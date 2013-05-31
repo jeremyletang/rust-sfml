@@ -1,0 +1,32 @@
+/*!
+* Here is a list of all modules:
+*
+*/
+#[link(name = "rsfml",
+       vers = "0.0.1",
+       url = "http://https://github.com/JeremyLetang/rust-sfml")];
+
+#[comment = "Rust binding for sfml"];
+#[license = "Zlib/png"];
+#[crate_type = "lib"];
+
+extern mod std;
+pub use rsfml::*;
+
+
+#[path = "system/sfml_system.rs"]
+pub mod system;
+
+#[path = "window/sfml_window.rs"]
+pub mod window;
+
+#[path = "audio/sfml_audio.rs"]
+pub mod audio;
+
+#[path = "graphics/sfml_graphics.rs"]
+pub mod graphics;
+
+#[path = "network/sfml_network.rs"]
+pub mod network;
+
+mod rsfml;
