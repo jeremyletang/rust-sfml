@@ -192,7 +192,7 @@ pub impl Text {
     /**
     * Set the global color of a text
     */
-    fn set_color(&self, color : Color) -> () {
+    fn set_color(&self, color : &Color) -> () {
         unsafe {
             csfml::sfText_setColor(self.text, color.unwrap_color())
         }
