@@ -201,31 +201,31 @@ impl CircleShape {
 
     pub fn move(&self, offset : &vector2::Vector2f) -> () {
         unsafe {
-            csfml::sfCircleShape_move(self.circleShape, vector2::unwrap_vector2f(*offset))
+            csfml::sfCircleShape_move(self.circleShape, vector2::unwrap_vector2f(offset))
         }
     }
 
     pub fn scale(&self, factors : &vector2::Vector2f) -> () {
         unsafe {
-            csfml::sfCircleShape_scale(self.circleShape, vector2::unwrap_vector2f(*factors))
+            csfml::sfCircleShape_scale(self.circleShape, vector2::unwrap_vector2f(factors))
         }
     }
 
     pub fn set_position(&self, position : &vector2::Vector2f) -> () {
         unsafe {
-            csfml::sfCircleShape_setPosition(self.circleShape, vector2::unwrap_vector2f(*position))
+            csfml::sfCircleShape_setPosition(self.circleShape, vector2::unwrap_vector2f(position))
         }
     }
 
     pub fn set_scale(&self, scale : &vector2::Vector2f) -> () {
         unsafe {
-            csfml::sfCircleShape_setScale(self.circleShape, vector2::unwrap_vector2f(*scale))
+            csfml::sfCircleShape_setScale(self.circleShape, vector2::unwrap_vector2f(scale))
         }
     }
 
     pub fn set_origin(&self, origin : &vector2::Vector2f) -> () {
         unsafe {
-            csfml::sfCircleShape_setOrigin(self.circleShape, vector2::unwrap_vector2f(*origin))
+            csfml::sfCircleShape_setOrigin(self.circleShape, vector2::unwrap_vector2f(origin))
         }
     }
 

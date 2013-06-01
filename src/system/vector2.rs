@@ -209,7 +209,7 @@ pub fn wrap_vector2f(vec : csfml::sfVector2f) -> Vector2f {
 * Function to convert Vector2i to C sfVector2i
 */
 #[doc(hidden)]
-pub fn unwrap_vector2i(vec : Vector2i) -> csfml::sfVector2i {
+pub fn unwrap_vector2i(vec : &Vector2i) -> csfml::sfVector2i {
     csfml::sfVector2i {x : vec.x as c_int, y : vec.y as c_int}
 }
 
@@ -217,7 +217,7 @@ pub fn unwrap_vector2i(vec : Vector2i) -> csfml::sfVector2i {
 * Function to convert Vector2i to C sfVector2i
 */
 #[doc(hidden)]
-pub fn unwrap_vector2u(vec : Vector2u) -> csfml::sfVector2u {
+pub fn unwrap_vector2u(vec : &Vector2u) -> csfml::sfVector2u {
     csfml::sfVector2u {x : vec.x as c_uint, y : vec.y as c_uint}
 }
 
@@ -225,6 +225,6 @@ pub fn unwrap_vector2u(vec : Vector2u) -> csfml::sfVector2u {
 * Function to convert Vector2i to C sfVector2i
 */
 #[doc(hidden)]
-pub fn unwrap_vector2f(vec : Vector2f) -> csfml::sfVector2f {
+pub fn unwrap_vector2f(vec : &Vector2f) -> csfml::sfVector2f {
     csfml::sfVector2f {x : vec.x as c_float, y : vec.y as c_float}
 }

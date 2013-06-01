@@ -376,7 +376,7 @@ pub impl Window {
     /**
     *   Method for class window, set the position of the window with a Vector2i.
     */
-    fn set_position(&self, position: vector2::Vector2i) -> () {
+    fn set_position(&self, position : &vector2::Vector2i) -> () {
         unsafe {
             csfml::sfWindow_setPosition(self.window, vector2::unwrap_vector2i(position))
         }
@@ -394,7 +394,7 @@ pub impl Window {
     /**
     *   Method for class window, set the size of the window with a Vector2u
     */
-    fn set_size(&self, size : vector2::Vector2u) -> () {
+    fn set_size(&self, size : &vector2::Vector2u) -> () {
         unsafe {
             csfml::sfWindow_setSize(self.window, vector2::unwrap_vector2u(size))
         }

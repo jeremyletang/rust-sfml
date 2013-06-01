@@ -83,6 +83,6 @@ pub fn wrap_vector3f(vec : csfml::sfVector3f) -> Vector3f {
 * Function to convert Vector3f to C sfVector3f
 */
 #[doc(hidden)]
-pub fn unwrap_vector3f(vec : Vector3f) -> csfml::sfVector3f {
+pub fn unwrap_vector3f(vec : &Vector3f) -> csfml::sfVector3f {
         csfml::sfVector3f {x : vec.x as c_float, y : vec.y as c_float, z : vec.z as c_float}
 }

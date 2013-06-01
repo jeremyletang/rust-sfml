@@ -96,19 +96,19 @@ impl View {
 
     pub fn set_center(&self, center : &vector2::Vector2f) -> () {
         unsafe {
-            csfml::sfView_setCenter(self.view, vector2::unwrap_vector2f(*center))
+            csfml::sfView_setCenter(self.view, vector2::unwrap_vector2f(center))
         }
     }
 
     pub fn set_size(&self, size : &vector2::Vector2f) -> () {
         unsafe {
-            csfml::sfView_setSize(self.view, vector2::unwrap_vector2f(*size))
+            csfml::sfView_setSize(self.view, vector2::unwrap_vector2f(size))
         }
     }
 
     pub fn move(&self, offset : &vector2::Vector2f) -> () {
         unsafe {
-            csfml::sfView_move(self.view, vector2::unwrap_vector2f(*offset))
+            csfml::sfView_move(self.view, vector2::unwrap_vector2f(offset))
         }
     }
 

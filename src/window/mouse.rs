@@ -63,7 +63,7 @@ pub fn mouse_get_position(relativeTo : &Window) -> vector2::Vector2i {
 * This function sets the current position of the mouse cursor relative to the given window.
 *
 */
-pub fn mouse_set_position(position : vector2::Vector2i, relativeTo : &Window) -> () {
+pub fn mouse_set_position(position : &vector2::Vector2i, relativeTo : &Window) -> () {
     unsafe {
         io::println(fmt!("Pos %d, %d", position.x, position.y));
         csfml::sfMouse_setPosition(vector2::unwrap_vector2i(position), relativeTo.get_sfWindow())

@@ -27,3 +27,4 @@ pub mod view;
 pub mod image;
 pub mod sprite;
 pub mod circle_shape;
+pub mod rectangle_shape;

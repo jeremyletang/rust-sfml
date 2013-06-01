@@ -150,7 +150,7 @@ impl Shader {
     fn set_vector2_parameter(&self, name : ~str, vector : &vector2::Vector2f) -> () {
         unsafe {
             do str::as_c_str(name) |namebuf| {
-                csfml::sfShader_setVector2Parameter(self.shader, namebuf, vector2::unwrap_vector2f(*vector))
+                csfml::sfShader_setVector2Parameter(self.shader, namebuf, vector2::unwrap_vector2f(vector))
             }
         }
     }
@@ -158,7 +158,7 @@ impl Shader {
     fn set_vector3_parameter(&self, name : ~str, vector : &vector3::Vector3f) -> () {
         unsafe {
             do str::as_c_str(name) |namebuf| {
-                csfml::sfShader_setVector3Parameter(self.shader, namebuf, vector3::unwrap_vector3f(*vector))
+                csfml::sfShader_setVector3Parameter(self.shader, namebuf, vector3::unwrap_vector3f(vector))
             }
         }
     }

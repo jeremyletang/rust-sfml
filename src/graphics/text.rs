@@ -209,31 +209,31 @@ pub impl Text {
 
     fn scale(&self, factors : &vector2::Vector2f) -> () {
         unsafe {
-            csfml::sfText_scale(self.text, vector2::unwrap_vector2f(*factors))
+            csfml::sfText_scale(self.text, vector2::unwrap_vector2f(factors))
         }
     }
 
     fn set_scale(&self, scale : &vector2::Vector2f) -> () {
         unsafe {
-            csfml::sfText_setScale(self.text, vector2::unwrap_vector2f(*scale))
+            csfml::sfText_setScale(self.text, vector2::unwrap_vector2f(scale))
         }
     }
 
     fn move(&self, offset : &vector2::Vector2f) -> () {
         unsafe {
-            csfml::sfText_move(self.text, vector2::unwrap_vector2f(*offset))
+            csfml::sfText_move(self.text, vector2::unwrap_vector2f(offset))
         }
     }
 
     fn set_position(&self, position : &vector2::Vector2f) -> () {
         unsafe {
-            csfml::sfText_setPosition(self.text, vector2::unwrap_vector2f(*position))
+            csfml::sfText_setPosition(self.text, vector2::unwrap_vector2f(position))
         }
     }
 
     fn set_origin(&self, origin : &vector2::Vector2f) -> () {
         unsafe {
-            csfml::sfText_setOrigin(self.text, vector2::unwrap_vector2f(*origin))
+            csfml::sfText_setOrigin(self.text, vector2::unwrap_vector2f(origin))
         }
     }
     
