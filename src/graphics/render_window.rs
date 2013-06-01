@@ -461,7 +461,7 @@ pub impl RenderWindow {
     /**
     * Drawing functions
     */
-    fn draw<T : drawable::Drawable>(&self, t : @T) -> () {
+    fn draw<T : drawable::Drawable>(&self, t : &T) -> () {
         t.draw_in_render_window(self);
     }
 
