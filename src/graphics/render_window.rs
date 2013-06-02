@@ -21,6 +21,7 @@ use graphics::color;
 use graphics::sprite::Sprite;
 use graphics::circle_shape::CircleShape;
 use graphics::rectangle_shape::RectangleShape;
+use graphics::convex_shape::ConvexShape;
 //use graphics::transform;
 //use graphics::render_states;
 use graphics::view;
@@ -40,6 +41,7 @@ pub mod csfml {
     use graphics::sprite::csfml::sfSprite;
     use graphics::circle_shape::csfml::sfCircleShape;
     use graphics::rectangle_shape::csfml::sfRectangleShape;
+    use graphics::convex_shape::csfml::sfConvexShape;
     use graphics::view::csfml::sfView;
     use graphics::image::csfml::sfImage;
 
@@ -93,7 +95,7 @@ pub mod csfml {
         fn sfRenderWindow_drawText(renderWindow : *sfRenderWindow, object : *sfText, states : *render_states::csfml::sfRenderStates) -> ();
         // fn sfRenderWindow_drawShape(renderWindow : *sfRenderWindow, object : *sfShape, states : *sfRenderStates) -> ();
         fn sfRenderWindow_drawCircleShape(renderWindow : *sfRenderWindow, object : *sfCircleShape, states : *render_states::csfml::sfRenderStates) -> ();
-        // fn sfRenderWindow_drawConvexShape(renderWindow : *sfRenderWindow, object : *sfConvexShape, states : *sfRenderStates) -> ();
+        fn sfRenderWindow_drawConvexShape(renderWindow : *sfRenderWindow, object : *sfConvexShape, states : *render_states::csfml::sfRenderStates) -> ();
         fn sfRenderWindow_drawRectangleShape(renderWindow : *sfRenderWindow, object : *sfRectangleShape, states : *render_states::csfml::sfRenderStates) -> ();
         // fn sfRenderWindow_drawVertexArray(renderWindow : *sfRenderWindow, object : *sfVertexArray, states : *sfRenderStates) -> ();
         // fn sfRenderWindow_drawPrimitives(renderWindow : *sfRenderWindow, vertices : *sfVertex, vertexCount : c_uint, ttype : sfPrimitiveType, states : *sfRenderStates) -> ();  
@@ -490,6 +492,11 @@ pub impl RenderWindow {
         }
     }
 
+    fn draw_convex_shape(&self, convexShape : &ConvexShape) -> () {
+        unsafe {
+            csfml::sfRenderWindow_drawConvexShape(self.renderWindow, convexShape.unwrap_convex_shape(), ptr::null())
+        }
+    }
 
     /// Clear window with the given color
     fn clear(&self, color : &color::Color) -> () {

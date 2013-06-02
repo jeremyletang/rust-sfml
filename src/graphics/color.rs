@@ -34,14 +34,14 @@ impl Color {
     * Construct a color from its 3 RGB components
     */
     pub fn new_from_RGB(red : u8, green : u8, blue : u8) -> Color {
-        Color { color : unsafe {csfml::sfColor_fromRGB(red, green, blue)}}
+        Color { color : csfml::sfColor{red : red, green : green, blue : blue, alpha : 255}}
     }
 
     /**
     * Construct a color from its 4 RGBA components
     */
     pub fn new_from_RGBA(red : u8, green : u8, blue : u8, alpha : u8) -> Color {
-        Color { color : unsafe {csfml::sfColor_fromRGBA(red, green, blue, alpha)}}
+        Color { color : csfml::sfColor {red : red, green : green, blue : blue, alpha : alpha}}
     }
 
     /**
@@ -60,27 +60,28 @@ impl Color {
     
     /// Black predefined color
     pub fn black() -> Color {
-        Color { color : unsafe {csfml::sfColor_fromRGB(0, 0, 0)}}
+        Color { color : csfml::sfColor {red : 0, green : 0, blue : 0, alpha : 255}}
     }
     
     /// White predefined color
     pub fn white() -> Color {
-        Color { color : unsafe {csfml::sfColor_fromRGB(255, 255, 255)}}
+        Color { color : csfml::sfColor {red : 255, green : 255, blue : 255, alpha : 255}}
     }
     
     /// Red predefined color
     pub fn red() -> Color {
-        Color { color : unsafe {csfml::sfColor_fromRGB(255, 0, 0)}}
+        //Color { color : unsafe {csfml::sfColor_fromRGB(255, 0, 0)}}
+        Color { color : csfml::sfColor {red : 255, green : 0, blue : 0, alpha : 255}}
     }
     
     /// Green predefined color
     pub fn green() -> Color {
-        Color { color : unsafe {csfml::sfColor_fromRGB(0, 255, 0)}}
+        Color { color : csfml::sfColor {red : 0, green : 255, blue : 0, alpha : 255}}
     }
     
     /// Blue predefined color
     pub fn blue() -> Color {
-        Color { color : unsafe {csfml::sfColor_fromRGB(0, 0, 255)}}
+        Color { color : csfml::sfColor {red : 0, green : 0, blue : 255, alpha : 255}}
     }
     
     #[doc(hidden)]

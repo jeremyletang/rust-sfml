@@ -28,3 +28,5 @@ pub mod image;
 pub mod sprite;
 pub mod circle_shape;
 pub mod rectangle_shape;
+pub mod convex_shape;
+pub mod vertex;
