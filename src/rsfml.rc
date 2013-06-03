@@ -13,7 +13,6 @@
 extern mod std;
 pub use rsfml::*;
 
-
 #[path = "system/sfml_system.rs"]
 pub mod system;
 

@@ -4,12 +4,14 @@
 *
 */
 
+#[cfg(mac_dylib)]
 #[cfg(target_os="linux")]
 #[cfg(target_os="win32")]
-mod others {
+mod platform {
     #[link_args="-lcsfml-window"]
     extern {}
 }
+
 
 pub mod video_mode;
 pub mod context;

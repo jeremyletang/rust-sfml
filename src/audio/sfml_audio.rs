@@ -4,9 +4,10 @@
 *
 */
 
+#[cfg(mac_dylib)]
 #[cfg(target_os="linux")]
 #[cfg(target_os="win32")]
-mod others {
+mod platform {
     #[link_args="-lcsfml-audio"]
     extern {}
 }

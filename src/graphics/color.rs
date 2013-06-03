@@ -5,6 +5,8 @@
 *
 */
 
+use rsfml::Wrapper;
+
 #[doc(hidden)]
 pub mod csfml {
     
