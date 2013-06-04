@@ -5,6 +5,7 @@ use graphics::texture;
 use system::vector2;
 use graphics::drawable;
 use graphics::render_window::RenderWindow;
+use graphics::rect::{FloatRect, IntRect};
 
 #[doc(hidden)]
 pub mod csfml {
@@ -14,6 +15,7 @@ pub mod csfml {
     use graphics::color;
     use graphics::texture;
     use rsfml::sfTypes::sfBool;
+    use graphics::rect::{FloatRect, IntRect};
 
     pub struct sfConvexShape {
         This : *c_void
@@ -37,12 +39,12 @@ pub mod csfml {
         //fn sfConvexShape_getTransform(shape : *sfConvexShape) -> sfTransform;
         //fn sfConvexShape_getInverseTransform(shape : *sfConvexShape) -> sfTransform;
         fn sfConvexShape_setTexture(shape : *sfConvexShape, texture : *texture::csfml::sfTexture, resetRect : sfBool) -> ();
-        //fn sfConvexShape_setTextureRect(shape : *sfConvexShape, rect : sfIntRect) -> ();
+        fn sfConvexShape_setTextureRect(shape : *sfConvexShape, rect : IntRect) -> ();
         fn sfConvexShape_setFillColor(shape : *sfConvexShape, color : color::Color) -> ();
         fn sfConvexShape_setOutlineColor(shape : *sfConvexShape, color : color::Color) -> ();
         fn sfConvexShape_setOutlineThickness(shape : *sfConvexShape, thickness : c_float) -> ();
         fn sfConvexShape_getTexture(shape : *sfConvexShape) -> *texture::csfml::sfTexture;
-        //fn sfConvexShape_getTextureRect(shape : *sfConvexShape) -> sfIntRect;
+        fn sfConvexShape_getTextureRect(shape : *sfConvexShape) -> IntRect;
         fn sfConvexShape_getFillColor(shape : *sfConvexShape) -> color::Color;
         fn sfConvexShape_getOutlineColor(shape : *sfConvexShape) -> color::Color;
         fn sfConvexShape_getOutlineThickness(shape : *sfConvexShape) -> c_float;
@@ -50,8 +52,8 @@ pub mod csfml {
         fn sfConvexShape_getPoint(shape : *sfConvexShape, index : c_uint) -> vector2::Vector2f;
         fn sfConvexShape_setPointCount(shape : *sfConvexShape, count : c_uint) -> ();
         fn sfConvexShape_setPoint(shape : *sfConvexShape, index : c_uint, point : vector2::Vector2f) -> ();
-        //fn sfConvexShape_getLocalBounds(shape : *sfConvexShape) -> sfFloatRect;
-        //fn sfConvexShape_getGlobalBounds(shape : *sfConvexShape) -> sfFloatRect;
+        fn sfConvexShape_getLocalBounds(shape : *sfConvexShape) -> FloatRect;
+        fn sfConvexShape_getGlobalBounds(shape : *sfConvexShape) -> FloatRect;
     }
 }
 
@@ -192,6 +194,30 @@ impl ConvexShape {
     pub fn set_point_count(&self, count : uint) -> () {
         unsafe {
             csfml::sfConvexShape_setPointCount(self.convexShape, count as c_uint)
+        }
+    }
+
+    pub fn set_texture_rect(&self, rect : &IntRect) -> () {
+        unsafe {
+            csfml::sfConvexShape_setTextureRect(self.convexShape, *rect)
+        }
+    }
+
+    pub fn get_local_bounds(&self) -> FloatRect {
+        unsafe {
+            csfml::sfConvexShape_getLocalBounds(self.convexShape)
+        }
+    }
+
+    pub fn get_global_bounds(&self) -> FloatRect {
+        unsafe {
+            csfml::sfConvexShape_getGlobalBounds(self.convexShape)
+        }
+    }
+
+    pub fn get_texture_rect(&self) -> IntRect {
+        unsafe {
+            csfml::sfConvexShape_getTextureRect(self.convexShape)
         }
     }
 

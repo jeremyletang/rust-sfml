@@ -7,7 +7,7 @@
 
 use core::libc::{c_float, c_uint};
 use graphics::color;
-use graphics::rect::{IntRect};
+use graphics::rect::{IntRect, FloatRect};
 use graphics::texture;
 use graphics::drawable;
 use graphics::render_window::RenderWindow;
@@ -59,8 +59,8 @@ pub mod csfml {
         fn sfCircleShape_setRadius(shape : *sfCircleShape, radius : c_float) -> ();
         fn sfCircleShape_getRadius(shape : *sfCircleShape) -> c_float;
         fn sfCircleShape_setPointCount(shape : *sfCircleShape, count : c_uint) -> ();
-        //fn sfCircleShape_getLocalBounds(shape : *sfCircleShape) -> sfFloatRect;
-        //fn sfCircleShape_getGlobalBounds(shape : *sfCircleShape) -> sfFloatRect;
+        fn sfCircleShape_getLocalBounds(shape : *sfCircleShape) -> rect::FloatRect;
+        fn sfCircleShape_getGlobalBounds(shape : *sfCircleShape) -> rect::FloatRect;
     }
 }
 
@@ -226,6 +226,18 @@ impl CircleShape {
     pub fn set_origin(&self, origin : &vector2::Vector2f) -> () {
         unsafe {
             csfml::sfCircleShape_setOrigin(self.circleShape, *origin)
+        }
+    }
+
+    pub fn get_local_bounds(&self) -> FloatRect {
+        unsafe {
+            csfml::sfCircleShape_getLocalBounds(self.circleShape)
+        }
+    }
+    
+    pub fn get_global_bounds(&self) -> FloatRect {
+        unsafe {
+            csfml::sfCircleShape_getGlobalBounds(self.circleShape)
         }
     }
 

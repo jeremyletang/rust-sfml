@@ -5,6 +5,7 @@ use graphics::color;
 use graphics::texture;
 use graphics::drawable;
 use graphics::render_window::RenderWindow;
+use graphics::rect::{FloatRect, IntRect};
 
 #[doc(hidden)]
 pub mod csfml {
@@ -14,6 +15,7 @@ pub mod csfml {
     use graphics::color;
     use graphics::texture;
     use rsfml::sfTypes::sfBool;
+    use graphics::rect::{FloatRect, IntRect};
 
     pub struct sfRectangleShape {
         This : *c_void
@@ -37,12 +39,12 @@ pub mod csfml {
         //fn sfRectangleShape_getTransform(shape : *sfRectangleShape) -> sfTransform;
         //fn sfRectangleShape_getInverseTransform(shape : *sfRectangleShape) -> sfTransform;
         fn sfRectangleShape_setTexture(shape : *sfRectangleShape, texture : *texture::csfml::sfTexture, resetRect : sfBool) -> ();
-        //fn sfRectangleShape_setTextureRect(shape : *sfRectangleShape, rect : IntRect) -> ();
+        fn sfRectangleShape_setTextureRect(shape : *sfRectangleShape, rect : IntRect) -> ();
         fn sfRectangleShape_setFillColor(shape : *sfRectangleShape, color : color::Color) -> ();
         fn sfRectangleShape_setOutlineColor(shape : *sfRectangleShape, color : color::Color) -> ();
         fn sfRectangleShape_setOutlineThickness(shape : *sfRectangleShape, thickness : c_float) -> ();
         fn sfRectangleShape_getTexture(shape : *sfRectangleShape) -> *texture::csfml::sfTexture;
-        //fn sfRectangleShape_getTextureRect(shape : *sfRectangleShape) -> sfIntRect;
+        fn sfRectangleShape_getTextureRect(shape : *sfRectangleShape) -> IntRect;
         fn sfRectangleShape_getFillColor(shape : *sfRectangleShape) -> color::Color;
         fn sfRectangleShape_getOutlineColor(shape : *sfRectangleShape) -> color::Color;
         fn sfRectangleShape_getOutlineThickness(shape : *sfRectangleShape) -> c_float;
@@ -50,8 +52,8 @@ pub mod csfml {
         fn sfRectangleShape_getPoint(shape : *sfRectangleShape, index : c_uint) -> vector2::Vector2f;
         fn sfRectangleShape_setSize(shape : *sfRectangleShape, size : vector2::Vector2f) -> ();
         fn sfRectangleShape_getSize(shape : *sfRectangleShape) -> vector2::Vector2f;
-        //fn sfRectangleShape_getLocalBounds(shape : *sfRectangleShape) -> sfFloatRect;
-        //fn sfRectangleShape_getGlobalBounds(shape : *sfRectangleShape) -> sfFloatRect;
+        fn sfRectangleShape_getLocalBounds(shape : *sfRectangleShape) -> FloatRect;
+        fn sfRectangleShape_getGlobalBounds(shape : *sfRectangleShape) -> FloatRect;
     }
 }
 
@@ -189,6 +191,30 @@ impl RectangleShape {
     pub fn get_point_count(&self) -> uint {
         unsafe {
             csfml::sfRectangleShape_getPointCount(self.rectangleShape) as uint
+        }
+    }
+
+    pub fn get_texture_rect(&self) -> IntRect {
+        unsafe {
+            csfml::sfRectangleShape_getTextureRect(self.rectangleShape)
+        }
+    }
+
+    pub fn set_texture_rect(&self, rect : &IntRect) -> () {
+        unsafe {
+            csfml::sfRectangleShape_setTextureRect(self.rectangleShape, *rect)
+        }
+    }
+
+    pub fn get_global_bounds(&self) -> FloatRect {
+        unsafe {
+            csfml::sfRectangleShape_getGlobalBounds(self.rectangleShape)
+        }
+    }
+
+    pub fn get_local_bounds(&self) -> FloatRect {
+        unsafe {
+            csfml::sfRectangleShape_getLocalBounds(self.rectangleShape)
         }
     }
 
