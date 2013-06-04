@@ -16,7 +16,8 @@ pub mod csfml {
 
     pub extern "C" {
         fn sfIntRect_contains(rect : *IntRect, x : c_int, y : c_int) -> sfBool;
-        fn sfIntRect_intersects(rect1 : *IntRect, rect2 : *IntRect, intersectons : *IntRect);
+        fn sfIntRect_intersects(rect1 : *IntRect, rect2 : *IntRect, intersectons : *IntRect) -> sfBool;
+        fn sfFloatRect_intersects(rect1 : *FloatRect, rect2 : *FloatRect, intersectons : *FloatRect) -> sfBool;
         fn sfFloatRect_contains(rect : *FloatRect, x : f32, y : f32) -> sfBool;
     }
 }
@@ -51,7 +52,14 @@ impl IntRect {
             0 => false,
             _ => true
         }
-    }    
+    }
+    
+    pub fn intersects(rect1 : &IntRect, rect2 : &IntRect, intersections : &IntRect) -> bool {
+        match unsafe {csfml::sfIntRect_intersects(rect1, rect2, intersections)} {
+            0 => false,
+            _ => true
+        }
+    }
 }
 
 impl FloatRect {
@@ -67,6 +75,13 @@ impl FloatRect {
     */
     pub fn contains(self, x : f32, y : f32) -> bool {
         match unsafe {csfml::sfFloatRect_contains(&self, x, y) } {
+            0 => false,
+            _ => true
+        }
+    }
+
+    pub fn intersects(rect1 : &FloatRect, rect2 : &FloatRect, intersections : &FloatRect) -> bool {
+        match unsafe {csfml::sfFloatRect_intersects(rect1, rect2, intersections)} {
             0 => false,
             _ => true
         }
