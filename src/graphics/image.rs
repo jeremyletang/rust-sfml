@@ -6,7 +6,7 @@
 */
 
 use core::libc::{c_uint};
-use system::vector2;
+//use system::vector2;
 use system::vector2::Vector2u;
 use graphics::color::Color;
 
@@ -32,7 +32,7 @@ pub mod csfml {
         fn sfImage_copy(image : *sfImage) -> *sfImage;
         fn sfImage_destroy(image : *sfImage) -> ();
         fn sfImage_saveToFile(image : *sfImage, filename : *c_char) -> sfBool;
-        fn sfImage_getSize(image : *sfImage) -> vector2::csfml::sfVector2u;
+        fn sfImage_getSize(image : *sfImage) -> vector2::Vector2u;
         fn sfImage_createMaskFromColor(image : *sfImage, color : color::Color, alpha : u8) -> ();
        // fn sfImage_copyImage(image : *sfImage, image : *sfImage, destX : c_uint, destY : c_uint, sourceRect : sfIntRect, applyAlpha : sfBool) -> ();
         fn sfImage_setPixel(image : *sfImage, x : c_uint, y : c_uint, color : color::Color) -> ();
@@ -95,7 +95,7 @@ impl Image {
     * Return the size of an image 
     */
     pub fn get_size(&self) -> Vector2u {
-        vector2::wrap_vector2u(unsafe {csfml::sfImage_getSize(self.image)})
+        unsafe {csfml::sfImage_getSize(self.image)}
     }
     
     /**

@@ -16,7 +16,7 @@ pub mod csfml {
     
     use core::libc::{c_uint, c_void, c_char};
     use rsfml::sfTypes::{sfBool};
-    use system::vector2::csfml::sfVector2u;
+    use system::vector2::Vector2u;
     use window::window::csfml::sfWindow;
     use graphics::render_window::csfml::sfRenderWindow;
     use graphics::rect::IntRect;
@@ -34,7 +34,7 @@ pub mod csfml {
         //fn sfTexture_createFromImage(image :*sfImage, area : *sfIntRect) -> *sfTexture;
         fn sfTexture_copy(texture : *sfTexture) -> *sfTexture;
         fn sfTexture_destroy(texture : *sfTexture) -> ();
-        fn sfTexture_getSize(texture : *sfTexture) -> sfVector2u;
+        fn sfTexture_getSize(texture : *sfTexture) -> Vector2u;
         fn sfTexture_copyToImage(texture : *sfTexture) -> *image::csfml::sfImage;
         //fn sfTexture_updateFromPixels(texture : *sfTexture, pixels : *u8, width : c_uint, height : c_uint, x : c_uint, y : c_uint) -> ();
         //fn sfTexture_updateFromImage(texture : *sfTexture, image : *sfImage, x : c_uint, y : c_uint) -> ();
@@ -82,9 +82,9 @@ impl Texture {
     * Return the size of the texture
     */
     pub fn get_size(&self) -> vector2::Vector2u {
-        vector2::wrap_vector2u(unsafe {
+        unsafe {
             csfml::sfTexture_getSize(self.texture)
-        })
+        }
     }
     
     /**

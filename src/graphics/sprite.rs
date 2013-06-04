@@ -29,17 +29,17 @@ pub mod csfml {
         fn sfSprite_create() -> *sfSprite;
         fn sfSprite_copy(sprite : *sfSprite) -> *sfSprite;
         fn sfSprite_destroy(sprite : *sfSprite) -> ();
-        fn sfSprite_setPosition(sprite : *sfSprite, position : vector2::csfml::sfVector2f) -> ();
+        fn sfSprite_setPosition(sprite : *sfSprite, position : vector2::Vector2f) -> ();
         fn sfSprite_setRotation(sprite : *sfSprite, angle : c_float) -> ();
-        fn sfSprite_setScale(sprite : *sfSprite, scale : vector2::csfml::sfVector2f) -> ();
-        fn sfSprite_setOrigin(sprite : *sfSprite, origin : vector2::csfml::sfVector2f) -> ();
-        fn sfSprite_getPosition(sprite : *sfSprite) -> vector2::csfml::sfVector2f;
+        fn sfSprite_setScale(sprite : *sfSprite, scale : vector2::Vector2f) -> ();
+        fn sfSprite_setOrigin(sprite : *sfSprite, origin : vector2::Vector2f) -> ();
+        fn sfSprite_getPosition(sprite : *sfSprite) -> vector2::Vector2f;
         fn sfSprite_getRotation(sprite : *sfSprite) -> c_float;
-        fn sfSprite_getScale(sprite : *sfSprite) -> vector2::csfml::sfVector2f;
-        fn sfSprite_getOrigin(sprite : *sfSprite) -> vector2::csfml::sfVector2f;
-        fn sfSprite_move(sprite : *sfSprite, offset : vector2::csfml::sfVector2f) -> ();
+        fn sfSprite_getScale(sprite : *sfSprite) -> vector2::Vector2f;
+        fn sfSprite_getOrigin(sprite : *sfSprite) -> vector2::Vector2f;
+        fn sfSprite_move(sprite : *sfSprite, offset : vector2::Vector2f) -> ();
         fn sfSprite_rotate(sprite : *sfSprite, angle : c_float) -> ();
-        fn sfSprite_scale(sprite : *sfSprite, factors : vector2::csfml::sfVector2f) -> ();
+        fn sfSprite_scale(sprite : *sfSprite, factors : vector2::Vector2f) -> ();
         //fn sfSprite_getTransform(sprite : *sfSprite) -> sfTransform;
         //fn sfSprite_getInverseTransform(sprite : *sfSprite) -> sfTransform;
         fn sfSprite_setTexture(sprite : *sfSprite, texture : *texture::csfml::sfTexture, resetRect : sfBool) -> ();
@@ -137,44 +137,44 @@ impl Sprite {
     
     pub fn set_position(&self, position : &vector2::Vector2f) -> () {
         unsafe {
-            csfml::sfSprite_setPosition(self.sprite, vector2::unwrap_vector2f(position))
+            csfml::sfSprite_setPosition(self.sprite, *position)
         }
     }
 
     pub fn scale(&self, factors : &vector2::Vector2f) -> () {
         unsafe {
-            csfml::sfSprite_scale(self.sprite, vector2::unwrap_vector2f(factors))
+            csfml::sfSprite_scale(self.sprite, *factors)
         }
     }
 
     pub fn get_scale(&self) -> vector2::Vector2f {
-        vector2::wrap_vector2f(unsafe {csfml::sfSprite_getScale(self.sprite)})
+        unsafe {csfml::sfSprite_getScale(self.sprite)}
     }
 
     pub fn get_origin(&self) -> vector2::Vector2f {
-        vector2::wrap_vector2f(unsafe {csfml::sfSprite_getOrigin(self.sprite)})
+        unsafe {csfml::sfSprite_getOrigin(self.sprite)}
     }
 
     pub fn move(&self, offset : &vector2::Vector2f) -> () {
         unsafe {
-            csfml::sfSprite_move(self.sprite, vector2::unwrap_vector2f(offset))
+            csfml::sfSprite_move(self.sprite, *offset)
         }
     }
 
     pub fn set_scale(&self, scale : &vector2::Vector2f) -> () {
         unsafe {
-            csfml::sfSprite_setScale(self.sprite, vector2::unwrap_vector2f(scale))
+            csfml::sfSprite_setScale(self.sprite, *scale)
         }
     }
     
     pub fn set_origin(&self, origin : &vector2::Vector2f) -> () {
         unsafe {
-            csfml::sfSprite_setOrigin(self.sprite, vector2::unwrap_vector2f(origin))
+            csfml::sfSprite_setOrigin(self.sprite, *origin)
         }
     }
 
     pub fn get_position(&self) -> vector2::Vector2f {
-        vector2::wrap_vector2f(unsafe {csfml::sfSprite_getPosition(self.sprite)})
+        unsafe {csfml::sfSprite_getPosition(self.sprite)}
     }
 
     #[doc(hidden)]

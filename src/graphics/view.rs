@@ -23,16 +23,16 @@ pub mod csfml {
         //fn sfView_createFromRect(rectangle : sfFloatRect rectangle) -> *sfView;
         fn sfView_copy(view : *sfView) -> *sfView;
         fn sfView_destroy(view : *sfView) -> ();
-        fn sfView_setCenter(view : *sfView, center : vector2::csfml::sfVector2f) -> ();
-        fn sfView_setSize(view : *sfView, size : vector2::csfml::sfVector2f) -> ();
+        fn sfView_setCenter(view : *sfView, center : vector2::Vector2f) -> ();
+        fn sfView_setSize(view : *sfView, size : vector2::Vector2f) -> ();
         fn sfView_setRotation(view : *sfView, angle : c_float) -> ();
         //fn sfView_setViewport(view : *sfView, viewport : sfFloatRect) -> ();
         //fn sfView_reset(view : *sfView, rectangle : sfFloatRect) -> ();
-        fn sfView_getCenter(view : *sfView) -> vector2::csfml::sfVector2f;
-        fn sfView_getSize(view : *sfView) -> vector2::csfml::sfVector2f;
+        fn sfView_getCenter(view : *sfView) -> vector2::Vector2f;
+        fn sfView_getSize(view : *sfView) -> vector2::Vector2f;
         fn sfView_getRotation(view : *sfView) -> c_float;
         //fn sfView_getViewport(view : *sfView) -> sfFloatRect;
-        fn sfView_move(view : *sfView, offset : vector2::csfml::sfVector2f) -> ();
+        fn sfView_move(view : *sfView, offset : vector2::Vector2f) -> ();
         fn sfView_rotate(view : *sfView, angle : c_float) -> ();
         fn sfView_zoom(view : *sfView, factor : c_float) -> ();
     }
@@ -96,28 +96,28 @@ impl View {
 
     pub fn set_center(&self, center : &vector2::Vector2f) -> () {
         unsafe {
-            csfml::sfView_setCenter(self.view, vector2::unwrap_vector2f(center))
+            csfml::sfView_setCenter(self.view, *center)
         }
     }
 
     pub fn set_size(&self, size : &vector2::Vector2f) -> () {
         unsafe {
-            csfml::sfView_setSize(self.view, vector2::unwrap_vector2f(size))
+            csfml::sfView_setSize(self.view, *size)
         }
     }
 
     pub fn move(&self, offset : &vector2::Vector2f) -> () {
         unsafe {
-            csfml::sfView_move(self.view, vector2::unwrap_vector2f(offset))
+            csfml::sfView_move(self.view, *offset)
         }
     }
 
     pub fn get_center(&self) -> vector2::Vector2f {
-        vector2::wrap_vector2f(unsafe {csfml::sfView_getCenter(self.view)})
+        unsafe {csfml::sfView_getCenter(self.view)}
     }
 
     pub fn get_size(&self) -> vector2::Vector2f {
-        vector2::wrap_vector2f(unsafe {csfml::sfView_getSize(self.view)})
+        unsafe {csfml::sfView_getSize(self.view)}
     }
 
     #[doc(hidden)]

@@ -7,65 +7,36 @@
 
 pub use core::libc::{c_uint, c_int, c_float};
 
-#[doc(hidden)]
-pub mod csfml {
-    pub use core::libc::{c_uint, c_int, c_float};
-    
-    /**
-    * C implemention of Vector2i
-    */
-    pub struct sfVector2i {
-        x : c_int,
-        y : c_int
-    }
-    
-    /**
-    * C implemention of Vector2u
-    */
-    pub struct sfVector2u {
-        x : c_uint,
-        y : c_uint
-    }
-
-    /**
-    * C implemention of Vector2f
-    */
-    pub struct sfVector2f {
-        x : c_float, 
-        y : c_float
-    }
-}
-
 /**
 * Implemention of Vector2i
 */
 pub struct Vector2i {
-    x : int,
-    y : int
+    x : i32,
+    y : i32
 }
 
 /**
 * Implemention of Vector2u
 */
 pub struct Vector2u {
-    x : uint,
-    y : uint
+    x : u32,
+    y : u32
 }
 
 /**
 * Implemention of Vector2f
 */
 pub struct Vector2f {
-    x : float,
-    y : float
+    x : f32,
+    y : f32
 }
 
 pub trait Vector2<T> {
     pub fn new(x : T, y : T) -> Self;
 }
 
-impl Vector2<int> for Vector2i {
-    pub fn new(x : int, y: int) -> Vector2i {
+impl Vector2<i32> for Vector2i {
+    pub fn new(x : i32, y: i32) -> Vector2i {
         Vector2i{x : x, y : y}
     }
 }
@@ -103,8 +74,8 @@ impl Eq for Vector2i {
     }
 }
 
-impl Vector2<uint> for Vector2u {
-    fn new(x : uint, y: uint) -> Vector2u {
+impl Vector2<u32> for Vector2u {
+    fn new(x : u32, y: u32) -> Vector2u {
         Vector2u{x : x, y : y}
     }
 }
@@ -142,8 +113,8 @@ impl Eq for Vector2u {
     }
 }
 
-impl Vector2<float> for Vector2f {
-    fn new(xa : float, ya: float) -> Vector2f {
+impl Vector2<f32> for Vector2f {
+    fn new(xa : f32, ya: f32) -> Vector2f {
         Vector2f{x : xa, y : ya}
     }
 }
@@ -179,52 +150,4 @@ impl Eq for Vector2f {
     fn ne(&self, rhs : &Vector2f) -> bool {
         self.x != rhs.x && self.y != rhs.y 
     }
-}
-
-/**
-* Function to convert C sfVector2i to Vector2i
-*/
-#[doc(hidden)]
-pub fn wrap_vector2i(vec : csfml::sfVector2i) -> Vector2i {
-    Vector2i {x : vec.x as int, y : vec.y as int}
-}
-
-/**
-* Function to convert C sfVector2u to Vector2u
-*/
-#[doc(hidden)]
-pub fn wrap_vector2u(vec : csfml::sfVector2u) -> Vector2u {
-    Vector2u {x : vec.x as uint, y : vec.y as uint}
-}
-
-/**
-* Function to convert C sfVector2f to Vector2f
-*/
-#[doc(hidden)]
-pub fn wrap_vector2f(vec : csfml::sfVector2f) -> Vector2f {
-    Vector2f {x : vec.x as float, y : vec.y as float}
-}
-
-/**
-* Function to convert Vector2i to C sfVector2i
-*/
-#[doc(hidden)]
-pub fn unwrap_vector2i(vec : &Vector2i) -> csfml::sfVector2i {
-    csfml::sfVector2i {x : vec.x as c_int, y : vec.y as c_int}
-}
-
-/**
-* Function to convert Vector2i to C sfVector2i
-*/
-#[doc(hidden)]
-pub fn unwrap_vector2u(vec : &Vector2u) -> csfml::sfVector2u {
-    csfml::sfVector2u {x : vec.x as c_uint, y : vec.y as c_uint}
-}
-
-/**
-* Function to convert Vector2i to C sfVector2i
-*/
-#[doc(hidden)]
-pub fn unwrap_vector2f(vec : &Vector2f) -> csfml::sfVector2f {
-    csfml::sfVector2f {x : vec.x as c_float, y : vec.y as c_float}
 }

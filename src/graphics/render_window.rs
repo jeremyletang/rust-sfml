@@ -68,10 +68,10 @@ pub mod csfml {
         fn sfRenderWindow_getSettings(renderWindow : *sfRenderWindow) -> ContextSettings;
         fn sfRenderWindow_pollEvent(renderWindow : *sfRenderWindow, event : *sfEvent) -> sfBool;
         fn sfRenderWindow_waitEvent(renderWindow : *sfRenderWindow, event : *sfEvent) -> sfBool;
-        fn sfRenderWindow_getPosition(renderWindow : *sfRenderWindow) -> vector2::csfml::sfVector2i;
-        fn sfRenderWindow_setPosition(renderWindow : *sfRenderWindow, position : vector2::csfml::sfVector2i) -> ();
-        fn sfRenderWindow_getSize(renderWindow : *sfRenderWindow) -> vector2::csfml::sfVector2u;
-        fn sfRenderWindow_setSize(renderWindow : *sfRenderWindow, size : vector2::csfml::sfVector2u) -> ();
+        fn sfRenderWindow_getPosition(renderWindow : *sfRenderWindow) -> vector2::Vector2i;
+        fn sfRenderWindow_setPosition(renderWindow : *sfRenderWindow, position : vector2::Vector2i) -> ();
+        fn sfRenderWindow_getSize(renderWindow : *sfRenderWindow) -> vector2::Vector2u;
+        fn sfRenderWindow_setSize(renderWindow : *sfRenderWindow, size : vector2::Vector2u) -> ();
         fn sfRenderWindow_setTitle(renderWindow : *sfRenderWindow, title : *c_char) -> ();
         // fn sfRenderWindow_setUnicodeTitle(renderWindow : *sfRenderWindow, title : *sfUint32) -> ();
         // fn sfRenderWindow_setIcon(renderWindow : *sfRenderWindow, width : c_uint, height : c_uint, pixels : *sfUint8) -> ();
@@ -89,8 +89,8 @@ pub mod csfml {
         fn sfRenderWindow_getView(renderWindow : *sfRenderWindow) -> *sfView;
         fn sfRenderWindow_getDefaultView(renderWindow : *sfRenderWindow) -> *sfView;
         // fn sfRenderWindow_getViewport(renderWindow : *sfRenderWindow, view : *sfView) -> sfIntRect;
-        fn sfRenderWindow_mapPixelToCoords(renderWindow : *sfRenderWindow, point : vector2::csfml::sfVector2i, view : *sfView) -> vector2::csfml::sfVector2f;
-        fn sfRenderWindow_mapCoordsToPixel(renderWindow : *sfRenderWindow, point : vector2::csfml::sfVector2f, view : *sfView) -> vector2::csfml::sfVector2i;
+        fn sfRenderWindow_mapPixelToCoords(renderWindow : *sfRenderWindow, point : vector2::Vector2i, view : *sfView) -> vector2::Vector2f;
+        fn sfRenderWindow_mapCoordsToPixel(renderWindow : *sfRenderWindow, point : vector2::Vector2f, view : *sfView) -> vector2::Vector2i;
         fn sfRenderWindow_drawSprite(renderWindow : *sfRenderWindow, object : *sfSprite, states : *render_states::csfml::sfRenderStates) -> ();
         fn sfRenderWindow_drawText(renderWindow : *sfRenderWindow, object : *sfText, states : *render_states::csfml::sfRenderStates) -> ();
         // fn sfRenderWindow_drawShape(renderWindow : *sfRenderWindow, object : *sfShape, states : *sfRenderStates) -> ();
@@ -103,8 +103,8 @@ pub mod csfml {
         fn sfRenderWindow_popGLStates(renderWindow : *sfRenderWindow) -> ();
         fn sfRenderWindow_resetGLStates(renderWindow : *sfRenderWindow) -> ();
         fn sfRenderWindow_capture(renderWindow : *sfRenderWindow) -> *sfImage;
-        fn sfMouse_getPositionRenderWindow(relativeTo : *sfRenderWindow) -> vector2::csfml::sfVector2i;
-        fn sfMouse_setPositionRenderWindow(position : vector2::csfml::sfVector2i, relativeTo : *sfRenderWindow) -> ();
+        fn sfMouse_getPositionRenderWindow(relativeTo : *sfRenderWindow) -> vector2::Vector2i;
+        fn sfMouse_setPositionRenderWindow(position : vector2::Vector2i, relativeTo : *sfRenderWindow) -> ();
     }    
 }
 
@@ -390,7 +390,7 @@ pub impl RenderWindow {
     */
     fn get_position(&self) -> vector2::Vector2i {
         unsafe {
-            vector2::wrap_vector2i(csfml::sfRenderWindow_getPosition(self.renderWindow))
+            csfml::sfRenderWindow_getPosition(self.renderWindow)
         }
     }
 
@@ -399,7 +399,7 @@ pub impl RenderWindow {
     */
     fn set_position(&self, position : &vector2::Vector2i) -> () {
         unsafe {
-            csfml::sfRenderWindow_setPosition(self.renderWindow, vector2::unwrap_vector2i(position))
+            csfml::sfRenderWindow_setPosition(self.renderWindow, *position)
         }
     }
     
@@ -408,7 +408,7 @@ pub impl RenderWindow {
     */
     fn get_size(&self) -> vector2::Vector2u {
         unsafe {
-            vector2::wrap_vector2u(csfml::sfRenderWindow_getSize(self.renderWindow))
+            csfml::sfRenderWindow_getSize(self.renderWindow)
         }
     }
     
@@ -417,7 +417,7 @@ pub impl RenderWindow {
     */
     fn set_size(&self, size : &vector2::Vector2u) -> () {
         unsafe {
-            csfml::sfRenderWindow_setSize(self.renderWindow, vector2::unwrap_vector2u(size))
+            csfml::sfRenderWindow_setSize(self.renderWindow, *size)
         }
     }
     
@@ -447,7 +447,7 @@ pub impl RenderWindow {
     */
     fn get_mouse_position(&self) -> vector2::Vector2i {
         unsafe {
-            vector2::wrap_vector2i(csfml::sfMouse_getPositionRenderWindow(self.renderWindow))
+            csfml::sfMouse_getPositionRenderWindow(self.renderWindow)
         }
     }
 
@@ -456,7 +456,7 @@ pub impl RenderWindow {
     */
     fn set_mouse_position(&self, position : &vector2::Vector2i) -> () {
         unsafe {
-            csfml::sfMouse_setPositionRenderWindow(vector2::unwrap_vector2i(position), self.renderWindow)
+            csfml::sfMouse_setPositionRenderWindow(*position, self.renderWindow)
         }
     }
 
@@ -525,13 +525,13 @@ pub impl RenderWindow {
     
     fn map_pixel_to_coords(&self, point : &vector2::Vector2i, view : &view::View) -> vector2::Vector2f {
         unsafe {
-            vector2::wrap_vector2f(csfml::sfRenderWindow_mapPixelToCoords(self.renderWindow, vector2::unwrap_vector2i(point), view.unwrap_view()))
+            csfml::sfRenderWindow_mapPixelToCoords(self.renderWindow, *point, view.unwrap_view())
         }
     }
 
     fn map_coords_to_pixel(&self, point : &vector2::Vector2f, view : &view::View) -> vector2::Vector2i {
         unsafe {
-            vector2::wrap_vector2i(csfml::sfRenderWindow_mapCoordsToPixel(self.renderWindow, vector2::unwrap_vector2f(point), view.unwrap_view()))
+            csfml::sfRenderWindow_mapCoordsToPixel(self.renderWindow, *point, view.unwrap_view())
         }
     }
 

@@ -76,10 +76,10 @@ pub mod csfml {
         fn sfWindow_display(window : *sfWindow) -> ();
         fn sfWindow_setFramerateLimit(window : *sfWindow, limit : c_uint) -> ();
         fn sfWindow_setJoystickThreshold(window : *sfWindow, threshold : c_float) -> ();
-        fn sfWindow_getPosition(window : *sfWindow) -> vector2::csfml::sfVector2i;
-        fn sfWindow_setPosition(window : *sfWindow, position : vector2::csfml::sfVector2i) -> ();
-        fn sfWindow_getSize(window : *sfWindow) -> vector2::csfml::sfVector2u;
-        fn sfWindow_setSize(window : *sfWindow, size : vector2::csfml::sfVector2u) -> ();
+        fn sfWindow_getPosition(window : *sfWindow) -> vector2::Vector2i;
+        fn sfWindow_setPosition(window : *sfWindow, position : vector2::Vector2i) -> ();
+        fn sfWindow_getSize(window : *sfWindow) -> vector2::Vector2u;
+        fn sfWindow_setSize(window : *sfWindow, size : vector2::Vector2u) -> ();
         fn sfWindow_pollEvent(window : *sfWindow, event : *sfEvent) -> sfBool;
         fn sfWindow_waitEvent(window : *sfWindow, event : *sfEvent) -> sfBool;
         //fn sfWindow_getSystemHandle(window : *sfWindow) -> sfWindowHandle;
@@ -369,7 +369,7 @@ pub impl Window {
     */
     fn get_position(&self) -> vector2::Vector2i {
         unsafe {
-            vector2::wrap_vector2i(csfml::sfWindow_getPosition(self.window))
+            csfml::sfWindow_getPosition(self.window)
         }
     }
     
@@ -378,7 +378,7 @@ pub impl Window {
     */
     fn set_position(&self, position : &vector2::Vector2i) -> () {
         unsafe {
-            csfml::sfWindow_setPosition(self.window, vector2::unwrap_vector2i(position))
+            csfml::sfWindow_setPosition(self.window, *position)
         }
     }
     
@@ -387,7 +387,7 @@ pub impl Window {
     */
     fn get_size(&self) -> vector2::Vector2u {
         unsafe {
-            vector2::wrap_vector2u(csfml::sfWindow_getSize(self.window))
+            csfml::sfWindow_getSize(self.window)
         }
     }
  
@@ -396,7 +396,7 @@ pub impl Window {
     */
     fn set_size(&self, size : &vector2::Vector2u) -> () {
         unsafe {
-            csfml::sfWindow_setSize(self.window, vector2::unwrap_vector2u(size))
+            csfml::sfWindow_setSize(self.window, *size)
         }
     }
 

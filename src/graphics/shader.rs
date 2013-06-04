@@ -35,8 +35,8 @@ pub mod csfml {
         fn sfShader_setFloat2Parameter(shader : *sfShader, name : *c_char, x : c_float, y : c_float) -> ();
         fn sfShader_setFloat3Parameter(shader : *sfShader, name : *c_char, x : c_float, y : c_float, z : c_float) -> ();
         fn sfShader_setFloat4Parameter(shader : *sfShader, name : *c_char, x : c_float, y : c_float, z : c_float, w : c_float) -> ();
-        fn sfShader_setVector2Parameter(shader : *sfShader, name : *c_char, vector : vector2::csfml::sfVector2f) -> ();
-        fn sfShader_setVector3Parameter(shader : *sfShader, name : *c_char, vector : vector3::csfml::sfVector3f) -> ();
+        fn sfShader_setVector2Parameter(shader : *sfShader, name : *c_char, vector : vector2::Vector2f) -> ();
+        fn sfShader_setVector3Parameter(shader : *sfShader, name : *c_char, vector : vector3::Vector3f) -> ();
         fn sfShader_setColorParameter(shader : *sfShader, name : *c_char, color : color::Color) -> (); 
         fn sfShader_setTransformParameter(shader : *sfShader, name : *c_char, transform : transform::csfml::sfTransform) -> ();
         fn sfShader_setTextureParameter(shader : *sfShader, name : *c_char, texture : *texture::csfml::sfTexture) -> ();
@@ -150,7 +150,7 @@ impl Shader {
     fn set_vector2_parameter(&self, name : ~str, vector : &vector2::Vector2f) -> () {
         unsafe {
             do str::as_c_str(name) |namebuf| {
-                csfml::sfShader_setVector2Parameter(self.shader, namebuf, vector2::unwrap_vector2f(vector))
+                csfml::sfShader_setVector2Parameter(self.shader, namebuf, *vector)
             }
         }
     }
@@ -158,7 +158,7 @@ impl Shader {
     fn set_vector3_parameter(&self, name : ~str, vector : &vector3::Vector3f) -> () {
         unsafe {
             do str::as_c_str(name) |namebuf| {
-                csfml::sfShader_setVector3Parameter(self.shader, namebuf, vector3::unwrap_vector3f(vector))
+                csfml::sfShader_setVector3Parameter(self.shader, namebuf, *vector)
             }
         }
     }

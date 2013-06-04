@@ -12,21 +12,15 @@ pub use core::libc::{c_int};
 pub mod csfml {
     
     pub use core::libc::{c_int};    
+    pub use system::vector3;
 
-    /* Modify this in the future, compiler bug when use 3 float*/
-    pub struct sfVector3f {
-        x : c_int,
-        y : c_int,
-        z : c_int
-    }
-    
     pub extern "C" {
         fn sfListener_setGlobalVolume(volume : f32) -> ();
         fn sfListener_getGlobalVolume() -> f32;
-        fn sfListener_setPosition(position : sfVector3f) -> ();
-        fn sfListener_getPosition() -> sfVector3f;
-        fn sfListener_setDirection(orientation : sfVector3f) -> ();
-        fn sfListener_getDirection() -> sfVector3f;
+        fn sfListener_setPosition(position : vector3::Vector3f) -> ();
+        fn sfListener_getPosition() -> vector3::Vector3f;
+        fn sfListener_setDirection(orientation : vector3::Vector3f) -> ();
+        fn sfListener_getDirection() -> vector3::Vector3f;
     }
 }
 /**
@@ -52,9 +46,9 @@ pub fn get_global_volume() -> float {
 /*
 * Set the position of the listener in the scene (Doesnt't work)
 */
-pub fn set_position(position : Vector3f) -> () {
+pub fn set_position(position : &Vector3f) -> () {
     unsafe {
-        csfml::sfListener_setPosition(csfml::sfVector3f{x : position.x as c_int, y : position.y as c_int, z : position.z as c_int})
+        csfml::sfListener_setPosition(*position)
     }
 }
 
@@ -63,17 +57,16 @@ pub fn set_position(position : Vector3f) -> () {
 */
 pub fn get_position() -> Vector3f {
     unsafe {
-        let tmp : csfml::sfVector3f = csfml::sfListener_getPosition();
-        Vector3f {x : tmp.x as float, y : tmp.y as float, z : tmp.z as float}
+        csfml::sfListener_getPosition()
     }
 }
 
 /**
 * Set the orientation of the listener in the scene (Doesn't work)
 */
-pub fn set_direction(position : Vector3f) -> () {
+pub fn set_direction(position : &Vector3f) -> () {
     unsafe {
-        csfml::sfListener_setDirection(csfml::sfVector3f{x : position.x as c_int, y : position.y as c_int, z : position.z as c_int})
+        csfml::sfListener_setDirection(*position)
     }
 }
 
@@ -82,7 +75,6 @@ pub fn set_direction(position : Vector3f) -> () {
 */
 pub fn get_direction() -> Vector3f {
     unsafe {
-        let tmp : csfml::sfVector3f = csfml::sfListener_getDirection();
-        Vector3f {x : tmp.x as float, y : tmp.y as float, z : tmp.z as float}
+        csfml::sfListener_getDirection()
     }
 }

@@ -32,17 +32,17 @@ pub mod csfml {
         fn sfText_create() -> *sfText;
         fn sfText_copy(text : *sfText) -> *sfText;
         fn sfText_destroy(text : *sfText) -> ();
-        fn sfText_setPosition(text : *sfText, position : vector2::csfml::sfVector2f) -> ();
+        fn sfText_setPosition(text : *sfText, position : vector2::Vector2f) -> ();
         fn sfText_setRotation(text : *sfText, angle : c_float) -> ();
-        fn sfText_setScale(text : *sfText, scale : vector2::csfml::sfVector2f) -> ();
-        fn sfText_setOrigin(text : *sfText, origin : vector2::csfml::sfVector2f) -> ();
-        fn sfText_getPosition(text : *sfText) -> vector2::csfml::sfVector2f;
+        fn sfText_setScale(text : *sfText, scale : vector2::Vector2f) -> ();
+        fn sfText_setOrigin(text : *sfText, origin : vector2::Vector2f) -> ();
+        fn sfText_getPosition(text : *sfText) -> vector2::Vector2f;
         fn sfText_getRotation(text : *sfText) -> c_float;
-        fn sfText_getScale(text : *sfText) -> vector2::csfml::sfVector2f;
-        fn sfText_getOrigin(text : *sfText) -> vector2::csfml::sfVector2f;
-        fn sfText_move(text : *sfText, offset : vector2::csfml::sfVector2f) -> ();
+        fn sfText_getScale(text : *sfText) -> vector2::Vector2f;
+        fn sfText_getOrigin(text : *sfText) -> vector2::Vector2f;
+        fn sfText_move(text : *sfText, offset : vector2::Vector2f) -> ();
         fn sfText_rotate(text : *sfText, angle : c_float) -> ();
-        fn sfText_scale(text : *sfText, factors : vector2::csfml::sfVector2f) -> ();
+        fn sfText_scale(text : *sfText, factors : vector2::Vector2f) -> ();
         // fn sfText_getTransform(text : *sfText) -> sfTransform;
         // fn sfText_getInverseTransform(text : *sfText) -> sfTransform;
         fn sfText_setString(text : *sfText, string : *c_char) -> ();
@@ -57,7 +57,7 @@ pub mod csfml {
         fn sfText_getCharacterSize(text : *sfText) -> c_uint;
         fn sfText_getStyle(text : *sfText) -> u32;
         fn sfText_getColor(text : *sfText) -> color::Color;
-        fn sfText_findCharacterPos(text : *sfText, index : size_t) -> vector2::csfml::sfVector2f;
+        fn sfText_findCharacterPos(text : *sfText, index : size_t) -> vector2::Vector2f;
         // fn sfText_getLocalBounds(text : *sfText) -> sfFloatRect;
         // fn sfText_getGlobalBounds(text : *sfText) -> sfFloatRect;
     }
@@ -209,48 +209,48 @@ pub impl Text {
 
     fn scale(&self, factors : &vector2::Vector2f) -> () {
         unsafe {
-            csfml::sfText_scale(self.text, vector2::unwrap_vector2f(factors))
+            csfml::sfText_scale(self.text, *factors)
         }
     }
 
     fn set_scale(&self, scale : &vector2::Vector2f) -> () {
         unsafe {
-            csfml::sfText_setScale(self.text, vector2::unwrap_vector2f(scale))
+            csfml::sfText_setScale(self.text, *scale)
         }
     }
 
     fn move(&self, offset : &vector2::Vector2f) -> () {
         unsafe {
-            csfml::sfText_move(self.text, vector2::unwrap_vector2f(offset))
+            csfml::sfText_move(self.text, *offset)
         }
     }
 
     fn set_position(&self, position : &vector2::Vector2f) -> () {
         unsafe {
-            csfml::sfText_setPosition(self.text, vector2::unwrap_vector2f(position))
+            csfml::sfText_setPosition(self.text, *position)
         }
     }
 
     fn set_origin(&self, origin : &vector2::Vector2f) -> () {
         unsafe {
-            csfml::sfText_setOrigin(self.text, vector2::unwrap_vector2f(origin))
+            csfml::sfText_setOrigin(self.text, *origin)
         }
     }
     
     fn get_scale(&self) -> vector2::Vector2f {
-        vector2::wrap_vector2f(unsafe {csfml::sfText_getScale(self.text)})
+        unsafe {csfml::sfText_getScale(self.text)}
     }
 
     fn get_origin(&self) -> vector2::Vector2f {
-        vector2::wrap_vector2f(unsafe {csfml::sfText_getOrigin(self.text)})
+        unsafe {csfml::sfText_getOrigin(self.text)}
     }
 
     fn find_character_pos(&self, index : u64) -> vector2::Vector2f {
-        vector2::wrap_vector2f(unsafe {csfml::sfText_findCharacterPos(self.text, index as size_t)})
+        unsafe {csfml::sfText_findCharacterPos(self.text, index as size_t)}
     }
 
     fn get_position(&self) -> vector2::Vector2f {
-        vector2::wrap_vector2f(unsafe {csfml::sfText_getPosition(self.text)})
+        unsafe {csfml::sfText_getPosition(self.text)}
     }
     
     #[doc(hidden)]

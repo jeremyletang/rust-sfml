@@ -6,7 +6,7 @@ use core::libc::c_uint;
 pub mod csfml {
     
     use core::libc::{c_uint, c_void};
-    use graphics::vertex::csfml;
+    use graphics::vertex;
 
     pub struct sfVertexArray {
         This : *c_void
@@ -20,7 +20,7 @@ pub mod csfml {
         //fn sfVertexArray_getVertex(vertexArray : *sfVertexArray, index : c_uint) -> *csfml::sfVertex;
         fn sfVertexArray_clear(vertexArray : *sfVertexArray) -> ();
         fn sfVertexArray_resize(vertexArray : *sfVertexArray, vertexCount : c_uint) -> ();
-        fn sfVertexArray_append(vertexArray : *sfVertexArray, vertex : csfml::sfVertex) -> ();
+        fn sfVertexArray_append(vertexArray : *sfVertexArray, vertex : vertex::Vertex) -> ();
         // fn sfVertexArray_setPrimitiveType(vertexArray : *sfVertexArray, stype : sfPrimitiveType) -> ();
         // fn sfVertexArray_getPrimitiveType(vertexArray : *sfVertexArray) -> sfPrimitiveType;
         //fn sfVertexArray_getBounds(vertexArray : *sfVertexArray) -> sfFloatRect;
@@ -65,7 +65,7 @@ impl VertexArray {
 
     pub fn append(&self, vertex : &Vertex) -> () {
         unsafe {
-            csfml::sfVertexArray_append(self.vertexArray, vertex.unwrap())
+            csfml::sfVertexArray_append(self.vertexArray, *vertex)
         }
     }
     

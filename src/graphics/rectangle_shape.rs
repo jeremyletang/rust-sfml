@@ -23,17 +23,17 @@ pub mod csfml {
         fn sfRectangleShape_create() -> *sfRectangleShape;
         fn sfRectangleShape_copy(shape : *sfRectangleShape) -> *sfRectangleShape;
         fn sfRectangleShape_destroy(shape : *sfRectangleShape) -> ();
-        fn sfRectangleShape_setPosition(shape : *sfRectangleShape, position : vector2::csfml::sfVector2f) -> ();
+        fn sfRectangleShape_setPosition(shape : *sfRectangleShape, position : vector2::Vector2f) -> ();
         fn sfRectangleShape_setRotation(shape : *sfRectangleShape, angle : c_float) -> ();
-        fn sfRectangleShape_setScale(shape : *sfRectangleShape, scale : vector2::csfml::sfVector2f) -> ();
-        fn sfRectangleShape_setOrigin(shape : *sfRectangleShape, origin : vector2::csfml::sfVector2f) -> ();
-        fn sfRectangleShape_getPosition(shape : *sfRectangleShape) -> vector2::csfml::sfVector2f;
+        fn sfRectangleShape_setScale(shape : *sfRectangleShape, scale : vector2::Vector2f) -> ();
+        fn sfRectangleShape_setOrigin(shape : *sfRectangleShape, origin : vector2::Vector2f) -> ();
+        fn sfRectangleShape_getPosition(shape : *sfRectangleShape) -> vector2::Vector2f;
         fn sfRectangleShape_getRotation(shape : *sfRectangleShape) -> c_float;
-        fn sfRectangleShape_getScale(shape : *sfRectangleShape) -> vector2::csfml::sfVector2f;
-        fn sfRectangleShape_getOrigin(shape : *sfRectangleShape) -> vector2::csfml::sfVector2f;
-        fn sfRectangleShape_move(shape : *sfRectangleShape, offset : vector2::csfml::sfVector2f) -> ();
+        fn sfRectangleShape_getScale(shape : *sfRectangleShape) -> vector2::Vector2f;
+        fn sfRectangleShape_getOrigin(shape : *sfRectangleShape) -> vector2::Vector2f;
+        fn sfRectangleShape_move(shape : *sfRectangleShape, offset : vector2::Vector2f) -> ();
         fn sfRectangleShape_rotate(shape : *sfRectangleShape, angle : c_float) -> ();
-        fn sfRectangleShape_scale(shape : *sfRectangleShape, factors : vector2::csfml::sfVector2f) -> ();
+        fn sfRectangleShape_scale(shape : *sfRectangleShape, factors : vector2::Vector2f) -> ();
         //fn sfRectangleShape_getTransform(shape : *sfRectangleShape) -> sfTransform;
         //fn sfRectangleShape_getInverseTransform(shape : *sfRectangleShape) -> sfTransform;
         fn sfRectangleShape_setTexture(shape : *sfRectangleShape, texture : *texture::csfml::sfTexture, resetRect : sfBool) -> ();
@@ -47,9 +47,9 @@ pub mod csfml {
         fn sfRectangleShape_getOutlineColor(shape : *sfRectangleShape) -> color::Color;
         fn sfRectangleShape_getOutlineThickness(shape : *sfRectangleShape) -> c_float;
         fn sfRectangleShape_getPointCount(shape : *sfRectangleShape) -> c_uint;
-        fn sfRectangleShape_getPoint(shape : *sfRectangleShape, index : c_uint) -> vector2::csfml::sfVector2f;
-        fn sfRectangleShape_setSize(shape : *sfRectangleShape, size : vector2::csfml::sfVector2f) -> ();
-        fn sfRectangleShape_getSize(shape : *sfRectangleShape) -> vector2::csfml::sfVector2f;
+        fn sfRectangleShape_getPoint(shape : *sfRectangleShape, index : c_uint) -> vector2::Vector2f;
+        fn sfRectangleShape_setSize(shape : *sfRectangleShape, size : vector2::Vector2f) -> ();
+        fn sfRectangleShape_getSize(shape : *sfRectangleShape) -> vector2::Vector2f;
         //fn sfRectangleShape_getLocalBounds(shape : *sfRectangleShape) -> sfFloatRect;
         //fn sfRectangleShape_getGlobalBounds(shape : *sfRectangleShape) -> sfFloatRect;
     }
@@ -71,7 +71,7 @@ impl RectangleShape {
     
     pub fn set_position(&self, position : &vector2::Vector2f) -> () {
         unsafe {
-            csfml::sfRectangleShape_setPosition(self.rectangleShape, vector2::unwrap_vector2f(position))
+            csfml::sfRectangleShape_setPosition(self.rectangleShape, *position)
         }
     }
     
@@ -83,25 +83,25 @@ impl RectangleShape {
 
     pub fn set_scale(&self, scale : &vector2::Vector2f) -> () {
         unsafe {
-            csfml::sfRectangleShape_setScale(self.rectangleShape, vector2::unwrap_vector2f(scale))
+            csfml::sfRectangleShape_setScale(self.rectangleShape, *scale)
         }
     }
 
     pub fn set_origin(&self, origin : &vector2::Vector2f) -> () {
         unsafe {
-            csfml::sfRectangleShape_setOrigin(self.rectangleShape, vector2::unwrap_vector2f(origin))
+            csfml::sfRectangleShape_setOrigin(self.rectangleShape, *origin)
         }
     }
 
     pub fn scale(&self, factors : &vector2::Vector2f) -> () {
         unsafe {
-            csfml::sfRectangleShape_scale(self.rectangleShape, vector2::unwrap_vector2f(factors))
+            csfml::sfRectangleShape_scale(self.rectangleShape, *factors)
         }
     }
 
     pub fn move(&self, offset : &vector2::Vector2f) -> () {
         unsafe {
-            csfml::sfRectangleShape_move(self.rectangleShape, vector2::unwrap_vector2f(offset))
+            csfml::sfRectangleShape_move(self.rectangleShape, *offset)
         }
     }
 
@@ -118,28 +118,28 @@ impl RectangleShape {
     }
 
     pub fn get_position(&self) -> vector2::Vector2f {
-        vector2::wrap_vector2f(unsafe { csfml::sfRectangleShape_getPosition(self.rectangleShape) })
+        unsafe { csfml::sfRectangleShape_getPosition(self.rectangleShape) }
     }
 
     pub fn get_scale(&self) -> vector2::Vector2f {
-        vector2::wrap_vector2f(unsafe { csfml::sfRectangleShape_getScale(self.rectangleShape) })
+        unsafe { csfml::sfRectangleShape_getScale(self.rectangleShape) }
     }
 
     pub fn get_origin(&self) -> vector2::Vector2f {
-        vector2::wrap_vector2f(unsafe { csfml::sfRectangleShape_getOrigin(self.rectangleShape) })
+        unsafe { csfml::sfRectangleShape_getOrigin(self.rectangleShape) }
     }
 
     pub fn get_size(&self) -> vector2::Vector2f {
-        vector2::wrap_vector2f(unsafe { csfml::sfRectangleShape_getSize(self.rectangleShape) })
+        unsafe { csfml::sfRectangleShape_getSize(self.rectangleShape) }
     }
 
     pub fn get_point(&self, index : uint) -> vector2::Vector2f {
-        vector2::wrap_vector2f(unsafe { csfml::sfRectangleShape_getPoint(self.rectangleShape, index as c_uint) })
+        unsafe { csfml::sfRectangleShape_getPoint(self.rectangleShape, index as c_uint) }
     }
 
     pub fn set_size(&self, size : &vector2::Vector2f) -> () {
         unsafe {
-            csfml::sfRectangleShape_setSize(self.rectangleShape, vector2::unwrap_vector2f(size))
+            csfml::sfRectangleShape_setSize(self.rectangleShape, *size)
         }
     }
 

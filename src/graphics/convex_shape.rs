@@ -23,17 +23,17 @@ pub mod csfml {
         fn sfConvexShape_create() -> *sfConvexShape;
         fn sfConvexShape_copy(shape : *sfConvexShape) -> *sfConvexShape;
         fn sfConvexShape_destroy(shape : *sfConvexShape) -> ();
-        fn sfConvexShape_setPosition(shape : *sfConvexShape, position : vector2::csfml::sfVector2f) -> ();
+        fn sfConvexShape_setPosition(shape : *sfConvexShape, position : vector2::Vector2f) -> ();
         fn sfConvexShape_setRotation(shape : *sfConvexShape, angle : c_float) -> ();
-        fn sfConvexShape_setScale(shape : *sfConvexShape, scale : vector2::csfml::sfVector2f) -> ();
-        fn sfConvexShape_setOrigin(shape : *sfConvexShape, origin : vector2::csfml::sfVector2f) -> ();
-        fn sfConvexShape_getPosition(shape : *sfConvexShape) -> vector2::csfml::sfVector2f;
+        fn sfConvexShape_setScale(shape : *sfConvexShape, scale : vector2::Vector2f) -> ();
+        fn sfConvexShape_setOrigin(shape : *sfConvexShape, origin : vector2::Vector2f) -> ();
+        fn sfConvexShape_getPosition(shape : *sfConvexShape) -> vector2::Vector2f;
         fn sfConvexShape_getRotation(shape : *sfConvexShape) -> c_float;
-        fn sfConvexShape_getScale(shape : *sfConvexShape) -> vector2::csfml::sfVector2f;
-        fn sfConvexShape_getOrigin(shape : *sfConvexShape) -> vector2::csfml::sfVector2f;
-        fn sfConvexShape_move(shape : *sfConvexShape, offset : vector2::csfml::sfVector2f) -> ();
+        fn sfConvexShape_getScale(shape : *sfConvexShape) -> vector2::Vector2f;
+        fn sfConvexShape_getOrigin(shape : *sfConvexShape) -> vector2::Vector2f;
+        fn sfConvexShape_move(shape : *sfConvexShape, offset : vector2::Vector2f) -> ();
         fn sfConvexShape_rotate(shape : *sfConvexShape, angle : c_float) -> ();
-        fn sfConvexShape_scale(shape : *sfConvexShape, factors : vector2::csfml::sfVector2f) -> ();
+        fn sfConvexShape_scale(shape : *sfConvexShape, factors : vector2::Vector2f) -> ();
         //fn sfConvexShape_getTransform(shape : *sfConvexShape) -> sfTransform;
         //fn sfConvexShape_getInverseTransform(shape : *sfConvexShape) -> sfTransform;
         fn sfConvexShape_setTexture(shape : *sfConvexShape, texture : *texture::csfml::sfTexture, resetRect : sfBool) -> ();
@@ -47,9 +47,9 @@ pub mod csfml {
         fn sfConvexShape_getOutlineColor(shape : *sfConvexShape) -> color::Color;
         fn sfConvexShape_getOutlineThickness(shape : *sfConvexShape) -> c_float;
         fn sfConvexShape_getPointCount(shape : *sfConvexShape) -> c_uint;
-        fn sfConvexShape_getPoint(shape : *sfConvexShape, index : c_uint) -> vector2::csfml::sfVector2f;
+        fn sfConvexShape_getPoint(shape : *sfConvexShape, index : c_uint) -> vector2::Vector2f;
         fn sfConvexShape_setPointCount(shape : *sfConvexShape, count : c_uint) -> ();
-        fn sfConvexShape_setPoint(shape : *sfConvexShape, index : c_uint, point : vector2::csfml::sfVector2f) -> ();
+        fn sfConvexShape_setPoint(shape : *sfConvexShape, index : c_uint, point : vector2::Vector2f) -> ();
         //fn sfConvexShape_getLocalBounds(shape : *sfConvexShape) -> sfFloatRect;
         //fn sfConvexShape_getGlobalBounds(shape : *sfConvexShape) -> sfFloatRect;
     }
@@ -72,54 +72,54 @@ impl ConvexShape {
 
     pub fn set_position(&self, position : &vector2::Vector2f) -> () {
         unsafe {
-            csfml::sfConvexShape_setPosition(self.convexShape, vector2::unwrap_vector2f(position))
+            csfml::sfConvexShape_setPosition(self.convexShape, *position)
         }
     }
 
     pub fn set_scale(&self, scale : &vector2::Vector2f) -> () {
         unsafe {
-            csfml::sfConvexShape_setScale(self.convexShape, vector2::unwrap_vector2f(scale))
+            csfml::sfConvexShape_setScale(self.convexShape, *scale)
         }
     }
 
     pub fn set_origin(&self, origin : &vector2::Vector2f) -> () {
         unsafe {
-            csfml::sfConvexShape_setOrigin(self.convexShape, vector2::unwrap_vector2f(origin))
+            csfml::sfConvexShape_setOrigin(self.convexShape, *origin)
         }
     }
 
     pub fn move(&self, offset : &vector2::Vector2f) -> () {
         unsafe {
-            csfml::sfConvexShape_move(self.convexShape, vector2::unwrap_vector2f(offset))
+            csfml::sfConvexShape_move(self.convexShape, *offset)
         }
     }
 
     pub fn scale(&self, factors : &vector2::Vector2f) -> () {
         unsafe {
-            csfml::sfConvexShape_scale(self.convexShape, vector2::unwrap_vector2f(factors))
+            csfml::sfConvexShape_scale(self.convexShape, *factors)
         }
     }
 
     pub fn set_point(&self, index : uint, point : &vector2::Vector2f) -> () {
         unsafe {
-            csfml::sfConvexShape_setPoint(self.convexShape, index as c_uint, vector2::unwrap_vector2f(point))
+            csfml::sfConvexShape_setPoint(self.convexShape, index as c_uint, *point)
         }
     }
 
     pub fn get_position(&self) -> vector2::Vector2f {
-        vector2::wrap_vector2f(unsafe {csfml::sfConvexShape_getPosition(self.convexShape)})
+        unsafe {csfml::sfConvexShape_getPosition(self.convexShape)}
     }
     
     pub fn get_scale(&self) -> vector2::Vector2f {
-        vector2::wrap_vector2f(unsafe {csfml::sfConvexShape_getScale(self.convexShape)})
+        unsafe {csfml::sfConvexShape_getScale(self.convexShape)}
     }
     
     pub fn get_origin(&self) -> vector2::Vector2f {
-        vector2::wrap_vector2f(unsafe {csfml::sfConvexShape_getOrigin(self.convexShape)})
+        unsafe {csfml::sfConvexShape_getOrigin(self.convexShape)}
     }
 
     pub fn get_point(&self, index : uint) -> vector2::Vector2f {
-        vector2::wrap_vector2f(unsafe {csfml::sfConvexShape_getPoint(self.convexShape, index as c_uint)})
+        unsafe {csfml::sfConvexShape_getPoint(self.convexShape, index as c_uint)}
     }
     
     pub fn set_rotation(&self, angle : float) -> () {
@@ -194,13 +194,6 @@ impl ConvexShape {
             csfml::sfConvexShape_setPointCount(self.convexShape, count as c_uint)
         }
     }
-
-/*
-        fn sfConvexShape_getOutlineThickness(shape : *sfConvexShape) -> c_float;
-        fn sfConvexShape_getPointCount(shape : *sfConvexShape) -> c_uint;
-        fn sfConvexShape_setPointCount(shape : *sfConvexShape, count : c_uint) -> ();
-
-*/
 
     pub fn wrap_convex_shape(convexShape : *csfml::sfConvexShape) -> ConvexShape {
         ConvexShape { convexShape : convexShape}

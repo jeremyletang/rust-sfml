@@ -31,17 +31,17 @@ pub mod csfml {
         fn sfCircleShape_create() -> *sfCircleShape;
         fn sfCircleShape_copy(shape : *sfCircleShape) -> *sfCircleShape;
         fn sfCircleShape_destroy(shape : *sfCircleShape) -> ();
-        fn sfCircleShape_setPosition(shape : *sfCircleShape, position : vector2::csfml::sfVector2f) -> ();
+        fn sfCircleShape_setPosition(shape : *sfCircleShape, position : vector2::Vector2f) -> ();
         fn sfCircleShape_setRotation(shape : *sfCircleShape, angle : c_float) -> ();
-        fn sfCircleShape_setScale(shape : *sfCircleShape, scale : vector2::csfml::sfVector2f) -> ();
-        fn sfCircleShape_setOrigin(shape : *sfCircleShape, origin : vector2::csfml::sfVector2f) -> ();
-        fn sfCircleShape_getPosition(shape : *sfCircleShape) -> vector2::csfml::sfVector2f;
+        fn sfCircleShape_setScale(shape : *sfCircleShape, scale : vector2::Vector2f) -> ();
+        fn sfCircleShape_setOrigin(shape : *sfCircleShape, origin : vector2::Vector2f) -> ();
+        fn sfCircleShape_getPosition(shape : *sfCircleShape) -> vector2::Vector2f;
         fn sfCircleShape_getRotation(shape : *sfCircleShape) -> c_float;
-        fn sfCircleShape_getScale(shape : *sfCircleShape) -> vector2::csfml::sfVector2f;
-        fn sfCircleShape_getOrigin(shape : *sfCircleShape) -> vector2::csfml::sfVector2f;
-        fn sfCircleShape_move(shape : *sfCircleShape, offset : vector2::csfml::sfVector2f) -> ();
+        fn sfCircleShape_getScale(shape : *sfCircleShape) -> vector2::Vector2f;
+        fn sfCircleShape_getOrigin(shape : *sfCircleShape) -> vector2::Vector2f;
+        fn sfCircleShape_move(shape : *sfCircleShape, offset : vector2::Vector2f) -> ();
         fn sfCircleShape_rotate(shape : *sfCircleShape, angle : c_float) -> ();
-        fn sfCircleShape_scale(shape : *sfCircleShape, factors : vector2::csfml::sfVector2f) -> ();
+        fn sfCircleShape_scale(shape : *sfCircleShape, factors : vector2::Vector2f) -> ();
         //fn sfCircleShape_getTransform(shape : *sfCircleShape) -> sfTransform;
         //fn sfCircleShape_getInverseTransform(shape : *sfCircleShape) -> sfTransform;
         fn sfCircleShape_setTexture(shape : *sfCircleShape, texture : *texture::csfml::sfTexture, resetRect : sfBool) -> ();
@@ -188,44 +188,44 @@ impl CircleShape {
     }
 
     pub fn get_position(&self) -> vector2::Vector2f {
-        vector2::wrap_vector2f(unsafe {csfml::sfCircleShape_getPosition(self.circleShape)})
+        unsafe {csfml::sfCircleShape_getPosition(self.circleShape)}
     }
 
     pub fn get_scale(&self) -> vector2::Vector2f {
-        vector2::wrap_vector2f(unsafe {csfml::sfCircleShape_getScale(self.circleShape)})
+        unsafe {csfml::sfCircleShape_getScale(self.circleShape)}
     }
 
     pub fn get_origin(&self) -> vector2::Vector2f {
-        vector2::wrap_vector2f(unsafe {csfml::sfCircleShape_getOrigin(self.circleShape)})
+        unsafe {csfml::sfCircleShape_getOrigin(self.circleShape)}
     }
 
     pub fn move(&self, offset : &vector2::Vector2f) -> () {
         unsafe {
-            csfml::sfCircleShape_move(self.circleShape, vector2::unwrap_vector2f(offset))
+            csfml::sfCircleShape_move(self.circleShape, *offset)
         }
     }
 
     pub fn scale(&self, factors : &vector2::Vector2f) -> () {
         unsafe {
-            csfml::sfCircleShape_scale(self.circleShape, vector2::unwrap_vector2f(factors))
+            csfml::sfCircleShape_scale(self.circleShape, *factors)
         }
     }
 
     pub fn set_position(&self, position : &vector2::Vector2f) -> () {
         unsafe {
-            csfml::sfCircleShape_setPosition(self.circleShape, vector2::unwrap_vector2f(position))
+            csfml::sfCircleShape_setPosition(self.circleShape, *position)
         }
     }
 
     pub fn set_scale(&self, scale : &vector2::Vector2f) -> () {
         unsafe {
-            csfml::sfCircleShape_setScale(self.circleShape, vector2::unwrap_vector2f(scale))
+            csfml::sfCircleShape_setScale(self.circleShape, *scale)
         }
     }
 
     pub fn set_origin(&self, origin : &vector2::Vector2f) -> () {
         unsafe {
-            csfml::sfCircleShape_setOrigin(self.circleShape, vector2::unwrap_vector2f(origin))
+            csfml::sfCircleShape_setOrigin(self.circleShape, *origin)
         }
     }
 
