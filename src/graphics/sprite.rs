@@ -44,10 +44,10 @@ pub mod csfml {
         //fn sfSprite_getInverseTransform(sprite : *sfSprite) -> sfTransform;
         fn sfSprite_setTexture(sprite : *sfSprite, texture : *texture::csfml::sfTexture, resetRect : sfBool) -> ();
         //fn sfSprite_setTextureRect(sprite : *sfSprite, rectangle : sfIntRect) -> ();
-        fn sfSprite_setColor(sprite : *sfSprite, color : color::csfml::sfColor) -> ();
+        fn sfSprite_setColor(sprite : *sfSprite, color : color::Color) -> ();
         fn sfSprite_getTexture(sprite : *sfSprite) -> *texture::csfml::sfTexture;
         //fn sfSprite_getTextureRect(sprite : *sfSprite) -> sfIntRect;
-        fn sfSprite_getColor(sprite : *sfSprite) -> color::csfml::sfColor;
+        fn sfSprite_getColor(sprite : *sfSprite) -> color::Color;
         //fn sfSprite_getLocalBounds(sprite : *sfSprite) -> sfFloatRect;
         //fn sfSprite_getGlobalBounds(sprite : *sfSprite) -> sfFloatRect;
     }
@@ -115,7 +115,7 @@ impl Sprite {
     */
     pub fn set_color(&self, color : &color::Color) -> () {
         unsafe {
-            csfml::sfSprite_setColor(self.sprite, color.unwrap_color())
+            csfml::sfSprite_setColor(self.sprite, *color)
         }
     }
     
@@ -132,7 +132,7 @@ impl Sprite {
     * Get the global color of a sprite
     */
     pub fn get_color(&self) -> color::Color {
-        color::Color::wrap_color(unsafe {csfml::sfSprite_getColor(self.sprite)})
+        unsafe {csfml::sfSprite_getColor(self.sprite)}
     }
     
     pub fn set_position(&self, position : &vector2::Vector2f) -> () {

@@ -38,13 +38,13 @@ pub mod csfml {
         //fn sfRectangleShape_getInverseTransform(shape : *sfRectangleShape) -> sfTransform;
         fn sfRectangleShape_setTexture(shape : *sfRectangleShape, texture : *texture::csfml::sfTexture, resetRect : sfBool) -> ();
         //fn sfRectangleShape_setTextureRect(shape : *sfRectangleShape, rect : IntRect) -> ();
-        fn sfRectangleShape_setFillColor(shape : *sfRectangleShape, color : color::csfml::sfColor) -> ();
-        fn sfRectangleShape_setOutlineColor(shape : *sfRectangleShape, color : color::csfml::sfColor) -> ();
+        fn sfRectangleShape_setFillColor(shape : *sfRectangleShape, color : color::Color) -> ();
+        fn sfRectangleShape_setOutlineColor(shape : *sfRectangleShape, color : color::Color) -> ();
         fn sfRectangleShape_setOutlineThickness(shape : *sfRectangleShape, thickness : c_float) -> ();
         fn sfRectangleShape_getTexture(shape : *sfRectangleShape) -> *texture::csfml::sfTexture;
         //fn sfRectangleShape_getTextureRect(shape : *sfRectangleShape) -> sfIntRect;
-        fn sfRectangleShape_getFillColor(shape : *sfRectangleShape) -> color::csfml::sfColor;
-        fn sfRectangleShape_getOutlineColor(shape : *sfRectangleShape) -> color::csfml::sfColor;
+        fn sfRectangleShape_getFillColor(shape : *sfRectangleShape) -> color::Color;
+        fn sfRectangleShape_getOutlineColor(shape : *sfRectangleShape) -> color::Color;
         fn sfRectangleShape_getOutlineThickness(shape : *sfRectangleShape) -> c_float;
         fn sfRectangleShape_getPointCount(shape : *sfRectangleShape) -> c_uint;
         fn sfRectangleShape_getPoint(shape : *sfRectangleShape, index : c_uint) -> vector2::csfml::sfVector2f;
@@ -150,15 +150,15 @@ impl RectangleShape {
         }
     }
 
-    pub fn set_fill_color(&self, color : color::Color) -> () {
+    pub fn set_fill_color(&self, color : &color::Color) -> () {
         unsafe {
-            csfml::sfRectangleShape_setFillColor(self.rectangleShape, color.unwrap_color())
+            csfml::sfRectangleShape_setFillColor(self.rectangleShape, *color)
         }
     }
     
-    pub fn set_outline_color(&self, color : color::Color) -> () {
+    pub fn set_outline_color(&self, color : &color::Color) -> () {
         unsafe {
-            csfml::sfRectangleShape_setOutlineColor(self.rectangleShape, color.unwrap_color())
+            csfml::sfRectangleShape_setOutlineColor(self.rectangleShape, *color)
         }
     }
 
@@ -175,11 +175,11 @@ impl RectangleShape {
     }
 
     pub fn get_fill_color(&self) -> color::Color {
-        color::Color::wrap_color(unsafe { csfml::sfRectangleShape_getFillColor(self.rectangleShape) })
+        unsafe { csfml::sfRectangleShape_getFillColor(self.rectangleShape) }
     }
 
     pub fn get_outline_color(&self) -> color::Color {
-        color::Color::wrap_color(unsafe { csfml::sfRectangleShape_getOutlineColor(self.rectangleShape) })
+        unsafe { csfml::sfRectangleShape_getOutlineColor(self.rectangleShape) }
     }
 
     pub fn get_outline_thickness(&self) -> float {

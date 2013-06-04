@@ -84,7 +84,7 @@ pub mod csfml {
         fn sfRenderWindow_setFramerateLimit(renderWindow : *sfRenderWindow, limit : c_uint) -> ();
         fn sfRenderWindow_setJoystickThreshold(renderWindow : *sfRenderWindow, treshold : c_float) -> ();
         // fn sfRenderWindow_getSystemHandle(renderWindow : *sfRenderWindow) -> sfWindowHandle;
-        fn sfRenderWindow_clear(renderWindow : *sfRenderWindow, color : color::csfml::sfColor) -> ();
+        fn sfRenderWindow_clear(renderWindow : *sfRenderWindow, color : color::Color) -> ();
         fn sfRenderWindow_setView(renderWindow : *sfRenderWindow, view : *sfView) -> ();
         fn sfRenderWindow_getView(renderWindow : *sfRenderWindow) -> *sfView;
         fn sfRenderWindow_getDefaultView(renderWindow : *sfRenderWindow) -> *sfView;
@@ -501,7 +501,7 @@ pub impl RenderWindow {
     /// Clear window with the given color
     fn clear(&self, color : &color::Color) -> () {
         unsafe {
-            csfml::sfRenderWindow_clear(self.renderWindow, color.unwrap_color())
+            csfml::sfRenderWindow_clear(self.renderWindow, *color)
         }
     }
     

@@ -38,13 +38,13 @@ pub mod csfml {
         //fn sfConvexShape_getInverseTransform(shape : *sfConvexShape) -> sfTransform;
         fn sfConvexShape_setTexture(shape : *sfConvexShape, texture : *texture::csfml::sfTexture, resetRect : sfBool) -> ();
         //fn sfConvexShape_setTextureRect(shape : *sfConvexShape, rect : sfIntRect) -> ();
-        fn sfConvexShape_setFillColor(shape : *sfConvexShape, color : color::csfml::sfColor) -> ();
-        fn sfConvexShape_setOutlineColor(shape : *sfConvexShape, color : color::csfml::sfColor) -> ();
+        fn sfConvexShape_setFillColor(shape : *sfConvexShape, color : color::Color) -> ();
+        fn sfConvexShape_setOutlineColor(shape : *sfConvexShape, color : color::Color) -> ();
         fn sfConvexShape_setOutlineThickness(shape : *sfConvexShape, thickness : c_float) -> ();
         fn sfConvexShape_getTexture(shape : *sfConvexShape) -> *texture::csfml::sfTexture;
         //fn sfConvexShape_getTextureRect(shape : *sfConvexShape) -> sfIntRect;
-        fn sfConvexShape_getFillColor(shape : *sfConvexShape) -> color::csfml::sfColor;
-        fn sfConvexShape_getOutlineColor(shape : *sfConvexShape) -> color::csfml::sfColor;
+        fn sfConvexShape_getFillColor(shape : *sfConvexShape) -> color::Color;
+        fn sfConvexShape_getOutlineColor(shape : *sfConvexShape) -> color::Color;
         fn sfConvexShape_getOutlineThickness(shape : *sfConvexShape) -> c_float;
         fn sfConvexShape_getPointCount(shape : *sfConvexShape) -> c_uint;
         fn sfConvexShape_getPoint(shape : *sfConvexShape, index : c_uint) -> vector2::csfml::sfVector2f;
@@ -149,13 +149,13 @@ impl ConvexShape {
 
     pub fn set_fill_color(&self, color : &color::Color) -> () {
         unsafe {
-            csfml::sfConvexShape_setFillColor(self.convexShape, color.unwrap_color())
+            csfml::sfConvexShape_setFillColor(self.convexShape, *color)
         }
     }
 
     pub fn set_outline_color(&self, color : &color::Color) -> () {
         unsafe {
-            csfml::sfConvexShape_setOutlineColor(self.convexShape, color.unwrap_color())
+            csfml::sfConvexShape_setOutlineColor(self.convexShape, *color)
         }
     }
 
@@ -170,11 +170,11 @@ impl ConvexShape {
     }
     
     pub fn get_fill_color(&self) -> color::Color {
-        color::Color::wrap_color(unsafe {csfml::sfConvexShape_getFillColor(self.convexShape)})
+        unsafe {csfml::sfConvexShape_getFillColor(self.convexShape)}
     }
     
     pub fn get_outline_color(&self) -> color::Color {
-        color::Color::wrap_color(unsafe {csfml::sfConvexShape_getOutlineColor(self.convexShape)})
+        unsafe {csfml::sfConvexShape_getOutlineColor(self.convexShape)}
     }
     
     pub fn get_outline_thickness(&self) -> float {

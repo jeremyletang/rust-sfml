@@ -46,13 +46,13 @@ pub mod csfml {
         //fn sfCircleShape_getInverseTransform(shape : *sfCircleShape) -> sfTransform;
         fn sfCircleShape_setTexture(shape : *sfCircleShape, texture : *texture::csfml::sfTexture, resetRect : sfBool) -> ();
         fn sfCircleShape_setTextureRect(shape : *sfCircleShape, rect : rect::IntRect) -> ();
-        fn sfCircleShape_setFillColor(shape : *sfCircleShape, color : color::csfml::sfColor) -> ();
-        fn sfCircleShape_setOutlineColor(shape : *sfCircleShape, color : color::csfml::sfColor) -> ();
+        fn sfCircleShape_setFillColor(shape : *sfCircleShape, color : color::Color) -> ();
+        fn sfCircleShape_setOutlineColor(shape : *sfCircleShape, color : color::Color) -> ();
         fn sfCircleShape_setOutlineThickness(shape : *sfCircleShape, thickness : c_float) -> ();
         fn sfCircleShape_getTexture(shape : *sfCircleShape) -> *texture::csfml::sfTexture;
         fn sfCircleShape_getTextureRect(shape : *sfCircleShape) -> rect::IntRect;
-        fn sfCircleShape_getFillColor(shape : *sfCircleShape) -> color::csfml::sfColor;
-        fn sfCircleShape_getOutlineColor(shape : *sfCircleShape) -> color::csfml::sfColor;
+        fn sfCircleShape_getFillColor(shape : *sfCircleShape) -> color::Color;
+        fn sfCircleShape_getOutlineColor(shape : *sfCircleShape) -> color::Color;
         fn sfCircleShape_getOutlineThickness(shape : *sfCircleShape) -> c_float;
         fn sfCircleShape_getPointCount(shape : *sfCircleShape) -> c_uint;
         fn sfCircleShape_getPoint(shape : *sfCircleShape, index : c_uint) -> ();
@@ -109,15 +109,15 @@ impl CircleShape {
         }
     }
     
-    pub fn set_fill_color(&self, color : color::Color) -> () {
+    pub fn set_fill_color(&self, color : &color::Color) -> () {
         unsafe {
-            csfml::sfCircleShape_setFillColor(self.circleShape, color.unwrap_color())
+            csfml::sfCircleShape_setFillColor(self.circleShape, *color)
         }
     }
 
-    pub fn set_outline_color(&self, color : color::Color) -> () {
+    pub fn set_outline_color(&self, color : &color::Color) -> () {
         unsafe {
-            csfml::sfCircleShape_setOutlineColor(self.circleShape, color.unwrap_color())
+            csfml::sfCircleShape_setOutlineColor(self.circleShape, *color)
         }
     }
 
@@ -141,13 +141,13 @@ impl CircleShape {
     
     pub fn get_fill_color(&self) -> color::Color {
         unsafe {
-            color::Color::wrap_color(csfml::sfCircleShape_getFillColor(self.circleShape))
+            csfml::sfCircleShape_getFillColor(self.circleShape)
         }
     }
 
     pub fn get_outline_color(&self) -> color::Color {
         unsafe {
-            color::Color::wrap_color(csfml::sfCircleShape_getOutlineColor(self.circleShape))
+            csfml::sfCircleShape_getOutlineColor(self.circleShape)
         }
     }
 

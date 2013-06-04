@@ -50,13 +50,13 @@ pub mod csfml {
         fn sfText_setFont(text : *sfText, font : *font::csfml::sfFont) -> ();
         fn sfText_setCharacterSize(text : *sfText, size : c_uint) -> ();
         fn sfText_setStyle(text : *sfText, style : u32) -> ();
-        fn sfText_setColor(text : *sfText, color : color::csfml::sfColor) -> ();
+        fn sfText_setColor(text : *sfText, color : color::Color) -> ();
         fn sfText_getString(text : *sfText) -> *c_char;
         //fn sfText_getUnicodeString(text : *sfText) -> *u32;
         fn sfText_getFont(text : *sfText) -> *font::csfml::sfFont;
         fn sfText_getCharacterSize(text : *sfText) -> c_uint;
         fn sfText_getStyle(text : *sfText) -> u32;
-        fn sfText_getColor(text : *sfText) -> color::csfml::sfColor;
+        fn sfText_getColor(text : *sfText) -> color::Color;
         fn sfText_findCharacterPos(text : *sfText, index : size_t) -> vector2::csfml::sfVector2f;
         // fn sfText_getLocalBounds(text : *sfText) -> sfFloatRect;
         // fn sfText_getGlobalBounds(text : *sfText) -> sfFloatRect;
@@ -194,7 +194,7 @@ pub impl Text {
     */
     fn set_color(&self, color : &Color) -> () {
         unsafe {
-            csfml::sfText_setColor(self.text, color.unwrap_color())
+            csfml::sfText_setColor(self.text, *color)
         }
     }
     
@@ -203,7 +203,7 @@ pub impl Text {
     */
     fn get_color(&self) -> Color {
         unsafe {
-            Color::wrap_color(csfml::sfText_getColor(self.text))
+            csfml::sfText_getColor(self.text)
         }
     }
 
