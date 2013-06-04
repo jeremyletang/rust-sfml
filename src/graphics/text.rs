@@ -119,7 +119,7 @@ pub impl Text {
     */
     fn set_font(&self, font : &font::Font) -> () {
         unsafe {
-            csfml::sfText_setFont(self.text, font.unwrap_font())
+            csfml::sfText_setFont(self.text, font.unwrap())
         }
     }
     
@@ -185,7 +185,7 @@ pub impl Text {
     */
     fn get_font(&self) -> font::Font {
         unsafe {
-            font::Font::wrap_font(csfml::sfText_getFont(self.text))        
+            font::Font::wrap(csfml::sfText_getFont(self.text))
         }
     }
     
@@ -254,7 +254,7 @@ pub impl Text {
     }
     
     #[doc(hidden)]
-    fn unwrap_text(&self) -> *csfml::sfText {
+    fn unwrap(&self) -> *csfml::sfText {
         self.text
     }
     

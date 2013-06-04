@@ -115,7 +115,7 @@ impl Shader {
     */
     pub fn set_texture_parameter(&self, name : ~str, texture : &Texture) -> () {
         do str::as_c_str(name) |shader| {
-            unsafe { csfml::sfShader_setTextureParameter(self.shader, shader, texture.unwrap_texture())}
+            unsafe { csfml::sfShader_setTextureParameter(self.shader, shader, texture.unwrap())}
         }
     }
     

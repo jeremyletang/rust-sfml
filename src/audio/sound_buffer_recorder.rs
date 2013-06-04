@@ -78,7 +78,7 @@ pub impl SoundBufferRecorder {
     */
     pub fn get_buffer(&self) -> sound_buffer::SoundBuffer {
         unsafe {
-            sound_buffer::SoundBuffer::wrap_SoundBuffer(csfml::sfSoundBufferRecorder_getBuffer(self.soundBufferRecorder))
+            sound_buffer::SoundBuffer::wrap(csfml::sfSoundBufferRecorder_getBuffer(self.soundBufferRecorder))
         }
     }
 

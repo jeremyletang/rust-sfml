@@ -55,7 +55,7 @@ impl View {
     * Create a view by copyinh an existant one.
     */
     pub fn new_copy(view : &View) -> View {
-        View { view : view.unwrap_view()}
+        View { view : view.unwrap()}
     }
     
     /**
@@ -121,12 +121,12 @@ impl View {
     }
 
     #[doc(hidden)]
-    pub fn wrap_view(view : *csfml::sfView) -> View {
+    pub fn wrap(view : *csfml::sfView) -> View {
         View { view : view }
     } 
 
     #[doc(hidden)]
-    pub fn unwrap_view(&self) -> *csfml::sfView {
+    pub fn unwrap(&self) -> *csfml::sfView {
         self.view
     }
         

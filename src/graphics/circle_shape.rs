@@ -75,7 +75,7 @@ impl CircleShape {
     }
 
     pub fn new_copy(shape : &CircleShape) -> CircleShape {
-        CircleShape { circleShape : unsafe {csfml::sfCircleShape_copy(shape.unwrap_circle_shape())} }
+        CircleShape { circleShape : unsafe {csfml::sfCircleShape_copy(shape.unwrap())} }
     }
 
     pub fn set_rotation(&self, angle : float) -> () {
@@ -98,8 +98,8 @@ impl CircleShape {
 
     pub fn set_texture(&self, texture : &texture::Texture, resetRect : bool) -> () {
         match resetRect {
-            true        => unsafe {csfml::sfCircleShape_setTexture(self.circleShape, texture.unwrap_texture(), 1)},
-            false       => unsafe {csfml::sfCircleShape_setTexture(self.circleShape, texture.unwrap_texture(), 0)},
+            true        => unsafe {csfml::sfCircleShape_setTexture(self.circleShape, texture.unwrap(), 1)},
+            false       => unsafe {csfml::sfCircleShape_setTexture(self.circleShape, texture.unwrap(), 0)},
         }
     }
     
@@ -129,7 +129,7 @@ impl CircleShape {
 
     pub fn get_texture(&self) -> texture::Texture {
         unsafe {
-            texture::Texture::wrap_texture(csfml::sfCircleShape_getTexture(self.circleShape))
+            texture::Texture::wrap(csfml::sfCircleShape_getTexture(self.circleShape))
         }
     }
 
@@ -230,12 +230,12 @@ impl CircleShape {
     }
 
     #[doc(hidden)]
-    pub fn wrap_circle_shape(circleShape : *csfml::sfCircleShape) -> CircleShape {
+    pub fn wrap(circleShape : *csfml::sfCircleShape) -> CircleShape {
         CircleShape { circleShape : circleShape}
     }
 
     #[doc(hidden)]
-    pub fn unwrap_circle_shape(&self) -> *csfml::sfCircleShape {
+    pub fn unwrap(&self) -> *csfml::sfCircleShape {
         self.circleShape
     }
 }

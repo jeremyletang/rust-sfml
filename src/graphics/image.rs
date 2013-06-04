@@ -76,7 +76,7 @@ impl Image {
     * Copy an existing image 
     */
     pub fn new_copy(image : &Image) -> Image {
-        Image { image : unsafe {csfml::sfImage_copy(image.unwrap_image())} }
+        Image { image : unsafe {csfml::sfImage_copy(image.unwrap())} }
     }
 
     /**
@@ -142,12 +142,12 @@ impl Image {
     }
 
     #[doc(hidden)]
-    pub fn wrap_image(image : *csfml::sfImage) -> Image {
+    pub fn wrap(image : *csfml::sfImage) -> Image {
         Image { image : image }
     }
     
     #[doc(hidden)]
-    pub fn unwrap_image(&self) -> *csfml::sfImage {
+    pub fn unwrap(&self) -> *csfml::sfImage {
         self.image
     }
 }

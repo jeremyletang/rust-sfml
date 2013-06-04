@@ -216,7 +216,7 @@ pub impl Window {
     fn new(mode : VideoMode, title : ~str, style : WindowStyle, settings : &ContextSettings) -> Option<Window> {
         let mut sfWin: *csfml::sfWindow = ptr::null();
         do str::as_c_str(title) |title_buf| {
-            unsafe { sfWin = csfml::sfWindow_create(VideoMode::unwrap_videoMode(mode), title_buf, style as u32, settings); }
+            unsafe { sfWin = csfml::sfWindow_create(VideoMode::unwrap(mode), title_buf, style as u32, settings); }
         };
         let sfEv : csfml::sfEvent = csfml::sfEvent {typeEvent : 0, p1 : 0, p2 : 0, p3 : 0 as c_float, p4 : 0, p5 : 0};//{0, 0, 0, 0 as float, 0, 0};
         if sfWin == ptr::null() {
@@ -404,7 +404,7 @@ pub impl Window {
     *   Method for class window, retrieve the sfWindow contained on struct Window. Used for binding.
     */
     #[doc(hidden)]
-    fn get_sfWindow(&self) -> *csfml::sfWindow {
+    fn unwrap(&self) -> *csfml::sfWindow {
         self.window
     }
 }

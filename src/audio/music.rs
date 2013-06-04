@@ -104,7 +104,7 @@ pub impl Music {
     * Get the total duration of a music
     */
     pub fn get_duration(&self) -> time::Time {
-        time::Time::wrap_time( unsafe {csfml::sfMusic_getDuration(self.music)})
+        time::Time::wrap( unsafe {csfml::sfMusic_getDuration(self.music)})
     }
 
     /**
@@ -157,7 +157,7 @@ pub impl Music {
     * Get the current playing position of a music
     */
     pub fn get_playing_offset(&self) -> time::Time {
-        time::Time::wrap_time( unsafe {csfml::sfMusic_getPlayingOffset(self.music)})
+        time::Time::wrap( unsafe {csfml::sfMusic_getPlayingOffset(self.music)})
     }
     
     /**
@@ -207,7 +207,7 @@ pub impl Music {
     */
     pub fn set_playing_offset(&self, timeOffset : time::Time) -> () {
         unsafe {
-            csfml::sfMusic_setPlayingOffset(self.music, timeOffset.unwrap_time())
+            csfml::sfMusic_setPlayingOffset(self.music, timeOffset.unwrap())
         }
     }
     

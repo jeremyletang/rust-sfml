@@ -67,7 +67,7 @@ impl ConvexShape {
     }
 
     pub fn new_copy(shape : &ConvexShape) -> ConvexShape {
-        ConvexShape { convexShape : unsafe {csfml::sfConvexShape_copy(shape.unwrap_convex_shape())} }
+        ConvexShape { convexShape : unsafe {csfml::sfConvexShape_copy(shape.unwrap())} }
     }
 
     pub fn set_position(&self, position : &vector2::Vector2f) -> () {
@@ -142,8 +142,8 @@ impl ConvexShape {
 
     pub fn set_texture(&self, texture : &texture::Texture, resetRect : bool) -> () {
         match resetRect {
-            true        => unsafe {csfml::sfConvexShape_setTexture(self.convexShape, texture.unwrap_texture(), 1)},
-            false       => unsafe {csfml::sfConvexShape_setTexture(self.convexShape, texture.unwrap_texture(), 0)}
+            true        => unsafe {csfml::sfConvexShape_setTexture(self.convexShape, texture.unwrap(), 1)},
+            false       => unsafe {csfml::sfConvexShape_setTexture(self.convexShape, texture.unwrap(), 0)}
         }
     }
 
@@ -166,7 +166,7 @@ impl ConvexShape {
     }
 
     pub fn get_texture(&self) -> texture::Texture {
-            texture::Texture::wrap_texture(unsafe {csfml::sfConvexShape_getTexture(self.convexShape)})
+            texture::Texture::wrap(unsafe {csfml::sfConvexShape_getTexture(self.convexShape)})
     }
     
     pub fn get_fill_color(&self) -> color::Color {
@@ -195,11 +195,11 @@ impl ConvexShape {
         }
     }
 
-    pub fn wrap_convex_shape(convexShape : *csfml::sfConvexShape) -> ConvexShape {
+    pub fn wrap(convexShape : *csfml::sfConvexShape) -> ConvexShape {
         ConvexShape { convexShape : convexShape}
     }
     
-    pub fn unwrap_convex_shape(&self) -> *csfml::sfConvexShape {
+    pub fn unwrap(&self) -> *csfml::sfConvexShape {
         self.convexShape
     }
 }

@@ -128,7 +128,7 @@ pub impl RenderWindow {
     pub fn new(mode : VideoMode, title : ~str, style : WindowStyle, settings : &ContextSettings) -> Option<RenderWindow> {
         let mut sfRenderWin: *csfml::sfRenderWindow = ptr::null();
         do str::as_c_str(title) |title_buf| {
-            unsafe { sfRenderWin = csfml::sfRenderWindow_create(VideoMode::unwrap_videoMode(mode), title_buf, style as u32, settings); }
+            unsafe { sfRenderWin = csfml::sfRenderWindow_create(VideoMode::unwrap(mode), title_buf, style as u32, settings); }
         };
         let sfEv : csfml::sfEvent = csfml::sfEvent {typeEvent : 0, p1 : 0, p2 : 0, p3 : 0 as c_float, p4 : 0, p5 : 0};//{0, 0, 0, 0 as float, 0, 0};
         if sfRenderWin == ptr::null() {
@@ -470,31 +470,31 @@ pub impl RenderWindow {
     /// Draw Text
     fn draw_text(&self, text : &Text) -> () {
         unsafe {
-            csfml::sfRenderWindow_drawText(self.renderWindow, text.unwrap_text(), ptr::null())
+            csfml::sfRenderWindow_drawText(self.renderWindow, text.unwrap(), ptr::null())
         }
     }
 
     fn draw_sprite(&self, sprite : &Sprite) -> () {
         unsafe {
-            csfml::sfRenderWindow_drawSprite(self.renderWindow, sprite.unwrap_sprite(), ptr::null())
+            csfml::sfRenderWindow_drawSprite(self.renderWindow, sprite.unwrap(), ptr::null())
         }
     }
 
     fn draw_circle_shape(&self, circleShape : &CircleShape) -> () {
         unsafe {
-            csfml::sfRenderWindow_drawCircleShape(self.renderWindow, circleShape.unwrap_circle_shape(), ptr::null())
+            csfml::sfRenderWindow_drawCircleShape(self.renderWindow, circleShape.unwrap(), ptr::null())
         }
     }
 
     fn draw_rectangle_shape(&self, rectangleShape : &RectangleShape) -> () {
         unsafe {
-            csfml::sfRenderWindow_drawRectangleShape(self.renderWindow, rectangleShape.unwrap_rectangle_shape(), ptr::null())
+            csfml::sfRenderWindow_drawRectangleShape(self.renderWindow, rectangleShape.unwrap(), ptr::null())
         }
     }
 
     fn draw_convex_shape(&self, convexShape : &ConvexShape) -> () {
         unsafe {
-            csfml::sfRenderWindow_drawConvexShape(self.renderWindow, convexShape.unwrap_convex_shape(), ptr::null())
+            csfml::sfRenderWindow_drawConvexShape(self.renderWindow, convexShape.unwrap(), ptr::null())
         }
     }
 
@@ -506,37 +506,37 @@ pub impl RenderWindow {
     }
     
     fn capture(&self) -> image::Image {
-        image::Image::wrap_image(unsafe {csfml::sfRenderWindow_capture(self.renderWindow)})
+        image::Image::wrap(unsafe {csfml::sfRenderWindow_capture(self.renderWindow)})
     }
     
     fn set_view(&self, view : &view::View) -> () {
         unsafe {
-            csfml::sfRenderWindow_setView(self.renderWindow, view.unwrap_view())
+            csfml::sfRenderWindow_setView(self.renderWindow, view.unwrap())
         }
     }
     
     fn get_view(&self) -> view::View {
-        view::View::wrap_view(unsafe {csfml::sfRenderWindow_getView(self.renderWindow)})
+        view::View::wrap(unsafe {csfml::sfRenderWindow_getView(self.renderWindow)})
     }
     
     fn get_default_view(&self) -> view::View {
-        view::View::wrap_view(unsafe {csfml::sfRenderWindow_getDefaultView(self.renderWindow)})
+        view::View::wrap(unsafe {csfml::sfRenderWindow_getDefaultView(self.renderWindow)})
     }
     
     fn map_pixel_to_coords(&self, point : &vector2::Vector2i, view : &view::View) -> vector2::Vector2f {
         unsafe {
-            csfml::sfRenderWindow_mapPixelToCoords(self.renderWindow, *point, view.unwrap_view())
+            csfml::sfRenderWindow_mapPixelToCoords(self.renderWindow, *point, view.unwrap())
         }
     }
 
     fn map_coords_to_pixel(&self, point : &vector2::Vector2f, view : &view::View) -> vector2::Vector2i {
         unsafe {
-            csfml::sfRenderWindow_mapCoordsToPixel(self.renderWindow, *point, view.unwrap_view())
+            csfml::sfRenderWindow_mapCoordsToPixel(self.renderWindow, *point, view.unwrap())
         }
     }
 
     #[doc(hidden)]
-    fn get_sfRenderWindow(&self) -> *csfml::sfRenderWindow {
+    fn unwrap(&self) -> *csfml::sfRenderWindow {
         self.renderWindow
     }
 }

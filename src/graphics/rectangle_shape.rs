@@ -66,7 +66,7 @@ impl RectangleShape {
     }
 
     pub fn new_copy(rectangleShape : &RectangleShape) -> RectangleShape {
-        RectangleShape {rectangleShape : unsafe {csfml::sfRectangleShape_copy(rectangleShape.unwrap_rectangle_shape())} }
+        RectangleShape {rectangleShape : unsafe {csfml::sfRectangleShape_copy(rectangleShape.unwrap())} }
     }
     
     pub fn set_position(&self, position : &vector2::Vector2f) -> () {
@@ -145,8 +145,8 @@ impl RectangleShape {
 
     pub fn set_texture(&self, texture : &texture::Texture, resetRect : bool) -> () {
         match resetRect {
-            false       => unsafe { csfml::sfRectangleShape_setTexture(self.rectangleShape, texture.unwrap_texture(), 0) },
-            true        => unsafe { csfml::sfRectangleShape_setTexture(self.rectangleShape, texture.unwrap_texture(), 1) }
+            false       => unsafe { csfml::sfRectangleShape_setTexture(self.rectangleShape, texture.unwrap(), 0) },
+            true        => unsafe { csfml::sfRectangleShape_setTexture(self.rectangleShape, texture.unwrap(), 1) }
         }
     }
 
@@ -170,7 +170,7 @@ impl RectangleShape {
 
     pub fn get_texture(&self) -> texture::Texture {
         unsafe {
-            texture::Texture::wrap_texture(csfml::sfRectangleShape_getTexture(self.rectangleShape))
+            texture::Texture::wrap(csfml::sfRectangleShape_getTexture(self.rectangleShape))
         }
     }
 
@@ -193,12 +193,12 @@ impl RectangleShape {
     }
 
     #[doc(hidden)]
-    pub fn wrap_rectangle_shape(rectangleShape : *csfml::sfRectangleShape) -> RectangleShape {
+    pub fn wrap(rectangleShape : *csfml::sfRectangleShape) -> RectangleShape {
         RectangleShape { rectangleShape : rectangleShape }
     }
     
     #[doc(hidden)]
-    pub fn unwrap_rectangle_shape(&self) -> *csfml::sfRectangleShape {
+    pub fn unwrap(&self) -> *csfml::sfRectangleShape {
         self.rectangleShape
     }
 }

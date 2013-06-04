@@ -88,14 +88,14 @@ pub impl VideoMode {
     /**
     * Static Method to convert a VideoMode to C struct sfVideoMode.
     */
-    fn unwrap_videoMode(mode: VideoMode) -> csfml::sfVideoMode {
+    fn unwrap(mode: VideoMode) -> csfml::sfVideoMode {
         csfml::sfVideoMode{Width : mode.Width as c_uint, Height : mode.Height as c_uint, BitsPerPixel : mode.BitsPerPixel as c_uint}
     }
 
     /**
     * Static Method to convert a C struct sfVideoMode VideoMode.
     */
-    pub fn wrap_videoMode(mode: csfml::sfVideoMode) -> VideoMode {
+    pub fn wrap(mode: csfml::sfVideoMode) -> VideoMode {
         VideoMode{Width : mode.Width as uint, Height : mode.Height as uint, BitsPerPixel : mode.BitsPerPixel as uint}
     }
 
@@ -112,10 +112,10 @@ pub impl VideoMode {
                 }
                 let cvec = CVec(tab, i as uint);
                 let mut d : uint = 0;
-                ret_tab.push(VideoMode::wrap_videoMode(get(cvec, d)));
+                ret_tab.push(VideoMode::wrap(get(cvec, d)));
                 d += 1;
                 while d != i as uint {
-                    ret_tab.push(VideoMode::wrap_videoMode(get(cvec, d)));
+                    ret_tab.push(VideoMode::wrap(get(cvec, d)));
                     d += 1;
                 }
             }

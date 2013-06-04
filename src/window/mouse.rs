@@ -53,7 +53,7 @@ pub fn mouse_is_button_pressed(button : MouseButton) -> bool {
 */
 pub fn mouse_get_position(relativeTo : &Window) -> vector2::Vector2i {
     unsafe {
-        csfml::sfMouse_getPosition(relativeTo.get_sfWindow())
+        csfml::sfMouse_getPosition(relativeTo.unwrap())
     }
 }
 
@@ -65,6 +65,6 @@ pub fn mouse_get_position(relativeTo : &Window) -> vector2::Vector2i {
 */
 pub fn mouse_set_position(position : &vector2::Vector2i, relativeTo : &Window) -> () {
     unsafe {
-        csfml::sfMouse_setPosition(*position, relativeTo.get_sfWindow())
+        csfml::sfMouse_setPosition(*position, relativeTo.unwrap())
     }
 }

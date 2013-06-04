@@ -82,11 +82,11 @@ impl Time {
     }
 
     #[doc(hidden)]
-    pub fn wrap_time(time : csfml::sfTime) -> Time {
+    pub fn wrap(time : csfml::sfTime) -> Time {
         Time {time : time}
     }
     #[doc(hidden)]
-    pub fn unwrap_time(&self) -> csfml::sfTime {
+    pub fn unwrap(&self) -> csfml::sfTime {
         self.time
     }
 }

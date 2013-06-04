@@ -49,6 +49,14 @@ impl Font {
     }
     
     /**
+    * Create font from a existing one
+    */
+    fn new_copy(font : &Font) -> Font {
+        unsafe {
+            Font { font : csfml::sfFont_copy(font.unwrap())}
+        }
+    }    
+    /**
     * Get the kerning value corresponding to a given pair of characters in a font
     */
     fn get_kerning(&self, first : u32, second : u32, characterSize : uint) -> int {
@@ -71,17 +79,17 @@ impl Font {
     */
     fn get_texture(&self, characterSize : uint) -> Texture {
         unsafe {
-            Texture::wrap_texture(csfml::sfFont_getTexture(self.font, characterSize as c_uint))
+            Texture::wrap(csfml::sfFont_getTexture(self.font, characterSize as c_uint))
         }
     }
     
     #[doc(hidden)]
-    pub fn wrap_font(font : *csfml::sfFont) -> Font {
+    pub fn wrap(font : *csfml::sfFont) -> Font {
         Font {font : font}
     }
     
     #[doc(hidden)]
-    pub fn unwrap_font(&self) -> *csfml::sfFont {
+    pub fn unwrap(&self) -> *csfml::sfFont {
         self.font
     } 
 

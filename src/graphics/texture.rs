@@ -75,7 +75,7 @@ impl Texture {
     * Create a new texture by copying a exitant one
     */
     pub fn new_copy(texture : &Texture) -> Texture {
-        Texture { texture : unsafe {csfml::sfTexture_copy(texture.unwrap_texture())}}
+        Texture { texture : unsafe {csfml::sfTexture_copy(texture.unwrap())}}
     }
     
     /**
@@ -92,7 +92,7 @@ impl Texture {
     */
     pub fn update_from_window(&self, window : window::Window, x : uint, y : uint) -> () {
         unsafe {
-            csfml::sfTexture_updateFromWindow(self.texture, window.get_sfWindow(), x as c_uint, y as c_uint)
+            csfml::sfTexture_updateFromWindow(self.texture, window.unwrap(), x as c_uint, y as c_uint)
         }
     }
 
@@ -101,7 +101,7 @@ impl Texture {
     */
     pub fn update_from_render_window(&self, renderWindow : render_window::RenderWindow, x : uint, y : uint) -> () {
         unsafe {
-            csfml::sfTexture_updateFromRenderWindow(self.texture, renderWindow.get_sfRenderWindow(), x as c_uint, y as c_uint)
+            csfml::sfTexture_updateFromRenderWindow(self.texture, renderWindow.unwrap(), x as c_uint, y as c_uint)
         }
     }
 
@@ -168,17 +168,17 @@ impl Texture {
     */
     pub fn copy_to_image(&self) -> image::Image {
         unsafe {
-            image::Image::wrap_image(csfml::sfTexture_copyToImage(self.texture))
+            image::Image::wrap(csfml::sfTexture_copyToImage(self.texture))
         }
     }
     
     #[doc(hidden)]
-    pub fn unwrap_texture(&self) -> *csfml::sfTexture {
+    pub fn unwrap(&self) -> *csfml::sfTexture {
         self.texture
     }
     
     #[doc(hidden)]
-    pub fn wrap_texture(texture : *csfml::sfTexture) -> Texture {
+    pub fn wrap(texture : *csfml::sfTexture) -> Texture {
         Texture { texture : texture}
     }
 }

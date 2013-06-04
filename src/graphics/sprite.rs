@@ -70,7 +70,7 @@ impl Sprite {
     * Copy an existing sprite
     */
     pub fn new_copy(sprite : &Sprite) -> Sprite {
-        Sprite { sprite : unsafe {csfml::sfSprite_copy(sprite.unwrap_sprite())}}
+        Sprite { sprite : unsafe {csfml::sfSprite_copy(sprite.unwrap())}}
     }
 
     /**
@@ -105,8 +105,8 @@ impl Sprite {
     */
     pub fn set_texture(&self, texture : &texture::Texture, resetRect : bool) -> (){
         match resetRect {
-            true        => unsafe {csfml::sfSprite_setTexture(self.sprite, texture.unwrap_texture(), 1)},
-            false       => unsafe {csfml::sfSprite_setTexture(self.sprite, texture.unwrap_texture(), 0)}
+            true        => unsafe {csfml::sfSprite_setTexture(self.sprite, texture.unwrap(), 1)},
+            false       => unsafe {csfml::sfSprite_setTexture(self.sprite, texture.unwrap(), 0)}
         }
     }
 
@@ -124,7 +124,7 @@ impl Sprite {
     */
     pub fn get_texture(&self) -> texture::Texture {
         unsafe {
-            texture::Texture::wrap_texture(csfml::sfSprite_getTexture(self.sprite))
+            texture::Texture::wrap(csfml::sfSprite_getTexture(self.sprite))
         }
     }
 
@@ -178,12 +178,12 @@ impl Sprite {
     }
 
     #[doc(hidden)]
-    pub fn wrap_sprite(sprite : *csfml::sfSprite) -> Sprite {
+    pub fn wrap(sprite : *csfml::sfSprite) -> Sprite {
         Sprite { sprite : sprite }
     }
 
     #[doc(hidden)]
-    pub fn unwrap_sprite(&self) -> *csfml::sfSprite {
+    pub fn unwrap(&self) -> *csfml::sfSprite {
         self.sprite
     }
 }

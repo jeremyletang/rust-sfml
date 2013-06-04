@@ -73,7 +73,7 @@ pub impl Sound {
     * Create a new sound by copying an existing one
     */
     pub fn new_copy(sound : Sound) -> Sound {
-        Sound {sound : unsafe {csfml::sfSound_copy(sound.unwrap_sound())}}
+        Sound {sound : unsafe {csfml::sfSound_copy(sound.unwrap())}}
     }
 
     /**
@@ -136,7 +136,7 @@ pub impl Sound {
     * Get the current playing position of a sound
     */
     pub fn get_playing_offset(&self) -> time::Time {
-        time::Time::wrap_time( unsafe {csfml::sfSound_getPlayingOffset(self.sound)})
+        time::Time::wrap( unsafe {csfml::sfSound_getPlayingOffset(self.sound)})
     }
 
     /**
@@ -186,7 +186,7 @@ pub impl Sound {
     */
     pub fn set_playing_offset(&self, timeOffset : time::Time) -> () {
         unsafe {
-            csfml::sfSound_setPlayingOffset(self.sound, timeOffset.unwrap_time())
+            csfml::sfSound_setPlayingOffset(self.sound, timeOffset.unwrap())
         }
     }
 
@@ -241,7 +241,7 @@ pub impl Sound {
     */
     fn set_buffer(&self, buffer : sound_buffer::SoundBuffer) -> () {
         unsafe {
-            csfml::sfSound_setBuffer(self.sound, buffer.unwrap_SoundBuffer())
+            csfml::sfSound_setBuffer(self.sound, buffer.unwrap())
         }
     }
 
@@ -249,7 +249,7 @@ pub impl Sound {
     * 
     */
     fn get_buffer(&self) -> sound_buffer::SoundBuffer {
-        sound_buffer::SoundBuffer::wrap_SoundBuffer(unsafe {
+        sound_buffer::SoundBuffer::wrap(unsafe {
             csfml::sfSound_getBuffer(self.sound)
         })
     }
@@ -258,7 +258,7 @@ pub impl Sound {
     * 
     */
     #[doc(hidden)]
-    fn unwrap_sound(&self) -> *csfml::sfSound {
+    fn unwrap(&self) -> *csfml::sfSound {
         self.sound
     }
 }

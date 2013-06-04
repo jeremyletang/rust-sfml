@@ -55,7 +55,7 @@ pub impl SoundBuffer {
     * Create a new sound buffer by copying an existing one
     */
     pub fn new_copy(soundBuffer : SoundBuffer) -> SoundBuffer {
-        SoundBuffer {soundBuffer :  unsafe {csfml::sfSoundBuffer_copy(soundBuffer.get_sfSoundBuffer())}}
+        SoundBuffer {soundBuffer :  unsafe {csfml::sfSoundBuffer_copy(soundBuffer.unwrap())}}
     }
 
     /**
@@ -91,21 +91,16 @@ pub impl SoundBuffer {
     * Get the total duration of a sound buffer
     */
     pub fn get_duration(&self) -> time::Time {
-        time::Time::wrap_time(unsafe {csfml::sfSoundBuffer_getDuration(self.soundBuffer)})
+        time::Time::wrap(unsafe {csfml::sfSoundBuffer_getDuration(self.soundBuffer)})
     }
 
     #[doc(hidden)]
-    pub fn unwrap_SoundBuffer(&self) -> *csfml::sfSoundBuffer {
-        self.soundBuffer
-    }
-    
-    #[doc(hidden)]
-    pub fn wrap_SoundBuffer(buffer : *csfml::sfSoundBuffer) -> SoundBuffer {
+    pub fn wrap(buffer : *csfml::sfSoundBuffer) -> SoundBuffer {
         SoundBuffer {soundBuffer : buffer}
     }
 
     #[doc(hidden)]
-    pub fn get_sfSoundBuffer(&self) -> *csfml::sfSoundBuffer {
+    pub fn unwrap(&self) -> *csfml::sfSoundBuffer {
         self.soundBuffer
     }
 

@@ -19,6 +19,6 @@ pub mod csfml {
 */
 pub fn sleep(time :Time) -> () {
     unsafe {
-        csfml::sfSleep(time.unwrap_time())
+        csfml::sfSleep(time.unwrap())
     }
 }

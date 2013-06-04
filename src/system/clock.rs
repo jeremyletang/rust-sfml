@@ -45,7 +45,7 @@ pub impl Clock {
     */
     pub fn get_elapsed_time(&self) -> time::Time {
         unsafe {
-            time::Time::wrap_time(csfml::sfClock_getElapsedTime(self.clock))
+            time::Time::wrap(csfml::sfClock_getElapsedTime(self.clock))
         }
     }
 
@@ -54,7 +54,7 @@ pub impl Clock {
     */
     pub fn restart(&self) -> time::Time {
         unsafe {
-            time::Time::wrap_time(csfml::sfClock_restart(self.clock))
+            time::Time::wrap(csfml::sfClock_restart(self.clock))
         }
     }
 }
