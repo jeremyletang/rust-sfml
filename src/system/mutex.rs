@@ -27,7 +27,7 @@ pub struct Mutex {
     priv mutex : *csfml::sfMutex
 }
 
-pub impl Mutex {
+impl Mutex {
 
     /**
     * Create a new Mutex

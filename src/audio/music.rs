@@ -59,7 +59,7 @@ pub struct Music {
     priv music : *csfml::sfMusic
 }
 
-pub impl Music {
+impl Music {
 
     /**
     * Create a new music and load it from a file

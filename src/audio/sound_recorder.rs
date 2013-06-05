@@ -33,7 +33,7 @@ pub struct SoundRecorder {
     priv soundRecorder : *csfml::sfSoundRecorder
 }
 
-pub impl SoundRecorder {
+impl SoundRecorder {
    /* pub fn new(onStart : @fn(data : *c_void), onProcess : @fn(sample : *i16, sampleSize : size_t, data : *c_void), onStop : @fn(data : *c_void), data : *c_void) -> SoundRecorder {
         SoundRecorder {
            soundRecorder : unsafe {csfml::sfSoundRecorder_create(onStart, cast::transmute(onProcess as *u8), cast::transmute(onStop as *u8), data)} 

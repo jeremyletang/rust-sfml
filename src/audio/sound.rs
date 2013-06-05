@@ -58,7 +58,7 @@ pub struct Sound {
     priv sound : *csfml::sfSound
 }
 
-pub impl Sound {
+impl Sound {
     
     /**
     * Constructor for class Sound.
@@ -239,7 +239,7 @@ pub impl Sound {
     /**
     * 
     */
-    fn set_buffer(&self, buffer : sound_buffer::SoundBuffer) -> () {
+    pub fn set_buffer(&self, buffer : sound_buffer::SoundBuffer) -> () {
         unsafe {
             csfml::sfSound_setBuffer(self.sound, buffer.unwrap())
         }
@@ -248,7 +248,7 @@ pub impl Sound {
     /**
     * 
     */
-    fn get_buffer(&self) -> sound_buffer::SoundBuffer {
+    pub fn get_buffer(&self) -> sound_buffer::SoundBuffer {
         sound_buffer::SoundBuffer::wrap(unsafe {
             csfml::sfSound_getBuffer(self.sound)
         })
@@ -258,7 +258,7 @@ pub impl Sound {
     * 
     */
     #[doc(hidden)]
-    fn unwrap(&self) -> *csfml::sfSound {
+    pub fn unwrap(&self) -> *csfml::sfSound {
         self.sound
     }
 }

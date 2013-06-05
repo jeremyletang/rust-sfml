@@ -32,7 +32,7 @@ pub struct SoundBufferRecorder {
     priv soundBufferRecorder : *csfml::sfSoundBufferRecorder
 }
 
-pub impl SoundBufferRecorder {
+impl SoundBufferRecorder {
     
     /**
     * Create a new sound buffer recorder

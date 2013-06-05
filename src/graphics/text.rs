@@ -76,11 +76,11 @@ pub struct Text {
     priv text : *csfml::sfText
 }
 
-pub impl Text {
+impl Text {
     /**
     * Create a new text
     */
-    fn new() -> Option<Text> {
+    pub fn new() -> Option<Text> {
         let text : *csfml::sfText;
         unsafe {text = csfml::sfText_create()};
         if text == ptr::null() {
@@ -94,7 +94,7 @@ pub impl Text {
     /**
     * Copy an existing text
     */
-    fn set_string(&self, string : ~str) -> () {
+    pub fn set_string(&self, string : ~str) -> () {
         do str::as_c_str(string) |cstring| {
             unsafe {csfml::sfText_setString(self.text, cstring)}
         };
@@ -103,7 +103,7 @@ pub impl Text {
     /**
     * Get the string of a text (returns an ANSI string)
     */
-    fn get_string(&self) -> ~str {
+    pub fn get_string(&self) -> ~str {
         unsafe {
             str::raw::from_c_str(csfml::sfText_getString(self.text))
         }
@@ -112,14 +112,14 @@ pub impl Text {
     /**
     * Set the size of the characters
     */
-    fn get_character_size(&self) -> uint {
+    pub fn get_character_size(&self) -> uint {
         unsafe { csfml::sfText_getCharacterSize(self.text) as uint}
     }
     
     /**
     * Set the font of the text
     */
-    fn set_font(&self, font : &font::Font) -> () {
+    pub fn set_font(&self, font : &font::Font) -> () {
         unsafe {
             csfml::sfText_setFont(self.text, font.unwrap())
         }
@@ -128,7 +128,7 @@ pub impl Text {
     /**
     * Set the orientation of a text
     */
-    fn set_rotation(&self, angle : float) -> () {
+    pub fn set_rotation(&self, angle : float) -> () {
         unsafe {
             csfml::sfText_setRotation(self.text, angle as c_float)
         }
@@ -137,7 +137,7 @@ pub impl Text {
     /**
     * Get the orientation of a text
     */
-    fn get_rotation(&self) -> float {
+    pub fn get_rotation(&self) -> float {
         unsafe {
             csfml::sfText_getRotation(self.text) as float
         }
@@ -146,7 +146,7 @@ pub impl Text {
     /**
     * Rotate a text
     */
-    fn rotate(&self, angle : float) -> () {
+    pub fn rotate(&self, angle : float) -> () {
         unsafe {
             csfml::sfText_rotate(self.text, angle as c_float)
         }
@@ -155,7 +155,7 @@ pub impl Text {
     /**
     * Set the style of a text
     */
-    fn set_style(&self, style : Style) -> () {
+    pub fn set_style(&self, style : Style) -> () {
         unsafe {
             csfml::sfText_setStyle(self.text, style as u32)
         }
@@ -164,7 +164,7 @@ pub impl Text {
     /**
     * Get the size of the characters of a text
     */
-    fn set_character_size(&self, size : uint) -> () {
+    pub fn set_character_size(&self, size : uint) -> () {
         unsafe {
             csfml::sfText_setCharacterSize(self.text, size as c_uint)
         }
@@ -173,7 +173,7 @@ pub impl Text {
     /**
     * Get the style of a text
     */
-    fn get_style(&self) -> Style {
+    pub fn get_style(&self) -> Style {
         match unsafe {csfml::sfText_getStyle(self.text)} {
             0 => Regular,
             1 => Bold,
@@ -185,7 +185,7 @@ pub impl Text {
     /**
     * Get the font of a text
     */
-    fn get_font(&self) -> font::Font {
+    pub fn get_font(&self) -> font::Font {
         unsafe {
             font::Font::wrap(csfml::sfText_getFont(self.text))
         }
@@ -194,7 +194,7 @@ pub impl Text {
     /**
     * Set the global color of a text
     */
-    fn set_color(&self, color : &Color) -> () {
+    pub fn set_color(&self, color : &Color) -> () {
         unsafe {
             csfml::sfText_setColor(self.text, *color)
         }
@@ -203,55 +203,55 @@ pub impl Text {
     /**
     * Get the global color of a text
     */
-    fn get_color(&self) -> Color {
+    pub fn get_color(&self) -> Color {
         unsafe {
             csfml::sfText_getColor(self.text)
         }
     }
 
-    fn scale(&self, factors : &vector2::Vector2f) -> () {
+    pub fn scale(&self, factors : &vector2::Vector2f) -> () {
         unsafe {
             csfml::sfText_scale(self.text, *factors)
         }
     }
 
-    fn set_scale(&self, scale : &vector2::Vector2f) -> () {
+    pub fn set_scale(&self, scale : &vector2::Vector2f) -> () {
         unsafe {
             csfml::sfText_setScale(self.text, *scale)
         }
     }
 
-    fn move(&self, offset : &vector2::Vector2f) -> () {
+    pub fn move(&self, offset : &vector2::Vector2f) -> () {
         unsafe {
             csfml::sfText_move(self.text, *offset)
         }
     }
 
-    fn set_position(&self, position : &vector2::Vector2f) -> () {
+    pub fn set_position(&self, position : &vector2::Vector2f) -> () {
         unsafe {
             csfml::sfText_setPosition(self.text, *position)
         }
     }
 
-    fn set_origin(&self, origin : &vector2::Vector2f) -> () {
+    pub fn set_origin(&self, origin : &vector2::Vector2f) -> () {
         unsafe {
             csfml::sfText_setOrigin(self.text, *origin)
         }
     }
     
-    fn get_scale(&self) -> vector2::Vector2f {
+    pub fn get_scale(&self) -> vector2::Vector2f {
         unsafe {csfml::sfText_getScale(self.text)}
     }
 
-    fn get_origin(&self) -> vector2::Vector2f {
+    pub fn get_origin(&self) -> vector2::Vector2f {
         unsafe {csfml::sfText_getOrigin(self.text)}
     }
 
-    fn find_character_pos(&self, index : u64) -> vector2::Vector2f {
+    pub fn find_character_pos(&self, index : u64) -> vector2::Vector2f {
         unsafe {csfml::sfText_findCharacterPos(self.text, index as size_t)}
     }
 
-    fn get_position(&self) -> vector2::Vector2f {
+    pub fn get_position(&self) -> vector2::Vector2f {
         unsafe {csfml::sfText_getPosition(self.text)}
     }
 
@@ -274,7 +274,7 @@ pub impl Text {
     }
 
     #[doc(hidden)]
-    fn unwrap(&self) -> *csfml::sfText {
+    pub fn unwrap(&self) -> *csfml::sfText {
         self.text
     }
     

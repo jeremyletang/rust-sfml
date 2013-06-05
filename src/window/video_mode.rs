@@ -41,26 +41,26 @@ pub mod csfml {
     }
 }
 
-pub impl VideoMode {
+impl VideoMode {
 
     /**
     * Default constructor for class VideoMode.
     */
-    fn new() -> VideoMode {
+    pub fn new() -> VideoMode {
         VideoMode{Width : 0, Height : 0, BitsPerPixel : 0}
     }
     
     /**
     * Constructor with parameters for class VideoMode.
     */
-    fn new_init(width : uint, height : uint, bitsPerPixel : uint) -> VideoMode {
+    pub fn new_init(width : uint, height : uint, bitsPerPixel : uint) -> VideoMode {
         VideoMode{Width : width, Height : height, BitsPerPixel : bitsPerPixel}
     } 
     
     /**
     * Method who verify if the VideoMode is a valide SFML video mode.
     */
-    fn is_valid(&self) -> bool {
+    pub fn is_valid(&self) -> bool {
         let i : c_int;
         unsafe {
             i = csfml::sfVideoMode_isValid(csfml::sfVideoMode{Width : self.Width as c_uint, Height : self.Height as c_uint, BitsPerPixel : self.BitsPerPixel as c_uint});
@@ -77,7 +77,7 @@ pub impl VideoMode {
     /**
     * Static Method who get the Desktop default video mode.
     */
-    fn get_desktop_mode() -> VideoMode {
+    pub fn get_desktop_mode() -> VideoMode {
         let mode: csfml::sfVideoMode;
         unsafe {
            mode = csfml::sfVideoMode_getDesktopMode();
@@ -88,13 +88,15 @@ pub impl VideoMode {
     /**
     * Static Method to convert a VideoMode to C struct sfVideoMode.
     */
-    fn unwrap(mode: VideoMode) -> csfml::sfVideoMode {
+    #[doc(hidden)]
+    pub fn unwrap(mode: VideoMode) -> csfml::sfVideoMode {
         csfml::sfVideoMode{Width : mode.Width as c_uint, Height : mode.Height as c_uint, BitsPerPixel : mode.BitsPerPixel as c_uint}
     }
 
     /**
     * Static Method to convert a C struct sfVideoMode VideoMode.
     */
+    #[doc(hidden)]
     pub fn wrap(mode: csfml::sfVideoMode) -> VideoMode {
         VideoMode{Width : mode.Width as uint, Height : mode.Height as uint, BitsPerPixel : mode.BitsPerPixel as uint}
     }
@@ -102,7 +104,7 @@ pub impl VideoMode {
     /**
     * Static Method who retrieve all the supported video fullscreen mode.
     */
-    fn get_fullscreen_modes() -> Option<~[VideoMode]> {
+    pub fn get_fullscreen_modes() -> Option<~[VideoMode]> {
         let i : size_t = 0;
         let mut ret_tab : ~[VideoMode] = ~[];
         unsafe {

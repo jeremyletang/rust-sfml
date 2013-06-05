@@ -102,9 +102,9 @@ pub struct Window {
     priv event : csfml::sfEvent
 }
 
-pub impl Window {
+impl Window {
     
-    fn get_wrapped_event(&self) ->event::Event {
+    pub fn get_wrapped_event(&self) ->event::Event {
             match self.event.typeEvent as c_uint {
             0   => event::Closed,
             1   => event::Resized{width : self.event.p1 as int, height : self.event.p2 as int},
@@ -180,7 +180,7 @@ pub impl Window {
     * Pop the event on top of event queue, if any, and return it, else return NoEvent.
     *
     */
-    fn poll_event(&self) -> event::Event {
+    pub fn poll_event(&self) -> event::Event {
         let haveEvent : bool =  unsafe {
             match csfml::sfWindow_pollEvent(self.window, &self.event) {
                 0       => false,
@@ -199,7 +199,7 @@ pub impl Window {
     * wait_event is blocking, it wait until a new event arrive.
     *
     */
-    fn wait_event(&self) -> event::Event {
+    pub fn wait_event(&self) -> event::Event {
         let haveEvent : bool =  unsafe {
             match csfml::sfWindow_waitEvent(self.window, &self.event) {
                 0       => false,
@@ -213,7 +213,7 @@ pub impl Window {
     }
     
     /// Constructor for class Window. Create a window with a VideoMode, a title, style and Contextsetting.
-    fn new(mode : VideoMode, title : ~str, style : WindowStyle, settings : &ContextSettings) -> Option<Window> {
+    pub fn new(mode : VideoMode, title : ~str, style : WindowStyle, settings : &ContextSettings) -> Option<Window> {
         let mut sfWin: *csfml::sfWindow = ptr::null();
         do str::as_c_str(title) |title_buf| {
             unsafe { sfWin = csfml::sfWindow_create(VideoMode::unwrap(mode), title_buf, style as u32, settings); }
@@ -228,7 +228,7 @@ pub impl Window {
     }
     
     /// Method close for class Window. Close the window and destroy attached ressources.
-    fn close(&self) -> () {
+    pub fn close(&self) -> () {
         unsafe {
             csfml::sfWindow_close(self.window);
         }
@@ -237,7 +237,7 @@ pub impl Window {
     /**
     *   Method is_open. Verifiy if the windows is already open.
     */
-    fn is_open(&self) -> bool {
+    pub fn is_open(&self) -> bool {
         let tmp : sfBool;
         unsafe {
             tmp = csfml::sfWindow_isOpen(self.window);
@@ -251,14 +251,14 @@ pub impl Window {
     /**
     *   Method for class window, get the window OpenGl context settings.
     */
-    fn get_settings(&self) -> ContextSettings {
+    pub fn get_settings(&self) -> ContextSettings {
         unsafe {csfml::sfWindow_getSettings(self.window)}
     }
 
     /**
     *   Method for class window, set the window title.
     */
-    fn set_title(&self, title : ~str) -> () {
+    pub fn set_title(&self, title : ~str) -> () {
         do str::as_c_str(title) |title_buf| {
             unsafe {
                 csfml::sfWindow_setTitle(self.window, title_buf);
@@ -269,7 +269,7 @@ pub impl Window {
     /**
     *   Method for class window, display or not the window.
     */
-    fn set_visible(&self, visible : bool) -> () {
+    pub fn set_visible(&self, visible : bool) -> () {
         let tmp : sfBool = 
             match visible {
                 true    => 1,
@@ -283,7 +283,7 @@ pub impl Window {
     /**
     *   Method for class window, set visible the mouse cursor on the window.
     */
-    fn set_mouse_cursor_visible(&self, visible : bool) -> () {
+    pub fn set_mouse_cursor_visible(&self, visible : bool) -> () {
         let tmp : sfBool = 
             match visible {
                 true    => 1,
@@ -297,7 +297,7 @@ pub impl Window {
     /**
     *   Method for class window, enable or diseable the vertical sync.
     */
-    fn set_vertical_sync_enabled(&self, enabled : bool) -> () {
+    pub fn set_vertical_sync_enabled(&self, enabled : bool) -> () {
         let tmp : sfBool = 
             match enabled {
                 true    => 1,
@@ -311,7 +311,7 @@ pub impl Window {
     /**
     *   Method for class window, enable or diseable the key repeat.
     */
-    fn set_key_repeat_enabled(&self, enabled : bool) -> () {
+    pub fn set_key_repeat_enabled(&self, enabled : bool) -> () {
         let tmp : sfBool = 
             match enabled {
                 true    => 1,
@@ -322,7 +322,7 @@ pub impl Window {
         }
     }
     
-    fn set_active(&self, enabled : bool) -> bool {
+    pub fn set_active(&self, enabled : bool) -> bool {
         let tmp : sfBool = 
             match enabled {
                 true    => 1,
@@ -340,7 +340,7 @@ pub impl Window {
     /**
     *   Method for class window, display the content of the window.
     */
-    fn display(&self) -> () {
+    pub fn display(&self) -> () {
         unsafe {
             csfml::sfWindow_display(self.window)
         }
@@ -349,7 +349,7 @@ pub impl Window {
     /**
     *   Method for class window, set the maximal framerate of the window.
     */
-    fn set_framerate_limit(&self, limit : uint) -> () {
+    pub fn set_framerate_limit(&self, limit : uint) -> () {
         unsafe {
             csfml::sfWindow_setFramerateLimit(self.window, limit as c_uint)
         }
@@ -358,7 +358,7 @@ pub impl Window {
     /**
     *   Method for class window, set the joystick Threshold.
     */
-    fn set_joystick_threshold(&self, threshold : float) -> () {
+    pub fn set_joystick_threshold(&self, threshold : float) -> () {
         unsafe {
             csfml::sfWindow_setJoystickThreshold(self.window, threshold as c_float)
         }
@@ -367,7 +367,7 @@ pub impl Window {
     /**
     *   Method for class window, get the position of the window on a Vector2i.
     */
-    fn get_position(&self) -> vector2::Vector2i {
+    pub fn get_position(&self) -> vector2::Vector2i {
         unsafe {
             csfml::sfWindow_getPosition(self.window)
         }
@@ -376,7 +376,7 @@ pub impl Window {
     /**
     *   Method for class window, set the position of the window with a Vector2i.
     */
-    fn set_position(&self, position : &vector2::Vector2i) -> () {
+    pub fn set_position(&self, position : &vector2::Vector2i) -> () {
         unsafe {
             csfml::sfWindow_setPosition(self.window, *position)
         }
@@ -385,7 +385,7 @@ pub impl Window {
     /**
     *   Method for class window, get the size of the window on a Vector2u.
     */
-    fn get_size(&self) -> vector2::Vector2u {
+    pub fn get_size(&self) -> vector2::Vector2u {
         unsafe {
             csfml::sfWindow_getSize(self.window)
         }
@@ -394,7 +394,7 @@ pub impl Window {
     /**
     *   Method for class window, set the size of the window with a Vector2u
     */
-    fn set_size(&self, size : &vector2::Vector2u) -> () {
+    pub fn set_size(&self, size : &vector2::Vector2u) -> () {
         unsafe {
             csfml::sfWindow_setSize(self.window, *size)
         }
@@ -404,7 +404,7 @@ pub impl Window {
     *   Method for class window, retrieve the sfWindow contained on struct Window. Used for binding.
     */
     #[doc(hidden)]
-    fn unwrap(&self) -> *csfml::sfWindow {
+    pub fn unwrap(&self) -> *csfml::sfWindow {
         self.window
     }
 }

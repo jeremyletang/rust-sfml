@@ -35,7 +35,7 @@ pub struct SoundBuffer {
     priv soundBuffer : *csfml::sfSoundBuffer,
 }
 
-pub impl SoundBuffer {
+impl SoundBuffer {
     
     /**
     * Create a new sound buffer and load it from a file

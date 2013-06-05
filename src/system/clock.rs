@@ -31,7 +31,7 @@ pub struct Clock {
     priv clock : *csfml::sfClock
 }
 
-pub impl Clock {
+impl Clock {
     
     /**
     * Create a new Clock and start it.

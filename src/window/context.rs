@@ -28,19 +28,19 @@ pub struct Context {
     priv cont : *csfml::sfContext
 }
 
-pub impl Context {
+impl Context {
 
     /**
     * Constructor for class Context. Create the context and active it.
     */
-    fn new() -> Context {
+    pub fn new() -> Context {
         Context{cont : unsafe{csfml::sfContext_create()}}
     }
 
     /**
     * Set if the constructor is active or not.
     */
-    fn set_active(&self, active : bool) -> () {
+    pub fn set_active(&self, active : bool) -> () {
         let act : sfBool = 
             match active {
                 true    => 0,
