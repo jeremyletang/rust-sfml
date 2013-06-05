@@ -59,15 +59,15 @@ pub mod csfml {
 
     pub extern "C" {
         fn sfWindow_create(mode : csfml::sfVideoMode, title : *c_char, style : c_uint, settings : *ContextSettings) -> *sfWindow;
-        //fn sfWindow_createUnicode(mode : sfVideoMode, title : *u32, style : c_uint, setting : *sfContextSettings) -> *sfWindow;
+        fn sfWindow_createUnicode(mode : csfml::sfVideoMode, title : *u32, style : c_uint, setting : *ContextSettings) -> *sfWindow;
         //fn sfWindow_createFromHandle(handle : sfWindowHandle, settings : *sfContextSettings) -> *sfWindow;
         fn sfWindow_close(window : *sfWindow) -> ();
         fn sfWindow_destroy(window : *sfWindow) -> ();
         fn sfWindow_isOpen(window : *sfWindow) -> sfBool;
         fn sfWindow_getSettings(window : *sfWindow) -> ContextSettings;
         fn sfWindow_setTitle(window : *sfWindow, title : *c_char) -> ();
-        //fn sfWindow_setUnicodeTitle(window : *sfWindow, title : *u32) -> ();
-        //fn sfWindow_setIcon(window : *sfWindow, width : c_uint, height : c_uint, pixel : *u8) -> (); 
+        fn sfWindow_setUnicodeTitle(window : *sfWindow, title : *u32) -> ();
+        fn sfWindow_setIcon(window : *sfWindow, width : c_uint, height : c_uint, pixel : *u8) -> (); 
         fn sfWindow_setVisible(window : *sfWindow, visible : sfBool) -> ();
         fn sfWindow_setMouseCursorVisible(window : *sfWindow, visible : sfBool) -> ();
         fn sfWindow_setVerticalSyncEnabled(window : *sfWindow, enabled : sfBool) -> ();
@@ -224,6 +224,30 @@ impl Window {
         }
         else {
         Some (Window { window : sfWin, event : sfEv})
+        }
+    }
+
+    pub fn new_with_unicode(mode : VideoMode, title : ~[u32], style : WindowStyle, settings : &ContextSettings) -> Option<Window> {
+        let sfWin: *csfml::sfWindow;
+        unsafe { sfWin = csfml::sfWindow_createUnicode(VideoMode::unwrap(mode), vec::raw::to_ptr(title), style as u32, settings); }
+        let sfEv : csfml::sfEvent = csfml::sfEvent {typeEvent : 0, p1 : 0, p2 : 0, p3 : 0 as c_float, p4 : 0, p5 : 0};//{0, 0, 0, 0 as float, 0, 0};
+        if sfWin == ptr::null() {
+            None
+        }
+        else {
+        Some (Window { window : sfWin, event : sfEv})
+        }
+    }
+
+    pub fn set_unicode_title(&self, title : ~[u32]) -> () {
+        unsafe {
+            csfml::sfWindow_setUnicodeTitle(self.window, vec::raw::to_ptr(title))
+        }
+    }
+
+    pub fn set_icon(&self, width : uint, height : uint, pixels : ~[u8]) -> () {
+        unsafe {
+            csfml::sfWindow_setIcon(self.window, width as c_uint, height as c_uint, vec::raw::to_ptr(pixels))
         }
     }
     
