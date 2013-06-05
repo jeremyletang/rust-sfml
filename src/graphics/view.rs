@@ -7,12 +7,14 @@
 
 use core::libc::{c_float};
 use system::vector2;
+use graphics::rect::FloatRect;
 
 #[doc(hidden)]
 pub mod csfml {
     
     use core::libc::{c_float, c_void};
     use system::vector2;
+    use graphics::rect::FloatRect;
 
     pub struct sfView {
         This : *c_void
@@ -20,18 +22,18 @@ pub mod csfml {
 
     pub extern "C" {
         fn sfView_create() -> *sfView;
-        //fn sfView_createFromRect(rectangle : sfFloatRect rectangle) -> *sfView;
+        fn sfView_createFromRect(rectangle : FloatRect) -> *sfView;
         fn sfView_copy(view : *sfView) -> *sfView;
         fn sfView_destroy(view : *sfView) -> ();
         fn sfView_setCenter(view : *sfView, center : vector2::Vector2f) -> ();
         fn sfView_setSize(view : *sfView, size : vector2::Vector2f) -> ();
         fn sfView_setRotation(view : *sfView, angle : c_float) -> ();
-        //fn sfView_setViewport(view : *sfView, viewport : sfFloatRect) -> ();
-        //fn sfView_reset(view : *sfView, rectangle : sfFloatRect) -> ();
+        fn sfView_setViewport(view : *sfView, viewport : FloatRect) -> ();
+        fn sfView_reset(view : *sfView, rectangle : FloatRect) -> ();
         fn sfView_getCenter(view : *sfView) -> vector2::Vector2f;
         fn sfView_getSize(view : *sfView) -> vector2::Vector2f;
         fn sfView_getRotation(view : *sfView) -> c_float;
-        //fn sfView_getViewport(view : *sfView) -> sfFloatRect;
+        fn sfView_getViewport(view : *sfView) -> FloatRect;
         fn sfView_move(view : *sfView, offset : vector2::Vector2f) -> ();
         fn sfView_rotate(view : *sfView, angle : c_float) -> ();
         fn sfView_zoom(view : *sfView, factor : c_float) -> ();
@@ -52,12 +54,16 @@ impl View {
     }
     
     /**
-    * Create a view by copyinh an existant one.
+    * Create a view by copying an existant one.
     */
     pub fn new_copy(view : &View) -> View {
-        View { view : view.unwrap()}
+        View { view : unsafe {csfml::sfView_copy(view.unwrap())}}
     }
-    
+
+    pub fn create_from_rect(rectangle : *FloatRect) -> View {
+        View { view : unsafe {csfml::sfView_createFromRect(*rectangle)}}
+    }
+
     /**
     * Set the orientation of a view
     */
@@ -118,6 +124,24 @@ impl View {
 
     pub fn get_size(&self) -> vector2::Vector2f {
         unsafe {csfml::sfView_getSize(self.view)}
+    }
+
+    pub fn set_viewport(&self, viewport : &FloatRect) -> () {
+        unsafe {
+            csfml::sfView_setViewport(self.view, *viewport)
+        }
+    }
+
+    pub fn reset(&self, rectangle : &FloatRect) -> () {
+        unsafe {
+            csfml::sfView_reset(self.view, *rectangle)
+        }
+    }
+
+    pub fn get_viewport(&self) -> FloatRect {
+        unsafe {
+            csfml::sfView_getViewport(self.view)
+        }
     }
 
     #[doc(hidden)]

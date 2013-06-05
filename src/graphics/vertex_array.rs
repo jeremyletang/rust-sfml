@@ -30,7 +30,7 @@ pub mod csfml {
         fn sfVertexArray_copy(vertexArray : *sfVertexArray) -> *sfVertexArray;
         fn sfVertexArray_destroy(vertexArray : *sfVertexArray) -> ();
         fn sfVertexArray_getVertexCount(vertexArray : *sfVertexArray) -> c_uint;
-        //fn sfVertexArray_getVertex(vertexArray : *sfVertexArray, index : c_uint) -> *csfml::sfVertex;
+        fn sfVertexArray_getVertex(vertexArray : *sfVertexArray, index : c_uint) -> *vertex::Vertex;
         fn sfVertexArray_clear(vertexArray : *sfVertexArray) -> ();
         fn sfVertexArray_resize(vertexArray : *sfVertexArray, vertexCount : c_uint) -> ();
         fn sfVertexArray_append(vertexArray : *sfVertexArray, vertex : vertex::Vertex) -> ();
@@ -110,6 +110,12 @@ impl VertexArray {
             csfml::sfTrianglesFan       => primitive_type::TrianglesFan,
             csfml::sfQuads              => primitive_type::Quads,
             _                           => primitive_type::Points   
+        }
+    }
+
+    pub fn get_vertex(&self, index : uint) -> Vertex {
+        unsafe {
+            *csfml::sfVertexArray_getVertex(self.vertexArray, index as c_uint)
         }
     }
 

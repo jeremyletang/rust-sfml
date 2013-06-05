@@ -48,7 +48,7 @@ pub mod csfml {
         // fn sfText_getTransform(text : *sfText) -> sfTransform;
         // fn sfText_getInverseTransform(text : *sfText) -> sfTransform;
         fn sfText_setString(text : *sfText, string : *c_char) -> ();
-        // fn sfText_setUnicodeString(text : *sfText, string : *ui32 ) -> ();
+        fn sfText_setUnicodeString(text : *sfText, string : *u32 ) -> ();
         fn sfText_setFont(text : *sfText, font : *font::csfml::sfFont) -> ();
         fn sfText_setCharacterSize(text : *sfText, size : c_uint) -> ();
         fn sfText_setStyle(text : *sfText, style : u32) -> ();
@@ -264,6 +264,12 @@ pub impl Text {
     pub fn get_global_bounds(&self) -> FloatRect {
         unsafe {
             csfml::sfText_getGlobalBounds(self.text)
+        }
+    }
+
+    pub fn set_unicode_string(&self, string : ~[u32]) -> () {
+        unsafe {
+            csfml::sfText_setUnicodeString(self.text, vec::raw::to_ptr(string) )
         }
     }
 

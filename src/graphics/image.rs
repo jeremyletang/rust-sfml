@@ -9,6 +9,7 @@ use core::libc::{c_uint};
 //use system::vector2;
 use system::vector2::Vector2u;
 use graphics::color::Color;
+use graphics::rect::IntRect;
 
 #[doc(hidden)]
 pub mod csfml {
@@ -17,6 +18,7 @@ pub mod csfml {
     use rsfml::sfTypes::{sfBool};
     use graphics::color;
     use system::vector2;
+    use graphics::rect::IntRect;
 
     pub struct sfImage {
         This : *c_void
@@ -25,7 +27,7 @@ pub mod csfml {
     pub extern "C" {
         fn sfImage_create(width : c_uint, height : c_uint) -> *sfImage;
         fn sfImage_createFromColor(width : c_uint, height : c_uint, color : color::Color) -> *sfImage;
-        //fn sfImage_createFromPixels(width : c_uint, height : c_uint, pixels *u8) -> *sfImage;
+        fn sfImage_createFromPixels(width : c_uint, height : c_uint, pixels : *u8) -> *sfImage;
         fn sfImage_createFromFile(filename : *c_char) -> *sfImage;
         //fn sfImage_createFromMemory(data : *c_void, size : size_t) -> *sfImage;
         //fn sfImage_createFromStream(stream : *sfInputStream) -> *sfImage;
@@ -34,7 +36,7 @@ pub mod csfml {
         fn sfImage_saveToFile(image : *sfImage, filename : *c_char) -> sfBool;
         fn sfImage_getSize(image : *sfImage) -> vector2::Vector2u;
         fn sfImage_createMaskFromColor(image : *sfImage, color : color::Color, alpha : u8) -> ();
-       // fn sfImage_copyImage(image : *sfImage, image : *sfImage, destX : c_uint, destY : c_uint, sourceRect : sfIntRect, applyAlpha : sfBool) -> ();
+        fn sfImage_copyImage(image : *sfImage, source : *sfImage, destX : c_uint, destY : c_uint, sourceRect : IntRect, applyAlpha : sfBool) -> ();
         fn sfImage_setPixel(image : *sfImage, x : c_uint, y : c_uint, color : color::Color) -> ();
         fn sfImage_getPixel(image : *sfImage, x : c_uint, y : c_uint) -> color::Color;
         fn sfImage_getPixelsPtr(image : *sfImage) -> *u8;
@@ -77,6 +79,12 @@ impl Image {
     */
     pub fn new_copy(image : &Image) -> Image {
         Image { image : unsafe {csfml::sfImage_copy(image.unwrap())} }
+    }
+
+    pub fn create_from_pixels(width : uint, height : uint, pixels : ~[u8]) -> Image {
+        unsafe {
+            Image { image : csfml::sfImage_createFromPixels(width as c_uint, height as c_uint, vec::raw::to_ptr(pixels))}
+        }
     }
 
     /**
@@ -135,9 +143,16 @@ impl Image {
     /**
     * Flip an image vertically (top <-> bottom)
     */
-    pub fn flip_vertiacally(&self) -> () {
+    pub fn flip_vertically(&self) -> () {
         unsafe {
             csfml::sfImage_flipVertically(self.image)
+        }
+    }
+
+    pub fn copy_image(&self, source : &Image, destX : uint, destY : uint, sourceRect : &IntRect, applyAlpha : bool) -> () {
+        match applyAlpha {
+            true        =>  unsafe { csfml::sfImage_copyImage(self.image, source.unwrap(), destX as c_uint, destY as c_uint, *sourceRect, 1) },
+            false       =>  unsafe { csfml::sfImage_copyImage(self.image, source.unwrap(), destX as c_uint, destY as c_uint, *sourceRect, 0) }
         }
     }
 
