@@ -11,6 +11,7 @@ use graphics::texture;
 use graphics::drawable::Drawable;
 use graphics::render_window;
 use system::vector2;
+use graphics::rect::{FloatRect, IntRect};
 
 #[doc(hidden)]
 pub mod csfml {
@@ -20,6 +21,7 @@ pub mod csfml {
     use graphics::color;
     use graphics::texture;
     use system::vector2;
+    use graphics::rect::{IntRect, FloatRect};
 
     pub struct sfSprite {
         This : *c_void
@@ -43,13 +45,13 @@ pub mod csfml {
         //fn sfSprite_getTransform(sprite : *sfSprite) -> sfTransform;
         //fn sfSprite_getInverseTransform(sprite : *sfSprite) -> sfTransform;
         fn sfSprite_setTexture(sprite : *sfSprite, texture : *texture::csfml::sfTexture, resetRect : sfBool) -> ();
-        //fn sfSprite_setTextureRect(sprite : *sfSprite, rectangle : sfIntRect) -> ();
+        fn sfSprite_setTextureRect(sprite : *sfSprite, rectangle : IntRect) -> ();
         fn sfSprite_setColor(sprite : *sfSprite, color : color::Color) -> ();
         fn sfSprite_getTexture(sprite : *sfSprite) -> *texture::csfml::sfTexture;
-        //fn sfSprite_getTextureRect(sprite : *sfSprite) -> sfIntRect;
+        fn sfSprite_getTextureRect(sprite : *sfSprite) -> IntRect;
         fn sfSprite_getColor(sprite : *sfSprite) -> color::Color;
-        //fn sfSprite_getLocalBounds(sprite : *sfSprite) -> sfFloatRect;
-        //fn sfSprite_getGlobalBounds(sprite : *sfSprite) -> sfFloatRect;
+        fn sfSprite_getLocalBounds(sprite : *sfSprite) -> FloatRect;
+        fn sfSprite_getGlobalBounds(sprite : *sfSprite) -> FloatRect;
     }
 }
 
@@ -175,6 +177,30 @@ impl Sprite {
 
     pub fn get_position(&self) -> vector2::Vector2f {
         unsafe {csfml::sfSprite_getPosition(self.sprite)}
+    }
+
+    pub fn get_local_bounds(&self) -> FloatRect {
+        unsafe {
+            csfml::sfSprite_getLocalBounds(self.sprite)
+        }
+    }
+
+    pub fn get_global_bounds(&self) -> FloatRect {
+        unsafe {
+            csfml::sfSprite_getGlobalBounds(self.sprite)
+        }
+    }
+
+    pub fn get_texture_rect(&self) -> IntRect {
+        unsafe {
+            csfml::sfSprite_getTextureRect(self.sprite)
+        }
+    }
+
+    pub fn set_texture_rect(&self, rect : &IntRect) -> () {
+        unsafe {
+            csfml::sfSprite_setTextureRect(self.sprite, *rect)
+        }
     }
 
     #[doc(hidden)]

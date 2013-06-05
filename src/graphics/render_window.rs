@@ -26,6 +26,7 @@ use graphics::convex_shape::ConvexShape;
 //use graphics::render_states;
 use graphics::view;
 use graphics::image;
+use graphics::rect::IntRect;
 
 #[doc(hidden)]
 pub mod csfml {
@@ -44,6 +45,7 @@ pub mod csfml {
     use graphics::convex_shape::csfml::sfConvexShape;
     use graphics::view::csfml::sfView;
     use graphics::image::csfml::sfImage;
+    use graphics::rect::IntRect;
 
     pub struct sfRenderWindow {
         This : *c_void
@@ -88,7 +90,7 @@ pub mod csfml {
         fn sfRenderWindow_setView(renderWindow : *sfRenderWindow, view : *sfView) -> ();
         fn sfRenderWindow_getView(renderWindow : *sfRenderWindow) -> *sfView;
         fn sfRenderWindow_getDefaultView(renderWindow : *sfRenderWindow) -> *sfView;
-        // fn sfRenderWindow_getViewport(renderWindow : *sfRenderWindow, view : *sfView) -> sfIntRect;
+        fn sfRenderWindow_getViewport(renderWindow : *sfRenderWindow, view : *sfView) -> IntRect;
         fn sfRenderWindow_mapPixelToCoords(renderWindow : *sfRenderWindow, point : vector2::Vector2i, view : *sfView) -> vector2::Vector2f;
         fn sfRenderWindow_mapCoordsToPixel(renderWindow : *sfRenderWindow, point : vector2::Vector2f, view : *sfView) -> vector2::Vector2i;
         fn sfRenderWindow_drawSprite(renderWindow : *sfRenderWindow, object : *sfSprite, states : *render_states::csfml::sfRenderStates) -> ();
@@ -532,6 +534,12 @@ pub impl RenderWindow {
     fn map_coords_to_pixel(&self, point : &vector2::Vector2f, view : &view::View) -> vector2::Vector2i {
         unsafe {
             csfml::sfRenderWindow_mapCoordsToPixel(self.renderWindow, *point, view.unwrap())
+        }
+    }
+
+    fn get_viewport(&self, view : &view::View) -> IntRect {
+        unsafe {
+            csfml::sfRenderWindow_getViewport(self.renderWindow, view.unwrap())
         }
     }
 

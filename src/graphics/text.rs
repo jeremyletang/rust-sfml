@@ -11,6 +11,7 @@ use system::vector2;
 use graphics::font;
 use graphics::color::Color;
 use core::libc::{c_float, c_uint, size_t};
+use graphics::rect::FloatRect;
 
 #[doc(hidden)]
 pub mod csfml {
@@ -20,6 +21,7 @@ pub mod csfml {
     use system::vector2;
     use graphics::font;
     use graphics::color;
+    use graphics::rect::FloatRect;
 
     pub struct sfText {
         This : c_void,
@@ -58,8 +60,8 @@ pub mod csfml {
         fn sfText_getStyle(text : *sfText) -> u32;
         fn sfText_getColor(text : *sfText) -> color::Color;
         fn sfText_findCharacterPos(text : *sfText, index : size_t) -> vector2::Vector2f;
-        // fn sfText_getLocalBounds(text : *sfText) -> sfFloatRect;
-        // fn sfText_getGlobalBounds(text : *sfText) -> sfFloatRect;
+        fn sfText_getLocalBounds(text : *sfText) -> FloatRect;
+        fn sfText_getGlobalBounds(text : *sfText) -> FloatRect;
     }
 }
 
@@ -252,7 +254,19 @@ pub impl Text {
     fn get_position(&self) -> vector2::Vector2f {
         unsafe {csfml::sfText_getPosition(self.text)}
     }
-    
+
+    pub fn get_local_bounds(&self) -> FloatRect {
+        unsafe {
+            csfml::sfText_getLocalBounds(self.text)
+        }
+    }
+
+    pub fn get_global_bounds(&self) -> FloatRect {
+        unsafe {
+            csfml::sfText_getGlobalBounds(self.text)
+        }
+    }
+
     #[doc(hidden)]
     fn unwrap(&self) -> *csfml::sfText {
         self.text
