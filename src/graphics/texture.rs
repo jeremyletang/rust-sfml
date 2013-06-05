@@ -10,6 +10,7 @@ use system::vector2;
 use window::window;
 use graphics::render_window;
 use graphics::image;
+use graphics::rect::IntRect;
 
 #[doc(hidden)]
 pub mod csfml {
@@ -31,13 +32,13 @@ pub mod csfml {
         fn sfTexture_createFromFile(filename : *c_char, area : *IntRect) -> *sfTexture;
         //fn sfTexture_createFromMemory(data : *c_void, sizeInBytes : size_t , area : *sfIntRect) -> *sfTexture;
         //fn sfTexture_createFromStream(strea; : *sfInputStream, area : *sfIntRect) -> *sfTexture;
-        //fn sfTexture_createFromImage(image :*sfImage, area : *sfIntRect) -> *sfTexture;
+        fn sfTexture_createFromImage(image :*image::csfml::sfImage, area : *IntRect) -> *sfTexture;
         fn sfTexture_copy(texture : *sfTexture) -> *sfTexture;
         fn sfTexture_destroy(texture : *sfTexture) -> ();
         fn sfTexture_getSize(texture : *sfTexture) -> Vector2u;
         fn sfTexture_copyToImage(texture : *sfTexture) -> *image::csfml::sfImage;
-        //fn sfTexture_updateFromPixels(texture : *sfTexture, pixels : *u8, width : c_uint, height : c_uint, x : c_uint, y : c_uint) -> ();
-        //fn sfTexture_updateFromImage(texture : *sfTexture, image : *sfImage, x : c_uint, y : c_uint) -> ();
+        fn sfTexture_updateFromPixels(texture : *sfTexture, pixels : *u8, width : c_uint, height : c_uint, x : c_uint, y : c_uint) -> ();
+        fn sfTexture_updateFromImage(texture : *sfTexture, image : *image::csfml::sfImage, x : c_uint, y : c_uint) -> ();
         fn sfTexture_updateFromWindow(texture : *sfTexture, window : *sfWindow, x : c_uint, y : c_uint) -> ();
         fn sfTexture_updateFromRenderWindow(texture : *sfTexture, renderWindow : *sfRenderWindow, x : c_uint, y : c_uint) -> ();
         fn sfTexture_setSmooth(texture : *sfTexture, smooth : sfBool) -> ();
@@ -77,6 +78,13 @@ impl Texture {
     pub fn new_copy(texture : &Texture) -> Texture {
         Texture { texture : unsafe {csfml::sfTexture_copy(texture.unwrap())}}
     }
+
+    /**
+    * Create a new texture with an existing image
+    */
+    pub fn new_from_image(image : &image::Image, area : &IntRect) -> Texture{
+        Texture { texture : unsafe { csfml::sfTexture_createFromImage(image.unwrap(), &*area)}}
+    }
     
     /**
     * Return the size of the texture
@@ -102,6 +110,18 @@ impl Texture {
     pub fn update_from_render_window(&self, renderWindow : render_window::RenderWindow, x : uint, y : uint) -> () {
         unsafe {
             csfml::sfTexture_updateFromRenderWindow(self.texture, renderWindow.unwrap(), x as c_uint, y as c_uint)
+        }
+    }
+
+    pub fn update_from_image(&self, image : &image::Image, x : uint, y : uint) -> () {
+        unsafe {
+            csfml::sfTexture_updateFromImage(self.texture, image.unwrap(), x as c_uint, y as c_uint)
+        }
+    }
+    
+    pub fn update_from_pixels(&self, pixels : ~[u8], width : uint, height : uint, x : uint, y : uint) -> () {
+        unsafe {
+            csfml::sfTexture_updateFromPixels(self.texture, vec::raw::to_ptr(pixels), width as c_uint, height as c_uint, x as c_uint, y as c_uint)
         }
     }
 
