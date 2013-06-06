@@ -33,3 +33,4 @@ pub mod convex_shape;
 pub mod primitive_type;
 pub mod vertex;
 pub mod vertex_array;
+pub mod transformable;
