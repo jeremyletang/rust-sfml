@@ -9,6 +9,7 @@
 use system::time;
 use core::libc::{c_float};
 use audio::sound_status;
+use system::vector3;
 
 #[doc(hidden)]
 pub mod csfml {
@@ -17,7 +18,8 @@ pub mod csfml {
     use rsfml::sfTypes::{sfBool};
     use system::time;
     use audio::sound_status;
-    
+    use system::vector3;
+
     pub struct sfMusic {
         This : *c_void,
         This1 : *c_void
@@ -40,14 +42,14 @@ pub mod csfml {
         fn sfMusic_getPlayingOffset(music : *sfMusic) -> time::csfml::sfTime;
         fn sfMusic_setPitch(music : *sfMusic, pitch : c_float) -> ();
         fn sfMusic_setVolume(music : *sfMusic, volume : c_float) -> ();
-        // fn sfMusic_setPosition(music : *sfMusic, position : *Vector3f) -> ();
+        fn sfMusic_setPosition(music : *sfMusic, position : vector3::Vector3f) -> ();
         fn sfMusic_setRelativeToListener(music : *sfMusic, relative : sfBool) -> ();
         fn sfMusic_setMinDistance(music : *sfMusic, distance : c_float) -> ();
         fn sfMusic_setAttenuation(music : *sfMusic, attenuation : c_float) -> ();
         fn sfMusic_setPlayingOffset(music : *sfMusic, timeOffset : time::csfml::sfTime) -> ();
         fn sfMusic_getPitch(music : *sfMusic) -> c_float;
         fn sfMusic_getVolume(music : *sfMusic) -> c_float;
-        // fn sfMusic_getPosition(music : *sfMusic) -> sfVector3f;
+        fn sfMusic_getPosition(music : *sfMusic) -> vector3::Vector3f;
         fn sfMusic_isRelativeToListener(music : *sfMusic) -> sfBool;
         fn sfMusic_getMinDistance(music : *sfMusic) -> c_float;
         fn sfMusic_getAttenuation(music : *sfMusic) -> c_float;
@@ -256,7 +258,18 @@ impl Music {
             csfml::sfMusic_getAttenuation(self.music) as float
         }        
     }
-    
+
+    fn set_position(&self, position : &vector3::Vector3f) -> () {
+        unsafe {
+            csfml::sfMusic_setPosition(self.music, *position)
+        }
+    }
+
+    fn get_position(&self) -> vector3::Vector3f {
+        unsafe {
+            csfml::sfMusic_getPosition(self.music)
+        }
+    }    
 }
 
 impl Drop for Music {

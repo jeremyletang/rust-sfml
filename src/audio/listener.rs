@@ -43,8 +43,8 @@ pub fn get_global_volume() -> float {
     }
 }
 
-/*
-* Set the position of the listener in the scene (Doesnt't work)
+/**
+* Set the position of the listener in the scene
 */
 pub fn set_position(position : &Vector3f) -> () {
     unsafe {
@@ -53,7 +53,7 @@ pub fn set_position(position : &Vector3f) -> () {
 }
 
 /**
-* Get the current position of the listener in the scene (Doesn't work)
+* Get the current position of the listener in the scene
 */
 pub fn get_position() -> Vector3f {
     unsafe {
@@ -62,7 +62,7 @@ pub fn get_position() -> Vector3f {
 }
 
 /**
-* Set the orientation of the listener in the scene (Doesn't work)
+* Set the orientation of the listener in the scene
 */
 pub fn set_direction(position : &Vector3f) -> () {
     unsafe {
