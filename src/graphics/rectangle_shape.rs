@@ -6,6 +6,7 @@ use graphics::texture;
 use graphics::drawable;
 use graphics::render_window::RenderWindow;
 use graphics::rect::{FloatRect, IntRect};
+use graphics::transform::Transform;
 
 #[doc(hidden)]
 pub mod csfml {
@@ -16,6 +17,7 @@ pub mod csfml {
     use graphics::texture;
     use rsfml::sfTypes::sfBool;
     use graphics::rect::{FloatRect, IntRect};
+    use graphics::transform::Transform;
 
     pub struct sfRectangleShape {
         This : *c_void
@@ -36,8 +38,8 @@ pub mod csfml {
         fn sfRectangleShape_move(shape : *sfRectangleShape, offset : vector2::Vector2f) -> ();
         fn sfRectangleShape_rotate(shape : *sfRectangleShape, angle : c_float) -> ();
         fn sfRectangleShape_scale(shape : *sfRectangleShape, factors : vector2::Vector2f) -> ();
-        //fn sfRectangleShape_getTransform(shape : *sfRectangleShape) -> sfTransform;
-        //fn sfRectangleShape_getInverseTransform(shape : *sfRectangleShape) -> sfTransform;
+        fn sfRectangleShape_getTransform(shape : *sfRectangleShape) -> Transform;
+        fn sfRectangleShape_getInverseTransform(shape : *sfRectangleShape) -> Transform;
         fn sfRectangleShape_setTexture(shape : *sfRectangleShape, texture : *texture::csfml::sfTexture, resetRect : sfBool) -> ();
         fn sfRectangleShape_setTextureRect(shape : *sfRectangleShape, rect : IntRect) -> ();
         fn sfRectangleShape_setFillColor(shape : *sfRectangleShape, color : color::Color) -> ();
@@ -215,6 +217,18 @@ impl RectangleShape {
     pub fn get_local_bounds(&self) -> FloatRect {
         unsafe {
             csfml::sfRectangleShape_getLocalBounds(self.rectangleShape)
+        }
+    }
+
+    pub fn get_transform(&self) -> Transform {
+        unsafe {
+            csfml::sfRectangleShape_getTransform(self.rectangleShape)
+        }
+    }
+
+    pub fn get_inverse_transform(&self) -> Transform {
+        unsafe {
+            csfml::sfRectangleShape_getInverseTransform(self.rectangleShape)
         }
     }
 

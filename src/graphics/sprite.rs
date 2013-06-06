@@ -12,6 +12,7 @@ use graphics::drawable::Drawable;
 use graphics::render_window;
 use system::vector2;
 use graphics::rect::{FloatRect, IntRect};
+use graphics::transform::Transform;
 
 #[doc(hidden)]
 pub mod csfml {
@@ -22,6 +23,7 @@ pub mod csfml {
     use graphics::texture;
     use system::vector2;
     use graphics::rect::{IntRect, FloatRect};
+    use graphics::transform::Transform;
 
     pub struct sfSprite {
         This : *c_void
@@ -42,8 +44,8 @@ pub mod csfml {
         fn sfSprite_move(sprite : *sfSprite, offset : vector2::Vector2f) -> ();
         fn sfSprite_rotate(sprite : *sfSprite, angle : c_float) -> ();
         fn sfSprite_scale(sprite : *sfSprite, factors : vector2::Vector2f) -> ();
-        //fn sfSprite_getTransform(sprite : *sfSprite) -> sfTransform;
-        //fn sfSprite_getInverseTransform(sprite : *sfSprite) -> sfTransform;
+        fn sfSprite_getTransform(sprite : *sfSprite) -> Transform;
+        fn sfSprite_getInverseTransform(sprite : *sfSprite) -> Transform;
         fn sfSprite_setTexture(sprite : *sfSprite, texture : *texture::csfml::sfTexture, resetRect : sfBool) -> ();
         fn sfSprite_setTextureRect(sprite : *sfSprite, rectangle : IntRect) -> ();
         fn sfSprite_setColor(sprite : *sfSprite, color : color::Color) -> ();
@@ -200,6 +202,18 @@ impl Sprite {
     pub fn set_texture_rect(&self, rect : &IntRect) -> () {
         unsafe {
             csfml::sfSprite_setTextureRect(self.sprite, *rect)
+        }
+    }
+
+    pub fn get_transform(&self) -> Transform {
+        unsafe {
+            csfml::sfSprite_getTransform(self.sprite)
+        }
+    }
+
+    pub fn get_inverse_transform(&self) -> Transform {
+        unsafe {
+            csfml::sfSprite_getInverseTransform(self.sprite)
         }
     }
 

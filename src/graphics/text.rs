@@ -12,6 +12,7 @@ use graphics::font;
 use graphics::color::Color;
 use core::libc::{c_float, c_uint, size_t};
 use graphics::rect::FloatRect;
+use graphics::transform::Transform;
 
 #[doc(hidden)]
 pub mod csfml {
@@ -22,6 +23,7 @@ pub mod csfml {
     use graphics::font;
     use graphics::color;
     use graphics::rect::FloatRect;
+    use graphics::transform::Transform;
 
     pub struct sfText {
         This : c_void,
@@ -45,8 +47,8 @@ pub mod csfml {
         fn sfText_move(text : *sfText, offset : vector2::Vector2f) -> ();
         fn sfText_rotate(text : *sfText, angle : c_float) -> ();
         fn sfText_scale(text : *sfText, factors : vector2::Vector2f) -> ();
-        // fn sfText_getTransform(text : *sfText) -> sfTransform;
-        // fn sfText_getInverseTransform(text : *sfText) -> sfTransform;
+        fn sfText_getTransform(text : *sfText) -> Transform;
+        fn sfText_getInverseTransform(text : *sfText) -> Transform;
         fn sfText_setString(text : *sfText, string : *c_char) -> ();
         fn sfText_setUnicodeString(text : *sfText, string : *u32 ) -> ();
         fn sfText_setFont(text : *sfText, font : *font::csfml::sfFont) -> ();
@@ -270,6 +272,18 @@ impl Text {
     pub fn set_unicode_string(&self, string : ~[u32]) -> () {
         unsafe {
             csfml::sfText_setUnicodeString(self.text, vec::raw::to_ptr(string) )
+        }
+    }
+
+    pub fn get_transform(&self) -> Transform {
+        unsafe {
+            csfml::sfText_getTransform(self.text)
+        }
+    }
+
+    pub fn get_inverse_transform(&self) -> Transform {
+        unsafe {
+            csfml::sfText_getInverseTransform(self.text)
         }
     }
 

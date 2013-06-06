@@ -12,6 +12,7 @@ use graphics::texture;
 use graphics::drawable;
 use graphics::render_window::RenderWindow;
 use system::vector2;
+use graphics::transform::Transform;
 
 #[doc(hidden)]
 pub mod csfml {
@@ -22,6 +23,7 @@ pub mod csfml {
     use graphics::rect;
     use system::vector2;
     use graphics::color;
+    use graphics::transform::Transform;
 
     pub struct sfCircleShape {
         This : *c_void
@@ -42,8 +44,8 @@ pub mod csfml {
         fn sfCircleShape_move(shape : *sfCircleShape, offset : vector2::Vector2f) -> ();
         fn sfCircleShape_rotate(shape : *sfCircleShape, angle : c_float) -> ();
         fn sfCircleShape_scale(shape : *sfCircleShape, factors : vector2::Vector2f) -> ();
-        //fn sfCircleShape_getTransform(shape : *sfCircleShape) -> sfTransform;
-        //fn sfCircleShape_getInverseTransform(shape : *sfCircleShape) -> sfTransform;
+        fn sfCircleShape_getTransform(shape : *sfCircleShape) -> Transform;
+        fn sfCircleShape_getInverseTransform(shape : *sfCircleShape) -> Transform;
         fn sfCircleShape_setTexture(shape : *sfCircleShape, texture : *texture::csfml::sfTexture, resetRect : sfBool) -> ();
         fn sfCircleShape_setTextureRect(shape : *sfCircleShape, rect : rect::IntRect) -> ();
         fn sfCircleShape_setFillColor(shape : *sfCircleShape, color : color::Color) -> ();
@@ -238,6 +240,18 @@ impl CircleShape {
     pub fn get_global_bounds(&self) -> FloatRect {
         unsafe {
             csfml::sfCircleShape_getGlobalBounds(self.circleShape)
+        }
+    }
+
+    pub fn get_transform(&self) -> Transform {
+        unsafe {
+            csfml::sfCircleShape_getTransform(self.circleShape)
+        }
+    }
+
+    pub fn get_inverse_transform(&self) -> Transform {
+        unsafe {
+            csfml::sfCircleShape_getInverseTransform(self.circleShape)
         }
     }
 

@@ -6,6 +6,7 @@ use system::vector2;
 use graphics::drawable;
 use graphics::render_window::RenderWindow;
 use graphics::rect::{FloatRect, IntRect};
+use graphics::transform::Transform;
 
 #[doc(hidden)]
 pub mod csfml {
@@ -16,7 +17,8 @@ pub mod csfml {
     use graphics::texture;
     use rsfml::sfTypes::sfBool;
     use graphics::rect::{FloatRect, IntRect};
-
+    use graphics::transform::Transform;
+    
     pub struct sfConvexShape {
         This : *c_void
     }
@@ -36,8 +38,8 @@ pub mod csfml {
         fn sfConvexShape_move(shape : *sfConvexShape, offset : vector2::Vector2f) -> ();
         fn sfConvexShape_rotate(shape : *sfConvexShape, angle : c_float) -> ();
         fn sfConvexShape_scale(shape : *sfConvexShape, factors : vector2::Vector2f) -> ();
-        //fn sfConvexShape_getTransform(shape : *sfConvexShape) -> sfTransform;
-        //fn sfConvexShape_getInverseTransform(shape : *sfConvexShape) -> sfTransform;
+        fn sfConvexShape_getTransform(shape : *sfConvexShape) -> Transform;
+        fn sfConvexShape_getInverseTransform(shape : *sfConvexShape) -> Transform;
         fn sfConvexShape_setTexture(shape : *sfConvexShape, texture : *texture::csfml::sfTexture, resetRect : sfBool) -> ();
         fn sfConvexShape_setTextureRect(shape : *sfConvexShape, rect : IntRect) -> ();
         fn sfConvexShape_setFillColor(shape : *sfConvexShape, color : color::Color) -> ();
@@ -220,11 +222,25 @@ impl ConvexShape {
             csfml::sfConvexShape_getTextureRect(self.convexShape)
         }
     }
+    
+    pub fn get_transform(&self) -> Transform {
+        unsafe {
+            csfml::sfConvexShape_getTransform(self.convexShape)
+        }
+    }
 
+    pub fn get_inverse_transform(&self) -> Transform {
+        unsafe {
+            csfml::sfConvexShape_getInverseTransform(self.convexShape)
+        }
+    }
+
+    #[doc(hidden)]
     pub fn wrap(convexShape : *csfml::sfConvexShape) -> ConvexShape {
         ConvexShape { convexShape : convexShape}
     }
     
+    #[doc(hidden)]
     pub fn unwrap(&self) -> *csfml::sfConvexShape {
         self.convexShape
     }
