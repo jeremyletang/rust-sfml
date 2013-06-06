@@ -7,12 +7,15 @@
 
 use core::libc::{c_uint};
 use graphics::texture::Texture;
+use graphics::glyph::Glyph;
 
 #[doc(hidden)]
 pub mod csfml {
 
     use core::libc::{c_void, c_char, c_uint, c_int};
     use graphics::texture;
+    use rsfml::sfTypes::sfBool;
+    use graphics::glyph::Glyph;
 
     pub struct sfFont {
         This : *c_void
@@ -24,7 +27,7 @@ pub mod csfml {
         // fn sfFont_createFromMemory(data : *c_void, sizeInBytes : size_t) -> *sfFont;
         // fn sfFont_createFromStream(stream : *sfInputStream) -> *sfFont;
         fn sfFont_destroy(font : *sfFont) -> ();
-        //fn sfFont_getGlyph(font : *sfFont, codepoint : u32, characterSize : c_uint, bold :sfBool) -> sfGlyph;
+        fn sfFont_getGlyph(font : *sfFont, codepoint : u32, characterSize : c_uint, bold :sfBool) -> Glyph;
         fn sfFont_getKerning(font : *sfFont, first : u32, second : u32, characterSize : c_uint) -> c_int;
         fn sfFont_getLineSpacing(font : *sfFont, characterSize : c_uint) -> c_int;
         fn sfFont_getTexture(font : *sfFont, characterSize : c_uint) -> *texture::csfml::sfTexture;
@@ -83,6 +86,13 @@ impl Font {
         }
     }
     
+    pub fn get_glyph(&self, codepoint : u32, characterSize : uint, bold : bool) -> Glyph {
+        match bold {
+            true        => unsafe {csfml::sfFont_getGlyph(self.font, codepoint, characterSize as c_uint, 1)},
+            false       => unsafe {csfml::sfFont_getGlyph(self.font, codepoint, characterSize as c_uint, 0)}
+        }
+    }
+
     #[doc(hidden)]
     pub fn wrap(font : *csfml::sfFont) -> Font {
         Font {font : font}
