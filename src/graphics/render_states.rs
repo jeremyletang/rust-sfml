@@ -20,7 +20,7 @@ pub mod csfml {
 
     pub struct sfRenderStates {
         blendMode : uint,
-        transform : transform::csfml::sfTransform,
+        transform : transform::Transform,
         texture : *csfml::sfTexture,
         shader : *shader::csfml::sfShader
     }

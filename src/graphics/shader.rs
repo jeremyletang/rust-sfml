@@ -38,7 +38,7 @@ pub mod csfml {
         fn sfShader_setVector2Parameter(shader : *sfShader, name : *c_char, vector : vector2::Vector2f) -> ();
         fn sfShader_setVector3Parameter(shader : *sfShader, name : *c_char, vector : vector3::Vector3f) -> ();
         fn sfShader_setColorParameter(shader : *sfShader, name : *c_char, color : color::Color) -> (); 
-        fn sfShader_setTransformParameter(shader : *sfShader, name : *c_char, transform : transform::csfml::sfTransform) -> ();
+        fn sfShader_setTransformParameter(shader : *sfShader, name : *c_char, transform : transform::Transform) -> ();
         fn sfShader_setTextureParameter(shader : *sfShader, name : *c_char, texture : *texture::csfml::sfTexture) -> ();
         fn sfShader_setCurrentTextureParameter(shader : *sfShader, name : *c_char) -> ();
         fn sfShader_bind(shader : *sfShader) -> ();

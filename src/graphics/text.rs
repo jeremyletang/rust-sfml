@@ -26,8 +26,8 @@ pub mod csfml {
     pub struct sfText {
         This : c_void,
         font : *c_void,
-        transform : transform::csfml::sfTransform,
-        transform2 : transform::csfml::sfTransform
+        transform : transform::Transform,
+        transform2 : transform::Transform
     }
 
     pub extern "C" {
