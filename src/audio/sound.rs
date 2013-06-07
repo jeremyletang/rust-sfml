@@ -29,7 +29,7 @@
 *
 */
 
-use core::libc::{c_float};
+use std::libc::{c_float};
 use system::time;
 use audio::sound_status;
 use audio::sound_buffer;
@@ -38,7 +38,7 @@ use system::vector3;
 #[doc(hidden)]
 pub mod csfml {
     
-    use core::libc::{c_float, c_void};
+    use std::libc::{c_float, c_void};
     use audio::sound_status;
     use audio::sound_buffer;
     use system::time;

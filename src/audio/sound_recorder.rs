@@ -29,12 +29,12 @@
 *
 */
 
-use core::libc::{c_uint};
+use std::libc::{c_uint};
 
 #[doc(hidden)]
 pub mod csfml{
 
-    pub use core::libc::{c_void, c_uint};
+    pub use std::libc::{c_void, c_uint};
     use rsfml::sfTypes::{sfBool};
 
     pub struct sfSoundRecorder {

@@ -30,7 +30,12 @@
 *
 */
 
-use core::libc::{c_float, c_uint};
+use std::libc::{c_float, c_uint};
+use std::str;
+use std::ptr;
+use std::cast;
+use std::vec;
+
 use rsfml::sfTypes::{sfBool};
 use window::video_mode::*;
 use window::context_settings::ContextSettings;
@@ -55,7 +60,7 @@ use graphics::rect::IntRect;
 #[doc(hidden)]
 pub mod csfml {
     
-    use core::libc::{c_uint, c_float, c_void, c_char};
+    use std::libc::{c_uint, c_float, c_void, c_char};
     use system::vector2;
     use rsfml::sfTypes::{sfBool};
     use window::video_mode::*;
@@ -72,7 +77,9 @@ pub mod csfml {
     use graphics::rect::IntRect;
 
     pub struct sfRenderWindow {
-        This : *c_void
+        This : *c_void,
+        DefaultView : sfView,
+        CurrentView : sfView
     }
 
     pub struct sfEvent {

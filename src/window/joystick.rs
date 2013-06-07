@@ -29,7 +29,7 @@
 *
 */
 
-use core::libc::{c_uint};
+use std::libc::{c_uint};
 
 /// Axes supported by SFML joysticks 
 pub enum Axis {
@@ -46,7 +46,7 @@ pub enum Axis {
 #[doc(hidden)]
 pub mod csfml {
     
-    use core::libc::{c_float, c_uint};
+    use std::libc::{c_float, c_uint};
     use rsfml::sfTypes::{sfBool};
     
 

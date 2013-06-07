@@ -5,16 +5,18 @@
 *
 */
 
-use core::libc::{c_uint};
+use std::libc::{c_uint};
 //use system::vector2;
 use system::vector2::Vector2u;
 use graphics::color::Color;
 use graphics::rect::IntRect;
+use std::str;
+use std::vec;
 
 #[doc(hidden)]
 pub mod csfml {
     
-    use core::libc::{c_char, c_void, c_uint};
+    use std::libc::{c_char, c_void, c_uint};
     use rsfml::sfTypes::{sfBool};
     use graphics::color;
     use system::vector2;

@@ -29,7 +29,7 @@
 *
 */
 
-use core::libc::{c_int};
+use std::libc::{c_int};
 
 /// Key codes
 pub enum Key { 
@@ -141,7 +141,7 @@ pub enum Key {
 #[doc(hidden)]
 pub mod csfml {
     
-    pub use core::libc::{c_int};
+    pub use std::libc::{c_int};
     use rsfml::sfTypes::{sfBool};
 
     pub extern "C" {

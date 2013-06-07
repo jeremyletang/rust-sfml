@@ -29,7 +29,11 @@
 *
 */
 
-use core::libc::{c_uint};
+use std::libc::{c_uint};
+use std::vec;
+use std::str;
+use std::ptr;
+
 use system::vector2;
 use window::window;
 use graphics::render_window;
@@ -39,7 +43,7 @@ use graphics::rect::IntRect;
 #[doc(hidden)]
 pub mod csfml {
     
-    use core::libc::{c_uint, c_void, c_char};
+    use std::libc::{c_uint, c_void, c_char};
     use rsfml::sfTypes::{sfBool};
     use system::vector2::Vector2u;
     use window::window::csfml::sfWindow;

@@ -29,11 +29,11 @@
 *
 */
 
-use core::libc::{c_int};
+use std::libc::{c_int};
 #[doc(hidden)]
 pub mod csfml {
     
-    use core::libc::{c_int};
+    use std::libc::{c_int};
     use rsfml::sfTypes::{sfBool};
     use graphics::rect::IntRect;
     use graphics::rect::FloatRect;

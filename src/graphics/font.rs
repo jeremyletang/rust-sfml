@@ -29,14 +29,15 @@
 *
 */
 
-use core::libc::{c_uint};
+use std::libc::{c_uint};
 use graphics::texture::Texture;
 use graphics::glyph::Glyph;
+use std::str;
 
 #[doc(hidden)]
 pub mod csfml {
 
-    use core::libc::{c_void, c_char, c_uint, c_int};
+    use std::libc::{c_void, c_char, c_uint, c_int};
     use graphics::texture;
     use rsfml::sfTypes::sfBool;
     use graphics::glyph::Glyph;

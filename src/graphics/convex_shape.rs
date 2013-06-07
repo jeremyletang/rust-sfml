@@ -22,7 +22,7 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-use core::libc::{c_float, c_uint};
+use std::libc::{c_float, c_uint};
 use graphics::color;
 use graphics::texture;
 use system::vector2;
@@ -34,7 +34,7 @@ use graphics::transform::Transform;
 #[doc(hidden)]
 pub mod csfml {
 
-    use core::libc::{c_uint, c_void, c_float};
+    use std::libc::{c_uint, c_void, c_float};
     use system::vector2;
     use graphics::color;
     use graphics::texture;

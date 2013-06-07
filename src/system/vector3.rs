@@ -29,7 +29,7 @@
 *
 */
 
-pub use core::libc::{c_float};
+pub use std::libc::{c_float};
 
 pub struct Vector3f {
     x : f32,

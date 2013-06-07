@@ -29,12 +29,12 @@
 *
 */
 
-pub use core::libc::{c_long, c_float, c_int};
+pub use std::libc::{c_long, c_float, c_int};
 
 #[doc(hidden)]
 pub mod csfml {
     
-    pub use core::libc::{c_long, c_float, c_int};
+    pub use std::libc::{c_long, c_float, c_int};
 
     pub struct sfTime {
         microseconds : c_long

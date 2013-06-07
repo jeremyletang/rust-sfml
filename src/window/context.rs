@@ -33,7 +33,7 @@ use rsfml::sfTypes::{sfBool};
 #[doc(hidden)]
 pub mod csfml {
 
-    use core::libc::{c_void};
+    use std::libc::{c_void};
     use rsfml::sfTypes::{sfBool};
 
     pub struct sfContext {

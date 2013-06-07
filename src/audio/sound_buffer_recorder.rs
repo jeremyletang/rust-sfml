@@ -28,13 +28,16 @@
 * SoundBufferRecorder allows to access a recorded sound through a sf::SoundBuffer, so that it can be played, saved to a file, etc.
 *
 */
-use core::libc::{c_uint};
+
+use std::libc::{c_uint};
+use std::ptr;
+
 use audio::sound_buffer;
 
 #[doc(hidden)]
 pub mod csfml {
 
-    use core::libc::{c_uint, c_void};
+    use std::libc::{c_uint, c_void};
     use audio::sound_buffer;
     
     pub struct sfSoundBufferRecorder {

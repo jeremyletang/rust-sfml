@@ -22,13 +22,15 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-use core::libc::c_char;
+use std::libc::c_char;
 use system::time::Time;
+use std::str;
+use std::ptr;
 
 #[doc(hidden)]
 pub mod csfml{
     
-    use core::libc::c_char;
+    use std::libc::c_char;
     use system::time;
 
     pub struct sfIpAddress {

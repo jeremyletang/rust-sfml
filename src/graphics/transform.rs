@@ -30,15 +30,15 @@
 */
 
 extern mod std;
-pub use std::c_vec::{CVec, len, get};
-use core::libc::{c_float};
+pub use extra::c_vec::{CVec, len, get};
+use std::libc::{c_float};
 use system::vector2;
 use graphics::rect::FloatRect;
 
 #[doc(hidden)]
 pub mod csfml {
     
-    use core::libc::{c_float};
+    use std::libc::{c_float};
     use system::vector2;
     use graphics::rect::FloatRect;
     use graphics::transform::Transform;

@@ -29,19 +29,23 @@
 *
 */
 
+use std::libc::{c_float, c_uint, size_t};
+use std::str;
+use std::ptr;
+use std::vec;
+
 use graphics::drawable::*;
 use graphics::render_window;
 use system::vector2;
 use graphics::font;
 use graphics::color::Color;
-use core::libc::{c_float, c_uint, size_t};
 use graphics::rect::FloatRect;
 use graphics::transform::Transform;
 
 #[doc(hidden)]
 pub mod csfml {
     
-    use core::libc::{c_uint, c_float, c_void, c_char, size_t};
+    use std::libc::{c_uint, c_float, c_void, c_char, size_t};
     use graphics::transform;
     use system::vector2;
     use graphics::font;

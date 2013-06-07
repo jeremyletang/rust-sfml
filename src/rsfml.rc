@@ -34,7 +34,7 @@
 #[license = "Zlib/png"];
 #[crate_type = "lib"];
 
-extern mod std;
+extern mod extra;
 pub use rsfml::*;
 
 #[path = "system/sfml_system.rs"]

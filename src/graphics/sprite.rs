@@ -29,7 +29,7 @@
 *
 */
 
-use core::libc::{c_float};
+use std::libc::{c_float};
 use graphics::color;
 use graphics::texture;
 use graphics::drawable::Drawable;
@@ -41,7 +41,7 @@ use graphics::transform::Transform;
 #[doc(hidden)]
 pub mod csfml {
 
-    use core::libc::{c_void, c_float};
+    use std::libc::{c_void, c_float};
     use rsfml::sfTypes::{sfBool};
     use graphics::color;
     use graphics::texture;

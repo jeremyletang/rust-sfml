@@ -30,15 +30,18 @@
 *
 */
 
+use std::libc::{c_float};
+use std::ptr;
+use std::str;
+
 use system::time;
-use core::libc::{c_float};
 use audio::sound_status;
 use system::vector3;
 
 #[doc(hidden)]
 pub mod csfml {
 
-    use core::libc::{c_void, c_char, c_uint, c_float};
+    use std::libc::{c_void, c_char, c_uint, c_float};
     use rsfml::sfTypes::{sfBool};
     use system::time;
     use audio::sound_status;

@@ -30,12 +30,12 @@
 */
 
 use system::vector3::*;
-pub use core::libc::{c_int};
+pub use std::libc::{c_int};
 
 #[doc(hidden)]
 pub mod csfml {
     
-    pub use core::libc::{c_int};    
+    pub use std::libc::{c_int};    
     pub use system::vector3;
 
     pub extern "C" {

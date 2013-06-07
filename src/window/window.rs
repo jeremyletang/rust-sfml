@@ -28,10 +28,15 @@
  * Provides OpenGL-based windows, and abstractions for events and input handling.
  */
 
+use std::libc::{c_uint, c_float};
+use std::str;
+use std::vec;
+use std::ptr;
+use std::cast;
+
 use window::context_settings::ContextSettings;
 use window::video_mode::*;
 use rsfml::sfTypes::{sfBool};
-use core::libc::{c_uint, c_float};
 use window::event;
 use window::keyboard;
 use system::vector2;
@@ -42,7 +47,7 @@ use window::mouse;
 pub mod csfml {
     
     use rsfml::sfTypes::{sfBool};
-    use core::libc::{c_void, c_uint, c_char, c_float};
+    use std::libc::{c_void, c_uint, c_char, c_float};
     use window::context_settings::ContextSettings;
     use window::video_mode::*;    
     use system::vector2;

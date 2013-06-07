@@ -34,7 +34,7 @@ use system::time;
 #[doc(hidden)]
 pub mod csfml {
     
-    use core::libc::{c_void};
+    use std::libc::{c_void};
     use system::time::*;
 
     pub struct sfClock {

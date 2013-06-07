@@ -24,7 +24,7 @@
 
 #[doc(hidden)]
 pub mod sfTypes {
-    use core::libc::{c_int};
+    use std::libc::{c_int};
     
     pub type sfBool = c_int;
     pub static sfFalse : sfBool = 0;

@@ -30,11 +30,13 @@
 */
 
 use system::time;
+use std::ptr;
+use std::str;
 
 #[doc(hidden)]
 pub mod csfml {
     
-    use core::libc::{c_char, size_t, c_void, c_uint};
+    use std::libc::{c_char, size_t, c_void, c_uint};
     use system::time;
     use rsfml::sfTypes::{sfBool};
 

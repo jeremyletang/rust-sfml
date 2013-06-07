@@ -23,7 +23,7 @@
 */
 
 use graphics::vertex::Vertex;
-use core::libc::c_uint;
+use std::libc::c_uint;
 use graphics::rect::FloatRect;
 use graphics::primitive_type;
 use graphics::primitive_type::PrimitiveType;
@@ -31,7 +31,7 @@ use graphics::primitive_type::PrimitiveType;
 #[doc(hidden)]
 pub mod csfml {
     
-    use core::libc::{c_uint, c_void};
+    use std::libc::{c_uint, c_void};
     use graphics::vertex;
     use graphics::rect::FloatRect;
     

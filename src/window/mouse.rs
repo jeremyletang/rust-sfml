@@ -29,7 +29,7 @@
 *
 */
 
-use core::libc::{c_uint};
+use std::libc::{c_uint};
 use window::window::*;
 use system::vector2;
 
@@ -45,7 +45,7 @@ pub enum MouseButton {
 #[doc(hidden)]
 pub mod csfml {
     
-    use core::libc::{c_uint};
+    use std::libc::{c_uint};
     use rsfml::sfTypes::{sfBool};
     use window::window::*;
     use system::vector2;

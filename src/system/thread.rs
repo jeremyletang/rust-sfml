@@ -22,11 +22,11 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-pub use core::libc::{c_void};
+pub use std::libc::{c_void};
 
 pub mod csfml {
     
-    pub use core::libc::{c_void};
+    pub use std::libc::{c_void};
     
     pub struct sfThread {
         This : *c_void

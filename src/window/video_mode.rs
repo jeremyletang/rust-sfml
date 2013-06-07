@@ -30,8 +30,8 @@
 *
 */
 extern mod std;
-pub use std::c_vec::{CVec, len, get};
-use core::libc::{c_uint, c_int, size_t};
+pub use extra::c_vec::{CVec, len, get};
+use std::libc::{c_uint, c_int, size_t};
 
 /**
 * VideoMode defines a video mode (width, height, bpp, frequency) 
@@ -49,7 +49,7 @@ pub struct VideoMode {
 #[doc(hidden)]
 pub mod csfml {
     
-    use core::libc::{c_uint, size_t};
+    use std::libc::{c_uint, size_t};
     use rsfml::sfTypes::{sfBool};
 
     pub struct sfVideoMode {

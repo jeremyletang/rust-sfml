@@ -34,11 +34,12 @@ use graphics::texture::Texture;
 use system::vector2;
 use system::vector3;
 use graphics::color;
+use std::str;
 
 #[doc(hidden)]
 pub mod csfml {
 
-    use core::libc::{c_void, c_float, c_char};
+    use std::libc::{c_void, c_float, c_char};
     use rsfml::sfTypes::{sfBool};
     use graphics::transform;
     use graphics::texture;

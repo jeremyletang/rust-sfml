@@ -32,7 +32,7 @@
 #[doc(hidden)]
 pub mod csfml {
     
-    pub use core::libc::{c_void};
+    pub use std::libc::{c_void};
     
     pub struct sfMutex {
         This : *c_void
