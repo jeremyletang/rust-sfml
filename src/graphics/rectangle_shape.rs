@@ -43,7 +43,10 @@ pub mod csfml {
     use graphics::transform::Transform;
 
     pub struct sfRectangleShape {
-        This : *c_void
+        This : *c_void,
+        Texture : *texture::csfml::sfTexture,
+        Transform : Transform,
+        InverseTransform : Transform
     }
     
     pub extern "C" {
