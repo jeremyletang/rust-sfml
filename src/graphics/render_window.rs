@@ -56,6 +56,7 @@ use graphics::convex_shape::ConvexShape;
 use graphics::view;
 use graphics::image;
 use graphics::rect::IntRect;
+use graphics::vertex_array::VertexArray;
 
 #[doc(hidden)]
 pub mod csfml {
@@ -75,6 +76,7 @@ pub mod csfml {
     use graphics::view::csfml::sfView;
     use graphics::image::csfml::sfImage;
     use graphics::rect::IntRect;
+    use graphics::vertex_array::csfml::sfVertexArray;
 
     pub struct sfRenderWindow {
         This : *c_void,
@@ -130,7 +132,7 @@ pub mod csfml {
         fn sfRenderWindow_drawCircleShape(renderWindow : *sfRenderWindow, object : *sfCircleShape, states : *render_states::csfml::sfRenderStates) -> ();
         fn sfRenderWindow_drawConvexShape(renderWindow : *sfRenderWindow, object : *sfConvexShape, states : *render_states::csfml::sfRenderStates) -> ();
         fn sfRenderWindow_drawRectangleShape(renderWindow : *sfRenderWindow, object : *sfRectangleShape, states : *render_states::csfml::sfRenderStates) -> ();
-        // fn sfRenderWindow_drawVertexArray(renderWindow : *sfRenderWindow, object : *sfVertexArray, states : *sfRenderStates) -> ();
+        fn sfRenderWindow_drawVertexArray(renderWindow : *sfRenderWindow, object : *sfVertexArray, states : *render_states::csfml::sfRenderStates) -> ();
         // fn sfRenderWindow_drawPrimitives(renderWindow : *sfRenderWindow, vertices : *sfVertex, vertexCount : c_uint, ttype : sfPrimitiveType, states : *sfRenderStates) -> ();  
         fn sfRenderWindow_pushGLStates(renderWindow : *sfRenderWindow) -> ();
         fn sfRenderWindow_popGLStates(renderWindow : *sfRenderWindow) -> ();
@@ -552,6 +554,12 @@ impl RenderWindow {
     pub fn draw_convex_shape(&self, convexShape : &ConvexShape) -> () {
         unsafe {
             csfml::sfRenderWindow_drawConvexShape(self.renderWindow, convexShape.unwrap(), ptr::null())
+        }
+    }
+
+    pub fn draw_vertex_array(&self, vertexArray : &VertexArray) -> () {
+        unsafe {
+            csfml::sfRenderWindow_drawVertexArray(self.renderWindow, vertexArray.unwrap(), ptr::null())
         }
     }
 

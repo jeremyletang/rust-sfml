@@ -27,6 +27,8 @@ use std::libc::c_uint;
 use graphics::rect::FloatRect;
 use graphics::primitive_type;
 use graphics::primitive_type::PrimitiveType;
+use graphics::drawable::Drawable;
+use graphics::render_window::RenderWindow;
 
 #[doc(hidden)]
 pub mod csfml {
@@ -148,6 +150,12 @@ impl VertexArray {
 
     pub fn unwrap(&self) -> *csfml::sfVertexArray {
         self.vertexArray
+    }
+}
+
+impl Drawable for VertexArray {
+    pub fn draw_in_render_window(&self, renderWindow : &RenderWindow) -> () {
+        renderWindow.draw_vertex_array(self)
     }
 }
 
