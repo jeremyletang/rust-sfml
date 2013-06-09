@@ -28,6 +28,7 @@ use graphics::texture;
 use system::vector2;
 use graphics::drawable;
 use graphics::render_window::RenderWindow;
+use graphics::render_texture::RenderTexture;
 use graphics::rect::{FloatRect, IntRect};
 use graphics::transform::Transform;
 
@@ -275,6 +276,10 @@ impl ConvexShape {
 impl drawable::Drawable for ConvexShape {
     pub fn draw_in_render_window(&self, renderWindow : &RenderWindow) -> () {
         renderWindow.draw_convex_shape(self)
+    }
+
+    pub fn draw_in_render_texture(&self, renderTexture : &RenderTexture) -> () {
+        renderTexture.draw_convex_shape(self)
     }
 }
 

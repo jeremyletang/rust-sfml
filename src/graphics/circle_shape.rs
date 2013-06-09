@@ -35,6 +35,7 @@ use graphics::rect::{IntRect, FloatRect};
 use graphics::texture;
 use graphics::drawable;
 use graphics::render_window::RenderWindow;
+use graphics::render_texture::RenderTexture;
 use system::vector2;
 use graphics::transform::Transform;
 
@@ -296,6 +297,10 @@ impl CircleShape {
 impl drawable::Drawable for CircleShape {
     pub fn draw_in_render_window(&self, renderWindow : &RenderWindow) -> () {
         renderWindow.draw_circle_shape(self)
+    }
+    
+    pub fn draw_in_render_texture(&self, renderTexture : &RenderTexture) -> () {
+        renderTexture.draw_circle_shape(self)
     }
 }
 

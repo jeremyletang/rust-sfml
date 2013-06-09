@@ -59,3 +59,4 @@ pub mod vertex;
 pub mod vertex_array;
 pub mod transformable;
 pub mod glyph;
+pub mod render_texture;

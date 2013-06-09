@@ -34,6 +34,7 @@ use graphics::color;
 use graphics::texture;
 use graphics::drawable::Drawable;
 use graphics::render_window;
+use graphics::render_texture;
 use system::vector2;
 use graphics::rect::{FloatRect, IntRect};
 use graphics::transform::Transform;
@@ -255,12 +256,17 @@ impl Sprite {
     }
 }
 
+#[doc(hidden)]
 impl Drawable for Sprite {
     /**
     * Draw the sprite in the RenderWindow
     */
     pub fn draw_in_render_window(&self, renderWindow : &render_window::RenderWindow) -> () {
         renderWindow.draw_sprite(self)
+    }
+
+    pub fn draw_in_render_texture(&self, renderTexture : &render_texture::RenderTexture) -> () {
+        renderTexture.draw_sprite(self)
     }
 }
 

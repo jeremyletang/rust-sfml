@@ -36,6 +36,7 @@ use std::vec;
 
 use graphics::drawable::*;
 use graphics::render_window;
+use graphics::render_texture;
 use system::vector2;
 use graphics::font;
 use graphics::color::Color;
@@ -326,6 +327,10 @@ impl Text {
 impl Drawable for Text {
     pub fn draw_in_render_window(&self, renderWindow : &render_window::RenderWindow) -> () {
         renderWindow.draw_text(self)
+    }
+
+    pub fn draw_in_render_texture(&self, renderTexture : &render_texture::RenderTexture) -> () {
+        renderTexture.draw_text(self)
     }
 }
 

@@ -29,6 +29,7 @@ use graphics::primitive_type;
 use graphics::primitive_type::PrimitiveType;
 use graphics::drawable::Drawable;
 use graphics::render_window::RenderWindow;
+use graphics::render_texture::RenderTexture;
 
 #[doc(hidden)]
 pub mod csfml {
@@ -156,6 +157,10 @@ impl VertexArray {
 impl Drawable for VertexArray {
     pub fn draw_in_render_window(&self, renderWindow : &RenderWindow) -> () {
         renderWindow.draw_vertex_array(self)
+    }
+
+    pub fn draw_in_render_texture(&self, renderTexture : &RenderTexture) -> () {
+        renderTexture.draw_vertex_array(self)
     }
 }
 
