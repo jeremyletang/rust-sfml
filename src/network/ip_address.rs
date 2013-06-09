@@ -107,4 +107,12 @@ impl IpAddress {
             IpAddress { ip : csfml::sfIpAddress_getPublicAddress(timeout.unwrap())}
         }
     }
+    
+    pub fn wrap(ip : csfml::sfIpAddress) -> IpAddress {
+        IpAddress {ip : ip}
+    }
+
+    pub fn unwrap(&self) -> csfml::sfIpAddress {
+        self.ip
+    }
 }

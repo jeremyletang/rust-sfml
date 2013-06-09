@@ -23,21 +23,15 @@
 */
 
 /*!
-* Socket-based communication
 *
-* utilities and higher-level network protocols (HTTP, FTP)
+*
+*
 *
 */
 
-#[cfg(mac_dylib)]
-#[cfg(target_os="linux")]
-#[cfg(target_os="win32")]
-mod platform {
-    #[link_args="-lcsfml-network"]
-    extern {}
+pub enum SocketStatus {
+    SocketNone = 0,
+    SocketNotReady = 1,
+    SocketDisconnected = 2,
+    SocketError = 3
 }
-
-pub mod ip_address;
-pub mod packet;
-pub mod socket_status;
-pub mod tcp_socket;
