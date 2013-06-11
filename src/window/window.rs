@@ -128,7 +128,8 @@ pub enum WindowStyle {
 #[doc(hidden)]
 pub struct Window {
     priv window : *csfml::sfWindow,
-    priv event : csfml::sfEvent
+    priv event : csfml::sfEvent,
+    priv titleLength : uint
 }
 
 impl Window {
@@ -252,7 +253,7 @@ impl Window {
             None
         }
         else {
-        Some (Window { window : sfWin, event : sfEv})
+        Some (Window { window : sfWin, event : sfEv, titleLength : title.len()})
         }
     }
 
@@ -264,7 +265,7 @@ impl Window {
             None
         }
         else {
-        Some (Window { window : sfWin, event : sfEv})
+        Some (Window { window : sfWin, event : sfEv, titleLength : title.len()})
         }
     }
 

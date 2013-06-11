@@ -30,6 +30,7 @@
 */
 
 use std::libc::{c_float, c_uint, size_t};
+pub use extra::c_vec::{CVec, len, get};
 use std::str;
 use std::ptr;
 use std::vec;
@@ -85,7 +86,7 @@ pub mod csfml {
         fn sfText_setStyle(text : *sfText, style : u32) -> ();
         fn sfText_setColor(text : *sfText, color : color::Color) -> ();
         fn sfText_getString(text : *sfText) -> *c_char;
-        //fn sfText_getUnicodeString(text : *sfText) -> *u32;
+        fn sfText_getUnicodeString(text : *sfText) -> *mut u32;
         fn sfText_getFont(text : *sfText) -> *font::csfml::sfFont;
         fn sfText_getCharacterSize(text : *sfText) -> c_uint;
         fn sfText_getStyle(text : *sfText) -> u32;
@@ -104,7 +105,8 @@ pub enum Style {
 }
 
 pub struct Text {
-    priv text : *csfml::sfText
+    priv text : *csfml::sfText,
+    priv stringLength : uint
 }
 
 impl Text {
@@ -118,17 +120,18 @@ impl Text {
             None
         }
         else {
-            Some(Text {text : text})
+            Some(Text {text : text, stringLength : 0})
         }
     }
     
     /**
     * Copy an existing text
     */
-    pub fn set_string(&self, string : ~str) -> () {
+    pub fn set_string(&mut self, string : ~str) -> () {
         do str::as_c_str(string) |cstring| {
             unsafe {csfml::sfText_setString(self.text, cstring)}
         };
+        self.stringLength = string.len()
     }
 
     /**
@@ -140,6 +143,22 @@ impl Text {
         }
     }
 
+    pub fn get_unicode_string(&self) -> ~[u32] {
+        unsafe {
+            let mut return_unicode : ~[u32] = ~[];
+            let string : *mut u32 = csfml::sfText_getUnicodeString(self.text);
+            let cvec = CVec(string, self.stringLength);
+            let mut d : uint = 0;
+            return_unicode.push(get(cvec, d));
+            d += 1;
+            while d != 16 {
+                return_unicode.push(get(cvec, d));
+                d += 1;
+            }
+        return_unicode
+        }
+    }
+    
     /**
     * Set the size of the characters
     */
@@ -298,8 +317,9 @@ impl Text {
         }
     }
 
-    pub fn set_unicode_string(&self, string : ~[u32]) -> () {
+    pub fn set_unicode_string(&mut self, string : ~[u32]) -> () {
         unsafe {
+            self.stringLength = string.len();
             csfml::sfText_setUnicodeString(self.text, vec::raw::to_ptr(string) )
         }
     }

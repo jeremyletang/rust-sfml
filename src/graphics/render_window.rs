@@ -156,7 +156,8 @@ pub enum WindowStyle {
 #[doc(hidden)]
 pub struct RenderWindow {
     priv renderWindow : *csfml::sfRenderWindow,
-    priv event : csfml::sfEvent
+    priv event : csfml::sfEvent,
+    priv titleLength : uint
 }
 
 impl RenderWindow {
@@ -170,7 +171,7 @@ impl RenderWindow {
             None
         }
         else {
-            Some (RenderWindow { renderWindow : sfRenderWin, event : sfEv})
+            Some (RenderWindow { renderWindow : sfRenderWin, event : sfEv, titleLength : title.len()})
         }
     }
 
@@ -182,15 +183,35 @@ impl RenderWindow {
             None
         }
         else {
-            Some (RenderWindow { renderWindow : sfRenderWin, event : sfEv})
+            Some (RenderWindow { renderWindow : sfRenderWin, event : sfEv, titleLength : title.len()})
         }
     }
     
-    pub fn set_unicode_title(&self, title : ~[u32]) -> () {
+    pub fn set_unicode_title(&mut self, title : ~[u32]) -> () {
         unsafe {
+            self.titleLength = title.len();
             csfml::sfRenderWindow_setUnicodeTitle(self.renderWindow, vec::raw::to_ptr(title))
         }
     }
+
+/*    pub fn get_unicode_title(&self) -> ~[u32] {
+        unsafe {
+            let title : *mut u32 = ptr::null();
+            let mut return_unicode : ~[f32] = ~[];
+            unsafe {
+                csfml::sfRenderWindow_getUnicodeTitle(&self.renderWindow, title);
+                let cvec = CVec(title, self.titleLength);
+                let mut d : uint = 0;
+                return_unicode.push(get(cvec, d));
+                d += 1;
+                while d != 16 {
+                    return_unicode.push(get(cvec, d));
+                    d += 1;
+                }
+            }
+            return_unicode
+        }
+    }*/
 
     pub fn set_icon(&self, width : uint, height : uint, pixels : ~[u8]) -> () {
         unsafe {
@@ -356,9 +377,10 @@ impl RenderWindow {
     /**
     *   Method for class RenderWindow, set the RenderWindow title.
     */
-    pub fn set_title(&self, title : ~str) -> () {
+    pub fn set_title(&mut self, title : ~str) -> () {
         do str::as_c_str(title) |title_buf| {
             unsafe {
+                self.titleLength = title.len();
                 csfml::sfRenderWindow_setTitle(self.renderWindow, title_buf);
             }
         }
