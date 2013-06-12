@@ -1,0 +1,237 @@
+/**
+* Example from SFML : Pong
+*/
+
+extern mod rsfml;
+
+use rsfml::graphics::render_window::*;
+use rsfml::window::video_mode::*;
+use rsfml::window::context_settings::*;
+use rsfml::system::vector2::*;
+use rsfml::window::event;
+use rsfml::graphics::text;
+use rsfml::graphics::color::*;
+use rsfml::graphics::font;
+//use rsfml::graphics::rect::IntRect;
+use rsfml::audio::sound_buffer::*;
+use rsfml::audio::sound::*;
+use rsfml::graphics::rectangle_shape::*;
+use rsfml::graphics::circle_shape::*;
+use rsfml::system::clock::*;
+use rsfml::system::time::*;
+use rsfml::window::keyboard;
+
+fn main () -> () {
+    // Define some constants
+    let pi : f32 = 3.14159;
+    let gameWidth : uint = 800;
+    let gameHeight : uint = 600;
+    let paddleSize : Vector2f =  Vector2::new(25., 100.);
+    let ballRadius : f32 = 10.;
+    
+     // Create the window of the application
+    let setting: ContextSettings = ContextSettings{depthBits: 10, stencilBits: 10, antialiasingLevel: 1, majorVersion: 0, minorVersion: 1};
+    let window : RenderWindow = match RenderWindow::new(VideoMode::new_init(gameWidth, gameHeight, 32), ~"SFML Pong", sfClose, &setting) {
+        Some(window) => window,
+        None => fail!("Cannot create a new Render Window.")
+    };
+    window.set_vertical_sync_enabled(true);
+
+    // Load the sounds used in the game
+    let ballSoundBuffer : SoundBuffer = match SoundBuffer::new(~"resources/ball.wav") {
+        Some(ballSoundBuffer)   => ballSoundBuffer,
+        None                    => fail!("Cannot load Ball sound buffer.")
+    };
+    let ballSound = Sound::new();
+    ballSound.set_buffer(ballSoundBuffer);
+
+    // Create the left paddle
+    let leftPaddle  = RectangleShape::new();
+    leftPaddle.set_size(~(paddleSize - Vector2::new(3., 3.)));
+    leftPaddle.set_outline_thickness(3.);
+    leftPaddle.set_outline_color(~Color::black());
+    leftPaddle.set_fill_color(~Color::new_from_RGB(100, 100, 200));
+    leftPaddle.set_origin(~(paddleSize / Vector2::new(2., 2.)));
+    
+    // Create the right paddle
+    let rightPaddle = RectangleShape::new();
+    rightPaddle.set_size(~(paddleSize - Vector2::new(3., 3.)));
+    rightPaddle.set_outline_thickness(3.);
+    rightPaddle.set_outline_color(~Color::black());
+    rightPaddle.set_fill_color(~Color::new_from_RGB(200, 100, 100));
+    rightPaddle.set_origin(~(paddleSize / Vector2::new(2., 2.)));
+
+    // Create the ball
+    let ball = CircleShape::new();
+    ball.set_radius(ballRadius as float - 3.);
+    ball.set_outline_thickness(3.);
+    ball.set_outline_color(~Color::black());
+    ball.set_fill_color(~Color::white());
+    ball.set_origin(~Vector2::new(ballRadius / 2., ballRadius / 2.));
+
+    // Load the text font
+    let font : font::Font = font::Font::new_from_file(~"resources/sansation.ttf");
+
+     // Initialize the pause message
+    let mut pauseMessage : text::Text = match text::Text::new() {
+        Some(text) => text,
+        None => fail!(~"Error on creating text")
+    };
+    pauseMessage.set_font(&font);
+    pauseMessage.set_character_size(40);
+    pauseMessage.set_position(~(Vector2::new(170., 150.)));
+    pauseMessage.set_color(~Color::white());
+    pauseMessage.set_string(~"Welcome to SFML pong!\nPress space to start the game");
+
+    // Define the paddles properties
+    let AITimer =  Clock::new();
+    let AITime : Time  = Time::new_with_seconds(0.1);
+    let paddleSpeed = 400.;
+    let mut rightPaddleSpeed  = 0.;
+    let ballSpeed   = 400.;
+    let mut ballAngle : f32  = 0.; // to be changed later
+
+    let clock = Clock::new();
+    let mut isPlaying = false;
+
+    while window.is_open() {
+        loop {
+            match window.poll_event() {
+                event::Closed => window.close(),
+                event::KeyPressed(key, _, _, _, _) => match key {
+                    keyboard::Escape      => {window.close(); break},
+                    keyboard::Space       => {
+                        if !isPlaying {
+                            // (re)start the game
+                            isPlaying = true;
+                            clock.restart();
+                            // Reset the position of the paddles and ball
+                            leftPaddle.set_position(~Vector2::new(10. + paddleSize.x / 2., gameHeight as f32 / 2.));
+                            rightPaddle.set_position(~Vector2::new(gameWidth as f32 - 10. - paddleSize.x / 2., gameHeight as f32 / 2.));
+                            ball.set_position(~Vector2::new(gameWidth as f32 / 2., gameHeight as f32 / 2.));
+                            // RANDOM HERE
+                        }
+                    },
+                    _                      => {}
+                } ,
+                event::NoEvent => break,
+                _ => {}
+            }
+        }
+        if isPlaying {
+            let deltaTime = clock.restart().as_seconds();
+
+            // Move the player's paddle
+            if keyboard::keyboard_is_key_pressed(keyboard::Up) &&
+               (leftPaddle.get_position().y - paddleSize.y / 2. > 5.) {
+                leftPaddle.move(~Vector2::new(0., -paddleSpeed * deltaTime));
+            }
+            if keyboard::keyboard_is_key_pressed(keyboard::Down) &&
+               (leftPaddle.get_position().y + paddleSize.y / 2. < gameHeight as f32 - 5.) {
+                leftPaddle.move(~Vector2::new(0., paddleSpeed * deltaTime));
+            }
+            
+            // Move the computer's paddle
+            if ((rightPaddleSpeed < 0.) && (rightPaddle.get_position().y - paddleSize.y / 2. > 5.)) ||
+                ((rightPaddleSpeed > 0.) && (rightPaddle.get_position().y + paddleSize.y / 2. < gameHeight as f32 - 5.)) {
+                rightPaddle.move(~Vector2::new(0., rightPaddleSpeed * deltaTime));
+            }
+            
+            // Update the computer's paddle direction according to the ball position
+            if (AITimer.get_elapsed_time().as_microseconds() > AITime.as_microseconds())
+            {
+                AITimer.restart();
+                if ball.get_position().y + ballRadius > rightPaddle.get_position().y + paddleSize.y / 2. {
+                    rightPaddleSpeed = paddleSpeed;
+                }
+                
+                else if  ball.get_position().y - ballRadius < rightPaddle.get_position().y - paddleSize.y / 2. {
+                    rightPaddleSpeed = -paddleSpeed;
+                }
+                
+                else {
+                    rightPaddleSpeed = 0.;
+                }
+            }
+
+            // Move the ball
+            let factor = ballSpeed * deltaTime;
+            ball.move(~Vector2::new(std::f32::cos(ballAngle) * factor, std::f32::sin(ballAngle) * factor));
+            
+            // Check collisions between the ball and the screen
+            if ball.get_position().x - ballRadius < 0. {
+                isPlaying = false;
+                pauseMessage.set_string(~"You lost !\nPress space to restart or\nescape to exit");
+            }
+            if ball.get_position().x + ballRadius > gameWidth as f32 {
+                isPlaying = false;
+                pauseMessage.set_string(~"You won !\nPress space to restart or\nescape to exit");
+            }
+            if ball.get_position().y - ballRadius < 0. {
+                ballSound.play();
+                ballAngle = -ballAngle;
+                ball.set_position(~Vector2::new(ball.get_position().x, ballRadius + 0.1));
+            }
+            if ball.get_position().y + ballRadius > gameHeight as f32 {
+                ballSound.play();
+                ballAngle = -ballAngle;
+                ball.set_position(~Vector2::new(ball.get_position().x, gameHeight as f32 - ballRadius - 0.1));
+            }
+
+            // Check the collisions between the ball and the paddles
+            // Left Paddle
+            if ball.get_position().x - ballRadius < leftPaddle.get_position().x + paddleSize.x / 2. && 
+                ball.get_position().x - ballRadius > leftPaddle.get_position().x &&
+                ball.get_position().y + ballRadius >= leftPaddle.get_position().y - paddleSize.y / 2. &&
+                ball.get_position().y - ballRadius <= leftPaddle.get_position().y + paddleSize.y / 2. {
+                if ball.get_position().y > leftPaddle.get_position().y {
+                    ballAngle = pi - ballAngle + (std::rand::random::<int>() % 20) as f32 * pi / 180.;
+                }
+                else {
+                    ballAngle = pi - ballAngle - (std::rand::random::<int>() % 20) as f32 * pi / 180.;
+                }
+                
+                ballSound.play();
+                ball.set_position(~Vector2::new(leftPaddle.get_position().x + ballRadius + paddleSize.x / 2. + 0.1, ball.get_position().y));
+            }
+
+            // Right Paddle
+            if ball.get_position().x + ballRadius > rightPaddle.get_position().x - paddleSize.x / 2. &&
+                ball.get_position().x + ballRadius < rightPaddle.get_position().x &&
+                ball.get_position().y + ballRadius >= rightPaddle.get_position().y - paddleSize.y / 2. &&
+                ball.get_position().y - ballRadius <= rightPaddle.get_position().y + paddleSize.y / 2. {
+                if ball.get_position().y > rightPaddle.get_position().y {
+                    ballAngle = pi - ballAngle + (std::rand::random::<int>() % 20) as f32* pi / 180.;
+                }
+                else {
+                    ballAngle = pi - ballAngle - (std::rand::random::<int>() % 20) as f32* pi / 180.;
+                }
+                
+                ballSound.play();
+                ball.set_position(~Vector2::new(rightPaddle.get_position().x - ballRadius - paddleSize.x / 2. - 0.1, ball.get_position().y));
+            }
+            
+                //let a = r.gen::<float>();
+                
+        }
+        // Clear the window
+        window.clear(~Color::new_from_RGB(50, 200, 50));
+
+        if isPlaying {
+            // Draw the paddles and the ball
+            window.draw(&leftPaddle);
+            window.draw(&rightPaddle);
+            window.draw(&ball);
+        }
+        else
+        {
+            // Draw the pause message
+            window.draw(&pauseMessage);
+        }
+
+        // Display things on screen
+        window.display()
+
+    }
+
+}
