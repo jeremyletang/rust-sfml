@@ -27,7 +27,7 @@
 *
 */
 #[link(name = "rsfml",
-       vers = "0.0.1",
+       vers = "0.1",
        url = "http://https://github.com/JeremyLetang/rust-sfml")];
 
 #[comment = "Rust binding for sfml"];
