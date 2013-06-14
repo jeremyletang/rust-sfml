@@ -1,5 +1,5 @@
 /*
-* Rust-SFML - Copyright (c) Letang Jeremy.
+* Rust-SFML - Copyright (c) 2013 Letang Jeremy.
 *
 * The Original software, SFML library, is provided by Laurent Gomila.
 *
@@ -59,6 +59,11 @@ pub mod csfml {
 
 /**
 * Check if a mouse button is pressed
+*
+* # Arguments
+* * button - Button to check
+*
+* Return true if the button is pressed, false otherwise
 */
 pub fn mouse_is_button_pressed(button : MouseButton) -> bool {
     unsafe {
@@ -74,6 +79,10 @@ pub fn mouse_is_button_pressed(button : MouseButton) -> bool {
 *
 * This function returns the current position of the mouse cursor relative to the given window.
 *
+* # Arguments
+* * relativeTo - Reference Window
+*
+* Return the position of the mouse cursor, relative to the given window
 */
 pub fn mouse_get_position(relativeTo : &Window) -> vector2::Vector2i {
     unsafe {
@@ -85,6 +94,10 @@ pub fn mouse_get_position(relativeTo : &Window) -> vector2::Vector2i {
 * Set the current position of the mouse
 *
 * This function sets the current position of the mouse cursor relative to the given window.
+*
+* # Arguments
+* * position - New position of the mouse
+* * relativeTo - Reference Window
 *
 */
 pub fn mouse_set_position(position : &vector2::Vector2i, relativeTo : &Window) -> () {

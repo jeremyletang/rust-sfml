@@ -1,5 +1,5 @@
 /*
-* Rust-SFML - Copyright (c) Letang Jeremy.
+* Rust-SFML - Copyright (c) 2013 Letang Jeremy.
 *
 * The Original software, SFML library, is provided by Laurent Gomila.
 *
@@ -55,14 +55,21 @@ pub struct Context {
 impl Context {
 
     /**
-    * Constructor for class Context. Create the context and active it.
+    * Create a new context
+    *
+    * This function activates the new context.
+    *
+    * Return New Context object
     */
     pub fn new() -> Context {
         Context{cont : unsafe{csfml::sfContext_create()}}
     }
 
     /**
-    * Set if the constructor is active or not.
+    * Activate or deactivate explicitely a context
+    *
+    * # Arguments
+    * * active - True to activate, False to deactivate
     */
     pub fn set_active(&self, active : bool) -> () {
         let act : sfBool = 
@@ -79,7 +86,7 @@ impl Context {
 
 impl Drop for Context {
     /*
-    *   Destructor for class Context. Destroy all the ressource.
+    *   Destructor for class Context.
     */
     fn finalize(&self) {
         unsafe {

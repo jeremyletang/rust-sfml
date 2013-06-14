@@ -1,5 +1,5 @@
 /*
-* Rust-SFML - Copyright (c) Letang Jeremy.
+* Rust-SFML - Copyright (c) 2013 Letang Jeremy.
 *
 * The Original software, SFML library, is provided by Laurent Gomila.
 *
@@ -72,7 +72,12 @@ pub mod csfml {
 }
 
 /**
-* Check if the joystick is connected.
+* Check if the joystick is connected
+*
+* # Arguments
+* * joystick - Index of the joystick to check
+*
+* Return true if the joystick is connected, false otherwise
 */
 pub fn joystick_is_connected(joystick : uint) -> bool {
     unsafe {
@@ -85,6 +90,11 @@ pub fn joystick_is_connected(joystick : uint) -> bool {
 
 /**
 * Return the number of buttons supported by a joystick
+*
+* # Arguments
+* * joystick - Index of the joystick
+*
+* Return the number of buttons supported by the joystick.
 */
 pub fn joystick_get_button_count(joystick : uint) -> uint {
     unsafe {
@@ -94,6 +104,14 @@ pub fn joystick_get_button_count(joystick : uint) -> uint {
 
 /**
 * Check if the joystick support a given Axis
+*
+* If the joystick is not connected, this function returns false.
+*
+* # Arguments
+* * joystick - Index of the joystick
+* * axis - Axis to check
+*
+* Return true if the joystick supports the axis, false otherwise
 */
 pub fn joystick_has_axis(joystick : uint, axis : Axis) -> bool {
     unsafe {
@@ -107,6 +125,14 @@ pub fn joystick_has_axis(joystick : uint, axis : Axis) -> bool {
 
 /**
 * Check if the button is pressed on a given joystick.
+*
+* If the joystick is not connected, this function returns false.
+*
+* # Arguments
+* * joystick - Index of the joystick
+* * button - Button to check
+*
+* Return true if the button is pressed, false otherwise
 */
 pub fn joystick_is_button_pressed(joystick : uint, button : uint) -> bool {
     unsafe {
@@ -120,6 +146,14 @@ pub fn joystick_is_button_pressed(joystick : uint, button : uint) -> bool {
 
 /**
 * Get the current position on a given Axis, on a given joystick.
+*
+* If the joystick is not connected, this function returns 0.
+*
+* # Arguments
+* * joystick - Index of the joystick
+* * axis - Axis to check
+*
+* Return the current position of the axis, in range [-100 .. 100]
 */
 pub fn joystick_get_axis_position(joystick : uint, axis : Axis) -> float {
     unsafe {
@@ -128,7 +162,13 @@ pub fn joystick_get_axis_position(joystick : uint, axis : Axis) -> float {
 }
 
 /**
-* Update All joystick states.
+* Update the states of all joysticks
+*
+* This function is used internally by SFML, so you normally
+* don't have to call it explicitely. However, you may need to
+* call it if you have no window yet (or no window at all):
+* in this case the joysticks states are not updated automatically.
+*
 */
 pub fn joystick_update() -> () {
     unsafe {

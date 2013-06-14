@@ -1,5 +1,5 @@
 /*
-* Rust-SFML - Copyright (c) Letang Jeremy.
+* Rust-SFML - Copyright (c) 2013 Letang Jeremy.
 *
 * The Original software, SFML library, is provided by Laurent Gomila.
 *
@@ -151,6 +151,9 @@ pub mod csfml {
 
 /**
  * Check if a key is pressed.
+ *
+ * # Arguments
+ * * key - The key to check
  *
  * Return true if the key is pressed, false otherwise.
  */
