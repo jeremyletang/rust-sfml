@@ -265,7 +265,7 @@ impl Sound {
     /**
     * 
     */
-    pub fn set_buffer(&self, buffer : sound_buffer::SoundBuffer) -> () {
+    pub fn set_buffer(&self, buffer : &sound_buffer::SoundBuffer) -> () {
         unsafe {
             csfml::sfSound_setBuffer(self.sound, buffer.unwrap())
         }

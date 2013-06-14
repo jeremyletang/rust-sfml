@@ -12,7 +12,6 @@ use rsfml::window::event;
 use rsfml::graphics::text;
 use rsfml::graphics::color::*;
 use rsfml::graphics::font;
-//use rsfml::graphics::rect::IntRect;
 use rsfml::audio::sound_buffer::*;
 use rsfml::audio::sound::*;
 use rsfml::graphics::rectangle_shape::*;
@@ -43,7 +42,8 @@ fn main () -> () {
         None                    => fail!("Cannot load Ball sound buffer.")
     };
     let ballSound = Sound::new();
-    ballSound.set_buffer(ballSoundBuffer);
+    ballSound.set_buffer(&ballSoundBuffer);
+    ballSound.set_volume(100.);
 
     // Create the left paddle
     let leftPaddle  = RectangleShape::new();
