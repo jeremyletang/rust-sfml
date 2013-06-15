@@ -79,7 +79,7 @@ impl Font {
     /**
     * Create font from a existing one
     */
-    fn new_copy(font : &Font) -> Font {
+    pub fn new_copy(font : &Font) -> Font {
         unsafe {
             Font { font : csfml::sfFont_copy(font.unwrap())}
         }
@@ -87,7 +87,7 @@ impl Font {
     /**
     * Get the kerning value corresponding to a given pair of characters in a font
     */
-    fn get_kerning(&self, first : u32, second : u32, characterSize : uint) -> int {
+    pub fn get_kerning(&self, first : u32, second : u32, characterSize : uint) -> int {
         unsafe {
             csfml::sfFont_getKerning(self.font, first, second, characterSize as c_uint) as int
         }
@@ -96,7 +96,7 @@ impl Font {
     /**
     * Get the line spacing value
     */
-    fn get_line_spacing(&self, characterSize : uint) -> int {
+    pub fn get_line_spacing(&self, characterSize : uint) -> int {
         unsafe {
             csfml::sfFont_getLineSpacing(self.font, characterSize as c_uint) as int
         }
@@ -105,7 +105,7 @@ impl Font {
     /**
     * Get the texture containing the glyphs of a given size in a font
     */
-    fn get_texture(&self, characterSize : uint) -> Texture {
+    pub fn get_texture(&self, characterSize : uint) -> Texture {
         unsafe {
             Texture::wrap(csfml::sfFont_getTexture(self.font, characterSize as c_uint))
         }
