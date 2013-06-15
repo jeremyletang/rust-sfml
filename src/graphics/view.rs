@@ -68,6 +68,7 @@ pub mod csfml {
 
 #[doc(hidden)]
 pub struct View {
+    priv dropable : bool,
     priv view : *csfml::sfView
 }
 
@@ -80,7 +81,7 @@ impl View {
     * Return a new View object
     */
     pub fn new() -> View {
-        View { view : unsafe {csfml::sfView_create()} }
+        View { dropable: true, view : unsafe {csfml::sfView_create()} }
     }
     
     /**
@@ -92,7 +93,7 @@ impl View {
     * Return a new View object
     */
     pub fn new_copy(view : &View) -> View {
-        View { view : unsafe {csfml::sfView_copy(view.unwrap())}}
+        View { dropable: true, view : unsafe {csfml::sfView_copy(view.unwrap())}}
     }
 
     /**
@@ -104,7 +105,7 @@ impl View {
     * Return a new View object
     */
     pub fn create_from_rect(rectangle : *FloatRect) -> View {
-        View { view : unsafe {csfml::sfView_createFromRect(*rectangle)}}
+        View { dropable: true, view : unsafe {csfml::sfView_createFromRect(*rectangle)}}
     }
 
     /**
@@ -262,7 +263,7 @@ impl View {
 
     #[doc(hidden)]
     pub fn wrap(view : *csfml::sfView) -> View {
-        View { view : view }
+        View { dropable: false, view : view }
     } 
 
     #[doc(hidden)]
@@ -275,8 +276,11 @@ impl View {
 impl Drop for View {
     /// Destructor for class View
     fn finalize(&self) -> () {
+      if self.dropable
+      {
         unsafe {
-            csfml::sfView_destroy(self.view)
+          csfml::sfView_destroy(self.view)
         }
+      }
     }
 }
