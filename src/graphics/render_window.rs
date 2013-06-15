@@ -363,7 +363,7 @@ impl RenderWindow {
                 let button : mouse::MouseButton = unsafe {cast::transmute(self.event.p1 as int)};
                 event::MouseButtonPressed{
                   button : button,
-                  x :      self.event.p2 as int,
+                  x :      unsafe { cast::transmute::<c_uint, c_int>(self.event.p2) as int },
                   y :      unsafe { cast::transmute::<c_float, c_int>(self.event.p3) as int }
                 }
             },
@@ -371,7 +371,7 @@ impl RenderWindow {
                 let button : mouse::MouseButton = unsafe {cast::transmute(self.event.p1 as int)};
                 event::MouseButtonReleased{
                   button : button,
-                  x :      self.event.p2 as int,
+                  x :      unsafe { cast::transmute::<c_uint, c_int>(self.event.p2) as int },
                   y :      unsafe { cast::transmute::<c_float, c_int>(self.event.p3) as int }
                 }
             },
