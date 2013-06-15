@@ -1,7 +1,7 @@
 /*
-* Rust-SFML - Copyright (c) Letang Jeremy.
+* Rust-SFML - Copyright (c) 2013 Letang Jeremy.
 *
-* The Original software, SFML library, is provided by Laurent Gomila.
+* The original software, SFML library, is provided by Laurent Gomila.
 *
 * This software is provided 'as-is', without any express or implied warranty.
 * In no event will the authors be held liable for any damages arising from
@@ -54,13 +54,28 @@ impl Color {
 
     /**
     * Construct a color from its 3 RGB components
+    * 
+    * # Arguments
+    * * red - Red component   (0 .. 255)
+    * * green - -Green component (0 .. 255)
+    * * blue - Blue component  (0 .. 255)
+    *
+    * Return Color object constructed from the components
     */
     pub fn new_from_RGB(red : u8, green : u8, blue : u8) -> Color {
         Color { red : red, green : green, blue : blue, alpha : 255}
     }
 
-    /**
+     /**
     * Construct a color from its 4 RGBA components
+    * 
+    * # Arguments
+    * * red - Red component   (0 .. 255)
+    * * green - -Green component (0 .. 255)
+    * * blue - Blue component  (0 .. 255)
+    * * alpha - Alpha component  (0 .. 255)
+    *
+    * Return Color object constructed from the components
     */
     pub fn new_from_RGBA(red : u8, green : u8, blue : u8, alpha : u8) -> Color {
         Color { red : red, green : green, blue : blue, alpha : alpha}
@@ -68,6 +83,12 @@ impl Color {
 
     /**
     * Add two colors
+    *
+    * # Arguments
+    * * color1 - The first color
+    * * color2 - The second color
+    *
+    * Return the component-wise saturated addition of the two colors
     */
     pub fn add(color1 : Color, color2 : Color) -> Color {
         unsafe {csfml::sfColor_add(color1, color2)}
@@ -75,6 +96,12 @@ impl Color {
 
     /**
     * Modulate two colors
+    *
+    * # Arguments
+    * * color1 - The first color
+    * * color2 - The second color
+    *
+    * Return the component-wise multiplication of the two colors
     */
     pub fn modulate(color1 : Color, color2 : Color) -> Color {
         unsafe {csfml::sfColor_modulate(color1, color2)}
