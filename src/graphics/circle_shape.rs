@@ -465,6 +465,7 @@ impl CircleShape {
             csfml::sfCircleShape_setScale(self.circleShape, *scale)
         }
     }
+    
     /**
     * Set the local origin of a circle shape
     *
