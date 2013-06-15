@@ -1,5 +1,5 @@
 /*
-* Rust-SFML - Copyright (c) Letang Jeremy.
+* Rust-SFML - Copyright (c) 2013 Letang Jeremy.
 *
 * The Original software, SFML library, is provided by Laurent Gomila.
 *
@@ -30,14 +30,16 @@
 */
 
 use std::libc::{c_uint};
+use std::str;
+
 use graphics::texture::Texture;
 use graphics::glyph::Glyph;
-use std::str;
 
 #[doc(hidden)]
 pub mod csfml {
 
     use std::libc::{c_void, c_char, c_uint, c_int};
+    
     use graphics::texture;
     use rsfml::sfTypes::sfBool;
     use graphics::glyph::Glyph;
@@ -67,6 +69,11 @@ pub struct Font {
 impl Font {
     /**
     * Create a new font from a file
+    *
+    * # Arguments
+    * * filename -  Path of the font file to load
+    * 
+    * Return a new Font object
     */
     pub fn new_from_file(filename : ~str) -> Font {
         do str::as_c_str(filename) |filenamebuf| {
@@ -78,6 +85,10 @@ impl Font {
     
     /**
     * Create font from a existing one
+    *
+    * # Arguments
+    * * font - Font to copy
+    * Return the copied font
     */
     pub fn new_copy(font : &Font) -> Font {
         unsafe {
@@ -86,6 +97,13 @@ impl Font {
     }    
     /**
     * Get the kerning value corresponding to a given pair of characters in a font
+    * 
+    * # Arguments
+    * * first - Unicode code point of the first character
+    * * second - Unicode code point of the second character
+    * * characterSize - Character size, in pixels
+    *
+    * Return the kerning offset, in pixels
     */
     pub fn get_kerning(&self, first : u32, second : u32, characterSize : uint) -> int {
         unsafe {
@@ -95,6 +113,11 @@ impl Font {
 
     /**
     * Get the line spacing value
+    *
+    * # Arguments
+    * * characterSize - Character size, in pixels
+    *
+    * Return the line spacing, in pixels
     */
     pub fn get_line_spacing(&self, characterSize : uint) -> int {
         unsafe {
@@ -104,6 +127,11 @@ impl Font {
 
     /**
     * Get the texture containing the glyphs of a given size in a font
+    *
+    * # Arguments
+    * * characterSize - Character size, in pixels
+    *
+    * Return the texture
     */
     pub fn get_texture(&self, characterSize : uint) -> Texture {
         unsafe {
@@ -111,6 +139,16 @@ impl Font {
         }
     }
     
+    /**
+    * Get a glyph in a font
+    *
+    * # Arguments
+    * * codePoint - Unicode code point of the character to get
+    * * characterSize - Character size, in pixels
+    * * bold - Retrieve the bold version or the regular one?
+    *
+    * Return the corresponding glyph
+    */
     pub fn get_glyph(&self, codepoint : u32, characterSize : uint, bold : bool) -> Glyph {
         match bold {
             true        => unsafe {csfml::sfFont_getGlyph(self.font, codepoint, characterSize as c_uint, 1)},
