@@ -1,5 +1,5 @@
 /*
-* Rust-SFML - Copyright (c) Letang Jeremy.
+* Rust-SFML - Copyright (c) 2013 Letang Jeremy.
 *
 * The Original software, SFML library, is provided by Laurent Gomila.
 *
@@ -23,12 +23,13 @@
 */
 
 /*!
+* Types of primitives that a sf::VertexArray can render
 *
-*
-*
+* Points and lines have no area, therefore their thickness
+* will always be 1 pixel, regardless the current transform
+* and view.
 *
 */
-
 pub enum PrimitiveType {
     Points,
     Lines,

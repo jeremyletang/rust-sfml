@@ -1,5 +1,5 @@
 /*
-* Rust-SFML - Copyright (c) Letang Jeremy.
+* Rust-SFML - Copyright (c) 2013 Letang Jeremy.
 *
 * The Original software, SFML library, is provided by Laurent Gomila.
 *
@@ -30,6 +30,7 @@
 */
 
 use std::libc::{c_int};
+
 #[doc(hidden)]
 pub mod csfml {
     
@@ -46,6 +47,10 @@ pub mod csfml {
     }
 }
 
+/**
+* sfFloatRect and sfIntRect are utility classes for
+* manipulating rectangles.
+*/
 pub struct IntRect {
     left : i32,
     top : i32,
@@ -70,6 +75,12 @@ impl IntRect {
     
     /**
     *  Check if a point is inside a rectangle's area 
+    *
+    * # Arguments
+    * * x - X coordinate of the point to test
+    * * y - Y coordinate of the point to test
+    * 
+    * Return true if the point is inside
     */
     pub fn contains(self, x : int, y : int) -> bool {
         match unsafe {csfml::sfIntRect_contains(&self, x as c_int, y as c_int) } {
@@ -78,6 +89,16 @@ impl IntRect {
         }
     }
     
+    /**
+    * Check intersection between two rectangles
+    *
+    * # Arguments
+    * * rect1 - First rectangle to test
+    * * rect2 - Second rectangle to test
+    * * intersection - Rectangle to be filled with overlapping rect 
+    *
+    * Return strue if rectangles overlap
+    */
     pub fn intersects(rect1 : &IntRect, rect2 : &IntRect, intersections : &IntRect) -> bool {
         match unsafe {csfml::sfIntRect_intersects(rect1, rect2, intersections)} {
             0 => false,
@@ -96,6 +117,12 @@ impl FloatRect {
     
     /**
     *  Check if a point is inside a rectangle's area 
+    *
+    * # Arguments
+    * * x - X coordinate of the point to test
+    * * y - Y coordinate of the point to test
+    * 
+    * Return true if the point is inside
     */
     pub fn contains(self, x : f32, y : f32) -> bool {
         match unsafe {csfml::sfFloatRect_contains(&self, x, y) } {
@@ -104,6 +131,16 @@ impl FloatRect {
         }
     }
 
+    /**
+    * Check intersection between two rectangles
+    *
+    * # Arguments
+    * * rect1 - First rectangle to test
+    * * rect2 - Second rectangle to test
+    * * intersection - Rectangle to be filled with overlapping rect 
+    *
+    * Return strue if rectangles overlap
+    */
     pub fn intersects(rect1 : &FloatRect, rect2 : &FloatRect, intersections : &FloatRect) -> bool {
         match unsafe {csfml::sfFloatRect_intersects(rect1, rect2, intersections)} {
             0 => false,

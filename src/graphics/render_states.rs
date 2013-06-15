@@ -1,5 +1,5 @@
 /*
-* Rust-SFML - Copyright (c) Letang Jeremy.
+* Rust-SFML - Copyright (c) 2013 Letang Jeremy.
 *
 * The Original software, SFML library, is provided by Laurent Gomila.
 *
@@ -50,7 +50,9 @@ pub mod csfml {
     }
 }
 
-#[doc(hidden)]
+/**
+* brief Define the states used for drawing to a RenderTarget
+*/
 pub struct RenderStates {
     bendMode : BlendMode,
     transform : @Transform,
