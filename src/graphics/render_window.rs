@@ -30,7 +30,7 @@
 *
 */
 
-use std::libc::{c_float, c_uint};
+use std::libc::{c_float, c_uint, c_int};
 use std::str;
 use std::ptr;
 use std::cast;
@@ -354,16 +354,31 @@ impl RenderWindow {
                 let k : keyboard::Key = unsafe {cast::transmute(self.event.p1 as int)};
                 event::KeyReleased{code : k, alt : al, ctrl : ct, shift :sh, system : sy}
             },
-            7   => event::MouseWheelMoved{delta : self.event.p1 as int, x : self.event.p2 as int, y : self.event.p3 as int},
+            7   => event::MouseWheelMoved{
+                     delta : unsafe { cast::transmute::<c_uint, c_int>(self.event.p1) }  as int,
+                     x :     unsafe { cast::transmute::<c_uint, c_int>(self.event.p2) }  as int,
+                     y :     unsafe { cast::transmute::<c_float, c_int>(self.event.p3) } as int
+                   },
             8   => {
                 let button : mouse::MouseButton = unsafe {cast::transmute(self.event.p1 as int)};
-                event::MouseButtonPressed{button : button, x : self.event.p2 as int, y : self.event.p3 as int}
+                event::MouseButtonPressed{
+                  button : button,
+                  x :      unsafe { cast::transmute::<c_uint, c_int>(self.event.p2) as int },
+                  y :      unsafe { cast::transmute::<c_float, c_int>(self.event.p3) as int }
+                }
             },
             9   => {
                 let button : mouse::MouseButton = unsafe {cast::transmute(self.event.p1 as int)};
-                event::MouseButtonReleased{button : button, x : self.event.p2 as int, y : self.event.p3 as int}
+                event::MouseButtonReleased{
+                  button : button,
+                  x :      unsafe { cast::transmute::<c_uint, c_int>(self.event.p2) as int },
+                  y :      unsafe { cast::transmute::<c_float, c_int>(self.event.p3) as int }
+                }
             },
-            10  => event::MouseMoved{x : self.event.p1 as int, y : self.event.p2 as int},
+            10  => event::MouseMoved{
+                     x : unsafe { cast::transmute::<c_uint, c_int>(self.event.p1) } as int,
+                     y : unsafe { cast::transmute::<c_uint, c_int>(self.event.p2) } as int
+                   },
             11  => event::MouseEntered,
             12  => event::MouseLeft,
             13  => event::JoystickButtonPressed{joystickid : self.event.p1 as int, button : self.event.p2 as int},
