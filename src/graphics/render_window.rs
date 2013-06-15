@@ -1,7 +1,7 @@
 /*
-* Rust-SFML - Copyright (c) Letang Jeremy.
+* Rust-SFML - Copyright (c) 2013 Letang Jeremy.
 *
-* The Original software, SFML library, is provided by Laurent Gomila.
+* The original software, SFML library, is provided by Laurent Gomila.
 *
 * This software is provided 'as-is', without any express or implied warranty.
 * In no event will the authors be held liable for any damages arising from
@@ -161,6 +161,27 @@ pub struct RenderWindow {
 }
 
 impl RenderWindow {
+    /**
+    * Construct a new render window
+    *
+    * This function creates the render window with the size and pixel
+    * depth defined in mode. An optional style can be passed to
+    * customize the look and behaviour of the window (borders,
+    * title bar, resizable, closable, ...). If style contains
+    * sfFullscreen, then mode must be a valid video mode.
+    *
+    * The fourth parameter is a pointer to a structure specifying
+    * advanced OpenGL context settings such as antialiasing,
+    * depth-buffer bits, etc.
+    * 
+    * # Arguments
+    * * mode - Video mode to use (defines the width, height and depth of the rendering area of the render window)
+    * * title - Title of the render window
+    * * style - Window style
+    * * settings - Additional settings for the underlying OpenGL context
+    *
+    * Return a new RenderWindow object
+    */
     pub fn new(mode : VideoMode, title : ~str, style : WindowStyle, settings : &ContextSettings) -> Option<RenderWindow> {
         let mut sfRenderWin: *csfml::sfRenderWindow = ptr::null();
         do str::as_c_str(title) |title_buf| {
@@ -175,6 +196,27 @@ impl RenderWindow {
         }
     }
 
+    /**
+    * Construct a new render window (with a UTF-32 title)
+    *
+    * This function creates the render window with the size and pixel
+    * depth defined in mode. An optional style can be passed to
+    * customize the look and behaviour of the render window (borders,
+    * title bar, resizable, closable, ...). If style contains
+    * sfFullscreen, then mode must be a valid video mode.
+    *
+    * The fourth parameter is a pointer to a structure specifying
+    * advanced OpenGL context settings such as antialiasing,
+    * depth-buffer bits, etc.
+    * 
+    * # Arguments
+    * * mode - Video mode to use (defines the width, height and depth of the rendering area of the render window)
+    * * title - Title of the render window (UTF-32)
+    * * style - Window style
+    * * settings - Additional settings for the underlying OpenGL context
+    *
+    * Return a new RenderWindow object
+    */
     pub fn new_with_unicode(mode : VideoMode, title : ~[u32], style : WindowStyle, settings : &ContextSettings) -> Option<RenderWindow> {
         let sfRenderWin: *csfml::sfRenderWindow;
         unsafe { sfRenderWin = csfml::sfRenderWindow_createUnicode(VideoMode::unwrap(mode), vec::raw::to_ptr(title), style as u32, settings); }
@@ -187,6 +229,12 @@ impl RenderWindow {
         }
     }
     
+    /**
+    * Change the title of a render window (with a UTF-32 string)
+    *
+    * # Arguments
+    * * title - New title
+    */
     pub fn set_unicode_title(&mut self, title : ~[u32]) -> () {
         unsafe {
             self.titleLength = title.len();
@@ -194,25 +242,15 @@ impl RenderWindow {
         }
     }
 
-/*    pub fn get_unicode_title(&self) -> ~[u32] {
-        unsafe {
-            let title : *mut u32 = ptr::null();
-            let mut return_unicode : ~[f32] = ~[];
-            unsafe {
-                csfml::sfRenderWindow_getUnicodeTitle(&self.renderWindow, title);
-                let cvec = CVec(title, self.titleLength);
-                let mut d : uint = 0;
-                return_unicode.push(get(cvec, d));
-                d += 1;
-                while d != 16 {
-                    return_unicode.push(get(cvec, d));
-                    d += 1;
-                }
-            }
-            return_unicode
-        }
-    }*/
-
+    /**
+    * Change a render window's icon
+    * pixels must be an array of width x height pixels in 32-bits RGBA format.
+    *
+    * # Arguments
+    * * width - Icon's width, in pixels
+    * * height - Icon's height, in pixels
+    * * pixels - Vector of pixels
+    */
     pub fn set_icon(&self, width : uint, height : uint, pixels : ~[u8]) -> () {
         unsafe {
             csfml::sfRenderWindow_setIcon(self.renderWindow, width as c_uint, height as c_uint, vec::raw::to_ptr(pixels))
@@ -220,10 +258,15 @@ impl RenderWindow {
     }
     
     /**
-    * Pop the event on top of event queue.
+    *  Pop the event on top of event queue, if any, and return it
     *
-    * Pop the event on top of event queue, if any, and return it, else return NoEvent.
+    * This function is not blocking: if there's no pending event then
+    * it will return false and leave \a event unmodified.
+    * Note that more than one event may be present in the event queue,
+    * thus you should always call this function in a loop
+    * to make sure that you process every pending event.
     *
+    * Return the event if an event was returned, or NoEvent if the event queue was empty
     */
     pub fn poll_event(&self) -> event::Event {
         let haveEvent : bool =  unsafe {
@@ -241,8 +284,15 @@ impl RenderWindow {
     /**
     * Wait for an event and return it
     *
-    * wait_event is blocking, it wait until a new event arrive.
+    * This function is blocking: if there's no pending event then
+    * it will wait until an event is received.
+    * After this function returns (and no error occured),
+    * the event object is always valid and filled properly.
+    * This function is typically used when you have a thread that
+    * is dedicated to events handling: you want to make this thread
+    * sleep as long as no new event is received.
     *
+    * Return the event or NoEvent if an error has occured
     */
     pub fn wait_event(&self) -> event::Event {
         let haveEvent : bool =  unsafe {
@@ -328,7 +378,15 @@ impl RenderWindow {
         }
     }
     
-    /// Method close for class RenderWindow. Close the window and destroy attached ressources.
+    /**
+    * Close a render window and destroy all the attached resources
+    *
+    * After calling this method, the Window object remains
+    * valid.
+    * All other functions such as poll_event or display
+    * will still work (i.e. you don't have to test is_open
+    * every time), and will have no effect on closed windows.
+    */
     pub fn close(&self) -> () {
         unsafe {
             csfml::sfRenderWindow_close(self.renderWindow);
@@ -336,7 +394,11 @@ impl RenderWindow {
     }
 
     /**
-    *   Method is_open. Verifiy if the Renderwindow is already open.
+    * Tell whether or not a window is opened
+    *
+    * This function returns whether or not the window exists.
+    * Note that a hidden window (set_visible(false)) will return
+    * true.
     */
     pub fn is_open(&self) -> bool {
         let tmp : sfBool;
@@ -350,7 +412,11 @@ impl RenderWindow {
     }
     
     /**
-    *   Method for class RenderWindow, display the content of the window.
+    * Display on screen what has been rendered to the window so far
+    *
+    * This function is typically called after all OpenGL rendering
+    * has been done for the current frame, in order to show
+    * it on screen.
     */
     pub fn display(&self) -> () {
         unsafe {
@@ -358,8 +424,15 @@ impl RenderWindow {
         }
     }
 
-     /**
-    *   Method for class RenderWindow, set the maximal framerate of the RenderWindow.
+    /**
+    * Limit the framerate to a maximum fixed frequency
+    *
+    * If a limit is set, the window will use a small delay after
+    * each call to sfWindow_display to ensure that the current frame
+    * lasted long enough to match the framerate limit.
+    *
+    * # Arguments
+    * * limit - Framerate limit, in frames per seconds (use 0 to disable limit)
     */
     pub fn set_framerate_limit(&self, limit : uint) -> () {
         unsafe {
@@ -368,14 +441,24 @@ impl RenderWindow {
     }
     
     /**
-    *   Method for class RenderWindow, get the window OpenGl context settings.
+    * Get the settings of the OpenGL context of a window
+    *
+    * Note that these settings may be different from what was
+    * passed to the sfWindow_create function,
+    * if one or more settings were not supported. In this case,
+    * SFML chose the closest match.
+    *
+    * Return a structure containing the OpenGL context settings
     */
     pub fn get_settings(&self) -> ContextSettings {
         unsafe {csfml::sfRenderWindow_getSettings(self.renderWindow)}
     }
 
     /**
-    *   Method for class RenderWindow, set the RenderWindow title.
+    * Change the title of a window
+    *
+    * # Arguments
+    * * title - New title
     */
     pub fn set_title(&mut self, title : ~str) -> () {
         do str::as_c_str(title) |title_buf| {
@@ -387,7 +470,10 @@ impl RenderWindow {
     }
     
     /**
-    *   Method for class RenderWindow, display or not the Renderindow.
+    * Show or hide a window
+    *
+    * # Arguments
+    * * visible - true to show the window, false to hide it
     */
     pub fn set_visible(&self, visible : bool) -> () {
         let tmp : sfBool =
@@ -401,7 +487,10 @@ impl RenderWindow {
     }
 
     /**
-    *   Method for class RenderWindow, set visible the mouse cursor on the RenderWindow.
+    * Show or hide the mouse cursor
+    *
+    * # Arguments
+    * * visible - true to show, false to hide
     */
     pub fn set_mouse_cursor_visible(&self, visible : bool) -> () {
         let tmp : sfBool =
@@ -415,7 +504,15 @@ impl RenderWindow {
     }
     
     /**
-    *   Method for class RenderWindow, enable or diseable the vertical sync.
+    * Enable or disable vertical synchronization
+    *
+    * Activating vertical synchronization will limit the number
+    * of frames displayed to the refresh rate of the monitor.
+    * This can avoid some visual artifacts, and limit the framerate
+    * to a good value (but not constant across different computers).
+    *
+    * # Arguments
+    * * enabled - true to enable v-sync, false to deactivate
     */
     pub fn set_vertical_sync_enabled(&self, enabled : bool) -> () {
         let tmp : sfBool =
@@ -429,7 +526,16 @@ impl RenderWindow {
     }
 
     /**
-    *   Method for class RenderWindow, enable or diseable the key repeat.
+    * Enable or disable automatic key-repeat
+    *
+    * If key repeat is enabled, you will receive repeated
+    * KeyPress events while keeping a key pressed. If it is disabled,
+    * you will only get a single event when the key is pressed.
+    *
+    * Key repeat is enabled by default.
+    *
+    * # Arguments
+    * * enabled - true to enable, false to disable
     */
     pub fn set_key_repeat_enabled(&self, enabled : bool) -> () {
         let tmp : sfBool =
@@ -442,6 +548,20 @@ impl RenderWindow {
         }
     }
     
+    /**
+    * Activate or deactivate a render window as the current target for OpenGL rendering
+    *
+    * A window is active only on the current thread, if you want to
+    * make it active on another thread you have to deactivate it
+    * on the previous thread first if it was active.
+    * Only one window can be active on a thread at a time, thus
+    * the window previously active (if any) automatically gets deactivated.
+    *
+    * # Arguments
+    * * active - true to activate, false to deactivate
+    *
+    * Return true if operation was successful, false otherwise
+    */
     pub fn set_active(&self, enabled : bool) -> bool {
         let tmp : sfBool =
             match enabled {
@@ -458,7 +578,13 @@ impl RenderWindow {
     }
 
     /**
-    *   Method for class RenderWindow, set the joystick Threshold.
+    * Change the joystick threshold
+    *
+    * The joystick threshold is the value below which
+    * no JoyMoved event will be generated.
+    *
+    * # Arguments
+    * * threshold - New threshold, in the range [0, 100]
     */
     pub fn set_joystick_threshold(&self, threshold : float) -> () {
         unsafe {
@@ -467,7 +593,9 @@ impl RenderWindow {
     }
 
     /**
-    *   Method for class RenderWindow, get the position of the RenderWindow on a Vector2i.
+    *  Get the position of a window
+    *
+    * Return the position in pixels
     */
     pub fn get_position(&self) -> vector2::Vector2i {
         unsafe {
@@ -476,7 +604,14 @@ impl RenderWindow {
     }
 
     /**
-    *   Method for class Renderindow, set the position of the Renderindow with a Vector2i.
+    * Change the position of a window on screen
+    *
+    * This function only works for top-level windows
+    * (i.e. it will be ignored for windows created from
+    * the handle of a child window/control).
+    *
+    * # Arguments
+    * * position - New position of the window, in pixels
     */
     pub fn set_position(&self, position : &vector2::Vector2i) -> () {
         unsafe {
@@ -485,7 +620,11 @@ impl RenderWindow {
     }
     
     /**
-    * Method for class RenderWindow, get the size of the RenderWindow on a Vector2u.
+    * Get the size of the rendering region of a window
+    *
+    * The size doesn't include the titlebar and borders of the window.
+    *
+    * Return the size in pixels
     */
     pub fn get_size(&self) -> vector2::Vector2u {
         unsafe {
@@ -494,7 +633,10 @@ impl RenderWindow {
     }
     
     /**
-    *   Method for class RenderWindow, set the size of the RenderWindow with a Vector2u
+    * Change the size of the rendering region of a window
+    *
+    * # Arguments
+    * * size - New size, in pixels
     */
     pub fn set_size(&self, size : &vector2::Vector2u) -> () {
         unsafe {
@@ -504,6 +646,22 @@ impl RenderWindow {
     
     /**
     * Save the current OpenGL render states and matrices
+    *
+    * This function can be used when you mix SFML drawing
+    * and direct OpenGL rendering. Combined with popGLStates,
+    * it ensures that: 
+    * SFML's internal states are not messed up by your OpenGL code
+    * and that your OpenGL states are not modified by a call to a SFML function
+    *
+    * Note that this function is quite expensive: it saves all the
+    * possible OpenGL states and matrices, even the ones you
+    * don't care about. Therefore it should be used wisely.
+    * It is provided for convenience, but the best results will
+    * be achieved if you handle OpenGL states yourself (because
+    * you know which states have really changed, and need to be
+    * saved and restored). Take a look at the resetGLStates
+    * function if you do so.
+    *
     */
     pub fn push_GL_states(&self) -> () {
         unsafe {csfml::sfRenderWindow_pushGLStates(self.renderWindow)}
@@ -518,13 +676,24 @@ impl RenderWindow {
 
     /**
     * Reset the internal OpenGL states so that the target is ready for drawing
+    *
+    * This function can be used when you mix SFML drawing
+    * and direct OpenGL rendering, if you choose not to use
+    * pushGLStates/popGLStates. It makes sure that all OpenGL
+    * states needed by SFML are set, so that subsequent sfRenderWindow_draw*()
+    * calls will work as expected.
     */
     pub fn reset_GL_states(&self) -> () {
         unsafe {csfml::sfRenderWindow_resetGLStates(self.renderWindow)}
     }
 
     /**
-    * Get the current position of the mouse relatively to a render-window
+    * Get the current position of the mouse relatively to a render window
+    *
+    * This function returns the current position of the mouse
+    * cursor relative to the given render window.
+    *
+    * Return the position of the mouse cursor, relative to the given render window
     */
     pub fn get_mouse_position(&self) -> vector2::Vector2i {
         unsafe {
@@ -534,6 +703,11 @@ impl RenderWindow {
 
     /**
     * Set the current position of the mouse relatively to a render-window
+    *
+    * This function sets the current position of the mouse cursor relative to the given render-window
+    *
+    * # Arguments
+    * * relativeTo - Reference render window
     */
     pub fn set_mouse_position(&self, position : &vector2::Vector2i) -> () {
         unsafe {
@@ -542,43 +716,51 @@ impl RenderWindow {
     }
 
     /**
-    * Drawing functions
+    * Draw a drawable object to the render-target
+    *
+    * # Arguments
+    * * object - Object to draw
     */
-    pub fn draw<T : drawable::Drawable>(&self, t : &T) -> () {
-        t.draw_in_render_window(self);
+    pub fn draw<T : drawable::Drawable>(&self, object : &T) -> () {
+        object.draw_in_render_window(self);
     }
 
-    /// Draw Text
+    /// Draw a Text
     pub fn draw_text(&self, text : &Text) -> () {
         unsafe {
             csfml::sfRenderWindow_drawText(self.renderWindow, text.unwrap(), ptr::null())
         }
     }
 
+    /// Draw a sprite
     pub fn draw_sprite(&self, sprite : &Sprite) -> () {
         unsafe {
             csfml::sfRenderWindow_drawSprite(self.renderWindow, sprite.unwrap(), ptr::null())
         }
     }
 
+    /// Draw a CircleShape
     pub fn draw_circle_shape(&self, circleShape : &CircleShape) -> () {
         unsafe {
             csfml::sfRenderWindow_drawCircleShape(self.renderWindow, circleShape.unwrap(), ptr::null())
         }
     }
 
+    /// Draw a RectangleShape
     pub fn draw_rectangle_shape(&self, rectangleShape : &RectangleShape) -> () {
         unsafe {
             csfml::sfRenderWindow_drawRectangleShape(self.renderWindow, rectangleShape.unwrap(), ptr::null())
         }
     }
 
+    /// Draw a ConvexShape
     pub fn draw_convex_shape(&self, convexShape : &ConvexShape) -> () {
         unsafe {
             csfml::sfRenderWindow_drawConvexShape(self.renderWindow, convexShape.unwrap(), ptr::null())
         }
     }
 
+    /// Draw a VertexArray
     pub fn draw_vertex_array(&self, vertexArray : &VertexArray) -> () {
         unsafe {
             csfml::sfRenderWindow_drawVertexArray(self.renderWindow, vertexArray.unwrap(), ptr::null())
@@ -592,36 +774,121 @@ impl RenderWindow {
         }
     }
     
+    /**
+    * Copy the current contents of a render window to an image
+    *
+    * This is a slow operation, whose main purpose is to make
+    * screenshots of the application. If you want to update an
+    * image with the contents of the window and then use it for
+    * drawing, you should rather use a Texture and its
+    * update(Window) function.
+    * You can also draw things directly to a texture with the
+    * sfRenderWindow class.
+    *
+    * Return a new image containing the captured contents
+    */
     pub fn capture(&self) -> image::Image {
         image::Image::wrap(unsafe {csfml::sfRenderWindow_capture(self.renderWindow)})
     }
     
+    /**
+    * Change the current active view of a render window
+    *
+    * # Arguments
+    * * view - The new view
+    */
     pub fn set_view(&self, view : &view::View) -> () {
         unsafe {
             csfml::sfRenderWindow_setView(self.renderWindow, view.unwrap())
         }
     }
     
+    /**
+    * Get the current active view of a render window
+    *
+    * Return the current active view
+    */
     pub fn get_view(&self) -> view::View {
         view::View::wrap(unsafe {csfml::sfRenderWindow_getView(self.renderWindow)})
     }
     
+    /**
+    * Get the default view of a render window
+    *
+    * Return the default view of the render window
+    */
     pub fn get_default_view(&self) -> view::View {
         view::View::wrap(unsafe {csfml::sfRenderWindow_getDefaultView(self.renderWindow)})
     }
     
+    /**
+    * Convert a point from window coordinates to world coordinates
+    *
+    * This function finds the 2D position that matches the
+    * given pixel of the render-window. In other words, it does
+    * the inverse of what the graphics card does, to find the
+    * initial position of a rendered pixel.
+    *
+    * Initially, both coordinate systems (world units and target pixels)
+    * match perfectly. But if you define a custom view or resize your
+    * render window, this assertion is not true anymore, ie. a point
+    * located at (10, 50) in your render-window may map to the point
+    * (150, 75) in your 2D world -- if the view is translated by (140, 25).
+    * 
+    * This function is typically used to find which point (or object) is
+    * located below the mouse cursor.
+    * 
+    * This version uses a custom view for calculations, see the other
+    * overload of the function if you want to use the current view of the
+    * render-window.
+    *
+    * # Arguments
+    * * point - Pixel to convert
+    * * view - The view to use for converting the point
+    * 
+    * Return the converted point, in "world" units
+    */
     pub fn map_pixel_to_coords(&self, point : &vector2::Vector2i, view : &view::View) -> vector2::Vector2f {
         unsafe {
             csfml::sfRenderWindow_mapPixelToCoords(self.renderWindow, *point, view.unwrap())
         }
     }
 
+    /**
+    * Convert a point from world coordinates to window coordinates
+    *
+    * This function finds the pixel of the render-window that matches
+    * the given 2D point. In other words, it goes through the same process
+    * as the graphics card, to compute the final position of a rendered point.
+    *
+    * Initially, both coordinate systems (world units and target pixels)
+    * match perfectly. But if you define a custom view or resize your
+    * render window, this assertion is not true anymore, ie. a point
+    * located at (150, 75) in your 2D world may map to the pixel
+    * (10, 50) of your render-window -- if the view is translated by (140, 25).
+    * 
+    * This version uses a custom view for calculations, see the other
+    * overload of the function if you want to use the current view of the
+    * render-window.
+    *
+    * # Arguments
+    * * point - Point to convert
+    * * view - The view to use for converting the point
+    */
     pub fn map_coords_to_pixel(&self, point : &vector2::Vector2f, view : &view::View) -> vector2::Vector2i {
         unsafe {
             csfml::sfRenderWindow_mapCoordsToPixel(self.renderWindow, *point, view.unwrap())
         }
     }
 
+    /**
+    * Get the viewport of a view applied to this target
+    *
+    * # Arguments
+    * * view - Target view
+    *
+    * Return the viewport rectangle, expressed in pixels in the current target
+    */
     pub fn get_viewport(&self, view : &view::View) -> IntRect {
         unsafe {
             csfml::sfRenderWindow_getViewport(self.renderWindow, view.unwrap())

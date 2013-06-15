@@ -1,7 +1,7 @@
 /*
-* Rust-SFML - Copyright (c) Letang Jeremy.
+* Rust-SFML - Copyright (c) 2013 Letang Jeremy.
 *
-* The Original software, SFML library, is provided by Laurent Gomila.
+* The original software, SFML library, is provided by Laurent Gomila.
 *
 * This software is provided 'as-is', without any express or implied warranty.
 * In no event will the authors be held liable for any damages arising from
@@ -46,8 +46,9 @@ use window::mouse;
 #[doc(hidden)]
 pub mod csfml {
     
+    use std::libc::{c_void, c_uint, c_char, c_float};    
+
     use rsfml::sfTypes::{sfBool};
-    use std::libc::{c_void, c_uint, c_char, c_float};
     use window::context_settings::ContextSettings;
     use window::video_mode::*;    
     use system::vector2;
@@ -132,9 +133,8 @@ pub struct Window {
     priv titleLength : uint
 }
 
-impl Window {
-    
-    pub fn get_wrapped_event(&self) ->event::Event {
+impl Window { 
+    priv fn get_wrapped_event(&self) ->event::Event {
             match self.event.typeEvent as c_uint {
             0   => event::Closed,
             1   => event::Resized{width : self.event.p1 as int, height : self.event.p2 as int},
@@ -204,11 +204,17 @@ impl Window {
             _ => event::NoEvent
         }
     }
+
     /**
-    * Pop the event on top of event queue.
+    *  Pop the event on top of event queue, if any, and return it
     *
-    * Pop the event on top of event queue, if any, and return it, else return NoEvent.
+    * This function is not blocking: if there's no pending event then
+    * it will return false and leave \a event unmodified.
+    * Note that more than one event may be present in the event queue,
+    * thus you should always call this function in a loop
+    * to make sure that you process every pending event.
     *
+    * Return the event if an event was returned, or NoEvent if the event queue was empty
     */
     pub fn poll_event(&self) -> event::Event {
         let haveEvent : bool =  unsafe {
@@ -226,8 +232,15 @@ impl Window {
     /**
     * Wait for an event and return it
     *
-    * wait_event is blocking, it wait until a new event arrive.
+    * This function is blocking: if there's no pending event then
+    * it will wait until an event is received.
+    * After this function returns (and no error occured),
+    * the event object is always valid and filled properly.
+    * This function is typically used when you have a thread that
+    * is dedicated to events handling: you want to make this thread
+    * sleep as long as no new event is received.
     *
+    * Return the event or NoEvent if an error has occured
     */
     pub fn wait_event(&self) -> event::Event {
         let haveEvent : bool =  unsafe {
@@ -242,7 +255,27 @@ impl Window {
         self.get_wrapped_event()
     }
     
-    /// Constructor for class Window. Create a window with a VideoMode, a title, style and Contextsetting.
+    /**
+    * Construct a new window
+    *
+    * This function creates the window with the size and pixel
+    * depth defined in mode. An optional style can be passed to
+    * customize the look and behaviour of the window (borders,
+    * title bar, resizable, closable, ...). If style contains
+    * sfFullscreen, then mode must be a valid video mode.
+    *
+    * The fourth parameter is a pointer to a structure specifying
+    * advanced OpenGL context settings such as antialiasing,
+    * depth-buffer bits, etc.
+    * 
+    * # Arguments
+    * * mode - Video mode to use (defines the width, height and depth of the rendering area of the window)
+    * * title - Title of the window
+    * * style - Window style
+    * * settings - Additional settings for the underlying OpenGL context
+    *
+    * Return a new Window object
+    */
     pub fn new(mode : VideoMode, title : ~str, style : WindowStyle, settings : &ContextSettings) -> Option<Window> {
         let mut sfWin: *csfml::sfWindow = ptr::null();
         do str::as_c_str(title) |title_buf| {
@@ -257,6 +290,27 @@ impl Window {
         }
     }
 
+    /**
+    * Construct a new window (with a UTF-32 title)
+    *
+    * This function creates the window with the size and pixel
+    * depth defined in mode. An optional style can be passed to
+    * customize the look and behaviour of the window (borders,
+    * title bar, resizable, closable, ...). If style contains
+    * sfFullscreen, then mode must be a valid video mode.
+    *
+    * The fourth parameter is a pointer to a structure specifying
+    * advanced OpenGL context settings such as antialiasing,
+    * depth-buffer bits, etc.
+    * 
+    * # Arguments
+    * * mode - Video mode to use (defines the width, height and depth of the rendering area of the window)
+    * * title - Title of the window (UTF-32)
+    * * style - Window style
+    * * settings - Additional settings for the underlying OpenGL context
+    *
+    * Return a new Window object
+    */
     pub fn new_with_unicode(mode : VideoMode, title : ~[u32], style : WindowStyle, settings : &ContextSettings) -> Option<Window> {
         let sfWin: *csfml::sfWindow;
         unsafe { sfWin = csfml::sfWindow_createUnicode(VideoMode::unwrap(mode), vec::raw::to_ptr(title), style as u32, settings); }
@@ -269,19 +323,41 @@ impl Window {
         }
     }
 
+    /**
+    * Change the title of a window (with a UTF-32 string)
+    *
+    * # Arguments
+    * * title - New title
+    */
     pub fn set_unicode_title(&self, title : ~[u32]) -> () {
         unsafe {
             csfml::sfWindow_setUnicodeTitle(self.window, vec::raw::to_ptr(title))
         }
     }
-
+    /**
+    * Change a window's icon
+    * pixels must be an array of width x height pixels in 32-bits RGBA format.
+    *
+    * # Arguments
+    * * width - Icon's width, in pixels
+    * * height - Icon's height, in pixels
+    * * pixels - Vector of pixels
+    */
     pub fn set_icon(&self, width : uint, height : uint, pixels : ~[u8]) -> () {
         unsafe {
             csfml::sfWindow_setIcon(self.window, width as c_uint, height as c_uint, vec::raw::to_ptr(pixels))
         }
     }
     
-    /// Method close for class Window. Close the window and destroy attached ressources.
+    /**
+    * Close a window and destroy all the attached resources
+    *
+    * After calling this method, the Window object remains
+    * valid.
+    * All other functions such as poll_event or display
+    * will still work (i.e. you don't have to test is_open
+    * every time), and will have no effect on closed windows.
+    */
     pub fn close(&self) -> () {
         unsafe {
             csfml::sfWindow_close(self.window);
@@ -289,7 +365,11 @@ impl Window {
     }
 
     /**
-    *   Method is_open. Verifiy if the windows is already open.
+    * Tell whether or not a window is opened
+    *
+    * This function returns whether or not the window exists.
+    * Note that a hidden window (set_visible(false)) will return
+    * true.
     */
     pub fn is_open(&self) -> bool {
         let tmp : sfBool;
@@ -303,14 +383,24 @@ impl Window {
     }
 
     /**
-    *   Method for class window, get the window OpenGl context settings.
+    * Get the settings of the OpenGL context of a window
+    *
+    * Note that these settings may be different from what was
+    * passed to the sfWindow_create function,
+    * if one or more settings were not supported. In this case,
+    * SFML chose the closest match.
+    *
+    * Return a structure containing the OpenGL context settings
     */
     pub fn get_settings(&self) -> ContextSettings {
         unsafe {csfml::sfWindow_getSettings(self.window)}
     }
 
     /**
-    *   Method for class window, set the window title.
+    * Change the title of a window
+    *
+    * # Arguments
+    * * title - New title
     */
     pub fn set_title(&self, title : ~str) -> () {
         do str::as_c_str(title) |title_buf| {
@@ -321,7 +411,10 @@ impl Window {
     }
 
     /**
-    *   Method for class window, display or not the window.
+    * Show or hide a window
+    *
+    * # Arguments
+    * * visible - true to show the window, false to hide it
     */
     pub fn set_visible(&self, visible : bool) -> () {
         let tmp : sfBool = 
@@ -335,7 +428,10 @@ impl Window {
     }
     
     /**
-    *   Method for class window, set visible the mouse cursor on the window.
+    * Show or hide the mouse cursor
+    *
+    * # Arguments
+    * * visible - true to show, false to hide
     */
     pub fn set_mouse_cursor_visible(&self, visible : bool) -> () {
         let tmp : sfBool = 
@@ -349,7 +445,15 @@ impl Window {
     }
     
     /**
-    *   Method for class window, enable or diseable the vertical sync.
+    * Enable or disable vertical synchronization
+    *
+    * Activating vertical synchronization will limit the number
+    * of frames displayed to the refresh rate of the monitor.
+    * This can avoid some visual artifacts, and limit the framerate
+    * to a good value (but not constant across different computers).
+    *
+    * # Arguments
+    * * enabled - true to enable v-sync, false to deactivate
     */
     pub fn set_vertical_sync_enabled(&self, enabled : bool) -> () {
         let tmp : sfBool = 
@@ -363,7 +467,16 @@ impl Window {
     }
     
     /**
-    *   Method for class window, enable or diseable the key repeat.
+    * Enable or disable automatic key-repeat
+    *
+    * If key repeat is enabled, you will receive repeated
+    * KeyPress events while keeping a key pressed. If it is disabled,
+    * you will only get a single event when the key is pressed.
+    *
+    * Key repeat is enabled by default.
+    *
+    * # Arguments
+    * * enabled - true to enable, false to disable
     */
     pub fn set_key_repeat_enabled(&self, enabled : bool) -> () {
         let tmp : sfBool = 
@@ -376,6 +489,20 @@ impl Window {
         }
     }
     
+    /**
+    * Activate or deactivate a window as the current target for OpenGL rendering
+    *
+    * A window is active only on the current thread, if you want to
+    * make it active on another thread you have to deactivate it
+    * on the previous thread first if it was active.
+    * Only one window can be active on a thread at a time, thus
+    * the window previously active (if any) automatically gets deactivated.
+    *
+    * # Arguments
+    * * active - true to activate, false to deactivate
+    *
+    * Return true if operation was successful, false otherwise
+    */
     pub fn set_active(&self, enabled : bool) -> bool {
         let tmp : sfBool = 
             match enabled {
@@ -392,7 +519,11 @@ impl Window {
     }
     
     /**
-    *   Method for class window, display the content of the window.
+    * Display on screen what has been rendered to the window so far
+    *
+    * This function is typically called after all OpenGL rendering
+    * has been done for the current frame, in order to show
+    * it on screen.
     */
     pub fn display(&self) -> () {
         unsafe {
@@ -401,7 +532,14 @@ impl Window {
     }
 
     /**
-    *   Method for class window, set the maximal framerate of the window.
+    * Limit the framerate to a maximum fixed frequency
+    *
+    * If a limit is set, the window will use a small delay after
+    * each call to sfWindow_display to ensure that the current frame
+    * lasted long enough to match the framerate limit.
+    *
+    * # Arguments
+    * * limit - Framerate limit, in frames per seconds (use 0 to disable limit)
     */
     pub fn set_framerate_limit(&self, limit : uint) -> () {
         unsafe {
@@ -410,7 +548,13 @@ impl Window {
     }
 
     /**
-    *   Method for class window, set the joystick Threshold.
+    * Change the joystick threshold
+    *
+    * The joystick threshold is the value below which
+    * no JoyMoved event will be generated.
+    *
+    * # Arguments
+    * * threshold - New threshold, in the range [0, 100]
     */
     pub fn set_joystick_threshold(&self, threshold : float) -> () {
         unsafe {
@@ -419,7 +563,9 @@ impl Window {
     }
     
     /**
-    *   Method for class window, get the position of the window on a Vector2i.
+    *  Get the position of a window
+    *
+    * Return the position in pixels
     */
     pub fn get_position(&self) -> vector2::Vector2i {
         unsafe {
@@ -428,7 +574,14 @@ impl Window {
     }
     
     /**
-    *   Method for class window, set the position of the window with a Vector2i.
+    * Change the position of a window on screen
+    *
+    * This function only works for top-level windows
+    * (i.e. it will be ignored for windows created from
+    * the handle of a child window/control).
+    *
+    * # Arguments
+    * * position - New position of the window, in pixels
     */
     pub fn set_position(&self, position : &vector2::Vector2i) -> () {
         unsafe {
@@ -437,7 +590,11 @@ impl Window {
     }
     
     /**
-    *   Method for class window, get the size of the window on a Vector2u.
+    * Get the size of the rendering region of a window
+    *
+    * The size doesn't include the titlebar and borders of the window.
+    *
+    * Return the size in pixels
     */
     pub fn get_size(&self) -> vector2::Vector2u {
         unsafe {
@@ -446,7 +603,10 @@ impl Window {
     }
  
     /**
-    *   Method for class window, set the size of the window with a Vector2u
+    * Change the size of the rendering region of a window
+    *
+    * # Arguments
+    * * size - New size, in pixels
     */
     pub fn set_size(&self, size : &vector2::Vector2u) -> () {
         unsafe {
@@ -454,9 +614,6 @@ impl Window {
         }
     }
 
-    /**
-    *   Method for class window, retrieve the sfWindow contained on struct Window. Used for binding.
-    */
     #[doc(hidden)]
     pub fn unwrap(&self) -> *csfml::sfWindow {
         self.window
