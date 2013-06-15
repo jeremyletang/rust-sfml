@@ -1,5 +1,5 @@
 /*
-* Rust-SFML - Copyright (c) Letang Jeremy.
+* Rust-SFML - Copyright (c) 2013 Letang Jeremy.
 *
 * The Original software, SFML library, is provided by Laurent Gomila.
 *
@@ -30,6 +30,7 @@
 */
 
 use std::libc::{c_float};
+
 use system::vector2;
 use graphics::rect::FloatRect;
 
@@ -37,6 +38,7 @@ use graphics::rect::FloatRect;
 pub mod csfml {
     
     use std::libc::{c_float, c_void};
+
     use system::vector2;
     use graphics::rect::FloatRect;
 
@@ -72,6 +74,10 @@ pub struct View {
 impl View {
     /**
     * Create a default view
+    *
+    * This function creates a default view of (0, 0, 1000, 1000)
+    * 
+    * Return a new View object
     */
     pub fn new() -> View {
         View { view : unsafe {csfml::sfView_create()} }
@@ -79,17 +85,35 @@ impl View {
     
     /**
     * Create a view by copying an existant one.
+    *
+    * # Arguments
+    * * view - View to copy
+    *
+    * Return a new View object
     */
     pub fn new_copy(view : &View) -> View {
         View { view : unsafe {csfml::sfView_copy(view.unwrap())}}
     }
 
+    /**
+    * Construct a view from a rectangle
+    *
+    * # Arguments
+    * * rectangle - The rectangle defining the zone to display
+    *
+    * Return a new View object
+    */
     pub fn create_from_rect(rectangle : *FloatRect) -> View {
         View { view : unsafe {csfml::sfView_createFromRect(*rectangle)}}
     }
 
     /**
     * Set the orientation of a view
+    *
+    * The default rotation of a view is 0 degree.
+    *
+    * # Arguments
+    * * angle - New angle, in degrees
     */
     pub fn set_rotation(&self, angle : float) -> () {
         unsafe {
@@ -99,6 +123,8 @@ impl View {
     
     /**
     * Get the current orientation of a view
+    *
+    * Return the rotation angle of the view, in degrees
     */
     pub fn get_rotation(&self) -> float {
         unsafe {
@@ -108,6 +134,9 @@ impl View {
 
     /**
     * Rotate a view relatively to its current orientation
+    *
+    * # Arguments
+    * * angle - Angle to rotate, in degrees
     */
     pub fn rotate(&self, angle : float) -> () {
         unsafe {
@@ -117,6 +146,15 @@ impl View {
 
     /**
     * Resize a view rectangle relatively to its current size
+    *
+    * Resizing the view simulates a zoom, as the zone displayed on screen grows or shrinks.
+    * # factor is a multiplier:
+    * * 1 keeps the size unchanged
+    * * bigger than 1 makes the view bigger (objects appear smaller)
+    * * smaller than 1 makes the view smaller (objects appear bigger)
+    *
+    * # Arguments
+    * * factor - Zoom factor to apply
     */
     pub fn zoom(&self, factor : float) -> () {
         unsafe {
@@ -124,44 +162,98 @@ impl View {
         }
     }
 
+    /**
+    * Set the center of a view
+    *
+    * # Arguments
+    * * center - New center
+    */
     pub fn set_center(&self, center : &vector2::Vector2f) -> () {
         unsafe {
             csfml::sfView_setCenter(self.view, *center)
         }
     }
 
+    /**
+    * Set the size of a view
+    *
+    * # Arguments
+    * * size - New size of the view
+    */
     pub fn set_size(&self, size : &vector2::Vector2f) -> () {
         unsafe {
             csfml::sfView_setSize(self.view, *size)
         }
     }
 
+    /**
+    * Move a view relatively to its current position
+    *
+    * # Arguments
+    * * offset - Offset
+    */
     pub fn move(&self, offset : &vector2::Vector2f) -> () {
         unsafe {
             csfml::sfView_move(self.view, *offset)
         }
     }
 
+    /**
+    * Get the center of a view
+    *
+    * Return the center of the view
+    */
     pub fn get_center(&self) -> vector2::Vector2f {
         unsafe {csfml::sfView_getCenter(self.view)}
     }
 
+    /**
+    * Get the size of a view
+    *
+    * Return the size of the view
+    */
     pub fn get_size(&self) -> vector2::Vector2f {
         unsafe {csfml::sfView_getSize(self.view)}
     }
 
+    /**
+    * Set the target viewport of a view
+    *
+    * The viewport is the rectangle into which the contents of the
+    * view are displayed, expressed as a factor (between 0 and 1)
+    * of the size of the render target to which the view is applied.
+    * For example, a view which takes the left side of the target would
+    * be defined by a rect of (0, 0, 0.5, 1).
+    * By default, a view has a viewport which covers the entire target.
+    *
+    * # Arguments
+    * * viewport - New viewport rectangle
+    */
     pub fn set_viewport(&self, viewport : &FloatRect) -> () {
         unsafe {
             csfml::sfView_setViewport(self.view, *viewport)
         }
     }
 
+    /**
+    * Reset a view to the given rectangle
+    *
+    * Note that this function resets the rotation angle to 0.
+    *
+    * # Arguments
+    * * rectangle - Rectangle defining the zone to display
+    */
     pub fn reset(&self, rectangle : &FloatRect) -> () {
         unsafe {
             csfml::sfView_reset(self.view, *rectangle)
         }
     }
 
+    /**
+    * Get the target viewport rectangle of a view
+    * 
+    * Return the viewport rectangle, expressed as a factor of the target size
+    */
     pub fn get_viewport(&self) -> FloatRect {
         unsafe {
             csfml::sfView_getViewport(self.view)
@@ -181,7 +273,7 @@ impl View {
 }
 
 impl Drop for View {
-    
+    /// Destructor for class View
     fn finalize(&self) -> () {
         unsafe {
             csfml::sfView_destroy(self.view)
