@@ -1,5 +1,5 @@
 /*
-* Rust-SFML - Copyright (c) Letang Jeremy.
+* Rust-SFML - Copyright (c) 2013 Letang Jeremy.
 *
 * The Original software, SFML library, is provided by Laurent Gomila.
 *
@@ -30,6 +30,7 @@
 */
 
 use std::libc::{c_float, c_uint};
+
 use graphics::color;
 use graphics::rect::{IntRect, FloatRect};
 use graphics::texture;
@@ -43,6 +44,7 @@ use graphics::transform::Transform;
 pub mod csfml {
     
     use std::libc::{c_void, c_float, c_uint};
+
     use graphics::texture;
     use rsfml::sfTypes::{sfBool};
     use graphics::rect;
@@ -100,32 +102,89 @@ pub struct CircleShape {
 }
 
 impl CircleShape {
+    /**
+    * Create a new circle shape
+    *
+    * Return a new CircleShape object
+    */
     pub fn new() -> CircleShape {
         CircleShape { circleShape : unsafe {csfml::sfCircleShape_create()} }
     }
 
+    /**
+    * Copy an existing circle shape
+    *
+    * # Arguments
+    * * shape - Shape to copy
+    * 
+    * Return the copied object
+    */
     pub fn new_copy(shape : &CircleShape) -> CircleShape {
         CircleShape { circleShape : unsafe {csfml::sfCircleShape_copy(shape.unwrap())} }
     }
 
+    /**
+    * Set the orientation of a circle shape
+    *
+    * This function completely overwrites the previous rotation.
+    * See rotate to add an angle based on the previous rotation instead.
+    * The default rotation of a circle Shape object is 0.
+    *
+    * # Arguments
+    * * rotation - New rotation
+    */
     pub fn set_rotation(&self, angle : float) -> () {
         unsafe {
             csfml::sfCircleShape_setRotation(self.circleShape, angle as c_float)
         }
     }
 
+    /**
+    * Get the orientation of a circle shape
+    *
+    * The rotation is always in the range [0, 360].
+    *
+    * Return the current rotation, in degrees
+    */
     pub fn get_rotation(&self) -> float {
         unsafe {
             csfml::sfCircleShape_getRotation(self.circleShape) as float
         }
     } 
 
+    /**
+    * Rotate a circle shape
+    *
+    * This function adds to the current rotation of the object,
+    * unlike set_rotation which overwrites it.
+    *
+    * # Arguments
+    * * angle - Angle of rotation, in degrees
+    */
     pub fn rotate(&self, angle : float) -> () {
         unsafe {
             csfml::sfCircleShape_rotate(self.circleShape, angle as c_float)
         }
     }
 
+    /**
+    * Change the source texture of a circle shape
+    *
+    * The texture argument refers to a texture that must
+    * exist as long as the shape uses it. Indeed, the shape
+    * doesn't store its own copy of the texture, but rather keeps
+    * a pointer to the one that you passed to this function.
+    * If the source texture is destroyed and the shape tries to
+    * use it, the behaviour is undefined.
+    * texture can be NULL to disable texturing.
+    * If resetRect is true, the TextureRect property of
+    * the shape is automatically adjusted to the size of the new
+    * texture. If it is false, the texture rect is left unchanged.
+    *
+    * # Arguments
+    * * texture - New texture
+    * * resetRect - Should the texture rect be reset to the size of the new texture?
+    */
     pub fn set_texture(&self, texture : &texture::Texture, resetRect : bool) -> () {
         match resetRect {
             true        => unsafe {csfml::sfCircleShape_setTexture(self.circleShape, texture.unwrap(), 1)},
@@ -133,150 +192,348 @@ impl CircleShape {
         }
     }
     
+    /**
+    * Set the sub-rectangle of the texture that a circle shape will display
+    *
+    * The texture rect is useful when you don't want to display
+    * the whole texture, but rather a part of it.
+    * By default, the texture rect covers the entire texture.
+    *
+    * # Arguments
+    * * rec - Rectangle defining the region of the texture to display
+    */
     pub fn set_texture_rect(&self, rect : &IntRect) -> () {
         unsafe {
             csfml::sfCircleShape_setTextureRect(self.circleShape, *rect)
         }
     }
     
+    /**
+    * Set the fill color of a circle shape
+    *
+    * This color is modulated (multiplied) with the shape's
+    * texture if any. It can be used to colorize the shape,
+    * or change its global opacity.
+    * You can use sfTransparent to make the inside of
+    * the shape transparent, and have the outline alone.
+    * By default, the shape's fill color is opaque white.
+    *
+    * # Arguments
+    * * color - New color of the shape
+    */
     pub fn set_fill_color(&self, color : &color::Color) -> () {
         unsafe {
             csfml::sfCircleShape_setFillColor(self.circleShape, *color)
         }
     }
 
+    /**
+    * Set the outline color of a circle shape
+    *
+    * You can use Transparent to disable the outline.
+    * By default, the shape's outline color is opaque white.
+    *
+    * # Arguments
+    * * color - New outline color of the shape
+    */
     pub fn set_outline_color(&self, color : &color::Color) -> () {
         unsafe {
             csfml::sfCircleShape_setOutlineColor(self.circleShape, *color)
         }
     }
 
+    /**
+    * Set the thickness of a circle shape's outline
+    *
+    * This number cannot be negative. Using zero disables
+    * the outline.
+    * By default, the outline thickness is 0.
+    *
+    * # Arguments
+    * * thickness - New outline thickness
+    */
     pub fn set_outline_thickness(&self, thickness : float) -> () {
         unsafe {
             csfml::sfCircleShape_setOutlineThickness(self.circleShape, thickness as c_float)
         }
     }
 
+    /**
+    * Get the source texture of a circle shape
+    *
+    * You can't modify the texture when you retrieve it with this function.
+    * 
+    * Return the shape's texture
+    */
     pub fn get_texture(&self) -> texture::Texture {
         unsafe {
             texture::Texture::wrap(csfml::sfCircleShape_getTexture(self.circleShape))
         }
     }
 
+    /**
+    * Get the sub-rectangle of the texture displayed by a circle shape
+    *
+    * Return the texture rectangle of the shape
+    */
     pub fn get_texture_rect(&self) -> IntRect {
         unsafe {
             csfml::sfCircleShape_getTextureRect(self.circleShape)
         }
     }
     
+    /**
+    * Get the fill color of a circle shape
+    *
+    * Return the fill color of the shape
+    */
     pub fn get_fill_color(&self) -> color::Color {
         unsafe {
             csfml::sfCircleShape_getFillColor(self.circleShape)
         }
     }
 
+    /**
+    * Get the outline color of a circle shape
+    *
+    * Return the outline color of the shape
+    */
     pub fn get_outline_color(&self) -> color::Color {
         unsafe {
             csfml::sfCircleShape_getOutlineColor(self.circleShape)
         }
     }
 
+    /**
+    * Get the outline thickness of a circle shape
+    *
+    * Return the outline thickness of the shape
+    */
     pub fn get_outline_thickness(&self) -> float {
         unsafe {
             csfml::sfCircleShape_getOutlineThickness(self.circleShape) as float
         }
     }
 
+    /**
+    * Get the total number of points of a circle shape
+    *
+    * Return the number of points of the shape
+    */
     pub fn get_point_count(&self) -> uint {
         unsafe {
             csfml::sfCircleShape_getPointCount(self.circleShape) as uint
         }
     }
 
+    /**
+    * Get a point of a circle shape
+    *
+    * The result is undefined if index is out of the valid range.
+    *
+    * # Arguments
+    * * index- Index of the point to get, in range [0 .. getPointCount() - 1]
+    *
+    * Return the index-th point of the shape
+    */
     pub fn get_point(&self, index : uint) -> () {
         unsafe {
             csfml::sfCircleShape_getPoint(self.circleShape, index as c_uint)
         }
     }
     
+    /**
+    * Set the radius of a circle
+    *
+    * # Arguments
+    * * radius - New radius of the circle
+    */
     pub fn set_radius(&self, radius : float) -> () {
         unsafe {
             csfml::sfCircleShape_setRadius(self.circleShape, radius as c_float)
         }
     }
 
+    /**
+    * Set the radius of a circle
+    *
+    * Return the radius of the circle
+    */
     pub fn get_radius(&self) -> float {
         unsafe {
             csfml::sfCircleShape_getRadius(self.circleShape) as float
         }
     }
     
+    /**
+    * Set the number of points of a circle
+    *
+    * # Arguments
+    * * count - New number of points of the circle
+    */
     pub fn set_point_count(&self, count : uint) -> () {
         unsafe {
             csfml::sfCircleShape_setPointCount(self.circleShape, count as c_uint)
         }
     }
 
+    /**
+    * Get the position of a circle shape
+    *
+    * Return the current position
+    */
     pub fn get_position(&self) -> vector2::Vector2f {
         unsafe {csfml::sfCircleShape_getPosition(self.circleShape)}
     }
 
+    /**
+    * Get the current scale of a circle shape
+    *
+    * Return the current scale factors
+    */
     pub fn get_scale(&self) -> vector2::Vector2f {
         unsafe {csfml::sfCircleShape_getScale(self.circleShape)}
     }
 
+    /**
+    * Get the local origin of a circle shape
+    *
+    * return the current origin
+    */
     pub fn get_origin(&self) -> vector2::Vector2f {
         unsafe {csfml::sfCircleShape_getOrigin(self.circleShape)}
     }
 
+    /**
+    * Move a circle shape by a given offset
+    *
+    * This function adds to the current position of the object,
+    * unlike sfCircleShape_setPosition which overwrites it.
+    *
+    * # Arguments
+    * * offset - Offset
+    */
     pub fn move(&self, offset : &vector2::Vector2f) -> () {
         unsafe {
             csfml::sfCircleShape_move(self.circleShape, *offset)
         }
     }
 
+    /**
+    * Scale a circle shape
+    *
+    * This function multiplies the current scale of the object,
+    * unlike sfCircleShape_setScale which overwrites it.
+    *
+    * # Arguments
+    * * factors - Scale factors
+    */
     pub fn scale(&self, factors : &vector2::Vector2f) -> () {
         unsafe {
             csfml::sfCircleShape_scale(self.circleShape, *factors)
         }
     }
 
+    /**
+    * Set the position of a circle shape
+    *
+    * This function completely overwrites the previous position.
+    * See move to apply an offset based on the previous position instead.
+    * The default position of a circle Shape object is (0, 0).
+    *
+    * # Arguments
+    * * position - New position
+    */
     pub fn set_position(&self, position : &vector2::Vector2f) -> () {
         unsafe {
             csfml::sfCircleShape_setPosition(self.circleShape, *position)
         }
     }
 
+    /**
+    * Set the scale factors of a circle shape
+    *
+    * This function completely overwrites the previous scale.
+    * See scale to add a factor based on the previous scale instead.
+    * The default scale of a circle Shape object is (1, 1).
+    *
+    * # Arguments
+    * * scale - New scale factors
+    */
     pub fn set_scale(&self, scale : &vector2::Vector2f) -> () {
         unsafe {
             csfml::sfCircleShape_setScale(self.circleShape, *scale)
         }
     }
-
+    /**
+    * Set the local origin of a circle shape
+    *
+    * The origin of an object defines the center point for
+    * all transformations (position, scale, rotation).
+    * The coordinates of this point must be relative to the
+    * top-left corner of the object, and ignore all
+    * transformations (position, scale, rotation).
+    * The default origin of a circle Shape object is (0, 0).
+    *
+    * # Arguments
+    * * origin - New origin
+    */
     pub fn set_origin(&self, origin : &vector2::Vector2f) -> () {
         unsafe {
             csfml::sfCircleShape_setOrigin(self.circleShape, *origin)
         }
     }
 
+    /**
+    * Get the local bounding rectangle of a circle shape
+    *
+    * The returned rectangle is in local coordinates, which means
+    * that it ignores the transformations (translation, rotation,
+    * scale, ...) that are applied to the entity.
+    * In other words, this function returns the bounds of the
+    * entity in the entity's coordinate system.
+    *
+    * Return the local bounding rectangle of the entity
+    */
     pub fn get_local_bounds(&self) -> FloatRect {
         unsafe {
             csfml::sfCircleShape_getLocalBounds(self.circleShape)
         }
     }
     
+    /**
+    * Get the global bounding rectangle of a circle shape
+    *
+    * The returned rectangle is in global coordinates, which means
+    * that it takes in account the transformations (translation,
+    * rotation, scale, ...) that are applied to the entity.
+    * In other words, this function returns the bounds of the
+    * sprite in the global 2D world's coordinate system.
+    *
+    * Return the global bounding rectangle of the entity
+    */
     pub fn get_global_bounds(&self) -> FloatRect {
         unsafe {
             csfml::sfCircleShape_getGlobalBounds(self.circleShape)
         }
     }
 
+    /**
+    * Get the combined transform of a circle shape
+    *
+    * Return transform combining the position/rotation/scale/origin of the object
+    */
     pub fn get_transform(&self) -> Transform {
         unsafe {
             csfml::sfCircleShape_getTransform(self.circleShape)
         }
     }
 
+    /**
+    * Get the inverse of the combined transform of a circle shape
+    *
+    * Return inverse of the combined transformations applied to the object
+    */
     pub fn get_inverse_transform(&self) -> Transform {
         unsafe {
             csfml::sfCircleShape_getInverseTransform(self.circleShape)
