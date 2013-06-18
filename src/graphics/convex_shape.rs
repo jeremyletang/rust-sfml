@@ -1,7 +1,7 @@
 /*
 * Rust-SFML - Copyright (c) 2013 Letang Jeremy.
 *
-* The Original software, SFML library, is provided by Laurent Gomila.
+* The original software, SFML library, is provided by Laurent Gomila.
 *
 * This software is provided 'as-is', without any express or implied warranty.
 * In no event will the authors be held liable for any damages arising from
@@ -23,10 +23,10 @@
 */
 
 /*!
+* Specialized shape representing a convex polygon
 *
-*
-*
-*
+* It is important to keep in mind that a convex shape must always be... convex, otherwise it may not be drawn correctly. 
+* Moreover, the points must be defined in order; using a random order would result in an incorrect shape.
 */
 
 use std::libc::{c_float, c_uint};

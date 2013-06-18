@@ -1,7 +1,7 @@
 /*
-* Rust-SFML - Copyright (c) Letang Jeremy.
+* Rust-SFML - Copyright (c) 2013 Letang Jeremy.
 *
-* The Original software, SFML library, is provided by Laurent Gomila.
+* The original software, SFML library, is provided by Laurent Gomila.
 *
 * This software is provided 'as-is', without any express or implied warranty.
 * In no event will the authors be held liable for any damages arising from
@@ -32,6 +32,7 @@
 extern mod std;
 pub use extra::c_vec::{CVec, len, get};
 use std::libc::{c_float};
+
 use system::vector2;
 use graphics::rect::FloatRect;
 
@@ -39,6 +40,7 @@ use graphics::rect::FloatRect;
 pub mod csfml {
     
     use std::libc::{c_float};
+
     use system::vector2;
     use graphics::rect::FloatRect;
     use graphics::transform::Transform;
@@ -58,44 +60,40 @@ pub mod csfml {
     }
 }
 
-
-/*
-    pub struct sfTransform {
-        a1 : i32,
-        a2 : i32,
-        a3 : i32,
-        a4 : i32,
-        a5 : i32,
-        a6 : i32,
-        a7 : i32,
-        a8 : i32,
-        a9 : i32
-    }
-    
-
-*/
-
 #[doc(hidden)]
 pub struct Transform {
-        a1 : f32,
-        a2 : f32,
-        a3 : f32,
-        a4 : f32,
-        a5 : f32,
-        a6 : f32,
-        a7 : f32,
-        a8 : f32,
-        a9 : f32
+        a00 : f32,
+        a01 : f32,
+        a02 : f32,
+        a10 : f32,
+        a11 : f32,
+        a12 : f32,
+        a20 : f32,
+        a21 : f32,
+        a22 : f32
 //    transform : csfml::sfTransform
 }
 
 impl Transform {
     /**
     * Create a new transform from a matrix
+    *
+    * # Arguments
+    * * a00 - Element (0, 0) of the matrix
+    * * a01 - Element (0, 1) of the matrix
+    * * a02 - Element (0, 2) of the matrix
+    * * a10 - Element (1, 0) of the matrix
+    * * a11 - Element (1, 1) of the matrix
+    * * a12 - Element (1, 2) of the matrix
+    * * a20 - Element (2, 0) of the matrix
+    * * a21 - Element (2, 1) of the matrix
+    * * a22 - Element (2, 2) of the matrix
+    *
+    * Return a new Transform object
     */
-    pub fn new(a01 : f32, a02 : f32, a03 : f32, b01 : f32, b02 : f32, b03 : f32, c01 : f32, c02 : f32, c03 : f32) -> Transform {
+    pub fn new(a00 : f32, a01 : f32, a02 : f32, b10 : f32, b11 : f32, b12 : f32, c20 : f32, c21 : f32, c22 : f32) -> Transform {
         unsafe {
-            csfml::sfTransform_fromMatrix(a01, a02, a03, b01, b02, b03, c01, c02, c03)
+            csfml::sfTransform_fromMatrix(a00, a01, a02, b10, b11, b12, c20, c21, c22)
         }
     }
 
@@ -120,6 +118,8 @@ impl Transform {
     
     /**
     * Create a new identity transform
+    *
+    * Return a new Transform object initialized at 1, 0, 0, 0, 1, 0, 0, 0, 1
     */
     pub fn new_identity() -> Transform {
         unsafe {
@@ -129,6 +129,11 @@ impl Transform {
 
     /**
     * Return the inverse of a transform
+    *
+    * If the inverse cannot be computed, a new identity transform
+    * is returned.
+    * 
+    * Return the inverse matrix
     */
     pub fn get_inverse(&self) -> Transform {
         unsafe {csfml::sfTransform_getInverse(&*self)}
@@ -136,6 +141,13 @@ impl Transform {
     
     /**
     * Combine two transforms
+    *
+    * The result is a transform that is equivalent to applying
+    * transform followed by other. Mathematically, it is
+    * equivalent to a matrix multiplication.
+    *
+    * # Arguments
+    * * other - Transform to combine to transform
     */
     pub fn combine(&self, other : &Transform) -> () {
         unsafe {
@@ -145,6 +157,10 @@ impl Transform {
     
     /**
     * Combine a transform with a translation
+    *
+    * # Arguments
+    * * x - Offset to apply on X axis
+    * * y - Offset to apply on Y axis
     */
     pub fn translate(&self, x : f32, y : f32) -> () {
         unsafe {
@@ -154,6 +170,9 @@ impl Transform {
 
     /**
     * Combine the current transform with a rotation
+    *
+    * # Arguments
+    * * angle - Rotation angle, in degrees
     */
     pub fn rotate(&self, angle : f32) -> () {
         unsafe {
@@ -163,6 +182,16 @@ impl Transform {
     
     /**
     * Combine the current transform with a rotation
+    *
+    * The center of rotation is provided for convenience as a second
+    * argument, so that you can build rotations around arbitrary points
+    * more easily (and efficiently) than the usual
+    * [translate(-center), rotate(angle), translate(center)].
+    *
+    * # Arguments
+    * * angle - Rotation angle, in degrees
+    * * centerX - X coordinate of the center of rotation
+    * * centerY - Y coordinate of the center of rotation
     */
     pub fn rotate_with_center(&self, angle : f32, centerX : f32, centerY : f32) -> () {
         unsafe {
@@ -172,6 +201,10 @@ impl Transform {
 
     /**
     * Combine the current transform with a scaling
+    *
+    * # Arguments
+    * * scaleX - Scaling factor on the X axis
+    * * scaleY - Scaling factor on the Y axis
     */
     pub fn scale(&self, scaleX : f32, scaleY : f32) -> () {
         unsafe {
@@ -181,6 +214,17 @@ impl Transform {
     
     /**
     * Combine the current transform with a scaling
+    *
+    * The center of scaling is provided for convenience as a second
+    * argument, so that you can build scaling around arbitrary points
+    * more easily (and efficiently) than the usual
+    * [translate(-center), scale(factors), translate(center)]
+    *
+    * # Arguments
+    * * scaleX - Scaling factor on X axis
+    * * scaleY - Scaling factor on Y axis
+    * * centerX - X coordinate of the center of scaling
+    * * centerY - Y coordinate of the center of scaling
     */
     pub fn scale_with_center(&self, scaleX : f32, scaleY : f32, centerX : f32, centerY : f32) -> () {
         unsafe {
@@ -188,12 +232,34 @@ impl Transform {
         }
     }
 
+    /**
+    * Apply a transform to a 2D point
+    *
+    * # Arguments
+    * * point - Point to transform
+    *
+    * Return a transformed point
+    */
     pub fn transform_point(&self, point : &vector2::Vector2f) -> vector2::Vector2f {
         unsafe {
             csfml::sfTransform_transformPoint(&*self, *point)
         }
     }
 
+    /**
+    * Apply a transform to a rectangle
+    * 
+    * Since SFML doesn't provide support for oriented rectangles,
+    * the result of this function is always an axis-aligned
+    * rectangle. Which means that if the transform contains a
+    * rotation, the bounding rectangle of the transformed rectangle
+    * is returned.
+    *
+    * # Arguments
+    * rectangle - Rectangle to transform
+    *
+    * Return the transformed rectangle
+    */
     pub fn transform_rect(&self, rectangle : &FloatRect) -> FloatRect {
         unsafe {
             csfml::sfTransform_transformRect(&*self, *rectangle)

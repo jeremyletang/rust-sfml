@@ -1,7 +1,7 @@
 /*
 * Rust-SFML - Copyright (c) 2013 Letang Jeremy.
 *
-* The Original software, SFML library, is provided by Laurent Gomila.
+* The original software, SFML library, is provided by Laurent Gomila.
 *
 * This software is provided 'as-is', without any express or implied warranty.
 * In no event will the authors be held liable for any damages arising from
@@ -408,7 +408,7 @@ impl CircleShape {
     * Move a circle shape by a given offset
     *
     * This function adds to the current position of the object,
-    * unlike sfCircleShape_setPosition which overwrites it.
+    * unlike sset_position which overwrites it.
     *
     * # Arguments
     * * offset - Offset

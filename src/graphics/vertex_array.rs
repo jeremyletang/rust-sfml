@@ -1,7 +1,7 @@
 /*
-* Rust-SFML - Copyright (c) Letang Jeremy.
+* Rust-SFML - Copyright (c) 2013 Letang Jeremy.
 *
-* The Original software, SFML library, is provided by Laurent Gomila.
+* The original software, SFML library, is provided by Laurent Gomila.
 *
 * This software is provided 'as-is', without any express or implied warranty.
 * In no event will the authors be held liable for any damages arising from
@@ -22,8 +22,16 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-use graphics::vertex::Vertex;
+/*!
+* Define a set of one or more 2D primitives
+*
+*
+*
+*/
+
 use std::libc::c_uint;
+
+use graphics::vertex::Vertex;
 use graphics::rect::FloatRect;
 use graphics::primitive_type;
 use graphics::primitive_type::PrimitiveType;
@@ -35,6 +43,7 @@ use graphics::render_texture::RenderTexture;
 pub mod csfml {
     
     use std::libc::{c_uint, c_void};
+
     use graphics::vertex;
     use graphics::rect::FloatRect;
     
@@ -72,48 +81,114 @@ pub struct VertexArray {
 }
 
 impl VertexArray {
+    /**
+    * Create a new vertex array
+    *
+    * Return a new VertexArray object
+    */
     pub fn new() -> VertexArray {
         unsafe {
             VertexArray { vertexArray : csfml::sfVertexArray_create()}
         }
     }
 
+    /**
+    * Copy an existing vertex array
+    *
+    * # Arguments
+    * * vertexArray - Vertex array to copy
+    *
+    * Return the copied object
+    */
     pub fn new_copy(vertexArray : &VertexArray) -> VertexArray {
         unsafe {
             VertexArray { vertexArray : csfml::sfVertexArray_copy(vertexArray.unwrap())}
         }
     }
 
+    /**
+    * Return the vertex count of a vertex array
+    *
+    * Return the number of vertices in the array
+    */
     pub fn get_vertex_count(&self) -> uint {
         unsafe {
             csfml::sfVertexArray_getVertexCount(self.vertexArray) as uint
         }
     }
 
+    /**
+    * Clear a vertex array
+    *
+    * This function removes all the vertices from the array.
+    * It doesn't deallocate the corresponding memory, so that
+    * adding new vertices after clearing doesn't involve
+    * reallocating all the memory.
+    */
     pub fn clear(&self) -> () {
         unsafe {
             csfml::sfVertexArray_clear(self.vertexArray)
         }
     }
     
+    /**
+    * Resize the vertex array
+    *
+    * If vertexCount is greater than the current size, the previous
+    * vertices are kept and new (default-constructed) vertices are
+    * added.
+    * If vertexCount is less than the current size, existing vertices
+    * are removed from the array.
+    *
+    * # Arguments
+    * * vertexCount - New size of the array (number of vertices)
+    */
     pub fn resize(&self, vertexCount : uint) -> () {
         unsafe {
             csfml::sfVertexArray_resize(self.vertexArray, vertexCount as c_uint)
         }
     }
 
+    /**
+    * Add a vertex to a vertex array array
+    *
+    * # Arguments
+    * * vertex - Vertex to add
+    */
     pub fn append(&self, vertex : &Vertex) -> () {
         unsafe {
             csfml::sfVertexArray_append(self.vertexArray, *vertex)
         }
     }
 
+    /**
+    * Compute the bounding rectangle of a vertex array
+    *
+    * This function returns the axis-aligned rectangle that
+    * contains all the vertices of the array.
+    *
+    * Return the bounding rectangle of the vertex array
+    */
     pub fn get_bounds(&self) -> FloatRect {
         unsafe {
             csfml::sfVertexArray_getBounds(self.vertexArray)
         }
     }
     
+    /**
+    * Set the type of primitives of a vertex array
+    *
+    * This function defines how the vertices must be interpreted
+    * when it's time to draw them:
+    * As points
+    * As lines
+    * As triangles
+    * As quads
+    * The default primitive type is Points.
+    *
+    * # Arguments
+    * * type - Type of primitive
+    */
     pub fn set_primitive_type(&self, primitiveType : PrimitiveType) -> () {
         match primitiveType {
             primitive_type::Points              => unsafe {csfml::sfVertexArray_setPrimitiveType(self.vertexArray, csfml::sfPoints)},
@@ -126,6 +201,11 @@ impl VertexArray {
         }
     }
     
+    /**
+    * Get the type of primitives drawn by a vertex array
+    *
+    * Return the primitive type
+    */
     pub fn get_primitive_type(&self) -> PrimitiveType {
         match unsafe {csfml::sfVertexArray_getPrimitiveType(self.vertexArray)} {
             csfml::sfPoints             => primitive_type::Points,
@@ -139,6 +219,18 @@ impl VertexArray {
         }
     }
 
+    /**
+    * Get access to a vertex by its index
+    *
+    * This function doesn't check \a index, it must be in range
+    * [0, vertex count - 1]. The behaviour is undefined
+    * otherwise.
+    *
+    * # Arguments
+    * * index - Index of the vertex to get
+    *
+    * Return the index-th vertex
+    */
     pub fn get_vertex(&self, index : uint) -> Vertex {
         unsafe {
             *csfml::sfVertexArray_getVertex(self.vertexArray, index as c_uint)

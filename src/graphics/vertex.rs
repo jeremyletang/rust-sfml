@@ -1,7 +1,7 @@
 /*
-* Rust-SFML - Copyright (c) Letang Jeremy.
+* Rust-SFML - Copyright (c) 2013 Letang Jeremy.
 *
-* The Original software, SFML library, is provided by Laurent Gomila.
+* The original software, SFML library, is provided by Laurent Gomila.
 *
 * This software is provided 'as-is', without any express or implied warranty.
 * In no event will the authors be held liable for any damages arising from
@@ -23,9 +23,12 @@
 */
 
 /*!
+* Define a point with color and texture coordinates
 *
+* A vertex is an improved point.
 *
-*
+* It has a position and other extra attributes that will be used for drawing: 
+* in SFML, vertices also have a color and a pair of texture coordinates.
 *
 */
 
@@ -45,6 +48,7 @@ pub mod csfml {
     }
 }
 
+/// Define a point with color and texture coordinates
 pub struct Vertex {
     position : Vector2f,
     color : Color,
@@ -52,6 +56,16 @@ pub struct Vertex {
 }
 
 impl Vertex {
+    /**
+    * Create a new Vertex
+    *
+    * # Arguments
+    * * position - Position of the vertex
+    * * color - Color of the vertex
+    * * texCoords - Texture coordinate of the vertex
+    *
+    * Return a Vertex
+    */
     pub fn new(position : &Vector2f, color : &Color, texCoords : &Vector2f) -> Vertex {
         Vertex {position : *position, color : *color, texCoords : *texCoords }
     }

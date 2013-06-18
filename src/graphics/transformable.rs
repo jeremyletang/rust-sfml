@@ -1,7 +1,7 @@
 /*
-* Rust-SFML - Copyright (c) Letang Jeremy.
+* Rust-SFML - Copyright (c) 2013 Letang Jeremy.
 *
-* The Original software, SFML library, is provided by Laurent Gomila.
+* The original software, SFML library, is provided by Laurent Gomila.
 *
 * This software is provided 'as-is', without any express or implied warranty.
 * In no event will the authors be held liable for any damages arising from
@@ -23,13 +23,14 @@
 */
 
 /*!
-*
+* Target for off-screen 2D rendering into a texture
 *
 *
 *
 */
 
 use std::libc::{c_float};
+
 use system::vector2;
 use graphics::transform::Transform;
     
@@ -37,6 +38,7 @@ use graphics::transform::Transform;
 pub mod csfml {
     
     use std::libc::{c_float, c_void};
+
     use system::vector2;
     use graphics::transform::Transform;
     
@@ -72,86 +74,200 @@ pub struct Transformable{
 }
 
 impl Transformable {
+    /**
+    * Create a new transformable
+    *
+    * Return a new Transformable object
+    */
     pub fn new() -> Transformable {
         Transformable { trans : unsafe {csfml::sfTransformable_create()}}
     }
     
+    /**
+    * Copy an existing transformable
+    *
+    * # Arguments
+    * * transformable - Transformable to copy
+    * Return the copied object
+    */
     pub fn new_copy(transformable : &Transformable) -> Transformable {
         Transformable { trans : unsafe {csfml::sfTransformable_copy(transformable.unwrap())} }
     }
 
+    /**
+    * Set the position of a transformable
+    *
+    * This function completely overwrites the previous position.
+    * See move to apply an offset based on the previous position instead.
+    * The default position of a transformable Transformable object is (0, 0).
+    * 
+    * # Arguments
+    * * position - The new position
+    */
     pub fn set_position(&self, position : &vector2::Vector2f) -> () {
         unsafe {
             csfml::sfTransformable_setPosition(self.trans, *position)
         }
     }
     
+    /**
+    * Set the orientation of a transformable
+    *
+    * This function completely overwrites the previous rotation.
+    * See rotate to add an angle based on the previous rotation instead.
+    * The default rotation of a transformable Transformable object is 0.
+    *
+    * # Arguments
+    * * angle - The new rotation, in degrees
+    */
     pub fn set_rotation(&self, angle : float) -> () {
         unsafe {
             csfml::sfTransformable_setRotation(self.trans, angle as c_float)
         }
     }
 
+    /**
+    * Set the scale factors of a transformable
+    *
+    * This function completely overwrites the previous scale.
+    * See scale to add a factor based on the previous scale instead.
+    * The default scale of a transformable Transformable object is (1, 1).
+    * 
+    * # Arguments
+    * * scale - New scale factors
+    */
     pub fn set_scale(&self, scale : &vector2::Vector2f) -> () {
         unsafe {
             csfml::sfTransformable_setScale(self.trans, *scale)
         }
     }
 
+    /**
+    * Set the local origin of a transformable
+    *
+    * The origin of an object defines the center point for
+    * all transformations (position, scale, rotation).
+    * The coordinates of this point must be relative to the
+    * top-left corner of the object, and ignore all
+    * transformations (position, scale, rotation).
+    * The default origin of a transformable Transformable object is (0, 0).
+    *
+    * # Arguments
+    * * origin - New origin
+    */
     pub fn set_origin(&self, origin : &vector2::Vector2f) -> () {
         unsafe {
             csfml::sfTransformable_setOrigin(self.trans, *origin)
         }
     }
     
+    /**
+    * Get the position of a transformable
+    *
+    * Return the current position
+    */
     pub fn get_position(&self) -> vector2::Vector2f {
         unsafe {
             csfml::sfTransformable_getPosition(self.trans)
         }
     }
 
+    /**
+    * Get the orientation of a transformable
+    *
+    * The rotation is always in the range [0, 360].
+    * 
+    * Return the current rotation, in degrees
+    */
     pub fn get_rotation(&self) -> float {
         unsafe {
             csfml::sfTransformable_getRotation(self.trans) as float
         }
     }
 
+    /**
+    * Get the current scale of a transformable
+    *
+    * Return the current scale factors
+    */
     pub fn get_scale(&self) -> vector2::Vector2f {
         unsafe {
             csfml::sfTransformable_getScale(self.trans)
         }
     }
 
+    /**
+    * Get the local origin of a transformable
+    *
+    * Return the current origin
+    */
     pub fn get_origin(&self) -> vector2::Vector2f {
         unsafe {
             csfml::sfTransformable_getOrigin(self.trans)
         }
     }
 
+    /**
+    * Move a transformable by a given offset
+    *
+    * This function adds to the current position of the object,
+    * unlike set_position which overwrites it.
+    *
+    * # Arguments
+    * * offset - Offset
+    */
     pub fn move(&self, offset : &vector2::Vector2f) -> () {
         unsafe {
             csfml::sfTransformable_move(self.trans, *offset)
         }
     }
 
+    /**
+    * Rotate a transformable
+    *
+    * This function adds to the current rotation of the object,
+    * unlike set_rotation which overwrites it.
+    *
+    * # Arguments
+    * * angle - Angle of rotation, in degrees
+    */
     pub fn rotate(&self, angle : float) -> () {
         unsafe {
             csfml::sfTransformable_rotate(self.trans, angle as c_float)
         }
     }
 
+    /**
+    * Scale a transformable
+    *
+    * This function multiplies the current scale of the object,
+    * unlike set_scale which overwrites it.
+    *
+    * # Arguments
+    * * factors - Scale factors
+    */
     pub fn scale(&self, factors : &vector2::Vector2f) -> () {
         unsafe {
             csfml::sfTransformable_scale(self.trans, *factors)
         }
     }
 
+    /**
+    * Get the combined transform of a transformable
+    *
+    * Return the transform combining the position/rotation/scale/origin of the object
+    */
     pub fn get_transform(&self) -> Transform {
         unsafe {
             csfml::sfTransformable_getTransform(self.trans)
         }
     }
 
+    /**
+    * Get the inverse of the combined transform of a transformable
+    *
+    * Return the inverse of the combined transformations applied to the object
+    */
     pub fn get_inverse_transform(&self) -> Transform {
         unsafe {
             csfml::sfTransformable_getInverseTransform(self.trans)

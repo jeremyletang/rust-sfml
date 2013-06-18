@@ -1,7 +1,7 @@
 /*
-* Rust-SFML - Copyright (c) Letang Jeremy.
+* Rust-SFML - Copyright (c) 2013 Letang Jeremy.
 *
-* The Original software, SFML library, is provided by Laurent Gomila.
+* The original software, SFML library, is provided by Laurent Gomila.
 *
 * This software is provided 'as-is', without any express or implied warranty.
 * In no event will the authors be held liable for any damages arising from
@@ -44,6 +44,7 @@ use graphics::rect::IntRect;
 pub mod csfml {
     
     use std::libc::{c_uint, c_void, c_char};
+
     use rsfml::sfTypes::{sfBool};
     use system::vector2::Vector2u;
     use window::window::csfml::sfWindow;
@@ -86,6 +87,12 @@ pub struct Texture {
 impl Texture {
     /**
     * Create a new texture
+    *
+    * # Arguments
+    * * width - Texture width
+    * * height - Texture height
+    *
+    * Return a new Option to Texture object or None
     */
     pub fn new(width: uint, height : uint) -> Texture {
         Texture { texture : unsafe {csfml::sfTexture_create(width as c_uint, height as c_uint)}}
@@ -93,29 +100,74 @@ impl Texture {
     
     /**
     * Create a new texture from a file
+    *
+    * # Arguments
+    * * filename - Path of the image file to load
+    *
+    * Return a new Option to Texture object or None
     */
     pub fn new_from_file(filename : ~str) -> Texture {
         do str::as_c_str(filename) |filebuf| {
             Texture { texture : unsafe {csfml::sfTexture_createFromFile(filebuf, ptr::null())} }
         }
     }
+
+     /**
+    * Create a new texture from a file with a given area
+    *
+    * # Arguments
+    * * filename - Path of the image file to load
+    * * area - Area of the source image to load
+    *
+    * Return a new Option to Texture object or None
+    */
+    pub fn new_from_file_with_rect(filename : ~str, area : &IntRect) -> Texture {
+        do str::as_c_str(filename) |filebuf| {
+            Texture { texture : unsafe {csfml::sfTexture_createFromFile(filebuf, &*area)} }
+        }
+    }
     
     /**
     * Create a new texture by copying a exitant one
+    *
+    * # Arguments
+    * * texture - Texture to copy
+    *
+    * Return an option to the copied texture or None
     */
     pub fn new_copy(texture : &Texture) -> Texture {
         Texture { texture : unsafe {csfml::sfTexture_copy(texture.unwrap())}}
     }
 
     /**
-    * Create a new texture with an existing image
+    * Create a new texture from an image
+    *
+    * # Arguments
+    * * image - Image to upload to the texture
+    * * area - Area of the source image to load
+    *
+    * Return a new Option to Texture object or None
     */
-    pub fn new_from_image(image : &image::Image, area : &IntRect) -> Texture{
+    pub fn new_from_image_with_rect(image : &image::Image, area : &IntRect) -> Texture{
         Texture { texture : unsafe { csfml::sfTexture_createFromImage(image.unwrap(), &*area)}}
+    }
+
+    /**
+    * Create a new texture from an image
+    *
+    * # Arguments
+    * * image - Image to upload to the texture
+    *
+    * Return a new Option to Texture object or None
+    */
+    pub fn new_from_image(image : &image::Image) -> Texture{
+        Texture { texture : unsafe { csfml::sfTexture_createFromImage(image.unwrap(), ptr::null())}}
     }
     
     /**
     * Return the size of the texture
+    *
+    * Return the Size in pixels
     */
     pub fn get_size(&self) -> vector2::Vector2u {
         unsafe {
@@ -125,6 +177,11 @@ impl Texture {
     
     /**
     * Update a texture from the contents of a window
+    *
+    * # Arguments
+    * * window - Window to copy to the texture
+    * * x - X offset in the texture where to copy the source pixels
+    * * y - Y offset in the texture where to copy the source pixels
     */
     pub fn update_from_window(&self, window : window::Window, x : uint, y : uint) -> () {
         unsafe {
@@ -134,6 +191,11 @@ impl Texture {
 
     /**
     * Update a texture from the contents of a render window
+    *
+    * # Arguments
+    * * renderWindow - Render-window to copy to the texture
+    * * x - X offset in the texture where to copy the source pixels
+    * * y - Y offset in the texture where to copy the source pixels
     */
     pub fn update_from_render_window(&self, renderWindow : render_window::RenderWindow, x : uint, y : uint) -> () {
         unsafe {
@@ -141,12 +203,28 @@ impl Texture {
         }
     }
 
+    /**
+    * Update a texture from the contents of an image
+    *
+    * # Arguments
+    * * image - Image to copy to the texture
+    * * x - X offset in the texture where to copy the source pixels
+    * * y - Y offset in the texture where to copy the source pixels
+    */
     pub fn update_from_image(&self, image : &image::Image, x : uint, y : uint) -> () {
         unsafe {
             csfml::sfTexture_updateFromImage(self.texture, image.unwrap(), x as c_uint, y as c_uint)
         }
     }
     
+    /**
+    * Update a texture from the contents of a Vector of pixels
+    *
+    * # Arguments
+    * * pixels - Pixels to copy to the texture
+    * * x - X offset in the texture where to copy the source pixels
+    * * y - Y offset in the texture where to copy the source pixels
+    */
     pub fn update_from_pixels(&self, pixels : ~[u8], width : uint, height : uint, x : uint, y : uint) -> () {
         unsafe {
             csfml::sfTexture_updateFromPixels(self.texture, vec::raw::to_ptr(pixels), width as c_uint, height as c_uint, x as c_uint, y as c_uint)
@@ -155,6 +233,9 @@ impl Texture {
 
     /**
     * Enable or disable the smooth filter on a texture
+    *
+    * # Arguments
+    * * smooth - true to enable smoothing, false to disable it
     */
     pub fn set_smooth(&self, smooth : bool) -> () {
         match smooth {
@@ -165,6 +246,8 @@ impl Texture {
 
     /**
     * Tell whether the smooth filter is enabled or not for a texture
+    *
+    * Return true if smoothing is enabled, false if it is disabled
     */
     pub fn is_smooth(&self) -> bool {
         match unsafe {csfml::sfTexture_isSmooth(self.texture)} {
@@ -175,6 +258,23 @@ impl Texture {
 
     /**
     * Enable or disable repeating for a texture
+    *
+    * epeating is involved when using texture coordinates
+    * outside the texture rectangle [0, 0, width, height].
+    * In this case, if repeat mode is enabled, the whole texture
+    * will be repeated as many times as needed to reach the
+    * coordinate (for example, if the X texture coordinate is
+    * 3 * width, the texture will be repeated 3 times).
+    * If repeat mode is disabled, the "extra space" will instead
+    * be filled with border pixels.
+    * Warning: on very old graphics cards, white pixels may appear
+    * when the texture is repeated. With such cards, repeat mode
+    * can be used reliably only if the texture has power-of-two
+    * dimensions (such as 256x128).
+    * Repeating is disabled by default.
+    * 
+    * # Arguments
+    * * repeated  - true to repeat the texture, false to disable repeating
     */
     pub fn set_repeated(&self, repeated : bool) -> () {
         match repeated {
@@ -185,6 +285,8 @@ impl Texture {
     
     /**
     * Tell whether a texture is repeated or not
+    *
+    * Return frue if repeat mode is enabled, false if it is disabled
     */
     pub fn is_repeated(&self) -> bool {
         match unsafe {csfml::sfTexture_isRepeated(self.texture)} {
@@ -195,6 +297,11 @@ impl Texture {
 
     /**
     * Bind a texture for rendering
+    *
+    * This function is not part of the graphics API, it mustn't be
+    * used when drawing SFML entities. It must be used only if you
+    * mix sfTexture with OpenGL code.
+    *
     */
     pub fn bind(&self) -> () {
         unsafe {
@@ -204,6 +311,8 @@ impl Texture {
     
     /**
     * Get the maximum texture size allowed
+    *
+    * Return the maximum size allowed for textures, in pixels
     */
     pub fn get_maximum_size() -> uint {
         unsafe {
@@ -213,6 +322,8 @@ impl Texture {
 
     /**
     * Copy a texture's pixels to an image
+    *
+    * Return an image containing the texture's pixels
     */
     pub fn copy_to_image(&self) -> image::Image {
         unsafe {

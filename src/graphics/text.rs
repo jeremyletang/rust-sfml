@@ -1,7 +1,7 @@
 /*
-* Rust-SFML - Copyright (c) Letang Jeremy.
+* Rust-SFML - Copyright (c) 2013 Letang Jeremy.
 *
-* The Original software, SFML library, is provided by Laurent Gomila.
+* The original software, SFML library, is provided by Laurent Gomila.
 *
 * This software is provided 'as-is', without any express or implied warranty.
 * In no event will the authors be held liable for any damages arising from
@@ -112,6 +112,8 @@ pub struct Text {
 impl Text {
     /**
     * Create a new text
+    *
+    * Return a new Option on Text object, or None
     */
     pub fn new() -> Option<Text> {
         let text : *csfml::sfText;
@@ -125,7 +127,12 @@ impl Text {
     }
     
     /**
-    * Copy an existing text
+    * Set the string of a text (from an ANSI string)
+    *
+    * A text's string is empty by default.
+    *
+    * # Arguments
+    * * string - New string
     */
     pub fn set_string(&mut self, string : ~str) -> () {
         do str::as_c_str(string) |cstring| {
@@ -136,6 +143,8 @@ impl Text {
 
     /**
     * Get the string of a text (returns an ANSI string)
+    *
+    * Return a string as a locale-dependant ANSI string
     */
     pub fn get_string(&self) -> ~str {
         unsafe {
@@ -143,6 +152,11 @@ impl Text {
         }
     }
 
+    /**
+    * Get the string of a text (returns a unicode string)
+    *
+    * Return a string as UTF-32
+    */
     pub fn get_unicode_string(&self) -> ~[u32] {
         unsafe {
             let mut return_unicode : ~[u32] = ~[];
@@ -160,7 +174,9 @@ impl Text {
     }
     
     /**
-    * Set the size of the characters
+    * Get the size of the characters
+    *
+    * Return the size of the characters
     */
     pub fn get_character_size(&self) -> uint {
         unsafe { csfml::sfText_getCharacterSize(self.text) as uint}
@@ -168,6 +184,15 @@ impl Text {
     
     /**
     * Set the font of the text
+    *
+    * The font argument refers to a texture that must
+    * exist as long as the text uses it. Indeed, the text
+    * doesn't store its own copy of the font, but rather keeps  
+    * a pointer to the one that you passed to this function.
+    * If the font is destroyed and the text tries to
+    * use it, the behaviour is undefined.
+    *
+    * font - New font
     */
     pub fn set_font(&self, font : &font::Font) -> () {
         unsafe {
@@ -177,6 +202,13 @@ impl Text {
     
     /**
     * Set the orientation of a text
+    *
+    * This function completely overwrites the previous rotation.
+    * See rotate to add an angle based on the previous rotation instead.
+    * The default rotation of a text Text object is 0.
+    *
+    * # Arguments
+    * * angle - New rotation, in degrees
     */
     pub fn set_rotation(&self, angle : float) -> () {
         unsafe {
@@ -186,6 +218,10 @@ impl Text {
     
     /**
     * Get the orientation of a text
+    *
+    * The rotation is always in the range [0, 360].
+    *
+    * Return the current rotation, in degrees
     */
     pub fn get_rotation(&self) -> float {
         unsafe {
@@ -195,6 +231,12 @@ impl Text {
     
     /**
     * Rotate a text
+    *
+    * This function adds to the current rotation of the object,
+    * unlike set_rotation which overwrites it.
+    *
+    * # Arguments
+    * * factors - Scale factors
     */
     pub fn rotate(&self, angle : float) -> () {
         unsafe {
@@ -204,6 +246,13 @@ impl Text {
 
     /**
     * Set the style of a text
+    *
+    * You can pass a combination of one or more styles, for
+    * example Bold | Italic.
+    * The default style is Regular.
+    *
+    * # Arguments
+    * * style - New style
     */
     pub fn set_style(&self, style : Style) -> () {
         unsafe {
@@ -212,7 +261,12 @@ impl Text {
     }
     
     /**
-    * Get the size of the characters of a text
+    * Set the size of the characters of a text
+    *
+    * The default size is 30.
+    *
+    * # Arguments
+    * * size - The new character size, in pixels
     */
     pub fn set_character_size(&self, size : uint) -> () {
         unsafe {
@@ -222,6 +276,8 @@ impl Text {
 
     /**
     * Get the style of a text
+    *
+    * Return the current string style (see Style enum)
     */
     pub fn get_style(&self) -> Style {
         match unsafe {csfml::sfText_getStyle(self.text)} {
@@ -234,15 +290,29 @@ impl Text {
     
     /**
     * Get the font of a text
+    * If the text has no font attached, a None is returned.
+    * The returned pointer is const, which means that you can't
+    * modify the font when you retrieve it with this function.
     */
-    pub fn get_font(&self) -> font::Font {
+    pub fn get_font(&self) -> Option<font::Font> {
         unsafe {
-            font::Font::wrap(csfml::sfText_getFont(self.text))
+            let fnt = csfml::sfText_getFont(self.text);
+            if fnt == ptr::null() {
+                None
+            }
+            else {
+                Some(font::Font::wrap(fnt))
+            }
         }
     }
     
     /**
-    * Set the global color of a text
+    * Set the global color of used by a text
+    *
+    * By default, the text's color is opaque white.
+    *
+    * # Arguments
+    * * color - The new color of the text
     */
     pub fn set_color(&self, color : &Color) -> () {
         unsafe {
@@ -252,6 +322,8 @@ impl Text {
     
     /**
     * Get the global color of a text
+    *
+    * Return the global color of the text
     */
     pub fn get_color(&self) -> Color {
         unsafe {
@@ -259,64 +331,173 @@ impl Text {
         }
     }
 
+    /**
+    * Scale a text
+    *
+    * This function multiplies the current scale of the object,
+    * unlike set_Scale which overwrites it.
+    *
+    * # Arguments
+    * * factors - Scale factors
+    */
     pub fn scale(&self, factors : &vector2::Vector2f) -> () {
         unsafe {
             csfml::sfText_scale(self.text, *factors)
         }
     }
 
+    /**
+    * Set the scale factors of a text
+    *
+    * This function completely overwrites the previous scale.
+    * See scale to add a factor based on the previous scale instead.
+    * The default scale of a text Text object is (1, 1).
+    *
+    * # Arguments
+    * * scale - The new scale factors
+    */
     pub fn set_scale(&self, scale : &vector2::Vector2f) -> () {
         unsafe {
             csfml::sfText_setScale(self.text, *scale)
         }
     }
 
+    /**
+    * Move a text by a given offset
+    *
+    * This function adds to the current position of the object,
+    * unlike set_position which overwrites it.
+    *
+    * # Arguments
+    * * offset - Offset
+    */
     pub fn move(&self, offset : &vector2::Vector2f) -> () {
         unsafe {
             csfml::sfText_move(self.text, *offset)
         }
     }
 
+    /**
+    * Set the position of a text
+    *
+    * This function completely overwrites the previous position.
+    * See move to apply an offset based on the previous position instead.
+    * The default position of a text Text object is (0, 0).
+    *
+    * # Arguments
+    * * position - The new position
+    */
     pub fn set_position(&self, position : &vector2::Vector2f) -> () {
         unsafe {
             csfml::sfText_setPosition(self.text, *position)
         }
     }
 
+    /**
+    * Set the local origin of a text
+    *
+    * The origin of an object defines the center point for
+    * all transformations (position, scale, rotation).
+    * The coordinates of this point must be relative to the
+    * top-left corner of the object, and ignore all
+    * transformations (position, scale, rotation).
+    * The default origin of a text object is (0, 0).
+    *
+    * # Arguments
+    * * origin - New origin
+    */
     pub fn set_origin(&self, origin : &vector2::Vector2f) -> () {
         unsafe {
             csfml::sfText_setOrigin(self.text, *origin)
         }
     }
     
+    /**
+    * Get the current scale of a text
+    *
+    * Return the current scale factors
+    */
     pub fn get_scale(&self) -> vector2::Vector2f {
         unsafe {csfml::sfText_getScale(self.text)}
     }
 
+    /**
+    * Get the local origin of a text
+    *
+    * Return the current origin
+    */
     pub fn get_origin(&self) -> vector2::Vector2f {
         unsafe {csfml::sfText_getOrigin(self.text)}
     }
 
+    /**
+    * Return the position of the index-th character in a text
+    *
+    * This function computes the visual position of a character
+    * from its index in the string. The returned position is
+    * in global coordinates (translation, rotation, scale and
+    * origin are applied).
+    * If index is out of range, the position of the end of
+    * the string is returned.
+    *
+    * # Arguments
+    * * index - The index of the character
+    *
+    * Return the position of the character
+    */
     pub fn find_character_pos(&self, index : u64) -> vector2::Vector2f {
         unsafe {csfml::sfText_findCharacterPos(self.text, index as size_t)}
     }
 
+    /**
+    * Get the position of a text
+    *
+    * Return the current position
+    */
     pub fn get_position(&self) -> vector2::Vector2f {
         unsafe {csfml::sfText_getPosition(self.text)}
     }
 
+    /**
+    * Get the local bounding rectangle of a text
+    *
+    * The returned rectangle is in local coordinates, which means
+    * that it ignores the transformations (translation, rotation,
+    * scale, ...) that are applied to the entity.
+    * In other words, this function returns the bounds of the
+    * entity in the entity's coordinate system.
+    *
+    * Return the local bounding rectangle of the entity
+    */
     pub fn get_local_bounds(&self) -> FloatRect {
         unsafe {
             csfml::sfText_getLocalBounds(self.text)
         }
     }
 
+    /**
+    * Get the global bounding rectangle of a text
+    *
+    * The returned rectangle is in global coordinates, which means
+    * that it takes in account the transformations (translation,
+    * rotation, scale, ...) that are applied to the entity.
+    * In other words, this function returns the bounds of the
+    * text in the global 2D world's coordinate system.
+    *
+    * Return the global bounding rectangle of the entity
+    */
     pub fn get_global_bounds(&self) -> FloatRect {
         unsafe {
             csfml::sfText_getGlobalBounds(self.text)
         }
     }
 
+    /**
+    * Set the string of a text (from a unicode string)
+    *
+    * # Arguments
+    * * string - The new string
+    */
     pub fn set_unicode_string(&mut self, string : ~[u32]) -> () {
         unsafe {
             self.stringLength = string.len();
@@ -324,12 +505,22 @@ impl Text {
         }
     }
 
+    /**
+    * Get the combined transform of a text
+    *
+    * Return the transform combining the position/rotation/scale/origin of the object
+    */
     pub fn get_transform(&self) -> Transform {
         unsafe {
             csfml::sfText_getTransform(self.text)
         }
     }
 
+    /**
+    * Get the inverse of the combined transform of a text
+    *
+    * Return the inverse of the combined transformations applied to the object
+    */
     pub fn get_inverse_transform(&self) -> Transform {
         unsafe {
             csfml::sfText_getInverseTransform(self.text)

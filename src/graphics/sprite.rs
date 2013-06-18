@@ -1,7 +1,7 @@
 /*
-* Rust-SFML - Copyright (c) Letang Jeremy.
+* Rust-SFML - Copyright (c) 2013 Letang Jeremy.
 *
-* The Original software, SFML library, is provided by Laurent Gomila.
+* The original software, SFML library, is provided by Laurent Gomila.
 *
 * This software is provided 'as-is', without any express or implied warranty.
 * In no event will the authors be held liable for any damages arising from
@@ -30,6 +30,8 @@
 */
 
 use std::libc::{c_float};
+use std::ptr;
+
 use graphics::color;
 use graphics::texture;
 use graphics::drawable::Drawable;
@@ -43,6 +45,7 @@ use graphics::transform::Transform;
 pub mod csfml {
 
     use std::libc::{c_void, c_float};
+
     use rsfml::sfTypes::{sfBool};
     use graphics::color;
     use graphics::texture;
@@ -93,6 +96,8 @@ pub struct Sprite {
 impl Sprite {
     /**
     * Create a new sprite
+    *
+    * Return a new sfSprite object
     */
     pub fn new() -> Sprite {
         Sprite { sprite : unsafe {csfml::sfSprite_create()} }
@@ -100,6 +105,9 @@ impl Sprite {
 
     /**
     * Copy an existing sprite
+    *
+    * # Arguments
+    * * sprite - Sprite to copy
     */
     pub fn new_copy(sprite : &Sprite) -> Sprite {
         Sprite { sprite : unsafe {csfml::sfSprite_copy(sprite.unwrap())}}
@@ -107,6 +115,13 @@ impl Sprite {
 
     /**
     * Set the orientation of a sprite
+    *
+    * This function completely overwrites the previous rotation.
+    * See rotate to add an angle based on the previous rotation instead.
+    * The default rotation of a sprite Sprite object is 0.
+    *
+    * # Arguments
+    * * angle - New rotation, in degrees
     */
     pub fn set_rotation(&self, angle : float) -> () {
         unsafe {
@@ -116,6 +131,10 @@ impl Sprite {
 
     /**
     * Get the orientation of a sprite
+    *
+    * The rotation is always in the range [0, 360].
+    *
+    * Return the current rotation, in degrees
     */
     pub fn get_rotation(&self) -> float {
         unsafe {
@@ -125,6 +144,12 @@ impl Sprite {
 
     /**
     * Rotate a sprite
+    *
+    * This function adds to the current rotation of the object,
+    * unlike sfSprite_setRotation which overwrites it.
+    *
+    * # Arguments
+    * * angle - Angle of rotation, in degrees
     */
     pub fn rotate(&self, angle : float) -> () {
         unsafe {
@@ -134,6 +159,20 @@ impl Sprite {
     
     /**
     * Change the source texture of a sprite
+    *
+    * The texture argument refers to a texture that must
+    * exist as long as the sprite uses it. Indeed, the sprite
+    * doesn't store its own copy of the texture, but rather keeps
+    * a pointer to the one that you passed to this function.
+    * If the source texture is destroyed and the sprite tries to
+    * use it, the behaviour is undefined.
+    * If resetRect is true, the TextureRect property of
+    * the sprite is automatically adjusted to the size of the new
+    * texture. If it is false, the texture rect is left unchanged.
+    *
+    * # Arguments
+    * * texture - New texture
+    * * resetRect - Should the texture rect be reset to the size of the new texture?
     */
     pub fn set_texture(&self, texture : &texture::Texture, resetRect : bool) -> (){
         match resetRect {
@@ -144,6 +183,14 @@ impl Sprite {
 
     /**
     * Set the global color of a sprite
+    *
+    * This color is modulated (multiplied) with the sprite's
+    * texture. It can be used to colorize the sprite, or change
+    * its global opacity.
+    * By default, the sprite's color is opaque white.
+    *
+    * # Arguments
+    * * color - New color of the sprite
     */
     pub fn set_color(&self, color : &color::Color) -> () {
         unsafe {
@@ -153,92 +200,219 @@ impl Sprite {
     
     /**
     * Get the source texture of a sprite
+    *
+    * If the sprite has no source texture, None is returned.
+    * You can't
+    * modify the texture when you retrieve it with this function.
+    *
+    * Return an Option to the sprite's texture
     */
-    pub fn get_texture(&self) -> texture::Texture {
+    pub fn get_texture(&self) -> Option<texture::Texture> {
         unsafe {
-            texture::Texture::wrap(csfml::sfSprite_getTexture(self.sprite))
-        }
+            let tex = csfml::sfSprite_getTexture(self.sprite);
+            if tex == ptr::null() {
+                None
+            }
+            else {
+                Some(texture::Texture::wrap(tex))
+            }
+        }   
     }
 
     /**
     * Get the global color of a sprite
+    *
+    * Return the global color of the sprite
     */
     pub fn get_color(&self) -> color::Color {
         unsafe {csfml::sfSprite_getColor(self.sprite)}
     }
     
+    /**
+    * Set the position of a sprite
+    *
+    * This function completely overwrites the previous position.
+    * See move to apply an offset based on the previous position instead.
+    * The default position of a sprite Sprite object is (0, 0).
+    *
+    * # Arguments
+    * * position - New position
+    */
     pub fn set_position(&self, position : &vector2::Vector2f) -> () {
         unsafe {
             csfml::sfSprite_setPosition(self.sprite, *position)
         }
     }
 
+    /**
+    * Scale a sprite
+    *
+    * This function multiplies the current scale of the object,
+    * unlike setScale which overwrites it.
+    *
+    * # Arguments
+    * * factors - Scale factors
+    */
     pub fn scale(&self, factors : &vector2::Vector2f) -> () {
         unsafe {
             csfml::sfSprite_scale(self.sprite, *factors)
         }
     }
 
+    /**
+    * Get the current scale of a sprite
+    *
+    * Return the current scale factors 
+    */
     pub fn get_scale(&self) -> vector2::Vector2f {
         unsafe {csfml::sfSprite_getScale(self.sprite)}
     }
 
+    /**
+    * Get the local origin of a sprite
+    *
+    * Return the current origin
+    */
     pub fn get_origin(&self) -> vector2::Vector2f {
         unsafe {csfml::sfSprite_getOrigin(self.sprite)}
     }
 
+    /**
+    * Move a sprite by a given offset
+    *
+    * This function adds to the current position of the object,
+    * unlike sfSprite_setPosition which overwrites it.
+    *
+    * # Arguments
+    * * offset - Offset
+    */
     pub fn move(&self, offset : &vector2::Vector2f) -> () {
         unsafe {
             csfml::sfSprite_move(self.sprite, *offset)
         }
     }
 
+    /**
+    * Set the scale factors of a sprite
+    *
+    * This function completely overwrites the previous scale.
+    * See scale to add a factor based on the previous scale instead.
+    * The default scale of a sprite Sprite object is (1, 1).
+    *
+    * # Arguments
+    * * scale - New scale factors
+    */
     pub fn set_scale(&self, scale : &vector2::Vector2f) -> () {
         unsafe {
             csfml::sfSprite_setScale(self.sprite, *scale)
         }
     }
     
+    /**
+    * Set the local origin of a sprite
+    *
+    * The origin of an object defines the center point for
+    * all transformations (position, scale, rotation).
+    * The coordinates of this point must be relative to the
+    * top-left corner of the object, and ignore all
+    * transformations (position, scale, rotation).
+    * The default origin of a sprite Sprite object is (0, 0).
+    *
+    * # Arguments
+    * * origin - New origin
+    */
     pub fn set_origin(&self, origin : &vector2::Vector2f) -> () {
         unsafe {
             csfml::sfSprite_setOrigin(self.sprite, *origin)
         }
     }
 
+    /**
+    * Get the position of a sprite
+    *
+    * Return the current position
+    */
     pub fn get_position(&self) -> vector2::Vector2f {
         unsafe {csfml::sfSprite_getPosition(self.sprite)}
     }
 
+    /**
+    * Get the local bounding rectangle of a sprite
+    *
+    * The returned rectangle is in local coordinates, which means
+    * that it ignores the transformations (translation, rotation,
+    * scale, ...) that are applied to the entity.
+    * In other words, this function returns the bounds of the
+    * entity in the entity's coordinate system.
+    *
+    * Return the local bounding rectangle of the entity
+    */
     pub fn get_local_bounds(&self) -> FloatRect {
         unsafe {
             csfml::sfSprite_getLocalBounds(self.sprite)
         }
     }
 
+    /**
+    * Get the global bounding rectangle of a sprite
+    *
+    * The returned rectangle is in global coordinates, which means
+    * that it takes in account the transformations (translation,
+    * rotation, scale, ...) that are applied to the entity.
+    * In other words, this function returns the bounds of the
+    * sprite in the global 2D world's coordinate system.
+    *
+    * Return the global bounding rectangle of the entity
+    */
     pub fn get_global_bounds(&self) -> FloatRect {
         unsafe {
             csfml::sfSprite_getGlobalBounds(self.sprite)
         }
     }
 
+    /**
+    * Get the sub-rectangle of the texture displayed by a sprite
+    *
+    * Return the texture rectangle of the sprite
+    */
     pub fn get_texture_rect(&self) -> IntRect {
         unsafe {
             csfml::sfSprite_getTextureRect(self.sprite)
         }
     }
 
+    /**
+    * Set the sub-rectangle of the texture that a sprite will display
+    *
+    * The texture rect is useful when you don't want to display
+    * the whole texture, but rather a part of it.
+    * By default, the texture rect covers the entire texture.
+    *
+    * # Arguments
+    * * rectangle - Rectangle defining the region of the texture to display
+    */
     pub fn set_texture_rect(&self, rect : &IntRect) -> () {
         unsafe {
             csfml::sfSprite_setTextureRect(self.sprite, *rect)
         }
     }
 
+    /**
+    * Get the combined transform of a sprite
+    *
+    * Return the transform combining the position/rotation/scale/origin of the object
+    */
     pub fn get_transform(&self) -> Transform {
         unsafe {
             csfml::sfSprite_getTransform(self.sprite)
         }
     }
 
+    /**
+    * Get the inverse of the combined transform of a sprite
+    *
+    * Return the inverse of the combined transformations applied to the object
+    */
     pub fn get_inverse_transform(&self) -> Transform {
         unsafe {
             csfml::sfSprite_getInverseTransform(self.sprite)
