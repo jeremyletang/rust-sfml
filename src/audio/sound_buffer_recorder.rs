@@ -1,7 +1,7 @@
 /*
-* Rust-SFML - Copyright (c) Letang Jeremy.
+* Rust-SFML - Copyright (c) 2013 Letang Jeremy.
 *
-* The Original software, SFML library, is provided by Laurent Gomila.
+* The original software, SFML library, is provided by Laurent Gomila.
 *
 * This software is provided 'as-is', without any express or implied warranty.
 * In no event will the authors be held liable for any damages arising from
@@ -63,6 +63,8 @@ impl SoundBufferRecorder {
     
     /**
     * Create a new sound buffer recorder
+    *
+    * Return a new option to SoundBufferRecorder object or None if failed
     */
     pub fn new() -> Option<SoundBufferRecorder> {
         let buffer : *csfml::sfSoundBufferRecorder;
@@ -74,7 +76,17 @@ impl SoundBufferRecorder {
     }
     
     /**
-    * Start the capture of a sound recorder recorder 
+    * Start the capture of a sound buffer recorder 
+    *
+    * The sampleRate parameter defines the number of audio samples
+    * captured per second. The higher, the better the quality
+    * (for example, 44100 samples/sec is CD quality).
+    * This function uses its own thread so that it doesn't block
+    * the rest of the program while the capture runs.
+    * Please note that only one capture can happen at the same time.
+    *
+    * # Arguments
+    * * ampleRate - Desired capture rate, in number of samples per second
     */
     pub fn start(&self, sampleRate : uint) -> () {
         unsafe {
@@ -93,6 +105,12 @@ impl SoundBufferRecorder {
 
     /**
     * Get the sample rate of a sound buffer recorder
+    *
+    * The sample rate defines the number of audio samples
+    * captured per second. The higher, the better the quality
+    * (for example, 44100 samples/sec is CD quality).
+    *
+    * Return the sample rate, in samples per second
     */
     pub fn get_sample_rate(&self) -> uint {
         unsafe {
@@ -102,6 +120,13 @@ impl SoundBufferRecorder {
 
     /**
     * Get the sound buffer containing the captured audio data
+    *
+    * The sound buffer is valid only after the capture has ended.
+    * This function provides a read-only access to the internal
+    * sound buffer, but it can be copied if you need to
+    * make any modification to it.
+    *
+    * Return Read-only access to the sound buffer
     */
     pub fn get_buffer(&self) -> sound_buffer::SoundBuffer {
         unsafe {

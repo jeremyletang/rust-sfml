@@ -1,7 +1,7 @@
 /*
-* Rust-SFML - Copyright (c) Letang Jeremy.
+* Rust-SFML - Copyright (c) 2013 Letang Jeremy.
 *
-* The Original software, SFML library, is provided by Laurent Gomila.
+* The original software, SFML library, is provided by Laurent Gomila.
 *
 * This software is provided 'as-is', without any express or implied warranty.
 * In no event will the authors be held liable for any damages arising from
@@ -50,7 +50,12 @@ pub mod csfml {
 /**
 * Change the global volume of all the sounds and musics
 *
-* The volume is a number between 0 and 100.
+* The volume is a number between 0 and 100, it is combined with
+* the individual volume of each sound / music.
+* The default value for the volume is 100 (maximum).
+*
+* # Arguments
+* * volume - The new global volume, in the range [0, 100]
 */
 pub fn set_global_volume(volume : float) -> () {
     unsafe {
@@ -60,6 +65,8 @@ pub fn set_global_volume(volume : float) -> () {
 
 /**
 * Get the current value of the global volume
+*
+* Return the current global volume, in the range [0, 100]
 */
 pub fn get_global_volume() -> float {
     unsafe {
@@ -69,6 +76,11 @@ pub fn get_global_volume() -> float {
 
 /**
 * Set the position of the listener in the scene
+*
+* The default listener's position is (0, 0, 0).
+*
+* # Arguments
+* * * position - the New position of the listener
 */
 pub fn set_position(position : &Vector3f) -> () {
     unsafe {
@@ -78,6 +90,8 @@ pub fn set_position(position : &Vector3f) -> () {
 
 /**
 * Get the current position of the listener in the scene
+*
+* Return the listener's position
 */
 pub fn get_position() -> Vector3f {
     unsafe {
@@ -87,6 +101,11 @@ pub fn get_position() -> Vector3f {
 
 /**
 * Set the orientation of the listener in the scene
+*
+* The orientation defines the 3D axes of the listener
+* (left, up, front) in the scene. The orientation vector
+* doesn't have to be normalized.
+* The default listener's orientation is (0, 0, -1).
 */
 pub fn set_direction(position : &Vector3f) -> () {
     unsafe {
@@ -96,6 +115,8 @@ pub fn set_direction(position : &Vector3f) -> () {
 
 /**
 * Get the current orientation of the listener in the scene
+*
+* Return the listener's direction
 */
 pub fn get_direction() -> Vector3f {
     unsafe {
