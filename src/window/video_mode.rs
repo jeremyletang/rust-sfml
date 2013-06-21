@@ -133,13 +133,13 @@ impl VideoMode {
     *
     * Return a vector containing all the supported VideoMode
     */
-    pub fn get_fullscreen_modes() -> Option<~[VideoMode]> {
+    pub fn get_fullscreen_modes() -> ~[VideoMode] {
         let i : size_t = 0;
         let mut ret_tab : ~[VideoMode] = ~[];
         unsafe {
             let tab : *mut csfml::sfVideoMode = csfml::sfVideoMode_getFullscreenModes(&i) as *mut csfml::sfVideoMode;
                 if i == 0 {
-                    return None;
+                    return ~[];
                 }
                 let cvec = CVec(tab, i as uint);
                 let mut d : uint = 0;
@@ -150,7 +150,7 @@ impl VideoMode {
                     d += 1;
                 }
             }
-        return Some(ret_tab);
+        return ret_tab;
     }
 
     #[doc(hidden)]
