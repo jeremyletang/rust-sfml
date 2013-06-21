@@ -910,6 +910,27 @@ impl RenderWindow {
         }
     }
 
+    /**
+     * Iterates through each event the window currently has queued.
+     *
+     * # Arguments
+     * * f - The function to pass the event to.
+     */
+    pub fn each_event(&mut self, f: &fn(ev: event::Event) -> bool) -> bool {
+        loop {
+            let op_ev = self.poll_event();
+            match op_ev {
+                Some(ev) => {
+                    if !f(ev) {
+                        return false;
+                    }
+                },
+                None     => break
+            }
+        }
+        true
+    }
+
     #[doc(hidden)]
     pub fn unwrap(&self) -> *csfml::sfRenderWindow {
         self.renderWindow
