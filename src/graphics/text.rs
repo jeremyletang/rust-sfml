@@ -536,11 +536,11 @@ impl Text {
 
 #[doc(hidden)]
 impl Drawable for Text {
-    pub fn draw_in_render_window(&self, renderWindow : &render_window::RenderWindow) -> () {
+    pub fn draw_in_render_window(&self, renderWindow : &mut render_window::RenderWindow) -> () {
         renderWindow.draw_text(self)
     }
 
-    pub fn draw_in_render_texture(&self, renderTexture : &render_texture::RenderTexture) -> () {
+    pub fn draw_in_render_texture(&self, renderTexture : &mut render_texture::RenderTexture) -> () {
         renderTexture.draw_text(self)
     }
 }

@@ -435,11 +435,11 @@ impl Drawable for Sprite {
     /**
     * Draw the sprite in the RenderWindow
     */
-    pub fn draw_in_render_window(&self, renderWindow : &render_window::RenderWindow) -> () {
+    pub fn draw_in_render_window(&self, renderWindow : &mut render_window::RenderWindow) -> () {
         renderWindow.draw_sprite(self)
     }
 
-    pub fn draw_in_render_texture(&self, renderTexture : &render_texture::RenderTexture) -> () {
+    pub fn draw_in_render_texture(&self, renderTexture : &mut render_texture::RenderTexture) -> () {
         renderTexture.draw_sprite(self)
     }
 }

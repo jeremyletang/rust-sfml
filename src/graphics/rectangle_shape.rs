@@ -529,11 +529,11 @@ impl RectangleShape {
 }
 
 impl drawable::Drawable for RectangleShape {
-    pub fn draw_in_render_window(&self, renderWindow : &RenderWindow) -> () {
+    pub fn draw_in_render_window(&self, renderWindow : &mut RenderWindow) -> () {
         renderWindow.draw_rectangle_shape(self);
     }
 
-    pub fn draw_in_render_texture(&self, renderTexture : &RenderTexture) -> () {
+    pub fn draw_in_render_texture(&self, renderTexture : &mut RenderTexture) -> () {
         renderTexture.draw_rectangle_shape(self);
     }
 }

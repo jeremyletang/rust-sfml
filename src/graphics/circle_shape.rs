@@ -553,11 +553,11 @@ impl CircleShape {
 }
 
 impl drawable::Drawable for CircleShape {
-    pub fn draw_in_render_window(&self, renderWindow : &RenderWindow) -> () {
+    pub fn draw_in_render_window(&self, renderWindow : &mut RenderWindow) -> () {
         renderWindow.draw_circle_shape(self)
     }
     
-    pub fn draw_in_render_texture(&self, renderTexture : &RenderTexture) -> () {
+    pub fn draw_in_render_texture(&self, renderTexture : &mut RenderTexture) -> () {
         renderTexture.draw_circle_shape(self)
     }
 }

@@ -36,6 +36,6 @@ use graphics::render_texture;
 * The trait drawable is inherited by each object who can be drawn by the RenderWindow
 */
 pub trait Drawable {
-    pub fn draw_in_render_window(&self, &render_window::RenderWindow) -> ();
-    pub fn draw_in_render_texture(&self, &render_texture::RenderTexture) -> ();
+    pub fn draw_in_render_window(&self, &mut render_window::RenderWindow) -> ();
+    pub fn draw_in_render_texture(&self, &mut render_texture::RenderTexture) -> ();
 }

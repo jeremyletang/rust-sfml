@@ -287,7 +287,7 @@ impl RenderTexture {
     /**
     * Drawing functions
     */
-    pub fn draw<T : drawable::Drawable>(&self, t : &T) -> () {
+    pub fn draw<T : drawable::Drawable>(&mut self, t : &T) -> () {
         t.draw_in_render_texture(self);
     }
 
