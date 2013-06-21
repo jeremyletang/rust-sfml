@@ -149,7 +149,7 @@ impl Transform {
     * # Arguments
     * * other - Transform to combine to transform
     */
-    pub fn combine(&self, other : &Transform) -> () {
+    pub fn combine(&mut self, other : &Transform) -> () {
         unsafe {
             csfml::sfTransform_combine(&*self, &*other)
         }
@@ -162,7 +162,7 @@ impl Transform {
     * * x - Offset to apply on X axis
     * * y - Offset to apply on Y axis
     */
-    pub fn translate(&self, x : f32, y : f32) -> () {
+    pub fn translate(&mut self, x : f32, y : f32) -> () {
         unsafe {
             csfml::sfTransform_translate(&*self, x as c_float, y as c_float)
         }
@@ -174,7 +174,7 @@ impl Transform {
     * # Arguments
     * * angle - Rotation angle, in degrees
     */
-    pub fn rotate(&self, angle : f32) -> () {
+    pub fn rotate(&mut self, angle : f32) -> () {
         unsafe {
             csfml::sfTransform_rotate(&*self, angle as c_float)
         }
@@ -193,7 +193,7 @@ impl Transform {
     * * centerX - X coordinate of the center of rotation
     * * centerY - Y coordinate of the center of rotation
     */
-    pub fn rotate_with_center(&self, angle : f32, centerX : f32, centerY : f32) -> () {
+    pub fn rotate_with_center(&mut self, angle : f32, centerX : f32, centerY : f32) -> () {
         unsafe {
             csfml::sfTransform_rotateWithCenter(&*self, angle as c_float, centerX as c_float, centerY as c_float)
         }
@@ -206,7 +206,7 @@ impl Transform {
     * * scaleX - Scaling factor on the X axis
     * * scaleY - Scaling factor on the Y axis
     */
-    pub fn scale(&self, scaleX : f32, scaleY : f32) -> () {
+    pub fn scale(&mut self, scaleX : f32, scaleY : f32) -> () {
         unsafe {
             csfml::sfTransform_scale(&*self, scaleX as c_float, scaleY as c_float)
         }
@@ -226,7 +226,7 @@ impl Transform {
     * * centerX - X coordinate of the center of scaling
     * * centerY - Y coordinate of the center of scaling
     */
-    pub fn scale_with_center(&self, scaleX : f32, scaleY : f32, centerX : f32, centerY : f32) -> () {
+    pub fn scale_with_center(&mut self, scaleX : f32, scaleY : f32, centerX : f32, centerY : f32) -> () {
         unsafe {
             csfml::sfTransform_scaleWithCenter(&*self, scaleX, scaleY, centerX, centerY)
         }

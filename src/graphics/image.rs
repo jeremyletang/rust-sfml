@@ -218,7 +218,7 @@ impl Image {
     * * y - Y coordinate of pixel to change
     * * color - New color of the pixel
     */
-    pub fn set_pixel(&self, x : uint, y : uint, color : &Color) -> () {
+    pub fn set_pixel(&mut self, x : uint, y : uint, color : &Color) -> () {
         unsafe {
             csfml::sfImage_setPixel(self.image, x as c_uint, y as c_uint, *color)
         }
@@ -244,7 +244,7 @@ impl Image {
     /**
     * Flip an image horizontally (left <-> right)
     */
-    pub fn flip_horizontally(&self) -> () {
+    pub fn flip_horizontally(&mut self) -> () {
         unsafe {
             csfml::sfImage_flipHorizontally(self.image)
         }
@@ -253,7 +253,7 @@ impl Image {
     /**
     * Flip an image vertically (top <-> bottom)
     */
-    pub fn flip_vertically(&self) -> () {
+    pub fn flip_vertically(&mut self) -> () {
         unsafe {
             csfml::sfImage_flipVertically(self.image)
         }
@@ -279,7 +279,7 @@ impl Image {
     * * sourceRect - Sub-rectangle of the source image to copy
     * * applyAlpha - Should the copy take in account the source transparency?
     */
-    pub fn copy_image(&self, source : &Image, destX : uint, destY : uint, sourceRect : &IntRect, applyAlpha : bool) -> () {
+    pub fn copy_image(&mut self, source : &Image, destX : uint, destY : uint, sourceRect : &IntRect, applyAlpha : bool) -> () {
         match applyAlpha {
             true        =>  unsafe { csfml::sfImage_copyImage(self.image, source.unwrap(), destX as c_uint, destY as c_uint, *sourceRect, 1) },
             false       =>  unsafe { csfml::sfImage_copyImage(self.image, source.unwrap(), destX as c_uint, destY as c_uint, *sourceRect, 0) }

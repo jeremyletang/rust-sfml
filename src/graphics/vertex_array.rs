@@ -125,7 +125,7 @@ impl VertexArray {
     * adding new vertices after clearing doesn't involve
     * reallocating all the memory.
     */
-    pub fn clear(&self) -> () {
+    pub fn clear(&mut self) -> () {
         unsafe {
             csfml::sfVertexArray_clear(self.vertexArray)
         }
@@ -143,7 +143,7 @@ impl VertexArray {
     * # Arguments
     * * vertexCount - New size of the array (number of vertices)
     */
-    pub fn resize(&self, vertexCount : uint) -> () {
+    pub fn resize(&mut self, vertexCount : uint) -> () {
         unsafe {
             csfml::sfVertexArray_resize(self.vertexArray, vertexCount as c_uint)
         }
@@ -155,7 +155,7 @@ impl VertexArray {
     * # Arguments
     * * vertex - Vertex to add
     */
-    pub fn append(&self, vertex : &Vertex) -> () {
+    pub fn append(&mut self, vertex : &Vertex) -> () {
         unsafe {
             csfml::sfVertexArray_append(self.vertexArray, *vertex)
         }
@@ -189,7 +189,7 @@ impl VertexArray {
     * # Arguments
     * * type - Type of primitive
     */
-    pub fn set_primitive_type(&self, primitiveType : PrimitiveType) -> () {
+    pub fn set_primitive_type(&mut self, primitiveType : PrimitiveType) -> () {
         match primitiveType {
             primitive_type::Points              => unsafe {csfml::sfVertexArray_setPrimitiveType(self.vertexArray, csfml::sfPoints)},
             primitive_type::Lines               => unsafe {csfml::sfVertexArray_setPrimitiveType(self.vertexArray, csfml::sfLines)},

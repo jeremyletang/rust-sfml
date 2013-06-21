@@ -143,7 +143,7 @@ impl RenderTexture {
     * # Arguments
     * * active - true to activate, false to deactivate
     */
-    pub fn set_active(&self, active : bool) -> bool {
+    pub fn set_active(&mut self, active : bool) -> bool {
         match match active {
             false       => unsafe {csfml::sfRenderTexture_setActive(self.renderTexture, 0)},
             true        => unsafe {csfml::sfRenderTexture_setActive(self.renderTexture, 1)}
@@ -182,7 +182,7 @@ impl RenderTexture {
     * # Arguments
     * * view - the new view
     */
-    pub fn set_view(&self, view : &view::View) -> () {
+    pub fn set_view(&mut self, view : &view::View) -> () {
         unsafe {
             csfml::sfRenderTexture_setView(self.renderTexture, view.unwrap())
         }
@@ -292,42 +292,42 @@ impl RenderTexture {
     }
 
     /// Draw Text
-    pub fn draw_text(&self, text : &Text) -> () {
+    pub fn draw_text(&mut self, text : &Text) -> () {
         unsafe {
             csfml::sfRenderTexture_drawText(self.renderTexture, text.unwrap(), ptr::null())
         }
     }
 
     /// Draw Sprite
-    pub fn draw_sprite(&self, sprite : &Sprite) -> () {
+    pub fn draw_sprite(&mut self, sprite : &Sprite) -> () {
         unsafe {
             csfml::sfRenderTexture_drawSprite(self.renderTexture, sprite.unwrap(), ptr::null())
         }
     }
 
     /// Draw CircleShape
-    pub fn draw_circle_shape(&self, circleShape : &CircleShape) -> () {
+    pub fn draw_circle_shape(&mut self, circleShape : &CircleShape) -> () {
         unsafe {
             csfml::sfRenderTexture_drawCircleShape(self.renderTexture, circleShape.unwrap(), ptr::null())
         }
     }
 
     /// Draw RectangleShape
-    pub fn draw_rectangle_shape(&self, rectangleShape : &RectangleShape) -> () {
+    pub fn draw_rectangle_shape(&mut self, rectangleShape : &RectangleShape) -> () {
         unsafe {
             csfml::sfRenderTexture_drawRectangleShape(self.renderTexture, rectangleShape.unwrap(), ptr::null())
         }
     }
 
     /// Draw ConvexShape
-    pub fn draw_convex_shape(&self, convexShape : &ConvexShape) -> () {
+    pub fn draw_convex_shape(&mut self, convexShape : &ConvexShape) -> () {
         unsafe {
             csfml::sfRenderTexture_drawConvexShape(self.renderTexture, convexShape.unwrap(), ptr::null())
         }
     }
 
     /// Draw VertexArray
-    pub fn draw_vertex_array(&self, vertexArray : &VertexArray) -> () {
+    pub fn draw_vertex_array(&mut self, vertexArray : &VertexArray) -> () {
         unsafe {
             csfml::sfRenderTexture_drawVertexArray(self.renderTexture, vertexArray.unwrap(), ptr::null())
         }
@@ -352,7 +352,7 @@ impl RenderTexture {
     * function if you do so.
     *
     */
-    pub fn push_GL_states(&self) -> () {
+    pub fn push_GL_states(&mut self) -> () {
         unsafe {
             csfml::sfRenderTexture_pushGLStates(self.renderTexture)
         }
@@ -361,7 +361,7 @@ impl RenderTexture {
     /**
     * Restore the previously saved OpenGL render states and matrices
     */
-    pub fn pop_GL_states(&self) -> () {
+    pub fn pop_GL_states(&mut self) -> () {
         unsafe {
             csfml::sfRenderTexture_popGLStates(self.renderTexture)
         }
@@ -376,7 +376,7 @@ impl RenderTexture {
     * states needed by SFML are set, so that subsequent sfRenderWindow_draw*()
     * calls will work as expected.
     */
-    pub fn reset_GL_states(&self) -> () {
+    pub fn reset_GL_states(&mut self) -> () {
         unsafe {
             csfml::sfRenderTexture_resetGLStates(self.renderTexture)
         }
@@ -399,7 +399,7 @@ impl RenderTexture {
     * # Arguments
     * * smooth - true to enable smoothing, false to disable it
     */
-    pub fn set_smooth(&self, smooth : bool) -> () {
+    pub fn set_smooth(&mut self, smooth : bool) -> () {
         match smooth {
             true        => unsafe {csfml::sfRenderTexture_setSmooth(self.renderTexture, 1)},
             false       => unsafe {csfml::sfRenderTexture_setSmooth(self.renderTexture, 0)}

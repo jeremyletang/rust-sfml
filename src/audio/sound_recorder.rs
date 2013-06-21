@@ -77,7 +77,7 @@ impl SoundRecorder {
     * # Arguments
     * * ampleRate - Desired capture rate, in number of samples per second
     */
-    pub fn start(&self, sampleRate : uint) -> () {
+    pub fn start(&mut self, sampleRate : uint) -> () {
         unsafe {
             csfml::sfSoundRecorder_start(self.soundRecorder, sampleRate as c_uint)
         }
@@ -86,7 +86,7 @@ impl SoundRecorder {
     /**
     * Stop the capture of a sound recorder
     */
-    pub fn stop(&self) -> () {
+    pub fn stop(&mut self) -> () {
         unsafe {
             csfml::sfSoundRecorder_stop(self.soundRecorder)
         }

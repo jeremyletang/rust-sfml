@@ -183,7 +183,7 @@ impl Texture {
     * * x - X offset in the texture where to copy the source pixels
     * * y - Y offset in the texture where to copy the source pixels
     */
-    pub fn update_from_window(&self, window : window::Window, x : uint, y : uint) -> () {
+    pub fn update_from_window(&mut self, window : window::Window, x : uint, y : uint) -> () {
         unsafe {
             csfml::sfTexture_updateFromWindow(self.texture, window.unwrap(), x as c_uint, y as c_uint)
         }
@@ -197,7 +197,7 @@ impl Texture {
     * * x - X offset in the texture where to copy the source pixels
     * * y - Y offset in the texture where to copy the source pixels
     */
-    pub fn update_from_render_window(&self, renderWindow : render_window::RenderWindow, x : uint, y : uint) -> () {
+    pub fn update_from_render_window(&mut self, renderWindow : render_window::RenderWindow, x : uint, y : uint) -> () {
         unsafe {
             csfml::sfTexture_updateFromRenderWindow(self.texture, renderWindow.unwrap(), x as c_uint, y as c_uint)
         }
@@ -211,7 +211,7 @@ impl Texture {
     * * x - X offset in the texture where to copy the source pixels
     * * y - Y offset in the texture where to copy the source pixels
     */
-    pub fn update_from_image(&self, image : &image::Image, x : uint, y : uint) -> () {
+    pub fn update_from_image(&mut self, image : &image::Image, x : uint, y : uint) -> () {
         unsafe {
             csfml::sfTexture_updateFromImage(self.texture, image.unwrap(), x as c_uint, y as c_uint)
         }
@@ -237,7 +237,7 @@ impl Texture {
     * # Arguments
     * * smooth - true to enable smoothing, false to disable it
     */
-    pub fn set_smooth(&self, smooth : bool) -> () {
+    pub fn set_smooth(&mut self, smooth : bool) -> () {
         match smooth {
             true        => unsafe {csfml::sfTexture_setSmooth(self.texture, 1)},
             false       => unsafe {csfml::sfTexture_setSmooth(self.texture, 0)}
@@ -276,7 +276,7 @@ impl Texture {
     * # Arguments
     * * repeated  - true to repeat the texture, false to disable repeating
     */
-    pub fn set_repeated(&self, repeated : bool) -> () {
+    pub fn set_repeated(&mut self, repeated : bool) -> () {
         match repeated {
             true        => unsafe {csfml::sfTexture_setRepeated(self.texture, 1)},
             false       => unsafe {csfml::sfTexture_setRepeated(self.texture, 0)}

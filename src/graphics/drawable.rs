@@ -33,7 +33,7 @@ use graphics::render_window;
 use graphics::render_texture;
 
 /**
-* The trait drawable is inherited by each object who can be drown by the RenderWindow
+* The trait drawable is inherited by each object who can be drawn by the RenderWindow
 */
 pub trait Drawable {
     pub fn draw_in_render_window(&self, &render_window::RenderWindow) -> ();

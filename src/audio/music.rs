@@ -108,7 +108,7 @@ impl Music {
     /**
     * Set whether or not a music should loop after reaching the end
     */
-    pub fn set_loop(&self, lloop : bool) -> () {
+    pub fn set_loop(&mut self, lloop : bool) -> () {
         unsafe {
             if lloop == true {
                 csfml::sfMusic_setLoop(self.music, 1)
@@ -139,21 +139,21 @@ impl Music {
     /**
     * Start or resume playing a music
     */
-    pub fn play(&self) -> () {
+    pub fn play(&mut self) -> () {
         unsafe {csfml::sfMusic_play(self.music)}
     }
 
     /**
     * Pause a music
     */
-    pub fn pause(&self) -> () {
+    pub fn pause(&mut self) -> () {
         unsafe {csfml::sfMusic_pause(self.music)}
     }
 
     /**
     * Stop playing a music
     */
-    pub fn stop(&self) -> () {
+    pub fn stop(&mut self) -> () {
         unsafe {csfml::sfMusic_stop(self.music)}
     }
     
@@ -192,21 +192,21 @@ impl Music {
     /**
     * Set the pitch of a music
     */
-    pub fn set_pitch(&self, pitch : float) -> () {
+    pub fn set_pitch(&mut self, pitch : float) -> () {
         unsafe {csfml::sfMusic_setPitch(self.music, pitch as c_float)}
     }
     
     /**
     * Set the volume of a music
     */
-    pub fn set_volume(&self, volume : float) -> () {
+    pub fn set_volume(&mut self, volume : float) -> () {
         unsafe {csfml::sfMusic_setVolume(self.music, volume as c_float)}
     }
 
     /**
     * Make a musics's position relative to the listener or absolute
     */
-    pub fn set_relative_to_listener(&self, relative : bool) -> () {
+    pub fn set_relative_to_listener(&mut self, relative : bool) -> () {
         unsafe {
             if relative == true {
                 csfml::sfMusic_setRelativeToListener(self.music, 1);
@@ -220,21 +220,21 @@ impl Music {
     /**
     * Set the minimum distance of a music 
     */
-    pub fn set_min_distance(&self, distance : float) -> () {
+    pub fn set_min_distance(&mut self, distance : float) -> () {
         unsafe {csfml::sfMusic_setMinDistance(self.music, distance as c_float)}
     }
     
     /**
     *  Set the attenuation factor of a music
     */
-    pub fn set_attenuation(&self, attenuation : float) -> () {
+    pub fn set_attenuation(&mut self, attenuation : float) -> () {
         unsafe {csfml::sfMusic_setAttenuation(self.music, attenuation as c_float)}
     }
     
     /**
     * Change the current playing position of a music
     */
-    pub fn set_playing_offset(&self, timeOffset : time::Time) -> () {
+    pub fn set_playing_offset(&mut self, timeOffset : time::Time) -> () {
         unsafe {
             csfml::sfMusic_setPlayingOffset(self.music, timeOffset.unwrap())
         }
@@ -286,7 +286,7 @@ impl Music {
         }        
     }
 
-    fn set_position(&self, position : &vector3::Vector3f) -> () {
+    fn set_position(&mut self, position : &vector3::Vector3f) -> () {
         unsafe {
             csfml::sfMusic_setPosition(self.music, *position)
         }

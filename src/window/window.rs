@@ -134,8 +134,8 @@ pub struct Window {
 }
 
 impl Window { 
-    priv fn get_wrapped_event(&self) ->event::Event {
-            match self.event.typeEvent as c_uint {
+    priv fn get_wrapped_event(&self) -> event::Event {
+        match self.event.typeEvent as c_uint {
             0   => event::Closed,
             1   => event::Resized{width : self.event.p1 as int, height : self.event.p2 as int},
             2   => event::LostFocus,
@@ -216,7 +216,7 @@ impl Window {
     *
     * Return the event if an event was returned, or NoEvent if the event queue was empty
     */
-    pub fn poll_event(&self) -> event::Event {
+    pub fn poll_event(&mut self) -> event::Event {
         let haveEvent : bool =  unsafe {
             match csfml::sfWindow_pollEvent(self.window, &self.event) {
                 0       => false,
@@ -242,7 +242,7 @@ impl Window {
     *
     * Return the event or NoEvent if an error has occured
     */
-    pub fn wait_event(&self) -> event::Event {
+    pub fn wait_event(&mut self) -> event::Event {
         let haveEvent : bool =  unsafe {
             match csfml::sfWindow_waitEvent(self.window, &self.event) {
                 0       => false,
@@ -329,7 +329,7 @@ impl Window {
     * # Arguments
     * * title - New title
     */
-    pub fn set_unicode_title(&self, title : ~[u32]) -> () {
+    pub fn set_unicode_title(&mut self, title : ~[u32]) -> () {
         unsafe {
             csfml::sfWindow_setUnicodeTitle(self.window, vec::raw::to_ptr(title))
         }
@@ -343,7 +343,7 @@ impl Window {
     * * height - Icon's height, in pixels
     * * pixels - Vector of pixels
     */
-    pub fn set_icon(&self, width : uint, height : uint, pixels : ~[u8]) -> () {
+    pub fn set_icon(&mut self, width : uint, height : uint, pixels : ~[u8]) -> () {
         unsafe {
             csfml::sfWindow_setIcon(self.window, width as c_uint, height as c_uint, vec::raw::to_ptr(pixels))
         }
@@ -358,7 +358,7 @@ impl Window {
     * will still work (i.e. you don't have to test is_open
     * every time), and will have no effect on closed windows.
     */
-    pub fn close(&self) -> () {
+    pub fn close(&mut self) -> () {
         unsafe {
             csfml::sfWindow_close(self.window);
         }
@@ -402,7 +402,7 @@ impl Window {
     * # Arguments
     * * title - New title
     */
-    pub fn set_title(&self, title : ~str) -> () {
+    pub fn set_title(&mut self, title : ~str) -> () {
         do str::as_c_str(title) |title_buf| {
             unsafe {
                 csfml::sfWindow_setTitle(self.window, title_buf);
@@ -416,7 +416,7 @@ impl Window {
     * # Arguments
     * * visible - true to show the window, false to hide it
     */
-    pub fn set_visible(&self, visible : bool) -> () {
+    pub fn set_visible(&mut self, visible : bool) -> () {
         let tmp : sfBool = 
             match visible {
                 true    => 1,
@@ -433,7 +433,7 @@ impl Window {
     * # Arguments
     * * visible - true to show, false to hide
     */
-    pub fn set_mouse_cursor_visible(&self, visible : bool) -> () {
+    pub fn set_mouse_cursor_visible(&mut self, visible : bool) -> () {
         let tmp : sfBool = 
             match visible {
                 true    => 1,
@@ -455,7 +455,7 @@ impl Window {
     * # Arguments
     * * enabled - true to enable v-sync, false to deactivate
     */
-    pub fn set_vertical_sync_enabled(&self, enabled : bool) -> () {
+    pub fn set_vertical_sync_enabled(&mut self, enabled : bool) -> () {
         let tmp : sfBool = 
             match enabled {
                 true    => 1,
@@ -478,7 +478,7 @@ impl Window {
     * # Arguments
     * * enabled - true to enable, false to disable
     */
-    pub fn set_key_repeat_enabled(&self, enabled : bool) -> () {
+    pub fn set_key_repeat_enabled(&mut self, enabled : bool) -> () {
         let tmp : sfBool = 
             match enabled {
                 true    => 1,
@@ -503,7 +503,7 @@ impl Window {
     *
     * Return true if operation was successful, false otherwise
     */
-    pub fn set_active(&self, enabled : bool) -> bool {
+    pub fn set_active(&mut self, enabled : bool) -> bool {
         let tmp : sfBool = 
             match enabled {
                 true    => 1,
@@ -541,7 +541,7 @@ impl Window {
     * # Arguments
     * * limit - Framerate limit, in frames per seconds (use 0 to disable limit)
     */
-    pub fn set_framerate_limit(&self, limit : uint) -> () {
+    pub fn set_framerate_limit(&mut self, limit : uint) -> () {
         unsafe {
             csfml::sfWindow_setFramerateLimit(self.window, limit as c_uint)
         }
@@ -556,7 +556,7 @@ impl Window {
     * # Arguments
     * * threshold - New threshold, in the range [0, 100]
     */
-    pub fn set_joystick_threshold(&self, threshold : float) -> () {
+    pub fn set_joystick_threshold(&mut self, threshold : float) -> () {
         unsafe {
             csfml::sfWindow_setJoystickThreshold(self.window, threshold as c_float)
         }
@@ -583,7 +583,7 @@ impl Window {
     * # Arguments
     * * position - New position of the window, in pixels
     */
-    pub fn set_position(&self, position : &vector2::Vector2i) -> () {
+    pub fn set_position(&mut self, position : &vector2::Vector2i) -> () {
         unsafe {
             csfml::sfWindow_setPosition(self.window, *position)
         }
@@ -608,7 +608,7 @@ impl Window {
     * # Arguments
     * * size - New size, in pixels
     */
-    pub fn set_size(&self, size : &vector2::Vector2u) -> () {
+    pub fn set_size(&mut self, size : &vector2::Vector2u) -> () {
         unsafe {
             csfml::sfWindow_setSize(self.window, *size)
         }

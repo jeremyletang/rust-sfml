@@ -105,7 +105,7 @@ impl Sound {
     /**
     * Set whether or not a sound should loop after reaching the end
     */
-    pub fn set_loop(&self, lloop : bool) -> () {
+    pub fn set_loop(&mut self, lloop : bool) -> () {
         unsafe {
             if lloop == true {
                 csfml::sfSound_setLoop(self.sound, 1)
@@ -129,21 +129,21 @@ impl Sound {
     /**
     * Start or resume playing a sound
     */
-    pub fn play(&self) -> () {
+    pub fn play(&mut self) -> () {
         unsafe {csfml::sfSound_play(self.sound)}
     }
 
     /**
     *  Start or resume playing a sound
     */
-    pub fn pause(&self) -> () {
+    pub fn pause(&mut self) -> () {
         unsafe {csfml::sfSound_pause(self.sound)}
     }
 
     /**
     * Stop playing a sound
     */
-    pub fn stop(&self) -> () {
+    pub fn stop(&mut self) -> () {
         unsafe {csfml::sfSound_stop(self.sound)}
     }
 
@@ -168,21 +168,21 @@ impl Sound {
     /**
     * Set the pitch of a sound 
     */
-    pub fn set_pitch(&self, pitch : float) -> () {
+    pub fn set_pitch(&mut self, pitch : float) -> () {
         unsafe {csfml::sfSound_setPitch(self.sound, pitch as c_float)}
     }
 
     /**
     * Set the volume of a sound
     */
-    pub fn set_volume(&self, volume : float) -> () {
+    pub fn set_volume(&mut self, volume : float) -> () {
         unsafe {csfml::sfSound_setVolume(self.sound, volume as c_float)}
     }
 
     /**
     * Make the sound's position relative to the listener or absolute
     */
-    pub fn set_relative_to_listener(&self, relative : bool) -> () {
+    pub fn set_relative_to_listener(&mut self, relative : bool) -> () {
         unsafe {
             if relative == true {
                 csfml::sfSound_setRelativeToListener(self.sound, 1);
@@ -196,21 +196,21 @@ impl Sound {
     /**
     * Set the minimum distance of a sound
     */
-    pub fn set_min_distance(&self, distance : float) -> () {
+    pub fn set_min_distance(&mut self, distance : float) -> () {
         unsafe {csfml::sfSound_setMinDistance(self.sound, distance as c_float)}
     }
 
     /**
     * Set the attenuation factor of a sound 
     */
-    pub fn set_attenuation(&self, attenuation : float) -> () {
+    pub fn set_attenuation(&mut self, attenuation : float) -> () {
         unsafe {csfml::sfSound_setAttenuation(self.sound, attenuation as c_float)}
     }
 
     /**
     * Change the current playing position of a sound
     */
-    pub fn set_playing_offset(&self, timeOffset : time::Time) -> () {
+    pub fn set_playing_offset(&mut self, timeOffset : time::Time) -> () {
         unsafe {
             csfml::sfSound_setPlayingOffset(self.sound, timeOffset.unwrap())
         }
@@ -265,7 +265,7 @@ impl Sound {
     /**
     * 
     */
-    pub fn set_buffer(&self, buffer : &sound_buffer::SoundBuffer) -> () {
+    pub fn set_buffer(&mut self, buffer : &sound_buffer::SoundBuffer) -> () {
         unsafe {
             csfml::sfSound_setBuffer(self.sound, buffer.unwrap())
         }
@@ -286,7 +286,7 @@ impl Sound {
         }
     }
 
-    pub fn set_position(&self, position : &vector3::Vector3f) -> () {
+    pub fn set_position(&mut self, position : &vector3::Vector3f) -> () {
         unsafe {
             csfml::sfSound_setPosition(self.sound, *position)
         }
