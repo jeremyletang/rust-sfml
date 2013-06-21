@@ -545,6 +545,17 @@ impl Drawable for Text {
     }
 }
 
+impl Clone for Text {
+    fn clone(&self) -> Text {
+        unsafe {
+            Text {
+                text:         csfml::sfText_copy(self.text),
+                stringLength: self.stringLength
+            }
+        }
+    }
+}
+
 impl Drop for Text {
     /**
     *   Destructor for class Text. Destroy all the ressource.

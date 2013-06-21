@@ -144,18 +144,6 @@ impl Texture {
             Texture { texture : unsafe {csfml::sfTexture_createFromFile(filebuf, &*area)} }
         }
     }
-    
-    /**
-    * Create a new texture by copying a exitant one
-    *
-    * # Arguments
-    * * texture - Texture to copy
-    *
-    * Return an option to the copied texture or None
-    */
-    pub fn new_copy(texture : &Texture) -> Texture {
-        Texture { texture : unsafe {csfml::sfTexture_copy(texture.unwrap())}}
-    }
 
     /**
     * Create a new texture from an image
@@ -357,6 +345,16 @@ impl Texture {
     #[doc(hidden)]
     pub fn wrap(texture : *csfml::sfTexture) -> Texture {
         Texture { texture : texture}
+    }
+}
+
+impl Clone for Texture {
+    fn clone(&self) -> Texture {
+        unsafe {
+            Texture {
+                texture: csfml::sfTexture_copy(self.texture)
+            }
+        }
     }
 }
 

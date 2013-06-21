@@ -83,18 +83,6 @@ impl View {
     pub fn new() -> View {
         View { dropable: true, view : unsafe {csfml::sfView_create()} }
     }
-    
-    /**
-    * Create a view by copying an existant one.
-    *
-    * # Arguments
-    * * view - View to copy
-    *
-    * Return a new View object
-    */
-    pub fn new_copy(view : &View) -> View {
-        View { dropable: true, view : unsafe {csfml::sfView_copy(view.unwrap())}}
-    }
 
     /**
     * Construct a view from a rectangle
@@ -272,6 +260,18 @@ impl View {
     }
         
 }
+
+impl Clone for View {
+    fn clone(&self) -> View {
+        unsafe {
+            View {
+                dropable: self.dropable,
+                view: csfml::sfView_copy(self.view)
+            }
+        }
+    }
+}
+
 
 impl Drop for View {
     /// Destructor for class View

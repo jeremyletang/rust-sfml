@@ -108,18 +108,6 @@ impl RectangleShape {
     pub fn new() -> RectangleShape {
         RectangleShape { rectangleShape : unsafe {csfml::sfRectangleShape_create()} }
     }
-
-    /**
-    * Copy an existing rectangle shape
-    *
-    * # Arguments
-    * * shape - Shape to copy
-    * 
-    * Return the copied object
-    */
-    pub fn new_copy(rectangleShape : &RectangleShape) -> RectangleShape {
-        RectangleShape {rectangleShape : unsafe {csfml::sfRectangleShape_copy(rectangleShape.unwrap())} }
-    }
     
     /**
     * Set the position of a rectangle shape
@@ -535,6 +523,16 @@ impl drawable::Drawable for RectangleShape {
 
     pub fn draw_in_render_texture(&self, renderTexture : &mut RenderTexture) -> () {
         renderTexture.draw_rectangle_shape(self);
+    }
+}
+
+impl Clone for RectangleShape {
+    fn clone(&self) -> RectangleShape {
+        unsafe {
+            RectangleShape {
+                rectangleShape: csfml::sfRectangleShape_copy(self.rectangleShape)
+            }
+        }
     }
 }
 

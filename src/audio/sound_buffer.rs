@@ -88,16 +88,6 @@ impl SoundBuffer {
     }
 
     /**
-    * Create a new sound buffer by copying an existing one
-    *
-    * # Arguments
-    * * soundBuffer - Sound buffer to copy
-    */
-    pub fn new_copy(soundBuffer : SoundBuffer) -> SoundBuffer {
-        SoundBuffer {soundBuffer :  unsafe {csfml::sfSoundBuffer_copy(soundBuffer.unwrap())}}
-    }
-
-    /**
     * Save a sound buffer to an audio file
     *
     * Here is a complete list of all the supported audio formats:
@@ -190,6 +180,16 @@ impl SoundBuffer {
         self.soundBuffer
     }
 
+}
+
+impl Clone for SoundBuffer {
+    fn clone(&self) -> SoundBuffer {
+        unsafe {
+            SoundBuffer {
+                soundBuffer: csfml::sfSoundBuffer_copy(self.soundBuffer)
+            }
+        }
+    }
 }
 
 impl Drop for SoundBuffer {

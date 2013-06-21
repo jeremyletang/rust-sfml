@@ -90,19 +90,7 @@ impl Font {
             }
         }
     }
-    
-    /**
-    * Create font from a existing one
-    *
-    * # Arguments
-    * * font - Font to copy
-    * Return the copied font
-    */
-    pub fn new_copy(font : &Font) -> Font {
-        unsafe {
-            Font { font : csfml::sfFont_copy(font.unwrap())}
-        }
-    }    
+      
     /**
     * Get the kerning value corresponding to a given pair of characters in a font
     * 
@@ -174,6 +162,16 @@ impl Font {
         self.font
     } 
 
+}
+
+impl Clone for Font {
+    fn clone(&self) -> Font {
+        unsafe {
+            Font {
+                font: csfml::sfFont_copy(self.font)
+            }
+        }
+    }
 }
 
 impl Drop for Font {

@@ -125,18 +125,6 @@ impl Image {
             Image { image : unsafe {csfml::sfImage_createFromFile(filebuf)} }
         }
     }
-    
-    /**
-    * Copy an existing image
-    *
-    * # Arguments
-    * * image - Image to copy
-    *
-    * Return copied object
-    */
-    pub fn new_copy(image : &Image) -> Image {
-        Image { image : unsafe {csfml::sfImage_copy(image.unwrap())} }
-    }
 
     /**
     * Create an image from an vector of pixels
@@ -294,6 +282,16 @@ impl Image {
     #[doc(hidden)]
     pub fn unwrap(&self) -> *csfml::sfImage {
         self.image
+    }
+}
+
+impl Clone for Image {
+    fn clone(&self) -> Image {
+        unsafe {
+            Image {
+                image: csfml::sfImage_copy(self.image)
+            }
+        }
     }
 }
 

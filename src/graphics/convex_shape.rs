@@ -111,18 +111,6 @@ impl ConvexShape {
     }
 
     /**
-    * Copy an existing convex shape
-    *
-    * # Arguments
-    * * shape - Shape to copy
-    * 
-    * Return the copied object
-    */
-    pub fn new_copy(shape : &ConvexShape) -> ConvexShape {
-        ConvexShape { convexShape : unsafe {csfml::sfConvexShape_copy(shape.unwrap())} }
-    }
-
-    /**
     * Set the position of a convex shape
     *
     * This function completely overwrites the previous position.
@@ -536,6 +524,16 @@ impl drawable::Drawable for ConvexShape {
 
     pub fn draw_in_render_texture(&self, renderTexture : &mut RenderTexture) -> () {
         renderTexture.draw_convex_shape(self)
+    }
+}
+
+impl Clone for ConvexShape {
+    fn clone(&self) -> ConvexShape {
+        unsafe {
+            ConvexShape {
+                convexShape: csfml::sfConvexShape_copy(self.convexShape)
+            }
+        }
     }
 }
 

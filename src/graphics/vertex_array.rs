@@ -93,20 +93,6 @@ impl VertexArray {
     }
 
     /**
-    * Copy an existing vertex array
-    *
-    * # Arguments
-    * * vertexArray - Vertex array to copy
-    *
-    * Return the copied object
-    */
-    pub fn new_copy(vertexArray : &VertexArray) -> VertexArray {
-        unsafe {
-            VertexArray { vertexArray : csfml::sfVertexArray_copy(vertexArray.unwrap())}
-        }
-    }
-
-    /**
     * Return the vertex count of a vertex array
     *
     * Return the number of vertices in the array
@@ -253,6 +239,16 @@ impl Drawable for VertexArray {
 
     pub fn draw_in_render_texture(&self, renderTexture : &mut RenderTexture) -> () {
         renderTexture.draw_vertex_array(self)
+    }
+}
+
+impl Clone for VertexArray {
+    fn clone(&self) -> VertexArray {
+        unsafe {
+            VertexArray {
+                vertexArray: csfml::sfVertexArray_copy(self.vertexArray)
+            }
+        }
     }
 }
 

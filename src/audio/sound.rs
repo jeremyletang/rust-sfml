@@ -94,13 +94,6 @@ impl Sound {
     pub fn new() -> Sound {
         Sound { sound : unsafe {csfml::sfSound_create()}}
     }
-    
-    /**
-    * Create a new sound by copying an existing one
-    */
-    pub fn new_copy(sound : Sound) -> Sound {
-        Sound {sound : unsafe {csfml::sfSound_copy(sound.unwrap())}}
-    }
 
     /**
     * Set whether or not a sound should loop after reaching the end
@@ -298,6 +291,16 @@ impl Sound {
     #[doc(hidden)]
     pub fn unwrap(&self) -> *csfml::sfSound {
         self.sound
+    }
+}
+
+impl Clone for Sound {
+    fn clone(&self) -> Sound {
+        unsafe {
+            Sound {
+                sound: csfml::sfSound_copy(self.sound)
+            }
+        }
     }
 }
 
