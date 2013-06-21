@@ -31,6 +31,7 @@
 
 use std::libc::{c_uint};
 use std::str;
+use std::ptr;
 
 use graphics::texture::Texture;
 use graphics::glyph::Glyph;
@@ -73,12 +74,19 @@ impl Font {
     * # Arguments
     * * filename -  Path of the font file to load
     * 
-    * Return a new Font object
+    * Return a new Font object or None if loading fails
     */
-    pub fn new_from_file(filename : ~str) -> Font {
+    pub fn new_from_file(filename : ~str) -> Option<Font> {
         do str::as_c_str(filename) |filenamebuf| {
             unsafe {
-            Font { font : csfml::sfFont_createFromFile(filenamebuf)}
+                let raw = csfml::sfFont_createFromFile(filenamebuf);
+                if raw == ptr::null() {
+                    None
+                } else {
+                    Some(Font {
+                        font: raw
+                    })
+                }
             }
         }
     }

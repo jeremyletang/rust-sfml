@@ -94,8 +94,17 @@ impl Texture {
     *
     * Return a new Option to Texture object or None
     */
-    pub fn new(width: uint, height : uint) -> Texture {
-        Texture { texture : unsafe {csfml::sfTexture_create(width as c_uint, height as c_uint)}}
+    pub fn new(width: uint, height : uint) -> Option<Texture> {
+        unsafe {
+            let raw = csfml::sfTexture_create(width as c_uint, height as c_uint);
+            if raw == ptr::null() {
+                None
+            } else {
+                Some(Texture {
+                    texture: raw
+                })
+            }
+        }
     }
     
     /**
@@ -106,9 +115,18 @@ impl Texture {
     *
     * Return a new Option to Texture object or None
     */
-    pub fn new_from_file(filename : ~str) -> Texture {
+    pub fn new_from_file(filename : ~str) -> Option<Texture> {
         do str::as_c_str(filename) |filebuf| {
-            Texture { texture : unsafe {csfml::sfTexture_createFromFile(filebuf, ptr::null())} }
+            unsafe {
+                let raw = csfml::sfTexture_createFromFile(filebuf, ptr::null());
+                if raw == ptr::null() {
+                    None
+                } else {
+                    Some(Texture {
+                        texture: raw
+                    })
+                }
+            }
         }
     }
 
