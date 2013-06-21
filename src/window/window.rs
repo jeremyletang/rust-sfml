@@ -201,7 +201,7 @@ impl Window {
             },
             16  => event::JoystickConnected{joystickid : self.event.p1 as uint},
             17  => event::JoystickDisconnected{joystickid : self.event.p1 as uint},
-            _ => event::NoEvent
+            _   => fail!("Recieved impossible event")
         }
     }
 
@@ -214,9 +214,9 @@ impl Window {
     * thus you should always call this function in a loop
     * to make sure that you process every pending event.
     *
-    * Return the event if an event was returned, or NoEvent if the event queue was empty
+    * Return Some(the event) if an event was returned, or None if the event queue was empty
     */
-    pub fn poll_event(&mut self) -> event::Event {
+    pub fn poll_event(&mut self) -> Option<event::Event> {
         let haveEvent : bool =  unsafe {
             match csfml::sfWindow_pollEvent(self.window, &self.event) {
                 0       => false,
@@ -224,9 +224,9 @@ impl Window {
             }
         };
         if haveEvent == false {
-            return event::NoEvent;
+            return None;
         }
-        self.get_wrapped_event()
+        Some(self.get_wrapped_event())
     }
 
     /**
@@ -240,9 +240,9 @@ impl Window {
     * is dedicated to events handling: you want to make this thread
     * sleep as long as no new event is received.
     *
-    * Return the event or NoEvent if an error has occured
+    * Return Some(the event) or None if an error has occured
     */
-    pub fn wait_event(&mut self) -> event::Event {
+    pub fn wait_event(&mut self) -> Option<event::Event> {
         let haveEvent : bool =  unsafe {
             match csfml::sfWindow_waitEvent(self.window, &self.event) {
                 0       => false,
@@ -250,9 +250,9 @@ impl Window {
             }
         };
         if haveEvent == false {
-            return event::NoEvent;
+            return None;
         }
-        self.get_wrapped_event()
+        Some(self.get_wrapped_event())
     }
     
     /**

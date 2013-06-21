@@ -266,9 +266,9 @@ impl RenderWindow {
     * thus you should always call this function in a loop
     * to make sure that you process every pending event.
     *
-    * Return the event if an event was returned, or NoEvent if the event queue was empty
+    * Return Some(the event) if an event was returned, or None if the event queue was empty
     */
-    pub fn poll_event(&mut self) -> event::Event {
+    pub fn poll_event(&mut self) -> Option<event::Event> {
         let haveEvent : bool =  unsafe {
             match csfml::sfRenderWindow_pollEvent(self.renderWindow, &self.event) {
                 0       => false,
@@ -276,9 +276,9 @@ impl RenderWindow {
             }
         };
         if haveEvent == false {
-            return event::NoEvent;
+            return None;
         }
-        self.get_wrapped_event()
+        Some(self.get_wrapped_event())
     }
     
     /**
@@ -292,9 +292,9 @@ impl RenderWindow {
     * is dedicated to events handling: you want to make this thread
     * sleep as long as no new event is received.
     *
-    * Return the event or NoEvent if an error has occured
+    * Return Some(the event) or None if an error has occured
     */
-    pub fn wait_event(&mut self) -> event::Event {
+    pub fn wait_event(&mut self) -> Option<event::Event> {
         let haveEvent : bool =  unsafe {
             match csfml::sfRenderWindow_waitEvent(self.renderWindow, &self.event) {
                 0       => false,
@@ -302,9 +302,9 @@ impl RenderWindow {
             }
         };
         if haveEvent == false {
-            return event::NoEvent;
+            return None;
         }
-        self.get_wrapped_event()
+        Some(self.get_wrapped_event())
     }
     
     pub fn get_wrapped_event(&self) ->event::Event {
@@ -389,7 +389,7 @@ impl RenderWindow {
             },
             16  => event::JoystickConnected{joystickid : self.event.p1 as uint},
             17  => event::JoystickDisconnected{joystickid : self.event.p1 as uint},
-            _ => event::NoEvent
+            _   => fail!("Recieved impossible event")
         }
     }
     

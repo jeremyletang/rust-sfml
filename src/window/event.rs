@@ -52,8 +52,7 @@ pub enum Event {
     JoystickButtonReleased {joystickid : int, button : int},
     JoystickMoved {joystickid : uint, axis : Axis, position : float},
     JoystickConnected {joystickid : uint},
-    JoystickDisconnected{joystickid : uint},
-    NoEvent
+    JoystickDisconnected{joystickid : uint}
 }
 
 
