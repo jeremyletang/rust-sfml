@@ -99,8 +99,14 @@ impl Sprite {
     *
     * Return a new sfSprite object
     */
-    pub fn new() -> Sprite {
-        Sprite { sprite : unsafe {csfml::sfSprite_create()} }
+    pub fn new() -> Option<Sprite> {
+        let sp = unsafe {csfml::sfSprite_create()};
+        if sp == ptr::null() {
+            None
+        }
+        else {
+            Some(Sprite { sprite : sp})
+        }
     }
 
     /**
@@ -109,8 +115,14 @@ impl Sprite {
     * # Arguments
     * * sprite - Sprite to copy
     */
-    pub fn new_copy(sprite : &Sprite) -> Sprite {
-        Sprite { sprite : unsafe {csfml::sfSprite_copy(sprite.unwrap())}}
+    pub fn new_copy(sprite : &Sprite) -> Option<Sprite> {
+        let sp = unsafe {csfml::sfSprite_copy(sprite.unwrap())};
+        if sp == ptr::null() {
+            None
+        }
+        else {
+            Some(Sprite { sprite : sp})
+        }
     }
 
     /**

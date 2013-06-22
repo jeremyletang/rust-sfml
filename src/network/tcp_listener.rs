@@ -1,7 +1,7 @@
 /*
-* Rust-SFML - Copyright (c) Letang Jeremy.
+* Rust-SFML - Copyright (c) 2013 Letang Jeremy.
 *
-* The Original software, SFML library, is provided by Laurent Gomila.
+* The original software, SFML library, is provided by Laurent Gomila.
 *
 * This software is provided 'as-is', without any express or implied warranty.
 * In no event will the authors be held liable for any damages arising from
@@ -23,13 +23,15 @@
 */
 
 /*!
-*
+* Socket that listens to new TCP connections
 *
 *
 *
 *
 *
 */
+
+use std::ptr;
 
 use network::tcp_socket;
 use network::socket_status::SocketStatus;
@@ -64,10 +66,36 @@ pub struct TcpListener {
 }
 
 impl TcpListener {
-    pub fn new() -> TcpListener {
-        TcpListener { listener : unsafe {csfml::sfTcpListener_create()} }
+    /**
+    * Create a new TCP listener
+    *
+    * Return a new option to TcpListener object or None
+    */
+    pub fn new() -> Option<TcpListener> {
+        let list = unsafe {csfml::sfTcpListener_create()};
+        if list == ptr::null() {
+            None
+        }
+        else {
+            Some(TcpListener { listener :list})
+        }
     }
 
+    /**
+    * Set the blocking state of a TCP listener
+    *
+    * In blocking mode, calls will not return until they have
+    * completed their task. For example, a call to
+    * sfTcpListener_accept in blocking mode won't return until
+    * a new connection was actually received.
+    * In non-blocking mode, calls will always return immediately,
+    * using the return code to signal whether there was data
+    * available or not.
+    * By default, all sockets are blocking.
+    *
+    * # Arguments
+    * * blocking - true to set the socket as blocking, false for non-blocking
+    */
     pub fn set_blocking(&self, blocking : bool) -> () {
         match blocking  {
             true        => unsafe {csfml::sfTcpListener_setBlocking(self.listener, 1)},
@@ -75,6 +103,11 @@ impl TcpListener {
         }
     }
 
+    /**
+    * Tell whether a TCP listener is in blocking or non-blocking mode
+    *
+    * Return true if the socket is blocking, false otherwise
+    */
     pub fn is_blocking(&self) -> bool {
         match unsafe {csfml::sfTcpListener_isBlocking(self.listener)} {
             0 => false,
@@ -82,18 +115,50 @@ impl TcpListener {
         }
     }
 
+    /**
+    * Get the port to which a TCP listener is bound locally
+    *
+    * If the socket is not listening to a port, this function
+    * returns 0.
+    *
+    * Return the port to which the TCP listener is bound
+    */
     pub fn get_local_port(&self) -> u16 {
         unsafe {
             csfml::sfTcpListener_getLocalPort(self.listener)
         }
     }
     
+    /**
+    * Start listening for connections
+    *
+    * This functions makes the socket listen to the specified
+    * port, waiting for new connections.
+    * If the socket was previously listening to another port,
+    * it will be stopped first and bound to the new port.
+    * 
+    * # Arguments
+    * * port - Port to listen for new connections
+    *
+    * Return status code
+    */
     pub fn listen(&self, port : u16) -> SocketStatus {
         unsafe {
             csfml::sfTcpListener_listen(self.listener, port)
         }
     }
     
+    /**
+    * Accept a new connection
+    *
+    * If the socket is in blocking mode, this function will
+    * not return until a connection is actually received.
+    * 
+    * # Arguments
+    * * connected - Socket that will hold the new connection
+    *
+    * Return status code
+    */
     pub fn accept(&self, connected : @tcp_socket::TcpSocket) -> SocketStatus {
         unsafe {
             csfml::sfTcpListener_accept(self.listener, &connected.unwrap())

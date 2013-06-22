@@ -31,6 +31,7 @@
 
 use std::libc::{c_uint};
 use std::str;
+use std::ptr;
 
 use graphics::texture::Texture;
 use graphics::glyph::Glyph;
@@ -75,10 +76,14 @@ impl Font {
     * 
     * Return a new Font object
     */
-    pub fn new_from_file(filename : ~str) -> Font {
+    pub fn new_from_file(filename : ~str) -> Option<Font> {
         do str::as_c_str(filename) |filenamebuf| {
-            unsafe {
-            Font { font : csfml::sfFont_createFromFile(filenamebuf)}
+            let fnt = unsafe {csfml::sfFont_createFromFile(filenamebuf)};
+            if fnt == ptr::null() {
+                None
+            }
+            else {
+                Some(Font { font : fnt})
             }
         }
     }
@@ -90,9 +95,13 @@ impl Font {
     * * font - Font to copy
     * Return the copied font
     */
-    pub fn new_copy(font : &Font) -> Font {
-        unsafe {
-            Font { font : csfml::sfFont_copy(font.unwrap())}
+    pub fn new_copy(font : &Font) -> Option<Font> {
+        let fnt = unsafe {csfml::sfFont_copy(font.unwrap())};
+        if fnt == ptr::null() {
+            None
+        }
+        else {
+            Some(Font { font : fnt})
         }
     }    
     /**

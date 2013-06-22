@@ -30,6 +30,7 @@
 */
 
 use std::libc::{c_float};
+use std::ptr;
 
 use system::vector2;
 use graphics::rect::FloatRect;
@@ -80,8 +81,14 @@ impl View {
     * 
     * Return a new View object
     */
-    pub fn new() -> View {
-        View { dropable: true, view : unsafe {csfml::sfView_create()} }
+    pub fn new() -> Option<View> {
+        let view = unsafe {csfml::sfView_create()};
+        if view == ptr::null() {
+            None
+        }
+        else {
+            Some(View { dropable: true, view : view})
+        }
     }
     
     /**
@@ -92,8 +99,14 @@ impl View {
     *
     * Return a new View object
     */
-    pub fn new_copy(view : &View) -> View {
-        View { dropable: true, view : unsafe {csfml::sfView_copy(view.unwrap())}}
+    pub fn new_copy(view : &View) -> Option<View> {
+        let view = unsafe {csfml::sfView_copy(view.unwrap())};
+        if view == ptr::null() {
+            None
+        }
+        else {
+            Some(View { dropable: true, view : view})
+        }    
     }
 
     /**
@@ -104,8 +117,14 @@ impl View {
     *
     * Return a new View object
     */
-    pub fn create_from_rect(rectangle : *FloatRect) -> View {
-        View { dropable: true, view : unsafe {csfml::sfView_createFromRect(*rectangle)}}
+    pub fn create_from_rect(rectangle : *FloatRect) -> Option<View> {
+        let view = unsafe {csfml::sfView_createFromRect(*rectangle)};
+        if view == ptr::null() {
+            None
+        }
+        else {
+            Some(View { dropable: true, view : view})
+        }
     }
 
     /**

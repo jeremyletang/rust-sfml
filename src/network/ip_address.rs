@@ -1,7 +1,7 @@
 /*
-* Rust-SFML - Copyright (c) Letang Jeremy.
+* Rust-SFML - Copyright (c) 2013 Letang Jeremy.
 *
-* The Original software, SFML library, is provided by Laurent Gomila.
+* The original software, SFML library, is provided by Laurent Gomila.
 *
 * This software is provided 'as-is', without any express or implied warranty.
 * In no event will the authors be held liable for any damages arising from
@@ -22,15 +22,23 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
+/*!
+* Encapsulate an IPv4 network address.
+*
+*
+*/
+
 use std::libc::c_char;
-use system::time::Time;
 use std::str;
 use std::ptr;
+
+use system::time::Time;
 
 #[doc(hidden)]
 pub mod csfml{
     
     use std::libc::c_char;
+
     use system::time;
 
     pub struct sfIpAddress {
@@ -68,20 +76,69 @@ pub struct IpAddress{
 }
 
 impl IpAddress {
+    /**
+    * Create an address from a string
+    *
+    * Here address can be either a decimal address
+    * (ex: "192.168.1.56") or a network name (ex: "localhost").
+    *
+    * # Arguments
+    * * address - IP address or network name
+    *
+    * Return Resulting address
+    */
     pub fn new_from_string(address : ~str) -> IpAddress {
         do str::as_c_str(address) |addr_buf| {
             IpAddress { ip : unsafe {csfml::sfIpAddress_fromString(addr_buf)}}
         }
     }
 
+    /**
+    * Create an address from 4 bytes
+    *
+    * Calling fromBytes(a, b, c, d) is equivalent
+    * to calling fromString("a.b.c.d"), but safer
+    * as it doesn't have to parse a string to get the address
+    * components.
+    *
+    * # Arguments
+    * * byte0 - First byte of the address
+    * * byte1 - Second byte of the address
+    * * byte2 - Third byte of the address
+    * * byte3 - Fourth byte of the address
+    *
+    * Return the resulting address
+    */
     pub fn mew_from_bytes(byte0 : u8, byte1 : u8, byte2 : u8, byte3 : u8) -> IpAddress {
         IpAddress { ip : unsafe {csfml::sfIpAddress_fromBytes(byte0, byte1, byte2, byte3)}}
     }
 
+    /**
+    * Construct an address from a 32-bits integer
+    *
+    * This function uses the internal representation of
+    * the address directly. It should be used for optimization
+    * purposes, and only if you got that representation from
+    * sfIpAddress_ToInteger.
+    * 
+    * # Arguments
+    * * address - 4 bytes of the address packed into a 32-bits integer
+    *
+    * Return the resulting address
+    */
     pub fn new_from_integer(address : u32) -> IpAddress {
         IpAddress { ip : unsafe {csfml::sfIpAddress_fromInteger(address)}}
     }
 
+    /**
+    * Get a string representation of an address
+    *
+    * The returned string is the decimal representation of the
+    * IP address (like "192.168.1.56"), even if it was constructed
+    * from a host name.
+    *
+    * Return a string representation of the address
+    */
     pub fn to_string(&self) -> ~str {
         unsafe {
             let string : *c_char = ptr::null();
@@ -90,28 +147,69 @@ impl IpAddress {
         }
     }
 
+    /**
+    * Get an integer representation of the address
+    *
+    * The returned number is the internal representation of the
+    * address, and should be used for optimization purposes only
+    * (like sending the address through a socket).
+    * The integer produced by this function can then be converted
+    * back to a IpAddress with From_integer.
+    *
+    * Return a 32-bits unsigned integer representation of the address
+    */
     pub fn to_integer(&self) -> u32 {
         unsafe {
             csfml::sfIpAddress_toInteger(self.ip)
         }
     }
 
+    /**
+    * Get the computer's local address
+    *
+    * The local address is the address of the computer from the
+    * LAN point of view, i.e. something like 192.168.1.56. It is
+    * meaningful only for communications over the local network.
+    * Unlike sfIpAddress_getPublicAddress, this function is fast
+    * and may be used safely anywhere.
+    *
+    * Return the local IP address of the computer
+    */
     pub fn get_local_address() -> IpAddress {
         unsafe {
             IpAddress { ip : csfml::sfIpAddress_getLocalAddress()}
         }
     }
 
+    /**
+    * Get the computer's public address
+    * 
+    * The public address is the address of the computer from the
+    * internet point of view, i.e. something like 89.54.1.169.
+    * It is necessary for communications over the world wide web.
+    * The only way to get a public address is to ask it to a
+    * distant website; as a consequence, this function depends on
+    * both your network connection and the server, and may be
+    * very slow. You should use it as few as possible. Because
+    * this function depends on the network connection and on a distant
+    * server, you may use a time limit if you don't want your program
+    * to be possibly stuck waiting in case there is a problem; use
+    * 0 to deactivate this limit.
+    *
+    * Return the public IP address of the computer
+    */
     pub fn get_public_address(timeout : &Time) -> IpAddress {
         unsafe {
             IpAddress { ip : csfml::sfIpAddress_getPublicAddress(timeout.unwrap())}
         }
     }
     
+    #[doc(hidden)]
     pub fn wrap(ip : csfml::sfIpAddress) -> IpAddress {
         IpAddress {ip : ip}
     }
 
+    #[doc(hidden)]
     pub fn unwrap(&self) -> csfml::sfIpAddress {
         self.ip
     }

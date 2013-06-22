@@ -29,17 +29,20 @@
 *
 */
 
+use std::str;
+use std::ptr;
+
 //use graphics::transform::Transform;
 use graphics::texture::Texture;
 use system::vector2;
 use system::vector3;
 use graphics::color;
-use std::str;
 
 #[doc(hidden)]
 pub mod csfml {
 
     use std::libc::{c_void, c_float, c_char};
+
     use rsfml::sfTypes::{sfBool};
     use graphics::transform;
     use graphics::texture;
@@ -94,10 +97,16 @@ impl Shader {
     *
     * Return a new Shader object
     */
-    pub fn new_from_file(vertexShaderFilename : ~str, fragmentShaderFilename : ~str) -> Shader {
+    pub fn new_from_file(vertexShaderFilename : ~str, fragmentShaderFilename : ~str) -> Option<Shader> {
         do str::as_c_str(vertexShaderFilename) |vertex| {
             do str::as_c_str(fragmentShaderFilename) |fragment| {
-                Shader { shader : unsafe { csfml::sfShader_createFromFile(vertex, fragment)}}
+                let shader = unsafe { csfml::sfShader_createFromFile(vertex, fragment)};
+                if shader == ptr::null() {
+                    None
+                }
+                else {
+                    Some(Shader { shader : shader})
+                }
             }
         }
     }
@@ -119,10 +128,16 @@ impl Shader {
     *
     * Return a new Shader object
     */
-    pub fn new_from_memory(vertexShader : ~str, fragmentShader : ~str) -> Shader {
+    pub fn new_from_memory(vertexShader : ~str, fragmentShader : ~str) -> Option<Shader> {
         do str::as_c_str(vertexShader) |vertex| {
             do str::as_c_str(fragmentShader) |fragment| {
-                Shader { shader : unsafe { csfml::sfShader_createFromFile(vertex, fragment)}}
+                let shader = unsafe { csfml::sfShader_createFromFile(vertex, fragment)};
+                if shader == ptr::null() {
+                    None
+                }
+                else {
+                    Some(Shader { shader :shader})
+                }
             }
         }
     }

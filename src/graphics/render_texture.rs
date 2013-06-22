@@ -119,10 +119,16 @@ impl RenderTexture {
     *
     * Return a new option on RenderTexture object, or None if it failed
     */
-    pub fn new(width : uint, height : uint, depthBuffer : bool) -> RenderTexture {
-        match depthBuffer {
-            false       =>   RenderTexture { renderTexture : unsafe {csfml::sfRenderTexture_create(width as c_uint, height as c_uint, 0) }},
-            true        =>   RenderTexture { renderTexture : unsafe {csfml::sfRenderTexture_create(width as c_uint, height as c_uint, 1) }}
+    pub fn new(width : uint, height : uint, depthBuffer : bool) -> Option<RenderTexture> {
+        let tex = match depthBuffer {
+            false       =>   unsafe {csfml::sfRenderTexture_create(width as c_uint, height as c_uint, 0) },
+            true        =>   unsafe {csfml::sfRenderTexture_create(width as c_uint, height as c_uint, 1) }
+        };
+        if tex == ptr::null() {
+            None
+        }
+        else {
+            Some(RenderTexture {renderTexture : tex})
         }
     }
     

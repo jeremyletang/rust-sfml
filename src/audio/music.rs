@@ -1,7 +1,7 @@
 /*
-* Rust-SFML - Copyright (c) Letang Jeremy.
+* Rust-SFML - Copyright (c) 2013 Letang Jeremy.
 *
-* The Original software, SFML library, is provided by Laurent Gomila.
+* The original software, SFML library, is provided by Laurent Gomila.
 *
 * This software is provided 'as-is', without any express or implied warranty.
 * In no event will the authors be held liable for any damages arising from
@@ -92,6 +92,17 @@ impl Music {
 
     /**
     * Create a new music and load it from a file
+    *
+    * This function doesn't start playing the music (call
+    * sfMusic_play to do so).
+    * Here is a complete list of all the supported audio formats:
+    * ogg, wav, flac, aiff, au, raw, paf, svx, nist, voc, ircam,
+    * w64, mat4, mat5 pvf, htk, sds, avr, sd2, caf, wve, mpc2k, rf64.
+    *
+    * # Arguments
+    * * filename - Path of the music file to open
+    *
+    * Return a new option to Music object or none 
     */
     pub fn new_from_file(filename : ~str) -> Option<Music> {
         let mut music_tmp : *csfml::sfMusic = ptr::null();
@@ -107,6 +118,14 @@ impl Music {
 
     /**
     * Set whether or not a music should loop after reaching the end
+    *
+    * If set, the music will restart from beginning after
+    * reaching the end and so on, until it is stopped or
+    * sfMusic_setLoop(music, sfFalse) is called.
+    * The default looping state for musics is false.
+    *
+    * # Arguments
+    * * loop - sfTrue to play in loop, sfFalse to play once
     */
     pub fn set_loop(&self, lloop : bool) -> () {
         unsafe {
@@ -121,6 +140,8 @@ impl Music {
 
     /**
     * Tell whether or not a music is in loop mode
+    *
+    * Return true if the music is looping, false otherwise
     */
     pub fn get_loop(&self) -> bool {
         match unsafe {csfml::sfMusic_getLoop(self.music)} {
@@ -131,6 +152,8 @@ impl Music {
     
     /**
     * Get the total duration of a music
+    *
+    * Return Music duration
     */
     pub fn get_duration(&self) -> time::Time {
         time::Time::wrap( unsafe {csfml::sfMusic_getDuration(self.music)})
@@ -138,6 +161,12 @@ impl Music {
 
     /**
     * Start or resume playing a music
+    *
+    * This function starts the music if it was stopped, resumes
+    * it if it was paused, and restarts it from beginning if it
+    * was it already playing.
+    * This function uses its own thread so that it doesn't block
+    * the rest of the program while the music is played.
     */
     pub fn play(&self) -> () {
         unsafe {csfml::sfMusic_play(self.music)}
@@ -145,6 +174,9 @@ impl Music {
 
     /**
     * Pause a music
+    *
+    * This function pauses the music if it was playing,
+    * otherwise (music already paused or stopped) it has no effect.
     */
     pub fn pause(&self) -> () {
         unsafe {csfml::sfMusic_pause(self.music)}
@@ -152,6 +184,10 @@ impl Music {
 
     /**
     * Stop playing a music
+    *
+    * This function stops the music if it was playing or paused,
+    * and does nothing if it was already stopped.
+    * It also resets the playing position (unlike pause).
     */
     pub fn stop(&self) -> () {
         unsafe {csfml::sfMusic_stop(self.music)}
@@ -159,6 +195,10 @@ impl Music {
     
     /**
     * Return the number of channels of a music
+    *
+    * 1 channel means a mono sound, 2 means stereo, etc.
+    *
+    * Return the number of channels
     */
     pub fn get_channel_count(&self) -> uint {
         unsafe {csfml::sfMusic_getChannelCount(self.music) as uint}
@@ -166,6 +206,11 @@ impl Music {
     
     /**
     * Get the sample rate of a music
+    *
+    * The sample rate is the number of audio samples played per
+    * second. The higher, the better the quality.
+    *
+    * Return the sample rate, in number of samples per second
     */
     pub fn get_sample_rate(&self) -> uint {
         unsafe {csfml::sfMusic_getSampleRate(self.music) as uint}
@@ -173,6 +218,8 @@ impl Music {
     
     /**
     * Get the current status of a music (stopped, paused, playing)
+    *
+    * Return current status
     */
     pub fn get_status(&self) -> sound_status::Status {
         match unsafe {csfml::sfMusic_getStatus(self.music)} {
@@ -184,6 +231,8 @@ impl Music {
 
     /**
     * Get the current playing position of a music
+    *
+    * Return the current playing position
     */
     pub fn get_playing_offset(&self) -> time::Time {
         time::Time::wrap( unsafe {csfml::sfMusic_getPlayingOffset(self.music)})
@@ -191,6 +240,15 @@ impl Music {
     
     /**
     * Set the pitch of a music
+    *
+    * The pitch represents the perceived fundamental frequency
+    * of a sound; thus you can make a music more acute or grave
+    * by changing its pitch. A side effect of changing the pitch
+    * is to modify the playing speed of the music as well.
+    * The default value for the pitch is 1.
+    *
+    * # Arguments
+    * * pitch - new pitch to apply to the music
     */
     pub fn set_pitch(&self, pitch : float) -> () {
         unsafe {csfml::sfMusic_setPitch(self.music, pitch as c_float)}
@@ -198,6 +256,12 @@ impl Music {
     
     /**
     * Set the volume of a music
+    *
+    * he volume is a value between 0 (mute) and 100 (full volume).
+    * The default value for the volume is 100.
+    *
+    * # Arguments
+    * * volume - Volume of the music
     */
     pub fn set_volume(&self, volume : float) -> () {
         unsafe {csfml::sfMusic_setVolume(self.music, volume as c_float)}
@@ -205,6 +269,15 @@ impl Music {
 
     /**
     * Make a musics's position relative to the listener or absolute
+    *
+    * Making a music relative to the listener will ensure that it will always
+    * be played the same way regardless the position of the listener.
+    * This can be useful for non-spatialized musics, musics that are
+    * produced by the listener, or musics attached to it.
+    * The default value is false (position is absolute).
+    *
+    * # Arguments
+    * * relative - true to set the position relative, false to set it absolute
     */
     pub fn set_relative_to_listener(&self, relative : bool) -> () {
         unsafe {
@@ -218,7 +291,17 @@ impl Music {
     }
 
     /**
-    * Set the minimum distance of a music 
+    * Set the minimum distance of a music
+    *
+    * The "minimum distance" of a music is the maximum
+    * distance at which it is heard at its maximum volume. Further
+    * than the minimum distance, it will start to fade out according
+    * to its attenuation factor. A value of 0 ("inside the head
+    * of the listener") is an invalid value and is forbidden.
+    * The default value of the minimum distance is 1.
+    *
+    * # Arguments
+    * * distance - New minimum distance of the music
     */
     pub fn set_min_distance(&self, distance : float) -> () {
         unsafe {csfml::sfMusic_setMinDistance(self.music, distance as c_float)}
@@ -226,6 +309,18 @@ impl Music {
     
     /**
     *  Set the attenuation factor of a music
+    *
+    * The attenuation is a multiplicative factor which makes
+    * the music more or less loud according to its distance
+    * from the listener. An attenuation of 0 will produce a
+    * non-attenuated music, i.e. its volume will always be the same
+    * whether it is heard from near or from far. On the other hand,
+    * an attenuation value such as 100 will make the music fade out
+    * very quickly as it gets further from the listener.
+    * The default value of the attenuation is 1.
+    *
+    * # Arguments
+    * * attenuation - New attenuation factor of the music
     */
     pub fn set_attenuation(&self, attenuation : float) -> () {
         unsafe {csfml::sfMusic_setAttenuation(self.music, attenuation as c_float)}
@@ -233,6 +328,12 @@ impl Music {
     
     /**
     * Change the current playing position of a music
+    *
+    * The playing position can be changed when the music is
+    * either paused or playing.
+    *
+    * # Arguments
+    * * timeOffset - New playing position
     */
     pub fn set_playing_offset(&self, timeOffset : time::Time) -> () {
         unsafe {
@@ -242,6 +343,8 @@ impl Music {
     
     /**
     * Get the pitch of a music
+    *
+    * Return the pitch of the music
     */
     pub fn get_pitch(&self) -> float {
         unsafe {
@@ -251,6 +354,8 @@ impl Music {
 
     /**
     * Get the volume of a music
+    *
+    * Return the volume of the music, in the range [0, 100]
     */
     pub fn get_volume(&self) -> float {
         unsafe {
@@ -260,6 +365,8 @@ impl Music {
 
     /**
     * Tell whether a music's position is relative to the listener or is absolute
+    *
+    * Return true if the position is relative, false if it's absolute
     */
     pub fn is_relative_to_listener(&self) -> bool {
         match unsafe {csfml::sfMusic_isRelativeToListener(self.music)} {
@@ -270,6 +377,8 @@ impl Music {
 
     /**
     * Get the minimum distance of a music
+    *
+    * Return the minimum distance of the music
     */
     pub fn get_min_distance(&self) -> float {
         unsafe {
@@ -279,6 +388,8 @@ impl Music {
 
     /**
     * Get the attenuation factor of a music
+    *
+    * Return the attenuation factor of the music
     */
     pub fn get_attenuation(&self) -> float {
         unsafe {
@@ -286,12 +397,27 @@ impl Music {
         }        
     }
 
+    /**
+    * Set the 3D position of a music in the audio scene
+    *
+    * Only musics with one channel (mono musics) can be
+    * spatialized.
+    * The default position of a music is (0, 0, 0).
+    *
+    * # Arguments
+    * * position - Position of the music in the scene
+    */
     fn set_position(&self, position : &vector3::Vector3f) -> () {
         unsafe {
             csfml::sfMusic_setPosition(self.music, *position)
         }
     }
 
+    /**
+    * Get the 3D position of a music in the audio scene
+    *
+    * Return the position of the music in the world
+    */
     fn get_position(&self) -> vector3::Vector3f {
         unsafe {
             csfml::sfMusic_getPosition(self.music)

@@ -30,6 +30,7 @@
 */
 
 use std::libc::{c_float};
+use std::ptr;
 
 use system::vector2;
 use graphics::transform::Transform;
@@ -79,8 +80,14 @@ impl Transformable {
     *
     * Return a new Transformable object
     */
-    pub fn new() -> Transformable {
-        Transformable { trans : unsafe {csfml::sfTransformable_create()}}
+    pub fn new() -> Option<Transformable> {
+        let tran = unsafe {csfml::sfTransformable_create()};
+        if tran == ptr::null() {
+            None
+        }
+        else {
+            Some(Transformable { trans : tran})
+        }
     }
     
     /**
@@ -90,8 +97,14 @@ impl Transformable {
     * * transformable - Transformable to copy
     * Return the copied object
     */
-    pub fn new_copy(transformable : &Transformable) -> Transformable {
-        Transformable { trans : unsafe {csfml::sfTransformable_copy(transformable.unwrap())} }
+    pub fn new_copy(transformable : &Transformable) -> Option<Transformable> {
+        let tran = unsafe {csfml::sfTransformable_copy(transformable.unwrap())};
+        if tran == ptr::null() {
+            None
+        }
+        else {
+            Some(Transformable { trans :tran}) 
+        }
     }
 
     /**

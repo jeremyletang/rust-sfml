@@ -29,6 +29,7 @@
 */
 
 use std::libc::{c_float, c_uint};
+use std::ptr;
 
 use system::vector2;
 use graphics::color;
@@ -105,8 +106,15 @@ impl RectangleShape {
     *
     * Return a new rectangleShape object
     */
-    pub fn new() -> RectangleShape {
-        RectangleShape { rectangleShape : unsafe {csfml::sfRectangleShape_create()} }
+    pub fn new() -> Option<RectangleShape> {
+        let rectangle = unsafe {csfml::sfRectangleShape_create()};
+        if rectangle == ptr::null() {
+            None
+        }
+        else {
+            Some(RectangleShape {rectangleShape : rectangle})
+        }
+//RectangleShape { rectangleShape : unsafe {csfml::sfRectangleShape_create()} }
     }
 
     /**
@@ -117,8 +125,17 @@ impl RectangleShape {
     * 
     * Return the copied object
     */
-    pub fn new_copy(rectangleShape : &RectangleShape) -> RectangleShape {
-        RectangleShape {rectangleShape : unsafe {csfml::sfRectangleShape_copy(rectangleShape.unwrap())} }
+    pub fn new_copy(rectangleShape : &RectangleShape) -> Option<RectangleShape> {
+        let rectangle = unsafe {csfml::sfRectangleShape_copy(rectangleShape.unwrap())};
+        if rectangle == ptr::null() {
+            None
+        }
+        else {
+            Some(RectangleShape {rectangleShape : rectangle})
+        }
+
+
+        //        RectangleShape {rectangleShape : unsafe {csfml::sfRectangleShape_copy(rectangleShape.unwrap())} }
     }
     
     /**

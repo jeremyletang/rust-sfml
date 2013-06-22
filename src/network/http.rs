@@ -1,7 +1,7 @@
 /*
 * Rust-SFML - Copyright (c) 2013 Letang Jeremy.
 *
-* The Original software, SFML library, is provided by Laurent Gomila.
+* The original software, SFML library, is provided by Laurent Gomila.
 *
 * This software is provided 'as-is', without any express or implied warranty.
 * In no event will the authors be held liable for any damages arising from
@@ -23,7 +23,7 @@
 */
 
 /*!
-*
+* A HTTP client
 *
 *
 *
@@ -133,10 +133,28 @@ pub struct Http {
 }
 
 impl Request {
+    /**
+    * Create a new HTTP request
+    *
+    * Return a new option to HttpRequest object, or None
+    */
     pub fn new() -> Request {
         Request { request : unsafe {csfml::sfHttpRequest_create()} }
     }
 
+    /**
+    * Set the value of a header field of a HTTP request
+    *
+    * The field is created if it doesn't exist. The name of
+    * the field is case insensitive.
+    * By default, a request doesn't contain any field (but the
+    * mandatory fields are added later by the HTTP client when
+    * sending the request).
+    *
+    * # Arguments
+    * * field - Name of the field to set
+    * * value - Value of the field
+    */
     pub fn set_field(&self, field : ~str, value : ~str) -> () {
         unsafe {
             do str::as_c_str(field) |f| {
@@ -147,12 +165,32 @@ impl Request {
         }
     }
 
+    /**
+    * Set a HTTP request method
+    *
+    * See the Method enumeration for a complete list of all
+    * the availale methods.
+    * The method is Get by default.
+    *
+    * # Arguments
+    * * method - Method to use for the request
+    */
     pub fn set_method(&self, method : Method) -> () {
         unsafe {
             csfml::sfHttpRequest_setMethod(self.request, method)
         }
     }
 
+    /**
+    * Set a HTTP request URI
+    *
+    * The URI is the resource (usually a web page or a file)
+    * that you want to get or post.
+    * The URI is "/" (the root page) by default.
+    *
+    * # Arguments
+    * * uri - URI to request, relative to the host
+    */
     pub fn set_uri(&self, uri : ~str) -> () {
         unsafe {
             do str::as_c_str(uri) |Uri| {
@@ -161,12 +199,30 @@ impl Request {
         }
     }
 
+    /**
+    * Set the HTTP version of a HTTP request
+    *
+    * The HTTP version is 1.0 by default.
+    *
+    * # Arguments
+    * * major - Major HTTP version number
+    * * param minor - Minor HTTP version number
+    */
     pub fn set_http_version(&self, major : u32, minor : u32) -> () {
         unsafe {
             csfml::sfHttpRequest_setHttpVersion(self.request, major, minor)
         }
     }
 
+    /**
+    * Set the body of a HTTP request
+    *
+    * The body of a request is optional and only makes sense
+    * for POST requests. It is ignored for all other methods. 
+    * The body is empty by default.
+    * # Arguments
+    * * body - Content of the body
+    */
     pub fn set_body(&self, body : ~str) -> () {
         unsafe {
             do str::as_c_str(body) |Body| {
@@ -190,6 +246,18 @@ impl Drop for Request {
 }
 
 impl Response {
+    /**
+    * Get the value of a field of a HTTP response
+    *
+    * If the field field is not found in the response header,
+    * the empty string is returned. This function uses
+    * case-insensitive comparisons.
+    *
+    * # Arguments
+    * * field - Name of the field to get
+    * 
+    * Return Value of the field, or empty string if not found
+    */
     pub fn get_field(&self, field : ~str) -> ~str {
         unsafe {
             do str::as_c_str(field) |f| {
@@ -198,24 +266,55 @@ impl Response {
         }
     }
 
+    /**
+    * Get the status code of a HTTP reponse
+    *
+    * The status code should be the first thing to be checked
+    * after receiving a response, it defines whether it is a
+    * success, a failure or anything else (see the sfHttpStatus
+    * enumeration).
+    *
+    * Return the status code
+    */
     pub fn get_status(&self) -> Status {
         unsafe {
             csfml::sfHttpResponse_getStatus(self.response)
         }
     }
 
+    /**
+    * Get the major HTTP version number of a HTTP response
+    * 
+    * Return Major HTTP version number
+    */
     pub fn get_major_version(&self) -> u32 {
         unsafe {
             csfml::sfHttpResponse_getMajorVersion(self.response)
         }
     }
     
+    /**
+    * Get the minor HTTP version number of a HTTP response
+    *
+    * Return the minor HTTP version number
+    */
     pub fn get_minor_version(&self) -> u32 {
         unsafe {
             csfml::sfHttpResponse_getMinorVersion(self.response)
         }
     }
 
+    /**
+    * Get the body of a HTTP response
+    *
+    * The body of a response may contain:
+    * the requested page (for GET requests),
+    * a response from the server (for POST requests),
+    * nothing (for HEAD requests),
+    * an error message (in case of an error)
+    *
+    * Return the response body
+    */
     pub fn get_body(&self) -> ~str {
         unsafe {
             str::raw::from_c_str(csfml::sfHttpResponse_getBody(self.response))
@@ -232,10 +331,30 @@ impl Drop for Response {
 }
 
 impl Http {
+    /**
+    * Create a new Http object
+    *
+    * Return a new option to Http object or None
+    */
     pub fn create() -> Http {
         Http { http : unsafe{csfml::sfHttp_create()} }
     }
 
+    /**
+    * Set the target host of a HTTP object
+    *
+    * This function just stores the host address and port, it
+    * doesn't actually connect to it until you send a request.
+    * If the port is 0, it means that the HTTP client will use
+    * the right port according to the protocol used
+    * (80 for HTTP, 443 for HTTPS). You should
+    * leave it like this unless you really need a port other
+    * than the standard one, or use an unknown protocol.
+    *
+    * # Arguments
+    * * host - Web server to connect to
+    * * port - Port to use for connection
+    */
     pub fn set_host(&self, host : ~str, port : u16) -> () {
         unsafe {
             do str::as_c_str(host) |h| {
@@ -244,6 +363,22 @@ impl Http {
         }
     }
 
+    /**
+    * Send a HTTP request and return the server's response.
+    *
+    * You must have a valid host before sending a request (see sfHttp_setHost).
+    * Any missing mandatory header field in the request will be added
+    * with an appropriate value.
+    * Warning: this function waits for the server's response and may
+    * not return instantly; use a thread if you don't want to block your
+    * application, or use a timeout to limit the time to wait. A value
+    * of 0 means that the client will use the system defaut timeout
+    * (which is usually pretty long).
+    *
+    * # Arguments
+    * * request - Request to send
+    * * timeout - Maximum time to wait
+    */
     pub fn send_request(&self, request : &Request, timeout : &time::Time) -> Response {
         Response { response : unsafe {csfml::sfHttp_sendRequest(self.http, request.unwrap(), timeout.unwrap())}}
     }

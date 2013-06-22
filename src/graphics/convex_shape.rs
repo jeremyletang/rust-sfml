@@ -30,6 +30,7 @@
 */
 
 use std::libc::{c_float, c_uint};
+use std::ptr;
 
 use graphics::color;
 use graphics::texture;
@@ -106,8 +107,14 @@ impl ConvexShape {
     *
     * Return a new convexShape object
     */
-    pub fn new() -> ConvexShape {
-        ConvexShape { convexShape : unsafe {csfml::sfConvexShape_create()} }
+    pub fn new() -> Option<ConvexShape> {
+        let shape = unsafe {csfml::sfConvexShape_create()};
+        if shape == ptr::null() {
+            None
+        }
+        else {
+            Some(ConvexShape { convexShape : shape})
+        } 
     }
 
     /**
@@ -118,8 +125,14 @@ impl ConvexShape {
     * 
     * Return the copied object
     */
-    pub fn new_copy(shape : &ConvexShape) -> ConvexShape {
-        ConvexShape { convexShape : unsafe {csfml::sfConvexShape_copy(shape.unwrap())} }
+    pub fn new_copy(shape : &ConvexShape) -> Option<ConvexShape> {
+        let shape = unsafe {csfml::sfConvexShape_copy(shape.unwrap())};
+        if shape == ptr::null() {
+            None
+        }
+        else {
+            Some(ConvexShape { convexShape : shape})
+        }
     }
 
     /**

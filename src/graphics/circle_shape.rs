@@ -30,6 +30,7 @@
 */
 
 use std::libc::{c_float, c_uint};
+use std::ptr;
 
 use graphics::color;
 use graphics::rect::{IntRect, FloatRect};
@@ -107,8 +108,14 @@ impl CircleShape {
     *
     * Return a new CircleShape object
     */
-    pub fn new() -> CircleShape {
-        CircleShape { circleShape : unsafe {csfml::sfCircleShape_create()} }
+    pub fn new() -> Option<CircleShape> {
+        let circle = unsafe {csfml::sfCircleShape_create()};
+        if circle == ptr::null() {
+            None
+        }
+        else {
+            Some(CircleShape { circleShape : circle} )
+        }
     }
 
     /**
@@ -119,8 +126,14 @@ impl CircleShape {
     * 
     * Return the copied object
     */
-    pub fn new_copy(shape : &CircleShape) -> CircleShape {
-        CircleShape { circleShape : unsafe {csfml::sfCircleShape_copy(shape.unwrap())} }
+    pub fn new_copy(shape : &CircleShape) -> Option<CircleShape> {
+        let circle = unsafe {csfml::sfCircleShape_copy(shape.unwrap())};
+        if circle == ptr::null() {
+            None
+        }
+        else {
+            Some(CircleShape { circleShape : circle} )
+        }
     }
 
     /**

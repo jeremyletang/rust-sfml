@@ -37,11 +37,7 @@ pub struct Vector3f {
     z : f32
 }
 
-trait Vector3<T> {
-    fn new(x : T, y : T, z : T) -> Self;
-}
-
-impl Vector3<f32> for Vector3f {
+impl Vector3f {
     fn new(x : f32, y : f32, z : f32) -> Vector3f {
         Vector3f{x : x, y : y, z : z}
     }
