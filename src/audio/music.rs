@@ -36,7 +36,7 @@ use std::str;
 
 use system::time;
 use audio::sound_status;
-use system::vector3;
+use system::vector3::Vector3f;
 
 #[doc(hidden)]
 pub mod csfml {
@@ -45,7 +45,7 @@ pub mod csfml {
     use rsfml::sfTypes::{sfBool};
     use system::time;
     use audio::sound_status;
-    use system::vector3;
+    use system::vector3::Vector3f;
 
     pub struct sfMusic {
         This : *c_void,
@@ -69,14 +69,14 @@ pub mod csfml {
         fn sfMusic_getPlayingOffset(music : *sfMusic) -> time::csfml::sfTime;
         fn sfMusic_setPitch(music : *sfMusic, pitch : c_float) -> ();
         fn sfMusic_setVolume(music : *sfMusic, volume : c_float) -> ();
-        fn sfMusic_setPosition(music : *sfMusic, position : vector3::Vector3f) -> ();
+        fn sfMusic_setPosition(music : *sfMusic, position : Vector3f) -> ();
         fn sfMusic_setRelativeToListener(music : *sfMusic, relative : sfBool) -> ();
         fn sfMusic_setMinDistance(music : *sfMusic, distance : c_float) -> ();
         fn sfMusic_setAttenuation(music : *sfMusic, attenuation : c_float) -> ();
         fn sfMusic_setPlayingOffset(music : *sfMusic, timeOffset : time::csfml::sfTime) -> ();
         fn sfMusic_getPitch(music : *sfMusic) -> c_float;
         fn sfMusic_getVolume(music : *sfMusic) -> c_float;
-        fn sfMusic_getPosition(music : *sfMusic) -> vector3::Vector3f;
+        fn sfMusic_getPosition(music : *sfMusic) -> Vector3f;
         fn sfMusic_isRelativeToListener(music : *sfMusic) -> sfBool;
         fn sfMusic_getMinDistance(music : *sfMusic) -> c_float;
         fn sfMusic_getAttenuation(music : *sfMusic) -> c_float;
@@ -407,9 +407,27 @@ impl Music {
     * # Arguments
     * * position - Position of the music in the scene
     */
-    fn set_position(&self, position : &vector3::Vector3f) -> () {
+    fn set_position(&self, position : &Vector3f) -> () {
         unsafe {
             csfml::sfMusic_setPosition(self.music, *position)
+        }
+    }
+
+    /**
+    * Set the 3D position of a music in the audio scene
+    *
+    * Only musics with one channel (mono musics) can be
+    * spatialized.
+    * The default position of a music is (0, 0, 0).
+    *
+    * # Arguments
+    * * x - X coordinate of the position of the sound in the scene
+    * * y - Y coordinate of the position of the sound in the scene
+    * * z - Z coordinate of the position of the sound in the scene
+    */
+    fn set_position3f(&self, x : f32, y : f32, z : f32) -> () {
+        unsafe {
+            csfml::sfMusic_setPosition(self.music, Vector3f::new(x, y, z))
         }
     }
 
@@ -418,7 +436,7 @@ impl Music {
     *
     * Return the position of the music in the world
     */
-    fn get_position(&self) -> vector3::Vector3f {
+    fn get_position(&self) -> Vector3f {
         unsafe {
             csfml::sfMusic_getPosition(self.music)
         }

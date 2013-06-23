@@ -89,6 +89,22 @@ pub fn set_position(position : &Vector3f) -> () {
 }
 
 /**
+* Set the position of the listener in the scene
+*
+* The default listener's position is (0, 0, 0).
+*
+* # Arguments
+* * x - the New position of the listener in x
+* * y - the New position of the listener in y
+* * z - the New position of the listener in z
+*/
+pub fn set_position3f(x : f32, y : f32, z : f32) -> () {
+    unsafe {
+        csfml::sfListener_setPosition(Vector3f::new(x, y, z))
+    }
+}
+
+/**
 * Get the current position of the listener in the scene
 *
 * Return the listener's position
@@ -106,10 +122,32 @@ pub fn get_position() -> Vector3f {
 * (left, up, front) in the scene. The orientation vector
 * doesn't have to be normalized.
 * The default listener's orientation is (0, 0, -1).
+*
+* # Arguments
+* * direction - New listener's orientation
 */
-pub fn set_direction(position : &Vector3f) -> () {
+pub fn set_direction(direction : &Vector3f) -> () {
     unsafe {
-        csfml::sfListener_setDirection(*position)
+        csfml::sfListener_setDirection(*direction)
+    }
+}
+
+/**
+* Set the orientation of the listener in the scene
+*
+* The orientation defines the 3D axes of the listener
+* (left, up, front) in the scene. The orientation vector
+* doesn't have to be normalized.
+* The default listener's orientation is (0, 0, -1).
+*
+* # Arguments
+* * x - X coordinate of the listener's orientation
+* * y - Y coordinate of the listener's orientation
+* * z - Z coordinate of the listener's orientation
+*/
+pub fn set_direction3f(x : f32, y : f32, z : f32) -> () {
+    unsafe {
+        csfml::sfListener_setDirection(Vector3f::new(x, y, z))
     }
 }
 

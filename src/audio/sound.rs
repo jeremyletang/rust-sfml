@@ -35,7 +35,7 @@ use std::ptr;
 use system::time;
 use audio::sound_status;
 use audio::sound_buffer;
-use system::vector3;
+use system::vector3::Vector3f;
 
 #[doc(hidden)]
 pub mod csfml {
@@ -46,7 +46,7 @@ pub mod csfml {
     use audio::sound_buffer;
     use system::time;
     use rsfml::sfTypes::{sfBool};
-    use system::vector3;
+    use system::vector3::Vector3f;
 
     pub struct sfSound {
         This : *c_void,
@@ -67,14 +67,14 @@ pub mod csfml {
         fn sfSound_getStatus(sound : *sfSound) -> sound_status::csfml::sfSoundStatus;
         fn sfSound_setPitch(sound : *sfSound, pitch : c_float) -> ();
         fn sfSound_setVolume(sound : *sfSound, volume : c_float) -> ();
-        fn sfSound_setPosition(sound : *sfSound, position : vector3::Vector3f) -> ();
+        fn sfSound_setPosition(sound : *sfSound, position : Vector3f) -> ();
         fn sfSound_setRelativeToListener(sound : *sfSound, relative : sfBool) -> ();
         fn sfSound_setMinDistance(sound : *sfSound, distance : c_float) -> ();
         fn sfSound_setAttenuation(sound : *sfSound, attenuation : c_float) -> ();
         fn sfSound_setPlayingOffset(sound : *sfSound, timeOffset : time::csfml::sfTime) -> ();
         fn sfSound_getPitch(sound : *sfSound) -> c_float;
         fn sfSound_getVolume(sound : *sfSound) -> c_float;
-        fn sfSound_getPosition(sound : *sfSound) -> vector3::Vector3f;
+        fn sfSound_getPosition(sound : *sfSound) -> Vector3f;
         fn sfSound_isRelativeToListener(sound : *sfSound) -> sfBool;
         fn sfSound_getMinDistance(sound : *sfSound) -> c_float;
         fn sfSound_getAttenuation(sound : *sfSound) -> c_float;
@@ -394,7 +394,7 @@ impl Sound {
     *
     * Return the position of the sound in the world
     */
-    pub fn get_position(&self) -> vector3::Vector3f {
+    pub fn get_position(&self) -> Vector3f {
         unsafe {
             csfml::sfSound_getPosition(self.sound)
         }
@@ -410,9 +410,27 @@ impl Sound {
     * # Arguments
     * * position - Position of the sound in the scene
     */
-    pub fn set_position(&self, position : &vector3::Vector3f) -> () {
+    pub fn set_position(&self, position : &Vector3f) -> () {
         unsafe {
             csfml::sfSound_setPosition(self.sound, *position)
+        }
+    }
+
+    /**
+    * Set the 3D position of a sound in the audio scene
+    *
+    * Only sounds with one channel (mono sounds) can be
+    * spatialized.
+    * The default position of a sound is (0, 0, 0).
+    *
+    * # Arguments
+    * * x - X coordinate of the position of the sound in the scene
+    * * y - Y coordinate of the position of the sound in the scene
+    * * z - Z coordinate of the position of the sound in the scene
+    */
+    pub fn set_position3f(&self, x : f32, y : f32, z: f32) -> () {
+        unsafe {
+            csfml::sfSound_setPosition(self.sound, Vector3f::new(x, y, z))
         }
     }
 

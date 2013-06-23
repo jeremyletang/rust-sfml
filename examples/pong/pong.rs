@@ -140,17 +140,17 @@ fn main () -> () {
             // Move the player's paddle
             if keyboard::keyboard_is_key_pressed(keyboard::Up) &&
                (leftPaddle.get_position().y - paddleSize.y / 2. > 5.) {
-                leftPaddle.move(~Vector2f::new(0., -paddleSpeed * deltaTime));
+                leftPaddle.move2f(0., -paddleSpeed * deltaTime);
             }
             if keyboard::keyboard_is_key_pressed(keyboard::Down) &&
                (leftPaddle.get_position().y + paddleSize.y / 2. < gameHeight as f32 - 5.) {
-                leftPaddle.move(~Vector2f::new(0., paddleSpeed * deltaTime));
+                leftPaddle.move2f(0., paddleSpeed * deltaTime);
             }
             
             // Move the computer's paddle
             if ((rightPaddleSpeed < 0.) && (rightPaddle.get_position().y - paddleSize.y / 2. > 5.)) ||
                 ((rightPaddleSpeed > 0.) && (rightPaddle.get_position().y + paddleSize.y / 2. < gameHeight as f32 - 5.)) {
-                rightPaddle.move(~Vector2f::new(0., rightPaddleSpeed * deltaTime));
+                rightPaddle.move2f(0., rightPaddleSpeed * deltaTime);
             }
             
             // Update the computer's paddle direction according to the ball position
