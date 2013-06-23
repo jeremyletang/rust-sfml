@@ -32,9 +32,9 @@
 use std::libc::{c_float, c_uint};
 use std::ptr;
 
-use graphics::color;
+use graphics::color::Color;
 use graphics::rect::{IntRect, FloatRect};
-use graphics::texture;
+use graphics::texture::Texture;
 use graphics::drawable::Drawable;
 use graphics::render_window::RenderWindow;
 use graphics::render_texture::RenderTexture;
@@ -48,9 +48,9 @@ pub mod csfml {
 
     use graphics::texture;
     use rsfml::sfTypes::{sfBool};
-    use graphics::rect;
+    use graphics::rect::{IntRect, FloatRect};
     use system::vector2::Vector2f;
-    use graphics::color;
+    use graphics::color::Color;
     use graphics::transform::Transform;
 
     pub struct sfCircleShape {
@@ -78,22 +78,22 @@ pub mod csfml {
         fn sfCircleShape_getTransform(shape : *sfCircleShape) -> Transform;
         fn sfCircleShape_getInverseTransform(shape : *sfCircleShape) -> Transform;
         fn sfCircleShape_setTexture(shape : *sfCircleShape, texture : *texture::csfml::sfTexture, resetRect : sfBool) -> ();
-        fn sfCircleShape_setTextureRect(shape : *sfCircleShape, rect : rect::IntRect) -> ();
-        fn sfCircleShape_setFillColor(shape : *sfCircleShape, color : color::Color) -> ();
-        fn sfCircleShape_setOutlineColor(shape : *sfCircleShape, color : color::Color) -> ();
+        fn sfCircleShape_setTextureRect(shape : *sfCircleShape, rect : IntRect) -> ();
+        fn sfCircleShape_setFillColor(shape : *sfCircleShape, color : Color) -> ();
+        fn sfCircleShape_setOutlineColor(shape : *sfCircleShape, color : Color) -> ();
         fn sfCircleShape_setOutlineThickness(shape : *sfCircleShape, thickness : c_float) -> ();
         fn sfCircleShape_getTexture(shape : *sfCircleShape) -> *texture::csfml::sfTexture;
-        fn sfCircleShape_getTextureRect(shape : *sfCircleShape) -> rect::IntRect;
-        fn sfCircleShape_getFillColor(shape : *sfCircleShape) -> color::Color;
-        fn sfCircleShape_getOutlineColor(shape : *sfCircleShape) -> color::Color;
+        fn sfCircleShape_getTextureRect(shape : *sfCircleShape) -> IntRect;
+        fn sfCircleShape_getFillColor(shape : *sfCircleShape) -> Color;
+        fn sfCircleShape_getOutlineColor(shape : *sfCircleShape) -> Color;
         fn sfCircleShape_getOutlineThickness(shape : *sfCircleShape) -> c_float;
         fn sfCircleShape_getPointCount(shape : *sfCircleShape) -> c_uint;
         fn sfCircleShape_getPoint(shape : *sfCircleShape, index : c_uint) -> ();
         fn sfCircleShape_setRadius(shape : *sfCircleShape, radius : c_float) -> ();
         fn sfCircleShape_getRadius(shape : *sfCircleShape) -> c_float;
         fn sfCircleShape_setPointCount(shape : *sfCircleShape, count : c_uint) -> ();
-        fn sfCircleShape_getLocalBounds(shape : *sfCircleShape) -> rect::FloatRect;
-        fn sfCircleShape_getGlobalBounds(shape : *sfCircleShape) -> rect::FloatRect;
+        fn sfCircleShape_getLocalBounds(shape : *sfCircleShape) -> FloatRect;
+        fn sfCircleShape_getGlobalBounds(shape : *sfCircleShape) -> FloatRect;
     }
 }
 
@@ -198,7 +198,7 @@ impl CircleShape {
     * * texture - New texture
     * * resetRect - Should the texture rect be reset to the size of the new texture?
     */
-    pub fn set_texture(&self, texture : &texture::Texture, resetRect : bool) -> () {
+    pub fn set_texture(&self, texture : &Texture, resetRect : bool) -> () {
         match resetRect {
             true        => unsafe {csfml::sfCircleShape_setTexture(self.circleShape, texture.unwrap(), 1)},
             false       => unsafe {csfml::sfCircleShape_setTexture(self.circleShape, texture.unwrap(), 0)},
@@ -234,7 +234,7 @@ impl CircleShape {
     * # Arguments
     * * color - New color of the shape
     */
-    pub fn set_fill_color(&self, color : &color::Color) -> () {
+    pub fn set_fill_color(&self, color : &Color) -> () {
         unsafe {
             csfml::sfCircleShape_setFillColor(self.circleShape, *color)
         }
@@ -249,7 +249,7 @@ impl CircleShape {
     * # Arguments
     * * color - New outline color of the shape
     */
-    pub fn set_outline_color(&self, color : &color::Color) -> () {
+    pub fn set_outline_color(&self, color : &Color) -> () {
         unsafe {
             csfml::sfCircleShape_setOutlineColor(self.circleShape, *color)
         }
@@ -278,9 +278,9 @@ impl CircleShape {
     * 
     * Return the shape's texture
     */
-    pub fn get_texture(&self) -> texture::Texture {
+    pub fn get_texture(&self) -> Texture {
         unsafe {
-            texture::Texture::wrap(csfml::sfCircleShape_getTexture(self.circleShape))
+            Texture::wrap(csfml::sfCircleShape_getTexture(self.circleShape))
         }
     }
 
@@ -300,7 +300,7 @@ impl CircleShape {
     *
     * Return the fill color of the shape
     */
-    pub fn get_fill_color(&self) -> color::Color {
+    pub fn get_fill_color(&self) -> Color {
         unsafe {
             csfml::sfCircleShape_getFillColor(self.circleShape)
         }
@@ -311,7 +311,7 @@ impl CircleShape {
     *
     * Return the outline color of the shape
     */
-    pub fn get_outline_color(&self) -> color::Color {
+    pub fn get_outline_color(&self) -> Color {
         unsafe {
             csfml::sfCircleShape_getOutlineColor(self.circleShape)
         }

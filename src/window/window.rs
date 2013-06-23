@@ -39,7 +39,7 @@ use window::video_mode::*;
 use rsfml::sfTypes::{sfBool};
 use window::event;
 use window::keyboard;
-use system::vector2;
+use system::vector2::{Vector2i, Vector2u};
 use window::joystick;
 use window::mouse;
 
@@ -48,10 +48,10 @@ pub mod csfml {
     
     use std::libc::{c_void, c_uint, c_char, c_float};    
 
-    use rsfml::sfTypes::{sfBool};
+    use rsfml::sfTypes::sfBool;
     use window::context_settings::ContextSettings;
     use window::video_mode::*;    
-    use system::vector2;
+    use system::vector2::{Vector2i, Vector2u};
 
     pub struct sfWindow {
         This : *c_void
@@ -106,10 +106,10 @@ pub mod csfml {
         fn sfWindow_display(window : *sfWindow) -> ();
         fn sfWindow_setFramerateLimit(window : *sfWindow, limit : c_uint) -> ();
         fn sfWindow_setJoystickThreshold(window : *sfWindow, threshold : c_float) -> ();
-        fn sfWindow_getPosition(window : *sfWindow) -> vector2::Vector2i;
-        fn sfWindow_setPosition(window : *sfWindow, position : vector2::Vector2i) -> ();
-        fn sfWindow_getSize(window : *sfWindow) -> vector2::Vector2u;
-        fn sfWindow_setSize(window : *sfWindow, size : vector2::Vector2u) -> ();
+        fn sfWindow_getPosition(window : *sfWindow) -> Vector2i;
+        fn sfWindow_setPosition(window : *sfWindow, position : Vector2i) -> ();
+        fn sfWindow_getSize(window : *sfWindow) -> Vector2u;
+        fn sfWindow_setSize(window : *sfWindow, size : Vector2u) -> ();
         fn sfWindow_pollEvent(window : *sfWindow, event : *sfEvent) -> sfBool;
         fn sfWindow_waitEvent(window : *sfWindow, event : *sfEvent) -> sfBool;
         //fn sfWindow_getSystemHandle(window : *sfWindow) -> sfWindowHandle;
@@ -582,7 +582,7 @@ impl Window {
     *
     * Return the position in pixels
     */
-    pub fn get_position(&self) -> vector2::Vector2i {
+    pub fn get_position(&self) -> Vector2i {
         unsafe {
             csfml::sfWindow_getPosition(self.window)
         }
@@ -598,7 +598,7 @@ impl Window {
     * # Arguments
     * * position - New position of the window, in pixels
     */
-    pub fn set_position(&self, position : &vector2::Vector2i) -> () {
+    pub fn set_position(&self, position : &Vector2i) -> () {
         unsafe {
             csfml::sfWindow_setPosition(self.window, *position)
         }
@@ -611,7 +611,7 @@ impl Window {
     *
     * Return the size in pixels
     */
-    pub fn get_size(&self) -> vector2::Vector2u {
+    pub fn get_size(&self) -> Vector2u {
         unsafe {
             csfml::sfWindow_getSize(self.window)
         }
@@ -623,7 +623,7 @@ impl Window {
     * # Arguments
     * * size - New size, in pixels
     */
-    pub fn set_size(&self, size : &vector2::Vector2u) -> () {
+    pub fn set_size(&self, size : &Vector2u) -> () {
         unsafe {
             csfml::sfWindow_setSize(self.window, *size)
         }

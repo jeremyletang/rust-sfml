@@ -30,16 +30,16 @@
 */
 
 use std::libc::{c_float, c_uint, size_t};
-pub use extra::c_vec::{CVec, len, get};
+use extra::c_vec::{CVec, get};
 use std::str;
 use std::ptr;
 use std::vec;
 
 use graphics::drawable::*;
-use graphics::render_window;
-use graphics::render_texture;
+use graphics::render_window::RenderWindow;
+use graphics::render_texture::RenderTexture;
 use system::vector2::Vector2f;
-use graphics::font;
+use graphics::font::Font;
 use graphics::color::Color;
 use graphics::rect::FloatRect;
 use graphics::transform::Transform;
@@ -194,7 +194,7 @@ impl Text {
     *
     * font - New font
     */
-    pub fn set_font(&self, font : &font::Font) -> () {
+    pub fn set_font(&self, font : &Font) -> () {
         unsafe {
             csfml::sfText_setFont(self.text, font.unwrap())
         }
@@ -294,14 +294,14 @@ impl Text {
     * The returned pointer is const, which means that you can't
     * modify the font when you retrieve it with this function.
     */
-    pub fn get_font(&self) -> Option<font::Font> {
+    pub fn get_font(&self) -> Option<Font> {
         unsafe {
             let fnt = csfml::sfText_getFont(self.text);
             if fnt == ptr::null() {
                 None
             }
             else {
-                Some(font::Font::wrap(fnt))
+                Some(Font::wrap(fnt))
             }
         }
     }
@@ -622,11 +622,11 @@ impl Text {
 
 #[doc(hidden)]
 impl Drawable for Text {
-    pub fn draw_in_render_window(&self, renderWindow : &render_window::RenderWindow) -> () {
+    pub fn draw_in_render_window(&self, renderWindow : &RenderWindow) -> () {
         renderWindow.draw_text(self)
     }
 
-    pub fn draw_in_render_texture(&self, renderTexture : &render_texture::RenderTexture) -> () {
+    pub fn draw_in_render_texture(&self, renderTexture : &RenderTexture) -> () {
         renderTexture.draw_text(self)
     }
 }

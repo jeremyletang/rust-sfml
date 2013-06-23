@@ -32,7 +32,7 @@
 
 use std::str;
 
-use system::time;
+use system::time::Time;
 
 #[doc(hidden)]
 pub mod csfml {
@@ -379,7 +379,7 @@ impl Http {
     * * request - Request to send
     * * timeout - Maximum time to wait
     */
-    pub fn send_request(&self, request : &Request, timeout : &time::Time) -> Response {
+    pub fn send_request(&self, request : &Request, timeout : &Time) -> Response {
         Response { response : unsafe {csfml::sfHttp_sendRequest(self.http, request.unwrap(), timeout.unwrap())}}
     }
 }

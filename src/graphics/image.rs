@@ -31,13 +31,12 @@
 
 use std::libc::{c_uint};
 use std::ptr;
+use std::str;
+use std::vec;
 
-//use system::vector2;
 use system::vector2::Vector2u;
 use graphics::color::Color;
 use graphics::rect::IntRect;
-use std::str;
-use std::vec;
 
 #[doc(hidden)]
 pub mod csfml {

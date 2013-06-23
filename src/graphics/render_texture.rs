@@ -33,19 +33,19 @@
 use std::libc::{c_uint};
 use std::ptr;
 
-use system::vector2;
-use graphics::view;
+use system::vector2::{Vector2f, Vector2i, Vector2u};
+use graphics::view::View;
 use graphics::sprite::Sprite;
-use graphics::color;
+use graphics::color::Color;
 use graphics::rect::IntRect;
-use graphics::texture;
+use graphics::texture::Texture;
 use graphics::text::Text;
 use graphics::circle_shape::CircleShape;
 use graphics::rectangle_shape::RectangleShape;
 use graphics::vertex_array::VertexArray;
 use graphics::convex_shape::ConvexShape;
 
-use graphics::drawable;
+use graphics::drawable::Drawable;
 
 #[doc(hidden)]
 pub mod csfml {
@@ -54,10 +54,10 @@ pub mod csfml {
 
     use rsfml::sfTypes::sfBool;
     use graphics::view;
-    use system::vector2;
+    use system::vector2::{Vector2f, Vector2i, Vector2u};
     use graphics::render_states;
     use graphics::sprite;
-    use graphics::color;
+    use graphics::color::Color;
     use graphics::rect::IntRect;
     use graphics::texture;
     use graphics::text;
@@ -76,16 +76,16 @@ pub mod csfml {
     pub extern "C" {
         fn sfRenderTexture_create(width : c_uint, height : c_uint, depthBuffer : sfBool) -> *sfRenderTexture;
         fn sfRenderTexture_destroy(renderTexture : *sfRenderTexture) -> ();
-        fn sfRenderTexture_getSize(renderTexture : *sfRenderTexture) -> vector2::Vector2u;
+        fn sfRenderTexture_getSize(renderTexture : *sfRenderTexture) -> Vector2u;
         fn sfRenderTexture_setActive(renderTexture : *sfRenderTexture, active : sfBool) -> sfBool;
         fn sfRenderTexture_display(renderTexture : *sfRenderTexture) -> ();
-        fn sfRenderTexture_clear(renderTexture : *sfRenderTexture, color : color::Color) -> ();
+        fn sfRenderTexture_clear(renderTexture : *sfRenderTexture, color : Color) -> ();
         fn sfRenderTexture_setView(renderTexture : *sfRenderTexture, view : *view::csfml::sfView) -> ();
         fn sfRenderTexture_getView(renderTexture : *sfRenderTexture) -> *view::csfml::sfView;
         fn sfRenderTexture_getDefaultView(renderTexture : *sfRenderTexture) -> *view::csfml::sfView;
         fn sfRenderTexture_getViewport(renderTexture : *sfRenderTexture, view : *view::csfml::sfView) -> IntRect;
-        fn sfRenderTexture_mapPixelToCoords(renderTexture : *sfRenderTexture, point : vector2::Vector2i, view : *view::csfml::sfView) -> vector2::Vector2f;
-        fn sfRenderTexture_mapCoordsToPixel(renderTexture : *sfRenderTexture, point : vector2::Vector2f, view : *view::csfml::sfView) -> vector2::Vector2i;
+        fn sfRenderTexture_mapPixelToCoords(renderTexture : *sfRenderTexture, point : Vector2i, view : *view::csfml::sfView) -> Vector2f;
+        fn sfRenderTexture_mapCoordsToPixel(renderTexture : *sfRenderTexture, point : Vector2f, view : *view::csfml::sfView) -> Vector2i;
         fn sfRenderTexture_drawSprite(renderTexture : *sfRenderTexture, object : *sprite::csfml::sfSprite, states : *render_states::csfml::sfRenderStates) -> ();
         fn sfRenderTexture_drawText(renderTexture : *sfRenderTexture, object : *text::csfml::sfText, states : *render_states::csfml::sfRenderStates) -> ();
         //fn sfRenderTexture_drawShape(renderTexture : *sfRenderTexture, object : *sfShape, states : *render_states::csfml::sfRenderStates) -> ();
@@ -137,7 +137,7 @@ impl RenderTexture {
     *
     * Return the size in pixels
     */
-    pub fn get_size(&self) -> vector2::Vector2u {
+    pub fn get_size(&self) -> Vector2u {
         unsafe {
             csfml::sfRenderTexture_getSize(self.renderTexture)
         }
@@ -176,7 +176,7 @@ impl RenderTexture {
     * # Arguments
     * * color - Fill color
     */
-    pub fn clear(&self, color : &color::Color) -> () {
+    pub fn clear(&self, color : &Color) -> () {
         unsafe {
             csfml::sfRenderTexture_clear(self.renderTexture, *color)
         }
@@ -188,7 +188,7 @@ impl RenderTexture {
     * # Arguments
     * * view - the new view
     */
-    pub fn set_view(&self, view : &view::View) -> () {
+    pub fn set_view(&self, view : &View) -> () {
         unsafe {
             csfml::sfRenderTexture_setView(self.renderTexture, view.unwrap())
         }
@@ -199,9 +199,9 @@ impl RenderTexture {
     *
     * Return the current active view
     */
-    pub fn get_view(&self) -> view::View {
+    pub fn get_view(&self) -> View {
         unsafe {
-            view::View::wrap(csfml::sfRenderTexture_getView(self.renderTexture))
+            View::wrap(csfml::sfRenderTexture_getView(self.renderTexture))
         }
     }
 
@@ -210,9 +210,9 @@ impl RenderTexture {
     *
     * Return the default view of the render texture
     */
-    pub fn get_default_view(&self) -> view::View {
+    pub fn get_default_view(&self) -> View {
         unsafe {
-            view::View::wrap(csfml::sfRenderTexture_getDefaultView(self.renderTexture))
+            View::wrap(csfml::sfRenderTexture_getDefaultView(self.renderTexture))
         }
     }
 
@@ -224,7 +224,7 @@ impl RenderTexture {
     *
     * Return the viewport rectangle, expressed in pixels in the current target
     */
-    pub fn get_viewport(&self, view : &view::View) -> IntRect {
+    pub fn get_viewport(&self, view : &View) -> IntRect {
         unsafe {
             csfml::sfRenderTexture_getViewport(self.renderTexture, view.unwrap())
         }
@@ -257,7 +257,7 @@ impl RenderTexture {
     * 
     * Return the converted point, in "world" units
     */
-    pub fn map_pixel_to_coords(&self, point : &vector2::Vector2i, view : &view::View) -> vector2::Vector2f {
+    pub fn map_pixel_to_coords(&self, point : &Vector2i, view : &View) -> Vector2f {
         unsafe {
             csfml::sfRenderTexture_mapPixelToCoords(self.renderTexture, *point, view.unwrap())
         }
@@ -284,7 +284,7 @@ impl RenderTexture {
     * * point - Point to convert
     * * view - The view to use for converting the point
     */
-    pub fn map_coords_to_pixel(&self, point : &vector2::Vector2f, view : &view::View) -> vector2::Vector2i {
+    pub fn map_coords_to_pixel(&self, point : &Vector2f, view : &View) -> Vector2i {
         unsafe {
             csfml::sfRenderTexture_mapCoordsToPixel(self.renderTexture, *point, view.unwrap())
         }
@@ -293,7 +293,7 @@ impl RenderTexture {
     /**
     * Drawing functions
     */
-    pub fn draw<T : drawable::Drawable>(&self, t : &T) -> () {
+    pub fn draw<T : Drawable>(&self, t : &T) -> () {
         t.draw_in_render_texture(self);
     }
 
@@ -393,9 +393,9 @@ impl RenderTexture {
     *
     * Return the target texture
     */
-    pub fn get_texture(&self) -> texture::Texture {
+    pub fn get_texture(&self) -> Texture {
         unsafe {
-            texture::Texture::wrap(csfml::sfRenderTexture_getTexture(self.renderTexture))
+            Texture::wrap(csfml::sfRenderTexture_getTexture(self.renderTexture))
         }
     }
     

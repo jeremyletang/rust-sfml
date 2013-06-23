@@ -29,7 +29,7 @@
 *
 */
 
-use system::time;
+use system::time::Time;
 
 #[doc(hidden)]
 pub mod csfml {
@@ -67,18 +67,18 @@ impl Clock {
     /**
     * Get the time elapsed in a clock
     */
-    pub fn get_elapsed_time(&self) -> time::Time {
+    pub fn get_elapsed_time(&self) -> Time {
         unsafe {
-            time::Time::wrap(csfml::sfClock_getElapsedTime(self.clock))
+            Time::wrap(csfml::sfClock_getElapsedTime(self.clock))
         }
     }
 
     /**
     * Restart a Clock.
     */
-    pub fn restart(&self) -> time::Time {
+    pub fn restart(&self) -> Time {
         unsafe {
-            time::Time::wrap(csfml::sfClock_restart(self.clock))
+            Time::wrap(csfml::sfClock_restart(self.clock))
         }
     }
 }

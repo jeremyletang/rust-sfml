@@ -41,20 +41,20 @@ use window::video_mode::*;
 use window::context_settings::ContextSettings;
 use window::event;
 use window::keyboard;
-use system::vector2;
+use system::vector2::{Vector2f, Vector2i, Vector2u};
 use window::joystick;
 use window::mouse;
 use graphics::text::Text;
-use graphics::drawable;
-use graphics::color;
+use graphics::drawable::Drawable;
+use graphics::color::Color;
 use graphics::sprite::Sprite;
 use graphics::circle_shape::CircleShape;
 use graphics::rectangle_shape::RectangleShape;
 use graphics::convex_shape::ConvexShape;
 //use graphics::transform;
 //use graphics::render_states;
-use graphics::view;
-use graphics::image;
+use graphics::view::View;
+use graphics::image::Image;
 use graphics::rect::IntRect;
 use graphics::vertex_array::VertexArray;
 
@@ -62,13 +62,13 @@ use graphics::vertex_array::VertexArray;
 pub mod csfml {
     
     use std::libc::{c_uint, c_float, c_void, c_char};
-    use system::vector2;
+    use system::vector2::{Vector2f, Vector2i, Vector2u};
     use rsfml::sfTypes::{sfBool};
     use window::video_mode::*;
     use window::context_settings::ContextSettings;
     use graphics::text::csfml::sfText;
     use graphics::render_states;
-    use graphics::color;
+    use graphics::color::Color;
     use graphics::sprite::csfml::sfSprite;
     use graphics::circle_shape::csfml::sfCircleShape;
     use graphics::rectangle_shape::csfml::sfRectangleShape;
@@ -103,10 +103,10 @@ pub mod csfml {
         fn sfRenderWindow_getSettings(renderWindow : *sfRenderWindow) -> ContextSettings;
         fn sfRenderWindow_pollEvent(renderWindow : *sfRenderWindow, event : *sfEvent) -> sfBool;
         fn sfRenderWindow_waitEvent(renderWindow : *sfRenderWindow, event : *sfEvent) -> sfBool;
-        fn sfRenderWindow_getPosition(renderWindow : *sfRenderWindow) -> vector2::Vector2i;
-        fn sfRenderWindow_setPosition(renderWindow : *sfRenderWindow, position : vector2::Vector2i) -> ();
-        fn sfRenderWindow_getSize(renderWindow : *sfRenderWindow) -> vector2::Vector2u;
-        fn sfRenderWindow_setSize(renderWindow : *sfRenderWindow, size : vector2::Vector2u) -> ();
+        fn sfRenderWindow_getPosition(renderWindow : *sfRenderWindow) -> Vector2i;
+        fn sfRenderWindow_setPosition(renderWindow : *sfRenderWindow, position : Vector2i) -> ();
+        fn sfRenderWindow_getSize(renderWindow : *sfRenderWindow) -> Vector2u;
+        fn sfRenderWindow_setSize(renderWindow : *sfRenderWindow, size : Vector2u) -> ();
         fn sfRenderWindow_setTitle(renderWindow : *sfRenderWindow, title : *c_char) -> ();
         fn sfRenderWindow_setUnicodeTitle(renderWindow : *sfRenderWindow, title : *u32) -> ();
         fn sfRenderWindow_setIcon(renderWindow : *sfRenderWindow, width : c_uint, height : c_uint, pixels : *u8) -> ();
@@ -119,13 +119,13 @@ pub mod csfml {
         fn sfRenderWindow_setFramerateLimit(renderWindow : *sfRenderWindow, limit : c_uint) -> ();
         fn sfRenderWindow_setJoystickThreshold(renderWindow : *sfRenderWindow, treshold : c_float) -> ();
         // fn sfRenderWindow_getSystemHandle(renderWindow : *sfRenderWindow) -> sfWindowHandle;
-        fn sfRenderWindow_clear(renderWindow : *sfRenderWindow, color : color::Color) -> ();
+        fn sfRenderWindow_clear(renderWindow : *sfRenderWindow, color : Color) -> ();
         fn sfRenderWindow_setView(renderWindow : *sfRenderWindow, view : *sfView) -> ();
         fn sfRenderWindow_getView(renderWindow : *sfRenderWindow) -> *sfView;
         fn sfRenderWindow_getDefaultView(renderWindow : *sfRenderWindow) -> *sfView;
         fn sfRenderWindow_getViewport(renderWindow : *sfRenderWindow, view : *sfView) -> IntRect;
-        fn sfRenderWindow_mapPixelToCoords(renderWindow : *sfRenderWindow, point : vector2::Vector2i, view : *sfView) -> vector2::Vector2f;
-        fn sfRenderWindow_mapCoordsToPixel(renderWindow : *sfRenderWindow, point : vector2::Vector2f, view : *sfView) -> vector2::Vector2i;
+        fn sfRenderWindow_mapPixelToCoords(renderWindow : *sfRenderWindow, point : Vector2i, view : *sfView) -> Vector2f;
+        fn sfRenderWindow_mapCoordsToPixel(renderWindow : *sfRenderWindow, point : Vector2f, view : *sfView) -> Vector2i;
         fn sfRenderWindow_drawSprite(renderWindow : *sfRenderWindow, object : *sfSprite, states : *render_states::csfml::sfRenderStates) -> ();
         fn sfRenderWindow_drawText(renderWindow : *sfRenderWindow, object : *sfText, states : *render_states::csfml::sfRenderStates) -> ();
         // fn sfRenderWindow_drawShape(renderWindow : *sfRenderWindow, object : *sfShape, states : *sfRenderStates) -> ();
@@ -138,8 +138,8 @@ pub mod csfml {
         fn sfRenderWindow_popGLStates(renderWindow : *sfRenderWindow) -> ();
         fn sfRenderWindow_resetGLStates(renderWindow : *sfRenderWindow) -> ();
         fn sfRenderWindow_capture(renderWindow : *sfRenderWindow) -> *sfImage;
-        fn sfMouse_getPositionRenderWindow(relativeTo : *sfRenderWindow) -> vector2::Vector2i;
-        fn sfMouse_setPositionRenderWindow(position : vector2::Vector2i, relativeTo : *sfRenderWindow) -> ();
+        fn sfMouse_getPositionRenderWindow(relativeTo : *sfRenderWindow) -> Vector2i;
+        fn sfMouse_setPositionRenderWindow(position : Vector2i, relativeTo : *sfRenderWindow) -> ();
     }    
 }
 
@@ -612,7 +612,7 @@ impl RenderWindow {
     *
     * Return the position in pixels
     */
-    pub fn get_position(&self) -> vector2::Vector2i {
+    pub fn get_position(&self) -> Vector2i {
         unsafe {
             csfml::sfRenderWindow_getPosition(self.renderWindow)
         }
@@ -628,7 +628,7 @@ impl RenderWindow {
     * # Arguments
     * * position - New position of the window, in pixels
     */
-    pub fn set_position(&self, position : &vector2::Vector2i) -> () {
+    pub fn set_position(&self, position : &Vector2i) -> () {
         unsafe {
             csfml::sfRenderWindow_setPosition(self.renderWindow, *position)
         }
@@ -641,7 +641,7 @@ impl RenderWindow {
     *
     * Return the size in pixels
     */
-    pub fn get_size(&self) -> vector2::Vector2u {
+    pub fn get_size(&self) -> Vector2u {
         unsafe {
             csfml::sfRenderWindow_getSize(self.renderWindow)
         }
@@ -653,7 +653,7 @@ impl RenderWindow {
     * # Arguments
     * * size - New size, in pixels
     */
-    pub fn set_size(&self, size : &vector2::Vector2u) -> () {
+    pub fn set_size(&self, size : &Vector2u) -> () {
         unsafe {
             csfml::sfRenderWindow_setSize(self.renderWindow, *size)
         }
@@ -710,7 +710,7 @@ impl RenderWindow {
     *
     * Return the position of the mouse cursor, relative to the given render window
     */
-    pub fn get_mouse_position(&self) -> vector2::Vector2i {
+    pub fn get_mouse_position(&self) -> Vector2i {
         unsafe {
             csfml::sfMouse_getPositionRenderWindow(self.renderWindow)
         }
@@ -724,7 +724,7 @@ impl RenderWindow {
     * # Arguments
     * * relativeTo - Reference render window
     */
-    pub fn set_mouse_position(&self, position : &vector2::Vector2i) -> () {
+    pub fn set_mouse_position(&self, position : &Vector2i) -> () {
         unsafe {
             csfml::sfMouse_setPositionRenderWindow(*position, self.renderWindow)
         }
@@ -736,7 +736,7 @@ impl RenderWindow {
     * # Arguments
     * * object - Object to draw
     */
-    pub fn draw<T : drawable::Drawable>(&self, object : &T) -> () {
+    pub fn draw<T : Drawable>(&self, object : &T) -> () {
         object.draw_in_render_window(self);
     }
 
@@ -783,7 +783,7 @@ impl RenderWindow {
     }
 
     /// Clear window with the given color
-    pub fn clear(&self, color : &color::Color) -> () {
+    pub fn clear(&self, color : &Color) -> () {
         unsafe {
             csfml::sfRenderWindow_clear(self.renderWindow, *color)
         }
@@ -802,8 +802,8 @@ impl RenderWindow {
     *
     * Return a new image containing the captured contents
     */
-    pub fn capture(&self) -> image::Image {
-        image::Image::wrap(unsafe {csfml::sfRenderWindow_capture(self.renderWindow)})
+    pub fn capture(&self) -> Image {
+        Image::wrap(unsafe {csfml::sfRenderWindow_capture(self.renderWindow)})
     }
     
     /**
@@ -812,7 +812,7 @@ impl RenderWindow {
     * # Arguments
     * * view - The new view
     */
-    pub fn set_view(&self, view : &view::View) -> () {
+    pub fn set_view(&self, view : &View) -> () {
         unsafe {
             csfml::sfRenderWindow_setView(self.renderWindow, view.unwrap())
         }
@@ -823,8 +823,8 @@ impl RenderWindow {
     *
     * Return the current active view
     */
-    pub fn get_view(&self) -> view::View {
-        view::View::wrap(unsafe {csfml::sfRenderWindow_getView(self.renderWindow)})
+    pub fn get_view(&self) -> View {
+        View::wrap(unsafe {csfml::sfRenderWindow_getView(self.renderWindow)})
     }
     
     /**
@@ -832,8 +832,8 @@ impl RenderWindow {
     *
     * Return the default view of the render window
     */
-    pub fn get_default_view(&self) -> view::View {
-        view::View::wrap(unsafe {csfml::sfRenderWindow_getDefaultView(self.renderWindow)})
+    pub fn get_default_view(&self) -> View {
+        View::wrap(unsafe {csfml::sfRenderWindow_getDefaultView(self.renderWindow)})
     }
     
     /**
@@ -863,7 +863,7 @@ impl RenderWindow {
     * 
     * Return the converted point, in "world" units
     */
-    pub fn map_pixel_to_coords(&self, point : &vector2::Vector2i, view : &view::View) -> vector2::Vector2f {
+    pub fn map_pixel_to_coords(&self, point : &Vector2i, view : &View) -> Vector2f {
         unsafe {
             csfml::sfRenderWindow_mapPixelToCoords(self.renderWindow, *point, view.unwrap())
         }
@@ -890,7 +890,7 @@ impl RenderWindow {
     * * point - Point to convert
     * * view - The view to use for converting the point
     */
-    pub fn map_coords_to_pixel(&self, point : &vector2::Vector2f, view : &view::View) -> vector2::Vector2i {
+    pub fn map_coords_to_pixel(&self, point : &Vector2f, view : &View) -> Vector2i {
         unsafe {
             csfml::sfRenderWindow_mapCoordsToPixel(self.renderWindow, *point, view.unwrap())
         }
@@ -904,7 +904,7 @@ impl RenderWindow {
     *
     * Return the viewport rectangle, expressed in pixels in the current target
     */
-    pub fn get_viewport(&self, view : &view::View) -> IntRect {
+    pub fn get_viewport(&self, view : &View) -> IntRect {
         unsafe {
             csfml::sfRenderWindow_getViewport(self.renderWindow, view.unwrap())
         }

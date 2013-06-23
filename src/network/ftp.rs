@@ -33,7 +33,7 @@ use std::libc::{size_t};
 use std::str;
 
 use network::ip_address::*;
-use system::time;
+use system::time::Time;
 
 #[doc(hidden)]
 pub mod csfml {
@@ -394,7 +394,7 @@ impl Ftp {
     *
     * Return the server response to the request
     */
-    pub fn connect(&self, server : &IpAddress, port : u16, timeout : &time::Time) -> Response {
+    pub fn connect(&self, server : &IpAddress, port : u16, timeout : &Time) -> Response {
         Response { response : unsafe {csfml::sfFtp_connect(self.ftp, server.unwrap(), port, timeout.unwrap())} }
     }
 

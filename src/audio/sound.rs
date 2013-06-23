@@ -34,7 +34,7 @@ use std::ptr;
 
 use system::time;
 use audio::sound_status;
-use audio::sound_buffer;
+use audio::sound_buffer::SoundBuffer;
 use system::vector3::Vector3f;
 
 #[doc(hidden)]
@@ -372,7 +372,7 @@ impl Sound {
     * # Arguments
     * * buffer - Sound buffer to attach to the sound
     */
-    pub fn set_buffer(&self, buffer : &sound_buffer::SoundBuffer) -> () {
+    pub fn set_buffer(&self, buffer : &SoundBuffer) -> () {
         unsafe {
             csfml::sfSound_setBuffer(self.sound, buffer.unwrap())
         }
@@ -383,8 +383,8 @@ impl Sound {
     *
     * Return an option to Sound buffer attached to the sound or None
     */
-    pub fn get_buffer(&self) -> sound_buffer::SoundBuffer {
-        sound_buffer::SoundBuffer::wrap(unsafe {
+    pub fn get_buffer(&self) -> SoundBuffer {
+        SoundBuffer::wrap(unsafe {
             csfml::sfSound_getBuffer(self.sound)
         })
     }

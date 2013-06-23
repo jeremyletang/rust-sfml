@@ -34,10 +34,10 @@ use std::vec;
 use std::str;
 use std::ptr;
 
-use system::vector2;
-use window::window;
-use graphics::render_window;
-use graphics::image;
+use system::vector2::Vector2u;
+use window::window::Window;
+use graphics::render_window::RenderWindow;
+use graphics::image::Image;
 use graphics::rect::IntRect;
 
 #[doc(hidden)]
@@ -148,7 +148,7 @@ impl Texture {
     *
     * Return a new Option to Texture object or None
     */
-    pub fn new_from_image_with_rect(image : &image::Image, area : &IntRect) -> Texture{
+    pub fn new_from_image_with_rect(image : &Image, area : &IntRect) -> Texture{
         Texture { texture : unsafe { csfml::sfTexture_createFromImage(image.unwrap(), &*area)}}
     }
 
@@ -160,7 +160,7 @@ impl Texture {
     *
     * Return a new Option to Texture object or None
     */
-    pub fn new_from_image(image : &image::Image) -> Texture{
+    pub fn new_from_image(image : &Image) -> Texture{
         Texture { texture : unsafe { csfml::sfTexture_createFromImage(image.unwrap(), ptr::null())}}
     }
     
@@ -169,7 +169,7 @@ impl Texture {
     *
     * Return the Size in pixels
     */
-    pub fn get_size(&self) -> vector2::Vector2u {
+    pub fn get_size(&self) -> Vector2u {
         unsafe {
             csfml::sfTexture_getSize(self.texture)
         }
@@ -183,7 +183,7 @@ impl Texture {
     * * x - X offset in the texture where to copy the source pixels
     * * y - Y offset in the texture where to copy the source pixels
     */
-    pub fn update_from_window(&self, window : window::Window, x : uint, y : uint) -> () {
+    pub fn update_from_window(&self, window : Window, x : uint, y : uint) -> () {
         unsafe {
             csfml::sfTexture_updateFromWindow(self.texture, window.unwrap(), x as c_uint, y as c_uint)
         }
@@ -197,7 +197,7 @@ impl Texture {
     * * x - X offset in the texture where to copy the source pixels
     * * y - Y offset in the texture where to copy the source pixels
     */
-    pub fn update_from_render_window(&self, renderWindow : render_window::RenderWindow, x : uint, y : uint) -> () {
+    pub fn update_from_render_window(&self, renderWindow : RenderWindow, x : uint, y : uint) -> () {
         unsafe {
             csfml::sfTexture_updateFromRenderWindow(self.texture, renderWindow.unwrap(), x as c_uint, y as c_uint)
         }
@@ -211,7 +211,7 @@ impl Texture {
     * * x - X offset in the texture where to copy the source pixels
     * * y - Y offset in the texture where to copy the source pixels
     */
-    pub fn update_from_image(&self, image : &image::Image, x : uint, y : uint) -> () {
+    pub fn update_from_image(&self, image : &Image, x : uint, y : uint) -> () {
         unsafe {
             csfml::sfTexture_updateFromImage(self.texture, image.unwrap(), x as c_uint, y as c_uint)
         }
@@ -325,9 +325,9 @@ impl Texture {
     *
     * Return an image containing the texture's pixels
     */
-    pub fn copy_to_image(&self) -> image::Image {
+    pub fn copy_to_image(&self) -> Image {
         unsafe {
-            image::Image::wrap(csfml::sfTexture_copyToImage(self.texture))
+            Image::wrap(csfml::sfTexture_copyToImage(self.texture))
         }
     }
     

@@ -34,9 +34,9 @@ use std::ptr;
 
 //use graphics::transform::Transform;
 use graphics::texture::Texture;
-use system::vector2;
-use system::vector3;
-use graphics::color;
+use system::vector2::Vector2f;
+use system::vector3::Vector3f;
+use graphics::color::Color;
 
 #[doc(hidden)]
 pub mod csfml {
@@ -46,9 +46,9 @@ pub mod csfml {
     use rsfml::sfTypes::{sfBool};
     use graphics::transform;
     use graphics::texture;
-    use system::vector2;
-    use system::vector3;
-    use graphics::color;
+    use system::vector2::Vector2f;
+    use system::vector3::Vector3f;
+    use graphics::color::Color;
 
     pub struct sfShader {
         This : *c_void
@@ -63,9 +63,9 @@ pub mod csfml {
         fn sfShader_setFloat2Parameter(shader : *sfShader, name : *c_char, x : c_float, y : c_float) -> ();
         fn sfShader_setFloat3Parameter(shader : *sfShader, name : *c_char, x : c_float, y : c_float, z : c_float) -> ();
         fn sfShader_setFloat4Parameter(shader : *sfShader, name : *c_char, x : c_float, y : c_float, z : c_float, w : c_float) -> ();
-        fn sfShader_setVector2Parameter(shader : *sfShader, name : *c_char, vector : vector2::Vector2f) -> ();
-        fn sfShader_setVector3Parameter(shader : *sfShader, name : *c_char, vector : vector3::Vector3f) -> ();
-        fn sfShader_setColorParameter(shader : *sfShader, name : *c_char, color : color::Color) -> (); 
+        fn sfShader_setVector2Parameter(shader : *sfShader, name : *c_char, vector : Vector2f) -> ();
+        fn sfShader_setVector3Parameter(shader : *sfShader, name : *c_char, vector : Vector3f) -> ();
+        fn sfShader_setColorParameter(shader : *sfShader, name : *c_char, color : Color) -> (); 
         fn sfShader_setTransformParameter(shader : *sfShader, name : *c_char, transform : transform::Transform) -> ();
         fn sfShader_setTextureParameter(shader : *sfShader, name : *c_char, texture : *texture::csfml::sfTexture) -> ();
         fn sfShader_setCurrentTextureParameter(shader : *sfShader, name : *c_char) -> ();
@@ -287,7 +287,7 @@ impl Shader {
     * * name - Name of the parameter in the shader
     * * vector - Vector to assign
     */
-    fn set_vector2_parameter(&self, name : ~str, vector : &vector2::Vector2f) -> () {
+    fn set_vector2_parameter(&self, name : ~str, vector : &Vector2f) -> () {
         unsafe {
             do str::as_c_str(name) |namebuf| {
                 csfml::sfShader_setVector2Parameter(self.shader, namebuf, *vector)
@@ -306,7 +306,7 @@ impl Shader {
     * * name - Name of the parameter in the shader
     * * vector - Vector to assign
     */
-    fn set_vector3_parameter(&self, name : ~str, vector : &vector3::Vector3f) -> () {
+    fn set_vector3_parameter(&self, name : ~str, vector : &Vector3f) -> () {
         unsafe {
             do str::as_c_str(name) |namebuf| {
                 csfml::sfShader_setVector3Parameter(self.shader, namebuf, *vector)
@@ -331,7 +331,7 @@ impl Shader {
     * * name - Name of the parameter in the shader
     * * color - Color to assign
     */
-    fn set_color_parameter(&self, name : ~str, color : &color::Color) -> () {
+    fn set_color_parameter(&self, name : ~str, color : &Color) -> () {
         unsafe {
             do str::as_c_str(name) |namebuf| {
                 csfml::sfShader_setColorParameter(self.shader, namebuf, *color)

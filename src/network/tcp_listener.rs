@@ -33,7 +33,7 @@
 
 use std::ptr;
 
-use network::tcp_socket;
+use network::tcp_socket::TcpSocket;
 use network::socket_status::SocketStatus;
 
 #[doc(hidden)]
@@ -159,7 +159,7 @@ impl TcpListener {
     *
     * Return status code
     */
-    pub fn accept(&self, connected : @tcp_socket::TcpSocket) -> SocketStatus {
+    pub fn accept(&self, connected : @TcpSocket) -> SocketStatus {
         unsafe {
             csfml::sfTcpListener_accept(self.listener, &connected.unwrap())
         }

@@ -31,7 +31,7 @@
 
 use std::libc::{c_uint};
 use window::window::*;
-use system::vector2;
+use system::vector2::Vector2i;
 
 /// Mouse buttons
 pub enum MouseButton {
@@ -48,12 +48,12 @@ pub mod csfml {
     use std::libc::{c_uint};
     use rsfml::sfTypes::{sfBool};
     use window::window::*;
-    use system::vector2;
+    use system::vector2::Vector2i;
 
     pub extern "C" {
         fn sfMouse_isButtonPressed(button : c_uint) -> sfBool;
-        fn sfMouse_getPosition(relativeTo : *csfml::sfWindow) -> vector2::Vector2i;
-        fn sfMouse_setPosition(position : vector2::Vector2i, relativeTo : *csfml::sfWindow) -> ();
+        fn sfMouse_getPosition(relativeTo : *csfml::sfWindow) -> Vector2i;
+        fn sfMouse_setPosition(position : Vector2i, relativeTo : *csfml::sfWindow) -> ();
     }
 }
 
@@ -84,7 +84,7 @@ pub fn mouse_is_button_pressed(button : MouseButton) -> bool {
 *
 * Return the position of the mouse cursor, relative to the given window
 */
-pub fn mouse_get_position(relativeTo : &Window) -> vector2::Vector2i {
+pub fn mouse_get_position(relativeTo : &Window) -> Vector2i {
     unsafe {
         csfml::sfMouse_getPosition(relativeTo.unwrap())
     }
@@ -100,7 +100,7 @@ pub fn mouse_get_position(relativeTo : &Window) -> vector2::Vector2i {
 * * relativeTo - Reference Window
 *
 */
-pub fn mouse_set_position(position : &vector2::Vector2i, relativeTo : &Window) -> () {
+pub fn mouse_set_position(position : &Vector2i, relativeTo : &Window) -> () {
     unsafe {
         csfml::sfMouse_setPosition(*position, relativeTo.unwrap())
     }

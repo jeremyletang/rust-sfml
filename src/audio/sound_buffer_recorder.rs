@@ -32,7 +32,7 @@
 use std::libc::{c_uint};
 use std::ptr;
 
-use audio::sound_buffer;
+use audio::sound_buffer::SoundBuffer;
 
 #[doc(hidden)]
 pub mod csfml {
@@ -128,9 +128,9 @@ impl SoundBufferRecorder {
     *
     * Return Read-only access to the sound buffer
     */
-    pub fn get_buffer(&self) -> sound_buffer::SoundBuffer {
+    pub fn get_buffer(&self) -> SoundBuffer {
         unsafe {
-            sound_buffer::SoundBuffer::wrap(csfml::sfSoundBufferRecorder_getBuffer(self.soundBufferRecorder))
+            SoundBuffer::wrap(csfml::sfSoundBufferRecorder_getBuffer(self.soundBufferRecorder))
         }
     }
 

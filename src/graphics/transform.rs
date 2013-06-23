@@ -34,7 +34,7 @@ pub use extra::c_vec::{CVec, len, get};
 use std::libc::{c_float};
 use std::ptr;
 
-use system::vector2;
+use system::vector2::Vector2f;
 use graphics::rect::FloatRect;
 
 #[doc(hidden)]
@@ -42,7 +42,7 @@ pub mod csfml {
     
     use std::libc::{c_float};
 
-    use system::vector2;
+    use system::vector2::Vector2f;
     use graphics::rect::FloatRect;
     use graphics::transform::Transform;
 
@@ -50,7 +50,7 @@ pub mod csfml {
         fn sfTransform_fromMatrix(a01 : f32, a02 : f32, a03 : f32, b01 : f32, b02 : f32, b03 : f32, c01 : f32, c02 : f32, c03 : f32) -> Transform;
         fn sfTransform_getMatrix(tranform : *Transform, matrix : *mut f32) -> ();
         fn sfTransform_getInverse(transform : *Transform) -> Transform;
-        fn sfTransform_transformPoint(transform : *Transform, point : vector2::Vector2f) -> vector2::Vector2f;
+        fn sfTransform_transformPoint(transform : *Transform, point : Vector2f) -> Vector2f;
         fn sfTransform_transformRect(transform : *Transform, rectangle : FloatRect) -> FloatRect;
         fn sfTransform_combine(transform : *Transform, other : *Transform) -> ();
         fn sfTransform_translate(transform : *Transform, x : c_float, y : c_float) -> ();
@@ -239,7 +239,7 @@ impl Transform {
     *
     * Return a transformed point
     */
-    pub fn transform_point(&self, point : &vector2::Vector2f) -> vector2::Vector2f {
+    pub fn transform_point(&self, point : &Vector2f) -> Vector2f {
         unsafe {
             csfml::sfTransform_transformPoint(&*self, *point)
         }
