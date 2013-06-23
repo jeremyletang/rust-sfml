@@ -104,8 +104,8 @@ impl TcpSocket {
     * available or not.
     * By default, all sockets are blocking.
     *
-    * #Arguments
-    * blocking - true to set the socket as blocking, false for non-blocking
+    * # Arguments
+    * * blocking - true to set the socket as blocking, false for non-blocking
     */
     pub fn set_blocking(&self, blocking : bool) -> () {
         match blocking  {

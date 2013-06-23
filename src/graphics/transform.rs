@@ -32,6 +32,7 @@
 extern mod std;
 pub use extra::c_vec::{CVec, len, get};
 use std::libc::{c_float};
+use std::ptr;
 
 use system::vector2;
 use graphics::rect::FloatRect;
@@ -47,7 +48,7 @@ pub mod csfml {
 
     pub extern "C" {
         fn sfTransform_fromMatrix(a01 : f32, a02 : f32, a03 : f32, b01 : f32, b02 : f32, b03 : f32, c01 : f32, c02 : f32, c03 : f32) -> Transform;
-        //fn sfTransform_getMatrix(tranform : *sfTransform, matrix : *mut f32) -> ();
+        fn sfTransform_getMatrix(tranform : *Transform, matrix : *mut f32) -> ();
         fn sfTransform_getInverse(transform : *Transform) -> Transform;
         fn sfTransform_transformPoint(transform : *Transform, point : vector2::Vector2f) -> vector2::Vector2f;
         fn sfTransform_transformRect(transform : *Transform, rectangle : FloatRect) -> FloatRect;
@@ -97,24 +98,22 @@ impl Transform {
         }
     }
 
-/*    pub fn get_matrix(&self) -> ~[f32] {
+    pub fn get_matrix(&self) -> ~[f32] {
         unsafe {
-            let matrix : *mut f32 = ptr::null();
+            let matrix : *f32 = ptr::null();
             let mut return_matrix : ~[f32] = ~[];
-            unsafe {
-                csfml::sfTransform_getMatrix(&self.transform, matrix);
-                let cvec = CVec(matrix, 16);
-                let mut d : uint = 0;
+            csfml::sfTransform_getMatrix(self, matrix as *mut f32);
+            let cvec = CVec(matrix as *mut f32, 16);
+            let mut d : uint = 0;
+            return_matrix.push(get(cvec, d));
+            d += 1;
+            while d != 16 {
                 return_matrix.push(get(cvec, d));
                 d += 1;
-                while d != 16 {
-                    return_matrix.push(get(cvec, d));
-                    d += 1;
-                }
             }
-        return_matrix
+            return_matrix
         }
-    }*/
+    }
     
     /**
     * Create a new identity transform

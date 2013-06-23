@@ -35,10 +35,10 @@ use std::ptr;
 use graphics::color;
 use graphics::rect::{IntRect, FloatRect};
 use graphics::texture;
-use graphics::drawable;
+use graphics::drawable::Drawable;
 use graphics::render_window::RenderWindow;
 use graphics::render_texture::RenderTexture;
-use system::vector2;
+use system::vector2::Vector2f;
 use graphics::transform::Transform;
 
 #[doc(hidden)]
@@ -49,7 +49,7 @@ pub mod csfml {
     use graphics::texture;
     use rsfml::sfTypes::{sfBool};
     use graphics::rect;
-    use system::vector2;
+    use system::vector2::Vector2f;
     use graphics::color;
     use graphics::transform::Transform;
 
@@ -64,17 +64,17 @@ pub mod csfml {
         fn sfCircleShape_create() -> *sfCircleShape;
         fn sfCircleShape_copy(shape : *sfCircleShape) -> *sfCircleShape;
         fn sfCircleShape_destroy(shape : *sfCircleShape) -> ();
-        fn sfCircleShape_setPosition(shape : *sfCircleShape, position : vector2::Vector2f) -> ();
+        fn sfCircleShape_setPosition(shape : *sfCircleShape, position : Vector2f) -> ();
         fn sfCircleShape_setRotation(shape : *sfCircleShape, angle : c_float) -> ();
-        fn sfCircleShape_setScale(shape : *sfCircleShape, scale : vector2::Vector2f) -> ();
-        fn sfCircleShape_setOrigin(shape : *sfCircleShape, origin : vector2::Vector2f) -> ();
-        fn sfCircleShape_getPosition(shape : *sfCircleShape) -> vector2::Vector2f;
+        fn sfCircleShape_setScale(shape : *sfCircleShape, scale : Vector2f) -> ();
+        fn sfCircleShape_setOrigin(shape : *sfCircleShape, origin : Vector2f) -> ();
+        fn sfCircleShape_getPosition(shape : *sfCircleShape) -> Vector2f;
         fn sfCircleShape_getRotation(shape : *sfCircleShape) -> c_float;
-        fn sfCircleShape_getScale(shape : *sfCircleShape) -> vector2::Vector2f;
-        fn sfCircleShape_getOrigin(shape : *sfCircleShape) -> vector2::Vector2f;
-        fn sfCircleShape_move(shape : *sfCircleShape, offset : vector2::Vector2f) -> ();
+        fn sfCircleShape_getScale(shape : *sfCircleShape) -> Vector2f;
+        fn sfCircleShape_getOrigin(shape : *sfCircleShape) -> Vector2f;
+        fn sfCircleShape_move(shape : *sfCircleShape, offset : Vector2f) -> ();
         fn sfCircleShape_rotate(shape : *sfCircleShape, angle : c_float) -> ();
-        fn sfCircleShape_scale(shape : *sfCircleShape, factors : vector2::Vector2f) -> ();
+        fn sfCircleShape_scale(shape : *sfCircleShape, factors : Vector2f) -> ();
         fn sfCircleShape_getTransform(shape : *sfCircleShape) -> Transform;
         fn sfCircleShape_getInverseTransform(shape : *sfCircleShape) -> Transform;
         fn sfCircleShape_setTexture(shape : *sfCircleShape, texture : *texture::csfml::sfTexture, resetRect : sfBool) -> ();
@@ -395,7 +395,7 @@ impl CircleShape {
     *
     * Return the current position
     */
-    pub fn get_position(&self) -> vector2::Vector2f {
+    pub fn get_position(&self) -> Vector2f {
         unsafe {csfml::sfCircleShape_getPosition(self.circleShape)}
     }
 
@@ -404,7 +404,7 @@ impl CircleShape {
     *
     * Return the current scale factors
     */
-    pub fn get_scale(&self) -> vector2::Vector2f {
+    pub fn get_scale(&self) -> Vector2f {
         unsafe {csfml::sfCircleShape_getScale(self.circleShape)}
     }
 
@@ -413,7 +413,7 @@ impl CircleShape {
     *
     * return the current origin
     */
-    pub fn get_origin(&self) -> vector2::Vector2f {
+    pub fn get_origin(&self) -> Vector2f {
         unsafe {csfml::sfCircleShape_getOrigin(self.circleShape)}
     }
 
@@ -426,9 +426,25 @@ impl CircleShape {
     * # Arguments
     * * offset - Offset
     */
-    pub fn move(&self, offset : &vector2::Vector2f) -> () {
+    pub fn move(&self, offset : &Vector2f) -> () {
         unsafe {
             csfml::sfCircleShape_move(self.circleShape, *offset)
+        }
+    }
+
+    /**
+    * Move a circle shape by a given offset
+    *
+    * This function adds to the current position of the object,
+    * unlike sset_position which overwrites it.
+    *
+    * # Arguments
+    * * offsetX - Offset x
+    * * offsetY - Offset y
+    */
+    pub fn move2f(&self, offsetX : f32, offsetY : f32) -> () {
+        unsafe {
+            csfml::sfCircleShape_move(self.circleShape, Vector2f::new(offsetX, offsetY))
         }
     }
 
@@ -441,9 +457,25 @@ impl CircleShape {
     * # Arguments
     * * factors - Scale factors
     */
-    pub fn scale(&self, factors : &vector2::Vector2f) -> () {
+    pub fn scale(&self, factors : &Vector2f) -> () {
         unsafe {
             csfml::sfCircleShape_scale(self.circleShape, *factors)
+        }
+    }
+
+    /**
+    * Scale a circle shape
+    *
+    * This function multiplies the current scale of the object,
+    * unlike sfCircleShape_setScale which overwrites it.
+    *
+    * # Arguments
+    * * factorX - Scale x factor
+    * * factorY - Scale y factor
+    */
+    pub fn scale2f(&self, factorX : f32, factorY : f32) -> () {
+        unsafe {
+            csfml::sfCircleShape_scale(self.circleShape, Vector2f::new(factorX, factorY))
         }
     }
 
@@ -457,9 +489,26 @@ impl CircleShape {
     * # Arguments
     * * position - New position
     */
-    pub fn set_position(&self, position : &vector2::Vector2f) -> () {
+    pub fn set_position(&self, position : &Vector2f) -> () {
         unsafe {
             csfml::sfCircleShape_setPosition(self.circleShape, *position)
+        }
+    }
+
+    /**
+    * Set the position of a circle shape
+    *
+    * This function completely overwrites the previous position.
+    * See move to apply an offset based on the previous position instead.
+    * The default position of a circle Shape object is (0, 0).
+    *
+    * # Arguments
+    * * x - New x coordinate
+    * * y - New y coordinate
+    */
+    pub fn set_position2f(&self, x : f32, y : f32) -> () {
+        unsafe {
+            csfml::sfCircleShape_setPosition(self.circleShape, Vector2f::new(x, y))
         }
     }
 
@@ -473,9 +522,26 @@ impl CircleShape {
     * # Arguments
     * * scale - New scale factors
     */
-    pub fn set_scale(&self, scale : &vector2::Vector2f) -> () {
+    pub fn set_scale(&self, scale : &Vector2f) -> () {
         unsafe {
             csfml::sfCircleShape_setScale(self.circleShape, *scale)
+        }
+    }
+    
+    /**
+    * Set the scale factors of a circle shape
+    *
+    * This function completely overwrites the previous scale.
+    * See scale to add a factor based on the previous scale instead.
+    * The default scale of a circle Shape object is (1, 1).
+    *
+    * # Arguments
+    * * scaleX - New x scale factor
+    * * scaleY - New y scale factor
+    */
+    pub fn set_scale2f(&self, scaleX : f32, scaleY : f32) -> () {
+        unsafe {
+            csfml::sfCircleShape_setScale(self.circleShape, Vector2f::new(scaleX, scaleY))
         }
     }
     
@@ -492,9 +558,29 @@ impl CircleShape {
     * # Arguments
     * * origin - New origin
     */
-    pub fn set_origin(&self, origin : &vector2::Vector2f) -> () {
+    pub fn set_origin(&self, origin : &Vector2f) -> () {
         unsafe {
             csfml::sfCircleShape_setOrigin(self.circleShape, *origin)
+        }
+    }
+
+    /**
+    * Set the local origin of a circle shape
+    *
+    * The origin of an object defines the center point for
+    * all transformations (position, scale, rotation).
+    * The coordinates of this point must be relative to the
+    * top-left corner of the object, and ignore all
+    * transformations (position, scale, rotation).
+    * The default origin of a circle Shape object is (0, 0).
+    *
+    * # Arguments
+    * * x - New x origin coordinate
+    * * y - New y origin coordinate
+    */
+    pub fn set_origin2f(&self, x : f32, y : f32) -> () {
+        unsafe {
+            csfml::sfCircleShape_setOrigin(self.circleShape, Vector2f::new(x, y))
         }
     }
 
@@ -565,7 +651,7 @@ impl CircleShape {
     }
 }
 
-impl drawable::Drawable for CircleShape {
+impl Drawable for CircleShape {
     pub fn draw_in_render_window(&self, renderWindow : &RenderWindow) -> () {
         renderWindow.draw_circle_shape(self)
     }

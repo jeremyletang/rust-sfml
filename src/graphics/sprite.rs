@@ -37,7 +37,7 @@ use graphics::texture;
 use graphics::drawable::Drawable;
 use graphics::render_window;
 use graphics::render_texture;
-use system::vector2;
+use system::vector2::Vector2f;
 use graphics::rect::{FloatRect, IntRect};
 use graphics::transform::Transform;
 
@@ -49,7 +49,7 @@ pub mod csfml {
     use rsfml::sfTypes::{sfBool};
     use graphics::color;
     use graphics::texture;
-    use system::vector2;
+    use system::vector2::Vector2f;
     use graphics::rect::{IntRect, FloatRect};
     use graphics::transform::Transform;
 
@@ -64,17 +64,17 @@ pub mod csfml {
         fn sfSprite_create() -> *sfSprite;
         fn sfSprite_copy(sprite : *sfSprite) -> *sfSprite;
         fn sfSprite_destroy(sprite : *sfSprite) -> ();
-        fn sfSprite_setPosition(sprite : *sfSprite, position : vector2::Vector2f) -> ();
+        fn sfSprite_setPosition(sprite : *sfSprite, position : Vector2f) -> ();
         fn sfSprite_setRotation(sprite : *sfSprite, angle : c_float) -> ();
-        fn sfSprite_setScale(sprite : *sfSprite, scale : vector2::Vector2f) -> ();
-        fn sfSprite_setOrigin(sprite : *sfSprite, origin : vector2::Vector2f) -> ();
-        fn sfSprite_getPosition(sprite : *sfSprite) -> vector2::Vector2f;
+        fn sfSprite_setScale(sprite : *sfSprite, scale : Vector2f) -> ();
+        fn sfSprite_setOrigin(sprite : *sfSprite, origin : Vector2f) -> ();
+        fn sfSprite_getPosition(sprite : *sfSprite) -> Vector2f;
         fn sfSprite_getRotation(sprite : *sfSprite) -> c_float;
-        fn sfSprite_getScale(sprite : *sfSprite) -> vector2::Vector2f;
-        fn sfSprite_getOrigin(sprite : *sfSprite) -> vector2::Vector2f;
-        fn sfSprite_move(sprite : *sfSprite, offset : vector2::Vector2f) -> ();
+        fn sfSprite_getScale(sprite : *sfSprite) -> Vector2f;
+        fn sfSprite_getOrigin(sprite : *sfSprite) -> Vector2f;
+        fn sfSprite_move(sprite : *sfSprite, offset : Vector2f) -> ();
         fn sfSprite_rotate(sprite : *sfSprite, angle : c_float) -> ();
-        fn sfSprite_scale(sprite : *sfSprite, factors : vector2::Vector2f) -> ();
+        fn sfSprite_scale(sprite : *sfSprite, factors : Vector2f) -> ();
         fn sfSprite_getTransform(sprite : *sfSprite) -> Transform;
         fn sfSprite_getInverseTransform(sprite : *sfSprite) -> Transform;
         fn sfSprite_setTexture(sprite : *sfSprite, texture : *texture::csfml::sfTexture, resetRect : sfBool) -> ();
@@ -250,9 +250,26 @@ impl Sprite {
     * # Arguments
     * * position - New position
     */
-    pub fn set_position(&self, position : &vector2::Vector2f) -> () {
+    pub fn set_position(&self, position : &Vector2f) -> () {
         unsafe {
             csfml::sfSprite_setPosition(self.sprite, *position)
+        }
+    }
+
+    /**
+    * Set the position of a sprite
+    *
+    * This function completely overwrites the previous position.
+    * See move to apply an offset based on the previous position instead.
+    * The default position of a sprite Sprite object is (0, 0).
+    *
+    * # Arguments
+    * * x - New x coordinate
+    * * y - New y coordinate
+    */
+    pub fn set_position2f(&self, x : f32, y : f32) -> () {
+        unsafe {
+            csfml::sfSprite_setPosition(self.sprite, Vector2f::new(x, y))
         }
     }
 
@@ -265,9 +282,25 @@ impl Sprite {
     * # Arguments
     * * factors - Scale factors
     */
-    pub fn scale(&self, factors : &vector2::Vector2f) -> () {
+    pub fn scale(&self, factors : &Vector2f) -> () {
         unsafe {
             csfml::sfSprite_scale(self.sprite, *factors)
+        }
+    }
+
+    /**
+    * Scale a sprite
+    *
+    * This function multiplies the current scale of the object,
+    * unlike setScale which overwrites it.
+    *
+    * # Arguments
+    * * factorX - Scale x factor
+    * * factorY - Scale y factor
+    */
+    pub fn scale2f(&self, factorX : f32, factorY : f32) -> () {
+        unsafe {
+            csfml::sfSprite_scale(self.sprite, Vector2f::new(factorX, factorY))
         }
     }
 
@@ -276,7 +309,7 @@ impl Sprite {
     *
     * Return the current scale factors 
     */
-    pub fn get_scale(&self) -> vector2::Vector2f {
+    pub fn get_scale(&self) -> Vector2f {
         unsafe {csfml::sfSprite_getScale(self.sprite)}
     }
 
@@ -285,7 +318,7 @@ impl Sprite {
     *
     * Return the current origin
     */
-    pub fn get_origin(&self) -> vector2::Vector2f {
+    pub fn get_origin(&self) -> Vector2f {
         unsafe {csfml::sfSprite_getOrigin(self.sprite)}
     }
 
@@ -298,9 +331,25 @@ impl Sprite {
     * # Arguments
     * * offset - Offset
     */
-    pub fn move(&self, offset : &vector2::Vector2f) -> () {
+    pub fn move(&self, offset : &Vector2f) -> () {
         unsafe {
             csfml::sfSprite_move(self.sprite, *offset)
+        }
+    }
+
+    /**
+    * Move a sprite by a given offset
+    *
+    * This function adds to the current position of the object,
+    * unlike sfSprite_setPosition which overwrites it.
+    *
+    * # Arguments
+    * * offsetX - Offset x
+    * * offsetY - Offset y
+    */
+    pub fn move2f(&self, offsetX : f32, offsetY : f32) -> () {
+        unsafe {
+            csfml::sfSprite_move(self.sprite, Vector2f::new(offsetX, offsetY))
         }
     }
 
@@ -314,9 +363,26 @@ impl Sprite {
     * # Arguments
     * * scale - New scale factors
     */
-    pub fn set_scale(&self, scale : &vector2::Vector2f) -> () {
+    pub fn set_scale(&self, scale : &Vector2f) -> () {
         unsafe {
             csfml::sfSprite_setScale(self.sprite, *scale)
+        }
+    }
+
+    /**
+    * Set the scale factors of a sprite
+    *
+    * This function completely overwrites the previous scale.
+    * See scale to add a factor based on the previous scale instead.
+    * The default scale of a sprite Sprite object is (1, 1).
+    *
+    * # Arguments
+    * * scaleX - New x scale factor
+    * * scaleY - New y scale factor
+    */
+    pub fn set_scale2f(&self, scaleX : f32, scaleY : f32) -> () {
+        unsafe {
+            csfml::sfSprite_setScale(self.sprite, Vector2f::new(scaleX, scaleY))
         }
     }
     
@@ -333,9 +399,29 @@ impl Sprite {
     * # Arguments
     * * origin - New origin
     */
-    pub fn set_origin(&self, origin : &vector2::Vector2f) -> () {
+    pub fn set_origin(&self, origin : &Vector2f) -> () {
         unsafe {
             csfml::sfSprite_setOrigin(self.sprite, *origin)
+        }
+    }
+
+    /**
+    * Set the local origin of a sprite
+    *
+    * The origin of an object defines the center point for
+    * all transformations (position, scale, rotation).
+    * The coordinates of this point must be relative to the
+    * top-left corner of the object, and ignore all
+    * transformations (position, scale, rotation).
+    * The default origin of a sprite Sprite object is (0, 0).
+    *
+    * # Arguments
+    * * x - New x origin coordinate
+    * * y - New y origin coordinate
+    */
+    pub fn set_origin2f(&self, x : f32, y : f32) -> () {
+        unsafe {
+            csfml::sfSprite_setOrigin(self.sprite, Vector2f::new(x, y))
         }
     }
 
@@ -344,7 +430,7 @@ impl Sprite {
     *
     * Return the current position
     */
-    pub fn get_position(&self) -> vector2::Vector2f {
+    pub fn get_position(&self) -> Vector2f {
         unsafe {csfml::sfSprite_getPosition(self.sprite)}
     }
 

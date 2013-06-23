@@ -37,6 +37,13 @@ pub struct Vector3f {
     z : f32
 }
 
+trait Vector3fOp {
+    fn add_to_Vector3f(&self, lhs: &Vector3f) -> Vector3f;
+    fn div_to_Vector3f(&self, lhs: &Vector3f) -> Vector3f;
+    fn mul_to_Vector3f(&self, lhs: &Vector3f) -> Vector3f;
+    fn sub_to_Vector3f(&self, lhs: &Vector3f) -> Vector3f;
+}
+
 impl Vector3f {
     fn new(x : f32, y : f32, z : f32) -> Vector3f {
         Vector3f{x : x, y : y, z : z}
