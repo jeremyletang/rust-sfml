@@ -189,7 +189,6 @@ impl CircleShape {
     * a pointer to the one that you passed to this function.
     * If the source texture is destroyed and the shape tries to
     * use it, the behaviour is undefined.
-    * texture can be NULL to disable texturing.
     * If resetRect is true, the TextureRect property of
     * the shape is automatically adjusted to the size of the new
     * texture. If it is false, the texture rect is left unchanged.
@@ -202,6 +201,17 @@ impl CircleShape {
         match resetRect {
             true        => unsafe {csfml::sfCircleShape_setTexture(self.circleShape, texture.unwrap(), 1)},
             false       => unsafe {csfml::sfCircleShape_setTexture(self.circleShape, texture.unwrap(), 0)},
+        }
+    }
+
+    /**
+    * Disable the current texture
+    *
+    * Disable the current texture on the CircleShape and reset the texture rect
+    */
+    pub fn disable_texture(&self) -> () {
+        unsafe {
+            csfml::sfCircleShape_setTexture(self.circleShape, ptr::null(), 1)
         }
     }
     

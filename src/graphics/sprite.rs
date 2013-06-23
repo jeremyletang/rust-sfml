@@ -194,6 +194,17 @@ impl Sprite {
     }
 
     /**
+    * Disable the current texture
+    *
+    * Disable the current and reset the texture rect
+    */
+    pub fn disable_texture(&self) -> () {
+        unsafe {
+            csfml::sfSprite_setTexture(self.sprite, ptr::null(), 1)
+        }
+    }
+
+    /**
     * Set the global color of a sprite
     *
     * This color is modulated (multiplied) with the sprite's

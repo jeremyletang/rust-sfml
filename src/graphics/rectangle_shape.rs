@@ -430,6 +430,17 @@ impl RectangleShape {
     }
 
     /**
+    * Disable the current texture
+    *
+    * Disable the current texture and reset the texture rect
+    */
+    pub fn disable_texture(&self) -> () {
+        unsafe {
+            csfml::sfRectangleShape_setTexture(self.rectangleShape, ptr::null(), 1)
+        }
+    }
+
+    /**
     * Set the fill color of a rectangle shape
     *
     * This color is modulated (multiplied) with the shape's

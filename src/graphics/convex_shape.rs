@@ -427,6 +427,17 @@ impl ConvexShape {
     }
 
     /**
+    * Disable the current texture
+    *
+    * Disable the texture and reset the texture rect
+    */
+    pub fn disable_texture(&self) -> () {
+        unsafe {
+            csfml::sfConvexShape_setTexture(self.convexShape, ptr::null(), 1)
+        }
+    }
+
+    /**
     * Set the fill color of a convex shape
     *
     * This color is modulated (multiplied) with the shape's
