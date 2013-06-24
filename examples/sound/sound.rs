@@ -26,7 +26,7 @@ fn play_sound() -> () {
     io::println(fmt!(" %d samples / sec", buffer.get_sample_rate() as int));
     io::println(fmt!(" %d channels", buffer.get_channel_count() as int));
 
-    let sound : Sound = match Sound::new() {
+    let mut sound : Sound = match Sound::new() {
         Some(sound)     => sound,
         None            => fail!("Error cannot create Sound")
     };
@@ -52,7 +52,7 @@ fn play_sound() -> () {
 
 /* Play a Music */
 fn play_music() -> () {
-    let music : Music = match Music::new_from_file(~"resources/orchestral.ogg") {
+    let mut music : Music = match Music::new_from_file(~"resources/orchestral.ogg") {
         Some(music)     => music,
         None            => fail!("Error, cannot load music")
     };
