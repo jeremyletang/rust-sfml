@@ -30,13 +30,13 @@
 */
 
 use std::libc::{c_uint};
+use std::ptr;
+use std::str;
+use std::vec;
 
-//use system::vector2;
 use system::vector2::Vector2u;
 use graphics::color::Color;
 use graphics::rect::IntRect;
-use std::str;
-use std::vec;
 
 #[doc(hidden)]
 pub mod csfml {
@@ -90,8 +90,14 @@ impl Image {
     * 
     * Return a new Image object
     */
-    pub fn new(width : uint, height : uint) -> Image {
-        Image { image : unsafe {csfml::sfImage_create(width as c_uint, height as c_uint)} }
+    pub fn new(width : uint, height : uint) -> Option<Image> {
+        let image = unsafe {csfml::sfImage_create(width as c_uint, height as c_uint)};
+        if image == ptr::null() {
+            None
+        }
+        else {
+            Some(Image { image : image})
+        }
     }
 
     /**
@@ -104,8 +110,14 @@ impl Image {
     *
     * Return a new Image object
     */
-    pub fn new_from_color(width : uint, height : uint, color : &Color) -> Image {
-        Image { image : unsafe {csfml::sfImage_createFromColor(width as c_uint, height as c_uint, *color)} }
+    pub fn new_from_color(width : uint, height : uint, color : &Color) -> Option<Image> {
+        let image = unsafe {csfml::sfImage_createFromColor(width as c_uint, height as c_uint, *color)};
+        if image == ptr::null() {
+            None
+        }
+        else {
+            Some(Image { image : image})
+        }
     }
     
     /**
@@ -120,9 +132,16 @@ impl Image {
     * * filename - Path of the image file to load
     * Return a new Image object, or NULL if it failed
     */
-    pub fn new_from_file(filename : ~str) -> Image {
+    pub fn new_from_file(filename : ~str) -> Option<Image> {
         do str::as_c_str(filename) |filebuf| {
-            Image { image : unsafe {csfml::sfImage_createFromFile(filebuf)} }
+            let image = unsafe {csfml::sfImage_createFromFile(filebuf)};
+            if image == ptr::null() {
+                None
+            }
+            else {
+               Some(Image { image : image}) 
+            }
+            
         }
     }
 
@@ -140,9 +159,13 @@ impl Image {
     *
     * Return A new Image object
     */
-    pub fn create_from_pixels(width : uint, height : uint, pixels : ~[u8]) -> Image {
-        unsafe {
-            Image { image : csfml::sfImage_createFromPixels(width as c_uint, height as c_uint, vec::raw::to_ptr(pixels))}
+    pub fn create_from_pixels(width : uint, height : uint, pixels : ~[u8]) -> Option<Image> {
+        let image = unsafe {csfml::sfImage_createFromPixels(width as c_uint, height as c_uint, vec::raw::to_ptr(pixels))};
+        if image == ptr::null() {
+            None
+        }
+        else {
+            Some(Image { image : image})
         }
     }
 

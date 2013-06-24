@@ -60,21 +60,21 @@ impl Time {
     /**
     * Construct a time value from a number of seconds
     */
-    pub fn new_with_seconds(seconds : f32) -> Time {
+    pub fn with_seconds(seconds : f32) -> Time {
         Time {time : unsafe {csfml::sfSeconds(seconds as c_float)}}
     }
 
     /**
     * Construct a time value from a number of milliseconds
     */
-    pub fn new_with_milliseconds(milliseconds : i32) -> Time {
+    pub fn with_milliseconds(milliseconds : i32) -> Time {
         Time {time : unsafe {csfml::sfMilliseconds(milliseconds as c_int)}}
     }
 
     /**
     * Construct a time value from a number of microseconds
     */
-    pub fn new_with_microseconds(microseconds : i64) -> Time {
+    pub fn with_microseconds(microseconds : i64) -> Time {
         Time {time : unsafe {csfml::sfMicroseconds(microseconds as c_long)}}
     }
 

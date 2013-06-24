@@ -30,16 +30,16 @@
 */
 
 use std::libc::{c_float, c_uint, size_t};
-pub use extra::c_vec::{CVec, len, get};
+use extra::c_vec::{CVec, get};
 use std::str;
 use std::ptr;
 use std::vec;
 
 use graphics::drawable::*;
-use graphics::render_window;
-use graphics::render_texture;
-use system::vector2;
-use graphics::font;
+use graphics::render_window::RenderWindow;
+use graphics::render_texture::RenderTexture;
+use system::vector2::Vector2f;
+use graphics::font::Font;
 use graphics::color::Color;
 use graphics::rect::FloatRect;
 use graphics::transform::Transform;
@@ -49,7 +49,7 @@ pub mod csfml {
     
     use std::libc::{c_uint, c_float, c_void, c_char, size_t};
     use graphics::transform;
-    use system::vector2;
+    use system::vector2::Vector2f;
     use graphics::font;
     use graphics::color;
     use graphics::rect::FloatRect;
@@ -66,17 +66,17 @@ pub mod csfml {
         fn sfText_create() -> *sfText;
         fn sfText_copy(text : *sfText) -> *sfText;
         fn sfText_destroy(text : *sfText) -> ();
-        fn sfText_setPosition(text : *sfText, position : vector2::Vector2f) -> ();
+        fn sfText_setPosition(text : *sfText, position : Vector2f) -> ();
         fn sfText_setRotation(text : *sfText, angle : c_float) -> ();
-        fn sfText_setScale(text : *sfText, scale : vector2::Vector2f) -> ();
-        fn sfText_setOrigin(text : *sfText, origin : vector2::Vector2f) -> ();
-        fn sfText_getPosition(text : *sfText) -> vector2::Vector2f;
+        fn sfText_setScale(text : *sfText, scale : Vector2f) -> ();
+        fn sfText_setOrigin(text : *sfText, origin : Vector2f) -> ();
+        fn sfText_getPosition(text : *sfText) -> Vector2f;
         fn sfText_getRotation(text : *sfText) -> c_float;
-        fn sfText_getScale(text : *sfText) -> vector2::Vector2f;
-        fn sfText_getOrigin(text : *sfText) -> vector2::Vector2f;
-        fn sfText_move(text : *sfText, offset : vector2::Vector2f) -> ();
+        fn sfText_getScale(text : *sfText) -> Vector2f;
+        fn sfText_getOrigin(text : *sfText) -> Vector2f;
+        fn sfText_move(text : *sfText, offset : Vector2f) -> ();
         fn sfText_rotate(text : *sfText, angle : c_float) -> ();
-        fn sfText_scale(text : *sfText, factors : vector2::Vector2f) -> ();
+        fn sfText_scale(text : *sfText, factors : Vector2f) -> ();
         fn sfText_getTransform(text : *sfText) -> Transform;
         fn sfText_getInverseTransform(text : *sfText) -> Transform;
         fn sfText_setString(text : *sfText, string : *c_char) -> ();
@@ -91,7 +91,7 @@ pub mod csfml {
         fn sfText_getCharacterSize(text : *sfText) -> c_uint;
         fn sfText_getStyle(text : *sfText) -> u32;
         fn sfText_getColor(text : *sfText) -> color::Color;
-        fn sfText_findCharacterPos(text : *sfText, index : size_t) -> vector2::Vector2f;
+        fn sfText_findCharacterPos(text : *sfText, index : size_t) -> Vector2f;
         fn sfText_getLocalBounds(text : *sfText) -> FloatRect;
         fn sfText_getGlobalBounds(text : *sfText) -> FloatRect;
     }
@@ -194,7 +194,7 @@ impl Text {
     *
     * font - New font
     */
-    pub fn set_font(&mut self, font : &font::Font) -> () {
+    pub fn set_font(&mut self, font : &Font) -> () {
         unsafe {
             csfml::sfText_setFont(self.text, font.unwrap())
         }
@@ -294,14 +294,14 @@ impl Text {
     * The returned pointer is const, which means that you can't
     * modify the font when you retrieve it with this function.
     */
-    pub fn get_font(&self) -> Option<font::Font> {
+    pub fn get_font(&self) -> Option<Font> {
         unsafe {
             let fnt = csfml::sfText_getFont(self.text);
             if fnt == ptr::null() {
                 None
             }
             else {
-                Some(font::Font::wrap(fnt))
+                Some(Font::wrap(fnt))
             }
         }
     }
@@ -340,9 +340,25 @@ impl Text {
     * # Arguments
     * * factors - Scale factors
     */
-    pub fn scale(&mut self, factors : &vector2::Vector2f) -> () {
+    pub fn scale(&mut self, factors : &Vector2f) -> () {
         unsafe {
             csfml::sfText_scale(self.text, *factors)
+        }
+    }
+
+    /**
+    * Scale a text
+    *
+    * This function multiplies the current scale of the object,
+    * unlike set_Scale which overwrites it.
+    *
+    * # Arguments
+    * * factorX - Scale x factor
+    * * factorY - Scale y factor
+    */
+    pub fn scale2f(&self, factorX : f32, factorY : f32) -> () {
+        unsafe {
+            csfml::sfText_scale(self.text, Vector2f::new(factorX, factorY))
         }
     }
 
@@ -356,9 +372,26 @@ impl Text {
     * # Arguments
     * * scale - The new scale factors
     */
-    pub fn set_scale(&mut self, scale : &vector2::Vector2f) -> () {
+    pub fn set_scale(&mut self, scale : &Vector2f) -> () {
         unsafe {
             csfml::sfText_setScale(self.text, *scale)
+        }
+    }
+
+    /**
+    * Set the scale factors of a text
+    *
+    * This function completely overwrites the previous scale.
+    * See scale to add a factor based on the previous scale instead.
+    * The default scale of a text Text object is (1, 1).
+    *
+    * # Arguments
+    * * scaleX - The new x scale factor
+    * * scaleY - The new y scale factor
+    */
+    pub fn set_scale2f(&self, scaleX : f32, scaleY : f32) -> () {
+        unsafe {
+            csfml::sfText_setScale(self.text, Vector2f::new(scaleX, scaleY))
         }
     }
 
@@ -371,9 +404,25 @@ impl Text {
     * # Arguments
     * * offset - Offset
     */
-    pub fn move(&mut self, offset : &vector2::Vector2f) -> () {
+    pub fn move(&mut self, offset : &Vector2f) -> () {
         unsafe {
             csfml::sfText_move(self.text, *offset)
+        }
+    }
+
+    /**
+    * Move a text by a given offset
+    *
+    * This function adds to the current position of the object,
+    * unlike set_position which overwrites it.
+    *
+    * # Arguments
+    * * offsetX - Offset x
+    * * offsetY - Offset y
+    */
+    pub fn move2f(&self, offsetX : f32, offsetY : f32) -> () {
+        unsafe {
+            csfml::sfText_move(self.text, Vector2f::new(offsetX, offsetY))
         }
     }
 
@@ -387,9 +436,26 @@ impl Text {
     * # Arguments
     * * position - The new position
     */
-    pub fn set_position(&mut self, position : &vector2::Vector2f) -> () {
+    pub fn set_position(&mut self, position : &Vector2f) -> () {
         unsafe {
             csfml::sfText_setPosition(self.text, *position)
+        }
+    }
+
+    /**
+    * Set the position of a text
+    *
+    * This function completely overwrites the previous position.
+    * See move to apply an offset based on the previous position instead.
+    * The default position of a text Text object is (0, 0).
+    *
+    * # Arguments
+    * * x - The new x coordinate
+    * * y - The new y coordinate
+    */
+    pub fn set_position2f(&self, x : f32, y : f32) -> () {
+        unsafe {
+            csfml::sfText_setPosition(self.text, Vector2f::new(x, y))
         }
     }
 
@@ -406,9 +472,29 @@ impl Text {
     * # Arguments
     * * origin - New origin
     */
-    pub fn set_origin(&mut self, origin : &vector2::Vector2f) -> () {
+    pub fn set_origin(&mut self, origin : &Vector2f) -> () {
         unsafe {
             csfml::sfText_setOrigin(self.text, *origin)
+        }
+    }
+    
+    /**
+    * Set the local origin of a text
+    *
+    * The origin of an object defines the center point for
+    * all transformations (position, scale, rotation).
+    * The coordinates of this point must be relative to the
+    * top-left corner of the object, and ignore all
+    * transformations (position, scale, rotation).
+    * The default origin of a text object is (0, 0).
+    *
+    * # Arguments
+    * * x - New x origin coordinate
+    * * y - New y origin coordinate
+    */
+    pub fn set_origin2f(&self, x : f32, y : f32) -> () {
+        unsafe {
+            csfml::sfText_setOrigin(self.text, Vector2f::new(x, y))
         }
     }
     
@@ -417,7 +503,7 @@ impl Text {
     *
     * Return the current scale factors
     */
-    pub fn get_scale(&self) -> vector2::Vector2f {
+    pub fn get_scale(&self) -> Vector2f {
         unsafe {csfml::sfText_getScale(self.text)}
     }
 
@@ -426,7 +512,7 @@ impl Text {
     *
     * Return the current origin
     */
-    pub fn get_origin(&self) -> vector2::Vector2f {
+    pub fn get_origin(&self) -> Vector2f {
         unsafe {csfml::sfText_getOrigin(self.text)}
     }
 
@@ -445,7 +531,7 @@ impl Text {
     *
     * Return the position of the character
     */
-    pub fn find_character_pos(&self, index : u64) -> vector2::Vector2f {
+    pub fn find_character_pos(&self, index : u64) -> Vector2f {
         unsafe {csfml::sfText_findCharacterPos(self.text, index as size_t)}
     }
 
@@ -454,7 +540,7 @@ impl Text {
     *
     * Return the current position
     */
-    pub fn get_position(&self) -> vector2::Vector2f {
+    pub fn get_position(&self) -> Vector2f {
         unsafe {csfml::sfText_getPosition(self.text)}
     }
 
@@ -536,11 +622,11 @@ impl Text {
 
 #[doc(hidden)]
 impl Drawable for Text {
-    pub fn draw_in_render_window(&self, renderWindow : &mut render_window::RenderWindow) -> () {
+    pub fn draw_in_render_window(&self, renderWindow : &mut RenderWindow) -> () {
         renderWindow.draw_text(self)
     }
 
-    pub fn draw_in_render_texture(&self, renderTexture : &mut render_texture::RenderTexture) -> () {
+    pub fn draw_in_render_texture(&self, renderTexture : &mut RenderTexture) -> () {
         renderTexture.draw_text(self)
     }
 }

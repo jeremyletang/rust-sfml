@@ -29,11 +29,12 @@
 */
 
 use std::libc::{c_float, c_uint};
+use std::ptr;
 
-use system::vector2;
-use graphics::color;
-use graphics::texture;
-use graphics::drawable;
+use system::vector2::Vector2f;
+use graphics::color::Color;
+use graphics::texture::Texture;
+use graphics::drawable::Drawable;
 use graphics::render_window::RenderWindow;
 use graphics::render_texture::RenderTexture;
 use graphics::rect::{FloatRect, IntRect};
@@ -44,8 +45,8 @@ pub mod csfml {
     
     use std::libc::{c_void, c_float, c_uint};
 
-    use system::vector2;
-    use graphics::color;
+    use system::vector2::Vector2f;
+    use graphics::color::Color;
     use graphics::texture;
     use rsfml::sfTypes::sfBool;
     use graphics::rect::{FloatRect, IntRect};
@@ -62,33 +63,33 @@ pub mod csfml {
         fn sfRectangleShape_create() -> *sfRectangleShape;
         fn sfRectangleShape_copy(shape : *sfRectangleShape) -> *sfRectangleShape;
         fn sfRectangleShape_destroy(shape : *sfRectangleShape) -> ();
-        fn sfRectangleShape_setPosition(shape : *sfRectangleShape, position : vector2::Vector2f) -> ();
+        fn sfRectangleShape_setPosition(shape : *sfRectangleShape, position : Vector2f) -> ();
         fn sfRectangleShape_setRotation(shape : *sfRectangleShape, angle : c_float) -> ();
-        fn sfRectangleShape_setScale(shape : *sfRectangleShape, scale : vector2::Vector2f) -> ();
-        fn sfRectangleShape_setOrigin(shape : *sfRectangleShape, origin : vector2::Vector2f) -> ();
-        fn sfRectangleShape_getPosition(shape : *sfRectangleShape) -> vector2::Vector2f;
+        fn sfRectangleShape_setScale(shape : *sfRectangleShape, scale : Vector2f) -> ();
+        fn sfRectangleShape_setOrigin(shape : *sfRectangleShape, origin : Vector2f) -> ();
+        fn sfRectangleShape_getPosition(shape : *sfRectangleShape) -> Vector2f;
         fn sfRectangleShape_getRotation(shape : *sfRectangleShape) -> c_float;
-        fn sfRectangleShape_getScale(shape : *sfRectangleShape) -> vector2::Vector2f;
-        fn sfRectangleShape_getOrigin(shape : *sfRectangleShape) -> vector2::Vector2f;
-        fn sfRectangleShape_move(shape : *sfRectangleShape, offset : vector2::Vector2f) -> ();
+        fn sfRectangleShape_getScale(shape : *sfRectangleShape) -> Vector2f;
+        fn sfRectangleShape_getOrigin(shape : *sfRectangleShape) -> Vector2f;
+        fn sfRectangleShape_move(shape : *sfRectangleShape, offset : Vector2f) -> ();
         fn sfRectangleShape_rotate(shape : *sfRectangleShape, angle : c_float) -> ();
-        fn sfRectangleShape_scale(shape : *sfRectangleShape, factors : vector2::Vector2f) -> ();
+        fn sfRectangleShape_scale(shape : *sfRectangleShape, factors : Vector2f) -> ();
         fn sfRectangleShape_getTransform(shape : *sfRectangleShape) -> Transform;
         fn sfRectangleShape_getInverseTransform(shape : *sfRectangleShape) -> Transform;
         fn sfRectangleShape_setTexture(shape : *sfRectangleShape, texture : *texture::csfml::sfTexture, resetRect : sfBool) -> ();
         fn sfRectangleShape_setTextureRect(shape : *sfRectangleShape, rect : IntRect) -> ();
-        fn sfRectangleShape_setFillColor(shape : *sfRectangleShape, color : color::Color) -> ();
-        fn sfRectangleShape_setOutlineColor(shape : *sfRectangleShape, color : color::Color) -> ();
+        fn sfRectangleShape_setFillColor(shape : *sfRectangleShape, color : Color) -> ();
+        fn sfRectangleShape_setOutlineColor(shape : *sfRectangleShape, color : Color) -> ();
         fn sfRectangleShape_setOutlineThickness(shape : *sfRectangleShape, thickness : c_float) -> ();
         fn sfRectangleShape_getTexture(shape : *sfRectangleShape) -> *texture::csfml::sfTexture;
         fn sfRectangleShape_getTextureRect(shape : *sfRectangleShape) -> IntRect;
-        fn sfRectangleShape_getFillColor(shape : *sfRectangleShape) -> color::Color;
-        fn sfRectangleShape_getOutlineColor(shape : *sfRectangleShape) -> color::Color;
+        fn sfRectangleShape_getFillColor(shape : *sfRectangleShape) -> Color;
+        fn sfRectangleShape_getOutlineColor(shape : *sfRectangleShape) -> Color;
         fn sfRectangleShape_getOutlineThickness(shape : *sfRectangleShape) -> c_float;
         fn sfRectangleShape_getPointCount(shape : *sfRectangleShape) -> c_uint;
-        fn sfRectangleShape_getPoint(shape : *sfRectangleShape, index : c_uint) -> vector2::Vector2f;
-        fn sfRectangleShape_setSize(shape : *sfRectangleShape, size : vector2::Vector2f) -> ();
-        fn sfRectangleShape_getSize(shape : *sfRectangleShape) -> vector2::Vector2f;
+        fn sfRectangleShape_getPoint(shape : *sfRectangleShape, index : c_uint) -> Vector2f;
+        fn sfRectangleShape_setSize(shape : *sfRectangleShape, size : Vector2f) -> ();
+        fn sfRectangleShape_getSize(shape : *sfRectangleShape) -> Vector2f;
         fn sfRectangleShape_getLocalBounds(shape : *sfRectangleShape) -> FloatRect;
         fn sfRectangleShape_getGlobalBounds(shape : *sfRectangleShape) -> FloatRect;
     }
@@ -105,9 +106,16 @@ impl RectangleShape {
     *
     * Return a new rectangleShape object
     */
-    pub fn new() -> RectangleShape {
-        RectangleShape { rectangleShape : unsafe {csfml::sfRectangleShape_create()} }
+    pub fn new() -> Option<RectangleShape> {
+        let rectangle = unsafe {csfml::sfRectangleShape_create()};
+        if rectangle == ptr::null() {
+            None
+        }
+        else {
+            Some(RectangleShape {rectangleShape : rectangle})
+        }
     }
+
     
     /**
     * Set the position of a rectangle shape
@@ -119,12 +127,27 @@ impl RectangleShape {
     * # Arguments
     * * position - New position
     */
-    pub fn set_position(&mut self, position : &vector2::Vector2f) -> () {
+    pub fn set_position(&mut self, position : &Vector2f) -> () {
         unsafe {
             csfml::sfRectangleShape_setPosition(self.rectangleShape, *position)
         }
     }
     
+    /**
+    * Set the position of a rectangle shape with 2 f32
+    *
+    * This function completely overwrites the previous position.
+    * See move to apply an offset based on the previous position instead.
+    * The default position of a rectangle Shape object is (0, 0).
+    *
+    * # Arguments
+    * * x - X coordinate of the new position
+    * * y - Y coordinate of the new position
+    */
+    pub fn set_position2f(&self, x : f32, y : f32) -> () {
+        unsafe {csfml::sfRectangleShape_setPosition(self.rectangleShape, Vector2f::new(x, y))}
+    }
+
     /**
     * Set the orientation of a rectangle shape
     *
@@ -151,9 +174,27 @@ impl RectangleShape {
     * # Arguments
     * * scale - New scale factors
     */
-    pub fn set_scale(&mut self, scale : &vector2::Vector2f) -> () {
+    pub fn set_scale(&mut self, scale : &Vector2f) -> () {
         unsafe {
             csfml::sfRectangleShape_setScale(self.rectangleShape, *scale)
+        }
+    }
+
+
+    /**
+    * Set the scale factors of a rectangle shape
+    *
+    * This function completely overwrites the previous scale.
+    * See scale to add a factor based on the previous scale instead.
+    * The default scale of a rectangle Shape object is (1, 1).
+    *
+    * # Arguments
+    * * factorX - New x scale factor
+    * * factorY - New y scale factor
+    */
+    pub fn set_scale2f(&self, factorX : f32, factorY : f32) -> () {
+        unsafe {
+            csfml::sfRectangleShape_setScale(self.rectangleShape, Vector2f::new(factorX, factorY))
         }
     }
 
@@ -170,9 +211,29 @@ impl RectangleShape {
     * # Arguments
     * * origin - New origin
     */
-    pub fn set_origin(&mut self, origin : &vector2::Vector2f) -> () {
+    pub fn set_origin(&mut self, origin : &Vector2f) -> () {
         unsafe {
             csfml::sfRectangleShape_setOrigin(self.rectangleShape, *origin)
+        }
+    }
+
+    /**
+    * Set the local origin of a rectangle shape
+    *
+    * The origin of an object defines the center point for
+    * all transformations (position, scale, rotation).
+    * The coordinates of this point must be relative to the
+    * top-left corner of the object, and ignore all
+    * transformations (position, scale, rotation).
+    * The default origin of a rectangle Shape object is (0, 0).
+    *
+    * # Arguments
+    * * x - New coordinate x of the origin
+    * * y - New coordinate y of the origin
+    */
+    pub fn set_origin2f(&self, x : f32, y : f32) -> () {
+        unsafe {
+            csfml::sfRectangleShape_setOrigin(self.rectangleShape, Vector2f::new(x, y))
         }
     }
 
@@ -180,14 +241,30 @@ impl RectangleShape {
     * Scale a rectangle shape
     *
     * This function multiplies the current scale of the object,
-    * unlike sfrectangleShape_setScale which overwrites it.
+    * unlike set_scale which overwrites it.
     *
     * # Arguments
     * * factors - Scale factors
     */
-    pub fn scale(&mut self, factors : &vector2::Vector2f) -> () {
+    pub fn scale(&mut self, factors : &Vector2f) -> () {
         unsafe {
             csfml::sfRectangleShape_scale(self.rectangleShape, *factors)
+        }
+    }
+
+    /**
+    * Scale a rectangle shape
+    *
+    * This function multiplies the current scale of the object,
+    * unlike set_scale which overwrites it.
+    *
+    * # Arguments
+    * * factorX - Scale x factor
+    * * factorY - Scale y factor
+    */
+    pub fn scale2f(&self, factorX : f32, factorY : f32) -> () {
+        unsafe {
+            csfml::sfRectangleShape_scale(self.rectangleShape, Vector2f::new(factorX, factorY))
         }
     }
 
@@ -195,15 +272,29 @@ impl RectangleShape {
     * Move a rectangle shape by a given offset
     *
     * This function adds to the current position of the object,
-    * unlike sset_position which overwrites it.
+    * unlike set_position which overwrites it.
     *
     * # Arguments
     * * offset - Offset
     */
-    pub fn move(&mut self, offset : &vector2::Vector2f) -> () {
+    pub fn move(&mut self, offset : &Vector2f) -> () {
         unsafe {
             csfml::sfRectangleShape_move(self.rectangleShape, *offset)
         }
+    }
+
+    /**
+    * Move a rectangle shape by a given offset of 2 f32
+    *
+    * This function adds to the current position of the object,
+    * unlike set_position which overwrites it.
+    *
+    * # Arguments
+    * * offsetX - Offset in x
+    * * offsetY - Offset in y
+    */
+    pub fn move2f(&self, offsetX : f32, offsetY : f32) -> () {
+        unsafe {csfml::sfRectangleShape_move(self.rectangleShape, Vector2f::new(offsetX, offsetY))}
     }
 
     /**
@@ -239,7 +330,7 @@ impl RectangleShape {
     *
     * Return the current position
     */
-    pub fn get_position(&self) -> vector2::Vector2f {
+    pub fn get_position(&self) -> Vector2f {
         unsafe { csfml::sfRectangleShape_getPosition(self.rectangleShape) }
     }
 
@@ -248,7 +339,7 @@ impl RectangleShape {
     *
     * Return the current scale factors
     */
-    pub fn get_scale(&self) -> vector2::Vector2f {
+    pub fn get_scale(&self) -> Vector2f {
         unsafe { csfml::sfRectangleShape_getScale(self.rectangleShape) }
     }
 
@@ -257,7 +348,7 @@ impl RectangleShape {
     *
     * return the current origin
     */
-    pub fn get_origin(&self) -> vector2::Vector2f {
+    pub fn get_origin(&self) -> Vector2f {
         unsafe { csfml::sfRectangleShape_getOrigin(self.rectangleShape) }
     }
 
@@ -266,7 +357,7 @@ impl RectangleShape {
     *
     * Return the height Size of the rectangle
     */
-    pub fn get_size(&self) -> vector2::Vector2f {
+    pub fn get_size(&self) -> Vector2f {
         unsafe { csfml::sfRectangleShape_getSize(self.rectangleShape) }
     }
 
@@ -280,7 +371,7 @@ impl RectangleShape {
     *
     * Return the index-th point of the shape
     */
-    pub fn get_point(&self, index : uint) -> vector2::Vector2f {
+    pub fn get_point(&self, index : uint) -> Vector2f {
         unsafe { csfml::sfRectangleShape_getPoint(self.rectangleShape, index as c_uint) }
     }
 
@@ -290,7 +381,7 @@ impl RectangleShape {
     * # Arguments
     * * size - The new size of the rectangle
     */
-    pub fn set_size(&mut self, size : &vector2::Vector2f) -> () {
+    pub fn set_size(&mut self, size : &Vector2f) -> () {
         unsafe {
             csfml::sfRectangleShape_setSize(self.rectangleShape, *size)
         }
@@ -314,10 +405,21 @@ impl RectangleShape {
     * * texture - New texture
     * * resetRect - Should the texture rect be reset to the size of the new texture?
     */
-    pub fn set_texture(&mut self, texture : &texture::Texture, resetRect : bool) -> () {
+    pub fn set_texture(&mut self, texture : &Texture, resetRect : bool) -> () {
         match resetRect {
             false       => unsafe { csfml::sfRectangleShape_setTexture(self.rectangleShape, texture.unwrap(), 0) },
             true        => unsafe { csfml::sfRectangleShape_setTexture(self.rectangleShape, texture.unwrap(), 1) }
+        }
+    }
+
+    /**
+    * Disable the current texture
+    *
+    * Disable the current texture and reset the texture rect
+    */
+    pub fn disable_texture(&self) -> () {
+        unsafe {
+            csfml::sfRectangleShape_setTexture(self.rectangleShape, ptr::null(), 1)
         }
     }
 
@@ -334,7 +436,7 @@ impl RectangleShape {
     * # Arguments
     * * color - New color of the shape
     */
-    pub fn set_fill_color(&mut self, color : &color::Color) -> () {
+    pub fn set_fill_color(&mut self, color : &Color) -> () {
         unsafe {
             csfml::sfRectangleShape_setFillColor(self.rectangleShape, *color)
         }
@@ -349,7 +451,7 @@ impl RectangleShape {
     * # Arguments
     * * color - New outline color of the shape
     */
-    pub fn set_outline_color(&mut self, color : &color::Color) -> () {
+    pub fn set_outline_color(&mut self, color : &Color) -> () {
         unsafe {
             csfml::sfRectangleShape_setOutlineColor(self.rectangleShape, *color)
         }
@@ -378,9 +480,9 @@ impl RectangleShape {
     * 
     * Return the shape's texture
     */
-    pub fn get_texture(&self) -> texture::Texture {
+    pub fn get_texture(&self) -> Texture {
         unsafe {
-            texture::Texture::wrap(csfml::sfRectangleShape_getTexture(self.rectangleShape))
+            Texture::wrap(csfml::sfRectangleShape_getTexture(self.rectangleShape))
         }
     }
 
@@ -389,7 +491,7 @@ impl RectangleShape {
     *
     * Return the fill color of the shape
     */
-    pub fn get_fill_color(&self) -> color::Color {
+    pub fn get_fill_color(&self) -> Color {
         unsafe { csfml::sfRectangleShape_getFillColor(self.rectangleShape) }
     }
 
@@ -398,7 +500,7 @@ impl RectangleShape {
     *
     * Return the outline color of the shape
     */
-    pub fn get_outline_color(&self) -> color::Color {
+    pub fn get_outline_color(&self) -> Color {
         unsafe { csfml::sfRectangleShape_getOutlineColor(self.rectangleShape) }
     }
 
@@ -507,7 +609,7 @@ impl RectangleShape {
 
     #[doc(hidden)]
     pub fn wrap(rectangleShape : *csfml::sfRectangleShape) -> RectangleShape {
-        RectangleShape { rectangleShape : rectangleShape }
+        RectangleShape { rectangleShape : rectangleShape}
     }
     
     #[doc(hidden)]
@@ -516,7 +618,7 @@ impl RectangleShape {
     }
 }
 
-impl drawable::Drawable for RectangleShape {
+impl Drawable for RectangleShape {
     pub fn draw_in_render_window(&self, renderWindow : &mut RenderWindow) -> () {
         renderWindow.draw_rectangle_shape(self);
     }

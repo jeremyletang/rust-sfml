@@ -28,7 +28,7 @@
  * Provides OpenGL-based windows, and abstractions for events and input handling.
  */
 
-use std::libc::{c_uint, c_float};
+use std::libc::{c_uint, c_float, c_int};
 use std::str;
 use std::vec;
 use std::ptr;
@@ -39,7 +39,7 @@ use window::video_mode::*;
 use rsfml::sfTypes::{sfBool};
 use window::event;
 use window::keyboard;
-use system::vector2;
+use system::vector2::{Vector2i, Vector2u};
 use window::joystick;
 use window::mouse;
 
@@ -48,10 +48,10 @@ pub mod csfml {
     
     use std::libc::{c_void, c_uint, c_char, c_float};    
 
-    use rsfml::sfTypes::{sfBool};
+    use rsfml::sfTypes::sfBool;
     use window::context_settings::ContextSettings;
     use window::video_mode::*;    
-    use system::vector2;
+    use system::vector2::{Vector2i, Vector2u};
 
     pub struct sfWindow {
         This : *c_void
@@ -106,10 +106,10 @@ pub mod csfml {
         fn sfWindow_display(window : *sfWindow) -> ();
         fn sfWindow_setFramerateLimit(window : *sfWindow, limit : c_uint) -> ();
         fn sfWindow_setJoystickThreshold(window : *sfWindow, threshold : c_float) -> ();
-        fn sfWindow_getPosition(window : *sfWindow) -> vector2::Vector2i;
-        fn sfWindow_setPosition(window : *sfWindow, position : vector2::Vector2i) -> ();
-        fn sfWindow_getSize(window : *sfWindow) -> vector2::Vector2u;
-        fn sfWindow_setSize(window : *sfWindow, size : vector2::Vector2u) -> ();
+        fn sfWindow_getPosition(window : *sfWindow) -> Vector2i;
+        fn sfWindow_setPosition(window : *sfWindow, position : Vector2i) -> ();
+        fn sfWindow_getSize(window : *sfWindow) -> Vector2u;
+        fn sfWindow_setSize(window : *sfWindow, size : Vector2u) -> ();
         fn sfWindow_pollEvent(window : *sfWindow, event : *sfEvent) -> sfBool;
         fn sfWindow_waitEvent(window : *sfWindow, event : *sfEvent) -> sfBool;
         //fn sfWindow_getSystemHandle(window : *sfWindow) -> sfWindowHandle;
@@ -181,16 +181,31 @@ impl Window {
                 let k : keyboard::Key = unsafe {cast::transmute(self.event.p1 as int)};
                 event::KeyReleased{code : k, alt : al, ctrl : ct, shift :sh, system : sy}
             },
-            7   => event::MouseWheelMoved{delta : self.event.p1 as int, x : self.event.p2 as int, y : self.event.p3 as int},
+            7   =>  event::MouseWheelMoved{
+                delta : unsafe { cast::transmute::<c_uint, c_int>(self.event.p1) }  as int,
+                x :     unsafe { cast::transmute::<c_uint, c_int>(self.event.p2) }  as int,
+                y :     unsafe { cast::transmute::<c_float, c_int>(self.event.p3) } as int
+            },
             8   => {
                 let button : mouse::MouseButton = unsafe {cast::transmute(self.event.p1 as int)};
-                event::MouseButtonPressed{button : button, x : self.event.p2 as int, y : self.event.p3 as int}
+                event::MouseButtonPressed{
+                    button : button,
+                    x :      unsafe { cast::transmute::<c_uint, c_int>(self.event.p2) as int },
+                    y :      unsafe { cast::transmute::<c_float, c_int>(self.event.p3) as int }
+                }
             },
             9   => {
                 let button : mouse::MouseButton = unsafe {cast::transmute(self.event.p1 as int)};
-                event::MouseButtonReleased{button : button, x : self.event.p2 as int, y : self.event.p3 as int}
+                event::MouseButtonReleased{
+                    button : button,
+                    x :      unsafe { cast::transmute::<c_uint, c_int>(self.event.p2) as int },
+                    y :      unsafe { cast::transmute::<c_float, c_int>(self.event.p3) as int }
+                }
             },
-            10  => event::MouseMoved{x : self.event.p1 as int, y : self.event.p2 as int},
+            10  => event::MouseMoved{
+                x : unsafe { cast::transmute::<c_uint, c_int>(self.event.p1) } as int,
+                y : unsafe { cast::transmute::<c_uint, c_int>(self.event.p2) } as int
+            },
             11  => event::MouseEntered,
             12  => event::MouseLeft,
             13  => event::JoystickButtonPressed{joystickid : self.event.p1 as int, button : self.event.p2 as int},
@@ -567,7 +582,7 @@ impl Window {
     *
     * Return the position in pixels
     */
-    pub fn get_position(&self) -> vector2::Vector2i {
+    pub fn get_position(&self) -> Vector2i {
         unsafe {
             csfml::sfWindow_getPosition(self.window)
         }
@@ -583,7 +598,7 @@ impl Window {
     * # Arguments
     * * position - New position of the window, in pixels
     */
-    pub fn set_position(&mut self, position : &vector2::Vector2i) -> () {
+    pub fn set_position(&mut self, position : &Vector2i) -> () {
         unsafe {
             csfml::sfWindow_setPosition(self.window, *position)
         }
@@ -596,7 +611,7 @@ impl Window {
     *
     * Return the size in pixels
     */
-    pub fn get_size(&self) -> vector2::Vector2u {
+    pub fn get_size(&self) -> Vector2u {
         unsafe {
             csfml::sfWindow_getSize(self.window)
         }
@@ -608,7 +623,7 @@ impl Window {
     * # Arguments
     * * size - New size, in pixels
     */
-    pub fn set_size(&mut self, size : &vector2::Vector2u) -> () {
+    pub fn set_size(&mut self, size : &Vector2u) -> () {
         unsafe {
             csfml::sfWindow_setSize(self.window, *size)
         }

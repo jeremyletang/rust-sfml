@@ -78,19 +78,16 @@ impl Font {
     */
     pub fn new_from_file(filename : ~str) -> Option<Font> {
         do str::as_c_str(filename) |filenamebuf| {
-            unsafe {
-                let raw = csfml::sfFont_createFromFile(filenamebuf);
-                if raw == ptr::null() {
-                    None
-                } else {
-                    Some(Font {
-                        font: raw
-                    })
-                }
+            let fnt = unsafe {csfml::sfFont_createFromFile(filenamebuf)};
+            if fnt == ptr::null() {
+                None
+            }
+            else {
+                Some(Font { font : fnt})
             }
         }
     }
-      
+    
     /**
     * Get the kerning value corresponding to a given pair of characters in a font
     * 

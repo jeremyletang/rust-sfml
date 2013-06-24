@@ -30,6 +30,7 @@
 */
 
 use std::libc::c_uint;
+use std::ptr;
 
 use graphics::vertex::Vertex;
 use graphics::rect::FloatRect;
@@ -86,10 +87,14 @@ impl VertexArray {
     *
     * Return a new VertexArray object
     */
-    pub fn new() -> VertexArray {
-        unsafe {
-            VertexArray { vertexArray : csfml::sfVertexArray_create()}
+    pub fn new() -> Option<VertexArray> {
+        let ver = unsafe { csfml::sfVertexArray_create()};
+        if ver == ptr::null() {
+            None
         }
+        else {
+            Some(VertexArray { vertexArray :ver}) 
+        }    
     }
 
     /**

@@ -133,3 +133,42 @@ impl Color {
         Color::new_from_RGB(0, 0, 255)
     }
 }
+
+impl Add<Color, Color> for Color {
+    fn add(&self, other : &Color) -> Color {
+        let r : i32 = self.red as i32 + other.red as i32;
+        let g : i32 = self.green as i32 + other.green as i32;
+        let b : i32 = self.blue as i32 + other.blue as i32;
+        let a : i32 = self.alpha as i32 + other.alpha as i32;
+        Color {
+            red : if r > 255 {255} else {r as u8},
+            green : if g > 255 {255} else {g as u8},
+            blue : if b > 255 {255} else {b as u8},
+            alpha : if a > 255 {255} else {a as u8}
+        }
+    }
+}
+
+impl Mul<Color, Color> for Color {
+    fn mul(&self, other : &Color) -> Color {
+        let r : i32 = self.red as i32 * (other.red as i32);
+        let g : i32 = self.green as i32 * (other.green as i32);
+        let b : i32 = self.blue as i32 * (other.blue as i32);
+        let a : i32 = self.alpha as i32 * (other.alpha as i32);
+        Color {
+            red : if r > 255 {255} else {r as u8},
+            green : if g > 255 {255} else {g as u8},
+            blue : if b > 255 {255} else {b as u8},
+            alpha : if a > 255 {255} else {a as u8}
+        }
+    }
+}
+
+impl Eq for Color {
+    fn eq(&self, other : &Color) -> bool {
+        self.red == other.red && self.green == other.green && self.blue == other.blue && self.alpha == other.alpha
+    }
+    fn ne(&self, other : &Color) -> bool {
+        self.red != other.red && self.green != other.green && self.blue != other.blue && self.alpha != other.alpha
+    }
+}

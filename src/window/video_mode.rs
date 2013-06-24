@@ -29,8 +29,8 @@
 * Video modes are used to setup windows at creation time.
 *
 */
-extern mod std;
-pub use extra::c_vec::{CVec, len, get};
+
+use extra::c_vec::{CVec, get};
 use std::libc::{c_uint, c_int, size_t};
 
 /**

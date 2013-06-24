@@ -30,8 +30,9 @@
 */
 
 use std::libc::{c_float};
+use std::ptr;
 
-use system::vector2;
+use system::vector2::Vector2f;
 use graphics::rect::FloatRect;
 
 #[doc(hidden)]
@@ -39,7 +40,7 @@ pub mod csfml {
     
     use std::libc::{c_float, c_void};
 
-    use system::vector2;
+    use system::vector2::Vector2f;
     use graphics::rect::FloatRect;
 
     pub struct sfView {
@@ -51,16 +52,16 @@ pub mod csfml {
         fn sfView_createFromRect(rectangle : FloatRect) -> *sfView;
         fn sfView_copy(view : *sfView) -> *sfView;
         fn sfView_destroy(view : *sfView) -> ();
-        fn sfView_setCenter(view : *sfView, center : vector2::Vector2f) -> ();
-        fn sfView_setSize(view : *sfView, size : vector2::Vector2f) -> ();
+        fn sfView_setCenter(view : *sfView, center : Vector2f) -> ();
+        fn sfView_setSize(view : *sfView, size : Vector2f) -> ();
         fn sfView_setRotation(view : *sfView, angle : c_float) -> ();
         fn sfView_setViewport(view : *sfView, viewport : FloatRect) -> ();
         fn sfView_reset(view : *sfView, rectangle : FloatRect) -> ();
-        fn sfView_getCenter(view : *sfView) -> vector2::Vector2f;
-        fn sfView_getSize(view : *sfView) -> vector2::Vector2f;
+        fn sfView_getCenter(view : *sfView) -> Vector2f;
+        fn sfView_getSize(view : *sfView) -> Vector2f;
         fn sfView_getRotation(view : *sfView) -> c_float;
         fn sfView_getViewport(view : *sfView) -> FloatRect;
-        fn sfView_move(view : *sfView, offset : vector2::Vector2f) -> ();
+        fn sfView_move(view : *sfView, offset : Vector2f) -> ();
         fn sfView_rotate(view : *sfView, angle : c_float) -> ();
         fn sfView_zoom(view : *sfView, factor : c_float) -> ();
     }
@@ -80,8 +81,14 @@ impl View {
     * 
     * Return a new View object
     */
-    pub fn new() -> View {
-        View { dropable: true, view : unsafe {csfml::sfView_create()} }
+    pub fn new() -> Option<View> {
+        let view = unsafe {csfml::sfView_create()};
+        if view == ptr::null() {
+            None
+        }
+        else {
+            Some(View { dropable: true, view : view})
+        }
     }
 
     /**
@@ -92,8 +99,14 @@ impl View {
     *
     * Return a new View object
     */
-    pub fn create_from_rect(rectangle : *FloatRect) -> View {
-        View { dropable: true, view : unsafe {csfml::sfView_createFromRect(*rectangle)}}
+    pub fn new_from_rect(rectangle : *FloatRect) -> Option<View> {
+        let view = unsafe {csfml::sfView_createFromRect(*rectangle)};
+        if view == ptr::null() {
+            None
+        }
+        else {
+            Some(View { dropable: true, view : view})
+        }
     }
 
     /**
@@ -157,9 +170,22 @@ impl View {
     * # Arguments
     * * center - New center
     */
-    pub fn set_center(&mut self, center : &vector2::Vector2f) -> () {
+    pub fn set_center(&mut self, center : &Vector2f) -> () {
         unsafe {
             csfml::sfView_setCenter(self.view, *center)
+        }
+    }
+
+    /**
+    * Set the center of a view
+    *
+    * # Arguments
+    * * centerX - New x center coordinate
+    * * centerY - New y center coordinate
+    */
+    pub fn set_center2f(&self, centerX : f32, centerY : f32) -> () {
+        unsafe {
+            csfml::sfView_setCenter(self.view, Vector2f::new(centerX, centerY))
         }
     }
 
@@ -169,9 +195,22 @@ impl View {
     * # Arguments
     * * size - New size of the view
     */
-    pub fn set_size(&mut self, size : &vector2::Vector2f) -> () {
+    pub fn set_size(&mut self, size : &Vector2f) -> () {
         unsafe {
             csfml::sfView_setSize(self.view, *size)
+        }
+    }
+
+    /**
+    * Set the size of a view
+    *
+    * # Arguments
+    * * sizeX - New size x of the view
+    * * sizeY - New size y of the view
+    */
+    pub fn set_size2f(&self, sizeX : f32, sizeY : f32) -> () {
+        unsafe {
+            csfml::sfView_setSize(self.view, Vector2f::new(sizeX, sizeY))
         }
     }
 
@@ -181,9 +220,21 @@ impl View {
     * # Arguments
     * * offset - Offset
     */
-    pub fn move(&mut self, offset : &vector2::Vector2f) -> () {
+    pub fn move(&mut self, offset : &Vector2f) -> () {
         unsafe {
             csfml::sfView_move(self.view, *offset)
+        }
+    }
+    /**
+    * Move a view relatively to its current position
+    *
+    * # Arguments
+    * * offsetX - Offset x
+    * * offsetY - Offset y
+    */
+    pub fn move2f(&self, offsetX : f32, offsetY : f32) -> () {
+        unsafe {
+            csfml::sfView_move(self.view, Vector2f::new(offsetX, offsetY))
         }
     }
 
@@ -192,7 +243,7 @@ impl View {
     *
     * Return the center of the view
     */
-    pub fn get_center(&self) -> vector2::Vector2f {
+    pub fn get_center(&self) -> Vector2f {
         unsafe {csfml::sfView_getCenter(self.view)}
     }
 
@@ -201,7 +252,7 @@ impl View {
     *
     * Return the size of the view
     */
-    pub fn get_size(&self) -> vector2::Vector2f {
+    pub fn get_size(&self) -> Vector2f {
         unsafe {csfml::sfView_getSize(self.view)}
     }
 
@@ -260,6 +311,7 @@ impl View {
     }
         
 }
+
 
 impl Clone for View {
     fn clone(&self) -> View {

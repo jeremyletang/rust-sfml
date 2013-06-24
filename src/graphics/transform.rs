@@ -32,8 +32,9 @@
 extern mod std;
 pub use extra::c_vec::{CVec, len, get};
 use std::libc::{c_float};
+use std::ptr;
 
-use system::vector2;
+use system::vector2::Vector2f;
 use graphics::rect::FloatRect;
 
 #[doc(hidden)]
@@ -41,15 +42,15 @@ pub mod csfml {
     
     use std::libc::{c_float};
 
-    use system::vector2;
+    use system::vector2::Vector2f;
     use graphics::rect::FloatRect;
     use graphics::transform::Transform;
 
     pub extern "C" {
         fn sfTransform_fromMatrix(a01 : f32, a02 : f32, a03 : f32, b01 : f32, b02 : f32, b03 : f32, c01 : f32, c02 : f32, c03 : f32) -> Transform;
-        //fn sfTransform_getMatrix(tranform : *sfTransform, matrix : *mut f32) -> ();
+        fn sfTransform_getMatrix(tranform : *Transform, matrix : *mut f32) -> ();
         fn sfTransform_getInverse(transform : *Transform) -> Transform;
-        fn sfTransform_transformPoint(transform : *Transform, point : vector2::Vector2f) -> vector2::Vector2f;
+        fn sfTransform_transformPoint(transform : *Transform, point : Vector2f) -> Vector2f;
         fn sfTransform_transformRect(transform : *Transform, rectangle : FloatRect) -> FloatRect;
         fn sfTransform_combine(transform : *Transform, other : *Transform) -> ();
         fn sfTransform_translate(transform : *Transform, x : c_float, y : c_float) -> ();
@@ -97,24 +98,22 @@ impl Transform {
         }
     }
 
-/*    pub fn get_matrix(&self) -> ~[f32] {
+    pub fn get_matrix(&self) -> ~[f32] {
         unsafe {
-            let matrix : *mut f32 = ptr::null();
+            let matrix : *f32 = ptr::null();
             let mut return_matrix : ~[f32] = ~[];
-            unsafe {
-                csfml::sfTransform_getMatrix(&self.transform, matrix);
-                let cvec = CVec(matrix, 16);
-                let mut d : uint = 0;
+            csfml::sfTransform_getMatrix(self, matrix as *mut f32);
+            let cvec = CVec(matrix as *mut f32, 16);
+            let mut d : uint = 0;
+            return_matrix.push(get(cvec, d));
+            d += 1;
+            while d != 16 {
                 return_matrix.push(get(cvec, d));
                 d += 1;
-                while d != 16 {
-                    return_matrix.push(get(cvec, d));
-                    d += 1;
-                }
             }
-        return_matrix
+            return_matrix
         }
-    }*/
+    }
     
     /**
     * Create a new identity transform
@@ -240,7 +239,7 @@ impl Transform {
     *
     * Return a transformed point
     */
-    pub fn transform_point(&self, point : &vector2::Vector2f) -> vector2::Vector2f {
+    pub fn transform_point(&self, point : &Vector2f) -> Vector2f {
         unsafe {
             csfml::sfTransform_transformPoint(&*self, *point)
         }
