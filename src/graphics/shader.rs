@@ -149,7 +149,7 @@ impl Shader {
     * * name - Name of the parameter in the shader
     * * x - Value to assign
     */
-    pub fn set_float_parameter(&self, name : ~str, x : f32) -> () {
+    pub fn set_float_parameter(&mut self, name : ~str, x : f32) -> () {
         do str::as_c_str(name) |shader| {
             unsafe { csfml::sfShader_setFloatParameter(self.shader, shader, x)}
         }
@@ -167,7 +167,7 @@ impl Shader {
     * * x - First component of the value to assign
     * * y - Second component of the value to assign
     */
-    pub fn set_float_2_parameter(&self, name : ~str, x : f32, y : f32) -> () {
+    pub fn set_float_2_parameter(&mut self, name : ~str, x : f32, y : f32) -> () {
         do str::as_c_str(name) |shader| {
             unsafe { csfml::sfShader_setFloat2Parameter(self.shader, shader, x, y)}
         }
@@ -186,7 +186,7 @@ impl Shader {
     * * y - Second component of the value to assign
     * * z - Third component of the value to assign
     */
-    pub fn set_float_3_parameter(&self, name : ~str, x : f32, y : f32, z : f32) -> () {
+    pub fn set_float_3_parameter(&mut self, name : ~str, x : f32, y : f32, z : f32) -> () {
         do str::as_c_str(name) |shader| {
             unsafe { csfml::sfShader_setFloat3Parameter(self.shader, shader, x, y, z)}
         }
@@ -206,7 +206,7 @@ impl Shader {
     * * z - Third component of the value to assign
     * * w - Fourth component of the value to assign
     */
-    pub fn set_float_4_parameter(&self, name : ~str, x : f32, y : f32, z : f32, w : f32) -> () {
+    pub fn set_float_4_parameter(&mut self, name : ~str, x : f32, y : f32, z : f32, w : f32) -> () {
         do str::as_c_str(name) |shader| {
             unsafe { csfml::sfShader_setFloat4Parameter(self.shader, shader, x, y, z, w)}
         }
@@ -223,7 +223,7 @@ impl Shader {
     * * name - Name of the texture in the shader
     * * texture - Texture to assign
     */
-    pub fn set_texture_parameter(&self, name : ~str, texture : &Texture) -> () {
+    pub fn set_texture_parameter(&mut self, name : ~str, texture : &Texture) -> () {
         do str::as_c_str(name) |shader| {
             unsafe { csfml::sfShader_setTextureParameter(self.shader, shader, texture.unwrap())}
         }
@@ -241,7 +241,7 @@ impl Shader {
     * # Arguments
     * * name - Name of the texture in the shader
     */
-    pub fn set_current_texture_parameter(&self, name : ~str) -> () {
+    pub fn set_current_texture_parameter(&mut self, name : ~str) -> () {
         do str::as_c_str(name) |shader| {
             unsafe { csfml::sfShader_setCurrentTextureParameter(self.shader, shader)}
         }   
@@ -287,7 +287,7 @@ impl Shader {
     * * name - Name of the parameter in the shader
     * * vector - Vector to assign
     */
-    fn set_vector2_parameter(&self, name : ~str, vector : &Vector2f) -> () {
+    fn set_vector2_parameter(&mut self, name : ~str, vector : &Vector2f) -> () {
         unsafe {
             do str::as_c_str(name) |namebuf| {
                 csfml::sfShader_setVector2Parameter(self.shader, namebuf, *vector)
@@ -306,7 +306,7 @@ impl Shader {
     * * name - Name of the parameter in the shader
     * * vector - Vector to assign
     */
-    fn set_vector3_parameter(&self, name : ~str, vector : &Vector3f) -> () {
+    fn set_vector3_parameter(&mut self, name : ~str, vector : &Vector3f) -> () {
         unsafe {
             do str::as_c_str(name) |namebuf| {
                 csfml::sfShader_setVector3Parameter(self.shader, namebuf, *vector)
@@ -331,7 +331,7 @@ impl Shader {
     * * name - Name of the parameter in the shader
     * * color - Color to assign
     */
-    fn set_color_parameter(&self, name : ~str, color : &Color) -> () {
+    fn set_color_parameter(&mut self, name : ~str, color : &Color) -> () {
         unsafe {
             do str::as_c_str(name) |namebuf| {
                 csfml::sfShader_setColorParameter(self.shader, namebuf, *color)

@@ -29,20 +29,20 @@ fn main () -> () {
     let ballRadius : f32 = 10.;
 
      // Create the window of the application
-    let setting: ContextSettings = ContextSettings{depthBits: 10, stencilBits: 10, antialiasingLevel: 1, majorVersion: 0, minorVersion: 1};
-    let window : RenderWindow = match RenderWindow::new(VideoMode::new_init(gameWidth, gameHeight, 32), ~"SFML Pong", sfClose, &setting) {
+    let mut setting: ContextSettings = ContextSettings{depthBits: 10, stencilBits: 10, antialiasingLevel: 1, majorVersion: 0, minorVersion: 1};
+    let mut window : RenderWindow = match RenderWindow::new(VideoMode::new_init(gameWidth, gameHeight, 32), ~"SFML Pong", sfClose, &setting) {
         Some(window) => window,
         None => fail!("Cannot create a new Render Window.")
     };
     window.set_vertical_sync_enabled(true);
 
     // Load the sounds used in the game
-    let ballSoundBuffer : SoundBuffer = match SoundBuffer::new(~"resources/ball.wav") {
+    let mut ballSoundBuffer : SoundBuffer = match SoundBuffer::new(~"resources/ball.wav") {
         Some(ballSoundBuffer)   => ballSoundBuffer,
         None                    => fail!("Cannot load Ball sound buffer.")
     };
 
-    let ballSound = match Sound::new() {
+    let mut ballSound = match Sound::new() {
         Some(sound)     => sound,
         None            => fail!("Error cannot create sound.")
     };
@@ -50,7 +50,7 @@ fn main () -> () {
     ballSound.set_volume(100.);
 
     // Create the left paddle
-    let leftPaddle  = match RectangleShape::new() {
+    let mut leftPaddle  = match RectangleShape::new() {
         Some(paddle)    => paddle,
         None()          => fail!("Error, cannot create paddle")
     };
@@ -61,7 +61,7 @@ fn main () -> () {
     leftPaddle.set_origin(~(paddleSize / 2.));
     
     // Create the right paddle
-    let rightPaddle = match RectangleShape::new() {
+    let mut rightPaddle = match RectangleShape::new() {
         Some(paddle)    => paddle,
         None()          => fail!("Error, cannot create paddle")
     };
@@ -72,7 +72,7 @@ fn main () -> () {
     rightPaddle.set_origin(~(paddleSize / 2.));
 
     // Create the ball
-    let ball = match CircleShape::new() {
+    let mut ball = match CircleShape::new() {
         Some(ball)    => ball,
         None()          => fail!("Error, cannot create ball")
     };
@@ -83,7 +83,7 @@ fn main () -> () {
     ball.set_origin(~Vector2f::new(ballRadius / 2., ballRadius / 2.));
 
     // Load the text font
-    let font : font::Font = match font::Font::new_from_file(~"resources/sansation.ttf") {
+    let mut font : font::Font = match font::Font::new_from_file(~"resources/sansation.ttf") {
         Some(font)    => font,
         None()          => fail!("Error, cannot load font")
     };
@@ -100,20 +100,22 @@ fn main () -> () {
     pauseMessage.set_string(~"Welcome to SFML pong!\nPress space to start the game");
 
     // Define the paddles properties
-    let AITimer =  Clock::new();
-    let AITime : Time  = Time::new_with_seconds(0.1);
-    let paddleSpeed = 400.;
+    let mut AITimer =  Clock::new();
+    let mut AITime : Time  = Time::new_with_seconds(0.1);
+    let mut paddleSpeed = 400.;
     let mut rightPaddleSpeed  = 0.;
-    let ballSpeed   = 400.;
+    let mut ballSpeed   = 400.;
     let mut ballAngle : f32  = 0.; // to be changed later
 
-    let clock = Clock::new();
+    let mut clock = Clock::new();
     let mut isPlaying = false;
 
-    while window.is_open() {
-        loop {
-            match window.poll_event() {
-                event::Closed => window.close(),
+    let mut running = true;
+
+    while running {
+        for window.each_event |event| {
+            match event {
+                event::Closed => running = false,
                 event::KeyPressed(key, _, _, _, _) => match key {
                     keyboard::Escape      => {window.close(); break},
                     keyboard::Space       => {
@@ -129,8 +131,7 @@ fn main () -> () {
                         }
                     },
                     _                      => {}
-                } ,
-                event::NoEvent => break,
+                },
                 _ => {}
             }
         }

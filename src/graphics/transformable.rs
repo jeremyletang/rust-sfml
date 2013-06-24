@@ -117,7 +117,7 @@ impl Transformable {
     * # Arguments
     * * position - The new position
     */
-    pub fn set_position(&self, position : &Vector2f) -> () {
+    pub fn set_position(&mut self, position : &Vector2f) -> () {
         unsafe {
             csfml::sfTransformable_setPosition(self.trans, *position)
         }
@@ -133,7 +133,7 @@ impl Transformable {
     * # Arguments
     * * angle - The new rotation, in degrees
     */
-    pub fn set_rotation(&self, angle : float) -> () {
+    pub fn set_rotation(&mut self, angle : float) -> () {
         unsafe {
             csfml::sfTransformable_setRotation(self.trans, angle as c_float)
         }
@@ -149,7 +149,7 @@ impl Transformable {
     * # Arguments
     * * scale - New scale factors
     */
-    pub fn set_scale(&self, scale : &Vector2f) -> () {
+    pub fn set_scale(&mut self, scale : &Vector2f) -> () {
         unsafe {
             csfml::sfTransformable_setScale(self.trans, *scale)
         }
@@ -168,7 +168,7 @@ impl Transformable {
     * # Arguments
     * * origin - New origin
     */
-    pub fn set_origin(&self, origin : &Vector2f) -> () {
+    pub fn set_origin(&mut self, origin : &Vector2f) -> () {
         unsafe {
             csfml::sfTransformable_setOrigin(self.trans, *origin)
         }
@@ -229,7 +229,7 @@ impl Transformable {
     * # Arguments
     * * offset - Offset
     */
-    pub fn move(&self, offset : &Vector2f) -> () {
+    pub fn move(&mut self, offset : &Vector2f) -> () {
         unsafe {
             csfml::sfTransformable_move(self.trans, *offset)
         }
@@ -244,7 +244,7 @@ impl Transformable {
     * # Arguments
     * * angle - Angle of rotation, in degrees
     */
-    pub fn rotate(&self, angle : float) -> () {
+    pub fn rotate(&mut self, angle : float) -> () {
         unsafe {
             csfml::sfTransformable_rotate(self.trans, angle as c_float)
         }
@@ -259,7 +259,7 @@ impl Transformable {
     * # Arguments
     * * factors - Scale factors
     */
-    pub fn scale(&self, factors : &Vector2f) -> () {
+    pub fn scale(&mut self, factors : &Vector2f) -> () {
         unsafe {
             csfml::sfTransformable_scale(self.trans, *factors)
         }

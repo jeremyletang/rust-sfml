@@ -94,8 +94,17 @@ impl Texture {
     *
     * Return a new Option to Texture object or None
     */
-    pub fn new(width: uint, height : uint) -> Texture {
-        Texture { texture : unsafe {csfml::sfTexture_create(width as c_uint, height as c_uint)}}
+    pub fn new(width: uint, height : uint) -> Option<Texture> {
+        unsafe {
+            let raw = csfml::sfTexture_create(width as c_uint, height as c_uint);
+            if raw == ptr::null() {
+                None
+            } else {
+                Some(Texture {
+                    texture: raw
+                })
+            }
+        }
     }
     
     /**
@@ -106,9 +115,18 @@ impl Texture {
     *
     * Return a new Option to Texture object or None
     */
-    pub fn new_from_file(filename : ~str) -> Texture {
+    pub fn new_from_file(filename : ~str) -> Option<Texture> {
         do str::as_c_str(filename) |filebuf| {
-            Texture { texture : unsafe {csfml::sfTexture_createFromFile(filebuf, ptr::null())} }
+            unsafe {
+                let raw = csfml::sfTexture_createFromFile(filebuf, ptr::null());
+                if raw == ptr::null() {
+                    None
+                } else {
+                    Some(Texture {
+                        texture: raw
+                    })
+                }
+            }
         }
     }
 
@@ -125,18 +143,6 @@ impl Texture {
         do str::as_c_str(filename) |filebuf| {
             Texture { texture : unsafe {csfml::sfTexture_createFromFile(filebuf, &*area)} }
         }
-    }
-    
-    /**
-    * Create a new texture by copying a exitant one
-    *
-    * # Arguments
-    * * texture - Texture to copy
-    *
-    * Return an option to the copied texture or None
-    */
-    pub fn new_copy(texture : &Texture) -> Texture {
-        Texture { texture : unsafe {csfml::sfTexture_copy(texture.unwrap())}}
     }
 
     /**
@@ -183,7 +189,7 @@ impl Texture {
     * * x - X offset in the texture where to copy the source pixels
     * * y - Y offset in the texture where to copy the source pixels
     */
-    pub fn update_from_window(&self, window : Window, x : uint, y : uint) -> () {
+    pub fn update_from_window(&mut self, window : Window, x : uint, y : uint) -> () {
         unsafe {
             csfml::sfTexture_updateFromWindow(self.texture, window.unwrap(), x as c_uint, y as c_uint)
         }
@@ -197,7 +203,7 @@ impl Texture {
     * * x - X offset in the texture where to copy the source pixels
     * * y - Y offset in the texture where to copy the source pixels
     */
-    pub fn update_from_render_window(&self, renderWindow : RenderWindow, x : uint, y : uint) -> () {
+    pub fn update_from_render_window(&mut self, renderWindow : RenderWindow, x : uint, y : uint) -> () {
         unsafe {
             csfml::sfTexture_updateFromRenderWindow(self.texture, renderWindow.unwrap(), x as c_uint, y as c_uint)
         }
@@ -211,7 +217,7 @@ impl Texture {
     * * x - X offset in the texture where to copy the source pixels
     * * y - Y offset in the texture where to copy the source pixels
     */
-    pub fn update_from_image(&self, image : &Image, x : uint, y : uint) -> () {
+    pub fn update_from_image(&mut self, image : &Image, x : uint, y : uint) -> () {
         unsafe {
             csfml::sfTexture_updateFromImage(self.texture, image.unwrap(), x as c_uint, y as c_uint)
         }
@@ -237,7 +243,7 @@ impl Texture {
     * # Arguments
     * * smooth - true to enable smoothing, false to disable it
     */
-    pub fn set_smooth(&self, smooth : bool) -> () {
+    pub fn set_smooth(&mut self, smooth : bool) -> () {
         match smooth {
             true        => unsafe {csfml::sfTexture_setSmooth(self.texture, 1)},
             false       => unsafe {csfml::sfTexture_setSmooth(self.texture, 0)}
@@ -276,7 +282,7 @@ impl Texture {
     * # Arguments
     * * repeated  - true to repeat the texture, false to disable repeating
     */
-    pub fn set_repeated(&self, repeated : bool) -> () {
+    pub fn set_repeated(&mut self, repeated : bool) -> () {
         match repeated {
             true        => unsafe {csfml::sfTexture_setRepeated(self.texture, 1)},
             false       => unsafe {csfml::sfTexture_setRepeated(self.texture, 0)}
@@ -339,6 +345,16 @@ impl Texture {
     #[doc(hidden)]
     pub fn wrap(texture : *csfml::sfTexture) -> Texture {
         Texture { texture : texture}
+    }
+}
+
+impl Clone for Texture {
+    fn clone(&self) -> Texture {
+        unsafe {
+            Texture {
+                texture: csfml::sfTexture_copy(self.texture)
+            }
+        }
     }
 }
 

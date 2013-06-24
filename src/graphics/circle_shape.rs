@@ -146,7 +146,7 @@ impl CircleShape {
     * # Arguments
     * * rotation - New rotation
     */
-    pub fn set_rotation(&self, angle : float) -> () {
+    pub fn set_rotation(&mut self, angle : float) -> () {
         unsafe {
             csfml::sfCircleShape_setRotation(self.circleShape, angle as c_float)
         }
@@ -174,7 +174,7 @@ impl CircleShape {
     * # Arguments
     * * angle - Angle of rotation, in degrees
     */
-    pub fn rotate(&self, angle : float) -> () {
+    pub fn rotate(&mut self, angle : float) -> () {
         unsafe {
             csfml::sfCircleShape_rotate(self.circleShape, angle as c_float)
         }
@@ -197,7 +197,7 @@ impl CircleShape {
     * * texture - New texture
     * * resetRect - Should the texture rect be reset to the size of the new texture?
     */
-    pub fn set_texture(&self, texture : &Texture, resetRect : bool) -> () {
+    pub fn set_texture(&mut self, texture : &Texture, resetRect : bool) -> () {
         match resetRect {
             true        => unsafe {csfml::sfCircleShape_setTexture(self.circleShape, texture.unwrap(), 1)},
             false       => unsafe {csfml::sfCircleShape_setTexture(self.circleShape, texture.unwrap(), 0)},
@@ -225,7 +225,7 @@ impl CircleShape {
     * # Arguments
     * * rec - Rectangle defining the region of the texture to display
     */
-    pub fn set_texture_rect(&self, rect : &IntRect) -> () {
+    pub fn set_texture_rect(&mut self, rect : &IntRect) -> () {
         unsafe {
             csfml::sfCircleShape_setTextureRect(self.circleShape, *rect)
         }
@@ -244,7 +244,7 @@ impl CircleShape {
     * # Arguments
     * * color - New color of the shape
     */
-    pub fn set_fill_color(&self, color : &Color) -> () {
+    pub fn set_fill_color(&mut self, color : &Color) -> () {
         unsafe {
             csfml::sfCircleShape_setFillColor(self.circleShape, *color)
         }
@@ -259,7 +259,7 @@ impl CircleShape {
     * # Arguments
     * * color - New outline color of the shape
     */
-    pub fn set_outline_color(&self, color : &Color) -> () {
+    pub fn set_outline_color(&mut self, color : &Color) -> () {
         unsafe {
             csfml::sfCircleShape_setOutlineColor(self.circleShape, *color)
         }
@@ -275,7 +275,7 @@ impl CircleShape {
     * # Arguments
     * * thickness - New outline thickness
     */
-    pub fn set_outline_thickness(&self, thickness : float) -> () {
+    pub fn set_outline_thickness(&mut self, thickness : float) -> () {
         unsafe {
             csfml::sfCircleShape_setOutlineThickness(self.circleShape, thickness as c_float)
         }
@@ -371,7 +371,7 @@ impl CircleShape {
     * # Arguments
     * * radius - New radius of the circle
     */
-    pub fn set_radius(&self, radius : float) -> () {
+    pub fn set_radius(&mut self, radius : float) -> () {
         unsafe {
             csfml::sfCircleShape_setRadius(self.circleShape, radius as c_float)
         }
@@ -394,7 +394,7 @@ impl CircleShape {
     * # Arguments
     * * count - New number of points of the circle
     */
-    pub fn set_point_count(&self, count : uint) -> () {
+    pub fn set_point_count(&mut self, count : uint) -> () {
         unsafe {
             csfml::sfCircleShape_setPointCount(self.circleShape, count as c_uint)
         }
@@ -436,7 +436,7 @@ impl CircleShape {
     * # Arguments
     * * offset - Offset
     */
-    pub fn move(&self, offset : &Vector2f) -> () {
+    pub fn move(&mut self, offset : &Vector2f) -> () {
         unsafe {
             csfml::sfCircleShape_move(self.circleShape, *offset)
         }
@@ -467,7 +467,7 @@ impl CircleShape {
     * # Arguments
     * * factors - Scale factors
     */
-    pub fn scale(&self, factors : &Vector2f) -> () {
+    pub fn scale(&mut self, factors : &Vector2f) -> () {
         unsafe {
             csfml::sfCircleShape_scale(self.circleShape, *factors)
         }
@@ -499,7 +499,7 @@ impl CircleShape {
     * # Arguments
     * * position - New position
     */
-    pub fn set_position(&self, position : &Vector2f) -> () {
+    pub fn set_position(&mut self, position : &Vector2f) -> () {
         unsafe {
             csfml::sfCircleShape_setPosition(self.circleShape, *position)
         }
@@ -532,7 +532,7 @@ impl CircleShape {
     * # Arguments
     * * scale - New scale factors
     */
-    pub fn set_scale(&self, scale : &Vector2f) -> () {
+    pub fn set_scale(&mut self, scale : &Vector2f) -> () {
         unsafe {
             csfml::sfCircleShape_setScale(self.circleShape, *scale)
         }
@@ -568,7 +568,7 @@ impl CircleShape {
     * # Arguments
     * * origin - New origin
     */
-    pub fn set_origin(&self, origin : &Vector2f) -> () {
+    pub fn set_origin(&mut self, origin : &Vector2f) -> () {
         unsafe {
             csfml::sfCircleShape_setOrigin(self.circleShape, *origin)
         }
@@ -661,12 +661,13 @@ impl CircleShape {
     }
 }
 
+
 impl Drawable for CircleShape {
-    pub fn draw_in_render_window(&self, renderWindow : &RenderWindow) -> () {
+    pub fn draw_in_render_window(&self, renderWindow : &mut RenderWindow) -> () {
         renderWindow.draw_circle_shape(self)
     }
     
-    pub fn draw_in_render_texture(&self, renderTexture : &RenderTexture) -> () {
+    pub fn draw_in_render_texture(&self, renderTexture : &mut RenderTexture) -> () {
         renderTexture.draw_circle_shape(self)
     }
 }

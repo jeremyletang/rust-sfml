@@ -74,7 +74,7 @@ impl Font {
     * # Arguments
     * * filename -  Path of the font file to load
     * 
-    * Return a new Font object
+    * Return a new Font object or None if loading fails
     */
     pub fn new_from_file(filename : ~str) -> Option<Font> {
         do str::as_c_str(filename) |filenamebuf| {
@@ -88,22 +88,6 @@ impl Font {
         }
     }
     
-    /**
-    * Create font from a existing one
-    *
-    * # Arguments
-    * * font - Font to copy
-    * Return the copied font
-    */
-    pub fn new_copy(font : &Font) -> Option<Font> {
-        let fnt = unsafe {csfml::sfFont_copy(font.unwrap())};
-        if fnt == ptr::null() {
-            None
-        }
-        else {
-            Some(Font { font : fnt})
-        }
-    }    
     /**
     * Get the kerning value corresponding to a given pair of characters in a font
     * 
@@ -175,6 +159,16 @@ impl Font {
         self.font
     } 
 
+}
+
+impl Clone for Font {
+    fn clone(&self) -> Font {
+        unsafe {
+            Font {
+                font: csfml::sfFont_copy(self.font)
+            }
+        }
+    }
 }
 
 impl Drop for Font {

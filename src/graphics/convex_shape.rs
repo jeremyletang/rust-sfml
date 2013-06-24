@@ -118,24 +118,7 @@ impl ConvexShape {
     }
 
     /**
-    * Copy an existing convex shape
-    *
-    * # Arguments
-    * * shape - Shape to copy
-    * 
-    * Return the copied object
-    */
-    pub fn new_copy(shape : &ConvexShape) -> Option<ConvexShape> {
-        let shape = unsafe {csfml::sfConvexShape_copy(shape.unwrap())};
-        if shape == ptr::null() {
-            None
-        }
-        else {
-            Some(ConvexShape { convexShape : shape})
-        }
-    }
 
-    /**
     * Set the position of a convex shape
     *
     * This function completely overwrites the previous position.
@@ -145,7 +128,7 @@ impl ConvexShape {
     * # Arguments
     * * position - New position
     */
-    pub fn set_position(&self, position : &Vector2f) -> () {
+    pub fn set_position(&mut self, position : &Vector2f) -> () {
         unsafe {
             csfml::sfConvexShape_setPosition(self.convexShape, *position)
         }
@@ -178,7 +161,7 @@ impl ConvexShape {
     * # Arguments
     * * scale - New scale factors
     */
-    pub fn set_scale(&self, scale : &Vector2f) -> () {
+    pub fn set_scale(&mut self, scale : &Vector2f) -> () {
         unsafe {
             csfml::sfConvexShape_setScale(self.convexShape, *scale)
         }
@@ -214,7 +197,7 @@ impl ConvexShape {
     * # Arguments
     * * origin - New origin
     */
-    pub fn set_origin(&self, origin : &Vector2f) -> () {
+    pub fn set_origin(&mut self, origin : &Vector2f) -> () {
         unsafe {
             csfml::sfConvexShape_setOrigin(self.convexShape, *origin)
         }
@@ -249,7 +232,7 @@ impl ConvexShape {
     * # Arguments
     * * offset - Offset
     */
-    pub fn move(&self, offset : &Vector2f) -> () {
+    pub fn move(&mut self, offset : &Vector2f) -> () {
         unsafe {
             csfml::sfConvexShape_move(self.convexShape, *offset)
         }
@@ -280,7 +263,7 @@ impl ConvexShape {
     * # Arguments
     * * factors - Scale factors
     */
-    pub fn scale(&self, factors : &Vector2f) -> () {
+    pub fn scale(&mut self, factors : &Vector2f) -> () {
         unsafe {
             csfml::sfConvexShape_scale(self.convexShape, *factors)
         }
@@ -310,7 +293,7 @@ impl ConvexShape {
     * # Arguments
     * * count - New number of points of the shape
     */
-    pub fn set_point(&self, index : uint, point : &Vector2f) -> () {
+    pub fn set_point(&mut self, index : uint, point : &Vector2f) -> () {
         unsafe {
             csfml::sfConvexShape_setPoint(self.convexShape, index as c_uint, *point)
         }
@@ -367,7 +350,7 @@ impl ConvexShape {
     * # Arguments
     * * rotation - New rotation
     */
-    pub fn set_rotation(&self, angle : float) -> () {
+    pub fn set_rotation(&mut self, angle : float) -> () {
         unsafe {
             csfml::sfConvexShape_setRotation(self.convexShape, angle as c_float)
         }
@@ -395,7 +378,7 @@ impl ConvexShape {
     * # Arguments
     * * angle - Angle of rotation, in degrees
     */
-    pub fn rotate(&self, angle : float) -> () {
+    pub fn rotate(&mut self, angle : float) -> () {
         unsafe {
             csfml::sfConvexShape_rotate(self.convexShape, angle as c_float)
         }
@@ -419,7 +402,7 @@ impl ConvexShape {
     * * texture - New texture
     * * resetRect - Should the texture rect be reset to the size of the new texture?
     */
-    pub fn set_texture(&self, texture : &Texture, resetRect : bool) -> () {
+    pub fn set_texture(&mut self, texture : &Texture, resetRect : bool) -> () {
         match resetRect {
             true        => unsafe {csfml::sfConvexShape_setTexture(self.convexShape, texture.unwrap(), 1)},
             false       => unsafe {csfml::sfConvexShape_setTexture(self.convexShape, texture.unwrap(), 0)}
@@ -450,7 +433,7 @@ impl ConvexShape {
     * # Arguments
     * * color - New color of the shape
     */
-    pub fn set_fill_color(&self, color : &Color) -> () {
+    pub fn set_fill_color(&mut self, color : &Color) -> () {
         unsafe {
             csfml::sfConvexShape_setFillColor(self.convexShape, *color)
         }
@@ -465,7 +448,7 @@ impl ConvexShape {
     * # Arguments
     * * color - New outline color of the shape
     */
-    pub fn set_outline_color(&self, color : &Color) -> () {
+    pub fn set_outline_color(&mut self, color : &Color) -> () {
         unsafe {
             csfml::sfConvexShape_setOutlineColor(self.convexShape, *color)
         }
@@ -481,7 +464,7 @@ impl ConvexShape {
     * # Arguments
     * * thickness - New outline thickness
     */
-    pub fn set_outline_thickness(&self, thickness : float) -> () {
+    pub fn set_outline_thickness(&mut self, thickness : float) -> () {
         unsafe {
             csfml::sfConvexShape_setOutlineThickness(self.convexShape, thickness as c_float)
         }
@@ -544,7 +527,7 @@ impl ConvexShape {
     * # Arguments
     * * count - New number of points of the convex
     */
-    pub fn set_point_count(&self, count : uint) -> () {
+    pub fn set_point_count(&mut self, count : uint) -> () {
         unsafe {
             csfml::sfConvexShape_setPointCount(self.convexShape, count as c_uint)
         }
@@ -555,7 +538,7 @@ impl ConvexShape {
     *
     * Return the texture rectangle of the shape
     */
-    pub fn set_texture_rect(&self, rect : &IntRect) -> () {
+    pub fn set_texture_rect(&mut self, rect : &IntRect) -> () {
         unsafe {
             csfml::sfConvexShape_setTextureRect(self.convexShape, *rect)
         }
@@ -639,13 +622,24 @@ impl ConvexShape {
     }
 }
 
+
 impl Drawable for ConvexShape {
-    pub fn draw_in_render_window(&self, renderWindow : &RenderWindow) -> () {
+    pub fn draw_in_render_window(&self, renderWindow : &mut RenderWindow) -> () {
         renderWindow.draw_convex_shape(self)
     }
 
-    pub fn draw_in_render_texture(&self, renderTexture : &RenderTexture) -> () {
+    pub fn draw_in_render_texture(&self, renderTexture : &mut RenderTexture) -> () {
         renderTexture.draw_convex_shape(self)
+    }
+}
+
+impl Clone for ConvexShape {
+    fn clone(&self) -> ConvexShape {
+        unsafe {
+            ConvexShape {
+                convexShape: csfml::sfConvexShape_copy(self.convexShape)
+            }
+        }
     }
 }
 

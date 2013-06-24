@@ -103,28 +103,13 @@ impl Sound {
             Some(Sound { sound : s})
         }
     }
-    
-    /**
-    * Create a new sound by copying an existing one
-    *
-    * Return a new option to Sound object which is a copy of sound or none
-    */
-    pub fn new_copy(sound : Sound) -> Option<Sound> {
-        let s = unsafe {csfml::sfSound_copy(sound.unwrap())};
-        if s == ptr::null() {
-            None
-        }
-        else {
-            Some(Sound {sound : s})
-        }
-    }
 
     /**
     * Tell whether or not a sound is in loop mode
     *
     * Return true if the sound is looping, false otherwise
     */
-    pub fn set_loop(&self, lloop : bool) -> () {
+    pub fn set_loop(&mut self, lloop : bool) -> () {
         unsafe {
             if lloop == true {
                 csfml::sfSound_setLoop(self.sound, 1)
@@ -156,7 +141,7 @@ impl Sound {
     * This function uses its own thread so that it doesn't block
     * the rest of the program while the sound is played.
     */
-    pub fn play(&self) -> () {
+    pub fn play(&mut self) -> () {
         unsafe {csfml::sfSound_play(self.sound)}
     }
 
@@ -166,7 +151,7 @@ impl Sound {
     * This function pauses the sound if it was playing,
     * otherwise (sound already paused or stopped) it has no effect.
     */
-    pub fn pause(&self) -> () {
+    pub fn pause(&mut self) -> () {
         unsafe {csfml::sfSound_pause(self.sound)}
     }
 
@@ -177,7 +162,7 @@ impl Sound {
     * and does nothing if it was already stopped.
     * It also resets the playing position (unlike pause).
     */
-    pub fn stop(&self) -> () {
+    pub fn stop(&mut self) -> () {
         unsafe {csfml::sfSound_stop(self.sound)}
     }
 
@@ -215,7 +200,7 @@ impl Sound {
     * # Arguments
     * * pitch - new pitch to apply to the sound
     */
-    pub fn set_pitch(&self, pitch : float) -> () {
+    pub fn set_pitch(&mut self, pitch : float) -> () {
         unsafe {csfml::sfSound_setPitch(self.sound, pitch as c_float)}
     }
 
@@ -228,7 +213,7 @@ impl Sound {
     * # Arguments
     * * volume - Volume of the sound
     */
-    pub fn set_volume(&self, volume : float) -> () {
+    pub fn set_volume(&mut self, volume : float) -> () {
         unsafe {csfml::sfSound_setVolume(self.sound, volume as c_float)}
     }
 
@@ -244,7 +229,7 @@ impl Sound {
     * # Arguments
     * * relative - true to set the position relative, false to set it absolute
     */
-    pub fn set_relative_to_listener(&self, relative : bool) -> () {
+    pub fn set_relative_to_listener(&mut self, relative : bool) -> () {
         unsafe {
             if relative == true {
                 csfml::sfSound_setRelativeToListener(self.sound, 1);
@@ -268,7 +253,7 @@ impl Sound {
     * # Arguments
     * * distance - New minimum distance of the sound
     */
-    pub fn set_min_distance(&self, distance : float) -> () {
+    pub fn set_min_distance(&mut self, distance : float) -> () {
         unsafe {csfml::sfSound_setMinDistance(self.sound, distance as c_float)}
     }
 
@@ -287,7 +272,7 @@ impl Sound {
     * # Arguments
     * * attenuation - New attenuation factor of the sound
     */
-    pub fn set_attenuation(&self, attenuation : float) -> () {
+    pub fn set_attenuation(&mut self, attenuation : float) -> () {
         unsafe {csfml::sfSound_setAttenuation(self.sound, attenuation as c_float)}
     }
 
@@ -300,7 +285,7 @@ impl Sound {
     * # Arguments
     * * timeOffset - New playing position
     */
-    pub fn set_playing_offset(&self, timeOffset : time::Time) -> () {
+    pub fn set_playing_offset(&mut self, timeOffset : time::Time) -> () {
         unsafe {
             csfml::sfSound_setPlayingOffset(self.sound, timeOffset.unwrap())
         }
@@ -372,7 +357,7 @@ impl Sound {
     * # Arguments
     * * buffer - Sound buffer to attach to the sound
     */
-    pub fn set_buffer(&self, buffer : &SoundBuffer) -> () {
+    pub fn set_buffer(&mut self, buffer : &SoundBuffer) -> () {
         unsafe {
             csfml::sfSound_setBuffer(self.sound, buffer.unwrap())
         }
@@ -410,7 +395,7 @@ impl Sound {
     * # Arguments
     * * position - Position of the sound in the scene
     */
-    pub fn set_position(&self, position : &Vector3f) -> () {
+    pub fn set_position(&mut self, position : &Vector3f) -> () {
         unsafe {
             csfml::sfSound_setPosition(self.sound, *position)
         }
@@ -440,6 +425,16 @@ impl Sound {
     #[doc(hidden)]
     pub fn unwrap(&self) -> *csfml::sfSound {
         self.sound
+    }
+}
+
+impl Clone for Sound {
+    fn clone(&self) -> Sound {
+        unsafe {
+            Sound {
+                sound: csfml::sfSound_copy(self.sound)
+            }
+        }
     }
 }
 

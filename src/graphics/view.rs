@@ -90,24 +90,6 @@ impl View {
             Some(View { dropable: true, view : view})
         }
     }
-    
-    /**
-    * Create a view by copying an existant one.
-    *
-    * # Arguments
-    * * view - View to copy
-    *
-    * Return a new View object
-    */
-    pub fn new_copy(view : &View) -> Option<View> {
-        let view = unsafe {csfml::sfView_copy(view.unwrap())};
-        if view == ptr::null() {
-            None
-        }
-        else {
-            Some(View { dropable: true, view : view})
-        }    
-    }
 
     /**
     * Construct a view from a rectangle
@@ -135,7 +117,7 @@ impl View {
     * # Arguments
     * * angle - New angle, in degrees
     */
-    pub fn set_rotation(&self, angle : float) -> () {
+    pub fn set_rotation(&mut self, angle : float) -> () {
         unsafe {
             csfml::sfView_setRotation(self.view, angle as c_float)
         }
@@ -158,7 +140,7 @@ impl View {
     * # Arguments
     * * angle - Angle to rotate, in degrees
     */
-    pub fn rotate(&self, angle : float) -> () {
+    pub fn rotate(&mut self, angle : float) -> () {
         unsafe {
             csfml::sfView_rotate(self.view, angle as c_float)
         }
@@ -176,7 +158,7 @@ impl View {
     * # Arguments
     * * factor - Zoom factor to apply
     */
-    pub fn zoom(&self, factor : float) -> () {
+    pub fn zoom(&mut self, factor : float) -> () {
         unsafe {
             csfml::sfView_zoom(self.view, factor as c_float)
         }
@@ -188,7 +170,7 @@ impl View {
     * # Arguments
     * * center - New center
     */
-    pub fn set_center(&self, center : &Vector2f) -> () {
+    pub fn set_center(&mut self, center : &Vector2f) -> () {
         unsafe {
             csfml::sfView_setCenter(self.view, *center)
         }
@@ -213,7 +195,7 @@ impl View {
     * # Arguments
     * * size - New size of the view
     */
-    pub fn set_size(&self, size : &Vector2f) -> () {
+    pub fn set_size(&mut self, size : &Vector2f) -> () {
         unsafe {
             csfml::sfView_setSize(self.view, *size)
         }
@@ -238,7 +220,7 @@ impl View {
     * # Arguments
     * * offset - Offset
     */
-    pub fn move(&self, offset : &Vector2f) -> () {
+    pub fn move(&mut self, offset : &Vector2f) -> () {
         unsafe {
             csfml::sfView_move(self.view, *offset)
         }
@@ -287,7 +269,7 @@ impl View {
     * # Arguments
     * * viewport - New viewport rectangle
     */
-    pub fn set_viewport(&self, viewport : &FloatRect) -> () {
+    pub fn set_viewport(&mut self, viewport : &FloatRect) -> () {
         unsafe {
             csfml::sfView_setViewport(self.view, *viewport)
         }
@@ -329,6 +311,19 @@ impl View {
     }
         
 }
+
+
+impl Clone for View {
+    fn clone(&self) -> View {
+        unsafe {
+            View {
+                dropable: self.dropable,
+                view: csfml::sfView_copy(self.view)
+            }
+        }
+    }
+}
+
 
 impl Drop for View {
     /// Destructor for class View

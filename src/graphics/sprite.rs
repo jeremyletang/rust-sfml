@@ -135,7 +135,7 @@ impl Sprite {
     * # Arguments
     * * angle - New rotation, in degrees
     */
-    pub fn set_rotation(&self, angle : float) -> () {
+    pub fn set_rotation(&mut self, angle : float) -> () {
         unsafe {
             csfml::sfSprite_setRotation(self.sprite, angle as c_float)
         }
@@ -163,7 +163,7 @@ impl Sprite {
     * # Arguments
     * * angle - Angle of rotation, in degrees
     */
-    pub fn rotate(&self, angle : float) -> () {
+    pub fn rotate(&mut self, angle : float) -> () {
         unsafe {
             csfml::sfSprite_rotate(self.sprite, angle as c_float)
         }
@@ -186,7 +186,7 @@ impl Sprite {
     * * texture - New texture
     * * resetRect - Should the texture rect be reset to the size of the new texture?
     */
-    pub fn set_texture(&self, texture : &texture::Texture, resetRect : bool) -> (){
+    pub fn set_texture(&mut self, texture : &texture::Texture, resetRect : bool) -> (){
         match resetRect {
             true        => unsafe {csfml::sfSprite_setTexture(self.sprite, texture.unwrap(), 1)},
             false       => unsafe {csfml::sfSprite_setTexture(self.sprite, texture.unwrap(), 0)}
@@ -215,7 +215,7 @@ impl Sprite {
     * # Arguments
     * * color - New color of the sprite
     */
-    pub fn set_color(&self, color : &color::Color) -> () {
+    pub fn set_color(&mut self, color : &color::Color) -> () {
         unsafe {
             csfml::sfSprite_setColor(self.sprite, *color)
         }
@@ -261,7 +261,7 @@ impl Sprite {
     * # Arguments
     * * position - New position
     */
-    pub fn set_position(&self, position : &Vector2f) -> () {
+    pub fn set_position(&mut self, position : &Vector2f) -> () {
         unsafe {
             csfml::sfSprite_setPosition(self.sprite, *position)
         }
@@ -293,7 +293,7 @@ impl Sprite {
     * # Arguments
     * * factors - Scale factors
     */
-    pub fn scale(&self, factors : &Vector2f) -> () {
+    pub fn scale(&mut self, factors : &Vector2f) -> () {
         unsafe {
             csfml::sfSprite_scale(self.sprite, *factors)
         }
@@ -342,7 +342,7 @@ impl Sprite {
     * # Arguments
     * * offset - Offset
     */
-    pub fn move(&self, offset : &Vector2f) -> () {
+    pub fn move(&mut self, offset : &Vector2f) -> () {
         unsafe {
             csfml::sfSprite_move(self.sprite, *offset)
         }
@@ -374,7 +374,7 @@ impl Sprite {
     * # Arguments
     * * scale - New scale factors
     */
-    pub fn set_scale(&self, scale : &Vector2f) -> () {
+    pub fn set_scale(&mut self, scale : &Vector2f) -> () {
         unsafe {
             csfml::sfSprite_setScale(self.sprite, *scale)
         }
@@ -410,7 +410,7 @@ impl Sprite {
     * # Arguments
     * * origin - New origin
     */
-    pub fn set_origin(&self, origin : &Vector2f) -> () {
+    pub fn set_origin(&mut self, origin : &Vector2f) -> () {
         unsafe {
             csfml::sfSprite_setOrigin(self.sprite, *origin)
         }
@@ -500,7 +500,7 @@ impl Sprite {
     * # Arguments
     * * rectangle - Rectangle defining the region of the texture to display
     */
-    pub fn set_texture_rect(&self, rect : &IntRect) -> () {
+    pub fn set_texture_rect(&mut self, rect : &IntRect) -> () {
         unsafe {
             csfml::sfSprite_setTextureRect(self.sprite, *rect)
         }
@@ -544,11 +544,11 @@ impl Drawable for Sprite {
     /**
     * Draw the sprite in the RenderWindow
     */
-    pub fn draw_in_render_window(&self, renderWindow : &render_window::RenderWindow) -> () {
+    pub fn draw_in_render_window(&self, renderWindow : &mut render_window::RenderWindow) -> () {
         renderWindow.draw_sprite(self)
     }
 
-    pub fn draw_in_render_texture(&self, renderTexture : &render_texture::RenderTexture) -> () {
+    pub fn draw_in_render_texture(&self, renderTexture : &mut render_texture::RenderTexture) -> () {
         renderTexture.draw_sprite(self)
     }
 }
