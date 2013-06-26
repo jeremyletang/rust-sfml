@@ -494,8 +494,14 @@ impl ConvexShape {
     * 
     * Return the shape's texture
     */
-    pub fn get_texture(&self) -> Texture {
-            Texture::wrap(unsafe {csfml::sfConvexShape_getTexture(self.convexShape)})
+    pub fn get_texture(&self) -> Option<Texture> {
+        let tex = unsafe {csfml::sfConvexShape_getTexture(self.convexShape)};
+        if tex == ptr::null() {
+            None
+        }
+        else {
+            Some(Texture::wrap(tex))
+        }
     }
     
     /**

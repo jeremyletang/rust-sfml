@@ -104,7 +104,7 @@ impl RectangleShape {
     /**
     * Create a new rectangle shape
     *
-    * Return a new rectangleShape object
+    * Return a new option to a rectangleShape object or None
     */
     pub fn new() -> Option<RectangleShape> {
         let rectangle = unsafe {csfml::sfRectangleShape_create()};
@@ -117,12 +117,32 @@ impl RectangleShape {
     }
 
     /**
+    * Create a new rectangle shape initialized
+    *
+    * Default value on SFML is size = Vector2f(0, 0) 
+    *
+    * Return a new option to a rectangleShape object, or None
+    */
+    pub fn new_init(size : &Vector2f) -> Option<RectangleShape> {
+        let rectangle = unsafe {csfml::sfRectangleShape_create()};
+        if rectangle == ptr::null() {
+            None
+        }
+        else {
+            unsafe{
+                csfml::sfRectangleShape_setSize(rectangle, *size);
+            }
+            Some(RectangleShape {rectangleShape : rectangle})
+        }
+    }
+
+    /**
     * Copy an existing rectangle shape
     *
     * # Arguments
     * * shape - Shape to copy
     * 
-    * Return the copied object
+    * Return the copied object on an option, or None
     */
     pub fn new_copy(rectangleShape : &RectangleShape) -> Option<RectangleShape> {
         let rectangle = unsafe {csfml::sfRectangleShape_copy(rectangleShape.unwrap())};
@@ -497,9 +517,13 @@ impl RectangleShape {
     * 
     * Return the shape's texture
     */
-    pub fn get_texture(&self) -> Texture {
-        unsafe {
-            Texture::wrap(csfml::sfRectangleShape_getTexture(self.rectangleShape))
+    pub fn get_texture(&self) -> Option<Texture> {
+        let tex = unsafe {csfml::sfRectangleShape_getTexture(self.rectangleShape)};
+        if tex == ptr::null() {
+            None
+        }
+        else {
+            Some(Texture::wrap(tex))
         }
     }
 

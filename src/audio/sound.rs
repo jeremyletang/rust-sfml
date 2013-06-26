@@ -383,10 +383,14 @@ impl Sound {
     *
     * Return an option to Sound buffer attached to the sound or None
     */
-    pub fn get_buffer(&self) -> SoundBuffer {
-        SoundBuffer::wrap(unsafe {
-            csfml::sfSound_getBuffer(self.sound)
-        })
+    pub fn get_buffer(&self) -> Option<SoundBuffer> {
+        let buff = unsafe {csfml::sfSound_getBuffer(self.sound)};
+        if buff == ptr::null() {
+            None
+        }
+        else {
+            Some(SoundBuffer::wrap(buff))        
+        }
     }
 
     /**

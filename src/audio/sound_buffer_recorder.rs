@@ -128,9 +128,13 @@ impl SoundBufferRecorder {
     *
     * Return Read-only access to the sound buffer
     */
-    pub fn get_buffer(&self) -> SoundBuffer {
-        unsafe {
-            SoundBuffer::wrap(csfml::sfSoundBufferRecorder_getBuffer(self.soundBufferRecorder))
+    pub fn get_buffer(&self) -> Option<SoundBuffer> {
+        let buff = unsafe {csfml::sfSoundBufferRecorder_getBuffer(self.soundBufferRecorder)};
+        if buff == ptr::null() {
+            None
+        }
+        else {
+            Some(SoundBuffer::wrap(buff))
         }
     }
 

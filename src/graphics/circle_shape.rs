@@ -106,7 +106,7 @@ impl CircleShape {
     /**
     * Create a new circle shape
     *
-    * Return a new CircleShape object
+    * Return a new option to CircleShape object or None
     */
     pub fn new() -> Option<CircleShape> {
         let circle = unsafe {csfml::sfCircleShape_create()};
@@ -117,6 +117,27 @@ impl CircleShape {
             Some(CircleShape { circleShape : circle} )
         }
     }
+    
+    /**
+    * Create a new CircleShape and initialize it.
+    *
+    * Default value on SFML are radius = 0 / pointCount = 30
+    *
+    * Return a new initialized option to CircleShape or None
+    */
+    pub fn new_init(radius : float, pointCount : uint) -> Option<CircleShape> {
+        let circle = unsafe {csfml::sfCircleShape_create()};
+        if circle == ptr::null() {
+           None
+        }
+        else {
+            unsafe {
+                csfml::sfCircleShape_setRadius(circle, radius as c_float);
+                csfml::sfCircleShape_setPointCount(circle, pointCount as c_uint);
+            }
+            Some(CircleShape {circleShape : circle})
+        }
+    }
 
     /**
     * Copy an existing circle shape
@@ -124,7 +145,7 @@ impl CircleShape {
     * # Arguments
     * * shape - Shape to copy
     * 
-    * Return the copied object
+    * Return the copied object on option or None
     */
     pub fn new_copy(shape : &CircleShape) -> Option<CircleShape> {
         let circle = unsafe {csfml::sfCircleShape_copy(shape.unwrap())};
@@ -288,9 +309,13 @@ impl CircleShape {
     * 
     * Return the shape's texture
     */
-    pub fn get_texture(&self) -> Texture {
-        unsafe {
-            Texture::wrap(csfml::sfCircleShape_getTexture(self.circleShape))
+    pub fn get_texture(&self) -> Option<Texture> {
+        let tex = unsafe {csfml::sfCircleShape_getTexture(self.circleShape)};
+        if tex == ptr::null() {
+            None
+        }
+        else {
+            Some(Texture::wrap(tex))
         }
     }
 

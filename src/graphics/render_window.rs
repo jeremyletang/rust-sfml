@@ -802,8 +802,14 @@ impl RenderWindow {
     *
     * Return a new image containing the captured contents
     */
-    pub fn capture(&self) -> Image {
-        Image::wrap(unsafe {csfml::sfRenderWindow_capture(self.renderWindow)})
+    pub fn capture(&self) -> Option<Image> {
+        let img = unsafe {csfml::sfRenderWindow_capture(self.renderWindow)};
+        if img == ptr::null() {
+            None
+        }
+        else {
+            Some(Image::wrap(img))
+        }
     }
     
     /**
@@ -853,8 +859,8 @@ impl RenderWindow {
     * This function is typically used to find which point (or object) is
     * located below the mouse cursor.
     * 
-    * This version uses a custom view for calculations, see the other
-    * overload of the function if you want to use the current view of the
+    * This version uses a custom view for calculations, see the
+    * map_pixel_to_coords_current_view function if you want to use the current view of the
     * render-window.
     *
     * # Arguments
@@ -866,6 +872,38 @@ impl RenderWindow {
     pub fn map_pixel_to_coords(&self, point : &Vector2i, view : &View) -> Vector2f {
         unsafe {
             csfml::sfRenderWindow_mapPixelToCoords(self.renderWindow, *point, view.unwrap())
+        }
+    }
+
+    /**
+    * Convert a point from window coordinates to world coordinates
+    *
+    * This function finds the 2D position that matches the
+    * given pixel of the render-window. In other words, it does
+    * the inverse of what the graphics card does, to find the
+    * initial position of a rendered pixel.
+    *
+    * Initially, both coordinate systems (world units and target pixels)
+    * match perfectly. But if you define a custom view or resize your
+    * render window, this assertion is not true anymore, ie. a point
+    * located at (10, 50) in your render-window may map to the point
+    * (150, 75) in your 2D world -- if the view is translated by (140, 25).
+    * 
+    * This function is typically used to find which point (or object) is
+    * located below the mouse cursor.
+    * 
+    * This version uses the current view for calculations, see the
+    * map_pixel_to_coords function if you want to use a custom view.
+    *
+    * # Arguments
+    * * point - Pixel to convert
+    * 
+    * Return the converted point, in "world" units
+    */
+    pub fn map_pixel_to_coords_current_view(&self, point : &Vector2i) -> Vector2f {
+        let view = unsafe {csfml::sfRenderWindow_getView(self.renderWindow)};
+        unsafe {
+            csfml::sfRenderWindow_mapPixelToCoords(self.renderWindow, *point, view)
         }
     }
 
@@ -882,8 +920,8 @@ impl RenderWindow {
     * located at (150, 75) in your 2D world may map to the pixel
     * (10, 50) of your render-window -- if the view is translated by (140, 25).
     * 
-    * This version uses a custom view for calculations, see the other
-    * overload of the function if you want to use the current view of the
+    * This version uses a custom view for calculations, see
+    * map_coords_to_pixel_current_view if you want to use the current view of the
     * render-window.
     *
     * # Arguments
@@ -896,6 +934,32 @@ impl RenderWindow {
         }
     }
 
+    /**
+    * Convert a point from world coordinates to window coordinates
+    *
+    * This function finds the pixel of the render-window that matches
+    * the given 2D point. In other words, it goes through the same process
+    * as the graphics card, to compute the final position of a rendered point.
+    *
+    * Initially, both coordinate systems (world units and target pixels)
+    * match perfectly. But if you define a custom view or resize your
+    * render window, this assertion is not true anymore, ie. a point
+    * located at (150, 75) in your 2D world may map to the pixel
+    * (10, 50) of your render-window -- if the view is translated by (140, 25).
+    * 
+    * This version uses the current view for calculations, see 
+    * map_coords_to_pixel if you want to use a custom view.
+    *
+    * # Arguments
+    * * point - Point to convert
+    */
+    pub fn map_coords_to_pixel_current_view(&self, point : &Vector2f) -> Vector2i {
+        let currView = unsafe {csfml::sfRenderWindow_getView(self.renderWindow)};
+        unsafe {
+            csfml::sfRenderWindow_mapCoordsToPixel(self.renderWindow, *point, currView)
+        }
+    }
+    
     /**
     * Get the viewport of a view applied to this target
     *

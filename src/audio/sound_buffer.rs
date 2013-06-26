@@ -60,6 +60,7 @@ pub mod csfml {
 #[doc(hidden)]
 pub struct SoundBuffer {
     priv soundBuffer : *csfml::sfSoundBuffer,
+    priv dropable : bool
 }
 
 impl SoundBuffer {
@@ -84,7 +85,7 @@ impl SoundBuffer {
         if soundBuffer == ptr::null() {
             return None;
         }
-        Some(SoundBuffer{soundBuffer : soundBuffer})
+        Some(SoundBuffer{soundBuffer : soundBuffer, dropable : true})
     }
 
     /**
@@ -93,8 +94,14 @@ impl SoundBuffer {
     * # Arguments
     * * soundBuffer - Sound buffer to copy
     */
-    pub fn new_copy(soundBuffer : SoundBuffer) -> SoundBuffer {
-        SoundBuffer {soundBuffer :  unsafe {csfml::sfSoundBuffer_copy(soundBuffer.unwrap())}}
+    pub fn new_copy(soundBuffer : SoundBuffer) -> Option<SoundBuffer> {
+        let soundBuffer = unsafe {csfml::sfSoundBuffer_copy(soundBuffer.unwrap())};
+        if soundBuffer == ptr::null() {
+            None
+        }
+        else {
+            Some(SoundBuffer {soundBuffer : soundBuffer, dropable : true})
+        }
     }
 
     /**
@@ -182,7 +189,7 @@ impl SoundBuffer {
 
     #[doc(hidden)]
     pub fn wrap(buffer : *csfml::sfSoundBuffer) -> SoundBuffer {
-        SoundBuffer {soundBuffer : buffer}
+        SoundBuffer {soundBuffer : buffer, dropable : false}
     }
 
     #[doc(hidden)]
@@ -197,8 +204,10 @@ impl Drop for SoundBuffer {
     *   Destructor for class SoundBuffer. Destroy all the ressource.
     */
     fn finalize(&self) {
-        unsafe {
-            csfml::sfSoundBuffer_destroy(self.soundBuffer);
+        if self.dropable {
+            unsafe {
+                csfml::sfSoundBuffer_destroy(self.soundBuffer);
+            }
         }
     }
 }

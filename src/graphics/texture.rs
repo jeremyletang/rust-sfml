@@ -81,7 +81,8 @@ pub mod csfml {
 
 #[doc(hidden)]
 pub struct Texture {
-    priv texture : *csfml::sfTexture
+    priv texture : *csfml::sfTexture,
+    priv dropable : bool
 }
 
 impl Texture {
@@ -95,7 +96,7 @@ impl Texture {
     * Return a new Option to Texture object or None
     */
     pub fn new(width: uint, height : uint) -> Texture {
-        Texture { texture : unsafe {csfml::sfTexture_create(width as c_uint, height as c_uint)}}
+        Texture { texture : unsafe {csfml::sfTexture_create(width as c_uint, height as c_uint)}, dropable : true}
     }
     
     /**
@@ -108,7 +109,7 @@ impl Texture {
     */
     pub fn new_from_file(filename : ~str) -> Texture {
         do str::as_c_str(filename) |filebuf| {
-            Texture { texture : unsafe {csfml::sfTexture_createFromFile(filebuf, ptr::null())} }
+            Texture { texture : unsafe {csfml::sfTexture_createFromFile(filebuf, ptr::null())}, dropable : true }
         }
     }
 
@@ -123,7 +124,7 @@ impl Texture {
     */
     pub fn new_from_file_with_rect(filename : ~str, area : &IntRect) -> Texture {
         do str::as_c_str(filename) |filebuf| {
-            Texture { texture : unsafe {csfml::sfTexture_createFromFile(filebuf, &*area)} }
+            Texture { texture : unsafe {csfml::sfTexture_createFromFile(filebuf, &*area)}, dropable : true }
         }
     }
     
@@ -136,7 +137,7 @@ impl Texture {
     * Return an option to the copied texture or None
     */
     pub fn new_copy(texture : &Texture) -> Texture {
-        Texture { texture : unsafe {csfml::sfTexture_copy(texture.unwrap())}}
+        Texture { texture : unsafe {csfml::sfTexture_copy(texture.unwrap())}, dropable : true}
     }
 
     /**
@@ -149,7 +150,7 @@ impl Texture {
     * Return a new Option to Texture object or None
     */
     pub fn new_from_image_with_rect(image : &Image, area : &IntRect) -> Texture{
-        Texture { texture : unsafe { csfml::sfTexture_createFromImage(image.unwrap(), &*area)}}
+        Texture { texture : unsafe { csfml::sfTexture_createFromImage(image.unwrap(), &*area)}, dropable : true}
     }
 
     /**
@@ -161,7 +162,7 @@ impl Texture {
     * Return a new Option to Texture object or None
     */
     pub fn new_from_image(image : &Image) -> Texture{
-        Texture { texture : unsafe { csfml::sfTexture_createFromImage(image.unwrap(), ptr::null())}}
+        Texture { texture : unsafe { csfml::sfTexture_createFromImage(image.unwrap(), ptr::null())}, dropable : true}
     }
     
     /**
@@ -325,9 +326,13 @@ impl Texture {
     *
     * Return an image containing the texture's pixels
     */
-    pub fn copy_to_image(&self) -> Image {
-        unsafe {
-            Image::wrap(csfml::sfTexture_copyToImage(self.texture))
+    pub fn copy_to_image(&self) -> Option<Image> {
+        let img = unsafe {csfml::sfTexture_copyToImage(self.texture)};
+        if img == ptr::null() {
+            None
+        }
+        else {
+            Some(Image::wrap(img))
         }
     }
     
@@ -338,7 +343,7 @@ impl Texture {
     
     #[doc(hidden)]
     pub fn wrap(texture : *csfml::sfTexture) -> Texture {
-        Texture { texture : texture}
+        Texture { texture : texture, dropable : false}
     }
 }
 
@@ -347,8 +352,10 @@ impl Drop for Texture {
     * Destroy an existing texture
     */
     fn finalize(&self) {
-        unsafe {
-            csfml::sfTexture_destroy(self.texture)
+        if self.dropable {
+            unsafe {
+                csfml::sfTexture_destroy(self.texture)
+            }
         }
     }
 }

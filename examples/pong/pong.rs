@@ -101,7 +101,7 @@ fn main () -> () {
 
     // Define the paddles properties
     let AITimer =  Clock::new();
-    let AITime : Time  = Time::new_with_seconds(0.1);
+    let AITime : Time  = Time::with_seconds(0.1);
     let paddleSpeed = 400.;
     let mut rightPaddleSpeed  = 0.;
     let ballSpeed   = 400.;

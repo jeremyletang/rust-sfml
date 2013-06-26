@@ -64,7 +64,8 @@ pub mod csfml {
 
 #[doc(hidden)]
 pub struct Font {
-    priv font : *csfml::sfFont
+    priv font : *csfml::sfFont,
+    priv dropable : bool
 }
 
 impl Font {
@@ -83,7 +84,7 @@ impl Font {
                 None
             }
             else {
-                Some(Font { font : fnt})
+                Some(Font { font : fnt, dropable : true})
             }
         }
     }
@@ -101,7 +102,7 @@ impl Font {
             None
         }
         else {
-            Some(Font { font : fnt})
+            Some(Font { font : fnt, dropable : true})
         }
     }    
     /**
@@ -142,9 +143,13 @@ impl Font {
     *
     * Return the texture
     */
-    pub fn get_texture(&self, characterSize : uint) -> Texture {
-        unsafe {
-            Texture::wrap(csfml::sfFont_getTexture(self.font, characterSize as c_uint))
+    pub fn get_texture(&self, characterSize : uint) -> Option<Texture> {
+        let tex = unsafe {csfml::sfFont_getTexture(self.font, characterSize as c_uint)};
+        if tex == ptr::null() {
+            None
+        }
+        else {
+            Some(Texture::wrap(tex))
         }
     }
     
@@ -167,7 +172,7 @@ impl Font {
 
     #[doc(hidden)]
     pub fn wrap(font : *csfml::sfFont) -> Font {
-        Font {font : font}
+        Font {font : font, dropable : false}
     }
     
     #[doc(hidden)]
@@ -182,8 +187,10 @@ impl Drop for Font {
     * Destroy an existing font
     */
     fn finalize(&self) -> () {
-        unsafe {
-            csfml::sfFont_destroy(self.font)
+        if self.dropable {
+            unsafe {
+                csfml::sfFont_destroy(self.font)
+            }
         }
     }
 }

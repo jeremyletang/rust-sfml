@@ -247,8 +247,8 @@ impl RenderTexture {
     * This function is typically used to find which point (or object) is
     * located below the mouse cursor.
     * 
-    * This version uses a custom view for calculations, see the other
-    * overload of the function if you want to use the current view of the
+    * This version uses a custom view for calculations, see
+    * map_pixel_to_coords if you want to use the current view of the
     * render-texture.
     *
     * # Arguments
@@ -260,6 +260,38 @@ impl RenderTexture {
     pub fn map_pixel_to_coords(&self, point : &Vector2i, view : &View) -> Vector2f {
         unsafe {
             csfml::sfRenderTexture_mapPixelToCoords(self.renderTexture, *point, view.unwrap())
+        }
+    }
+
+    /**
+    * Convert a point from texture coordinates to world coordinates
+    *
+    * This function finds the 2D position that matches the
+    * given pixel of the render-texture. In other words, it does
+    * the inverse of what the graphics card does, to find the
+    * initial position of a rendered pixel.
+    *
+    * Initially, both coordinate systems (world units and target pixels)
+    * match perfectly. But if you define a custom view or resize your
+    * render texture, this assertion is not true anymore, ie. a point
+    * located at (10, 50) in your render-texture may map to the point
+    * (150, 75) in your 2D world -- if the view is translated by (140, 25).
+    * 
+    * This function is typically used to find which point (or object) is
+    * located below the mouse cursor.
+    * 
+    * This version the current view for calculations, see
+    * map_pixel_to_coordss if you want to use a custom view
+    *
+    * # Arguments
+    * * point - Pixel to convert
+    * 
+    * Return the converted point, in "world" units
+    */
+    pub fn map_pixel_to_coords_current_view(&self, point : &Vector2i) -> Vector2f {
+        let view = unsafe {csfml::sfRenderTexture_getView(self.renderTexture)};
+        unsafe {
+            csfml::sfRenderTexture_mapPixelToCoords(self.renderTexture, *point, view)
         }
     }
 
@@ -276,8 +308,8 @@ impl RenderTexture {
     * located at (150, 75) in your 2D world may map to the pixel
     * (10, 50) of your render-texture -- if the view is translated by (140, 25).
     * 
-    * This version uses a custom view for calculations, see the other
-    * overload of the function if you want to use the current view of the
+    * This version uses a custom view for calculations, see
+    * map_coords_to_pixel_current_view if you want to use the current view of the
     * render-texture.
     *
     * # Arguments
@@ -287,6 +319,32 @@ impl RenderTexture {
     pub fn map_coords_to_pixel(&self, point : &Vector2f, view : &View) -> Vector2i {
         unsafe {
             csfml::sfRenderTexture_mapCoordsToPixel(self.renderTexture, *point, view.unwrap())
+        }
+    }
+
+    /**
+    * Convert a point from world coordinates to render texture coordinates
+    *
+    * This function finds the pixel of the render-texture that matches
+    * the given 2D point. In other words, it goes through the same process
+    * as the graphics card, to compute the final position of a rendered point.
+    *
+    * Initially, both coordinate systems (world units and target pixels)
+    * match perfectly. But if you define a custom view or resize your
+    * render texture, this assertion is not true anymore, ie. a point
+    * located at (150, 75) in your 2D world may map to the pixel
+    * (10, 50) of your render-texture -- if the view is translated by (140, 25).
+    * 
+    * This version uses the default view for calculations, see
+    * map_coords_to_pixel if you want to use as custom view.
+    *
+    * # Arguments
+    * * point - Point to convert
+    */
+    pub fn map_coords_to_pixel_current_view(&self, point : &Vector2f) -> Vector2i {
+        let view = unsafe {csfml::sfRenderTexture_getView(self.renderTexture)};
+        unsafe {
+            csfml::sfRenderTexture_mapCoordsToPixel(self.renderTexture, *point, view)
         }
     }
 
@@ -393,9 +451,13 @@ impl RenderTexture {
     *
     * Return the target texture
     */
-    pub fn get_texture(&self) -> Texture {
-        unsafe {
-            Texture::wrap(csfml::sfRenderTexture_getTexture(self.renderTexture))
+    pub fn get_texture(&self) -> Option<Texture> {
+        let tex = unsafe {csfml::sfRenderTexture_getTexture(self.renderTexture)};
+        if tex == ptr::null() {
+            None
+        }
+        else {
+            Some(Texture::wrap(tex))
         }
     }
     
