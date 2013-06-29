@@ -447,7 +447,7 @@ impl Drop for Music {
     /**
     *   Destructor for class Music. Destroy all the ressource.
     */
-    fn finalize(&self) {
+    fn drop(&self) {
         unsafe {
             csfml::sfMusic_destroy(self.music);
         }

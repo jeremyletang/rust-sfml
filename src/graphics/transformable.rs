@@ -299,7 +299,7 @@ impl Transformable {
 }
 
 impl Drop for Transformable {
-    fn finalize(&self) -> () {
+    fn drop(&self) -> () {
         unsafe {
             csfml::sfTransformable_destroy(self.trans)
         }

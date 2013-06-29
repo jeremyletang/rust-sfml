@@ -266,7 +266,7 @@ impl Drawable for VertexArray {
 }
 
 impl Drop for VertexArray {
-    fn finalize(&self) -> () {
+    fn drop(&self) -> () {
         unsafe {
             csfml::sfVertexArray_destroy(self.vertexArray)
         }

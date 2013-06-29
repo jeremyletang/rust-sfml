@@ -85,7 +85,7 @@ impl Drop for Mutex {
     /**
     * Destroy a Mutex
     */
-    fn finalize(&self) -> () {
+    fn drop(&self) -> () {
         unsafe {
             csfml::sfMutex_destroy(self.mutex)
         }

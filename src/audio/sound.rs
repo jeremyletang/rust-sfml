@@ -451,7 +451,7 @@ impl Drop for Sound {
     /* Destructor for class Sound. Destroy all the ressource.
     *
     */
-    fn finalize(&self) {
+    fn drop(&self) {
         unsafe {
             csfml::sfSound_destroy(self.sound);
         }

@@ -167,7 +167,7 @@ impl TcpListener {
 }
 
 impl Drop for TcpListener {
-    fn finalize(&self) -> () {
+    fn drop(&self) -> () {
         unsafe {
             csfml::sfTcpListener_destroy(self.listener)
         }

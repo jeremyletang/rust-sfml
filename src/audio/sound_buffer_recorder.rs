@@ -144,7 +144,7 @@ impl Drop for SoundBufferRecorder {
     /**
     *   Destructor for class SoundBufferRecorder. Destroy all the ressource.
     */
-    fn finalize(&self) {
+    fn drop(&self) {
         unsafe {
             csfml::sfSoundBufferRecorder_destroy(self.soundBufferRecorder);
         }

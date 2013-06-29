@@ -278,7 +278,7 @@ impl TcpSocket {
 }
 
 impl Drop for TcpSocket {
-    fn finalize(&self) -> () {
+    fn drop(&self) -> () {
         unsafe {
             csfml::sfTcpSocket_destroy(self.socket)
         }
