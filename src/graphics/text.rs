@@ -125,6 +125,35 @@ impl Text {
             Some(Text {text : text, stringLength : 0})
         }
     }
+
+    /**
+    * Create a new text with initialized value
+    *
+    * Default value for characterSize on SFML is 30.
+    *
+    * # Arguments
+    * * string - The string of the text
+    * * font - The font to display the Text
+    * * characterSize - The size of the Text
+    *
+    * Return a new Option on Text object, or None
+    */
+    pub fn new_init(string : ~str, font : &Font, characterSize : uint) ->Option<Text> {
+        let text = unsafe {csfml::sfText_create()};
+        if text == ptr::null() {
+            None
+        }
+        else {
+            unsafe {
+                do str::as_c_str(string) |cstring| {
+                    csfml::sfText_setString(text, cstring);
+                }
+                csfml::sfText_setFont(text, font.unwrap());
+                csfml::sfText_setCharacterSize(text, characterSize as c_uint);
+                Some(Text {text : text, stringLength : string.len()})
+            }
+        }
+    }
     
     /**
     * Set the string of a text (from an ANSI string)

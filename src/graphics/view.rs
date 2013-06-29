@@ -79,7 +79,7 @@ impl View {
     *
     * This function creates a default view of (0, 0, 1000, 1000)
     * 
-    * Return a new View object
+    * Return a new option to View object
     */
     pub fn new() -> Option<View> {
         let view = unsafe {csfml::sfView_create()};
@@ -90,6 +90,31 @@ impl View {
             Some(View { dropable: true, view : view})
         }
     }
+
+    /**
+    * Create a default view
+    *
+    * This function creates a default view with initialized position and size
+    * 
+    * # Arguments
+    * * center - The center of the view
+    * * size - The size of the view
+    *
+    * Return a new option to View object
+    */
+    pub fn new_init(center : &Vector2f, size : &Vector2f) -> Option<View> {
+        let view = unsafe {csfml::sfView_create()};
+        if view == ptr::null() {
+            None
+        }
+        else {
+            unsafe {
+                csfml::sfView_setCenter(view, *center);
+                csfml::sfView_setSize(view, *size);
+            }
+            Some(View { dropable : true, view : view})
+        }
+    }
     
     /**
     * Create a view by copying an existant one.
@@ -97,7 +122,7 @@ impl View {
     * # Arguments
     * * view - View to copy
     *
-    * Return a new View object
+    * Return a new option to View object
     */
     pub fn new_copy(view : &View) -> Option<View> {
         let view = unsafe {csfml::sfView_copy(view.unwrap())};

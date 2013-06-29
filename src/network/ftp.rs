@@ -187,7 +187,6 @@ pub struct DirectoryResponse{
     priv directoryResponse : *csfml::sfFtpDirectoryResponse
 }
 
-
 impl ListingResponse {
     /**
     * Check if a FTP listing response status code means a success
