@@ -252,7 +252,7 @@ impl ListingResponse {
 }
 
 impl Drop for ListingResponse {
-    fn finalize(&self) -> () {
+    fn drop(&self) -> () {
         unsafe {
             csfml::sfFtpListingResponse_destroy(self.listingResponse)
         }
@@ -310,7 +310,7 @@ impl DirectoryResponse {
 }
 
 impl Drop for DirectoryResponse {
-    fn finalize(&self) -> () {
+    fn drop(&self) -> () {
         unsafe {
             csfml::sfFtpDirectoryResponse_destroy(self.directoryResponse)
         }
@@ -357,7 +357,7 @@ impl Response {
 }
 
 impl Drop for Response {
-    fn finalize(&self) -> () {
+    fn drop(&self) -> () {
         unsafe {
             csfml::sfFtpResponse_destroy(self.response)
         }
@@ -649,7 +649,7 @@ impl Ftp {
 }
 
 impl Drop for Ftp {
-    fn finalize(&self) -> () {
+    fn drop(&self) -> () {
         unsafe {
             csfml::sfFtp_destroy(self.ftp)
         }

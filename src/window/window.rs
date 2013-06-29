@@ -639,7 +639,7 @@ impl Drop for Window {
     /**
     *   Destructor for class Window. Destroy all the ressource.
     */
-    fn finalize(&self) {
+    fn drop(&self) {
         unsafe {
             csfml::sfWindow_destroy(self.window);
         }

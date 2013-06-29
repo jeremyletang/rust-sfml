@@ -186,7 +186,7 @@ impl Drop for Font {
     /**
     * Destroy an existing font
     */
-    fn finalize(&self) -> () {
+    fn drop(&self) -> () {
         if self.dropable {
             unsafe {
                 csfml::sfFont_destroy(self.font)

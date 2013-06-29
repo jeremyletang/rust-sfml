@@ -670,7 +670,7 @@ impl Drawable for RectangleShape {
 }
 
 impl Drop for RectangleShape {
-    fn finalize(&self) -> () {
+    fn drop(&self) -> () {
         unsafe {
             csfml::sfRectangleShape_destroy(self.rectangleShape)
         }

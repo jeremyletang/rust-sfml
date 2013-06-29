@@ -700,7 +700,7 @@ impl Drop for CircleShape {
     /**
     * Destroy an existing CircleShape
     */
-    fn finalize(&self) {
+    fn drop(&self) {
         unsafe {
             csfml::sfCircleShape_destroy(self.circleShape)
         }

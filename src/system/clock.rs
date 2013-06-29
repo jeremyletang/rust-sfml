@@ -88,7 +88,7 @@ impl Drop for Clock {
     /**
     * Create a new Clock and start it.
     */
-    fn finalize(&self) {
+    fn drop(&self) {
         unsafe {
             csfml::sfClock_destroy(self.clock)
         }

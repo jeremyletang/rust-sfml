@@ -273,7 +273,7 @@ impl UdpSocket {
 }
 
 impl Drop for UdpSocket {
-    fn finalize(&self) -> () {
+    fn drop(&self) -> () {
         unsafe {
             csfml::sfUdpSocket_destroy(self.socket)
         }

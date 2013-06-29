@@ -378,7 +378,7 @@ impl Packet {
 }
 
 impl Drop for Packet {
-    fn finalize(&self) -> () {
+    fn drop(&self) -> () {
         unsafe {
             csfml::sfPacket_destroy(self.packet)
         }

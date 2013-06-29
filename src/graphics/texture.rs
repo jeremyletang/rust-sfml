@@ -351,7 +351,7 @@ impl Drop for Texture {
     /**
     * Destroy an existing texture
     */
-    fn finalize(&self) {
+    fn drop(&self) {
         if self.dropable {
             unsafe {
                 csfml::sfTexture_destroy(self.texture)

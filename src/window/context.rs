@@ -88,7 +88,7 @@ impl Drop for Context {
     /*
     *   Destructor for class Context.
     */
-    fn finalize(&self) {
+    fn drop(&self) {
         unsafe {
             csfml::sfContext_destroy(self.cont);
         }

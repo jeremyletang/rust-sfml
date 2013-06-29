@@ -488,7 +488,7 @@ impl RenderTexture {
 }
 
 impl Drop for RenderTexture {
-    fn finalize(&self) -> () {
+    fn drop(&self) -> () {
         unsafe {
             csfml::sfRenderTexture_destroy(self.renderTexture)
         }

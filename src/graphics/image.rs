@@ -331,7 +331,7 @@ impl Drop for Image {
     /**
     * Destroy an existing image
     */
-    fn finalize(&self) -> () {
+    fn drop(&self) -> () {
         unsafe {
             csfml::sfImage_destroy(self.image)
         }
