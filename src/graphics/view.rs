@@ -160,7 +160,7 @@ impl View {
     * # Arguments
     * * angle - New angle, in degrees
     */
-    pub fn set_rotation(&self, angle : float) -> () {
+    pub fn set_rotation(&mut self, angle : float) -> () {
         unsafe {
             csfml::sfView_setRotation(self.view, angle as c_float)
         }
@@ -183,7 +183,7 @@ impl View {
     * # Arguments
     * * angle - Angle to rotate, in degrees
     */
-    pub fn rotate(&self, angle : float) -> () {
+    pub fn rotate(&mut self, angle : float) -> () {
         unsafe {
             csfml::sfView_rotate(self.view, angle as c_float)
         }
@@ -201,7 +201,7 @@ impl View {
     * # Arguments
     * * factor - Zoom factor to apply
     */
-    pub fn zoom(&self, factor : float) -> () {
+    pub fn zoom(&mut self, factor : float) -> () {
         unsafe {
             csfml::sfView_zoom(self.view, factor as c_float)
         }
@@ -213,7 +213,7 @@ impl View {
     * # Arguments
     * * center - New center
     */
-    pub fn set_center(&self, center : &Vector2f) -> () {
+    pub fn set_center(&mut self, center : &Vector2f) -> () {
         unsafe {
             csfml::sfView_setCenter(self.view, *center)
         }
@@ -226,7 +226,7 @@ impl View {
     * * centerX - New x center coordinate
     * * centerY - New y center coordinate
     */
-    pub fn set_center2f(&self, centerX : f32, centerY : f32) -> () {
+    pub fn set_center2f(&mut self, centerX : f32, centerY : f32) -> () {
         unsafe {
             csfml::sfView_setCenter(self.view, Vector2f::new(centerX, centerY))
         }
@@ -238,7 +238,7 @@ impl View {
     * # Arguments
     * * size - New size of the view
     */
-    pub fn set_size(&self, size : &Vector2f) -> () {
+    pub fn set_size(&mut self, size : &Vector2f) -> () {
         unsafe {
             csfml::sfView_setSize(self.view, *size)
         }
@@ -251,7 +251,7 @@ impl View {
     * * sizeX - New size x of the view
     * * sizeY - New size y of the view
     */
-    pub fn set_size2f(&self, sizeX : f32, sizeY : f32) -> () {
+    pub fn set_size2f(&mut self, sizeX : f32, sizeY : f32) -> () {
         unsafe {
             csfml::sfView_setSize(self.view, Vector2f::new(sizeX, sizeY))
         }
@@ -263,7 +263,7 @@ impl View {
     * # Arguments
     * * offset - Offset
     */
-    pub fn move(&self, offset : &Vector2f) -> () {
+    pub fn move(&mut self, offset : &Vector2f) -> () {
         unsafe {
             csfml::sfView_move(self.view, *offset)
         }
@@ -275,7 +275,7 @@ impl View {
     * * offsetX - Offset x
     * * offsetY - Offset y
     */
-    pub fn move2f(&self, offsetX : f32, offsetY : f32) -> () {
+    pub fn move2f(&mut self, offsetX : f32, offsetY : f32) -> () {
         unsafe {
             csfml::sfView_move(self.view, Vector2f::new(offsetX, offsetY))
         }
@@ -312,7 +312,7 @@ impl View {
     * # Arguments
     * * viewport - New viewport rectangle
     */
-    pub fn set_viewport(&self, viewport : &FloatRect) -> () {
+    pub fn set_viewport(&mut self, viewport : &FloatRect) -> () {
         unsafe {
             csfml::sfView_setViewport(self.view, *viewport)
         }
@@ -326,7 +326,7 @@ impl View {
     * # Arguments
     * * rectangle - Rectangle defining the zone to display
     */
-    pub fn reset(&self, rectangle : &FloatRect) -> () {
+    pub fn reset(&mut self, rectangle : &FloatRect) -> () {
         unsafe {
             csfml::sfView_reset(self.view, *rectangle)
         }

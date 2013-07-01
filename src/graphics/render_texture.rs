@@ -149,7 +149,7 @@ impl RenderTexture {
     * # Arguments
     * * active - true to activate, false to deactivate
     */
-    pub fn set_active(&self, active : bool) -> bool {
+    pub fn set_active(&mut self, active : bool) -> bool {
         match match active {
             false       => unsafe {csfml::sfRenderTexture_setActive(self.renderTexture, 0)},
             true        => unsafe {csfml::sfRenderTexture_setActive(self.renderTexture, 1)}
@@ -176,7 +176,7 @@ impl RenderTexture {
     * # Arguments
     * * color - Fill color
     */
-    pub fn clear(&self, color : &Color) -> () {
+    pub fn clear(&mut self, color : &Color) -> () {
         unsafe {
             csfml::sfRenderTexture_clear(self.renderTexture, *color)
         }
@@ -188,7 +188,7 @@ impl RenderTexture {
     * # Arguments
     * * view - the new view
     */
-    pub fn set_view(&self, view : &View) -> () {
+    pub fn set_view(&mut self, view : &View) -> () {
         unsafe {
             csfml::sfRenderTexture_setView(self.renderTexture, view.unwrap())
         }
@@ -351,7 +351,7 @@ impl RenderTexture {
     /**
     * Drawing functions
     */
-    pub fn draw<T : Drawable>(&self, t : &T) -> () {
+    pub fn draw<T : Drawable>(&mut self, t : &T) -> () {
         t.draw_in_render_texture(self);
     }
 
@@ -416,7 +416,7 @@ impl RenderTexture {
     * function if you do so.
     *
     */
-    pub fn push_GL_states(&self) -> () {
+    pub fn push_GL_states(&mut self) -> () {
         unsafe {
             csfml::sfRenderTexture_pushGLStates(self.renderTexture)
         }
@@ -425,7 +425,7 @@ impl RenderTexture {
     /**
     * Restore the previously saved OpenGL render states and matrices
     */
-    pub fn pop_GL_states(&self) -> () {
+    pub fn pop_GL_states(&mut self) -> () {
         unsafe {
             csfml::sfRenderTexture_popGLStates(self.renderTexture)
         }
@@ -440,7 +440,7 @@ impl RenderTexture {
     * states needed by SFML are set, so that subsequent sfRenderWindow_draw*()
     * calls will work as expected.
     */
-    pub fn reset_GL_states(&self) -> () {
+    pub fn reset_GL_states(&mut self) -> () {
         unsafe {
             csfml::sfRenderTexture_resetGLStates(self.renderTexture)
         }
@@ -467,7 +467,7 @@ impl RenderTexture {
     * # Arguments
     * * smooth - true to enable smoothing, false to disable it
     */
-    pub fn set_smooth(&self, smooth : bool) -> () {
+    pub fn set_smooth(&mut self, smooth : bool) -> () {
         match smooth {
             true        => unsafe {csfml::sfRenderTexture_setSmooth(self.renderTexture, 1)},
             false       => unsafe {csfml::sfRenderTexture_setSmooth(self.renderTexture, 0)}

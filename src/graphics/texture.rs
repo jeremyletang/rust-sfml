@@ -184,7 +184,7 @@ impl Texture {
     * * x - X offset in the texture where to copy the source pixels
     * * y - Y offset in the texture where to copy the source pixels
     */
-    pub fn update_from_window(&self, window : Window, x : uint, y : uint) -> () {
+    pub fn update_from_window(&mut self, window : Window, x : uint, y : uint) -> () {
         unsafe {
             csfml::sfTexture_updateFromWindow(self.texture, window.unwrap(), x as c_uint, y as c_uint)
         }
@@ -198,7 +198,7 @@ impl Texture {
     * * x - X offset in the texture where to copy the source pixels
     * * y - Y offset in the texture where to copy the source pixels
     */
-    pub fn update_from_render_window(&self, renderWindow : RenderWindow, x : uint, y : uint) -> () {
+    pub fn update_from_render_window(&mut self, renderWindow : RenderWindow, x : uint, y : uint) -> () {
         unsafe {
             csfml::sfTexture_updateFromRenderWindow(self.texture, renderWindow.unwrap(), x as c_uint, y as c_uint)
         }
@@ -212,7 +212,7 @@ impl Texture {
     * * x - X offset in the texture where to copy the source pixels
     * * y - Y offset in the texture where to copy the source pixels
     */
-    pub fn update_from_image(&self, image : &Image, x : uint, y : uint) -> () {
+    pub fn update_from_image(&mut self, image : &Image, x : uint, y : uint) -> () {
         unsafe {
             csfml::sfTexture_updateFromImage(self.texture, image.unwrap(), x as c_uint, y as c_uint)
         }
@@ -226,7 +226,7 @@ impl Texture {
     * * x - X offset in the texture where to copy the source pixels
     * * y - Y offset in the texture where to copy the source pixels
     */
-    pub fn update_from_pixels(&self, pixels : ~[u8], width : uint, height : uint, x : uint, y : uint) -> () {
+    pub fn update_from_pixels(&mut self, pixels : ~[u8], width : uint, height : uint, x : uint, y : uint) -> () {
         unsafe {
             csfml::sfTexture_updateFromPixels(self.texture, vec::raw::to_ptr(pixels), width as c_uint, height as c_uint, x as c_uint, y as c_uint)
         }
@@ -238,7 +238,7 @@ impl Texture {
     * # Arguments
     * * smooth - true to enable smoothing, false to disable it
     */
-    pub fn set_smooth(&self, smooth : bool) -> () {
+    pub fn set_smooth(&mut self, smooth : bool) -> () {
         match smooth {
             true        => unsafe {csfml::sfTexture_setSmooth(self.texture, 1)},
             false       => unsafe {csfml::sfTexture_setSmooth(self.texture, 0)}
@@ -277,7 +277,7 @@ impl Texture {
     * # Arguments
     * * repeated  - true to repeat the texture, false to disable repeating
     */
-    pub fn set_repeated(&self, repeated : bool) -> () {
+    pub fn set_repeated(&mut self, repeated : bool) -> () {
         match repeated {
             true        => unsafe {csfml::sfTexture_setRepeated(self.texture, 1)},
             false       => unsafe {csfml::sfTexture_setRepeated(self.texture, 0)}
@@ -304,7 +304,7 @@ impl Texture {
     * mix sfTexture with OpenGL code.
     *
     */
-    pub fn bind(&self) -> () {
+    pub fn bind(&mut self) -> () {
         unsafe {
             csfml::sfTexture_bind(self.texture)
         }

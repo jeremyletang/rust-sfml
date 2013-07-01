@@ -127,7 +127,7 @@ impl Music {
     * # Arguments
     * * loop - sfTrue to play in loop, sfFalse to play once
     */
-    pub fn set_loop(&self, lloop : bool) -> () {
+    pub fn set_loop(&mut self, lloop : bool) -> () {
         unsafe {
             if lloop == true {
                 csfml::sfMusic_setLoop(self.music, 1)
@@ -168,7 +168,7 @@ impl Music {
     * This function uses its own thread so that it doesn't block
     * the rest of the program while the music is played.
     */
-    pub fn play(&self) -> () {
+    pub fn play(&mut self) -> () {
         unsafe {csfml::sfMusic_play(self.music)}
     }
 
@@ -178,7 +178,7 @@ impl Music {
     * This function pauses the music if it was playing,
     * otherwise (music already paused or stopped) it has no effect.
     */
-    pub fn pause(&self) -> () {
+    pub fn pause(&mut self) -> () {
         unsafe {csfml::sfMusic_pause(self.music)}
     }
 
@@ -189,7 +189,7 @@ impl Music {
     * and does nothing if it was already stopped.
     * It also resets the playing position (unlike pause).
     */
-    pub fn stop(&self) -> () {
+    pub fn stop(&mut self) -> () {
         unsafe {csfml::sfMusic_stop(self.music)}
     }
     
@@ -250,7 +250,7 @@ impl Music {
     * # Arguments
     * * pitch - new pitch to apply to the music
     */
-    pub fn set_pitch(&self, pitch : float) -> () {
+    pub fn set_pitch(&mut self, pitch : float) -> () {
         unsafe {csfml::sfMusic_setPitch(self.music, pitch as c_float)}
     }
     
@@ -263,7 +263,7 @@ impl Music {
     * # Arguments
     * * volume - Volume of the music
     */
-    pub fn set_volume(&self, volume : float) -> () {
+    pub fn set_volume(&mut self, volume : float) -> () {
         unsafe {csfml::sfMusic_setVolume(self.music, volume as c_float)}
     }
 
@@ -279,7 +279,7 @@ impl Music {
     * # Arguments
     * * relative - true to set the position relative, false to set it absolute
     */
-    pub fn set_relative_to_listener(&self, relative : bool) -> () {
+    pub fn set_relative_to_listener(&mut self, relative : bool) -> () {
         unsafe {
             if relative == true {
                 csfml::sfMusic_setRelativeToListener(self.music, 1);
@@ -303,7 +303,7 @@ impl Music {
     * # Arguments
     * * distance - New minimum distance of the music
     */
-    pub fn set_min_distance(&self, distance : float) -> () {
+    pub fn set_min_distance(&mut self, distance : float) -> () {
         unsafe {csfml::sfMusic_setMinDistance(self.music, distance as c_float)}
     }
     
@@ -322,7 +322,7 @@ impl Music {
     * # Arguments
     * * attenuation - New attenuation factor of the music
     */
-    pub fn set_attenuation(&self, attenuation : float) -> () {
+    pub fn set_attenuation(&mut self, attenuation : float) -> () {
         unsafe {csfml::sfMusic_setAttenuation(self.music, attenuation as c_float)}
     }
     
@@ -335,7 +335,7 @@ impl Music {
     * # Arguments
     * * timeOffset - New playing position
     */
-    pub fn set_playing_offset(&self, timeOffset : Time) -> () {
+    pub fn set_playing_offset(&mut self, timeOffset : Time) -> () {
         unsafe {
             csfml::sfMusic_setPlayingOffset(self.music, timeOffset.unwrap())
         }
@@ -407,7 +407,7 @@ impl Music {
     * # Arguments
     * * position - Position of the music in the scene
     */
-    fn set_position(&self, position : &Vector3f) -> () {
+    fn set_position(&mut self, position : &Vector3f) -> () {
         unsafe {
             csfml::sfMusic_setPosition(self.music, *position)
         }
@@ -425,7 +425,7 @@ impl Music {
     * * y - Y coordinate of the position of the sound in the scene
     * * z - Z coordinate of the position of the sound in the scene
     */
-    fn set_position3f(&self, x : f32, y : f32, z : f32) -> () {
+    fn set_position3f(&mut self, x : f32, y : f32, z : f32) -> () {
         unsafe {
             csfml::sfMusic_setPosition(self.music, Vector3f::new(x, y, z))
         }

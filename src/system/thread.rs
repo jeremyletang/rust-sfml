@@ -22,12 +22,17 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-pub use std::libc::{c_void};
+use std::libc::{c_void};
+
+use std::io;
+use std::cast;
+use std::borrow;
 
 pub mod csfml {
     
-    pub use std::libc::{c_void};
-    
+    use std::libc::{c_void};
+    use system::thread;
+
     pub struct sfThread {
         This : *c_void
     }
@@ -41,27 +46,43 @@ pub mod csfml {
     }
 }
 
-extern fn threadable_function(userData : *c_void) -> () {
-   // let data : Thread = unsafe {cast::transmute(userData as *Thread) };
-   // let func : @fn(x : *c_void) =  data.func;
-   // func(data.param);
+pub trait threadObject {
+    pub fn execute(&self);
 }
 
-pub struct ThreadableStructData<T> {
-    func : @fn(x : T) -> (),
-    param : T
+struct test;
+
+impl test {
+    
+    pub fn new() -> test {
+        test
+    }
+    
+
+}
+
+impl threadObject for test {
+    pub fn execute(&self) -> () {
+        io::println("Hello world");
+    }
+}
+
+extern fn threadable_function<T : threadObject>(userData : &T) -> () {
+    userData.execute();
 }
 
 pub struct Thread {
-    priv thread : *csfml::sfThread,
-    func : @fn(x : *c_void),
-    param : *c_void
+    priv thread : *csfml::sfThread
 }
-
 impl Thread {
-    pub fn new(func : @fn(x : *c_void), params : *c_void) -> Thread {
-        let mut t : Thread = Thread{thread : unsafe {ptr::null()}, func : func, param : params};
-        t.thread = unsafe {csfml::sfThread_create(threadable_function, ptr::null())};
-        return t;
+    pub fn new<T : threadObject>(params : &T) -> Thread {
+        let t = unsafe {csfml::sfThread_create(threadable_function, cast::transmute::<*T, *c_void>(params))};
+        Thread {thread : t}
+    }
+
+    pub fn launch(&self) -> () {
+        unsafe {
+            csfml::sfThread_launch(self.thread)
+        }
     }
 }

@@ -223,7 +223,7 @@ impl Text {
     *
     * font - New font
     */
-    pub fn set_font(&self, font : &Font) -> () {
+    pub fn set_font(&mut self, font : &Font) -> () {
         unsafe {
             csfml::sfText_setFont(self.text, font.unwrap())
         }
@@ -239,7 +239,7 @@ impl Text {
     * # Arguments
     * * angle - New rotation, in degrees
     */
-    pub fn set_rotation(&self, angle : float) -> () {
+    pub fn set_rotation(&mut self, angle : float) -> () {
         unsafe {
             csfml::sfText_setRotation(self.text, angle as c_float)
         }
@@ -267,7 +267,7 @@ impl Text {
     * # Arguments
     * * factors - Scale factors
     */
-    pub fn rotate(&self, angle : float) -> () {
+    pub fn rotate(&mut self, angle : float) -> () {
         unsafe {
             csfml::sfText_rotate(self.text, angle as c_float)
         }
@@ -283,7 +283,7 @@ impl Text {
     * # Arguments
     * * style - New style
     */
-    pub fn set_style(&self, style : Style) -> () {
+    pub fn set_style(&mut self, style : Style) -> () {
         unsafe {
             csfml::sfText_setStyle(self.text, style as u32)
         }
@@ -297,7 +297,7 @@ impl Text {
     * # Arguments
     * * size - The new character size, in pixels
     */
-    pub fn set_character_size(&self, size : uint) -> () {
+    pub fn set_character_size(&mut self, size : uint) -> () {
         unsafe {
             csfml::sfText_setCharacterSize(self.text, size as c_uint)
         }
@@ -343,7 +343,7 @@ impl Text {
     * # Arguments
     * * color - The new color of the text
     */
-    pub fn set_color(&self, color : &Color) -> () {
+    pub fn set_color(&mut self, color : &Color) -> () {
         unsafe {
             csfml::sfText_setColor(self.text, *color)
         }
@@ -369,7 +369,7 @@ impl Text {
     * # Arguments
     * * factors - Scale factors
     */
-    pub fn scale(&self, factors : &Vector2f) -> () {
+    pub fn scale(&mut self, factors : &Vector2f) -> () {
         unsafe {
             csfml::sfText_scale(self.text, *factors)
         }
@@ -385,7 +385,7 @@ impl Text {
     * * factorX - Scale x factor
     * * factorY - Scale y factor
     */
-    pub fn scale2f(&self, factorX : f32, factorY : f32) -> () {
+    pub fn scale2f(&mut self, factorX : f32, factorY : f32) -> () {
         unsafe {
             csfml::sfText_scale(self.text, Vector2f::new(factorX, factorY))
         }
@@ -401,7 +401,7 @@ impl Text {
     * # Arguments
     * * scale - The new scale factors
     */
-    pub fn set_scale(&self, scale : &Vector2f) -> () {
+    pub fn set_scale(&mut self, scale : &Vector2f) -> () {
         unsafe {
             csfml::sfText_setScale(self.text, *scale)
         }
@@ -418,7 +418,7 @@ impl Text {
     * * scaleX - The new x scale factor
     * * scaleY - The new y scale factor
     */
-    pub fn set_scale2f(&self, scaleX : f32, scaleY : f32) -> () {
+    pub fn set_scale2f(&mut self, scaleX : f32, scaleY : f32) -> () {
         unsafe {
             csfml::sfText_setScale(self.text, Vector2f::new(scaleX, scaleY))
         }
@@ -433,7 +433,7 @@ impl Text {
     * # Arguments
     * * offset - Offset
     */
-    pub fn move(&self, offset : &Vector2f) -> () {
+    pub fn move(&mut self, offset : &Vector2f) -> () {
         unsafe {
             csfml::sfText_move(self.text, *offset)
         }
@@ -449,7 +449,7 @@ impl Text {
     * * offsetX - Offset x
     * * offsetY - Offset y
     */
-    pub fn move2f(&self, offsetX : f32, offsetY : f32) -> () {
+    pub fn move2f(&mut self, offsetX : f32, offsetY : f32) -> () {
         unsafe {
             csfml::sfText_move(self.text, Vector2f::new(offsetX, offsetY))
         }
@@ -465,7 +465,7 @@ impl Text {
     * # Arguments
     * * position - The new position
     */
-    pub fn set_position(&self, position : &Vector2f) -> () {
+    pub fn set_position(&mut self, position : &Vector2f) -> () {
         unsafe {
             csfml::sfText_setPosition(self.text, *position)
         }
@@ -482,7 +482,7 @@ impl Text {
     * * x - The new x coordinate
     * * y - The new y coordinate
     */
-    pub fn set_position2f(&self, x : f32, y : f32) -> () {
+    pub fn set_position2f(&mut self, x : f32, y : f32) -> () {
         unsafe {
             csfml::sfText_setPosition(self.text, Vector2f::new(x, y))
         }
@@ -501,7 +501,7 @@ impl Text {
     * # Arguments
     * * origin - New origin
     */
-    pub fn set_origin(&self, origin : &Vector2f) -> () {
+    pub fn set_origin(&mut self, origin : &Vector2f) -> () {
         unsafe {
             csfml::sfText_setOrigin(self.text, *origin)
         }
@@ -521,7 +521,7 @@ impl Text {
     * * x - New x origin coordinate
     * * y - New y origin coordinate
     */
-    pub fn set_origin2f(&self, x : f32, y : f32) -> () {
+    pub fn set_origin2f(&mut self, x : f32, y : f32) -> () {
         unsafe {
             csfml::sfText_setOrigin(self.text, Vector2f::new(x, y))
         }

@@ -96,7 +96,7 @@ impl TcpListener {
     * # Arguments
     * * blocking - true to set the socket as blocking, false for non-blocking
     */
-    pub fn set_blocking(&self, blocking : bool) -> () {
+    pub fn set_blocking(&mut self, blocking : bool) -> () {
         match blocking  {
             true        => unsafe {csfml::sfTcpListener_setBlocking(self.listener, 1)},
             false       => unsafe {csfml::sfTcpListener_setBlocking(self.listener, 0)},

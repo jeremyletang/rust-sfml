@@ -251,7 +251,7 @@ impl RenderWindow {
     * * height - Icon's height, in pixels
     * * pixels - Vector of pixels
     */
-    pub fn set_icon(&self, width : uint, height : uint, pixels : ~[u8]) -> () {
+    pub fn set_icon(&mut self, width : uint, height : uint, pixels : ~[u8]) -> () {
         unsafe {
             csfml::sfRenderWindow_setIcon(self.renderWindow, width as c_uint, height as c_uint, vec::raw::to_ptr(pixels))
         }
@@ -268,7 +268,7 @@ impl RenderWindow {
     *
     * Return the event if an event was returned, or NoEvent if the event queue was empty
     */
-    pub fn poll_event(&self) -> event::Event {
+    pub fn poll_event(&mut self) -> event::Event {
         let haveEvent : bool =  unsafe {
             match csfml::sfRenderWindow_pollEvent(self.renderWindow, &self.event) {
                 0       => false,
@@ -294,7 +294,7 @@ impl RenderWindow {
     *
     * Return the event or NoEvent if an error has occured
     */
-    pub fn wait_event(&self) -> event::Event {
+    pub fn wait_event(&mut self) -> event::Event {
         let haveEvent : bool =  unsafe {
             match csfml::sfRenderWindow_waitEvent(self.renderWindow, &self.event) {
                 0       => false,
@@ -402,7 +402,7 @@ impl RenderWindow {
     * will still work (i.e. you don't have to test is_open
     * every time), and will have no effect on closed windows.
     */
-    pub fn close(&self) -> () {
+    pub fn close(&mut self) -> () {
         unsafe {
             csfml::sfRenderWindow_close(self.renderWindow);
         }
@@ -433,7 +433,7 @@ impl RenderWindow {
     * has been done for the current frame, in order to show
     * it on screen.
     */
-    pub fn display(&self) -> () {
+    pub fn display(&mut self) -> () {
         unsafe {
             csfml::sfRenderWindow_display(self.renderWindow)
         }
@@ -449,7 +449,7 @@ impl RenderWindow {
     * # Arguments
     * * limit - Framerate limit, in frames per seconds (use 0 to disable limit)
     */
-    pub fn set_framerate_limit(&self, limit : uint) -> () {
+    pub fn set_framerate_limit(&mut self, limit : uint) -> () {
         unsafe {
             csfml::sfRenderWindow_setFramerateLimit(self.renderWindow, limit as c_uint)
         }
@@ -490,7 +490,7 @@ impl RenderWindow {
     * # Arguments
     * * visible - true to show the window, false to hide it
     */
-    pub fn set_visible(&self, visible : bool) -> () {
+    pub fn set_visible(&mut self, visible : bool) -> () {
         let tmp : sfBool =
             match visible {
                 true    => 1,
@@ -507,7 +507,7 @@ impl RenderWindow {
     * # Arguments
     * * visible - true to show, false to hide
     */
-    pub fn set_mouse_cursor_visible(&self, visible : bool) -> () {
+    pub fn set_mouse_cursor_visible(&mut self, visible : bool) -> () {
         let tmp : sfBool =
             match visible {
                 true    => 1,
@@ -529,7 +529,7 @@ impl RenderWindow {
     * # Arguments
     * * enabled - true to enable v-sync, false to deactivate
     */
-    pub fn set_vertical_sync_enabled(&self, enabled : bool) -> () {
+    pub fn set_vertical_sync_enabled(&mut self, enabled : bool) -> () {
         let tmp : sfBool =
             match enabled {
                 true    => 1,
@@ -552,7 +552,7 @@ impl RenderWindow {
     * # Arguments
     * * enabled - true to enable, false to disable
     */
-    pub fn set_key_repeat_enabled(&self, enabled : bool) -> () {
+    pub fn set_key_repeat_enabled(&mut self, enabled : bool) -> () {
         let tmp : sfBool =
             match enabled {
                 true    => 1,
@@ -577,7 +577,7 @@ impl RenderWindow {
     *
     * Return true if operation was successful, false otherwise
     */
-    pub fn set_active(&self, enabled : bool) -> bool {
+    pub fn set_active(&mut self, enabled : bool) -> bool {
         let tmp : sfBool =
             match enabled {
                 true    => 1,
@@ -601,7 +601,7 @@ impl RenderWindow {
     * # Arguments
     * * threshold - New threshold, in the range [0, 100]
     */
-    pub fn set_joystick_threshold(&self, threshold : float) -> () {
+    pub fn set_joystick_threshold(&mut self, threshold : float) -> () {
         unsafe {
             csfml::sfRenderWindow_setJoystickThreshold(self.renderWindow, threshold as c_float)
         }
@@ -628,7 +628,7 @@ impl RenderWindow {
     * # Arguments
     * * position - New position of the window, in pixels
     */
-    pub fn set_position(&self, position : &Vector2i) -> () {
+    pub fn set_position(&mut self, position : &Vector2i) -> () {
         unsafe {
             csfml::sfRenderWindow_setPosition(self.renderWindow, *position)
         }
@@ -653,7 +653,7 @@ impl RenderWindow {
     * # Arguments
     * * size - New size, in pixels
     */
-    pub fn set_size(&self, size : &Vector2u) -> () {
+    pub fn set_size(&mut self, size : &Vector2u) -> () {
         unsafe {
             csfml::sfRenderWindow_setSize(self.renderWindow, *size)
         }
@@ -678,14 +678,14 @@ impl RenderWindow {
     * function if you do so.
     *
     */
-    pub fn push_GL_states(&self) -> () {
+    pub fn push_GL_states(&mut self) -> () {
         unsafe {csfml::sfRenderWindow_pushGLStates(self.renderWindow)}
     }
 
     /**
     * Restore the previously saved OpenGL render states and matrices
     */
-    pub fn pop_GL_states(&self) -> () {
+    pub fn pop_GL_states(&mut self) -> () {
         unsafe {csfml::sfRenderWindow_popGLStates(self.renderWindow)}
     }
 
@@ -698,7 +698,7 @@ impl RenderWindow {
     * states needed by SFML are set, so that subsequent sfRenderWindow_draw*()
     * calls will work as expected.
     */
-    pub fn reset_GL_states(&self) -> () {
+    pub fn reset_GL_states(&mut self) -> () {
         unsafe {csfml::sfRenderWindow_resetGLStates(self.renderWindow)}
     }
 
@@ -724,7 +724,7 @@ impl RenderWindow {
     * # Arguments
     * * relativeTo - Reference render window
     */
-    pub fn set_mouse_position(&self, position : &Vector2i) -> () {
+    pub fn set_mouse_position(&mut self, position : &Vector2i) -> () {
         unsafe {
             csfml::sfMouse_setPositionRenderWindow(*position, self.renderWindow)
         }
@@ -736,7 +736,7 @@ impl RenderWindow {
     * # Arguments
     * * object - Object to draw
     */
-    pub fn draw<T : Drawable>(&self, object : &T) -> () {
+    pub fn draw<T : Drawable>(&mut self, object : &T) -> () {
         object.draw_in_render_window(self);
     }
 
@@ -783,7 +783,7 @@ impl RenderWindow {
     }
 
     /// Clear window with the given color
-    pub fn clear(&self, color : &Color) -> () {
+    pub fn clear(&mut self, color : &Color) -> () {
         unsafe {
             csfml::sfRenderWindow_clear(self.renderWindow, *color)
         }
@@ -802,7 +802,7 @@ impl RenderWindow {
     *
     * Return a new image containing the captured contents
     */
-    pub fn capture(&self) -> Option<Image> {
+    pub fn capture(&mut self) -> Option<Image> {
         let img = unsafe {csfml::sfRenderWindow_capture(self.renderWindow)};
         if img == ptr::null() {
             None
@@ -818,7 +818,7 @@ impl RenderWindow {
     * # Arguments
     * * view - The new view
     */
-    pub fn set_view(&self, view : &View) -> () {
+    pub fn set_view(&mut self, view : &View) -> () {
         unsafe {
             csfml::sfRenderWindow_setView(self.renderWindow, view.unwrap())
         }

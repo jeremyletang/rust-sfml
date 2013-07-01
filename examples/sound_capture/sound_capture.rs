@@ -35,7 +35,7 @@ fn main() -> () {
     stdin.read_line();
 
     // Here we'll use an integrated custom recorder, which saves the captured data into a SoundBuffer
-    let recorder : SoundBufferRecorder = match SoundBufferRecorder::new() {
+    let mut recorder : SoundBufferRecorder = match SoundBufferRecorder::new() {
         Some(rec)       => rec,
         None            => fail!("Error, cannot initialize Sound buffer recorder.")
     };
@@ -72,7 +72,7 @@ fn main() -> () {
         buffer.save_to_file(filename);
     }
     else {
-        let sound : Sound = match Sound::new() {
+        let mut sound : Sound = match Sound::new() {
             Some(sound)     => sound,
             None            => fail!("Error cannot create Sound")
         };

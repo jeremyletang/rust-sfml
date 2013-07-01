@@ -107,7 +107,7 @@ impl TcpSocket {
     * # Arguments
     * * blocking - true to set the socket as blocking, false for non-blocking
     */
-    pub fn set_blocking(&self, blocking : bool) -> () {
+    pub fn set_blocking(&mut self, blocking : bool) -> () {
         match blocking  {
             true        => unsafe {csfml::sfTcpSocket_setBlocking(self.socket, 1)},
             false       => unsafe {csfml::sfTcpSocket_setBlocking(self.socket, 0)},
@@ -194,7 +194,7 @@ impl TcpSocket {
     * socket is not connected, this function has no effect.
     *
     */
-    pub fn disconnect(&self) -> () {
+    pub fn disconnect(&mut self) -> () {
         unsafe {
             csfml::sfTcpSocket_disconnect(self.socket)
         }
