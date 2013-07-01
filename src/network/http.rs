@@ -238,7 +238,7 @@ impl Request {
 }
 
 impl Drop for Request {
-    fn finalize(&self) -> () {
+    fn drop(&self) -> () {
         unsafe {
             csfml::sfHttpRequest_destroy(self.request)
         }
@@ -323,7 +323,7 @@ impl Response {
 }
 
 impl Drop for Response {
-    fn finalize(&self) -> () {
+    fn drop(&self) -> () {
         unsafe {
             csfml::sfHttpResponse_destroy(self.response)
         }
@@ -385,7 +385,7 @@ impl Http {
 }
 
 impl Drop for Http {
-    fn finalize(&self) -> () {
+    fn drop(&self) -> () {
         unsafe {
             csfml::sfHttp_destroy(self.http)
         }

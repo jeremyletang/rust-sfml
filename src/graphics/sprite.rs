@@ -557,7 +557,7 @@ impl Drop for Sprite {
     /**
     * Destroy an existing sprite
     */
-    fn finalize(&self) -> () {
+    fn drop(&self) -> () {
         unsafe {
             csfml::sfSprite_destroy(self.sprite)
         }

@@ -345,7 +345,7 @@ impl Drop for Shader {
     /**
     * Destroy an existing shader
     */
-    fn finalize(&self) -> () {
+    fn drop(&self) -> () {
         unsafe {
             csfml::sfShader_destroy(self.shader)
         }

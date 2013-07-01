@@ -357,7 +357,7 @@ impl View {
 
 impl Drop for View {
     /// Destructor for class View
-    fn finalize(&self) -> () {
+    fn drop(&self) -> () {
       if self.dropable
       {
         unsafe {

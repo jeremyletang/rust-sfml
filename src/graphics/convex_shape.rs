@@ -656,7 +656,7 @@ impl Drawable for ConvexShape {
 }
 
 impl Drop for ConvexShape {
-    fn finalize(&self) -> () {
+    fn drop(&self) -> () {
         unsafe {
             csfml::sfConvexShape_destroy(self.convexShape)
         }

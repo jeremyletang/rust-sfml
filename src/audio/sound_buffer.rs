@@ -203,7 +203,7 @@ impl Drop for SoundBuffer {
     /**
     *   Destructor for class SoundBuffer. Destroy all the ressource.
     */
-    fn finalize(&self) {
+    fn drop(&self) {
         if self.dropable {
             unsafe {
                 csfml::sfSoundBuffer_destroy(self.soundBuffer);

@@ -664,7 +664,7 @@ impl Drop for Text {
     /**
     *   Destructor for class Text. Destroy all the ressource.
     */
-    fn finalize(&self) {
+    fn drop(&self) {
         unsafe {
             csfml::sfText_destroy(self.text);
         }

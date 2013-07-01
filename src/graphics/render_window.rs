@@ -984,7 +984,7 @@ impl Drop for RenderWindow {
     /**
     *   Destructor for class RenderWindow. Destroy all the ressource.
     */
-    fn finalize(&self) {
+    fn drop(&self) {
         unsafe {
             csfml::sfRenderWindow_destroy(self.renderWindow);
         }
