@@ -49,9 +49,14 @@ $(DEMO) :
 			@echo "Building examples success"
 
 
+doc :
+			@mkdir -p $(ROOT_DIR)/doc
+			rustdoc --output-dir $(ROOT_DIR)/doc $(SRC_DIR)/$(TARGET).rc
+
 
 clean :
 			$(RM) $(BUILD_DIR)
 			$(RM) $(DEMO_DIR)/pong/pong
 			$(RM) $(DEMO_DIR)/sound/sound
 			$(RM) $(DEMO_DIR)/sound_capture/sound_capture
+			$(RM) $(ROOT_DIR)/doc

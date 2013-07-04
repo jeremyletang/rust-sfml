@@ -85,4 +85,26 @@ impl Thread {
             csfml::sfThread_launch(self.thread)
         }
     }
+
+    pub fn wait(&self) -> () {
+        unsafe {
+            csfml::sfThread_launch(self.thread)
+        }
+    }
+
+    pub fn destroy(&self) -> () {
+        csfml::sfThread_destroy(self.thread)
+    }
+
+    pub fn terminate(&self) -> () {
+        csfml::sfThread_terminate(self.thread)
+    }
+}
+
+impl Drop for Thread {
+    fn finalize(&self) -> () {
+        unsafe {
+            csfml::sfThread_destroy(self.thread)
+        }
+    }
 }

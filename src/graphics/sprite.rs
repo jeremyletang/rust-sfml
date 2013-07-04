@@ -100,12 +100,14 @@ impl Sprite {
     * Return a new sfSprite object
     */
     pub fn new() -> Option<Sprite> {
-        let sp = unsafe {csfml::sfSprite_create()};
-        if sp == ptr::null() {
+        let sp = unsafe { csfml::sfSprite_create() };
+        if ptr::is_null(sp) {
             None
         }
         else {
-            Some(Sprite { sprite : sp})
+            Some(Sprite { 
+                sprite : sp
+            })
         }
     }
 
@@ -116,12 +118,14 @@ impl Sprite {
     * * sprite - Sprite to copy
     */
     pub fn new_copy(sprite : &Sprite) -> Option<Sprite> {
-        let sp = unsafe {csfml::sfSprite_copy(sprite.unwrap())};
-        if sp == ptr::null() {
+        let sp = unsafe { csfml::sfSprite_copy(sprite.unwrap()) };
+        if ptr::is_null(sp) {
             None
         }
         else {
-            Some(Sprite { sprite : sp})
+            Some(Sprite {
+                sprite : sp
+            })
         }
     }
 
@@ -187,9 +191,11 @@ impl Sprite {
     * * resetRect - Should the texture rect be reset to the size of the new texture?
     */
     pub fn set_texture(&mut self, texture : &texture::Texture, resetRect : bool) -> (){
-        match resetRect {
-            true        => unsafe {csfml::sfSprite_setTexture(self.sprite, texture.unwrap(), 1)},
-            false       => unsafe {csfml::sfSprite_setTexture(self.sprite, texture.unwrap(), 0)}
+        unsafe {
+            match resetRect {
+                true        => csfml::sfSprite_setTexture(self.sprite, texture.unwrap(), 1),
+                false       => csfml::sfSprite_setTexture(self.sprite, texture.unwrap(), 0)
+            }
         }
     }
 
@@ -231,14 +237,12 @@ impl Sprite {
     * Return an Option to the sprite's texture
     */
     pub fn get_texture(&self) -> Option<texture::Texture> {
-        unsafe {
-            let tex = csfml::sfSprite_getTexture(self.sprite);
-            if tex == ptr::null() {
-                None
-            }
-            else {
-                Some(texture::Texture::wrap(tex))
-            }
+        let tex = unsafe { csfml::sfSprite_getTexture(self.sprite) };
+        if ptr::is_null(tex) {
+            None
+        }
+        else {
+            Some(texture::Texture::wrap(tex))
         }   
     }
 
@@ -248,7 +252,9 @@ impl Sprite {
     * Return the global color of the sprite
     */
     pub fn get_color(&self) -> color::Color {
-        unsafe {csfml::sfSprite_getColor(self.sprite)}
+        unsafe {
+            csfml::sfSprite_getColor(self.sprite)
+        }
     }
     
     /**
@@ -321,7 +327,9 @@ impl Sprite {
     * Return the current scale factors 
     */
     pub fn get_scale(&self) -> Vector2f {
-        unsafe {csfml::sfSprite_getScale(self.sprite)}
+        unsafe {
+            csfml::sfSprite_getScale(self.sprite)
+        }
     }
 
     /**
@@ -330,7 +338,9 @@ impl Sprite {
     * Return the current origin
     */
     pub fn get_origin(&self) -> Vector2f {
-        unsafe {csfml::sfSprite_getOrigin(self.sprite)}
+        unsafe {
+            csfml::sfSprite_getOrigin(self.sprite)
+        }
     }
 
     /**
@@ -530,7 +540,9 @@ impl Sprite {
 
     #[doc(hidden)]
     pub fn wrap(sprite : *csfml::sfSprite) -> Sprite {
-        Sprite { sprite : sprite }
+        Sprite { 
+            sprite : sprite 
+        }
     }
 
     #[doc(hidden)]

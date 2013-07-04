@@ -107,12 +107,16 @@ impl Music {
     pub fn new_from_file(filename : ~str) -> Option<Music> {
         let mut music_tmp : *csfml::sfMusic = ptr::null();
         do str::as_c_str(filename) |filename_buf| {
-            unsafe { music_tmp = csfml::sfMusic_createFromFile(filename_buf); }
+            unsafe { 
+                music_tmp = csfml::sfMusic_createFromFile(filename_buf);
+            }
         };
-        if music_tmp == ptr::null() {
+        if ptr::is_null(music_tmp) {
             return None;
         }
-        Some(Music{music : music_tmp})
+        Some(Music{
+            music : music_tmp
+        })
 
     }
 
@@ -129,11 +133,9 @@ impl Music {
     */
     pub fn set_loop(&mut self, lloop : bool) -> () {
         unsafe {
-            if lloop == true {
-                csfml::sfMusic_setLoop(self.music, 1)
-            }
-            else {
-                csfml::sfMusic_setLoop(self.music, 0)
+            match lloop {
+                true    => csfml::sfMusic_setLoop(self.music, 1),
+                false   => csfml::sfMusic_setLoop(self.music, 0)
             }
         }
     } 
@@ -144,7 +146,7 @@ impl Music {
     * Return true if the music is looping, false otherwise
     */
     pub fn get_loop(&self) -> bool {
-        match unsafe {csfml::sfMusic_getLoop(self.music)} {
+        match unsafe { csfml::sfMusic_getLoop(self.music) } {
             0 => false,
             _ => true
         }
@@ -156,7 +158,7 @@ impl Music {
     * Return Music duration
     */
     pub fn get_duration(&self) -> Time {
-        Time::wrap( unsafe {csfml::sfMusic_getDuration(self.music)})
+        Time::wrap( unsafe { csfml::sfMusic_getDuration(self.music) })
     }
 
     /**
@@ -169,7 +171,9 @@ impl Music {
     * the rest of the program while the music is played.
     */
     pub fn play(&mut self) -> () {
-        unsafe {csfml::sfMusic_play(self.music)}
+        unsafe {
+            csfml::sfMusic_play(self.music)
+        }
     }
 
     /**
@@ -179,7 +183,9 @@ impl Music {
     * otherwise (music already paused or stopped) it has no effect.
     */
     pub fn pause(&mut self) -> () {
-        unsafe {csfml::sfMusic_pause(self.music)}
+        unsafe {
+            csfml::sfMusic_pause(self.music)
+        }
     }
 
     /**
@@ -190,7 +196,9 @@ impl Music {
     * It also resets the playing position (unlike pause).
     */
     pub fn stop(&mut self) -> () {
-        unsafe {csfml::sfMusic_stop(self.music)}
+        unsafe {
+            csfml::sfMusic_stop(self.music)
+        }
     }
     
     /**
@@ -201,7 +209,9 @@ impl Music {
     * Return the number of channels
     */
     pub fn get_channel_count(&self) -> uint {
-        unsafe {csfml::sfMusic_getChannelCount(self.music) as uint}
+        unsafe {
+            csfml::sfMusic_getChannelCount(self.music) as uint
+        }
     }
     
     /**
@@ -213,7 +223,9 @@ impl Music {
     * Return the sample rate, in number of samples per second
     */
     pub fn get_sample_rate(&self) -> uint {
-        unsafe {csfml::sfMusic_getSampleRate(self.music) as uint}
+        unsafe {
+            csfml::sfMusic_getSampleRate(self.music) as uint
+        }
     }
     
     /**
@@ -222,7 +234,7 @@ impl Music {
     * Return current status
     */
     pub fn get_status(&self) -> sound_status::Status {
-        match unsafe {csfml::sfMusic_getStatus(self.music)} {
+        match unsafe { csfml::sfMusic_getStatus(self.music) } {
             sound_status::csfml::sfStopped => sound_status::Stopped,
             sound_status::csfml::sfPaused => sound_status::Paused,
             sound_status::csfml::sfPlaying => sound_status::Playing,
@@ -235,7 +247,7 @@ impl Music {
     * Return the current playing position
     */
     pub fn get_playing_offset(&self) -> Time {
-        Time::wrap( unsafe {csfml::sfMusic_getPlayingOffset(self.music)})
+        Time::wrap(unsafe { csfml::sfMusic_getPlayingOffset(self.music) })
     }
     
     /**
@@ -251,7 +263,9 @@ impl Music {
     * * pitch - new pitch to apply to the music
     */
     pub fn set_pitch(&mut self, pitch : float) -> () {
-        unsafe {csfml::sfMusic_setPitch(self.music, pitch as c_float)}
+        unsafe {
+            csfml::sfMusic_setPitch(self.music, pitch as c_float)
+        }
     }
     
     /**
@@ -264,7 +278,9 @@ impl Music {
     * * volume - Volume of the music
     */
     pub fn set_volume(&mut self, volume : float) -> () {
-        unsafe {csfml::sfMusic_setVolume(self.music, volume as c_float)}
+        unsafe {
+            csfml::sfMusic_setVolume(self.music, volume as c_float)
+        }
     }
 
     /**
@@ -281,11 +297,9 @@ impl Music {
     */
     pub fn set_relative_to_listener(&mut self, relative : bool) -> () {
         unsafe {
-            if relative == true {
-                csfml::sfMusic_setRelativeToListener(self.music, 1);
-            }
-            else {
-                csfml::sfMusic_setRelativeToListener(self.music, 0);
+            match relative {
+                true    => csfml::sfMusic_setRelativeToListener(self.music, 1),
+                false   => csfml::sfMusic_setRelativeToListener(self.music, 0)
             }
         }  
     }
@@ -304,7 +318,9 @@ impl Music {
     * * distance - New minimum distance of the music
     */
     pub fn set_min_distance(&mut self, distance : float) -> () {
-        unsafe {csfml::sfMusic_setMinDistance(self.music, distance as c_float)}
+        unsafe {
+            csfml::sfMusic_setMinDistance(self.music, distance as c_float)
+        }
     }
     
     /**
@@ -323,7 +339,9 @@ impl Music {
     * * attenuation - New attenuation factor of the music
     */
     pub fn set_attenuation(&mut self, attenuation : float) -> () {
-        unsafe {csfml::sfMusic_setAttenuation(self.music, attenuation as c_float)}
+        unsafe {
+            csfml::sfMusic_setAttenuation(self.music, attenuation as c_float)
+        }
     }
     
     /**
@@ -369,7 +387,7 @@ impl Music {
     * Return true if the position is relative, false if it's absolute
     */
     pub fn is_relative_to_listener(&self) -> bool {
-        match unsafe {csfml::sfMusic_isRelativeToListener(self.music)} {
+        match unsafe { csfml::sfMusic_isRelativeToListener(self.music) } {
             0 => false,
             _ => true
         }

@@ -107,12 +107,14 @@ impl RectangleShape {
     * Return a new option to a rectangleShape object or None
     */
     pub fn new() -> Option<RectangleShape> {
-        let rectangle = unsafe {csfml::sfRectangleShape_create()};
-        if rectangle == ptr::null() {
+        let rectangle = unsafe { csfml::sfRectangleShape_create() };
+        if ptr::is_null(rectangle) {
             None
         }
         else {
-            Some(RectangleShape {rectangleShape : rectangle})
+            Some(RectangleShape {
+                rectangleShape : rectangle
+            })
         }
     }
 
@@ -124,15 +126,17 @@ impl RectangleShape {
     * Return a new option to a rectangleShape object, or None
     */
     pub fn new_init(size : &Vector2f) -> Option<RectangleShape> {
-        let rectangle = unsafe {csfml::sfRectangleShape_create()};
-        if rectangle == ptr::null() {
+        let rectangle = unsafe { csfml::sfRectangleShape_create() };
+        if ptr::is_null(rectangle) {
             None
         }
         else {
             unsafe{
                 csfml::sfRectangleShape_setSize(rectangle, *size);
             }
-            Some(RectangleShape {rectangleShape : rectangle})
+            Some(RectangleShape {
+                rectangleShape : rectangle
+            })
         }
     }
 
@@ -145,12 +149,14 @@ impl RectangleShape {
     * Return the copied object on an option, or None
     */
     pub fn new_copy(rectangleShape : &RectangleShape) -> Option<RectangleShape> {
-        let rectangle = unsafe {csfml::sfRectangleShape_copy(rectangleShape.unwrap())};
-        if rectangle == ptr::null() {
+        let rectangle = unsafe { csfml::sfRectangleShape_copy(rectangleShape.unwrap()) };
+        if ptr::is_null(rectangle) {
             None
         }
         else {
-            Some(RectangleShape {rectangleShape : rectangle})
+            Some(RectangleShape {
+                rectangleShape : rectangle
+            })
         }
     }
     
@@ -182,7 +188,9 @@ impl RectangleShape {
     * * y - Y coordinate of the new position
     */
     pub fn set_position2f(&mut self, x : f32, y : f32) -> () {
-        unsafe {csfml::sfRectangleShape_setPosition(self.rectangleShape, Vector2f::new(x, y))}
+        unsafe {
+            csfml::sfRectangleShape_setPosition(self.rectangleShape, Vector2f::new(x, y))
+        }
     }
 
     /**
@@ -368,7 +376,9 @@ impl RectangleShape {
     * Return the current position
     */
     pub fn get_position(&self) -> Vector2f {
-        unsafe { csfml::sfRectangleShape_getPosition(self.rectangleShape) }
+        unsafe {
+            csfml::sfRectangleShape_getPosition(self.rectangleShape) 
+        }
     }
 
     /**
@@ -377,7 +387,9 @@ impl RectangleShape {
     * Return the current scale factors
     */
     pub fn get_scale(&self) -> Vector2f {
-        unsafe { csfml::sfRectangleShape_getScale(self.rectangleShape) }
+        unsafe { 
+            csfml::sfRectangleShape_getScale(self.rectangleShape) 
+        }
     }
 
     /**
@@ -386,7 +398,9 @@ impl RectangleShape {
     * return the current origin
     */
     pub fn get_origin(&self) -> Vector2f {
-        unsafe { csfml::sfRectangleShape_getOrigin(self.rectangleShape) }
+        unsafe { 
+            csfml::sfRectangleShape_getOrigin(self.rectangleShape) 
+        }
     }
 
     /**
@@ -395,7 +409,9 @@ impl RectangleShape {
     * Return the height Size of the rectangle
     */
     pub fn get_size(&self) -> Vector2f {
-        unsafe { csfml::sfRectangleShape_getSize(self.rectangleShape) }
+        unsafe { 
+            csfml::sfRectangleShape_getSize(self.rectangleShape) 
+        }
     }
 
     /**
@@ -409,7 +425,9 @@ impl RectangleShape {
     * Return the index-th point of the shape
     */
     pub fn get_point(&self, index : uint) -> Vector2f {
-        unsafe { csfml::sfRectangleShape_getPoint(self.rectangleShape, index as c_uint) }
+        unsafe { 
+            csfml::sfRectangleShape_getPoint(self.rectangleShape, index as c_uint) 
+        }
     }
 
     /**
@@ -443,9 +461,11 @@ impl RectangleShape {
     * * resetRect - Should the texture rect be reset to the size of the new texture?
     */
     pub fn set_texture(&mut self, texture : &Texture, resetRect : bool) -> () {
-        match resetRect {
-            false       => unsafe { csfml::sfRectangleShape_setTexture(self.rectangleShape, texture.unwrap(), 0) },
-            true        => unsafe { csfml::sfRectangleShape_setTexture(self.rectangleShape, texture.unwrap(), 1) }
+        unsafe {
+            match resetRect {
+                false       => csfml::sfRectangleShape_setTexture(self.rectangleShape, texture.unwrap(), 0),
+                true        => csfml::sfRectangleShape_setTexture(self.rectangleShape, texture.unwrap(), 1)
+            }
         }
     }
 
@@ -518,8 +538,8 @@ impl RectangleShape {
     * Return the shape's texture
     */
     pub fn get_texture(&self) -> Option<Texture> {
-        let tex = unsafe {csfml::sfRectangleShape_getTexture(self.rectangleShape)};
-        if tex == ptr::null() {
+        let tex = unsafe { csfml::sfRectangleShape_getTexture(self.rectangleShape) };
+        if ptr::is_null(tex) {
             None
         }
         else {
@@ -533,7 +553,9 @@ impl RectangleShape {
     * Return the fill color of the shape
     */
     pub fn get_fill_color(&self) -> Color {
-        unsafe { csfml::sfRectangleShape_getFillColor(self.rectangleShape) }
+        unsafe {
+            csfml::sfRectangleShape_getFillColor(self.rectangleShape)
+        }
     }
 
     /**
@@ -542,7 +564,9 @@ impl RectangleShape {
     * Return the outline color of the shape
     */
     pub fn get_outline_color(&self) -> Color {
-        unsafe { csfml::sfRectangleShape_getOutlineColor(self.rectangleShape) }
+        unsafe {
+            csfml::sfRectangleShape_getOutlineColor(self.rectangleShape)
+        }
     }
 
     /**
@@ -551,7 +575,9 @@ impl RectangleShape {
     * Return the outline thickness of the shape
     */
     pub fn get_outline_thickness(&self) -> float {
-        unsafe { csfml::sfRectangleShape_getOutlineThickness(self.rectangleShape) as float }
+        unsafe {
+            csfml::sfRectangleShape_getOutlineThickness(self.rectangleShape) as float 
+        }
     }
 
     /**
@@ -650,7 +676,9 @@ impl RectangleShape {
 
     #[doc(hidden)]
     pub fn wrap(rectangleShape : *csfml::sfRectangleShape) -> RectangleShape {
-        RectangleShape { rectangleShape : rectangleShape}
+        RectangleShape {
+            rectangleShape : rectangleShape
+        }
     }
     
     #[doc(hidden)]

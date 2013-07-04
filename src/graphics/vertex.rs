@@ -67,6 +67,10 @@ impl Vertex {
     * Return a Vertex
     */
     pub fn new(position : &Vector2f, color : &Color, texCoords : &Vector2f) -> Vertex {
-        Vertex {position : *position, color : *color, texCoords : *texCoords }
+        Vertex {
+            position : *position,
+            color : *color,
+            texCoords : *texCoords
+        }
     }
 }

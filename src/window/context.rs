@@ -28,8 +28,6 @@
  * Class holding a valid drawing context.
  */
 
-use rsfml::sfTypes::{sfBool};
-
 #[doc(hidden)]
 pub mod csfml {
 
@@ -62,7 +60,9 @@ impl Context {
     * Return New Context object
     */
     pub fn new() -> Context {
-        Context{cont : unsafe{csfml::sfContext_create()}}
+        Context{
+            cont : unsafe{ csfml::sfContext_create() }
+        }
     }
 
     /**
@@ -72,13 +72,12 @@ impl Context {
     * * active - True to activate, False to deactivate
     */
     pub fn set_active(&mut self, active : bool) -> () {
-        let act : sfBool = 
-            match active {
-                true    => 0,
-                _       => 1
-            };
         unsafe {
-            csfml::sfContext_setActive(self.cont, act);
+            match active {
+                true    => csfml::sfContext_setActive(self.cont, 1),
+                false   => csfml::sfContext_setActive(self.cont, 0)
+            };
+
         }
     }
 

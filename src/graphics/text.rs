@@ -116,13 +116,15 @@ impl Text {
     * Return a new Option on Text object, or None
     */
     pub fn new() -> Option<Text> {
-        let text : *csfml::sfText;
-        unsafe {text = csfml::sfText_create()};
-        if text == ptr::null() {
+        let text  = unsafe { csfml::sfText_create() };
+        if ptr::is_null(text) {
             None
         }
         else {
-            Some(Text {text : text, stringLength : 0})
+            Some(Text {
+                text : text,
+                stringLength : 0
+            })
         }
     }
 
@@ -139,8 +141,8 @@ impl Text {
     * Return a new Option on Text object, or None
     */
     pub fn new_init(string : ~str, font : &Font, characterSize : uint) ->Option<Text> {
-        let text = unsafe {csfml::sfText_create()};
-        if text == ptr::null() {
+        let text = unsafe { csfml::sfText_create() };
+        if ptr::is_null(text) {
             None
         }
         else {
@@ -150,7 +152,10 @@ impl Text {
                 }
                 csfml::sfText_setFont(text, font.unwrap());
                 csfml::sfText_setCharacterSize(text, characterSize as c_uint);
-                Some(Text {text : text, stringLength : string.len()})
+                Some(Text {
+                    text : text, 
+                    stringLength : string.len()
+                })
             }
         }
     }
@@ -165,7 +170,9 @@ impl Text {
     */
     pub fn set_string(&mut self, string : ~str) -> () {
         do str::as_c_str(string) |cstring| {
-            unsafe {csfml::sfText_setString(self.text, cstring)}
+            unsafe {
+                csfml::sfText_setString(self.text, cstring)
+            }
         };
         self.stringLength = string.len()
     }
@@ -208,7 +215,9 @@ impl Text {
     * Return the size of the characters
     */
     pub fn get_character_size(&self) -> uint {
-        unsafe { csfml::sfText_getCharacterSize(self.text) as uint}
+        unsafe { 
+            csfml::sfText_getCharacterSize(self.text) as uint
+        }
     }
     
     /**
@@ -309,7 +318,7 @@ impl Text {
     * Return the current string style (see Style enum)
     */
     pub fn get_style(&self) -> Style {
-        match unsafe {csfml::sfText_getStyle(self.text)} {
+        match unsafe { csfml::sfText_getStyle(self.text) } {
             0 => Regular,
             1 => Bold,
             2 => Italic,
@@ -324,14 +333,12 @@ impl Text {
     * modify the font when you retrieve it with this function.
     */
     pub fn get_font(&self) -> Option<Font> {
-        unsafe {
-            let fnt = csfml::sfText_getFont(self.text);
-            if fnt == ptr::null() {
-                None
-            }
-            else {
-                Some(Font::wrap(fnt))
-            }
+        let fnt = unsafe { csfml::sfText_getFont(self.text) };
+        if ptr::is_null(fnt) {
+            None
+        }
+        else {
+            Some(Font::wrap(fnt))
         }
     }
     
@@ -533,7 +540,9 @@ impl Text {
     * Return the current scale factors
     */
     pub fn get_scale(&self) -> Vector2f {
-        unsafe {csfml::sfText_getScale(self.text)}
+        unsafe {
+            csfml::sfText_getScale(self.text)
+        }
     }
 
     /**
@@ -542,7 +551,9 @@ impl Text {
     * Return the current origin
     */
     pub fn get_origin(&self) -> Vector2f {
-        unsafe {csfml::sfText_getOrigin(self.text)}
+        unsafe {
+            csfml::sfText_getOrigin(self.text)
+        }
     }
 
     /**
@@ -561,7 +572,9 @@ impl Text {
     * Return the position of the character
     */
     pub fn find_character_pos(&self, index : u64) -> Vector2f {
-        unsafe {csfml::sfText_findCharacterPos(self.text, index as size_t)}
+        unsafe {
+            csfml::sfText_findCharacterPos(self.text, index as size_t)
+        }
     }
 
     /**
@@ -570,7 +583,9 @@ impl Text {
     * Return the current position
     */
     pub fn get_position(&self) -> Vector2f {
-        unsafe {csfml::sfText_getPosition(self.text)}
+        unsafe {
+            csfml::sfText_getPosition(self.text)
+        }
     }
 
     /**
@@ -616,7 +631,7 @@ impl Text {
     pub fn set_unicode_string(&mut self, string : ~[u32]) -> () {
         unsafe {
             self.stringLength = string.len();
-            csfml::sfText_setUnicodeString(self.text, vec::raw::to_ptr(string) )
+            csfml::sfText_setUnicodeString(self.text, vec::raw::to_ptr(string))
         }
     }
 

@@ -197,7 +197,7 @@ impl ListingResponse {
     * Return true if the status is a success, false if it is a failure
     */
     pub fn is_ok(&self) -> bool {
-        match unsafe {csfml::sfFtpListingResponse_isOk(self.listingResponse)} {
+        match unsafe { csfml::sfFtpListingResponse_isOk(self.listingResponse) } {
             0 => false,
             _ => true
         }
@@ -269,7 +269,7 @@ impl DirectoryResponse {
     * Return true if the status is a success, false if it is a failure
     */
     pub fn is_ok(&self) -> bool {
-        match unsafe {csfml::sfFtpDirectoryResponse_isOk(self.directoryResponse)} {
+        match unsafe { csfml::sfFtpDirectoryResponse_isOk(self.directoryResponse) } {
             0 => false,
             _ => true
         }
@@ -327,7 +327,7 @@ impl Response {
     * Return true if the status is a success, false if it is a failure
     */
     pub fn is_ok(&self) -> bool {
-        match unsafe {csfml::sfFtpResponse_isOk(self.response)} {
+        match unsafe { csfml::sfFtpResponse_isOk(self.response) } {
             0 => false,
             _ => true
         }
@@ -371,7 +371,9 @@ impl Ftp {
     * Return a new option to Ftp object or None
     */
     pub fn new() -> Ftp {
-        Ftp { ftp : unsafe {csfml::sfFtp_create()}}
+        Ftp {
+            ftp : unsafe { csfml::sfFtp_create() }
+        }
     }
 
     /**
@@ -394,7 +396,9 @@ impl Ftp {
     * Return the server response to the request
     */
     pub fn connect(&self, server : &IpAddress, port : u16, timeout : &Time) -> Response {
-        Response { response : unsafe {csfml::sfFtp_connect(self.ftp, server.unwrap(), port, timeout.unwrap())} }
+        Response {
+            response : unsafe { csfml::sfFtp_connect(self.ftp, server.unwrap(), port, timeout.unwrap()) }
+        }
     }
 
     /**
@@ -406,7 +410,9 @@ impl Ftp {
     * Return the server response to the request
     */
     pub fn login_anonymous(&self) -> Response {
-        Response { response : unsafe {csfml::sfFtp_loginAnonymous(self.ftp)}}
+        Response {
+            response : unsafe { csfml::sfFtp_loginAnonymous(self.ftp) }
+        }
     }
 
     /**
@@ -425,7 +431,9 @@ impl Ftp {
         
         do str::as_c_str(userName) |name| {
             do str::as_c_str(password) |pass| {
-                Response { response : unsafe {csfml::sfFtp_login(self.ftp, name, pass)} }
+                Response {
+                    response : unsafe { csfml::sfFtp_login(self.ftp, name, pass) }
+                }
             }
         }
     }
@@ -436,7 +444,9 @@ impl Ftp {
     * Return the server response to the request
     */
     pub fn disconnect(&self) -> Response {
-        Response { response : unsafe {csfml::sfFtp_disconnect(self.ftp)}}
+        Response {
+            response : unsafe { csfml::sfFtp_disconnect(self.ftp) }
+        }
     }
 
     /**
@@ -448,7 +458,9 @@ impl Ftp {
     * Return the server response to the request
     */
     pub fn keep_alive(&self) -> Response {
-        Response { response : unsafe {csfml::sfFtp_keepAlive(self.ftp)} }
+        Response {
+            response : unsafe { csfml::sfFtp_keepAlive(self.ftp) }
+        }
     }
 
     /**
@@ -460,7 +472,9 @@ impl Ftp {
     * Return the server response to the request
     */
     pub fn get_working_directory(&self) -> DirectoryResponse {
-        DirectoryResponse { directoryResponse : unsafe {csfml::sfFtp_getWorkingDirectory(self.ftp)} }
+        DirectoryResponse {
+            directoryResponse : unsafe { csfml::sfFtp_getWorkingDirectory(self.ftp) } 
+        }
     }
 
     /**
@@ -477,10 +491,10 @@ impl Ftp {
     * Return the server response to the request
     */
     pub fn get_directory_listing(&self, directory : ~str) -> ListingResponse {
-        unsafe {
             do str::as_c_str(directory) |dir| {
-                ListingResponse { listingResponse : csfml::sfFtp_getDirectoryListing(self.ftp, dir) }
-            }
+                ListingResponse {
+                    listingResponse : unsafe { csfml::sfFtp_getDirectoryListing(self.ftp, dir) }
+                }
         }
     }
 
@@ -495,9 +509,9 @@ impl Ftp {
     * Return the server response to the request
     */
     pub fn change_directory(&self, directory : ~str) -> Response {
-        unsafe {
-            do str::as_c_str(directory) |dir| {
-                Response { response : csfml::sfFtp_changeDirectory(self.ftp, dir) }
+        do str::as_c_str(directory) |dir| {
+            Response {
+                response : unsafe { csfml::sfFtp_changeDirectory(self.ftp, dir) }
             }
         }
     }
@@ -508,8 +522,8 @@ impl Ftp {
     * Return the server response to the request
     */
     pub fn parent_directory(&self) -> Response {
-        unsafe {
-            Response { response : csfml::sfFtp_parentDirectory(self.ftp) }
+        Response {
+            response : unsafe { csfml::sfFtp_parentDirectory(self.ftp) }
         }
     }
 
@@ -525,9 +539,9 @@ impl Ftp {
     * Return the server response to the request
     */
     pub fn create_directory(&self, name : ~str) -> Response {
-        unsafe {
-            do str::as_c_str(name) |dir| {
-                Response { response : csfml::sfFtp_createDirectory(self.ftp, dir) }
+        do str::as_c_str(name) |dir| {
+            Response { 
+                response : unsafe { csfml::sfFtp_createDirectory(self.ftp, dir) }
             }
         }
     }
@@ -546,9 +560,9 @@ impl Ftp {
     * Return the server response to the request
     */
     pub fn delete_directory(&self, name : ~str) -> Response {
-        unsafe {
-            do str::as_c_str(name) |dir| {
-                Response { response : csfml::sfFtp_deleteDirectory(self.ftp, dir) }
+        do str::as_c_str(name) |dir| {
+            Response {
+                response : unsafe { csfml::sfFtp_deleteDirectory(self.ftp, dir) }
             }
         }
     }
@@ -566,10 +580,10 @@ impl Ftp {
     * Return the server response to the request
     */
     pub fn rename_file(&self, name : ~str, newName : ~str) -> Response {
-        unsafe {
-            do str::as_c_str(name) |file| {
-                do str::as_c_str(newName) |newFile| {
-                    Response { response : csfml::sfFtp_renameFile(self.ftp, file, newFile) }
+        do str::as_c_str(name) |file| {
+            do str::as_c_str(newName) |newFile| {
+                Response {
+                    response : unsafe { csfml::sfFtp_renameFile(self.ftp, file, newFile) } 
                 }
             }
         }
@@ -589,9 +603,9 @@ impl Ftp {
     * Return the server response to the request
     */
     pub fn delete_file(&self, name : ~str) -> Response {
-        unsafe {
-            do str::as_c_str(name) |file| {
-                Response { response : csfml::sfFtp_deleteFile(self.ftp, file) }
+        do str::as_c_str(name) |file| {
+            Response {
+                response : unsafe { csfml::sfFtp_deleteFile(self.ftp, file) }
             }
         }
     }
@@ -612,10 +626,10 @@ impl Ftp {
     * Return the server response to the request
     */
     pub fn download(&self, distantFile : ~str, destPath : ~str, mode : TransferMode) -> Response {
-        unsafe {
-            do str::as_c_str(distantFile) |dist| {
-                do str::as_c_str(destPath) |path| {
-                    Response { response : csfml::sfFtp_download(self.ftp, dist, path, mode) }
+        do str::as_c_str(distantFile) |dist| {
+            do str::as_c_str(destPath) |path| {
+                Response { 
+                    response : unsafe { csfml::sfFtp_download(self.ftp, dist, path, mode) }
                 }
             }
         }
@@ -637,10 +651,10 @@ impl Ftp {
     * Return the server response to the request
     */
     pub fn upload(&self, localFile : ~str, destPath : ~str, mode : TransferMode) -> Response {
-        unsafe {
-            do str::as_c_str(localFile) |local| {
-                do str::as_c_str(destPath) |path| {
-                    Response { response : csfml::sfFtp_upload(self.ftp, local, path, mode) }
+        do str::as_c_str(localFile) |local| {
+            do str::as_c_str(destPath) |path| {
+                Response { 
+                    response : unsafe { csfml::sfFtp_upload(self.ftp, local, path, mode) }
                 }
             }
         }

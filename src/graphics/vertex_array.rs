@@ -88,12 +88,14 @@ impl VertexArray {
     * Return a new VertexArray object
     */
     pub fn new() -> Option<VertexArray> {
-        let ver = unsafe { csfml::sfVertexArray_create()};
-        if ver == ptr::null() {
+        let ver = unsafe { csfml::sfVertexArray_create() };
+        if ptr::is_null(ver) {
             None
         }
         else {
-            Some(VertexArray { vertexArray :ver}) 
+            Some(VertexArray {
+                vertexArray : ver
+            })
         }    
     }
 
@@ -106,12 +108,14 @@ impl VertexArray {
     * Return the copied object
     */
     pub fn new_copy(vertexArray : &VertexArray) -> Option<VertexArray> {
-        let ver = unsafe { csfml::sfVertexArray_copy(vertexArray.unwrap())};
-        if ver == ptr::null() {
+        let ver = unsafe { csfml::sfVertexArray_copy(vertexArray.unwrap()) };
+        if ptr::is_null(ver) {
             None
         }
         else {
-            Some(VertexArray { vertexArray : ver})
+            Some(VertexArray {
+                vertexArray : ver
+            })
         }
     }
 
@@ -199,14 +203,16 @@ impl VertexArray {
     * * type - Type of primitive
     */
     pub fn set_primitive_type(&mut self, primitiveType : PrimitiveType) -> () {
-        match primitiveType {
-            primitive_type::Points              => unsafe {csfml::sfVertexArray_setPrimitiveType(self.vertexArray, csfml::sfPoints)},
-            primitive_type::Lines               => unsafe {csfml::sfVertexArray_setPrimitiveType(self.vertexArray, csfml::sfLines)},
-            primitive_type::LinesStrip          => unsafe {csfml::sfVertexArray_setPrimitiveType(self.vertexArray, csfml::sfLinesStrip)},
-            primitive_type::Triangles           => unsafe {csfml::sfVertexArray_setPrimitiveType(self.vertexArray, csfml::sfTriangles)},
-            primitive_type::TrianglesStrip      => unsafe {csfml::sfVertexArray_setPrimitiveType(self.vertexArray, csfml::sfTrianglesStrip)},
-            primitive_type::TrianglesFan        => unsafe {csfml::sfVertexArray_setPrimitiveType(self.vertexArray, csfml::sfTrianglesFan)},
-            primitive_type::Quads               => unsafe {csfml::sfVertexArray_setPrimitiveType(self.vertexArray, csfml::sfQuads)}
+        unsafe {
+            match primitiveType {
+                primitive_type::Points              => csfml::sfVertexArray_setPrimitiveType(self.vertexArray, csfml::sfPoints),
+                primitive_type::Lines               => csfml::sfVertexArray_setPrimitiveType(self.vertexArray, csfml::sfLines),
+                primitive_type::LinesStrip          => csfml::sfVertexArray_setPrimitiveType(self.vertexArray, csfml::sfLinesStrip),
+                primitive_type::Triangles           => csfml::sfVertexArray_setPrimitiveType(self.vertexArray, csfml::sfTriangles),
+                primitive_type::TrianglesStrip      => csfml::sfVertexArray_setPrimitiveType(self.vertexArray, csfml::sfTrianglesStrip),
+                primitive_type::TrianglesFan        => csfml::sfVertexArray_setPrimitiveType(self.vertexArray, csfml::sfTrianglesFan),
+                primitive_type::Quads               => csfml::sfVertexArray_setPrimitiveType(self.vertexArray, csfml::sfQuads)
+            }
         }
     }
     
@@ -216,7 +222,7 @@ impl VertexArray {
     * Return the primitive type
     */
     pub fn get_primitive_type(&self) -> PrimitiveType {
-        match unsafe {csfml::sfVertexArray_getPrimitiveType(self.vertexArray)} {
+        match unsafe { csfml::sfVertexArray_getPrimitiveType(self.vertexArray) } {
             csfml::sfPoints             => primitive_type::Points,
             csfml::sfLines              => primitive_type::Lines,
             csfml::sfLinesStrip         => primitive_type::LinesStrip,
@@ -246,10 +252,14 @@ impl VertexArray {
         }
     }
 
+    #[doc(hidden)]
     pub fn wrap(vertexArray : *csfml::sfVertexArray) -> VertexArray {
-        VertexArray {vertexArray : vertexArray}
+        VertexArray {
+            vertexArray : vertexArray
+        }
     }
 
+    #[doc(hidden)]
     pub fn unwrap(&self) -> *csfml::sfVertexArray {
         self.vertexArray
     }

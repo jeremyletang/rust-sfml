@@ -80,11 +80,14 @@ impl Font {
     pub fn new_from_file(filename : ~str) -> Option<Font> {
         do str::as_c_str(filename) |filenamebuf| {
             let fnt = unsafe {csfml::sfFont_createFromFile(filenamebuf)};
-            if fnt == ptr::null() {
+            if ptr::is_null(fnt) {
                 None
             }
             else {
-                Some(Font { font : fnt, dropable : true})
+                Some(Font {
+                    font : fnt, 
+                    dropable : true
+                })
             }
         }
     }
@@ -98,11 +101,14 @@ impl Font {
     */
     pub fn new_copy(font : &Font) -> Option<Font> {
         let fnt = unsafe {csfml::sfFont_copy(font.unwrap())};
-        if fnt == ptr::null() {
+        if ptr::is_null(fnt) {
             None
         }
         else {
-            Some(Font { font : fnt, dropable : true})
+            Some(Font {
+                font : fnt, 
+                dropable : true
+            })
         }
     }    
     /**
@@ -145,7 +151,7 @@ impl Font {
     */
     pub fn get_texture(&self, characterSize : uint) -> Option<Texture> {
         let tex = unsafe {csfml::sfFont_getTexture(self.font, characterSize as c_uint)};
-        if tex == ptr::null() {
+        if ptr::is_null(tex) {
             None
         }
         else {
@@ -164,15 +170,20 @@ impl Font {
     * Return the corresponding glyph
     */
     pub fn get_glyph(&self, codepoint : u32, characterSize : uint, bold : bool) -> Glyph {
-        match bold {
-            true        => unsafe {csfml::sfFont_getGlyph(self.font, codepoint, characterSize as c_uint, 1)},
-            false       => unsafe {csfml::sfFont_getGlyph(self.font, codepoint, characterSize as c_uint, 0)}
+        unsafe {
+            match bold {
+                true        => csfml::sfFont_getGlyph(self.font, codepoint, characterSize as c_uint, 1),
+                false       => csfml::sfFont_getGlyph(self.font, codepoint, characterSize as c_uint, 0)
+            }
         }
     }
 
     #[doc(hidden)]
     pub fn wrap(font : *csfml::sfFont) -> Font {
-        Font {font : font, dropable : false}
+        Font {
+            font : font,
+            dropable : false
+        }
     }
     
     #[doc(hidden)]

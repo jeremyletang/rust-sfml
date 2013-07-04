@@ -83,12 +83,14 @@ impl TcpSocket {
     * Return a new option to TcpSocket object, or None
     */
     pub fn new() -> Option<TcpSocket> {
-        let tcp = unsafe {csfml::sfTcpSocket_create()};
-        if tcp == ptr::null() {
+        let tcp = unsafe { csfml::sfTcpSocket_create() };
+        if ptr::is_null(tcp) {
             None
         }
         else {
-            Some(TcpSocket { socket :tcp}) 
+            Some(TcpSocket {
+                socket : tcp
+            }) 
         }
     }
 
@@ -108,9 +110,11 @@ impl TcpSocket {
     * * blocking - true to set the socket as blocking, false for non-blocking
     */
     pub fn set_blocking(&mut self, blocking : bool) -> () {
-        match blocking  {
-            true        => unsafe {csfml::sfTcpSocket_setBlocking(self.socket, 1)},
-            false       => unsafe {csfml::sfTcpSocket_setBlocking(self.socket, 0)},
+        unsafe {
+            match blocking  {
+                true        => csfml::sfTcpSocket_setBlocking(self.socket, 1),
+                false       => csfml::sfTcpSocket_setBlocking(self.socket, 0)
+            }
         }
     }
 
@@ -120,7 +124,7 @@ impl TcpSocket {
     * Return true if the socket is blocking, false otherwise
     */
     pub fn is_blocking(&self) -> bool {
-        match unsafe {csfml::sfTcpSocket_isBlocking(self.socket)} {
+        match unsafe { csfml::sfTcpSocket_isBlocking(self.socket) } {
             0 => false,
             _ => true
         }
@@ -268,7 +272,9 @@ impl TcpSocket {
 
     #[doc(hidden)]
     pub fn wrap(socket : *csfml::sfTcpSocket) -> TcpSocket {
-        TcpSocket {socket : socket}
+        TcpSocket {
+            socket : socket
+        }
     }
     
     #[doc(hidden)]

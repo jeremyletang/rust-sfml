@@ -78,7 +78,10 @@ trait Vector2uOp {
 
 impl Vector2i {
     pub fn new(x : i32, y: i32) -> Vector2i {
-        Vector2i{x : x, y : y}
+        Vector2i{
+            x : x, 
+            y : y
+        }
     }
 }
 
@@ -108,37 +111,61 @@ impl<R: Vector2iOp> Div<R, Vector2i> for Vector2i {
 
 impl Vector2iOp for Vector2i {
     fn add_to_Vector2i(&self, lhs: &Vector2i) -> Vector2i {
-        Vector2i { x : lhs.x+self.x, y : lhs.y+self.y }
+        Vector2i {
+            x : lhs.x + self.x,
+            y : lhs.y + self.y
+        }
     }
 
     fn sub_to_Vector2i(&self, lhs: &Vector2i) -> Vector2i {
-        Vector2i { x : lhs.x - self.x, y : lhs.y - self.y }
+        Vector2i { 
+            x : lhs.x - self.x, 
+            y : lhs.y - self.y 
+        }
     }
 
     fn div_to_Vector2i(&self, lhs: &Vector2i) -> Vector2i {
-        Vector2i { x : lhs.x / self.x, y : lhs.y / self.y }
+        Vector2i {
+            x : lhs.x / self.x,
+            y : lhs.y / self.y 
+        }
     }
 
     fn mul_to_Vector2i(&self, lhs: &Vector2i) -> Vector2i {
-        Vector2i { x : lhs.x * self.x, y : lhs.y * self.y }
+        Vector2i {
+            x : lhs.x * self.x,
+            y : lhs.y * self.y 
+        }
     }
 }
  
 impl Vector2iOp for int {
     fn add_to_Vector2i(&self, lhs: &Vector2i) -> Vector2i {
-        Vector2i { x:lhs.x+*self as i32, y:lhs.y+*self as i32}
+        Vector2i {
+            x : lhs.x + *self as i32,
+            y : lhs.y + *self as i32
+        }
     }
 
     fn sub_to_Vector2i(&self, lhs: &Vector2i) -> Vector2i {
-        Vector2i { x : lhs.x - *self as i32, y : lhs.y - *self as i32}
+        Vector2i {
+            x : lhs.x - *self as i32,
+            y : lhs.y - *self as i32
+        }
     }
 
     fn mul_to_Vector2i(&self, lhs: &Vector2i) -> Vector2i {
-        Vector2i { x : lhs.x * (*self as i32), y : lhs.y * (*self as i32)}
+        Vector2i {
+            x : lhs.x * (*self as i32),
+            y : lhs.y * (*self as i32)
+        }
     }
 
     fn div_to_Vector2i(&self, lhs: &Vector2i) -> Vector2i {
-        Vector2i { x : lhs.x / (*self as i32), y : lhs.y / (*self as i32)}
+        Vector2i {
+            x : lhs.x / (*self as i32),
+            y : lhs.y / (*self as i32)
+        }
     }
 }
 
@@ -153,7 +180,10 @@ impl Eq for Vector2i {
 
 impl Vector2u {
     pub fn new(x : u32, y: u32) -> Vector2u {
-        Vector2u{x : x, y : y}
+        Vector2u{
+            x : x,
+            y : y
+        }
     }
 }
 
@@ -183,37 +213,61 @@ impl<R: Vector2uOp> Div<R, Vector2u> for Vector2u {
 
 impl Vector2uOp for Vector2u {
     fn add_to_Vector2u(&self, lhs: &Vector2u) -> Vector2u {
-        Vector2u { x : lhs.x+self.x, y : lhs.y+self.y }
+        Vector2u {
+            x : lhs.x + self.x,
+            y : lhs.y + self.y
+        }
     }
 
     fn sub_to_Vector2u(&self, lhs: &Vector2u) -> Vector2u {
-        Vector2u { x : lhs.x - self.x, y : lhs.y - self.y }
+        Vector2u {
+            x : lhs.x - self.x,
+            y : lhs.y - self.y
+        }
     }
 
     fn div_to_Vector2u(&self, lhs: &Vector2u) -> Vector2u {
-        Vector2u { x : lhs.x / self.x, y : lhs.y / self.y }
+        Vector2u {
+            x : lhs.x / self.x,
+            y : lhs.y / self.y
+        }
     }
 
     fn mul_to_Vector2u(&self, lhs: &Vector2u) -> Vector2u {
-        Vector2u { x : lhs.x * self.x, y : lhs.y * self.y }
+        Vector2u {
+            x : lhs.x * self.x,
+            y : lhs.y * self.y 
+        }
     }
 }
  
 impl Vector2uOp for uint {
     fn add_to_Vector2u(&self, lhs: &Vector2u) -> Vector2u {
-        Vector2u { x:lhs.x+*self as u32, y:lhs.y+*self as u32}
+        Vector2u {
+            x : lhs.x + *self as u32,
+            y : lhs.y + *self as u32
+        }
     }
 
     fn sub_to_Vector2u(&self, lhs: &Vector2u) -> Vector2u {
-        Vector2u { x : lhs.x - *self as u32, y : lhs.y - *self as u32}
+        Vector2u {
+            x : lhs.x - *self as u32,
+            y : lhs.y - *self as u32
+        }
     }
 
     fn mul_to_Vector2u(&self, lhs: &Vector2u) -> Vector2u {
-        Vector2u { x : lhs.x * (*self as u32), y : lhs.y * (*self as u32)}
+        Vector2u {
+            x : lhs.x * (*self as u32),
+            y : lhs.y * (*self as u32)
+        }
     }
 
     fn div_to_Vector2u(&self, lhs: &Vector2u) -> Vector2u {
-        Vector2u { x : lhs.x / (*self as u32), y : lhs.y / (*self as u32)}
+        Vector2u { 
+            x : lhs.x / (*self as u32),
+            y : lhs.y / (*self as u32)
+        }
     }
 }
 
@@ -228,7 +282,10 @@ impl Eq for Vector2u {
 
 impl Vector2f {
     pub fn new(x : f32, y: f32) -> Vector2f {
-        Vector2f{x : x, y : y}
+        Vector2f{
+            x : x,
+            y : y
+        }
     }
 }
 
@@ -258,37 +315,61 @@ impl<R: Vector2fOp> Div<R, Vector2f> for Vector2f {
 
 impl Vector2fOp for Vector2f {
     fn add_to_Vector2f(&self, lhs: &Vector2f) -> Vector2f {
-        Vector2f { x : lhs.x+self.x, y : lhs.y+self.y }
+        Vector2f {
+            x : lhs.x + self.x,
+            y : lhs.y + self.y
+        }
     }
 
     fn sub_to_Vector2f(&self, lhs: &Vector2f) -> Vector2f {
-        Vector2f { x : lhs.x - self.x, y : lhs.y - self.y }
+        Vector2f {
+            x : lhs.x - self.x,
+            y : lhs.y - self.y
+        }
     }
 
     fn div_to_Vector2f(&self, lhs: &Vector2f) -> Vector2f {
-        Vector2f { x : lhs.x / self.x, y : lhs.y / self.y }
+        Vector2f {
+            x : lhs.x / self.x,
+            y : lhs.y / self.y
+        }
     }
 
     fn mul_to_Vector2f(&self, lhs: &Vector2f) -> Vector2f {
-        Vector2f { x : lhs.x * self.x, y : lhs.y * self.y }
+        Vector2f {
+            x : lhs.x * self.x,
+            y : lhs.y * self.y 
+        }
     }
 }
  
 impl Vector2fOp for float {
     fn add_to_Vector2f(&self, lhs: &Vector2f) -> Vector2f {
-        Vector2f { x:lhs.x+*self as f32, y:lhs.y+*self as f32}
+        Vector2f { 
+            x : lhs.x + *self as f32,
+            y : lhs.y + *self as f32
+        }
     }
 
     fn sub_to_Vector2f(&self, lhs: &Vector2f) -> Vector2f {
-        Vector2f { x : lhs.x - *self as f32, y : lhs.y - *self as f32}
+        Vector2f {
+            x : lhs.x - *self as f32,
+            y : lhs.y - *self as f32
+        }
     }
 
     fn mul_to_Vector2f(&self, lhs: &Vector2f) -> Vector2f {
-        Vector2f { x : lhs.x * (*self as f32), y : lhs.y * (*self as f32)}
+        Vector2f { 
+            x : lhs.x * (*self as f32),
+            y : lhs.y * (*self as f32)
+        }
     }
 
     fn div_to_Vector2f(&self, lhs: &Vector2f) -> Vector2f {
-        Vector2f { x : lhs.x / (*self as f32), y : lhs.y / (*self as f32)}
+        Vector2f {
+            x : lhs.x / (*self as f32),
+            y : lhs.y / (*self as f32)
+        }
     }
 }
 

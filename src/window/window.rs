@@ -36,7 +36,6 @@ use std::cast;
 
 use window::context_settings::ContextSettings;
 use window::video_mode::*;
-use rsfml::sfTypes::{sfBool};
 use window::event;
 use window::keyboard;
 use system::vector2::{Vector2i, Vector2u};
@@ -134,13 +133,113 @@ pub struct Window {
 }
 
 impl Window { 
+    /**
+    * Construct a new window
+    *
+    * This function creates the window with the size and pixel
+    * depth defined in mode. An optional style can be passed to
+    * customize the look and behaviour of the window (borders,
+    * title bar, resizable, closable, ...). If style contains
+    * sfFullscreen, then mode must be a valid video mode.
+    *
+    * The fourth parameter is a pointer to a structure specifying
+    * advanced OpenGL context settings such as antialiasing,
+    * depth-buffer bits, etc.
+    * 
+    * # Arguments
+    * * mode - Video mode to use (defines the width, height and depth of the rendering area of the window)
+    * * title - Title of the window
+    * * style - Window style
+    * * settings - Additional settings for the underlying OpenGL context
+    *
+    * Return a new Window object
+    */
+    pub fn new(mode : VideoMode, title : ~str, style : WindowStyle, settings : &ContextSettings) -> Option<Window> {
+        let mut sfWin: *csfml::sfWindow = ptr::null();
+        do str::as_c_str(title) |title_buf| {
+            unsafe {
+                sfWin = csfml::sfWindow_create(VideoMode::unwrap(mode), title_buf, style as u32, settings); 
+            }
+        };
+        let sfEv = csfml::sfEvent {
+            typeEvent : 0,
+            p1 : 0,
+            p2 : 0,
+            p3 : 0 as c_float,
+            p4 : 0,
+            p5 : 0
+        };
+        if ptr::is_null(sfWin) {
+            None
+        }
+        else {
+            Some (Window {
+                window : sfWin, 
+                event : sfEv, 
+                titleLength : title.len()
+            })
+        }
+    }
+
+    /**
+    * Construct a new window (with a UTF-32 title)
+    *
+    * This function creates the window with the size and pixel
+    * depth defined in mode. An optional style can be passed to
+    * customize the look and behaviour of the window (borders,
+    * title bar, resizable, closable, ...). If style contains
+    * sfFullscreen, then mode must be a valid video mode.
+    *
+    * The fourth parameter is a pointer to a structure specifying
+    * advanced OpenGL context settings such as antialiasing,
+    * depth-buffer bits, etc.
+    * 
+    * # Arguments
+    * * mode - Video mode to use (defines the width, height and depth of the rendering area of the window)
+    * * title - Title of the window (UTF-32)
+    * * style - Window style
+    * * settings - Additional settings for the underlying OpenGL context
+    *
+    * Return a new Window object
+    */
+    pub fn new_with_unicode(mode : VideoMode, title : ~[u32], style : WindowStyle, settings : &ContextSettings) -> Option<Window> {
+        let sfWin = unsafe { csfml::sfWindow_createUnicode(VideoMode::unwrap(mode), vec::raw::to_ptr(title), style as u32, settings) };
+        let sfEv = csfml::sfEvent {
+            typeEvent : 0,
+            p1 : 0, 
+            p2 : 0, 
+            p3 : 0 as c_float, 
+            p4 : 0, 
+            p5 : 0
+        };
+        if ptr::is_null(sfWin) {
+            None
+        }
+        else {
+            Some (Window {
+                window : sfWin,
+                event : sfEv,
+                titleLength : title.len()
+            })
+        }
+    }
+
     priv fn get_wrapped_event(&self) ->event::Event {
             match self.event.typeEvent as c_uint {
                 0   => event::Closed,
-                1   => event::Resized{width : self.event.p1 as int, height : self.event.p2 as int},
+                1   => {
+                    event::Resized{
+                        width : self.event.p1 as int,
+                        height : self.event.p2 as int
+                    }
+                },
                 2   => event::LostFocus,
                 3   => event::GainedFocus,
-                4   => event::TextEntered{code : self.event.p1 as char},
+                4   => {
+                    event::TextEntered{
+                        code : self.event.p1 as char
+                    }
+                },
                 5   => {
                     let al : bool = match self.event.p2 {
                         0 => false,
@@ -158,8 +257,14 @@ impl Window {
                         0 => false,
                         _ => true
                     };
-                    let k : keyboard::Key = unsafe {cast::transmute(self.event.p1 as int)};
-                    event::KeyPressed{code : k, alt : al, ctrl : ct, shift :sh, system : sy}
+                    let k : keyboard::Key = unsafe { cast::transmute(self.event.p1 as int) };
+                    event::KeyPressed{
+                        code : k,
+                        alt : al,
+                        ctrl : ct,
+                        shift :sh,
+                        system : sy
+                    }
                 },
                 6   => {
                     let al : bool = match self.event.p2 {
@@ -178,8 +283,14 @@ impl Window {
                         0 => false,
                         _ => true
                     };
-                    let k : keyboard::Key = unsafe {cast::transmute(self.event.p1 as int)};
-                    event::KeyReleased{code : k, alt : al, ctrl : ct, shift :sh, system : sy}
+                    let k : keyboard::Key = unsafe { cast::transmute(self.event.p1 as int) };
+                    event::KeyReleased{
+                        code : k,
+                        alt : al, 
+                        ctrl : ct,
+                        shift :sh,
+                        system : sy
+                    }
                 },
                 7   =>  event::MouseWheelMoved{
                     delta : unsafe { cast::transmute::<c_uint, c_int>(self.event.p1) }  as int,
@@ -208,14 +319,36 @@ impl Window {
                 },
                 11  => event::MouseEntered,
                 12  => event::MouseLeft,
-                13  => event::JoystickButtonPressed{joystickid : self.event.p1 as int, button : self.event.p2 as int},
-                14  => event::JoystickButtonReleased{joystickid : self.event.p1 as int, button : self.event.p2 as int},
+                13  => {
+                    event::JoystickButtonPressed{
+                        joystickid : self.event.p1 as int,
+                        button : self.event.p2 as int
+                    }
+                },
+                14  => {
+                    event::JoystickButtonReleased{
+                        joystickid : self.event.p1 as int,
+                        button : self.event.p2 as int
+                    }
+                },
                 15  => {
                     let ax : joystick::Axis = unsafe {cast::transmute(self.event.p2 as int)};
-                    event::JoystickMoved{joystickid : self.event.p1 as uint, axis : ax, position : self.event.p3 as float}
+                    event::JoystickMoved{
+                        joystickid : self.event.p1 as uint,
+                        axis : ax,
+                        position : self.event.p3 as float
+                    }
                 },
-                16  => event::JoystickConnected{joystickid : self.event.p1 as uint},
-                17  => event::JoystickDisconnected{joystickid : self.event.p1 as uint},
+                16  => {
+                    event::JoystickConnected{
+                        joystickid : self.event.p1 as uint
+                    }
+                },
+                17  => {
+                    event::JoystickDisconnected{
+                        joystickid : self.event.p1 as uint
+                    }
+                },
                 _ => event::NoEvent
         }
     }
@@ -269,74 +402,6 @@ impl Window {
         }
         self.get_wrapped_event()
     }
-    
-    /**
-    * Construct a new window
-    *
-    * This function creates the window with the size and pixel
-    * depth defined in mode. An optional style can be passed to
-    * customize the look and behaviour of the window (borders,
-    * title bar, resizable, closable, ...). If style contains
-    * sfFullscreen, then mode must be a valid video mode.
-    *
-    * The fourth parameter is a pointer to a structure specifying
-    * advanced OpenGL context settings such as antialiasing,
-    * depth-buffer bits, etc.
-    * 
-    * # Arguments
-    * * mode - Video mode to use (defines the width, height and depth of the rendering area of the window)
-    * * title - Title of the window
-    * * style - Window style
-    * * settings - Additional settings for the underlying OpenGL context
-    *
-    * Return a new Window object
-    */
-    pub fn new(mode : VideoMode, title : ~str, style : WindowStyle, settings : &ContextSettings) -> Option<Window> {
-        let mut sfWin: *csfml::sfWindow = ptr::null();
-        do str::as_c_str(title) |title_buf| {
-            unsafe { sfWin = csfml::sfWindow_create(VideoMode::unwrap(mode), title_buf, style as u32, settings); }
-        };
-        let sfEv : csfml::sfEvent = csfml::sfEvent {typeEvent : 0, p1 : 0, p2 : 0, p3 : 0 as c_float, p4 : 0, p5 : 0};//{0, 0, 0, 0 as float, 0, 0};
-        if sfWin == ptr::null() {
-            None
-        }
-        else {
-        Some (Window { window : sfWin, event : sfEv, titleLength : title.len()})
-        }
-    }
-
-    /**
-    * Construct a new window (with a UTF-32 title)
-    *
-    * This function creates the window with the size and pixel
-    * depth defined in mode. An optional style can be passed to
-    * customize the look and behaviour of the window (borders,
-    * title bar, resizable, closable, ...). If style contains
-    * sfFullscreen, then mode must be a valid video mode.
-    *
-    * The fourth parameter is a pointer to a structure specifying
-    * advanced OpenGL context settings such as antialiasing,
-    * depth-buffer bits, etc.
-    * 
-    * # Arguments
-    * * mode - Video mode to use (defines the width, height and depth of the rendering area of the window)
-    * * title - Title of the window (UTF-32)
-    * * style - Window style
-    * * settings - Additional settings for the underlying OpenGL context
-    *
-    * Return a new Window object
-    */
-    pub fn new_with_unicode(mode : VideoMode, title : ~[u32], style : WindowStyle, settings : &ContextSettings) -> Option<Window> {
-        let sfWin: *csfml::sfWindow;
-        unsafe { sfWin = csfml::sfWindow_createUnicode(VideoMode::unwrap(mode), vec::raw::to_ptr(title), style as u32, settings); }
-        let sfEv : csfml::sfEvent = csfml::sfEvent {typeEvent : 0, p1 : 0, p2 : 0, p3 : 0 as c_float, p4 : 0, p5 : 0};//{0, 0, 0, 0 as float, 0, 0};
-        if sfWin == ptr::null() {
-            None
-        }
-        else {
-        Some (Window { window : sfWin, event : sfEv, titleLength : title.len()})
-        }
-    }
 
     /**
     * Change the title of a window (with a UTF-32 string)
@@ -387,10 +452,7 @@ impl Window {
     * true.
     */
     pub fn is_open(&self) -> bool {
-        let tmp : sfBool;
-        unsafe {
-            tmp = csfml::sfWindow_isOpen(self.window);
-        }
+        let tmp = unsafe { csfml::sfWindow_isOpen(self.window) };
         match tmp {
             0 => false,
             _ => true
@@ -432,13 +494,11 @@ impl Window {
     * * visible - true to show the window, false to hide it
     */
     pub fn set_visible(&mut self, visible : bool) -> () {
-        let tmp : sfBool = 
-            match visible {
-                true    => 1,
-                _       => 0
-            };
         unsafe {
-            csfml::sfWindow_setVisible(self.window, tmp);
+            match visible {
+                true    => csfml::sfWindow_setVisible(self.window, 1),
+                false   => csfml::sfWindow_setVisible(self.window, 0)
+            }
         }
     }
     
@@ -449,13 +509,11 @@ impl Window {
     * * visible - true to show, false to hide
     */
     pub fn set_mouse_cursor_visible(&mut self, visible : bool) -> () {
-        let tmp : sfBool = 
+        unsafe { 
             match visible {
-                true    => 1,
-                _       => 0
-            };
-        unsafe {
-            csfml::sfWindow_setMouseCursorVisible(self.window, tmp);
+                true    => csfml::sfWindow_setMouseCursorVisible(self.window, 1),
+                false   => csfml::sfWindow_setMouseCursorVisible(self.window, 0)
+            }
         }
     }
     
@@ -471,13 +529,11 @@ impl Window {
     * * enabled - true to enable v-sync, false to deactivate
     */
     pub fn set_vertical_sync_enabled(&mut self, enabled : bool) -> () {
-        let tmp : sfBool = 
-            match enabled {
-                true    => 1,
-                _       => 0
-            };
         unsafe {
-            csfml::sfWindow_setVerticalSyncEnabled(self.window, tmp);
+            match enabled {
+                true    => csfml::sfWindow_setVerticalSyncEnabled(self.window, 1),
+                false   => csfml::sfWindow_setVerticalSyncEnabled(self.window, 0)
+            }
         }
     }
     
@@ -494,13 +550,11 @@ impl Window {
     * * enabled - true to enable, false to disable
     */
     pub fn set_key_repeat_enabled(&mut self, enabled : bool) -> () {
-        let tmp : sfBool = 
-            match enabled {
-                true    => 1,
-                _       => 0
-            };
         unsafe {
-            csfml::sfWindow_setKeyRepeatEnabled(self.window, tmp);
+            match enabled {
+                true    => csfml::sfWindow_setKeyRepeatEnabled(self.window, 1),
+                false   => csfml::sfWindow_setKeyRepeatEnabled(self.window, 0)
+            }
         }
     }
     
@@ -519,15 +573,11 @@ impl Window {
     * Return true if operation was successful, false otherwise
     */
     pub fn set_active(&mut self, enabled : bool) -> bool {
-        let tmp : sfBool = 
-            match enabled {
-                true    => 1,
-                _       => 0
-            };
-        let res : sfBool = unsafe {
-            csfml::sfWindow_setActive(self.window, tmp)
-        };
-        match res {
+        let tmp = unsafe { match enabled {
+            true    => csfml::sfWindow_setActive(self.window, 1),
+            _       => csfml::sfWindow_setActive(self.window, 0)
+        }};
+        match tmp {
             1   => true,
             _   => false
         }

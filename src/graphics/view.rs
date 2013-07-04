@@ -82,12 +82,15 @@ impl View {
     * Return a new option to View object
     */
     pub fn new() -> Option<View> {
-        let view = unsafe {csfml::sfView_create()};
-        if view == ptr::null() {
+        let view = unsafe { csfml::sfView_create() };
+        if ptr::is_null(view) {
             None
         }
         else {
-            Some(View { dropable: true, view : view})
+            Some(View {
+                dropable: true,
+                view : view
+            })
         }
     }
 
@@ -103,8 +106,8 @@ impl View {
     * Return a new option to View object
     */
     pub fn new_init(center : &Vector2f, size : &Vector2f) -> Option<View> {
-        let view = unsafe {csfml::sfView_create()};
-        if view == ptr::null() {
+        let view = unsafe { csfml::sfView_create() };
+        if ptr::is_null(view) {
             None
         }
         else {
@@ -112,7 +115,10 @@ impl View {
                 csfml::sfView_setCenter(view, *center);
                 csfml::sfView_setSize(view, *size);
             }
-            Some(View { dropable : true, view : view})
+            Some(View {
+                dropable : true,
+                view : view
+            })
         }
     }
     
@@ -125,12 +131,15 @@ impl View {
     * Return a new option to View object
     */
     pub fn new_copy(view : &View) -> Option<View> {
-        let view = unsafe {csfml::sfView_copy(view.unwrap())};
-        if view == ptr::null() {
+        let view = unsafe { csfml::sfView_copy(view.unwrap()) };
+        if ptr::is_null(view) {
             None
         }
         else {
-            Some(View { dropable: true, view : view})
+            Some(View {
+                dropable: true,
+                view : view
+            })
         }    
     }
 
@@ -143,12 +152,15 @@ impl View {
     * Return a new View object
     */
     pub fn new_from_rect(rectangle : *FloatRect) -> Option<View> {
-        let view = unsafe {csfml::sfView_createFromRect(*rectangle)};
-        if view == ptr::null() {
+        let view = unsafe { csfml::sfView_createFromRect(*rectangle) };
+        if ptr::is_null(view) {
             None
         }
         else {
-            Some(View { dropable: true, view : view})
+            Some(View {
+                dropable: true,
+                view : view
+            })
         }
     }
 
@@ -296,7 +308,9 @@ impl View {
     * Return the size of the view
     */
     pub fn get_size(&self) -> Vector2f {
-        unsafe {csfml::sfView_getSize(self.view)}
+        unsafe {
+            csfml::sfView_getSize(self.view)
+        }
     }
 
     /**
@@ -345,7 +359,10 @@ impl View {
 
     #[doc(hidden)]
     pub fn wrap(view : *csfml::sfView) -> View {
-        View { dropable: false, view : view }
+        View { 
+            dropable: false, 
+            view : view
+        }
     } 
 
     #[doc(hidden)]

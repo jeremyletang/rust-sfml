@@ -139,7 +139,9 @@ impl Request {
     * Return a new option to HttpRequest object, or None
     */
     pub fn new() -> Request {
-        Request { request : unsafe {csfml::sfHttpRequest_create()} }
+        Request { 
+            request : unsafe { csfml::sfHttpRequest_create() }
+        }
     }
 
     /**
@@ -226,7 +228,7 @@ impl Request {
     pub fn set_body(&self, body : ~str) -> () {
         unsafe {
             do str::as_c_str(body) |Body| {
-            csfml::sfHttpRequest_setBody(self.request, Body)
+                csfml::sfHttpRequest_setBody(self.request, Body)
             }
         }
     }
@@ -337,7 +339,9 @@ impl Http {
     * Return a new option to Http object or None
     */
     pub fn create() -> Http {
-        Http { http : unsafe{csfml::sfHttp_create()} }
+        Http { 
+            http : unsafe{ csfml::sfHttp_create() }
+        }
     }
 
     /**
@@ -380,7 +384,9 @@ impl Http {
     * * timeout - Maximum time to wait
     */
     pub fn send_request(&self, request : &Request, timeout : &Time) -> Response {
-        Response { response : unsafe {csfml::sfHttp_sendRequest(self.http, request.unwrap(), timeout.unwrap())}}
+        Response {
+            response : unsafe { csfml::sfHttp_sendRequest(self.http, request.unwrap(), timeout.unwrap()) }
+        }
     }
 }
 

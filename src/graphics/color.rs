@@ -63,7 +63,12 @@ impl Color {
     * Return Color object constructed from the components
     */
     pub fn new_from_RGB(red : u8, green : u8, blue : u8) -> Color {
-        Color { red : red, green : green, blue : blue, alpha : 255}
+        Color {
+            red : red, 
+            green : green, 
+            blue : blue, 
+            alpha : 255
+        }
     }
 
      /**
@@ -78,7 +83,12 @@ impl Color {
     * Return Color object constructed from the components
     */
     pub fn new_from_RGBA(red : u8, green : u8, blue : u8, alpha : u8) -> Color {
-        Color { red : red, green : green, blue : blue, alpha : alpha}
+        Color {
+            red : red, 
+            green : green, 
+            blue : blue, 
+            alpha : alpha
+        }
     }
 
     /**

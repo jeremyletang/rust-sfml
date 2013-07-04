@@ -72,12 +72,14 @@ impl TcpListener {
     * Return a new option to TcpListener object or None
     */
     pub fn new() -> Option<TcpListener> {
-        let list = unsafe {csfml::sfTcpListener_create()};
-        if list == ptr::null() {
+        let list = unsafe { csfml::sfTcpListener_create() };
+        if ptr::is_null(list) {
             None
         }
         else {
-            Some(TcpListener { listener :list})
+            Some(TcpListener { 
+                listener : list
+            })
         }
     }
 
@@ -97,9 +99,11 @@ impl TcpListener {
     * * blocking - true to set the socket as blocking, false for non-blocking
     */
     pub fn set_blocking(&mut self, blocking : bool) -> () {
-        match blocking  {
-            true        => unsafe {csfml::sfTcpListener_setBlocking(self.listener, 1)},
-            false       => unsafe {csfml::sfTcpListener_setBlocking(self.listener, 0)},
+        unsafe {
+            match blocking  {
+                true        => csfml::sfTcpListener_setBlocking(self.listener, 1),
+                false       => csfml::sfTcpListener_setBlocking(self.listener, 0)
+            }
         }
     }
 
@@ -109,7 +113,7 @@ impl TcpListener {
     * Return true if the socket is blocking, false otherwise
     */
     pub fn is_blocking(&self) -> bool {
-        match unsafe {csfml::sfTcpListener_isBlocking(self.listener)} {
+        match unsafe { csfml::sfTcpListener_isBlocking(self.listener) } {
             0 => false,
             _ => true
         }

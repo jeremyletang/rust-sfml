@@ -135,7 +135,9 @@ impl Transform {
     * Return the inverse matrix
     */
     pub fn get_inverse(&self) -> Transform {
-        unsafe {csfml::sfTransform_getInverse(&*self)}
+        unsafe {
+            csfml::sfTransform_getInverse(&*self)
+        }
     }
     
     /**

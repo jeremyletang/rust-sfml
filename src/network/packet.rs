@@ -89,12 +89,14 @@ impl Packet {
     * Return a new sfPacket object
     */
     pub fn new() -> Option<Packet> {
-        let pck = unsafe {csfml::sfPacket_create()};
-        if pck == ptr::null() {
+        let pck = unsafe { csfml::sfPacket_create() };
+        if ptr::is_null(pck) {
             None
         }
         else {
-            Some(Packet { packet : pck})
+            Some(Packet {
+                packet : pck
+            })
         }
     }
 
@@ -104,12 +106,14 @@ impl Packet {
     * Return a new Packet object which is a copy of packet
     */
     pub fn new_copy(packet : &Packet) -> Option<Packet> {
-        let pck = unsafe {csfml::sfPacket_copy(packet.unwrap())};
-        if pck == ptr::null() {
+        let pck = unsafe { csfml::sfPacket_copy(packet.unwrap()) };
+        if ptr::is_null(pck) {
             None
         }
         else{
-            Some(Packet { packet :pck}) 
+            Some(Packet {
+                packet : pck
+            }) 
         }
     }
 
@@ -148,11 +152,9 @@ impl Packet {
     * Return true if all data was read, false otherwise
     */
     pub fn end_of_packet(&self) -> bool {
-        unsafe {
-            match csfml::sfPacket_endOfPacket(self.packet) {
-                0 => false,
-                _ => true
-            }
+        match unsafe { csfml::sfPacket_endOfPacket(self.packet) } {
+            0 => false,
+            _ => true
         }
     }
 
@@ -168,11 +170,9 @@ impl Packet {
     * Return true if last data extraction from packet was successful
     */
     pub fn can_read(&self) -> bool {
-        unsafe {
-            match csfml::sfPacket_canRead(self.packet) {
-                0 => false,
-                _ => true
-            }
+        match unsafe { csfml::sfPacket_canRead(self.packet) } {
+            0 => false,
+            _ => true
         }
     }
 
@@ -180,11 +180,9 @@ impl Packet {
     * Function to extract data from a packet
     */
     pub fn read_bool(&self) -> bool {
-        unsafe {
-            match csfml::sfPacket_readBool(self.packet) {
-                0 => false,
-                _ => true
-            }
+        match unsafe { csfml::sfPacket_readBool(self.packet) } {
+            0 => false,
+            _ => true
         }
     }
 
@@ -373,7 +371,9 @@ impl Packet {
 
     #[doc(hidden)]
     pub fn wrap(packet : *csfml::sfPacket) -> Packet {
-        Packet { packet : packet}
+        Packet {
+            packet : packet
+        }
     }
 }
 

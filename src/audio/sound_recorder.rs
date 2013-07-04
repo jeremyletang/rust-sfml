@@ -117,7 +117,7 @@ impl SoundRecorder {
     * Return true if audio capture is supported, false otherwise
     */
     pub fn is_available() -> bool {
-        match unsafe {csfml::sfSoundRecorder_isAvailable()} {
+        match unsafe { csfml::sfSoundRecorder_isAvailable() } {
             0 => false,
             _ => true
         }

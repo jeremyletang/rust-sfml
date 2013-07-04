@@ -89,7 +89,9 @@ impl IpAddress {
     */
     pub fn new_from_string(address : ~str) -> IpAddress {
         do str::as_c_str(address) |addr_buf| {
-            IpAddress { ip : unsafe {csfml::sfIpAddress_fromString(addr_buf)}}
+            IpAddress {
+                ip : unsafe { csfml::sfIpAddress_fromString(addr_buf) } 
+            }
         }
     }
 
@@ -110,7 +112,9 @@ impl IpAddress {
     * Return the resulting address
     */
     pub fn mew_from_bytes(byte0 : u8, byte1 : u8, byte2 : u8, byte3 : u8) -> IpAddress {
-        IpAddress { ip : unsafe {csfml::sfIpAddress_fromBytes(byte0, byte1, byte2, byte3)}}
+        IpAddress {
+            ip : unsafe { csfml::sfIpAddress_fromBytes(byte0, byte1, byte2, byte3) }
+        }
     }
 
     /**
@@ -127,7 +131,9 @@ impl IpAddress {
     * Return the resulting address
     */
     pub fn new_from_integer(address : u32) -> IpAddress {
-        IpAddress { ip : unsafe {csfml::sfIpAddress_fromInteger(address)}}
+        IpAddress {
+            ip : unsafe { csfml::sfIpAddress_fromInteger(address) } 
+        }
     }
 
     /**
@@ -176,8 +182,8 @@ impl IpAddress {
     * Return the local IP address of the computer
     */
     pub fn get_local_address() -> IpAddress {
-        unsafe {
-            IpAddress { ip : csfml::sfIpAddress_getLocalAddress()}
+        IpAddress {
+            ip : unsafe { csfml::sfIpAddress_getLocalAddress() }
         }
     }
 
@@ -199,14 +205,16 @@ impl IpAddress {
     * Return the public IP address of the computer
     */
     pub fn get_public_address(timeout : &Time) -> IpAddress {
-        unsafe {
-            IpAddress { ip : csfml::sfIpAddress_getPublicAddress(timeout.unwrap())}
-        }
+        IpAddress {
+            ip : unsafe { csfml::sfIpAddress_getPublicAddress(timeout.unwrap()) } 
+    }
     }
     
     #[doc(hidden)]
     pub fn wrap(ip : csfml::sfIpAddress) -> IpAddress {
-        IpAddress {ip : ip}
+        IpAddress {
+            ip : ip
+        }
     }
 
     #[doc(hidden)]

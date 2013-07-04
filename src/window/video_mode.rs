@@ -31,7 +31,7 @@
 */
 
 use extra::c_vec::{CVec, get};
-use std::libc::{c_uint, c_int, size_t};
+use std::libc::{c_uint, size_t};
 
 /**
 * VideoMode defines a video mode (width, height, bpp, frequency) 
@@ -39,11 +39,6 @@ use std::libc::{c_uint, c_int, size_t};
 * Provides functions for getting modes supported by the display device
 *
 */
-pub struct VideoMode {
-    Width: uint,
-    Height: uint,
-    BitsPerPixel: uint
-}
 
 #[doc(hidden)]
 pub mod csfml {
@@ -64,6 +59,12 @@ pub mod csfml {
     }
 }
 
+pub struct VideoMode {
+    Width: uint,
+    Height: uint,
+    BitsPerPixel: uint
+}
+
 impl VideoMode {
 
     /**
@@ -72,7 +73,11 @@ impl VideoMode {
     * Return a new VideoMode
     */
     pub fn new() -> VideoMode {
-        VideoMode{Width : 0, Height : 0, BitsPerPixel : 0}
+        VideoMode{
+            Width : 0, 
+            Height : 0,
+            BitsPerPixel : 0
+        }
     }
     
     /**
@@ -81,7 +86,11 @@ impl VideoMode {
     * Return a new VideoMode initialized
     */
     pub fn new_init(width : uint, height : uint, bitsPerPixel : uint) -> VideoMode {
-        VideoMode{Width : width, Height : height, BitsPerPixel : bitsPerPixel}
+        VideoMode{
+            Width : width,
+            Height : height,
+            BitsPerPixel : bitsPerPixel
+        }
     } 
     
     /**
@@ -94,18 +103,16 @@ impl VideoMode {
     * return true if the video mode is valid for fullscreen mode
     */
     pub fn is_valid(&self) -> bool {
-        let i : c_int;
-        unsafe {
-            i = csfml::sfVideoMode_isValid(csfml::sfVideoMode{Width : self.Width as c_uint, Height : self.Height as c_uint, BitsPerPixel : self.BitsPerPixel as c_uint});
+        let i =  unsafe { csfml::sfVideoMode_isValid(csfml::sfVideoMode{
+            Width : self.Width as c_uint, 
+            Height : self.Height as c_uint, 
+            BitsPerPixel : self.BitsPerPixel as c_uint
+        }) };
+         match i {
+             0 => false,
+             _ => true
         }
-        let tmp : bool;
-        match i {
-            0 => tmp =  false,
-            1 => tmp = true,
-            _ => tmp = true
-        }
-        return tmp;
-    }
+     }
 
     /**
     * Static Method, get the current desktop video mode
@@ -113,11 +120,12 @@ impl VideoMode {
     * return the urrent desktop video mode
     */
     pub fn get_desktop_mode() -> VideoMode {
-        let mode: csfml::sfVideoMode;
-        unsafe {
-           mode = csfml::sfVideoMode_getDesktopMode();
+        let mode = unsafe { csfml::sfVideoMode_getDesktopMode() };
+        VideoMode{
+            Width : mode.Width as uint, 
+            Height : mode.Height as uint, 
+            BitsPerPixel : mode.BitsPerPixel as uint
         }
-        return VideoMode{Width : mode.Width as uint, Height : mode.Height as uint, BitsPerPixel : mode.BitsPerPixel as uint};
     }
 
     /**
@@ -150,16 +158,24 @@ impl VideoMode {
                     d += 1;
                 }
             }
-        return Some(ret_tab);
+        Some(ret_tab)
     }
 
     #[doc(hidden)]
     pub fn unwrap(mode: VideoMode) -> csfml::sfVideoMode {
-        csfml::sfVideoMode{Width : mode.Width as c_uint, Height : mode.Height as c_uint, BitsPerPixel : mode.BitsPerPixel as c_uint}
+        csfml::sfVideoMode{
+            Width : mode.Width as c_uint,
+            Height : mode.Height as c_uint,
+            BitsPerPixel : mode.BitsPerPixel as c_uint
+        }
     }
 
     #[doc(hidden)]
     pub fn wrap(mode: csfml::sfVideoMode) -> VideoMode {
-        VideoMode{Width : mode.Width as uint, Height : mode.Height as uint, BitsPerPixel : mode.BitsPerPixel as uint}
+        VideoMode{
+            Width : mode.Width as uint,
+            Height : mode.Height as uint,
+            BitsPerPixel : mode.BitsPerPixel as uint
+        }
     }
 } 

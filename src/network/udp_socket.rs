@@ -80,12 +80,14 @@ impl UdpSocket {
     * Return a new option to UdpSocket object or None
     */
     pub fn new() -> Option<UdpSocket> {
-        let udp = unsafe {csfml::sfUdpSocket_create()};
-        if udp == ptr::null() {
+        let udp = unsafe { csfml::sfUdpSocket_create() };
+        if ptr::is_null(udp) {
             None
         }
         else {
-            Some(UdpSocket { socket : udp})
+            Some(UdpSocket {
+                socket : udp
+            })
         }
     }
 
@@ -105,9 +107,11 @@ impl UdpSocket {
     * blocking - true to set the socket as blocking, false for non-blocking
     */
     pub fn set_blocking(&self, blocking : bool) -> () {
-        match blocking  {
-            true        => unsafe {csfml::sfUdpSocket_setBlocking(self.socket, 1)},
-            false       => unsafe {csfml::sfUdpSocket_setBlocking(self.socket, 0)},
+        unsafe {
+            match blocking  {
+                true        => csfml::sfUdpSocket_setBlocking(self.socket, 1),
+                false       => csfml::sfUdpSocket_setBlocking(self.socket, 0)
+            }
         }
     }
 
@@ -117,7 +121,7 @@ impl UdpSocket {
     * Return true if the socket is blocking, false otherwise
     */
     pub fn is_blocking(&self) -> bool {
-        match unsafe {csfml::sfUdpSocket_isBlocking(self.socket)} {
+        match unsafe { csfml::sfUdpSocket_isBlocking(self.socket) } {
             0 => false,
             _ => true
         }
@@ -263,7 +267,9 @@ impl UdpSocket {
 
     #[doc(hidden)]
     pub fn wrap(socket : *csfml::sfUdpSocket) -> UdpSocket {
-        UdpSocket {socket : socket}
+        UdpSocket {
+            socket : socket
+        }
     }
     
     #[doc(hidden)]

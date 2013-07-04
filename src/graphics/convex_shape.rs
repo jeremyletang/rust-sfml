@@ -108,12 +108,14 @@ impl ConvexShape {
     * Return a new convexShape object
     */
     pub fn new() -> Option<ConvexShape> {
-        let shape = unsafe {csfml::sfConvexShape_create()};
-        if shape == ptr::null() {
+        let shape = unsafe { csfml::sfConvexShape_create() };
+        if ptr::is_null(shape) {
             None
         }
         else {
-            Some(ConvexShape { convexShape : shape})
+            Some(ConvexShape {
+                convexShape : shape 
+            })
         } 
     }
 
@@ -126,12 +128,14 @@ impl ConvexShape {
     * Return the copied object
     */
     pub fn new_copy(shape : &ConvexShape) -> Option<ConvexShape> {
-        let shape = unsafe {csfml::sfConvexShape_copy(shape.unwrap())};
-        if shape == ptr::null() {
+        let shape = unsafe { csfml::sfConvexShape_copy(shape.unwrap()) };
+        if ptr::is_null(shape) {
             None
         }
         else {
-            Some(ConvexShape { convexShape : shape})
+            Some(ConvexShape {
+                convexShape : shape
+            })
         }
     }
 
@@ -322,7 +326,9 @@ impl ConvexShape {
     * Return the current position
     */
     pub fn get_position(&self) -> Vector2f {
-        unsafe {csfml::sfConvexShape_getPosition(self.convexShape)}
+        unsafe {
+            csfml::sfConvexShape_getPosition(self.convexShape)
+        }
     }
     
     /**
@@ -331,7 +337,9 @@ impl ConvexShape {
     * Return the current scale factors
     */
     pub fn get_scale(&self) -> Vector2f {
-        unsafe {csfml::sfConvexShape_getScale(self.convexShape)}
+        unsafe {
+            csfml::sfConvexShape_getScale(self.convexShape)
+        }
     }
     
     /**
@@ -340,7 +348,9 @@ impl ConvexShape {
     * return the current origin
     */
     pub fn get_origin(&self) -> Vector2f {
-        unsafe {csfml::sfConvexShape_getOrigin(self.convexShape)}
+        unsafe {
+            csfml::sfConvexShape_getOrigin(self.convexShape)
+        }
     }
 
     /**
@@ -354,7 +364,9 @@ impl ConvexShape {
     * Return the index-th point of the shape
     */
     pub fn get_point(&self, index : uint) -> Vector2f {
-        unsafe {csfml::sfConvexShape_getPoint(self.convexShape, index as c_uint)}
+        unsafe {
+            csfml::sfConvexShape_getPoint(self.convexShape, index as c_uint)
+        }
     }
     
     /**
@@ -420,9 +432,11 @@ impl ConvexShape {
     * * resetRect - Should the texture rect be reset to the size of the new texture?
     */
     pub fn set_texture(&mut self, texture : &Texture, resetRect : bool) -> () {
-        match resetRect {
-            true        => unsafe {csfml::sfConvexShape_setTexture(self.convexShape, texture.unwrap(), 1)},
-            false       => unsafe {csfml::sfConvexShape_setTexture(self.convexShape, texture.unwrap(), 0)}
+        unsafe {
+            match resetRect {
+                true        => csfml::sfConvexShape_setTexture(self.convexShape, texture.unwrap(), 1),
+                false       => csfml::sfConvexShape_setTexture(self.convexShape, texture.unwrap(), 0)
+            }
         }
     }
 
@@ -495,8 +509,8 @@ impl ConvexShape {
     * Return the shape's texture
     */
     pub fn get_texture(&self) -> Option<Texture> {
-        let tex = unsafe {csfml::sfConvexShape_getTexture(self.convexShape)};
-        if tex == ptr::null() {
+        let tex = unsafe { csfml::sfConvexShape_getTexture(self.convexShape) };
+        if ptr::is_null(tex) {
             None
         }
         else {
@@ -510,7 +524,9 @@ impl ConvexShape {
     * Return the fill color of the shape
     */
     pub fn get_fill_color(&self) -> Color {
-        unsafe {csfml::sfConvexShape_getFillColor(self.convexShape)}
+        unsafe {
+            csfml::sfConvexShape_getFillColor(self.convexShape)
+        }
     }
     
     /**
@@ -519,7 +535,9 @@ impl ConvexShape {
     * Return the outline color of the shape
     */
     pub fn get_outline_color(&self) -> Color {
-        unsafe {csfml::sfConvexShape_getOutlineColor(self.convexShape)}
+        unsafe {
+            csfml::sfConvexShape_getOutlineColor(self.convexShape)
+        }
     }
     
     /**
@@ -636,7 +654,9 @@ impl ConvexShape {
 
     #[doc(hidden)]
     pub fn wrap(convexShape : *csfml::sfConvexShape) -> ConvexShape {
-        ConvexShape { convexShape : convexShape}
+        ConvexShape {
+            convexShape : convexShape
+        }
     }
     
     #[doc(hidden)]

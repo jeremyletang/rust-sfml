@@ -120,15 +120,17 @@ impl RenderTexture {
     * Return a new option on RenderTexture object, or None if it failed
     */
     pub fn new(width : uint, height : uint, depthBuffer : bool) -> Option<RenderTexture> {
-        let tex = match depthBuffer {
-            false       =>   unsafe {csfml::sfRenderTexture_create(width as c_uint, height as c_uint, 0) },
-            true        =>   unsafe {csfml::sfRenderTexture_create(width as c_uint, height as c_uint, 1) }
-        };
-        if tex == ptr::null() {
+            let tex = match depthBuffer {
+                false       => unsafe { csfml::sfRenderTexture_create(width as c_uint, height as c_uint, 0) },
+                true        => unsafe { csfml::sfRenderTexture_create(width as c_uint, height as c_uint, 1) }
+            };
+        if ptr::is_null(tex) {
             None
         }
         else {
-            Some(RenderTexture {renderTexture : tex})
+            Some(RenderTexture {
+                renderTexture : tex
+            })
         }
     }
     
@@ -150,13 +152,14 @@ impl RenderTexture {
     * * active - true to activate, false to deactivate
     */
     pub fn set_active(&mut self, active : bool) -> bool {
-        match match active {
-            false       => unsafe {csfml::sfRenderTexture_setActive(self.renderTexture, 0)},
-            true        => unsafe {csfml::sfRenderTexture_setActive(self.renderTexture, 1)}
+        match unsafe {
+            match active {
+                false       => csfml::sfRenderTexture_setActive(self.renderTexture, 0),
+                true        => csfml::sfRenderTexture_setActive(self.renderTexture, 1)
+            }
         } {
             0   => false,
             _   => true
-            
         }
     }
 
@@ -289,7 +292,7 @@ impl RenderTexture {
     * Return the converted point, in "world" units
     */
     pub fn map_pixel_to_coords_current_view(&self, point : &Vector2i) -> Vector2f {
-        let view = unsafe {csfml::sfRenderTexture_getView(self.renderTexture)};
+        let view = unsafe { csfml::sfRenderTexture_getView(self.renderTexture) };
         unsafe {
             csfml::sfRenderTexture_mapPixelToCoords(self.renderTexture, *point, view)
         }
@@ -342,7 +345,7 @@ impl RenderTexture {
     * * point - Point to convert
     */
     pub fn map_coords_to_pixel_current_view(&self, point : &Vector2f) -> Vector2i {
-        let view = unsafe {csfml::sfRenderTexture_getView(self.renderTexture)};
+        let view = unsafe { csfml::sfRenderTexture_getView(self.renderTexture) };
         unsafe {
             csfml::sfRenderTexture_mapCoordsToPixel(self.renderTexture, *point, view)
         }
@@ -452,8 +455,8 @@ impl RenderTexture {
     * Return the target texture
     */
     pub fn get_texture(&self) -> Option<Texture> {
-        let tex = unsafe {csfml::sfRenderTexture_getTexture(self.renderTexture)};
-        if tex == ptr::null() {
+        let tex = unsafe { csfml::sfRenderTexture_getTexture(self.renderTexture) };
+        if ptr::is_null(tex) {
             None
         }
         else {
@@ -468,9 +471,11 @@ impl RenderTexture {
     * * smooth - true to enable smoothing, false to disable it
     */
     pub fn set_smooth(&mut self, smooth : bool) -> () {
-        match smooth {
-            true        => unsafe {csfml::sfRenderTexture_setSmooth(self.renderTexture, 1)},
-            false       => unsafe {csfml::sfRenderTexture_setSmooth(self.renderTexture, 0)}
+        unsafe {
+            match smooth {
+                true        => csfml::sfRenderTexture_setSmooth(self.renderTexture, 1),
+                false       => csfml::sfRenderTexture_setSmooth(self.renderTexture, 0)
+            }
         }
     }
     
@@ -480,7 +485,7 @@ impl RenderTexture {
     * Return true if smoothing is enabled, false if it is disabled
     */
     pub fn is_smooth(&self) -> bool {
-        match unsafe {csfml::sfRenderTexture_isSmooth(self.renderTexture)} {
+        match unsafe { csfml::sfRenderTexture_isSmooth(self.renderTexture) } {
             0 => false,
             _ => true
         }

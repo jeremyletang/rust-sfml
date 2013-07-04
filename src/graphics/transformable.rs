@@ -81,12 +81,14 @@ impl Transformable {
     * Return a new Transformable object
     */
     pub fn new() -> Option<Transformable> {
-        let tran = unsafe {csfml::sfTransformable_create()};
-        if tran == ptr::null() {
+        let tran = unsafe { csfml::sfTransformable_create() };
+        if ptr::is_null(tran) {
             None
         }
         else {
-            Some(Transformable { trans : tran})
+            Some(Transformable {
+                trans : tran
+            })
         }
     }
     
@@ -98,12 +100,14 @@ impl Transformable {
     * Return the copied object
     */
     pub fn new_copy(transformable : &Transformable) -> Option<Transformable> {
-        let tran = unsafe {csfml::sfTransformable_copy(transformable.unwrap())};
-        if tran == ptr::null() {
+        let tran = unsafe { csfml::sfTransformable_copy(transformable.unwrap()) };
+        if ptr::is_null(tran) {
             None
         }
         else {
-            Some(Transformable { trans :tran}) 
+            Some(Transformable {
+                trans :tran
+            }) 
         }
     }
 
@@ -289,7 +293,9 @@ impl Transformable {
 
     #[doc(hidden)]
     pub fn wrap(transformable : *csfml::sfTransformable) -> Transformable {
-        Transformable {trans : transformable}
+        Transformable {
+            trans : transformable
+        }
     }
 
     #[doc(hidden)]

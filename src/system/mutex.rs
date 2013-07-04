@@ -57,7 +57,9 @@ impl Mutex {
     * Create a new Mutex
     */
     pub fn new() -> Mutex {
-        Mutex {mutex : unsafe {csfml::sfMutex_create()}}
+        Mutex {
+            mutex : unsafe { csfml::sfMutex_create() }
+        }
     }
 
     

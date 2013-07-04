@@ -95,8 +95,17 @@ impl Texture {
     *
     * Return a new Option to Texture object or None
     */
-    pub fn new(width: uint, height : uint) -> Texture {
-        Texture { texture : unsafe {csfml::sfTexture_create(width as c_uint, height as c_uint)}, dropable : true}
+    pub fn new(width: uint, height : uint) -> Option<Texture> {
+        let tex = unsafe { csfml::sfTexture_create(width as c_uint, height as c_uint) };
+        if ptr::is_null(tex) {
+            None
+        }
+        else {
+            Some(Texture {
+                texture : tex,
+                dropable : true
+            })
+        }
     }
     
     /**
@@ -107,9 +116,19 @@ impl Texture {
     *
     * Return a new Option to Texture object or None
     */
-    pub fn new_from_file(filename : ~str) -> Texture {
+    pub fn new_from_file(filename : ~str) -> Option<Texture> {
+        let mut tex = ptr::null();
         do str::as_c_str(filename) |filebuf| {
-            Texture { texture : unsafe {csfml::sfTexture_createFromFile(filebuf, ptr::null())}, dropable : true }
+            tex = unsafe { csfml::sfTexture_createFromFile(filebuf, ptr::null()) };
+        }
+        if ptr::is_null(tex) {
+            None
+        }
+        else {
+            Some(Texture {
+                texture : tex,
+                dropable : true
+            })
         }
     }
 
@@ -122,9 +141,19 @@ impl Texture {
     *
     * Return a new Option to Texture object or None
     */
-    pub fn new_from_file_with_rect(filename : ~str, area : &IntRect) -> Texture {
+    pub fn new_from_file_with_rect(filename : ~str, area : &IntRect) -> Option<Texture> {
+        let mut tex = ptr::null();
         do str::as_c_str(filename) |filebuf| {
-            Texture { texture : unsafe {csfml::sfTexture_createFromFile(filebuf, &*area)}, dropable : true }
+            tex = unsafe { csfml::sfTexture_createFromFile(filebuf, &*area)};
+        }
+        if ptr::is_null(tex) {
+            None
+        }
+        else {
+            Some(Texture {
+                texture : tex,
+                dropable : true
+            })
         }
     }
     
@@ -136,8 +165,17 @@ impl Texture {
     *
     * Return an option to the copied texture or None
     */
-    pub fn new_copy(texture : &Texture) -> Texture {
-        Texture { texture : unsafe {csfml::sfTexture_copy(texture.unwrap())}, dropable : true}
+    pub fn new_copy(texture : &Texture) -> Option<Texture> {
+        let tex = unsafe { csfml::sfTexture_copy(texture.unwrap()) };
+        if ptr::is_null(tex) {
+            None
+        }
+        else {
+            Some(Texture {
+                texture : tex,
+                dropable : true
+            })
+        }
     }
 
     /**
@@ -149,8 +187,17 @@ impl Texture {
     *
     * Return a new Option to Texture object or None
     */
-    pub fn new_from_image_with_rect(image : &Image, area : &IntRect) -> Texture{
-        Texture { texture : unsafe { csfml::sfTexture_createFromImage(image.unwrap(), &*area)}, dropable : true}
+    pub fn new_from_image_with_rect(image : &Image, area : &IntRect) -> Option<Texture> {
+        let tex = unsafe { csfml::sfTexture_createFromImage(image.unwrap(), &*area) };
+        if ptr::is_null(tex) {
+            None
+        }
+        else {
+            Some(Texture {
+                texture : tex,
+                dropable : true
+            })
+        }
     }
 
     /**
@@ -161,8 +208,17 @@ impl Texture {
     *
     * Return a new Option to Texture object or None
     */
-    pub fn new_from_image(image : &Image) -> Texture{
-        Texture { texture : unsafe { csfml::sfTexture_createFromImage(image.unwrap(), ptr::null())}, dropable : true}
+    pub fn new_from_image(image : &Image) -> Option<Texture> {
+        let tex = unsafe { csfml::sfTexture_createFromImage(image.unwrap(), ptr::null()) };
+        if ptr::is_null(tex) {
+            None
+        }
+        else {
+            Some(Texture {
+                texture : tex,
+                dropable : true
+            })
+        }
     }
     
     /**
@@ -239,9 +295,11 @@ impl Texture {
     * * smooth - true to enable smoothing, false to disable it
     */
     pub fn set_smooth(&mut self, smooth : bool) -> () {
-        match smooth {
-            true        => unsafe {csfml::sfTexture_setSmooth(self.texture, 1)},
-            false       => unsafe {csfml::sfTexture_setSmooth(self.texture, 0)}
+        unsafe {
+            match smooth {
+                true        => csfml::sfTexture_setSmooth(self.texture, 1),
+                false       => csfml::sfTexture_setSmooth(self.texture, 0)
+            }
         }
     }
 
@@ -251,7 +309,7 @@ impl Texture {
     * Return true if smoothing is enabled, false if it is disabled
     */
     pub fn is_smooth(&self) -> bool {
-        match unsafe {csfml::sfTexture_isSmooth(self.texture)} {
+        match unsafe { csfml::sfTexture_isSmooth(self.texture) } {
             0 => false,
             _ => true
         }
@@ -278,9 +336,11 @@ impl Texture {
     * * repeated  - true to repeat the texture, false to disable repeating
     */
     pub fn set_repeated(&mut self, repeated : bool) -> () {
-        match repeated {
-            true        => unsafe {csfml::sfTexture_setRepeated(self.texture, 1)},
-            false       => unsafe {csfml::sfTexture_setRepeated(self.texture, 0)}
+        unsafe {
+            match repeated {
+                true        => csfml::sfTexture_setRepeated(self.texture, 1),
+                false       => csfml::sfTexture_setRepeated(self.texture, 0)
+            }
         }
     }
     
@@ -328,7 +388,7 @@ impl Texture {
     */
     pub fn copy_to_image(&self) -> Option<Image> {
         let img = unsafe {csfml::sfTexture_copyToImage(self.texture)};
-        if img == ptr::null() {
+        if ptr::is_null(img) {
             None
         }
         else {
@@ -343,7 +403,10 @@ impl Texture {
     
     #[doc(hidden)]
     pub fn wrap(texture : *csfml::sfTexture) -> Texture {
-        Texture { texture : texture, dropable : false}
+        Texture { 
+            texture : texture,
+            dropable : false
+        }
     }
 }
 

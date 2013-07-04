@@ -67,12 +67,15 @@ impl SoundBufferRecorder {
     * Return a new option to SoundBufferRecorder object or None if failed
     */
     pub fn new() -> Option<SoundBufferRecorder> {
-        let buffer : *csfml::sfSoundBufferRecorder;
-        unsafe { buffer = csfml::sfSoundBufferRecorder_create()};
-        if buffer == ptr::null() {
-            return None;
+        let buffer = unsafe { csfml::sfSoundBufferRecorder_create() };
+        if ptr::is_null(buffer) {
+            None
         }
-        Some(SoundBufferRecorder{soundBufferRecorder : buffer})
+        else {
+            Some(SoundBufferRecorder{
+                soundBufferRecorder : buffer
+            })
+        }
     }
     
     /**
@@ -129,8 +132,8 @@ impl SoundBufferRecorder {
     * Return Read-only access to the sound buffer
     */
     pub fn get_buffer(&self) -> Option<SoundBuffer> {
-        let buff = unsafe {csfml::sfSoundBufferRecorder_getBuffer(self.soundBufferRecorder)};
-        if buff == ptr::null() {
+        let buff = unsafe { csfml::sfSoundBufferRecorder_getBuffer(self.soundBufferRecorder) };
+        if ptr::is_null(buff) {
             None
         }
         else {

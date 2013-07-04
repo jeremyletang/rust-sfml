@@ -91,12 +91,14 @@ impl Image {
     * Return a new Image object
     */
     pub fn new(width : uint, height : uint) -> Option<Image> {
-        let image = unsafe {csfml::sfImage_create(width as c_uint, height as c_uint)};
-        if image == ptr::null() {
+        let image = unsafe { csfml::sfImage_create(width as c_uint, height as c_uint) };
+        if ptr::is_null(image) {
             None
         }
         else {
-            Some(Image { image : image})
+            Some(Image { 
+                image : image
+            })
         }
     }
 
@@ -111,12 +113,14 @@ impl Image {
     * Return a new Image object
     */
     pub fn new_from_color(width : uint, height : uint, color : &Color) -> Option<Image> {
-        let image = unsafe {csfml::sfImage_createFromColor(width as c_uint, height as c_uint, *color)};
-        if image == ptr::null() {
+        let image = unsafe { csfml::sfImage_createFromColor(width as c_uint, height as c_uint, *color) };
+        if ptr::is_null(image) {
             None
         }
         else {
-            Some(Image { image : image})
+            Some(Image { 
+                image : image
+            })
         }
     }
     
@@ -134,12 +138,14 @@ impl Image {
     */
     pub fn new_from_file(filename : ~str) -> Option<Image> {
         do str::as_c_str(filename) |filebuf| {
-            let image = unsafe {csfml::sfImage_createFromFile(filebuf)};
-            if image == ptr::null() {
+            let image = unsafe { csfml::sfImage_createFromFile(filebuf) };
+            if ptr::is_null(image) {
                 None
             }
             else {
-               Some(Image { image : image}) 
+               Some(Image {
+                   image : image
+               }) 
             }
             
         }
@@ -154,12 +160,14 @@ impl Image {
     * Return copied object
     */
     pub fn new_copy(image : &Image) -> Option<Image> {
-        let image = unsafe {csfml::sfImage_copy(image.unwrap())};
-        if image == ptr::null() {
+        let image = unsafe { csfml::sfImage_copy(image.unwrap()) };
+        if ptr::is_null(image) {
             None
         }
         else {
-            Some(Image { image : image})
+            Some(Image {
+                image : image
+            })
         }
         
     }
@@ -179,12 +187,14 @@ impl Image {
     * Return A new Image object
     */
     pub fn create_from_pixels(width : uint, height : uint, pixels : ~[u8]) -> Option<Image> {
-        let image = unsafe {csfml::sfImage_createFromPixels(width as c_uint, height as c_uint, vec::raw::to_ptr(pixels))};
-        if image == ptr::null() {
+        let image = unsafe { csfml::sfImage_createFromPixels(width as c_uint, height as c_uint, vec::raw::to_ptr(pixels)) };
+        if ptr::is_null(image) {
             None
         }
         else {
-            Some(Image { image : image})
+            Some(Image {
+                image : image
+            })
         }
     }
 
@@ -203,7 +213,7 @@ impl Image {
     */
     pub fn save_to_file(&self, filename : ~str) -> bool {
         do str::as_c_str(filename) |filebuf| {
-            match unsafe {csfml::sfImage_saveToFile(self.image, filebuf)} {
+            match unsafe { csfml::sfImage_saveToFile(self.image, filebuf) } {
                 0 => false,
                 _ => true
             }
@@ -216,7 +226,9 @@ impl Image {
     * Return the size in pixels
     */
     pub fn get_size(&self) -> Vector2u {
-        unsafe {csfml::sfImage_getSize(self.image)}
+        unsafe {
+            csfml::sfImage_getSize(self.image)
+        }
     }
     
     /**
@@ -268,7 +280,9 @@ impl Image {
     * Return the Color of the pixel at coordinates (x, y)
     */
     pub fn get_pixel(&self, x : uint, y : uint) -> Color {
-        unsafe {csfml::sfImage_getPixel(self.image, x as c_uint, y as c_uint)}
+        unsafe {
+            csfml::sfImage_getPixel(self.image, x as c_uint, y as c_uint)
+        }
     }
 
     /**
@@ -310,15 +324,19 @@ impl Image {
     * * applyAlpha - Should the copy take in account the source transparency?
     */
     pub fn copy_image(&mut self, source : &Image, destX : uint, destY : uint, sourceRect : &IntRect, applyAlpha : bool) -> () {
-        match applyAlpha {
-            true        =>  unsafe { csfml::sfImage_copyImage(self.image, source.unwrap(), destX as c_uint, destY as c_uint, *sourceRect, 1) },
-            false       =>  unsafe { csfml::sfImage_copyImage(self.image, source.unwrap(), destX as c_uint, destY as c_uint, *sourceRect, 0) }
+        unsafe {
+            match applyAlpha {
+                true        =>  csfml::sfImage_copyImage(self.image, source.unwrap(), destX as c_uint, destY as c_uint, *sourceRect, 1),
+                false       =>  csfml::sfImage_copyImage(self.image, source.unwrap(), destX as c_uint, destY as c_uint, *sourceRect, 0)
+            }
         }
     }
 
     #[doc(hidden)]
     pub fn wrap(image : *csfml::sfImage) -> Image {
-        Image { image : image }
+        Image {
+            image : image
+        }
     }
     
     #[doc(hidden)]

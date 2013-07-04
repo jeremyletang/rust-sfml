@@ -185,14 +185,27 @@ impl RenderWindow {
     pub fn new(mode : VideoMode, title : ~str, style : WindowStyle, settings : &ContextSettings) -> Option<RenderWindow> {
         let mut sfRenderWin: *csfml::sfRenderWindow = ptr::null();
         do str::as_c_str(title) |title_buf| {
-            unsafe { sfRenderWin = csfml::sfRenderWindow_create(VideoMode::unwrap(mode), title_buf, style as u32, settings); }
+            unsafe { 
+                sfRenderWin = csfml::sfRenderWindow_create(VideoMode::unwrap(mode), title_buf, style as u32, settings); 
+            }
         };
-        let sfEv : csfml::sfEvent = csfml::sfEvent {typeEvent : 0, p1 : 0, p2 : 0, p3 : 0 as c_float, p4 : 0, p5 : 0};//{0, 0, 0, 0 as float, 0, 0};
-        if sfRenderWin == ptr::null() {
+        let sfEv = csfml::sfEvent {
+            typeEvent : 0, 
+            p1 : 0, 
+            p2 : 0, 
+            p3 : 0 as c_float, 
+            p4 : 0, 
+            p5 : 0
+        };
+        if ptr::is_null(sfRenderWin) {
             None
         }
         else {
-            Some (RenderWindow { renderWindow : sfRenderWin, event : sfEv, titleLength : title.len()})
+            Some (RenderWindow {
+                renderWindow : sfRenderWin, 
+                event : sfEv, 
+                titleLength : title.len()
+            })
         }
     }
 
@@ -219,13 +232,25 @@ impl RenderWindow {
     */
     pub fn new_with_unicode(mode : VideoMode, title : ~[u32], style : WindowStyle, settings : &ContextSettings) -> Option<RenderWindow> {
         let sfRenderWin: *csfml::sfRenderWindow;
-        unsafe { sfRenderWin = csfml::sfRenderWindow_createUnicode(VideoMode::unwrap(mode), vec::raw::to_ptr(title), style as u32, settings); }
-        let sfEv : csfml::sfEvent = csfml::sfEvent {typeEvent : 0, p1 : 0, p2 : 0, p3 : 0 as c_float, p4 : 0, p5 : 0};//{0, 0, 0, 0 as float, 0, 0};
-        if sfRenderWin == ptr::null() {
+        unsafe { 
+            sfRenderWin = csfml::sfRenderWindow_createUnicode(VideoMode::unwrap(mode), vec::raw::to_ptr(title), style as u32, settings); 
+        }
+        let sfEv = csfml::sfEvent {
+            typeEvent : 0, 
+            p1 : 0, 
+            p2 : 0, 
+            p3 : 0 as c_float, 
+            p4 : 0, 
+            p5 : 0};
+        if ptr::is_null(sfRenderWin) {
             None
         }
         else {
-            Some (RenderWindow { renderWindow : sfRenderWin, event : sfEv, titleLength : title.len()})
+            Some (RenderWindow { 
+                renderWindow : sfRenderWin, 
+                event : sfEv, 
+                titleLength : title.len()
+            })
         }
     }
     
@@ -276,9 +301,11 @@ impl RenderWindow {
             }
         };
         if haveEvent == false {
-            return event::NoEvent;
+            event::NoEvent
         }
-        self.get_wrapped_event()
+        else {
+            self.get_wrapped_event()
+        }
     }
     
     /**
@@ -302,18 +329,24 @@ impl RenderWindow {
             }
         };
         if haveEvent == false {
-            return event::NoEvent;
+            event::NoEvent
         }
-        self.get_wrapped_event()
+        else {
+            self.get_wrapped_event()
+        }
     }
     
     pub fn get_wrapped_event(&self) ->event::Event {
         match self.event.typeEvent as c_uint {
             0   => event::Closed,
-            1   => event::Resized{width : self.event.p1 as int, height : self.event.p2 as int},
+            1   => event::Resized{ width : self.event.p1 as int, height : self.event.p2 as int },
             2   => event::LostFocus,
             3   => event::GainedFocus,
-            4   => event::TextEntered{code : self.event.p1 as char},
+            4   => {
+                event::TextEntered { 
+                    code : self.event.p1 as char 
+                }
+            },
             5   => {
                 let al : bool = match self.event.p2 {
                     0 => false,
@@ -331,8 +364,14 @@ impl RenderWindow {
                     0 => false,
                     _ => true
                 };
-                let k : keyboard::Key = unsafe {cast::transmute(self.event.p1 as int)};
-                event::KeyPressed{code : k, alt : al, ctrl : ct, shift :sh, system : sy}
+                let k : keyboard::Key = unsafe { cast::transmute(self.event.p1 as int) };
+                event::KeyPressed{ 
+                    code : k, 
+                    alt : al, 
+                    ctrl : ct, 
+                    shift :sh, 
+                    system : sy 
+                }
             },
             6   => {
                 let al : bool = match self.event.p2 {
@@ -351,44 +390,76 @@ impl RenderWindow {
                     0 => false,
                     _ => true
                 };
-                let k : keyboard::Key = unsafe {cast::transmute(self.event.p1 as int)};
-                event::KeyReleased{code : k, alt : al, ctrl : ct, shift :sh, system : sy}
+                let k : keyboard::Key = unsafe { cast::transmute(self.event.p1 as int) };
+                event::KeyReleased {
+                    code : k, 
+                    alt : al, 
+                    ctrl : ct, 
+                    shift :sh, 
+                    system : sy 
+                }
             },
-            7   => event::MouseWheelMoved{
-                     delta : unsafe { cast::transmute::<c_uint, c_int>(self.event.p1) }  as int,
-                     x :     unsafe { cast::transmute::<c_uint, c_int>(self.event.p2) }  as int,
-                     y :     unsafe { cast::transmute::<c_float, c_int>(self.event.p3) } as int
-                   },
+            7   => {
+                event::MouseWheelMoved{
+                    delta : unsafe { cast::transmute::<c_uint, c_int>(self.event.p1) }  as int,
+                    x :     unsafe { cast::transmute::<c_uint, c_int>(self.event.p2) }  as int,
+                    y :     unsafe { cast::transmute::<c_float, c_int>(self.event.p3) } as int
+                }
+            },
             8   => {
                 let button : mouse::MouseButton = unsafe {cast::transmute(self.event.p1 as int)};
                 event::MouseButtonPressed{
-                  button : button,
-                  x :      unsafe { cast::transmute::<c_uint, c_int>(self.event.p2) as int },
-                  y :      unsafe { cast::transmute::<c_float, c_int>(self.event.p3) as int }
+                    button : button,
+                    x :      unsafe { cast::transmute::<c_uint, c_int>(self.event.p2) as int },
+                    y :      unsafe { cast::transmute::<c_float, c_int>(self.event.p3) as int }
                 }
             },
             9   => {
-                let button : mouse::MouseButton = unsafe {cast::transmute(self.event.p1 as int)};
+                let button : mouse::MouseButton = unsafe { cast::transmute(self.event.p1 as int) };
                 event::MouseButtonReleased{
-                  button : button,
-                  x :      unsafe { cast::transmute::<c_uint, c_int>(self.event.p2) as int },
-                  y :      unsafe { cast::transmute::<c_float, c_int>(self.event.p3) as int }
+                    button : button,
+                    x :      unsafe { cast::transmute::<c_uint, c_int>(self.event.p2) as int },
+                    y :      unsafe { cast::transmute::<c_float, c_int>(self.event.p3) as int }
                 }
             },
-            10  => event::MouseMoved{
-                     x : unsafe { cast::transmute::<c_uint, c_int>(self.event.p1) } as int,
-                     y : unsafe { cast::transmute::<c_uint, c_int>(self.event.p2) } as int
-                   },
+            10  => { 
+                event::MouseMoved {
+                    x : unsafe { cast::transmute::<c_uint, c_int>(self.event.p1) } as int,
+                    y : unsafe { cast::transmute::<c_uint, c_int>(self.event.p2) } as int
+                }
+            },
             11  => event::MouseEntered,
             12  => event::MouseLeft,
-            13  => event::JoystickButtonPressed{joystickid : self.event.p1 as int, button : self.event.p2 as int},
-            14  => event::JoystickButtonReleased{joystickid : self.event.p1 as int, button : self.event.p2 as int},
-            15  => {
-                let ax : joystick::Axis = unsafe {cast::transmute(self.event.p2 as int)};
-                event::JoystickMoved{joystickid : self.event.p1 as uint, axis : ax, position : self.event.p3 as float}
+            13  => {
+                event::JoystickButtonPressed {
+                    joystickid : self.event.p1 as int, 
+                    button : self.event.p2 as int
+                }
             },
-            16  => event::JoystickConnected{joystickid : self.event.p1 as uint},
-            17  => event::JoystickDisconnected{joystickid : self.event.p1 as uint},
+            14  => { 
+                event::JoystickButtonReleased{
+                    joystickid : self.event.p1 as int, 
+                    button : self.event.p2 as int
+                }
+            },
+            15  => {
+                let ax : joystick::Axis = unsafe { cast::transmute(self.event.p2 as int) };
+                event::JoystickMoved{
+                    joystickid : self.event.p1 as uint, 
+                    axis : ax, 
+                    position : self.event.p3 as float
+                }
+            },
+            16  => { 
+                event::JoystickConnected{
+                    joystickid : self.event.p1 as uint
+                }
+            },
+            17  => { 
+                event::JoystickDisconnected{
+                    joystickid : self.event.p1 as uint
+                }
+            },
             _ => event::NoEvent
         }
     }
@@ -466,7 +537,9 @@ impl RenderWindow {
     * Return a structure containing the OpenGL context settings
     */
     pub fn get_settings(&self) -> ContextSettings {
-        unsafe {csfml::sfRenderWindow_getSettings(self.renderWindow)}
+        unsafe {
+            csfml::sfRenderWindow_getSettings(self.renderWindow)
+        }
     }
 
     /**
@@ -578,11 +651,10 @@ impl RenderWindow {
     * Return true if operation was successful, false otherwise
     */
     pub fn set_active(&mut self, enabled : bool) -> bool {
-        let tmp : sfBool =
-            match enabled {
-                true    => 1,
-                false   => 0
-            };
+        let tmp : sfBool = match enabled {
+            true    => 1,
+            false   => 0
+        };
         let res : sfBool = unsafe {
             csfml::sfRenderWindow_setActive(self.renderWindow, tmp)
         };
@@ -679,14 +751,18 @@ impl RenderWindow {
     *
     */
     pub fn push_GL_states(&mut self) -> () {
-        unsafe {csfml::sfRenderWindow_pushGLStates(self.renderWindow)}
+        unsafe {
+            csfml::sfRenderWindow_pushGLStates(self.renderWindow)
+        }
     }
 
     /**
     * Restore the previously saved OpenGL render states and matrices
     */
     pub fn pop_GL_states(&mut self) -> () {
-        unsafe {csfml::sfRenderWindow_popGLStates(self.renderWindow)}
+        unsafe {
+            csfml::sfRenderWindow_popGLStates(self.renderWindow)
+        }
     }
 
     /**
@@ -699,7 +775,9 @@ impl RenderWindow {
     * calls will work as expected.
     */
     pub fn reset_GL_states(&mut self) -> () {
-        unsafe {csfml::sfRenderWindow_resetGLStates(self.renderWindow)}
+        unsafe {
+            csfml::sfRenderWindow_resetGLStates(self.renderWindow)
+        }
     }
 
     /**
@@ -803,8 +881,8 @@ impl RenderWindow {
     * Return a new image containing the captured contents
     */
     pub fn capture(&mut self) -> Option<Image> {
-        let img = unsafe {csfml::sfRenderWindow_capture(self.renderWindow)};
-        if img == ptr::null() {
+        let img = unsafe { csfml::sfRenderWindow_capture(self.renderWindow) };
+        if ptr::is_null(img) {
             None
         }
         else {
@@ -830,7 +908,9 @@ impl RenderWindow {
     * Return the current active view
     */
     pub fn get_view(&self) -> View {
-        View::wrap(unsafe {csfml::sfRenderWindow_getView(self.renderWindow)})
+        View::wrap(unsafe {
+            csfml::sfRenderWindow_getView(self.renderWindow)
+        })
     }
     
     /**
@@ -839,7 +919,9 @@ impl RenderWindow {
     * Return the default view of the render window
     */
     pub fn get_default_view(&self) -> View {
-        View::wrap(unsafe {csfml::sfRenderWindow_getDefaultView(self.renderWindow)})
+        View::wrap(unsafe {
+            csfml::sfRenderWindow_getDefaultView(self.renderWindow)
+        })
     }
     
     /**
@@ -954,7 +1036,7 @@ impl RenderWindow {
     * * point - Point to convert
     */
     pub fn map_coords_to_pixel_current_view(&self, point : &Vector2f) -> Vector2i {
-        let currView = unsafe {csfml::sfRenderWindow_getView(self.renderWindow)};
+        let currView = unsafe { csfml::sfRenderWindow_getView(self.renderWindow) };
         unsafe {
             csfml::sfRenderWindow_mapCoordsToPixel(self.renderWindow, *point, currView)
         }

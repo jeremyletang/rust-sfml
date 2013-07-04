@@ -43,6 +43,7 @@ pub mod csfml {
 
     pub extern "C" {
         fn sfClock_create() -> *sfClock;
+        fn sfClock_copy(clock : *sfClock) -> *sfClock;
         fn sfClock_destroy(clock : *sfClock) -> ();
         fn sfClock_getElapsedTime(clock : *sfClock) -> csfml::sfTime;
         fn sfClock_restart(clock : *sfClock) -> csfml::sfTime;
@@ -61,7 +62,19 @@ impl Clock {
     * Create a new Clock and start it.
     */
     pub fn new() -> Clock {
-        Clock {clock : unsafe {csfml::sfClock_create()}}
+        Clock {
+            clock : unsafe { csfml::sfClock_create() }
+        }
+    }
+
+    /**
+    * Create a clock by copying an extant one
+    * 
+    */
+    pub fn new_copy(clock : &Clock) -> Clock {
+        Clock {
+            clock : unsafe { csfml::sfClock_copy(clock.unwrap()) } 
+        }
     }
 
     /**
@@ -76,10 +89,14 @@ impl Clock {
     /**
     * Restart a Clock.
     */
-    pub fn restart(&self) -> Time {
+    pub fn restart(&mut self) -> Time {
         unsafe {
             Time::wrap(csfml::sfClock_restart(self.clock))
         }
+    }
+
+    fn unwrap(&self) -> *csfml::sfClock {
+        self.clock
     }
 }
 

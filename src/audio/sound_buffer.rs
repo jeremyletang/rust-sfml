@@ -80,12 +80,19 @@ impl SoundBuffer {
     pub fn new(filename : ~str) -> Option<SoundBuffer> {
         let mut soundBuffer : *csfml::sfSoundBuffer = ptr::null();
         do str::as_c_str(filename) |filename_buf| {
-            unsafe { soundBuffer = csfml::sfSoundBuffer_createFromFile(filename_buf); }
+            unsafe { 
+                soundBuffer = csfml::sfSoundBuffer_createFromFile(filename_buf);
+            }
         };
-        if soundBuffer == ptr::null() {
-            return None;
+        if ptr::is_null(soundBuffer) {
+            None
         }
-        Some(SoundBuffer{soundBuffer : soundBuffer, dropable : true})
+        else {
+            Some(SoundBuffer{
+                soundBuffer : soundBuffer,
+                dropable : true
+            })
+        }
     }
 
     /**
@@ -95,12 +102,15 @@ impl SoundBuffer {
     * * soundBuffer - Sound buffer to copy
     */
     pub fn new_copy(soundBuffer : SoundBuffer) -> Option<SoundBuffer> {
-        let soundBuffer = unsafe {csfml::sfSoundBuffer_copy(soundBuffer.unwrap())};
-        if soundBuffer == ptr::null() {
+        let soundBuffer = unsafe { csfml::sfSoundBuffer_copy(soundBuffer.unwrap()) };
+        if ptr::is_null(soundBuffer) {
             None
         }
         else {
-            Some(SoundBuffer {soundBuffer : soundBuffer, dropable : true})
+            Some(SoundBuffer {
+                soundBuffer : soundBuffer,
+                dropable : true
+            })
         }
     }
 
@@ -118,7 +128,7 @@ impl SoundBuffer {
     */
     pub fn save_to_file(&self, filename : ~str) -> bool {
         match do str::as_c_str(filename) |filename_buf| {
-            unsafe {csfml::sfSoundBuffer_saveToFile(self.soundBuffer, filename_buf) }} {
+            unsafe { csfml::sfSoundBuffer_saveToFile(self.soundBuffer, filename_buf) } } {
             0 => false,
             _ => true
         }
@@ -169,7 +179,7 @@ impl SoundBuffer {
     * Return the sound duration
     */
     pub fn get_duration(&self) -> time::Time {
-        time::Time::wrap(unsafe {csfml::sfSoundBuffer_getDuration(self.soundBuffer)})
+        time::Time::wrap(unsafe { csfml::sfSoundBuffer_getDuration(self.soundBuffer) })
     }
 
     /**
@@ -189,7 +199,10 @@ impl SoundBuffer {
 
     #[doc(hidden)]
     pub fn wrap(buffer : *csfml::sfSoundBuffer) -> SoundBuffer {
-        SoundBuffer {soundBuffer : buffer, dropable : false}
+        SoundBuffer {
+            soundBuffer : buffer,
+            dropable : false
+        }
     }
 
     #[doc(hidden)]

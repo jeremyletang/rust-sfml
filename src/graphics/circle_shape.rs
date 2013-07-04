@@ -109,12 +109,14 @@ impl CircleShape {
     * Return a new option to CircleShape object or None
     */
     pub fn new() -> Option<CircleShape> {
-        let circle = unsafe {csfml::sfCircleShape_create()};
-        if circle == ptr::null() {
+        let circle = unsafe { csfml::sfCircleShape_create() };
+        if ptr::is_null(circle) {
             None
         }
         else {
-            Some(CircleShape { circleShape : circle} )
+            Some(CircleShape {
+                circleShape : circle
+            })
         }
     }
     
@@ -126,8 +128,8 @@ impl CircleShape {
     * Return a new initialized option to CircleShape or None
     */
     pub fn new_init(radius : float, pointCount : uint) -> Option<CircleShape> {
-        let circle = unsafe {csfml::sfCircleShape_create()};
-        if circle == ptr::null() {
+        let circle = unsafe { csfml::sfCircleShape_create() };
+        if ptr::is_null(circle) {
            None
         }
         else {
@@ -135,7 +137,9 @@ impl CircleShape {
                 csfml::sfCircleShape_setRadius(circle, radius as c_float);
                 csfml::sfCircleShape_setPointCount(circle, pointCount as c_uint);
             }
-            Some(CircleShape {circleShape : circle})
+            Some(CircleShape {
+                circleShape : circle
+            })
         }
     }
 
@@ -148,12 +152,14 @@ impl CircleShape {
     * Return the copied object on option or None
     */
     pub fn new_copy(shape : &CircleShape) -> Option<CircleShape> {
-        let circle = unsafe {csfml::sfCircleShape_copy(shape.unwrap())};
-        if circle == ptr::null() {
+        let circle = unsafe { csfml::sfCircleShape_copy(shape.unwrap()) };
+        if ptr::is_null(circle) {
             None
         }
         else {
-            Some(CircleShape { circleShape : circle} )
+            Some(CircleShape {
+                circleShape : circle
+            })
         }
     }
 
@@ -219,9 +225,11 @@ impl CircleShape {
     * * resetRect - Should the texture rect be reset to the size of the new texture?
     */
     pub fn set_texture(&mut self, texture : &Texture, resetRect : bool) -> () {
-        match resetRect {
-            true        => unsafe {csfml::sfCircleShape_setTexture(self.circleShape, texture.unwrap(), 1)},
-            false       => unsafe {csfml::sfCircleShape_setTexture(self.circleShape, texture.unwrap(), 0)},
+        unsafe {
+            match resetRect {
+                true        => csfml::sfCircleShape_setTexture(self.circleShape, texture.unwrap(), 1),
+                false       => csfml::sfCircleShape_setTexture(self.circleShape, texture.unwrap(), 0),
+            }
         }
     }
 
@@ -310,8 +318,8 @@ impl CircleShape {
     * Return the shape's texture
     */
     pub fn get_texture(&self) -> Option<Texture> {
-        let tex = unsafe {csfml::sfCircleShape_getTexture(self.circleShape)};
-        if tex == ptr::null() {
+        let tex = unsafe { csfml::sfCircleShape_getTexture(self.circleShape) };
+        if ptr::is_null(tex) {
             None
         }
         else {
@@ -431,7 +439,9 @@ impl CircleShape {
     * Return the current position
     */
     pub fn get_position(&self) -> Vector2f {
-        unsafe {csfml::sfCircleShape_getPosition(self.circleShape)}
+        unsafe {
+            csfml::sfCircleShape_getPosition(self.circleShape)
+        }
     }
 
     /**
@@ -440,7 +450,9 @@ impl CircleShape {
     * Return the current scale factors
     */
     pub fn get_scale(&self) -> Vector2f {
-        unsafe {csfml::sfCircleShape_getScale(self.circleShape)}
+        unsafe {
+            csfml::sfCircleShape_getScale(self.circleShape)
+        }
     }
 
     /**
@@ -449,7 +461,9 @@ impl CircleShape {
     * return the current origin
     */
     pub fn get_origin(&self) -> Vector2f {
-        unsafe {csfml::sfCircleShape_getOrigin(self.circleShape)}
+        unsafe {
+            csfml::sfCircleShape_getOrigin(self.circleShape)
+        }
     }
 
     /**
@@ -677,7 +691,9 @@ impl CircleShape {
 
     #[doc(hidden)]
     pub fn wrap(circleShape : *csfml::sfCircleShape) -> CircleShape {
-        CircleShape { circleShape : circleShape}
+        CircleShape {
+            circleShape : circleShape
+        }
     }
 
     #[doc(hidden)]
