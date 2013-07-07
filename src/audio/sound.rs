@@ -116,19 +116,22 @@ impl Sound {
     *
     * Return a new option to Sound object which is a copy of sound or none
     */
-    pub fn new_copy(sound : Sound) -> Option<Sound> {
+    pub fn new_copy(sound : &Sound) -> Option<Sound> {
         let s = unsafe {csfml::sfSound_copy(sound.unwrap())};
         if s == ptr::null() {
             None
         }
         else {
-            unsafe {
-                csfml::sfSound_setBuffer(s, sound.get_buffer().unwrap())
+            let buf = SoundBuffer::new_copy(sound.get_buffer());
+            if buf.is_none() {
+                None
             }
-            Some(Sound {
-                sound : s,
-                buffer : sound.get_buffer()
-            })
+            else {
+                Some(Sound {
+                    sound : s,
+                    buffer : @buf.unwrap()
+                })
+            }
         }
     }
 
