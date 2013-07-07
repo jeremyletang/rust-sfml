@@ -15,8 +15,8 @@ use rsfml::audio::sound_status;
 
 /* Play a Sound */
 fn play_sound() -> () {
-    let buffer : SoundBuffer = match SoundBuffer::new(~"resources/canary.wav") {
-        Some(buffer)    => buffer,
+    let buffer : @SoundBuffer = match SoundBuffer::new(~"resources/canary.wav") {
+        Some(buffer)    => @buffer,
         None            => fail!("Error, cannot load sound buffer!")
     };
     
@@ -26,12 +26,11 @@ fn play_sound() -> () {
     io::println(fmt!(" %d samples / sec", buffer.get_sample_rate() as int));
     io::println(fmt!(" %d channels", buffer.get_channel_count() as int));
 
-    let mut sound : Sound = match Sound::new() {
+    let mut sound : Sound = match Sound::new(buffer) {
         Some(sound)     => sound,
         None            => fail!("Error cannot create Sound")
     };
 
-    sound.set_buffer(&buffer);
     sound.play();
     
     loop {

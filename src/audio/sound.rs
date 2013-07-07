@@ -84,7 +84,8 @@ pub mod csfml {
 
 #[doc(hidden)]
 pub struct Sound {
-    priv sound : *csfml::sfSound
+    priv sound : *csfml::sfSound,
+    priv buffer : @SoundBuffer
 }
 
 impl Sound {
@@ -94,13 +95,19 @@ impl Sound {
     *
     * Return a new option to Sound object or None
     */
-    pub fn new() -> Option<Sound> {
+    pub fn new(buffer : @SoundBuffer) -> Option<Sound> {
         let s = unsafe {csfml::sfSound_create()};
         if s == ptr::null() {
             None
         }
         else {
-            Some(Sound { sound : s})
+            unsafe {
+                csfml::sfSound_setBuffer(s, buffer.unwrap());
+            }
+            Some(Sound { 
+                sound : s,
+                buffer : buffer
+            })
         }
     }
     
@@ -115,7 +122,13 @@ impl Sound {
             None
         }
         else {
-            Some(Sound {sound : s})
+            unsafe {
+                csfml::sfSound_setBuffer(s, sound.get_buffer().unwrap())
+            }
+            Some(Sound {
+                sound : s,
+                buffer : sound.get_buffer()
+            })
         }
     }
 
@@ -372,25 +385,20 @@ impl Sound {
     * # Arguments
     * * buffer - Sound buffer to attach to the sound
     */
-    pub fn set_buffer(&mut self, buffer : &SoundBuffer) -> () {
+    pub fn set_buffer(&mut self, buffer : @SoundBuffer) -> () {
+        self.buffer = buffer;
         unsafe {
             csfml::sfSound_setBuffer(self.sound, buffer.unwrap())
         }
     }
 
     /**
-    *  Get the audio buffer attached to a sound
+    * Get the audio buffer attached to a sound
     *
     * Return an option to Sound buffer attached to the sound or None
     */
-    pub fn get_buffer(&self) -> Option<SoundBuffer> {
-        let buff = unsafe {csfml::sfSound_getBuffer(self.sound)};
-        if buff == ptr::null() {
-            None
-        }
-        else {
-            Some(SoundBuffer::wrap(buff))        
-        }
+    pub fn get_buffer(&self) -> @SoundBuffer {
+        self.buffer
     }
 
     /**
@@ -447,6 +455,7 @@ impl Sound {
     }
 }
 
+#[unsafe_destructor]
 impl Drop for Sound {
     /* Destructor for class Sound. Destroy all the ressource.
     *

@@ -48,7 +48,7 @@ fn main() -> () {
 
     // Get the buffer containing the captured data
     let buffer = match recorder.get_buffer() {
-        Some(buf)       => buf,
+        Some(buf)       => @buf,
         None            => fail!("Error when retreiving buffer.")
     };
 
@@ -72,13 +72,12 @@ fn main() -> () {
         buffer.save_to_file(filename);
     }
     else {
-        let mut sound : Sound = match Sound::new() {
+        let mut sound : Sound = match Sound::new(buffer) {
             Some(sound)     => sound,
             None            => fail!("Error cannot create Sound")
         };
         
-        sound.set_buffer(&buffer);
-        sound.play();
+         sound.play();
         
         loop {
             match sound.get_status() {

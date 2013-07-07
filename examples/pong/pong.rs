@@ -37,16 +37,16 @@ fn main () -> () {
     window.set_vertical_sync_enabled(true);
 
     // Load the sounds used in the game
-    let ballSoundBuffer : SoundBuffer = match SoundBuffer::new(~"resources/ball.wav") {
-        Some(ballSoundBuffer)   => ballSoundBuffer,
+    let ballSoundBuffer : @SoundBuffer = match SoundBuffer::new(~"resources/ball.wav") {
+        Some(ballSoundBuffer)   => @ballSoundBuffer,
         None                    => fail!("Cannot load Ball sound buffer.")
     };
 
-    let mut ballSound = match Sound::new() {
+    let mut ballSound = match Sound::new(ballSoundBuffer) {
         Some(sound)     => sound,
         None            => fail!("Error cannot create sound.")
     };
-    ballSound.set_buffer(&ballSoundBuffer);
+//    ballSound.set_buffer(&ballSoundBuffer);
     ballSound.set_volume(100.);
 
     // Create the left paddle
@@ -100,14 +100,14 @@ fn main () -> () {
     pauseMessage.set_string(~"Welcome to SFML pong!\nPress space to start the game");
 
     // Define the paddles properties
-    let AITimer =  Clock::new();
+    let mut AITimer =  Clock::new();
     let AITime : Time  = Time::with_seconds(0.1);
     let paddleSpeed = 400.;
     let mut rightPaddleSpeed  = 0.;
     let ballSpeed   = 400.;
     let mut ballAngle : f32  = 0.; // to be changed later
 
-    let clock = Clock::new();
+    let mut clock = Clock::new();
     let mut isPlaying = false;
 
     while window.is_open() {
