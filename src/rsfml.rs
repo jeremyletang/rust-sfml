@@ -27,6 +27,6 @@ pub mod sfTypes {
     use std::libc::{c_int};
     
     pub type sfBool = c_int;
-    pub static sfFalse : sfBool = 0;
-    pub static sfTrue : sfBool = 1;
+    pub static SFFALSE : sfBool = 0;
+    pub static SFTRUE : sfBool = 1;
 }

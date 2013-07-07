@@ -26,7 +26,8 @@ use std::libc::{c_void};
 
 use std::io;
 use std::cast;
-use std::borrow;
+//use std::borrow;
+use std::ptr;
 
 pub mod csfml {
     
@@ -67,16 +68,19 @@ impl threadObject for test {
     }
 }
 
-extern fn threadable_function<T : threadObject>(userData : &T) -> () {
-    userData.execute();
+extern fn threadable_function(userData : *c_void) -> () {
+    //let u = unsafe {cast::transmute::<*c_void, &threadObject>(userData)};
+    //userData.execute();
 }
 
 pub struct Thread {
     priv thread : *csfml::sfThread
 }
 impl Thread {
-    pub fn new<T : threadObject>(params : &T) -> Thread {
-        let t = unsafe {csfml::sfThread_create(threadable_function, cast::transmute::<*T, *c_void>(params))};
+    pub fn new(params : @threadObject) -> Thread {
+        // let t = unsafe {csfml::sfThread_create(threadable_function, cast::transmute::<*T, *c_void>(params))};
+        //        let t = unsafe {csfml::sfThread_create(threadable_function, borrow::to_uint(params) as *c_void)};
+        let t = unsafe {csfml::sfThread_create(threadable_function, ptr::to_unsafe_ptr(&params) as *c_void)};
         Thread {thread : t}
     }
 
@@ -93,16 +97,20 @@ impl Thread {
     }
 
     pub fn destroy(&self) -> () {
-        csfml::sfThread_destroy(self.thread)
+        unsafe {
+            csfml::sfThread_destroy(self.thread)
+        }
     }
 
     pub fn terminate(&self) -> () {
-        csfml::sfThread_terminate(self.thread)
+        unsafe {
+            csfml::sfThread_terminate(self.thread)
+        }    
     }
 }
 
 impl Drop for Thread {
-    fn finalize(&self) -> () {
+    fn drop(&self) -> () {
         unsafe {
             csfml::sfThread_destroy(self.thread)
         }

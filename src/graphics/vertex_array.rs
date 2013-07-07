@@ -49,13 +49,13 @@ pub mod csfml {
     use graphics::rect::FloatRect;
     
     pub type sfPrimitiveType = c_uint;
-    pub static sfPoints : sfPrimitiveType = 0;
-    pub static sfLines : sfPrimitiveType = 1;
-    pub static sfLinesStrip : sfPrimitiveType = 2;
-    pub static sfTriangles : sfPrimitiveType = 3;
-    pub static sfTrianglesStrip : sfPrimitiveType = 4;
-    pub static sfTrianglesFan : sfPrimitiveType = 5;
-    pub static sfQuads : sfPrimitiveType = 6;
+    pub static SFPOINTS : sfPrimitiveType = 0;
+    pub static SFLINES : sfPrimitiveType = 1;
+    pub static SFLINESSTRIP : sfPrimitiveType = 2;
+    pub static SFTRIANGLES : sfPrimitiveType = 3;
+    pub static SFTRIANGLESSTRIP : sfPrimitiveType = 4;
+    pub static SFTRIANGLESFAN : sfPrimitiveType = 5;
+    pub static SFQUADS : sfPrimitiveType = 6;
 
     pub struct sfVertexArray {
         This : *c_void
@@ -205,13 +205,13 @@ impl VertexArray {
     pub fn set_primitive_type(&mut self, primitiveType : PrimitiveType) -> () {
         unsafe {
             match primitiveType {
-                primitive_type::Points              => csfml::sfVertexArray_setPrimitiveType(self.vertexArray, csfml::sfPoints),
-                primitive_type::Lines               => csfml::sfVertexArray_setPrimitiveType(self.vertexArray, csfml::sfLines),
-                primitive_type::LinesStrip          => csfml::sfVertexArray_setPrimitiveType(self.vertexArray, csfml::sfLinesStrip),
-                primitive_type::Triangles           => csfml::sfVertexArray_setPrimitiveType(self.vertexArray, csfml::sfTriangles),
-                primitive_type::TrianglesStrip      => csfml::sfVertexArray_setPrimitiveType(self.vertexArray, csfml::sfTrianglesStrip),
-                primitive_type::TrianglesFan        => csfml::sfVertexArray_setPrimitiveType(self.vertexArray, csfml::sfTrianglesFan),
-                primitive_type::Quads               => csfml::sfVertexArray_setPrimitiveType(self.vertexArray, csfml::sfQuads)
+                primitive_type::Points              => csfml::sfVertexArray_setPrimitiveType(self.vertexArray, csfml::SFPOINTS),
+                primitive_type::Lines               => csfml::sfVertexArray_setPrimitiveType(self.vertexArray, csfml::SFLINES),
+                primitive_type::LinesStrip          => csfml::sfVertexArray_setPrimitiveType(self.vertexArray, csfml::SFLINESSTRIP),
+                primitive_type::Triangles           => csfml::sfVertexArray_setPrimitiveType(self.vertexArray, csfml::SFTRIANGLES),
+                primitive_type::TrianglesStrip      => csfml::sfVertexArray_setPrimitiveType(self.vertexArray, csfml::SFTRIANGLESSTRIP),
+                primitive_type::TrianglesFan        => csfml::sfVertexArray_setPrimitiveType(self.vertexArray, csfml::SFTRIANGLESFAN),
+                primitive_type::Quads               => csfml::sfVertexArray_setPrimitiveType(self.vertexArray, csfml::SFQUADS)
             }
         }
     }
@@ -223,13 +223,13 @@ impl VertexArray {
     */
     pub fn get_primitive_type(&self) -> PrimitiveType {
         match unsafe { csfml::sfVertexArray_getPrimitiveType(self.vertexArray) } {
-            csfml::sfPoints             => primitive_type::Points,
-            csfml::sfLines              => primitive_type::Lines,
-            csfml::sfLinesStrip         => primitive_type::LinesStrip,
-            csfml::sfTriangles          => primitive_type::Triangles,
-            csfml::sfTrianglesStrip     => primitive_type::TrianglesStrip,
-            csfml::sfTrianglesFan       => primitive_type::TrianglesFan,
-            csfml::sfQuads              => primitive_type::Quads,
+            csfml::SFPOINTS             => primitive_type::Points,
+            csfml::SFLINES              => primitive_type::Lines,
+            csfml::SFLINESSTRIP         => primitive_type::LinesStrip,
+            csfml::SFTRIANGLES          => primitive_type::Triangles,
+            csfml::SFTRIANGLESSTRIP     => primitive_type::TrianglesStrip,
+            csfml::SFTRIANGLESFAN       => primitive_type::TrianglesFan,
+            csfml::SFQUADS              => primitive_type::Quads,
             _                           => primitive_type::Points   
         }
     }

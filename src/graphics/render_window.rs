@@ -157,7 +157,9 @@ pub enum WindowStyle {
 pub struct RenderWindow {
     priv renderWindow : *csfml::sfRenderWindow,
     priv event : csfml::sfEvent,
-    priv titleLength : uint
+    priv titleLength : uint,
+    priv currentView : @mut View,
+    priv defaultView : @mut View
 }
 
 impl RenderWindow {
@@ -201,11 +203,19 @@ impl RenderWindow {
             None
         }
         else {
-            Some (RenderWindow {
-                renderWindow : sfRenderWin, 
-                event : sfEv, 
-                titleLength : title.len()
-            })
+            let defView = unsafe { csfml::sfRenderWindow_getDefaultView(sfRenderWin) };
+            if ptr::is_null(defView) {
+                None
+            }
+            else {
+                Some (RenderWindow {
+                    renderWindow : sfRenderWin, 
+                    event : sfEv, 
+                    titleLength : title.len(),
+                    currentView : @mut View::wrap(defView),
+                    defaultView : @mut View::wrap(defView)
+                })
+            }
         }
     }
 
@@ -246,11 +256,19 @@ impl RenderWindow {
             None
         }
         else {
-            Some (RenderWindow { 
-                renderWindow : sfRenderWin, 
-                event : sfEv, 
-                titleLength : title.len()
-            })
+            let defView = unsafe { csfml::sfRenderWindow_getDefaultView(sfRenderWin) };
+            if ptr::is_null(defView) {
+                None
+            }
+            else {
+                Some (RenderWindow {
+                    renderWindow : sfRenderWin, 
+                    event : sfEv, 
+                    titleLength : title.len(),
+                    currentView : @mut View::wrap(defView),
+                    defaultView : @mut View::wrap(defView)
+                })
+            } 
         }
     }
     
@@ -896,7 +914,8 @@ impl RenderWindow {
     * # Arguments
     * * view - The new view
     */
-    pub fn set_view(&mut self, view : &View) -> () {
+    pub fn set_view(&mut self, view : @mut View) -> () {
+        self.currentView = view;
         unsafe {
             csfml::sfRenderWindow_setView(self.renderWindow, view.unwrap())
         }
@@ -907,10 +926,8 @@ impl RenderWindow {
     *
     * Return the current active view
     */
-    pub fn get_view(&self) -> View {
-        View::wrap(unsafe {
-            csfml::sfRenderWindow_getView(self.renderWindow)
-        })
+    pub fn get_view(&self) -> @mut View {
+        self.currentView
     }
     
     /**
@@ -918,10 +935,8 @@ impl RenderWindow {
     *
     * Return the default view of the render window
     */
-    pub fn get_default_view(&self) -> View {
-        View::wrap(unsafe {
-            csfml::sfRenderWindow_getDefaultView(self.renderWindow)
-        })
+    pub fn get_default_view(&self) -> @mut View {
+        self.defaultView
     }
     
     /**
@@ -1062,6 +1077,7 @@ impl RenderWindow {
     }
 }
 
+#[unsafe_destructor]
 impl Drop for RenderWindow {
     /**
     *   Destructor for class RenderWindow. Destroy all the ressource.
