@@ -32,10 +32,11 @@
 use std::libc::{c_float, c_uint};
 use std::ptr;
 
+use traits::wrappable::Wrappable;
+use traits::drawable::Drawable;
 use graphics::color::Color;
 use graphics::texture::Texture;
 use system::vector2::Vector2f;
-use graphics::drawable::Drawable;
 use graphics::render_window::RenderWindow;
 use graphics::render_texture::RenderTexture;
 use graphics::rect::{FloatRect, IntRect};
@@ -514,7 +515,7 @@ impl ConvexShape {
             None
         }
         else {
-            Some(Texture::wrap(tex))
+            Some(Wrappable::wrap(tex))
         }
     }
     
@@ -651,7 +652,9 @@ impl ConvexShape {
             csfml::sfConvexShape_getInverseTransform(self.convexShape)
         }
     }
+}
 
+impl Wrappable<*csfml::sfConvexShape> for ConvexShape {
     #[doc(hidden)]
     pub fn wrap(convexShape : *csfml::sfConvexShape) -> ConvexShape {
         ConvexShape {
@@ -663,6 +666,7 @@ impl ConvexShape {
     pub fn unwrap(&self) -> *csfml::sfConvexShape {
         self.convexShape
     }
+
 }
 
 impl Drawable for ConvexShape {

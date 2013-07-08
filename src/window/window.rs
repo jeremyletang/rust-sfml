@@ -34,6 +34,7 @@ use std::vec;
 use std::ptr;
 use std::cast;
 
+use traits::wrappable::Wrappable;
 use window::context_settings::ContextSettings;
 use window::video_mode::*;
 use window::event;
@@ -158,7 +159,7 @@ impl Window {
         let mut sfWin: *csfml::sfWindow = ptr::null();
         do str::as_c_str(title) |title_buf| {
             unsafe {
-                sfWin = csfml::sfWindow_create(VideoMode::unwrap(mode), title_buf, style as u32, settings); 
+                sfWin = csfml::sfWindow_create(mode.unwrap(), title_buf, style as u32, settings); 
             }
         };
         let sfEv = csfml::sfEvent {
@@ -203,7 +204,7 @@ impl Window {
     * Return a new Window object
     */
     pub fn new_with_unicode(mode : VideoMode, title : ~[u32], style : WindowStyle, settings : &ContextSettings) -> Option<Window> {
-        let sfWin = unsafe { csfml::sfWindow_createUnicode(VideoMode::unwrap(mode), vec::raw::to_ptr(title), style as u32, settings) };
+        let sfWin = unsafe { csfml::sfWindow_createUnicode(mode.unwrap(), vec::raw::to_ptr(title), style as u32, settings) };
         let sfEv = csfml::sfEvent {
             typeEvent : 0,
             p1 : 0, 

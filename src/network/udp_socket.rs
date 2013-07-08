@@ -34,6 +34,7 @@ use std::ptr;
 use std::vec;
 use std::libc::size_t;
 
+use traits::wrappable::Wrappable;
 use network::packet;
 use network::ip_address;
 use network::socket_status::SocketStatus;
@@ -213,7 +214,7 @@ impl UdpSocket {
             let addr : *ip_address::csfml::sfIpAddress = ptr::null();
             let port : u16 = 0;
             let stat : SocketStatus = csfml::sfUdpSocket_receive(self.socket, datas, maxSize, &s, addr, &port);
-            (vec::raw::from_buf_raw(datas, s as uint), stat, s, ip_address::IpAddress::wrap(*addr), port)
+            (vec::raw::from_buf_raw(datas, s as uint), stat, s, Wrappable::wrap(*addr), port)
         }
     }
     
@@ -249,7 +250,7 @@ impl UdpSocket {
             let addr : *ip_address::csfml::sfIpAddress = ptr::null();
             let port : u16 = 0;
             let stat = csfml::sfUdpSocket_receivePacket(self.socket, pack, addr, &port);
-            (packet::Packet::wrap(pack), stat, ip_address::IpAddress::wrap(*addr), port)
+            (Wrappable::wrap(pack), stat, Wrappable::wrap(*addr), port)
         }
     }
 
@@ -264,15 +265,15 @@ impl UdpSocket {
             csfml::sfUdpSocket_maxDatagramSize()
         }
     }
+}
 
-    #[doc(hidden)]
+impl Wrappable<*csfml::sfUdpSocket> for UdpSocket {
     pub fn wrap(socket : *csfml::sfUdpSocket) -> UdpSocket {
         UdpSocket {
             socket : socket
         }
     }
     
-    #[doc(hidden)]
     pub fn unwrap(&self) -> *csfml::sfUdpSocket {
         self.socket
     }

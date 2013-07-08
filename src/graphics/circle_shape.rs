@@ -32,10 +32,11 @@
 use std::libc::{c_float, c_uint};
 use std::ptr;
 
+use traits::drawable::Drawable;
+use traits::wrappable::Wrappable;
 use graphics::color::Color;
 use graphics::rect::{IntRect, FloatRect};
 use graphics::texture::Texture;
-use graphics::drawable::Drawable;
 use graphics::render_window::RenderWindow;
 use graphics::render_texture::RenderTexture;
 use system::vector2::Vector2f;
@@ -323,7 +324,7 @@ impl CircleShape {
             None
         }
         else {
-            Some(Texture::wrap(tex))
+            Some(Wrappable::wrap(tex))
         }
     }
 
@@ -689,6 +690,9 @@ impl CircleShape {
         }
     }
 
+}
+
+impl Wrappable<*csfml::sfCircleShape> for CircleShape {
     #[doc(hidden)]
     pub fn wrap(circleShape : *csfml::sfCircleShape) -> CircleShape {
         CircleShape {

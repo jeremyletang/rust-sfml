@@ -36,6 +36,8 @@ use std::ptr;
 use std::cast;
 use std::vec;
 
+use traits::drawable::Drawable;
+use traits::wrappable::Wrappable;
 use rsfml::sfTypes::{sfBool};
 use window::video_mode::*;
 use window::context_settings::ContextSettings;
@@ -45,7 +47,6 @@ use system::vector2::{Vector2f, Vector2i, Vector2u};
 use window::joystick;
 use window::mouse;
 use graphics::text::Text;
-use graphics::drawable::Drawable;
 use graphics::color::Color;
 use graphics::sprite::Sprite;
 use graphics::circle_shape::CircleShape;
@@ -188,7 +189,7 @@ impl RenderWindow {
         let mut sfRenderWin: *csfml::sfRenderWindow = ptr::null();
         do str::as_c_str(title) |title_buf| {
             unsafe { 
-                sfRenderWin = csfml::sfRenderWindow_create(VideoMode::unwrap(mode), title_buf, style as u32, settings); 
+                sfRenderWin = csfml::sfRenderWindow_create(mode.unwrap(), title_buf, style as u32, settings); 
             }
         };
         let sfEv = csfml::sfEvent {
@@ -212,8 +213,8 @@ impl RenderWindow {
                     renderWindow : sfRenderWin, 
                     event : sfEv, 
                     titleLength : title.len(),
-                    currentView : @mut View::wrap(defView),
-                    defaultView : @mut View::wrap(defView)
+                    currentView : @mut Wrappable::wrap(defView),
+                    defaultView : @mut Wrappable::wrap(defView)
                 })
             }
         }
@@ -243,7 +244,7 @@ impl RenderWindow {
     pub fn new_with_unicode(mode : VideoMode, title : ~[u32], style : WindowStyle, settings : &ContextSettings) -> Option<RenderWindow> {
         let sfRenderWin: *csfml::sfRenderWindow;
         unsafe { 
-            sfRenderWin = csfml::sfRenderWindow_createUnicode(VideoMode::unwrap(mode), vec::raw::to_ptr(title), style as u32, settings); 
+            sfRenderWin = csfml::sfRenderWindow_createUnicode(mode.unwrap(), vec::raw::to_ptr(title), style as u32, settings); 
         }
         let sfEv = csfml::sfEvent {
             typeEvent : 0, 
@@ -265,8 +266,8 @@ impl RenderWindow {
                     renderWindow : sfRenderWin, 
                     event : sfEv, 
                     titleLength : title.len(),
-                    currentView : @mut View::wrap(defView),
-                    defaultView : @mut View::wrap(defView)
+                    currentView : @mut Wrappable::wrap(defView),
+                    defaultView : @mut Wrappable::wrap(defView)
                 })
             } 
         }
@@ -904,7 +905,7 @@ impl RenderWindow {
             None
         }
         else {
-            Some(Image::wrap(img))
+            Some(Wrappable::wrap(img))
         }
     }
     

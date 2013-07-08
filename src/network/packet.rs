@@ -33,6 +33,8 @@ use std::libc::c_char;
 use std::ptr;
 use std::str;
 
+use traits::wrappable::Wrappable;
+
 #[doc(hidden)]
 pub mod csfml {
     
@@ -363,13 +365,13 @@ impl Packet {
             }
         }
     }
+}
 
-    #[doc(hidden)]
+impl Wrappable<*csfml::sfPacket> for Packet {
     pub fn unwrap(&self) -> *csfml::sfPacket {
         self.packet
     }
 
-    #[doc(hidden)]
     pub fn wrap(packet : *csfml::sfPacket) -> Packet {
         Packet {
             packet : packet

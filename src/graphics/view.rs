@@ -32,6 +32,7 @@
 use std::libc::{c_float};
 use std::ptr;
 
+use traits::wrappable::Wrappable;
 use system::vector2::Vector2f;
 use graphics::rect::FloatRect;
 
@@ -356,8 +357,9 @@ impl View {
             csfml::sfView_getViewport(self.view)
         }
     }
+}
 
-    #[doc(hidden)]
+impl Wrappable<*csfml::sfView> for View {
     pub fn wrap(view : *csfml::sfView) -> View {
         View { 
             dropable: false, 
@@ -365,11 +367,9 @@ impl View {
         }
     } 
 
-    #[doc(hidden)]
     pub fn unwrap(&self) -> *csfml::sfView {
         self.view
     }
-        
 }
 
 impl Drop for View {

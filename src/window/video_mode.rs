@@ -33,6 +33,8 @@
 use extra::c_vec::{CVec, get};
 use std::libc::{c_uint, size_t};
 
+use traits::wrappable::Wrappable;
+
 /**
 * VideoMode defines a video mode (width, height, bpp, frequency) 
 *
@@ -151,26 +153,19 @@ impl VideoMode {
                 }
                 let cvec = CVec(tab, i as uint);
                 let mut d : uint = 0;
-                ret_tab.push(VideoMode::wrap(get(cvec, d)));
+                ret_tab.push(Wrappable::wrap(get(cvec, d)));
                 d += 1;
                 while d != i as uint {
-                    ret_tab.push(VideoMode::wrap(get(cvec, d)));
+                    ret_tab.push(Wrappable::wrap(get(cvec, d)));
                     d += 1;
                 }
             }
         Some(ret_tab)
     }
 
-    #[doc(hidden)]
-    pub fn unwrap(mode: VideoMode) -> csfml::sfVideoMode {
-        csfml::sfVideoMode{
-            Width : mode.Width as c_uint,
-            Height : mode.Height as c_uint,
-            BitsPerPixel : mode.BitsPerPixel as c_uint
-        }
-    }
+}
 
-    #[doc(hidden)]
+impl Wrappable<csfml::sfVideoMode> for VideoMode {
     pub fn wrap(mode: csfml::sfVideoMode) -> VideoMode {
         VideoMode{
             Width : mode.Width as uint,
@@ -178,4 +173,12 @@ impl VideoMode {
             BitsPerPixel : mode.BitsPerPixel as uint
         }
     }
-} 
+
+    pub fn unwrap(&self) -> csfml::sfVideoMode {
+        csfml::sfVideoMode{
+            Width : self.Width as c_uint,
+            Height : self.Height as c_uint,
+            BitsPerPixel : self.BitsPerPixel as c_uint
+        }
+    }
+}

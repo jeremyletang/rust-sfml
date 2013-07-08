@@ -32,6 +32,7 @@ e* Permission is granted to anyone to use this software for any purpose,
 use std::libc::{size_t};
 use std::str;
 
+use traits::wrappable::Wrappable;
 use network::ip_address::*;
 use system::time::Time;
 

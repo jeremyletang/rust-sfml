@@ -29,6 +29,7 @@
 *
 */
 
+use traits::wrappable::Wrappable;
 use system::time::Time;
 
 #[doc(hidden)]
@@ -82,7 +83,7 @@ impl Clock {
     */
     pub fn get_elapsed_time(&self) -> Time {
         unsafe {
-            Time::wrap(csfml::sfClock_getElapsedTime(self.clock))
+            Wrappable::wrap(csfml::sfClock_getElapsedTime(self.clock))
         }
     }
 
@@ -91,7 +92,7 @@ impl Clock {
     */
     pub fn restart(&mut self) -> Time {
         unsafe {
-            Time::wrap(csfml::sfClock_restart(self.clock))
+            Wrappable::wrap(csfml::sfClock_restart(self.clock))
         }
     }
 

@@ -32,6 +32,7 @@
 use std::libc::{c_uint};
 use std::ptr;
 
+use traits::wrappable::Wrappable;
 use audio::sound_buffer::SoundBuffer;
 
 #[doc(hidden)]
@@ -137,7 +138,7 @@ impl SoundBufferRecorder {
             None
         }
         else {
-            Some(SoundBuffer::wrap(buff))
+            Some(Wrappable::wrap(buff))
         }
     }
 

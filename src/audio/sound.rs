@@ -32,6 +32,7 @@
 use std::libc::{c_float};
 use std::ptr;
 
+use traits::wrappable::Wrappable;
 use system::time;
 use audio::sound_status;
 use audio::sound_buffer::SoundBuffer;
@@ -216,7 +217,7 @@ impl Sound {
     * Return the current playing position
     */
     pub fn get_playing_offset(&self) -> time::Time {
-        time::Time::wrap( unsafe {csfml::sfSound_getPlayingOffset(self.sound)})
+        Wrappable::wrap( unsafe {csfml::sfSound_getPlayingOffset(self.sound)})
     }
 
     /**

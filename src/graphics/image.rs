@@ -34,6 +34,7 @@ use std::ptr;
 use std::str;
 use std::vec;
 
+use traits::wrappable::Wrappable;
 use system::vector2::Vector2u;
 use graphics::color::Color;
 use graphics::rect::IntRect;
@@ -332,14 +333,15 @@ impl Image {
         }
     }
 
-    #[doc(hidden)]
+}
+
+impl Wrappable<*csfml::sfImage> for Image {
     pub fn wrap(image : *csfml::sfImage) -> Image {
         Image {
             image : image
         }
     }
     
-    #[doc(hidden)]
     pub fn unwrap(&self) -> *csfml::sfImage {
         self.image
     }

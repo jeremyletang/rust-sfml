@@ -32,6 +32,7 @@
 use std::libc::{c_float};
 use std::ptr;
 
+use traits::wrappable::Wrappable;
 use system::vector2::Vector2f;
 use graphics::transform::Transform;
     
@@ -290,15 +291,15 @@ impl Transformable {
             csfml::sfTransformable_getInverseTransform(self.trans)
         }
     }
+}
 
-    #[doc(hidden)]
+impl Wrappable<*csfml::sfTransformable> for Transformable {
     pub fn wrap(transformable : *csfml::sfTransformable) -> Transformable {
         Transformable {
             trans : transformable
         }
     }
 
-    #[doc(hidden)]
     pub fn unwrap(&self) -> *csfml::sfTransformable {
         self.trans
     }

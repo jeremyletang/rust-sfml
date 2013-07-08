@@ -31,6 +31,8 @@
 
 pub use std::libc::{c_long, c_float, c_int};
 
+use traits::wrappable::Wrappable;
+
 #[doc(hidden)]
 pub mod csfml {
     
@@ -110,15 +112,15 @@ impl Time {
             csfml::sfTime_asMicroseconds(self.time)
         }        
     }
+}
 
-    #[doc(hidden)]
+impl Wrappable<csfml::sfTime> for Time {
     pub fn wrap(time : csfml::sfTime) -> Time {
         Time {
             time : time
         }
     }
  
-    #[doc(hidden)]
     pub fn unwrap(&self) -> csfml::sfTime {
         self.time
     }

@@ -33,6 +33,7 @@ use std::str;
 use std::ptr;
 
 //use graphics::transform::Transform;
+use traits::wrappable::Wrappable;
 use graphics::texture::Texture;
 use system::vector2::Vector2f;
 use system::vector3::Vector3f;

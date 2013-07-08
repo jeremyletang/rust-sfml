@@ -26,6 +26,7 @@
 * Make thread sleeping
 */
 
+use traits::wrappable::Wrappable;
 use system::time::*;
 
 #[doc(hidden)]

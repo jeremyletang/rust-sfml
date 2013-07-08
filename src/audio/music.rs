@@ -34,6 +34,7 @@ use std::libc::{c_float};
 use std::ptr;
 use std::str;
 
+use traits::wrappable::Wrappable;
 use system::time::Time;
 use audio::sound_status;
 use system::vector3::Vector3f;
@@ -158,7 +159,7 @@ impl Music {
     * Return Music duration
     */
     pub fn get_duration(&self) -> Time {
-        Time::wrap( unsafe { csfml::sfMusic_getDuration(self.music) })
+        Wrappable::wrap( unsafe { csfml::sfMusic_getDuration(self.music) })
     }
 
     /**
@@ -247,7 +248,7 @@ impl Music {
     * Return the current playing position
     */
     pub fn get_playing_offset(&self) -> Time {
-        Time::wrap(unsafe { csfml::sfMusic_getPlayingOffset(self.music) })
+        Wrappable::wrap(unsafe { csfml::sfMusic_getPlayingOffset(self.music) })
     }
     
     /**

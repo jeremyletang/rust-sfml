@@ -29,9 +29,11 @@
 *
 */
 
-use system::time;
 use std::ptr;
 use std::str;
+
+use traits::wrappable::Wrappable;
+use system::time;
 
 #[doc(hidden)]
 pub mod csfml {
@@ -179,7 +181,7 @@ impl SoundBuffer {
     * Return the sound duration
     */
     pub fn get_duration(&self) -> time::Time {
-        time::Time::wrap(unsafe { csfml::sfSoundBuffer_getDuration(self.soundBuffer) })
+        Wrappable::wrap(unsafe { csfml::sfSoundBuffer_getDuration(self.soundBuffer) })
     }
 
     /**
@@ -196,8 +198,9 @@ impl SoundBuffer {
             csfml::sfSoundBuffer_getSampleRate(self.soundBuffer) as uint
         }
     }
+}
 
-    #[doc(hidden)]
+impl Wrappable<*csfml::sfSoundBuffer> for SoundBuffer {
     pub fn wrap(buffer : *csfml::sfSoundBuffer) -> SoundBuffer {
         SoundBuffer {
             soundBuffer : buffer,
@@ -205,7 +208,6 @@ impl SoundBuffer {
         }
     }
 
-    #[doc(hidden)]
     pub fn unwrap(&self) -> *csfml::sfSoundBuffer {
         self.soundBuffer
     }

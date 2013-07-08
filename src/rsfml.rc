@@ -39,6 +39,9 @@
 extern mod extra;
 pub use rsfml::*;
 
+#[path = "traits/traits.rs"]
+pub mod traits;
+
 #[path = "system/sfml_system.rs"]
 pub mod system;
 

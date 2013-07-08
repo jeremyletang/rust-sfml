@@ -31,10 +31,11 @@
 use std::libc::{c_float, c_uint};
 use std::ptr;
 
+use traits::drawable::Drawable;
+use traits::wrappable::Wrappable;
 use system::vector2::Vector2f;
 use graphics::color::Color;
 use graphics::texture::Texture;
-use graphics::drawable::Drawable;
 use graphics::render_window::RenderWindow;
 use graphics::render_texture::RenderTexture;
 use graphics::rect::{FloatRect, IntRect};
@@ -543,7 +544,7 @@ impl RectangleShape {
             None
         }
         else {
-            Some(Texture::wrap(tex))
+            Some(Wrappable::wrap(tex))
         }
     }
 
@@ -673,15 +674,15 @@ impl RectangleShape {
             csfml::sfRectangleShape_getInverseTransform(self.rectangleShape)
         }
     }
+}
 
-    #[doc(hidden)]
+impl Wrappable<*csfml::sfRectangleShape> for RectangleShape {
     pub fn wrap(rectangleShape : *csfml::sfRectangleShape) -> RectangleShape {
         RectangleShape {
             rectangleShape : rectangleShape
         }
     }
     
-    #[doc(hidden)]
     pub fn unwrap(&self) -> *csfml::sfRectangleShape {
         self.rectangleShape
     }

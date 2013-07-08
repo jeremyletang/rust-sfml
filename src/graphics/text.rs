@@ -35,7 +35,8 @@ use std::str;
 use std::ptr;
 use std::vec;
 
-use graphics::drawable::*;
+use traits::drawable::Drawable;
+use traits::wrappable::Wrappable;
 use graphics::render_window::RenderWindow;
 use graphics::render_texture::RenderTexture;
 use system::vector2::Vector2f;
@@ -338,7 +339,7 @@ impl Text {
             None
         }
         else {
-            Some(Font::wrap(fnt))
+            Some(Wrappable::wrap(fnt))
         }
     }
     
@@ -656,12 +657,18 @@ impl Text {
             csfml::sfText_getInverseTransform(self.text)
         }
     }
+}
 
-    #[doc(hidden)]
+impl Wrappable<*csfml::sfText> for Text {
+    pub fn wrap(text : *csfml::sfText) -> Text {
+        Text {
+            text : text,
+            stringLength : 0
+        }
+    } 
     pub fn unwrap(&self) -> *csfml::sfText {
         self.text
     }
-    
 }
 
 #[doc(hidden)]

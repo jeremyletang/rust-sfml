@@ -33,6 +33,7 @@
 
 use std::ptr;
 
+use traits::wrappable::Wrappable;
 use network::tcp_socket::TcpSocket;
 use network::socket_status::SocketStatus;
 

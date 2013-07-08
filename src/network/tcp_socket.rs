@@ -33,6 +33,7 @@ use std::libc::size_t;
 use std::vec;
 use std::ptr;
 
+use traits::wrappable::Wrappable;
 use network::ip_address;
 use system::time;
 use network::socket_status::SocketStatus;
@@ -154,7 +155,7 @@ impl TcpSocket {
     */
     pub fn get_remote_address(&self) -> ip_address::IpAddress {
         unsafe {
-            ip_address::IpAddress::wrap(csfml::sfTcpSocket_getRemoteAddress(self.socket))
+            Wrappable::wrap(csfml::sfTcpSocket_getRemoteAddress(self.socket))
         }
     }
 
@@ -266,18 +267,18 @@ impl TcpSocket {
         unsafe {
             let pack : *packet::csfml::sfPacket = ptr::null();
             let stat = csfml::sfTcpSocket_receivePacket(self.socket, pack);
-            (packet::Packet::wrap(pack), stat)
+            (Wrappable::wrap(pack), stat)
         }
     }
+}
 
-    #[doc(hidden)]
+impl Wrappable<*csfml::sfTcpSocket> for TcpSocket {
     pub fn wrap(socket : *csfml::sfTcpSocket) -> TcpSocket {
         TcpSocket {
             socket : socket
         }
     }
     
-    #[doc(hidden)]
     pub fn unwrap(&self) -> *csfml::sfTcpSocket {
         self.socket
     }

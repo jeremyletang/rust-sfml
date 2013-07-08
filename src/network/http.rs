@@ -32,6 +32,7 @@
 
 use std::str;
 
+use traits::wrappable::Wrappable;
 use system::time::Time;
 
 #[doc(hidden)]

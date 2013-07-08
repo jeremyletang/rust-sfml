@@ -32,11 +32,12 @@
 use std::libc::{c_float};
 use std::ptr;
 
-use graphics::color;
-use graphics::texture;
-use graphics::drawable::Drawable;
-use graphics::render_window;
-use graphics::render_texture;
+use traits::drawable::Drawable;
+use traits::wrappable::Wrappable;
+use graphics::color::Color;
+use graphics::texture::Texture;
+use graphics::render_window::RenderWindow;
+use graphics::render_texture::RenderTexture;
 use system::vector2::Vector2f;
 use graphics::rect::{FloatRect, IntRect};
 use graphics::transform::Transform;
@@ -47,7 +48,7 @@ pub mod csfml {
     use std::libc::{c_void, c_float};
 
     use rsfml::sfTypes::{sfBool};
-    use graphics::color;
+    use graphics::color::Color;
     use graphics::texture;
     use system::vector2::Vector2f;
     use graphics::rect::{IntRect, FloatRect};
@@ -79,10 +80,10 @@ pub mod csfml {
         fn sfSprite_getInverseTransform(sprite : *sfSprite) -> Transform;
         fn sfSprite_setTexture(sprite : *sfSprite, texture : *texture::csfml::sfTexture, resetRect : sfBool) -> ();
         fn sfSprite_setTextureRect(sprite : *sfSprite, rectangle : IntRect) -> ();
-        fn sfSprite_setColor(sprite : *sfSprite, color : color::Color) -> ();
+        fn sfSprite_setColor(sprite : *sfSprite, color : Color) -> ();
         fn sfSprite_getTexture(sprite : *sfSprite) -> *texture::csfml::sfTexture;
         fn sfSprite_getTextureRect(sprite : *sfSprite) -> IntRect;
-        fn sfSprite_getColor(sprite : *sfSprite) -> color::Color;
+        fn sfSprite_getColor(sprite : *sfSprite) -> Color;
         fn sfSprite_getLocalBounds(sprite : *sfSprite) -> FloatRect;
         fn sfSprite_getGlobalBounds(sprite : *sfSprite) -> FloatRect;
     }
@@ -190,7 +191,7 @@ impl Sprite {
     * * texture - New texture
     * * resetRect - Should the texture rect be reset to the size of the new texture?
     */
-    pub fn set_texture(&mut self, texture : &texture::Texture, resetRect : bool) -> (){
+    pub fn set_texture(&mut self, texture : &Texture, resetRect : bool) -> (){
         unsafe {
             match resetRect {
                 true        => csfml::sfSprite_setTexture(self.sprite, texture.unwrap(), 1),
@@ -221,7 +222,7 @@ impl Sprite {
     * # Arguments
     * * color - New color of the sprite
     */
-    pub fn set_color(&mut self, color : &color::Color) -> () {
+    pub fn set_color(&mut self, color : &Color) -> () {
         unsafe {
             csfml::sfSprite_setColor(self.sprite, *color)
         }
@@ -236,13 +237,13 @@ impl Sprite {
     *
     * Return an Option to the sprite's texture
     */
-    pub fn get_texture(&self) -> Option<texture::Texture> {
+    pub fn get_texture(&self) -> Option<Texture> {
         let tex = unsafe { csfml::sfSprite_getTexture(self.sprite) };
         if ptr::is_null(tex) {
             None
         }
         else {
-            Some(texture::Texture::wrap(tex))
+            Some(Wrappable::wrap(tex))
         }   
     }
 
@@ -251,7 +252,7 @@ impl Sprite {
     *
     * Return the global color of the sprite
     */
-    pub fn get_color(&self) -> color::Color {
+    pub fn get_color(&self) -> Color {
         unsafe {
             csfml::sfSprite_getColor(self.sprite)
         }
@@ -538,17 +539,19 @@ impl Sprite {
         }
     }
 
-    #[doc(hidden)]
+}
+
+impl Wrappable<*csfml::sfSprite> for Sprite {
     pub fn wrap(sprite : *csfml::sfSprite) -> Sprite {
         Sprite { 
             sprite : sprite 
         }
     }
 
-    #[doc(hidden)]
     pub fn unwrap(&self) -> *csfml::sfSprite {
         self.sprite
     }
+    
 }
 
 #[doc(hidden)]
@@ -556,11 +559,11 @@ impl Drawable for Sprite {
     /**
     * Draw the sprite in the RenderWindow
     */
-    pub fn draw_in_render_window(&self, renderWindow : &render_window::RenderWindow) -> () {
+    pub fn draw_in_render_window(&self, renderWindow : &RenderWindow) -> () {
         renderWindow.draw_sprite(self)
     }
 
-    pub fn draw_in_render_texture(&self, renderTexture : &render_texture::RenderTexture) -> () {
+    pub fn draw_in_render_texture(&self, renderTexture : &RenderTexture) -> () {
         renderTexture.draw_sprite(self)
     }
 }

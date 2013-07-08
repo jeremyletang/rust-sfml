@@ -33,6 +33,7 @@ use std::libc::{c_uint};
 use std::str;
 use std::ptr;
 
+use traits::wrappable::Wrappable;
 use graphics::texture::Texture;
 use graphics::glyph::Glyph;
 
@@ -155,7 +156,7 @@ impl Font {
             None
         }
         else {
-            Some(Texture::wrap(tex))
+            Some(Wrappable::wrap(tex))
         }
     }
     
@@ -177,16 +178,15 @@ impl Font {
             }
         }
     }
+}
 
-    #[doc(hidden)]
+impl Wrappable<*csfml::sfFont> for Font {
     pub fn wrap(font : *csfml::sfFont) -> Font {
         Font {
             font : font,
             dropable : false
         }
     }
-    
-    #[doc(hidden)]
     pub fn unwrap(&self) -> *csfml::sfFont {
         self.font
     } 

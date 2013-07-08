@@ -32,6 +32,7 @@ use std::libc::c_char;
 use std::str;
 use std::ptr;
 
+use traits::wrappable::Wrappable;
 use system::time::Time;
 
 #[doc(hidden)]
@@ -207,18 +208,18 @@ impl IpAddress {
     pub fn get_public_address(timeout : &Time) -> IpAddress {
         IpAddress {
             ip : unsafe { csfml::sfIpAddress_getPublicAddress(timeout.unwrap()) } 
+        }
     }
-    }
-    
-    #[doc(hidden)]
+}
+
+impl Wrappable<csfml::sfIpAddress> for IpAddress {
     pub fn wrap(ip : csfml::sfIpAddress) -> IpAddress {
         IpAddress {
             ip : ip
         }
     }
 
-    #[doc(hidden)]
     pub fn unwrap(&self) -> csfml::sfIpAddress {
         self.ip
-    }
+    }    
 }

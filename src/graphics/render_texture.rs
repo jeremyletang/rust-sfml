@@ -33,6 +33,8 @@
 use std::libc::{c_uint};
 use std::ptr;
 
+use traits::drawable::Drawable;
+use traits::wrappable::Wrappable;
 use system::vector2::{Vector2f, Vector2i, Vector2u};
 use graphics::view::View;
 use graphics::sprite::Sprite;
@@ -44,8 +46,6 @@ use graphics::circle_shape::CircleShape;
 use graphics::rectangle_shape::RectangleShape;
 use graphics::vertex_array::VertexArray;
 use graphics::convex_shape::ConvexShape;
-
-use graphics::drawable::Drawable;
 
 #[doc(hidden)]
 pub mod csfml {
@@ -204,7 +204,7 @@ impl RenderTexture {
     */
     pub fn get_view(&self) -> View {
         unsafe {
-            View::wrap(csfml::sfRenderTexture_getView(self.renderTexture))
+            Wrappable::wrap(csfml::sfRenderTexture_getView(self.renderTexture))
         }
     }
 
@@ -215,7 +215,7 @@ impl RenderTexture {
     */
     pub fn get_default_view(&self) -> View {
         unsafe {
-            View::wrap(csfml::sfRenderTexture_getDefaultView(self.renderTexture))
+            Wrappable::wrap(csfml::sfRenderTexture_getDefaultView(self.renderTexture))
         }
     }
 
@@ -460,7 +460,7 @@ impl RenderTexture {
             None
         }
         else {
-            Some(Texture::wrap(tex))
+            Some(Wrappable::wrap(tex))
         }
     }
     

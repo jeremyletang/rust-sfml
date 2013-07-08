@@ -34,6 +34,7 @@ use std::vec;
 use std::str;
 use std::ptr;
 
+use traits::wrappable::Wrappable;
 use system::vector2::Vector2u;
 use window::window::Window;
 use graphics::render_window::RenderWindow;
@@ -392,16 +393,16 @@ impl Texture {
             None
         }
         else {
-            Some(Image::wrap(img))
+            Some(Wrappable::wrap(img))
         }
     }
-    
-    #[doc(hidden)]
+}
+
+impl Wrappable<*csfml::sfTexture> for Texture {
     pub fn unwrap(&self) -> *csfml::sfTexture {
         self.texture
     }
     
-    #[doc(hidden)]
     pub fn wrap(texture : *csfml::sfTexture) -> Texture {
         Texture { 
             texture : texture,

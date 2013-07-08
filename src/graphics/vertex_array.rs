@@ -32,11 +32,12 @@
 use std::libc::c_uint;
 use std::ptr;
 
+use traits::drawable::Drawable;
+use traits::wrappable::Wrappable;
 use graphics::vertex::Vertex;
 use graphics::rect::FloatRect;
 use graphics::primitive_type;
 use graphics::primitive_type::PrimitiveType;
-use graphics::drawable::Drawable;
 use graphics::render_window::RenderWindow;
 use graphics::render_texture::RenderTexture;
 
@@ -251,15 +252,15 @@ impl VertexArray {
             *csfml::sfVertexArray_getVertex(self.vertexArray, index as c_uint)
         }
     }
+}
 
-    #[doc(hidden)]
+impl Wrappable<*csfml::sfVertexArray> for VertexArray {
     pub fn wrap(vertexArray : *csfml::sfVertexArray) -> VertexArray {
         VertexArray {
             vertexArray : vertexArray
         }
     }
 
-    #[doc(hidden)]
     pub fn unwrap(&self) -> *csfml::sfVertexArray {
         self.vertexArray
     }
