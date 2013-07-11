@@ -100,7 +100,9 @@ pub mod csfml {
 
 #[doc(hidden)]
 pub struct CircleShape {
-    priv circleShape : *csfml::sfCircleShape
+    priv circleShape : *csfml::sfCircleShape,
+    priv texture : Option<@mut Texture>
+
 }
 
 impl CircleShape {
@@ -116,11 +118,29 @@ impl CircleShape {
         }
         else {
             Some(CircleShape {
-                circleShape : circle
+                circleShape : circle,
+                texture : None
             })
         }
     }
     
+    pub fn new_with_texture(texture : @mut Texture) -> Option<CircleShape> {
+        let circle = unsafe { csfml::sfCircleShape_create() };
+        if ptr::is_null(circle) {
+            None
+        }
+        else {
+            unsafe {
+                csfml::sfCircleShape_setTexture(circle, texture.unwrap(), 1);
+            }
+            Some(CircleShape {
+                circleShape : circle,
+                texture : Some(texture)
+            })
+        }
+
+    }
+
     /**
     * Create a new CircleShape and initialize it.
     *
@@ -139,7 +159,8 @@ impl CircleShape {
                 csfml::sfCircleShape_setPointCount(circle, pointCount as c_uint);
             }
             Some(CircleShape {
-                circleShape : circle
+                circleShape : circle,
+                texture : None
             })
         }
     }
@@ -152,14 +173,15 @@ impl CircleShape {
     * 
     * Return the copied object on option or None
     */
-    pub fn new_copy(shape : &CircleShape) -> Option<CircleShape> {
-        let circle = unsafe { csfml::sfCircleShape_copy(shape.unwrap()) };
+    pub fn clone(&self) -> Option<CircleShape> {
+        let circle = unsafe { csfml::sfCircleShape_copy(self.circleShape) };
         if ptr::is_null(circle) {
             None
         }
         else {
             Some(CircleShape {
-                circleShape : circle
+                circleShape : circle,
+                texture : self.texture
             })
         }
     }
@@ -225,7 +247,8 @@ impl CircleShape {
     * * texture - New texture
     * * resetRect - Should the texture rect be reset to the size of the new texture?
     */
-    pub fn set_texture(&mut self, texture : &Texture, resetRect : bool) -> () {
+    pub fn set_texture(&mut self, texture : @mut Texture, resetRect : bool) -> () {
+        self.texture = Some(texture);
         unsafe {
             match resetRect {
                 true        => csfml::sfCircleShape_setTexture(self.circleShape, texture.unwrap(), 1),
@@ -318,14 +341,8 @@ impl CircleShape {
     * 
     * Return the shape's texture
     */
-    pub fn get_texture(&self) -> Option<Texture> {
-        let tex = unsafe { csfml::sfCircleShape_getTexture(self.circleShape) };
-        if ptr::is_null(tex) {
-            None
-        }
-        else {
-            Some(Wrappable::wrap(tex))
-        }
+    pub fn get_texture(&self) -> Option<@mut Texture> {
+        self.texture
     }
 
     /**
@@ -696,7 +713,8 @@ impl Wrappable<*csfml::sfCircleShape> for CircleShape {
     #[doc(hidden)]
     pub fn wrap(circleShape : *csfml::sfCircleShape) -> CircleShape {
         CircleShape {
-            circleShape : circleShape
+            circleShape : circleShape,
+            texture : None
         }
     }
 
@@ -716,6 +734,7 @@ impl Drawable for CircleShape {
     }
 }
 
+#[unsafe_destructor]
 impl Drop for CircleShape {
     /**
     * Destroy an existing CircleShape

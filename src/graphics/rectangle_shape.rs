@@ -98,7 +98,8 @@ pub mod csfml {
 
 #[doc(hidden)]
 pub struct RectangleShape {
-    priv rectangleShape : *csfml::sfRectangleShape
+    priv rectangleShape : *csfml::sfRectangleShape,
+    priv texture : Option<@mut Texture>
 }
 
 impl RectangleShape {
@@ -114,7 +115,29 @@ impl RectangleShape {
         }
         else {
             Some(RectangleShape {
-                rectangleShape : rectangle
+                rectangleShape : rectangle,
+                texture : None
+            })
+        }
+    }
+
+    /**
+    * Create a new rectangle shape with a texture
+    *
+    * Return a new option to a rectangleShape object or None
+    */
+    pub fn new_with_texture(texture : @mut Texture) -> Option<RectangleShape> {
+        let rectangle = unsafe { csfml::sfRectangleShape_create() };
+        if ptr::is_null(rectangle) {
+            None
+        }
+        else {
+            unsafe {
+                csfml::sfRectangleShape_setTexture(rectangle, texture.unwrap(), 1);
+            }
+            Some(RectangleShape {
+                rectangleShape : rectangle,
+                texture : Some(texture)
             })
         }
     }
@@ -136,27 +159,26 @@ impl RectangleShape {
                 csfml::sfRectangleShape_setSize(rectangle, *size);
             }
             Some(RectangleShape {
-                rectangleShape : rectangle
+                rectangleShape : rectangle,
+                texture : None
             })
         }
     }
 
     /**
-    * Copy an existing rectangle shape
-    *
-    * # Arguments
-    * * shape - Shape to copy
+    * Clone an existing rectangle shape
     * 
     * Return the copied object on an option, or None
     */
-    pub fn new_copy(rectangleShape : &RectangleShape) -> Option<RectangleShape> {
-        let rectangle = unsafe { csfml::sfRectangleShape_copy(rectangleShape.unwrap()) };
+    pub fn clone(&self) -> Option<RectangleShape> {
+        let rectangle = unsafe { csfml::sfRectangleShape_copy(self.rectangleShape) };
         if ptr::is_null(rectangle) {
             None
         }
         else {
             Some(RectangleShape {
-                rectangleShape : rectangle
+                rectangleShape : rectangle,
+                texture : self.texture
             })
         }
     }
@@ -461,7 +483,8 @@ impl RectangleShape {
     * * texture - New texture
     * * resetRect - Should the texture rect be reset to the size of the new texture?
     */
-    pub fn set_texture(&mut self, texture : &Texture, resetRect : bool) -> () {
+    pub fn set_texture(&mut self, texture : @mut Texture, resetRect : bool) -> () {
+        self.texture = Some(texture);
         unsafe {
             match resetRect {
                 false       => csfml::sfRectangleShape_setTexture(self.rectangleShape, texture.unwrap(), 0),
@@ -538,14 +561,8 @@ impl RectangleShape {
     * 
     * Return the shape's texture
     */
-    pub fn get_texture(&self) -> Option<Texture> {
-        let tex = unsafe { csfml::sfRectangleShape_getTexture(self.rectangleShape) };
-        if ptr::is_null(tex) {
-            None
-        }
-        else {
-            Some(Wrappable::wrap(tex))
-        }
+    pub fn get_texture(&self) -> Option<@mut Texture> {
+        self.texture
     }
 
     /**
@@ -679,7 +696,8 @@ impl RectangleShape {
 impl Wrappable<*csfml::sfRectangleShape> for RectangleShape {
     pub fn wrap(rectangleShape : *csfml::sfRectangleShape) -> RectangleShape {
         RectangleShape {
-            rectangleShape : rectangleShape
+            rectangleShape : rectangleShape,
+            texture : None
         }
     }
     
@@ -698,6 +716,7 @@ impl Drawable for RectangleShape {
     }
 }
 
+#[unsafe_destructor]
 impl Drop for RectangleShape {
     fn drop(&self) -> () {
         unsafe {

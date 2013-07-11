@@ -99,7 +99,8 @@ pub mod csfml {
 
 #[doc(hidden)]
 pub struct ConvexShape {
-    priv convexShape : *csfml::sfConvexShape
+    priv convexShape : *csfml::sfConvexShape,
+    priv texture : Option<@mut Texture>
 }
 
 impl ConvexShape {
@@ -115,27 +116,48 @@ impl ConvexShape {
         }
         else {
             Some(ConvexShape {
-                convexShape : shape 
+                convexShape : shape,
+                texture : None
             })
         } 
     }
 
     /**
-    * Copy an existing convex shape
+    * Create a new convex shape with a texture
     *
-    * # Arguments
-    * * shape - Shape to copy
-    * 
-    * Return the copied object
+    * Return a new convexShape object
     */
-    pub fn new_copy(shape : &ConvexShape) -> Option<ConvexShape> {
-        let shape = unsafe { csfml::sfConvexShape_copy(shape.unwrap()) };
+    pub fn new_with_texture(texture : @mut Texture) -> Option<ConvexShape> {
+        let shape = unsafe { csfml::sfConvexShape_create() };
+        if ptr::is_null(shape) {
+            None
+        }
+        else {
+            unsafe {
+                csfml::sfConvexShape_setTexture(shape, texture.unwrap(), 1);
+            }
+            Some(ConvexShape {
+                convexShape : shape,
+                texture : Some(texture)
+            })
+        } 
+
+    }
+
+    /**
+    * Clone an existing convex shape
+    *
+    * Return the cloned object
+    */
+    pub fn clone(&self) -> Option<ConvexShape> {
+        let shape = unsafe { csfml::sfConvexShape_copy(self.convexShape) };
         if ptr::is_null(shape) {
             None
         }
         else {
             Some(ConvexShape {
-                convexShape : shape
+                convexShape : shape,
+                texture : self.texture
             })
         }
     }
@@ -432,7 +454,8 @@ impl ConvexShape {
     * * texture - New texture
     * * resetRect - Should the texture rect be reset to the size of the new texture?
     */
-    pub fn set_texture(&mut self, texture : &Texture, resetRect : bool) -> () {
+    pub fn set_texture(&mut self, texture : @mut Texture, resetRect : bool) -> () {
+        self.texture = Some(texture);
         unsafe {
             match resetRect {
                 true        => csfml::sfConvexShape_setTexture(self.convexShape, texture.unwrap(), 1),
@@ -509,14 +532,8 @@ impl ConvexShape {
     * 
     * Return the shape's texture
     */
-    pub fn get_texture(&self) -> Option<Texture> {
-        let tex = unsafe { csfml::sfConvexShape_getTexture(self.convexShape) };
-        if ptr::is_null(tex) {
-            None
-        }
-        else {
-            Some(Wrappable::wrap(tex))
-        }
+    pub fn get_texture(&self) -> Option<@mut Texture> {
+        self.texture
     }
     
     /**
@@ -658,7 +675,9 @@ impl Wrappable<*csfml::sfConvexShape> for ConvexShape {
     #[doc(hidden)]
     pub fn wrap(convexShape : *csfml::sfConvexShape) -> ConvexShape {
         ConvexShape {
-            convexShape : convexShape
+            convexShape : convexShape,
+            texture : None
+
         }
     }
     
@@ -679,6 +698,7 @@ impl Drawable for ConvexShape {
     }
 }
 
+#[unsafe_destructor]
 impl Drop for ConvexShape {
     fn drop(&self) -> () {
         unsafe {

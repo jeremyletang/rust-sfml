@@ -91,7 +91,8 @@ pub mod csfml {
 
 #[doc(hidden)]
 pub struct Sprite {
-    priv sprite : *csfml::sfSprite
+    priv sprite : *csfml::sfSprite,
+    priv texture : Option<@mut Texture>
 }
 
 impl Sprite {
@@ -107,25 +108,49 @@ impl Sprite {
         }
         else {
             Some(Sprite { 
-                sprite : sp
+                sprite : sp,
+                texture : None
+                    
             })
         }
     }
 
     /**
+    * Create a new sprite with a texture
+    *
+    * Return a new sfSprite object
+    */
+    pub fn new_with_texture(texture : @mut Texture) -> Option<Sprite> {
+        let sp = unsafe { csfml::sfSprite_create() };
+        if ptr::is_null(sp) {
+            None
+        }
+        else {
+            unsafe {
+                csfml::sfSprite_setTexture(sp, texture.unwrap(), 1);
+            }
+            Some(Sprite {
+                sprite : sp,
+                texture : Some(texture)
+            })
+        }
+
+    }
+
+    /**
     * Copy an existing sprite
     *
-    * # Arguments
-    * * sprite - Sprite to copy
+    * Return An option to the cloned sprite or none.
     */
-    pub fn new_copy(sprite : &Sprite) -> Option<Sprite> {
-        let sp = unsafe { csfml::sfSprite_copy(sprite.unwrap()) };
+    pub fn clone(&self) -> Option<Sprite> {
+        let sp = unsafe { csfml::sfSprite_copy(self.sprite) };
         if ptr::is_null(sp) {
             None
         }
         else {
             Some(Sprite {
-                sprite : sp
+                sprite : sp,
+                texture : self.texture
             })
         }
     }
@@ -191,7 +216,8 @@ impl Sprite {
     * * texture - New texture
     * * resetRect - Should the texture rect be reset to the size of the new texture?
     */
-    pub fn set_texture(&mut self, texture : &Texture, resetRect : bool) -> (){
+    pub fn set_texture(&mut self, texture : @mut Texture, resetRect : bool) -> (){
+        self.texture = Some(texture);
         unsafe {
             match resetRect {
                 true        => csfml::sfSprite_setTexture(self.sprite, texture.unwrap(), 1),
@@ -237,13 +263,13 @@ impl Sprite {
     *
     * Return an Option to the sprite's texture
     */
-    pub fn get_texture(&self) -> Option<Texture> {
-        let tex = unsafe { csfml::sfSprite_getTexture(self.sprite) };
-        if ptr::is_null(tex) {
+    pub fn get_texture(&self) -> Option<@mut Texture> {
+        //let tex = unsafe { csfml::sfSprite_getTexture(self.sprite) };
+        if self.texture.is_none() {
             None
         }
         else {
-            Some(Wrappable::wrap(tex))
+            self.texture
         }   
     }
 
@@ -544,7 +570,8 @@ impl Sprite {
 impl Wrappable<*csfml::sfSprite> for Sprite {
     pub fn wrap(sprite : *csfml::sfSprite) -> Sprite {
         Sprite { 
-            sprite : sprite 
+            sprite : sprite,
+            texture : None
         }
     }
 
@@ -568,6 +595,7 @@ impl Drawable for Sprite {
     }
 }
 
+#[unsafe_destructor]
 impl Drop for Sprite {
     /**
     * Destroy an existing sprite
