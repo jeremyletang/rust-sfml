@@ -126,13 +126,10 @@ impl View {
     /**
     * Create a view by copying an existant one.
     *
-    * # Arguments
-    * * view - View to copy
-    *
     * Return a new option to View object
     */
-    pub fn new_copy(view : &View) -> Option<View> {
-        let view = unsafe { csfml::sfView_copy(view.unwrap()) };
+    pub fn new_copy(&self) -> Option<View> {
+        let view = unsafe { csfml::sfView_copy(self.view) };
         if ptr::is_null(view) {
             None
         }

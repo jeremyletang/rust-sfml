@@ -100,11 +100,10 @@ impl SoundBuffer {
     /**
     * Create a new sound buffer by copying an existing one
     *
-    * # Arguments
-    * * soundBuffer - Sound buffer to copy
+    *  Return an option to a cloned SoundBuffer object or None.
     */
-    pub fn new_copy(soundBuffer : &SoundBuffer) -> Option<SoundBuffer> {
-        let soundBuffer = unsafe { csfml::sfSoundBuffer_copy(soundBuffer.unwrap()) };
+    pub fn clone(&self) -> Option<SoundBuffer> {
+        let soundBuffer = unsafe { csfml::sfSoundBuffer_copy(self.soundBuffer) };
         if ptr::is_null(soundBuffer) {
             None
         }

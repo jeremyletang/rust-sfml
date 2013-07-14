@@ -72,9 +72,9 @@ impl Clock {
     * Create a clock by copying an extant one
     * 
     */
-    pub fn new_copy(clock : &Clock) -> Clock {
+    pub fn clone(&self) -> Clock {
         Clock {
-            clock : unsafe { csfml::sfClock_copy(clock.unwrap()) } 
+            clock : unsafe { csfml::sfClock_copy(self.clock) } 
         }
     }
 

@@ -108,8 +108,8 @@ impl VertexArray {
     *
     * Return the copied object
     */
-    pub fn new_copy(vertexArray : &VertexArray) -> Option<VertexArray> {
-        let ver = unsafe { csfml::sfVertexArray_copy(vertexArray.unwrap()) };
+    pub fn clone(&self) -> Option<VertexArray> {
+        let ver = unsafe { csfml::sfVertexArray_copy(self.vertexArray) };
         if ptr::is_null(ver) {
             None
         }

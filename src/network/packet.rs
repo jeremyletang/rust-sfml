@@ -107,8 +107,8 @@ impl Packet {
     *
     * Return a new Packet object which is a copy of packet
     */
-    pub fn new_copy(packet : &Packet) -> Option<Packet> {
-        let pck = unsafe { csfml::sfPacket_copy(packet.unwrap()) };
+    pub fn clone(&self) -> Option<Packet> {
+        let pck = unsafe { csfml::sfPacket_copy(self.packet) };
         if ptr::is_null(pck) {
             None
         }

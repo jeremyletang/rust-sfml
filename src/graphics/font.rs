@@ -100,8 +100,8 @@ impl Font {
     * * font - Font to copy
     * Return the copied font
     */
-    pub fn new_copy(font : &Font) -> Option<Font> {
-        let fnt = unsafe {csfml::sfFont_copy(font.unwrap())};
+    pub fn clone(&self) -> Option<Font> {
+        let fnt = unsafe {csfml::sfFont_copy(self.font)};
         if ptr::is_null(fnt) {
             None
         }

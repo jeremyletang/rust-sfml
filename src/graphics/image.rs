@@ -155,13 +155,10 @@ impl Image {
     /**
     * Copy an existing image
     *
-    * # Arguments
-    * * image - Image to copy
-    *
     * Return copied object
     */
-    pub fn new_copy(image : &Image) -> Option<Image> {
-        let image = unsafe { csfml::sfImage_copy(image.unwrap()) };
+    pub fn clone(&self) -> Option<Image> {
+        let image = unsafe { csfml::sfImage_copy(self.image) };
         if ptr::is_null(image) {
             None
         }

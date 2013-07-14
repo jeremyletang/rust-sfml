@@ -96,12 +96,10 @@ impl Transformable {
     /**
     * Copy an existing transformable
     *
-    * # Arguments
-    * * transformable - Transformable to copy
     * Return the copied object
     */
-    pub fn new_copy(transformable : &Transformable) -> Option<Transformable> {
-        let tran = unsafe { csfml::sfTransformable_copy(transformable.unwrap()) };
+    pub fn clone(&self) -> Option<Transformable> {
+        let tran = unsafe { csfml::sfTransformable_copy(self.trans) };
         if ptr::is_null(tran) {
             None
         }

@@ -166,8 +166,8 @@ impl Texture {
     *
     * Return an option to the copied texture or None
     */
-    pub fn new_copy(texture : &Texture) -> Option<Texture> {
-        let tex = unsafe { csfml::sfTexture_copy(texture.unwrap()) };
+    pub fn clone(&self) -> Option<Texture> {
+        let tex = unsafe { csfml::sfTexture_copy(self.texture) };
         if ptr::is_null(tex) {
             None
         }
