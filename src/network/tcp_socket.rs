@@ -40,7 +40,7 @@ use network::socket_status::SocketStatus;
 use network::packet;
 
 #[doc(hidden)]
-pub mod csfml {
+pub mod ffi {
 
     use std::libc::{c_void, size_t};
 
@@ -60,21 +60,21 @@ pub mod csfml {
         fn sfTcpSocket_setBlocking(socket : *sfTcpSocket, blocking : sfBool) -> ();
         fn sfTcpSocket_isBlocking(socket : *sfTcpSocket) -> sfBool;
         fn sfTcpSocket_getLocalPort(socket : *sfTcpSocket) -> u16;
-        fn sfTcpSocket_getRemoteAddress(socket : *sfTcpSocket) -> ip_address::csfml::sfIpAddress;
+        fn sfTcpSocket_getRemoteAddress(socket : *sfTcpSocket) -> ip_address::ffi::sfIpAddress;
         fn sfTcpSocket_getRemotePort(socket : *sfTcpSocket) -> u16;
-        fn sfTcpSocket_connect(socket : *sfTcpSocket, host : ip_address::csfml::sfIpAddress, port : u16,  timeout : time::csfml::sfTime) -> SocketStatus;
+        fn sfTcpSocket_connect(socket : *sfTcpSocket, host : ip_address::ffi::sfIpAddress, port : u16,  timeout : time::ffi::sfTime) -> SocketStatus;
         fn sfTcpSocket_disconnect(socket : *sfTcpSocket) -> ();
         fn sfTcpSocket_send(socket : *sfTcpSocket, data : *i8, size : size_t) -> SocketStatus;
         fn sfTcpSocket_receive(socket : *sfTcpSocket, data : *i8, maxSize : size_t, sizeReceived : *size_t) -> SocketStatus;
-        fn sfTcpSocket_sendPacket(socket : *sfTcpSocket, packet : *packet::csfml::sfPacket) -> SocketStatus;
-        fn sfTcpSocket_receivePacket(socket : *sfTcpSocket, packet : *packet::csfml::sfPacket) -> SocketStatus;
+        fn sfTcpSocket_sendPacket(socket : *sfTcpSocket, packet : *packet::ffi::sfPacket) -> SocketStatus;
+        fn sfTcpSocket_receivePacket(socket : *sfTcpSocket, packet : *packet::ffi::sfPacket) -> SocketStatus;
     }
 
 }
 
 #[doc(hidden)]
 pub struct TcpSocket {
-    priv socket : *csfml::sfTcpSocket
+    priv socket : *ffi::sfTcpSocket
 }
 
 impl TcpSocket {
@@ -84,7 +84,7 @@ impl TcpSocket {
     * Return a new option to TcpSocket object, or None
     */
     pub fn new() -> Option<TcpSocket> {
-        let tcp = unsafe { csfml::sfTcpSocket_create() };
+        let tcp = unsafe { ffi::sfTcpSocket_create() };
         if ptr::is_null(tcp) {
             None
         }
@@ -113,8 +113,8 @@ impl TcpSocket {
     pub fn set_blocking(&mut self, blocking : bool) -> () {
         unsafe {
             match blocking  {
-                true        => csfml::sfTcpSocket_setBlocking(self.socket, 1),
-                false       => csfml::sfTcpSocket_setBlocking(self.socket, 0)
+                true        => ffi::sfTcpSocket_setBlocking(self.socket, 1),
+                false       => ffi::sfTcpSocket_setBlocking(self.socket, 0)
             }
         }
     }
@@ -125,7 +125,7 @@ impl TcpSocket {
     * Return true if the socket is blocking, false otherwise
     */
     pub fn is_blocking(&self) -> bool {
-        match unsafe { csfml::sfTcpSocket_isBlocking(self.socket) } {
+        match unsafe { ffi::sfTcpSocket_isBlocking(self.socket) } {
             0 => false,
             _ => true
         }
@@ -141,7 +141,7 @@ impl TcpSocket {
     */
     pub fn get_local_port(&self) -> u16 {
         unsafe {
-            csfml::sfTcpSocket_getLocalPort(self.socket)
+            ffi::sfTcpSocket_getLocalPort(self.socket)
         }
     }
 
@@ -155,7 +155,7 @@ impl TcpSocket {
     */
     pub fn get_remote_address(&self) -> ip_address::IpAddress {
         unsafe {
-            Wrappable::wrap(csfml::sfTcpSocket_getRemoteAddress(self.socket))
+            Wrappable::wrap(ffi::sfTcpSocket_getRemoteAddress(self.socket))
         }
     }
 
@@ -169,7 +169,7 @@ impl TcpSocket {
     */
     pub fn get_remote_port(&self) -> u16 {
         unsafe {
-            csfml::sfTcpSocket_getRemotePort(self.socket)
+            ffi::sfTcpSocket_getRemotePort(self.socket)
         }
     }
 
@@ -188,7 +188,7 @@ impl TcpSocket {
     */
     pub fn connect(&self, host : &ip_address::IpAddress, port : u16, timeout : time::Time) -> SocketStatus {
         unsafe {
-            csfml::sfTcpSocket_connect(self.socket, host.unwrap(), port, timeout.unwrap())
+            ffi::sfTcpSocket_connect(self.socket, host.unwrap(), port, timeout.unwrap())
         }
     }
 
@@ -201,7 +201,7 @@ impl TcpSocket {
     */
     pub fn disconnect(&mut self) -> () {
         unsafe {
-            csfml::sfTcpSocket_disconnect(self.socket)
+            ffi::sfTcpSocket_disconnect(self.socket)
         }
     }
 
@@ -215,7 +215,7 @@ impl TcpSocket {
     */
     pub fn send(&self, data : ~[i8]) -> SocketStatus {
         unsafe {
-            csfml::sfTcpSocket_send(self.socket, vec::raw::to_ptr(data), data.len() as size_t)
+            ffi::sfTcpSocket_send(self.socket, vec::raw::to_ptr(data), data.len() as size_t)
         }
     }
 
@@ -235,7 +235,7 @@ impl TcpSocket {
         unsafe {
             let s : size_t = 0;
             let datas : *i8 = ptr::null();
-            let stat : SocketStatus = csfml::sfTcpSocket_receive(self.socket, datas, maxSize, &s);
+            let stat : SocketStatus = ffi::sfTcpSocket_receive(self.socket, datas, maxSize, &s);
             (vec::raw::from_buf_raw(datas, s as uint), stat, s)
         }
     }
@@ -250,7 +250,7 @@ impl TcpSocket {
     */
     pub fn send_packet(&self, packet : &packet::Packet) -> SocketStatus {
         unsafe {
-            csfml::sfTcpSocket_sendPacket(self.socket, packet.unwrap())
+            ffi::sfTcpSocket_sendPacket(self.socket, packet.unwrap())
         }
     }
 
@@ -265,21 +265,22 @@ impl TcpSocket {
     */
     pub fn receive_packet(&self) -> (packet::Packet, SocketStatus) {
         unsafe {
-            let pack : *packet::csfml::sfPacket = ptr::null();
-            let stat = csfml::sfTcpSocket_receivePacket(self.socket, pack);
+            let pack : *packet::ffi::sfPacket = ptr::null();
+            let stat = ffi::sfTcpSocket_receivePacket(self.socket, pack);
             (Wrappable::wrap(pack), stat)
         }
     }
 }
 
-impl Wrappable<*csfml::sfTcpSocket> for TcpSocket {
-    pub fn wrap(socket : *csfml::sfTcpSocket) -> TcpSocket {
+#[doc(hidden)]
+impl Wrappable<*ffi::sfTcpSocket> for TcpSocket {
+    pub fn wrap(socket : *ffi::sfTcpSocket) -> TcpSocket {
         TcpSocket {
             socket : socket
         }
     }
     
-    pub fn unwrap(&self) -> *csfml::sfTcpSocket {
+    pub fn unwrap(&self) -> *ffi::sfTcpSocket {
         self.socket
     }
 }
@@ -287,7 +288,7 @@ impl Wrappable<*csfml::sfTcpSocket> for TcpSocket {
 impl Drop for TcpSocket {
     fn drop(&self) -> () {
         unsafe {
-            csfml::sfTcpSocket_destroy(self.socket)
+            ffi::sfTcpSocket_destroy(self.socket)
         }
     }
 }

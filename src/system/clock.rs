@@ -33,7 +33,7 @@ use traits::wrappable::Wrappable;
 use system::time::Time;
 
 #[doc(hidden)]
-pub mod csfml {
+pub mod ffi {
     
     use std::libc::{c_void};
     use system::time::*;
@@ -46,15 +46,15 @@ pub mod csfml {
         fn sfClock_create() -> *sfClock;
         fn sfClock_copy(clock : *sfClock) -> *sfClock;
         fn sfClock_destroy(clock : *sfClock) -> ();
-        fn sfClock_getElapsedTime(clock : *sfClock) -> csfml::sfTime;
-        fn sfClock_restart(clock : *sfClock) -> csfml::sfTime;
+        fn sfClock_getElapsedTime(clock : *sfClock) -> ffi::sfTime;
+        fn sfClock_restart(clock : *sfClock) -> ffi::sfTime;
     }
 }
 
 
 #[doc(hidden)]
 pub struct Clock {
-    priv clock : *csfml::sfClock
+    priv clock : *ffi::sfClock
 }
 
 impl Clock {
@@ -64,7 +64,7 @@ impl Clock {
     */
     pub fn new() -> Clock {
         Clock {
-            clock : unsafe { csfml::sfClock_create() }
+            clock : unsafe { ffi::sfClock_create() }
         }
     }
 
@@ -74,7 +74,7 @@ impl Clock {
     */
     pub fn clone(&self) -> Clock {
         Clock {
-            clock : unsafe { csfml::sfClock_copy(self.clock) } 
+            clock : unsafe { ffi::sfClock_copy(self.clock) } 
         }
     }
 
@@ -83,7 +83,7 @@ impl Clock {
     */
     pub fn get_elapsed_time(&self) -> Time {
         unsafe {
-            Wrappable::wrap(csfml::sfClock_getElapsedTime(self.clock))
+            Wrappable::wrap(ffi::sfClock_getElapsedTime(self.clock))
         }
     }
 
@@ -92,11 +92,11 @@ impl Clock {
     */
     pub fn restart(&mut self) -> Time {
         unsafe {
-            Wrappable::wrap(csfml::sfClock_restart(self.clock))
+            Wrappable::wrap(ffi::sfClock_restart(self.clock))
         }
     }
 
-    fn unwrap(&self) -> *csfml::sfClock {
+    fn unwrap(&self) -> *ffi::sfClock {
         self.clock
     }
 }
@@ -108,7 +108,7 @@ impl Drop for Clock {
     */
     fn drop(&self) {
         unsafe {
-            csfml::sfClock_destroy(self.clock)
+            ffi::sfClock_destroy(self.clock)
         }
     }
 }

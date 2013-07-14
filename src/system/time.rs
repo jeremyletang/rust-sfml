@@ -34,7 +34,7 @@ pub use std::libc::{c_long, c_float, c_int};
 use traits::wrappable::Wrappable;
 
 #[doc(hidden)]
-pub mod csfml {
+pub mod ffi {
     
     pub use std::libc::{c_long, c_float, c_int};
 
@@ -54,7 +54,7 @@ pub mod csfml {
 
 #[doc(hiddden)]
 pub struct Time {
-    priv time : csfml::sfTime
+    priv time : ffi::sfTime
 }
 
 impl Time {
@@ -64,7 +64,7 @@ impl Time {
     */
     pub fn with_seconds(seconds : f32) -> Time {
         Time {
-            time : unsafe { csfml::sfSeconds(seconds as c_float) }
+            time : unsafe { ffi::sfSeconds(seconds as c_float) }
         }
     }
 
@@ -73,7 +73,7 @@ impl Time {
     */
     pub fn with_milliseconds(milliseconds : i32) -> Time {
         Time {
-            time : unsafe { csfml::sfMilliseconds(milliseconds as c_int) }
+            time : unsafe { ffi::sfMilliseconds(milliseconds as c_int) }
         }
     }
 
@@ -82,7 +82,7 @@ impl Time {
     */
     pub fn with_microseconds(microseconds : i64) -> Time {
         Time {
-            time : unsafe { csfml::sfMicroseconds(microseconds as c_long) }
+            time : unsafe { ffi::sfMicroseconds(microseconds as c_long) }
         }
     }
 
@@ -91,7 +91,7 @@ impl Time {
     */
     pub fn as_seconds(&self) -> f32 {
         unsafe {
-            csfml::sfTime_asSeconds(self.time)
+            ffi::sfTime_asSeconds(self.time)
         }
     }
 
@@ -100,7 +100,7 @@ impl Time {
     */
     pub fn as_milliseconds(&self) -> i32 {
         unsafe {
-            csfml::sfTime_asMilliseconds(self.time)
+            ffi::sfTime_asMilliseconds(self.time)
         }
     }
     
@@ -109,19 +109,20 @@ impl Time {
     */
     pub fn as_microseconds(&self) -> i64 {
         unsafe {
-            csfml::sfTime_asMicroseconds(self.time)
+            ffi::sfTime_asMicroseconds(self.time)
         }        
     }
 }
 
-impl Wrappable<csfml::sfTime> for Time {
-    pub fn wrap(time : csfml::sfTime) -> Time {
+#[doc(hidden)]
+impl Wrappable<ffi::sfTime> for Time {
+    pub fn wrap(time : ffi::sfTime) -> Time {
         Time {
             time : time
         }
     }
  
-    pub fn unwrap(&self) -> csfml::sfTime {
+    pub fn unwrap(&self) -> ffi::sfTime {
         self.time
     }
 }

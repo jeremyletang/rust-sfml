@@ -36,7 +36,7 @@ use graphics::color::Color;
 use system::vector2::Vector2f;
 
 #[doc(hidden)]
-pub mod csfml {
+pub mod ffi {
     
     use graphics::color;
     use system::vector2;

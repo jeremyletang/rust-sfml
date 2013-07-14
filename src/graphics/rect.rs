@@ -32,7 +32,7 @@
 use std::libc::{c_int};
 
 #[doc(hidden)]
-pub mod csfml {
+pub mod ffi {
     
     use std::libc::{c_int};
     use rsfml::sfTypes::{sfBool};
@@ -88,7 +88,7 @@ impl IntRect {
     * Return true if the point is inside
     */
     pub fn contains(self, x : int, y : int) -> bool {
-        match unsafe { csfml::sfIntRect_contains(&self, x as c_int, y as c_int) } {
+        match unsafe { ffi::sfIntRect_contains(&self, x as c_int, y as c_int) } {
             0 => false,
             _ => true
         }
@@ -105,7 +105,7 @@ impl IntRect {
     * Return strue if rectangles overlap
     */
     pub fn intersects(rect1 : &IntRect, rect2 : &IntRect, intersections : &IntRect) -> bool {
-        match unsafe { csfml::sfIntRect_intersects(rect1, rect2, intersections) } {
+        match unsafe { ffi::sfIntRect_intersects(rect1, rect2, intersections) } {
             0 => false,
             _ => true
         }
@@ -135,7 +135,7 @@ impl FloatRect {
     * Return true if the point is inside
     */
     pub fn contains(self, x : f32, y : f32) -> bool {
-        match unsafe { csfml::sfFloatRect_contains(&self, x, y) } {
+        match unsafe { ffi::sfFloatRect_contains(&self, x, y) } {
             0 => false,
             _ => true
         }
@@ -152,7 +152,7 @@ impl FloatRect {
     * Return strue if rectangles overlap
     */
     pub fn intersects(rect1 : &FloatRect, rect2 : &FloatRect, intersections : &FloatRect) -> bool {
-        match unsafe { csfml::sfFloatRect_intersects(rect1, rect2, intersections) } {
+        match unsafe { ffi::sfFloatRect_intersects(rect1, rect2, intersections) } {
             0 => false,
             _ => true
         }

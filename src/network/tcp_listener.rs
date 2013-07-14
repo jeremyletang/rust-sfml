@@ -38,7 +38,7 @@ use network::tcp_socket::TcpSocket;
 use network::socket_status::SocketStatus;
 
 #[doc(hidden)]
-pub mod csfml {
+pub mod ffi {
 
     use std::libc::{c_void};
  
@@ -57,13 +57,13 @@ pub mod csfml {
         fn sfTcpListener_isBlocking(listener : *sfTcpListener) -> sfBool;
         fn sfTcpListener_getLocalPort(listener : *sfTcpListener) -> u16;
         fn sfTcpListener_listen(listener : *sfTcpListener, port : u16) -> SocketStatus;
-        fn sfTcpListener_accept(listener : *sfTcpListener, connected : **tcp_socket::csfml::sfTcpSocket) -> SocketStatus;
+        fn sfTcpListener_accept(listener : *sfTcpListener, connected : **tcp_socket::ffi::sfTcpSocket) -> SocketStatus;
     }
 }
 
 #[doc(hidden)]
 pub struct TcpListener {
-    priv listener : *csfml::sfTcpListener
+    priv listener : *ffi::sfTcpListener
 }
 
 impl TcpListener {
@@ -73,7 +73,7 @@ impl TcpListener {
     * Return a new option to TcpListener object or None
     */
     pub fn new() -> Option<TcpListener> {
-        let list = unsafe { csfml::sfTcpListener_create() };
+        let list = unsafe { ffi::sfTcpListener_create() };
         if ptr::is_null(list) {
             None
         }
@@ -102,8 +102,8 @@ impl TcpListener {
     pub fn set_blocking(&mut self, blocking : bool) -> () {
         unsafe {
             match blocking  {
-                true        => csfml::sfTcpListener_setBlocking(self.listener, 1),
-                false       => csfml::sfTcpListener_setBlocking(self.listener, 0)
+                true        => ffi::sfTcpListener_setBlocking(self.listener, 1),
+                false       => ffi::sfTcpListener_setBlocking(self.listener, 0)
             }
         }
     }
@@ -114,7 +114,7 @@ impl TcpListener {
     * Return true if the socket is blocking, false otherwise
     */
     pub fn is_blocking(&self) -> bool {
-        match unsafe { csfml::sfTcpListener_isBlocking(self.listener) } {
+        match unsafe { ffi::sfTcpListener_isBlocking(self.listener) } {
             0 => false,
             _ => true
         }
@@ -130,7 +130,7 @@ impl TcpListener {
     */
     pub fn get_local_port(&self) -> u16 {
         unsafe {
-            csfml::sfTcpListener_getLocalPort(self.listener)
+            ffi::sfTcpListener_getLocalPort(self.listener)
         }
     }
     
@@ -149,7 +149,7 @@ impl TcpListener {
     */
     pub fn listen(&self, port : u16) -> SocketStatus {
         unsafe {
-            csfml::sfTcpListener_listen(self.listener, port)
+            ffi::sfTcpListener_listen(self.listener, port)
         }
     }
     
@@ -166,7 +166,7 @@ impl TcpListener {
     */
     pub fn accept(&self, connected : @TcpSocket) -> SocketStatus {
         unsafe {
-            csfml::sfTcpListener_accept(self.listener, &connected.unwrap())
+            ffi::sfTcpListener_accept(self.listener, &connected.unwrap())
         }
     }
 }
@@ -174,7 +174,7 @@ impl TcpListener {
 impl Drop for TcpListener {
     fn drop(&self) -> () {
         unsafe {
-            csfml::sfTcpListener_destroy(self.listener)
+            ffi::sfTcpListener_destroy(self.listener)
         }
     }
 }

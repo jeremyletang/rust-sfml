@@ -44,7 +44,7 @@ use window::joystick;
 use window::mouse;
 
 #[doc(hidden)]
-pub mod csfml {
+pub mod ffi {
     
     use std::libc::{c_void, c_uint, c_char, c_float};    
 
@@ -88,8 +88,8 @@ pub mod csfml {
     }
 
     pub extern "C" {
-        fn sfWindow_create(mode : csfml::sfVideoMode, title : *c_char, style : c_uint, settings : *ContextSettings) -> *sfWindow;
-        fn sfWindow_createUnicode(mode : csfml::sfVideoMode, title : *u32, style : c_uint, setting : *ContextSettings) -> *sfWindow;
+        fn sfWindow_create(mode : ffi::sfVideoMode, title : *c_char, style : c_uint, settings : *ContextSettings) -> *sfWindow;
+        fn sfWindow_createUnicode(mode : ffi::sfVideoMode, title : *u32, style : c_uint, setting : *ContextSettings) -> *sfWindow;
         //fn sfWindow_createFromHandle(handle : sfWindowHandle, settings : *sfContextSettings) -> *sfWindow;
         fn sfWindow_close(window : *sfWindow) -> ();
         fn sfWindow_destroy(window : *sfWindow) -> ();
@@ -128,8 +128,8 @@ pub enum WindowStyle {
 
 #[doc(hidden)]
 pub struct Window {
-    priv window : *csfml::sfWindow,
-    priv event : csfml::sfEvent,
+    priv window : *ffi::sfWindow,
+    priv event : ffi::sfEvent,
     priv titleLength : uint
 }
 
@@ -156,13 +156,13 @@ impl Window {
     * Return a new Window object
     */
     pub fn new(mode : VideoMode, title : ~str, style : WindowStyle, settings : &ContextSettings) -> Option<Window> {
-        let mut sfWin: *csfml::sfWindow = ptr::null();
+        let mut sfWin: *ffi::sfWindow = ptr::null();
         do str::as_c_str(title) |title_buf| {
             unsafe {
-                sfWin = csfml::sfWindow_create(mode.unwrap(), title_buf, style as u32, settings); 
+                sfWin = ffi::sfWindow_create(mode.unwrap(), title_buf, style as u32, settings); 
             }
         };
-        let sfEv = csfml::sfEvent {
+        let sfEv = ffi::sfEvent {
             typeEvent : 0,
             p1 : 0,
             p2 : 0,
@@ -204,8 +204,8 @@ impl Window {
     * Return a new Window object
     */
     pub fn new_with_unicode(mode : VideoMode, title : ~[u32], style : WindowStyle, settings : &ContextSettings) -> Option<Window> {
-        let sfWin = unsafe { csfml::sfWindow_createUnicode(mode.unwrap(), vec::raw::to_ptr(title), style as u32, settings) };
-        let sfEv = csfml::sfEvent {
+        let sfWin = unsafe { ffi::sfWindow_createUnicode(mode.unwrap(), vec::raw::to_ptr(title), style as u32, settings) };
+        let sfEv = ffi::sfEvent {
             typeEvent : 0,
             p1 : 0, 
             p2 : 0, 
@@ -367,7 +367,7 @@ impl Window {
     */
     pub fn poll_event(&mut self) -> event::Event {
         let haveEvent : bool =  unsafe {
-            match csfml::sfWindow_pollEvent(self.window, &self.event) {
+            match ffi::sfWindow_pollEvent(self.window, &self.event) {
                 0       => false,
                 _       => true
             }
@@ -393,7 +393,7 @@ impl Window {
     */
     pub fn wait_event(&mut self) -> event::Event {
         let haveEvent : bool =  unsafe {
-            match csfml::sfWindow_waitEvent(self.window, &self.event) {
+            match ffi::sfWindow_waitEvent(self.window, &self.event) {
                 0       => false,
                 _       => true
             }
@@ -412,7 +412,7 @@ impl Window {
     */
     pub fn set_unicode_title(&mut self, title : ~[u32]) -> () {
         unsafe {
-            csfml::sfWindow_setUnicodeTitle(self.window, vec::raw::to_ptr(title))
+            ffi::sfWindow_setUnicodeTitle(self.window, vec::raw::to_ptr(title))
         }
     }
     /**
@@ -426,7 +426,7 @@ impl Window {
     */
     pub fn set_icon(&mut self, width : uint, height : uint, pixels : ~[u8]) -> () {
         unsafe {
-            csfml::sfWindow_setIcon(self.window, width as c_uint, height as c_uint, vec::raw::to_ptr(pixels))
+            ffi::sfWindow_setIcon(self.window, width as c_uint, height as c_uint, vec::raw::to_ptr(pixels))
         }
     }
     
@@ -441,7 +441,7 @@ impl Window {
     */
     pub fn close(&mut self) -> () {
         unsafe {
-            csfml::sfWindow_close(self.window);
+            ffi::sfWindow_close(self.window);
         }
     }
 
@@ -453,7 +453,7 @@ impl Window {
     * true.
     */
     pub fn is_open(&self) -> bool {
-        let tmp = unsafe { csfml::sfWindow_isOpen(self.window) };
+        let tmp = unsafe { ffi::sfWindow_isOpen(self.window) };
         match tmp {
             0 => false,
             _ => true
@@ -471,7 +471,7 @@ impl Window {
     * Return a structure containing the OpenGL context settings
     */
     pub fn get_settings(&self) -> ContextSettings {
-        unsafe {csfml::sfWindow_getSettings(self.window)}
+        unsafe {ffi::sfWindow_getSettings(self.window)}
     }
 
     /**
@@ -483,7 +483,7 @@ impl Window {
     pub fn set_title(&mut self, title : ~str) -> () {
         do str::as_c_str(title) |title_buf| {
             unsafe {
-                csfml::sfWindow_setTitle(self.window, title_buf);
+                ffi::sfWindow_setTitle(self.window, title_buf);
             }
         }
     }
@@ -497,8 +497,8 @@ impl Window {
     pub fn set_visible(&mut self, visible : bool) -> () {
         unsafe {
             match visible {
-                true    => csfml::sfWindow_setVisible(self.window, 1),
-                false   => csfml::sfWindow_setVisible(self.window, 0)
+                true    => ffi::sfWindow_setVisible(self.window, 1),
+                false   => ffi::sfWindow_setVisible(self.window, 0)
             }
         }
     }
@@ -512,8 +512,8 @@ impl Window {
     pub fn set_mouse_cursor_visible(&mut self, visible : bool) -> () {
         unsafe { 
             match visible {
-                true    => csfml::sfWindow_setMouseCursorVisible(self.window, 1),
-                false   => csfml::sfWindow_setMouseCursorVisible(self.window, 0)
+                true    => ffi::sfWindow_setMouseCursorVisible(self.window, 1),
+                false   => ffi::sfWindow_setMouseCursorVisible(self.window, 0)
             }
         }
     }
@@ -532,8 +532,8 @@ impl Window {
     pub fn set_vertical_sync_enabled(&mut self, enabled : bool) -> () {
         unsafe {
             match enabled {
-                true    => csfml::sfWindow_setVerticalSyncEnabled(self.window, 1),
-                false   => csfml::sfWindow_setVerticalSyncEnabled(self.window, 0)
+                true    => ffi::sfWindow_setVerticalSyncEnabled(self.window, 1),
+                false   => ffi::sfWindow_setVerticalSyncEnabled(self.window, 0)
             }
         }
     }
@@ -553,8 +553,8 @@ impl Window {
     pub fn set_key_repeat_enabled(&mut self, enabled : bool) -> () {
         unsafe {
             match enabled {
-                true    => csfml::sfWindow_setKeyRepeatEnabled(self.window, 1),
-                false   => csfml::sfWindow_setKeyRepeatEnabled(self.window, 0)
+                true    => ffi::sfWindow_setKeyRepeatEnabled(self.window, 1),
+                false   => ffi::sfWindow_setKeyRepeatEnabled(self.window, 0)
             }
         }
     }
@@ -575,8 +575,8 @@ impl Window {
     */
     pub fn set_active(&mut self, enabled : bool) -> bool {
         let tmp = unsafe { match enabled {
-            true    => csfml::sfWindow_setActive(self.window, 1),
-            _       => csfml::sfWindow_setActive(self.window, 0)
+            true    => ffi::sfWindow_setActive(self.window, 1),
+            _       => ffi::sfWindow_setActive(self.window, 0)
         }};
         match tmp {
             1   => true,
@@ -593,7 +593,7 @@ impl Window {
     */
     pub fn display(&mut self) -> () {
         unsafe {
-            csfml::sfWindow_display(self.window)
+            ffi::sfWindow_display(self.window)
         }
     }
 
@@ -609,7 +609,7 @@ impl Window {
     */
     pub fn set_framerate_limit(&mut self, limit : uint) -> () {
         unsafe {
-            csfml::sfWindow_setFramerateLimit(self.window, limit as c_uint)
+            ffi::sfWindow_setFramerateLimit(self.window, limit as c_uint)
         }
     }
 
@@ -624,7 +624,7 @@ impl Window {
     */
     pub fn set_joystick_threshold(&mut self, threshold : float) -> () {
         unsafe {
-            csfml::sfWindow_setJoystickThreshold(self.window, threshold as c_float)
+            ffi::sfWindow_setJoystickThreshold(self.window, threshold as c_float)
         }
     }
     
@@ -635,7 +635,7 @@ impl Window {
     */
     pub fn get_position(&self) -> Vector2i {
         unsafe {
-            csfml::sfWindow_getPosition(self.window)
+            ffi::sfWindow_getPosition(self.window)
         }
     }
     
@@ -651,7 +651,7 @@ impl Window {
     */
     pub fn set_position(&mut self, position : &Vector2i) -> () {
         unsafe {
-            csfml::sfWindow_setPosition(self.window, *position)
+            ffi::sfWindow_setPosition(self.window, *position)
         }
     }
     
@@ -664,7 +664,7 @@ impl Window {
     */
     pub fn get_size(&self) -> Vector2u {
         unsafe {
-            csfml::sfWindow_getSize(self.window)
+            ffi::sfWindow_getSize(self.window)
         }
     }
  
@@ -676,12 +676,12 @@ impl Window {
     */
     pub fn set_size(&mut self, size : &Vector2u) -> () {
         unsafe {
-            csfml::sfWindow_setSize(self.window, *size)
+            ffi::sfWindow_setSize(self.window, *size)
         }
     }
 
     #[doc(hidden)]
-    pub fn unwrap(&self) -> *csfml::sfWindow {
+    pub fn unwrap(&self) -> *ffi::sfWindow {
         self.window
     }
 }
@@ -692,7 +692,7 @@ impl Drop for Window {
     */
     fn drop(&self) {
         unsafe {
-            csfml::sfWindow_destroy(self.window);
+            ffi::sfWindow_destroy(self.window);
         }
     }
 }

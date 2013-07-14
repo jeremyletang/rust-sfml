@@ -43,7 +43,7 @@ pub enum MouseButton {
 }
 
 #[doc(hidden)]
-pub mod csfml {
+pub mod ffi {
     
     use std::libc::{c_uint};
     use rsfml::sfTypes::{sfBool};
@@ -52,8 +52,8 @@ pub mod csfml {
 
     pub extern "C" {
         fn sfMouse_isButtonPressed(button : c_uint) -> sfBool;
-        fn sfMouse_getPosition(relativeTo : *csfml::sfWindow) -> Vector2i;
-        fn sfMouse_setPosition(position : Vector2i, relativeTo : *csfml::sfWindow) -> ();
+        fn sfMouse_getPosition(relativeTo : *ffi::sfWindow) -> Vector2i;
+        fn sfMouse_setPosition(position : Vector2i, relativeTo : *ffi::sfWindow) -> ();
     }
 }
 
@@ -67,7 +67,7 @@ pub mod csfml {
 */
 pub fn mouse_is_button_pressed(button : MouseButton) -> bool {
     unsafe {
-        match csfml::sfMouse_isButtonPressed(button as c_uint) {
+        match ffi::sfMouse_isButtonPressed(button as c_uint) {
             0   => false,
             _   => true
         }
@@ -86,7 +86,7 @@ pub fn mouse_is_button_pressed(button : MouseButton) -> bool {
 */
 pub fn mouse_get_position(relativeTo : &Window) -> Vector2i {
     unsafe {
-        csfml::sfMouse_getPosition(relativeTo.unwrap())
+        ffi::sfMouse_getPosition(relativeTo.unwrap())
     }
 }
 
@@ -102,6 +102,6 @@ pub fn mouse_get_position(relativeTo : &Window) -> Vector2i {
 */
 pub fn mouse_set_position(position : &Vector2i, relativeTo : &Window) -> () {
     unsafe {
-        csfml::sfMouse_setPosition(*position, relativeTo.unwrap())
+        ffi::sfMouse_setPosition(*position, relativeTo.unwrap())
     }
 }

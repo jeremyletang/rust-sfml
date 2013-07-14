@@ -36,7 +36,7 @@ use std::str;
 use traits::wrappable::Wrappable;
 
 #[doc(hidden)]
-pub mod csfml {
+pub mod ffi {
     
     use std::libc::{c_void, c_char, size_t, c_float, c_double};
     use rsfml::sfTypes::sfBool;
@@ -81,7 +81,7 @@ pub mod csfml {
 }
 
 pub struct Packet {
-    packet : *csfml::sfPacket
+    packet : *ffi::sfPacket
 }
 
 impl Packet {
@@ -91,7 +91,7 @@ impl Packet {
     * Return a new sfPacket object
     */
     pub fn new() -> Option<Packet> {
-        let pck = unsafe { csfml::sfPacket_create() };
+        let pck = unsafe { ffi::sfPacket_create() };
         if ptr::is_null(pck) {
             None
         }
@@ -108,7 +108,7 @@ impl Packet {
     * Return a new Packet object which is a copy of packet
     */
     pub fn clone(&self) -> Option<Packet> {
-        let pck = unsafe { csfml::sfPacket_copy(self.packet) };
+        let pck = unsafe { ffi::sfPacket_copy(self.packet) };
         if ptr::is_null(pck) {
             None
         }
@@ -126,7 +126,7 @@ impl Packet {
     */
     pub fn clear(&self) -> () {
         unsafe {
-            csfml::sfPacket_clear(self.packet)
+            ffi::sfPacket_clear(self.packet)
         }
     }
 
@@ -140,7 +140,7 @@ impl Packet {
     */
     pub fn get_data_size(&self) -> u32 {
         unsafe {
-            csfml::sfPacket_getDataSize(self.packet) as u32 
+            ffi::sfPacket_getDataSize(self.packet) as u32 
         }
     }
 
@@ -154,7 +154,7 @@ impl Packet {
     * Return true if all data was read, false otherwise
     */
     pub fn end_of_packet(&self) -> bool {
-        match unsafe { csfml::sfPacket_endOfPacket(self.packet) } {
+        match unsafe { ffi::sfPacket_endOfPacket(self.packet) } {
             0 => false,
             _ => true
         }
@@ -172,7 +172,7 @@ impl Packet {
     * Return true if last data extraction from packet was successful
     */
     pub fn can_read(&self) -> bool {
-        match unsafe { csfml::sfPacket_canRead(self.packet) } {
+        match unsafe { ffi::sfPacket_canRead(self.packet) } {
             0 => false,
             _ => true
         }
@@ -182,7 +182,7 @@ impl Packet {
     * Function to extract data from a packet
     */
     pub fn read_bool(&self) -> bool {
-        match unsafe { csfml::sfPacket_readBool(self.packet) } {
+        match unsafe { ffi::sfPacket_readBool(self.packet) } {
             0 => false,
             _ => true
         }
@@ -193,7 +193,7 @@ impl Packet {
     */
     pub fn read_i8(&self) -> i8 {
         unsafe {
-            csfml::sfPacket_readInt8(self.packet)
+            ffi::sfPacket_readInt8(self.packet)
         }
     }
 
@@ -202,7 +202,7 @@ impl Packet {
     */
     pub fn read_u8(&self) -> u8 {
         unsafe {
-            csfml::sfPacket_readUint8(self.packet)
+            ffi::sfPacket_readUint8(self.packet)
         }
     }
 
@@ -211,7 +211,7 @@ impl Packet {
     */
     pub fn read_i16(&self) -> i16 {
         unsafe {
-            csfml::sfPacket_readInt16(self.packet)
+            ffi::sfPacket_readInt16(self.packet)
         }
     }
 
@@ -220,7 +220,7 @@ impl Packet {
     */
     pub fn read_u16(&self) -> u16 {
         unsafe {
-            csfml::sfPacket_readUint16(self.packet)
+            ffi::sfPacket_readUint16(self.packet)
         }
     }
 
@@ -229,7 +229,7 @@ impl Packet {
     */
     pub fn read_i32(&self) -> i32 {
         unsafe {
-            csfml::sfPacket_readInt32(self.packet)
+            ffi::sfPacket_readInt32(self.packet)
         }
     }
 
@@ -238,7 +238,7 @@ impl Packet {
     */
     pub fn read_u32(&self) -> u32 {
         unsafe {
-            csfml::sfPacket_readUint32(self.packet)
+            ffi::sfPacket_readUint32(self.packet)
         }
     }
 
@@ -247,7 +247,7 @@ impl Packet {
     */
     pub fn read_f32(&self) -> f32 {
         unsafe {
-            csfml::sfPacket_readFloat(self.packet) as f32
+            ffi::sfPacket_readFloat(self.packet) as f32
         }
     }
 
@@ -256,7 +256,7 @@ impl Packet {
     */
     pub fn read_f64(&self) -> f64 {
         unsafe {
-            csfml::sfPacket_readDouble(self.packet) as f64
+            ffi::sfPacket_readDouble(self.packet) as f64
         }
     }
 
@@ -266,7 +266,7 @@ impl Packet {
     pub fn read_string(&self) -> ~str {
         unsafe {
             let string : *c_char = ptr::null();
-            csfml::sfPacket_readString(self.packet, string);
+            ffi::sfPacket_readString(self.packet, string);
             str::raw::from_c_str(string)
         }
     }
@@ -277,8 +277,8 @@ impl Packet {
     pub fn write_bool(&self, data : bool) -> () {
         unsafe {
             match data {
-                true    => csfml::sfPacket_writeBool(self.packet, 1),
-                false    => csfml::sfPacket_writeBool(self.packet, 0)
+                true    => ffi::sfPacket_writeBool(self.packet, 1),
+                false    => ffi::sfPacket_writeBool(self.packet, 0)
             }
         }
     }
@@ -288,7 +288,7 @@ impl Packet {
     */
     pub fn write_i8(&self, data : i8) -> () {
         unsafe {
-            csfml::sfPacket_writeInt8(self.packet, data)
+            ffi::sfPacket_writeInt8(self.packet, data)
         }
     }
     
@@ -297,7 +297,7 @@ impl Packet {
     */
     pub fn write_u8(&self, data : u8) -> () {
         unsafe {
-            csfml::sfPacket_writeUint8(self.packet, data)
+            ffi::sfPacket_writeUint8(self.packet, data)
         }
     }
 
@@ -306,7 +306,7 @@ impl Packet {
     */
     pub fn write_i16(&self, data : i16) -> () {
         unsafe {
-            csfml::sfPacket_writeInt16(self.packet, data)
+            ffi::sfPacket_writeInt16(self.packet, data)
         }
     }
 
@@ -315,7 +315,7 @@ impl Packet {
     */
     pub fn write_u16(&self, data : u16) -> () {
         unsafe {
-            csfml::sfPacket_writeUint16(self.packet, data)
+            ffi::sfPacket_writeUint16(self.packet, data)
         }
     }
 
@@ -324,7 +324,7 @@ impl Packet {
     */
     pub fn write_i32(&self, data : i32) -> () {
         unsafe {
-            csfml::sfPacket_writeInt32(self.packet, data)
+            ffi::sfPacket_writeInt32(self.packet, data)
         }
     }
 
@@ -333,7 +333,7 @@ impl Packet {
     */
     pub fn write_u32(&self, data : u32) -> () {
         unsafe {
-            csfml::sfPacket_writeUint32(self.packet, data)
+            ffi::sfPacket_writeUint32(self.packet, data)
         }
     }
 
@@ -342,7 +342,7 @@ impl Packet {
     */
     pub fn write_f32(&self, data : f32) -> () {
         unsafe {
-            csfml::sfPacket_writeFloat(self.packet, data)
+            ffi::sfPacket_writeFloat(self.packet, data)
         }
     }
 
@@ -351,7 +351,7 @@ impl Packet {
     */
     pub fn write_f64(&self, data : f64) -> () {
         unsafe {
-            csfml::sfPacket_writeDouble(self.packet, data)
+            ffi::sfPacket_writeDouble(self.packet, data)
         }
     }
 
@@ -361,18 +361,19 @@ impl Packet {
     pub fn write_string(&self, string : ~str) -> () {
         unsafe {
             do str::as_c_str(string) |string_buf| {
-                csfml::sfPacket_writeString(self.packet, string_buf)
+                ffi::sfPacket_writeString(self.packet, string_buf)
             }
         }
     }
 }
 
-impl Wrappable<*csfml::sfPacket> for Packet {
-    pub fn unwrap(&self) -> *csfml::sfPacket {
+#[doc(hidden)]
+impl Wrappable<*ffi::sfPacket> for Packet {
+    pub fn unwrap(&self) -> *ffi::sfPacket {
         self.packet
     }
 
-    pub fn wrap(packet : *csfml::sfPacket) -> Packet {
+    pub fn wrap(packet : *ffi::sfPacket) -> Packet {
         Packet {
             packet : packet
         }
@@ -382,7 +383,7 @@ impl Wrappable<*csfml::sfPacket> for Packet {
 impl Drop for Packet {
     fn drop(&self) -> () {
         unsafe {
-            csfml::sfPacket_destroy(self.packet)
+            ffi::sfPacket_destroy(self.packet)
         }
     }
 }

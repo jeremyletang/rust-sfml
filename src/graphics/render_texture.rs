@@ -48,7 +48,7 @@ use graphics::vertex_array::VertexArray;
 use graphics::convex_shape::ConvexShape;
 
 #[doc(hidden)]
-pub mod csfml {
+pub mod ffi {
     
     use std::libc::{c_void, c_uint};
 
@@ -68,9 +68,9 @@ pub mod csfml {
 
     pub struct sfRenderTexture {
         This : *c_void,
-        Target : *texture::csfml::sfTexture,
-        DefaultView : view::csfml::sfView,
-        CurrentView : view::csfml::sfView
+        Target : *texture::ffi::sfTexture,
+        DefaultView : view::ffi::sfView,
+        CurrentView : view::ffi::sfView
     }
     
     pub extern "C" {
@@ -80,24 +80,24 @@ pub mod csfml {
         fn sfRenderTexture_setActive(renderTexture : *sfRenderTexture, active : sfBool) -> sfBool;
         fn sfRenderTexture_display(renderTexture : *sfRenderTexture) -> ();
         fn sfRenderTexture_clear(renderTexture : *sfRenderTexture, color : Color) -> ();
-        fn sfRenderTexture_setView(renderTexture : *sfRenderTexture, view : *view::csfml::sfView) -> ();
-        fn sfRenderTexture_getView(renderTexture : *sfRenderTexture) -> *view::csfml::sfView;
-        fn sfRenderTexture_getDefaultView(renderTexture : *sfRenderTexture) -> *view::csfml::sfView;
-        fn sfRenderTexture_getViewport(renderTexture : *sfRenderTexture, view : *view::csfml::sfView) -> IntRect;
-        fn sfRenderTexture_mapPixelToCoords(renderTexture : *sfRenderTexture, point : Vector2i, view : *view::csfml::sfView) -> Vector2f;
-        fn sfRenderTexture_mapCoordsToPixel(renderTexture : *sfRenderTexture, point : Vector2f, view : *view::csfml::sfView) -> Vector2i;
-        fn sfRenderTexture_drawSprite(renderTexture : *sfRenderTexture, object : *sprite::csfml::sfSprite, states : *render_states::csfml::sfRenderStates) -> ();
-        fn sfRenderTexture_drawText(renderTexture : *sfRenderTexture, object : *text::csfml::sfText, states : *render_states::csfml::sfRenderStates) -> ();
-        //fn sfRenderTexture_drawShape(renderTexture : *sfRenderTexture, object : *sfShape, states : *render_states::csfml::sfRenderStates) -> ();
-        fn sfRenderTexture_drawCircleShape(renderTexture : *sfRenderTexture, object : *circle_shape::csfml::sfCircleShape, states : *render_states::csfml::sfRenderStates) -> ();
-        fn sfRenderTexture_drawConvexShape(renderTexture : *sfRenderTexture, object : *convex_shape::csfml::sfConvexShape, states : *render_states::csfml::sfRenderStates) -> ();
-        fn sfRenderTexture_drawRectangleShape(renderTexture : *sfRenderTexture, object : *rectangle_shape::csfml::sfRectangleShape, states : *render_states::csfml::sfRenderStates) -> ();
-        fn sfRenderTexture_drawVertexArray(renderTexture : *sfRenderTexture, object : *vertex_array::csfml::sfVertexArray, states : *render_states::csfml::sfRenderStates) -> ();
+        fn sfRenderTexture_setView(renderTexture : *sfRenderTexture, view : *view::ffi::sfView) -> ();
+        fn sfRenderTexture_getView(renderTexture : *sfRenderTexture) -> *view::ffi::sfView;
+        fn sfRenderTexture_getDefaultView(renderTexture : *sfRenderTexture) -> *view::ffi::sfView;
+        fn sfRenderTexture_getViewport(renderTexture : *sfRenderTexture, view : *view::ffi::sfView) -> IntRect;
+        fn sfRenderTexture_mapPixelToCoords(renderTexture : *sfRenderTexture, point : Vector2i, view : *view::ffi::sfView) -> Vector2f;
+        fn sfRenderTexture_mapCoordsToPixel(renderTexture : *sfRenderTexture, point : Vector2f, view : *view::ffi::sfView) -> Vector2i;
+        fn sfRenderTexture_drawSprite(renderTexture : *sfRenderTexture, object : *sprite::ffi::sfSprite, states : *render_states::ffi::sfRenderStates) -> ();
+        fn sfRenderTexture_drawText(renderTexture : *sfRenderTexture, object : *text::ffi::sfText, states : *render_states::ffi::sfRenderStates) -> ();
+        //fn sfRenderTexture_drawShape(renderTexture : *sfRenderTexture, object : *sfShape, states : *render_states::ffi::sfRenderStates) -> ();
+        fn sfRenderTexture_drawCircleShape(renderTexture : *sfRenderTexture, object : *circle_shape::ffi::sfCircleShape, states : *render_states::ffi::sfRenderStates) -> ();
+        fn sfRenderTexture_drawConvexShape(renderTexture : *sfRenderTexture, object : *convex_shape::ffi::sfConvexShape, states : *render_states::ffi::sfRenderStates) -> ();
+        fn sfRenderTexture_drawRectangleShape(renderTexture : *sfRenderTexture, object : *rectangle_shape::ffi::sfRectangleShape, states : *render_states::ffi::sfRenderStates) -> ();
+        fn sfRenderTexture_drawVertexArray(renderTexture : *sfRenderTexture, object : *vertex_array::ffi::sfVertexArray, states : *render_states::ffi::sfRenderStates) -> ();
         //fn sfRenderTexture_drawPrimitives(renderTexture : *sfRenderTexture) -> (); // a modifier
         fn sfRenderTexture_pushGLStates(renderTexture : *sfRenderTexture) -> ();
         fn sfRenderTexture_popGLStates(renderTexture : *sfRenderTexture) -> ();
         fn sfRenderTexture_resetGLStates(renderTexture : *sfRenderTexture) -> ();
-        fn sfRenderTexture_getTexture(renderTexture : *sfRenderTexture) -> *texture::csfml::sfTexture;
+        fn sfRenderTexture_getTexture(renderTexture : *sfRenderTexture) -> *texture::ffi::sfTexture;
         fn sfRenderTexture_setSmooth(renderTexture : *sfRenderTexture, smooth : sfBool) -> ();
         fn sfRenderTexture_isSmooth(renderTexture : *sfRenderTexture) -> sfBool;
     }
@@ -105,7 +105,7 @@ pub mod csfml {
 
 #[doc(hidden)]
 pub struct RenderTexture {
-    renderTexture : *csfml::sfRenderTexture
+    renderTexture : *ffi::sfRenderTexture
 }
 
 impl RenderTexture {
@@ -121,8 +121,8 @@ impl RenderTexture {
     */
     pub fn new(width : uint, height : uint, depthBuffer : bool) -> Option<RenderTexture> {
             let tex = match depthBuffer {
-                false       => unsafe { csfml::sfRenderTexture_create(width as c_uint, height as c_uint, 0) },
-                true        => unsafe { csfml::sfRenderTexture_create(width as c_uint, height as c_uint, 1) }
+                false       => unsafe { ffi::sfRenderTexture_create(width as c_uint, height as c_uint, 0) },
+                true        => unsafe { ffi::sfRenderTexture_create(width as c_uint, height as c_uint, 1) }
             };
         if ptr::is_null(tex) {
             None
@@ -141,7 +141,7 @@ impl RenderTexture {
     */
     pub fn get_size(&self) -> Vector2u {
         unsafe {
-            csfml::sfRenderTexture_getSize(self.renderTexture)
+            ffi::sfRenderTexture_getSize(self.renderTexture)
         }
     }
 
@@ -154,8 +154,8 @@ impl RenderTexture {
     pub fn set_active(&mut self, active : bool) -> bool {
         match unsafe {
             match active {
-                false       => csfml::sfRenderTexture_setActive(self.renderTexture, 0),
-                true        => csfml::sfRenderTexture_setActive(self.renderTexture, 1)
+                false       => ffi::sfRenderTexture_setActive(self.renderTexture, 0),
+                true        => ffi::sfRenderTexture_setActive(self.renderTexture, 1)
             }
         } {
             0   => false,
@@ -169,7 +169,7 @@ impl RenderTexture {
     */
     pub fn display(&self) -> () {
         unsafe {
-            csfml::sfRenderTexture_display(self.renderTexture)
+            ffi::sfRenderTexture_display(self.renderTexture)
         }
     }
 
@@ -181,7 +181,7 @@ impl RenderTexture {
     */
     pub fn clear(&mut self, color : &Color) -> () {
         unsafe {
-            csfml::sfRenderTexture_clear(self.renderTexture, *color)
+            ffi::sfRenderTexture_clear(self.renderTexture, *color)
         }
     }
 
@@ -193,7 +193,7 @@ impl RenderTexture {
     */
     pub fn set_view(&mut self, view : &View) -> () {
         unsafe {
-            csfml::sfRenderTexture_setView(self.renderTexture, view.unwrap())
+            ffi::sfRenderTexture_setView(self.renderTexture, view.unwrap())
         }
     }
 
@@ -204,7 +204,7 @@ impl RenderTexture {
     */
     pub fn get_view(&self) -> View {
         unsafe {
-            Wrappable::wrap(csfml::sfRenderTexture_getView(self.renderTexture))
+            Wrappable::wrap(ffi::sfRenderTexture_getView(self.renderTexture))
         }
     }
 
@@ -215,7 +215,7 @@ impl RenderTexture {
     */
     pub fn get_default_view(&self) -> View {
         unsafe {
-            Wrappable::wrap(csfml::sfRenderTexture_getDefaultView(self.renderTexture))
+            Wrappable::wrap(ffi::sfRenderTexture_getDefaultView(self.renderTexture))
         }
     }
 
@@ -229,7 +229,7 @@ impl RenderTexture {
     */
     pub fn get_viewport(&self, view : &View) -> IntRect {
         unsafe {
-            csfml::sfRenderTexture_getViewport(self.renderTexture, view.unwrap())
+            ffi::sfRenderTexture_getViewport(self.renderTexture, view.unwrap())
         }
     }
     
@@ -262,7 +262,7 @@ impl RenderTexture {
     */
     pub fn map_pixel_to_coords(&self, point : &Vector2i, view : &View) -> Vector2f {
         unsafe {
-            csfml::sfRenderTexture_mapPixelToCoords(self.renderTexture, *point, view.unwrap())
+            ffi::sfRenderTexture_mapPixelToCoords(self.renderTexture, *point, view.unwrap())
         }
     }
 
@@ -292,9 +292,9 @@ impl RenderTexture {
     * Return the converted point, in "world" units
     */
     pub fn map_pixel_to_coords_current_view(&self, point : &Vector2i) -> Vector2f {
-        let view = unsafe { csfml::sfRenderTexture_getView(self.renderTexture) };
+        let view = unsafe { ffi::sfRenderTexture_getView(self.renderTexture) };
         unsafe {
-            csfml::sfRenderTexture_mapPixelToCoords(self.renderTexture, *point, view)
+            ffi::sfRenderTexture_mapPixelToCoords(self.renderTexture, *point, view)
         }
     }
 
@@ -321,7 +321,7 @@ impl RenderTexture {
     */
     pub fn map_coords_to_pixel(&self, point : &Vector2f, view : &View) -> Vector2i {
         unsafe {
-            csfml::sfRenderTexture_mapCoordsToPixel(self.renderTexture, *point, view.unwrap())
+            ffi::sfRenderTexture_mapCoordsToPixel(self.renderTexture, *point, view.unwrap())
         }
     }
 
@@ -345,9 +345,9 @@ impl RenderTexture {
     * * point - Point to convert
     */
     pub fn map_coords_to_pixel_current_view(&self, point : &Vector2f) -> Vector2i {
-        let view = unsafe { csfml::sfRenderTexture_getView(self.renderTexture) };
+        let view = unsafe { ffi::sfRenderTexture_getView(self.renderTexture) };
         unsafe {
-            csfml::sfRenderTexture_mapCoordsToPixel(self.renderTexture, *point, view)
+            ffi::sfRenderTexture_mapCoordsToPixel(self.renderTexture, *point, view)
         }
     }
 
@@ -361,42 +361,42 @@ impl RenderTexture {
     /// Draw Text
     pub fn draw_text(&self, text : &Text) -> () {
         unsafe {
-            csfml::sfRenderTexture_drawText(self.renderTexture, text.unwrap(), ptr::null())
+            ffi::sfRenderTexture_drawText(self.renderTexture, text.unwrap(), ptr::null())
         }
     }
 
     /// Draw Sprite
     pub fn draw_sprite(&self, sprite : &Sprite) -> () {
         unsafe {
-            csfml::sfRenderTexture_drawSprite(self.renderTexture, sprite.unwrap(), ptr::null())
+            ffi::sfRenderTexture_drawSprite(self.renderTexture, sprite.unwrap(), ptr::null())
         }
     }
 
     /// Draw CircleShape
     pub fn draw_circle_shape(&self, circleShape : &CircleShape) -> () {
         unsafe {
-            csfml::sfRenderTexture_drawCircleShape(self.renderTexture, circleShape.unwrap(), ptr::null())
+            ffi::sfRenderTexture_drawCircleShape(self.renderTexture, circleShape.unwrap(), ptr::null())
         }
     }
 
     /// Draw RectangleShape
     pub fn draw_rectangle_shape(&self, rectangleShape : &RectangleShape) -> () {
         unsafe {
-            csfml::sfRenderTexture_drawRectangleShape(self.renderTexture, rectangleShape.unwrap(), ptr::null())
+            ffi::sfRenderTexture_drawRectangleShape(self.renderTexture, rectangleShape.unwrap(), ptr::null())
         }
     }
 
     /// Draw ConvexShape
     pub fn draw_convex_shape(&self, convexShape : &ConvexShape) -> () {
         unsafe {
-            csfml::sfRenderTexture_drawConvexShape(self.renderTexture, convexShape.unwrap(), ptr::null())
+            ffi::sfRenderTexture_drawConvexShape(self.renderTexture, convexShape.unwrap(), ptr::null())
         }
     }
 
     /// Draw VertexArray
     pub fn draw_vertex_array(&self, vertexArray : &VertexArray) -> () {
         unsafe {
-            csfml::sfRenderTexture_drawVertexArray(self.renderTexture, vertexArray.unwrap(), ptr::null())
+            ffi::sfRenderTexture_drawVertexArray(self.renderTexture, vertexArray.unwrap(), ptr::null())
         }
     }
 
@@ -421,7 +421,7 @@ impl RenderTexture {
     */
     pub fn push_GL_states(&mut self) -> () {
         unsafe {
-            csfml::sfRenderTexture_pushGLStates(self.renderTexture)
+            ffi::sfRenderTexture_pushGLStates(self.renderTexture)
         }
     }
     
@@ -430,7 +430,7 @@ impl RenderTexture {
     */
     pub fn pop_GL_states(&mut self) -> () {
         unsafe {
-            csfml::sfRenderTexture_popGLStates(self.renderTexture)
+            ffi::sfRenderTexture_popGLStates(self.renderTexture)
         }
     }
 
@@ -445,7 +445,7 @@ impl RenderTexture {
     */
     pub fn reset_GL_states(&mut self) -> () {
         unsafe {
-            csfml::sfRenderTexture_resetGLStates(self.renderTexture)
+            ffi::sfRenderTexture_resetGLStates(self.renderTexture)
         }
     }
 
@@ -455,7 +455,7 @@ impl RenderTexture {
     * Return the target texture
     */
     pub fn get_texture(&self) -> Option<Texture> {
-        let tex = unsafe { csfml::sfRenderTexture_getTexture(self.renderTexture) };
+        let tex = unsafe { ffi::sfRenderTexture_getTexture(self.renderTexture) };
         if ptr::is_null(tex) {
             None
         }
@@ -473,8 +473,8 @@ impl RenderTexture {
     pub fn set_smooth(&mut self, smooth : bool) -> () {
         unsafe {
             match smooth {
-                true        => csfml::sfRenderTexture_setSmooth(self.renderTexture, 1),
-                false       => csfml::sfRenderTexture_setSmooth(self.renderTexture, 0)
+                true        => ffi::sfRenderTexture_setSmooth(self.renderTexture, 1),
+                false       => ffi::sfRenderTexture_setSmooth(self.renderTexture, 0)
             }
         }
     }
@@ -485,7 +485,7 @@ impl RenderTexture {
     * Return true if smoothing is enabled, false if it is disabled
     */
     pub fn is_smooth(&self) -> bool {
-        match unsafe { csfml::sfRenderTexture_isSmooth(self.renderTexture) } {
+        match unsafe { ffi::sfRenderTexture_isSmooth(self.renderTexture) } {
             0 => false,
             _ => true
         }
@@ -495,7 +495,7 @@ impl RenderTexture {
 impl Drop for RenderTexture {
     fn drop(&self) -> () {
         unsafe {
-            csfml::sfRenderTexture_destroy(self.renderTexture)
+            ffi::sfRenderTexture_destroy(self.renderTexture)
         }
     }
 }

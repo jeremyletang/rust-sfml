@@ -30,7 +30,7 @@
 */
 
 #[doc(hidden)]
-pub mod csfml {
+pub mod ffi {
     
     use graphics::color::Color;
     
@@ -101,7 +101,7 @@ impl Color {
     * Return the component-wise saturated addition of the two colors
     */
     pub fn add(color1 : Color, color2 : Color) -> Color {
-        unsafe {csfml::sfColor_add(color1, color2)}
+        unsafe {ffi::sfColor_add(color1, color2)}
     }
 
     /**
@@ -114,7 +114,7 @@ impl Color {
     * Return the component-wise multiplication of the two colors
     */
     pub fn modulate(color1 : Color, color2 : Color) -> Color {
-        unsafe {csfml::sfColor_modulate(color1, color2)}
+        unsafe {ffi::sfColor_modulate(color1, color2)}
     }
     
     /// Black predefined color
@@ -134,7 +134,7 @@ impl Color {
     
     /// Green predefined color
     pub fn green() -> Color {
-        //Color { color : csfml::sfColor {red : 0, green : 255, blue : 0, alpha : 255}}
+        //Color { color : ffi::sfColor {red : 0, green : 255, blue : 0, alpha : 255}}
         Color::new_from_RGB(0, 255, 0)
     }
    

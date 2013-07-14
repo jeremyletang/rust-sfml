@@ -40,7 +40,7 @@ use audio::sound_status;
 use system::vector3::Vector3f;
 
 #[doc(hidden)]
-pub mod csfml {
+pub mod ffi {
 
     use std::libc::{c_void, c_char, c_uint, c_float};
     use rsfml::sfTypes::{sfBool};
@@ -60,21 +60,21 @@ pub mod csfml {
         fn sfMusic_destroy(music : *sfMusic) -> ();
         fn sfMusic_setLoop(music : *sfMusic, lloop : sfBool) -> ();
         fn sfMusic_getLoop(music : *sfMusic) -> sfBool;
-        fn sfMusic_getDuration(music : *sfMusic) -> time::csfml::sfTime;
+        fn sfMusic_getDuration(music : *sfMusic) -> time::ffi::sfTime;
         fn sfMusic_play(music : *sfMusic) -> ();
         fn sfMusic_pause(music : *sfMusic) -> ();
         fn sfMusic_stop(music : *sfMusic) -> ();
         fn sfMusic_getChannelCount(music : *sfMusic) -> c_uint;
         fn sfMusic_getSampleRate(music : *sfMusic) -> c_uint;
-        fn sfMusic_getStatus(music : *sfMusic) -> sound_status::csfml::sfSoundStatus;
-        fn sfMusic_getPlayingOffset(music : *sfMusic) -> time::csfml::sfTime;
+        fn sfMusic_getStatus(music : *sfMusic) -> sound_status::ffi::sfSoundStatus;
+        fn sfMusic_getPlayingOffset(music : *sfMusic) -> time::ffi::sfTime;
         fn sfMusic_setPitch(music : *sfMusic, pitch : c_float) -> ();
         fn sfMusic_setVolume(music : *sfMusic, volume : c_float) -> ();
         fn sfMusic_setPosition(music : *sfMusic, position : Vector3f) -> ();
         fn sfMusic_setRelativeToListener(music : *sfMusic, relative : sfBool) -> ();
         fn sfMusic_setMinDistance(music : *sfMusic, distance : c_float) -> ();
         fn sfMusic_setAttenuation(music : *sfMusic, attenuation : c_float) -> ();
-        fn sfMusic_setPlayingOffset(music : *sfMusic, timeOffset : time::csfml::sfTime) -> ();
+        fn sfMusic_setPlayingOffset(music : *sfMusic, timeOffset : time::ffi::sfTime) -> ();
         fn sfMusic_getPitch(music : *sfMusic) -> c_float;
         fn sfMusic_getVolume(music : *sfMusic) -> c_float;
         fn sfMusic_getPosition(music : *sfMusic) -> Vector3f;
@@ -86,7 +86,7 @@ pub mod csfml {
 
 #[doc(hidden)]
 pub struct Music {
-    priv music : *csfml::sfMusic
+    priv music : *ffi::sfMusic
 }
 
 impl Music {
@@ -106,10 +106,10 @@ impl Music {
     * Return a new option to Music object or none 
     */
     pub fn new_from_file(filename : ~str) -> Option<Music> {
-        let mut music_tmp : *csfml::sfMusic = ptr::null();
+        let mut music_tmp : *ffi::sfMusic = ptr::null();
         do str::as_c_str(filename) |filename_buf| {
             unsafe { 
-                music_tmp = csfml::sfMusic_createFromFile(filename_buf);
+                music_tmp = ffi::sfMusic_createFromFile(filename_buf);
             }
         };
         if ptr::is_null(music_tmp) {
@@ -135,8 +135,8 @@ impl Music {
     pub fn set_loop(&mut self, lloop : bool) -> () {
         unsafe {
             match lloop {
-                true    => csfml::sfMusic_setLoop(self.music, 1),
-                false   => csfml::sfMusic_setLoop(self.music, 0)
+                true    => ffi::sfMusic_setLoop(self.music, 1),
+                false   => ffi::sfMusic_setLoop(self.music, 0)
             }
         }
     } 
@@ -147,7 +147,7 @@ impl Music {
     * Return true if the music is looping, false otherwise
     */
     pub fn get_loop(&self) -> bool {
-        match unsafe { csfml::sfMusic_getLoop(self.music) } {
+        match unsafe { ffi::sfMusic_getLoop(self.music) } {
             0 => false,
             _ => true
         }
@@ -159,7 +159,7 @@ impl Music {
     * Return Music duration
     */
     pub fn get_duration(&self) -> Time {
-        Wrappable::wrap( unsafe { csfml::sfMusic_getDuration(self.music) })
+        Wrappable::wrap( unsafe { ffi::sfMusic_getDuration(self.music) })
     }
 
     /**
@@ -173,7 +173,7 @@ impl Music {
     */
     pub fn play(&mut self) -> () {
         unsafe {
-            csfml::sfMusic_play(self.music)
+            ffi::sfMusic_play(self.music)
         }
     }
 
@@ -185,7 +185,7 @@ impl Music {
     */
     pub fn pause(&mut self) -> () {
         unsafe {
-            csfml::sfMusic_pause(self.music)
+            ffi::sfMusic_pause(self.music)
         }
     }
 
@@ -198,7 +198,7 @@ impl Music {
     */
     pub fn stop(&mut self) -> () {
         unsafe {
-            csfml::sfMusic_stop(self.music)
+            ffi::sfMusic_stop(self.music)
         }
     }
     
@@ -211,7 +211,7 @@ impl Music {
     */
     pub fn get_channel_count(&self) -> uint {
         unsafe {
-            csfml::sfMusic_getChannelCount(self.music) as uint
+            ffi::sfMusic_getChannelCount(self.music) as uint
         }
     }
     
@@ -225,7 +225,7 @@ impl Music {
     */
     pub fn get_sample_rate(&self) -> uint {
         unsafe {
-            csfml::sfMusic_getSampleRate(self.music) as uint
+            ffi::sfMusic_getSampleRate(self.music) as uint
         }
     }
     
@@ -235,10 +235,10 @@ impl Music {
     * Return current status
     */
     pub fn get_status(&self) -> sound_status::Status {
-        match unsafe { csfml::sfMusic_getStatus(self.music) } {
-            sound_status::csfml::sfStopped => sound_status::Stopped,
-            sound_status::csfml::sfPaused => sound_status::Paused,
-            sound_status::csfml::sfPlaying => sound_status::Playing,
+        match unsafe { ffi::sfMusic_getStatus(self.music) } {
+            sound_status::ffi::sfStopped => sound_status::Stopped,
+            sound_status::ffi::sfPaused => sound_status::Paused,
+            sound_status::ffi::sfPlaying => sound_status::Playing,
         }
     }
 
@@ -248,7 +248,7 @@ impl Music {
     * Return the current playing position
     */
     pub fn get_playing_offset(&self) -> Time {
-        Wrappable::wrap(unsafe { csfml::sfMusic_getPlayingOffset(self.music) })
+        Wrappable::wrap(unsafe { ffi::sfMusic_getPlayingOffset(self.music) })
     }
     
     /**
@@ -265,7 +265,7 @@ impl Music {
     */
     pub fn set_pitch(&mut self, pitch : float) -> () {
         unsafe {
-            csfml::sfMusic_setPitch(self.music, pitch as c_float)
+            ffi::sfMusic_setPitch(self.music, pitch as c_float)
         }
     }
     
@@ -280,7 +280,7 @@ impl Music {
     */
     pub fn set_volume(&mut self, volume : float) -> () {
         unsafe {
-            csfml::sfMusic_setVolume(self.music, volume as c_float)
+            ffi::sfMusic_setVolume(self.music, volume as c_float)
         }
     }
 
@@ -299,8 +299,8 @@ impl Music {
     pub fn set_relative_to_listener(&mut self, relative : bool) -> () {
         unsafe {
             match relative {
-                true    => csfml::sfMusic_setRelativeToListener(self.music, 1),
-                false   => csfml::sfMusic_setRelativeToListener(self.music, 0)
+                true    => ffi::sfMusic_setRelativeToListener(self.music, 1),
+                false   => ffi::sfMusic_setRelativeToListener(self.music, 0)
             }
         }  
     }
@@ -320,7 +320,7 @@ impl Music {
     */
     pub fn set_min_distance(&mut self, distance : float) -> () {
         unsafe {
-            csfml::sfMusic_setMinDistance(self.music, distance as c_float)
+            ffi::sfMusic_setMinDistance(self.music, distance as c_float)
         }
     }
     
@@ -341,7 +341,7 @@ impl Music {
     */
     pub fn set_attenuation(&mut self, attenuation : float) -> () {
         unsafe {
-            csfml::sfMusic_setAttenuation(self.music, attenuation as c_float)
+            ffi::sfMusic_setAttenuation(self.music, attenuation as c_float)
         }
     }
     
@@ -356,7 +356,7 @@ impl Music {
     */
     pub fn set_playing_offset(&mut self, timeOffset : Time) -> () {
         unsafe {
-            csfml::sfMusic_setPlayingOffset(self.music, timeOffset.unwrap())
+            ffi::sfMusic_setPlayingOffset(self.music, timeOffset.unwrap())
         }
     }
     
@@ -367,7 +367,7 @@ impl Music {
     */
     pub fn get_pitch(&self) -> float {
         unsafe {
-            csfml::sfMusic_getPitch(self.music) as float
+            ffi::sfMusic_getPitch(self.music) as float
         }
     }
 
@@ -378,7 +378,7 @@ impl Music {
     */
     pub fn get_volume(&self) -> float {
         unsafe {
-            csfml::sfMusic_getVolume(self.music) as float
+            ffi::sfMusic_getVolume(self.music) as float
         }
     }
 
@@ -388,7 +388,7 @@ impl Music {
     * Return true if the position is relative, false if it's absolute
     */
     pub fn is_relative_to_listener(&self) -> bool {
-        match unsafe { csfml::sfMusic_isRelativeToListener(self.music) } {
+        match unsafe { ffi::sfMusic_isRelativeToListener(self.music) } {
             0 => false,
             _ => true
         }
@@ -401,7 +401,7 @@ impl Music {
     */
     pub fn get_min_distance(&self) -> float {
         unsafe {
-           csfml::sfMusic_getMinDistance(self.music) as float
+           ffi::sfMusic_getMinDistance(self.music) as float
        }        
     }
 
@@ -412,7 +412,7 @@ impl Music {
     */
     pub fn get_attenuation(&self) -> float {
         unsafe {
-            csfml::sfMusic_getAttenuation(self.music) as float
+            ffi::sfMusic_getAttenuation(self.music) as float
         }        
     }
 
@@ -428,7 +428,7 @@ impl Music {
     */
     fn set_position(&mut self, position : &Vector3f) -> () {
         unsafe {
-            csfml::sfMusic_setPosition(self.music, *position)
+            ffi::sfMusic_setPosition(self.music, *position)
         }
     }
 
@@ -446,7 +446,7 @@ impl Music {
     */
     fn set_position3f(&mut self, x : f32, y : f32, z : f32) -> () {
         unsafe {
-            csfml::sfMusic_setPosition(self.music, Vector3f::new(x, y, z))
+            ffi::sfMusic_setPosition(self.music, Vector3f::new(x, y, z))
         }
     }
 
@@ -457,7 +457,7 @@ impl Music {
     */
     fn get_position(&self) -> Vector3f {
         unsafe {
-            csfml::sfMusic_getPosition(self.music)
+            ffi::sfMusic_getPosition(self.music)
         }
     }    
 }
@@ -468,7 +468,7 @@ impl Drop for Music {
     */
     fn drop(&self) {
         unsafe {
-            csfml::sfMusic_destroy(self.music);
+            ffi::sfMusic_destroy(self.music);
         }
     }
 }

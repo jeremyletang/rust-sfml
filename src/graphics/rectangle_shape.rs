@@ -42,7 +42,7 @@ use graphics::rect::{FloatRect, IntRect};
 use graphics::transform::Transform;
 
 #[doc(hidden)]
-pub mod csfml {
+pub mod ffi {
     
     use std::libc::{c_void, c_float, c_uint};
 
@@ -55,7 +55,7 @@ pub mod csfml {
 
     pub struct sfRectangleShape {
         This : *c_void,
-        Texture : *texture::csfml::sfTexture,
+        Texture : *texture::ffi::sfTexture,
         Transform : Transform,
         InverseTransform : Transform
     }
@@ -77,12 +77,12 @@ pub mod csfml {
         fn sfRectangleShape_scale(shape : *sfRectangleShape, factors : Vector2f) -> ();
         fn sfRectangleShape_getTransform(shape : *sfRectangleShape) -> Transform;
         fn sfRectangleShape_getInverseTransform(shape : *sfRectangleShape) -> Transform;
-        fn sfRectangleShape_setTexture(shape : *sfRectangleShape, texture : *texture::csfml::sfTexture, resetRect : sfBool) -> ();
+        fn sfRectangleShape_setTexture(shape : *sfRectangleShape, texture : *texture::ffi::sfTexture, resetRect : sfBool) -> ();
         fn sfRectangleShape_setTextureRect(shape : *sfRectangleShape, rect : IntRect) -> ();
         fn sfRectangleShape_setFillColor(shape : *sfRectangleShape, color : Color) -> ();
         fn sfRectangleShape_setOutlineColor(shape : *sfRectangleShape, color : Color) -> ();
         fn sfRectangleShape_setOutlineThickness(shape : *sfRectangleShape, thickness : c_float) -> ();
-        fn sfRectangleShape_getTexture(shape : *sfRectangleShape) -> *texture::csfml::sfTexture;
+        fn sfRectangleShape_getTexture(shape : *sfRectangleShape) -> *texture::ffi::sfTexture;
         fn sfRectangleShape_getTextureRect(shape : *sfRectangleShape) -> IntRect;
         fn sfRectangleShape_getFillColor(shape : *sfRectangleShape) -> Color;
         fn sfRectangleShape_getOutlineColor(shape : *sfRectangleShape) -> Color;
@@ -98,7 +98,7 @@ pub mod csfml {
 
 #[doc(hidden)]
 pub struct RectangleShape {
-    priv rectangleShape : *csfml::sfRectangleShape,
+    priv rectangleShape : *ffi::sfRectangleShape,
     priv texture : Option<@mut Texture>
 }
 
@@ -109,7 +109,7 @@ impl RectangleShape {
     * Return a new option to a rectangleShape object or None
     */
     pub fn new() -> Option<RectangleShape> {
-        let rectangle = unsafe { csfml::sfRectangleShape_create() };
+        let rectangle = unsafe { ffi::sfRectangleShape_create() };
         if ptr::is_null(rectangle) {
             None
         }
@@ -127,13 +127,13 @@ impl RectangleShape {
     * Return a new option to a rectangleShape object or None
     */
     pub fn new_with_texture(texture : @mut Texture) -> Option<RectangleShape> {
-        let rectangle = unsafe { csfml::sfRectangleShape_create() };
+        let rectangle = unsafe { ffi::sfRectangleShape_create() };
         if ptr::is_null(rectangle) {
             None
         }
         else {
             unsafe {
-                csfml::sfRectangleShape_setTexture(rectangle, texture.unwrap(), 1);
+                ffi::sfRectangleShape_setTexture(rectangle, texture.unwrap(), 1);
             }
             Some(RectangleShape {
                 rectangleShape : rectangle,
@@ -150,13 +150,13 @@ impl RectangleShape {
     * Return a new option to a rectangleShape object, or None
     */
     pub fn new_init(size : &Vector2f) -> Option<RectangleShape> {
-        let rectangle = unsafe { csfml::sfRectangleShape_create() };
+        let rectangle = unsafe { ffi::sfRectangleShape_create() };
         if ptr::is_null(rectangle) {
             None
         }
         else {
             unsafe{
-                csfml::sfRectangleShape_setSize(rectangle, *size);
+                ffi::sfRectangleShape_setSize(rectangle, *size);
             }
             Some(RectangleShape {
                 rectangleShape : rectangle,
@@ -171,7 +171,7 @@ impl RectangleShape {
     * Return the copied object on an option, or None
     */
     pub fn clone(&self) -> Option<RectangleShape> {
-        let rectangle = unsafe { csfml::sfRectangleShape_copy(self.rectangleShape) };
+        let rectangle = unsafe { ffi::sfRectangleShape_copy(self.rectangleShape) };
         if ptr::is_null(rectangle) {
             None
         }
@@ -195,7 +195,7 @@ impl RectangleShape {
     */
     pub fn set_position(&mut self, position : &Vector2f) -> () {
         unsafe {
-            csfml::sfRectangleShape_setPosition(self.rectangleShape, *position)
+            ffi::sfRectangleShape_setPosition(self.rectangleShape, *position)
         }
     }
     
@@ -212,7 +212,7 @@ impl RectangleShape {
     */
     pub fn set_position2f(&mut self, x : f32, y : f32) -> () {
         unsafe {
-            csfml::sfRectangleShape_setPosition(self.rectangleShape, Vector2f::new(x, y))
+            ffi::sfRectangleShape_setPosition(self.rectangleShape, Vector2f::new(x, y))
         }
     }
 
@@ -228,7 +228,7 @@ impl RectangleShape {
     */
     pub fn set_rotation(&mut self, angle : float) -> () {
         unsafe {
-            csfml::sfRectangleShape_setRotation(self.rectangleShape, angle as c_float)
+            ffi::sfRectangleShape_setRotation(self.rectangleShape, angle as c_float)
         }
     }
 
@@ -244,7 +244,7 @@ impl RectangleShape {
     */
     pub fn set_scale(&mut self, scale : &Vector2f) -> () {
         unsafe {
-            csfml::sfRectangleShape_setScale(self.rectangleShape, *scale)
+            ffi::sfRectangleShape_setScale(self.rectangleShape, *scale)
         }
     }
 
@@ -262,7 +262,7 @@ impl RectangleShape {
     */
     pub fn set_scale2f(&mut self, factorX : f32, factorY : f32) -> () {
         unsafe {
-            csfml::sfRectangleShape_setScale(self.rectangleShape, Vector2f::new(factorX, factorY))
+            ffi::sfRectangleShape_setScale(self.rectangleShape, Vector2f::new(factorX, factorY))
         }
     }
 
@@ -281,7 +281,7 @@ impl RectangleShape {
     */
     pub fn set_origin(&mut self, origin : &Vector2f) -> () {
         unsafe {
-            csfml::sfRectangleShape_setOrigin(self.rectangleShape, *origin)
+            ffi::sfRectangleShape_setOrigin(self.rectangleShape, *origin)
         }
     }
 
@@ -301,7 +301,7 @@ impl RectangleShape {
     */
     pub fn set_origin2f(&mut self, x : f32, y : f32) -> () {
         unsafe {
-            csfml::sfRectangleShape_setOrigin(self.rectangleShape, Vector2f::new(x, y))
+            ffi::sfRectangleShape_setOrigin(self.rectangleShape, Vector2f::new(x, y))
         }
     }
 
@@ -316,7 +316,7 @@ impl RectangleShape {
     */
     pub fn scale(&mut self, factors : &Vector2f) -> () {
         unsafe {
-            csfml::sfRectangleShape_scale(self.rectangleShape, *factors)
+            ffi::sfRectangleShape_scale(self.rectangleShape, *factors)
         }
     }
 
@@ -332,7 +332,7 @@ impl RectangleShape {
     */
     pub fn scale2f(&mut self, factorX : f32, factorY : f32) -> () {
         unsafe {
-            csfml::sfRectangleShape_scale(self.rectangleShape, Vector2f::new(factorX, factorY))
+            ffi::sfRectangleShape_scale(self.rectangleShape, Vector2f::new(factorX, factorY))
         }
     }
 
@@ -347,7 +347,7 @@ impl RectangleShape {
     */
     pub fn move(&mut self, offset : &Vector2f) -> () {
         unsafe {
-            csfml::sfRectangleShape_move(self.rectangleShape, *offset)
+            ffi::sfRectangleShape_move(self.rectangleShape, *offset)
         }
     }
 
@@ -362,7 +362,7 @@ impl RectangleShape {
     * * offsetY - Offset in y
     */
     pub fn move2f(&mut self, offsetX : f32, offsetY : f32) -> () {
-        unsafe {csfml::sfRectangleShape_move(self.rectangleShape, Vector2f::new(offsetX, offsetY))}
+        unsafe {ffi::sfRectangleShape_move(self.rectangleShape, Vector2f::new(offsetX, offsetY))}
     }
 
     /**
@@ -374,7 +374,7 @@ impl RectangleShape {
     */
     pub fn get_rotation(&self) -> float {
         unsafe {
-            csfml::sfRectangleShape_getRotation(self.rectangleShape) as float
+            ffi::sfRectangleShape_getRotation(self.rectangleShape) as float
         }
     }
     
@@ -389,7 +389,7 @@ impl RectangleShape {
     */
     pub fn rotate(&mut self, angle : float) -> () {
         unsafe {
-            csfml::sfRectangleShape_rotate(self.rectangleShape, angle as c_float)
+            ffi::sfRectangleShape_rotate(self.rectangleShape, angle as c_float)
         }
     }
 
@@ -400,7 +400,7 @@ impl RectangleShape {
     */
     pub fn get_position(&self) -> Vector2f {
         unsafe {
-            csfml::sfRectangleShape_getPosition(self.rectangleShape) 
+            ffi::sfRectangleShape_getPosition(self.rectangleShape) 
         }
     }
 
@@ -411,7 +411,7 @@ impl RectangleShape {
     */
     pub fn get_scale(&self) -> Vector2f {
         unsafe { 
-            csfml::sfRectangleShape_getScale(self.rectangleShape) 
+            ffi::sfRectangleShape_getScale(self.rectangleShape) 
         }
     }
 
@@ -422,7 +422,7 @@ impl RectangleShape {
     */
     pub fn get_origin(&self) -> Vector2f {
         unsafe { 
-            csfml::sfRectangleShape_getOrigin(self.rectangleShape) 
+            ffi::sfRectangleShape_getOrigin(self.rectangleShape) 
         }
     }
 
@@ -433,7 +433,7 @@ impl RectangleShape {
     */
     pub fn get_size(&self) -> Vector2f {
         unsafe { 
-            csfml::sfRectangleShape_getSize(self.rectangleShape) 
+            ffi::sfRectangleShape_getSize(self.rectangleShape) 
         }
     }
 
@@ -449,7 +449,7 @@ impl RectangleShape {
     */
     pub fn get_point(&self, index : uint) -> Vector2f {
         unsafe { 
-            csfml::sfRectangleShape_getPoint(self.rectangleShape, index as c_uint) 
+            ffi::sfRectangleShape_getPoint(self.rectangleShape, index as c_uint) 
         }
     }
 
@@ -461,7 +461,7 @@ impl RectangleShape {
     */
     pub fn set_size(&mut self, size : &Vector2f) -> () {
         unsafe {
-            csfml::sfRectangleShape_setSize(self.rectangleShape, *size)
+            ffi::sfRectangleShape_setSize(self.rectangleShape, *size)
         }
     }
 
@@ -487,8 +487,8 @@ impl RectangleShape {
         self.texture = Some(texture);
         unsafe {
             match resetRect {
-                false       => csfml::sfRectangleShape_setTexture(self.rectangleShape, texture.unwrap(), 0),
-                true        => csfml::sfRectangleShape_setTexture(self.rectangleShape, texture.unwrap(), 1)
+                false       => ffi::sfRectangleShape_setTexture(self.rectangleShape, texture.unwrap(), 0),
+                true        => ffi::sfRectangleShape_setTexture(self.rectangleShape, texture.unwrap(), 1)
             }
         }
     }
@@ -500,7 +500,7 @@ impl RectangleShape {
     */
     pub fn disable_texture(&mut self) -> () {
         unsafe {
-            csfml::sfRectangleShape_setTexture(self.rectangleShape, ptr::null(), 1)
+            ffi::sfRectangleShape_setTexture(self.rectangleShape, ptr::null(), 1)
         }
     }
 
@@ -519,7 +519,7 @@ impl RectangleShape {
     */
     pub fn set_fill_color(&mut self, color : &Color) -> () {
         unsafe {
-            csfml::sfRectangleShape_setFillColor(self.rectangleShape, *color)
+            ffi::sfRectangleShape_setFillColor(self.rectangleShape, *color)
         }
     }
     
@@ -534,7 +534,7 @@ impl RectangleShape {
     */
     pub fn set_outline_color(&mut self, color : &Color) -> () {
         unsafe {
-            csfml::sfRectangleShape_setOutlineColor(self.rectangleShape, *color)
+            ffi::sfRectangleShape_setOutlineColor(self.rectangleShape, *color)
         }
     }
 
@@ -550,7 +550,7 @@ impl RectangleShape {
     */
     pub fn set_outline_thickness(&mut self, thickness : float) -> () {
         unsafe {
-            csfml::sfRectangleShape_setOutlineThickness(self.rectangleShape, thickness as c_float)
+            ffi::sfRectangleShape_setOutlineThickness(self.rectangleShape, thickness as c_float)
         }
     }
 
@@ -572,7 +572,7 @@ impl RectangleShape {
     */
     pub fn get_fill_color(&self) -> Color {
         unsafe {
-            csfml::sfRectangleShape_getFillColor(self.rectangleShape)
+            ffi::sfRectangleShape_getFillColor(self.rectangleShape)
         }
     }
 
@@ -583,7 +583,7 @@ impl RectangleShape {
     */
     pub fn get_outline_color(&self) -> Color {
         unsafe {
-            csfml::sfRectangleShape_getOutlineColor(self.rectangleShape)
+            ffi::sfRectangleShape_getOutlineColor(self.rectangleShape)
         }
     }
 
@@ -594,7 +594,7 @@ impl RectangleShape {
     */
     pub fn get_outline_thickness(&self) -> float {
         unsafe {
-            csfml::sfRectangleShape_getOutlineThickness(self.rectangleShape) as float 
+            ffi::sfRectangleShape_getOutlineThickness(self.rectangleShape) as float 
         }
     }
 
@@ -605,7 +605,7 @@ impl RectangleShape {
     */
     pub fn get_point_count(&self) -> uint {
         unsafe {
-            csfml::sfRectangleShape_getPointCount(self.rectangleShape) as uint
+            ffi::sfRectangleShape_getPointCount(self.rectangleShape) as uint
         }
     }
 
@@ -616,7 +616,7 @@ impl RectangleShape {
     */
     pub fn get_texture_rect(&self) -> IntRect {
         unsafe {
-            csfml::sfRectangleShape_getTextureRect(self.rectangleShape)
+            ffi::sfRectangleShape_getTextureRect(self.rectangleShape)
         }
     }
 
@@ -632,7 +632,7 @@ impl RectangleShape {
     */
     pub fn set_texture_rect(&mut self, rect : &IntRect) -> () {
         unsafe {
-            csfml::sfRectangleShape_setTextureRect(self.rectangleShape, *rect)
+            ffi::sfRectangleShape_setTextureRect(self.rectangleShape, *rect)
         }
     }
 
@@ -649,7 +649,7 @@ impl RectangleShape {
     */
     pub fn get_global_bounds(&self) -> FloatRect {
         unsafe {
-            csfml::sfRectangleShape_getGlobalBounds(self.rectangleShape)
+            ffi::sfRectangleShape_getGlobalBounds(self.rectangleShape)
         }
     }
 
@@ -666,7 +666,7 @@ impl RectangleShape {
     */
     pub fn get_local_bounds(&self) -> FloatRect {
         unsafe {
-            csfml::sfRectangleShape_getLocalBounds(self.rectangleShape)
+            ffi::sfRectangleShape_getLocalBounds(self.rectangleShape)
         }
     }
 
@@ -677,7 +677,7 @@ impl RectangleShape {
     */
     pub fn get_transform(&self) -> Transform {
         unsafe {
-            csfml::sfRectangleShape_getTransform(self.rectangleShape)
+            ffi::sfRectangleShape_getTransform(self.rectangleShape)
         }
     }
 
@@ -688,20 +688,21 @@ impl RectangleShape {
     */
     pub fn get_inverse_transform(&self) -> Transform {
         unsafe {
-            csfml::sfRectangleShape_getInverseTransform(self.rectangleShape)
+            ffi::sfRectangleShape_getInverseTransform(self.rectangleShape)
         }
     }
 }
 
-impl Wrappable<*csfml::sfRectangleShape> for RectangleShape {
-    pub fn wrap(rectangleShape : *csfml::sfRectangleShape) -> RectangleShape {
+#[doc(hidden)]
+impl Wrappable<*ffi::sfRectangleShape> for RectangleShape {
+    pub fn wrap(rectangleShape : *ffi::sfRectangleShape) -> RectangleShape {
         RectangleShape {
             rectangleShape : rectangleShape,
             texture : None
         }
     }
     
-    pub fn unwrap(&self) -> *csfml::sfRectangleShape {
+    pub fn unwrap(&self) -> *ffi::sfRectangleShape {
         self.rectangleShape
     }
 }
@@ -720,7 +721,7 @@ impl Drawable for RectangleShape {
 impl Drop for RectangleShape {
     fn drop(&self) -> () {
         unsafe {
-            csfml::sfRectangleShape_destroy(self.rectangleShape)
+            ffi::sfRectangleShape_destroy(self.rectangleShape)
         }
     }
 }

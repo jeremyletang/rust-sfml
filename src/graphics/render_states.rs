@@ -35,7 +35,7 @@ use graphics::texture::*;
 use graphics::transform::*; 
 
 #[doc(hidden)]
-pub mod csfml {
+pub mod ffi {
     
     // use graphics::blend_mode::*; 
     use graphics::shader; 
@@ -45,8 +45,8 @@ pub mod csfml {
     pub struct sfRenderStates {
         blendMode : uint,
         transform : transform::Transform,
-        texture : *csfml::sfTexture,
-        shader : *shader::csfml::sfShader
+        texture : *ffi::sfTexture,
+        shader : *shader::ffi::sfShader
     }
 }
 

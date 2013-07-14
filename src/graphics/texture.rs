@@ -42,14 +42,14 @@ use graphics::image::Image;
 use graphics::rect::IntRect;
 
 #[doc(hidden)]
-pub mod csfml {
+pub mod ffi {
     
     use std::libc::{c_uint, c_void, c_char};
 
     use rsfml::sfTypes::{sfBool};
     use system::vector2::Vector2u;
-    use window::window::csfml::sfWindow;
-    use graphics::render_window::csfml::sfRenderWindow;
+    use window::window::ffi::sfWindow;
+    use graphics::render_window::ffi::sfRenderWindow;
     use graphics::rect::IntRect;
     use graphics::image;
 
@@ -62,13 +62,13 @@ pub mod csfml {
         fn sfTexture_createFromFile(filename : *c_char, area : *IntRect) -> *sfTexture;
         //fn sfTexture_createFromMemory(data : *c_void, sizeInBytes : size_t , area : *sfIntRect) -> *sfTexture;
         //fn sfTexture_createFromStream(strea; : *sfInputStream, area : *sfIntRect) -> *sfTexture;
-        fn sfTexture_createFromImage(image :*image::csfml::sfImage, area : *IntRect) -> *sfTexture;
+        fn sfTexture_createFromImage(image :*image::ffi::sfImage, area : *IntRect) -> *sfTexture;
         fn sfTexture_copy(texture : *sfTexture) -> *sfTexture;
         fn sfTexture_destroy(texture : *sfTexture) -> ();
         fn sfTexture_getSize(texture : *sfTexture) -> Vector2u;
-        fn sfTexture_copyToImage(texture : *sfTexture) -> *image::csfml::sfImage;
+        fn sfTexture_copyToImage(texture : *sfTexture) -> *image::ffi::sfImage;
         fn sfTexture_updateFromPixels(texture : *sfTexture, pixels : *u8, width : c_uint, height : c_uint, x : c_uint, y : c_uint) -> ();
-        fn sfTexture_updateFromImage(texture : *sfTexture, image : *image::csfml::sfImage, x : c_uint, y : c_uint) -> ();
+        fn sfTexture_updateFromImage(texture : *sfTexture, image : *image::ffi::sfImage, x : c_uint, y : c_uint) -> ();
         fn sfTexture_updateFromWindow(texture : *sfTexture, window : *sfWindow, x : c_uint, y : c_uint) -> ();
         fn sfTexture_updateFromRenderWindow(texture : *sfTexture, renderWindow : *sfRenderWindow, x : c_uint, y : c_uint) -> ();
         fn sfTexture_setSmooth(texture : *sfTexture, smooth : sfBool) -> ();
@@ -82,7 +82,7 @@ pub mod csfml {
 
 #[doc(hidden)]
 pub struct Texture {
-    priv texture : *csfml::sfTexture,
+    priv texture : *ffi::sfTexture,
     priv dropable : bool
 }
 
@@ -97,7 +97,7 @@ impl Texture {
     * Return a new Option to Texture object or None
     */
     pub fn new(width: uint, height : uint) -> Option<Texture> {
-        let tex = unsafe { csfml::sfTexture_create(width as c_uint, height as c_uint) };
+        let tex = unsafe { ffi::sfTexture_create(width as c_uint, height as c_uint) };
         if ptr::is_null(tex) {
             None
         }
@@ -120,7 +120,7 @@ impl Texture {
     pub fn new_from_file(filename : ~str) -> Option<Texture> {
         let mut tex = ptr::null();
         do str::as_c_str(filename) |filebuf| {
-            tex = unsafe { csfml::sfTexture_createFromFile(filebuf, ptr::null()) };
+            tex = unsafe { ffi::sfTexture_createFromFile(filebuf, ptr::null()) };
         }
         if ptr::is_null(tex) {
             None
@@ -145,7 +145,7 @@ impl Texture {
     pub fn new_from_file_with_rect(filename : ~str, area : &IntRect) -> Option<Texture> {
         let mut tex = ptr::null();
         do str::as_c_str(filename) |filebuf| {
-            tex = unsafe { csfml::sfTexture_createFromFile(filebuf, &*area)};
+            tex = unsafe { ffi::sfTexture_createFromFile(filebuf, &*area)};
         }
         if ptr::is_null(tex) {
             None
@@ -167,7 +167,7 @@ impl Texture {
     * Return an option to the copied texture or None
     */
     pub fn clone(&self) -> Option<Texture> {
-        let tex = unsafe { csfml::sfTexture_copy(self.texture) };
+        let tex = unsafe { ffi::sfTexture_copy(self.texture) };
         if ptr::is_null(tex) {
             None
         }
@@ -189,7 +189,7 @@ impl Texture {
     * Return a new Option to Texture object or None
     */
     pub fn new_from_image_with_rect(image : &Image, area : &IntRect) -> Option<Texture> {
-        let tex = unsafe { csfml::sfTexture_createFromImage(image.unwrap(), &*area) };
+        let tex = unsafe { ffi::sfTexture_createFromImage(image.unwrap(), &*area) };
         if ptr::is_null(tex) {
             None
         }
@@ -210,7 +210,7 @@ impl Texture {
     * Return a new Option to Texture object or None
     */
     pub fn new_from_image(image : &Image) -> Option<Texture> {
-        let tex = unsafe { csfml::sfTexture_createFromImage(image.unwrap(), ptr::null()) };
+        let tex = unsafe { ffi::sfTexture_createFromImage(image.unwrap(), ptr::null()) };
         if ptr::is_null(tex) {
             None
         }
@@ -229,7 +229,7 @@ impl Texture {
     */
     pub fn get_size(&self) -> Vector2u {
         unsafe {
-            csfml::sfTexture_getSize(self.texture)
+            ffi::sfTexture_getSize(self.texture)
         }
     }
     
@@ -243,7 +243,7 @@ impl Texture {
     */
     pub fn update_from_window(&mut self, window : Window, x : uint, y : uint) -> () {
         unsafe {
-            csfml::sfTexture_updateFromWindow(self.texture, window.unwrap(), x as c_uint, y as c_uint)
+            ffi::sfTexture_updateFromWindow(self.texture, window.unwrap(), x as c_uint, y as c_uint)
         }
     }
 
@@ -257,7 +257,7 @@ impl Texture {
     */
     pub fn update_from_render_window(&mut self, renderWindow : RenderWindow, x : uint, y : uint) -> () {
         unsafe {
-            csfml::sfTexture_updateFromRenderWindow(self.texture, renderWindow.unwrap(), x as c_uint, y as c_uint)
+            ffi::sfTexture_updateFromRenderWindow(self.texture, renderWindow.unwrap(), x as c_uint, y as c_uint)
         }
     }
 
@@ -271,7 +271,7 @@ impl Texture {
     */
     pub fn update_from_image(&mut self, image : &Image, x : uint, y : uint) -> () {
         unsafe {
-            csfml::sfTexture_updateFromImage(self.texture, image.unwrap(), x as c_uint, y as c_uint)
+            ffi::sfTexture_updateFromImage(self.texture, image.unwrap(), x as c_uint, y as c_uint)
         }
     }
     
@@ -285,7 +285,7 @@ impl Texture {
     */
     pub fn update_from_pixels(&mut self, pixels : ~[u8], width : uint, height : uint, x : uint, y : uint) -> () {
         unsafe {
-            csfml::sfTexture_updateFromPixels(self.texture, vec::raw::to_ptr(pixels), width as c_uint, height as c_uint, x as c_uint, y as c_uint)
+            ffi::sfTexture_updateFromPixels(self.texture, vec::raw::to_ptr(pixels), width as c_uint, height as c_uint, x as c_uint, y as c_uint)
         }
     }
 
@@ -298,8 +298,8 @@ impl Texture {
     pub fn set_smooth(&mut self, smooth : bool) -> () {
         unsafe {
             match smooth {
-                true        => csfml::sfTexture_setSmooth(self.texture, 1),
-                false       => csfml::sfTexture_setSmooth(self.texture, 0)
+                true        => ffi::sfTexture_setSmooth(self.texture, 1),
+                false       => ffi::sfTexture_setSmooth(self.texture, 0)
             }
         }
     }
@@ -310,7 +310,7 @@ impl Texture {
     * Return true if smoothing is enabled, false if it is disabled
     */
     pub fn is_smooth(&self) -> bool {
-        match unsafe { csfml::sfTexture_isSmooth(self.texture) } {
+        match unsafe { ffi::sfTexture_isSmooth(self.texture) } {
             0 => false,
             _ => true
         }
@@ -339,8 +339,8 @@ impl Texture {
     pub fn set_repeated(&mut self, repeated : bool) -> () {
         unsafe {
             match repeated {
-                true        => csfml::sfTexture_setRepeated(self.texture, 1),
-                false       => csfml::sfTexture_setRepeated(self.texture, 0)
+                true        => ffi::sfTexture_setRepeated(self.texture, 1),
+                false       => ffi::sfTexture_setRepeated(self.texture, 0)
             }
         }
     }
@@ -351,7 +351,7 @@ impl Texture {
     * Return frue if repeat mode is enabled, false if it is disabled
     */
     pub fn is_repeated(&self) -> bool {
-        match unsafe {csfml::sfTexture_isRepeated(self.texture)} {
+        match unsafe {ffi::sfTexture_isRepeated(self.texture)} {
             0   => false,
             _   => true
         }
@@ -367,7 +367,7 @@ impl Texture {
     */
     pub fn bind(&mut self) -> () {
         unsafe {
-            csfml::sfTexture_bind(self.texture)
+            ffi::sfTexture_bind(self.texture)
         }
     }
     
@@ -378,7 +378,7 @@ impl Texture {
     */
     pub fn get_maximum_size() -> uint {
         unsafe {
-            csfml::sfTexture_getMaximumSize() as uint
+            ffi::sfTexture_getMaximumSize() as uint
         }
     }
 
@@ -388,7 +388,7 @@ impl Texture {
     * Return an image containing the texture's pixels
     */
     pub fn copy_to_image(&self) -> Option<Image> {
-        let img = unsafe {csfml::sfTexture_copyToImage(self.texture)};
+        let img = unsafe {ffi::sfTexture_copyToImage(self.texture)};
         if ptr::is_null(img) {
             None
         }
@@ -398,12 +398,13 @@ impl Texture {
     }
 }
 
-impl Wrappable<*csfml::sfTexture> for Texture {
-    pub fn unwrap(&self) -> *csfml::sfTexture {
+#[doc(hidden)]
+impl Wrappable<*ffi::sfTexture> for Texture {
+    pub fn unwrap(&self) -> *ffi::sfTexture {
         self.texture
     }
     
-    pub fn wrap(texture : *csfml::sfTexture) -> Texture {
+    pub fn wrap(texture : *ffi::sfTexture) -> Texture {
         Texture { 
             texture : texture,
             dropable : false
@@ -418,7 +419,7 @@ impl Drop for Texture {
     fn drop(&self) {
         if self.dropable {
             unsafe {
-                csfml::sfTexture_destroy(self.texture)
+                ffi::sfTexture_destroy(self.texture)
             }
         }
     }

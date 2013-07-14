@@ -29,7 +29,7 @@
  */
 
 #[doc(hidden)]
-pub mod csfml {
+pub mod ffi {
 
     use std::libc::{c_void};
     use rsfml::sfTypes::{sfBool};
@@ -47,7 +47,7 @@ pub mod csfml {
 
 #[doc(hidden)]
 pub struct Context {
-    priv cont : *csfml::sfContext
+    priv cont : *ffi::sfContext
 }
 
 impl Context {
@@ -61,7 +61,7 @@ impl Context {
     */
     pub fn new() -> Context {
         Context{
-            cont : unsafe{ csfml::sfContext_create() }
+            cont : unsafe{ ffi::sfContext_create() }
         }
     }
 
@@ -74,8 +74,8 @@ impl Context {
     pub fn set_active(&mut self, active : bool) -> () {
         unsafe {
             match active {
-                true    => csfml::sfContext_setActive(self.cont, 1),
-                false   => csfml::sfContext_setActive(self.cont, 0)
+                true    => ffi::sfContext_setActive(self.cont, 1),
+                false   => ffi::sfContext_setActive(self.cont, 0)
             };
 
         }
@@ -89,7 +89,7 @@ impl Drop for Context {
     */
     fn drop(&self) {
         unsafe {
-            csfml::sfContext_destroy(self.cont);
+            ffi::sfContext_destroy(self.cont);
         }
     }
 }

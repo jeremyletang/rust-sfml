@@ -43,7 +43,7 @@ use traits::wrappable::Wrappable;
 */
 
 #[doc(hidden)]
-pub mod csfml {
+pub mod ffi {
     
     use std::libc::{c_uint, size_t};
     use rsfml::sfTypes::{sfBool};
@@ -105,7 +105,7 @@ impl VideoMode {
     * return true if the video mode is valid for fullscreen mode
     */
     pub fn is_valid(&self) -> bool {
-        let i =  unsafe { csfml::sfVideoMode_isValid(csfml::sfVideoMode{
+        let i =  unsafe { ffi::sfVideoMode_isValid(ffi::sfVideoMode{
             Width : self.Width as c_uint, 
             Height : self.Height as c_uint, 
             BitsPerPixel : self.BitsPerPixel as c_uint
@@ -122,7 +122,7 @@ impl VideoMode {
     * return the urrent desktop video mode
     */
     pub fn get_desktop_mode() -> VideoMode {
-        let mode = unsafe { csfml::sfVideoMode_getDesktopMode() };
+        let mode = unsafe { ffi::sfVideoMode_getDesktopMode() };
         VideoMode{
             Width : mode.Width as uint, 
             Height : mode.Height as uint, 
@@ -147,7 +147,7 @@ impl VideoMode {
         let i : size_t = 0;
         let mut ret_tab : ~[VideoMode] = ~[];
         unsafe {
-            let tab : *mut csfml::sfVideoMode = csfml::sfVideoMode_getFullscreenModes(&i) as *mut csfml::sfVideoMode;
+            let tab : *mut ffi::sfVideoMode = ffi::sfVideoMode_getFullscreenModes(&i) as *mut ffi::sfVideoMode;
                 if i == 0 {
                     return None;
                 }
@@ -165,8 +165,9 @@ impl VideoMode {
 
 }
 
-impl Wrappable<csfml::sfVideoMode> for VideoMode {
-    pub fn wrap(mode: csfml::sfVideoMode) -> VideoMode {
+#[doc(hidden)]
+impl Wrappable<ffi::sfVideoMode> for VideoMode {
+    pub fn wrap(mode: ffi::sfVideoMode) -> VideoMode {
         VideoMode{
             Width : mode.Width as uint,
             Height : mode.Height as uint,
@@ -174,8 +175,8 @@ impl Wrappable<csfml::sfVideoMode> for VideoMode {
         }
     }
 
-    pub fn unwrap(&self) -> csfml::sfVideoMode {
-        csfml::sfVideoMode{
+    pub fn unwrap(&self) -> ffi::sfVideoMode {
+        ffi::sfVideoMode{
             Width : self.Width as c_uint,
             Height : self.Height as c_uint,
             BitsPerPixel : self.BitsPerPixel as c_uint

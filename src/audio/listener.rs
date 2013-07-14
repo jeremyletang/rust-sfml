@@ -33,7 +33,7 @@ use system::vector3::*;
 pub use std::libc::{c_int};
 
 #[doc(hidden)]
-pub mod csfml {
+pub mod ffi {
     
     pub use std::libc::{c_int};    
     pub use system::vector3;
@@ -59,7 +59,7 @@ pub mod csfml {
 */
 pub fn set_global_volume(volume : float) -> () {
     unsafe {
-        csfml::sfListener_setGlobalVolume(volume as f32)
+        ffi::sfListener_setGlobalVolume(volume as f32)
     }
 }
 
@@ -70,7 +70,7 @@ pub fn set_global_volume(volume : float) -> () {
 */
 pub fn get_global_volume() -> float {
     unsafe {
-        csfml::sfListener_getGlobalVolume() as float
+        ffi::sfListener_getGlobalVolume() as float
     }
 }
 
@@ -84,7 +84,7 @@ pub fn get_global_volume() -> float {
 */
 pub fn set_position(position : &Vector3f) -> () {
     unsafe {
-        csfml::sfListener_setPosition(*position)
+        ffi::sfListener_setPosition(*position)
     }
 }
 
@@ -100,7 +100,7 @@ pub fn set_position(position : &Vector3f) -> () {
 */
 pub fn set_position3f(x : f32, y : f32, z : f32) -> () {
     unsafe {
-        csfml::sfListener_setPosition(Vector3f::new(x, y, z))
+        ffi::sfListener_setPosition(Vector3f::new(x, y, z))
     }
 }
 
@@ -111,7 +111,7 @@ pub fn set_position3f(x : f32, y : f32, z : f32) -> () {
 */
 pub fn get_position() -> Vector3f {
     unsafe {
-        csfml::sfListener_getPosition()
+        ffi::sfListener_getPosition()
     }
 }
 
@@ -128,7 +128,7 @@ pub fn get_position() -> Vector3f {
 */
 pub fn set_direction(direction : &Vector3f) -> () {
     unsafe {
-        csfml::sfListener_setDirection(*direction)
+        ffi::sfListener_setDirection(*direction)
     }
 }
 
@@ -147,7 +147,7 @@ pub fn set_direction(direction : &Vector3f) -> () {
 */
 pub fn set_direction3f(x : f32, y : f32, z : f32) -> () {
     unsafe {
-        csfml::sfListener_setDirection(Vector3f::new(x, y, z))
+        ffi::sfListener_setDirection(Vector3f::new(x, y, z))
     }
 }
 
@@ -158,6 +158,6 @@ pub fn set_direction3f(x : f32, y : f32, z : f32) -> () {
 */
 pub fn get_direction() -> Vector3f {
     unsafe {
-        csfml::sfListener_getDirection()
+        ffi::sfListener_getDirection()
     }
 }

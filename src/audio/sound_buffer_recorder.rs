@@ -36,7 +36,7 @@ use traits::wrappable::Wrappable;
 use audio::sound_buffer::SoundBuffer;
 
 #[doc(hidden)]
-pub mod csfml {
+pub mod ffi {
 
     use std::libc::{c_uint, c_void};
     use audio::sound_buffer;
@@ -51,13 +51,13 @@ pub mod csfml {
         fn sfSoundBufferRecorder_start(soundBufferRecorder : *sfSoundBufferRecorder, sampleRate : c_uint) -> ();
         fn sfSoundBufferRecorder_stop(soundBufferRecorder : *sfSoundBufferRecorder) -> ();
         fn sfSoundBufferRecorder_getSampleRate(soundBufferRecorder : *sfSoundBufferRecorder) -> c_uint;
-        fn sfSoundBufferRecorder_getBuffer(soundBufferRecorder : *sfSoundBufferRecorder) -> *sound_buffer::csfml::sfSoundBuffer;
+        fn sfSoundBufferRecorder_getBuffer(soundBufferRecorder : *sfSoundBufferRecorder) -> *sound_buffer::ffi::sfSoundBuffer;
     }
 }
 
 #[doc(hidden)]
 pub struct SoundBufferRecorder {
-    priv soundBufferRecorder : *csfml::sfSoundBufferRecorder
+    priv soundBufferRecorder : *ffi::sfSoundBufferRecorder
 }
 
 impl SoundBufferRecorder {
@@ -68,7 +68,7 @@ impl SoundBufferRecorder {
     * Return a new option to SoundBufferRecorder object or None if failed
     */
     pub fn new() -> Option<SoundBufferRecorder> {
-        let buffer = unsafe { csfml::sfSoundBufferRecorder_create() };
+        let buffer = unsafe { ffi::sfSoundBufferRecorder_create() };
         if ptr::is_null(buffer) {
             None
         }
@@ -94,7 +94,7 @@ impl SoundBufferRecorder {
     */
     pub fn start(&mut self, sampleRate : uint) -> () {
         unsafe {
-            csfml::sfSoundBufferRecorder_start(self.soundBufferRecorder, sampleRate as c_uint)
+            ffi::sfSoundBufferRecorder_start(self.soundBufferRecorder, sampleRate as c_uint)
         }
     }
 
@@ -103,7 +103,7 @@ impl SoundBufferRecorder {
     */
     pub fn stop(&mut self) -> () {
         unsafe {
-            csfml::sfSoundBufferRecorder_stop(self.soundBufferRecorder)
+            ffi::sfSoundBufferRecorder_stop(self.soundBufferRecorder)
         }
     }
 
@@ -118,7 +118,7 @@ impl SoundBufferRecorder {
     */
     pub fn get_sample_rate(&self) -> uint {
         unsafe {
-            csfml::sfSoundBufferRecorder_getSampleRate(self.soundBufferRecorder) as uint
+            ffi::sfSoundBufferRecorder_getSampleRate(self.soundBufferRecorder) as uint
         }
     }
 
@@ -133,7 +133,7 @@ impl SoundBufferRecorder {
     * Return Read-only access to the sound buffer
     */
     pub fn get_buffer(&self) -> Option<SoundBuffer> {
-        let buff = unsafe { csfml::sfSoundBufferRecorder_getBuffer(self.soundBufferRecorder) };
+        let buff = unsafe { ffi::sfSoundBufferRecorder_getBuffer(self.soundBufferRecorder) };
         if ptr::is_null(buff) {
             None
         }
@@ -150,7 +150,7 @@ impl Drop for SoundBufferRecorder {
     */
     fn drop(&self) {
         unsafe {
-            csfml::sfSoundBufferRecorder_destroy(self.soundBufferRecorder);
+            ffi::sfSoundBufferRecorder_destroy(self.soundBufferRecorder);
         }
     }
 }

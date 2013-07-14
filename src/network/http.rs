@@ -36,7 +36,7 @@ use traits::wrappable::Wrappable;
 use system::time::Time;
 
 #[doc(hidden)]
-pub mod csfml {
+pub mod ffi {
     
     use std::libc::{c_char, c_void};
 
@@ -73,7 +73,7 @@ pub mod csfml {
         fn sfHttp_create() -> *sfHttp;
         fn sfHttp_destroy(http : *sfHttp) -> ();
         fn sfHttp_setHost(http : *sfHttp, host : *c_char, port : u16) -> ();
-        fn sfHttp_sendRequest(http : *sfHttp, httpRequest : *sfHttpRequest, timeout : time::csfml::sfTime) -> *sfHttpResponse;
+        fn sfHttp_sendRequest(http : *sfHttp, httpRequest : *sfHttpRequest, timeout : time::ffi::sfTime) -> *sfHttpResponse;
     }
 }
 
@@ -120,17 +120,17 @@ pub enum Status {
 
 #[doc(hidden)]
 pub struct Request {
-    priv request : *csfml::sfHttpRequest
+    priv request : *ffi::sfHttpRequest
 }
 
 #[doc(hidden)]
 pub struct Response {
-    priv response : *csfml::sfHttpResponse
+    priv response : *ffi::sfHttpResponse
 }
 
 #[doc(hidden)]
 pub struct Http {
-    priv http : *csfml::sfHttp
+    priv http : *ffi::sfHttp
 }
 
 impl Request {
@@ -141,7 +141,7 @@ impl Request {
     */
     pub fn new() -> Request {
         Request { 
-            request : unsafe { csfml::sfHttpRequest_create() }
+            request : unsafe { ffi::sfHttpRequest_create() }
         }
     }
 
@@ -162,7 +162,7 @@ impl Request {
         unsafe {
             do str::as_c_str(field) |f| {
                 do str::as_c_str(value) |v| {
-                    csfml::sfHttpRequest_setField(self.request, f, v)
+                    ffi::sfHttpRequest_setField(self.request, f, v)
                 }
             }
         }
@@ -180,7 +180,7 @@ impl Request {
     */
     pub fn set_method(&self, method : Method) -> () {
         unsafe {
-            csfml::sfHttpRequest_setMethod(self.request, method)
+            ffi::sfHttpRequest_setMethod(self.request, method)
         }
     }
 
@@ -197,7 +197,7 @@ impl Request {
     pub fn set_uri(&self, uri : ~str) -> () {
         unsafe {
             do str::as_c_str(uri) |Uri| {
-                csfml::sfHttpRequest_setUri(self.request, Uri)
+                ffi::sfHttpRequest_setUri(self.request, Uri)
             }
         }
     }
@@ -213,7 +213,7 @@ impl Request {
     */
     pub fn set_http_version(&self, major : u32, minor : u32) -> () {
         unsafe {
-            csfml::sfHttpRequest_setHttpVersion(self.request, major, minor)
+            ffi::sfHttpRequest_setHttpVersion(self.request, major, minor)
         }
     }
 
@@ -229,13 +229,13 @@ impl Request {
     pub fn set_body(&self, body : ~str) -> () {
         unsafe {
             do str::as_c_str(body) |Body| {
-                csfml::sfHttpRequest_setBody(self.request, Body)
+                ffi::sfHttpRequest_setBody(self.request, Body)
             }
         }
     }
 
     #[doc(hidden)]
-    pub fn unwrap(&self) -> *csfml::sfHttpRequest {
+    pub fn unwrap(&self) -> *ffi::sfHttpRequest {
         self.request
     }
 }
@@ -243,7 +243,7 @@ impl Request {
 impl Drop for Request {
     fn drop(&self) -> () {
         unsafe {
-            csfml::sfHttpRequest_destroy(self.request)
+            ffi::sfHttpRequest_destroy(self.request)
         }
     }
 }
@@ -264,7 +264,7 @@ impl Response {
     pub fn get_field(&self, field : ~str) -> ~str {
         unsafe {
             do str::as_c_str(field) |f| {
-                str::raw::from_c_str(csfml::sfHttpResponse_getField(self.response, f))
+                str::raw::from_c_str(ffi::sfHttpResponse_getField(self.response, f))
             }
         }
     }
@@ -281,7 +281,7 @@ impl Response {
     */
     pub fn get_status(&self) -> Status {
         unsafe {
-            csfml::sfHttpResponse_getStatus(self.response)
+            ffi::sfHttpResponse_getStatus(self.response)
         }
     }
 
@@ -292,7 +292,7 @@ impl Response {
     */
     pub fn get_major_version(&self) -> u32 {
         unsafe {
-            csfml::sfHttpResponse_getMajorVersion(self.response)
+            ffi::sfHttpResponse_getMajorVersion(self.response)
         }
     }
     
@@ -303,7 +303,7 @@ impl Response {
     */
     pub fn get_minor_version(&self) -> u32 {
         unsafe {
-            csfml::sfHttpResponse_getMinorVersion(self.response)
+            ffi::sfHttpResponse_getMinorVersion(self.response)
         }
     }
 
@@ -320,7 +320,7 @@ impl Response {
     */
     pub fn get_body(&self) -> ~str {
         unsafe {
-            str::raw::from_c_str(csfml::sfHttpResponse_getBody(self.response))
+            str::raw::from_c_str(ffi::sfHttpResponse_getBody(self.response))
         }
     } 
 }
@@ -328,7 +328,7 @@ impl Response {
 impl Drop for Response {
     fn drop(&self) -> () {
         unsafe {
-            csfml::sfHttpResponse_destroy(self.response)
+            ffi::sfHttpResponse_destroy(self.response)
         }
     }
 }
@@ -341,7 +341,7 @@ impl Http {
     */
     pub fn create() -> Http {
         Http { 
-            http : unsafe{ csfml::sfHttp_create() }
+            http : unsafe{ ffi::sfHttp_create() }
         }
     }
 
@@ -363,7 +363,7 @@ impl Http {
     pub fn set_host(&self, host : ~str, port : u16) -> () {
         unsafe {
             do str::as_c_str(host) |h| {
-                csfml::sfHttp_setHost(self.http, h, port)
+                ffi::sfHttp_setHost(self.http, h, port)
             }
         }
     }
@@ -386,7 +386,7 @@ impl Http {
     */
     pub fn send_request(&self, request : &Request, timeout : &Time) -> Response {
         Response {
-            response : unsafe { csfml::sfHttp_sendRequest(self.http, request.unwrap(), timeout.unwrap()) }
+            response : unsafe { ffi::sfHttp_sendRequest(self.http, request.unwrap(), timeout.unwrap()) }
         }
     }
 }
@@ -394,7 +394,7 @@ impl Http {
 impl Drop for Http {
     fn drop(&self) -> () {
         unsafe {
-            csfml::sfHttp_destroy(self.http)
+            ffi::sfHttp_destroy(self.http)
         }
     }
 }

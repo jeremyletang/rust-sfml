@@ -44,7 +44,7 @@ pub enum Axis {
 }
 
 #[doc(hidden)]
-pub mod csfml {
+pub mod ffi {
     
     use std::libc::{c_float, c_uint};
     use rsfml::sfTypes::{sfBool};
@@ -81,7 +81,7 @@ pub mod csfml {
 */
 pub fn joystick_is_connected(joystick : uint) -> bool {
     unsafe {
-        match csfml::sfJoystick_isConnected(joystick as c_uint) {
+        match ffi::sfJoystick_isConnected(joystick as c_uint) {
             0   => false,
             _   => true
         }
@@ -98,7 +98,7 @@ pub fn joystick_is_connected(joystick : uint) -> bool {
 */
 pub fn joystick_get_button_count(joystick : uint) -> uint {
     unsafe {
-        csfml::sfJoystick_getButtonCount(joystick as c_uint) as uint
+        ffi::sfJoystick_getButtonCount(joystick as c_uint) as uint
     }
 }
 
@@ -115,7 +115,7 @@ pub fn joystick_get_button_count(joystick : uint) -> uint {
 */
 pub fn joystick_has_axis(joystick : uint, axis : Axis) -> bool {
     unsafe {
-        match csfml::sfJoystick_hasAxis(joystick as c_uint, axis as c_uint) {
+        match ffi::sfJoystick_hasAxis(joystick as c_uint, axis as c_uint) {
             0   => false,
             _   => true
         }
@@ -136,7 +136,7 @@ pub fn joystick_has_axis(joystick : uint, axis : Axis) -> bool {
 */
 pub fn joystick_is_button_pressed(joystick : uint, button : uint) -> bool {
     unsafe {
-        match csfml::sfJoystick_isButtonPressed(joystick as c_uint, button as c_uint) {
+        match ffi::sfJoystick_isButtonPressed(joystick as c_uint, button as c_uint) {
             0   => false,
             _   => true
         }
@@ -157,7 +157,7 @@ pub fn joystick_is_button_pressed(joystick : uint, button : uint) -> bool {
 */
 pub fn joystick_get_axis_position(joystick : uint, axis : Axis) -> float {
     unsafe {
-        csfml::sfJoystick_getAxisPosition(joystick as c_uint, axis as c_uint) as float
+        ffi::sfJoystick_getAxisPosition(joystick as c_uint, axis as c_uint) as float
     }
 }
 
@@ -172,6 +172,6 @@ pub fn joystick_get_axis_position(joystick : uint, axis : Axis) -> float {
 */
 pub fn joystick_update() -> () {
     unsafe {
-        csfml::sfJoystick_update();
+        ffi::sfJoystick_update();
     }
 }

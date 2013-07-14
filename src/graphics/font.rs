@@ -38,7 +38,7 @@ use graphics::texture::Texture;
 use graphics::glyph::Glyph;
 
 #[doc(hidden)]
-pub mod csfml {
+pub mod ffi {
 
     use std::libc::{c_void, c_char, c_uint, c_int};
     
@@ -59,13 +59,13 @@ pub mod csfml {
         fn sfFont_getGlyph(font : *sfFont, codepoint : u32, characterSize : c_uint, bold :sfBool) -> Glyph;
         fn sfFont_getKerning(font : *sfFont, first : u32, second : u32, characterSize : c_uint) -> c_int;
         fn sfFont_getLineSpacing(font : *sfFont, characterSize : c_uint) -> c_int;
-        fn sfFont_getTexture(font : *sfFont, characterSize : c_uint) -> *texture::csfml::sfTexture;
+        fn sfFont_getTexture(font : *sfFont, characterSize : c_uint) -> *texture::ffi::sfTexture;
     }
 }
 
 #[doc(hidden)]
 pub struct Font {
-    priv font : *csfml::sfFont,
+    priv font : *ffi::sfFont,
     priv dropable : bool
 }
 
@@ -80,7 +80,7 @@ impl Font {
     */
     pub fn new_from_file(filename : ~str) -> Option<Font> {
         do str::as_c_str(filename) |filenamebuf| {
-            let fnt = unsafe {csfml::sfFont_createFromFile(filenamebuf)};
+            let fnt = unsafe {ffi::sfFont_createFromFile(filenamebuf)};
             if ptr::is_null(fnt) {
                 None
             }
@@ -101,7 +101,7 @@ impl Font {
     * Return the copied font
     */
     pub fn clone(&self) -> Option<Font> {
-        let fnt = unsafe {csfml::sfFont_copy(self.font)};
+        let fnt = unsafe {ffi::sfFont_copy(self.font)};
         if ptr::is_null(fnt) {
             None
         }
@@ -124,7 +124,7 @@ impl Font {
     */
     pub fn get_kerning(&self, first : u32, second : u32, characterSize : uint) -> int {
         unsafe {
-            csfml::sfFont_getKerning(self.font, first, second, characterSize as c_uint) as int
+            ffi::sfFont_getKerning(self.font, first, second, characterSize as c_uint) as int
         }
     }
 
@@ -138,7 +138,7 @@ impl Font {
     */
     pub fn get_line_spacing(&self, characterSize : uint) -> int {
         unsafe {
-            csfml::sfFont_getLineSpacing(self.font, characterSize as c_uint) as int
+            ffi::sfFont_getLineSpacing(self.font, characterSize as c_uint) as int
         }
     }
 
@@ -151,7 +151,7 @@ impl Font {
     * Return the texture
     */
     pub fn get_texture(&self, characterSize : uint) -> Option<Texture> {
-        let tex = unsafe {csfml::sfFont_getTexture(self.font, characterSize as c_uint)};
+        let tex = unsafe {ffi::sfFont_getTexture(self.font, characterSize as c_uint)};
         if ptr::is_null(tex) {
             None
         }
@@ -173,21 +173,22 @@ impl Font {
     pub fn get_glyph(&self, codepoint : u32, characterSize : uint, bold : bool) -> Glyph {
         unsafe {
             match bold {
-                true        => csfml::sfFont_getGlyph(self.font, codepoint, characterSize as c_uint, 1),
-                false       => csfml::sfFont_getGlyph(self.font, codepoint, characterSize as c_uint, 0)
+                true        => ffi::sfFont_getGlyph(self.font, codepoint, characterSize as c_uint, 1),
+                false       => ffi::sfFont_getGlyph(self.font, codepoint, characterSize as c_uint, 0)
             }
         }
     }
 }
 
-impl Wrappable<*csfml::sfFont> for Font {
-    pub fn wrap(font : *csfml::sfFont) -> Font {
+#[doc(hidden)]
+impl Wrappable<*ffi::sfFont> for Font {
+    pub fn wrap(font : *ffi::sfFont) -> Font {
         Font {
             font : font,
             dropable : false
         }
     }
-    pub fn unwrap(&self) -> *csfml::sfFont {
+    pub fn unwrap(&self) -> *ffi::sfFont {
         self.font
     } 
 
@@ -200,7 +201,7 @@ impl Drop for Font {
     fn drop(&self) -> () {
         if self.dropable {
             unsafe {
-                csfml::sfFont_destroy(self.font)
+                ffi::sfFont_destroy(self.font)
             }
         }
     }

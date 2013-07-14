@@ -40,7 +40,7 @@ use graphics::color::Color;
 use graphics::rect::IntRect;
 
 #[doc(hidden)]
-pub mod csfml {
+pub mod ffi {
     
     use std::libc::{c_char, c_void, c_uint};
 
@@ -76,7 +76,7 @@ pub mod csfml {
 
 #[doc(hidden)]
 pub struct Image {
-    priv image : *csfml::sfImage
+    priv image : *ffi::sfImage
 }
 
 impl Image {
@@ -92,7 +92,7 @@ impl Image {
     * Return a new Image object
     */
     pub fn new(width : uint, height : uint) -> Option<Image> {
-        let image = unsafe { csfml::sfImage_create(width as c_uint, height as c_uint) };
+        let image = unsafe { ffi::sfImage_create(width as c_uint, height as c_uint) };
         if ptr::is_null(image) {
             None
         }
@@ -114,7 +114,7 @@ impl Image {
     * Return a new Image object
     */
     pub fn new_from_color(width : uint, height : uint, color : &Color) -> Option<Image> {
-        let image = unsafe { csfml::sfImage_createFromColor(width as c_uint, height as c_uint, *color) };
+        let image = unsafe { ffi::sfImage_createFromColor(width as c_uint, height as c_uint, *color) };
         if ptr::is_null(image) {
             None
         }
@@ -139,7 +139,7 @@ impl Image {
     */
     pub fn new_from_file(filename : ~str) -> Option<Image> {
         do str::as_c_str(filename) |filebuf| {
-            let image = unsafe { csfml::sfImage_createFromFile(filebuf) };
+            let image = unsafe { ffi::sfImage_createFromFile(filebuf) };
             if ptr::is_null(image) {
                 None
             }
@@ -158,7 +158,7 @@ impl Image {
     * Return copied object
     */
     pub fn clone(&self) -> Option<Image> {
-        let image = unsafe { csfml::sfImage_copy(self.image) };
+        let image = unsafe { ffi::sfImage_copy(self.image) };
         if ptr::is_null(image) {
             None
         }
@@ -185,7 +185,7 @@ impl Image {
     * Return A new Image object
     */
     pub fn create_from_pixels(width : uint, height : uint, pixels : ~[u8]) -> Option<Image> {
-        let image = unsafe { csfml::sfImage_createFromPixels(width as c_uint, height as c_uint, vec::raw::to_ptr(pixels)) };
+        let image = unsafe { ffi::sfImage_createFromPixels(width as c_uint, height as c_uint, vec::raw::to_ptr(pixels)) };
         if ptr::is_null(image) {
             None
         }
@@ -211,7 +211,7 @@ impl Image {
     */
     pub fn save_to_file(&self, filename : ~str) -> bool {
         do str::as_c_str(filename) |filebuf| {
-            match unsafe { csfml::sfImage_saveToFile(self.image, filebuf) } {
+            match unsafe { ffi::sfImage_saveToFile(self.image, filebuf) } {
                 0 => false,
                 _ => true
             }
@@ -225,7 +225,7 @@ impl Image {
     */
     pub fn get_size(&self) -> Vector2u {
         unsafe {
-            csfml::sfImage_getSize(self.image)
+            ffi::sfImage_getSize(self.image)
         }
     }
     
@@ -242,7 +242,7 @@ impl Image {
     */
     pub fn create_mask_from_color(&self, color : &Color, alpha : u8) -> () {
         unsafe {
-            csfml::sfImage_createMaskFromColor(self.image, *color, alpha)
+            ffi::sfImage_createMaskFromColor(self.image, *color, alpha)
         }
     }
     
@@ -260,7 +260,7 @@ impl Image {
     */
     pub fn set_pixel(&mut self, x : uint, y : uint, color : &Color) -> () {
         unsafe {
-            csfml::sfImage_setPixel(self.image, x as c_uint, y as c_uint, *color)
+            ffi::sfImage_setPixel(self.image, x as c_uint, y as c_uint, *color)
         }
     }
 
@@ -279,7 +279,7 @@ impl Image {
     */
     pub fn get_pixel(&self, x : uint, y : uint) -> Color {
         unsafe {
-            csfml::sfImage_getPixel(self.image, x as c_uint, y as c_uint)
+            ffi::sfImage_getPixel(self.image, x as c_uint, y as c_uint)
         }
     }
 
@@ -288,7 +288,7 @@ impl Image {
     */
     pub fn flip_horizontally(&mut self) -> () {
         unsafe {
-            csfml::sfImage_flipHorizontally(self.image)
+            ffi::sfImage_flipHorizontally(self.image)
         }
     }
     
@@ -297,7 +297,7 @@ impl Image {
     */
     pub fn flip_vertically(&mut self) -> () {
         unsafe {
-            csfml::sfImage_flipVertically(self.image)
+            ffi::sfImage_flipVertically(self.image)
         }
     }
 
@@ -324,22 +324,23 @@ impl Image {
     pub fn copy_image(&mut self, source : &Image, destX : uint, destY : uint, sourceRect : &IntRect, applyAlpha : bool) -> () {
         unsafe {
             match applyAlpha {
-                true        =>  csfml::sfImage_copyImage(self.image, source.unwrap(), destX as c_uint, destY as c_uint, *sourceRect, 1),
-                false       =>  csfml::sfImage_copyImage(self.image, source.unwrap(), destX as c_uint, destY as c_uint, *sourceRect, 0)
+                true        =>  ffi::sfImage_copyImage(self.image, source.unwrap(), destX as c_uint, destY as c_uint, *sourceRect, 1),
+                false       =>  ffi::sfImage_copyImage(self.image, source.unwrap(), destX as c_uint, destY as c_uint, *sourceRect, 0)
             }
         }
     }
 
 }
 
-impl Wrappable<*csfml::sfImage> for Image {
-    pub fn wrap(image : *csfml::sfImage) -> Image {
+#[doc(hidden)]
+impl Wrappable<*ffi::sfImage> for Image {
+    pub fn wrap(image : *ffi::sfImage) -> Image {
         Image {
             image : image
         }
     }
     
-    pub fn unwrap(&self) -> *csfml::sfImage {
+    pub fn unwrap(&self) -> *ffi::sfImage {
         self.image
     }
 }
@@ -350,7 +351,7 @@ impl Drop for Image {
     */
     fn drop(&self) -> () {
         unsafe {
-            csfml::sfImage_destroy(self.image)
+            ffi::sfImage_destroy(self.image)
         }
     }
 }

@@ -36,7 +36,7 @@ use traits::wrappable::Wrappable;
 use system::time;
 
 #[doc(hidden)]
-pub mod csfml {
+pub mod ffi {
     
     use std::libc::{c_char, size_t, c_void, c_uint};
     use system::time;
@@ -54,14 +54,14 @@ pub mod csfml {
        // fn sfSoundBuffer_getSamples(soundBuffer : *sfSoundBuffer) -> *i16;
         fn sfSoundBuffer_getSampleCount(soundBuffer : *sfSoundBuffer) -> size_t;
         fn sfSoundBuffer_getChannelCount(soundBuffer : *sfSoundBuffer) -> c_uint;
-        fn sfSoundBuffer_getDuration(soundBuffer : *sfSoundBuffer) -> time::csfml::sfTime;
+        fn sfSoundBuffer_getDuration(soundBuffer : *sfSoundBuffer) -> time::ffi::sfTime;
         fn sfSoundBuffer_getSampleRate(soundBuffer : *sfSoundBuffer) -> c_uint;
     }
 }
 
 #[doc(hidden)]
 pub struct SoundBuffer {
-    priv soundBuffer : *csfml::sfSoundBuffer,
+    priv soundBuffer : *ffi::sfSoundBuffer,
     priv dropable : bool
 }
 
@@ -80,10 +80,10 @@ impl SoundBuffer {
     * Return an option to a SoundBuffer object or None.
     */
     pub fn new(filename : ~str) -> Option<SoundBuffer> {
-        let mut soundBuffer : *csfml::sfSoundBuffer = ptr::null();
+        let mut soundBuffer : *ffi::sfSoundBuffer = ptr::null();
         do str::as_c_str(filename) |filename_buf| {
             unsafe { 
-                soundBuffer = csfml::sfSoundBuffer_createFromFile(filename_buf);
+                soundBuffer = ffi::sfSoundBuffer_createFromFile(filename_buf);
             }
         };
         if ptr::is_null(soundBuffer) {
@@ -103,7 +103,7 @@ impl SoundBuffer {
     *  Return an option to a cloned SoundBuffer object or None.
     */
     pub fn clone(&self) -> Option<SoundBuffer> {
-        let soundBuffer = unsafe { csfml::sfSoundBuffer_copy(self.soundBuffer) };
+        let soundBuffer = unsafe { ffi::sfSoundBuffer_copy(self.soundBuffer) };
         if ptr::is_null(soundBuffer) {
             None
         }
@@ -129,7 +129,7 @@ impl SoundBuffer {
     */
     pub fn save_to_file(&self, filename : ~str) -> bool {
         match do str::as_c_str(filename) |filename_buf| {
-            unsafe { csfml::sfSoundBuffer_saveToFile(self.soundBuffer, filename_buf) } } {
+            unsafe { ffi::sfSoundBuffer_saveToFile(self.soundBuffer, filename_buf) } } {
             0 => false,
             _ => true
         }
@@ -156,7 +156,7 @@ impl SoundBuffer {
     */
     pub fn get_sample_count(&self) -> i64 {
         unsafe {
-            csfml::sfSoundBuffer_getSampleCount(self.soundBuffer) as i64
+            ffi::sfSoundBuffer_getSampleCount(self.soundBuffer) as i64
         }
     }
 
@@ -170,7 +170,7 @@ impl SoundBuffer {
     */
     pub fn get_channel_count(&self) -> uint {
         unsafe {
-            csfml::sfSoundBuffer_getChannelCount(self.soundBuffer) as uint
+            ffi::sfSoundBuffer_getChannelCount(self.soundBuffer) as uint
         }
     }
 
@@ -180,7 +180,7 @@ impl SoundBuffer {
     * Return the sound duration
     */
     pub fn get_duration(&self) -> time::Time {
-        Wrappable::wrap(unsafe { csfml::sfSoundBuffer_getDuration(self.soundBuffer) })
+        Wrappable::wrap(unsafe { ffi::sfSoundBuffer_getDuration(self.soundBuffer) })
     }
 
     /**
@@ -194,20 +194,21 @@ impl SoundBuffer {
     */
     pub fn get_sample_rate(&self) -> uint {
         unsafe {
-            csfml::sfSoundBuffer_getSampleRate(self.soundBuffer) as uint
+            ffi::sfSoundBuffer_getSampleRate(self.soundBuffer) as uint
         }
     }
 }
 
-impl Wrappable<*csfml::sfSoundBuffer> for SoundBuffer {
-    pub fn wrap(buffer : *csfml::sfSoundBuffer) -> SoundBuffer {
+#[doc(hidden)]
+impl Wrappable<*ffi::sfSoundBuffer> for SoundBuffer {
+    pub fn wrap(buffer : *ffi::sfSoundBuffer) -> SoundBuffer {
         SoundBuffer {
             soundBuffer : buffer,
             dropable : false
         }
     }
 
-    pub fn unwrap(&self) -> *csfml::sfSoundBuffer {
+    pub fn unwrap(&self) -> *ffi::sfSoundBuffer {
         self.soundBuffer
     }
 
@@ -220,7 +221,7 @@ impl Drop for SoundBuffer {
     fn drop(&self) {
         if self.dropable {
             unsafe {
-                csfml::sfSoundBuffer_destroy(self.soundBuffer);
+                ffi::sfSoundBuffer_destroy(self.soundBuffer);
             }
         }
     }

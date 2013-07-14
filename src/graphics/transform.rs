@@ -38,7 +38,7 @@ use system::vector2::Vector2f;
 use graphics::rect::FloatRect;
 
 #[doc(hidden)]
-pub mod csfml {
+pub mod ffi {
     
     use std::libc::{c_float};
 
@@ -72,7 +72,7 @@ pub struct Transform {
         a20 : f32,
         a21 : f32,
         a22 : f32
-//    transform : csfml::sfTransform
+//    transform : ffi::sfTransform
 }
 
 impl Transform {
@@ -94,7 +94,7 @@ impl Transform {
     */
     pub fn new(a00 : f32, a01 : f32, a02 : f32, b10 : f32, b11 : f32, b12 : f32, c20 : f32, c21 : f32, c22 : f32) -> Transform {
         unsafe {
-            csfml::sfTransform_fromMatrix(a00, a01, a02, b10, b11, b12, c20, c21, c22)
+            ffi::sfTransform_fromMatrix(a00, a01, a02, b10, b11, b12, c20, c21, c22)
         }
     }
 
@@ -102,7 +102,7 @@ impl Transform {
         unsafe {
             let matrix : *f32 = ptr::null();
             let mut return_matrix : ~[f32] = ~[];
-            csfml::sfTransform_getMatrix(self, matrix as *mut f32);
+            ffi::sfTransform_getMatrix(self, matrix as *mut f32);
             let cvec = CVec(matrix as *mut f32, 16);
             let mut d : uint = 0;
             return_matrix.push(get(cvec, d));
@@ -122,7 +122,7 @@ impl Transform {
     */
     pub fn new_identity() -> Transform {
         unsafe {
-            csfml::sfTransform_fromMatrix(1., 0., 0., 0., 1., 0., 0., 0., 1.)
+            ffi::sfTransform_fromMatrix(1., 0., 0., 0., 1., 0., 0., 0., 1.)
         }
     }
 
@@ -136,7 +136,7 @@ impl Transform {
     */
     pub fn get_inverse(&self) -> Transform {
         unsafe {
-            csfml::sfTransform_getInverse(&*self)
+            ffi::sfTransform_getInverse(&*self)
         }
     }
     
@@ -152,7 +152,7 @@ impl Transform {
     */
     pub fn combine(&mut self, other : &Transform) -> () {
         unsafe {
-            csfml::sfTransform_combine(&*self, &*other)
+            ffi::sfTransform_combine(&*self, &*other)
         }
     }
     
@@ -165,7 +165,7 @@ impl Transform {
     */
     pub fn translate(&mut self, x : f32, y : f32) -> () {
         unsafe {
-            csfml::sfTransform_translate(&*self, x as c_float, y as c_float)
+            ffi::sfTransform_translate(&*self, x as c_float, y as c_float)
         }
     }
 
@@ -177,7 +177,7 @@ impl Transform {
     */
     pub fn rotate(&mut self, angle : f32) -> () {
         unsafe {
-            csfml::sfTransform_rotate(&*self, angle as c_float)
+            ffi::sfTransform_rotate(&*self, angle as c_float)
         }
     }
     
@@ -196,7 +196,7 @@ impl Transform {
     */
     pub fn rotate_with_center(&mut self, angle : f32, centerX : f32, centerY : f32) -> () {
         unsafe {
-            csfml::sfTransform_rotateWithCenter(&*self, angle as c_float, centerX as c_float, centerY as c_float)
+            ffi::sfTransform_rotateWithCenter(&*self, angle as c_float, centerX as c_float, centerY as c_float)
         }
     }
 
@@ -209,7 +209,7 @@ impl Transform {
     */
     pub fn scale(&mut self, scaleX : f32, scaleY : f32) -> () {
         unsafe {
-            csfml::sfTransform_scale(&*self, scaleX as c_float, scaleY as c_float)
+            ffi::sfTransform_scale(&*self, scaleX as c_float, scaleY as c_float)
         }
     }
     
@@ -229,7 +229,7 @@ impl Transform {
     */
     pub fn scale_with_center(&mut self, scaleX : f32, scaleY : f32, centerX : f32, centerY : f32) -> () {
         unsafe {
-            csfml::sfTransform_scaleWithCenter(&*self, scaleX, scaleY, centerX, centerY)
+            ffi::sfTransform_scaleWithCenter(&*self, scaleX, scaleY, centerX, centerY)
         }
     }
 
@@ -243,7 +243,7 @@ impl Transform {
     */
     pub fn transform_point(&self, point : &Vector2f) -> Vector2f {
         unsafe {
-            csfml::sfTransform_transformPoint(&*self, *point)
+            ffi::sfTransform_transformPoint(&*self, *point)
         }
     }
 
@@ -263,7 +263,7 @@ impl Transform {
     */
     pub fn transform_rect(&self, rectangle : &FloatRect) -> FloatRect {
         unsafe {
-            csfml::sfTransform_transformRect(&*self, *rectangle)
+            ffi::sfTransform_transformRect(&*self, *rectangle)
         }
     }
     

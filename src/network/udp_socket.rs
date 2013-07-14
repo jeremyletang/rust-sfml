@@ -40,7 +40,7 @@ use network::ip_address;
 use network::socket_status::SocketStatus;
 
 #[doc(hidden)]
-pub mod csfml {
+pub mod ffi {
     
     use std::libc::{size_t, c_void};
 
@@ -61,17 +61,17 @@ pub mod csfml {
         fn sfUdpSocket_getLocalPort(socket : *sfUdpSocket) -> u16;
         fn sfUdpSocket_bind(socket : *sfUdpSocket, port : u16) -> SocketStatus;
         fn sfUdpSocket_unbind(socket : *sfUdpSocket) -> ();
-        fn sfUdpSocket_send(socket : *sfUdpSocket, data : *i8, size : size_t, address : ip_address::csfml::sfIpAddress, port : u16) -> SocketStatus;
-        fn sfUdpSocket_receive(socket : *sfUdpSocket, data : *i8, maxSize : size_t, sizeReceived : *size_t, address : *ip_address::csfml::sfIpAddress, port : *u16) -> SocketStatus;
-        fn sfUdpSocket_sendPacket(socket : *sfUdpSocket, packet : *packet::csfml::sfPacket, address : ip_address::csfml::sfIpAddress, port : u16) -> SocketStatus;
-        fn sfUdpSocket_receivePacket(socket : *sfUdpSocket, packet : *packet::csfml::sfPacket, address : *ip_address::csfml::sfIpAddress, port : *u16) -> SocketStatus;
+        fn sfUdpSocket_send(socket : *sfUdpSocket, data : *i8, size : size_t, address : ip_address::ffi::sfIpAddress, port : u16) -> SocketStatus;
+        fn sfUdpSocket_receive(socket : *sfUdpSocket, data : *i8, maxSize : size_t, sizeReceived : *size_t, address : *ip_address::ffi::sfIpAddress, port : *u16) -> SocketStatus;
+        fn sfUdpSocket_sendPacket(socket : *sfUdpSocket, packet : *packet::ffi::sfPacket, address : ip_address::ffi::sfIpAddress, port : u16) -> SocketStatus;
+        fn sfUdpSocket_receivePacket(socket : *sfUdpSocket, packet : *packet::ffi::sfPacket, address : *ip_address::ffi::sfIpAddress, port : *u16) -> SocketStatus;
         fn sfUdpSocket_maxDatagramSize() -> u32;
     }
 }
 
 #[doc(hidden)]
 pub struct UdpSocket {
-    priv socket : *csfml::sfUdpSocket
+    priv socket : *ffi::sfUdpSocket
 }
 
 impl UdpSocket {
@@ -81,7 +81,7 @@ impl UdpSocket {
     * Return a new option to UdpSocket object or None
     */
     pub fn new() -> Option<UdpSocket> {
-        let udp = unsafe { csfml::sfUdpSocket_create() };
+        let udp = unsafe { ffi::sfUdpSocket_create() };
         if ptr::is_null(udp) {
             None
         }
@@ -110,8 +110,8 @@ impl UdpSocket {
     pub fn set_blocking(&self, blocking : bool) -> () {
         unsafe {
             match blocking  {
-                true        => csfml::sfUdpSocket_setBlocking(self.socket, 1),
-                false       => csfml::sfUdpSocket_setBlocking(self.socket, 0)
+                true        => ffi::sfUdpSocket_setBlocking(self.socket, 1),
+                false       => ffi::sfUdpSocket_setBlocking(self.socket, 0)
             }
         }
     }
@@ -122,7 +122,7 @@ impl UdpSocket {
     * Return true if the socket is blocking, false otherwise
     */
     pub fn is_blocking(&self) -> bool {
-        match unsafe { csfml::sfUdpSocket_isBlocking(self.socket) } {
+        match unsafe { ffi::sfUdpSocket_isBlocking(self.socket) } {
             0 => false,
             _ => true
         }
@@ -138,7 +138,7 @@ impl UdpSocket {
     */
     pub fn get_local_port(&self) -> u16 {
         unsafe {
-            csfml::sfUdpSocket_getLocalPort(self.socket)
+            ffi::sfUdpSocket_getLocalPort(self.socket)
         }
     }
 
@@ -158,7 +158,7 @@ impl UdpSocket {
     */
     pub fn bind(&self, port : u16) -> SocketStatus {
         unsafe {
-            csfml::sfUdpSocket_bind(self.socket, port)
+            ffi::sfUdpSocket_bind(self.socket, port)
         }
 
     }
@@ -172,7 +172,7 @@ impl UdpSocket {
     */
     pub fn unbind(&self) -> () {
         unsafe {
-            csfml::sfUdpSocket_unbind(self.socket)
+            ffi::sfUdpSocket_unbind(self.socket)
         }
     }
 
@@ -190,7 +190,7 @@ impl UdpSocket {
     */
     pub fn send(&self, data : ~[i8], address : &ip_address::IpAddress, port : u16) -> SocketStatus {
         unsafe {
-            csfml::sfUdpSocket_send(self.socket, vec::raw::to_ptr(data), data.len() as size_t, address.unwrap(), port)
+            ffi::sfUdpSocket_send(self.socket, vec::raw::to_ptr(data), data.len() as size_t, address.unwrap(), port)
         }
     }
 
@@ -211,9 +211,9 @@ impl UdpSocket {
         unsafe {
             let s : size_t = 0;
             let datas : *i8 = ptr::null();
-            let addr : *ip_address::csfml::sfIpAddress = ptr::null();
+            let addr : *ip_address::ffi::sfIpAddress = ptr::null();
             let port : u16 = 0;
-            let stat : SocketStatus = csfml::sfUdpSocket_receive(self.socket, datas, maxSize, &s, addr, &port);
+            let stat : SocketStatus = ffi::sfUdpSocket_receive(self.socket, datas, maxSize, &s, addr, &port);
             (vec::raw::from_buf_raw(datas, s as uint), stat, s, Wrappable::wrap(*addr), port)
         }
     }
@@ -233,7 +233,7 @@ impl UdpSocket {
     */
     pub fn send_packet(&self, packet : &packet::Packet, address : &ip_address::IpAddress, port : u16) -> SocketStatus {
         unsafe {
-            csfml::sfUdpSocket_sendPacket(self.socket, packet.unwrap(), address.unwrap(), port)
+            ffi::sfUdpSocket_sendPacket(self.socket, packet.unwrap(), address.unwrap(), port)
         }
     }
 
@@ -246,10 +246,10 @@ impl UdpSocket {
     */
     pub fn receive_packet(&self) -> (packet::Packet, SocketStatus, ip_address::IpAddress, u16) {
         unsafe {
-            let pack : *packet::csfml::sfPacket = ptr::null();
-            let addr : *ip_address::csfml::sfIpAddress = ptr::null();
+            let pack : *packet::ffi::sfPacket = ptr::null();
+            let addr : *ip_address::ffi::sfIpAddress = ptr::null();
             let port : u16 = 0;
-            let stat = csfml::sfUdpSocket_receivePacket(self.socket, pack, addr, &port);
+            let stat = ffi::sfUdpSocket_receivePacket(self.socket, pack, addr, &port);
             (Wrappable::wrap(pack), stat, Wrappable::wrap(*addr), port)
         }
     }
@@ -262,19 +262,20 @@ impl UdpSocket {
     */
     pub fn max_datagram_size() -> u32 {
         unsafe {
-            csfml::sfUdpSocket_maxDatagramSize()
+            ffi::sfUdpSocket_maxDatagramSize()
         }
     }
 }
 
-impl Wrappable<*csfml::sfUdpSocket> for UdpSocket {
-    pub fn wrap(socket : *csfml::sfUdpSocket) -> UdpSocket {
+#[doc(hidden)]
+impl Wrappable<*ffi::sfUdpSocket> for UdpSocket {
+    pub fn wrap(socket : *ffi::sfUdpSocket) -> UdpSocket {
         UdpSocket {
             socket : socket
         }
     }
     
-    pub fn unwrap(&self) -> *csfml::sfUdpSocket {
+    pub fn unwrap(&self) -> *ffi::sfUdpSocket {
         self.socket
     }
 }
@@ -282,7 +283,7 @@ impl Wrappable<*csfml::sfUdpSocket> for UdpSocket {
 impl Drop for UdpSocket {
     fn drop(&self) -> () {
         unsafe {
-            csfml::sfUdpSocket_destroy(self.socket)
+            ffi::sfUdpSocket_destroy(self.socket)
         }
     }
 }

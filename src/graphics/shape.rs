@@ -39,7 +39,7 @@ use graphics::transform::Transform;
 use graphics::rect::{IntRect, FloatRect};
 
 #[doc(hidden)]
-pub mod csfml {
+pub mod ffi {
     
     use std::libc::{c_void, c_float, c_uint};
 
@@ -52,7 +52,7 @@ pub mod csfml {
 
     pub struct sfShape {
         This : *c_void,
-        Texture : *texture::csfml::sfTexture,
+        Texture : *texture::ffi::sfTexture,
         Transform : Transform,
         InverseTransform : Transform
     }
@@ -73,12 +73,12 @@ pub mod csfml {
         fn sfShape_scale(shape : *sfShape, factors : Vector2f) -> ();
         fn sfShape_getTransform(shape : *sfShape) -> Transform;
         fn sfShape_getInverseTransform(shape : *sfShape) -> Transform;
-        fn sfShape_setTexture(shape : *sfShape, texture : *texture::csfml::sfTexture, resetRect : sfBool) -> ();
+        fn sfShape_setTexture(shape : *sfShape, texture : *texture::ffi::sfTexture, resetRect : sfBool) -> ();
         fn sfShape_setTextureRect(shape : *sfShape, rect : IntRect) -> ();
         fn sfShape_setFillColor(shape : *sfShape, color : Color) -> ();
         fn sfShape_setOutlineColor(shape : *sfShape, color : Color) -> ();
         fn sfShape_setOutlineThickness(shape : *sfShape, thickness : c_float) -> ();
-        fn sfShape_getTexture(shape : *sfShape) -> *texture::csfml::sfTexture;
+        fn sfShape_getTexture(shape : *sfShape) -> *texture::ffi::sfTexture;
         fn sfShape_getTextureRect(shape : *sfShape) -> IntRect;
         fn sfShape_getFillColor(shape : *sfShape) -> Color;
         fn sfShape_getOutlineColor(shape : *sfShape) -> Color;
@@ -97,7 +97,7 @@ pub trait AbstractShape {
 }
 
 pub struct Shape {
-    priv shape : *csfml::sfShape
+    priv shape : *ffi::sfShape
 }
 
 /*
@@ -117,7 +117,7 @@ extern fn get_point_callback(point : u32, obj : *c_void) -> Vector2f {
 impl Shape {
 
 /*    pub fn new<T : AbstractShape>(abstractShape : &T) -> Option<Shape> {
-        let sp = unsafe { csfml::sfShape_create(get_point_count_callback, get_point_callback, ptr::to_unsafe_ptr(abstractShape) as *c_void) };
+        let sp = unsafe { ffi::sfShape_create(get_point_count_callback, get_point_callback, ptr::to_unsafe_ptr(abstractShape) as *c_void) };
         if ptr::is_null(sp) {
             None
         }
@@ -130,147 +130,147 @@ impl Shape {
 
     pub fn set_position(&mut self, position : &Vector2f) -> () {
         unsafe {
-            csfml::sfShape_setPosition(self.shape, *position)
+            ffi::sfShape_setPosition(self.shape, *position)
         }
     }
 
     pub fn set_position2f(&mut self, x : f32, y : f32) -> () {
         unsafe {
-            csfml::sfShape_setPosition(self.shape, Vector2f::new(x, y))
+            ffi::sfShape_setPosition(self.shape, Vector2f::new(x, y))
         }
     }
 
     pub fn set_rotation(&mut self, angle : float) -> () {
         unsafe {
-            csfml::sfShape_setRotation(self.shape, angle as c_float)
+            ffi::sfShape_setRotation(self.shape, angle as c_float)
         }
     }
 
     pub fn set_scale(&mut self, scale : &Vector2f) -> () {
         unsafe {
-            csfml::sfShape_setScale(self.shape, *scale)
+            ffi::sfShape_setScale(self.shape, *scale)
         }
     }
     
     pub fn set_scale2f(&mut self, scaleX : f32, scaleY : f32) -> () {
         unsafe {
-            csfml::sfShape_setScale(self.shape, Vector2f::new(scaleX, scaleY))
+            ffi::sfShape_setScale(self.shape, Vector2f::new(scaleX, scaleY))
         }
     }
 
     pub fn set_origin(&mut self, origin : &Vector2f) -> () {
         unsafe {
-            csfml::sfShape_setOrigin(self.shape, *origin)
+            ffi::sfShape_setOrigin(self.shape, *origin)
         }
     }
 
     pub fn set_origin2f(&mut self, x : f32, y : f32) -> () {
         unsafe {
-            csfml::sfShape_setOrigin(self.shape, Vector2f::new(x, y))
+            ffi::sfShape_setOrigin(self.shape, Vector2f::new(x, y))
         }
     }
 
     pub fn get_position(&self) -> Vector2f {
         unsafe {
-            csfml::sfShape_getPosition(self.shape)
+            ffi::sfShape_getPosition(self.shape)
         }
     }
 
     pub fn get_rotation(&self) -> float {
         unsafe {
-            csfml::sfShape_getRotation(self.shape) as float
+            ffi::sfShape_getRotation(self.shape) as float
         }
     }
 
     pub fn get_scale(&self) -> Vector2f {
         unsafe {
-            csfml::sfShape_getScale(self.shape)
+            ffi::sfShape_getScale(self.shape)
         }
     }
 
     pub fn get_origin(&self) -> Vector2f {
         unsafe {
-            csfml::sfShape_getOrigin(self.shape)
+            ffi::sfShape_getOrigin(self.shape)
         }
     }
 
     pub fn move(&mut self, offset : &Vector2f) -> () {
         unsafe {
-            csfml::sfShape_move(self.shape, *offset)
+            ffi::sfShape_move(self.shape, *offset)
         }
     }
 
     pub fn move2f(&mut self, offsetX : f32, offsetY : f32) -> () {
         unsafe {
-            csfml::sfShape_move(self.shape, Vector2f::new(offsetX, offsetY))
+            ffi::sfShape_move(self.shape, Vector2f::new(offsetX, offsetY))
         }
     }
 
     pub fn rotate(&mut self, angle : float) -> () {
         unsafe {
-            csfml::sfShape_rotate(self.shape, angle as c_float)
+            ffi::sfShape_rotate(self.shape, angle as c_float)
         }
     }
 
     pub fn scale(&mut self, factors : &Vector2f) -> () {
         unsafe {
-            csfml::sfShape_scale(self.shape, *factors)
+            ffi::sfShape_scale(self.shape, *factors)
         }
     }
 
     pub fn scale2f(&mut self, factorX : f32, factorY : f32) -> () {
         unsafe {
-            csfml::sfShape_scale(self.shape, Vector2f::new(factorX, factorY))
+            ffi::sfShape_scale(self.shape, Vector2f::new(factorX, factorY))
         }
     }
 
     pub fn get_transform(&self) -> Transform {
         unsafe {
-            csfml::sfShape_getTransform(self.shape)
+            ffi::sfShape_getTransform(self.shape)
         }
     }
 
     pub fn get_inverse_transform(&self) -> Transform {
         unsafe {
-            csfml::sfShape_getInverseTransform(self.shape)
+            ffi::sfShape_getInverseTransform(self.shape)
         }
     }
 
     pub fn set_texture(&mut self, texture : &Texture, resetRect : bool) -> () {
         unsafe {
             match resetRect {
-                true    => csfml::sfShape_setTexture(self.shape, texture.unwrap(), 1),
-                false   => csfml::sfShape_setTexture(self.shape, texture.unwrap(), 0)
+                true    => ffi::sfShape_setTexture(self.shape, texture.unwrap(), 1),
+                false   => ffi::sfShape_setTexture(self.shape, texture.unwrap(), 0)
             }
         }
     }
 
     pub fn set_texture_rect(&mut self, rect : &IntRect) -> () {
         unsafe {
-            csfml::sfShape_setTextureRect(self.shape, *rect)
+            ffi::sfShape_setTextureRect(self.shape, *rect)
         }
     }
 
     pub fn set_fill_color(&mut self, color : &Color) -> () {
         unsafe {
-            csfml::sfShape_setFillColor(self.shape, *color)
+            ffi::sfShape_setFillColor(self.shape, *color)
         }
     }
 
     pub fn set_outline_color(&mut self, color : &Color) -> () {
         unsafe {
-            csfml::sfShape_setOutlineColor(self.shape, *color)
+            ffi::sfShape_setOutlineColor(self.shape, *color)
         }
     }
 
     pub fn set_outline_thickness(&mut self, thickness : float) -> () {
         unsafe {
-            csfml::sfShape_setOutlineThickness(self.shape, thickness as c_float)
+            ffi::sfShape_setOutlineThickness(self.shape, thickness as c_float)
         }
     }
 
     pub fn get_texture(&self) -> Option<Texture> {
-        let tex = unsafe { csfml::sfShape_getTexture(self.shape) };
+        let tex = unsafe { ffi::sfShape_getTexture(self.shape) };
         if ptr::is_null(tex) {
             None
         }
@@ -281,60 +281,60 @@ impl Shape {
 
     pub fn get_texture_rect(&self) -> IntRect {
         unsafe {
-            csfml::sfShape_getTextureRect(self.shape)
+            ffi::sfShape_getTextureRect(self.shape)
         }
     }
 
     pub fn get_fill_color(&self) -> Color {
         unsafe {
-            csfml::sfShape_getFillColor(self.shape)
+            ffi::sfShape_getFillColor(self.shape)
         }
     }
 
     pub fn get_outline_color(&self) -> Color {
         unsafe {
-            csfml::sfShape_getOutlineColor(self.shape)
+            ffi::sfShape_getOutlineColor(self.shape)
         }
     }
 
     pub fn get_outline_thickness(&self) -> float {
         unsafe {
-            csfml::sfShape_getOutlineThickness(self.shape) as float
+            ffi::sfShape_getOutlineThickness(self.shape) as float
         }
     }
     
     pub fn get_point_count(&self) -> uint {
         unsafe {
-            csfml::sfShape_getPointCount(self.shape) as uint
+            ffi::sfShape_getPointCount(self.shape) as uint
         }
     }
 
     pub fn get_point(&self, index : uint) -> Vector2f {
         unsafe {
-            csfml::sfShape_getPoint(self.shape, index as c_uint)
+            ffi::sfShape_getPoint(self.shape, index as c_uint)
         }
     }
 
     pub fn get_local_bounds(&self) -> FloatRect {
         unsafe {
-            csfml::sfShape_getLocalBounds(self.shape)
+            ffi::sfShape_getLocalBounds(self.shape)
         }
     }
 
     pub fn get_global_bounds(&self) -> FloatRect {
         unsafe {
-            csfml::sfShape_getGlobalBounds(self.shape)
+            ffi::sfShape_getGlobalBounds(self.shape)
         }
     }
     
     pub fn update(&mut self) -> () {
         unsafe {
-            csfml::sfShape_update(self.shape)
+            ffi::sfShape_update(self.shape)
         }
     }
 
     #[doc(hidden)]
-    pub fn unwrap(&self) -> *csfml::sfShape {
+    pub fn unwrap(&self) -> *ffi::sfShape {
         self.shape
     }
 }
@@ -342,7 +342,7 @@ impl Shape {
 impl Drop for Shape {
     fn drop(&self) -> () {
         unsafe {
-            csfml::sfShape_destroy(self.shape)
+            ffi::sfShape_destroy(self.shape)
         }
     }
 }

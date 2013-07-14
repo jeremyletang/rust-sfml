@@ -43,7 +43,7 @@ use graphics::rect::{FloatRect, IntRect};
 use graphics::transform::Transform;
 
 #[doc(hidden)]
-pub mod csfml {
+pub mod ffi {
 
     use std::libc::{c_void, c_float};
 
@@ -56,7 +56,7 @@ pub mod csfml {
 
     pub struct sfSprite {
         This : *c_void,
-        Texture : *texture::csfml::sfTexture,
+        Texture : *texture::ffi::sfTexture,
         Transform : Transform,
         InverseTransform : Transform
     }
@@ -78,10 +78,10 @@ pub mod csfml {
         fn sfSprite_scale(sprite : *sfSprite, factors : Vector2f) -> ();
         fn sfSprite_getTransform(sprite : *sfSprite) -> Transform;
         fn sfSprite_getInverseTransform(sprite : *sfSprite) -> Transform;
-        fn sfSprite_setTexture(sprite : *sfSprite, texture : *texture::csfml::sfTexture, resetRect : sfBool) -> ();
+        fn sfSprite_setTexture(sprite : *sfSprite, texture : *texture::ffi::sfTexture, resetRect : sfBool) -> ();
         fn sfSprite_setTextureRect(sprite : *sfSprite, rectangle : IntRect) -> ();
         fn sfSprite_setColor(sprite : *sfSprite, color : Color) -> ();
-        fn sfSprite_getTexture(sprite : *sfSprite) -> *texture::csfml::sfTexture;
+        fn sfSprite_getTexture(sprite : *sfSprite) -> *texture::ffi::sfTexture;
         fn sfSprite_getTextureRect(sprite : *sfSprite) -> IntRect;
         fn sfSprite_getColor(sprite : *sfSprite) -> Color;
         fn sfSprite_getLocalBounds(sprite : *sfSprite) -> FloatRect;
@@ -91,7 +91,7 @@ pub mod csfml {
 
 #[doc(hidden)]
 pub struct Sprite {
-    priv sprite : *csfml::sfSprite,
+    priv sprite : *ffi::sfSprite,
     priv texture : Option<@mut Texture>
 }
 
@@ -102,7 +102,7 @@ impl Sprite {
     * Return a new sfSprite object
     */
     pub fn new() -> Option<Sprite> {
-        let sp = unsafe { csfml::sfSprite_create() };
+        let sp = unsafe { ffi::sfSprite_create() };
         if ptr::is_null(sp) {
             None
         }
@@ -121,13 +121,13 @@ impl Sprite {
     * Return a new sfSprite object
     */
     pub fn new_with_texture(texture : @mut Texture) -> Option<Sprite> {
-        let sp = unsafe { csfml::sfSprite_create() };
+        let sp = unsafe { ffi::sfSprite_create() };
         if ptr::is_null(sp) {
             None
         }
         else {
             unsafe {
-                csfml::sfSprite_setTexture(sp, texture.unwrap(), 1);
+                ffi::sfSprite_setTexture(sp, texture.unwrap(), 1);
             }
             Some(Sprite {
                 sprite : sp,
@@ -143,7 +143,7 @@ impl Sprite {
     * Return An option to the cloned sprite or none.
     */
     pub fn clone(&self) -> Option<Sprite> {
-        let sp = unsafe { csfml::sfSprite_copy(self.sprite) };
+        let sp = unsafe { ffi::sfSprite_copy(self.sprite) };
         if ptr::is_null(sp) {
             None
         }
@@ -167,7 +167,7 @@ impl Sprite {
     */
     pub fn set_rotation(&mut self, angle : float) -> () {
         unsafe {
-            csfml::sfSprite_setRotation(self.sprite, angle as c_float)
+            ffi::sfSprite_setRotation(self.sprite, angle as c_float)
         }
     }
 
@@ -180,7 +180,7 @@ impl Sprite {
     */
     pub fn get_rotation(&self) -> float {
         unsafe {
-            csfml::sfSprite_getRotation(self.sprite) as float
+            ffi::sfSprite_getRotation(self.sprite) as float
         }
     }
 
@@ -195,7 +195,7 @@ impl Sprite {
     */
     pub fn rotate(&mut self, angle : float) -> () {
         unsafe {
-            csfml::sfSprite_rotate(self.sprite, angle as c_float)
+            ffi::sfSprite_rotate(self.sprite, angle as c_float)
         }
     }
     
@@ -220,8 +220,8 @@ impl Sprite {
         self.texture = Some(texture);
         unsafe {
             match resetRect {
-                true        => csfml::sfSprite_setTexture(self.sprite, texture.unwrap(), 1),
-                false       => csfml::sfSprite_setTexture(self.sprite, texture.unwrap(), 0)
+                true        => ffi::sfSprite_setTexture(self.sprite, texture.unwrap(), 1),
+                false       => ffi::sfSprite_setTexture(self.sprite, texture.unwrap(), 0)
             }
         }
     }
@@ -233,7 +233,7 @@ impl Sprite {
     */
     pub fn disable_texture(&mut self) -> () {
         unsafe {
-            csfml::sfSprite_setTexture(self.sprite, ptr::null(), 1)
+            ffi::sfSprite_setTexture(self.sprite, ptr::null(), 1)
         }
     }
 
@@ -250,7 +250,7 @@ impl Sprite {
     */
     pub fn set_color(&mut self, color : &Color) -> () {
         unsafe {
-            csfml::sfSprite_setColor(self.sprite, *color)
+            ffi::sfSprite_setColor(self.sprite, *color)
         }
     }
     
@@ -264,7 +264,7 @@ impl Sprite {
     * Return an Option to the sprite's texture
     */
     pub fn get_texture(&self) -> Option<@mut Texture> {
-        //let tex = unsafe { csfml::sfSprite_getTexture(self.sprite) };
+        //let tex = unsafe { ffi::sfSprite_getTexture(self.sprite) };
         if self.texture.is_none() {
             None
         }
@@ -280,7 +280,7 @@ impl Sprite {
     */
     pub fn get_color(&self) -> Color {
         unsafe {
-            csfml::sfSprite_getColor(self.sprite)
+            ffi::sfSprite_getColor(self.sprite)
         }
     }
     
@@ -296,7 +296,7 @@ impl Sprite {
     */
     pub fn set_position(&mut self, position : &Vector2f) -> () {
         unsafe {
-            csfml::sfSprite_setPosition(self.sprite, *position)
+            ffi::sfSprite_setPosition(self.sprite, *position)
         }
     }
 
@@ -313,7 +313,7 @@ impl Sprite {
     */
     pub fn set_position2f(&mut self, x : f32, y : f32) -> () {
         unsafe {
-            csfml::sfSprite_setPosition(self.sprite, Vector2f::new(x, y))
+            ffi::sfSprite_setPosition(self.sprite, Vector2f::new(x, y))
         }
     }
 
@@ -328,7 +328,7 @@ impl Sprite {
     */
     pub fn scale(&mut self, factors : &Vector2f) -> () {
         unsafe {
-            csfml::sfSprite_scale(self.sprite, *factors)
+            ffi::sfSprite_scale(self.sprite, *factors)
         }
     }
 
@@ -344,7 +344,7 @@ impl Sprite {
     */
     pub fn scale2f(&mut self, factorX : f32, factorY : f32) -> () {
         unsafe {
-            csfml::sfSprite_scale(self.sprite, Vector2f::new(factorX, factorY))
+            ffi::sfSprite_scale(self.sprite, Vector2f::new(factorX, factorY))
         }
     }
 
@@ -355,7 +355,7 @@ impl Sprite {
     */
     pub fn get_scale(&self) -> Vector2f {
         unsafe {
-            csfml::sfSprite_getScale(self.sprite)
+            ffi::sfSprite_getScale(self.sprite)
         }
     }
 
@@ -366,7 +366,7 @@ impl Sprite {
     */
     pub fn get_origin(&self) -> Vector2f {
         unsafe {
-            csfml::sfSprite_getOrigin(self.sprite)
+            ffi::sfSprite_getOrigin(self.sprite)
         }
     }
 
@@ -381,7 +381,7 @@ impl Sprite {
     */
     pub fn move(&mut self, offset : &Vector2f) -> () {
         unsafe {
-            csfml::sfSprite_move(self.sprite, *offset)
+            ffi::sfSprite_move(self.sprite, *offset)
         }
     }
 
@@ -397,7 +397,7 @@ impl Sprite {
     */
     pub fn move2f(&mut self, offsetX : f32, offsetY : f32) -> () {
         unsafe {
-            csfml::sfSprite_move(self.sprite, Vector2f::new(offsetX, offsetY))
+            ffi::sfSprite_move(self.sprite, Vector2f::new(offsetX, offsetY))
         }
     }
 
@@ -413,7 +413,7 @@ impl Sprite {
     */
     pub fn set_scale(&mut self, scale : &Vector2f) -> () {
         unsafe {
-            csfml::sfSprite_setScale(self.sprite, *scale)
+            ffi::sfSprite_setScale(self.sprite, *scale)
         }
     }
 
@@ -430,7 +430,7 @@ impl Sprite {
     */
     pub fn set_scale2f(&mut self, scaleX : f32, scaleY : f32) -> () {
         unsafe {
-            csfml::sfSprite_setScale(self.sprite, Vector2f::new(scaleX, scaleY))
+            ffi::sfSprite_setScale(self.sprite, Vector2f::new(scaleX, scaleY))
         }
     }
     
@@ -449,7 +449,7 @@ impl Sprite {
     */
     pub fn set_origin(&mut self, origin : &Vector2f) -> () {
         unsafe {
-            csfml::sfSprite_setOrigin(self.sprite, *origin)
+            ffi::sfSprite_setOrigin(self.sprite, *origin)
         }
     }
 
@@ -469,7 +469,7 @@ impl Sprite {
     */
     pub fn set_origin2f(&mut self, x : f32, y : f32) -> () {
         unsafe {
-            csfml::sfSprite_setOrigin(self.sprite, Vector2f::new(x, y))
+            ffi::sfSprite_setOrigin(self.sprite, Vector2f::new(x, y))
         }
     }
 
@@ -479,7 +479,7 @@ impl Sprite {
     * Return the current position
     */
     pub fn get_position(&self) -> Vector2f {
-        unsafe {csfml::sfSprite_getPosition(self.sprite)}
+        unsafe {ffi::sfSprite_getPosition(self.sprite)}
     }
 
     /**
@@ -495,7 +495,7 @@ impl Sprite {
     */
     pub fn get_local_bounds(&self) -> FloatRect {
         unsafe {
-            csfml::sfSprite_getLocalBounds(self.sprite)
+            ffi::sfSprite_getLocalBounds(self.sprite)
         }
     }
 
@@ -512,7 +512,7 @@ impl Sprite {
     */
     pub fn get_global_bounds(&self) -> FloatRect {
         unsafe {
-            csfml::sfSprite_getGlobalBounds(self.sprite)
+            ffi::sfSprite_getGlobalBounds(self.sprite)
         }
     }
 
@@ -523,7 +523,7 @@ impl Sprite {
     */
     pub fn get_texture_rect(&self) -> IntRect {
         unsafe {
-            csfml::sfSprite_getTextureRect(self.sprite)
+            ffi::sfSprite_getTextureRect(self.sprite)
         }
     }
 
@@ -539,7 +539,7 @@ impl Sprite {
     */
     pub fn set_texture_rect(&mut self, rect : &IntRect) -> () {
         unsafe {
-            csfml::sfSprite_setTextureRect(self.sprite, *rect)
+            ffi::sfSprite_setTextureRect(self.sprite, *rect)
         }
     }
 
@@ -550,7 +550,7 @@ impl Sprite {
     */
     pub fn get_transform(&self) -> Transform {
         unsafe {
-            csfml::sfSprite_getTransform(self.sprite)
+            ffi::sfSprite_getTransform(self.sprite)
         }
     }
 
@@ -561,21 +561,22 @@ impl Sprite {
     */
     pub fn get_inverse_transform(&self) -> Transform {
         unsafe {
-            csfml::sfSprite_getInverseTransform(self.sprite)
+            ffi::sfSprite_getInverseTransform(self.sprite)
         }
     }
 
 }
 
-impl Wrappable<*csfml::sfSprite> for Sprite {
-    pub fn wrap(sprite : *csfml::sfSprite) -> Sprite {
+#[doc(hidden)]
+impl Wrappable<*ffi::sfSprite> for Sprite {
+    pub fn wrap(sprite : *ffi::sfSprite) -> Sprite {
         Sprite { 
             sprite : sprite,
             texture : None
         }
     }
 
-    pub fn unwrap(&self) -> *csfml::sfSprite {
+    pub fn unwrap(&self) -> *ffi::sfSprite {
         self.sprite
     }
     
@@ -602,7 +603,7 @@ impl Drop for Sprite {
     */
     fn drop(&self) -> () {
         unsafe {
-            csfml::sfSprite_destroy(self.sprite)
+            ffi::sfSprite_destroy(self.sprite)
         }
     }
 }

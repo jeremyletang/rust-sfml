@@ -32,7 +32,7 @@
 use std::libc::{c_uint};
 
 #[doc(hidden)]
-pub mod csfml{
+pub mod ffi{
 
     pub use std::libc::{c_void, c_uint};
     use rsfml::sfTypes::{sfBool};
@@ -54,13 +54,13 @@ pub mod csfml{
 
 #[doc(hidden)]
 pub struct SoundRecorder {
-    priv soundRecorder : *csfml::sfSoundRecorder
+    priv soundRecorder : *ffi::sfSoundRecorder
 }
 
 impl SoundRecorder {
    /* pub fn new(onStart : @fn(data : *c_void), onProcess : @fn(sample : *i16, sampleSize : size_t, data : *c_void), onStop : @fn(data : *c_void), data : *c_void) -> SoundRecorder {
         SoundRecorder {
-           soundRecorder : unsafe {csfml::sfSoundRecorder_create(onStart, cast::transmute(onProcess as *u8), cast::transmute(onStop as *u8), data)} 
+           soundRecorder : unsafe {ffi::sfSoundRecorder_create(onStart, cast::transmute(onProcess as *u8), cast::transmute(onStop as *u8), data)} 
         }
     }*/
     
@@ -79,7 +79,7 @@ impl SoundRecorder {
     */
     pub fn start(&mut self, sampleRate : uint) -> () {
         unsafe {
-            csfml::sfSoundRecorder_start(self.soundRecorder, sampleRate as c_uint)
+            ffi::sfSoundRecorder_start(self.soundRecorder, sampleRate as c_uint)
         }
     }
     
@@ -88,7 +88,7 @@ impl SoundRecorder {
     */
     pub fn stop(&mut self) -> () {
         unsafe {
-            csfml::sfSoundRecorder_stop(self.soundRecorder)
+            ffi::sfSoundRecorder_stop(self.soundRecorder)
         }
     }
 
@@ -103,7 +103,7 @@ impl SoundRecorder {
     */
     pub fn get_sample_rate(&self) -> uint {
         unsafe {
-            csfml::sfSoundRecorder_getSampleRate(self.soundRecorder) as uint
+            ffi::sfSoundRecorder_getSampleRate(self.soundRecorder) as uint
         }
     }
     
@@ -117,7 +117,7 @@ impl SoundRecorder {
     * Return true if audio capture is supported, false otherwise
     */
     pub fn is_available() -> bool {
-        match unsafe { csfml::sfSoundRecorder_isAvailable() } {
+        match unsafe { ffi::sfSoundRecorder_isAvailable() } {
             0 => false,
             _ => true
         }
@@ -132,7 +132,7 @@ impl Drop for SoundRecorder {
     */
     fn drop(&self) {
         unsafe {
-            csfml::sfSoundRecorder_destroy(self.soundRecorder);
+            ffi::sfSoundRecorder_destroy(self.soundRecorder);
         }
     }
 }

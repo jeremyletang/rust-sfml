@@ -36,7 +36,7 @@ use traits::wrappable::Wrappable;
 use system::time::Time;
 
 #[doc(hidden)]
-pub mod csfml{
+pub mod ffi{
     
     use std::libc::c_char;
 
@@ -68,12 +68,12 @@ pub mod csfml{
         fn sfIpAddress_toString(address : sfIpAddress, string : *c_char) -> ();
         fn sfIpAddress_toInteger(address : sfIpAddress) -> u32;
         fn sfIpAddress_getLocalAddress() -> sfIpAddress;
-        fn sfIpAddress_getPublicAddress(timeout : time::csfml::sfTime) -> sfIpAddress;
+        fn sfIpAddress_getPublicAddress(timeout : time::ffi::sfTime) -> sfIpAddress;
     }
 }
 
 pub struct IpAddress{
-    priv ip : csfml::sfIpAddress
+    priv ip : ffi::sfIpAddress
 }
 
 impl IpAddress {
@@ -91,7 +91,7 @@ impl IpAddress {
     pub fn new_from_string(address : ~str) -> IpAddress {
         do str::as_c_str(address) |addr_buf| {
             IpAddress {
-                ip : unsafe { csfml::sfIpAddress_fromString(addr_buf) } 
+                ip : unsafe { ffi::sfIpAddress_fromString(addr_buf) } 
             }
         }
     }
@@ -114,7 +114,7 @@ impl IpAddress {
     */
     pub fn mew_from_bytes(byte0 : u8, byte1 : u8, byte2 : u8, byte3 : u8) -> IpAddress {
         IpAddress {
-            ip : unsafe { csfml::sfIpAddress_fromBytes(byte0, byte1, byte2, byte3) }
+            ip : unsafe { ffi::sfIpAddress_fromBytes(byte0, byte1, byte2, byte3) }
         }
     }
 
@@ -133,7 +133,7 @@ impl IpAddress {
     */
     pub fn new_from_integer(address : u32) -> IpAddress {
         IpAddress {
-            ip : unsafe { csfml::sfIpAddress_fromInteger(address) } 
+            ip : unsafe { ffi::sfIpAddress_fromInteger(address) } 
         }
     }
 
@@ -149,7 +149,7 @@ impl IpAddress {
     pub fn to_string(&self) -> ~str {
         unsafe {
             let string : *c_char = ptr::null();
-            csfml::sfIpAddress_toString(self.ip, string);
+            ffi::sfIpAddress_toString(self.ip, string);
             str::raw::from_c_str(string)
         }
     }
@@ -167,7 +167,7 @@ impl IpAddress {
     */
     pub fn to_integer(&self) -> u32 {
         unsafe {
-            csfml::sfIpAddress_toInteger(self.ip)
+            ffi::sfIpAddress_toInteger(self.ip)
         }
     }
 
@@ -184,7 +184,7 @@ impl IpAddress {
     */
     pub fn get_local_address() -> IpAddress {
         IpAddress {
-            ip : unsafe { csfml::sfIpAddress_getLocalAddress() }
+            ip : unsafe { ffi::sfIpAddress_getLocalAddress() }
         }
     }
 
@@ -207,19 +207,20 @@ impl IpAddress {
     */
     pub fn get_public_address(timeout : &Time) -> IpAddress {
         IpAddress {
-            ip : unsafe { csfml::sfIpAddress_getPublicAddress(timeout.unwrap()) } 
+            ip : unsafe { ffi::sfIpAddress_getPublicAddress(timeout.unwrap()) } 
         }
     }
 }
 
-impl Wrappable<csfml::sfIpAddress> for IpAddress {
-    pub fn wrap(ip : csfml::sfIpAddress) -> IpAddress {
+#[doc(hidden)]
+impl Wrappable<ffi::sfIpAddress> for IpAddress {
+    pub fn wrap(ip : ffi::sfIpAddress) -> IpAddress {
         IpAddress {
             ip : ip
         }
     }
 
-    pub fn unwrap(&self) -> csfml::sfIpAddress {
+    pub fn unwrap(&self) -> ffi::sfIpAddress {
         self.ip
     }    
 }

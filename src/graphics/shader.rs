@@ -40,7 +40,7 @@ use system::vector3::Vector3f;
 use graphics::color::Color;
 
 #[doc(hidden)]
-pub mod csfml {
+pub mod ffi {
 
     use std::libc::{c_void, c_float, c_char};
 
@@ -68,7 +68,7 @@ pub mod csfml {
         fn sfShader_setVector3Parameter(shader : *sfShader, name : *c_char, vector : Vector3f) -> ();
         fn sfShader_setColorParameter(shader : *sfShader, name : *c_char, color : Color) -> (); 
         fn sfShader_setTransformParameter(shader : *sfShader, name : *c_char, transform : transform::Transform) -> ();
-        fn sfShader_setTextureParameter(shader : *sfShader, name : *c_char, texture : *texture::csfml::sfTexture) -> ();
+        fn sfShader_setTextureParameter(shader : *sfShader, name : *c_char, texture : *texture::ffi::sfTexture) -> ();
         fn sfShader_setCurrentTextureParameter(shader : *sfShader, name : *c_char) -> ();
         fn sfShader_bind(shader : *sfShader) -> ();
         fn sfShader_isAvailable() -> sfBool;
@@ -77,7 +77,7 @@ pub mod csfml {
 
 #[doc(hidden)]
 pub struct Shader {
-    priv shader : *csfml::sfShader
+    priv shader : *ffi::sfShader
 }
 
 impl Shader {
@@ -101,7 +101,7 @@ impl Shader {
     pub fn new_from_file(vertexShaderFilename : ~str, fragmentShaderFilename : ~str) -> Option<Shader> {
         do str::as_c_str(vertexShaderFilename) |vertex| {
             do str::as_c_str(fragmentShaderFilename) |fragment| {
-                let shader = unsafe { csfml::sfShader_createFromFile(vertex, fragment) };
+                let shader = unsafe { ffi::sfShader_createFromFile(vertex, fragment) };
                 if ptr::is_null(shader) {
                     None
                 }
@@ -134,7 +134,7 @@ impl Shader {
     pub fn new_from_memory(vertexShader : ~str, fragmentShader : ~str) -> Option<Shader> {
         do str::as_c_str(vertexShader) |vertex| {
             do str::as_c_str(fragmentShader) |fragment| {
-                let shader = unsafe { csfml::sfShader_createFromFile(vertex, fragment) };
+                let shader = unsafe { ffi::sfShader_createFromFile(vertex, fragment) };
                 if ptr::is_null(shader) {
                     None
                 }
@@ -157,7 +157,7 @@ impl Shader {
     pub fn set_float_parameter(&mut self, name : ~str, x : f32) -> () {
         do str::as_c_str(name) |shader| {
             unsafe { 
-                csfml::sfShader_setFloatParameter(self.shader, shader, x)
+                ffi::sfShader_setFloatParameter(self.shader, shader, x)
             }
         }
     }
@@ -177,7 +177,7 @@ impl Shader {
     pub fn set_float_2_parameter(&mut self, name : ~str, x : f32, y : f32) -> () {
         do str::as_c_str(name) |shader| {
             unsafe { 
-                csfml::sfShader_setFloat2Parameter(self.shader, shader, x, y)
+                ffi::sfShader_setFloat2Parameter(self.shader, shader, x, y)
             }
         }
     }
@@ -198,7 +198,7 @@ impl Shader {
     pub fn set_float_3_parameter(&mut self, name : ~str, x : f32, y : f32, z : f32) -> () {
         do str::as_c_str(name) |shader| {
             unsafe { 
-                csfml::sfShader_setFloat3Parameter(self.shader, shader, x, y, z)
+                ffi::sfShader_setFloat3Parameter(self.shader, shader, x, y, z)
             }
         }
     }
@@ -220,7 +220,7 @@ impl Shader {
     pub fn set_float_4_parameter(&mut self, name : ~str, x : f32, y : f32, z : f32, w : f32) -> () {
         do str::as_c_str(name) |shader| {
             unsafe {
-                csfml::sfShader_setFloat4Parameter(self.shader, shader, x, y, z, w)
+                ffi::sfShader_setFloat4Parameter(self.shader, shader, x, y, z, w)
             }
         }
     }
@@ -239,7 +239,7 @@ impl Shader {
     pub fn set_texture_parameter(&mut self, name : ~str, texture : &Texture) -> () {
         do str::as_c_str(name) |shader| {
             unsafe { 
-                csfml::sfShader_setTextureParameter(self.shader, shader, texture.unwrap())
+                ffi::sfShader_setTextureParameter(self.shader, shader, texture.unwrap())
             }
         }
     }
@@ -259,7 +259,7 @@ impl Shader {
     pub fn set_current_texture_parameter(&self, name : ~str) -> () {
         do str::as_c_str(name) |shader| {
             unsafe { 
-                csfml::sfShader_setCurrentTextureParameter(self.shader, shader)
+                ffi::sfShader_setCurrentTextureParameter(self.shader, shader)
             }
         }   
     }
@@ -273,7 +273,7 @@ impl Shader {
     */
     pub fn bind(&mut self) -> () {
         unsafe {
-            csfml::sfShader_bind(self.shader)
+            ffi::sfShader_bind(self.shader)
         }
     }
 
@@ -287,7 +287,7 @@ impl Shader {
     * Return true if the system can use shaders, false otherwise
     */
     pub fn is_available() -> bool {
-        match unsafe { csfml::sfShader_isAvailable() } {
+        match unsafe { ffi::sfShader_isAvailable() } {
             0   => false,
             _   => true
         }
@@ -307,7 +307,7 @@ impl Shader {
     fn set_vector2_parameter(&mut self, name : ~str, vector : &Vector2f) -> () {
         unsafe {
             do str::as_c_str(name) |namebuf| {
-                csfml::sfShader_setVector2Parameter(self.shader, namebuf, *vector)
+                ffi::sfShader_setVector2Parameter(self.shader, namebuf, *vector)
             }
         }
     }
@@ -326,7 +326,7 @@ impl Shader {
     fn set_vector3_parameter(&mut self, name : ~str, vector : &Vector3f) -> () {
         unsafe {
             do str::as_c_str(name) |namebuf| {
-                csfml::sfShader_setVector3Parameter(self.shader, namebuf, *vector)
+                ffi::sfShader_setVector3Parameter(self.shader, namebuf, *vector)
             }
         }
     }
@@ -351,7 +351,7 @@ impl Shader {
     fn set_color_parameter(&mut self, name : ~str, color : &Color) -> () {
         unsafe {
             do str::as_c_str(name) |namebuf| {
-                csfml::sfShader_setColorParameter(self.shader, namebuf, *color)
+                ffi::sfShader_setColorParameter(self.shader, namebuf, *color)
             }
         }
     }
@@ -364,7 +364,7 @@ impl Drop for Shader {
     */
     fn drop(&self) -> () {
         unsafe {
-            csfml::sfShader_destroy(self.shader)
+            ffi::sfShader_destroy(self.shader)
         }
     }
 }

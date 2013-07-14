@@ -28,7 +28,7 @@
 */
 
 #[doc(hidden)]
-pub mod csfml {
+pub mod ffi {
     
     pub enum sfSoundStatus {
         sfStopped = 0,

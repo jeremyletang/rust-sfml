@@ -30,12 +30,12 @@ use traits::wrappable::Wrappable;
 use system::time::*;
 
 #[doc(hidden)]
-pub mod csfml {
+pub mod ffi {
     
     use system::time::*;
 
     pub extern "C" {
-        fn sfSleep(duration : csfml::sfTime) -> ();
+        fn sfSleep(duration : ffi::sfTime) -> ();
     }
 }
 
@@ -44,6 +44,6 @@ pub mod csfml {
 */
 pub fn sleep(time :Time) -> () {
     unsafe {
-        csfml::sfSleep(time.unwrap())
+        ffi::sfSleep(time.unwrap())
     }
 }

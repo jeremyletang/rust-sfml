@@ -37,7 +37,7 @@ use system::vector2::Vector2f;
 use graphics::transform::Transform;
     
 #[doc(hidden)]
-pub mod csfml {
+pub mod ffi {
     
     use std::libc::{c_float, c_void};
 
@@ -72,7 +72,7 @@ pub mod csfml {
 
 #[doc(hidden)]
 pub struct Transformable{
-    priv trans : *csfml::sfTransformable
+    priv trans : *ffi::sfTransformable
 }
 
 impl Transformable {
@@ -82,7 +82,7 @@ impl Transformable {
     * Return a new Transformable object
     */
     pub fn new() -> Option<Transformable> {
-        let tran = unsafe { csfml::sfTransformable_create() };
+        let tran = unsafe { ffi::sfTransformable_create() };
         if ptr::is_null(tran) {
             None
         }
@@ -99,7 +99,7 @@ impl Transformable {
     * Return the copied object
     */
     pub fn clone(&self) -> Option<Transformable> {
-        let tran = unsafe { csfml::sfTransformable_copy(self.trans) };
+        let tran = unsafe { ffi::sfTransformable_copy(self.trans) };
         if ptr::is_null(tran) {
             None
         }
@@ -122,7 +122,7 @@ impl Transformable {
     */
     pub fn set_position(&mut self, position : &Vector2f) -> () {
         unsafe {
-            csfml::sfTransformable_setPosition(self.trans, *position)
+            ffi::sfTransformable_setPosition(self.trans, *position)
         }
     }
     
@@ -138,7 +138,7 @@ impl Transformable {
     */
     pub fn set_rotation(&mut self, angle : float) -> () {
         unsafe {
-            csfml::sfTransformable_setRotation(self.trans, angle as c_float)
+            ffi::sfTransformable_setRotation(self.trans, angle as c_float)
         }
     }
 
@@ -154,7 +154,7 @@ impl Transformable {
     */
     pub fn set_scale(&mut self, scale : &Vector2f) -> () {
         unsafe {
-            csfml::sfTransformable_setScale(self.trans, *scale)
+            ffi::sfTransformable_setScale(self.trans, *scale)
         }
     }
 
@@ -173,7 +173,7 @@ impl Transformable {
     */
     pub fn set_origin(&mut self, origin : &Vector2f) -> () {
         unsafe {
-            csfml::sfTransformable_setOrigin(self.trans, *origin)
+            ffi::sfTransformable_setOrigin(self.trans, *origin)
         }
     }
     
@@ -184,7 +184,7 @@ impl Transformable {
     */
     pub fn get_position(&self) -> Vector2f {
         unsafe {
-            csfml::sfTransformable_getPosition(self.trans)
+            ffi::sfTransformable_getPosition(self.trans)
         }
     }
 
@@ -197,7 +197,7 @@ impl Transformable {
     */
     pub fn get_rotation(&self) -> float {
         unsafe {
-            csfml::sfTransformable_getRotation(self.trans) as float
+            ffi::sfTransformable_getRotation(self.trans) as float
         }
     }
 
@@ -208,7 +208,7 @@ impl Transformable {
     */
     pub fn get_scale(&self) -> Vector2f {
         unsafe {
-            csfml::sfTransformable_getScale(self.trans)
+            ffi::sfTransformable_getScale(self.trans)
         }
     }
 
@@ -219,7 +219,7 @@ impl Transformable {
     */
     pub fn get_origin(&self) -> Vector2f {
         unsafe {
-            csfml::sfTransformable_getOrigin(self.trans)
+            ffi::sfTransformable_getOrigin(self.trans)
         }
     }
 
@@ -234,7 +234,7 @@ impl Transformable {
     */
     pub fn move(&mut self, offset : &Vector2f) -> () {
         unsafe {
-            csfml::sfTransformable_move(self.trans, *offset)
+            ffi::sfTransformable_move(self.trans, *offset)
         }
     }
 
@@ -249,7 +249,7 @@ impl Transformable {
     */
     pub fn rotate(&mut self, angle : float) -> () {
         unsafe {
-            csfml::sfTransformable_rotate(self.trans, angle as c_float)
+            ffi::sfTransformable_rotate(self.trans, angle as c_float)
         }
     }
 
@@ -264,7 +264,7 @@ impl Transformable {
     */
     pub fn scale(&mut self, factors : &Vector2f) -> () {
         unsafe {
-            csfml::sfTransformable_scale(self.trans, *factors)
+            ffi::sfTransformable_scale(self.trans, *factors)
         }
     }
 
@@ -275,7 +275,7 @@ impl Transformable {
     */
     pub fn get_transform(&self) -> Transform {
         unsafe {
-            csfml::sfTransformable_getTransform(self.trans)
+            ffi::sfTransformable_getTransform(self.trans)
         }
     }
 
@@ -286,19 +286,20 @@ impl Transformable {
     */
     pub fn get_inverse_transform(&self) -> Transform {
         unsafe {
-            csfml::sfTransformable_getInverseTransform(self.trans)
+            ffi::sfTransformable_getInverseTransform(self.trans)
         }
     }
 }
 
-impl Wrappable<*csfml::sfTransformable> for Transformable {
-    pub fn wrap(transformable : *csfml::sfTransformable) -> Transformable {
+#[doc(hidden)]
+impl Wrappable<*ffi::sfTransformable> for Transformable {
+    pub fn wrap(transformable : *ffi::sfTransformable) -> Transformable {
         Transformable {
             trans : transformable
         }
     }
 
-    pub fn unwrap(&self) -> *csfml::sfTransformable {
+    pub fn unwrap(&self) -> *ffi::sfTransformable {
         self.trans
     }
 }
@@ -306,7 +307,7 @@ impl Wrappable<*csfml::sfTransformable> for Transformable {
 impl Drop for Transformable {
     fn drop(&self) -> () {
         unsafe {
-            csfml::sfTransformable_destroy(self.trans)
+            ffi::sfTransformable_destroy(self.trans)
         }
     }
 }
