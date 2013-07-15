@@ -41,6 +41,7 @@ use graphics::render_window::RenderWindow;
 use graphics::render_texture::RenderTexture;
 use system::vector2::Vector2f;
 use graphics::transform::Transform;
+use graphics::render_states::RenderStates;
 
 #[doc(hidden)]
 pub mod ffi {
@@ -728,6 +729,10 @@ impl Wrappable<*ffi::sfCircleShape> for CircleShape {
 impl Drawable for CircleShape {
     pub fn draw_in_render_window(&self, renderWindow : &RenderWindow) -> () {
         renderWindow.draw_circle_shape(self)
+    }
+
+    pub fn draw_in_render_window_rs(&self, renderWindow : &RenderWindow, renderStates : &mut RenderStates) -> () {
+        renderWindow.draw_circle_shape_rs(self, renderStates)
     }
     
     pub fn draw_in_render_texture(&self, renderTexture : &RenderTexture) -> () {

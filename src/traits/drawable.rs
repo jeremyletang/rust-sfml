@@ -29,13 +29,15 @@
 *
 */
 
-use graphics::render_window;
-use graphics::render_texture;
+use graphics::render_window::RenderWindow;
+use graphics::render_texture::RenderTexture;
+use graphics::render_states::RenderStates;
 
 /**
 * The trait drawable is inherited by each object who can be drown by the RenderWindow
 */
 pub trait Drawable {
-    pub fn draw_in_render_window(&self, &render_window::RenderWindow) -> ();
-    pub fn draw_in_render_texture(&self, &render_texture::RenderTexture) -> ();
+    pub fn draw_in_render_window(&self, &RenderWindow) -> ();
+    pub fn draw_in_render_window_rs(&self, &RenderWindow, &mut RenderStates) -> ();
+    pub fn draw_in_render_texture(&self, &RenderTexture) -> ();
 }

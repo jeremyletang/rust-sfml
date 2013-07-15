@@ -40,6 +40,7 @@ use graphics::primitive_type;
 use graphics::primitive_type::PrimitiveType;
 use graphics::render_window::RenderWindow;
 use graphics::render_texture::RenderTexture;
+use graphics::render_states::RenderStates;
 
 #[doc(hidden)]
 pub mod ffi {
@@ -270,6 +271,10 @@ impl Wrappable<*ffi::sfVertexArray> for VertexArray {
 impl Drawable for VertexArray {
     pub fn draw_in_render_window(&self, renderWindow : &RenderWindow) -> () {
         renderWindow.draw_vertex_array(self)
+    }
+
+    pub fn draw_in_render_window_rs(&self, renderWindow : &RenderWindow, renderStates : &mut RenderStates) -> () {
+        renderWindow.draw_vertex_array_rs(self, renderStates)
     }
 
     pub fn draw_in_render_texture(&self, renderTexture : &RenderTexture) -> () {

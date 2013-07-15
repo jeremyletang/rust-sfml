@@ -44,6 +44,7 @@ use graphics::font::Font;
 use graphics::color::Color;
 use graphics::rect::FloatRect;
 use graphics::transform::Transform;
+use graphics::render_states::RenderStates;
 
 #[doc(hidden)]
 pub mod ffi {
@@ -676,6 +677,10 @@ impl Wrappable<*ffi::sfText> for Text {
 impl Drawable for Text {
     pub fn draw_in_render_window(&self, renderWindow : &RenderWindow) -> () {
         renderWindow.draw_text(self)
+    }
+
+    pub fn draw_in_render_window_rs(&self, renderWindow : &RenderWindow, renderStates : &mut RenderStates) -> () {
+        renderWindow.draw_text_rs(self, renderStates)
     }
 
     pub fn draw_in_render_texture(&self, renderTexture : &RenderTexture) -> () {

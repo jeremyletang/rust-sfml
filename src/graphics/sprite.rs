@@ -41,6 +41,7 @@ use graphics::render_texture::RenderTexture;
 use system::vector2::Vector2f;
 use graphics::rect::{FloatRect, IntRect};
 use graphics::transform::Transform;
+use graphics::render_states::RenderStates;
 
 #[doc(hidden)]
 pub mod ffi {
@@ -591,10 +592,16 @@ impl Drawable for Sprite {
         renderWindow.draw_sprite(self)
     }
 
+    pub fn draw_in_render_window_rs(&self, renderWindow : &RenderWindow, renderStates : &mut RenderStates) -> () {
+        renderWindow.draw_sprite_rs(self, renderStates)
+    }
+
     pub fn draw_in_render_texture(&self, renderTexture : &RenderTexture) -> () {
         renderTexture.draw_sprite(self)
     }
 }
+
+
 
 #[unsafe_destructor]
 impl Drop for Sprite {

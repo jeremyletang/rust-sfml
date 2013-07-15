@@ -358,6 +358,19 @@ impl Shader {
 
 }
 
+#[doc(hidden)]
+impl Wrappable<*ffi::sfShader> for Shader {
+    pub fn wrap(shader : *ffi::sfShader) -> Shader {
+        Shader {
+            shader : shader
+        }
+    }
+
+    pub fn unwrap(&self) -> *ffi::sfShader {
+        self.shader
+    }
+}
+
 impl Drop for Shader {
     /**
     * Destroy an existing shader
