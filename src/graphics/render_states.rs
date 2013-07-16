@@ -42,13 +42,13 @@ pub mod ffi {
     
     use graphics::blend_mode::*; 
     use graphics::shader; 
-    use graphics::texture::*; 
+    use graphics::texture; 
     use graphics::transform; 
 
     pub struct sfRenderStates {
-        blendMode : BlendMode,
+        blendMode : i32,
         transform : transform::Transform,
-        texture : *ffi::sfTexture,
+        texture : *texture::ffi::sfTexture,
         shader : *shader::ffi::sfShader
     }
 }
@@ -69,7 +69,7 @@ impl RenderStates {
     pub fn default() -> RenderStates {
         RenderStates {
             sfRenderStates : ffi::sfRenderStates {
-                blendMode : BlendAlpha,
+                blendMode : BlendAlpha as i32,
                 transform : Transform::new_identity(),
                 texture : ptr::null(),
                 shader : ptr::null()
@@ -82,7 +82,7 @@ impl RenderStates {
     }
 
     pub fn unwrap(&mut self) -> *ffi::sfRenderStates {
-        self.sfRenderStates.blendMode = self.blendMode;
+        self.sfRenderStates.blendMode = self.blendMode as i32;
         self.sfRenderStates.transform = self.transform;
         self.sfRenderStates.texture = if !self.texture.is_none() { self.texture.unwrap().unwrap() } else { ptr::null() };
         self.sfRenderStates.shader = if !self.shader.is_none() { self.shader.unwrap().unwrap() } else { ptr::null() };
