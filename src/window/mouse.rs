@@ -65,7 +65,7 @@ pub mod ffi {
 *
 * Return true if the button is pressed, false otherwise
 */
-pub fn mouse_is_button_pressed(button : MouseButton) -> bool {
+pub fn is_button_pressed(button : MouseButton) -> bool {
     unsafe {
         match ffi::sfMouse_isButtonPressed(button as c_uint) {
             0   => false,
@@ -84,7 +84,7 @@ pub fn mouse_is_button_pressed(button : MouseButton) -> bool {
 *
 * Return the position of the mouse cursor, relative to the given window
 */
-pub fn mouse_get_position(relativeTo : &Window) -> Vector2i {
+pub fn get_position(relativeTo : &Window) -> Vector2i {
     unsafe {
         ffi::sfMouse_getPosition(relativeTo.unwrap())
     }
@@ -100,7 +100,7 @@ pub fn mouse_get_position(relativeTo : &Window) -> Vector2i {
 * * relativeTo - Reference Window
 *
 */
-pub fn mouse_set_position(position : &Vector2i, relativeTo : &Window) -> () {
+pub fn set_position(position : &Vector2i, relativeTo : &Window) -> () {
     unsafe {
         ffi::sfMouse_setPosition(*position, relativeTo.unwrap())
     }

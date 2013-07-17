@@ -104,7 +104,7 @@ impl Clock {
 impl Drop for Clock {
     
     /**
-    * Create a new Clock and start it.
+    * Destroy a clock
     */
     fn drop(&self) {
         unsafe {

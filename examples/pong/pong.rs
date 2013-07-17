@@ -138,11 +138,11 @@ fn main () -> () {
             let deltaTime = clock.restart().as_seconds();
 
             // Move the player's paddle
-            if keyboard::keyboard_is_key_pressed(keyboard::Up) &&
+            if keyboard::is_key_pressed(keyboard::Up) &&
                (leftPaddle.get_position().y - paddleSize.y / 2. > 5.) {
                 leftPaddle.move2f(0., -paddleSpeed * deltaTime);
             }
-            if keyboard::keyboard_is_key_pressed(keyboard::Down) &&
+            if keyboard::is_key_pressed(keyboard::Down) &&
                (leftPaddle.get_position().y + paddleSize.y / 2. < gameHeight as f32 - 5.) {
                 leftPaddle.move2f(0., paddleSpeed * deltaTime);
             }

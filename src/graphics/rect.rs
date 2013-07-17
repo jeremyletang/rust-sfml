@@ -48,8 +48,7 @@ pub mod ffi {
 }
 
 /**
-* sfFloatRect and sfIntRect are utility classes for
-* manipulating rectangles.
+* utility classes for manipulating rectangles of int.
 */
 pub struct IntRect {
     left : i32,
@@ -58,6 +57,9 @@ pub struct IntRect {
     height : i32
 }
 
+/**
+* utility classes for manipulating rectangles of float.
+*/
 pub struct FloatRect {
     left : f32,
     top : f32,

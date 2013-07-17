@@ -23,7 +23,7 @@
 */
 
 /*!
-*
+* Basic traits for internal functionnement of rsfml.
 *
 *
 *

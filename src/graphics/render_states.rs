@@ -25,7 +25,6 @@
 /*!
 * Define the states used for drawing to a RenderTarget
 *
-* Don't WORK
 *
 */
 
@@ -40,7 +39,6 @@ use graphics::transform::*;
 #[doc(hidden)]
 pub mod ffi {
     
-    use graphics::blend_mode::*; 
     use graphics::shader; 
     use graphics::texture; 
     use graphics::transform; 
@@ -66,6 +64,17 @@ pub struct RenderStates {
 
 impl RenderStates {
 
+    /**
+    * Create a new RenderStates initialized to default.
+    *
+    * # default
+    * * blendMode is initialized to BlendAlpha
+    * * transform is initialized to the identity matrix
+    * * texture is initialized to None
+    * * shader is initialized to None
+    *
+    * Return a new default RenderStates
+    */
     pub fn default() -> RenderStates {
         RenderStates {
             sfRenderStates : ffi::sfRenderStates {
@@ -81,6 +90,9 @@ impl RenderStates {
         }
     }
 
+    /**
+    * Internal rsfml use only
+    */
     pub fn unwrap(&mut self) -> *ffi::sfRenderStates {
         self.sfRenderStates.blendMode = self.blendMode as i32;
         self.sfRenderStates.transform = self.transform;

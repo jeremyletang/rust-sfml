@@ -157,7 +157,7 @@ pub mod ffi {
  *
  * Return true if the key is pressed, false otherwise.
  */
-pub fn keyboard_is_key_pressed(key : Key) -> bool {
+pub fn is_key_pressed(key : Key) -> bool {
     unsafe {
         match ffi::sfKeyboard_isKeyPressed(key as c_int) {
             0   => false,
