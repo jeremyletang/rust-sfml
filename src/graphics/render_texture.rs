@@ -46,6 +46,7 @@ use graphics::circle_shape::CircleShape;
 use graphics::rectangle_shape::RectangleShape;
 use graphics::vertex_array::VertexArray;
 use graphics::convex_shape::ConvexShape;
+use graphics::render_states::RenderStates;
 
 #[doc(hidden)]
 pub mod ffi {
@@ -352,10 +353,24 @@ impl RenderTexture {
     }
 
     /**
-    * Drawing functions
+    * Draw a drawable object to the render-target
+    *
+    * # Arguments
+    * * object - Object to draw
     */
     pub fn draw<T : Drawable>(&mut self, t : &T) -> () {
         t.draw_in_render_texture(self);
+    }
+
+    /**
+    * Draw a drawable object to the render-target
+    *
+    * # Arguments
+    * * object - Object to draw
+    * * renderStates - The RenderStates to associate to the object
+    */
+    pub fn draw_with_renderstates<T : Drawable>(&mut self, t : &T, renderStates : &mut RenderStates) -> () {
+        t.draw_in_render_texture_rs(self, renderStates);
     }
 
     /// Draw Text
@@ -397,6 +412,47 @@ impl RenderTexture {
     pub fn draw_vertex_array(&self, vertexArray : &VertexArray) -> () {
         unsafe {
             ffi::sfRenderTexture_drawVertexArray(self.renderTexture, vertexArray.unwrap(), ptr::null())
+        }
+    }
+    /// Draw Text
+    pub fn draw_text_rs(&self, text : &Text, rs : &mut RenderStates) -> () {
+        unsafe {
+            ffi::sfRenderTexture_drawText(self.renderTexture, text.unwrap(), rs.unwrap())
+        }
+    }
+
+    /// Draw Sprite
+    pub fn draw_sprite_rs(&self, sprite : &Sprite, rs : &mut RenderStates) -> () {
+        unsafe {
+            ffi::sfRenderTexture_drawSprite(self.renderTexture, sprite.unwrap(), rs.unwrap())
+        }
+    }
+
+    /// Draw CircleShape
+    pub fn draw_circle_shape_rs(&self, circleShape : &CircleShape, rs : &mut RenderStates) -> () {
+        unsafe {
+            ffi::sfRenderTexture_drawCircleShape(self.renderTexture, circleShape.unwrap(), rs.unwrap())
+        }
+    }
+
+    /// Draw RectangleShape
+    pub fn draw_rectangle_shape_rs(&self, rectangleShape : &RectangleShape, rs : &mut RenderStates) -> () {
+        unsafe {
+            ffi::sfRenderTexture_drawRectangleShape(self.renderTexture, rectangleShape.unwrap(), rs.unwrap())
+        }
+    }
+
+    /// Draw ConvexShape
+    pub fn draw_convex_shape_rs(&self, convexShape : &ConvexShape, rs : &mut RenderStates) -> () {
+        unsafe {
+            ffi::sfRenderTexture_drawConvexShape(self.renderTexture, convexShape.unwrap(), rs.unwrap())
+        }
+    }
+
+    /// Draw VertexArray
+    pub fn draw_vertex_array_rs(&self, vertexArray : &VertexArray, rs : &mut RenderStates) -> () {
+        unsafe {
+            ffi::sfRenderTexture_drawVertexArray(self.renderTexture, vertexArray.unwrap(), rs.unwrap())
         }
     }
 

@@ -837,6 +837,13 @@ impl RenderWindow {
         object.draw_in_render_window(self);
     }
 
+    /**
+    * Draw a drawable object to the render-target with a RenderStates
+    *
+    * # Arguments 
+    * * object - Object to draw
+    * * renderStates - The renderStates to associate to the object
+    */
     pub fn draw_with_renderstates<T : Drawable>(&mut self, object : &T, renderStates : &mut RenderStates) -> () {
         object.draw_in_render_window_rs(self, renderStates);
     }

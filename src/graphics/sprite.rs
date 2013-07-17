@@ -599,6 +599,10 @@ impl Drawable for Sprite {
     pub fn draw_in_render_texture(&self, renderTexture : &RenderTexture) -> () {
         renderTexture.draw_sprite(self)
     }
+
+    pub fn draw_in_render_texture_rs(&self, renderTexture : &RenderTexture, renderStates : &mut RenderStates) -> () {
+        renderTexture.draw_sprite_rs(self, renderStates)
+    }
 }
 
 

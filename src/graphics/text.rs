@@ -686,6 +686,10 @@ impl Drawable for Text {
     pub fn draw_in_render_texture(&self, renderTexture : &RenderTexture) -> () {
         renderTexture.draw_text(self)
     }
+
+    pub fn draw_in_render_texture_rs(&self, renderTexture : &RenderTexture, renderStates : &mut RenderStates) -> () {
+        renderTexture.draw_text_rs(self, renderStates)
+    }
 }
 
 impl Drop for Text {

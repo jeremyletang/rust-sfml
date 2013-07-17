@@ -280,6 +280,10 @@ impl Drawable for VertexArray {
     pub fn draw_in_render_texture(&self, renderTexture : &RenderTexture) -> () {
         renderTexture.draw_vertex_array(self)
     }
+
+    pub fn draw_in_render_texture_rs(&self, renderTexture : &RenderTexture, renderStates : &mut RenderStates) -> () {
+        renderTexture.draw_vertex_array_rs(self, renderStates)
+    }
 }
 
 impl Drop for VertexArray {

@@ -738,6 +738,10 @@ impl Drawable for CircleShape {
     pub fn draw_in_render_texture(&self, renderTexture : &RenderTexture) -> () {
         renderTexture.draw_circle_shape(self)
     }
+
+    pub fn draw_in_render_texture_rs(&self, renderTexture : &RenderTexture, renderStates : &mut RenderStates) -> () {
+        renderTexture.draw_circle_shape_rs(self, renderStates)
+    }
 }
 
 #[unsafe_destructor]

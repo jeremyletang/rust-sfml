@@ -40,4 +40,5 @@ pub trait Drawable {
     pub fn draw_in_render_window(&self, &RenderWindow) -> ();
     pub fn draw_in_render_window_rs(&self, &RenderWindow, &mut RenderStates) -> ();
     pub fn draw_in_render_texture(&self, &RenderTexture) -> ();
+    pub fn draw_in_render_texture_rs(&self, &RenderTexture, &mut RenderStates) -> ();
 }
