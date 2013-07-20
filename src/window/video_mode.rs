@@ -53,6 +53,16 @@ pub mod ffi {
         Height: c_uint,
         BitsPerPixel: c_uint 
     }
+
+    impl Clone for sfVideoMode {
+    	 fn clone(&self) -> sfVideoMode {
+	    sfVideoMode {
+	    	Width : self.Width,
+		Height : self.Height,
+		BitsPerPixel : self.BitsPerPixel
+	    }   
+	 }
+    }
     
     pub extern "C" {
         fn sfVideoMode_getDesktopMode() -> sfVideoMode;
