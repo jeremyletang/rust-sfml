@@ -29,7 +29,7 @@
 *
 */
 
-#[cfg(mac_dylib)]
+#[cfg(target_os="macos")]
 #[cfg(target_os="linux")]
 #[cfg(target_os="win32")]
 mod platform {

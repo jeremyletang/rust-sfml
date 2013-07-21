@@ -20,7 +20,23 @@ use rsfml::system::clock::*;
 use rsfml::system::time::*;
 use rsfml::window::keyboard;
 
-fn main () -> () {
+#[cfg(target_os="macos")]
+use rsfml::start;
+
+#[cfg(target_os="macos")]
+fn main() -> () {
+    do start::start() {
+        pong();
+    }
+}
+
+#[cfg(target_os="linux")]
+#[cfg(target_os="win32")]
+fn main() -> () {
+    pong();
+}
+
+fn pong () -> () {
     // Define some constants
     let pi : f32 = 3.14159;
     let gameWidth : uint = 800;
