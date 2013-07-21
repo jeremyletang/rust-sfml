@@ -1,7 +1,7 @@
 /*
-* Rust-SFML - Copyright (c) Letang Jeremy.
+* Rust-SFML - Copyright (c) 2013 Letang Jeremy.
 *
-* The Original software, SFML library, is provided by Laurent Gomila.
+* The original software, SFML library, is provided by Laurent Gomila.
 *
 * This software is provided 'as-is', without any express or implied warranty.
 * In no event will the authors be held liable for any damages arising from
@@ -29,12 +29,14 @@
 *
 */
 
-use system::time;
 use std::ptr;
 use std::str;
 
+use traits::wrappable::Wrappable;
+use system::time;
+
 #[doc(hidden)]
-pub mod csfml {
+pub mod ffi {
     
     use std::libc::{c_char, size_t, c_void, c_uint};
     use system::time;
@@ -52,81 +54,161 @@ pub mod csfml {
        // fn sfSoundBuffer_getSamples(soundBuffer : *sfSoundBuffer) -> *i16;
         fn sfSoundBuffer_getSampleCount(soundBuffer : *sfSoundBuffer) -> size_t;
         fn sfSoundBuffer_getChannelCount(soundBuffer : *sfSoundBuffer) -> c_uint;
-        fn sfSoundBuffer_getDuration(soundBuffer : *sfSoundBuffer) -> time::csfml::sfTime;
+        fn sfSoundBuffer_getDuration(soundBuffer : *sfSoundBuffer) -> time::ffi::sfTime;
+        fn sfSoundBuffer_getSampleRate(soundBuffer : *sfSoundBuffer) -> c_uint;
     }
 }
 
 #[doc(hidden)]
 pub struct SoundBuffer {
-    priv soundBuffer : *csfml::sfSoundBuffer,
+    priv soundBuffer : *ffi::sfSoundBuffer,
+    priv dropable : bool
 }
 
 impl SoundBuffer {
     
     /**
     * Create a new sound buffer and load it from a file
+    *
+    * Here is a complete list of all the supported audio formats:
+    * ogg, wav, flac, aiff, au, raw, paf, svx, nist, voc, ircam,
+    * w64, mat4, mat5 pvf, htk, sds, avr, sd2, caf, wve, mpc2k, rf64.
+    *
+    * # Arguments
+    * * filename - Path of the sound file to load
+    *
+    * Return an option to a SoundBuffer object or None.
     */
     pub fn new(filename : ~str) -> Option<SoundBuffer> {
-        let mut soundBuffer : *csfml::sfSoundBuffer = ptr::null();
+        let mut soundBuffer : *ffi::sfSoundBuffer = ptr::null();
         do str::as_c_str(filename) |filename_buf| {
-            unsafe { soundBuffer = csfml::sfSoundBuffer_createFromFile(filename_buf); }
+            unsafe { 
+                soundBuffer = ffi::sfSoundBuffer_createFromFile(filename_buf);
+            }
         };
-        if soundBuffer == ptr::null() {
-            return None;
+        if ptr::is_null(soundBuffer) {
+            None
         }
-        Some(SoundBuffer{soundBuffer : soundBuffer})
+        else {
+            Some(SoundBuffer{
+                soundBuffer : soundBuffer,
+                dropable : true
+            })
+        }
     }
 
     /**
     * Create a new sound buffer by copying an existing one
+    *
+    *  Return an option to a cloned SoundBuffer object or None.
     */
-    pub fn new_copy(soundBuffer : SoundBuffer) -> SoundBuffer {
-        SoundBuffer {soundBuffer :  unsafe {csfml::sfSoundBuffer_copy(soundBuffer.unwrap())}}
+    pub fn clone(&self) -> Option<SoundBuffer> {
+        let soundBuffer = unsafe { ffi::sfSoundBuffer_copy(self.soundBuffer) };
+        if ptr::is_null(soundBuffer) {
+            None
+        }
+        else {
+            Some(SoundBuffer {
+                soundBuffer : soundBuffer,
+                dropable : true
+            })
+        }
     }
 
     /**
     * Save a sound buffer to an audio file
+    *
+    * Here is a complete list of all the supported audio formats:
+    * ogg, wav, flac, aiff, au, raw, paf, svx, nist, voc, ircam,
+    * w64, mat4, mat5 pvf, htk, sds, avr, sd2, caf, wve, mpc2k, rf64.
+    *
+    * # Arguments
+    * * filename - Path of the sound file to write
+    *
+    * Return true if saving succeeded, false if it faileds
     */
     pub fn save_to_file(&self, filename : ~str) -> bool {
         match do str::as_c_str(filename) |filename_buf| {
-            unsafe {csfml::sfSoundBuffer_saveToFile(self.soundBuffer, filename_buf) }} {
+            unsafe { ffi::sfSoundBuffer_saveToFile(self.soundBuffer, filename_buf) } } {
             0 => false,
             _ => true
         }
     }
     
     /**
+    * Get the array of audio samples stored in a sound buffer
+    *
+    * The format of the returned samples is 16 bits signed integer
+    * (sfInt16). The total number of samples in this array
+    * is given by the get_cample_count function.
+    *
+    * return Read-only pointer to the array of sound samples
+    */
+
+
+    /**
     * Get the number of samples stored in a sound buffer
+    *
+    * The array of samples can be accessed with the
+    * get_samples function.
+    * 
+    * Return the number of samples
     */
     pub fn get_sample_count(&self) -> i64 {
         unsafe {
-            csfml::sfSoundBuffer_getSampleCount(self.soundBuffer) as i64
+            ffi::sfSoundBuffer_getSampleCount(self.soundBuffer) as i64
         }
     }
 
     /*
     * Get the number of channels used by a sound buffer
+    *
+    * If the sound is mono then the number of channels will
+    * be 1, 2 for stereo, etc.
+    *
+    * Return the number of channels
     */
     pub fn get_channel_count(&self) -> uint {
         unsafe {
-            csfml::sfSoundBuffer_getChannelCount(self.soundBuffer) as uint
+            ffi::sfSoundBuffer_getChannelCount(self.soundBuffer) as uint
         }
     }
 
     /*
     * Get the total duration of a sound buffer
+    *
+    * Return the sound duration
     */
     pub fn get_duration(&self) -> time::Time {
-        time::Time::wrap(unsafe {csfml::sfSoundBuffer_getDuration(self.soundBuffer)})
+        Wrappable::wrap(unsafe { ffi::sfSoundBuffer_getDuration(self.soundBuffer) })
     }
 
-    #[doc(hidden)]
-    pub fn wrap(buffer : *csfml::sfSoundBuffer) -> SoundBuffer {
-        SoundBuffer {soundBuffer : buffer}
+    /**
+    * Get the sample rate of a sound buffer
+    *
+    * The sample rate is the number of samples played per second.
+    * The higher, the better the quality (for example, 44100
+    * samples/s is CD quality).
+    *
+    * Return the sample rate (number of samples per second)
+    */
+    pub fn get_sample_rate(&self) -> uint {
+        unsafe {
+            ffi::sfSoundBuffer_getSampleRate(self.soundBuffer) as uint
+        }
+    }
+}
+
+#[doc(hidden)]
+impl Wrappable<*ffi::sfSoundBuffer> for SoundBuffer {
+    pub fn wrap(buffer : *ffi::sfSoundBuffer) -> SoundBuffer {
+        SoundBuffer {
+            soundBuffer : buffer,
+            dropable : false
+        }
     }
 
-    #[doc(hidden)]
-    pub fn unwrap(&self) -> *csfml::sfSoundBuffer {
+    pub fn unwrap(&self) -> *ffi::sfSoundBuffer {
         self.soundBuffer
     }
 
@@ -136,9 +218,11 @@ impl Drop for SoundBuffer {
     /**
     *   Destructor for class SoundBuffer. Destroy all the ressource.
     */
-    fn finalize(&self) {
-        unsafe {
-            csfml::sfSoundBuffer_destroy(self.soundBuffer);
+    fn drop(&self) {
+        if self.dropable {
+            unsafe {
+                ffi::sfSoundBuffer_destroy(self.soundBuffer);
+            }
         }
     }
 }

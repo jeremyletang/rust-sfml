@@ -1,7 +1,7 @@
 /*
-* Rust-SFML - Copyright (c) Letang Jeremy.
+* Rust-SFML - Copyright (c) 2013 Letang Jeremy.
 *
-* The Original software, SFML library, is provided by Laurent Gomila.
+* The original software, SFML library, is provided by Laurent Gomila.
 *
 * This software is provided 'as-is', without any express or implied warranty.
 * In no event will the authors be held liable for any damages arising from
@@ -30,8 +30,9 @@
 */
 
 use std::libc::{c_int};
+
 #[doc(hidden)]
-pub mod csfml {
+pub mod ffi {
     
     use std::libc::{c_int};
     use rsfml::sfTypes::{sfBool};
@@ -46,6 +47,9 @@ pub mod csfml {
     }
 }
 
+/**
+* utility classes for manipulating rectangles of int.
+*/
 pub struct IntRect {
     left : i32,
     top : i32,
@@ -53,6 +57,9 @@ pub struct IntRect {
     height : i32
 }
 
+/**
+* utility classes for manipulating rectangles of float.
+*/
 pub struct FloatRect {
     left : f32,
     top : f32,
@@ -65,21 +72,42 @@ impl IntRect {
     * Construct a new IntRect
     */
     pub fn new(left : i32, top : i32, width : i32, height : i32) -> IntRect {
-        IntRect {left : left, top : top, width : width, height : height}
+        IntRect {
+            left : left, 
+            top : top, 
+            width : width, 
+            height : height
+        }
     }
     
     /**
     *  Check if a point is inside a rectangle's area 
+    *
+    * # Arguments
+    * * x - X coordinate of the point to test
+    * * y - Y coordinate of the point to test
+    * 
+    * Return true if the point is inside
     */
     pub fn contains(self, x : int, y : int) -> bool {
-        match unsafe {csfml::sfIntRect_contains(&self, x as c_int, y as c_int) } {
+        match unsafe { ffi::sfIntRect_contains(&self, x as c_int, y as c_int) } {
             0 => false,
             _ => true
         }
     }
     
+    /**
+    * Check intersection between two rectangles
+    *
+    * # Arguments
+    * * rect1 - First rectangle to test
+    * * rect2 - Second rectangle to test
+    * * intersection - Rectangle to be filled with overlapping rect 
+    *
+    * Return strue if rectangles overlap
+    */
     pub fn intersects(rect1 : &IntRect, rect2 : &IntRect, intersections : &IntRect) -> bool {
-        match unsafe {csfml::sfIntRect_intersects(rect1, rect2, intersections)} {
+        match unsafe { ffi::sfIntRect_intersects(rect1, rect2, intersections) } {
             0 => false,
             _ => true
         }
@@ -91,21 +119,42 @@ impl FloatRect {
     * Construct a new FloatRect
     */
     pub fn new(left : f32, top : f32, width : f32, height : f32) -> FloatRect {
-        FloatRect {left : left, top : top, width : width, height : height}
+        FloatRect {
+            left : left, 
+            top : top, 
+            width : width, 
+            height : height
+        }
     }
     
     /**
     *  Check if a point is inside a rectangle's area 
+    *
+    * # Arguments
+    * * x - X coordinate of the point to test
+    * * y - Y coordinate of the point to test
+    * 
+    * Return true if the point is inside
     */
     pub fn contains(self, x : f32, y : f32) -> bool {
-        match unsafe {csfml::sfFloatRect_contains(&self, x, y) } {
+        match unsafe { ffi::sfFloatRect_contains(&self, x, y) } {
             0 => false,
             _ => true
         }
     }
 
+    /**
+    * Check intersection between two rectangles
+    *
+    * # Arguments
+    * * rect1 - First rectangle to test
+    * * rect2 - Second rectangle to test
+    * * intersection - Rectangle to be filled with overlapping rect 
+    *
+    * Return strue if rectangles overlap
+    */
     pub fn intersects(rect1 : &FloatRect, rect2 : &FloatRect, intersections : &FloatRect) -> bool {
-        match unsafe {csfml::sfFloatRect_intersects(rect1, rect2, intersections)} {
+        match unsafe { ffi::sfFloatRect_intersects(rect1, rect2, intersections) } {
             0 => false,
             _ => true
         }

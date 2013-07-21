@@ -28,10 +28,8 @@
  * Class holding a valid drawing context.
  */
 
-use rsfml::sfTypes::{sfBool};
-
 #[doc(hidden)]
-pub mod csfml {
+pub mod ffi {
 
     use std::libc::{c_void};
     use rsfml::sfTypes::{sfBool};
@@ -49,7 +47,7 @@ pub mod csfml {
 
 #[doc(hidden)]
 pub struct Context {
-    priv cont : *csfml::sfContext
+    priv cont : *ffi::sfContext
 }
 
 impl Context {
@@ -62,7 +60,9 @@ impl Context {
     * Return New Context object
     */
     pub fn new() -> Context {
-        Context{cont : unsafe{csfml::sfContext_create()}}
+        Context{
+            cont : unsafe{ ffi::sfContext_create() }
+        }
     }
 
     /**
@@ -71,14 +71,13 @@ impl Context {
     * # Arguments
     * * active - True to activate, False to deactivate
     */
-    pub fn set_active(&self, active : bool) -> () {
-        let act : sfBool = 
-            match active {
-                true    => 0,
-                _       => 1
-            };
+    pub fn set_active(&mut self, active : bool) -> () {
         unsafe {
-            csfml::sfContext_setActive(self.cont, act);
+            match active {
+                true    => ffi::sfContext_setActive(self.cont, 1),
+                false   => ffi::sfContext_setActive(self.cont, 0)
+            };
+
         }
     }
 
@@ -88,9 +87,9 @@ impl Drop for Context {
     /*
     *   Destructor for class Context.
     */
-    fn finalize(&self) {
+    fn drop(&self) {
         unsafe {
-            csfml::sfContext_destroy(self.cont);
+            ffi::sfContext_destroy(self.cont);
         }
     }
 }

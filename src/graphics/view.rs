@@ -30,16 +30,18 @@
 */
 
 use std::libc::{c_float};
+use std::ptr;
 
-use system::vector2;
+use traits::wrappable::Wrappable;
+use system::vector2::Vector2f;
 use graphics::rect::FloatRect;
 
 #[doc(hidden)]
-pub mod csfml {
+pub mod ffi {
     
     use std::libc::{c_float, c_void};
 
-    use system::vector2;
+    use system::vector2::Vector2f;
     use graphics::rect::FloatRect;
 
     pub struct sfView {
@@ -51,16 +53,16 @@ pub mod csfml {
         fn sfView_createFromRect(rectangle : FloatRect) -> *sfView;
         fn sfView_copy(view : *sfView) -> *sfView;
         fn sfView_destroy(view : *sfView) -> ();
-        fn sfView_setCenter(view : *sfView, center : vector2::Vector2f) -> ();
-        fn sfView_setSize(view : *sfView, size : vector2::Vector2f) -> ();
+        fn sfView_setCenter(view : *sfView, center : Vector2f) -> ();
+        fn sfView_setSize(view : *sfView, size : Vector2f) -> ();
         fn sfView_setRotation(view : *sfView, angle : c_float) -> ();
         fn sfView_setViewport(view : *sfView, viewport : FloatRect) -> ();
         fn sfView_reset(view : *sfView, rectangle : FloatRect) -> ();
-        fn sfView_getCenter(view : *sfView) -> vector2::Vector2f;
-        fn sfView_getSize(view : *sfView) -> vector2::Vector2f;
+        fn sfView_getCenter(view : *sfView) -> Vector2f;
+        fn sfView_getSize(view : *sfView) -> Vector2f;
         fn sfView_getRotation(view : *sfView) -> c_float;
         fn sfView_getViewport(view : *sfView) -> FloatRect;
-        fn sfView_move(view : *sfView, offset : vector2::Vector2f) -> ();
+        fn sfView_move(view : *sfView, offset : Vector2f) -> ();
         fn sfView_rotate(view : *sfView, angle : c_float) -> ();
         fn sfView_zoom(view : *sfView, factor : c_float) -> ();
     }
@@ -69,7 +71,7 @@ pub mod csfml {
 #[doc(hidden)]
 pub struct View {
     priv dropable : bool,
-    priv view : *csfml::sfView
+    priv view : *ffi::sfView
 }
 
 impl View {
@@ -78,22 +80,65 @@ impl View {
     *
     * This function creates a default view of (0, 0, 1000, 1000)
     * 
-    * Return a new View object
+    * Return a new option to View object
     */
-    pub fn new() -> View {
-        View { dropable: true, view : unsafe {csfml::sfView_create()} }
+    pub fn new() -> Option<View> {
+        let view = unsafe { ffi::sfView_create() };
+        if ptr::is_null(view) {
+            None
+        }
+        else {
+            Some(View {
+                dropable: true,
+                view : view
+            })
+        }
+    }
+
+    /**
+    * Create a default view
+    *
+    * This function creates a default view with initialized position and size
+    * 
+    * # Arguments
+    * * center - The center of the view
+    * * size - The size of the view
+    *
+    * Return a new option to View object
+    */
+    pub fn new_init(center : &Vector2f, size : &Vector2f) -> Option<View> {
+        let view = unsafe { ffi::sfView_create() };
+        if ptr::is_null(view) {
+            None
+        }
+        else {
+            unsafe {
+                ffi::sfView_setCenter(view, *center);
+                ffi::sfView_setSize(view, *size);
+            }
+            Some(View {
+                dropable : true,
+                view : view
+            })
+        }
     }
     
     /**
     * Create a view by copying an existant one.
     *
-    * # Arguments
-    * * view - View to copy
-    *
-    * Return a new View object
+    * Return a new option to View object
     */
-    pub fn new_copy(view : &View) -> View {
-        View { dropable: true, view : unsafe {csfml::sfView_copy(view.unwrap())}}
+    pub fn new_copy(&self) -> Option<View> {
+        let view = unsafe { ffi::sfView_copy(self.view) };
+        if ptr::is_null(view) {
+            None
+        }
+        else {
+            Some(View {
+                dropable: true,
+                view : view
+            })
+        }    
     }
 
     /**
@@ -104,8 +149,17 @@ impl View {
     *
     * Return a new View object
     */
-    pub fn create_from_rect(rectangle : *FloatRect) -> View {
-        View { dropable: true, view : unsafe {csfml::sfView_createFromRect(*rectangle)}}
+    pub fn new_from_rect(rectangle : *FloatRect) -> Option<View> {
+        let view = unsafe { ffi::sfView_createFromRect(*rectangle) };
+        if ptr::is_null(view) {
+            None
+        }
+        else {
+            Some(View {
+                dropable: true,
+                view : view
+            })
+        }
     }
 
     /**
@@ -116,9 +170,9 @@ impl View {
     * # Arguments
     * * angle - New angle, in degrees
     */
-    pub fn set_rotation(&self, angle : float) -> () {
+    pub fn set_rotation(&mut self, angle : float) -> () {
         unsafe {
-            csfml::sfView_setRotation(self.view, angle as c_float)
+            ffi::sfView_setRotation(self.view, angle as c_float)
         }
     }
     
@@ -129,7 +183,7 @@ impl View {
     */
     pub fn get_rotation(&self) -> float {
         unsafe {
-            csfml::sfView_getRotation(self.view) as float
+            ffi::sfView_getRotation(self.view) as float
         }
     }
 
@@ -139,9 +193,9 @@ impl View {
     * # Arguments
     * * angle - Angle to rotate, in degrees
     */
-    pub fn rotate(&self, angle : float) -> () {
+    pub fn rotate(&mut self, angle : float) -> () {
         unsafe {
-            csfml::sfView_rotate(self.view, angle as c_float)
+            ffi::sfView_rotate(self.view, angle as c_float)
         }
     }
 
@@ -157,9 +211,9 @@ impl View {
     * # Arguments
     * * factor - Zoom factor to apply
     */
-    pub fn zoom(&self, factor : float) -> () {
+    pub fn zoom(&mut self, factor : float) -> () {
         unsafe {
-            csfml::sfView_zoom(self.view, factor as c_float)
+            ffi::sfView_zoom(self.view, factor as c_float)
         }
     }
 
@@ -169,9 +223,22 @@ impl View {
     * # Arguments
     * * center - New center
     */
-    pub fn set_center(&self, center : &vector2::Vector2f) -> () {
+    pub fn set_center(&mut self, center : &Vector2f) -> () {
         unsafe {
-            csfml::sfView_setCenter(self.view, *center)
+            ffi::sfView_setCenter(self.view, *center)
+        }
+    }
+
+    /**
+    * Set the center of a view
+    *
+    * # Arguments
+    * * centerX - New x center coordinate
+    * * centerY - New y center coordinate
+    */
+    pub fn set_center2f(&mut self, centerX : f32, centerY : f32) -> () {
+        unsafe {
+            ffi::sfView_setCenter(self.view, Vector2f::new(centerX, centerY))
         }
     }
 
@@ -181,9 +248,22 @@ impl View {
     * # Arguments
     * * size - New size of the view
     */
-    pub fn set_size(&self, size : &vector2::Vector2f) -> () {
+    pub fn set_size(&mut self, size : &Vector2f) -> () {
         unsafe {
-            csfml::sfView_setSize(self.view, *size)
+            ffi::sfView_setSize(self.view, *size)
+        }
+    }
+
+    /**
+    * Set the size of a view
+    *
+    * # Arguments
+    * * sizeX - New size x of the view
+    * * sizeY - New size y of the view
+    */
+    pub fn set_size2f(&mut self, sizeX : f32, sizeY : f32) -> () {
+        unsafe {
+            ffi::sfView_setSize(self.view, Vector2f::new(sizeX, sizeY))
         }
     }
 
@@ -193,9 +273,21 @@ impl View {
     * # Arguments
     * * offset - Offset
     */
-    pub fn move(&self, offset : &vector2::Vector2f) -> () {
+    pub fn move(&mut self, offset : &Vector2f) -> () {
         unsafe {
-            csfml::sfView_move(self.view, *offset)
+            ffi::sfView_move(self.view, *offset)
+        }
+    }
+    /**
+    * Move a view relatively to its current position
+    *
+    * # Arguments
+    * * offsetX - Offset x
+    * * offsetY - Offset y
+    */
+    pub fn move2f(&mut self, offsetX : f32, offsetY : f32) -> () {
+        unsafe {
+            ffi::sfView_move(self.view, Vector2f::new(offsetX, offsetY))
         }
     }
 
@@ -204,8 +296,8 @@ impl View {
     *
     * Return the center of the view
     */
-    pub fn get_center(&self) -> vector2::Vector2f {
-        unsafe {csfml::sfView_getCenter(self.view)}
+    pub fn get_center(&self) -> Vector2f {
+        unsafe {ffi::sfView_getCenter(self.view)}
     }
 
     /**
@@ -213,8 +305,10 @@ impl View {
     *
     * Return the size of the view
     */
-    pub fn get_size(&self) -> vector2::Vector2f {
-        unsafe {csfml::sfView_getSize(self.view)}
+    pub fn get_size(&self) -> Vector2f {
+        unsafe {
+            ffi::sfView_getSize(self.view)
+        }
     }
 
     /**
@@ -230,9 +324,9 @@ impl View {
     * # Arguments
     * * viewport - New viewport rectangle
     */
-    pub fn set_viewport(&self, viewport : &FloatRect) -> () {
+    pub fn set_viewport(&mut self, viewport : &FloatRect) -> () {
         unsafe {
-            csfml::sfView_setViewport(self.view, *viewport)
+            ffi::sfView_setViewport(self.view, *viewport)
         }
     }
 
@@ -244,9 +338,9 @@ impl View {
     * # Arguments
     * * rectangle - Rectangle defining the zone to display
     */
-    pub fn reset(&self, rectangle : &FloatRect) -> () {
+    pub fn reset(&mut self, rectangle : &FloatRect) -> () {
         unsafe {
-            csfml::sfView_reset(self.view, *rectangle)
+            ffi::sfView_reset(self.view, *rectangle)
         }
     }
 
@@ -257,29 +351,32 @@ impl View {
     */
     pub fn get_viewport(&self) -> FloatRect {
         unsafe {
-            csfml::sfView_getViewport(self.view)
+            ffi::sfView_getViewport(self.view)
         }
     }
+}
 
-    #[doc(hidden)]
-    pub fn wrap(view : *csfml::sfView) -> View {
-        View { dropable: false, view : view }
+#[doc(hidden)]
+impl Wrappable<*ffi::sfView> for View {
+    pub fn wrap(view : *ffi::sfView) -> View {
+        View { 
+            dropable: false, 
+            view : view
+        }
     } 
 
-    #[doc(hidden)]
-    pub fn unwrap(&self) -> *csfml::sfView {
+    pub fn unwrap(&self) -> *ffi::sfView {
         self.view
     }
-        
 }
 
 impl Drop for View {
     /// Destructor for class View
-    fn finalize(&self) -> () {
+    fn drop(&self) -> () {
       if self.dropable
       {
         unsafe {
-          csfml::sfView_destroy(self.view)
+          ffi::sfView_destroy(self.view)
         }
       }
     }

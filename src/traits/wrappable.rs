@@ -23,23 +23,16 @@
 */
 
 /*!
-* Sounds, streaming (musics or custom sources), recording, spatialization
+* Wrappable trait
 *
+* Implemented by each object who wrapp an SFML object
 *
 */
 
-#[cfg(mac_dylib)]
-#[cfg(target_os="linux")]
-#[cfg(target_os="win32")]
-mod platform {
-    #[link_args="-lcsfml-audio"]
-    extern {}
+/**
+* The trait wrappable is inherited by each object who needs to be wrapp or unwrapp to call to sfml
+*/
+pub trait Wrappable<T> {
+    pub fn wrap(T) -> Self;
+    pub fn unwrap(&self) -> T;
 }
-
-pub mod sound_buffer;
-pub mod listener;
-pub mod sound_status;
-pub mod music;
-pub mod sound;
-pub mod sound_buffer_recorder;
-pub mod sound_recorder;

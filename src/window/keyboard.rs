@@ -139,7 +139,7 @@ pub enum Key {
 }
 
 #[doc(hidden)]
-pub mod csfml {
+pub mod ffi {
     
     pub use std::libc::{c_int};
     use rsfml::sfTypes::{sfBool};
@@ -157,9 +157,9 @@ pub mod csfml {
  *
  * Return true if the key is pressed, false otherwise.
  */
-pub fn keyboard_is_key_pressed(key : Key) -> bool {
+pub fn is_key_pressed(key : Key) -> bool {
     unsafe {
-        match csfml::sfKeyboard_isKeyPressed(key as c_int) {
+        match ffi::sfKeyboard_isKeyPressed(key as c_int) {
             0   => false,
             _   => true
         }

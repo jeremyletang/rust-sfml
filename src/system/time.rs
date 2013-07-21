@@ -1,7 +1,7 @@
 /*
-* Rust-SFML - Copyright (c) Letang Jeremy.
+* Rust-SFML - Copyright (c) 2013 Letang Jeremy.
 *
-* The Original software, SFML library, is provided by Laurent Gomila.
+* The original software, SFML library, is provided by Laurent Gomila.
 *
 * This software is provided 'as-is', without any express or implied warranty.
 * In no event will the authors be held liable for any damages arising from
@@ -31,8 +31,10 @@
 
 pub use std::libc::{c_long, c_float, c_int};
 
+use traits::wrappable::Wrappable;
+
 #[doc(hidden)]
-pub mod csfml {
+pub mod ffi {
     
     pub use std::libc::{c_long, c_float, c_int};
 
@@ -50,9 +52,9 @@ pub mod csfml {
     }
 }
 
-#[doc(hiddden)]
+#[doc(hidden)]
 pub struct Time {
-    priv time : csfml::sfTime
+    priv time : ffi::sfTime
 }
 
 impl Time {
@@ -60,22 +62,28 @@ impl Time {
     /**
     * Construct a time value from a number of seconds
     */
-    pub fn new_with_seconds(seconds : f32) -> Time {
-        Time {time : unsafe {csfml::sfSeconds(seconds as c_float)}}
+    pub fn with_seconds(seconds : f32) -> Time {
+        Time {
+            time : unsafe { ffi::sfSeconds(seconds as c_float) }
+        }
     }
 
     /**
     * Construct a time value from a number of milliseconds
     */
-    pub fn new_with_milliseconds(milliseconds : i32) -> Time {
-        Time {time : unsafe {csfml::sfMilliseconds(milliseconds as c_int)}}
+    pub fn with_milliseconds(milliseconds : i32) -> Time {
+        Time {
+            time : unsafe { ffi::sfMilliseconds(milliseconds as c_int) }
+        }
     }
 
     /**
     * Construct a time value from a number of microseconds
     */
-    pub fn new_with_microseconds(microseconds : i64) -> Time {
-        Time {time : unsafe {csfml::sfMicroseconds(microseconds as c_long)}}
+    pub fn with_microseconds(microseconds : i64) -> Time {
+        Time {
+            time : unsafe { ffi::sfMicroseconds(microseconds as c_long) }
+        }
     }
 
     /**
@@ -83,7 +91,7 @@ impl Time {
     */
     pub fn as_seconds(&self) -> f32 {
         unsafe {
-            csfml::sfTime_asSeconds(self.time)
+            ffi::sfTime_asSeconds(self.time)
         }
     }
 
@@ -92,7 +100,7 @@ impl Time {
     */
     pub fn as_milliseconds(&self) -> i32 {
         unsafe {
-            csfml::sfTime_asMilliseconds(self.time)
+            ffi::sfTime_asMilliseconds(self.time)
         }
     }
     
@@ -101,16 +109,20 @@ impl Time {
     */
     pub fn as_microseconds(&self) -> i64 {
         unsafe {
-            csfml::sfTime_asMicroseconds(self.time)
+            ffi::sfTime_asMicroseconds(self.time)
         }        
     }
+}
 
-    #[doc(hidden)]
-    pub fn wrap(time : csfml::sfTime) -> Time {
-        Time {time : time}
+#[doc(hidden)]
+impl Wrappable<ffi::sfTime> for Time {
+    pub fn wrap(time : ffi::sfTime) -> Time {
+        Time {
+            time : time
+        }
     }
-    #[doc(hidden)]
-    pub fn unwrap(&self) -> csfml::sfTime {
+ 
+    pub fn unwrap(&self) -> ffi::sfTime {
         self.time
     }
 }

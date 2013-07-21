@@ -28,30 +28,30 @@
  * Provides OpenGL-based windows, and abstractions for events and input handling.
  */
 
-use std::libc::{c_uint, c_float};
+use std::libc::{c_uint, c_float, c_int};
 use std::str;
 use std::vec;
 use std::ptr;
 use std::cast;
 
+use traits::wrappable::Wrappable;
 use window::context_settings::ContextSettings;
 use window::video_mode::*;
-use rsfml::sfTypes::{sfBool};
 use window::event;
 use window::keyboard;
-use system::vector2;
+use system::vector2::{Vector2i, Vector2u};
 use window::joystick;
 use window::mouse;
 
 #[doc(hidden)]
-pub mod csfml {
+pub mod ffi {
     
     use std::libc::{c_void, c_uint, c_char, c_float};    
 
-    use rsfml::sfTypes::{sfBool};
+    use rsfml::sfTypes::sfBool;
     use window::context_settings::ContextSettings;
     use window::video_mode::*;    
-    use system::vector2;
+    use system::vector2::{Vector2i, Vector2u};
 
     pub struct sfWindow {
         This : *c_void
@@ -88,8 +88,8 @@ pub mod csfml {
     }
 
     pub extern "C" {
-        fn sfWindow_create(mode : csfml::sfVideoMode, title : *c_char, style : c_uint, settings : *ContextSettings) -> *sfWindow;
-        fn sfWindow_createUnicode(mode : csfml::sfVideoMode, title : *u32, style : c_uint, setting : *ContextSettings) -> *sfWindow;
+        fn sfWindow_create(mode : ffi::sfVideoMode, title : *c_char, style : c_uint, settings : *ContextSettings) -> *sfWindow;
+        fn sfWindow_createUnicode(mode : ffi::sfVideoMode, title : *u32, style : c_uint, setting : *ContextSettings) -> *sfWindow;
         //fn sfWindow_createFromHandle(handle : sfWindowHandle, settings : *sfContextSettings) -> *sfWindow;
         fn sfWindow_close(window : *sfWindow) -> ();
         fn sfWindow_destroy(window : *sfWindow) -> ();
@@ -106,10 +106,10 @@ pub mod csfml {
         fn sfWindow_display(window : *sfWindow) -> ();
         fn sfWindow_setFramerateLimit(window : *sfWindow, limit : c_uint) -> ();
         fn sfWindow_setJoystickThreshold(window : *sfWindow, threshold : c_float) -> ();
-        fn sfWindow_getPosition(window : *sfWindow) -> vector2::Vector2i;
-        fn sfWindow_setPosition(window : *sfWindow, position : vector2::Vector2i) -> ();
-        fn sfWindow_getSize(window : *sfWindow) -> vector2::Vector2u;
-        fn sfWindow_setSize(window : *sfWindow, size : vector2::Vector2u) -> ();
+        fn sfWindow_getPosition(window : *sfWindow) -> Vector2i;
+        fn sfWindow_setPosition(window : *sfWindow, position : Vector2i) -> ();
+        fn sfWindow_getSize(window : *sfWindow) -> Vector2u;
+        fn sfWindow_setSize(window : *sfWindow, size : Vector2u) -> ();
         fn sfWindow_pollEvent(window : *sfWindow, event : *sfEvent) -> sfBool;
         fn sfWindow_waitEvent(window : *sfWindow, event : *sfEvent) -> sfBool;
         //fn sfWindow_getSystemHandle(window : *sfWindow) -> sfWindowHandle;
@@ -118,143 +118,22 @@ pub mod csfml {
 
 /// Enumeration of window creation styles
 pub enum WindowStyle {
-    pub sfNone = 0,
-    pub sfTitlebar = 1,
-    pub sfResize = 2,
-    pub sfClose = 4,
-    pub sfFullscreen = 8,
-    pub sfDefaultStyle = 7
+    sfNone = 0,
+    sfTitlebar = 1,
+    sfResize = 2,
+    sfClose = 4,
+    sfFullscreen = 8,
+    sfDefaultStyle = 7
 }
 
 #[doc(hidden)]
 pub struct Window {
-    priv window : *csfml::sfWindow,
-    priv event : csfml::sfEvent,
+    priv window : *ffi::sfWindow,
+    priv event : ffi::sfEvent,
     priv titleLength : uint
 }
 
 impl Window { 
-    priv fn get_wrapped_event(&self) ->event::Event {
-            match self.event.typeEvent as c_uint {
-            0   => event::Closed,
-            1   => event::Resized{width : self.event.p1 as int, height : self.event.p2 as int},
-            2   => event::LostFocus,
-            3   => event::GainedFocus,
-            4   => event::TextEntered{code : self.event.p1 as char},
-            5   => {
-                let al : bool = match self.event.p2 {
-                    0 => false,
-                    _ => true
-                };
-                let ct : bool = match self.event.p3 as int{
-                    0 => false,
-                    _ => true
-                };
-                let sh : bool = match self.event.p4  {
-                    0 => false,
-                    _ => true
-                };
-                let sy : bool = match self.event.p5 {
-                    0 => false,
-                    _ => true
-                };
-                let k : keyboard::Key = unsafe {cast::transmute(self.event.p1 as int)};
-                event::KeyPressed{code : k, alt : al, ctrl : ct, shift :sh, system : sy}
-            },
-            6   => {
-                let al : bool = match self.event.p2 {
-                    0 => false,
-                    _ => true
-                };
-                let ct : bool = match self.event.p3 as int{
-                    0 => false,
-                    _ => true
-                };
-                let sh : bool = match self.event.p4  {
-                    0 => false,
-                    _ => true
-                };
-                let sy : bool = match self.event.p5 {
-                    0 => false,
-                    _ => true
-                };
-                let k : keyboard::Key = unsafe {cast::transmute(self.event.p1 as int)};
-                event::KeyReleased{code : k, alt : al, ctrl : ct, shift :sh, system : sy}
-            },
-            7   => event::MouseWheelMoved{delta : self.event.p1 as int, x : self.event.p2 as int, y : self.event.p3 as int},
-            8   => {
-                let button : mouse::MouseButton = unsafe {cast::transmute(self.event.p1 as int)};
-                event::MouseButtonPressed{button : button, x : self.event.p2 as int, y : self.event.p3 as int}
-            },
-            9   => {
-                let button : mouse::MouseButton = unsafe {cast::transmute(self.event.p1 as int)};
-                event::MouseButtonReleased{button : button, x : self.event.p2 as int, y : self.event.p3 as int}
-            },
-            10  => event::MouseMoved{x : self.event.p1 as int, y : self.event.p2 as int},
-            11  => event::MouseEntered,
-            12  => event::MouseLeft,
-            13  => event::JoystickButtonPressed{joystickid : self.event.p1 as int, button : self.event.p2 as int},
-            14  => event::JoystickButtonReleased{joystickid : self.event.p1 as int, button : self.event.p2 as int},
-            15  => {
-                let ax : joystick::Axis = unsafe {cast::transmute(self.event.p2 as int)};
-                event::JoystickMoved{joystickid : self.event.p1 as uint, axis : ax, position : self.event.p3 as float}
-            },
-            16  => event::JoystickConnected{joystickid : self.event.p1 as uint},
-            17  => event::JoystickDisconnected{joystickid : self.event.p1 as uint},
-            _ => event::NoEvent
-        }
-    }
-
-    /**
-    *  Pop the event on top of event queue, if any, and return it
-    *
-    * This function is not blocking: if there's no pending event then
-    * it will return false and leave \a event unmodified.
-    * Note that more than one event may be present in the event queue,
-    * thus you should always call this function in a loop
-    * to make sure that you process every pending event.
-    *
-    * Return the event if an event was returned, or NoEvent if the event queue was empty
-    */
-    pub fn poll_event(&self) -> event::Event {
-        let haveEvent : bool =  unsafe {
-            match csfml::sfWindow_pollEvent(self.window, &self.event) {
-                0       => false,
-                _       => true
-            }
-        };
-        if haveEvent == false {
-            return event::NoEvent;
-        }
-        self.get_wrapped_event()
-    }
-
-    /**
-    * Wait for an event and return it
-    *
-    * This function is blocking: if there's no pending event then
-    * it will wait until an event is received.
-    * After this function returns (and no error occured),
-    * the event object is always valid and filled properly.
-    * This function is typically used when you have a thread that
-    * is dedicated to events handling: you want to make this thread
-    * sleep as long as no new event is received.
-    *
-    * Return the event or NoEvent if an error has occured
-    */
-    pub fn wait_event(&self) -> event::Event {
-        let haveEvent : bool =  unsafe {
-            match csfml::sfWindow_waitEvent(self.window, &self.event) {
-                0       => false,
-                _       => true
-            }
-        };
-        if haveEvent == false {
-            return event::NoEvent;
-        }
-        self.get_wrapped_event()
-    }
-    
     /**
     * Construct a new window
     *
@@ -277,16 +156,29 @@ impl Window {
     * Return a new Window object
     */
     pub fn new(mode : VideoMode, title : ~str, style : WindowStyle, settings : &ContextSettings) -> Option<Window> {
-        let mut sfWin: *csfml::sfWindow = ptr::null();
+        let mut sfWin: *ffi::sfWindow = ptr::null();
         do str::as_c_str(title) |title_buf| {
-            unsafe { sfWin = csfml::sfWindow_create(VideoMode::unwrap(mode), title_buf, style as u32, settings); }
+            unsafe {
+                sfWin = ffi::sfWindow_create(mode.unwrap(), title_buf, style as u32, settings); 
+            }
         };
-        let sfEv : csfml::sfEvent = csfml::sfEvent {typeEvent : 0, p1 : 0, p2 : 0, p3 : 0 as c_float, p4 : 0, p5 : 0};//{0, 0, 0, 0 as float, 0, 0};
-        if sfWin == ptr::null() {
+        let sfEv = ffi::sfEvent {
+            typeEvent : 0,
+            p1 : 0,
+            p2 : 0,
+            p3 : 0 as c_float,
+            p4 : 0,
+            p5 : 0
+        };
+        if ptr::is_null(sfWin) {
             None
         }
         else {
-        Some (Window { window : sfWin, event : sfEv, titleLength : title.len()})
+            Some (Window {
+                window : sfWin, 
+                event : sfEv, 
+                titleLength : title.len()
+            })
         }
     }
 
@@ -312,15 +204,204 @@ impl Window {
     * Return a new Window object
     */
     pub fn new_with_unicode(mode : VideoMode, title : ~[u32], style : WindowStyle, settings : &ContextSettings) -> Option<Window> {
-        let sfWin: *csfml::sfWindow;
-        unsafe { sfWin = csfml::sfWindow_createUnicode(VideoMode::unwrap(mode), vec::raw::to_ptr(title), style as u32, settings); }
-        let sfEv : csfml::sfEvent = csfml::sfEvent {typeEvent : 0, p1 : 0, p2 : 0, p3 : 0 as c_float, p4 : 0, p5 : 0};//{0, 0, 0, 0 as float, 0, 0};
-        if sfWin == ptr::null() {
+        let sfWin = unsafe { ffi::sfWindow_createUnicode(mode.unwrap(), vec::raw::to_ptr(title), style as u32, settings) };
+        let sfEv = ffi::sfEvent {
+            typeEvent : 0,
+            p1 : 0, 
+            p2 : 0, 
+            p3 : 0 as c_float, 
+            p4 : 0, 
+            p5 : 0
+        };
+        if ptr::is_null(sfWin) {
             None
         }
         else {
-        Some (Window { window : sfWin, event : sfEv, titleLength : title.len()})
+            Some (Window {
+                window : sfWin,
+                event : sfEv,
+                titleLength : title.len()
+            })
         }
+    }
+
+    priv fn get_wrapped_event(&self) ->event::Event {
+            match self.event.typeEvent as c_uint {
+                0   => event::Closed,
+                1   => {
+                    event::Resized{
+                        width : self.event.p1 as int,
+                        height : self.event.p2 as int
+                    }
+                },
+                2   => event::LostFocus,
+                3   => event::GainedFocus,
+                4   => {
+                    event::TextEntered{
+                        code : self.event.p1 as char
+                    }
+                },
+                5   => {
+                    let al : bool = match self.event.p2 {
+                        0 => false,
+                        _ => true
+                    };
+                    let ct : bool = match self.event.p3 as int{
+                        0 => false,
+                        _ => true
+                    };
+                    let sh : bool = match self.event.p4  {
+                        0 => false,
+                        _ => true
+                    };
+                    let sy : bool = match self.event.p5 {
+                        0 => false,
+                        _ => true
+                    };
+                    let k : keyboard::Key = unsafe { cast::transmute(self.event.p1 as int) };
+                    event::KeyPressed{
+                        code : k,
+                        alt : al,
+                        ctrl : ct,
+                        shift :sh,
+                        system : sy
+                    }
+                },
+                6   => {
+                    let al : bool = match self.event.p2 {
+                        0 => false,
+                        _ => true
+                    };
+                    let ct : bool = match self.event.p3 as int{
+                        0 => false,
+                        _ => true
+                    };
+                    let sh : bool = match self.event.p4  {
+                        0 => false,
+                        _ => true
+                    };
+                    let sy : bool = match self.event.p5 {
+                        0 => false,
+                        _ => true
+                    };
+                    let k : keyboard::Key = unsafe { cast::transmute(self.event.p1 as int) };
+                    event::KeyReleased{
+                        code : k,
+                        alt : al, 
+                        ctrl : ct,
+                        shift :sh,
+                        system : sy
+                    }
+                },
+                7   =>  event::MouseWheelMoved{
+                    delta : unsafe { cast::transmute::<c_uint, c_int>(self.event.p1) }  as int,
+                    x :     unsafe { cast::transmute::<c_uint, c_int>(self.event.p2) }  as int,
+                    y :     unsafe { cast::transmute::<c_float, c_int>(self.event.p3) } as int
+                },
+                8   => {
+                    let button : mouse::MouseButton = unsafe {cast::transmute(self.event.p1 as int)};
+                    event::MouseButtonPressed{
+                        button : button,
+                        x :      unsafe { cast::transmute::<c_uint, c_int>(self.event.p2) as int },
+                        y :      unsafe { cast::transmute::<c_float, c_int>(self.event.p3) as int }
+                    }
+                },
+                9   => {
+                    let button : mouse::MouseButton = unsafe {cast::transmute(self.event.p1 as int)};
+                    event::MouseButtonReleased{
+                        button : button,
+                        x :      unsafe { cast::transmute::<c_uint, c_int>(self.event.p2) as int },
+                        y :      unsafe { cast::transmute::<c_float, c_int>(self.event.p3) as int }
+                    }
+                },
+                10  => event::MouseMoved{
+                    x : unsafe { cast::transmute::<c_uint, c_int>(self.event.p1) } as int,
+                    y : unsafe { cast::transmute::<c_uint, c_int>(self.event.p2) } as int
+                },
+                11  => event::MouseEntered,
+                12  => event::MouseLeft,
+                13  => {
+                    event::JoystickButtonPressed{
+                        joystickid : self.event.p1 as int,
+                        button : self.event.p2 as int
+                    }
+                },
+                14  => {
+                    event::JoystickButtonReleased{
+                        joystickid : self.event.p1 as int,
+                        button : self.event.p2 as int
+                    }
+                },
+                15  => {
+                    let ax : joystick::Axis = unsafe {cast::transmute(self.event.p2 as int)};
+                    event::JoystickMoved{
+                        joystickid : self.event.p1 as uint,
+                        axis : ax,
+                        position : self.event.p3 as float
+                    }
+                },
+                16  => {
+                    event::JoystickConnected{
+                        joystickid : self.event.p1 as uint
+                    }
+                },
+                17  => {
+                    event::JoystickDisconnected{
+                        joystickid : self.event.p1 as uint
+                    }
+                },
+                _ => event::NoEvent
+        }
+    }
+
+    /**
+    *  Pop the event on top of event queue, if any, and return it
+    *
+    * This function is not blocking: if there's no pending event then
+    * it will return false and leave \a event unmodified.
+    * Note that more than one event may be present in the event queue,
+    * thus you should always call this function in a loop
+    * to make sure that you process every pending event.
+    *
+    * Return the event if an event was returned, or NoEvent if the event queue was empty
+    */
+    pub fn poll_event(&mut self) -> event::Event {
+        let haveEvent : bool =  unsafe {
+            match ffi::sfWindow_pollEvent(self.window, &self.event) {
+                0       => false,
+                _       => true
+            }
+        };
+        if haveEvent == false {
+            return event::NoEvent;
+        }
+        self.get_wrapped_event()
+    }
+
+    /**
+    * Wait for an event and return it
+    *
+    * This function is blocking: if there's no pending event then
+    * it will wait until an event is received.
+    * After this function returns (and no error occured),
+    * the event object is always valid and filled properly.
+    * This function is typically used when you have a thread that
+    * is dedicated to events handling: you want to make this thread
+    * sleep as long as no new event is received.
+    *
+    * Return the event or NoEvent if an error has occured
+    */
+    pub fn wait_event(&mut self) -> event::Event {
+        let haveEvent : bool =  unsafe {
+            match ffi::sfWindow_waitEvent(self.window, &self.event) {
+                0       => false,
+                _       => true
+            }
+        };
+        if haveEvent == false {
+            return event::NoEvent;
+        }
+        self.get_wrapped_event()
     }
 
     /**
@@ -329,9 +410,9 @@ impl Window {
     * # Arguments
     * * title - New title
     */
-    pub fn set_unicode_title(&self, title : ~[u32]) -> () {
+    pub fn set_unicode_title(&mut self, title : ~[u32]) -> () {
         unsafe {
-            csfml::sfWindow_setUnicodeTitle(self.window, vec::raw::to_ptr(title))
+            ffi::sfWindow_setUnicodeTitle(self.window, vec::raw::to_ptr(title))
         }
     }
     /**
@@ -343,9 +424,9 @@ impl Window {
     * * height - Icon's height, in pixels
     * * pixels - Vector of pixels
     */
-    pub fn set_icon(&self, width : uint, height : uint, pixels : ~[u8]) -> () {
+    pub fn set_icon(&mut self, width : uint, height : uint, pixels : ~[u8]) -> () {
         unsafe {
-            csfml::sfWindow_setIcon(self.window, width as c_uint, height as c_uint, vec::raw::to_ptr(pixels))
+            ffi::sfWindow_setIcon(self.window, width as c_uint, height as c_uint, vec::raw::to_ptr(pixels))
         }
     }
     
@@ -358,9 +439,9 @@ impl Window {
     * will still work (i.e. you don't have to test is_open
     * every time), and will have no effect on closed windows.
     */
-    pub fn close(&self) -> () {
+    pub fn close(&mut self) -> () {
         unsafe {
-            csfml::sfWindow_close(self.window);
+            ffi::sfWindow_close(self.window);
         }
     }
 
@@ -372,10 +453,7 @@ impl Window {
     * true.
     */
     pub fn is_open(&self) -> bool {
-        let tmp : sfBool;
-        unsafe {
-            tmp = csfml::sfWindow_isOpen(self.window);
-        }
+        let tmp = unsafe { ffi::sfWindow_isOpen(self.window) };
         match tmp {
             0 => false,
             _ => true
@@ -393,7 +471,7 @@ impl Window {
     * Return a structure containing the OpenGL context settings
     */
     pub fn get_settings(&self) -> ContextSettings {
-        unsafe {csfml::sfWindow_getSettings(self.window)}
+        unsafe {ffi::sfWindow_getSettings(self.window)}
     }
 
     /**
@@ -402,10 +480,10 @@ impl Window {
     * # Arguments
     * * title - New title
     */
-    pub fn set_title(&self, title : ~str) -> () {
+    pub fn set_title(&mut self, title : ~str) -> () {
         do str::as_c_str(title) |title_buf| {
             unsafe {
-                csfml::sfWindow_setTitle(self.window, title_buf);
+                ffi::sfWindow_setTitle(self.window, title_buf);
             }
         }
     }
@@ -416,14 +494,12 @@ impl Window {
     * # Arguments
     * * visible - true to show the window, false to hide it
     */
-    pub fn set_visible(&self, visible : bool) -> () {
-        let tmp : sfBool = 
-            match visible {
-                true    => 1,
-                _       => 0
-            };
+    pub fn set_visible(&mut self, visible : bool) -> () {
         unsafe {
-            csfml::sfWindow_setVisible(self.window, tmp);
+            match visible {
+                true    => ffi::sfWindow_setVisible(self.window, 1),
+                false   => ffi::sfWindow_setVisible(self.window, 0)
+            }
         }
     }
     
@@ -433,14 +509,12 @@ impl Window {
     * # Arguments
     * * visible - true to show, false to hide
     */
-    pub fn set_mouse_cursor_visible(&self, visible : bool) -> () {
-        let tmp : sfBool = 
+    pub fn set_mouse_cursor_visible(&mut self, visible : bool) -> () {
+        unsafe { 
             match visible {
-                true    => 1,
-                _       => 0
-            };
-        unsafe {
-            csfml::sfWindow_setMouseCursorVisible(self.window, tmp);
+                true    => ffi::sfWindow_setMouseCursorVisible(self.window, 1),
+                false   => ffi::sfWindow_setMouseCursorVisible(self.window, 0)
+            }
         }
     }
     
@@ -455,14 +529,12 @@ impl Window {
     * # Arguments
     * * enabled - true to enable v-sync, false to deactivate
     */
-    pub fn set_vertical_sync_enabled(&self, enabled : bool) -> () {
-        let tmp : sfBool = 
-            match enabled {
-                true    => 1,
-                _       => 0
-            };
+    pub fn set_vertical_sync_enabled(&mut self, enabled : bool) -> () {
         unsafe {
-            csfml::sfWindow_setVerticalSyncEnabled(self.window, tmp);
+            match enabled {
+                true    => ffi::sfWindow_setVerticalSyncEnabled(self.window, 1),
+                false   => ffi::sfWindow_setVerticalSyncEnabled(self.window, 0)
+            }
         }
     }
     
@@ -478,14 +550,12 @@ impl Window {
     * # Arguments
     * * enabled - true to enable, false to disable
     */
-    pub fn set_key_repeat_enabled(&self, enabled : bool) -> () {
-        let tmp : sfBool = 
-            match enabled {
-                true    => 1,
-                _       => 0
-            };
+    pub fn set_key_repeat_enabled(&mut self, enabled : bool) -> () {
         unsafe {
-            csfml::sfWindow_setKeyRepeatEnabled(self.window, tmp);
+            match enabled {
+                true    => ffi::sfWindow_setKeyRepeatEnabled(self.window, 1),
+                false   => ffi::sfWindow_setKeyRepeatEnabled(self.window, 0)
+            }
         }
     }
     
@@ -503,16 +573,12 @@ impl Window {
     *
     * Return true if operation was successful, false otherwise
     */
-    pub fn set_active(&self, enabled : bool) -> bool {
-        let tmp : sfBool = 
-            match enabled {
-                true    => 1,
-                _       => 0
-            };
-        let res : sfBool = unsafe {
-            csfml::sfWindow_setActive(self.window, tmp)
-        };
-        match res {
+    pub fn set_active(&mut self, enabled : bool) -> bool {
+        let tmp = unsafe { match enabled {
+            true    => ffi::sfWindow_setActive(self.window, 1),
+            _       => ffi::sfWindow_setActive(self.window, 0)
+        }};
+        match tmp {
             1   => true,
             _   => false
         }
@@ -525,9 +591,9 @@ impl Window {
     * has been done for the current frame, in order to show
     * it on screen.
     */
-    pub fn display(&self) -> () {
+    pub fn display(&mut self) -> () {
         unsafe {
-            csfml::sfWindow_display(self.window)
+            ffi::sfWindow_display(self.window)
         }
     }
 
@@ -541,9 +607,9 @@ impl Window {
     * # Arguments
     * * limit - Framerate limit, in frames per seconds (use 0 to disable limit)
     */
-    pub fn set_framerate_limit(&self, limit : uint) -> () {
+    pub fn set_framerate_limit(&mut self, limit : uint) -> () {
         unsafe {
-            csfml::sfWindow_setFramerateLimit(self.window, limit as c_uint)
+            ffi::sfWindow_setFramerateLimit(self.window, limit as c_uint)
         }
     }
 
@@ -556,9 +622,9 @@ impl Window {
     * # Arguments
     * * threshold - New threshold, in the range [0, 100]
     */
-    pub fn set_joystick_threshold(&self, threshold : float) -> () {
+    pub fn set_joystick_threshold(&mut self, threshold : float) -> () {
         unsafe {
-            csfml::sfWindow_setJoystickThreshold(self.window, threshold as c_float)
+            ffi::sfWindow_setJoystickThreshold(self.window, threshold as c_float)
         }
     }
     
@@ -567,9 +633,9 @@ impl Window {
     *
     * Return the position in pixels
     */
-    pub fn get_position(&self) -> vector2::Vector2i {
+    pub fn get_position(&self) -> Vector2i {
         unsafe {
-            csfml::sfWindow_getPosition(self.window)
+            ffi::sfWindow_getPosition(self.window)
         }
     }
     
@@ -583,9 +649,9 @@ impl Window {
     * # Arguments
     * * position - New position of the window, in pixels
     */
-    pub fn set_position(&self, position : &vector2::Vector2i) -> () {
+    pub fn set_position(&mut self, position : &Vector2i) -> () {
         unsafe {
-            csfml::sfWindow_setPosition(self.window, *position)
+            ffi::sfWindow_setPosition(self.window, *position)
         }
     }
     
@@ -596,9 +662,9 @@ impl Window {
     *
     * Return the size in pixels
     */
-    pub fn get_size(&self) -> vector2::Vector2u {
+    pub fn get_size(&self) -> Vector2u {
         unsafe {
-            csfml::sfWindow_getSize(self.window)
+            ffi::sfWindow_getSize(self.window)
         }
     }
  
@@ -608,14 +674,14 @@ impl Window {
     * # Arguments
     * * size - New size, in pixels
     */
-    pub fn set_size(&self, size : &vector2::Vector2u) -> () {
+    pub fn set_size(&mut self, size : &Vector2u) -> () {
         unsafe {
-            csfml::sfWindow_setSize(self.window, *size)
+            ffi::sfWindow_setSize(self.window, *size)
         }
     }
 
     #[doc(hidden)]
-    pub fn unwrap(&self) -> *csfml::sfWindow {
+    pub fn unwrap(&self) -> *ffi::sfWindow {
         self.window
     }
 }
@@ -624,9 +690,9 @@ impl Drop for Window {
     /**
     *   Destructor for class Window. Destroy all the ressource.
     */
-    fn finalize(&self) {
+    fn drop(&self) {
         unsafe {
-            csfml::sfWindow_destroy(self.window);
+            ffi::sfWindow_destroy(self.window);
         }
     }
 }

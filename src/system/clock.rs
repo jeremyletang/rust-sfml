@@ -1,7 +1,7 @@
 /*
-* Rust-SFML - Copyright (c) Letang Jeremy.
+* Rust-SFML - Copyright (c) 2013 Letang Jeremy.
 *
-* The Original software, SFML library, is provided by Laurent Gomila.
+* The original software, SFML library, is provided by Laurent Gomila.
 *
 * This software is provided 'as-is', without any express or implied warranty.
 * In no event will the authors be held liable for any damages arising from
@@ -29,10 +29,11 @@
 *
 */
 
-use system::time;
+use traits::wrappable::Wrappable;
+use system::time::Time;
 
 #[doc(hidden)]
-pub mod csfml {
+pub mod ffi {
     
     use std::libc::{c_void};
     use system::time::*;
@@ -43,16 +44,17 @@ pub mod csfml {
 
     pub extern "C" {
         fn sfClock_create() -> *sfClock;
+        fn sfClock_copy(clock : *sfClock) -> *sfClock;
         fn sfClock_destroy(clock : *sfClock) -> ();
-        fn sfClock_getElapsedTime(clock : *sfClock) -> csfml::sfTime;
-        fn sfClock_restart(clock : *sfClock) -> csfml::sfTime;
+        fn sfClock_getElapsedTime(clock : *sfClock) -> ffi::sfTime;
+        fn sfClock_restart(clock : *sfClock) -> ffi::sfTime;
     }
 }
 
 
 #[doc(hidden)]
 pub struct Clock {
-    priv clock : *csfml::sfClock
+    priv clock : *ffi::sfClock
 }
 
 impl Clock {
@@ -61,36 +63,52 @@ impl Clock {
     * Create a new Clock and start it.
     */
     pub fn new() -> Clock {
-        Clock {clock : unsafe {csfml::sfClock_create()}}
+        Clock {
+            clock : unsafe { ffi::sfClock_create() }
+        }
+    }
+
+    /**
+    * Create a clock by copying an extant one
+    * 
+    */
+    pub fn clone(&self) -> Clock {
+        Clock {
+            clock : unsafe { ffi::sfClock_copy(self.clock) } 
+        }
     }
 
     /**
     * Get the time elapsed in a clock
     */
-    pub fn get_elapsed_time(&self) -> time::Time {
+    pub fn get_elapsed_time(&self) -> Time {
         unsafe {
-            time::Time::wrap(csfml::sfClock_getElapsedTime(self.clock))
+            Wrappable::wrap(ffi::sfClock_getElapsedTime(self.clock))
         }
     }
 
     /**
     * Restart a Clock.
     */
-    pub fn restart(&self) -> time::Time {
+    pub fn restart(&mut self) -> Time {
         unsafe {
-            time::Time::wrap(csfml::sfClock_restart(self.clock))
+            Wrappable::wrap(ffi::sfClock_restart(self.clock))
         }
+    }
+
+    fn unwrap(&self) -> *ffi::sfClock {
+        self.clock
     }
 }
 
 impl Drop for Clock {
     
     /**
-    * Create a new Clock and start it.
+    * Destroy a clock
     */
-    fn finalize(&self) {
+    fn drop(&self) {
         unsafe {
-            csfml::sfClock_destroy(self.clock)
+            ffi::sfClock_destroy(self.clock)
         }
     }
 }

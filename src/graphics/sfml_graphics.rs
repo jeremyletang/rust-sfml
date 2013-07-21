@@ -1,7 +1,7 @@
 /*
-* Rust-SFML - Copyright (c) Letang Jeremy.
+* Rust-SFML - Copyright (c) 2013 Letang Jeremy.
 *
-* The Original software, SFML library, is provided by Laurent Gomila.
+* The original software, SFML library, is provided by Laurent Gomila.
 *
 * This software is provided 'as-is', without any express or implied warranty.
 * In no event will the authors be held liable for any damages arising from
@@ -43,7 +43,7 @@ pub mod rect;
 pub mod texture;
 pub mod blend_mode;
 pub mod transform;
-pub mod drawable;
+//pub mod drawable;
 pub mod text;
 pub mod shader;
 pub mod color;
@@ -60,3 +60,4 @@ pub mod vertex_array;
 pub mod transformable;
 pub mod glyph;
 pub mod render_texture;
+//pub mod shape;

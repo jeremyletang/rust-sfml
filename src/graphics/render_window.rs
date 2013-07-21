@@ -36,47 +36,48 @@ use std::ptr;
 use std::cast;
 use std::vec;
 
+use traits::drawable::Drawable;
+use traits::wrappable::Wrappable;
 use rsfml::sfTypes::{sfBool};
 use window::video_mode::*;
 use window::context_settings::ContextSettings;
 use window::event;
 use window::keyboard;
-use system::vector2;
+use system::vector2::{Vector2f, Vector2i, Vector2u};
 use window::joystick;
 use window::mouse;
 use graphics::text::Text;
-use graphics::drawable;
-use graphics::color;
+use graphics::color::Color;
 use graphics::sprite::Sprite;
 use graphics::circle_shape::CircleShape;
 use graphics::rectangle_shape::RectangleShape;
 use graphics::convex_shape::ConvexShape;
 //use graphics::transform;
-//use graphics::render_states;
-use graphics::view;
-use graphics::image;
+use graphics::render_states::RenderStates;
+use graphics::view::View;
+use graphics::image::Image;
 use graphics::rect::IntRect;
 use graphics::vertex_array::VertexArray;
 
 #[doc(hidden)]
-pub mod csfml {
+pub mod ffi {
     
     use std::libc::{c_uint, c_float, c_void, c_char};
-    use system::vector2;
+    use system::vector2::{Vector2f, Vector2i, Vector2u};
     use rsfml::sfTypes::{sfBool};
     use window::video_mode::*;
     use window::context_settings::ContextSettings;
-    use graphics::text::csfml::sfText;
+    use graphics::text::ffi::sfText;
     use graphics::render_states;
-    use graphics::color;
-    use graphics::sprite::csfml::sfSprite;
-    use graphics::circle_shape::csfml::sfCircleShape;
-    use graphics::rectangle_shape::csfml::sfRectangleShape;
-    use graphics::convex_shape::csfml::sfConvexShape;
-    use graphics::view::csfml::sfView;
-    use graphics::image::csfml::sfImage;
+    use graphics::color::Color;
+    use graphics::sprite::ffi::sfSprite;
+    use graphics::circle_shape::ffi::sfCircleShape;
+    use graphics::rectangle_shape::ffi::sfRectangleShape;
+    use graphics::convex_shape::ffi::sfConvexShape;
+    use graphics::view::ffi::sfView;
+    use graphics::image::ffi::sfImage;
     use graphics::rect::IntRect;
-    use graphics::vertex_array::csfml::sfVertexArray;
+    use graphics::vertex_array::ffi::sfVertexArray;
 
     pub struct sfRenderWindow {
         This : *c_void,
@@ -94,8 +95,8 @@ pub mod csfml {
     }
 
     pub extern "C" {
-        fn sfRenderWindow_create(mode : csfml::sfVideoMode, title : *c_char, style : c_uint, settings : *ContextSettings) -> *sfRenderWindow;
-        fn sfRenderWindow_createUnicode(mode : csfml::sfVideoMode, title : *u32, style : c_uint, settings : *ContextSettings) -> *sfRenderWindow;
+        fn sfRenderWindow_create(mode : ffi::sfVideoMode, title : *c_char, style : c_uint, settings : *ContextSettings) -> *sfRenderWindow;
+        fn sfRenderWindow_createUnicode(mode : ffi::sfVideoMode, title : *u32, style : c_uint, settings : *ContextSettings) -> *sfRenderWindow;
         //fn sfRenderWindow_createFromHandle(handle : sfWindowHandle, settings : *sfContextSettings) -> *sfRenderWindow;
         fn sfRenderWindow_destroy(renderWindow : *sfRenderWindow) -> ();
         fn sfRenderWindow_close(renderWindow : *sfRenderWindow) -> ();
@@ -103,10 +104,10 @@ pub mod csfml {
         fn sfRenderWindow_getSettings(renderWindow : *sfRenderWindow) -> ContextSettings;
         fn sfRenderWindow_pollEvent(renderWindow : *sfRenderWindow, event : *sfEvent) -> sfBool;
         fn sfRenderWindow_waitEvent(renderWindow : *sfRenderWindow, event : *sfEvent) -> sfBool;
-        fn sfRenderWindow_getPosition(renderWindow : *sfRenderWindow) -> vector2::Vector2i;
-        fn sfRenderWindow_setPosition(renderWindow : *sfRenderWindow, position : vector2::Vector2i) -> ();
-        fn sfRenderWindow_getSize(renderWindow : *sfRenderWindow) -> vector2::Vector2u;
-        fn sfRenderWindow_setSize(renderWindow : *sfRenderWindow, size : vector2::Vector2u) -> ();
+        fn sfRenderWindow_getPosition(renderWindow : *sfRenderWindow) -> Vector2i;
+        fn sfRenderWindow_setPosition(renderWindow : *sfRenderWindow, position : Vector2i) -> ();
+        fn sfRenderWindow_getSize(renderWindow : *sfRenderWindow) -> Vector2u;
+        fn sfRenderWindow_setSize(renderWindow : *sfRenderWindow, size : Vector2u) -> ();
         fn sfRenderWindow_setTitle(renderWindow : *sfRenderWindow, title : *c_char) -> ();
         fn sfRenderWindow_setUnicodeTitle(renderWindow : *sfRenderWindow, title : *u32) -> ();
         fn sfRenderWindow_setIcon(renderWindow : *sfRenderWindow, width : c_uint, height : c_uint, pixels : *u8) -> ();
@@ -119,27 +120,27 @@ pub mod csfml {
         fn sfRenderWindow_setFramerateLimit(renderWindow : *sfRenderWindow, limit : c_uint) -> ();
         fn sfRenderWindow_setJoystickThreshold(renderWindow : *sfRenderWindow, treshold : c_float) -> ();
         // fn sfRenderWindow_getSystemHandle(renderWindow : *sfRenderWindow) -> sfWindowHandle;
-        fn sfRenderWindow_clear(renderWindow : *sfRenderWindow, color : color::Color) -> ();
+        fn sfRenderWindow_clear(renderWindow : *sfRenderWindow, color : Color) -> ();
         fn sfRenderWindow_setView(renderWindow : *sfRenderWindow, view : *sfView) -> ();
         fn sfRenderWindow_getView(renderWindow : *sfRenderWindow) -> *sfView;
         fn sfRenderWindow_getDefaultView(renderWindow : *sfRenderWindow) -> *sfView;
         fn sfRenderWindow_getViewport(renderWindow : *sfRenderWindow, view : *sfView) -> IntRect;
-        fn sfRenderWindow_mapPixelToCoords(renderWindow : *sfRenderWindow, point : vector2::Vector2i, view : *sfView) -> vector2::Vector2f;
-        fn sfRenderWindow_mapCoordsToPixel(renderWindow : *sfRenderWindow, point : vector2::Vector2f, view : *sfView) -> vector2::Vector2i;
-        fn sfRenderWindow_drawSprite(renderWindow : *sfRenderWindow, object : *sfSprite, states : *render_states::csfml::sfRenderStates) -> ();
-        fn sfRenderWindow_drawText(renderWindow : *sfRenderWindow, object : *sfText, states : *render_states::csfml::sfRenderStates) -> ();
+        fn sfRenderWindow_mapPixelToCoords(renderWindow : *sfRenderWindow, point : Vector2i, view : *sfView) -> Vector2f;
+        fn sfRenderWindow_mapCoordsToPixel(renderWindow : *sfRenderWindow, point : Vector2f, view : *sfView) -> Vector2i;
+        fn sfRenderWindow_drawSprite(renderWindow : *sfRenderWindow, object : *sfSprite, states : *render_states::ffi::sfRenderStates) -> ();
+        fn sfRenderWindow_drawText(renderWindow : *sfRenderWindow, object : *sfText, states : *render_states::ffi::sfRenderStates) -> ();
         // fn sfRenderWindow_drawShape(renderWindow : *sfRenderWindow, object : *sfShape, states : *sfRenderStates) -> ();
-        fn sfRenderWindow_drawCircleShape(renderWindow : *sfRenderWindow, object : *sfCircleShape, states : *render_states::csfml::sfRenderStates) -> ();
-        fn sfRenderWindow_drawConvexShape(renderWindow : *sfRenderWindow, object : *sfConvexShape, states : *render_states::csfml::sfRenderStates) -> ();
-        fn sfRenderWindow_drawRectangleShape(renderWindow : *sfRenderWindow, object : *sfRectangleShape, states : *render_states::csfml::sfRenderStates) -> ();
-        fn sfRenderWindow_drawVertexArray(renderWindow : *sfRenderWindow, object : *sfVertexArray, states : *render_states::csfml::sfRenderStates) -> ();
+        fn sfRenderWindow_drawCircleShape(renderWindow : *sfRenderWindow, object : *sfCircleShape, states : *render_states::ffi::sfRenderStates) -> ();
+        fn sfRenderWindow_drawConvexShape(renderWindow : *sfRenderWindow, object : *sfConvexShape, states : *render_states::ffi::sfRenderStates) -> ();
+        fn sfRenderWindow_drawRectangleShape(renderWindow : *sfRenderWindow, object : *sfRectangleShape, states : *render_states::ffi::sfRenderStates) -> ();
+        fn sfRenderWindow_drawVertexArray(renderWindow : *sfRenderWindow, object : *sfVertexArray, states : *render_states::ffi::sfRenderStates) -> ();
         // fn sfRenderWindow_drawPrimitives(renderWindow : *sfRenderWindow, vertices : *sfVertex, vertexCount : c_uint, ttype : sfPrimitiveType, states : *sfRenderStates) -> ();  
         fn sfRenderWindow_pushGLStates(renderWindow : *sfRenderWindow) -> ();
         fn sfRenderWindow_popGLStates(renderWindow : *sfRenderWindow) -> ();
         fn sfRenderWindow_resetGLStates(renderWindow : *sfRenderWindow) -> ();
         fn sfRenderWindow_capture(renderWindow : *sfRenderWindow) -> *sfImage;
-        fn sfMouse_getPositionRenderWindow(relativeTo : *sfRenderWindow) -> vector2::Vector2i;
-        fn sfMouse_setPositionRenderWindow(position : vector2::Vector2i, relativeTo : *sfRenderWindow) -> ();
+        fn sfMouse_getPositionRenderWindow(relativeTo : *sfRenderWindow) -> Vector2i;
+        fn sfMouse_setPositionRenderWindow(position : Vector2i, relativeTo : *sfRenderWindow) -> ();
     }    
 }
 
@@ -155,9 +156,11 @@ pub enum WindowStyle {
 
 #[doc(hidden)]
 pub struct RenderWindow {
-    priv renderWindow : *csfml::sfRenderWindow,
-    priv event : csfml::sfEvent,
-    priv titleLength : uint
+    priv renderWindow : *ffi::sfRenderWindow,
+    priv event : ffi::sfEvent,
+    priv titleLength : uint,
+    priv currentView : @mut View,
+    priv defaultView : @mut View
 }
 
 impl RenderWindow {
@@ -183,16 +186,37 @@ impl RenderWindow {
     * Return a new RenderWindow object
     */
     pub fn new(mode : VideoMode, title : ~str, style : WindowStyle, settings : &ContextSettings) -> Option<RenderWindow> {
-        let mut sfRenderWin: *csfml::sfRenderWindow = ptr::null();
+        let mut sfRenderWin: *ffi::sfRenderWindow = ptr::null();
         do str::as_c_str(title) |title_buf| {
-            unsafe { sfRenderWin = csfml::sfRenderWindow_create(VideoMode::unwrap(mode), title_buf, style as u32, settings); }
+            unsafe { 
+                sfRenderWin = ffi::sfRenderWindow_create(mode.unwrap(), title_buf, style as u32, settings); 
+            }
         };
-        let sfEv : csfml::sfEvent = csfml::sfEvent {typeEvent : 0, p1 : 0, p2 : 0, p3 : 0 as c_float, p4 : 0, p5 : 0};//{0, 0, 0, 0 as float, 0, 0};
-        if sfRenderWin == ptr::null() {
+        let sfEv = ffi::sfEvent {
+            typeEvent : 0, 
+            p1 : 0, 
+            p2 : 0, 
+            p3 : 0 as c_float, 
+            p4 : 0, 
+            p5 : 0
+        };
+        if ptr::is_null(sfRenderWin) {
             None
         }
         else {
-            Some (RenderWindow { renderWindow : sfRenderWin, event : sfEv, titleLength : title.len()})
+            let defView = unsafe { ffi::sfRenderWindow_getDefaultView(sfRenderWin) };
+            if ptr::is_null(defView) {
+                None
+            }
+            else {
+                Some (RenderWindow {
+                    renderWindow : sfRenderWin, 
+                    event : sfEv, 
+                    titleLength : title.len(),
+                    currentView : @mut Wrappable::wrap(defView),
+                    defaultView : @mut Wrappable::wrap(defView)
+                })
+            }
         }
     }
 
@@ -218,14 +242,34 @@ impl RenderWindow {
     * Return a new RenderWindow object
     */
     pub fn new_with_unicode(mode : VideoMode, title : ~[u32], style : WindowStyle, settings : &ContextSettings) -> Option<RenderWindow> {
-        let sfRenderWin: *csfml::sfRenderWindow;
-        unsafe { sfRenderWin = csfml::sfRenderWindow_createUnicode(VideoMode::unwrap(mode), vec::raw::to_ptr(title), style as u32, settings); }
-        let sfEv : csfml::sfEvent = csfml::sfEvent {typeEvent : 0, p1 : 0, p2 : 0, p3 : 0 as c_float, p4 : 0, p5 : 0};//{0, 0, 0, 0 as float, 0, 0};
-        if sfRenderWin == ptr::null() {
+        let sfRenderWin: *ffi::sfRenderWindow;
+        unsafe { 
+            sfRenderWin = ffi::sfRenderWindow_createUnicode(mode.unwrap(), vec::raw::to_ptr(title), style as u32, settings); 
+        }
+        let sfEv = ffi::sfEvent {
+            typeEvent : 0, 
+            p1 : 0, 
+            p2 : 0, 
+            p3 : 0 as c_float, 
+            p4 : 0, 
+            p5 : 0};
+        if ptr::is_null(sfRenderWin) {
             None
         }
         else {
-            Some (RenderWindow { renderWindow : sfRenderWin, event : sfEv, titleLength : title.len()})
+            let defView = unsafe { ffi::sfRenderWindow_getDefaultView(sfRenderWin) };
+            if ptr::is_null(defView) {
+                None
+            }
+            else {
+                Some (RenderWindow {
+                    renderWindow : sfRenderWin, 
+                    event : sfEv, 
+                    titleLength : title.len(),
+                    currentView : @mut Wrappable::wrap(defView),
+                    defaultView : @mut Wrappable::wrap(defView)
+                })
+            } 
         }
     }
     
@@ -238,7 +282,7 @@ impl RenderWindow {
     pub fn set_unicode_title(&mut self, title : ~[u32]) -> () {
         unsafe {
             self.titleLength = title.len();
-            csfml::sfRenderWindow_setUnicodeTitle(self.renderWindow, vec::raw::to_ptr(title))
+            ffi::sfRenderWindow_setUnicodeTitle(self.renderWindow, vec::raw::to_ptr(title))
         }
     }
 
@@ -251,9 +295,9 @@ impl RenderWindow {
     * * height - Icon's height, in pixels
     * * pixels - Vector of pixels
     */
-    pub fn set_icon(&self, width : uint, height : uint, pixels : ~[u8]) -> () {
+    pub fn set_icon(&mut self, width : uint, height : uint, pixels : ~[u8]) -> () {
         unsafe {
-            csfml::sfRenderWindow_setIcon(self.renderWindow, width as c_uint, height as c_uint, vec::raw::to_ptr(pixels))
+            ffi::sfRenderWindow_setIcon(self.renderWindow, width as c_uint, height as c_uint, vec::raw::to_ptr(pixels))
         }
     }
     
@@ -268,17 +312,19 @@ impl RenderWindow {
     *
     * Return the event if an event was returned, or NoEvent if the event queue was empty
     */
-    pub fn poll_event(&self) -> event::Event {
+    pub fn poll_event(&mut self) -> event::Event {
         let haveEvent : bool =  unsafe {
-            match csfml::sfRenderWindow_pollEvent(self.renderWindow, &self.event) {
+            match ffi::sfRenderWindow_pollEvent(self.renderWindow, &self.event) {
                 0       => false,
                 _       => true
             }
         };
         if haveEvent == false {
-            return event::NoEvent;
+            event::NoEvent
         }
-        self.get_wrapped_event()
+        else {
+            self.get_wrapped_event()
+        }
     }
     
     /**
@@ -294,26 +340,32 @@ impl RenderWindow {
     *
     * Return the event or NoEvent if an error has occured
     */
-    pub fn wait_event(&self) -> event::Event {
+    pub fn wait_event(&mut self) -> event::Event {
         let haveEvent : bool =  unsafe {
-            match csfml::sfRenderWindow_waitEvent(self.renderWindow, &self.event) {
+            match ffi::sfRenderWindow_waitEvent(self.renderWindow, &self.event) {
                 0       => false,
                 _       => true
             }
         };
         if haveEvent == false {
-            return event::NoEvent;
+            event::NoEvent
         }
-        self.get_wrapped_event()
+        else {
+            self.get_wrapped_event()
+        }
     }
     
     pub fn get_wrapped_event(&self) ->event::Event {
         match self.event.typeEvent as c_uint {
             0   => event::Closed,
-            1   => event::Resized{width : self.event.p1 as int, height : self.event.p2 as int},
+            1   => event::Resized{ width : self.event.p1 as int, height : self.event.p2 as int },
             2   => event::LostFocus,
             3   => event::GainedFocus,
-            4   => event::TextEntered{code : self.event.p1 as char},
+            4   => {
+                event::TextEntered { 
+                    code : self.event.p1 as char 
+                }
+            },
             5   => {
                 let al : bool = match self.event.p2 {
                     0 => false,
@@ -331,8 +383,14 @@ impl RenderWindow {
                     0 => false,
                     _ => true
                 };
-                let k : keyboard::Key = unsafe {cast::transmute(self.event.p1 as int)};
-                event::KeyPressed{code : k, alt : al, ctrl : ct, shift :sh, system : sy}
+                let k : keyboard::Key = unsafe { cast::transmute(self.event.p1 as int) };
+                event::KeyPressed{ 
+                    code : k, 
+                    alt : al, 
+                    ctrl : ct, 
+                    shift :sh, 
+                    system : sy 
+                }
             },
             6   => {
                 let al : bool = match self.event.p2 {
@@ -351,44 +409,76 @@ impl RenderWindow {
                     0 => false,
                     _ => true
                 };
-                let k : keyboard::Key = unsafe {cast::transmute(self.event.p1 as int)};
-                event::KeyReleased{code : k, alt : al, ctrl : ct, shift :sh, system : sy}
+                let k : keyboard::Key = unsafe { cast::transmute(self.event.p1 as int) };
+                event::KeyReleased {
+                    code : k, 
+                    alt : al, 
+                    ctrl : ct, 
+                    shift :sh, 
+                    system : sy 
+                }
             },
-            7   => event::MouseWheelMoved{
-                     delta : unsafe { cast::transmute::<c_uint, c_int>(self.event.p1) }  as int,
-                     x :     unsafe { cast::transmute::<c_uint, c_int>(self.event.p2) }  as int,
-                     y :     unsafe { cast::transmute::<c_float, c_int>(self.event.p3) } as int
-                   },
+            7   => {
+                event::MouseWheelMoved{
+                    delta : unsafe { cast::transmute::<c_uint, c_int>(self.event.p1) }  as int,
+                    x :     unsafe { cast::transmute::<c_uint, c_int>(self.event.p2) }  as int,
+                    y :     unsafe { cast::transmute::<c_float, c_int>(self.event.p3) } as int
+                }
+            },
             8   => {
                 let button : mouse::MouseButton = unsafe {cast::transmute(self.event.p1 as int)};
                 event::MouseButtonPressed{
-                  button : button,
-                  x :      unsafe { cast::transmute::<c_uint, c_int>(self.event.p2) as int },
-                  y :      unsafe { cast::transmute::<c_float, c_int>(self.event.p3) as int }
+                    button : button,
+                    x :      unsafe { cast::transmute::<c_uint, c_int>(self.event.p2) as int },
+                    y :      unsafe { cast::transmute::<c_float, c_int>(self.event.p3) as int }
                 }
             },
             9   => {
-                let button : mouse::MouseButton = unsafe {cast::transmute(self.event.p1 as int)};
+                let button : mouse::MouseButton = unsafe { cast::transmute(self.event.p1 as int) };
                 event::MouseButtonReleased{
-                  button : button,
-                  x :      unsafe { cast::transmute::<c_uint, c_int>(self.event.p2) as int },
-                  y :      unsafe { cast::transmute::<c_float, c_int>(self.event.p3) as int }
+                    button : button,
+                    x :      unsafe { cast::transmute::<c_uint, c_int>(self.event.p2) as int },
+                    y :      unsafe { cast::transmute::<c_float, c_int>(self.event.p3) as int }
                 }
             },
-            10  => event::MouseMoved{
-                     x : unsafe { cast::transmute::<c_uint, c_int>(self.event.p1) } as int,
-                     y : unsafe { cast::transmute::<c_uint, c_int>(self.event.p2) } as int
-                   },
+            10  => { 
+                event::MouseMoved {
+                    x : unsafe { cast::transmute::<c_uint, c_int>(self.event.p1) } as int,
+                    y : unsafe { cast::transmute::<c_uint, c_int>(self.event.p2) } as int
+                }
+            },
             11  => event::MouseEntered,
             12  => event::MouseLeft,
-            13  => event::JoystickButtonPressed{joystickid : self.event.p1 as int, button : self.event.p2 as int},
-            14  => event::JoystickButtonReleased{joystickid : self.event.p1 as int, button : self.event.p2 as int},
-            15  => {
-                let ax : joystick::Axis = unsafe {cast::transmute(self.event.p2 as int)};
-                event::JoystickMoved{joystickid : self.event.p1 as uint, axis : ax, position : self.event.p3 as float}
+            13  => {
+                event::JoystickButtonPressed {
+                    joystickid : self.event.p1 as int, 
+                    button : self.event.p2 as int
+                }
             },
-            16  => event::JoystickConnected{joystickid : self.event.p1 as uint},
-            17  => event::JoystickDisconnected{joystickid : self.event.p1 as uint},
+            14  => { 
+                event::JoystickButtonReleased{
+                    joystickid : self.event.p1 as int, 
+                    button : self.event.p2 as int
+                }
+            },
+            15  => {
+                let ax : joystick::Axis = unsafe { cast::transmute(self.event.p2 as int) };
+                event::JoystickMoved{
+                    joystickid : self.event.p1 as uint, 
+                    axis : ax, 
+                    position : self.event.p3 as float
+                }
+            },
+            16  => { 
+                event::JoystickConnected{
+                    joystickid : self.event.p1 as uint
+                }
+            },
+            17  => { 
+                event::JoystickDisconnected{
+                    joystickid : self.event.p1 as uint
+                }
+            },
             _ => event::NoEvent
         }
     }
@@ -402,9 +492,9 @@ impl RenderWindow {
     * will still work (i.e. you don't have to test is_open
     * every time), and will have no effect on closed windows.
     */
-    pub fn close(&self) -> () {
+    pub fn close(&mut self) -> () {
         unsafe {
-            csfml::sfRenderWindow_close(self.renderWindow);
+            ffi::sfRenderWindow_close(self.renderWindow);
         }
     }
 
@@ -418,7 +508,7 @@ impl RenderWindow {
     pub fn is_open(&self) -> bool {
         let tmp : sfBool;
         unsafe {
-            tmp = csfml::sfRenderWindow_isOpen(self.renderWindow);
+            tmp = ffi::sfRenderWindow_isOpen(self.renderWindow);
         }
         match tmp {
             0 => false,
@@ -433,9 +523,9 @@ impl RenderWindow {
     * has been done for the current frame, in order to show
     * it on screen.
     */
-    pub fn display(&self) -> () {
+    pub fn display(&mut self) -> () {
         unsafe {
-            csfml::sfRenderWindow_display(self.renderWindow)
+            ffi::sfRenderWindow_display(self.renderWindow)
         }
     }
 
@@ -449,9 +539,9 @@ impl RenderWindow {
     * # Arguments
     * * limit - Framerate limit, in frames per seconds (use 0 to disable limit)
     */
-    pub fn set_framerate_limit(&self, limit : uint) -> () {
+    pub fn set_framerate_limit(&mut self, limit : uint) -> () {
         unsafe {
-            csfml::sfRenderWindow_setFramerateLimit(self.renderWindow, limit as c_uint)
+            ffi::sfRenderWindow_setFramerateLimit(self.renderWindow, limit as c_uint)
         }
     }
     
@@ -466,7 +556,9 @@ impl RenderWindow {
     * Return a structure containing the OpenGL context settings
     */
     pub fn get_settings(&self) -> ContextSettings {
-        unsafe {csfml::sfRenderWindow_getSettings(self.renderWindow)}
+        unsafe {
+            ffi::sfRenderWindow_getSettings(self.renderWindow)
+        }
     }
 
     /**
@@ -479,7 +571,7 @@ impl RenderWindow {
         do str::as_c_str(title) |title_buf| {
             unsafe {
                 self.titleLength = title.len();
-                csfml::sfRenderWindow_setTitle(self.renderWindow, title_buf);
+                ffi::sfRenderWindow_setTitle(self.renderWindow, title_buf);
             }
         }
     }
@@ -490,14 +582,14 @@ impl RenderWindow {
     * # Arguments
     * * visible - true to show the window, false to hide it
     */
-    pub fn set_visible(&self, visible : bool) -> () {
+    pub fn set_visible(&mut self, visible : bool) -> () {
         let tmp : sfBool =
             match visible {
                 true    => 1,
                 false   => 0
             };
         unsafe {
-            csfml::sfRenderWindow_setVisible(self.renderWindow, tmp);
+            ffi::sfRenderWindow_setVisible(self.renderWindow, tmp);
         }
     }
 
@@ -507,14 +599,14 @@ impl RenderWindow {
     * # Arguments
     * * visible - true to show, false to hide
     */
-    pub fn set_mouse_cursor_visible(&self, visible : bool) -> () {
+    pub fn set_mouse_cursor_visible(&mut self, visible : bool) -> () {
         let tmp : sfBool =
             match visible {
                 true    => 1,
                 false   => 0
             };
         unsafe {
-            csfml::sfRenderWindow_setMouseCursorVisible(self.renderWindow, tmp);
+            ffi::sfRenderWindow_setMouseCursorVisible(self.renderWindow, tmp);
         }
     }
     
@@ -529,14 +621,14 @@ impl RenderWindow {
     * # Arguments
     * * enabled - true to enable v-sync, false to deactivate
     */
-    pub fn set_vertical_sync_enabled(&self, enabled : bool) -> () {
+    pub fn set_vertical_sync_enabled(&mut self, enabled : bool) -> () {
         let tmp : sfBool =
             match enabled {
                 true    => 1,
                 false   => 0
             };
         unsafe {
-            csfml::sfRenderWindow_setVerticalSyncEnabled(self.renderWindow, tmp);
+            ffi::sfRenderWindow_setVerticalSyncEnabled(self.renderWindow, tmp);
         }
     }
 
@@ -552,14 +644,14 @@ impl RenderWindow {
     * # Arguments
     * * enabled - true to enable, false to disable
     */
-    pub fn set_key_repeat_enabled(&self, enabled : bool) -> () {
+    pub fn set_key_repeat_enabled(&mut self, enabled : bool) -> () {
         let tmp : sfBool =
             match enabled {
                 true    => 1,
                 false   => 0
             };
         unsafe {
-            csfml::sfRenderWindow_setKeyRepeatEnabled(self.renderWindow, tmp);
+            ffi::sfRenderWindow_setKeyRepeatEnabled(self.renderWindow, tmp);
         }
     }
     
@@ -577,14 +669,13 @@ impl RenderWindow {
     *
     * Return true if operation was successful, false otherwise
     */
-    pub fn set_active(&self, enabled : bool) -> bool {
-        let tmp : sfBool =
-            match enabled {
-                true    => 1,
-                false   => 0
-            };
+    pub fn set_active(&mut self, enabled : bool) -> bool {
+        let tmp : sfBool = match enabled {
+            true    => 1,
+            false   => 0
+        };
         let res : sfBool = unsafe {
-            csfml::sfRenderWindow_setActive(self.renderWindow, tmp)
+            ffi::sfRenderWindow_setActive(self.renderWindow, tmp)
         };
         match res {
             1   => true,
@@ -601,9 +692,9 @@ impl RenderWindow {
     * # Arguments
     * * threshold - New threshold, in the range [0, 100]
     */
-    pub fn set_joystick_threshold(&self, threshold : float) -> () {
+    pub fn set_joystick_threshold(&mut self, threshold : float) -> () {
         unsafe {
-            csfml::sfRenderWindow_setJoystickThreshold(self.renderWindow, threshold as c_float)
+            ffi::sfRenderWindow_setJoystickThreshold(self.renderWindow, threshold as c_float)
         }
     }
 
@@ -612,9 +703,9 @@ impl RenderWindow {
     *
     * Return the position in pixels
     */
-    pub fn get_position(&self) -> vector2::Vector2i {
+    pub fn get_position(&self) -> Vector2i {
         unsafe {
-            csfml::sfRenderWindow_getPosition(self.renderWindow)
+            ffi::sfRenderWindow_getPosition(self.renderWindow)
         }
     }
 
@@ -628,9 +719,9 @@ impl RenderWindow {
     * # Arguments
     * * position - New position of the window, in pixels
     */
-    pub fn set_position(&self, position : &vector2::Vector2i) -> () {
+    pub fn set_position(&mut self, position : &Vector2i) -> () {
         unsafe {
-            csfml::sfRenderWindow_setPosition(self.renderWindow, *position)
+            ffi::sfRenderWindow_setPosition(self.renderWindow, *position)
         }
     }
     
@@ -641,9 +732,9 @@ impl RenderWindow {
     *
     * Return the size in pixels
     */
-    pub fn get_size(&self) -> vector2::Vector2u {
+    pub fn get_size(&self) -> Vector2u {
         unsafe {
-            csfml::sfRenderWindow_getSize(self.renderWindow)
+            ffi::sfRenderWindow_getSize(self.renderWindow)
         }
     }
     
@@ -653,9 +744,9 @@ impl RenderWindow {
     * # Arguments
     * * size - New size, in pixels
     */
-    pub fn set_size(&self, size : &vector2::Vector2u) -> () {
+    pub fn set_size(&mut self, size : &Vector2u) -> () {
         unsafe {
-            csfml::sfRenderWindow_setSize(self.renderWindow, *size)
+            ffi::sfRenderWindow_setSize(self.renderWindow, *size)
         }
     }
     
@@ -678,15 +769,19 @@ impl RenderWindow {
     * function if you do so.
     *
     */
-    pub fn push_GL_states(&self) -> () {
-        unsafe {csfml::sfRenderWindow_pushGLStates(self.renderWindow)}
+    pub fn push_GL_states(&mut self) -> () {
+        unsafe {
+            ffi::sfRenderWindow_pushGLStates(self.renderWindow)
+        }
     }
 
     /**
     * Restore the previously saved OpenGL render states and matrices
     */
-    pub fn pop_GL_states(&self) -> () {
-        unsafe {csfml::sfRenderWindow_popGLStates(self.renderWindow)}
+    pub fn pop_GL_states(&mut self) -> () {
+        unsafe {
+            ffi::sfRenderWindow_popGLStates(self.renderWindow)
+        }
     }
 
     /**
@@ -698,8 +793,10 @@ impl RenderWindow {
     * states needed by SFML are set, so that subsequent sfRenderWindow_draw*()
     * calls will work as expected.
     */
-    pub fn reset_GL_states(&self) -> () {
-        unsafe {csfml::sfRenderWindow_resetGLStates(self.renderWindow)}
+    pub fn reset_GL_states(&mut self) -> () {
+        unsafe {
+            ffi::sfRenderWindow_resetGLStates(self.renderWindow)
+        }
     }
 
     /**
@@ -710,9 +807,9 @@ impl RenderWindow {
     *
     * Return the position of the mouse cursor, relative to the given render window
     */
-    pub fn get_mouse_position(&self) -> vector2::Vector2i {
+    pub fn get_mouse_position(&self) -> Vector2i {
         unsafe {
-            csfml::sfMouse_getPositionRenderWindow(self.renderWindow)
+            ffi::sfMouse_getPositionRenderWindow(self.renderWindow)
         }
     }
 
@@ -724,9 +821,9 @@ impl RenderWindow {
     * # Arguments
     * * relativeTo - Reference render window
     */
-    pub fn set_mouse_position(&self, position : &vector2::Vector2i) -> () {
+    pub fn set_mouse_position(&mut self, position : &Vector2i) -> () {
         unsafe {
-            csfml::sfMouse_setPositionRenderWindow(*position, self.renderWindow)
+            ffi::sfMouse_setPositionRenderWindow(*position, self.renderWindow)
         }
     }
 
@@ -736,56 +833,109 @@ impl RenderWindow {
     * # Arguments
     * * object - Object to draw
     */
-    pub fn draw<T : drawable::Drawable>(&self, object : &T) -> () {
+    pub fn draw<T : Drawable>(&mut self, object : &T) -> () {
         object.draw_in_render_window(self);
+    }
+
+    /**
+    * Draw a drawable object to the render-target with a RenderStates
+    *
+    * # Arguments 
+    * * object - Object to draw
+    * * renderStates - The renderStates to associate to the object
+    */
+    pub fn draw_with_renderstates<T : Drawable>(&mut self, object : &T, renderStates : &mut RenderStates) -> () {
+        object.draw_in_render_window_rs(self, renderStates);
     }
 
     /// Draw a Text
     pub fn draw_text(&self, text : &Text) -> () {
         unsafe {
-            csfml::sfRenderWindow_drawText(self.renderWindow, text.unwrap(), ptr::null())
+            ffi::sfRenderWindow_drawText(self.renderWindow, text.unwrap(), ptr::null())
         }
     }
 
     /// Draw a sprite
     pub fn draw_sprite(&self, sprite : &Sprite) -> () {
         unsafe {
-            csfml::sfRenderWindow_drawSprite(self.renderWindow, sprite.unwrap(), ptr::null())
+            ffi::sfRenderWindow_drawSprite(self.renderWindow, sprite.unwrap(), ptr::null())
         }
     }
 
     /// Draw a CircleShape
     pub fn draw_circle_shape(&self, circleShape : &CircleShape) -> () {
         unsafe {
-            csfml::sfRenderWindow_drawCircleShape(self.renderWindow, circleShape.unwrap(), ptr::null())
+            ffi::sfRenderWindow_drawCircleShape(self.renderWindow, circleShape.unwrap(), ptr::null())
         }
     }
 
     /// Draw a RectangleShape
     pub fn draw_rectangle_shape(&self, rectangleShape : &RectangleShape) -> () {
         unsafe {
-            csfml::sfRenderWindow_drawRectangleShape(self.renderWindow, rectangleShape.unwrap(), ptr::null())
+            ffi::sfRenderWindow_drawRectangleShape(self.renderWindow, rectangleShape.unwrap(), ptr::null())
         }
     }
 
     /// Draw a ConvexShape
     pub fn draw_convex_shape(&self, convexShape : &ConvexShape) -> () {
         unsafe {
-            csfml::sfRenderWindow_drawConvexShape(self.renderWindow, convexShape.unwrap(), ptr::null())
+            ffi::sfRenderWindow_drawConvexShape(self.renderWindow, convexShape.unwrap(), ptr::null())
         }
     }
 
     /// Draw a VertexArray
     pub fn draw_vertex_array(&self, vertexArray : &VertexArray) -> () {
         unsafe {
-            csfml::sfRenderWindow_drawVertexArray(self.renderWindow, vertexArray.unwrap(), ptr::null())
+            ffi::sfRenderWindow_drawVertexArray(self.renderWindow, vertexArray.unwrap(), ptr::null())
+        }
+    }
+
+    /// Draw a Text with a RenderStates
+    pub fn draw_text_rs(&self, text : &Text, renderStates : &mut RenderStates) -> () {
+        unsafe {
+            ffi::sfRenderWindow_drawText(self.renderWindow, text.unwrap(), renderStates.unwrap())
+        }
+    }
+
+    /// Draw a sprite with a RenderStates
+    pub fn draw_sprite_rs(&self, sprite : &Sprite, renderStates : &mut RenderStates) -> () {
+        unsafe {
+            ffi::sfRenderWindow_drawSprite(self.renderWindow, sprite.unwrap(), renderStates.unwrap())
+        }
+    }
+
+    /// Draw a CircleShape with a RenderStates
+    pub fn draw_circle_shape_rs(&self, circleShape : &CircleShape, renderStates : &mut RenderStates) -> () {
+        unsafe {
+            ffi::sfRenderWindow_drawCircleShape(self.renderWindow, circleShape.unwrap(), renderStates.unwrap())
+        }
+    }
+
+    /// Draw a RectangleShape with a RenderStates
+    pub fn draw_rectangle_shape_rs(&self, rectangleShape : &RectangleShape, renderStates : &mut RenderStates) -> () {
+        unsafe {
+            ffi::sfRenderWindow_drawRectangleShape(self.renderWindow, rectangleShape.unwrap(), renderStates.unwrap())
+        }
+    }
+
+    /// Draw a ConvexShape with a RenderStates
+    pub fn draw_convex_shape_rs(&self, convexShape : &ConvexShape, renderStates : &mut RenderStates) -> () {
+        unsafe {
+            ffi::sfRenderWindow_drawConvexShape(self.renderWindow, convexShape.unwrap(), renderStates.unwrap())
+        }
+    }
+
+    /// Draw a VertexArray with a RenderStates
+    pub fn draw_vertex_array_rs(&self, vertexArray : &VertexArray, renderStates : &mut RenderStates) -> () {
+        unsafe {
+            ffi::sfRenderWindow_drawVertexArray(self.renderWindow, vertexArray.unwrap(), renderStates.unwrap())
         }
     }
 
     /// Clear window with the given color
-    pub fn clear(&self, color : &color::Color) -> () {
+    pub fn clear(&mut self, color : &Color) -> () {
         unsafe {
-            csfml::sfRenderWindow_clear(self.renderWindow, *color)
+            ffi::sfRenderWindow_clear(self.renderWindow, *color)
         }
     }
     
@@ -802,8 +952,14 @@ impl RenderWindow {
     *
     * Return a new image containing the captured contents
     */
-    pub fn capture(&self) -> image::Image {
-        image::Image::wrap(unsafe {csfml::sfRenderWindow_capture(self.renderWindow)})
+    pub fn capture(&mut self) -> Option<Image> {
+        let img = unsafe { ffi::sfRenderWindow_capture(self.renderWindow) };
+        if ptr::is_null(img) {
+            None
+        }
+        else {
+            Some(Wrappable::wrap(img))
+        }
     }
     
     /**
@@ -812,9 +968,10 @@ impl RenderWindow {
     * # Arguments
     * * view - The new view
     */
-    pub fn set_view(&self, view : &view::View) -> () {
+    pub fn set_view(&mut self, view : @mut View) -> () {
+        self.currentView = view;
         unsafe {
-            csfml::sfRenderWindow_setView(self.renderWindow, view.unwrap())
+            ffi::sfRenderWindow_setView(self.renderWindow, view.unwrap())
         }
     }
     
@@ -823,8 +980,8 @@ impl RenderWindow {
     *
     * Return the current active view
     */
-    pub fn get_view(&self) -> view::View {
-        view::View::wrap(unsafe {csfml::sfRenderWindow_getView(self.renderWindow)})
+    pub fn get_view(&self) -> @mut View {
+        self.currentView
     }
     
     /**
@@ -832,8 +989,8 @@ impl RenderWindow {
     *
     * Return the default view of the render window
     */
-    pub fn get_default_view(&self) -> view::View {
-        view::View::wrap(unsafe {csfml::sfRenderWindow_getDefaultView(self.renderWindow)})
+    pub fn get_default_view(&self) -> @mut View {
+        self.defaultView
     }
     
     /**
@@ -853,8 +1010,8 @@ impl RenderWindow {
     * This function is typically used to find which point (or object) is
     * located below the mouse cursor.
     * 
-    * This version uses a custom view for calculations, see the other
-    * overload of the function if you want to use the current view of the
+    * This version uses a custom view for calculations, see the
+    * map_pixel_to_coords_current_view function if you want to use the current view of the
     * render-window.
     *
     * # Arguments
@@ -863,9 +1020,41 @@ impl RenderWindow {
     * 
     * Return the converted point, in "world" units
     */
-    pub fn map_pixel_to_coords(&self, point : &vector2::Vector2i, view : &view::View) -> vector2::Vector2f {
+    pub fn map_pixel_to_coords(&self, point : &Vector2i, view : &View) -> Vector2f {
         unsafe {
-            csfml::sfRenderWindow_mapPixelToCoords(self.renderWindow, *point, view.unwrap())
+            ffi::sfRenderWindow_mapPixelToCoords(self.renderWindow, *point, view.unwrap())
+        }
+    }
+
+    /**
+    * Convert a point from window coordinates to world coordinates
+    *
+    * This function finds the 2D position that matches the
+    * given pixel of the render-window. In other words, it does
+    * the inverse of what the graphics card does, to find the
+    * initial position of a rendered pixel.
+    *
+    * Initially, both coordinate systems (world units and target pixels)
+    * match perfectly. But if you define a custom view or resize your
+    * render window, this assertion is not true anymore, ie. a point
+    * located at (10, 50) in your render-window may map to the point
+    * (150, 75) in your 2D world -- if the view is translated by (140, 25).
+    * 
+    * This function is typically used to find which point (or object) is
+    * located below the mouse cursor.
+    * 
+    * This version uses the current view for calculations, see the
+    * map_pixel_to_coords function if you want to use a custom view.
+    *
+    * # Arguments
+    * * point - Pixel to convert
+    * 
+    * Return the converted point, in "world" units
+    */
+    pub fn map_pixel_to_coords_current_view(&self, point : &Vector2i) -> Vector2f {
+        let view = unsafe {ffi::sfRenderWindow_getView(self.renderWindow)};
+        unsafe {
+            ffi::sfRenderWindow_mapPixelToCoords(self.renderWindow, *point, view)
         }
     }
 
@@ -882,20 +1071,46 @@ impl RenderWindow {
     * located at (150, 75) in your 2D world may map to the pixel
     * (10, 50) of your render-window -- if the view is translated by (140, 25).
     * 
-    * This version uses a custom view for calculations, see the other
-    * overload of the function if you want to use the current view of the
+    * This version uses a custom view for calculations, see
+    * map_coords_to_pixel_current_view if you want to use the current view of the
     * render-window.
     *
     * # Arguments
     * * point - Point to convert
     * * view - The view to use for converting the point
     */
-    pub fn map_coords_to_pixel(&self, point : &vector2::Vector2f, view : &view::View) -> vector2::Vector2i {
+    pub fn map_coords_to_pixel(&self, point : &Vector2f, view : &View) -> Vector2i {
         unsafe {
-            csfml::sfRenderWindow_mapCoordsToPixel(self.renderWindow, *point, view.unwrap())
+            ffi::sfRenderWindow_mapCoordsToPixel(self.renderWindow, *point, view.unwrap())
         }
     }
 
+    /**
+    * Convert a point from world coordinates to window coordinates
+    *
+    * This function finds the pixel of the render-window that matches
+    * the given 2D point. In other words, it goes through the same process
+    * as the graphics card, to compute the final position of a rendered point.
+    *
+    * Initially, both coordinate systems (world units and target pixels)
+    * match perfectly. But if you define a custom view or resize your
+    * render window, this assertion is not true anymore, ie. a point
+    * located at (150, 75) in your 2D world may map to the pixel
+    * (10, 50) of your render-window -- if the view is translated by (140, 25).
+    * 
+    * This version uses the current view for calculations, see 
+    * map_coords_to_pixel if you want to use a custom view.
+    *
+    * # Arguments
+    * * point - Point to convert
+    */
+    pub fn map_coords_to_pixel_current_view(&self, point : &Vector2f) -> Vector2i {
+        let currView = unsafe { ffi::sfRenderWindow_getView(self.renderWindow) };
+        unsafe {
+            ffi::sfRenderWindow_mapCoordsToPixel(self.renderWindow, *point, currView)
+        }
+    }
+    
     /**
     * Get the viewport of a view applied to this target
     *
@@ -904,25 +1119,26 @@ impl RenderWindow {
     *
     * Return the viewport rectangle, expressed in pixels in the current target
     */
-    pub fn get_viewport(&self, view : &view::View) -> IntRect {
+    pub fn get_viewport(&self, view : &View) -> IntRect {
         unsafe {
-            csfml::sfRenderWindow_getViewport(self.renderWindow, view.unwrap())
+            ffi::sfRenderWindow_getViewport(self.renderWindow, view.unwrap())
         }
     }
 
     #[doc(hidden)]
-    pub fn unwrap(&self) -> *csfml::sfRenderWindow {
+    pub fn unwrap(&self) -> *ffi::sfRenderWindow {
         self.renderWindow
     }
 }
 
+#[unsafe_destructor]
 impl Drop for RenderWindow {
     /**
     *   Destructor for class RenderWindow. Destroy all the ressource.
     */
-    fn finalize(&self) {
+    fn drop(&self) {
         unsafe {
-            csfml::sfRenderWindow_destroy(self.renderWindow);
+            ffi::sfRenderWindow_destroy(self.renderWindow);
         }
     }
 }

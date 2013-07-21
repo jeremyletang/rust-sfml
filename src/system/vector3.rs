@@ -1,7 +1,7 @@
 /*
-* Rust-SFML - Copyright (c) Letang Jeremy.
+* Rust-SFML - Copyright (c) 2013 Letang Jeremy.
 *
-* The Original software, SFML library, is provided by Laurent Gomila.
+* The original software, SFML library, is provided by Laurent Gomila.
 *
 * This software is provided 'as-is', without any express or implied warranty.
 * In no event will the authors be held liable for any damages arising from
@@ -37,37 +37,112 @@ pub struct Vector3f {
     z : f32
 }
 
-trait Vector3<T> {
-    fn new(x : T, y : T, z : T) -> Self;
+trait Vector3fOp {
+    fn add_to_Vector3f(&self, lhs: &Vector3f) -> Vector3f;
+    fn div_to_Vector3f(&self, lhs: &Vector3f) -> Vector3f;
+    fn mul_to_Vector3f(&self, lhs: &Vector3f) -> Vector3f;
+    fn sub_to_Vector3f(&self, lhs: &Vector3f) -> Vector3f;
 }
 
-impl Vector3<f32> for Vector3f {
-    fn new(x : f32, y : f32, z : f32) -> Vector3f {
-        Vector3f{x : x, y : y, z : z}
+impl Vector3f {
+    pub fn new(x : f32, y : f32, z : f32) -> Vector3f {
+        Vector3f{
+            x : x, 
+            y : y,
+            z : z
+        }
     }
 }
 
-impl Sub<Vector3f, Vector3f> for Vector3f {
-    fn sub(&self, rhs : &Vector3f) -> Vector3f {
-        Vector3f { x : self.x - rhs.x, y : self.y - rhs.y, z : self.z - rhs.z}
+impl<R: Vector3fOp> Add<R, Vector3f> for Vector3f {
+    fn add(&self, rhs: &R) -> Vector3f {
+         rhs.add_to_Vector3f(self)
     }
 }
 
-impl Add<Vector3f, Vector3f> for Vector3f {
-    fn add(&self, rhs : &Vector3f) -> Vector3f {
-        Vector3f { x : self.x + rhs.x, y : self.y + rhs.y, z : self.z + rhs.z}
+impl<R: Vector3fOp> Sub<R, Vector3f> for Vector3f {
+    fn sub(&self, rhs: &R) -> Vector3f {
+         rhs.sub_to_Vector3f(self)
     }
 }
 
-impl Mul<Vector3f, Vector3f> for Vector3f {
-    fn mul(&self, rhs : &Vector3f) -> Vector3f {
-        Vector3f { x : self.x * rhs.x, y : self.y * rhs.y, z : self.z * rhs.z}
+impl<R: Vector3fOp> Mul<R, Vector3f> for Vector3f {
+    fn mul(&self, rhs: &R) -> Vector3f {
+         rhs.mul_to_Vector3f(self)
     }
 }
 
-impl Div<Vector3f, Vector3f> for Vector3f {
-    fn div(&self, rhs : &Vector3f) -> Vector3f {
-        Vector3f { x : self.x / rhs.x, y : self.y / rhs.y, z : self.z / rhs.z}
+impl<R: Vector3fOp> Div<R, Vector3f> for Vector3f {
+    fn div(&self, rhs: &R) -> Vector3f {
+         rhs.div_to_Vector3f(self)
+    }
+}
+
+impl Vector3fOp for Vector3f {
+    fn add_to_Vector3f(&self, lhs: &Vector3f) -> Vector3f {
+        Vector3f {
+            x : lhs.x + self.x,
+            y : lhs.y + self.y ,
+            z : lhs.z + self.z
+        }
+    }
+
+    fn sub_to_Vector3f(&self, lhs: &Vector3f) -> Vector3f {
+        Vector3f { 
+            x : lhs.x - self.x,
+            y : lhs.y - self.y,
+            z : lhs.z - self.z 
+        }
+    }
+
+    fn div_to_Vector3f(&self, lhs: &Vector3f) -> Vector3f {
+        Vector3f {
+            x : lhs.x / self.x,
+            y : lhs.y / self.y,
+            z : lhs.z / self.z 
+        }
+    }
+
+    fn mul_to_Vector3f(&self, lhs: &Vector3f) -> Vector3f {
+        Vector3f { 
+            x : lhs.x * self.x, 
+            y : lhs.y * self.y,
+            z : lhs.z * self.z 
+        }
+    }
+}
+
+impl Vector3fOp for float {
+    fn add_to_Vector3f(&self, lhs: &Vector3f) -> Vector3f {
+        Vector3f {
+            x : lhs.x + *self as f32,
+            y : lhs.y + *self as f32,
+            z : lhs.z + *self as f32
+        }
+    }
+
+    fn sub_to_Vector3f(&self, lhs: &Vector3f) -> Vector3f {
+        Vector3f { 
+            x : lhs.x - *self as f32,
+            y : lhs.y - *self as f32,
+            z : lhs.z - *self as f32
+        }
+    }
+
+    fn mul_to_Vector3f(&self, lhs: &Vector3f) -> Vector3f {
+        Vector3f { 
+            x : lhs.x * (*self as f32),
+            y : lhs.y * (*self as f32),
+            z : lhs.z * (*self as f32)
+        }
+    }
+
+    fn div_to_Vector3f(&self, lhs: &Vector3f) -> Vector3f {
+        Vector3f {
+            x : lhs.x / (*self as f32),
+            y : lhs.y / (*self as f32),
+            z : lhs.z / (*self as f32)
+        }
     }
 }
 

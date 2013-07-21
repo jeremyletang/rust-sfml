@@ -1,7 +1,7 @@
 /*
-* Rust-SFML - Copyright (c) Letang Jeremy.
+* Rust-SFML - Copyright (c) 2013 Letang Jeremy.
 *
-* The Original software, SFML library, is provided by Laurent Gomila.
+* The original software, SFML library, is provided by Laurent Gomila.
 *
 * This software is provided 'as-is', without any express or implied warranty.
 * In no event will the authors be held liable for any damages arising from
@@ -25,35 +25,80 @@
 /*!
 * Define the states used for drawing to a RenderTarget
 *
-* Don't WORK
 *
 */
 
+use std::ptr;
+
+use traits::wrappable::Wrappable;
 use graphics::blend_mode::*; 
 use graphics::shader::*; 
 use graphics::texture::*; 
 use graphics::transform::*; 
 
 #[doc(hidden)]
-pub mod csfml {
+pub mod ffi {
     
-    // use graphics::blend_mode::*; 
     use graphics::shader; 
-    use graphics::texture::*; 
+    use graphics::texture; 
     use graphics::transform; 
 
     pub struct sfRenderStates {
-        blendMode : uint,
+        blendMode : i32,
         transform : transform::Transform,
-        texture : *csfml::sfTexture,
-        shader : *shader::csfml::sfShader
+        texture : *texture::ffi::sfTexture,
+        shader : *shader::ffi::sfShader
     }
 }
 
-#[doc(hidden)]
+/**
+* brief Define the states used for drawing to a RenderTarget
+*/
 pub struct RenderStates {
-    bendMode : BlendMode,
-    transform : @Transform,
-    texture : @Texture,
-    shader : @Shader
+    priv sfRenderStates : ffi::sfRenderStates,
+    blendMode : BlendMode,
+    transform : Transform,
+    texture : Option<@Texture>,
+    shader : Option<@Shader>
 }
+
+impl RenderStates {
+
+    /**
+    * Create a new RenderStates initialized to default.
+    *
+    * # default
+    * * blendMode is initialized to BlendAlpha
+    * * transform is initialized to the identity matrix
+    * * texture is initialized to None
+    * * shader is initialized to None
+    *
+    * Return a new default RenderStates
+    */
+    pub fn default() -> RenderStates {
+        RenderStates {
+            sfRenderStates : ffi::sfRenderStates {
+                blendMode : BlendAlpha as i32,
+                transform : Transform::new_identity(),
+                texture : ptr::null(),
+                shader : ptr::null()
+            },
+            blendMode : BlendAlpha,
+            transform : Transform::new_identity(),
+            texture : None,
+            shader : None
+        }
+    }
+
+    /**
+    * Internal rsfml use only
+    */
+    pub fn unwrap(&mut self) -> *ffi::sfRenderStates {
+        self.sfRenderStates.blendMode = self.blendMode as i32;
+        self.sfRenderStates.transform = self.transform;
+        self.sfRenderStates.texture = if !self.texture.is_none() { self.texture.unwrap().unwrap() } else { ptr::null() };
+        self.sfRenderStates.shader = if !self.shader.is_none() { self.shader.unwrap().unwrap() } else { ptr::null() };
+        
+        ptr::to_unsafe_ptr(&self.sfRenderStates)
+    }
+} 
