@@ -56,24 +56,24 @@ pub mod ffi {
         This : *c_void
     }
 
-    pub extern "C" {
-        fn sfHttpRequest_create() -> *sfHttpRequest;
-        fn sfHttpRequest_destroy(httpRequest : *sfHttpRequest) -> ();
-        fn sfHttpRequest_setField(httpRequest : *sfHttpRequest, field : *c_char, value : *c_char) -> ();
-        fn sfHttpRequest_setMethod(httpRequest : *sfHttpRequest, method : Method) -> ();
-        fn sfHttpRequest_setUri(httpRequest : *sfHttpRequest, uri : *c_char) -> ();
-        fn sfHttpRequest_setHttpVersion(httpRequest : *sfHttpRequest, major : u32, minor : u32) -> ();
-        fn sfHttpRequest_setBody(httpRequest : *sfHttpRequest, body : *c_char) -> ();
-        fn sfHttpResponse_destroy(httpResponse : *sfHttpResponse) -> ();
-        fn sfHttpResponse_getField(httpResponse : *sfHttpResponse, field : *c_char) -> *c_char;
-        fn sfHttpResponse_getStatus(httpResponse : *sfHttpResponse) -> Status;
-        fn sfHttpResponse_getMajorVersion(httpResponse : *sfHttpResponse) -> u32;
-        fn sfHttpResponse_getMinorVersion(httpResponse : *sfHttpResponse) -> u32;
-        fn sfHttpResponse_getBody(httpResponse : *sfHttpResponse) -> *c_char;
-        fn sfHttp_create() -> *sfHttp;
-        fn sfHttp_destroy(http : *sfHttp) -> ();
-        fn sfHttp_setHost(http : *sfHttp, host : *c_char, port : u16) -> ();
-        fn sfHttp_sendRequest(http : *sfHttp, httpRequest : *sfHttpRequest, timeout : time::ffi::sfTime) -> *sfHttpResponse;
+    extern "C" {
+        pub fn sfHttpRequest_create() -> *sfHttpRequest;
+        pub fn sfHttpRequest_destroy(httpRequest : *sfHttpRequest) -> ();
+        pub fn sfHttpRequest_setField(httpRequest : *sfHttpRequest, field : *c_char, value : *c_char) -> ();
+        pub fn sfHttpRequest_setMethod(httpRequest : *sfHttpRequest, method : Method) -> ();
+        pub fn sfHttpRequest_setUri(httpRequest : *sfHttpRequest, uri : *c_char) -> ();
+        pub fn sfHttpRequest_setHttpVersion(httpRequest : *sfHttpRequest, major : u32, minor : u32) -> ();
+        pub fn sfHttpRequest_setBody(httpRequest : *sfHttpRequest, body : *c_char) -> ();
+        pub fn sfHttpResponse_destroy(httpResponse : *sfHttpResponse) -> ();
+        pub fn sfHttpResponse_getField(httpResponse : *sfHttpResponse, field : *c_char) -> *c_char;
+        pub fn sfHttpResponse_getStatus(httpResponse : *sfHttpResponse) -> Status;
+        pub fn sfHttpResponse_getMajorVersion(httpResponse : *sfHttpResponse) -> u32;
+        pub fn sfHttpResponse_getMinorVersion(httpResponse : *sfHttpResponse) -> u32;
+        pub fn sfHttpResponse_getBody(httpResponse : *sfHttpResponse) -> *c_char;
+        pub fn sfHttp_create() -> *sfHttp;
+        pub fn sfHttp_destroy(http : *sfHttp) -> ();
+        pub fn sfHttp_setHost(http : *sfHttp, host : *c_char, port : u16) -> ();
+        pub fn sfHttp_sendRequest(http : *sfHttp, httpRequest : *sfHttpRequest, timeout : time::ffi::sfTime) -> *sfHttpResponse;
     }
 }
 

@@ -62,31 +62,31 @@ pub mod ffi {
         InverseTransform : Transform
     }
 
-    pub extern "C" {
-        fn sfSprite_create() -> *sfSprite;
-        fn sfSprite_copy(sprite : *sfSprite) -> *sfSprite;
-        fn sfSprite_destroy(sprite : *sfSprite) -> ();
-        fn sfSprite_setPosition(sprite : *sfSprite, position : Vector2f) -> ();
-        fn sfSprite_setRotation(sprite : *sfSprite, angle : c_float) -> ();
-        fn sfSprite_setScale(sprite : *sfSprite, scale : Vector2f) -> ();
-        fn sfSprite_setOrigin(sprite : *sfSprite, origin : Vector2f) -> ();
-        fn sfSprite_getPosition(sprite : *sfSprite) -> Vector2f;
-        fn sfSprite_getRotation(sprite : *sfSprite) -> c_float;
-        fn sfSprite_getScale(sprite : *sfSprite) -> Vector2f;
-        fn sfSprite_getOrigin(sprite : *sfSprite) -> Vector2f;
-        fn sfSprite_move(sprite : *sfSprite, offset : Vector2f) -> ();
-        fn sfSprite_rotate(sprite : *sfSprite, angle : c_float) -> ();
-        fn sfSprite_scale(sprite : *sfSprite, factors : Vector2f) -> ();
-        fn sfSprite_getTransform(sprite : *sfSprite) -> Transform;
-        fn sfSprite_getInverseTransform(sprite : *sfSprite) -> Transform;
-        fn sfSprite_setTexture(sprite : *sfSprite, texture : *texture::ffi::sfTexture, resetRect : sfBool) -> ();
-        fn sfSprite_setTextureRect(sprite : *sfSprite, rectangle : IntRect) -> ();
-        fn sfSprite_setColor(sprite : *sfSprite, color : Color) -> ();
-        fn sfSprite_getTexture(sprite : *sfSprite) -> *texture::ffi::sfTexture;
-        fn sfSprite_getTextureRect(sprite : *sfSprite) -> IntRect;
-        fn sfSprite_getColor(sprite : *sfSprite) -> Color;
-        fn sfSprite_getLocalBounds(sprite : *sfSprite) -> FloatRect;
-        fn sfSprite_getGlobalBounds(sprite : *sfSprite) -> FloatRect;
+    extern "C" {
+        pub fn sfSprite_create() -> *sfSprite;
+        pub fn sfSprite_copy(sprite : *sfSprite) -> *sfSprite;
+        pub fn sfSprite_destroy(sprite : *sfSprite) -> ();
+        pub fn sfSprite_setPosition(sprite : *sfSprite, position : Vector2f) -> ();
+        pub fn sfSprite_setRotation(sprite : *sfSprite, angle : c_float) -> ();
+        pub fn sfSprite_setScale(sprite : *sfSprite, scale : Vector2f) -> ();
+        pub fn sfSprite_setOrigin(sprite : *sfSprite, origin : Vector2f) -> ();
+        pub fn sfSprite_getPosition(sprite : *sfSprite) -> Vector2f;
+        pub fn sfSprite_getRotation(sprite : *sfSprite) -> c_float;
+        pub fn sfSprite_getScale(sprite : *sfSprite) -> Vector2f;
+        pub fn sfSprite_getOrigin(sprite : *sfSprite) -> Vector2f;
+        pub fn sfSprite_move(sprite : *sfSprite, offset : Vector2f) -> ();
+        pub fn sfSprite_rotate(sprite : *sfSprite, angle : c_float) -> ();
+        pub fn sfSprite_scale(sprite : *sfSprite, factors : Vector2f) -> ();
+        pub fn sfSprite_getTransform(sprite : *sfSprite) -> Transform;
+        pub fn sfSprite_getInverseTransform(sprite : *sfSprite) -> Transform;
+        pub fn sfSprite_setTexture(sprite : *sfSprite, texture : *texture::ffi::sfTexture, resetRect : sfBool) -> ();
+        pub fn sfSprite_setTextureRect(sprite : *sfSprite, rectangle : IntRect) -> ();
+        pub fn sfSprite_setColor(sprite : *sfSprite, color : Color) -> ();
+        pub fn sfSprite_getTexture(sprite : *sfSprite) -> *texture::ffi::sfTexture;
+        pub fn sfSprite_getTextureRect(sprite : *sfSprite) -> IntRect;
+        pub fn sfSprite_getColor(sprite : *sfSprite) -> Color;
+        pub fn sfSprite_getLocalBounds(sprite : *sfSprite) -> FloatRect;
+        pub fn sfSprite_getGlobalBounds(sprite : *sfSprite) -> FloatRect;
     }
 }
 

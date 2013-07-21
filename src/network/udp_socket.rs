@@ -53,19 +53,19 @@ pub mod ffi {
         This : *c_void
     }
 
-    pub extern "C" {
-        fn sfUdpSocket_create() -> *sfUdpSocket;
-        fn sfUdpSocket_destroy(socket : *sfUdpSocket) -> ();
-        fn sfUdpSocket_setBlocking(socket : *sfUdpSocket, blocking : sfBool) -> ();
-        fn sfUdpSocket_isBlocking(socket : *sfUdpSocket) -> sfBool;
-        fn sfUdpSocket_getLocalPort(socket : *sfUdpSocket) -> u16;
-        fn sfUdpSocket_bind(socket : *sfUdpSocket, port : u16) -> SocketStatus;
-        fn sfUdpSocket_unbind(socket : *sfUdpSocket) -> ();
-        fn sfUdpSocket_send(socket : *sfUdpSocket, data : *i8, size : size_t, address : ip_address::ffi::sfIpAddress, port : u16) -> SocketStatus;
-        fn sfUdpSocket_receive(socket : *sfUdpSocket, data : *i8, maxSize : size_t, sizeReceived : *size_t, address : *ip_address::ffi::sfIpAddress, port : *u16) -> SocketStatus;
-        fn sfUdpSocket_sendPacket(socket : *sfUdpSocket, packet : *packet::ffi::sfPacket, address : ip_address::ffi::sfIpAddress, port : u16) -> SocketStatus;
-        fn sfUdpSocket_receivePacket(socket : *sfUdpSocket, packet : *packet::ffi::sfPacket, address : *ip_address::ffi::sfIpAddress, port : *u16) -> SocketStatus;
-        fn sfUdpSocket_maxDatagramSize() -> u32;
+    extern "C" {
+        pub fn sfUdpSocket_create() -> *sfUdpSocket;
+        pub fn sfUdpSocket_destroy(socket : *sfUdpSocket) -> ();
+        pub fn sfUdpSocket_setBlocking(socket : *sfUdpSocket, blocking : sfBool) -> ();
+        pub fn sfUdpSocket_isBlocking(socket : *sfUdpSocket) -> sfBool;
+        pub fn sfUdpSocket_getLocalPort(socket : *sfUdpSocket) -> u16;
+        pub fn sfUdpSocket_bind(socket : *sfUdpSocket, port : u16) -> SocketStatus;
+        pub fn sfUdpSocket_unbind(socket : *sfUdpSocket) -> ();
+        pub fn sfUdpSocket_send(socket : *sfUdpSocket, data : *i8, size : size_t, address : ip_address::ffi::sfIpAddress, port : u16) -> SocketStatus;
+        pub fn sfUdpSocket_receive(socket : *sfUdpSocket, data : *i8, maxSize : size_t, sizeReceived : *size_t, address : *ip_address::ffi::sfIpAddress, port : *u16) -> SocketStatus;
+        pub fn sfUdpSocket_sendPacket(socket : *sfUdpSocket, packet : *packet::ffi::sfPacket, address : ip_address::ffi::sfIpAddress, port : u16) -> SocketStatus;
+        pub fn sfUdpSocket_receivePacket(socket : *sfUdpSocket, packet : *packet::ffi::sfPacket, address : *ip_address::ffi::sfIpAddress, port : *u16) -> SocketStatus;
+        pub fn sfUdpSocket_maxDatagramSize() -> u32;
     }
 }
 

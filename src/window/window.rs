@@ -87,31 +87,31 @@ pub mod ffi {
         sfEvtJoystickDisconnected // 17
     }
 
-    pub extern "C" {
-        fn sfWindow_create(mode : ffi::sfVideoMode, title : *c_char, style : c_uint, settings : *ContextSettings) -> *sfWindow;
-        fn sfWindow_createUnicode(mode : ffi::sfVideoMode, title : *u32, style : c_uint, setting : *ContextSettings) -> *sfWindow;
+    extern "C" {
+        pub fn sfWindow_create(mode : ffi::sfVideoMode, title : *c_char, style : c_uint, settings : *ContextSettings) -> *sfWindow;
+        pub fn sfWindow_createUnicode(mode : ffi::sfVideoMode, title : *u32, style : c_uint, setting : *ContextSettings) -> *sfWindow;
         //fn sfWindow_createFromHandle(handle : sfWindowHandle, settings : *sfContextSettings) -> *sfWindow;
-        fn sfWindow_close(window : *sfWindow) -> ();
-        fn sfWindow_destroy(window : *sfWindow) -> ();
-        fn sfWindow_isOpen(window : *sfWindow) -> sfBool;
-        fn sfWindow_getSettings(window : *sfWindow) -> ContextSettings;
-        fn sfWindow_setTitle(window : *sfWindow, title : *c_char) -> ();
-        fn sfWindow_setUnicodeTitle(window : *sfWindow, title : *u32) -> ();
-        fn sfWindow_setIcon(window : *sfWindow, width : c_uint, height : c_uint, pixel : *u8) -> (); 
-        fn sfWindow_setVisible(window : *sfWindow, visible : sfBool) -> ();
-        fn sfWindow_setMouseCursorVisible(window : *sfWindow, visible : sfBool) -> ();
-        fn sfWindow_setVerticalSyncEnabled(window : *sfWindow, enabled : sfBool) -> ();
-        fn sfWindow_setKeyRepeatEnabled(window : *sfWindow, enabled : sfBool) -> ();
-        fn sfWindow_setActive(window : *sfWindow, active : sfBool) -> sfBool;
-        fn sfWindow_display(window : *sfWindow) -> ();
-        fn sfWindow_setFramerateLimit(window : *sfWindow, limit : c_uint) -> ();
-        fn sfWindow_setJoystickThreshold(window : *sfWindow, threshold : c_float) -> ();
-        fn sfWindow_getPosition(window : *sfWindow) -> Vector2i;
-        fn sfWindow_setPosition(window : *sfWindow, position : Vector2i) -> ();
-        fn sfWindow_getSize(window : *sfWindow) -> Vector2u;
-        fn sfWindow_setSize(window : *sfWindow, size : Vector2u) -> ();
-        fn sfWindow_pollEvent(window : *sfWindow, event : *sfEvent) -> sfBool;
-        fn sfWindow_waitEvent(window : *sfWindow, event : *sfEvent) -> sfBool;
+        pub fn sfWindow_close(window : *sfWindow) -> ();
+        pub fn sfWindow_destroy(window : *sfWindow) -> ();
+        pub fn sfWindow_isOpen(window : *sfWindow) -> sfBool;
+        pub fn sfWindow_getSettings(window : *sfWindow) -> ContextSettings;
+        pub fn sfWindow_setTitle(window : *sfWindow, title : *c_char) -> ();
+        pub fn sfWindow_setUnicodeTitle(window : *sfWindow, title : *u32) -> ();
+        pub fn sfWindow_setIcon(window : *sfWindow, width : c_uint, height : c_uint, pixel : *u8) -> (); 
+        pub fn sfWindow_setVisible(window : *sfWindow, visible : sfBool) -> ();
+        pub fn sfWindow_setMouseCursorVisible(window : *sfWindow, visible : sfBool) -> ();
+        pub fn sfWindow_setVerticalSyncEnabled(window : *sfWindow, enabled : sfBool) -> ();
+        pub fn sfWindow_setKeyRepeatEnabled(window : *sfWindow, enabled : sfBool) -> ();
+        pub fn sfWindow_setActive(window : *sfWindow, active : sfBool) -> sfBool;
+        pub fn sfWindow_display(window : *sfWindow) -> ();
+        pub fn sfWindow_setFramerateLimit(window : *sfWindow, limit : c_uint) -> ();
+        pub fn sfWindow_setJoystickThreshold(window : *sfWindow, threshold : c_float) -> ();
+        pub fn sfWindow_getPosition(window : *sfWindow) -> Vector2i;
+        pub fn sfWindow_setPosition(window : *sfWindow, position : Vector2i) -> ();
+        pub fn sfWindow_getSize(window : *sfWindow) -> Vector2u;
+        pub fn sfWindow_setSize(window : *sfWindow, size : Vector2u) -> ();
+        pub fn sfWindow_pollEvent(window : *sfWindow, event : *sfEvent) -> sfBool;
+        pub fn sfWindow_waitEvent(window : *sfWindow, event : *sfEvent) -> sfBool;
         //fn sfWindow_getSystemHandle(window : *sfWindow) -> sfWindowHandle;
     }
 }

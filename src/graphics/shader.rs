@@ -55,23 +55,23 @@ pub mod ffi {
         This : *c_void
     }
 
-    pub extern "C" {
-        fn sfShader_createFromFile(vertexShaderFilename : *c_char, fragmentShaderFilename : *c_char) -> *sfShader;
-        fn sfShader_createFromMemory(vertexShader : *c_char, fragmentShader : *c_char) -> *sfShader;
+    extern "C" {
+        pub fn sfShader_createFromFile(vertexShaderFilename : *c_char, fragmentShaderFilename : *c_char) -> *sfShader;
+        pub fn sfShader_createFromMemory(vertexShader : *c_char, fragmentShader : *c_char) -> *sfShader;
         //fn sfShader_createFromStream(vertexShaderStream : *sfInputStream, fragmentShaderStream : *sfInputStream) -> *sfShader;
-        fn sfShader_destroy(shader : *sfShader)-> ();
-        fn sfShader_setFloatParameter(shader : *sfShader, name : *c_char, x : c_float) -> ();
-        fn sfShader_setFloat2Parameter(shader : *sfShader, name : *c_char, x : c_float, y : c_float) -> ();
-        fn sfShader_setFloat3Parameter(shader : *sfShader, name : *c_char, x : c_float, y : c_float, z : c_float) -> ();
-        fn sfShader_setFloat4Parameter(shader : *sfShader, name : *c_char, x : c_float, y : c_float, z : c_float, w : c_float) -> ();
-        fn sfShader_setVector2Parameter(shader : *sfShader, name : *c_char, vector : Vector2f) -> ();
-        fn sfShader_setVector3Parameter(shader : *sfShader, name : *c_char, vector : Vector3f) -> ();
-        fn sfShader_setColorParameter(shader : *sfShader, name : *c_char, color : Color) -> (); 
-        fn sfShader_setTransformParameter(shader : *sfShader, name : *c_char, transform : transform::Transform) -> ();
-        fn sfShader_setTextureParameter(shader : *sfShader, name : *c_char, texture : *texture::ffi::sfTexture) -> ();
-        fn sfShader_setCurrentTextureParameter(shader : *sfShader, name : *c_char) -> ();
-        fn sfShader_bind(shader : *sfShader) -> ();
-        fn sfShader_isAvailable() -> sfBool;
+        pub fn sfShader_destroy(shader : *sfShader)-> ();
+        pub fn sfShader_setFloatParameter(shader : *sfShader, name : *c_char, x : c_float) -> ();
+        pub fn sfShader_setFloat2Parameter(shader : *sfShader, name : *c_char, x : c_float, y : c_float) -> ();
+        pub fn sfShader_setFloat3Parameter(shader : *sfShader, name : *c_char, x : c_float, y : c_float, z : c_float) -> ();
+        pub fn sfShader_setFloat4Parameter(shader : *sfShader, name : *c_char, x : c_float, y : c_float, z : c_float, w : c_float) -> ();
+        pub fn sfShader_setVector2Parameter(shader : *sfShader, name : *c_char, vector : Vector2f) -> ();
+        pub fn sfShader_setVector3Parameter(shader : *sfShader, name : *c_char, vector : Vector3f) -> ();
+        pub fn sfShader_setColorParameter(shader : *sfShader, name : *c_char, color : Color) -> (); 
+        pub fn sfShader_setTransformParameter(shader : *sfShader, name : *c_char, transform : transform::Transform) -> ();
+        pub fn sfShader_setTextureParameter(shader : *sfShader, name : *c_char, texture : *texture::ffi::sfTexture) -> ();
+        pub fn sfShader_setCurrentTextureParameter(shader : *sfShader, name : *c_char) -> ();
+        pub fn sfShader_bind(shader : *sfShader) -> ();
+        pub fn sfShader_isAvailable() -> sfBool;
    }
 }
 

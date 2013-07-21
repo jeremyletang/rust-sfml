@@ -62,40 +62,40 @@ pub mod ffi {
         InverseTransform : Transform
     }
     
-    pub extern "C" {
-        fn sfCircleShape_create() -> *sfCircleShape;
-        fn sfCircleShape_copy(shape : *sfCircleShape) -> *sfCircleShape;
-        fn sfCircleShape_destroy(shape : *sfCircleShape) -> ();
-        fn sfCircleShape_setPosition(shape : *sfCircleShape, position : Vector2f) -> ();
-        fn sfCircleShape_setRotation(shape : *sfCircleShape, angle : c_float) -> ();
-        fn sfCircleShape_setScale(shape : *sfCircleShape, scale : Vector2f) -> ();
-        fn sfCircleShape_setOrigin(shape : *sfCircleShape, origin : Vector2f) -> ();
-        fn sfCircleShape_getPosition(shape : *sfCircleShape) -> Vector2f;
-        fn sfCircleShape_getRotation(shape : *sfCircleShape) -> c_float;
-        fn sfCircleShape_getScale(shape : *sfCircleShape) -> Vector2f;
-        fn sfCircleShape_getOrigin(shape : *sfCircleShape) -> Vector2f;
-        fn sfCircleShape_move(shape : *sfCircleShape, offset : Vector2f) -> ();
-        fn sfCircleShape_rotate(shape : *sfCircleShape, angle : c_float) -> ();
-        fn sfCircleShape_scale(shape : *sfCircleShape, factors : Vector2f) -> ();
-        fn sfCircleShape_getTransform(shape : *sfCircleShape) -> Transform;
-        fn sfCircleShape_getInverseTransform(shape : *sfCircleShape) -> Transform;
-        fn sfCircleShape_setTexture(shape : *sfCircleShape, texture : *texture::ffi::sfTexture, resetRect : sfBool) -> ();
-        fn sfCircleShape_setTextureRect(shape : *sfCircleShape, rect : IntRect) -> ();
-        fn sfCircleShape_setFillColor(shape : *sfCircleShape, color : Color) -> ();
-        fn sfCircleShape_setOutlineColor(shape : *sfCircleShape, color : Color) -> ();
-        fn sfCircleShape_setOutlineThickness(shape : *sfCircleShape, thickness : c_float) -> ();
-        fn sfCircleShape_getTexture(shape : *sfCircleShape) -> *texture::ffi::sfTexture;
-        fn sfCircleShape_getTextureRect(shape : *sfCircleShape) -> IntRect;
-        fn sfCircleShape_getFillColor(shape : *sfCircleShape) -> Color;
-        fn sfCircleShape_getOutlineColor(shape : *sfCircleShape) -> Color;
-        fn sfCircleShape_getOutlineThickness(shape : *sfCircleShape) -> c_float;
-        fn sfCircleShape_getPointCount(shape : *sfCircleShape) -> c_uint;
-        fn sfCircleShape_getPoint(shape : *sfCircleShape, index : c_uint) -> ();
-        fn sfCircleShape_setRadius(shape : *sfCircleShape, radius : c_float) -> ();
-        fn sfCircleShape_getRadius(shape : *sfCircleShape) -> c_float;
-        fn sfCircleShape_setPointCount(shape : *sfCircleShape, count : c_uint) -> ();
-        fn sfCircleShape_getLocalBounds(shape : *sfCircleShape) -> FloatRect;
-        fn sfCircleShape_getGlobalBounds(shape : *sfCircleShape) -> FloatRect;
+    extern "C" {
+        pub fn sfCircleShape_create() -> *sfCircleShape;
+        pub fn sfCircleShape_copy(shape : *sfCircleShape) -> *sfCircleShape;
+        pub fn sfCircleShape_destroy(shape : *sfCircleShape) -> ();
+        pub fn sfCircleShape_setPosition(shape : *sfCircleShape, position : Vector2f) -> ();
+        pub fn sfCircleShape_setRotation(shape : *sfCircleShape, angle : c_float) -> ();
+        pub fn sfCircleShape_setScale(shape : *sfCircleShape, scale : Vector2f) -> ();
+        pub fn sfCircleShape_setOrigin(shape : *sfCircleShape, origin : Vector2f) -> ();
+        pub fn sfCircleShape_getPosition(shape : *sfCircleShape) -> Vector2f;
+        pub fn sfCircleShape_getRotation(shape : *sfCircleShape) -> c_float;
+        pub fn sfCircleShape_getScale(shape : *sfCircleShape) -> Vector2f;
+        pub fn sfCircleShape_getOrigin(shape : *sfCircleShape) -> Vector2f;
+        pub fn sfCircleShape_move(shape : *sfCircleShape, offset : Vector2f) -> ();
+        pub fn sfCircleShape_rotate(shape : *sfCircleShape, angle : c_float) -> ();
+        pub fn sfCircleShape_scale(shape : *sfCircleShape, factors : Vector2f) -> ();
+        pub fn sfCircleShape_getTransform(shape : *sfCircleShape) -> Transform;
+        pub fn sfCircleShape_getInverseTransform(shape : *sfCircleShape) -> Transform;
+        pub fn sfCircleShape_setTexture(shape : *sfCircleShape, texture : *texture::ffi::sfTexture, resetRect : sfBool) -> ();
+        pub fn sfCircleShape_setTextureRect(shape : *sfCircleShape, rect : IntRect) -> ();
+        pub fn sfCircleShape_setFillColor(shape : *sfCircleShape, color : Color) -> ();
+        pub fn sfCircleShape_setOutlineColor(shape : *sfCircleShape, color : Color) -> ();
+        pub fn sfCircleShape_setOutlineThickness(shape : *sfCircleShape, thickness : c_float) -> ();
+        pub fn sfCircleShape_getTexture(shape : *sfCircleShape) -> *texture::ffi::sfTexture;
+        pub fn sfCircleShape_getTextureRect(shape : *sfCircleShape) -> IntRect;
+        pub fn sfCircleShape_getFillColor(shape : *sfCircleShape) -> Color;
+        pub fn sfCircleShape_getOutlineColor(shape : *sfCircleShape) -> Color;
+        pub fn sfCircleShape_getOutlineThickness(shape : *sfCircleShape) -> c_float;
+        pub fn sfCircleShape_getPointCount(shape : *sfCircleShape) -> c_uint;
+        pub fn sfCircleShape_getPoint(shape : *sfCircleShape, index : c_uint) -> ();
+        pub fn sfCircleShape_setRadius(shape : *sfCircleShape, radius : c_float) -> ();
+        pub fn sfCircleShape_getRadius(shape : *sfCircleShape) -> c_float;
+        pub fn sfCircleShape_setPointCount(shape : *sfCircleShape, count : c_uint) -> ();
+        pub fn sfCircleShape_getLocalBounds(shape : *sfCircleShape) -> FloatRect;
+        pub fn sfCircleShape_getGlobalBounds(shape : *sfCircleShape) -> FloatRect;
     }
 }
 

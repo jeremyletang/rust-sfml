@@ -54,20 +54,20 @@ pub mod ffi {
         This : *c_void
     }
 
-    pub extern "C" {
-        fn sfTcpSocket_create() -> *sfTcpSocket;
-        fn sfTcpSocket_destroy(socket : *sfTcpSocket) -> ();
-        fn sfTcpSocket_setBlocking(socket : *sfTcpSocket, blocking : sfBool) -> ();
-        fn sfTcpSocket_isBlocking(socket : *sfTcpSocket) -> sfBool;
-        fn sfTcpSocket_getLocalPort(socket : *sfTcpSocket) -> u16;
-        fn sfTcpSocket_getRemoteAddress(socket : *sfTcpSocket) -> ip_address::ffi::sfIpAddress;
-        fn sfTcpSocket_getRemotePort(socket : *sfTcpSocket) -> u16;
-        fn sfTcpSocket_connect(socket : *sfTcpSocket, host : ip_address::ffi::sfIpAddress, port : u16,  timeout : time::ffi::sfTime) -> SocketStatus;
-        fn sfTcpSocket_disconnect(socket : *sfTcpSocket) -> ();
-        fn sfTcpSocket_send(socket : *sfTcpSocket, data : *i8, size : size_t) -> SocketStatus;
-        fn sfTcpSocket_receive(socket : *sfTcpSocket, data : *i8, maxSize : size_t, sizeReceived : *size_t) -> SocketStatus;
-        fn sfTcpSocket_sendPacket(socket : *sfTcpSocket, packet : *packet::ffi::sfPacket) -> SocketStatus;
-        fn sfTcpSocket_receivePacket(socket : *sfTcpSocket, packet : *packet::ffi::sfPacket) -> SocketStatus;
+    extern "C" {
+        pub fn sfTcpSocket_create() -> *sfTcpSocket;
+        pub fn sfTcpSocket_destroy(socket : *sfTcpSocket) -> ();
+        pub fn sfTcpSocket_setBlocking(socket : *sfTcpSocket, blocking : sfBool) -> ();
+        pub fn sfTcpSocket_isBlocking(socket : *sfTcpSocket) -> sfBool;
+        pub fn sfTcpSocket_getLocalPort(socket : *sfTcpSocket) -> u16;
+        pub fn sfTcpSocket_getRemoteAddress(socket : *sfTcpSocket) -> ip_address::ffi::sfIpAddress;
+        pub fn sfTcpSocket_getRemotePort(socket : *sfTcpSocket) -> u16;
+        pub fn sfTcpSocket_connect(socket : *sfTcpSocket, host : ip_address::ffi::sfIpAddress, port : u16,  timeout : time::ffi::sfTime) -> SocketStatus;
+        pub fn sfTcpSocket_disconnect(socket : *sfTcpSocket) -> ();
+        pub fn sfTcpSocket_send(socket : *sfTcpSocket, data : *i8, size : size_t) -> SocketStatus;
+        pub fn sfTcpSocket_receive(socket : *sfTcpSocket, data : *i8, maxSize : size_t, sizeReceived : *size_t) -> SocketStatus;
+        pub fn sfTcpSocket_sendPacket(socket : *sfTcpSocket, packet : *packet::ffi::sfPacket) -> SocketStatus;
+        pub fn sfTcpSocket_receivePacket(socket : *sfTcpSocket, packet : *packet::ffi::sfPacket) -> SocketStatus;
     }
 
 }

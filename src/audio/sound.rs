@@ -54,32 +54,32 @@ pub mod ffi {
         This2 : *c_void
     }
     
-    pub extern "C" {
-        fn sfSound_create() -> *sfSound;
-        fn sfSound_copy(sound : *sfSound) -> *sfSound;
-        fn sfSound_destroy(sound : *sfSound) -> ();
-        fn sfSound_play(sound : *sfSound) -> ();
-        fn sfSound_pause(sound : *sfSound) -> ();
-        fn sfSound_stop(sound : *sfSound) -> ();
-        fn sfSound_setBuffer(sound : *sfSound, buffer : *sound_buffer::ffi::sfSoundBuffer) -> (); // a faire
-        fn sfSound_getBuffer(sound : *sfSound) -> *sound_buffer::ffi::sfSoundBuffer; // a faire
-        fn sfSound_setLoop(sound : *sfSound, lloop : sfBool) -> ();
-        fn sfSound_getLoop(sound : *sfSound) -> sfBool;
-        fn sfSound_getStatus(sound : *sfSound) -> sound_status::ffi::sfSoundStatus;
-        fn sfSound_setPitch(sound : *sfSound, pitch : c_float) -> ();
-        fn sfSound_setVolume(sound : *sfSound, volume : c_float) -> ();
-        fn sfSound_setPosition(sound : *sfSound, position : Vector3f) -> ();
-        fn sfSound_setRelativeToListener(sound : *sfSound, relative : sfBool) -> ();
-        fn sfSound_setMinDistance(sound : *sfSound, distance : c_float) -> ();
-        fn sfSound_setAttenuation(sound : *sfSound, attenuation : c_float) -> ();
-        fn sfSound_setPlayingOffset(sound : *sfSound, timeOffset : time::ffi::sfTime) -> ();
-        fn sfSound_getPitch(sound : *sfSound) -> c_float;
-        fn sfSound_getVolume(sound : *sfSound) -> c_float;
-        fn sfSound_getPosition(sound : *sfSound) -> Vector3f;
-        fn sfSound_isRelativeToListener(sound : *sfSound) -> sfBool;
-        fn sfSound_getMinDistance(sound : *sfSound) -> c_float;
-        fn sfSound_getAttenuation(sound : *sfSound) -> c_float;
-        fn sfSound_getPlayingOffset(sound : *sfSound) -> time::ffi::sfTime;
+    extern "C" {
+        pub fn sfSound_create() -> *sfSound;
+        pub fn sfSound_copy(sound : *sfSound) -> *sfSound;
+        pub fn sfSound_destroy(sound : *sfSound) -> ();
+        pub fn sfSound_play(sound : *sfSound) -> ();
+        pub fn sfSound_pause(sound : *sfSound) -> ();
+        pub fn sfSound_stop(sound : *sfSound) -> ();
+        pub fn sfSound_setBuffer(sound : *sfSound, buffer : *sound_buffer::ffi::sfSoundBuffer) -> (); // a faire
+        pub fn sfSound_getBuffer(sound : *sfSound) -> *sound_buffer::ffi::sfSoundBuffer; // a faire
+        pub fn sfSound_setLoop(sound : *sfSound, lloop : sfBool) -> ();
+        pub fn sfSound_getLoop(sound : *sfSound) -> sfBool;
+        pub fn sfSound_getStatus(sound : *sfSound) -> sound_status::ffi::sfSoundStatus;
+        pub fn sfSound_setPitch(sound : *sfSound, pitch : c_float) -> ();
+        pub fn sfSound_setVolume(sound : *sfSound, volume : c_float) -> ();
+        pub fn sfSound_setPosition(sound : *sfSound, position : Vector3f) -> ();
+        pub fn sfSound_setRelativeToListener(sound : *sfSound, relative : sfBool) -> ();
+        pub fn sfSound_setMinDistance(sound : *sfSound, distance : c_float) -> ();
+        pub fn sfSound_setAttenuation(sound : *sfSound, attenuation : c_float) -> ();
+        pub fn sfSound_setPlayingOffset(sound : *sfSound, timeOffset : time::ffi::sfTime) -> ();
+        pub fn sfSound_getPitch(sound : *sfSound) -> c_float;
+        pub fn sfSound_getVolume(sound : *sfSound) -> c_float;
+        pub fn sfSound_getPosition(sound : *sfSound) -> Vector3f;
+        pub fn sfSound_isRelativeToListener(sound : *sfSound) -> sfBool;
+        pub fn sfSound_getMinDistance(sound : *sfSound) -> c_float;
+        pub fn sfSound_getAttenuation(sound : *sfSound) -> c_float;
+        pub fn sfSound_getPlayingOffset(sound : *sfSound) -> time::ffi::sfTime;
     }
 }
 

@@ -34,11 +34,11 @@ pub mod ffi {
     
     use graphics::color::Color;
     
-    pub extern "C" {
-        fn sfColor_fromRGB(red : u8, green : u8, blue : u8) -> Color;
-        fn sfColor_fromRGBA(red : u8, green : u8, blue : u8, alpha : u8) -> Color;
-        fn sfColor_add(color1 : Color, color2 : Color) -> Color;
-        fn sfColor_modulate(color1 : Color, color2 : Color) -> Color;
+    extern "C" {
+        pub fn sfColor_fromRGB(red : u8, green : u8, blue : u8) -> Color;
+        pub fn sfColor_fromRGBA(red : u8, green : u8, blue : u8, alpha : u8) -> Color;
+        pub fn sfColor_add(color1 : Color, color2 : Color) -> Color;
+        pub fn sfColor_modulate(color1 : Color, color2 : Color) -> Color;
     }
 }
 
