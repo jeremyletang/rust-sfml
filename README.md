@@ -31,7 +31,9 @@ Finally build your program with the rust-sfml library. For exemple, if the libra
 >
 ```
 
-Normaly rust-sfml works on Linux and windows.
+Normaly rust-sfml works on Linux and windows and OSX.
+
+On OSX window must be launched in the main thread. So you should use the start function in the module start, you can see the pong example.
 
 License
 =======
