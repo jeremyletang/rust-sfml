@@ -64,10 +64,10 @@ pub mod ffi {
 	 }
     }
     
-    pub extern "C" {
-        fn sfVideoMode_getDesktopMode() -> sfVideoMode;
-        fn sfVideoMode_getFullscreenModes(Count : *size_t) -> *sfVideoMode;
-        fn sfVideoMode_isValid(mode : sfVideoMode) -> sfBool;
+    extern "C" {
+        pub fn sfVideoMode_getDesktopMode() -> sfVideoMode;
+        pub fn sfVideoMode_getFullscreenModes(Count : *size_t) -> *sfVideoMode;
+        pub fn sfVideoMode_isValid(mode : sfVideoMode) -> sfBool;
     }
 }
 

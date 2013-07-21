@@ -50,10 +50,10 @@ pub mod ffi {
     use window::window::*;
     use system::vector2::Vector2i;
 
-    pub extern "C" {
-        fn sfMouse_isButtonPressed(button : c_uint) -> sfBool;
-        fn sfMouse_getPosition(relativeTo : *ffi::sfWindow) -> Vector2i;
-        fn sfMouse_setPosition(position : Vector2i, relativeTo : *ffi::sfWindow) -> ();
+    extern "C" {
+        pub fn sfMouse_isButtonPressed(button : c_uint) -> sfBool;
+        pub fn sfMouse_getPosition(relativeTo : *ffi::sfWindow) -> Vector2i;
+        pub fn sfMouse_setPosition(position : Vector2i, relativeTo : *ffi::sfWindow) -> ();
     }
 }
 

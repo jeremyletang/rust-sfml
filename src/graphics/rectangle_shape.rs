@@ -61,39 +61,39 @@ pub mod ffi {
         InverseTransform : Transform
     }
     
-    pub extern "C" {
-        fn sfRectangleShape_create() -> *sfRectangleShape;
-        fn sfRectangleShape_copy(shape : *sfRectangleShape) -> *sfRectangleShape;
-        fn sfRectangleShape_destroy(shape : *sfRectangleShape) -> ();
-        fn sfRectangleShape_setPosition(shape : *sfRectangleShape, position : Vector2f) -> ();
-        fn sfRectangleShape_setRotation(shape : *sfRectangleShape, angle : c_float) -> ();
-        fn sfRectangleShape_setScale(shape : *sfRectangleShape, scale : Vector2f) -> ();
-        fn sfRectangleShape_setOrigin(shape : *sfRectangleShape, origin : Vector2f) -> ();
-        fn sfRectangleShape_getPosition(shape : *sfRectangleShape) -> Vector2f;
-        fn sfRectangleShape_getRotation(shape : *sfRectangleShape) -> c_float;
-        fn sfRectangleShape_getScale(shape : *sfRectangleShape) -> Vector2f;
-        fn sfRectangleShape_getOrigin(shape : *sfRectangleShape) -> Vector2f;
-        fn sfRectangleShape_move(shape : *sfRectangleShape, offset : Vector2f) -> ();
-        fn sfRectangleShape_rotate(shape : *sfRectangleShape, angle : c_float) -> ();
-        fn sfRectangleShape_scale(shape : *sfRectangleShape, factors : Vector2f) -> ();
-        fn sfRectangleShape_getTransform(shape : *sfRectangleShape) -> Transform;
-        fn sfRectangleShape_getInverseTransform(shape : *sfRectangleShape) -> Transform;
-        fn sfRectangleShape_setTexture(shape : *sfRectangleShape, texture : *texture::ffi::sfTexture, resetRect : sfBool) -> ();
-        fn sfRectangleShape_setTextureRect(shape : *sfRectangleShape, rect : IntRect) -> ();
-        fn sfRectangleShape_setFillColor(shape : *sfRectangleShape, color : Color) -> ();
-        fn sfRectangleShape_setOutlineColor(shape : *sfRectangleShape, color : Color) -> ();
-        fn sfRectangleShape_setOutlineThickness(shape : *sfRectangleShape, thickness : c_float) -> ();
-        fn sfRectangleShape_getTexture(shape : *sfRectangleShape) -> *texture::ffi::sfTexture;
-        fn sfRectangleShape_getTextureRect(shape : *sfRectangleShape) -> IntRect;
-        fn sfRectangleShape_getFillColor(shape : *sfRectangleShape) -> Color;
-        fn sfRectangleShape_getOutlineColor(shape : *sfRectangleShape) -> Color;
-        fn sfRectangleShape_getOutlineThickness(shape : *sfRectangleShape) -> c_float;
-        fn sfRectangleShape_getPointCount(shape : *sfRectangleShape) -> c_uint;
-        fn sfRectangleShape_getPoint(shape : *sfRectangleShape, index : c_uint) -> Vector2f;
-        fn sfRectangleShape_setSize(shape : *sfRectangleShape, size : Vector2f) -> ();
-        fn sfRectangleShape_getSize(shape : *sfRectangleShape) -> Vector2f;
-        fn sfRectangleShape_getLocalBounds(shape : *sfRectangleShape) -> FloatRect;
-        fn sfRectangleShape_getGlobalBounds(shape : *sfRectangleShape) -> FloatRect;
+    extern "C" {
+        pub fn sfRectangleShape_create() -> *sfRectangleShape;
+        pub fn sfRectangleShape_copy(shape : *sfRectangleShape) -> *sfRectangleShape;
+        pub fn sfRectangleShape_destroy(shape : *sfRectangleShape) -> ();
+        pub fn sfRectangleShape_setPosition(shape : *sfRectangleShape, position : Vector2f) -> ();
+        pub fn sfRectangleShape_setRotation(shape : *sfRectangleShape, angle : c_float) -> ();
+        pub fn sfRectangleShape_setScale(shape : *sfRectangleShape, scale : Vector2f) -> ();
+        pub fn sfRectangleShape_setOrigin(shape : *sfRectangleShape, origin : Vector2f) -> ();
+        pub fn sfRectangleShape_getPosition(shape : *sfRectangleShape) -> Vector2f;
+        pub fn sfRectangleShape_getRotation(shape : *sfRectangleShape) -> c_float;
+        pub fn sfRectangleShape_getScale(shape : *sfRectangleShape) -> Vector2f;
+        pub fn sfRectangleShape_getOrigin(shape : *sfRectangleShape) -> Vector2f;
+        pub fn sfRectangleShape_move(shape : *sfRectangleShape, offset : Vector2f) -> ();
+        pub fn sfRectangleShape_rotate(shape : *sfRectangleShape, angle : c_float) -> ();
+        pub fn sfRectangleShape_scale(shape : *sfRectangleShape, factors : Vector2f) -> ();
+        pub fn sfRectangleShape_getTransform(shape : *sfRectangleShape) -> Transform;
+        pub fn sfRectangleShape_getInverseTransform(shape : *sfRectangleShape) -> Transform;
+        pub fn sfRectangleShape_setTexture(shape : *sfRectangleShape, texture : *texture::ffi::sfTexture, resetRect : sfBool) -> ();
+        pub fn sfRectangleShape_setTextureRect(shape : *sfRectangleShape, rect : IntRect) -> ();
+        pub fn sfRectangleShape_setFillColor(shape : *sfRectangleShape, color : Color) -> ();
+        pub fn sfRectangleShape_setOutlineColor(shape : *sfRectangleShape, color : Color) -> ();
+        pub fn sfRectangleShape_setOutlineThickness(shape : *sfRectangleShape, thickness : c_float) -> ();
+        pub fn sfRectangleShape_getTexture(shape : *sfRectangleShape) -> *texture::ffi::sfTexture;
+        pub fn sfRectangleShape_getTextureRect(shape : *sfRectangleShape) -> IntRect;
+        pub fn sfRectangleShape_getFillColor(shape : *sfRectangleShape) -> Color;
+        pub fn sfRectangleShape_getOutlineColor(shape : *sfRectangleShape) -> Color;
+        pub fn sfRectangleShape_getOutlineThickness(shape : *sfRectangleShape) -> c_float;
+        pub fn sfRectangleShape_getPointCount(shape : *sfRectangleShape) -> c_uint;
+        pub fn sfRectangleShape_getPoint(shape : *sfRectangleShape, index : c_uint) -> Vector2f;
+        pub fn sfRectangleShape_setSize(shape : *sfRectangleShape, size : Vector2f) -> ();
+        pub fn sfRectangleShape_getSize(shape : *sfRectangleShape) -> Vector2f;
+        pub fn sfRectangleShape_getLocalBounds(shape : *sfRectangleShape) -> FloatRect;
+        pub fn sfRectangleShape_getGlobalBounds(shape : *sfRectangleShape) -> FloatRect;
     }
 }
 

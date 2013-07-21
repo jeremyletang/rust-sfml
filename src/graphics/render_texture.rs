@@ -74,33 +74,33 @@ pub mod ffi {
         CurrentView : view::ffi::sfView
     }
     
-    pub extern "C" {
-        fn sfRenderTexture_create(width : c_uint, height : c_uint, depthBuffer : sfBool) -> *sfRenderTexture;
-        fn sfRenderTexture_destroy(renderTexture : *sfRenderTexture) -> ();
-        fn sfRenderTexture_getSize(renderTexture : *sfRenderTexture) -> Vector2u;
-        fn sfRenderTexture_setActive(renderTexture : *sfRenderTexture, active : sfBool) -> sfBool;
-        fn sfRenderTexture_display(renderTexture : *sfRenderTexture) -> ();
-        fn sfRenderTexture_clear(renderTexture : *sfRenderTexture, color : Color) -> ();
-        fn sfRenderTexture_setView(renderTexture : *sfRenderTexture, view : *view::ffi::sfView) -> ();
-        fn sfRenderTexture_getView(renderTexture : *sfRenderTexture) -> *view::ffi::sfView;
-        fn sfRenderTexture_getDefaultView(renderTexture : *sfRenderTexture) -> *view::ffi::sfView;
-        fn sfRenderTexture_getViewport(renderTexture : *sfRenderTexture, view : *view::ffi::sfView) -> IntRect;
-        fn sfRenderTexture_mapPixelToCoords(renderTexture : *sfRenderTexture, point : Vector2i, view : *view::ffi::sfView) -> Vector2f;
-        fn sfRenderTexture_mapCoordsToPixel(renderTexture : *sfRenderTexture, point : Vector2f, view : *view::ffi::sfView) -> Vector2i;
-        fn sfRenderTexture_drawSprite(renderTexture : *sfRenderTexture, object : *sprite::ffi::sfSprite, states : *render_states::ffi::sfRenderStates) -> ();
-        fn sfRenderTexture_drawText(renderTexture : *sfRenderTexture, object : *text::ffi::sfText, states : *render_states::ffi::sfRenderStates) -> ();
+    extern "C" {
+        pub fn sfRenderTexture_create(width : c_uint, height : c_uint, depthBuffer : sfBool) -> *sfRenderTexture;
+        pub fn sfRenderTexture_destroy(renderTexture : *sfRenderTexture) -> ();
+        pub fn sfRenderTexture_getSize(renderTexture : *sfRenderTexture) -> Vector2u;
+        pub fn sfRenderTexture_setActive(renderTexture : *sfRenderTexture, active : sfBool) -> sfBool;
+        pub fn sfRenderTexture_display(renderTexture : *sfRenderTexture) -> ();
+        pub fn sfRenderTexture_clear(renderTexture : *sfRenderTexture, color : Color) -> ();
+        pub fn sfRenderTexture_setView(renderTexture : *sfRenderTexture, view : *view::ffi::sfView) -> ();
+        pub fn sfRenderTexture_getView(renderTexture : *sfRenderTexture) -> *view::ffi::sfView;
+        pub fn sfRenderTexture_getDefaultView(renderTexture : *sfRenderTexture) -> *view::ffi::sfView;
+        pub fn sfRenderTexture_getViewport(renderTexture : *sfRenderTexture, view : *view::ffi::sfView) -> IntRect;
+        pub fn sfRenderTexture_mapPixelToCoords(renderTexture : *sfRenderTexture, point : Vector2i, view : *view::ffi::sfView) -> Vector2f;
+        pub fn sfRenderTexture_mapCoordsToPixel(renderTexture : *sfRenderTexture, point : Vector2f, view : *view::ffi::sfView) -> Vector2i;
+        pub fn sfRenderTexture_drawSprite(renderTexture : *sfRenderTexture, object : *sprite::ffi::sfSprite, states : *render_states::ffi::sfRenderStates) -> ();
+        pub fn sfRenderTexture_drawText(renderTexture : *sfRenderTexture, object : *text::ffi::sfText, states : *render_states::ffi::sfRenderStates) -> ();
         //fn sfRenderTexture_drawShape(renderTexture : *sfRenderTexture, object : *sfShape, states : *render_states::ffi::sfRenderStates) -> ();
-        fn sfRenderTexture_drawCircleShape(renderTexture : *sfRenderTexture, object : *circle_shape::ffi::sfCircleShape, states : *render_states::ffi::sfRenderStates) -> ();
-        fn sfRenderTexture_drawConvexShape(renderTexture : *sfRenderTexture, object : *convex_shape::ffi::sfConvexShape, states : *render_states::ffi::sfRenderStates) -> ();
-        fn sfRenderTexture_drawRectangleShape(renderTexture : *sfRenderTexture, object : *rectangle_shape::ffi::sfRectangleShape, states : *render_states::ffi::sfRenderStates) -> ();
-        fn sfRenderTexture_drawVertexArray(renderTexture : *sfRenderTexture, object : *vertex_array::ffi::sfVertexArray, states : *render_states::ffi::sfRenderStates) -> ();
+        pub fn sfRenderTexture_drawCircleShape(renderTexture : *sfRenderTexture, object : *circle_shape::ffi::sfCircleShape, states : *render_states::ffi::sfRenderStates) -> ();
+        pub fn sfRenderTexture_drawConvexShape(renderTexture : *sfRenderTexture, object : *convex_shape::ffi::sfConvexShape, states : *render_states::ffi::sfRenderStates) -> ();
+        pub fn sfRenderTexture_drawRectangleShape(renderTexture : *sfRenderTexture, object : *rectangle_shape::ffi::sfRectangleShape, states : *render_states::ffi::sfRenderStates) -> ();
+        pub fn sfRenderTexture_drawVertexArray(renderTexture : *sfRenderTexture, object : *vertex_array::ffi::sfVertexArray, states : *render_states::ffi::sfRenderStates) -> ();
         //fn sfRenderTexture_drawPrimitives(renderTexture : *sfRenderTexture) -> (); // a modifier
-        fn sfRenderTexture_pushGLStates(renderTexture : *sfRenderTexture) -> ();
-        fn sfRenderTexture_popGLStates(renderTexture : *sfRenderTexture) -> ();
-        fn sfRenderTexture_resetGLStates(renderTexture : *sfRenderTexture) -> ();
-        fn sfRenderTexture_getTexture(renderTexture : *sfRenderTexture) -> *texture::ffi::sfTexture;
-        fn sfRenderTexture_setSmooth(renderTexture : *sfRenderTexture, smooth : sfBool) -> ();
-        fn sfRenderTexture_isSmooth(renderTexture : *sfRenderTexture) -> sfBool;
+        pub fn sfRenderTexture_pushGLStates(renderTexture : *sfRenderTexture) -> ();
+        pub fn sfRenderTexture_popGLStates(renderTexture : *sfRenderTexture) -> ();
+        pub fn sfRenderTexture_resetGLStates(renderTexture : *sfRenderTexture) -> ();
+        pub fn sfRenderTexture_getTexture(renderTexture : *sfRenderTexture) -> *texture::ffi::sfTexture;
+        pub fn sfRenderTexture_setSmooth(renderTexture : *sfRenderTexture, smooth : sfBool) -> ();
+        pub fn sfRenderTexture_isSmooth(renderTexture : *sfRenderTexture) -> sfBool;
     }
 }
 

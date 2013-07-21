@@ -42,13 +42,13 @@ pub mod ffi {
         microseconds : c_long
     }
     
-    pub extern "C" {
-        fn sfTime_asSeconds(time : sfTime) -> c_float;
-        fn sfTime_asMilliseconds(time : sfTime) -> c_int;
-        fn sfTime_asMicroseconds(time : sfTime) -> c_long;
-        fn sfSeconds(amount : c_float) -> sfTime;
-        fn sfMilliseconds(amount : c_int) -> sfTime;
-        fn sfMicroseconds(amount : c_long) -> sfTime;
+    extern "C" {
+        pub fn sfTime_asSeconds(time : sfTime) -> c_float;
+        pub fn sfTime_asMilliseconds(time : sfTime) -> c_int;
+        pub fn sfTime_asMicroseconds(time : sfTime) -> c_long;
+        pub fn sfSeconds(amount : c_float) -> sfTime;
+        pub fn sfMilliseconds(amount : c_int) -> sfTime;
+        pub fn sfMicroseconds(amount : c_long) -> sfTime;
     }
 }
 

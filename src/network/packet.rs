@@ -45,37 +45,37 @@ pub mod ffi {
         This : *c_void
     }
 
-    pub extern "C" {
-        fn sfPacket_create() -> *sfPacket;
-        fn sfPacket_copy(pack : *sfPacket) -> *sfPacket;
-        fn sfPacket_destroy(pack : *sfPacket) -> ();
+    extern "C" {
+        pub fn sfPacket_create() -> *sfPacket;
+        pub fn sfPacket_copy(pack : *sfPacket) -> *sfPacket;
+        pub fn sfPacket_destroy(pack : *sfPacket) -> ();
         //fn sfPacket_append(pack : *sfPacket, data : *c_void, sizeInBytes : size_t) -> ();
-        fn sfPacket_clear(pack : *sfPacket) -> ();
+        pub fn sfPacket_clear(pack : *sfPacket) -> ();
         //fn sfPacket_getData(pack : *sfPacket) -> *c_void;
-        fn sfPacket_getDataSize(pack : *sfPacket) -> size_t;
-        fn sfPacket_endOfPacket(pack : *sfPacket) -> sfBool;
-        fn sfPacket_canRead(pack : *sfPacket) -> sfBool;
-        fn sfPacket_readBool(pack : *sfPacket) -> sfBool;
-        fn sfPacket_readInt8(pack : *sfPacket) -> i8;
-        fn sfPacket_readUint8(pack : *sfPacket) -> u8;
-        fn sfPacket_readInt16(pack : *sfPacket) -> i16;
-        fn sfPacket_readUint16(pack : *sfPacket) -> u16;
-        fn sfPacket_readInt32(pack : *sfPacket) -> i32;
-        fn sfPacket_readUint32(pack : *sfPacket) -> u32;
-        fn sfPacket_readFloat(pack : *sfPacket) -> c_float;
-        fn sfPacket_readDouble(pack : *sfPacket) -> c_double;
-        fn sfPacket_readString(pack : *sfPacket, string : *c_char) -> ();
+        pub fn sfPacket_getDataSize(pack : *sfPacket) -> size_t;
+        pub fn sfPacket_endOfPacket(pack : *sfPacket) -> sfBool;
+        pub fn sfPacket_canRead(pack : *sfPacket) -> sfBool;
+        pub fn sfPacket_readBool(pack : *sfPacket) -> sfBool;
+        pub fn sfPacket_readInt8(pack : *sfPacket) -> i8;
+        pub fn sfPacket_readUint8(pack : *sfPacket) -> u8;
+        pub fn sfPacket_readInt16(pack : *sfPacket) -> i16;
+        pub fn sfPacket_readUint16(pack : *sfPacket) -> u16;
+        pub fn sfPacket_readInt32(pack : *sfPacket) -> i32;
+        pub fn sfPacket_readUint32(pack : *sfPacket) -> u32;
+        pub fn sfPacket_readFloat(pack : *sfPacket) -> c_float;
+        pub fn sfPacket_readDouble(pack : *sfPacket) -> c_double;
+        pub fn sfPacket_readString(pack : *sfPacket, string : *c_char) -> ();
         //fn sfPacket_readWideString(pack : *sfPacket, string : *wchar_t) -> ();
-        fn sfPacket_writeBool(pack : *sfPacket, data : sfBool) -> ();
-        fn sfPacket_writeInt8(pack : *sfPacket, data : i8) -> ();
-        fn sfPacket_writeUint8(pack : *sfPacket, data : u8) -> ();
-        fn sfPacket_writeInt16(pack : *sfPacket, data : i16) -> ();
-        fn sfPacket_writeUint16(pack : *sfPacket, data : u16) -> ();
-        fn sfPacket_writeInt32(pack : *sfPacket, data : i32) -> ();
-        fn sfPacket_writeUint32(pack : *sfPacket, data : u32) -> ();
-        fn sfPacket_writeFloat(pack : *sfPacket, data : c_float) -> ();
-        fn sfPacket_writeDouble(pack : *sfPacket, data : c_double) -> ();
-        fn sfPacket_writeString(pack : *sfPacket, string : *c_char) -> ();
+        pub fn sfPacket_writeBool(pack : *sfPacket, data : sfBool) -> ();
+        pub fn sfPacket_writeInt8(pack : *sfPacket, data : i8) -> ();
+        pub fn sfPacket_writeUint8(pack : *sfPacket, data : u8) -> ();
+        pub fn sfPacket_writeInt16(pack : *sfPacket, data : i16) -> ();
+        pub fn sfPacket_writeUint16(pack : *sfPacket, data : u16) -> ();
+        pub fn sfPacket_writeInt32(pack : *sfPacket, data : i32) -> ();
+        pub fn sfPacket_writeUint32(pack : *sfPacket, data : u32) -> ();
+        pub fn sfPacket_writeFloat(pack : *sfPacket, data : c_float) -> ();
+        pub fn sfPacket_writeDouble(pack : *sfPacket, data : c_double) -> ();
+        pub fn sfPacket_writeString(pack : *sfPacket, string : *c_char) -> ();
         //fn sfPacket_writeWideString(pack : *sfPacket, string : *wchar_t) -> ();
     }
 }

@@ -63,39 +63,39 @@ pub mod ffi {
         This : *c_void
     }
     
-    pub extern "C" {
-        fn sfFtpListingResponse_destroy(ftpListingResponse : *sfFtpListingResponse) -> ();
-        fn sfFtpListingResponse_isOk(ftpListingResponse : *sfFtpListingResponse) -> sfBool;
-        fn sfFtpListingResponse_getStatus(ftpListingResponse : *sfFtpListingResponse) -> Status;
-        fn sfFtpListingResponse_getMessage(ftpListingResponse : *sfFtpListingResponse) -> *c_char;
-        fn sfFtpListingResponse_getCount(ftpListingResponse : *sfFtpListingResponse) -> size_t;
-        fn sfFtpListingResponse_getName(ftpListingResponse : *sfFtpListingResponse, index : size_t) -> *c_char;
-        fn sfFtpDirectoryResponse_destroy(ftpDirectoryResponse : *sfFtpDirectoryResponse) -> ();
-        fn sfFtpDirectoryResponse_isOk(ftpDirectoryResponse : *sfFtpDirectoryResponse) -> sfBool;
-        fn sfFtpDirectoryResponse_getStatus(ftpDirectoryResponse : *sfFtpDirectoryResponse) -> Status;
-        fn sfFtpDirectoryResponse_getMessage(ftpDirectoryResponse : *sfFtpDirectoryResponse) -> *c_char;
-        fn sfFtpDirectoryResponse_getDirectory(ftpDirectoryResponse : *sfFtpDirectoryResponse) -> *c_char;
-        fn sfFtpResponse_destroy(ftpResponse : *sfFtpResponse) -> ();
-        fn sfFtpResponse_isOk(ftpResponse : *sfFtpResponse) -> sfBool;
-        fn sfFtpResponse_getStatus(ftpResponse : *sfFtpResponse) -> Status;
-        fn sfFtpResponse_getMessage(ftpResponse : *sfFtpResponse) -> *c_char;
-        fn sfFtp_create() -> *sfFtp;
-        fn sfFtp_destroy(ftp : *sfFtp) -> ();
-        fn sfFtp_connect(ftp : *sfFtp, server : sfIpAddress, port : u16, timeout : time::ffi::sfTime) -> *sfFtpResponse;
-        fn sfFtp_loginAnonymous(ftp : *sfFtp) -> *sfFtpResponse;
-        fn sfFtp_login(ftp : *sfFtp, userName : *c_char, password : *c_char) -> *sfFtpResponse;
-        fn sfFtp_disconnect(ftp : *sfFtp) -> *sfFtpResponse;
-        fn sfFtp_keepAlive(ftp : *sfFtp) -> *sfFtpResponse;
-        fn sfFtp_getWorkingDirectory(ftp : *sfFtp) -> *sfFtpDirectoryResponse;
-        fn sfFtp_getDirectoryListing(ftp : *sfFtp, directory : *c_char) -> *sfFtpListingResponse;
-        fn sfFtp_changeDirectory(ftp : *sfFtp, directory : *c_char) -> *sfFtpResponse;
-        fn sfFtp_parentDirectory(ftp : *sfFtp) -> *sfFtpResponse;
-        fn sfFtp_createDirectory(ftp : *sfFtp, name : *c_char) -> *sfFtpResponse;
-        fn sfFtp_deleteDirectory(ftp : *sfFtp, name : *c_char) -> *sfFtpResponse;
-        fn sfFtp_renameFile(ftp : *sfFtp, file : *c_char, newName : *c_char) -> *sfFtpResponse;
-        fn sfFtp_deleteFile(ftp : *sfFtp, name : *c_char) -> *sfFtpResponse;
-        fn sfFtp_download(ftp : *sfFtp, distantFile : *c_char, destPath : *c_char, mode : TransferMode) -> *sfFtpResponse;
-        fn sfFtp_upload(ftp : *sfFtp, localFile : *c_char, destPath : *c_char, mode : TransferMode) -> *sfFtpResponse;
+    extern "C" {
+        pub fn sfFtpListingResponse_destroy(ftpListingResponse : *sfFtpListingResponse) -> ();
+        pub fn sfFtpListingResponse_isOk(ftpListingResponse : *sfFtpListingResponse) -> sfBool;
+        pub fn sfFtpListingResponse_getStatus(ftpListingResponse : *sfFtpListingResponse) -> Status;
+        pub fn sfFtpListingResponse_getMessage(ftpListingResponse : *sfFtpListingResponse) -> *c_char;
+        pub fn sfFtpListingResponse_getCount(ftpListingResponse : *sfFtpListingResponse) -> size_t;
+        pub fn sfFtpListingResponse_getName(ftpListingResponse : *sfFtpListingResponse, index : size_t) -> *c_char;
+        pub fn sfFtpDirectoryResponse_destroy(ftpDirectoryResponse : *sfFtpDirectoryResponse) -> ();
+        pub fn sfFtpDirectoryResponse_isOk(ftpDirectoryResponse : *sfFtpDirectoryResponse) -> sfBool;
+        pub fn sfFtpDirectoryResponse_getStatus(ftpDirectoryResponse : *sfFtpDirectoryResponse) -> Status;
+        pub fn sfFtpDirectoryResponse_getMessage(ftpDirectoryResponse : *sfFtpDirectoryResponse) -> *c_char;
+        pub fn sfFtpDirectoryResponse_getDirectory(ftpDirectoryResponse : *sfFtpDirectoryResponse) -> *c_char;
+        pub fn sfFtpResponse_destroy(ftpResponse : *sfFtpResponse) -> ();
+        pub fn sfFtpResponse_isOk(ftpResponse : *sfFtpResponse) -> sfBool;
+        pub fn sfFtpResponse_getStatus(ftpResponse : *sfFtpResponse) -> Status;
+        pub fn sfFtpResponse_getMessage(ftpResponse : *sfFtpResponse) -> *c_char;
+        pub fn sfFtp_create() -> *sfFtp;
+        pub fn sfFtp_destroy(ftp : *sfFtp) -> ();
+        pub fn sfFtp_connect(ftp : *sfFtp, server : sfIpAddress, port : u16, timeout : time::ffi::sfTime) -> *sfFtpResponse;
+        pub fn sfFtp_loginAnonymous(ftp : *sfFtp) -> *sfFtpResponse;
+        pub fn sfFtp_login(ftp : *sfFtp, userName : *c_char, password : *c_char) -> *sfFtpResponse;
+        pub fn sfFtp_disconnect(ftp : *sfFtp) -> *sfFtpResponse;
+        pub fn sfFtp_keepAlive(ftp : *sfFtp) -> *sfFtpResponse;
+        pub fn sfFtp_getWorkingDirectory(ftp : *sfFtp) -> *sfFtpDirectoryResponse;
+        pub fn sfFtp_getDirectoryListing(ftp : *sfFtp, directory : *c_char) -> *sfFtpListingResponse;
+        pub fn sfFtp_changeDirectory(ftp : *sfFtp, directory : *c_char) -> *sfFtpResponse;
+        pub fn sfFtp_parentDirectory(ftp : *sfFtp) -> *sfFtpResponse;
+        pub fn sfFtp_createDirectory(ftp : *sfFtp, name : *c_char) -> *sfFtpResponse;
+        pub fn sfFtp_deleteDirectory(ftp : *sfFtp, name : *c_char) -> *sfFtpResponse;
+        pub fn sfFtp_renameFile(ftp : *sfFtp, file : *c_char, newName : *c_char) -> *sfFtpResponse;
+        pub fn sfFtp_deleteFile(ftp : *sfFtp, name : *c_char) -> *sfFtpResponse;
+        pub fn sfFtp_download(ftp : *sfFtp, distantFile : *c_char, destPath : *c_char, mode : TransferMode) -> *sfFtpResponse;
+        pub fn sfFtp_upload(ftp : *sfFtp, localFile : *c_char, destPath : *c_char, mode : TransferMode) -> *sfFtpResponse;
     }
 }
 

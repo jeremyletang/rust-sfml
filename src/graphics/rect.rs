@@ -39,11 +39,11 @@ pub mod ffi {
     use graphics::rect::IntRect;
     use graphics::rect::FloatRect;
 
-    pub extern "C" {
-        fn sfIntRect_contains(rect : *IntRect, x : c_int, y : c_int) -> sfBool;
-        fn sfIntRect_intersects(rect1 : *IntRect, rect2 : *IntRect, intersectons : *IntRect) -> sfBool;
-        fn sfFloatRect_intersects(rect1 : *FloatRect, rect2 : *FloatRect, intersectons : *FloatRect) -> sfBool;
-        fn sfFloatRect_contains(rect : *FloatRect, x : f32, y : f32) -> sfBool;
+    extern "C" {
+        pub fn sfIntRect_contains(rect : *IntRect, x : c_int, y : c_int) -> sfBool;
+        pub fn sfIntRect_intersects(rect1 : *IntRect, rect2 : *IntRect, intersectons : *IntRect) -> sfBool;
+        pub fn sfFloatRect_intersects(rect1 : *FloatRect, rect2 : *FloatRect, intersectons : *FloatRect) -> sfBool;
+        pub fn sfFloatRect_contains(rect : *FloatRect, x : f32, y : f32) -> sfBool;
     }
 }
 

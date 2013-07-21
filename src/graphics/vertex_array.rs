@@ -63,18 +63,18 @@ pub mod ffi {
         This : *c_void
     }
 
-    pub extern "C" {
-        fn sfVertexArray_create() -> *sfVertexArray;
-        fn sfVertexArray_copy(vertexArray : *sfVertexArray) -> *sfVertexArray;
-        fn sfVertexArray_destroy(vertexArray : *sfVertexArray) -> ();
-        fn sfVertexArray_getVertexCount(vertexArray : *sfVertexArray) -> c_uint;
-        fn sfVertexArray_getVertex(vertexArray : *sfVertexArray, index : c_uint) -> *vertex::Vertex;
-        fn sfVertexArray_clear(vertexArray : *sfVertexArray) -> ();
-        fn sfVertexArray_resize(vertexArray : *sfVertexArray, vertexCount : c_uint) -> ();
-        fn sfVertexArray_append(vertexArray : *sfVertexArray, vertex : vertex::Vertex) -> ();
-        fn sfVertexArray_setPrimitiveType(vertexArray : *sfVertexArray, stype : sfPrimitiveType) -> ();
-        fn sfVertexArray_getPrimitiveType(vertexArray : *sfVertexArray) -> sfPrimitiveType;
-        fn sfVertexArray_getBounds(vertexArray : *sfVertexArray) -> FloatRect;
+    extern "C" {
+        pub fn sfVertexArray_create() -> *sfVertexArray;
+        pub fn sfVertexArray_copy(vertexArray : *sfVertexArray) -> *sfVertexArray;
+        pub fn sfVertexArray_destroy(vertexArray : *sfVertexArray) -> ();
+        pub fn sfVertexArray_getVertexCount(vertexArray : *sfVertexArray) -> c_uint;
+        pub fn sfVertexArray_getVertex(vertexArray : *sfVertexArray, index : c_uint) -> *vertex::Vertex;
+        pub fn sfVertexArray_clear(vertexArray : *sfVertexArray) -> ();
+        pub fn sfVertexArray_resize(vertexArray : *sfVertexArray, vertexCount : c_uint) -> ();
+        pub fn sfVertexArray_append(vertexArray : *sfVertexArray, vertex : vertex::Vertex) -> ();
+        pub fn sfVertexArray_setPrimitiveType(vertexArray : *sfVertexArray, stype : sfPrimitiveType) -> ();
+        pub fn sfVertexArray_getPrimitiveType(vertexArray : *sfVertexArray) -> sfPrimitiveType;
+        pub fn sfVertexArray_getBounds(vertexArray : *sfVertexArray) -> FloatRect;
     }
 }
 

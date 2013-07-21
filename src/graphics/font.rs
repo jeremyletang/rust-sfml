@@ -50,16 +50,16 @@ pub mod ffi {
         This : *c_void
     }
 
-    pub extern "C" {
-        fn sfFont_createFromFile(filename : *c_char) -> *sfFont;
-        fn sfFont_copy(font : *sfFont) -> *sfFont;
+    extern "C" {
+        pub fn sfFont_createFromFile(filename : *c_char) -> *sfFont;
+        pub fn sfFont_copy(font : *sfFont) -> *sfFont;
         // fn sfFont_createFromMemory(data : *c_void, sizeInBytes : size_t) -> *sfFont;
         // fn sfFont_createFromStream(stream : *sfInputStream) -> *sfFont;
-        fn sfFont_destroy(font : *sfFont) -> ();
-        fn sfFont_getGlyph(font : *sfFont, codepoint : u32, characterSize : c_uint, bold :sfBool) -> Glyph;
-        fn sfFont_getKerning(font : *sfFont, first : u32, second : u32, characterSize : c_uint) -> c_int;
-        fn sfFont_getLineSpacing(font : *sfFont, characterSize : c_uint) -> c_int;
-        fn sfFont_getTexture(font : *sfFont, characterSize : c_uint) -> *texture::ffi::sfTexture;
+        pub fn sfFont_destroy(font : *sfFont) -> ();
+        pub fn sfFont_getGlyph(font : *sfFont, codepoint : u32, characterSize : c_uint, bold :sfBool) -> Glyph;
+        pub fn sfFont_getKerning(font : *sfFont, first : u32, second : u32, characterSize : c_uint) -> c_int;
+        pub fn sfFont_getLineSpacing(font : *sfFont, characterSize : c_uint) -> c_int;
+        pub fn sfFont_getTexture(font : *sfFont, characterSize : c_uint) -> *texture::ffi::sfTexture;
     }
 }
 

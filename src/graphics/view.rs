@@ -48,23 +48,23 @@ pub mod ffi {
         This : *c_void
     }
 
-    pub extern "C" {
-        fn sfView_create() -> *sfView;
-        fn sfView_createFromRect(rectangle : FloatRect) -> *sfView;
-        fn sfView_copy(view : *sfView) -> *sfView;
-        fn sfView_destroy(view : *sfView) -> ();
-        fn sfView_setCenter(view : *sfView, center : Vector2f) -> ();
-        fn sfView_setSize(view : *sfView, size : Vector2f) -> ();
-        fn sfView_setRotation(view : *sfView, angle : c_float) -> ();
-        fn sfView_setViewport(view : *sfView, viewport : FloatRect) -> ();
-        fn sfView_reset(view : *sfView, rectangle : FloatRect) -> ();
-        fn sfView_getCenter(view : *sfView) -> Vector2f;
-        fn sfView_getSize(view : *sfView) -> Vector2f;
-        fn sfView_getRotation(view : *sfView) -> c_float;
-        fn sfView_getViewport(view : *sfView) -> FloatRect;
-        fn sfView_move(view : *sfView, offset : Vector2f) -> ();
-        fn sfView_rotate(view : *sfView, angle : c_float) -> ();
-        fn sfView_zoom(view : *sfView, factor : c_float) -> ();
+    extern "C" {
+        pub fn sfView_create() -> *sfView;
+        pub fn sfView_createFromRect(rectangle : FloatRect) -> *sfView;
+        pub fn sfView_copy(view : *sfView) -> *sfView;
+        pub fn sfView_destroy(view : *sfView) -> ();
+        pub fn sfView_setCenter(view : *sfView, center : Vector2f) -> ();
+        pub fn sfView_setSize(view : *sfView, size : Vector2f) -> ();
+        pub fn sfView_setRotation(view : *sfView, angle : c_float) -> ();
+        pub fn sfView_setViewport(view : *sfView, viewport : FloatRect) -> ();
+        pub fn sfView_reset(view : *sfView, rectangle : FloatRect) -> ();
+        pub fn sfView_getCenter(view : *sfView) -> Vector2f;
+        pub fn sfView_getSize(view : *sfView) -> Vector2f;
+        pub fn sfView_getRotation(view : *sfView) -> c_float;
+        pub fn sfView_getViewport(view : *sfView) -> FloatRect;
+        pub fn sfView_move(view : *sfView, offset : Vector2f) -> ();
+        pub fn sfView_rotate(view : *sfView, angle : c_float) -> ();
+        pub fn sfView_zoom(view : *sfView, factor : c_float) -> ();
     }
 }
 

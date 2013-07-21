@@ -50,14 +50,14 @@ pub mod ffi {
         This : *c_void
     }
     
-    pub extern "C" {
-        fn sfTcpListener_create() -> *sfTcpListener;
-        fn sfTcpListener_destroy(listener : *sfTcpListener) -> ();
-        fn sfTcpListener_setBlocking(listener : *sfTcpListener, blocking : sfBool) -> ();
-        fn sfTcpListener_isBlocking(listener : *sfTcpListener) -> sfBool;
-        fn sfTcpListener_getLocalPort(listener : *sfTcpListener) -> u16;
-        fn sfTcpListener_listen(listener : *sfTcpListener, port : u16) -> SocketStatus;
-        fn sfTcpListener_accept(listener : *sfTcpListener, connected : **tcp_socket::ffi::sfTcpSocket) -> SocketStatus;
+    extern "C" {
+        pub fn sfTcpListener_create() -> *sfTcpListener;
+        pub fn sfTcpListener_destroy(listener : *sfTcpListener) -> ();
+        pub fn sfTcpListener_setBlocking(listener : *sfTcpListener, blocking : sfBool) -> ();
+        pub fn sfTcpListener_isBlocking(listener : *sfTcpListener) -> sfBool;
+        pub fn sfTcpListener_getLocalPort(listener : *sfTcpListener) -> u16;
+        pub fn sfTcpListener_listen(listener : *sfTcpListener, port : u16) -> SocketStatus;
+        pub fn sfTcpListener_accept(listener : *sfTcpListener, connected : **tcp_socket::ffi::sfTcpSocket) -> SocketStatus;
     }
 }
 

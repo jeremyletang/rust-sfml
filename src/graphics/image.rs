@@ -53,24 +53,24 @@ pub mod ffi {
         This : *c_void
     }
 
-    pub extern "C" {
-        fn sfImage_create(width : c_uint, height : c_uint) -> *sfImage;
-        fn sfImage_createFromColor(width : c_uint, height : c_uint, color : color::Color) -> *sfImage;
-        fn sfImage_createFromPixels(width : c_uint, height : c_uint, pixels : *u8) -> *sfImage;
-        fn sfImage_createFromFile(filename : *c_char) -> *sfImage;
+    extern "C" {
+        pub fn sfImage_create(width : c_uint, height : c_uint) -> *sfImage;
+        pub fn sfImage_createFromColor(width : c_uint, height : c_uint, color : color::Color) -> *sfImage;
+        pub fn sfImage_createFromPixels(width : c_uint, height : c_uint, pixels : *u8) -> *sfImage;
+        pub fn sfImage_createFromFile(filename : *c_char) -> *sfImage;
         //fn sfImage_createFromMemory(data : *c_void, size : size_t) -> *sfImage;
         //fn sfImage_createFromStream(stream : *sfInputStream) -> *sfImage;
-        fn sfImage_copy(image : *sfImage) -> *sfImage;
-        fn sfImage_destroy(image : *sfImage) -> ();
-        fn sfImage_saveToFile(image : *sfImage, filename : *c_char) -> sfBool;
-        fn sfImage_getSize(image : *sfImage) -> vector2::Vector2u;
-        fn sfImage_createMaskFromColor(image : *sfImage, color : color::Color, alpha : u8) -> ();
-        fn sfImage_copyImage(image : *sfImage, source : *sfImage, destX : c_uint, destY : c_uint, sourceRect : IntRect, applyAlpha : sfBool) -> ();
-        fn sfImage_setPixel(image : *sfImage, x : c_uint, y : c_uint, color : color::Color) -> ();
-        fn sfImage_getPixel(image : *sfImage, x : c_uint, y : c_uint) -> color::Color;
-        fn sfImage_getPixelsPtr(image : *sfImage) -> *u8;
-        fn sfImage_flipHorizontally(image : *sfImage) -> ();
-        fn sfImage_flipVertically(image : *sfImage) -> ();
+        pub fn sfImage_copy(image : *sfImage) -> *sfImage;
+        pub fn sfImage_destroy(image : *sfImage) -> ();
+        pub fn sfImage_saveToFile(image : *sfImage, filename : *c_char) -> sfBool;
+        pub fn sfImage_getSize(image : *sfImage) -> vector2::Vector2u;
+        pub fn sfImage_createMaskFromColor(image : *sfImage, color : color::Color, alpha : u8) -> ();
+        pub fn sfImage_copyImage(image : *sfImage, source : *sfImage, destX : c_uint, destY : c_uint, sourceRect : IntRect, applyAlpha : sfBool) -> ();
+        pub fn sfImage_setPixel(image : *sfImage, x : c_uint, y : c_uint, color : color::Color) -> ();
+        pub fn sfImage_getPixel(image : *sfImage, x : c_uint, y : c_uint) -> color::Color;
+        pub fn sfImage_getPixelsPtr(image : *sfImage) -> *u8;
+        pub fn sfImage_flipHorizontally(image : *sfImage) -> ();
+        pub fn sfImage_flipVertically(image : *sfImage) -> ();
     }
 }
 

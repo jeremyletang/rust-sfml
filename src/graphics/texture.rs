@@ -57,26 +57,26 @@ pub mod ffi {
         this : *c_void
     }
 
-    pub extern "C" {
-        fn sfTexture_create(width : c_uint, height : c_uint) -> *sfTexture;
-        fn sfTexture_createFromFile(filename : *c_char, area : *IntRect) -> *sfTexture;
+    extern "C" {
+        pub fn sfTexture_create(width : c_uint, height : c_uint) -> *sfTexture;
+        pub fn sfTexture_createFromFile(filename : *c_char, area : *IntRect) -> *sfTexture;
         //fn sfTexture_createFromMemory(data : *c_void, sizeInBytes : size_t , area : *sfIntRect) -> *sfTexture;
         //fn sfTexture_createFromStream(strea; : *sfInputStream, area : *sfIntRect) -> *sfTexture;
-        fn sfTexture_createFromImage(image :*image::ffi::sfImage, area : *IntRect) -> *sfTexture;
-        fn sfTexture_copy(texture : *sfTexture) -> *sfTexture;
-        fn sfTexture_destroy(texture : *sfTexture) -> ();
-        fn sfTexture_getSize(texture : *sfTexture) -> Vector2u;
-        fn sfTexture_copyToImage(texture : *sfTexture) -> *image::ffi::sfImage;
-        fn sfTexture_updateFromPixels(texture : *sfTexture, pixels : *u8, width : c_uint, height : c_uint, x : c_uint, y : c_uint) -> ();
-        fn sfTexture_updateFromImage(texture : *sfTexture, image : *image::ffi::sfImage, x : c_uint, y : c_uint) -> ();
-        fn sfTexture_updateFromWindow(texture : *sfTexture, window : *sfWindow, x : c_uint, y : c_uint) -> ();
-        fn sfTexture_updateFromRenderWindow(texture : *sfTexture, renderWindow : *sfRenderWindow, x : c_uint, y : c_uint) -> ();
-        fn sfTexture_setSmooth(texture : *sfTexture, smooth : sfBool) -> ();
-        fn sfTexture_isSmooth(texture : *sfTexture) -> sfBool;
-        fn sfTexture_setRepeated(texture : *sfTexture, repeated : sfBool);
-        fn sfTexture_isRepeated(texture : *sfTexture) -> sfBool;
-        fn sfTexture_bind(texture : *sfTexture) -> ();
-        fn sfTexture_getMaximumSize() -> c_uint;
+        pub fn sfTexture_createFromImage(image :*image::ffi::sfImage, area : *IntRect) -> *sfTexture;
+        pub fn sfTexture_copy(texture : *sfTexture) -> *sfTexture;
+        pub fn sfTexture_destroy(texture : *sfTexture) -> ();
+        pub fn sfTexture_getSize(texture : *sfTexture) -> Vector2u;
+        pub fn sfTexture_copyToImage(texture : *sfTexture) -> *image::ffi::sfImage;
+        pub fn sfTexture_updateFromPixels(texture : *sfTexture, pixels : *u8, width : c_uint, height : c_uint, x : c_uint, y : c_uint) -> ();
+        pub fn sfTexture_updateFromImage(texture : *sfTexture, image : *image::ffi::sfImage, x : c_uint, y : c_uint) -> ();
+        pub fn sfTexture_updateFromWindow(texture : *sfTexture, window : *sfWindow, x : c_uint, y : c_uint) -> ();
+        pub fn sfTexture_updateFromRenderWindow(texture : *sfTexture, renderWindow : *sfRenderWindow, x : c_uint, y : c_uint) -> ();
+        pub fn sfTexture_setSmooth(texture : *sfTexture, smooth : sfBool) -> ();
+        pub fn sfTexture_isSmooth(texture : *sfTexture) -> sfBool;
+        pub fn sfTexture_setRepeated(texture : *sfTexture, repeated : sfBool);
+        pub fn sfTexture_isRepeated(texture : *sfTexture) -> sfBool;
+        pub fn sfTexture_bind(texture : *sfTexture) -> ();
+        pub fn sfTexture_getMaximumSize() -> c_uint;
     }
 }
 

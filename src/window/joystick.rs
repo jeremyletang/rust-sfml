@@ -61,13 +61,13 @@ pub mod ffi {
         PovY
     }
 
-    pub extern "C" {
-        fn sfJoystick_isConnected(joystick : c_uint) -> sfBool;
-        fn sfJoystick_getButtonCount(joystick : c_uint) -> c_uint;
-        fn sfJoystick_hasAxis(joystick : c_uint, axis : c_uint) -> sfBool;
-        fn sfJoystick_isButtonPressed(joystick : c_uint, button : c_uint) -> sfBool;
-        fn sfJoystick_getAxisPosition(joystick : c_uint, axis : c_uint) -> c_float;
-        fn sfJoystick_update() -> ();
+    extern "C" {
+        pub fn sfJoystick_isConnected(joystick : c_uint) -> sfBool;
+        pub fn sfJoystick_getButtonCount(joystick : c_uint) -> c_uint;
+        pub fn sfJoystick_hasAxis(joystick : c_uint, axis : c_uint) -> sfBool;
+        pub fn sfJoystick_isButtonPressed(joystick : c_uint, button : c_uint) -> sfBool;
+        pub fn sfJoystick_getAxisPosition(joystick : c_uint, axis : c_uint) -> c_float;
+        pub fn sfJoystick_update() -> ();
     }
 }
 

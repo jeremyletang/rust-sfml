@@ -34,8 +34,8 @@ pub mod ffi {
     
     use system::time::*;
 
-    pub extern "C" {
-        fn sfSleep(duration : ffi::sfTime) -> ();
+    extern "C" {
+        pub fn sfSleep(duration : ffi::sfTime) -> ();
     }
 }
 
