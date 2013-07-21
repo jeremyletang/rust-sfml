@@ -46,16 +46,16 @@ pub mod ffi {
         This : *c_void
     }
 
-    pub extern "C" {
-        fn sfSoundBuffer_createFromFile(filename : *c_char) -> *sfSoundBuffer;
-        fn sfSoundBuffer_copy(soundBuffer : *sfSoundBuffer) -> *sfSoundBuffer;
-        fn sfSoundBuffer_destroy(soundBuffer : *sfSoundBuffer) -> ();
-        fn sfSoundBuffer_saveToFile(soundBuffer : *sfSoundBuffer, filename : *c_char) -> sfBool;
+    extern "C" {
+        pub fn sfSoundBuffer_createFromFile(filename : *c_char) -> *sfSoundBuffer;
+        pub fn sfSoundBuffer_copy(soundBuffer : *sfSoundBuffer) -> *sfSoundBuffer;
+        pub fn sfSoundBuffer_destroy(soundBuffer : *sfSoundBuffer) -> ();
+        pub fn sfSoundBuffer_saveToFile(soundBuffer : *sfSoundBuffer, filename : *c_char) -> sfBool;
        // fn sfSoundBuffer_getSamples(soundBuffer : *sfSoundBuffer) -> *i16;
-        fn sfSoundBuffer_getSampleCount(soundBuffer : *sfSoundBuffer) -> size_t;
-        fn sfSoundBuffer_getChannelCount(soundBuffer : *sfSoundBuffer) -> c_uint;
-        fn sfSoundBuffer_getDuration(soundBuffer : *sfSoundBuffer) -> time::ffi::sfTime;
-        fn sfSoundBuffer_getSampleRate(soundBuffer : *sfSoundBuffer) -> c_uint;
+        pub fn sfSoundBuffer_getSampleCount(soundBuffer : *sfSoundBuffer) -> size_t;
+        pub fn sfSoundBuffer_getChannelCount(soundBuffer : *sfSoundBuffer) -> c_uint;
+        pub fn sfSoundBuffer_getDuration(soundBuffer : *sfSoundBuffer) -> time::ffi::sfTime;
+        pub fn sfSoundBuffer_getSampleRate(soundBuffer : *sfSoundBuffer) -> c_uint;
     }
 }
 

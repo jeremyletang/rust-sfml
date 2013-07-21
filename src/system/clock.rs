@@ -42,12 +42,12 @@ pub mod ffi {
         This : *c_void
     }
 
-    pub extern "C" {
-        fn sfClock_create() -> *sfClock;
-        fn sfClock_copy(clock : *sfClock) -> *sfClock;
-        fn sfClock_destroy(clock : *sfClock) -> ();
-        fn sfClock_getElapsedTime(clock : *sfClock) -> ffi::sfTime;
-        fn sfClock_restart(clock : *sfClock) -> ffi::sfTime;
+    extern "C" {
+        pub fn sfClock_create() -> *sfClock;
+        pub fn sfClock_copy(clock : *sfClock) -> *sfClock;
+        pub fn sfClock_destroy(clock : *sfClock) -> ();
+        pub fn sfClock_getElapsedTime(clock : *sfClock) -> ffi::sfTime;
+        pub fn sfClock_restart(clock : *sfClock) -> ffi::sfTime;
     }
 }
 

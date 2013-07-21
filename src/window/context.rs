@@ -38,10 +38,10 @@ pub mod ffi {
         This: *c_void
     }
 
-    pub extern "C" {
-        fn sfContext_create() -> *sfContext;
-        fn sfContext_destroy(context : *sfContext) -> ();
-        fn sfContext_setActive(context : *sfContext, active : sfBool) -> ();
+    extern "C" {
+        pub fn sfContext_create() -> *sfContext;
+        pub fn sfContext_destroy(context : *sfContext) -> ();
+        pub fn sfContext_setActive(context : *sfContext, active : sfBool) -> ();
     }
 }
 

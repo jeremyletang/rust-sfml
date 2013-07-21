@@ -50,23 +50,23 @@ pub mod ffi {
         inverseTransform : Transform
     }
 
-    pub extern "C" {
-        fn sfTransformable_create() -> *sfTransformable;
-        fn sfTransformable_copy(transformable : *sfTransformable) -> *sfTransformable;
-        fn sfTransformable_destroy(transformable : *sfTransformable) -> ();
-        fn sfTransformable_setPosition(transformable : *sfTransformable, position : Vector2f) -> ();
-        fn sfTransformable_setRotation(transformable : *sfTransformable, angle : c_float) -> ();
-        fn sfTransformable_setScale(transformable : *sfTransformable, scale : Vector2f) -> ();
-        fn sfTransformable_setOrigin(transformable : *sfTransformable, origin : Vector2f) -> ();
-        fn sfTransformable_getPosition(transformable : *sfTransformable) -> Vector2f;
-        fn sfTransformable_getRotation(transformable : *sfTransformable) -> c_float;
-        fn sfTransformable_getScale(transformable : *sfTransformable) -> Vector2f;
-        fn sfTransformable_getOrigin(transformable : *sfTransformable) -> Vector2f;
-        fn sfTransformable_move(transformable : *sfTransformable, offset : Vector2f) -> ();
-        fn sfTransformable_rotate(transformable : *sfTransformable, angle : c_float) -> ();
-        fn sfTransformable_scale(transformable : *sfTransformable, factors : Vector2f) -> ();
-        fn sfTransformable_getTransform(transformable : *sfTransformable) -> Transform;
-        fn sfTransformable_getInverseTransform(transformable : *sfTransformable) -> Transform;
+    extern "C" {
+        pub fn sfTransformable_create() -> *sfTransformable;
+        pub fn sfTransformable_copy(transformable : *sfTransformable) -> *sfTransformable;
+        pub fn sfTransformable_destroy(transformable : *sfTransformable) -> ();
+        pub fn sfTransformable_setPosition(transformable : *sfTransformable, position : Vector2f) -> ();
+        pub fn sfTransformable_setRotation(transformable : *sfTransformable, angle : c_float) -> ();
+        pub fn sfTransformable_setScale(transformable : *sfTransformable, scale : Vector2f) -> ();
+        pub fn sfTransformable_setOrigin(transformable : *sfTransformable, origin : Vector2f) -> ();
+        pub fn sfTransformable_getPosition(transformable : *sfTransformable) -> Vector2f;
+        pub fn sfTransformable_getRotation(transformable : *sfTransformable) -> c_float;
+        pub fn sfTransformable_getScale(transformable : *sfTransformable) -> Vector2f;
+        pub fn sfTransformable_getOrigin(transformable : *sfTransformable) -> Vector2f;
+        pub fn sfTransformable_move(transformable : *sfTransformable, offset : Vector2f) -> ();
+        pub fn sfTransformable_rotate(transformable : *sfTransformable, angle : c_float) -> ();
+        pub fn sfTransformable_scale(transformable : *sfTransformable, factors : Vector2f) -> ();
+        pub fn sfTransformable_getTransform(transformable : *sfTransformable) -> Transform;
+        pub fn sfTransformable_getInverseTransform(transformable : *sfTransformable) -> Transform;
     }
 }
 

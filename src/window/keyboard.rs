@@ -144,8 +144,8 @@ pub mod ffi {
     pub use std::libc::{c_int};
     use rsfml::sfTypes::{sfBool};
 
-    pub extern "C" {
-        fn sfKeyboard_isKeyPressed(key : c_int) -> sfBool;
+    extern "C" {
+        pub fn sfKeyboard_isKeyPressed(key : c_int) -> sfBool;
     }
 }
 

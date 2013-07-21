@@ -61,14 +61,14 @@ pub mod ffi{
         c16 : c_char
     }
 
-    pub extern "C" {
-        fn sfIpAddress_fromString(address : *c_char) -> sfIpAddress;
-        fn sfIpAddress_fromBytes(byte0 : u8, byte1 : u8, byte2 : u8, byte3 : u8) -> sfIpAddress;
-        fn sfIpAddress_fromInteger(address : u32) -> sfIpAddress;
-        fn sfIpAddress_toString(address : sfIpAddress, string : *c_char) -> ();
-        fn sfIpAddress_toInteger(address : sfIpAddress) -> u32;
-        fn sfIpAddress_getLocalAddress() -> sfIpAddress;
-        fn sfIpAddress_getPublicAddress(timeout : time::ffi::sfTime) -> sfIpAddress;
+    extern "C" {
+        pub fn sfIpAddress_fromString(address : *c_char) -> sfIpAddress;
+        pub fn sfIpAddress_fromBytes(byte0 : u8, byte1 : u8, byte2 : u8, byte3 : u8) -> sfIpAddress;
+        pub fn sfIpAddress_fromInteger(address : u32) -> sfIpAddress;
+        pub fn sfIpAddress_toString(address : sfIpAddress, string : *c_char) -> ();
+        pub fn sfIpAddress_toInteger(address : sfIpAddress) -> u32;
+        pub fn sfIpAddress_getLocalAddress() -> sfIpAddress;
+        pub fn sfIpAddress_getPublicAddress(timeout : time::ffi::sfTime) -> sfIpAddress;
     }
 }
 

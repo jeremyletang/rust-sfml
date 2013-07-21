@@ -38,13 +38,13 @@ pub mod ffi {
     pub use std::libc::{c_int};    
     pub use system::vector3;
 
-    pub extern "C" {
-        fn sfListener_setGlobalVolume(volume : f32) -> ();
-        fn sfListener_getGlobalVolume() -> f32;
-        fn sfListener_setPosition(position : vector3::Vector3f) -> ();
-        fn sfListener_getPosition() -> vector3::Vector3f;
-        fn sfListener_setDirection(orientation : vector3::Vector3f) -> ();
-        fn sfListener_getDirection() -> vector3::Vector3f;
+    extern "C" {
+        pub fn sfListener_setGlobalVolume(volume : f32) -> ();
+        pub fn sfListener_getGlobalVolume() -> f32;
+        pub fn sfListener_setPosition(position : vector3::Vector3f) -> ();
+        pub fn sfListener_getPosition() -> vector3::Vector3f;
+        pub fn sfListener_setDirection(orientation : vector3::Vector3f) -> ();
+        pub fn sfListener_getDirection() -> vector3::Vector3f;
     }
 }
 /**

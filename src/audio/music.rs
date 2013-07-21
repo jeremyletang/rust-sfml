@@ -53,34 +53,34 @@ pub mod ffi {
         This1 : *c_void
     }
 
-    pub extern "C" {
-        fn sfMusic_createFromFile(filename : *c_char) -> *sfMusic;
+    extern "C" {
+        pub fn sfMusic_createFromFile(filename : *c_char) -> *sfMusic;
         // sfMusic* sfMusic_createFromMemory(const void* data, size_t sizeInBytes);
         // sfMusic* sfMusic_createFromStream(sfInputStream* stream);
-        fn sfMusic_destroy(music : *sfMusic) -> ();
-        fn sfMusic_setLoop(music : *sfMusic, lloop : sfBool) -> ();
-        fn sfMusic_getLoop(music : *sfMusic) -> sfBool;
-        fn sfMusic_getDuration(music : *sfMusic) -> time::ffi::sfTime;
-        fn sfMusic_play(music : *sfMusic) -> ();
-        fn sfMusic_pause(music : *sfMusic) -> ();
-        fn sfMusic_stop(music : *sfMusic) -> ();
-        fn sfMusic_getChannelCount(music : *sfMusic) -> c_uint;
-        fn sfMusic_getSampleRate(music : *sfMusic) -> c_uint;
-        fn sfMusic_getStatus(music : *sfMusic) -> sound_status::ffi::sfSoundStatus;
-        fn sfMusic_getPlayingOffset(music : *sfMusic) -> time::ffi::sfTime;
-        fn sfMusic_setPitch(music : *sfMusic, pitch : c_float) -> ();
-        fn sfMusic_setVolume(music : *sfMusic, volume : c_float) -> ();
-        fn sfMusic_setPosition(music : *sfMusic, position : Vector3f) -> ();
-        fn sfMusic_setRelativeToListener(music : *sfMusic, relative : sfBool) -> ();
-        fn sfMusic_setMinDistance(music : *sfMusic, distance : c_float) -> ();
-        fn sfMusic_setAttenuation(music : *sfMusic, attenuation : c_float) -> ();
-        fn sfMusic_setPlayingOffset(music : *sfMusic, timeOffset : time::ffi::sfTime) -> ();
-        fn sfMusic_getPitch(music : *sfMusic) -> c_float;
-        fn sfMusic_getVolume(music : *sfMusic) -> c_float;
-        fn sfMusic_getPosition(music : *sfMusic) -> Vector3f;
-        fn sfMusic_isRelativeToListener(music : *sfMusic) -> sfBool;
-        fn sfMusic_getMinDistance(music : *sfMusic) -> c_float;
-        fn sfMusic_getAttenuation(music : *sfMusic) -> c_float;
+        pub fn sfMusic_destroy(music : *sfMusic) -> ();
+        pub fn sfMusic_setLoop(music : *sfMusic, lloop : sfBool) -> ();
+        pub fn sfMusic_getLoop(music : *sfMusic) -> sfBool;
+        pub fn sfMusic_getDuration(music : *sfMusic) -> time::ffi::sfTime;
+        pub fn sfMusic_play(music : *sfMusic) -> ();
+        pub fn sfMusic_pause(music : *sfMusic) -> ();
+        pub fn sfMusic_stop(music : *sfMusic) -> ();
+        pub fn sfMusic_getChannelCount(music : *sfMusic) -> c_uint;
+        pub fn sfMusic_getSampleRate(music : *sfMusic) -> c_uint;
+        pub fn sfMusic_getStatus(music : *sfMusic) -> sound_status::ffi::sfSoundStatus;
+        pub fn sfMusic_getPlayingOffset(music : *sfMusic) -> time::ffi::sfTime;
+        pub fn sfMusic_setPitch(music : *sfMusic, pitch : c_float) -> ();
+        pub fn sfMusic_setVolume(music : *sfMusic, volume : c_float) -> ();
+        pub fn sfMusic_setPosition(music : *sfMusic, position : Vector3f) -> ();
+        pub fn sfMusic_setRelativeToListener(music : *sfMusic, relative : sfBool) -> ();
+        pub fn sfMusic_setMinDistance(music : *sfMusic, distance : c_float) -> ();
+        pub fn sfMusic_setAttenuation(music : *sfMusic, attenuation : c_float) -> ();
+        pub fn sfMusic_setPlayingOffset(music : *sfMusic, timeOffset : time::ffi::sfTime) -> ();
+        pub fn sfMusic_getPitch(music : *sfMusic) -> c_float;
+        pub fn sfMusic_getVolume(music : *sfMusic) -> c_float;
+        pub fn sfMusic_getPosition(music : *sfMusic) -> Vector3f;
+        pub fn sfMusic_isRelativeToListener(music : *sfMusic) -> sfBool;
+        pub fn sfMusic_getMinDistance(music : *sfMusic) -> c_float;
+        pub fn sfMusic_getAttenuation(music : *sfMusic) -> c_float;
     }
 }
 

@@ -41,13 +41,13 @@ pub mod ffi{
         This : *c_void
     }
 
-    pub extern "C" {
-        fn sfSoundRecorder_create(onStart : *u8, onProcess : *u8, onStop : *u8, data : *c_void) -> *sfSoundRecorder;
-        fn sfSoundRecorder_destroy(soundRecorder : *sfSoundRecorder) -> ();
-        fn sfSoundRecorder_start(soundRecorder : *sfSoundRecorder, sampleRate : c_uint) -> ();
-        fn sfSoundRecorder_stop(soundRecorder : *sfSoundRecorder) -> ();
-        fn sfSoundRecorder_getSampleRate(soundRecorder : *sfSoundRecorder) -> c_uint;
-        fn sfSoundRecorder_isAvailable() -> sfBool; // static
+    extern "C" {
+        pub fn sfSoundRecorder_create(onStart : *u8, onProcess : *u8, onStop : *u8, data : *c_void) -> *sfSoundRecorder;
+        pub fn sfSoundRecorder_destroy(soundRecorder : *sfSoundRecorder) -> ();
+        pub fn sfSoundRecorder_start(soundRecorder : *sfSoundRecorder, sampleRate : c_uint) -> ();
+        pub fn sfSoundRecorder_stop(soundRecorder : *sfSoundRecorder) -> ();
+        pub fn sfSoundRecorder_getSampleRate(soundRecorder : *sfSoundRecorder) -> c_uint;
+        pub fn sfSoundRecorder_isAvailable() -> sfBool; // static
 
     }
 }

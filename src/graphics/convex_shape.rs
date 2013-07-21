@@ -62,39 +62,39 @@ pub mod ffi {
         InverseTransform : Transform
     }
 
-    pub extern "C" {
-        fn sfConvexShape_create() -> *sfConvexShape;
-        fn sfConvexShape_copy(shape : *sfConvexShape) -> *sfConvexShape;
-        fn sfConvexShape_destroy(shape : *sfConvexShape) -> ();
-        fn sfConvexShape_setPosition(shape : *sfConvexShape, position : Vector2f) -> ();
-        fn sfConvexShape_setRotation(shape : *sfConvexShape, angle : c_float) -> ();
-        fn sfConvexShape_setScale(shape : *sfConvexShape, scale : Vector2f) -> ();
-        fn sfConvexShape_setOrigin(shape : *sfConvexShape, origin : Vector2f) -> ();
-        fn sfConvexShape_getPosition(shape : *sfConvexShape) -> Vector2f;
-        fn sfConvexShape_getRotation(shape : *sfConvexShape) -> c_float;
-        fn sfConvexShape_getScale(shape : *sfConvexShape) -> Vector2f;
-        fn sfConvexShape_getOrigin(shape : *sfConvexShape) -> Vector2f;
-        fn sfConvexShape_move(shape : *sfConvexShape, offset : Vector2f) -> ();
-        fn sfConvexShape_rotate(shape : *sfConvexShape, angle : c_float) -> ();
-        fn sfConvexShape_scale(shape : *sfConvexShape, factors : Vector2f) -> ();
-        fn sfConvexShape_getTransform(shape : *sfConvexShape) -> Transform;
-        fn sfConvexShape_getInverseTransform(shape : *sfConvexShape) -> Transform;
-        fn sfConvexShape_setTexture(shape : *sfConvexShape, texture : *texture::ffi::sfTexture, resetRect : sfBool) -> ();
-        fn sfConvexShape_setTextureRect(shape : *sfConvexShape, rect : IntRect) -> ();
-        fn sfConvexShape_setFillColor(shape : *sfConvexShape, color : Color) -> ();
-        fn sfConvexShape_setOutlineColor(shape : *sfConvexShape, color : Color) -> ();
-        fn sfConvexShape_setOutlineThickness(shape : *sfConvexShape, thickness : c_float) -> ();
-        fn sfConvexShape_getTexture(shape : *sfConvexShape) -> *texture::ffi::sfTexture;
-        fn sfConvexShape_getTextureRect(shape : *sfConvexShape) -> IntRect;
-        fn sfConvexShape_getFillColor(shape : *sfConvexShape) -> Color;
-        fn sfConvexShape_getOutlineColor(shape : *sfConvexShape) -> Color;
-        fn sfConvexShape_getOutlineThickness(shape : *sfConvexShape) -> c_float;
-        fn sfConvexShape_getPointCount(shape : *sfConvexShape) -> c_uint;
-        fn sfConvexShape_getPoint(shape : *sfConvexShape, index : c_uint) -> Vector2f;
-        fn sfConvexShape_setPointCount(shape : *sfConvexShape, count : c_uint) -> ();
-        fn sfConvexShape_setPoint(shape : *sfConvexShape, index : c_uint, point : Vector2f) -> ();
-        fn sfConvexShape_getLocalBounds(shape : *sfConvexShape) -> FloatRect;
-        fn sfConvexShape_getGlobalBounds(shape : *sfConvexShape) -> FloatRect;
+    extern "C" {
+        pub fn sfConvexShape_create() -> *sfConvexShape;
+        pub fn sfConvexShape_copy(shape : *sfConvexShape) -> *sfConvexShape;
+        pub fn sfConvexShape_destroy(shape : *sfConvexShape) -> ();
+        pub fn sfConvexShape_setPosition(shape : *sfConvexShape, position : Vector2f) -> ();
+        pub fn sfConvexShape_setRotation(shape : *sfConvexShape, angle : c_float) -> ();
+        pub fn sfConvexShape_setScale(shape : *sfConvexShape, scale : Vector2f) -> ();
+        pub fn sfConvexShape_setOrigin(shape : *sfConvexShape, origin : Vector2f) -> ();
+        pub fn sfConvexShape_getPosition(shape : *sfConvexShape) -> Vector2f;
+        pub fn sfConvexShape_getRotation(shape : *sfConvexShape) -> c_float;
+        pub fn sfConvexShape_getScale(shape : *sfConvexShape) -> Vector2f;
+        pub fn sfConvexShape_getOrigin(shape : *sfConvexShape) -> Vector2f;
+        pub fn sfConvexShape_move(shape : *sfConvexShape, offset : Vector2f) -> ();
+        pub fn sfConvexShape_rotate(shape : *sfConvexShape, angle : c_float) -> ();
+        pub fn sfConvexShape_scale(shape : *sfConvexShape, factors : Vector2f) -> ();
+        pub fn sfConvexShape_getTransform(shape : *sfConvexShape) -> Transform;
+        pub fn sfConvexShape_getInverseTransform(shape : *sfConvexShape) -> Transform;
+        pub fn sfConvexShape_setTexture(shape : *sfConvexShape, texture : *texture::ffi::sfTexture, resetRect : sfBool) -> ();
+        pub fn sfConvexShape_setTextureRect(shape : *sfConvexShape, rect : IntRect) -> ();
+        pub fn sfConvexShape_setFillColor(shape : *sfConvexShape, color : Color) -> ();
+        pub fn sfConvexShape_setOutlineColor(shape : *sfConvexShape, color : Color) -> ();
+        pub fn sfConvexShape_setOutlineThickness(shape : *sfConvexShape, thickness : c_float) -> ();
+        pub fn sfConvexShape_getTexture(shape : *sfConvexShape) -> *texture::ffi::sfTexture;
+        pub fn sfConvexShape_getTextureRect(shape : *sfConvexShape) -> IntRect;
+        pub fn sfConvexShape_getFillColor(shape : *sfConvexShape) -> Color;
+        pub fn sfConvexShape_getOutlineColor(shape : *sfConvexShape) -> Color;
+        pub fn sfConvexShape_getOutlineThickness(shape : *sfConvexShape) -> c_float;
+        pub fn sfConvexShape_getPointCount(shape : *sfConvexShape) -> c_uint;
+        pub fn sfConvexShape_getPoint(shape : *sfConvexShape, index : c_uint) -> Vector2f;
+        pub fn sfConvexShape_setPointCount(shape : *sfConvexShape, count : c_uint) -> ();
+        pub fn sfConvexShape_setPoint(shape : *sfConvexShape, index : c_uint, point : Vector2f) -> ();
+        pub fn sfConvexShape_getLocalBounds(shape : *sfConvexShape) -> FloatRect;
+        pub fn sfConvexShape_getGlobalBounds(shape : *sfConvexShape) -> FloatRect;
     }
 }
 
