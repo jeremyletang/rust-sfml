@@ -108,7 +108,8 @@ pub enum Style {
 
 pub struct Text {
     priv text : *ffi::sfText,
-    priv stringLength : uint
+    priv stringLength : uint,
+    priv font : Option<@Font>
 }
 
 impl Text {
@@ -125,7 +126,8 @@ impl Text {
         else {
             Some(Text {
                 text : text,
-                stringLength : 0
+                stringLength : 0,
+                font : None
             })
         }
     }
@@ -142,7 +144,7 @@ impl Text {
     *
     * Return a new Option on Text object, or None
     */
-    pub fn new_init(string : ~str, font : &Font, characterSize : uint) ->Option<Text> {
+    pub fn new_init(string : ~str, font : @Font, characterSize : uint) ->Option<Text> {
         let text = unsafe { ffi::sfText_create() };
         if ptr::is_null(text) {
             None
@@ -156,7 +158,8 @@ impl Text {
                 ffi::sfText_setCharacterSize(text, characterSize as c_uint);
                 Some(Text {
                     text : text, 
-                    stringLength : string.len()
+                    stringLength : string.len(),
+                    font : Some(font)
                 })
             }
         }
@@ -234,7 +237,8 @@ impl Text {
     *
     * font - New font
     */
-    pub fn set_font(&mut self, font : &Font) -> () {
+    pub fn set_font(&mut self, font : @Font) -> () {
+        self.font = Some(font);
         unsafe {
             ffi::sfText_setFont(self.text, font.unwrap())
         }
@@ -334,14 +338,8 @@ impl Text {
     * The returned pointer is const, which means that you can't
     * modify the font when you retrieve it with this function.
     */
-    pub fn get_font(&self) -> Option<Font> {
-        let fnt = unsafe { ffi::sfText_getFont(self.text) };
-        if ptr::is_null(fnt) {
-            None
-        }
-        else {
-            Some(Wrappable::wrap(fnt))
-        }
+    pub fn get_font(&self) -> Option<@Font> {
+       self.font
     }
     
     /**
@@ -665,7 +663,8 @@ impl Wrappable<*ffi::sfText> for Text {
     pub fn wrap(text : *ffi::sfText) -> Text {
         Text {
             text : text,
-            stringLength : 0
+            stringLength : 0,
+            font : None
         }
     } 
     pub fn unwrap(&self) -> *ffi::sfText {
@@ -692,6 +691,7 @@ impl Drawable for Text {
     }
 }
 
+#[unsafe_destructor]
 impl Drop for Text {
     /**
     *   Destructor for class Text. Destroy all the ressource.
