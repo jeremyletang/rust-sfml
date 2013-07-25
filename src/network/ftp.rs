@@ -430,8 +430,8 @@ impl Ftp {
     */
     pub fn login(&self, userName : ~str, password : ~str) -> Response {
         
-        do str::as_c_str(userName) |name| {
-            do str::as_c_str(password) |pass| {
+        do userName.as_c_str |name| {
+            do password.as_c_str |pass| {
                 Response {
                     response : unsafe { ffi::sfFtp_login(self.ftp, name, pass) }
                 }
@@ -492,7 +492,7 @@ impl Ftp {
     * Return the server response to the request
     */
     pub fn get_directory_listing(&self, directory : ~str) -> ListingResponse {
-            do str::as_c_str(directory) |dir| {
+            do directory.as_c_str |dir| {
                 ListingResponse {
                     listingResponse : unsafe { ffi::sfFtp_getDirectoryListing(self.ftp, dir) }
                 }
@@ -510,7 +510,7 @@ impl Ftp {
     * Return the server response to the request
     */
     pub fn change_directory(&self, directory : ~str) -> Response {
-        do str::as_c_str(directory) |dir| {
+        do directory.as_c_str |dir| {
             Response {
                 response : unsafe { ffi::sfFtp_changeDirectory(self.ftp, dir) }
             }
@@ -540,7 +540,7 @@ impl Ftp {
     * Return the server response to the request
     */
     pub fn create_directory(&self, name : ~str) -> Response {
-        do str::as_c_str(name) |dir| {
+        do name.as_c_str |dir| {
             Response { 
                 response : unsafe { ffi::sfFtp_createDirectory(self.ftp, dir) }
             }
@@ -561,7 +561,7 @@ impl Ftp {
     * Return the server response to the request
     */
     pub fn delete_directory(&self, name : ~str) -> Response {
-        do str::as_c_str(name) |dir| {
+        do name.as_c_str |dir| {
             Response {
                 response : unsafe { ffi::sfFtp_deleteDirectory(self.ftp, dir) }
             }
@@ -581,8 +581,8 @@ impl Ftp {
     * Return the server response to the request
     */
     pub fn rename_file(&self, name : ~str, newName : ~str) -> Response {
-        do str::as_c_str(name) |file| {
-            do str::as_c_str(newName) |newFile| {
+        do name.as_c_str |file| {
+            do newName.as_c_str |newFile| {
                 Response {
                     response : unsafe { ffi::sfFtp_renameFile(self.ftp, file, newFile) } 
                 }
@@ -604,7 +604,7 @@ impl Ftp {
     * Return the server response to the request
     */
     pub fn delete_file(&self, name : ~str) -> Response {
-        do str::as_c_str(name) |file| {
+        do name.as_c_str |file| {
             Response {
                 response : unsafe { ffi::sfFtp_deleteFile(self.ftp, file) }
             }
@@ -627,8 +627,8 @@ impl Ftp {
     * Return the server response to the request
     */
     pub fn download(&self, distantFile : ~str, destPath : ~str, mode : TransferMode) -> Response {
-        do str::as_c_str(distantFile) |dist| {
-            do str::as_c_str(destPath) |path| {
+        do distantFile.as_c_str |dist| {
+            do destPath.as_c_str |path| {
                 Response { 
                     response : unsafe { ffi::sfFtp_download(self.ftp, dist, path, mode) }
                 }
@@ -652,8 +652,8 @@ impl Ftp {
     * Return the server response to the request
     */
     pub fn upload(&self, localFile : ~str, destPath : ~str, mode : TransferMode) -> Response {
-        do str::as_c_str(localFile) |local| {
-            do str::as_c_str(destPath) |path| {
+        do localFile.as_c_str |local| {
+            do destPath.as_c_str |path| {
                 Response { 
                     response : unsafe { ffi::sfFtp_upload(self.ftp, local, path, mode) }
                 }

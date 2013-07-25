@@ -31,7 +31,6 @@
 
 use std::libc::{c_uint};
 use std::ptr;
-use std::str;
 use std::vec;
 
 use traits::wrappable::Wrappable;
@@ -138,7 +137,7 @@ impl Image {
     * Return a new Image object, or NULL if it failed
     */
     pub fn new_from_file(filename : ~str) -> Option<Image> {
-        do str::as_c_str(filename) |filebuf| {
+        do filename.as_c_str |filebuf| {
             let image = unsafe { ffi::sfImage_createFromFile(filebuf) };
             if ptr::is_null(image) {
                 None
@@ -210,7 +209,7 @@ impl Image {
     * Return true if saving was successful
     */
     pub fn save_to_file(&self, filename : ~str) -> bool {
-        do str::as_c_str(filename) |filebuf| {
+        do filename.as_c_str |filebuf| {
             match unsafe { ffi::sfImage_saveToFile(self.image, filebuf) } {
                 0 => false,
                 _ => true

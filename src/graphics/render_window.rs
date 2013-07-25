@@ -31,7 +31,6 @@
 */
 
 use std::libc::{c_float, c_uint, c_int};
-use std::str;
 use std::ptr;
 use std::cast;
 use std::vec;
@@ -187,7 +186,7 @@ impl RenderWindow {
     */
     pub fn new(mode : VideoMode, title : ~str, style : WindowStyle, settings : &ContextSettings) -> Option<RenderWindow> {
         let mut sfRenderWin: *ffi::sfRenderWindow = ptr::null();
-        do str::as_c_str(title) |title_buf| {
+        do title.as_c_str |title_buf| {
             unsafe { 
                 sfRenderWin = ffi::sfRenderWindow_create(mode.unwrap(), title_buf, style as u32, settings); 
             }
@@ -568,7 +567,7 @@ impl RenderWindow {
     * * title - New title
     */
     pub fn set_title(&mut self, title : ~str) -> () {
-        do str::as_c_str(title) |title_buf| {
+        do title.as_c_str |title_buf| {
             unsafe {
                 self.titleLength = title.len();
                 ffi::sfRenderWindow_setTitle(self.renderWindow, title_buf);

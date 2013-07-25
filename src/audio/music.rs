@@ -32,7 +32,6 @@
 
 use std::libc::{c_float};
 use std::ptr;
-use std::str;
 
 use traits::wrappable::Wrappable;
 use system::time::Time;
@@ -107,7 +106,7 @@ impl Music {
     */
     pub fn new_from_file(filename : ~str) -> Option<Music> {
         let mut music_tmp : *ffi::sfMusic = ptr::null();
-        do str::as_c_str(filename) |filename_buf| {
+        do filename.as_c_str |filename_buf| {
             unsafe { 
                 music_tmp = ffi::sfMusic_createFromFile(filename_buf);
             }

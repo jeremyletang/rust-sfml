@@ -30,7 +30,6 @@
 */
 
 use std::libc::{c_uint};
-use std::str;
 use std::ptr;
 
 use traits::wrappable::Wrappable;
@@ -79,7 +78,7 @@ impl Font {
     * Return a new Font object
     */
     pub fn new_from_file(filename : ~str) -> Option<Font> {
-        do str::as_c_str(filename) |filenamebuf| {
+        do filename.as_c_str |filenamebuf| {
             let fnt = unsafe {ffi::sfFont_createFromFile(filenamebuf)};
             if ptr::is_null(fnt) {
                 None
