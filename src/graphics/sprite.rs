@@ -228,11 +228,12 @@ impl Sprite {
     }
 
     /**
-    * Disable the current texture
+    * Disable Texturing
     *
-    * Disable the current and reset the texture rect
+    * Disable the current texture and reset the texture rect
     */
     pub fn disable_texture(&mut self) -> () {
+        self.texture = None;
         unsafe {
             ffi::sfSprite_setTexture(self.sprite, ptr::null(), 1)
         }

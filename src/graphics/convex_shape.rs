@@ -466,11 +466,12 @@ impl ConvexShape {
     }
 
     /**
-    * Disable the current texture
+    * Disable Texturing
     *
-    * Disable the texture and reset the texture rect
+    * Disable the current texture and reset the texture rect
     */
-    pub fn disable_texture(&self) -> () {
+    pub fn disable_texture(&mut self) -> () {
+        self.texture = None;
         unsafe {
             ffi::sfConvexShape_setTexture(self.convexShape, ptr::null(), 1)
         }

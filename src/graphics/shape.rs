@@ -467,6 +467,18 @@ impl Shape {
     }
 
     /**
+    * Disable Texturing
+    *
+    * Disable the current texture and reset the texture rect
+    */
+    pub fn disable_texture(&mut self) -> () {
+        self.texture = None;
+        unsafe {
+            ffi::sfShape_setTexture(self.shape, ptr::null(), 1)
+        }
+    }
+
+    /**
     * Set the sub-rectangle of the texture that a shape will display
     *
     * The texture rect is useful when you don't want to display

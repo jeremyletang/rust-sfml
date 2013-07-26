@@ -495,11 +495,12 @@ impl RectangleShape {
     }
 
     /**
-    * Disable the current texture
+    * Disable Texturing
     *
     * Disable the current texture and reset the texture rect
     */
     pub fn disable_texture(&mut self) -> () {
+        self.texture = None;
         unsafe {
             ffi::sfRectangleShape_setTexture(self.rectangleShape, ptr::null(), 1)
         }

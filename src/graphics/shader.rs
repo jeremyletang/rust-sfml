@@ -76,7 +76,8 @@ pub mod ffi {
 
 #[doc(hidden)]
 pub struct Shader {
-    priv shader : *ffi::sfShader
+    priv shader : *ffi::sfShader,
+    priv texture : Option<@mut Texture>
 }
 
 impl Shader {
@@ -106,7 +107,8 @@ impl Shader {
                 }
                 else {
                     Some(Shader { 
-                        shader : shader
+                        shader : shader,
+                        texture : None
                     })
                 }
             }
@@ -139,7 +141,8 @@ impl Shader {
                 }
                 else {
                     Some(Shader {
-                        shader : shader
+                        shader : shader,
+                        texture : None
                     })
                 }
             }
@@ -235,7 +238,8 @@ impl Shader {
     * * name - Name of the texture in the shader
     * * texture - Texture to assign
     */
-    pub fn set_texture_parameter(&mut self, name : ~str, texture : &Texture) -> () {
+    pub fn set_texture_parameter(&mut self, name : ~str, texture : @mut Texture) -> () {
+        self.texture = Some(texture);
         do name.as_c_str |shader| {
             unsafe { 
                 ffi::sfShader_setTextureParameter(self.shader, shader, texture.unwrap())
@@ -361,7 +365,8 @@ impl Shader {
 impl Wrappable<*ffi::sfShader> for Shader {
     pub fn wrap(shader : *ffi::sfShader) -> Shader {
         Shader {
-            shader : shader
+            shader : shader,
+            texture : None
         }
     }
 
@@ -370,6 +375,7 @@ impl Wrappable<*ffi::sfShader> for Shader {
     }
 }
 
+#[unsafe_destructor]
 impl Drop for Shader {
     /**
     * Destroy an existing shader
