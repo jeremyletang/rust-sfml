@@ -160,8 +160,8 @@ impl Request {
     */
     pub fn set_field(&self, field : ~str, value : ~str) -> () {
         unsafe {
-            do str::as_c_str(field) |f| {
-                do str::as_c_str(value) |v| {
+            do field.as_c_str |f| {
+                do value.as_c_str |v| {
                     ffi::sfHttpRequest_setField(self.request, f, v)
                 }
             }
@@ -196,7 +196,7 @@ impl Request {
     */
     pub fn set_uri(&self, uri : ~str) -> () {
         unsafe {
-            do str::as_c_str(uri) |Uri| {
+            do uri.as_c_str |Uri| {
                 ffi::sfHttpRequest_setUri(self.request, Uri)
             }
         }
@@ -228,7 +228,7 @@ impl Request {
     */
     pub fn set_body(&self, body : ~str) -> () {
         unsafe {
-            do str::as_c_str(body) |Body| {
+            do body.as_c_str |Body| {
                 ffi::sfHttpRequest_setBody(self.request, Body)
             }
         }
@@ -263,7 +263,7 @@ impl Response {
     */
     pub fn get_field(&self, field : ~str) -> ~str {
         unsafe {
-            do str::as_c_str(field) |f| {
+            do field.as_c_str |f| {
                 str::raw::from_c_str(ffi::sfHttpResponse_getField(self.response, f))
             }
         }
@@ -362,7 +362,7 @@ impl Http {
     */
     pub fn set_host(&self, host : ~str, port : u16) -> () {
         unsafe {
-            do str::as_c_str(host) |h| {
+            do host.as_c_str |h| {
                 ffi::sfHttp_setHost(self.http, h, port)
             }
         }

@@ -89,7 +89,7 @@ impl IpAddress {
     * Return Resulting address
     */
     pub fn new_from_string(address : ~str) -> IpAddress {
-        do str::as_c_str(address) |addr_buf| {
+        do address.as_c_str |addr_buf| {
             IpAddress {
                 ip : unsafe { ffi::sfIpAddress_fromString(addr_buf) } 
             }

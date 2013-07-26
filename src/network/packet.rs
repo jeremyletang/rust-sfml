@@ -360,7 +360,7 @@ impl Packet {
     */
     pub fn write_string(&self, string : ~str) -> () {
         unsafe {
-            do str::as_c_str(string) |string_buf| {
+            do string.as_c_str |string_buf| {
                 ffi::sfPacket_writeString(self.packet, string_buf)
             }
         }

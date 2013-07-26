@@ -29,7 +29,6 @@
  */
 
 use std::libc::{c_uint, c_float, c_int};
-use std::str;
 use std::vec;
 use std::ptr;
 use std::cast;
@@ -157,7 +156,7 @@ impl Window {
     */
     pub fn new(mode : VideoMode, title : ~str, style : WindowStyle, settings : &ContextSettings) -> Option<Window> {
         let mut sfWin: *ffi::sfWindow = ptr::null();
-        do str::as_c_str(title) |title_buf| {
+        do title.as_c_str |title_buf| {
             unsafe {
                 sfWin = ffi::sfWindow_create(mode.unwrap(), title_buf, style as u32, settings); 
             }
@@ -481,7 +480,7 @@ impl Window {
     * * title - New title
     */
     pub fn set_title(&mut self, title : ~str) -> () {
-        do str::as_c_str(title) |title_buf| {
+        do title.as_c_str |title_buf| {
             unsafe {
                 ffi::sfWindow_setTitle(self.window, title_buf);
             }
