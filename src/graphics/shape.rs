@@ -31,7 +31,13 @@
 use std::libc::{c_void, c_float, c_uint};
 use std::ptr;
 use std::cast;
+use std::io;
+use std::sys;
 
+use graphics::render_window::RenderWindow;
+use graphics::render_texture::RenderTexture;
+use graphics::render_states::RenderStates;
+use traits::drawable::Drawable;
 use traits::wrappable::Wrappable;
 use graphics::texture::Texture;
 use system::vector2::Vector2f;
@@ -106,16 +112,18 @@ pub struct Shape {
     priv wrap_obj : WrapObj
 }
 
-
 #[doc(hidden)]
 extern fn get_point_count_callback(obj : *c_void) -> u32 {
     let shape = unsafe { cast::transmute::<*c_void, &WrapObj>(obj) };
+    io::println("point_count");
+    io::println(fmt!("POINT COUNT : %d", shape.shape_impl.get_point_count() as int ));
     shape.shape_impl.get_point_count()
 }
 
 #[doc(hidden)]
 extern fn get_point_callback(point : u32, obj : *c_void) -> Vector2f {
     let shape = unsafe { cast::transmute::<*c_void, &WrapObj>(obj) };
+    io::println("point");
     shape.shape_impl.get_point(point)
 }
 
@@ -124,6 +132,9 @@ impl Shape {
 
     pub fn new(abstractShape : @AbstractShape) -> Option<Shape> {
         let w_o = WrapObj { shape_impl : abstractShape};
+        io::println(fmt!("POINT COUNT : %d", w_o.shape_impl.get_point_count() as int ));
+        io::println(fmt!("WrapObj : %d", sys::size_of::<&WrapObj>() as int));
+        io::println(fmt!("*c_void : %d", sys::size_of::<*c_void>() as int));
         let sp = unsafe { ffi::sfShape_create(get_point_count_callback, get_point_callback, ptr::to_unsafe_ptr(&w_o) as *c_void) };
         if ptr::is_null(sp) {
             None
@@ -344,6 +355,24 @@ impl Shape {
     #[doc(hidden)]
     pub fn unwrap(&self) -> *ffi::sfShape {
         self.shape
+    }
+}
+
+impl Drawable for Shape {
+    pub fn draw_in_render_window(&self, renderWindow : &RenderWindow) -> () {
+        renderWindow.draw_shape(self)
+    }
+
+    pub fn draw_in_render_window_rs(&self, renderWindow : &RenderWindow, renderStates : &mut RenderStates) -> () {
+        renderWindow.draw_shape_rs(self, renderStates)
+    }
+    
+    pub fn draw_in_render_texture(&self, renderTexture : &RenderTexture) -> () {
+        renderTexture.draw_shape(self)
+    }
+
+    pub fn draw_in_render_texture_rs(&self, renderTexture : &RenderTexture, renderStates : &mut RenderStates) -> () {
+        renderTexture.draw_shape_rs(self, renderStates)
     }
 }
 

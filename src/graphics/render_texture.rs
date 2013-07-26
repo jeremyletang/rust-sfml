@@ -47,6 +47,7 @@ use graphics::rectangle_shape::RectangleShape;
 use graphics::vertex_array::VertexArray;
 use graphics::convex_shape::ConvexShape;
 use graphics::render_states::RenderStates;
+use graphics::shape::Shape;
 
 #[doc(hidden)]
 pub mod ffi {
@@ -66,6 +67,7 @@ pub mod ffi {
     use graphics::rectangle_shape;
     use graphics::vertex_array;
     use graphics::convex_shape;
+    use graphics::shape;
 
     pub struct sfRenderTexture {
         This : *c_void,
@@ -89,7 +91,7 @@ pub mod ffi {
         pub fn sfRenderTexture_mapCoordsToPixel(renderTexture : *sfRenderTexture, point : Vector2f, view : *view::ffi::sfView) -> Vector2i;
         pub fn sfRenderTexture_drawSprite(renderTexture : *sfRenderTexture, object : *sprite::ffi::sfSprite, states : *render_states::ffi::sfRenderStates) -> ();
         pub fn sfRenderTexture_drawText(renderTexture : *sfRenderTexture, object : *text::ffi::sfText, states : *render_states::ffi::sfRenderStates) -> ();
-        //fn sfRenderTexture_drawShape(renderTexture : *sfRenderTexture, object : *sfShape, states : *render_states::ffi::sfRenderStates) -> ();
+        fn sfRenderTexture_drawShape(renderTexture : *sfRenderTexture, object : *shape::ffi::sfShape, states : *render_states::ffi::sfRenderStates) -> ();
         pub fn sfRenderTexture_drawCircleShape(renderTexture : *sfRenderTexture, object : *circle_shape::ffi::sfCircleShape, states : *render_states::ffi::sfRenderStates) -> ();
         pub fn sfRenderTexture_drawConvexShape(renderTexture : *sfRenderTexture, object : *convex_shape::ffi::sfConvexShape, states : *render_states::ffi::sfRenderStates) -> ();
         pub fn sfRenderTexture_drawRectangleShape(renderTexture : *sfRenderTexture, object : *rectangle_shape::ffi::sfRectangleShape, states : *render_states::ffi::sfRenderStates) -> ();
@@ -380,6 +382,13 @@ impl RenderTexture {
         }
     }
 
+    /// Draw Text
+    pub fn draw_shape(&self, shape : &Shape) -> () {
+        unsafe {
+            ffi::sfRenderTexture_drawShape(self.renderTexture, shape.unwrap(), ptr::null())
+        }
+    }
+
     /// Draw Sprite
     pub fn draw_sprite(&self, sprite : &Sprite) -> () {
         unsafe {
@@ -414,10 +423,18 @@ impl RenderTexture {
             ffi::sfRenderTexture_drawVertexArray(self.renderTexture, vertexArray.unwrap(), ptr::null())
         }
     }
+    
     /// Draw Text
     pub fn draw_text_rs(&self, text : &Text, rs : &mut RenderStates) -> () {
         unsafe {
             ffi::sfRenderTexture_drawText(self.renderTexture, text.unwrap(), rs.unwrap())
+        }
+    }
+
+    /// Draw Shape
+    pub fn draw_shape_rs(&self, shape : &Shape, rs : &mut RenderStates) -> () {
+        unsafe {
+            ffi::sfRenderTexture_drawShape(self.renderTexture, shape.unwrap(), rs.unwrap())
         }
     }
 
