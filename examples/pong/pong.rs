@@ -99,8 +99,8 @@ fn pong () -> () {
     ball.set_origin(~Vector2f::new(ballRadius / 2., ballRadius / 2.));
 
     // Load the text font
-    let font : font::Font = match font::Font::new_from_file(~"resources/sansation.ttf") {
-        Some(font)    => font,
+    let font : @font::Font = match font::Font::new_from_file(~"resources/sansation.ttf") {
+        Some(font)    => @font,
         None()          => fail!("Error, cannot load font")
     };
 
@@ -109,7 +109,7 @@ fn pong () -> () {
         Some(text) => text,
         None => fail!(~"Error on creating text")
     };
-    pauseMessage.set_font(&font);
+    pauseMessage.set_font(font);
     pauseMessage.set_character_size(40);
     pauseMessage.set_position(~(Vector2f::new(170., 150.)));
     pauseMessage.set_color(~Color::white());

@@ -28,10 +28,11 @@
 *
 */
 
-use std::libc::{/*c_void,*/ c_float, c_uint};
+use std::libc::{c_void, c_float, c_uint};
 use std::ptr;
-//use std::cast;
+use std::cast;
 
+use traits::wrappable::Wrappable;
 use graphics::texture::Texture;
 use system::vector2::Vector2f;
 use graphics::color::Color;
@@ -57,37 +58,37 @@ pub mod ffi {
         InverseTransform : Transform
     }
 
-    pub extern "C" {
-        fn sfShape_create(getPointCount : *u8, getPoint : *u8, userData : *c_void) -> *sfShape;
-        fn sfShape_destroy(shape : *sfShape) -> ();
-        fn sfShape_setPosition(shape : *sfShape, position : Vector2f) -> ();
-        fn sfShape_setRotation(shape : *sfShape, angle : c_float) -> ();
-        fn sfShape_setScale(shape : *sfShape, scale : Vector2f) -> ();
-        fn sfShape_setOrigin(shape : *sfShape, origin : Vector2f) -> ();
-        fn sfShape_getPosition(shape : *sfShape) -> Vector2f;
-        fn sfShape_getRotation(shape : *sfShape) -> c_float;
-        fn sfShape_getScale(shape : *sfShape) -> Vector2f;
-        fn sfShape_getOrigin(shape : *sfShape) -> Vector2f;
-        fn sfShape_move(shape : *sfShape, offset : Vector2f) -> ();
-        fn sfShape_rotate(shape : *sfShape, angle : c_float) -> ();
-        fn sfShape_scale(shape : *sfShape, factors : Vector2f) -> ();
-        fn sfShape_getTransform(shape : *sfShape) -> Transform;
-        fn sfShape_getInverseTransform(shape : *sfShape) -> Transform;
-        fn sfShape_setTexture(shape : *sfShape, texture : *texture::ffi::sfTexture, resetRect : sfBool) -> ();
-        fn sfShape_setTextureRect(shape : *sfShape, rect : IntRect) -> ();
-        fn sfShape_setFillColor(shape : *sfShape, color : Color) -> ();
-        fn sfShape_setOutlineColor(shape : *sfShape, color : Color) -> ();
-        fn sfShape_setOutlineThickness(shape : *sfShape, thickness : c_float) -> ();
-        fn sfShape_getTexture(shape : *sfShape) -> *texture::ffi::sfTexture;
-        fn sfShape_getTextureRect(shape : *sfShape) -> IntRect;
-        fn sfShape_getFillColor(shape : *sfShape) -> Color;
-        fn sfShape_getOutlineColor(shape : *sfShape) -> Color;
-        fn sfShape_getOutlineThickness(shape : *sfShape) -> c_float;
-        fn sfShape_getPointCount(shape : *sfShape) -> c_uint;
-        fn sfShape_getPoint(shape : *sfShape, index : c_uint) -> Vector2f;
-        fn sfShape_getLocalBounds(shape : *sfShape) -> FloatRect;
-        fn sfShape_getGlobalBounds(shape : *sfShape) -> FloatRect;
-        fn sfShape_update(shape : *sfShape) -> ();
+    extern "C" {
+        pub fn sfShape_create(getPointCount : *u8, getPoint : *u8, userData : *c_void) -> *sfShape;
+        pub fn sfShape_destroy(shape : *sfShape) -> ();
+        pub fn sfShape_setPosition(shape : *sfShape, position : Vector2f) -> ();
+        pub fn sfShape_setRotation(shape : *sfShape, angle : c_float) -> ();
+        pub fn sfShape_setScale(shape : *sfShape, scale : Vector2f) -> ();
+        pub fn sfShape_setOrigin(shape : *sfShape, origin : Vector2f) -> ();
+        pub fn sfShape_getPosition(shape : *sfShape) -> Vector2f;
+        pub fn sfShape_getRotation(shape : *sfShape) -> c_float;
+        pub fn sfShape_getScale(shape : *sfShape) -> Vector2f;
+        pub fn sfShape_getOrigin(shape : *sfShape) -> Vector2f;
+        pub fn sfShape_move(shape : *sfShape, offset : Vector2f) -> ();
+        pub fn sfShape_rotate(shape : *sfShape, angle : c_float) -> ();
+        pub fn sfShape_scale(shape : *sfShape, factors : Vector2f) -> ();
+        pub fn sfShape_getTransform(shape : *sfShape) -> Transform;
+        pub fn sfShape_getInverseTransform(shape : *sfShape) -> Transform;
+        pub fn sfShape_setTexture(shape : *sfShape, texture : *texture::ffi::sfTexture, resetRect : sfBool) -> ();
+        pub fn sfShape_setTextureRect(shape : *sfShape, rect : IntRect) -> ();
+        pub fn sfShape_setFillColor(shape : *sfShape, color : Color) -> ();
+        pub fn sfShape_setOutlineColor(shape : *sfShape, color : Color) -> ();
+        pub fn sfShape_setOutlineThickness(shape : *sfShape, thickness : c_float) -> ();
+        pub fn sfShape_getTexture(shape : *sfShape) -> *texture::ffi::sfTexture;
+        pub fn sfShape_getTextureRect(shape : *sfShape) -> IntRect;
+        pub fn sfShape_getFillColor(shape : *sfShape) -> Color;
+        pub fn sfShape_getOutlineColor(shape : *sfShape) -> Color;
+        pub fn sfShape_getOutlineThickness(shape : *sfShape) -> c_float;
+        pub fn sfShape_getPointCount(shape : *sfShape) -> c_uint;
+        pub fn sfShape_getPoint(shape : *sfShape, index : c_uint) -> Vector2f;
+        pub fn sfShape_getLocalBounds(shape : *sfShape) -> FloatRect;
+        pub fn sfShape_getGlobalBounds(shape : *sfShape) -> FloatRect;
+        pub fn sfShape_update(shape : *sfShape) -> ();
     }
 }
 
@@ -96,37 +97,44 @@ pub trait AbstractShape {
     pub fn get_point(&self, point : u32) -> Vector2f;
 }
 
-pub struct Shape {
-    priv shape : *ffi::sfShape
+pub struct WrapObj {
+    shape_impl : @AbstractShape
 }
 
-/*
+pub struct Shape {
+    priv shape : *ffi::sfShape,
+    priv wrap_obj : WrapObj
+}
+
+
 #[doc(hidden)]
 extern fn get_point_count_callback(obj : *c_void) -> u32 {
-    let shape = unsafe { cast::transmute::<*c_void, &AbstractShape>(obj) };
-    shape.get_point_count()
+    let shape = unsafe { cast::transmute::<*c_void, &WrapObj>(obj) };
+    shape.shape_impl.get_point_count()
 }
 
 #[doc(hidden)]
 extern fn get_point_callback(point : u32, obj : *c_void) -> Vector2f {
-    let shape = unsafe { cast::transmute::<*c_void, &AbstractShape>(obj) };
-    shape.get_point(point)
+    let shape = unsafe { cast::transmute::<*c_void, &WrapObj>(obj) };
+    shape.shape_impl.get_point(point)
 }
-*/
+
 
 impl Shape {
 
-/*    pub fn new<T : AbstractShape>(abstractShape : &T) -> Option<Shape> {
-        let sp = unsafe { ffi::sfShape_create(get_point_count_callback, get_point_callback, ptr::to_unsafe_ptr(abstractShape) as *c_void) };
+    pub fn new(abstractShape : @AbstractShape) -> Option<Shape> {
+        let w_o = WrapObj { shape_impl : abstractShape};
+        let sp = unsafe { ffi::sfShape_create(get_point_count_callback, get_point_callback, ptr::to_unsafe_ptr(&w_o) as *c_void) };
         if ptr::is_null(sp) {
             None
         }
         else {
             Some(Shape {
-                shape : sp
+                shape : sp,
+                wrap_obj : w_o
             })
         }
-    }*/
+    }
 
     pub fn set_position(&mut self, position : &Vector2f) -> () {
         unsafe {
@@ -275,7 +283,7 @@ impl Shape {
             None
         }
         else {
-            Some(Texture::wrap(tex))
+            Some(Wrappable::wrap(tex))
         }
     }
 
@@ -339,6 +347,7 @@ impl Shape {
     }
 }
 
+#[unsafe_destructor]
 impl Drop for Shape {
     fn drop(&self) -> () {
         unsafe {
