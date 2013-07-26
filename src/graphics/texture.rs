@@ -31,7 +31,6 @@
 
 use std::libc::{c_uint};
 use std::vec;
-use std::str;
 use std::ptr;
 
 use traits::wrappable::Wrappable;
@@ -119,7 +118,7 @@ impl Texture {
     */
     pub fn new_from_file(filename : ~str) -> Option<Texture> {
         let mut tex = ptr::null();
-        do str::as_c_str(filename) |filebuf| {
+        do filename.as_c_str |filebuf| {
             tex = unsafe { ffi::sfTexture_createFromFile(filebuf, ptr::null()) };
         }
         if ptr::is_null(tex) {
@@ -144,7 +143,7 @@ impl Texture {
     */
     pub fn new_from_file_with_rect(filename : ~str, area : &IntRect) -> Option<Texture> {
         let mut tex = ptr::null();
-        do str::as_c_str(filename) |filebuf| {
+        do filename.as_c_str |filebuf| {
             tex = unsafe { ffi::sfTexture_createFromFile(filebuf, &*area)};
         }
         if ptr::is_null(tex) {

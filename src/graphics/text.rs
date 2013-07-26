@@ -151,7 +151,7 @@ impl Text {
         }
         else {
             unsafe {
-                do str::as_c_str(string) |cstring| {
+                do string.as_c_str |cstring| {
                     ffi::sfText_setString(text, cstring);
                 }
                 ffi::sfText_setFont(text, font.unwrap());
@@ -174,7 +174,7 @@ impl Text {
     * * string - New string
     */
     pub fn set_string(&mut self, string : ~str) -> () {
-        do str::as_c_str(string) |cstring| {
+        do string.as_c_str |cstring| {
             unsafe {
                 ffi::sfText_setString(self.text, cstring)
             }

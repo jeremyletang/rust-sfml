@@ -30,7 +30,6 @@
 */
 
 use std::ptr;
-use std::str;
 
 use traits::wrappable::Wrappable;
 use system::time;
@@ -81,7 +80,7 @@ impl SoundBuffer {
     */
     pub fn new(filename : ~str) -> Option<SoundBuffer> {
         let mut soundBuffer : *ffi::sfSoundBuffer = ptr::null();
-        do str::as_c_str(filename) |filename_buf| {
+        do filename.as_c_str |filename_buf| {
             unsafe { 
                 soundBuffer = ffi::sfSoundBuffer_createFromFile(filename_buf);
             }
@@ -128,7 +127,7 @@ impl SoundBuffer {
     * Return true if saving succeeded, false if it faileds
     */
     pub fn save_to_file(&self, filename : ~str) -> bool {
-        match do str::as_c_str(filename) |filename_buf| {
+        match do filename.as_c_str |filename_buf| {
             unsafe { ffi::sfSoundBuffer_saveToFile(self.soundBuffer, filename_buf) } } {
             0 => false,
             _ => true
