@@ -103,7 +103,6 @@ pub mod ffi {
 pub struct CircleShape {
     priv circleShape : *ffi::sfCircleShape,
     priv texture : Option<@mut Texture>
-
 }
 
 impl CircleShape {
