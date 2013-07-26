@@ -79,7 +79,7 @@ pub mod ffi {
         pub fn sfSprite_scale(sprite : *sfSprite, factors : Vector2f) -> ();
         pub fn sfSprite_getTransform(sprite : *sfSprite) -> Transform;
         pub fn sfSprite_getInverseTransform(sprite : *sfSprite) -> Transform;
-        pub fn sfSprite_setTexture(sprite : *sfSprite, texture : *texture::ffi::sfTexture, resetRect : sfBool) -> ();
+        pub fn sfSprite_setTexture(sprite : *sfSprite, texture : *texture::ffi::sfTexture, reset_rect : sfBool) -> ();
         pub fn sfSprite_setTextureRect(sprite : *sfSprite, rectangle : IntRect) -> ();
         pub fn sfSprite_setColor(sprite : *sfSprite, color : Color) -> ();
         pub fn sfSprite_getTexture(sprite : *sfSprite) -> *texture::ffi::sfTexture;
@@ -209,18 +209,18 @@ impl Sprite {
     * a pointer to the one that you passed to this function.
     * If the source texture is destroyed and the sprite tries to
     * use it, the behaviour is undefined.
-    * If resetRect is true, the TextureRect property of
+    * If reset_rect is true, the TextureRect property of
     * the sprite is automatically adjusted to the size of the new
     * texture. If it is false, the texture rect is left unchanged.
     *
     * # Arguments
     * * texture - New texture
-    * * resetRect - Should the texture rect be reset to the size of the new texture?
+    * * reset_rect - Should the texture rect be reset to the size of the new texture?
     */
-    pub fn set_texture(&mut self, texture : @mut Texture, resetRect : bool) -> (){
+    pub fn set_texture(&mut self, texture : @mut Texture, reset_rect : bool) -> (){
         self.texture = Some(texture);
         unsafe {
-            match resetRect {
+            match reset_rect {
                 true        => ffi::sfSprite_setTexture(self.sprite, texture.unwrap(), 1),
                 false       => ffi::sfSprite_setTexture(self.sprite, texture.unwrap(), 0)
             }
@@ -341,12 +341,12 @@ impl Sprite {
     * unlike setScale which overwrites it.
     *
     * # Arguments
-    * * factorX - Scale x factor
-    * * factorY - Scale y factor
+    * * factor_x - Scale x factor
+    * * factor_y - Scale y factor
     */
-    pub fn scale2f(&mut self, factorX : f32, factorY : f32) -> () {
+    pub fn scale2f(&mut self, factor_x : f32, factor_y : f32) -> () {
         unsafe {
-            ffi::sfSprite_scale(self.sprite, Vector2f::new(factorX, factorY))
+            ffi::sfSprite_scale(self.sprite, Vector2f::new(factor_x, factor_y))
         }
     }
 
@@ -397,9 +397,9 @@ impl Sprite {
     * * offsetX - Offset x
     * * offsetY - Offset y
     */
-    pub fn move2f(&mut self, offsetX : f32, offsetY : f32) -> () {
+    pub fn move2f(&mut self, offset_x : f32, offset_y : f32) -> () {
         unsafe {
-            ffi::sfSprite_move(self.sprite, Vector2f::new(offsetX, offsetY))
+            ffi::sfSprite_move(self.sprite, Vector2f::new(offset_x, offset_y))
         }
     }
 
@@ -427,12 +427,12 @@ impl Sprite {
     * The default scale of a sprite Sprite object is (1, 1).
     *
     * # Arguments
-    * * scaleX - New x scale factor
-    * * scaleY - New y scale factor
+    * * scale_x - New x scale factor
+    * * scale_y - New y scale factor
     */
-    pub fn set_scale2f(&mut self, scaleX : f32, scaleY : f32) -> () {
+    pub fn set_scale2f(&mut self, scale_x : f32, scale_y : f32) -> () {
         unsafe {
-            ffi::sfSprite_setScale(self.sprite, Vector2f::new(scaleX, scaleY))
+            ffi::sfSprite_setScale(self.sprite, Vector2f::new(scale_x, scale_y))
         }
     }
     
@@ -589,20 +589,20 @@ impl Drawable for Sprite {
     /**
     * Draw the sprite in the RenderWindow
     */
-    pub fn draw_in_render_window(&self, renderWindow : &RenderWindow) -> () {
-        renderWindow.draw_sprite(self)
+    pub fn draw_in_render_window(&self, render_window : &RenderWindow) -> () {
+        render_window.draw_sprite(self)
     }
 
-    pub fn draw_in_render_window_rs(&self, renderWindow : &RenderWindow, renderStates : &mut RenderStates) -> () {
-        renderWindow.draw_sprite_rs(self, renderStates)
+    pub fn draw_in_render_window_rs(&self, render_window : &RenderWindow, render_states : &mut RenderStates) -> () {
+        render_window.draw_sprite_rs(self, render_states)
     }
 
-    pub fn draw_in_render_texture(&self, renderTexture : &RenderTexture) -> () {
-        renderTexture.draw_sprite(self)
+    pub fn draw_in_render_texture(&self, render_texture : &RenderTexture) -> () {
+        render_texture.draw_sprite(self)
     }
 
-    pub fn draw_in_render_texture_rs(&self, renderTexture : &RenderTexture, renderStates : &mut RenderStates) -> () {
-        renderTexture.draw_sprite_rs(self, renderStates)
+    pub fn draw_in_render_texture_rs(&self, render_texture : &RenderTexture, render_states : &mut RenderStates) -> () {
+        render_texture.draw_sprite_rs(self, render_states)
     }
 }
 

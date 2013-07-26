@@ -231,11 +231,11 @@ impl TcpSocket {
     *
     * Return a tuple containing the size read, a vector width data and the socket status
     */
-    pub fn receive(&self, maxSize : size_t) -> (~[i8], SocketStatus, size_t) {
+    pub fn receive(&self, max_size : size_t) -> (~[i8], SocketStatus, size_t) {
         unsafe {
             let s : size_t = 0;
             let datas : *i8 = ptr::null();
-            let stat : SocketStatus = ffi::sfTcpSocket_receive(self.socket, datas, maxSize, &s);
+            let stat : SocketStatus = ffi::sfTcpSocket_receive(self.socket, datas, max_size, &s);
             (vec::raw::from_buf_raw(datas, s as uint), stat, s)
         }
     }

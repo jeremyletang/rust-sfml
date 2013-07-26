@@ -80,7 +80,7 @@ pub mod ffi {
 
 #[doc(hidden)]
 pub struct VertexArray {
-    priv vertexArray : *ffi::sfVertexArray
+    priv vertex_array : *ffi::sfVertexArray
 }
 
 impl VertexArray {
@@ -96,7 +96,7 @@ impl VertexArray {
         }
         else {
             Some(VertexArray {
-                vertexArray : ver
+                vertex_array : ver
             })
         }    
     }
@@ -110,13 +110,13 @@ impl VertexArray {
     * Return the copied object
     */
     pub fn clone(&self) -> Option<VertexArray> {
-        let ver = unsafe { ffi::sfVertexArray_copy(self.vertexArray) };
+        let ver = unsafe { ffi::sfVertexArray_copy(self.vertex_array) };
         if ptr::is_null(ver) {
             None
         }
         else {
             Some(VertexArray {
-                vertexArray : ver
+                vertex_array : ver
             })
         }
     }
@@ -128,7 +128,7 @@ impl VertexArray {
     */
     pub fn get_vertex_count(&self) -> uint {
         unsafe {
-            ffi::sfVertexArray_getVertexCount(self.vertexArray) as uint
+            ffi::sfVertexArray_getVertexCount(self.vertex_array) as uint
         }
     }
 
@@ -142,7 +142,7 @@ impl VertexArray {
     */
     pub fn clear(&mut self) -> () {
         unsafe {
-            ffi::sfVertexArray_clear(self.vertexArray)
+            ffi::sfVertexArray_clear(self.vertex_array)
         }
     }
     
@@ -160,7 +160,7 @@ impl VertexArray {
     */
     pub fn resize(&mut self, vertexCount : uint) -> () {
         unsafe {
-            ffi::sfVertexArray_resize(self.vertexArray, vertexCount as c_uint)
+            ffi::sfVertexArray_resize(self.vertex_array, vertexCount as c_uint)
         }
     }
 
@@ -172,7 +172,7 @@ impl VertexArray {
     */
     pub fn append(&mut self, vertex : &Vertex) -> () {
         unsafe {
-            ffi::sfVertexArray_append(self.vertexArray, *vertex)
+            ffi::sfVertexArray_append(self.vertex_array, *vertex)
         }
     }
 
@@ -186,7 +186,7 @@ impl VertexArray {
     */
     pub fn get_bounds(&self) -> FloatRect {
         unsafe {
-            ffi::sfVertexArray_getBounds(self.vertexArray)
+            ffi::sfVertexArray_getBounds(self.vertex_array)
         }
     }
     
@@ -207,13 +207,13 @@ impl VertexArray {
     pub fn set_primitive_type(&mut self, primitiveType : PrimitiveType) -> () {
         unsafe {
             match primitiveType {
-                primitive_type::Points              => ffi::sfVertexArray_setPrimitiveType(self.vertexArray, ffi::SFPOINTS),
-                primitive_type::Lines               => ffi::sfVertexArray_setPrimitiveType(self.vertexArray, ffi::SFLINES),
-                primitive_type::LinesStrip          => ffi::sfVertexArray_setPrimitiveType(self.vertexArray, ffi::SFLINESSTRIP),
-                primitive_type::Triangles           => ffi::sfVertexArray_setPrimitiveType(self.vertexArray, ffi::SFTRIANGLES),
-                primitive_type::TrianglesStrip      => ffi::sfVertexArray_setPrimitiveType(self.vertexArray, ffi::SFTRIANGLESSTRIP),
-                primitive_type::TrianglesFan        => ffi::sfVertexArray_setPrimitiveType(self.vertexArray, ffi::SFTRIANGLESFAN),
-                primitive_type::Quads               => ffi::sfVertexArray_setPrimitiveType(self.vertexArray, ffi::SFQUADS)
+                primitive_type::Points              => ffi::sfVertexArray_setPrimitiveType(self.vertex_array, ffi::SFPOINTS),
+                primitive_type::Lines               => ffi::sfVertexArray_setPrimitiveType(self.vertex_array, ffi::SFLINES),
+                primitive_type::LinesStrip          => ffi::sfVertexArray_setPrimitiveType(self.vertex_array, ffi::SFLINESSTRIP),
+                primitive_type::Triangles           => ffi::sfVertexArray_setPrimitiveType(self.vertex_array, ffi::SFTRIANGLES),
+                primitive_type::TrianglesStrip      => ffi::sfVertexArray_setPrimitiveType(self.vertex_array, ffi::SFTRIANGLESSTRIP),
+                primitive_type::TrianglesFan        => ffi::sfVertexArray_setPrimitiveType(self.vertex_array, ffi::SFTRIANGLESFAN),
+                primitive_type::Quads               => ffi::sfVertexArray_setPrimitiveType(self.vertex_array, ffi::SFQUADS)
             }
         }
     }
@@ -224,7 +224,7 @@ impl VertexArray {
     * Return the primitive type
     */
     pub fn get_primitive_type(&self) -> PrimitiveType {
-        match unsafe { ffi::sfVertexArray_getPrimitiveType(self.vertexArray) } {
+        match unsafe { ffi::sfVertexArray_getPrimitiveType(self.vertex_array) } {
             ffi::SFPOINTS             => primitive_type::Points,
             ffi::SFLINES              => primitive_type::Lines,
             ffi::SFLINESSTRIP         => primitive_type::LinesStrip,
@@ -250,46 +250,46 @@ impl VertexArray {
     */
     pub fn get_vertex(&self, index : uint) -> Vertex {
         unsafe {
-            *ffi::sfVertexArray_getVertex(self.vertexArray, index as c_uint)
+            *ffi::sfVertexArray_getVertex(self.vertex_array, index as c_uint)
         }
     }
 }
 
 impl Wrappable<*ffi::sfVertexArray> for VertexArray {
-    pub fn wrap(vertexArray : *ffi::sfVertexArray) -> VertexArray {
+    pub fn wrap(vertex_array : *ffi::sfVertexArray) -> VertexArray {
         VertexArray {
-            vertexArray : vertexArray
+            vertex_array : vertex_array
         }
     }
 
     pub fn unwrap(&self) -> *ffi::sfVertexArray {
-        self.vertexArray
+        self.vertex_array
     }
 }
 
 #[doc(hidden)]
 impl Drawable for VertexArray {
-    pub fn draw_in_render_window(&self, renderWindow : &RenderWindow) -> () {
-        renderWindow.draw_vertex_array(self)
+    pub fn draw_in_render_window(&self, render_window : &RenderWindow) -> () {
+        render_window.draw_vertex_array(self)
     }
 
-    pub fn draw_in_render_window_rs(&self, renderWindow : &RenderWindow, renderStates : &mut RenderStates) -> () {
-        renderWindow.draw_vertex_array_rs(self, renderStates)
+    pub fn draw_in_render_window_rs(&self, render_window : &RenderWindow, render_states : &mut RenderStates) -> () {
+        render_window.draw_vertex_array_rs(self, render_states)
     }
 
-    pub fn draw_in_render_texture(&self, renderTexture : &RenderTexture) -> () {
-        renderTexture.draw_vertex_array(self)
+    pub fn draw_in_render_texture(&self, render_texture : &RenderTexture) -> () {
+        render_texture.draw_vertex_array(self)
     }
 
-    pub fn draw_in_render_texture_rs(&self, renderTexture : &RenderTexture, renderStates : &mut RenderStates) -> () {
-        renderTexture.draw_vertex_array_rs(self, renderStates)
+    pub fn draw_in_render_texture_rs(&self, render_texture : &RenderTexture, render_states : &mut RenderStates) -> () {
+        render_texture.draw_vertex_array_rs(self, render_states)
     }
 }
 
 impl Drop for VertexArray {
     fn drop(&self) -> () {
         unsafe {
-            ffi::sfVertexArray_destroy(self.vertexArray)
+            ffi::sfVertexArray_destroy(self.vertex_array)
         }
     }
 }

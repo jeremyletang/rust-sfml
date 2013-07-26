@@ -320,11 +320,11 @@ impl Image {
     * * sourceRect - Sub-rectangle of the source image to copy
     * * applyAlpha - Should the copy take in account the source transparency?
     */
-    pub fn copy_image(&mut self, source : &Image, destX : uint, destY : uint, sourceRect : &IntRect, applyAlpha : bool) -> () {
+    pub fn copy_image(&mut self, source : &Image, destX : uint, destY : uint, source_rect : &IntRect, apply_alpha : bool) -> () {
         unsafe {
-            match applyAlpha {
-                true        =>  ffi::sfImage_copyImage(self.image, source.unwrap(), destX as c_uint, destY as c_uint, *sourceRect, 1),
-                false       =>  ffi::sfImage_copyImage(self.image, source.unwrap(), destX as c_uint, destY as c_uint, *sourceRect, 0)
+            match apply_alpha {
+                true        =>  ffi::sfImage_copyImage(self.image, source.unwrap(), destX as c_uint, destY as c_uint, *source_rect, 1),
+                false       =>  ffi::sfImage_copyImage(self.image, source.unwrap(), destX as c_uint, destY as c_uint, *source_rect, 0)
             }
         }
     }

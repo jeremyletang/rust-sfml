@@ -108,7 +108,7 @@ pub enum Style {
 
 pub struct Text {
     priv text : *ffi::sfText,
-    priv stringLength : uint,
+    priv string_length : uint,
     priv font : Option<@Font>
 }
 
@@ -126,7 +126,7 @@ impl Text {
         else {
             Some(Text {
                 text : text,
-                stringLength : 0,
+                string_length : 0,
                 font : None
             })
         }
@@ -144,7 +144,7 @@ impl Text {
     *
     * Return a new Option on Text object, or None
     */
-    pub fn new_init(string : ~str, font : @Font, characterSize : uint) ->Option<Text> {
+    pub fn new_init(string : ~str, font : @Font, character_size : uint) ->Option<Text> {
         let text = unsafe { ffi::sfText_create() };
         if ptr::is_null(text) {
             None
@@ -155,10 +155,10 @@ impl Text {
                     ffi::sfText_setString(text, cstring);
                 }
                 ffi::sfText_setFont(text, font.unwrap());
-                ffi::sfText_setCharacterSize(text, characterSize as c_uint);
+                ffi::sfText_setCharacterSize(text, character_size as c_uint);
                 Some(Text {
                     text : text, 
-                    stringLength : string.len(),
+                    string_length : string.len(),
                     font : Some(font)
                 })
             }
@@ -179,7 +179,7 @@ impl Text {
                 ffi::sfText_setString(self.text, cstring)
             }
         };
-        self.stringLength = string.len()
+        self.string_length = string.len()
     }
 
     /**
@@ -202,7 +202,7 @@ impl Text {
         unsafe {
             let mut return_unicode : ~[u32] = ~[];
             let string : *mut u32 = ffi::sfText_getUnicodeString(self.text);
-            let cvec = CVec(string, self.stringLength);
+            let cvec = CVec(string, self.string_length);
             let mut d : uint = 0;
             return_unicode.push(get(cvec, d));
             d += 1;
@@ -389,12 +389,12 @@ impl Text {
     * unlike set_Scale which overwrites it.
     *
     * # Arguments
-    * * factorX - Scale x factor
-    * * factorY - Scale y factor
+    * * factor_x - Scale x factor
+    * * factor_y - Scale y factor
     */
-    pub fn scale2f(&mut self, factorX : f32, factorY : f32) -> () {
+    pub fn scale2f(&mut self, factor_x : f32, factor_y : f32) -> () {
         unsafe {
-            ffi::sfText_scale(self.text, Vector2f::new(factorX, factorY))
+            ffi::sfText_scale(self.text, Vector2f::new(factor_x, factor_y))
         }
     }
 
@@ -422,12 +422,12 @@ impl Text {
     * The default scale of a text Text object is (1, 1).
     *
     * # Arguments
-    * * scaleX - The new x scale factor
-    * * scaleY - The new y scale factor
+    * * scale_x - The new x scale factor
+    * * scale_y - The new y scale factor
     */
-    pub fn set_scale2f(&mut self, scaleX : f32, scaleY : f32) -> () {
+    pub fn set_scale2f(&mut self, scale_x : f32, scale_y : f32) -> () {
         unsafe {
-            ffi::sfText_setScale(self.text, Vector2f::new(scaleX, scaleY))
+            ffi::sfText_setScale(self.text, Vector2f::new(scale_x, scale_y))
         }
     }
 
@@ -456,9 +456,9 @@ impl Text {
     * * offsetX - Offset x
     * * offsetY - Offset y
     */
-    pub fn move2f(&mut self, offsetX : f32, offsetY : f32) -> () {
+    pub fn move2f(&mut self, offset_x : f32, offset_y : f32) -> () {
         unsafe {
-            ffi::sfText_move(self.text, Vector2f::new(offsetX, offsetY))
+            ffi::sfText_move(self.text, Vector2f::new(offset_x, offset_y))
         }
     }
 
@@ -630,7 +630,7 @@ impl Text {
     */
     pub fn set_unicode_string(&mut self, string : ~[u32]) -> () {
         unsafe {
-            self.stringLength = string.len();
+            self.string_length = string.len();
             ffi::sfText_setUnicodeString(self.text, vec::raw::to_ptr(string))
         }
     }
@@ -663,7 +663,7 @@ impl Wrappable<*ffi::sfText> for Text {
     pub fn wrap(text : *ffi::sfText) -> Text {
         Text {
             text : text,
-            stringLength : 0,
+            string_length : 0,
             font : None
         }
     } 
@@ -674,20 +674,20 @@ impl Wrappable<*ffi::sfText> for Text {
 
 #[doc(hidden)]
 impl Drawable for Text {
-    pub fn draw_in_render_window(&self, renderWindow : &RenderWindow) -> () {
-        renderWindow.draw_text(self)
+    pub fn draw_in_render_window(&self, render_window : &RenderWindow) -> () {
+        render_window.draw_text(self)
     }
 
-    pub fn draw_in_render_window_rs(&self, renderWindow : &RenderWindow, renderStates : &mut RenderStates) -> () {
-        renderWindow.draw_text_rs(self, renderStates)
+    pub fn draw_in_render_window_rs(&self, render_window : &RenderWindow, render_states : &mut RenderStates) -> () {
+        render_window.draw_text_rs(self, render_states)
     }
 
     pub fn draw_in_render_texture(&self, renderTexture : &RenderTexture) -> () {
         renderTexture.draw_text(self)
     }
 
-    pub fn draw_in_render_texture_rs(&self, renderTexture : &RenderTexture, renderStates : &mut RenderStates) -> () {
-        renderTexture.draw_text_rs(self, renderStates)
+    pub fn draw_in_render_texture_rs(&self, render_texture : &RenderTexture, render_states : &mut RenderStates) -> () {
+        render_texture.draw_text_rs(self, render_states)
     }
 }
 

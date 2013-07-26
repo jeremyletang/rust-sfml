@@ -207,13 +207,13 @@ impl UdpSocket {
     * # Arguments
     * * size - Maximum number of bytes that can be received
     */
-    pub fn receive(&self, maxSize : size_t) -> (~[i8], SocketStatus, size_t, ip_address::IpAddress, u16) {
+    pub fn receive(&self, max_size : size_t) -> (~[i8], SocketStatus, size_t, ip_address::IpAddress, u16) {
         unsafe {
             let s : size_t = 0;
             let datas : *i8 = ptr::null();
             let addr : *ip_address::ffi::sfIpAddress = ptr::null();
             let port : u16 = 0;
-            let stat : SocketStatus = ffi::sfUdpSocket_receive(self.socket, datas, maxSize, &s, addr, &port);
+            let stat : SocketStatus = ffi::sfUdpSocket_receive(self.socket, datas, max_size, &s, addr, &port);
             (vec::raw::from_buf_raw(datas, s as uint), stat, s, Wrappable::wrap(*addr), port)
         }
     }

@@ -129,7 +129,7 @@ pub enum WindowStyle {
 pub struct Window {
     priv window : *ffi::sfWindow,
     priv event : ffi::sfEvent,
-    priv titleLength : uint
+    priv title_length : uint
 }
 
 impl Window { 
@@ -176,7 +176,7 @@ impl Window {
             Some (Window {
                 window : sfWin, 
                 event : sfEv, 
-                titleLength : title.len()
+                title_length : title.len()
             })
         }
     }
@@ -219,7 +219,7 @@ impl Window {
             Some (Window {
                 window : sfWin,
                 event : sfEv,
-                titleLength : title.len()
+                title_length : title.len()
             })
         }
     }

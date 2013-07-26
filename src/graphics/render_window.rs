@@ -157,11 +157,11 @@ pub enum WindowStyle {
 
 #[doc(hidden)]
 pub struct RenderWindow {
-    priv renderWindow : *ffi::sfRenderWindow,
+    priv render_window : *ffi::sfRenderWindow,
     priv event : ffi::sfEvent,
-    priv titleLength : uint,
-    priv currentView : @mut View,
-    priv defaultView : @mut View
+    priv title_length : uint,
+    priv current_view : @mut View,
+    priv default_view : @mut View
 }
 
 impl RenderWindow {
@@ -205,17 +205,17 @@ impl RenderWindow {
             None
         }
         else {
-            let defView = unsafe { ffi::sfRenderWindow_getDefaultView(sfRenderWin) };
-            if ptr::is_null(defView) {
+            let def_view = unsafe { ffi::sfRenderWindow_getDefaultView(sfRenderWin) };
+            if ptr::is_null(def_view) {
                 None
             }
             else {
                 Some (RenderWindow {
-                    renderWindow : sfRenderWin, 
+                    render_window : sfRenderWin, 
                     event : sfEv, 
-                    titleLength : title.len(),
-                    currentView : @mut Wrappable::wrap(defView),
-                    defaultView : @mut Wrappable::wrap(defView)
+                    title_length : title.len(),
+                    current_view : @mut Wrappable::wrap(def_view),
+                    default_view : @mut Wrappable::wrap(def_view)
                 })
             }
         }
@@ -264,11 +264,11 @@ impl RenderWindow {
             }
             else {
                 Some (RenderWindow {
-                    renderWindow : sfRenderWin, 
+                    render_window : sfRenderWin, 
                     event : sfEv, 
-                    titleLength : title.len(),
-                    currentView : @mut Wrappable::wrap(defView),
-                    defaultView : @mut Wrappable::wrap(defView)
+                    title_length : title.len(),
+                    current_view : @mut Wrappable::wrap(defView),
+                    default_view : @mut Wrappable::wrap(defView)
                 })
             } 
         }
@@ -282,8 +282,8 @@ impl RenderWindow {
     */
     pub fn set_unicode_title(&mut self, title : ~[u32]) -> () {
         unsafe {
-            self.titleLength = title.len();
-            ffi::sfRenderWindow_setUnicodeTitle(self.renderWindow, vec::raw::to_ptr(title))
+            self.title_length = title.len();
+            ffi::sfRenderWindow_setUnicodeTitle(self.render_window, vec::raw::to_ptr(title))
         }
     }
 
@@ -298,7 +298,7 @@ impl RenderWindow {
     */
     pub fn set_icon(&mut self, width : uint, height : uint, pixels : ~[u8]) -> () {
         unsafe {
-            ffi::sfRenderWindow_setIcon(self.renderWindow, width as c_uint, height as c_uint, vec::raw::to_ptr(pixels))
+            ffi::sfRenderWindow_setIcon(self.render_window, width as c_uint, height as c_uint, vec::raw::to_ptr(pixels))
         }
     }
     
@@ -315,7 +315,7 @@ impl RenderWindow {
     */
     pub fn poll_event(&mut self) -> event::Event {
         let haveEvent : bool =  unsafe {
-            match ffi::sfRenderWindow_pollEvent(self.renderWindow, &self.event) {
+            match ffi::sfRenderWindow_pollEvent(self.render_window, &self.event) {
                 0       => false,
                 _       => true
             }
@@ -343,7 +343,7 @@ impl RenderWindow {
     */
     pub fn wait_event(&mut self) -> event::Event {
         let haveEvent : bool =  unsafe {
-            match ffi::sfRenderWindow_waitEvent(self.renderWindow, &self.event) {
+            match ffi::sfRenderWindow_waitEvent(self.render_window, &self.event) {
                 0       => false,
                 _       => true
             }
@@ -495,7 +495,7 @@ impl RenderWindow {
     */
     pub fn close(&mut self) -> () {
         unsafe {
-            ffi::sfRenderWindow_close(self.renderWindow);
+            ffi::sfRenderWindow_close(self.render_window);
         }
     }
 
@@ -509,7 +509,7 @@ impl RenderWindow {
     pub fn is_open(&self) -> bool {
         let tmp : sfBool;
         unsafe {
-            tmp = ffi::sfRenderWindow_isOpen(self.renderWindow);
+            tmp = ffi::sfRenderWindow_isOpen(self.render_window);
         }
         match tmp {
             0 => false,
@@ -526,7 +526,7 @@ impl RenderWindow {
     */
     pub fn display(&mut self) -> () {
         unsafe {
-            ffi::sfRenderWindow_display(self.renderWindow)
+            ffi::sfRenderWindow_display(self.render_window)
         }
     }
 
@@ -542,7 +542,7 @@ impl RenderWindow {
     */
     pub fn set_framerate_limit(&mut self, limit : uint) -> () {
         unsafe {
-            ffi::sfRenderWindow_setFramerateLimit(self.renderWindow, limit as c_uint)
+            ffi::sfRenderWindow_setFramerateLimit(self.render_window, limit as c_uint)
         }
     }
     
@@ -558,7 +558,7 @@ impl RenderWindow {
     */
     pub fn get_settings(&self) -> ContextSettings {
         unsafe {
-            ffi::sfRenderWindow_getSettings(self.renderWindow)
+            ffi::sfRenderWindow_getSettings(self.render_window)
         }
     }
 
@@ -571,8 +571,8 @@ impl RenderWindow {
     pub fn set_title(&mut self, title : ~str) -> () {
         do title.as_c_str |title_buf| {
             unsafe {
-                self.titleLength = title.len();
-                ffi::sfRenderWindow_setTitle(self.renderWindow, title_buf);
+                self.title_length = title.len();
+                ffi::sfRenderWindow_setTitle(self.render_window, title_buf);
             }
         }
     }
@@ -590,7 +590,7 @@ impl RenderWindow {
                 false   => 0
             };
         unsafe {
-            ffi::sfRenderWindow_setVisible(self.renderWindow, tmp);
+            ffi::sfRenderWindow_setVisible(self.render_window, tmp);
         }
     }
 
@@ -607,7 +607,7 @@ impl RenderWindow {
                 false   => 0
             };
         unsafe {
-            ffi::sfRenderWindow_setMouseCursorVisible(self.renderWindow, tmp);
+            ffi::sfRenderWindow_setMouseCursorVisible(self.render_window, tmp);
         }
     }
     
@@ -629,7 +629,7 @@ impl RenderWindow {
                 false   => 0
             };
         unsafe {
-            ffi::sfRenderWindow_setVerticalSyncEnabled(self.renderWindow, tmp);
+            ffi::sfRenderWindow_setVerticalSyncEnabled(self.render_window, tmp);
         }
     }
 
@@ -652,7 +652,7 @@ impl RenderWindow {
                 false   => 0
             };
         unsafe {
-            ffi::sfRenderWindow_setKeyRepeatEnabled(self.renderWindow, tmp);
+            ffi::sfRenderWindow_setKeyRepeatEnabled(self.render_window, tmp);
         }
     }
     
@@ -676,7 +676,7 @@ impl RenderWindow {
             false   => 0
         };
         let res : sfBool = unsafe {
-            ffi::sfRenderWindow_setActive(self.renderWindow, tmp)
+            ffi::sfRenderWindow_setActive(self.render_window, tmp)
         };
         match res {
             1   => true,
@@ -695,7 +695,7 @@ impl RenderWindow {
     */
     pub fn set_joystick_threshold(&mut self, threshold : float) -> () {
         unsafe {
-            ffi::sfRenderWindow_setJoystickThreshold(self.renderWindow, threshold as c_float)
+            ffi::sfRenderWindow_setJoystickThreshold(self.render_window, threshold as c_float)
         }
     }
 
@@ -706,7 +706,7 @@ impl RenderWindow {
     */
     pub fn get_position(&self) -> Vector2i {
         unsafe {
-            ffi::sfRenderWindow_getPosition(self.renderWindow)
+            ffi::sfRenderWindow_getPosition(self.render_window)
         }
     }
 
@@ -722,7 +722,7 @@ impl RenderWindow {
     */
     pub fn set_position(&mut self, position : &Vector2i) -> () {
         unsafe {
-            ffi::sfRenderWindow_setPosition(self.renderWindow, *position)
+            ffi::sfRenderWindow_setPosition(self.render_window, *position)
         }
     }
     
@@ -735,7 +735,7 @@ impl RenderWindow {
     */
     pub fn get_size(&self) -> Vector2u {
         unsafe {
-            ffi::sfRenderWindow_getSize(self.renderWindow)
+            ffi::sfRenderWindow_getSize(self.render_window)
         }
     }
     
@@ -747,7 +747,7 @@ impl RenderWindow {
     */
     pub fn set_size(&mut self, size : &Vector2u) -> () {
         unsafe {
-            ffi::sfRenderWindow_setSize(self.renderWindow, *size)
+            ffi::sfRenderWindow_setSize(self.render_window, *size)
         }
     }
     
@@ -772,7 +772,7 @@ impl RenderWindow {
     */
     pub fn push_GL_states(&mut self) -> () {
         unsafe {
-            ffi::sfRenderWindow_pushGLStates(self.renderWindow)
+            ffi::sfRenderWindow_pushGLStates(self.render_window)
         }
     }
 
@@ -781,7 +781,7 @@ impl RenderWindow {
     */
     pub fn pop_GL_states(&mut self) -> () {
         unsafe {
-            ffi::sfRenderWindow_popGLStates(self.renderWindow)
+            ffi::sfRenderWindow_popGLStates(self.render_window)
         }
     }
 
@@ -796,7 +796,7 @@ impl RenderWindow {
     */
     pub fn reset_GL_states(&mut self) -> () {
         unsafe {
-            ffi::sfRenderWindow_resetGLStates(self.renderWindow)
+            ffi::sfRenderWindow_resetGLStates(self.render_window)
         }
     }
 
@@ -810,7 +810,7 @@ impl RenderWindow {
     */
     pub fn get_mouse_position(&self) -> Vector2i {
         unsafe {
-            ffi::sfMouse_getPositionRenderWindow(self.renderWindow)
+            ffi::sfMouse_getPositionRenderWindow(self.render_window)
         }
     }
 
@@ -824,7 +824,7 @@ impl RenderWindow {
     */
     pub fn set_mouse_position(&mut self, position : &Vector2i) -> () {
         unsafe {
-            ffi::sfMouse_setPositionRenderWindow(*position, self.renderWindow)
+            ffi::sfMouse_setPositionRenderWindow(*position, self.render_window)
         }
     }
 
@@ -845,112 +845,112 @@ impl RenderWindow {
     * * object - Object to draw
     * * renderStates - The renderStates to associate to the object
     */
-    pub fn draw_with_renderstates<T : Drawable>(&mut self, object : &T, renderStates : &mut RenderStates) -> () {
-        object.draw_in_render_window_rs(self, renderStates);
+    pub fn draw_with_renderstates<T : Drawable>(&mut self, object : &T, render_states : &mut RenderStates) -> () {
+        object.draw_in_render_window_rs(self, render_states);
     }
 
     /// Draw a Text
     pub fn draw_text(&self, text : &Text) -> () {
         unsafe {
-            ffi::sfRenderWindow_drawText(self.renderWindow, text.unwrap(), ptr::null())
+            ffi::sfRenderWindow_drawText(self.render_window, text.unwrap(), ptr::null())
         }
     }
 
     // Draw a Shape
     pub fn draw_shape(&self, shape : &Shape) -> () {
         unsafe {
-            ffi::sfRenderWindow_drawShape(self.renderWindow, shape.unwrap(), ptr::null())
+            ffi::sfRenderWindow_drawShape(self.render_window, shape.unwrap(), ptr::null())
         }
     }
 
     /// Draw a sprite
     pub fn draw_sprite(&self, sprite : &Sprite) -> () {
         unsafe {
-            ffi::sfRenderWindow_drawSprite(self.renderWindow, sprite.unwrap(), ptr::null())
+            ffi::sfRenderWindow_drawSprite(self.render_window, sprite.unwrap(), ptr::null())
         }
     }
 
     /// Draw a CircleShape
-    pub fn draw_circle_shape(&self, circleShape : &CircleShape) -> () {
+    pub fn draw_circle_shape(&self, circle_shape : &CircleShape) -> () {
         unsafe {
-            ffi::sfRenderWindow_drawCircleShape(self.renderWindow, circleShape.unwrap(), ptr::null())
+            ffi::sfRenderWindow_drawCircleShape(self.render_window, circle_shape.unwrap(), ptr::null())
         }
     }
 
     /// Draw a RectangleShape
-    pub fn draw_rectangle_shape(&self, rectangleShape : &RectangleShape) -> () {
+    pub fn draw_rectangle_shape(&self, rectangle_shape : &RectangleShape) -> () {
         unsafe {
-            ffi::sfRenderWindow_drawRectangleShape(self.renderWindow, rectangleShape.unwrap(), ptr::null())
+            ffi::sfRenderWindow_drawRectangleShape(self.render_window, rectangle_shape.unwrap(), ptr::null())
         }
     }
 
     /// Draw a ConvexShape
-    pub fn draw_convex_shape(&self, convexShape : &ConvexShape) -> () {
+    pub fn draw_convex_shape(&self, convex_shape : &ConvexShape) -> () {
         unsafe {
-            ffi::sfRenderWindow_drawConvexShape(self.renderWindow, convexShape.unwrap(), ptr::null())
+            ffi::sfRenderWindow_drawConvexShape(self.render_window, convex_shape.unwrap(), ptr::null())
         }
     }
 
     /// Draw a VertexArray
-    pub fn draw_vertex_array(&self, vertexArray : &VertexArray) -> () {
+    pub fn draw_vertex_array(&self, vertex_array : &VertexArray) -> () {
         unsafe {
-            ffi::sfRenderWindow_drawVertexArray(self.renderWindow, vertexArray.unwrap(), ptr::null())
+            ffi::sfRenderWindow_drawVertexArray(self.render_window, vertex_array.unwrap(), ptr::null())
         }
     }
 
     /// Draw a Text with a RenderStates
-    pub fn draw_text_rs(&self, text : &Text, renderStates : &mut RenderStates) -> () {
+    pub fn draw_text_rs(&self, text : &Text, render_states : &mut RenderStates) -> () {
         unsafe {
-            ffi::sfRenderWindow_drawText(self.renderWindow, text.unwrap(), renderStates.unwrap())
+            ffi::sfRenderWindow_drawText(self.render_window, text.unwrap(), render_states.unwrap())
         }
     }
 
     /// Draw a Shape with a RenderStates
-    pub fn draw_shape_rs(&self, shape : &Shape, renderStates : &mut RenderStates) -> () {
+    pub fn draw_shape_rs(&self, shape : &Shape, render_states : &mut RenderStates) -> () {
         unsafe {
-            ffi::sfRenderWindow_drawShape(self.renderWindow, shape.unwrap(), renderStates.unwrap())
+            ffi::sfRenderWindow_drawShape(self.render_window, shape.unwrap(), render_states.unwrap())
         }
     }
 
     /// Draw a sprite with a RenderStates
-    pub fn draw_sprite_rs(&self, sprite : &Sprite, renderStates : &mut RenderStates) -> () {
+    pub fn draw_sprite_rs(&self, sprite : &Sprite, render_states : &mut RenderStates) -> () {
         unsafe {
-            ffi::sfRenderWindow_drawSprite(self.renderWindow, sprite.unwrap(), renderStates.unwrap())
+            ffi::sfRenderWindow_drawSprite(self.render_window, sprite.unwrap(), render_states.unwrap())
         }
     }
 
     /// Draw a CircleShape with a RenderStates
-    pub fn draw_circle_shape_rs(&self, circleShape : &CircleShape, renderStates : &mut RenderStates) -> () {
+    pub fn draw_circle_shape_rs(&self, circle_shape : &CircleShape, render_states : &mut RenderStates) -> () {
         unsafe {
-            ffi::sfRenderWindow_drawCircleShape(self.renderWindow, circleShape.unwrap(), renderStates.unwrap())
+            ffi::sfRenderWindow_drawCircleShape(self.render_window, circle_shape.unwrap(), render_states.unwrap())
         }
     }
 
     /// Draw a RectangleShape with a RenderStates
-    pub fn draw_rectangle_shape_rs(&self, rectangleShape : &RectangleShape, renderStates : &mut RenderStates) -> () {
+    pub fn draw_rectangle_shape_rs(&self, rectangle_shape : &RectangleShape, render_states : &mut RenderStates) -> () {
         unsafe {
-            ffi::sfRenderWindow_drawRectangleShape(self.renderWindow, rectangleShape.unwrap(), renderStates.unwrap())
+            ffi::sfRenderWindow_drawRectangleShape(self.render_window, rectangle_shape.unwrap(), render_states.unwrap())
         }
     }
 
     /// Draw a ConvexShape with a RenderStates
-    pub fn draw_convex_shape_rs(&self, convexShape : &ConvexShape, renderStates : &mut RenderStates) -> () {
+    pub fn draw_convex_shape_rs(&self, convex_shape : &ConvexShape, render_states : &mut RenderStates) -> () {
         unsafe {
-            ffi::sfRenderWindow_drawConvexShape(self.renderWindow, convexShape.unwrap(), renderStates.unwrap())
+            ffi::sfRenderWindow_drawConvexShape(self.render_window, convex_shape.unwrap(), render_states.unwrap())
         }
     }
 
     /// Draw a VertexArray with a RenderStates
-    pub fn draw_vertex_array_rs(&self, vertexArray : &VertexArray, renderStates : &mut RenderStates) -> () {
+    pub fn draw_vertex_array_rs(&self, vertex_array : &VertexArray, render_states : &mut RenderStates) -> () {
         unsafe {
-            ffi::sfRenderWindow_drawVertexArray(self.renderWindow, vertexArray.unwrap(), renderStates.unwrap())
+            ffi::sfRenderWindow_drawVertexArray(self.render_window, vertex_array.unwrap(), render_states.unwrap())
         }
     }
 
     /// Clear window with the given color
     pub fn clear(&mut self, color : &Color) -> () {
         unsafe {
-            ffi::sfRenderWindow_clear(self.renderWindow, *color)
+            ffi::sfRenderWindow_clear(self.render_window, *color)
         }
     }
     
@@ -968,7 +968,7 @@ impl RenderWindow {
     * Return a new image containing the captured contents
     */
     pub fn capture(&mut self) -> Option<Image> {
-        let img = unsafe { ffi::sfRenderWindow_capture(self.renderWindow) };
+        let img = unsafe { ffi::sfRenderWindow_capture(self.render_window) };
         if ptr::is_null(img) {
             None
         }
@@ -984,9 +984,9 @@ impl RenderWindow {
     * * view - The new view
     */
     pub fn set_view(&mut self, view : @mut View) -> () {
-        self.currentView = view;
+        self.current_view = view;
         unsafe {
-            ffi::sfRenderWindow_setView(self.renderWindow, view.unwrap())
+            ffi::sfRenderWindow_setView(self.render_window, view.unwrap())
         }
     }
     
@@ -996,7 +996,7 @@ impl RenderWindow {
     * Return the current active view
     */
     pub fn get_view(&self) -> @mut View {
-        self.currentView
+        self.current_view
     }
     
     /**
@@ -1005,7 +1005,7 @@ impl RenderWindow {
     * Return the default view of the render window
     */
     pub fn get_default_view(&self) -> @mut View {
-        self.defaultView
+        self.default_view
     }
     
     /**
@@ -1037,7 +1037,7 @@ impl RenderWindow {
     */
     pub fn map_pixel_to_coords(&self, point : &Vector2i, view : &View) -> Vector2f {
         unsafe {
-            ffi::sfRenderWindow_mapPixelToCoords(self.renderWindow, *point, view.unwrap())
+            ffi::sfRenderWindow_mapPixelToCoords(self.render_window, *point, view.unwrap())
         }
     }
 
@@ -1067,9 +1067,9 @@ impl RenderWindow {
     * Return the converted point, in "world" units
     */
     pub fn map_pixel_to_coords_current_view(&self, point : &Vector2i) -> Vector2f {
-        let view = unsafe {ffi::sfRenderWindow_getView(self.renderWindow)};
+        let view = unsafe {ffi::sfRenderWindow_getView(self.render_window)};
         unsafe {
-            ffi::sfRenderWindow_mapPixelToCoords(self.renderWindow, *point, view)
+            ffi::sfRenderWindow_mapPixelToCoords(self.render_window, *point, view)
         }
     }
 
@@ -1096,7 +1096,7 @@ impl RenderWindow {
     */
     pub fn map_coords_to_pixel(&self, point : &Vector2f, view : &View) -> Vector2i {
         unsafe {
-            ffi::sfRenderWindow_mapCoordsToPixel(self.renderWindow, *point, view.unwrap())
+            ffi::sfRenderWindow_mapCoordsToPixel(self.render_window, *point, view.unwrap())
         }
     }
 
@@ -1120,9 +1120,9 @@ impl RenderWindow {
     * * point - Point to convert
     */
     pub fn map_coords_to_pixel_current_view(&self, point : &Vector2f) -> Vector2i {
-        let currView = unsafe { ffi::sfRenderWindow_getView(self.renderWindow) };
+        let currView = unsafe { ffi::sfRenderWindow_getView(self.render_window) };
         unsafe {
-            ffi::sfRenderWindow_mapCoordsToPixel(self.renderWindow, *point, currView)
+            ffi::sfRenderWindow_mapCoordsToPixel(self.render_window, *point, currView)
         }
     }
     
@@ -1136,13 +1136,13 @@ impl RenderWindow {
     */
     pub fn get_viewport(&self, view : &View) -> IntRect {
         unsafe {
-            ffi::sfRenderWindow_getViewport(self.renderWindow, view.unwrap())
+            ffi::sfRenderWindow_getViewport(self.render_window, view.unwrap())
         }
     }
 
     #[doc(hidden)]
     pub fn unwrap(&self) -> *ffi::sfRenderWindow {
-        self.renderWindow
+        self.render_window
     }
 }
 
@@ -1153,7 +1153,7 @@ impl Drop for RenderWindow {
     */
     fn drop(&self) {
         unsafe {
-            ffi::sfRenderWindow_destroy(self.renderWindow);
+            ffi::sfRenderWindow_destroy(self.render_window);
         }
     }
 }

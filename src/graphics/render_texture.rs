@@ -108,7 +108,7 @@ pub mod ffi {
 
 #[doc(hidden)]
 pub struct RenderTexture {
-    renderTexture : *ffi::sfRenderTexture
+    render_texture : *ffi::sfRenderTexture
 }
 
 impl RenderTexture {
@@ -122,8 +122,8 @@ impl RenderTexture {
     *
     * Return a new option on RenderTexture object, or None if it failed
     */
-    pub fn new(width : uint, height : uint, depthBuffer : bool) -> Option<RenderTexture> {
-            let tex = match depthBuffer {
+    pub fn new(width : uint, height : uint, depth_buffer : bool) -> Option<RenderTexture> {
+            let tex = match depth_buffer {
                 false       => unsafe { ffi::sfRenderTexture_create(width as c_uint, height as c_uint, 0) },
                 true        => unsafe { ffi::sfRenderTexture_create(width as c_uint, height as c_uint, 1) }
             };
@@ -132,7 +132,7 @@ impl RenderTexture {
         }
         else {
             Some(RenderTexture {
-                renderTexture : tex
+                render_texture : tex
             })
         }
     }
@@ -144,7 +144,7 @@ impl RenderTexture {
     */
     pub fn get_size(&self) -> Vector2u {
         unsafe {
-            ffi::sfRenderTexture_getSize(self.renderTexture)
+            ffi::sfRenderTexture_getSize(self.render_texture)
         }
     }
 
@@ -157,8 +157,8 @@ impl RenderTexture {
     pub fn set_active(&mut self, active : bool) -> bool {
         match unsafe {
             match active {
-                false       => ffi::sfRenderTexture_setActive(self.renderTexture, 0),
-                true        => ffi::sfRenderTexture_setActive(self.renderTexture, 1)
+                false       => ffi::sfRenderTexture_setActive(self.render_texture, 0),
+                true        => ffi::sfRenderTexture_setActive(self.render_texture, 1)
             }
         } {
             0   => false,
@@ -172,7 +172,7 @@ impl RenderTexture {
     */
     pub fn display(&self) -> () {
         unsafe {
-            ffi::sfRenderTexture_display(self.renderTexture)
+            ffi::sfRenderTexture_display(self.render_texture)
         }
     }
 
@@ -184,7 +184,7 @@ impl RenderTexture {
     */
     pub fn clear(&mut self, color : &Color) -> () {
         unsafe {
-            ffi::sfRenderTexture_clear(self.renderTexture, *color)
+            ffi::sfRenderTexture_clear(self.render_texture, *color)
         }
     }
 
@@ -196,7 +196,7 @@ impl RenderTexture {
     */
     pub fn set_view(&mut self, view : &View) -> () {
         unsafe {
-            ffi::sfRenderTexture_setView(self.renderTexture, view.unwrap())
+            ffi::sfRenderTexture_setView(self.render_texture, view.unwrap())
         }
     }
 
@@ -207,7 +207,7 @@ impl RenderTexture {
     */
     pub fn get_view(&self) -> View {
         unsafe {
-            Wrappable::wrap(ffi::sfRenderTexture_getView(self.renderTexture))
+            Wrappable::wrap(ffi::sfRenderTexture_getView(self.render_texture))
         }
     }
 
@@ -218,7 +218,7 @@ impl RenderTexture {
     */
     pub fn get_default_view(&self) -> View {
         unsafe {
-            Wrappable::wrap(ffi::sfRenderTexture_getDefaultView(self.renderTexture))
+            Wrappable::wrap(ffi::sfRenderTexture_getDefaultView(self.render_texture))
         }
     }
 
@@ -232,7 +232,7 @@ impl RenderTexture {
     */
     pub fn get_viewport(&self, view : &View) -> IntRect {
         unsafe {
-            ffi::sfRenderTexture_getViewport(self.renderTexture, view.unwrap())
+            ffi::sfRenderTexture_getViewport(self.render_texture, view.unwrap())
         }
     }
     
@@ -265,7 +265,7 @@ impl RenderTexture {
     */
     pub fn map_pixel_to_coords(&self, point : &Vector2i, view : &View) -> Vector2f {
         unsafe {
-            ffi::sfRenderTexture_mapPixelToCoords(self.renderTexture, *point, view.unwrap())
+            ffi::sfRenderTexture_mapPixelToCoords(self.render_texture, *point, view.unwrap())
         }
     }
 
@@ -295,9 +295,9 @@ impl RenderTexture {
     * Return the converted point, in "world" units
     */
     pub fn map_pixel_to_coords_current_view(&self, point : &Vector2i) -> Vector2f {
-        let view = unsafe { ffi::sfRenderTexture_getView(self.renderTexture) };
+        let view = unsafe { ffi::sfRenderTexture_getView(self.render_texture) };
         unsafe {
-            ffi::sfRenderTexture_mapPixelToCoords(self.renderTexture, *point, view)
+            ffi::sfRenderTexture_mapPixelToCoords(self.render_texture, *point, view)
         }
     }
 
@@ -324,7 +324,7 @@ impl RenderTexture {
     */
     pub fn map_coords_to_pixel(&self, point : &Vector2f, view : &View) -> Vector2i {
         unsafe {
-            ffi::sfRenderTexture_mapCoordsToPixel(self.renderTexture, *point, view.unwrap())
+            ffi::sfRenderTexture_mapCoordsToPixel(self.render_texture, *point, view.unwrap())
         }
     }
 
@@ -348,9 +348,9 @@ impl RenderTexture {
     * * point - Point to convert
     */
     pub fn map_coords_to_pixel_current_view(&self, point : &Vector2f) -> Vector2i {
-        let view = unsafe { ffi::sfRenderTexture_getView(self.renderTexture) };
+        let view = unsafe { ffi::sfRenderTexture_getView(self.render_texture) };
         unsafe {
-            ffi::sfRenderTexture_mapCoordsToPixel(self.renderTexture, *point, view)
+            ffi::sfRenderTexture_mapCoordsToPixel(self.render_texture, *point, view)
         }
     }
 
@@ -371,105 +371,105 @@ impl RenderTexture {
     * * object - Object to draw
     * * renderStates - The RenderStates to associate to the object
     */
-    pub fn draw_with_renderstates<T : Drawable>(&mut self, t : &T, renderStates : &mut RenderStates) -> () {
-        t.draw_in_render_texture_rs(self, renderStates);
+    pub fn draw_with_renderstates<T : Drawable>(&mut self, t : &T, render_states : &mut RenderStates) -> () {
+        t.draw_in_render_texture_rs(self, render_states);
     }
 
     /// Draw Text
     pub fn draw_text(&self, text : &Text) -> () {
         unsafe {
-            ffi::sfRenderTexture_drawText(self.renderTexture, text.unwrap(), ptr::null())
+            ffi::sfRenderTexture_drawText(self.render_texture, text.unwrap(), ptr::null())
         }
     }
 
     /// Draw Text
     pub fn draw_shape(&self, shape : &Shape) -> () {
         unsafe {
-            ffi::sfRenderTexture_drawShape(self.renderTexture, shape.unwrap(), ptr::null())
+            ffi::sfRenderTexture_drawShape(self.render_texture, shape.unwrap(), ptr::null())
         }
     }
 
     /// Draw Sprite
     pub fn draw_sprite(&self, sprite : &Sprite) -> () {
         unsafe {
-            ffi::sfRenderTexture_drawSprite(self.renderTexture, sprite.unwrap(), ptr::null())
+            ffi::sfRenderTexture_drawSprite(self.render_texture, sprite.unwrap(), ptr::null())
         }
     }
 
     /// Draw CircleShape
-    pub fn draw_circle_shape(&self, circleShape : &CircleShape) -> () {
+    pub fn draw_circle_shape(&self, circle_shape : &CircleShape) -> () {
         unsafe {
-            ffi::sfRenderTexture_drawCircleShape(self.renderTexture, circleShape.unwrap(), ptr::null())
+            ffi::sfRenderTexture_drawCircleShape(self.render_texture, circle_shape.unwrap(), ptr::null())
         }
     }
 
     /// Draw RectangleShape
-    pub fn draw_rectangle_shape(&self, rectangleShape : &RectangleShape) -> () {
+    pub fn draw_rectangle_shape(&self, rectangle_shape : &RectangleShape) -> () {
         unsafe {
-            ffi::sfRenderTexture_drawRectangleShape(self.renderTexture, rectangleShape.unwrap(), ptr::null())
+            ffi::sfRenderTexture_drawRectangleShape(self.render_texture, rectangle_shape.unwrap(), ptr::null())
         }
     }
 
     /// Draw ConvexShape
-    pub fn draw_convex_shape(&self, convexShape : &ConvexShape) -> () {
+    pub fn draw_convex_shape(&self, convex_shape : &ConvexShape) -> () {
         unsafe {
-            ffi::sfRenderTexture_drawConvexShape(self.renderTexture, convexShape.unwrap(), ptr::null())
+            ffi::sfRenderTexture_drawConvexShape(self.render_texture, convex_shape.unwrap(), ptr::null())
         }
     }
 
     /// Draw VertexArray
-    pub fn draw_vertex_array(&self, vertexArray : &VertexArray) -> () {
+    pub fn draw_vertex_array(&self, vertex_array : &VertexArray) -> () {
         unsafe {
-            ffi::sfRenderTexture_drawVertexArray(self.renderTexture, vertexArray.unwrap(), ptr::null())
+            ffi::sfRenderTexture_drawVertexArray(self.render_texture, vertex_array.unwrap(), ptr::null())
         }
     }
     
     /// Draw Text
     pub fn draw_text_rs(&self, text : &Text, rs : &mut RenderStates) -> () {
         unsafe {
-            ffi::sfRenderTexture_drawText(self.renderTexture, text.unwrap(), rs.unwrap())
+            ffi::sfRenderTexture_drawText(self.render_texture, text.unwrap(), rs.unwrap())
         }
     }
 
     /// Draw Shape
     pub fn draw_shape_rs(&self, shape : &Shape, rs : &mut RenderStates) -> () {
         unsafe {
-            ffi::sfRenderTexture_drawShape(self.renderTexture, shape.unwrap(), rs.unwrap())
+            ffi::sfRenderTexture_drawShape(self.render_texture, shape.unwrap(), rs.unwrap())
         }
     }
 
     /// Draw Sprite
     pub fn draw_sprite_rs(&self, sprite : &Sprite, rs : &mut RenderStates) -> () {
         unsafe {
-            ffi::sfRenderTexture_drawSprite(self.renderTexture, sprite.unwrap(), rs.unwrap())
+            ffi::sfRenderTexture_drawSprite(self.render_texture, sprite.unwrap(), rs.unwrap())
         }
     }
 
     /// Draw CircleShape
-    pub fn draw_circle_shape_rs(&self, circleShape : &CircleShape, rs : &mut RenderStates) -> () {
+    pub fn draw_circle_shape_rs(&self, circle_shape : &CircleShape, rs : &mut RenderStates) -> () {
         unsafe {
-            ffi::sfRenderTexture_drawCircleShape(self.renderTexture, circleShape.unwrap(), rs.unwrap())
+            ffi::sfRenderTexture_drawCircleShape(self.render_texture, circle_shape.unwrap(), rs.unwrap())
         }
     }
 
     /// Draw RectangleShape
-    pub fn draw_rectangle_shape_rs(&self, rectangleShape : &RectangleShape, rs : &mut RenderStates) -> () {
+    pub fn draw_rectangle_shape_rs(&self, rectangle_shape : &RectangleShape, rs : &mut RenderStates) -> () {
         unsafe {
-            ffi::sfRenderTexture_drawRectangleShape(self.renderTexture, rectangleShape.unwrap(), rs.unwrap())
+            ffi::sfRenderTexture_drawRectangleShape(self.render_texture, rectangle_shape.unwrap(), rs.unwrap())
         }
     }
 
     /// Draw ConvexShape
-    pub fn draw_convex_shape_rs(&self, convexShape : &ConvexShape, rs : &mut RenderStates) -> () {
+    pub fn draw_convex_shape_rs(&self, convex_shape : &ConvexShape, rs : &mut RenderStates) -> () {
         unsafe {
-            ffi::sfRenderTexture_drawConvexShape(self.renderTexture, convexShape.unwrap(), rs.unwrap())
+            ffi::sfRenderTexture_drawConvexShape(self.render_texture, convex_shape.unwrap(), rs.unwrap())
         }
     }
 
     /// Draw VertexArray
-    pub fn draw_vertex_array_rs(&self, vertexArray : &VertexArray, rs : &mut RenderStates) -> () {
+    pub fn draw_vertex_array_rs(&self, vertex_array : &VertexArray, rs : &mut RenderStates) -> () {
         unsafe {
-            ffi::sfRenderTexture_drawVertexArray(self.renderTexture, vertexArray.unwrap(), rs.unwrap())
+            ffi::sfRenderTexture_drawVertexArray(self.render_texture, vertex_array.unwrap(), rs.unwrap())
         }
     }
 
@@ -494,7 +494,7 @@ impl RenderTexture {
     */
     pub fn push_GL_states(&mut self) -> () {
         unsafe {
-            ffi::sfRenderTexture_pushGLStates(self.renderTexture)
+            ffi::sfRenderTexture_pushGLStates(self.render_texture)
         }
     }
     
@@ -503,7 +503,7 @@ impl RenderTexture {
     */
     pub fn pop_GL_states(&mut self) -> () {
         unsafe {
-            ffi::sfRenderTexture_popGLStates(self.renderTexture)
+            ffi::sfRenderTexture_popGLStates(self.render_texture)
         }
     }
 
@@ -518,7 +518,7 @@ impl RenderTexture {
     */
     pub fn reset_GL_states(&mut self) -> () {
         unsafe {
-            ffi::sfRenderTexture_resetGLStates(self.renderTexture)
+            ffi::sfRenderTexture_resetGLStates(self.render_texture)
         }
     }
 
@@ -528,7 +528,7 @@ impl RenderTexture {
     * Return the target texture
     */
     pub fn get_texture(&self) -> Option<Texture> {
-        let tex = unsafe { ffi::sfRenderTexture_getTexture(self.renderTexture) };
+        let tex = unsafe { ffi::sfRenderTexture_getTexture(self.render_texture) };
         if ptr::is_null(tex) {
             None
         }
@@ -546,8 +546,8 @@ impl RenderTexture {
     pub fn set_smooth(&mut self, smooth : bool) -> () {
         unsafe {
             match smooth {
-                true        => ffi::sfRenderTexture_setSmooth(self.renderTexture, 1),
-                false       => ffi::sfRenderTexture_setSmooth(self.renderTexture, 0)
+                true        => ffi::sfRenderTexture_setSmooth(self.render_texture, 1),
+                false       => ffi::sfRenderTexture_setSmooth(self.render_texture, 0)
             }
         }
     }
@@ -558,7 +558,7 @@ impl RenderTexture {
     * Return true if smoothing is enabled, false if it is disabled
     */
     pub fn is_smooth(&self) -> bool {
-        match unsafe { ffi::sfRenderTexture_isSmooth(self.renderTexture) } {
+        match unsafe { ffi::sfRenderTexture_isSmooth(self.render_texture) } {
             0 => false,
             _ => true
         }
@@ -568,7 +568,7 @@ impl RenderTexture {
 impl Drop for RenderTexture {
     fn drop(&self) -> () {
         unsafe {
-            ffi::sfRenderTexture_destroy(self.renderTexture)
+            ffi::sfRenderTexture_destroy(self.render_texture)
         }
     }
 }

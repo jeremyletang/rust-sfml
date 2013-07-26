@@ -98,9 +98,9 @@ impl Shader {
     *
     * Return a new Shader object
     */
-    pub fn new_from_file(vertexShaderFilename : ~str, fragmentShaderFilename : ~str) -> Option<Shader> {
-        do vertexShaderFilename.as_c_str |vertex| {
-            do fragmentShaderFilename.as_c_str |fragment| {
+    pub fn new_from_file(vertex_shader_filename : ~str, fragment_shader_filename : ~str) -> Option<Shader> {
+        do vertex_shader_filename.as_c_str |vertex| {
+            do fragment_shader_filename.as_c_str |fragment| {
                 let shader = unsafe { ffi::sfShader_createFromFile(vertex, fragment) };
                 if ptr::is_null(shader) {
                     None
@@ -132,9 +132,9 @@ impl Shader {
     *
     * Return a new Shader object
     */
-    pub fn new_from_memory(vertexShader : ~str, fragmentShader : ~str) -> Option<Shader> {
-        do vertexShader.as_c_str |vertex| {
-            do fragmentShader.as_c_str |fragment| {
+    pub fn new_from_memory(vertex_shader : ~str, fragment_shader : ~str) -> Option<Shader> {
+        do vertex_shader.as_c_str |vertex| {
+            do fragment_shader.as_c_str |fragment| {
                 let shader = unsafe { ffi::sfShader_createFromFile(vertex, fragment) };
                 if ptr::is_null(shader) {
                     None

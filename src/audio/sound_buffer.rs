@@ -60,7 +60,7 @@ pub mod ffi {
 
 #[doc(hidden)]
 pub struct SoundBuffer {
-    priv soundBuffer : *ffi::sfSoundBuffer,
+    priv sound_buffer : *ffi::sfSoundBuffer,
     priv dropable : bool
 }
 
@@ -79,18 +79,18 @@ impl SoundBuffer {
     * Return an option to a SoundBuffer object or None.
     */
     pub fn new(filename : ~str) -> Option<SoundBuffer> {
-        let mut soundBuffer : *ffi::sfSoundBuffer = ptr::null();
+        let mut sound_buffer : *ffi::sfSoundBuffer = ptr::null();
         do filename.as_c_str |filename_buf| {
             unsafe { 
-                soundBuffer = ffi::sfSoundBuffer_createFromFile(filename_buf);
+                sound_buffer = ffi::sfSoundBuffer_createFromFile(filename_buf);
             }
         };
-        if ptr::is_null(soundBuffer) {
+        if ptr::is_null(sound_buffer) {
             None
         }
         else {
             Some(SoundBuffer{
-                soundBuffer : soundBuffer,
+                sound_buffer : sound_buffer,
                 dropable : true
             })
         }
@@ -102,13 +102,13 @@ impl SoundBuffer {
     *  Return an option to a cloned SoundBuffer object or None.
     */
     pub fn clone(&self) -> Option<SoundBuffer> {
-        let soundBuffer = unsafe { ffi::sfSoundBuffer_copy(self.soundBuffer) };
-        if ptr::is_null(soundBuffer) {
+        let sound_buffer = unsafe { ffi::sfSoundBuffer_copy(self.sound_buffer) };
+        if ptr::is_null(sound_buffer) {
             None
         }
         else {
             Some(SoundBuffer {
-                soundBuffer : soundBuffer,
+                sound_buffer : sound_buffer,
                 dropable : true
             })
         }
@@ -128,7 +128,7 @@ impl SoundBuffer {
     */
     pub fn save_to_file(&self, filename : ~str) -> bool {
         match do filename.as_c_str |filename_buf| {
-            unsafe { ffi::sfSoundBuffer_saveToFile(self.soundBuffer, filename_buf) } } {
+            unsafe { ffi::sfSoundBuffer_saveToFile(self.sound_buffer, filename_buf) } } {
             0 => false,
             _ => true
         }
@@ -155,7 +155,7 @@ impl SoundBuffer {
     */
     pub fn get_sample_count(&self) -> i64 {
         unsafe {
-            ffi::sfSoundBuffer_getSampleCount(self.soundBuffer) as i64
+            ffi::sfSoundBuffer_getSampleCount(self.sound_buffer) as i64
         }
     }
 
@@ -169,7 +169,7 @@ impl SoundBuffer {
     */
     pub fn get_channel_count(&self) -> uint {
         unsafe {
-            ffi::sfSoundBuffer_getChannelCount(self.soundBuffer) as uint
+            ffi::sfSoundBuffer_getChannelCount(self.sound_buffer) as uint
         }
     }
 
@@ -179,7 +179,7 @@ impl SoundBuffer {
     * Return the sound duration
     */
     pub fn get_duration(&self) -> time::Time {
-        Wrappable::wrap(unsafe { ffi::sfSoundBuffer_getDuration(self.soundBuffer) })
+        Wrappable::wrap(unsafe { ffi::sfSoundBuffer_getDuration(self.sound_buffer) })
     }
 
     /**
@@ -193,7 +193,7 @@ impl SoundBuffer {
     */
     pub fn get_sample_rate(&self) -> uint {
         unsafe {
-            ffi::sfSoundBuffer_getSampleRate(self.soundBuffer) as uint
+            ffi::sfSoundBuffer_getSampleRate(self.sound_buffer) as uint
         }
     }
 }
@@ -202,13 +202,13 @@ impl SoundBuffer {
 impl Wrappable<*ffi::sfSoundBuffer> for SoundBuffer {
     pub fn wrap(buffer : *ffi::sfSoundBuffer) -> SoundBuffer {
         SoundBuffer {
-            soundBuffer : buffer,
+            sound_buffer : buffer,
             dropable : false
         }
     }
 
     pub fn unwrap(&self) -> *ffi::sfSoundBuffer {
-        self.soundBuffer
+        self.sound_buffer
     }
 
 }
@@ -220,7 +220,7 @@ impl Drop for SoundBuffer {
     fn drop(&self) {
         if self.dropable {
             unsafe {
-                ffi::sfSoundBuffer_destroy(self.soundBuffer);
+                ffi::sfSoundBuffer_destroy(self.sound_buffer);
             }
         }
     }

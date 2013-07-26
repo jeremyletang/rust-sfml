@@ -72,7 +72,7 @@ pub mod ffi {
 
 #[doc(hidden)]
 pub struct Transformable{
-    priv trans : *ffi::sfTransformable
+    priv transformable : *ffi::sfTransformable
 }
 
 impl Transformable {
@@ -88,7 +88,7 @@ impl Transformable {
         }
         else {
             Some(Transformable {
-                trans : tran
+                transformable : tran
             })
         }
     }
@@ -99,13 +99,13 @@ impl Transformable {
     * Return the copied object
     */
     pub fn clone(&self) -> Option<Transformable> {
-        let tran = unsafe { ffi::sfTransformable_copy(self.trans) };
+        let tran = unsafe { ffi::sfTransformable_copy(self.transformable) };
         if ptr::is_null(tran) {
             None
         }
         else {
             Some(Transformable {
-                trans :tran
+                transformable :tran
             }) 
         }
     }
@@ -122,7 +122,7 @@ impl Transformable {
     */
     pub fn set_position(&mut self, position : &Vector2f) -> () {
         unsafe {
-            ffi::sfTransformable_setPosition(self.trans, *position)
+            ffi::sfTransformable_setPosition(self.transformable, *position)
         }
     }
     
@@ -138,7 +138,7 @@ impl Transformable {
     */
     pub fn set_rotation(&mut self, angle : float) -> () {
         unsafe {
-            ffi::sfTransformable_setRotation(self.trans, angle as c_float)
+            ffi::sfTransformable_setRotation(self.transformable, angle as c_float)
         }
     }
 
@@ -154,7 +154,7 @@ impl Transformable {
     */
     pub fn set_scale(&mut self, scale : &Vector2f) -> () {
         unsafe {
-            ffi::sfTransformable_setScale(self.trans, *scale)
+            ffi::sfTransformable_setScale(self.transformable, *scale)
         }
     }
 
@@ -173,7 +173,7 @@ impl Transformable {
     */
     pub fn set_origin(&mut self, origin : &Vector2f) -> () {
         unsafe {
-            ffi::sfTransformable_setOrigin(self.trans, *origin)
+            ffi::sfTransformable_setOrigin(self.transformable, *origin)
         }
     }
     
@@ -184,7 +184,7 @@ impl Transformable {
     */
     pub fn get_position(&self) -> Vector2f {
         unsafe {
-            ffi::sfTransformable_getPosition(self.trans)
+            ffi::sfTransformable_getPosition(self.transformable)
         }
     }
 
@@ -197,7 +197,7 @@ impl Transformable {
     */
     pub fn get_rotation(&self) -> float {
         unsafe {
-            ffi::sfTransformable_getRotation(self.trans) as float
+            ffi::sfTransformable_getRotation(self.transformable) as float
         }
     }
 
@@ -208,7 +208,7 @@ impl Transformable {
     */
     pub fn get_scale(&self) -> Vector2f {
         unsafe {
-            ffi::sfTransformable_getScale(self.trans)
+            ffi::sfTransformable_getScale(self.transformable)
         }
     }
 
@@ -219,7 +219,7 @@ impl Transformable {
     */
     pub fn get_origin(&self) -> Vector2f {
         unsafe {
-            ffi::sfTransformable_getOrigin(self.trans)
+            ffi::sfTransformable_getOrigin(self.transformable)
         }
     }
 
@@ -234,7 +234,7 @@ impl Transformable {
     */
     pub fn move(&mut self, offset : &Vector2f) -> () {
         unsafe {
-            ffi::sfTransformable_move(self.trans, *offset)
+            ffi::sfTransformable_move(self.transformable, *offset)
         }
     }
 
@@ -249,7 +249,7 @@ impl Transformable {
     */
     pub fn rotate(&mut self, angle : float) -> () {
         unsafe {
-            ffi::sfTransformable_rotate(self.trans, angle as c_float)
+            ffi::sfTransformable_rotate(self.transformable, angle as c_float)
         }
     }
 
@@ -264,7 +264,7 @@ impl Transformable {
     */
     pub fn scale(&mut self, factors : &Vector2f) -> () {
         unsafe {
-            ffi::sfTransformable_scale(self.trans, *factors)
+            ffi::sfTransformable_scale(self.transformable, *factors)
         }
     }
 
@@ -275,7 +275,7 @@ impl Transformable {
     */
     pub fn get_transform(&self) -> Transform {
         unsafe {
-            ffi::sfTransformable_getTransform(self.trans)
+            ffi::sfTransformable_getTransform(self.transformable)
         }
     }
 
@@ -286,7 +286,7 @@ impl Transformable {
     */
     pub fn get_inverse_transform(&self) -> Transform {
         unsafe {
-            ffi::sfTransformable_getInverseTransform(self.trans)
+            ffi::sfTransformable_getInverseTransform(self.transformable)
         }
     }
 }
@@ -295,19 +295,19 @@ impl Transformable {
 impl Wrappable<*ffi::sfTransformable> for Transformable {
     pub fn wrap(transformable : *ffi::sfTransformable) -> Transformable {
         Transformable {
-            trans : transformable
+            transformable : transformable
         }
     }
 
     pub fn unwrap(&self) -> *ffi::sfTransformable {
-        self.trans
+        self.transformable
     }
 }
 
 impl Drop for Transformable {
     fn drop(&self) -> () {
         unsafe {
-            ffi::sfTransformable_destroy(self.trans)
+            ffi::sfTransformable_destroy(self.transformable)
         }
     }
 }

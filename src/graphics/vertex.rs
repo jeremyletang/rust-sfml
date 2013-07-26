@@ -44,7 +44,7 @@ pub mod ffi {
     pub struct sfVertex {
         position : vector2::Vector2f,
         color : color::Color,
-        texCoords : vector2::Vector2f 
+        tex_coords : vector2::Vector2f 
     }
 }
 
@@ -52,7 +52,7 @@ pub mod ffi {
 pub struct Vertex {
     position : Vector2f,
     color : Color,
-    texCoords : Vector2f
+    tex_coords : Vector2f
 }
 
 impl Vertex {
@@ -66,11 +66,11 @@ impl Vertex {
     *
     * Return a Vertex
     */
-    pub fn new(position : &Vector2f, color : &Color, texCoords : &Vector2f) -> Vertex {
+    pub fn new(position : &Vector2f, color : &Color, tex_coords : &Vector2f) -> Vertex {
         Vertex {
             position : *position,
             color : *color,
-            texCoords : *texCoords
+            tex_coords : *tex_coords
         }
     }
 }

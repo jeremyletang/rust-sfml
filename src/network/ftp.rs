@@ -179,13 +179,13 @@ pub struct Response{
 
 #[doc(hidden)]
 pub struct ListingResponse{
-    priv listingResponse : *ffi::sfFtpListingResponse
+    priv listing_response : *ffi::sfFtpListingResponse
 }
 
 
 #[doc(hidden)]
 pub struct DirectoryResponse{
-    priv directoryResponse : *ffi::sfFtpDirectoryResponse
+    priv directory_response : *ffi::sfFtpDirectoryResponse
 }
 
 impl ListingResponse {
@@ -198,7 +198,7 @@ impl ListingResponse {
     * Return true if the status is a success, false if it is a failure
     */
     pub fn is_ok(&self) -> bool {
-        match unsafe { ffi::sfFtpListingResponse_isOk(self.listingResponse) } {
+        match unsafe { ffi::sfFtpListingResponse_isOk(self.listing_response) } {
             0 => false,
             _ => true
         }
@@ -211,7 +211,7 @@ impl ListingResponse {
     */
     pub fn get_status(&self) -> Status {
         unsafe {
-            ffi::sfFtpListingResponse_getStatus(self.listingResponse)
+            ffi::sfFtpListingResponse_getStatus(self.listing_response)
         }
     }
 
@@ -222,7 +222,7 @@ impl ListingResponse {
     */
     pub fn get_message(&self) -> ~str {
         unsafe {
-            str::raw::from_c_str(ffi::sfFtpListingResponse_getMessage(self.listingResponse))
+            str::raw::from_c_str(ffi::sfFtpListingResponse_getMessage(self.listing_response))
         }
     }
 
@@ -233,7 +233,7 @@ impl ListingResponse {
     */
     pub fn get_count(&self) -> u64 {
         unsafe {
-            ffi::sfFtpListingResponse_getCount(self.listingResponse) as u64
+            ffi::sfFtpListingResponse_getCount(self.listing_response) as u64
         }
     }
 
@@ -247,7 +247,7 @@ impl ListingResponse {
     */
     pub fn get_name(&self, index : u64) -> ~str {
         unsafe {
-            str::raw::from_c_str(ffi::sfFtpListingResponse_getName(self.listingResponse, index as size_t))            
+            str::raw::from_c_str(ffi::sfFtpListingResponse_getName(self.listing_response, index as size_t))            
         }
     }
 }
@@ -255,7 +255,7 @@ impl ListingResponse {
 impl Drop for ListingResponse {
     fn drop(&self) -> () {
         unsafe {
-            ffi::sfFtpListingResponse_destroy(self.listingResponse)
+            ffi::sfFtpListingResponse_destroy(self.listing_response)
         }
     }
 }
@@ -270,7 +270,7 @@ impl DirectoryResponse {
     * Return true if the status is a success, false if it is a failure
     */
     pub fn is_ok(&self) -> bool {
-        match unsafe { ffi::sfFtpDirectoryResponse_isOk(self.directoryResponse) } {
+        match unsafe { ffi::sfFtpDirectoryResponse_isOk(self.directory_response) } {
             0 => false,
             _ => true
         }
@@ -283,7 +283,7 @@ impl DirectoryResponse {
     */
     pub fn get_status(&self) -> Status {
         unsafe {
-            ffi::sfFtpDirectoryResponse_getStatus(self.directoryResponse)
+            ffi::sfFtpDirectoryResponse_getStatus(self.directory_response)
         }
     }
     
@@ -294,7 +294,7 @@ impl DirectoryResponse {
     */
     pub fn get_message(&self) -> ~str {
         unsafe {
-            str::raw::from_c_str(ffi::sfFtpDirectoryResponse_getMessage(self.directoryResponse))
+            str::raw::from_c_str(ffi::sfFtpDirectoryResponse_getMessage(self.directory_response))
         }
     }
     
@@ -305,7 +305,7 @@ impl DirectoryResponse {
     */
     pub fn get_directory(&self) -> ~str {
         unsafe {
-            str::raw::from_c_str(ffi::sfFtpDirectoryResponse_getDirectory(self.directoryResponse))
+            str::raw::from_c_str(ffi::sfFtpDirectoryResponse_getDirectory(self.directory_response))
         }
     }
 }
@@ -313,7 +313,7 @@ impl DirectoryResponse {
 impl Drop for DirectoryResponse {
     fn drop(&self) -> () {
         unsafe {
-            ffi::sfFtpDirectoryResponse_destroy(self.directoryResponse)
+            ffi::sfFtpDirectoryResponse_destroy(self.directory_response)
         }
     }
 }
@@ -474,7 +474,7 @@ impl Ftp {
     */
     pub fn get_working_directory(&self) -> DirectoryResponse {
         DirectoryResponse {
-            directoryResponse : unsafe { ffi::sfFtp_getWorkingDirectory(self.ftp) } 
+            directory_response : unsafe { ffi::sfFtp_getWorkingDirectory(self.ftp) } 
         }
     }
 
@@ -494,7 +494,7 @@ impl Ftp {
     pub fn get_directory_listing(&self, directory : ~str) -> ListingResponse {
             do directory.as_c_str |dir| {
                 ListingResponse {
-                    listingResponse : unsafe { ffi::sfFtp_getDirectoryListing(self.ftp, dir) }
+                    listing_response : unsafe { ffi::sfFtp_getDirectoryListing(self.ftp, dir) }
                 }
         }
     }
@@ -580,9 +580,9 @@ impl Ftp {
     *
     * Return the server response to the request
     */
-    pub fn rename_file(&self, name : ~str, newName : ~str) -> Response {
+    pub fn rename_file(&self, name : ~str, new_name : ~str) -> Response {
         do name.as_c_str |file| {
-            do newName.as_c_str |newFile| {
+            do new_name.as_c_str |newFile| {
                 Response {
                     response : unsafe { ffi::sfFtp_renameFile(self.ftp, file, newFile) } 
                 }
@@ -626,9 +626,9 @@ impl Ftp {
     *
     * Return the server response to the request
     */
-    pub fn download(&self, distantFile : ~str, destPath : ~str, mode : TransferMode) -> Response {
-        do distantFile.as_c_str |dist| {
-            do destPath.as_c_str |path| {
+    pub fn download(&self, distant_file : ~str, dest_path : ~str, mode : TransferMode) -> Response {
+        do distant_file.as_c_str |dist| {
+            do dest_path.as_c_str |path| {
                 Response { 
                     response : unsafe { ffi::sfFtp_download(self.ftp, dist, path, mode) }
                 }
@@ -651,9 +651,9 @@ impl Ftp {
     *
     * Return the server response to the request
     */
-    pub fn upload(&self, localFile : ~str, destPath : ~str, mode : TransferMode) -> Response {
-        do localFile.as_c_str |local| {
-            do destPath.as_c_str |path| {
+    pub fn upload(&self, local_file : ~str, dest_path : ~str, mode : TransferMode) -> Response {
+        do local_file.as_c_str |local| {
+            do dest_path.as_c_str |path| {
                 Response { 
                     response : unsafe { ffi::sfFtp_upload(self.ftp, local, path, mode) }
                 }

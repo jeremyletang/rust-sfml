@@ -233,12 +233,12 @@ impl View {
     * Set the center of a view
     *
     * # Arguments
-    * * centerX - New x center coordinate
-    * * centerY - New y center coordinate
+    * * center_x - New x center coordinate
+    * * center_y - New y center coordinate
     */
-    pub fn set_center2f(&mut self, centerX : f32, centerY : f32) -> () {
+    pub fn set_center2f(&mut self, center_x : f32, center_y : f32) -> () {
         unsafe {
-            ffi::sfView_setCenter(self.view, Vector2f::new(centerX, centerY))
+            ffi::sfView_setCenter(self.view, Vector2f::new(center_x, center_y))
         }
     }
 
@@ -258,12 +258,12 @@ impl View {
     * Set the size of a view
     *
     * # Arguments
-    * * sizeX - New size x of the view
-    * * sizeY - New size y of the view
+    * * size_x - New size x of the view
+    * * size_y - New size y of the view
     */
-    pub fn set_size2f(&mut self, sizeX : f32, sizeY : f32) -> () {
+    pub fn set_size2f(&mut self, size_x : f32, size_y : f32) -> () {
         unsafe {
-            ffi::sfView_setSize(self.view, Vector2f::new(sizeX, sizeY))
+            ffi::sfView_setSize(self.view, Vector2f::new(size_x, size_y))
         }
     }
 

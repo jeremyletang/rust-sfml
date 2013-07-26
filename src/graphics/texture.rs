@@ -254,9 +254,9 @@ impl Texture {
     * * x - X offset in the texture where to copy the source pixels
     * * y - Y offset in the texture where to copy the source pixels
     */
-    pub fn update_from_render_window(&mut self, renderWindow : RenderWindow, x : uint, y : uint) -> () {
+    pub fn update_from_render_window(&mut self, render_window : RenderWindow, x : uint, y : uint) -> () {
         unsafe {
-            ffi::sfTexture_updateFromRenderWindow(self.texture, renderWindow.unwrap(), x as c_uint, y as c_uint)
+            ffi::sfTexture_updateFromRenderWindow(self.texture, render_window.unwrap(), x as c_uint, y as c_uint)
         }
     }
 

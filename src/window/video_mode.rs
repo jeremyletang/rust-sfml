@@ -49,19 +49,19 @@ pub mod ffi {
     use rsfml::sfTypes::{sfBool};
 
     pub struct sfVideoMode {
-        Width: c_uint,
-        Height: c_uint,
-        BitsPerPixel: c_uint 
+        width: c_uint,
+        height: c_uint,
+        bits_per_pixel: c_uint 
     }
 
     impl Clone for sfVideoMode {
-    	 fn clone(&self) -> sfVideoMode {
-	    sfVideoMode {
-	    	Width : self.Width,
-		Height : self.Height,
-		BitsPerPixel : self.BitsPerPixel
-	    }   
-	 }
+        fn clone(&self) -> sfVideoMode {
+	       sfVideoMode {
+	           width : self.width,
+		       height : self.height,
+		       bits_per_pixel : self.bits_per_pixel
+	        }   
+	    }
     }
     
     extern "C" {
@@ -72,9 +72,9 @@ pub mod ffi {
 }
 
 pub struct VideoMode {
-    Width: uint,
-    Height: uint,
-    BitsPerPixel: uint
+    width: uint,
+    height: uint,
+    bits_per_pixel: uint
 }
 
 impl VideoMode {
@@ -86,9 +86,9 @@ impl VideoMode {
     */
     pub fn new() -> VideoMode {
         VideoMode{
-            Width : 0, 
-            Height : 0,
-            BitsPerPixel : 0
+            width : 0, 
+            height : 0,
+            bits_per_pixel : 0
         }
     }
     
@@ -97,11 +97,11 @@ impl VideoMode {
     *
     * Return a new VideoMode initialized
     */
-    pub fn new_init(width : uint, height : uint, bitsPerPixel : uint) -> VideoMode {
+    pub fn new_init(width : uint, height : uint, bits_per_pixel : uint) -> VideoMode {
         VideoMode{
-            Width : width,
-            Height : height,
-            BitsPerPixel : bitsPerPixel
+            width : width,
+            height : height,
+            bits_per_pixel : bits_per_pixel
         }
     } 
     
@@ -116,9 +116,9 @@ impl VideoMode {
     */
     pub fn is_valid(&self) -> bool {
         let i =  unsafe { ffi::sfVideoMode_isValid(ffi::sfVideoMode{
-            Width : self.Width as c_uint, 
-            Height : self.Height as c_uint, 
-            BitsPerPixel : self.BitsPerPixel as c_uint
+            width : self.width as c_uint, 
+            height : self.height as c_uint, 
+            bits_per_pixel : self.bits_per_pixel as c_uint
         }) };
          match i {
              0 => false,
@@ -134,9 +134,9 @@ impl VideoMode {
     pub fn get_desktop_mode() -> VideoMode {
         let mode = unsafe { ffi::sfVideoMode_getDesktopMode() };
         VideoMode{
-            Width : mode.Width as uint, 
-            Height : mode.Height as uint, 
-            BitsPerPixel : mode.BitsPerPixel as uint
+            width : mode.width as uint, 
+            height : mode.height as uint, 
+            bits_per_pixel : mode.bits_per_pixel as uint
         }
     }
 
@@ -179,17 +179,17 @@ impl VideoMode {
 impl Wrappable<ffi::sfVideoMode> for VideoMode {
     pub fn wrap(mode: ffi::sfVideoMode) -> VideoMode {
         VideoMode{
-            Width : mode.Width as uint,
-            Height : mode.Height as uint,
-            BitsPerPixel : mode.BitsPerPixel as uint
+            width : mode.width as uint,
+            height : mode.height as uint,
+            bits_per_pixel : mode.bits_per_pixel as uint
         }
     }
 
     pub fn unwrap(&self) -> ffi::sfVideoMode {
         ffi::sfVideoMode{
-            Width : self.Width as c_uint,
-            Height : self.Height as c_uint,
-            BitsPerPixel : self.BitsPerPixel as c_uint
+            width : self.width as c_uint,
+            height : self.height as c_uint,
+            bits_per_pixel : self.bits_per_pixel as c_uint
         }
     }
 }

@@ -34,5 +34,5 @@ use graphics::rect::IntRect;
 pub struct Glyph {
     advance : i32,
     bounds : IntRect,
-    textureRect : IntRect
+    texture_rect : IntRect
 }

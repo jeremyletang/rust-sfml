@@ -135,9 +135,9 @@ impl Font {
     *
     * Return the line spacing, in pixels
     */
-    pub fn get_line_spacing(&self, characterSize : uint) -> int {
+    pub fn get_line_spacing(&self, character_size : uint) -> int {
         unsafe {
-            ffi::sfFont_getLineSpacing(self.font, characterSize as c_uint) as int
+            ffi::sfFont_getLineSpacing(self.font, character_size as c_uint) as int
         }
     }
 
@@ -149,8 +149,8 @@ impl Font {
     *
     * Return the texture
     */
-    pub fn get_texture(&self, characterSize : uint) -> Option<Texture> {
-        let tex = unsafe {ffi::sfFont_getTexture(self.font, characterSize as c_uint)};
+    pub fn get_texture(&self, character_size : uint) -> Option<Texture> {
+        let tex = unsafe {ffi::sfFont_getTexture(self.font, character_size as c_uint)};
         if ptr::is_null(tex) {
             None
         }
@@ -169,11 +169,11 @@ impl Font {
     *
     * Return the corresponding glyph
     */
-    pub fn get_glyph(&self, codepoint : u32, characterSize : uint, bold : bool) -> Glyph {
+    pub fn get_glyph(&self, codepoint : u32, character_size : uint, bold : bool) -> Glyph {
         unsafe {
             match bold {
-                true        => ffi::sfFont_getGlyph(self.font, codepoint, characterSize as c_uint, 1),
-                false       => ffi::sfFont_getGlyph(self.font, codepoint, characterSize as c_uint, 0)
+                true        => ffi::sfFont_getGlyph(self.font, codepoint, character_size as c_uint, 1),
+                false       => ffi::sfFont_getGlyph(self.font, codepoint, character_size as c_uint, 0)
             }
         }
     }

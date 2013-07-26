@@ -57,7 +57,7 @@ pub mod ffi {
 
 #[doc(hidden)]
 pub struct SoundBufferRecorder {
-    priv soundBufferRecorder : *ffi::sfSoundBufferRecorder
+    priv sound_buffer_recorder : *ffi::sfSoundBufferRecorder
 }
 
 impl SoundBufferRecorder {
@@ -74,7 +74,7 @@ impl SoundBufferRecorder {
         }
         else {
             Some(SoundBufferRecorder{
-                soundBufferRecorder : buffer
+                sound_buffer_recorder : buffer
             })
         }
     }
@@ -94,7 +94,7 @@ impl SoundBufferRecorder {
     */
     pub fn start(&mut self, sampleRate : uint) -> () {
         unsafe {
-            ffi::sfSoundBufferRecorder_start(self.soundBufferRecorder, sampleRate as c_uint)
+            ffi::sfSoundBufferRecorder_start(self.sound_buffer_recorder, sampleRate as c_uint)
         }
     }
 
@@ -103,7 +103,7 @@ impl SoundBufferRecorder {
     */
     pub fn stop(&mut self) -> () {
         unsafe {
-            ffi::sfSoundBufferRecorder_stop(self.soundBufferRecorder)
+            ffi::sfSoundBufferRecorder_stop(self.sound_buffer_recorder)
         }
     }
 
@@ -118,7 +118,7 @@ impl SoundBufferRecorder {
     */
     pub fn get_sample_rate(&self) -> uint {
         unsafe {
-            ffi::sfSoundBufferRecorder_getSampleRate(self.soundBufferRecorder) as uint
+            ffi::sfSoundBufferRecorder_getSampleRate(self.sound_buffer_recorder) as uint
         }
     }
 
@@ -133,7 +133,7 @@ impl SoundBufferRecorder {
     * Return Read-only access to the sound buffer
     */
     pub fn get_buffer(&self) -> Option<SoundBuffer> {
-        let buff = unsafe { ffi::sfSoundBufferRecorder_getBuffer(self.soundBufferRecorder) };
+        let buff = unsafe { ffi::sfSoundBufferRecorder_getBuffer(self.sound_buffer_recorder) };
         if ptr::is_null(buff) {
             None
         }
@@ -150,7 +150,7 @@ impl Drop for SoundBufferRecorder {
     */
     fn drop(&self) {
         unsafe {
-            ffi::sfSoundBufferRecorder_destroy(self.soundBufferRecorder);
+            ffi::sfSoundBufferRecorder_destroy(self.sound_buffer_recorder);
         }
     }
 }

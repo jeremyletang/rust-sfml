@@ -79,7 +79,7 @@ pub mod ffi {
         pub fn sfShape_scale(shape : *sfShape, factors : Vector2f) -> ();
         pub fn sfShape_getTransform(shape : *sfShape) -> Transform;
         pub fn sfShape_getInverseTransform(shape : *sfShape) -> Transform;
-        pub fn sfShape_setTexture(shape : *sfShape, texture : *texture::ffi::sfTexture, resetRect : sfBool) -> ();
+        pub fn sfShape_setTexture(shape : *sfShape, texture : *texture::ffi::sfTexture, reset_rect : sfBool) -> ();
         pub fn sfShape_setTextureRect(shape : *sfShape, rect : IntRect) -> ();
         pub fn sfShape_setFillColor(shape : *sfShape, color : Color) -> ();
         pub fn sfShape_setOutlineColor(shape : *sfShape, color : Color) -> ();
@@ -448,7 +448,7 @@ impl Shape {
     * exist as long as the shape uses it. Indeed, the shape
     * doesn't store its own copy of the texture, but rather keeps
     * a pointer to the one that you passed to this function.
-    * If resetRect is true, the TextureRect property of
+    * If reset_rect is true, the TextureRect property of
     * the shape is automatically adjusted to the size of the new
     * texture. If it is false, the texture rect is left unchanged.
     * 

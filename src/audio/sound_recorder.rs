@@ -54,7 +54,7 @@ pub mod ffi{
 
 #[doc(hidden)]
 pub struct SoundRecorder {
-    priv soundRecorder : *ffi::sfSoundRecorder
+    priv sound_recorder : *ffi::sfSoundRecorder
 }
 
 impl SoundRecorder {
@@ -79,7 +79,7 @@ impl SoundRecorder {
     */
     pub fn start(&mut self, sampleRate : uint) -> () {
         unsafe {
-            ffi::sfSoundRecorder_start(self.soundRecorder, sampleRate as c_uint)
+            ffi::sfSoundRecorder_start(self.sound_recorder, sampleRate as c_uint)
         }
     }
     
@@ -88,7 +88,7 @@ impl SoundRecorder {
     */
     pub fn stop(&mut self) -> () {
         unsafe {
-            ffi::sfSoundRecorder_stop(self.soundRecorder)
+            ffi::sfSoundRecorder_stop(self.sound_recorder)
         }
     }
 
@@ -103,7 +103,7 @@ impl SoundRecorder {
     */
     pub fn get_sample_rate(&self) -> uint {
         unsafe {
-            ffi::sfSoundRecorder_getSampleRate(self.soundRecorder) as uint
+            ffi::sfSoundRecorder_getSampleRate(self.sound_recorder) as uint
         }
     }
     
@@ -132,7 +132,7 @@ impl Drop for SoundRecorder {
     */
     fn drop(&self) {
         unsafe {
-            ffi::sfSoundRecorder_destroy(self.soundRecorder);
+            ffi::sfSoundRecorder_destroy(self.sound_recorder);
         }
     }
 }
