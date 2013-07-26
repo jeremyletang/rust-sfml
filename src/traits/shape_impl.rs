@@ -23,13 +23,16 @@
 */
 
 /*!
-* Basic traits for internal functionnement of rsfml.
+* ShapeImpl trait
 *
-*
+* Implement this shape to create a new Shape
 *
 */
 
+use system::vector2::Vector2f;
 
-pub mod drawable;
-pub mod wrappable;
-pub mod shape_impl;
+
+pub trait ShapeImpl {
+	pub fn get_point_count(&self) -> u32;
+    pub fn get_point(&self, point : u32) -> Vector2f;
+}

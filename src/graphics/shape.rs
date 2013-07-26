@@ -44,6 +44,7 @@ use system::vector2::Vector2f;
 use graphics::color::Color;
 use graphics::transform::Transform;
 use graphics::rect::{IntRect, FloatRect};
+use traits::shape_impl::ShapeImpl;
 
 #[doc(hidden)]
 pub mod ffi {
@@ -98,44 +99,35 @@ pub mod ffi {
     }
 }
 
-pub trait AbstractShape {
-    pub fn get_point_count(&self) -> u32;
-    pub fn get_point(&self, point : u32) -> Vector2f;
-}
-
+#[doc(hidden)]
 pub struct WrapObj {
-    shape_impl : @AbstractShape
+    shape_impl : @ShapeImpl
 }
 
 pub struct Shape {
     priv shape : *ffi::sfShape,
-    priv wrap_obj : WrapObj
+    priv wrap_obj : @WrapObj
 }
 
 #[doc(hidden)]
 extern fn get_point_count_callback(obj : *c_void) -> u32 {
     let shape = unsafe { cast::transmute::<*c_void, &WrapObj>(obj) };
-    io::println("point_count");
-    io::println(fmt!("POINT COUNT : %d", shape.shape_impl.get_point_count() as int ));
     shape.shape_impl.get_point_count()
 }
 
 #[doc(hidden)]
 extern fn get_point_callback(point : u32, obj : *c_void) -> Vector2f {
     let shape = unsafe { cast::transmute::<*c_void, &WrapObj>(obj) };
-    io::println("point");
     shape.shape_impl.get_point(point)
 }
 
 
 impl Shape {
 
-    pub fn new(abstractShape : @AbstractShape) -> Option<Shape> {
-        let w_o = WrapObj { shape_impl : abstractShape};
-        io::println(fmt!("POINT COUNT : %d", w_o.shape_impl.get_point_count() as int ));
-        io::println(fmt!("WrapObj : %d", sys::size_of::<&WrapObj>() as int));
-        io::println(fmt!("*c_void : %d", sys::size_of::<*c_void>() as int));
-        let sp = unsafe { ffi::sfShape_create(get_point_count_callback, get_point_callback, ptr::to_unsafe_ptr(&w_o) as *c_void) };
+    pub fn new<T : 'static + ShapeImpl>(shape_impl : @T) -> Option<Shape> {
+        let w_o = @WrapObj { shape_impl : shape_impl as @ShapeImpl};
+      
+        let sp = unsafe { ffi::sfShape_create(get_point_count_callback, get_point_callback, ptr::to_unsafe_ptr(&*w_o) as *c_void) };
         if ptr::is_null(sp) {
             None
         }
