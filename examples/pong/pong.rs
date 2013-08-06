@@ -21,22 +21,12 @@ use rsfml::system::time::*;
 use rsfml::window::keyboard;
 
 #[cfg(target_os="macos")]
-use rsfml::start;
-
-#[cfg(target_os="macos")]
-fn main() -> () {
-    do start::start() {
-        pong();
-    }
+#[start]
+fn start(argc: int, argv: **u8, crate_map: *u8) -> int {
+    std::rt::start_on_main_thread(argc, argv, crate_map, main)
 }
 
-#[cfg(target_os="linux")]
-#[cfg(target_os="win32")]
-fn main() -> () {
-    pong();
-}
-
-fn pong () -> () {
+fn main () -> () {
     // Define some constants
     let pi : f32 = 3.14159;
     let gameWidth : uint = 800;

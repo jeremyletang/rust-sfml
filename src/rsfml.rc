@@ -57,7 +57,4 @@ pub mod graphics;
 #[path = "network/sfml_network.rs"]
 pub mod network;
 
-#[path = "osx_hack/start.rs"]
-pub mod start;
-
 mod rsfml;
