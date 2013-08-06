@@ -33,7 +33,15 @@ Finally build your program with the rust-sfml library. For exemple, if the libra
 
 Normaly rust-sfml works on Linux and windows and OSX.
 
-On OSX window must be launched in the main thread. So you should use the start function in the module start, you can see the pong example.
+On OSX window must be launched in the main thread. You should override the rust runtime start function.
+
+```Rust
+#[cfg(target_os="macos")]
+#[start]
+fn start(argc: int, argv: **u8, crate_map: *u8) -> int {
+    std::rt::start_on_main_thread(argc, argv, crate_map, main)
+}
+```
 
 License
 =======
