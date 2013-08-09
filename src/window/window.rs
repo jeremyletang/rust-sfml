@@ -224,7 +224,7 @@ impl Window {
         }
     }
 
-    priv fn get_wrapped_event(&self) -> event::Event {
+    fn get_wrapped_event(&self) -> event::Event {
             match self.event.typeEvent as c_uint {
                 0   => event::Closed,
                 1   => {
