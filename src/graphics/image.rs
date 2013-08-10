@@ -41,7 +41,7 @@ use graphics::rect::IntRect;
 #[doc(hidden)]
 pub mod ffi {
     
-    use std::libc::{c_char, c_void, c_uint};
+    use std::libc::{c_void, c_uint};
 
     use rsfml::sfTypes::{sfBool};
     use graphics::color;
@@ -56,12 +56,12 @@ pub mod ffi {
         pub fn sfImage_create(width : c_uint, height : c_uint) -> *sfImage;
         pub fn sfImage_createFromColor(width : c_uint, height : c_uint, color : color::Color) -> *sfImage;
         pub fn sfImage_createFromPixels(width : c_uint, height : c_uint, pixels : *u8) -> *sfImage;
-        pub fn sfImage_createFromFile(filename : *c_char) -> *sfImage;
+        pub fn sfImage_createFromFile(filename : *u8) -> *sfImage;
         //fn sfImage_createFromMemory(data : *c_void, size : size_t) -> *sfImage;
         //fn sfImage_createFromStream(stream : *sfInputStream) -> *sfImage;
         pub fn sfImage_copy(image : *sfImage) -> *sfImage;
         pub fn sfImage_destroy(image : *sfImage) -> ();
-        pub fn sfImage_saveToFile(image : *sfImage, filename : *c_char) -> sfBool;
+        pub fn sfImage_saveToFile(image : *sfImage, filename : *u8) -> sfBool;
         pub fn sfImage_getSize(image : *sfImage) -> vector2::Vector2u;
         pub fn sfImage_createMaskFromColor(image : *sfImage, color : color::Color, alpha : u8) -> ();
         pub fn sfImage_copyImage(image : *sfImage, source : *sfImage, destX : c_uint, destY : c_uint, sourceRect : IntRect, applyAlpha : sfBool) -> ();
@@ -137,7 +137,9 @@ impl Image {
     * Return a new Image object, or NULL if it failed
     */
     pub fn new_from_file(filename : ~str) -> Option<Image> {
-        do filename.as_c_str |filebuf| {
+        let mut tmp_filename = filename;
+        tmp_filename.push_char(0 as char);
+        do tmp_filename.as_imm_buf |filebuf, _| {
             let image = unsafe { ffi::sfImage_createFromFile(filebuf) };
             if ptr::is_null(image) {
                 None
@@ -209,7 +211,7 @@ impl Image {
     * Return true if saving was successful
     */
     pub fn save_to_file(&self, filename : ~str) -> bool {
-        do filename.as_c_str |filebuf| {
+        do filename.as_imm_buf |filebuf, _| {
             match unsafe { ffi::sfImage_saveToFile(self.image, filebuf) } {
                 0 => false,
                 _ => true

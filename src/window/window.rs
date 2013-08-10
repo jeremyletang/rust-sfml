@@ -45,7 +45,7 @@ use window::mouse;
 #[doc(hidden)]
 pub mod ffi {
     
-    use std::libc::{c_void, c_uint, c_char, c_float};    
+    use std::libc::{c_void, c_uint, c_float};    
 
     use rsfml::sfTypes::sfBool;
     use window::context_settings::ContextSettings;
@@ -87,14 +87,14 @@ pub mod ffi {
     }
 
     extern "C" {
-        pub fn sfWindow_create(mode : ffi::sfVideoMode, title : *c_char, style : c_uint, settings : *ContextSettings) -> *sfWindow;
+        pub fn sfWindow_create(mode : ffi::sfVideoMode, title : *u8, style : c_uint, settings : *ContextSettings) -> *sfWindow;
         pub fn sfWindow_createUnicode(mode : ffi::sfVideoMode, title : *u32, style : c_uint, setting : *ContextSettings) -> *sfWindow;
         //fn sfWindow_createFromHandle(handle : sfWindowHandle, settings : *sfContextSettings) -> *sfWindow;
         pub fn sfWindow_close(window : *sfWindow) -> ();
         pub fn sfWindow_destroy(window : *sfWindow) -> ();
         pub fn sfWindow_isOpen(window : *sfWindow) -> sfBool;
         pub fn sfWindow_getSettings(window : *sfWindow) -> ContextSettings;
-        pub fn sfWindow_setTitle(window : *sfWindow, title : *c_char) -> ();
+        pub fn sfWindow_setTitle(window : *sfWindow, title : *u8) -> ();
         pub fn sfWindow_setUnicodeTitle(window : *sfWindow, title : *u32) -> ();
         pub fn sfWindow_setIcon(window : *sfWindow, width : c_uint, height : c_uint, pixel : *u8) -> (); 
         pub fn sfWindow_setVisible(window : *sfWindow, visible : sfBool) -> ();
@@ -156,7 +156,9 @@ impl Window {
     */
     pub fn new(mode : VideoMode, title : ~str, style : WindowStyle, settings : &ContextSettings) -> Option<Window> {
         let mut sfWin: *ffi::sfWindow = ptr::null();
-        do title.as_c_str |title_buf| {
+        let mut tmp_title = title;
+        tmp_title.push_char(0 as char);
+        do tmp_title.as_imm_buf |title_buf, _| {
             unsafe {
                 sfWin = ffi::sfWindow_create(mode.unwrap(), title_buf, style as u32, settings); 
             }
@@ -176,7 +178,7 @@ impl Window {
             Some (Window {
                 window : sfWin, 
                 event : sfEv, 
-                title_length : title.len()
+                title_length : tmp_title.len()
             })
         }
     }
@@ -480,7 +482,9 @@ impl Window {
     * * title - New title
     */
     pub fn set_title(&mut self, title : ~str) -> () {
-        do title.as_c_str |title_buf| {
+        let mut tmp_title = title;
+        tmp_title.push_char(0 as char);
+        do tmp_title.as_imm_buf |title_buf, _| {
             unsafe {
                 ffi::sfWindow_setTitle(self.window, title_buf);
             }

@@ -29,7 +29,6 @@
 *
 */
 
-use std::libc::c_char;
 use std::ptr;
 use std::str;
 
@@ -38,7 +37,7 @@ use traits::wrappable::Wrappable;
 #[doc(hidden)]
 pub mod ffi {
     
-    use std::libc::{c_void, c_char, size_t, c_float, c_double};
+    use std::libc::{c_void, size_t, c_float, c_double};
     use rsfml::sfTypes::sfBool;
     
     pub struct sfPacket {
@@ -64,7 +63,7 @@ pub mod ffi {
         pub fn sfPacket_readUint32(pack : *sfPacket) -> u32;
         pub fn sfPacket_readFloat(pack : *sfPacket) -> c_float;
         pub fn sfPacket_readDouble(pack : *sfPacket) -> c_double;
-        pub fn sfPacket_readString(pack : *sfPacket, string : *c_char) -> ();
+        pub fn sfPacket_readString(pack : *sfPacket, string : *u8) -> ();
         //fn sfPacket_readWideString(pack : *sfPacket, string : *wchar_t) -> ();
         pub fn sfPacket_writeBool(pack : *sfPacket, data : sfBool) -> ();
         pub fn sfPacket_writeInt8(pack : *sfPacket, data : i8) -> ();
@@ -75,7 +74,7 @@ pub mod ffi {
         pub fn sfPacket_writeUint32(pack : *sfPacket, data : u32) -> ();
         pub fn sfPacket_writeFloat(pack : *sfPacket, data : c_float) -> ();
         pub fn sfPacket_writeDouble(pack : *sfPacket, data : c_double) -> ();
-        pub fn sfPacket_writeString(pack : *sfPacket, string : *c_char) -> ();
+        pub fn sfPacket_writeString(pack : *sfPacket, string : *u8) -> ();
         //fn sfPacket_writeWideString(pack : *sfPacket, string : *wchar_t) -> ();
     }
 }
@@ -265,9 +264,9 @@ impl Packet {
     */
     pub fn read_string(&self) -> ~str {
         unsafe {
-            let string : *c_char = ptr::null();
+            let string : *u8 = ptr::null();
             ffi::sfPacket_readString(self.packet, string);
-            str::raw::from_c_str(string)
+            str::raw::from_c_str(string as *i8)
         }
     }
 
@@ -359,8 +358,10 @@ impl Packet {
     * Function to insert data into a packet
     */
     pub fn write_string(&self, string : ~str) -> () {
+        let mut tmp_string = string;
+        tmp_string.push_char(0 as char);
         unsafe {
-            do string.as_c_str |string_buf| {
+            do tmp_string.as_imm_buf |string_buf, _| {
                 ffi::sfPacket_writeString(self.packet, string_buf)
             }
         }

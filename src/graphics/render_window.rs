@@ -62,7 +62,7 @@ use graphics::shape::Shape;
 #[doc(hidden)]
 pub mod ffi {
     
-    use std::libc::{c_uint, c_float, c_void, c_char};
+    use std::libc::{c_uint, c_float, c_void};
     use system::vector2::{Vector2f, Vector2i, Vector2u};
     use rsfml::sfTypes::{sfBool};
     use window::video_mode::*;
@@ -96,7 +96,7 @@ pub mod ffi {
     }
 
     extern "C" {
-        pub fn sfRenderWindow_create(mode : ffi::sfVideoMode, title : *c_char, style : c_uint, settings : *ContextSettings) -> *sfRenderWindow;
+        pub fn sfRenderWindow_create(mode : ffi::sfVideoMode, title : *u8, style : c_uint, settings : *ContextSettings) -> *sfRenderWindow;
         pub fn sfRenderWindow_createUnicode(mode : ffi::sfVideoMode, title : *u32, style : c_uint, settings : *ContextSettings) -> *sfRenderWindow;
         //fn sfRenderWindow_createFromHandle(handle : sfWindowHandle, settings : *sfContextSettings) -> *sfRenderWindow;
         pub fn sfRenderWindow_destroy(renderWindow : *sfRenderWindow) -> ();
@@ -109,7 +109,7 @@ pub mod ffi {
         pub fn sfRenderWindow_setPosition(renderWindow : *sfRenderWindow, position : Vector2i) -> ();
         pub fn sfRenderWindow_getSize(renderWindow : *sfRenderWindow) -> Vector2u;
         pub fn sfRenderWindow_setSize(renderWindow : *sfRenderWindow, size : Vector2u) -> ();
-        pub fn sfRenderWindow_setTitle(renderWindow : *sfRenderWindow, title : *c_char) -> ();
+        pub fn sfRenderWindow_setTitle(renderWindow : *sfRenderWindow, title : *u8) -> ();
         pub fn sfRenderWindow_setUnicodeTitle(renderWindow : *sfRenderWindow, title : *u32) -> ();
         pub fn sfRenderWindow_setIcon(renderWindow : *sfRenderWindow, width : c_uint, height : c_uint, pixels : *u8) -> ();
         pub fn sfRenderWindow_setVisible(renderWindow : *sfRenderWindow, visible : sfBool) -> ();
@@ -188,7 +188,9 @@ impl RenderWindow {
     */
     pub fn new(mode : VideoMode, title : ~str, style : WindowStyle, settings : &ContextSettings) -> Option<RenderWindow> {
         let mut sfRenderWin: *ffi::sfRenderWindow = ptr::null();
-        do title.as_c_str |title_buf| {
+        let mut tmp_title = title;
+        tmp_title.push_char(0 as char);
+        do tmp_title.as_imm_buf |title_buf, _| {
             unsafe { 
                 sfRenderWin = ffi::sfRenderWindow_create(mode.unwrap(), title_buf, style as u32, settings); 
             }
@@ -213,7 +215,7 @@ impl RenderWindow {
                 Some (RenderWindow {
                     render_window : sfRenderWin, 
                     event : sfEv, 
-                    title_length : title.len(),
+                    title_length : tmp_title.len(),
                     current_view : @mut Wrappable::wrap(def_view),
                     default_view : @mut Wrappable::wrap(def_view)
                 })
@@ -569,9 +571,11 @@ impl RenderWindow {
     * * title - New title
     */
     pub fn set_title(&mut self, title : ~str) -> () {
-        do title.as_c_str |title_buf| {
+        let mut tmp_title = title;
+        tmp_title.push_char(0 as char);
+        do tmp_title.as_imm_buf |title_buf, _| {
             unsafe {
-                self.title_length = title.len();
+                self.title_length = tmp_title.len();
                 ffi::sfRenderWindow_setTitle(self.render_window, title_buf);
             }
         }

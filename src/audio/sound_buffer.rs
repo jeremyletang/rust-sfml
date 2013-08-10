@@ -37,7 +37,7 @@ use system::time;
 #[doc(hidden)]
 pub mod ffi {
     
-    use std::libc::{c_char, size_t, c_void, c_uint};
+    use std::libc::{size_t, c_void, c_uint};
     use system::time;
     use rsfml::sfTypes::{sfBool};
 
@@ -46,10 +46,10 @@ pub mod ffi {
     }
 
     extern "C" {
-        pub fn sfSoundBuffer_createFromFile(filename : *c_char) -> *sfSoundBuffer;
+        pub fn sfSoundBuffer_createFromFile(filename : *u8) -> *sfSoundBuffer;
         pub fn sfSoundBuffer_copy(soundBuffer : *sfSoundBuffer) -> *sfSoundBuffer;
         pub fn sfSoundBuffer_destroy(soundBuffer : *sfSoundBuffer) -> ();
-        pub fn sfSoundBuffer_saveToFile(soundBuffer : *sfSoundBuffer, filename : *c_char) -> sfBool;
+        pub fn sfSoundBuffer_saveToFile(soundBuffer : *sfSoundBuffer, filename : *u8) -> sfBool;
        // fn sfSoundBuffer_getSamples(soundBuffer : *sfSoundBuffer) -> *i16;
         pub fn sfSoundBuffer_getSampleCount(soundBuffer : *sfSoundBuffer) -> size_t;
         pub fn sfSoundBuffer_getChannelCount(soundBuffer : *sfSoundBuffer) -> c_uint;
@@ -80,7 +80,9 @@ impl SoundBuffer {
     */
     pub fn new(filename : ~str) -> Option<SoundBuffer> {
         let mut sound_buffer : *ffi::sfSoundBuffer = ptr::null();
-        do filename.as_c_str |filename_buf| {
+        let mut tmp_file = filename;
+        tmp_file.push_char(0 as char);
+        do tmp_file.as_imm_buf |filename_buf, _| {
             unsafe { 
                 sound_buffer = ffi::sfSoundBuffer_createFromFile(filename_buf);
             }
@@ -127,7 +129,9 @@ impl SoundBuffer {
     * Return true if saving succeeded, false if it faileds
     */
     pub fn save_to_file(&self, filename : ~str) -> bool {
-        match do filename.as_c_str |filename_buf| {
+        let mut tmp_filename = filename;
+        tmp_filename.push_char(0 as char);
+        match do tmp_filename.as_imm_buf |filename_buf, _| {
             unsafe { ffi::sfSoundBuffer_saveToFile(self.sound_buffer, filename_buf) } } {
             0 => false,
             _ => true

@@ -49,7 +49,7 @@ use graphics::render_states::RenderStates;
 #[doc(hidden)]
 pub mod ffi {
     
-    use std::libc::{c_uint, c_float, c_void, c_char, size_t};
+    use std::libc::{c_uint, c_float, c_void, size_t, c_char};
     use graphics::transform;
     use system::vector2::Vector2f;
     use graphics::font;
@@ -81,7 +81,7 @@ pub mod ffi {
         pub fn sfText_scale(text : *sfText, factors : Vector2f) -> ();
         pub fn sfText_getTransform(text : *sfText) -> Transform;
         pub fn sfText_getInverseTransform(text : *sfText) -> Transform;
-        pub fn sfText_setString(text : *sfText, string : *c_char) -> ();
+        pub fn sfText_setString(text : *sfText, string : *u8) -> ();
         pub fn sfText_setUnicodeString(text : *sfText, string : *u32 ) -> ();
         pub fn sfText_setFont(text : *sfText, font : *font::ffi::sfFont) -> ();
         pub fn sfText_setCharacterSize(text : *sfText, size : c_uint) -> ();
@@ -150,15 +150,17 @@ impl Text {
             None
         }
         else {
+            let mut tmp_string = string;
+            tmp_string.push_char(0 as char);
             unsafe {
-                do string.as_c_str |cstring| {
+                do tmp_string.as_imm_buf |cstring, _| {
                     ffi::sfText_setString(text, cstring);
                 }
                 ffi::sfText_setFont(text, font.unwrap());
                 ffi::sfText_setCharacterSize(text, character_size as c_uint);
                 Some(Text {
                     text : text, 
-                    string_length : string.len(),
+                    string_length : tmp_string.len(),
                     font : Some(font)
                 })
             }
@@ -174,12 +176,14 @@ impl Text {
     * * string - New string
     */
     pub fn set_string(&mut self, string : ~str) -> () {
-        do string.as_c_str |cstring| {
+        let mut tmp_string = string;
+        tmp_string.push_char(0 as char);
+        do tmp_string.as_imm_buf |cstring, _| {
             unsafe {
                 ffi::sfText_setString(self.text, cstring)
             }
         };
-        self.string_length = string.len()
+        self.string_length = tmp_string.len()
     }
 
     /**

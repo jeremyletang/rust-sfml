@@ -59,20 +59,20 @@ pub mod ffi {
     extern "C" {
         pub fn sfHttpRequest_create() -> *sfHttpRequest;
         pub fn sfHttpRequest_destroy(httpRequest : *sfHttpRequest) -> ();
-        pub fn sfHttpRequest_setField(httpRequest : *sfHttpRequest, field : *c_char, value : *c_char) -> ();
+        pub fn sfHttpRequest_setField(httpRequest : *sfHttpRequest, field : *u8, value : *u8) -> ();
         pub fn sfHttpRequest_setMethod(httpRequest : *sfHttpRequest, method : Method) -> ();
-        pub fn sfHttpRequest_setUri(httpRequest : *sfHttpRequest, uri : *c_char) -> ();
+        pub fn sfHttpRequest_setUri(httpRequest : *sfHttpRequest, uri : *u8) -> ();
         pub fn sfHttpRequest_setHttpVersion(httpRequest : *sfHttpRequest, major : u32, minor : u32) -> ();
-        pub fn sfHttpRequest_setBody(httpRequest : *sfHttpRequest, body : *c_char) -> ();
+        pub fn sfHttpRequest_setBody(httpRequest : *sfHttpRequest, body : *u8) -> ();
         pub fn sfHttpResponse_destroy(httpResponse : *sfHttpResponse) -> ();
-        pub fn sfHttpResponse_getField(httpResponse : *sfHttpResponse, field : *c_char) -> *c_char;
+        pub fn sfHttpResponse_getField(httpResponse : *sfHttpResponse, field : *u8) -> *c_char;
         pub fn sfHttpResponse_getStatus(httpResponse : *sfHttpResponse) -> Status;
         pub fn sfHttpResponse_getMajorVersion(httpResponse : *sfHttpResponse) -> u32;
         pub fn sfHttpResponse_getMinorVersion(httpResponse : *sfHttpResponse) -> u32;
         pub fn sfHttpResponse_getBody(httpResponse : *sfHttpResponse) -> *c_char;
         pub fn sfHttp_create() -> *sfHttp;
         pub fn sfHttp_destroy(http : *sfHttp) -> ();
-        pub fn sfHttp_setHost(http : *sfHttp, host : *c_char, port : u16) -> ();
+        pub fn sfHttp_setHost(http : *sfHttp, host : *u8, port : u16) -> ();
         pub fn sfHttp_sendRequest(http : *sfHttp, httpRequest : *sfHttpRequest, timeout : time::ffi::sfTime) -> *sfHttpResponse;
     }
 }
@@ -159,9 +159,13 @@ impl Request {
     * * value - Value of the field
     */
     pub fn set_field(&self, field : ~str, value : ~str) -> () {
+        let mut tmp_field = field;
+        tmp_field.push_char(0 as char);
+        let mut tmp_value = value;
+        tmp_value.push_char(0 as char);
         unsafe {
-            do field.as_c_str |f| {
-                do value.as_c_str |v| {
+            do tmp_field.as_imm_buf |f, _| {
+                do tmp_value.as_imm_buf |v, _| {
                     ffi::sfHttpRequest_setField(self.request, f, v)
                 }
             }
@@ -195,8 +199,10 @@ impl Request {
     * * uri - URI to request, relative to the host
     */
     pub fn set_uri(&self, uri : ~str) -> () {
+        let mut tmp_uri = uri;
+        tmp_uri.push_char(0 as char);
         unsafe {
-            do uri.as_c_str |Uri| {
+            do tmp_uri.as_imm_buf |Uri, _| {
                 ffi::sfHttpRequest_setUri(self.request, Uri)
             }
         }
@@ -227,8 +233,10 @@ impl Request {
     * * body - Content of the body
     */
     pub fn set_body(&self, body : ~str) -> () {
+        let mut tmp_body = body;
+        tmp_body.push_char(0 as char);
         unsafe {
-            do body.as_c_str |Body| {
+            do tmp_body.as_imm_buf|Body, _| {
                 ffi::sfHttpRequest_setBody(self.request, Body)
             }
         }
@@ -262,8 +270,10 @@ impl Response {
     * Return Value of the field, or empty string if not found
     */
     pub fn get_field(&self, field : ~str) -> ~str {
+        let mut tmp_field = field;
+        tmp_field.push_char(0 as char);
         unsafe {
-            do field.as_c_str |f| {
+            do tmp_field.as_imm_buf |f, _| {
                 str::raw::from_c_str(ffi::sfHttpResponse_getField(self.response, f))
             }
         }
@@ -361,8 +371,10 @@ impl Http {
     * * port - Port to use for connection
     */
     pub fn set_host(&self, host : ~str, port : u16) -> () {
+        let mut tmp_host = host;
+        tmp_host.push_char(0 as char);
         unsafe {
-            do host.as_c_str |h| {
+            do tmp_host.as_imm_buf |h, _| {
                 ffi::sfHttp_setHost(self.http, h, port)
             }
         }

@@ -41,11 +41,11 @@ all :
 $(DEMO) :
 			@echo "Building examples..."
 			@echo "Building pong example..."
-			@rustc $(DEMO_DIR)/pong/pong.rs -L $(BUILD_DIR)
+			@rustc $(DEMO_DIR)/pong/pong.rs 
 			@echo "Building sound example..."
-			@rustc $(DEMO_DIR)/sound/sound.rs -L $(BUILD_DIR)
+			@rustc $(DEMO_DIR)/sound/sound.rs 
 			@echo "Building sound_capture example..."
-			@rustc $(DEMO_DIR)/sound_capture/sound_capture.rs -L $(BUILD_DIR)
+			@rustc $(DEMO_DIR)/sound_capture/sound_capture.rs 
 			@echo "Building examples success"
 
 

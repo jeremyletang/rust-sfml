@@ -39,7 +39,7 @@ use graphics::glyph::Glyph;
 #[doc(hidden)]
 pub mod ffi {
 
-    use std::libc::{c_void, c_char, c_uint, c_int};
+    use std::libc::{c_void, c_uint, c_int};
     
     use graphics::texture;
     use rsfml::sfTypes::sfBool;
@@ -50,7 +50,7 @@ pub mod ffi {
     }
 
     extern "C" {
-        pub fn sfFont_createFromFile(filename : *c_char) -> *sfFont;
+        pub fn sfFont_createFromFile(filename : *u8) -> *sfFont;
         pub fn sfFont_copy(font : *sfFont) -> *sfFont;
         // fn sfFont_createFromMemory(data : *c_void, sizeInBytes : size_t) -> *sfFont;
         // fn sfFont_createFromStream(stream : *sfInputStream) -> *sfFont;
@@ -78,7 +78,9 @@ impl Font {
     * Return a new Font object
     */
     pub fn new_from_file(filename : ~str) -> Option<Font> {
-        do filename.as_c_str |filenamebuf| {
+        let mut tmp_filename = filename;
+        tmp_filename.push_char(0 as char);
+        do tmp_filename.as_imm_buf |filenamebuf, _| {
             let fnt = unsafe {ffi::sfFont_createFromFile(filenamebuf)};
             if ptr::is_null(fnt) {
                 None

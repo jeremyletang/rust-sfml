@@ -28,7 +28,6 @@
 *
 */
 
-use std::libc::c_char;
 use std::str;
 use std::ptr;
 
@@ -38,34 +37,32 @@ use system::time::Time;
 #[doc(hidden)]
 pub mod ffi{
     
-    use std::libc::c_char;
-
     use system::time;
 
     pub struct sfIpAddress {
-        c1 : c_char,
-        c2 : c_char,
-        c3 : c_char,
-        c4 : c_char,
-        c5 : c_char,
-        c6 : c_char,
-        c7 : c_char,
-        c8 : c_char,
-        c9 : c_char,
-        c10 : c_char,
-        c11 : c_char,
-        c12 : c_char,
-        c13 : c_char,
-        c14 : c_char,
-        c15 : c_char,
-        c16 : c_char
+        c1 : u8,
+        c2 : u8,
+        c3 : u8,
+        c4 : u8,
+        c5 : u8,
+        c6 : u8,
+        c7 : u8,
+        c8 : u8,
+        c9 : u8,
+        c10 : u8,
+        c11 : u8,
+        c12 : u8,
+        c13 : u8,
+        c14 : u8,
+        c15 : u8,
+        c16 : u8
     }
 
     extern "C" {
-        pub fn sfIpAddress_fromString(address : *c_char) -> sfIpAddress;
+        pub fn sfIpAddress_fromString(address : *u8) -> sfIpAddress;
         pub fn sfIpAddress_fromBytes(byte0 : u8, byte1 : u8, byte2 : u8, byte3 : u8) -> sfIpAddress;
         pub fn sfIpAddress_fromInteger(address : u32) -> sfIpAddress;
-        pub fn sfIpAddress_toString(address : sfIpAddress, string : *c_char) -> ();
+        pub fn sfIpAddress_toString(address : sfIpAddress, string : *u8) -> ();
         pub fn sfIpAddress_toInteger(address : sfIpAddress) -> u32;
         pub fn sfIpAddress_getLocalAddress() -> sfIpAddress;
         pub fn sfIpAddress_getPublicAddress(timeout : time::ffi::sfTime) -> sfIpAddress;
@@ -89,7 +86,9 @@ impl IpAddress {
     * Return Resulting address
     */
     pub fn new_from_string(address : ~str) -> IpAddress {
-        do address.as_c_str |addr_buf| {
+        let mut tmp_address = address;
+        tmp_address.push_char(0 as char);
+        do tmp_address.as_imm_buf |addr_buf, _| {
             IpAddress {
                 ip : unsafe { ffi::sfIpAddress_fromString(addr_buf) } 
             }
@@ -148,9 +147,9 @@ impl IpAddress {
     */
     pub fn to_string(&self) -> ~str {
         unsafe {
-            let string : *c_char = ptr::null();
+            let string : *u8 = ptr::null();
             ffi::sfIpAddress_toString(self.ip, string);
-            str::raw::from_c_str(string)
+            str::raw::from_c_str(string as *i8)
         }
     }
 
