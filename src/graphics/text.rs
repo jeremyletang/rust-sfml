@@ -664,33 +664,33 @@ impl Text {
 
 #[doc(hidden)]
 impl Wrappable<*ffi::sfText> for Text {
-    pub fn wrap(text : *ffi::sfText) -> Text {
+    fn wrap(text : *ffi::sfText) -> Text {
         Text {
             text : text,
             string_length : 0,
             font : None
         }
     } 
-    pub fn unwrap(&self) -> *ffi::sfText {
+    fn unwrap(&self) -> *ffi::sfText {
         self.text
     }
 }
 
 #[doc(hidden)]
 impl Drawable for Text {
-    pub fn draw_in_render_window(&self, render_window : &RenderWindow) -> () {
+    fn draw_in_render_window(&self, render_window : &RenderWindow) -> () {
         render_window.draw_text(self)
     }
 
-    pub fn draw_in_render_window_rs(&self, render_window : &RenderWindow, render_states : &mut RenderStates) -> () {
+    fn draw_in_render_window_rs(&self, render_window : &RenderWindow, render_states : &mut RenderStates) -> () {
         render_window.draw_text_rs(self, render_states)
     }
 
-    pub fn draw_in_render_texture(&self, renderTexture : &RenderTexture) -> () {
+    fn draw_in_render_texture(&self, renderTexture : &RenderTexture) -> () {
         renderTexture.draw_text(self)
     }
 
-    pub fn draw_in_render_texture_rs(&self, render_texture : &RenderTexture, render_states : &mut RenderStates) -> () {
+    fn draw_in_render_texture_rs(&self, render_texture : &RenderTexture, render_states : &mut RenderStates) -> () {
         render_texture.draw_text_rs(self, render_states)
     }
 }

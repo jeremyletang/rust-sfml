@@ -243,7 +243,7 @@ impl Request {
     }
 
     #[doc(hidden)]
-    pub fn unwrap(&self) -> *ffi::sfHttpRequest {
+    fn unwrap(&self) -> *ffi::sfHttpRequest {
         self.request
     }
 }

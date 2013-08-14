@@ -147,12 +147,12 @@ pub mod ffi {
 
 /// Enumeration of window creation styles
 pub enum WindowStyle {
-    pub sfNone = 0,
-    pub sfTitlebar = 1,
-    pub sfResize = 2,
-    pub sfClose = 4,
-    pub sfFullscreen = 8,
-    pub sfDefaultStyle = 7
+    sfNone = 0,
+    sfTitlebar = 1,
+    sfResize = 2,
+    sfClose = 4,
+    sfFullscreen = 8,
+    sfDefaultStyle = 7
 }
 
 #[doc(hidden)]

@@ -358,14 +358,14 @@ impl View {
 
 #[doc(hidden)]
 impl Wrappable<*ffi::sfView> for View {
-    pub fn wrap(view : *ffi::sfView) -> View {
+    fn wrap(view : *ffi::sfView) -> View {
         View { 
             dropable: false, 
             view : view
         }
     } 
 
-    pub fn unwrap(&self) -> *ffi::sfView {
+    fn unwrap(&self) -> *ffi::sfView {
         self.view
     }
 }

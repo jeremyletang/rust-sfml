@@ -269,13 +269,13 @@ impl UdpSocket {
 
 #[doc(hidden)]
 impl Wrappable<*ffi::sfUdpSocket> for UdpSocket {
-    pub fn wrap(socket : *ffi::sfUdpSocket) -> UdpSocket {
+    fn wrap(socket : *ffi::sfUdpSocket) -> UdpSocket {
         UdpSocket {
             socket : socket
         }
     }
     
-    pub fn unwrap(&self) -> *ffi::sfUdpSocket {
+    fn unwrap(&self) -> *ffi::sfUdpSocket {
         self.socket
     }
 }

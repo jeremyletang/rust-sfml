@@ -37,8 +37,8 @@ use graphics::render_states::RenderStates;
 * The trait drawable is inherited by each object who can be drown by the RenderWindow
 */
 pub trait Drawable {
-    pub fn draw_in_render_window(&self, &RenderWindow) -> ();
-    pub fn draw_in_render_window_rs(&self, &RenderWindow, &mut RenderStates) -> ();
-    pub fn draw_in_render_texture(&self, &RenderTexture) -> ();
-    pub fn draw_in_render_texture_rs(&self, &RenderTexture, &mut RenderStates) -> ();
+    fn draw_in_render_window(&self, &RenderWindow) -> ();
+    fn draw_in_render_window_rs(&self, &RenderWindow, &mut RenderStates) -> ();
+    fn draw_in_render_texture(&self, &RenderTexture) -> ();
+    fn draw_in_render_texture_rs(&self, &RenderTexture, &mut RenderStates) -> ();
 }

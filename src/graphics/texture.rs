@@ -403,11 +403,11 @@ impl Texture {
 
 #[doc(hidden)]
 impl Wrappable<*ffi::sfTexture> for Texture {
-    pub fn unwrap(&self) -> *ffi::sfTexture {
+    fn unwrap(&self) -> *ffi::sfTexture {
         self.texture
     }
     
-    pub fn wrap(texture : *ffi::sfTexture) -> Texture {
+    fn wrap(texture : *ffi::sfTexture) -> Texture {
         Texture { 
             texture : texture,
             dropable : false

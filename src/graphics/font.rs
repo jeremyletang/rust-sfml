@@ -183,13 +183,13 @@ impl Font {
 
 #[doc(hidden)]
 impl Wrappable<*ffi::sfFont> for Font {
-    pub fn wrap(font : *ffi::sfFont) -> Font {
+    fn wrap(font : *ffi::sfFont) -> Font {
         Font {
             font : font,
             dropable : false
         }
     }
-    pub fn unwrap(&self) -> *ffi::sfFont {
+    fn unwrap(&self) -> *ffi::sfFont {
         self.font
     } 
 

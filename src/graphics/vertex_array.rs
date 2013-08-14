@@ -256,32 +256,32 @@ impl VertexArray {
 }
 
 impl Wrappable<*ffi::sfVertexArray> for VertexArray {
-    pub fn wrap(vertex_array : *ffi::sfVertexArray) -> VertexArray {
+    fn wrap(vertex_array : *ffi::sfVertexArray) -> VertexArray {
         VertexArray {
             vertex_array : vertex_array
         }
     }
 
-    pub fn unwrap(&self) -> *ffi::sfVertexArray {
+    fn unwrap(&self) -> *ffi::sfVertexArray {
         self.vertex_array
     }
 }
 
 #[doc(hidden)]
 impl Drawable for VertexArray {
-    pub fn draw_in_render_window(&self, render_window : &RenderWindow) -> () {
+    fn draw_in_render_window(&self, render_window : &RenderWindow) -> () {
         render_window.draw_vertex_array(self)
     }
 
-    pub fn draw_in_render_window_rs(&self, render_window : &RenderWindow, render_states : &mut RenderStates) -> () {
+    fn draw_in_render_window_rs(&self, render_window : &RenderWindow, render_states : &mut RenderStates) -> () {
         render_window.draw_vertex_array_rs(self, render_states)
     }
 
-    pub fn draw_in_render_texture(&self, render_texture : &RenderTexture) -> () {
+    fn draw_in_render_texture(&self, render_texture : &RenderTexture) -> () {
         render_texture.draw_vertex_array(self)
     }
 
-    pub fn draw_in_render_texture_rs(&self, render_texture : &RenderTexture, render_states : &mut RenderStates) -> () {
+    fn draw_in_render_texture_rs(&self, render_texture : &RenderTexture, render_states : &mut RenderStates) -> () {
         render_texture.draw_vertex_array_rs(self, render_states)
     }
 }

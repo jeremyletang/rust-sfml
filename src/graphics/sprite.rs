@@ -571,14 +571,14 @@ impl Sprite {
 
 #[doc(hidden)]
 impl Wrappable<*ffi::sfSprite> for Sprite {
-    pub fn wrap(sprite : *ffi::sfSprite) -> Sprite {
+    fn wrap(sprite : *ffi::sfSprite) -> Sprite {
         Sprite { 
             sprite : sprite,
             texture : None
         }
     }
 
-    pub fn unwrap(&self) -> *ffi::sfSprite {
+    fn unwrap(&self) -> *ffi::sfSprite {
         self.sprite
     }
     
@@ -589,19 +589,19 @@ impl Drawable for Sprite {
     /**
     * Draw the sprite in the RenderWindow
     */
-    pub fn draw_in_render_window(&self, render_window : &RenderWindow) -> () {
+    fn draw_in_render_window(&self, render_window : &RenderWindow) -> () {
         render_window.draw_sprite(self)
     }
 
-    pub fn draw_in_render_window_rs(&self, render_window : &RenderWindow, render_states : &mut RenderStates) -> () {
+    fn draw_in_render_window_rs(&self, render_window : &RenderWindow, render_states : &mut RenderStates) -> () {
         render_window.draw_sprite_rs(self, render_states)
     }
 
-    pub fn draw_in_render_texture(&self, render_texture : &RenderTexture) -> () {
+    fn draw_in_render_texture(&self, render_texture : &RenderTexture) -> () {
         render_texture.draw_sprite(self)
     }
 
-    pub fn draw_in_render_texture_rs(&self, render_texture : &RenderTexture, render_states : &mut RenderStates) -> () {
+    fn draw_in_render_texture_rs(&self, render_texture : &RenderTexture, render_states : &mut RenderStates) -> () {
         render_texture.draw_sprite_rs(self, render_states)
     }
 }

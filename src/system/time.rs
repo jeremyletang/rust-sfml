@@ -116,13 +116,13 @@ impl Time {
 
 #[doc(hidden)]
 impl Wrappable<ffi::sfTime> for Time {
-    pub fn wrap(time : ffi::sfTime) -> Time {
+    fn wrap(time : ffi::sfTime) -> Time {
         Time {
             time : time
         }
     }
  
-    pub fn unwrap(&self) -> ffi::sfTime {
+    fn unwrap(&self) -> ffi::sfTime {
         self.time
     }
 }

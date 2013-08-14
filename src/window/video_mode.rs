@@ -177,7 +177,7 @@ impl VideoMode {
 
 #[doc(hidden)]
 impl Wrappable<ffi::sfVideoMode> for VideoMode {
-    pub fn wrap(mode: ffi::sfVideoMode) -> VideoMode {
+    fn wrap(mode: ffi::sfVideoMode) -> VideoMode {
         VideoMode{
             width : mode.width as uint,
             height : mode.height as uint,
@@ -185,7 +185,7 @@ impl Wrappable<ffi::sfVideoMode> for VideoMode {
         }
     }
 
-    pub fn unwrap(&self) -> ffi::sfVideoMode {
+    fn unwrap(&self) -> ffi::sfVideoMode {
         ffi::sfVideoMode{
             width : self.width as c_uint,
             height : self.height as c_uint,

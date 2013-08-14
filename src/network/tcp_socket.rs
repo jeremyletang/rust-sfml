@@ -274,13 +274,13 @@ impl TcpSocket {
 
 #[doc(hidden)]
 impl Wrappable<*ffi::sfTcpSocket> for TcpSocket {
-    pub fn wrap(socket : *ffi::sfTcpSocket) -> TcpSocket {
+    fn wrap(socket : *ffi::sfTcpSocket) -> TcpSocket {
         TcpSocket {
             socket : socket
         }
     }
     
-    pub fn unwrap(&self) -> *ffi::sfTcpSocket {
+    fn unwrap(&self) -> *ffi::sfTcpSocket {
         self.socket
     }
 }

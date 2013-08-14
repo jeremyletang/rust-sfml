@@ -293,13 +293,13 @@ impl Transformable {
 
 #[doc(hidden)]
 impl Wrappable<*ffi::sfTransformable> for Transformable {
-    pub fn wrap(transformable : *ffi::sfTransformable) -> Transformable {
+    fn wrap(transformable : *ffi::sfTransformable) -> Transformable {
         Transformable {
             transformable : transformable
         }
     }
 
-    pub fn unwrap(&self) -> *ffi::sfTransformable {
+    fn unwrap(&self) -> *ffi::sfTransformable {
         self.transformable
     }
 }

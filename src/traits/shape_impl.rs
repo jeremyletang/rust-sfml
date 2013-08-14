@@ -38,7 +38,7 @@ pub trait ShapeImpl {
 	*
 	* Return the points count
 	*/
-	pub fn get_point_count(&self) -> u32;
+	fn get_point_count(&self) -> u32;
 
 	/**
 	* Get a given point of a Shape.
@@ -48,5 +48,5 @@ pub trait ShapeImpl {
 	* 
 	* Return a Vector2f who contains the point coordinates.
 	*/
-    pub fn get_point(&self, point : u32) -> Vector2f;
+    fn get_point(&self, point : u32) -> Vector2f;
 }

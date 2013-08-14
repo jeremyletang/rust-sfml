@@ -370,11 +370,11 @@ impl Packet {
 
 #[doc(hidden)]
 impl Wrappable<*ffi::sfPacket> for Packet {
-    pub fn unwrap(&self) -> *ffi::sfPacket {
+    fn unwrap(&self) -> *ffi::sfPacket {
         self.packet
     }
 
-    pub fn wrap(packet : *ffi::sfPacket) -> Packet {
+    fn wrap(packet : *ffi::sfPacket) -> Packet {
         Packet {
             packet : packet
         }

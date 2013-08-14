@@ -676,7 +676,7 @@ impl ConvexShape {
 #[doc(hidden)]
 impl Wrappable<*ffi::sfConvexShape> for ConvexShape {
     #[doc(hidden)]
-    pub fn wrap(convex_shape : *ffi::sfConvexShape) -> ConvexShape {
+    fn wrap(convex_shape : *ffi::sfConvexShape) -> ConvexShape {
         ConvexShape {
             convex_shape : convex_shape,
             texture : None
@@ -685,26 +685,26 @@ impl Wrappable<*ffi::sfConvexShape> for ConvexShape {
     }
     
     #[doc(hidden)]
-    pub fn unwrap(&self) -> *ffi::sfConvexShape {
+    fn unwrap(&self) -> *ffi::sfConvexShape {
         self.convex_shape
     }
 
 }
 
 impl Drawable for ConvexShape {
-    pub fn draw_in_render_window(&self, render_window : &RenderWindow) -> () {
+    fn draw_in_render_window(&self, render_window : &RenderWindow) -> () {
         render_window.draw_convex_shape(self)
     }
 
-    pub fn draw_in_render_window_rs(&self, render_window : &RenderWindow, render_states : &mut RenderStates) -> () {
+    fn draw_in_render_window_rs(&self, render_window : &RenderWindow, render_states : &mut RenderStates) -> () {
         render_window.draw_convex_shape_rs(self, render_states)
     }
 
-    pub fn draw_in_render_texture(&self, render_texture : &RenderTexture) -> () {
+    fn draw_in_render_texture(&self, render_texture : &RenderTexture) -> () {
         render_texture.draw_convex_shape(self)
     }
 
-    pub fn draw_in_render_texture_rs(&self, render_texture : &RenderTexture, render_states : &mut RenderStates) -> () {
+    fn draw_in_render_texture_rs(&self, render_texture : &RenderTexture, render_states : &mut RenderStates) -> () {
         render_texture.draw_convex_shape_rs(self, render_states)
     }
 }

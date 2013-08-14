@@ -335,13 +335,13 @@ impl Image {
 
 #[doc(hidden)]
 impl Wrappable<*ffi::sfImage> for Image {
-    pub fn wrap(image : *ffi::sfImage) -> Image {
+    fn wrap(image : *ffi::sfImage) -> Image {
         Image {
             image : image
         }
     }
     
-    pub fn unwrap(&self) -> *ffi::sfImage {
+    fn unwrap(&self) -> *ffi::sfImage {
         self.image
     }
 }

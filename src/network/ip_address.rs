@@ -213,13 +213,13 @@ impl IpAddress {
 
 #[doc(hidden)]
 impl Wrappable<ffi::sfIpAddress> for IpAddress {
-    pub fn wrap(ip : ffi::sfIpAddress) -> IpAddress {
+    fn wrap(ip : ffi::sfIpAddress) -> IpAddress {
         IpAddress {
             ip : ip
         }
     }
 
-    pub fn unwrap(&self) -> ffi::sfIpAddress {
+    fn unwrap(&self) -> ffi::sfIpAddress {
         self.ip
     }    
 }

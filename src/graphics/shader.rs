@@ -389,14 +389,14 @@ impl Shader {
 
 #[doc(hidden)]
 impl Wrappable<*ffi::sfShader> for Shader {
-    pub fn wrap(shader : *ffi::sfShader) -> Shader {
+    fn wrap(shader : *ffi::sfShader) -> Shader {
         Shader {
             shader : shader,
             texture : None
         }
     }
 
-    pub fn unwrap(&self) -> *ffi::sfShader {
+    fn unwrap(&self) -> *ffi::sfShader {
         self.shader
     }
 }

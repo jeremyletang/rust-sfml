@@ -33,6 +33,6 @@
 * The trait wrappable is inherited by each object who needs to be wrapp or unwrapp to call to sfml
 */
 pub trait Wrappable<T> {
-    pub fn wrap(T) -> Self;
-    pub fn unwrap(&self) -> T;
+    fn wrap(T) -> Self;
+    fn unwrap(&self) -> T;
 }

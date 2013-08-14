@@ -713,7 +713,7 @@ impl CircleShape {
 #[doc(hidden)]
 impl Wrappable<*ffi::sfCircleShape> for CircleShape {
     #[doc(hidden)]
-    pub fn wrap(circle_shape : *ffi::sfCircleShape) -> CircleShape {
+    fn wrap(circle_shape : *ffi::sfCircleShape) -> CircleShape {
         CircleShape {
             circle_shape : circle_shape,
             texture : None
@@ -721,25 +721,25 @@ impl Wrappable<*ffi::sfCircleShape> for CircleShape {
     }
 
     #[doc(hidden)]
-    pub fn unwrap(&self) -> *ffi::sfCircleShape {
+    fn unwrap(&self) -> *ffi::sfCircleShape {
         self.circle_shape
     }
 }
 
 impl Drawable for CircleShape {
-    pub fn draw_in_render_window(&self, render_window : &RenderWindow) -> () {
+    fn draw_in_render_window(&self, render_window : &RenderWindow) -> () {
         render_window.draw_circle_shape(self)
     }
 
-    pub fn draw_in_render_window_rs(&self, render_window : &RenderWindow, render_states : &mut RenderStates) -> () {
+    fn draw_in_render_window_rs(&self, render_window : &RenderWindow, render_states : &mut RenderStates) -> () {
         render_window.draw_circle_shape_rs(self, render_states)
     }
     
-    pub fn draw_in_render_texture(&self, render_texture : &RenderTexture) -> () {
+    fn draw_in_render_texture(&self, render_texture : &RenderTexture) -> () {
         render_texture.draw_circle_shape(self)
     }
 
-    pub fn draw_in_render_texture_rs(&self, render_texture : &RenderTexture, render_states : &mut RenderStates) -> () {
+    fn draw_in_render_texture_rs(&self, render_texture : &RenderTexture, render_states : &mut RenderStates) -> () {
         render_texture.draw_circle_shape_rs(self, render_states)
     }
 }

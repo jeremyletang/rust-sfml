@@ -204,14 +204,14 @@ impl SoundBuffer {
 
 #[doc(hidden)]
 impl Wrappable<*ffi::sfSoundBuffer> for SoundBuffer {
-    pub fn wrap(buffer : *ffi::sfSoundBuffer) -> SoundBuffer {
+    fn wrap(buffer : *ffi::sfSoundBuffer) -> SoundBuffer {
         SoundBuffer {
             sound_buffer : buffer,
             dropable : false
         }
     }
 
-    pub fn unwrap(&self) -> *ffi::sfSoundBuffer {
+    fn unwrap(&self) -> *ffi::sfSoundBuffer {
         self.sound_buffer
     }
 

@@ -697,32 +697,32 @@ impl RectangleShape {
 
 #[doc(hidden)]
 impl Wrappable<*ffi::sfRectangleShape> for RectangleShape {
-    pub fn wrap(rectangle_shape : *ffi::sfRectangleShape) -> RectangleShape {
+    fn wrap(rectangle_shape : *ffi::sfRectangleShape) -> RectangleShape {
         RectangleShape {
             rectangle_shape : rectangle_shape,
             texture : None
         }
     }
     
-    pub fn unwrap(&self) -> *ffi::sfRectangleShape {
+    fn unwrap(&self) -> *ffi::sfRectangleShape {
         self.rectangle_shape
     }
 }
 
 impl Drawable for RectangleShape {
-    pub fn draw_in_render_window(&self, render_window : &RenderWindow) -> () {
+    fn draw_in_render_window(&self, render_window : &RenderWindow) -> () {
         render_window.draw_rectangle_shape(self);
     }
 
-    pub fn draw_in_render_window_rs(&self, render_window : &RenderWindow, render_states : &mut RenderStates) -> () {
+    fn draw_in_render_window_rs(&self, render_window : &RenderWindow, render_states : &mut RenderStates) -> () {
         render_window.draw_rectangle_shape_rs(self, render_states);
     }
 
-    pub fn draw_in_render_texture(&self, render_texture : &RenderTexture) -> () {
+    fn draw_in_render_texture(&self, render_texture : &RenderTexture) -> () {
         render_texture.draw_rectangle_shape(self);
     }
  
-    pub fn draw_in_render_texture_rs(&self, render_texture : &RenderTexture, render_states : &mut RenderStates) -> () {
+    fn draw_in_render_texture_rs(&self, render_texture : &RenderTexture, render_states : &mut RenderStates) -> () {
         render_texture.draw_rectangle_shape_rs(self, render_states);
     }
 }
