@@ -41,7 +41,7 @@ use system::vector3::Vector3f;
 #[doc(hidden)]
 pub mod ffi {
 
-    use std::libc::{c_void, c_uint, c_float};
+    use std::libc::{c_void, c_uint, c_float, c_char};
     use rsfml::sfTypes::{sfBool};
     use system::time;
     use audio::sound_status;
@@ -53,7 +53,7 @@ pub mod ffi {
     }
 
     extern "C" {
-        pub fn sfMusic_createFromFile(filename : *u8) -> *sfMusic;
+        pub fn sfMusic_createFromFile(filename : *c_char) -> *sfMusic;
         // sfMusic* sfMusic_createFromMemory(const void* data, size_t sizeInBytes);
         // sfMusic* sfMusic_createFromStream(sfInputStream* stream);
         pub fn sfMusic_destroy(music : *sfMusic) -> ();
@@ -105,14 +105,11 @@ impl Music {
     * Return a new option to Music object or none 
     */
     pub fn new_from_file(filename : ~str) -> Option<Music> {
-        let mut music_tmp : *ffi::sfMusic = ptr::null();
-        let mut tmp_filename = filename;
-        tmp_filename.push_char(0 as char);
-        do tmp_filename.as_imm_buf |filename_buf, _| {
-            unsafe { 
-                music_tmp = ffi::sfMusic_createFromFile(filename_buf);
-            }
-        };
+        let mut music_tmp : *ffi::sfMusic;
+        unsafe {
+            let c_filename = filename.to_c_str().unwrap();
+            music_tmp = ffi::sfMusic_createFromFile(c_filename);
+        }
         if ptr::is_null(music_tmp) {
             return None;
         }

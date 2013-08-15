@@ -37,7 +37,7 @@ use traits::wrappable::Wrappable;
 #[doc(hidden)]
 pub mod ffi {
     
-    use std::libc::{c_void, size_t, c_float, c_double};
+    use std::libc::{c_void, size_t, c_float, c_double, c_char};
     use rsfml::sfTypes::sfBool;
     
     pub struct sfPacket {
@@ -74,7 +74,7 @@ pub mod ffi {
         pub fn sfPacket_writeUint32(pack : *sfPacket, data : u32) -> ();
         pub fn sfPacket_writeFloat(pack : *sfPacket, data : c_float) -> ();
         pub fn sfPacket_writeDouble(pack : *sfPacket, data : c_double) -> ();
-        pub fn sfPacket_writeString(pack : *sfPacket, string : *u8) -> ();
+        pub fn sfPacket_writeString(pack : *sfPacket, string : *c_char) -> ();
         //fn sfPacket_writeWideString(pack : *sfPacket, string : *wchar_t) -> ();
     }
 }
@@ -358,12 +358,9 @@ impl Packet {
     * Function to insert data into a packet
     */
     pub fn write_string(&self, string : ~str) -> () {
-        let mut tmp_string = string;
-        tmp_string.push_char(0 as char);
+        let c_string = string.to_c_str();
         unsafe {
-            do tmp_string.as_imm_buf |string_buf, _| {
-                ffi::sfPacket_writeString(self.packet, string_buf)
-            }
+            ffi::sfPacket_writeString(self.packet, c_string.unwrap())
         }
     }
 }

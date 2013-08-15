@@ -37,6 +37,8 @@ use system::time::Time;
 #[doc(hidden)]
 pub mod ffi{
     
+    use std::libc::c_char;
+    
     use system::time;
 
     pub struct sfIpAddress {
@@ -59,7 +61,7 @@ pub mod ffi{
     }
 
     extern "C" {
-        pub fn sfIpAddress_fromString(address : *u8) -> sfIpAddress;
+        pub fn sfIpAddress_fromString(address : *c_char) -> sfIpAddress;
         pub fn sfIpAddress_fromBytes(byte0 : u8, byte1 : u8, byte2 : u8, byte3 : u8) -> sfIpAddress;
         pub fn sfIpAddress_fromInteger(address : u32) -> sfIpAddress;
         pub fn sfIpAddress_toString(address : sfIpAddress, string : *u8) -> ();
@@ -86,12 +88,9 @@ impl IpAddress {
     * Return Resulting address
     */
     pub fn new_from_string(address : ~str) -> IpAddress {
-        let mut tmp_address = address;
-        tmp_address.push_char(0 as char);
-        do tmp_address.as_imm_buf |addr_buf, _| {
-            IpAddress {
-                ip : unsafe { ffi::sfIpAddress_fromString(addr_buf) } 
-            }
+        let c_address = address.to_c_str();
+        IpAddress {
+            ip : unsafe { ffi::sfIpAddress_fromString(c_address.unwrap()) } 
         }
     }
 

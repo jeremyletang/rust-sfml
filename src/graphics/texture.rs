@@ -43,7 +43,7 @@ use graphics::rect::IntRect;
 #[doc(hidden)]
 pub mod ffi {
     
-    use std::libc::{c_uint, c_void};
+    use std::libc::{c_uint, c_void, c_char};
 
     use rsfml::sfTypes::{sfBool};
     use system::vector2::Vector2u;
@@ -58,7 +58,7 @@ pub mod ffi {
 
     extern "C" {
         pub fn sfTexture_create(width : c_uint, height : c_uint) -> *sfTexture;
-        pub fn sfTexture_createFromFile(filename : *u8, area : *IntRect) -> *sfTexture;
+        pub fn sfTexture_createFromFile(filename : *c_char, area : *IntRect) -> *sfTexture;
         //fn sfTexture_createFromMemory(data : *c_void, sizeInBytes : size_t , area : *sfIntRect) -> *sfTexture;
         //fn sfTexture_createFromStream(strea; : *sfInputStream, area : *sfIntRect) -> *sfTexture;
         pub fn sfTexture_createFromImage(image :*image::ffi::sfImage, area : *IntRect) -> *sfTexture;
@@ -117,12 +117,10 @@ impl Texture {
     * Return a new Option to Texture object or None
     */
     pub fn new_from_file(filename : ~str) -> Option<Texture> {
-        let mut tmp_filename = filename;
-        tmp_filename.push_char(0 as char);
-        let mut tex = ptr::null();
-        do tmp_filename.as_imm_buf |filebuf, _| {
-            tex = unsafe { ffi::sfTexture_createFromFile(filebuf, ptr::null()) };
-        }
+        let tex = unsafe {
+            let c_filename = filename.to_c_str().unwrap();
+            ffi::sfTexture_createFromFile(c_filename, ptr::null())
+        };
         if ptr::is_null(tex) {
             None
         }
@@ -144,12 +142,10 @@ impl Texture {
     * Return a new Option to Texture object or None
     */
     pub fn new_from_file_with_rect(filename : ~str, area : &IntRect) -> Option<Texture> {
-        let mut tmp_filename = filename;
-        tmp_filename.push_char(0 as char);
-        let mut tex = ptr::null();
-        do tmp_filename.as_imm_buf |filebuf, _| {
-            tex = unsafe { ffi::sfTexture_createFromFile(filebuf, &*area)};
-        }
+        let tex = unsafe {
+            let c_filename = filename.to_c_str().unwrap();
+            ffi::sfTexture_createFromFile(c_filename, &*area)
+        };
         if ptr::is_null(tex) {
             None
         }

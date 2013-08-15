@@ -83,19 +83,19 @@ pub mod ffi {
         pub fn sfFtp_destroy(ftp : *sfFtp) -> ();
         pub fn sfFtp_connect(ftp : *sfFtp, server : sfIpAddress, port : u16, timeout : time::ffi::sfTime) -> *sfFtpResponse;
         pub fn sfFtp_loginAnonymous(ftp : *sfFtp) -> *sfFtpResponse;
-        pub fn sfFtp_login(ftp : *sfFtp, userName : *u8, password : *u8) -> *sfFtpResponse;
+        pub fn sfFtp_login(ftp : *sfFtp, userName : *c_char, password : *c_char) -> *sfFtpResponse;
         pub fn sfFtp_disconnect(ftp : *sfFtp) -> *sfFtpResponse;
         pub fn sfFtp_keepAlive(ftp : *sfFtp) -> *sfFtpResponse;
         pub fn sfFtp_getWorkingDirectory(ftp : *sfFtp) -> *sfFtpDirectoryResponse;
-        pub fn sfFtp_getDirectoryListing(ftp : *sfFtp, directory : *u8) -> *sfFtpListingResponse;
-        pub fn sfFtp_changeDirectory(ftp : *sfFtp, directory : *u8) -> *sfFtpResponse;
+        pub fn sfFtp_getDirectoryListing(ftp : *sfFtp, directory : *c_char) -> *sfFtpListingResponse;
+        pub fn sfFtp_changeDirectory(ftp : *sfFtp, directory : *c_char) -> *sfFtpResponse;
         pub fn sfFtp_parentDirectory(ftp : *sfFtp) -> *sfFtpResponse;
-        pub fn sfFtp_createDirectory(ftp : *sfFtp, name : *u8) -> *sfFtpResponse;
-        pub fn sfFtp_deleteDirectory(ftp : *sfFtp, name : *u8) -> *sfFtpResponse;
-        pub fn sfFtp_renameFile(ftp : *sfFtp, file : *u8, newName : *u8) -> *sfFtpResponse;
-        pub fn sfFtp_deleteFile(ftp : *sfFtp, name : *u8) -> *sfFtpResponse;
-        pub fn sfFtp_download(ftp : *sfFtp, distantFile : *u8, destPath : *u8, mode : TransferMode) -> *sfFtpResponse;
-        pub fn sfFtp_upload(ftp : *sfFtp, localFile : *u8, destPath : *u8, mode : TransferMode) -> *sfFtpResponse;
+        pub fn sfFtp_createDirectory(ftp : *sfFtp, name : *c_char) -> *sfFtpResponse;
+        pub fn sfFtp_deleteDirectory(ftp : *sfFtp, name : *c_char) -> *sfFtpResponse;
+        pub fn sfFtp_renameFile(ftp : *sfFtp, file : *c_char, newName : *c_char) -> *sfFtpResponse;
+        pub fn sfFtp_deleteFile(ftp : *sfFtp, name : *c_char) -> *sfFtpResponse;
+        pub fn sfFtp_download(ftp : *sfFtp, distantFile : *c_char, destPath : *c_char, mode : TransferMode) -> *sfFtpResponse;
+        pub fn sfFtp_upload(ftp : *sfFtp, localFile : *c_char, destPath : *c_char, mode : TransferMode) -> *sfFtpResponse;
     }
 }
 
@@ -429,16 +429,10 @@ impl Ftp {
     * Return the server response to the request
     */
     pub fn login(&self, user_name : ~str, password : ~str) -> Response {
-        let mut tmp_user_name = user_name;
-        tmp_user_name.push_char(0 as char);
-        let mut tmp_password = password;
-        tmp_password.push_char(0 as char);
-        do tmp_user_name.as_imm_buf |name, _| {
-            do tmp_password.as_imm_buf |pass, _| {
-                Response {
-                    response : unsafe { ffi::sfFtp_login(self.ftp, name, pass) }
-                }
-            }
+        let c_user_name = user_name.to_c_str();
+        let c_password = password.to_c_str();
+        Response {
+            response : unsafe { ffi::sfFtp_login(self.ftp, c_user_name.unwrap(), c_password.unwrap()) }
         }
     }
     
@@ -495,12 +489,9 @@ impl Ftp {
     * Return the server response to the request
     */
     pub fn get_directory_listing(&self, directory : ~str) -> ListingResponse {
-        let mut tmp_directory = directory;
-        tmp_directory.push_char(0 as char);
-        do tmp_directory.as_imm_buf |dir, _| {
-            ListingResponse {
-                listing_response : unsafe { ffi::sfFtp_getDirectoryListing(self.ftp, dir) }
-            }
+        let c_directory = directory.to_c_str();
+        ListingResponse {
+            listing_response : unsafe { ffi::sfFtp_getDirectoryListing(self.ftp, c_directory.unwrap()) }
         }
     }
 
@@ -515,12 +506,9 @@ impl Ftp {
     * Return the server response to the request
     */
     pub fn change_directory(&self, directory : ~str) -> Response {
-        let mut tmp_directory = directory;
-        tmp_directory.push_char(0 as char);
-        do tmp_directory.as_imm_buf |dir, _| {
-            Response {
-                response : unsafe { ffi::sfFtp_changeDirectory(self.ftp, dir) }
-            }
+        let c_directory = directory.to_c_str();
+        Response {
+            response : unsafe { ffi::sfFtp_changeDirectory(self.ftp, c_directory.unwrap()) }
         }
     }
 
@@ -547,12 +535,9 @@ impl Ftp {
     * Return the server response to the request
     */
     pub fn create_directory(&self, name : ~str) -> Response {
-        let mut tmp_name = name;
-        tmp_name.push_char(0 as char);
-        do tmp_name.as_imm_buf |dir, _| {
-            Response { 
-                response : unsafe { ffi::sfFtp_createDirectory(self.ftp, dir) }
-            }
+        let c_name = name.to_c_str();
+        Response { 
+            response : unsafe { ffi::sfFtp_createDirectory(self.ftp, c_name.unwrap()) }
         }
     }
 
@@ -570,12 +555,9 @@ impl Ftp {
     * Return the server response to the request
     */
     pub fn delete_directory(&self, name : ~str) -> Response {
-        let mut tmp_name = name;
-        tmp_name.push_char(0 as char);
-        do tmp_name.as_imm_buf |dir, _| {
-            Response {
-                response : unsafe { ffi::sfFtp_deleteDirectory(self.ftp, dir) }
-            }
+        let c_name = name.to_c_str();
+        Response {
+            response : unsafe { ffi::sfFtp_deleteDirectory(self.ftp, c_name.unwrap()) }
         }
     }
     
@@ -592,16 +574,10 @@ impl Ftp {
     * Return the server response to the request
     */
     pub fn rename_file(&self, name : ~str, new_name : ~str) -> Response {
-        let mut tmp_name = name;
-        tmp_name.push_char(0 as char);
-        let mut tmp_new_name = new_name;
-        tmp_new_name.push_char(0 as char);
-        do tmp_name.as_imm_buf |file, _| {
-            do tmp_new_name.as_imm_buf |newFile, _| {
-                Response {
-                    response : unsafe { ffi::sfFtp_renameFile(self.ftp, file, newFile) } 
-                }
-            }
+        let c_name = name.to_c_str();
+        let c_new_name = new_name.to_c_str();
+        Response {
+            response : unsafe { ffi::sfFtp_renameFile(self.ftp, c_name.unwrap(), c_new_name.unwrap()) } 
         }
     }
 
@@ -619,12 +595,9 @@ impl Ftp {
     * Return the server response to the request
     */
     pub fn delete_file(&self, name : ~str) -> Response {
-        let mut tmp_name = name;
-        tmp_name.push_char(0 as char);
-        do tmp_name.as_imm_buf |file, _| {
-            Response {
-                response : unsafe { ffi::sfFtp_deleteFile(self.ftp, file) }
-            }
+        let c_name = name.to_c_str();
+        Response {
+            response : unsafe { ffi::sfFtp_deleteFile(self.ftp, c_name.unwrap()) }
         }
     }
 
@@ -644,16 +617,10 @@ impl Ftp {
     * Return the server response to the request
     */
     pub fn download(&self, distant_file : ~str, dest_path : ~str, mode : TransferMode) -> Response {
-        let mut tmp_distant_file = distant_file;
-        tmp_distant_file.push_char(0 as char);
-        let mut tmp_dest_path = dest_path;
-        tmp_dest_path.push_char(0 as char);
-        do tmp_distant_file.as_imm_buf |dist, _| {
-            do tmp_dest_path.as_imm_buf |path, _| {
-                Response { 
-                    response : unsafe { ffi::sfFtp_download(self.ftp, dist, path, mode) }
-                }
-            }
+        let c_distant_file = distant_file.to_c_str();
+        let c_dest_path = dest_path.to_c_str();
+        Response { 
+            response : unsafe { ffi::sfFtp_download(self.ftp, c_distant_file.unwrap(), c_dest_path.unwrap(), mode) }
         }
     }
 
@@ -673,16 +640,10 @@ impl Ftp {
     * Return the server response to the request
     */
     pub fn upload(&self, local_file : ~str, dest_path : ~str, mode : TransferMode) -> Response {
-        let mut tmp_local_file = local_file;
-        tmp_local_file.push_char(0 as char);
-        let mut tmp_dest_path = dest_path;
-        tmp_dest_path.push_char(0 as char);
-        do tmp_local_file.as_imm_buf |local, _| {
-            do tmp_dest_path.as_imm_buf |path, _| {
-                Response { 
-                    response : unsafe { ffi::sfFtp_upload(self.ftp, local, path, mode) }
-                }
-            }
+        let c_local_file = local_file.to_c_str();
+        let c_dest_path = dest_path.to_c_str();
+        Response { 
+            response : unsafe { ffi::sfFtp_upload(self.ftp, c_local_file.unwrap(), c_dest_path.unwrap(), mode) }
         }
     }
 
