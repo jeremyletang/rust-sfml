@@ -57,6 +57,7 @@ pub mod ffi {
 * # Arguments
 * * volume - The new global volume, in the range [0, 100]
 */
+#[fixed_stack_segment] #[inline(never)]
 pub fn set_global_volume(volume : float) -> () {
     unsafe {
         ffi::sfListener_setGlobalVolume(volume as f32)
@@ -68,6 +69,7 @@ pub fn set_global_volume(volume : float) -> () {
 *
 * Return the current global volume, in the range [0, 100]
 */
+#[fixed_stack_segment] #[inline(never)]
 pub fn get_global_volume() -> float {
     unsafe {
         ffi::sfListener_getGlobalVolume() as float
@@ -82,6 +84,7 @@ pub fn get_global_volume() -> float {
 * # Arguments
 * * * position - the New position of the listener
 */
+#[fixed_stack_segment] #[inline(never)]
 pub fn set_position(position : &Vector3f) -> () {
     unsafe {
         ffi::sfListener_setPosition(*position)
@@ -98,6 +101,7 @@ pub fn set_position(position : &Vector3f) -> () {
 * * y - the New position of the listener in y
 * * z - the New position of the listener in z
 */
+#[fixed_stack_segment] #[inline(never)]
 pub fn set_position3f(x : f32, y : f32, z : f32) -> () {
     unsafe {
         ffi::sfListener_setPosition(Vector3f::new(x, y, z))
@@ -109,6 +113,7 @@ pub fn set_position3f(x : f32, y : f32, z : f32) -> () {
 *
 * Return the listener's position
 */
+#[fixed_stack_segment] #[inline(never)]
 pub fn get_position() -> Vector3f {
     unsafe {
         ffi::sfListener_getPosition()
@@ -126,6 +131,7 @@ pub fn get_position() -> Vector3f {
 * # Arguments
 * * direction - New listener's orientation
 */
+#[fixed_stack_segment] #[inline(never)]
 pub fn set_direction(direction : &Vector3f) -> () {
     unsafe {
         ffi::sfListener_setDirection(*direction)
@@ -145,6 +151,7 @@ pub fn set_direction(direction : &Vector3f) -> () {
 * * y - Y coordinate of the listener's orientation
 * * z - Z coordinate of the listener's orientation
 */
+#[fixed_stack_segment] #[inline(never)]
 pub fn set_direction3f(x : f32, y : f32, z : f32) -> () {
     unsafe {
         ffi::sfListener_setDirection(Vector3f::new(x, y, z))
@@ -156,6 +163,7 @@ pub fn set_direction3f(x : f32, y : f32, z : f32) -> () {
 *
 * Return the listener's direction
 */
+#[fixed_stack_segment] #[inline(never)]
 pub fn get_direction() -> Vector3f {
     unsafe {
         ffi::sfListener_getDirection()

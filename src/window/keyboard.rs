@@ -157,6 +157,7 @@ pub mod ffi {
  *
  * Return true if the key is pressed, false otherwise.
  */
+#[fixed_stack_segment] #[inline(never)]
 pub fn is_key_pressed(key : Key) -> bool {
     unsafe {
         match ffi::sfKeyboard_isKeyPressed(key as c_int) {

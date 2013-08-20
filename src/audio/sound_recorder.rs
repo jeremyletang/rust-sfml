@@ -77,6 +77,7 @@ impl SoundRecorder {
     * # Arguments
     * * ampleRate - Desired capture rate, in number of samples per second
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn start(&mut self, sampleRate : uint) -> () {
         unsafe {
             ffi::sfSoundRecorder_start(self.sound_recorder, sampleRate as c_uint)
@@ -86,6 +87,7 @@ impl SoundRecorder {
     /**
     * Stop the capture of a sound recorder
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn stop(&mut self) -> () {
         unsafe {
             ffi::sfSoundRecorder_stop(self.sound_recorder)
@@ -101,6 +103,7 @@ impl SoundRecorder {
     *
     * Return the sample rate, in samples per second
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn get_sample_rate(&self) -> uint {
         unsafe {
             ffi::sfSoundRecorder_getSampleRate(self.sound_recorder) as uint
@@ -116,6 +119,7 @@ impl SoundRecorder {
     *
     * Return true if audio capture is supported, false otherwise
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn is_available() -> bool {
         match unsafe { ffi::sfSoundRecorder_isAvailable() } {
             0 => false,
@@ -130,6 +134,7 @@ impl Drop for SoundRecorder {
     /**
     *   Destructor for class SoundRecorder. Destroy all the ressource.
     */
+    #[fixed_stack_segment] #[inline(never)]
     fn drop(&self) {
         unsafe {
             ffi::sfSoundRecorder_destroy(self.sound_recorder);

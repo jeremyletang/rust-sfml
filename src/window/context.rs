@@ -59,6 +59,7 @@ impl Context {
     *
     * Return New Context object
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn new() -> Context {
         Context{
             cont : unsafe{ ffi::sfContext_create() }
@@ -71,6 +72,7 @@ impl Context {
     * # Arguments
     * * active - True to activate, False to deactivate
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn set_active(&mut self, active : bool) -> () {
         unsafe {
             match active {
@@ -87,6 +89,7 @@ impl Drop for Context {
     /*
     *   Destructor for class Context.
     */
+    #[fixed_stack_segment] #[inline(never)]
     fn drop(&self) {
         unsafe {
             ffi::sfContext_destroy(self.cont);

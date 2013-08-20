@@ -102,6 +102,7 @@ impl Sprite {
     *
     * Return a new sfSprite object
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn new() -> Option<Sprite> {
         let sp = unsafe { ffi::sfSprite_create() };
         if ptr::is_null(sp) {
@@ -121,6 +122,7 @@ impl Sprite {
     *
     * Return a new sfSprite object
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn new_with_texture(texture : @mut Texture) -> Option<Sprite> {
         let sp = unsafe { ffi::sfSprite_create() };
         if ptr::is_null(sp) {
@@ -143,6 +145,7 @@ impl Sprite {
     *
     * Return An option to the cloned sprite or none.
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn clone(&self) -> Option<Sprite> {
         let sp = unsafe { ffi::sfSprite_copy(self.sprite) };
         if ptr::is_null(sp) {
@@ -166,6 +169,7 @@ impl Sprite {
     * # Arguments
     * * angle - New rotation, in degrees
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn set_rotation(&mut self, angle : float) -> () {
         unsafe {
             ffi::sfSprite_setRotation(self.sprite, angle as c_float)
@@ -179,6 +183,7 @@ impl Sprite {
     *
     * Return the current rotation, in degrees
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn get_rotation(&self) -> float {
         unsafe {
             ffi::sfSprite_getRotation(self.sprite) as float
@@ -194,6 +199,7 @@ impl Sprite {
     * # Arguments
     * * angle - Angle of rotation, in degrees
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn rotate(&mut self, angle : float) -> () {
         unsafe {
             ffi::sfSprite_rotate(self.sprite, angle as c_float)
@@ -217,6 +223,7 @@ impl Sprite {
     * * texture - New texture
     * * reset_rect - Should the texture rect be reset to the size of the new texture?
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn set_texture(&mut self, texture : @mut Texture, reset_rect : bool) -> (){
         self.texture = Some(texture);
         unsafe {
@@ -232,6 +239,7 @@ impl Sprite {
     *
     * Disable the current texture and reset the texture rect
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn disable_texture(&mut self) -> () {
         self.texture = None;
         unsafe {
@@ -250,6 +258,7 @@ impl Sprite {
     * # Arguments
     * * color - New color of the sprite
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn set_color(&mut self, color : &Color) -> () {
         unsafe {
             ffi::sfSprite_setColor(self.sprite, *color)
@@ -265,6 +274,7 @@ impl Sprite {
     *
     * Return an Option to the sprite's texture
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn get_texture(&self) -> Option<@mut Texture> {
         //let tex = unsafe { ffi::sfSprite_getTexture(self.sprite) };
         if self.texture.is_none() {
@@ -280,6 +290,7 @@ impl Sprite {
     *
     * Return the global color of the sprite
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn get_color(&self) -> Color {
         unsafe {
             ffi::sfSprite_getColor(self.sprite)
@@ -296,6 +307,7 @@ impl Sprite {
     * # Arguments
     * * position - New position
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn set_position(&mut self, position : &Vector2f) -> () {
         unsafe {
             ffi::sfSprite_setPosition(self.sprite, *position)
@@ -313,6 +325,7 @@ impl Sprite {
     * * x - New x coordinate
     * * y - New y coordinate
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn set_position2f(&mut self, x : f32, y : f32) -> () {
         unsafe {
             ffi::sfSprite_setPosition(self.sprite, Vector2f::new(x, y))
@@ -328,6 +341,7 @@ impl Sprite {
     * # Arguments
     * * factors - Scale factors
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn scale(&mut self, factors : &Vector2f) -> () {
         unsafe {
             ffi::sfSprite_scale(self.sprite, *factors)
@@ -344,6 +358,7 @@ impl Sprite {
     * * factor_x - Scale x factor
     * * factor_y - Scale y factor
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn scale2f(&mut self, factor_x : f32, factor_y : f32) -> () {
         unsafe {
             ffi::sfSprite_scale(self.sprite, Vector2f::new(factor_x, factor_y))
@@ -355,6 +370,7 @@ impl Sprite {
     *
     * Return the current scale factors 
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn get_scale(&self) -> Vector2f {
         unsafe {
             ffi::sfSprite_getScale(self.sprite)
@@ -366,6 +382,7 @@ impl Sprite {
     *
     * Return the current origin
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn get_origin(&self) -> Vector2f {
         unsafe {
             ffi::sfSprite_getOrigin(self.sprite)
@@ -381,6 +398,7 @@ impl Sprite {
     * # Arguments
     * * offset - Offset
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn move(&mut self, offset : &Vector2f) -> () {
         unsafe {
             ffi::sfSprite_move(self.sprite, *offset)
@@ -397,6 +415,7 @@ impl Sprite {
     * * offsetX - Offset x
     * * offsetY - Offset y
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn move2f(&mut self, offset_x : f32, offset_y : f32) -> () {
         unsafe {
             ffi::sfSprite_move(self.sprite, Vector2f::new(offset_x, offset_y))
@@ -413,6 +432,7 @@ impl Sprite {
     * # Arguments
     * * scale - New scale factors
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn set_scale(&mut self, scale : &Vector2f) -> () {
         unsafe {
             ffi::sfSprite_setScale(self.sprite, *scale)
@@ -430,6 +450,7 @@ impl Sprite {
     * * scale_x - New x scale factor
     * * scale_y - New y scale factor
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn set_scale2f(&mut self, scale_x : f32, scale_y : f32) -> () {
         unsafe {
             ffi::sfSprite_setScale(self.sprite, Vector2f::new(scale_x, scale_y))
@@ -449,6 +470,7 @@ impl Sprite {
     * # Arguments
     * * origin - New origin
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn set_origin(&mut self, origin : &Vector2f) -> () {
         unsafe {
             ffi::sfSprite_setOrigin(self.sprite, *origin)
@@ -469,6 +491,7 @@ impl Sprite {
     * * x - New x origin coordinate
     * * y - New y origin coordinate
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn set_origin2f(&mut self, x : f32, y : f32) -> () {
         unsafe {
             ffi::sfSprite_setOrigin(self.sprite, Vector2f::new(x, y))
@@ -480,6 +503,7 @@ impl Sprite {
     *
     * Return the current position
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn get_position(&self) -> Vector2f {
         unsafe {ffi::sfSprite_getPosition(self.sprite)}
     }
@@ -495,6 +519,7 @@ impl Sprite {
     *
     * Return the local bounding rectangle of the entity
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn get_local_bounds(&self) -> FloatRect {
         unsafe {
             ffi::sfSprite_getLocalBounds(self.sprite)
@@ -512,6 +537,7 @@ impl Sprite {
     *
     * Return the global bounding rectangle of the entity
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn get_global_bounds(&self) -> FloatRect {
         unsafe {
             ffi::sfSprite_getGlobalBounds(self.sprite)
@@ -523,6 +549,7 @@ impl Sprite {
     *
     * Return the texture rectangle of the sprite
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn get_texture_rect(&self) -> IntRect {
         unsafe {
             ffi::sfSprite_getTextureRect(self.sprite)
@@ -539,6 +566,7 @@ impl Sprite {
     * # Arguments
     * * rectangle - Rectangle defining the region of the texture to display
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn set_texture_rect(&mut self, rect : &IntRect) -> () {
         unsafe {
             ffi::sfSprite_setTextureRect(self.sprite, *rect)
@@ -550,6 +578,7 @@ impl Sprite {
     *
     * Return the transform combining the position/rotation/scale/origin of the object
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn get_transform(&self) -> Transform {
         unsafe {
             ffi::sfSprite_getTransform(self.sprite)
@@ -561,6 +590,7 @@ impl Sprite {
     *
     * Return the inverse of the combined transformations applied to the object
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn get_inverse_transform(&self) -> Transform {
         unsafe {
             ffi::sfSprite_getInverseTransform(self.sprite)
@@ -613,6 +643,7 @@ impl Drop for Sprite {
     /**
     * Destroy an existing sprite
     */
+    #[fixed_stack_segment] #[inline(never)]
     fn drop(&self) -> () {
         unsafe {
             ffi::sfSprite_destroy(self.sprite)

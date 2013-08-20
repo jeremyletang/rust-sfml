@@ -131,6 +131,7 @@ impl Shape {
     *
     * Return a new Option to Shape
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn new<T : 'static + ShapeImpl>(shape_impl : @T) -> Option<Shape> {
         let w_o = @WrapObj { shape_impl : shape_impl as @ShapeImpl };
       
@@ -156,6 +157,7 @@ impl Shape {
     *
     * Return a new Option to Shape
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn new_with_texture<T : 'static + ShapeImpl>(shape_impl : @T, texture : @mut Texture) -> Option<Shape> {
         let w_o = @WrapObj { shape_impl : shape_impl as @ShapeImpl };
       
@@ -185,6 +187,7 @@ impl Shape {
     * # Arguments 
     * * position - The new position of the Shape
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn set_position(&mut self, position : &Vector2f) -> () {
         unsafe {
             ffi::sfShape_setPosition(self.shape, *position)
@@ -202,6 +205,7 @@ impl Shape {
     * * x - The new x position of the Shape
     * * y - The new y position of the Shape
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn set_position2f(&mut self, x : f32, y : f32) -> () {
         unsafe {
             ffi::sfShape_setPosition(self.shape, Vector2f::new(x, y))
@@ -218,6 +222,7 @@ impl Shape {
     * # Arguments
     * * angle - The new rotation, in degrees
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn set_rotation(&mut self, angle : float) -> () {
         unsafe {
             ffi::sfShape_setRotation(self.shape, angle as c_float)
@@ -234,6 +239,7 @@ impl Shape {
     * # Arguments
     * scale - The new scale factors
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn set_scale(&mut self, scale : &Vector2f) -> () {
         unsafe {
             ffi::sfShape_setScale(self.shape, *scale)
@@ -251,6 +257,7 @@ impl Shape {
     * scale_x - The new x scale factors
     * scale_y - The new y scale factors    
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn set_scale2f(&mut self, scale_x : f32, scale_y : f32) -> () {
         unsafe {
             ffi::sfShape_setScale(self.shape, Vector2f::new(scale_x, scale_y))
@@ -270,6 +277,7 @@ impl Shape {
     * # Arguments 
     * * origin - The new origin
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn set_origin(&mut self, origin : &Vector2f) -> () {
         unsafe {
             ffi::sfShape_setOrigin(self.shape, *origin)
@@ -290,6 +298,7 @@ impl Shape {
     * * x - The new x origin
     * * y - The new y origin
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn set_origin2f(&mut self, x : f32, y : f32) -> () {
         unsafe {
             ffi::sfShape_setOrigin(self.shape, Vector2f::new(x, y))
@@ -301,6 +310,7 @@ impl Shape {
     *
     * Return the current position
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn get_position(&self) -> Vector2f {
         unsafe {
             ffi::sfShape_getPosition(self.shape)
@@ -314,6 +324,7 @@ impl Shape {
     *
     * Return the current rotation, in degrees
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn get_rotation(&self) -> float {
         unsafe {
             ffi::sfShape_getRotation(self.shape) as float
@@ -325,6 +336,7 @@ impl Shape {
     *
     * Return the current scale factors
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn get_scale(&self) -> Vector2f {
         unsafe {
             ffi::sfShape_getScale(self.shape)
@@ -336,6 +348,7 @@ impl Shape {
     *
     * Return the current origin
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn get_origin(&self) -> Vector2f {
         unsafe {
             ffi::sfShape_getOrigin(self.shape)
@@ -351,6 +364,7 @@ impl Shape {
     * # Arguments
     * * offset - Offset
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn move(&mut self, offset : &Vector2f) -> () {
         unsafe {
             ffi::sfShape_move(self.shape, *offset)
@@ -367,6 +381,7 @@ impl Shape {
     * * offset_x - Offset x
     * * offset_y - Offset y
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn move2f(&mut self, offset_x : f32, offset_y : f32) -> () {
         unsafe {
             ffi::sfShape_move(self.shape, Vector2f::new(offset_x, offset_y))
@@ -382,6 +397,7 @@ impl Shape {
     * # Arguments
     * * angle - The angle of rotation, in degrees
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn rotate(&mut self, angle : float) -> () {
         unsafe {
             ffi::sfShape_rotate(self.shape, angle as c_float)
@@ -397,6 +413,7 @@ impl Shape {
     * # Arguments
     * * factors - Scale factors
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn scale(&mut self, factors : &Vector2f) -> () {
         unsafe {
             ffi::sfShape_scale(self.shape, *factors)
@@ -413,6 +430,7 @@ impl Shape {
     * * factor_x - x Scale factors
     * * factor_y - y Scale factors
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn scale2f(&mut self, factor_x : f32, factor_y : f32) -> () {
         unsafe {
             ffi::sfShape_scale(self.shape, Vector2f::new(factor_x, factor_y))
@@ -424,6 +442,7 @@ impl Shape {
     *
     * Return the transform combining the position/rotation/scale/origin of the object
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn get_transform(&self) -> Transform {
         unsafe {
             ffi::sfShape_getTransform(self.shape)
@@ -435,6 +454,7 @@ impl Shape {
     *
     * Return the inverse of the combined transformations applied to the object
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn get_inverse_transform(&self) -> Transform {
         unsafe {
             ffi::sfShape_getInverseTransform(self.shape)
@@ -456,6 +476,7 @@ impl Shape {
     * * texture - The new texture
     * * reset_rect - Should the texture rect be reset to the size of the new texture?
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn set_texture(&mut self, texture : @mut Texture, reset_rect : bool) -> () {
         self.texture = Some(texture);
         unsafe {
@@ -471,6 +492,7 @@ impl Shape {
     *
     * Disable the current texture and reset the texture rect
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn disable_texture(&mut self) -> () {
         self.texture = None;
         unsafe {
@@ -488,6 +510,7 @@ impl Shape {
     * # Arguments
     * * rect - The rectangle defining the region of the texture to display
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn set_texture_rect(&mut self, rect : &IntRect) -> () {
         unsafe {
             ffi::sfShape_setTextureRect(self.shape, *rect)
@@ -507,6 +530,7 @@ impl Shape {
     * # Arguments
     * * color - The new color of the Shape
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn set_fill_color(&mut self, color : &Color) -> () {
         unsafe {
             ffi::sfShape_setFillColor(self.shape, *color)
@@ -522,6 +546,7 @@ impl Shape {
     * # Arguments
     * * color - The new outline color of the shape
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn set_outline_color(&mut self, color : &Color) -> () {
         unsafe {
             ffi::sfShape_setOutlineColor(self.shape, *color)
@@ -538,6 +563,7 @@ impl Shape {
     * # Arguments
     * * thickness - The new outline thickness
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn set_outline_thickness(&mut self, thickness : float) -> () {
         unsafe {
             ffi::sfShape_setOutlineThickness(self.shape, thickness as c_float)
@@ -562,6 +588,7 @@ impl Shape {
     * 
     * Return the texture rectangle of the shape
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn get_texture_rect(&self) -> IntRect {
         unsafe {
             ffi::sfShape_getTextureRect(self.shape)
@@ -573,6 +600,7 @@ impl Shape {
     *
     * Return the fill color of the shape
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn get_fill_color(&self) -> Color {
         unsafe {
             ffi::sfShape_getFillColor(self.shape)
@@ -584,6 +612,7 @@ impl Shape {
     *
     * Return the outline color of the shape
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn get_outline_color(&self) -> Color {
         unsafe {
             ffi::sfShape_getOutlineColor(self.shape)
@@ -596,6 +625,7 @@ impl Shape {
     *
     * Return the outline thickness of the shape
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn get_outline_thickness(&self) -> float {
         unsafe {
             ffi::sfShape_getOutlineThickness(self.shape) as float
@@ -607,6 +637,7 @@ impl Shape {
     * 
     * Return the number of points of the shape
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn get_point_count(&self) -> uint {
         unsafe {
             ffi::sfShape_getPointCount(self.shape) as uint
@@ -623,6 +654,7 @@ impl Shape {
     *
     * Return the index-th point of the shape
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn get_point(&self, index : uint) -> Vector2f {
         unsafe {
             ffi::sfShape_getPoint(self.shape, index as c_uint)
@@ -640,6 +672,7 @@ impl Shape {
     *
     * Return the local bounding rectangle of the entity
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn get_local_bounds(&self) -> FloatRect {
         unsafe {
             ffi::sfShape_getLocalBounds(self.shape)
@@ -657,6 +690,7 @@ impl Shape {
     *
     * Return the global bounding rectangle of the entity
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn get_global_bounds(&self) -> FloatRect {
         unsafe {
             ffi::sfShape_getGlobalBounds(self.shape)
@@ -670,6 +704,7 @@ impl Shape {
     * everytime their points change (ie. the result of either
     * the getPointCount or getPoint callbacks is different).
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn update(&mut self) -> () {
         unsafe {
             ffi::sfShape_update(self.shape)
@@ -702,6 +737,7 @@ impl Drawable for Shape {
 
 #[unsafe_destructor]
 impl Drop for Shape {
+    #[fixed_stack_segment] #[inline(never)]
     fn drop(&self) -> () {
         unsafe {
             ffi::sfShape_destroy(self.shape)

@@ -42,6 +42,7 @@ pub mod ffi {
 /**
 * Make the current thread sleep for a given duration
 */
+#[fixed_stack_segment] #[inline(never)]
 pub fn sleep(time :Time) -> () {
     unsafe {
         ffi::sfSleep(time.unwrap())

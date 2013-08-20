@@ -87,6 +87,7 @@ impl IpAddress {
     *
     * Return Resulting address
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn new_from_string(address : ~str) -> IpAddress {
         let c_address = address.to_c_str();
         IpAddress {
@@ -110,6 +111,7 @@ impl IpAddress {
     *
     * Return the resulting address
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn mew_from_bytes(byte0 : u8, byte1 : u8, byte2 : u8, byte3 : u8) -> IpAddress {
         IpAddress {
             ip : unsafe { ffi::sfIpAddress_fromBytes(byte0, byte1, byte2, byte3) }
@@ -129,6 +131,7 @@ impl IpAddress {
     *
     * Return the resulting address
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn new_from_integer(address : u32) -> IpAddress {
         IpAddress {
             ip : unsafe { ffi::sfIpAddress_fromInteger(address) } 
@@ -144,6 +147,7 @@ impl IpAddress {
     *
     * Return a string representation of the address
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn to_string(&self) -> ~str {
         unsafe {
             let string : *u8 = ptr::null();
@@ -163,6 +167,7 @@ impl IpAddress {
     *
     * Return a 32-bits unsigned integer representation of the address
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn to_integer(&self) -> u32 {
         unsafe {
             ffi::sfIpAddress_toInteger(self.ip)
@@ -180,6 +185,7 @@ impl IpAddress {
     *
     * Return the local IP address of the computer
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn get_local_address() -> IpAddress {
         IpAddress {
             ip : unsafe { ffi::sfIpAddress_getLocalAddress() }
@@ -203,6 +209,7 @@ impl IpAddress {
     *
     * Return the public IP address of the computer
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn get_public_address(timeout : &Time) -> IpAddress {
         IpAddress {
             ip : unsafe { ffi::sfIpAddress_getPublicAddress(timeout.unwrap()) } 
