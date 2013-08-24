@@ -65,6 +65,32 @@ pub struct RenderStates {
 impl RenderStates {
 
     /**
+    * Create a new RenderStates.
+    *
+    * # Arguments
+    * * blend_mode - The BlendMode 
+    * * transform - The transform
+    * * texture - Some(texture) if there is a texture, None otherwise
+    * * shader - Some(shader) if there is a shader, None otherwise
+    *
+    * Return a new default RenderStates
+    */
+    pub fn new(blend_mode : BlendMode, transform : Transform, texture : Option<@Texture>, shader : Option<@Shader>) -> RenderStates {
+        RenderStates {
+            sfRenderStates : ffi::sfRenderStates {
+                blendMode : blend_mode as i32,
+                transform : transform,
+                texture : ptr::null(),
+                shader : ptr::null()
+            },
+            blendMode : blend_mode,
+            transform : transform,
+            texture : texture,
+            shader : shader
+        }
+    }
+
+    /**
     * Create a new RenderStates initialized to default.
     *
     * # default
