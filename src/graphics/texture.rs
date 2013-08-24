@@ -95,6 +95,7 @@ impl Texture {
     *
     * Return a new Option to Texture object or None
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn new(width: uint, height : uint) -> Option<Texture> {
         let tex = unsafe { ffi::sfTexture_create(width as c_uint, height as c_uint) };
         if ptr::is_null(tex) {
@@ -116,6 +117,7 @@ impl Texture {
     *
     * Return a new Option to Texture object or None
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn new_from_file(filename : ~str) -> Option<Texture> {
         let tex = unsafe {
             let c_filename = filename.to_c_str().unwrap();
@@ -141,6 +143,7 @@ impl Texture {
     *
     * Return a new Option to Texture object or None
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn new_from_file_with_rect(filename : ~str, area : &IntRect) -> Option<Texture> {
         let tex = unsafe {
             let c_filename = filename.to_c_str().unwrap();
@@ -165,6 +168,7 @@ impl Texture {
     *
     * Return an option to the copied texture or None
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn clone(&self) -> Option<Texture> {
         let tex = unsafe { ffi::sfTexture_copy(self.texture) };
         if ptr::is_null(tex) {
@@ -187,6 +191,7 @@ impl Texture {
     *
     * Return a new Option to Texture object or None
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn new_from_image_with_rect(image : &Image, area : &IntRect) -> Option<Texture> {
         let tex = unsafe { ffi::sfTexture_createFromImage(image.unwrap(), &*area) };
         if ptr::is_null(tex) {
@@ -208,6 +213,7 @@ impl Texture {
     *
     * Return a new Option to Texture object or None
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn new_from_image(image : &Image) -> Option<Texture> {
         let tex = unsafe { ffi::sfTexture_createFromImage(image.unwrap(), ptr::null()) };
         if ptr::is_null(tex) {
@@ -226,6 +232,7 @@ impl Texture {
     *
     * Return the Size in pixels
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn get_size(&self) -> Vector2u {
         unsafe {
             ffi::sfTexture_getSize(self.texture)
@@ -240,6 +247,7 @@ impl Texture {
     * * x - X offset in the texture where to copy the source pixels
     * * y - Y offset in the texture where to copy the source pixels
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn update_from_window(&mut self, window : Window, x : uint, y : uint) -> () {
         unsafe {
             ffi::sfTexture_updateFromWindow(self.texture, window.unwrap(), x as c_uint, y as c_uint)
@@ -254,6 +262,7 @@ impl Texture {
     * * x - X offset in the texture where to copy the source pixels
     * * y - Y offset in the texture where to copy the source pixels
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn update_from_render_window(&mut self, render_window : RenderWindow, x : uint, y : uint) -> () {
         unsafe {
             ffi::sfTexture_updateFromRenderWindow(self.texture, render_window.unwrap(), x as c_uint, y as c_uint)
@@ -268,6 +277,7 @@ impl Texture {
     * * x - X offset in the texture where to copy the source pixels
     * * y - Y offset in the texture where to copy the source pixels
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn update_from_image(&mut self, image : &Image, x : uint, y : uint) -> () {
         unsafe {
             ffi::sfTexture_updateFromImage(self.texture, image.unwrap(), x as c_uint, y as c_uint)
@@ -282,6 +292,7 @@ impl Texture {
     * * x - X offset in the texture where to copy the source pixels
     * * y - Y offset in the texture where to copy the source pixels
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn update_from_pixels(&mut self, pixels : ~[u8], width : uint, height : uint, x : uint, y : uint) -> () {
         unsafe {
             ffi::sfTexture_updateFromPixels(self.texture, vec::raw::to_ptr(pixels), width as c_uint, height as c_uint, x as c_uint, y as c_uint)
@@ -294,6 +305,7 @@ impl Texture {
     * # Arguments
     * * smooth - true to enable smoothing, false to disable it
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn set_smooth(&mut self, smooth : bool) -> () {
         unsafe {
             match smooth {
@@ -308,6 +320,7 @@ impl Texture {
     *
     * Return true if smoothing is enabled, false if it is disabled
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn is_smooth(&self) -> bool {
         match unsafe { ffi::sfTexture_isSmooth(self.texture) } {
             0 => false,
@@ -335,6 +348,7 @@ impl Texture {
     * # Arguments
     * * repeated  - true to repeat the texture, false to disable repeating
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn set_repeated(&mut self, repeated : bool) -> () {
         unsafe {
             match repeated {
@@ -349,6 +363,7 @@ impl Texture {
     *
     * Return frue if repeat mode is enabled, false if it is disabled
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn is_repeated(&self) -> bool {
         match unsafe {ffi::sfTexture_isRepeated(self.texture)} {
             0   => false,
@@ -364,6 +379,7 @@ impl Texture {
     * mix sfTexture with OpenGL code.
     *
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn bind(&mut self) -> () {
         unsafe {
             ffi::sfTexture_bind(self.texture)
@@ -375,6 +391,7 @@ impl Texture {
     *
     * Return the maximum size allowed for textures, in pixels
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn get_maximum_size() -> uint {
         unsafe {
             ffi::sfTexture_getMaximumSize() as uint
@@ -386,6 +403,7 @@ impl Texture {
     *
     * Return an image containing the texture's pixels
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn copy_to_image(&self) -> Option<Image> {
         let img = unsafe {ffi::sfTexture_copyToImage(self.texture)};
         if ptr::is_null(img) {
@@ -415,6 +433,7 @@ impl Drop for Texture {
     /**
     * Destroy an existing texture
     */
+    #[fixed_stack_segment] #[inline(never)]
     fn drop(&self) {
         if self.dropable {
             unsafe {

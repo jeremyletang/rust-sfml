@@ -91,12 +91,14 @@ impl Transform {
     *
     * Return a new Transform object
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn new(a00 : f32, a01 : f32, a02 : f32, b10 : f32, b11 : f32, b12 : f32, c20 : f32, c21 : f32, c22 : f32) -> Transform {
         unsafe {
             ffi::sfTransform_fromMatrix(a00, a01, a02, b10, b11, b12, c20, c21, c22)
         }
     }
 
+    #[fixed_stack_segment] #[inline(never)]
     pub fn get_matrix(&self) -> [f32, ..16] {
         unsafe {
             let matrix : [f32, ..16] = [0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.];
@@ -110,6 +112,7 @@ impl Transform {
     *
     * Return a new Transform object initialized at 1, 0, 0, 0, 1, 0, 0, 0, 1
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn new_identity() -> Transform {
         unsafe {
             ffi::sfTransform_fromMatrix(1., 0., 0., 0., 1., 0., 0., 0., 1.)
@@ -124,6 +127,7 @@ impl Transform {
     * 
     * Return the inverse matrix
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn get_inverse(&self) -> Transform {
         unsafe {
             ffi::sfTransform_getInverse(self)
@@ -140,6 +144,7 @@ impl Transform {
     * # Arguments
     * * other - Transform to combine to transform
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn combine(&self, other : &Transform) -> () {
         unsafe {
             ffi::sfTransform_combine(self, other)
@@ -153,6 +158,7 @@ impl Transform {
     * * x - Offset to apply on X axis
     * * y - Offset to apply on Y axis
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn translate(&self, x : f32, y : f32) -> () {
         unsafe {
             ffi::sfTransform_translate(self, x as c_float, y as c_float)
@@ -165,6 +171,7 @@ impl Transform {
     * # Arguments
     * * angle - Rotation angle, in degrees
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn rotate(&self, angle : f32) -> () {
         unsafe {
             ffi::sfTransform_rotate(self, angle as c_float)
@@ -184,6 +191,7 @@ impl Transform {
     * * center_x - X coordinate of the center of rotation
     * * center_y - Y coordinate of the center of rotation
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn rotate_with_center(&self, angle : f32, center_x : f32, center_y : f32) -> () {
         unsafe {
             ffi::sfTransform_rotateWithCenter(self, angle as c_float, center_x as c_float, center_y as c_float)
@@ -197,6 +205,7 @@ impl Transform {
     * * scale_x - Scaling factor on the X axis
     * * scale_y - Scaling factor on the Y axis
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn scale(&self, scale_x : f32, scale_y : f32) -> () {
         unsafe {
             ffi::sfTransform_scale(self, scale_x as c_float, scale_y as c_float)
@@ -217,6 +226,7 @@ impl Transform {
     * * center_x - X coordinate of the center of scaling
     * * center_y - Y coordinate of the center of scaling
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn scale_with_center(&self, scale_x : f32, scale_y : f32, center_x : f32, center_y : f32) -> () {
         unsafe {
             ffi::sfTransform_scaleWithCenter(self, scale_x, scale_y, center_x, center_y)
@@ -231,6 +241,7 @@ impl Transform {
     *
     * Return a transformed point
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn transform_point(&self, point : &Vector2f) -> Vector2f {
         unsafe {
             ffi::sfTransform_transformPoint(self, *point)
@@ -251,6 +262,7 @@ impl Transform {
     *
     * Return the transformed rectangle
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn transform_rect(&self, rectangle : &FloatRect) -> FloatRect {
         unsafe {
             ffi::sfTransform_transformRect(self, *rectangle)

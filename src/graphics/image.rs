@@ -90,6 +90,7 @@ impl Image {
     * 
     * Return a new Image object
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn new(width : uint, height : uint) -> Option<Image> {
         let image = unsafe { ffi::sfImage_create(width as c_uint, height as c_uint) };
         if ptr::is_null(image) {
@@ -112,6 +113,7 @@ impl Image {
     *
     * Return a new Image object
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn new_from_color(width : uint, height : uint, color : &Color) -> Option<Image> {
         let image = unsafe { ffi::sfImage_createFromColor(width as c_uint, height as c_uint, *color) };
         if ptr::is_null(image) {
@@ -136,6 +138,7 @@ impl Image {
     * * filename - Path of the image file to load
     * Return a new Image object, or NULL if it failed
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn new_from_file(filename : ~str) -> Option<Image> {
         let image = unsafe { 
             let c_filename = filename.to_c_str().unwrap();
@@ -156,6 +159,7 @@ impl Image {
     *
     * Return copied object
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn clone(&self) -> Option<Image> {
         let image = unsafe { ffi::sfImage_copy(self.image) };
         if ptr::is_null(image) {
@@ -183,6 +187,7 @@ impl Image {
     *
     * Return A new Image object
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn create_from_pixels(width : uint, height : uint, pixels : ~[u8]) -> Option<Image> {
         let image = unsafe { ffi::sfImage_createFromPixels(width as c_uint, height as c_uint, vec::raw::to_ptr(pixels)) };
         if ptr::is_null(image) {
@@ -208,6 +213,7 @@ impl Image {
     * 
     * Return true if saving was successful
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn save_to_file(&self, filename : ~str) -> bool {
         unsafe {
             let c_filename = filename.to_c_str().unwrap();
@@ -223,6 +229,7 @@ impl Image {
     * 
     * Return the size in pixels
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn get_size(&self) -> Vector2u {
         unsafe {
             ffi::sfImage_getSize(self.image)
@@ -240,6 +247,7 @@ impl Image {
     * * color - Color to make transparent
     * * alpha - Alpha value to assign to transparent pixels
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn create_mask_from_color(&self, color : &Color, alpha : u8) -> () {
         unsafe {
             ffi::sfImage_createMaskFromColor(self.image, *color, alpha)
@@ -258,6 +266,7 @@ impl Image {
     * * y - Y coordinate of pixel to change
     * * color - New color of the pixel
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn set_pixel(&mut self, x : uint, y : uint, color : &Color) -> () {
         unsafe {
             ffi::sfImage_setPixel(self.image, x as c_uint, y as c_uint, *color)
@@ -277,6 +286,7 @@ impl Image {
     *
     * Return the Color of the pixel at coordinates (x, y)
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn get_pixel(&self, x : uint, y : uint) -> Color {
         unsafe {
             ffi::sfImage_getPixel(self.image, x as c_uint, y as c_uint)
@@ -286,6 +296,7 @@ impl Image {
     /**
     * Flip an image horizontally (left <-> right)
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn flip_horizontally(&mut self) -> () {
         unsafe {
             ffi::sfImage_flipHorizontally(self.image)
@@ -295,6 +306,7 @@ impl Image {
     /**
     * Flip an image vertically (top <-> bottom)
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn flip_vertically(&mut self) -> () {
         unsafe {
             ffi::sfImage_flipVertically(self.image)
@@ -321,6 +333,7 @@ impl Image {
     * * sourceRect - Sub-rectangle of the source image to copy
     * * applyAlpha - Should the copy take in account the source transparency?
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn copy_image(&mut self, source : &Image, destX : uint, destY : uint, source_rect : &IntRect, apply_alpha : bool) -> () {
         unsafe {
             match apply_alpha {
@@ -349,6 +362,7 @@ impl Drop for Image {
     /**
     * Destroy an existing image
     */
+    #[fixed_stack_segment] #[inline(never)]
     fn drop(&self) -> () {
         unsafe {
             ffi::sfImage_destroy(self.image)

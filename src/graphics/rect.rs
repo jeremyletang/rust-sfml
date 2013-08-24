@@ -89,6 +89,7 @@ impl IntRect {
     * 
     * Return true if the point is inside
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn contains(self, x : int, y : int) -> bool {
         match unsafe { ffi::sfIntRect_contains(&self, x as c_int, y as c_int) } {
             0 => false,
@@ -106,6 +107,7 @@ impl IntRect {
     *
     * Return strue if rectangles overlap
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn intersects(rect1 : &IntRect, rect2 : &IntRect, intersections : &IntRect) -> bool {
         match unsafe { ffi::sfIntRect_intersects(rect1, rect2, intersections) } {
             0 => false,
@@ -136,6 +138,7 @@ impl FloatRect {
     * 
     * Return true if the point is inside
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn contains(self, x : f32, y : f32) -> bool {
         match unsafe { ffi::sfFloatRect_contains(&self, x, y) } {
             0 => false,
@@ -153,6 +156,7 @@ impl FloatRect {
     *
     * Return strue if rectangles overlap
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn intersects(rect1 : &FloatRect, rect2 : &FloatRect, intersections : &FloatRect) -> bool {
         match unsafe { ffi::sfFloatRect_intersects(rect1, rect2, intersections) } {
             0 => false,

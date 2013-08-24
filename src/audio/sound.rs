@@ -96,6 +96,7 @@ impl Sound {
     *
     * Return a new option to Sound object or None
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn new(buffer : @SoundBuffer) -> Option<Sound> {
         let s = unsafe {ffi::sfSound_create()};
         if s == ptr::null() {
@@ -117,6 +118,7 @@ impl Sound {
     *
     * Return a new option to Sound object which is a copy of sound or none
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn clone(&self) -> Option<Sound> {
         let s = unsafe {ffi::sfSound_copy(self.sound)};
         if s == ptr::null() {
@@ -136,6 +138,7 @@ impl Sound {
     *
     * Return true if the sound is looping, false otherwise
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn set_loop(&mut self, lloop : bool) -> () {
         unsafe {
             if lloop == true {
@@ -152,6 +155,7 @@ impl Sound {
     *
     * Return true if the sound is looping, false otherwise
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn get_loop(&self) -> bool {
         match unsafe {ffi::sfSound_getLoop(self.sound)} {
             0 => false,
@@ -168,6 +172,7 @@ impl Sound {
     * This function uses its own thread so that it doesn't block
     * the rest of the program while the sound is played.
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn play(&mut self) -> () {
         unsafe {ffi::sfSound_play(self.sound)}
     }
@@ -178,6 +183,7 @@ impl Sound {
     * This function pauses the sound if it was playing,
     * otherwise (sound already paused or stopped) it has no effect.
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn pause(&mut self) -> () {
         unsafe {ffi::sfSound_pause(self.sound)}
     }
@@ -189,6 +195,7 @@ impl Sound {
     * and does nothing if it was already stopped.
     * It also resets the playing position (unlike pause).
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn stop(&mut self) -> () {
         unsafe {ffi::sfSound_stop(self.sound)}
     }
@@ -198,6 +205,7 @@ impl Sound {
     *
     * Return current status
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn get_status(&self) -> sound_status::Status {
         match unsafe {ffi::sfSound_getStatus(self.sound)} {
             sound_status::ffi::sfStopped => sound_status::Stopped,
@@ -211,6 +219,7 @@ impl Sound {
     *
     * Return the current playing position
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn get_playing_offset(&self) -> time::Time {
         Wrappable::wrap( unsafe {ffi::sfSound_getPlayingOffset(self.sound)})
     }
@@ -227,6 +236,7 @@ impl Sound {
     * # Arguments
     * * pitch - new pitch to apply to the sound
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn set_pitch(&mut self, pitch : float) -> () {
         unsafe {ffi::sfSound_setPitch(self.sound, pitch as c_float)}
     }
@@ -240,6 +250,7 @@ impl Sound {
     * # Arguments
     * * volume - Volume of the sound
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn set_volume(&mut self, volume : float) -> () {
         unsafe {ffi::sfSound_setVolume(self.sound, volume as c_float)}
     }
@@ -256,6 +267,7 @@ impl Sound {
     * # Arguments
     * * relative - true to set the position relative, false to set it absolute
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn set_relative_to_listener(&mut self, relative : bool) -> () {
         unsafe {
             if relative == true {
@@ -280,6 +292,7 @@ impl Sound {
     * # Arguments
     * * distance - New minimum distance of the sound
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn set_min_distance(&mut self, distance : float) -> () {
         unsafe {ffi::sfSound_setMinDistance(self.sound, distance as c_float)}
     }
@@ -299,6 +312,7 @@ impl Sound {
     * # Arguments
     * * attenuation - New attenuation factor of the sound
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn set_attenuation(&mut self, attenuation : float) -> () {
         unsafe {ffi::sfSound_setAttenuation(self.sound, attenuation as c_float)}
     }
@@ -312,6 +326,7 @@ impl Sound {
     * # Arguments
     * * timeOffset - New playing position
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn set_playing_offset(&mut self, timeOffset : time::Time) -> () {
         unsafe {
             ffi::sfSound_setPlayingOffset(self.sound, timeOffset.unwrap())
@@ -323,6 +338,7 @@ impl Sound {
     *
     * Return the pitch of the sound
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn get_pitch(&self) -> float {
         unsafe {
             ffi::sfSound_getPitch(self.sound) as float
@@ -334,6 +350,7 @@ impl Sound {
     *
     * Return the volume of the sound, in the range [0, 100]
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn get_volume(&self) -> float {
         unsafe {
             ffi::sfSound_getVolume(self.sound) as float
@@ -345,6 +362,7 @@ impl Sound {
     *
     * Return true if the position is relative, false if it's absolute
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn is_relative_to_listener(&self) -> bool {
         match unsafe {ffi::sfSound_isRelativeToListener(self.sound)} {
             0 => false,
@@ -357,6 +375,7 @@ impl Sound {
     *
     * Return the minimum distance of the sound
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn get_min_distance(&self) -> float {
         unsafe {
            ffi::sfSound_getMinDistance(self.sound) as float
@@ -368,6 +387,7 @@ impl Sound {
     *
     * Return the attenuation factor of the sound
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn get_attenuation(&self) -> float {
         unsafe {
             ffi::sfSound_getAttenuation(self.sound) as float
@@ -384,6 +404,7 @@ impl Sound {
     * # Arguments
     * * buffer - Sound buffer to attach to the sound
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn set_buffer(&mut self, buffer : @SoundBuffer) -> () {
         self.buffer = buffer;
         unsafe {
@@ -405,6 +426,7 @@ impl Sound {
     *
     * Return the position of the sound in the world
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn get_position(&self) -> Vector3f {
         unsafe {
             ffi::sfSound_getPosition(self.sound)
@@ -421,6 +443,7 @@ impl Sound {
     * # Arguments
     * * position - Position of the sound in the scene
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn set_position(&mut self, position : &Vector3f) -> () {
         unsafe {
             ffi::sfSound_setPosition(self.sound, *position)
@@ -439,6 +462,7 @@ impl Sound {
     * * y - Y coordinate of the position of the sound in the scene
     * * z - Z coordinate of the position of the sound in the scene
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn set_position3f(&mut self, x : f32, y : f32, z: f32) -> () {
         unsafe {
             ffi::sfSound_setPosition(self.sound, Vector3f::new(x, y, z))
@@ -448,6 +472,7 @@ impl Sound {
     /**
     * 
     */
+    #[fixed_stack_segment] #[inline(never)]
     #[doc(hidden)]
     fn unwrap(&self) -> *ffi::sfSound {
         self.sound
@@ -459,6 +484,7 @@ impl Drop for Sound {
     /* Destructor for class Sound. Destroy all the ressource.
     *
     */
+    #[fixed_stack_segment] #[inline(never)]
     fn drop(&self) {
         unsafe {
             ffi::sfSound_destroy(self.sound);

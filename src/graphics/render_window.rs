@@ -186,6 +186,7 @@ impl RenderWindow {
     *
     * Return a new RenderWindow object
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn new(mode : VideoMode, title : ~str, style : WindowStyle, settings : &ContextSettings) -> Option<RenderWindow> {
         let mut sf_render_win: *ffi::sfRenderWindow;
         unsafe {
@@ -241,6 +242,7 @@ impl RenderWindow {
     *
     * Return a new RenderWindow object
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn new_with_unicode(mode : VideoMode, title : ~[u32], style : WindowStyle, settings : &ContextSettings) -> Option<RenderWindow> {
         let sfRenderWin: *ffi::sfRenderWindow;
         unsafe { 
@@ -279,6 +281,7 @@ impl RenderWindow {
     * # Arguments
     * * title - New title
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn set_unicode_title(&mut self, title : ~[u32]) -> () {
         unsafe {
             self.title_length = title.len();
@@ -295,6 +298,7 @@ impl RenderWindow {
     * * height - Icon's height, in pixels
     * * pixels - Vector of pixels
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn set_icon(&mut self, width : uint, height : uint, pixels : ~[u8]) -> () {
         unsafe {
             ffi::sfRenderWindow_setIcon(self.render_window, width as c_uint, height as c_uint, vec::raw::to_ptr(pixels))
@@ -312,6 +316,7 @@ impl RenderWindow {
     *
     * Return the event if an event was returned, or NoEvent if the event queue was empty
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn poll_event(&mut self) -> event::Event {
         let haveEvent : bool =  unsafe {
             match ffi::sfRenderWindow_pollEvent(self.render_window, &self.event) {
@@ -340,6 +345,7 @@ impl RenderWindow {
     *
     * Return the event or NoEvent if an error has occured
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn wait_event(&mut self) -> event::Event {
         let haveEvent : bool =  unsafe {
             match ffi::sfRenderWindow_waitEvent(self.render_window, &self.event) {
@@ -492,6 +498,7 @@ impl RenderWindow {
     * will still work (i.e. you don't have to test is_open
     * every time), and will have no effect on closed windows.
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn close(&mut self) -> () {
         unsafe {
             ffi::sfRenderWindow_close(self.render_window);
@@ -505,6 +512,7 @@ impl RenderWindow {
     * Note that a hidden window (set_visible(false)) will return
     * true.
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn is_open(&self) -> bool {
         let tmp : sfBool;
         unsafe {
@@ -523,6 +531,7 @@ impl RenderWindow {
     * has been done for the current frame, in order to show
     * it on screen.
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn display(&mut self) -> () {
         unsafe {
             ffi::sfRenderWindow_display(self.render_window)
@@ -539,6 +548,7 @@ impl RenderWindow {
     * # Arguments
     * * limit - Framerate limit, in frames per seconds (use 0 to disable limit)
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn set_framerate_limit(&mut self, limit : uint) -> () {
         unsafe {
             ffi::sfRenderWindow_setFramerateLimit(self.render_window, limit as c_uint)
@@ -555,6 +565,7 @@ impl RenderWindow {
     *
     * Return a structure containing the OpenGL context settings
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn get_settings(&self) -> ContextSettings {
         unsafe {
             ffi::sfRenderWindow_getSettings(self.render_window)
@@ -567,6 +578,7 @@ impl RenderWindow {
     * # Arguments
     * * title - New title
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn set_title(&mut self, title : ~str) -> () {
         unsafe {
             let c_title = title.to_c_str().unwrap();
@@ -581,6 +593,7 @@ impl RenderWindow {
     * # Arguments
     * * visible - true to show the window, false to hide it
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn set_visible(&mut self, visible : bool) -> () {
         let tmp : sfBool =
             match visible {
@@ -598,6 +611,7 @@ impl RenderWindow {
     * # Arguments
     * * visible - true to show, false to hide
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn set_mouse_cursor_visible(&mut self, visible : bool) -> () {
         let tmp : sfBool =
             match visible {
@@ -620,6 +634,7 @@ impl RenderWindow {
     * # Arguments
     * * enabled - true to enable v-sync, false to deactivate
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn set_vertical_sync_enabled(&mut self, enabled : bool) -> () {
         let tmp : sfBool =
             match enabled {
@@ -643,6 +658,7 @@ impl RenderWindow {
     * # Arguments
     * * enabled - true to enable, false to disable
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn set_key_repeat_enabled(&mut self, enabled : bool) -> () {
         let tmp : sfBool =
             match enabled {
@@ -668,6 +684,7 @@ impl RenderWindow {
     *
     * Return true if operation was successful, false otherwise
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn set_active(&mut self, enabled : bool) -> bool {
         let tmp : sfBool = match enabled {
             true    => 1,
@@ -691,6 +708,7 @@ impl RenderWindow {
     * # Arguments
     * * threshold - New threshold, in the range [0, 100]
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn set_joystick_threshold(&mut self, threshold : float) -> () {
         unsafe {
             ffi::sfRenderWindow_setJoystickThreshold(self.render_window, threshold as c_float)
@@ -702,6 +720,7 @@ impl RenderWindow {
     *
     * Return the position in pixels
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn get_position(&self) -> Vector2i {
         unsafe {
             ffi::sfRenderWindow_getPosition(self.render_window)
@@ -718,6 +737,7 @@ impl RenderWindow {
     * # Arguments
     * * position - New position of the window, in pixels
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn set_position(&mut self, position : &Vector2i) -> () {
         unsafe {
             ffi::sfRenderWindow_setPosition(self.render_window, *position)
@@ -731,6 +751,7 @@ impl RenderWindow {
     *
     * Return the size in pixels
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn get_size(&self) -> Vector2u {
         unsafe {
             ffi::sfRenderWindow_getSize(self.render_window)
@@ -743,6 +764,7 @@ impl RenderWindow {
     * # Arguments
     * * size - New size, in pixels
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn set_size(&mut self, size : &Vector2u) -> () {
         unsafe {
             ffi::sfRenderWindow_setSize(self.render_window, *size)
@@ -768,6 +790,7 @@ impl RenderWindow {
     * function if you do so.
     *
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn push_GL_states(&mut self) -> () {
         unsafe {
             ffi::sfRenderWindow_pushGLStates(self.render_window)
@@ -777,6 +800,7 @@ impl RenderWindow {
     /**
     * Restore the previously saved OpenGL render states and matrices
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn pop_GL_states(&mut self) -> () {
         unsafe {
             ffi::sfRenderWindow_popGLStates(self.render_window)
@@ -792,6 +816,7 @@ impl RenderWindow {
     * states needed by SFML are set, so that subsequent sfRenderWindow_draw*()
     * calls will work as expected.
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn reset_GL_states(&mut self) -> () {
         unsafe {
             ffi::sfRenderWindow_resetGLStates(self.render_window)
@@ -806,6 +831,7 @@ impl RenderWindow {
     *
     * Return the position of the mouse cursor, relative to the given render window
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn get_mouse_position(&self) -> Vector2i {
         unsafe {
             ffi::sfMouse_getPositionRenderWindow(self.render_window)
@@ -820,6 +846,7 @@ impl RenderWindow {
     * # Arguments
     * * relativeTo - Reference render window
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn set_mouse_position(&mut self, position : &Vector2i) -> () {
         unsafe {
             ffi::sfMouse_setPositionRenderWindow(*position, self.render_window)
@@ -848,6 +875,7 @@ impl RenderWindow {
     }
 
     /// Draw a Text
+    #[fixed_stack_segment] #[inline(never)]
     pub fn draw_text(&self, text : &Text) -> () {
         unsafe {
             ffi::sfRenderWindow_drawText(self.render_window, text.unwrap(), ptr::null())
@@ -855,6 +883,7 @@ impl RenderWindow {
     }
 
     // Draw a Shape
+    #[fixed_stack_segment] #[inline(never)]
     pub fn draw_shape(&self, shape : &Shape) -> () {
         unsafe {
             ffi::sfRenderWindow_drawShape(self.render_window, shape.unwrap(), ptr::null())
@@ -862,6 +891,7 @@ impl RenderWindow {
     }
 
     /// Draw a sprite
+    #[fixed_stack_segment] #[inline(never)]
     pub fn draw_sprite(&self, sprite : &Sprite) -> () {
         unsafe {
             ffi::sfRenderWindow_drawSprite(self.render_window, sprite.unwrap(), ptr::null())
@@ -869,6 +899,7 @@ impl RenderWindow {
     }
 
     /// Draw a CircleShape
+    #[fixed_stack_segment] #[inline(never)]
     pub fn draw_circle_shape(&self, circle_shape : &CircleShape) -> () {
         unsafe {
             ffi::sfRenderWindow_drawCircleShape(self.render_window, circle_shape.unwrap(), ptr::null())
@@ -876,6 +907,7 @@ impl RenderWindow {
     }
 
     /// Draw a RectangleShape
+    #[fixed_stack_segment] #[inline(never)]
     pub fn draw_rectangle_shape(&self, rectangle_shape : &RectangleShape) -> () {
         unsafe {
             ffi::sfRenderWindow_drawRectangleShape(self.render_window, rectangle_shape.unwrap(), ptr::null())
@@ -883,6 +915,7 @@ impl RenderWindow {
     }
 
     /// Draw a ConvexShape
+    #[fixed_stack_segment] #[inline(never)]
     pub fn draw_convex_shape(&self, convex_shape : &ConvexShape) -> () {
         unsafe {
             ffi::sfRenderWindow_drawConvexShape(self.render_window, convex_shape.unwrap(), ptr::null())
@@ -890,6 +923,7 @@ impl RenderWindow {
     }
 
     /// Draw a VertexArray
+    #[fixed_stack_segment] #[inline(never)]
     pub fn draw_vertex_array(&self, vertex_array : &VertexArray) -> () {
         unsafe {
             ffi::sfRenderWindow_drawVertexArray(self.render_window, vertex_array.unwrap(), ptr::null())
@@ -897,6 +931,7 @@ impl RenderWindow {
     }
 
     /// Draw a Text with a RenderStates
+    #[fixed_stack_segment] #[inline(never)]
     pub fn draw_text_rs(&self, text : &Text, render_states : &mut RenderStates) -> () {
         unsafe {
             ffi::sfRenderWindow_drawText(self.render_window, text.unwrap(), render_states.unwrap())
@@ -904,6 +939,7 @@ impl RenderWindow {
     }
 
     /// Draw a Shape with a RenderStates
+    #[fixed_stack_segment] #[inline(never)]
     pub fn draw_shape_rs(&self, shape : &Shape, render_states : &mut RenderStates) -> () {
         unsafe {
             ffi::sfRenderWindow_drawShape(self.render_window, shape.unwrap(), render_states.unwrap())
@@ -911,6 +947,7 @@ impl RenderWindow {
     }
 
     /// Draw a sprite with a RenderStates
+    #[fixed_stack_segment] #[inline(never)]
     pub fn draw_sprite_rs(&self, sprite : &Sprite, render_states : &mut RenderStates) -> () {
         unsafe {
             ffi::sfRenderWindow_drawSprite(self.render_window, sprite.unwrap(), render_states.unwrap())
@@ -918,6 +955,7 @@ impl RenderWindow {
     }
 
     /// Draw a CircleShape with a RenderStates
+    #[fixed_stack_segment] #[inline(never)]
     pub fn draw_circle_shape_rs(&self, circle_shape : &CircleShape, render_states : &mut RenderStates) -> () {
         unsafe {
             ffi::sfRenderWindow_drawCircleShape(self.render_window, circle_shape.unwrap(), render_states.unwrap())
@@ -925,6 +963,7 @@ impl RenderWindow {
     }
 
     /// Draw a RectangleShape with a RenderStates
+    #[fixed_stack_segment] #[inline(never)]
     pub fn draw_rectangle_shape_rs(&self, rectangle_shape : &RectangleShape, render_states : &mut RenderStates) -> () {
         unsafe {
             ffi::sfRenderWindow_drawRectangleShape(self.render_window, rectangle_shape.unwrap(), render_states.unwrap())
@@ -932,6 +971,7 @@ impl RenderWindow {
     }
 
     /// Draw a ConvexShape with a RenderStates
+    #[fixed_stack_segment] #[inline(never)]
     pub fn draw_convex_shape_rs(&self, convex_shape : &ConvexShape, render_states : &mut RenderStates) -> () {
         unsafe {
             ffi::sfRenderWindow_drawConvexShape(self.render_window, convex_shape.unwrap(), render_states.unwrap())
@@ -939,6 +979,7 @@ impl RenderWindow {
     }
 
     /// Draw a VertexArray with a RenderStates
+    #[fixed_stack_segment] #[inline(never)]
     pub fn draw_vertex_array_rs(&self, vertex_array : &VertexArray, render_states : &mut RenderStates) -> () {
         unsafe {
             ffi::sfRenderWindow_drawVertexArray(self.render_window, vertex_array.unwrap(), render_states.unwrap())
@@ -946,6 +987,7 @@ impl RenderWindow {
     }
 
     /// Clear window with the given color
+    #[fixed_stack_segment] #[inline(never)]
     pub fn clear(&mut self, color : &Color) -> () {
         unsafe {
             ffi::sfRenderWindow_clear(self.render_window, *color)
@@ -965,6 +1007,7 @@ impl RenderWindow {
     *
     * Return a new image containing the captured contents
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn capture(&mut self) -> Option<Image> {
         let img = unsafe { ffi::sfRenderWindow_capture(self.render_window) };
         if ptr::is_null(img) {
@@ -981,6 +1024,7 @@ impl RenderWindow {
     * # Arguments
     * * view - The new view
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn set_view(&mut self, view : @mut View) -> () {
         self.current_view = view;
         unsafe {
@@ -1033,6 +1077,7 @@ impl RenderWindow {
     * 
     * Return the converted point, in "world" units
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn map_pixel_to_coords(&self, point : &Vector2i, view : &View) -> Vector2f {
         unsafe {
             ffi::sfRenderWindow_mapPixelToCoords(self.render_window, *point, view.unwrap())
@@ -1064,6 +1109,7 @@ impl RenderWindow {
     * 
     * Return the converted point, in "world" units
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn map_pixel_to_coords_current_view(&self, point : &Vector2i) -> Vector2f {
         let view = unsafe {ffi::sfRenderWindow_getView(self.render_window)};
         unsafe {
@@ -1092,6 +1138,7 @@ impl RenderWindow {
     * * point - Point to convert
     * * view - The view to use for converting the point
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn map_coords_to_pixel(&self, point : &Vector2f, view : &View) -> Vector2i {
         unsafe {
             ffi::sfRenderWindow_mapCoordsToPixel(self.render_window, *point, view.unwrap())
@@ -1117,6 +1164,7 @@ impl RenderWindow {
     * # Arguments
     * * point - Point to convert
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn map_coords_to_pixel_current_view(&self, point : &Vector2f) -> Vector2i {
         let currView = unsafe { ffi::sfRenderWindow_getView(self.render_window) };
         unsafe {
@@ -1132,12 +1180,14 @@ impl RenderWindow {
     *
     * Return the viewport rectangle, expressed in pixels in the current target
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn get_viewport(&self, view : &View) -> IntRect {
         unsafe {
             ffi::sfRenderWindow_getViewport(self.render_window, view.unwrap())
         }
     }
 
+    #[fixed_stack_segment] #[inline(never)]
     #[doc(hidden)]
     pub fn unwrap(&self) -> *ffi::sfRenderWindow {
         self.render_window
@@ -1149,6 +1199,7 @@ impl Drop for RenderWindow {
     /**
     *   Destructor for class RenderWindow. Destroy all the ressource.
     */
+    #[fixed_stack_segment] #[inline(never)]
     fn drop(&self) {
         unsafe {
             ffi::sfRenderWindow_destroy(self.render_window);
