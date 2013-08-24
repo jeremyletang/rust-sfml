@@ -98,6 +98,7 @@ impl Shader {
     *
     * Return a new Shader object
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn new_from_file(vertex_shader_filename : ~str, fragment_shader_filename : ~str) -> Option<Shader> {
         let shader = unsafe { 
             let c_vertex_shader_filename = vertex_shader_filename.to_c_str().unwrap();
@@ -132,6 +133,7 @@ impl Shader {
     *
     * Return a new Shader object
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn new_from_memory(vertex_shader : ~str, fragment_shader : ~str) -> Option<Shader> {
         let shader = unsafe { 
             let c_vertex_shader = vertex_shader.to_c_str().unwrap();
@@ -156,6 +158,7 @@ impl Shader {
     * * name - Name of the parameter in the shader
     * * x - Value to assign
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn set_float_parameter(&mut self, name : ~str, x : f32) -> () {
         unsafe { 
             let c_name = name.to_c_str().unwrap();
@@ -175,6 +178,7 @@ impl Shader {
     * * x - First component of the value to assign
     * * y - Second component of the value to assign
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn set_float_2_parameter(&mut self, name : ~str, x : f32, y : f32) -> () {
         unsafe { 
             let c_name = name.to_c_str().unwrap();
@@ -195,6 +199,7 @@ impl Shader {
     * * y - Second component of the value to assign
     * * z - Third component of the value to assign
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn set_float_3_parameter(&mut self, name : ~str, x : f32, y : f32, z : f32) -> () {
         unsafe { 
             let c_name = name.to_c_str().unwrap();
@@ -216,6 +221,7 @@ impl Shader {
     * * z - Third component of the value to assign
     * * w - Fourth component of the value to assign
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn set_float_4_parameter(&mut self, name : ~str, x : f32, y : f32, z : f32, w : f32) -> () {
         unsafe { 
             let c_name = name.to_c_str().unwrap();
@@ -234,6 +240,7 @@ impl Shader {
     * * name - Name of the texture in the shader
     * * texture - Texture to assign
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn set_texture_parameter(&mut self, name : ~str, texture : @mut Texture) -> () {
         self.texture = Some(texture);
         unsafe { 
@@ -254,6 +261,7 @@ impl Shader {
     * # Arguments
     * * name - Name of the texture in the shader
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn set_current_texture_parameter(&self, name : ~str) -> () {
         unsafe { 
             let c_name = name.to_c_str().unwrap();
@@ -268,6 +276,7 @@ impl Shader {
     * used when drawing SFML entities. It must be used only if you
     * mix sfShader with OpenGL code.
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn bind(&mut self) -> () {
         unsafe {
             ffi::sfShader_bind(self.shader)
@@ -283,6 +292,7 @@ impl Shader {
     * 
     * Return true if the system can use shaders, false otherwise
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn is_available() -> bool {
         match unsafe { ffi::sfShader_isAvailable() } {
             0   => false,
@@ -301,6 +311,7 @@ impl Shader {
     * * name - Name of the parameter in the shader
     * * vector - Vector to assign
     */
+    #[fixed_stack_segment] #[inline(never)]
     fn set_vector2_parameter(&mut self, name : ~str, vector : &Vector2f) -> () {
         unsafe { 
             let c_name = name.to_c_str().unwrap();
@@ -319,6 +330,7 @@ impl Shader {
     * * name - Name of the parameter in the shader
     * * vector - Vector to assign
     */
+    #[fixed_stack_segment] #[inline(never)]
     fn set_vector3_parameter(&mut self, name : ~str, vector : &Vector3f) -> () {
         unsafe { 
             let c_name = name.to_c_str().unwrap();
@@ -343,6 +355,7 @@ impl Shader {
     * * name - Name of the parameter in the shader
     * * color - Color to assign
     */
+    #[fixed_stack_segment] #[inline(never)]
     fn set_color_parameter(&mut self, name : ~str, color : &Color) -> () {
         unsafe { 
             let c_name = name.to_c_str().unwrap();
@@ -371,6 +384,7 @@ impl Drop for Shader {
     /**
     * Destroy an existing shader
     */
+    #[fixed_stack_segment] #[inline(never)]
     fn drop(&self) -> () {
         unsafe {
             ffi::sfShader_destroy(self.shader)

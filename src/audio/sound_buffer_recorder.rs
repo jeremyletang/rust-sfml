@@ -67,6 +67,7 @@ impl SoundBufferRecorder {
     *
     * Return a new option to SoundBufferRecorder object or None if failed
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn new() -> Option<SoundBufferRecorder> {
         let buffer = unsafe { ffi::sfSoundBufferRecorder_create() };
         if ptr::is_null(buffer) {
@@ -92,6 +93,7 @@ impl SoundBufferRecorder {
     * # Arguments
     * * ampleRate - Desired capture rate, in number of samples per second
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn start(&mut self, sampleRate : uint) -> () {
         unsafe {
             ffi::sfSoundBufferRecorder_start(self.sound_buffer_recorder, sampleRate as c_uint)
@@ -101,6 +103,7 @@ impl SoundBufferRecorder {
     /**
     * Stop the capture of a sound recorder
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn stop(&mut self) -> () {
         unsafe {
             ffi::sfSoundBufferRecorder_stop(self.sound_buffer_recorder)
@@ -116,6 +119,7 @@ impl SoundBufferRecorder {
     *
     * Return the sample rate, in samples per second
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn get_sample_rate(&self) -> uint {
         unsafe {
             ffi::sfSoundBufferRecorder_getSampleRate(self.sound_buffer_recorder) as uint
@@ -132,6 +136,7 @@ impl SoundBufferRecorder {
     *
     * Return Read-only access to the sound buffer
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn get_buffer(&self) -> Option<SoundBuffer> {
         let buff = unsafe { ffi::sfSoundBufferRecorder_getBuffer(self.sound_buffer_recorder) };
         if ptr::is_null(buff) {
@@ -148,6 +153,7 @@ impl Drop for SoundBufferRecorder {
     /**
     *   Destructor for class SoundBufferRecorder. Destroy all the ressource.
     */
+    #[fixed_stack_segment] #[inline(never)]
     fn drop(&self) {
         unsafe {
             ffi::sfSoundBufferRecorder_destroy(self.sound_buffer_recorder);

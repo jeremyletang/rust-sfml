@@ -99,6 +99,7 @@ impl Color {
     *
     * Return the component-wise saturated addition of the two colors
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn add(color1 : Color, color2 : Color) -> Color {
         unsafe {ffi::sfColor_add(color1, color2)}
     }
@@ -112,6 +113,7 @@ impl Color {
     *
     * Return the component-wise multiplication of the two colors
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn modulate(color1 : Color, color2 : Color) -> Color {
         unsafe {ffi::sfColor_modulate(color1, color2)}
     }
@@ -132,6 +134,7 @@ impl Color {
     }
     
     /// Green predefined color
+    #[fixed_stack_segment] #[inline(never)]
     pub fn green() -> Color {
         //Color { color : ffi::sfColor {red : 0, green : 255, blue : 0, alpha : 255}}
         Color::new_from_RGB(0, 255, 0)

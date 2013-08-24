@@ -122,6 +122,7 @@ impl RenderTexture {
     *
     * Return a new option on RenderTexture object, or None if it failed
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn new(width : uint, height : uint, depth_buffer : bool) -> Option<RenderTexture> {
             let tex = match depth_buffer {
                 false       => unsafe { ffi::sfRenderTexture_create(width as c_uint, height as c_uint, 0) },
@@ -142,6 +143,7 @@ impl RenderTexture {
     *
     * Return the size in pixels
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn get_size(&self) -> Vector2u {
         unsafe {
             ffi::sfRenderTexture_getSize(self.render_texture)
@@ -154,6 +156,7 @@ impl RenderTexture {
     * # Arguments
     * * active - true to activate, false to deactivate
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn set_active(&mut self, active : bool) -> bool {
         match unsafe {
             match active {
@@ -170,6 +173,7 @@ impl RenderTexture {
     * Update the contents of the target texture
     *
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn display(&self) -> () {
         unsafe {
             ffi::sfRenderTexture_display(self.render_texture)
@@ -182,6 +186,7 @@ impl RenderTexture {
     * # Arguments
     * * color - Fill color
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn clear(&mut self, color : &Color) -> () {
         unsafe {
             ffi::sfRenderTexture_clear(self.render_texture, *color)
@@ -194,6 +199,7 @@ impl RenderTexture {
     * # Arguments
     * * view - the new view
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn set_view(&mut self, view : &View) -> () {
         unsafe {
             ffi::sfRenderTexture_setView(self.render_texture, view.unwrap())
@@ -205,6 +211,7 @@ impl RenderTexture {
     *
     * Return the current active view
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn get_view(&self) -> View {
         unsafe {
             Wrappable::wrap(ffi::sfRenderTexture_getView(self.render_texture))
@@ -216,6 +223,7 @@ impl RenderTexture {
     *
     * Return the default view of the render texture
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn get_default_view(&self) -> View {
         unsafe {
             Wrappable::wrap(ffi::sfRenderTexture_getDefaultView(self.render_texture))
@@ -230,6 +238,7 @@ impl RenderTexture {
     *
     * Return the viewport rectangle, expressed in pixels in the current target
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn get_viewport(&self, view : &View) -> IntRect {
         unsafe {
             ffi::sfRenderTexture_getViewport(self.render_texture, view.unwrap())
@@ -263,6 +272,7 @@ impl RenderTexture {
     * 
     * Return the converted point, in "world" units
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn map_pixel_to_coords(&self, point : &Vector2i, view : &View) -> Vector2f {
         unsafe {
             ffi::sfRenderTexture_mapPixelToCoords(self.render_texture, *point, view.unwrap())
@@ -294,6 +304,7 @@ impl RenderTexture {
     * 
     * Return the converted point, in "world" units
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn map_pixel_to_coords_current_view(&self, point : &Vector2i) -> Vector2f {
         let view = unsafe { ffi::sfRenderTexture_getView(self.render_texture) };
         unsafe {
@@ -322,6 +333,7 @@ impl RenderTexture {
     * * point - Point to convert
     * * view - The view to use for converting the point
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn map_coords_to_pixel(&self, point : &Vector2f, view : &View) -> Vector2i {
         unsafe {
             ffi::sfRenderTexture_mapCoordsToPixel(self.render_texture, *point, view.unwrap())
@@ -347,6 +359,7 @@ impl RenderTexture {
     * # Arguments
     * * point - Point to convert
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn map_coords_to_pixel_current_view(&self, point : &Vector2f) -> Vector2i {
         let view = unsafe { ffi::sfRenderTexture_getView(self.render_texture) };
         unsafe {
@@ -376,6 +389,7 @@ impl RenderTexture {
     }
 
     /// Draw Text
+    #[fixed_stack_segment] #[inline(never)]
     pub fn draw_text(&self, text : &Text) -> () {
         unsafe {
             ffi::sfRenderTexture_drawText(self.render_texture, text.unwrap(), ptr::null())
@@ -383,6 +397,7 @@ impl RenderTexture {
     }
 
     /// Draw Text
+    #[fixed_stack_segment] #[inline(never)]
     pub fn draw_shape(&self, shape : &Shape) -> () {
         unsafe {
             ffi::sfRenderTexture_drawShape(self.render_texture, shape.unwrap(), ptr::null())
@@ -390,6 +405,7 @@ impl RenderTexture {
     }
 
     /// Draw Sprite
+    #[fixed_stack_segment] #[inline(never)]
     pub fn draw_sprite(&self, sprite : &Sprite) -> () {
         unsafe {
             ffi::sfRenderTexture_drawSprite(self.render_texture, sprite.unwrap(), ptr::null())
@@ -397,6 +413,7 @@ impl RenderTexture {
     }
 
     /// Draw CircleShape
+    #[fixed_stack_segment] #[inline(never)]
     pub fn draw_circle_shape(&self, circle_shape : &CircleShape) -> () {
         unsafe {
             ffi::sfRenderTexture_drawCircleShape(self.render_texture, circle_shape.unwrap(), ptr::null())
@@ -404,6 +421,7 @@ impl RenderTexture {
     }
 
     /// Draw RectangleShape
+    #[fixed_stack_segment] #[inline(never)]
     pub fn draw_rectangle_shape(&self, rectangle_shape : &RectangleShape) -> () {
         unsafe {
             ffi::sfRenderTexture_drawRectangleShape(self.render_texture, rectangle_shape.unwrap(), ptr::null())
@@ -411,6 +429,7 @@ impl RenderTexture {
     }
 
     /// Draw ConvexShape
+    #[fixed_stack_segment] #[inline(never)]
     pub fn draw_convex_shape(&self, convex_shape : &ConvexShape) -> () {
         unsafe {
             ffi::sfRenderTexture_drawConvexShape(self.render_texture, convex_shape.unwrap(), ptr::null())
@@ -418,6 +437,7 @@ impl RenderTexture {
     }
 
     /// Draw VertexArray
+    #[fixed_stack_segment] #[inline(never)]
     pub fn draw_vertex_array(&self, vertex_array : &VertexArray) -> () {
         unsafe {
             ffi::sfRenderTexture_drawVertexArray(self.render_texture, vertex_array.unwrap(), ptr::null())
@@ -425,6 +445,7 @@ impl RenderTexture {
     }
     
     /// Draw Text
+    #[fixed_stack_segment] #[inline(never)]
     pub fn draw_text_rs(&self, text : &Text, rs : &mut RenderStates) -> () {
         unsafe {
             ffi::sfRenderTexture_drawText(self.render_texture, text.unwrap(), rs.unwrap())
@@ -432,6 +453,7 @@ impl RenderTexture {
     }
 
     /// Draw Shape
+    #[fixed_stack_segment] #[inline(never)]
     pub fn draw_shape_rs(&self, shape : &Shape, rs : &mut RenderStates) -> () {
         unsafe {
             ffi::sfRenderTexture_drawShape(self.render_texture, shape.unwrap(), rs.unwrap())
@@ -439,6 +461,7 @@ impl RenderTexture {
     }
 
     /// Draw Sprite
+    #[fixed_stack_segment] #[inline(never)]
     pub fn draw_sprite_rs(&self, sprite : &Sprite, rs : &mut RenderStates) -> () {
         unsafe {
             ffi::sfRenderTexture_drawSprite(self.render_texture, sprite.unwrap(), rs.unwrap())
@@ -446,6 +469,7 @@ impl RenderTexture {
     }
 
     /// Draw CircleShape
+    #[fixed_stack_segment] #[inline(never)]
     pub fn draw_circle_shape_rs(&self, circle_shape : &CircleShape, rs : &mut RenderStates) -> () {
         unsafe {
             ffi::sfRenderTexture_drawCircleShape(self.render_texture, circle_shape.unwrap(), rs.unwrap())
@@ -453,6 +477,7 @@ impl RenderTexture {
     }
 
     /// Draw RectangleShape
+    #[fixed_stack_segment] #[inline(never)]
     pub fn draw_rectangle_shape_rs(&self, rectangle_shape : &RectangleShape, rs : &mut RenderStates) -> () {
         unsafe {
             ffi::sfRenderTexture_drawRectangleShape(self.render_texture, rectangle_shape.unwrap(), rs.unwrap())
@@ -460,6 +485,7 @@ impl RenderTexture {
     }
 
     /// Draw ConvexShape
+    #[fixed_stack_segment] #[inline(never)]
     pub fn draw_convex_shape_rs(&self, convex_shape : &ConvexShape, rs : &mut RenderStates) -> () {
         unsafe {
             ffi::sfRenderTexture_drawConvexShape(self.render_texture, convex_shape.unwrap(), rs.unwrap())
@@ -467,6 +493,7 @@ impl RenderTexture {
     }
 
     /// Draw VertexArray
+    #[fixed_stack_segment] #[inline(never)]
     pub fn draw_vertex_array_rs(&self, vertex_array : &VertexArray, rs : &mut RenderStates) -> () {
         unsafe {
             ffi::sfRenderTexture_drawVertexArray(self.render_texture, vertex_array.unwrap(), rs.unwrap())
@@ -492,6 +519,7 @@ impl RenderTexture {
     * function if you do so.
     *
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn push_GL_states(&mut self) -> () {
         unsafe {
             ffi::sfRenderTexture_pushGLStates(self.render_texture)
@@ -501,6 +529,7 @@ impl RenderTexture {
     /**
     * Restore the previously saved OpenGL render states and matrices
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn pop_GL_states(&mut self) -> () {
         unsafe {
             ffi::sfRenderTexture_popGLStates(self.render_texture)
@@ -516,6 +545,7 @@ impl RenderTexture {
     * states needed by SFML are set, so that subsequent sfRenderWindow_draw*()
     * calls will work as expected.
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn reset_GL_states(&mut self) -> () {
         unsafe {
             ffi::sfRenderTexture_resetGLStates(self.render_texture)
@@ -527,6 +557,7 @@ impl RenderTexture {
     *
     * Return the target texture
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn get_texture(&self) -> Option<Texture> {
         let tex = unsafe { ffi::sfRenderTexture_getTexture(self.render_texture) };
         if ptr::is_null(tex) {
@@ -543,6 +574,7 @@ impl RenderTexture {
     * # Arguments
     * * smooth - true to enable smoothing, false to disable it
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn set_smooth(&mut self, smooth : bool) -> () {
         unsafe {
             match smooth {
@@ -557,6 +589,7 @@ impl RenderTexture {
     *
     * Return true if smoothing is enabled, false if it is disabled
     */
+    #[fixed_stack_segment] #[inline(never)]
     pub fn is_smooth(&self) -> bool {
         match unsafe { ffi::sfRenderTexture_isSmooth(self.render_texture) } {
             0 => false,
@@ -566,6 +599,7 @@ impl RenderTexture {
 }
 
 impl Drop for RenderTexture {
+    #[fixed_stack_segment] #[inline(never)]
     fn drop(&self) -> () {
         unsafe {
             ffi::sfRenderTexture_destroy(self.render_texture)
