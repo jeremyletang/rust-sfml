@@ -64,7 +64,7 @@ pub mod ffi {
     }
 
     extern "C" {
-        pub fn sfShape_create(getPointCount : *u8, getPoint : *u8, userData : *c_void) -> *sfShape;
+        pub fn sfShape_create(getPointCount : extern "C" fn(*c_void) -> u32, getPoint : extern "C" fn(u32, *c_void) -> Vector2f, userData : *c_void) -> *sfShape;
         pub fn sfShape_destroy(shape : *sfShape) -> ();
         pub fn sfShape_setPosition(shape : *sfShape, position : Vector2f) -> ();
         pub fn sfShape_setRotation(shape : *sfShape, angle : c_float) -> ();
