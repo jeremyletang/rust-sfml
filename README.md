@@ -18,18 +18,19 @@ CSFML2 : http://www.sfml-dev.org/download/csfml/
 
 Then clone the repo and build the library with the following command.
 
-```Shell
-> rustc rsfml.rc
->
-```
-Finally build your program with the rust-sfml library. For exemple, if the library is in the same path than your program.
+Rust-sfml is now build with the rustpkg tool :
 
 ```Shell
-> rustc main.rs -L .
->
+> rustpkg build rsfml
 ```
 
-Normaly rust-sfml works on Linux and windows and OSX.
+Examples are build too with rustpkg :
+
+```Shell
+> rustpkg build examples/pong
+```
+
+Rust-sfml works on Linux, windows and OSX.
 
 OSX Specific
 ============
@@ -50,16 +51,31 @@ Short example
 Here is a short example, draw a circle shape and display it.
 
 ```Rust
+extern mod rsfml;
+
+use rsfml::system::vector2::Vector2f;
+use rsfml::window::context_settings::ContextSettings;
+use rsfml::window::video_mode::VideoMode;
+use rsfml::window::event;
+use rsfml::graphics::render_window::*;
+use rsfml::graphics::circle_shape::CircleShape;
+use rsfml::graphics::color::Color;
+
+#[start]
+fn start(argc: int, argv: **u8, crate_map: *u8) -> int {
+    std::rt::start_on_main_thread(argc, argv, crate_map, main)
+}
+
 fn main () -> () {
      // Create the window of the application
     let setting = ContextSettings{
         depthBits: 10,
-        stencilBits: 10, 
-        antialiasingLevel: 1, 
-        majorVersion: 0, 
+        stencilBits: 10,
+        antialiasingLevel: 1,
+        majorVersion: 0,
         minorVersion: 1
     };
-    let mut window = match RenderWindow::new(VideoMode::new_init(800, 600, 32), ~"SFML Pong", sfClose, &setting) {
+    let mut window = match RenderWindow::new(VideoMode::new_init(800, 600, 32), ~"SFML Example", sfClose, &setting) {
         Some(window) => window,
         None => fail!("Cannot create a new Render Window.")
     };
@@ -82,11 +98,11 @@ fn main () -> () {
                 _ => {}
             }
         }
-        
+
         // Clear the window
         window.clear(~Color::new_from_RGB(0, 200, 200));
         // Draw the shape
-		window.draw(&circle);
+           window.draw(&circle);
         // Display things on screen
         window.display()
     }
