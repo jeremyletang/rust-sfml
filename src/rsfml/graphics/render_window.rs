@@ -369,7 +369,7 @@ impl RenderWindow {
             3   => event::GainedFocus,
             4   => {
                 event::TextEntered { 
-                    code : self.event.p1 as char 
+                    code : (self.event.p1 as u8) as char
                 }
             },
             5   => {
