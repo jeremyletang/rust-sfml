@@ -34,6 +34,7 @@ pub use std::libc::{c_uint, c_int, c_float};
 /**
 * Implemention of Vector2i
 */
+#[deriving(Clone)]
 pub struct Vector2i {
     x : i32,
     y : i32
@@ -42,6 +43,7 @@ pub struct Vector2i {
 /**
 * Implemention of Vector2u
 */
+#[deriving(Clone)]
 pub struct Vector2u {
     x : u32,
     y : u32
@@ -50,6 +52,7 @@ pub struct Vector2u {
 /**
 * Implemention of Vector2f
 */
+#[deriving(Clone)]
 pub struct Vector2f {
     x : f32,
     y : f32

@@ -35,7 +35,7 @@ fn main () -> () {
     let ballRadius : f32 = 10.;
 
      // Create the window of the application
-    let setting: ContextSettings = ContextSettings{depthBits: 10, stencilBits: 10, antialiasingLevel: 1, majorVersion: 0, minorVersion: 1};
+    let setting : ContextSettings = ContextSettings::default();
     let mut window : RenderWindow = match RenderWindow::new(VideoMode::new_init(gameWidth, gameHeight, 32), ~"SFML Pong", sfClose, &setting) {
         Some(window) => window,
         None => fail!("Cannot create a new Render Window.")
@@ -178,7 +178,7 @@ fn main () -> () {
 
             // Move the ball
             let factor = ballSpeed * deltaTime;
-            ball.move(~Vector2f::new(ballAngle.cos() * factor, ballAngle.cos() * factor));
+            ball.move(~Vector2f::new(ballAngle.cos() * factor, ballAngle.sin() * factor));
             
             // Check collisions between the ball and the screen
             if ball.get_position().x - ballRadius < 0. {

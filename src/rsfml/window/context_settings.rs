@@ -31,9 +31,21 @@
 
 
 pub struct ContextSettings {
-    depthBits: uint,
-    stencilBits: uint,
-    antialiasingLevel: uint,
-    majorVersion: uint,
-    minorVersion: uint
+    depth_bits: uint,
+    stencil_bits: uint,
+    antialiasing_level: uint,
+    major_version: uint,
+    minor_version: uint
+}
+
+impl ContextSettings {
+	pub fn default() -> ContextSettings {
+		ContextSettings {
+			depth_bits : 0,
+			stencil_bits : 0,
+			antialiasing_level : 0,
+			major_version : 2,
+			minor_version : 0
+		}
+	}
 }

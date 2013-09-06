@@ -31,6 +31,7 @@
 
 pub use std::libc::{c_float};
 
+#[deriving(Clone)]
 pub struct Vector3f {
     x : f32,
     y : f32,
