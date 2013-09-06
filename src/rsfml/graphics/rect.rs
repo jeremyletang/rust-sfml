@@ -50,6 +50,7 @@ pub mod ffi {
 /**
 * utility classes for manipulating rectangles of int.
 */
+#[deriving(Clone)]
 pub struct IntRect {
     left : i32,
     top : i32,
@@ -60,6 +61,7 @@ pub struct IntRect {
 /**
 * utility classes for manipulating rectangles of float.
 */
+#[deriving(Clone)]
 pub struct FloatRect {
     left : f32,
     top : f32,

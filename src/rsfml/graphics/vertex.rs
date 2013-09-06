@@ -49,6 +49,7 @@ pub mod ffi {
 }
 
 /// Define a point with color and texture coordinates
+#[deriving(Clone)]
 pub struct Vertex {
     position : Vector2f,
     color : Color,
