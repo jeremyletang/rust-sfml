@@ -63,7 +63,7 @@ fn main () -> () {
     leftPaddle.set_size(~(paddleSize - 3.));
     leftPaddle.set_outline_thickness(3.);
     leftPaddle.set_outline_color(~Color::black());
-    leftPaddle.set_fill_color(~Color::new_from_RGB(100, 100, 200));
+    leftPaddle.set_fill_color(~Color::new_RGB(100, 100, 200));
     leftPaddle.set_origin(~(paddleSize / 2.));
     
     // Create the right paddle
@@ -74,7 +74,7 @@ fn main () -> () {
     rightPaddle.set_size(~(paddleSize - 3.));
     rightPaddle.set_outline_thickness(3.);
     rightPaddle.set_outline_color(~Color::black());
-    rightPaddle.set_fill_color(~Color::new_from_RGB(200, 100, 100));
+    rightPaddle.set_fill_color(~Color::new_RGB(200, 100, 100));
     rightPaddle.set_origin(~(paddleSize / 2.));
 
     // Create the ball
@@ -241,7 +241,7 @@ fn main () -> () {
                 
         }
         // Clear the window
-        window.clear(~Color::new_from_RGB(50, 200, 50));
+        window.clear(~Color::new_RGB(50, 200, 50));
 
         if isPlaying {
             // Draw the paddles and the ball

@@ -42,6 +42,7 @@ pub mod ffi {
     }
 }
 
+#[deriving(Clone)]
 pub struct Color {
     red : u8,
     green : u8,
@@ -61,7 +62,7 @@ impl Color {
     *
     * Return Color object constructed from the components
     */
-    pub fn new_from_RGB(red : u8, green : u8, blue : u8) -> Color {
+    pub fn new_RGB(red : u8, green : u8, blue : u8) -> Color {
         Color {
             red : red, 
             green : green, 
@@ -81,7 +82,7 @@ impl Color {
     *
     * Return Color object constructed from the components
     */
-    pub fn new_from_RGBA(red : u8, green : u8, blue : u8, alpha : u8) -> Color {
+    pub fn new_RGBA(red : u8, green : u8, blue : u8, alpha : u8) -> Color {
         Color {
             red : red, 
             green : green, 
@@ -120,30 +121,51 @@ impl Color {
     
     /// Black predefined color
     pub fn black() -> Color {
-        Color::new_from_RGB(0, 0, 0)
+        Color::new_RGB(0, 0, 0)
     }
     
     /// White predefined color
     pub fn white() -> Color {
-        Color::new_from_RGB(255, 255, 255)
+        Color::new_RGB(255, 255, 255)
     }
     
     /// Red predefined color
     pub fn red() -> Color {
-        Color::new_from_RGB(255, 0, 0)
+        Color::new_RGB(255, 0, 0)
     }
     
     /// Green predefined color
     #[fixed_stack_segment] #[inline(never)]
     pub fn green() -> Color {
         //Color { color : ffi::sfColor {red : 0, green : 255, blue : 0, alpha : 255}}
-        Color::new_from_RGB(0, 255, 0)
+        Color::new_RGB(0, 255, 0)
     }
    
     /// Blue predefined color
     pub fn blue() -> Color {
-        Color::new_from_RGB(0, 0, 255)
+        Color::new_RGB(0, 0, 255)
     }
+
+    /// Yellow predefined color
+    pub fn yellow() -> Color {
+        Color::new_RGB(255, 255, 0)
+    }
+
+    /// Magenta predefined color
+    pub fn magenta() -> Color {
+        Color::new_RGB(255, 0, 255)
+    }
+
+    /// Cyan predifined color
+    pub fn cyan() -> Color {
+        Color::new_RGB(0, 255, 255)
+    }
+
+    /// Tranparent predefined color
+    pub fn transparent() -> Color {
+        Color::new_RGBA(0, 0, 0, 0)
+    }
+
 }
 
 impl Add<Color, Color> for Color {
