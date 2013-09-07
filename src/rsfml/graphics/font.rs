@@ -35,6 +35,7 @@ use std::ptr;
 use traits::wrappable::Wrappable;
 use graphics::texture::Texture;
 use graphics::glyph::Glyph;
+use sfml_types::*;
 
 #[doc(hidden)]
 pub mod ffi {
@@ -179,8 +180,8 @@ impl Font {
     pub fn get_glyph(&self, codepoint : u32, character_size : uint, bold : bool) -> Glyph {
         unsafe {
             match bold {
-                true        => ffi::sfFont_getGlyph(self.font, codepoint, character_size as c_uint, 1),
-                false       => ffi::sfFont_getGlyph(self.font, codepoint, character_size as c_uint, 0)
+                true        => ffi::sfFont_getGlyph(self.font, codepoint, character_size as c_uint, SFFALSE),
+                false       => ffi::sfFont_getGlyph(self.font, codepoint, character_size as c_uint, SFTRUE)
             }
         }
     }

@@ -42,6 +42,7 @@ use system::vector2::Vector2f;
 use graphics::rect::{FloatRect, IntRect};
 use graphics::transform::Transform;
 use graphics::render_states::RenderStates;
+use sfml_types::*;
 
 #[doc(hidden)]
 pub mod ffi {
@@ -130,7 +131,7 @@ impl Sprite {
         }
         else {
             unsafe {
-                ffi::sfSprite_setTexture(sp, texture.unwrap(), 1);
+                ffi::sfSprite_setTexture(sp, texture.unwrap(), SFTRUE);
             }
             Some(Sprite {
                 sprite : sp,
@@ -228,8 +229,8 @@ impl Sprite {
         self.texture = Some(texture);
         unsafe {
             match reset_rect {
-                true        => ffi::sfSprite_setTexture(self.sprite, texture.unwrap(), 1),
-                false       => ffi::sfSprite_setTexture(self.sprite, texture.unwrap(), 0)
+                true        => ffi::sfSprite_setTexture(self.sprite, texture.unwrap(), SFTRUE),
+                false       => ffi::sfSprite_setTexture(self.sprite, texture.unwrap(), SFFALSE)
             }
         }
     }
@@ -243,7 +244,7 @@ impl Sprite {
     pub fn disable_texture(&mut self) -> () {
         self.texture = None;
         unsafe {
-            ffi::sfSprite_setTexture(self.sprite, ptr::null(), 1)
+            ffi::sfSprite_setTexture(self.sprite, ptr::null(), SFTRUE)
         }
     }
 

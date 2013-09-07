@@ -30,14 +30,13 @@
 */
 
 use std::libc::size_t;
-use std::vec;
-use std::ptr;
+use std::{vec, ptr};
 
 use traits::wrappable::Wrappable;
-use network::ip_address;
+use network::{ip_address, packet};
 use system::time;
 use network::socket_status::SocketStatus;
-use network::packet;
+use sfml_types::*;
 
 #[doc(hidden)]
 pub mod ffi {
@@ -115,8 +114,8 @@ impl TcpSocket {
     pub fn set_blocking(&mut self, blocking : bool) -> () {
         unsafe {
             match blocking  {
-                true        => ffi::sfTcpSocket_setBlocking(self.socket, 1),
-                false       => ffi::sfTcpSocket_setBlocking(self.socket, 0)
+                true        => ffi::sfTcpSocket_setBlocking(self.socket, SFTRUE),
+                false       => ffi::sfTcpSocket_setBlocking(self.socket, SFFALSE)
             }
         }
     }
@@ -129,8 +128,9 @@ impl TcpSocket {
     #[fixed_stack_segment] #[inline(never)]
     pub fn is_blocking(&self) -> bool {
         match unsafe { ffi::sfTcpSocket_isBlocking(self.socket) } {
-            0 => false,
-            _ => true
+            SFFALSE => false,
+            SFTRUE  => true,
+            _       => unreachable!()
         }
     }
 

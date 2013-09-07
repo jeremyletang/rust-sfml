@@ -37,13 +37,14 @@ use graphics::texture::Texture;
 use system::vector2::Vector2f;
 use system::vector3::Vector3f;
 use graphics::color::Color;
+use sfml_types::*;
 
 #[doc(hidden)]
 pub mod ffi {
 
     use std::libc::{c_void, c_float, c_char};
 
-    use sfml_types::{SfBool};
+    use sfml_types::SfBool;
     use graphics::transform;
     use graphics::texture;
     use system::vector2::Vector2f;
@@ -295,8 +296,9 @@ impl Shader {
     #[fixed_stack_segment] #[inline(never)]
     pub fn is_available() -> bool {
         match unsafe { ffi::sfShader_isAvailable() } {
-            0   => false,
-            _   => true
+            SFFALSE   => false,
+            SFTRUE    => true,
+            _         => unreachable!()
         }
     }
 

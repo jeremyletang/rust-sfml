@@ -30,8 +30,7 @@
 */
 
 use std::libc::{c_uint};
-use std::vec;
-use std::ptr;
+use std::{vec, ptr};
 
 use traits::wrappable::Wrappable;
 use system::vector2::Vector2u;
@@ -39,6 +38,7 @@ use window::window::Window;
 use graphics::render_window::RenderWindow;
 use graphics::image::Image;
 use graphics::rect::IntRect;
+use sfml_types::*;
 
 #[doc(hidden)]
 pub mod ffi {
@@ -309,8 +309,8 @@ impl Texture {
     pub fn set_smooth(&mut self, smooth : bool) -> () {
         unsafe {
             match smooth {
-                true        => ffi::sfTexture_setSmooth(self.texture, 1),
-                false       => ffi::sfTexture_setSmooth(self.texture, 0)
+                true        => ffi::sfTexture_setSmooth(self.texture, SFTRUE),
+                false       => ffi::sfTexture_setSmooth(self.texture, SFFALSE)
             }
         }
     }
@@ -323,8 +323,9 @@ impl Texture {
     #[fixed_stack_segment] #[inline(never)]
     pub fn is_smooth(&self) -> bool {
         match unsafe { ffi::sfTexture_isSmooth(self.texture) } {
-            0 => false,
-            _ => true
+            SFFALSE => false,
+            SFTRUE  => true,
+            _       => unreachable!()
         }
     }
 
@@ -352,8 +353,8 @@ impl Texture {
     pub fn set_repeated(&mut self, repeated : bool) -> () {
         unsafe {
             match repeated {
-                true        => ffi::sfTexture_setRepeated(self.texture, 1),
-                false       => ffi::sfTexture_setRepeated(self.texture, 0)
+                true        => ffi::sfTexture_setRepeated(self.texture, SFTRUE),
+                false       => ffi::sfTexture_setRepeated(self.texture, SFFALSE)
             }
         }
     }
@@ -366,8 +367,9 @@ impl Texture {
     #[fixed_stack_segment] #[inline(never)]
     pub fn is_repeated(&self) -> bool {
         match unsafe {ffi::sfTexture_isRepeated(self.texture)} {
-            0   => false,
-            _   => true
+            SFFALSE   => false,
+            SFTRUE    => true,
+            _         => unreachable!()
         }
     }
 

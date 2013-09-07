@@ -41,6 +41,7 @@ use graphics::render_texture::RenderTexture;
 use graphics::rect::{FloatRect, IntRect};
 use graphics::transform::Transform;
 use graphics::render_states::RenderStates;
+use sfml_types::*;
 
 #[doc(hidden)]
 pub mod ffi {
@@ -512,8 +513,8 @@ impl RectangleShape {
         self.texture = Some(texture);
         unsafe {
             match reset_rect {
-                false       => ffi::sfRectangleShape_setTexture(self.rectangle_shape, texture.unwrap(), 0),
-                true        => ffi::sfRectangleShape_setTexture(self.rectangle_shape, texture.unwrap(), 1)
+                false       => ffi::sfRectangleShape_setTexture(self.rectangle_shape, texture.unwrap(), SFFALSE),
+                true        => ffi::sfRectangleShape_setTexture(self.rectangle_shape, texture.unwrap(), SFTRUE)
             }
         }
     }
@@ -527,7 +528,7 @@ impl RectangleShape {
     pub fn disable_texture(&mut self) -> () {
         self.texture = None;
         unsafe {
-            ffi::sfRectangleShape_setTexture(self.rectangle_shape, ptr::null(), 1)
+            ffi::sfRectangleShape_setTexture(self.rectangle_shape, ptr::null(), SFTRUE)
         }
     }
 

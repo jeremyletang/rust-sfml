@@ -31,27 +31,21 @@
 */
 
 use std::libc::{c_float, c_uint, c_int};
-use std::ptr;
-use std::cast;
-use std::vec;
+use std::{ptr, cast, vec};
 
 use traits::drawable::Drawable;
 use traits::wrappable::Wrappable;
-use sfml_types::{SfBool};
+use sfml_types::*;
 use window::video_mode::*;
 use window::context_settings::ContextSettings;
-use window::event;
-use window::keyboard;
+use window::{event, keyboard, joystick, mouse};
 use system::vector2::{Vector2f, Vector2i, Vector2u};
-use window::joystick;
-use window::mouse;
 use graphics::text::Text;
 use graphics::color::Color;
 use graphics::sprite::Sprite;
 use graphics::circle_shape::CircleShape;
 use graphics::rectangle_shape::RectangleShape;
 use graphics::convex_shape::ConvexShape;
-//use graphics::transform;
 use graphics::render_states::RenderStates;
 use graphics::view::View;
 use graphics::image::Image;
@@ -320,8 +314,9 @@ impl RenderWindow {
     pub fn poll_event(&mut self) -> event::Event {
         let haveEvent : bool =  unsafe {
             match ffi::sfRenderWindow_pollEvent(self.render_window, &self.event) {
-                0       => false,
-                _       => true
+                SFFALSE     => false,
+                SFTRUE      => true,
+                _           => unreachable!()
             }
         };
         if haveEvent == false {
@@ -349,8 +344,9 @@ impl RenderWindow {
     pub fn wait_event(&mut self) -> event::Event {
         let haveEvent : bool =  unsafe {
             match ffi::sfRenderWindow_waitEvent(self.render_window, &self.event) {
-                0       => false,
-                _       => true
+                SFFALSE     => false,
+                SFTRUE      => true,
+                _           => unreachable!()
             }
         };
         if haveEvent == false {
@@ -519,8 +515,9 @@ impl RenderWindow {
             tmp = ffi::sfRenderWindow_isOpen(self.render_window);
         }
         match tmp {
-            0 => false,
-            _ => true
+            SFFALSE => false,
+            SFTRUE  => true,
+            _       => unreachable!()
         }
     }
     
@@ -597,8 +594,8 @@ impl RenderWindow {
     pub fn set_visible(&mut self, visible : bool) -> () {
         let tmp : SfBool =
             match visible {
-                true    => 1,
-                false   => 0
+                true    => SFTRUE,
+                false   => SFFALSE
             };
         unsafe {
             ffi::sfRenderWindow_setVisible(self.render_window, tmp);
@@ -615,8 +612,8 @@ impl RenderWindow {
     pub fn set_mouse_cursor_visible(&mut self, visible : bool) -> () {
         let tmp : SfBool =
             match visible {
-                true    => 1,
-                false   => 0
+                true    => SFTRUE,
+                false   => SFFALSE
             };
         unsafe {
             ffi::sfRenderWindow_setMouseCursorVisible(self.render_window, tmp);
@@ -638,8 +635,8 @@ impl RenderWindow {
     pub fn set_vertical_sync_enabled(&mut self, enabled : bool) -> () {
         let tmp : SfBool =
             match enabled {
-                true    => 1,
-                false   => 0
+                true    => SFTRUE,
+                false   => SFFALSE
             };
         unsafe {
             ffi::sfRenderWindow_setVerticalSyncEnabled(self.render_window, tmp);
@@ -662,8 +659,8 @@ impl RenderWindow {
     pub fn set_key_repeat_enabled(&mut self, enabled : bool) -> () {
         let tmp : SfBool =
             match enabled {
-                true    => 1,
-                false   => 0
+                true    => SFTRUE,
+                false   => SFFALSE
             };
         unsafe {
             ffi::sfRenderWindow_setKeyRepeatEnabled(self.render_window, tmp);
@@ -687,15 +684,16 @@ impl RenderWindow {
     #[fixed_stack_segment] #[inline(never)]
     pub fn set_active(&mut self, enabled : bool) -> bool {
         let tmp : SfBool = match enabled {
-            true    => 1,
-            false   => 0
+            true    => SFTRUE,
+            false   => SFFALSE
         };
         let res : SfBool = unsafe {
             ffi::sfRenderWindow_setActive(self.render_window, tmp)
         };
         match res {
-            1   => true,
-            _   => false
+            SFTRUE      => true,
+            SFFALSE     => false,
+            _           => unreachable!()
         }
     }
 

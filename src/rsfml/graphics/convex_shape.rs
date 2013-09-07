@@ -42,6 +42,7 @@ use graphics::render_texture::RenderTexture;
 use graphics::rect::{FloatRect, IntRect};
 use graphics::transform::Transform;
 use graphics::render_states::RenderStates;
+use sfml_types::*;
 
 #[doc(hidden)]
 pub mod ffi {
@@ -137,7 +138,7 @@ impl ConvexShape {
         }
         else {
             unsafe {
-                ffi::sfConvexShape_setTexture(shape, texture.unwrap(), 1);
+                ffi::sfConvexShape_setTexture(shape, texture.unwrap(), SFTRUE);
             }
             Some(ConvexShape {
                 convex_shape : shape,
@@ -481,8 +482,8 @@ impl ConvexShape {
         self.texture = Some(texture);
         unsafe {
             match reset_rect {
-                true        => ffi::sfConvexShape_setTexture(self.convex_shape, texture.unwrap(), 1),
-                false       => ffi::sfConvexShape_setTexture(self.convex_shape, texture.unwrap(), 0)
+                true        => ffi::sfConvexShape_setTexture(self.convex_shape, texture.unwrap(), SFTRUE),
+                false       => ffi::sfConvexShape_setTexture(self.convex_shape, texture.unwrap(), SFFALSE)
             }
         }
     }
@@ -496,7 +497,7 @@ impl ConvexShape {
     pub fn disable_texture(&mut self) -> () {
         self.texture = None;
         unsafe {
-            ffi::sfConvexShape_setTexture(self.convex_shape, ptr::null(), 1)
+            ffi::sfConvexShape_setTexture(self.convex_shape, ptr::null(), SFTRUE)
         }
     }
 

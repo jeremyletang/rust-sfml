@@ -34,6 +34,7 @@ use extra::c_vec::{CVec, get};
 use std::libc::{c_uint, size_t};
 
 use traits::wrappable::Wrappable;
+use sfml_types::*;
 
 /**
 * VideoMode defines a video mode (width, height, bpp, frequency) 
@@ -46,7 +47,7 @@ use traits::wrappable::Wrappable;
 pub mod ffi {
     
     use std::libc::{c_uint, size_t};
-    use sfml_types::{SfBool};
+    use sfml_types::SfBool;
 
     pub struct sfVideoMode {
         width: c_uint,
@@ -56,12 +57,12 @@ pub mod ffi {
 
     impl Clone for sfVideoMode {
         fn clone(&self) -> sfVideoMode {
-	       sfVideoMode {
-	           width : self.width,
-		       height : self.height,
-		       bits_per_pixel : self.bits_per_pixel
-	        }   
-	    }
+           sfVideoMode {
+               width : self.width,
+               height : self.height,
+               bits_per_pixel : self.bits_per_pixel
+            }   
+        }
     }
     
     extern "C" {
@@ -122,8 +123,9 @@ impl VideoMode {
             bits_per_pixel : self.bits_per_pixel as c_uint
         }) };
          match i {
-             0 => false,
-             _ => true
+             SFFALSE => false,
+             SFTRUE  => true,
+             _       => unreachable!()
         }
      }
 

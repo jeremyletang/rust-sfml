@@ -37,6 +37,7 @@ use traits::wrappable::Wrappable;
 use system::time::Time;
 use audio::sound_status;
 use system::vector3::Vector3f;
+use sfml_types::*;
 
 #[doc(hidden)]
 pub mod ffi {
@@ -135,8 +136,8 @@ impl Music {
     pub fn set_loop(&mut self, lloop : bool) -> () {
         unsafe {
             match lloop {
-                true    => ffi::sfMusic_setLoop(self.music, 1),
-                false   => ffi::sfMusic_setLoop(self.music, 0)
+                true    => ffi::sfMusic_setLoop(self.music, SFTRUE),
+                false   => ffi::sfMusic_setLoop(self.music, SFFALSE)
             }
         }
     } 
@@ -311,8 +312,8 @@ impl Music {
     pub fn set_relative_to_listener(&mut self, relative : bool) -> () {
         unsafe {
             match relative {
-                true    => ffi::sfMusic_setRelativeToListener(self.music, 1),
-                false   => ffi::sfMusic_setRelativeToListener(self.music, 0)
+                true    => ffi::sfMusic_setRelativeToListener(self.music, SFTRUE),
+                false   => ffi::sfMusic_setRelativeToListener(self.music, SFFALSE)
             }
         }  
     }
@@ -407,8 +408,9 @@ impl Music {
     #[fixed_stack_segment] #[inline(never)]
     pub fn is_relative_to_listener(&self) -> bool {
         match unsafe { ffi::sfMusic_isRelativeToListener(self.music) } {
-            0 => false,
-            _ => true
+            SFFALSE => false,
+            SFTRUE  => true,
+            _       => unreachable!()
         }
     }
 

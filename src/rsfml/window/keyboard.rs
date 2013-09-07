@@ -30,6 +30,7 @@
 */
 
 use std::libc::{c_int};
+use sfml_types::*;
 
 /// Key codes
 pub enum Key { 
@@ -161,8 +162,9 @@ pub mod ffi {
 pub fn is_key_pressed(key : Key) -> bool {
     unsafe {
         match ffi::sfKeyboard_isKeyPressed(key as c_int) {
-            0   => false,
-            _   => true
+            SFFALSE  => false,
+            SFTRUE   => true,
+            _        => unreachable!()
         }
     }
 }

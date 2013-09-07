@@ -33,13 +33,14 @@ use std::ptr;
 
 use traits::wrappable::Wrappable;
 use system::time;
+use sfml_types::*;
 
 #[doc(hidden)]
 pub mod ffi {
     
     use std::libc::{size_t, c_void, c_uint, c_char};
     use system::time;
-    use sfml_types::{SfBool};
+    use sfml_types::SfBool;
 
     pub struct sfSoundBuffer {
         This : *c_void
@@ -132,8 +133,9 @@ impl SoundBuffer {
         unsafe {
             let c_filename = filename.to_c_str().unwrap();
             match ffi::sfSoundBuffer_saveToFile(self.sound_buffer, c_filename) {
-                0 => false,
-                _ => true
+                SFFALSE => false,
+                SFTRUE  => true,
+                _       => unreachable!()
             }
         }
     }

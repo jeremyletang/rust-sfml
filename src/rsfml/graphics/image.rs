@@ -37,6 +37,7 @@ use traits::wrappable::Wrappable;
 use system::vector2::Vector2u;
 use graphics::color::Color;
 use graphics::rect::IntRect;
+use sfml_types::*;
 
 #[doc(hidden)]
 pub mod ffi {
@@ -218,8 +219,9 @@ impl Image {
         unsafe {
             let c_filename = filename.to_c_str().unwrap();
             match ffi::sfImage_saveToFile(self.image, c_filename) {
-                0 => false,
-                _ => true
+                SFFALSE => false,
+                SFTRUE  => true,
+                _       => unreachable!()
             }
         }
     }
@@ -337,8 +339,8 @@ impl Image {
     pub fn copy_image(&mut self, source : &Image, destX : uint, destY : uint, source_rect : &IntRect, apply_alpha : bool) -> () {
         unsafe {
             match apply_alpha {
-                true        =>  ffi::sfImage_copyImage(self.image, source.unwrap(), destX as c_uint, destY as c_uint, *source_rect, 1),
-                false       =>  ffi::sfImage_copyImage(self.image, source.unwrap(), destX as c_uint, destY as c_uint, *source_rect, 0)
+                true        =>  ffi::sfImage_copyImage(self.image, source.unwrap(), destX as c_uint, destY as c_uint, *source_rect, SFFALSE),
+                false       =>  ffi::sfImage_copyImage(self.image, source.unwrap(), destX as c_uint, destY as c_uint, *source_rect, SFTRUE)
             }
         }
     }

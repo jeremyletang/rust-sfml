@@ -29,8 +29,7 @@
 */
 
 use std::libc::{c_void, c_float, c_uint};
-use std::ptr;
-use std::cast;
+use std::{ptr, cast};
 
 use graphics::render_window::RenderWindow;
 use graphics::render_texture::RenderTexture;
@@ -43,6 +42,7 @@ use graphics::color::Color;
 use graphics::transform::Transform;
 use graphics::rect::{IntRect, FloatRect};
 use traits::shape_impl::ShapeImpl;
+use sfml_types::*;
 
 #[doc(hidden)]
 pub mod ffi {
@@ -167,7 +167,7 @@ impl Shape {
         }
         else {
             unsafe {
-                ffi::sfShape_setTexture(sp, texture.unwrap(), 1);
+                ffi::sfShape_setTexture(sp, texture.unwrap(), SFTRUE);
             }
             Some(Shape {
                 shape : sp,
@@ -481,8 +481,8 @@ impl Shape {
         self.texture = Some(texture);
         unsafe {
             match reset_rect {
-                true        => ffi::sfShape_setTexture(self.shape, texture.unwrap(), 1),
-                false       => ffi::sfShape_setTexture(self.shape, texture.unwrap(), 0),
+                true        => ffi::sfShape_setTexture(self.shape, texture.unwrap(), SFTRUE),
+                false       => ffi::sfShape_setTexture(self.shape, texture.unwrap(), SFFALSE),
             }
         }
     }
@@ -496,7 +496,7 @@ impl Shape {
     pub fn disable_texture(&mut self) -> () {
         self.texture = None;
         unsafe {
-            ffi::sfShape_setTexture(self.shape, ptr::null(), 1)
+            ffi::sfShape_setTexture(self.shape, ptr::null(), SFTRUE)
         }
     }
 

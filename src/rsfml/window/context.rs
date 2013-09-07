@@ -28,6 +28,8 @@
  * Class holding a valid drawing context.
  */
 
+use sfml_types::*;
+
 #[doc(hidden)]
 pub mod ffi {
 
@@ -76,8 +78,8 @@ impl Context {
     pub fn set_active(&mut self, active : bool) -> () {
         unsafe {
             match active {
-                true    => ffi::sfContext_setActive(self.cont, 1),
-                false   => ffi::sfContext_setActive(self.cont, 0)
+                true    => ffi::sfContext_setActive(self.cont, SFTRUE),
+                false   => ffi::sfContext_setActive(self.cont, SFFALSE)
             };
 
         }

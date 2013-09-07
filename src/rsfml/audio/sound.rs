@@ -37,6 +37,7 @@ use system::time;
 use audio::sound_status;
 use audio::sound_buffer::SoundBuffer;
 use system::vector3::Vector3f;
+use sfml_types::*;
 
 #[doc(hidden)]
 pub mod ffi {
@@ -142,10 +143,10 @@ impl Sound {
     pub fn set_loop(&mut self, lloop : bool) -> () {
         unsafe {
             if lloop == true {
-                ffi::sfSound_setLoop(self.sound, 1)
+                ffi::sfSound_setLoop(self.sound, SFTRUE)
             }
             else {
-                ffi::sfSound_setLoop(self.sound, 0)
+                ffi::sfSound_setLoop(self.sound, SFFALSE)
             }
         }
     }
@@ -158,8 +159,9 @@ impl Sound {
     #[fixed_stack_segment] #[inline(never)]
     pub fn get_loop(&self) -> bool {
         match unsafe {ffi::sfSound_getLoop(self.sound)} {
-            0 => false,
-            _ => true
+            SFFALSE => false,
+            SFTRUE  => true,
+            _       => unreachable!()
         }
     }
 
@@ -271,10 +273,10 @@ impl Sound {
     pub fn set_relative_to_listener(&mut self, relative : bool) -> () {
         unsafe {
             if relative == true {
-                ffi::sfSound_setRelativeToListener(self.sound, 1);
+                ffi::sfSound_setRelativeToListener(self.sound, SFTRUE);
             }
             else {
-                ffi::sfSound_setRelativeToListener(self.sound, 0);
+                ffi::sfSound_setRelativeToListener(self.sound, SFFALSE);
             }
         }
     }
@@ -365,8 +367,9 @@ impl Sound {
     #[fixed_stack_segment] #[inline(never)]
     pub fn is_relative_to_listener(&self) -> bool {
         match unsafe {ffi::sfSound_isRelativeToListener(self.sound)} {
-            0 => false,
-            _ => true
+            SFFALSE => false,
+            SFTRUE  => true,
+            _       => unreachable!()
         }
     }
 

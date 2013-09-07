@@ -30,7 +30,7 @@
 *
 */
 
-use std::libc::{c_uint};
+use std::libc::c_uint;
 use std::ptr;
 
 use traits::drawable::Drawable;
@@ -593,7 +593,8 @@ impl RenderTexture {
     pub fn is_smooth(&self) -> bool {
         match unsafe { ffi::sfRenderTexture_isSmooth(self.render_texture) } {
             0 => false,
-            _ => true
+            1  => true,
+            _       => unreachable!()
         }
     }    
 }

@@ -42,6 +42,7 @@ use graphics::render_texture::RenderTexture;
 use system::vector2::Vector2f;
 use graphics::transform::Transform;
 use graphics::render_states::RenderStates;
+use sfml_types::*;
 
 #[doc(hidden)]
 pub mod ffi {
@@ -133,7 +134,7 @@ impl CircleShape {
         }
         else {
             unsafe {
-                ffi::sfCircleShape_setTexture(circle, texture.unwrap(), 1);
+                ffi::sfCircleShape_setTexture(circle, texture.unwrap(), SFTRUE);
             }
             Some(CircleShape {
                 circle_shape : circle,
@@ -259,8 +260,8 @@ impl CircleShape {
         self.texture = Some(texture);
         unsafe {
             match reset_rect {
-                true        => ffi::sfCircleShape_setTexture(self.circle_shape, texture.unwrap(), 1),
-                false       => ffi::sfCircleShape_setTexture(self.circle_shape, texture.unwrap(), 0),
+                true        => ffi::sfCircleShape_setTexture(self.circle_shape, texture.unwrap(), SFTRUE),
+                false       => ffi::sfCircleShape_setTexture(self.circle_shape, texture.unwrap(), SFFALSE),
             }
         }
     }
@@ -274,7 +275,7 @@ impl CircleShape {
     pub fn disable_texture(&mut self) -> () {
         self.texture = None;
         unsafe {
-            ffi::sfCircleShape_setTexture(self.circle_shape, ptr::null(), 1)
+            ffi::sfCircleShape_setTexture(self.circle_shape, ptr::null(), SFTRUE)
         }
     }
 

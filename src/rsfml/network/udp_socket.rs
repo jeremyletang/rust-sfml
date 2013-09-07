@@ -30,14 +30,13 @@
 *
 */
 
-use std::ptr;
-use std::vec;
+use std::{ptr, vec};
 use std::libc::size_t;
 
 use traits::wrappable::Wrappable;
-use network::packet;
-use network::ip_address;
+use network::{packet, ip_address};
 use network::socket_status::SocketStatus;
+use sfml_types::*;
 
 #[doc(hidden)]
 pub mod ffi {
@@ -112,8 +111,8 @@ impl UdpSocket {
     pub fn set_blocking(&self, blocking : bool) -> () {
         unsafe {
             match blocking  {
-                true        => ffi::sfUdpSocket_setBlocking(self.socket, 1),
-                false       => ffi::sfUdpSocket_setBlocking(self.socket, 0)
+                true        => ffi::sfUdpSocket_setBlocking(self.socket, SFTRUE),
+                false       => ffi::sfUdpSocket_setBlocking(self.socket, SFFALSE)
             }
         }
     }
@@ -126,8 +125,9 @@ impl UdpSocket {
     #[fixed_stack_segment] #[inline(never)]
     pub fn is_blocking(&self) -> bool {
         match unsafe { ffi::sfUdpSocket_isBlocking(self.socket) } {
-            0 => false,
-            _ => true
+            SFFALSE  => false,
+            SFTRUE   => true,
+            _        => unreachable!()
         }
     }
 

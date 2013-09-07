@@ -31,6 +31,8 @@
 
 use std::libc::{c_uint};
 
+use sfml_types::*;
+
 /// Axes supported by SFML joysticks 
 pub enum Axis {
     X,
@@ -83,8 +85,9 @@ pub mod ffi {
 pub fn joystick_is_connected(joystick : uint) -> bool {
     unsafe {
         match ffi::sfJoystick_isConnected(joystick as c_uint) {
-            0   => false,
-            _   => true
+            SFFALSE   => false,
+            SFTRUE    => true,
+            _         => unreachable!()
         }
     }
 }
@@ -119,8 +122,9 @@ pub fn joystick_get_button_count(joystick : uint) -> uint {
 pub fn joystick_has_axis(joystick : uint, axis : Axis) -> bool {
     unsafe {
         match ffi::sfJoystick_hasAxis(joystick as c_uint, axis as c_uint) {
-            0   => false,
-            _   => true
+            SFFALSE     => false,
+            SFTRUE      => true,
+            _           => unreachable!()
         }
     }
     
@@ -141,8 +145,10 @@ pub fn joystick_has_axis(joystick : uint, axis : Axis) -> bool {
 pub fn joystick_is_button_pressed(joystick : uint, button : uint) -> bool {
     unsafe {
         match ffi::sfJoystick_isButtonPressed(joystick as c_uint, button as c_uint) {
-            0   => false,
-            _   => true
+            SFFALSE    => false,
+            SFTRUE     => true,
+            _          => unreachable!()
+        
         }
     }
 }

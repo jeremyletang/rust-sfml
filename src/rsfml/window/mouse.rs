@@ -32,6 +32,7 @@
 use std::libc::{c_uint};
 use window::window::*;
 use system::vector2::Vector2i;
+use sfml_types::*;
 
 /// Mouse buttons
 pub enum MouseButton {
@@ -46,7 +47,7 @@ pub enum MouseButton {
 pub mod ffi {
     
     use std::libc::{c_uint};
-    use sfml_types::{SfBool};
+    use sfml_types::SfBool;
     use window::window::*;
     use system::vector2::Vector2i;
 
@@ -69,8 +70,9 @@ pub mod ffi {
 pub fn is_button_pressed(button : MouseButton) -> bool {
     unsafe {
         match ffi::sfMouse_isButtonPressed(button as c_uint) {
-            0   => false,
-            _   => true
+            SFFALSE   => false,
+            SFTRUE    => true,
+            _         => unreachable!()
         }
     }
 }

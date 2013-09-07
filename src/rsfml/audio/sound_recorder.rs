@@ -30,6 +30,7 @@
 */
 
 use std::libc::{c_uint};
+use sfml_types::*;
 
 #[doc(hidden)]
 pub mod ffi{
@@ -122,8 +123,9 @@ impl SoundRecorder {
     #[fixed_stack_segment] #[inline(never)]
     pub fn is_available() -> bool {
         match unsafe { ffi::sfSoundRecorder_isAvailable() } {
-            0 => false,
-            _ => true
+            SFFALSE => false,
+            SFTRUE  => true,
+            _       => unreachable!()
         }
     }
 
