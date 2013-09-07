@@ -39,22 +39,10 @@
 extern mod extra;
 pub use rsfml::*;
 
-#[path = "traits/traits.rs"]
 pub mod traits;
-
-#[path = "system/sfml_system.rs"]
 pub mod system;
-
-#[path = "window/sfml_window.rs"]
 pub mod window;
-
-#[path = "audio/sfml_audio.rs"]
 pub mod audio;
-
-#[path = "graphics/sfml_graphics.rs"]
 pub mod graphics;
-
-#[path = "network/sfml_network.rs"]
 pub mod network;
-
 mod rsfml;
