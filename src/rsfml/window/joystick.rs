@@ -47,7 +47,7 @@ pub enum Axis {
 pub mod ffi {
     
     use std::libc::{c_float, c_uint};
-    use rsfml::sfTypes::{sfBool};
+    use sfml_types::{SfBool};
     
 
     pub enum sfJoystickAxis {
@@ -62,10 +62,10 @@ pub mod ffi {
     }
 
     extern "C" {
-        pub fn sfJoystick_isConnected(joystick : c_uint) -> sfBool;
+        pub fn sfJoystick_isConnected(joystick : c_uint) -> SfBool;
         pub fn sfJoystick_getButtonCount(joystick : c_uint) -> c_uint;
-        pub fn sfJoystick_hasAxis(joystick : c_uint, axis : c_uint) -> sfBool;
-        pub fn sfJoystick_isButtonPressed(joystick : c_uint, button : c_uint) -> sfBool;
+        pub fn sfJoystick_hasAxis(joystick : c_uint, axis : c_uint) -> SfBool;
+        pub fn sfJoystick_isButtonPressed(joystick : c_uint, button : c_uint) -> SfBool;
         pub fn sfJoystick_getAxisPosition(joystick : c_uint, axis : c_uint) -> c_float;
         pub fn sfJoystick_update() -> ();
     }

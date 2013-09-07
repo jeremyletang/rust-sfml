@@ -42,7 +42,7 @@ use system::vector3::Vector3f;
 pub mod ffi {
 
     use std::libc::{c_void, c_uint, c_float, c_char};
-    use rsfml::sfTypes::{sfBool};
+    use sfml_types::{SfBool};
     use system::time;
     use audio::sound_status;
     use system::vector3::Vector3f;
@@ -57,8 +57,8 @@ pub mod ffi {
         // sfMusic* sfMusic_createFromMemory(const void* data, size_t sizeInBytes);
         // sfMusic* sfMusic_createFromStream(sfInputStream* stream);
         pub fn sfMusic_destroy(music : *sfMusic) -> ();
-        pub fn sfMusic_setLoop(music : *sfMusic, lloop : sfBool) -> ();
-        pub fn sfMusic_getLoop(music : *sfMusic) -> sfBool;
+        pub fn sfMusic_setLoop(music : *sfMusic, lloop : SfBool) -> ();
+        pub fn sfMusic_getLoop(music : *sfMusic) -> SfBool;
         pub fn sfMusic_getDuration(music : *sfMusic) -> time::ffi::sfTime;
         pub fn sfMusic_play(music : *sfMusic) -> ();
         pub fn sfMusic_pause(music : *sfMusic) -> ();
@@ -70,14 +70,14 @@ pub mod ffi {
         pub fn sfMusic_setPitch(music : *sfMusic, pitch : c_float) -> ();
         pub fn sfMusic_setVolume(music : *sfMusic, volume : c_float) -> ();
         pub fn sfMusic_setPosition(music : *sfMusic, position : Vector3f) -> ();
-        pub fn sfMusic_setRelativeToListener(music : *sfMusic, relative : sfBool) -> ();
+        pub fn sfMusic_setRelativeToListener(music : *sfMusic, relative : SfBool) -> ();
         pub fn sfMusic_setMinDistance(music : *sfMusic, distance : c_float) -> ();
         pub fn sfMusic_setAttenuation(music : *sfMusic, attenuation : c_float) -> ();
         pub fn sfMusic_setPlayingOffset(music : *sfMusic, timeOffset : time::ffi::sfTime) -> ();
         pub fn sfMusic_getPitch(music : *sfMusic) -> c_float;
         pub fn sfMusic_getVolume(music : *sfMusic) -> c_float;
         pub fn sfMusic_getPosition(music : *sfMusic) -> Vector3f;
-        pub fn sfMusic_isRelativeToListener(music : *sfMusic) -> sfBool;
+        pub fn sfMusic_isRelativeToListener(music : *sfMusic) -> SfBool;
         pub fn sfMusic_getMinDistance(music : *sfMusic) -> c_float;
         pub fn sfMusic_getAttenuation(music : *sfMusic) -> c_float;
     }

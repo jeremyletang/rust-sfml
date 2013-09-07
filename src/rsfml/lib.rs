@@ -37,7 +37,6 @@
 #[crate_type = "lib"];
 
 extern mod extra;
-pub use rsfml::*;
 
 pub mod traits;
 pub mod system;
@@ -45,4 +44,4 @@ pub mod window;
 pub mod audio;
 pub mod graphics;
 pub mod network;
-mod rsfml;
+mod sfml_types;

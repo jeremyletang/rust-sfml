@@ -22,11 +22,8 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#[doc(hidden)]
-pub mod sfTypes {
-    use std::libc::{c_int};
+use std::libc::{c_int};
     
-    pub type sfBool = c_int;
-    pub static SFFALSE : sfBool = 0;
-    pub static SFTRUE : sfBool = 1;
-}
+pub type SfBool = c_int;
+pub static SFFALSE : SfBool = 0;
+pub static SFTRUE : SfBool = 1;

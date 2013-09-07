@@ -32,7 +32,7 @@
 pub mod ffi {
 
     use std::libc::{c_void};
-    use rsfml::sfTypes::{sfBool};
+    use sfml_types::{SfBool};
 
     pub struct sfContext {
         This: *c_void
@@ -41,7 +41,7 @@ pub mod ffi {
     extern "C" {
         pub fn sfContext_create() -> *sfContext;
         pub fn sfContext_destroy(context : *sfContext) -> ();
-        pub fn sfContext_setActive(context : *sfContext, active : sfBool) -> ();
+        pub fn sfContext_setActive(context : *sfContext, active : SfBool) -> ();
     }
 }
 

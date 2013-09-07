@@ -35,15 +35,15 @@ use std::libc::{c_int};
 pub mod ffi {
     
     use std::libc::{c_int};
-    use rsfml::sfTypes::{sfBool};
+    use sfml_types::{SfBool};
     use graphics::rect::IntRect;
     use graphics::rect::FloatRect;
 
     extern "C" {
-        pub fn sfIntRect_contains(rect : *IntRect, x : c_int, y : c_int) -> sfBool;
-        pub fn sfIntRect_intersects(rect1 : *IntRect, rect2 : *IntRect, intersectons : *IntRect) -> sfBool;
-        pub fn sfFloatRect_intersects(rect1 : *FloatRect, rect2 : *FloatRect, intersectons : *FloatRect) -> sfBool;
-        pub fn sfFloatRect_contains(rect : *FloatRect, x : f32, y : f32) -> sfBool;
+        pub fn sfIntRect_contains(rect : *IntRect, x : c_int, y : c_int) -> SfBool;
+        pub fn sfIntRect_intersects(rect1 : *IntRect, rect2 : *IntRect, intersectons : *IntRect) -> SfBool;
+        pub fn sfFloatRect_intersects(rect1 : *FloatRect, rect2 : *FloatRect, intersectons : *FloatRect) -> SfBool;
+        pub fn sfFloatRect_contains(rect : *FloatRect, x : f32, y : f32) -> SfBool;
     }
 }
 

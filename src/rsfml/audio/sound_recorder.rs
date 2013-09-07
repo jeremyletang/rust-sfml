@@ -35,7 +35,7 @@ use std::libc::{c_uint};
 pub mod ffi{
 
     pub use std::libc::{c_void, c_uint};
-    use rsfml::sfTypes::{sfBool};
+    use sfml_types::{SfBool};
 
     pub struct sfSoundRecorder {
         This : *c_void
@@ -47,7 +47,7 @@ pub mod ffi{
         pub fn sfSoundRecorder_start(soundRecorder : *sfSoundRecorder, sampleRate : c_uint) -> ();
         pub fn sfSoundRecorder_stop(soundRecorder : *sfSoundRecorder) -> ();
         pub fn sfSoundRecorder_getSampleRate(soundRecorder : *sfSoundRecorder) -> c_uint;
-        pub fn sfSoundRecorder_isAvailable() -> sfBool; // static
+        pub fn sfSoundRecorder_isAvailable() -> SfBool; // static
 
     }
 }

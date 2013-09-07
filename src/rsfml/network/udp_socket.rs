@@ -46,7 +46,7 @@ pub mod ffi {
 
     use network::socket_status::SocketStatus;
     use network::ip_address;
-    use rsfml::sfTypes::sfBool;
+    use sfml_types::SfBool;
     use network::packet;
 
     pub struct sfUdpSocket {
@@ -56,8 +56,8 @@ pub mod ffi {
     extern "C" {
         pub fn sfUdpSocket_create() -> *sfUdpSocket;
         pub fn sfUdpSocket_destroy(socket : *sfUdpSocket) -> ();
-        pub fn sfUdpSocket_setBlocking(socket : *sfUdpSocket, blocking : sfBool) -> ();
-        pub fn sfUdpSocket_isBlocking(socket : *sfUdpSocket) -> sfBool;
+        pub fn sfUdpSocket_setBlocking(socket : *sfUdpSocket, blocking : SfBool) -> ();
+        pub fn sfUdpSocket_isBlocking(socket : *sfUdpSocket) -> SfBool;
         pub fn sfUdpSocket_getLocalPort(socket : *sfUdpSocket) -> u16;
         pub fn sfUdpSocket_bind(socket : *sfUdpSocket, port : u16) -> SocketStatus;
         pub fn sfUdpSocket_unbind(socket : *sfUdpSocket) -> ();

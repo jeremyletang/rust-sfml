@@ -50,7 +50,7 @@ pub mod ffi {
     use system::vector2::Vector2f;
     use graphics::color::Color;
     use graphics::texture;
-    use rsfml::sfTypes::sfBool;
+    use sfml_types::SfBool;
     use graphics::rect::{FloatRect, IntRect};
     use graphics::transform::Transform;
 
@@ -78,7 +78,7 @@ pub mod ffi {
         pub fn sfRectangleShape_scale(shape : *sfRectangleShape, factors : Vector2f) -> ();
         pub fn sfRectangleShape_getTransform(shape : *sfRectangleShape) -> Transform;
         pub fn sfRectangleShape_getInverseTransform(shape : *sfRectangleShape) -> Transform;
-        pub fn sfRectangleShape_setTexture(shape : *sfRectangleShape, texture : *texture::ffi::sfTexture, reset_rect : sfBool) -> ();
+        pub fn sfRectangleShape_setTexture(shape : *sfRectangleShape, texture : *texture::ffi::sfTexture, reset_rect : SfBool) -> ();
         pub fn sfRectangleShape_setTextureRect(shape : *sfRectangleShape, rect : IntRect) -> ();
         pub fn sfRectangleShape_setFillColor(shape : *sfRectangleShape, color : Color) -> ();
         pub fn sfRectangleShape_setOutlineColor(shape : *sfRectangleShape, color : Color) -> ();

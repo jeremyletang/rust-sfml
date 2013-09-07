@@ -42,7 +42,7 @@ pub mod ffi {
     use std::libc::{c_void, c_char, size_t};
 
     use network::ip_address::ffi::*;
-    use rsfml::sfTypes::sfBool;
+    use sfml_types::SfBool;
     use network::ftp::Status;
     use network::ftp::TransferMode;
     use system::time;
@@ -65,18 +65,18 @@ pub mod ffi {
     
     extern "C" {
         pub fn sfFtpListingResponse_destroy(ftpListingResponse : *sfFtpListingResponse) -> ();
-        pub fn sfFtpListingResponse_isOk(ftpListingResponse : *sfFtpListingResponse) -> sfBool;
+        pub fn sfFtpListingResponse_isOk(ftpListingResponse : *sfFtpListingResponse) -> SfBool;
         pub fn sfFtpListingResponse_getStatus(ftpListingResponse : *sfFtpListingResponse) -> Status;
         pub fn sfFtpListingResponse_getMessage(ftpListingResponse : *sfFtpListingResponse) -> *c_char;
         pub fn sfFtpListingResponse_getCount(ftpListingResponse : *sfFtpListingResponse) -> size_t;
         pub fn sfFtpListingResponse_getName(ftpListingResponse : *sfFtpListingResponse, index : size_t) -> *c_char;
         pub fn sfFtpDirectoryResponse_destroy(ftpDirectoryResponse : *sfFtpDirectoryResponse) -> ();
-        pub fn sfFtpDirectoryResponse_isOk(ftpDirectoryResponse : *sfFtpDirectoryResponse) -> sfBool;
+        pub fn sfFtpDirectoryResponse_isOk(ftpDirectoryResponse : *sfFtpDirectoryResponse) -> SfBool;
         pub fn sfFtpDirectoryResponse_getStatus(ftpDirectoryResponse : *sfFtpDirectoryResponse) -> Status;
         pub fn sfFtpDirectoryResponse_getMessage(ftpDirectoryResponse : *sfFtpDirectoryResponse) -> *c_char;
         pub fn sfFtpDirectoryResponse_getDirectory(ftpDirectoryResponse : *sfFtpDirectoryResponse) -> *c_char;
         pub fn sfFtpResponse_destroy(ftpResponse : *sfFtpResponse) -> ();
-        pub fn sfFtpResponse_isOk(ftpResponse : *sfFtpResponse) -> sfBool;
+        pub fn sfFtpResponse_isOk(ftpResponse : *sfFtpResponse) -> SfBool;
         pub fn sfFtpResponse_getStatus(ftpResponse : *sfFtpResponse) -> Status;
         pub fn sfFtpResponse_getMessage(ftpResponse : *sfFtpResponse) -> *c_char;
         pub fn sfFtp_create() -> *sfFtp;

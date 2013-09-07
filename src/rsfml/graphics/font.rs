@@ -42,7 +42,7 @@ pub mod ffi {
     use std::libc::{c_void, c_uint, c_int, c_char};
     
     use graphics::texture;
-    use rsfml::sfTypes::sfBool;
+    use sfml_types::SfBool;
     use graphics::glyph::Glyph;
 
     pub struct sfFont {
@@ -55,7 +55,7 @@ pub mod ffi {
         // fn sfFont_createFromMemory(data : *c_void, sizeInBytes : size_t) -> *sfFont;
         // fn sfFont_createFromStream(stream : *sfInputStream) -> *sfFont;
         pub fn sfFont_destroy(font : *sfFont) -> ();
-        pub fn sfFont_getGlyph(font : *sfFont, codepoint : u32, characterSize : c_uint, bold :sfBool) -> Glyph;
+        pub fn sfFont_getGlyph(font : *sfFont, codepoint : u32, characterSize : c_uint, bold :SfBool) -> Glyph;
         pub fn sfFont_getKerning(font : *sfFont, first : u32, second : u32, characterSize : c_uint) -> c_int;
         pub fn sfFont_getLineSpacing(font : *sfFont, characterSize : c_uint) -> c_int;
         pub fn sfFont_getTexture(font : *sfFont, characterSize : c_uint) -> *texture::ffi::sfTexture;

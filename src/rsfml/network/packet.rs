@@ -38,7 +38,7 @@ use traits::wrappable::Wrappable;
 pub mod ffi {
     
     use std::libc::{c_void, size_t, c_float, c_double, c_char};
-    use rsfml::sfTypes::sfBool;
+    use sfml_types::SfBool;
     
     pub struct sfPacket {
         This : *c_void
@@ -52,9 +52,9 @@ pub mod ffi {
         pub fn sfPacket_clear(pack : *sfPacket) -> ();
         //fn sfPacket_getData(pack : *sfPacket) -> *c_void;
         pub fn sfPacket_getDataSize(pack : *sfPacket) -> size_t;
-        pub fn sfPacket_endOfPacket(pack : *sfPacket) -> sfBool;
-        pub fn sfPacket_canRead(pack : *sfPacket) -> sfBool;
-        pub fn sfPacket_readBool(pack : *sfPacket) -> sfBool;
+        pub fn sfPacket_endOfPacket(pack : *sfPacket) -> SfBool;
+        pub fn sfPacket_canRead(pack : *sfPacket) -> SfBool;
+        pub fn sfPacket_readBool(pack : *sfPacket) -> SfBool;
         pub fn sfPacket_readInt8(pack : *sfPacket) -> i8;
         pub fn sfPacket_readUint8(pack : *sfPacket) -> u8;
         pub fn sfPacket_readInt16(pack : *sfPacket) -> i16;
@@ -65,7 +65,7 @@ pub mod ffi {
         pub fn sfPacket_readDouble(pack : *sfPacket) -> c_double;
         pub fn sfPacket_readString(pack : *sfPacket, string : *u8) -> ();
         //fn sfPacket_readWideString(pack : *sfPacket, string : *wchar_t) -> ();
-        pub fn sfPacket_writeBool(pack : *sfPacket, data : sfBool) -> ();
+        pub fn sfPacket_writeBool(pack : *sfPacket, data : SfBool) -> ();
         pub fn sfPacket_writeInt8(pack : *sfPacket, data : i8) -> ();
         pub fn sfPacket_writeUint8(pack : *sfPacket, data : u8) -> ();
         pub fn sfPacket_writeInt16(pack : *sfPacket, data : i16) -> ();

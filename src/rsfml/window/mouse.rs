@@ -46,12 +46,12 @@ pub enum MouseButton {
 pub mod ffi {
     
     use std::libc::{c_uint};
-    use rsfml::sfTypes::{sfBool};
+    use sfml_types::{SfBool};
     use window::window::*;
     use system::vector2::Vector2i;
 
     extern "C" {
-        pub fn sfMouse_isButtonPressed(button : c_uint) -> sfBool;
+        pub fn sfMouse_isButtonPressed(button : c_uint) -> SfBool;
         pub fn sfMouse_getPosition(relativeTo : *ffi::sfWindow) -> Vector2i;
         pub fn sfMouse_setPosition(position : Vector2i, relativeTo : *ffi::sfWindow) -> ();
     }

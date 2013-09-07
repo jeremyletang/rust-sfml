@@ -51,7 +51,7 @@ pub mod ffi {
     use system::vector2::Vector2f;
     use graphics::color::Color;
     use graphics::texture;
-    use rsfml::sfTypes::sfBool;
+    use sfml_types::SfBool;
     use graphics::rect::{FloatRect, IntRect};
     use graphics::transform::Transform;
     
@@ -79,7 +79,7 @@ pub mod ffi {
         pub fn sfConvexShape_scale(shape : *sfConvexShape, factors : Vector2f) -> ();
         pub fn sfConvexShape_getTransform(shape : *sfConvexShape) -> Transform;
         pub fn sfConvexShape_getInverseTransform(shape : *sfConvexShape) -> Transform;
-        pub fn sfConvexShape_setTexture(shape : *sfConvexShape, texture : *texture::ffi::sfTexture, reset_rect : sfBool) -> ();
+        pub fn sfConvexShape_setTexture(shape : *sfConvexShape, texture : *texture::ffi::sfTexture, reset_rect : SfBool) -> ();
         pub fn sfConvexShape_setTextureRect(shape : *sfConvexShape, rect : IntRect) -> ();
         pub fn sfConvexShape_setFillColor(shape : *sfConvexShape, color : Color) -> ();
         pub fn sfConvexShape_setOutlineColor(shape : *sfConvexShape, color : Color) -> ();

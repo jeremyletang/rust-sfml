@@ -49,7 +49,7 @@ pub mod ffi {
     use std::libc::{c_void, c_float, c_uint};
 
     use graphics::texture;
-    use rsfml::sfTypes::{sfBool};
+    use sfml_types::{SfBool};
     use graphics::rect::{IntRect, FloatRect};
     use system::vector2::Vector2f;
     use graphics::color::Color;
@@ -79,7 +79,7 @@ pub mod ffi {
         pub fn sfCircleShape_scale(shape : *sfCircleShape, factors : Vector2f) -> ();
         pub fn sfCircleShape_getTransform(shape : *sfCircleShape) -> Transform;
         pub fn sfCircleShape_getInverseTransform(shape : *sfCircleShape) -> Transform;
-        pub fn sfCircleShape_setTexture(shape : *sfCircleShape, texture : *texture::ffi::sfTexture, reset_rect : sfBool) -> ();
+        pub fn sfCircleShape_setTexture(shape : *sfCircleShape, texture : *texture::ffi::sfTexture, reset_rect : SfBool) -> ();
         pub fn sfCircleShape_setTextureRect(shape : *sfCircleShape, rect : IntRect) -> ();
         pub fn sfCircleShape_setFillColor(shape : *sfCircleShape, color : Color) -> ();
         pub fn sfCircleShape_setOutlineColor(shape : *sfCircleShape, color : Color) -> ();

@@ -29,25 +29,21 @@
  */
 
 use std::libc::{c_uint, c_float, c_int};
-use std::vec;
-use std::ptr;
-use std::cast;
+use std::{vec, ptr, cast};
 
 use traits::wrappable::Wrappable;
-use window::context_settings::ContextSettings;
+use window::{event, keyboard, joystick, mouse};
 use window::video_mode::*;
-use window::event;
-use window::keyboard;
+use window::context_settings::ContextSettings;
 use system::vector2::{Vector2i, Vector2u};
-use window::joystick;
-use window::mouse;
+use sfml_types::*;
 
 #[doc(hidden)]
 pub mod ffi {
     
     use std::libc::{c_void, c_uint, c_float, c_char};    
 
-    use rsfml::sfTypes::sfBool;
+    use sfml_types::SfBool;
     use window::context_settings::ContextSettings;
     use window::video_mode::*;    
     use system::vector2::{Vector2i, Vector2u};
@@ -92,16 +88,16 @@ pub mod ffi {
         //fn sfWindow_createFromHandle(handle : sfWindowHandle, settings : *sfContextSettings) -> *sfWindow;
         pub fn sfWindow_close(window : *sfWindow) -> ();
         pub fn sfWindow_destroy(window : *sfWindow) -> ();
-        pub fn sfWindow_isOpen(window : *sfWindow) -> sfBool;
+        pub fn sfWindow_isOpen(window : *sfWindow) -> SfBool;
         pub fn sfWindow_getSettings(window : *sfWindow) -> ContextSettings;
         pub fn sfWindow_setTitle(window : *sfWindow, title : *c_char) -> ();
         pub fn sfWindow_setUnicodeTitle(window : *sfWindow, title : *u32) -> ();
         pub fn sfWindow_setIcon(window : *sfWindow, width : c_uint, height : c_uint, pixel : *u8) -> (); 
-        pub fn sfWindow_setVisible(window : *sfWindow, visible : sfBool) -> ();
-        pub fn sfWindow_setMouseCursorVisible(window : *sfWindow, visible : sfBool) -> ();
-        pub fn sfWindow_setVerticalSyncEnabled(window : *sfWindow, enabled : sfBool) -> ();
-        pub fn sfWindow_setKeyRepeatEnabled(window : *sfWindow, enabled : sfBool) -> ();
-        pub fn sfWindow_setActive(window : *sfWindow, active : sfBool) -> sfBool;
+        pub fn sfWindow_setVisible(window : *sfWindow, visible : SfBool) -> ();
+        pub fn sfWindow_setMouseCursorVisible(window : *sfWindow, visible : SfBool) -> ();
+        pub fn sfWindow_setVerticalSyncEnabled(window : *sfWindow, enabled : SfBool) -> ();
+        pub fn sfWindow_setKeyRepeatEnabled(window : *sfWindow, enabled : SfBool) -> ();
+        pub fn sfWindow_setActive(window : *sfWindow, active : SfBool) -> SfBool;
         pub fn sfWindow_display(window : *sfWindow) -> ();
         pub fn sfWindow_setFramerateLimit(window : *sfWindow, limit : c_uint) -> ();
         pub fn sfWindow_setJoystickThreshold(window : *sfWindow, threshold : c_float) -> ();
@@ -109,8 +105,8 @@ pub mod ffi {
         pub fn sfWindow_setPosition(window : *sfWindow, position : Vector2i) -> ();
         pub fn sfWindow_getSize(window : *sfWindow) -> Vector2u;
         pub fn sfWindow_setSize(window : *sfWindow, size : Vector2u) -> ();
-        pub fn sfWindow_pollEvent(window : *sfWindow, event : *sfEvent) -> sfBool;
-        pub fn sfWindow_waitEvent(window : *sfWindow, event : *sfEvent) -> sfBool;
+        pub fn sfWindow_pollEvent(window : *sfWindow, event : *sfEvent) -> SfBool;
+        pub fn sfWindow_waitEvent(window : *sfWindow, event : *sfEvent) -> SfBool;
         //fn sfWindow_getSystemHandle(window : *sfWindow) -> sfWindowHandle;
     }
 }
@@ -369,8 +365,9 @@ impl Window {
     pub fn poll_event(&mut self) -> event::Event {
         let haveEvent : bool =  unsafe {
             match ffi::sfWindow_pollEvent(self.window, &self.event) {
-                0       => false,
-                _       => true
+                SFFALSE     => false,
+                SFTRUE      => true,
+                _           => unreachable!()
             }
         };
         if haveEvent == false {
@@ -396,8 +393,9 @@ impl Window {
     pub fn wait_event(&mut self) -> event::Event {
         let haveEvent : bool =  unsafe {
             match ffi::sfWindow_waitEvent(self.window, &self.event) {
-                0       => false,
-                _       => true
+                SFFALSE     => false,
+                SFTRUE      => true,
+                _           => unreachable!()
             }
         };
         if haveEvent == false {
@@ -461,8 +459,10 @@ impl Window {
     pub fn is_open(&self) -> bool {
         let tmp = unsafe { ffi::sfWindow_isOpen(self.window) };
         match tmp {
-            0 => false,
-            _ => true
+            SFFALSE => false,
+            SFTRUE  => true,
+            _       => unreachable!()
+        
         }
     }
 
@@ -505,8 +505,8 @@ impl Window {
     pub fn set_visible(&mut self, visible : bool) -> () {
         unsafe {
             match visible {
-                true    => ffi::sfWindow_setVisible(self.window, 1),
-                false   => ffi::sfWindow_setVisible(self.window, 0)
+                true    => ffi::sfWindow_setVisible(self.window, SFTRUE),
+                false   => ffi::sfWindow_setVisible(self.window, SFFALSE)
             }
         }
     }
@@ -521,8 +521,8 @@ impl Window {
     pub fn set_mouse_cursor_visible(&mut self, visible : bool) -> () {
         unsafe { 
             match visible {
-                true    => ffi::sfWindow_setMouseCursorVisible(self.window, 1),
-                false   => ffi::sfWindow_setMouseCursorVisible(self.window, 0)
+                true    => ffi::sfWindow_setMouseCursorVisible(self.window, SFTRUE),
+                false   => ffi::sfWindow_setMouseCursorVisible(self.window, SFFALSE)
             }
         }
     }
@@ -542,8 +542,8 @@ impl Window {
     pub fn set_vertical_sync_enabled(&mut self, enabled : bool) -> () {
         unsafe {
             match enabled {
-                true    => ffi::sfWindow_setVerticalSyncEnabled(self.window, 1),
-                false   => ffi::sfWindow_setVerticalSyncEnabled(self.window, 0)
+                true    => ffi::sfWindow_setVerticalSyncEnabled(self.window, SFTRUE),
+                false   => ffi::sfWindow_setVerticalSyncEnabled(self.window, SFFALSE)
             }
         }
     }
@@ -564,8 +564,8 @@ impl Window {
     pub fn set_key_repeat_enabled(&mut self, enabled : bool) -> () {
         unsafe {
             match enabled {
-                true    => ffi::sfWindow_setKeyRepeatEnabled(self.window, 1),
-                false   => ffi::sfWindow_setKeyRepeatEnabled(self.window, 0)
+                true    => ffi::sfWindow_setKeyRepeatEnabled(self.window, SFTRUE),
+                false   => ffi::sfWindow_setKeyRepeatEnabled(self.window, SFFALSE)
             }
         }
     }
@@ -587,12 +587,13 @@ impl Window {
     #[fixed_stack_segment] #[inline(never)]
     pub fn set_active(&mut self, enabled : bool) -> bool {
         let tmp = unsafe { match enabled {
-            true    => ffi::sfWindow_setActive(self.window, 1),
-            _       => ffi::sfWindow_setActive(self.window, 0)
+            true    => ffi::sfWindow_setActive(self.window, SFTRUE),
+            false   => ffi::sfWindow_setActive(self.window, SFFALSE)
         }};
         match tmp {
-            1   => true,
-            _   => false
+            SFTRUE   => true,
+            SFFALSE  => false,
+            _        => unreachable!()
         }
     }
     

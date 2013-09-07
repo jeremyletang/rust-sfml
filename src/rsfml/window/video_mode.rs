@@ -46,7 +46,7 @@ use traits::wrappable::Wrappable;
 pub mod ffi {
     
     use std::libc::{c_uint, size_t};
-    use rsfml::sfTypes::{sfBool};
+    use sfml_types::{SfBool};
 
     pub struct sfVideoMode {
         width: c_uint,
@@ -67,7 +67,7 @@ pub mod ffi {
     extern "C" {
         pub fn sfVideoMode_getDesktopMode() -> sfVideoMode;
         pub fn sfVideoMode_getFullscreenModes(Count : *size_t) -> *sfVideoMode;
-        pub fn sfVideoMode_isValid(mode : sfVideoMode) -> sfBool;
+        pub fn sfVideoMode_isValid(mode : sfVideoMode) -> SfBool;
     }
 }
 

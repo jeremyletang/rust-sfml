@@ -43,7 +43,7 @@ pub mod ffi {
 
     use std::libc::{c_void, c_float, c_char};
 
-    use rsfml::sfTypes::{sfBool};
+    use sfml_types::{SfBool};
     use graphics::transform;
     use graphics::texture;
     use system::vector2::Vector2f;
@@ -70,7 +70,7 @@ pub mod ffi {
         pub fn sfShader_setTextureParameter(shader : *sfShader, name : *c_char, texture : *texture::ffi::sfTexture) -> ();
         pub fn sfShader_setCurrentTextureParameter(shader : *sfShader, name : *c_char) -> ();
         pub fn sfShader_bind(shader : *sfShader) -> ();
-        pub fn sfShader_isAvailable() -> sfBool;
+        pub fn sfShader_isAvailable() -> SfBool;
    }
 }
 

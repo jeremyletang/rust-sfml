@@ -54,7 +54,7 @@ pub mod ffi {
     
     use std::libc::{c_void, c_uint};
 
-    use rsfml::sfTypes::sfBool;
+    use sfml_types::SfBool;
     use graphics::view;
     use system::vector2::{Vector2f, Vector2i, Vector2u};
     use graphics::render_states;
@@ -77,10 +77,10 @@ pub mod ffi {
     }
     
     extern "C" {
-        pub fn sfRenderTexture_create(width : c_uint, height : c_uint, depthBuffer : sfBool) -> *sfRenderTexture;
+        pub fn sfRenderTexture_create(width : c_uint, height : c_uint, depthBuffer : SfBool) -> *sfRenderTexture;
         pub fn sfRenderTexture_destroy(renderTexture : *sfRenderTexture) -> ();
         pub fn sfRenderTexture_getSize(renderTexture : *sfRenderTexture) -> Vector2u;
-        pub fn sfRenderTexture_setActive(renderTexture : *sfRenderTexture, active : sfBool) -> sfBool;
+        pub fn sfRenderTexture_setActive(renderTexture : *sfRenderTexture, active : SfBool) -> SfBool;
         pub fn sfRenderTexture_display(renderTexture : *sfRenderTexture) -> ();
         pub fn sfRenderTexture_clear(renderTexture : *sfRenderTexture, color : Color) -> ();
         pub fn sfRenderTexture_setView(renderTexture : *sfRenderTexture, view : *view::ffi::sfView) -> ();
@@ -101,8 +101,8 @@ pub mod ffi {
         pub fn sfRenderTexture_popGLStates(renderTexture : *sfRenderTexture) -> ();
         pub fn sfRenderTexture_resetGLStates(renderTexture : *sfRenderTexture) -> ();
         pub fn sfRenderTexture_getTexture(renderTexture : *sfRenderTexture) -> *texture::ffi::sfTexture;
-        pub fn sfRenderTexture_setSmooth(renderTexture : *sfRenderTexture, smooth : sfBool) -> ();
-        pub fn sfRenderTexture_isSmooth(renderTexture : *sfRenderTexture) -> sfBool;
+        pub fn sfRenderTexture_setSmooth(renderTexture : *sfRenderTexture, smooth : SfBool) -> ();
+        pub fn sfRenderTexture_isSmooth(renderTexture : *sfRenderTexture) -> SfBool;
     }
 }
 

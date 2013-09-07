@@ -37,7 +37,7 @@ use std::vec;
 
 use traits::drawable::Drawable;
 use traits::wrappable::Wrappable;
-use rsfml::sfTypes::{sfBool};
+use sfml_types::{SfBool};
 use window::video_mode::*;
 use window::context_settings::ContextSettings;
 use window::event;
@@ -64,7 +64,7 @@ pub mod ffi {
     
     use std::libc::{c_uint, c_float, c_void, c_char};
     use system::vector2::{Vector2f, Vector2i, Vector2u};
-    use rsfml::sfTypes::{sfBool};
+    use sfml_types::{SfBool};
     use window::video_mode::*;
     use window::context_settings::ContextSettings;
     use graphics::text::ffi::sfText;
@@ -101,10 +101,10 @@ pub mod ffi {
         //fn sfRenderWindow_createFromHandle(handle : sfWindowHandle, settings : *sfContextSettings) -> *sfRenderWindow;
         pub fn sfRenderWindow_destroy(renderWindow : *sfRenderWindow) -> ();
         pub fn sfRenderWindow_close(renderWindow : *sfRenderWindow) -> ();
-        pub fn sfRenderWindow_isOpen(renderWindow : *sfRenderWindow) -> sfBool;
+        pub fn sfRenderWindow_isOpen(renderWindow : *sfRenderWindow) -> SfBool;
         pub fn sfRenderWindow_getSettings(renderWindow : *sfRenderWindow) -> ContextSettings;
-        pub fn sfRenderWindow_pollEvent(renderWindow : *sfRenderWindow, event : *sfEvent) -> sfBool;
-        pub fn sfRenderWindow_waitEvent(renderWindow : *sfRenderWindow, event : *sfEvent) -> sfBool;
+        pub fn sfRenderWindow_pollEvent(renderWindow : *sfRenderWindow, event : *sfEvent) -> SfBool;
+        pub fn sfRenderWindow_waitEvent(renderWindow : *sfRenderWindow, event : *sfEvent) -> SfBool;
         pub fn sfRenderWindow_getPosition(renderWindow : *sfRenderWindow) -> Vector2i;
         pub fn sfRenderWindow_setPosition(renderWindow : *sfRenderWindow, position : Vector2i) -> ();
         pub fn sfRenderWindow_getSize(renderWindow : *sfRenderWindow) -> Vector2u;
@@ -112,11 +112,11 @@ pub mod ffi {
         pub fn sfRenderWindow_setTitle(renderWindow : *sfRenderWindow, title : *c_char) -> ();
         pub fn sfRenderWindow_setUnicodeTitle(renderWindow : *sfRenderWindow, title : *u32) -> ();
         pub fn sfRenderWindow_setIcon(renderWindow : *sfRenderWindow, width : c_uint, height : c_uint, pixels : *u8) -> ();
-        pub fn sfRenderWindow_setVisible(renderWindow : *sfRenderWindow, visible : sfBool) -> ();
-        pub fn sfRenderWindow_setMouseCursorVisible(renderWindow : *sfRenderWindow, show : sfBool) -> ();
-        pub fn sfRenderWindow_setVerticalSyncEnabled(renderWindow : *sfRenderWindow, enabled : sfBool) -> ();
-        pub fn sfRenderWindow_setKeyRepeatEnabled(renderWindow : *sfRenderWindow, enabled : sfBool) -> ();
-        pub fn sfRenderWindow_setActive(renderWindow : *sfRenderWindow, active : sfBool) -> sfBool;
+        pub fn sfRenderWindow_setVisible(renderWindow : *sfRenderWindow, visible : SfBool) -> ();
+        pub fn sfRenderWindow_setMouseCursorVisible(renderWindow : *sfRenderWindow, show : SfBool) -> ();
+        pub fn sfRenderWindow_setVerticalSyncEnabled(renderWindow : *sfRenderWindow, enabled : SfBool) -> ();
+        pub fn sfRenderWindow_setKeyRepeatEnabled(renderWindow : *sfRenderWindow, enabled : SfBool) -> ();
+        pub fn sfRenderWindow_setActive(renderWindow : *sfRenderWindow, active : SfBool) -> SfBool;
         pub fn sfRenderWindow_display(renderWindow : *sfRenderWindow) -> ();
         pub fn sfRenderWindow_setFramerateLimit(renderWindow : *sfRenderWindow, limit : c_uint) -> ();
         pub fn sfRenderWindow_setJoystickThreshold(renderWindow : *sfRenderWindow, treshold : c_float) -> ();
@@ -514,7 +514,7 @@ impl RenderWindow {
     */
     #[fixed_stack_segment] #[inline(never)]
     pub fn is_open(&self) -> bool {
-        let tmp : sfBool;
+        let tmp : SfBool;
         unsafe {
             tmp = ffi::sfRenderWindow_isOpen(self.render_window);
         }
@@ -595,7 +595,7 @@ impl RenderWindow {
     */
     #[fixed_stack_segment] #[inline(never)]
     pub fn set_visible(&mut self, visible : bool) -> () {
-        let tmp : sfBool =
+        let tmp : SfBool =
             match visible {
                 true    => 1,
                 false   => 0
@@ -613,7 +613,7 @@ impl RenderWindow {
     */
     #[fixed_stack_segment] #[inline(never)]
     pub fn set_mouse_cursor_visible(&mut self, visible : bool) -> () {
-        let tmp : sfBool =
+        let tmp : SfBool =
             match visible {
                 true    => 1,
                 false   => 0
@@ -636,7 +636,7 @@ impl RenderWindow {
     */
     #[fixed_stack_segment] #[inline(never)]
     pub fn set_vertical_sync_enabled(&mut self, enabled : bool) -> () {
-        let tmp : sfBool =
+        let tmp : SfBool =
             match enabled {
                 true    => 1,
                 false   => 0
@@ -660,7 +660,7 @@ impl RenderWindow {
     */
     #[fixed_stack_segment] #[inline(never)]
     pub fn set_key_repeat_enabled(&mut self, enabled : bool) -> () {
-        let tmp : sfBool =
+        let tmp : SfBool =
             match enabled {
                 true    => 1,
                 false   => 0
@@ -686,11 +686,11 @@ impl RenderWindow {
     */
     #[fixed_stack_segment] #[inline(never)]
     pub fn set_active(&mut self, enabled : bool) -> bool {
-        let tmp : sfBool = match enabled {
+        let tmp : SfBool = match enabled {
             true    => 1,
             false   => 0
         };
-        let res : sfBool = unsafe {
+        let res : SfBool = unsafe {
             ffi::sfRenderWindow_setActive(self.render_window, tmp)
         };
         match res {

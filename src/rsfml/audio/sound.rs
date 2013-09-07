@@ -46,7 +46,7 @@ pub mod ffi {
     use audio::sound_status;
     use audio::sound_buffer;
     use system::time;
-    use rsfml::sfTypes::{sfBool};
+    use sfml_types::{SfBool};
     use system::vector3::Vector3f;
 
     pub struct sfSound {
@@ -63,20 +63,20 @@ pub mod ffi {
         pub fn sfSound_stop(sound : *sfSound) -> ();
         pub fn sfSound_setBuffer(sound : *sfSound, buffer : *sound_buffer::ffi::sfSoundBuffer) -> (); // a faire
         pub fn sfSound_getBuffer(sound : *sfSound) -> *sound_buffer::ffi::sfSoundBuffer; // a faire
-        pub fn sfSound_setLoop(sound : *sfSound, lloop : sfBool) -> ();
-        pub fn sfSound_getLoop(sound : *sfSound) -> sfBool;
+        pub fn sfSound_setLoop(sound : *sfSound, lloop : SfBool) -> ();
+        pub fn sfSound_getLoop(sound : *sfSound) -> SfBool;
         pub fn sfSound_getStatus(sound : *sfSound) -> sound_status::ffi::sfSoundStatus;
         pub fn sfSound_setPitch(sound : *sfSound, pitch : c_float) -> ();
         pub fn sfSound_setVolume(sound : *sfSound, volume : c_float) -> ();
         pub fn sfSound_setPosition(sound : *sfSound, position : Vector3f) -> ();
-        pub fn sfSound_setRelativeToListener(sound : *sfSound, relative : sfBool) -> ();
+        pub fn sfSound_setRelativeToListener(sound : *sfSound, relative : SfBool) -> ();
         pub fn sfSound_setMinDistance(sound : *sfSound, distance : c_float) -> ();
         pub fn sfSound_setAttenuation(sound : *sfSound, attenuation : c_float) -> ();
         pub fn sfSound_setPlayingOffset(sound : *sfSound, timeOffset : time::ffi::sfTime) -> ();
         pub fn sfSound_getPitch(sound : *sfSound) -> c_float;
         pub fn sfSound_getVolume(sound : *sfSound) -> c_float;
         pub fn sfSound_getPosition(sound : *sfSound) -> Vector3f;
-        pub fn sfSound_isRelativeToListener(sound : *sfSound) -> sfBool;
+        pub fn sfSound_isRelativeToListener(sound : *sfSound) -> SfBool;
         pub fn sfSound_getMinDistance(sound : *sfSound) -> c_float;
         pub fn sfSound_getAttenuation(sound : *sfSound) -> c_float;
         pub fn sfSound_getPlayingOffset(sound : *sfSound) -> time::ffi::sfTime;

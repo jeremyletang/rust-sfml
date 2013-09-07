@@ -39,7 +39,7 @@ pub mod ffi {
     
     use std::libc::{size_t, c_void, c_uint, c_char};
     use system::time;
-    use rsfml::sfTypes::{sfBool};
+    use sfml_types::{SfBool};
 
     pub struct sfSoundBuffer {
         This : *c_void
@@ -49,7 +49,7 @@ pub mod ffi {
         pub fn sfSoundBuffer_createFromFile(filename : *c_char) -> *sfSoundBuffer;
         pub fn sfSoundBuffer_copy(soundBuffer : *sfSoundBuffer) -> *sfSoundBuffer;
         pub fn sfSoundBuffer_destroy(soundBuffer : *sfSoundBuffer) -> ();
-        pub fn sfSoundBuffer_saveToFile(soundBuffer : *sfSoundBuffer, filename : *c_char) -> sfBool;
+        pub fn sfSoundBuffer_saveToFile(soundBuffer : *sfSoundBuffer, filename : *c_char) -> SfBool;
        // fn sfSoundBuffer_getSamples(soundBuffer : *sfSoundBuffer) -> *i16;
         pub fn sfSoundBuffer_getSampleCount(soundBuffer : *sfSoundBuffer) -> size_t;
         pub fn sfSoundBuffer_getChannelCount(soundBuffer : *sfSoundBuffer) -> c_uint;

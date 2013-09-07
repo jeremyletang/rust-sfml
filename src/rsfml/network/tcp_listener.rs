@@ -43,7 +43,7 @@ pub mod ffi {
     use std::libc::{c_void};
  
     use network::tcp_socket;
-    use rsfml::sfTypes::sfBool;
+    use sfml_types::SfBool;
     use network::socket_status::SocketStatus;
 
     pub struct sfTcpListener {
@@ -53,8 +53,8 @@ pub mod ffi {
     extern "C" {
         pub fn sfTcpListener_create() -> *sfTcpListener;
         pub fn sfTcpListener_destroy(listener : *sfTcpListener) -> ();
-        pub fn sfTcpListener_setBlocking(listener : *sfTcpListener, blocking : sfBool) -> ();
-        pub fn sfTcpListener_isBlocking(listener : *sfTcpListener) -> sfBool;
+        pub fn sfTcpListener_setBlocking(listener : *sfTcpListener, blocking : SfBool) -> ();
+        pub fn sfTcpListener_isBlocking(listener : *sfTcpListener) -> SfBool;
         pub fn sfTcpListener_getLocalPort(listener : *sfTcpListener) -> u16;
         pub fn sfTcpListener_listen(listener : *sfTcpListener, port : u16) -> SocketStatus;
         pub fn sfTcpListener_accept(listener : *sfTcpListener, connected : **tcp_socket::ffi::sfTcpSocket) -> SocketStatus;

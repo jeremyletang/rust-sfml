@@ -48,7 +48,7 @@ pub mod ffi {
 
     use std::libc::{c_void, c_float};
 
-    use rsfml::sfTypes::{sfBool};
+    use sfml_types::{SfBool};
     use graphics::color::Color;
     use graphics::texture;
     use system::vector2::Vector2f;
@@ -79,7 +79,7 @@ pub mod ffi {
         pub fn sfSprite_scale(sprite : *sfSprite, factors : Vector2f) -> ();
         pub fn sfSprite_getTransform(sprite : *sfSprite) -> Transform;
         pub fn sfSprite_getInverseTransform(sprite : *sfSprite) -> Transform;
-        pub fn sfSprite_setTexture(sprite : *sfSprite, texture : *texture::ffi::sfTexture, reset_rect : sfBool) -> ();
+        pub fn sfSprite_setTexture(sprite : *sfSprite, texture : *texture::ffi::sfTexture, reset_rect : SfBool) -> ();
         pub fn sfSprite_setTextureRect(sprite : *sfSprite, rectangle : IntRect) -> ();
         pub fn sfSprite_setColor(sprite : *sfSprite, color : Color) -> ();
         pub fn sfSprite_getTexture(sprite : *sfSprite) -> *texture::ffi::sfTexture;

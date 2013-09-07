@@ -44,7 +44,7 @@ pub mod ffi {
 
     use std::libc::{c_void, size_t};
 
-    use rsfml::sfTypes::sfBool;
+    use sfml_types::SfBool;
     use network::ip_address;
     use system::time;
     use network::socket_status::SocketStatus;
@@ -57,8 +57,8 @@ pub mod ffi {
     extern "C" {
         pub fn sfTcpSocket_create() -> *sfTcpSocket;
         pub fn sfTcpSocket_destroy(socket : *sfTcpSocket) -> ();
-        pub fn sfTcpSocket_setBlocking(socket : *sfTcpSocket, blocking : sfBool) -> ();
-        pub fn sfTcpSocket_isBlocking(socket : *sfTcpSocket) -> sfBool;
+        pub fn sfTcpSocket_setBlocking(socket : *sfTcpSocket, blocking : SfBool) -> ();
+        pub fn sfTcpSocket_isBlocking(socket : *sfTcpSocket) -> SfBool;
         pub fn sfTcpSocket_getLocalPort(socket : *sfTcpSocket) -> u16;
         pub fn sfTcpSocket_getRemoteAddress(socket : *sfTcpSocket) -> ip_address::ffi::sfIpAddress;
         pub fn sfTcpSocket_getRemotePort(socket : *sfTcpSocket) -> u16;

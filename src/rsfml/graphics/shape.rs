@@ -49,7 +49,7 @@ pub mod ffi {
     
     use std::libc::{c_void, c_float, c_uint};
 
-    use rsfml::sfTypes::sfBool;
+    use sfml_types::SfBool;
     use graphics::texture;
     use graphics::color::Color;
     use graphics::transform::Transform;
@@ -79,7 +79,7 @@ pub mod ffi {
         pub fn sfShape_scale(shape : *sfShape, factors : Vector2f) -> ();
         pub fn sfShape_getTransform(shape : *sfShape) -> Transform;
         pub fn sfShape_getInverseTransform(shape : *sfShape) -> Transform;
-        pub fn sfShape_setTexture(shape : *sfShape, texture : *texture::ffi::sfTexture, reset_rect : sfBool) -> ();
+        pub fn sfShape_setTexture(shape : *sfShape, texture : *texture::ffi::sfTexture, reset_rect : SfBool) -> ();
         pub fn sfShape_setTextureRect(shape : *sfShape, rect : IntRect) -> ();
         pub fn sfShape_setFillColor(shape : *sfShape, color : Color) -> ();
         pub fn sfShape_setOutlineColor(shape : *sfShape, color : Color) -> ();

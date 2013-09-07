@@ -45,7 +45,7 @@ pub mod ffi {
     
     use std::libc::{c_uint, c_void, c_char};
 
-    use rsfml::sfTypes::{sfBool};
+    use sfml_types::{SfBool};
     use system::vector2::Vector2u;
     use window::window::ffi::sfWindow;
     use graphics::render_window::ffi::sfRenderWindow;
@@ -70,10 +70,10 @@ pub mod ffi {
         pub fn sfTexture_updateFromImage(texture : *sfTexture, image : *image::ffi::sfImage, x : c_uint, y : c_uint) -> ();
         pub fn sfTexture_updateFromWindow(texture : *sfTexture, window : *sfWindow, x : c_uint, y : c_uint) -> ();
         pub fn sfTexture_updateFromRenderWindow(texture : *sfTexture, renderWindow : *sfRenderWindow, x : c_uint, y : c_uint) -> ();
-        pub fn sfTexture_setSmooth(texture : *sfTexture, smooth : sfBool) -> ();
-        pub fn sfTexture_isSmooth(texture : *sfTexture) -> sfBool;
-        pub fn sfTexture_setRepeated(texture : *sfTexture, repeated : sfBool);
-        pub fn sfTexture_isRepeated(texture : *sfTexture) -> sfBool;
+        pub fn sfTexture_setSmooth(texture : *sfTexture, smooth : SfBool) -> ();
+        pub fn sfTexture_isSmooth(texture : *sfTexture) -> SfBool;
+        pub fn sfTexture_setRepeated(texture : *sfTexture, repeated : SfBool);
+        pub fn sfTexture_isRepeated(texture : *sfTexture) -> SfBool;
         pub fn sfTexture_bind(texture : *sfTexture) -> ();
         pub fn sfTexture_getMaximumSize() -> c_uint;
     }
