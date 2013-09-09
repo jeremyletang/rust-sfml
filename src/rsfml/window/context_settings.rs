@@ -31,11 +31,11 @@
 
 
 pub struct ContextSettings {
-    depth_bits: 		uint,
-    stencil_bits: 		uint,
-    antialiasing_level: uint,
-    major_version: 		uint,
-    minor_version: 		uint
+    depth_bits: 		u32,
+    stencil_bits: 		u32,
+    antialiasing_level: u32,
+    major_version: 		u32,
+    minor_version: 		u32
 }
 
 impl ContextSettings {

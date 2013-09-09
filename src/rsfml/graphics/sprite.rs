@@ -506,7 +506,9 @@ impl Sprite {
     */
     #[fixed_stack_segment] #[inline(never)]
     pub fn get_position(&self) -> Vector2f {
-        unsafe {ffi::sfSprite_getPosition(self.sprite)}
+        unsafe {
+            ffi::sfSprite_getPosition(self.sprite)
+        }
     }
 
     /**
