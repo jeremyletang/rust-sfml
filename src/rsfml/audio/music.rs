@@ -49,7 +49,7 @@ pub mod ffi {
     use system::vector3::Vector3f;
 
     pub struct sfMusic {
-        This : *c_void,
+        This :  *c_void,
         This1 : *c_void
     }
 

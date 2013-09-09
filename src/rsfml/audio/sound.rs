@@ -44,10 +44,9 @@ pub mod ffi {
     
     use std::libc::{c_float, c_void};
 
-    use audio::sound_status;
-    use audio::sound_buffer;
+    use audio::{sound_status, sound_buffer};
     use system::time;
-    use sfml_types::{SfBool};
+    use sfml_types::SfBool;
     use system::vector3::Vector3f;
 
     pub struct sfSound {
@@ -86,8 +85,8 @@ pub mod ffi {
 
 #[doc(hidden)]
 pub struct Sound {
-    priv sound : *ffi::sfSound,
-    priv buffer : @SoundBuffer
+    priv sound :    *ffi::sfSound,
+    priv buffer :   @SoundBuffer
 }
 
 impl Sound {
@@ -108,8 +107,8 @@ impl Sound {
                 ffi::sfSound_setBuffer(s, buffer.unwrap());
             }
             Some(Sound { 
-                sound : s,
-                buffer : buffer
+                sound :     s,
+                buffer :    buffer
             })
         }
     }
@@ -128,8 +127,8 @@ impl Sound {
         else {
             let buf = self.get_buffer();
             Some(Sound {
-                sound : s,
-                buffer : buf
+                sound :     s,
+                buffer :    buf
             })
         }
     }

@@ -36,7 +36,7 @@ use sfml_types::*;
 pub mod ffi{
 
     pub use std::libc::{c_void, c_uint};
-    use sfml_types::{SfBool};
+    use sfml_types::SfBool;
 
     pub struct sfSoundRecorder {
         This : *c_void
