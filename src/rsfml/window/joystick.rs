@@ -49,19 +49,7 @@ pub enum Axis {
 pub mod ffi {
     
     use std::libc::{c_float, c_uint};
-    use sfml_types::{SfBool};
-    
-
-    pub enum sfJoystickAxis {
-        X,
-        Y,
-        Z,
-        R,
-        U,
-        V,
-        PovX,
-        PovY
-    }
+    use sfml_types::SfBool;
 
     extern "C" {
         pub fn sfJoystick_isConnected(joystick : c_uint) -> SfBool;

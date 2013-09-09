@@ -143,7 +143,7 @@ pub enum Key {
 pub mod ffi {
     
     pub use std::libc::{c_int};
-    use sfml_types::{SfBool};
+    use sfml_types::SfBool;
 
     extern "C" {
         pub fn sfKeyboard_isKeyPressed(key : c_int) -> SfBool;

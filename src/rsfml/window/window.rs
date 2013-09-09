@@ -54,11 +54,11 @@ pub mod ffi {
     
     pub struct sfEvent {
         typeEvent : c_uint,
-        p1 : c_uint,
-        p2 : c_uint,
-        p3 : c_float,
-        p4 : c_uint,
-        p5 : c_uint
+        p1 :        c_uint,
+        p2 :        c_uint,
+        p3 :        c_float,
+        p4 :        c_uint,
+        p5 :        c_uint
     }
 
     pub enum sfEventType {
@@ -113,18 +113,18 @@ pub mod ffi {
 
 /// Enumeration of window creation styles
 pub enum WindowStyle {
-    sfNone = 0,
-    sfTitlebar = 1,
-    sfResize = 2,
-    sfClose = 4,
-    sfFullscreen = 8,
-    sfDefaultStyle = 7
+    sfNone =            0,
+    sfTitlebar =        1,
+    sfResize =          2,
+    sfClose =           4,
+    sfFullscreen =      8,
+    sfDefaultStyle =    7
 }
 
 #[doc(hidden)]
 pub struct Window {
-    priv window : *ffi::sfWindow,
-    priv event : ffi::sfEvent,
+    priv window :       *ffi::sfWindow,
+    priv event :        ffi::sfEvent,
     priv title_length : uint
 }
 
@@ -159,20 +159,20 @@ impl Window {
         };
         let sf_ev = ffi::sfEvent {
             typeEvent : 0,
-            p1 : 0,
-            p2 : 0,
-            p3 : 0 as c_float,
-            p4 : 0,
-            p5 : 0
+            p1 :        0,
+            p2 :        0,
+            p3 :        0 as c_float,
+            p4 :        0,
+            p5 :        0
         };
         if ptr::is_null(sf_win) {
             None
         }
         else {
             Some (Window {
-                window : sf_win, 
-                event : sf_ev, 
-                title_length : title.len()
+                window :        sf_win, 
+                event :         sf_ev, 
+                title_length :  title.len()
             })
         }
     }
@@ -200,23 +200,23 @@ impl Window {
     */
     #[fixed_stack_segment] #[inline(never)]
     pub fn new_with_unicode(mode : VideoMode, title : ~[u32], style : WindowStyle, settings : &ContextSettings) -> Option<Window> {
-        let sfWin = unsafe { ffi::sfWindow_createUnicode(mode.unwrap(), vec::raw::to_ptr(title), style as u32, settings) };
-        let sfEv = ffi::sfEvent {
+        let sf_win = unsafe { ffi::sfWindow_createUnicode(mode.unwrap(), vec::raw::to_ptr(title), style as u32, settings) };
+        let sf_ev = ffi::sfEvent {
             typeEvent : 0,
-            p1 : 0, 
-            p2 : 0, 
-            p3 : 0 as c_float, 
-            p4 : 0, 
-            p5 : 0
+            p1 :        0, 
+            p2 :        0, 
+            p3 :        0 as c_float, 
+            p4 :        0, 
+            p5 :        0
         };
-        if ptr::is_null(sfWin) {
+        if ptr::is_null(sf_win) {
             None
         }
         else {
             Some (Window {
-                window : sfWin,
-                event : sfEv,
-                title_length : title.len()
+                window :        sf_win,
+                event :         sf_ev,
+                title_length :  title.len()
             })
         }
     }
