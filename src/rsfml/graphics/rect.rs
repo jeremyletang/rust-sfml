@@ -122,6 +122,22 @@ impl IntRect {
     }
 }
 
+impl Eq for IntRect {
+    fn eq(&self, other : &IntRect) -> bool {
+        self.left == other.left && 
+        self.top == other.top &&
+        self.width == other.width &&
+        self.height == other.height   
+    }
+    fn ne(&self, other : &IntRect) -> bool {
+        self.left != other.left || 
+        self.top != other.top ||
+        self.width != other.width ||
+        self.height != other.height  
+    }
+}
+
+
 impl FloatRect {
     /**
     * Construct a new FloatRect
@@ -171,5 +187,19 @@ impl FloatRect {
             _       => unreachable!()
         }
     }
+}
 
+impl Eq for FloatRect {
+    fn eq(&self, other : &FloatRect) -> bool {
+        self.left == other.left && 
+        self.top == other.top &&
+        self.width == other.width &&
+        self.height == other.height   
+    }
+    fn ne(&self, other : &FloatRect) -> bool {
+        self.left != other.left || 
+        self.top != other.top ||
+        self.width != other.width ||
+        self.height != other.height  
+    }
 }

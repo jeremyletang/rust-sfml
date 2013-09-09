@@ -152,6 +152,6 @@ impl Eq for Vector3f {
         self.x == rhs.x && self.y == rhs.y && self.z == rhs.z
     }
     fn ne(&self, rhs : &Vector3f) -> bool {
-        self.x != rhs.x && self.y != rhs.y && self.z != rhs.z
+        self.x != rhs.x || self.y != rhs.y || self.z != rhs.z
     }
 }

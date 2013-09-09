@@ -177,7 +177,7 @@ impl Eq for Vector2i {
         self.x == rhs.x && self.y == rhs.y
     }
     fn ne(&self, rhs : &Vector2i) -> bool {
-        self.x != rhs.x && self.y != rhs.y 
+        self.x != rhs.x || self.y != rhs.y 
     }
 }
 
@@ -279,7 +279,7 @@ impl Eq for Vector2u {
         self.x == rhs.x && self.y == rhs.y
     }
     fn ne(&self, rhs : &Vector2u) -> bool {
-        self.x != rhs.x && self.y != rhs.y 
+        self.x != rhs.x || self.y != rhs.y 
     }
 }
 
@@ -381,6 +381,6 @@ impl Eq for Vector2f {
         self.x == rhs.x && self.y == rhs.y
     }
     fn ne(&self, rhs : &Vector2f) -> bool {
-        self.x != rhs.x && self.y != rhs.y 
+        self.x != rhs.x || self.y != rhs.y 
     }
 }

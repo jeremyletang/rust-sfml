@@ -120,6 +120,54 @@ impl Time {
     }
 }
 
+impl Eq for Time {
+    fn eq(&self, other : &Time) -> bool {
+        self.as_microseconds() == other.as_microseconds()
+    }
+    fn ne(&self, other : &Time) -> bool {
+        self.as_microseconds() != other.as_microseconds() 
+    }
+}
+
+impl Ord for Time {
+    fn lt(&self, other: &Time) -> bool {
+        self.as_microseconds() < other.as_microseconds()
+    }
+    fn le(&self, other: &Time) -> bool {
+        self.as_microseconds() <= other.as_microseconds()
+    }
+    fn gt(&self, other: &Time) -> bool {
+        self.as_microseconds() > other.as_microseconds()
+    }
+    fn ge(&self, other: &Time) -> bool {
+        self.as_microseconds() >= other.as_microseconds()
+    }
+}
+
+impl Add<Time, Time> for Time {
+    fn add(&self, other : &Time) -> Time {
+         Time::with_microseconds(self.as_microseconds() + other.as_microseconds())
+    }
+}
+
+impl Sub<Time, Time> for Time {
+    fn sub(&self, other : &Time) -> Time {
+         Time::with_microseconds(self.as_microseconds() - other.as_microseconds())
+    }
+}
+
+impl Mul<Time, Time> for Time {
+    fn mul(&self, other : &Time) -> Time {
+         Time::with_microseconds(self.as_microseconds() * other.as_microseconds())
+    }
+}
+
+impl Div<Time, Time> for Time {
+    fn div(&self, other : &Time) -> Time {
+         Time::with_microseconds(self.as_microseconds() / other.as_microseconds())
+    }
+}
+
 #[doc(hidden)]
 impl Wrappable<ffi::sfTime> for Time {
     fn wrap(time : ffi::sfTime) -> Time {
