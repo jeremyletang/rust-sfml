@@ -68,13 +68,7 @@ fn start(argc: int, argv: **u8, crate_map: *u8) -> int {
 
 fn main () -> () {
      // Create the window of the application
-    let setting = ContextSettings{
-        depthBits: 10,
-        stencilBits: 10,
-        antialiasingLevel: 1,
-        majorVersion: 0,
-        minorVersion: 1
-    };
+    let setting = ContextSettings::default();
     let mut window = match RenderWindow::new(VideoMode::new_init(800, 600, 32), ~"SFML Example", sfClose, &setting) {
         Some(window) => window,
         None => fail!("Cannot create a new Render Window.")

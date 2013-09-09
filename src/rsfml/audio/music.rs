@@ -126,11 +126,11 @@ impl Music {
     *
     * If set, the music will restart from beginning after
     * reaching the end and so on, until it is stopped or
-    * sfMusic_setLoop(music, sfFalse) is called.
+    * sfMusic_setLoop(music, SFFALSE) is called.
     * The default looping state for musics is false.
     *
     * # Arguments
-    * * loop - sfTrue to play in loop, sfFalse to play once
+    * * loop - SFTRUE to play in loop, SFFALSE to play once
     */
     #[fixed_stack_segment] #[inline(never)]
     pub fn set_loop(&mut self, lloop : bool) -> () {

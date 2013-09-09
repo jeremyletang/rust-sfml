@@ -56,10 +56,10 @@ pub mod ffi {
     use graphics::transform::Transform;
 
     pub struct sfRectangleShape {
-        This : *c_void,
-        Texture : *texture::ffi::sfTexture,
-        Transform : Transform,
-        InverseTransform : Transform
+        This :              *c_void,
+        Texture :           *texture::ffi::sfTexture,
+        Transform :         Transform,
+        InverseTransform :  Transform
     }
     
     extern "C" {
@@ -100,8 +100,8 @@ pub mod ffi {
 
 #[doc(hidden)]
 pub struct RectangleShape {
-    priv rectangle_shape : *ffi::sfRectangleShape,
-    priv texture : Option<@mut Texture>
+    priv rectangle_shape :  *ffi::sfRectangleShape,
+    priv texture :          Option<@mut Texture>
 }
 
 impl RectangleShape {
@@ -118,8 +118,8 @@ impl RectangleShape {
         }
         else {
             Some(RectangleShape {
-                rectangle_shape : rectangle,
-                texture : None
+                rectangle_shape :   rectangle,
+                texture :           None
             })
         }
     }
@@ -137,11 +137,11 @@ impl RectangleShape {
         }
         else {
             unsafe {
-                ffi::sfRectangleShape_setTexture(rectangle, texture.unwrap(), 1);
+                ffi::sfRectangleShape_setTexture(rectangle, texture.unwrap(), SFTRUE);
             }
             Some(RectangleShape {
-                rectangle_shape : rectangle,
-                texture : Some(texture)
+                rectangle_shape :   rectangle,
+                texture :           Some(texture)
             })
         }
     }
@@ -164,8 +164,8 @@ impl RectangleShape {
                 ffi::sfRectangleShape_setSize(rectangle, *size);
             }
             Some(RectangleShape {
-                rectangle_shape : rectangle,
-                texture : None
+                rectangle_shape :   rectangle,
+                texture :           None
             })
         }
     }
@@ -183,8 +183,8 @@ impl RectangleShape {
         }
         else {
             Some(RectangleShape {
-                rectangle_shape : rectangle,
-                texture : self.texture
+                rectangle_shape :   rectangle,
+                texture :           self.texture
             })
         }
     }
@@ -738,8 +738,8 @@ impl RectangleShape {
 impl Wrappable<*ffi::sfRectangleShape> for RectangleShape {
     fn wrap(rectangle_shape : *ffi::sfRectangleShape) -> RectangleShape {
         RectangleShape {
-            rectangle_shape : rectangle_shape,
-            texture : None
+            rectangle_shape :   rectangle_shape,
+            texture :           None
         }
     }
     

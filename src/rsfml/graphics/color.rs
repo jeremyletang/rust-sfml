@@ -44,9 +44,9 @@ pub mod ffi {
 
 #[deriving(Clone)]
 pub struct Color {
-    red : u8,
+    red :   u8,
     green : u8,
-    blue : u8,
+    blue :  u8,
     alpha : u8
 }
 
@@ -64,9 +64,9 @@ impl Color {
     */
     pub fn new_RGB(red : u8, green : u8, blue : u8) -> Color {
         Color {
-            red : red, 
+            red :   red, 
             green : green, 
-            blue : blue, 
+            blue :  blue, 
             alpha : 255
         }
     }
@@ -84,9 +84,9 @@ impl Color {
     */
     pub fn new_RGBA(red : u8, green : u8, blue : u8, alpha : u8) -> Color {
         Color {
-            red : red, 
+            red :   red, 
             green : green, 
-            blue : blue, 
+            blue :  blue, 
             alpha : alpha
         }
     }
@@ -175,9 +175,9 @@ impl Add<Color, Color> for Color {
         let b : i32 = self.blue as i32 + other.blue as i32;
         let a : i32 = self.alpha as i32 + other.alpha as i32;
         Color {
-            red : if r > 255 {255} else {r as u8},
+            red :   if r > 255 {255} else {r as u8},
             green : if g > 255 {255} else {g as u8},
-            blue : if b > 255 {255} else {b as u8},
+            blue :  if b > 255 {255} else {b as u8},
             alpha : if a > 255 {255} else {a as u8}
         }
     }
@@ -190,9 +190,9 @@ impl Mul<Color, Color> for Color {
         let b : i32 = self.blue as i32 * (other.blue as i32);
         let a : i32 = self.alpha as i32 * (other.alpha as i32);
         Color {
-            red : if r > 255 {255} else {r as u8},
+            red :   if r > 255 {255} else {r as u8},
             green : if g > 255 {255} else {g as u8},
-            blue : if b > 255 {255} else {b as u8},
+            blue :  if b > 255 {255} else {b as u8},
             alpha : if a > 255 {255} else {a as u8}
         }
     }

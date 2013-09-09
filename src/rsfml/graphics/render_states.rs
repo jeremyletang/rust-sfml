@@ -39,15 +39,13 @@ use graphics::transform::*;
 #[doc(hidden)]
 pub mod ffi {
     
-    use graphics::shader; 
-    use graphics::texture; 
-    use graphics::transform; 
+    use graphics::{shader, texture, transform}; 
 
     pub struct sfRenderStates {
         blendMode : i32,
         transform : transform::Transform,
-        texture : *texture::ffi::sfTexture,
-        shader : *shader::ffi::sfShader
+        texture :   *texture::ffi::sfTexture,
+        shader :    *shader::ffi::sfShader
     }
 }
 
@@ -55,11 +53,11 @@ pub mod ffi {
 * brief Define the states used for drawing to a RenderTarget
 */
 pub struct RenderStates {
-    priv sfRenderStates : ffi::sfRenderStates,
-    blendMode : BlendMode,
-    transform : Transform,
-    texture : Option<@Texture>,
-    shader : Option<@Shader>
+    priv sfRenderStates :   ffi::sfRenderStates,
+    blendMode :             BlendMode,
+    transform :             Transform,
+    texture :               Option<@Texture>,
+    shader :                Option<@Shader>
 }
 
 impl RenderStates {
@@ -77,16 +75,16 @@ impl RenderStates {
     */
     pub fn new(blend_mode : BlendMode, transform : Transform, texture : Option<@Texture>, shader : Option<@Shader>) -> RenderStates {
         RenderStates {
-            sfRenderStates : ffi::sfRenderStates {
+            sfRenderStates :    ffi::sfRenderStates {
                 blendMode : blend_mode as i32,
                 transform : transform,
-                texture : ptr::null(),
-                shader : ptr::null()
+                texture :   ptr::null(),
+                shader :    ptr::null()
             },
-            blendMode : blend_mode,
-            transform : transform,
-            texture : texture,
-            shader : shader
+            blendMode :         blend_mode,
+            transform :         transform,
+            texture :           texture,
+            shader :            shader
         }
     }
 
@@ -103,16 +101,16 @@ impl RenderStates {
     */
     pub fn default() -> RenderStates {
         RenderStates {
-            sfRenderStates : ffi::sfRenderStates {
+            sfRenderStates :    ffi::sfRenderStates {
                 blendMode : BlendAlpha as i32,
                 transform : Transform::new_identity(),
-                texture : ptr::null(),
-                shader : ptr::null()
+                texture :   ptr::null(),
+                shader :    ptr::null()
             },
-            blendMode : BlendAlpha,
-            transform : Transform::new_identity(),
-            texture : None,
-            shader : None
+            blendMode :         BlendAlpha,
+            transform :         Transform::new_identity(),
+            texture :           None,
+            shader :            None
         }
     }
 

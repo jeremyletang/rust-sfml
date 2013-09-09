@@ -30,8 +30,7 @@
 */
 
 use std::libc::{c_uint};
-use std::ptr;
-use std::vec;
+use std::{ptr, vec};
 
 use traits::wrappable::Wrappable;
 use system::vector2::Vector2u;

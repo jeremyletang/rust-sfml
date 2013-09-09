@@ -57,10 +57,10 @@ pub mod ffi {
     use graphics::transform::Transform;
 
     pub struct sfCircleShape {
-        This : *c_void,
-        Texture : *texture::ffi::sfTexture,
-        Transform : Transform,
-        InverseTransform : Transform
+        This :              *c_void,
+        Texture :           *texture::ffi::sfTexture,
+        Transform :         Transform,
+        InverseTransform :  Transform
     }
     
     extern "C" {
@@ -103,7 +103,7 @@ pub mod ffi {
 #[doc(hidden)]
 pub struct CircleShape {
     priv circle_shape : *ffi::sfCircleShape,
-    priv texture : Option<@mut Texture>
+    priv texture :      Option<@mut Texture>
 }
 
 impl CircleShape {
@@ -120,8 +120,8 @@ impl CircleShape {
         }
         else {
             Some(CircleShape {
-                circle_shape : circle,
-                texture : None
+                circle_shape :  circle,
+                texture :       None
             })
         }
     }
@@ -137,8 +137,8 @@ impl CircleShape {
                 ffi::sfCircleShape_setTexture(circle, texture.unwrap(), SFTRUE);
             }
             Some(CircleShape {
-                circle_shape : circle,
-                texture : Some(texture)
+                circle_shape :  circle,
+                texture :       Some(texture)
             })
         }
 
@@ -163,8 +163,8 @@ impl CircleShape {
                 ffi::sfCircleShape_setPointCount(circle, point_count as c_uint);
             }
             Some(CircleShape {
-                circle_shape : circle,
-                texture : None
+                circle_shape :  circle,
+                texture :       None
             })
         }
     }
@@ -185,8 +185,8 @@ impl CircleShape {
         }
         else {
             Some(CircleShape {
-                circle_shape : circle,
-                texture : self.texture
+                circle_shape :  circle,
+                texture :       self.texture
             })
         }
     }
@@ -755,8 +755,8 @@ impl Wrappable<*ffi::sfCircleShape> for CircleShape {
     #[doc(hidden)]
     fn wrap(circle_shape : *ffi::sfCircleShape) -> CircleShape {
         CircleShape {
-            circle_shape : circle_shape,
-            texture : None
+            circle_shape :  circle_shape,
+            texture :       None
         }
     }
 

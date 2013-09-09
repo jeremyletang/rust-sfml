@@ -71,7 +71,7 @@ pub mod ffi {
 #[doc(hidden)]
 pub struct View {
     priv dropable : bool,
-    priv view : *ffi::sfView
+    priv view :     *ffi::sfView
 }
 
 impl View {
@@ -90,8 +90,8 @@ impl View {
         }
         else {
             Some(View {
-                dropable: true,
-                view : view
+                dropable:   true,
+                view :      view
             })
         }
     }
@@ -119,8 +119,8 @@ impl View {
                 ffi::sfView_setSize(view, *size);
             }
             Some(View {
-                dropable : true,
-                view : view
+                dropable :  true,
+                view :      view
             })
         }
     }
@@ -138,8 +138,8 @@ impl View {
         }
         else {
             Some(View {
-                dropable: true,
-                view : view
+                dropable:   true,
+                view :      view
             })
         }    
     }
@@ -160,8 +160,8 @@ impl View {
         }
         else {
             Some(View {
-                dropable: true,
-                view : view
+                dropable:   true,
+                view :      view
             })
         }
     }
@@ -379,8 +379,8 @@ impl View {
 impl Wrappable<*ffi::sfView> for View {
     fn wrap(view : *ffi::sfView) -> View {
         View { 
-            dropable: false, 
-            view : view
+            dropable:   false, 
+            view :      view
         }
     } 
 

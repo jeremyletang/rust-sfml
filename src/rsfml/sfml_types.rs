@@ -23,7 +23,7 @@
 */
 
 use std::libc::{c_int};
-    
+
 pub type SfBool = c_int;
 pub static SFFALSE : SfBool = 0;
 pub static SFTRUE : SfBool = 1;

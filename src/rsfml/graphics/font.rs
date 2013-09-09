@@ -65,7 +65,7 @@ pub mod ffi {
 
 #[doc(hidden)]
 pub struct Font {
-    priv font : *ffi::sfFont,
+    priv font :     *ffi::sfFont,
     priv dropable : bool
 }
 
@@ -89,8 +89,8 @@ impl Font {
         }
         else {
             Some(Font {
-                font : fnt, 
-                dropable : true
+                font :      fnt, 
+                dropable :  true
             })
         }
     }
@@ -110,8 +110,8 @@ impl Font {
         }
         else {
             Some(Font {
-                font : fnt, 
-                dropable : true
+                font :      fnt, 
+                dropable :  true
             })
         }
     }    
@@ -191,8 +191,8 @@ impl Font {
 impl Wrappable<*ffi::sfFont> for Font {
     fn wrap(font : *ffi::sfFont) -> Font {
         Font {
-            font : font,
-            dropable : false
+            font :      font,
+            dropable :  false
         }
     }
     fn unwrap(&self) -> *ffi::sfFont {

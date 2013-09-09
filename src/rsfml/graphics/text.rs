@@ -58,10 +58,10 @@ pub mod ffi {
     use graphics::transform::Transform;
 
     pub struct sfText {
-        This : c_void,
-        font : *c_void,
-        transform : transform::Transform,
-        transform2 : transform::Transform
+        This :          c_void,
+        font :          *c_void,
+        transform :     transform::Transform,
+        transform2 :    transform::Transform
     }
 
     extern "C" {
@@ -100,16 +100,16 @@ pub mod ffi {
 }
 
 pub enum Style {
-    Regular = 0,
-    Bold = 1,
-    Italic = 2,
-    Underlined = 4
+    Regular =       0,
+    Bold =          1,
+    Italic =        2,
+    Underlined =    4
 }
 
 pub struct Text {
-    priv text : *ffi::sfText,
-    priv string_length : uint,
-    priv font : Option<@Font>
+    priv text :             *ffi::sfText,
+    priv string_length :    uint,
+    priv font :             Option<@Font>
 }
 
 impl Text {
@@ -126,9 +126,9 @@ impl Text {
         }
         else {
             Some(Text {
-                text : text,
+                text :          text,
                 string_length : 0,
-                font : None
+                font :          None
             })
         }
     }
@@ -159,9 +159,9 @@ impl Text {
                 ffi::sfText_setCharacterSize(text, character_size as c_uint)
             }
             Some(Text {
-                text : text, 
+                text :          text, 
                 string_length : string.len(),
-                font : Some(font)
+                font :          Some(font)
             })
         }
     }
@@ -694,9 +694,9 @@ impl Text {
 impl Wrappable<*ffi::sfText> for Text {
     fn wrap(text : *ffi::sfText) -> Text {
         Text {
-            text : text,
+            text :          text,
             string_length : 0,
-            font : None
+            font :          None
         }
     } 
     fn unwrap(&self) -> *ffi::sfText {

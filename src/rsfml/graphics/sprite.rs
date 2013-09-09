@@ -57,10 +57,10 @@ pub mod ffi {
     use graphics::transform::Transform;
 
     pub struct sfSprite {
-        This : *c_void,
-        Texture : *texture::ffi::sfTexture,
-        Transform : Transform,
-        InverseTransform : Transform
+        This :              *c_void,
+        Texture :           *texture::ffi::sfTexture,
+        Transform :         Transform,
+        InverseTransform :  Transform
     }
 
     extern "C" {
@@ -93,8 +93,8 @@ pub mod ffi {
 
 #[doc(hidden)]
 pub struct Sprite {
-    priv sprite : *ffi::sfSprite,
-    priv texture : Option<@mut Texture>
+    priv sprite :   *ffi::sfSprite,
+    priv texture :  Option<@mut Texture>
 }
 
 impl Sprite {
@@ -111,8 +111,8 @@ impl Sprite {
         }
         else {
             Some(Sprite { 
-                sprite : sp,
-                texture : None
+                sprite :    sp,
+                texture :   None
                     
             })
         }
@@ -134,8 +134,8 @@ impl Sprite {
                 ffi::sfSprite_setTexture(sp, texture.unwrap(), SFTRUE);
             }
             Some(Sprite {
-                sprite : sp,
-                texture : Some(texture)
+                sprite :    sp,
+                texture :   Some(texture)
             })
         }
 
@@ -154,8 +154,8 @@ impl Sprite {
         }
         else {
             Some(Sprite {
-                sprite : sp,
-                texture : self.texture
+                sprite :    sp,
+                texture :   self.texture
             })
         }
     }
@@ -604,8 +604,8 @@ impl Sprite {
 impl Wrappable<*ffi::sfSprite> for Sprite {
     fn wrap(sprite : *ffi::sfSprite) -> Sprite {
         Sprite { 
-            sprite : sprite,
-            texture : None
+            sprite :    sprite,
+            texture :   None
         }
     }
 

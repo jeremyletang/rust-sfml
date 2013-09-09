@@ -45,9 +45,9 @@ pub mod ffi {
     use graphics::transform::Transform;
     
     pub struct sfTransformable {
-        This : *c_void,
-        transform : Transform,
-        inverseTransform : Transform
+        This :              *c_void,
+        transform :         Transform,
+        inverseTransform :  Transform
     }
 
     extern "C" {

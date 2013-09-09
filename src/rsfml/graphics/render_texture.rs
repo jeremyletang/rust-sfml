@@ -70,10 +70,10 @@ pub mod ffi {
     use graphics::shape;
 
     pub struct sfRenderTexture {
-        This : *c_void,
-        Target : *texture::ffi::sfTexture,
-        DefaultView : view::ffi::sfView,
-        CurrentView : view::ffi::sfView
+        This :          *c_void,
+        Target :        *texture::ffi::sfTexture,
+        DefaultView :   view::ffi::sfView,
+        CurrentView :   view::ffi::sfView
     }
     
     extern "C" {

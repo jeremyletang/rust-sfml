@@ -42,18 +42,18 @@ pub mod ffi {
     use system::vector2;
 
     pub struct sfVertex {
-        position : vector2::Vector2f,
-        color : color::Color,
-        tex_coords : vector2::Vector2f 
+        position :      vector2::Vector2f,
+        color :         color::Color,
+        tex_coords :    vector2::Vector2f 
     }
 }
 
 /// Define a point with color and texture coordinates
 #[deriving(Clone)]
 pub struct Vertex {
-    position : Vector2f,
-    color : Color,
-    tex_coords : Vector2f
+    position :      Vector2f,
+    color :         Color,
+    tex_coords :    Vector2f
 }
 
 impl Vertex {
@@ -69,9 +69,9 @@ impl Vertex {
     */
     pub fn new(position : &Vector2f, color : &Color, tex_coords : &Vector2f) -> Vertex {
         Vertex {
-            position : *position,
-            color : *color,
-            tex_coords : *tex_coords
+            position :      *position,
+            color :         *color,
+            tex_coords :    *tex_coords
         }
     }
 }

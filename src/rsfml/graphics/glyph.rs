@@ -31,6 +31,7 @@
 
 use graphics::rect::IntRect;
 
+#[deriving(Clone)]
 pub struct Glyph {
     advance : i32,
     bounds : IntRect,

@@ -57,10 +57,10 @@ pub mod ffi {
     use graphics::transform::Transform;
     
     pub struct sfConvexShape {
-        This : *c_void,
-        Texture : *texture::ffi::sfTexture,
-        Transform : Transform,
-        InverseTransform : Transform
+        This :              *c_void,
+        Texture :           *texture::ffi::sfTexture,
+        Transform :         Transform,
+        InverseTransform :  Transform
     }
 
     extern "C" {
@@ -102,7 +102,7 @@ pub mod ffi {
 #[doc(hidden)]
 pub struct ConvexShape {
     priv convex_shape : *ffi::sfConvexShape,
-    priv texture : Option<@mut Texture>
+    priv texture :      Option<@mut Texture>
 }
 
 impl ConvexShape {
@@ -119,8 +119,8 @@ impl ConvexShape {
         }
         else {
             Some(ConvexShape {
-                convex_shape : shape,
-                texture : None
+                convex_shape :  shape,
+                texture :       None
             })
         } 
     }
@@ -141,8 +141,8 @@ impl ConvexShape {
                 ffi::sfConvexShape_setTexture(shape, texture.unwrap(), SFTRUE);
             }
             Some(ConvexShape {
-                convex_shape : shape,
-                texture : Some(texture)
+                convex_shape :  shape,
+                texture :       Some(texture)
             })
         } 
 
@@ -161,8 +161,8 @@ impl ConvexShape {
         }
         else {
             Some(ConvexShape {
-                convex_shape : shape,
-                texture : self.texture
+                convex_shape :  shape,
+                texture :       self.texture
             })
         }
     }
@@ -716,8 +716,8 @@ impl Wrappable<*ffi::sfConvexShape> for ConvexShape {
     #[doc(hidden)]
     fn wrap(convex_shape : *ffi::sfConvexShape) -> ConvexShape {
         ConvexShape {
-            convex_shape : convex_shape,
-            texture : None
+            convex_shape :  convex_shape,
+            texture :       None
 
         }
     }

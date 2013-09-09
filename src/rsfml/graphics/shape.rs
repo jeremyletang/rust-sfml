@@ -57,10 +57,10 @@ pub mod ffi {
     use graphics::rect::{IntRect, FloatRect};
 
     pub struct sfShape {
-        This : *c_void,
-        Texture : *texture::ffi::sfTexture,
-        Transform : Transform,
-        InverseTransform : Transform
+        This :              *c_void,
+        Texture :           *texture::ffi::sfTexture,
+        Transform :         Transform,
+        InverseTransform :  Transform
     }
 
     extern "C" {
@@ -103,9 +103,9 @@ pub struct WrapObj {
 }
 
 pub struct Shape {
-    priv shape : *ffi::sfShape,
+    priv shape :    *ffi::sfShape,
     priv wrap_obj : @WrapObj,
-    priv texture : Option<@mut Texture>
+    priv texture :  Option<@mut Texture>
 }
 
 #[doc(hidden)]
@@ -141,9 +141,9 @@ impl Shape {
         }
         else {
             Some(Shape {
-                shape : sp,
-                wrap_obj : w_o,
-                texture : None
+                shape :     sp,
+                wrap_obj :  w_o,
+                texture :   None
             })
         }
     }
@@ -170,9 +170,9 @@ impl Shape {
                 ffi::sfShape_setTexture(sp, texture.unwrap(), SFTRUE);
             }
             Some(Shape {
-                shape : sp,
-                wrap_obj : w_o,
-                texture : Some(texture)
+                shape :     sp,
+                wrap_obj :  w_o,
+                texture :   Some(texture)
             })
         }
     }

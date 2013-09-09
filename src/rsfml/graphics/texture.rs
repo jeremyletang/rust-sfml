@@ -81,7 +81,7 @@ pub mod ffi {
 
 #[doc(hidden)]
 pub struct Texture {
-    priv texture : *ffi::sfTexture,
+    priv texture :  *ffi::sfTexture,
     priv dropable : bool
 }
 
@@ -103,8 +103,8 @@ impl Texture {
         }
         else {
             Some(Texture {
-                texture : tex,
-                dropable : true
+                texture :   tex,
+                dropable :  true
             })
         }
     }
@@ -128,8 +128,8 @@ impl Texture {
         }
         else {
             Some(Texture {
-                texture : tex,
-                dropable : true
+                texture :   tex,
+                dropable :  true
             })
         }
     }
@@ -154,8 +154,8 @@ impl Texture {
         }
         else {
             Some(Texture {
-                texture : tex,
-                dropable : true
+                texture :   tex,
+                dropable :  true
             })
         }
     }
@@ -176,8 +176,8 @@ impl Texture {
         }
         else {
             Some(Texture {
-                texture : tex,
-                dropable : true
+                texture :   tex,
+                dropable :  true
             })
         }
     }
@@ -199,8 +199,8 @@ impl Texture {
         }
         else {
             Some(Texture {
-                texture : tex,
-                dropable : true
+                texture :   tex,
+                dropable :  true
             })
         }
     }
@@ -221,8 +221,8 @@ impl Texture {
         }
         else {
             Some(Texture {
-                texture : tex,
-                dropable : true
+                texture :   tex,
+                dropable :  true
             })
         }
     }
@@ -425,8 +425,8 @@ impl Wrappable<*ffi::sfTexture> for Texture {
     
     fn wrap(texture : *ffi::sfTexture) -> Texture {
         Texture { 
-            texture : texture,
-            dropable : false
+            texture :   texture,
+            dropable :  false
         }
     }
 }

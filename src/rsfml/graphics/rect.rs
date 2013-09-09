@@ -53,10 +53,10 @@ pub mod ffi {
 */
 #[deriving(Clone)]
 pub struct IntRect {
-    left : i32,
-    top : i32,
-    width : i32,
-    height : i32
+    left :      i32,
+    top :       i32,
+    width :     i32,
+    height :    i32
 }
 
 /**
@@ -64,10 +64,10 @@ pub struct IntRect {
 */
 #[deriving(Clone)]
 pub struct FloatRect {
-    left : f32,
-    top : f32,
-    width : f32,
-    height : f32
+    left :      f32,
+    top :       f32,
+    width :     f32,
+    height :    f32
 }
 
 impl IntRect {
@@ -76,10 +76,10 @@ impl IntRect {
     */
     pub fn new(left : i32, top : i32, width : i32, height : i32) -> IntRect {
         IntRect {
-            left : left, 
-            top : top, 
-            width : width, 
-            height : height
+            left :      left, 
+            top :       top, 
+            width :     width, 
+            height :    height
         }
     }
     
@@ -128,10 +128,10 @@ impl FloatRect {
     */
     pub fn new(left : f32, top : f32, width : f32, height : f32) -> FloatRect {
         FloatRect {
-            left : left, 
-            top : top, 
-            width : width, 
-            height : height
+            left :      left, 
+            top :       top, 
+            width :     width, 
+            height :    height
         }
     }
     

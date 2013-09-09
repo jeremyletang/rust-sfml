@@ -57,8 +57,9 @@ use graphics::shape::Shape;
 pub mod ffi {
     
     use std::libc::{c_uint, c_float, c_void, c_char};
+    
     use system::vector2::{Vector2f, Vector2i, Vector2u};
-    use sfml_types::{SfBool};
+    use sfml_types::SfBool;
     use window::video_mode::*;
     use window::context_settings::ContextSettings;
     use graphics::text::ffi::sfText;
@@ -75,18 +76,18 @@ pub mod ffi {
     use graphics::vertex_array::ffi::sfVertexArray;
 
     pub struct sfRenderWindow {
-        This : *c_void,
-        DefaultView : sfView,
-        CurrentView : sfView
+        This :          *c_void,
+        DefaultView :   sfView,
+        CurrentView :   sfView
     }
 
     pub struct sfEvent {
         typeEvent : c_uint,
-        p1 : c_uint,
-        p2 : c_uint,
-        p3 : c_float,
-        p4 : c_uint,
-        p5 : c_uint
+        p1 :        c_uint,
+        p2 :        c_uint,
+        p3 :        c_float,
+        p4 :        c_uint,
+        p5 :        c_uint
     }
 
     extern "C" {
@@ -141,21 +142,21 @@ pub mod ffi {
 
 /// Enumeration of window creation styles
 pub enum WindowStyle {
-    sfNone = 0,
-    sfTitlebar = 1,
-    sfResize = 2,
-    sfClose = 4,
-    sfFullscreen = 8,
-    sfDefaultStyle = 7
+    sfNone =            0,
+    sfTitlebar =        1,
+    sfResize =          2,
+    sfClose =           4,
+    sfFullscreen =      8,
+    sfDefaultStyle =    7
 }
 
 #[doc(hidden)]
 pub struct RenderWindow {
-    priv render_window : *ffi::sfRenderWindow,
-    priv event : ffi::sfEvent,
-    priv title_length : uint,
-    priv current_view : @mut View,
-    priv default_view : @mut View
+    priv render_window :    *ffi::sfRenderWindow,
+    priv event :            ffi::sfEvent,
+    priv title_length :     uint,
+    priv current_view :     @mut View,
+    priv default_view :     @mut View
 }
 
 impl RenderWindow {
@@ -189,11 +190,11 @@ impl RenderWindow {
         }
         let sf_ev = ffi::sfEvent {
             typeEvent : 0, 
-            p1 : 0, 
-            p2 : 0, 
-            p3 : 0 as c_float, 
-            p4 : 0, 
-            p5 : 0
+            p1 :        0, 
+            p2 :        0, 
+            p3 :        0 as c_float, 
+            p4 :        0, 
+            p5 :        0
         };
         if ptr::is_null(sf_render_win) {
             None
@@ -205,11 +206,11 @@ impl RenderWindow {
             }
             else {
                 Some (RenderWindow {
-                    render_window : sf_render_win, 
-                    event : sf_ev, 
-                    title_length : title.len(),
-                    current_view : @mut Wrappable::wrap(def_view),
-                    default_view : @mut Wrappable::wrap(def_view)
+                    render_window :     sf_render_win, 
+                    event :             sf_ev, 
+                    title_length :      title.len(),
+                    current_view :      @mut Wrappable::wrap(def_view),
+                    default_view :      @mut Wrappable::wrap(def_view)
                 })
             }
         }
@@ -238,32 +239,33 @@ impl RenderWindow {
     */
     #[fixed_stack_segment] #[inline(never)]
     pub fn new_with_unicode(mode : VideoMode, title : ~[u32], style : WindowStyle, settings : &ContextSettings) -> Option<RenderWindow> {
-        let sfRenderWin: *ffi::sfRenderWindow;
+        let sf_render_win: *ffi::sfRenderWindow;
         unsafe { 
-            sfRenderWin = ffi::sfRenderWindow_createUnicode(mode.unwrap(), vec::raw::to_ptr(title), style as u32, settings); 
+            sf_render_win = ffi::sfRenderWindow_createUnicode(mode.unwrap(), vec::raw::to_ptr(title), style as u32, settings); 
         }
-        let sfEv = ffi::sfEvent {
+        let sf_ev = ffi::sfEvent {
             typeEvent : 0, 
-            p1 : 0, 
-            p2 : 0, 
-            p3 : 0 as c_float, 
-            p4 : 0, 
-            p5 : 0};
-        if ptr::is_null(sfRenderWin) {
+            p1 :        0, 
+            p2 :        0, 
+            p3 :        0 as c_float, 
+            p4 :        0, 
+            p5 :        0
+        };
+        if ptr::is_null(sf_render_win) {
             None
         }
         else {
-            let defView = unsafe { ffi::sfRenderWindow_getDefaultView(sfRenderWin) };
-            if ptr::is_null(defView) {
+            let def_view = unsafe { ffi::sfRenderWindow_getDefaultView(sf_render_win) };
+            if ptr::is_null(def_view) {
                 None
             }
             else {
                 Some (RenderWindow {
-                    render_window : sfRenderWin, 
-                    event : sfEv, 
-                    title_length : title.len(),
-                    current_view : @mut Wrappable::wrap(defView),
-                    default_view : @mut Wrappable::wrap(defView)
+                    render_window :     sf_render_win, 
+                    event :             sf_ev, 
+                    title_length :      title.len(),
+                    current_view :      @mut Wrappable::wrap(def_view),
+                    default_view :      @mut Wrappable::wrap(def_view)
                 })
             } 
         }

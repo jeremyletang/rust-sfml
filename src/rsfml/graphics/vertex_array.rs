@@ -51,13 +51,13 @@ pub mod ffi {
     use graphics::rect::FloatRect;
     
     pub type sfPrimitiveType = c_uint;
-    pub static SFPOINTS : sfPrimitiveType = 0;
-    pub static SFLINES : sfPrimitiveType = 1;
-    pub static SFLINESSTRIP : sfPrimitiveType = 2;
-    pub static SFTRIANGLES : sfPrimitiveType = 3;
-    pub static SFTRIANGLESSTRIP : sfPrimitiveType = 4;
-    pub static SFTRIANGLESFAN : sfPrimitiveType = 5;
-    pub static SFQUADS : sfPrimitiveType = 6;
+    pub static SFPOINTS :           sfPrimitiveType = 0;
+    pub static SFLINES :            sfPrimitiveType = 1;
+    pub static SFLINESSTRIP :       sfPrimitiveType = 2;
+    pub static SFTRIANGLES :        sfPrimitiveType = 3;
+    pub static SFTRIANGLESSTRIP :   sfPrimitiveType = 4;
+    pub static SFTRIANGLESFAN :     sfPrimitiveType = 5;
+    pub static SFQUADS :            sfPrimitiveType = 6;
 
     pub struct sfVertexArray {
         This : *c_void
