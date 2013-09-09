@@ -74,5 +74,37 @@ impl Vertex {
             tex_coords :    *tex_coords
         }
     }
+
+    pub fn default() -> Vertex {
+        Vertex {
+            position :      Vector2f{ x : 0., y : 0. },
+            color :         Color::white(),
+            tex_coords :    Vector2f { x : 0., y : 0. }
+        }
+    }
+
+    pub fn new_with_pos(position : &Vector2f) -> Vertex {
+        Vertex {
+            position :      *position,
+            color :         Color::white(),
+            tex_coords :    Vector2f { x : 0., y : 0. }
+        }
+    }
+
+    pub fn new_with_pos_color(position : &Vector2f, color : &Color) -> Vertex {
+        Vertex {
+            position :      *position,
+            color :         *color,
+            tex_coords :    Vector2f { x : 0., y : 0. }
+        }
+    }
+
+    pub fn new_with_pos_coords(position : &Vector2f, tex_coords : &Vector2f) -> Vertex {
+        Vertex {
+            position :      *position,
+            color :         Color::white(),
+            tex_coords :    *tex_coords
+        }
+    }
 }
 
