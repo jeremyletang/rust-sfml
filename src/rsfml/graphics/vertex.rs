@@ -63,7 +63,7 @@ impl Vertex {
     * # Arguments
     * * position - Position of the vertex
     * * color - Color of the vertex
-    * * texCoords - Texture coordinate of the vertex
+    * * tex_coords - Texture coordinate of the vertex
     *
     * Return a Vertex
     */
@@ -75,6 +75,16 @@ impl Vertex {
         }
     }
 
+    /**
+    * Create a new default Vertex
+    *
+    * # Default
+    * * position - (0., 0.)
+    * * color - white
+    * * tex_coords - (0., 0.)
+    *
+    * Return a Vertex
+    */
     pub fn default() -> Vertex {
         Vertex {
             position :      Vector2f{ x : 0., y : 0. },
@@ -83,6 +93,18 @@ impl Vertex {
         }
     }
 
+    /**
+    * Create a new Vertex whit a position
+    *
+    * # Arguments
+    * * position - Position of the vertex
+    *
+    * # Default
+    * * color - white
+    * * tex_coords - (0., 0.)
+    *
+    * Return a Vertex
+    */
     pub fn new_with_pos(position : &Vector2f) -> Vertex {
         Vertex {
             position :      *position,
@@ -91,6 +113,18 @@ impl Vertex {
         }
     }
 
+    /**
+    * Create a new Vertex with the position and the color
+    *
+    * # Arguments
+    * * position - Position of the vertex
+    * * color - Color of the vertex
+    *
+    * # Default
+    * * tex_coords - (0., 0)
+    *
+    * Return a Vertex
+    */
     pub fn new_with_pos_color(position : &Vector2f, color : &Color) -> Vertex {
         Vertex {
             position :      *position,
@@ -99,6 +133,18 @@ impl Vertex {
         }
     }
 
+    /**
+    * Create a new Vertex whit the position and the texture coordinates
+    *
+    * # Arguments
+    * * position - Position of the vertex
+    * * tex_coords - Texture coordinate of the vertex
+    *
+    * # Default
+    * * color - white
+    *
+    * Return a Vertex
+    */
     pub fn new_with_pos_coords(position : &Vector2f, tex_coords : &Vector2f) -> Vertex {
         Vertex {
             position :      *position,
