@@ -772,6 +772,20 @@ impl RenderWindow {
     }
     
     /**
+    * Change the size of the rendering region of a window
+    *
+    * # Arguments
+    * * size_x - New size x, in pixels
+    * * size_y - New size x, in pixels
+    */
+    #[fixed_stack_segment] #[inline(never)]
+    pub fn set_size2f(&mut self, size_x : u32, size_y : u32) -> () {
+        unsafe {
+            ffi::sfRenderWindow_setSize(self.render_window, Vector2u::new(size_x, size_y))
+        }
+    }
+
+    /**
     * Save the current OpenGL render states and matrices
     *
     * This function can be used when you mix SFML drawing

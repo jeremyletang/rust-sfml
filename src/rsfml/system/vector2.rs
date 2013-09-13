@@ -384,3 +384,69 @@ impl Eq for Vector2f {
         self.x != rhs.x || self.y != rhs.y 
     }
 }
+
+pub trait ToVec {
+    fn to_vector2f(&self) -> Vector2f;
+    fn to_vector2i(&self) -> Vector2i;
+    fn to_vector2u(&self) -> Vector2u;
+}
+
+impl ToVec for Vector2f {
+    fn to_vector2f(&self) -> Vector2f {
+        self.clone()
+    }
+
+    fn to_vector2i(&self) -> Vector2i {
+        Vector2i {
+            x : self.x as i32,
+            y : self.y as i32
+        }
+    }
+
+    fn to_vector2u(&self) -> Vector2u {
+        Vector2u {
+            x : self.x as u32,
+            y : self.x as u32
+        }
+    }
+}
+
+impl ToVec for Vector2i {
+    fn to_vector2f(&self) -> Vector2f {
+        Vector2f {
+            x : self.x as f32,
+            y : self.x as f32
+        }
+    }
+
+    fn to_vector2i(&self) -> Vector2i {
+         self.clone()
+    }
+
+    fn to_vector2u(&self) -> Vector2u {
+        Vector2u {
+            x : self.x as u32,
+            y : self.x as u32
+        }
+    }
+}
+
+impl ToVec for Vector2u {
+    fn to_vector2f(&self) -> Vector2f {
+        Vector2f {
+            x : self.x as f32,
+            y : self.x as f32
+        }
+    }
+
+    fn to_vector2i(&self) -> Vector2i {
+        Vector2i {
+            x : self.x as i32,
+            y : self.y as i32
+        }
+    }
+
+    fn to_vector2u(&self) -> Vector2u {
+        self.clone()
+    }
+}

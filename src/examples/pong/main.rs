@@ -26,6 +26,7 @@ fn start(argc: int, argv: **u8, crate_map: *u8) -> int {
     std::rt::start_on_main_thread(argc, argv, crate_map, main)
 }
 
+
 fn main () -> () {
     // Define some constants
     let pi : f32 = 3.14159;
@@ -120,7 +121,7 @@ fn main () -> () {
         loop {
             match window.poll_event() {
                 event::Closed => window.close(),
-                event::KeyPressed(key, _, _, _, _) => match key {
+                event::KeyPressed{code, alt, ctrl, _} => match code {
                     keyboard::Escape      => {window.close(); break},
                     keyboard::Space       => {
                         if !isPlaying {

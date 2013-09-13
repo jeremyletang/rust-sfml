@@ -212,9 +212,9 @@ impl VertexArray {
     * * type - Type of primitive
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn set_primitive_type(&mut self, primitiveType : PrimitiveType) -> () {
+    pub fn set_primitive_type(&mut self, primitive_type : PrimitiveType) -> () {
         unsafe {
-            match primitiveType {
+            match primitive_type {
                 primitive_type::Points              => ffi::sfVertexArray_setPrimitiveType(self.vertex_array, ffi::SFPOINTS),
                 primitive_type::Lines               => ffi::sfVertexArray_setPrimitiveType(self.vertex_array, ffi::SFLINES),
                 primitive_type::LinesStrip          => ffi::sfVertexArray_setPrimitiveType(self.vertex_array, ffi::SFLINESSTRIP),
@@ -248,7 +248,7 @@ impl VertexArray {
     /**
     * Get access to a vertex by its index
     *
-    * This function doesn't check \a index, it must be in range
+    * This function doesn't check index, it must be in range
     * [0, vertex count - 1]. The behaviour is undefined
     * otherwise.
     *
@@ -277,7 +277,6 @@ impl Wrappable<*ffi::sfVertexArray> for VertexArray {
     }
 }
 
-#[doc(hidden)]
 impl Drawable for VertexArray {
     fn draw_in_render_window(&self, render_window : &RenderWindow) -> () {
         render_window.draw_vertex_array(self)

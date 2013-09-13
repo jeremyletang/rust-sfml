@@ -491,6 +491,20 @@ impl RectangleShape {
     }
 
     /**
+    * Set the size of a rectangle shape
+    *
+    * # Arguments
+    * * size_x - The new size x of the rectangle
+    * * size_y - The new size y of the rectangle
+    */
+    #[fixed_stack_segment] #[inline(never)]
+    pub fn set_size2f(&mut self, size_x : f32, size_y : f32) -> () {
+        unsafe {
+            ffi::sfRectangleShape_setSize(self.rectangle_shape, Vector2f::new(size_x, size_y))
+        }
+    }
+
+    /**
     * Change the source texture of a rectangle shape
     *
     * The texture argument refers to a texture that must
