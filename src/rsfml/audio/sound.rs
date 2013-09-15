@@ -84,12 +84,12 @@ pub mod ffi {
 }
 
 #[doc(hidden)]
-pub struct Sound {
+pub struct Sound<'self> {
     priv sound :    *ffi::sfSound,
-    priv buffer :   @SoundBuffer
+    priv buffer :   &'self SoundBuffer
 }
 
-impl Sound {
+impl<'self> Sound<'self> {
     
     /**
     * Create a new Sound
@@ -97,7 +97,7 @@ impl Sound {
     * Return a new option to Sound object or None
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn new(buffer : @SoundBuffer) -> Option<Sound> {
+    pub fn new(buffer : &'self SoundBuffer) -> Option<Sound<'self>> {
         let s = unsafe {ffi::sfSound_create()};
         if s == ptr::null() {
             None
@@ -119,7 +119,7 @@ impl Sound {
     * Return a new option to Sound object which is a copy of sound or none
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn clone(&self) -> Option<Sound> {
+    pub fn clone(&self) -> Option<Sound<'self>> {
         let s = unsafe {ffi::sfSound_copy(self.sound)};
         if s == ptr::null() {
             None
@@ -407,7 +407,7 @@ impl Sound {
     * * buffer - Sound buffer to attach to the sound
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn set_buffer(&mut self, buffer : @SoundBuffer) -> () {
+    pub fn set_buffer(&mut self, buffer : &'self SoundBuffer) -> () {
         self.buffer = buffer;
         unsafe {
             ffi::sfSound_setBuffer(self.sound, buffer.unwrap())
@@ -419,7 +419,7 @@ impl Sound {
     *
     * Return an option to Sound buffer attached to the sound or None
     */
-    pub fn get_buffer(&self) -> @SoundBuffer {
+    pub fn get_buffer(&self) -> &'self SoundBuffer {
         self.buffer
     }
 
@@ -482,7 +482,7 @@ impl Sound {
 }
 
 #[unsafe_destructor]
-impl Drop for Sound {
+impl<'self> Drop for Sound<'self> {
     /* Destructor for class Sound. Destroy all the ressource.
     *
     */

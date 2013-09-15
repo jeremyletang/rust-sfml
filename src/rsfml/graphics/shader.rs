@@ -76,12 +76,12 @@ pub mod ffi {
 }
 
 #[doc(hidden)]
-pub struct Shader {
+pub struct Shader<'self> {
     priv shader :   *ffi::sfShader,
-    priv texture :  Option<@mut Texture>
+    priv texture :  Option<&'self Texture>
 }
 
-impl Shader {
+impl<'self> Shader<'self> {
     /**
     *  Load both the vertex and fragment shaders from files
     *
@@ -100,7 +100,7 @@ impl Shader {
     * Return a new Shader object
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn new_from_file(vertex_shader_filename : ~str, fragment_shader_filename : ~str) -> Option<Shader> {
+    pub fn new_from_file(vertex_shader_filename : ~str, fragment_shader_filename : ~str) -> Option<Shader<'self>> {
         let shader = unsafe { 
             let c_vertex_shader_filename = vertex_shader_filename.to_c_str().unwrap();
             let c_fragment_shader_filename = fragment_shader_filename.to_c_str().unwrap();
@@ -135,7 +135,7 @@ impl Shader {
     * Return a new Shader object
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn new_from_memory(vertex_shader : ~str, fragment_shader : ~str) -> Option<Shader> {
+    pub fn new_from_memory(vertex_shader : ~str, fragment_shader : ~str) -> Option<Shader<'self>> {
         let shader = unsafe { 
             let c_vertex_shader = vertex_shader.to_c_str().unwrap();
             let c_fragment_shader = fragment_shader.to_c_str().unwrap();
@@ -242,7 +242,7 @@ impl Shader {
     * * texture - Texture to assign
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn set_texture_parameter(&mut self, name : ~str, texture : @mut Texture) -> () {
+    pub fn set_texture_parameter(&mut self, name : ~str, texture : &'self Texture) -> () {
         self.texture = Some(texture);
         unsafe { 
             let c_name = name.to_c_str().unwrap();
@@ -368,7 +368,7 @@ impl Shader {
 }
 
 #[doc(hidden)]
-impl Wrappable<*ffi::sfShader> for Shader {
+impl<'self> Wrappable<*ffi::sfShader> for Shader<'self> {
     fn wrap(shader : *ffi::sfShader) -> Shader {
         Shader {
             shader :    shader,
@@ -382,7 +382,7 @@ impl Wrappable<*ffi::sfShader> for Shader {
 }
 
 #[unsafe_destructor]
-impl Drop for Shader {
+impl<'self> Drop for Shader<'self> {
     /**
     * Destroy an existing shader
     */

@@ -92,19 +92,19 @@ pub mod ffi {
 }
 
 #[doc(hidden)]
-pub struct Sprite {
+pub struct Sprite<'self> {
     priv sprite :   *ffi::sfSprite,
-    priv texture :  Option<@mut Texture>
+    priv texture :  Option<&'self Texture>
 }
 
-impl Sprite {
+impl<'self> Sprite<'self> {
     /**
     * Create a new sprite
     *
     * Return a new sfSprite object
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn new() -> Option<Sprite> {
+    pub fn new() -> Option<Sprite<'self>> {
         let sp = unsafe { ffi::sfSprite_create() };
         if ptr::is_null(sp) {
             None
@@ -124,7 +124,7 @@ impl Sprite {
     * Return a new sfSprite object
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn new_with_texture(texture : @mut Texture) -> Option<Sprite> {
+    pub fn new_with_texture(texture : &'self Texture) -> Option<Sprite<'self>> {
         let sp = unsafe { ffi::sfSprite_create() };
         if ptr::is_null(sp) {
             None
@@ -147,7 +147,7 @@ impl Sprite {
     * Return An option to the cloned sprite or none.
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn clone(&self) -> Option<Sprite> {
+    pub fn clone(&self) -> Option<Sprite<'self>> {
         let sp = unsafe { ffi::sfSprite_copy(self.sprite) };
         if ptr::is_null(sp) {
             None
@@ -225,7 +225,7 @@ impl Sprite {
     * * reset_rect - Should the texture rect be reset to the size of the new texture?
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn set_texture(&mut self, texture : @mut Texture, reset_rect : bool) -> (){
+    pub fn set_texture(&mut self, texture : &'self Texture, reset_rect : bool) -> (){
         self.texture = Some(texture);
         unsafe {
             match reset_rect {
@@ -276,7 +276,7 @@ impl Sprite {
     * Return an Option to the sprite's texture
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn get_texture(&self) -> Option<@mut Texture> {
+    pub fn get_texture(&self) -> Option<&'self Texture> {
         //let tex = unsafe { ffi::sfSprite_getTexture(self.sprite) };
         if self.texture.is_none() {
             None
@@ -603,7 +603,7 @@ impl Sprite {
 }
 
 #[doc(hidden)]
-impl Wrappable<*ffi::sfSprite> for Sprite {
+impl<'self> Wrappable<*ffi::sfSprite> for Sprite<'self> {
     fn wrap(sprite : *ffi::sfSprite) -> Sprite {
         Sprite { 
             sprite :    sprite,
@@ -618,7 +618,7 @@ impl Wrappable<*ffi::sfSprite> for Sprite {
 }
 
 #[doc(hidden)]
-impl Drawable for Sprite {
+impl<'self> Drawable for Sprite<'self> {
     /**
     * Draw the sprite in the RenderWindow
     */
@@ -642,7 +642,7 @@ impl Drawable for Sprite {
 
 
 #[unsafe_destructor]
-impl Drop for Sprite {
+impl<'self> Drop for Sprite<'self> {
     /**
     * Destroy an existing sprite
     */

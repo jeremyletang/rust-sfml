@@ -106,20 +106,20 @@ pub enum Style {
     Underlined =    4
 }
 
-pub struct Text {
+pub struct Text<'self> {
     priv text :             *ffi::sfText,
     priv string_length :    uint,
-    priv font :             Option<@Font>
+    priv font :             Option<&'self Font>
 }
 
-impl Text {
+impl<'self> Text<'self> {
     /**
     * Create a new text
     *
     * Return a new Option on Text object, or None
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn new() -> Option<Text> {
+    pub fn new() -> Option<Text<'self>> {
         let text  = unsafe { ffi::sfText_create() };
         if ptr::is_null(text) {
             None
@@ -146,7 +146,7 @@ impl Text {
     * Return a new Option on Text object, or None
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn new_init(string : ~str, font : @Font, character_size : uint) ->Option<Text> {
+    pub fn new_init(string : ~str, font : &'self Font, character_size : uint) ->Option<Text<'self>> {
         let text = unsafe { ffi::sfText_create() };
         if ptr::is_null(text) {
             None
@@ -242,7 +242,7 @@ impl Text {
     * font - New font
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn set_font(&mut self, font : @Font) -> () {
+    pub fn set_font(&mut self, font : &'self Font) -> () {
         self.font = Some(font);
         unsafe {
             ffi::sfText_setFont(self.text, font.unwrap())
@@ -349,7 +349,7 @@ impl Text {
     * The returned pointer is const, which means that you can't
     * modify the font when you retrieve it with this function.
     */
-    pub fn get_font(&self) -> Option<@Font> {
+    pub fn get_font(&self) -> Option<&'self Font> {
        self.font
     }
     
@@ -691,7 +691,7 @@ impl Text {
 }
 
 #[doc(hidden)]
-impl Wrappable<*ffi::sfText> for Text {
+impl<'self> Wrappable<*ffi::sfText> for Text<'self> {
     fn wrap(text : *ffi::sfText) -> Text {
         Text {
             text :          text,
@@ -705,7 +705,7 @@ impl Wrappable<*ffi::sfText> for Text {
 }
 
 #[doc(hidden)]
-impl Drawable for Text {
+impl<'self> Drawable for Text<'self> {
     fn draw_in_render_window(&self, render_window : &RenderWindow) -> () {
         render_window.draw_text(self)
     }
@@ -724,7 +724,7 @@ impl Drawable for Text {
 }
 
 #[unsafe_destructor]
-impl Drop for Text {
+impl<'self> Drop for Text<'self> {
     /**
     *   Destructor for class Text. Destroy all the ressource.
     */
