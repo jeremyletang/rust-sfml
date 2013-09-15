@@ -86,7 +86,7 @@ impl<'self> Shader<'self> {
     *  Load both the vertex and fragment shaders from files
     *
     * This function can load both the vertex and the fragment
-    * shaders, or only one of them: pass NULL if you don't want to load
+    * shaders, or only one of them: pass None if you don't want to load
     * either the vertex shader or the fragment shader.
     * The sources must be text files containing valid shaders
     * in GLSL language. GLSL is a C-like language dedicated to
@@ -94,16 +94,16 @@ impl<'self> Shader<'self> {
     * for it before writing your own shaders.
     *
     * # Arguments
-    * * vertexShaderFilename - Path of the vertex shader file to load, or NULL to skip this shader
-    * * fragmentShaderFilename - Path of the fragment shader file to load, or NULL to skip this shader
+    * * vertexShaderFilename - Some(Path) of the vertex shader file to load, or None to skip this shader
+    * * fragmentShaderFilename - Some(Path) of the fragment shader file to load, or None to skip this shader
     *
     * Return a new Shader object
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn new_from_file(vertex_shader_filename : ~str, fragment_shader_filename : ~str) -> Option<Shader<'self>> {
+    pub fn new_from_file(vertex_shader_filename : Option<~str>, fragment_shader_filename : Option<~str>) -> Option<Shader<'self>> {
         let shader = unsafe { 
-            let c_vertex_shader_filename = vertex_shader_filename.to_c_str().unwrap();
-            let c_fragment_shader_filename = fragment_shader_filename.to_c_str().unwrap();
+            let c_vertex_shader_filename = if vertex_shader_filename.is_none() { ptr::null() } else { vertex_shader_filename.unwrap().to_c_str().unwrap() };
+            let c_fragment_shader_filename = if fragment_shader_filename.is_none() { ptr::null() } else { fragment_shader_filename.unwrap().to_c_str().unwrap() };
             ffi::sfShader_createFromFile(c_vertex_shader_filename, c_fragment_shader_filename) 
         };
         if ptr::is_null(shader) {
@@ -129,16 +129,16 @@ impl<'self> Shader<'self> {
     * writing your own shaders.
     *
     * # Arguments
-    * * vertexShader - String containing the source code of the vertex shader, or NULL to skip this shader
-    * * fragmentShader - String containing the source code of the fragment shader, or NULL to skip this shader
+    * * vertexShader - Some(String) containing the source code of the vertex shader, or None to skip this shader
+    * * fragmentShader - Some(String) containing the source code of the fragment shader, or None to skip this shader
     *
     * Return a new Shader object
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn new_from_memory(vertex_shader : ~str, fragment_shader : ~str) -> Option<Shader<'self>> {
+    pub fn new_from_memory(vertex_shader : Option<~str>, fragment_shader : Option<~str>) -> Option<Shader<'self>> {
         let shader = unsafe { 
-            let c_vertex_shader = vertex_shader.to_c_str().unwrap();
-            let c_fragment_shader = fragment_shader.to_c_str().unwrap();
+            let c_vertex_shader = if vertex_shader.is_none() { ptr::null() } else { vertex_shader.unwrap().to_c_str().unwrap() };
+            let c_fragment_shader = if fragment_shader.is_none() { ptr::null() } else { fragment_shader.unwrap().to_c_str().unwrap() };
             ffi::sfShader_createFromFile(c_vertex_shader, c_fragment_shader) 
         };
         if ptr::is_null(shader) {
