@@ -136,7 +136,8 @@ impl Image {
     *
     * # Arguments
     * * filename - Path of the image file to load
-    * Return a new Image object, or NULL if it failed
+    *
+    * Return a new Some(Image) object, or None if it failed
     */
     #[fixed_stack_segment] #[inline(never)]
     pub fn new_from_file(filename : ~str) -> Option<Image> {

@@ -468,7 +468,6 @@ impl<'self> ConvexShape<'self> {
     * a pointer to the one that you passed to this function.
     * If the source texture is destroyed and the shape tries to
     * use it, the behaviour is undefined.
-    * texture can be NULL to disable texturing.
     * If reset_rect is true, the TextureRect property of
     * the shape is automatically adjusted to the size of the new
     * texture. If it is false, the texture rect is left unchanged.

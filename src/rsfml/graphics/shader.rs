@@ -121,7 +121,7 @@ impl<'self> Shader<'self> {
     * Load both the vertex and fragment shaders from source codes in memory
     *
     * This function can load both the vertex and the fragment
-    * shaders, or only one of them: pass NULL if you don't want to load
+    * shaders, or only one of them: pass None if you don't want to load
     * either the vertex shader or the fragment shader.
     * The sources must be valid shaders in GLSL language. GLSL is
     * a C-like language dedicated to OpenGL shaders; you'll
