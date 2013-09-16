@@ -30,8 +30,6 @@
 */
 
 use std::libc::{c_uint};
-use window::window::*;
-use system::vector2::Vector2i;
 use sfml_types::*;
 
 /// Mouse buttons
@@ -48,13 +46,10 @@ pub mod ffi {
     
     use std::libc::{c_uint};
     use sfml_types::SfBool;
-    use window::window::*;
-    use system::vector2::Vector2i;
 
     extern "C" {
         pub fn sfMouse_isButtonPressed(button : c_uint) -> SfBool;
-        pub fn sfMouse_getPosition(relativeTo : *ffi::sfWindow) -> Vector2i;
-        pub fn sfMouse_setPosition(position : Vector2i, relativeTo : *ffi::sfWindow) -> ();
+        
     }
 }
 
@@ -77,36 +72,4 @@ pub fn is_button_pressed(button : MouseButton) -> bool {
     }
 }
 
-/**
-*  Get the current position of the mouse
-*
-* This function returns the current position of the mouse cursor relative to the given window.
-*
-* # Arguments
-* * relativeTo - Reference Window
-*
-* Return the position of the mouse cursor, relative to the given window
-*/
-#[fixed_stack_segment] #[inline(never)]
-pub fn get_position(relativeTo : &Window) -> Vector2i {
-    unsafe {
-        ffi::sfMouse_getPosition(relativeTo.unwrap())
-    }
-}
 
-/**
-* Set the current position of the mouse
-*
-* This function sets the current position of the mouse cursor relative to the given window.
-*
-* # Arguments
-* * position - New position of the mouse
-* * relativeTo - Reference Window
-*
-*/
-#[fixed_stack_segment] #[inline(never)]
-pub fn set_position(position : &Vector2i, relativeTo : &Window) -> () {
-    unsafe {
-        ffi::sfMouse_setPosition(*position, relativeTo.unwrap())
-    }
-}

@@ -34,8 +34,8 @@ pub use self::context::Context;
 pub use self::context_settings::ContextSettings;
 pub use self::joystick::*;
 pub use self::keyboard::*;
-// pub use self::mouse::*;
-// pub use self::event::*;
+pub use self::mouse::*;
+pub use self::event::*;
 
 #[cfg(target_os="macos")]
 #[cfg(target_os="linux")]
