@@ -28,6 +28,15 @@
 *
 */
 
+// pub use self::window::Window;
+pub use self::video_mode::VideoMode;
+pub use self::context::Context;
+pub use self::context_settings::ContextSettings;
+pub use self::joystick::*;
+pub use self::keyboard::*;
+// pub use self::mouse::*;
+// pub use self::event::*;
+
 #[cfg(target_os="macos")]
 #[cfg(target_os="linux")]
 #[cfg(target_os="win32")]
@@ -37,10 +46,10 @@ mod platform {
 }
 
 
+pub mod window;
 pub mod video_mode;
 pub mod context;
 pub mod context_settings;
-pub mod window;
 pub mod joystick;
 pub mod keyboard;
 pub mod mouse;

@@ -29,6 +29,31 @@
 *
 */
 
+pub use self::render_states::RenderStates;
+pub use self::render_window::*;
+pub use self::rect::{FloatRect, IntRect};
+pub use self::texture::Texture;
+pub use self::blend_mode::*;
+pub use self::transform::Transform;
+pub use self::text::Text;
+pub use self::shader::Shader;
+pub use self::color::Color;
+pub use self::font::Font;
+pub use self::view::View;
+pub use self::image::Image;
+pub use self::sprite::Sprite;
+pub use self::circle_shape::CircleShape;
+pub use self::rectangle_shape::RectangleShape;
+pub use self::convex_shape::ConvexShape;
+pub use self::primitive_type::*;
+pub use self::vertex::Vertex;
+pub use self::transformable::Transformable;
+pub use self::glyph::Glyph;
+pub use self::render_texture::RenderTexture;
+pub use self::shape::Shape;
+pub use self::vertex_array::VertexArray;
+
+
 #[cfg(target_os="macos")]
 #[cfg(target_os="linux")]
 #[cfg(target_os="win32")]

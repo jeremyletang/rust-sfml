@@ -33,7 +33,7 @@ use std::libc::{c_uint};
 use std::ptr;
 
 use traits::wrappable::Wrappable;
-use audio::sound_buffer::SoundBuffer;
+use super::sound_buffer::SoundBuffer;
 
 #[doc(hidden)]
 pub mod ffi {

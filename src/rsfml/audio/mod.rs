@@ -28,6 +28,14 @@
 *
 */
 
+pub use self::sound_buffer::SoundBuffer;
+pub use self::listener::*;
+pub use self::sound_status::*;
+pub use self::music::Music;
+pub use self::sound::Sound;
+pub use self::sound_buffer_recorder::SoundBufferRecorder;
+pub use self::sound_recorder::SoundRecorder;
+
 #[cfg(target_os="macos")]
 #[cfg(target_os="linux")]
 #[cfg(target_os="win32")]

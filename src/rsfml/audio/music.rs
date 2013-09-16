@@ -35,7 +35,7 @@ use std::ptr;
 
 use traits::wrappable::Wrappable;
 use system::time::Time;
-use audio::sound_status;
+use super::sound_status;
 use system::vector3::Vector3f;
 use sfml_types::*;
 

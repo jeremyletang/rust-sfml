@@ -29,6 +29,12 @@
 *
 */
 
+pub use self::vector2::*;
+pub use self::vector3::*;
+pub use self::sleep::*;
+pub use self::time::Time;
+pub use self::clock::Clock;
+
 #[cfg(target_os="macos")]
 #[cfg(target_os="linux")]
 #[cfg(target_os="win32")]

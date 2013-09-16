@@ -29,6 +29,15 @@
 *
 */
 
+pub use self::ip_address::IpAddress;
+pub use self::packet::Packet;
+pub use self::socket_status::*;
+// pub use self::tcp_socket::*;
+// pub use self::udp_socket::*;
+// pub use self::tcp_listener::*;
+pub use self::ftp::*;
+pub use self::http::*;
+
 #[cfg(target_os="macos")]
 #[cfg(target_os="linux")]
 #[cfg(target_os="win32")]
