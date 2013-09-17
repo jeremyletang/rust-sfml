@@ -259,7 +259,7 @@ impl ListingResponse {
 
 impl Drop for ListingResponse {
     #[fixed_stack_segment] #[inline(never)]
-    fn drop(&self) -> () {
+    fn drop(&mut self) -> () {
         unsafe {
             ffi::sfFtpListingResponse_destroy(self.listing_response)
         }
@@ -322,7 +322,7 @@ impl DirectoryResponse {
 
 impl Drop for DirectoryResponse {
     #[fixed_stack_segment] #[inline(never)]
-    fn drop(&self) -> () {
+    fn drop(&mut self) -> () {
         unsafe {
             ffi::sfFtpDirectoryResponse_destroy(self.directory_response)
         }
@@ -373,7 +373,7 @@ impl Response {
 
 impl Drop for Response {
     #[fixed_stack_segment] #[inline(never)]
-    fn drop(&self) -> () {
+    fn drop(&mut self) -> () {
         unsafe {
             ffi::sfFtpResponse_destroy(self.response)
         }
@@ -682,7 +682,7 @@ impl Ftp {
 
 impl Drop for Ftp {
     #[fixed_stack_segment] #[inline(never)]
-    fn drop(&self) -> () {
+    fn drop(&mut self) -> () {
         unsafe {
             ffi::sfFtp_destroy(self.ftp)
         }

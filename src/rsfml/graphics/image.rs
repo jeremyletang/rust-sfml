@@ -365,7 +365,7 @@ impl Drop for Image {
     * Destroy an existing image
     */
     #[fixed_stack_segment] #[inline(never)]
-    fn drop(&self) -> () {
+    fn drop(&mut self) -> () {
         unsafe {
             ffi::sfImage_destroy(self.image)
         }

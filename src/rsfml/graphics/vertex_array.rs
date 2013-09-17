@@ -297,7 +297,7 @@ impl Drawable for VertexArray {
 
 impl Drop for VertexArray {
     #[fixed_stack_segment] #[inline(never)]
-    fn drop(&self) -> () {
+    fn drop(&mut self) -> () {
         unsafe {
             ffi::sfVertexArray_destroy(self.vertex_array)
         }

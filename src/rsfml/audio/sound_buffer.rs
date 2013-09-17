@@ -228,7 +228,7 @@ impl Drop for SoundBuffer {
     *   Destructor for class SoundBuffer. Destroy all the ressource.
     */
     #[fixed_stack_segment] #[inline(never)]
-    fn drop(&self) {
+    fn drop(&mut self) {
         if self.dropable {
             unsafe {
                 ffi::sfSoundBuffer_destroy(self.sound_buffer);

@@ -293,7 +293,7 @@ impl Wrappable<*ffi::sfUdpSocket> for UdpSocket {
 
 impl Drop for UdpSocket {
     #[fixed_stack_segment] #[inline(never)]
-    fn drop(&self) -> () {
+    fn drop(&mut self) -> () {
         unsafe {
             ffi::sfUdpSocket_destroy(self.socket)
         }

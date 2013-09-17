@@ -387,7 +387,7 @@ impl<'self> Drop for Shader<'self> {
     * Destroy an existing shader
     */
     #[fixed_stack_segment] #[inline(never)]
-    fn drop(&self) -> () {
+    fn drop(&mut self) -> () {
         unsafe {
             ffi::sfShader_destroy(self.shader)
         }

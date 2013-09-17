@@ -137,7 +137,7 @@ impl Drop for SoundRecorder {
     *   Destructor for class SoundRecorder. Destroy all the ressource.
     */
     #[fixed_stack_segment] #[inline(never)]
-    fn drop(&self) {
+    fn drop(&mut self) {
         unsafe {
             ffi::sfSoundRecorder_destroy(self.sound_recorder);
         }

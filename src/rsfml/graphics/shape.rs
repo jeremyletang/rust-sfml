@@ -738,7 +738,7 @@ impl<'self> Drawable for Shape<'self> {
 #[unsafe_destructor]
 impl<'self> Drop for Shape<'self> {
     #[fixed_stack_segment] #[inline(never)]
-    fn drop(&self) -> () {
+    fn drop(&mut self) -> () {
         unsafe {
             ffi::sfShape_destroy(self.shape)
         }

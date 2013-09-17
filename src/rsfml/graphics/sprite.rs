@@ -647,7 +647,7 @@ impl<'self> Drop for Sprite<'self> {
     * Destroy an existing sprite
     */
     #[fixed_stack_segment] #[inline(never)]
-    fn drop(&self) -> () {
+    fn drop(&mut self) -> () {
         unsafe {
             ffi::sfSprite_destroy(self.sprite)
         }

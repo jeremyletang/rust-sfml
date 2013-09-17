@@ -111,7 +111,7 @@ impl Drop for Clock {
     * Destroy a clock
     */
     #[fixed_stack_segment] #[inline(never)]
-    fn drop(&self) {
+    fn drop(&mut self) {
         unsafe {
             ffi::sfClock_destroy(self.clock)
         }

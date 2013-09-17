@@ -321,7 +321,7 @@ impl Wrappable<*ffi::sfTransformable> for Transformable {
 
 impl Drop for Transformable {
     #[fixed_stack_segment] #[inline(never)]
-    fn drop(&self) -> () {
+    fn drop(&mut self) -> () {
         unsafe {
             ffi::sfTransformable_destroy(self.transformable)
         }

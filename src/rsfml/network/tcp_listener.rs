@@ -179,7 +179,7 @@ impl TcpListener {
 
 impl Drop for TcpListener {
     #[fixed_stack_segment] #[inline(never)]
-    fn drop(&self) -> () {
+    fn drop(&mut self) -> () {
         unsafe {
             ffi::sfTcpListener_destroy(self.listener)
         }

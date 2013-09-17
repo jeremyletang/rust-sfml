@@ -206,7 +206,7 @@ impl Drop for Font {
     * Destroy an existing font
     */
     #[fixed_stack_segment] #[inline(never)]
-    fn drop(&self) -> () {
+    fn drop(&mut self) -> () {
         if self.dropable {
             unsafe {
                 ffi::sfFont_destroy(self.font)

@@ -601,7 +601,7 @@ impl RenderTexture {
 
 impl Drop for RenderTexture {
     #[fixed_stack_segment] #[inline(never)]
-    fn drop(&self) -> () {
+    fn drop(&mut self) -> () {
         unsafe {
             ffi::sfRenderTexture_destroy(self.render_texture)
         }

@@ -392,7 +392,7 @@ impl Wrappable<*ffi::sfView> for View {
 impl Drop for View {
     /// Destructor for class View
     #[fixed_stack_segment] #[inline(never)]
-    fn drop(&self) -> () {
+    fn drop(&mut self) -> () {
       if self.dropable
       {
         unsafe {

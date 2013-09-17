@@ -729,7 +729,7 @@ impl<'self> Drop for Text<'self> {
     *   Destructor for class Text. Destroy all the ressource.
     */
     #[fixed_stack_segment] #[inline(never)]
-    fn drop(&self) {
+    fn drop(&mut self) {
         unsafe {
             ffi::sfText_destroy(self.text);
         }

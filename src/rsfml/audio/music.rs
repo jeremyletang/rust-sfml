@@ -492,7 +492,7 @@ impl Drop for Music {
     *   Destructor for class Music. Destroy all the ressource.
     */
     #[fixed_stack_segment] #[inline(never)]
-    fn drop(&self) {
+    fn drop(&mut self) {
         unsafe {
             ffi::sfMusic_destroy(self.music);
         }

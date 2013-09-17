@@ -299,7 +299,7 @@ impl Wrappable<*ffi::sfTcpSocket> for TcpSocket {
 
 impl Drop for TcpSocket {
     #[fixed_stack_segment] #[inline(never)]
-    fn drop(&self) -> () {
+    fn drop(&mut self) -> () {
         unsafe {
             ffi::sfTcpSocket_destroy(self.socket)
         }

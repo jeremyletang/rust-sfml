@@ -92,7 +92,7 @@ impl Drop for Context {
     *   Destructor for class Context.
     */
     #[fixed_stack_segment] #[inline(never)]
-    fn drop(&self) {
+    fn drop(&mut self) {
         unsafe {
             ffi::sfContext_destroy(self.cont);
         }

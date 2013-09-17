@@ -782,7 +782,7 @@ impl<'self> Drawable for RectangleShape<'self> {
 #[unsafe_destructor]
 impl<'self> Drop for RectangleShape<'self> {
     #[fixed_stack_segment] #[inline(never)]
-    fn drop(&self) -> () {
+    fn drop(&mut self) -> () {
         unsafe {
             ffi::sfRectangleShape_destroy(self.rectangle_shape)
         }

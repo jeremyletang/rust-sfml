@@ -244,7 +244,7 @@ impl Request {
 
 impl Drop for Request {
     #[fixed_stack_segment] #[inline(never)]
-    fn drop(&self) -> () {
+    fn drop(&mut self) -> () {
         unsafe {
             ffi::sfHttpRequest_destroy(self.request)
         }
@@ -334,7 +334,7 @@ impl Response {
 
 impl Drop for Response {
     #[fixed_stack_segment] #[inline(never)]
-    fn drop(&self) -> () {
+    fn drop(&mut self) -> () {
         unsafe {
             ffi::sfHttpResponse_destroy(self.response)
         }
@@ -403,7 +403,7 @@ impl Http {
 
 impl Drop for Http {
     #[fixed_stack_segment] #[inline(never)]
-    fn drop(&self) -> () {
+    fn drop(&mut self) -> () {
         unsafe {
             ffi::sfHttp_destroy(self.http)
         }

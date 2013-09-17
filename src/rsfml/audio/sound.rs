@@ -487,7 +487,7 @@ impl<'self> Drop for Sound<'self> {
     *
     */
     #[fixed_stack_segment] #[inline(never)]
-    fn drop(&self) {
+    fn drop(&mut self) {
         unsafe {
             ffi::sfSound_destroy(self.sound);
         }

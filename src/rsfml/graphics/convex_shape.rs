@@ -760,7 +760,7 @@ impl<'self> Drawable for ConvexShape<'self> {
 #[unsafe_destructor]
 impl<'self> Drop for ConvexShape<'self> {
     #[fixed_stack_segment] #[inline(never)]
-    fn drop(&self) -> () {
+    fn drop(&mut self) -> () {
         unsafe {
             ffi::sfConvexShape_destroy(self.convex_shape)
         }

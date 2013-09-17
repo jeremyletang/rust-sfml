@@ -790,7 +790,7 @@ impl<'self> Drop for CircleShape<'self> {
     * Destroy an existing CircleShape
     */
     #[fixed_stack_segment] #[inline(never)]
-    fn drop(&self) {
+    fn drop(&mut self) {
         unsafe {
             ffi::sfCircleShape_destroy(self.circle_shape)
         }

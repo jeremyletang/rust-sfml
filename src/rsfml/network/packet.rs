@@ -406,7 +406,7 @@ impl Wrappable<*ffi::sfPacket> for Packet {
 
 impl Drop for Packet {
     #[fixed_stack_segment] #[inline(never)]
-    fn drop(&self) -> () {
+    fn drop(&mut self) -> () {
         unsafe {
             ffi::sfPacket_destroy(self.packet)
         }

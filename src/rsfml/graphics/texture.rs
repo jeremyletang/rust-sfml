@@ -436,7 +436,7 @@ impl Drop for Texture {
     * Destroy an existing texture
     */
     #[fixed_stack_segment] #[inline(never)]
-    fn drop(&self) {
+    fn drop(&mut self) {
         if self.dropable {
             unsafe {
                 ffi::sfTexture_destroy(self.texture)
