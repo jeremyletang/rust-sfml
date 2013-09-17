@@ -32,7 +32,7 @@
        uuid = "4F3334F2-A32B-4460-A63A-9B56C98D1D78",
        url = "http://https://github.com/JeremyLetang/rust-sfml")];
 
-#[comment = "Rust binding for sfml"];
+#[desc = "Rust binding for sfml"];
 #[license = "Zlib/png"];
 #[crate_type = "lib"];
 

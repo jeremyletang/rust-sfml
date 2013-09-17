@@ -109,15 +109,21 @@ impl<'self> ConvexShape<'self> {
     /**
     * Create a new convex shape
     *
+    * # Arguments
+    * * points_count - The number of point for the convex shape
+    *
     * Return a new convexShape object
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn new() -> Option<ConvexShape<'self>> {
+    pub fn new(points_count : uint) -> Option<ConvexShape<'self>> {
         let shape = unsafe { ffi::sfConvexShape_create() };
         if ptr::is_null(shape) {
             None
         }
         else {
+            unsafe {
+                ffi::sfConvexShape_setPointCount(shape, points_count as c_uint);
+            }
             Some(ConvexShape {
                 convex_shape :  shape,
                 texture :       None
@@ -128,10 +134,14 @@ impl<'self> ConvexShape<'self> {
     /**
     * Create a new convex shape with a texture
     *
+    * # Arguments
+    * * texture - The texture to apply to the convex shape
+    * * points_count - The number of point for the convex shape
+    *
     * Return a new convexShape object
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn new_with_texture(texture : &'self Texture) -> Option<ConvexShape<'self>> {
+    pub fn new_with_texture(texture : &'self Texture, points_count : uint) -> Option<ConvexShape<'self>> {
         let shape = unsafe { ffi::sfConvexShape_create() };
         if ptr::is_null(shape) {
             None
@@ -139,6 +149,7 @@ impl<'self> ConvexShape<'self> {
         else {
             unsafe {
                 ffi::sfConvexShape_setTexture(shape, texture.unwrap(), SFTRUE);
+                ffi::sfConvexShape_setPointCount(shape, points_count as c_uint)
             }
             Some(ConvexShape {
                 convex_shape :  shape,
