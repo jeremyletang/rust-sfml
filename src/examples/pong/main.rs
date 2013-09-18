@@ -53,7 +53,7 @@ fn main () -> () {
         Some(sound)     => sound,
         None            => fail!("Error cannot create sound.")
     };
-//    ballSound.set_buffer(&ballSoundBuffer);
+    //    ballSound.set_buffer(&ballSoundBuffer);
     ballSound.set_volume(100.);
 
     // Create the left paddle
@@ -121,7 +121,7 @@ fn main () -> () {
         loop {
             match window.poll_event() {
                 event::Closed => window.close(),
-                event::KeyPressed{code, alt, ctrl, _} => match code {
+                event::KeyPressed{code, _} => match code {
                     keyboard::Escape      => {window.close(); break},
                     keyboard::Space       => {
                         if !isPlaying {
