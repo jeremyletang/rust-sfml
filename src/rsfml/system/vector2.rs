@@ -406,7 +406,7 @@ impl ToVec for Vector2f {
     fn to_vector2u(&self) -> Vector2u {
         Vector2u {
             x : self.x as u32,
-            y : self.x as u32
+            y : self.y as u32
         }
     }
 }
@@ -415,7 +415,7 @@ impl ToVec for Vector2i {
     fn to_vector2f(&self) -> Vector2f {
         Vector2f {
             x : self.x as f32,
-            y : self.x as f32
+            y : self.y as f32
         }
     }
 
@@ -426,7 +426,7 @@ impl ToVec for Vector2i {
     fn to_vector2u(&self) -> Vector2u {
         Vector2u {
             x : self.x as u32,
-            y : self.x as u32
+            y : self.y as u32
         }
     }
 }
@@ -435,7 +435,7 @@ impl ToVec for Vector2u {
     fn to_vector2f(&self) -> Vector2f {
         Vector2f {
             x : self.x as f32,
-            y : self.x as f32
+            y : self.y as f32
         }
     }
 
