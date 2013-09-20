@@ -6,12 +6,8 @@ extern mod rsfml;
 
 use std::io;
 
-use rsfml::audio::sound_buffer::SoundBuffer;
-use rsfml::audio::sound::*;
-use rsfml::audio::music::*;
-use rsfml::system::sleep::sleep;
-use rsfml::system::time::Time;
-use rsfml::audio::sound_status;
+use rsfml::audio::{SoundBuffer, Sound, Music, sound_status};
+use rsfml::system::{sleep, Time};
 
 /* Play a Sound */
 fn play_sound() -> () {

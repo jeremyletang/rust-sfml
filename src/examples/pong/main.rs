@@ -4,21 +4,10 @@
 
 extern mod rsfml;
 
-use rsfml::graphics::render_window::*;
-use rsfml::window::video_mode::*;
-use rsfml::window::context_settings::*;
-use rsfml::system::vector2::*;
-use rsfml::window::event;
-use rsfml::graphics::text;
-use rsfml::graphics::color::*;
-use rsfml::graphics::font;
-use rsfml::audio::sound_buffer::*;
-use rsfml::audio::sound::*;
-use rsfml::graphics::rectangle_shape::*;
-use rsfml::graphics::circle_shape::*;
-use rsfml::system::clock::*;
-use rsfml::system::time::*;
-use rsfml::window::keyboard;
+use rsfml::graphics::{RenderWindow, sfClose, Color, Font, Text, RectangleShape, CircleShape, };
+use rsfml::window::{VideoMode, ContextSettings, event, keyboard};
+use rsfml::system::{Vector2f, Clock, Time};
+use rsfml::audio::{SoundBuffer, Sound};
 
 #[cfg(target_os="macos")]
 #[start]
@@ -90,13 +79,13 @@ fn main () -> () {
     ball.set_origin(~Vector2f::new(ballRadius / 2., ballRadius / 2.));
 
     // Load the text font
-    let font : @font::Font = match font::Font::new_from_file(~"resources/sansation.ttf") {
+    let font : @Font = match Font::new_from_file(~"resources/sansation.ttf") {
         Some(font)    => @font,
         None()          => fail!("Error, cannot load font")
     };
 
      // Initialize the pause message
-    let mut pauseMessage : text::Text = match text::Text::new() {
+    let mut pauseMessage : Text = match Text::new() {
         Some(text) => text,
         None => fail!(~"Error on creating text")
     };

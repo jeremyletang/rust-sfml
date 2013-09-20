@@ -7,12 +7,8 @@ extern mod rsfml;
 use std::io;
 use std::num::strconv;
 
-use rsfml::audio::sound::*;
-use rsfml::audio::sound_recorder::SoundRecorder;
-use rsfml::audio::sound_buffer_recorder::SoundBufferRecorder;
-use rsfml::audio::sound_status;
-use rsfml::system::sleep::sleep;
-use rsfml::system::time::Time;
+use rsfml::audio::{Sound, SoundRecorder, SoundBufferRecorder, sound_status};
+use rsfml::system::{sleep, Time};
 
 fn main() -> () {
     

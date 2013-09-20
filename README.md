@@ -53,13 +53,9 @@ Here is a short example, draw a circle shape and display it.
 ```Rust
 extern mod rsfml;
 
-use rsfml::system::vector2::Vector2f;
-use rsfml::window::context_settings::ContextSettings;
-use rsfml::window::video_mode::VideoMode;
-use rsfml::window::event;
-use rsfml::graphics::render_window::*;
-use rsfml::graphics::circle_shape::CircleShape;
-use rsfml::graphics::color::Color;
+use rsfml::system::Vector2f;
+use rsfml::window::{ContextSettings, VideoMode, Event};
+use rsfml::graphics::{RenderWindow, sfClose, CircleShape, Color};
 
 #[start]
 fn start(argc: int, argv: **u8, crate_map: *u8) -> int {
