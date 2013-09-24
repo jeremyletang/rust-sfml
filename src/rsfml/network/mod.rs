@@ -38,6 +38,7 @@ pub use self::socket_status::*;
 pub use self::ftp::*;
 pub use self::http::*;
 
+#[doc(hidden)]
 #[cfg(target_os="macos")]
 #[cfg(target_os="linux")]
 #[cfg(target_os="win32")]

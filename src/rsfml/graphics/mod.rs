@@ -53,7 +53,7 @@ pub use self::render_texture::RenderTexture;
 pub use self::shape::Shape;
 pub use self::vertex_array::VertexArray;
 
-
+#[doc(hidden)]
 #[cfg(target_os="macos")]
 #[cfg(target_os="linux")]
 #[cfg(target_os="win32")]

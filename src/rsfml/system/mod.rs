@@ -35,6 +35,7 @@ pub use self::sleep::*;
 pub use self::time::Time;
 pub use self::clock::Clock;
 
+#[doc(hidden)]
 #[cfg(target_os="macos")]
 #[cfg(target_os="linux")]
 #[cfg(target_os="win32")]

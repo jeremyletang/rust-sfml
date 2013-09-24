@@ -37,6 +37,7 @@ pub use self::keyboard::*;
 pub use self::mouse::*;
 pub use self::event::*;
 
+#[doc(hidden)]
 #[cfg(target_os="macos")]
 #[cfg(target_os="linux")]
 #[cfg(target_os="win32")]

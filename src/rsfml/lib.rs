@@ -44,4 +44,5 @@ pub mod window;
 pub mod audio;
 pub mod graphics;
 pub mod network;
+#[doc(hidden)]
 mod sfml_types;
