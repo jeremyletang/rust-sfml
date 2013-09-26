@@ -91,7 +91,6 @@ pub mod ffi {
     }
 }
 
-#[doc(hidden)]
 pub struct Sprite<'self> {
     priv sprite :   *ffi::sfSprite,
     priv texture :  Option<&'self Texture>
@@ -602,7 +601,6 @@ impl<'self> Sprite<'self> {
 
 }
 
-#[doc(hidden)]
 impl<'self> Wrappable<*ffi::sfSprite> for Sprite<'self> {
     fn wrap(sprite : *ffi::sfSprite) -> Sprite {
         Sprite { 
@@ -617,7 +615,6 @@ impl<'self> Wrappable<*ffi::sfSprite> for Sprite<'self> {
     
 }
 
-#[doc(hidden)]
 impl<'self> Drawable for Sprite<'self> {
     /**
     * Draw the sprite in the RenderWindow

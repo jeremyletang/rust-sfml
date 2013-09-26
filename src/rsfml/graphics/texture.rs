@@ -79,7 +79,6 @@ pub mod ffi {
     }
 }
 
-#[doc(hidden)]
 pub struct Texture {
     priv texture :  *ffi::sfTexture,
     priv dropable : bool
@@ -417,7 +416,6 @@ impl Texture {
     }
 }
 
-#[doc(hidden)]
 impl Wrappable<*ffi::sfTexture> for Texture {
     fn unwrap(&self) -> *ffi::sfTexture {
         self.texture

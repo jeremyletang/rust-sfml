@@ -63,7 +63,6 @@ pub mod ffi {
     }
 }
 
-#[doc(hidden)]
 pub struct Font {
     priv font :     *ffi::sfFont,
     priv dropable : bool
@@ -187,7 +186,6 @@ impl Font {
     }
 }
 
-#[doc(hidden)]
 impl Wrappable<*ffi::sfFont> for Font {
     fn wrap(font : *ffi::sfFont) -> Font {
         Font {

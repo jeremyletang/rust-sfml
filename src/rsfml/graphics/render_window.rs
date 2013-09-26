@@ -150,7 +150,6 @@ pub enum WindowStyle {
     sfDefaultStyle =    7
 }
 
-#[doc(hidden)]
 pub struct RenderWindow {
     priv render_window :    *ffi::sfRenderWindow,
     priv event :            ffi::sfEvent,

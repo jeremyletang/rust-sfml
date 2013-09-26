@@ -217,7 +217,6 @@ impl IpAddress {
     }
 }
 
-#[doc(hidden)]
 impl Wrappable<ffi::sfIpAddress> for IpAddress {
     fn wrap(ip : ffi::sfIpAddress) -> IpAddress {
         IpAddress {

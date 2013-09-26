@@ -59,7 +59,6 @@ pub mod ffi {
     }
 }
 
-#[doc(hidden)]
 pub struct SoundBuffer {
     priv sound_buffer : *ffi::sfSoundBuffer,
     priv dropable :     bool
@@ -208,7 +207,6 @@ impl SoundBuffer {
     }
 }
 
-#[doc(hidden)]
 impl Wrappable<*ffi::sfSoundBuffer> for SoundBuffer {
     fn wrap(buffer : *ffi::sfSoundBuffer) -> SoundBuffer {
         SoundBuffer {

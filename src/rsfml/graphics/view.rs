@@ -68,7 +68,6 @@ pub mod ffi {
     }
 }
 
-#[doc(hidden)]
 pub struct View {
     priv dropable : bool,
     priv view :     *ffi::sfView
@@ -375,7 +374,6 @@ impl View {
     }
 }
 
-#[doc(hidden)]
 impl Wrappable<*ffi::sfView> for View {
     fn wrap(view : *ffi::sfView) -> View {
         View { 

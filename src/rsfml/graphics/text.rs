@@ -690,7 +690,6 @@ impl<'self> Text<'self> {
     }
 }
 
-#[doc(hidden)]
 impl<'self> Wrappable<*ffi::sfText> for Text<'self> {
     fn wrap(text : *ffi::sfText) -> Text {
         Text {
@@ -704,7 +703,6 @@ impl<'self> Wrappable<*ffi::sfText> for Text<'self> {
     }
 }
 
-#[doc(hidden)]
 impl<'self> Drawable for Text<'self> {
     fn draw_in_render_window(&self, render_window : &RenderWindow) -> () {
         render_window.draw_text(self)

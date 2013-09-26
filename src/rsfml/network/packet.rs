@@ -391,7 +391,6 @@ impl Packet {
     }
 }
 
-#[doc(hidden)]
 impl Wrappable<*ffi::sfPacket> for Packet {
     fn unwrap(&self) -> *ffi::sfPacket {
         self.packet

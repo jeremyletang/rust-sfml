@@ -75,7 +75,6 @@ pub mod ffi {
    }
 }
 
-#[doc(hidden)]
 pub struct Shader<'self> {
     priv shader :   *ffi::sfShader,
     priv texture :  Option<&'self Texture>
@@ -367,7 +366,6 @@ impl<'self> Shader<'self> {
 
 }
 
-#[doc(hidden)]
 impl<'self> Wrappable<*ffi::sfShader> for Shader<'self> {
     fn wrap(shader : *ffi::sfShader) -> Shader {
         Shader {

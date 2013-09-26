@@ -53,7 +53,6 @@ pub mod ffi{
     }
 }
 
-#[doc(hidden)]
 pub struct SoundRecorder {
     priv sound_recorder : *ffi::sfSoundRecorder
 }

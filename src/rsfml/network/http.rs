@@ -118,17 +118,14 @@ pub enum Status {
     ConnectionFailed = 1001  //< Connection with server failed
 }
 
-#[doc(hidden)]
 pub struct Request {
     priv request : *ffi::sfHttpRequest
 }
 
-#[doc(hidden)]
 pub struct Response {
     priv response : *ffi::sfHttpResponse
 }
 
-#[doc(hidden)]
 pub struct Http {
     priv http : *ffi::sfHttp
 }

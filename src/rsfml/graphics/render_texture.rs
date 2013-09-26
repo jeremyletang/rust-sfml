@@ -106,7 +106,6 @@ pub mod ffi {
     }
 }
 
-#[doc(hidden)]
 pub struct RenderTexture {
     render_texture : *ffi::sfRenderTexture
 }

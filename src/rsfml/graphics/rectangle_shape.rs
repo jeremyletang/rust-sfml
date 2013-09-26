@@ -98,7 +98,6 @@ pub mod ffi {
     }
 }
 
-#[doc(hidden)]
 pub struct RectangleShape<'self> {
     priv rectangle_shape :  *ffi::sfRectangleShape,
     priv texture :          Option<&'self Texture>
@@ -747,7 +746,6 @@ impl<'self> RectangleShape<'self> {
     }
 }
 
-#[doc(hidden)]
 impl<'self> Wrappable<*ffi::sfRectangleShape> for RectangleShape<'self> {
     fn wrap(rectangle_shape : *ffi::sfRectangleShape) -> RectangleShape {
         RectangleShape {

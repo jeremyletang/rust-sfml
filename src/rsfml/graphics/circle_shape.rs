@@ -100,7 +100,6 @@ pub mod ffi {
     }
 }
 
-#[doc(hidden)]
 pub struct CircleShape<'self> {
     priv circle_shape : *ffi::sfCircleShape,
     priv texture :      Option<&'self Texture>
@@ -750,7 +749,6 @@ impl<'self> CircleShape<'self> {
 
 }
 
-#[doc(hidden)]
 impl<'self> Wrappable<*ffi::sfCircleShape> for CircleShape<'self> {
     #[doc(hidden)]
     fn wrap(circle_shape : *ffi::sfCircleShape) -> CircleShape {

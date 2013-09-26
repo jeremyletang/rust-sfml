@@ -73,7 +73,6 @@ pub mod ffi {
     }
 }
 
-#[doc(hidden)]
 pub struct Image {
     priv image : *ffi::sfImage
 }
@@ -347,7 +346,6 @@ impl Image {
 
 }
 
-#[doc(hidden)]
 impl Wrappable<*ffi::sfImage> for Image {
     fn wrap(image : *ffi::sfImage) -> Image {
         Image {

@@ -68,7 +68,6 @@ pub mod ffi {
     }
 }
 
-#[doc(hidden)]
 pub struct UdpSocket {
     priv socket : *ffi::sfUdpSocket
 }
@@ -278,7 +277,6 @@ impl UdpSocket {
     }
 }
 
-#[doc(hidden)]
 impl Wrappable<*ffi::sfUdpSocket> for UdpSocket {
     fn wrap(socket : *ffi::sfUdpSocket) -> UdpSocket {
         UdpSocket {

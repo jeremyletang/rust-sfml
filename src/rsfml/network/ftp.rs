@@ -166,24 +166,20 @@ pub enum Status {
     InvalidFile      = 1003  // Invalid file to upload / download
 }
 
-#[doc(hidden)]
 pub struct Ftp {
     priv ftp : *ffi::sfFtp
 }
 
 
-#[doc(hidden)]
 pub struct Response{
     priv response : *ffi::sfFtpResponse
 }
 
-#[doc(hidden)]
 pub struct ListingResponse{
     priv listing_response : *ffi::sfFtpListingResponse
 }
 
 
-#[doc(hidden)]
 pub struct DirectoryResponse{
     priv directory_response : *ffi::sfFtpDirectoryResponse
 }

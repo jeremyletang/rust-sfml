@@ -24,9 +24,6 @@
 
 /*!
 * Utility Class providing 3 dimensional vectors for float.
-* 
-* Create your own by implementing the Trait Vector3
-*
 */
 
 pub use std::libc::{c_float};

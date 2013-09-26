@@ -50,7 +50,7 @@ pub mod ffi {
 }
 
 /**
-* brief Define the states used for drawing to a RenderTarget
+* Define the states used for drawing to a RenderTarget
 */
 pub struct RenderStates<'self> {
     priv sfRenderStates :   ffi::sfRenderStates,

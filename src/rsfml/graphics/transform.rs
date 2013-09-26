@@ -61,7 +61,6 @@ pub mod ffi {
     }
 }
 
-#[doc(hidden)]
 pub struct Transform {
         a00 : f32,
         a01 : f32,

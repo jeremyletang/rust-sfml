@@ -71,7 +71,6 @@ pub mod ffi {
 
 }
 
-#[doc(hidden)]
 pub struct TcpSocket {
     priv socket : *ffi::sfTcpSocket
 }
@@ -284,7 +283,6 @@ impl TcpSocket {
     }
 }
 
-#[doc(hidden)]
 impl Wrappable<*ffi::sfTcpSocket> for TcpSocket {
     fn wrap(socket : *ffi::sfTcpSocket) -> TcpSocket {
         TcpSocket {

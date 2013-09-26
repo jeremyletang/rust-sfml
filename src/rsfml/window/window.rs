@@ -123,7 +123,6 @@ pub enum WindowStyle {
     sfDefaultStyle =    7
 }
 
-#[doc(hidden)]
 pub struct Window {
     priv window :       *ffi::sfWindow,
     priv event :        ffi::sfEvent,

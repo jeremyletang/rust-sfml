@@ -52,7 +52,6 @@ pub mod ffi {
 }
 
 
-#[doc(hidden)]
 pub struct Clock {
     priv clock : *ffi::sfClock
 }

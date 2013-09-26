@@ -70,7 +70,6 @@ pub mod ffi {
     }
 }
 
-#[doc(hidden)]
 pub struct Transformable{
     priv transformable : *ffi::sfTransformable
 }
@@ -306,7 +305,6 @@ impl Transformable {
     }
 }
 
-#[doc(hidden)]
 impl Wrappable<*ffi::sfTransformable> for Transformable {
     fn wrap(transformable : *ffi::sfTransformable) -> Transformable {
         Transformable {

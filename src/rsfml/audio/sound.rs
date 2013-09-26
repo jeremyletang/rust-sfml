@@ -83,7 +83,6 @@ pub mod ffi {
     }
 }
 
-#[doc(hidden)]
 pub struct Sound<'self> {
     priv sound :    *ffi::sfSound,
     priv buffer :   &'self SoundBuffer
