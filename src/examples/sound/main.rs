@@ -18,9 +18,9 @@ fn play_sound() -> () {
     
     // Display sound informations
     io::println("canary.wav :");
-    io::println(fmt!(" %f seconds", buffer.get_duration().as_seconds() as float));
-    io::println(fmt!(" %d samples / sec", buffer.get_sample_rate() as int));
-    io::println(fmt!(" %d channels", buffer.get_channel_count() as int));
+    io::println(format!(" {} seconds", buffer.get_duration().as_seconds()));
+    io::println(format!(" {} samples / sec", buffer.get_sample_rate()));
+    io::println(format!(" {} channels", buffer.get_channel_count()));
 
     let mut sound : Sound = match Sound::new(buffer) {
         Some(sound)     => sound,
@@ -35,7 +35,7 @@ fn play_sound() -> () {
                 // Leave some CPU time for other processes
                 sleep(Time::with_milliseconds(100));
                 // Display the playing position
-                io::println(fmt!("\rPlaying...   %f", sound.get_playing_offset().as_seconds() as float));
+                io::println(format!("\rPlaying...   {}", sound.get_playing_offset().as_seconds()));
             },
             _                           => break
             
@@ -54,9 +54,9 @@ fn play_music() -> () {
     
     // Display Music informations
     io::println("orchestral.ogg :");
-    io::println(fmt!(" %f seconds", music.get_duration().as_seconds() as float));
-    io::println(fmt!(" %d samples / sec", music.get_sample_rate() as int));
-    io::println(fmt!(" %d channels", music.get_channel_count() as int));
+    io::println(format!(" {} format seconds", music.get_duration().as_seconds()));
+    io::println(format!(" {} samples / sec", music.get_sample_rate()));
+    io::println(format!(" {} channels", music.get_channel_count()));
 
     music.play();
     
@@ -66,7 +66,7 @@ fn play_music() -> () {
                 // Leave some CPU time for other processes
                 sleep(Time::with_milliseconds(100));
                 // Display the playing position
-                io::println(fmt!("\rPlaying...   %f", music.get_playing_offset().as_seconds() as float));
+                io::println(format!("\rPlaying...   {}", music.get_playing_offset().as_seconds()));
             },
             _                           => break
             

@@ -234,7 +234,7 @@ impl<'self> RectangleShape<'self> {
     * * rotation - New rotation
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn set_rotation(&mut self, angle : float) -> () {
+    pub fn set_rotation(&mut self, angle : f32) -> () {
         unsafe {
             ffi::sfRectangleShape_setRotation(self.rectangle_shape, angle as c_float)
         }
@@ -389,9 +389,9 @@ impl<'self> RectangleShape<'self> {
     * Return the current rotation, in degrees
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn get_rotation(&self) -> float {
+    pub fn get_rotation(&self) -> f32 {
         unsafe {
-            ffi::sfRectangleShape_getRotation(self.rectangle_shape) as float
+            ffi::sfRectangleShape_getRotation(self.rectangle_shape) as f32
         }
     }
     
@@ -405,7 +405,7 @@ impl<'self> RectangleShape<'self> {
     * * angle - Angle of rotation, in degrees
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn rotate(&mut self, angle : float) -> () {
+    pub fn rotate(&mut self, angle : f32) -> () {
         unsafe {
             ffi::sfRectangleShape_rotate(self.rectangle_shape, angle as c_float)
         }
@@ -591,7 +591,7 @@ impl<'self> RectangleShape<'self> {
     * * thickness - New outline thickness
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn set_outline_thickness(&mut self, thickness : float) -> () {
+    pub fn set_outline_thickness(&mut self, thickness : f32) -> () {
         unsafe {
             ffi::sfRectangleShape_setOutlineThickness(self.rectangle_shape, thickness as c_float)
         }
@@ -638,9 +638,9 @@ impl<'self> RectangleShape<'self> {
     * Return the outline thickness of the shape
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn get_outline_thickness(&self) -> float {
+    pub fn get_outline_thickness(&self) -> f32 {
         unsafe {
-            ffi::sfRectangleShape_getOutlineThickness(self.rectangle_shape) as float 
+            ffi::sfRectangleShape_getOutlineThickness(self.rectangle_shape) as f32 
         }
     }
 

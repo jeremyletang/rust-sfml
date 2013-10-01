@@ -23,7 +23,7 @@
 */
 
 /*!
-* Utility Class providing 3 dimensional vectors for float.
+* Utility Class providing 3 dimensional vectors for f32.
 */
 
 pub use std::libc::{c_float};
@@ -110,7 +110,7 @@ impl Vector3fOp for Vector3f {
     }
 }
 
-impl Vector3fOp for float {
+impl Vector3fOp for f32 {
     fn add_to_Vector3f(&self, lhs: &Vector3f) -> Vector3f {
         Vector3f {
             x : lhs.x + *self as f32,

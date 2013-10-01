@@ -58,7 +58,7 @@ pub mod ffi {
 * * volume - The new global volume, in the range [0, 100]
 */
 #[fixed_stack_segment] #[inline(never)]
-pub fn set_global_volume(volume : float) -> () {
+pub fn set_global_volume(volume : f32) -> () {
     unsafe {
         ffi::sfListener_setGlobalVolume(volume as f32)
     }
@@ -70,9 +70,9 @@ pub fn set_global_volume(volume : float) -> () {
 * Return the current global volume, in the range [0, 100]
 */
 #[fixed_stack_segment] #[inline(never)]
-pub fn get_global_volume() -> float {
+pub fn get_global_volume() -> f32 {
     unsafe {
-        ffi::sfListener_getGlobalVolume() as float
+        ffi::sfListener_getGlobalVolume() as f32
     }
 }
 

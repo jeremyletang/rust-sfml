@@ -50,7 +50,7 @@ pub enum Event {
     MouseLeft,
     JoystickButtonPressed { joystickid : int, button : int },
     JoystickButtonReleased { joystickid : int, button : int },
-    JoystickMoved { joystickid : uint, axis : Axis, position : float },
+    JoystickMoved { joystickid : uint, axis : Axis, position : f32 },
     JoystickConnected { joystickid : uint },
     JoystickDisconnected { joystickid : uint },
     NoEvent

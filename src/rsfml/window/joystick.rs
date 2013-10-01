@@ -154,9 +154,9 @@ pub fn joystick_is_button_pressed(joystick : uint, button : uint) -> bool {
 * Return the current position of the axis, in range [-100 .. 100]
 */
 #[fixed_stack_segment] #[inline(never)]
-pub fn joystick_get_axis_position(joystick : uint, axis : Axis) -> float {
+pub fn joystick_get_axis_position(joystick : uint, axis : Axis) -> f32 {
     unsafe {
-        ffi::sfJoystick_getAxisPosition(joystick as c_uint, axis as c_uint) as float
+        ffi::sfJoystick_getAxisPosition(joystick as c_uint, axis as c_uint) as f32
     }
 }
 

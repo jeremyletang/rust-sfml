@@ -60,7 +60,7 @@ pub struct IntRect {
 }
 
 /**
-* utility classes for manipulating rectangles of float.
+* utility classes for manipulating rectangles of f32.
 */
 #[deriving(Clone)]
 pub struct FloatRect {

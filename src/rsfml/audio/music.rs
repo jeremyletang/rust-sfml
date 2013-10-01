@@ -273,7 +273,7 @@ impl Music {
     * * pitch - new pitch to apply to the music
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn set_pitch(&mut self, pitch : float) -> () {
+    pub fn set_pitch(&mut self, pitch : f32) -> () {
         unsafe {
             ffi::sfMusic_setPitch(self.music, pitch as c_float)
         }
@@ -289,7 +289,7 @@ impl Music {
     * * volume - Volume of the music
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn set_volume(&mut self, volume : float) -> () {
+    pub fn set_volume(&mut self, volume : f32) -> () {
         unsafe {
             ffi::sfMusic_setVolume(self.music, volume as c_float)
         }
@@ -331,7 +331,7 @@ impl Music {
     * * distance - New minimum distance of the music
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn set_min_distance(&mut self, distance : float) -> () {
+    pub fn set_min_distance(&mut self, distance : f32) -> () {
         unsafe {
             ffi::sfMusic_setMinDistance(self.music, distance as c_float)
         }
@@ -353,7 +353,7 @@ impl Music {
     * * attenuation - New attenuation factor of the music
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn set_attenuation(&mut self, attenuation : float) -> () {
+    pub fn set_attenuation(&mut self, attenuation : f32) -> () {
         unsafe {
             ffi::sfMusic_setAttenuation(self.music, attenuation as c_float)
         }
@@ -381,9 +381,9 @@ impl Music {
     * Return the pitch of the music
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn get_pitch(&self) -> float {
+    pub fn get_pitch(&self) -> f32 {
         unsafe {
-            ffi::sfMusic_getPitch(self.music) as float
+            ffi::sfMusic_getPitch(self.music) as f32
         }
     }
 
@@ -393,9 +393,9 @@ impl Music {
     * Return the volume of the music, in the range [0, 100]
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn get_volume(&self) -> float {
+    pub fn get_volume(&self) -> f32 {
         unsafe {
-            ffi::sfMusic_getVolume(self.music) as float
+            ffi::sfMusic_getVolume(self.music) as f32
         }
     }
 
@@ -419,9 +419,9 @@ impl Music {
     * Return the minimum distance of the music
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn get_min_distance(&self) -> float {
+    pub fn get_min_distance(&self) -> f32 {
         unsafe {
-           ffi::sfMusic_getMinDistance(self.music) as float
+           ffi::sfMusic_getMinDistance(self.music) as f32
        }        
     }
 
@@ -431,9 +431,9 @@ impl Music {
     * Return the attenuation factor of the music
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn get_attenuation(&self) -> float {
+    pub fn get_attenuation(&self) -> f32 {
         unsafe {
-            ffi::sfMusic_getAttenuation(self.music) as float
+            ffi::sfMusic_getAttenuation(self.music) as f32
         }        
     }
 

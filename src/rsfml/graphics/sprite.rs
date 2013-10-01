@@ -170,7 +170,7 @@ impl<'self> Sprite<'self> {
     * * angle - New rotation, in degrees
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn set_rotation(&mut self, angle : float) -> () {
+    pub fn set_rotation(&mut self, angle : f32) -> () {
         unsafe {
             ffi::sfSprite_setRotation(self.sprite, angle as c_float)
         }
@@ -184,9 +184,9 @@ impl<'self> Sprite<'self> {
     * Return the current rotation, in degrees
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn get_rotation(&self) -> float {
+    pub fn get_rotation(&self) -> f32 {
         unsafe {
-            ffi::sfSprite_getRotation(self.sprite) as float
+            ffi::sfSprite_getRotation(self.sprite) as f32
         }
     }
 
@@ -200,7 +200,7 @@ impl<'self> Sprite<'self> {
     * * angle - Angle of rotation, in degrees
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn rotate(&mut self, angle : float) -> () {
+    pub fn rotate(&mut self, angle : f32) -> () {
         unsafe {
             ffi::sfSprite_rotate(self.sprite, angle as c_float)
         }

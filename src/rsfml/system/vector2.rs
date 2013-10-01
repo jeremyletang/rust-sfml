@@ -23,7 +23,7 @@
 */
 
 /*!
-* Utility Class providing 2 dimensional vectors for int, uint, and float.
+* Utility Class providing 2 dimensional vectors for int, uint, and f32.
 *
 * Create your own by implementing the Trait Vector2
 *
@@ -346,7 +346,7 @@ impl Vector2fOp for Vector2f {
     }
 }
  
-impl Vector2fOp for float {
+impl Vector2fOp for f32 {
     fn add_to_Vector2f(&self, lhs: &Vector2f) -> Vector2f {
         Vector2f { 
             x : lhs.x + *self as f32,

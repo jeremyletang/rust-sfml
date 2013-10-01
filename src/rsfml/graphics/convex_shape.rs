@@ -433,7 +433,7 @@ impl<'self> ConvexShape<'self> {
     * * rotation - New rotation
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn set_rotation(&self, angle : float) -> () {
+    pub fn set_rotation(&self, angle : f32) -> () {
         unsafe {
             ffi::sfConvexShape_setRotation(self.convex_shape, angle as c_float)
         }
@@ -447,9 +447,9 @@ impl<'self> ConvexShape<'self> {
     * Return the current rotation, in degrees
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn get_rotation(&self) -> float {
+    pub fn get_rotation(&self) -> f32 {
         unsafe {
-            ffi::sfConvexShape_getRotation(self.convex_shape) as float
+            ffi::sfConvexShape_getRotation(self.convex_shape) as f32
         }
     }
 
@@ -463,7 +463,7 @@ impl<'self> ConvexShape<'self> {
     * * angle - Angle of rotation, in degrees
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn rotate(&mut self, angle : float) -> () {
+    pub fn rotate(&mut self, angle : f32) -> () {
         unsafe {
             ffi::sfConvexShape_rotate(self.convex_shape, angle as c_float)
         }
@@ -557,7 +557,7 @@ impl<'self> ConvexShape<'self> {
     * * thickness - New outline thickness
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn set_outline_thickness(&mut self, thickness : float) -> () {
+    pub fn set_outline_thickness(&mut self, thickness : f32) -> () {
         unsafe {
             ffi::sfConvexShape_setOutlineThickness(self.convex_shape, thickness as c_float)
         }
@@ -604,9 +604,9 @@ impl<'self> ConvexShape<'self> {
     * Return the outline thickness of the shape
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn get_outline_thickness(&self) -> float {
+    pub fn get_outline_thickness(&self) -> f32 {
         unsafe {
-            ffi::sfConvexShape_getOutlineThickness(self.convex_shape) as float
+            ffi::sfConvexShape_getOutlineThickness(self.convex_shape) as f32
         }
     }
 

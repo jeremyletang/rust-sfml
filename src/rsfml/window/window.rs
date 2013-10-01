@@ -334,7 +334,7 @@ impl Window {
                     event::JoystickMoved{
                         joystickid : self.event.p1 as uint,
                         axis : ax,
-                        position : self.event.p3 as float
+                        position : self.event.p3 as f32
                     }
                 },
                 16  => {
@@ -639,7 +639,7 @@ impl Window {
     * * threshold - New threshold, in the range [0, 100]
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn set_joystick_threshold(&mut self, threshold : float) -> () {
+    pub fn set_joystick_threshold(&mut self, threshold : f32) -> () {
         unsafe {
             ffi::sfWindow_setJoystickThreshold(self.window, threshold as c_float)
         }

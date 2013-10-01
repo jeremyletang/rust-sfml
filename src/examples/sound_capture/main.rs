@@ -50,9 +50,9 @@ fn main() -> () {
 
     // Display captured sound informations
     io::println("Sound informations :");
-    io::println(fmt!(" %f seconds", buffer.get_duration().as_seconds() as float));
-    io::println(fmt!(" %d samples / sec", buffer.get_sample_rate() as int));
-    io::println(fmt!(" %d channels", buffer.get_channel_count() as int));
+    io::println(format!(" {} seconds", buffer.get_duration().as_seconds()));
+    io::println(format!(" {} samples / sec", buffer.get_sample_rate()));
+    io::println(format!(" {} channels", buffer.get_channel_count()));
     
 
     // Choose what to do with the recorded sound data
@@ -79,7 +79,7 @@ fn main() -> () {
             match sound.get_status() {
                 sound_status::Playing       => {
                 // Display the playing position
-                io::println(fmt!("\rPlaying...   %f", sound.get_playing_offset().as_seconds() as float));
+                io::println(format!("\rPlaying...   {}", sound.get_playing_offset().as_seconds()));
                 // Leave some CPU time for other processes
                 sleep(Time::with_milliseconds(100));
                 },

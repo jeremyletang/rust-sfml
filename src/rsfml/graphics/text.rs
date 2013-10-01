@@ -260,7 +260,7 @@ impl<'self> Text<'self> {
     * * angle - New rotation, in degrees
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn set_rotation(&mut self, angle : float) -> () {
+    pub fn set_rotation(&mut self, angle : f32) -> () {
         unsafe {
             ffi::sfText_setRotation(self.text, angle as c_float)
         }
@@ -274,9 +274,9 @@ impl<'self> Text<'self> {
     * Return the current rotation, in degrees
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn get_rotation(&self) -> float {
+    pub fn get_rotation(&self) -> f32 {
         unsafe {
-            ffi::sfText_getRotation(self.text) as float
+            ffi::sfText_getRotation(self.text) as f32
         }
     }
     
@@ -290,7 +290,7 @@ impl<'self> Text<'self> {
     * * factors - Scale factors
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn rotate(&mut self, angle : float) -> () {
+    pub fn rotate(&mut self, angle : f32) -> () {
         unsafe {
             ffi::sfText_rotate(self.text, angle as c_float)
         }

@@ -237,7 +237,7 @@ impl<'self> Sound<'self> {
     * * pitch - new pitch to apply to the sound
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn set_pitch(&mut self, pitch : float) -> () {
+    pub fn set_pitch(&mut self, pitch : f32) -> () {
         unsafe {ffi::sfSound_setPitch(self.sound, pitch as c_float)}
     }
 
@@ -251,7 +251,7 @@ impl<'self> Sound<'self> {
     * * volume - Volume of the sound
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn set_volume(&mut self, volume : float) -> () {
+    pub fn set_volume(&mut self, volume : f32) -> () {
         unsafe {ffi::sfSound_setVolume(self.sound, volume as c_float)}
     }
 
@@ -293,7 +293,7 @@ impl<'self> Sound<'self> {
     * * distance - New minimum distance of the sound
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn set_min_distance(&mut self, distance : float) -> () {
+    pub fn set_min_distance(&mut self, distance : f32) -> () {
         unsafe {ffi::sfSound_setMinDistance(self.sound, distance as c_float)}
     }
 
@@ -313,7 +313,7 @@ impl<'self> Sound<'self> {
     * * attenuation - New attenuation factor of the sound
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn set_attenuation(&mut self, attenuation : float) -> () {
+    pub fn set_attenuation(&mut self, attenuation : f32) -> () {
         unsafe {ffi::sfSound_setAttenuation(self.sound, attenuation as c_float)}
     }
 
@@ -339,9 +339,9 @@ impl<'self> Sound<'self> {
     * Return the pitch of the sound
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn get_pitch(&self) -> float {
+    pub fn get_pitch(&self) -> f32 {
         unsafe {
-            ffi::sfSound_getPitch(self.sound) as float
+            ffi::sfSound_getPitch(self.sound) as f32
         }
     }
 
@@ -351,9 +351,9 @@ impl<'self> Sound<'self> {
     * Return the volume of the sound, in the range [0, 100]
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn get_volume(&self) -> float {
+    pub fn get_volume(&self) -> f32 {
         unsafe {
-            ffi::sfSound_getVolume(self.sound) as float
+            ffi::sfSound_getVolume(self.sound) as f32
         }
     }
 
@@ -377,9 +377,9 @@ impl<'self> Sound<'self> {
     * Return the minimum distance of the sound
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn get_min_distance(&self) -> float {
+    pub fn get_min_distance(&self) -> f32 {
         unsafe {
-           ffi::sfSound_getMinDistance(self.sound) as float
+           ffi::sfSound_getMinDistance(self.sound) as f32
         }
     }
 
@@ -389,9 +389,9 @@ impl<'self> Sound<'self> {
     * Return the attenuation factor of the sound
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn get_attenuation(&self) -> float {
+    pub fn get_attenuation(&self) -> f32 {
         unsafe {
-            ffi::sfSound_getAttenuation(self.sound) as float
+            ffi::sfSound_getAttenuation(self.sound) as f32
         }
     }
     

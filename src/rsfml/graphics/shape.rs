@@ -223,7 +223,7 @@ impl<'self> Shape<'self> {
     * * angle - The new rotation, in degrees
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn set_rotation(&mut self, angle : float) -> () {
+    pub fn set_rotation(&mut self, angle : f32) -> () {
         unsafe {
             ffi::sfShape_setRotation(self.shape, angle as c_float)
         }
@@ -325,9 +325,9 @@ impl<'self> Shape<'self> {
     * Return the current rotation, in degrees
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn get_rotation(&self) -> float {
+    pub fn get_rotation(&self) -> f32 {
         unsafe {
-            ffi::sfShape_getRotation(self.shape) as float
+            ffi::sfShape_getRotation(self.shape) as f32
         }
     }
 
@@ -398,7 +398,7 @@ impl<'self> Shape<'self> {
     * * angle - The angle of rotation, in degrees
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn rotate(&mut self, angle : float) -> () {
+    pub fn rotate(&mut self, angle : f32) -> () {
         unsafe {
             ffi::sfShape_rotate(self.shape, angle as c_float)
         }
@@ -564,7 +564,7 @@ impl<'self> Shape<'self> {
     * * thickness - The new outline thickness
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn set_outline_thickness(&mut self, thickness : float) -> () {
+    pub fn set_outline_thickness(&mut self, thickness : f32) -> () {
         unsafe {
             ffi::sfShape_setOutlineThickness(self.shape, thickness as c_float)
         }
@@ -626,9 +626,9 @@ impl<'self> Shape<'self> {
     * Return the outline thickness of the shape
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn get_outline_thickness(&self) -> float {
+    pub fn get_outline_thickness(&self) -> f32 {
         unsafe {
-            ffi::sfShape_getOutlineThickness(self.shape) as float
+            ffi::sfShape_getOutlineThickness(self.shape) as f32
         }
     }
     

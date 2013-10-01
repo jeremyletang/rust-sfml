@@ -139,7 +139,7 @@ impl Transformable {
     * * angle - The new rotation, in degrees
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn set_rotation(&mut self, angle : float) -> () {
+    pub fn set_rotation(&mut self, angle : f32) -> () {
         unsafe {
             ffi::sfTransformable_setRotation(self.transformable, angle as c_float)
         }
@@ -202,9 +202,9 @@ impl Transformable {
     * Return the current rotation, in degrees
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn get_rotation(&self) -> float {
+    pub fn get_rotation(&self) -> f32 {
         unsafe {
-            ffi::sfTransformable_getRotation(self.transformable) as float
+            ffi::sfTransformable_getRotation(self.transformable) as f32
         }
     }
 
@@ -258,7 +258,7 @@ impl Transformable {
     * * angle - Angle of rotation, in degrees
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn rotate(&mut self, angle : float) -> () {
+    pub fn rotate(&mut self, angle : f32) -> () {
         unsafe {
             ffi::sfTransformable_rotate(self.transformable, angle as c_float)
         }

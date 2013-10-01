@@ -174,7 +174,7 @@ impl View {
     * * angle - New angle, in degrees
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn set_rotation(&mut self, angle : float) -> () {
+    pub fn set_rotation(&mut self, angle : f32) -> () {
         unsafe {
             ffi::sfView_setRotation(self.view, angle as c_float)
         }
@@ -186,9 +186,9 @@ impl View {
     * Return the rotation angle of the view, in degrees
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn get_rotation(&self) -> float {
+    pub fn get_rotation(&self) -> f32 {
         unsafe {
-            ffi::sfView_getRotation(self.view) as float
+            ffi::sfView_getRotation(self.view) as f32
         }
     }
 
@@ -199,7 +199,7 @@ impl View {
     * * angle - Angle to rotate, in degrees
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn rotate(&mut self, angle : float) -> () {
+    pub fn rotate(&mut self, angle : f32) -> () {
         unsafe {
             ffi::sfView_rotate(self.view, angle as c_float)
         }
@@ -218,7 +218,7 @@ impl View {
     * * factor - Zoom factor to apply
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn zoom(&mut self, factor : float) -> () {
+    pub fn zoom(&mut self, factor : f32) -> () {
         unsafe {
             ffi::sfView_zoom(self.view, factor as c_float)
         }

@@ -152,7 +152,7 @@ impl<'self> Shader<'self> {
     }
     
     /**
-    * Change a float parameter of a shader
+    * Change a f32 parameter of a shader
     *
     * # Arguments
     * * name - Name of the parameter in the shader

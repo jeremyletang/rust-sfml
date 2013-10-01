@@ -151,7 +151,7 @@ impl<'self> CircleShape<'self> {
     * Return a new initialized option to CircleShape or None
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn new_init(radius : float, point_count : uint) -> Option<CircleShape<'self>> {
+    pub fn new_init(radius : f32, point_count : uint) -> Option<CircleShape<'self>> {
         let circle = unsafe { ffi::sfCircleShape_create() };
         if ptr::is_null(circle) {
            None
@@ -201,7 +201,7 @@ impl<'self> CircleShape<'self> {
     * * rotation - New rotation
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn set_rotation(&mut self, angle : float) -> () {
+    pub fn set_rotation(&mut self, angle : f32) -> () {
         unsafe {
             ffi::sfCircleShape_setRotation(self.circle_shape, angle as c_float)
         }
@@ -215,9 +215,9 @@ impl<'self> CircleShape<'self> {
     * Return the current rotation, in degrees
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn get_rotation(&self) -> float {
+    pub fn get_rotation(&self) -> f32 {
         unsafe {
-            ffi::sfCircleShape_getRotation(self.circle_shape) as float
+            ffi::sfCircleShape_getRotation(self.circle_shape) as f32
         }
     } 
 
@@ -231,7 +231,7 @@ impl<'self> CircleShape<'self> {
     * * angle - Angle of rotation, in degrees
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn rotate(&mut self, angle : float) -> () {
+    pub fn rotate(&mut self, angle : f32) -> () {
         unsafe {
             ffi::sfCircleShape_rotate(self.circle_shape, angle as c_float)
         }
@@ -342,7 +342,7 @@ impl<'self> CircleShape<'self> {
     * * thickness - New outline thickness
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn set_outline_thickness(&mut self, thickness : float) -> () {
+    pub fn set_outline_thickness(&mut self, thickness : f32) -> () {
         unsafe {
             ffi::sfCircleShape_setOutlineThickness(self.circle_shape, thickness as c_float)
         }
@@ -401,9 +401,9 @@ impl<'self> CircleShape<'self> {
     * Return the outline thickness of the shape
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn get_outline_thickness(&self) -> float {
+    pub fn get_outline_thickness(&self) -> f32 {
         unsafe {
-            ffi::sfCircleShape_getOutlineThickness(self.circle_shape) as float
+            ffi::sfCircleShape_getOutlineThickness(self.circle_shape) as f32
         }
     }
 
@@ -443,7 +443,7 @@ impl<'self> CircleShape<'self> {
     * * radius - New radius of the circle
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn set_radius(&self, radius : float) -> () {
+    pub fn set_radius(&self, radius : f32) -> () {
         unsafe {
             ffi::sfCircleShape_setRadius(self.circle_shape, radius as c_float)
         }
@@ -455,9 +455,9 @@ impl<'self> CircleShape<'self> {
     * Return the radius of the circle
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn get_radius(&self) -> float {
+    pub fn get_radius(&self) -> f32 {
         unsafe {
-            ffi::sfCircleShape_getRadius(self.circle_shape) as float
+            ffi::sfCircleShape_getRadius(self.circle_shape) as f32
         }
     }
     
