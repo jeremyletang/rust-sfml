@@ -85,7 +85,7 @@ pub mod ffi {
 
 pub struct Sound<'self> {
     priv sound :    *ffi::sfSound,
-    priv buffer :   &'self SoundBuffer
+    priv buffer :   Option<&'self SoundBuffer>
 }
 
 impl<'self> Sound<'self> {
@@ -96,7 +96,26 @@ impl<'self> Sound<'self> {
     * Return a new option to Sound object or None
     */
     #[fixed_stack_segment] #[inline(never)]
-    pub fn new(buffer : &'self SoundBuffer) -> Option<Sound<'self>> {
+    pub fn new() -> Option<Sound<'self>> {
+        let s = unsafe {ffi::sfSound_create()};
+        if s == ptr::null() {
+            None
+        }
+        else {
+            Some(Sound { 
+                sound :     s,
+                buffer :    None
+            })
+        }
+    }
+
+    /**
+    * Create a new Sound
+    *
+    * Return a new option to Sound object or None
+    */
+    #[fixed_stack_segment] #[inline(never)]
+    pub fn new_with_buffer(buffer : &'self SoundBuffer) -> Option<Sound<'self>> {
         let s = unsafe {ffi::sfSound_create()};
         if s == ptr::null() {
             None
@@ -107,7 +126,7 @@ impl<'self> Sound<'self> {
             }
             Some(Sound { 
                 sound :     s,
-                buffer :    buffer
+                buffer :    Some(buffer)
             })
         }
     }
@@ -407,7 +426,7 @@ impl<'self> Sound<'self> {
     */
     #[fixed_stack_segment] #[inline(never)]
     pub fn set_buffer(&mut self, buffer : &'self SoundBuffer) -> () {
-        self.buffer = buffer;
+        self.buffer = Some(buffer);
         unsafe {
             ffi::sfSound_setBuffer(self.sound, buffer.unwrap())
         }
@@ -418,7 +437,7 @@ impl<'self> Sound<'self> {
     *
     * Return an option to Sound buffer attached to the sound or None
     */
-    pub fn get_buffer(&self) -> &'self SoundBuffer {
+    pub fn get_buffer(&self) -> Option<&'self SoundBuffer> {
         self.buffer
     }
 

@@ -22,7 +22,7 @@ fn play_sound() -> () {
     io::println(format!(" {} samples / sec", buffer.get_sample_rate()));
     io::println(format!(" {} channels", buffer.get_channel_count()));
 
-    let mut sound : Sound = match Sound::new(buffer) {
+    let mut sound : Sound = match Sound::new_with_buffer(buffer) {
         Some(sound)     => sound,
         None            => fail!("Error cannot create Sound")
     };
