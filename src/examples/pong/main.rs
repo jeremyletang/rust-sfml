@@ -38,7 +38,7 @@ fn main () -> () {
         None                    => fail!("Cannot load Ball sound buffer.")
     };
 
-    let mut ballSound = match Sound::new(ballSoundBuffer) {
+    let mut ballSound = match Sound::new_with_buffer(ballSoundBuffer) {
         Some(sound)     => sound,
         None            => fail!("Error cannot create sound.")
     };

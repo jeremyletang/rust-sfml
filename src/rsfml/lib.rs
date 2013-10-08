@@ -26,6 +26,9 @@
 * Here is a list of all modules :
 */
 
+#[feature(globs)];
+#[feature(struct_variant)];
+
 #[link(name = "rsfml",
        vers = "0.2",
        author = "letang.jeremy@gmail.com",
@@ -36,6 +39,7 @@
 #[license = "Zlib/png"];
 #[crate_type = "lib"];
 
+
 extern mod extra;
 
 pub mod traits;
@@ -45,4 +49,6 @@ pub mod audio;
 pub mod graphics;
 pub mod network;
 #[doc(hidden)]
+
+#[feature(globs)]
 mod sfml_types;

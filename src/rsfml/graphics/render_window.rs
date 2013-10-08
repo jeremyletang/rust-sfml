@@ -125,7 +125,7 @@ pub mod ffi {
         pub fn sfRenderWindow_mapCoordsToPixel(renderWindow : *sfRenderWindow, point : Vector2f, view : *sfView) -> Vector2i;
         pub fn sfRenderWindow_drawSprite(renderWindow : *sfRenderWindow, object : *sfSprite, states : *render_states::ffi::sfRenderStates) -> ();
         pub fn sfRenderWindow_drawText(renderWindow : *sfRenderWindow, object : *sfText, states : *render_states::ffi::sfRenderStates) -> ();
-        fn sfRenderWindow_drawShape(renderWindow : *sfRenderWindow, object : *sfShape, states : *render_states::ffi::sfRenderStates) -> ();
+        pub fn sfRenderWindow_drawShape(renderWindow : *sfRenderWindow, object : *sfShape, states : *render_states::ffi::sfRenderStates) -> ();
         pub fn sfRenderWindow_drawCircleShape(renderWindow : *sfRenderWindow, object : *sfCircleShape, states : *render_states::ffi::sfRenderStates) -> ();
         pub fn sfRenderWindow_drawConvexShape(renderWindow : *sfRenderWindow, object : *sfConvexShape, states : *render_states::ffi::sfRenderStates) -> ();
         pub fn sfRenderWindow_drawRectangleShape(renderWindow : *sfRenderWindow, object : *sfRectangleShape, states : *render_states::ffi::sfRenderStates) -> ();

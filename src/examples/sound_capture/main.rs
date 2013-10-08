@@ -68,7 +68,7 @@ fn main() -> () {
         buffer.save_to_file(filename);
     }
     else {
-        let mut sound : Sound = match Sound::new(buffer) {
+        let mut sound : Sound = match Sound::new_with_buffer(buffer) {
             Some(sound)     => sound,
             None            => fail!("Error cannot create Sound")
         };

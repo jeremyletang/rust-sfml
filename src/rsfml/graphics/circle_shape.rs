@@ -29,6 +29,9 @@
 *
 */
 
+#[feature(globs)]
+
+
 use std::libc::{c_float, c_uint};
 use std::ptr;
 
@@ -50,7 +53,7 @@ pub mod ffi {
     use std::libc::{c_void, c_float, c_uint};
 
     use graphics::texture;
-    use sfml_types::{SfBool};
+    use sfml_types::SfBool;
     use graphics::rect::{IntRect, FloatRect};
     use system::vector2::Vector2f;
     use graphics::color::Color;
