@@ -1,6 +1,8 @@
 rust-sfml
 =========
 
+[![Build Status](https://travis-ci.org/JeremyLetang/rust-sfml.png?branch=master)](https://travis-ci.org/JeremyLetang/rust-sfml)
+
 SFML bindings for Rust
 
 This is a Rust binding for SFML, the Simple and Fast Multimedia Library, developped by Laurent Gomila.
