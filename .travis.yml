@@ -1,0 +1,14 @@
+before_install:
+  - yes | sudo add-apt-repository ppa:hansjorg/rust
+  - yes | sudo apt-add-repository ppa:sonkun/sfml-stable
+  - sudo apt-get update
+install:
+  - sudo apt-get install libsfml-dev
+  - sudo apt-get install libcsfml-dev
+  - sudo apt-get install rust-nightly
+  - sudo apt-get install libpthread-stubs0-dev libgl1-mesa-dev libx11-dev
+  - sudo apt-get install libxrandr-dev libfreetype6-dev libglew1.5-dev
+  - sudo apt-get install libjpeg8-dev libgpgme11-dev libsndfile1-dev libopenal-dev
+script:
+  - mkdir -p build
+  - rustc --out-dir build src/rsfml/lib.rs
