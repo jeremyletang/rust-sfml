@@ -36,19 +36,19 @@ use traits::wrappable::Wrappable;
 #[doc(hidden)]
 pub mod ffi {
     
-    pub use std::libc::{c_long, c_float, c_int};
+    pub use std::libc::{c_longlong, c_float, c_int};
 
     pub struct sfTime {
-        microseconds : c_long
+        microseconds : c_longlong
     }
     
     extern "C" {
         pub fn sfTime_asSeconds(time : sfTime) -> c_float;
         pub fn sfTime_asMilliseconds(time : sfTime) -> c_int;
-        pub fn sfTime_asMicroseconds(time : sfTime) -> c_long;
+        pub fn sfTime_asMicroseconds(time : sfTime) -> c_longlong;
         pub fn sfSeconds(amount : c_float) -> sfTime;
         pub fn sfMilliseconds(amount : c_int) -> sfTime;
-        pub fn sfMicroseconds(amount : c_long) -> sfTime;
+        pub fn sfMicroseconds(amount : c_longlong) -> sfTime;
     }
 }
 
@@ -84,7 +84,7 @@ impl Time {
     #[fixed_stack_segment] #[inline(never)]
     pub fn with_microseconds(microseconds : i64) -> Time {
         Time {
-            time : unsafe { ffi::sfMicroseconds(microseconds as c_long) }
+            time : unsafe { ffi::sfMicroseconds(microseconds) }
         }
     }
 
