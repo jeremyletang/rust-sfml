@@ -76,7 +76,9 @@ pub mod ffi {
 }
 
 pub struct Shader<'self> {
+    #[doc(hidden)]
     priv shader :   *ffi::sfShader,
+    #[doc(hidden)]
     priv texture :  Option<&'self Texture>
 }
 

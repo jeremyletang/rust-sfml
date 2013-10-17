@@ -80,6 +80,7 @@ pub mod ffi {
 }
 
 pub struct Packet {
+    #[doc(hidden)]
     packet : *ffi::sfPacket
 }
 

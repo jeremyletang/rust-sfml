@@ -69,7 +69,9 @@ pub mod ffi {
 }
 
 pub struct View {
+    #[doc(hidden)]
     priv dropable : bool,
+    #[doc(hidden)]
     priv view :     *ffi::sfView
 }
 

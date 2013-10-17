@@ -60,7 +60,9 @@ pub mod ffi {
 }
 
 pub struct SoundBuffer {
+    #[doc(hidden)]
     priv sound_buffer : *ffi::sfSoundBuffer,
+    #[doc(hidden)]
     priv dropable :     bool
 }
 

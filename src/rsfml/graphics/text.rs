@@ -107,8 +107,11 @@ pub enum Style {
 }
 
 pub struct Text<'self> {
+    #[doc(hidden)]
     priv text :             *ffi::sfText,
+    #[doc(hidden)]
     priv string_length :    uint,
+    #[doc(hidden)]
     priv font :             Option<&'self Font>
 }
 

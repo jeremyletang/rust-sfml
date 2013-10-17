@@ -69,6 +69,7 @@ pub mod ffi {
 }
 
 pub struct UdpSocket {
+    #[doc(hidden)]
     priv socket : *ffi::sfUdpSocket
 }
 

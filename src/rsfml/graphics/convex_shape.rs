@@ -100,7 +100,9 @@ pub mod ffi {
 }
 
 pub struct ConvexShape<'self> {
+    #[doc(hidden)]
     priv convex_shape : *ffi::sfConvexShape,
+    #[doc(hidden)]
     priv texture :      Option<&'self Texture>
 }
 

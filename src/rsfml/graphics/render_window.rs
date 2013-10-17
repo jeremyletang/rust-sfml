@@ -151,10 +151,15 @@ pub enum WindowStyle {
 }
 
 pub struct RenderWindow {
+    #[doc(hidden)]
     priv render_window :    *ffi::sfRenderWindow,
+    #[doc(hidden)]
     priv event :            ffi::sfEvent,
+    #[doc(hidden)]
     priv title_length :     uint,
+    #[doc(hidden)]
     priv current_view :     @mut View,
+    #[doc(hidden)]
     priv default_view :     @mut View
 }
 

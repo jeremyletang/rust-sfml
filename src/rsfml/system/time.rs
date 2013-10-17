@@ -53,6 +53,7 @@ pub mod ffi {
 }
 
 pub struct Time {
+    #[doc(hidden)]
     priv time : ffi::sfTime
 }
 

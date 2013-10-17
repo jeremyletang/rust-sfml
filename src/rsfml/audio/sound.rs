@@ -84,7 +84,9 @@ pub mod ffi {
 }
 
 pub struct Sound<'self> {
+    #[doc(hidden)]
     priv sound :    *ffi::sfSound,
+    #[doc(hidden)]
     priv buffer :   Option<&'self SoundBuffer>
 }
 

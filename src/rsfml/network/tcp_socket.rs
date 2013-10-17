@@ -72,6 +72,7 @@ pub mod ffi {
 }
 
 pub struct TcpSocket {
+    #[doc(hidden)]
     priv socket : *ffi::sfTcpSocket
 }
 

@@ -71,6 +71,7 @@ pub mod ffi {
 }
 
 pub struct Transformable{
+    #[doc(hidden)]
     priv transformable : *ffi::sfTransformable
 }
 

@@ -103,8 +103,11 @@ pub struct WrapObj {
 }
 
 pub struct Shape<'self> {
+    #[doc(hidden)]
     priv shape :    *ffi::sfShape,
+    #[doc(hidden)]
     priv wrap_obj : @WrapObj,
+    #[doc(hidden)]
     priv texture :  Option<&'self Texture>
 }
 

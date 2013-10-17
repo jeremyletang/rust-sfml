@@ -79,6 +79,7 @@ pub mod ffi {
 }
 
 pub struct VertexArray {
+    #[doc(hidden)]
     priv vertex_array : *ffi::sfVertexArray
 }
 

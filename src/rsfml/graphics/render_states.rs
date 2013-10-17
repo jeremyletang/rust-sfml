@@ -53,6 +53,7 @@ pub mod ffi {
 * Define the states used for drawing to a RenderTarget
 */
 pub struct RenderStates<'self> {
+    #[doc(hidden)]
     priv sfRenderStates :   ffi::sfRenderStates,
     blendMode :             BlendMode,
     transform :             Transform,

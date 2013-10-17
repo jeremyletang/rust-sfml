@@ -92,7 +92,9 @@ pub mod ffi {
 }
 
 pub struct Sprite<'self> {
+    #[doc(hidden)]
     priv sprite :   *ffi::sfSprite,
+    #[doc(hidden)]
     priv texture :  Option<&'self Texture>
 }
 

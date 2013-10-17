@@ -167,20 +167,24 @@ pub enum Status {
 }
 
 pub struct Ftp {
+    #[doc(hidden)]
     priv ftp : *ffi::sfFtp
 }
 
 
 pub struct Response{
+    #[doc(hidden)]
     priv response : *ffi::sfFtpResponse
 }
 
 pub struct ListingResponse{
+    #[doc(hidden)]
     priv listing_response : *ffi::sfFtpListingResponse
 }
 
 
 pub struct DirectoryResponse{
+    #[doc(hidden)]
     priv directory_response : *ffi::sfFtpDirectoryResponse
 }
 

@@ -62,6 +62,7 @@ pub mod ffi {
 }
 
 pub struct TcpListener {
+    #[doc(hidden)]
     priv listener : *ffi::sfTcpListener
 }
 

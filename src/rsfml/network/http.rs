@@ -119,14 +119,17 @@ pub enum Status {
 }
 
 pub struct Request {
+    #[doc(hidden)]
     priv request : *ffi::sfHttpRequest
 }
 
 pub struct Response {
+    #[doc(hidden)]
     priv response : *ffi::sfHttpResponse
 }
 
 pub struct Http {
+    #[doc(hidden)]
     priv http : *ffi::sfHttp
 }
 

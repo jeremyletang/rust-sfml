@@ -72,6 +72,7 @@ pub mod ffi{
 }
 
 pub struct IpAddress{
+    #[doc(hidden)]
     priv ip : ffi::sfIpAddress
 }
 

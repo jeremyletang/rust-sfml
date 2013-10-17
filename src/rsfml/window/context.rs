@@ -48,6 +48,7 @@ pub mod ffi {
 }
 
 pub struct Context {
+    #[doc(hidden)]
     priv cont : *ffi::sfContext
 }
 

@@ -64,7 +64,9 @@ pub mod ffi {
 }
 
 pub struct Font {
+    #[doc(hidden)]
     priv font :     *ffi::sfFont,
+    #[doc(hidden)]
     priv dropable : bool
 }
 

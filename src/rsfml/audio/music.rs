@@ -85,6 +85,7 @@ pub mod ffi {
 }
 
 pub struct Music {
+    #[doc(hidden)]
     priv music : *ffi::sfMusic
 }
 

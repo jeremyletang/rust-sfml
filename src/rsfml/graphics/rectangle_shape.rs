@@ -99,7 +99,9 @@ pub mod ffi {
 }
 
 pub struct RectangleShape<'self> {
+    #[doc(hidden)]
     priv rectangle_shape :  *ffi::sfRectangleShape,
+    #[doc(hidden)]
     priv texture :          Option<&'self Texture>
 }
 

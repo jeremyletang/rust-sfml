@@ -104,7 +104,9 @@ pub mod ffi {
 }
 
 pub struct CircleShape<'self> {
+    #[doc(hidden)]
     priv circle_shape : *ffi::sfCircleShape,
+    #[doc(hidden)]
     priv texture :      Option<&'self Texture>
 }
 

@@ -124,8 +124,11 @@ pub enum WindowStyle {
 }
 
 pub struct Window {
+    #[doc(hidden)]
     priv window :       *ffi::sfWindow,
+    #[doc(hidden)]
     priv event :        ffi::sfEvent,
+    #[doc(hidden)]
     priv title_length : uint
 }
 

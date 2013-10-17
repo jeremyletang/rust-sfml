@@ -80,7 +80,9 @@ pub mod ffi {
 }
 
 pub struct Texture {
+    #[doc(hidden)]
     priv texture :  *ffi::sfTexture,
+    #[doc(hidden)]
     priv dropable : bool
 }
 
