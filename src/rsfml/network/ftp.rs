@@ -99,71 +99,122 @@ pub mod ffi {
     }
 }
 
+/// The differents FTP modes availables.
 pub enum TransferMode {
+    /// Ftp Binary Mod
     FtpBinary = 0,
+    /// Ftp ASCII Mod
     FtpAscii = 1,
+    /// Ftp Ebcdic Mod
     FtpEbcdic = 2
 }
 
+/// The status and commands id's for FTP.
 pub enum Status {
     // 1xx: the requested action is being initiated,
     // expect another reply before proceeding with a new command
-    RestartMarkerReply          = 110, ///< Restart marker reply
-    ServiceReadySoon            = 120, ///< Service ready in N minutes
-    DataConnectionAlreadyOpened = 125, ///< Data connection already opened, transfer starting
-    OpeningDataConnection       = 150, ///< File status ok, about to open data connection
+
+    /// Restart marker reply
+    RestartMarkerReply          = 110, 
+    /// Service ready in N minutes
+    ServiceReadySoon            = 120, 
+    /// Data connection already opened, transfer starting
+    DataConnectionAlreadyOpened = 125, 
+    /// File status ok, about to open data connection
+    OpeningDataConnection       = 150, 
 
     // 2xx: the requested action has been successfully completed
-    Ok                    = 200, ///< Command ok
-    PointlessCommand      = 202, ///< Command not implemented
-    SystemStatus          = 211, ///< System status, or system help reply
-    DirectoryStatus       = 212, ///< Directory status
-    FileStatus            = 213, ///< File status
-    HelpMessage           = 214, ///< Help message
-    SystemType            = 215, ///< NAME system type, where NAME is an official system name from the list in the Assigned Numbers document
-    ServiceReady          = 220, ///< Service ready for new user
-    ClosingConnection     = 221, ///< Service closing control connection
-    DataConnectionOpened  = 225, ///< Data connection open, no transfer in progress
-    ClosingDataConnection = 226, ///< Closing data connection, requested file action successful
-    EnteringPassiveMode   = 227, ///< Entering passive mode
-    LoggedIn              = 230, ///< User logged in, proceed. Logged out if appropriate
-    FileActionOk          = 250, ///< Requested file action ok
-    DirectoryOk           = 257, ///< PATHNAME created
+
+    /// Command ok
+    Ok                    = 200, 
+    /// Command not implemented
+    PointlessCommand      = 202, 
+    /// System status, or system help reply
+    SystemStatus          = 211, 
+    /// Directory status
+    DirectoryStatus       = 212, 
+    /// File status
+    FileStatus            = 213, 
+    /// Help message
+    HelpMessage           = 214, 
+    /// NAME system type, where NAME is an official system name from the list in the Assigned Numbers document
+    SystemType            = 215, 
+    /// Service ready for new user
+    ServiceReady          = 220, 
+    /// Service closing control connection
+    ClosingConnection     = 221, 
+    /// Data connection open, no transfer in progress
+    DataConnectionOpened  = 225, 
+    /// Closing data connection, requested file action successful
+    ClosingDataConnection = 226, 
+    /// Entering passive mode
+    EnteringPassiveMode   = 227, 
+    /// User logged in, proceed. Logged out if appropriate
+    LoggedIn              = 230, 
+    /// Requested file action ok
+    FileActionOk          = 250, 
+    /// PATHNAME created
+    DirectoryOk           = 257, 
 
     // 3xx: the command has been accepted, but the requested action
     // is dormant, pending receipt of further information
-    NeedPassword       = 331, ///< User name ok, need password
-    NeedAccountToLogIn = 332, ///< Need account for login
-    NeedInformation    = 350, ///< Requested file action pending further information
+    /// User name ok, need password
+    NeedPassword       = 331, 
+    /// Need account for login
+    NeedAccountToLogIn = 332, 
+    /// Requested file action pending further information
+    NeedInformation    = 350, 
 
     // 4xx: the command was not accepted and the requested action did not take place,
     // but the error condition is temporary and the action may be requested again
-    ServiceUnavailable        = 421, ///< Service not available, closing control connection
-    DataConnectionUnavailable = 425, ///< Can't open data connection
-    TransferAborted           = 426, ///< Connection closed, transfer aborted
-    FileActionAborted         = 450, ///< Requested file action not taken
-    LocalError                = 451, ///< Requested action aborted, local error in processing
-    InsufficientStorageSpace  = 452, ///< Requested action not taken; insufficient storage space in system, file unavailable
+
+    /// Service not available, closing control connection
+    ServiceUnavailable        = 421, 
+    /// Can't open data connection
+    DataConnectionUnavailable = 425, 
+    /// Connection closed, transfer aborted
+    TransferAborted           = 426, 
+    /// Requested file action not taken
+    FileActionAborted         = 450, 
+    /// Requested action aborted, local error in processing
+    LocalError                = 451, 
+    /// Requested action not taken; insufficient storage space in system, file unavailable
+    InsufficientStorageSpace  = 452, 
 
     // 5xx: the command was not accepted and
     // the requested action did not take place
-    CommandUnknown          = 500, ///< Syntax error, command unrecognized
-    ParametersUnknown       = 501, ///< Syntax error in parameters or arguments
-    CommandNotImplemented   = 502, ///< Command not implemented
-    BadCommandSequence      = 503, ///< Bad sequence of commands
-    ParameterNotImplemented = 504, ///< Command not implemented for that parameter
-    NotLoggedIn             = 530, ///< Not logged in
-    NeedAccountToStore      = 532, ///< Need account for storing files
-    FileUnavailable         = 550, ///< Requested action not taken, file unavailable
-    PageTypeUnknown         = 551, ///< Requested action aborted, page type unknown
-    NotEnoughMemory         = 552, ///< Requested file action aborted, exceeded storage allocation
-    FilenameNotAllowed      = 553, ///< Requested action not taken, file name not allowed
+    /// Syntax error, command unrecognized
+    CommandUnknown          = 500, 
+    /// Syntax error in parameters or arguments
+    ParametersUnknown       = 501, 
+    /// Command not implemented
+    CommandNotImplemented   = 502, 
+    /// Bad sequence of commands
+    BadCommandSequence      = 503, 
+    /// Command not implemented for that parameter
+    ParameterNotImplemented = 504, 
+    /// Not logged in
+    NotLoggedIn             = 530, 
+    /// Need account for storing files
+    NeedAccountToStore      = 532, 
+    /// Requested action not taken, file unavailable
+    FileUnavailable         = 550, 
+    /// Requested action aborted, page type unknown
+    PageTypeUnknown         = 551, 
+    /// Requested file action aborted, exceeded storage allocation
+    NotEnoughMemory         = 552, 
+    /// Requested action not taken, file name not allowed
+    FilenameNotAllowed      = 553, 
 
     // 10xx: SFML custom codes
-    InvalidResponse  = 1000, ///< Response is not a valid FTP one
-    ConnectionFailed = 1001, ///< Connection with server failed
-    ConnectionClosed = 1002, ///< Connection with server closed
-    InvalidFile      = 1003  // Invalid file to upload / download
+    /// Response is not a valid FTP one
+    InvalidResponse  = 1000, 
+    /// Connection with server failed
+    ConnectionFailed = 1001, 
+    /// Connection with server closed
+    ConnectionClosed = 1002, 
+    /// Invalid file to upload / download
+    InvalidFile      = 1003  
 }
 
 pub struct Ftp {

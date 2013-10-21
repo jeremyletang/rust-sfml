@@ -31,8 +31,8 @@
 
 pub use self::ip_address::IpAddress;
 pub use self::packet::Packet;
-pub use self::socket_status::*;
-// pub use self::tcp_socket::*;
+pub use self::socket_status::{SocketStatus, SocketNotReady, SocketDisconnected, SocketError};
+// pub use self::tcp_socket::TcpSocket;
 // pub use self::udp_socket::*;
 // pub use self::tcp_listener::*;
 pub use self::ftp::*;

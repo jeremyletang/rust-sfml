@@ -30,7 +30,7 @@
 
 pub use self::sound_buffer::SoundBuffer;
 pub use self::listener::*;
-pub use self::sound_status::*;
+pub use self::sound_status::{Status, Playing, Paused, Stopped};
 pub use self::music::Music;
 pub use self::sound::Sound;
 pub use self::sound_buffer_recorder::SoundBufferRecorder;
