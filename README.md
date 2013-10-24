@@ -1,7 +1,6 @@
-rust-sfml
+rust-sfml [![Build Status](https://travis-ci.org/JeremyLetang/rust-sfml.png?branch=master)](https://travis-ci.org/JeremyLetang/rust-sfml)
 =========
 
-[![Build Status](https://travis-ci.org/JeremyLetang/rust-sfml.png?branch=master)](https://travis-ci.org/JeremyLetang/rust-sfml)
 
 SFML bindings for Rust
 
