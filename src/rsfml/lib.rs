@@ -26,8 +26,7 @@
 * Here is a list of all modules :
 */
 
-#[feature(globs)];
-#[feature(struct_variant)];
+#[feature(globs, managed_boxes, struct_variant)];
 
 #[link(name = "rsfml",
        vers = "0.2",
