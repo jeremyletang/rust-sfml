@@ -168,7 +168,7 @@ pub enum Status {
     ServiceNotAvailable = ffi::SERVICENOTAVAILABLE as c_int,
     /// The gateway server couldn't receive a response from the source server
     GatewayTimeout      = ffi::GATEWAYTIMEOUT as c_int,
-    ///< The server doesn't support the requested HTTP version
+    /// The server doesn't support the requested HTTP version
     VersionNotSupported = ffi::VERSIONNOTSUPPORTED as c_int, 
 
     // 10xx: SFML custom codes

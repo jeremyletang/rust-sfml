@@ -44,7 +44,7 @@ pub mod ffi {
 * Enumeration of statuses for sounds and musics
 */
 pub enum Status {
-    Stopped = 	ffi::SFPLAYING as c_int,
+    Stopped = 	ffi::SFSTOPPED as c_int,
     Paused = 	ffi::SFPAUSED as c_int,
-    Playing = 	ffi::SFSTOPPED as c_int
+    Playing = 	ffi::SFPLAYING as c_int
 }

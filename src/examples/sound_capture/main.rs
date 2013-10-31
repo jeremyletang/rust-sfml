@@ -4,7 +4,8 @@
 
 extern mod rsfml;
 
-use std::io;
+use std::rt::io;
+
 use std::num::strconv;
 
 use rsfml::audio::{Sound, SoundRecorder, SoundBufferRecorder, sound_status};
@@ -18,7 +19,7 @@ fn main() -> () {
     }
 
     // Choose the sample rate
-    io::print("Please choose the sample rate for sound capture (44100 is CD quality) : ");
+    print!("Please choose the sample rate for sound capture (44100 is CD quality) : ");
     let stdin = io::stdin();
     let line = stdin.read_line();
     let sampleRate : uint = match strconv::from_str_common(line, 10, false, false, false, strconv::ExpNone, true, false) {
@@ -27,7 +28,7 @@ fn main() -> () {
     };
 
     // Wait for user input...
-    io::println("Press enter to start recording audio");
+    println!("Press enter to start recording audio");
     stdin.read_line();
 
     // Here we'll use an integrated custom recorder, which saves the captured data into a SoundBuffer
@@ -38,7 +39,7 @@ fn main() -> () {
 
     // Audio capture is done in a separate thread, so we can block the main thread while it is capturing
     recorder.start(sampleRate);
-    io::print("Recording... press enter to stop");
+    print!("Recording... press enter to stop");
     stdin.read_line();
     recorder.stop();
 
@@ -49,19 +50,19 @@ fn main() -> () {
     };
 
     // Display captured sound informations
-    io::println("Sound informations :");
-    io::println(format!(" {} seconds", buffer.get_duration().as_seconds()));
-    io::println(format!(" {} samples / sec", buffer.get_sample_rate()));
-    io::println(format!(" {} channels", buffer.get_channel_count()));
+    println("Sound informations :");
+    println!(" {} seconds", buffer.get_duration().as_seconds());
+    println!(" {} samples / sec", buffer.get_sample_rate());
+    println!(" {} channels", buffer.get_channel_count());
     
 
     // Choose what to do with the recorded sound data
-    io::print("What do you want to do with captured sound (p = play, s = save) ? ");
+    print!("What do you want to do with captured sound (p = play, s = save) ? ");
     let mut resp = stdin.read_line();
     
     if resp.pop_char() == 's' {
         // Choose a filename
-        io::print("Choose the file to create : ");
+        print!("Choose the file to create : ");
         let filename = stdin.read_line();
         
         // Save the buffer
@@ -79,7 +80,7 @@ fn main() -> () {
             match sound.get_status() {
                 sound_status::Playing       => {
                 // Display the playing position
-                io::println(format!("\rPlaying...   {}", sound.get_playing_offset().as_seconds()));
+                println!("\rPlaying...   {}", sound.get_playing_offset().as_seconds());
                 // Leave some CPU time for other processes
                 sleep(Time::with_milliseconds(100));
                 },
@@ -90,9 +91,9 @@ fn main() -> () {
     }
     
     // Finished
-    io::println("Done!");
+    println!("Done!");
     
     // Wait until the user presses 'enter' key
-    io::println("Press enter to exit...");
+    println!("Press enter to exit...");
     stdin.read_line();
 }

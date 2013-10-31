@@ -36,12 +36,12 @@ fn main () -> () {
     window.set_vertical_sync_enabled(true);
 
     // Load the sounds used in the game
-    let ballSoundBuffer : @SoundBuffer = match SoundBuffer::new(~"resources/ball.wav") {
-        Some(ballSoundBuffer)   => @ballSoundBuffer,
+    let ballSoundBuffer : SoundBuffer = match SoundBuffer::new(~"resources/ball.wav") {
+        Some(ballSoundBuffer)   => ballSoundBuffer,
         None                    => fail!("Cannot load Ball sound buffer.")
     };
 
-    let mut ballSound = match Sound::new_with_buffer(ballSoundBuffer) {
+    let mut ballSound = match Sound::new_with_buffer(&ballSoundBuffer) {
         Some(sound)     => sound,
         None            => fail!("Error cannot create sound.")
     };
@@ -82,9 +82,9 @@ fn main () -> () {
     ball.set_origin(~Vector2f::new(ballRadius / 2., ballRadius / 2.));
 
     // Load the text font
-    let font : @Font = match Font::new_from_file(~"resources/sansation.ttf") {
-        Some(font)    => @font,
-        None()          => fail!("Error, cannot load font")
+    let font : Font = match Font::new_from_file(~"resources/sansation.ttf") {
+        Some(font)    => font,
+        None()        => fail!("Error, cannot load font")
     };
 
      // Initialize the pause message
@@ -92,7 +92,7 @@ fn main () -> () {
         Some(text) => text,
         None => fail!(~"Error on creating text")
     };
-    pauseMessage.set_font(font);
+    pauseMessage.set_font(&font);
     pauseMessage.set_character_size(40);
     pauseMessage.set_position(~(Vector2f::new(170., 150.)));
     pauseMessage.set_color(~Color::white());
