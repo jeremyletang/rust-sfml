@@ -158,16 +158,24 @@ pub enum Status {
     RangeNotSatisfiable = ffi::RANGENOTSATISFIABLE as c_int, 
 
     // 5xx: server error
-    InternalServerError = ffi::INTERNALSERVERERROR as c_int, ///< The server encountered an unexpected error
-    NotImplemented      = ffi::NOTIMPLEMENTED as c_int, ///< The server doesn't implement a requested feature
-    BadGateway          = ffi::BADGATEWAY as c_int, ///< The gateway server has received an error from the source server
-    ServiceNotAvailable = ffi::SERVICENOTAVAILABLE as c_int, ///< The server is temporarily unavailable (overloaded, in maintenance, ...)
-    GatewayTimeout      = ffi::GATEWAYTIMEOUT as c_int, ///< The gateway server couldn't receive a response from the source server
-    VersionNotSupported = ffi::VERSIONNOTSUPPORTED as c_int, ///< The server doesn't support the requested HTTP version
+    /// The server encountered an unexpected error
+    InternalServerError = ffi::INTERNALSERVERERROR as c_int,
+    /// The server doesn't implement a requested feature
+    NotImplemented      = ffi::NOTIMPLEMENTED as c_int,
+    /// The gateway server has received an error from the source server
+    BadGateway          = ffi::BADGATEWAY as c_int,
+    /// The server is temporarily unavailable (overloaded, in maintenance, ...)
+    ServiceNotAvailable = ffi::SERVICENOTAVAILABLE as c_int,
+    /// The gateway server couldn't receive a response from the source server
+    GatewayTimeout      = ffi::GATEWAYTIMEOUT as c_int,
+    ///< The server doesn't support the requested HTTP version
+    VersionNotSupported = ffi::VERSIONNOTSUPPORTED as c_int, 
 
     // 10xx: SFML custom codes
-    InvalidResponse     = ffi::INVALIDRESPONSE as c_int, ///< Response is not a valid HTTP one
-    ConnectionFailed    = ffi::CONNECTIONFAILED as c_int //< Connection with server failed
+    /// Response is not a valid HTTP one
+    InvalidResponse     = ffi::INVALIDRESPONSE as c_int,
+    /// Connection with server failed
+    ConnectionFailed    = ffi::CONNECTIONFAILED as c_int 
 }
 
 pub struct Request {
