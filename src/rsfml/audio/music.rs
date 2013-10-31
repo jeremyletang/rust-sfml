@@ -245,11 +245,6 @@ impl Music {
     #[fixed_stack_segment] #[inline(never)]
     pub fn get_status(&self) -> sound_status::Status {
         unsafe {cast::transmute(ffi::sfMusic_getStatus(self.music) as i8)}
-        // match unsafe { ffi::sfMusic_getStatus(self.music) } {
-        //     sound_status::ffi::SFSTOPPED => sound_status::Stopped,
-        //     sound_status::ffi::SFPAUSED => sound_status::Paused,
-        //     sound_status::ffi::SFPAUSED => sound_status::Playing,
-        // }
     }
 
     /**

@@ -29,8 +29,8 @@ e* Permission is granted to anyone to use this software for any purpose,
 *
 */
 
-use std::libc::{size_t};
-use std::str;
+use std::libc::{size_t, c_int};
+use std::{str, cast};
 
 use traits::wrappable::Wrappable;
 use network::ip_address::*;
@@ -39,13 +39,66 @@ use system::time::Time;
 #[doc(hidden)]
 pub mod ffi {
     
-    use std::libc::{c_void, c_char, size_t};
+    use std::libc::{c_void, c_char, size_t, c_int};
 
     use network::ip_address::ffi::*;
     use sfml_types::SfBool;
-    use network::ftp::Status;
-    use network::ftp::TransferMode;
     use system::time;
+
+    pub type TransferMode = c_int;
+    pub static FTPBINARY:   TransferMode = 0;
+    pub static FTPASCII:    TransferMode = 1;
+    pub static FTPEBCDIC:   TransferMode = 2;
+
+    pub type Status = c_int;
+    pub static RESTARTMARKERREPLY:          Status = 110; 
+    pub static SERVICEREADYSOON:            Status = 120; 
+    pub static DATACONNECTIONALREADYOPENED: Status = 125; 
+    pub static OPENINGDATACONNECTION:       Status = 150;
+
+    pub static OK:                          Status = 200; 
+    pub static POINTLESSCOMMAND:            Status = 202; 
+    pub static SYSTEMSTATUS:                Status = 211; 
+    pub static DIRECTORYSTATUS:             Status = 212; 
+    pub static FILESTATUS:                  Status = 213; 
+    pub static HELPMESSAGE:                 Status = 214; 
+    pub static SYSTEMTYPE:                  Status = 215; 
+    pub static SERVICEREADY:                Status = 220; 
+    pub static CLOSINGCONNECTION:           Status = 221; 
+    pub static DATACONNECTIONOPENED:        Status = 225; 
+    pub static CLOSINGDATACONNECTION:       Status = 226; 
+    pub static ENTERINGPASSIVEMODE:         Status = 227; 
+    pub static LOGGEDIN:                    Status = 230; 
+    pub static FILEACTIONOK:                Status = 250; 
+    pub static DIRECTORYOK:                 Status = 257; 
+
+    pub static NEEDPASSWORD:                Status = 331; 
+    pub static NEEDACCOUNTTOLOGIN:          Status = 332; 
+    pub static NEEDINFORMATION:             Status = 350;
+
+    pub static SERVICEUNAVAILABLE:          Status = 421;
+    pub static DATACONNECTIONUNAVAILABLE:   Status = 425; 
+    pub static TRANSFERABORTED:             Status = 426; 
+    pub static FILEACTIONABORTED:           Status = 450; 
+    pub static LOCALERROR:                  Status = 451; 
+    pub static INSUFFICIENTSTORAGESPACE:    Status = 452; 
+
+    pub static COMMANDUNKNOWN:              Status = 500; 
+    pub static PARAMETERSUNKNOWN:           Status = 501; 
+    pub static COMMANDNOTIMPLEMENTED:       Status = 502; 
+    pub static BADCOMMANDSEQUENCE:          Status = 503; 
+    pub static PARAMETERNOTIMPLEMENTED:     Status = 504; 
+    pub static NOTLOGGEDIN:                 Status = 530; 
+    pub static NEEDACCOUNTTOSTORE:          Status = 532; 
+    pub static FILEUNAVAILABLE:             Status = 550; 
+    pub static PAGETYPEUNKNOWN:             Status = 551; 
+    pub static NOTENOUGHMEMORY:             Status = 552;
+    pub static FILENAMENOTALLOWED:          Status = 553;
+
+    pub static INVALIDRESPONSE:             Status = 1000; 
+    pub static CONNECTIONFAILED:            Status = 1001; 
+    pub static CONNECTIONCLOSED:            Status = 1002; 
+    pub static INVALIDFILE:                 Status = 1003;
 
     pub struct sfFtp {
         This : *c_void
@@ -115,106 +168,106 @@ pub enum Status {
     // expect another reply before proceeding with a new command
 
     /// Restart marker reply
-    RestartMarkerReply          = 110, 
+    RestartMarkerReply          = ffi::RESTARTMARKERREPLY, 
     /// Service ready in N minutes
-    ServiceReadySoon            = 120, 
+    ServiceReadySoon            = ffi::SERVICEREADYSOON, 
     /// Data connection already opened, transfer starting
-    DataConnectionAlreadyOpened = 125, 
+    DataConnectionAlreadyOpened = ffi::DATACONNECTIONALREADYOPENED, 
     /// File status ok, about to open data connection
-    OpeningDataConnection       = 150, 
+    OpeningDataConnection       = ffi::OPENINGDATACONNECTION, 
 
     // 2xx: the requested action has been successfully completed
 
     /// Command ok
-    Ok                    = 200, 
+    Ok                          = ffi::OK as c_int, 
     /// Command not implemented
-    PointlessCommand      = 202, 
+    PointlessCommand            = ffi::POINTLESSCOMMAND as c_int, 
     /// System status, or system help reply
-    SystemStatus          = 211, 
+    SystemStatus                = ffi::SYSTEMSTATUS as c_int, 
     /// Directory status
-    DirectoryStatus       = 212, 
+    DirectoryStatus             = ffi::DIRECTORYSTATUS as c_int, 
     /// File status
-    FileStatus            = 213, 
+    FileStatus                  = ffi::FILESTATUS as c_int, 
     /// Help message
-    HelpMessage           = 214, 
+    HelpMessage                 = ffi::HELPMESSAGE as c_int, 
     /// NAME system type, where NAME is an official system name from the list in the Assigned Numbers document
-    SystemType            = 215, 
+    SystemType                  = ffi::SYSTEMTYPE as c_int, 
     /// Service ready for new user
-    ServiceReady          = 220, 
+    ServiceReady                = ffi::SERVICEREADY as c_int, 
     /// Service closing control connection
-    ClosingConnection     = 221, 
+    ClosingConnection           = ffi::CLOSINGCONNECTION as c_int, 
     /// Data connection open, no transfer in progress
-    DataConnectionOpened  = 225, 
+    DataConnectionOpened        = ffi::DATACONNECTIONOPENED as c_int, 
     /// Closing data connection, requested file action successful
-    ClosingDataConnection = 226, 
+    ClosingDataConnection       = ffi::CLOSINGDATACONNECTION as c_int, 
     /// Entering passive mode
-    EnteringPassiveMode   = 227, 
+    EnteringPassiveMode         = ffi::ENTERINGPASSIVEMODE as c_int, 
     /// User logged in, proceed. Logged out if appropriate
-    LoggedIn              = 230, 
+    LoggedIn                    = ffi::LOGGEDIN as c_int, 
     /// Requested file action ok
-    FileActionOk          = 250, 
+    FileActionOk                = ffi::FILEACTIONOK as c_int, 
     /// PATHNAME created
-    DirectoryOk           = 257, 
+    DirectoryOk                 = ffi::DIRECTORYOK as c_int, 
 
     // 3xx: the command has been accepted, but the requested action
     // is dormant, pending receipt of further information
     /// User name ok, need password
-    NeedPassword       = 331, 
+    NeedPassword                = ffi::NEEDPASSWORD as c_int, 
     /// Need account for login
-    NeedAccountToLogIn = 332, 
+    NeedAccountToLogIn          = ffi::NEEDACCOUNTTOLOGIN as c_int, 
     /// Requested file action pending further information
-    NeedInformation    = 350, 
+    NeedInformation             = ffi::NEEDINFORMATION as c_int, 
 
     // 4xx: the command was not accepted and the requested action did not take place,
     // but the error condition is temporary and the action may be requested again
 
     /// Service not available, closing control connection
-    ServiceUnavailable        = 421, 
+    ServiceUnavailable          = ffi::SERVICEUNAVAILABLE as c_int, 
     /// Can't open data connection
-    DataConnectionUnavailable = 425, 
+    DataConnectionUnavailable   = ffi::DATACONNECTIONUNAVAILABLE as c_int, 
     /// Connection closed, transfer aborted
-    TransferAborted           = 426, 
+    TransferAborted             = ffi::TRANSFERABORTED as c_int, 
     /// Requested file action not taken
-    FileActionAborted         = 450, 
+    FileActionAborted           = ffi::FILEACTIONABORTED as c_int, 
     /// Requested action aborted, local error in processing
-    LocalError                = 451, 
+    LocalError                  = ffi::LOCALERROR as c_int, 
     /// Requested action not taken; insufficient storage space in system, file unavailable
-    InsufficientStorageSpace  = 452, 
+    InsufficientStorageSpace    = ffi::INSUFFICIENTSTORAGESPACE as c_int, 
 
     // 5xx: the command was not accepted and
     // the requested action did not take place
     /// Syntax error, command unrecognized
-    CommandUnknown          = 500, 
+    CommandUnknown              = ffi::COMMANDUNKNOWN as c_int, 
     /// Syntax error in parameters or arguments
-    ParametersUnknown       = 501, 
+    ParametersUnknown           = ffi::PARAMETERSUNKNOWN as c_int, 
     /// Command not implemented
-    CommandNotImplemented   = 502, 
+    CommandNotImplemented       = ffi::COMMANDNOTIMPLEMENTED as c_int, 
     /// Bad sequence of commands
-    BadCommandSequence      = 503, 
+    BadCommandSequence          = ffi::BADCOMMANDSEQUENCE as c_int, 
     /// Command not implemented for that parameter
-    ParameterNotImplemented = 504, 
+    ParameterNotImplemented     = ffi::PARAMETERNOTIMPLEMENTED as c_int, 
     /// Not logged in
-    NotLoggedIn             = 530, 
+    NotLoggedIn                 = ffi::NOTLOGGEDIN as c_int, 
     /// Need account for storing files
-    NeedAccountToStore      = 532, 
+    NeedAccountToStore          = ffi::NEEDACCOUNTTOSTORE as c_int, 
     /// Requested action not taken, file unavailable
-    FileUnavailable         = 550, 
+    FileUnavailable             = ffi::FILEUNAVAILABLE as c_int, 
     /// Requested action aborted, page type unknown
-    PageTypeUnknown         = 551, 
+    PageTypeUnknown             = ffi::PAGETYPEUNKNOWN as c_int, 
     /// Requested file action aborted, exceeded storage allocation
-    NotEnoughMemory         = 552, 
+    NotEnoughMemory             = ffi::NOTENOUGHMEMORY as c_int, 
     /// Requested action not taken, file name not allowed
-    FilenameNotAllowed      = 553, 
+    FilenameNotAllowed          = ffi::FILENAMENOTALLOWED as c_int, 
 
     // 10xx: SFML custom codes
     /// Response is not a valid FTP one
-    InvalidResponse  = 1000, 
+    InvalidResponse             = ffi::INVALIDRESPONSE as c_int, 
     /// Connection with server failed
-    ConnectionFailed = 1001, 
+    ConnectionFailed            = ffi::CONNECTIONFAILED as c_int, 
     /// Connection with server closed
-    ConnectionClosed = 1002, 
+    ConnectionClosed            = ffi::CONNECTIONCLOSED as c_int, 
     /// Invalid file to upload / download
-    InvalidFile      = 1003  
+    InvalidFile                 = ffi::INVALIDFILE as c_int  
 }
 
 pub struct Ftp {
@@ -264,7 +317,7 @@ impl ListingResponse {
     #[fixed_stack_segment] #[inline(never)]
     pub fn get_status(&self) -> Status {
         unsafe {
-            ffi::sfFtpListingResponse_getStatus(self.listing_response)
+            cast::transmute(ffi::sfFtpListingResponse_getStatus(self.listing_response) as i16)
         }
     }
 
@@ -342,7 +395,7 @@ impl DirectoryResponse {
     #[fixed_stack_segment] #[inline(never)]
     pub fn get_status(&self) -> Status {
         unsafe {
-            ffi::sfFtpDirectoryResponse_getStatus(self.directory_response)
+            cast::transmute(ffi::sfFtpDirectoryResponse_getStatus(self.directory_response) as i16)
         }
     }
     
@@ -405,7 +458,7 @@ impl Response {
     #[fixed_stack_segment] #[inline(never)]
     pub fn get_status(&self) -> Status {
         unsafe {
-            ffi::sfFtpResponse_getStatus(self.response)
+            cast::transmute(ffi::sfFtpResponse_getStatus(self.response) as i16)
         }
     }
 
@@ -701,7 +754,7 @@ impl Ftp {
         let c_distant_file = distant_file.to_c_str();
         let c_dest_path = dest_path.to_c_str();
         Response { 
-            response : unsafe { ffi::sfFtp_download(self.ftp, c_distant_file.unwrap(), c_dest_path.unwrap(), mode) }
+            response : unsafe { ffi::sfFtp_download(self.ftp, c_distant_file.unwrap(), c_dest_path.unwrap(), mode as ffi::TransferMode) }
         }
     }
 
@@ -725,7 +778,7 @@ impl Ftp {
         let c_local_file = local_file.to_c_str();
         let c_dest_path = dest_path.to_c_str();
         Response { 
-            response : unsafe { ffi::sfFtp_upload(self.ftp, c_local_file.unwrap(), c_dest_path.unwrap(), mode) }
+            response : unsafe { ffi::sfFtp_upload(self.ftp, c_local_file.unwrap(), c_dest_path.unwrap(), mode as ffi::TransferMode) }
         }
     }
 
