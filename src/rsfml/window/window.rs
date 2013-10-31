@@ -258,7 +258,7 @@ impl Window {
                         0 => false,
                         _ => true
                     };
-                    let k : keyboard::Key = unsafe { cast::transmute(self.event.p1 as int) };
+                    let k : keyboard::Key = unsafe { cast::transmute(self.event.p1 as i8) };
                     event::KeyPressed{
                         code : k,
                         alt : al,
@@ -284,7 +284,7 @@ impl Window {
                         0 => false,
                         _ => true
                     };
-                    let k : keyboard::Key = unsafe { cast::transmute(self.event.p1 as int) };
+                    let k : keyboard::Key = unsafe { cast::transmute(self.event.p1 as i8) };
                     event::KeyReleased{
                         code : k,
                         alt : al, 
@@ -299,7 +299,7 @@ impl Window {
                     y :     unsafe { cast::transmute::<c_float, c_int>(self.event.p3) } as int
                 },
                 8   => {
-                    let button : mouse::MouseButton = unsafe {cast::transmute(self.event.p1 as int)};
+                    let button : mouse::MouseButton = unsafe {cast::transmute(self.event.p1 as i8)};
                     event::MouseButtonPressed{
                         button : button,
                         x :      unsafe { cast::transmute::<c_uint, c_int>(self.event.p2) as int },
@@ -307,7 +307,7 @@ impl Window {
                     }
                 },
                 9   => {
-                    let button : mouse::MouseButton = unsafe {cast::transmute(self.event.p1 as int)};
+                    let button : mouse::MouseButton = unsafe {cast::transmute(self.event.p1 as i8)};
                     event::MouseButtonReleased{
                         button : button,
                         x :      unsafe { cast::transmute::<c_uint, c_int>(self.event.p2) as int },
@@ -333,7 +333,7 @@ impl Window {
                     }
                 },
                 15  => {
-                    let ax : joystick::Axis = unsafe {cast::transmute(self.event.p2 as int)};
+                    let ax : joystick::Axis = unsafe {cast::transmute(self.event.p2 as i8)};
                     event::JoystickMoved{
                         joystickid : self.event.p1 as uint,
                         axis : ax,
