@@ -32,6 +32,7 @@
 
 use std::libc::{c_float};
 use std::ptr;
+use std::cast;
 
 use traits::wrappable::Wrappable;
 use system::time::Time;
@@ -244,11 +245,12 @@ impl Music {
     */
     #[fixed_stack_segment] #[inline(never)]
     pub fn get_status(&self) -> sound_status::Status {
-        match unsafe { ffi::sfMusic_getStatus(self.music) } {
-            sound_status::ffi::sfStopped => sound_status::Stopped,
-            sound_status::ffi::sfPaused => sound_status::Paused,
-            sound_status::ffi::sfPlaying => sound_status::Playing,
-        }
+        unsafe {cast::transmute(ffi::sfMusic_getStatus(self.music) as i8)}
+        // match unsafe { ffi::sfMusic_getStatus(self.music) } {
+        //     sound_status::ffi::SFSTOPPED => sound_status::Stopped,
+        //     sound_status::ffi::SFPAUSED => sound_status::Paused,
+        //     sound_status::ffi::SFPAUSED => sound_status::Playing,
+        // }
     }
 
     /**

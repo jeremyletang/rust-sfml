@@ -2,12 +2,15 @@
 * Example from SFML : Pong
 */
 
+#[feature(managed_boxes)]
+
 extern mod rsfml;
 
-use rsfml::graphics::{RenderWindow, sfClose, Color, Font, Text, RectangleShape, CircleShape, };
+use rsfml::graphics::{RenderWindow, sfClose, Color, Font, Text, RectangleShape, CircleShape};
 use rsfml::window::{VideoMode, ContextSettings, event, keyboard};
 use rsfml::system::{Vector2f, Clock, Time};
 use rsfml::audio::{SoundBuffer, Sound};
+
 
 #[cfg(target_os="macos")]
 #[start]

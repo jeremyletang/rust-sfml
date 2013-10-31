@@ -27,21 +27,24 @@
 * 
 */
 
+use std::libc::c_int;
+
 #[doc(hidden)]
 pub mod ffi {
+
+	use std::libc::c_int;
     
-    pub enum sfSoundStatus {
-        sfStopped = 0,
-        sfPaused = 1,
-        sfPlaying = 2
-    }
+    pub type sfSoundStatus = c_int;
+    pub static SFSTOPPED:	sfSoundStatus = 0;
+    pub static SFPAUSED: 	sfSoundStatus = 1;
+    pub static SFPLAYING: 	sfSoundStatus = 2;
 }
 
 /**
 * Enumeration of statuses for sounds and musics
 */
 pub enum Status {
-    Stopped,
-    Paused,
-    Playing
+    Stopped = 	ffi::SFPLAYING as c_int,
+    Paused = 	ffi::SFPAUSED as c_int,
+    Playing = 	ffi::SFSTOPPED as c_int
 }

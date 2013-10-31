@@ -1,6 +1,9 @@
-/**
+/*!
 * Example from SFML : play sound and music
 */
+
+#[feature(managed_boxes)]
+
 
 extern mod rsfml;
 
