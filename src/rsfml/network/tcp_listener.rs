@@ -31,7 +31,7 @@
 *
 */
 
-use std::ptr;
+use std::{ptr, cast};
 
 use traits::wrappable::Wrappable;
 use network::tcp_socket::TcpSocket;
@@ -44,7 +44,7 @@ pub mod ffi {
  
     use network::tcp_socket;
     use sfml_types::SfBool;
-    use network::socket_status::SocketStatus;
+    use network::socket_status;
 
     pub struct sfTcpListener {
         This : *c_void
@@ -56,8 +56,8 @@ pub mod ffi {
         pub fn sfTcpListener_setBlocking(listener : *sfTcpListener, blocking : SfBool) -> ();
         pub fn sfTcpListener_isBlocking(listener : *sfTcpListener) -> SfBool;
         pub fn sfTcpListener_getLocalPort(listener : *sfTcpListener) -> u16;
-        pub fn sfTcpListener_listen(listener : *sfTcpListener, port : u16) -> SocketStatus;
-        pub fn sfTcpListener_accept(listener : *sfTcpListener, connected : **tcp_socket::ffi::sfTcpSocket) -> SocketStatus;
+        pub fn sfTcpListener_listen(listener : *sfTcpListener, port : u16) -> socket_status::ffi::SocketStatus;
+        pub fn sfTcpListener_accept(listener : *sfTcpListener, connected : **tcp_socket::ffi::sfTcpSocket) -> socket_status::ffi::SocketStatus;
     }
 }
 
@@ -154,7 +154,7 @@ impl TcpListener {
     #[fixed_stack_segment] #[inline(never)]
     pub fn listen(&self, port : u16) -> SocketStatus {
         unsafe {
-            ffi::sfTcpListener_listen(self.listener, port)
+            cast::transmute(ffi::sfTcpListener_listen(self.listener, port) as i8)
         }
     }
     
@@ -172,7 +172,7 @@ impl TcpListener {
     #[fixed_stack_segment] #[inline(never)]
     pub fn accept(&self, connected : @TcpSocket) -> SocketStatus {
         unsafe {
-            ffi::sfTcpListener_accept(self.listener, &connected.unwrap())
+            cast::transmute(ffi::sfTcpListener_accept(self.listener, &connected.unwrap()) as i8)
         }
     }
 }

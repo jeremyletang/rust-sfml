@@ -31,8 +31,7 @@
 */
 
 use std::libc::{c_float};
-use std::ptr;
-use std::cast;
+use std::{ptr, cast};
 
 use traits::wrappable::Wrappable;
 use system::time::Time;

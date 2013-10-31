@@ -30,7 +30,7 @@
 *
 */
 
-use std::{ptr, vec};
+use std::{ptr, vec, cast};
 use std::libc::size_t;
 
 use traits::wrappable::Wrappable;
@@ -43,7 +43,7 @@ pub mod ffi {
     
     use std::libc::{size_t, c_void};
 
-    use network::socket_status::SocketStatus;
+    use network::socket_status;
     use network::ip_address;
     use sfml_types::SfBool;
     use network::packet;
@@ -58,12 +58,12 @@ pub mod ffi {
         pub fn sfUdpSocket_setBlocking(socket : *sfUdpSocket, blocking : SfBool) -> ();
         pub fn sfUdpSocket_isBlocking(socket : *sfUdpSocket) -> SfBool;
         pub fn sfUdpSocket_getLocalPort(socket : *sfUdpSocket) -> u16;
-        pub fn sfUdpSocket_bind(socket : *sfUdpSocket, port : u16) -> SocketStatus;
+        pub fn sfUdpSocket_bind(socket : *sfUdpSocket, port : u16) -> socket_status::ffi::SocketStatus;
         pub fn sfUdpSocket_unbind(socket : *sfUdpSocket) -> ();
-        pub fn sfUdpSocket_send(socket : *sfUdpSocket, data : *i8, size : size_t, address : ip_address::ffi::sfIpAddress, port : u16) -> SocketStatus;
-        pub fn sfUdpSocket_receive(socket : *sfUdpSocket, data : *i8, maxSize : size_t, sizeReceived : *size_t, address : *ip_address::ffi::sfIpAddress, port : *u16) -> SocketStatus;
-        pub fn sfUdpSocket_sendPacket(socket : *sfUdpSocket, packet : *packet::ffi::sfPacket, address : ip_address::ffi::sfIpAddress, port : u16) -> SocketStatus;
-        pub fn sfUdpSocket_receivePacket(socket : *sfUdpSocket, packet : *packet::ffi::sfPacket, address : *ip_address::ffi::sfIpAddress, port : *u16) -> SocketStatus;
+        pub fn sfUdpSocket_send(socket : *sfUdpSocket, data : *i8, size : size_t, address : ip_address::ffi::sfIpAddress, port : u16) -> socket_status::ffi::SocketStatus;
+        pub fn sfUdpSocket_receive(socket : *sfUdpSocket, data : *i8, maxSize : size_t, sizeReceived : *size_t, address : *ip_address::ffi::sfIpAddress, port : *u16) -> socket_status::ffi::SocketStatus;
+        pub fn sfUdpSocket_sendPacket(socket : *sfUdpSocket, packet : *packet::ffi::sfPacket, address : ip_address::ffi::sfIpAddress, port : u16) -> socket_status::ffi::SocketStatus;
+        pub fn sfUdpSocket_receivePacket(socket : *sfUdpSocket, packet : *packet::ffi::sfPacket, address : *ip_address::ffi::sfIpAddress, port : *u16) -> socket_status::ffi::SocketStatus;
         pub fn sfUdpSocket_maxDatagramSize() -> u32;
     }
 }
@@ -163,7 +163,7 @@ impl UdpSocket {
     #[fixed_stack_segment] #[inline(never)]
     pub fn bind(&self, port : u16) -> SocketStatus {
         unsafe {
-            ffi::sfUdpSocket_bind(self.socket, port)
+            cast::transmute(ffi::sfUdpSocket_bind(self.socket, port) as i8)
         }
 
     }
@@ -197,7 +197,7 @@ impl UdpSocket {
     #[fixed_stack_segment] #[inline(never)]
     pub fn send(&self, data : ~[i8], address : &ip_address::IpAddress, port : u16) -> SocketStatus {
         unsafe {
-            ffi::sfUdpSocket_send(self.socket, vec::raw::to_ptr(data), data.len() as size_t, address.unwrap(), port)
+            cast::transmute(ffi::sfUdpSocket_send(self.socket, vec::raw::to_ptr(data), data.len() as size_t, address.unwrap(), port) as i8)
         }
     }
 
@@ -221,7 +221,7 @@ impl UdpSocket {
             let datas : *i8 = ptr::null();
             let addr : *ip_address::ffi::sfIpAddress = ptr::null();
             let port : u16 = 0;
-            let stat : SocketStatus = ffi::sfUdpSocket_receive(self.socket, datas, max_size, &s, addr, &port);
+            let stat : SocketStatus = cast::transmute(ffi::sfUdpSocket_receive(self.socket, datas, max_size, &s, addr, &port) as i8);
             (vec::raw::from_buf_raw(datas, s as uint), stat, s, Wrappable::wrap(*addr), port)
         }
     }
@@ -242,7 +242,7 @@ impl UdpSocket {
     #[fixed_stack_segment] #[inline(never)]
     pub fn send_packet(&self, packet : &packet::Packet, address : &ip_address::IpAddress, port : u16) -> SocketStatus {
         unsafe {
-            ffi::sfUdpSocket_sendPacket(self.socket, packet.unwrap(), address.unwrap(), port)
+            cast::transmute(ffi::sfUdpSocket_sendPacket(self.socket, packet.unwrap(), address.unwrap(), port) as i8)
         }
     }
 
@@ -259,7 +259,7 @@ impl UdpSocket {
             let pack : *packet::ffi::sfPacket = ptr::null();
             let addr : *ip_address::ffi::sfIpAddress = ptr::null();
             let port : u16 = 0;
-            let stat = ffi::sfUdpSocket_receivePacket(self.socket, pack, addr, &port);
+            let stat : SocketStatus = cast::transmute(ffi::sfUdpSocket_receivePacket(self.socket, pack, addr, &port) as i8);
             (Wrappable::wrap(pack), stat, Wrappable::wrap(*addr), port)
         }
     }

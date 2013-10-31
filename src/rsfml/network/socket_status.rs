@@ -29,9 +29,22 @@
 *
 */
 
+use std::libc::c_int;
+
+pub mod ffi {
+
+	use std::libc::c_int;
+
+	pub type SocketStatus = c_int;
+	pub static SOCKETNONE: 			SocketStatus = 0;
+	pub static SOCKETNOTREADY: 		SocketStatus = 1;
+	pub static SOCKETDISCONNECTED: 	SocketStatus = 2;
+	pub static SOCKETERROR: 		SocketStatus = 3;
+}
+
 pub enum SocketStatus {
-    SocketNone = 0,
-    SocketNotReady = 1,
-    SocketDisconnected = 2,
-    SocketError = 3
+    SocketNone = 			ffi::SOCKETNONE as c_int,
+    SocketNotReady = 		ffi::SOCKETNOTREADY as c_int,
+    SocketDisconnected = 	ffi::SOCKETDISCONNECTED as c_int,
+    SocketError = 			ffi::SOCKETERROR as c_int
 }

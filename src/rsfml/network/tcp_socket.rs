@@ -30,7 +30,7 @@
 */
 
 use std::libc::size_t;
-use std::{vec, ptr};
+use std::{vec, ptr, cast};
 
 use traits::wrappable::Wrappable;
 use network::{ip_address, packet};
@@ -46,7 +46,7 @@ pub mod ffi {
     use sfml_types::SfBool;
     use network::ip_address;
     use system::time;
-    use network::socket_status::SocketStatus;
+    use network::socket_status;
     use network::packet;
 
     pub struct sfTcpSocket {
@@ -61,12 +61,12 @@ pub mod ffi {
         pub fn sfTcpSocket_getLocalPort(socket : *sfTcpSocket) -> u16;
         pub fn sfTcpSocket_getRemoteAddress(socket : *sfTcpSocket) -> ip_address::ffi::sfIpAddress;
         pub fn sfTcpSocket_getRemotePort(socket : *sfTcpSocket) -> u16;
-        pub fn sfTcpSocket_connect(socket : *sfTcpSocket, host : ip_address::ffi::sfIpAddress, port : u16,  timeout : time::ffi::sfTime) -> SocketStatus;
+        pub fn sfTcpSocket_connect(socket : *sfTcpSocket, host : ip_address::ffi::sfIpAddress, port : u16,  timeout : time::ffi::sfTime) -> socket_status::ffi::SocketStatus;
         pub fn sfTcpSocket_disconnect(socket : *sfTcpSocket) -> ();
-        pub fn sfTcpSocket_send(socket : *sfTcpSocket, data : *i8, size : size_t) -> SocketStatus;
-        pub fn sfTcpSocket_receive(socket : *sfTcpSocket, data : *i8, maxSize : size_t, sizeReceived : *size_t) -> SocketStatus;
-        pub fn sfTcpSocket_sendPacket(socket : *sfTcpSocket, packet : *packet::ffi::sfPacket) -> SocketStatus;
-        pub fn sfTcpSocket_receivePacket(socket : *sfTcpSocket, packet : *packet::ffi::sfPacket) -> SocketStatus;
+        pub fn sfTcpSocket_send(socket : *sfTcpSocket, data : *i8, size : size_t) -> socket_status::ffi::SocketStatus;
+        pub fn sfTcpSocket_receive(socket : *sfTcpSocket, data : *i8, maxSize : size_t, sizeReceived : *size_t) -> socket_status::ffi::SocketStatus;
+        pub fn sfTcpSocket_sendPacket(socket : *sfTcpSocket, packet : *packet::ffi::sfPacket) -> socket_status::ffi::SocketStatus;
+        pub fn sfTcpSocket_receivePacket(socket : *sfTcpSocket, packet : *packet::ffi::sfPacket) -> socket_status::ffi::SocketStatus;
     }
 
 }
@@ -195,7 +195,7 @@ impl TcpSocket {
     #[fixed_stack_segment] #[inline(never)]
     pub fn connect(&self, host : &ip_address::IpAddress, port : u16, timeout : time::Time) -> SocketStatus {
         unsafe {
-            ffi::sfTcpSocket_connect(self.socket, host.unwrap(), port, timeout.unwrap())
+            cast::transmute(ffi::sfTcpSocket_connect(self.socket, host.unwrap(), port, timeout.unwrap()) as i8)
         }
     }
 
@@ -224,7 +224,7 @@ impl TcpSocket {
     #[fixed_stack_segment] #[inline(never)]
     pub fn send(&self, data : ~[i8]) -> SocketStatus {
         unsafe {
-            ffi::sfTcpSocket_send(self.socket, vec::raw::to_ptr(data), data.len() as size_t)
+            cast::transmute(ffi::sfTcpSocket_send(self.socket, vec::raw::to_ptr(data), data.len() as size_t) as i8)
         }
     }
 
@@ -245,7 +245,7 @@ impl TcpSocket {
         unsafe {
             let s : size_t = 0;
             let datas : *i8 = ptr::null();
-            let stat : SocketStatus = ffi::sfTcpSocket_receive(self.socket, datas, max_size, &s);
+            let stat : SocketStatus = cast::transmute(ffi::sfTcpSocket_receive(self.socket, datas, max_size, &s) as i8);
             (vec::raw::from_buf_raw(datas, s as uint), stat, s)
         }
     }
@@ -261,7 +261,7 @@ impl TcpSocket {
     #[fixed_stack_segment] #[inline(never)]
     pub fn send_packet(&self, packet : &packet::Packet) -> SocketStatus {
         unsafe {
-            ffi::sfTcpSocket_sendPacket(self.socket, packet.unwrap())
+            cast::transmute(ffi::sfTcpSocket_sendPacket(self.socket, packet.unwrap()) as i8)
         }
     }
 
@@ -278,7 +278,7 @@ impl TcpSocket {
     pub fn receive_packet(&self) -> (packet::Packet, SocketStatus) {
         unsafe {
             let pack : *packet::ffi::sfPacket = ptr::null();
-            let stat = ffi::sfTcpSocket_receivePacket(self.socket, pack);
+            let stat : SocketStatus = cast::transmute(ffi::sfTcpSocket_receivePacket(self.socket, pack) as i8);
             (Wrappable::wrap(pack), stat)
         }
     }
