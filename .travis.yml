@@ -11,4 +11,5 @@ install:
   - sudo apt-get install libjpeg8-dev libgpgme11-dev libsndfile1-dev libopenal-dev
 script:
   - mkdir -p build
+  - rustc --version
   - rustc --out-dir build src/rsfml/lib.rs
