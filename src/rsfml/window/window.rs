@@ -258,7 +258,7 @@ impl Window {
                         0 => false,
                         _ => true
                     };
-                    let k : keyboard::Key = unsafe { cast::transmute(self.event.p1 as i8) };
+                    let k : keyboard::Key = unsafe { cast::transmute(self.event.p1 as i64) };
                     event::KeyPressed{
                         code : k,
                         alt : al,
@@ -284,7 +284,7 @@ impl Window {
                         0 => false,
                         _ => true
                     };
-                    let k : keyboard::Key = unsafe { cast::transmute(self.event.p1 as i8) };
+                    let k : keyboard::Key = unsafe { cast::transmute(self.event.p1 as i64) };
                     event::KeyReleased{
                         code : k,
                         alt : al, 

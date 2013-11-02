@@ -33,6 +33,7 @@ use std::libc::{c_int};
 use sfml_types::*;
 
 /// Key codes
+#[repr(i64)]
 pub enum Key { 
     Unknown = -1, 
     A = 0, 
