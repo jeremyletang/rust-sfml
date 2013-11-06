@@ -55,7 +55,7 @@ Here is a short example, draw a circle shape and display it.
 extern mod rsfml;
 
 use rsfml::system::Vector2f;
-use rsfml::window::{ContextSettings, VideoMode, Event};
+use rsfml::window::{ContextSettings, VideoMode, event};
 use rsfml::graphics::{RenderWindow, sfClose, CircleShape, Color};
 
 #[start]
