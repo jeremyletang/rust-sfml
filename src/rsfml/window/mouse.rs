@@ -33,6 +33,7 @@ use std::libc::{c_uint};
 use sfml_types::*;
 
 /// Mouse buttons
+#[deriving(Clone, Eq, Ord)]
 pub enum MouseButton {
     MouseLeft,
     MouseRight,

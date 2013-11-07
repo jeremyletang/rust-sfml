@@ -43,6 +43,7 @@ pub mod ffi {
 /**
 * Enumeration of statuses for sounds and musics
 */
+#[deriving(Eq, Ord)]
 pub enum Status {
     Stopped = 	ffi::SFSTOPPED as c_int,
     Paused = 	ffi::SFPAUSED as c_int,

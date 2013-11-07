@@ -42,6 +42,7 @@ pub mod ffi {
 	pub static SOCKETERROR: 		SocketStatus = 3;
 }
 
+#[deriving(Eq, Ord)]
 pub enum SocketStatus {
     SocketNone = 			ffi::SOCKETNONE as c_int,
     SocketNotReady = 		ffi::SOCKETNOTREADY as c_int,

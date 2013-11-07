@@ -34,6 +34,7 @@ use window::mouse::*;
 use window::joystick::*;
 
 /// Definition of all the event types
+#[deriving(Clone, Eq, Ord)]
 pub enum Event {
     Closed,
     Resized { width : int, height : int },

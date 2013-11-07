@@ -42,7 +42,7 @@ pub mod ffi {
     }
 }
 
-#[deriving(Clone)]
+#[deriving(Clone, Ord)]
 pub struct Color {
     red :   u8,
     green : u8,

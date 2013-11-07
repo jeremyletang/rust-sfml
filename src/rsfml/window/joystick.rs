@@ -34,6 +34,7 @@ use std::libc::{c_uint};
 use sfml_types::*;
 
 /// Axes supported by SFML joysticks 
+#[deriving(Clone, Eq, Ord)]
 pub enum Axis {
     X,
     Y,

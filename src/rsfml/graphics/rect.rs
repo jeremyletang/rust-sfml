@@ -51,7 +51,7 @@ pub mod ffi {
 /**
 * utility classes for manipulating rectangles of int.
 */
-#[deriving(Clone)]
+#[deriving(Clone, Ord)]
 pub struct IntRect {
     left :      i32,
     top :       i32,
@@ -62,7 +62,7 @@ pub struct IntRect {
 /**
 * utility classes for manipulating rectangles of f32.
 */
-#[deriving(Clone)]
+#[deriving(Clone, Ord)]
 pub struct FloatRect {
     left :      f32,
     top :       f32,

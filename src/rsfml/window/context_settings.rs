@@ -30,6 +30,7 @@
  */
 
 
+#[deriving(Clone, Eq, Ord)]
 pub struct ContextSettings {
     depth_bits: 		u32,
     stencil_bits: 		u32,

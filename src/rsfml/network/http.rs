@@ -111,6 +111,7 @@ pub mod ffi {
     }
 }
 
+#[deriving(Eq, Ord)]
 pub enum Method {
     /// Request in get mode, standard method to retrieve a page
     Get = ffi::GET as c_int,
@@ -120,6 +121,7 @@ pub enum Method {
     Head = ffi::HEAD as c_int
 }
 
+#[deriving(Eq, Ord)]
 pub enum Status {
     // 2xx: success
     /// Most common code returned when operation was successful

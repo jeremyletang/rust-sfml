@@ -153,6 +153,7 @@ pub mod ffi {
 }
 
 /// The differents FTP modes availables.
+#[deriving(Eq, Ord)]
 pub enum TransferMode {
     /// Ftp Binary Mod
     FtpBinary = 0,
@@ -163,6 +164,7 @@ pub enum TransferMode {
 }
 
 /// The status and commands id's for FTP.
+#[deriving(Eq, Ord)]
 pub enum Status {
     // 1xx: the requested action is being initiated,
     // expect another reply before proceeding with a new command

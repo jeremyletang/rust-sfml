@@ -30,6 +30,7 @@
 */
 
 ///Available Blending modes for drawing.
+#[deriving(Eq, Ord)]
 pub enum BlendMode {
     BlendAlpha = 0,
     BlendAdd = 1,
