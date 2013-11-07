@@ -44,8 +44,12 @@ pub mod ffi {
 
 #[deriving(Eq, Ord)]
 pub enum SocketStatus {
+	/// The socket has sent / received the data.
     SocketNone = 			ffi::SOCKETNONE as c_int,
+    /// The socket is not ready to send / receive data yet.
     SocketNotReady = 		ffi::SOCKETNOTREADY as c_int,
+    /// The TCP socket has been disconnected.
     SocketDisconnected = 	ffi::SOCKETDISCONNECTED as c_int,
+    /// An unexpected error happened.
     SocketError = 			ffi::SOCKETERROR as c_int
 }

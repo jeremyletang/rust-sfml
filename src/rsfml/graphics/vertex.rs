@@ -51,8 +51,11 @@ pub mod ffi {
 /// Define a point with color and texture coordinates
 #[deriving(Clone, Eq, Ord)]
 pub struct Vertex {
+    /// 2D position of the vertex 
     position :      Vector2f,
+    /// Color of the vertex. 
     color :         Color,
+    /// Coordinates of the texture's pixel to map to the vertex.
     tex_coords :    Vector2f
 }
 

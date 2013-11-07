@@ -36,13 +36,21 @@ use sfml_types::*;
 /// Axes supported by SFML joysticks 
 #[deriving(Clone, Eq, Ord)]
 pub enum Axis {
+    /// The X axis.
     X,
+    /// The Y axis.
     Y,
+    /// The Z axis.
     Z,
+    /// The R axis.
     R,
+    /// The U axis.
     U,
+    /// The V axis.
     V,
+    /// The X axis of the point-of-view hat.
     PovX,
+    /// The Y axis of the point-of-view hat.
     PovY
 }
 

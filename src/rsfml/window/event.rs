@@ -36,24 +36,43 @@ use window::joystick::*;
 /// Definition of all the event types
 #[deriving(Clone, Eq, Ord)]
 pub enum Event {
+    /// The window requested to be closed
     Closed,
+    /// The window was resized
     Resized { width : int, height : int },
+    /// The window lost the focus
     LostFocus,
+    /// The window gained the focus
     GainedFocus,
+    /// A character was entered
     TextEntered { code : char },
+    /// A key was pressed
     KeyPressed { code : Key, alt : bool, ctrl : bool, shift : bool, system : bool },
+    /// A key was released
     KeyReleased { code : Key, alt : bool, ctrl : bool, shift : bool, system : bool },
+    /// The mouse wheel was scrolled
     MouseWheelMoved { delta : int, x : int, y : int },
+    /// A mouse button was pressed
     MouseButtonPressed { button : MouseButton, x : int, y : int },
+    /// A mouse button was released
     MouseButtonReleased { button : MouseButton, x : int, y : int },
+    /// The mouse cursor moved
     MouseMoved { x : int, y : int },
+    /// The mouse cursor entered the area of the window
     MouseEntered,
+    /// The mouse cursor left the area of the window
     MouseLeft,
+    /// A joystick button was pressed
     JoystickButtonPressed { joystickid : int, button : int },
+    /// A joystick button was released
     JoystickButtonReleased { joystickid : int, button : int },
+    /// The joystick moved along an axis
     JoystickMoved { joystickid : uint, axis : Axis, position : f32 },
+    /// A joystick was connected
     JoystickConnected { joystickid : uint },
+    /// A joystick was disconnected
     JoystickDisconnected { joystickid : uint },
+    /// No Event
     NoEvent
 }
 

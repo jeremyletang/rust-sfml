@@ -35,10 +35,15 @@ use sfml_types::*;
 /// Mouse buttons
 #[deriving(Clone, Eq, Ord)]
 pub enum MouseButton {
+    /// The left mouse button.
     MouseLeft,
+    /// The right mouse button.
     MouseRight,
+    /// The middle (wheel) mouse button.
     MouseMiddle,
+    /// The first extra mouse button.
     MouseXButton1,
+    /// The second extra mouse button.
     MouseXButton2
 }
 

@@ -45,7 +45,10 @@ pub mod ffi {
 */
 #[deriving(Eq, Ord)]
 pub enum Status {
+	/// Sound is not playing.
     Stopped = 	ffi::SFSTOPPED as c_int,
+    /// Sound is paused.
     Paused = 	ffi::SFPAUSED as c_int,
+    /// Sound is playing.
     Playing = 	ffi::SFPLAYING as c_int
 }

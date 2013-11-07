@@ -32,10 +32,15 @@
 
 #[deriving(Clone, Eq, Ord)]
 pub struct ContextSettings {
+	/// Bits of the depth buffer.
     depth_bits: 		u32,
+    /// Bits of the stencil buffer. 
     stencil_bits: 		u32,
+    /// Level of antialiasing. 
     antialiasing_level: u32,
+    /// Major number of the context version
     major_version: 		u32,
+    /// Minor number of the context version
     minor_version: 		u32
 }
 

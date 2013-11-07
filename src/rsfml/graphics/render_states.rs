@@ -55,9 +55,13 @@ pub mod ffi {
 pub struct RenderStates<'self> {
     #[doc(hidden)]
     priv sfRenderStates :   ffi::sfRenderStates,
+    /// Blending mode. 
     blendMode :             BlendMode,
+    /// Transform
     transform :             Transform,
+    /// Texture
     texture :               Option<&'self Texture>,
+    /// Shader
     shader :                Option<&'self Shader<'self>>
 }
 

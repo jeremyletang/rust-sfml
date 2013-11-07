@@ -23,9 +23,7 @@
 */
 
 /*!
-* Keyboard inputs
-* 
-* Give acces to real-time keyboard input.
+* Keyboard inputs Give acces to real-time keyboard input.
 *
 */
 

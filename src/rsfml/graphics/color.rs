@@ -44,9 +44,13 @@ pub mod ffi {
 
 #[deriving(Clone, Ord)]
 pub struct Color {
+    /// The red composant of the color
     red :   u8,
+    /// The green composant of the color
     green : u8,
+    /// The blue composant of the color
     blue :  u8,
+    /// The alpha composant of the color
     alpha : u8
 }
 

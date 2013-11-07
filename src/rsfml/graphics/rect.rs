@@ -53,9 +53,13 @@ pub mod ffi {
 */
 #[deriving(Clone, Ord)]
 pub struct IntRect {
+    /// Left coordinate of the rectangle. 
     left :      i32,
+    /// Top coordinate of the rectangle. 
     top :       i32,
+    /// Width of the rectangle. 
     width :     i32,
+    /// Height coordinate of the rectangle. 
     height :    i32
 }
 
@@ -64,9 +68,13 @@ pub struct IntRect {
 */
 #[deriving(Clone, Ord)]
 pub struct FloatRect {
+    /// Left coordinate of the rectangle. 
     left :      f32,
+    /// Top coordinate of the rectangle. 
     top :       f32,
+    /// Width of the rectangle. 
     width :     f32,
+    /// Height of the rectangle. 
     height :    f32
 }
 

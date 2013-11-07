@@ -33,7 +33,10 @@ use graphics::rect::IntRect;
 
 #[deriving(Clone, Eq, Ord)]
 pub struct Glyph {
+	/// Offset to move horizontically to the next character. 
     advance : i32,
+    /// Bounding rectangle of the glyph, in coordinates relative to the baseline.
     bounds : IntRect,
+    /// Texture coordinates of the glyph inside the font's texture.
     texture_rect : IntRect
 }
