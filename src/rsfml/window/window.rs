@@ -154,7 +154,6 @@ impl Window {
     *
     * Return a new Window object
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn new(mode : VideoMode, title : ~str, style : WindowStyle, settings : &ContextSettings) -> Option<Window> {
         let sf_win: *ffi::sfWindow =
         unsafe {
@@ -202,7 +201,6 @@ impl Window {
     *
     * Return a new Window object
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn new_with_unicode(mode : VideoMode, title : ~[u32], style : WindowStyle, settings : &ContextSettings) -> Option<Window> {
         let sf_win = unsafe { ffi::sfWindow_createUnicode(mode.unwrap(), vec::raw::to_ptr(title), style as u32, settings) };
         let sf_ev = ffi::sfEvent {
@@ -365,7 +363,6 @@ impl Window {
     *
     * Return the event if an event was returned, or NoEvent if the event queue was empty
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn poll_event(&mut self) -> event::Event {
         let haveEvent : bool =  unsafe {
             match ffi::sfWindow_pollEvent(self.window, &self.event) {
@@ -393,7 +390,6 @@ impl Window {
     *
     * Return the event or NoEvent if an error has occured
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn wait_event(&mut self) -> event::Event {
         let haveEvent : bool =  unsafe {
             match ffi::sfWindow_waitEvent(self.window, &self.event) {
@@ -414,7 +410,6 @@ impl Window {
     * # Arguments
     * * title - New title
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn set_unicode_title(&mut self, title : ~[u32]) -> () {
         unsafe {
             ffi::sfWindow_setUnicodeTitle(self.window, vec::raw::to_ptr(title))
@@ -429,7 +424,6 @@ impl Window {
     * * height - Icon's height, in pixels
     * * pixels - Vector of pixels
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn set_icon(&mut self, width : uint, height : uint, pixels : ~[u8]) -> () {
         unsafe {
             ffi::sfWindow_setIcon(self.window, width as c_uint, height as c_uint, vec::raw::to_ptr(pixels))
@@ -445,7 +439,6 @@ impl Window {
     * will still work (i.e. you don't have to test is_open
     * every time), and will have no effect on closed windows.
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn close(&mut self) -> () {
         unsafe {
             ffi::sfWindow_close(self.window);
@@ -459,7 +452,6 @@ impl Window {
     * Note that a hidden window (set_visible(false)) will return
     * true.
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn is_open(&self) -> bool {
         let tmp = unsafe { ffi::sfWindow_isOpen(self.window) };
         match tmp {
@@ -480,7 +472,6 @@ impl Window {
     *
     * Return a structure containing the OpenGL context settings
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_settings(&self) -> ContextSettings {
         unsafe {ffi::sfWindow_getSettings(self.window)}
     }
@@ -491,7 +482,6 @@ impl Window {
     * # Arguments
     * * title - New title
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn set_title(&mut self, title : ~str) -> () {
         let c_title = title.to_c_str();
         unsafe {
@@ -505,7 +495,6 @@ impl Window {
     * # Arguments
     * * visible - true to show the window, false to hide it
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn set_visible(&mut self, visible : bool) -> () {
         unsafe {
             match visible {
@@ -521,7 +510,6 @@ impl Window {
     * # Arguments
     * * visible - true to show, false to hide
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn set_mouse_cursor_visible(&mut self, visible : bool) -> () {
         unsafe { 
             match visible {
@@ -542,7 +530,6 @@ impl Window {
     * # Arguments
     * * enabled - true to enable v-sync, false to deactivate
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn set_vertical_sync_enabled(&mut self, enabled : bool) -> () {
         unsafe {
             match enabled {
@@ -564,7 +551,6 @@ impl Window {
     * # Arguments
     * * enabled - true to enable, false to disable
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn set_key_repeat_enabled(&mut self, enabled : bool) -> () {
         unsafe {
             match enabled {
@@ -588,7 +574,6 @@ impl Window {
     *
     * Return true if operation was successful, false otherwise
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn set_active(&mut self, enabled : bool) -> bool {
         let tmp = unsafe { match enabled {
             true    => ffi::sfWindow_setActive(self.window, SFTRUE),
@@ -608,7 +593,6 @@ impl Window {
     * has been done for the current frame, in order to show
     * it on screen.
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn display(&mut self) -> () {
         unsafe {
             ffi::sfWindow_display(self.window)
@@ -625,7 +609,6 @@ impl Window {
     * # Arguments
     * * limit - Framerate limit, in frames per seconds (use 0 to disable limit)
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn set_framerate_limit(&mut self, limit : uint) -> () {
         unsafe {
             ffi::sfWindow_setFramerateLimit(self.window, limit as c_uint)
@@ -641,7 +624,6 @@ impl Window {
     * # Arguments
     * * threshold - New threshold, in the range [0, 100]
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn set_joystick_threshold(&mut self, threshold : f32) -> () {
         unsafe {
             ffi::sfWindow_setJoystickThreshold(self.window, threshold as c_float)
@@ -653,7 +635,6 @@ impl Window {
     *
     * Return the position in pixels
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_position(&self) -> Vector2i {
         unsafe {
             ffi::sfWindow_getPosition(self.window)
@@ -670,7 +651,6 @@ impl Window {
     * # Arguments
     * * position - New position of the window, in pixels
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn set_position(&mut self, position : &Vector2i) -> () {
         unsafe {
             ffi::sfWindow_setPosition(self.window, *position)
@@ -684,7 +664,6 @@ impl Window {
     *
     * Return the size in pixels
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_size(&self) -> Vector2u {
         unsafe {
             ffi::sfWindow_getSize(self.window)
@@ -697,7 +676,6 @@ impl Window {
     * # Arguments
     * * size - New size, in pixels
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn set_size(&mut self, size : &Vector2u) -> () {
         unsafe {
             ffi::sfWindow_setSize(self.window, *size)
@@ -739,7 +717,6 @@ pub fn set_mouse_position(&mut self, position : &Vector2i) -> () {
 }
 
 
-    #[fixed_stack_segment] #[inline(never)]
     #[doc(hidden)]
     pub fn unwrap(&self) -> *ffi::sfWindow {
         self.window
@@ -750,7 +727,6 @@ impl Drop for Window {
     /**
     *   Destructor for class Window. Destroy all the ressource.
     */
-    #[fixed_stack_segment] #[inline(never)]
     fn drop(&mut self) {
         unsafe {
             ffi::sfWindow_destroy(self.window);

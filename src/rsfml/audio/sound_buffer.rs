@@ -80,7 +80,6 @@ impl SoundBuffer {
     *
     * Return an option to a SoundBuffer object or None.
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn new(filename : ~str) -> Option<SoundBuffer> {
         let mut sound_buffer : *ffi::sfSoundBuffer;
         unsafe { 
@@ -103,7 +102,6 @@ impl SoundBuffer {
     *
     *  Return an option to a cloned SoundBuffer object or None.
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn clone(&self) -> Option<SoundBuffer> {
         let sound_buffer = unsafe { ffi::sfSoundBuffer_copy(self.sound_buffer) };
         if ptr::is_null(sound_buffer) {
@@ -129,7 +127,6 @@ impl SoundBuffer {
     *
     * Return true if saving succeeded, false if it faileds
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn save_to_file(&self, filename : ~str) -> bool {
         unsafe {
             let c_filename = filename.to_c_str().unwrap();
@@ -160,7 +157,6 @@ impl SoundBuffer {
     * 
     * Return the number of samples
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_sample_count(&self) -> i64 {
         unsafe {
             ffi::sfSoundBuffer_getSampleCount(self.sound_buffer) as i64
@@ -175,7 +171,6 @@ impl SoundBuffer {
     *
     * Return the number of channels
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_channel_count(&self) -> uint {
         unsafe {
             ffi::sfSoundBuffer_getChannelCount(self.sound_buffer) as uint
@@ -187,7 +182,6 @@ impl SoundBuffer {
     *
     * Return the sound duration
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_duration(&self) -> time::Time {
         Wrappable::wrap(unsafe { ffi::sfSoundBuffer_getDuration(self.sound_buffer) })
     }
@@ -201,7 +195,6 @@ impl SoundBuffer {
     *
     * Return the sample rate (number of samples per second)
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_sample_rate(&self) -> uint {
         unsafe {
             ffi::sfSoundBuffer_getSampleRate(self.sound_buffer) as uint
@@ -227,7 +220,6 @@ impl Drop for SoundBuffer {
     /**
     *   Destructor for class SoundBuffer. Destroy all the ressource.
     */
-    #[fixed_stack_segment] #[inline(never)]
     fn drop(&mut self) {
         if self.dropable {
             unsafe {

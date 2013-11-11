@@ -82,7 +82,6 @@ impl TcpSocket {
     *
     * Return a new option to TcpSocket object, or None
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn new() -> Option<TcpSocket> {
         let tcp = unsafe { ffi::sfTcpSocket_create() };
         if ptr::is_null(tcp) {
@@ -110,7 +109,6 @@ impl TcpSocket {
     * # Arguments
     * * blocking - true to set the socket as blocking, false for non-blocking
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn set_blocking(&mut self, blocking : bool) -> () {
         unsafe {
             match blocking  {
@@ -125,7 +123,6 @@ impl TcpSocket {
     *
     * Return true if the socket is blocking, false otherwise
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn is_blocking(&self) -> bool {
         match unsafe { ffi::sfTcpSocket_isBlocking(self.socket) } {
             SFFALSE => false,
@@ -142,7 +139,6 @@ impl TcpSocket {
     * 
     * Return the port to which the socket is bound
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_local_port(&self) -> u16 {
         unsafe {
             ffi::sfTcpSocket_getLocalPort(self.socket)
@@ -157,7 +153,6 @@ impl TcpSocket {
     *
     * Return the address of the remote peer
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_remote_address(&self) -> ip_address::IpAddress {
         unsafe {
             Wrappable::wrap(ffi::sfTcpSocket_getRemoteAddress(self.socket))
@@ -172,7 +167,6 @@ impl TcpSocket {
     *
     * Return the remote port to which the socket is connected
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_remote_port(&self) -> u16 {
         unsafe {
             ffi::sfTcpSocket_getRemotePort(self.socket)
@@ -192,7 +186,6 @@ impl TcpSocket {
     * * remotePort - Port of the remote peer
     * * timeout - Maximum time to wait
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn connect(&self, host : &ip_address::IpAddress, port : u16, timeout : time::Time) -> SocketStatus {
         unsafe {
             cast::transmute(ffi::sfTcpSocket_connect(self.socket, host.unwrap(), port, timeout.unwrap()) as i8)
@@ -206,7 +199,6 @@ impl TcpSocket {
     * socket is not connected, this function has no effect.
     *
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn disconnect(&mut self) -> () {
         unsafe {
             ffi::sfTcpSocket_disconnect(self.socket)
@@ -221,7 +213,6 @@ impl TcpSocket {
     * 
     * Return the status code
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn send(&self, data : ~[i8]) -> SocketStatus {
         unsafe {
             cast::transmute(ffi::sfTcpSocket_send(self.socket, vec::raw::to_ptr(data), data.len() as size_t) as i8)
@@ -240,7 +231,6 @@ impl TcpSocket {
     *
     * Return a tuple containing the size read, a vector width data and the socket status
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn receive(&self, max_size : size_t) -> (~[i8], SocketStatus, size_t) {
         unsafe {
             let s : size_t = 0;
@@ -258,7 +248,6 @@ impl TcpSocket {
     *
     * Return the socket status
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn send_packet(&self, packet : &packet::Packet) -> SocketStatus {
         unsafe {
             cast::transmute(ffi::sfTcpSocket_sendPacket(self.socket, packet.unwrap()) as i8)
@@ -274,7 +263,6 @@ impl TcpSocket {
     *
     * Return a packet and a socket status
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn receive_packet(&self) -> (packet::Packet, SocketStatus) {
         unsafe {
             let pack : *packet::ffi::sfPacket = ptr::null();
@@ -297,7 +285,6 @@ impl Wrappable<*ffi::sfTcpSocket> for TcpSocket {
 }
 
 impl Drop for TcpSocket {
-    #[fixed_stack_segment] #[inline(never)]
     fn drop(&mut self) -> () {
         unsafe {
             ffi::sfTcpSocket_destroy(self.socket)

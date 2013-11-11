@@ -90,7 +90,6 @@ impl Packet {
     *
     * Return a new sfPacket object
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn new() -> Option<Packet> {
         let pck = unsafe { ffi::sfPacket_create() };
         if ptr::is_null(pck) {
@@ -108,7 +107,6 @@ impl Packet {
     *
     * Return a new Packet object which is a copy of packet
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn clone(&self) -> Option<Packet> {
         let pck = unsafe { ffi::sfPacket_copy(self.packet) };
         if ptr::is_null(pck) {
@@ -126,7 +124,6 @@ impl Packet {
     *
     * After calling Clear, the packet is empty.
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn clear(&self) -> () {
         unsafe {
             ffi::sfPacket_clear(self.packet)
@@ -141,7 +138,6 @@ impl Packet {
     *
     * Return the data size, in bytes
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_data_size(&self) -> u32 {
         unsafe {
             ffi::sfPacket_getDataSize(self.packet) as u32 
@@ -157,7 +153,6 @@ impl Packet {
     *
     * Return true if all data was read, false otherwise
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn end_of_packet(&self) -> bool {
         match unsafe { ffi::sfPacket_endOfPacket(self.packet) } {
             0 => false,
@@ -176,7 +171,6 @@ impl Packet {
     *
     * Return true if last data extraction from packet was successful
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn can_read(&self) -> bool {
         match unsafe { ffi::sfPacket_canRead(self.packet) } {
             0 => false,
@@ -187,7 +181,6 @@ impl Packet {
     /**
     * Function to extract data from a packet
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn read_bool(&self) -> bool {
         match unsafe { ffi::sfPacket_readBool(self.packet) } {
             0 => false,
@@ -198,7 +191,6 @@ impl Packet {
     /**
     * Function to extract data from a packet
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn read_i8(&self) -> i8 {
         unsafe {
             ffi::sfPacket_readInt8(self.packet)
@@ -208,7 +200,6 @@ impl Packet {
     /**
     * Function to extract data from a packet
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn read_u8(&self) -> u8 {
         unsafe {
             ffi::sfPacket_readUint8(self.packet)
@@ -218,7 +209,6 @@ impl Packet {
     /**
     * Function to extract data from a packet
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn read_i16(&self) -> i16 {
         unsafe {
             ffi::sfPacket_readInt16(self.packet)
@@ -228,7 +218,6 @@ impl Packet {
     /**
     * Function to extract data from a packet
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn read_u16(&self) -> u16 {
         unsafe {
             ffi::sfPacket_readUint16(self.packet)
@@ -238,7 +227,6 @@ impl Packet {
     /**
     * Function to extract data from a packet
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn read_i32(&self) -> i32 {
         unsafe {
             ffi::sfPacket_readInt32(self.packet)
@@ -248,7 +236,6 @@ impl Packet {
     /**
     * Function to extract data from a packet
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn read_u32(&self) -> u32 {
         unsafe {
             ffi::sfPacket_readUint32(self.packet)
@@ -258,7 +245,6 @@ impl Packet {
     /**
     * Function to extract data from a packet
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn read_f32(&self) -> f32 {
         unsafe {
             ffi::sfPacket_readFloat(self.packet) as f32
@@ -268,7 +254,6 @@ impl Packet {
     /**
     * Function to extract data from a packet
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn read_f64(&self) -> f64 {
         unsafe {
             ffi::sfPacket_readDouble(self.packet) as f64
@@ -278,7 +263,6 @@ impl Packet {
     /**
     * Function to extract data from a packet
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn read_string(&self) -> ~str {
         unsafe {
             let string : *u8 = ptr::null();
@@ -290,7 +274,6 @@ impl Packet {
     /**
     * Function to insert data into a packet
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn write_bool(&self, data : bool) -> () {
         unsafe {
             match data {
@@ -303,7 +286,6 @@ impl Packet {
     /**
     * Function to insert data into a packet
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn write_i8(&self, data : i8) -> () {
         unsafe {
             ffi::sfPacket_writeInt8(self.packet, data)
@@ -313,7 +295,6 @@ impl Packet {
     /**
     * Function to insert data into a packet
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn write_u8(&self, data : u8) -> () {
         unsafe {
             ffi::sfPacket_writeUint8(self.packet, data)
@@ -323,7 +304,6 @@ impl Packet {
     /**
     * Function to insert data into a packet
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn write_i16(&self, data : i16) -> () {
         unsafe {
             ffi::sfPacket_writeInt16(self.packet, data)
@@ -333,7 +313,6 @@ impl Packet {
     /**
     * Function to insert data into a packet
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn write_u16(&self, data : u16) -> () {
         unsafe {
             ffi::sfPacket_writeUint16(self.packet, data)
@@ -343,7 +322,6 @@ impl Packet {
     /**
     * Function to insert data into a packet
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn write_i32(&self, data : i32) -> () {
         unsafe {
             ffi::sfPacket_writeInt32(self.packet, data)
@@ -353,7 +331,6 @@ impl Packet {
     /**
     * Function to insert data into a packet
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn write_u32(&self, data : u32) -> () {
         unsafe {
             ffi::sfPacket_writeUint32(self.packet, data)
@@ -363,7 +340,6 @@ impl Packet {
     /**
     * Function to insert data into a packet
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn write_f32(&self, data : f32) -> () {
         unsafe {
             ffi::sfPacket_writeFloat(self.packet, data)
@@ -373,7 +349,6 @@ impl Packet {
     /**
     * Function to insert data into a packet
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn write_f64(&self, data : f64) -> () {
         unsafe {
             ffi::sfPacket_writeDouble(self.packet, data)
@@ -383,7 +358,6 @@ impl Packet {
     /**
     * Function to insert data into a packet
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn write_string(&self, string : ~str) -> () {
         let c_string = string.to_c_str();
         unsafe {
@@ -405,7 +379,6 @@ impl Wrappable<*ffi::sfPacket> for Packet {
 }
 
 impl Drop for Packet {
-    #[fixed_stack_segment] #[inline(never)]
     fn drop(&mut self) -> () {
         unsafe {
             ffi::sfPacket_destroy(self.packet)

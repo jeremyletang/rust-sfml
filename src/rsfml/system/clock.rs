@@ -62,7 +62,6 @@ impl Clock {
     /**
     * Create a new Clock and start it.
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn new() -> Clock {
         Clock {
             clock : unsafe { ffi::sfClock_create() }
@@ -73,7 +72,6 @@ impl Clock {
     * Create a clock by copying an extant one
     * 
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn clone(&self) -> Clock {
         Clock {
             clock : unsafe { ffi::sfClock_copy(self.clock) } 
@@ -83,7 +81,6 @@ impl Clock {
     /**
     * Get the time elapsed in a clock
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_elapsed_time(&self) -> Time {
         unsafe {
             Wrappable::wrap(ffi::sfClock_getElapsedTime(self.clock))
@@ -93,7 +90,6 @@ impl Clock {
     /**
     * Restart a Clock.
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn restart(&mut self) -> Time {
         unsafe {
             Wrappable::wrap(ffi::sfClock_restart(self.clock))
@@ -110,7 +106,6 @@ impl Drop for Clock {
     /**
     * Destroy a clock
     */
-    #[fixed_stack_segment] #[inline(never)]
     fn drop(&mut self) {
         unsafe {
             ffi::sfClock_destroy(self.clock)

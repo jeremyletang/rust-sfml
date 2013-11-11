@@ -81,7 +81,6 @@ impl Transformable {
     *
     * Return a new Transformable object
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn new() -> Option<Transformable> {
         let tran = unsafe { ffi::sfTransformable_create() };
         if ptr::is_null(tran) {
@@ -99,7 +98,6 @@ impl Transformable {
     *
     * Return the copied object
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn clone(&self) -> Option<Transformable> {
         let tran = unsafe { ffi::sfTransformable_copy(self.transformable) };
         if ptr::is_null(tran) {
@@ -122,7 +120,6 @@ impl Transformable {
     * # Arguments
     * * position - The new position
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn set_position(&mut self, position : &Vector2f) -> () {
         unsafe {
             ffi::sfTransformable_setPosition(self.transformable, *position)
@@ -139,7 +136,6 @@ impl Transformable {
     * # Arguments
     * * angle - The new rotation, in degrees
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn set_rotation(&mut self, angle : f32) -> () {
         unsafe {
             ffi::sfTransformable_setRotation(self.transformable, angle as c_float)
@@ -156,7 +152,6 @@ impl Transformable {
     * # Arguments
     * * scale - New scale factors
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn set_scale(&mut self, scale : &Vector2f) -> () {
         unsafe {
             ffi::sfTransformable_setScale(self.transformable, *scale)
@@ -176,7 +171,6 @@ impl Transformable {
     * # Arguments
     * * origin - New origin
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn set_origin(&mut self, origin : &Vector2f) -> () {
         unsafe {
             ffi::sfTransformable_setOrigin(self.transformable, *origin)
@@ -188,7 +182,6 @@ impl Transformable {
     *
     * Return the current position
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_position(&self) -> Vector2f {
         unsafe {
             ffi::sfTransformable_getPosition(self.transformable)
@@ -202,7 +195,6 @@ impl Transformable {
     * 
     * Return the current rotation, in degrees
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_rotation(&self) -> f32 {
         unsafe {
             ffi::sfTransformable_getRotation(self.transformable) as f32
@@ -214,7 +206,6 @@ impl Transformable {
     *
     * Return the current scale factors
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_scale(&self) -> Vector2f {
         unsafe {
             ffi::sfTransformable_getScale(self.transformable)
@@ -226,7 +217,6 @@ impl Transformable {
     *
     * Return the current origin
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_origin(&self) -> Vector2f {
         unsafe {
             ffi::sfTransformable_getOrigin(self.transformable)
@@ -242,7 +232,6 @@ impl Transformable {
     * # Arguments
     * * offset - Offset
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn move(&mut self, offset : &Vector2f) -> () {
         unsafe {
             ffi::sfTransformable_move(self.transformable, *offset)
@@ -258,7 +247,6 @@ impl Transformable {
     * # Arguments
     * * angle - Angle of rotation, in degrees
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn rotate(&mut self, angle : f32) -> () {
         unsafe {
             ffi::sfTransformable_rotate(self.transformable, angle as c_float)
@@ -274,7 +262,6 @@ impl Transformable {
     * # Arguments
     * * factors - Scale factors
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn scale(&mut self, factors : &Vector2f) -> () {
         unsafe {
             ffi::sfTransformable_scale(self.transformable, *factors)
@@ -286,7 +273,6 @@ impl Transformable {
     *
     * Return the transform combining the position/rotation/scale/origin of the object
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_transform(&self) -> Transform {
         unsafe {
             ffi::sfTransformable_getTransform(self.transformable)
@@ -298,7 +284,6 @@ impl Transformable {
     *
     * Return the inverse of the combined transformations applied to the object
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_inverse_transform(&self) -> Transform {
         unsafe {
             ffi::sfTransformable_getInverseTransform(self.transformable)
@@ -319,7 +304,6 @@ impl Wrappable<*ffi::sfTransformable> for Transformable {
 }
 
 impl Drop for Transformable {
-    #[fixed_stack_segment] #[inline(never)]
     fn drop(&mut self) -> () {
         unsafe {
             ffi::sfTransformable_destroy(self.transformable)

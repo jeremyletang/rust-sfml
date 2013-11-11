@@ -303,7 +303,6 @@ impl ListingResponse {
     *
     * Return true if the status is a success, false if it is a failure
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn is_ok(&self) -> bool {
         match unsafe { ffi::sfFtpListingResponse_isOk(self.listing_response) } {
             0 => false,
@@ -316,7 +315,6 @@ impl ListingResponse {
     *
     * Return the status code
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_status(&self) -> Status {
         unsafe {
             cast::transmute(ffi::sfFtpListingResponse_getStatus(self.listing_response) as i16)
@@ -328,7 +326,6 @@ impl ListingResponse {
     *
     * Return the response message
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_message(&self) -> ~str {
         unsafe {
             str::raw::from_c_str(ffi::sfFtpListingResponse_getMessage(self.listing_response))
@@ -340,7 +337,6 @@ impl ListingResponse {
     *
     * Return the total number of names available
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_count(&self) -> u64 {
         unsafe {
             ffi::sfFtpListingResponse_getCount(self.listing_response) as u64
@@ -355,7 +351,6 @@ impl ListingResponse {
     *
     * Return the requested name
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_name(&self, index : u64) -> ~str {
         unsafe {
             str::raw::from_c_str(ffi::sfFtpListingResponse_getName(self.listing_response, index as size_t))            
@@ -364,7 +359,6 @@ impl ListingResponse {
 }
 
 impl Drop for ListingResponse {
-    #[fixed_stack_segment] #[inline(never)]
     fn drop(&mut self) -> () {
         unsafe {
             ffi::sfFtpListingResponse_destroy(self.listing_response)
@@ -381,7 +375,6 @@ impl DirectoryResponse {
     *
     * Return true if the status is a success, false if it is a failure
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn is_ok(&self) -> bool {
         match unsafe { ffi::sfFtpDirectoryResponse_isOk(self.directory_response) } {
             0 => false,
@@ -394,7 +387,6 @@ impl DirectoryResponse {
     *
     * Return the status code
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_status(&self) -> Status {
         unsafe {
             cast::transmute(ffi::sfFtpDirectoryResponse_getStatus(self.directory_response) as i16)
@@ -406,7 +398,6 @@ impl DirectoryResponse {
     *
     * Return the response message
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_message(&self) -> ~str {
         unsafe {
             str::raw::from_c_str(ffi::sfFtpDirectoryResponse_getMessage(self.directory_response))
@@ -418,7 +409,6 @@ impl DirectoryResponse {
     *
     * Return the directory name
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_directory(&self) -> ~str {
         unsafe {
             str::raw::from_c_str(ffi::sfFtpDirectoryResponse_getDirectory(self.directory_response))
@@ -427,7 +417,6 @@ impl DirectoryResponse {
 }
 
 impl Drop for DirectoryResponse {
-    #[fixed_stack_segment] #[inline(never)]
     fn drop(&mut self) -> () {
         unsafe {
             ffi::sfFtpDirectoryResponse_destroy(self.directory_response)
@@ -444,7 +433,6 @@ impl Response {
     *
     * Return true if the status is a success, false if it is a failure
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn is_ok(&self) -> bool {
         match unsafe { ffi::sfFtpResponse_isOk(self.response) } {
             0 => false,
@@ -457,7 +445,6 @@ impl Response {
     *
     * Return Status code
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_status(&self) -> Status {
         unsafe {
             cast::transmute(ffi::sfFtpResponse_getStatus(self.response) as i16)
@@ -469,7 +456,6 @@ impl Response {
     *
     * Return the response message
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_message(&self) -> ~str {
         unsafe {
             str::raw::from_c_str(ffi::sfFtpResponse_getMessage(self.response))
@@ -478,7 +464,6 @@ impl Response {
 }
 
 impl Drop for Response {
-    #[fixed_stack_segment] #[inline(never)]
     fn drop(&mut self) -> () {
         unsafe {
             ffi::sfFtpResponse_destroy(self.response)
@@ -492,7 +477,6 @@ impl Ftp {
     *
     * Return a new option to Ftp object or None
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn new() -> Ftp {
         Ftp {
             ftp : unsafe { ffi::sfFtp_create() }
@@ -518,7 +502,6 @@ impl Ftp {
     *
     * Return the server response to the request
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn connect(&self, server : &IpAddress, port : u16, timeout : &Time) -> Response {
         Response {
             response : unsafe { ffi::sfFtp_connect(self.ftp, server.unwrap(), port, timeout.unwrap()) }
@@ -533,7 +516,6 @@ impl Ftp {
     *
     * Return the server response to the request
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn login_anonymous(&self) -> Response {
         Response {
             response : unsafe { ffi::sfFtp_loginAnonymous(self.ftp) }
@@ -552,7 +534,6 @@ impl Ftp {
     *
     * Return the server response to the request
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn login(&self, user_name : ~str, password : ~str) -> Response {
         let c_user_name = user_name.to_c_str();
         let c_password = password.to_c_str();
@@ -566,7 +547,6 @@ impl Ftp {
     *
     * Return the server response to the request
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn disconnect(&self) -> Response {
         Response {
             response : unsafe { ffi::sfFtp_disconnect(self.ftp) }
@@ -581,7 +561,6 @@ impl Ftp {
     *
     * Return the server response to the request
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn keep_alive(&self) -> Response {
         Response {
             response : unsafe { ffi::sfFtp_keepAlive(self.ftp) }
@@ -596,7 +575,6 @@ impl Ftp {
     *
     * Return the server response to the request
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_working_directory(&self) -> DirectoryResponse {
         DirectoryResponse {
             directory_response : unsafe { ffi::sfFtp_getWorkingDirectory(self.ftp) } 
@@ -616,7 +594,6 @@ impl Ftp {
     *
     * Return the server response to the request
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_directory_listing(&self, directory : ~str) -> ListingResponse {
         let c_directory = directory.to_c_str();
         ListingResponse {
@@ -634,7 +611,6 @@ impl Ftp {
     * 
     * Return the server response to the request
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn change_directory(&self, directory : ~str) -> Response {
         let c_directory = directory.to_c_str();
         Response {
@@ -647,7 +623,6 @@ impl Ftp {
     *
     * Return the server response to the request
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn parent_directory(&self) -> Response {
         Response {
             response : unsafe { ffi::sfFtp_parentDirectory(self.ftp) }
@@ -665,7 +640,6 @@ impl Ftp {
     *
     * Return the server response to the request
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn create_directory(&self, name : ~str) -> Response {
         let c_name = name.to_c_str();
         Response { 
@@ -686,7 +660,6 @@ impl Ftp {
     * 
     * Return the server response to the request
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn delete_directory(&self, name : ~str) -> Response {
         let c_name = name.to_c_str();
         Response {
@@ -706,7 +679,6 @@ impl Ftp {
     *
     * Return the server response to the request
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn rename_file(&self, name : ~str, new_name : ~str) -> Response {
         let c_name = name.to_c_str();
         let c_new_name = new_name.to_c_str();
@@ -728,7 +700,6 @@ impl Ftp {
     * 
     * Return the server response to the request
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn delete_file(&self, name : ~str) -> Response {
         let c_name = name.to_c_str();
         Response {
@@ -751,7 +722,6 @@ impl Ftp {
     *
     * Return the server response to the request
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn download(&self, distant_file : ~str, dest_path : ~str, mode : TransferMode) -> Response {
         let c_distant_file = distant_file.to_c_str();
         let c_dest_path = dest_path.to_c_str();
@@ -775,7 +745,6 @@ impl Ftp {
     *
     * Return the server response to the request
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn upload(&self, local_file : ~str, dest_path : ~str, mode : TransferMode) -> Response {
         let c_local_file = local_file.to_c_str();
         let c_dest_path = dest_path.to_c_str();
@@ -787,7 +756,6 @@ impl Ftp {
 }
 
 impl Drop for Ftp {
-    #[fixed_stack_segment] #[inline(never)]
     fn drop(&mut self) -> () {
         unsafe {
             ffi::sfFtp_destroy(self.ftp)

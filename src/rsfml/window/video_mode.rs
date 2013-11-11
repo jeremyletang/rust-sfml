@@ -116,7 +116,6 @@ impl VideoMode {
     *
     * return true if the video mode is valid for fullscreen mode
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn is_valid(&self) -> bool {
         let i =  unsafe { ffi::sfVideoMode_isValid(ffi::sfVideoMode{
             width : self.width as c_uint, 
@@ -135,7 +134,6 @@ impl VideoMode {
     *
     * return the urrent desktop video mode
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_desktop_mode() -> VideoMode {
         let mode = unsafe { ffi::sfVideoMode_getDesktopMode() };
         VideoMode{
@@ -158,7 +156,6 @@ impl VideoMode {
     *
     * Return a vector containing all the supported VideoMode
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_fullscreen_modes() -> Option<~[VideoMode]> {
         let i : size_t = 0;
         let mut ret_tab : ~[VideoMode] = ~[];

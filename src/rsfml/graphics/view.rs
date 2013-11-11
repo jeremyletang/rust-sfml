@@ -83,7 +83,6 @@ impl View {
     * 
     * Return a new option to View object
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn new() -> Option<View> {
         let view = unsafe { ffi::sfView_create() };
         if ptr::is_null(view) {
@@ -108,7 +107,6 @@ impl View {
     *
     * Return a new option to View object
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn new_init(center : &Vector2f, size : &Vector2f) -> Option<View> {
         let view = unsafe { ffi::sfView_create() };
         if ptr::is_null(view) {
@@ -131,7 +129,6 @@ impl View {
     *
     * Return a new option to View object
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn new_copy(&self) -> Option<View> {
         let view = unsafe { ffi::sfView_copy(self.view) };
         if ptr::is_null(view) {
@@ -153,7 +150,6 @@ impl View {
     *
     * Return a new View object
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn new_from_rect(rectangle : *FloatRect) -> Option<View> {
         let view = unsafe { ffi::sfView_createFromRect(*rectangle) };
         if ptr::is_null(view) {
@@ -175,7 +171,6 @@ impl View {
     * # Arguments
     * * angle - New angle, in degrees
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn set_rotation(&mut self, angle : f32) -> () {
         unsafe {
             ffi::sfView_setRotation(self.view, angle as c_float)
@@ -187,7 +182,6 @@ impl View {
     *
     * Return the rotation angle of the view, in degrees
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_rotation(&self) -> f32 {
         unsafe {
             ffi::sfView_getRotation(self.view) as f32
@@ -200,7 +194,6 @@ impl View {
     * # Arguments
     * * angle - Angle to rotate, in degrees
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn rotate(&mut self, angle : f32) -> () {
         unsafe {
             ffi::sfView_rotate(self.view, angle as c_float)
@@ -219,7 +212,6 @@ impl View {
     * # Arguments
     * * factor - Zoom factor to apply
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn zoom(&mut self, factor : f32) -> () {
         unsafe {
             ffi::sfView_zoom(self.view, factor as c_float)
@@ -232,7 +224,6 @@ impl View {
     * # Arguments
     * * center - New center
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn set_center(&mut self, center : &Vector2f) -> () {
         unsafe {
             ffi::sfView_setCenter(self.view, *center)
@@ -246,7 +237,6 @@ impl View {
     * * center_x - New x center coordinate
     * * center_y - New y center coordinate
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn set_center2f(&mut self, center_x : f32, center_y : f32) -> () {
         unsafe {
             ffi::sfView_setCenter(self.view, Vector2f::new(center_x, center_y))
@@ -259,7 +249,6 @@ impl View {
     * # Arguments
     * * size - New size of the view
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn set_size(&mut self, size : &Vector2f) -> () {
         unsafe {
             ffi::sfView_setSize(self.view, *size)
@@ -273,7 +262,6 @@ impl View {
     * * size_x - New size x of the view
     * * size_y - New size y of the view
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn set_size2f(&mut self, size_x : f32, size_y : f32) -> () {
         unsafe {
             ffi::sfView_setSize(self.view, Vector2f::new(size_x, size_y))
@@ -286,7 +274,6 @@ impl View {
     * # Arguments
     * * offset - Offset
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn move(&mut self, offset : &Vector2f) -> () {
         unsafe {
             ffi::sfView_move(self.view, *offset)
@@ -299,7 +286,6 @@ impl View {
     * * offsetX - Offset x
     * * offsetY - Offset y
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn move2f(&mut self, offsetX : f32, offsetY : f32) -> () {
         unsafe {
             ffi::sfView_move(self.view, Vector2f::new(offsetX, offsetY))
@@ -311,7 +297,6 @@ impl View {
     *
     * Return the center of the view
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_center(&self) -> Vector2f {
         unsafe {ffi::sfView_getCenter(self.view)}
     }
@@ -321,7 +306,6 @@ impl View {
     *
     * Return the size of the view
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_size(&self) -> Vector2f {
         unsafe {
             ffi::sfView_getSize(self.view)
@@ -341,7 +325,6 @@ impl View {
     * # Arguments
     * * viewport - New viewport rectangle
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn set_viewport(&mut self, viewport : &FloatRect) -> () {
         unsafe {
             ffi::sfView_setViewport(self.view, *viewport)
@@ -356,7 +339,6 @@ impl View {
     * # Arguments
     * * rectangle - Rectangle defining the zone to display
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn reset(&mut self, rectangle : &FloatRect) -> () {
         unsafe {
             ffi::sfView_reset(self.view, *rectangle)
@@ -368,7 +350,6 @@ impl View {
     * 
     * Return the viewport rectangle, expressed as a factor of the target size
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_viewport(&self) -> FloatRect {
         unsafe {
             ffi::sfView_getViewport(self.view)
@@ -391,7 +372,6 @@ impl Wrappable<*ffi::sfView> for View {
 
 impl Drop for View {
     /// Destructor for class View
-    #[fixed_stack_segment] #[inline(never)]
     fn drop(&mut self) -> () {
       if self.dropable
       {

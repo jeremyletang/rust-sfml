@@ -79,7 +79,6 @@ impl UdpSocket {
     *
     * Return a new option to UdpSocket object or None
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn new() -> Option<UdpSocket> {
         let udp = unsafe { ffi::sfUdpSocket_create() };
         if ptr::is_null(udp) {
@@ -107,7 +106,6 @@ impl UdpSocket {
     * #Arguments
     * blocking - true to set the socket as blocking, false for non-blocking
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn set_blocking(&self, blocking : bool) -> () {
         unsafe {
             match blocking  {
@@ -122,7 +120,6 @@ impl UdpSocket {
     *
     * Return true if the socket is blocking, false otherwise
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn is_blocking(&self) -> bool {
         match unsafe { ffi::sfUdpSocket_isBlocking(self.socket) } {
             SFFALSE  => false,
@@ -139,7 +136,6 @@ impl UdpSocket {
     * 
     * Return the port to which the socket is bound
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_local_port(&self) -> u16 {
         unsafe {
             ffi::sfUdpSocket_getLocalPort(self.socket)
@@ -160,7 +156,6 @@ impl UdpSocket {
     *
     * Return the tatus code
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn bind(&self, port : u16) -> SocketStatus {
         unsafe {
             cast::transmute(ffi::sfUdpSocket_bind(self.socket, port) as i8)
@@ -175,7 +170,6 @@ impl UdpSocket {
     * available after this function is called. If the
     * socket is not bound to a port, this function has no effect.
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn unbind(&self) -> () {
         unsafe {
             ffi::sfUdpSocket_unbind(self.socket)
@@ -194,7 +188,6 @@ impl UdpSocket {
     * * remoteAddress - Address of the receiver
     * * remotePort - Port of the receiver to send the data to
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn send(&self, data : ~[i8], address : &ip_address::IpAddress, port : u16) -> SocketStatus {
         unsafe {
             cast::transmute(ffi::sfUdpSocket_send(self.socket, vec::raw::to_ptr(data), data.len() as size_t, address.unwrap(), port) as i8)
@@ -214,7 +207,6 @@ impl UdpSocket {
     * # Arguments
     * * size - Maximum number of bytes that can be received
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn receive(&self, max_size : size_t) -> (~[i8], SocketStatus, size_t, ip_address::IpAddress, u16) {
         unsafe {
             let s : size_t = 0;
@@ -239,7 +231,6 @@ impl UdpSocket {
     * * remotePort - Port of the receiver to send the data to
     *
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn send_packet(&self, packet : &packet::Packet, address : &ip_address::IpAddress, port : u16) -> SocketStatus {
         unsafe {
             cast::transmute(ffi::sfUdpSocket_sendPacket(self.socket, packet.unwrap(), address.unwrap(), port) as i8)
@@ -253,7 +244,6 @@ impl UdpSocket {
     * has been received.
     *
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn receive_packet(&self) -> (packet::Packet, SocketStatus, ip_address::IpAddress, u16) {
         unsafe {
             let pack : *packet::ffi::sfPacket = ptr::null();
@@ -270,7 +260,6 @@ impl UdpSocket {
     *
     * Return the maximum size of a UDP datagram (message)
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn max_datagram_size() -> u32 {
         unsafe {
             ffi::sfUdpSocket_maxDatagramSize()
@@ -291,7 +280,6 @@ impl Wrappable<*ffi::sfUdpSocket> for UdpSocket {
 }
 
 impl Drop for UdpSocket {
-    #[fixed_stack_segment] #[inline(never)]
     fn drop(&mut self) -> () {
         unsafe {
             ffi::sfUdpSocket_destroy(self.socket)

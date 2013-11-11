@@ -89,7 +89,6 @@ impl VertexArray {
     *
     * Return a new VertexArray object
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn new() -> Option<VertexArray> {
         let ver = unsafe { ffi::sfVertexArray_create() };
         if ptr::is_null(ver) {
@@ -110,7 +109,6 @@ impl VertexArray {
     *
     * Return the copied object
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn clone(&self) -> Option<VertexArray> {
         let ver = unsafe { ffi::sfVertexArray_copy(self.vertex_array) };
         if ptr::is_null(ver) {
@@ -128,7 +126,6 @@ impl VertexArray {
     *
     * Return the number of vertices in the array
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_vertex_count(&self) -> uint {
         unsafe {
             ffi::sfVertexArray_getVertexCount(self.vertex_array) as uint
@@ -143,7 +140,6 @@ impl VertexArray {
     * adding new vertices after clearing doesn't involve
     * reallocating all the memory.
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn clear(&mut self) -> () {
         unsafe {
             ffi::sfVertexArray_clear(self.vertex_array)
@@ -162,7 +158,6 @@ impl VertexArray {
     * # Arguments
     * * vertexCount - New size of the array (number of vertices)
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn resize(&mut self, vertexCount : uint) -> () {
         unsafe {
             ffi::sfVertexArray_resize(self.vertex_array, vertexCount as c_uint)
@@ -175,7 +170,6 @@ impl VertexArray {
     * # Arguments
     * * vertex - Vertex to add
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn append(&mut self, vertex : &Vertex) -> () {
         unsafe {
             ffi::sfVertexArray_append(self.vertex_array, *vertex)
@@ -190,7 +184,6 @@ impl VertexArray {
     *
     * Return the bounding rectangle of the vertex array
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_bounds(&self) -> FloatRect {
         unsafe {
             ffi::sfVertexArray_getBounds(self.vertex_array)
@@ -211,7 +204,6 @@ impl VertexArray {
     * # Arguments
     * * type - Type of primitive
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn set_primitive_type(&mut self, primitive_type : PrimitiveType) -> () {
         unsafe {
             match primitive_type {
@@ -231,7 +223,6 @@ impl VertexArray {
     *
     * Return the primitive type
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_primitive_type(&self) -> PrimitiveType {
         match unsafe { ffi::sfVertexArray_getPrimitiveType(self.vertex_array) } {
             ffi::SFPOINTS             => primitive_type::Points,
@@ -257,7 +248,6 @@ impl VertexArray {
     *
     * Return the index-th vertex
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_vertex(&self, index : uint) -> Vertex {
         unsafe {
             *ffi::sfVertexArray_getVertex(self.vertex_array, index as c_uint)
@@ -296,7 +286,6 @@ impl Drawable for VertexArray {
 }
 
 impl Drop for VertexArray {
-    #[fixed_stack_segment] #[inline(never)]
     fn drop(&mut self) -> () {
         unsafe {
             ffi::sfVertexArray_destroy(self.vertex_array)

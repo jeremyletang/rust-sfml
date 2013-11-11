@@ -121,7 +121,6 @@ impl<'self> Text<'self> {
     *
     * Return a new Option on Text object, or None
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn new() -> Option<Text<'self>> {
         let text  = unsafe { ffi::sfText_create() };
         if ptr::is_null(text) {
@@ -148,7 +147,6 @@ impl<'self> Text<'self> {
     *
     * Return a new Option on Text object, or None
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn new_init(string : ~str, font : &'self Font, character_size : uint) ->Option<Text<'self>> {
         let text = unsafe { ffi::sfText_create() };
         if ptr::is_null(text) {
@@ -177,7 +175,6 @@ impl<'self> Text<'self> {
     * # Arguments
     * * string - New string
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn set_string(&mut self, string : ~str) -> () {
         unsafe {
             let c_string = string.to_c_str().unwrap();
@@ -191,7 +188,6 @@ impl<'self> Text<'self> {
     *
     * Return a string as a locale-dependant ANSI string
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_string(&self) -> ~str {
         unsafe {
             str::raw::from_c_str(ffi::sfText_getString(self.text))
@@ -203,7 +199,6 @@ impl<'self> Text<'self> {
     *
     * Return a string as UTF-32
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_unicode_string(&self) -> ~[u32] {
         unsafe {
             let mut return_unicode : ~[u32] = ~[];
@@ -225,7 +220,6 @@ impl<'self> Text<'self> {
     *
     * Return the size of the characters
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_character_size(&self) -> uint {
         unsafe { 
             ffi::sfText_getCharacterSize(self.text) as uint
@@ -244,7 +238,6 @@ impl<'self> Text<'self> {
     *
     * font - New font
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn set_font(&mut self, font : &'self Font) -> () {
         self.font = Some(font);
         unsafe {
@@ -262,7 +255,6 @@ impl<'self> Text<'self> {
     * # Arguments
     * * angle - New rotation, in degrees
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn set_rotation(&mut self, angle : f32) -> () {
         unsafe {
             ffi::sfText_setRotation(self.text, angle as c_float)
@@ -276,7 +268,6 @@ impl<'self> Text<'self> {
     *
     * Return the current rotation, in degrees
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_rotation(&self) -> f32 {
         unsafe {
             ffi::sfText_getRotation(self.text) as f32
@@ -292,7 +283,6 @@ impl<'self> Text<'self> {
     * # Arguments
     * * factors - Scale factors
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn rotate(&mut self, angle : f32) -> () {
         unsafe {
             ffi::sfText_rotate(self.text, angle as c_float)
@@ -309,7 +299,6 @@ impl<'self> Text<'self> {
     * # Arguments
     * * style - New style
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn set_style(&mut self, style : Style) -> () {
         unsafe {
             ffi::sfText_setStyle(self.text, style as u32)
@@ -324,7 +313,6 @@ impl<'self> Text<'self> {
     * # Arguments
     * * size - The new character size, in pixels
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn set_character_size(&mut self, size : uint) -> () {
         unsafe {
             ffi::sfText_setCharacterSize(self.text, size as c_uint)
@@ -336,7 +324,6 @@ impl<'self> Text<'self> {
     *
     * Return the current string style (see Style enum)
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_style(&self) -> Style {
         match unsafe { ffi::sfText_getStyle(self.text) } {
             0 => Regular,
@@ -364,7 +351,6 @@ impl<'self> Text<'self> {
     * # Arguments
     * * color - The new color of the text
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn set_color(&mut self, color : &Color) -> () {
         unsafe {
             ffi::sfText_setColor(self.text, *color)
@@ -376,7 +362,6 @@ impl<'self> Text<'self> {
     *
     * Return the global color of the text
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_color(&self) -> Color {
         unsafe {
             ffi::sfText_getColor(self.text)
@@ -392,7 +377,6 @@ impl<'self> Text<'self> {
     * # Arguments
     * * factors - Scale factors
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn scale(&mut self, factors : &Vector2f) -> () {
         unsafe {
             ffi::sfText_scale(self.text, *factors)
@@ -409,7 +393,6 @@ impl<'self> Text<'self> {
     * * factor_x - Scale x factor
     * * factor_y - Scale y factor
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn scale2f(&mut self, factor_x : f32, factor_y : f32) -> () {
         unsafe {
             ffi::sfText_scale(self.text, Vector2f::new(factor_x, factor_y))
@@ -426,7 +409,6 @@ impl<'self> Text<'self> {
     * # Arguments
     * * scale - The new scale factors
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn set_scale(&mut self, scale : &Vector2f) -> () {
         unsafe {
             ffi::sfText_setScale(self.text, *scale)
@@ -444,7 +426,6 @@ impl<'self> Text<'self> {
     * * scale_x - The new x scale factor
     * * scale_y - The new y scale factor
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn set_scale2f(&mut self, scale_x : f32, scale_y : f32) -> () {
         unsafe {
             ffi::sfText_setScale(self.text, Vector2f::new(scale_x, scale_y))
@@ -460,7 +441,6 @@ impl<'self> Text<'self> {
     * # Arguments
     * * offset - Offset
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn move(&mut self, offset : &Vector2f) -> () {
         unsafe {
             ffi::sfText_move(self.text, *offset)
@@ -477,7 +457,6 @@ impl<'self> Text<'self> {
     * * offsetX - Offset x
     * * offsetY - Offset y
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn move2f(&mut self, offset_x : f32, offset_y : f32) -> () {
         unsafe {
             ffi::sfText_move(self.text, Vector2f::new(offset_x, offset_y))
@@ -494,7 +473,6 @@ impl<'self> Text<'self> {
     * # Arguments
     * * position - The new position
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn set_position(&mut self, position : &Vector2f) -> () {
         unsafe {
             ffi::sfText_setPosition(self.text, *position)
@@ -512,7 +490,6 @@ impl<'self> Text<'self> {
     * * x - The new x coordinate
     * * y - The new y coordinate
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn set_position2f(&mut self, x : f32, y : f32) -> () {
         unsafe {
             ffi::sfText_setPosition(self.text, Vector2f::new(x, y))
@@ -532,7 +509,6 @@ impl<'self> Text<'self> {
     * # Arguments
     * * origin - New origin
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn set_origin(&mut self, origin : &Vector2f) -> () {
         unsafe {
             ffi::sfText_setOrigin(self.text, *origin)
@@ -553,7 +529,6 @@ impl<'self> Text<'self> {
     * * x - New x origin coordinate
     * * y - New y origin coordinate
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn set_origin2f(&mut self, x : f32, y : f32) -> () {
         unsafe {
             ffi::sfText_setOrigin(self.text, Vector2f::new(x, y))
@@ -565,7 +540,6 @@ impl<'self> Text<'self> {
     *
     * Return the current scale factors
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_scale(&self) -> Vector2f {
         unsafe {
             ffi::sfText_getScale(self.text)
@@ -577,7 +551,6 @@ impl<'self> Text<'self> {
     *
     * Return the current origin
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_origin(&self) -> Vector2f {
         unsafe {
             ffi::sfText_getOrigin(self.text)
@@ -599,7 +572,6 @@ impl<'self> Text<'self> {
     *
     * Return the position of the character
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn find_character_pos(&self, index : u64) -> Vector2f {
         unsafe {
             ffi::sfText_findCharacterPos(self.text, index as size_t)
@@ -611,7 +583,6 @@ impl<'self> Text<'self> {
     *
     * Return the current position
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_position(&self) -> Vector2f {
         unsafe {
             ffi::sfText_getPosition(self.text)
@@ -629,7 +600,6 @@ impl<'self> Text<'self> {
     *
     * Return the local bounding rectangle of the entity
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_local_bounds(&self) -> FloatRect {
         unsafe {
             ffi::sfText_getLocalBounds(self.text)
@@ -647,7 +617,6 @@ impl<'self> Text<'self> {
     *
     * Return the global bounding rectangle of the entity
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_global_bounds(&self) -> FloatRect {
         unsafe {
             ffi::sfText_getGlobalBounds(self.text)
@@ -660,7 +629,6 @@ impl<'self> Text<'self> {
     * # Arguments
     * * string - The new string
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn set_unicode_string(&mut self, string : ~[u32]) -> () {
         unsafe {
             self.string_length = string.len();
@@ -673,7 +641,6 @@ impl<'self> Text<'self> {
     *
     * Return the transform combining the position/rotation/scale/origin of the object
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_transform(&self) -> Transform {
         unsafe {
             ffi::sfText_getTransform(self.text)
@@ -685,7 +652,6 @@ impl<'self> Text<'self> {
     *
     * Return the inverse of the combined transformations applied to the object
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_inverse_transform(&self) -> Transform {
         unsafe {
             ffi::sfText_getInverseTransform(self.text)
@@ -729,7 +695,6 @@ impl<'self> Drop for Text<'self> {
     /**
     *   Destructor for class Text. Destroy all the ressource.
     */
-    #[fixed_stack_segment] #[inline(never)]
     fn drop(&mut self) {
         unsafe {
             ffi::sfText_destroy(self.text);

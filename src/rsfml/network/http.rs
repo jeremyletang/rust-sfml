@@ -201,7 +201,6 @@ impl Request {
     *
     * Return a new option to HttpRequest object, or None
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn new() -> Request {
         Request { 
             request : unsafe { ffi::sfHttpRequest_create() }
@@ -221,7 +220,6 @@ impl Request {
     * * field - Name of the field to set
     * * value - Value of the field
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn set_field(&self, field : ~str, value : ~str) -> () {
         let c_field = field.to_c_str();
         let c_value = value.to_c_str();
@@ -240,7 +238,6 @@ impl Request {
     * # Arguments
     * * method - Method to use for the request
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn set_method(&self, method : Method) -> () {
         unsafe {
             ffi::sfHttpRequest_setMethod(self.request, method as ffi::Method)
@@ -257,7 +254,6 @@ impl Request {
     * # Arguments
     * * uri - URI to request, relative to the host
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn set_uri(&self, uri : ~str) -> () {
         let c_uri = uri.to_c_str();
         unsafe {
@@ -274,7 +270,6 @@ impl Request {
     * * major - Major HTTP version number
     * * param minor - Minor HTTP version number
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn set_http_version(&self, major : u32, minor : u32) -> () {
         unsafe {
             ffi::sfHttpRequest_setHttpVersion(self.request, major, minor)
@@ -290,7 +285,6 @@ impl Request {
     * # Arguments
     * * body - Content of the body
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn set_body(&self, body : ~str) -> () {
         let c_body = body.to_c_str();
         unsafe {
@@ -305,7 +299,6 @@ impl Request {
 }
 
 impl Drop for Request {
-    #[fixed_stack_segment] #[inline(never)]
     fn drop(&mut self) -> () {
         unsafe {
             ffi::sfHttpRequest_destroy(self.request)
@@ -326,7 +319,6 @@ impl Response {
     * 
     * Return Value of the field, or empty string if not found
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_field(&self, field : ~str) -> ~str {
         let c_field = field.to_c_str();
         unsafe {
@@ -344,7 +336,6 @@ impl Response {
     *
     * Return the status code
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_status(&self) -> Status {
         unsafe {
             cast::transmute(ffi::sfHttpResponse_getStatus(self.response) as i16)
@@ -356,7 +347,6 @@ impl Response {
     * 
     * Return Major HTTP version number
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_major_version(&self) -> u32 {
         unsafe {
             ffi::sfHttpResponse_getMajorVersion(self.response)
@@ -368,7 +358,6 @@ impl Response {
     *
     * Return the minor HTTP version number
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_minor_version(&self) -> u32 {
         unsafe {
             ffi::sfHttpResponse_getMinorVersion(self.response)
@@ -386,7 +375,6 @@ impl Response {
     *
     * Return the response body
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_body(&self) -> ~str {
         unsafe {
             str::raw::from_c_str(ffi::sfHttpResponse_getBody(self.response))
@@ -395,7 +383,6 @@ impl Response {
 }
 
 impl Drop for Response {
-    #[fixed_stack_segment] #[inline(never)]
     fn drop(&mut self) -> () {
         unsafe {
             ffi::sfHttpResponse_destroy(self.response)
@@ -409,7 +396,6 @@ impl Http {
     *
     * Return a new option to Http object or None
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn create() -> Http {
         Http { 
             http : unsafe{ ffi::sfHttp_create() }
@@ -431,7 +417,6 @@ impl Http {
     * * host - Web server to connect to
     * * port - Port to use for connection
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn set_host(&self, host : ~str, port : u16) -> () {
         let c_host = host.to_c_str();
         unsafe {
@@ -455,7 +440,6 @@ impl Http {
     * * request - Request to send
     * * timeout - Maximum time to wait
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn send_request(&self, request : &Request, timeout : &Time) -> Response {
         Response {
             response : unsafe { ffi::sfHttp_sendRequest(self.http, request.unwrap(), timeout.unwrap()) }
@@ -464,7 +448,6 @@ impl Http {
 }
 
 impl Drop for Http {
-    #[fixed_stack_segment] #[inline(never)]
     fn drop(&mut self) -> () {
         unsafe {
             ffi::sfHttp_destroy(self.http)

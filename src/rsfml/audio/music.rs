@@ -105,7 +105,6 @@ impl Music {
     *
     * Return a new option to Music object or none 
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn new_from_file(filename : ~str) -> Option<Music> {
         let mut music_tmp : *ffi::sfMusic;
         unsafe {
@@ -132,7 +131,6 @@ impl Music {
     * # Arguments
     * * loop - SFTRUE to play in loop, SFFALSE to play once
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn set_loop(&mut self, lloop : bool) -> () {
         unsafe {
             match lloop {
@@ -147,7 +145,6 @@ impl Music {
     *
     * Return true if the music is looping, false otherwise
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_loop(&self) -> bool {
         match unsafe { ffi::sfMusic_getLoop(self.music) } {
             0 => false,
@@ -160,7 +157,6 @@ impl Music {
     *
     * Return Music duration
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_duration(&self) -> Time {
         Wrappable::wrap( unsafe { ffi::sfMusic_getDuration(self.music) })
     }
@@ -174,7 +170,6 @@ impl Music {
     * This function uses its own thread so that it doesn't block
     * the rest of the program while the music is played.
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn play(&mut self) -> () {
         unsafe {
             ffi::sfMusic_play(self.music)
@@ -187,7 +182,6 @@ impl Music {
     * This function pauses the music if it was playing,
     * otherwise (music already paused or stopped) it has no effect.
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn pause(&mut self) -> () {
         unsafe {
             ffi::sfMusic_pause(self.music)
@@ -201,7 +195,6 @@ impl Music {
     * and does nothing if it was already stopped.
     * It also resets the playing position (unlike pause).
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn stop(&mut self) -> () {
         unsafe {
             ffi::sfMusic_stop(self.music)
@@ -215,7 +208,6 @@ impl Music {
     *
     * Return the number of channels
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_channel_count(&self) -> uint {
         unsafe {
             ffi::sfMusic_getChannelCount(self.music) as uint
@@ -230,7 +222,6 @@ impl Music {
     *
     * Return the sample rate, in number of samples per second
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_sample_rate(&self) -> uint {
         unsafe {
             ffi::sfMusic_getSampleRate(self.music) as uint
@@ -242,7 +233,6 @@ impl Music {
     *
     * Return current status
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_status(&self) -> sound_status::Status {
         unsafe {cast::transmute(ffi::sfMusic_getStatus(self.music) as i8)}
     }
@@ -252,7 +242,6 @@ impl Music {
     *
     * Return the current playing position
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_playing_offset(&self) -> Time {
         Wrappable::wrap(unsafe { ffi::sfMusic_getPlayingOffset(self.music) })
     }
@@ -269,7 +258,6 @@ impl Music {
     * # Arguments
     * * pitch - new pitch to apply to the music
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn set_pitch(&mut self, pitch : f32) -> () {
         unsafe {
             ffi::sfMusic_setPitch(self.music, pitch as c_float)
@@ -285,7 +273,6 @@ impl Music {
     * # Arguments
     * * volume - Volume of the music
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn set_volume(&mut self, volume : f32) -> () {
         unsafe {
             ffi::sfMusic_setVolume(self.music, volume as c_float)
@@ -304,7 +291,6 @@ impl Music {
     * # Arguments
     * * relative - true to set the position relative, false to set it absolute
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn set_relative_to_listener(&mut self, relative : bool) -> () {
         unsafe {
             match relative {
@@ -327,7 +313,6 @@ impl Music {
     * # Arguments
     * * distance - New minimum distance of the music
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn set_min_distance(&mut self, distance : f32) -> () {
         unsafe {
             ffi::sfMusic_setMinDistance(self.music, distance as c_float)
@@ -349,7 +334,6 @@ impl Music {
     * # Arguments
     * * attenuation - New attenuation factor of the music
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn set_attenuation(&mut self, attenuation : f32) -> () {
         unsafe {
             ffi::sfMusic_setAttenuation(self.music, attenuation as c_float)
@@ -365,7 +349,6 @@ impl Music {
     * # Arguments
     * * timeOffset - New playing position
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn set_playing_offset(&mut self, timeOffset : Time) -> () {
         unsafe {
             ffi::sfMusic_setPlayingOffset(self.music, timeOffset.unwrap())
@@ -377,7 +360,6 @@ impl Music {
     *
     * Return the pitch of the music
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_pitch(&self) -> f32 {
         unsafe {
             ffi::sfMusic_getPitch(self.music) as f32
@@ -389,7 +371,6 @@ impl Music {
     *
     * Return the volume of the music, in the range [0, 100]
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_volume(&self) -> f32 {
         unsafe {
             ffi::sfMusic_getVolume(self.music) as f32
@@ -401,7 +382,6 @@ impl Music {
     *
     * Return true if the position is relative, false if it's absolute
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn is_relative_to_listener(&self) -> bool {
         match unsafe { ffi::sfMusic_isRelativeToListener(self.music) } {
             SFFALSE => false,
@@ -415,7 +395,6 @@ impl Music {
     *
     * Return the minimum distance of the music
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_min_distance(&self) -> f32 {
         unsafe {
            ffi::sfMusic_getMinDistance(self.music) as f32
@@ -427,7 +406,6 @@ impl Music {
     *
     * Return the attenuation factor of the music
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_attenuation(&self) -> f32 {
         unsafe {
             ffi::sfMusic_getAttenuation(self.music) as f32
@@ -444,7 +422,6 @@ impl Music {
     * # Arguments
     * * position - Position of the music in the scene
     */
-    #[fixed_stack_segment] #[inline(never)]
     fn set_position(&mut self, position : &Vector3f) -> () {
         unsafe {
             ffi::sfMusic_setPosition(self.music, *position)
@@ -463,7 +440,6 @@ impl Music {
     * * y - Y coordinate of the position of the sound in the scene
     * * z - Z coordinate of the position of the sound in the scene
     */
-    #[fixed_stack_segment] #[inline(never)]
     fn set_position3f(&mut self, x : f32, y : f32, z : f32) -> () {
         unsafe {
             ffi::sfMusic_setPosition(self.music, Vector3f::new(x, y, z))
@@ -475,7 +451,6 @@ impl Music {
     *
     * Return the position of the music in the world
     */
-    #[fixed_stack_segment] #[inline(never)]
     fn get_position(&self) -> Vector3f {
         unsafe {
             ffi::sfMusic_getPosition(self.music)
@@ -487,7 +462,6 @@ impl Drop for Music {
     /**
     *   Destructor for class Music. Destroy all the ressource.
     */
-    #[fixed_stack_segment] #[inline(never)]
     fn drop(&mut self) {
         unsafe {
             ffi::sfMusic_destroy(self.music);

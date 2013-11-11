@@ -79,7 +79,6 @@ impl Font {
     * 
     * Return a new Font object
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn new_from_file(filename : ~str) -> Option<Font> {
         let fnt = unsafe {
             let c_filename = filename.to_c_str().unwrap();
@@ -103,7 +102,6 @@ impl Font {
     * * font - Font to copy
     * Return the copied font
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn clone(&self) -> Option<Font> {
         let fnt = unsafe {ffi::sfFont_copy(self.font)};
         if ptr::is_null(fnt) {
@@ -126,7 +124,6 @@ impl Font {
     *
     * Return the kerning offset, in pixels
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_kerning(&self, first : u32, second : u32, characterSize : uint) -> int {
         unsafe {
             ffi::sfFont_getKerning(self.font, first, second, characterSize as c_uint) as int
@@ -141,7 +138,6 @@ impl Font {
     *
     * Return the line spacing, in pixels
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_line_spacing(&self, character_size : uint) -> int {
         unsafe {
             ffi::sfFont_getLineSpacing(self.font, character_size as c_uint) as int
@@ -156,7 +152,6 @@ impl Font {
     *
     * Return the texture
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_texture(&self, character_size : uint) -> Option<Texture> {
         let tex = unsafe {ffi::sfFont_getTexture(self.font, character_size as c_uint)};
         if ptr::is_null(tex) {
@@ -177,7 +172,6 @@ impl Font {
     *
     * Return the corresponding glyph
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_glyph(&self, codepoint : u32, character_size : uint, bold : bool) -> Glyph {
         unsafe {
             match bold {
@@ -205,7 +199,6 @@ impl Drop for Font {
     /**
     * Destroy an existing font
     */
-    #[fixed_stack_segment] #[inline(never)]
     fn drop(&mut self) -> () {
         if self.dropable {
             unsafe {

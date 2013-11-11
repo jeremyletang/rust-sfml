@@ -144,7 +144,6 @@ Here is a list of all modules :
 #[license = "Zlib/png"];
 #[crate_type = "lib"];
 
-
 extern mod extra;
 
 pub mod traits;

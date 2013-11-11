@@ -72,7 +72,6 @@ impl TcpListener {
     *
     * Return a new option to TcpListener object or None
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn new() -> Option<TcpListener> {
         let list = unsafe { ffi::sfTcpListener_create() };
         if ptr::is_null(list) {
@@ -100,7 +99,6 @@ impl TcpListener {
     * # Arguments
     * * blocking - true to set the socket as blocking, false for non-blocking
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn set_blocking(&mut self, blocking : bool) -> () {
         unsafe {
             match blocking  {
@@ -115,7 +113,6 @@ impl TcpListener {
     *
     * Return true if the socket is blocking, false otherwise
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn is_blocking(&self) -> bool {
         match unsafe { ffi::sfTcpListener_isBlocking(self.listener) } {
             0 => false,
@@ -131,7 +128,6 @@ impl TcpListener {
     *
     * Return the port to which the TCP listener is bound
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn get_local_port(&self) -> u16 {
         unsafe {
             ffi::sfTcpListener_getLocalPort(self.listener)
@@ -151,7 +147,6 @@ impl TcpListener {
     *
     * Return status code
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn listen(&self, port : u16) -> SocketStatus {
         unsafe {
             cast::transmute(ffi::sfTcpListener_listen(self.listener, port) as i8)
@@ -169,7 +164,6 @@ impl TcpListener {
     *
     * Return status code
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn accept(&self, connected : @TcpSocket) -> SocketStatus {
         unsafe {
             cast::transmute(ffi::sfTcpListener_accept(self.listener, &connected.unwrap()) as i8)
@@ -178,7 +172,6 @@ impl TcpListener {
 }
 
 impl Drop for TcpListener {
-    #[fixed_stack_segment] #[inline(never)]
     fn drop(&mut self) -> () {
         unsafe {
             ffi::sfTcpListener_destroy(self.listener)

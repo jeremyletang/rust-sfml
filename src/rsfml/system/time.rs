@@ -62,7 +62,6 @@ impl Time {
     /**
     * Construct a time value from a number of seconds
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn with_seconds(seconds : f32) -> Time {
         Time {
             time : unsafe { ffi::sfSeconds(seconds as c_float) }
@@ -72,7 +71,6 @@ impl Time {
     /**
     * Construct a time value from a number of milliseconds
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn with_milliseconds(milliseconds : i32) -> Time {
         Time {
             time : unsafe { ffi::sfMilliseconds(milliseconds as c_int) }
@@ -82,7 +80,6 @@ impl Time {
     /**
     * Construct a time value from a number of microseconds
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn with_microseconds(microseconds : i64) -> Time {
         Time {
             time : unsafe { ffi::sfMicroseconds(microseconds) }
@@ -92,7 +89,6 @@ impl Time {
     /**
     * Return a time value as a number of seconds
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn as_seconds(&self) -> f32 {
         unsafe {
             ffi::sfTime_asSeconds(self.time)
@@ -102,7 +98,6 @@ impl Time {
     /**
     * Return a time value as a number of milliseconds
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn as_milliseconds(&self) -> i32 {
         unsafe {
             ffi::sfTime_asMilliseconds(self.time)
@@ -112,7 +107,6 @@ impl Time {
     /**
     * Return a time value as a number of microseconds
     */
-    #[fixed_stack_segment] #[inline(never)]
     pub fn as_microseconds(&self) -> i64 {
         unsafe {
             ffi::sfTime_asMicroseconds(self.time)
