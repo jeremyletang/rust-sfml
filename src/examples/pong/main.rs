@@ -11,14 +11,7 @@ use rsfml::window::{VideoMode, ContextSettings, event, keyboard};
 use rsfml::system::{Vector2f, Clock, Time};
 use rsfml::audio::{SoundBuffer, Sound};
 
-#[doc(hidden)]
-#[cfg(target_os="macos")]
-#[cfg(target_os="linux")]
-#[cfg(target_os="win32")]
-mod platform {
-    #[link_args="-lcsfml-audio -lcsfml-window -lcsfml-graphics -lcsfml-system -lcsfml-network"]
-    extern {}
-}
+
 
 #[cfg(target_os="macos")]
 #[start]
