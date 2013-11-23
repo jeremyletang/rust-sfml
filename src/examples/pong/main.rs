@@ -54,22 +54,22 @@ fn main () -> () {
         Some(paddle)    => paddle,
         None()          => fail!("Error, cannot create paddle")
     };
-    leftPaddle.set_size(~(paddleSize - 3f32));
+    leftPaddle.set_size(~(paddleSize - Vector2f{x: 3., y: 3.}));
     leftPaddle.set_outline_thickness(3.);
     leftPaddle.set_outline_color(~Color::black());
     leftPaddle.set_fill_color(~Color::new_RGB(100, 100, 200));
-    leftPaddle.set_origin(~(paddleSize / 2f32));
+    leftPaddle.set_origin(~(paddleSize / Vector2f{x: 2., y: 2.}));
     
     // Create the right paddle
     let mut rightPaddle = match RectangleShape::new() {
         Some(paddle)    => paddle,
         None()          => fail!("Error, cannot create paddle")
     };
-    rightPaddle.set_size(~(paddleSize - 3f32));
+    rightPaddle.set_size(~(paddleSize - Vector2f{x: 3., y: 3.}));
     rightPaddle.set_outline_thickness(3.);
     rightPaddle.set_outline_color(~Color::black());
     rightPaddle.set_fill_color(~Color::new_RGB(200, 100, 100));
-    rightPaddle.set_origin(~(paddleSize / 2f32));
+    rightPaddle.set_origin(~(paddleSize / Vector2f{x: 2., y: 2.}));
 
     // Create the ball
     let mut ball = match CircleShape::new() {
