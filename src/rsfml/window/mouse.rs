@@ -67,7 +67,6 @@ pub mod ffi {
 *
 * Return true if the button is pressed, false otherwise
 */
-#[fixed_stack_segment] #[inline(never)]
 pub fn is_button_pressed(button : MouseButton) -> bool {
     unsafe {
         match ffi::sfMouse_isButtonPressed(button as c_uint) {

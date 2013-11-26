@@ -78,7 +78,6 @@ pub mod ffi {
 *
 * Return true if the joystick is connected, false otherwise
 */
-#[fixed_stack_segment] #[inline(never)]
 pub fn joystick_is_connected(joystick : uint) -> bool {
     unsafe {
         match ffi::sfJoystick_isConnected(joystick as c_uint) {
@@ -97,7 +96,6 @@ pub fn joystick_is_connected(joystick : uint) -> bool {
 *
 * Return the number of buttons supported by the joystick.
 */
-#[fixed_stack_segment] #[inline(never)]
 pub fn joystick_get_button_count(joystick : uint) -> uint {
     unsafe {
         ffi::sfJoystick_getButtonCount(joystick as c_uint) as uint
@@ -115,7 +113,6 @@ pub fn joystick_get_button_count(joystick : uint) -> uint {
 *
 * Return true if the joystick supports the axis, false otherwise
 */
-#[fixed_stack_segment] #[inline(never)]
 pub fn joystick_has_axis(joystick : uint, axis : Axis) -> bool {
     unsafe {
         match ffi::sfJoystick_hasAxis(joystick as c_uint, axis as c_uint) {
@@ -138,7 +135,6 @@ pub fn joystick_has_axis(joystick : uint, axis : Axis) -> bool {
 *
 * Return true if the button is pressed, false otherwise
 */
-#[fixed_stack_segment] #[inline(never)]
 pub fn joystick_is_button_pressed(joystick : uint, button : uint) -> bool {
     unsafe {
         match ffi::sfJoystick_isButtonPressed(joystick as c_uint, button as c_uint) {
@@ -162,7 +158,6 @@ pub fn joystick_is_button_pressed(joystick : uint, button : uint) -> bool {
 *
 * Return the current position of the axis, in range [-100 .. 100]
 */
-#[fixed_stack_segment] #[inline(never)]
 pub fn joystick_get_axis_position(joystick : uint, axis : Axis) -> f32 {
     unsafe {
         ffi::sfJoystick_getAxisPosition(joystick as c_uint, axis as c_uint) as f32
@@ -178,7 +173,6 @@ pub fn joystick_get_axis_position(joystick : uint, axis : Axis) -> f32 {
 * in this case the joysticks states are not updated automatically.
 *
 */
-#[fixed_stack_segment] #[inline(never)]
 pub fn joystick_update() -> () {
     unsafe {
         ffi::sfJoystick_update();

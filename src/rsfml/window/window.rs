@@ -692,7 +692,6 @@ impl Window {
 *
 * Return the position of the mouse cursor, relative to the given window
 */
-#[fixed_stack_segment] #[inline(never)]
 pub fn get_mouse_position(&self) -> Vector2i {
     unsafe {
         ffi::sfMouse_getPosition(self.window)
@@ -709,7 +708,6 @@ pub fn get_mouse_position(&self) -> Vector2i {
 * * relativeTo - Reference Window
 *
 */
-#[fixed_stack_segment] #[inline(never)]
 pub fn set_mouse_position(&mut self, position : &Vector2i) -> () {
     unsafe {
         ffi::sfMouse_setPosition(*position, self.window)

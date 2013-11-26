@@ -29,9 +29,6 @@
 *
 */
 
-#[feature(globs)]
-
-
 use std::libc::{c_float, c_uint};
 use std::ptr;
 

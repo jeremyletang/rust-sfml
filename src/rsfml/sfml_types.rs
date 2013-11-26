@@ -22,8 +22,6 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#[feature(globs)]
-
 use std::libc::{c_int};
 
 pub type SfBool = c_int;

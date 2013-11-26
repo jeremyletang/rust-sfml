@@ -154,5 +154,4 @@ pub mod graphics;
 pub mod network;
 #[doc(hidden)]
 
-#[feature(globs)]
 mod sfml_types;
