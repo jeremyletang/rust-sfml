@@ -2,6 +2,7 @@
 * Example from SFML : Pong
 */
 
+
 #[feature(managed_boxes)]
 
 extern mod rsfml;
@@ -114,7 +115,7 @@ fn main () -> () {
         loop {
             match window.poll_event() {
                 event::Closed => window.close(),
-                event::KeyPressed{code, _} => match code {
+                event::KeyPressed{code, ..} => match code {
                     keyboard::Escape      => {window.close(); break},
                     keyboard::Space       => {
                         if !isPlaying {
