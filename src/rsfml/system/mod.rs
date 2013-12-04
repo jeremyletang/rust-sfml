@@ -40,7 +40,7 @@ pub use self::clock::Clock;
 #[cfg(target_os="linux")]
 #[cfg(target_os="win32")]
 mod platform {
-    #[link_args="-lcsfml-system"]
+    #[link(name = "csfml-system")]
     extern {}
 }
 

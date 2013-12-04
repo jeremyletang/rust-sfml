@@ -30,7 +30,7 @@
 */
 
 extern mod std;
-pub use extra::c_vec::{CVec, len, get};
+pub use extra::c_vec::CVec;
 use std::libc::{c_float};
 use std::vec;
 

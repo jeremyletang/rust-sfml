@@ -58,7 +58,7 @@ pub use self::vertex_array::VertexArray;
 #[cfg(target_os="linux")]
 #[cfg(target_os="win32")]
 mod platform {
-    #[link_args="-lcsfml-graphics"]
+    #[link(name = "csfml-graphics")]
     extern {}
 }
 

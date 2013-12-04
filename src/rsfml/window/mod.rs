@@ -42,7 +42,7 @@ pub use self::event::*;
 #[cfg(target_os="linux")]
 #[cfg(target_os="win32")]
 mod platform {
-    #[link_args="-lcsfml-window"]
+    #[link(name = "csfml-window")]
     extern {}
 }
 

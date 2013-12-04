@@ -41,7 +41,7 @@ pub use self::sound_recorder::SoundRecorder;
 #[cfg(target_os="linux")]
 #[cfg(target_os="win32")]
 mod platform {
-    #[link_args="-lcsfml-audio"]
+    #[link(name = "csfml-audio")]
     extern {}
 }
 
