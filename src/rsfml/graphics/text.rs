@@ -30,7 +30,7 @@
 */
 
 use std::libc::{c_float, c_uint, size_t};
-use extra::c_vec::{CVec, get};
+use extra::c_vec::CVec;
 use std::str;
 use std::ptr;
 use std::vec;
@@ -203,12 +203,12 @@ impl<'self> Text<'self> {
         unsafe {
             let mut return_unicode : ~[u32] = ~[];
             let string : *mut u32 = ffi::sfText_getUnicodeString(self.text);
-            let cvec = CVec(string, self.string_length);
+            let cvec = CVec::new(string, self.string_length);
             let mut d : uint = 0;
-            return_unicode.push(get(cvec, d));
+            return_unicode.push(*cvec.get(d));
             d += 1;
             while d != 16 {
-                return_unicode.push(get(cvec, d));
+                return_unicode.push(*cvec.get(d));
                 d += 1;
             }
         return_unicode

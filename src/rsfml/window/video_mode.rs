@@ -30,7 +30,7 @@
 *
 */
 
-use extra::c_vec::{CVec, get};
+use extra::c_vec::CVec;
 use std::libc::{c_uint, size_t};
 
 use traits::wrappable::Wrappable;
@@ -164,12 +164,12 @@ impl VideoMode {
                 if i == 0 {
                     return None;
                 }
-                let cvec = CVec(tab, i as uint);
+                let cvec = CVec::new(tab, i as uint);
                 let mut d : uint = 0;
-                ret_tab.push(Wrappable::wrap(get(cvec, d)));
+                ret_tab.push(Wrappable::wrap(*cvec.get(d)));
                 d += 1;
                 while d != i as uint {
-                    ret_tab.push(Wrappable::wrap(get(cvec, d)));
+                    ret_tab.push(Wrappable::wrap(*cvec.get(d)));
                     d += 1;
                 }
             }
