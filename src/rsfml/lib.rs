@@ -135,11 +135,12 @@ Here is a list of all modules :
 
 #[link(name = "rsfml",
        vers = "0.2",
-       package_id = "rsfml#0.2",
+       // package_id = "rsfml#0.2",
        author = "letang.jeremy@gmail.com",
        uuid = "4F3334F2-A32B-4460-A63A-9B56C98D1D78",
        url = "http://https://github.com/JeremyLetang/rust-sfml")];
 
+#[pkgid="github.com/JeremyLetang/rust-sfml#rsfml:0.2"];
 #[desc = "Rust binding for sfml"];
 #[license = "Zlib/png"];
 #[doc(html_logo_url = "http://rust-sfml.org/logo_rsfml.png")];
