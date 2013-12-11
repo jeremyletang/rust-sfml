@@ -33,7 +33,7 @@ use std::{vec, ptr, cast};
 
 use traits::wrappable::Wrappable;
 use window::{event, keyboard, joystick, mouse};
-use window::video_mode::*;
+use window::video_mode::VideoMode;
 use window::context_settings::ContextSettings;
 use system::vector2::{Vector2i, Vector2u};
 use sfml_types::*;

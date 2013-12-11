@@ -30,7 +30,7 @@
 */
 
 use window::keyboard::*;
-use window::mouse::*;
+use window::mouse::{MouseButton};
 use window::joystick::*;
 
 /// Definition of all the event types

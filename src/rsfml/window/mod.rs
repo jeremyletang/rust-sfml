@@ -29,13 +29,10 @@
 */
 
 // pub use self::window::Window;
+pub use self::window::{Window, WindowStyle, sfNone, sfTitlebar, sfResize, sfClose, sfFullscreen, sfDefaultStyle};
 pub use self::video_mode::VideoMode;
 pub use self::context::Context;
 pub use self::context_settings::ContextSettings;
-pub use self::joystick::*;
-pub use self::keyboard::*;
-pub use self::mouse::*;
-pub use self::event::*;
 
 #[doc(hidden)]
 #[cfg(target_os="macos")]
