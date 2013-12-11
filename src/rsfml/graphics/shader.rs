@@ -100,7 +100,7 @@ impl<'s> Shader<'s> {
     *
     * Return a new Shader object
     */
-    pub fn new_from_file(vertex_shader_filename : Option<~str>, fragment_shader_filename : Option<~str>) -> Option<Shader<'s>> {
+    pub fn new_from_file(vertex_shader_filename : Option<&str>, fragment_shader_filename : Option<&str>) -> Option<Shader<'s>> {
         let shader = unsafe { 
             let c_vertex_shader_filename = if vertex_shader_filename.is_none() { ptr::null() } else { vertex_shader_filename.unwrap().to_c_str().unwrap() };
             let c_fragment_shader_filename = if fragment_shader_filename.is_none() { ptr::null() } else { fragment_shader_filename.unwrap().to_c_str().unwrap() };
@@ -134,7 +134,7 @@ impl<'s> Shader<'s> {
     *
     * Return a new Shader object
     */
-    pub fn new_from_memory(vertex_shader : Option<~str>, fragment_shader : Option<~str>) -> Option<Shader<'s>> {
+    pub fn new_from_memory(vertex_shader : Option<&str>, fragment_shader : Option<&str>) -> Option<Shader<'s>> {
         let shader = unsafe { 
             let c_vertex_shader = if vertex_shader.is_none() { ptr::null() } else { vertex_shader.unwrap().to_c_str().unwrap() };
             let c_fragment_shader = if fragment_shader.is_none() { ptr::null() } else { fragment_shader.unwrap().to_c_str().unwrap() };
@@ -158,7 +158,7 @@ impl<'s> Shader<'s> {
     * * name - Name of the parameter in the shader
     * * x - Value to assign
     */
-    pub fn set_float_parameter(&mut self, name : ~str, x : f32) -> () {
+    pub fn set_float_parameter(&mut self, name : &str, x : f32) -> () {
         unsafe { 
             let c_name = name.to_c_str().unwrap();
             ffi::sfShader_setFloatParameter(self.shader, c_name, x)
@@ -177,7 +177,7 @@ impl<'s> Shader<'s> {
     * * x - First component of the value to assign
     * * y - Second component of the value to assign
     */
-    pub fn set_float_2_parameter(&mut self, name : ~str, x : f32, y : f32) -> () {
+    pub fn set_float_2_parameter(&mut self, name : &str, x : f32, y : f32) -> () {
         unsafe { 
             let c_name = name.to_c_str().unwrap();
             ffi::sfShader_setFloat2Parameter(self.shader, c_name, x, y)
@@ -197,7 +197,7 @@ impl<'s> Shader<'s> {
     * * y - Second component of the value to assign
     * * z - Third component of the value to assign
     */
-    pub fn set_float_3_parameter(&mut self, name : ~str, x : f32, y : f32, z : f32) -> () {
+    pub fn set_float_3_parameter(&mut self, name : &str, x : f32, y : f32, z : f32) -> () {
         unsafe { 
             let c_name = name.to_c_str().unwrap();
             ffi::sfShader_setFloat3Parameter(self.shader, c_name, x, y, z)
@@ -218,7 +218,7 @@ impl<'s> Shader<'s> {
     * * z - Third component of the value to assign
     * * w - Fourth component of the value to assign
     */
-    pub fn set_float_4_parameter(&mut self, name : ~str, x : f32, y : f32, z : f32, w : f32) -> () {
+    pub fn set_float_4_parameter(&mut self, name : &str, x : f32, y : f32, z : f32, w : f32) -> () {
         unsafe { 
             let c_name = name.to_c_str().unwrap();
             ffi::sfShader_setFloat4Parameter(self.shader, c_name, x, y, z, w)
@@ -236,7 +236,7 @@ impl<'s> Shader<'s> {
     * * name - Name of the texture in the shader
     * * texture - Texture to assign
     */
-    pub fn set_texture_parameter(&mut self, name : ~str, texture : &'s Texture) -> () {
+    pub fn set_texture_parameter(&mut self, name : &str, texture : &'s Texture) -> () {
         self.texture = Some(texture);
         unsafe { 
             let c_name = name.to_c_str().unwrap();
@@ -256,7 +256,7 @@ impl<'s> Shader<'s> {
     * # Arguments
     * * name - Name of the texture in the shader
     */
-    pub fn set_current_texture_parameter(&self, name : ~str) -> () {
+    pub fn set_current_texture_parameter(&self, name : &str) -> () {
         unsafe { 
             let c_name = name.to_c_str().unwrap();
             ffi::sfShader_setCurrentTextureParameter(self.shader, c_name)
@@ -304,7 +304,7 @@ impl<'s> Shader<'s> {
     * * name - Name of the parameter in the shader
     * * vector - Vector to assign
     */
-    fn set_vector2_parameter(&mut self, name : ~str, vector : &Vector2f) -> () {
+    pub fn set_vector2_parameter(&mut self, name : &str, vector : &Vector2f) -> () {
         unsafe { 
             let c_name = name.to_c_str().unwrap();
             ffi::sfShader_setVector2Parameter(self.shader, c_name, *vector)
@@ -322,7 +322,7 @@ impl<'s> Shader<'s> {
     * * name - Name of the parameter in the shader
     * * vector - Vector to assign
     */
-    fn set_vector3_parameter(&mut self, name : ~str, vector : &Vector3f) -> () {
+    pub fn set_vector3_parameter(&mut self, name : &str, vector : &Vector3f) -> () {
         unsafe { 
             let c_name = name.to_c_str().unwrap();
             ffi::sfShader_setVector3Parameter(self.shader, c_name, *vector)
@@ -346,7 +346,7 @@ impl<'s> Shader<'s> {
     * * name - Name of the parameter in the shader
     * * color - Color to assign
     */
-    fn set_color_parameter(&mut self, name : ~str, color : &Color) -> () {
+    pub fn set_color_parameter(&mut self, name : &str, color : &Color) -> () {
         unsafe { 
             let c_name = name.to_c_str().unwrap();
             ffi::sfShader_setColorParameter(self.shader, c_name, *color)

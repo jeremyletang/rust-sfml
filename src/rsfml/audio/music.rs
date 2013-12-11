@@ -106,10 +106,11 @@ impl Music {
     * Return a new option to Music object or none 
     */
     pub fn new_from_file(filename : &str) -> Option<Music> {
-        let mut music_tmp : *ffi::sfMusic;
+        let mut music_tmp : *ffi::sfMusic = ptr::null();
         unsafe {
-            let c_filename = filename.to_c_str().unwrap();
-            music_tmp = ffi::sfMusic_createFromFile(c_filename);
+            filename.with_c_str(|c_str| {
+                music_tmp = ffi::sfMusic_createFromFile(c_str)
+            });
         }
         if ptr::is_null(music_tmp) {
             return None;
@@ -422,7 +423,7 @@ impl Music {
     * # Arguments
     * * position - Position of the music in the scene
     */
-    fn set_position(&mut self, position : &Vector3f) -> () {
+    pub fn set_position(&mut self, position : &Vector3f) -> () {
         unsafe {
             ffi::sfMusic_setPosition(self.music, *position)
         }
@@ -440,7 +441,7 @@ impl Music {
     * * y - Y coordinate of the position of the sound in the scene
     * * z - Z coordinate of the position of the sound in the scene
     */
-    fn set_position3f(&mut self, x : f32, y : f32, z : f32) -> () {
+    pub fn set_position3f(&mut self, x : f32, y : f32, z : f32) -> () {
         unsafe {
             ffi::sfMusic_setPosition(self.music, Vector3f::new(x, y, z))
         }
@@ -451,7 +452,7 @@ impl Music {
     *
     * Return the position of the music in the world
     */
-    fn get_position(&self) -> Vector3f {
+    pub fn get_position(&self) -> Vector3f {
         unsafe {
             ffi::sfMusic_getPosition(self.music)
         }

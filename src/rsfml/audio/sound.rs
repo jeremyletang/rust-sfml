@@ -466,7 +466,7 @@ impl<'s> Sound<'s> {
     * 
     */
     #[doc(hidden)]
-    fn unwrap(&self) -> *ffi::sfSound {
+    pub fn unwrap(&self) -> *ffi::sfSound {
         self.sound
     }
 }

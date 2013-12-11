@@ -96,7 +96,8 @@ impl Clock {
         }
     }
 
-    fn unwrap(&self) -> *ffi::sfClock {
+    #[doc(hidden)]
+    pub fn unwrap(&self) -> *ffi::sfClock {
         self.clock
     }
 }
