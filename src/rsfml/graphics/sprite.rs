@@ -91,20 +91,20 @@ pub mod ffi {
     }
 }
 
-pub struct Sprite<'self> {
+pub struct Sprite<'s> {
     #[doc(hidden)]
     priv sprite :   *ffi::sfSprite,
     #[doc(hidden)]
-    priv texture :  Option<&'self Texture>
+    priv texture :  Option<&'s Texture>
 }
 
-impl<'self> Sprite<'self> {
+impl<'s> Sprite<'s> {
     /**
     * Create a new sprite
     *
     * Return a new sfSprite object
     */
-    pub fn new() -> Option<Sprite<'self>> {
+    pub fn new() -> Option<Sprite<'s>> {
         let sp = unsafe { ffi::sfSprite_create() };
         if ptr::is_null(sp) {
             None
@@ -123,7 +123,7 @@ impl<'self> Sprite<'self> {
     *
     * Return a new sfSprite object
     */
-    pub fn new_with_texture(texture : &'self Texture) -> Option<Sprite<'self>> {
+    pub fn new_with_texture(texture : &'s Texture) -> Option<Sprite<'s>> {
         let sp = unsafe { ffi::sfSprite_create() };
         if ptr::is_null(sp) {
             None
@@ -145,7 +145,7 @@ impl<'self> Sprite<'self> {
     *
     * Return An option to the cloned sprite or none.
     */
-    pub fn clone(&self) -> Option<Sprite<'self>> {
+    pub fn clone(&self) -> Option<Sprite<'s>> {
         let sp = unsafe { ffi::sfSprite_copy(self.sprite) };
         if ptr::is_null(sp) {
             None
@@ -219,7 +219,7 @@ impl<'self> Sprite<'self> {
     * * texture - New texture
     * * reset_rect - Should the texture rect be reset to the size of the new texture?
     */
-    pub fn set_texture(&mut self, texture : &'self Texture, reset_rect : bool) -> (){
+    pub fn set_texture(&mut self, texture : &'s Texture, reset_rect : bool) -> (){
         self.texture = Some(texture);
         unsafe {
             match reset_rect {
@@ -267,7 +267,7 @@ impl<'self> Sprite<'self> {
     *
     * Return an Option to the sprite's texture
     */
-    pub fn get_texture(&self) -> Option<&'self Texture> {
+    pub fn get_texture(&self) -> Option<&'s Texture> {
         //let tex = unsafe { ffi::sfSprite_getTexture(self.sprite) };
         if self.texture.is_none() {
             None
@@ -573,7 +573,7 @@ impl<'self> Sprite<'self> {
 
 }
 
-impl<'self> Wrappable<*ffi::sfSprite> for Sprite<'self> {
+impl<'s> Wrappable<*ffi::sfSprite> for Sprite<'s> {
     fn wrap(sprite : *ffi::sfSprite) -> Sprite {
         Sprite { 
             sprite :    sprite,
@@ -587,7 +587,7 @@ impl<'self> Wrappable<*ffi::sfSprite> for Sprite<'self> {
     
 }
 
-impl<'self> Drawable for Sprite<'self> {
+impl<'s> Drawable for Sprite<'s> {
     /**
     * Draw the sprite in the RenderWindow
     */
@@ -611,7 +611,7 @@ impl<'self> Drawable for Sprite<'self> {
 
 
 #[unsafe_destructor]
-impl<'self> Drop for Sprite<'self> {
+impl<'s> Drop for Sprite<'s> {
     /**
     * Destroy an existing sprite
     */

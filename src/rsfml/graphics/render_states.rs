@@ -52,7 +52,7 @@ pub mod ffi {
 /**
 * Define the states used for drawing to a RenderTarget
 */
-pub struct RenderStates<'self> {
+pub struct RenderStates<'s> {
     #[doc(hidden)]
     priv sfRenderStates :   ffi::sfRenderStates,
     /// Blending mode. 
@@ -60,12 +60,12 @@ pub struct RenderStates<'self> {
     /// Transform
     transform :             Transform,
     /// Texture
-    texture :               Option<&'self Texture>,
+    texture :               Option<&'s Texture>,
     /// Shader
-    shader :                Option<&'self Shader<'self>>
+    shader :                Option<&'s Shader<'s>>
 }
 
-impl<'self> RenderStates<'self> {
+impl<'s> RenderStates<'s> {
 
     /**
     * Create a new RenderStates.
@@ -78,7 +78,7 @@ impl<'self> RenderStates<'self> {
     *
     * Return a new default RenderStates
     */
-    pub fn new(blend_mode : BlendMode, transform : Transform, texture : Option<&'self Texture>, shader : Option<&'self Shader<'self>>) -> RenderStates<'self> {
+    pub fn new(blend_mode : BlendMode, transform : Transform, texture : Option<&'s Texture>, shader : Option<&'s Shader<'s>>) -> RenderStates<'s> {
         RenderStates {
             sfRenderStates :    ffi::sfRenderStates {
                 blendMode : blend_mode as i32,
@@ -104,7 +104,7 @@ impl<'self> RenderStates<'self> {
     *
     * Return a new default RenderStates
     */
-    pub fn default() -> RenderStates<'self> {
+    pub fn default() -> RenderStates<'s> {
         RenderStates {
             sfRenderStates :    ffi::sfRenderStates {
                 blendMode : BlendAlpha as i32,

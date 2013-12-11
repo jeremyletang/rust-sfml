@@ -83,21 +83,21 @@ pub mod ffi {
     }
 }
 
-pub struct Sound<'self> {
+pub struct Sound<'s> {
     #[doc(hidden)]
     priv sound :    *ffi::sfSound,
     #[doc(hidden)]
-    priv buffer :   Option<&'self SoundBuffer>
+    priv buffer :   Option<&'s SoundBuffer>
 }
 
-impl<'self> Sound<'self> {
+impl<'s> Sound<'s> {
     
     /**
     * Create a new Sound
     *
     * Return a new option to Sound object or None
     */
-    pub fn new() -> Option<Sound<'self>> {
+    pub fn new() -> Option<Sound<'s>> {
         let s = unsafe {ffi::sfSound_create()};
         if s == ptr::null() {
             None
@@ -115,7 +115,7 @@ impl<'self> Sound<'self> {
     *
     * Return a new option to Sound object or None
     */
-    pub fn new_with_buffer(buffer : &'self SoundBuffer) -> Option<Sound<'self>> {
+    pub fn new_with_buffer(buffer : &'s SoundBuffer) -> Option<Sound<'s>> {
         let s = unsafe {ffi::sfSound_create()};
         if s == ptr::null() {
             None
@@ -136,7 +136,7 @@ impl<'self> Sound<'self> {
     *
     * Return a new option to Sound object which is a copy of sound or none
     */
-    pub fn clone(&self) -> Option<Sound<'self>> {
+    pub fn clone(&self) -> Option<Sound<'s>> {
         let s = unsafe {ffi::sfSound_copy(self.sound)};
         if s == ptr::null() {
             None
@@ -401,7 +401,7 @@ impl<'self> Sound<'self> {
     * # Arguments
     * * buffer - Sound buffer to attach to the sound
     */
-    pub fn set_buffer(&mut self, buffer : &'self SoundBuffer) -> () {
+    pub fn set_buffer(&mut self, buffer : &'s SoundBuffer) -> () {
         self.buffer = Some(buffer);
         unsafe {
             ffi::sfSound_setBuffer(self.sound, buffer.unwrap())
@@ -413,7 +413,7 @@ impl<'self> Sound<'self> {
     *
     * Return an option to Sound buffer attached to the sound or None
     */
-    pub fn get_buffer(&self) -> Option<&'self SoundBuffer> {
+    pub fn get_buffer(&self) -> Option<&'s SoundBuffer> {
         self.buffer
     }
 
@@ -472,7 +472,7 @@ impl<'self> Sound<'self> {
 }
 
 #[unsafe_destructor]
-impl<'self> Drop for Sound<'self> {
+impl<'s> Drop for Sound<'s> {
     /* Destructor for class Sound. Destroy all the ressource.
     *
     */

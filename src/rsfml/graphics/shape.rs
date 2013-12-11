@@ -102,13 +102,13 @@ pub struct WrapObj {
     shape_impl : @ShapeImpl
 }
 
-pub struct Shape<'self> {
+pub struct Shape<'s> {
     #[doc(hidden)]
     priv shape :    *ffi::sfShape,
     #[doc(hidden)]
     priv wrap_obj : @WrapObj,
     #[doc(hidden)]
-    priv texture :  Option<&'self Texture>
+    priv texture :  Option<&'s Texture>
 }
 
 #[doc(hidden)]
@@ -124,7 +124,7 @@ extern fn get_point_callback(point : u32, obj : *c_void) -> Vector2f {
 }
 
 
-impl<'self> Shape<'self> {
+impl<'s> Shape<'s> {
 
     /**
     * Create a new Shape
@@ -134,7 +134,7 @@ impl<'self> Shape<'self> {
     *
     * Return a new Option to Shape
     */
-    pub fn new<T : 'static + ShapeImpl>(shape_impl : @T) -> Option<Shape<'self>> {
+    pub fn new<T : 'static + ShapeImpl>(shape_impl : @T) -> Option<Shape<'s>> {
         let w_o = @WrapObj { shape_impl : shape_impl as @ShapeImpl };
       
         let sp = unsafe { ffi::sfShape_create(get_point_count_callback, get_point_callback, ptr::to_unsafe_ptr(&*w_o) as *c_void) };
@@ -159,7 +159,7 @@ impl<'self> Shape<'self> {
     *
     * Return a new Option to Shape
     */
-    pub fn new_with_texture<T : 'static + ShapeImpl>(shape_impl : @T, texture : &'self Texture) -> Option<Shape<'self>> {
+    pub fn new_with_texture<T : 'static + ShapeImpl>(shape_impl : @T, texture : &'s Texture) -> Option<Shape<'s>> {
         let w_o = @WrapObj { shape_impl : shape_impl as @ShapeImpl };
       
         let sp = unsafe { ffi::sfShape_create(get_point_count_callback, get_point_callback, ptr::to_unsafe_ptr(&*w_o) as *c_void) };
@@ -459,7 +459,7 @@ impl<'self> Shape<'self> {
     * * texture - The new texture
     * * reset_rect - Should the texture rect be reset to the size of the new texture?
     */
-    pub fn set_texture(&mut self, texture : &'self Texture, reset_rect : bool) -> () {
+    pub fn set_texture(&mut self, texture : &'s Texture, reset_rect : bool) -> () {
         self.texture = Some(texture);
         unsafe {
             match reset_rect {
@@ -556,7 +556,7 @@ impl<'self> Shape<'self> {
     *
     * Return the pointer to the Shape's texture
     */
-    pub fn get_texture(&self) -> Option<&'self Texture> {
+    pub fn get_texture(&self) -> Option<&'s Texture> {
         self.texture
     }
 
@@ -685,7 +685,7 @@ impl<'self> Shape<'self> {
     }
 }
 
-impl<'self> Drawable for Shape<'self> {
+impl<'s> Drawable for Shape<'s> {
     fn draw_in_render_window(&self, render_window : &RenderWindow) -> () {
         render_window.draw_shape(self)
     }
@@ -704,7 +704,7 @@ impl<'self> Drawable for Shape<'self> {
 }
 
 #[unsafe_destructor]
-impl<'self> Drop for Shape<'self> {
+impl<'s> Drop for Shape<'s> {
     fn drop(&mut self) -> () {
         unsafe {
             ffi::sfShape_destroy(self.shape)

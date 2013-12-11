@@ -99,14 +99,14 @@ pub mod ffi {
     }
 }
 
-pub struct ConvexShape<'self> {
+pub struct ConvexShape<'s> {
     #[doc(hidden)]
     priv convex_shape : *ffi::sfConvexShape,
     #[doc(hidden)]
-    priv texture :      Option<&'self Texture>
+    priv texture :      Option<&'s Texture>
 }
 
-impl<'self> ConvexShape<'self> {
+impl<'s> ConvexShape<'s> {
     /**
     * Create a new convex shape
     *
@@ -115,7 +115,7 @@ impl<'self> ConvexShape<'self> {
     *
     * Return a new convexShape object
     */
-    pub fn new(points_count : uint) -> Option<ConvexShape<'self>> {
+    pub fn new(points_count : uint) -> Option<ConvexShape<'s>> {
         let shape = unsafe { ffi::sfConvexShape_create() };
         if ptr::is_null(shape) {
             None
@@ -140,7 +140,7 @@ impl<'self> ConvexShape<'self> {
     *
     * Return a new convexShape object
     */
-    pub fn new_with_texture(texture : &'self Texture, points_count : uint) -> Option<ConvexShape<'self>> {
+    pub fn new_with_texture(texture : &'s Texture, points_count : uint) -> Option<ConvexShape<'s>> {
         let shape = unsafe { ffi::sfConvexShape_create() };
         if ptr::is_null(shape) {
             None
@@ -163,7 +163,7 @@ impl<'self> ConvexShape<'self> {
     *
     * Return the cloned object
     */
-    pub fn clone(&self) -> Option<ConvexShape<'self>> {
+    pub fn clone(&self) -> Option<ConvexShape<'s>> {
         let shape = unsafe { ffi::sfConvexShape_copy(self.convex_shape) };
         if ptr::is_null(shape) {
             None
@@ -467,7 +467,7 @@ impl<'self> ConvexShape<'self> {
     * * texture - New texture
     * * reset_rect - Should the texture rect be reset to the size of the new texture?
     */
-    pub fn set_texture(&mut self, texture : &'self Texture, reset_rect : bool) -> () {
+    pub fn set_texture(&mut self, texture : &'s Texture, reset_rect : bool) -> () {
         self.texture = Some(texture);
         unsafe {
             match reset_rect {
@@ -546,7 +546,7 @@ impl<'self> ConvexShape<'self> {
     * 
     * Return the shape's texture
     */
-    pub fn get_texture(&self) -> Option<&'self Texture> {
+    pub fn get_texture(&self) -> Option<&'s Texture> {
         self.texture
     }
     
@@ -686,7 +686,7 @@ impl<'self> ConvexShape<'self> {
 }
 
 #[doc(hidden)]
-impl<'self> Wrappable<*ffi::sfConvexShape> for ConvexShape<'self> {
+impl<'s> Wrappable<*ffi::sfConvexShape> for ConvexShape<'s> {
     #[doc(hidden)]
     fn wrap(convex_shape : *ffi::sfConvexShape) -> ConvexShape {
         ConvexShape {
@@ -703,7 +703,7 @@ impl<'self> Wrappable<*ffi::sfConvexShape> for ConvexShape<'self> {
 
 }
 
-impl<'self> Drawable for ConvexShape<'self> {
+impl<'s> Drawable for ConvexShape<'s> {
     fn draw_in_render_window(&self, render_window : &RenderWindow) -> () {
         render_window.draw_convex_shape(self)
     }
@@ -722,7 +722,7 @@ impl<'self> Drawable for ConvexShape<'self> {
 }
 
 #[unsafe_destructor]
-impl<'self> Drop for ConvexShape<'self> {
+impl<'s> Drop for ConvexShape<'s> {
     fn drop(&mut self) -> () {
         unsafe {
             ffi::sfConvexShape_destroy(self.convex_shape)

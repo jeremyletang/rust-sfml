@@ -143,6 +143,7 @@ Here is a list of all modules :
 #[desc = "Rust binding for sfml"];
 #[license = "Zlib/png"];
 #[crate_type = "lib"];
+#[allow(dead_code)]; 
 
 extern mod extra;
 

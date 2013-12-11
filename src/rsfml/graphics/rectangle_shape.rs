@@ -98,20 +98,20 @@ pub mod ffi {
     }
 }
 
-pub struct RectangleShape<'self> {
+pub struct RectangleShape<'s> {
     #[doc(hidden)]
     priv rectangle_shape :  *ffi::sfRectangleShape,
     #[doc(hidden)]
-    priv texture :          Option<&'self Texture>
+    priv texture :          Option<&'s Texture>
 }
 
-impl<'self> RectangleShape<'self> {
+impl<'s> RectangleShape<'s> {
     /**
     * Create a new rectangle shape
     *
     * Return a new option to a rectangleShape object or None
     */
-    pub fn new() -> Option<RectangleShape<'self>> {
+    pub fn new() -> Option<RectangleShape<'s>> {
         let rectangle = unsafe { ffi::sfRectangleShape_create() };
         if ptr::is_null(rectangle) {
             None
@@ -129,7 +129,7 @@ impl<'self> RectangleShape<'self> {
     *
     * Return a new option to a rectangleShape object or None
     */
-    pub fn new_with_texture(texture : &'self Texture) -> Option<RectangleShape<'self>> {
+    pub fn new_with_texture(texture : &'s Texture) -> Option<RectangleShape<'s>> {
         let rectangle = unsafe { ffi::sfRectangleShape_create() };
         if ptr::is_null(rectangle) {
             None
@@ -152,7 +152,7 @@ impl<'self> RectangleShape<'self> {
     *
     * Return a new option to a rectangleShape object, or None
     */
-    pub fn new_init(size : &Vector2f) -> Option<RectangleShape<'self>> {
+    pub fn new_init(size : &Vector2f) -> Option<RectangleShape<'s>> {
         let rectangle = unsafe { ffi::sfRectangleShape_create() };
         if ptr::is_null(rectangle) {
             None
@@ -173,7 +173,7 @@ impl<'self> RectangleShape<'self> {
     * 
     * Return the copied object on an option, or None
     */
-    pub fn clone(&self) -> Option<RectangleShape<'self>> {
+    pub fn clone(&self) -> Option<RectangleShape<'s>> {
         let rectangle = unsafe { ffi::sfRectangleShape_copy(self.rectangle_shape) };
         if ptr::is_null(rectangle) {
             None
@@ -498,7 +498,7 @@ impl<'self> RectangleShape<'self> {
     * * texture - New texture
     * * reset_rect - Should the texture rect be reset to the size of the new texture?
     */
-    pub fn set_texture(&mut self, texture : &'self Texture, reset_rect : bool) -> () {
+    pub fn set_texture(&mut self, texture : &'s Texture, reset_rect : bool) -> () {
         self.texture = Some(texture);
         unsafe {
             match reset_rect {
@@ -577,7 +577,7 @@ impl<'self> RectangleShape<'self> {
     * 
     * Return the shape's texture
     */
-    pub fn get_texture(&self) -> Option<&'self Texture> {
+    pub fn get_texture(&self) -> Option<&'s Texture> {
         self.texture
     }
 
@@ -709,7 +709,7 @@ impl<'self> RectangleShape<'self> {
     }
 }
 
-impl<'self> Wrappable<*ffi::sfRectangleShape> for RectangleShape<'self> {
+impl<'s> Wrappable<*ffi::sfRectangleShape> for RectangleShape<'s> {
     fn wrap(rectangle_shape : *ffi::sfRectangleShape) -> RectangleShape {
         RectangleShape {
             rectangle_shape :   rectangle_shape,
@@ -722,7 +722,7 @@ impl<'self> Wrappable<*ffi::sfRectangleShape> for RectangleShape<'self> {
     }
 }
 
-impl<'self> Drawable for RectangleShape<'self> {
+impl<'s> Drawable for RectangleShape<'s> {
     fn draw_in_render_window(&self, render_window : &RenderWindow) -> () {
         render_window.draw_rectangle_shape(self);
     }
@@ -741,7 +741,7 @@ impl<'self> Drawable for RectangleShape<'self> {
 }
 
 #[unsafe_destructor]
-impl<'self> Drop for RectangleShape<'self> {
+impl<'s> Drop for RectangleShape<'s> {
     fn drop(&mut self) -> () {
         unsafe {
             ffi::sfRectangleShape_destroy(self.rectangle_shape)

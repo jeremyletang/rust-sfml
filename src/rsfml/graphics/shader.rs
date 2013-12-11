@@ -75,14 +75,14 @@ pub mod ffi {
    }
 }
 
-pub struct Shader<'self> {
+pub struct Shader<'s> {
     #[doc(hidden)]
     priv shader :   *ffi::sfShader,
     #[doc(hidden)]
-    priv texture :  Option<&'self Texture>
+    priv texture :  Option<&'s Texture>
 }
 
-impl<'self> Shader<'self> {
+impl<'s> Shader<'s> {
     /**
     *  Load both the vertex and fragment shaders from files
     *
@@ -100,7 +100,7 @@ impl<'self> Shader<'self> {
     *
     * Return a new Shader object
     */
-    pub fn new_from_file(vertex_shader_filename : Option<~str>, fragment_shader_filename : Option<~str>) -> Option<Shader<'self>> {
+    pub fn new_from_file(vertex_shader_filename : Option<~str>, fragment_shader_filename : Option<~str>) -> Option<Shader<'s>> {
         let shader = unsafe { 
             let c_vertex_shader_filename = if vertex_shader_filename.is_none() { ptr::null() } else { vertex_shader_filename.unwrap().to_c_str().unwrap() };
             let c_fragment_shader_filename = if fragment_shader_filename.is_none() { ptr::null() } else { fragment_shader_filename.unwrap().to_c_str().unwrap() };
@@ -134,7 +134,7 @@ impl<'self> Shader<'self> {
     *
     * Return a new Shader object
     */
-    pub fn new_from_memory(vertex_shader : Option<~str>, fragment_shader : Option<~str>) -> Option<Shader<'self>> {
+    pub fn new_from_memory(vertex_shader : Option<~str>, fragment_shader : Option<~str>) -> Option<Shader<'s>> {
         let shader = unsafe { 
             let c_vertex_shader = if vertex_shader.is_none() { ptr::null() } else { vertex_shader.unwrap().to_c_str().unwrap() };
             let c_fragment_shader = if fragment_shader.is_none() { ptr::null() } else { fragment_shader.unwrap().to_c_str().unwrap() };
@@ -236,7 +236,7 @@ impl<'self> Shader<'self> {
     * * name - Name of the texture in the shader
     * * texture - Texture to assign
     */
-    pub fn set_texture_parameter(&mut self, name : ~str, texture : &'self Texture) -> () {
+    pub fn set_texture_parameter(&mut self, name : ~str, texture : &'s Texture) -> () {
         self.texture = Some(texture);
         unsafe { 
             let c_name = name.to_c_str().unwrap();
@@ -355,7 +355,7 @@ impl<'self> Shader<'self> {
 
 }
 
-impl<'self> Wrappable<*ffi::sfShader> for Shader<'self> {
+impl<'s> Wrappable<*ffi::sfShader> for Shader<'s> {
     fn wrap(shader : *ffi::sfShader) -> Shader {
         Shader {
             shader :    shader,
@@ -369,7 +369,7 @@ impl<'self> Wrappable<*ffi::sfShader> for Shader<'self> {
 }
 
 #[unsafe_destructor]
-impl<'self> Drop for Shader<'self> {
+impl<'s> Drop for Shader<'s> {
     /**
     * Destroy an existing shader
     */
