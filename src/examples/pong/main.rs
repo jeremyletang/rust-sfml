@@ -57,20 +57,20 @@ fn main () -> () {
     };
     leftPaddle.set_size(&(paddleSize - Vector2f{x: 3., y: 3.}));
     leftPaddle.set_outline_thickness(3.);
-    leftPaddle.set_outline_color(~Color::black());
-    leftPaddle.set_fill_color(~Color::new_RGB(100, 100, 200));
-    leftPaddle.set_origin(~(paddleSize / Vector2f{x: 2., y: 2.}));
+    leftPaddle.set_outline_color(&Color::black());
+    leftPaddle.set_fill_color(&Color::new_RGB(100, 100, 200));
+    leftPaddle.set_origin(&(paddleSize / Vector2f{x: 2., y: 2.}));
     
     // Create the right paddle
     let mut rightPaddle = match RectangleShape::new() {
         Some(paddle)    => paddle,
         None()          => fail!("Error, cannot create paddle")
     };
-    rightPaddle.set_size(~(paddleSize - Vector2f{x: 3., y: 3.}));
+    rightPaddle.set_size(&(paddleSize - Vector2f{x: 3., y: 3.}));
     rightPaddle.set_outline_thickness(3.);
-    rightPaddle.set_outline_color(~Color::black());
-    rightPaddle.set_fill_color(~Color::new_RGB(200, 100, 100));
-    rightPaddle.set_origin(~(paddleSize / Vector2f{x: 2., y: 2.}));
+    rightPaddle.set_outline_color(&Color::black());
+    rightPaddle.set_fill_color(&Color::new_RGB(200, 100, 100));
+    rightPaddle.set_origin(&(paddleSize / Vector2f{x: 2., y: 2.}));
 
     // Create the ball
     let mut ball = match CircleShape::new() {
@@ -79,12 +79,12 @@ fn main () -> () {
     };
     ball.set_radius(ballRadius as f32 - 3.);
     ball.set_outline_thickness(3.);
-    ball.set_outline_color(~Color::black());
-    ball.set_fill_color(~Color::white());
-    ball.set_origin(~Vector2f::new(ballRadius / 2., ballRadius / 2.));
+    ball.set_outline_color(&Color::black());
+    ball.set_fill_color(&Color::white());
+    ball.set_origin(&Vector2f::new(ballRadius / 2., ballRadius / 2.));
 
     // Load the text font
-    let font : Font = match Font::new_from_file(~"resources/sansation.ttf") {
+    let font : Font = match Font::new_from_file("resources/sansation.ttf") {
         Some(font)    => font,
         None()        => fail!("Error, cannot load font")
     };
@@ -92,13 +92,13 @@ fn main () -> () {
      // Initialize the pause message
     let mut pauseMessage : Text = match Text::new() {
         Some(text) => text,
-        None => fail!(~"Error on creating text")
+        None => fail!("Error on creating text")
     };
     pauseMessage.set_font(&font);
     pauseMessage.set_character_size(40);
-    pauseMessage.set_position(~(Vector2f::new(170., 150.)));
-    pauseMessage.set_color(~Color::white());
-    pauseMessage.set_string(~"Welcome to SFML pong!\nPress space to start the game");
+    pauseMessage.set_position(&(Vector2f::new(170., 150.)));
+    pauseMessage.set_color(&Color::white());
+    pauseMessage.set_string("Welcome to SFML pong!\nPress space to start the game");
 
     // Define the paddles properties
     let mut AITimer =  Clock::new();
@@ -123,9 +123,9 @@ fn main () -> () {
                             isPlaying = true;
                             clock.restart();
                             // Reset the position of the paddles and ball
-                            leftPaddle.set_position(~Vector2f::new(10. + paddleSize.x / 2., gameHeight as f32 / 2.));
-                            rightPaddle.set_position(~Vector2f::new(gameWidth as f32 - 10. - paddleSize.x / 2., gameHeight as f32 / 2.));
-                            ball.set_position(~Vector2f::new(gameWidth as f32 / 2., gameHeight as f32 / 2.));
+                            leftPaddle.set_position(&Vector2f::new(10. + paddleSize.x / 2., gameHeight as f32 / 2.));
+                            rightPaddle.set_position(&Vector2f::new(gameWidth as f32 - 10. - paddleSize.x / 2., gameHeight as f32 / 2.));
+                            ball.set_position(&Vector2f::new(gameWidth as f32 / 2., gameHeight as f32 / 2.));
                             // RANDOM HERE
                         }
                     },
@@ -178,23 +178,23 @@ fn main () -> () {
             // Check collisions between the ball and the screen
             if ball.get_position().x - ballRadius < 0. {
                 isPlaying = false;
-                pauseMessage.set_string(~"You lost !\nPress space to restart or\nescape to exit");
+                pauseMessage.set_string("You lost !\nPress space to restart or\nescape to exit");
             }
             if ball.get_position().x + ballRadius > gameWidth as f32 {
                 isPlaying = false;
-                pauseMessage.set_string(~"You won !\nPress space to restart or\nescape to exit");
+                pauseMessage.set_string("You won !\nPress space to restart or\nescape to exit");
             }
             if ball.get_position().y - ballRadius < 0. {
                 ballSound.play();
                 ballAngle = -ballAngle;
                 let p = ball.get_position().x;
-                ball.set_position(~Vector2f::new(p, ballRadius + 0.1));
+                ball.set_position(&Vector2f::new(p, ballRadius + 0.1));
             }
             if ball.get_position().y + ballRadius > gameHeight as f32 {
                 ballSound.play();
                 ballAngle = -ballAngle;
                 let p = ball.get_position().x;
-                ball.set_position(~Vector2f::new(p, gameHeight as f32 - ballRadius - 0.1));
+                ball.set_position(&Vector2f::new(p, gameHeight as f32 - ballRadius - 0.1));
             }
 
             // Check the collisions between the ball and the paddles
@@ -229,14 +229,14 @@ fn main () -> () {
                 
                 ballSound.play();
                 let p = ball.get_position().y;  
-                ball.set_position(~Vector2f::new(rightPaddle.get_position().x - ballRadius - paddleSize.x / 2. - 0.1, p));
+                ball.set_position(&Vector2f::new(rightPaddle.get_position().x - ballRadius - paddleSize.x / 2. - 0.1, p));
             }
             
                 //let a = r.gen::<float>();
                 
         }
         // Clear the window
-        window.clear(~Color::new_RGB(50, 200, 50));
+        window.clear(&Color::new_RGB(50, 200, 50));
 
         if isPlaying {
             // Draw the paddles and the ball

@@ -147,7 +147,7 @@ impl<'s> Text<'s> {
     *
     * Return a new Option on Text object, or None
     */
-    pub fn new_init(string : ~str, font : &'s Font, character_size : uint) ->Option<Text<'s>> {
+    pub fn new_init(string : &str, font : &'s Font, character_size : uint) ->Option<Text<'s>> {
         let text = unsafe { ffi::sfText_create() };
         if ptr::is_null(text) {
             None
@@ -175,7 +175,7 @@ impl<'s> Text<'s> {
     * # Arguments
     * * string - New string
     */
-    pub fn set_string(&mut self, string : ~str) -> () {
+    pub fn set_string(&mut self, string : &str) -> () {
         unsafe {
             let c_string = string.to_c_str().unwrap();
             ffi::sfText_setString(self.text, c_string)
