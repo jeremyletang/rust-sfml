@@ -80,7 +80,7 @@ impl SoundBuffer {
     *
     * Return an option to a SoundBuffer object or None.
     */
-    pub fn new(filename : ~str) -> Option<SoundBuffer> {
+    pub fn new(filename : &str) -> Option<SoundBuffer> {
         let mut sound_buffer : *ffi::sfSoundBuffer;
         unsafe { 
             let c_filename = filename.to_c_str().unwrap();
@@ -127,7 +127,7 @@ impl SoundBuffer {
     *
     * Return true if saving succeeded, false if it faileds
     */
-    pub fn save_to_file(&self, filename : ~str) -> bool {
+    pub fn save_to_file(&self, filename : &str) -> bool {
         unsafe {
             let c_filename = filename.to_c_str().unwrap();
             match ffi::sfSoundBuffer_saveToFile(self.sound_buffer, c_filename) {

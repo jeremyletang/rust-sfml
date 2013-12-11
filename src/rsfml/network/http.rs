@@ -220,7 +220,7 @@ impl Request {
     * * field - Name of the field to set
     * * value - Value of the field
     */
-    pub fn set_field(&self, field : ~str, value : ~str) -> () {
+    pub fn set_field(&self, field : &str, value : &str) -> () {
         let c_field = field.to_c_str();
         let c_value = value.to_c_str();
         unsafe {
@@ -254,7 +254,7 @@ impl Request {
     * # Arguments
     * * uri - URI to request, relative to the host
     */
-    pub fn set_uri(&self, uri : ~str) -> () {
+    pub fn set_uri(&self, uri : &str) -> () {
         let c_uri = uri.to_c_str();
         unsafe {
             ffi::sfHttpRequest_setUri(self.request, c_uri.unwrap())
@@ -285,7 +285,7 @@ impl Request {
     * # Arguments
     * * body - Content of the body
     */
-    pub fn set_body(&self, body : ~str) -> () {
+    pub fn set_body(&self, body : &str) -> () {
         let c_body = body.to_c_str();
         unsafe {
             ffi::sfHttpRequest_setBody(self.request, c_body.unwrap())
@@ -319,7 +319,7 @@ impl Response {
     * 
     * Return Value of the field, or empty string if not found
     */
-    pub fn get_field(&self, field : ~str) -> ~str {
+    pub fn get_field(&self, field : &str) -> ~str {
         let c_field = field.to_c_str();
         unsafe {
             str::raw::from_c_str(ffi::sfHttpResponse_getField(self.response, c_field.unwrap()))
@@ -417,7 +417,7 @@ impl Http {
     * * host - Web server to connect to
     * * port - Port to use for connection
     */
-    pub fn set_host(&self, host : ~str, port : u16) -> () {
+    pub fn set_host(&self, host : &str, port : u16) -> () {
         let c_host = host.to_c_str();
         unsafe {
                 ffi::sfHttp_setHost(self.http, c_host.unwrap(), port)

@@ -117,7 +117,7 @@ impl Texture {
     *
     * Return a new Option to Texture object or None
     */
-    pub fn new_from_file(filename : ~str) -> Option<Texture> {
+    pub fn new_from_file(filename : &str) -> Option<Texture> {
         let tex = unsafe {
             let c_filename = filename.to_c_str().unwrap();
             ffi::sfTexture_createFromFile(c_filename, ptr::null())
@@ -142,7 +142,7 @@ impl Texture {
     *
     * Return a new Option to Texture object or None
     */
-    pub fn new_from_file_with_rect(filename : ~str, area : &IntRect) -> Option<Texture> {
+    pub fn new_from_file_with_rect(filename : &str, area : &IntRect) -> Option<Texture> {
         let tex = unsafe {
             let c_filename = filename.to_c_str().unwrap();
             ffi::sfTexture_createFromFile(c_filename, &*area)

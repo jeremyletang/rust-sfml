@@ -88,7 +88,7 @@ impl IpAddress {
     *
     * Return Resulting address
     */
-    pub fn new_from_string(address : ~str) -> IpAddress {
+    pub fn new_from_string(address : &str) -> IpAddress {
         let c_address = address.to_c_str();
         IpAddress {
             ip : unsafe { ffi::sfIpAddress_fromString(c_address.unwrap()) } 

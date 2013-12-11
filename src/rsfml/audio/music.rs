@@ -105,7 +105,7 @@ impl Music {
     *
     * Return a new option to Music object or none 
     */
-    pub fn new_from_file(filename : ~str) -> Option<Music> {
+    pub fn new_from_file(filename : &str) -> Option<Music> {
         let mut music_tmp : *ffi::sfMusic;
         unsafe {
             let c_filename = filename.to_c_str().unwrap();
