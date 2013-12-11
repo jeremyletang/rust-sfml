@@ -129,14 +129,17 @@ impl SoundBuffer {
     * Return true if saving succeeded, false if it faileds
     */
     pub fn save_to_file(&self, filename : &str) -> bool {
+        let mut return_value: bool = false;
         unsafe {
-            let c_filename = filename.to_c_str().unwrap();
-            match ffi::sfSoundBuffer_saveToFile(self.sound_buffer, c_filename) {
-                SFFALSE => false,
-                SFTRUE  => true,
-                _       => unreachable!()
-            }
+            filename.with_c_str(|c_str| {
+                match ffi::sfSoundBuffer_saveToFile(self.sound_buffer, c_str) {
+                    SFFALSE => return_value = false,
+                    SFTRUE  => return_value = true,
+                    _       => unreachable!()
+                }
+            });
         }
+        return_value
     }
     
     /**

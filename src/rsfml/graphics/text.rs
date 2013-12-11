@@ -154,8 +154,9 @@ impl<'s> Text<'s> {
         }
         else {
             unsafe {
-                let c_string = string.to_c_str().unwrap();
-                ffi::sfText_setString(text, c_string);
+                string.with_c_str(|c_str| {
+                    ffi::sfText_setString(text, c_str)
+                });
                 ffi::sfText_setFont(text, font.unwrap());
                 ffi::sfText_setCharacterSize(text, character_size as c_uint)
             }
@@ -177,8 +178,9 @@ impl<'s> Text<'s> {
     */
     pub fn set_string(&mut self, string : &str) -> () {
         unsafe {
-            let c_string = string.to_c_str().unwrap();
-            ffi::sfText_setString(self.text, c_string)
+            string.with_c_str(|c_str| {
+            ffi::sfText_setString(self.text, c_str)
+            });
         }
         self.string_length = string.len()
     }

@@ -208,15 +208,18 @@ impl Image {
     * 
     * Return true if saving was successful
     */
-    pub fn save_to_file(&self, filename : ~str) -> bool {
+    pub fn save_to_file(&self, filename : &str) -> bool {
+        let mut return_value = false;
         unsafe {
-            let c_filename = filename.to_c_str().unwrap();
-            match ffi::sfImage_saveToFile(self.image, c_filename) {
-                SFFALSE => false,
-                SFTRUE  => true,
-                _       => unreachable!()
-            }
+            filename.with_c_str(|c_str| {
+                match ffi::sfImage_saveToFile(self.image, c_str) {
+                    SFFALSE => return_value = false,
+                    SFTRUE  => return_value = true,
+                    _       => unreachable!()
+                }
+            });
         }
+        return_value
     }
     
     /**

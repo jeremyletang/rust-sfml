@@ -186,10 +186,11 @@ impl RenderWindow {
     * Return a new RenderWindow object
     */
     pub fn new(mode : VideoMode, title : &str, style : WindowStyle, settings : &ContextSettings) -> Option<RenderWindow> {
-        let mut sf_render_win: *ffi::sfRenderWindow;
+        let mut sf_render_win: *ffi::sfRenderWindow = ptr::null();
         unsafe {
-            let c_title = title.to_c_str().unwrap();
-            sf_render_win = ffi::sfRenderWindow_create(mode.unwrap(), c_title, style as u32, settings); 
+            title.with_c_str(|c_str| {
+                sf_render_win = ffi::sfRenderWindow_create(mode.unwrap(), c_str, style as u32, settings); 
+            });
         }
         let sf_ev = ffi::sfEvent {
             typeEvent : 0, 
@@ -572,8 +573,9 @@ impl RenderWindow {
     */
     pub fn set_title(&mut self, title : &str) -> () {
         unsafe {
-            let c_title = title.to_c_str().unwrap();
-            ffi::sfRenderWindow_setTitle(self.render_window, c_title);
+            title.with_c_str(|c_str| {
+                ffi::sfRenderWindow_setTitle(self.render_window, c_str);
+            });
         }
         self.title_length = title.len();
     }

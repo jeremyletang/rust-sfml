@@ -155,10 +155,11 @@ impl Window {
     * Return a new Window object
     */
     pub fn new(mode : VideoMode, title : &str, style : WindowStyle, settings : &ContextSettings) -> Option<Window> {
-        let sf_win: *ffi::sfWindow =
+        let mut sf_win: *ffi::sfWindow = ptr::null();
         unsafe {
-            let c_title = title.to_c_str().unwrap();
-            ffi::sfWindow_create(mode.unwrap(), c_title, style as u32, settings)
+            title.with_c_str(|c_str| {
+                sf_win = ffi::sfWindow_create(mode.unwrap(), c_str, style as u32, settings)
+            });
         };
         let sf_ev = ffi::sfEvent {
             typeEvent : 0,
@@ -483,9 +484,10 @@ impl Window {
     * * title - New title
     */
     pub fn set_title(&mut self, title : &str) -> () {
-        let c_title = title.to_c_str();
         unsafe {
-            ffi::sfWindow_setTitle(self.window, c_title.unwrap());
+            title.with_c_str(|c_str| {
+                ffi::sfWindow_setTitle(self.window, c_str)
+            });
         }
     }
 

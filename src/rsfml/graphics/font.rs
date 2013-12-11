@@ -80,10 +80,12 @@ impl Font {
     * Return a new Font object
     */
     pub fn new_from_file(filename : &str) -> Option<Font> {
-        let fnt = unsafe {
-            let c_filename = filename.to_c_str().unwrap();
-            ffi::sfFont_createFromFile(c_filename)
-        };
+        let mut fnt = ptr::null();
+        unsafe {
+            filename.with_c_str(|c_str| {
+                fnt = ffi::sfFont_createFromFile(c_str)
+            });
+        }
         if ptr::is_null(fnt) {
             None
         }
