@@ -154,7 +154,7 @@ impl Window {
     *
     * Return a new Window object
     */
-    pub fn new(mode : VideoMode, title : ~str, style : WindowStyle, settings : &ContextSettings) -> Option<Window> {
+    pub fn new(mode : VideoMode, title : &str, style : WindowStyle, settings : &ContextSettings) -> Option<Window> {
         let sf_win: *ffi::sfWindow =
         unsafe {
             let c_title = title.to_c_str().unwrap();
@@ -482,7 +482,7 @@ impl Window {
     * # Arguments
     * * title - New title
     */
-    pub fn set_title(&mut self, title : ~str) -> () {
+    pub fn set_title(&mut self, title : &str) -> () {
         let c_title = title.to_c_str();
         unsafe {
             ffi::sfWindow_setTitle(self.window, c_title.unwrap());

@@ -185,7 +185,7 @@ impl RenderWindow {
     *
     * Return a new RenderWindow object
     */
-    pub fn new(mode : VideoMode, title : ~str, style : WindowStyle, settings : &ContextSettings) -> Option<RenderWindow> {
+    pub fn new(mode : VideoMode, title : &str, style : WindowStyle, settings : &ContextSettings) -> Option<RenderWindow> {
         let mut sf_render_win: *ffi::sfRenderWindow;
         unsafe {
             let c_title = title.to_c_str().unwrap();
@@ -570,7 +570,7 @@ impl RenderWindow {
     * # Arguments
     * * title - New title
     */
-    pub fn set_title(&mut self, title : ~str) -> () {
+    pub fn set_title(&mut self, title : &str) -> () {
         unsafe {
             let c_title = title.to_c_str().unwrap();
             ffi::sfRenderWindow_setTitle(self.render_window, c_title);

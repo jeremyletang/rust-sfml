@@ -31,14 +31,14 @@ fn main () -> () {
 
      // Create the window of the application
     let setting : ContextSettings = ContextSettings::default();
-    let mut window : RenderWindow = match RenderWindow::new(VideoMode::new_init(gameWidth, gameHeight, 32), ~"SFML Pong", sfClose, &setting) {
+    let mut window : RenderWindow = match RenderWindow::new(VideoMode::new_init(gameWidth, gameHeight, 32), "SFML Pong", sfClose, &setting) {
         Some(window) => window,
         None => fail!("Cannot create a new Render Window.")
     };
     window.set_vertical_sync_enabled(true);
 
     // Load the sounds used in the game
-    let ballSoundBuffer : SoundBuffer = match SoundBuffer::new(~"resources/ball.wav") {
+    let ballSoundBuffer : SoundBuffer = match SoundBuffer::new("resources/ball.wav") {
         Some(ballSoundBuffer)   => ballSoundBuffer,
         None                    => fail!("Cannot load Ball sound buffer.")
     };
@@ -55,7 +55,7 @@ fn main () -> () {
         Some(paddle)    => paddle,
         None()          => fail!("Error, cannot create paddle")
     };
-    leftPaddle.set_size(~(paddleSize - Vector2f{x: 3., y: 3.}));
+    leftPaddle.set_size(&(paddleSize - Vector2f{x: 3., y: 3.}));
     leftPaddle.set_outline_thickness(3.);
     leftPaddle.set_outline_color(~Color::black());
     leftPaddle.set_fill_color(~Color::new_RGB(100, 100, 200));
