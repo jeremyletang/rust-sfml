@@ -30,7 +30,7 @@
 */
 
 use std::libc::{c_uint};
-use std::{ptr, vec};
+use std::ptr;
 
 use traits::wrappable::Wrappable;
 use system::vector2::Vector2u;
@@ -184,7 +184,7 @@ impl Image {
     * Return A new Image object
     */
     pub fn create_from_pixels(width : uint, height : uint, pixels : ~[u8]) -> Option<Image> {
-        let image = unsafe { ffi::sfImage_createFromPixels(width as c_uint, height as c_uint, vec::raw::to_ptr(pixels)) };
+        let image = unsafe { ffi::sfImage_createFromPixels(width as c_uint, height as c_uint, pixels.as_ptr()) };
         if ptr::is_null(image) {
             None
         }

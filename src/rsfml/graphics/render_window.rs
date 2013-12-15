@@ -31,7 +31,7 @@
 */
 
 use std::libc::{c_float, c_uint, c_int};
-use std::{ptr, cast, vec};
+use std::{ptr, cast};
 
 use traits::drawable::Drawable;
 use traits::wrappable::Wrappable;
@@ -56,7 +56,7 @@ use graphics::shape::Shape;
 #[doc(hidden)]
 pub mod ffi {
     
-    use std::libc::{c_uint, c_float, c_void, c_char};
+    use std::libc::{c_uint, c_float, c_char};
     
     use system::vector2::{Vector2f, Vector2i, Vector2u};
     use sfml_types::SfBool;
@@ -75,11 +75,12 @@ pub mod ffi {
     use graphics::rect::IntRect;
     use graphics::vertex_array::ffi::sfVertexArray;
 
-    pub struct sfRenderWindow {
-        This :          *c_void,
-        DefaultView :   sfView,
-        CurrentView :   sfView
-    }
+    pub struct sfRenderWindow;
+    //  {
+    //     This :          *c_void,
+    //     DefaultView :   sfView,
+    //     CurrentView :   sfView
+    // }
 
     pub struct sfEvent {
         typeEvent : c_uint,
@@ -141,6 +142,7 @@ pub mod ffi {
 }
 
 /// Enumeration of window creation styles
+#[repr(C)]
 pub enum WindowStyle {
     sfNone =            0,
     sfTitlebar =        1,
@@ -244,7 +246,7 @@ impl RenderWindow {
     pub fn new_with_unicode(mode : VideoMode, title : ~[u32], style : WindowStyle, settings : &ContextSettings) -> Option<RenderWindow> {
         let sf_render_win: *ffi::sfRenderWindow;
         unsafe { 
-            sf_render_win = ffi::sfRenderWindow_createUnicode(mode.unwrap(), vec::raw::to_ptr(title), style as u32, settings); 
+            sf_render_win = ffi::sfRenderWindow_createUnicode(mode.unwrap(), title.as_ptr(), style as u32, settings); 
         }
         let sf_ev = ffi::sfEvent {
             typeEvent : 0, 
@@ -283,7 +285,7 @@ impl RenderWindow {
     pub fn set_unicode_title(&mut self, title : ~[u32]) -> () {
         unsafe {
             self.title_length = title.len();
-            ffi::sfRenderWindow_setUnicodeTitle(self.render_window, vec::raw::to_ptr(title))
+            ffi::sfRenderWindow_setUnicodeTitle(self.render_window, title.as_ptr())
         }
     }
 
@@ -298,7 +300,7 @@ impl RenderWindow {
     */
     pub fn set_icon(&mut self, width : uint, height : uint, pixels : ~[u8]) -> () {
         unsafe {
-            ffi::sfRenderWindow_setIcon(self.render_window, width as c_uint, height as c_uint, vec::raw::to_ptr(pixels))
+            ffi::sfRenderWindow_setIcon(self.render_window, width as c_uint, height as c_uint, pixels.as_ptr())
         }
     }
     

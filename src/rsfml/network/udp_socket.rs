@@ -190,7 +190,7 @@ impl UdpSocket {
     */
     pub fn send(&self, data : ~[i8], address : &ip_address::IpAddress, port : u16) -> SocketStatus {
         unsafe {
-            cast::transmute(ffi::sfUdpSocket_send(self.socket, vec::raw::to_ptr(data), data.len() as size_t, address.unwrap(), port) as i8)
+            cast::transmute(ffi::sfUdpSocket_send(self.socket, data.as_ptr(), data.len() as size_t, address.unwrap(), port) as i8)
         }
     }
 

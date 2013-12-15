@@ -32,7 +32,6 @@
 extern mod std;
 pub use extra::c_vec::CVec;
 use std::libc::{c_float};
-use std::vec;
 
 use system::vector2::Vector2f;
 use graphics::rect::FloatRect;
@@ -99,7 +98,7 @@ impl Transform {
     pub fn get_matrix(&self) -> [f32, ..16] {
         unsafe {
             let matrix : [f32, ..16] = [0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.];
-            ffi::sfTransform_getMatrix(self, vec::raw::to_ptr(matrix));
+            ffi::sfTransform_getMatrix(self, matrix.as_ptr());
             matrix
         }
     }

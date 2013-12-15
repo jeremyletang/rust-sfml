@@ -7,12 +7,14 @@
 
 extern mod rsfml;
 
+use rsfml::graphics::render_window::ffi::sfEvent;
 use rsfml::graphics::{RenderWindow, sfClose, Color, Font, Text, RectangleShape, CircleShape};
 use rsfml::window::{VideoMode, ContextSettings, event, keyboard};
 use rsfml::system::{Vector2f, Clock, Time};
 use rsfml::audio::{SoundBuffer, Sound};
 
 
+use std::mem;
 
 #[cfg(target_os="macos")]
 #[start]
@@ -29,6 +31,7 @@ fn main () -> () {
     let paddleSize : Vector2f =  Vector2f::new(25., 100.);
     let ballRadius : f32 = 10.;
 
+    println!("{}", mem::size_of::<sfEvent>());
      // Create the window of the application
     let setting : ContextSettings = ContextSettings::default();
     let mut window : RenderWindow = match RenderWindow::new(VideoMode::new_init(gameWidth, gameHeight, 32), "SFML Pong", sfClose, &setting) {

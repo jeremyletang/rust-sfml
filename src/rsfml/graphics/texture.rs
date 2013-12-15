@@ -30,7 +30,7 @@
 */
 
 use std::libc::{c_uint};
-use std::{vec, ptr};
+use std::ptr;
 
 use traits::wrappable::Wrappable;
 use system::vector2::Vector2u;
@@ -289,7 +289,7 @@ impl Texture {
     */
     pub fn update_from_pixels(&mut self, pixels : ~[u8], width : uint, height : uint, x : uint, y : uint) -> () {
         unsafe {
-            ffi::sfTexture_updateFromPixels(self.texture, vec::raw::to_ptr(pixels), width as c_uint, height as c_uint, x as c_uint, y as c_uint)
+            ffi::sfTexture_updateFromPixels(self.texture, pixels.as_ptr(), width as c_uint, height as c_uint, x as c_uint, y as c_uint)
         }
     }
 

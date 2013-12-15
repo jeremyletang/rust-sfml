@@ -31,9 +31,7 @@
 
 use std::libc::{c_float, c_uint, size_t};
 use extra::c_vec::CVec;
-use std::str;
-use std::ptr;
-use std::vec;
+use std::{str, ptr};
 
 use traits::drawable::Drawable;
 use traits::wrappable::Wrappable;
@@ -634,7 +632,7 @@ impl<'s> Text<'s> {
     pub fn set_unicode_string(&mut self, string : ~[u32]) -> () {
         unsafe {
             self.string_length = string.len();
-            ffi::sfText_setUnicodeString(self.text, vec::raw::to_ptr(string))
+            ffi::sfText_setUnicodeString(self.text, string.as_ptr())
         }
     }
 

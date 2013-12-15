@@ -29,7 +29,7 @@
  */
 
 use std::libc::{c_uint, c_float, c_int};
-use std::{vec, ptr, cast};
+use std::{ptr, cast};
 
 use traits::wrappable::Wrappable;
 use window::{event, keyboard, joystick, mouse};
@@ -203,7 +203,7 @@ impl Window {
     * Return a new Window object
     */
     pub fn new_with_unicode(mode : VideoMode, title : ~[u32], style : WindowStyle, settings : &ContextSettings) -> Option<Window> {
-        let sf_win = unsafe { ffi::sfWindow_createUnicode(mode.unwrap(), vec::raw::to_ptr(title), style as u32, settings) };
+        let sf_win = unsafe { ffi::sfWindow_createUnicode(mode.unwrap(), title.as_ptr(), style as u32, settings) };
         let sf_ev = ffi::sfEvent {
             typeEvent : 0,
             p1 :        0, 
@@ -413,7 +413,7 @@ impl Window {
     */
     pub fn set_unicode_title(&mut self, title : ~[u32]) -> () {
         unsafe {
-            ffi::sfWindow_setUnicodeTitle(self.window, vec::raw::to_ptr(title))
+            ffi::sfWindow_setUnicodeTitle(self.window, title.as_ptr())
         }
     }
     /**
@@ -427,7 +427,7 @@ impl Window {
     */
     pub fn set_icon(&mut self, width : uint, height : uint, pixels : ~[u8]) -> () {
         unsafe {
-            ffi::sfWindow_setIcon(self.window, width as c_uint, height as c_uint, vec::raw::to_ptr(pixels))
+            ffi::sfWindow_setIcon(self.window, width as c_uint, height as c_uint, pixels.as_ptr())
         }
     }
     

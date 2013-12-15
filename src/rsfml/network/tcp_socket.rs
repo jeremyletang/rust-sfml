@@ -215,7 +215,7 @@ impl TcpSocket {
     */
     pub fn send(&self, data : ~[i8]) -> SocketStatus {
         unsafe {
-            cast::transmute(ffi::sfTcpSocket_send(self.socket, vec::raw::to_ptr(data), data.len() as size_t) as i8)
+            cast::transmute(ffi::sfTcpSocket_send(self.socket, data.as_ptr(), data.len() as size_t) as i8)
         }
     }
 
