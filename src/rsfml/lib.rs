@@ -138,7 +138,8 @@ Here is a list of all modules :
        author = "letang.jeremy@gmail.com",
        url = "http://https://github.com/JeremyLetang/rust-sfml")];
 
-#[pkgid="rsfml"];
+#[pkgid="github.com/JeremyLetang/rust-sfml/src/rsfml#0.2"];
+
 #[desc = "Rust binding for sfml"];
 #[license = "Zlib/png"];
 #[doc(html_logo_url = "http://rust-sfml.org/logo_rsfml.png")];
