@@ -133,12 +133,13 @@ Here is a list of all modules :
 
 #[feature(globs, managed_boxes, struct_variant)];
 
-#[link(name = "rsfml",
-       vers = "0.2",
-       author = "letang.jeremy@gmail.com",
-       url = "http://https://github.com/JeremyLetang/rust-sfml")];
+// #[link(name = "rsfml",
+//        vers = "0.2",
+//        author = "letang.jeremy@gmail.com",
+//        url = "http://https://github.com/JeremyLetang/rust-sfml")];
 
-#[pkgid="github.com/JeremyLetang/rust-sfml/src/rsfml#0.2"];
+// #[pkgid="github.com/JeremyLetang/rust-sfml/src/rsfml#0.2"];
+#[crate_id = "rsfml#0.2"];
 
 #[desc = "Rust binding for sfml"];
 #[license = "Zlib/png"];
