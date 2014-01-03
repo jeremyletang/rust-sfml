@@ -72,10 +72,13 @@ pub mod ffi {
     }
 }
 
-#[deriving(Clone)]
+#[deriving(Clone, Eq, Ord)]
 pub struct VideoMode {
+    /// Video mode width, in pixels.
     width:          uint,
+    /// Video mode height, in pixels.
     height:         uint,
+    /// Video mode pixel depth, in bits per pixels. 
     bits_per_pixel: uint
 }
 
@@ -174,19 +177,6 @@ impl VideoMode {
                 }
             }
         Some(ret_tab)
-    }
-}
-
-impl Eq for VideoMode {
-    fn eq(&self, other : &VideoMode) -> bool {
-        self.width == other.width && 
-        self.height == other.height &&
-        self.bits_per_pixel == other.bits_per_pixel   
-    }
-    fn ne(&self, other : &VideoMode) -> bool {
-        self.width != other.width || 
-        self.height != other.height ||
-        self.bits_per_pixel != other.bits_per_pixel   
     }
 }
 
