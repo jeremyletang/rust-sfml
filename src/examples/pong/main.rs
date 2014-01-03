@@ -5,6 +5,7 @@
 
 #[feature(managed_boxes)]
 
+extern mod native;
 extern mod rsfml;
 
 use rsfml::graphics::render_window::ffi::sfEvent;
@@ -19,7 +20,7 @@ use std::mem;
 #[cfg(target_os="macos")]
 #[start]
 fn start(argc: int, argv: **u8) -> int {
-    std::rt::start_on_main_thread(argc, argv, main)
+    native::start(argc, argv, main)
 }
 
 

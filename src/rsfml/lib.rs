@@ -72,6 +72,7 @@ fn start(argc: int, argv: **u8) -> int {
 Here is a short example, draw a circle shape and display it.
 
 ```Rust
+extern mod native;
 extern mod rsfml;
 
 use rsfml::system::Vector2f;
@@ -80,7 +81,7 @@ use rsfml::graphics::{RenderWindow, sfClose, CircleShape, Color};
 
 #[start]
 fn start(argc: int, argv: **u8) -> int {
-    std::rt::start_on_main_thread(argc, argv, main)
+    native::start(argc, argv, main)
 }
 
 fn main () -> () {
