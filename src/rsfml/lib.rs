@@ -76,7 +76,7 @@ extern mod native;
 extern mod rsfml;
 
 use rsfml::system::Vector2f;
-use rsfml::window::{ContextSettings, VideoMode, Event};
+use rsfml::window::{ContextSettings, VideoMode, event};
 use rsfml::graphics::{RenderWindow, sfClose, CircleShape, Color};
 
 #[start]
@@ -87,7 +87,7 @@ fn start(argc: int, argv: **u8) -> int {
 fn main () -> () {
      // Create the window of the application
     let setting = ContextSettings::default();
-    let mut window = match RenderWindow::new(VideoMode::new_init(800, 600, 32), ~"SFML Example", sfClose, &setting) {
+    let mut window = match RenderWindow::new(VideoMode::new_init(800, 600, 32), "SFML Example", sfClose, &setting) {
         Some(window) => window,
         None => fail!("Cannot create a new Render Window.")
     };
@@ -98,8 +98,8 @@ fn main () -> () {
         None()          => fail!("Error, cannot create ball")
     };
     circle.set_radius(30.);
-    circle.set_fill_color(~Color::red());
-    circle.set_position(~Vector2f::new(100., 100.));
+    circle.set_fill_color(&Color::red());
+    circle.set_position(&Vector2f::new(100., 100.));
 
 
     while window.is_open() {
@@ -112,7 +112,7 @@ fn main () -> () {
         }
 
         // Clear the window
-        window.clear(~Color::new_RGB(0, 200, 200));
+        window.clear(&Color::new_RGB(0, 200, 200));
         // Draw the shape
            window.draw(&circle);
         // Display things on screen
