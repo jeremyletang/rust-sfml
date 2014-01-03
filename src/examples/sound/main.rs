@@ -2,6 +2,10 @@
 * Example from SFML : play sound and music
 */
 
+#[crate_id = "sound"];
+#[desc = "Sound example for rsfml"];
+#[crate_type = "bin"];
+
 extern mod rsfml;
 
 use rsfml::audio::{SoundBuffer, Sound, Music, sound_status};

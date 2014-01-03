@@ -12,4 +12,5 @@ install:
 script:
   - rustc --version
   - rustpkg install rsfml
-  - rustpkg install examples/pong
+  - rustc -o ./bin/pong src/examples/pong/main.rs
+  - rustc -o ./bin/sound src/examples/sound/main.rs
