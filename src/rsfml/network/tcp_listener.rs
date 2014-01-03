@@ -164,7 +164,7 @@ impl TcpListener {
     *
     * Return status code
     */
-    pub fn accept(&self, connected : @TcpSocket) -> SocketStatus {
+    pub fn accept(&self, connected : &TcpSocket) -> SocketStatus {
         unsafe {
             cast::transmute(ffi::sfTcpListener_accept(self.listener, &connected.unwrap()) as i8)
         }

@@ -34,7 +34,6 @@ pub use self::sound_status::{Status, Playing, Paused, Stopped};
 pub use self::music::Music;
 pub use self::sound::Sound;
 pub use self::sound_buffer_recorder::SoundBufferRecorder;
-pub use self::sound_recorder::SoundRecorder;
 
 #[doc(hidden)]
 #[cfg(target_os="macos")]
@@ -51,4 +50,3 @@ pub mod sound_status;
 pub mod music;
 pub mod sound;
 pub mod sound_buffer_recorder;
-pub mod sound_recorder;

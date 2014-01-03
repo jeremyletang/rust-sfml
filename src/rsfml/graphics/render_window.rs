@@ -32,6 +32,7 @@
 
 use std::libc::{c_float, c_uint, c_int};
 use std::{ptr, cast};
+use extra::arc::RWArc;
 
 use traits::drawable::Drawable;
 use traits::wrappable::Wrappable;
@@ -76,11 +77,6 @@ pub mod ffi {
     use graphics::vertex_array::ffi::sfVertexArray;
 
     pub struct sfRenderWindow;
-    //  {
-    //     This :          *c_void,
-    //     DefaultView :   sfView,
-    //     CurrentView :   sfView
-    // }
 
     pub struct sfEvent {
         typeEvent : c_uint,
@@ -160,9 +156,9 @@ pub struct RenderWindow {
     #[doc(hidden)]
     priv title_length :     uint,
     #[doc(hidden)]
-    priv current_view :     @mut View,
+    priv current_view :     RWArc<View>,
     #[doc(hidden)]
-    priv default_view :     @mut View
+    priv default_view :     RWArc<View>
 }
 
 impl RenderWindow {
@@ -206,17 +202,18 @@ impl RenderWindow {
             None
         }
         else {
-            let def_view = unsafe { ffi::sfRenderWindow_getDefaultView(sf_render_win) };
-            if ptr::is_null(def_view) {
+            let raw_def_view = unsafe { ffi::sfRenderWindow_getDefaultView(sf_render_win) };
+            if ptr::is_null(raw_def_view) {
                 None
             }
             else {
+                let def_view = RWArc::new(Wrappable::wrap(raw_def_view));
                 Some (RenderWindow {
                     render_window :     sf_render_win, 
                     event :             sf_ev, 
                     title_length :      title.len(),
-                    current_view :      @mut Wrappable::wrap(def_view),
-                    default_view :      @mut Wrappable::wrap(def_view)
+                    current_view :      def_view.clone(),
+                    default_view :      def_view.clone()
                 })
             }
         }
@@ -260,17 +257,18 @@ impl RenderWindow {
             None
         }
         else {
-            let def_view = unsafe { ffi::sfRenderWindow_getDefaultView(sf_render_win) };
-            if ptr::is_null(def_view) {
+            let raw_def_view = unsafe { ffi::sfRenderWindow_getDefaultView(sf_render_win) };
+            if ptr::is_null(raw_def_view) {
                 None
             }
             else {
+                let def_view = RWArc::new(Wrappable::wrap(raw_def_view));
                 Some (RenderWindow {
                     render_window :     sf_render_win, 
                     event :             sf_ev, 
                     title_length :      title.len(),
-                    current_view :      @mut Wrappable::wrap(def_view),
-                    default_view :      @mut Wrappable::wrap(def_view)
+                    current_view :      def_view.clone(),
+                    default_view :      def_view.clone()
                 })
             } 
         }
@@ -1002,10 +1000,13 @@ impl RenderWindow {
     * # Arguments
     * * view - The new view
     */
-    pub fn set_view(&mut self, view : @mut View) -> () {
-        self.current_view = view;
+    pub fn set_view(&mut self, view : &RWArc<View>) -> () {
+        self.current_view = view.clone();
         unsafe {
-            ffi::sfRenderWindow_setView(self.render_window, view.unwrap())
+            self.current_view.read(|v| {
+                ffi::sfRenderWindow_setView(self.render_window, v.unwrap())  
+            })
+
         }
     }
     
@@ -1014,8 +1015,8 @@ impl RenderWindow {
     *
     * Return the current active view
     */
-    pub fn get_view(&self) -> @mut View {
-        self.current_view
+    pub fn get_view(&self) -> RWArc<View> {
+        self.current_view.clone()
     }
     
     /**
@@ -1023,8 +1024,8 @@ impl RenderWindow {
     *
     * Return the default view of the render window
     */
-    pub fn get_default_view(&self) -> @mut View {
-        self.default_view
+    pub fn get_default_view(&self) -> RWArc<View> {
+        self.default_view.clone()
     }
     
     /**
