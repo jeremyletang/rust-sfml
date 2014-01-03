@@ -99,30 +99,35 @@ pub mod ffi {
 
 #[doc(hidden)]
 pub struct WrapObj {
-    shape_impl : ~ShapeImpl
+    shape_impl : ~ShapeImpl,
+    i : i32
 }
 
 pub struct Shape<'s> {
     #[doc(hidden)]
     priv shape :    *ffi::sfShape,
     #[doc(hidden)]
-    priv wrap_obj : ~WrapObj,
+    // priv wrap_obj : ~WrapObj,
     #[doc(hidden)]
     priv texture :  Option<&'s Texture>
 }
 
 #[doc(hidden)]
 extern fn get_point_count_callback(obj : *c_void) -> u32 {
-    println!("Hi");
-    let shape = unsafe { cast::transmute::<*c_void, &WrapObj>(obj) };
-    shape.shape_impl.get_point_count()
+    let shape = unsafe { cast::transmute::<*c_void, ~~WrapObj>(obj) };
+    let ret = shape.shape_impl.get_point_count();
+    unsafe { cast::forget(shape) };
+    println!("get_point_count ret: {:?}", ret);
+    ret
 }
 
 #[doc(hidden)]
 extern fn get_point_callback(point : u32, obj : *c_void) -> Vector2f {
-    println!("amigo");
-    let shape = unsafe { cast::transmute::<*c_void, &WrapObj>(obj) };
-    shape.shape_impl.get_point(point)
+    let shape = unsafe { cast::transmute::<*c_void, ~~WrapObj>(obj) };
+    let ret = shape.shape_impl.get_point(point);
+    unsafe { cast::forget(shape) };
+    println!("get_point ret: {:?}", ret);
+    ret
 }
 
 
@@ -137,16 +142,16 @@ impl<'s> Shape<'s> {
     * Return a new Option to Shape
     */
     pub fn new(shape_impl : ~ShapeImpl) -> Option<Shape<'s>> {
-        let w_o = ~WrapObj { shape_impl : shape_impl };
+        let w_o = ~WrapObj { shape_impl : shape_impl, i : 42 };
       
-        let sp = unsafe { ffi::sfShape_create(get_point_count_callback, get_point_callback, ptr::to_unsafe_ptr(&w_o) as *c_void) };
+        let sp = unsafe { ffi::sfShape_create(get_point_count_callback, get_point_callback, cast::transmute::<~~WrapObj, *c_void>(~w_o)) };
         if ptr::is_null(sp) {
             None
         }
         else {
             Some(Shape {
                 shape :     sp,
-                wrap_obj :  w_o,
+                // wrap_obj :  w_o,
                 texture :   None
             })
         }
@@ -162,7 +167,7 @@ impl<'s> Shape<'s> {
     * Return a new Option to Shape
     */
     pub fn new_with_texture(shape_impl : ~ShapeImpl, texture : &'s Texture) -> Option<Shape<'s>> {
-        let w_o = WrapObj { shape_impl : shape_impl};
+        let w_o = WrapObj { shape_impl : shape_impl, i : 42};
       
         let sp = unsafe { ffi::sfShape_create(get_point_count_callback, get_point_callback, ptr::to_unsafe_ptr(&w_o) as *c_void) };
         if ptr::is_null(sp) {
@@ -174,7 +179,7 @@ impl<'s> Shape<'s> {
             }
             Some(Shape {
                 shape :     sp,
-                wrap_obj :  ~w_o,
+                // wrap_obj :  ~w_o,
                 texture :   Some(texture)
             })
         }
