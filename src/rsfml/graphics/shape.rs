@@ -99,26 +99,28 @@ pub mod ffi {
 
 #[doc(hidden)]
 pub struct WrapObj {
-    shape_impl : @ShapeImpl
+    shape_impl : ~ShapeImpl
 }
 
 pub struct Shape<'s> {
     #[doc(hidden)]
     priv shape :    *ffi::sfShape,
     #[doc(hidden)]
-    priv wrap_obj : @WrapObj,
+    priv wrap_obj : ~WrapObj,
     #[doc(hidden)]
     priv texture :  Option<&'s Texture>
 }
 
 #[doc(hidden)]
 extern fn get_point_count_callback(obj : *c_void) -> u32 {
+    println!("Hi");
     let shape = unsafe { cast::transmute::<*c_void, &WrapObj>(obj) };
     shape.shape_impl.get_point_count()
 }
 
 #[doc(hidden)]
 extern fn get_point_callback(point : u32, obj : *c_void) -> Vector2f {
+    println!("amigo");
     let shape = unsafe { cast::transmute::<*c_void, &WrapObj>(obj) };
     shape.shape_impl.get_point(point)
 }
@@ -134,10 +136,10 @@ impl<'s> Shape<'s> {
     *
     * Return a new Option to Shape
     */
-    pub fn new<T : 'static + ShapeImpl>(shape_impl : @T) -> Option<Shape<'s>> {
-        let w_o = @WrapObj { shape_impl : shape_impl as @ShapeImpl };
+    pub fn new(shape_impl : ~ShapeImpl) -> Option<Shape<'s>> {
+        let w_o = ~WrapObj { shape_impl : shape_impl };
       
-        let sp = unsafe { ffi::sfShape_create(get_point_count_callback, get_point_callback, ptr::to_unsafe_ptr(&*w_o) as *c_void) };
+        let sp = unsafe { ffi::sfShape_create(get_point_count_callback, get_point_callback, ptr::to_unsafe_ptr(&w_o) as *c_void) };
         if ptr::is_null(sp) {
             None
         }
@@ -159,10 +161,10 @@ impl<'s> Shape<'s> {
     *
     * Return a new Option to Shape
     */
-    pub fn new_with_texture<T : 'static + ShapeImpl>(shape_impl : @T, texture : &'s Texture) -> Option<Shape<'s>> {
-        let w_o = @WrapObj { shape_impl : shape_impl as @ShapeImpl };
+    pub fn new_with_texture(shape_impl : ~ShapeImpl, texture : &'s Texture) -> Option<Shape<'s>> {
+        let w_o = WrapObj { shape_impl : shape_impl};
       
-        let sp = unsafe { ffi::sfShape_create(get_point_count_callback, get_point_callback, ptr::to_unsafe_ptr(&*w_o) as *c_void) };
+        let sp = unsafe { ffi::sfShape_create(get_point_count_callback, get_point_callback, ptr::to_unsafe_ptr(&w_o) as *c_void) };
         if ptr::is_null(sp) {
             None
         }
@@ -172,7 +174,7 @@ impl<'s> Shape<'s> {
             }
             Some(Shape {
                 shape :     sp,
-                wrap_obj :  w_o,
+                wrap_obj :  ~w_o,
                 texture :   Some(texture)
             })
         }
