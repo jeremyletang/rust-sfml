@@ -56,8 +56,8 @@ extern mod native;
 extern mod rsfml;
 
 use rsfml::system::Vector2f;
-use rsfml::window::{ContextSettings, VideoMode, event};
-use rsfml::graphics::{RenderWindow, sfClose, CircleShape, Color};
+use rsfml::window::{ContextSettings, VideoMode, event, Close};
+use rsfml::graphics::{RenderWindow, CircleShape, Color};
 
 #[start]
 fn start(argc: int, argv: **u8) -> int {
@@ -67,7 +67,7 @@ fn start(argc: int, argv: **u8) -> int {
 fn main () -> () {
      // Create the window of the application
     let setting = ContextSettings::default();
-    let mut window = match RenderWindow::new(VideoMode::new_init(800, 600, 32), "SFML Example", sfClose, &setting) {
+    let mut window = match RenderWindow::new(VideoMode::new_init(800, 600, 32), "SFML Example", Close, &setting) {
         Some(window) => window,
         None => fail!("Cannot create a new Render Window.")
     };

@@ -35,6 +35,7 @@ use traits::wrappable::Wrappable;
 use window::{event, keyboard, joystick, mouse};
 use window::video_mode::VideoMode;
 use window::context_settings::ContextSettings;
+use window::window_style::WindowStyle;
 use system::vector2::{Vector2i, Vector2u};
 use sfml_types::*;
 
@@ -111,16 +112,6 @@ pub mod ffi {
         pub fn sfMouse_setPosition(position : Vector2i, relativeTo : *sfWindow) -> ();
         //fn sfWindow_getSystemHandle(window : *sfWindow) -> sfWindowHandle;
     }
-}
-
-/// Enumeration of window creation styles
-pub enum WindowStyle {
-    sfNone =            0,
-    sfTitlebar =        1,
-    sfResize =          2,
-    sfClose =           4,
-    sfFullscreen =      8,
-    sfDefaultStyle =    7
 }
 
 pub struct Window {

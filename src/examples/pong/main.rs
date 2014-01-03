@@ -13,8 +13,8 @@ extern mod native;
 extern mod rsfml;
 
 use rsfml::graphics::render_window::ffi::sfEvent;
-use rsfml::graphics::{RenderWindow, sfClose, Color, Font, Text, RectangleShape, CircleShape};
-use rsfml::window::{VideoMode, ContextSettings, event, keyboard};
+use rsfml::graphics::{RenderWindow, Color, Font, Text, RectangleShape, CircleShape};
+use rsfml::window::{VideoMode, ContextSettings, event, keyboard, Close};
 use rsfml::system::{Vector2f, Clock, Time};
 use rsfml::audio::{SoundBuffer, Sound};
 
@@ -39,7 +39,7 @@ fn main () -> () {
     println!("{}", mem::size_of::<sfEvent>());
      // Create the window of the application
     let setting : ContextSettings = ContextSettings::default();
-    let mut window : RenderWindow = match RenderWindow::new(VideoMode::new_init(gameWidth, gameHeight, 32), "SFML Pong", sfClose, &setting) {
+    let mut window : RenderWindow = match RenderWindow::new(VideoMode::new_init(gameWidth, gameHeight, 32), "SFML Pong", Close, &setting) {
         Some(window) => window,
         None => fail!("Cannot create a new Render Window.")
     };

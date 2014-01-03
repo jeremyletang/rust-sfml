@@ -23,34 +23,25 @@
 */
 
 /*!
-* Provides OpenGL-based windows, and abstractions for events and input handling.
-*
-*
-*/
+ * Window styles
+ *
+ * Availables window styles
+ */
 
-// pub use self::window::Window;
-pub use self::window::Window;
-pub use self::video_mode::VideoMode;
-pub use self::context::Context;
-pub use self::context_settings::ContextSettings;
-pub use self::window_style::{WindowStyle, NoStyle, Titlebar, Resize, Close, Fullscreen, DefaultStyle};
-
-#[doc(hidden)]
-#[cfg(target_os="macos")]
-#[cfg(target_os="linux")]
-#[cfg(target_os="win32")]
-mod platform {
-    #[link(name = "csfml-window")]
-    extern {}
+/// Enumeration of window creation styles
+#[deriving(Clone, Eq, Ord)]
+#[repr(C)]
+pub enum WindowStyle {
+	/// No border / title bar (this flag and all others are mutually exclusive)
+    NoStyle =         0,
+    /// Title bar + fixed border.
+    Titlebar =        1,
+    /// Titlebar + resizable border + maximize button.
+    Resize =          2,
+    /// Titlebar + close button.
+    Close =           4,
+    /// Fullscreen mode (this flag and all others are mutually exclusive)
+    Fullscreen =      8,
+    /// Default window style.
+    DefaultStyle =    7
 }
-
-
-pub mod window;
-pub mod video_mode;
-pub mod context;
-pub mod context_settings;
-pub mod joystick;
-pub mod keyboard;
-pub mod mouse;
-pub mod event;
-pub mod window_style;

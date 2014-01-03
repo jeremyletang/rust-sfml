@@ -30,7 +30,7 @@
 */
 
 pub use self::render_states::RenderStates;
-pub use self::render_window::{RenderWindow, WindowStyle, sfNone, sfTitlebar, sfResize, sfClose, sfFullscreen, sfDefaultStyle};
+pub use self::render_window::RenderWindow;
 pub use self::rect::{FloatRect, IntRect};
 pub use self::texture::Texture;
 pub use self::blend_mode::{BlendMode, BlendAlpha, BlendAdd, BlendMultiply, BlendNone};
