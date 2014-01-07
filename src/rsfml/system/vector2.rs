@@ -24,17 +24,12 @@
 
 /*!
 * Utility Class providing 2 dimensional vectors for int, uint, and f32.
-*
-* Create your own by implementing the Trait Vector2
-*
 */
-
-use std::libc::{c_uint, c_int, c_float};
 
 /**
 * Implemention of Vector2i
 */
-#[deriving(Clone, Ord)]
+#[deriving(Clone, Ord, Eq)]
 pub struct Vector2i {
     x : i32,
     y : i32
@@ -43,7 +38,7 @@ pub struct Vector2i {
 /**
 * Implemention of Vector2u
 */
-#[deriving(Clone, Ord)]
+#[deriving(Clone, Ord, Eq)]
 pub struct Vector2u {
     x : u32,
     y : u32
@@ -52,7 +47,7 @@ pub struct Vector2u {
 /**
 * Implemention of Vector2f
 */
-#[deriving(Clone, Ord)]
+#[deriving(Clone, Ord, Eq)]
 pub struct Vector2f {
     x : f32,
     y : f32
@@ -172,15 +167,6 @@ impl Vector2iOp for int {
     }
 }
 
-impl Eq for Vector2i {
-    fn eq(&self, rhs : &Vector2i) -> bool {
-        self.x == rhs.x && self.y == rhs.y
-    }
-    fn ne(&self, rhs : &Vector2i) -> bool {
-        self.x != rhs.x || self.y != rhs.y
-    }
-}
-
 impl Vector2u {
     pub fn new(x : u32, y: u32) -> Vector2u {
         Vector2u{
@@ -274,15 +260,6 @@ impl Vector2uOp for uint {
     }
 }
 
-impl Eq for Vector2u {
-    fn eq(&self, rhs : &Vector2u) -> bool {
-        self.x == rhs.x && self.y == rhs.y
-    }
-    fn ne(&self, rhs : &Vector2u) -> bool {
-        self.x != rhs.x || self.y != rhs.y
-    }
-}
-
 impl Vector2f {
     pub fn new(x : f32, y: f32) -> Vector2f {
         Vector2f{
@@ -373,15 +350,6 @@ impl Vector2fOp for f32 {
             x : lhs.x / (*self as f32),
             y : lhs.y / (*self as f32)
         }
-    }
-}
-
-impl Eq for Vector2f {
-    fn eq(&self, rhs : &Vector2f) -> bool {
-        self.x == rhs.x && self.y == rhs.y
-    }
-    fn ne(&self, rhs : &Vector2f) -> bool {
-        self.x != rhs.x || self.y != rhs.y
     }
 }
 
