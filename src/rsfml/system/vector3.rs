@@ -26,10 +26,14 @@
 * Utility Class providing 3 dimensional vectors for f32.
 */
 
+/// Vector3f definition
 #[deriving(Clone, Ord, Eq)]
 pub struct Vector3f {
+    /// X coordinate of the vector.
     x : f32,
+    /// Y coordinate of the vector.
     y : f32,
+    /// Z coordinate of the vector.
     z : f32
 }
 
@@ -41,6 +45,7 @@ trait Vector3fOp {
 }
 
 impl Vector3f {
+    /// Create a new Vector3f with the given values.
     pub fn new(x : f32, y : f32, z : f32) -> Vector3f {
         Vector3f{
             x : x, 

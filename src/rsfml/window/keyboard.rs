@@ -27,8 +27,8 @@
 *
 */
 
-use std::libc::{c_int};
-use sfml_types::*;
+use std::libc::c_int;
+use sfml_types::{SFTRUE, SFFALSE};
 
 /// Key codes
 #[deriving(Clone, Eq, Ord)]

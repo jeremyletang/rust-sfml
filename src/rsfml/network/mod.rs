@@ -32,11 +32,8 @@
 pub use self::ip_address::IpAddress;
 pub use self::packet::Packet;
 pub use self::socket_status::{SocketStatus, SocketNotReady, SocketDisconnected, SocketError};
-// pub use self::tcp_socket::TcpSocket;
-// pub use self::udp_socket::*;
-// pub use self::tcp_listener::*;
-pub use self::ftp::*;
-pub use self::http::*;
+pub use self::ftp::Ftp;
+pub use self::http::Http;
 
 #[doc(hidden)]
 #[cfg(target_os="macos")]

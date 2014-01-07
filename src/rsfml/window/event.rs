@@ -29,9 +29,9 @@
 *
 */
 
-use window::keyboard::*;
-use window::mouse::{MouseButton};
-use window::joystick::*;
+use window::keyboard::Key;
+use window::mouse::MouseButton;
+use window::joystick::Axis;
 
 /// Definition of all the event types
 #[deriving(Clone, Eq, Ord)]

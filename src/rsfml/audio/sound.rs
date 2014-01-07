@@ -29,15 +29,14 @@
 *
 */
 
-use std::libc::{c_float};
+use std::libc::c_float;
 use std::{ptr, cast};
 
 use traits::wrappable::Wrappable;
 use system::time;
-use audio::sound_status;
-use audio::sound_buffer::SoundBuffer;
+use audio::{sound_status, SoundBuffer};
 use system::vector3::Vector3f;
-use sfml_types::*;
+use sfml_types::{SFTRUE, SFFALSE};
 
 #[doc(hidden)]
 pub mod ffi {

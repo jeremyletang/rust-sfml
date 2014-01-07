@@ -36,8 +36,8 @@ use extra::arc::RWArc;
 
 use traits::drawable::Drawable;
 use traits::wrappable::Wrappable;
-use sfml_types::*;
-use window::video_mode::*;
+use sfml_types::{SfBool, SFTRUE, SFFALSE};
+use window::video_mode::VideoMode;
 use window::context_settings::ContextSettings;
 use window::{event, keyboard, joystick, mouse, WindowStyle};
 use system::vector2::{Vector2f, Vector2i, Vector2u};
@@ -61,7 +61,7 @@ pub mod ffi {
     
     use system::vector2::{Vector2f, Vector2i, Vector2u};
     use sfml_types::SfBool;
-    use window::video_mode::*;
+    use window::video_mode::ffi::sfVideoMode;
     use window::context_settings::ContextSettings;
     use graphics::text::ffi::sfText;
     use graphics::render_states;
@@ -88,8 +88,8 @@ pub mod ffi {
     }
 
     extern "C" {
-        pub fn sfRenderWindow_create(mode : ffi::sfVideoMode, title : *c_char, style : c_uint, settings : *ContextSettings) -> *sfRenderWindow;
-        pub fn sfRenderWindow_createUnicode(mode : ffi::sfVideoMode, title : *u32, style : c_uint, settings : *ContextSettings) -> *sfRenderWindow;
+        pub fn sfRenderWindow_create(mode : sfVideoMode, title : *c_char, style : c_uint, settings : *ContextSettings) -> *sfRenderWindow;
+        pub fn sfRenderWindow_createUnicode(mode : sfVideoMode, title : *u32, style : c_uint, settings : *ContextSettings) -> *sfRenderWindow;
         //fn sfRenderWindow_createFromHandle(handle : sfWindowHandle, settings : *sfContextSettings) -> *sfRenderWindow;
         pub fn sfRenderWindow_destroy(renderWindow : *sfRenderWindow) -> ();
         pub fn sfRenderWindow_close(renderWindow : *sfRenderWindow) -> ();

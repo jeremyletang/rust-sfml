@@ -42,7 +42,7 @@ use graphics::color::Color;
 use graphics::transform::Transform;
 use graphics::rect::{IntRect, FloatRect};
 use traits::shape_impl::ShapeImpl;
-use sfml_types::*;
+use sfml_types::{SFTRUE, SFFALSE};
 
 #[doc(hidden)]
 pub mod ffi {

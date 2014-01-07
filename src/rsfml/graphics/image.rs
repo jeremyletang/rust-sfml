@@ -29,14 +29,14 @@
 *
 */
 
-use std::libc::{c_uint};
+use std::libc::c_uint;
 use std::ptr;
 
 use traits::wrappable::Wrappable;
 use system::vector2::Vector2u;
 use graphics::color::Color;
 use graphics::rect::IntRect;
-use sfml_types::*;
+use sfml_types::{SFTRUE, SFFALSE};
 
 #[doc(hidden)]
 pub mod ffi {

@@ -29,8 +29,8 @@
 *
 */
 
-use std::libc::{c_int};
-use sfml_types::*;
+use std::libc::c_int;
+use sfml_types::{SFTRUE, SFFALSE};
 
 #[doc(hidden)]
 pub mod ffi {

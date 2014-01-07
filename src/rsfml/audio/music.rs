@@ -37,13 +37,13 @@ use traits::wrappable::Wrappable;
 use system::time::Time;
 use super::sound_status;
 use system::vector3::Vector3f;
-use sfml_types::*;
+use sfml_types::{SFTRUE, SFFALSE};
 
 #[doc(hidden)]
 pub mod ffi {
 
     use std::libc::{c_void, c_uint, c_float, c_char};
-    use sfml_types::{SfBool};
+    use sfml_types::SfBool;
     use system::time;
     use audio::sound_status;
     use system::vector3::Vector3f;

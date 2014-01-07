@@ -29,7 +29,7 @@
 *
 */
 
-use std::libc::{c_float};
+use std::libc::c_float;
 use std::ptr;
 
 use traits::wrappable::Wrappable;

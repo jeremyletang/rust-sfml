@@ -36,7 +36,7 @@ use std::libc::size_t;
 use traits::wrappable::Wrappable;
 use network::{packet, ip_address};
 use network::socket_status::SocketStatus;
-use sfml_types::*;
+use sfml_types::{SFTRUE, SFFALSE};
 
 #[doc(hidden)]
 pub mod ffi {

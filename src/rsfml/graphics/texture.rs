@@ -29,7 +29,7 @@
 *
 */
 
-use std::libc::{c_uint};
+use std::libc::c_uint;
 use std::ptr;
 
 use traits::wrappable::Wrappable;
@@ -38,7 +38,7 @@ use window::window::Window;
 use graphics::render_window::RenderWindow;
 use graphics::image::Image;
 use graphics::rect::IntRect;
-use sfml_types::*;
+use sfml_types::{SFTRUE, SFFALSE};
 
 #[doc(hidden)]
 pub mod ffi {

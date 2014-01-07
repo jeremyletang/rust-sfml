@@ -29,8 +29,8 @@
 *
 */
 
-use std::libc::{c_uint};
-use sfml_types::*;
+use std::libc::c_uint;
+use sfml_types::{SFTRUE, SFFALSE};
 
 /// Mouse buttons
 #[deriving(Clone, Eq, Ord)]
@@ -50,7 +50,7 @@ pub enum MouseButton {
 #[doc(hidden)]
 pub mod ffi {
     
-    use std::libc::{c_uint};
+    use std::libc::c_uint;
     use sfml_types::SfBool;
 
     extern "C" {

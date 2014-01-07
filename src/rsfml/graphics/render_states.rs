@@ -31,10 +31,10 @@
 use std::ptr;
 
 use traits::wrappable::Wrappable;
-use graphics::blend_mode::*; 
-use graphics::shader::*; 
-use graphics::texture::*; 
-use graphics::transform::*; 
+use graphics::blend_mode::{BlendMode, BlendAlpha}; 
+use graphics::shader::Shader; 
+use graphics::texture::Texture;
+use graphics::transform::Transform; 
 
 #[doc(hidden)]
 pub mod ffi {

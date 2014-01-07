@@ -33,7 +33,7 @@ use std::ptr;
 
 use traits::wrappable::Wrappable;
 use system::time;
-use sfml_types::*;
+use sfml_types::{SFTRUE, SFFALSE};
 
 #[doc(hidden)]
 pub mod ffi {

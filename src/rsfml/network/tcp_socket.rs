@@ -36,7 +36,7 @@ use traits::wrappable::Wrappable;
 use network::{ip_address, packet};
 use system::time;
 use network::socket_status::SocketStatus;
-use sfml_types::*;
+use sfml_types::{SFTRUE, SFFALSE};
 
 #[doc(hidden)]
 pub mod ffi {

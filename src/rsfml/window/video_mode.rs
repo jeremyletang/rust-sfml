@@ -34,7 +34,7 @@ use extra::c_vec::CVec;
 use std::libc::{c_uint, size_t};
 
 use traits::wrappable::Wrappable;
-use sfml_types::*;
+use sfml_types::{SFTRUE, SFFALSE};
 
 /**
 * VideoMode defines a video mode (width, height, bpp, frequency) 

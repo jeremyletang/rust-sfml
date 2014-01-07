@@ -33,7 +33,7 @@ use std::libc::{size_t, c_int};
 use std::{str, cast};
 
 use traits::wrappable::Wrappable;
-use network::ip_address::*;
+use network::ip_address::IpAddress;
 use system::time::Time;
 
 #[doc(hidden)]
@@ -41,7 +41,7 @@ pub mod ffi {
     
     use std::libc::{c_void, c_char, size_t, c_int};
 
-    use network::ip_address::ffi::*;
+    use network::ip_address::ffi::sfIpAddress;
     use sfml_types::SfBool;
     use system::time;
 
@@ -278,7 +278,7 @@ pub struct Ftp {
 }
 
 
-pub struct Response{
+pub struct Response {
     #[doc(hidden)]
     priv response : *ffi::sfFtpResponse
 }

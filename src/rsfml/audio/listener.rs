@@ -29,8 +29,7 @@
 *
 */
 
-use system::vector3::*;
-pub use std::libc::{c_int};
+use system::vector3::Vector3f;
 
 #[doc(hidden)]
 pub mod ffi {

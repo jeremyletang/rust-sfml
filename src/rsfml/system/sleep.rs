@@ -27,12 +27,12 @@
 */
 
 use traits::wrappable::Wrappable;
-use system::time::*;
+use system::time::Time;
 
 #[doc(hidden)]
 pub mod ffi {
     
-    use system::time::*;
+    use system::time::ffi;
 
     extern "C" {
         pub fn sfSleep(duration : ffi::sfTime) -> ();

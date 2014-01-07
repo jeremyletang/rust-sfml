@@ -29,13 +29,13 @@
 *
 */
 
-use std::libc::{c_uint};
+use std::libc::c_uint;
 use std::ptr;
 
 use traits::wrappable::Wrappable;
 use graphics::texture::Texture;
 use graphics::glyph::Glyph;
-use sfml_types::*;
+use sfml_types::{SFTRUE, SFFALSE};
 
 #[doc(hidden)]
 pub mod ffi {

@@ -42,7 +42,7 @@ use system::vector2::Vector2f;
 use graphics::rect::{FloatRect, IntRect};
 use graphics::transform::Transform;
 use graphics::render_states::RenderStates;
-use sfml_types::*;
+use sfml_types::{SFTRUE, SFFALSE};
 
 #[doc(hidden)]
 pub mod ffi {

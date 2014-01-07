@@ -29,7 +29,7 @@
 *
 */
 
-use std::libc::{c_uint};
+use std::libc::c_uint;
 use std::ptr;
 
 use traits::wrappable::Wrappable;

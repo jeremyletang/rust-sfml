@@ -30,6 +30,7 @@
 * and view.
 *
 */
+#[deriving(Clone, Eq, Ord)]
 pub enum PrimitiveType {
 	/// List of individual points.
     Points,

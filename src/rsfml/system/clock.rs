@@ -36,7 +36,7 @@ use system::time::Time;
 pub mod ffi {
     
     use std::libc::{c_void};
-    use system::time::*;
+    use system::time::ffi;
 
     pub struct sfClock {
         This : *c_void

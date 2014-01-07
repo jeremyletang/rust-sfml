@@ -31,7 +31,7 @@
 
 use std::libc::{c_uint};
 
-use sfml_types::*;
+use sfml_types::{SFFALSE, SFTRUE};
 
 /// Axes supported by SFML joysticks 
 #[deriving(Clone, Eq, Ord)]

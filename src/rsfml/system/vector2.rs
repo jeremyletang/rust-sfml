@@ -27,29 +27,35 @@
 */
 
 /**
-* Implemention of Vector2i
+* Implementation of Vector2i
 */
 #[deriving(Clone, Ord, Eq)]
 pub struct Vector2i {
+    /// X coordinate of the vector.
     x : i32,
+    /// Y coordinate of the vector.
     y : i32
 }
 
 /**
-* Implemention of Vector2u
+* Implementation of Vector2u
 */
 #[deriving(Clone, Ord, Eq)]
 pub struct Vector2u {
+    /// X coordinate of the vector.
     x : u32,
+    /// Y coordinate of the vector.
     y : u32
 }
 
 /**
-* Implemention of Vector2f
+* Implementation of Vector2f
 */
 #[deriving(Clone, Ord, Eq)]
 pub struct Vector2f {
+    /// X coordinate of the vector.
     x : f32,
+    /// Y coordinate of the vector.
     y : f32
 }
 
@@ -75,6 +81,7 @@ trait Vector2uOp {
 }
 
 impl Vector2i {
+    /// Create a new Vector2i with the given values.
     pub fn new(x : i32, y: i32) -> Vector2i {
         Vector2i{
             x : x,
@@ -168,6 +175,7 @@ impl Vector2iOp for int {
 }
 
 impl Vector2u {
+    /// Create a new Vector2u with the given values.
     pub fn new(x : u32, y: u32) -> Vector2u {
         Vector2u{
             x : x,
@@ -261,6 +269,7 @@ impl Vector2uOp for uint {
 }
 
 impl Vector2f {
+    /// Create a new Vector2f with the given values.
     pub fn new(x : f32, y: f32) -> Vector2f {
         Vector2f{
             x : x,
@@ -353,9 +362,13 @@ impl Vector2fOp for f32 {
     }
 }
 
+/// Utility trait to convert a Vector2 on another type
 pub trait ToVec {
+    /// Convert the current Vector2 to a Vector2f
     fn to_vector2f(&self) -> Vector2f;
+    /// Convert the current Vector2 to a Vector2i
     fn to_vector2i(&self) -> Vector2i;
+    /// Convert the current Vector2f to a Vector2u
     fn to_vector2u(&self) -> Vector2u;
 }
 

@@ -37,7 +37,7 @@ use window::video_mode::VideoMode;
 use window::context_settings::ContextSettings;
 use window::window_style::WindowStyle;
 use system::vector2::{Vector2i, Vector2u};
-use sfml_types::*;
+use sfml_types::{SFTRUE, SFFALSE};
 
 #[doc(hidden)]
 pub mod ffi {
@@ -46,7 +46,7 @@ pub mod ffi {
 
     use sfml_types::SfBool;
     use window::context_settings::ContextSettings;
-    use window::video_mode::*;    
+    use window::video_mode::ffi;    
     use system::vector2::{Vector2i, Vector2u};
 
     pub struct sfWindow {

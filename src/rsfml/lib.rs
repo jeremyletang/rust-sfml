@@ -132,7 +132,7 @@ This software is provided under the same license than the SFML, the Zlib/png lic
 Here is a list of all modules :
 */
 
-#[feature(globs, struct_variant)];
+#[feature(struct_variant)];
 
 #[crate_id = "github.com/JeremyLetang/rust-sfml#rsfml:0.2"];
 
@@ -140,7 +140,8 @@ Here is a list of all modules :
 #[license = "Zlib/png"];
 #[doc(html_logo_url = "http://rust-sfml.org/logo_rsfml.png")];
 #[crate_type = "lib"];
-#[allow(dead_code)]; 
+#[allow(dead_code)];
+//#[warn(missing_doc)];
 
 extern mod extra;
 

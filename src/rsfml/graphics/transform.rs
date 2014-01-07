@@ -29,9 +29,7 @@
 *
 */
 
-extern mod std;
-pub use extra::c_vec::CVec;
-use std::libc::{c_float};
+use std::libc::c_float;
 
 use system::vector2::Vector2f;
 use graphics::rect::FloatRect;
@@ -39,7 +37,7 @@ use graphics::rect::FloatRect;
 #[doc(hidden)]
 pub mod ffi {
     
-    use std::libc::{c_float};
+    use std::libc::c_float;
 
     use system::vector2::Vector2f;
     use graphics::rect::FloatRect;

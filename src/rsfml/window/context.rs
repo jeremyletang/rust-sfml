@@ -28,13 +28,13 @@
  * Class holding a valid drawing context.
  */
 
-use sfml_types::*;
+use sfml_types::{SFTRUE, SFFALSE};
 
 #[doc(hidden)]
 pub mod ffi {
 
-    use std::libc::{c_void};
-    use sfml_types::{SfBool};
+    use std::libc::c_void;
+    use sfml_types::SfBool;
 
     pub struct sfContext {
         This: *c_void
