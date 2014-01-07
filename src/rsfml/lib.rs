@@ -134,7 +134,7 @@ Here is a list of all modules :
 
 #[feature(struct_variant)];
 
-#[crate_id = "github.com/JeremyLetang/rust-sfml;rsfml#0.2"];
+#[crate_id = "github.com/JeremyLetang/rust-sfml#rsfml:0.2"];
 
 #[desc = "Rust binding for sfml"];
 #[license = "Zlib/png"];
