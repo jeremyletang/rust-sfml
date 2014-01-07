@@ -29,9 +29,9 @@
 *
 */
 
-pub use self::vector2::*;
-pub use self::vector3::*;
-pub use self::sleep::*;
+pub use self::vector2::{Vector2u, Vector2i, Vector2f, ToVec};
+pub use self::vector3::Vector3f;
+pub use self::sleep::sleep;
 pub use self::time::Time;
 pub use self::clock::Clock;
 

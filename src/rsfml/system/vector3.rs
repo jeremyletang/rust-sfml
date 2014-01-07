@@ -26,7 +26,7 @@
 * Utility Class providing 3 dimensional vectors for f32.
 */
 
-#[deriving(Clone, Ord)]
+#[deriving(Clone, Ord, Eq)]
 pub struct Vector3f {
     x : f32,
     y : f32,
@@ -142,11 +142,3 @@ impl Vector3fOp for f32 {
     }
 }
 
-impl Eq for Vector3f {
-    fn eq(&self, rhs : &Vector3f) -> bool {
-        self.x == rhs.x && self.y == rhs.y && self.z == rhs.z
-    }
-    fn ne(&self, rhs : &Vector3f) -> bool {
-        self.x != rhs.x || self.y != rhs.y || self.z != rhs.z
-    }
-}
