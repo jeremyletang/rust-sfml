@@ -29,7 +29,7 @@
 *
 */
 
-pub use std::libc::{c_uint, c_int, c_float};
+use std::libc::{c_uint, c_int, c_float};
 
 /**
 * Implemention of Vector2i

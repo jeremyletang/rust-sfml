@@ -26,7 +26,7 @@
 * Utility Class providing 3 dimensional vectors for f32.
 */
 
-pub use std::libc::{c_float};
+use std::libc::{c_float};
 
 #[deriving(Clone, Ord)]
 pub struct Vector3f {
