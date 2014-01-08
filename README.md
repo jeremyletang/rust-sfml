@@ -42,7 +42,7 @@ On OSX window must be launched in the main thread. You should override the rust 
 #[cfg(target_os="macos")]
 #[start]
 fn start(argc: int, argv: **u8) -> int {
-    std::rt::start_on_main_thread(argc, argv, main)
+    native::start(argc, argv, main)
 }
 ```
 
