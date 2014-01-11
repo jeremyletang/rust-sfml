@@ -8,29 +8,31 @@
 
 extern mod rsfml;
 
+use std::rc::Rc;
+use std::cell::RefCell;
 use rsfml::audio::{SoundBuffer, Sound, Music, sound_status};
 use rsfml::system::{sleep, Time};
 
 /* Play a Sound */
 fn play_sound() -> () {
-    let buffer : SoundBuffer = match SoundBuffer::new("resources/canary.wav") {
-        Some(buffer)    => buffer,
+    let buffer = match SoundBuffer::new("resources/canary.wav") {
+        Some(buffer)    => Rc::from_mut(RefCell::new(buffer)),
         None            => fail!("Error, cannot load sound buffer!")
     };
     
     // Display sound informations
     println!("canary.wav :");
-    println!(" {} seconds", buffer.get_duration().as_seconds());
-    println!(" {} samples / sec", buffer.get_sample_rate());
-    println!(" {} channels", buffer.get_channel_count());
+    println!(" {} seconds", buffer.borrow().with(|b| b.get_duration().as_seconds()));
+    println!(" {} samples / sec", buffer.borrow().with(|b| b.get_sample_rate()));
+    println!(" {} channels", buffer.borrow().with(|b| b.get_channel_count()));
 
-    let mut sound : Sound = match Sound::new_with_buffer(&buffer) {
+    let mut sound : Sound = match Sound::new_with_buffer(buffer.clone()) {
         Some(sound)     => sound,
         None            => fail!("Error cannot create Sound")
     };
 
     sound.play();
-    
+
     loop {
         match sound.get_status() {
             sound_status::Playing       => {

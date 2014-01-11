@@ -29,6 +29,8 @@
 *
 */
 
+use std::rc::Rc;
+use std::cell::RefCell;
 use std::libc::{c_float, c_uint, size_t};
 use extra::c_vec::CVec;
 use std::{str, ptr};
@@ -104,22 +106,22 @@ pub enum Style {
     Underlined =    4
 }
 
-pub struct Text<'s> {
+pub struct Text {
     #[doc(hidden)]
     priv text :             *ffi::sfText,
     #[doc(hidden)]
     priv string_length :    uint,
     #[doc(hidden)]
-    priv font :             Option<&'s Font>
+    priv font :             Option<Rc<RefCell<Font>>>
 }
 
-impl<'s> Text<'s> {
+impl Text {
     /**
     * Create a new text
     *
     * Return a new Option on Text object, or None
     */
-    pub fn new() -> Option<Text<'s>> {
+    pub fn new() -> Option<Text> {
         let text  = unsafe { ffi::sfText_create() };
         if ptr::is_null(text) {
             None
@@ -145,7 +147,7 @@ impl<'s> Text<'s> {
     *
     * Return a new Option on Text object, or None
     */
-    pub fn new_init(string : &str, font : &'s Font, character_size : uint) ->Option<Text<'s>> {
+    pub fn new_init(string : &str, font : Rc<RefCell<Font>>, character_size : uint) ->Option<Text> {
         let text = unsafe { ffi::sfText_create() };
         if ptr::is_null(text) {
             None
@@ -155,7 +157,7 @@ impl<'s> Text<'s> {
                 string.with_c_str(|c_str| {
                     ffi::sfText_setString(text, c_str)
                 });
-                ffi::sfText_setFont(text, font.unwrap());
+                ffi::sfText_setFont(text, font.borrow().with(|t| t.unwrap()));
                 ffi::sfText_setCharacterSize(text, character_size as c_uint)
             }
             Some(Text {
@@ -238,11 +240,11 @@ impl<'s> Text<'s> {
     *
     * font - New font
     */
-    pub fn set_font(&mut self, font : &'s Font) -> () {
-        self.font = Some(font);
+    pub fn set_font(&mut self, font : Rc<RefCell<Font>>) -> () {
         unsafe {
-            ffi::sfText_setFont(self.text, font.unwrap())
+            ffi::sfText_setFont(self.text, font.borrow().with(|t| t.unwrap()))
         }
+        self.font = Some(font);
     }
     
     /**
@@ -339,8 +341,8 @@ impl<'s> Text<'s> {
     * The returned pointer is const, which means that you can't
     * modify the font when you retrieve it with this function.
     */
-    pub fn get_font(&self) -> Option<&'s Font> {
-       self.font
+    pub fn get_font(&self) -> Option<Rc<RefCell<Font>>> {
+       self.font.clone()
     }
     
     /**
@@ -659,7 +661,7 @@ impl<'s> Text<'s> {
     }
 }
 
-impl<'s> Wrappable<*ffi::sfText> for Text<'s> {
+impl Wrappable<*ffi::sfText> for Text {
     fn wrap(text : *ffi::sfText) -> Text {
         Text {
             text :          text,
@@ -672,7 +674,7 @@ impl<'s> Wrappable<*ffi::sfText> for Text<'s> {
     }
 }
 
-impl<'s> Drawable for Text<'s> {
+impl Drawable for Text {
     fn draw_in_render_window(&self, render_window : &RenderWindow) -> () {
         render_window.draw_text(self)
     }
@@ -691,7 +693,7 @@ impl<'s> Drawable for Text<'s> {
 }
 
 #[unsafe_destructor]
-impl<'s> Drop for Text<'s> {
+impl Drop for Text {
     /**
     *   Destructor for class Text. Destroy all the ressource.
     */

@@ -29,6 +29,8 @@
 *
 */
 
+use std::rc::Rc;
+use std::cell::RefCell;
 use std::ptr;
 
 use traits::wrappable::Wrappable;
@@ -74,14 +76,14 @@ pub mod ffi {
    }
 }
 
-pub struct Shader<'s> {
+pub struct Shader {
     #[doc(hidden)]
     priv shader :   *ffi::sfShader,
     #[doc(hidden)]
-    priv texture :  Option<&'s Texture>
+    priv texture :  Option<Rc<RefCell<Texture>>>
 }
 
-impl<'s> Shader<'s> {
+impl Shader {
     /**
     *  Load both the vertex and fragment shaders from files
     *
@@ -99,7 +101,7 @@ impl<'s> Shader<'s> {
     *
     * Return a new Shader object
     */
-    pub fn new_from_file(vertex_shader_filename : Option<&str>, fragment_shader_filename : Option<&str>) -> Option<Shader<'s>> {
+    pub fn new_from_file(vertex_shader_filename : Option<&str>, fragment_shader_filename : Option<&str>) -> Option<Shader> {
         let shader = unsafe { 
             let c_vertex_shader_filename = if vertex_shader_filename.is_none() { ptr::null() } else { vertex_shader_filename.unwrap().to_c_str().unwrap() };
             let c_fragment_shader_filename = if fragment_shader_filename.is_none() { ptr::null() } else { fragment_shader_filename.unwrap().to_c_str().unwrap() };
@@ -133,7 +135,7 @@ impl<'s> Shader<'s> {
     *
     * Return a new Shader object
     */
-    pub fn new_from_memory(vertex_shader : Option<&str>, fragment_shader : Option<&str>) -> Option<Shader<'s>> {
+    pub fn new_from_memory(vertex_shader : Option<&str>, fragment_shader : Option<&str>) -> Option<Shader> {
         let shader = unsafe { 
             let c_vertex_shader = if vertex_shader.is_none() { ptr::null() } else { vertex_shader.unwrap().to_c_str().unwrap() };
             let c_fragment_shader = if fragment_shader.is_none() { ptr::null() } else { fragment_shader.unwrap().to_c_str().unwrap() };
@@ -239,13 +241,13 @@ impl<'s> Shader<'s> {
     * * name - Name of the texture in the shader
     * * texture - Texture to assign
     */
-    pub fn set_texture_parameter(&mut self, name : &str, texture : &'s Texture) -> () {
-        self.texture = Some(texture);
+    pub fn set_texture_parameter(&mut self, name : &str, texture : Rc<RefCell<Texture>>) -> () {
         unsafe { 
             name.with_c_str(|c_str| {
-                ffi::sfShader_setTextureParameter(self.shader, c_str, texture.unwrap())
+                ffi::sfShader_setTextureParameter(self.shader, c_str, texture.borrow().with(|t| t.unwrap()))
             });
         }
+        self.texture = Some(texture);
     }
     
     /**
@@ -363,7 +365,7 @@ impl<'s> Shader<'s> {
 
 }
 
-impl<'s> Wrappable<*ffi::sfShader> for Shader<'s> {
+impl Wrappable<*ffi::sfShader> for Shader {
     fn wrap(shader : *ffi::sfShader) -> Shader {
         Shader {
             shader :    shader,
@@ -377,7 +379,7 @@ impl<'s> Wrappable<*ffi::sfShader> for Shader<'s> {
 }
 
 #[unsafe_destructor]
-impl<'s> Drop for Shader<'s> {
+impl Drop for Shader {
     /**
     * Destroy an existing shader
     */

@@ -28,6 +28,8 @@
 *
 */
 
+use std::rc::Rc;
+use std::cell::RefCell;
 use std::libc::{c_float, c_uint};
 use std::ptr;
 
@@ -98,20 +100,20 @@ pub mod ffi {
     }
 }
 
-pub struct RectangleShape<'s> {
+pub struct RectangleShape {
     #[doc(hidden)]
     priv rectangle_shape :  *ffi::sfRectangleShape,
     #[doc(hidden)]
-    priv texture :          Option<&'s Texture>
+    priv texture :          Option<Rc<RefCell<Texture>>>
 }
 
-impl<'s> RectangleShape<'s> {
+impl RectangleShape {
     /**
     * Create a new rectangle shape
     *
     * Return a new option to a rectangleShape object or None
     */
-    pub fn new() -> Option<RectangleShape<'s>> {
+    pub fn new() -> Option<RectangleShape> {
         let rectangle = unsafe { ffi::sfRectangleShape_create() };
         if ptr::is_null(rectangle) {
             None
@@ -129,14 +131,14 @@ impl<'s> RectangleShape<'s> {
     *
     * Return a new option to a rectangleShape object or None
     */
-    pub fn new_with_texture(texture : &'s Texture) -> Option<RectangleShape<'s>> {
+    pub fn new_with_texture(texture : Rc<RefCell<Texture>>) -> Option<RectangleShape> {
         let rectangle = unsafe { ffi::sfRectangleShape_create() };
         if ptr::is_null(rectangle) {
             None
         }
         else {
             unsafe {
-                ffi::sfRectangleShape_setTexture(rectangle, texture.unwrap(), SFTRUE);
+                ffi::sfRectangleShape_setTexture(rectangle, texture.borrow().with(|t| t.unwrap()), SFTRUE);
             }
             Some(RectangleShape {
                 rectangle_shape :   rectangle,
@@ -152,7 +154,7 @@ impl<'s> RectangleShape<'s> {
     *
     * Return a new option to a rectangleShape object, or None
     */
-    pub fn new_init(size : &Vector2f) -> Option<RectangleShape<'s>> {
+    pub fn new_init(size : &Vector2f) -> Option<RectangleShape> {
         let rectangle = unsafe { ffi::sfRectangleShape_create() };
         if ptr::is_null(rectangle) {
             None
@@ -173,7 +175,7 @@ impl<'s> RectangleShape<'s> {
     * 
     * Return the copied object on an option, or None
     */
-    pub fn clone(&self) -> Option<RectangleShape<'s>> {
+    pub fn clone(&self) -> Option<RectangleShape> {
         let rectangle = unsafe { ffi::sfRectangleShape_copy(self.rectangle_shape) };
         if ptr::is_null(rectangle) {
             None
@@ -181,7 +183,7 @@ impl<'s> RectangleShape<'s> {
         else {
             Some(RectangleShape {
                 rectangle_shape :   rectangle,
-                texture :           self.texture
+                texture :           self.texture.clone()
             })
         }
     }
@@ -498,14 +500,14 @@ impl<'s> RectangleShape<'s> {
     * * texture - New texture
     * * reset_rect - Should the texture rect be reset to the size of the new texture?
     */
-    pub fn set_texture(&mut self, texture : &'s Texture, reset_rect : bool) -> () {
-        self.texture = Some(texture);
+    pub fn set_texture(&mut self, texture : Rc<RefCell<Texture>>, reset_rect : bool) -> () {
         unsafe {
             match reset_rect {
-                false       => ffi::sfRectangleShape_setTexture(self.rectangle_shape, texture.unwrap(), SFFALSE),
-                true        => ffi::sfRectangleShape_setTexture(self.rectangle_shape, texture.unwrap(), SFTRUE)
+                false       => ffi::sfRectangleShape_setTexture(self.rectangle_shape, texture.borrow().with(|t| t.unwrap()), SFFALSE),
+                true        => ffi::sfRectangleShape_setTexture(self.rectangle_shape, texture.borrow().with(|t| t.unwrap()), SFTRUE)
             }
         }
+        self.texture = Some(texture);
     }
 
     /**
@@ -577,8 +579,8 @@ impl<'s> RectangleShape<'s> {
     * 
     * Return the shape's texture
     */
-    pub fn get_texture(&self) -> Option<&'s Texture> {
-        self.texture
+    pub fn get_texture(&self) -> Option<Rc<RefCell<Texture>>> {
+        self.texture.clone()
     }
 
     /**
@@ -709,7 +711,7 @@ impl<'s> RectangleShape<'s> {
     }
 }
 
-impl<'s> Wrappable<*ffi::sfRectangleShape> for RectangleShape<'s> {
+impl Wrappable<*ffi::sfRectangleShape> for RectangleShape {
     fn wrap(rectangle_shape : *ffi::sfRectangleShape) -> RectangleShape {
         RectangleShape {
             rectangle_shape :   rectangle_shape,
@@ -722,7 +724,7 @@ impl<'s> Wrappable<*ffi::sfRectangleShape> for RectangleShape<'s> {
     }
 }
 
-impl<'s> Drawable for RectangleShape<'s> {
+impl Drawable for RectangleShape {
     fn draw_in_render_window(&self, render_window : &RenderWindow) -> () {
         render_window.draw_rectangle_shape(self);
     }
@@ -741,7 +743,7 @@ impl<'s> Drawable for RectangleShape<'s> {
 }
 
 #[unsafe_destructor]
-impl<'s> Drop for RectangleShape<'s> {
+impl Drop for RectangleShape {
     fn drop(&mut self) -> () {
         unsafe {
             ffi::sfRectangleShape_destroy(self.rectangle_shape)

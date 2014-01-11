@@ -29,6 +29,8 @@
 *
 */
 
+use std::rc::Rc;
+use std::cell::RefCell;
 use std::libc::{c_float, c_uint};
 use std::ptr;
 
@@ -100,20 +102,20 @@ pub mod ffi {
     }
 }
 
-pub struct CircleShape<'s> {
+pub struct CircleShape {
     #[doc(hidden)]
     priv circle_shape : *ffi::sfCircleShape,
     #[doc(hidden)]
-    priv texture :      Option<&'s Texture>
+    priv texture :      Option<Rc<RefCell<Texture>>>
 }
 
-impl<'s> CircleShape<'s> {
+impl CircleShape {
     /**
     * Create a new circle shape
     *
     * Return a new option to CircleShape object or None
     */
-    pub fn new() -> Option<CircleShape<'s>> {
+    pub fn new() -> Option<CircleShape> {
         let circle = unsafe { ffi::sfCircleShape_create() };
         if ptr::is_null(circle) {
             None
@@ -126,14 +128,14 @@ impl<'s> CircleShape<'s> {
         }
     }
     
-    pub fn new_with_texture(texture : &'s Texture) -> Option<CircleShape<'s>> {
+    pub fn new_with_texture(texture : Rc<RefCell<Texture>>) -> Option<CircleShape> {
         let circle = unsafe { ffi::sfCircleShape_create() };
         if ptr::is_null(circle) {
             None
         }
         else {
             unsafe {
-                ffi::sfCircleShape_setTexture(circle, texture.unwrap(), SFTRUE);
+                ffi::sfCircleShape_setTexture(circle, texture.borrow().with(|t| t.unwrap()), SFTRUE);
             }
             Some(CircleShape {
                 circle_shape :  circle,
@@ -150,7 +152,7 @@ impl<'s> CircleShape<'s> {
     *
     * Return a new initialized option to CircleShape or None
     */
-    pub fn new_init(radius : f32, point_count : uint) -> Option<CircleShape<'s>> {
+    pub fn new_init(radius : f32, point_count : uint) -> Option<CircleShape> {
         let circle = unsafe { ffi::sfCircleShape_create() };
         if ptr::is_null(circle) {
            None
@@ -175,7 +177,7 @@ impl<'s> CircleShape<'s> {
     * 
     * Return the copied object on option or None
     */
-    pub fn clone(&self) -> Option<CircleShape<'s>> {
+    pub fn clone(&self) -> Option<CircleShape> {
         let circle = unsafe { ffi::sfCircleShape_copy(self.circle_shape) };
         if ptr::is_null(circle) {
             None
@@ -183,7 +185,7 @@ impl<'s> CircleShape<'s> {
         else {
             Some(CircleShape {
                 circle_shape :  circle,
-                texture :       self.texture
+                texture :       self.texture.clone()
             })
         }
     }
@@ -249,14 +251,14 @@ impl<'s> CircleShape<'s> {
     * * texture - New texture
     * * reset_rect - Should the texture rect be reset to the size of the new texture?
     */
-    pub fn set_texture(&mut self, texture : &'s Texture, reset_rect : bool) -> () {
-        self.texture = Some(texture);
+    pub fn set_texture(&mut self, texture : Rc<RefCell<Texture>>, reset_rect : bool) -> () {
         unsafe {
             match reset_rect {
-                true        => ffi::sfCircleShape_setTexture(self.circle_shape, texture.unwrap(), SFTRUE),
-                false       => ffi::sfCircleShape_setTexture(self.circle_shape, texture.unwrap(), SFFALSE),
-            }
+                true        => ffi::sfCircleShape_setTexture(self.circle_shape, texture.borrow().with(|t| t.unwrap()), SFTRUE),
+                false       => ffi::sfCircleShape_setTexture(self.circle_shape, texture.borrow().with(|t| t.unwrap()), SFFALSE),
+            };
         }
+        self.texture = Some(texture);
     }
 
     /**
@@ -344,8 +346,8 @@ impl<'s> CircleShape<'s> {
     * 
     * Return the shape's texture
     */
-    pub fn get_texture(&self) -> Option<&'s Texture> {
-        self.texture
+    pub fn get_texture(&self) -> Option<Rc<RefCell<Texture>>> {
+        self.texture.clone()
     }
 
     /**
@@ -712,7 +714,7 @@ impl<'s> CircleShape<'s> {
 
 }
 
-impl<'s> Wrappable<*ffi::sfCircleShape> for CircleShape<'s> {
+impl Wrappable<*ffi::sfCircleShape> for CircleShape {
     #[doc(hidden)]
     fn wrap(circle_shape : *ffi::sfCircleShape) -> CircleShape {
         CircleShape {
@@ -727,7 +729,7 @@ impl<'s> Wrappable<*ffi::sfCircleShape> for CircleShape<'s> {
     }
 }
 
-impl<'s> Drawable for CircleShape<'s> {
+impl Drawable for CircleShape {
     fn draw_in_render_window(&self, render_window : &RenderWindow) -> () {
         render_window.draw_circle_shape(self)
     }
@@ -746,7 +748,7 @@ impl<'s> Drawable for CircleShape<'s> {
 }
 
 #[unsafe_destructor]
-impl<'s> Drop for CircleShape<'s> {
+impl Drop for CircleShape {
     /**
     * Destroy an existing CircleShape
     */
