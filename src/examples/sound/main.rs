@@ -55,7 +55,7 @@ fn play_music() -> () {
     };
     
     // Display Music informations
-    println("orchestral.ogg :");
+    println!("orchestral.ogg :");
     println!(" {} format seconds", music.get_duration().as_seconds());
     println!(" {} samples / sec", music.get_sample_rate());
     println!(" {} channels", music.get_channel_count());
