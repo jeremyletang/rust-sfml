@@ -16,7 +16,7 @@ use rsfml::system::{sleep, Time};
 /* Play a Sound */
 fn play_sound() -> () {
     let buffer = match SoundBuffer::new("resources/canary.wav") {
-        Some(buffer)    => Rc::from_mut(RefCell::new(buffer)),
+        Some(buffer)    => Rc::new(RefCell::new(buffer)),
         None            => fail!("Error, cannot load sound buffer!")
     };
     

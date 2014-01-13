@@ -44,7 +44,7 @@ fn main () -> () {
 
     // Load the sounds used in the game
     let ballSoundBuffer = match SoundBuffer::new("resources/ball.wav") {
-        Some(ballSoundBuffer)   => Rc::from_mut(RefCell::new(ballSoundBuffer)),
+        Some(ballSoundBuffer)   => Rc::new(RefCell::new(ballSoundBuffer)),
         None                    => fail!("Cannot load Ball sound buffer.")
     };
 
@@ -90,7 +90,7 @@ fn main () -> () {
 
     // Load the text font
     let font = match Font::new_from_file("resources/sansation.ttf") {
-        Some(font)    => Rc::from_mut(RefCell::new(font)),
+        Some(font)    => Rc::new(RefCell::new(font)),
         None()        => fail!("Error, cannot load font")
     };
 
