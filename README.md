@@ -11,11 +11,11 @@ SFML website  : www.sfml-dev.org
 Installation
 ============
 
-You must install on your computer the SFML2 and CSFML2 libraries who are used for the binding.
+You must install on your computer the SFML2.1 and CSFML2.1 libraries who are used for the binding.
 
-SFML2 : http://www.sfml-dev.org/download/sfml/2.0/
+SFML2.1 : http://www.sfml-dev.org/download/sfml/2.1/
 
-CSFML2 : http://www.sfml-dev.org/download/csfml/
+CSFML2.1 : http://www.sfml-dev.org/download/csfml/
 
 Then clone the repo and build the library with the following command.
 
