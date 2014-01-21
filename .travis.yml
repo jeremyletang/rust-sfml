@@ -1,11 +1,18 @@
+env:
+  global:
+    - secure: Q0YTaTb4BGr0ViEo5laf3nBHRCYgvmemeyjPkUpNAYARvYTeLPmIiH12tF7G7D99Xs4ppQHzQ+9BKPLjJnrmY+Z4JSlVSsSZraXbra1XWrkQAWx8esipA1FfmyHlGlaigxqMvMb36wBx0hD0ZM5dmXiKK02JAVxw3qEnCuUcl8Q=
 before_install:
   - yes | sudo add-apt-repository ppa:hansjorg/rust
   - yes | sudo apt-add-repository ppa:sonkun/sfml-development
   - sudo apt-get update
 install:
-  - sudo apt-get install libsfml-dev
-  - sudo apt-get install libcsfml-dev
   - sudo apt-get install rust-nightly
+  - wget http://www.sfml-dev.org/download/sfml/2.1/SFML-2.1-linux-gcc-64bits.tar.bz2
+  - tar xf SFML-2.1-linux-gcc-64bits.tar.bz2
+  - sudo cp -r SFML-2.1/lib/* /usr/local/lib/.
+  - wget http://www.sfml-dev.org/download/csfml/CSFML-2.1-linux-gcc-64bits.tar.bz2
+  - tar xf CSFML-2.1-linux-gcc-64bits.tar.bz2
+  - sudo cp -r CSFML-2.1/lib/* /usr/local/lib/.
   - sudo apt-get install libpthread-stubs0-dev libgl1-mesa-dev libx11-dev
   - sudo apt-get install libxrandr-dev libfreetype6-dev libglew1.5-dev
   - sudo apt-get install libjpeg8-dev libgpgme11-dev libsndfile1-dev libopenal-dev
@@ -14,3 +21,5 @@ script:
   - rustpkg install rsfml
   - rustc -o ./bin/pong src/examples/pong/main.rs
   - rustc -o ./bin/sound src/examples/sound/main.rs
+after_script:
+  - curl http://www.rust-ci.org/artifacts/put?t=$RUSTCI_TOKEN | sh
