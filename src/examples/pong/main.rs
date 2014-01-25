@@ -2,9 +2,6 @@
 * Example from SFML : Pong
 */
 
-
-#[feature(managed_boxes)]
-
 #[crate_id = "pong"]
 #[desc = "Pong example for rsfml"]
 #[crate_type = "bin"]
@@ -160,8 +157,7 @@ fn main () -> () {
             }
             
             // Update the computer's paddle direction according to the ball position
-            if (AITimer.get_elapsed_time().as_microseconds() > AITime.as_microseconds())
-            {
+            if AITimer.get_elapsed_time().as_microseconds() > AITime.as_microseconds() {
                 AITimer.restart();
                 if ball.get_position().y + ballRadius > rightPaddle.get_position().y + paddleSize.y / 2. {
                     rightPaddleSpeed = paddleSpeed;
