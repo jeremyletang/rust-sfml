@@ -18,9 +18,9 @@ install:
   - sudo apt-get install libjpeg8-dev libgpgme11-dev libsndfile1-dev libopenal-dev libjpeg62
 script:
   - rustc --version
-  - rustpkg install rsfml
-  - rustc -o ./bin/pong src/examples/pong/main.rs
-  - rustc -o ./bin/sound src/examples/sound/main.rs
+  - rustc src/rsfml/lib.rs
+  - rustc -L src/rsfml/ -o ./bin/pong src/examples/pong/main.rs
+  - rustc -L src/rsfml/ -o ./bin/sound src/examples/sound/main.rs
   - rustdoc -o doc src/rsfml/lib.rs
 after_script:
   - curl http://www.rust-ci.org/artifacts/put?t=$RUSTCI_TOKEN | sh
