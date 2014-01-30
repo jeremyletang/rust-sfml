@@ -30,9 +30,10 @@
 *
 */
 
+use std::rc::Rc;
+use std::cell::RefCell;
 use std::libc::{c_float, c_uint, c_int};
 use std::{ptr, cast};
-use extra::arc::RWArc;
 
 use traits::drawable::Drawable;
 use traits::wrappable::Wrappable;
@@ -145,9 +146,9 @@ pub struct RenderWindow {
     #[doc(hidden)]
     priv title_length :     uint,
     #[doc(hidden)]
-    priv current_view :     RWArc<View>,
+    priv current_view :     Rc<RefCell<View>>,
     #[doc(hidden)]
-    priv default_view :     RWArc<View>
+    priv default_view :     Rc<RefCell<View>>
 }
 
 impl RenderWindow {
@@ -196,7 +197,7 @@ impl RenderWindow {
                 None
             }
             else {
-                let def_view = RWArc::new(Wrappable::wrap(raw_def_view));
+                let def_view = Rc::new(RefCell::new(Wrappable::wrap(raw_def_view)));
                 Some (RenderWindow {
                     render_window :     sf_render_win, 
                     event :             sf_ev, 
@@ -251,7 +252,7 @@ impl RenderWindow {
                 None
             }
             else {
-                let def_view = RWArc::new(Wrappable::wrap(raw_def_view));
+                let def_view = Rc::new(RefCell::new(Wrappable::wrap(raw_def_view)));
                 Some (RenderWindow {
                     render_window :     sf_render_win, 
                     event :             sf_ev, 
@@ -989,13 +990,10 @@ impl RenderWindow {
     * # Arguments
     * * view - The new view
     */
-    pub fn set_view(&mut self, view : &RWArc<View>) -> () {
-        self.current_view = view.clone();
+    pub fn set_view(&mut self, view : Rc<RefCell<View>>) -> () {
+        self.current_view = view;
         unsafe {
-            self.current_view.read(|v| {
-                ffi::sfRenderWindow_setView(self.render_window, v.unwrap())  
-            })
-
+            ffi::sfRenderWindow_setView(self.render_window, self.current_view.borrow().with(|v| v.unwrap()))  
         }
     }
     
@@ -1004,7 +1002,7 @@ impl RenderWindow {
     *
     * Return the current active view
     */
-    pub fn get_view(&self) -> RWArc<View> {
+    pub fn get_view(&self) -> Rc<RefCell<View>> {
         self.current_view.clone()
     }
     
@@ -1013,7 +1011,7 @@ impl RenderWindow {
     *
     * Return the default view of the render window
     */
-    pub fn get_default_view(&self) -> RWArc<View> {
+    pub fn get_default_view(&self) -> Rc<RefCell<View>> {
         self.default_view.clone()
     }
     

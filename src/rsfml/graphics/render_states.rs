@@ -28,6 +28,8 @@
 *
 */
 
+use std::rc::Rc;
+use std::cell::RefCell;
 use std::ptr;
 
 use traits::wrappable::Wrappable;
@@ -52,7 +54,7 @@ pub mod ffi {
 /**
 * Define the states used for drawing to a RenderTarget
 */
-pub struct RenderStates<'s> {
+pub struct RenderStates {
     #[doc(hidden)]
     priv sfRenderStates :   ffi::sfRenderStates,
     /// Blending mode. 
@@ -60,12 +62,12 @@ pub struct RenderStates<'s> {
     /// Transform
     transform :             Transform,
     /// Texture
-    texture :               Option<&'s Texture>,
+    texture :               Option<Rc<RefCell<Texture>>>,
     /// Shader
-    shader :                Option<&'s Shader<'s>>
+    shader :                Option<Rc<RefCell<Shader>>>
 }
 
-impl<'s> RenderStates<'s> {
+impl RenderStates {
 
     /**
     * Create a new RenderStates.
@@ -78,7 +80,7 @@ impl<'s> RenderStates<'s> {
     *
     * Return a new default RenderStates
     */
-    pub fn new(blend_mode : BlendMode, transform : Transform, texture : Option<&'s Texture>, shader : Option<&'s Shader<'s>>) -> RenderStates<'s> {
+    pub fn new(blend_mode : BlendMode, transform : Transform, texture : Option<Rc<RefCell<Texture>>>, shader : Option<Rc<RefCell<Shader>>>) -> RenderStates {
         RenderStates {
             sfRenderStates :    ffi::sfRenderStates {
                 blendMode : blend_mode as i32,
@@ -104,7 +106,7 @@ impl<'s> RenderStates<'s> {
     *
     * Return a new default RenderStates
     */
-    pub fn default() -> RenderStates<'s> {
+    pub fn default() -> RenderStates {
         RenderStates {
             sfRenderStates :    ffi::sfRenderStates {
                 blendMode : BlendAlpha as i32,
@@ -123,10 +125,12 @@ impl<'s> RenderStates<'s> {
     * Internal rsfml use only
     */
     pub fn unwrap(&mut self) -> *ffi::sfRenderStates {
+        // let tmp_tex = self.texture.get_ref().clone();
+        // let tmp_shad = self.shader.get_ref().clone();
         self.sfRenderStates.blendMode = self.blendMode as i32;
         self.sfRenderStates.transform = self.transform;
-        self.sfRenderStates.texture = if !self.texture.is_none() { self.texture.unwrap().unwrap() } else { ptr::null() };
-        self.sfRenderStates.shader = if !self.shader.is_none() { self.shader.unwrap().unwrap() } else { ptr::null() };
+        self.sfRenderStates.texture = if !self.texture.is_none() { self.texture.get_ref().borrow().with(|t| t.unwrap()) } else { ptr::null() };
+        self.sfRenderStates.shader = if !self.shader.is_none() { self.shader.get_ref().borrow().with(|t| t.unwrap()) } else { ptr::null() };
         
         ptr::to_unsafe_ptr(&self.sfRenderStates)
     }

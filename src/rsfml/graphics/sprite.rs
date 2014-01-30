@@ -29,6 +29,8 @@
 *
 */
 
+use std::rc::Rc;
+use std::cell::RefCell;
 use std::libc::{c_float};
 use std::ptr;
 
@@ -91,20 +93,20 @@ pub mod ffi {
     }
 }
 
-pub struct Sprite<'s> {
+pub struct Sprite {
     #[doc(hidden)]
     priv sprite :   *ffi::sfSprite,
     #[doc(hidden)]
-    priv texture :  Option<&'s Texture>
+    priv texture :  Option<Rc<RefCell<Texture>>>
 }
 
-impl<'s> Sprite<'s> {
+impl Sprite {
     /**
     * Create a new sprite
     *
     * Return a new sfSprite object
     */
-    pub fn new() -> Option<Sprite<'s>> {
+    pub fn new() -> Option<Sprite> {
         let sp = unsafe { ffi::sfSprite_create() };
         if ptr::is_null(sp) {
             None
@@ -123,14 +125,14 @@ impl<'s> Sprite<'s> {
     *
     * Return a new sfSprite object
     */
-    pub fn new_with_texture(texture : &'s Texture) -> Option<Sprite<'s>> {
+    pub fn new_with_texture(texture : Rc<RefCell<Texture>>) -> Option<Sprite> {
         let sp = unsafe { ffi::sfSprite_create() };
         if ptr::is_null(sp) {
             None
         }
         else {
             unsafe {
-                ffi::sfSprite_setTexture(sp, texture.unwrap(), SFTRUE);
+                ffi::sfSprite_setTexture(sp, texture.borrow().with(|t| t.unwrap()), SFTRUE);
             }
             Some(Sprite {
                 sprite :    sp,
@@ -145,7 +147,7 @@ impl<'s> Sprite<'s> {
     *
     * Return An option to the cloned sprite or none.
     */
-    pub fn clone(&self) -> Option<Sprite<'s>> {
+    pub fn clone(&self) -> Option<Sprite> {
         let sp = unsafe { ffi::sfSprite_copy(self.sprite) };
         if ptr::is_null(sp) {
             None
@@ -153,7 +155,7 @@ impl<'s> Sprite<'s> {
         else {
             Some(Sprite {
                 sprite :    sp,
-                texture :   self.texture
+                texture :   self.texture.clone()
             })
         }
     }
@@ -219,14 +221,14 @@ impl<'s> Sprite<'s> {
     * * texture - New texture
     * * reset_rect - Should the texture rect be reset to the size of the new texture?
     */
-    pub fn set_texture(&mut self, texture : &'s Texture, reset_rect : bool) -> (){
-        self.texture = Some(texture);
+    pub fn set_texture(&mut self, texture : Rc<RefCell<Texture>>, reset_rect : bool) -> (){
         unsafe {
             match reset_rect {
-                true        => ffi::sfSprite_setTexture(self.sprite, texture.unwrap(), SFTRUE),
-                false       => ffi::sfSprite_setTexture(self.sprite, texture.unwrap(), SFFALSE)
+                true        => ffi::sfSprite_setTexture(self.sprite, texture.borrow().with(|t| t.unwrap()), SFTRUE),
+                false       => ffi::sfSprite_setTexture(self.sprite, texture.borrow().with(|t| t.unwrap()), SFFALSE)
             }
         }
+        self.texture = Some(texture);
     }
 
     /**
@@ -267,14 +269,8 @@ impl<'s> Sprite<'s> {
     *
     * Return an Option to the sprite's texture
     */
-    pub fn get_texture(&self) -> Option<&'s Texture> {
-        //let tex = unsafe { ffi::sfSprite_getTexture(self.sprite) };
-        if self.texture.is_none() {
-            None
-        }
-        else {
-            self.texture
-        }   
+    pub fn get_texture(&self) -> Option<Rc<RefCell<Texture>>> {
+        self.texture.clone()
     }
 
     /**
@@ -573,7 +569,7 @@ impl<'s> Sprite<'s> {
 
 }
 
-impl<'s> Wrappable<*ffi::sfSprite> for Sprite<'s> {
+impl Wrappable<*ffi::sfSprite> for Sprite {
     fn wrap(sprite : *ffi::sfSprite) -> Sprite {
         Sprite { 
             sprite :    sprite,
@@ -587,7 +583,7 @@ impl<'s> Wrappable<*ffi::sfSprite> for Sprite<'s> {
     
 }
 
-impl<'s> Drawable for Sprite<'s> {
+impl Drawable for Sprite {
     /**
     * Draw the sprite in the RenderWindow
     */
@@ -611,7 +607,7 @@ impl<'s> Drawable for Sprite<'s> {
 
 
 #[unsafe_destructor]
-impl<'s> Drop for Sprite<'s> {
+impl Drop for Sprite {
     /**
     * Destroy an existing sprite
     */

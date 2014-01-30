@@ -28,6 +28,8 @@
 *
 */
 
+use std::rc::Rc;
+use std::cell::RefCell;
 use std::libc::{c_void, c_float, c_uint};
 use std::{ptr, cast};
 
@@ -102,13 +104,13 @@ pub struct WrapObj {
     shape_impl : ~ShapeImpl
 }
 
-pub struct Shape<'s> {
+pub struct Shape {
     #[doc(hidden)]
     priv shape :    *ffi::sfShape,
     #[doc(hidden)]
     // priv wrap_obj : ~WrapObj,
     #[doc(hidden)]
-    priv texture :  Option<&'s Texture>
+    priv texture :  Option<Rc<RefCell<Texture>>>
 }
 
 #[doc(hidden)]
@@ -128,7 +130,7 @@ extern fn get_point_callback(point : u32, obj : *c_void) -> Vector2f {
 }
 
 
-impl<'s> Shape<'s> {
+impl Shape {
 
     /**
     * Create a new Shape
@@ -138,7 +140,7 @@ impl<'s> Shape<'s> {
     *
     * Return a new Option to Shape
     */
-    pub fn new(shape_impl : ~ShapeImpl) -> Option<Shape<'s>> {
+    pub fn new(shape_impl : ~ShapeImpl) -> Option<Shape> {
         let w_o = ~WrapObj { shape_impl : shape_impl};
       
         let sp = unsafe { ffi::sfShape_create(get_point_count_callback, get_point_callback, cast::transmute::<~~WrapObj, *c_void>(~w_o)) };
@@ -163,7 +165,7 @@ impl<'s> Shape<'s> {
     *
     * Return a new Option to Shape
     */
-    pub fn new_with_texture(shape_impl : ~ShapeImpl, texture : &'s Texture) -> Option<Shape<'s>> {
+    pub fn new_with_texture(shape_impl : ~ShapeImpl, texture : Rc<RefCell<Texture>>) -> Option<Shape> {
         let w_o = ~WrapObj { shape_impl : shape_impl };
       
         let sp = unsafe { ffi::sfShape_create(get_point_count_callback, get_point_callback, cast::transmute::<~~WrapObj, *c_void>(~w_o)) };
@@ -172,7 +174,7 @@ impl<'s> Shape<'s> {
         }
         else {
             unsafe {
-                ffi::sfShape_setTexture(sp, texture.unwrap(), SFTRUE);
+                ffi::sfShape_setTexture(sp, texture.borrow().with(|t| t.unwrap()), SFTRUE);
             }
             Some(Shape {
                 shape :     sp,
@@ -463,14 +465,14 @@ impl<'s> Shape<'s> {
     * * texture - The new texture
     * * reset_rect - Should the texture rect be reset to the size of the new texture?
     */
-    pub fn set_texture(&mut self, texture : &'s Texture, reset_rect : bool) -> () {
-        self.texture = Some(texture);
+    pub fn set_texture(&mut self, texture : Rc<RefCell<Texture>>, reset_rect : bool) -> () {
         unsafe {
             match reset_rect {
-                true        => ffi::sfShape_setTexture(self.shape, texture.unwrap(), SFTRUE),
-                false       => ffi::sfShape_setTexture(self.shape, texture.unwrap(), SFFALSE),
-            }
+                true        => ffi::sfShape_setTexture(self.shape, texture.borrow().with(|t| t.unwrap()), SFTRUE),
+                false       => ffi::sfShape_setTexture(self.shape, texture.borrow().with(|t| t.unwrap()), SFFALSE),
+            };
         }
+        self.texture = Some(texture);
     }
 
     /**
@@ -560,8 +562,8 @@ impl<'s> Shape<'s> {
     *
     * Return the pointer to the Shape's texture
     */
-    pub fn get_texture(&self) -> Option<&'s Texture> {
-        self.texture
+    pub fn get_texture(&self) -> Option<Rc<RefCell<Texture>>> {
+        self.texture.clone()
     }
 
     /**
@@ -689,7 +691,7 @@ impl<'s> Shape<'s> {
     }
 }
 
-impl<'s> Drawable for Shape<'s> {
+impl Drawable for Shape {
     fn draw_in_render_window(&self, render_window : &RenderWindow) -> () {
         render_window.draw_shape(self)
     }
@@ -708,7 +710,7 @@ impl<'s> Drawable for Shape<'s> {
 }
 
 #[unsafe_destructor]
-impl<'s> Drop for Shape<'s> {
+impl Drop for Shape {
     fn drop(&mut self) -> () {
         unsafe {
             ffi::sfShape_destroy(self.shape)

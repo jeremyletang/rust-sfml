@@ -31,6 +31,8 @@
 
 use std::libc::c_float;
 use std::{ptr, cast};
+use std::rc::Rc;
+use std::cell::RefCell;
 
 use traits::wrappable::Wrappable;
 use system::time;
@@ -82,21 +84,21 @@ pub mod ffi {
     }
 }
 
-pub struct Sound<'s> {
+pub struct Sound {
     #[doc(hidden)]
     priv sound :    *ffi::sfSound,
     #[doc(hidden)]
-    priv buffer :   Option<&'s SoundBuffer>
+    priv buffer :   Option<Rc<RefCell<SoundBuffer>>>
 }
 
-impl<'s> Sound<'s> {
+impl Sound {
     
     /**
     * Create a new Sound
     *
     * Return a new option to Sound object or None
     */
-    pub fn new() -> Option<Sound<'s>> {
+    pub fn new() -> Option<Sound> {
         let s = unsafe {ffi::sfSound_create()};
         if s == ptr::null() {
             None
@@ -114,14 +116,14 @@ impl<'s> Sound<'s> {
     *
     * Return a new option to Sound object or None
     */
-    pub fn new_with_buffer(buffer : &'s SoundBuffer) -> Option<Sound<'s>> {
+    pub fn new_with_buffer(buffer : Rc<RefCell<SoundBuffer>>) -> Option<Sound> {
         let s = unsafe {ffi::sfSound_create()};
         if s == ptr::null() {
             None
         }
         else {
             unsafe {
-                ffi::sfSound_setBuffer(s, buffer.unwrap());
+                ffi::sfSound_setBuffer(s, buffer.borrow().with(|s| s.unwrap()));
             }
             Some(Sound { 
                 sound :     s,
@@ -135,7 +137,7 @@ impl<'s> Sound<'s> {
     *
     * Return a new option to Sound object which is a copy of sound or none
     */
-    pub fn clone(&self) -> Option<Sound<'s>> {
+    pub fn clone(&self) -> Option<Sound> {
         let s = unsafe {ffi::sfSound_copy(self.sound)};
         if s == ptr::null() {
             None
@@ -400,11 +402,11 @@ impl<'s> Sound<'s> {
     * # Arguments
     * * buffer - Sound buffer to attach to the sound
     */
-    pub fn set_buffer(&mut self, buffer : &'s SoundBuffer) -> () {
-        self.buffer = Some(buffer);
+    pub fn set_buffer(&mut self, buffer : Rc<RefCell<SoundBuffer>>) -> () {
         unsafe {
-            ffi::sfSound_setBuffer(self.sound, buffer.unwrap())
+            ffi::sfSound_setBuffer(self.sound, buffer.borrow().with(|s| s.unwrap()));
         }
+        self.buffer = Some(buffer);
     }
 
     /**
@@ -412,8 +414,8 @@ impl<'s> Sound<'s> {
     *
     * Return an option to Sound buffer attached to the sound or None
     */
-    pub fn get_buffer(&self) -> Option<&'s SoundBuffer> {
-        self.buffer
+    pub fn get_buffer(&self) -> Option<Rc<RefCell<SoundBuffer>>> {
+        self.buffer.clone()
     }
 
     /**
@@ -471,7 +473,7 @@ impl<'s> Sound<'s> {
 }
 
 #[unsafe_destructor]
-impl<'s> Drop for Sound<'s> {
+impl Drop for Sound {
     /* Destructor for class Sound. Destroy all the ressource.
     *
     */

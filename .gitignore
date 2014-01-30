@@ -1,3 +1,10 @@
 /lib/
 /build/
 /doc/
+.rust/rustpkg_db.json
+
+bin/pong
+
+src/rsfml/librsfml-fe88034a-0.2.dylib
+
+bin/sound
