@@ -42,6 +42,7 @@ use graphics::color::Color;
 use graphics::rect::IntRect;
 use graphics::texture::Texture;
 use graphics::text::Text;
+use graphics::circle_shape::RcCircleShape;
 use graphics::circle_shape::CircleShape;
 use graphics::rectangle_shape::RectangleShape;
 use graphics::vertex_array::VertexArray;
@@ -397,7 +398,14 @@ impl RenderTexture {
     }
 
     /// Draw CircleShape
-    pub fn draw_circle_shape(&self, circle_shape : &CircleShape) -> () {
+    pub fn draw_circle_shape_borrow(&self, circle_shape : &CircleShape) -> () {
+        unsafe {
+            ffi::sfRenderTexture_drawCircleShape(self.render_texture, circle_shape.unwrap(), ptr::null())
+        }
+    }
+
+    /// Draw CircleShape
+    pub fn draw_circle_shape_rc(&self, circle_shape : &RcCircleShape) -> () {
         unsafe {
             ffi::sfRenderTexture_drawCircleShape(self.render_texture, circle_shape.unwrap(), ptr::null())
         }
@@ -446,7 +454,14 @@ impl RenderTexture {
     }
 
     /// Draw CircleShape
-    pub fn draw_circle_shape_rs(&self, circle_shape : &CircleShape, rs : &mut RenderStates) -> () {
+    pub fn draw_circle_shape_rs_borrow(&self, circle_shape : &CircleShape, rs : &mut RenderStates) -> () {
+        unsafe {
+            ffi::sfRenderTexture_drawCircleShape(self.render_texture, circle_shape.unwrap(), rs.unwrap())
+        }
+    }
+
+    /// Draw CircleShape
+    pub fn draw_circle_shape_rs_rc(&self, circle_shape : &RcCircleShape, rs : &mut RenderStates) -> () {
         unsafe {
             ffi::sfRenderTexture_drawCircleShape(self.render_texture, circle_shape.unwrap(), rs.unwrap())
         }
