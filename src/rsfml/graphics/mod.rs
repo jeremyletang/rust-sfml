@@ -42,7 +42,6 @@ pub use self::font::Font;
 pub use self::view::View;
 pub use self::image::Image;
 pub use self::sprite::Sprite;
-pub use self::circle_shape::CircleShape;
 pub use self::rectangle_shape::RectangleShape;
 pub use self::convex_shape::ConvexShape;
 pub use self::primitive_type::{PrimitiveType, Points, Lines, LinesStrip, Triangles, TrianglesStrip, TrianglesFan, Quads};
@@ -52,6 +51,14 @@ pub use self::glyph::Glyph;
 pub use self::render_texture::RenderTexture;
 pub use self::shape::Shape;
 pub use self::vertex_array::VertexArray;
+
+pub mod rc {
+	pub use graphics::circle_shape::rc::CircleShape;
+}
+
+pub mod borrow {
+	pub use graphics::circle_shape::borrow::CircleShape;
+}
 
 #[doc(hidden)]
 #[cfg(target_os="macos")]

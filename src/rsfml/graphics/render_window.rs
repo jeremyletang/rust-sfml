@@ -45,7 +45,8 @@ use system::vector2::{Vector2f, Vector2i, Vector2u};
 use graphics::text::Text;
 use graphics::color::Color;
 use graphics::sprite::Sprite;
-use graphics::circle_shape::CircleShape;
+use graphics::rc;
+use graphics::borrow;
 use graphics::rectangle_shape::RectangleShape;
 use graphics::convex_shape::ConvexShape;
 use graphics::render_states::RenderStates;
@@ -878,7 +879,14 @@ impl RenderWindow {
     }
 
     /// Draw a CircleShape
-    pub fn draw_circle_shape(&self, circle_shape : &CircleShape) -> () {
+    pub fn draw_circle_shape_rc(&self, circle_shape : &rc::CircleShape) -> () {
+        unsafe {
+            ffi::sfRenderWindow_drawCircleShape(self.render_window, circle_shape.unwrap(), ptr::null())
+        }
+    }
+
+    /// Draw a CircleShape
+    pub fn draw_circle_shape_borrow(&self, circle_shape : &borrow::CircleShape) -> () {
         unsafe {
             ffi::sfRenderWindow_drawCircleShape(self.render_window, circle_shape.unwrap(), ptr::null())
         }
@@ -927,7 +935,14 @@ impl RenderWindow {
     }
 
     /// Draw a CircleShape with a RenderStates
-    pub fn draw_circle_shape_rs(&self, circle_shape : &CircleShape, render_states : &mut RenderStates) -> () {
+    pub fn draw_circle_shape_rs_rc(&self, circle_shape : &rc::CircleShape, render_states : &mut RenderStates) -> () {
+        unsafe {
+            ffi::sfRenderWindow_drawCircleShape(self.render_window, circle_shape.unwrap(), render_states.unwrap())
+        }
+    }
+
+    /// Draw a CircleShape with a RenderStates
+    pub fn draw_circle_shape_rs_borrow(&self, circle_shape : &borrow::CircleShape, render_states : &mut RenderStates) -> () {
         unsafe {
             ffi::sfRenderWindow_drawCircleShape(self.render_window, circle_shape.unwrap(), render_states.unwrap())
         }
