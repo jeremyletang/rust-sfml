@@ -145,7 +145,7 @@ impl SoundBufferRecorder {
         }
     }
 
-    /*
+    /**
     * Check if the system supports audio capture
     *
     * This function should always be called before using
