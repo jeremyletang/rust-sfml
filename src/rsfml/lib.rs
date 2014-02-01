@@ -41,19 +41,23 @@ CSFML2 : http://www.sfml-dev.org/download/csfml/
 
 Then clone the repo and build the library with the following command.
 
-__rust-sfml__ is build with the rustpkg tool :
+__Rust-sfml__ is now build with make :
 
 ```Shell
-> rustpkg build rsfml
+> make
 ```
 
-Examples are build too with rustpkg :
+This command build rust-sfml, the examples, and the documentation.
+
+You can build them separatly too.
 
 ```Shell
-> rustpkg build examples/pong
+> make lib
+> make examples
+> make doc
 ```
 
-__rust-sfml__ works on Linux, windows and OSX.
+__Rust-sfml__ works on Linux, windows and OSX.
 
 # OSX Specific
 
