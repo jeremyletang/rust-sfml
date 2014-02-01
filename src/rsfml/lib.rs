@@ -139,7 +139,8 @@ Here is a list of all modules :
 #[desc = "Rust binding for sfml"];
 #[license = "Zlib/png"];
 #[doc(html_logo_url = "http://rust-sfml.org/logo_rsfml.png")];
-#[crate_type = "lib"];
+#[crate_type = "rlib"];
+#[crate_type = "dylib"];
 #[allow(dead_code)];
 //#[warn(missing_doc)];
 

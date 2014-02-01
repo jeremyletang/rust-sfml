@@ -1,10 +1,10 @@
-/**
+/*!
 * Example from SFML : Pong
 */
 
-#[crate_id = "pong"]
-#[desc = "Pong example for rsfml"]
-#[crate_type = "bin"]
+#[crate_id = "pong"];
+#[desc = "Pong example for rsfml"];
+#[crate_type = "bin"];
 
 extern mod native;
 extern mod rsfml;
