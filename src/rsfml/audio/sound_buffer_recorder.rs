@@ -34,12 +34,14 @@ use std::ptr;
 
 use traits::wrappable::Wrappable;
 use super::sound_buffer::SoundBuffer;
+use sfml_types::{SFTRUE, SFFALSE};
 
 #[doc(hidden)]
 pub mod ffi {
 
     use std::libc::{c_uint, c_void};
     use audio::sound_buffer;
+    use sfml_types::SfBool;
     
     pub struct sfSoundBufferRecorder {
         This : *c_void
@@ -52,6 +54,7 @@ pub mod ffi {
         pub fn sfSoundBufferRecorder_stop(soundBufferRecorder : *sfSoundBufferRecorder) -> ();
         pub fn sfSoundBufferRecorder_getSampleRate(soundBufferRecorder : *sfSoundBufferRecorder) -> c_uint;
         pub fn sfSoundBufferRecorder_getBuffer(soundBufferRecorder : *sfSoundBufferRecorder) -> *sound_buffer::ffi::sfSoundBuffer;
+        pub fn sfSoundRecorder_isAvailable() -> SfBool;
     }
 }
 
@@ -139,6 +142,23 @@ impl SoundBufferRecorder {
         }
         else {
             Some(Wrappable::wrap(buff))
+        }
+    }
+
+    /*
+    * Check if the system supports audio capture
+    *
+    * This function should always be called before using
+    * the audio capture features. If it returns false, then
+    * any attempt to use sfSoundRecorder will fail.
+    *
+    * Return true if audio capture is supported, false otherwise
+    */
+    pub fn is_available() -> bool {
+        match unsafe { ffi::sfSoundRecorder_isAvailable() } {
+            SFFALSE => false,
+            SFTRUE  => true,
+            _       => unreachable!()
         }
     }
 
