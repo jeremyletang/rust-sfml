@@ -25,8 +25,8 @@
 /*!
 * Drawable representation of a texture
 *
-* Sprite is a drawable class that allows to easily display a texture (or a part of it) on a render target.
-*
+* Sprite is a drawable class that allows to easily 
+* display a texture (or a part of it) on a render target.
 */
 
 use std::rc::Rc;
@@ -34,65 +34,20 @@ use std::cell::RefCell;
 use std::libc::{c_float};
 use std::ptr;
 
-use traits::drawable::Drawable;
-use traits::wrappable::Wrappable;
-use graphics::color::Color;
-use graphics::texture::Texture;
-use graphics::render_window::RenderWindow;
-use graphics::render_texture::RenderTexture;
+use traits::{Drawable, Wrappable};
+use graphics::{FloatRect, IntRect, Color, Texture, 
+    RenderWindow, RenderTexture, Transform, RenderStates};
 use system::vector2::Vector2f;
-use graphics::rect::{FloatRect, IntRect};
-use graphics::transform::Transform;
-use graphics::render_states::RenderStates;
-use sfml_types::{SFTRUE, SFFALSE};
 
-#[doc(hidden)]
-pub mod ffi {
+use ffi::sfml_types::{SFTRUE, SFFALSE};
+use ffi = ffi::graphics::sprite;
 
-    use std::libc::{c_void, c_float};
-
-    use sfml_types::{SfBool};
-    use graphics::color::Color;
-    use graphics::texture;
-    use system::vector2::Vector2f;
-    use graphics::rect::{IntRect, FloatRect};
-    use graphics::transform::Transform;
-
-    pub struct sfSprite {
-        This :              *c_void,
-        Texture :           *texture::ffi::sfTexture,
-        Transform :         Transform,
-        InverseTransform :  Transform
-    }
-
-    extern "C" {
-        pub fn sfSprite_create() -> *sfSprite;
-        pub fn sfSprite_copy(sprite : *sfSprite) -> *sfSprite;
-        pub fn sfSprite_destroy(sprite : *sfSprite) -> ();
-        pub fn sfSprite_setPosition(sprite : *sfSprite, position : Vector2f) -> ();
-        pub fn sfSprite_setRotation(sprite : *sfSprite, angle : c_float) -> ();
-        pub fn sfSprite_setScale(sprite : *sfSprite, scale : Vector2f) -> ();
-        pub fn sfSprite_setOrigin(sprite : *sfSprite, origin : Vector2f) -> ();
-        pub fn sfSprite_getPosition(sprite : *sfSprite) -> Vector2f;
-        pub fn sfSprite_getRotation(sprite : *sfSprite) -> c_float;
-        pub fn sfSprite_getScale(sprite : *sfSprite) -> Vector2f;
-        pub fn sfSprite_getOrigin(sprite : *sfSprite) -> Vector2f;
-        pub fn sfSprite_move(sprite : *sfSprite, offset : Vector2f) -> ();
-        pub fn sfSprite_rotate(sprite : *sfSprite, angle : c_float) -> ();
-        pub fn sfSprite_scale(sprite : *sfSprite, factors : Vector2f) -> ();
-        pub fn sfSprite_getTransform(sprite : *sfSprite) -> Transform;
-        pub fn sfSprite_getInverseTransform(sprite : *sfSprite) -> Transform;
-        pub fn sfSprite_setTexture(sprite : *sfSprite, texture : *texture::ffi::sfTexture, reset_rect : SfBool) -> ();
-        pub fn sfSprite_setTextureRect(sprite : *sfSprite, rectangle : IntRect) -> ();
-        pub fn sfSprite_setColor(sprite : *sfSprite, color : Color) -> ();
-        pub fn sfSprite_getTexture(sprite : *sfSprite) -> *texture::ffi::sfTexture;
-        pub fn sfSprite_getTextureRect(sprite : *sfSprite) -> IntRect;
-        pub fn sfSprite_getColor(sprite : *sfSprite) -> Color;
-        pub fn sfSprite_getLocalBounds(sprite : *sfSprite) -> FloatRect;
-        pub fn sfSprite_getGlobalBounds(sprite : *sfSprite) -> FloatRect;
-    }
-}
-
+/**
+* Drawable representation of a texture
+*
+* Sprite is a drawable class that allows to easily 
+* display a texture (or a part of it) on a render target.
+*/
 pub struct Sprite {
     #[doc(hidden)]
     priv sprite :   *ffi::sfSprite,
@@ -104,7 +59,7 @@ impl Sprite {
     /**
     * Create a new sprite
     *
-    * Return a new sfSprite object
+    * Return Some(Sprite) or None
     */
     pub fn new() -> Option<Sprite> {
         let sp = unsafe { ffi::sfSprite_create() };
@@ -123,7 +78,7 @@ impl Sprite {
     /**
     * Create a new sprite with a texture
     *
-    * Return a new sfSprite object
+    * Return Some(Sprite) or None
     */
     pub fn new_with_texture(texture : Rc<RefCell<Texture>>) -> Option<Sprite> {
         let sp = unsafe { ffi::sfSprite_create() };
@@ -145,7 +100,7 @@ impl Sprite {
     /**
     * Copy an existing sprite
     *
-    * Return An option to the cloned sprite or none.
+    * Return Some(Sprite) or None
     */
     pub fn clone(&self) -> Option<Sprite> {
         let sp = unsafe { ffi::sfSprite_copy(self.sprite) };

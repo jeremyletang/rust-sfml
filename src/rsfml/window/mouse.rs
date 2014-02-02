@@ -30,7 +30,9 @@
 */
 
 use std::libc::c_uint;
-use sfml_types::{SFTRUE, SFFALSE};
+
+use ffi::sfml_types::{SFTRUE, SFFALSE};
+use ffi = ffi::window::mouse;
 
 /// Mouse buttons
 #[deriving(Clone, Eq, Ord)]
@@ -45,18 +47,6 @@ pub enum MouseButton {
     MouseXButton1,
     /// The second extra mouse button.
     MouseXButton2
-}
-
-#[doc(hidden)]
-pub mod ffi {
-    
-    use std::libc::c_uint;
-    use sfml_types::SfBool;
-
-    extern "C" {
-        pub fn sfMouse_isButtonPressed(button : c_uint) -> SfBool;
-        
-    }
 }
 
 /**

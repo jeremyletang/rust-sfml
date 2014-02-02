@@ -31,34 +31,17 @@
 
 use std::ptr;
 
-use traits::wrappable::Wrappable;
-use system::time;
-use sfml_types::{SFTRUE, SFFALSE};
+use traits::Wrappable;
+use system::Time;
 
-#[doc(hidden)]
-pub mod ffi {
-    
-    use std::libc::{size_t, c_void, c_uint, c_char};
-    use system::time;
-    use sfml_types::SfBool;
+use ffi::sfml_types::{SFTRUE, SFFALSE};
+use ffi = ffi::audio::sound_buffer;
 
-    pub struct sfSoundBuffer {
-        This : *c_void
-    }
-
-    extern "C" {
-        pub fn sfSoundBuffer_createFromFile(filename : *c_char) -> *sfSoundBuffer;
-        pub fn sfSoundBuffer_copy(soundBuffer : *sfSoundBuffer) -> *sfSoundBuffer;
-        pub fn sfSoundBuffer_destroy(soundBuffer : *sfSoundBuffer) -> ();
-        pub fn sfSoundBuffer_saveToFile(soundBuffer : *sfSoundBuffer, filename : *c_char) -> SfBool;
-       // fn sfSoundBuffer_getSamples(soundBuffer : *sfSoundBuffer) -> *i16;
-        pub fn sfSoundBuffer_getSampleCount(soundBuffer : *sfSoundBuffer) -> size_t;
-        pub fn sfSoundBuffer_getChannelCount(soundBuffer : *sfSoundBuffer) -> c_uint;
-        pub fn sfSoundBuffer_getDuration(soundBuffer : *sfSoundBuffer) -> time::ffi::sfTime;
-        pub fn sfSoundBuffer_getSampleRate(soundBuffer : *sfSoundBuffer) -> c_uint;
-    }
-}
-
+/**
+* Storage of audio sample
+*
+* A sound buffer holds the data of a sound, which is an array of audio samples.
+*/
 pub struct SoundBuffer {
     #[doc(hidden)]
     priv sound_buffer : *ffi::sfSoundBuffer,
@@ -167,7 +150,7 @@ impl SoundBuffer {
         }
     }
 
-    /*
+    /**
     * Get the number of channels used by a sound buffer
     *
     * If the sound is mono then the number of channels will
@@ -186,7 +169,7 @@ impl SoundBuffer {
     *
     * Return the sound duration
     */
-    pub fn get_duration(&self) -> time::Time {
+    pub fn get_duration(&self) -> Time {
         Wrappable::wrap(unsafe { ffi::sfSoundBuffer_getDuration(self.sound_buffer) })
     }
 

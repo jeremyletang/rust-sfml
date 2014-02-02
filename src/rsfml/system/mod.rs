@@ -29,11 +29,11 @@
 *
 */
 
-pub use self::vector2::{Vector2u, Vector2i, Vector2f, ToVec};
-pub use self::vector3::Vector3f;
-pub use self::sleep::sleep;
-pub use self::time::Time;
-pub use self::clock::Clock;
+pub use system::vector2::{Vector2u, Vector2i, Vector2f, ToVec};
+pub use system::vector3::Vector3f;
+pub use system::msleep::sleep;
+pub use system::time::Time;
+pub use system::clock::Clock;
 
 #[doc(hidden)]
 #[cfg(target_os="macos")]
@@ -46,6 +46,7 @@ mod platform {
 
 pub mod vector2;
 pub mod vector3;
-pub mod time;
-pub mod clock;
-pub mod sleep;
+mod time;
+mod clock;
+#[path = "sleep.rs"]
+mod msleep;

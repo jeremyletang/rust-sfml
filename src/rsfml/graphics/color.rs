@@ -26,22 +26,15 @@
 * Utility class for manpulating RGBA colors
 *
 * Color is a simple color class composed of 4 components: Red, Green, Blue, Alpha
-*
 */
 
-#[doc(hidden)]
-pub mod ffi {
-    
-    use graphics::color::Color;
-    
-    extern "C" {
-        pub fn sfColor_fromRGB(red : u8, green : u8, blue : u8) -> Color;
-        pub fn sfColor_fromRGBA(red : u8, green : u8, blue : u8, alpha : u8) -> Color;
-        pub fn sfColor_add(color1 : Color, color2 : Color) -> Color;
-        pub fn sfColor_modulate(color1 : Color, color2 : Color) -> Color;
-    }
-}
+use ffi = ffi::graphics::color;
 
+/**
+* Utility class for manpulating RGBA colors
+*
+* Color is a simple color class composed of 4 components: Red, Green, Blue, Alpha
+*/
 #[deriving(Clone, Ord)]
 pub struct Color {
     /// The red composant of the color
@@ -75,7 +68,7 @@ impl Color {
         }
     }
 
-     /**
+    /**
     * Construct a color from its 4 RGBA components
     * 
     * # Arguments
@@ -138,7 +131,6 @@ impl Color {
     
     /// Green predefined color
     pub fn green() -> Color {
-        //Color { color : ffi::sfColor {red : 0, green : 255, blue : 0, alpha : 255}}
         Color::new_RGB(0, 255, 0)
     }
    

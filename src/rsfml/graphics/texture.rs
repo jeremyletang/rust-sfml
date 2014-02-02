@@ -26,59 +26,24 @@
 * Image used for drawing
 *
 * Texture stores pixels that can be drawn, with a sprite for example.
-*
 */
 
 use std::libc::c_uint;
 use std::ptr;
 
-use traits::wrappable::Wrappable;
+use traits::Wrappable;
+use graphics::{RenderWindow, Image, IntRect};
 use system::vector2::Vector2u;
-use window::window::Window;
-use graphics::render_window::RenderWindow;
-use graphics::image::Image;
-use graphics::rect::IntRect;
-use sfml_types::{SFTRUE, SFFALSE};
+use window::Window;
 
-#[doc(hidden)]
-pub mod ffi {
-    
-    use std::libc::{c_uint, c_void, c_char};
+use ffi::sfml_types::{SFTRUE, SFFALSE};
+use ffi = ffi::graphics::texture;
 
-    use sfml_types::{SfBool};
-    use system::vector2::Vector2u;
-    use window::window::ffi::sfWindow;
-    use graphics::render_window::ffi::sfRenderWindow;
-    use graphics::rect::IntRect;
-    use graphics::image;
-
-    pub struct sfTexture {
-        this : *c_void
-    }
-
-    extern "C" {
-        pub fn sfTexture_create(width : c_uint, height : c_uint) -> *sfTexture;
-        pub fn sfTexture_createFromFile(filename : *c_char, area : *IntRect) -> *sfTexture;
-        //fn sfTexture_createFromMemory(data : *c_void, sizeInBytes : size_t , area : *sfIntRect) -> *sfTexture;
-        //fn sfTexture_createFromStream(strea; : *sfInputStream, area : *sfIntRect) -> *sfTexture;
-        pub fn sfTexture_createFromImage(image :*image::ffi::sfImage, area : *IntRect) -> *sfTexture;
-        pub fn sfTexture_copy(texture : *sfTexture) -> *sfTexture;
-        pub fn sfTexture_destroy(texture : *sfTexture) -> ();
-        pub fn sfTexture_getSize(texture : *sfTexture) -> Vector2u;
-        pub fn sfTexture_copyToImage(texture : *sfTexture) -> *image::ffi::sfImage;
-        pub fn sfTexture_updateFromPixels(texture : *sfTexture, pixels : *u8, width : c_uint, height : c_uint, x : c_uint, y : c_uint) -> ();
-        pub fn sfTexture_updateFromImage(texture : *sfTexture, image : *image::ffi::sfImage, x : c_uint, y : c_uint) -> ();
-        pub fn sfTexture_updateFromWindow(texture : *sfTexture, window : *sfWindow, x : c_uint, y : c_uint) -> ();
-        pub fn sfTexture_updateFromRenderWindow(texture : *sfTexture, renderWindow : *sfRenderWindow, x : c_uint, y : c_uint) -> ();
-        pub fn sfTexture_setSmooth(texture : *sfTexture, smooth : SfBool) -> ();
-        pub fn sfTexture_isSmooth(texture : *sfTexture) -> SfBool;
-        pub fn sfTexture_setRepeated(texture : *sfTexture, repeated : SfBool);
-        pub fn sfTexture_isRepeated(texture : *sfTexture) -> SfBool;
-        pub fn sfTexture_bind(texture : *sfTexture) -> ();
-        pub fn sfTexture_getMaximumSize() -> c_uint;
-    }
-}
-
+/**
+* Image used for drawing
+*
+* Texture stores pixels that can be drawn, with a sprite for example.
+*/
 pub struct Texture {
     #[doc(hidden)]
     priv texture :  *ffi::sfTexture,
@@ -94,7 +59,7 @@ impl Texture {
     * * width - Texture width
     * * height - Texture height
     *
-    * Return a new Option to Texture object or None
+    * Return Some(Texture) or None
     */
     pub fn new(width: uint, height : uint) -> Option<Texture> {
         let tex = unsafe { ffi::sfTexture_create(width as c_uint, height as c_uint) };
@@ -115,7 +80,7 @@ impl Texture {
     * # Arguments
     * * filename - Path of the image file to load
     *
-    * Return a new Option to Texture object or None
+    * Return Some(Texture) or None
     */
     pub fn new_from_file(filename : &str) -> Option<Texture> {
         let mut tex = ptr::null();
@@ -142,7 +107,7 @@ impl Texture {
     * * filename - Path of the image file to load
     * * area - Area of the source image to load
     *
-    * Return a new Option to Texture object or None
+    * Return Some(Texture) or None
     */
     pub fn new_from_file_with_rect(filename : &str, area : &IntRect) -> Option<Texture> {
         let mut tex = ptr::null();
@@ -168,7 +133,7 @@ impl Texture {
     * # Arguments
     * * texture - Texture to copy
     *
-    * Return an option to the copied texture or None
+    * Return Some(Texture) or None
     */
     pub fn clone(&self) -> Option<Texture> {
         let tex = unsafe { ffi::sfTexture_copy(self.texture) };
@@ -190,7 +155,7 @@ impl Texture {
     * * image - Image to upload to the texture
     * * area - Area of the source image to load
     *
-    * Return a new Option to Texture object or None
+    * Return Some(Texture) or None
     */
     pub fn new_from_image_with_rect(image : &Image, area : &IntRect) -> Option<Texture> {
         let tex = unsafe { ffi::sfTexture_createFromImage(image.unwrap(), &*area) };
@@ -211,7 +176,7 @@ impl Texture {
     * # Arguments
     * * image - Image to upload to the texture
     *
-    * Return a new Option to Texture object or None
+    * Return Some(Texture) or None
     */
     pub fn new_from_image(image : &Image) -> Option<Texture> {
         let tex = unsafe { ffi::sfTexture_createFromImage(image.unwrap(), ptr::null()) };

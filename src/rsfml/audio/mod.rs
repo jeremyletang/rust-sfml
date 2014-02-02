@@ -24,15 +24,13 @@
 
 /*!
 * Sounds, streaming (musics or custom sources), recording, spatialization
-*
-*
 */
 
-pub use self::sound_buffer::SoundBuffer;
-pub use self::sound_status::{Status, Playing, Paused, Stopped};
-pub use self::music::Music;
-pub use self::sound::Sound;
-pub use self::sound_buffer_recorder::SoundBufferRecorder;
+pub use audio::sound_buffer::SoundBuffer;
+pub use audio::sound_status::{Status, Playing, Paused, Stopped};
+pub use audio::music::Music;
+pub use audio::sound::Sound;
+pub use audio::sound_buffer_recorder::SoundBufferRecorder;
 
 #[doc(hidden)]
 #[cfg(target_os="macos")]
@@ -43,9 +41,9 @@ mod platform {
     extern {}
 }
 
-pub mod sound_buffer;
+mod sound_buffer;
 pub mod listener;
-pub mod sound_status;
-pub mod music;
-pub mod sound;
-pub mod sound_buffer_recorder;
+mod sound_status;
+mod music;
+mod sound;
+mod sound_buffer_recorder;

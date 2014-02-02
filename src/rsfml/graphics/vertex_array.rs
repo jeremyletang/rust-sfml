@@ -24,60 +24,18 @@
 
 /*!
 * Define a set of one or more 2D primitives
-*
-*
-*
 */
 
 use std::libc::c_uint;
 use std::ptr;
 
-use traits::drawable::Drawable;
-use traits::wrappable::Wrappable;
-use graphics::vertex::Vertex;
-use graphics::rect::FloatRect;
-use graphics::primitive_type;
-use graphics::primitive_type::PrimitiveType;
-use graphics::render_window::RenderWindow;
-use graphics::render_texture::RenderTexture;
-use graphics::render_states::RenderStates;
+use traits::{Drawable, Wrappable};
+use graphics::{Vertex, FloatRect, primitive_type, 
+    PrimitiveType, RenderWindow, RenderTexture, RenderStates};
 
-#[doc(hidden)]
-pub mod ffi {
-    
-    use std::libc::{c_uint, c_void};
+use ffi = ffi::graphics::vertex_array;
 
-    use graphics::vertex;
-    use graphics::rect::FloatRect;
-    
-    pub type sfPrimitiveType = c_uint;
-    pub static SFPOINTS :           sfPrimitiveType = 0;
-    pub static SFLINES :            sfPrimitiveType = 1;
-    pub static SFLINESSTRIP :       sfPrimitiveType = 2;
-    pub static SFTRIANGLES :        sfPrimitiveType = 3;
-    pub static SFTRIANGLESSTRIP :   sfPrimitiveType = 4;
-    pub static SFTRIANGLESFAN :     sfPrimitiveType = 5;
-    pub static SFQUADS :            sfPrimitiveType = 6;
-
-    pub struct sfVertexArray {
-        This : *c_void
-    }
-
-    extern "C" {
-        pub fn sfVertexArray_create() -> *sfVertexArray;
-        pub fn sfVertexArray_copy(vertexArray : *sfVertexArray) -> *sfVertexArray;
-        pub fn sfVertexArray_destroy(vertexArray : *sfVertexArray) -> ();
-        pub fn sfVertexArray_getVertexCount(vertexArray : *sfVertexArray) -> c_uint;
-        pub fn sfVertexArray_getVertex(vertexArray : *sfVertexArray, index : c_uint) -> *vertex::Vertex;
-        pub fn sfVertexArray_clear(vertexArray : *sfVertexArray) -> ();
-        pub fn sfVertexArray_resize(vertexArray : *sfVertexArray, vertexCount : c_uint) -> ();
-        pub fn sfVertexArray_append(vertexArray : *sfVertexArray, vertex : vertex::Vertex) -> ();
-        pub fn sfVertexArray_setPrimitiveType(vertexArray : *sfVertexArray, stype : sfPrimitiveType) -> ();
-        pub fn sfVertexArray_getPrimitiveType(vertexArray : *sfVertexArray) -> sfPrimitiveType;
-        pub fn sfVertexArray_getBounds(vertexArray : *sfVertexArray) -> FloatRect;
-    }
-}
-
+/// Define a set of one or more 2D primitives
 pub struct VertexArray {
     #[doc(hidden)]
     priv vertex_array : *ffi::sfVertexArray
@@ -87,7 +45,7 @@ impl VertexArray {
     /**
     * Create a new vertex array
     *
-    * Return a new VertexArray object
+    * Return Some(VertexArray) or None
     */
     pub fn new() -> Option<VertexArray> {
         let ver = unsafe { ffi::sfVertexArray_create() };
@@ -107,7 +65,7 @@ impl VertexArray {
     * # Arguments
     * * vertexArray - Vertex array to copy
     *
-    * Return the copied object
+    * Return Some(VertexArray) or None
     */
     pub fn clone(&self) -> Option<VertexArray> {
         let ver = unsafe { ffi::sfVertexArray_copy(self.vertex_array) };
@@ -156,11 +114,11 @@ impl VertexArray {
     * are removed from the array.
     *
     * # Arguments
-    * * vertexCount - New size of the array (number of vertices)
+    * * vertex_count - New size of the array (number of vertices)
     */
-    pub fn resize(&mut self, vertexCount : uint) -> () {
+    pub fn resize(&mut self, vertex_count : uint) -> () {
         unsafe {
-            ffi::sfVertexArray_resize(self.vertex_array, vertexCount as c_uint)
+            ffi::sfVertexArray_resize(self.vertex_array, vertex_count as c_uint)
         }
     }
 

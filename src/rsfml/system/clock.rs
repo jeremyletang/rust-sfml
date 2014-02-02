@@ -26,32 +26,18 @@
 * Measuring elapsed time
 *
 * Utility class that measures the elapsed time
-*
 */
 
-use traits::wrappable::Wrappable;
-use system::time::Time;
+use traits::Wrappable;
+use system::Time;
 
-#[doc(hidden)]
-pub mod ffi {
-    
-    use std::libc::{c_void};
-    use system::time::ffi;
+use ffi = ffi::system::clock;
 
-    pub struct sfClock {
-        This : *c_void
-    }
-
-    extern "C" {
-        pub fn sfClock_create() -> *sfClock;
-        pub fn sfClock_copy(clock : *sfClock) -> *sfClock;
-        pub fn sfClock_destroy(clock : *sfClock) -> ();
-        pub fn sfClock_getElapsedTime(clock : *sfClock) -> ffi::sfTime;
-        pub fn sfClock_restart(clock : *sfClock) -> ffi::sfTime;
-    }
-}
-
-
+/**
+* Measuring elapsed time
+*
+* Utility class that measures the elapsed time
+*/
 pub struct Clock {
     #[doc(hidden)]
     priv clock : *ffi::sfClock
@@ -70,7 +56,6 @@ impl Clock {
 
     /**
     * Create a clock by copying an extant one
-    * 
     */
     pub fn clone(&self) -> Clock {
         Clock {

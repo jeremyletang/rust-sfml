@@ -22,14 +22,11 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-/*!
- * OpenGL contextSettings
- *
- * Structure defining the window's creation settings
- *
- */
-
-
+/**
+* OpenGL contextSettings
+*
+* Structure defining the window's creation settings
+*/
 #[deriving(Clone, Eq, Ord)]
 pub struct ContextSettings {
 	/// Bits of the depth buffer.

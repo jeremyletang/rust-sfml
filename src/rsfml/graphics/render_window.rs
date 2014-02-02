@@ -27,7 +27,6 @@
 *
 * RenderWindow is the main class of the Graphics module.
 * It defines an OS window that can be painted using the other classes of the graphics module.
-*
 */
 
 use std::rc::Rc;
@@ -35,109 +34,23 @@ use std::cell::RefCell;
 use std::libc::{c_float, c_uint, c_int};
 use std::{ptr, cast};
 
-use traits::drawable::Drawable;
-use traits::wrappable::Wrappable;
-use sfml_types::{SfBool, SFTRUE, SFFALSE};
-use window::video_mode::VideoMode;
-use window::context_settings::ContextSettings;
-use window::{event, keyboard, joystick, mouse, WindowStyle};
+use traits::{Drawable, Wrappable};
+use window::{ContextSettings, VideoMode, 
+    event, keyboard, joystick, mouse, WindowStyle};
 use system::vector2::{Vector2f, Vector2i, Vector2u};
-use graphics::text::Text;
-use graphics::color::Color;
-use graphics::sprite::Sprite;
-use graphics::circle_shape::CircleShape;
-use graphics::rectangle_shape::RectangleShape;
-use graphics::convex_shape::ConvexShape;
-use graphics::render_states::RenderStates;
-use graphics::view::View;
-use graphics::image::Image;
-use graphics::rect::IntRect;
-use graphics::vertex_array::VertexArray;
-use graphics::shape::Shape;
+use graphics::{Text, Color, Sprite, CircleShape, 
+    RectangleShape, ConvexShape, RenderStates, 
+    View, Image, IntRect, VertexArray, Shape};
 
-#[doc(hidden)]
-pub mod ffi {
-    
-    use std::libc::{c_uint, c_float, c_char};
-    
-    use system::vector2::{Vector2f, Vector2i, Vector2u};
-    use sfml_types::SfBool;
-    use window::video_mode::ffi::sfVideoMode;
-    use window::context_settings::ContextSettings;
-    use graphics::text::ffi::sfText;
-    use graphics::render_states;
-    use graphics::color::Color;
-    use graphics::sprite::ffi::sfSprite;
-    use graphics::circle_shape::ffi::sfCircleShape;
-    use graphics::rectangle_shape::ffi::sfRectangleShape;
-    use graphics::convex_shape::ffi::sfConvexShape;
-    use graphics::view::ffi::sfView;
-    use graphics::image::ffi::sfImage;
-    use graphics::shape::ffi::sfShape;
-    use graphics::rect::IntRect;
-    use graphics::vertex_array::ffi::sfVertexArray;
+use ffi::sfml_types::{SfBool, SFTRUE, SFFALSE};
+use ffi = ffi::graphics::render_window;
 
-    pub struct sfRenderWindow;
-
-    pub struct sfEvent {
-        typeEvent : c_uint,
-        p1 :        c_uint,
-        p2 :        c_uint,
-        p3 :        c_float,
-        p4 :        c_uint,
-        p5 :        c_uint
-    }
-
-    extern "C" {
-        pub fn sfRenderWindow_create(mode : sfVideoMode, title : *c_char, style : c_uint, settings : *ContextSettings) -> *sfRenderWindow;
-        pub fn sfRenderWindow_createUnicode(mode : sfVideoMode, title : *u32, style : c_uint, settings : *ContextSettings) -> *sfRenderWindow;
-        //fn sfRenderWindow_createFromHandle(handle : sfWindowHandle, settings : *sfContextSettings) -> *sfRenderWindow;
-        pub fn sfRenderWindow_destroy(renderWindow : *sfRenderWindow) -> ();
-        pub fn sfRenderWindow_close(renderWindow : *sfRenderWindow) -> ();
-        pub fn sfRenderWindow_isOpen(renderWindow : *sfRenderWindow) -> SfBool;
-        pub fn sfRenderWindow_getSettings(renderWindow : *sfRenderWindow) -> ContextSettings;
-        pub fn sfRenderWindow_pollEvent(renderWindow : *sfRenderWindow, event : *sfEvent) -> SfBool;
-        pub fn sfRenderWindow_waitEvent(renderWindow : *sfRenderWindow, event : *sfEvent) -> SfBool;
-        pub fn sfRenderWindow_getPosition(renderWindow : *sfRenderWindow) -> Vector2i;
-        pub fn sfRenderWindow_setPosition(renderWindow : *sfRenderWindow, position : Vector2i) -> ();
-        pub fn sfRenderWindow_getSize(renderWindow : *sfRenderWindow) -> Vector2u;
-        pub fn sfRenderWindow_setSize(renderWindow : *sfRenderWindow, size : Vector2u) -> ();
-        pub fn sfRenderWindow_setTitle(renderWindow : *sfRenderWindow, title : *c_char) -> ();
-        pub fn sfRenderWindow_setUnicodeTitle(renderWindow : *sfRenderWindow, title : *u32) -> ();
-        pub fn sfRenderWindow_setIcon(renderWindow : *sfRenderWindow, width : c_uint, height : c_uint, pixels : *u8) -> ();
-        pub fn sfRenderWindow_setVisible(renderWindow : *sfRenderWindow, visible : SfBool) -> ();
-        pub fn sfRenderWindow_setMouseCursorVisible(renderWindow : *sfRenderWindow, show : SfBool) -> ();
-        pub fn sfRenderWindow_setVerticalSyncEnabled(renderWindow : *sfRenderWindow, enabled : SfBool) -> ();
-        pub fn sfRenderWindow_setKeyRepeatEnabled(renderWindow : *sfRenderWindow, enabled : SfBool) -> ();
-        pub fn sfRenderWindow_setActive(renderWindow : *sfRenderWindow, active : SfBool) -> SfBool;
-        pub fn sfRenderWindow_display(renderWindow : *sfRenderWindow) -> ();
-        pub fn sfRenderWindow_setFramerateLimit(renderWindow : *sfRenderWindow, limit : c_uint) -> ();
-        pub fn sfRenderWindow_setJoystickThreshold(renderWindow : *sfRenderWindow, treshold : c_float) -> ();
-        // fn sfRenderWindow_getSystemHandle(renderWindow : *sfRenderWindow) -> sfWindowHandle;
-        pub fn sfRenderWindow_clear(renderWindow : *sfRenderWindow, color : Color) -> ();
-        pub fn sfRenderWindow_setView(renderWindow : *sfRenderWindow, view : *sfView) -> ();
-        pub fn sfRenderWindow_getView(renderWindow : *sfRenderWindow) -> *sfView;
-        pub fn sfRenderWindow_getDefaultView(renderWindow : *sfRenderWindow) -> *sfView;
-        pub fn sfRenderWindow_getViewport(renderWindow : *sfRenderWindow, view : *sfView) -> IntRect;
-        pub fn sfRenderWindow_mapPixelToCoords(renderWindow : *sfRenderWindow, point : Vector2i, view : *sfView) -> Vector2f;
-        pub fn sfRenderWindow_mapCoordsToPixel(renderWindow : *sfRenderWindow, point : Vector2f, view : *sfView) -> Vector2i;
-        pub fn sfRenderWindow_drawSprite(renderWindow : *sfRenderWindow, object : *sfSprite, states : *render_states::ffi::sfRenderStates) -> ();
-        pub fn sfRenderWindow_drawText(renderWindow : *sfRenderWindow, object : *sfText, states : *render_states::ffi::sfRenderStates) -> ();
-        pub fn sfRenderWindow_drawShape(renderWindow : *sfRenderWindow, object : *sfShape, states : *render_states::ffi::sfRenderStates) -> ();
-        pub fn sfRenderWindow_drawCircleShape(renderWindow : *sfRenderWindow, object : *sfCircleShape, states : *render_states::ffi::sfRenderStates) -> ();
-        pub fn sfRenderWindow_drawConvexShape(renderWindow : *sfRenderWindow, object : *sfConvexShape, states : *render_states::ffi::sfRenderStates) -> ();
-        pub fn sfRenderWindow_drawRectangleShape(renderWindow : *sfRenderWindow, object : *sfRectangleShape, states : *render_states::ffi::sfRenderStates) -> ();
-        pub fn sfRenderWindow_drawVertexArray(renderWindow : *sfRenderWindow, object : *sfVertexArray, states : *render_states::ffi::sfRenderStates) -> ();
-        // fn sfRenderWindow_drawPrimitives(renderWindow : *sfRenderWindow, vertices : *sfVertex, vertexCount : c_uint, ttype : sfPrimitiveType, states : *sfRenderStates) -> ();  
-        pub fn sfRenderWindow_pushGLStates(renderWindow : *sfRenderWindow) -> ();
-        pub fn sfRenderWindow_popGLStates(renderWindow : *sfRenderWindow) -> ();
-        pub fn sfRenderWindow_resetGLStates(renderWindow : *sfRenderWindow) -> ();
-        pub fn sfRenderWindow_capture(renderWindow : *sfRenderWindow) -> *sfImage;
-        pub fn sfMouse_getPositionRenderWindow(relativeTo : *sfRenderWindow) -> Vector2i;
-        pub fn sfMouse_setPositionRenderWindow(position : Vector2i, relativeTo : *sfRenderWindow) -> ();
-    }    
-}
-
+/**
+* Window that can serve as a target for 2D drawing.
+*
+* RenderWindow is the main class of the Graphics module.
+* It defines an OS window that can be painted using the other classes of the graphics module.
+*/
 pub struct RenderWindow {
     #[doc(hidden)]
     priv render_window :    *ffi::sfRenderWindow,
@@ -171,9 +84,13 @@ impl RenderWindow {
     * * style - Window style
     * * settings - Additional settings for the underlying OpenGL context
     *
-    * Return a new RenderWindow object
+    * Return Some(RenderWindow) or None
     */
-    pub fn new(mode : VideoMode, title : &str, style : WindowStyle, settings : &ContextSettings) -> Option<RenderWindow> {
+    pub fn new(mode : VideoMode, 
+        title : &str, 
+        style : WindowStyle, 
+        settings : &ContextSettings) -> Option<RenderWindow> {
+        
         let mut sf_render_win: *ffi::sfRenderWindow = ptr::null();
         unsafe {
             title.with_c_str(|c_str| {
@@ -228,9 +145,13 @@ impl RenderWindow {
     * * style - Window style
     * * settings - Additional settings for the underlying OpenGL context
     *
-    * Return a new RenderWindow object
+    * Return Some(RenderWindow) or None
     */
-    pub fn new_with_unicode(mode : VideoMode, title : ~[u32], style : WindowStyle, settings : &ContextSettings) -> Option<RenderWindow> {
+    pub fn new_with_unicode(mode : VideoMode, 
+        title : ~[u32], 
+        style : WindowStyle, 
+        settings : &ContextSettings) -> Option<RenderWindow> {
+        
         let sf_render_win: *ffi::sfRenderWindow;
         unsafe { 
             sf_render_win = ffi::sfRenderWindow_createUnicode(mode.unwrap(), title.as_ptr(), style as u32, settings); 
@@ -348,6 +269,7 @@ impl RenderWindow {
         }
     }
     
+    #[doc(hidden)]
     pub fn get_wrapped_event(&self) ->event::Event {
         match self.event.typeEvent as c_uint {
             0   => event::Closed,

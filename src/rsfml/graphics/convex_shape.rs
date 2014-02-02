@@ -25,8 +25,10 @@
 /*!
 * Specialized shape representing a convex polygon
 *
-* It is important to keep in mind that a convex shape must always be... convex, otherwise it may not be drawn correctly. 
-* Moreover, the points must be defined in order; using a random order would result in an incorrect shape.
+* It is important to keep in mind that a convex shape must 
+* always be... convex, otherwise it may not be drawn correctly. 
+* Moreover, the points must be defined in order; using a random 
+* order would result in an incorrect shape.
 */
 
 use std::rc::Rc;
@@ -34,73 +36,22 @@ use std::cell::RefCell;
 use std::libc::{c_float, c_uint};
 use std::ptr;
 
-use traits::wrappable::Wrappable;
-use traits::drawable::Drawable;
-use graphics::color::Color;
-use graphics::texture::Texture;
+use traits::{Wrappable, Drawable};
+use graphics::{Color, Texture, RenderWindow, 
+    RenderTexture, FloatRect, IntRect, Transform, RenderStates};
 use system::vector2::Vector2f;
-use graphics::render_window::RenderWindow;
-use graphics::render_texture::RenderTexture;
-use graphics::rect::{FloatRect, IntRect};
-use graphics::transform::Transform;
-use graphics::render_states::RenderStates;
-use sfml_types::{SFTRUE, SFFALSE};
 
-#[doc(hidden)]
-pub mod ffi {
+use ffi::sfml_types::{SFTRUE, SFFALSE};
+use ffi = ffi::graphics::convex_shape;
 
-    use std::libc::{c_uint, c_void, c_float};
-
-    use system::vector2::Vector2f;
-    use graphics::color::Color;
-    use graphics::texture;
-    use sfml_types::SfBool;
-    use graphics::rect::{FloatRect, IntRect};
-    use graphics::transform::Transform;
-    
-    pub struct sfConvexShape {
-        This :              *c_void,
-        Texture :           *texture::ffi::sfTexture,
-        Transform :         Transform,
-        InverseTransform :  Transform
-    }
-
-    extern "C" {
-        pub fn sfConvexShape_create() -> *sfConvexShape;
-        pub fn sfConvexShape_copy(shape : *sfConvexShape) -> *sfConvexShape;
-        pub fn sfConvexShape_destroy(shape : *sfConvexShape) -> ();
-        pub fn sfConvexShape_setPosition(shape : *sfConvexShape, position : Vector2f) -> ();
-        pub fn sfConvexShape_setRotation(shape : *sfConvexShape, angle : c_float) -> ();
-        pub fn sfConvexShape_setScale(shape : *sfConvexShape, scale : Vector2f) -> ();
-        pub fn sfConvexShape_setOrigin(shape : *sfConvexShape, origin : Vector2f) -> ();
-        pub fn sfConvexShape_getPosition(shape : *sfConvexShape) -> Vector2f;
-        pub fn sfConvexShape_getRotation(shape : *sfConvexShape) -> c_float;
-        pub fn sfConvexShape_getScale(shape : *sfConvexShape) -> Vector2f;
-        pub fn sfConvexShape_getOrigin(shape : *sfConvexShape) -> Vector2f;
-        pub fn sfConvexShape_move(shape : *sfConvexShape, offset : Vector2f) -> ();
-        pub fn sfConvexShape_rotate(shape : *sfConvexShape, angle : c_float) -> ();
-        pub fn sfConvexShape_scale(shape : *sfConvexShape, factors : Vector2f) -> ();
-        pub fn sfConvexShape_getTransform(shape : *sfConvexShape) -> Transform;
-        pub fn sfConvexShape_getInverseTransform(shape : *sfConvexShape) -> Transform;
-        pub fn sfConvexShape_setTexture(shape : *sfConvexShape, texture : *texture::ffi::sfTexture, reset_rect : SfBool) -> ();
-        pub fn sfConvexShape_setTextureRect(shape : *sfConvexShape, rect : IntRect) -> ();
-        pub fn sfConvexShape_setFillColor(shape : *sfConvexShape, color : Color) -> ();
-        pub fn sfConvexShape_setOutlineColor(shape : *sfConvexShape, color : Color) -> ();
-        pub fn sfConvexShape_setOutlineThickness(shape : *sfConvexShape, thickness : c_float) -> ();
-        pub fn sfConvexShape_getTexture(shape : *sfConvexShape) -> *texture::ffi::sfTexture;
-        pub fn sfConvexShape_getTextureRect(shape : *sfConvexShape) -> IntRect;
-        pub fn sfConvexShape_getFillColor(shape : *sfConvexShape) -> Color;
-        pub fn sfConvexShape_getOutlineColor(shape : *sfConvexShape) -> Color;
-        pub fn sfConvexShape_getOutlineThickness(shape : *sfConvexShape) -> c_float;
-        pub fn sfConvexShape_getPointCount(shape : *sfConvexShape) -> c_uint;
-        pub fn sfConvexShape_getPoint(shape : *sfConvexShape, index : c_uint) -> Vector2f;
-        pub fn sfConvexShape_setPointCount(shape : *sfConvexShape, count : c_uint) -> ();
-        pub fn sfConvexShape_setPoint(shape : *sfConvexShape, index : c_uint, point : Vector2f) -> ();
-        pub fn sfConvexShape_getLocalBounds(shape : *sfConvexShape) -> FloatRect;
-        pub fn sfConvexShape_getGlobalBounds(shape : *sfConvexShape) -> FloatRect;
-    }
-}
-
+/**
+* Specialized shape representing a convex polygon
+*
+* It is important to keep in mind that a convex shape must 
+* always be... convex, otherwise it may not be drawn correctly. 
+* Moreover, the points must be defined in order; using a random 
+* order would result in an incorrect shape.
+*/
 pub struct ConvexShape {
     #[doc(hidden)]
     priv convex_shape : *ffi::sfConvexShape,
@@ -115,7 +66,7 @@ impl ConvexShape {
     * # Arguments
     * * points_count - The number of point for the convex shape
     *
-    * Return a new convexShape object
+    * Return Some(ConvexShape) or None
     */
     pub fn new(points_count : uint) -> Option<ConvexShape> {
         let shape = unsafe { ffi::sfConvexShape_create() };
@@ -140,7 +91,7 @@ impl ConvexShape {
     * * texture - The texture to apply to the convex shape
     * * points_count - The number of point for the convex shape
     *
-    * Return a new convexShape object
+    * Return Some(ConvexShape) or None
     */
     pub fn new_with_texture(texture : Rc<RefCell<Texture>>, points_count : uint) -> Option<ConvexShape> {
         let shape = unsafe { ffi::sfConvexShape_create() };
@@ -163,7 +114,7 @@ impl ConvexShape {
     /**
     * Clone an existing convex shape
     *
-    * Return the cloned object
+    * Return Some(ConvexShape) or None
     */
     pub fn clone(&self) -> Option<ConvexShape> {
         let shape = unsafe { ffi::sfConvexShape_copy(self.convex_shape) };

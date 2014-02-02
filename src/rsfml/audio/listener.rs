@@ -31,21 +31,8 @@
 
 use system::vector3::Vector3f;
 
-#[doc(hidden)]
-pub mod ffi {
-    
-    pub use std::libc::{c_int};    
-    pub use system::vector3;
+use ffi = ffi::audio::listener;
 
-    extern "C" {
-        pub fn sfListener_setGlobalVolume(volume : f32) -> ();
-        pub fn sfListener_getGlobalVolume() -> f32;
-        pub fn sfListener_setPosition(position : vector3::Vector3f) -> ();
-        pub fn sfListener_getPosition() -> vector3::Vector3f;
-        pub fn sfListener_setDirection(orientation : vector3::Vector3f) -> ();
-        pub fn sfListener_getDirection() -> vector3::Vector3f;
-    }
-}
 /**
 * Change the global volume of all the sounds and musics
 *

@@ -24,53 +24,17 @@
 
 /*!
 * Encapsulate an IPv4 network address.
-*
-*
 */
 
 use std::str;
 use std::ptr;
 
-use traits::wrappable::Wrappable;
-use system::time::Time;
+use traits::Wrappable;
+use system::Time;
 
-#[doc(hidden)]
-pub mod ffi{
-    
-    use std::libc::c_char;
-    
-    use system::time;
+use ffi = ffi::network::ip_address;
 
-    pub struct sfIpAddress {
-        c1 : u8,
-        c2 : u8,
-        c3 : u8,
-        c4 : u8,
-        c5 : u8,
-        c6 : u8,
-        c7 : u8,
-        c8 : u8,
-        c9 : u8,
-        c10 : u8,
-        c11 : u8,
-        c12 : u8,
-        c13 : u8,
-        c14 : u8,
-        c15 : u8,
-        c16 : u8
-    }
-
-    extern "C" {
-        pub fn sfIpAddress_fromString(address : *c_char) -> sfIpAddress;
-        pub fn sfIpAddress_fromBytes(byte0 : u8, byte1 : u8, byte2 : u8, byte3 : u8) -> sfIpAddress;
-        pub fn sfIpAddress_fromInteger(address : u32) -> sfIpAddress;
-        pub fn sfIpAddress_toString(address : sfIpAddress, string : *u8) -> ();
-        pub fn sfIpAddress_toInteger(address : sfIpAddress) -> u32;
-        pub fn sfIpAddress_getLocalAddress() -> sfIpAddress;
-        pub fn sfIpAddress_getPublicAddress(timeout : time::ffi::sfTime) -> sfIpAddress;
-    }
-}
-
+/// Encapsulate an IPv4 network address.
 pub struct IpAddress{
     #[doc(hidden)]
     priv ip : ffi::sfIpAddress

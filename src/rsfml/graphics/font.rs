@@ -24,45 +24,18 @@
 
 /*!
 * Class for loading and manipulating character fonts
-*
-* 
-*
 */
 
 use std::libc::c_uint;
 use std::ptr;
 
-use traits::wrappable::Wrappable;
-use graphics::texture::Texture;
-use graphics::glyph::Glyph;
-use sfml_types::{SFTRUE, SFFALSE};
+use traits::Wrappable;
+use graphics::{Texture, Glyph};
 
-#[doc(hidden)]
-pub mod ffi {
+use ffi::sfml_types::{SFTRUE, SFFALSE};
+use ffi = ffi::graphics::font;
 
-    use std::libc::{c_void, c_uint, c_int, c_char};
-    
-    use graphics::texture;
-    use sfml_types::SfBool;
-    use graphics::glyph::Glyph;
-
-    pub struct sfFont {
-        This : *c_void
-    }
-
-    extern "C" {
-        pub fn sfFont_createFromFile(filename : *c_char) -> *sfFont;
-        pub fn sfFont_copy(font : *sfFont) -> *sfFont;
-        // fn sfFont_createFromMemory(data : *c_void, sizeInBytes : size_t) -> *sfFont;
-        // fn sfFont_createFromStream(stream : *sfInputStream) -> *sfFont;
-        pub fn sfFont_destroy(font : *sfFont) -> ();
-        pub fn sfFont_getGlyph(font : *sfFont, codepoint : u32, characterSize : c_uint, bold :SfBool) -> Glyph;
-        pub fn sfFont_getKerning(font : *sfFont, first : u32, second : u32, characterSize : c_uint) -> c_int;
-        pub fn sfFont_getLineSpacing(font : *sfFont, characterSize : c_uint) -> c_int;
-        pub fn sfFont_getTexture(font : *sfFont, characterSize : c_uint) -> *texture::ffi::sfTexture;
-    }
-}
-
+/// Class for loading and manipulating character fonts
 pub struct Font {
     #[doc(hidden)]
     priv font :     *ffi::sfFont,
@@ -77,7 +50,7 @@ impl Font {
     * # Arguments
     * * filename -  Path of the font file to load
     * 
-    * Return a new Font object
+    * Return Some(Font) or None
     */
     pub fn new_from_file(filename : &str) -> Option<Font> {
         let mut fnt = ptr::null();
@@ -102,7 +75,8 @@ impl Font {
     *
     * # Arguments
     * * font - Font to copy
-    * Return the copied font
+    *
+    * Return Some(Font) or None
     */
     pub fn clone(&self) -> Option<Font> {
         let fnt = unsafe {ffi::sfFont_copy(self.font)};

@@ -25,39 +25,23 @@
 /*!
 * Define a 3x3 transform matrix.
 *
-* A Transform specifies how to translate, rotate, scale, shear, project, whatever things.
-*
+* A Transform specifies how to translate, 
+* rotate, scale, shear, project, whatever things.
 */
 
 use std::libc::c_float;
 
 use system::vector2::Vector2f;
-use graphics::rect::FloatRect;
+use graphics::FloatRect;
 
-#[doc(hidden)]
-pub mod ffi {
-    
-    use std::libc::c_float;
+use ffi = ffi::graphics::transform;
 
-    use system::vector2::Vector2f;
-    use graphics::rect::FloatRect;
-    use graphics::transform::Transform;
-
-    extern "C" {
-        pub fn sfTransform_fromMatrix(a01 : f32, a02 : f32, a03 : f32, b01 : f32, b02 : f32, b03 : f32, c01 : f32, c02 : f32, c03 : f32) -> Transform;
-        pub fn sfTransform_getMatrix(tranform : *Transform, matrix : *f32) -> ();
-        pub fn sfTransform_getInverse(transform : *Transform) -> Transform;
-        pub fn sfTransform_transformPoint(transform : *Transform, point : Vector2f) -> Vector2f;
-        pub fn sfTransform_transformRect(transform : *Transform, rectangle : FloatRect) -> FloatRect;
-        pub fn sfTransform_combine(transform : *Transform, other : *Transform) -> ();
-        pub fn sfTransform_translate(transform : *Transform, x : c_float, y : c_float) -> ();
-        pub fn sfTransform_rotate(transform : *Transform, angle : c_float) -> ();
-        pub fn sfTransform_rotateWithCenter(transform : *Transform, angle : c_float, center_x : c_float, center_y : c_float) -> ();
-        pub fn sfTransform_scale(transform : *Transform, scale_x : c_float, scale_y : c_float) -> ();
-        pub fn sfTransform_scaleWithCenter(transform: *Transform, scale_x : c_float, scale_y : c_float, center_x : c_float, center_y : c_float) -> ();
-    }
-}
-
+/**
+* Define a 3x3 transform matrix.
+*
+* A Transform specifies how to translate, 
+* rotate, scale, shear, project, whatever things.
+*/
 pub struct Transform {
         a00 : f32,
         a01 : f32,
@@ -85,7 +69,7 @@ impl Transform {
     * * a21 - Element (2, 1) of the matrix
     * * a22 - Element (2, 2) of the matrix
     *
-    * Return a new Transform object
+    * Return a new Transform
     */
     pub fn new(a00 : f32, a01 : f32, a02 : f32, b10 : f32, b11 : f32, b12 : f32, c20 : f32, c21 : f32, c22 : f32) -> Transform {
         unsafe {
@@ -104,7 +88,7 @@ impl Transform {
     /**
     * Create a new identity transform
     *
-    * Return a new Transform object initialized at 1, 0, 0, 0, 1, 0, 0, 0, 1
+    * Return a new Transform initialized at 1, 0, 0, 0, 1, 0, 0, 0, 1
     */
     pub fn new_identity() -> Transform {
         unsafe {

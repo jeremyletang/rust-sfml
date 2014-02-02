@@ -24,136 +24,19 @@ e* Permission is granted to anyone to use this software for any purpose,
 
 /*!
 * A FTP client.
-*
-*
-*
 */
 
 use std::libc::{size_t, c_int};
 use std::{str, cast};
 
-use traits::wrappable::Wrappable;
-use network::ip_address::IpAddress;
-use system::time::Time;
+use traits::Wrappable;
+use network::IpAddress;
+use system::Time;
 
-#[doc(hidden)]
-pub mod ffi {
-    
-    use std::libc::{c_void, c_char, size_t, c_int};
-
-    use network::ip_address::ffi::sfIpAddress;
-    use sfml_types::SfBool;
-    use system::time;
-
-    pub type TransferMode = c_int;
-    pub static FTPBINARY:   TransferMode = 0;
-    pub static FTPASCII:    TransferMode = 1;
-    pub static FTPEBCDIC:   TransferMode = 2;
-
-    pub type Status = c_int;
-    pub static RESTARTMARKERREPLY:          Status = 110; 
-    pub static SERVICEREADYSOON:            Status = 120; 
-    pub static DATACONNECTIONALREADYOPENED: Status = 125; 
-    pub static OPENINGDATACONNECTION:       Status = 150;
-
-    pub static OK:                          Status = 200; 
-    pub static POINTLESSCOMMAND:            Status = 202; 
-    pub static SYSTEMSTATUS:                Status = 211; 
-    pub static DIRECTORYSTATUS:             Status = 212; 
-    pub static FILESTATUS:                  Status = 213; 
-    pub static HELPMESSAGE:                 Status = 214; 
-    pub static SYSTEMTYPE:                  Status = 215; 
-    pub static SERVICEREADY:                Status = 220; 
-    pub static CLOSINGCONNECTION:           Status = 221; 
-    pub static DATACONNECTIONOPENED:        Status = 225; 
-    pub static CLOSINGDATACONNECTION:       Status = 226; 
-    pub static ENTERINGPASSIVEMODE:         Status = 227; 
-    pub static LOGGEDIN:                    Status = 230; 
-    pub static FILEACTIONOK:                Status = 250; 
-    pub static DIRECTORYOK:                 Status = 257; 
-
-    pub static NEEDPASSWORD:                Status = 331; 
-    pub static NEEDACCOUNTTOLOGIN:          Status = 332; 
-    pub static NEEDINFORMATION:             Status = 350;
-
-    pub static SERVICEUNAVAILABLE:          Status = 421;
-    pub static DATACONNECTIONUNAVAILABLE:   Status = 425; 
-    pub static TRANSFERABORTED:             Status = 426; 
-    pub static FILEACTIONABORTED:           Status = 450; 
-    pub static LOCALERROR:                  Status = 451; 
-    pub static INSUFFICIENTSTORAGESPACE:    Status = 452; 
-
-    pub static COMMANDUNKNOWN:              Status = 500; 
-    pub static PARAMETERSUNKNOWN:           Status = 501; 
-    pub static COMMANDNOTIMPLEMENTED:       Status = 502; 
-    pub static BADCOMMANDSEQUENCE:          Status = 503; 
-    pub static PARAMETERNOTIMPLEMENTED:     Status = 504; 
-    pub static NOTLOGGEDIN:                 Status = 530; 
-    pub static NEEDACCOUNTTOSTORE:          Status = 532; 
-    pub static FILEUNAVAILABLE:             Status = 550; 
-    pub static PAGETYPEUNKNOWN:             Status = 551; 
-    pub static NOTENOUGHMEMORY:             Status = 552;
-    pub static FILENAMENOTALLOWED:          Status = 553;
-
-    pub static INVALIDRESPONSE:             Status = 1000; 
-    pub static CONNECTIONFAILED:            Status = 1001; 
-    pub static CONNECTIONCLOSED:            Status = 1002; 
-    pub static INVALIDFILE:                 Status = 1003;
-
-    pub struct sfFtp {
-        This : *c_void
-    }
-
-    pub struct sfFtpDirectoryResponse {
-        This : *c_void
-    }
-
-    pub struct sfFtpListingResponse {
-        This : *c_void
-    }
-
-    pub struct sfFtpResponse {
-        This : *c_void
-    }
-    
-    extern "C" {
-        pub fn sfFtpListingResponse_destroy(ftpListingResponse : *sfFtpListingResponse) -> ();
-        pub fn sfFtpListingResponse_isOk(ftpListingResponse : *sfFtpListingResponse) -> SfBool;
-        pub fn sfFtpListingResponse_getStatus(ftpListingResponse : *sfFtpListingResponse) -> Status;
-        pub fn sfFtpListingResponse_getMessage(ftpListingResponse : *sfFtpListingResponse) -> *c_char;
-        pub fn sfFtpListingResponse_getCount(ftpListingResponse : *sfFtpListingResponse) -> size_t;
-        pub fn sfFtpListingResponse_getName(ftpListingResponse : *sfFtpListingResponse, index : size_t) -> *c_char;
-        pub fn sfFtpDirectoryResponse_destroy(ftpDirectoryResponse : *sfFtpDirectoryResponse) -> ();
-        pub fn sfFtpDirectoryResponse_isOk(ftpDirectoryResponse : *sfFtpDirectoryResponse) -> SfBool;
-        pub fn sfFtpDirectoryResponse_getStatus(ftpDirectoryResponse : *sfFtpDirectoryResponse) -> Status;
-        pub fn sfFtpDirectoryResponse_getMessage(ftpDirectoryResponse : *sfFtpDirectoryResponse) -> *c_char;
-        pub fn sfFtpDirectoryResponse_getDirectory(ftpDirectoryResponse : *sfFtpDirectoryResponse) -> *c_char;
-        pub fn sfFtpResponse_destroy(ftpResponse : *sfFtpResponse) -> ();
-        pub fn sfFtpResponse_isOk(ftpResponse : *sfFtpResponse) -> SfBool;
-        pub fn sfFtpResponse_getStatus(ftpResponse : *sfFtpResponse) -> Status;
-        pub fn sfFtpResponse_getMessage(ftpResponse : *sfFtpResponse) -> *c_char;
-        pub fn sfFtp_create() -> *sfFtp;
-        pub fn sfFtp_destroy(ftp : *sfFtp) -> ();
-        pub fn sfFtp_connect(ftp : *sfFtp, server : sfIpAddress, port : u16, timeout : time::ffi::sfTime) -> *sfFtpResponse;
-        pub fn sfFtp_loginAnonymous(ftp : *sfFtp) -> *sfFtpResponse;
-        pub fn sfFtp_login(ftp : *sfFtp, userName : *c_char, password : *c_char) -> *sfFtpResponse;
-        pub fn sfFtp_disconnect(ftp : *sfFtp) -> *sfFtpResponse;
-        pub fn sfFtp_keepAlive(ftp : *sfFtp) -> *sfFtpResponse;
-        pub fn sfFtp_getWorkingDirectory(ftp : *sfFtp) -> *sfFtpDirectoryResponse;
-        pub fn sfFtp_getDirectoryListing(ftp : *sfFtp, directory : *c_char) -> *sfFtpListingResponse;
-        pub fn sfFtp_changeDirectory(ftp : *sfFtp, directory : *c_char) -> *sfFtpResponse;
-        pub fn sfFtp_parentDirectory(ftp : *sfFtp) -> *sfFtpResponse;
-        pub fn sfFtp_createDirectory(ftp : *sfFtp, name : *c_char) -> *sfFtpResponse;
-        pub fn sfFtp_deleteDirectory(ftp : *sfFtp, name : *c_char) -> *sfFtpResponse;
-        pub fn sfFtp_renameFile(ftp : *sfFtp, file : *c_char, newName : *c_char) -> *sfFtpResponse;
-        pub fn sfFtp_deleteFile(ftp : *sfFtp, name : *c_char) -> *sfFtpResponse;
-        pub fn sfFtp_download(ftp : *sfFtp, distantFile : *c_char, destPath : *c_char, mode : TransferMode) -> *sfFtpResponse;
-        pub fn sfFtp_upload(ftp : *sfFtp, localFile : *c_char, destPath : *c_char, mode : TransferMode) -> *sfFtpResponse;
-    }
-}
+use ffi = ffi::network::ftp;
 
 /// The differents FTP modes availables.
-#[deriving(Eq, Ord)]
+#[deriving(Eq, Ord, ToStr)]
 pub enum TransferMode {
     /// Ftp Binary Mod
     FtpBinary = 0,
@@ -164,7 +47,7 @@ pub enum TransferMode {
 }
 
 /// The status and commands id's for FTP.
-#[deriving(Eq, Ord)]
+#[deriving(Eq, Ord, ToStr)]
 pub enum Status {
     // 1xx: the requested action is being initiated,
     // expect another reply before proceeding with a new command
@@ -475,11 +358,16 @@ impl Ftp {
     /**
     * Create a new Ftp object
     *
-    * Return a new option to Ftp object or None
+    * Return Some(Ftp) or None
     */
-    pub fn new() -> Ftp {
-        Ftp {
-            ftp : unsafe { ffi::sfFtp_create() }
+    pub fn new() -> Option<Ftp> {
+        let ptr = unsafe { ffi::sfFtp_create() };
+        if ptr.is_null() {
+            None
+        } else {
+            Some(Ftp {
+                ftp : ptr
+            })
         }
     }
 

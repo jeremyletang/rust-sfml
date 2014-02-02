@@ -24,94 +24,17 @@
 
 /*!
 * A HTTP client
-*
-*
-*
-*
 */
 
 use std::{str, cast};
 use std::libc::c_int;
 
-use traits::wrappable::Wrappable;
-use system::time::Time;
+use traits::Wrappable;
+use system::Time;
 
-#[doc(hidden)]
-pub mod ffi {
-    
-    use std::libc::{c_char, c_void, c_int};
+use ffi = ffi::network::http;
 
-    use system::time;
-
-    pub type Method = c_int;
-    pub static GET : Method = 0;
-    pub static POST : Method = 1;
-    pub static HEAD : Method = 2;
-
-    pub type Status = c_int;
-    pub static OK:                  Status = 200;
-    pub static CREATED:             Status = 201;
-    pub static ACCEPTED:            Status = 202;
-    pub static NOCONTENT:           Status = 204;
-    pub static RESETCONTENT:        Status = 205;
-    pub static PARTIALCONTENT:      Status = 206;
-   
-    pub static MULTIPLECHOICES:     Status = 300;
-    pub static MOVEDPERMANENTLY:    Status = 301;
-    pub static MOVEDTEMPORARILY:    Status = 302;
-    pub static NOTMODIFIED:         Status = 304;
-
-
-    pub static BADREQUEST:          Status = 400;
-    pub static UNAUTHORIZED:        Status = 401;
-    pub static FORBIDDEN:           Status = 403;
-    pub static NOTFOUND:            Status = 404;
-    pub static RANGENOTSATISFIABLE: Status = 407;
-
-    pub static INTERNALSERVERERROR: Status = 500;
-    pub static NOTIMPLEMENTED:      Status = 501;
-    pub static BADGATEWAY:          Status = 502;
-    pub static SERVICENOTAVAILABLE: Status = 503;
-    pub static GATEWAYTIMEOUT:      Status = 504;
-    pub static VERSIONNOTSUPPORTED: Status = 505;
-
-    pub static INVALIDRESPONSE:     Status = 1000;
-    pub static CONNECTIONFAILED:    Status = 1001;
-
-    pub struct sfHttpRequest {
-        This : *c_void
-    }
-
-    pub struct sfHttpResponse {
-        This : *c_void
-    }
-
-    pub struct sfHttp {
-        This : *c_void
-    }
-
-    extern "C" {
-        pub fn sfHttpRequest_create() -> *sfHttpRequest;
-        pub fn sfHttpRequest_destroy(httpRequest : *sfHttpRequest) -> ();
-        pub fn sfHttpRequest_setField(httpRequest : *sfHttpRequest, field : *c_char, value : *c_char) -> ();
-        pub fn sfHttpRequest_setMethod(httpRequest : *sfHttpRequest, method : Method) -> ();
-        pub fn sfHttpRequest_setUri(httpRequest : *sfHttpRequest, uri : *c_char) -> ();
-        pub fn sfHttpRequest_setHttpVersion(httpRequest : *sfHttpRequest, major : u32, minor : u32) -> ();
-        pub fn sfHttpRequest_setBody(httpRequest : *sfHttpRequest, body : *c_char) -> ();
-        pub fn sfHttpResponse_destroy(httpResponse : *sfHttpResponse) -> ();
-        pub fn sfHttpResponse_getField(httpResponse : *sfHttpResponse, field : *c_char) -> *c_char;
-        pub fn sfHttpResponse_getStatus(httpResponse : *sfHttpResponse) -> Status;
-        pub fn sfHttpResponse_getMajorVersion(httpResponse : *sfHttpResponse) -> u32;
-        pub fn sfHttpResponse_getMinorVersion(httpResponse : *sfHttpResponse) -> u32;
-        pub fn sfHttpResponse_getBody(httpResponse : *sfHttpResponse) -> *c_char;
-        pub fn sfHttp_create() -> *sfHttp;
-        pub fn sfHttp_destroy(http : *sfHttp) -> ();
-        pub fn sfHttp_setHost(http : *sfHttp, host : *c_char, port : u16) -> ();
-        pub fn sfHttp_sendRequest(http : *sfHttp, httpRequest : *sfHttpRequest, timeout : time::ffi::sfTime) -> *sfHttpResponse;
-    }
-}
-
-#[deriving(Eq, Ord)]
+#[deriving(Eq, Ord, ToStr)]
 pub enum Method {
     /// Request in get mode, standard method to retrieve a page
     Get = ffi::GET as c_int,
@@ -121,7 +44,7 @@ pub enum Method {
     Head = ffi::HEAD as c_int
 }
 
-#[deriving(Eq, Ord)]
+#[deriving(Eq, Ord, ToStr)]
 pub enum Status {
     // 2xx: success
     /// Most common code returned when operation was successful
@@ -199,11 +122,16 @@ impl Request {
     /**
     * Create a new HTTP request
     *
-    * Return a new option to HttpRequest object, or None
+    * Return Some(Request) or None
     */
-    pub fn new() -> Request {
-        Request { 
-            request : unsafe { ffi::sfHttpRequest_create() }
+    pub fn new() -> Option<Request> {
+        let ptr = unsafe { ffi::sfHttpRequest_create() };
+        if ptr.is_null() {
+            None
+        } else {
+            Some(Request { 
+                request : ptr
+            })
         }
     }
 
@@ -394,11 +322,16 @@ impl Http {
     /**
     * Create a new Http object
     *
-    * Return a new option to Http object or None
+    * Return Some(Http) or None
     */
-    pub fn create() -> Http {
-        Http { 
-            http : unsafe{ ffi::sfHttp_create() }
+    pub fn new() -> Option<Http> {
+        let ptr = unsafe{ ffi::sfHttp_create() };
+        if ptr.is_null() {
+            None
+        } else {
+            Some(Http { 
+                http : ptr
+            })
         }
     }
 

@@ -22,7 +22,7 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-/*!
+/**
 * Types of primitives that a sf::VertexArray can render
 *
 * Points and lines have no area, therefore their thickness

@@ -26,7 +26,6 @@
 * Play sounds.
 *
 * Regular sound that can be played in the audio environment.
-*
 */
 
 use std::libc::c_float;
@@ -34,56 +33,19 @@ use std::{ptr, cast};
 use std::rc::Rc;
 use std::cell::RefCell;
 
-use traits::wrappable::Wrappable;
-use system::time;
-use audio::{sound_status, SoundBuffer};
+use audio::{Status, SoundBuffer};
+use system::Time;
 use system::vector3::Vector3f;
-use sfml_types::{SFTRUE, SFFALSE};
+use traits::Wrappable;
 
-#[doc(hidden)]
-pub mod ffi {
-    
-    use std::libc::{c_float, c_void};
+use ffi::sfml_types::{SFTRUE, SFFALSE};
+use ffi = ffi::audio::sound;
 
-    use audio::{sound_status, sound_buffer};
-    use system::time;
-    use sfml_types::SfBool;
-    use system::vector3::Vector3f;
-
-    pub struct sfSound {
-        This : *c_void,
-        This2 : *c_void
-    }
-    
-    extern "C" {
-        pub fn sfSound_create() -> *sfSound;
-        pub fn sfSound_copy(sound : *sfSound) -> *sfSound;
-        pub fn sfSound_destroy(sound : *sfSound) -> ();
-        pub fn sfSound_play(sound : *sfSound) -> ();
-        pub fn sfSound_pause(sound : *sfSound) -> ();
-        pub fn sfSound_stop(sound : *sfSound) -> ();
-        pub fn sfSound_setBuffer(sound : *sfSound, buffer : *sound_buffer::ffi::sfSoundBuffer) -> (); // a faire
-        pub fn sfSound_getBuffer(sound : *sfSound) -> *sound_buffer::ffi::sfSoundBuffer; // a faire
-        pub fn sfSound_setLoop(sound : *sfSound, lloop : SfBool) -> ();
-        pub fn sfSound_getLoop(sound : *sfSound) -> SfBool;
-        pub fn sfSound_getStatus(sound : *sfSound) -> sound_status::ffi::sfSoundStatus;
-        pub fn sfSound_setPitch(sound : *sfSound, pitch : c_float) -> ();
-        pub fn sfSound_setVolume(sound : *sfSound, volume : c_float) -> ();
-        pub fn sfSound_setPosition(sound : *sfSound, position : Vector3f) -> ();
-        pub fn sfSound_setRelativeToListener(sound : *sfSound, relative : SfBool) -> ();
-        pub fn sfSound_setMinDistance(sound : *sfSound, distance : c_float) -> ();
-        pub fn sfSound_setAttenuation(sound : *sfSound, attenuation : c_float) -> ();
-        pub fn sfSound_setPlayingOffset(sound : *sfSound, timeOffset : time::ffi::sfTime) -> ();
-        pub fn sfSound_getPitch(sound : *sfSound) -> c_float;
-        pub fn sfSound_getVolume(sound : *sfSound) -> c_float;
-        pub fn sfSound_getPosition(sound : *sfSound) -> Vector3f;
-        pub fn sfSound_isRelativeToListener(sound : *sfSound) -> SfBool;
-        pub fn sfSound_getMinDistance(sound : *sfSound) -> c_float;
-        pub fn sfSound_getAttenuation(sound : *sfSound) -> c_float;
-        pub fn sfSound_getPlayingOffset(sound : *sfSound) -> time::ffi::sfTime;
-    }
-}
-
+/**
+* Play sounds.
+*
+* Regular sound that can be played in the audio environment.
+*/
 pub struct Sound {
     #[doc(hidden)]
     priv sound :    *ffi::sfSound,
@@ -96,7 +58,7 @@ impl Sound {
     /**
     * Create a new Sound
     *
-    * Return a new option to Sound object or None
+    * Return Some(Sound) or None
     */
     pub fn new() -> Option<Sound> {
         let s = unsafe {ffi::sfSound_create()};
@@ -114,7 +76,10 @@ impl Sound {
     /**
     * Create a new Sound
     *
-    * Return a new option to Sound object or None
+    * # Arguments
+    * * buffer - the buffer to set.
+    *
+    * Return Some(Sound) or None
     */
     pub fn new_with_buffer(buffer : Rc<RefCell<SoundBuffer>>) -> Option<Sound> {
         let s = unsafe {ffi::sfSound_create()};
@@ -135,7 +100,7 @@ impl Sound {
     /**
     * Create a new sound by copying an existing one
     *
-    * Return a new option to Sound object which is a copy of sound or none
+    * Return Some(Sound) or None
     */
     pub fn clone(&self) -> Option<Sound> {
         let s = unsafe {ffi::sfSound_copy(self.sound)};
@@ -219,7 +184,7 @@ impl Sound {
     *
     * Return current status
     */
-    pub fn get_status(&self) -> sound_status::Status {
+    pub fn get_status(&self) -> Status {
         unsafe {cast::transmute(ffi::sfSound_getStatus(self.sound) as i8)}
     }
 
@@ -228,7 +193,7 @@ impl Sound {
     *
     * Return the current playing position
     */
-    pub fn get_playing_offset(&self) -> time::Time {
+    pub fn get_playing_offset(&self) -> Time {
         Wrappable::wrap( unsafe {ffi::sfSound_getPlayingOffset(self.sound)})
     }
 
@@ -329,7 +294,7 @@ impl Sound {
     * # Arguments
     * * timeOffset - New playing position
     */
-    pub fn set_playing_offset(&mut self, timeOffset : time::Time) -> () {
+    pub fn set_playing_offset(&mut self, timeOffset : Time) -> () {
         unsafe {
             ffi::sfSound_setPlayingOffset(self.sound, timeOffset.unwrap())
         }

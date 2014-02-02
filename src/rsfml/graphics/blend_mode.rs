@@ -24,9 +24,6 @@
 
 /*!
 * Available blending modes for drawing
-*
-*
-*
 */
 
 ///Available Blending modes for drawing.

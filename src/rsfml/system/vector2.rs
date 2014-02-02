@@ -23,7 +23,7 @@
 */
 
 /*!
-* Utility Class providing 2 dimensional vectors for int, uint, and f32.
+* Utility Class providing 2 dimensional vectors for i32, u32, and f32.
 */
 
 /**

@@ -24,61 +24,16 @@
 
 /*!
 * Utility class to build blocks of data to transfer over the network.
-*
-*
-*
 */
 
 use std::ptr;
 use std::str;
 
-use traits::wrappable::Wrappable;
+use traits::Wrappable;
 
-#[doc(hidden)]
-pub mod ffi {
-    
-    use std::libc::{c_void, size_t, c_float, c_double, c_char};
-    use sfml_types::SfBool;
-    
-    pub struct sfPacket {
-        This : *c_void
-    }
+use ffi = ffi::network::packet;
 
-    extern "C" {
-        pub fn sfPacket_create() -> *sfPacket;
-        pub fn sfPacket_copy(pack : *sfPacket) -> *sfPacket;
-        pub fn sfPacket_destroy(pack : *sfPacket) -> ();
-        //fn sfPacket_append(pack : *sfPacket, data : *c_void, sizeInBytes : size_t) -> ();
-        pub fn sfPacket_clear(pack : *sfPacket) -> ();
-        //fn sfPacket_getData(pack : *sfPacket) -> *c_void;
-        pub fn sfPacket_getDataSize(pack : *sfPacket) -> size_t;
-        pub fn sfPacket_endOfPacket(pack : *sfPacket) -> SfBool;
-        pub fn sfPacket_canRead(pack : *sfPacket) -> SfBool;
-        pub fn sfPacket_readBool(pack : *sfPacket) -> SfBool;
-        pub fn sfPacket_readInt8(pack : *sfPacket) -> i8;
-        pub fn sfPacket_readUint8(pack : *sfPacket) -> u8;
-        pub fn sfPacket_readInt16(pack : *sfPacket) -> i16;
-        pub fn sfPacket_readUint16(pack : *sfPacket) -> u16;
-        pub fn sfPacket_readInt32(pack : *sfPacket) -> i32;
-        pub fn sfPacket_readUint32(pack : *sfPacket) -> u32;
-        pub fn sfPacket_readFloat(pack : *sfPacket) -> c_float;
-        pub fn sfPacket_readDouble(pack : *sfPacket) -> c_double;
-        pub fn sfPacket_readString(pack : *sfPacket, string : *u8) -> ();
-        //fn sfPacket_readWideString(pack : *sfPacket, string : *wchar_t) -> ();
-        pub fn sfPacket_writeBool(pack : *sfPacket, data : SfBool) -> ();
-        pub fn sfPacket_writeInt8(pack : *sfPacket, data : i8) -> ();
-        pub fn sfPacket_writeUint8(pack : *sfPacket, data : u8) -> ();
-        pub fn sfPacket_writeInt16(pack : *sfPacket, data : i16) -> ();
-        pub fn sfPacket_writeUint16(pack : *sfPacket, data : u16) -> ();
-        pub fn sfPacket_writeInt32(pack : *sfPacket, data : i32) -> ();
-        pub fn sfPacket_writeUint32(pack : *sfPacket, data : u32) -> ();
-        pub fn sfPacket_writeFloat(pack : *sfPacket, data : c_float) -> ();
-        pub fn sfPacket_writeDouble(pack : *sfPacket, data : c_double) -> ();
-        pub fn sfPacket_writeString(pack : *sfPacket, string : *c_char) -> ();
-        //fn sfPacket_writeWideString(pack : *sfPacket, string : *wchar_t) -> ();
-    }
-}
-
+/// Utility class to build blocks of data to transfer over the network.
 pub struct Packet {
     #[doc(hidden)]
     packet : *ffi::sfPacket
@@ -88,7 +43,7 @@ impl Packet {
     /**
     * Create a new packet
     *
-    * Return a new sfPacket object
+    * Return Some(Packet) or None
     */
     pub fn new() -> Option<Packet> {
         let pck = unsafe { ffi::sfPacket_create() };
@@ -105,7 +60,7 @@ impl Packet {
     /**
     * Create a new packet by copying an existing one
     *
-    * Return a new Packet object which is a copy of packet
+    * Return Some(Packet) or None
     */
     pub fn clone(&self) -> Option<Packet> {
         let pck = unsafe { ffi::sfPacket_copy(self.packet) };

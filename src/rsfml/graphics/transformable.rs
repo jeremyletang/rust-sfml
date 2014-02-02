@@ -24,52 +24,20 @@
 
 /*!
 * Target for off-screen 2D rendering into a texture
-*
-*
-*
 */
 
 use std::libc::c_float;
 use std::ptr;
 
-use traits::wrappable::Wrappable;
+use traits::Wrappable;
+use graphics::Transform;
 use system::vector2::Vector2f;
-use graphics::transform::Transform;
     
-#[doc(hidden)]
-pub mod ffi {
-    
-    use std::libc::{c_float, c_void};
+use ffi = ffi::graphics::transformable;
 
-    use system::vector2::Vector2f;
-    use graphics::transform::Transform;
-    
-    pub struct sfTransformable {
-        This :              *c_void,
-        transform :         Transform,
-        inverseTransform :  Transform
-    }
-
-    extern "C" {
-        pub fn sfTransformable_create() -> *sfTransformable;
-        pub fn sfTransformable_copy(transformable : *sfTransformable) -> *sfTransformable;
-        pub fn sfTransformable_destroy(transformable : *sfTransformable) -> ();
-        pub fn sfTransformable_setPosition(transformable : *sfTransformable, position : Vector2f) -> ();
-        pub fn sfTransformable_setRotation(transformable : *sfTransformable, angle : c_float) -> ();
-        pub fn sfTransformable_setScale(transformable : *sfTransformable, scale : Vector2f) -> ();
-        pub fn sfTransformable_setOrigin(transformable : *sfTransformable, origin : Vector2f) -> ();
-        pub fn sfTransformable_getPosition(transformable : *sfTransformable) -> Vector2f;
-        pub fn sfTransformable_getRotation(transformable : *sfTransformable) -> c_float;
-        pub fn sfTransformable_getScale(transformable : *sfTransformable) -> Vector2f;
-        pub fn sfTransformable_getOrigin(transformable : *sfTransformable) -> Vector2f;
-        pub fn sfTransformable_move(transformable : *sfTransformable, offset : Vector2f) -> ();
-        pub fn sfTransformable_rotate(transformable : *sfTransformable, angle : c_float) -> ();
-        pub fn sfTransformable_scale(transformable : *sfTransformable, factors : Vector2f) -> ();
-        pub fn sfTransformable_getTransform(transformable : *sfTransformable) -> Transform;
-        pub fn sfTransformable_getInverseTransform(transformable : *sfTransformable) -> Transform;
-    }
-}
-
+/**
+* Target for off-screen 2D rendering into a texture
+*/
 pub struct Transformable{
     #[doc(hidden)]
     priv transformable : *ffi::sfTransformable
@@ -79,7 +47,7 @@ impl Transformable {
     /**
     * Create a new transformable
     *
-    * Return a new Transformable object
+    * Return Some(Transformable) or None
     */
     pub fn new() -> Option<Transformable> {
         let tran = unsafe { ffi::sfTransformable_create() };
@@ -96,7 +64,7 @@ impl Transformable {
     /**
     * Copy an existing transformable
     *
-    * Return the copied object
+    * Return Some(Transformable) or None
     */
     pub fn clone(&self) -> Option<Transformable> {
         let tran = unsafe { ffi::sfTransformable_copy(self.transformable) };

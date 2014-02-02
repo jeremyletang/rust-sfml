@@ -28,7 +28,9 @@
 */
 
 use std::libc::c_int;
-use sfml_types::{SFTRUE, SFFALSE};
+
+use ffi::sfml_types::{SFTRUE, SFFALSE};
+use ffi = ffi::window::keyboard;
 
 /// Key codes
 #[deriving(Clone, Eq, Ord)]
@@ -137,17 +139,6 @@ pub enum Key {
     F15, 
     Pause, 
     KeyCount 
-}
-
-#[doc(hidden)]
-pub mod ffi {
-    
-    pub use std::libc::{c_int};
-    use sfml_types::SfBool;
-
-    extern "C" {
-        pub fn sfKeyboard_isKeyPressed(key : c_int) -> SfBool;
-    }
 }
 
 /**

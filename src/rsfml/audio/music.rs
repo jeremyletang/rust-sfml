@@ -30,60 +30,24 @@
 *
 */
 
-use std::libc::{c_float};
+use std::libc::c_float;
 use std::{ptr, cast};
 
-use traits::wrappable::Wrappable;
-use system::time::Time;
-use super::sound_status;
+use audio::Status;
+use system::Time;
 use system::vector3::Vector3f;
-use sfml_types::{SFTRUE, SFFALSE};
+use traits::Wrappable;
 
-#[doc(hidden)]
-pub mod ffi {
+use ffi::sfml_types::{SFTRUE, SFFALSE};
+use ffi = ffi::audio::music;
 
-    use std::libc::{c_void, c_uint, c_float, c_char};
-    use sfml_types::SfBool;
-    use system::time;
-    use audio::sound_status;
-    use system::vector3::Vector3f;
-
-    pub struct sfMusic {
-        This :  *c_void,
-        This1 : *c_void
-    }
-
-    extern "C" {
-        pub fn sfMusic_createFromFile(filename : *c_char) -> *sfMusic;
-        // sfMusic* sfMusic_createFromMemory(const void* data, size_t sizeInBytes);
-        // sfMusic* sfMusic_createFromStream(sfInputStream* stream);
-        pub fn sfMusic_destroy(music : *sfMusic) -> ();
-        pub fn sfMusic_setLoop(music : *sfMusic, lloop : SfBool) -> ();
-        pub fn sfMusic_getLoop(music : *sfMusic) -> SfBool;
-        pub fn sfMusic_getDuration(music : *sfMusic) -> time::ffi::sfTime;
-        pub fn sfMusic_play(music : *sfMusic) -> ();
-        pub fn sfMusic_pause(music : *sfMusic) -> ();
-        pub fn sfMusic_stop(music : *sfMusic) -> ();
-        pub fn sfMusic_getChannelCount(music : *sfMusic) -> c_uint;
-        pub fn sfMusic_getSampleRate(music : *sfMusic) -> c_uint;
-        pub fn sfMusic_getStatus(music : *sfMusic) -> sound_status::ffi::sfSoundStatus;
-        pub fn sfMusic_getPlayingOffset(music : *sfMusic) -> time::ffi::sfTime;
-        pub fn sfMusic_setPitch(music : *sfMusic, pitch : c_float) -> ();
-        pub fn sfMusic_setVolume(music : *sfMusic, volume : c_float) -> ();
-        pub fn sfMusic_setPosition(music : *sfMusic, position : Vector3f) -> ();
-        pub fn sfMusic_setRelativeToListener(music : *sfMusic, relative : SfBool) -> ();
-        pub fn sfMusic_setMinDistance(music : *sfMusic, distance : c_float) -> ();
-        pub fn sfMusic_setAttenuation(music : *sfMusic, attenuation : c_float) -> ();
-        pub fn sfMusic_setPlayingOffset(music : *sfMusic, timeOffset : time::ffi::sfTime) -> ();
-        pub fn sfMusic_getPitch(music : *sfMusic) -> c_float;
-        pub fn sfMusic_getVolume(music : *sfMusic) -> c_float;
-        pub fn sfMusic_getPosition(music : *sfMusic) -> Vector3f;
-        pub fn sfMusic_isRelativeToListener(music : *sfMusic) -> SfBool;
-        pub fn sfMusic_getMinDistance(music : *sfMusic) -> c_float;
-        pub fn sfMusic_getAttenuation(music : *sfMusic) -> c_float;
-    }
-}
-
+/**
+* Play Music
+*
+* Streamed music played from an audio file.
+* Musics are sounds that are streamed rather than completely loaded in memory.
+*
+*/
 pub struct Music {
     #[doc(hidden)]
     priv music : *ffi::sfMusic
@@ -103,7 +67,7 @@ impl Music {
     * # Arguments
     * * filename - Path of the music file to open
     *
-    * Return a new option to Music object or none 
+    * Return Some(Music) or None
     */
     pub fn new_from_file(filename : &str) -> Option<Music> {
         let mut music_tmp : *ffi::sfMusic = ptr::null();
@@ -234,7 +198,7 @@ impl Music {
     *
     * Return current status
     */
-    pub fn get_status(&self) -> sound_status::Status {
+    pub fn get_status(&self) -> Status {
         unsafe {cast::transmute(ffi::sfMusic_getStatus(self.music) as i8)}
     }
 

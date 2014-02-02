@@ -14,7 +14,7 @@ use std::cell::RefCell;
 use std::io::{BufferedReader, stdin};
 use std::num::strconv;
 
-use rsfml::audio::{Sound, SoundBufferRecorder, sound_status};
+use rsfml::audio::{Sound, SoundBufferRecorder, Playing};
 use rsfml::system::{sleep, Time};
 
 fn main() -> () {
@@ -86,13 +86,13 @@ fn main() -> () {
         
         loop {
             match sound.get_status() {
-                sound_status::Playing       => {
+                Playing     => {
                 // Display the playing position
                 println!("\rPlaying...   {}", sound.get_playing_offset().as_seconds());
                 // Leave some CPU time for other processes
                 sleep(Time::with_milliseconds(100));
                 },
-            _                           => break
+            _               => break
 
             }
         }

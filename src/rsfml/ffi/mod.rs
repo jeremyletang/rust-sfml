@@ -22,14 +22,9 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-/*!
-* Basic traits for internal functionnement of rsfml.
-*/
-
-pub use traits::drawable::Drawable;
-pub use traits::wrappable::Wrappable;
-pub use traits::shape_impl::ShapeImpl;
-
-mod drawable;
-mod wrappable;
-mod shape_impl;
+pub mod graphics;
+pub mod audio;
+pub mod window;
+pub mod network;
+pub mod system;
+pub mod sfml_types;

@@ -24,13 +24,11 @@
 
 /*!
 * Glyph describes a glyph (a visual character)
-*
-*
-*
 */
 
-use graphics::rect::IntRect;
+use graphics::IntRect;
 
+/// Glyph describes a glyph (a visual character)
 #[deriving(Clone, Eq, Ord)]
 pub struct Glyph {
 	/// Offset to move horizontically to the next character. 

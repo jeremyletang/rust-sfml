@@ -23,97 +23,29 @@
 */
 
 /*!
- * Window manipulation
- *
- * Provides OpenGL-based windows, and abstractions for events and input handling.
- */
+* Window manipulation
+*
+* Provides OpenGL-based windows, 
+* and abstractions for events and input handling.
+*/
 
 use std::libc::{c_uint, c_float, c_int};
 use std::{ptr, cast};
 
-use traits::wrappable::Wrappable;
-use window::{event, keyboard, joystick, mouse};
-use window::video_mode::VideoMode;
-use window::context_settings::ContextSettings;
-use window::window_style::WindowStyle;
+use traits::Wrappable;
+use window::{event, keyboard, joystick, mouse, 
+    VideoMode, ContextSettings, WindowStyle};
 use system::vector2::{Vector2i, Vector2u};
-use sfml_types::{SFTRUE, SFFALSE};
 
-#[doc(hidden)]
-pub mod ffi {
-    
-    use std::libc::{c_void, c_uint, c_float, c_char};    
+use ffi::sfml_types::{SFTRUE, SFFALSE};
+use ffi = ffi::window::window;
 
-    use sfml_types::SfBool;
-    use window::context_settings::ContextSettings;
-    use window::video_mode::ffi;    
-    use system::vector2::{Vector2i, Vector2u};
-
-    pub struct sfWindow {
-        This : *c_void
-    }
-    
-    pub struct sfEvent {
-        typeEvent : c_uint,
-        p1 :        c_uint,
-        p2 :        c_uint,
-        p3 :        c_float,
-        p4 :        c_uint,
-        p5 :        c_uint
-    }
-
-    pub enum sfEventType {
-        sfEvtClosed, // 0
-        sfEvtResized, // 1
-        sfEvtLostFocus, // 2
-        sfEvtGainedFocus, // 3
-        sfEvtTextEntered, // 4
-        sfEvtKeyPressed, // 5
-        sfEvtKeyReleased, // 6
-        sfEvtMouseWheelMoved, // 7
-        sfEvtMouseButtonPressed, // 8
-        sfEvtMouseButtonReleased, // 9
-        sfEvtMouseMoved, // 10
-        sfEvtMouseEntered, // 11
-        sfEvtMouseLeft, // 12
-        sfEvtJoystickButtonPressed, // 13
-        sfEvtJoystickButtonReleased, // 14
-        sfEvtJoystickMoved, // 15
-        sfEvtJoystickConnected, // 16
-        sfEvtJoystickDisconnected // 17
-    }
-
-    extern "C" {
-        pub fn sfWindow_create(mode : ffi::sfVideoMode, title : *c_char, style : c_uint, settings : *ContextSettings) -> *sfWindow;
-        pub fn sfWindow_createUnicode(mode : ffi::sfVideoMode, title : *u32, style : c_uint, setting : *ContextSettings) -> *sfWindow;
-        //fn sfWindow_createFromHandle(handle : sfWindowHandle, settings : *sfContextSettings) -> *sfWindow;
-        pub fn sfWindow_close(window : *sfWindow) -> ();
-        pub fn sfWindow_destroy(window : *sfWindow) -> ();
-        pub fn sfWindow_isOpen(window : *sfWindow) -> SfBool;
-        pub fn sfWindow_getSettings(window : *sfWindow) -> ContextSettings;
-        pub fn sfWindow_setTitle(window : *sfWindow, title : *c_char) -> ();
-        pub fn sfWindow_setUnicodeTitle(window : *sfWindow, title : *u32) -> ();
-        pub fn sfWindow_setIcon(window : *sfWindow, width : c_uint, height : c_uint, pixel : *u8) -> (); 
-        pub fn sfWindow_setVisible(window : *sfWindow, visible : SfBool) -> ();
-        pub fn sfWindow_setMouseCursorVisible(window : *sfWindow, visible : SfBool) -> ();
-        pub fn sfWindow_setVerticalSyncEnabled(window : *sfWindow, enabled : SfBool) -> ();
-        pub fn sfWindow_setKeyRepeatEnabled(window : *sfWindow, enabled : SfBool) -> ();
-        pub fn sfWindow_setActive(window : *sfWindow, active : SfBool) -> SfBool;
-        pub fn sfWindow_display(window : *sfWindow) -> ();
-        pub fn sfWindow_setFramerateLimit(window : *sfWindow, limit : c_uint) -> ();
-        pub fn sfWindow_setJoystickThreshold(window : *sfWindow, threshold : c_float) -> ();
-        pub fn sfWindow_getPosition(window : *sfWindow) -> Vector2i;
-        pub fn sfWindow_setPosition(window : *sfWindow, position : Vector2i) -> ();
-        pub fn sfWindow_getSize(window : *sfWindow) -> Vector2u;
-        pub fn sfWindow_setSize(window : *sfWindow, size : Vector2u) -> ();
-        pub fn sfWindow_pollEvent(window : *sfWindow, event : *sfEvent) -> SfBool;
-        pub fn sfWindow_waitEvent(window : *sfWindow, event : *sfEvent) -> SfBool;
-        pub fn sfMouse_getPosition(relativeTo : *sfWindow) -> Vector2i;
-        pub fn sfMouse_setPosition(position : Vector2i, relativeTo : *sfWindow) -> ();
-        //fn sfWindow_getSystemHandle(window : *sfWindow) -> sfWindowHandle;
-    }
-}
-
+/**
+* Window manipulation
+*
+* Provides OpenGL-based windows, 
+* and abstractions for events and input handling.
+*/
 pub struct Window {
     #[doc(hidden)]
     priv window :       *ffi::sfWindow,
@@ -143,9 +75,13 @@ impl Window {
     * * style - Window style
     * * settings - Additional settings for the underlying OpenGL context
     *
-    * Return a new Window object
+    * Return Some(Window) or None
     */
-    pub fn new(mode : VideoMode, title : &str, style : WindowStyle, settings : &ContextSettings) -> Option<Window> {
+    pub fn new(mode : VideoMode, 
+        title : &str, 
+        style : WindowStyle, 
+        settings : &ContextSettings) -> Option<Window> {
+        
         let mut sf_win: *ffi::sfWindow = ptr::null();
         unsafe {
             title.with_c_str(|c_str| {
@@ -191,9 +127,13 @@ impl Window {
     * * style - Window style
     * * settings - Additional settings for the underlying OpenGL context
     *
-    * Return a new Window object
+    * Return Some(Window) or None
     */
-    pub fn new_with_unicode(mode : VideoMode, title : ~[u32], style : WindowStyle, settings : &ContextSettings) -> Option<Window> {
+    pub fn new_with_unicode(mode : VideoMode, 
+        title : ~[u32], 
+        style : WindowStyle, 
+        settings : &ContextSettings) -> Option<Window> {
+        
         let sf_win = unsafe { ffi::sfWindow_createUnicode(mode.unwrap(), title.as_ptr(), style as u32, settings) };
         let sf_ev = ffi::sfEvent {
             typeEvent : 0,
@@ -215,6 +155,7 @@ impl Window {
         }
     }
 
+    #[doc(hidden)]
     fn get_wrapped_event(&self) -> event::Event {
             match self.event.typeEvent as c_uint {
                 0   => event::Closed,
@@ -676,36 +617,36 @@ impl Window {
     }
 
     /**
-*  Get the current position of the mouse
-*
-* This function returns the current position of the mouse cursor relative to the given window.
-*
-* # Arguments
-* * relativeTo - Reference Window
-*
-* Return the position of the mouse cursor, relative to the given window
-*/
-pub fn get_mouse_position(&self) -> Vector2i {
-    unsafe {
-        ffi::sfMouse_getPosition(self.window)
+    *  Get the current position of the mouse
+    *
+    * This function returns the current position of the mouse cursor relative to the given window.
+    *
+    * # Arguments
+    * * relativeTo - Reference Window
+    *
+    * Return the position of the mouse cursor, relative to the given window
+    */
+    pub fn get_mouse_position(&self) -> Vector2i {
+        unsafe {
+            ffi::sfMouse_getPosition(self.window)
+        }
     }
-}
 
-/**
-* Set the current position of the mouse
-*
-* This function sets the current position of the mouse cursor relative to the given window.
-*
-* # Arguments
-* * position - New position of the mouse
-* * relativeTo - Reference Window
-*
-*/
-pub fn set_mouse_position(&mut self, position : &Vector2i) -> () {
-    unsafe {
-        ffi::sfMouse_setPosition(*position, self.window)
+    /**
+    * Set the current position of the mouse
+    *
+    * This function sets the current position of the mouse cursor relative to the given window.
+    *
+    * # Arguments
+    * * position - New position of the mouse
+    * * relativeTo - Reference Window
+    *
+    */
+    pub fn set_mouse_position(&mut self, position : &Vector2i) -> () {
+        unsafe {
+            ffi::sfMouse_setPosition(*position, self.window)
+        }
     }
-}
 
 
     #[doc(hidden)]

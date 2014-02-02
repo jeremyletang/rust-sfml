@@ -24,9 +24,6 @@
 
 /*!
 * Specialized shape representing a circle.
-*
-* 
-*
 */
 
 use std::rc::Rc;
@@ -34,74 +31,15 @@ use std::cell::RefCell;
 use std::libc::{c_float, c_uint};
 use std::ptr;
 
-use traits::drawable::Drawable;
-use traits::wrappable::Wrappable;
-use graphics::color::Color;
-use graphics::rect::{IntRect, FloatRect};
-use graphics::texture::Texture;
-use graphics::render_window::RenderWindow;
-use graphics::render_texture::RenderTexture;
+use traits::{Drawable, Wrappable};
+use graphics::{IntRect, FloatRect, Color, Texture, 
+    RenderWindow, RenderTexture, Transform, RenderStates};
 use system::vector2::Vector2f;
-use graphics::transform::Transform;
-use graphics::render_states::RenderStates;
-use sfml_types::{SFTRUE, SFFALSE};
 
-#[doc(hidden)]
-pub mod ffi {
-    
-    use std::libc::{c_void, c_float, c_uint};
+use ffi::sfml_types::{SFTRUE, SFFALSE};
+use ffi = ffi::graphics::circle_shape;
 
-    use graphics::texture;
-    use sfml_types::SfBool;
-    use graphics::rect::{IntRect, FloatRect};
-    use system::vector2::Vector2f;
-    use graphics::color::Color;
-    use graphics::transform::Transform;
-
-    pub struct sfCircleShape {
-        This :              *c_void,
-        Texture :           *texture::ffi::sfTexture,
-        Transform :         Transform,
-        InverseTransform :  Transform
-    }
-    
-    extern "C" {
-        pub fn sfCircleShape_create() -> *sfCircleShape;
-        pub fn sfCircleShape_copy(shape : *sfCircleShape) -> *sfCircleShape;
-        pub fn sfCircleShape_destroy(shape : *sfCircleShape) -> ();
-        pub fn sfCircleShape_setPosition(shape : *sfCircleShape, position : Vector2f) -> ();
-        pub fn sfCircleShape_setRotation(shape : *sfCircleShape, angle : c_float) -> ();
-        pub fn sfCircleShape_setScale(shape : *sfCircleShape, scale : Vector2f) -> ();
-        pub fn sfCircleShape_setOrigin(shape : *sfCircleShape, origin : Vector2f) -> ();
-        pub fn sfCircleShape_getPosition(shape : *sfCircleShape) -> Vector2f;
-        pub fn sfCircleShape_getRotation(shape : *sfCircleShape) -> c_float;
-        pub fn sfCircleShape_getScale(shape : *sfCircleShape) -> Vector2f;
-        pub fn sfCircleShape_getOrigin(shape : *sfCircleShape) -> Vector2f;
-        pub fn sfCircleShape_move(shape : *sfCircleShape, offset : Vector2f) -> ();
-        pub fn sfCircleShape_rotate(shape : *sfCircleShape, angle : c_float) -> ();
-        pub fn sfCircleShape_scale(shape : *sfCircleShape, factors : Vector2f) -> ();
-        pub fn sfCircleShape_getTransform(shape : *sfCircleShape) -> Transform;
-        pub fn sfCircleShape_getInverseTransform(shape : *sfCircleShape) -> Transform;
-        pub fn sfCircleShape_setTexture(shape : *sfCircleShape, texture : *texture::ffi::sfTexture, reset_rect : SfBool) -> ();
-        pub fn sfCircleShape_setTextureRect(shape : *sfCircleShape, rect : IntRect) -> ();
-        pub fn sfCircleShape_setFillColor(shape : *sfCircleShape, color : Color) -> ();
-        pub fn sfCircleShape_setOutlineColor(shape : *sfCircleShape, color : Color) -> ();
-        pub fn sfCircleShape_setOutlineThickness(shape : *sfCircleShape, thickness : c_float) -> ();
-        pub fn sfCircleShape_getTexture(shape : *sfCircleShape) -> *texture::ffi::sfTexture;
-        pub fn sfCircleShape_getTextureRect(shape : *sfCircleShape) -> IntRect;
-        pub fn sfCircleShape_getFillColor(shape : *sfCircleShape) -> Color;
-        pub fn sfCircleShape_getOutlineColor(shape : *sfCircleShape) -> Color;
-        pub fn sfCircleShape_getOutlineThickness(shape : *sfCircleShape) -> c_float;
-        pub fn sfCircleShape_getPointCount(shape : *sfCircleShape) -> c_uint;
-        pub fn sfCircleShape_getPoint(shape : *sfCircleShape, index : c_uint) -> ();
-        pub fn sfCircleShape_setRadius(shape : *sfCircleShape, radius : c_float) -> ();
-        pub fn sfCircleShape_getRadius(shape : *sfCircleShape) -> c_float;
-        pub fn sfCircleShape_setPointCount(shape : *sfCircleShape, count : c_uint) -> ();
-        pub fn sfCircleShape_getLocalBounds(shape : *sfCircleShape) -> FloatRect;
-        pub fn sfCircleShape_getGlobalBounds(shape : *sfCircleShape) -> FloatRect;
-    }
-}
-
+/// Specialized shape representing a circle.
 pub struct CircleShape {
     #[doc(hidden)]
     priv circle_shape : *ffi::sfCircleShape,
@@ -113,7 +51,7 @@ impl CircleShape {
     /**
     * Create a new circle shape
     *
-    * Return a new option to CircleShape object or None
+    * Return Some(CircleShape) or None
     */
     pub fn new() -> Option<CircleShape> {
         let circle = unsafe { ffi::sfCircleShape_create() };
@@ -128,6 +66,14 @@ impl CircleShape {
         }
     }
     
+    /**
+    * Create a new circle shape initialized with a texture
+    *
+    * # Arguments
+    * * texture - The texture to initialize the CircleShape with.
+    * 
+    * Return Some(CircleShape) or None
+    */
     pub fn new_with_texture(texture : Rc<RefCell<Texture>>) -> Option<CircleShape> {
         let circle = unsafe { ffi::sfCircleShape_create() };
         if ptr::is_null(circle) {
@@ -148,9 +94,13 @@ impl CircleShape {
     /**
     * Create a new CircleShape and initialize it.
     *
+    * # Arguments:
+    * * radius - The radius of the CircleShape
+    * * point_count - The number of points to define the CircleShape
+    *
     * Default value on SFML are radius = 0 / pointCount = 30
     *
-    * Return a new initialized option to CircleShape or None
+    * Return Some(CircleShape) or None
     */
     pub fn new_init(radius : f32, point_count : uint) -> Option<CircleShape> {
         let circle = unsafe { ffi::sfCircleShape_create() };
@@ -175,7 +125,7 @@ impl CircleShape {
     * # Arguments
     * * shape - Shape to copy
     * 
-    * Return the copied object on option or None
+    * Return Some(CircleShape) or None
     */
     pub fn clone(&self) -> Option<CircleShape> {
         let circle = unsafe { ffi::sfCircleShape_copy(self.circle_shape) };

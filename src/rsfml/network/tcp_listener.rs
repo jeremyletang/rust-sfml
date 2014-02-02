@@ -24,43 +24,16 @@
 
 /*!
 * Socket that listens to new TCP connections
-*
-*
-*
-*
-*
 */
 
 use std::{ptr, cast};
 
-use traits::wrappable::Wrappable;
-use network::tcp_socket::TcpSocket;
-use network::socket_status::SocketStatus;
+use traits::Wrappable;
+use network::{TcpSocket, SocketStatus};
 
-#[doc(hidden)]
-pub mod ffi {
+use ffi = ffi::network::tcp_listener;
 
-    use std::libc::{c_void};
- 
-    use network::tcp_socket;
-    use sfml_types::SfBool;
-    use network::socket_status;
-
-    pub struct sfTcpListener {
-        This : *c_void
-    }
-    
-    extern "C" {
-        pub fn sfTcpListener_create() -> *sfTcpListener;
-        pub fn sfTcpListener_destroy(listener : *sfTcpListener) -> ();
-        pub fn sfTcpListener_setBlocking(listener : *sfTcpListener, blocking : SfBool) -> ();
-        pub fn sfTcpListener_isBlocking(listener : *sfTcpListener) -> SfBool;
-        pub fn sfTcpListener_getLocalPort(listener : *sfTcpListener) -> u16;
-        pub fn sfTcpListener_listen(listener : *sfTcpListener, port : u16) -> socket_status::ffi::SocketStatus;
-        pub fn sfTcpListener_accept(listener : *sfTcpListener, connected : **tcp_socket::ffi::sfTcpSocket) -> socket_status::ffi::SocketStatus;
-    }
-}
-
+/// Socket that listens to new TCP connections
 pub struct TcpListener {
     #[doc(hidden)]
     priv listener : *ffi::sfTcpListener
@@ -70,7 +43,7 @@ impl TcpListener {
     /**
     * Create a new TCP listener
     *
-    * Return a new option to TcpListener object or None
+    * Return Some(TcpListener) or None
     */
     pub fn new() -> Option<TcpListener> {
         let list = unsafe { ffi::sfTcpListener_create() };

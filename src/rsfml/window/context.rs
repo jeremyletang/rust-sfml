@@ -28,25 +28,14 @@
  * Class holding a valid drawing context.
  */
 
-use sfml_types::{SFTRUE, SFFALSE};
+use ffi::sfml_types::{SFTRUE, SFFALSE};
+use ffi = ffi::window::context;
 
-#[doc(hidden)]
-pub mod ffi {
-
-    use std::libc::c_void;
-    use sfml_types::SfBool;
-
-    pub struct sfContext {
-        This: *c_void
-    }
-
-    extern "C" {
-        pub fn sfContext_create() -> *sfContext;
-        pub fn sfContext_destroy(context : *sfContext) -> ();
-        pub fn sfContext_setActive(context : *sfContext, active : SfBool) -> ();
-    }
-}
-
+/**
+* Drawing context
+*
+* Class holding a valid drawing context.
+*/
 pub struct Context {
     #[doc(hidden)]
     priv cont : *ffi::sfContext

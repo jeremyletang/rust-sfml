@@ -25,39 +25,25 @@
 /*!
 * Store captured audio data in sound Buffer
 *
-* SoundBufferRecorder allows to access a recorded sound through a sf::SoundBuffer, so that it can be played, saved to a file, etc.
-*
+* SoundBufferRecorder allows to access a recorded sound through a SoundBuffer, 
+* so that it can be played, saved to a file, etc.
 */
 
 use std::libc::c_uint;
 use std::ptr;
 
-use traits::wrappable::Wrappable;
-use super::sound_buffer::SoundBuffer;
-use sfml_types::{SFTRUE, SFFALSE};
+use traits::Wrappable;
+use audio::sound_buffer::SoundBuffer;
 
-#[doc(hidden)]
-pub mod ffi {
+use ffi::sfml_types::{SFTRUE, SFFALSE};
+use ffi = ffi::audio::sound_buffer_recorder;
 
-    use std::libc::{c_uint, c_void};
-    use audio::sound_buffer;
-    use sfml_types::SfBool;
-    
-    pub struct sfSoundBufferRecorder {
-        This : *c_void
-    }
-
-    extern "C" {
-        pub fn sfSoundBufferRecorder_create() -> *sfSoundBufferRecorder;
-        pub fn sfSoundBufferRecorder_destroy(soundBufferRecorder : *sfSoundBufferRecorder) -> ();
-        pub fn sfSoundBufferRecorder_start(soundBufferRecorder : *sfSoundBufferRecorder, sampleRate : c_uint) -> ();
-        pub fn sfSoundBufferRecorder_stop(soundBufferRecorder : *sfSoundBufferRecorder) -> ();
-        pub fn sfSoundBufferRecorder_getSampleRate(soundBufferRecorder : *sfSoundBufferRecorder) -> c_uint;
-        pub fn sfSoundBufferRecorder_getBuffer(soundBufferRecorder : *sfSoundBufferRecorder) -> *sound_buffer::ffi::sfSoundBuffer;
-        pub fn sfSoundRecorder_isAvailable() -> SfBool;
-    }
-}
-
+/**
+* Store captured audio data in sound Buffer
+*
+* SoundBufferRecorder allows to access a recorded sound through a SoundBuffer, 
+* so that it can be played, saved to a file, etc.
+*/
 pub struct SoundBufferRecorder {
     #[doc(hidden)]
     priv sound_buffer_recorder : *ffi::sfSoundBufferRecorder
