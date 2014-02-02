@@ -43,7 +43,7 @@ use graphics::rect::IntRect;
 use graphics::texture::Texture;
 use graphics::text::Text;
 use graphics::rc;
-use graphics::borrow;
+use graphics::CircleShape;
 use graphics::rectangle_shape::RectangleShape;
 use graphics::vertex_array::VertexArray;
 use graphics::convex_shape::ConvexShape;
@@ -398,7 +398,7 @@ impl RenderTexture {
     }
 
     /// Draw CircleShape
-    pub fn draw_circle_shape_borrow(&self, circle_shape : &borrow::CircleShape) -> () {
+    pub fn draw_circle_shape_borrow(&self, circle_shape : &CircleShape) -> () {
         unsafe {
             ffi::sfRenderTexture_drawCircleShape(self.render_texture, circle_shape.unwrap(), ptr::null())
         }
@@ -454,7 +454,7 @@ impl RenderTexture {
     }
 
     /// Draw CircleShape
-    pub fn draw_circle_shape_rs_borrow(&self, circle_shape : &borrow::CircleShape, rs : &mut RenderStates) -> () {
+    pub fn draw_circle_shape_rs_borrow(&self, circle_shape : &CircleShape, rs : &mut RenderStates) -> () {
         unsafe {
             ffi::sfRenderTexture_drawCircleShape(self.render_texture, circle_shape.unwrap(), rs.unwrap())
         }

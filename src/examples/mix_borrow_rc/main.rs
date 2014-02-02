@@ -9,7 +9,7 @@
 extern mod native;
 extern mod rsfml;
 
-use rsfml::graphics::{RenderWindow, Color, rc, borrow};
+use rsfml::graphics::{RenderWindow, Color, rc, CircleShape};
 use rsfml::window::{VideoMode, ContextSettings, event, keyboard, Close};
 use rsfml::system::Vector2f;
 
@@ -30,7 +30,7 @@ fn main () -> () {
     window.set_vertical_sync_enabled(true);
 
 
-    let mut borrow: borrow::CircleShape = borrow::CircleShape::new().expect("Error, cannot create a borrow CircleShape");
+    let mut borrow: CircleShape = CircleShape::new().expect("Error, cannot create a borrow CircleShape");
    	borrow.set_fill_color(&Color::red());
     borrow.set_outline_color(&Color::green());
     borrow.set_outline_thickness(3.);

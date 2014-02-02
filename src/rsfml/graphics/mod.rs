@@ -52,12 +52,12 @@ pub use self::render_texture::RenderTexture;
 pub use self::shape::Shape;
 pub use self::vertex_array::VertexArray;
 
+// borrow reexports -> default Shapes 
+pub use graphics::circle_shape::borrow::CircleShape;
+
+// rc reexports
 pub mod rc {
 	pub use graphics::circle_shape::rc::CircleShape;
-}
-
-pub mod borrow {
-	pub use graphics::circle_shape::borrow::CircleShape;
 }
 
 #[doc(hidden)]
