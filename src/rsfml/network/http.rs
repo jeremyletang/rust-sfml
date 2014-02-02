@@ -34,14 +34,14 @@ use std::{str, cast};
 use std::libc::c_int;
 
 use traits::wrappable::Wrappable;
-use system::time::Time;
+use system::Time;
 
 #[doc(hidden)]
 pub mod ffi {
     
     use std::libc::{c_char, c_void, c_int};
 
-    use system::time;
+    use ffi::system::time::sfTime;
 
     pub type Method = c_int;
     pub static GET : Method = 0;
@@ -107,7 +107,7 @@ pub mod ffi {
         pub fn sfHttp_create() -> *sfHttp;
         pub fn sfHttp_destroy(http : *sfHttp) -> ();
         pub fn sfHttp_setHost(http : *sfHttp, host : *c_char, port : u16) -> ();
-        pub fn sfHttp_sendRequest(http : *sfHttp, httpRequest : *sfHttpRequest, timeout : time::ffi::sfTime) -> *sfHttpResponse;
+        pub fn sfHttp_sendRequest(http : *sfHttp, httpRequest : *sfHttpRequest, timeout : sfTime) -> *sfHttpResponse;
     }
 }
 

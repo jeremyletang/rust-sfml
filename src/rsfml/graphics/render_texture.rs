@@ -49,62 +49,7 @@ use graphics::convex_shape::ConvexShape;
 use graphics::render_states::RenderStates;
 use graphics::shape::Shape;
 
-#[doc(hidden)]
-pub mod ffi {
-    
-    use std::libc::{c_void, c_uint};
-
-    use sfml_types::SfBool;
-    use graphics::view;
-    use system::vector2::{Vector2f, Vector2i, Vector2u};
-    use graphics::render_states;
-    use graphics::sprite;
-    use graphics::color::Color;
-    use graphics::rect::IntRect;
-    use graphics::texture;
-    use graphics::text;
-    use graphics::circle_shape;
-    use graphics::rectangle_shape;
-    use graphics::vertex_array;
-    use graphics::convex_shape;
-    use graphics::shape;
-
-    pub struct sfRenderTexture {
-        This :          *c_void,
-        Target :        *texture::ffi::sfTexture,
-        DefaultView :   view::ffi::sfView,
-        CurrentView :   view::ffi::sfView
-    }
-    
-    extern "C" {
-        pub fn sfRenderTexture_create(width : c_uint, height : c_uint, depthBuffer : SfBool) -> *sfRenderTexture;
-        pub fn sfRenderTexture_destroy(renderTexture : *sfRenderTexture) -> ();
-        pub fn sfRenderTexture_getSize(renderTexture : *sfRenderTexture) -> Vector2u;
-        pub fn sfRenderTexture_setActive(renderTexture : *sfRenderTexture, active : SfBool) -> SfBool;
-        pub fn sfRenderTexture_display(renderTexture : *sfRenderTexture) -> ();
-        pub fn sfRenderTexture_clear(renderTexture : *sfRenderTexture, color : Color) -> ();
-        pub fn sfRenderTexture_setView(renderTexture : *sfRenderTexture, view : *view::ffi::sfView) -> ();
-        pub fn sfRenderTexture_getView(renderTexture : *sfRenderTexture) -> *view::ffi::sfView;
-        pub fn sfRenderTexture_getDefaultView(renderTexture : *sfRenderTexture) -> *view::ffi::sfView;
-        pub fn sfRenderTexture_getViewport(renderTexture : *sfRenderTexture, view : *view::ffi::sfView) -> IntRect;
-        pub fn sfRenderTexture_mapPixelToCoords(renderTexture : *sfRenderTexture, point : Vector2i, view : *view::ffi::sfView) -> Vector2f;
-        pub fn sfRenderTexture_mapCoordsToPixel(renderTexture : *sfRenderTexture, point : Vector2f, view : *view::ffi::sfView) -> Vector2i;
-        pub fn sfRenderTexture_drawSprite(renderTexture : *sfRenderTexture, object : *sprite::ffi::sfSprite, states : *render_states::ffi::sfRenderStates) -> ();
-        pub fn sfRenderTexture_drawText(renderTexture : *sfRenderTexture, object : *text::ffi::sfText, states : *render_states::ffi::sfRenderStates) -> ();
-        pub fn sfRenderTexture_drawShape(renderTexture : *sfRenderTexture, object : *shape::ffi::sfShape, states : *render_states::ffi::sfRenderStates) -> ();
-        pub fn sfRenderTexture_drawCircleShape(renderTexture : *sfRenderTexture, object : *circle_shape::ffi::sfCircleShape, states : *render_states::ffi::sfRenderStates) -> ();
-        pub fn sfRenderTexture_drawConvexShape(renderTexture : *sfRenderTexture, object : *convex_shape::ffi::sfConvexShape, states : *render_states::ffi::sfRenderStates) -> ();
-        pub fn sfRenderTexture_drawRectangleShape(renderTexture : *sfRenderTexture, object : *rectangle_shape::ffi::sfRectangleShape, states : *render_states::ffi::sfRenderStates) -> ();
-        pub fn sfRenderTexture_drawVertexArray(renderTexture : *sfRenderTexture, object : *vertex_array::ffi::sfVertexArray, states : *render_states::ffi::sfRenderStates) -> ();
-        //fn sfRenderTexture_drawPrimitives(renderTexture : *sfRenderTexture) -> (); // a modifier
-        pub fn sfRenderTexture_pushGLStates(renderTexture : *sfRenderTexture) -> ();
-        pub fn sfRenderTexture_popGLStates(renderTexture : *sfRenderTexture) -> ();
-        pub fn sfRenderTexture_resetGLStates(renderTexture : *sfRenderTexture) -> ();
-        pub fn sfRenderTexture_getTexture(renderTexture : *sfRenderTexture) -> *texture::ffi::sfTexture;
-        pub fn sfRenderTexture_setSmooth(renderTexture : *sfRenderTexture, smooth : SfBool) -> ();
-        pub fn sfRenderTexture_isSmooth(renderTexture : *sfRenderTexture) -> SfBool;
-    }
-}
+use ffi = ffi::graphics::render_texture;
 
 pub struct RenderTexture {
     #[doc(hidden)]

@@ -38,18 +38,7 @@ use graphics::shader::Shader;
 use graphics::texture::Texture;
 use graphics::transform::Transform; 
 
-#[doc(hidden)]
-pub mod ffi {
-    
-    use graphics::{shader, texture, transform}; 
-
-    pub struct sfRenderStates {
-        blendMode : i32,
-        transform : transform::Transform,
-        texture :   *texture::ffi::sfTexture,
-        shader :    *shader::ffi::sfShader
-    }
-}
+use ffi = ffi::graphics::render_states;
 
 /**
 * Define the states used for drawing to a RenderTarget

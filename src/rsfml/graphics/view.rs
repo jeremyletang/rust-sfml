@@ -36,37 +36,7 @@ use traits::wrappable::Wrappable;
 use system::vector2::Vector2f;
 use graphics::rect::FloatRect;
 
-#[doc(hidden)]
-pub mod ffi {
-    
-    use std::libc::{c_float, c_void};
-
-    use system::vector2::Vector2f;
-    use graphics::rect::FloatRect;
-
-    pub struct sfView {
-        This : *c_void
-    }
-
-    extern "C" {
-        pub fn sfView_create() -> *sfView;
-        pub fn sfView_createFromRect(rectangle : FloatRect) -> *sfView;
-        pub fn sfView_copy(view : *sfView) -> *sfView;
-        pub fn sfView_destroy(view : *sfView) -> ();
-        pub fn sfView_setCenter(view : *sfView, center : Vector2f) -> ();
-        pub fn sfView_setSize(view : *sfView, size : Vector2f) -> ();
-        pub fn sfView_setRotation(view : *sfView, angle : c_float) -> ();
-        pub fn sfView_setViewport(view : *sfView, viewport : FloatRect) -> ();
-        pub fn sfView_reset(view : *sfView, rectangle : FloatRect) -> ();
-        pub fn sfView_getCenter(view : *sfView) -> Vector2f;
-        pub fn sfView_getSize(view : *sfView) -> Vector2f;
-        pub fn sfView_getRotation(view : *sfView) -> c_float;
-        pub fn sfView_getViewport(view : *sfView) -> FloatRect;
-        pub fn sfView_move(view : *sfView, offset : Vector2f) -> ();
-        pub fn sfView_rotate(view : *sfView, angle : c_float) -> ();
-        pub fn sfView_zoom(view : *sfView, factor : c_float) -> ();
-    }
-}
+use ffi = ffi::graphics::view;
 
 pub struct View {
     #[doc(hidden)]

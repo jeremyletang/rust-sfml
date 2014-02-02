@@ -29,16 +29,7 @@
 
 use std::libc::c_int;
 
-#[doc(hidden)]
-pub mod ffi {
-
-	use std::libc::c_int;
-    
-    pub type sfSoundStatus = c_int;
-    pub static SFSTOPPED:	sfSoundStatus = 0;
-    pub static SFPAUSED: 	sfSoundStatus = 1;
-    pub static SFPLAYING: 	sfSoundStatus = 2;
-}
+use ffi = ffi::audio::sound_status;
 
 /**
 * Enumeration of statuses for sounds and musics

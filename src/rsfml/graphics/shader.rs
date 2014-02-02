@@ -40,41 +40,7 @@ use system::vector3::Vector3f;
 use graphics::color::Color;
 use sfml_types::{SFTRUE, SFFALSE};
 
-#[doc(hidden)]
-pub mod ffi {
-
-    use std::libc::{c_void, c_float, c_char};
-
-    use sfml_types::SfBool;
-    use graphics::transform;
-    use graphics::texture;
-    use system::vector2::Vector2f;
-    use system::vector3::Vector3f;
-    use graphics::color::Color;
-
-    pub struct sfShader {
-        This : *c_void
-    }
-
-    extern "C" {
-        pub fn sfShader_createFromFile(vertexShaderFilename : *c_char, fragmentShaderFilename : *c_char) -> *sfShader;
-        pub fn sfShader_createFromMemory(vertexShader : *c_char, fragmentShader : *c_char) -> *sfShader;
-        //fn sfShader_createFromStream(vertexShaderStream : *sfInputStream, fragmentShaderStream : *sfInputStream) -> *sfShader;
-        pub fn sfShader_destroy(shader : *sfShader)-> ();
-        pub fn sfShader_setFloatParameter(shader : *sfShader, name : *c_char, x : c_float) -> ();
-        pub fn sfShader_setFloat2Parameter(shader : *sfShader, name : *c_char, x : c_float, y : c_float) -> ();
-        pub fn sfShader_setFloat3Parameter(shader : *sfShader, name : *c_char, x : c_float, y : c_float, z : c_float) -> ();
-        pub fn sfShader_setFloat4Parameter(shader : *sfShader, name : *c_char, x : c_float, y : c_float, z : c_float, w : c_float) -> ();
-        pub fn sfShader_setVector2Parameter(shader : *sfShader, name : *c_char, vector : Vector2f) -> ();
-        pub fn sfShader_setVector3Parameter(shader : *sfShader, name : *c_char, vector : Vector3f) -> ();
-        pub fn sfShader_setColorParameter(shader : *sfShader, name : *c_char, color : Color) -> (); 
-        pub fn sfShader_setTransformParameter(shader : *sfShader, name : *c_char, transform : transform::Transform) -> ();
-        pub fn sfShader_setTextureParameter(shader : *sfShader, name : *c_char, texture : *texture::ffi::sfTexture) -> ();
-        pub fn sfShader_setCurrentTextureParameter(shader : *sfShader, name : *c_char) -> ();
-        pub fn sfShader_bind(shader : *sfShader) -> ();
-        pub fn sfShader_isAvailable() -> SfBool;
-   }
-}
+use ffi = ffi::graphics::shader;
 
 pub struct Shader {
     #[doc(hidden)]

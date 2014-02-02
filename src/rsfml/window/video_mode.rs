@@ -36,42 +36,14 @@ use std::libc::{c_uint, size_t};
 use traits::wrappable::Wrappable;
 use sfml_types::{SFTRUE, SFFALSE};
 
+use ffi = ffi::window::video_mode;
+
 /**
 * VideoMode defines a video mode (width, height, bpp, frequency) 
 *
 * Provides functions for getting modes supported by the display device
 *
 */
-
-#[doc(hidden)]
-pub mod ffi {
-    
-    use std::libc::{c_uint, size_t};
-    use sfml_types::SfBool;
-
-    pub struct sfVideoMode {
-        width:          c_uint,
-        height:         c_uint,
-        bits_per_pixel: c_uint 
-    }
-
-    impl Clone for sfVideoMode {
-        fn clone(&self) -> sfVideoMode {
-           sfVideoMode {
-               width : self.width,
-               height : self.height,
-               bits_per_pixel : self.bits_per_pixel
-            }   
-        }
-    }
-    
-    extern "C" {
-        pub fn sfVideoMode_getDesktopMode() -> sfVideoMode;
-        pub fn sfVideoMode_getFullscreenModes(Count : *size_t) -> *sfVideoMode;
-        pub fn sfVideoMode_isValid(mode : sfVideoMode) -> SfBool;
-    }
-}
-
 #[deriving(Clone, Eq, Ord)]
 pub struct VideoMode {
     /// Video mode width, in pixels.

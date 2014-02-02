@@ -36,39 +36,7 @@ use traits::wrappable::Wrappable;
 use system::vector2::Vector2f;
 use graphics::transform::Transform;
     
-#[doc(hidden)]
-pub mod ffi {
-    
-    use std::libc::{c_float, c_void};
-
-    use system::vector2::Vector2f;
-    use graphics::transform::Transform;
-    
-    pub struct sfTransformable {
-        This :              *c_void,
-        transform :         Transform,
-        inverseTransform :  Transform
-    }
-
-    extern "C" {
-        pub fn sfTransformable_create() -> *sfTransformable;
-        pub fn sfTransformable_copy(transformable : *sfTransformable) -> *sfTransformable;
-        pub fn sfTransformable_destroy(transformable : *sfTransformable) -> ();
-        pub fn sfTransformable_setPosition(transformable : *sfTransformable, position : Vector2f) -> ();
-        pub fn sfTransformable_setRotation(transformable : *sfTransformable, angle : c_float) -> ();
-        pub fn sfTransformable_setScale(transformable : *sfTransformable, scale : Vector2f) -> ();
-        pub fn sfTransformable_setOrigin(transformable : *sfTransformable, origin : Vector2f) -> ();
-        pub fn sfTransformable_getPosition(transformable : *sfTransformable) -> Vector2f;
-        pub fn sfTransformable_getRotation(transformable : *sfTransformable) -> c_float;
-        pub fn sfTransformable_getScale(transformable : *sfTransformable) -> Vector2f;
-        pub fn sfTransformable_getOrigin(transformable : *sfTransformable) -> Vector2f;
-        pub fn sfTransformable_move(transformable : *sfTransformable, offset : Vector2f) -> ();
-        pub fn sfTransformable_rotate(transformable : *sfTransformable, angle : c_float) -> ();
-        pub fn sfTransformable_scale(transformable : *sfTransformable, factors : Vector2f) -> ();
-        pub fn sfTransformable_getTransform(transformable : *sfTransformable) -> Transform;
-        pub fn sfTransformable_getInverseTransform(transformable : *sfTransformable) -> Transform;
-    }
-}
+use ffi = ffi::graphics::transformable;
 
 pub struct Transformable{
     #[doc(hidden)]

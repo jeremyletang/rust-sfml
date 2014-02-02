@@ -29,9 +29,9 @@
 *
 */
 
-use graphics::render_window::RenderWindow;
-use graphics::render_texture::RenderTexture;
-use graphics::render_states::RenderStates;
+use graphics::RenderWindow;
+use graphics::RenderTexture;
+use graphics::RenderStates;
 
 /**
 * The trait drawable is inherited by each object who can be drown by the RenderWindow

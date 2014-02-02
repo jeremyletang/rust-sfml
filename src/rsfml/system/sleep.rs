@@ -29,15 +29,7 @@
 use traits::wrappable::Wrappable;
 use system::time::Time;
 
-#[doc(hidden)]
-pub mod ffi {
-    
-    use system::time::ffi;
-
-    extern "C" {
-        pub fn sfSleep(duration : ffi::sfTime) -> ();
-    }
-}
+use ffi = ffi::system::sleep;
 
 /**
 * Make the current thread sleep for a given duration

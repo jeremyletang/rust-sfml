@@ -10,7 +10,7 @@ extern mod rsfml;
 
 use std::rc::Rc;
 use std::cell::RefCell;
-use rsfml::audio::{SoundBuffer, Sound, Music, sound_status};
+use rsfml::audio::{SoundBuffer, Sound, Music, Playing};
 use rsfml::system::{sleep, Time};
 
 /* Play a Sound */
@@ -35,13 +35,13 @@ fn play_sound() -> () {
 
     loop {
         match sound.get_status() {
-            sound_status::Playing       => {
+            Playing     => {
                 // Leave some CPU time for other processes
                 sleep(Time::with_milliseconds(100));
                 // Display the playing position
                 println!("\rPlaying...   {}", sound.get_playing_offset().as_seconds());
             },
-            _                           => break
+            _           => break
             
         }
         
@@ -66,13 +66,13 @@ fn play_music() -> () {
     
     loop {
         match music.get_status() {
-            sound_status::Playing       => {
+            Playing     => {
                 // Leave some CPU time for other processes
                 sleep(Time::with_milliseconds(100));
                 // Display the playing position
                 println!("\rPlaying...   {}", music.get_playing_offset().as_seconds());
             },
-            _                           => break
+            _           => break
             
         }
         

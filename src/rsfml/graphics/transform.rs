@@ -34,29 +34,7 @@ use std::libc::c_float;
 use system::vector2::Vector2f;
 use graphics::rect::FloatRect;
 
-#[doc(hidden)]
-pub mod ffi {
-    
-    use std::libc::c_float;
-
-    use system::vector2::Vector2f;
-    use graphics::rect::FloatRect;
-    use graphics::transform::Transform;
-
-    extern "C" {
-        pub fn sfTransform_fromMatrix(a01 : f32, a02 : f32, a03 : f32, b01 : f32, b02 : f32, b03 : f32, c01 : f32, c02 : f32, c03 : f32) -> Transform;
-        pub fn sfTransform_getMatrix(tranform : *Transform, matrix : *f32) -> ();
-        pub fn sfTransform_getInverse(transform : *Transform) -> Transform;
-        pub fn sfTransform_transformPoint(transform : *Transform, point : Vector2f) -> Vector2f;
-        pub fn sfTransform_transformRect(transform : *Transform, rectangle : FloatRect) -> FloatRect;
-        pub fn sfTransform_combine(transform : *Transform, other : *Transform) -> ();
-        pub fn sfTransform_translate(transform : *Transform, x : c_float, y : c_float) -> ();
-        pub fn sfTransform_rotate(transform : *Transform, angle : c_float) -> ();
-        pub fn sfTransform_rotateWithCenter(transform : *Transform, angle : c_float, center_x : c_float, center_y : c_float) -> ();
-        pub fn sfTransform_scale(transform : *Transform, scale_x : c_float, scale_y : c_float) -> ();
-        pub fn sfTransform_scaleWithCenter(transform: *Transform, scale_x : c_float, scale_y : c_float, center_x : c_float, center_y : c_float) -> ();
-    }
-}
+use ffi = ffi::graphics::transform;
 
 pub struct Transform {
         a00 : f32,

@@ -32,14 +32,14 @@ use std::str;
 use std::ptr;
 
 use traits::wrappable::Wrappable;
-use system::time::Time;
+use system::Time;
 
 #[doc(hidden)]
 pub mod ffi{
     
     use std::libc::c_char;
     
-    use system::time;
+    use ffi::system::time::sfTime;
 
     pub struct sfIpAddress {
         c1 : u8,
@@ -67,7 +67,7 @@ pub mod ffi{
         pub fn sfIpAddress_toString(address : sfIpAddress, string : *u8) -> ();
         pub fn sfIpAddress_toInteger(address : sfIpAddress) -> u32;
         pub fn sfIpAddress_getLocalAddress() -> sfIpAddress;
-        pub fn sfIpAddress_getPublicAddress(timeout : time::ffi::sfTime) -> sfIpAddress;
+        pub fn sfIpAddress_getPublicAddress(timeout : sfTime) -> sfIpAddress;
     }
 }
 

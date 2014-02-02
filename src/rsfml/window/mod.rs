@@ -45,12 +45,12 @@ mod platform {
 }
 
 
-pub mod window;
-pub mod video_mode;
-pub mod context;
-pub mod context_settings;
+mod window;
+mod video_mode;
+mod context;
+mod context_settings;
 pub mod joystick;
 pub mod keyboard;
 pub mod mouse;
 pub mod event;
-pub mod window_style;
+mod window_style;

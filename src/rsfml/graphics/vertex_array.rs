@@ -42,41 +42,7 @@ use graphics::render_window::RenderWindow;
 use graphics::render_texture::RenderTexture;
 use graphics::render_states::RenderStates;
 
-#[doc(hidden)]
-pub mod ffi {
-    
-    use std::libc::{c_uint, c_void};
-
-    use graphics::vertex;
-    use graphics::rect::FloatRect;
-    
-    pub type sfPrimitiveType = c_uint;
-    pub static SFPOINTS :           sfPrimitiveType = 0;
-    pub static SFLINES :            sfPrimitiveType = 1;
-    pub static SFLINESSTRIP :       sfPrimitiveType = 2;
-    pub static SFTRIANGLES :        sfPrimitiveType = 3;
-    pub static SFTRIANGLESSTRIP :   sfPrimitiveType = 4;
-    pub static SFTRIANGLESFAN :     sfPrimitiveType = 5;
-    pub static SFQUADS :            sfPrimitiveType = 6;
-
-    pub struct sfVertexArray {
-        This : *c_void
-    }
-
-    extern "C" {
-        pub fn sfVertexArray_create() -> *sfVertexArray;
-        pub fn sfVertexArray_copy(vertexArray : *sfVertexArray) -> *sfVertexArray;
-        pub fn sfVertexArray_destroy(vertexArray : *sfVertexArray) -> ();
-        pub fn sfVertexArray_getVertexCount(vertexArray : *sfVertexArray) -> c_uint;
-        pub fn sfVertexArray_getVertex(vertexArray : *sfVertexArray, index : c_uint) -> *vertex::Vertex;
-        pub fn sfVertexArray_clear(vertexArray : *sfVertexArray) -> ();
-        pub fn sfVertexArray_resize(vertexArray : *sfVertexArray, vertexCount : c_uint) -> ();
-        pub fn sfVertexArray_append(vertexArray : *sfVertexArray, vertex : vertex::Vertex) -> ();
-        pub fn sfVertexArray_setPrimitiveType(vertexArray : *sfVertexArray, stype : sfPrimitiveType) -> ();
-        pub fn sfVertexArray_getPrimitiveType(vertexArray : *sfVertexArray) -> sfPrimitiveType;
-        pub fn sfVertexArray_getBounds(vertexArray : *sfVertexArray) -> FloatRect;
-    }
-}
+use ffi = ffi::graphics::vertex_array;
 
 pub struct VertexArray {
     #[doc(hidden)]

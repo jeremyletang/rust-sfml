@@ -32,25 +32,7 @@
 use traits::wrappable::Wrappable;
 use system::time::Time;
 
-#[doc(hidden)]
-pub mod ffi {
-    
-    use std::libc::{c_void};
-    use system::time::ffi;
-
-    pub struct sfClock {
-        This : *c_void
-    }
-
-    extern "C" {
-        pub fn sfClock_create() -> *sfClock;
-        pub fn sfClock_copy(clock : *sfClock) -> *sfClock;
-        pub fn sfClock_destroy(clock : *sfClock) -> ();
-        pub fn sfClock_getElapsedTime(clock : *sfClock) -> ffi::sfTime;
-        pub fn sfClock_restart(clock : *sfClock) -> ffi::sfTime;
-    }
-}
-
+use ffi = ffi::system::clock;
 
 pub struct Clock {
     #[doc(hidden)]

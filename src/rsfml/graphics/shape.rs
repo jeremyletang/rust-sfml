@@ -46,58 +46,7 @@ use graphics::rect::{IntRect, FloatRect};
 use traits::shape_impl::ShapeImpl;
 use sfml_types::{SFTRUE, SFFALSE};
 
-#[doc(hidden)]
-pub mod ffi {
-    
-    use std::libc::{c_void, c_float, c_uint};
-
-    use sfml_types::SfBool;
-    use graphics::texture;
-    use graphics::color::Color;
-    use graphics::transform::Transform;
-    use system::vector2::Vector2f;
-    use graphics::rect::{IntRect, FloatRect};
-
-    pub struct sfShape {
-        This :              *c_void,
-        Texture :           *texture::ffi::sfTexture,
-        Transform :         Transform,
-        InverseTransform :  Transform
-    }
-
-    extern "C" {
-        pub fn sfShape_create(getPointCount : extern "C" fn(*c_void) -> u32, getPoint : extern "C" fn(u32, *c_void) -> Vector2f, userData : *c_void) -> *sfShape;
-        pub fn sfShape_destroy(shape : *sfShape) -> ();
-        pub fn sfShape_setPosition(shape : *sfShape, position : Vector2f) -> ();
-        pub fn sfShape_setRotation(shape : *sfShape, angle : c_float) -> ();
-        pub fn sfShape_setScale(shape : *sfShape, scale : Vector2f) -> ();
-        pub fn sfShape_setOrigin(shape : *sfShape, origin : Vector2f) -> ();
-        pub fn sfShape_getPosition(shape : *sfShape) -> Vector2f;
-        pub fn sfShape_getRotation(shape : *sfShape) -> c_float;
-        pub fn sfShape_getScale(shape : *sfShape) -> Vector2f;
-        pub fn sfShape_getOrigin(shape : *sfShape) -> Vector2f;
-        pub fn sfShape_move(shape : *sfShape, offset : Vector2f) -> ();
-        pub fn sfShape_rotate(shape : *sfShape, angle : c_float) -> ();
-        pub fn sfShape_scale(shape : *sfShape, factors : Vector2f) -> ();
-        pub fn sfShape_getTransform(shape : *sfShape) -> Transform;
-        pub fn sfShape_getInverseTransform(shape : *sfShape) -> Transform;
-        pub fn sfShape_setTexture(shape : *sfShape, texture : *texture::ffi::sfTexture, reset_rect : SfBool) -> ();
-        pub fn sfShape_setTextureRect(shape : *sfShape, rect : IntRect) -> ();
-        pub fn sfShape_setFillColor(shape : *sfShape, color : Color) -> ();
-        pub fn sfShape_setOutlineColor(shape : *sfShape, color : Color) -> ();
-        pub fn sfShape_setOutlineThickness(shape : *sfShape, thickness : c_float) -> ();
-        pub fn sfShape_getTexture(shape : *sfShape) -> *texture::ffi::sfTexture;
-        pub fn sfShape_getTextureRect(shape : *sfShape) -> IntRect;
-        pub fn sfShape_getFillColor(shape : *sfShape) -> Color;
-        pub fn sfShape_getOutlineColor(shape : *sfShape) -> Color;
-        pub fn sfShape_getOutlineThickness(shape : *sfShape) -> c_float;
-        pub fn sfShape_getPointCount(shape : *sfShape) -> c_uint;
-        pub fn sfShape_getPoint(shape : *sfShape, index : c_uint) -> Vector2f;
-        pub fn sfShape_getLocalBounds(shape : *sfShape) -> FloatRect;
-        pub fn sfShape_getGlobalBounds(shape : *sfShape) -> FloatRect;
-        pub fn sfShape_update(shape : *sfShape) -> ();
-    }
-}
+use ffi = ffi::graphics::shape;
 
 #[doc(hidden)]
 pub struct WrapObj {

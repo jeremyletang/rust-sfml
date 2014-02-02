@@ -34,50 +34,13 @@ use std::ptr;
 
 use traits::wrappable::Wrappable;
 use system::vector2::Vector2u;
-use window::window::Window;
-use graphics::render_window::RenderWindow;
-use graphics::image::Image;
-use graphics::rect::IntRect;
+use window::Window;
+use graphics::RenderWindow;
+use graphics::Image;
+use graphics::IntRect;
 use sfml_types::{SFTRUE, SFFALSE};
 
-#[doc(hidden)]
-pub mod ffi {
-    
-    use std::libc::{c_uint, c_void, c_char};
-
-    use sfml_types::{SfBool};
-    use system::vector2::Vector2u;
-    use window::window::ffi::sfWindow;
-    use graphics::render_window::ffi::sfRenderWindow;
-    use graphics::rect::IntRect;
-    use graphics::image;
-
-    pub struct sfTexture {
-        this : *c_void
-    }
-
-    extern "C" {
-        pub fn sfTexture_create(width : c_uint, height : c_uint) -> *sfTexture;
-        pub fn sfTexture_createFromFile(filename : *c_char, area : *IntRect) -> *sfTexture;
-        //fn sfTexture_createFromMemory(data : *c_void, sizeInBytes : size_t , area : *sfIntRect) -> *sfTexture;
-        //fn sfTexture_createFromStream(strea; : *sfInputStream, area : *sfIntRect) -> *sfTexture;
-        pub fn sfTexture_createFromImage(image :*image::ffi::sfImage, area : *IntRect) -> *sfTexture;
-        pub fn sfTexture_copy(texture : *sfTexture) -> *sfTexture;
-        pub fn sfTexture_destroy(texture : *sfTexture) -> ();
-        pub fn sfTexture_getSize(texture : *sfTexture) -> Vector2u;
-        pub fn sfTexture_copyToImage(texture : *sfTexture) -> *image::ffi::sfImage;
-        pub fn sfTexture_updateFromPixels(texture : *sfTexture, pixels : *u8, width : c_uint, height : c_uint, x : c_uint, y : c_uint) -> ();
-        pub fn sfTexture_updateFromImage(texture : *sfTexture, image : *image::ffi::sfImage, x : c_uint, y : c_uint) -> ();
-        pub fn sfTexture_updateFromWindow(texture : *sfTexture, window : *sfWindow, x : c_uint, y : c_uint) -> ();
-        pub fn sfTexture_updateFromRenderWindow(texture : *sfTexture, renderWindow : *sfRenderWindow, x : c_uint, y : c_uint) -> ();
-        pub fn sfTexture_setSmooth(texture : *sfTexture, smooth : SfBool) -> ();
-        pub fn sfTexture_isSmooth(texture : *sfTexture) -> SfBool;
-        pub fn sfTexture_setRepeated(texture : *sfTexture, repeated : SfBool);
-        pub fn sfTexture_isRepeated(texture : *sfTexture) -> SfBool;
-        pub fn sfTexture_bind(texture : *sfTexture) -> ();
-        pub fn sfTexture_getMaximumSize() -> c_uint;
-    }
-}
+use ffi = ffi::graphics::texture;
 
 pub struct Texture {
     #[doc(hidden)]

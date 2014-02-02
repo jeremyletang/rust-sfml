@@ -21,31 +21,3 @@
 * 
 * 3. This notice may not be removed or altered from any source distribution.
 */
-
-/*!
-* Sounds, streaming (musics or custom sources), recording, spatialization
-*
-*
-*/
-
-pub use audio::sound_buffer::SoundBuffer;
-pub use audio::sound_status::{Status, Playing, Paused, Stopped};
-pub use audio::music::Music;
-pub use audio::sound::Sound;
-pub use audio::sound_buffer_recorder::SoundBufferRecorder;
-
-#[doc(hidden)]
-#[cfg(target_os="macos")]
-#[cfg(target_os="linux")]
-#[cfg(target_os="win32")]
-mod platform {
-    #[link(name = "csfml-audio")]
-    extern {}
-}
-
-mod sound_buffer;
-pub mod listener;
-mod sound_status;
-mod music;
-mod sound;
-mod sound_buffer_recorder;

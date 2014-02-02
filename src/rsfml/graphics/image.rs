@@ -38,40 +38,7 @@ use graphics::color::Color;
 use graphics::rect::IntRect;
 use sfml_types::{SFTRUE, SFFALSE};
 
-#[doc(hidden)]
-pub mod ffi {
-    
-    use std::libc::{c_void, c_uint, c_char};
-
-    use sfml_types::{SfBool};
-    use graphics::color;
-    use system::vector2;
-    use graphics::rect::IntRect;
-
-    pub struct sfImage {
-        This : *c_void
-    }
-
-    extern "C" {
-        pub fn sfImage_create(width : c_uint, height : c_uint) -> *sfImage;
-        pub fn sfImage_createFromColor(width : c_uint, height : c_uint, color : color::Color) -> *sfImage;
-        pub fn sfImage_createFromPixels(width : c_uint, height : c_uint, pixels : *u8) -> *sfImage;
-        pub fn sfImage_createFromFile(filename : *c_char) -> *sfImage;
-        //fn sfImage_createFromMemory(data : *c_void, size : size_t) -> *sfImage;
-        //fn sfImage_createFromStream(stream : *sfInputStream) -> *sfImage;
-        pub fn sfImage_copy(image : *sfImage) -> *sfImage;
-        pub fn sfImage_destroy(image : *sfImage) -> ();
-        pub fn sfImage_saveToFile(image : *sfImage, filename : *c_char) -> SfBool;
-        pub fn sfImage_getSize(image : *sfImage) -> vector2::Vector2u;
-        pub fn sfImage_createMaskFromColor(image : *sfImage, color : color::Color, alpha : u8) -> ();
-        pub fn sfImage_copyImage(image : *sfImage, source : *sfImage, destX : c_uint, destY : c_uint, sourceRect : IntRect, applyAlpha : SfBool) -> ();
-        pub fn sfImage_setPixel(image : *sfImage, x : c_uint, y : c_uint, color : color::Color) -> ();
-        pub fn sfImage_getPixel(image : *sfImage, x : c_uint, y : c_uint) -> color::Color;
-        pub fn sfImage_getPixelsPtr(image : *sfImage) -> *u8;
-        pub fn sfImage_flipHorizontally(image : *sfImage) -> ();
-        pub fn sfImage_flipVertically(image : *sfImage) -> ();
-    }
-}
+use ffi = ffi::graphics::image;
 
 pub struct Image {
     priv image : *ffi::sfImage

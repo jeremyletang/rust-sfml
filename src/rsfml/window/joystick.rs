@@ -33,6 +33,8 @@ use std::libc::{c_uint};
 
 use sfml_types::{SFFALSE, SFTRUE};
 
+use ffi = ffi::window::joystick;
+
 /// Axes supported by SFML joysticks 
 #[deriving(Clone, Eq, Ord)]
 pub enum Axis {
@@ -52,22 +54,6 @@ pub enum Axis {
     PovX,
     /// The Y axis of the point-of-view hat.
     PovY
-}
-
-#[doc(hidden)]
-pub mod ffi {
-    
-    use std::libc::{c_float, c_uint};
-    use sfml_types::SfBool;
-
-    extern "C" {
-        pub fn sfJoystick_isConnected(joystick : c_uint) -> SfBool;
-        pub fn sfJoystick_getButtonCount(joystick : c_uint) -> c_uint;
-        pub fn sfJoystick_hasAxis(joystick : c_uint, axis : c_uint) -> SfBool;
-        pub fn sfJoystick_isButtonPressed(joystick : c_uint, button : c_uint) -> SfBool;
-        pub fn sfJoystick_getAxisPosition(joystick : c_uint, axis : c_uint) -> c_float;
-        pub fn sfJoystick_update() -> ();
-    }
 }
 
 /**

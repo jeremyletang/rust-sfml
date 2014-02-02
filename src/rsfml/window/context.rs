@@ -30,22 +30,7 @@
 
 use sfml_types::{SFTRUE, SFFALSE};
 
-#[doc(hidden)]
-pub mod ffi {
-
-    use std::libc::c_void;
-    use sfml_types::SfBool;
-
-    pub struct sfContext {
-        This: *c_void
-    }
-
-    extern "C" {
-        pub fn sfContext_create() -> *sfContext;
-        pub fn sfContext_destroy(context : *sfContext) -> ();
-        pub fn sfContext_setActive(context : *sfContext, active : SfBool) -> ();
-    }
-}
+use ffi = ffi::window::context;
 
 pub struct Context {
     #[doc(hidden)]

@@ -34,7 +34,7 @@ use std::{str, cast};
 
 use traits::wrappable::Wrappable;
 use network::ip_address::IpAddress;
-use system::time::Time;
+use system::Time;
 
 #[doc(hidden)]
 pub mod ffi {
@@ -43,7 +43,7 @@ pub mod ffi {
 
     use network::ip_address::ffi::sfIpAddress;
     use sfml_types::SfBool;
-    use system::time;
+    use ffi::system::time::sfTime;
 
     pub type TransferMode = c_int;
     pub static FTPBINARY:   TransferMode = 0;
@@ -134,7 +134,7 @@ pub mod ffi {
         pub fn sfFtpResponse_getMessage(ftpResponse : *sfFtpResponse) -> *c_char;
         pub fn sfFtp_create() -> *sfFtp;
         pub fn sfFtp_destroy(ftp : *sfFtp) -> ();
-        pub fn sfFtp_connect(ftp : *sfFtp, server : sfIpAddress, port : u16, timeout : time::ffi::sfTime) -> *sfFtpResponse;
+        pub fn sfFtp_connect(ftp : *sfFtp, server : sfIpAddress, port : u16, timeout : sfTime) -> *sfFtpResponse;
         pub fn sfFtp_loginAnonymous(ftp : *sfFtp) -> *sfFtpResponse;
         pub fn sfFtp_login(ftp : *sfFtp, userName : *c_char, password : *c_char) -> *sfFtpResponse;
         pub fn sfFtp_disconnect(ftp : *sfFtp) -> *sfFtpResponse;

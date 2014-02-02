@@ -46,58 +46,7 @@ use graphics::rect::FloatRect;
 use graphics::transform::Transform;
 use graphics::render_states::RenderStates;
 
-#[doc(hidden)]
-pub mod ffi {
-    
-    use std::libc::{c_uint, c_float, c_void, size_t, c_char};
-    use graphics::transform;
-    use system::vector2::Vector2f;
-    use graphics::font;
-    use graphics::color;
-    use graphics::rect::FloatRect;
-    use graphics::transform::Transform;
-
-    pub struct sfText {
-        This :          c_void,
-        font :          *c_void,
-        transform :     transform::Transform,
-        transform2 :    transform::Transform
-    }
-
-    extern "C" {
-        pub fn sfText_create() -> *sfText;
-        pub fn sfText_copy(text : *sfText) -> *sfText;
-        pub fn sfText_destroy(text : *sfText) -> ();
-        pub fn sfText_setPosition(text : *sfText, position : Vector2f) -> ();
-        pub fn sfText_setRotation(text : *sfText, angle : c_float) -> ();
-        pub fn sfText_setScale(text : *sfText, scale : Vector2f) -> ();
-        pub fn sfText_setOrigin(text : *sfText, origin : Vector2f) -> ();
-        pub fn sfText_getPosition(text : *sfText) -> Vector2f;
-        pub fn sfText_getRotation(text : *sfText) -> c_float;
-        pub fn sfText_getScale(text : *sfText) -> Vector2f;
-        pub fn sfText_getOrigin(text : *sfText) -> Vector2f;
-        pub fn sfText_move(text : *sfText, offset : Vector2f) -> ();
-        pub fn sfText_rotate(text : *sfText, angle : c_float) -> ();
-        pub fn sfText_scale(text : *sfText, factors : Vector2f) -> ();
-        pub fn sfText_getTransform(text : *sfText) -> Transform;
-        pub fn sfText_getInverseTransform(text : *sfText) -> Transform;
-        pub fn sfText_setString(text : *sfText, string : *c_char) -> ();
-        pub fn sfText_setUnicodeString(text : *sfText, string : *u32 ) -> ();
-        pub fn sfText_setFont(text : *sfText, font : *font::ffi::sfFont) -> ();
-        pub fn sfText_setCharacterSize(text : *sfText, size : c_uint) -> ();
-        pub fn sfText_setStyle(text : *sfText, style : u32) -> ();
-        pub fn sfText_setColor(text : *sfText, color : color::Color) -> ();
-        pub fn sfText_getString(text : *sfText) -> *c_char;
-        pub fn sfText_getUnicodeString(text : *sfText) -> *mut u32;
-        pub fn sfText_getFont(text : *sfText) -> *font::ffi::sfFont;
-        pub fn sfText_getCharacterSize(text : *sfText) -> c_uint;
-        pub fn sfText_getStyle(text : *sfText) -> u32;
-        pub fn sfText_getColor(text : *sfText) -> color::Color;
-        pub fn sfText_findCharacterPos(text : *sfText, index : size_t) -> Vector2f;
-        pub fn sfText_getLocalBounds(text : *sfText) -> FloatRect;
-        pub fn sfText_getGlobalBounds(text : *sfText) -> FloatRect;
-    }
-}
+use ffi = ffi::graphics::text;
 
 pub enum Style {
     Regular =       0,

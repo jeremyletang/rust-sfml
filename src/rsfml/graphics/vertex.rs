@@ -35,19 +35,6 @@
 use graphics::color::Color;
 use system::vector2::Vector2f;
 
-#[doc(hidden)]
-pub mod ffi {
-    
-    use graphics::color;
-    use system::vector2;
-
-    pub struct sfVertex {
-        position :      vector2::Vector2f,
-        color :         color::Color,
-        tex_coords :    vector2::Vector2f 
-    }
-}
-
 /// Define a point with color and texture coordinates
 #[deriving(Clone, Eq, Ord)]
 pub struct Vertex {
