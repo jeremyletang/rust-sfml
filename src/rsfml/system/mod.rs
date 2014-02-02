@@ -31,7 +31,7 @@
 
 pub use system::vector2::{Vector2u, Vector2i, Vector2f, ToVec};
 pub use system::vector3::Vector3f;
-pub use system::sleep::sleep;
+pub use system::msleep::sleep;
 pub use system::time::Time;
 pub use system::clock::Clock;
 
@@ -48,4 +48,5 @@ pub mod vector2;
 pub mod vector3;
 mod time;
 mod clock;
-mod sleep;
+#[path = "sleep.rs"]
+mod msleep;
