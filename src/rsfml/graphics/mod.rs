@@ -24,9 +24,6 @@
 
 /*!
 * 2D graphics module: sprites, text, shapes
-*
-*
-*
 */
 
 pub use graphics::render_states::RenderStates;

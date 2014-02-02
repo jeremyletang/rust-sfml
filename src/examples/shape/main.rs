@@ -11,7 +11,7 @@ extern mod rsfml;
 
 use rsfml::graphics::{RenderWindow, Color, Shape};
 use rsfml::window::{VideoMode, ContextSettings, event, keyboard, Close};
-use rsfml::traits::shape_impl::ShapeImpl;
+use rsfml::traits::ShapeImpl;
 use rsfml::system::Vector2f;
 
 #[cfg(target_os="macos")]

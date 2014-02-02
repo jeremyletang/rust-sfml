@@ -26,7 +26,6 @@
 * Measuring elapsed time
 *
 * Utility class that measures the elapsed time
-*
 */
 
 use traits::Wrappable;
@@ -34,6 +33,11 @@ use system::Time;
 
 use ffi = ffi::system::clock;
 
+/**
+* Measuring elapsed time
+*
+* Utility class that measures the elapsed time
+*/
 pub struct Clock {
     #[doc(hidden)]
     priv clock : *ffi::sfClock
@@ -52,7 +56,6 @@ impl Clock {
 
     /**
     * Create a clock by copying an extant one
-    * 
     */
     pub fn clone(&self) -> Clock {
         Clock {

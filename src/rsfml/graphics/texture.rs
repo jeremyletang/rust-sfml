@@ -26,7 +26,6 @@
 * Image used for drawing
 *
 * Texture stores pixels that can be drawn, with a sprite for example.
-*
 */
 
 use std::libc::c_uint;
@@ -40,6 +39,11 @@ use window::Window;
 use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi = ffi::graphics::texture;
 
+/**
+* Image used for drawing
+*
+* Texture stores pixels that can be drawn, with a sprite for example.
+*/
 pub struct Texture {
     #[doc(hidden)]
     priv texture :  *ffi::sfTexture,
@@ -55,7 +59,7 @@ impl Texture {
     * * width - Texture width
     * * height - Texture height
     *
-    * Return a new Option to Texture object or None
+    * Return Some(Texture) or None
     */
     pub fn new(width: uint, height : uint) -> Option<Texture> {
         let tex = unsafe { ffi::sfTexture_create(width as c_uint, height as c_uint) };
@@ -76,7 +80,7 @@ impl Texture {
     * # Arguments
     * * filename - Path of the image file to load
     *
-    * Return a new Option to Texture object or None
+    * Return Some(Texture) or None
     */
     pub fn new_from_file(filename : &str) -> Option<Texture> {
         let mut tex = ptr::null();
@@ -103,7 +107,7 @@ impl Texture {
     * * filename - Path of the image file to load
     * * area - Area of the source image to load
     *
-    * Return a new Option to Texture object or None
+    * Return Some(Texture) or None
     */
     pub fn new_from_file_with_rect(filename : &str, area : &IntRect) -> Option<Texture> {
         let mut tex = ptr::null();
@@ -129,7 +133,7 @@ impl Texture {
     * # Arguments
     * * texture - Texture to copy
     *
-    * Return an option to the copied texture or None
+    * Return Some(Texture) or None
     */
     pub fn clone(&self) -> Option<Texture> {
         let tex = unsafe { ffi::sfTexture_copy(self.texture) };
@@ -151,7 +155,7 @@ impl Texture {
     * * image - Image to upload to the texture
     * * area - Area of the source image to load
     *
-    * Return a new Option to Texture object or None
+    * Return Some(Texture) or None
     */
     pub fn new_from_image_with_rect(image : &Image, area : &IntRect) -> Option<Texture> {
         let tex = unsafe { ffi::sfTexture_createFromImage(image.unwrap(), &*area) };
@@ -172,7 +176,7 @@ impl Texture {
     * # Arguments
     * * image - Image to upload to the texture
     *
-    * Return a new Option to Texture object or None
+    * Return Some(Texture) or None
     */
     pub fn new_from_image(image : &Image) -> Option<Texture> {
         let tex = unsafe { ffi::sfTexture_createFromImage(image.unwrap(), ptr::null()) };

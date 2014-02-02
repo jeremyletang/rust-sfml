@@ -25,13 +25,16 @@
 /*!
 * ShapeImpl trait
 *
-* Implement this shape to create a new Shape
-*
+* Implement this trait to create a new Shape
 */
 
 use system::vector2::Vector2f;
 
-
+/**
+* ShapeImpl trait
+*
+* Implement this shape to create a new Shape
+*/
 pub trait ShapeImpl {
 	/**
 	* Get the total count of the point for the Shape who implement this trait.

@@ -25,8 +25,8 @@
 /*!
 * Store captured audio data in sound Buffer
 *
-* SoundBufferRecorder allows to access a recorded sound through a sf::SoundBuffer, so that it can be played, saved to a file, etc.
-*
+* SoundBufferRecorder allows to access a recorded sound through a SoundBuffer, 
+* so that it can be played, saved to a file, etc.
 */
 
 use std::libc::c_uint;
@@ -38,6 +38,12 @@ use audio::sound_buffer::SoundBuffer;
 use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi = ffi::audio::sound_buffer_recorder;
 
+/**
+* Store captured audio data in sound Buffer
+*
+* SoundBufferRecorder allows to access a recorded sound through a SoundBuffer, 
+* so that it can be played, saved to a file, etc.
+*/
 pub struct SoundBufferRecorder {
     #[doc(hidden)]
     priv sound_buffer_recorder : *ffi::sfSoundBufferRecorder

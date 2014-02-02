@@ -25,8 +25,8 @@
 /*!
 * Define a 3x3 transform matrix.
 *
-* A Transform specifies how to translate, rotate, scale, shear, project, whatever things.
-*
+* A Transform specifies how to translate, 
+* rotate, scale, shear, project, whatever things.
 */
 
 use std::libc::c_float;
@@ -36,6 +36,12 @@ use graphics::FloatRect;
 
 use ffi = ffi::graphics::transform;
 
+/**
+* Define a 3x3 transform matrix.
+*
+* A Transform specifies how to translate, 
+* rotate, scale, shear, project, whatever things.
+*/
 pub struct Transform {
         a00 : f32,
         a01 : f32,
@@ -63,7 +69,7 @@ impl Transform {
     * * a21 - Element (2, 1) of the matrix
     * * a22 - Element (2, 2) of the matrix
     *
-    * Return a new Transform object
+    * Return a new Transform
     */
     pub fn new(a00 : f32, a01 : f32, a02 : f32, b10 : f32, b11 : f32, b12 : f32, c20 : f32, c21 : f32, c22 : f32) -> Transform {
         unsafe {
@@ -82,7 +88,7 @@ impl Transform {
     /**
     * Create a new identity transform
     *
-    * Return a new Transform object initialized at 1, 0, 0, 0, 1, 0, 0, 0, 1
+    * Return a new Transform initialized at 1, 0, 0, 0, 1, 0, 0, 0, 1
     */
     pub fn new_identity() -> Transform {
         unsafe {

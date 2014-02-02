@@ -24,9 +24,6 @@
 
 /*!
 * Loading, manipulating and saving images.
-*
-*
-*
 */
 
 use std::libc::c_uint;
@@ -39,6 +36,7 @@ use graphics::{Color, IntRect};
 use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi = ffi::graphics::image;
 
+/// Loading, manipulating and saving images.
 pub struct Image {
     priv image : *ffi::sfImage
 }
@@ -53,7 +51,7 @@ impl Image {
     * * width - Width of the image
     * * height - Height of the image
     * 
-    * Return a new Image object
+    * Return Some(Image) or None
     */
     pub fn new(width : uint, height : uint) -> Option<Image> {
         let image = unsafe { ffi::sfImage_create(width as c_uint, height as c_uint) };
@@ -75,7 +73,7 @@ impl Image {
     * * height - Height of the image
     * * color - Fill color
     *
-    * Return a new Image object
+    * Return Some(Image) or None
     */
     pub fn new_from_color(width : uint, height : uint, color : &Color) -> Option<Image> {
         let image = unsafe { ffi::sfImage_createFromColor(width as c_uint, height as c_uint, *color) };
@@ -100,7 +98,7 @@ impl Image {
     * # Arguments
     * * filename - Path of the image file to load
     *
-    * Return a new Some(Image) object, or None if it failed
+    * Return Some(Image) or None
     */
     pub fn new_from_file(filename : ~str) -> Option<Image> {
         let image = unsafe { 
@@ -120,7 +118,7 @@ impl Image {
     /**
     * Copy an existing image
     *
-    * Return copied object
+    * Return Some(Image) or None
     */
     pub fn clone(&self) -> Option<Image> {
         let image = unsafe { ffi::sfImage_copy(self.image) };
@@ -147,7 +145,7 @@ impl Image {
     * * height - Height of the image
     * * pixels - Vector of pixels to copy to the image 
     *
-    * Return A new Image object
+    * Return Some(Image) or None
     */
     pub fn create_from_pixels(width : uint, height : uint, pixels : ~[u8]) -> Option<Image> {
         let image = unsafe { ffi::sfImage_createFromPixels(width as c_uint, height as c_uint, pixels.as_ptr()) };

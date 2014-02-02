@@ -24,10 +24,6 @@
 
 /*!
 * Target for off-screen 2D rendering into a texture
-*
-*
-*
-*
 */
 
 use std::libc::c_uint;
@@ -41,6 +37,7 @@ use graphics::{View, Sprite, Color, IntRect, Texture,
 
 use ffi = ffi::graphics::render_texture;
 
+/// Target for off-screen 2D rendering into a texture
 pub struct RenderTexture {
     #[doc(hidden)]
     render_texture : *ffi::sfRenderTexture
@@ -55,13 +52,16 @@ impl RenderTexture {
     * * height - Height of the render texture
     * * depthBuffer - Do you want a depth-buffer attached? (useful only if you're doing 3D OpenGL on the rendertexture)
     *
-    * Return a new option on RenderTexture object, or None if it failed
+    * Return Some(RenderTexture) or None
     */
-    pub fn new(width : uint, height : uint, depth_buffer : bool) -> Option<RenderTexture> {
-            let tex = match depth_buffer {
-                false       => unsafe { ffi::sfRenderTexture_create(width as c_uint, height as c_uint, 0) },
-                true        => unsafe { ffi::sfRenderTexture_create(width as c_uint, height as c_uint, 1) }
-            };
+    pub fn new(width : uint, 
+        height : uint, 
+        depth_buffer : bool) -> Option<RenderTexture> {
+        
+        let tex = match depth_buffer {
+            false       => unsafe { ffi::sfRenderTexture_create(width as c_uint, height as c_uint, 0) },
+            true        => unsafe { ffi::sfRenderTexture_create(width as c_uint, height as c_uint, 1) }
+        };
         if ptr::is_null(tex) {
             None
         }

@@ -25,8 +25,9 @@
 /*!
 * Shader class (vertex and fragment)
 *
-* Shaders are programs written using a specific language, executed directly by the graphics card and allowing to apply real-time operations to the rendered entities.
-*
+* Shaders are programs written using a specific language, 
+* executed directly by the graphics card and allowing to apply 
+* real-time operations to the rendered entities.
 */
 
 use std::rc::Rc;
@@ -41,6 +42,13 @@ use system::vector3::Vector3f;
 use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi = ffi::graphics::shader;
 
+/**
+* Shader class (vertex and fragment)
+*
+* Shaders are programs written using a specific language, 
+* executed directly by the graphics card and allowing to apply 
+* real-time operations to the rendered entities.
+*/
 pub struct Shader {
     #[doc(hidden)]
     priv shader :   *ffi::sfShader,
@@ -64,12 +72,23 @@ impl Shader {
     * * vertexShaderFilename - Some(Path) of the vertex shader file to load, or None to skip this shader
     * * fragmentShaderFilename - Some(Path) of the fragment shader file to load, or None to skip this shader
     *
-    * Return a new Shader object
+    * Return Some(Shader) or None
     */
-    pub fn new_from_file(vertex_shader_filename : Option<&str>, fragment_shader_filename : Option<&str>) -> Option<Shader> {
+    pub fn new_from_file(vertex_shader_filename : Option<&str>, 
+        fragment_shader_filename : Option<&str>) -> Option<Shader> {
         let shader = unsafe { 
-            let c_vertex_shader_filename = if vertex_shader_filename.is_none() { ptr::null() } else { vertex_shader_filename.unwrap().to_c_str().unwrap() };
-            let c_fragment_shader_filename = if fragment_shader_filename.is_none() { ptr::null() } else { fragment_shader_filename.unwrap().to_c_str().unwrap() };
+            let c_vertex_shader_filename = 
+                if vertex_shader_filename.is_none() { 
+                    ptr::null() 
+                } else { 
+                    vertex_shader_filename.unwrap().to_c_str().unwrap() 
+                };
+            let c_fragment_shader_filename = 
+                if fragment_shader_filename.is_none() { 
+                    ptr::null() 
+                } else { 
+                    fragment_shader_filename.unwrap().to_c_str().unwrap() 
+                };
             ffi::sfShader_createFromFile(c_vertex_shader_filename, c_fragment_shader_filename) 
         };
         if ptr::is_null(shader) {
@@ -100,10 +119,21 @@ impl Shader {
     *
     * Return a new Shader object
     */
-    pub fn new_from_memory(vertex_shader : Option<&str>, fragment_shader : Option<&str>) -> Option<Shader> {
+    pub fn new_from_memory(vertex_shader : Option<&str>, 
+        fragment_shader : Option<&str>) -> Option<Shader> {
         let shader = unsafe { 
-            let c_vertex_shader = if vertex_shader.is_none() { ptr::null() } else { vertex_shader.unwrap().to_c_str().unwrap() };
-            let c_fragment_shader = if fragment_shader.is_none() { ptr::null() } else { fragment_shader.unwrap().to_c_str().unwrap() };
+            let c_vertex_shader = 
+                if vertex_shader.is_none() { 
+                    ptr::null() 
+                } else { 
+                    vertex_shader.unwrap().to_c_str().unwrap() 
+                };
+            let c_fragment_shader = 
+                if fragment_shader.is_none() { 
+                    ptr::null() 
+                } else { 
+                    fragment_shader.unwrap().to_c_str().unwrap() 
+                };
             ffi::sfShader_createFromFile(c_vertex_shader, c_fragment_shader) 
         };
         if ptr::is_null(shader) {

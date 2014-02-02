@@ -23,10 +23,11 @@
 */
 
 /*!
- * Window manipulation
- *
- * Provides OpenGL-based windows, and abstractions for events and input handling.
- */
+* Window manipulation
+*
+* Provides OpenGL-based windows, 
+* and abstractions for events and input handling.
+*/
 
 use std::libc::{c_uint, c_float, c_int};
 use std::{ptr, cast};
@@ -39,6 +40,12 @@ use system::vector2::{Vector2i, Vector2u};
 use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi = ffi::window::window;
 
+/**
+* Window manipulation
+*
+* Provides OpenGL-based windows, 
+* and abstractions for events and input handling.
+*/
 pub struct Window {
     #[doc(hidden)]
     priv window :       *ffi::sfWindow,
@@ -68,9 +75,13 @@ impl Window {
     * * style - Window style
     * * settings - Additional settings for the underlying OpenGL context
     *
-    * Return a new Window object
+    * Return Some(Window) or None
     */
-    pub fn new(mode : VideoMode, title : &str, style : WindowStyle, settings : &ContextSettings) -> Option<Window> {
+    pub fn new(mode : VideoMode, 
+        title : &str, 
+        style : WindowStyle, 
+        settings : &ContextSettings) -> Option<Window> {
+        
         let mut sf_win: *ffi::sfWindow = ptr::null();
         unsafe {
             title.with_c_str(|c_str| {
@@ -116,9 +127,13 @@ impl Window {
     * * style - Window style
     * * settings - Additional settings for the underlying OpenGL context
     *
-    * Return a new Window object
+    * Return Some(Window) or None
     */
-    pub fn new_with_unicode(mode : VideoMode, title : ~[u32], style : WindowStyle, settings : &ContextSettings) -> Option<Window> {
+    pub fn new_with_unicode(mode : VideoMode, 
+        title : ~[u32], 
+        style : WindowStyle, 
+        settings : &ContextSettings) -> Option<Window> {
+        
         let sf_win = unsafe { ffi::sfWindow_createUnicode(mode.unwrap(), title.as_ptr(), style as u32, settings) };
         let sf_ev = ffi::sfEvent {
             typeEvent : 0,
@@ -140,6 +155,7 @@ impl Window {
         }
     }
 
+    #[doc(hidden)]
     fn get_wrapped_event(&self) -> event::Event {
             match self.event.typeEvent as c_uint {
                 0   => event::Closed,
@@ -601,36 +617,36 @@ impl Window {
     }
 
     /**
-*  Get the current position of the mouse
-*
-* This function returns the current position of the mouse cursor relative to the given window.
-*
-* # Arguments
-* * relativeTo - Reference Window
-*
-* Return the position of the mouse cursor, relative to the given window
-*/
-pub fn get_mouse_position(&self) -> Vector2i {
-    unsafe {
-        ffi::sfMouse_getPosition(self.window)
+    *  Get the current position of the mouse
+    *
+    * This function returns the current position of the mouse cursor relative to the given window.
+    *
+    * # Arguments
+    * * relativeTo - Reference Window
+    *
+    * Return the position of the mouse cursor, relative to the given window
+    */
+    pub fn get_mouse_position(&self) -> Vector2i {
+        unsafe {
+            ffi::sfMouse_getPosition(self.window)
+        }
     }
-}
 
-/**
-* Set the current position of the mouse
-*
-* This function sets the current position of the mouse cursor relative to the given window.
-*
-* # Arguments
-* * position - New position of the mouse
-* * relativeTo - Reference Window
-*
-*/
-pub fn set_mouse_position(&mut self, position : &Vector2i) -> () {
-    unsafe {
-        ffi::sfMouse_setPosition(*position, self.window)
+    /**
+    * Set the current position of the mouse
+    *
+    * This function sets the current position of the mouse cursor relative to the given window.
+    *
+    * # Arguments
+    * * position - New position of the mouse
+    * * relativeTo - Reference Window
+    *
+    */
+    pub fn set_mouse_position(&mut self, position : &Vector2i) -> () {
+        unsafe {
+            ffi::sfMouse_setPosition(*position, self.window)
+        }
     }
-}
 
 
     #[doc(hidden)]

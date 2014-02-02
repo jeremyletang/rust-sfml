@@ -24,11 +24,6 @@
 
 /*!
 * Socket that listens to new TCP connections
-*
-*
-*
-*
-*
 */
 
 use std::{ptr, cast};
@@ -38,6 +33,7 @@ use network::{TcpSocket, SocketStatus};
 
 use ffi = ffi::network::tcp_listener;
 
+/// Socket that listens to new TCP connections
 pub struct TcpListener {
     #[doc(hidden)]
     priv listener : *ffi::sfTcpListener
@@ -47,7 +43,7 @@ impl TcpListener {
     /**
     * Create a new TCP listener
     *
-    * Return a new option to TcpListener object or None
+    * Return Some(TcpListener) or None
     */
     pub fn new() -> Option<TcpListener> {
         let list = unsafe { ffi::sfTcpListener_create() };

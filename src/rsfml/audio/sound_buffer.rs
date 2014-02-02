@@ -37,6 +37,11 @@ use system::Time;
 use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi = ffi::audio::sound_buffer;
 
+/**
+* Storage of audio sample
+*
+* A sound buffer holds the data of a sound, which is an array of audio samples.
+*/
 pub struct SoundBuffer {
     #[doc(hidden)]
     priv sound_buffer : *ffi::sfSoundBuffer,
@@ -145,7 +150,7 @@ impl SoundBuffer {
         }
     }
 
-    /*
+    /**
     * Get the number of channels used by a sound buffer
     *
     * If the sound is mono then the number of channels will

@@ -24,8 +24,6 @@
 
 /*!
 * Specialized shape representing a rectangle
-*
-*
 */
 
 use std::rc::Rc;
@@ -41,6 +39,7 @@ use graphics::{FloatRect, IntRect, Color, Texture,
 use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi = ffi::graphics::rectangle_shape;
 
+/// Specialized shape representing a rectangle
 pub struct RectangleShape {
     #[doc(hidden)]
     priv rectangle_shape :  *ffi::sfRectangleShape,
@@ -52,7 +51,7 @@ impl RectangleShape {
     /**
     * Create a new rectangle shape
     *
-    * Return a new option to a rectangleShape object or None
+    * Return Some(RectangleShape) or None
     */
     pub fn new() -> Option<RectangleShape> {
         let rectangle = unsafe { ffi::sfRectangleShape_create() };
@@ -70,7 +69,7 @@ impl RectangleShape {
     /**
     * Create a new rectangle shape with a texture
     *
-    * Return a new option to a rectangleShape object or None
+    * Return Some(RectangleShape) or None
     */
     pub fn new_with_texture(texture : Rc<RefCell<Texture>>) -> Option<RectangleShape> {
         let rectangle = unsafe { ffi::sfRectangleShape_create() };
@@ -93,7 +92,7 @@ impl RectangleShape {
     *
     * Default value on SFML is size = Vector2f(0, 0) 
     *
-    * Return a new option to a rectangleShape object, or None
+    * Return Some(RectangleShape) or None
     */
     pub fn new_init(size : &Vector2f) -> Option<RectangleShape> {
         let rectangle = unsafe { ffi::sfRectangleShape_create() };
@@ -114,7 +113,7 @@ impl RectangleShape {
     /**
     * Clone an existing rectangle shape
     * 
-    * Return the copied object on an option, or None
+    * Return Some(RectangleShape) or None
     */
     pub fn clone(&self) -> Option<RectangleShape> {
         let rectangle = unsafe { ffi::sfRectangleShape_copy(self.rectangle_shape) };

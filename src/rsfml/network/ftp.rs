@@ -24,9 +24,6 @@ e* Permission is granted to anyone to use this software for any purpose,
 
 /*!
 * A FTP client.
-*
-*
-*
 */
 
 use std::libc::{size_t, c_int};
@@ -361,11 +358,16 @@ impl Ftp {
     /**
     * Create a new Ftp object
     *
-    * Return a new option to Ftp object or None
+    * Return Some(Ftp) or None
     */
-    pub fn new() -> Ftp {
-        Ftp {
-            ftp : unsafe { ffi::sfFtp_create() }
+    pub fn new() -> Option<Ftp> {
+        let ptr = unsafe { ffi::sfFtp_create() };
+        if ptr.is_null() {
+            None
+        } else {
+            Some(Ftp {
+                ftp : ptr
+            })
         }
     }
 

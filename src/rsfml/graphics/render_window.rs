@@ -27,7 +27,6 @@
 *
 * RenderWindow is the main class of the Graphics module.
 * It defines an OS window that can be painted using the other classes of the graphics module.
-*
 */
 
 use std::rc::Rc;
@@ -46,6 +45,12 @@ use graphics::{Text, Color, Sprite, CircleShape,
 use ffi::sfml_types::{SfBool, SFTRUE, SFFALSE};
 use ffi = ffi::graphics::render_window;
 
+/**
+* Window that can serve as a target for 2D drawing.
+*
+* RenderWindow is the main class of the Graphics module.
+* It defines an OS window that can be painted using the other classes of the graphics module.
+*/
 pub struct RenderWindow {
     #[doc(hidden)]
     priv render_window :    *ffi::sfRenderWindow,
@@ -79,9 +84,13 @@ impl RenderWindow {
     * * style - Window style
     * * settings - Additional settings for the underlying OpenGL context
     *
-    * Return a new RenderWindow object
+    * Return Some(RenderWindow) or None
     */
-    pub fn new(mode : VideoMode, title : &str, style : WindowStyle, settings : &ContextSettings) -> Option<RenderWindow> {
+    pub fn new(mode : VideoMode, 
+        title : &str, 
+        style : WindowStyle, 
+        settings : &ContextSettings) -> Option<RenderWindow> {
+        
         let mut sf_render_win: *ffi::sfRenderWindow = ptr::null();
         unsafe {
             title.with_c_str(|c_str| {
@@ -136,9 +145,13 @@ impl RenderWindow {
     * * style - Window style
     * * settings - Additional settings for the underlying OpenGL context
     *
-    * Return a new RenderWindow object
+    * Return Some(RenderWindow) or None
     */
-    pub fn new_with_unicode(mode : VideoMode, title : ~[u32], style : WindowStyle, settings : &ContextSettings) -> Option<RenderWindow> {
+    pub fn new_with_unicode(mode : VideoMode, 
+        title : ~[u32], 
+        style : WindowStyle, 
+        settings : &ContextSettings) -> Option<RenderWindow> {
+        
         let sf_render_win: *ffi::sfRenderWindow;
         unsafe { 
             sf_render_win = ffi::sfRenderWindow_createUnicode(mode.unwrap(), title.as_ptr(), style as u32, settings); 
@@ -256,6 +269,7 @@ impl RenderWindow {
         }
     }
     
+    #[doc(hidden)]
     pub fn get_wrapped_event(&self) ->event::Event {
         match self.event.typeEvent as c_uint {
             0   => event::Closed,

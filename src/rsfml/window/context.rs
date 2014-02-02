@@ -31,6 +31,11 @@
 use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi = ffi::window::context;
 
+/**
+* Drawing context
+*
+* Class holding a valid drawing context.
+*/
 pub struct Context {
     #[doc(hidden)]
     priv cont : *ffi::sfContext

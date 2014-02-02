@@ -24,10 +24,6 @@
 
 /*!
 * A HTTP client
-*
-*
-*
-*
 */
 
 use std::{str, cast};
@@ -126,11 +122,16 @@ impl Request {
     /**
     * Create a new HTTP request
     *
-    * Return a new option to HttpRequest object, or None
+    * Return Some(Request) or None
     */
-    pub fn new() -> Request {
-        Request { 
-            request : unsafe { ffi::sfHttpRequest_create() }
+    pub fn new() -> Option<Request> {
+        let ptr = unsafe { ffi::sfHttpRequest_create() };
+        if ptr.is_null() {
+            None
+        } else {
+            Some(Request { 
+                request : ptr
+            })
         }
     }
 
@@ -321,11 +322,16 @@ impl Http {
     /**
     * Create a new Http object
     *
-    * Return a new option to Http object or None
+    * Return Some(Http) or None
     */
-    pub fn create() -> Http {
-        Http { 
-            http : unsafe{ ffi::sfHttp_create() }
+    pub fn new() -> Option<Http> {
+        let ptr = unsafe{ ffi::sfHttp_create() };
+        if ptr.is_null() {
+            None
+        } else {
+            Some(Http { 
+                http : ptr
+            })
         }
     }
 

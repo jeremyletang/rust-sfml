@@ -24,10 +24,6 @@
 
 /*!
 * Specialized socket using the UDP protocol.
-*
-*
-*
-*
 */
 
 use std::{ptr, vec, cast};
@@ -39,6 +35,7 @@ use network::{Packet, IpAddress, SocketStatus};
 use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi = ffi::network::udp_socket;
 
+/// Specialized socket using the UDP protocol.
 pub struct UdpSocket {
     #[doc(hidden)]
     priv socket : *ffi::sfUdpSocket
@@ -48,7 +45,7 @@ impl UdpSocket {
     /**
     * Create a new UDP socket
     *
-    * Return a new option to UdpSocket object or None
+    * Return Some(UdpSocket) or None
     */
     pub fn new() -> Option<UdpSocket> {
         let udp = unsafe { ffi::sfUdpSocket_create() };

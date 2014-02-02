@@ -26,7 +26,6 @@
 * Manipulating 2D rectangles
 *
 * Utility class for manipulating 2D axis aligned rectangles
-*
 */
 
 use std::libc::c_int;
@@ -34,9 +33,7 @@ use std::libc::c_int;
 use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi = ffi::graphics::rect;
 
-/**
-* utility classes for manipulating rectangles of int.
-*/
+/// Utility classes for manipulating rectangles of int.
 #[deriving(Clone, Ord)]
 pub struct IntRect {
     /// Left coordinate of the rectangle. 
@@ -49,9 +46,7 @@ pub struct IntRect {
     height :    i32
 }
 
-/**
-* utility classes for manipulating rectangles of f32.
-*/
+/// Utility classes for manipulating rectangles of f32.
 #[deriving(Clone, Ord)]
 pub struct FloatRect {
     /// Left coordinate of the rectangle. 
@@ -68,7 +63,11 @@ impl IntRect {
     /**
     * Construct a new IntRect
     */
-    pub fn new(left : i32, top : i32, width : i32, height : i32) -> IntRect {
+    pub fn new(left : i32, 
+        top : i32, 
+        width : i32, 
+        height : i32) -> IntRect {
+        
         IntRect {
             left :      left, 
             top :       top, 
@@ -104,7 +103,10 @@ impl IntRect {
     *
     * Return strue if rectangles overlap
     */
-    pub fn intersects(rect1 : &IntRect, rect2 : &IntRect, intersections : &IntRect) -> bool {
+    pub fn intersects(rect1 : &IntRect, 
+        rect2 : &IntRect, 
+        intersections : &IntRect) -> bool {
+        
         match unsafe { ffi::sfIntRect_intersects(rect1, rect2, intersections) } {
             SFFALSE => false,
             SFTRUE  => true,
@@ -134,7 +136,11 @@ impl FloatRect {
     /**
     * Construct a new FloatRect
     */
-    pub fn new(left : f32, top : f32, width : f32, height : f32) -> FloatRect {
+    pub fn new(left : f32, 
+        top : f32, 
+        width : f32, 
+        height : f32) -> FloatRect {
+        
         FloatRect {
             left :      left, 
             top :       top, 
@@ -168,9 +174,12 @@ impl FloatRect {
     * * rect2 - Second rectangle to test
     * * intersection - Rectangle to be filled with overlapping rect 
     *
-    * Return strue if rectangles overlap
+    * Return true if rectangles overlap
     */
-    pub fn intersects(rect1 : &FloatRect, rect2 : &FloatRect, intersections : &FloatRect) -> bool {
+    pub fn intersects(rect1 : &FloatRect, 
+        rect2 : &FloatRect, 
+        intersections : &FloatRect) -> bool {
+        
         match unsafe { ffi::sfFloatRect_intersects(rect1, rect2, intersections) } {
             SFFALSE => false,
             SFTRUE  => true,

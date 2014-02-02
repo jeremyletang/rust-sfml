@@ -37,9 +37,7 @@ use graphics::{BlendMode, BlendAlpha, Shader, Texture, Transform};
 
 use ffi = ffi::graphics::render_states;
 
-/**
-* Define the states used for drawing to a RenderTarget
-*/
+/// Define the states used for drawing to a RenderTarget
 pub struct RenderStates {
     #[doc(hidden)]
     priv sfRenderStates :   ffi::sfRenderStates,
@@ -64,9 +62,13 @@ impl RenderStates {
     * * texture - Some(texture) if there is a texture, None otherwise
     * * shader - Some(shader) if there is a shader, None otherwise
     *
-    * Return a new default RenderStates
+    * Return a new initialized RenderState
     */
-    pub fn new(blend_mode : BlendMode, transform : Transform, texture : Option<Rc<RefCell<Texture>>>, shader : Option<Rc<RefCell<Shader>>>) -> RenderStates {
+    pub fn new(blend_mode : BlendMode, 
+        transform : Transform, 
+        texture : Option<Rc<RefCell<Texture>>>, 
+        shader : Option<Rc<RefCell<Shader>>>) -> RenderStates {
+        
         RenderStates {
             sfRenderStates :    ffi::sfRenderStates {
                 blendMode : blend_mode as i32,
@@ -107,9 +109,7 @@ impl RenderStates {
         }
     }
 
-    /**
-    * Internal rsfml use only
-    */
+    #[doc(hidden)]
     pub fn unwrap(&mut self) -> *ffi::sfRenderStates {
         // let tmp_tex = self.texture.get_ref().clone();
         // let tmp_shad = self.shader.get_ref().clone();

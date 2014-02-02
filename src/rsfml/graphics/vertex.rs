@@ -29,13 +29,19 @@
 *
 * It has a position and other extra attributes that will be used for drawing: 
 * in SFML, vertices also have a color and a pair of texture coordinates.
-*
 */
 
 use graphics::Color;
 use system::vector2::Vector2f;
 
-/// Define a point with color and texture coordinates
+/**
+* Define a point with color and texture coordinates
+*
+* A vertex is an improved point.
+*
+* It has a position and other extra attributes that will be used for drawing: 
+* in SFML, vertices also have a color and a pair of texture coordinates.
+*/
 #[deriving(Clone, Eq, Ord)]
 pub struct Vertex {
     /// 2D position of the vertex 
@@ -57,7 +63,10 @@ impl Vertex {
     *
     * Return a Vertex
     */
-    pub fn new(position : &Vector2f, color : &Color, tex_coords : &Vector2f) -> Vertex {
+    pub fn new(position : &Vector2f, 
+        color : &Color, 
+        tex_coords : &Vector2f) -> Vertex {
+        
         Vertex {
             position :      *position,
             color :         *color,

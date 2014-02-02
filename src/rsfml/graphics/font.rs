@@ -24,9 +24,6 @@
 
 /*!
 * Class for loading and manipulating character fonts
-*
-* 
-*
 */
 
 use std::libc::c_uint;
@@ -38,6 +35,7 @@ use graphics::{Texture, Glyph};
 use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi = ffi::graphics::font;
 
+/// Class for loading and manipulating character fonts
 pub struct Font {
     #[doc(hidden)]
     priv font :     *ffi::sfFont,
@@ -52,7 +50,7 @@ impl Font {
     * # Arguments
     * * filename -  Path of the font file to load
     * 
-    * Return a new Font object
+    * Return Some(Font) or None
     */
     pub fn new_from_file(filename : &str) -> Option<Font> {
         let mut fnt = ptr::null();
@@ -77,7 +75,8 @@ impl Font {
     *
     * # Arguments
     * * font - Font to copy
-    * Return the copied font
+    *
+    * Return Some(Font) or None
     */
     pub fn clone(&self) -> Option<Font> {
         let fnt = unsafe {ffi::sfFont_copy(self.font)};

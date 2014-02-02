@@ -24,8 +24,6 @@
 
 /*!
 * Encapsulate an IPv4 network address.
-*
-*
 */
 
 use std::str;
@@ -36,6 +34,7 @@ use system::Time;
 
 use ffi = ffi::network::ip_address;
 
+/// Encapsulate an IPv4 network address.
 pub struct IpAddress{
     #[doc(hidden)]
     priv ip : ffi::sfIpAddress

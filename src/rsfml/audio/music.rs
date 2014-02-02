@@ -41,6 +41,13 @@ use traits::Wrappable;
 use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi = ffi::audio::music;
 
+/**
+* Play Music
+*
+* Streamed music played from an audio file.
+* Musics are sounds that are streamed rather than completely loaded in memory.
+*
+*/
 pub struct Music {
     #[doc(hidden)]
     priv music : *ffi::sfMusic
@@ -60,7 +67,7 @@ impl Music {
     * # Arguments
     * * filename - Path of the music file to open
     *
-    * Return a new option to Music object or none 
+    * Return Some(Music) or None
     */
     pub fn new_from_file(filename : &str) -> Option<Music> {
         let mut music_tmp : *ffi::sfMusic = ptr::null();

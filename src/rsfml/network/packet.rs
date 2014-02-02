@@ -24,9 +24,6 @@
 
 /*!
 * Utility class to build blocks of data to transfer over the network.
-*
-*
-*
 */
 
 use std::ptr;
@@ -36,6 +33,7 @@ use traits::Wrappable;
 
 use ffi = ffi::network::packet;
 
+/// Utility class to build blocks of data to transfer over the network.
 pub struct Packet {
     #[doc(hidden)]
     packet : *ffi::sfPacket
@@ -45,7 +43,7 @@ impl Packet {
     /**
     * Create a new packet
     *
-    * Return a new sfPacket object
+    * Return Some(Packet) or None
     */
     pub fn new() -> Option<Packet> {
         let pck = unsafe { ffi::sfPacket_create() };
@@ -62,7 +60,7 @@ impl Packet {
     /**
     * Create a new packet by copying an existing one
     *
-    * Return a new Packet object which is a copy of packet
+    * Return Some(Packet) or None
     */
     pub fn clone(&self) -> Option<Packet> {
         let pck = unsafe { ffi::sfPacket_copy(self.packet) };

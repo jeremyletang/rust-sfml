@@ -24,9 +24,6 @@
 
 /*!
 * Target for off-screen 2D rendering into a texture
-*
-*
-*
 */
 
 use std::libc::c_float;
@@ -38,6 +35,9 @@ use system::vector2::Vector2f;
     
 use ffi = ffi::graphics::transformable;
 
+/**
+* Target for off-screen 2D rendering into a texture
+*/
 pub struct Transformable{
     #[doc(hidden)]
     priv transformable : *ffi::sfTransformable
@@ -47,7 +47,7 @@ impl Transformable {
     /**
     * Create a new transformable
     *
-    * Return a new Transformable object
+    * Return Some(Transformable) or None
     */
     pub fn new() -> Option<Transformable> {
         let tran = unsafe { ffi::sfTransformable_create() };
@@ -64,7 +64,7 @@ impl Transformable {
     /**
     * Copy an existing transformable
     *
-    * Return the copied object
+    * Return Some(Transformable) or None
     */
     pub fn clone(&self) -> Option<Transformable> {
         let tran = unsafe { ffi::sfTransformable_copy(self.transformable) };

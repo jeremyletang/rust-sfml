@@ -25,8 +25,8 @@
 /*!
 * Graphical text
 *
-* Text is a drawable class that allows to easily display some text with custom style and color on a render target.
-*
+* Text is a drawable class that allows to easily 
+* display some text with custom style and color on a render target.
 */
 
 use std::rc::Rc;
@@ -42,6 +42,7 @@ use system::vector2::Vector2f;
 
 use ffi = ffi::graphics::text;
 
+/// Availables texts styles
 pub enum Style {
     Regular =       0,
     Bold =          1,
@@ -49,6 +50,12 @@ pub enum Style {
     Underlined =    4
 }
 
+/**
+* Graphical text
+*
+* Text is a drawable class that allows to easily 
+* display some text with custom style and color on a render target.
+*/
 pub struct Text {
     #[doc(hidden)]
     priv text :             *ffi::sfText,
@@ -62,7 +69,7 @@ impl Text {
     /**
     * Create a new text
     *
-    * Return a new Option on Text object, or None
+    * Return Some(Text) or None
     */
     pub fn new() -> Option<Text> {
         let text  = unsafe { ffi::sfText_create() };
@@ -88,9 +95,12 @@ impl Text {
     * * font - The font to display the Text
     * * characterSize - The size of the Text
     *
-    * Return a new Option on Text object, or None
+    * Return Some(Text) or None
     */
-    pub fn new_init(string : &str, font : Rc<RefCell<Font>>, character_size : uint) ->Option<Text> {
+    pub fn new_init(string : &str, 
+        font : Rc<RefCell<Font>>, 
+        character_size : uint) ->Option<Text> {
+        
         let text = unsafe { ffi::sfText_create() };
         if ptr::is_null(text) {
             None

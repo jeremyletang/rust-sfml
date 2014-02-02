@@ -24,9 +24,6 @@
 
 /*!
 * Define a set of one or more 2D primitives
-*
-*
-*
 */
 
 use std::libc::c_uint;
@@ -38,6 +35,7 @@ use graphics::{Vertex, FloatRect, primitive_type,
 
 use ffi = ffi::graphics::vertex_array;
 
+/// Define a set of one or more 2D primitives
 pub struct VertexArray {
     #[doc(hidden)]
     priv vertex_array : *ffi::sfVertexArray
@@ -47,7 +45,7 @@ impl VertexArray {
     /**
     * Create a new vertex array
     *
-    * Return a new VertexArray object
+    * Return Some(VertexArray) or None
     */
     pub fn new() -> Option<VertexArray> {
         let ver = unsafe { ffi::sfVertexArray_create() };
@@ -67,7 +65,7 @@ impl VertexArray {
     * # Arguments
     * * vertexArray - Vertex array to copy
     *
-    * Return the copied object
+    * Return Some(VertexArray) or None
     */
     pub fn clone(&self) -> Option<VertexArray> {
         let ver = unsafe { ffi::sfVertexArray_copy(self.vertex_array) };
@@ -116,11 +114,11 @@ impl VertexArray {
     * are removed from the array.
     *
     * # Arguments
-    * * vertexCount - New size of the array (number of vertices)
+    * * vertex_count - New size of the array (number of vertices)
     */
-    pub fn resize(&mut self, vertexCount : uint) -> () {
+    pub fn resize(&mut self, vertex_count : uint) -> () {
         unsafe {
-            ffi::sfVertexArray_resize(self.vertex_array, vertexCount as c_uint)
+            ffi::sfVertexArray_resize(self.vertex_array, vertex_count as c_uint)
         }
     }
 

@@ -26,7 +26,6 @@
 * Play sounds.
 *
 * Regular sound that can be played in the audio environment.
-*
 */
 
 use std::libc::c_float;
@@ -42,6 +41,11 @@ use traits::Wrappable;
 use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi = ffi::audio::sound;
 
+/**
+* Play sounds.
+*
+* Regular sound that can be played in the audio environment.
+*/
 pub struct Sound {
     #[doc(hidden)]
     priv sound :    *ffi::sfSound,
@@ -54,7 +58,7 @@ impl Sound {
     /**
     * Create a new Sound
     *
-    * Return a new option to Sound object or None
+    * Return Some(Sound) or None
     */
     pub fn new() -> Option<Sound> {
         let s = unsafe {ffi::sfSound_create()};
@@ -72,7 +76,10 @@ impl Sound {
     /**
     * Create a new Sound
     *
-    * Return a new option to Sound object or None
+    * # Arguments
+    * * buffer - the buffer to set.
+    *
+    * Return Some(Sound) or None
     */
     pub fn new_with_buffer(buffer : Rc<RefCell<SoundBuffer>>) -> Option<Sound> {
         let s = unsafe {ffi::sfSound_create()};
@@ -93,7 +100,7 @@ impl Sound {
     /**
     * Create a new sound by copying an existing one
     *
-    * Return a new option to Sound object which is a copy of sound or none
+    * Return Some(Sound) or None
     */
     pub fn clone(&self) -> Option<Sound> {
         let s = unsafe {ffi::sfSound_copy(self.sound)};

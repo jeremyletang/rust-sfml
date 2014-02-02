@@ -24,15 +24,13 @@
 
 /*!
 * Status codes that may be returned by socket functions.
-*
-*
-*
 */
 
 use std::libc::c_int;
 
 use ffi = ffi::network::socket_status;
 
+/// Status codes that may be returned by socket functions.
 #[deriving(Eq, Ord)]
 pub enum SocketStatus {
 	/// The socket has sent / received the data.

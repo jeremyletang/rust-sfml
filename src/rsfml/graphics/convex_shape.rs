@@ -25,8 +25,10 @@
 /*!
 * Specialized shape representing a convex polygon
 *
-* It is important to keep in mind that a convex shape must always be... convex, otherwise it may not be drawn correctly. 
-* Moreover, the points must be defined in order; using a random order would result in an incorrect shape.
+* It is important to keep in mind that a convex shape must 
+* always be... convex, otherwise it may not be drawn correctly. 
+* Moreover, the points must be defined in order; using a random 
+* order would result in an incorrect shape.
 */
 
 use std::rc::Rc;
@@ -42,6 +44,14 @@ use system::vector2::Vector2f;
 use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi = ffi::graphics::convex_shape;
 
+/**
+* Specialized shape representing a convex polygon
+*
+* It is important to keep in mind that a convex shape must 
+* always be... convex, otherwise it may not be drawn correctly. 
+* Moreover, the points must be defined in order; using a random 
+* order would result in an incorrect shape.
+*/
 pub struct ConvexShape {
     #[doc(hidden)]
     priv convex_shape : *ffi::sfConvexShape,
@@ -56,7 +66,7 @@ impl ConvexShape {
     * # Arguments
     * * points_count - The number of point for the convex shape
     *
-    * Return a new convexShape object
+    * Return Some(ConvexShape) or None
     */
     pub fn new(points_count : uint) -> Option<ConvexShape> {
         let shape = unsafe { ffi::sfConvexShape_create() };
@@ -81,7 +91,7 @@ impl ConvexShape {
     * * texture - The texture to apply to the convex shape
     * * points_count - The number of point for the convex shape
     *
-    * Return a new convexShape object
+    * Return Some(ConvexShape) or None
     */
     pub fn new_with_texture(texture : Rc<RefCell<Texture>>, points_count : uint) -> Option<ConvexShape> {
         let shape = unsafe { ffi::sfConvexShape_create() };
@@ -104,7 +114,7 @@ impl ConvexShape {
     /**
     * Clone an existing convex shape
     *
-    * Return the cloned object
+    * Return Some(ConvexShape) or None
     */
     pub fn clone(&self) -> Option<ConvexShape> {
         let shape = unsafe { ffi::sfConvexShape_copy(self.convex_shape) };

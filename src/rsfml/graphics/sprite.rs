@@ -25,8 +25,8 @@
 /*!
 * Drawable representation of a texture
 *
-* Sprite is a drawable class that allows to easily display a texture (or a part of it) on a render target.
-*
+* Sprite is a drawable class that allows to easily 
+* display a texture (or a part of it) on a render target.
 */
 
 use std::rc::Rc;
@@ -42,6 +42,12 @@ use system::vector2::Vector2f;
 use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi = ffi::graphics::sprite;
 
+/**
+* Drawable representation of a texture
+*
+* Sprite is a drawable class that allows to easily 
+* display a texture (or a part of it) on a render target.
+*/
 pub struct Sprite {
     #[doc(hidden)]
     priv sprite :   *ffi::sfSprite,
@@ -53,7 +59,7 @@ impl Sprite {
     /**
     * Create a new sprite
     *
-    * Return a new sfSprite object
+    * Return Some(Sprite) or None
     */
     pub fn new() -> Option<Sprite> {
         let sp = unsafe { ffi::sfSprite_create() };
@@ -72,7 +78,7 @@ impl Sprite {
     /**
     * Create a new sprite with a texture
     *
-    * Return a new sfSprite object
+    * Return Some(Sprite) or None
     */
     pub fn new_with_texture(texture : Rc<RefCell<Texture>>) -> Option<Sprite> {
         let sp = unsafe { ffi::sfSprite_create() };
@@ -94,7 +100,7 @@ impl Sprite {
     /**
     * Copy an existing sprite
     *
-    * Return An option to the cloned sprite or none.
+    * Return Some(Sprite) or None
     */
     pub fn clone(&self) -> Option<Sprite> {
         let sp = unsafe { ffi::sfSprite_copy(self.sprite) };

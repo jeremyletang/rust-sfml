@@ -24,9 +24,6 @@
 
 /*!
 * Specialized socket using the TCP protocol
-*
-*
-*
 */
 
 use std::libc::size_t;
@@ -39,6 +36,7 @@ use system::Time;
 use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi = ffi::network::tcp_socket;
 
+/// Specialized socket using the TCP protocol
 pub struct TcpSocket {
     #[doc(hidden)]
     priv socket : *ffi::sfTcpSocket
@@ -48,7 +46,7 @@ impl TcpSocket {
     /**
     * Create a new TCP socket
     *
-    * Return a new option to TcpSocket object, or None
+    * Return Some(TcpSocket) or None
     */
     pub fn new() -> Option<TcpSocket> {
         let tcp = unsafe { ffi::sfTcpSocket_create() };

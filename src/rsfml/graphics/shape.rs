@@ -24,8 +24,6 @@
 
 /*!
 * Base class for textured shapes with outline
-*
-*
 */
 
 use std::rc::Rc;
@@ -47,6 +45,7 @@ pub struct WrapObj {
     shape_impl : ~ShapeImpl
 }
 
+/// Base class for textured shapes with outline
 pub struct Shape {
     #[doc(hidden)]
     priv shape :    *ffi::sfShape,

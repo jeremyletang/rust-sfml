@@ -25,8 +25,9 @@
 /*!
 * 2D camera that defines what region is shown on screen
 *
-* This is a very powerful concept: you can scroll, rotate or zoom the entire scene without altering the way that your drawable objects are drawn.
-*
+* This is a very powerful concept: you can scroll, 
+* rotate or zoom the entire scene without altering 
+* the way that your drawable objects are drawn.
 */
 
 use std::libc::c_float;
@@ -38,6 +39,13 @@ use system::vector2::Vector2f;
 
 use ffi = ffi::graphics::view;
 
+/**
+* 2D camera that defines what region is shown on screen
+*
+* This is a very powerful concept: you can scroll, 
+* rotate or zoom the entire scene without altering 
+* the way that your drawable objects are drawn.
+*/
 pub struct View {
     #[doc(hidden)]
     priv dropable : bool,
@@ -51,7 +59,7 @@ impl View {
     *
     * This function creates a default view of (0, 0, 1000, 1000)
     * 
-    * Return a new option to View object
+    * Return Some(View) or None
     */
     pub fn new() -> Option<View> {
         let view = unsafe { ffi::sfView_create() };
@@ -75,7 +83,7 @@ impl View {
     * * center - The center of the view
     * * size - The size of the view
     *
-    * Return a new option to View object
+    * Return Some(View) or None
     */
     pub fn new_init(center : &Vector2f, size : &Vector2f) -> Option<View> {
         let view = unsafe { ffi::sfView_create() };
@@ -97,7 +105,7 @@ impl View {
     /**
     * Create a view by copying an existant one.
     *
-    * Return a new option to View object
+    * Return Some(View) or None
     */
     pub fn new_copy(&self) -> Option<View> {
         let view = unsafe { ffi::sfView_copy(self.view) };
@@ -118,9 +126,9 @@ impl View {
     * # Arguments
     * * rectangle - The rectangle defining the zone to display
     *
-    * Return a new View object
+    * Return Some(View) or None
     */
-    pub fn new_from_rect(rectangle : *FloatRect) -> Option<View> {
+    pub fn new_from_rect(rectangle : &FloatRect) -> Option<View> {
         let view = unsafe { ffi::sfView_createFromRect(*rectangle) };
         if ptr::is_null(view) {
             None
