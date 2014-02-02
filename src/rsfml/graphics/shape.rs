@@ -33,19 +33,13 @@ use std::cell::RefCell;
 use std::libc::{c_void, c_float, c_uint};
 use std::{ptr, cast};
 
-use graphics::render_window::RenderWindow;
-use graphics::render_texture::RenderTexture;
-use graphics::render_states::RenderStates;
-use traits::drawable::Drawable;
-use traits::wrappable::Wrappable;
-use graphics::texture::Texture;
+use traits::{Drawable, ShapeImpl, Wrappable};
+use graphics::{RenderWindow, RenderTexture, 
+    RenderStates, Texture, Color, Transform, 
+    IntRect, FloatRect};
 use system::vector2::Vector2f;
-use graphics::color::Color;
-use graphics::transform::Transform;
-use graphics::rect::{IntRect, FloatRect};
-use traits::shape_impl::ShapeImpl;
-use sfml_types::{SFTRUE, SFFALSE};
 
+use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi = ffi::graphics::shape;
 
 #[doc(hidden)]

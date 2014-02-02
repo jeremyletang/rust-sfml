@@ -33,12 +33,12 @@
 use std::libc::c_float;
 use std::{ptr, cast};
 
-use audio::sound_status;
+use audio::Status;
 use system::Time;
 use system::vector3::Vector3f;
-use traits::wrappable::Wrappable;
-use sfml_types::{SFTRUE, SFFALSE};
+use traits::Wrappable;
 
+use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi = ffi::audio::music;
 
 pub struct Music {
@@ -191,7 +191,7 @@ impl Music {
     *
     * Return current status
     */
-    pub fn get_status(&self) -> sound_status::Status {
+    pub fn get_status(&self) -> Status {
         unsafe {cast::transmute(ffi::sfMusic_getStatus(self.music) as i8)}
     }
 

@@ -24,12 +24,12 @@
 
 /*!
 * Basic traits for internal functionnement of rsfml.
-*
-*
-*
 */
 
+pub use traits::drawable::Drawable;
+pub use traits::wrappable::Wrappable;
+pub use traits::shape_impl::ShapeImpl;
 
-pub mod drawable;
-pub mod wrappable;
-pub mod shape_impl;
+mod drawable;
+mod wrappable;
+mod shape_impl;

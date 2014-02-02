@@ -32,11 +32,8 @@ use std::rc::Rc;
 use std::cell::RefCell;
 use std::ptr;
 
-use traits::wrappable::Wrappable;
-use graphics::blend_mode::{BlendMode, BlendAlpha}; 
-use graphics::shader::Shader; 
-use graphics::texture::Texture;
-use graphics::transform::Transform; 
+use traits::Wrappable;
+use graphics::{BlendMode, BlendAlpha, Shader, Texture, Transform}; 
 
 use ffi = ffi::graphics::render_states;
 

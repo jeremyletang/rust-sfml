@@ -29,7 +29,7 @@
 *
 */
 
-use graphics::rect::IntRect;
+use graphics::IntRect;
 
 #[deriving(Clone, Eq, Ord)]
 pub struct Glyph {

@@ -32,19 +32,13 @@
 use std::rc::Rc;
 use std::cell::RefCell;
 use std::libc::{c_float, c_uint, size_t};
-use extra::c_vec::CVec;
 use std::{str, ptr};
+use extra::c_vec::CVec;
 
-use traits::drawable::Drawable;
-use traits::wrappable::Wrappable;
-use graphics::render_window::RenderWindow;
-use graphics::render_texture::RenderTexture;
+use traits::{Drawable, Wrappable};
+use graphics::{RenderWindow, RenderTexture, Font, 
+    FloatRect, Color, Transform, RenderStates};
 use system::vector2::Vector2f;
-use graphics::font::Font;
-use graphics::color::Color;
-use graphics::rect::FloatRect;
-use graphics::transform::Transform;
-use graphics::render_states::RenderStates;
 
 use ffi = ffi::graphics::text;
 

@@ -34,12 +34,12 @@ use std::{ptr, cast};
 use std::rc::Rc;
 use std::cell::RefCell;
 
-use audio::{sound_status, SoundBuffer};
+use audio::{Status, SoundBuffer};
 use system::Time;
 use system::vector3::Vector3f;
-use traits::wrappable::Wrappable;
-use sfml_types::{SFTRUE, SFFALSE};
+use traits::Wrappable;
 
+use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi = ffi::audio::sound;
 
 pub struct Sound {
@@ -177,7 +177,7 @@ impl Sound {
     *
     * Return current status
     */
-    pub fn get_status(&self) -> sound_status::Status {
+    pub fn get_status(&self) -> Status {
         unsafe {cast::transmute(ffi::sfSound_getStatus(self.sound) as i8)}
     }
 

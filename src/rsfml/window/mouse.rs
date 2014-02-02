@@ -30,8 +30,8 @@
 */
 
 use std::libc::c_uint;
-use sfml_types::{SFTRUE, SFFALSE};
 
+use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi = ffi::window::mouse;
 
 /// Mouse buttons

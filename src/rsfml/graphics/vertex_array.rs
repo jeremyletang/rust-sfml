@@ -32,15 +32,9 @@
 use std::libc::c_uint;
 use std::ptr;
 
-use traits::drawable::Drawable;
-use traits::wrappable::Wrappable;
-use graphics::vertex::Vertex;
-use graphics::rect::FloatRect;
-use graphics::primitive_type;
-use graphics::primitive_type::PrimitiveType;
-use graphics::render_window::RenderWindow;
-use graphics::render_texture::RenderTexture;
-use graphics::render_states::RenderStates;
+use traits::{Drawable, Wrappable};
+use graphics::{Vertex, FloatRect, primitive_type, 
+    PrimitiveType, RenderWindow, RenderTexture, RenderStates};
 
 use ffi = ffi::graphics::vertex_array;
 

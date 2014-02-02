@@ -32,7 +32,7 @@
 use std::libc::c_float;
 
 use system::vector2::Vector2f;
-use graphics::rect::FloatRect;
+use graphics::FloatRect;
 
 use ffi = ffi::graphics::transform;
 

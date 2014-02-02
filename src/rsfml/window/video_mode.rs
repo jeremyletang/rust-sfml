@@ -33,9 +33,9 @@
 use extra::c_vec::CVec;
 use std::libc::{c_uint, size_t};
 
-use traits::wrappable::Wrappable;
-use sfml_types::{SFTRUE, SFFALSE};
+use traits::Wrappable;
 
+use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi = ffi::window::video_mode;
 
 /**

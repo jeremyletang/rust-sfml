@@ -32,11 +32,10 @@
 use std::libc::c_uint;
 use std::ptr;
 
-use traits::wrappable::Wrappable;
-use graphics::texture::Texture;
-use graphics::glyph::Glyph;
-use sfml_types::{SFTRUE, SFFALSE};
+use traits::Wrappable;
+use graphics::{Texture, Glyph};
 
+use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi = ffi::graphics::font;
 
 pub struct Font {

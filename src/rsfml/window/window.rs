@@ -31,14 +31,12 @@
 use std::libc::{c_uint, c_float, c_int};
 use std::{ptr, cast};
 
-use traits::wrappable::Wrappable;
-use window::{event, keyboard, joystick, mouse};
-use window::video_mode::VideoMode;
-use window::context_settings::ContextSettings;
-use window::window_style::WindowStyle;
+use traits::Wrappable;
+use window::{event, keyboard, joystick, mouse, 
+    VideoMode, ContextSettings, WindowStyle};
 use system::vector2::{Vector2i, Vector2u};
-use sfml_types::{SFTRUE, SFFALSE};
 
+use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi = ffi::window::window;
 
 pub struct Window {

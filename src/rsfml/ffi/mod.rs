@@ -27,3 +27,4 @@ pub mod audio;
 pub mod window;
 pub mod network;
 pub mod system;
+pub mod sfml_types;

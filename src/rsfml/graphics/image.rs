@@ -32,12 +32,11 @@
 use std::libc::c_uint;
 use std::ptr;
 
-use traits::wrappable::Wrappable;
+use traits::Wrappable;
 use system::vector2::Vector2u;
-use graphics::color::Color;
-use graphics::rect::IntRect;
-use sfml_types::{SFTRUE, SFFALSE};
+use graphics::{Color, IntRect};
 
+use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi = ffi::graphics::image;
 
 pub struct Image {

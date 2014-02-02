@@ -34,18 +34,12 @@ use std::cell::RefCell;
 use std::libc::{c_float};
 use std::ptr;
 
-use traits::drawable::Drawable;
-use traits::wrappable::Wrappable;
-use graphics::color::Color;
-use graphics::texture::Texture;
-use graphics::render_window::RenderWindow;
-use graphics::render_texture::RenderTexture;
+use traits::{Drawable, Wrappable};
+use graphics::{FloatRect, IntRect, Color, Texture, 
+    RenderWindow, RenderTexture, Transform, RenderStates};
 use system::vector2::Vector2f;
-use graphics::rect::{FloatRect, IntRect};
-use graphics::transform::Transform;
-use graphics::render_states::RenderStates;
-use sfml_types::{SFTRUE, SFFALSE};
 
+use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi = ffi::graphics::sprite;
 
 pub struct Sprite {

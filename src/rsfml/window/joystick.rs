@@ -31,8 +31,7 @@
 
 use std::libc::{c_uint};
 
-use sfml_types::{SFFALSE, SFTRUE};
-
+use ffi::sfml_types::{SFFALSE, SFTRUE};
 use ffi = ffi::window::joystick;
 
 /// Axes supported by SFML joysticks 

@@ -28,8 +28,7 @@
  * Class holding a valid drawing context.
  */
 
-use sfml_types::{SFTRUE, SFFALSE};
-
+use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi = ffi::window::context;
 
 pub struct Context {

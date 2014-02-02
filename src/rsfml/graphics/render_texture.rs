@@ -33,21 +33,11 @@
 use std::libc::c_uint;
 use std::ptr;
 
-use traits::drawable::Drawable;
-use traits::wrappable::Wrappable;
+use traits::{Drawable, Wrappable};
 use system::vector2::{Vector2f, Vector2i, Vector2u};
-use graphics::view::View;
-use graphics::sprite::Sprite;
-use graphics::color::Color;
-use graphics::rect::IntRect;
-use graphics::texture::Texture;
-use graphics::text::Text;
-use graphics::circle_shape::CircleShape;
-use graphics::rectangle_shape::RectangleShape;
-use graphics::vertex_array::VertexArray;
-use graphics::convex_shape::ConvexShape;
-use graphics::render_states::RenderStates;
-use graphics::shape::Shape;
+use graphics::{View, Sprite, Color, IntRect, Texture, 
+    CircleShape, RectangleShape, VertexArray, ConvexShape, 
+    RenderStates, Shape, Text};
 
 use ffi = ffi::graphics::render_texture;
 

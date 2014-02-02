@@ -33,13 +33,12 @@ use std::rc::Rc;
 use std::cell::RefCell;
 use std::ptr;
 
-use traits::wrappable::Wrappable;
-use graphics::texture::Texture;
+use traits::Wrappable;
+use graphics::{Texture, Color};
 use system::vector2::Vector2f;
 use system::vector3::Vector3f;
-use graphics::color::Color;
-use sfml_types::{SFTRUE, SFFALSE};
 
+use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi = ffi::graphics::shader;
 
 pub struct Shader {

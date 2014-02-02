@@ -29,6 +29,7 @@ pub mod render_window {
     use system::vector2::{Vector2f, Vector2i, Vector2u};
     use window::ContextSettings;
     use graphics::{Color, IntRect};
+    
     use ffi::window::video_mode::sfVideoMode;
     use ffi::graphics::text::sfText;
     use ffi::graphics::sprite::sfSprite;
@@ -40,7 +41,7 @@ pub mod render_window {
     use ffi::graphics::image::sfImage;
     use ffi::graphics::shape::sfShape;
     use ffi::graphics::vertex_array::sfVertexArray;
-    use sfml_types::SfBool;
+    use ffi::sfml_types::SfBool;
 
     pub struct sfRenderWindow;
 
@@ -109,8 +110,9 @@ pub mod circle_shape {
 
     use system::vector2::Vector2f;
     use graphics::{Color, Transform, IntRect, FloatRect};
+    
     use ffi::graphics::texture::sfTexture;
-    use sfml_types::SfBool;
+    use ffi::sfml_types::SfBool;
 
     pub struct sfCircleShape {
         This :              *c_void,
@@ -174,8 +176,9 @@ pub mod convex_shape {
 
     use system::vector2::Vector2f;
     use graphics::{Color, Transform, FloatRect, IntRect};
+    
     use ffi::graphics::texture::sfTexture;
-    use sfml_types::SfBool;
+    use ffi::sfml_types::SfBool;
     
     pub struct sfConvexShape {
         This :              *c_void,
@@ -225,8 +228,9 @@ pub mod font {
     use std::libc::{c_void, c_uint, c_int, c_char};
     
     use graphics::Glyph;
+    
     use ffi::graphics::texture::sfTexture;
-    use sfml_types::SfBool;
+    use ffi::sfml_types::SfBool;
 
     pub struct sfFont {
         This : *c_void
@@ -251,7 +255,8 @@ pub mod image {
 
     use graphics::{Color, IntRect};
     use system::vector2::Vector2u;
-    use sfml_types::SfBool;
+    
+    use ffi::sfml_types::SfBool;
 
     pub struct sfImage {
         This : *c_void
@@ -282,7 +287,8 @@ pub mod rect {
     
     use std::libc::{c_int};
     use graphics::{FloatRect, IntRect};
-    use sfml_types::{SfBool};
+    
+    use ffi::sfml_types::{SfBool};
 
     extern "C" {
         pub fn sfIntRect_contains(rect : *IntRect, x : c_int, y : c_int) -> SfBool;
@@ -298,8 +304,9 @@ pub mod rectangle_shape {
 
     use system::vector2::Vector2f;
     use graphics::{Color, Transform, FloatRect, IntRect};
+    
     use ffi::graphics::texture::sfTexture;
-    use sfml_types::SfBool;
+    use ffi::sfml_types::SfBool;
 
     pub struct sfRectangleShape {
         This :              *c_void,
@@ -347,6 +354,7 @@ pub mod rectangle_shape {
 pub mod render_states {
     
     use graphics::Transform;
+    
     use ffi::graphics::shader::sfShader; 
     use ffi::graphics::texture::sfTexture; 
 
@@ -365,8 +373,9 @@ pub mod shader {
     use graphics::{Transform, Color};
     use system::vector2::Vector2f;
     use system::vector3::Vector3f;
+    
     use ffi::graphics::texture::sfTexture;
-    use sfml_types::SfBool;
+    use ffi::sfml_types::SfBool;
 
     pub struct sfShader {
         This : *c_void
@@ -399,6 +408,7 @@ pub mod render_texture {
 
     use system::vector2::{Vector2f, Vector2i, Vector2u};
     use graphics::{Color, IntRect};
+    
     use ffi::graphics::sprite::sfSprite;
     use ffi::graphics::render_states::sfRenderStates;
     use ffi::graphics::texture::sfTexture;
@@ -409,7 +419,7 @@ pub mod render_texture {
     use ffi::graphics::convex_shape::sfConvexShape;
     use ffi::graphics::shape::sfShape;
     use ffi::graphics::view::sfView;
-    use sfml_types::SfBool;
+    use ffi::sfml_types::SfBool;
 
     pub struct sfRenderTexture {
         This :          *c_void,
@@ -454,8 +464,9 @@ pub mod shape {
 
     use graphics::{Color, Transform, IntRect, FloatRect};
     use system::vector2::Vector2f;
+    
     use ffi::graphics::texture::sfTexture;
-    use sfml_types::SfBool;
+    use ffi::sfml_types::SfBool;
 
     pub struct sfShape {
         This :              *c_void,
@@ -504,8 +515,9 @@ pub mod sprite {
 
     use system::vector2::Vector2f;
     use graphics::{Color, Transform, IntRect, FloatRect};
+    
     use ffi::graphics::texture::sfTexture;
-    use sfml_types::SfBool;
+    use ffi::sfml_types::SfBool;
 
     pub struct sfSprite {
         This :              *c_void,
@@ -545,8 +557,10 @@ pub mod sprite {
 pub mod text {
     
     use std::libc::{c_uint, c_float, c_void, size_t, c_char};
+    
     use system::vector2::Vector2f;
     use graphics::{Color, Transform, FloatRect};
+    
     use ffi::graphics::font::sfFont;
 
     pub struct sfText {
@@ -597,10 +611,11 @@ pub mod texture {
 
     use system::vector2::Vector2u;
     use graphics::IntRect;
+    
     use ffi::graphics::render_window::sfRenderWindow;
     use ffi::graphics::image::sfImage;
     use ffi::window::window::sfWindow;
-    use sfml_types::SfBool;
+    use ffi::sfml_types::SfBool;
 
     pub struct sfTexture {
         this : *c_void
@@ -748,4 +763,3 @@ pub mod view {
         pub fn sfView_zoom(view : *sfView, factor : c_float) -> ();
     }
 }
-

@@ -29,11 +29,14 @@
 *
 */
 
-pub use self::ip_address::IpAddress;
-pub use self::packet::Packet;
-pub use self::socket_status::{SocketStatus, SocketNotReady, SocketDisconnected, SocketError};
-pub use self::ftp::Ftp;
-pub use self::http::Http;
+pub use network::ip_address::IpAddress;
+pub use network::packet::Packet;
+pub use network::tcp_socket::TcpSocket;
+pub use network::udp_socket::UdpSocket;
+pub use network::socket_status::{SocketStatus, SocketNotReady, SocketDisconnected, SocketError};
+pub use network::ftp::Ftp;
+pub use network::http::Http;
+
 
 #[doc(hidden)]
 #[cfg(target_os="macos")]
@@ -44,11 +47,11 @@ mod platform {
     extern {}
 }
 
-pub mod ip_address;
-pub mod packet;
-pub mod socket_status;
-pub mod tcp_socket;
-pub mod udp_socket;
-pub mod tcp_listener;
+mod ip_address;
+mod packet;
+mod socket_status;
+mod tcp_socket;
+mod udp_socket;
+mod tcp_listener;
 pub mod ftp;
 pub mod http;

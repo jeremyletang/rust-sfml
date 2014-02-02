@@ -26,8 +26,8 @@
 * Make thread sleeping
 */
 
-use traits::wrappable::Wrappable;
-use system::time::Time;
+use traits::Wrappable;
+use system::Time;
 
 use ffi = ffi::system::sleep;
 

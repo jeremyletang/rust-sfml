@@ -35,26 +35,15 @@ use std::cell::RefCell;
 use std::libc::{c_float, c_uint, c_int};
 use std::{ptr, cast};
 
-use traits::drawable::Drawable;
-use traits::wrappable::Wrappable;
-use window::VideoMode;
-use window::ContextSettings;
-use window::{event, keyboard, joystick, mouse, WindowStyle};
+use traits::{Drawable, Wrappable};
+use window::{ContextSettings, VideoMode, 
+    event, keyboard, joystick, mouse, WindowStyle};
 use system::vector2::{Vector2f, Vector2i, Vector2u};
-use graphics::Text;
-use graphics::Color;
-use graphics::Sprite;
-use graphics::CircleShape;
-use graphics::RectangleShape;
-use graphics::ConvexShape;
-use graphics::RenderStates;
-use graphics::View;
-use graphics::Image;
-use graphics::IntRect;
-use graphics::VertexArray;
-use graphics::Shape;
-use sfml_types::{SfBool, SFTRUE, SFFALSE};
+use graphics::{Text, Color, Sprite, CircleShape, 
+    RectangleShape, ConvexShape, RenderStates, 
+    View, Image, IntRect, VertexArray, Shape};
 
+use ffi::sfml_types::{SfBool, SFTRUE, SFFALSE};
 use ffi = ffi::graphics::render_window;
 
 pub struct RenderWindow {

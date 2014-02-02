@@ -30,8 +30,8 @@
 */
 
 use std::libc::c_int;
-use sfml_types::{SFTRUE, SFFALSE};
 
+use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi = ffi::graphics::rect;
 
 /**

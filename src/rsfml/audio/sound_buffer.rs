@@ -31,10 +31,10 @@
 
 use std::ptr;
 
-use traits::wrappable::Wrappable;
+use traits::Wrappable;
 use system::Time;
-use sfml_types::{SFTRUE, SFFALSE};
 
+use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi = ffi::audio::sound_buffer;
 
 pub struct SoundBuffer {

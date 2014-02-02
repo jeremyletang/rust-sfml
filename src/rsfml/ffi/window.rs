@@ -27,9 +27,10 @@ pub mod window {
     use std::libc::{c_void, c_uint, c_float, c_char};    
 
     use window::ContextSettings;
-    use ffi::window::video_mode::sfVideoMode;    
     use system::vector2::{Vector2i, Vector2u};
-    use sfml_types::SfBool;
+
+    use ffi::window::video_mode::sfVideoMode;    
+    use ffi::sfml_types::SfBool;
 
     pub struct sfWindow {
         This : *c_void
@@ -99,7 +100,8 @@ pub mod window {
 pub mod context {
 
     use std::libc::c_void;
-    use sfml_types::SfBool;
+    
+    use ffi::sfml_types::SfBool;
 
     pub struct sfContext {
         This: *c_void
@@ -115,7 +117,8 @@ pub mod context {
 pub mod joystick {
     
     use std::libc::{c_float, c_uint};
-    use sfml_types::SfBool;
+    
+    use ffi::sfml_types::SfBool;
 
     extern "C" {
         pub fn sfJoystick_isConnected(joystick : c_uint) -> SfBool;
@@ -130,7 +133,8 @@ pub mod joystick {
 pub mod keyboard {
     
     pub use std::libc::c_int;
-    use sfml_types::SfBool;
+    
+    use ffi::sfml_types::SfBool;
 
     extern "C" {
         pub fn sfKeyboard_isKeyPressed(key : c_int) -> SfBool;
@@ -140,7 +144,8 @@ pub mod keyboard {
 pub mod mouse {
     
     use std::libc::c_uint;
-    use sfml_types::SfBool;
+    
+    use ffi::sfml_types::SfBool;
 
     extern "C" {
         pub fn sfMouse_isButtonPressed(button : c_uint) -> SfBool;
@@ -151,7 +156,8 @@ pub mod mouse {
 pub mod video_mode {
     
     use std::libc::{c_uint, size_t};
-    use sfml_types::SfBool;
+    
+    use ffi::sfml_types::SfBool;
 
     pub struct sfVideoMode {
         width:          c_uint,

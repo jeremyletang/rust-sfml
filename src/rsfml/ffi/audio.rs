@@ -24,7 +24,8 @@
 
 pub mod listener {
     
-    pub use std::libc::c_int;    
+    pub use std::libc::c_int;
+
     pub use system::vector3;
 
     extern "C" {
@@ -40,10 +41,12 @@ pub mod listener {
 pub mod music {
 
     use std::libc::{c_void, c_uint, c_float, c_char};
+
+    use system::vector3::Vector3f;
+
     use ffi::system::time::sfTime;
     use ffi::audio::sound_status::sfSoundStatus;
-    use system::vector3::Vector3f;
-    use sfml_types::SfBool;
+    use ffi::sfml_types::SfBool;
 
     pub struct sfMusic {
         This :  *c_void,
@@ -85,11 +88,12 @@ pub mod sound {
     
     use std::libc::{c_float, c_void};
 
+    use system::vector3::Vector3f;
+
     use ffi::audio::sound_status::sfSoundStatus; 
     use ffi::audio::sound_buffer::sfSoundBuffer;
     use ffi::system::time::sfTime;
-    use system::vector3::Vector3f;
-    use sfml_types::SfBool;
+    use ffi::sfml_types::SfBool;
 
     pub struct sfSound {
         This : *c_void,
@@ -128,8 +132,9 @@ pub mod sound {
 pub mod sound_buffer {
     
     use std::libc::{size_t, c_void, c_uint, c_char};
+    
     use ffi::system::time::sfTime;
-    use sfml_types::SfBool;
+    use ffi::sfml_types::SfBool;
 
     pub struct sfSoundBuffer {
         This : *c_void
@@ -151,8 +156,9 @@ pub mod sound_buffer {
 pub mod sound_buffer_recorder {
 
     use std::libc::{c_uint, c_void};
+    
     use ffi::audio::sound_buffer::sfSoundBuffer;
-    use sfml_types::SfBool;
+    use ffi::sfml_types::SfBool;
     
     pub struct sfSoundBufferRecorder {
         This : *c_void

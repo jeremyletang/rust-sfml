@@ -34,18 +34,12 @@ use std::cell::RefCell;
 use std::libc::{c_float, c_uint};
 use std::ptr;
 
-use traits::wrappable::Wrappable;
-use traits::drawable::Drawable;
-use graphics::color::Color;
-use graphics::texture::Texture;
+use traits::{Wrappable, Drawable};
+use graphics::{Color, Texture, RenderWindow, 
+    RenderTexture, FloatRect, IntRect, Transform, RenderStates};
 use system::vector2::Vector2f;
-use graphics::render_window::RenderWindow;
-use graphics::render_texture::RenderTexture;
-use graphics::rect::{FloatRect, IntRect};
-use graphics::transform::Transform;
-use graphics::render_states::RenderStates;
-use sfml_types::{SFTRUE, SFFALSE};
 
+use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi = ffi::graphics::convex_shape;
 
 pub struct ConvexShape {

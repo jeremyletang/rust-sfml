@@ -32,44 +32,12 @@
 use std::libc::size_t;
 use std::{vec, ptr, cast};
 
-use traits::wrappable::Wrappable;
-use network::{ip_address, packet};
+use traits::Wrappable;
+use network::{IpAddress, Packet, SocketStatus};
 use system::Time;
-use network::socket_status::SocketStatus;
-use sfml_types::{SFTRUE, SFFALSE};
 
-#[doc(hidden)]
-pub mod ffi {
-
-    use std::libc::{c_void, size_t};
-
-    use network::ip_address;
-    use ffi::system::time::sfTime;
-    use network::socket_status;
-    use network::packet;
-    use sfml_types::SfBool;
-
-    pub struct sfTcpSocket {
-        This : *c_void
-    }
-
-    extern "C" {
-        pub fn sfTcpSocket_create() -> *sfTcpSocket;
-        pub fn sfTcpSocket_destroy(socket : *sfTcpSocket) -> ();
-        pub fn sfTcpSocket_setBlocking(socket : *sfTcpSocket, blocking : SfBool) -> ();
-        pub fn sfTcpSocket_isBlocking(socket : *sfTcpSocket) -> SfBool;
-        pub fn sfTcpSocket_getLocalPort(socket : *sfTcpSocket) -> u16;
-        pub fn sfTcpSocket_getRemoteAddress(socket : *sfTcpSocket) -> ip_address::ffi::sfIpAddress;
-        pub fn sfTcpSocket_getRemotePort(socket : *sfTcpSocket) -> u16;
-        pub fn sfTcpSocket_connect(socket : *sfTcpSocket, host : ip_address::ffi::sfIpAddress, port : u16,  timeout : sfTime) -> socket_status::ffi::SocketStatus;
-        pub fn sfTcpSocket_disconnect(socket : *sfTcpSocket) -> ();
-        pub fn sfTcpSocket_send(socket : *sfTcpSocket, data : *i8, size : size_t) -> socket_status::ffi::SocketStatus;
-        pub fn sfTcpSocket_receive(socket : *sfTcpSocket, data : *i8, maxSize : size_t, sizeReceived : *size_t) -> socket_status::ffi::SocketStatus;
-        pub fn sfTcpSocket_sendPacket(socket : *sfTcpSocket, packet : *packet::ffi::sfPacket) -> socket_status::ffi::SocketStatus;
-        pub fn sfTcpSocket_receivePacket(socket : *sfTcpSocket, packet : *packet::ffi::sfPacket) -> socket_status::ffi::SocketStatus;
-    }
-
-}
+use ffi::sfml_types::{SFTRUE, SFFALSE};
+use ffi = ffi::network::tcp_socket;
 
 pub struct TcpSocket {
     #[doc(hidden)]
@@ -153,7 +121,7 @@ impl TcpSocket {
     *
     * Return the address of the remote peer
     */
-    pub fn get_remote_address(&self) -> ip_address::IpAddress {
+    pub fn get_remote_address(&self) -> IpAddress {
         unsafe {
             Wrappable::wrap(ffi::sfTcpSocket_getRemoteAddress(self.socket))
         }
@@ -186,7 +154,7 @@ impl TcpSocket {
     * * remotePort - Port of the remote peer
     * * timeout - Maximum time to wait
     */
-    pub fn connect(&self, host : &ip_address::IpAddress, port : u16, timeout : Time) -> SocketStatus {
+    pub fn connect(&self, host : &IpAddress, port : u16, timeout : Time) -> SocketStatus {
         unsafe {
             cast::transmute(ffi::sfTcpSocket_connect(self.socket, host.unwrap(), port, timeout.unwrap()) as i8)
         }
@@ -248,7 +216,7 @@ impl TcpSocket {
     *
     * Return the socket status
     */
-    pub fn send_packet(&self, packet : &packet::Packet) -> SocketStatus {
+    pub fn send_packet(&self, packet : &Packet) -> SocketStatus {
         unsafe {
             cast::transmute(ffi::sfTcpSocket_sendPacket(self.socket, packet.unwrap()) as i8)
         }
@@ -263,9 +231,9 @@ impl TcpSocket {
     *
     * Return a packet and a socket status
     */
-    pub fn receive_packet(&self) -> (packet::Packet, SocketStatus) {
+    pub fn receive_packet(&self) -> (Packet, SocketStatus) {
         unsafe {
-            let pack : *packet::ffi::sfPacket = ptr::null();
+            let pack : *::ffi::network::packet::sfPacket = ptr::null();
             let stat : SocketStatus = cast::transmute(ffi::sfTcpSocket_receivePacket(self.socket, pack) as i8);
             (Wrappable::wrap(pack), stat)
         }

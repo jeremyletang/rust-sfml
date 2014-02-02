@@ -32,10 +32,10 @@
 use std::libc::c_uint;
 use std::ptr;
 
-use traits::wrappable::Wrappable;
+use traits::Wrappable;
 use audio::sound_buffer::SoundBuffer;
-use sfml_types::{SFTRUE, SFFALSE};
 
+use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi = ffi::audio::sound_buffer_recorder;
 
 pub struct SoundBufferRecorder {

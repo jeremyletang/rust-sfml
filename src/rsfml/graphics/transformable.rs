@@ -32,9 +32,9 @@
 use std::libc::c_float;
 use std::ptr;
 
-use traits::wrappable::Wrappable;
+use traits::Wrappable;
+use graphics::Transform;
 use system::vector2::Vector2f;
-use graphics::transform::Transform;
     
 use ffi = ffi::graphics::transformable;
 

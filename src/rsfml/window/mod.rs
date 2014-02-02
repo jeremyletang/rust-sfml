@@ -28,12 +28,11 @@
 *
 */
 
-// pub use self::window::Window;
-pub use self::window::Window;
-pub use self::video_mode::VideoMode;
-pub use self::context::Context;
-pub use self::context_settings::ContextSettings;
-pub use self::window_style::{WindowStyle, NoStyle, Titlebar, Resize, Close, Fullscreen, DefaultStyle};
+pub use window::window::Window;
+pub use window::video_mode::VideoMode;
+pub use window::context::Context;
+pub use window::context_settings::ContextSettings;
+pub use window::window_style::{WindowStyle, NoStyle, Titlebar, Resize, Close, Fullscreen, DefaultStyle};
 
 #[doc(hidden)]
 #[cfg(target_os="macos")]

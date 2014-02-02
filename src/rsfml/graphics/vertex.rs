@@ -32,7 +32,7 @@
 *
 */
 
-use graphics::color::Color;
+use graphics::Color;
 use system::vector2::Vector2f;
 
 /// Define a point with color and texture coordinates

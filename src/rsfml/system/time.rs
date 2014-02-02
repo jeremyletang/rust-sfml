@@ -31,7 +31,7 @@
 
 pub use std::libc::{c_long, c_float, c_int};
 
-use traits::wrappable::Wrappable;
+use traits::Wrappable;
 
 use ffi = ffi::system::time;
 

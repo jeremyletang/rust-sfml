@@ -32,14 +32,12 @@
 use std::libc::c_uint;
 use std::ptr;
 
-use traits::wrappable::Wrappable;
+use traits::Wrappable;
+use graphics::{RenderWindow, Image, IntRect};
 use system::vector2::Vector2u;
 use window::Window;
-use graphics::RenderWindow;
-use graphics::Image;
-use graphics::IntRect;
-use sfml_types::{SFTRUE, SFFALSE};
 
+use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi = ffi::graphics::texture;
 
 pub struct Texture {
