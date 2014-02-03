@@ -9,8 +9,6 @@
 extern mod native;
 extern mod rsfml;
 
-use std::rc::Rc;
-use std::cell::RefCell;
 use rsfml::graphics::{RenderWindow, Color, Font, Text, RectangleShape, CircleShape};
 use rsfml::window::{VideoMode, ContextSettings, event, keyboard, Close};
 use rsfml::system::{Vector2f, Clock, Time};
@@ -41,11 +39,11 @@ fn main () -> () {
 
     // Load the sounds used in the game
     let ballSoundBuffer = match SoundBuffer::new("resources/ball.wav") {
-        Some(ballSoundBuffer)   => Rc::new(RefCell::new(ballSoundBuffer)),
+        Some(ballSoundBuffer)   => ballSoundBuffer,
         None                    => fail!("Cannot load Ball sound buffer.")
     };
 
-    let mut ballSound = match Sound::new_with_buffer(ballSoundBuffer.clone()) {
+    let mut ballSound = match Sound::new_with_buffer(&ballSoundBuffer) {
         Some(sound)     => sound,
         None            => fail!("Error cannot create sound.")
     };
@@ -87,7 +85,7 @@ fn main () -> () {
 
     // Load the text font
     let font = match Font::new_from_file("resources/sansation.ttf") {
-        Some(font)    => Rc::new(RefCell::new(font)),
+        Some(font)    => font,
         None()        => fail!("Error, cannot load font")
     };
 
@@ -96,7 +94,7 @@ fn main () -> () {
         Some(text) => text,
         None => fail!("Error on creating text")
     };
-    pauseMessage.set_font(font.clone());
+    pauseMessage.set_font(&font);
     pauseMessage.set_character_size(40);
     pauseMessage.set_position(&(Vector2f::new(170., 150.)));
     pauseMessage.set_color(&Color::white());

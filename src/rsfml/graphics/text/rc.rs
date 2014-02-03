@@ -32,23 +32,15 @@
 use std::rc::Rc;
 use std::cell::RefCell;
 use std::libc::{c_float, c_uint, size_t};
-use std::{str, ptr};
+use std::{str, ptr, cast};
 use extra::c_vec::CVec;
 
 use traits::{Drawable, Wrappable};
 use graphics::{RenderWindow, RenderTexture, Font, 
-    FloatRect, Color, Transform, RenderStates};
+    FloatRect, Color, Transform, rc, TextStyle};
 use system::vector2::Vector2f;
 
 use ffi = ffi::graphics::text;
-
-/// Availables texts styles
-pub enum Style {
-    Regular =       0,
-    Bold =          1,
-    Italic =        2,
-    Underlined =    4
-}
 
 /**
 * Graphical text
@@ -254,7 +246,7 @@ impl Text {
     * # Arguments
     * * style - New style
     */
-    pub fn set_style(&mut self, style : Style) -> () {
+    pub fn set_style(&mut self, style : TextStyle) -> () {
         unsafe {
             ffi::sfText_setStyle(self.text, style as u32)
         }
@@ -279,13 +271,8 @@ impl Text {
     *
     * Return the current string style (see Style enum)
     */
-    pub fn get_style(&self) -> Style {
-        match unsafe { ffi::sfText_getStyle(self.text) } {
-            0 => Regular,
-            1 => Bold,
-            2 => Italic,
-            _ => Underlined
-        }
+    pub fn get_style(&self) -> TextStyle {
+        unsafe { cast::transmute(ffi::sfText_getStyle(self.text)) }
     }
     
     /**
@@ -629,19 +616,19 @@ impl Wrappable<*ffi::sfText> for Text {
 
 impl Drawable for Text {
     fn draw_in_render_window(&self, render_window : &RenderWindow) -> () {
-        render_window.draw_text(self)
+        render_window.draw_text_rc(self)
     }
 
-    fn draw_in_render_window_rs(&self, render_window : &RenderWindow, render_states : &mut RenderStates) -> () {
-        render_window.draw_text_rs(self, render_states)
+    fn draw_in_render_window_rs_rc(&self, render_window : &RenderWindow, render_states : &mut rc::RenderStates) -> () {
+        render_window.draw_text_rs_rc(self, render_states)
     }
 
     fn draw_in_render_texture(&self, renderTexture : &RenderTexture) -> () {
-        renderTexture.draw_text(self)
+        renderTexture.draw_text_rc(self)
     }
 
-    fn draw_in_render_texture_rs(&self, render_texture : &RenderTexture, render_states : &mut RenderStates) -> () {
-        render_texture.draw_text_rs(self, render_states)
+    fn draw_in_render_texture_rs_rc(&self, render_texture : &RenderTexture, render_states : &mut rc::RenderStates) -> () {
+        render_texture.draw_text_rs_rc(self, render_states)
     }
 }
 

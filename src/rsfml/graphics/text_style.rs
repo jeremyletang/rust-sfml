@@ -22,33 +22,12 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-/*!
-* Sounds, streaming (musics or custom sources), recording, spatialization
-*/
-
-pub use audio::sound_buffer::SoundBuffer;
-pub use audio::sound_status::{Status, Playing, Paused, Stopped};
-pub use audio::music::Music;
-pub use audio::sound::Sound;
-pub use audio::sound_buffer_recorder::SoundBufferRecorder;
-
-/// Sound implementation using reference counting to manage shared resources
-pub mod rc {
-	pub use audio::sound::rc::Sound;
+/// Availables texts styles
+#[deriving(Eq, Ord, ToStr)]
+#[repr(C)]
+pub enum TextStyle {
+    Regular =       0,
+    Bold =          1,
+    Italic =        2,
+    Underlined =    4
 }
-
-#[doc(hidden)]
-#[cfg(target_os="macos")]
-#[cfg(target_os="linux")]
-#[cfg(target_os="win32")]
-mod platform {
-    #[link(name = "csfml-audio")]
-    extern {}
-}
-
-mod sound_buffer;
-pub mod listener;
-mod sound_status;
-mod music;
-mod sound;
-mod sound_buffer_recorder;

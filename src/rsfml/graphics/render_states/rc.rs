@@ -24,8 +24,6 @@
 
 /*!
 * Define the states used for drawing to a RenderTarget
-*
-*
 */
 
 use std::rc::Rc;
@@ -33,7 +31,7 @@ use std::cell::RefCell;
 use std::ptr;
 
 use traits::Wrappable;
-use graphics::{BlendMode, BlendAlpha, Shader, Texture, Transform}; 
+use graphics::{BlendMode, BlendAlpha, Texture, rc, Transform}; 
 
 use ffi = ffi::graphics::render_states;
 
@@ -48,7 +46,7 @@ pub struct RenderStates {
     /// Texture
     texture :               Option<Rc<RefCell<Texture>>>,
     /// Shader
-    shader :                Option<Rc<RefCell<Shader>>>
+    shader :                Option<Rc<RefCell<rc::Shader>>>
 }
 
 impl RenderStates {
@@ -67,7 +65,7 @@ impl RenderStates {
     pub fn new(blend_mode : BlendMode, 
         transform : Transform, 
         texture : Option<Rc<RefCell<Texture>>>, 
-        shader : Option<Rc<RefCell<Shader>>>) -> RenderStates {
+        shader : Option<Rc<RefCell<rc::Shader>>>) -> RenderStates {
         
         RenderStates {
             sfRenderStates :    ffi::sfRenderStates {

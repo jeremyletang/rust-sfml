@@ -10,7 +10,7 @@ extern mod rsfml;
 
 use std::rc::Rc;
 use std::cell::RefCell;
-use rsfml::audio::{SoundBuffer, Sound, Music, Playing};
+use rsfml::audio::{SoundBuffer, rc, Music, Playing};
 use rsfml::system::{sleep, Time};
 
 /* Play a Sound */
@@ -26,7 +26,7 @@ fn play_sound() -> () {
     println!(" {} samples / sec", buffer.borrow().with(|b| b.get_sample_rate()));
     println!(" {} channels", buffer.borrow().with(|b| b.get_channel_count()));
 
-    let mut sound : Sound = match Sound::new_with_buffer(buffer.clone()) {
+    let mut sound : rc::Sound = match rc::Sound::new_with_buffer(buffer.clone()) {
         Some(sound)     => sound,
         None            => fail!("Error cannot create Sound")
     };
