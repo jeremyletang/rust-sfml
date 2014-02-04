@@ -40,7 +40,7 @@ use window::{ContextSettings, VideoMode,
 use system::vector2::{Vector2f, Vector2i, Vector2u};
 use graphics::{Text, Color, Sprite, CircleShape, 
     RectangleShape, ConvexShape, RenderStates, 
-    View, Image, IntRect, VertexArray, Shape};
+    View, Image, IntRect, VertexArray, Shape, rc};
 
 use ffi::sfml_types::{SfBool, SFTRUE, SFFALSE};
 use ffi = ffi::graphics::render_window;
@@ -778,6 +778,17 @@ impl RenderWindow {
         object.draw_in_render_window_rs(self, render_states);
     }
 
+    /**
+    * Draw a drawable object to the render-target with a RenderStates
+    *
+    * # Arguments 
+    * * object - Object to draw
+    * * renderStates - The renderStates to associate to the object
+    */
+    pub fn draw_with_renderstates_rc<T : Drawable>(&mut self, object : &T, render_states : &mut rc::RenderStates) -> () {
+        object.draw_in_render_window_rs_rc(self, render_states);
+    }
+
     /// Draw a Text
     pub fn draw_text(&self, text : &Text) -> () {
         unsafe {
@@ -785,8 +796,22 @@ impl RenderWindow {
         }
     }
 
-    // Draw a Shape
+    /// Draw a Text
+    pub fn draw_text_rc(&self, text : &rc::Text) -> () {
+        unsafe {
+            ffi::sfRenderWindow_drawText(self.render_window, text.unwrap(), ptr::null())
+        }
+    }
+
+    /// Draw a Shape
     pub fn draw_shape(&self, shape : &Shape) -> () {
+        unsafe {
+            ffi::sfRenderWindow_drawShape(self.render_window, shape.unwrap(), ptr::null())
+        }
+    }
+
+    /// Draw a Shape
+    pub fn draw_shape_rc(&self, shape : &rc::Shape) -> () {
         unsafe {
             ffi::sfRenderWindow_drawShape(self.render_window, shape.unwrap(), ptr::null())
         }
@@ -799,8 +824,22 @@ impl RenderWindow {
         }
     }
 
+    /// Draw a sprite
+    pub fn draw_sprite_rc(&self, sprite : &rc::Sprite) -> () {
+        unsafe {
+            ffi::sfRenderWindow_drawSprite(self.render_window, sprite.unwrap(), ptr::null())
+        }
+    }
+
     /// Draw a CircleShape
     pub fn draw_circle_shape(&self, circle_shape : &CircleShape) -> () {
+        unsafe {
+            ffi::sfRenderWindow_drawCircleShape(self.render_window, circle_shape.unwrap(), ptr::null())
+        }
+    }
+
+    /// Draw a CircleShape
+    pub fn draw_circle_shape_rc(&self, circle_shape : &rc::CircleShape) -> () {
         unsafe {
             ffi::sfRenderWindow_drawCircleShape(self.render_window, circle_shape.unwrap(), ptr::null())
         }
@@ -813,8 +852,22 @@ impl RenderWindow {
         }
     }
 
+    /// Draw a RectangleShape
+    pub fn draw_rectangle_shape_rc(&self, rectangle_shape : &rc::RectangleShape) -> () {
+        unsafe {
+            ffi::sfRenderWindow_drawRectangleShape(self.render_window, rectangle_shape.unwrap(), ptr::null())
+        }
+    }
+
     /// Draw a ConvexShape
     pub fn draw_convex_shape(&self, convex_shape : &ConvexShape) -> () {
+        unsafe {
+            ffi::sfRenderWindow_drawConvexShape(self.render_window, convex_shape.unwrap(), ptr::null())
+        }
+    }
+
+    /// Draw a ConvexShape
+    pub fn draw_convex_shape_rc(&self, convex_shape : &rc::ConvexShape) -> () {
         unsafe {
             ffi::sfRenderWindow_drawConvexShape(self.render_window, convex_shape.unwrap(), ptr::null())
         }
@@ -834,8 +887,22 @@ impl RenderWindow {
         }
     }
 
+    // /// Draw a Text with a RenderStates
+    pub fn draw_text_rs_rc(&self, text : &rc::Text, render_states : &mut rc::RenderStates) -> () {
+        unsafe {
+            ffi::sfRenderWindow_drawText(self.render_window, text.unwrap(), render_states.unwrap())
+        }
+    }
+
     /// Draw a Shape with a RenderStates
     pub fn draw_shape_rs(&self, shape : &Shape, render_states : &mut RenderStates) -> () {
+        unsafe {
+            ffi::sfRenderWindow_drawShape(self.render_window, shape.unwrap(), render_states.unwrap())
+        }
+    }
+
+    /// Draw a Shape with a RenderStates
+    pub fn draw_shape_rs_rc(&self, shape : &rc::Shape, render_states : &mut rc::RenderStates) -> () {
         unsafe {
             ffi::sfRenderWindow_drawShape(self.render_window, shape.unwrap(), render_states.unwrap())
         }
@@ -848,8 +915,22 @@ impl RenderWindow {
         }
     }
 
+    /// Draw a sprite with a RenderStates
+    pub fn draw_sprite_rs_rc(&self, sprite : &rc::Sprite, render_states : &mut rc::RenderStates) -> () {
+        unsafe {
+            ffi::sfRenderWindow_drawSprite(self.render_window, sprite.unwrap(), render_states.unwrap())
+        }
+    }
+
     /// Draw a CircleShape with a RenderStates
     pub fn draw_circle_shape_rs(&self, circle_shape : &CircleShape, render_states : &mut RenderStates) -> () {
+        unsafe {
+            ffi::sfRenderWindow_drawCircleShape(self.render_window, circle_shape.unwrap(), render_states.unwrap())
+        }
+    }
+
+    /// Draw a CircleShape with a RenderStates
+    pub fn draw_circle_shape_rs_rc(&self, circle_shape : &rc::CircleShape, render_states : &mut rc::RenderStates) -> () {
         unsafe {
             ffi::sfRenderWindow_drawCircleShape(self.render_window, circle_shape.unwrap(), render_states.unwrap())
         }
@@ -862,8 +943,22 @@ impl RenderWindow {
         }
     }
 
+    /// Draw a RectangleShape with a RenderStates
+    pub fn draw_rectangle_shape_rs_rc(&self, rectangle_shape : &rc::RectangleShape, render_states : &mut rc::RenderStates) -> () {
+        unsafe {
+            ffi::sfRenderWindow_drawRectangleShape(self.render_window, rectangle_shape.unwrap(), render_states.unwrap())
+        }
+    }
+
     /// Draw a ConvexShape with a RenderStates
     pub fn draw_convex_shape_rs(&self, convex_shape : &ConvexShape, render_states : &mut RenderStates) -> () {
+        unsafe {
+            ffi::sfRenderWindow_drawConvexShape(self.render_window, convex_shape.unwrap(), render_states.unwrap())
+        }
+    }
+
+    /// Draw a ConvexShape with a RenderStates
+    pub fn draw_convex_shape_rs_rc(&self, convex_shape : &rc::ConvexShape, render_states : &mut rc::RenderStates) -> () {
         unsafe {
             ffi::sfRenderWindow_drawConvexShape(self.render_window, convex_shape.unwrap(), render_states.unwrap())
         }

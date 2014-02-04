@@ -14,7 +14,7 @@ use std::cell::RefCell;
 use std::io::{BufferedReader, stdin};
 use std::num::strconv;
 
-use rsfml::audio::{Sound, SoundBufferRecorder, Playing};
+use rsfml::audio::{rc, SoundBufferRecorder, Playing};
 use rsfml::system::{sleep, Time};
 
 fn main() -> () {
@@ -77,7 +77,7 @@ fn main() -> () {
         buffer.borrow().with(|b| b.save_to_file(filename));
     }
     else {
-        let mut sound : Sound = match Sound::new_with_buffer(buffer.clone()) {
+        let mut sound : rc::Sound = match rc::Sound::new_with_buffer(buffer.clone()) {
             Some(sound)     => sound,
             None            => fail!("Error cannot create Sound")
         };

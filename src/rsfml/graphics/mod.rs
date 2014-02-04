@@ -49,7 +49,19 @@ pub use graphics::glyph::Glyph;
 pub use graphics::render_texture::RenderTexture;
 pub use graphics::shape::Shape;
 pub use graphics::vertex_array::VertexArray;
-pub use graphics::text::{Style, Regular, Bold, Italic, Underlined};
+pub use graphics::text_style::{TextStyle, Regular, Bold, Italic, Underlined};
+
+/// Shapes implementations using reference counting to manage shared resources
+pub mod rc {
+	pub use graphics::circle_shape::rc::CircleShape;
+	pub use graphics::rectangle_shape::rc::RectangleShape;
+	pub use graphics::convex_shape::rc::ConvexShape;
+	pub use graphics::shape::rc::Shape;
+	pub use graphics::shader::rc::Shader;
+	pub use graphics::text::rc::Text;
+	pub use graphics::sprite::rc::Sprite;
+	pub use graphics::render_states::rc::RenderStates;
+}
 
 #[doc(hidden)]
 #[cfg(target_os="macos")]
@@ -67,6 +79,7 @@ mod texture;
 mod blend_mode;
 mod transform;
 mod text;
+mod text_style;
 mod shader;
 mod color;
 mod font;

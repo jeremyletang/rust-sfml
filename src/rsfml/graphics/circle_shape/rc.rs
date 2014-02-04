@@ -33,7 +33,7 @@ use std::ptr;
 
 use traits::{Drawable, Wrappable};
 use graphics::{IntRect, FloatRect, Color, Texture, 
-    RenderWindow, RenderTexture, Transform, RenderStates};
+    RenderWindow, RenderTexture, Transform, rc};
 use system::vector2::Vector2f;
 
 use ffi::sfml_types::{SFTRUE, SFFALSE};
@@ -681,19 +681,19 @@ impl Wrappable<*ffi::sfCircleShape> for CircleShape {
 
 impl Drawable for CircleShape {
     fn draw_in_render_window(&self, render_window : &RenderWindow) -> () {
-        render_window.draw_circle_shape(self)
+        render_window.draw_circle_shape_rc(self)
     }
 
-    fn draw_in_render_window_rs(&self, render_window : &RenderWindow, render_states : &mut RenderStates) -> () {
-        render_window.draw_circle_shape_rs(self, render_states)
+    fn draw_in_render_window_rs_rc(&self, render_window : &RenderWindow, render_states : &mut rc::RenderStates) -> () {
+        render_window.draw_circle_shape_rs_rc(self, render_states)
     }
     
     fn draw_in_render_texture(&self, render_texture : &RenderTexture) -> () {
-        render_texture.draw_circle_shape(self)
+        render_texture.draw_circle_shape_rc(self)
     }
 
-    fn draw_in_render_texture_rs(&self, render_texture : &RenderTexture, render_states : &mut RenderStates) -> () {
-        render_texture.draw_circle_shape_rs(self, render_states)
+    fn draw_in_render_texture_rs_rc(&self, render_texture : &RenderTexture, render_states : &mut rc::RenderStates) -> () {
+        render_texture.draw_circle_shape_rs_rc(self, render_states)
     }
 }
 

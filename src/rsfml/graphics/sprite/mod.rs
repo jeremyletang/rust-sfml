@@ -29,8 +29,6 @@
 * display a texture (or a part of it) on a render target.
 */
 
-use std::rc::Rc;
-use std::cell::RefCell;
 use std::libc::{c_float};
 use std::ptr;
 
@@ -42,26 +40,28 @@ use system::vector2::Vector2f;
 use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi = ffi::graphics::sprite;
 
+pub mod rc;
+
 /**
 * Drawable representation of a texture
 *
 * Sprite is a drawable class that allows to easily 
 * display a texture (or a part of it) on a render target.
 */
-pub struct Sprite {
+pub struct Sprite<'s> {
     #[doc(hidden)]
     priv sprite :   *ffi::sfSprite,
     #[doc(hidden)]
-    priv texture :  Option<Rc<RefCell<Texture>>>
+    priv texture :  Option<&'s Texture>
 }
 
-impl Sprite {
+impl<'s> Sprite<'s> {
     /**
     * Create a new sprite
     *
     * Return Some(Sprite) or None
     */
-    pub fn new() -> Option<Sprite> {
+    pub fn new() -> Option<Sprite<'s>> {
         let sp = unsafe { ffi::sfSprite_create() };
         if ptr::is_null(sp) {
             None
@@ -80,14 +80,14 @@ impl Sprite {
     *
     * Return Some(Sprite) or None
     */
-    pub fn new_with_texture(texture : Rc<RefCell<Texture>>) -> Option<Sprite> {
+    pub fn new_with_texture(texture : &'s Texture) -> Option<Sprite<'s>> {
         let sp = unsafe { ffi::sfSprite_create() };
         if ptr::is_null(sp) {
             None
         }
         else {
             unsafe {
-                ffi::sfSprite_setTexture(sp, texture.borrow().with(|t| t.unwrap()), SFTRUE);
+                ffi::sfSprite_setTexture(sp, texture.unwrap(), SFTRUE);
             }
             Some(Sprite {
                 sprite :    sp,
@@ -102,7 +102,7 @@ impl Sprite {
     *
     * Return Some(Sprite) or None
     */
-    pub fn clone(&self) -> Option<Sprite> {
+    pub fn clone(&self) -> Option<Sprite<'s>> {
         let sp = unsafe { ffi::sfSprite_copy(self.sprite) };
         if ptr::is_null(sp) {
             None
@@ -110,7 +110,7 @@ impl Sprite {
         else {
             Some(Sprite {
                 sprite :    sp,
-                texture :   self.texture.clone()
+                texture :   self.texture
             })
         }
     }
@@ -176,14 +176,14 @@ impl Sprite {
     * * texture - New texture
     * * reset_rect - Should the texture rect be reset to the size of the new texture?
     */
-    pub fn set_texture(&mut self, texture : Rc<RefCell<Texture>>, reset_rect : bool) -> (){
+    pub fn set_texture(&mut self, texture : &'s Texture, reset_rect : bool) -> (){
+        self.texture = Some(texture);
         unsafe {
             match reset_rect {
-                true        => ffi::sfSprite_setTexture(self.sprite, texture.borrow().with(|t| t.unwrap()), SFTRUE),
-                false       => ffi::sfSprite_setTexture(self.sprite, texture.borrow().with(|t| t.unwrap()), SFFALSE)
+                true        => ffi::sfSprite_setTexture(self.sprite, texture.unwrap(), SFTRUE),
+                false       => ffi::sfSprite_setTexture(self.sprite, texture.unwrap(), SFFALSE)
             }
         }
-        self.texture = Some(texture);
     }
 
     /**
@@ -224,8 +224,14 @@ impl Sprite {
     *
     * Return an Option to the sprite's texture
     */
-    pub fn get_texture(&self) -> Option<Rc<RefCell<Texture>>> {
-        self.texture.clone()
+    pub fn get_texture(&self) -> Option<&'s Texture> {
+        //let tex = unsafe { ffi::sfSprite_getTexture(self.sprite) };
+        if self.texture.is_none() {
+            None
+        }
+        else {
+            self.texture
+        }   
     }
 
     /**
@@ -524,7 +530,7 @@ impl Sprite {
 
 }
 
-impl Wrappable<*ffi::sfSprite> for Sprite {
+impl<'s> Wrappable<*ffi::sfSprite> for Sprite<'s> {
     fn wrap(sprite : *ffi::sfSprite) -> Sprite {
         Sprite { 
             sprite :    sprite,
@@ -538,7 +544,7 @@ impl Wrappable<*ffi::sfSprite> for Sprite {
     
 }
 
-impl Drawable for Sprite {
+impl<'s> Drawable for Sprite<'s> {
     /**
     * Draw the sprite in the RenderWindow
     */
@@ -562,7 +568,7 @@ impl Drawable for Sprite {
 
 
 #[unsafe_destructor]
-impl Drop for Sprite {
+impl<'s> Drop for Sprite<'s> {
     /**
     * Destroy an existing sprite
     */
