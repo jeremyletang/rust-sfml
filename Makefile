@@ -33,6 +33,7 @@ doc:
 examples:
 	rustc -o bin/pong -L ./lib src/examples/pong/main.rs
 	rustc -o bin/shape -L ./lib src/examples/shape/main.rs
+	rustc -o bin/custom_drawable -L ./lib src/examples/custom_drawable/main.rs
 	rustc -o bin/sound -L ./lib src/examples/sound/main.rs
 	rustc -o bin/sound_capture -L ./lib src/examples/sound_capture/main.rs
 
@@ -44,3 +45,4 @@ clean:
 	rm -rf bin/shape
 	rm -rf bin/sound
 	rm -rf bin/sound_capture
+	rm -rf bin/custom_drawable

@@ -6,3 +6,4 @@ bin/pong
 bin/sound
 bin/shape
 bin/sound_capture
+bin/custom_drawable

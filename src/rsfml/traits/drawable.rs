@@ -38,23 +38,23 @@ pub trait Drawable {
     fn draw_in_render_window(&self, &RenderWindow) -> ();
     
     fn draw_in_render_window_rs(&self, &RenderWindow, &mut RenderStates) -> () {
-    	println!("Bad usage error: you can't draw a reference counted Shape with a non reference counted RenderStates")
+    	println!("Bad usage error: you can't draw a reference counted Shape with a non reference counted RenderStates.")
     }
 
     fn draw_in_render_window_rs_rc(&self, &RenderWindow, &mut rc::RenderStates) -> () {
-    	println!("Bad usage error: you can't draw a non reference counted Shape with a reference counted RenderStates")
+    	println!("Bad usage error: you can't draw a non reference counted Shape with a reference counted RenderStates.")
 
     }
 
     fn draw_in_render_texture(&self, &RenderTexture) -> ();
     
     fn draw_in_render_texture_rs(&self, &RenderTexture, &mut RenderStates) -> () {
-    	println!("Bad usage error: you can't draw a reference counted Shape with a non reference counted RenderStates")
+    	println!("Bad usage error: you can't draw a reference counted Shape with a non reference counted RenderStates.")
 
     }
     
     fn draw_in_render_texture_rs_rc(&self, &RenderTexture, &mut rc::RenderStates) -> () {
-    	println!("Bad usage error: you can't draw a non reference counted Shape with a reference counted RenderStates")
+    	println!("Bad usage error: you can't draw a non reference counted Shape with a reference counted RenderStates.")
 
     }
 }
