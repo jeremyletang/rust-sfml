@@ -22,6 +22,8 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
+#[allow(missing_doc)];
+
 /*!
 * Define a 3x3 transform matrix.
 *
@@ -77,6 +79,7 @@ impl Transform {
         }
     }
 
+    /// Return the matrix
     pub fn get_matrix(&self) -> [f32, ..16] {
         unsafe {
             let matrix : [f32, ..16] = [0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.];

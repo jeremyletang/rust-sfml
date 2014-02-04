@@ -887,7 +887,7 @@ impl RenderWindow {
         }
     }
 
-    // /// Draw a Text with a RenderStates
+    /// Draw a Text with a RenderStates
     pub fn draw_text_rs_rc(&self, text : &rc::Text, render_states : &mut rc::RenderStates) -> () {
         unsafe {
             ffi::sfRenderWindow_drawText(self.render_window, text.unwrap(), render_states.unwrap())

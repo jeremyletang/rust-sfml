@@ -29,26 +29,27 @@
 */
 #[deriving(Clone, Eq, Ord)]
 pub struct ContextSettings {
-	/// Bits of the depth buffer.
-    depth_bits: 		u32,
+    /// Bits of the depth buffer.
+    depth_bits:         u32,
     /// Bits of the stencil buffer. 
-    stencil_bits: 		u32,
+    stencil_bits:       u32,
     /// Level of antialiasing. 
     antialiasing_level: u32,
     /// Major number of the context version
-    major_version: 		u32,
+    major_version:      u32,
     /// Minor number of the context version
-    minor_version: 		u32
+    minor_version:      u32
 }
 
 impl ContextSettings {
-	pub fn default() -> ContextSettings {
-		ContextSettings {
-			depth_bits : 			0,
-			stencil_bits : 			0,
-			antialiasing_level : 	0,
-			major_version : 		2,
-			minor_version : 		0
-		}
-	}
+    /// Create a default ContextSettings
+    pub fn default() -> ContextSettings {
+        ContextSettings {
+            depth_bits :            0,
+            stencil_bits :          0,
+            antialiasing_level :    0,
+            major_version :         2,
+            minor_version :         0
+        }
+    }
 }

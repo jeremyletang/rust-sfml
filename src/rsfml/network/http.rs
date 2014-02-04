@@ -34,6 +34,7 @@ use system::Time;
 
 use ffi = ffi::network::http;
 
+/// Method type to send the request
 #[deriving(Eq, Ord, ToStr)]
 pub enum Method {
     /// Request in get mode, standard method to retrieve a page
@@ -44,6 +45,7 @@ pub enum Method {
     Head = ffi::HEAD as c_int
 }
 
+/// Status code returned by a serveur.
 #[deriving(Eq, Ord, ToStr)]
 pub enum Status {
     // 2xx: success
@@ -103,16 +105,19 @@ pub enum Status {
     ConnectionFailed    = ffi::CONNECTIONFAILED as c_int 
 }
 
+/// Encapsulation of an HTTP request
 pub struct Request {
     #[doc(hidden)]
     priv request : *ffi::sfHttpRequest
 }
 
+/// Encapsulation of an HTTP response
 pub struct Response {
     #[doc(hidden)]
     priv response : *ffi::sfHttpResponse
 }
 
+/// The HTTP client.
 pub struct Http {
     #[doc(hidden)]
     priv http : *ffi::sfHttp

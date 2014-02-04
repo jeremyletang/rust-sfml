@@ -22,6 +22,8 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
+#[allow(missing_doc)];
+
 /*!
 * Utility Class providing 2 dimensional vectors for i32, u32, and f32.
 */

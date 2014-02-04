@@ -32,6 +32,7 @@
 /**
 * The trait wrappable is inherited by each object who needs to be wrapp or unwrapp to call to sfml
 */
+#[doc(hidden)]
 pub trait Wrappable<T> {
     fn wrap(T) -> Self;
     fn unwrap(&self) -> T;

@@ -155,25 +155,23 @@ pub enum Status {
     InvalidFile                 = ffi::INVALIDFILE as c_int  
 }
 
+/// The FTP client
 pub struct Ftp {
-    #[doc(hidden)]
     priv ftp : *ffi::sfFtp
 }
 
-
+/// Encapsulation of an Ftp Serveur response
 pub struct Response {
-    #[doc(hidden)]
     priv response : *ffi::sfFtpResponse
 }
 
+/// Encapsulation of a response returning a list of filename
 pub struct ListingResponse{
-    #[doc(hidden)]
     priv listing_response : *ffi::sfFtpListingResponse
 }
 
-
+/// Encapsulation of a response returning a directory
 pub struct DirectoryResponse{
-    #[doc(hidden)]
     priv directory_response : *ffi::sfFtpDirectoryResponse
 }
 

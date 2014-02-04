@@ -124,17 +124,6 @@ impl SoundBuffer {
         }
         return_value
     }
-    
-    /**
-    * Get the array of audio samples stored in a sound buffer
-    *
-    * The format of the returned samples is 16 bits signed integer
-    * (sfInt16). The total number of samples in this array
-    * is given by the get_cample_count function.
-    *
-    * return Read-only pointer to the array of sound samples
-    */
-
 
     /**
     * Get the number of samples stored in a sound buffer
@@ -164,7 +153,7 @@ impl SoundBuffer {
         }
     }
 
-    /*
+    /**
     * Get the total duration of a sound buffer
     *
     * Return the sound duration

@@ -146,7 +146,7 @@ Here is a list of all modules :
 #[crate_type = "rlib"];
 #[crate_type = "dylib"];
 #[allow(dead_code)];
-//#[warn(missing_doc)];
+#[warn(missing_doc)];
 
 extern mod extra;
 
