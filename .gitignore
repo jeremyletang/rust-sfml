@@ -7,3 +7,5 @@ bin/sound
 bin/shape
 bin/sound_capture
 bin/custom_drawable
+bin/rc_res
+bin/borrow_res

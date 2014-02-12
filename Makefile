@@ -36,6 +36,8 @@ examples:
 	rustc -o bin/custom_drawable -L ./lib src/examples/custom_drawable/main.rs
 	rustc -o bin/sound -L ./lib src/examples/sound/main.rs
 	rustc -o bin/sound_capture -L ./lib src/examples/sound_capture/main.rs
+	rustc -o bin/borrow_res -L ./lib src/examples/borrow_res/main.rs
+	rustc -o bin/rc_res -L ./lib src/examples/rc_res/main.rs
 
 
 clean:
@@ -46,3 +48,5 @@ clean:
 	rm -rf bin/sound
 	rm -rf bin/sound_capture
 	rm -rf bin/custom_drawable
+	rm -rf bin/borrow_res
+	rm -rf bin/rc_res
