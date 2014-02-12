@@ -44,14 +44,14 @@ impl<'s> CustomDrawable<'s> {
 
 // Implements the drawable trait, only these two method are mendatory.
 impl<'s> Drawable for CustomDrawable<'s> {
-    fn draw_in_render_window(&self, render_window : &RenderWindow) -> () {
-        render_window.draw_circle_shape(&self.circle);
-        render_window.draw_rectangle_shape(&self.rect)
+    fn draw_in_render_window(&self, render_window : &mut RenderWindow) -> () {
+        render_window.draw(&self.circle);
+        render_window.draw(&self.rect)
     }
 
-    fn draw_in_render_texture(&self, render_texture : &RenderTexture) -> () {
-        render_texture.draw_circle_shape(&self.circle);
-        render_texture.draw_rectangle_shape(&self.rect)
+    fn draw_in_render_texture(&self, render_texture : &mut RenderTexture) -> () {
+        render_texture.draw(&self.circle);
+        render_texture.draw(&self.rect)
     }
 }
 

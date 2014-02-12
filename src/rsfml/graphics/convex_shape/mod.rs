@@ -657,19 +657,19 @@ impl<'s> Wrappable<*ffi::sfConvexShape> for ConvexShape<'s> {
 }
 
 impl<'s> Drawable for ConvexShape<'s> {
-    fn draw_in_render_window(&self, render_window : &RenderWindow) -> () {
+    fn draw_in_render_window(&self, render_window : &mut RenderWindow) -> () {
         render_window.draw_convex_shape(self)
     }
 
-    fn draw_in_render_window_rs(&self, render_window : &RenderWindow, render_states : &mut RenderStates) -> () {
+    fn draw_in_render_window_rs(&self, render_window : &mut RenderWindow, render_states : &mut RenderStates) -> () {
         render_window.draw_convex_shape_rs(self, render_states)
     }
 
-    fn draw_in_render_texture(&self, render_texture : &RenderTexture) -> () {
+    fn draw_in_render_texture(&self, render_texture : &mut RenderTexture) -> () {
         render_texture.draw_convex_shape(self)
     }
 
-    fn draw_in_render_texture_rs(&self, render_texture : &RenderTexture, render_states : &mut RenderStates) -> () {
+    fn draw_in_render_texture_rs(&self, render_texture : &mut RenderTexture, render_states : &mut RenderStates) -> () {
         render_texture.draw_convex_shape_rs(self, render_states)
     }
 }

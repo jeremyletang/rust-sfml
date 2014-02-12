@@ -6,7 +6,7 @@
 #[crate_id = "sound_capture"];
 #[desc = "Sound capture example for rsfml"];
 #[crate_type = "bin"];
-
+ #[allow(unused_must_use)];
 extern mod rsfml;
 
 use std::rc::Rc;

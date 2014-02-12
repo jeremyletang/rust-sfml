@@ -634,19 +634,19 @@ impl<'s> Shape<'s> {
 }
 
 impl<'s> Drawable for Shape<'s> {
-    fn draw_in_render_window(&self, render_window : &RenderWindow) -> () {
+    fn draw_in_render_window(&self, render_window : &mut RenderWindow) -> () {
         render_window.draw_shape(self)
     }
 
-    fn draw_in_render_window_rs(&self, render_window : &RenderWindow, render_states : &mut RenderStates) -> () {
+    fn draw_in_render_window_rs(&self, render_window : &mut RenderWindow, render_states : &mut RenderStates) -> () {
         render_window.draw_shape_rs(self, render_states)
     }
     
-    fn draw_in_render_texture(&self, render_texture : &RenderTexture) -> () {
+    fn draw_in_render_texture(&self, render_texture : &mut RenderTexture) -> () {
         render_texture.draw_shape(self)
     }
 
-    fn draw_in_render_texture_rs(&self, render_texture : &RenderTexture, render_states : &mut RenderStates) -> () {
+    fn draw_in_render_texture_rs(&self, render_texture : &mut RenderTexture, render_states : &mut RenderStates) -> () {
         render_texture.draw_shape_rs(self, render_states)
     }
 }
