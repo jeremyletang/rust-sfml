@@ -37,7 +37,7 @@
 */
 
 use std::libc::{c_float, c_uint, size_t};
-use std::{str, ptr, cast};
+use std::{str, cast};
 use extra::c_vec::CVec;
 
 use traits::{Drawable, Wrappable};
@@ -72,7 +72,7 @@ impl<'s> Text<'s> {
     */
     pub fn new() -> Option<Text<'s>> {
         let text  = unsafe { ffi::sfText_create() };
-        if ptr::is_null(text) {
+        if text.is_null() {
             None
         }
         else {
@@ -98,7 +98,7 @@ impl<'s> Text<'s> {
     */
     pub fn new_init(string : &str, font : &'s Font, character_size : uint) ->Option<Text<'s>> {
         let text = unsafe { ffi::sfText_create() };
-        if ptr::is_null(text) {
+        if text.is_null() {
             None
         }
         else {

@@ -27,7 +27,6 @@
 */
 
 use std::libc::c_uint;
-use std::ptr;
 
 use traits::{Drawable, Wrappable};
 use graphics::{Vertex, FloatRect, primitive_type, 
@@ -49,7 +48,7 @@ impl VertexArray {
     */
     pub fn new() -> Option<VertexArray> {
         let ver = unsafe { ffi::sfVertexArray_create() };
-        if ptr::is_null(ver) {
+        if ver.is_null() {
             None
         }
         else {
@@ -69,7 +68,7 @@ impl VertexArray {
     */
     pub fn clone(&self) -> Option<VertexArray> {
         let ver = unsafe { ffi::sfVertexArray_copy(self.vertex_array) };
-        if ptr::is_null(ver) {
+        if ver.is_null() {
             None
         }
         else {

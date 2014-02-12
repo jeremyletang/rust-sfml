@@ -63,7 +63,7 @@ impl<'s> Sprite<'s> {
     */
     pub fn new() -> Option<Sprite<'s>> {
         let sp = unsafe { ffi::sfSprite_create() };
-        if ptr::is_null(sp) {
+        if sp.is_null() {
             None
         }
         else {
@@ -82,7 +82,7 @@ impl<'s> Sprite<'s> {
     */
     pub fn new_with_texture(texture : &'s Texture) -> Option<Sprite<'s>> {
         let sp = unsafe { ffi::sfSprite_create() };
-        if ptr::is_null(sp) {
+        if sp.is_null() {
             None
         }
         else {
@@ -104,7 +104,7 @@ impl<'s> Sprite<'s> {
     */
     pub fn clone(&self) -> Option<Sprite<'s>> {
         let sp = unsafe { ffi::sfSprite_copy(self.sprite) };
-        if ptr::is_null(sp) {
+        if sp.is_null() {
             None
         }
         else {

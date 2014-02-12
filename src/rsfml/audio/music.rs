@@ -76,7 +76,7 @@ impl Music {
                 music_tmp = ffi::sfMusic_createFromFile(c_str)
             });
         }
-        if ptr::is_null(music_tmp) {
+        if music_tmp.is_null() {
             return None;
         }
         Some(Music{

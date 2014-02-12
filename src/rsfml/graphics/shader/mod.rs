@@ -99,7 +99,7 @@ impl<'s> Shader<'s> {
                 };
             ffi::sfShader_createFromFile(c_vertex_shader_filename, c_fragment_shader_filename) 
         };
-        if ptr::is_null(shader) {
+        if shader.is_null() {
             None
             }
         else {
@@ -145,7 +145,7 @@ impl<'s> Shader<'s> {
                 };
             ffi::sfShader_createFromFile(c_vertex_shader, c_fragment_shader) 
         };
-        if ptr::is_null(shader) {
+        if shader.is_null() {
             None
         }
         else {

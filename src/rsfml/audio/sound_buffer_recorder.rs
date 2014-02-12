@@ -30,7 +30,6 @@
 */
 
 use std::libc::c_uint;
-use std::ptr;
 
 use traits::Wrappable;
 use audio::sound_buffer::SoundBuffer;
@@ -58,7 +57,7 @@ impl SoundBufferRecorder {
     */
     pub fn new() -> Option<SoundBufferRecorder> {
         let buffer = unsafe { ffi::sfSoundBufferRecorder_create() };
-        if ptr::is_null(buffer) {
+        if buffer.is_null() {
             None
         }
         else {
@@ -123,7 +122,7 @@ impl SoundBufferRecorder {
     */
     pub fn get_buffer(&self) -> Option<SoundBuffer> {
         let buff = unsafe { ffi::sfSoundBufferRecorder_getBuffer(self.sound_buffer_recorder) };
-        if ptr::is_null(buff) {
+        if buff.is_null() {
             None
         }
         else {

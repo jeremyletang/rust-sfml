@@ -70,7 +70,7 @@ impl ConvexShape {
     */
     pub fn new(points_count : uint) -> Option<ConvexShape> {
         let shape = unsafe { ffi::sfConvexShape_create() };
-        if ptr::is_null(shape) {
+        if shape.is_null() {
             None
         }
         else {
@@ -95,7 +95,7 @@ impl ConvexShape {
     */
     pub fn new_with_texture(texture : Rc<RefCell<Texture>>, points_count : uint) -> Option<ConvexShape> {
         let shape = unsafe { ffi::sfConvexShape_create() };
-        if ptr::is_null(shape) {
+        if shape.is_null() {
             None
         }
         else {
@@ -118,7 +118,7 @@ impl ConvexShape {
     */
     pub fn clone(&self) -> Option<ConvexShape> {
         let shape = unsafe { ffi::sfConvexShape_copy(self.convex_shape) };
-        if ptr::is_null(shape) {
+        if shape.is_null() {
             None
         }
         else {

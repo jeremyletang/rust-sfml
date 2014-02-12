@@ -49,7 +49,7 @@ impl UdpSocket {
     */
     pub fn new() -> Option<UdpSocket> {
         let udp = unsafe { ffi::sfUdpSocket_create() };
-        if ptr::is_null(udp) {
+        if udp.is_null() {
             None
         }
         else {

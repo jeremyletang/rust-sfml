@@ -59,7 +59,7 @@ impl Font {
                 fnt = ffi::sfFont_createFromFile(c_str)
             });
         }
-        if ptr::is_null(fnt) {
+        if fnt.is_null() {
             None
         }
         else {
@@ -80,7 +80,7 @@ impl Font {
     */
     pub fn clone(&self) -> Option<Font> {
         let fnt = unsafe {ffi::sfFont_copy(self.font)};
-        if ptr::is_null(fnt) {
+        if fnt.is_null() {
             None
         }
         else {
@@ -130,7 +130,7 @@ impl Font {
     */
     pub fn get_texture(&self, character_size : uint) -> Option<Texture> {
         let tex = unsafe {ffi::sfFont_getTexture(self.font, character_size as c_uint)};
-        if ptr::is_null(tex) {
+        if tex.is_null() {
             None
         }
         else {

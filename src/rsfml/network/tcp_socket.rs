@@ -50,7 +50,7 @@ impl TcpSocket {
     */
     pub fn new() -> Option<TcpSocket> {
         let tcp = unsafe { ffi::sfTcpSocket_create() };
-        if ptr::is_null(tcp) {
+        if tcp.is_null() {
             None
         }
         else {

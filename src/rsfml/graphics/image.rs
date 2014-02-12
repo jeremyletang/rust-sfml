@@ -27,7 +27,6 @@
 */
 
 use std::libc::c_uint;
-use std::ptr;
 
 use traits::Wrappable;
 use system::vector2::Vector2u;
@@ -55,7 +54,7 @@ impl Image {
     */
     pub fn new(width : uint, height : uint) -> Option<Image> {
         let image = unsafe { ffi::sfImage_create(width as c_uint, height as c_uint) };
-        if ptr::is_null(image) {
+        if image.is_null() {
             None
         }
         else {
@@ -77,7 +76,7 @@ impl Image {
     */
     pub fn new_from_color(width : uint, height : uint, color : &Color) -> Option<Image> {
         let image = unsafe { ffi::sfImage_createFromColor(width as c_uint, height as c_uint, *color) };
-        if ptr::is_null(image) {
+        if image.is_null() {
             None
         }
         else {
@@ -105,7 +104,7 @@ impl Image {
             let c_filename = filename.to_c_str().unwrap();
             ffi::sfImage_createFromFile(c_filename)
         };
-        if ptr::is_null(image) {
+        if image.is_null() {
             None
         }
         else {
@@ -122,7 +121,7 @@ impl Image {
     */
     pub fn clone(&self) -> Option<Image> {
         let image = unsafe { ffi::sfImage_copy(self.image) };
-        if ptr::is_null(image) {
+        if image.is_null() {
             None
         }
         else {
@@ -149,7 +148,7 @@ impl Image {
     */
     pub fn create_from_pixels(width : uint, height : uint, pixels : ~[u8]) -> Option<Image> {
         let image = unsafe { ffi::sfImage_createFromPixels(width as c_uint, height as c_uint, pixels.as_ptr()) };
-        if ptr::is_null(image) {
+        if image.is_null() {
             None
         }
         else {

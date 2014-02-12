@@ -50,8 +50,6 @@ pub struct Shape {
     #[doc(hidden)]
     priv shape :    *ffi::sfShape,
     #[doc(hidden)]
-    // priv wrap_obj : ~WrapObj,
-    #[doc(hidden)]
     priv texture :  Option<Rc<RefCell<Texture>>>
 }
 
@@ -86,13 +84,12 @@ impl Shape {
         let w_o = ~WrapObj { shape_impl : shape_impl};
       
         let sp = unsafe { ffi::sfShape_create(get_point_count_callback, get_point_callback, cast::transmute::<~~WrapObj, *c_void>(~w_o)) };
-        if ptr::is_null(sp) {
+        if sp.is_null() {
             None
         }
         else {
             Some(Shape {
                 shape :     sp,
-                // wrap_obj :  w_o,
                 texture :   None
             })
         }
@@ -111,7 +108,7 @@ impl Shape {
         let w_o = ~WrapObj { shape_impl : shape_impl };
       
         let sp = unsafe { ffi::sfShape_create(get_point_count_callback, get_point_callback, cast::transmute::<~~WrapObj, *c_void>(~w_o)) };
-        if ptr::is_null(sp) {
+        if sp.is_null() {
             None
         }
         else {
@@ -120,7 +117,6 @@ impl Shape {
             }
             Some(Shape {
                 shape :     sp,
-                // wrap_obj :  ~w_o,
                 texture :   Some(texture)
             })
         }

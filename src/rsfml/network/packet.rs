@@ -47,7 +47,7 @@ impl Packet {
     */
     pub fn new() -> Option<Packet> {
         let pck = unsafe { ffi::sfPacket_create() };
-        if ptr::is_null(pck) {
+        if pck.is_null() {
             None
         }
         else {
@@ -64,7 +64,7 @@ impl Packet {
     */
     pub fn clone(&self) -> Option<Packet> {
         let pck = unsafe { ffi::sfPacket_copy(self.packet) };
-        if ptr::is_null(pck) {
+        if pck.is_null() {
             None
         }
         else{

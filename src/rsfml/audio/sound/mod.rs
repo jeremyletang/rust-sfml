@@ -29,7 +29,7 @@
 */
 
 use std::libc::c_float;
-use std::{ptr, cast};
+use std::cast;
 
 use audio::{Status, SoundBuffer};
 use system::Time;
@@ -62,7 +62,7 @@ impl<'s> Sound<'s> {
     */
     pub fn new() -> Option<Sound<'s>> {
         let s = unsafe {ffi::sfSound_create()};
-        if s == ptr::null() {
+        if s.is_null() {
             None
         }
         else {
@@ -80,7 +80,7 @@ impl<'s> Sound<'s> {
     */
     pub fn new_with_buffer(buffer : &'s SoundBuffer) -> Option<Sound<'s>> {
         let s = unsafe {ffi::sfSound_create()};
-        if s == ptr::null() {
+        if s.is_null() {
             None
         }
         else {
@@ -101,7 +101,7 @@ impl<'s> Sound<'s> {
     */
     pub fn clone(&self) -> Option<Sound<'s>> {
         let s = unsafe {ffi::sfSound_copy(self.sound)};
-        if s == ptr::null() {
+        if s.is_null() {
             None
         }
         else {

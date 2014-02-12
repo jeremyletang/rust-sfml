@@ -55,7 +55,7 @@ impl RectangleShape {
     */
     pub fn new() -> Option<RectangleShape> {
         let rectangle = unsafe { ffi::sfRectangleShape_create() };
-        if ptr::is_null(rectangle) {
+        if rectangle.is_null() {
             None
         }
         else {
@@ -73,7 +73,7 @@ impl RectangleShape {
     */
     pub fn new_with_texture(texture : Rc<RefCell<Texture>>) -> Option<RectangleShape> {
         let rectangle = unsafe { ffi::sfRectangleShape_create() };
-        if ptr::is_null(rectangle) {
+        if rectangle.is_null() {
             None
         }
         else {
@@ -96,7 +96,7 @@ impl RectangleShape {
     */
     pub fn new_init(size : &Vector2f) -> Option<RectangleShape> {
         let rectangle = unsafe { ffi::sfRectangleShape_create() };
-        if ptr::is_null(rectangle) {
+        if rectangle.is_null() {
             None
         }
         else {
@@ -117,7 +117,7 @@ impl RectangleShape {
     */
     pub fn clone(&self) -> Option<RectangleShape> {
         let rectangle = unsafe { ffi::sfRectangleShape_copy(self.rectangle_shape) };
-        if ptr::is_null(rectangle) {
+        if rectangle.is_null() {
             None
         }
         else {

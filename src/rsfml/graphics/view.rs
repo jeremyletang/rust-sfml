@@ -31,7 +31,6 @@
 */
 
 use std::libc::c_float;
-use std::ptr;
 
 use traits::Wrappable;
 use graphics::FloatRect;
@@ -63,7 +62,7 @@ impl View {
     */
     pub fn new() -> Option<View> {
         let view = unsafe { ffi::sfView_create() };
-        if ptr::is_null(view) {
+        if view.is_null() {
             None
         }
         else {
@@ -87,7 +86,7 @@ impl View {
     */
     pub fn new_init(center : &Vector2f, size : &Vector2f) -> Option<View> {
         let view = unsafe { ffi::sfView_create() };
-        if ptr::is_null(view) {
+        if view.is_null() {
             None
         }
         else {
@@ -109,7 +108,7 @@ impl View {
     */
     pub fn new_copy(&self) -> Option<View> {
         let view = unsafe { ffi::sfView_copy(self.view) };
-        if ptr::is_null(view) {
+        if view.is_null() {
             None
         }
         else {
@@ -130,7 +129,7 @@ impl View {
     */
     pub fn new_from_rect(rectangle : &FloatRect) -> Option<View> {
         let view = unsafe { ffi::sfView_createFromRect(*rectangle) };
-        if ptr::is_null(view) {
+        if view.is_null() {
             None
         }
         else {

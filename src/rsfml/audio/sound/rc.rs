@@ -29,7 +29,7 @@
 */
 
 use std::libc::c_float;
-use std::{ptr, cast};
+use std::cast;
 use std::rc::Rc;
 use std::cell::RefCell;
 
@@ -62,7 +62,7 @@ impl Sound {
     */
     pub fn new() -> Option<Sound> {
         let s = unsafe {ffi::sfSound_create()};
-        if s == ptr::null() {
+        if s.is_null() {
             None
         }
         else {
@@ -83,7 +83,7 @@ impl Sound {
     */
     pub fn new_with_buffer(buffer : Rc<RefCell<SoundBuffer>>) -> Option<Sound> {
         let s = unsafe {ffi::sfSound_create()};
-        if s == ptr::null() {
+        if s.is_null() {
             None
         }
         else {
@@ -104,7 +104,7 @@ impl Sound {
     */
     pub fn clone(&self) -> Option<Sound> {
         let s = unsafe {ffi::sfSound_copy(self.sound)};
-        if s == ptr::null() {
+        if s.is_null() {
             None
         }
         else {

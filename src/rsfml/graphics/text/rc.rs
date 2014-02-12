@@ -32,7 +32,7 @@
 use std::rc::Rc;
 use std::cell::RefCell;
 use std::libc::{c_float, c_uint, size_t};
-use std::{str, ptr, cast};
+use std::{str, cast};
 use extra::c_vec::CVec;
 
 use traits::{Drawable, Wrappable};
@@ -65,7 +65,7 @@ impl Text {
     */
     pub fn new() -> Option<Text> {
         let text  = unsafe { ffi::sfText_create() };
-        if ptr::is_null(text) {
+        if text.is_null() {
             None
         }
         else {
@@ -94,7 +94,7 @@ impl Text {
         character_size : uint) ->Option<Text> {
         
         let text = unsafe { ffi::sfText_create() };
-        if ptr::is_null(text) {
+        if text.is_null() {
             None
         }
         else {

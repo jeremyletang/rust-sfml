@@ -55,7 +55,7 @@ impl<'s> CircleShape<'s> {
     */
     pub fn new() -> Option<CircleShape<'s>> {
         let circle = unsafe { ffi::sfCircleShape_create() };
-        if ptr::is_null(circle) {
+        if circle.is_null() {
             None
         }
         else {
@@ -76,7 +76,7 @@ impl<'s> CircleShape<'s> {
     */    
     pub fn new_with_texture(texture : &'s Texture) -> Option<CircleShape<'s>> {
         let circle = unsafe { ffi::sfCircleShape_create() };
-        if ptr::is_null(circle) {
+        if circle.is_null() {
             None
         }
         else {
@@ -104,7 +104,7 @@ impl<'s> CircleShape<'s> {
     */
     pub fn new_init(radius : f32, point_count : uint) -> Option<CircleShape<'s>> {
         let circle = unsafe { ffi::sfCircleShape_create() };
-        if ptr::is_null(circle) {
+        if circle.is_null() {
            None
         }
         else {
@@ -129,7 +129,7 @@ impl<'s> CircleShape<'s> {
     */
     pub fn clone(&self) -> Option<CircleShape<'s>> {
         let circle = unsafe { ffi::sfCircleShape_copy(self.circle_shape) };
-        if ptr::is_null(circle) {
+        if circle.is_null() {
             None
         }
         else {

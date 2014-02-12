@@ -70,7 +70,7 @@ impl SoundBuffer {
                 sound_buffer = ffi::sfSoundBuffer_createFromFile(c_str)
             });
         }
-        if ptr::is_null(sound_buffer) {
+        if sound_buffer.is_null() {
             None
         }
         else {
@@ -88,7 +88,7 @@ impl SoundBuffer {
     */
     pub fn clone(&self) -> Option<SoundBuffer> {
         let sound_buffer = unsafe { ffi::sfSoundBuffer_copy(self.sound_buffer) };
-        if ptr::is_null(sound_buffer) {
+        if sound_buffer.is_null() {
             None
         }
         else {

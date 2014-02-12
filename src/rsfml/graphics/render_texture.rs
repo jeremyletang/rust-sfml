@@ -62,7 +62,7 @@ impl RenderTexture {
             false       => unsafe { ffi::sfRenderTexture_create(width as c_uint, height as c_uint, 0) },
             true        => unsafe { ffi::sfRenderTexture_create(width as c_uint, height as c_uint, 1) }
         };
-        if ptr::is_null(tex) {
+        if tex.is_null() {
             None
         }
         else {
@@ -559,7 +559,7 @@ impl RenderTexture {
     */
     pub fn get_texture(&self) -> Option<Texture> {
         let tex = unsafe { ffi::sfRenderTexture_getTexture(self.render_texture) };
-        if ptr::is_null(tex) {
+        if tex.is_null() {
             None
         }
         else {

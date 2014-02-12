@@ -96,7 +96,7 @@ impl Window {
             p4 :        0,
             p5 :        0
         };
-        if ptr::is_null(sf_win) {
+        if sf_win.is_null() {
             None
         }
         else {
@@ -143,7 +143,7 @@ impl Window {
             p4 :        0, 
             p5 :        0
         };
-        if ptr::is_null(sf_win) {
+        if sf_win.is_null() {
             None
         }
         else {

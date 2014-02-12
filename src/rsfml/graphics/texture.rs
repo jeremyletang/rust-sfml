@@ -63,7 +63,7 @@ impl Texture {
     */
     pub fn new(width: uint, height : uint) -> Option<Texture> {
         let tex = unsafe { ffi::sfTexture_create(width as c_uint, height as c_uint) };
-        if ptr::is_null(tex) {
+        if tex.is_null() {
             None
         }
         else {
@@ -89,7 +89,7 @@ impl Texture {
                 tex = ffi::sfTexture_createFromFile(c_str, ptr::null())
             });
         }
-        if ptr::is_null(tex) {
+        if tex.is_null() {
             None
         }
         else {
@@ -116,7 +116,7 @@ impl Texture {
                 tex = ffi::sfTexture_createFromFile(c_str, &*area)
             });
         }
-        if ptr::is_null(tex) {
+        if tex.is_null() {
             None
         }
         else {
@@ -137,7 +137,7 @@ impl Texture {
     */
     pub fn clone(&self) -> Option<Texture> {
         let tex = unsafe { ffi::sfTexture_copy(self.texture) };
-        if ptr::is_null(tex) {
+        if tex.is_null() {
             None
         }
         else {
@@ -159,7 +159,7 @@ impl Texture {
     */
     pub fn new_from_image_with_rect(image : &Image, area : &IntRect) -> Option<Texture> {
         let tex = unsafe { ffi::sfTexture_createFromImage(image.unwrap(), &*area) };
-        if ptr::is_null(tex) {
+        if tex.is_null() {
             None
         }
         else {
@@ -180,7 +180,7 @@ impl Texture {
     */
     pub fn new_from_image(image : &Image) -> Option<Texture> {
         let tex = unsafe { ffi::sfTexture_createFromImage(image.unwrap(), ptr::null()) };
-        if ptr::is_null(tex) {
+        if tex.is_null() {
             None
         }
         else {
@@ -360,7 +360,7 @@ impl Texture {
     */
     pub fn copy_to_image(&self) -> Option<Image> {
         let img = unsafe {ffi::sfTexture_copyToImage(self.texture)};
-        if ptr::is_null(img) {
+        if img.is_null() {
             None
         }
         else {

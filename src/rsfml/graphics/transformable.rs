@@ -27,7 +27,6 @@
 */
 
 use std::libc::c_float;
-use std::ptr;
 
 use traits::Wrappable;
 use graphics::Transform;
@@ -51,7 +50,7 @@ impl Transformable {
     */
     pub fn new() -> Option<Transformable> {
         let tran = unsafe { ffi::sfTransformable_create() };
-        if ptr::is_null(tran) {
+        if tran.is_null() {
             None
         }
         else {
@@ -68,7 +67,7 @@ impl Transformable {
     */
     pub fn clone(&self) -> Option<Transformable> {
         let tran = unsafe { ffi::sfTransformable_copy(self.transformable) };
-        if ptr::is_null(tran) {
+        if tran.is_null() {
             None
         }
         else {

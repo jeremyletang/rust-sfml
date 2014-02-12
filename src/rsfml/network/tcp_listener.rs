@@ -26,7 +26,7 @@
 * Socket that listens to new TCP connections
 */
 
-use std::{ptr, cast};
+use std::cast;
 
 use traits::Wrappable;
 use network::{TcpSocket, SocketStatus};
@@ -47,7 +47,7 @@ impl TcpListener {
     */
     pub fn new() -> Option<TcpListener> {
         let list = unsafe { ffi::sfTcpListener_create() };
-        if ptr::is_null(list) {
+        if list.is_null() {
             None
         }
         else {

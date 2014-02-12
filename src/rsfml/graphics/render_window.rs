@@ -105,12 +105,12 @@ impl RenderWindow {
             p4 :        0, 
             p5 :        0
         };
-        if ptr::is_null(sf_render_win) {
+        if sf_render_win.is_null() {
             None
         }
         else {
             let raw_def_view = unsafe { ffi::sfRenderWindow_getDefaultView(sf_render_win) };
-            if ptr::is_null(raw_def_view) {
+            if raw_def_view.is_null() {
                 None
             }
             else {
@@ -164,12 +164,12 @@ impl RenderWindow {
             p4 :        0, 
             p5 :        0
         };
-        if ptr::is_null(sf_render_win) {
+        if sf_render_win.is_null() {
             None
         }
         else {
             let raw_def_view = unsafe { ffi::sfRenderWindow_getDefaultView(sf_render_win) };
-            if ptr::is_null(raw_def_view) {
+            if raw_def_view.is_null() {
                 None
             }
             else {
@@ -993,7 +993,7 @@ impl RenderWindow {
     */
     pub fn capture(&mut self) -> Option<Image> {
         let img = unsafe { ffi::sfRenderWindow_capture(self.render_window) };
-        if ptr::is_null(img) {
+        if img.is_null() {
             None
         }
         else {
