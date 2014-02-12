@@ -42,7 +42,16 @@ pub struct ContextSettings {
 }
 
 impl ContextSettings {
-    /// Create a default ContextSettings
+    /**
+    * Create a default ContextSettings
+    *
+    * # Default values:
+    * * `depth_bits`: 0
+    * * `stencil_bits`: 0
+    * * `antialiasing_level`: 0
+    * * `major_version`: 2
+    * * `minor_version`: 0
+    */
     pub fn default() -> ContextSettings {
         ContextSettings {
             depth_bits :            0,

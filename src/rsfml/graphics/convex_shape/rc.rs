@@ -297,12 +297,15 @@ impl ConvexShape {
     }
 
     /**
-    * Set the number of points of a convex shape
+    * Set the position of a point.
     * 
-    * count must be greater than 2 to define a valid shape.
+    * Don't forget that the polygon must remain convex, and the points need to stay ordered! 
+    * set_point_count must be called first in order to set the total number of points. 
+    * The result is undefined if index is out of the valid range.
     *
     * # Arguments
-    * * count - New number of points of the shape
+    * * index - Index of the point to change, in range [0 .. getPointCount() - 1]
+    * * point - New position of the point
     */
     pub fn set_point(&mut self, index : uint, point : &Vector2f) -> () {
         unsafe {
