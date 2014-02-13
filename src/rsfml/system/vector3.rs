@@ -29,7 +29,7 @@
 */
 
 /// Vector3f definition
-#[deriving(Clone, Ord, Eq)]
+#[deriving(Clone, Ord, Eq, Show, ToStr)]
 pub struct Vector3f {
     /// X coordinate of the vector.
     x : f32,

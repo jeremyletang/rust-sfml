@@ -34,7 +34,7 @@ use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi = ffi::graphics::rect;
 
 /// Utility classes for manipulating rectangles of int.
-#[deriving(Clone, Ord)]
+#[deriving(Clone, Ord, Show, ToStr)]
 pub struct IntRect {
     /// Left coordinate of the rectangle. 
     left :      i32,
@@ -47,7 +47,7 @@ pub struct IntRect {
 }
 
 /// Utility classes for manipulating rectangles of f32.
-#[deriving(Clone, Ord)]
+#[deriving(Clone, Ord, Show, ToStr)]
 pub struct FloatRect {
     /// Left coordinate of the rectangle. 
     left :      f32,

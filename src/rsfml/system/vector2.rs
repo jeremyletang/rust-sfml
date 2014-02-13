@@ -31,7 +31,7 @@
 /**
 * Implementation of Vector2i
 */
-#[deriving(Clone, Ord, Eq)]
+#[deriving(Clone, Ord, Eq, Show, ToStr)]
 pub struct Vector2i {
     /// X coordinate of the vector.
     x : i32,
@@ -42,7 +42,7 @@ pub struct Vector2i {
 /**
 * Implementation of Vector2u
 */
-#[deriving(Clone, Ord, Eq)]
+#[deriving(Clone, Ord, Eq, Show, ToStr)]
 pub struct Vector2u {
     /// X coordinate of the vector.
     x : u32,
@@ -53,7 +53,7 @@ pub struct Vector2u {
 /**
 * Implementation of Vector2f
 */
-#[deriving(Clone, Ord, Eq)]
+#[deriving(Clone, Ord, Eq, Show, ToStr)]
 pub struct Vector2f {
     /// X coordinate of the vector.
     x : f32,
