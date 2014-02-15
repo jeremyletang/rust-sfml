@@ -59,6 +59,30 @@ impl VertexArray {
     }
 
     /**
+    * Create a new initialized vertex array
+    *
+    * # Arguments
+    * * primitive_type - The type of the VertexArray
+    * * vertex_count - The maximal number of vertex
+    *
+    * Return Some(VertexArray) or None
+    */
+    pub fn new_init(primitive_type: PrimitiveType, vertex_count: uint) -> Option<VertexArray> {
+        let ver = unsafe { ffi::sfVertexArray_create() };
+        if ver.is_null() {
+            None
+        }
+        else {
+            let mut tmp_vertex = VertexArray {
+                vertex_array : ver
+            };
+            tmp_vertex.set_primitive_type(primitive_type);
+            tmp_vertex.resize(vertex_count);
+            Some(tmp_vertex)
+        }    
+    }
+
+    /**
     * Copy an existing vertex array
     *
     * # Arguments
