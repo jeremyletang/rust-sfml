@@ -148,7 +148,7 @@ Here is a list of all modules :
 #[allow(dead_code)];
 #[warn(missing_doc)];
 
-extern mod extra;
+extern crate extra;
 
 pub mod traits;
 pub mod system;

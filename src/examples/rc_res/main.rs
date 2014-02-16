@@ -6,8 +6,8 @@
 #[desc = "Shape using borrow ressources example for rsfml"];
 #[crate_type = "bin"];
 
-extern mod native;
-extern mod rsfml;
+extern crate native;
+extern crate rsfml;
 
 use std::rc::Rc;
 use std::cell::RefCell;

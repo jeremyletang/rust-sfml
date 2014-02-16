@@ -6,7 +6,7 @@
 #[desc = "Sound example for rsfml"];
 #[crate_type = "bin"];
 
-extern mod rsfml;
+extern crate rsfml;
 
 use std::rc::Rc;
 use std::cell::RefCell;

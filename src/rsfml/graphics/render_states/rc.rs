@@ -28,7 +28,7 @@
 
 use std::rc::Rc;
 use std::cell::RefCell;
-use std::ptr;
+use std::{ptr, cast};
 
 use traits::Wrappable;
 use graphics::{BlendMode, BlendAlpha, Texture, rc, Transform}; 
@@ -116,6 +116,6 @@ impl RenderStates {
         self.sfRenderStates.texture = if !self.texture.is_none() { self.texture.get_ref().borrow().with(|t| t.unwrap()) } else { ptr::null() };
         self.sfRenderStates.shader = if !self.shader.is_none() { self.shader.get_ref().borrow().with(|t| t.unwrap()) } else { ptr::null() };
         
-        ptr::to_unsafe_ptr(&self.sfRenderStates)
+        unsafe { cast::transmute(&self.sfRenderStates) }
     }
 } 

@@ -26,7 +26,7 @@
 * Define the states used for drawing to a RenderTarget
 */
 
-use std::ptr;
+use std::{ptr, cast};
 
 use traits::Wrappable;
 use graphics::{BlendMode, BlendAlpha, Shader, Texture, Transform}; 
@@ -112,6 +112,6 @@ impl<'s> RenderStates<'s> {
         self.sfRenderStates.texture = if !self.texture.is_none() { self.texture.unwrap().unwrap() } else { ptr::null() };
         self.sfRenderStates.shader = if !self.shader.is_none() { self.shader.unwrap().unwrap() } else { ptr::null() };
         
-        ptr::to_unsafe_ptr(&self.sfRenderStates)
+        unsafe { cast::transmute(&self.sfRenderStates) }
     }
 } 

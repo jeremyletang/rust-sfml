@@ -6,8 +6,8 @@
 #[desc = "Shape example for rsfml"];
 #[crate_type = "bin"];
 
-extern mod native;
-extern mod rsfml;
+extern crate native;
+extern crate rsfml;
 
 use rsfml::graphics::{RenderWindow, Color, Shape};
 use rsfml::window::{VideoMode, ContextSettings, event, keyboard, Close};
