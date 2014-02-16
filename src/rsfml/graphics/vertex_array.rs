@@ -27,6 +27,7 @@
 */
 
 use std::libc::c_uint;
+use std::cast;
 
 use traits::{Drawable, Wrappable};
 use graphics::{Vertex, FloatRect, primitive_type, 
@@ -38,6 +39,14 @@ use ffi = ffi::graphics::vertex_array;
 pub struct VertexArray {
     #[doc(hidden)]
     priv vertex_array : *ffi::sfVertexArray
+}
+
+/// An itertator over the vertice of a VertexArray
+pub struct Vertices<'s> {
+    #[doc(hidden)]
+    priv vertex_array: *ffi::sfVertexArray,
+    #[doc(hidden)]
+    priv pos: u32
 }
 
 impl VertexArray {
@@ -227,11 +236,41 @@ impl VertexArray {
     * # Arguments
     * * index - Index of the vertex to get
     *
-    * Return the index-th vertex
+    * Return a mutable reference to the index-th vertex
     */
-    pub fn get_vertex(&self, index : uint) -> Vertex {
+    pub fn get_vertex(&self, index : uint) -> &mut Vertex {
         unsafe {
-            *ffi::sfVertexArray_getVertex(self.vertex_array, index as c_uint)
+            cast::transmute(ffi::sfVertexArray_getVertex(self.vertex_array, index as c_uint))
+        }
+    }
+
+    /// Return an immutable iterator over all the vertice contained by the VertexArray
+    pub fn iter(&self) -> Vertices {
+        Vertices {
+            vertex_array: self.vertex_array.clone(),
+            pos: 0
+        }
+    }
+}
+
+impl<'s> Iterator<&'s Vertex> for Vertices<'s> {
+    fn next(&mut self) -> Option<&'s Vertex> {
+        let point_count = unsafe { ffi::sfVertexArray_getVertexCount(self.vertex_array) as u32 };
+        if self.pos == point_count {
+            None
+        } else {
+            self.pos += 1;
+            unsafe {
+                cast::transmute(ffi::sfVertexArray_getVertex(self.vertex_array, self.pos as c_uint))
+            }
+        }
+    }
+} 
+
+impl<'s> Index<uint, &'s Vertex> for VertexArray {
+    fn index(&self, _rhs: &uint) -> &'s Vertex {
+        unsafe {
+            cast::transmute::<*Vertex, &'s Vertex>(ffi::sfVertexArray_getVertex(self.vertex_array, *_rhs as c_uint))
         }
     }
 }

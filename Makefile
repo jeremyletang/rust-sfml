@@ -38,6 +38,7 @@ examples:
 	rustc -o bin/sound_capture -L ./lib src/examples/sound_capture/main.rs
 	rustc -o bin/borrow_res -L ./lib src/examples/borrow_res/main.rs
 	rustc -o bin/rc_res -L ./lib src/examples/rc_res/main.rs
+	rustc -o bin/vertex_arrays -L ./lib src/examples/vertex_arrays/main.rs
 
 
 clean:
@@ -50,3 +51,4 @@ clean:
 	rm -rf bin/custom_drawable
 	rm -rf bin/borrow_res
 	rm -rf bin/rc_res
+	rm -rf bin/vertex_arrays
