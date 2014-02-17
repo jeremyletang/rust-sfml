@@ -38,8 +38,8 @@ use traits::{Drawable, Wrappable};
 use window::{ContextSettings, VideoMode, 
     event, keyboard, joystick, mouse, WindowStyle};
 use system::vector2::{Vector2f, Vector2i, Vector2u};
-use graphics::{Text, Color, Sprite, CircleShape, 
-    RectangleShape, ConvexShape, RenderStates, 
+use graphics::{Text, Color, Sprite, CircleShape,
+    RectangleShape, ConvexShape, RenderStates,
     View, Image, IntRect, VertexArray, Shape, rc};
 
 use ffi::sfml_types::{SfBool, SFTRUE, SFFALSE};
@@ -86,9 +86,9 @@ impl RenderWindow {
     *
     * Return Some(RenderWindow) or None
     */
-    pub fn new(mode : VideoMode, 
-        title : &str, 
-        style : WindowStyle, 
+    pub fn new(mode : VideoMode,
+        title : &str,
+        style : WindowStyle,
         settings : &ContextSettings) -> Option<RenderWindow> {
         
         let mut sf_render_win: *ffi::sfRenderWindow = ptr::null();
@@ -147,14 +147,14 @@ impl RenderWindow {
     *
     * Return Some(RenderWindow) or None
     */
-    pub fn new_with_unicode(mode : VideoMode, 
-        title : ~[u32], 
-        style : WindowStyle, 
+    pub fn new_with_unicode(mode : VideoMode,
+        title : ~[u32],
+        style : WindowStyle,
         settings : &ContextSettings) -> Option<RenderWindow> {
         
         let sf_render_win: *ffi::sfRenderWindow;
         unsafe { 
-            sf_render_win = ffi::sfRenderWindow_createUnicode(mode.unwrap(), title.as_ptr(), style as u32, settings); 
+            sf_render_win = ffi::sfRenderWindow_createUnicode(mode.unwrap(), title.as_ptr(), style as u32, settings);
         }
         let sf_ev = ffi::sfEvent {
             typeEvent : 0, 
@@ -175,8 +175,8 @@ impl RenderWindow {
             else {
                 let def_view = Rc::new(RefCell::new(Wrappable::wrap(raw_def_view)));
                 Some (RenderWindow {
-                    render_window :     sf_render_win, 
-                    event :             sf_ev, 
+                    render_window :     sf_render_win,
+                    event :             sf_ev,
                     title_length :      title.len(),
                     current_view :      def_view.clone(),
                     default_view :      def_view.clone()
@@ -184,7 +184,7 @@ impl RenderWindow {
             } 
         }
     }
-    
+
     /**
     * Change the title of a render window (with a UTF-32 string)
     *
@@ -212,7 +212,7 @@ impl RenderWindow {
             ffi::sfRenderWindow_setIcon(self.render_window, width as c_uint, height as c_uint, pixels.as_ptr())
         }
     }
-    
+
     /**
     *  Pop the event on top of event queue, if any, and return it
     *
@@ -239,7 +239,7 @@ impl RenderWindow {
             self.get_wrapped_event()
         }
     }
-    
+
     /**
     * Wait for an event and return it
     *
@@ -268,7 +268,7 @@ impl RenderWindow {
             self.get_wrapped_event()
         }
     }
-    
+
     #[doc(hidden)]
     pub fn get_wrapped_event(&self) ->event::Event {
         match self.event.typeEvent as c_uint {
@@ -397,7 +397,7 @@ impl RenderWindow {
             _ => event::NoEvent
         }
     }
-    
+
     /**
     * Close a render window and destroy all the attached resources
     *
@@ -431,7 +431,7 @@ impl RenderWindow {
             _       => unreachable!()
         }
     }
-    
+
     /**
     * Display on screen what has been rendered to the window so far
     *
@@ -491,7 +491,7 @@ impl RenderWindow {
         }
         self.title_length = title.len();
     }
-    
+
     /**
     * Show or hide a window
     *
@@ -525,7 +525,7 @@ impl RenderWindow {
             ffi::sfRenderWindow_setMouseCursorVisible(self.render_window, tmp);
         }
     }
-    
+
     /**
     * Enable or disable vertical synchronization
     *
@@ -570,7 +570,7 @@ impl RenderWindow {
             ffi::sfRenderWindow_setKeyRepeatEnabled(self.render_window, tmp);
         }
     }
-    
+
     /**
     * Activate or deactivate a render window as the current target for OpenGL rendering
     *
@@ -641,7 +641,7 @@ impl RenderWindow {
             ffi::sfRenderWindow_setPosition(self.render_window, *position)
         }
     }
-    
+
     /**
     * Get the size of the rendering region of a window
     *
@@ -654,7 +654,7 @@ impl RenderWindow {
             ffi::sfRenderWindow_getSize(self.render_window)
         }
     }
-    
+
     /**
     * Change the size of the rendering region of a window
     *
@@ -666,7 +666,7 @@ impl RenderWindow {
             ffi::sfRenderWindow_setSize(self.render_window, *size)
         }
     }
-    
+
     /**
     * Change the size of the rendering region of a window
     *
@@ -1000,7 +1000,7 @@ impl RenderWindow {
             Some(Wrappable::wrap(img))
         }
     }
-    
+
     /**
     * Change the current active view of a render window
     *
@@ -1013,7 +1013,7 @@ impl RenderWindow {
             ffi::sfRenderWindow_setView(self.render_window, self.current_view.borrow().with(|v| v.unwrap()))  
         }
     }
-    
+
     /**
     * Get the current active view of a render window
     *
@@ -1022,7 +1022,7 @@ impl RenderWindow {
     pub fn get_view(&self) -> Rc<RefCell<View>> {
         self.current_view.clone()
     }
-    
+
     /**
     * Get the default view of a render window
     *

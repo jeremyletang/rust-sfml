@@ -35,7 +35,7 @@ use std::libc::{c_float};
 use std::ptr;
 
 use traits::{Drawable, Wrappable};
-use graphics::{FloatRect, IntRect, Color, Texture, 
+use graphics::{FloatRect, IntRect, Color, Texture,
     RenderWindow, RenderTexture, Transform, rc};
 use system::vector2::Vector2f;
 
@@ -67,10 +67,9 @@ impl Sprite {
             None
         }
         else {
-            Some(Sprite { 
+            Some(Sprite {
                 sprite :    sp,
                 texture :   None
-                    
             })
         }
     }
@@ -94,7 +93,6 @@ impl Sprite {
                 texture :   Some(texture)
             })
         }
-
     }
 
     /**
@@ -158,7 +156,7 @@ impl Sprite {
             ffi::sfSprite_rotate(self.sprite, angle as c_float)
         }
     }
-    
+
     /**
     * Change the source texture of a sprite
     *
@@ -214,7 +212,7 @@ impl Sprite {
             ffi::sfSprite_setColor(self.sprite, *color)
         }
     }
-    
+
     /**
     * Get the source texture of a sprite
     *
@@ -238,7 +236,7 @@ impl Sprite {
             ffi::sfSprite_getColor(self.sprite)
         }
     }
-    
+
     /**
     * Set the position of a sprite
     *
@@ -388,7 +386,7 @@ impl Sprite {
             ffi::sfSprite_setScale(self.sprite, Vector2f::new(scale_x, scale_y))
         }
     }
-    
+
     /**
     * Set the local origin of a sprite
     *
@@ -521,7 +519,6 @@ impl Sprite {
             ffi::sfSprite_getInverseTransform(self.sprite)
         }
     }
-
 }
 
 impl Wrappable<*ffi::sfSprite> for Sprite {
@@ -535,13 +532,9 @@ impl Wrappable<*ffi::sfSprite> for Sprite {
     fn unwrap(&self) -> *ffi::sfSprite {
         self.sprite
     }
-    
 }
 
 impl Drawable for Sprite {
-    /**
-    * Draw the sprite in the RenderWindow
-    */
     fn draw_in_render_window(&self, render_window : &mut RenderWindow) -> () {
         render_window.draw_sprite_rc(self)
     }
@@ -563,9 +556,7 @@ impl Drawable for Sprite {
 
 #[unsafe_destructor]
 impl Drop for Sprite {
-    /**
-    * Destroy an existing sprite
-    */
+    /// Destroy an existing sprite
     fn drop(&mut self) -> () {
         unsafe {
             ffi::sfSprite_destroy(self.sprite)

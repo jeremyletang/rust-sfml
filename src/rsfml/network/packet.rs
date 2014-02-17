@@ -70,7 +70,7 @@ impl Packet {
         else{
             Some(Packet {
                 packet : pck
-            }) 
+            })
         }
     }
 
@@ -246,7 +246,7 @@ impl Packet {
             ffi::sfPacket_writeInt8(self.packet, data)
         }
     }
-    
+
     /**
     * Function to insert data into a packet
     */
@@ -274,45 +274,35 @@ impl Packet {
         }
     }
 
-    /**
-    * Function to insert data into a packet
-    */
+    /// Function to insert data into a packet
     pub fn write_i32(&self, data : i32) -> () {
         unsafe {
             ffi::sfPacket_writeInt32(self.packet, data)
         }
     }
 
-    /**
-    * Function to insert data into a packet
-    */
+    /// Function to insert data into a packet
     pub fn write_u32(&self, data : u32) -> () {
         unsafe {
             ffi::sfPacket_writeUint32(self.packet, data)
         }
     }
 
-    /**
-    * Function to insert data into a packet
-    */
+    /// Function to insert data into a packet
     pub fn write_f32(&self, data : f32) -> () {
         unsafe {
             ffi::sfPacket_writeFloat(self.packet, data)
         }
     }
 
-    /**
-    * Function to insert data into a packet
-    */
+    /// Function to insert data into a packet
     pub fn write_f64(&self, data : f64) -> () {
         unsafe {
             ffi::sfPacket_writeDouble(self.packet, data)
         }
     }
 
-    /**
-    * Function to insert data into a packet
-    */
+    /// Function to insert data into a packet
     pub fn write_string(&self, string : ~str) -> () {
         let c_string = string.to_c_str();
         unsafe {

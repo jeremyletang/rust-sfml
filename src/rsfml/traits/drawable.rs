@@ -31,21 +31,19 @@
 
 use graphics::{RenderWindow, RenderTexture, RenderStates, rc};
 
-/**
-* The trait drawable is inherited by each object who can be drown by the RenderWindow
-*/
+/// The trait drawable is inherited by each object who can be drown by the RenderWindow
 pub trait Drawable {
     /// Draw the shape in the RenderWindow
     fn draw_in_render_window(&self, &mut RenderWindow) -> ();
     
     /// Draw the shape in the RenderWindow, using a RenderState (the shape should use borrow for internal resources)
     fn draw_in_render_window_rs(&self, &mut RenderWindow, &mut RenderStates) -> () {
-    	println!("Bad usage error: you can't draw a reference counted Shape with a non reference counted RenderStates.")
+        println!("Bad usage error: you can't draw a reference counted Shape with a non reference counted RenderStates.")
     }
 
     /// Draw the shape in the RenderWindow, using a RenderState (the shape should use rc for internal resources)
     fn draw_in_render_window_rs_rc(&self, &mut RenderWindow, &mut rc::RenderStates) -> () {
-    	println!("Bad usage error: you can't draw a non reference counted Shape with a reference counted RenderStates.")
+        println!("Bad usage error: you can't draw a non reference counted Shape with a reference counted RenderStates.")
 
     }
 
@@ -54,13 +52,13 @@ pub trait Drawable {
     
     /// Draw the shape in the RenderTexture, using a RenderState (the shape should use borrow for internal resources)
     fn draw_in_render_texture_rs(&self, &mut RenderTexture, &mut RenderStates) -> () {
-    	println!("Bad usage error: you can't draw a reference counted Shape with a non reference counted RenderStates.")
+        println!("Bad usage error: you can't draw a reference counted Shape with a non reference counted RenderStates.")
 
     }
     
     /// Draw the shape in the RenderTexture, using a RenderState (the shape should use rc for internal resources)
     fn draw_in_render_texture_rs_rc(&self, &mut RenderTexture, &mut rc::RenderStates) -> () {
-    	println!("Bad usage error: you can't draw a non reference counted Shape with a reference counted RenderStates.")
+        println!("Bad usage error: you can't draw a non reference counted Shape with a reference counted RenderStates.")
 
     }
 }

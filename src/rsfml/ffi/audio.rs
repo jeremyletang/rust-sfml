@@ -177,10 +177,10 @@ pub mod sound_buffer_recorder {
 
 pub mod sound_status {
 
-	use std::libc::c_int;
+    use std::libc::c_int;
     
     pub type sfSoundStatus = c_int;
-    pub static SFSTOPPED:	sfSoundStatus = 0;
-    pub static SFPAUSED: 	sfSoundStatus = 1;
-    pub static SFPLAYING: 	sfSoundStatus = 2;
+    pub static SFSTOPPED:   sfSoundStatus = 0;
+    pub static SFPAUSED:    sfSoundStatus = 1;
+    pub static SFPLAYING:   sfSoundStatus = 2;
 }

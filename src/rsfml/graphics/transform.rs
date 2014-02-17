@@ -87,7 +87,7 @@ impl Transform {
             matrix
         }
     }
-    
+
     /**
     * Create a new identity transform
     *
@@ -112,7 +112,7 @@ impl Transform {
             ffi::sfTransform_getInverse(self)
         }
     }
-    
+
     /**
     * Combine two transforms
     *
@@ -128,7 +128,7 @@ impl Transform {
             ffi::sfTransform_combine(self, other)
         }
     }
-    
+
     /**
     * Combine a transform with a translation
     *
@@ -153,7 +153,7 @@ impl Transform {
             ffi::sfTransform_rotate(self, angle as c_float)
         }
     }
-    
+
     /**
     * Combine the current transform with a rotation
     *
@@ -185,7 +185,7 @@ impl Transform {
             ffi::sfTransform_scale(self, scale_x as c_float, scale_y as c_float)
         }
     }
-    
+
     /**
     * Combine the current transform with a scaling
     *

@@ -54,7 +54,6 @@ pub struct Sound {
 }
 
 impl Sound {
-    
     /**
     * Create a new Sound
     *
@@ -66,7 +65,7 @@ impl Sound {
             None
         }
         else {
-            Some(Sound { 
+            Some(Sound {
                 sound :     s,
                 buffer :    None
             })
@@ -90,13 +89,13 @@ impl Sound {
             unsafe {
                 ffi::sfSound_setBuffer(s, buffer.borrow().with(|s| s.unwrap()));
             }
-            Some(Sound { 
+            Some(Sound {
                 sound :     s,
                 buffer :    Some(buffer)
             })
         }
     }
-    
+
     /**
     * Create a new sound by copying an existing one
     *
@@ -356,7 +355,7 @@ impl Sound {
             ffi::sfSound_getAttenuation(self.sound) as f32
         }
     }
-    
+
     /**
     * Set the source buffer containing the audio data to play
     *
@@ -436,9 +435,7 @@ impl Sound {
 
 #[unsafe_destructor]
 impl Drop for Sound {
-    /* Destructor for class Sound. Destroy all the ressource.
-    *
-    */
+    /// Destructor for class Sound. Destroy all the ressource.
     fn drop(&mut self) {
         unsafe {
             ffi::sfSound_destroy(self.sound);

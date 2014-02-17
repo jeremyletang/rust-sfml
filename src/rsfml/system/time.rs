@@ -45,55 +45,42 @@ pub struct Time {
 }
 
 impl Time {
-    
-    /**
-    * Construct a time value from a number of seconds
-    */
+    /// Construct a time value from a number of seconds
     pub fn with_seconds(seconds : f32) -> Time {
         Time {
             time : unsafe { ffi::sfSeconds(seconds as c_float) }
         }
     }
 
-    /**
-    * Construct a time value from a number of milliseconds
-    */
+    /// Construct a time value from a number of milliseconds
     pub fn with_milliseconds(milliseconds : i32) -> Time {
         Time {
             time : unsafe { ffi::sfMilliseconds(milliseconds as c_int) }
         }
     }
 
-    /**
-    * Construct a time value from a number of microseconds
-    */
+    /// Construct a time value from a number of microseconds
     pub fn with_microseconds(microseconds : i64) -> Time {
         Time {
             time : unsafe { ffi::sfMicroseconds(microseconds) }
         }
     }
 
-    /**
-    * Return a time value as a number of seconds
-    */
+    /// Return a time value as a number of seconds
     pub fn as_seconds(&self) -> f32 {
         unsafe {
             ffi::sfTime_asSeconds(self.time)
         }
     }
 
-    /**
-    * Return a time value as a number of milliseconds
-    */
+    /// Return a time value as a number of milliseconds
     pub fn as_milliseconds(&self) -> i32 {
         unsafe {
             ffi::sfTime_asMilliseconds(self.time)
         }
     }
-    
-    /**
-    * Return a time value as a number of microseconds
-    */
+
+    /// Return a time value as a number of microseconds
     pub fn as_microseconds(&self) -> i64 {
         unsafe {
             ffi::sfTime_asMicroseconds(self.time)
@@ -105,6 +92,7 @@ impl Eq for Time {
     fn eq(&self, other : &Time) -> bool {
         self.as_microseconds() == other.as_microseconds()
     }
+
     fn ne(&self, other : &Time) -> bool {
         self.as_microseconds() != other.as_microseconds() 
     }
@@ -114,12 +102,15 @@ impl Ord for Time {
     fn lt(&self, other: &Time) -> bool {
         self.as_microseconds() < other.as_microseconds()
     }
+
     fn le(&self, other: &Time) -> bool {
         self.as_microseconds() <= other.as_microseconds()
     }
+
     fn gt(&self, other: &Time) -> bool {
         self.as_microseconds() > other.as_microseconds()
     }
+
     fn ge(&self, other: &Time) -> bool {
         self.as_microseconds() >= other.as_microseconds()
     }

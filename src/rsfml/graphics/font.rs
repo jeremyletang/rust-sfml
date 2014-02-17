@@ -89,7 +89,8 @@ impl Font {
                 dropable :  true
             })
         }
-    }    
+    }
+
     /**
     * Get the kerning value corresponding to a given pair of characters in a font
     * 
@@ -137,7 +138,7 @@ impl Font {
             Some(Wrappable::wrap(tex))
         }
     }
-    
+
     /**
     * Get a glyph in a font
     *

@@ -106,13 +106,13 @@ impl Text {
                 ffi::sfText_setCharacterSize(text, character_size as c_uint)
             }
             Some(Text {
-                text :          text, 
+                text :          text,
                 string_length : string.len(),
                 font :          Some(font)
             })
         }
     }
-    
+
     /**
     * Set the string of a text (from an ANSI string)
     *
@@ -161,7 +161,7 @@ impl Text {
         return_unicode
         }
     }
-    
+
     /**
     * Get the size of the characters
     *
@@ -172,7 +172,7 @@ impl Text {
             ffi::sfText_getCharacterSize(self.text) as uint
         }
     }
-    
+
     /**
     * Set the font of the text
     *
@@ -191,7 +191,7 @@ impl Text {
         }
         self.font = Some(font);
     }
-    
+
     /**
     * Set the orientation of a text
     *
@@ -207,7 +207,7 @@ impl Text {
             ffi::sfText_setRotation(self.text, angle as c_float)
         }
     }
-    
+
     /**
     * Get the orientation of a text
     *
@@ -220,7 +220,7 @@ impl Text {
             ffi::sfText_getRotation(self.text) as f32
         }
     }
-    
+
     /**
     * Rotate a text
     *
@@ -251,7 +251,7 @@ impl Text {
             ffi::sfText_setStyle(self.text, style as u32)
         }
     }
-    
+
     /**
     * Set the size of the characters of a text
     *
@@ -274,7 +274,7 @@ impl Text {
     pub fn get_style(&self) -> TextStyle {
         unsafe { cast::transmute(ffi::sfText_getStyle(self.text)) }
     }
-    
+
     /**
     * Get the font of a text
     * If the text has no font attached, a None is returned.
@@ -284,7 +284,7 @@ impl Text {
     pub fn get_font(&self) -> Option<Rc<RefCell<Font>>> {
        self.font.clone()
     }
-    
+
     /**
     * Set the global color of used by a text
     *
@@ -298,7 +298,7 @@ impl Text {
             ffi::sfText_setColor(self.text, *color)
         }
     }
-    
+
     /**
     * Get the global color of a text
     *
@@ -456,7 +456,7 @@ impl Text {
             ffi::sfText_setOrigin(self.text, *origin)
         }
     }
-    
+
     /**
     * Set the local origin of a text
     *
@@ -476,7 +476,7 @@ impl Text {
             ffi::sfText_setOrigin(self.text, Vector2f::new(x, y))
         }
     }
-    
+
     /**
     * Get the current scale of a text
     *
@@ -608,7 +608,8 @@ impl Wrappable<*ffi::sfText> for Text {
             string_length : 0,
             font :          None
         }
-    } 
+    }
+
     fn unwrap(&self) -> *ffi::sfText {
         self.text
     }
@@ -634,9 +635,7 @@ impl Drawable for Text {
 
 #[unsafe_destructor]
 impl Drop for Text {
-    /**
-    *   Destructor for class Text. Destroy all the ressource.
-    */
+    /// Destructor for class Text. Destroy all the ressource.
     fn drop(&mut self) {
         unsafe {
             ffi::sfText_destroy(self.text);

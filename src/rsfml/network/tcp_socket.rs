@@ -205,7 +205,7 @@ impl TcpSocket {
             (vec::raw::from_buf_raw(datas, s as uint), stat, s)
         }
     }
-    
+
     /**
     * Send a formatted packet of data to the remote peer of a TCP socket
     *

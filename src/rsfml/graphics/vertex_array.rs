@@ -64,7 +64,7 @@ impl VertexArray {
             Some(VertexArray {
                 vertex_array : ver
             })
-        }    
+        }
     }
 
     /**
@@ -88,7 +88,7 @@ impl VertexArray {
             tmp_vertex.set_primitive_type(primitive_type);
             tmp_vertex.resize(vertex_count);
             Some(tmp_vertex)
-        }    
+        }
     }
 
     /**
@@ -135,7 +135,7 @@ impl VertexArray {
             ffi::sfVertexArray_clear(self.vertex_array)
         }
     }
-    
+
     /**
     * Resize the vertex array
     *
@@ -207,7 +207,7 @@ impl VertexArray {
             }
         }
     }
-    
+
     /**
     * Get the type of primitives drawn by a vertex array
     *

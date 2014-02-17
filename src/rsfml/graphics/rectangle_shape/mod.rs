@@ -31,7 +31,7 @@ use std::ptr;
 
 use traits::{Drawable, Wrappable};
 use system::vector2::Vector2f;
-use graphics::{FloatRect, IntRect, Color, Texture, 
+use graphics::{FloatRect, IntRect, Color, Texture,
     RenderWindow, RenderTexture, Transform, RenderStates};
 
 use ffi::sfml_types::{SFTRUE, SFFALSE};
@@ -127,7 +127,7 @@ impl<'s> RectangleShape<'s> {
             })
         }
     }
-    
+
     /**
     * Set the position of a rectangle shape
     *
@@ -143,7 +143,7 @@ impl<'s> RectangleShape<'s> {
             ffi::sfRectangleShape_setPosition(self.rectangle_shape, *position)
         }
     }
-    
+
     /**
     * Set the position of a rectangle shape with 2 f32
     *
@@ -480,7 +480,7 @@ impl<'s> RectangleShape<'s> {
             ffi::sfRectangleShape_setFillColor(self.rectangle_shape, *color)
         }
     }
-    
+
     /**
     * Set the outline color of a rectangle shape
     *
@@ -658,7 +658,7 @@ impl<'s> Wrappable<*ffi::sfRectangleShape> for RectangleShape<'s> {
             texture :           None
         }
     }
-    
+
     fn unwrap(&self) -> *ffi::sfRectangleShape {
         self.rectangle_shape
     }

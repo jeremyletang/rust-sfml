@@ -107,8 +107,7 @@ impl ConvexShape {
                 convex_shape :  shape,
                 texture :       Some(texture)
             })
-        } 
-
+        }
     }
 
     /**
@@ -323,7 +322,7 @@ impl ConvexShape {
             ffi::sfConvexShape_getPosition(self.convex_shape)
         }
     }
-    
+
     /**
     * Get the current scale of a convex shape
     *
@@ -334,7 +333,7 @@ impl ConvexShape {
             ffi::sfConvexShape_getScale(self.convex_shape)
         }
     }
-    
+
     /**
     * Get the local origin of a convex shape
     *
@@ -361,7 +360,7 @@ impl ConvexShape {
             ffi::sfConvexShape_getPoint(self.convex_shape, index as c_uint)
         }
     }
-    
+
     /**
     * Set the orientation of a convex shape
     *
@@ -505,7 +504,7 @@ impl ConvexShape {
     pub fn get_texture(&self) -> Option<Rc<RefCell<Texture>>> {
         self.texture.clone()
     }
-    
+
     /**
     * Get the fill color of a convex shape
     *
@@ -516,7 +515,7 @@ impl ConvexShape {
             ffi::sfConvexShape_getFillColor(self.convex_shape)
         }
     }
-    
+
     /**
     * Get the outline color of a convex shape
     *
@@ -527,7 +526,7 @@ impl ConvexShape {
             ffi::sfConvexShape_getOutlineColor(self.convex_shape)
         }
     }
-    
+
     /**
     * Get the outline thickness of a convex shape
     *
@@ -617,7 +616,7 @@ impl ConvexShape {
             ffi::sfConvexShape_getTextureRect(self.convex_shape)
         }
     }
-    
+
     /**
     * Get the combined transform of a convex shape
     *
@@ -648,15 +647,13 @@ impl Wrappable<*ffi::sfConvexShape> for ConvexShape {
         ConvexShape {
             convex_shape :  convex_shape,
             texture :       None
-
         }
     }
-    
+
     #[doc(hidden)]
     fn unwrap(&self) -> *ffi::sfConvexShape {
         self.convex_shape
     }
-
 }
 
 impl Drawable for ConvexShape {

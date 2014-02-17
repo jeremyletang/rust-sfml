@@ -31,8 +31,8 @@ use std::ptr;
 
 use traits::{Drawable, Wrappable};
 use system::vector2::{Vector2f, Vector2i, Vector2u};
-use graphics::{View, Sprite, Color, IntRect, Texture, 
-    CircleShape, RectangleShape, VertexArray, ConvexShape, 
+use graphics::{View, Sprite, Color, IntRect, Texture,
+    CircleShape, RectangleShape, VertexArray, ConvexShape,
     RenderStates, Shape, Text, rc};
 
 use ffi = ffi::graphics::render_texture;
@@ -71,7 +71,7 @@ impl RenderTexture {
             })
         }
     }
-    
+
     /**
     * Get the size of the rendering region of a render texture
     *
@@ -170,7 +170,7 @@ impl RenderTexture {
             ffi::sfRenderTexture_getViewport(self.render_texture, view.unwrap())
         }
     }
-    
+
     /**
     * Convert a point from texture coordinates to world coordinates
     *
@@ -411,7 +411,7 @@ impl RenderTexture {
             ffi::sfRenderTexture_drawVertexArray(self.render_texture, vertex_array.unwrap(), ptr::null())
         }
     }
-    
+
     /// Draw Text
     pub fn draw_text_rs(&self, text : &Text, rs : &mut RenderStates) -> () {
         unsafe {
@@ -527,7 +527,7 @@ impl RenderTexture {
             ffi::sfRenderTexture_pushGLStates(self.render_texture)
         }
     }
-    
+
     /**
     * Restore the previously saved OpenGL render states and matrices
     */
@@ -566,7 +566,7 @@ impl RenderTexture {
             Some(Wrappable::wrap(tex))
         }
     }
-    
+
     /**
     * Enable or disable the smooth filter on a render texture
     *
@@ -581,7 +581,7 @@ impl RenderTexture {
             }
         }
     }
-    
+
     /**
     * Tell whether the smooth filter is enabled or not for a render texture
     *

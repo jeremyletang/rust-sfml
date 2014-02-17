@@ -24,13 +24,13 @@
 
 pub mod socket_status {
 
-	use std::libc::c_int;
+    use std::libc::c_int;
 
-	pub type SocketStatus = c_int;
-	pub static SOCKETNONE: 			SocketStatus = 0;
-	pub static SOCKETNOTREADY: 		SocketStatus = 1;
-	pub static SOCKETDISCONNECTED: 	SocketStatus = 2;
-	pub static SOCKETERROR: 		SocketStatus = 3;
+    pub type SocketStatus = c_int;
+    pub static SOCKETNONE:          SocketStatus = 0;
+    pub static SOCKETNOTREADY:      SocketStatus = 1;
+    pub static SOCKETDISCONNECTED:  SocketStatus = 2;
+    pub static SOCKETERROR:         SocketStatus = 3;
 }
 
 pub mod packet {

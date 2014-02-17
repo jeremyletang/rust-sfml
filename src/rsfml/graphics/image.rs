@@ -85,7 +85,7 @@ impl Image {
             })
         }
     }
-    
+
     /**
     * Create an image from a file on disk
     *
@@ -113,7 +113,7 @@ impl Image {
             }) 
         }
     }
-    
+
     /**
     * Copy an existing image
     *
@@ -184,7 +184,7 @@ impl Image {
         }
         return_value
     }
-    
+
     /**
     * Return the size of an image 
     * 
@@ -212,7 +212,7 @@ impl Image {
             ffi::sfImage_createMaskFromColor(self.image, *color, alpha)
         }
     }
-    
+
     /**
     * Change the color of a pixel in an image
     *
@@ -258,7 +258,7 @@ impl Image {
             ffi::sfImage_flipHorizontally(self.image)
         }
     }
-    
+
     /**
     * Flip an image vertically (top <-> bottom)
     */

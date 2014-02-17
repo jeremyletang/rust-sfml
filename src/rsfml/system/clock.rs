@@ -44,37 +44,28 @@ pub struct Clock {
 }
 
 impl Clock {
-    
-    /**
-    * Create a new Clock and start it.
-    */
+    /// Create a new Clock and start it.
     pub fn new() -> Clock {
         Clock {
             clock : unsafe { ffi::sfClock_create() }
         }
     }
 
-    /**
-    * Create a clock by copying an extant one
-    */
+    /// Create a clock by copying an extant one
     pub fn clone(&self) -> Clock {
         Clock {
-            clock : unsafe { ffi::sfClock_copy(self.clock) } 
+            clock : unsafe { ffi::sfClock_copy(self.clock) }
         }
     }
 
-    /**
-    * Get the time elapsed in a clock
-    */
+    /// Get the time elapsed in a clock
     pub fn get_elapsed_time(&self) -> Time {
         unsafe {
             Wrappable::wrap(ffi::sfClock_getElapsedTime(self.clock))
         }
     }
 
-    /**
-    * Restart a Clock.
-    */
+    /// Restart a Clock.
     pub fn restart(&mut self) -> Time {
         unsafe {
             Wrappable::wrap(ffi::sfClock_restart(self.clock))
@@ -88,10 +79,7 @@ impl Clock {
 }
 
 impl Drop for Clock {
-    
-    /**
-    * Destroy a clock
-    */
+    /// Destroy a clock
     fn drop(&mut self) {
         unsafe {
             ffi::sfClock_destroy(self.clock)

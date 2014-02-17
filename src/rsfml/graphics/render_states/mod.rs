@@ -50,7 +50,6 @@ pub struct RenderStates<'s> {
 }
 
 impl<'s> RenderStates<'s> {
-
     /**
     * Create a new RenderStates.
     *

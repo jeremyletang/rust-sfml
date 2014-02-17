@@ -82,7 +82,6 @@ impl Music {
         Some(Music{
             music : music_tmp
         })
-
     }
 
     /**
@@ -116,7 +115,7 @@ impl Music {
             _ => true
         }
     }
-    
+
     /**
     * Get the total duration of a music
     *
@@ -165,7 +164,7 @@ impl Music {
             ffi::sfMusic_stop(self.music)
         }
     }
-    
+
     /**
     * Return the number of channels of a music
     *
@@ -178,7 +177,7 @@ impl Music {
             ffi::sfMusic_getChannelCount(self.music) as uint
         }
     }
-    
+
     /**
     * Get the sample rate of a music
     *
@@ -192,7 +191,7 @@ impl Music {
             ffi::sfMusic_getSampleRate(self.music) as uint
         }
     }
-    
+
     /**
     * Get the current status of a music (stopped, paused, playing)
     *
@@ -210,7 +209,7 @@ impl Music {
     pub fn get_playing_offset(&self) -> Time {
         Wrappable::wrap(unsafe { ffi::sfMusic_getPlayingOffset(self.music) })
     }
-    
+
     /**
     * Set the pitch of a music
     *
@@ -228,7 +227,7 @@ impl Music {
             ffi::sfMusic_setPitch(self.music, pitch as c_float)
         }
     }
-    
+
     /**
     * Set the volume of a music
     *
@@ -283,7 +282,7 @@ impl Music {
             ffi::sfMusic_setMinDistance(self.music, distance as c_float)
         }
     }
-    
+
     /**
     *  Set the attenuation factor of a music
     *
@@ -304,7 +303,7 @@ impl Music {
             ffi::sfMusic_setAttenuation(self.music, attenuation as c_float)
         }
     }
-    
+
     /**
     * Change the current playing position of a music
     *
@@ -319,7 +318,7 @@ impl Music {
             ffi::sfMusic_setPlayingOffset(self.music, timeOffset.unwrap())
         }
     }
-    
+
     /**
     * Get the pitch of a music
     *
@@ -420,7 +419,7 @@ impl Music {
         unsafe {
             ffi::sfMusic_getPosition(self.music)
         }
-    }    
+    }
 }
 
 impl Drop for Music {

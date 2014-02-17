@@ -30,7 +30,7 @@ use std::libc::{c_float, c_uint};
 use std::ptr;
 
 use traits::{Drawable, Wrappable};
-use graphics::{IntRect, FloatRect, Color, Texture, 
+use graphics::{IntRect, FloatRect, Color, Texture,
     RenderWindow, RenderTexture, Transform, RenderStates};
 use system::vector2::Vector2f;
 
@@ -88,7 +88,6 @@ impl<'s> CircleShape<'s> {
                 texture :       Some(texture)
             })
         }
-
     }
 
     /**
@@ -238,7 +237,7 @@ impl<'s> CircleShape<'s> {
             ffi::sfCircleShape_setTextureRect(self.circle_shape, *rect)
         }
     }
-    
+
     /**
     * Set the fill color of a circle shape
     *
@@ -310,7 +309,7 @@ impl<'s> CircleShape<'s> {
             ffi::sfCircleShape_getTextureRect(self.circle_shape)
         }
     }
-    
+
     /**
     * Get the fill color of a circle shape
     *
@@ -370,7 +369,7 @@ impl<'s> CircleShape<'s> {
             ffi::sfCircleShape_getPoint(self.circle_shape, index as c_uint)
         }
     }
-    
+
     /**
     * Set the radius of a circle
     *
@@ -393,7 +392,7 @@ impl<'s> CircleShape<'s> {
             ffi::sfCircleShape_getRadius(self.circle_shape) as f32
         }
     }
-    
+
     /**
     * Set the number of points of a circle
     *
@@ -549,7 +548,7 @@ impl<'s> CircleShape<'s> {
             ffi::sfCircleShape_setScale(self.circle_shape, *scale)
         }
     }
-    
+
     /**
     * Set the scale factors of a circle shape
     *
@@ -566,7 +565,7 @@ impl<'s> CircleShape<'s> {
             ffi::sfCircleShape_setScale(self.circle_shape, Vector2f::new(scale_x, scale_y))
         }
     }
-    
+
     /**
     * Set the local origin of a circle shape
     *
@@ -622,7 +621,7 @@ impl<'s> CircleShape<'s> {
             ffi::sfCircleShape_getLocalBounds(self.circle_shape)
         }
     }
-    
+
     /**
     * Get the global bounding rectangle of a circle shape
     *

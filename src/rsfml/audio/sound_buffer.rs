@@ -50,7 +50,6 @@ pub struct SoundBuffer {
 }
 
 impl SoundBuffer {
-    
     /**
     * Create a new sound buffer and load it from a file
     *
@@ -193,9 +192,7 @@ impl Wrappable<*ffi::sfSoundBuffer> for SoundBuffer {
 }
 
 impl Drop for SoundBuffer {
-    /**
-    *   Destructor for class SoundBuffer. Destroy all the ressource.
-    */
+    /// Destructor for class SoundBuffer. Destroy all the ressource.
     fn drop(&mut self) {
         if self.dropable {
             unsafe {

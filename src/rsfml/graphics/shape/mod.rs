@@ -30,8 +30,8 @@ use std::libc::{c_void, c_float, c_uint};
 use std::{ptr, cast};
 
 use traits::{Drawable, ShapeImpl, Wrappable};
-use graphics::{RenderWindow, RenderTexture, 
-    RenderStates, Texture, Color, Transform, 
+use graphics::{RenderWindow, RenderTexture,
+    RenderStates, Texture, Color, Transform,
     IntRect, FloatRect};
 use system::vector2::Vector2f;
 
@@ -71,7 +71,6 @@ extern fn get_point_callback(point : u32, obj : *c_void) -> Vector2f {
 
 
 impl<'s> Shape<'s> {
-
     /**
     * Create a new Shape
     *
@@ -90,7 +89,6 @@ impl<'s> Shape<'s> {
         else {
             Some(Shape {
                 shape :     sp,
-                // wrap_obj :  w_o,
                 texture :   None
             })
         }
@@ -187,7 +185,7 @@ impl<'s> Shape<'s> {
             ffi::sfShape_setScale(self.shape, *scale)
         }
     }
-    
+
     /**
     * Set the scale factors of a shape
     *
@@ -538,7 +536,6 @@ impl<'s> Shape<'s> {
         }
     }
 
-
     /**
     * Get the outline thickness of a shape
     *
@@ -549,7 +546,7 @@ impl<'s> Shape<'s> {
             ffi::sfShape_getOutlineThickness(self.shape) as f32
         }
     }
-    
+
     /**
     * Get the total number of points of a shape
     * 
@@ -610,7 +607,7 @@ impl<'s> Shape<'s> {
             ffi::sfShape_getGlobalBounds(self.shape)
         }
     }
-    
+
     /**
     * Recompute the internal geometry of a shape
     *

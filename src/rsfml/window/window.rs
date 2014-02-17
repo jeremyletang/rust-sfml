@@ -55,7 +55,7 @@ pub struct Window {
     priv title_length : uint
 }
 
-impl Window { 
+impl Window {
     /**
     * Construct a new window
     *
@@ -77,9 +77,9 @@ impl Window {
     *
     * Return Some(Window) or None
     */
-    pub fn new(mode : VideoMode, 
-        title : &str, 
-        style : WindowStyle, 
+    pub fn new(mode : VideoMode,
+        title : &str,
+        style : WindowStyle,
         settings : &ContextSettings) -> Option<Window> {
         
         let mut sf_win: *ffi::sfWindow = ptr::null();
@@ -101,8 +101,8 @@ impl Window {
         }
         else {
             Some (Window {
-                window :        sf_win, 
-                event :         sf_ev, 
+                window :        sf_win,
+                event :         sf_ev,
                 title_length :  title.len()
             })
         }
@@ -218,7 +218,7 @@ impl Window {
                     let k : keyboard::Key = unsafe { cast::transmute(self.event.p1 as i64) };
                     event::KeyReleased{
                         code : k,
-                        alt : al, 
+                        alt : al,
                         ctrl : ct,
                         shift :sh,
                         system : sy
@@ -362,7 +362,7 @@ impl Window {
             ffi::sfWindow_setIcon(self.window, width as c_uint, height as c_uint, pixels.as_ptr())
         }
     }
-    
+
     /**
     * Close a window and destroy all the attached resources
     *
@@ -437,7 +437,7 @@ impl Window {
             }
         }
     }
-    
+
     /**
     * Show or hide the mouse cursor
     *
@@ -452,7 +452,7 @@ impl Window {
             }
         }
     }
-    
+
     /**
     * Enable or disable vertical synchronization
     *
@@ -472,7 +472,7 @@ impl Window {
             }
         }
     }
-    
+
     /**
     * Enable or disable automatic key-repeat
     *
@@ -493,7 +493,7 @@ impl Window {
             }
         }
     }
-    
+
     /**
     * Activate or deactivate a window as the current target for OpenGL rendering
     *
@@ -519,7 +519,7 @@ impl Window {
             _        => unreachable!()
         }
     }
-    
+
     /**
     * Display on screen what has been rendered to the window so far
     *
@@ -563,7 +563,7 @@ impl Window {
             ffi::sfWindow_setJoystickThreshold(self.window, threshold as c_float)
         }
     }
-    
+
     /**
     *  Get the position of a window
     *
@@ -574,7 +574,7 @@ impl Window {
             ffi::sfWindow_getPosition(self.window)
         }
     }
-    
+
     /**
     * Change the position of a window on screen
     *
@@ -590,7 +590,7 @@ impl Window {
             ffi::sfWindow_setPosition(self.window, *position)
         }
     }
-    
+
     /**
     * Get the size of the rendering region of a window
     *
@@ -603,7 +603,7 @@ impl Window {
             ffi::sfWindow_getSize(self.window)
         }
     }
- 
+
     /**
     * Change the size of the rendering region of a window
     *
@@ -648,7 +648,6 @@ impl Window {
         }
     }
 
-
     #[doc(hidden)]
     pub fn unwrap(&self) -> *ffi::sfWindow {
         self.window
@@ -656,9 +655,7 @@ impl Window {
 }
 
 impl Drop for Window {
-    /**
-    *   Destructor for class Window. Destroy all the ressource.
-    */
+    /// Destructor for class Window. Destroy all the ressource.
     fn drop(&mut self) {
         unsafe {
             ffi::sfWindow_destroy(self.window);

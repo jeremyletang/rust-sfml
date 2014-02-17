@@ -63,9 +63,9 @@ impl IntRect {
     /**
     * Construct a new IntRect
     */
-    pub fn new(left : i32, 
-        top : i32, 
-        width : i32, 
+    pub fn new(left : i32,
+        top : i32,
+        width : i32,
         height : i32) -> IntRect {
         
         IntRect {
@@ -75,7 +75,7 @@ impl IntRect {
             height :    height
         }
     }
-    
+
     /**
     *  Check if a point is inside a rectangle's area 
     *
@@ -92,7 +92,7 @@ impl IntRect {
             _       => unreachable!()
         }
     }
-    
+
     /**
     * Check intersection between two rectangles
     *
@@ -118,16 +118,16 @@ impl IntRect {
 
 impl Eq for IntRect {
     fn eq(&self, other : &IntRect) -> bool {
-        self.left == other.left && 
+        self.left == other.left &&
         self.top == other.top &&
         self.width == other.width &&
-        self.height == other.height   
+        self.height == other.height
     }
     fn ne(&self, other : &IntRect) -> bool {
-        self.left != other.left || 
+        self.left != other.left ||
         self.top != other.top ||
         self.width != other.width ||
-        self.height != other.height  
+        self.height != other.height
     }
 }
 
@@ -136,19 +136,19 @@ impl FloatRect {
     /**
     * Construct a new FloatRect
     */
-    pub fn new(left : f32, 
-        top : f32, 
-        width : f32, 
+    pub fn new(left : f32,
+        top : f32,
+        width : f32,
         height : f32) -> FloatRect {
         
         FloatRect {
-            left :      left, 
-            top :       top, 
-            width :     width, 
+            left :      left,
+            top :       top,
+            width :     width,
             height :    height
         }
     }
-    
+
     /**
     *  Check if a point is inside a rectangle's area 
     *
@@ -176,8 +176,8 @@ impl FloatRect {
     *
     * Return true if rectangles overlap
     */
-    pub fn intersects(rect1 : &FloatRect, 
-        rect2 : &FloatRect, 
+    pub fn intersects(rect1 : &FloatRect,
+        rect2 : &FloatRect,
         intersections : &FloatRect) -> bool {
         
         match unsafe { ffi::sfFloatRect_intersects(rect1, rect2, intersections) } {
@@ -190,15 +190,16 @@ impl FloatRect {
 
 impl Eq for FloatRect {
     fn eq(&self, other : &FloatRect) -> bool {
-        self.left == other.left && 
+        self.left == other.left &&
         self.top == other.top &&
         self.width == other.width &&
-        self.height == other.height   
+        self.height == other.height
     }
+
     fn ne(&self, other : &FloatRect) -> bool {
-        self.left != other.left || 
+        self.left != other.left ||
         self.top != other.top ||
         self.width != other.width ||
-        self.height != other.height  
+        self.height != other.height
     }
 }

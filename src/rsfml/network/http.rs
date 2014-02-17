@@ -22,9 +22,7 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-/*!
-* A HTTP client
-*/
+//! A HTTP client
 
 use std::{str, cast};
 use std::libc::c_int;
@@ -82,7 +80,7 @@ pub enum Status {
     /// The requested page doesn't exist
     NotFound            = ffi::NOTFOUND as c_int,
     /// The server can't satisfy the partial GET request (with a "Range" header field)
-    RangeNotSatisfiable = ffi::RANGENOTSATISFIABLE as c_int, 
+    RangeNotSatisfiable = ffi::RANGENOTSATISFIABLE as c_int,
 
     // 5xx: server error
     /// The server encountered an unexpected error
@@ -96,7 +94,7 @@ pub enum Status {
     /// The gateway server couldn't receive a response from the source server
     GatewayTimeout      = ffi::GATEWAYTIMEOUT as c_int,
     /// The server doesn't support the requested HTTP version
-    VersionNotSupported = ffi::VERSIONNOTSUPPORTED as c_int, 
+    VersionNotSupported = ffi::VERSIONNOTSUPPORTED as c_int,
 
     // 10xx: SFML custom codes
     /// Response is not a valid HTTP one
@@ -285,7 +283,7 @@ impl Response {
             ffi::sfHttpResponse_getMajorVersion(self.response)
         }
     }
-    
+
     /**
     * Get the minor HTTP version number of a HTTP response
     *
@@ -312,7 +310,7 @@ impl Response {
         unsafe {
             str::raw::from_c_str(ffi::sfHttpResponse_getBody(self.response))
         }
-    } 
+    }
 }
 
 impl Drop for Response {
@@ -334,7 +332,7 @@ impl Http {
         if ptr.is_null() {
             None
         } else {
-            Some(Http { 
+            Some(Http {
                 http : ptr
             })
         }
@@ -358,7 +356,7 @@ impl Http {
     pub fn set_host(&self, host : &str, port : u16) -> () {
         let c_host = host.to_c_str();
         unsafe {
-                ffi::sfHttp_setHost(self.http, c_host.unwrap(), port)
+            ffi::sfHttp_setHost(self.http, c_host.unwrap(), port)
         }
     }
 

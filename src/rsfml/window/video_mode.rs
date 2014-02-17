@@ -55,7 +55,6 @@ pub struct VideoMode {
 }
 
 impl VideoMode {
-
     /**
     * Default constructor for class VideoMode.
     *
@@ -68,7 +67,7 @@ impl VideoMode {
             bits_per_pixel :    0
         }
     }
-    
+
     /**
     * Constructor with parameters for class VideoMode.
     *
@@ -80,8 +79,8 @@ impl VideoMode {
             height :            height,
             bits_per_pixel :    bits_per_pixel
         }
-    } 
-    
+    }
+
     /**
     * Tell whether or not a video mode is valid
     *

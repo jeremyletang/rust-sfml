@@ -32,7 +32,7 @@
 */
 #[deriving(Clone, Eq, Ord, Show, ToStr)]
 pub enum PrimitiveType {
-	/// List of individual points.
+    /// List of individual points.
     Points,
     /// List of individual lines.
     Lines,

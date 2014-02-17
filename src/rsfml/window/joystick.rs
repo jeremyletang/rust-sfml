@@ -39,7 +39,7 @@ pub static Count: uint          = 8;
 /// Maximum number of supported buttons.
 pub static ButtonCount: uint    = 32;
 /// Maximum number of supported axes.
-pub static AxisCount: uint      = 8; 
+pub static AxisCount: uint      = 8;
 
 /// Axes supported by SFML joysticks 
 #[deriving(Clone, Eq, Ord, Show, ToStr)]
@@ -113,7 +113,6 @@ pub fn has_axis(joystick : uint, axis : Axis) -> bool {
             _           => unreachable!()
         }
     }
-    
 }
 
 /**

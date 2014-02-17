@@ -127,7 +127,7 @@ impl RectangleShape {
             })
         }
     }
-    
+
     /**
     * Set the position of a rectangle shape
     *
@@ -143,7 +143,7 @@ impl RectangleShape {
             ffi::sfRectangleShape_setPosition(self.rectangle_shape, *position)
         }
     }
-    
+
     /**
     * Set the position of a rectangle shape with 2 f32
     *
@@ -322,7 +322,7 @@ impl RectangleShape {
             ffi::sfRectangleShape_getRotation(self.rectangle_shape) as f32
         }
     }
-    
+
     /**
     * Rotate a rectangle shape
     *
@@ -480,7 +480,7 @@ impl RectangleShape {
             ffi::sfRectangleShape_setFillColor(self.rectangle_shape, *color)
         }
     }
-    
+
     /**
     * Set the outline color of a rectangle shape
     *
@@ -658,7 +658,7 @@ impl Wrappable<*ffi::sfRectangleShape> for RectangleShape {
             texture :           None
         }
     }
-    
+
     fn unwrap(&self) -> *ffi::sfRectangleShape {
         self.rectangle_shape
     }

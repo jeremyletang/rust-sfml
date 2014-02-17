@@ -66,7 +66,7 @@ impl SoundBufferRecorder {
             })
         }
     }
-    
+
     /**
     * Start the capture of a sound buffer recorder 
     *

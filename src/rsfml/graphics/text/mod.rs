@@ -25,13 +25,6 @@
 /*!
 * Graphical text
 *
-* Text is a drawable class that allows to easily display some text with custom style and color on a render target.
-*
-*/
-
-/*!
-* Graphical text
-*
 * Text is a drawable class that allows to easily 
 * display some text with custom style and color on a render target.
 */
@@ -41,7 +34,7 @@ use std::{str, cast};
 use extra::c_vec::CVec;
 
 use traits::{Drawable, Wrappable};
-use graphics::{RenderWindow, RenderTexture, Font, 
+use graphics::{RenderWindow, RenderTexture, Font,
     FloatRect, Color, Transform, RenderStates, TextStyle};
 use system::vector2::Vector2f;
 
@@ -110,13 +103,13 @@ impl<'s> Text<'s> {
                 ffi::sfText_setCharacterSize(text, character_size as c_uint)
             }
             Some(Text {
-                text :          text, 
+                text :          text,
                 string_length : string.len(),
                 font :          Some(font)
             })
         }
     }
-    
+
     /**
     * Set the string of a text (from an ANSI string)
     *
@@ -165,7 +158,7 @@ impl<'s> Text<'s> {
         return_unicode
         }
     }
-    
+
     /**
     * Get the size of the characters
     *
@@ -176,7 +169,7 @@ impl<'s> Text<'s> {
             ffi::sfText_getCharacterSize(self.text) as uint
         }
     }
-    
+
     /**
     * Set the font of the text
     *
@@ -195,7 +188,7 @@ impl<'s> Text<'s> {
             ffi::sfText_setFont(self.text, font.unwrap())
         }
     }
-    
+
     /**
     * Set the orientation of a text
     *
@@ -211,7 +204,7 @@ impl<'s> Text<'s> {
             ffi::sfText_setRotation(self.text, angle as c_float)
         }
     }
-    
+
     /**
     * Get the orientation of a text
     *
@@ -224,7 +217,7 @@ impl<'s> Text<'s> {
             ffi::sfText_getRotation(self.text) as f32
         }
     }
-    
+
     /**
     * Rotate a text
     *
@@ -255,7 +248,7 @@ impl<'s> Text<'s> {
             ffi::sfText_setStyle(self.text, style as u32)
         }
     }
-    
+
     /**
     * Set the size of the characters of a text
     *
@@ -278,7 +271,7 @@ impl<'s> Text<'s> {
     pub fn get_style(&self) -> TextStyle {
         unsafe { cast::transmute(ffi::sfText_getStyle(self.text)) } 
     }
-    
+
     /**
     * Get the font of a text
     * If the text has no font attached, a None is returned.
@@ -288,7 +281,7 @@ impl<'s> Text<'s> {
     pub fn get_font(&self) -> Option<&'s Font> {
        self.font
     }
-    
+
     /**
     * Set the global color of used by a text
     *
@@ -302,7 +295,7 @@ impl<'s> Text<'s> {
             ffi::sfText_setColor(self.text, *color)
         }
     }
-    
+
     /**
     * Get the global color of a text
     *
@@ -460,7 +453,7 @@ impl<'s> Text<'s> {
             ffi::sfText_setOrigin(self.text, *origin)
         }
     }
-    
+
     /**
     * Set the local origin of a text
     *
@@ -480,7 +473,7 @@ impl<'s> Text<'s> {
             ffi::sfText_setOrigin(self.text, Vector2f::new(x, y))
         }
     }
-    
+
     /**
     * Get the current scale of a text
     *
@@ -613,6 +606,7 @@ impl<'s> Wrappable<*ffi::sfText> for Text<'s> {
             font :          None
         }
     } 
+
     fn unwrap(&self) -> *ffi::sfText {
         self.text
     }
@@ -638,9 +632,7 @@ impl<'s> Drawable for Text<'s> {
 
 #[unsafe_destructor]
 impl<'s> Drop for Text<'s> {
-    /**
-    *   Destructor for class Text. Destroy all the ressource.
-    */
+    /// Destructor for class Text. Destroy all the ressource.
     fn drop(&mut self) {
         unsafe {
             ffi::sfText_destroy(self.text);

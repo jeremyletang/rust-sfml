@@ -68,16 +68,12 @@ impl Context {
                 true    => ffi::sfContext_setActive(self.cont, SFTRUE),
                 false   => ffi::sfContext_setActive(self.cont, SFFALSE)
             };
-
         }
     }
-
 }
 
 impl Drop for Context {
-    /*
-    *   Destructor for class Context.
-    */
+    /// Destructor for class Context.
     fn drop(&mut self) {
         unsafe {
             ffi::sfContext_destroy(self.cont);

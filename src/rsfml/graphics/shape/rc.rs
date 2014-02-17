@@ -32,8 +32,8 @@ use std::libc::{c_void, c_float, c_uint};
 use std::{ptr, cast};
 
 use traits::{Drawable, ShapeImpl, Wrappable};
-use graphics::{RenderWindow, RenderTexture, 
-    rc, Texture, Color, Transform, 
+use graphics::{RenderWindow, RenderTexture,
+    rc, Texture, Color, Transform,
     IntRect, FloatRect};
 use system::vector2::Vector2f;
 
@@ -71,7 +71,6 @@ extern fn get_point_callback(point : u32, obj : *c_void) -> Vector2f {
 
 
 impl Shape {
-
     /**
     * Create a new Shape
     *
@@ -82,7 +81,7 @@ impl Shape {
     */
     pub fn new(shape_impl : ~ShapeImpl) -> Option<Shape> {
         let w_o = ~WrapObj { shape_impl : shape_impl};
-      
+
         let sp = unsafe { ffi::sfShape_create(get_point_count_callback, get_point_callback, cast::transmute::<~~WrapObj, *c_void>(~w_o)) };
         if sp.is_null() {
             None
@@ -186,7 +185,7 @@ impl Shape {
             ffi::sfShape_setScale(self.shape, *scale)
         }
     }
-    
+
     /**
     * Set the scale factors of a shape
     *
@@ -548,7 +547,7 @@ impl Shape {
             ffi::sfShape_getOutlineThickness(self.shape) as f32
         }
     }
-    
+
     /**
     * Get the total number of points of a shape
     * 
@@ -609,7 +608,7 @@ impl Shape {
             ffi::sfShape_getGlobalBounds(self.shape)
         }
     }
-    
+
     /**
     * Recompute the internal geometry of a shape
     *
@@ -637,7 +636,7 @@ impl Drawable for Shape {
     fn draw_in_render_window_rs_rc(&self, render_window : &mut RenderWindow, render_states : &mut rc::RenderStates) -> () {
         render_window.draw_shape_rs_rc(self, render_states)
     }
-    
+
     fn draw_in_render_texture(&self, render_texture : &mut RenderTexture) -> () {
         render_texture.draw_shape_rc(self)
     }

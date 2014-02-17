@@ -84,32 +84,32 @@ impl<'s> Shader<'s> {
     pub fn new_from_file(vertex_shader_filename : Option<&str>, 
         fragment_shader_filename : Option<&str>) -> Option<Shader<'s>> {
 
-        let shader = unsafe { 
-            let c_vertex_shader_filename = 
-                if vertex_shader_filename.is_none() { 
+        let shader = unsafe {
+            let c_vertex_shader_filename =
+                if vertex_shader_filename.is_none() {
                     ptr::null() 
-                } else { 
-                    vertex_shader_filename.unwrap().to_c_str().unwrap() 
+                } else {
+                    vertex_shader_filename.unwrap().to_c_str().unwrap()
                 };
-            let c_fragment_shader_filename = 
-                if fragment_shader_filename.is_none() { 
-                    ptr::null() 
-                } else { 
-                    fragment_shader_filename.unwrap().to_c_str().unwrap() 
+            let c_fragment_shader_filename =
+                if fragment_shader_filename.is_none() {
+                    ptr::null()
+                } else {
+                    fragment_shader_filename.unwrap().to_c_str().unwrap()
                 };
-            ffi::sfShader_createFromFile(c_vertex_shader_filename, c_fragment_shader_filename) 
+            ffi::sfShader_createFromFile(c_vertex_shader_filename, c_fragment_shader_filename)
         };
         if shader.is_null() {
             None
             }
         else {
-            Some(Shader { 
+            Some(Shader {
                 shader :    shader,
                 texture :   None
             })
         }
     }
-    
+
     /**
     * Load both the vertex and fragment shaders from source codes in memory
     *
@@ -128,22 +128,21 @@ impl<'s> Shader<'s> {
     * Return Some(Shader) or None
     */
     pub fn new_from_memory(vertex_shader : Option<&str>, 
-        fragment_shader : Option<&str>) -> Option<Shader<'s>> {
-
-        let shader = unsafe { 
-            let c_vertex_shader = 
-                if vertex_shader.is_none() { 
-                    ptr::null() 
-                } else { 
-                    vertex_shader.unwrap().to_c_str().unwrap() 
+                           fragment_shader : Option<&str>) -> Option<Shader<'s>> {
+        let shader = unsafe {
+            let c_vertex_shader =
+                if vertex_shader.is_none() {
+                    ptr::null()
+                } else {
+                    vertex_shader.unwrap().to_c_str().unwrap()
                 };
-            let c_fragment_shader = 
-                if fragment_shader.is_none() { 
-                    ptr::null() 
-                } else { 
-                    fragment_shader.unwrap().to_c_str().unwrap() 
+            let c_fragment_shader =
+                if fragment_shader.is_none() {
+                    ptr::null()
+                } else {
+                    fragment_shader.unwrap().to_c_str().unwrap()
                 };
-            ffi::sfShader_createFromFile(c_vertex_shader, c_fragment_shader) 
+            ffi::sfShader_createFromFile(c_vertex_shader, c_fragment_shader)
         };
         if shader.is_null() {
             None
@@ -155,7 +154,7 @@ impl<'s> Shader<'s> {
             })
         }
     }
-    
+
     /**
     * Change a f32 parameter of a shader
     *
@@ -211,7 +210,7 @@ impl<'s> Shader<'s> {
             });
         }
     }
-    
+
     /**
     * Change a 4-components vector parameter of a shader
     *
@@ -233,7 +232,7 @@ impl<'s> Shader<'s> {
             });
         }
     }
-    
+
     /**
     * Change a texture parameter of a shader
     *
@@ -253,7 +252,7 @@ impl<'s> Shader<'s> {
             });
         }
     }
-    
+
     /**
     * Change a texture parameter of a shader
     *
@@ -360,13 +359,12 @@ impl<'s> Shader<'s> {
     * * color - Color to assign
     */
     pub fn set_color_parameter(&mut self, name : &str, color : &Color) -> () {
-        unsafe { 
+        unsafe {
             name.with_c_str(|c_str| {
                 ffi::sfShader_setColorParameter(self.shader, c_str, *color)
             });
         }
     }
-
 }
 
 impl<'s> Wrappable<*ffi::sfShader> for Shader<'s> {
@@ -384,9 +382,7 @@ impl<'s> Wrappable<*ffi::sfShader> for Shader<'s> {
 
 #[unsafe_destructor]
 impl<'s> Drop for Shader<'s> {
-    /**
-    * Destroy an existing shader
-    */
+    /// Destroy an existing shader
     fn drop(&mut self) -> () {
         unsafe {
             ffi::sfShader_destroy(self.shader)

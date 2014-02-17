@@ -106,7 +106,7 @@ impl TcpListener {
             ffi::sfTcpListener_getLocalPort(self.listener)
         }
     }
-    
+
     /**
     * Start listening for connections
     *
@@ -125,7 +125,7 @@ impl TcpListener {
             cast::transmute(ffi::sfTcpListener_listen(self.listener, port) as i8)
         }
     }
-    
+
     /**
     * Accept a new connection
     *

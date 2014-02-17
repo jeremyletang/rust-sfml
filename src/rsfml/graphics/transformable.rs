@@ -59,7 +59,7 @@ impl Transformable {
             })
         }
     }
-    
+
     /**
     * Copy an existing transformable
     *
@@ -92,7 +92,7 @@ impl Transformable {
             ffi::sfTransformable_setPosition(self.transformable, *position)
         }
     }
-    
+
     /**
     * Set the orientation of a transformable
     *
@@ -143,7 +143,7 @@ impl Transformable {
             ffi::sfTransformable_setOrigin(self.transformable, *origin)
         }
     }
-    
+
     /**
     * Get the position of a transformable
     *

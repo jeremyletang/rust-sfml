@@ -36,10 +36,10 @@ use ffi = ffi::audio::sound_status;
 */
 #[deriving(Eq, Ord)]
 pub enum Status {
-	/// Sound is not playing.
-    Stopped = 	ffi::SFSTOPPED as c_int,
+    /// Sound is not playing.
+    Stopped =   ffi::SFSTOPPED as c_int,
     /// Sound is paused.
-    Paused = 	ffi::SFPAUSED as c_int,
+    Paused =    ffi::SFPAUSED as c_int,
     /// Sound is playing.
-    Playing = 	ffi::SFPLAYING as c_int
+    Playing =   ffi::SFPLAYING as c_int
 }

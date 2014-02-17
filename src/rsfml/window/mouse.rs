@@ -66,5 +66,3 @@ pub fn is_button_pressed(button : MouseButton) -> bool {
         }
     }
 }
-
-

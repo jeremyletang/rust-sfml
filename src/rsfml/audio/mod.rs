@@ -34,7 +34,7 @@ pub use audio::sound_buffer_recorder::SoundBufferRecorder;
 
 /// Sound implementation using reference counting to manage shared resources
 pub mod rc {
-	pub use audio::sound::rc::Sound;
+    pub use audio::sound::rc::Sound;
 }
 
 #[doc(hidden)]

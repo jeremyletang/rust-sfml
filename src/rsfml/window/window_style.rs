@@ -32,7 +32,7 @@
 #[deriving(Clone, Eq, Ord, Show, ToStr)]
 #[repr(C)]
 pub enum WindowStyle {
-	/// No border / title bar (this flag and all others are mutually exclusive)
+    /// No border / title bar (this flag and all others are mutually exclusive)
     NoStyle =         0,
     /// Title bar + fixed border.
     Titlebar =        1,

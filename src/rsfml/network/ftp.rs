@@ -22,9 +22,7 @@ e* Permission is granted to anyone to use this software for any purpose,
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-/*!
-* A FTP client.
-*/
+//! A FTP client.
 
 use std::libc::{size_t, c_int};
 use std::{str, cast};
@@ -53,106 +51,106 @@ pub enum Status {
     // expect another reply before proceeding with a new command
 
     /// Restart marker reply
-    RestartMarkerReply          = ffi::RESTARTMARKERREPLY, 
+    RestartMarkerReply          = ffi::RESTARTMARKERREPLY,
     /// Service ready in N minutes
-    ServiceReadySoon            = ffi::SERVICEREADYSOON, 
+    ServiceReadySoon            = ffi::SERVICEREADYSOON,
     /// Data connection already opened, transfer starting
-    DataConnectionAlreadyOpened = ffi::DATACONNECTIONALREADYOPENED, 
+    DataConnectionAlreadyOpened = ffi::DATACONNECTIONALREADYOPENED,
     /// File status ok, about to open data connection
-    OpeningDataConnection       = ffi::OPENINGDATACONNECTION, 
+    OpeningDataConnection       = ffi::OPENINGDATACONNECTION,
 
     // 2xx: the requested action has been successfully completed
 
     /// Command ok
-    Ok                          = ffi::OK as c_int, 
+    Ok                          = ffi::OK as c_int,
     /// Command not implemented
-    PointlessCommand            = ffi::POINTLESSCOMMAND as c_int, 
+    PointlessCommand            = ffi::POINTLESSCOMMAND as c_int,
     /// System status, or system help reply
-    SystemStatus                = ffi::SYSTEMSTATUS as c_int, 
+    SystemStatus                = ffi::SYSTEMSTATUS as c_int,
     /// Directory status
-    DirectoryStatus             = ffi::DIRECTORYSTATUS as c_int, 
+    DirectoryStatus             = ffi::DIRECTORYSTATUS as c_int,
     /// File status
-    FileStatus                  = ffi::FILESTATUS as c_int, 
+    FileStatus                  = ffi::FILESTATUS as c_int,
     /// Help message
-    HelpMessage                 = ffi::HELPMESSAGE as c_int, 
+    HelpMessage                 = ffi::HELPMESSAGE as c_int,
     /// NAME system type, where NAME is an official system name from the list in the Assigned Numbers document
-    SystemType                  = ffi::SYSTEMTYPE as c_int, 
+    SystemType                  = ffi::SYSTEMTYPE as c_int,
     /// Service ready for new user
-    ServiceReady                = ffi::SERVICEREADY as c_int, 
+    ServiceReady                = ffi::SERVICEREADY as c_int,
     /// Service closing control connection
-    ClosingConnection           = ffi::CLOSINGCONNECTION as c_int, 
+    ClosingConnection           = ffi::CLOSINGCONNECTION as c_int,
     /// Data connection open, no transfer in progress
-    DataConnectionOpened        = ffi::DATACONNECTIONOPENED as c_int, 
+    DataConnectionOpened        = ffi::DATACONNECTIONOPENED as c_int,
     /// Closing data connection, requested file action successful
-    ClosingDataConnection       = ffi::CLOSINGDATACONNECTION as c_int, 
+    ClosingDataConnection       = ffi::CLOSINGDATACONNECTION as c_int,
     /// Entering passive mode
-    EnteringPassiveMode         = ffi::ENTERINGPASSIVEMODE as c_int, 
+    EnteringPassiveMode         = ffi::ENTERINGPASSIVEMODE as c_int,
     /// User logged in, proceed. Logged out if appropriate
-    LoggedIn                    = ffi::LOGGEDIN as c_int, 
+    LoggedIn                    = ffi::LOGGEDIN as c_int,
     /// Requested file action ok
-    FileActionOk                = ffi::FILEACTIONOK as c_int, 
+    FileActionOk                = ffi::FILEACTIONOK as c_int,
     /// PATHNAME created
-    DirectoryOk                 = ffi::DIRECTORYOK as c_int, 
+    DirectoryOk                 = ffi::DIRECTORYOK as c_int,
 
     // 3xx: the command has been accepted, but the requested action
     // is dormant, pending receipt of further information
     /// User name ok, need password
-    NeedPassword                = ffi::NEEDPASSWORD as c_int, 
+    NeedPassword                = ffi::NEEDPASSWORD as c_int,
     /// Need account for login
-    NeedAccountToLogIn          = ffi::NEEDACCOUNTTOLOGIN as c_int, 
+    NeedAccountToLogIn          = ffi::NEEDACCOUNTTOLOGIN as c_int,
     /// Requested file action pending further information
-    NeedInformation             = ffi::NEEDINFORMATION as c_int, 
+    NeedInformation             = ffi::NEEDINFORMATION as c_int,
 
     // 4xx: the command was not accepted and the requested action did not take place,
     // but the error condition is temporary and the action may be requested again
 
     /// Service not available, closing control connection
-    ServiceUnavailable          = ffi::SERVICEUNAVAILABLE as c_int, 
+    ServiceUnavailable          = ffi::SERVICEUNAVAILABLE as c_int,
     /// Can't open data connection
-    DataConnectionUnavailable   = ffi::DATACONNECTIONUNAVAILABLE as c_int, 
+    DataConnectionUnavailable   = ffi::DATACONNECTIONUNAVAILABLE as c_int,
     /// Connection closed, transfer aborted
-    TransferAborted             = ffi::TRANSFERABORTED as c_int, 
+    TransferAborted             = ffi::TRANSFERABORTED as c_int,
     /// Requested file action not taken
-    FileActionAborted           = ffi::FILEACTIONABORTED as c_int, 
+    FileActionAborted           = ffi::FILEACTIONABORTED as c_int,
     /// Requested action aborted, local error in processing
-    LocalError                  = ffi::LOCALERROR as c_int, 
+    LocalError                  = ffi::LOCALERROR as c_int,
     /// Requested action not taken; insufficient storage space in system, file unavailable
-    InsufficientStorageSpace    = ffi::INSUFFICIENTSTORAGESPACE as c_int, 
+    InsufficientStorageSpace    = ffi::INSUFFICIENTSTORAGESPACE as c_int,
 
     // 5xx: the command was not accepted and
     // the requested action did not take place
     /// Syntax error, command unrecognized
-    CommandUnknown              = ffi::COMMANDUNKNOWN as c_int, 
+    CommandUnknown              = ffi::COMMANDUNKNOWN as c_int,
     /// Syntax error in parameters or arguments
-    ParametersUnknown           = ffi::PARAMETERSUNKNOWN as c_int, 
+    ParametersUnknown           = ffi::PARAMETERSUNKNOWN as c_int,
     /// Command not implemented
-    CommandNotImplemented       = ffi::COMMANDNOTIMPLEMENTED as c_int, 
+    CommandNotImplemented       = ffi::COMMANDNOTIMPLEMENTED as c_int,
     /// Bad sequence of commands
-    BadCommandSequence          = ffi::BADCOMMANDSEQUENCE as c_int, 
+    BadCommandSequence          = ffi::BADCOMMANDSEQUENCE as c_int,
     /// Command not implemented for that parameter
-    ParameterNotImplemented     = ffi::PARAMETERNOTIMPLEMENTED as c_int, 
+    ParameterNotImplemented     = ffi::PARAMETERNOTIMPLEMENTED as c_int,
     /// Not logged in
-    NotLoggedIn                 = ffi::NOTLOGGEDIN as c_int, 
+    NotLoggedIn                 = ffi::NOTLOGGEDIN as c_int,
     /// Need account for storing files
-    NeedAccountToStore          = ffi::NEEDACCOUNTTOSTORE as c_int, 
+    NeedAccountToStore          = ffi::NEEDACCOUNTTOSTORE as c_int,
     /// Requested action not taken, file unavailable
-    FileUnavailable             = ffi::FILEUNAVAILABLE as c_int, 
+    FileUnavailable             = ffi::FILEUNAVAILABLE as c_int,
     /// Requested action aborted, page type unknown
-    PageTypeUnknown             = ffi::PAGETYPEUNKNOWN as c_int, 
+    PageTypeUnknown             = ffi::PAGETYPEUNKNOWN as c_int,
     /// Requested file action aborted, exceeded storage allocation
-    NotEnoughMemory             = ffi::NOTENOUGHMEMORY as c_int, 
+    NotEnoughMemory             = ffi::NOTENOUGHMEMORY as c_int,
     /// Requested action not taken, file name not allowed
-    FilenameNotAllowed          = ffi::FILENAMENOTALLOWED as c_int, 
+    FilenameNotAllowed          = ffi::FILENAMENOTALLOWED as c_int,
 
     // 10xx: SFML custom codes
     /// Response is not a valid FTP one
-    InvalidResponse             = ffi::INVALIDRESPONSE as c_int, 
+    InvalidResponse             = ffi::INVALIDRESPONSE as c_int,
     /// Connection with server failed
-    ConnectionFailed            = ffi::CONNECTIONFAILED as c_int, 
+    ConnectionFailed            = ffi::CONNECTIONFAILED as c_int,
     /// Connection with server closed
-    ConnectionClosed            = ffi::CONNECTIONCLOSED as c_int, 
+    ConnectionClosed            = ffi::CONNECTIONCLOSED as c_int,
     /// Invalid file to upload / download
-    InvalidFile                 = ffi::INVALIDFILE as c_int  
+    InvalidFile                 = ffi::INVALIDFILE as c_int
 }
 
 /// The FTP client
@@ -190,7 +188,7 @@ impl ListingResponse {
             _ => true
         }
     }
-    
+
     /**
     * Get the status code of a FTP listing response
     *
@@ -262,7 +260,7 @@ impl DirectoryResponse {
             _ => true
         }
     }
-    
+
     /**
     * Get the status code of a FTP directory response
     *
@@ -273,7 +271,7 @@ impl DirectoryResponse {
             cast::transmute(ffi::sfFtpDirectoryResponse_getStatus(self.directory_response) as i16)
         }
     }
-    
+
     /**
     * Get the full message contained in a FTP directory response
     *
@@ -284,7 +282,7 @@ impl DirectoryResponse {
             str::raw::from_c_str(ffi::sfFtpDirectoryResponse_getMessage(self.directory_response))
         }
     }
-    
+
     /**
     * Get the directory returned in a FTP directory response
     *
@@ -427,7 +425,7 @@ impl Ftp {
             response : unsafe { ffi::sfFtp_login(self.ftp, c_user_name.unwrap(), c_password.unwrap()) }
         }
     }
-    
+
     /**
     * Close the connection with the server
     *
@@ -552,7 +550,7 @@ impl Ftp {
             response : unsafe { ffi::sfFtp_deleteDirectory(self.ftp, c_name.unwrap()) }
         }
     }
-    
+
     /**
     * Rename an existing file
     *
@@ -638,7 +636,6 @@ impl Ftp {
             response : unsafe { ffi::sfFtp_upload(self.ftp, c_local_file.unwrap(), c_dest_path.unwrap(), mode as ffi::TransferMode) }
         }
     }
-
 }
 
 impl Drop for Ftp {

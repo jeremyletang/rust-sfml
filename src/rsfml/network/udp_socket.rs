@@ -128,7 +128,6 @@ impl UdpSocket {
         unsafe {
             cast::transmute(ffi::sfUdpSocket_bind(self.socket, port) as i8)
         }
-
     }
 
     /**
@@ -185,7 +184,7 @@ impl UdpSocket {
             (vec::raw::from_buf_raw(datas, s as uint), stat, s, Wrappable::wrap(*addr), port)
         }
     }
-    
+
     /**
     * Send a formatted packet of data to a remote peer with a UDP socket
     *
@@ -241,7 +240,7 @@ impl Wrappable<*ffi::sfUdpSocket> for UdpSocket {
             socket : socket
         }
     }
-    
+
     fn unwrap(&self) -> *ffi::sfUdpSocket {
         self.socket
     }

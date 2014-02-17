@@ -39,119 +39,118 @@ pub enum Event {
     /// The window requested to be closed
     Closed,
     /// The window was resized
-    Resized { 
+    Resized {
         /// The new width of the window
         width : int,
         /// The new height of the window
-        height : int 
+        height : int
     },
     /// The window lost the focus
     LostFocus,
     /// The window gained the focus
     GainedFocus,
     /// A character was entered
-    TextEntered { 
+    TextEntered {
         /// The character entered by the user
-        code : char 
+        code : char
     },
     /// A key was pressed
-    KeyPressed { 
+    KeyPressed {
         /// The pressed key
         code : Key,
         /// Is alt pressed too?
-        alt : bool, 
+        alt : bool,
         /// Is ctrl pressed too?
-        ctrl : bool, 
+        ctrl : bool,
         /// Is shift pressed too?
-        shift : bool, 
+        shift : bool,
         /// Is system pressed too?
-        system : bool 
+        system : bool
     },
     /// A key was released
     KeyReleased {
         /// The released key
-        code : Key, 
+        code : Key,
         /// Is alt released too?
-        alt : bool, 
+        alt : bool,
         /// Is ctrl released too?
-        ctrl : bool, 
+        ctrl : bool,
         /// Is shift released too?
-        shift : bool, 
+        shift : bool,
         /// Is system released too?
-        system : bool 
+        system : bool
     },
     /// The mouse wheel was scrolled
-    MouseWheelMoved { 
+    MouseWheelMoved {
         /// Number of ticks the wheel has moved (positive is up, negative is down) 
-        delta : int, 
+        delta : int,
         /// X position of the mouse pointer, relative to the left of the owner window. 
-        x : int, 
+        x : int,
         /// Y position of the mouse pointer, relative to the top of the owner window. 
-        y : int 
+        y : int
     },
     /// A mouse button was pressed
-    MouseButtonPressed { 
+    MouseButtonPressed {
         /// Code of the button that has been pressed. 
-        button : MouseButton, 
+        button : MouseButton,
         /// X position of the mouse pointer, relative to the left of the owner window. 
-        x : int, 
+        x : int,
         /// Y position of the mouse pointer, relative to the top of the owner window. 
-        y : int 
+        y : int
     },
     /// A mouse button was released
-    MouseButtonReleased { 
+    MouseButtonReleased {
         /// Code of the button that has been pressed.
-        button : MouseButton, 
+        button : MouseButton,
         /// X position of the mouse pointer, relative to the left of the owner window. 
-        x : int, 
+        x : int,
         /// Y position of the mouse pointer, relative to the top of the owner window. 
-        y : int 
+        y : int
     },
     /// The mouse cursor moved
-    MouseMoved { 
+    MouseMoved {
         /// X position of the mouse pointer, relative to the left of the owner window. 
-        x : int, 
+        x : int,
         /// Y position of the mouse pointer, relative to the top of the owner window. 
-        y : int 
+        y : int
     },
     /// The mouse cursor entered the area of the window
     MouseEntered,
     /// The mouse cursor left the area of the window
     MouseLeft,
     /// A joystick button was pressed
-    JoystickButtonPressed { 
+    JoystickButtonPressed {
         /// Index of the joystick (in range [0 .. joystick::Count - 1]) 
-        joystickid : int, 
+        joystickid : int,
         /// Index of the button that has been pressed (in range [0 .. Joystick::button_count - 1]) 
-        button : int 
+        button : int
     },
     /// A joystick button was released
-    JoystickButtonReleased { 
+    JoystickButtonReleased {
         /// Index of the joystick (in range [0 .. joystick::Count - 1])
-        joystickid : int, 
+        joystickid : int,
         /// Index of the button that has been pressed (in range [0 .. Joystick::button_count - 1])
-        button : int 
+        button : int
     },
     /// The joystick moved along an axis
-    JoystickMoved { 
+    JoystickMoved {
         /// Index of the joystick (in range [0 .. joystick::Count - 1])
-        joystickid : uint, 
+        joystickid : uint,
         /// Axis on which the joystick moved. 
-        axis : Axis, 
+        axis : Axis,
         /// New position on the axis (in range [-100 .. 100]) 
-        position : f32 
+        position : f32
     },
     /// A joystick was connected
-    JoystickConnected { 
+    JoystickConnected {
         /// Index of the joystick (in range [0 .. joystick::Count - 1])
-        joystickid : uint 
+        joystickid : uint
     },
     /// A joystick was disconnected
-    JoystickDisconnected { 
+    JoystickDisconnected {
         /// Index of the joystick (in range [0 .. joystick::Count - 1])
-        joystickid : uint 
+        joystickid : uint
     },
     /// No Event
     NoEvent
 }
-

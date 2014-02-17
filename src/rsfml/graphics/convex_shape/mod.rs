@@ -35,7 +35,7 @@ use std::libc::{c_float, c_uint};
 use std::ptr;
 
 use traits::{Wrappable, Drawable};
-use graphics::{Color, Texture, RenderWindow, 
+use graphics::{Color, Texture, RenderWindow,
     RenderTexture, FloatRect, IntRect, Transform, RenderStates};
 use system::vector2::Vector2f;
 
@@ -81,7 +81,7 @@ impl<'s> ConvexShape<'s> {
                 convex_shape :  shape,
                 texture :       None
             })
-        } 
+        }
     }
 
     /**
@@ -107,8 +107,7 @@ impl<'s> ConvexShape<'s> {
                 convex_shape :  shape,
                 texture :       Some(texture)
             })
-        } 
-
+        }
     }
 
     /**
@@ -323,7 +322,7 @@ impl<'s> ConvexShape<'s> {
             ffi::sfConvexShape_getPosition(self.convex_shape)
         }
     }
-    
+
     /**
     * Get the current scale of a convex shape
     *
@@ -334,7 +333,7 @@ impl<'s> ConvexShape<'s> {
             ffi::sfConvexShape_getScale(self.convex_shape)
         }
     }
-    
+
     /**
     * Get the local origin of a convex shape
     *
@@ -361,7 +360,7 @@ impl<'s> ConvexShape<'s> {
             ffi::sfConvexShape_getPoint(self.convex_shape, index as c_uint)
         }
     }
-    
+
     /**
     * Set the orientation of a convex shape
     *
@@ -505,7 +504,7 @@ impl<'s> ConvexShape<'s> {
     pub fn get_texture(&self) -> Option<&'s Texture> {
         self.texture
     }
-    
+
     /**
     * Get the fill color of a convex shape
     *
@@ -516,7 +515,7 @@ impl<'s> ConvexShape<'s> {
             ffi::sfConvexShape_getFillColor(self.convex_shape)
         }
     }
-    
+
     /**
     * Get the outline color of a convex shape
     *
@@ -527,7 +526,7 @@ impl<'s> ConvexShape<'s> {
             ffi::sfConvexShape_getOutlineColor(self.convex_shape)
         }
     }
-    
+
     /**
     * Get the outline thickness of a convex shape
     *
@@ -617,7 +616,7 @@ impl<'s> ConvexShape<'s> {
             ffi::sfConvexShape_getTextureRect(self.convex_shape)
         }
     }
-    
+
     /**
     * Get the combined transform of a convex shape
     *
@@ -648,7 +647,6 @@ impl<'s> Wrappable<*ffi::sfConvexShape> for ConvexShape<'s> {
         ConvexShape {
             convex_shape :  convex_shape,
             texture :       None
-
         }
     }
     
@@ -656,7 +654,6 @@ impl<'s> Wrappable<*ffi::sfConvexShape> for ConvexShape<'s> {
     fn unwrap(&self) -> *ffi::sfConvexShape {
         self.convex_shape
     }
-
 }
 
 impl<'s> Drawable for ConvexShape<'s> {

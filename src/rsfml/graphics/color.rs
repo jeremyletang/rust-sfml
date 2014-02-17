@@ -113,7 +113,7 @@ impl Color {
     pub fn modulate(color1 : Color, color2 : Color) -> Color {
         unsafe {ffi::sfColor_modulate(color1, color2)}
     }
-    
+
     /// Black predefined color
     pub fn black() -> Color {
         Color::new_RGB(0, 0, 0)
@@ -123,17 +123,17 @@ impl Color {
     pub fn white() -> Color {
         Color::new_RGB(255, 255, 255)
     }
-    
+
     /// Red predefined color
     pub fn red() -> Color {
         Color::new_RGB(255, 0, 0)
     }
-    
+
     /// Green predefined color
     pub fn green() -> Color {
         Color::new_RGB(0, 255, 0)
     }
-   
+
     /// Blue predefined color
     pub fn blue() -> Color {
         Color::new_RGB(0, 0, 255)

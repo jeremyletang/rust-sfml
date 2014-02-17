@@ -73,7 +73,7 @@ impl Texture {
             })
         }
     }
-    
+
     /**
     * Create a new texture from a file
     *
@@ -100,7 +100,7 @@ impl Texture {
         }
     }
 
-     /**
+    /**
     * Create a new texture from a file with a given area
     *
     * # Arguments
@@ -126,7 +126,7 @@ impl Texture {
             })
         }
     }
-    
+
     /**
     * Create a new texture by copying a exitant one
     *
@@ -190,7 +190,7 @@ impl Texture {
             })
         }
     }
-    
+
     /**
     * Return the size of the texture
     *
@@ -201,7 +201,7 @@ impl Texture {
             ffi::sfTexture_getSize(self.texture)
         }
     }
-    
+
     /**
     * Update a texture from the contents of a window
     *
@@ -243,7 +243,7 @@ impl Texture {
             ffi::sfTexture_updateFromImage(self.texture, image.unwrap(), x as c_uint, y as c_uint)
         }
     }
-    
+
     /**
     * Update a texture from the contents of a Vector of pixels
     *
@@ -314,7 +314,7 @@ impl Texture {
             }
         }
     }
-    
+
     /**
     * Tell whether a texture is repeated or not
     *
@@ -341,7 +341,7 @@ impl Texture {
             ffi::sfTexture_bind(self.texture)
         }
     }
-    
+
     /**
     * Get the maximum texture size allowed
     *
