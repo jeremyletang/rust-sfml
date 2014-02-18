@@ -504,6 +504,13 @@ impl RenderTexture {
         }
     }
 
+    /// Draw VertexArray
+    pub fn draw_vertex_array_rs_rc(&self, vertex_array : &VertexArray, rs : &mut rc::RenderStates) -> () {
+        unsafe {
+            ffi::sfRenderTexture_drawVertexArray(self.render_texture, vertex_array.unwrap(), rs.unwrap())
+        }
+    }
+
     /**
     * Save the current OpenGL render states and matrices
     *

@@ -861,6 +861,13 @@ impl RenderWindow {
         }
     }
 
+    /// Draw a VertexArray with a RenderStates
+    pub fn draw_vertex_array_rs_rc(&self, vertex_array : &VertexArray, render_states : &mut rc::RenderStates) -> () {
+        unsafe {
+            ffi::sfRenderWindow_drawVertexArray(self.render_window, vertex_array.unwrap(), render_states.unwrap())
+        }
+    }
+
     /// Clear window with the given color
     pub fn clear(&mut self, color : &Color) -> () {
         unsafe {

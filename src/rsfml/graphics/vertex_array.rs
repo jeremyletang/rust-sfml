@@ -31,7 +31,7 @@ use std::cast;
 
 use traits::{Drawable, Wrappable};
 use graphics::{Vertex, FloatRect, primitive_type, 
-    PrimitiveType, RenderWindow, RenderTexture, RenderStates};
+    PrimitiveType, RenderWindow, RenderTexture, RenderStates, rc};
 
 use ffi = ffi::graphics::vertex_array;
 
@@ -296,12 +296,20 @@ impl Drawable for VertexArray {
         render_window.draw_vertex_array_rs(self, render_states)
     }
 
+    fn draw_in_render_window_rs_rc(&self, render_window : &mut RenderWindow, render_states : &mut rc::RenderStates) -> () {
+        render_window.draw_vertex_array_rs_rc(self, render_states)
+    }
+
     fn draw_in_render_texture(&self, render_texture : &mut RenderTexture) -> () {
         render_texture.draw_vertex_array(self)
     }
 
     fn draw_in_render_texture_rs(&self, render_texture : &mut RenderTexture, render_states : &mut RenderStates) -> () {
         render_texture.draw_vertex_array_rs(self, render_states)
+    }
+
+    fn draw_in_render_texture_rs_rc(&self, render_texture : &mut RenderTexture, render_states : &mut rc::RenderStates) -> () {
+        render_texture.draw_vertex_array_rs_rc(self, render_states)
     }
 }
 
