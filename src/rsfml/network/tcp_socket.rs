@@ -92,8 +92,7 @@ impl TcpSocket {
     pub fn is_blocking(&self) -> bool {
         match unsafe { ffi::sfTcpSocket_isBlocking(self.socket) } {
             SFFALSE => false,
-            SFTRUE  => true,
-            _       => unreachable!()
+            SFTRUE  => true
         }
     }
 

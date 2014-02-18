@@ -31,6 +31,7 @@ use std::str;
 
 use traits::Wrappable;
 
+use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi = ffi::network::packet;
 
 /// Utility class to build blocks of data to transfer over the network.
@@ -110,8 +111,8 @@ impl Packet {
     */
     pub fn end_of_packet(&self) -> bool {
         match unsafe { ffi::sfPacket_endOfPacket(self.packet) } {
-            0 => false,
-            _ => true
+            SFFALSE => false,
+            SFTRUE => true
         }
     }
 
@@ -128,8 +129,8 @@ impl Packet {
     */
     pub fn can_read(&self) -> bool {
         match unsafe { ffi::sfPacket_canRead(self.packet) } {
-            0 => false,
-            _ => true
+            SFFALSE => false,
+            SFTRUE => true
         }
     }
 
@@ -138,8 +139,8 @@ impl Packet {
     */
     pub fn read_bool(&self) -> bool {
         match unsafe { ffi::sfPacket_readBool(self.packet) } {
-            0 => false,
-            _ => true
+            SFFALSE => false,
+            SFTRUE => true
         }
     }
 
@@ -232,8 +233,8 @@ impl Packet {
     pub fn write_bool(&self, data : bool) -> () {
         unsafe {
             match data {
-                true    => ffi::sfPacket_writeBool(self.packet, 1),
-                false    => ffi::sfPacket_writeBool(self.packet, 0)
+                true    => ffi::sfPacket_writeBool(self.packet, SFTRUE),
+                false    => ffi::sfPacket_writeBool(self.packet, SFFALSE)
             }
         }
     }

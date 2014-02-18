@@ -116,8 +116,7 @@ impl SoundBuffer {
             filename.with_c_str(|c_str| {
                 match ffi::sfSoundBuffer_saveToFile(self.sound_buffer, c_str) {
                     SFFALSE => return_value = false,
-                    SFTRUE  => return_value = true,
-                    _       => unreachable!()
+                    SFTRUE  => return_value = true
                 }
             });
         }

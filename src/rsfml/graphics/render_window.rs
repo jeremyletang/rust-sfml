@@ -251,8 +251,7 @@ impl RenderWindow {
         let haveEvent : bool =  unsafe {
             match ffi::sfRenderWindow_pollEvent(self.render_window, &self.event) {
                 SFFALSE     => false,
-                SFTRUE      => true,
-                _           => unreachable!()
+                SFTRUE      => true
             }
         };
         if haveEvent == false {
@@ -280,8 +279,7 @@ impl RenderWindow {
         let haveEvent : bool =  unsafe {
             match ffi::sfRenderWindow_waitEvent(self.render_window, &self.event) {
                 SFFALSE     => false,
-                SFTRUE      => true,
-                _           => unreachable!()
+                SFTRUE      => true
             }
         };
         if haveEvent == false {
@@ -321,8 +319,7 @@ impl RenderWindow {
         }
         match tmp {
             SFFALSE => false,
-            SFTRUE  => true,
-            _       => unreachable!()
+            SFTRUE  => true
         }
     }
 
@@ -489,8 +486,7 @@ impl RenderWindow {
         };
         match res {
             SFTRUE      => true,
-            SFFALSE     => false,
-            _           => unreachable!()
+            SFFALSE     => false
         }
     }
 
@@ -1197,8 +1193,7 @@ impl Iterator<event::Event> for Events {
     fn next(&mut self) -> Option<event::Event> {
         match unsafe { ffi::sfRenderWindow_pollEvent(self.render_window, &self.event) } {
             SFFALSE     => None,
-            SFTRUE      => Some(get_wrapped_event(&self.event)),
-            _           => unreachable!()
+            SFTRUE      => Some(get_wrapped_event(&self.event))
         }
     }
 } 

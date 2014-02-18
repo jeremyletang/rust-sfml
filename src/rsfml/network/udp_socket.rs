@@ -91,8 +91,7 @@ impl UdpSocket {
     pub fn is_blocking(&self) -> bool {
         match unsafe { ffi::sfUdpSocket_isBlocking(self.socket) } {
             SFFALSE  => false,
-            SFTRUE   => true,
-            _        => unreachable!()
+            SFTRUE   => true
         }
     }
 

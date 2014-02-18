@@ -177,8 +177,7 @@ impl Image {
             filename.with_c_str(|c_str| {
                 match ffi::sfImage_saveToFile(self.image, c_str) {
                     SFFALSE => return_value = false,
-                    SFTRUE  => return_value = true,
-                    _       => unreachable!()
+                    SFTRUE  => return_value = true
                 }
             });
         }

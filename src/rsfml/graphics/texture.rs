@@ -281,8 +281,7 @@ impl Texture {
     pub fn is_smooth(&self) -> bool {
         match unsafe { ffi::sfTexture_isSmooth(self.texture) } {
             SFFALSE => false,
-            SFTRUE  => true,
-            _       => unreachable!()
+            SFTRUE  => true
         }
     }
 
@@ -323,8 +322,7 @@ impl Texture {
     pub fn is_repeated(&self) -> bool {
         match unsafe {ffi::sfTexture_isRepeated(self.texture)} {
             SFFALSE   => false,
-            SFTRUE    => true,
-            _         => unreachable!()
+            SFTRUE    => true
         }
     }
 

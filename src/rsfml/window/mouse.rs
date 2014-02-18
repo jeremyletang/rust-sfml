@@ -61,8 +61,7 @@ pub fn is_button_pressed(button : MouseButton) -> bool {
     unsafe {
         match ffi::sfMouse_isButtonPressed(button as c_uint) {
             SFFALSE   => false,
-            SFTRUE    => true,
-            _         => unreachable!()
+            SFTRUE    => true
         }
     }
 }

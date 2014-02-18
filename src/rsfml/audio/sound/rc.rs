@@ -139,8 +139,7 @@ impl Sound {
     pub fn get_loop(&self) -> bool {
         match unsafe {ffi::sfSound_getLoop(self.sound)} {
             SFFALSE => false,
-            SFTRUE  => true,
-            _       => unreachable!()
+            SFTRUE  => true
         }
     }
 
@@ -329,8 +328,7 @@ impl Sound {
     pub fn is_relative_to_listener(&self) -> bool {
         match unsafe {ffi::sfSound_isRelativeToListener(self.sound)} {
             SFFALSE => false,
-            SFTRUE  => true,
-            _       => unreachable!()
+            SFTRUE  => true
         }
     }
 

@@ -111,8 +111,8 @@ impl Music {
     */
     pub fn get_loop(&self) -> bool {
         match unsafe { ffi::sfMusic_getLoop(self.music) } {
-            0 => false,
-            _ => true
+            SFFALSE => false,
+            SFTRUE => true
         }
     }
 
@@ -349,8 +349,7 @@ impl Music {
     pub fn is_relative_to_listener(&self) -> bool {
         match unsafe { ffi::sfMusic_isRelativeToListener(self.music) } {
             SFFALSE => false,
-            SFTRUE  => true,
-            _       => unreachable!()
+            SFTRUE  => true
         }
     }
 

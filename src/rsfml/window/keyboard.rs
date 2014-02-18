@@ -155,8 +155,7 @@ pub fn is_key_pressed(key : Key) -> bool {
     unsafe {
         match ffi::sfKeyboard_isKeyPressed(key as c_int) {
             SFFALSE  => false,
-            SFTRUE   => true,
-            _        => unreachable!()
+            SFTRUE   => true
         }
     }
 }

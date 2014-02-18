@@ -98,8 +98,7 @@ impl VideoMode {
         }) };
          match i {
              SFFALSE => false,
-             SFTRUE  => true,
-             _       => unreachable!()
+             SFTRUE  => true
         }
      }
 

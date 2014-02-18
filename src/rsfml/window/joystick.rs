@@ -74,8 +74,7 @@ pub fn is_connected(joystick : uint) -> bool {
     unsafe {
         match ffi::sfJoystick_isConnected(joystick as c_uint) {
             SFFALSE   => false,
-            SFTRUE    => true,
-            _         => unreachable!()
+            SFTRUE    => true
         }
     }
 }
@@ -109,8 +108,7 @@ pub fn has_axis(joystick : uint, axis : Axis) -> bool {
     unsafe {
         match ffi::sfJoystick_hasAxis(joystick as c_uint, axis as c_uint) {
             SFFALSE     => false,
-            SFTRUE      => true,
-            _           => unreachable!()
+            SFTRUE      => true
         }
     }
 }
@@ -130,9 +128,7 @@ pub fn is_button_pressed(joystick : uint, button : uint) -> bool {
     unsafe {
         match ffi::sfJoystick_isButtonPressed(joystick as c_uint, button as c_uint) {
             SFFALSE    => false,
-            SFTRUE     => true,
-            _          => unreachable!()
-        
+            SFTRUE     => true
         }
     }
 }

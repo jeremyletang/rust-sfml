@@ -88,8 +88,7 @@ impl IntRect {
     pub fn contains(self, x : int, y : int) -> bool {
         match unsafe { ffi::sfIntRect_contains(&self, x as c_int, y as c_int) } {
             SFFALSE => false,
-            SFTRUE  => true,
-            _       => unreachable!()
+            SFTRUE  => true
         }
     }
 
@@ -109,9 +108,7 @@ impl IntRect {
         
         match unsafe { ffi::sfIntRect_intersects(rect1, rect2, intersections) } {
             SFFALSE => false,
-            SFTRUE  => true,
-            _       => unreachable!()
-        
+            SFTRUE  => true        
         }
     }
 }
@@ -161,8 +158,7 @@ impl FloatRect {
     pub fn contains(self, x : f32, y : f32) -> bool {
         match unsafe { ffi::sfFloatRect_contains(&self, x, y) } {
             SFFALSE => false,
-            SFTRUE  => true,
-            _       => unreachable!()
+            SFTRUE  => true
         }
     }
 
@@ -182,8 +178,7 @@ impl FloatRect {
         
         match unsafe { ffi::sfFloatRect_intersects(rect1, rect2, intersections) } {
             SFFALSE => false,
-            SFTRUE  => true,
-            _       => unreachable!()
+            SFTRUE  => true
         }
     }
 }

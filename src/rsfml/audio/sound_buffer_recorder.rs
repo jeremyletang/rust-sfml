@@ -143,7 +143,6 @@ impl SoundBufferRecorder {
         match unsafe { ffi::sfSoundRecorder_isAvailable() } {
             SFFALSE => false,
             SFTRUE  => true,
-            _       => unreachable!()
         }
     }
 

@@ -298,8 +298,7 @@ impl<'s> Shader<'s> {
     pub fn is_available() -> bool {
         match unsafe { ffi::sfShader_isAvailable() } {
             SFFALSE   => false,
-            SFTRUE    => true,
-            _         => unreachable!()
+            SFTRUE    => true
         }
     }
 

@@ -31,6 +31,7 @@ use std::cast;
 use traits::Wrappable;
 use network::{TcpSocket, SocketStatus};
 
+use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi = ffi::network::tcp_listener;
 
 /// Socket that listens to new TCP connections
@@ -75,8 +76,8 @@ impl TcpListener {
     pub fn set_blocking(&mut self, blocking : bool) -> () {
         unsafe {
             match blocking  {
-                true        => ffi::sfTcpListener_setBlocking(self.listener, 1),
-                false       => ffi::sfTcpListener_setBlocking(self.listener, 0)
+                true        => ffi::sfTcpListener_setBlocking(self.listener, SFTRUE),
+                false       => ffi::sfTcpListener_setBlocking(self.listener, SFFALSE)
             }
         }
     }
@@ -88,8 +89,8 @@ impl TcpListener {
     */
     pub fn is_blocking(&self) -> bool {
         match unsafe { ffi::sfTcpListener_isBlocking(self.listener) } {
-            0 => false,
-            _ => true
+            SFFALSE => false,
+            SFTRUE  => true
         }
     }
 

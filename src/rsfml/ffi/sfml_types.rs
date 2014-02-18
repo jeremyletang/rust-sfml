@@ -22,8 +22,9 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-use std::libc::{c_int};
-
-pub type SfBool = c_int;
-pub static SFFALSE : SfBool = 0;
-pub static SFTRUE : SfBool = 1;
+#[repr(C)]
+#[deriving(Eq)]
+pub enum SfBool {
+    SFFALSE = 0,
+    SFTRUE = 1
+}

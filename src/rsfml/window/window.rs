@@ -300,8 +300,7 @@ impl Window {
         let haveEvent : bool =  unsafe {
             match ffi::sfWindow_pollEvent(self.window, &self.event) {
                 SFFALSE     => false,
-                SFTRUE      => true,
-                _           => unreachable!()
+                SFTRUE      => true
             }
         };
         if haveEvent == false {
@@ -327,8 +326,7 @@ impl Window {
         let haveEvent : bool =  unsafe {
             match ffi::sfWindow_waitEvent(self.window, &self.event) {
                 SFFALSE     => false,
-                SFTRUE      => true,
-                _           => unreachable!()
+                SFTRUE      => true
             }
         };
         if haveEvent == false {
@@ -389,9 +387,7 @@ impl Window {
         let tmp = unsafe { ffi::sfWindow_isOpen(self.window) };
         match tmp {
             SFFALSE => false,
-            SFTRUE  => true,
-            _       => unreachable!()
-        
+            SFTRUE  => true        
         }
     }
 
@@ -515,8 +511,7 @@ impl Window {
         }};
         match tmp {
             SFTRUE   => true,
-            SFFALSE  => false,
-            _        => unreachable!()
+            SFFALSE  => false
         }
     }
 

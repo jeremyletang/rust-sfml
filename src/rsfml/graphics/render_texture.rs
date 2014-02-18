@@ -35,6 +35,7 @@ use graphics::{View, Sprite, Color, IntRect, Texture,
     CircleShape, RectangleShape, VertexArray, ConvexShape,
     RenderStates, Shape, Text, rc};
 
+use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi = ffi::graphics::render_texture;
 
 /// Target for off-screen 2D rendering into a texture
@@ -59,8 +60,8 @@ impl RenderTexture {
         depth_buffer : bool) -> Option<RenderTexture> {
         
         let tex = match depth_buffer {
-            false       => unsafe { ffi::sfRenderTexture_create(width as c_uint, height as c_uint, 0) },
-            true        => unsafe { ffi::sfRenderTexture_create(width as c_uint, height as c_uint, 1) }
+            false       => unsafe { ffi::sfRenderTexture_create(width as c_uint, height as c_uint, SFFALSE) },
+            true        => unsafe { ffi::sfRenderTexture_create(width as c_uint, height as c_uint, SFTRUE) }
         };
         if tex.is_null() {
             None
@@ -92,12 +93,12 @@ impl RenderTexture {
     pub fn set_active(&mut self, active : bool) -> bool {
         match unsafe {
             match active {
-                false       => ffi::sfRenderTexture_setActive(self.render_texture, 0),
-                true        => ffi::sfRenderTexture_setActive(self.render_texture, 1)
+                false       => ffi::sfRenderTexture_setActive(self.render_texture, SFFALSE),
+                true        => ffi::sfRenderTexture_setActive(self.render_texture, SFTRUE)
             }
         } {
-            0   => false,
-            _   => true
+            SFFALSE => false,
+            SFTRUE  => true
         }
     }
 
@@ -576,8 +577,8 @@ impl RenderTexture {
     pub fn set_smooth(&mut self, smooth : bool) -> () {
         unsafe {
             match smooth {
-                true        => ffi::sfRenderTexture_setSmooth(self.render_texture, 1),
-                false       => ffi::sfRenderTexture_setSmooth(self.render_texture, 0)
+                true        => ffi::sfRenderTexture_setSmooth(self.render_texture, SFTRUE),
+                false       => ffi::sfRenderTexture_setSmooth(self.render_texture, SFFALSE)
             }
         }
     }
@@ -589,9 +590,8 @@ impl RenderTexture {
     */
     pub fn is_smooth(&self) -> bool {
         match unsafe { ffi::sfRenderTexture_isSmooth(self.render_texture) } {
-            0 => false,
-            1  => true,
-            _       => unreachable!()
+            SFFALSE => false,
+            SFTRUE  => true
         }
     }    
 }

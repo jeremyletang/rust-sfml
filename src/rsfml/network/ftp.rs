@@ -31,6 +31,7 @@ use traits::Wrappable;
 use network::IpAddress;
 use system::Time;
 
+use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi = ffi::network::ftp;
 
 /// The differents FTP modes availables.
@@ -184,8 +185,8 @@ impl ListingResponse {
     */
     pub fn is_ok(&self) -> bool {
         match unsafe { ffi::sfFtpListingResponse_isOk(self.listing_response) } {
-            0 => false,
-            _ => true
+            SFFALSE => false,
+            SFTRUE  => true
         }
     }
 
@@ -256,8 +257,8 @@ impl DirectoryResponse {
     */
     pub fn is_ok(&self) -> bool {
         match unsafe { ffi::sfFtpDirectoryResponse_isOk(self.directory_response) } {
-            0 => false,
-            _ => true
+            SFFALSE => false,
+            SFTRUE => true
         }
     }
 
@@ -314,8 +315,8 @@ impl Response {
     */
     pub fn is_ok(&self) -> bool {
         match unsafe { ffi::sfFtpResponse_isOk(self.response) } {
-            0 => false,
-            _ => true
+            SFFALSE => false,
+            SFTRUE => true
         }
     }
 
