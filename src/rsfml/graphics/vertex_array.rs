@@ -245,7 +245,7 @@ impl VertexArray {
     }
 
     /// Return an immutable iterator over all the vertice contained by the VertexArray
-    pub fn iter(&self) -> Vertices {
+    pub fn vertices(&self) -> Vertices {
         Vertices {
             vertex_array: self.vertex_array.clone(),
             pos: 0

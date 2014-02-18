@@ -41,7 +41,7 @@ fn main () -> () {
     vertex_array.append(&Vertex::new_with_pos_color(&Vector2f{x: 50f32, y: 80f32}, &Color::green()));
 
     println!("\nIterate over the vertices of a VertexArray");
-    for v in vertex_array.iter() {
+    for v in vertex_array.vertices() {
         println!("Vertex Color: {} | Position: {}", v.color, v.position)
     }
 
@@ -54,12 +54,8 @@ fn main () -> () {
     println!("Vertex Color: {} | Position: {}", vertex_array[1].color, vertex_array[1].position);
 
     while window.is_open() {
-        loop {
-            match window.poll_event() {
-                event::Closed 				=> window.close(),
-                event::NoEvent 				=> break,
-                _ 							=> {}
-            }
+        for e in window.events() {
+            if e == event::Closed { window.close() }
         }
         // Clear the window
         window.clear(&Color::black());

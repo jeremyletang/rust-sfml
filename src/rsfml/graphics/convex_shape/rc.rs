@@ -59,6 +59,14 @@ pub struct ConvexShape {
     priv texture :      Option<Rc<RefCell<Texture>>>
 }
 
+/// An itertator over the points of a ConvexShape
+pub struct Points {
+    #[doc(hidden)]
+    priv convex_shape: *ffi::sfConvexShape,
+    #[doc(hidden)]
+    priv pos: u32
+}
+
 impl ConvexShape {
     /**
     * Create a new convex shape
@@ -638,6 +646,36 @@ impl ConvexShape {
             ffi::sfConvexShape_getInverseTransform(self.convex_shape)
         }
     }
+
+    /// Return an immutable iterator over all the points of the ConvexShape
+    pub fn points(&self) -> Points {
+        Points {
+            convex_shape: self.convex_shape,
+            pos: 0
+        }
+    }
+}
+
+impl Iterator<Vector2f> for Points {
+    fn next(&mut self) -> Option<Vector2f> {
+        let point_count = unsafe { ffi::sfConvexShape_getPointCount(self.convex_shape) as u32 };
+        if self.pos == point_count {
+            None
+        } else {
+            self.pos += 1;
+            unsafe {
+                Some(ffi::sfConvexShape_getPoint(self.convex_shape, self.pos as c_uint))
+            }
+        }
+    }
+} 
+
+impl<'s> Index<uint, Vector2f> for ConvexShape {
+    fn index(&self, _rhs: &uint) -> Vector2f {
+        unsafe {
+            ffi::sfConvexShape_getPoint(self.convex_shape, *_rhs as c_uint)
+        }
+    }
 }
 
 #[doc(hidden)]
@@ -645,7 +683,7 @@ impl Wrappable<*ffi::sfConvexShape> for ConvexShape {
     #[doc(hidden)]
     fn wrap(convex_shape : *ffi::sfConvexShape) -> ConvexShape {
         ConvexShape {
-            convex_shape :  convex_shape,
+            convex_shape :  convex_shape.clone(),
             texture :       None
         }
     }

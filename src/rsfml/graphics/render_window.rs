@@ -64,6 +64,14 @@ pub struct RenderWindow {
     priv default_view :     Rc<RefCell<View>>
 }
 
+/// An iterator over all the events in the events queue (internally call poll_event)
+pub struct Events {
+    #[doc(hidden)]
+    priv render_window: *ffi::sfRenderWindow,
+    #[doc(hidden)]
+    priv event :            ffi::sfEvent,
+}
+
 impl RenderWindow {
     /**
     * Construct a new render window
@@ -213,6 +221,21 @@ impl RenderWindow {
         }
     }
 
+    /// Return an iterator over all the event currently in the events queue.
+    pub fn events(&self) -> Events {
+        Events {
+            render_window: self.render_window.clone(),
+            event : ffi::sfEvent {
+                typeEvent : 0,
+                p1 :        0,
+                p2 :        0,
+                p3 :        0 as c_float,
+                p4 :        0,
+                p5 :        0
+            }
+        }
+    }
+
     /**
     *  Pop the event on top of event queue, if any, and return it
     *
@@ -236,7 +259,7 @@ impl RenderWindow {
             event::NoEvent
         }
         else {
-            self.get_wrapped_event()
+            get_wrapped_event(&self.event)
         }
     }
 
@@ -265,136 +288,7 @@ impl RenderWindow {
             event::NoEvent
         }
         else {
-            self.get_wrapped_event()
-        }
-    }
-
-    #[doc(hidden)]
-    pub fn get_wrapped_event(&self) ->event::Event {
-        match self.event.typeEvent as c_uint {
-            0   => event::Closed,
-            1   => event::Resized{ width : self.event.p1 as int, height : self.event.p2 as int },
-            2   => event::LostFocus,
-            3   => event::GainedFocus,
-            4   => {
-                event::TextEntered { 
-                    code : (self.event.p1 as u8) as char
-                }
-            },
-            5   => {
-                let al : bool = match self.event.p2 {
-                    0 => false,
-                    _ => true
-                };
-                let ct : bool = match self.event.p3 as int{
-                    0 => false,
-                    _ => true
-                };
-                let sh : bool = match self.event.p4  {
-                    0 => false,
-                    _ => true
-                };
-                let sy : bool = match self.event.p5 {
-                    0 => false,
-                    _ => true
-                };
-                let k : keyboard::Key = unsafe { cast::transmute(self.event.p1 as i64) };
-                event::KeyPressed{ 
-                    code : k, 
-                    alt : al, 
-                    ctrl : ct, 
-                    shift :sh, 
-                    system : sy 
-                }
-            },
-            6   => {
-                let al : bool = match self.event.p2 {
-                    0 => false,
-                    _ => true
-                };
-                let ct : bool = match self.event.p3 as int{
-                    0 => false,
-                    _ => true
-                };
-                let sh : bool = match self.event.p4  {
-                    0 => false,
-                    _ => true
-                };
-                let sy : bool = match self.event.p5 {
-                    0 => false,
-                    _ => true
-                };
-                let k : keyboard::Key = unsafe { cast::transmute(self.event.p1 as i64) };
-                event::KeyReleased {
-                    code : k, 
-                    alt : al, 
-                    ctrl : ct, 
-                    shift :sh, 
-                    system : sy 
-                }
-            },
-            7   => {
-                event::MouseWheelMoved{
-                    delta : unsafe { cast::transmute::<c_uint, c_int>(self.event.p1) }  as int,
-                    x :     unsafe { cast::transmute::<c_uint, c_int>(self.event.p2) }  as int,
-                    y :     unsafe { cast::transmute::<c_float, c_int>(self.event.p3) } as int
-                }
-            },
-            8   => {
-                let button : mouse::MouseButton = unsafe {cast::transmute(self.event.p1 as i8)};
-                event::MouseButtonPressed{
-                    button : button,
-                    x :      unsafe { cast::transmute::<c_uint, c_int>(self.event.p2) as int },
-                    y :      unsafe { cast::transmute::<c_float, c_int>(self.event.p3) as int }
-                }
-            },
-            9   => {
-                let button : mouse::MouseButton = unsafe { cast::transmute(self.event.p1 as i8) };
-                event::MouseButtonReleased{
-                    button : button,
-                    x :      unsafe { cast::transmute::<c_uint, c_int>(self.event.p2) as int },
-                    y :      unsafe { cast::transmute::<c_float, c_int>(self.event.p3) as int }
-                }
-            },
-            10  => { 
-                event::MouseMoved {
-                    x : unsafe { cast::transmute::<c_uint, c_int>(self.event.p1) } as int,
-                    y : unsafe { cast::transmute::<c_uint, c_int>(self.event.p2) } as int
-                }
-            },
-            11  => event::MouseEntered,
-            12  => event::MouseLeft,
-            13  => {
-                event::JoystickButtonPressed {
-                    joystickid : self.event.p1 as int, 
-                    button : self.event.p2 as int
-                }
-            },
-            14  => { 
-                event::JoystickButtonReleased{
-                    joystickid : self.event.p1 as int, 
-                    button : self.event.p2 as int
-                }
-            },
-            15  => {
-                let ax : joystick::Axis = unsafe { cast::transmute(self.event.p2 as i8) };
-                event::JoystickMoved{
-                    joystickid : self.event.p1 as uint, 
-                    axis : ax, 
-                    position : self.event.p3 as f32
-                }
-            },
-            16  => { 
-                event::JoystickConnected{
-                    joystickid : self.event.p1 as uint
-                }
-            },
-            17  => { 
-                event::JoystickDisconnected{
-                    joystickid : self.event.p1 as uint
-                }
-            },
-            _ => event::NoEvent
+            get_wrapped_event(&self.event)
         }
     }
 
@@ -1169,6 +1063,146 @@ impl RenderWindow {
         self.render_window
     }
 }
+
+#[doc(hidden)]
+fn get_wrapped_event(event: &ffi::sfEvent) ->event::Event {
+    match event.typeEvent as c_uint {
+        0   => event::Closed,
+        1   => event::Resized{ width : event.p1 as int, height : event.p2 as int },
+        2   => event::LostFocus,
+        3   => event::GainedFocus,
+        4   => {
+            event::TextEntered { 
+                code : (event.p1 as u8) as char
+            }
+        },
+        5   => {
+            let al : bool = match event.p2 {
+                0 => false,
+                _ => true
+            };
+            let ct : bool = match event.p3 as int{
+                0 => false,
+                _ => true
+            };
+            let sh : bool = match event.p4  {
+                0 => false,
+                _ => true
+            };
+            let sy : bool = match event.p5 {
+                0 => false,
+                _ => true
+            };
+            let k : keyboard::Key = unsafe { cast::transmute(event.p1 as i64) };
+            event::KeyPressed{ 
+                code : k, 
+                alt : al, 
+                ctrl : ct, 
+                shift :sh, 
+                system : sy 
+            }
+        },
+        6   => {
+            let al : bool = match event.p2 {
+                0 => false,
+                _ => true
+            };
+            let ct : bool = match event.p3 as int{
+                0 => false,
+                _ => true
+            };
+            let sh : bool = match event.p4  {
+                0 => false,
+                _ => true
+            };
+            let sy : bool = match event.p5 {
+                0 => false,
+                _ => true
+            };
+            let k : keyboard::Key = unsafe { cast::transmute(event.p1 as i64) };
+            event::KeyReleased {
+                code : k, 
+                alt : al, 
+                ctrl : ct, 
+                shift :sh, 
+                system : sy 
+            }
+        },
+        7   => {
+            event::MouseWheelMoved{
+                delta : unsafe { cast::transmute::<c_uint, c_int>(event.p1) }  as int,
+                x :     unsafe { cast::transmute::<c_uint, c_int>(event.p2) }  as int,
+                y :     unsafe { cast::transmute::<c_float, c_int>(event.p3) } as int
+            }
+        },
+        8   => {
+            let button : mouse::MouseButton = unsafe {cast::transmute(event.p1 as i8)};
+            event::MouseButtonPressed{
+                button : button,
+                x :      unsafe { cast::transmute::<c_uint, c_int>(event.p2) as int },
+                y :      unsafe { cast::transmute::<c_float, c_int>(event.p3) as int }
+            }
+        },
+        9   => {
+            let button : mouse::MouseButton = unsafe { cast::transmute(event.p1 as i8) };
+            event::MouseButtonReleased{
+                button : button,
+                x :      unsafe { cast::transmute::<c_uint, c_int>(event.p2) as int },
+                y :      unsafe { cast::transmute::<c_float, c_int>(event.p3) as int }
+            }
+        },
+        10  => { 
+            event::MouseMoved {
+                x : unsafe { cast::transmute::<c_uint, c_int>(event.p1) } as int,
+                y : unsafe { cast::transmute::<c_uint, c_int>(event.p2) } as int
+            }
+        },
+        11  => event::MouseEntered,
+        12  => event::MouseLeft,
+        13  => {
+            event::JoystickButtonPressed {
+                joystickid : event.p1 as int, 
+                button : event.p2 as int
+            }
+        },
+        14  => { 
+            event::JoystickButtonReleased{
+                joystickid : event.p1 as int, 
+                button : event.p2 as int
+            }
+        },
+        15  => {
+            let ax : joystick::Axis = unsafe { cast::transmute(event.p2 as i8) };
+            event::JoystickMoved{
+                joystickid : event.p1 as uint, 
+                axis : ax, 
+                position : event.p3 as f32
+            }
+        },
+        16  => { 
+            event::JoystickConnected{
+                joystickid : event.p1 as uint
+            }
+        },
+        17  => { 
+            event::JoystickDisconnected{
+                joystickid : event.p1 as uint
+            }
+        },
+        _ => event::NoEvent
+    }
+}
+
+impl Iterator<event::Event> for Events {
+    fn next(&mut self) -> Option<event::Event> {
+        match unsafe { ffi::sfRenderWindow_pollEvent(self.render_window, &self.event) } {
+            SFFALSE     => None,
+            SFTRUE      => Some(get_wrapped_event(&self.event)),
+            _           => unreachable!()
+        }
+    }
+} 
+
 
 #[unsafe_destructor]
 impl Drop for RenderWindow {

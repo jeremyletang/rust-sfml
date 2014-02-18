@@ -59,6 +59,14 @@ pub struct ConvexShape<'s> {
     priv texture :      Option<&'s Texture>
 }
 
+/// An itertator over the points of a ConvexShape
+pub struct Points {
+    #[doc(hidden)]
+    priv convex_shape: *ffi::sfConvexShape,
+    #[doc(hidden)]
+    priv pos: u32
+}
+
 impl<'s> ConvexShape<'s> {
     /**
     * Create a new convex shape
@@ -636,6 +644,36 @@ impl<'s> ConvexShape<'s> {
     pub fn get_inverse_transform(&self) -> Transform {
         unsafe {
             ffi::sfConvexShape_getInverseTransform(self.convex_shape)
+        }
+    }
+
+    /// Return an immutable iterator over all the points of the ConvexShape
+    pub fn points(&self) -> Points {
+        Points {
+            convex_shape: self.convex_shape.clone(),
+            pos: 0
+        }
+    }
+}
+
+impl Iterator<Vector2f> for Points {
+    fn next(&mut self) -> Option<Vector2f> {
+        let point_count = unsafe { ffi::sfConvexShape_getPointCount(self.convex_shape) as u32 };
+        if self.pos == point_count {
+            None
+        } else {
+            self.pos += 1;
+            unsafe {
+                Some(ffi::sfConvexShape_getPoint(self.convex_shape, self.pos as c_uint))
+            }
+        }
+    }
+} 
+
+impl<'s> Index<uint, Vector2f> for ConvexShape<'s> {
+    fn index(&self, _rhs: &uint) -> Vector2f {
+        unsafe {
+            ffi::sfConvexShape_getPoint(self.convex_shape, *_rhs as c_uint)
         }
     }
 }
