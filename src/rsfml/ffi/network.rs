@@ -18,7 +18,7 @@
 *
 * 2. Altered source versions must be plainly marked as such, and must not be
 *    misrepresented as being the original software.
-* 
+*
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
@@ -34,11 +34,10 @@ pub mod socket_status {
 }
 
 pub mod packet {
-    
     use std::libc::{c_void, size_t, c_float, c_double, c_char};
-    
+
     use ffi::sfml_types::SfBool;
-    
+
     pub struct sfPacket {
         This : *c_void
     }
@@ -79,9 +78,8 @@ pub mod packet {
 }
 
 pub mod ip_address {
-    
     use std::libc::c_char;
-    
+
     use ffi::system::time::sfTime;
 
     pub struct sfIpAddress {
@@ -115,9 +113,8 @@ pub mod ip_address {
 }
 
 pub mod tcp_listener {
-
     use std::libc::{c_void};
- 
+
     use ffi::network::tcp_socket::sfTcpSocket;
     use ffi::network::socket_status::SocketStatus;
     use ffi::sfml_types::SfBool;
@@ -125,7 +122,7 @@ pub mod tcp_listener {
     pub struct sfTcpListener {
         This : *c_void
     }
-    
+
     extern "C" {
         pub fn sfTcpListener_create() -> *sfTcpListener;
         pub fn sfTcpListener_destroy(listener : *sfTcpListener) -> ();
@@ -138,7 +135,6 @@ pub mod tcp_listener {
 }
 
 pub mod tcp_socket {
-
     use std::libc::{c_void, size_t};
 
     use ffi::system::time::sfTime;
@@ -170,7 +166,6 @@ pub mod tcp_socket {
 }
 
 pub mod udp_socket {
-    
     use std::libc::{size_t, c_void};
 
     use ffi::network::socket_status::SocketStatus;
@@ -199,7 +194,6 @@ pub mod udp_socket {
 }
 
 pub mod ftp {
-    
     use std::libc::{c_void, c_char, size_t, c_int};
 
     use ffi::network::ip_address::sfIpAddress;
@@ -212,53 +206,53 @@ pub mod ftp {
     pub static FTPEBCDIC:   TransferMode = 2;
 
     pub type Status = c_int;
-    pub static RESTARTMARKERREPLY:          Status = 110; 
-    pub static SERVICEREADYSOON:            Status = 120; 
-    pub static DATACONNECTIONALREADYOPENED: Status = 125; 
+    pub static RESTARTMARKERREPLY:          Status = 110;
+    pub static SERVICEREADYSOON:            Status = 120;
+    pub static DATACONNECTIONALREADYOPENED: Status = 125;
     pub static OPENINGDATACONNECTION:       Status = 150;
 
-    pub static OK:                          Status = 200; 
-    pub static POINTLESSCOMMAND:            Status = 202; 
-    pub static SYSTEMSTATUS:                Status = 211; 
-    pub static DIRECTORYSTATUS:             Status = 212; 
-    pub static FILESTATUS:                  Status = 213; 
-    pub static HELPMESSAGE:                 Status = 214; 
-    pub static SYSTEMTYPE:                  Status = 215; 
-    pub static SERVICEREADY:                Status = 220; 
-    pub static CLOSINGCONNECTION:           Status = 221; 
-    pub static DATACONNECTIONOPENED:        Status = 225; 
-    pub static CLOSINGDATACONNECTION:       Status = 226; 
-    pub static ENTERINGPASSIVEMODE:         Status = 227; 
-    pub static LOGGEDIN:                    Status = 230; 
-    pub static FILEACTIONOK:                Status = 250; 
-    pub static DIRECTORYOK:                 Status = 257; 
+    pub static OK:                          Status = 200;
+    pub static POINTLESSCOMMAND:            Status = 202;
+    pub static SYSTEMSTATUS:                Status = 211;
+    pub static DIRECTORYSTATUS:             Status = 212;
+    pub static FILESTATUS:                  Status = 213;
+    pub static HELPMESSAGE:                 Status = 214;
+    pub static SYSTEMTYPE:                  Status = 215;
+    pub static SERVICEREADY:                Status = 220;
+    pub static CLOSINGCONNECTION:           Status = 221;
+    pub static DATACONNECTIONOPENED:        Status = 225;
+    pub static CLOSINGDATACONNECTION:       Status = 226;
+    pub static ENTERINGPASSIVEMODE:         Status = 227;
+    pub static LOGGEDIN:                    Status = 230;
+    pub static FILEACTIONOK:                Status = 250;
+    pub static DIRECTORYOK:                 Status = 257;
 
-    pub static NEEDPASSWORD:                Status = 331; 
-    pub static NEEDACCOUNTTOLOGIN:          Status = 332; 
+    pub static NEEDPASSWORD:                Status = 331;
+    pub static NEEDACCOUNTTOLOGIN:          Status = 332;
     pub static NEEDINFORMATION:             Status = 350;
 
     pub static SERVICEUNAVAILABLE:          Status = 421;
-    pub static DATACONNECTIONUNAVAILABLE:   Status = 425; 
-    pub static TRANSFERABORTED:             Status = 426; 
-    pub static FILEACTIONABORTED:           Status = 450; 
-    pub static LOCALERROR:                  Status = 451; 
-    pub static INSUFFICIENTSTORAGESPACE:    Status = 452; 
+    pub static DATACONNECTIONUNAVAILABLE:   Status = 425;
+    pub static TRANSFERABORTED:             Status = 426;
+    pub static FILEACTIONABORTED:           Status = 450;
+    pub static LOCALERROR:                  Status = 451;
+    pub static INSUFFICIENTSTORAGESPACE:    Status = 452;
 
-    pub static COMMANDUNKNOWN:              Status = 500; 
-    pub static PARAMETERSUNKNOWN:           Status = 501; 
-    pub static COMMANDNOTIMPLEMENTED:       Status = 502; 
-    pub static BADCOMMANDSEQUENCE:          Status = 503; 
-    pub static PARAMETERNOTIMPLEMENTED:     Status = 504; 
-    pub static NOTLOGGEDIN:                 Status = 530; 
-    pub static NEEDACCOUNTTOSTORE:          Status = 532; 
-    pub static FILEUNAVAILABLE:             Status = 550; 
-    pub static PAGETYPEUNKNOWN:             Status = 551; 
+    pub static COMMANDUNKNOWN:              Status = 500;
+    pub static PARAMETERSUNKNOWN:           Status = 501;
+    pub static COMMANDNOTIMPLEMENTED:       Status = 502;
+    pub static BADCOMMANDSEQUENCE:          Status = 503;
+    pub static PARAMETERNOTIMPLEMENTED:     Status = 504;
+    pub static NOTLOGGEDIN:                 Status = 530;
+    pub static NEEDACCOUNTTOSTORE:          Status = 532;
+    pub static FILEUNAVAILABLE:             Status = 550;
+    pub static PAGETYPEUNKNOWN:             Status = 551;
     pub static NOTENOUGHMEMORY:             Status = 552;
     pub static FILENAMENOTALLOWED:          Status = 553;
 
-    pub static INVALIDRESPONSE:             Status = 1000; 
-    pub static CONNECTIONFAILED:            Status = 1001; 
-    pub static CONNECTIONCLOSED:            Status = 1002; 
+    pub static INVALIDRESPONSE:             Status = 1000;
+    pub static CONNECTIONFAILED:            Status = 1001;
+    pub static CONNECTIONCLOSED:            Status = 1002;
     pub static INVALIDFILE:                 Status = 1003;
 
     pub struct sfFtp {
@@ -276,7 +270,7 @@ pub mod ftp {
     pub struct sfFtpResponse {
         This : *c_void
     }
-    
+
     extern "C" {
         pub fn sfFtpListingResponse_destroy(ftpListingResponse : *sfFtpListingResponse) -> ();
         pub fn sfFtpListingResponse_isOk(ftpListingResponse : *sfFtpListingResponse) -> SfBool;
@@ -314,7 +308,6 @@ pub mod ftp {
 }
 
 pub mod http {
-    
     use std::libc::{c_char, c_void, c_int};
 
     use ffi::system::time::sfTime;
@@ -331,7 +324,7 @@ pub mod http {
     pub static NOCONTENT:           Status = 204;
     pub static RESETCONTENT:        Status = 205;
     pub static PARTIALCONTENT:      Status = 206;
-   
+
     pub static MULTIPLECHOICES:     Status = 300;
     pub static MOVEDPERMANENTLY:    Status = 301;
     pub static MOVEDTEMPORARILY:    Status = 302;

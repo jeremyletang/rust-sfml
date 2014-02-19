@@ -18,15 +18,15 @@
 *
 * 2. Altered source versions must be plainly marked as such, and must not be
 *    misrepresented as being the original software.
-* 
+*
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
 /*!
-* Represents a time value.
-*
-* Time encapsulates a time value in a flexible way. 
-*/
+ * Represents a time value.
+ *
+ * Time encapsulates a time value in a flexible way.
+ */
 
 pub use std::libc::{c_long, c_float, c_int};
 
@@ -35,10 +35,10 @@ use traits::Wrappable;
 use ffi = ffi::system::time;
 
 /**
-* Represents a time value.
-*
-* Time encapsulates a time value in a flexible way. 
-*/
+ * Represents a time value.
+ *
+ * Time encapsulates a time value in a flexible way.
+ */
 pub struct Time {
     #[doc(hidden)]
     priv time : ffi::sfTime
@@ -84,7 +84,7 @@ impl Time {
     pub fn as_microseconds(&self) -> i64 {
         unsafe {
             ffi::sfTime_asMicroseconds(self.time)
-        }        
+        }
     }
 }
 
@@ -94,7 +94,7 @@ impl Eq for Time {
     }
 
     fn ne(&self, other : &Time) -> bool {
-        self.as_microseconds() != other.as_microseconds() 
+        self.as_microseconds() != other.as_microseconds()
     }
 }
 
@@ -147,7 +147,7 @@ impl Wrappable<ffi::sfTime> for Time {
             time : time
         }
     }
- 
+
     fn unwrap(&self) -> ffi::sfTime {
         self.time
     }

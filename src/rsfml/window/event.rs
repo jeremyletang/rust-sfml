@@ -18,7 +18,7 @@
 *
 * 2. Altered source versions must be plainly marked as such, and must not be
 *    misrepresented as being the original software.
-* 
+*
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
@@ -91,7 +91,7 @@ pub enum Event {
     },
     /// A mouse button was pressed
     MouseButtonPressed {
-        /// Code of the button that has been pressed. 
+        /// Code of the button that has been pressed.
         button : MouseButton,
         /// X position of the mouse pointer, relative to the left of the owner window. 
         x : int,
@@ -120,7 +120,7 @@ pub enum Event {
     MouseLeft,
     /// A joystick button was pressed
     JoystickButtonPressed {
-        /// Index of the joystick (in range [0 .. joystick::Count - 1]) 
+        /// Index of the joystick (in range [0 .. joystick::Count - 1])
         joystickid : int,
         /// Index of the button that has been pressed (in range [0 .. Joystick::button_count - 1]) 
         button : int
@@ -136,9 +136,9 @@ pub enum Event {
     JoystickMoved {
         /// Index of the joystick (in range [0 .. joystick::Count - 1])
         joystickid : uint,
-        /// Axis on which the joystick moved. 
+        /// Axis on which the joystick moved.
         axis : Axis,
-        /// New position on the axis (in range [-100 .. 100]) 
+        /// New position on the axis (in range [-100 .. 100])
         position : f32
     },
     /// A joystick was connected

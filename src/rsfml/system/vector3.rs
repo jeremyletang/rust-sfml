@@ -18,15 +18,13 @@
 *
 * 2. Altered source versions must be plainly marked as such, and must not be
 *    misrepresented as being the original software.
-* 
+*
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
 #[allow(missing_doc)];
 
-/*!
-* Utility Class providing 3 dimensional vectors for f32.
-*/
+//! Utility Class providing 3 dimensional vectors for f32.
 
 /// Vector3f definition
 #[deriving(Clone, Ord, Eq, Show, ToStr)]
@@ -50,7 +48,7 @@ impl Vector3f {
     /// Create a new Vector3f with the given values.
     pub fn new(x : f32, y : f32, z : f32) -> Vector3f {
         Vector3f{
-            x : x, 
+            x : x,
             y : y,
             z : z
         }
@@ -91,10 +89,10 @@ impl Vector3fOp for Vector3f {
     }
 
     fn sub_to_Vector3f(&self, lhs: &Vector3f) -> Vector3f {
-        Vector3f { 
+        Vector3f {
             x : lhs.x - self.x,
             y : lhs.y - self.y,
-            z : lhs.z - self.z 
+            z : lhs.z - self.z
         }
     }
 
@@ -102,15 +100,15 @@ impl Vector3fOp for Vector3f {
         Vector3f {
             x : lhs.x / self.x,
             y : lhs.y / self.y,
-            z : lhs.z / self.z 
+            z : lhs.z / self.z
         }
     }
 
     fn mul_to_Vector3f(&self, lhs: &Vector3f) -> Vector3f {
-        Vector3f { 
-            x : lhs.x * self.x, 
+        Vector3f {
+            x : lhs.x * self.x,
             y : lhs.y * self.y,
-            z : lhs.z * self.z 
+            z : lhs.z * self.z
         }
     }
 }
@@ -125,7 +123,7 @@ impl Vector3fOp for f32 {
     }
 
     fn sub_to_Vector3f(&self, lhs: &Vector3f) -> Vector3f {
-        Vector3f { 
+        Vector3f {
             x : lhs.x - *self as f32,
             y : lhs.y - *self as f32,
             z : lhs.z - *self as f32
@@ -133,7 +131,7 @@ impl Vector3fOp for f32 {
     }
 
     fn mul_to_Vector3f(&self, lhs: &Vector3f) -> Vector3f {
-        Vector3f { 
+        Vector3f {
             x : lhs.x * (*self as f32),
             y : lhs.y * (*self as f32),
             z : lhs.z * (*self as f32)

@@ -18,20 +18,18 @@
 *
 * 2. Altered source versions must be plainly marked as such, and must not be
 *    misrepresented as being the original software.
-* 
+*
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-/*!
-* Glyph describes a glyph (a visual character)
-*/
+//! Glyph describes a glyph (a visual character)
 
 use graphics::IntRect;
 
 /// Glyph describes a glyph (a visual character)
 #[deriving(Clone, Eq, Ord, Show, ToStr)]
 pub struct Glyph {
-    /// Offset to move horizontically to the next character. 
+    /// Offset to move horizontically to the next character.
     advance : i32,
     /// Bounding rectangle of the glyph, in coordinates relative to the baseline.
     bounds : IntRect,

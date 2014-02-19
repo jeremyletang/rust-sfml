@@ -18,35 +18,35 @@
 *
 * 2. Altered source versions must be plainly marked as such, and must not be
 *    misrepresented as being the original software.
-* 
+*
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
 /*!
-* Define a point with color and texture coordinates
-*
-* A vertex is an improved point.
-*
-* It has a position and other extra attributes that will be used for drawing: 
-* in SFML, vertices also have a color and a pair of texture coordinates.
-*/
+ * Define a point with color and texture coordinates
+ *
+ * A vertex is an improved point.
+ *
+ * It has a position and other extra attributes that will be used for drawing:
+ * in SFML, vertices also have a color and a pair of texture coordinates.
+ */
 
 use graphics::Color;
 use system::vector2::Vector2f;
 
 /**
-* Define a point with color and texture coordinates
-*
-* A vertex is an improved point.
-*
-* It has a position and other extra attributes that will be used for drawing: 
-* in SFML, vertices also have a color and a pair of texture coordinates.
-*/
+ * Define a point with color and texture coordinates
+ *
+ * A vertex is an improved point.
+ *
+ * It has a position and other extra attributes that will be used for drawing:
+ * in SFML, vertices also have a color and a pair of texture coordinates.
+ */
 #[deriving(Clone, Eq, Ord, Show, ToStr)]
 pub struct Vertex {
-    /// 2D position of the vertex 
+    /// 2D position of the vertex
     position :      Vector2f,
-    /// Color of the vertex. 
+    /// Color of the vertex.
     color :         Color,
     /// Coordinates of the texture's pixel to map to the vertex.
     tex_coords :    Vector2f
@@ -54,19 +54,18 @@ pub struct Vertex {
 
 impl Vertex {
     /**
-    * Create a new Vertex
-    *
-    * # Arguments
-    * * position - Position of the vertex
-    * * color - Color of the vertex
-    * * tex_coords - Texture coordinate of the vertex
-    *
-    * Return a Vertex
-    */
-    pub fn new(position : &Vector2f, 
-        color : &Color, 
-        tex_coords : &Vector2f) -> Vertex {
-        
+     * Create a new Vertex
+     *
+     * # Arguments
+     * * position - Position of the vertex
+     * * color - Color of the vertex
+     * * tex_coords - Texture coordinate of the vertex
+     *
+     * Return a Vertex
+     */
+    pub fn new(position : &Vector2f,
+               color : &Color,
+               tex_coords : &Vector2f) -> Vertex {
         Vertex {
             position :      *position,
             color :         *color,
@@ -75,35 +74,35 @@ impl Vertex {
     }
 
     /**
-    * Create a new default Vertex
-    *
-    * # Default
-    * * position - (0., 0.)
-    * * color - white
-    * * tex_coords - (0., 0.)
-    *
-    * Return a Vertex
-    */
+     * Create a new default Vertex
+     *
+     * # Default
+     * * position - (0., 0.)
+     * * color - white
+     * * tex_coords - (0., 0.)
+     *
+     * Return a Vertex
+     */
     pub fn default() -> Vertex {
         Vertex {
-            position :      Vector2f{ x : 0., y : 0. },
+            position :      Vector2f { x : 0., y : 0. },
             color :         Color::white(),
             tex_coords :    Vector2f { x : 0., y : 0. }
         }
     }
 
     /**
-    * Create a new Vertex whit a position
-    *
-    * # Arguments
-    * * position - Position of the vertex
-    *
-    * # Default
-    * * color - white
-    * * tex_coords - (0., 0.)
-    *
-    * Return a Vertex
-    */
+     * Create a new Vertex whit a position
+     *
+     * # Arguments
+     * * position - Position of the vertex
+     *
+     * # Default
+     * * color - white
+     * * tex_coords - (0., 0.)
+     *
+     * Return a Vertex
+     */
     pub fn new_with_pos(position : &Vector2f) -> Vertex {
         Vertex {
             position :      *position,
@@ -113,17 +112,17 @@ impl Vertex {
     }
 
     /**
-    * Create a new Vertex with the position and the color
-    *
-    * # Arguments
-    * * position - Position of the vertex
-    * * color - Color of the vertex
-    *
-    * # Default
-    * * tex_coords - (0., 0)
-    *
-    * Return a Vertex
-    */
+     * Create a new Vertex with the position and the color
+     *
+     * # Arguments
+     * * position - Position of the vertex
+     * * color - Color of the vertex
+     *
+     * # Default
+     * * tex_coords - (0., 0)
+     *
+     * Return a Vertex
+     */
     pub fn new_with_pos_color(position : &Vector2f, color : &Color) -> Vertex {
         Vertex {
             position :      *position,
@@ -133,18 +132,19 @@ impl Vertex {
     }
 
     /**
-    * Create a new Vertex whit the position and the texture coordinates
-    *
-    * # Arguments
-    * * position - Position of the vertex
-    * * tex_coords - Texture coordinate of the vertex
-    *
-    * # Default
-    * * color - white
-    *
-    * Return a Vertex
-    */
-    pub fn new_with_pos_coords(position : &Vector2f, tex_coords : &Vector2f) -> Vertex {
+     * Create a new Vertex whit the position and the texture coordinates
+     *
+     * # Arguments
+     * * position - Position of the vertex
+     * * tex_coords - Texture coordinate of the vertex
+     *
+     * # Default
+     * * color - white
+     *
+     * Return a Vertex
+     */
+    pub fn new_with_pos_coords(position : &Vector2f,
+                               tex_coords : &Vector2f) -> Vertex {
         Vertex {
             position :      *position,
             color :         Color::white(),

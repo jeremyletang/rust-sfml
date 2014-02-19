@@ -18,15 +18,15 @@
 *
 * 2. Altered source versions must be plainly marked as such, and must not be
 *    misrepresented as being the original software.
-* 
+*
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
 /*!
-* Manipulating 2D rectangles
-*
-* Utility class for manipulating 2D axis aligned rectangles
-*/
+ * Manipulating 2D rectangles
+ *
+ * Utility class for manipulating 2D axis aligned rectangles
+ */
 
 use std::libc::c_int;
 
@@ -36,55 +36,52 @@ use ffi = ffi::graphics::rect;
 /// Utility classes for manipulating rectangles of int.
 #[deriving(Clone, Ord, Show, ToStr)]
 pub struct IntRect {
-    /// Left coordinate of the rectangle. 
+    /// Left coordinate of the rectangle.
     left :      i32,
-    /// Top coordinate of the rectangle. 
+    /// Top coordinate of the rectangle.
     top :       i32,
-    /// Width of the rectangle. 
+    /// Width of the rectangle.
     width :     i32,
-    /// Height coordinate of the rectangle. 
+    /// Height coordinate of the rectangle.
     height :    i32
 }
 
 /// Utility classes for manipulating rectangles of f32.
 #[deriving(Clone, Ord, Show, ToStr)]
 pub struct FloatRect {
-    /// Left coordinate of the rectangle. 
+    /// Left coordinate of the rectangle.
     left :      f32,
-    /// Top coordinate of the rectangle. 
+    /// Top coordinate of the rectangle.
     top :       f32,
-    /// Width of the rectangle. 
+    /// Width of the rectangle.
     width :     f32,
-    /// Height of the rectangle. 
+    /// Height of the rectangle.
     height :    f32
 }
 
 impl IntRect {
-    /**
-    * Construct a new IntRect
-    */
+    /// Construct a new IntRect
     pub fn new(left : i32,
-        top : i32,
-        width : i32,
-        height : i32) -> IntRect {
-        
+               top : i32,
+               width : i32,
+               height : i32) -> IntRect {
         IntRect {
-            left :      left, 
-            top :       top, 
-            width :     width, 
+            left :      left,
+            top :       top,
+            width :     width,
             height :    height
         }
     }
 
     /**
-    *  Check if a point is inside a rectangle's area 
-    *
-    * # Arguments
-    * * x - X coordinate of the point to test
-    * * y - Y coordinate of the point to test
-    * 
-    * Return true if the point is inside
-    */
+     *  Check if a point is inside a rectangle's area
+     *
+     * # Arguments
+     * * x - X coordinate of the point to test
+     * * y - Y coordinate of the point to test
+     *
+     * Return true if the point is inside
+     */
     pub fn contains(self, x : int, y : int) -> bool {
         match unsafe { ffi::sfIntRect_contains(&self, x as c_int, y as c_int) } {
             SFFALSE => false,
@@ -93,22 +90,21 @@ impl IntRect {
     }
 
     /**
-    * Check intersection between two rectangles
-    *
-    * # Arguments
-    * * rect1 - First rectangle to test
-    * * rect2 - Second rectangle to test
-    * * intersection - Rectangle to be filled with overlapping rect 
-    *
-    * Return strue if rectangles overlap
-    */
-    pub fn intersects(rect1 : &IntRect, 
-        rect2 : &IntRect, 
-        intersections : &IntRect) -> bool {
-        
+     * Check intersection between two rectangles
+     *
+     * # Arguments
+     * * rect1 - First rectangle to test
+     * * rect2 - Second rectangle to test
+     * * intersection - Rectangle to be filled with overlapping rect
+     *
+     * Return strue if rectangles overlap
+     */
+    pub fn intersects(rect1 : &IntRect,
+                      rect2 : &IntRect,
+                      intersections : &IntRect) -> bool {
         match unsafe { ffi::sfIntRect_intersects(rect1, rect2, intersections) } {
             SFFALSE => false,
-            SFTRUE  => true        
+            SFTRUE  => true
         }
     }
 }
@@ -116,15 +112,15 @@ impl IntRect {
 impl Eq for IntRect {
     fn eq(&self, other : &IntRect) -> bool {
         self.left == other.left &&
-        self.top == other.top &&
-        self.width == other.width &&
-        self.height == other.height
+            self.top == other.top &&
+            self.width == other.width &&
+            self.height == other.height
     }
     fn ne(&self, other : &IntRect) -> bool {
         self.left != other.left ||
-        self.top != other.top ||
-        self.width != other.width ||
-        self.height != other.height
+            self.top != other.top ||
+            self.width != other.width ||
+            self.height != other.height
     }
 }
 

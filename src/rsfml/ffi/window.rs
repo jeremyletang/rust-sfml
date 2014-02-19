@@ -18,24 +18,23 @@
 *
 * 2. Altered source versions must be plainly marked as such, and must not be
 *    misrepresented as being the original software.
-* 
+*
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
 pub mod window {
-    
-    use std::libc::{c_void, c_uint, c_float, c_char};    
+    use std::libc::{c_void, c_uint, c_float, c_char};
 
     use window::ContextSettings;
     use system::vector2::{Vector2i, Vector2u};
 
-    use ffi::window::video_mode::sfVideoMode;    
+    use ffi::window::video_mode::sfVideoMode;
     use ffi::sfml_types::SfBool;
 
     pub struct sfWindow {
         This : *c_void
     }
-    
+
     pub struct sfEvent {
         typeEvent : c_uint,
         p1 :        c_uint,
@@ -98,9 +97,8 @@ pub mod window {
 }
 
 pub mod context {
-
     use std::libc::c_void;
-    
+
     use ffi::sfml_types::SfBool;
 
     pub struct sfContext {
@@ -115,9 +113,8 @@ pub mod context {
 }
 
 pub mod joystick {
-    
     use std::libc::{c_float, c_uint};
-    
+
     use ffi::sfml_types::SfBool;
 
     extern "C" {
@@ -131,9 +128,8 @@ pub mod joystick {
 }
 
 pub mod keyboard {
-    
     pub use std::libc::c_int;
-    
+
     use ffi::sfml_types::SfBool;
 
     extern "C" {
@@ -142,27 +138,25 @@ pub mod keyboard {
 }
 
 pub mod mouse {
-    
+
     use std::libc::c_uint;
-    
+
     use ffi::sfml_types::SfBool;
 
     extern "C" {
         pub fn sfMouse_isButtonPressed(button : c_uint) -> SfBool;
-        
     }
 }
 
 pub mod video_mode {
-    
     use std::libc::{c_uint, size_t};
-    
+
     use ffi::sfml_types::SfBool;
 
     pub struct sfVideoMode {
         width:          c_uint,
         height:         c_uint,
-        bits_per_pixel: c_uint 
+        bits_per_pixel: c_uint
     }
 
     impl Clone for sfVideoMode {
@@ -171,10 +165,10 @@ pub mod video_mode {
                width : self.width,
                height : self.height,
                bits_per_pixel : self.bits_per_pixel
-            }   
+            }
         }
     }
-    
+
     extern "C" {
         pub fn sfVideoMode_getDesktopMode() -> sfVideoMode;
         pub fn sfVideoMode_getFullscreenModes(Count : *size_t) -> *sfVideoMode;

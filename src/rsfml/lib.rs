@@ -18,7 +18,7 @@
 *
 * 2. Altered source versions must be plainly marked as such, and must not be
 *    misrepresented as being the original software.
-* 
+*
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
@@ -27,13 +27,15 @@
 
 __SFML__ bindings for Rust
 
-This is a Rust binding for __SFML__, the Simple and Fast Multimedia Library, developped by Laurent Gomila.
+This is a Rust binding for __SFML__, the Simple and Fast Multimedia Library,
+developped by Laurent Gomila.
 
 __SFML__ website  : www.sfml-dev.org
 
 # Installation
 
-You must install on your computer the SFML2 and CSFML2 libraries who are used for the binding.
+You must install on your computer the SFML2 and CSFML2 libraries
+who are used for the binding.
 
 SFML2 : http://www.sfml-dev.org/download/sfml/2.0/
 
@@ -61,7 +63,8 @@ __Rust-sfml__ works on Linux, windows and OSX.
 
 # OSX Specific
 
-On OSX window must be launched in the main thread. You should override the rust runtime start function.
+On OSX window must be launched in the main thread. You should override the
+rust runtime start function.
 
 ```Rust
 #[cfg(target_os="macos")]
@@ -127,9 +130,11 @@ fn main () -> () {
 
 # License
 
-This software is a binding of the SFML library created by Laurent Gomila, which is provided under the Zlib/png license.
+This software is a binding of the SFML library created by Laurent Gomila, which
+is provided under the Zlib/png license.
 
-This software is provided under the same license than the SFML, the Zlib/png license.
+This software is provided under the same license than the SFML, the Zlib/png
+license.
 
 # Modules
 

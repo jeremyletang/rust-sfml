@@ -18,7 +18,7 @@
 *
 * 2. Altered source versions must be plainly marked as such, and must not be
 *    misrepresented as being the original software.
-* 
+*
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
@@ -32,10 +32,10 @@ use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi = ffi::window::context;
 
 /**
-* Drawing context
-*
-* Class holding a valid drawing context.
-*/
+ * Drawing context
+ *
+ * Class holding a valid drawing context.
+ */
 pub struct Context {
     #[doc(hidden)]
     priv cont : *ffi::sfContext
@@ -44,30 +44,30 @@ pub struct Context {
 impl Context {
 
     /**
-    * Create a new context
-    *
-    * This function activates the new context.
-    *
-    * Return New Context object
-    */
+     * Create a new context
+     *
+     * This function activates the new context.
+     *
+     * Return New Context object
+     */
     pub fn new() -> Context {
         Context{
-            cont : unsafe{ ffi::sfContext_create() }
+            cont : unsafe { ffi::sfContext_create() }
         }
     }
 
     /**
-    * Activate or deactivate explicitely a context
-    *
-    * # Arguments
-    * * active - True to activate, False to deactivate
-    */
+     * Activate or deactivate explicitely a context
+     *
+     * # Arguments
+     * * active - True to activate, False to deactivate
+     */
     pub fn set_active(&mut self, active : bool) -> () {
         unsafe {
             match active {
                 true    => ffi::sfContext_setActive(self.cont, SFTRUE),
                 false   => ffi::sfContext_setActive(self.cont, SFFALSE)
-            };
+            }
         }
     }
 }

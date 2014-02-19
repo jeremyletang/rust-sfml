@@ -18,21 +18,19 @@
 *
 * 2. Altered source versions must be plainly marked as such, and must not be
 *    misrepresented as being the original software.
-* 
+*
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-/*!
-* Provides OpenGL-based windows, and abstractions for events and input handling.
-*
-*
-*/
+//! Provides OpenGL-based windows, and abstractions for events and input handling.
+
 
 pub use window::window::Window;
 pub use window::video_mode::VideoMode;
 pub use window::context::Context;
 pub use window::context_settings::ContextSettings;
-pub use window::window_style::{WindowStyle, NoStyle, Titlebar, Resize, Close, Fullscreen, DefaultStyle};
+pub use window::window_style::{WindowStyle, NoStyle, Titlebar,
+                               Resize, Close, Fullscreen, DefaultStyle};
 
 #[doc(hidden)]
 #[cfg(target_os="macos")]

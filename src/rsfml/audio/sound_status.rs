@@ -18,23 +18,19 @@
 *
 * 2. Altered source versions must be plainly marked as such, and must not be
 *    misrepresented as being the original software.
-* 
+*
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-/*!
-* Sound and musics statues
-* 
-*/
+//! Sound and musics statues
 
 use std::libc::c_int;
 
 use ffi = ffi::audio::sound_status;
 
-/**
-* Enumeration of statuses for sounds and musics
-*/
+/// Enumeration of statuses for sounds and musics
 #[deriving(Eq, Ord)]
+#[repr(C)]
 pub enum Status {
     /// Sound is not playing.
     Stopped =   ffi::SFSTOPPED as c_int,

@@ -18,15 +18,15 @@
 *
 * 2. Altered source versions must be plainly marked as such, and must not be
 *    misrepresented as being the original software.
-* 
+*
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
 /*!
-* Measuring elapsed time
-*
-* Utility class that measures the elapsed time
-*/
+ * Measuring elapsed time
+ *
+ * Utility class that measures the elapsed time
+ */
 
 use traits::Wrappable;
 use system::Time;
@@ -34,10 +34,10 @@ use system::Time;
 use ffi = ffi::system::clock;
 
 /**
-* Measuring elapsed time
-*
-* Utility class that measures the elapsed time
-*/
+ * Measuring elapsed time
+ *
+ * Utility class that measures the elapsed time
+ */
 pub struct Clock {
     #[doc(hidden)]
     priv clock : *ffi::sfClock

@@ -18,12 +18,11 @@
 *
 * 2. Altered source versions must be plainly marked as such, and must not be
 *    misrepresented as being the original software.
-* 
+*
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
 pub mod listener {
-    
     pub use std::libc::c_int;
 
     pub use system::vector3;
@@ -39,7 +38,6 @@ pub mod listener {
 }
 
 pub mod music {
-
     use std::libc::{c_void, c_uint, c_float, c_char};
 
     use system::vector3::Vector3f;
@@ -85,12 +83,12 @@ pub mod music {
 }
 
 pub mod sound {
-    
+
     use std::libc::{c_float, c_void};
 
     use system::vector3::Vector3f;
 
-    use ffi::audio::sound_status::sfSoundStatus; 
+    use ffi::audio::sound_status::sfSoundStatus;
     use ffi::audio::sound_buffer::sfSoundBuffer;
     use ffi::system::time::sfTime;
     use ffi::sfml_types::SfBool;
@@ -99,7 +97,7 @@ pub mod sound {
         This : *c_void,
         This2 : *c_void
     }
-    
+
     extern "C" {
         pub fn sfSound_create() -> *sfSound;
         pub fn sfSound_copy(sound : *sfSound) -> *sfSound;
@@ -130,9 +128,8 @@ pub mod sound {
 }
 
 pub mod sound_buffer {
-    
     use std::libc::{size_t, c_void, c_uint, c_char};
-    
+
     use ffi::system::time::sfTime;
     use ffi::sfml_types::SfBool;
 
@@ -154,12 +151,11 @@ pub mod sound_buffer {
 }
 
 pub mod sound_buffer_recorder {
-
     use std::libc::{c_uint, c_void};
-    
+
     use ffi::audio::sound_buffer::sfSoundBuffer;
     use ffi::sfml_types::SfBool;
-    
+
     pub struct sfSoundBufferRecorder {
         This : *c_void
     }
@@ -176,9 +172,8 @@ pub mod sound_buffer_recorder {
 }
 
 pub mod sound_status {
-
     use std::libc::c_int;
-    
+
     pub type sfSoundStatus = c_int;
     pub static SFSTOPPED:   sfSoundStatus = 0;
     pub static SFPAUSED:    sfSoundStatus = 1;

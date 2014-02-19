@@ -18,22 +18,19 @@
 *
 * 2. Altered source versions must be plainly marked as such, and must not be
 *    misrepresented as being the original software.
-* 
+*
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-/*!
-* Make thread sleeping
-*/
+//! Make thread sleeping
 
 use traits::Wrappable;
 use system::Time;
 
 use ffi = ffi::system::sleep;
 
-/**
-* Make the current thread sleep for a given duration
-*/
+
+/// Make the current thread sleep for a given duration
 pub fn sleep(time : Time) -> () {
     unsafe {
         ffi::sfSleep(time.unwrap())

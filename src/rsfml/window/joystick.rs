@@ -18,16 +18,16 @@
 *
 * 2. Altered source versions must be plainly marked as such, and must not be
 *    misrepresented as being the original software.
-* 
+*
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
 /*!
-* Handle Joysticks
-*
-* Offers a set of function for manage joystick
-*
-*/
+ * Handle Joysticks
+ *
+ * Offers a set of function for manage joystick
+ *
+ */
 
 use std::libc::{c_uint};
 
@@ -41,7 +41,7 @@ pub static ButtonCount: uint    = 32;
 /// Maximum number of supported axes.
 pub static AxisCount: uint      = 8;
 
-/// Axes supported by SFML joysticks 
+/// Axes supported by SFML joysticks
 #[deriving(Clone, Eq, Ord, Show, ToStr)]
 pub enum Axis {
     /// The X axis.
@@ -63,13 +63,13 @@ pub enum Axis {
 }
 
 /**
-* Check if the joystick is connected
-*
-* # Arguments
-* * joystick - Index of the joystick to check
-*
-* Return true if the joystick is connected, false otherwise
-*/
+ * Check if the joystick is connected
+ *
+ * # Arguments
+ * * joystick - Index of the joystick to check
+ *
+ * Return true if the joystick is connected, false otherwise
+ */
 pub fn is_connected(joystick : uint) -> bool {
     unsafe {
         match ffi::sfJoystick_isConnected(joystick as c_uint) {
@@ -80,13 +80,13 @@ pub fn is_connected(joystick : uint) -> bool {
 }
 
 /**
-* Return the number of buttons supported by a joystick
-*
-* # Arguments
-* * joystick - Index of the joystick
-*
-* Return the number of buttons supported by the joystick.
-*/
+ * Return the number of buttons supported by a joystick
+ *
+ * # Arguments
+ * * joystick - Index of the joystick
+ *
+ * Return the number of buttons supported by the joystick.
+ */
 pub fn button_count(joystick : uint) -> uint {
     unsafe {
         ffi::sfJoystick_getButtonCount(joystick as c_uint) as uint
@@ -94,16 +94,16 @@ pub fn button_count(joystick : uint) -> uint {
 }
 
 /**
-* Check if the joystick support a given Axis
-*
-* If the joystick is not connected, this function returns false.
-*
-* # Arguments
-* * joystick - Index of the joystick
-* * axis - Axis to check
-*
-* Return true if the joystick supports the axis, false otherwise
-*/
+ * Check if the joystick support a given Axis
+ *
+ * If the joystick is not connected, this function returns false.
+ *
+ * # Arguments
+ * * joystick - Index of the joystick
+ * * axis - Axis to check
+ *
+ * Return true if the joystick supports the axis, false otherwise
+ */
 pub fn has_axis(joystick : uint, axis : Axis) -> bool {
     unsafe {
         match ffi::sfJoystick_hasAxis(joystick as c_uint, axis as c_uint) {
@@ -114,16 +114,16 @@ pub fn has_axis(joystick : uint, axis : Axis) -> bool {
 }
 
 /**
-* Check if the button is pressed on a given joystick.
-*
-* If the joystick is not connected, this function returns false.
-*
-* # Arguments
-* * joystick - Index of the joystick
-* * button - Button to check
-*
-* Return true if the button is pressed, false otherwise
-*/
+ * Check if the button is pressed on a given joystick.
+ *
+ * If the joystick is not connected, this function returns false.
+ *
+ * # Arguments
+ * * joystick - Index of the joystick
+ * * button - Button to check
+ *
+ * Return true if the button is pressed, false otherwise
+ */
 pub fn is_button_pressed(joystick : uint, button : uint) -> bool {
     unsafe {
         match ffi::sfJoystick_isButtonPressed(joystick as c_uint, button as c_uint) {
@@ -135,16 +135,16 @@ pub fn is_button_pressed(joystick : uint, button : uint) -> bool {
 
 
 /**
-* Get the current position on a given Axis, on a given joystick.
-*
-* If the joystick is not connected, this function returns 0.
-*
-* # Arguments
-* * joystick - Index of the joystick
-* * axis - Axis to check
-*
-* Return the current position of the axis, in range [-100 .. 100]
-*/
+ * Get the current position on a given Axis, on a given joystick.
+ *
+ * If the joystick is not connected, this function returns 0.
+ *
+ * # Arguments
+ * * joystick - Index of the joystick
+ * * axis - Axis to check
+ *
+ * Return the current position of the axis, in range [-100 .. 100]
+ */
 pub fn get_axis_position(joystick : uint, axis : Axis) -> f32 {
     unsafe {
         ffi::sfJoystick_getAxisPosition(joystick as c_uint, axis as c_uint) as f32
@@ -152,14 +152,14 @@ pub fn get_axis_position(joystick : uint, axis : Axis) -> f32 {
 }
 
 /**
-* Update the states of all joysticks
-*
-* This function is used internally by SFML, so you normally
-* don't have to call it explicitely. However, you may need to
-* call it if you have no window yet (or no window at all):
-* in this case the joysticks states are not updated automatically.
-*
-*/
+ * Update the states of all joysticks
+ *
+ * This function is used internally by SFML, so you normally
+ * don't have to call it explicitely. However, you may need to
+ * call it if you have no window yet (or no window at all):
+ * in this case the joysticks states are not updated automatically.
+ *
+ */
 pub fn update() -> () {
     unsafe {
         ffi::sfJoystick_update();

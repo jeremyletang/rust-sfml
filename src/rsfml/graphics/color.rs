@@ -18,23 +18,23 @@
 *
 * 2. Altered source versions must be plainly marked as such, and must not be
 *    misrepresented as being the original software.
-* 
+*
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
 /*!
-* Utility class for manpulating RGBA colors
-*
-* Color is a simple color class composed of 4 components: Red, Green, Blue, Alpha
-*/
+ * Utility class for manpulating RGBA colors
+ *
+ * Color is a simple color class composed of 4 components: Red, Green, Blue, Alpha
+ */
 
 use ffi = ffi::graphics::color;
 
 /**
-* Utility class for manpulating RGBA colors
-*
-* Color is a simple color class composed of 4 components: Red, Green, Blue, Alpha
-*/
+ * Utility class for manpulating RGBA colors
+ *
+ * Color is a simple color class composed of 4 components: Red, Green, Blue, Alpha
+ */
 #[deriving(Clone, Ord, Show, ToStr)]
 pub struct Color {
     /// The red composant of the color
@@ -50,66 +50,66 @@ pub struct Color {
 impl Color {
 
     /**
-    * Construct a color from its 3 RGB components
-    * 
-    * # Arguments
-    * * red - Red component   (0 .. 255)
-    * * green - -Green component (0 .. 255)
-    * * blue - Blue component  (0 .. 255)
-    *
-    * Return Color object constructed from the components
-    */
+     * Construct a color from its 3 RGB components
+     *
+     * # Arguments
+     * * red - Red component   (0 .. 255)
+     * * green - -Green component (0 .. 255)
+     * * blue - Blue component  (0 .. 255)
+     *
+     * Return Color object constructed from the components
+     */
     pub fn new_RGB(red : u8, green : u8, blue : u8) -> Color {
         Color {
-            red :   red, 
-            green : green, 
-            blue :  blue, 
+            red :   red,
+            green : green,
+            blue :  blue,
             alpha : 255
         }
     }
 
     /**
-    * Construct a color from its 4 RGBA components
-    * 
-    * # Arguments
-    * * red - Red component   (0 .. 255)
-    * * green - -Green component (0 .. 255)
-    * * blue - Blue component  (0 .. 255)
-    * * alpha - Alpha component  (0 .. 255)
-    *
-    * Return Color object constructed from the components
-    */
+     * Construct a color from its 4 RGBA components
+     *
+     * # Arguments
+     * * red - Red component   (0 .. 255)
+     * * green - -Green component (0 .. 255)
+     * * blue - Blue component  (0 .. 255)
+     * * alpha - Alpha component  (0 .. 255)
+     *
+     * Return Color object constructed from the components
+     */
     pub fn new_RGBA(red : u8, green : u8, blue : u8, alpha : u8) -> Color {
         Color {
-            red :   red, 
-            green : green, 
-            blue :  blue, 
+            red :   red,
+            green : green,
+            blue :  blue,
             alpha : alpha
         }
     }
 
     /**
-    * Add two colors
-    *
-    * # Arguments
-    * * color1 - The first color
-    * * color2 - The second color
-    *
-    * Return the component-wise saturated addition of the two colors
-    */
+     * Add two colors
+     *
+     * # Arguments
+     * * color1 - The first color
+     * * color2 - The second color
+     *
+     * Return the component-wise saturated addition of the two colors
+     */
     pub fn add(color1 : Color, color2 : Color) -> Color {
         unsafe {ffi::sfColor_add(color1, color2)}
     }
 
     /**
-    * Modulate two colors
-    *
-    * # Arguments
-    * * color1 - The first color
-    * * color2 - The second color
-    *
-    * Return the component-wise multiplication of the two colors
-    */
+     * Modulate two colors
+     *
+     * # Arguments
+     * * color1 - The first color
+     * * color2 - The second color
+     *
+     * Return the component-wise multiplication of the two colors
+     */
     pub fn modulate(color1 : Color, color2 : Color) -> Color {
         unsafe {ffi::sfColor_modulate(color1, color2)}
     }
@@ -118,7 +118,7 @@ impl Color {
     pub fn black() -> Color {
         Color::new_RGB(0, 0, 0)
     }
-    
+
     /// White predefined color
     pub fn white() -> Color {
         Color::new_RGB(255, 255, 255)
@@ -193,9 +193,15 @@ impl Mul<Color, Color> for Color {
 
 impl Eq for Color {
     fn eq(&self, other : &Color) -> bool {
-        self.red == other.red && self.green == other.green && self.blue == other.blue && self.alpha == other.alpha
+        self.red == other.red &&
+            self.green == other.green &&
+            self.blue == other.blue &&
+            self.alpha == other.alpha
     }
     fn ne(&self, other : &Color) -> bool {
-        self.red != other.red && self.green != other.green && self.blue != other.blue && self.alpha != other.alpha
+        self.red != other.red &&
+            self.green != other.green &&
+            self.blue != other.blue &&
+            self.alpha != other.alpha
     }
 }

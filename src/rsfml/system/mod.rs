@@ -18,16 +18,15 @@
 *
 * 2. Altered source versions must be plainly marked as such, and must not be
 *    misrepresented as being the original software.
-* 
+*
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
 /*!
-* Base module of SFML, defining various utilities.
-*
-* It provides vector classes, unicode strings and conversion functions, threads and mutexes, timing classes.
-*
-*/
+ * Base module of SFML, defining various utilities.
+ *
+ * It provides vector classes, unicode strings and conversion functions, threads and mutexes, timing classes.
+ */
 
 pub use system::vector2::{Vector2u, Vector2i, Vector2f, ToVec};
 pub use system::vector3::Vector3f;

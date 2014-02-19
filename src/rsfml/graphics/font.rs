@@ -18,13 +18,12 @@
 *
 * 2. Altered source versions must be plainly marked as such, and must not be
 *    misrepresented as being the original software.
-* 
+*
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-/*!
-* Class for loading and manipulating character fonts
-*/
+
+//! Class for loading and manipulating character fonts
 
 use std::libc::c_uint;
 use std::ptr;
@@ -45,115 +44,129 @@ pub struct Font {
 
 impl Font {
     /**
-    * Create a new font from a file
-    *
-    * # Arguments
-    * * filename -  Path of the font file to load
-    * 
-    * Return Some(Font) or None
-    */
+     * Create a new font from a file
+     *
+     * # Arguments
+     * * filename -  Path of the font file to load
+     *
+     * Return Some(Font) or None
+     */
     pub fn new_from_file(filename : &str) -> Option<Font> {
         let mut fnt = ptr::null();
         unsafe {
             filename.with_c_str(|c_str| {
-                fnt = ffi::sfFont_createFromFile(c_str)
-            });
+                    fnt = ffi::sfFont_createFromFile(c_str)
+                });
         }
         if fnt.is_null() {
             None
-        }
-        else {
+        } else {
             Some(Font {
-                font :      fnt, 
-                dropable :  true
-            })
+                    font :      fnt,
+                    dropable :  true
+                })
         }
     }
-    
+
     /**
-    * Create font from a existing one
-    *
-    * # Arguments
-    * * font - Font to copy
-    *
-    * Return Some(Font) or None
-    */
+     * Create font from a existing one
+     *
+     * # Arguments
+     * * font - Font to copy
+     *
+     * Return Some(Font) or None
+     */
     pub fn clone(&self) -> Option<Font> {
         let fnt = unsafe {ffi::sfFont_copy(self.font)};
         if fnt.is_null() {
             None
-        }
-        else {
+        } else {
             Some(Font {
-                font :      fnt, 
-                dropable :  true
-            })
+                    font :      fnt,
+                    dropable :  true
+                })
         }
     }
 
     /**
-    * Get the kerning value corresponding to a given pair of characters in a font
-    * 
-    * # Arguments
-    * * first - Unicode code point of the first character
-    * * second - Unicode code point of the second character
-    * * characterSize - Character size, in pixels
-    *
-    * Return the kerning offset, in pixels
-    */
-    pub fn get_kerning(&self, first : u32, second : u32, characterSize : uint) -> int {
+     * Get the kerning value corresponding to a given pair of characters in a font
+     *
+     * # Arguments
+     * * first - Unicode code point of the first character
+     * * second - Unicode code point of the second character
+     * * characterSize - Character size, in pixels
+     *
+     * Return the kerning offset, in pixels
+     */
+    pub fn get_kerning(&self,
+                       first : u32,
+                       second : u32,
+                       characterSize : uint) -> int {
         unsafe {
-            ffi::sfFont_getKerning(self.font, first, second, characterSize as c_uint) as int
+            ffi::sfFont_getKerning(self.font,
+                                   first,
+                                   second,
+                                   characterSize as c_uint) as int
         }
     }
 
     /**
-    * Get the line spacing value
-    *
-    * # Arguments
-    * * characterSize - Character size, in pixels
-    *
-    * Return the line spacing, in pixels
-    */
+     * Get the line spacing value
+     *
+     * # Arguments
+     * * characterSize - Character size, in pixels
+     *
+     * Return the line spacing, in pixels
+     */
     pub fn get_line_spacing(&self, character_size : uint) -> int {
         unsafe {
-            ffi::sfFont_getLineSpacing(self.font, character_size as c_uint) as int
+            ffi::sfFont_getLineSpacing(self.font,
+                                       character_size as c_uint) as int
         }
     }
 
     /**
-    * Get the texture containing the glyphs of a given size in a font
-    *
-    * # Arguments
-    * * characterSize - Character size, in pixels
-    *
-    * Return the texture
-    */
+     * Get the texture containing the glyphs of a given size in a font
+     *
+     * # Arguments
+     * * characterSize - Character size, in pixels
+     *
+     * Return the texture
+     */
     pub fn get_texture(&self, character_size : uint) -> Option<Texture> {
-        let tex = unsafe {ffi::sfFont_getTexture(self.font, character_size as c_uint)};
+        let tex = unsafe {ffi::sfFont_getTexture(self.font,
+                                                 character_size as c_uint)};
         if tex.is_null() {
             None
-        }
-        else {
+        } else {
             Some(Wrappable::wrap(tex))
         }
     }
 
     /**
-    * Get a glyph in a font
-    *
-    * # Arguments
-    * * codePoint - Unicode code point of the character to get
-    * * characterSize - Character size, in pixels
-    * * bold - Retrieve the bold version or the regular one?
-    *
-    * Return the corresponding glyph
-    */
-    pub fn get_glyph(&self, codepoint : u32, character_size : uint, bold : bool) -> Glyph {
+     * Get a glyph in a font
+     *
+     * # Arguments
+     * * codePoint - Unicode code point of the character to get
+     * * characterSize - Character size, in pixels
+     * * bold - Retrieve the bold version or the regular one?
+     *
+     * Return the corresponding glyph
+     */
+    pub fn get_glyph(&self,
+                     codepoint : u32,
+                     character_size : uint,
+                     bold : bool) -> Glyph {
         unsafe {
             match bold {
-                true        => ffi::sfFont_getGlyph(self.font, codepoint, character_size as c_uint, SFFALSE),
-                false       => ffi::sfFont_getGlyph(self.font, codepoint, character_size as c_uint, SFTRUE)
+                true        => ffi::sfFont_getGlyph(self.font,
+                                                    codepoint,
+                                                    character_size as c_uint,
+                                                    SFFALSE),
+                false       => ffi::sfFont_getGlyph(self.font,
+                                                    codepoint,
+                                                    character_size as c_uint,
+                                                    SFTRUE)
             }
         }
     }
@@ -168,14 +181,11 @@ impl Wrappable<*ffi::sfFont> for Font {
     }
     fn unwrap(&self) -> *ffi::sfFont {
         self.font
-    } 
-
+    }
 }
 
 impl Drop for Font {
-    /**
-    * Destroy an existing font
-    */
+    /// Destroy an existing font
     fn drop(&mut self) -> () {
         if self.dropable {
             unsafe {

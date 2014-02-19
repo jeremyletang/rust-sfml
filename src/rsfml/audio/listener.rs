@@ -18,31 +18,31 @@
 *
 * 2. Altered source versions must be plainly marked as such, and must not be
 *    misrepresented as being the original software.
-* 
+*
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
 /*!
-* Audio listener
-*
-* The audio listener is the point in the scene from where all the sounds are heard.
-*
-*/
+ * Audio listener
+ *
+ * The audio listener is the point in the scene from where all the sounds are heard.
+ *
+ */
 
 use system::vector3::Vector3f;
 
 use ffi = ffi::audio::listener;
 
 /**
-* Change the global volume of all the sounds and musics
-*
-* The volume is a number between 0 and 100, it is combined with
-* the individual volume of each sound / music.
-* The default value for the volume is 100 (maximum).
-*
-* # Arguments
-* * volume - The new global volume, in the range [0, 100]
-*/
+ * Change the global volume of all the sounds and musics
+ *
+ * The volume is a number between 0 and 100, it is combined with
+ * the individual volume of each sound / music.
+ * The default value for the volume is 100 (maximum).
+ *
+ * # Arguments
+ * * volume - The new global volume, in the range [0, 100]
+ */
 pub fn set_global_volume(volume : f32) -> () {
     unsafe {
         ffi::sfListener_setGlobalVolume(volume as f32)
@@ -50,10 +50,10 @@ pub fn set_global_volume(volume : f32) -> () {
 }
 
 /**
-* Get the current value of the global volume
-*
-* Return the current global volume, in the range [0, 100]
-*/
+ * Get the current value of the global volume
+ *
+ * Return the current global volume, in the range [0, 100]
+ */
 pub fn get_global_volume() -> f32 {
     unsafe {
         ffi::sfListener_getGlobalVolume() as f32
@@ -61,13 +61,13 @@ pub fn get_global_volume() -> f32 {
 }
 
 /**
-* Set the position of the listener in the scene
-*
-* The default listener's position is (0, 0, 0).
-*
-* # Arguments
-* * * position - the New position of the listener
-*/
+ * Set the position of the listener in the scene
+ *
+ * The default listener's position is (0, 0, 0).
+ *
+ * # Arguments
+ * * * position - the New position of the listener
+ */
 pub fn set_position(position : &Vector3f) -> () {
     unsafe {
         ffi::sfListener_setPosition(*position)
@@ -75,15 +75,15 @@ pub fn set_position(position : &Vector3f) -> () {
 }
 
 /**
-* Set the position of the listener in the scene
-*
-* The default listener's position is (0, 0, 0).
-*
-* # Arguments
-* * x - the New position of the listener in x
-* * y - the New position of the listener in y
-* * z - the New position of the listener in z
-*/
+ * Set the position of the listener in the scene
+ *
+ * The default listener's position is (0, 0, 0).
+ *
+ * # Arguments
+ * * x - the New position of the listener in x
+ * * y - the New position of the listener in y
+ * * z - the New position of the listener in z
+ */
 pub fn set_position3f(x : f32, y : f32, z : f32) -> () {
     unsafe {
         ffi::sfListener_setPosition(Vector3f::new(x, y, z))
@@ -91,10 +91,10 @@ pub fn set_position3f(x : f32, y : f32, z : f32) -> () {
 }
 
 /**
-* Get the current position of the listener in the scene
-*
-* Return the listener's position
-*/
+ * Get the current position of the listener in the scene
+ *
+ * Return the listener's position
+ */
 pub fn get_position() -> Vector3f {
     unsafe {
         ffi::sfListener_getPosition()
@@ -102,16 +102,16 @@ pub fn get_position() -> Vector3f {
 }
 
 /**
-* Set the orientation of the listener in the scene
-*
-* The orientation defines the 3D axes of the listener
-* (left, up, front) in the scene. The orientation vector
-* doesn't have to be normalized.
-* The default listener's orientation is (0, 0, -1).
-*
-* # Arguments
-* * direction - New listener's orientation
-*/
+ * Set the orientation of the listener in the scene
+ *
+ * The orientation defines the 3D axes of the listener
+ * (left, up, front) in the scene. The orientation vector
+ * doesn't have to be normalized.
+ * The default listener's orientation is (0, 0, -1).
+ *
+ * # Arguments
+ * * direction - New listener's orientation
+ */
 pub fn set_direction(direction : &Vector3f) -> () {
     unsafe {
         ffi::sfListener_setDirection(*direction)

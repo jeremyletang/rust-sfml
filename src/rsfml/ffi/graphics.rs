@@ -18,18 +18,17 @@
 *
 * 2. Altered source versions must be plainly marked as such, and must not be
 *    misrepresented as being the original software.
-* 
+*
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
 pub mod render_window {
-    
     use std::libc::{c_uint, c_float, c_char};
-    
+
     use system::vector2::{Vector2f, Vector2i, Vector2u};
     use window::ContextSettings;
     use graphics::{Color, IntRect};
-    
+
     use ffi::window::video_mode::sfVideoMode;
     use ffi::graphics::text::sfText;
     use ffi::graphics::sprite::sfSprite;
@@ -101,16 +100,16 @@ pub mod render_window {
         pub fn sfRenderWindow_capture(renderWindow : *sfRenderWindow) -> *sfImage;
         pub fn sfMouse_getPositionRenderWindow(relativeTo : *sfRenderWindow) -> Vector2i;
         pub fn sfMouse_setPositionRenderWindow(position : Vector2i, relativeTo : *sfRenderWindow) -> ();
-    }    
+    }
 }
 
 pub mod circle_shape {
-    
+
     use std::libc::{c_void, c_float, c_uint};
 
     use system::vector2::Vector2f;
     use graphics::{Color, Transform, IntRect, FloatRect};
-    
+
     use ffi::graphics::texture::sfTexture;
     use ffi::sfml_types::SfBool;
 
@@ -120,7 +119,7 @@ pub mod circle_shape {
         Transform :         Transform,
         InverseTransform :  Transform
     }
-    
+
     extern "C" {
         pub fn sfCircleShape_create() -> *sfCircleShape;
         pub fn sfCircleShape_copy(shape : *sfCircleShape) -> *sfCircleShape;
@@ -159,9 +158,9 @@ pub mod circle_shape {
 }
 
 pub mod color {
-    
+
     use graphics::Color;
-    
+
     extern "C" {
         pub fn sfColor_fromRGB(red : u8, green : u8, blue : u8) -> Color;
         pub fn sfColor_fromRGBA(red : u8, green : u8, blue : u8, alpha : u8) -> Color;
@@ -176,10 +175,10 @@ pub mod convex_shape {
 
     use system::vector2::Vector2f;
     use graphics::{Color, Transform, FloatRect, IntRect};
-    
+
     use ffi::graphics::texture::sfTexture;
     use ffi::sfml_types::SfBool;
-    
+
     pub struct sfConvexShape {
         This :              *c_void,
         Texture :           *sfTexture,
@@ -224,11 +223,10 @@ pub mod convex_shape {
 }
 
 pub mod font {
-
     use std::libc::{c_void, c_uint, c_int, c_char};
-    
+
     use graphics::Glyph;
-    
+
     use ffi::graphics::texture::sfTexture;
     use ffi::sfml_types::SfBool;
 
@@ -250,12 +248,11 @@ pub mod font {
 }
 
 pub mod image {
-    
     use std::libc::{c_void, c_uint, c_char};
 
     use graphics::{Color, IntRect};
     use system::vector2::Vector2u;
-    
+
     use ffi::sfml_types::SfBool;
 
     pub struct sfImage {
@@ -284,10 +281,9 @@ pub mod image {
 }
 
 pub mod rect {
-    
     use std::libc::{c_int};
     use graphics::{FloatRect, IntRect};
-    
+
     use ffi::sfml_types::{SfBool};
 
     extern "C" {
@@ -299,12 +295,11 @@ pub mod rect {
 }
 
 pub mod rectangle_shape {
-    
     use std::libc::{c_void, c_float, c_uint};
 
     use system::vector2::Vector2f;
     use graphics::{Color, Transform, FloatRect, IntRect};
-    
+
     use ffi::graphics::texture::sfTexture;
     use ffi::sfml_types::SfBool;
 
@@ -314,7 +309,7 @@ pub mod rectangle_shape {
         Transform :         Transform,
         InverseTransform :  Transform
     }
-    
+
     extern "C" {
         pub fn sfRectangleShape_create() -> *sfRectangleShape;
         pub fn sfRectangleShape_copy(shape : *sfRectangleShape) -> *sfRectangleShape;
@@ -352,11 +347,10 @@ pub mod rectangle_shape {
 }
 
 pub mod render_states {
-    
     use graphics::Transform;
-    
-    use ffi::graphics::shader::sfShader; 
-    use ffi::graphics::texture::sfTexture; 
+
+    use ffi::graphics::shader::sfShader;
+    use ffi::graphics::texture::sfTexture;
 
     pub struct sfRenderStates {
         blendMode : i32,
@@ -373,7 +367,7 @@ pub mod shader {
     use graphics::{Transform, Color};
     use system::vector2::Vector2f;
     use system::vector3::Vector3f;
-    
+
     use ffi::graphics::texture::sfTexture;
     use ffi::sfml_types::SfBool;
 
@@ -403,12 +397,11 @@ pub mod shader {
 
 #[doc(hidden)]
 pub mod render_texture {
-    
     use std::libc::{c_void, c_uint};
 
     use system::vector2::{Vector2f, Vector2i, Vector2u};
     use graphics::{Color, IntRect};
-    
+
     use ffi::graphics::sprite::sfSprite;
     use ffi::graphics::render_states::sfRenderStates;
     use ffi::graphics::texture::sfTexture;
@@ -427,7 +420,7 @@ pub mod render_texture {
         DefaultView :   sfView,
         CurrentView :   sfView
     }
-    
+
     extern "C" {
         pub fn sfRenderTexture_create(width : c_uint, height : c_uint, depthBuffer : SfBool) -> *sfRenderTexture;
         pub fn sfRenderTexture_destroy(renderTexture : *sfRenderTexture) -> ();
@@ -459,12 +452,12 @@ pub mod render_texture {
 }
 
 pub mod shape {
-    
+
     use std::libc::{c_void, c_float, c_uint};
 
     use graphics::{Color, Transform, IntRect, FloatRect};
     use system::vector2::Vector2f;
-    
+
     use ffi::graphics::texture::sfTexture;
     use ffi::sfml_types::SfBool;
 
@@ -515,7 +508,7 @@ pub mod sprite {
 
     use system::vector2::Vector2f;
     use graphics::{Color, Transform, IntRect, FloatRect};
-    
+
     use ffi::graphics::texture::sfTexture;
     use ffi::sfml_types::SfBool;
 
@@ -555,12 +548,11 @@ pub mod sprite {
 }
 
 pub mod text {
-    
     use std::libc::{c_uint, c_float, c_void, size_t, c_char};
-    
+
     use system::vector2::Vector2f;
     use graphics::{Color, Transform, FloatRect};
-    
+
     use ffi::graphics::font::sfFont;
 
     pub struct sfText {
@@ -606,12 +598,12 @@ pub mod text {
 }
 
 pub mod texture {
-    
+
     use std::libc::{c_uint, c_void, c_char};
 
     use system::vector2::Vector2u;
     use graphics::IntRect;
-    
+
     use ffi::graphics::render_window::sfRenderWindow;
     use ffi::graphics::image::sfImage;
     use ffi::window::window::sfWindow;
@@ -645,7 +637,7 @@ pub mod texture {
 }
 
 pub mod transform {
-    
+
     use std::libc::c_float;
 
     use system::vector2::Vector2f;
@@ -667,12 +659,12 @@ pub mod transform {
 }
 
 pub mod transformable {
-    
+
     use std::libc::{c_float, c_void};
 
     use system::vector2::Vector2f;
     use graphics::Transform;
-    
+
     pub struct sfTransformable {
         This :              *c_void,
         transform :         Transform,
@@ -700,11 +692,11 @@ pub mod transformable {
 }
 
 pub mod vertex_array {
-    
+
     use std::libc::{c_uint, c_void};
 
     use graphics::{FloatRect, Vertex};
-    
+
     pub type sfPrimitiveType = c_uint;
     pub static SFPOINTS :           sfPrimitiveType = 0;
     pub static SFLINES :            sfPrimitiveType = 1;
@@ -734,7 +726,7 @@ pub mod vertex_array {
 }
 
 pub mod view {
-    
+
     use std::libc::{c_float, c_void};
 
     use system::vector2::Vector2f;

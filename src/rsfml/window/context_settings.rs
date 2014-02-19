@@ -18,22 +18,22 @@
 *
 * 2. Altered source versions must be plainly marked as such, and must not be
 *    misrepresented as being the original software.
-* 
+*
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
 /**
-* OpenGL contextSettings
-*
-* Structure defining the window's creation settings
-*/
+ * OpenGL context settings
+ *
+ * Structure defining the window's creation settings
+ */
 #[deriving(Clone, Eq, Ord, Show, ToStr)]
 pub struct ContextSettings {
     /// Bits of the depth buffer.
     depth_bits:         u32,
-    /// Bits of the stencil buffer. 
+    /// Bits of the stencil buffer.
     stencil_bits:       u32,
-    /// Level of antialiasing. 
+    /// Level of antialiasing.
     antialiasing_level: u32,
     /// Major number of the context version
     major_version:      u32,
@@ -43,15 +43,15 @@ pub struct ContextSettings {
 
 impl ContextSettings {
     /**
-    * Create a default ContextSettings
-    *
-    * # Default values:
-    * * `depth_bits`: 0
-    * * `stencil_bits`: 0
-    * * `antialiasing_level`: 0
-    * * `major_version`: 2
-    * * `minor_version`: 0
-    */
+     * Create a default ContextSettings
+     *
+     * # Default values:
+     * * `depth_bits`: 0
+     * * `stencil_bits`: 0
+     * * `antialiasing_level`: 0
+     * * `major_version`: 2
+     * * `minor_version`: 0
+     */
     pub fn default() -> ContextSettings {
         ContextSettings {
             depth_bits :            0,

@@ -18,7 +18,7 @@
 *
 * 2. Altered source versions must be plainly marked as such, and must not be
 *    misrepresented as being the original software.
-* 
+*
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
@@ -30,7 +30,8 @@ pub use graphics::render_states::RenderStates;
 pub use graphics::render_window::RenderWindow;
 pub use graphics::rect::{FloatRect, IntRect};
 pub use graphics::texture::Texture;
-pub use graphics::blend_mode::{BlendMode, BlendAlpha, BlendAdd, BlendMultiply, BlendNone};
+pub use graphics::blend_mode::{BlendMode, BlendAlpha, BlendAdd, BlendMultiply,
+                               BlendNone};
 pub use graphics::transform::Transform;
 pub use graphics::text::Text;
 pub use graphics::shader::Shader;
@@ -42,7 +43,9 @@ pub use graphics::sprite::Sprite;
 pub use graphics::circle_shape::CircleShape;
 pub use graphics::rectangle_shape::RectangleShape;
 pub use graphics::convex_shape::ConvexShape;
-pub use graphics::primitive_type::{PrimitiveType, Points, Lines, LinesStrip, Triangles, TrianglesStrip, TrianglesFan, Quads};
+pub use graphics::primitive_type::{PrimitiveType, Points, Lines, LinesStrip,
+                                   Triangles, TrianglesStrip, TrianglesFan,
+                                   Quads};
 pub use graphics::vertex::Vertex;
 pub use graphics::transformable::Transformable;
 pub use graphics::glyph::Glyph;
@@ -53,14 +56,14 @@ pub use graphics::text_style::{TextStyle, Regular, Bold, Italic, Underlined};
 
 /// Shapes implementations using reference counting to manage shared resources
 pub mod rc {
-	pub use graphics::circle_shape::rc::CircleShape;
-	pub use graphics::rectangle_shape::rc::RectangleShape;
-	pub use graphics::convex_shape::rc::ConvexShape;
-	pub use graphics::shape::rc::Shape;
-	pub use graphics::shader::rc::Shader;
-	pub use graphics::text::rc::Text;
-	pub use graphics::sprite::rc::Sprite;
-	pub use graphics::render_states::rc::RenderStates;
+    pub use graphics::circle_shape::rc::CircleShape;
+    pub use graphics::rectangle_shape::rc::RectangleShape;
+    pub use graphics::convex_shape::rc::ConvexShape;
+    pub use graphics::shape::rc::Shape;
+    pub use graphics::shader::rc::Shader;
+    pub use graphics::text::rc::Text;
+    pub use graphics::sprite::rc::Sprite;
+    pub use graphics::render_states::rc::RenderStates;
 }
 
 #[doc(hidden)]

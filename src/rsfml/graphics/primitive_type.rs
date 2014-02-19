@@ -18,18 +18,18 @@
 *
 * 2. Altered source versions must be plainly marked as such, and must not be
 *    misrepresented as being the original software.
-* 
+*
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
 /**
-* Types of primitives that a sf::VertexArray can render
-*
-* Points and lines have no area, therefore their thickness
-* will always be 1 pixel, regardless the current transform
-* and view.
-*
-*/
+ * Types of primitives that a VertexArray can render
+ *
+ * Points and lines have no area, therefore their thickness
+ * will always be 1 pixel, regardless the current transform
+ * and view.
+ *
+ */
 #[deriving(Clone, Eq, Ord, Show, ToStr)]
 pub enum PrimitiveType {
     /// List of individual points.

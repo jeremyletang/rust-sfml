@@ -18,12 +18,11 @@
 *
 * 2. Altered source versions must be plainly marked as such, and must not be
 *    misrepresented as being the original software.
-* 
+*
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
 pub mod clock {
-    
     use std::libc::{c_void};
     use ffi::system::time::sfTime;
 
@@ -41,7 +40,6 @@ pub mod clock {
 }
 
 pub mod sleep {
-    
     use ffi::system::time::sfTime;
 
     extern "C" {
@@ -50,13 +48,12 @@ pub mod sleep {
 }
 
 pub mod time {
-    
     pub use std::libc::{c_longlong, c_float, c_int};
 
     pub struct sfTime {
         microseconds : c_longlong
     }
-    
+
     extern "C" {
         pub fn sfTime_asSeconds(time : sfTime) -> c_float;
         pub fn sfTime_asMilliseconds(time : sfTime) -> c_int;

@@ -18,25 +18,21 @@
 *
 * 2. Altered source versions must be plainly marked as such, and must not be
 *    misrepresented as being the original software.
-* 
+*
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-/*!
-* Target for off-screen 2D rendering into a texture
-*/
+//! Target for off-screen 2D rendering into a texture
 
 use std::libc::c_float;
 
 use traits::Wrappable;
 use graphics::Transform;
 use system::vector2::Vector2f;
-    
+
 use ffi = ffi::graphics::transformable;
 
-/**
-* Target for off-screen 2D rendering into a texture
-*/
+/// Target for off-screen 2D rendering into a texture
 pub struct Transformable{
     #[doc(hidden)]
     priv transformable : *ffi::sfTransformable
@@ -44,49 +40,47 @@ pub struct Transformable{
 
 impl Transformable {
     /**
-    * Create a new transformable
-    *
-    * Return Some(Transformable) or None
-    */
+     * Create a new transformable
+     *
+     * Return Some(Transformable) or None
+     */
     pub fn new() -> Option<Transformable> {
         let tran = unsafe { ffi::sfTransformable_create() };
         if tran.is_null() {
             None
-        }
-        else {
+        } else {
             Some(Transformable {
-                transformable : tran
-            })
+                    transformable : tran
+                })
         }
     }
 
     /**
-    * Copy an existing transformable
-    *
-    * Return Some(Transformable) or None
-    */
+     * Copy an existing transformable
+     *
+     * Return Some(Transformable) or None
+     */
     pub fn clone(&self) -> Option<Transformable> {
         let tran = unsafe { ffi::sfTransformable_copy(self.transformable) };
         if tran.is_null() {
             None
-        }
-        else {
+        } else {
             Some(Transformable {
-                transformable :tran
-            }) 
+                    transformable :tran
+                })
         }
     }
 
     /**
-    * Set the position of a transformable
-    *
-    * This function completely overwrites the previous position.
-    * See move to apply an offset based on the previous position instead.
-    * The default position of a transformable Transformable object is (0, 0).
-    * 
-    * # Arguments
-    * * position - The new position
-    */
+     * Set the position of a transformable
+     *
+     * This function completely overwrites the previous position.
+     * See move to apply an offset based on the previous position instead.
+     * The default position of a transformable Transformable object is (0, 0).
+     *
+     * # Arguments
+     * * position - The new position
+     */
     pub fn set_position(&mut self, position : &Vector2f) -> () {
         unsafe {
             ffi::sfTransformable_setPosition(self.transformable, *position)
@@ -94,15 +88,15 @@ impl Transformable {
     }
 
     /**
-    * Set the orientation of a transformable
-    *
-    * This function completely overwrites the previous rotation.
-    * See rotate to add an angle based on the previous rotation instead.
-    * The default rotation of a transformable Transformable object is 0.
-    *
-    * # Arguments
-    * * angle - The new rotation, in degrees
-    */
+     * Set the orientation of a transformable
+     *
+     * This function completely overwrites the previous rotation.
+     * See rotate to add an angle based on the previous rotation instead.
+     * The default rotation of a transformable Transformable object is 0.
+     *
+     * # Arguments
+     * * angle - The new rotation, in degrees
+     */
     pub fn set_rotation(&mut self, angle : f32) -> () {
         unsafe {
             ffi::sfTransformable_setRotation(self.transformable, angle as c_float)
@@ -110,15 +104,15 @@ impl Transformable {
     }
 
     /**
-    * Set the scale factors of a transformable
-    *
-    * This function completely overwrites the previous scale.
-    * See scale to add a factor based on the previous scale instead.
-    * The default scale of a transformable Transformable object is (1, 1).
-    * 
-    * # Arguments
-    * * scale - New scale factors
-    */
+     * Set the scale factors of a transformable
+     *
+     * This function completely overwrites the previous scale.
+     * See scale to add a factor based on the previous scale instead.
+     * The default scale of a transformable Transformable object is (1, 1).
+     *
+     * # Arguments
+     * * scale - New scale factors
+     */
     pub fn set_scale(&mut self, scale : &Vector2f) -> () {
         unsafe {
             ffi::sfTransformable_setScale(self.transformable, *scale)
@@ -126,18 +120,18 @@ impl Transformable {
     }
 
     /**
-    * Set the local origin of a transformable
-    *
-    * The origin of an object defines the center point for
-    * all transformations (position, scale, rotation).
-    * The coordinates of this point must be relative to the
-    * top-left corner of the object, and ignore all
-    * transformations (position, scale, rotation).
-    * The default origin of a transformable Transformable object is (0, 0).
-    *
-    * # Arguments
-    * * origin - New origin
-    */
+     * Set the local origin of a transformable
+     *
+     * The origin of an object defines the center point for
+     * all transformations (position, scale, rotation).
+     * The coordinates of this point must be relative to the
+     * top-left corner of the object, and ignore all
+     * transformations (position, scale, rotation).
+     * The default origin of a transformable Transformable object is (0, 0).
+     *
+     * # Arguments
+     * * origin - New origin
+     */
     pub fn set_origin(&mut self, origin : &Vector2f) -> () {
         unsafe {
             ffi::sfTransformable_setOrigin(self.transformable, *origin)
@@ -145,10 +139,10 @@ impl Transformable {
     }
 
     /**
-    * Get the position of a transformable
-    *
-    * Return the current position
-    */
+     * Get the position of a transformable
+     *
+     * Return the current position
+     */
     pub fn get_position(&self) -> Vector2f {
         unsafe {
             ffi::sfTransformable_getPosition(self.transformable)
@@ -156,12 +150,12 @@ impl Transformable {
     }
 
     /**
-    * Get the orientation of a transformable
-    *
-    * The rotation is always in the range [0, 360].
-    * 
-    * Return the current rotation, in degrees
-    */
+     * Get the orientation of a transformable
+     *
+     * The rotation is always in the range [0, 360].
+     *
+     * Return the current rotation, in degrees
+     */
     pub fn get_rotation(&self) -> f32 {
         unsafe {
             ffi::sfTransformable_getRotation(self.transformable) as f32
@@ -169,10 +163,10 @@ impl Transformable {
     }
 
     /**
-    * Get the current scale of a transformable
-    *
-    * Return the current scale factors
-    */
+     * Get the current scale of a transformable
+     *
+     * Return the current scale factors
+     */
     pub fn get_scale(&self) -> Vector2f {
         unsafe {
             ffi::sfTransformable_getScale(self.transformable)
@@ -180,10 +174,10 @@ impl Transformable {
     }
 
     /**
-    * Get the local origin of a transformable
-    *
-    * Return the current origin
-    */
+     * Get the local origin of a transformable
+     *
+     * Return the current origin
+     */
     pub fn get_origin(&self) -> Vector2f {
         unsafe {
             ffi::sfTransformable_getOrigin(self.transformable)
@@ -191,14 +185,14 @@ impl Transformable {
     }
 
     /**
-    * Move a transformable by a given offset
-    *
-    * This function adds to the current position of the object,
-    * unlike set_position which overwrites it.
-    *
-    * # Arguments
-    * * offset - Offset
-    */
+     * Move a transformable by a given offset
+     *
+     * This function adds to the current position of the object,
+     * unlike set_position which overwrites it.
+     *
+     * # Arguments
+     * * offset - Offset
+     */
     pub fn move(&mut self, offset : &Vector2f) -> () {
         unsafe {
             ffi::sfTransformable_move(self.transformable, *offset)
@@ -206,14 +200,14 @@ impl Transformable {
     }
 
     /**
-    * Rotate a transformable
-    *
-    * This function adds to the current rotation of the object,
-    * unlike set_rotation which overwrites it.
-    *
-    * # Arguments
-    * * angle - Angle of rotation, in degrees
-    */
+     * Rotate a transformable
+     *
+     * This function adds to the current rotation of the object,
+     * unlike set_rotation which overwrites it.
+     *
+     * # Arguments
+     * * angle - Angle of rotation, in degrees
+     */
     pub fn rotate(&mut self, angle : f32) -> () {
         unsafe {
             ffi::sfTransformable_rotate(self.transformable, angle as c_float)
@@ -221,14 +215,14 @@ impl Transformable {
     }
 
     /**
-    * Scale a transformable
-    *
-    * This function multiplies the current scale of the object,
-    * unlike set_scale which overwrites it.
-    *
-    * # Arguments
-    * * factors - Scale factors
-    */
+     * Scale a transformable
+     *
+     * This function multiplies the current scale of the object,
+     * unlike set_scale which overwrites it.
+     *
+     * # Arguments
+     * * factors - Scale factors
+     */
     pub fn scale(&mut self, factors : &Vector2f) -> () {
         unsafe {
             ffi::sfTransformable_scale(self.transformable, *factors)
@@ -236,10 +230,11 @@ impl Transformable {
     }
 
     /**
-    * Get the combined transform of a transformable
-    *
-    * Return the transform combining the position/rotation/scale/origin of the object
-    */
+     * Get the combined transform of a transformable
+     *
+     * Return the transform combining the
+     * position/rotation/scale/origin of the object
+     */
     pub fn get_transform(&self) -> Transform {
         unsafe {
             ffi::sfTransformable_getTransform(self.transformable)
@@ -247,10 +242,10 @@ impl Transformable {
     }
 
     /**
-    * Get the inverse of the combined transform of a transformable
-    *
-    * Return the inverse of the combined transformations applied to the object
-    */
+     * Get the inverse of the combined transform of a transformable
+     *
+     * Return the inverse of the combined transformations applied to the object
+     */
     pub fn get_inverse_transform(&self) -> Transform {
         unsafe {
             ffi::sfTransformable_getInverseTransform(self.transformable)

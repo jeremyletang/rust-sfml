@@ -18,20 +18,18 @@
 *
 * 2. Altered source versions must be plainly marked as such, and must not be
 *    misrepresented as being the original software.
-* 
+*
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-/*!
-* Define the states used for drawing to a RenderTarget
-*/
+//! Define the states used for drawing to a RenderTarget
 
 use std::rc::Rc;
 use std::cell::RefCell;
-use std::{ptr, cast};
+use std::ptr;
 
 use traits::Wrappable;
-use graphics::{BlendMode, BlendAlpha, Texture, rc, Transform}; 
+use graphics::{BlendMode, BlendAlpha, Texture, rc, Transform};
 
 use ffi = ffi::graphics::render_states;
 
@@ -39,7 +37,7 @@ use ffi = ffi::graphics::render_states;
 pub struct RenderStates {
     #[doc(hidden)]
     priv sfRenderStates :   ffi::sfRenderStates,
-    /// Blending mode. 
+    /// Blending mode.
     blendMode :             BlendMode,
     /// Transform
     transform :             Transform,
@@ -52,21 +50,21 @@ pub struct RenderStates {
 impl RenderStates {
 
     /**
-    * Create a new RenderStates.
-    *
-    * # Arguments
-    * * blend_mode - The BlendMode 
-    * * transform - The transform
-    * * texture - Some(texture) if there is a texture, None otherwise
-    * * shader - Some(shader) if there is a shader, None otherwise
-    *
-    * Return a new initialized RenderState
-    */
-    pub fn new(blend_mode : BlendMode, 
-        transform : Transform, 
-        texture : Option<Rc<RefCell<Texture>>>, 
+     * Create a new RenderStates.
+     *
+     * # Arguments
+     * * blend_mode - The BlendMode
+     * * transform - The transform
+     * * texture - Some(texture) if there is a texture, None otherwise
+     * * shader - Some(shader) if there is a shader, None otherwise
+     *
+     * Return a new initialized RenderState
+     */
+    pub fn new(blend_mode : BlendMode,
+        transform : Transform,
+        texture : Option<Rc<RefCell<Texture>>>,
         shader : Option<Rc<RefCell<rc::Shader>>>) -> RenderStates {
-        
+
         RenderStates {
             sfRenderStates :    ffi::sfRenderStates {
                 blendMode : blend_mode as i32,
@@ -82,16 +80,16 @@ impl RenderStates {
     }
 
     /**
-    * Create a new RenderStates initialized to default.
-    *
-    * # default
-    * * blendMode is initialized to BlendAlpha
-    * * transform is initialized to the identity matrix
-    * * texture is initialized to None
-    * * shader is initialized to None
-    *
-    * Return a new default RenderStates
-    */
+     * Create a new RenderStates initialized to default.
+     *
+     * # default
+     * * blendMode is initialized to BlendAlpha
+     * * transform is initialized to the identity matrix
+     * * texture is initialized to None
+     * * shader is initialized to None
+     *
+     * Return a new default RenderStates
+     */
     pub fn default() -> RenderStates {
         RenderStates {
             sfRenderStates :    ffi::sfRenderStates {
@@ -109,13 +107,19 @@ impl RenderStates {
 
     #[doc(hidden)]
     pub fn unwrap(&mut self) -> *ffi::sfRenderStates {
-        // let tmp_tex = self.texture.get_ref().clone();
-        // let tmp_shad = self.shader.get_ref().clone();
         self.sfRenderStates.blendMode = self.blendMode as i32;
         self.sfRenderStates.transform = self.transform;
-        self.sfRenderStates.texture = if !self.texture.is_none() { self.texture.get_ref().borrow().with(|t| t.unwrap()) } else { ptr::null() };
-        self.sfRenderStates.shader = if !self.shader.is_none() { self.shader.get_ref().borrow().with(|t| t.unwrap()) } else { ptr::null() };
-        
-        unsafe { cast::transmute(&self.sfRenderStates) }
+        self.sfRenderStates.texture = if !self.texture.is_none() {
+            self.texture.get_ref().borrow().with(|t| t.unwrap())
+        } else {
+            ptr::null()
+        };
+        self.sfRenderStates.shader = if !self.shader.is_none() {
+            self.shader.get_ref().borrow().with(|t| t.unwrap())
+        } else {
+            ptr::null()
+        };
+
+        &self.sfRenderStates as *ffi::sfRenderStates
     }
-} 
+}
