@@ -151,6 +151,7 @@ Here is a list of all modules :
 #[crate_type = "rlib"];
 #[crate_type = "dylib"];
 #[allow(dead_code)];
+#[allow(non_camel_case_types)];
 #[warn(missing_doc)];
 
 extern crate extra;
