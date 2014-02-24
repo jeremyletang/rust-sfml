@@ -42,7 +42,7 @@ use system::vector2::Vector2f;
  * It has a position and other extra attributes that will be used for drawing:
  * in SFML, vertices also have a color and a pair of texture coordinates.
  */
-#[deriving(Clone, Eq, Ord, Show, ToStr)]
+#[deriving(Clone, Eq, Ord, Show)]
 pub struct Vertex {
     /// 2D position of the vertex
     position :      Vector2f,

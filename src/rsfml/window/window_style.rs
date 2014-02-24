@@ -29,7 +29,7 @@
  */
 
 /// Enumeration of window creation styles
-#[deriving(Clone, Eq, Ord, Show, ToStr)]
+#[deriving(Clone, Eq, Ord, Show)]
 #[repr(C)]
 pub enum WindowStyle {
     /// No border / title bar (this flag and all others are mutually exclusive)

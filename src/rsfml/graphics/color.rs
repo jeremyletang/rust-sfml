@@ -35,7 +35,7 @@ use ffi = ffi::graphics::color;
  *
  * Color is a simple color class composed of 4 components: Red, Green, Blue, Alpha
  */
-#[deriving(Clone, Ord, Show, ToStr)]
+#[deriving(Clone, Ord, Show)]
 pub struct Color {
     /// The red composant of the color
     red :   u8,

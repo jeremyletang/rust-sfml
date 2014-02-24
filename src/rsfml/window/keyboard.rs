@@ -35,7 +35,7 @@ use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi = ffi::window::keyboard;
 
 /// Key codes
-#[deriving(Clone, Eq, Ord, Show, ToStr)]
+#[deriving(Clone, Eq, Ord, Show)]
 #[repr(i64)]
 pub enum Key {
     Unknown = -1,

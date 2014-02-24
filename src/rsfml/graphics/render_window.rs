@@ -413,7 +413,7 @@ impl RenderWindow {
      * Show or hide the mouse cursor
      *
      * # Arguments
-     * * visible - true to show, false to hide
+     * * visible - true to  false to hide
      */
     pub fn set_mouse_cursor_visible(&mut self, visible : bool) -> () {
         let tmp : SfBool = match visible {
