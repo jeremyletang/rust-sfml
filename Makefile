@@ -20,13 +20,13 @@
 #
 # 3. This notice may not be removed or altered from any source distribution.
 
-all: rsfml examples doc
+all: rsfml examples docs
 
 rsfml:
 	mkdir -p lib
 	rustc --out-dir=lib src/rsfml/lib.rs
 
-doc:
+docs:
 	mkdir -p doc
 	rustdoc -o doc src/rsfml/lib.rs
 

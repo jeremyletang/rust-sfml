@@ -79,8 +79,8 @@ fn start(argc: int, argv: **u8) -> int {
 Here is a short example, draw a circle shape and display it.
 
 ```Rust
-extern mod native;
-extern mod rsfml;
+extern crate native;
+extern crate rsfml;
 
 use rsfml::system::Vector2f;
 use rsfml::window::{ContextSettings, VideoMode, event, Close};
@@ -94,7 +94,10 @@ fn start(argc: int, argv: **u8) -> int {
 fn main () -> () {
      // Create the window of the application
     let setting = ContextSettings::default();
-    let mut window = match RenderWindow::new(VideoMode::new_init(800, 600, 32), "SFML Example", Close, &setting) {
+    let mut window = match RenderWindow::new(VideoMode::new_init(800, 600, 32),
+                                             "SFML Example",
+                                             Close,
+                                             &setting) {
         Some(window) => window,
         None => fail!("Cannot create a new Render Window.")
     };
@@ -152,6 +155,7 @@ Here is a list of all modules :
 #[crate_type = "dylib"];
 #[allow(dead_code)];
 #[allow(non_camel_case_types)];
+#[allow(visible_private_types)];
 #[warn(missing_doc)];
 
 extern crate extra;

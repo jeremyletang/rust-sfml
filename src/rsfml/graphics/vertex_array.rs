@@ -39,7 +39,7 @@ pub struct VertexArray {
     priv vertex_array : *ffi::sfVertexArray
 }
 
-/// An itertator over the vertice of a VertexArray
+/// An iterator over the vertice of a VertexArray
 pub struct Vertices<'s> {
     #[doc(hidden)]
     priv vertex_array: *ffi::sfVertexArray,

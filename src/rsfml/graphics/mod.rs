@@ -27,7 +27,7 @@
 */
 
 pub use graphics::render_states::RenderStates;
-pub use graphics::render_window::RenderWindow;
+pub use graphics::render_window::{RenderWindow, Events};
 pub use graphics::rect::{FloatRect, IntRect};
 pub use graphics::texture::Texture;
 pub use graphics::blend_mode::{BlendMode, BlendAlpha, BlendAdd, BlendMultiply,
@@ -42,7 +42,7 @@ pub use graphics::image::Image;
 pub use graphics::sprite::Sprite;
 pub use graphics::circle_shape::CircleShape;
 pub use graphics::rectangle_shape::RectangleShape;
-pub use graphics::convex_shape::ConvexShape;
+pub use graphics::convex_shape::{ConvexShape, ConvexShapePoints};
 pub use graphics::primitive_type::{PrimitiveType, Points, Lines, LinesStrip,
                                    Triangles, TrianglesStrip, TrianglesFan,
                                    Quads};
@@ -51,14 +51,14 @@ pub use graphics::transformable::Transformable;
 pub use graphics::glyph::Glyph;
 pub use graphics::render_texture::RenderTexture;
 pub use graphics::shape::Shape;
-pub use graphics::vertex_array::VertexArray;
+pub use graphics::vertex_array::{VertexArray, Vertices};
 pub use graphics::text_style::{TextStyle, Regular, Bold, Italic, Underlined};
 
 /// Shapes implementations using reference counting to manage shared resources
 pub mod rc {
     pub use graphics::circle_shape::rc::CircleShape;
     pub use graphics::rectangle_shape::rc::RectangleShape;
-    pub use graphics::convex_shape::rc::ConvexShape;
+    pub use graphics::convex_shape::rc::{ConvexShape, ConvexShapePoints};
     pub use graphics::shape::rc::Shape;
     pub use graphics::shader::rc::Shader;
     pub use graphics::text::rc::Text;

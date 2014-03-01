@@ -59,8 +59,8 @@ pub struct ConvexShape {
     priv texture :      Option<Rc<RefCell<Texture>>>
 }
 
-/// An itertator over the points of a ConvexShape
-pub struct Points {
+/// An iterator over the points of a ConvexShape
+pub struct ConvexShapePoints {
     #[doc(hidden)]
     priv convex_shape: *ffi::sfConvexShape,
     #[doc(hidden)]
@@ -658,15 +658,15 @@ impl ConvexShape {
     }
 
     /// Return an immutable iterator over all the points of the ConvexShape
-    pub fn points(&self) -> Points {
-        Points {
+    pub fn points(&self) -> ConvexShapePoints {
+        ConvexShapePoints {
             convex_shape: self.convex_shape,
             pos: 0
         }
     }
 }
 
-impl Iterator<Vector2f> for Points {
+impl Iterator<Vector2f> for ConvexShapePoints {
     fn next(&mut self) -> Option<Vector2f> {
         let point_count =
             unsafe { ffi::sfConvexShape_getPointCount(self.convex_shape) as u32 };
