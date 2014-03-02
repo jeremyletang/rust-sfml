@@ -30,7 +30,7 @@ docs:
 	mkdir -p doc
 	rustdoc -o doc src/rsfml/lib.rs
 
-examples:
+examples: rsfml
 	rustc -o bin/pong -L ./lib src/examples/pong/main.rs
 	rustc -o bin/shape -L ./lib src/examples/shape/main.rs
 	rustc -o bin/custom_drawable -L ./lib src/examples/custom_drawable/main.rs
