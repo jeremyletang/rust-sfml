@@ -32,7 +32,7 @@ pub mod window {
     use ffi::sfml_types::SfBool;
 
     pub struct sfWindow {
-        This : *c_void
+        this : *c_void
     }
 
     pub struct sfEvent {
@@ -102,7 +102,7 @@ pub mod context {
     use ffi::sfml_types::SfBool;
 
     pub struct sfContext {
-        This: *c_void
+        this: *c_void
     }
 
     extern "C" {

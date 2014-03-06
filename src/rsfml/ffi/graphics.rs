@@ -114,10 +114,10 @@ pub mod circle_shape {
     use ffi::sfml_types::SfBool;
 
     pub struct sfCircleShape {
-        This :              *c_void,
-        Texture :           *sfTexture,
-        Transform :         Transform,
-        InverseTransform :  Transform
+        this :              *c_void,
+        texture :           *sfTexture,
+        transform :         Transform,
+        inverseTransform :  Transform
     }
 
     extern "C" {
@@ -180,10 +180,10 @@ pub mod convex_shape {
     use ffi::sfml_types::SfBool;
 
     pub struct sfConvexShape {
-        This :              *c_void,
-        Texture :           *sfTexture,
-        Transform :         Transform,
-        InverseTransform :  Transform
+        this :              *c_void,
+        texture :           *sfTexture,
+        transform :         Transform,
+        inverseTransform :  Transform
     }
 
     extern "C" {
@@ -231,7 +231,7 @@ pub mod font {
     use ffi::sfml_types::SfBool;
 
     pub struct sfFont {
-        This : *c_void
+        this : *c_void
     }
 
     extern "C" {
@@ -256,7 +256,7 @@ pub mod image {
     use ffi::sfml_types::SfBool;
 
     pub struct sfImage {
-        This : *c_void
+        this : *c_void
     }
 
     extern "C" {
@@ -304,10 +304,10 @@ pub mod rectangle_shape {
     use ffi::sfml_types::SfBool;
 
     pub struct sfRectangleShape {
-        This :              *c_void,
-        Texture :           *sfTexture,
-        Transform :         Transform,
-        InverseTransform :  Transform
+        this :              *c_void,
+        texture :           *sfTexture,
+        transform :         Transform,
+        inverseTransform :  Transform
     }
 
     extern "C" {
@@ -372,7 +372,7 @@ pub mod shader {
     use ffi::sfml_types::SfBool;
 
     pub struct sfShader {
-        This : *c_void
+        this : *c_void
     }
 
     extern "C" {
@@ -415,10 +415,10 @@ pub mod render_texture {
     use ffi::sfml_types::SfBool;
 
     pub struct sfRenderTexture {
-        This :          *c_void,
-        Target :        *sfTexture,
-        DefaultView :   sfView,
-        CurrentView :   sfView
+        this :          *c_void,
+        target :        *sfTexture,
+        defaultView :   sfView,
+        currentView :   sfView
     }
 
     extern "C" {
@@ -462,10 +462,10 @@ pub mod shape {
     use ffi::sfml_types::SfBool;
 
     pub struct sfShape {
-        This :              *c_void,
-        Texture :           *sfTexture,
-        Transform :         Transform,
-        InverseTransform :  Transform
+        this :              *c_void,
+        texture :           *sfTexture,
+        transform :         Transform,
+        inverseTransform :  Transform
     }
 
     extern "C" {
@@ -513,10 +513,10 @@ pub mod sprite {
     use ffi::sfml_types::SfBool;
 
     pub struct sfSprite {
-        This :              *c_void,
-        Texture :           *sfTexture,
-        Transform :         Transform,
-        InverseTransform :  Transform
+        this :              *c_void,
+        texture :           *sfTexture,
+        transform :         Transform,
+        inverseTransform :  Transform
     }
 
     extern "C" {
@@ -556,7 +556,7 @@ pub mod text {
     use ffi::graphics::font::sfFont;
 
     pub struct sfText {
-        This :          c_void,
+        this :          c_void,
         font :          *c_void,
         transform :     Transform,
         transform2 :    Transform
@@ -666,7 +666,7 @@ pub mod transformable {
     use graphics::Transform;
 
     pub struct sfTransformable {
-        This :              *c_void,
+        this :              *c_void,
         transform :         Transform,
         inverseTransform :  Transform
     }
@@ -707,7 +707,7 @@ pub mod vertex_array {
     pub static SFQUADS :            sfPrimitiveType = 6;
 
     pub struct sfVertexArray {
-        This : *c_void
+        this : *c_void
     }
 
     extern "C" {
@@ -733,7 +733,7 @@ pub mod view {
     use graphics::FloatRect;
 
     pub struct sfView {
-        This : *c_void
+        this : *c_void
     }
 
     extern "C" {

@@ -39,7 +39,7 @@ pub mod packet {
     use ffi::sfml_types::SfBool;
 
     pub struct sfPacket {
-        This : *c_void
+        this : *c_void
     }
 
     extern "C" {
@@ -120,7 +120,7 @@ pub mod tcp_listener {
     use ffi::sfml_types::SfBool;
 
     pub struct sfTcpListener {
-        This : *c_void
+        this : *c_void
     }
 
     extern "C" {
@@ -144,7 +144,7 @@ pub mod tcp_socket {
     use ffi::sfml_types::SfBool;
 
     pub struct sfTcpSocket {
-        This : *c_void
+        this : *c_void
     }
 
     extern "C" {
@@ -174,7 +174,7 @@ pub mod udp_socket {
     use ffi::sfml_types::SfBool;
 
     pub struct sfUdpSocket {
-        This : *c_void
+        this : *c_void
     }
 
     extern "C" {
@@ -256,19 +256,19 @@ pub mod ftp {
     pub static INVALIDFILE:                 Status = 1003;
 
     pub struct sfFtp {
-        This : *c_void
+        this : *c_void
     }
 
     pub struct sfFtpDirectoryResponse {
-        This : *c_void
+        this : *c_void
     }
 
     pub struct sfFtpListingResponse {
-        This : *c_void
+        this : *c_void
     }
 
     pub struct sfFtpResponse {
-        This : *c_void
+        this : *c_void
     }
 
     extern "C" {
@@ -348,15 +348,15 @@ pub mod http {
     pub static CONNECTIONFAILED:    Status = 1001;
 
     pub struct sfHttpRequest {
-        This : *c_void
+        this : *c_void
     }
 
     pub struct sfHttpResponse {
-        This : *c_void
+        this : *c_void
     }
 
     pub struct sfHttp {
-        This : *c_void
+        this : *c_void
     }
 
     extern "C" {

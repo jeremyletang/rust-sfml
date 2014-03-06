@@ -47,8 +47,8 @@ pub mod music {
     use ffi::sfml_types::SfBool;
 
     pub struct sfMusic {
-        This :  *c_void,
-        This1 : *c_void
+        this :  *c_void,
+        this1 : *c_void
     }
 
     extern "C" {
@@ -94,8 +94,8 @@ pub mod sound {
     use ffi::sfml_types::SfBool;
 
     pub struct sfSound {
-        This : *c_void,
-        This2 : *c_void
+        this : *c_void,
+        this2 : *c_void
     }
 
     extern "C" {
@@ -134,7 +134,7 @@ pub mod sound_buffer {
     use ffi::sfml_types::SfBool;
 
     pub struct sfSoundBuffer {
-        This : *c_void
+        this : *c_void
     }
 
     extern "C" {
@@ -157,7 +157,7 @@ pub mod sound_buffer_recorder {
     use ffi::sfml_types::SfBool;
 
     pub struct sfSoundBufferRecorder {
-        This : *c_void
+        this : *c_void
     }
 
     extern "C" {

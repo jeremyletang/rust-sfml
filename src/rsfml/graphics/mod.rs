@@ -22,9 +22,7 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-/*!
-* 2D graphics module: sprites, text, shapes
-*/
+//! 2D graphics module: sprites, text, shapes
 
 pub use graphics::render_states::RenderStates;
 pub use graphics::render_window::{RenderWindow, Events};

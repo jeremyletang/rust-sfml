@@ -27,7 +27,7 @@ pub mod clock {
     use ffi::system::time::sfTime;
 
     pub struct sfClock {
-        This : *c_void
+        this : *c_void
     }
 
     extern "C" {

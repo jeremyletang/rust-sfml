@@ -101,8 +101,8 @@ fn main () -> () {
     pauseMessage.set_string("Welcome to SFML pong!\nPress space to start the game");
 
     // Define the paddles properties
-    let mut AITimer =  Clock::new();
-    let AITime : Time  = Time::with_seconds(0.1);
+    let mut ai_timer =  Clock::new();
+    let ai_time : Time  = Time::with_seconds(0.1);
     let paddleSpeed = 400.;
     let mut rightPaddleSpeed  = 0.;
     let ballSpeed   = 400.;
@@ -155,8 +155,8 @@ fn main () -> () {
             }
             
             // Update the computer's paddle direction according to the ball position
-            if AITimer.get_elapsed_time().as_microseconds() > AITime.as_microseconds() {
-                AITimer.restart();
+            if ai_timer.get_elapsed_time().as_microseconds() > ai_time.as_microseconds() {
+                ai_timer.restart();
                 if ball.get_position().y + ballRadius > rightPaddle.get_position().y + paddleSize.y / 2. {
                     rightPaddleSpeed = paddleSpeed;
                 }
