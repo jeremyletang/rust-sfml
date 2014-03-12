@@ -8,6 +8,7 @@
 
 extern crate native;
 extern crate rsfml;
+extern crate rand;
 
 use rsfml::graphics::{RenderWindow, Color, Font, Text, RectangleShape, CircleShape};
 use rsfml::window::{VideoMode, ContextSettings, event, keyboard, Close};
@@ -31,10 +32,14 @@ fn main () -> () {
 
      // Create the window of the application
     let setting : ContextSettings = ContextSettings::default();
-    let mut window : RenderWindow = match RenderWindow::new(VideoMode::new_init(gameWidth, gameHeight, 32), "SFML Pong", Close, &setting) {
-        Some(window) => window,
-        None => fail!("Cannot create a new Render Window.")
-    };
+    let mut window : RenderWindow =
+        match RenderWindow::new(VideoMode::new_init(gameWidth, gameHeight, 32),
+                                "SFML Pong",
+                                Close,
+                                &setting) {
+            Some(window) => window,
+            None => fail!("Cannot create a new Render Window.")
+        };
     window.set_vertical_sync_enabled(true);
 
     // Load the sounds used in the game
@@ -60,7 +65,7 @@ fn main () -> () {
     leftPaddle.set_outline_color(&Color::black());
     leftPaddle.set_fill_color(&Color::new_RGB(100, 100, 200));
     leftPaddle.set_origin(&(paddleSize / 2f32));
-    
+
     // Create the right paddle
     let mut rightPaddle = match RectangleShape::new() {
         Some(paddle)    => paddle,
@@ -147,24 +152,24 @@ fn main () -> () {
                (leftPaddle.get_position().y + paddleSize.y / 2. < gameHeight as f32 - 5.) {
                 leftPaddle.move2f(0., paddleSpeed * deltaTime);
             }
-            
+
             // Move the computer's paddle
             if ((rightPaddleSpeed < 0.) && (rightPaddle.get_position().y - paddleSize.y / 2. > 5.)) ||
                 ((rightPaddleSpeed > 0.) && (rightPaddle.get_position().y + paddleSize.y / 2. < gameHeight as f32 - 5.)) {
                 rightPaddle.move2f(0., rightPaddleSpeed * deltaTime);
             }
-            
+
             // Update the computer's paddle direction according to the ball position
             if ai_timer.get_elapsed_time().as_microseconds() > ai_time.as_microseconds() {
                 ai_timer.restart();
                 if ball.get_position().y + ballRadius > rightPaddle.get_position().y + paddleSize.y / 2. {
                     rightPaddleSpeed = paddleSpeed;
                 }
-                
+
                 else if  ball.get_position().y - ballRadius < rightPaddle.get_position().y - paddleSize.y / 2. {
                     rightPaddleSpeed = -paddleSpeed;
                 }
-                
+
                 else {
                     rightPaddleSpeed = 0.;
                 }
@@ -173,7 +178,7 @@ fn main () -> () {
             // Move the ball
             let factor = ballSpeed * deltaTime;
             ball.move(&Vector2f::new(ballAngle.cos() * factor, ballAngle.sin() * factor));
-            
+
             // Check collisions between the ball and the screen
             if ball.get_position().x - ballRadius < 0. {
                 isPlaying = false;
@@ -203,12 +208,12 @@ fn main () -> () {
                 ball.get_position().y + ballRadius >= leftPaddle.get_position().y - paddleSize.y / 2. &&
                 ball.get_position().y - ballRadius <= leftPaddle.get_position().y + paddleSize.y / 2. {
                 if ball.get_position().y > leftPaddle.get_position().y {
-                    ballAngle = pi - ballAngle + (std::rand::random::<int>() % 20) as f32 * pi / 180.;
+                    ballAngle = pi - ballAngle + (rand::random::<int>() % 20) as f32 * pi / 180.;
                 }
                 else {
-                    ballAngle = pi - ballAngle - (std::rand::random::<int>() % 20) as f32 * pi / 180.;
+                    ballAngle = pi - ballAngle - (rand::random::<int>() % 20) as f32 * pi / 180.;
                 }
-                
+
                 ballSound.play();
                 let p = ball.get_position().y;
                 ball.set_position(&Vector2f::new(leftPaddle.get_position().x + ballRadius + paddleSize.x / 2. + 0.1, p));
@@ -220,19 +225,18 @@ fn main () -> () {
                 ball.get_position().y + ballRadius >= rightPaddle.get_position().y - paddleSize.y / 2. &&
                 ball.get_position().y - ballRadius <= rightPaddle.get_position().y + paddleSize.y / 2. {
                 if ball.get_position().y > rightPaddle.get_position().y {
-                    ballAngle = pi - ballAngle + (std::rand::random::<int>() % 20) as f32* pi / 180.;
+                    ballAngle = pi - ballAngle + (rand::random::<int>() % 20) as f32* pi / 180.;
                 }
                 else {
-                    ballAngle = pi - ballAngle - (std::rand::random::<int>() % 20) as f32* pi / 180.;
+                    ballAngle = pi - ballAngle - (rand::random::<int>() % 20) as f32* pi / 180.;
                 }
-                
+
                 ballSound.play();
-                let p = ball.get_position().y;  
+                let p = ball.get_position().y;
                 ball.set_position(&Vector2f::new(rightPaddle.get_position().x - ballRadius - paddleSize.x / 2. - 0.1, p));
             }
-            
-                //let a = r.gen::<float>();
-                
+
+            //let a = r.gen::<float>();
         }
         // Clear the window
         window.clear(&Color::new_RGB(50, 200, 50));
