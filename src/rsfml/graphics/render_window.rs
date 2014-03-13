@@ -1001,7 +1001,7 @@ impl RenderWindow {
         self.current_view = view;
         unsafe {
             ffi::sfRenderWindow_setView(self.render_window,
-                                        self.current_view.borrow().with(|v| v.unwrap()))  
+                                        (*self.current_view).with(|v| v.unwrap()))  
         }
     }
 

@@ -108,7 +108,7 @@ impl ConvexShape {
             None
         } else {
             unsafe {
-                ffi::sfConvexShape_setTexture(shape, texture.borrow().with(|t| t.unwrap()), SFTRUE);
+                ffi::sfConvexShape_setTexture(shape, (*texture).with(|t| t.unwrap()), SFTRUE);
                 ffi::sfConvexShape_setPointCount(shape, points_count as c_uint)
             }
             Some(ConvexShape {
@@ -437,10 +437,10 @@ impl ConvexShape {
         unsafe {
             match reset_rect {
                 true        => ffi::sfConvexShape_setTexture(self.convex_shape,
-                                                             texture.borrow().with(|t| t.unwrap()), 
+                                                             (*texture).with(|t| t.unwrap()), 
                                                              SFTRUE),
                 false       => ffi::sfConvexShape_setTexture(self.convex_shape,
-                                                             texture.borrow().with(|t| t.unwrap()), 
+                                                             (*texture).with(|t| t.unwrap()), 
                                                              SFFALSE)
             };
         }

@@ -85,7 +85,7 @@ impl Sprite {
         } else {
             unsafe {
                 ffi::sfSprite_setTexture(sp,
-                                         texture.borrow().with(|t| t.unwrap()),
+                                         (*texture).with(|t| t.unwrap()),
                                          SFTRUE);
             }
             Some(Sprite {
@@ -180,11 +180,11 @@ impl Sprite {
             match reset_rect {
                 true  =>
                     ffi::sfSprite_setTexture(self.sprite,
-                                             texture.borrow().with(|t| t.unwrap()),
+                                             (*texture).with(|t| t.unwrap()),
                                              SFTRUE),
                 false =>
                     ffi::sfSprite_setTexture(self.sprite,
-                                             texture.borrow().with(|t| t.unwrap()),
+                                             (*texture).with(|t| t.unwrap()),
                                              SFFALSE)
             }
         }

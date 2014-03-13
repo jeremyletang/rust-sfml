@@ -76,7 +76,7 @@ impl RectangleShape {
         } else {
             unsafe {
                 ffi::sfRectangleShape_setTexture(rectangle,
-                                                 texture.borrow().with(|t| t.unwrap()),
+                                                 (*texture).with(|t| t.unwrap()),
                                                  SFTRUE);
             }
             Some(RectangleShape {
@@ -453,11 +453,11 @@ impl RectangleShape {
             match reset_rect {
                 false       =>
                     ffi::sfRectangleShape_setTexture(self.rectangle_shape,
-                                                     texture.borrow().with(|t| t.unwrap()),
+                                                     (*texture).with(|t| t.unwrap()),
                                                      SFFALSE),
                 true        =>
                     ffi::sfRectangleShape_setTexture(self.rectangle_shape,
-                                                     texture.borrow().with(|t| t.unwrap()),
+                                                     (*texture).with(|t| t.unwrap()),
                                                      SFTRUE)
             }
         }

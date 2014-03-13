@@ -99,7 +99,7 @@ impl Text {
                 string.with_c_str(|c_str| {
                         ffi::sfText_setString(text, c_str)
                     });
-                ffi::sfText_setFont(text, font.borrow().with(|t| t.unwrap()));
+                ffi::sfText_setFont(text, (*font).with(|t| t.unwrap()));
                 ffi::sfText_setCharacterSize(text, character_size as c_uint)
             }
             Some(Text {
@@ -184,7 +184,7 @@ impl Text {
      */
     pub fn set_font(&mut self, font : Rc<RefCell<Font>>) -> () {
         unsafe {
-            ffi::sfText_setFont(self.text, font.borrow().with(|t| t.unwrap()))
+            ffi::sfText_setFont(self.text, (*font).with(|t| t.unwrap()))
         }
         self.font = Some(font);
     }

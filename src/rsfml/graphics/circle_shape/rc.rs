@@ -78,7 +78,7 @@ impl CircleShape {
         } else {
             unsafe {
                 ffi::sfCircleShape_setTexture(circle,
-                                              texture.borrow().with(|t| t.unwrap()),
+                                              (*texture).with(|t| t.unwrap()),
                                               SFTRUE);
             }
             Some(CircleShape {
@@ -203,11 +203,11 @@ impl CircleShape {
             match reset_rect {
                 true        =>
                     ffi::sfCircleShape_setTexture(self.circle_shape,
-                                                  texture.borrow().with(|t| t.unwrap()),
+                                                  (*texture).with(|t| t.unwrap()),
                                                   SFTRUE),
                 false       =>
                     ffi::sfCircleShape_setTexture(self.circle_shape,
-                                                  texture.borrow().with(|t| t.unwrap()),
+                                                  (*texture).with(|t| t.unwrap()),
                                                   SFFALSE),
             };
         }

@@ -30,6 +30,6 @@ pub use traits::drawable::Drawable;
 pub use traits::wrappable::Wrappable;
 pub use traits::shape_impl::ShapeImpl;
 
-mod drawable;
+pub mod drawable;
 mod wrappable;
-mod shape_impl;
+pub mod shape_impl;

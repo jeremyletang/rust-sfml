@@ -87,7 +87,7 @@ impl Sound {
         }
         else {
             unsafe {
-                ffi::sfSound_setBuffer(s, buffer.borrow().with(|s| s.unwrap()));
+                ffi::sfSound_setBuffer(s, (*buffer).with(|s| s.unwrap()));
             }
             Some(Sound {
                 sound :     s,
@@ -366,7 +366,7 @@ impl Sound {
      */
     pub fn set_buffer(&mut self, buffer : Rc<RefCell<SoundBuffer>>) -> () {
         unsafe {
-            ffi::sfSound_setBuffer(self.sound, buffer.borrow().with(|s| s.unwrap()));
+            ffi::sfSound_setBuffer(self.sound, (*buffer).with(|s| s.unwrap()));
         }
         self.buffer = Some(buffer);
     }
