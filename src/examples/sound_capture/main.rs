@@ -69,7 +69,7 @@ fn main() -> () {
     println!("What do you want to do with captured sound (p = play, s = save) ? ");
     let mut resp = stdin.read_line().unwrap();
     
-    if resp.pop_char() == 's' {
+    if resp.pop_char().unwrap() == 's' {
         // Choose a filename
         println!("Choose the file to create : ");
         let filename = stdin.read_line().unwrap();
