@@ -124,7 +124,7 @@ fn main () -> () {
         // Clear the window
         window.clear(&Color::new_RGB(0, 200, 200));
         // Draw the shape
-           window.draw(&circle);
+        window.draw(&circle);
         // Display things on screen
         window.display()
     }
