@@ -25,6 +25,7 @@
 //! Loading, manipulating and saving images.
 
 use std::libc::c_uint;
+use std::vec_ng::Vec;
 
 use traits::Wrappable;
 use system::vector2::Vector2u;
@@ -146,7 +147,7 @@ impl Image {
      */
     pub fn create_from_pixels(width : uint,
                               height : uint,
-                              pixels : ~[u8]) -> Option<Image> {
+                              pixels : Vec<u8>) -> Option<Image> {
         let image =
             unsafe { ffi::sfImage_createFromPixels(width as c_uint,
                                                    height as c_uint,

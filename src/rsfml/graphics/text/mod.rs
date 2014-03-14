@@ -31,6 +31,7 @@
 
 use std::libc::{c_float, c_uint, size_t};
 use std::{str, cast};
+use std::vec_ng::Vec;
 use extra::c_vec::CVec;
 
 use traits::{Drawable, Wrappable};
@@ -143,9 +144,9 @@ impl<'s> Text<'s> {
      *
      * Return a string as UTF-32
      */
-    pub fn get_unicode_string(&self) -> ~[u32] {
+    pub fn get_unicode_string(&self) -> Vec<u32> {
         unsafe {
-            let mut return_unicode : ~[u32] = ~[];
+            let mut return_unicode : Vec<u32> = Vec::new();
             let string : *mut u32 = ffi::sfText_getUnicodeString(self.text);
             let cvec = CVec::new(string, self.string_length);
             let mut d : uint = 0;
@@ -568,7 +569,7 @@ impl<'s> Text<'s> {
      * # Arguments
      * * string - The new string
      */
-    pub fn set_unicode_string(&mut self, string : ~[u32]) -> () {
+    pub fn set_unicode_string(&mut self, string : Vec<u32>) -> () {
         unsafe {
             self.string_length = string.len();
             ffi::sfText_setUnicodeString(self.text, string.as_ptr())

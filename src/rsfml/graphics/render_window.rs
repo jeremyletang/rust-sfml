@@ -34,6 +34,7 @@ use std::rc::Rc;
 use std::cell::RefCell;
 use std::libc::{c_float, c_uint, c_int};
 use std::{ptr, cast};
+use std::vec_ng::Vec;
 
 use traits::{Drawable, Wrappable};
 use window::{ContextSettings, VideoMode, event, keyboard, joystick, mouse,
@@ -158,7 +159,7 @@ impl RenderWindow {
      * Return Some(RenderWindow) or None
      */
     pub fn new_with_unicode(mode : VideoMode,
-                            title : ~[u32],
+                            title : Vec<u32>,
                             style : WindowStyle,
                             settings : &ContextSettings) -> Option<RenderWindow> {
 
@@ -203,7 +204,7 @@ impl RenderWindow {
      * # Arguments
      * * title - New title
      */
-    pub fn set_unicode_title(&mut self, title : ~[u32]) -> () {
+    pub fn set_unicode_title(&mut self, title : Vec<u32>) -> () {
         unsafe {
             self.title_length = title.len();
             ffi::sfRenderWindow_setUnicodeTitle(self.render_window,
@@ -223,7 +224,7 @@ impl RenderWindow {
     pub fn set_icon(&mut self,
                     width : uint,
                     height : uint,
-                    pixels : ~[u8]) -> () {
+                    pixels : Vec<u8>) -> () {
         unsafe {
             ffi::sfRenderWindow_setIcon(self.render_window,
                                         width as c_uint,

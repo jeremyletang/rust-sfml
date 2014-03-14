@@ -31,6 +31,7 @@
 
 use extra::c_vec::CVec;
 use std::libc::{c_uint, size_t};
+use std::vec_ng::Vec;
 
 use traits::Wrappable;
 
@@ -129,9 +130,9 @@ impl VideoMode {
      *
      * Return a vector containing all the supported VideoMode
      */
-    pub fn get_fullscreen_modes() -> Option<~[VideoMode]> {
+    pub fn get_fullscreen_modes() -> Option<Vec<VideoMode>> {
         let i : size_t = 0;
-        let mut ret_tab : ~[VideoMode] = ~[];
+        let mut ret_tab : Vec<VideoMode> = Vec::new();
         unsafe {
             let tab : *mut ffi::sfVideoMode =
                 ffi::sfVideoMode_getFullscreenModes(&i) as *mut ffi::sfVideoMode;

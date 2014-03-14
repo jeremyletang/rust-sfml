@@ -31,6 +31,7 @@
 
 use std::libc::{c_uint, c_float, c_int};
 use std::{ptr, cast};
+use std::vec_ng::Vec;
 
 use traits::Wrappable;
 use window::{event, keyboard, joystick, mouse,
@@ -129,7 +130,7 @@ impl Window {
      * Return Some(Window) or None
      */
     pub fn new_with_unicode(mode : VideoMode,
-                            title : ~[u32],
+                            title : Vec<u32>,
                             style : WindowStyle,
                             settings : &ContextSettings) -> Option<Window> {
 
@@ -344,7 +345,7 @@ impl Window {
      * # Arguments
      * * title - New title
      */
-    pub fn set_unicode_title(&mut self, title : ~[u32]) -> () {
+    pub fn set_unicode_title(&mut self, title : Vec<u32>) -> () {
         unsafe {
             ffi::sfWindow_setUnicodeTitle(self.window, title.as_ptr())
         }
@@ -358,7 +359,7 @@ impl Window {
      * * height - Icon's height, in pixels
      * * pixels - Vector of pixels
      */
-    pub fn set_icon(&mut self, width : uint, height : uint, pixels : ~[u8]) -> () {
+    pub fn set_icon(&mut self, width : uint, height : uint, pixels : Vec<u8>) -> () {
         unsafe {
             ffi::sfWindow_setIcon(self.window, width as c_uint, height as c_uint, pixels.as_ptr())
         }

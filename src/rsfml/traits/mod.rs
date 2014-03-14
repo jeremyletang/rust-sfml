@@ -31,5 +31,5 @@ pub use traits::wrappable::Wrappable;
 pub use traits::shape_impl::ShapeImpl;
 
 pub mod drawable;
-mod wrappable;
 pub mod shape_impl;
+mod wrappable;

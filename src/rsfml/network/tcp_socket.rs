@@ -26,8 +26,11 @@
 * Specialized socket using the TCP protocol
 */
 
+#[allow(deprecated_owned_vector)];
+
 use std::libc::size_t;
 use std::{vec, ptr, cast};
+use std::vec_ng::Vec;
 
 use traits::Wrappable;
 use network::{IpAddress, Packet, SocketStatus};
@@ -178,7 +181,7 @@ impl TcpSocket {
     * 
     * Return the status code
     */
-    pub fn send(&self, data : ~[i8]) -> SocketStatus {
+    pub fn send(&self, data : Vec<i8>) -> SocketStatus {
         unsafe {
             cast::transmute(ffi::sfTcpSocket_send(self.socket, data.as_ptr(), data.len() as size_t) as i8)
         }
@@ -196,12 +199,12 @@ impl TcpSocket {
     *
     * Return a tuple containing the size read, a vector width data and the socket status
     */
-    pub fn receive(&self, max_size : size_t) -> (~[i8], SocketStatus, size_t) {
+    pub fn receive(&self, max_size : size_t) -> (Vec<i8>, SocketStatus, size_t) {
         unsafe {
             let s : size_t = 0;
             let datas : *i8 = ptr::null();
             let stat : SocketStatus = cast::transmute(ffi::sfTcpSocket_receive(self.socket, datas, max_size, &s) as i8);
-            (vec::raw::from_buf_raw(datas, s as uint), stat, s)
+            (Vec::from_slice(vec::raw::from_buf_raw(datas, s as uint)), stat, s)
         }
     }
 

@@ -26,8 +26,11 @@
 * Specialized socket using the UDP protocol.
 */
 
+#[allow(deprecated_owned_vector)];
+
 use std::{ptr, vec, cast};
 use std::libc::size_t;
+use std::vec_ng::Vec;
 
 use traits::Wrappable;
 use network::{Packet, IpAddress, SocketStatus};
@@ -154,7 +157,7 @@ impl UdpSocket {
     * * remoteAddress - Address of the receiver
     * * remotePort - Port of the receiver to send the data to
     */
-    pub fn send(&self, data : ~[i8], address : &IpAddress, port : u16) -> SocketStatus {
+    pub fn send(&self, data : Vec<i8>, address : &IpAddress, port : u16) -> SocketStatus {
         unsafe {
             cast::transmute(ffi::sfUdpSocket_send(self.socket, data.as_ptr(), data.len() as size_t, address.unwrap(), port) as i8)
         }
@@ -173,14 +176,14 @@ impl UdpSocket {
     * # Arguments
     * * size - Maximum number of bytes that can be received
     */
-    pub fn receive(&self, max_size : size_t) -> (~[i8], SocketStatus, size_t, IpAddress, u16) {
+    pub fn receive(&self, max_size : size_t) -> (Vec<i8>, SocketStatus, size_t, IpAddress, u16) {
         unsafe {
             let s : size_t = 0;
             let datas : *i8 = ptr::null();
             let addr : *::ffi::network::ip_address::sfIpAddress = ptr::null();
             let port : u16 = 0;
             let stat : SocketStatus = cast::transmute(ffi::sfUdpSocket_receive(self.socket, datas, max_size, &s, addr, &port) as i8);
-            (vec::raw::from_buf_raw(datas, s as uint), stat, s, Wrappable::wrap(*addr), port)
+            (Vec::from_slice(vec::raw::from_buf_raw(datas, s as uint)), stat, s, Wrappable::wrap(*addr), port)
         }
     }
 
