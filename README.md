@@ -39,9 +39,9 @@ This command build rsfml, the examples, and the documentation.
 You can build them separatly too.
 
 ```Shell
-> make lib
+> make rsfml
 > make examples
-> make doc
+> make docs
 ```
 
 Rust-sfml works on Linux, windows and OSX.
