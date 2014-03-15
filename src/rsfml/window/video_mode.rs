@@ -29,7 +29,7 @@
  * (in bits per pixel). Video modes are used to setup windows at creation time.
  */
 
-use extra::c_vec::CVec;
+use std::c_vec::CVec;
 use std::libc::{c_uint, size_t};
 use std::vec_ng::Vec;
 
@@ -141,10 +141,10 @@ impl VideoMode {
             }
             let cvec = CVec::new(tab, i as uint);
             let mut d : uint = 0;
-            ret_tab.push(Wrappable::wrap(*cvec.get(d)));
+            ret_tab.push(Wrappable::wrap(*cvec.get(d).unwrap()));
             d += 1;
             while d != i as uint {
-                ret_tab.push(Wrappable::wrap(*cvec.get(d)));
+                ret_tab.push(Wrappable::wrap(*cvec.get(d).unwrap()));
                 d += 1;
             }
         }

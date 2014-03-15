@@ -158,8 +158,6 @@ Here is a list of all modules :
 #[allow(visible_private_types)];
 #[warn(missing_doc)];
 
-extern crate extra;
-
 pub mod traits;
 pub mod system;
 pub mod window;

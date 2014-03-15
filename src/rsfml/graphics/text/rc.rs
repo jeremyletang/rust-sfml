@@ -34,7 +34,7 @@ use std::cell::RefCell;
 use std::libc::{c_float, c_uint, size_t};
 use std::{str, cast};
 use std::vec_ng::Vec;
-use extra::c_vec::CVec;
+use std::c_vec::CVec;
 
 use traits::{Drawable, Wrappable};
 use graphics::{RenderWindow, RenderTexture, Font, FloatRect, Color, Transform,
@@ -150,10 +150,10 @@ impl Text {
             let string : *mut u32 = ffi::sfText_getUnicodeString(self.text);
             let cvec = CVec::new(string, self.string_length);
             let mut d : uint = 0;
-            return_unicode.push(*cvec.get(d));
+            return_unicode.push(*cvec.get(d).unwrap());
             d += 1;
             while d != 16 {
-                return_unicode.push(*cvec.get(d));
+                return_unicode.push(*cvec.get(d).unwrap());
                 d += 1;
             }
         return_unicode
