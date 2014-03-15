@@ -26,8 +26,6 @@
 * Specialized socket using the UDP protocol.
 */
 
-#[allow(deprecated_owned_vector)];
-
 use std::{ptr, vec, cast};
 use std::libc::size_t;
 use std::vec_ng::Vec;
@@ -183,7 +181,7 @@ impl UdpSocket {
             let addr : *::ffi::network::ip_address::sfIpAddress = ptr::null();
             let port : u16 = 0;
             let stat : SocketStatus = cast::transmute(ffi::sfUdpSocket_receive(self.socket, datas, max_size, &s, addr, &port) as i8);
-            (Vec::from_slice(vec::raw::from_buf_raw(datas, s as uint)), stat, s, Wrappable::wrap(*addr), port)
+            (vec::raw::buf_as_slice(datas, s as uint, Vec::from_slice), stat, s, Wrappable::wrap(*addr), port)
         }
     }
 
