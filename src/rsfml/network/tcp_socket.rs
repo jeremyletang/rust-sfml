@@ -26,8 +26,6 @@
 * Specialized socket using the TCP protocol
 */
 
-#[allow(deprecated_owned_vector)];
-
 use std::libc::size_t;
 use std::{vec, ptr, cast};
 use std::vec_ng::Vec;
@@ -204,7 +202,7 @@ impl TcpSocket {
             let s : size_t = 0;
             let datas : *i8 = ptr::null();
             let stat : SocketStatus = cast::transmute(ffi::sfTcpSocket_receive(self.socket, datas, max_size, &s) as i8);
-            (Vec::from_slice(vec::raw::from_buf_raw(datas, s as uint)), stat, s)
+            (vec::raw::buf_as_slice(datas, s as uint, Vec::from_slice), stat, s)
         }
     }
 
