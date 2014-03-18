@@ -58,7 +58,7 @@ fn main () -> () {
     // Create the left paddle
     let mut leftPaddle  = match RectangleShape::new() {
         Some(paddle)    => paddle,
-        None()          => fail!("Error, cannot create paddle")
+        None            => fail!("Error, cannot create paddle")
     };
     leftPaddle.set_size(&(paddleSize - 3f32));
     leftPaddle.set_outline_thickness(3.);
@@ -69,7 +69,7 @@ fn main () -> () {
     // Create the right paddle
     let mut rightPaddle = match RectangleShape::new() {
         Some(paddle)    => paddle,
-        None()          => fail!("Error, cannot create paddle")
+        None            => fail!("Error, cannot create paddle")
     };
     rightPaddle.set_size(&(paddleSize - 3f32));
     rightPaddle.set_outline_thickness(3.);
@@ -80,7 +80,7 @@ fn main () -> () {
     // Create the ball
     let mut ball = match CircleShape::new() {
         Some(ball)    => ball,
-        None()          => fail!("Error, cannot create ball")
+        None          => fail!("Error, cannot create ball")
     };
     ball.set_radius(ballRadius as f32 - 3.);
     ball.set_outline_thickness(3.);
@@ -91,13 +91,13 @@ fn main () -> () {
     // Load the text font
     let font = match Font::new_from_file("resources/sansation.ttf") {
         Some(font)    => font,
-        None()        => fail!("Error, cannot load font")
+        None          => fail!("Error, cannot load font")
     };
 
      // Initialize the pause message
     let mut pauseMessage : Text = match Text::new() {
         Some(text) => text,
-        None => fail!("Error on creating text")
+        None       => fail!("Error on creating text")
     };
     pauseMessage.set_font(&font);
     pauseMessage.set_character_size(40);
