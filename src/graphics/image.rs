@@ -25,7 +25,7 @@
 //! Loading, manipulating and saving images.
 
 use std::libc::c_uint;
-use std::vec_ng::Vec;
+use std::vec::Vec;
 
 use traits::Wrappable;
 use system::vector2::Vector2u;

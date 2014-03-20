@@ -34,7 +34,7 @@ use std::rc::Rc;
 use std::cell::RefCell;
 use std::libc::{c_float, c_uint, c_int};
 use std::{ptr, cast};
-use std::vec_ng::Vec;
+use std::vec::Vec;
 
 use traits::{Drawable, Wrappable};
 use window::{ContextSettings, VideoMode, event, keyboard, joystick, mouse,

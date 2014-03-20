@@ -30,7 +30,7 @@
 
 use std::libc::c_uint;
 use std::ptr;
-use std::vec_ng::Vec;
+use std::vec::Vec;
 
 use traits::Wrappable;
 use graphics::{RenderWindow, Image, IntRect};

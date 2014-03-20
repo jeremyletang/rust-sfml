@@ -31,7 +31,7 @@
 
 use std::libc::{c_float, c_uint, size_t};
 use std::{str, cast};
-use std::vec_ng::Vec;
+use std::vec::Vec;
 use std::c_vec::CVec;
 
 use traits::{Drawable, Wrappable};

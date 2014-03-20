@@ -27,8 +27,8 @@
 */
 
 use std::libc::size_t;
-use std::{vec, ptr, cast};
-use std::vec_ng::Vec;
+use std::{slice, ptr, cast};
+use std::vec::Vec;
 
 use traits::Wrappable;
 use network::{IpAddress, Packet, SocketStatus};
@@ -202,7 +202,7 @@ impl TcpSocket {
             let s : size_t = 0;
             let datas : *i8 = ptr::null();
             let stat : SocketStatus = cast::transmute(ffi::sfTcpSocket_receive(self.socket, datas, max_size, &s) as i8);
-            (vec::raw::buf_as_slice(datas, s as uint, Vec::from_slice), stat, s)
+            (slice::raw::buf_as_slice(datas, s as uint, Vec::from_slice), stat, s)
         }
     }
 

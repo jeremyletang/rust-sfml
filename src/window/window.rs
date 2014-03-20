@@ -31,7 +31,7 @@
 
 use std::libc::{c_uint, c_float, c_int};
 use std::{ptr, cast};
-use std::vec_ng::Vec;
+use std::vec::Vec;
 
 use traits::Wrappable;
 use window::{event, keyboard, joystick, mouse,
