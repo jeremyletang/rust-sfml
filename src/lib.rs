@@ -144,19 +144,17 @@ license.
 Here is a list of all modules :
 */
 
-#[feature(struct_variant)];
-
-#[crate_id = "github.com/JeremyLetang/rust-sfml#rsfml:0.2"];
-
-#[desc = "Rust binding for sfml"];
-#[license = "Zlib/png"];
-#[doc(html_logo_url = "http://rust-sfml.org/logo_rsfml.png")];
-#[crate_type = "rlib"];
-#[crate_type = "dylib"];
-#[allow(dead_code)];
-#[allow(non_camel_case_types)];
-#[allow(visible_private_types)];
-#[warn(missing_doc)];
+#![crate_id = "github.com/JeremyLetang/rust-sfml#rsfml:0.2"]
+#![desc = "Rust binding for sfml"]
+#![license = "Zlib/png"]
+#![doc(html_logo_url = "http://rust-sfml.org/logo_rsfml.png")]
+#![crate_type = "rlib"]
+#![crate_type = "dylib"]
+#![allow(dead_code)]
+#![allow(non_camel_case_types)]
+#![allow(visible_private_types)]
+#![warn(missing_doc)]
+#![feature(struct_variant)]
 
 pub mod traits;
 pub mod system;
