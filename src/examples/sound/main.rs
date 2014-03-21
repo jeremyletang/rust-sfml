@@ -22,9 +22,9 @@ fn play_sound() -> () {
     
     // Display sound informations
     println!("canary.wav :");
-    println!(" {} seconds", (*buffer).with(|b| b.get_duration().as_seconds()));
-    println!(" {} samples / sec", (*buffer).with(|b| b.get_sample_rate()));
-    println!(" {} channels", (*buffer).with(|b| b.get_channel_count()));
+    println!(" {} seconds", (*buffer).borrow().get_duration().as_seconds());
+    println!(" {} samples / sec", (*buffer).borrow().get_sample_rate());
+    println!(" {} channels", (*buffer).borrow().get_channel_count());
 
     let mut sound : rc::Sound = match rc::Sound::new_with_buffer(buffer.clone()) {
         Some(sound)     => sound,

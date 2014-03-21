@@ -111,7 +111,7 @@ impl Shape {
         } else {
             unsafe {
                 ffi::sfShape_setTexture(sp,
-                                        (*texture).with(|t| t.unwrap()),
+                                        (*texture).borrow().unwrap(),
                                         SFTRUE);
             }
             Some(Shape {
@@ -410,11 +410,11 @@ impl Shape {
             match reset_rect {
                 true  =>
                     ffi::sfShape_setTexture(self.shape,
-                                            (*texture).with(|t| t.unwrap()),
+                                            (*texture).borrow().unwrap(),
                                             SFTRUE),
                 false =>
                     ffi::sfShape_setTexture(self.shape,
-                                            (*texture).with(|t| t.unwrap()),
+                                            (*texture).borrow().unwrap(),
                                             SFFALSE),
             };
         }

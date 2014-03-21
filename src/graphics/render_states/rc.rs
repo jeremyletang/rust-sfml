@@ -110,12 +110,12 @@ impl RenderStates {
         self.sfRenderStates.blendMode = self.blendMode as i32;
         self.sfRenderStates.transform = self.transform;
         self.sfRenderStates.texture = if !self.texture.is_none() {
-            self.texture.get_ref().with(|t| t.unwrap())
+            self.texture.get_ref().borrow().unwrap()
         } else {
             ptr::null()
         };
         self.sfRenderStates.shader = if !self.shader.is_none() {
-            self.shader.get_ref().with(|t| t.unwrap())
+            self.shader.get_ref().borrow().unwrap()
         } else {
             ptr::null()
         };

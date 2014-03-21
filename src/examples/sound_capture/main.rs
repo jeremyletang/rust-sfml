@@ -57,12 +57,11 @@ fn main() -> () {
         None            => fail!("Error when retreiving buffer.")
     };
 
-    //texture.borrow().with(|t| t.unwrap())
     // Display captured sound informations
     println!("Sound informations :");
-    println!(" {} seconds", (*buffer).with(|b| b.get_duration().as_seconds()));
-    println!(" {} samples / sec", (*buffer).with(|b| b.get_sample_rate()));
-    println!(" {} channels", (*buffer).with(|b| b.get_channel_count()));
+    println!(" {} seconds", (*buffer).borrow().get_duration().as_seconds());
+    println!(" {} samples / sec", (*buffer).borrow().get_sample_rate());
+    println!(" {} channels", (*buffer).borrow().get_channel_count());
     
 
     // Choose what to do with the recorded sound data
@@ -75,7 +74,7 @@ fn main() -> () {
         let filename = stdin.read_line().unwrap();
         
         // Save the buffer
-        (*buffer).with(|b| b.save_to_file(filename));
+        (*buffer).borrow().save_to_file(filename);
     }
     else {
         let mut sound : rc::Sound = match rc::Sound::new_with_buffer(buffer.clone()) {

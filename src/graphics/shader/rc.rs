@@ -260,7 +260,7 @@ impl Shader {
             name.with_c_str(|c_str| {
                     ffi::sfShader_setTextureParameter(self.shader,
                                                       c_str,
-                                                      (*texture).with(|t| t.unwrap()))
+                                                      (*texture).borrow().unwrap())
                 });
         }
         self.texture = Some(texture);
