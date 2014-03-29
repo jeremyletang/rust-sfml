@@ -18,7 +18,7 @@
 *
 * 2. Altered source versions must be plainly marked as such, and must not be
 *    misrepresented as being the original software.
-* 
+*
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
@@ -48,7 +48,7 @@ pub trait ShapeImpl {
     *
     * # Argument
     * * point - The index of the point to return
-    * 
+    *
     * Return a Vector2f who contains the point coordinates.
     */
     fn get_point(&self, point : u32) -> Vector2f;

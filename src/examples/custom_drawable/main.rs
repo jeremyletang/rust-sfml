@@ -2,9 +2,9 @@
 * Example from SFML : Custom drawable
 */
 
-#[crate_id = "custom_drawable"];
-#[desc = "Custom drawable example for rsfml"];
-#[crate_type = "bin"];
+#![crate_id = "custom_drawable"]
+#![desc = "Custom drawable example for rsfml"]
+#![crate_type = "bin"]
 
 extern crate native;
 extern crate rsfml;

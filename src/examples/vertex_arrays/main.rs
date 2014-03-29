@@ -2,9 +2,9 @@
 * Example from SFML : Shape
 */
 
-#[crate_id = "vertex_arrays"];
-#[desc = "VertexArray example for rsfml"];
-#[crate_type = "bin"];
+#![crate_id = "vertex_arrays"]
+#![desc = "VertexArray example for rsfml"]
+#![crate_type = "bin"]
 
 extern crate native;
 extern crate rsfml;

@@ -3,10 +3,10 @@
 */
 
 
-#[crate_id = "sound_capture"];
-#[desc = "Sound capture example for rsfml"];
-#[crate_type = "bin"];
-#[allow(unused_must_use)];
+#![crate_id = "sound_capture"]
+#![desc = "Sound capture example for rsfml"]
+#![crate_type = "bin"]
+#![allow(unused_must_use)]
 
 extern crate rsfml;
 
@@ -19,7 +19,6 @@ use rsfml::audio::{rc, SoundBufferRecorder, Playing};
 use rsfml::system::{sleep, Time};
 
 fn main() -> () {
-    
     // Check that the device can capture audio
     if !SoundBufferRecorder::is_available() {
         fail!("Sorry, audio capture is not supported by your system");
@@ -62,17 +61,17 @@ fn main() -> () {
     println!(" {} seconds", (*buffer).borrow().get_duration().as_seconds());
     println!(" {} samples / sec", (*buffer).borrow().get_sample_rate());
     println!(" {} channels", (*buffer).borrow().get_channel_count());
-    
+
 
     // Choose what to do with the recorded sound data
     println!("What do you want to do with captured sound (p = play, s = save) ? ");
     let mut resp = stdin.read_line().unwrap();
-    
+
     if resp.pop_char().unwrap() == 's' {
         // Choose a filename
         println!("Choose the file to create : ");
         let filename = stdin.read_line().unwrap();
-        
+
         // Save the buffer
         (*buffer).borrow().save_to_file(filename);
     }
@@ -81,9 +80,9 @@ fn main() -> () {
             Some(sound)     => sound,
             None            => fail!("Error cannot create Sound")
         };
-        
+
          sound.play();
-        
+
         loop {
             match sound.get_status() {
                 Playing     => {
@@ -97,10 +96,10 @@ fn main() -> () {
             }
         }
     }
-    
+
     // Finished
     println!("Done!");
-    
+
     // Wait until the user presses 'enter' key
     println!("Press enter to exit...");
     stdin.read_line();

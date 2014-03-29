@@ -2,9 +2,9 @@
 * Example from SFML : borrow_res
 */
 
-#[crate_id = "borrow_res"];
-#[desc = "Shape using borrow ressources example for rsfml"];
-#[crate_type = "bin"];
+#![crate_id = "borrow_res"]
+#![desc = "Shape using borrow ressources example for rsfml"]
+#![crate_type = "bin"]
 
 extern crate native;
 extern crate rsfml;

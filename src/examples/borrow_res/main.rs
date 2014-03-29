@@ -2,14 +2,14 @@
 * Example from SFML : borrow_res
 */
 
-#[crate_id = "borrow_res"];
-#[desc = "Shape using borrow ressources example for rsfml"];
-#[crate_type = "bin"];
+#![crate_id = "borrow_res"]
+#![desc = "Shape using borrow ressources example for rsfml"]
+#![crate_type = "bin"]
 
 extern crate native;
 extern crate rsfml;
 
-use rsfml::graphics::{RenderWindow, Color, CircleShape, Sprite, 
+use rsfml::graphics::{RenderWindow, Color, CircleShape, Sprite,
     Texture, Text, Font, ConvexShape};
 use rsfml::window::{VideoMode, ContextSettings, event, keyboard, Close};
 use rsfml::system::Vector2f;
@@ -23,7 +23,7 @@ fn start(argc: int, argv: **u8) -> int {
 fn main () -> () {
     // Create the window of the application
     let setting : ContextSettings = ContextSettings::default();
-    let mut window : RenderWindow = match RenderWindow::new(VideoMode::new_init(800, 600, 32), 
+    let mut window : RenderWindow = match RenderWindow::new(VideoMode::new_init(800, 600, 32),
         "SFML borrow ressources Example", Close, &setting) {
         Some(window) => window,
         None => fail!("Cannot create a new Render Window.")
@@ -67,7 +67,7 @@ fn main () -> () {
 
     // Create an initialized text
     let title = Text::new_init(&"Borrow ressources example!", &font, 50).expect("Cannot create a new font");
-    
+
     // Create a Text an initialize it after
     let mut second_text = Text::new().expect("Cannot create a new font");
     second_text.set_string("This text share the same font than the title !");

@@ -2,9 +2,9 @@
 * Example from SFML : play sound and music
 */
 
-#[crate_id = "sound"];
-#[desc = "Sound example for rsfml"];
-#[crate_type = "bin"];
+#![crate_id = "sound"]
+#![desc = "Sound example for rsfml"]
+#![crate_type = "bin"]
 
 extern crate rsfml;
 
@@ -19,7 +19,7 @@ fn play_sound() -> () {
         Some(buffer)    => Rc::new(RefCell::new(buffer)),
         None            => fail!("Error, cannot load sound buffer!")
     };
-    
+
     // Display sound informations
     println!("canary.wav :");
     println!(" {} seconds", (*buffer).borrow().get_duration().as_seconds());
@@ -42,9 +42,7 @@ fn play_sound() -> () {
                 println!("\rPlaying...   {}", sound.get_playing_offset().as_seconds());
             },
             _           => break
-            
         }
-        
         println!("");
     }
 }
@@ -55,7 +53,7 @@ fn play_music() -> () {
         Some(music)     => music,
         None            => fail!("Error, cannot load music")
     };
-    
+
     // Display Music informations
     println!("orchestral.ogg :");
     println!(" {} format seconds", music.get_duration().as_seconds());
@@ -63,7 +61,7 @@ fn play_music() -> () {
     println!(" {} channels", music.get_channel_count());
 
     music.play();
-    
+
     loop {
         match music.get_status() {
             Playing     => {
@@ -73,18 +71,18 @@ fn play_music() -> () {
                 println!("\rPlaying...   {}", music.get_playing_offset().as_seconds());
             },
             _           => break
-            
+
         }
-        
+
         println!("");
-    }    
+    }
 }
 
 fn main() -> ()
 {
     // Play a sound
     play_sound();
-    
+
     // Play a music
     play_music();
 }

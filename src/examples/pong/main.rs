@@ -2,9 +2,9 @@
 * Example from SFML : Pong
 */
 
-#[crate_id = "pong"];
-#[desc = "Pong example for rsfml"];
-#[crate_type = "bin"];
+#![crate_id = "pong"]
+#![desc = "Pong example for rsfml"]
+#![crate_type = "bin"]
 
 extern crate native;
 extern crate rsfml;
@@ -203,7 +203,7 @@ fn main () -> () {
 
             // Check the collisions between the ball and the paddles
             // Left Paddle
-            if ball.get_position().x - ballRadius < leftPaddle.get_position().x + paddleSize.x / 2. && 
+            if ball.get_position().x - ballRadius < leftPaddle.get_position().x + paddleSize.x / 2. &&
                 ball.get_position().x - ballRadius > leftPaddle.get_position().x &&
                 ball.get_position().y + ballRadius >= leftPaddle.get_position().y - paddleSize.y / 2. &&
                 ball.get_position().y - ballRadius <= leftPaddle.get_position().y + paddleSize.y / 2. {
