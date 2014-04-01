@@ -45,12 +45,12 @@ pub mod render_window {
     pub struct sfRenderWindow;
 
     pub struct sfEvent {
-        typeEvent : c_uint,
-        p1 :        c_uint,
-        p2 :        c_uint,
-        p3 :        c_float,
-        p4 :        c_uint,
-        p5 :        c_uint
+        pub typeEvent : c_uint,
+        pub p1 :        c_uint,
+        pub p2 :        c_uint,
+        pub p3 :        c_float,
+        pub p4 :        c_uint,
+        pub p5 :        c_uint
     }
 
     extern "C" {
@@ -353,10 +353,10 @@ pub mod render_states {
     use ffi::graphics::texture::sfTexture;
 
     pub struct sfRenderStates {
-        blendMode : i32,
-        transform : Transform,
-        texture :   *sfTexture,
-        shader :    *sfShader
+        pub blendMode : i32,
+        pub transform : Transform,
+        pub texture :   *sfTexture,
+        pub shader :    *sfShader
     }
 }
 
