@@ -36,15 +36,15 @@ pub mod rc;
 /// Define the states used for drawing to a RenderTarget
 pub struct RenderStates<'s> {
     #[doc(hidden)]
-    priv sfRenderStates :   ffi::sfRenderStates,
+    sfRenderStates :   ffi::sfRenderStates,
     /// Blending mode.
-    blendMode :             BlendMode,
+    pub blendMode :             BlendMode,
     /// Transform
-    transform :             Transform,
+    pub transform :             Transform,
     /// Texture
-    texture :               Option<&'s Texture>,
+    pub texture :               Option<&'s Texture>,
     /// Shader
-    shader :                Option<&'s Shader<'s>>
+    pub shader :                Option<&'s Shader<'s>>
 }
 
 impl<'s> RenderStates<'s> {

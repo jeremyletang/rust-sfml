@@ -46,11 +46,11 @@ use ffi = ffi::window::video_mode;
 #[deriving(Clone, Eq, Ord, Show)]
 pub struct VideoMode {
     /// Video mode width, in pixels.
-    width:          uint,
+    pub width:          uint,
     /// Video mode height, in pixels.
-    height:         uint,
+    pub height:         uint,
     /// Video mode pixel depth, in bits per pixels.
-    bits_per_pixel: uint
+    pub bits_per_pixel: uint
 }
 
 impl VideoMode {

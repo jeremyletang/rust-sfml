@@ -18,13 +18,11 @@
 *
 * 2. Altered source versions must be plainly marked as such, and must not be
 *    misrepresented as being the original software.
-* 
+*
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-/*!
-* Utility class to build blocks of data to transfer over the network.
-*/
+//! Utility class to build blocks of data to transfer over the network.
 
 use std::ptr;
 use std::str;
@@ -37,7 +35,7 @@ use ffi = ffi::network::packet;
 /// Utility class to build blocks of data to transfer over the network.
 pub struct Packet {
     #[doc(hidden)]
-    packet : *ffi::sfPacket
+    pub packet : *ffi::sfPacket
 }
 
 impl Packet {
@@ -96,7 +94,7 @@ impl Packet {
     */
     pub fn get_data_size(&self) -> u32 {
         unsafe {
-            ffi::sfPacket_getDataSize(self.packet) as u32 
+            ffi::sfPacket_getDataSize(self.packet) as u32
         }
     }
 

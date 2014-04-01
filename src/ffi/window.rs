@@ -36,12 +36,12 @@ pub mod window {
     }
 
     pub struct sfEvent {
-        typeEvent : c_uint,
-        p1 :        c_uint,
-        p2 :        c_uint,
-        p3 :        c_float,
-        p4 :        c_uint,
-        p5 :        c_uint
+        pub typeEvent : c_uint,
+        pub p1 :        c_uint,
+        pub p2 :        c_uint,
+        pub p3 :        c_float,
+        pub p4 :        c_uint,
+        pub p5 :        c_uint
     }
 
     pub enum sfEventType {
@@ -154,9 +154,9 @@ pub mod video_mode {
     use ffi::sfml_types::SfBool;
 
     pub struct sfVideoMode {
-        width:          c_uint,
-        height:         c_uint,
-        bits_per_pixel: c_uint
+        pub width:          c_uint,
+        pub height:         c_uint,
+        pub bits_per_pixel: c_uint
     }
 
     impl Clone for sfVideoMode {

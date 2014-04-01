@@ -45,15 +45,15 @@ use ffi = ffi::graphics::transform;
  * rotate, scale, shear, project, whatever things.
  */
 pub struct Transform {
-    a00 : f32,
-    a01 : f32,
-    a02 : f32,
-    a10 : f32,
-    a11 : f32,
-    a12 : f32,
-    a20 : f32,
-    a21 : f32,
-    a22 : f32
+    pub a00 : f32,
+    pub a01 : f32,
+    pub a02 : f32,
+    pub a10 : f32,
+    pub a11 : f32,
+    pub a12 : f32,
+    pub a20 : f32,
+    pub a21 : f32,
+    pub a22 : f32
 }
 
 impl Transform {

@@ -30,11 +30,11 @@
 #[deriving(Clone, Ord, Eq, Show)]
 pub struct Vector3f {
     /// X coordinate of the vector.
-    x : f32,
+    pub x : f32,
     /// Y coordinate of the vector.
-    y : f32,
+    pub y : f32,
     /// Z coordinate of the vector.
-    z : f32
+    pub z : f32
 }
 
 trait Vector3fOp {

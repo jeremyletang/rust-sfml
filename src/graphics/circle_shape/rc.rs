@@ -40,9 +40,9 @@ use ffi = ffi::graphics::circle_shape;
 /// Specialized shape representing a circle.
 pub struct CircleShape {
     #[doc(hidden)]
-    priv circle_shape : *ffi::sfCircleShape,
+    circle_shape : *ffi::sfCircleShape,
     #[doc(hidden)]
-    priv texture :      Option<Rc<RefCell<Texture>>>
+    texture :      Option<Rc<RefCell<Texture>>>
 }
 
 impl CircleShape {

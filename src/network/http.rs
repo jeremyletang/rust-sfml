@@ -18,7 +18,7 @@
 *
 * 2. Altered source versions must be plainly marked as such, and must not be
 *    misrepresented as being the original software.
-* 
+*
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
@@ -68,7 +68,7 @@ pub enum Status {
     /// The requested page has temporarily moved to a new location
     MovedTemporarily    = ffi::MOVEDTEMPORARILY as c_int,
     /// For conditionnal requests, means the requested page hasn't changed and doesn't need to be refreshed
-    NotModified         = ffi::NOTMODIFIED as c_int, 
+    NotModified         = ffi::NOTMODIFIED as c_int,
 
     // 4xx: client error
     /// The server couldn't understand the request (syntax error)
@@ -100,25 +100,25 @@ pub enum Status {
     /// Response is not a valid HTTP one
     InvalidResponse     = ffi::INVALIDRESPONSE as c_int,
     /// Connection with server failed
-    ConnectionFailed    = ffi::CONNECTIONFAILED as c_int 
+    ConnectionFailed    = ffi::CONNECTIONFAILED as c_int
 }
 
 /// Encapsulation of an HTTP request
 pub struct Request {
     #[doc(hidden)]
-    priv request : *ffi::sfHttpRequest
+    request : *ffi::sfHttpRequest
 }
 
 /// Encapsulation of an HTTP response
 pub struct Response {
     #[doc(hidden)]
-    priv response : *ffi::sfHttpResponse
+    response : *ffi::sfHttpResponse
 }
 
 /// The HTTP client.
 pub struct Http {
     #[doc(hidden)]
-    priv http : *ffi::sfHttp
+    http : *ffi::sfHttp
 }
 
 impl Request {
@@ -132,7 +132,7 @@ impl Request {
         if ptr.is_null() {
             None
         } else {
-            Some(Request { 
+            Some(Request {
                 request : ptr
             })
         }
@@ -211,7 +211,7 @@ impl Request {
     * Set the body of a HTTP request
     *
     * The body of a request is optional and only makes sense
-    * for POST requests. It is ignored for all other methods. 
+    * for POST requests. It is ignored for all other methods.
     * The body is empty by default.
     * # Arguments
     * * body - Content of the body
@@ -247,7 +247,7 @@ impl Response {
     *
     * # Arguments
     * * field - Name of the field to get
-    * 
+    *
     * Return Value of the field, or empty string if not found
     */
     pub fn get_field(&self, field : &str) -> ~str {
@@ -275,7 +275,7 @@ impl Response {
 
     /**
     * Get the major HTTP version number of a HTTP response
-    * 
+    *
     * Return Major HTTP version number
     */
     pub fn get_major_version(&self) -> u32 {

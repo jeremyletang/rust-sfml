@@ -50,9 +50,9 @@ pub mod rc;
  */
 pub struct Sprite<'s> {
     #[doc(hidden)]
-    priv sprite :   *ffi::sfSprite,
+    sprite :   *ffi::sfSprite,
     #[doc(hidden)]
-    priv texture :  Option<&'s Texture>
+    texture :  Option<&'s Texture>
 }
 
 impl<'s> Sprite<'s> {

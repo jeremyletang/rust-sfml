@@ -40,9 +40,9 @@ use ffi = ffi::graphics::rectangle_shape;
 /// Specialized shape representing a rectangle
 pub struct RectangleShape {
     #[doc(hidden)]
-    priv rectangle_shape :  *ffi::sfRectangleShape,
+    rectangle_shape :  *ffi::sfRectangleShape,
     #[doc(hidden)]
-    priv texture :          Option<Rc<RefCell<Texture>>>
+    texture :          Option<Rc<RefCell<Texture>>>
 }
 
 impl RectangleShape {

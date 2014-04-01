@@ -18,13 +18,11 @@
 *
 * 2. Altered source versions must be plainly marked as such, and must not be
 *    misrepresented as being the original software.
-* 
+*
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-/*!
-* Specialized socket using the TCP protocol
-*/
+//! Specialized socket using the TCP protocol
 
 use std::libc::size_t;
 use std::{slice, ptr, cast};
@@ -40,7 +38,7 @@ use ffi = ffi::network::tcp_socket;
 /// Specialized socket using the TCP protocol
 pub struct TcpSocket {
     #[doc(hidden)]
-    priv socket : *ffi::sfTcpSocket
+    socket : *ffi::sfTcpSocket
 }
 
 impl TcpSocket {
@@ -57,7 +55,7 @@ impl TcpSocket {
         else {
             Some(TcpSocket {
                 socket : tcp
-            }) 
+            })
         }
     }
 
@@ -102,7 +100,7 @@ impl TcpSocket {
     *
     * If the socket is not bound to a port, this function
     * returns 0.
-    * 
+    *
     * Return the port to which the socket is bound
     */
     pub fn get_local_port(&self) -> u16 {
@@ -176,7 +174,7 @@ impl TcpSocket {
     *
     * # Arguments
     * * data - Vector of the sequence of bytes to send
-    * 
+    *
     * Return the status code
     */
     pub fn send(&self, data : Vec<i8>) -> SocketStatus {
@@ -244,7 +242,7 @@ impl Wrappable<*ffi::sfTcpSocket> for TcpSocket {
             socket : socket
         }
     }
-    
+
     fn unwrap(&self) -> *ffi::sfTcpSocket {
         self.socket
     }

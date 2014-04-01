@@ -51,11 +51,11 @@ pub mod rc;
  */
 pub struct Text<'s> {
     #[doc(hidden)]
-    priv text :             *ffi::sfText,
+    text :             *ffi::sfText,
     #[doc(hidden)]
-    priv string_length :    uint,
+    string_length :    uint,
     #[doc(hidden)]
-    priv font :             Option<&'s Font>
+    font :             Option<&'s Font>
 }
 
 impl<'s> Text<'s> {

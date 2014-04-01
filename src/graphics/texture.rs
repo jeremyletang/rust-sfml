@@ -47,9 +47,9 @@ use ffi = ffi::graphics::texture;
  */
 pub struct Texture {
     #[doc(hidden)]
-    priv texture :  *ffi::sfTexture,
+    texture :  *ffi::sfTexture,
     #[doc(hidden)]
-    priv dropable : bool
+    dropable : bool
 }
 
 impl Texture {

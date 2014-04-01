@@ -40,9 +40,9 @@ pub mod rc;
 /// Specialized shape representing a circle.
 pub struct CircleShape<'s> {
     #[doc(hidden)]
-    priv circle_shape : *ffi::sfCircleShape,
+    circle_shape : *ffi::sfCircleShape,
     #[doc(hidden)]
-    priv texture :      Option<&'s Texture>
+    texture :      Option<&'s Texture>
 }
 
 impl<'s> CircleShape<'s> {

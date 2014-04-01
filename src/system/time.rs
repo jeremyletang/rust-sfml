@@ -41,7 +41,7 @@ use ffi = ffi::system::time;
  */
 pub struct Time {
     #[doc(hidden)]
-    priv time : ffi::sfTime
+    time : ffi::sfTime
 }
 
 impl Time {

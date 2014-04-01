@@ -51,9 +51,9 @@ pub mod rc;
  */
 pub struct Shader<'s> {
     #[doc(hidden)]
-    priv shader :   *ffi::sfShader,
+    shader :   *ffi::sfShader,
     #[doc(hidden)]
-    priv texture :  Option<&'s Texture>
+    texture :  Option<&'s Texture>
 }
 
 impl<'s> Shader<'s> {

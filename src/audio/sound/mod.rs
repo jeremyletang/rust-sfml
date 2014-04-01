@@ -48,9 +48,9 @@ pub mod rc;
  */
 pub struct Sound<'s> {
     #[doc(hidden)]
-    priv sound :    *ffi::sfSound,
+    sound :    *ffi::sfSound,
     #[doc(hidden)]
-    priv buffer :   Option<&'s SoundBuffer>
+    buffer :   Option<&'s SoundBuffer>
 }
 
 impl<'s> Sound<'s> {

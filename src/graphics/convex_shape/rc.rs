@@ -54,17 +54,17 @@ use ffi = ffi::graphics::convex_shape;
  */
 pub struct ConvexShape {
     #[doc(hidden)]
-    priv convex_shape : *ffi::sfConvexShape,
+    convex_shape : *ffi::sfConvexShape,
     #[doc(hidden)]
-    priv texture :      Option<Rc<RefCell<Texture>>>
+    texture :      Option<Rc<RefCell<Texture>>>
 }
 
 /// An iterator over the points of a ConvexShape
 pub struct ConvexShapePoints {
     #[doc(hidden)]
-    priv convex_shape: *ffi::sfConvexShape,
+    convex_shape: *ffi::sfConvexShape,
     #[doc(hidden)]
-    priv pos: u32
+    pos: u32
 }
 
 impl ConvexShape {

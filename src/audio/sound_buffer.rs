@@ -44,9 +44,9 @@ use ffi = ffi::audio::sound_buffer;
  */
 pub struct SoundBuffer {
     #[doc(hidden)]
-    priv sound_buffer : *ffi::sfSoundBuffer,
+    sound_buffer : *ffi::sfSoundBuffer,
     #[doc(hidden)]
-    priv dropable :     bool
+    dropable :     bool
 }
 
 impl SoundBuffer {

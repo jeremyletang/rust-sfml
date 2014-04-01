@@ -55,23 +55,23 @@ use ffi = ffi::graphics::render_window;
  */
 pub struct RenderWindow {
     #[doc(hidden)]
-    priv render_window :    *ffi::sfRenderWindow,
+    render_window :    *ffi::sfRenderWindow,
     #[doc(hidden)]
-    priv event :            ffi::sfEvent,
+    event :            ffi::sfEvent,
     #[doc(hidden)]
-    priv title_length :     uint,
+    title_length :     uint,
     #[doc(hidden)]
-    priv current_view :     Rc<RefCell<View>>,
+    current_view :     Rc<RefCell<View>>,
     #[doc(hidden)]
-    priv default_view :     Rc<RefCell<View>>
+    default_view :     Rc<RefCell<View>>
 }
 
 /// An iterator over all the events in the events queue (internally call poll_event)
 pub struct Events {
     #[doc(hidden)]
-    priv render_window: *ffi::sfRenderWindow,
+    render_window: *ffi::sfRenderWindow,
     #[doc(hidden)]
-    priv event :            ffi::sfEvent,
+    event :            ffi::sfEvent,
 }
 
 impl RenderWindow {

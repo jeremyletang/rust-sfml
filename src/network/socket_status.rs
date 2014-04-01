@@ -18,13 +18,11 @@
 *
 * 2. Altered source versions must be plainly marked as such, and must not be
 *    misrepresented as being the original software.
-* 
+*
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-/*!
-* Status codes that may be returned by socket functions.
-*/
+//! Status codes that may be returned by socket functions.
 
 use std::libc::c_int;
 

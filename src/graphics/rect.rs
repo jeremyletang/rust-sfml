@@ -37,26 +37,26 @@ use ffi = ffi::graphics::rect;
 #[deriving(Clone, Ord, Show)]
 pub struct IntRect {
     /// Left coordinate of the rectangle.
-    left :      i32,
+    pub left :      i32,
     /// Top coordinate of the rectangle.
-    top :       i32,
+    pub top :       i32,
     /// Width of the rectangle.
-    width :     i32,
+    pub width :     i32,
     /// Height coordinate of the rectangle.
-    height :    i32
+    pub height :    i32
 }
 
 /// Utility classes for manipulating rectangles of f32.
 #[deriving(Clone, Ord, Show)]
 pub struct FloatRect {
     /// Left coordinate of the rectangle.
-    left :      f32,
+    pub left :      f32,
     /// Top coordinate of the rectangle.
-    top :       f32,
+    pub top :       f32,
     /// Width of the rectangle.
-    width :     f32,
+    pub width :     f32,
     /// Height of the rectangle.
-    height :    f32
+    pub height :    f32
 }
 
 impl IntRect {
@@ -133,7 +133,7 @@ impl FloatRect {
         top : f32,
         width : f32,
         height : f32) -> FloatRect {
-        
+
         FloatRect {
             left :      left,
             top :       top,
@@ -143,12 +143,12 @@ impl FloatRect {
     }
 
     /**
-    *  Check if a point is inside a rectangle's area 
+    *  Check if a point is inside a rectangle's area
     *
     * # Arguments
     * * x - X coordinate of the point to test
     * * y - Y coordinate of the point to test
-    * 
+    *
     * Return true if the point is inside
     */
     pub fn contains(self, x : f32, y : f32) -> bool {
@@ -164,14 +164,14 @@ impl FloatRect {
     * # Arguments
     * * rect1 - First rectangle to test
     * * rect2 - Second rectangle to test
-    * * intersection - Rectangle to be filled with overlapping rect 
+    * * intersection - Rectangle to be filled with overlapping rect
     *
     * Return true if rectangles overlap
     */
     pub fn intersects(rect1 : &FloatRect,
         rect2 : &FloatRect,
         intersections : &FloatRect) -> bool {
-        
+
         match unsafe { ffi::sfFloatRect_intersects(rect1, rect2, intersections) } {
             SFFALSE => false,
             SFTRUE  => true

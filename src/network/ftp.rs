@@ -18,7 +18,7 @@ e* Permission is granted to anyone to use this software for any purpose,
 *
 * 2. Altered source versions must be plainly marked as such, and must not be
 *    misrepresented as being the original software.
-* 
+*
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
@@ -156,22 +156,26 @@ pub enum Status {
 
 /// The FTP client
 pub struct Ftp {
-    priv ftp : *ffi::sfFtp
+    #[doc(hidden)]
+    ftp : *ffi::sfFtp
 }
 
 /// Encapsulation of an Ftp Serveur response
 pub struct Response {
-    priv response : *ffi::sfFtpResponse
+    #[doc(hidden)]
+    response : *ffi::sfFtpResponse
 }
 
 /// Encapsulation of a response returning a list of filename
 pub struct ListingResponse{
-    priv listing_response : *ffi::sfFtpListingResponse
+    #[doc(hidden)]
+    listing_response : *ffi::sfFtpListingResponse
 }
 
 /// Encapsulation of a response returning a directory
 pub struct DirectoryResponse{
-    priv directory_response : *ffi::sfFtpDirectoryResponse
+    #[doc(hidden)]
+    directory_response : *ffi::sfFtpDirectoryResponse
 }
 
 impl ListingResponse {
@@ -233,7 +237,7 @@ impl ListingResponse {
     */
     pub fn get_name(&self, index : u64) -> ~str {
         unsafe {
-            str::raw::from_c_str(ffi::sfFtpListingResponse_getName(self.listing_response, index as size_t))            
+            str::raw::from_c_str(ffi::sfFtpListingResponse_getName(self.listing_response, index as size_t))
         }
     }
 }
@@ -462,7 +466,7 @@ impl Ftp {
     */
     pub fn get_working_directory(&self) -> DirectoryResponse {
         DirectoryResponse {
-            directory_response : unsafe { ffi::sfFtp_getWorkingDirectory(self.ftp) } 
+            directory_response : unsafe { ffi::sfFtp_getWorkingDirectory(self.ftp) }
         }
     }
 
@@ -493,7 +497,7 @@ impl Ftp {
     *
     * # Arguments
     * * directory - New working directory
-    * 
+    *
     * Return the server response to the request
     */
     pub fn change_directory(&self, directory : &str) -> Response {
@@ -527,7 +531,7 @@ impl Ftp {
     */
     pub fn create_directory(&self, name : &str) -> Response {
         let c_name = name.to_c_str();
-        Response { 
+        Response {
             response : unsafe { ffi::sfFtp_createDirectory(self.ftp, c_name.unwrap()) }
         }
     }
@@ -542,7 +546,7 @@ impl Ftp {
     *
     * # Arguments
     * * name - Name of the directory to remove
-    * 
+    *
     * Return the server response to the request
     */
     pub fn delete_directory(&self, name : &str) -> Response {
@@ -568,7 +572,7 @@ impl Ftp {
         let c_name = name.to_c_str();
         let c_new_name = new_name.to_c_str();
         Response {
-            response : unsafe { ffi::sfFtp_renameFile(self.ftp, c_name.unwrap(), c_new_name.unwrap()) } 
+            response : unsafe { ffi::sfFtp_renameFile(self.ftp, c_name.unwrap(), c_new_name.unwrap()) }
         }
     }
 
@@ -582,7 +586,7 @@ impl Ftp {
     *
     * # Arguments
     * * name File to remove
-    * 
+    *
     * Return the server response to the request
     */
     pub fn delete_file(&self, name : &str) -> Response {
@@ -610,7 +614,7 @@ impl Ftp {
     pub fn download(&self, distant_file : &str, dest_path : &str, mode : TransferMode) -> Response {
         let c_distant_file = distant_file.to_c_str();
         let c_dest_path = dest_path.to_c_str();
-        Response { 
+        Response {
             response : unsafe { ffi::sfFtp_download(self.ftp, c_distant_file.unwrap(), c_dest_path.unwrap(), mode as ffi::TransferMode) }
         }
     }
@@ -622,7 +626,7 @@ impl Ftp {
     * working directory of your application, and the
     * remote path is relative to the current directory of the
     * FTP server.
-    * 
+    *
     * # Arguments
     * * localFile - Path of the local file to upload
     * * remotePath - Where to put to file on the server
@@ -633,7 +637,7 @@ impl Ftp {
     pub fn upload(&self, local_file : &str, dest_path : &str, mode : TransferMode) -> Response {
         let c_local_file = local_file.to_c_str();
         let c_dest_path = dest_path.to_c_str();
-        Response { 
+        Response {
             response : unsafe { ffi::sfFtp_upload(self.ftp, c_local_file.unwrap(), c_dest_path.unwrap(), mode as ffi::TransferMode) }
         }
     }

@@ -54,17 +54,17 @@ pub mod rc;
  */
 pub struct ConvexShape<'s> {
     #[doc(hidden)]
-    priv convex_shape : *ffi::sfConvexShape,
+    convex_shape : *ffi::sfConvexShape,
     #[doc(hidden)]
-    priv texture :      Option<&'s Texture>
+    texture :      Option<&'s Texture>
 }
 
 /// An iterator over the points of a ConvexShape
 pub struct ConvexShapePoints {
     #[doc(hidden)]
-    priv convex_shape: *ffi::sfConvexShape,
+    convex_shape: *ffi::sfConvexShape,
     #[doc(hidden)]
-    priv pos: u32
+    pos: u32
 }
 
 impl<'s> ConvexShape<'s> {

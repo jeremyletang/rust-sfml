@@ -45,7 +45,7 @@ use ffi = ffi::audio::sound_buffer_recorder;
  */
 pub struct SoundBufferRecorder {
     #[doc(hidden)]
-    priv sound_buffer_recorder : *ffi::sfSoundBufferRecorder
+    sound_buffer_recorder : *ffi::sfSoundBufferRecorder
 }
 
 impl SoundBufferRecorder {

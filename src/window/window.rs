@@ -49,11 +49,11 @@ use ffi = ffi::window::window;
  */
 pub struct Window {
     #[doc(hidden)]
-    priv window :       *ffi::sfWindow,
+    window :       *ffi::sfWindow,
     #[doc(hidden)]
-    priv event :        ffi::sfEvent,
+    event :        ffi::sfEvent,
     #[doc(hidden)]
-    priv title_length : uint
+    title_length : uint
 }
 
 impl Window {

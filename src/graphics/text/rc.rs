@@ -51,11 +51,11 @@ use ffi = ffi::graphics::text;
  */
 pub struct Text {
     #[doc(hidden)]
-    priv text :             *ffi::sfText,
+    text :             *ffi::sfText,
     #[doc(hidden)]
-    priv string_length :    uint,
+    string_length :    uint,
     #[doc(hidden)]
-    priv font :             Option<Rc<RefCell<Font>>>
+    font :             Option<Rc<RefCell<Font>>>
 }
 
 impl Text {

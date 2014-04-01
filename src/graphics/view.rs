@@ -47,9 +47,9 @@ use ffi = ffi::graphics::view;
  */
 pub struct View {
     #[doc(hidden)]
-    priv dropable : bool,
+    dropable : bool,
     #[doc(hidden)]
-    priv view :     *ffi::sfView
+    view :     *ffi::sfView
 }
 
 impl View {
