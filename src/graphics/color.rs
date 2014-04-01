@@ -38,13 +38,13 @@ use ffi = ffi::graphics::color;
 #[deriving(Clone, Ord, Show)]
 pub struct Color {
     /// The red composant of the color
-    red :   u8,
+    pub red :   u8,
     /// The green composant of the color
-    green : u8,
+    pub green : u8,
     /// The blue composant of the color
-    blue :  u8,
+    pub blue :  u8,
     /// The alpha composant of the color
-    alpha : u8
+    pub alpha : u8
 }
 
 impl Color {

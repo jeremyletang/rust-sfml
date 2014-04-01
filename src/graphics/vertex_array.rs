@@ -36,15 +36,15 @@ use ffi = ffi::graphics::vertex_array;
 /// Define a set of one or more 2D primitives
 pub struct VertexArray {
     #[doc(hidden)]
-    priv vertex_array : *ffi::sfVertexArray
+    vertex_array : *ffi::sfVertexArray
 }
 
 /// An iterator over the vertice of a VertexArray
 pub struct Vertices<'s> {
     #[doc(hidden)]
-    priv vertex_array: *ffi::sfVertexArray,
+    vertex_array: *ffi::sfVertexArray,
     #[doc(hidden)]
-    priv pos: u32
+    pos: u32
 }
 
 impl VertexArray {

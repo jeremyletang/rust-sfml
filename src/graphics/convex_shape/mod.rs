@@ -54,9 +54,9 @@ pub mod rc;
  */
 pub struct ConvexShape<'s> {
     #[doc(hidden)]
-    priv convex_shape : *ffi::sfConvexShape,
+    convex_shape : *ffi::sfConvexShape,
     #[doc(hidden)]
-    priv texture :      Option<&'s Texture>
+    texture :      Option<&'s Texture>
 }
 
 /// An iterator over the points of a ConvexShape

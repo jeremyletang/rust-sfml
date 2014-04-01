@@ -37,9 +37,9 @@ use ffi = ffi::graphics::font;
 /// Class for loading and manipulating character fonts
 pub struct Font {
     #[doc(hidden)]
-    priv font :     *ffi::sfFont,
+    font :     *ffi::sfFont,
     #[doc(hidden)]
-    priv dropable : bool
+    dropable : bool
 }
 
 impl Font {

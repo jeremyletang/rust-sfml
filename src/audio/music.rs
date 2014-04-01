@@ -50,7 +50,7 @@ use ffi = ffi::audio::music;
  */
 pub struct Music {
     #[doc(hidden)]
-    priv music : *ffi::sfMusic
+    music : *ffi::sfMusic
 }
 
 impl Music {

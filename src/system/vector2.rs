@@ -30,27 +30,27 @@
 #[deriving(Clone, Ord, Eq, Show)]
 pub struct Vector2i {
     /// X coordinate of the vector.
-    x : i32,
+    pub x : i32,
     /// Y coordinate of the vector.
-    y : i32
+    pub y : i32
 }
 
 /// Implementation of Vector2u
 #[deriving(Clone, Ord, Eq, Show)]
 pub struct Vector2u {
     /// X coordinate of the vector.
-    x : u32,
+    pub x : u32,
     /// Y coordinate of the vector.
-    y : u32
+    pub y : u32
 }
 
 /// Implementation of Vector2f
 #[deriving(Clone, Ord, Eq, Show)]
 pub struct Vector2f {
     /// X coordinate of the vector.
-    x : f32,
+    pub x : f32,
     /// Y coordinate of the vector.
-    y : f32
+    pub y : f32
 }
 
 trait Vector2iOp {

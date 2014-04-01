@@ -18,13 +18,11 @@
 *
 * 2. Altered source versions must be plainly marked as such, and must not be
 *    misrepresented as being the original software.
-* 
+*
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-/*!
-* Encapsulate an IPv4 network address.
-*/
+//! Encapsulate an IPv4 network address.
 
 use std::str;
 use std::ptr;
@@ -37,7 +35,7 @@ use ffi = ffi::network::ip_address;
 /// Encapsulate an IPv4 network address.
 pub struct IpAddress{
     #[doc(hidden)]
-    priv ip : ffi::sfIpAddress
+    ip : ffi::sfIpAddress
 }
 
 impl IpAddress {
@@ -88,7 +86,7 @@ impl IpAddress {
     * the address directly. It should be used for optimization
     * purposes, and only if you got that representation from
     * sfIpAddress_ToInteger.
-    * 
+    *
     * # Arguments
     * * address - 4 bytes of the address packed into a 32-bits integer
     *
@@ -96,7 +94,7 @@ impl IpAddress {
     */
     pub fn new_from_integer(address : u32) -> IpAddress {
         IpAddress {
-            ip : unsafe { ffi::sfIpAddress_fromInteger(address) } 
+            ip : unsafe { ffi::sfIpAddress_fromInteger(address) }
         }
     }
 
@@ -153,7 +151,7 @@ impl IpAddress {
 
     /**
     * Get the computer's public address
-    * 
+    *
     * The public address is the address of the computer from the
     * internet point of view, i.e. something like 89.54.1.169.
     * It is necessary for communications over the world wide web.
@@ -170,7 +168,7 @@ impl IpAddress {
     */
     pub fn get_public_address(timeout : &Time) -> IpAddress {
         IpAddress {
-            ip : unsafe { ffi::sfIpAddress_getPublicAddress(timeout.unwrap()) } 
+            ip : unsafe { ffi::sfIpAddress_getPublicAddress(timeout.unwrap()) }
         }
     }
 }
@@ -184,5 +182,5 @@ impl Wrappable<ffi::sfIpAddress> for IpAddress {
 
     fn unwrap(&self) -> ffi::sfIpAddress {
         self.ip
-    }    
+    }
 }

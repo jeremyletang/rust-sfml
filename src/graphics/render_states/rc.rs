@@ -36,15 +36,15 @@ use ffi = ffi::graphics::render_states;
 /// Define the states used for drawing to a RenderTarget
 pub struct RenderStates {
     #[doc(hidden)]
-    priv sfRenderStates :   ffi::sfRenderStates,
+    sfRenderStates :   ffi::sfRenderStates,
     /// Blending mode.
-    blendMode :             BlendMode,
+    pub blendMode :             BlendMode,
     /// Transform
-    transform :             Transform,
+    pub transform :             Transform,
     /// Texture
-    texture :               Option<Rc<RefCell<Texture>>>,
+    pub texture :               Option<Rc<RefCell<Texture>>>,
     /// Shader
-    shader :                Option<Rc<RefCell<rc::Shader>>>
+    pub shader :                Option<Rc<RefCell<rc::Shader>>>
 }
 
 impl RenderStates {

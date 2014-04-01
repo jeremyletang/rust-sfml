@@ -54,9 +54,9 @@ use ffi = ffi::graphics::convex_shape;
  */
 pub struct ConvexShape {
     #[doc(hidden)]
-    priv convex_shape : *ffi::sfConvexShape,
+    convex_shape : *ffi::sfConvexShape,
     #[doc(hidden)]
-    priv texture :      Option<Rc<RefCell<Texture>>>
+    texture :      Option<Rc<RefCell<Texture>>>
 }
 
 /// An iterator over the points of a ConvexShape

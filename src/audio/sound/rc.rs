@@ -48,9 +48,9 @@ use ffi = ffi::audio::sound;
  */
 pub struct Sound {
     #[doc(hidden)]
-    priv sound :    *ffi::sfSound,
+    sound :    *ffi::sfSound,
     #[doc(hidden)]
-    priv buffer :   Option<Rc<RefCell<SoundBuffer>>>
+    buffer :   Option<Rc<RefCell<SoundBuffer>>>
 }
 
 impl Sound {

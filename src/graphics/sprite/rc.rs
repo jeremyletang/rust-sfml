@@ -50,9 +50,9 @@ use ffi = ffi::graphics::sprite;
  */
 pub struct Sprite {
     #[doc(hidden)]
-    priv sprite :   *ffi::sfSprite,
+    sprite :   *ffi::sfSprite,
     #[doc(hidden)]
-    priv texture :  Option<Rc<RefCell<Texture>>>
+    texture :  Option<Rc<RefCell<Texture>>>
 }
 
 impl Sprite {

@@ -40,7 +40,7 @@ use ffi = ffi::system::clock;
  */
 pub struct Clock {
     #[doc(hidden)]
-    priv clock : *ffi::sfClock
+    clock : *ffi::sfClock
 }
 
 impl Clock {

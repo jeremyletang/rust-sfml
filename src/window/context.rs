@@ -38,7 +38,7 @@ use ffi = ffi::window::context;
  */
 pub struct Context {
     #[doc(hidden)]
-    priv cont : *ffi::sfContext
+    cont : *ffi::sfContext
 }
 
 impl Context {

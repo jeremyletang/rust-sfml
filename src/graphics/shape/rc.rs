@@ -45,9 +45,9 @@ pub struct WrapObj {
 /// Base class for textured shapes with outline
 pub struct Shape {
     #[doc(hidden)]
-    priv shape :    *ffi::sfShape,
+    shape :    *ffi::sfShape,
     #[doc(hidden)]
-    priv texture :  Option<Rc<RefCell<Texture>>>
+    texture :  Option<Rc<RefCell<Texture>>>
 }
 
 #[doc(hidden)]

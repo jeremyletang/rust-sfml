@@ -45,11 +45,11 @@ use system::vector2::Vector2f;
 #[deriving(Clone, Eq, Ord, Show)]
 pub struct Vertex {
     /// 2D position of the vertex
-    position :      Vector2f,
+    pub position :      Vector2f,
     /// Color of the vertex.
-    color :         Color,
+    pub color :         Color,
     /// Coordinates of the texture's pixel to map to the vertex.
-    tex_coords :    Vector2f
+    pub tex_coords :    Vector2f
 }
 
 impl Vertex {

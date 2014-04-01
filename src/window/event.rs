@@ -23,11 +23,10 @@
 */
 
 /*!
-* Defines a system event and its parameters
-*
-* Event holds all the informations about a system event that just happened.
-*
-*/
+ * Defines a system event and its parameters
+ *
+ * Event holds all the informations about a system event that just happened.
+ */
 
 use window::keyboard::Key;
 use window::mouse::MouseButton;

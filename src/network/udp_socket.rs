@@ -18,13 +18,11 @@
 *
 * 2. Altered source versions must be plainly marked as such, and must not be
 *    misrepresented as being the original software.
-* 
+*
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-/*!
-* Specialized socket using the UDP protocol.
-*/
+//! Specialized socket using the UDP protocol
 
 use std::{ptr, slice, cast};
 use std::libc::size_t;
@@ -39,7 +37,7 @@ use ffi = ffi::network::udp_socket;
 /// Specialized socket using the UDP protocol.
 pub struct UdpSocket {
     #[doc(hidden)]
-    priv socket : *ffi::sfUdpSocket
+    socket : *ffi::sfUdpSocket
 }
 
 impl UdpSocket {
@@ -101,7 +99,7 @@ impl UdpSocket {
     *
     * If the socket is not bound to a port, this function
     * returns 0.
-    * 
+    *
     * Return the port to which the socket is bound
     */
     pub fn get_local_port(&self) -> u16 {
@@ -118,7 +116,7 @@ impl UdpSocket {
     * You can use the special value 0 to tell the
     * system to automatically pick an available port, and then
     * call sfUdpSocket_getLocalPort to retrieve the chosen port.
-    * 
+    *
     * # Arguments
     * * port - Port to bind the socket to
     *

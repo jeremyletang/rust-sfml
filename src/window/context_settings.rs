@@ -27,18 +27,19 @@
  *
  * Structure defining the window's creation settings
  */
+
 #[deriving(Clone, Eq, Ord, Show)]
 pub struct ContextSettings {
     /// Bits of the depth buffer.
-    depth_bits:         u32,
+    pub depth_bits:         u32,
     /// Bits of the stencil buffer.
-    stencil_bits:       u32,
+    pub stencil_bits:       u32,
     /// Level of antialiasing.
-    antialiasing_level: u32,
+    pub antialiasing_level: u32,
     /// Major number of the context version
-    major_version:      u32,
+    pub major_version:      u32,
     /// Minor number of the context version
-    minor_version:      u32
+    pub minor_version:      u32
 }
 
 impl ContextSettings {

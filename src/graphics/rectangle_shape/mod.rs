@@ -40,9 +40,9 @@ pub mod rc;
 /// Specialized shape representing a rectangle
 pub struct RectangleShape<'s> {
     #[doc(hidden)]
-    priv rectangle_shape :  *ffi::sfRectangleShape,
+    rectangle_shape :  *ffi::sfRectangleShape,
     #[doc(hidden)]
-    priv texture :          Option<&'s Texture>
+    texture :          Option<&'s Texture>
 }
 
 impl<'s> RectangleShape<'s> {

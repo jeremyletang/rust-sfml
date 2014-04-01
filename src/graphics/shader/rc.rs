@@ -51,9 +51,9 @@ use ffi = ffi::graphics::shader;
  */
 pub struct Shader {
     #[doc(hidden)]
-    priv shader :   *ffi::sfShader,
+    shader :   *ffi::sfShader,
     #[doc(hidden)]
-    priv texture :  Option<Rc<RefCell<Texture>>>
+    texture :  Option<Rc<RefCell<Texture>>>
 }
 
 impl Shader {

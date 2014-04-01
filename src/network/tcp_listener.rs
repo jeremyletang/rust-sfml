@@ -18,13 +18,11 @@
 *
 * 2. Altered source versions must be plainly marked as such, and must not be
 *    misrepresented as being the original software.
-* 
+*
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-/*!
-* Socket that listens to new TCP connections
-*/
+//! Socket that listens to new TCP connections
 
 use std::cast;
 
@@ -37,7 +35,7 @@ use ffi = ffi::network::tcp_listener;
 /// Socket that listens to new TCP connections
 pub struct TcpListener {
     #[doc(hidden)]
-    priv listener : *ffi::sfTcpListener
+    listener : *ffi::sfTcpListener
 }
 
 impl TcpListener {
@@ -52,7 +50,7 @@ impl TcpListener {
             None
         }
         else {
-            Some(TcpListener { 
+            Some(TcpListener {
                 listener : list
             })
         }
@@ -115,7 +113,7 @@ impl TcpListener {
     * port, waiting for new connections.
     * If the socket was previously listening to another port,
     * it will be stopped first and bound to the new port.
-    * 
+    *
     * # Arguments
     * * port - Port to listen for new connections
     *
@@ -132,7 +130,7 @@ impl TcpListener {
     *
     * If the socket is in blocking mode, this function will
     * not return until a connection is actually received.
-    * 
+    *
     * # Arguments
     * * connected - Socket that will hold the new connection
     *

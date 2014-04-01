@@ -26,7 +26,6 @@
  * Handle Joysticks
  *
  * Offers a set of function for manage joystick
- *
  */
 
 use std::libc::{c_uint};
