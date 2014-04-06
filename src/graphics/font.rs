@@ -25,7 +25,7 @@
 
 //! Class for loading and manipulating character fonts
 
-use std::libc::c_uint;
+use libc::c_uint;
 use std::ptr;
 
 use traits::Wrappable;

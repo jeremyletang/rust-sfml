@@ -24,7 +24,7 @@
 
 //! Specialized socket using the TCP protocol
 
-use std::libc::size_t;
+use libc::size_t;
 use std::{slice, ptr, cast};
 use std::vec::Vec;
 

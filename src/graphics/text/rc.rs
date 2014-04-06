@@ -31,7 +31,7 @@
 
 use std::rc::Rc;
 use std::cell::RefCell;
-use std::libc::{c_float, c_uint, size_t};
+use libc::{c_float, c_uint, size_t};
 use std::{str, cast};
 use std::vec::Vec;
 use std::c_vec::CVec;

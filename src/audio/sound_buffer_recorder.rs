@@ -29,7 +29,7 @@
  * so that it can be played, saved to a file, etc.
  */
 
-use std::libc::c_uint;
+use libc::c_uint;
 
 use traits::Wrappable;
 use audio::sound_buffer::SoundBuffer;

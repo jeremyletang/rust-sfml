@@ -28,7 +28,7 @@
  * Texture stores pixels that can be drawn, with a sprite for example.
  */
 
-use std::libc::c_uint;
+use libc::c_uint;
 use std::ptr;
 use std::vec::Vec;
 

@@ -29,7 +29,7 @@
  * display a texture (or a part of it) on a render target.
  */
 
-use std::libc::{c_float};
+use libc::{c_float};
 use std::ptr;
 
 use traits::{Drawable, Wrappable};

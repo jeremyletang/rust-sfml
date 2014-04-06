@@ -30,7 +30,7 @@
  *
 */
 
-use std::libc::c_float;
+use libc::c_float;
 use std::{ptr, cast};
 
 use audio::Status;

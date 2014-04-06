@@ -24,7 +24,7 @@
 
 //! Define a set of one or more 2D primitives
 
-use std::libc::c_uint;
+use libc::c_uint;
 use std::cast;
 
 use traits::{Drawable, Wrappable};

@@ -28,7 +28,7 @@
  * Offers a set of function for manage joystick
  */
 
-use std::libc::{c_uint};
+use libc::{c_uint};
 
 use ffi::sfml_types::{SFFALSE, SFTRUE};
 use ffi = ffi::window::joystick;

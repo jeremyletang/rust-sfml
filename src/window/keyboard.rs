@@ -26,7 +26,7 @@
 
 //! Keyboard inputs Give acces to real-time keyboard input.
 
-use std::libc::c_int;
+use libc::c_int;
 
 use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi = ffi::window::keyboard;

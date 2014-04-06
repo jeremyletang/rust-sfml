@@ -29,7 +29,7 @@
  * and abstractions for events and input handling.
  */
 
-use std::libc::{c_uint, c_float, c_int};
+use libc::{c_uint, c_float, c_int};
 use std::{ptr, cast};
 use std::vec::Vec;
 

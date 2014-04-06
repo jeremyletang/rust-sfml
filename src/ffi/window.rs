@@ -23,7 +23,7 @@
 */
 
 pub mod window {
-    use std::libc::{c_void, c_uint, c_float, c_char};
+    use libc::{c_void, c_uint, c_float, c_char};
 
     use window::ContextSettings;
     use system::vector2::{Vector2i, Vector2u};
@@ -97,7 +97,7 @@ pub mod window {
 }
 
 pub mod context {
-    use std::libc::c_void;
+    use libc::c_void;
 
     use ffi::sfml_types::SfBool;
 
@@ -113,7 +113,7 @@ pub mod context {
 }
 
 pub mod joystick {
-    use std::libc::{c_float, c_uint};
+    use libc::{c_float, c_uint};
 
     use ffi::sfml_types::SfBool;
 
@@ -128,7 +128,7 @@ pub mod joystick {
 }
 
 pub mod keyboard {
-    pub use std::libc::c_int;
+    pub use libc::c_int;
 
     use ffi::sfml_types::SfBool;
 
@@ -139,7 +139,7 @@ pub mod keyboard {
 
 pub mod mouse {
 
-    use std::libc::c_uint;
+    use libc::c_uint;
 
     use ffi::sfml_types::SfBool;
 
@@ -149,7 +149,7 @@ pub mod mouse {
 }
 
 pub mod video_mode {
-    use std::libc::{c_uint, size_t};
+    use libc::{c_uint, size_t};
 
     use ffi::sfml_types::SfBool;
 

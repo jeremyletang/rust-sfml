@@ -24,7 +24,7 @@
 
 //! Specialized shape representing a circle.
 
-use std::libc::{c_float, c_uint};
+use libc::{c_float, c_uint};
 use std::ptr;
 
 use traits::{Drawable, Wrappable};

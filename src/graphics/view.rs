@@ -30,7 +30,7 @@
  * the way that your drawable objects are drawn.
  */
 
-use std::libc::c_float;
+use libc::c_float;
 
 use traits::Wrappable;
 use graphics::FloatRect;

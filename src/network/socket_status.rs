@@ -24,7 +24,7 @@
 
 //! Status codes that may be returned by socket functions.
 
-use std::libc::c_int;
+use libc::c_int;
 
 use ffi = ffi::network::socket_status;
 

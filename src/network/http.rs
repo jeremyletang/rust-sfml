@@ -25,7 +25,7 @@
 //! A HTTP client
 
 use std::{str, cast};
-use std::libc::c_int;
+use libc::c_int;
 
 use traits::Wrappable;
 use system::Time;

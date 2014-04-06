@@ -30,7 +30,7 @@
  */
 
 use std::c_vec::CVec;
-use std::libc::{c_uint, size_t};
+use libc::{c_uint, size_t};
 use std::vec::Vec;
 
 use traits::Wrappable;

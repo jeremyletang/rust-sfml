@@ -26,7 +26,7 @@
 * Target for off-screen 2D rendering into a texture
 */
 
-use std::libc::c_uint;
+use libc::c_uint;
 use std::ptr;
 
 use traits::{Drawable, Wrappable};

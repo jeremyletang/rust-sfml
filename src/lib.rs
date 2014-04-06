@@ -156,6 +156,8 @@ Here is a list of all modules :
 #![warn(missing_doc)]
 #![feature(struct_variant)]
 
+extern crate libc;
+
 pub mod traits;
 pub mod system;
 pub mod window;

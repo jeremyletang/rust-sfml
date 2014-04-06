@@ -28,7 +28,7 @@
  * Time encapsulates a time value in a flexible way.
  */
 
-pub use std::libc::{c_long, c_float, c_int};
+pub use libc::{c_long, c_float, c_int};
 
 use traits::Wrappable;
 

@@ -33,7 +33,7 @@
 
 use std::rc::Rc;
 use std::cell::RefCell;
-use std::libc::{c_float, c_uint};
+use libc::{c_float, c_uint};
 use std::ptr;
 
 use traits::{Wrappable, Drawable};

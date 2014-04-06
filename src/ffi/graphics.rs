@@ -23,7 +23,7 @@
 */
 
 pub mod render_window {
-    use std::libc::{c_uint, c_float, c_char};
+    use libc::{c_uint, c_float, c_char};
 
     use system::vector2::{Vector2f, Vector2i, Vector2u};
     use window::ContextSettings;
@@ -105,7 +105,7 @@ pub mod render_window {
 
 pub mod circle_shape {
 
-    use std::libc::{c_void, c_float, c_uint};
+    use libc::{c_void, c_float, c_uint};
 
     use system::vector2::Vector2f;
     use graphics::{Color, Transform, IntRect, FloatRect};
@@ -171,7 +171,7 @@ pub mod color {
 
 pub mod convex_shape {
 
-    use std::libc::{c_uint, c_void, c_float};
+    use libc::{c_uint, c_void, c_float};
 
     use system::vector2::Vector2f;
     use graphics::{Color, Transform, FloatRect, IntRect};
@@ -223,7 +223,7 @@ pub mod convex_shape {
 }
 
 pub mod font {
-    use std::libc::{c_void, c_uint, c_int, c_char};
+    use libc::{c_void, c_uint, c_int, c_char};
 
     use graphics::Glyph;
 
@@ -248,7 +248,7 @@ pub mod font {
 }
 
 pub mod image {
-    use std::libc::{c_void, c_uint, c_char};
+    use libc::{c_void, c_uint, c_char};
 
     use graphics::{Color, IntRect};
     use system::vector2::Vector2u;
@@ -281,7 +281,7 @@ pub mod image {
 }
 
 pub mod rect {
-    use std::libc::{c_int};
+    use libc::{c_int};
     use graphics::{FloatRect, IntRect};
 
     use ffi::sfml_types::{SfBool};
@@ -295,7 +295,7 @@ pub mod rect {
 }
 
 pub mod rectangle_shape {
-    use std::libc::{c_void, c_float, c_uint};
+    use libc::{c_void, c_float, c_uint};
 
     use system::vector2::Vector2f;
     use graphics::{Color, Transform, FloatRect, IntRect};
@@ -362,7 +362,7 @@ pub mod render_states {
 
 pub mod shader {
 
-    use std::libc::{c_void, c_float, c_char};
+    use libc::{c_void, c_float, c_char};
 
     use graphics::{Transform, Color};
     use system::vector2::Vector2f;
@@ -397,7 +397,7 @@ pub mod shader {
 
 #[doc(hidden)]
 pub mod render_texture {
-    use std::libc::{c_void, c_uint};
+    use libc::{c_void, c_uint};
 
     use system::vector2::{Vector2f, Vector2i, Vector2u};
     use graphics::{Color, IntRect};
@@ -453,7 +453,7 @@ pub mod render_texture {
 
 pub mod shape {
 
-    use std::libc::{c_void, c_float, c_uint};
+    use libc::{c_void, c_float, c_uint};
 
     use graphics::{Color, Transform, IntRect, FloatRect};
     use system::vector2::Vector2f;
@@ -504,7 +504,7 @@ pub mod shape {
 
 pub mod sprite {
 
-    use std::libc::{c_void, c_float};
+    use libc::{c_void, c_float};
 
     use system::vector2::Vector2f;
     use graphics::{Color, Transform, IntRect, FloatRect};
@@ -548,7 +548,7 @@ pub mod sprite {
 }
 
 pub mod text {
-    use std::libc::{c_uint, c_float, c_void, size_t, c_char};
+    use libc::{c_uint, c_float, c_void, size_t, c_char};
 
     use system::vector2::Vector2f;
     use graphics::{Color, Transform, FloatRect};
@@ -599,7 +599,7 @@ pub mod text {
 
 pub mod texture {
 
-    use std::libc::{c_uint, c_void, c_char};
+    use libc::{c_uint, c_void, c_char};
 
     use system::vector2::Vector2u;
     use graphics::IntRect;
@@ -638,7 +638,7 @@ pub mod texture {
 
 pub mod transform {
 
-    use std::libc::c_float;
+    use libc::c_float;
 
     use system::vector2::Vector2f;
     use graphics::{Transform, FloatRect};
@@ -660,7 +660,7 @@ pub mod transform {
 
 pub mod transformable {
 
-    use std::libc::{c_float, c_void};
+    use libc::{c_float, c_void};
 
     use system::vector2::Vector2f;
     use graphics::Transform;
@@ -693,7 +693,7 @@ pub mod transformable {
 
 pub mod vertex_array {
 
-    use std::libc::{c_uint, c_void};
+    use libc::{c_uint, c_void};
 
     use graphics::{FloatRect, Vertex};
 
@@ -727,7 +727,7 @@ pub mod vertex_array {
 
 pub mod view {
 
-    use std::libc::{c_float, c_void};
+    use libc::{c_float, c_void};
 
     use system::vector2::Vector2f;
     use graphics::FloatRect;

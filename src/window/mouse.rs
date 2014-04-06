@@ -28,7 +28,7 @@
 * Give access to the real-time state of the mouse
 */
 
-use std::libc::c_uint;
+use libc::c_uint;
 
 use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi = ffi::window::mouse;

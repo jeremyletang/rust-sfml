@@ -26,7 +26,7 @@
 
 use std::rc::Rc;
 use std::cell::RefCell;
-use std::libc::{c_void, c_float, c_uint};
+use libc::{c_void, c_float, c_uint};
 use std::{ptr, cast};
 
 use traits::{Drawable, ShapeImpl, Wrappable};

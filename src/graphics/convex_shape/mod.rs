@@ -31,7 +31,7 @@
  * order would result in an incorrect shape.
  */
 
-use std::libc::{c_float, c_uint};
+use libc::{c_float, c_uint};
 use std::ptr;
 
 use traits::{Wrappable, Drawable};

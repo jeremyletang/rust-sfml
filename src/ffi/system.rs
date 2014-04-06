@@ -23,7 +23,7 @@
 */
 
 pub mod clock {
-    use std::libc::{c_void};
+    use libc::{c_void};
     use ffi::system::time::sfTime;
 
     pub struct sfClock {
@@ -48,7 +48,7 @@ pub mod sleep {
 }
 
 pub mod time {
-    pub use std::libc::{c_longlong, c_float, c_int};
+    pub use libc::{c_longlong, c_float, c_int};
 
     pub struct sfTime {
         microseconds : c_longlong

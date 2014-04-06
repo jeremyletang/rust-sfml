@@ -24,7 +24,7 @@
 
 pub mod socket_status {
 
-    use std::libc::c_int;
+    use libc::c_int;
 
     pub type SocketStatus = c_int;
     pub static SOCKETNONE:          SocketStatus = 0;
@@ -34,7 +34,7 @@ pub mod socket_status {
 }
 
 pub mod packet {
-    use std::libc::{c_void, size_t, c_float, c_double, c_char};
+    use libc::{c_void, size_t, c_float, c_double, c_char};
 
     use ffi::sfml_types::SfBool;
 
@@ -78,7 +78,7 @@ pub mod packet {
 }
 
 pub mod ip_address {
-    use std::libc::c_char;
+    use libc::c_char;
 
     use ffi::system::time::sfTime;
 
@@ -113,7 +113,7 @@ pub mod ip_address {
 }
 
 pub mod tcp_listener {
-    use std::libc::{c_void};
+    use libc::{c_void};
 
     use ffi::network::tcp_socket::sfTcpSocket;
     use ffi::network::socket_status::SocketStatus;
@@ -135,7 +135,7 @@ pub mod tcp_listener {
 }
 
 pub mod tcp_socket {
-    use std::libc::{c_void, size_t};
+    use libc::{c_void, size_t};
 
     use ffi::system::time::sfTime;
     use ffi::network::ip_address::sfIpAddress;
@@ -166,7 +166,7 @@ pub mod tcp_socket {
 }
 
 pub mod udp_socket {
-    use std::libc::{size_t, c_void};
+    use libc::{size_t, c_void};
 
     use ffi::network::socket_status::SocketStatus;
     use ffi::network::ip_address::sfIpAddress;
@@ -194,7 +194,7 @@ pub mod udp_socket {
 }
 
 pub mod ftp {
-    use std::libc::{c_void, c_char, size_t, c_int};
+    use libc::{c_void, c_char, size_t, c_int};
 
     use ffi::network::ip_address::sfIpAddress;
     use ffi::system::time::sfTime;
@@ -308,7 +308,7 @@ pub mod ftp {
 }
 
 pub mod http {
-    use std::libc::{c_char, c_void, c_int};
+    use libc::{c_char, c_void, c_int};
 
     use ffi::system::time::sfTime;
 

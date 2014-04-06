@@ -24,7 +24,7 @@
 
 //! Sound and musics statues
 
-use std::libc::c_int;
+use libc::c_int;
 
 use ffi = ffi::audio::sound_status;
 

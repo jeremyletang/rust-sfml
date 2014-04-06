@@ -28,7 +28,7 @@
  * Utility class for manipulating 2D axis aligned rectangles
  */
 
-use std::libc::c_int;
+use libc::c_int;
 
 use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi = ffi::graphics::rect;

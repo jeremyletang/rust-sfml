@@ -31,7 +31,7 @@
  * rotate, scale, shear, project, whatever things.
  */
 
-use std::libc::c_float;
+use libc::c_float;
 
 use system::vector2::Vector2f;
 use graphics::FloatRect;

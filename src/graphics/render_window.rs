@@ -32,7 +32,7 @@
 
 use std::rc::Rc;
 use std::cell::RefCell;
-use std::libc::{c_float, c_uint, c_int};
+use libc::{c_float, c_uint, c_int};
 use std::{ptr, cast};
 use std::vec::Vec;
 

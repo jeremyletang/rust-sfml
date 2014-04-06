@@ -24,7 +24,7 @@ e* Permission is granted to anyone to use this software for any purpose,
 
 //! A FTP client.
 
-use std::libc::{size_t, c_int};
+use libc::{size_t, c_int};
 use std::{str, cast};
 
 use traits::Wrappable;

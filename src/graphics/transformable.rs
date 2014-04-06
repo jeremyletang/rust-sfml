@@ -24,7 +24,7 @@
 
 //! Target for off-screen 2D rendering into a texture
 
-use std::libc::c_float;
+use libc::c_float;
 
 use traits::Wrappable;
 use graphics::Transform;

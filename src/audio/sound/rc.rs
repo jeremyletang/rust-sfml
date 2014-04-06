@@ -28,7 +28,7 @@
  * Regular sound that can be played in the audio environment.
  */
 
-use std::libc::c_float;
+use libc::c_float;
 use std::cast;
 use std::rc::Rc;
 use std::cell::RefCell;

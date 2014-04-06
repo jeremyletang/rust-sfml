@@ -25,7 +25,7 @@
 //! Specialized socket using the UDP protocol
 
 use std::{ptr, slice, cast};
-use std::libc::size_t;
+use libc::size_t;
 use std::vec::Vec;
 
 use traits::Wrappable;
