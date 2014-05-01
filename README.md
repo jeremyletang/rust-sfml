@@ -1,4 +1,4 @@
-rust-sfml [![Build Status](https://travis-ci.org/JeremyLetang/rust-sfml.png?branch=master)](https://travis-ci.org/JeremyLetang/rust-sfml)
+rust-sfml [![Build Status](https://api.travis-ci.org/jeremyletang/rust-sfml.png?branch=master)](https://travis-ci.org/jeremyletang/rust-sfml)
 =========
 
 
