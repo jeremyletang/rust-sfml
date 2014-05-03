@@ -76,7 +76,7 @@ impl Font {
      *
      * Return Some(Font) or None
      */
-    pub fn clone(&self) -> Option<Font> {
+    pub fn clone_opt(&self) -> Option<Font> {
         let fnt = unsafe {ffi::sfFont_copy(self.font)};
         if fnt.is_null() {
             None
@@ -167,6 +167,21 @@ impl Font {
                                                     codepoint,
                                                     character_size as c_uint,
                                                     SFTRUE)
+            }
+        }
+    }
+}
+
+impl Clone for Font {
+    /// Return a new Font or fail! if there is not enough memory
+    fn clone(&self) -> Font {
+        let fnt = unsafe {ffi::sfFont_copy(self.font)};
+        if fnt.is_null() {
+            fail!("Not enough memory to clone Font")
+        } else {
+            Font {
+                font :      fnt,
+                dropable :  true
             }
         }
     }

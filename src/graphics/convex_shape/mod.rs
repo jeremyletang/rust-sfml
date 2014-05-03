@@ -122,7 +122,7 @@ impl<'s> ConvexShape<'s> {
      *
      * Return Some(ConvexShape) or None
      */
-    pub fn clone(&self) -> Option<ConvexShape<'s>> {
+    pub fn clone_opt(&self) -> Option<ConvexShape<'s>> {
         let shape = unsafe { ffi::sfConvexShape_copy(self.convex_shape) };
         if shape.is_null() {
             None
@@ -663,6 +663,21 @@ impl<'s> ConvexShape<'s> {
         ConvexShapePoints {
             convex_shape: self.convex_shape.clone(),
             pos: 0
+        }
+    }
+}
+
+impl<'s> Clone for ConvexShape<'s> {
+    /// Return a new ConvexShape or fail! if there is not enough memory
+    fn clone(&self) -> ConvexShape<'s> {
+        let shape = unsafe { ffi::sfConvexShape_copy(self.convex_shape) };
+        if shape.is_null() {
+            fail!("Not enough memory to clone ConvexShape")
+        } else {
+            ConvexShape {
+                convex_shape :  shape,
+                texture :       self.texture.clone()
+            }
         }
     }
 }

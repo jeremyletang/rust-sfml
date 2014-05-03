@@ -123,7 +123,7 @@ impl CircleShape {
      *
      * Return Some(CircleShape) or None
      */
-    pub fn clone(&self) -> Option<CircleShape> {
+    pub fn clone_opt(&self) -> Option<CircleShape> {
         let circle = unsafe { ffi::sfCircleShape_copy(self.circle_shape) };
         if circle.is_null() {
             None
@@ -670,6 +670,21 @@ impl CircleShape {
     pub fn get_inverse_transform(&self) -> Transform {
         unsafe {
             ffi::sfCircleShape_getInverseTransform(self.circle_shape)
+        }
+    }
+}
+
+impl Clone for CircleShape {
+    /// Return a new CircleShape or fail! if there is not enough memory
+    fn clone(&self) -> CircleShape {
+        let circle = unsafe { ffi::sfCircleShape_copy(self.circle_shape) };
+        if circle.is_null() {
+            fail!("Not enough memory to clone CircleShape")
+        } else {
+            CircleShape {
+                circle_shape :  circle,
+                texture :       self.texture.clone()
+            }
         }
     }
 }

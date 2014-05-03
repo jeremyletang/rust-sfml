@@ -104,7 +104,7 @@ impl View {
      *
      * Return Some(View) or None
      */
-    pub fn new_copy(&self) -> Option<View> {
+    pub fn clone_opt(&self) -> Option<View> {
         let view = unsafe { ffi::sfView_copy(self.view) };
         if view.is_null() {
             None
@@ -328,6 +328,21 @@ impl View {
     pub fn get_viewport(&self) -> FloatRect {
         unsafe {
             ffi::sfView_getViewport(self.view)
+        }
+    }
+}
+
+impl Clone for View {
+    /// Return a new View or fail! if there is not enough memory
+    fn clone(&self) -> View {
+        let view = unsafe { ffi::sfView_copy(self.view) };
+        if view.is_null() {
+            fail!("Not enough memory to clone View")
+        } else {
+            View {
+                dropable:   true,
+                view :      view
+            }
         }
     }
 }

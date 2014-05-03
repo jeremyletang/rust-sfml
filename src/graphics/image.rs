@@ -121,7 +121,7 @@ impl Image {
      *
      * Return Some(Image) or None
      */
-    pub fn clone(&self) -> Option<Image> {
+    pub fn clone_opt(&self) -> Option<Image> {
         let image = unsafe { ffi::sfImage_copy(self.image) };
         if image.is_null() {
             None
@@ -314,7 +314,20 @@ impl Image {
             }
         }
     }
+}
 
+impl Clone for Image {
+    /// Return a new Image or fail! if there is not enough memory
+    fn clone(&self) -> Image {
+        let image = unsafe { ffi::sfImage_copy(self.image) };
+        if image.is_null() {
+            fail!("Not enough memory to clone Image")
+        } else {
+            Image {
+                image : image
+            }
+        }
+    }
 }
 
 impl Wrappable<*ffi::sfImage> for Image {

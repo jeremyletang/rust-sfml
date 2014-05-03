@@ -96,7 +96,7 @@ impl VertexArray {
      *
      * Return Some(VertexArray) or None
      */
-    pub fn clone(&self) -> Option<VertexArray> {
+    pub fn clone_opt(&self) -> Option<VertexArray> {
         let ver = unsafe { ffi::sfVertexArray_copy(self.vertex_array) };
         if ver.is_null() {
             None
@@ -260,6 +260,20 @@ impl VertexArray {
         Vertices {
             vertex_array: self.vertex_array.clone(),
             pos: 0
+        }
+    }
+}
+
+impl Clone for VertexArray {
+    /// Return a new Font or fail! if there is not enough memory
+    fn clone(&self) -> VertexArray {
+        let ver = unsafe { ffi::sfVertexArray_copy(self.vertex_array) };
+        if ver.is_null() {
+            fail!("Not enough memory to clone Font")
+        } else {
+            VertexArray {
+                vertex_array : ver
+            }
         }
     }
 }

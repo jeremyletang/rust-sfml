@@ -100,7 +100,7 @@ impl Sprite {
      *
      * Return Some(Sprite) or None
      */
-    pub fn clone(&self) -> Option<Sprite> {
+    pub fn clone_opt(&self) -> Option<Sprite> {
         let sp = unsafe { ffi::sfSprite_copy(self.sprite) };
         if sp.is_null() {
             None
@@ -524,6 +524,21 @@ impl Sprite {
     pub fn get_inverse_transform(&self) -> Transform {
         unsafe {
             ffi::sfSprite_getInverseTransform(self.sprite)
+        }
+    }
+}
+
+impl Clone for Sprite {
+    /// Return a new Sprite or fail! if there is not enough memory
+    fn clone(&self) -> Sprite {
+        let sp = unsafe { ffi::sfSprite_copy(self.sprite) };
+        if sp.is_null() {
+            fail!("Not enough memory to clone RectangleShape")
+        } else {
+            Sprite {
+                sprite :    sp,
+                texture :   self.texture.clone()
+            }
         }
     }
 }

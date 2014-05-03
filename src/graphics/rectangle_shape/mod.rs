@@ -112,7 +112,7 @@ impl<'s> RectangleShape<'s> {
      *
      * Return Some(RectangleShape) or None
      */
-    pub fn clone(&self) -> Option<RectangleShape<'s>> {
+    pub fn clone_opt(&self) -> Option<RectangleShape<'s>> {
         let rectangle =
             unsafe { ffi::sfRectangleShape_copy(self.rectangle_shape) };
         if rectangle.is_null() {
@@ -663,6 +663,22 @@ impl<'s> RectangleShape<'s> {
     pub fn get_inverse_transform(&self) -> Transform {
         unsafe {
             ffi::sfRectangleShape_getInverseTransform(self.rectangle_shape)
+        }
+    }
+}
+
+impl<'s> Clone for RectangleShape<'s> {
+    /// Return a new RectangleShape or fail! if there is not enough memory
+    fn clone(&self) -> RectangleShape<'s> {
+        let rectangle =
+            unsafe { ffi::sfRectangleShape_copy(self.rectangle_shape) };
+        if rectangle.is_null() {
+            fail!("Not enough memory to clone RectangleShape")
+        } else {
+            RectangleShape {
+                rectangle_shape :   rectangle,
+                texture :           self.texture.clone()
+            }
         }
     }
 }

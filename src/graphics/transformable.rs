@@ -60,7 +60,7 @@ impl Transformable {
      *
      * Return Some(Transformable) or None
      */
-    pub fn clone(&self) -> Option<Transformable> {
+    pub fn clone_opt(&self) -> Option<Transformable> {
         let tran = unsafe { ffi::sfTransformable_copy(self.transformable) };
         if tran.is_null() {
             None
@@ -249,6 +249,20 @@ impl Transformable {
     pub fn get_inverse_transform(&self) -> Transform {
         unsafe {
             ffi::sfTransformable_getInverseTransform(self.transformable)
+        }
+    }
+}
+
+impl Clone for Transformable {
+    /// Return a new Transformable or fail! if there is not enough memory
+    fn clone(&self) -> Transformable {
+        let tran = unsafe { ffi::sfTransformable_copy(self.transformable) };
+        if tran.is_null() {
+            fail!("Not enough memory to clone Transformable")
+        } else {
+            Transformable {
+                transformable :tran
+            }
         }
     }
 }

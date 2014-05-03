@@ -135,7 +135,7 @@ impl Texture {
      *
      * Return Some(Texture) or None
      */
-    pub fn clone(&self) -> Option<Texture> {
+    pub fn clone_opt(&self) -> Option<Texture> {
         let tex = unsafe { ffi::sfTexture_copy(self.texture) };
         if tex.is_null() {
             None
@@ -389,6 +389,21 @@ impl Texture {
             None
         } else {
             Some(Wrappable::wrap(img))
+        }
+    }
+}
+
+impl Clone for Texture {
+    /// Return a new Texture or fail! if there is not enough memory
+    fn clone(&self) -> Texture {
+        let tex = unsafe { ffi::sfTexture_copy(self.texture) };
+        if tex.is_null() {
+            fail!("Not enough memory to clone Texture")
+        } else {
+            Texture {
+                texture :   tex,
+                dropable :  true
+            }
         }
     }
 }

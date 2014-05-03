@@ -33,7 +33,7 @@ fn main () -> () {
     let clear_color = Color::black();
 
     // Create a new texture (hey frank !)
-    let frank = match Texture::new_from_file(&"./resources/frank.jpeg") {
+    let frank = match Texture::new_from_file("./resources/frank.jpeg") {
         Some(tex)   => tex,
         None        => fail!("Cannot found resource: frank.jpeg")
     };
@@ -66,7 +66,7 @@ fn main () -> () {
     convex_shape.set_point(5, &Vector2f{x:420f32, y:120f32});
 
     // Create an initialized text
-    let title = Text::new_init(&"Borrow ressources example!", &font, 50).expect("Cannot create a new font");
+    let title = Text::new_init("Borrow ressources example!", &font, 50).expect("Cannot create a new font");
 
     // Create a Text an initialize it after
     let mut second_text = Text::new().expect("Cannot create a new font");
@@ -77,7 +77,7 @@ fn main () -> () {
     second_text.set_character_size(20);
 
     // another text
-    let mut third_text = Text::new_init(&"This one too!", &font, 20).expect("Cannot create a new font");
+    let mut third_text = Text::new_init("This one too!", &font, 20).expect("Cannot create a new font");
     third_text.set_position2f(300f32, 100f32);
     third_text.set_color(&Color::red());
 

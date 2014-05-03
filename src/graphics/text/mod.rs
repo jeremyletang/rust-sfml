@@ -112,6 +112,24 @@ impl<'s> Text<'s> {
     }
 
     /**
+     * Copy an existing Text
+     *
+     * Return Some(Text) or None
+     */
+    pub fn clone_opt(&self) -> Option<Text<'s>> {
+        let sp = unsafe { ffi::sfText_copy(self.text) };
+        if sp.is_null() {
+            None
+        } else {
+            Some(Text {
+                text :          self.text,
+                string_length : self.string_length,
+                font :          self.font
+            })
+        }
+    }
+
+    /**
      * Set the string of a text (from an ANSI string)
      *
      * A text's string is empty by default.
@@ -596,6 +614,22 @@ impl<'s> Text<'s> {
     pub fn get_inverse_transform(&self) -> Transform {
         unsafe {
             ffi::sfText_getInverseTransform(self.text)
+        }
+    }
+}
+
+impl<'s> Clone for Text<'s> {
+    /// Return a new Text or fail! if there is not enough memory
+    fn clone(&self) -> Text<'s> {
+        let sp = unsafe { ffi::sfText_copy(self.text) };
+        if sp.is_null() {
+            fail!("Not enough memory to clone Text")
+        } else {
+            Text {
+                text :          self.text,
+                string_length : self.string_length,
+                font :          self.font.clone()
+            }
         }
     }
 }
