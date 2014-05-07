@@ -39,7 +39,7 @@ use ffi = ffi::graphics::shape;
 
 #[doc(hidden)]
 pub struct WrapObj {
-    shape_impl : ~ShapeImpl
+    shape_impl : Box<ShapeImpl>
 }
 
 /// Base class for textured shapes with outline
@@ -52,7 +52,7 @@ pub struct Shape {
 
 #[doc(hidden)]
 extern fn get_point_count_callback(obj : *c_void) -> u32 {
-    let shape = unsafe { cast::transmute::<*c_void, ~~WrapObj>(obj) };
+    let shape = unsafe { cast::transmute::<*c_void, Box<Box<WrapObj>>>(obj) };
     let ret = shape.shape_impl.get_point_count();
     unsafe { cast::forget(shape) };
     ret
@@ -60,7 +60,7 @@ extern fn get_point_count_callback(obj : *c_void) -> u32 {
 
 #[doc(hidden)]
 extern fn get_point_callback(point : u32, obj : *c_void) -> Vector2f {
-    let shape = unsafe { cast::transmute::<*c_void, ~~WrapObj>(obj) };
+    let shape = unsafe { cast::transmute::<*c_void, Box<Box<WrapObj>>>(obj) };
     let ret = shape.shape_impl.get_point(point);
     unsafe { cast::forget(shape) };
     ret
@@ -76,11 +76,11 @@ impl Shape {
      *
      * Return Some(Shape) or None
      */
-    pub fn new(shape_impl : ~ShapeImpl) -> Option<Shape> {
-        let w_o = ~WrapObj { shape_impl : shape_impl};
+    pub fn new(shape_impl : Box<ShapeImpl>) -> Option<Shape> {
+        let w_o = box WrapObj { shape_impl : shape_impl};
         let sp = unsafe { ffi::sfShape_create(get_point_count_callback,
                                               get_point_callback,
-                                              cast::transmute::<~~WrapObj, *c_void>(~w_o)) };
+                                              cast::transmute::<Box<Box<WrapObj>>, *c_void>(box w_o)) };
         if sp.is_null() {
             None
         } else {
@@ -100,12 +100,12 @@ impl Shape {
      *
      * Return Some(Shape) or None
      */
-    pub fn new_with_texture(shape_impl : ~ShapeImpl,
+    pub fn new_with_texture(shape_impl : Box<ShapeImpl>,
                             texture : Rc<RefCell<Texture>>) -> Option<Shape> {
-        let w_o = ~WrapObj { shape_impl : shape_impl };
+        let w_o = box WrapObj { shape_impl : shape_impl };
         let sp = unsafe { ffi::sfShape_create(get_point_count_callback,
                                               get_point_callback,
-                                              cast::transmute::<~~WrapObj, *c_void>(~w_o)) };
+                                              cast::transmute::<Box<Box<WrapObj>>, *c_void>(box w_o)) };
         if sp.is_null() {
             None
         } else {
