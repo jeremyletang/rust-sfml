@@ -25,7 +25,7 @@
 //! Define a set of one or more 2D primitives
 
 use libc::c_uint;
-use std::cast;
+use std::mem;
 
 use traits::{Drawable, Wrappable};
 use graphics::{Vertex, FloatRect, primitive_type, PrimitiveType, RenderWindow,
@@ -250,7 +250,7 @@ impl VertexArray {
      */
     pub fn get_vertex(&self, index : uint) -> &mut Vertex {
         unsafe {
-            cast::transmute(ffi::sfVertexArray_getVertex(self.vertex_array,
+            mem::transmute(ffi::sfVertexArray_getVertex(self.vertex_array,
                                                          index as c_uint))
         }
     }
@@ -287,7 +287,7 @@ impl<'s> Iterator<&'s Vertex> for Vertices<'s> {
         } else {
             self.pos += 1;
             unsafe {
-                cast::transmute(ffi::sfVertexArray_getVertex(self.vertex_array,
+                mem::transmute(ffi::sfVertexArray_getVertex(self.vertex_array,
                                                              self.pos as c_uint))
             }
         }
@@ -297,7 +297,7 @@ impl<'s> Iterator<&'s Vertex> for Vertices<'s> {
 impl<'s> Index<uint, &'s Vertex> for VertexArray {
     fn index(&self, _rhs: &uint) -> &'s Vertex {
         unsafe {
-            cast::transmute::<*Vertex, &'s Vertex>
+            mem::transmute::<*Vertex, &'s Vertex>
                 (ffi::sfVertexArray_getVertex(self.vertex_array,
                                               *_rhs as c_uint))
         }

@@ -29,7 +29,7 @@
  */
 
 use libc::c_float;
-use std::cast;
+use std::mem;
 
 use audio::{Status, SoundBuffer};
 use system::Time;
@@ -180,7 +180,7 @@ impl<'s> Sound<'s> {
      * Return current status
      */
     pub fn get_status(&self) -> Status {
-        unsafe { cast::transmute(ffi::sfSound_getStatus(self.sound)) }
+        unsafe { mem::transmute(ffi::sfSound_getStatus(self.sound)) }
     }
 
     /**

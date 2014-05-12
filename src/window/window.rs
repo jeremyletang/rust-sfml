@@ -30,7 +30,7 @@
  */
 
 use libc::{c_uint, c_float, c_int};
-use std::{ptr, cast};
+use std::{ptr, mem};
 use std::vec::Vec;
 
 use traits::Wrappable;
@@ -191,7 +191,7 @@ impl Window {
                     0 => false,
                     _ => true
                 };
-                let k : keyboard::Key = unsafe { cast::transmute(self.event.p1 as i64) };
+                let k : keyboard::Key = unsafe { mem::transmute(self.event.p1 as i64) };
                 event::KeyPressed{
                     code : k,
                     alt : al,
@@ -217,7 +217,7 @@ impl Window {
                     0 => false,
                     _ => true
                 };
-                let k : keyboard::Key = unsafe { cast::transmute(self.event.p1 as i64) };
+                let k : keyboard::Key = unsafe { mem::transmute(self.event.p1 as i64) };
                 event::KeyReleased{
                     code : k,
                     alt : al,
@@ -227,29 +227,29 @@ impl Window {
                 }
             },
             7   =>  event::MouseWheelMoved{
-                delta : unsafe { cast::transmute::<c_uint, c_int>(self.event.p1) }  as int,
-                x :     unsafe { cast::transmute::<c_uint, c_int>(self.event.p2) }  as int,
-                y :     unsafe { cast::transmute::<c_float, c_int>(self.event.p3) } as int
+                delta : unsafe { mem::transmute::<c_uint, c_int>(self.event.p1) }  as int,
+                x :     unsafe { mem::transmute::<c_uint, c_int>(self.event.p2) }  as int,
+                y :     unsafe { mem::transmute::<c_float, c_int>(self.event.p3) } as int
             },
             8   => {
-                let button : mouse::MouseButton = unsafe {cast::transmute(self.event.p1 as i8)};
+                let button : mouse::MouseButton = unsafe {mem::transmute(self.event.p1 as i8)};
                 event::MouseButtonPressed{
                     button : button,
-                    x :      unsafe { cast::transmute::<c_uint, c_int>(self.event.p2) as int },
-                    y :      unsafe { cast::transmute::<c_float, c_int>(self.event.p3) as int }
+                    x :      unsafe { mem::transmute::<c_uint, c_int>(self.event.p2) as int },
+                    y :      unsafe { mem::transmute::<c_float, c_int>(self.event.p3) as int }
                 }
             },
             9   => {
-                let button : mouse::MouseButton = unsafe {cast::transmute(self.event.p1 as i8)};
+                let button : mouse::MouseButton = unsafe {mem::transmute(self.event.p1 as i8)};
                 event::MouseButtonReleased{
                     button : button,
-                    x :      unsafe { cast::transmute::<c_uint, c_int>(self.event.p2) as int },
-                    y :      unsafe { cast::transmute::<c_float, c_int>(self.event.p3) as int }
+                    x :      unsafe { mem::transmute::<c_uint, c_int>(self.event.p2) as int },
+                    y :      unsafe { mem::transmute::<c_float, c_int>(self.event.p3) as int }
                 }
             },
             10  => event::MouseMoved{
-                x : unsafe { cast::transmute::<c_uint, c_int>(self.event.p1) } as int,
-                y : unsafe { cast::transmute::<c_uint, c_int>(self.event.p2) } as int
+                x : unsafe { mem::transmute::<c_uint, c_int>(self.event.p1) } as int,
+                y : unsafe { mem::transmute::<c_uint, c_int>(self.event.p2) } as int
             },
             11  => event::MouseEntered,
             12  => event::MouseLeft,
@@ -266,7 +266,7 @@ impl Window {
                 }
             },
             15  => {
-                let ax : joystick::Axis = unsafe {cast::transmute(self.event.p2 as i8)};
+                let ax : joystick::Axis = unsafe {mem::transmute(self.event.p2 as i8)};
                 event::JoystickMoved{
                     joystickid : self.event.p1 as uint,
                     axis : ax,

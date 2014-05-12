@@ -27,7 +27,7 @@
 use std::rc::Rc;
 use std::cell::RefCell;
 use libc::{c_void, c_float, c_uint};
-use std::{ptr, cast};
+use std::{ptr, mem};
 
 use traits::{Drawable, ShapeImpl, Wrappable};
 use graphics::{RenderWindow, RenderTexture, rc, Texture, Color, Transform,
@@ -52,17 +52,17 @@ pub struct Shape {
 
 #[doc(hidden)]
 extern fn get_point_count_callback(obj : *c_void) -> u32 {
-    let shape = unsafe { cast::transmute::<*c_void, Box<Box<WrapObj>>>(obj) };
+    let shape = unsafe { mem::transmute::<*c_void, Box<Box<WrapObj>>>(obj) };
     let ret = shape.shape_impl.get_point_count();
-    unsafe { cast::forget(shape) };
+    unsafe { mem::forget(shape) };
     ret
 }
 
 #[doc(hidden)]
 extern fn get_point_callback(point : u32, obj : *c_void) -> Vector2f {
-    let shape = unsafe { cast::transmute::<*c_void, Box<Box<WrapObj>>>(obj) };
+    let shape = unsafe { mem::transmute::<*c_void, Box<Box<WrapObj>>>(obj) };
     let ret = shape.shape_impl.get_point(point);
-    unsafe { cast::forget(shape) };
+    unsafe { mem::forget(shape) };
     ret
 }
 
@@ -80,7 +80,7 @@ impl Shape {
         let w_o = box WrapObj { shape_impl : shape_impl};
         let sp = unsafe { ffi::sfShape_create(get_point_count_callback,
                                               get_point_callback,
-                                              cast::transmute::<Box<Box<WrapObj>>, *c_void>(box w_o)) };
+                                              mem::transmute::<Box<Box<WrapObj>>, *c_void>(box w_o)) };
         if sp.is_null() {
             None
         } else {
@@ -105,7 +105,7 @@ impl Shape {
         let w_o = box WrapObj { shape_impl : shape_impl };
         let sp = unsafe { ffi::sfShape_create(get_point_count_callback,
                                               get_point_callback,
-                                              cast::transmute::<Box<Box<WrapObj>>, *c_void>(box w_o)) };
+                                              mem::transmute::<Box<Box<WrapObj>>, *c_void>(box w_o)) };
         if sp.is_null() {
             None
         } else {

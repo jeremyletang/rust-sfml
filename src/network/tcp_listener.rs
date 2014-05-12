@@ -24,7 +24,7 @@
 
 //! Socket that listens to new TCP connections
 
-use std::cast;
+use std::mem;
 
 use traits::Wrappable;
 use network::{TcpSocket, SocketStatus};
@@ -121,7 +121,7 @@ impl TcpListener {
     */
     pub fn listen(&self, port : u16) -> SocketStatus {
         unsafe {
-            cast::transmute(ffi::sfTcpListener_listen(self.listener, port) as i8)
+            mem::transmute(ffi::sfTcpListener_listen(self.listener, port) as i8)
         }
     }
 
@@ -138,7 +138,7 @@ impl TcpListener {
     */
     pub fn accept(&self, connected : &TcpSocket) -> SocketStatus {
         unsafe {
-            cast::transmute(ffi::sfTcpListener_accept(self.listener, &connected.unwrap()) as i8)
+            mem::transmute(ffi::sfTcpListener_accept(self.listener, &connected.unwrap()) as i8)
         }
     }
 }

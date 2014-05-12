@@ -33,7 +33,7 @@
 use std::rc::Rc;
 use std::cell::RefCell;
 use libc::{c_float, c_uint, c_int};
-use std::{ptr, cast};
+use std::{ptr, mem};
 use std::vec::Vec;
 
 use traits::{Drawable, Wrappable};
@@ -1206,7 +1206,7 @@ fn get_wrapped_event(event: &ffi::sfEvent) ->event::Event {
                 0 => false,
                 _ => true
             };
-            let k : keyboard::Key = unsafe { cast::transmute(event.p1 as i64) };
+            let k : keyboard::Key = unsafe { mem::transmute(event.p1 as i64) };
             event::KeyPressed{
                 code : k,
                 alt : al,
@@ -1232,7 +1232,7 @@ fn get_wrapped_event(event: &ffi::sfEvent) ->event::Event {
                 0 => false,
                 _ => true
             };
-            let k : keyboard::Key = unsafe { cast::transmute(event.p1 as i64) };
+            let k : keyboard::Key = unsafe { mem::transmute(event.p1 as i64) };
             event::KeyReleased {
                 code : k,
                 alt : al,
@@ -1243,31 +1243,31 @@ fn get_wrapped_event(event: &ffi::sfEvent) ->event::Event {
         },
         7   => {
             event::MouseWheelMoved{
-                delta : unsafe { cast::transmute::<c_uint, c_int>(event.p1) }  as int,
-                x :     unsafe { cast::transmute::<c_uint, c_int>(event.p2) }  as int,
-                y :     unsafe { cast::transmute::<c_float, c_int>(event.p3) } as int
+                delta : unsafe { mem::transmute::<c_uint, c_int>(event.p1) }  as int,
+                x :     unsafe { mem::transmute::<c_uint, c_int>(event.p2) }  as int,
+                y :     unsafe { mem::transmute::<c_float, c_int>(event.p3) } as int
             }
         },
         8   => {
-            let button : mouse::MouseButton = unsafe {cast::transmute(event.p1 as i8)};
+            let button : mouse::MouseButton = unsafe {mem::transmute(event.p1 as i8)};
             event::MouseButtonPressed{
                 button : button,
-                x :      unsafe { cast::transmute::<c_uint, c_int>(event.p2) as int },
-                y :      unsafe { cast::transmute::<c_float, c_int>(event.p3) as int }
+                x :      unsafe { mem::transmute::<c_uint, c_int>(event.p2) as int },
+                y :      unsafe { mem::transmute::<c_float, c_int>(event.p3) as int }
             }
         },
         9   => {
-            let button : mouse::MouseButton = unsafe { cast::transmute(event.p1 as i8) };
+            let button : mouse::MouseButton = unsafe { mem::transmute(event.p1 as i8) };
             event::MouseButtonReleased{
                 button : button,
-                x :      unsafe { cast::transmute::<c_uint, c_int>(event.p2) as int },
-                y :      unsafe { cast::transmute::<c_float, c_int>(event.p3) as int }
+                x :      unsafe { mem::transmute::<c_uint, c_int>(event.p2) as int },
+                y :      unsafe { mem::transmute::<c_float, c_int>(event.p3) as int }
             }
         },
         10  => {
             event::MouseMoved {
-                x : unsafe { cast::transmute::<c_uint, c_int>(event.p1) } as int,
-                y : unsafe { cast::transmute::<c_uint, c_int>(event.p2) } as int
+                x : unsafe { mem::transmute::<c_uint, c_int>(event.p1) } as int,
+                y : unsafe { mem::transmute::<c_uint, c_int>(event.p2) } as int
             }
         },
         11  => event::MouseEntered,
@@ -1285,7 +1285,7 @@ fn get_wrapped_event(event: &ffi::sfEvent) ->event::Event {
             }
         },
         15  => {
-            let ax : joystick::Axis = unsafe { cast::transmute(event.p2 as i8) };
+            let ax : joystick::Axis = unsafe { mem::transmute(event.p2 as i8) };
             event::JoystickMoved{
                 joystickid : event.p1 as uint,
                 axis : ax,

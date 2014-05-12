@@ -31,7 +31,7 @@
 */
 
 use libc::c_float;
-use std::{ptr, cast};
+use std::{ptr, mem};
 
 use audio::Status;
 use system::Time;
@@ -198,7 +198,7 @@ impl Music {
      * Return current status
      */
     pub fn get_status(&self) -> Status {
-        unsafe { cast::transmute(ffi::sfMusic_getStatus(self.music))}
+        unsafe { mem::transmute(ffi::sfMusic_getStatus(self.music))}
     }
 
     /**

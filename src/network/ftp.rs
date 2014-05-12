@@ -25,7 +25,7 @@ e* Permission is granted to anyone to use this software for any purpose,
 //! A FTP client.
 
 use libc::{size_t, c_int};
-use std::{str, cast};
+use std::{str, mem};
 
 use traits::Wrappable;
 use network::IpAddress;
@@ -201,7 +201,7 @@ impl ListingResponse {
     */
     pub fn get_status(&self) -> Status {
         unsafe {
-            cast::transmute(ffi::sfFtpListingResponse_getStatus(self.listing_response) as i16)
+            mem::transmute(ffi::sfFtpListingResponse_getStatus(self.listing_response) as i16)
         }
     }
 
@@ -273,7 +273,7 @@ impl DirectoryResponse {
     */
     pub fn get_status(&self) -> Status {
         unsafe {
-            cast::transmute(ffi::sfFtpDirectoryResponse_getStatus(self.directory_response) as i16)
+            mem::transmute(ffi::sfFtpDirectoryResponse_getStatus(self.directory_response) as i16)
         }
     }
 
@@ -331,7 +331,7 @@ impl Response {
     */
     pub fn get_status(&self) -> Status {
         unsafe {
-            cast::transmute(ffi::sfFtpResponse_getStatus(self.response) as i16)
+            mem::transmute(ffi::sfFtpResponse_getStatus(self.response) as i16)
         }
     }
 

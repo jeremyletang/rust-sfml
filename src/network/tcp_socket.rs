@@ -25,7 +25,7 @@
 //! Specialized socket using the TCP protocol
 
 use libc::size_t;
-use std::{slice, ptr, cast};
+use std::{slice, ptr, mem};
 use std::vec::Vec;
 
 use traits::Wrappable;
@@ -152,7 +152,7 @@ impl TcpSocket {
     */
     pub fn connect(&self, host : &IpAddress, port : u16, timeout : Time) -> SocketStatus {
         unsafe {
-            cast::transmute(ffi::sfTcpSocket_connect(self.socket, host.unwrap(), port, timeout.unwrap()) as i8)
+            mem::transmute(ffi::sfTcpSocket_connect(self.socket, host.unwrap(), port, timeout.unwrap()) as i8)
         }
     }
 
@@ -179,7 +179,7 @@ impl TcpSocket {
     */
     pub fn send(&self, data : Vec<i8>) -> SocketStatus {
         unsafe {
-            cast::transmute(ffi::sfTcpSocket_send(self.socket, data.as_ptr(), data.len() as size_t) as i8)
+            mem::transmute(ffi::sfTcpSocket_send(self.socket, data.as_ptr(), data.len() as size_t) as i8)
         }
     }
 
@@ -199,7 +199,7 @@ impl TcpSocket {
         unsafe {
             let s : size_t = 0;
             let datas : *i8 = ptr::null();
-            let stat : SocketStatus = cast::transmute(ffi::sfTcpSocket_receive(self.socket, datas, max_size, &s) as i8);
+            let stat : SocketStatus = mem::transmute(ffi::sfTcpSocket_receive(self.socket, datas, max_size, &s) as i8);
             (slice::raw::buf_as_slice(datas, s as uint, Vec::from_slice), stat, s)
         }
     }
@@ -214,7 +214,7 @@ impl TcpSocket {
     */
     pub fn send_packet(&self, packet : &Packet) -> SocketStatus {
         unsafe {
-            cast::transmute(ffi::sfTcpSocket_sendPacket(self.socket, packet.unwrap()) as i8)
+            mem::transmute(ffi::sfTcpSocket_sendPacket(self.socket, packet.unwrap()) as i8)
         }
     }
 
@@ -230,7 +230,7 @@ impl TcpSocket {
     pub fn receive_packet(&self) -> (Packet, SocketStatus) {
         unsafe {
             let pack : *::ffi::network::packet::sfPacket = ptr::null();
-            let stat : SocketStatus = cast::transmute(ffi::sfTcpSocket_receivePacket(self.socket, pack) as i8);
+            let stat : SocketStatus = mem::transmute(ffi::sfTcpSocket_receivePacket(self.socket, pack) as i8);
             (Wrappable::wrap(pack), stat)
         }
     }

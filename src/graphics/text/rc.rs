@@ -32,7 +32,7 @@
 use std::rc::Rc;
 use std::cell::RefCell;
 use libc::{c_float, c_uint, size_t};
-use std::{str, cast};
+use std::{str, mem};
 use std::vec::Vec;
 use std::c_vec::CVec;
 
@@ -288,7 +288,7 @@ impl Text {
      * Return the current string style (see Style enum)
      */
     pub fn get_style(&self) -> TextStyle {
-        unsafe { cast::transmute(ffi::sfText_getStyle(self.text)) }
+        unsafe { mem::transmute(ffi::sfText_getStyle(self.text)) }
     }
 
     /**
