@@ -24,7 +24,7 @@
 
 //! A HTTP client
 
-use std::{str, cast};
+use std::{str, mem};
 use libc::c_int;
 
 use traits::Wrappable;
@@ -269,7 +269,7 @@ impl Response {
     */
     pub fn get_status(&self) -> Status {
         unsafe {
-            cast::transmute(ffi::sfHttpResponse_getStatus(self.response) as i16)
+            mem::transmute(ffi::sfHttpResponse_getStatus(self.response) as i16)
         }
     }
 
