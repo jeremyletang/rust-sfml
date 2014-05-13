@@ -2,11 +2,11 @@ env:
   global:
     - secure: Q0YTaTb4BGr0ViEo5laf3nBHRCYgvmemeyjPkUpNAYARvYTeLPmIiH12tF7G7D99Xs4ppQHzQ+9BKPLjJnrmY+Z4JSlVSsSZraXbra1XWrkQAWx8esipA1FfmyHlGlaigxqMvMb36wBx0hD0ZM5dmXiKK02JAVxw3qEnCuUcl8Q=
 before_install:
-  - yes | sudo add-apt-repository ppa:hansjorg/rust
-  - yes | sudo apt-add-repository ppa:sonkun/sfml-development
   - sudo apt-get update
 install:
-  - sudo apt-get install rust-nightly
+  - wget http://static.rust-lang.org/dist/rust-nightly-x86_64-unknown-linux-gnu.tar.gz
+  - tar xzf rust-nightly-x86_64-unknown-linux-gnu.tar.gz
+  - export PATH=$PATH:$(pwd)/rust-nightly-x86_64-unknown-linux-gnu/bin
   - wget http://www.sfml-dev.org/download/sfml/2.1/SFML-2.1-linux-gcc-64bits.tar.bz2
   - tar xf SFML-2.1-linux-gcc-64bits.tar.bz2
   - sudo cp -r SFML-2.1/lib/* /usr/local/lib/.
