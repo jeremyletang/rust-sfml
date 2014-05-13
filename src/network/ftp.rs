@@ -210,9 +210,9 @@ impl ListingResponse {
     *
     * Return the response message
     */
-    pub fn get_message(&self) -> ~str {
+    pub fn get_message(&self) -> StrBuf {
         unsafe {
-            str::raw::from_c_str(ffi::sfFtpListingResponse_getMessage(self.listing_response))
+            StrBuf::from_str(str::raw::from_c_str(ffi::sfFtpListingResponse_getMessage(self.listing_response)))
         }
     }
 
@@ -235,9 +235,9 @@ impl ListingResponse {
     *
     * Return the requested name
     */
-    pub fn get_name(&self, index : u64) -> ~str {
+    pub fn get_name(&self, index : u64) -> StrBuf {
         unsafe {
-            str::raw::from_c_str(ffi::sfFtpListingResponse_getName(self.listing_response, index as size_t))
+            StrBuf::from_str(str::raw::from_c_str(ffi::sfFtpListingResponse_getName(self.listing_response, index as size_t)))
         }
     }
 }
@@ -282,9 +282,9 @@ impl DirectoryResponse {
     *
     * Return the response message
     */
-    pub fn get_message(&self) -> ~str {
+    pub fn get_message(&self) -> StrBuf {
         unsafe {
-            str::raw::from_c_str(ffi::sfFtpDirectoryResponse_getMessage(self.directory_response))
+            StrBuf::from_str(str::raw::from_c_str(ffi::sfFtpDirectoryResponse_getMessage(self.directory_response)))
         }
     }
 
@@ -293,9 +293,9 @@ impl DirectoryResponse {
     *
     * Return the directory name
     */
-    pub fn get_directory(&self) -> ~str {
+    pub fn get_directory(&self) -> StrBuf {
         unsafe {
-            str::raw::from_c_str(ffi::sfFtpDirectoryResponse_getDirectory(self.directory_response))
+            StrBuf::from_str(str::raw::from_c_str(ffi::sfFtpDirectoryResponse_getDirectory(self.directory_response)))
         }
     }
 }
@@ -340,9 +340,9 @@ impl Response {
     *
     * Return the response message
     */
-    pub fn get_message(&self) -> ~str {
+    pub fn get_message(&self) -> StrBuf {
         unsafe {
-            str::raw::from_c_str(ffi::sfFtpResponse_getMessage(self.response))
+            StrBuf::from_str(str::raw::from_c_str(ffi::sfFtpResponse_getMessage(self.response)))
         }
     }
 }

@@ -250,10 +250,10 @@ impl Response {
     *
     * Return Value of the field, or empty string if not found
     */
-    pub fn get_field(&self, field : &str) -> ~str {
+    pub fn get_field(&self, field : &str) -> StrBuf {
         let c_field = field.to_c_str();
         unsafe {
-            str::raw::from_c_str(ffi::sfHttpResponse_getField(self.response, c_field.unwrap()))
+            StrBuf::from_str(str::raw::from_c_str(ffi::sfHttpResponse_getField(self.response, c_field.unwrap())))
         }
     }
 
@@ -306,9 +306,9 @@ impl Response {
     *
     * Return the response body
     */
-    pub fn get_body(&self) -> ~str {
+    pub fn get_body(&self) -> StrBuf {
         unsafe {
-            str::raw::from_c_str(ffi::sfHttpResponse_getBody(self.response))
+            StrBuf::from_str(str::raw::from_c_str(ffi::sfHttpResponse_getBody(self.response)))
         }
     }
 }

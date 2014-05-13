@@ -107,11 +107,11 @@ impl IpAddress {
     *
     * Return a string representation of the address
     */
-    pub fn to_string(&self) -> ~str {
+    pub fn to_string(&self) -> StrBuf {
         unsafe {
             let string : *u8 = ptr::null();
             ffi::sfIpAddress_toString(self.ip, string);
-            str::raw::from_c_str(string as *i8)
+            StrBuf::from_str(str::raw::from_c_str(string as *i8))
         }
     }
 

@@ -151,9 +151,9 @@ impl Text {
      *
      * Return a string as a locale-dependant ANSI string
      */
-    pub fn get_string(&self) -> ~str {
+    pub fn get_string(&self) -> StrBuf {
         unsafe {
-            str::raw::from_c_str(ffi::sfText_getString(self.text))
+            StrBuf::from_str(str::raw::from_c_str(ffi::sfText_getString(self.text)))
         }
     }
 

@@ -217,11 +217,11 @@ impl Packet {
     /**
     * Function to extract data from a packet
     */
-    pub fn read_string(&self) -> ~str {
+    pub fn read_string(&self) -> StrBuf {
         unsafe {
             let string : *u8 = ptr::null();
             ffi::sfPacket_readString(self.packet, string);
-            str::raw::from_c_str(string as *i8)
+            StrBuf::from_str(str::raw::from_c_str(string as *i8))
         }
     }
 
@@ -302,7 +302,7 @@ impl Packet {
     }
 
     /// Function to insert data into a packet
-    pub fn write_string(&self, string : ~str) -> () {
+    pub fn write_string(&self, string : &str) -> () {
         let c_string = string.to_c_str();
         unsafe {
             ffi::sfPacket_writeString(self.packet, c_string.unwrap())
