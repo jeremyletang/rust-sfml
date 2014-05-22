@@ -24,8 +24,9 @@ e* Permission is granted to anyone to use this software for any purpose,
 
 //! A FTP client.
 
+use std::mem;
+use std::c_str::CString;
 use libc::{size_t, c_int};
-use std::{str, mem};
 
 use traits::Wrappable;
 use network::IpAddress;
@@ -212,7 +213,8 @@ impl ListingResponse {
     */
     pub fn get_message(&self) -> StrBuf {
         unsafe {
-            StrBuf::from_str(str::raw::from_c_str(ffi::sfFtpListingResponse_getMessage(self.listing_response)))
+            CString::new(ffi::sfFtpListingResponse_getMessage(self.listing_response),
+                         false).as_str().unwrap().to_strbuf()
         }
     }
 
@@ -237,7 +239,8 @@ impl ListingResponse {
     */
     pub fn get_name(&self, index : u64) -> StrBuf {
         unsafe {
-            StrBuf::from_str(str::raw::from_c_str(ffi::sfFtpListingResponse_getName(self.listing_response, index as size_t)))
+            CString::new(ffi::sfFtpListingResponse_getName(self.listing_response, index as size_t),
+                         false).as_str().unwrap().to_strbuf()
         }
     }
 }
@@ -284,7 +287,8 @@ impl DirectoryResponse {
     */
     pub fn get_message(&self) -> StrBuf {
         unsafe {
-            StrBuf::from_str(str::raw::from_c_str(ffi::sfFtpDirectoryResponse_getMessage(self.directory_response)))
+            CString::new(ffi::sfFtpDirectoryResponse_getMessage(self.directory_response),
+                         false).as_str().unwrap().to_strbuf()
         }
     }
 
@@ -295,7 +299,8 @@ impl DirectoryResponse {
     */
     pub fn get_directory(&self) -> StrBuf {
         unsafe {
-            StrBuf::from_str(str::raw::from_c_str(ffi::sfFtpDirectoryResponse_getDirectory(self.directory_response)))
+            CString::new(ffi::sfFtpDirectoryResponse_getDirectory(self.directory_response),
+                         false).as_str().unwrap().to_strbuf()
         }
     }
 }
@@ -342,7 +347,8 @@ impl Response {
     */
     pub fn get_message(&self) -> StrBuf {
         unsafe {
-            StrBuf::from_str(str::raw::from_c_str(ffi::sfFtpResponse_getMessage(self.response)))
+            CString::new(ffi::sfFtpResponse_getMessage(self.response),
+                         false).as_str().unwrap().to_strbuf()
         }
     }
 }

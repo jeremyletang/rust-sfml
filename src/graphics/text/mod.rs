@@ -29,10 +29,11 @@
  * display some text with custom style and color on a render target.
  */
 
-use libc::{c_float, c_uint, size_t};
-use std::{str, mem};
+use std::mem;
 use std::vec::Vec;
 use std::c_vec::CVec;
+use std::c_str::CString;
+use libc::{c_float, c_uint, size_t};
 
 use traits::{Drawable, Wrappable};
 use graphics::{RenderWindow, RenderTexture, Font, FloatRect, Color, Transform,
@@ -153,7 +154,7 @@ impl<'s> Text<'s> {
      */
     pub fn get_string(&self) -> StrBuf {
         unsafe {
-            StrBuf::from_str(str::raw::from_c_str(ffi::sfText_getString(self.text)))
+            CString::new(ffi::sfText_getString(self.text), false).as_str().unwrap().to_strbuf()
         }
     }
 

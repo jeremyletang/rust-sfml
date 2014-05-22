@@ -29,7 +29,6 @@ rsfml:
 docs:
 	mkdir -p doc
 	rustdoc -o doc src/lib.rs
-	cd doc && rm -rf main.css && wget http://www.rust-sfml.org/doc/main.css
 
 examples: rsfml
 	rustc -o bin/pong -L ./lib src/examples/pong/main.rs

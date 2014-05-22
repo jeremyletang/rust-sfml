@@ -24,7 +24,8 @@
 
 //! A HTTP client
 
-use std::{str, mem};
+use std::mem;
+use std::c_str::CString;
 use libc::c_int;
 
 use traits::Wrappable;
@@ -253,7 +254,8 @@ impl Response {
     pub fn get_field(&self, field : &str) -> StrBuf {
         let c_field = field.to_c_str();
         unsafe {
-            StrBuf::from_str(str::raw::from_c_str(ffi::sfHttpResponse_getField(self.response, c_field.unwrap())))
+            CString::new(ffi::sfHttpResponse_getField(self.response, c_field.unwrap()),
+                         false).as_str().unwrap().to_strbuf()
         }
     }
 
@@ -308,7 +310,8 @@ impl Response {
     */
     pub fn get_body(&self) -> StrBuf {
         unsafe {
-            StrBuf::from_str(str::raw::from_c_str(ffi::sfHttpResponse_getBody(self.response)))
+            CString::new(ffi::sfHttpResponse_getBody(self.response),
+                         false).as_str().unwrap().to_strbuf()
         }
     }
 }

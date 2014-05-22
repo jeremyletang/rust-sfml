@@ -31,10 +31,11 @@
 
 use std::rc::Rc;
 use std::cell::RefCell;
-use libc::{c_float, c_uint, size_t};
-use std::{str, mem};
+use std::mem;
 use std::vec::Vec;
 use std::c_vec::CVec;
+use std::c_str::CString;
+use libc::{c_float, c_uint, size_t};
 
 use traits::{Drawable, Wrappable};
 use graphics::{RenderWindow, RenderTexture, Font, FloatRect, Color, Transform,
@@ -153,7 +154,7 @@ impl Text {
      */
     pub fn get_string(&self) -> StrBuf {
         unsafe {
-            StrBuf::from_str(str::raw::from_c_str(ffi::sfText_getString(self.text)))
+            CString::new(ffi::sfText_getString(self.text), false).as_str().unwrap().to_strbuf()
         }
     }
 
