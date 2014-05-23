@@ -14,7 +14,6 @@ use std::rc::Rc;
 use std::cell::RefCell;
 use std::io::{BufferedReader, stdin};
 use std::num::strconv;
-use std::strbuf::StrBuf;
 
 use rsfml::audio::{rc, SoundBufferRecorder, Playing};
 use rsfml::system::{sleep, Time};
@@ -28,9 +27,9 @@ fn main() -> () {
     // Choose the sample rate
     println!("Please choose the sample rate for sound capture (44100 is CD quality) : ");
     let mut stdin = BufferedReader::new(stdin());
-    let mut line = StrBuf::from_str(stdin.read_line().unwrap());
+    let mut line = stdin.read_line().unwrap();
     unsafe { line.pop_byte(); }
-    let sample_rate : uint = match strconv::from_str_common(line.into_owned(), 10, false, false, false, strconv::ExpNone, true, false) {
+    let sample_rate : uint = match strconv::from_str_common(line.as_slice(), 10, false, false, false, strconv::ExpNone, true, false) {
         Some(value)     => value,
         None            => fail!("Error, input is not valid")
     };
@@ -66,7 +65,7 @@ fn main() -> () {
 
     // Choose what to do with the recorded sound data
     println!("What do you want to do with captured sound (p = play, s = save) ? ");
-    let mut resp = StrBuf::from_str(stdin.read_line().unwrap());
+    let mut resp = stdin.read_line().unwrap();
 
     if unsafe { resp.pop_byte().unwrap() } == 's' as u8 {
         // Choose a filename
@@ -74,7 +73,7 @@ fn main() -> () {
         let filename = stdin.read_line().unwrap();
 
         // Save the buffer
-        (*buffer).borrow().save_to_file(filename);
+        (*buffer).borrow().save_to_file(filename.as_slice());
     }
     else {
         let mut sound : rc::Sound = match rc::Sound::new_with_buffer(buffer.clone()) {
