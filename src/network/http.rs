@@ -251,7 +251,7 @@ impl Response {
     *
     * Return Value of the field, or empty string if not found
     */
-    pub fn get_field(&self, field : &str) -> StrBuf {
+    pub fn get_field(&self, field : &str) -> String {
         let c_field = field.to_c_str();
         unsafe {
             CString::new(ffi::sfHttpResponse_getField(self.response, c_field.unwrap()),
@@ -308,7 +308,7 @@ impl Response {
     *
     * Return the response body
     */
-    pub fn get_body(&self) -> StrBuf {
+    pub fn get_body(&self) -> String {
         unsafe {
             CString::new(ffi::sfHttpResponse_getBody(self.response),
                          false).as_str().unwrap().to_strbuf()

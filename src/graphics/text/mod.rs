@@ -152,7 +152,7 @@ impl<'s> Text<'s> {
      *
      * Return a string as a locale-dependant ANSI string
      */
-    pub fn get_string(&self) -> StrBuf {
+    pub fn get_string(&self) -> String {
         unsafe {
             CString::new(ffi::sfText_getString(self.text), false).as_str().unwrap().to_strbuf()
         }

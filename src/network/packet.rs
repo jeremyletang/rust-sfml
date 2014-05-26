@@ -217,7 +217,7 @@ impl Packet {
     /**
     * Function to extract data from a packet
     */
-    pub fn read_string(&self) -> StrBuf {
+    pub fn read_string(&self) -> String {
         unsafe {
             let string : *u8 = ptr::null();
             ffi::sfPacket_readString(self.packet, string);
