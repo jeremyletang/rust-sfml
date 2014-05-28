@@ -214,7 +214,7 @@ impl ListingResponse {
     pub fn get_message(&self) -> String {
         unsafe {
             CString::new(ffi::sfFtpListingResponse_getMessage(self.listing_response),
-                         false).as_str().unwrap().to_strbuf()
+                         false).as_str().unwrap().to_string()
         }
     }
 
@@ -240,7 +240,7 @@ impl ListingResponse {
     pub fn get_name(&self, index : u64) -> String {
         unsafe {
             CString::new(ffi::sfFtpListingResponse_getName(self.listing_response, index as size_t),
-                         false).as_str().unwrap().to_strbuf()
+                         false).as_str().unwrap().to_string()
         }
     }
 }
@@ -288,7 +288,7 @@ impl DirectoryResponse {
     pub fn get_message(&self) -> String {
         unsafe {
             CString::new(ffi::sfFtpDirectoryResponse_getMessage(self.directory_response),
-                         false).as_str().unwrap().to_strbuf()
+                         false).as_str().unwrap().to_string()
         }
     }
 
@@ -300,7 +300,7 @@ impl DirectoryResponse {
     pub fn get_directory(&self) -> String {
         unsafe {
             CString::new(ffi::sfFtpDirectoryResponse_getDirectory(self.directory_response),
-                         false).as_str().unwrap().to_strbuf()
+                         false).as_str().unwrap().to_string()
         }
     }
 }
@@ -348,7 +348,7 @@ impl Response {
     pub fn get_message(&self) -> String {
         unsafe {
             CString::new(ffi::sfFtpResponse_getMessage(self.response),
-                         false).as_str().unwrap().to_strbuf()
+                         false).as_str().unwrap().to_string()
         }
     }
 }
