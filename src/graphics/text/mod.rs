@@ -154,7 +154,7 @@ impl<'s> Text<'s> {
      */
     pub fn get_string(&self) -> String {
         unsafe {
-            CString::new(ffi::sfText_getString(self.text), false).as_str().unwrap().to_strbuf()
+            CString::new(ffi::sfText_getString(self.text), false).as_str().unwrap().to_string()
         }
     }
 

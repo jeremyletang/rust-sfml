@@ -255,7 +255,7 @@ impl Response {
         let c_field = field.to_c_str();
         unsafe {
             CString::new(ffi::sfHttpResponse_getField(self.response, c_field.unwrap()),
-                         false).as_str().unwrap().to_strbuf()
+                         false).as_str().unwrap().to_string()
         }
     }
 
@@ -311,7 +311,7 @@ impl Response {
     pub fn get_body(&self) -> String {
         unsafe {
             CString::new(ffi::sfHttpResponse_getBody(self.response),
-                         false).as_str().unwrap().to_strbuf()
+                         false).as_str().unwrap().to_string()
         }
     }
 }
