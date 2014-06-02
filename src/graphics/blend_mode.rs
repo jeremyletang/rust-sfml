@@ -25,7 +25,7 @@
 //! Available blending modes for drawing
 
 ///Available Blending modes for drawing.
-#[deriving(Clone, Eq, Ord, Show)]
+#[deriving(Clone, PartialEq, Eq, PartialOrd, Ord, Show)]
 pub enum BlendMode {
     /// Pixel = Source * Source.a + Dest * (1 - Source.a)
     BlendAlpha = 0,

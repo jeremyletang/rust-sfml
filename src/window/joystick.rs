@@ -41,7 +41,7 @@ pub static ButtonCount: uint    = 32;
 pub static AxisCount: uint      = 8;
 
 /// Axes supported by SFML joysticks
-#[deriving(Clone, Eq, Ord, Show)]
+#[deriving(Clone, PartialEq, Eq, PartialOrd, Ord, Show)]
 pub enum Axis {
     /// The X axis.
     X,

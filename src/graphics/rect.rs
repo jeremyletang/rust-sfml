@@ -34,7 +34,7 @@ use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi = ffi::graphics::rect;
 
 /// Utility classes for manipulating rectangles of int.
-#[deriving(Clone, Ord, Show)]
+#[deriving(Clone, PartialEq, Eq, PartialOrd, Ord, Show)]
 pub struct IntRect {
     /// Left coordinate of the rectangle.
     pub left :      i32,
@@ -47,7 +47,7 @@ pub struct IntRect {
 }
 
 /// Utility classes for manipulating rectangles of f32.
-#[deriving(Clone, Ord, Show)]
+#[deriving(Clone, PartialEq, PartialOrd, Show)]
 pub struct FloatRect {
     /// Left coordinate of the rectangle.
     pub left :      f32,
@@ -109,22 +109,6 @@ impl IntRect {
     }
 }
 
-impl Eq for IntRect {
-    fn eq(&self, other : &IntRect) -> bool {
-        self.left == other.left &&
-            self.top == other.top &&
-            self.width == other.width &&
-            self.height == other.height
-    }
-    fn ne(&self, other : &IntRect) -> bool {
-        self.left != other.left ||
-            self.top != other.top ||
-            self.width != other.width ||
-            self.height != other.height
-    }
-}
-
-
 impl FloatRect {
     /**
     * Construct a new FloatRect
@@ -176,21 +160,5 @@ impl FloatRect {
             SFFALSE => false,
             SFTRUE  => true
         }
-    }
-}
-
-impl Eq for FloatRect {
-    fn eq(&self, other : &FloatRect) -> bool {
-        self.left == other.left &&
-        self.top == other.top &&
-        self.width == other.width &&
-        self.height == other.height
-    }
-
-    fn ne(&self, other : &FloatRect) -> bool {
-        self.left != other.left ||
-        self.top != other.top ||
-        self.width != other.width ||
-        self.height != other.height
     }
 }

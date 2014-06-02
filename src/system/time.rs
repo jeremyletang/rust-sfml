@@ -88,7 +88,7 @@ impl Time {
     }
 }
 
-impl Eq for Time {
+impl PartialEq for Time {
     fn eq(&self, other : &Time) -> bool {
         self.as_microseconds() == other.as_microseconds()
     }
@@ -98,7 +98,7 @@ impl Eq for Time {
     }
 }
 
-impl Ord for Time {
+impl PartialOrd for Time {
     fn lt(&self, other: &Time) -> bool {
         self.as_microseconds() < other.as_microseconds()
     }

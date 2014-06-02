@@ -43,7 +43,7 @@ use ffi = ffi::window::video_mode;
  *
  * Provides functions for getting modes supported by the display device
  */
-#[deriving(Clone, Eq, Ord, Show)]
+#[deriving(Clone, PartialEq, Eq, PartialOrd, Ord, Show)]
 pub struct VideoMode {
     /// Video mode width, in pixels.
     pub width:          uint,

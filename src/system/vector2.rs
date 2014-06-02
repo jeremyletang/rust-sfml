@@ -27,7 +27,7 @@
 //! Utility Class providing 2 dimensional vectors for i32, u32, and f32.
 
 /// Implementation of Vector2i
-#[deriving(Clone, Ord, Eq, Show)]
+#[deriving(Clone, PartialOrd, Ord, PartialEq, Eq, Show)]
 pub struct Vector2i {
     /// X coordinate of the vector.
     pub x : i32,
@@ -36,7 +36,7 @@ pub struct Vector2i {
 }
 
 /// Implementation of Vector2u
-#[deriving(Clone, Ord, Eq, Show)]
+#[deriving(Clone, PartialOrd, Ord, PartialEq, Eq, Show)]
 pub struct Vector2u {
     /// X coordinate of the vector.
     pub x : u32,
@@ -45,7 +45,7 @@ pub struct Vector2u {
 }
 
 /// Implementation of Vector2f
-#[deriving(Clone, Ord, Eq, Show)]
+#[deriving(Clone, PartialOrd, PartialEq, Show)]
 pub struct Vector2f {
     /// X coordinate of the vector.
     pub x : f32,

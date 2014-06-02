@@ -27,7 +27,7 @@
 //! Utility Class providing 3 dimensional vectors for f32.
 
 /// Vector3f definition
-#[deriving(Clone, Ord, Eq, Show)]
+#[deriving(Clone, PartialOrd, PartialEq, Show)]
 pub struct Vector3f {
     /// X coordinate of the vector.
     pub x : f32,

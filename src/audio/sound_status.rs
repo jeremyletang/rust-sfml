@@ -29,7 +29,7 @@ use libc::c_int;
 use ffi = ffi::audio::sound_status;
 
 /// Enumeration of statuses for sounds and musics
-#[deriving(Eq, Ord)]
+#[deriving(Clone, PartialEq, Eq, PartialOrd, Ord, Show)]
 #[repr(C)]
 pub enum Status {
     /// Sound is not playing.
