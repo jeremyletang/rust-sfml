@@ -27,7 +27,7 @@
 use graphics::IntRect;
 
 /// Glyph describes a glyph (a visual character)
-#[deriving(Clone, Eq, Ord, Show)]
+#[deriving(Clone, PartialEq, Eq, PartialOrd, Ord, Show)]
 pub struct Glyph {
     /// Offset to move horizontically to the next character.
     pub advance : i32,

@@ -25,7 +25,7 @@
 #![allow(missing_doc)]
 
 /// Availables texts styles
-#[deriving(Eq, Ord, Show)]
+#[deriving(Clone, PartialEq, Eq, PartialOrd, Ord, Show)]
 #[repr(C)]
 pub enum TextStyle {
     Regular =       0,

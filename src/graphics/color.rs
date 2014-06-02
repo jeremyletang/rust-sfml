@@ -22,6 +22,8 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
+#![allow(non_snake_case_functions)]
+
 /*!
  * Utility class for manpulating RGBA colors
  *
@@ -35,7 +37,7 @@ use ffi = ffi::graphics::color;
  *
  * Color is a simple color class composed of 4 components: Red, Green, Blue, Alpha
  */
-#[deriving(Clone, Ord, Show)]
+#[deriving(Clone, PartialEq, Eq, PartialOrd, Ord, Show)]
 pub struct Color {
     /// The red composant of the color
     pub red :   u8,
@@ -188,20 +190,5 @@ impl Mul<Color, Color> for Color {
             blue :  if b > 255 {255} else {b as u8},
             alpha : if a > 255 {255} else {a as u8}
         }
-    }
-}
-
-impl Eq for Color {
-    fn eq(&self, other : &Color) -> bool {
-        self.red == other.red &&
-            self.green == other.green &&
-            self.blue == other.blue &&
-            self.alpha == other.alpha
-    }
-    fn ne(&self, other : &Color) -> bool {
-        self.red != other.red &&
-            self.green != other.green &&
-            self.blue != other.blue &&
-            self.alpha != other.alpha
     }
 }

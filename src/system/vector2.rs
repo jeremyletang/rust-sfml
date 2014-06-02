@@ -23,6 +23,7 @@
 */
 
 #![allow(missing_doc)]
+#![allow(non_snake_case_functions)]
 
 //! Utility Class providing 2 dimensional vectors for i32, u32, and f32.
 

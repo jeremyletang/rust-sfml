@@ -23,6 +23,7 @@
 */
 
 #![allow(missing_doc)]
+#![allow(non_snake_case_functions)]
 
 //! Utility Class providing 3 dimensional vectors for f32.
 

@@ -34,7 +34,7 @@ use system::Time;
 use ffi = ffi::network::http;
 
 /// Method type to send the request
-#[deriving(Eq, Ord, Show)]
+#[deriving(Clone, PartialEq, Eq, PartialOrd, Ord, Show)]
 pub enum Method {
     /// Request in get mode, standard method to retrieve a page
     Get = ffi::GET as c_int,
@@ -45,7 +45,7 @@ pub enum Method {
 }
 
 /// Status code returned by a serveur.
-#[deriving(Eq, Ord, Show)]
+#[deriving(Clone, PartialEq, Eq, PartialOrd, Ord, Show)]
 pub enum Status {
     // 2xx: success
     /// Most common code returned when operation was successful

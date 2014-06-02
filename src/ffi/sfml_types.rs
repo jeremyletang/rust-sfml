@@ -23,7 +23,7 @@
 */
 
 #[repr(C)]
-#[deriving(Eq)]
+#[deriving(PartialEq, Eq)]
 pub enum SfBool {
     SFFALSE = 0,
     SFTRUE = 1

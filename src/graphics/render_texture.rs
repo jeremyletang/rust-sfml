@@ -22,6 +22,8 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
+#![allow(non_snake_case_functions)]
+
 /*!
 * Target for off-screen 2D rendering into a texture
 */
