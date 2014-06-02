@@ -8,7 +8,8 @@
 
 extern crate native;
 extern crate rsfml;
-extern crate rand;
+
+use std::rand;
 
 use rsfml::graphics::{RenderWindow, Color, Font, Text, RectangleShape, CircleShape};
 use rsfml::window::{VideoMode, ContextSettings, event, keyboard, Close};
