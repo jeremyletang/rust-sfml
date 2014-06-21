@@ -155,6 +155,7 @@ Here is a list of all modules :
 #![allow(visible_private_types)]
 #![warn(missing_doc)]
 #![feature(struct_variant)]
+#![feature(unsafe_destructor)]
 
 extern crate libc;
 
