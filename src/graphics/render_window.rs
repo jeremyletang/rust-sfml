@@ -575,7 +575,7 @@ impl RenderWindow {
      * * size_x - New size x, in pixels
      * * size_y - New size x, in pixels
      */
-    pub fn set_size2f(&mut self, size_x : u32, size_y : u32) -> () {
+    pub fn set_size2u(&mut self, size_x : u32, size_y : u32) -> () {
         unsafe {
             ffi::sfRenderWindow_setSize(self.render_window,
                                         Vector2u::new(size_x, size_y))

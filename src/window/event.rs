@@ -81,36 +81,36 @@ pub enum Event {
     },
     /// The mouse wheel was scrolled
     MouseWheelMoved {
-        /// Number of ticks the wheel has moved (positive is up, negative is down) 
+        /// Number of ticks the wheel has moved (positive is up, negative is down)
         pub delta : int,
-        /// X position of the mouse pointer, relative to the left of the owner window. 
+        /// X position of the mouse pointer, relative to the left of the owner window.
         pub x : int,
-        /// Y position of the mouse pointer, relative to the top of the owner window. 
+        /// Y position of the mouse pointer, relative to the top of the owner window.
         pub y : int
     },
     /// A mouse button was pressed
     MouseButtonPressed {
         /// Code of the button that has been pressed.
         pub button : MouseButton,
-        /// X position of the mouse pointer, relative to the left of the owner window. 
+        /// X position of the mouse pointer, relative to the left of the owner window.
         pub x : int,
-        /// Y position of the mouse pointer, relative to the top of the owner window. 
+        /// Y position of the mouse pointer, relative to the top of the owner window.
         pub y : int
     },
     /// A mouse button was released
     MouseButtonReleased {
         /// Code of the button that has been pressed.
         pub button : MouseButton,
-        /// X position of the mouse pointer, relative to the left of the owner window. 
+        /// X position of the mouse pointer, relative to the left of the owner window.
         pub x : int,
-        /// Y position of the mouse pointer, relative to the top of the owner window. 
+        /// Y position of the mouse pointer, relative to the top of the owner window.
         pub y : int
     },
     /// The mouse cursor moved
     MouseMoved {
-        /// X position of the mouse pointer, relative to the left of the owner window. 
+        /// X position of the mouse pointer, relative to the left of the owner window.
         pub x : int,
-        /// Y position of the mouse pointer, relative to the top of the owner window. 
+        /// Y position of the mouse pointer, relative to the top of the owner window.
         pub y : int
     },
     /// The mouse cursor entered the area of the window
@@ -121,7 +121,7 @@ pub enum Event {
     JoystickButtonPressed {
         /// Index of the joystick (in range [0 .. joystick::Count - 1])
         pub joystickid : int,
-        /// Index of the button that has been pressed (in range [0 .. Joystick::button_count - 1]) 
+        /// Index of the button that has been pressed (in range [0 .. Joystick::button_count - 1])
         pub button : int
     },
     /// A joystick button was released

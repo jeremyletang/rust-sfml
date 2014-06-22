@@ -72,8 +72,8 @@ Short example
 Here is a short example, draw a circle shape and display it.
 
 ```Rust
-extern mod native;
-extern mod rsfml;
+extern crate native;
+extern crate rsfml;
 
 use rsfml::system::Vector2f;
 use rsfml::window::{ContextSettings, VideoMode, event, Close};
@@ -97,7 +97,7 @@ fn main () -> () {
     // Create a CircleShape
     let mut circle = match CircleShape::new() {
         Some(circle) => circle,
-        None()       => fail!("Error, cannot create ball")
+        None       => fail!("Error, cannot create ball")
     };
     circle.set_radius(30.);
     circle.set_fill_color(&Color::red());
