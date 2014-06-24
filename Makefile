@@ -24,11 +24,11 @@ all: rsfml examples docs
 
 rsfml:
 	mkdir -p lib
-	rustc --out-dir=lib src/lib.rs
+	rustc --out-dir=lib src/rsfml.rs
 
 docs:
 	mkdir -p doc
-	rustdoc -o doc src/lib.rs
+	rustdoc -o doc src/rsfml.rs
 
 examples: rsfml
 	rustc -o bin/pong -L ./lib src/examples/pong/main.rs

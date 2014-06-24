@@ -33,13 +33,13 @@ fn main () -> () {
     let clear_color = Color::black();
 
     // Create a new texture (hey frank !)
-    let frank = match Texture::new_from_file("./resources/frank.jpeg") {
+    let frank = match Texture::new_from_file("../resources/frank.jpeg") {
         Some(tex)   => tex,
         None        => fail!("Cannot found resource: frank.jpeg")
     };
 
     // Create a font.
-    let font = match Font::new_from_file("resources/sansation.ttf") {
+    let font = match Font::new_from_file("../resources/sansation.ttf") {
         Some(fnt)   => fnt,
         None        => fail!("Cannot found the font: sansation.ttf")
     };

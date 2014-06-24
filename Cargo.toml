@@ -1,0 +1,50 @@
+[package]
+
+name = "rust-sfml"
+version = "0.9.0"
+authors = ["Jeremy Letang <letang.jeremy@gmail.com>"]
+
+[[lib]]
+
+name = "rsfml"
+crate-type = ["dylib", "rlib"]
+
+[[bin]]
+
+name = "pong"
+path = "src/examples/pong/main.rs"
+
+[[bin]]
+
+name = "sound"
+path = "src/examples/sound/main.rs"
+
+[[bin]]
+
+name = "sound_capture"
+path = "src/examples/sound_capture/main.rs"
+
+[[bin]]
+
+name = "borrow_res"
+path = "src/examples/borrow_res/main.rs"
+
+[[bin]]
+
+name = "rc_res"
+path = "src/examples/rc_res/main.rs"
+
+[[bin]]
+
+name = "custom_drawable"
+path = "src/examples/custom_drawable/main.rs"
+
+[[bin]]
+
+name = "shape"
+path = "src/examples/shape/main.rs"
+
+[[bin]]
+
+name = "vertex_arrays"
+path = "src/examples/vertex_arrays/main.rs"
