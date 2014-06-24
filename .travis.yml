@@ -21,6 +21,6 @@ install:
 script:
   - rustc --version
   - cargo build
-  - rusdoc -o doc src/rsfml.rs
+  - rustdoc -o doc src/rsfml.rs
 after_script:
   - curl http://www.rust-ci.org/artifacts/put?t=$RUSTCI_TOKEN | sh
