@@ -40,7 +40,7 @@ use ffi = ffi::graphics::rectangle_shape;
 /// Specialized shape representing a rectangle
 pub struct RectangleShape {
     #[doc(hidden)]
-    rectangle_shape :  *ffi::sfRectangleShape,
+    rectangle_shape :  *mut ffi::sfRectangleShape,
     #[doc(hidden)]
     texture :          Option<Rc<RefCell<Texture>>>
 }
@@ -473,7 +473,7 @@ impl RectangleShape {
         self.texture = None;
         unsafe {
             ffi::sfRectangleShape_setTexture(self.rectangle_shape,
-                                             ptr::null(),
+                                             ptr::mut_null(),
                                              SFTRUE)
         }
     }
@@ -685,15 +685,15 @@ impl Clone for RectangleShape {
     }
 }
 
-impl Wrappable<*ffi::sfRectangleShape> for RectangleShape {
-    fn wrap(rectangle_shape : *ffi::sfRectangleShape) -> RectangleShape {
+impl Wrappable<*mut ffi::sfRectangleShape> for RectangleShape {
+    fn wrap(rectangle_shape : *mut ffi::sfRectangleShape) -> RectangleShape {
         RectangleShape {
             rectangle_shape :   rectangle_shape,
             texture :           None
         }
     }
 
-    fn unwrap(&self) -> *ffi::sfRectangleShape {
+    fn unwrap(&self) -> *mut ffi::sfRectangleShape {
         self.rectangle_shape
     }
 }

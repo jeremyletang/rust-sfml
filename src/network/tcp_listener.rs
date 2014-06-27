@@ -35,7 +35,7 @@ use ffi = ffi::network::tcp_listener;
 /// Socket that listens to new TCP connections
 pub struct TcpListener {
     #[doc(hidden)]
-    listener : *ffi::sfTcpListener
+    listener : *mut ffi::sfTcpListener
 }
 
 impl TcpListener {
@@ -136,9 +136,9 @@ impl TcpListener {
     *
     * Return status code
     */
-    pub fn accept(&self, connected : &TcpSocket) -> SocketStatus {
+    pub fn accept(&self, connected : &mut TcpSocket) -> SocketStatus {
         unsafe {
-            mem::transmute(ffi::sfTcpListener_accept(self.listener, &connected.unwrap()) as i8)
+            mem::transmute(ffi::sfTcpListener_accept(self.listener, &mut connected.unwrap()) as i8)
         }
     }
 }

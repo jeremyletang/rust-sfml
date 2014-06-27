@@ -27,15 +27,15 @@ pub mod clock {
     use ffi::system::time::sfTime;
 
     pub struct sfClock {
-        this : *c_void
+        this : *mut c_void
     }
 
     extern "C" {
-        pub fn sfClock_create() -> *sfClock;
-        pub fn sfClock_copy(clock : *sfClock) -> *sfClock;
-        pub fn sfClock_destroy(clock : *sfClock) -> ();
-        pub fn sfClock_getElapsedTime(clock : *sfClock) -> sfTime;
-        pub fn sfClock_restart(clock : *sfClock) -> sfTime;
+        pub fn sfClock_create() -> *mut sfClock;
+        pub fn sfClock_copy(clock : *mut sfClock) -> *mut sfClock;
+        pub fn sfClock_destroy(clock : *mut sfClock) -> ();
+        pub fn sfClock_getElapsedTime(clock : *mut sfClock) -> sfTime;
+        pub fn sfClock_restart(clock : *mut sfClock) -> sfTime;
     }
 }
 

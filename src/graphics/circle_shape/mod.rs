@@ -40,7 +40,7 @@ pub mod rc;
 /// Specialized shape representing a circle.
 pub struct CircleShape<'s> {
     #[doc(hidden)]
-    circle_shape : *ffi::sfCircleShape,
+    circle_shape : *mut ffi::sfCircleShape,
     #[doc(hidden)]
     texture :      Option<&'s Texture>
 }
@@ -220,7 +220,7 @@ impl<'s> CircleShape<'s> {
         self.texture = None;
         unsafe {
             ffi::sfCircleShape_setTexture(self.circle_shape,
-                                          ptr::null(),
+                                          ptr::mut_null(),
                                           SFTRUE)
         }
     }
@@ -686,9 +686,9 @@ impl<'s> Clone for CircleShape<'s> {
     }
 }
 
-impl<'s> Wrappable<*ffi::sfCircleShape> for CircleShape<'s> {
+impl<'s> Wrappable<*mut ffi::sfCircleShape> for CircleShape<'s> {
     #[doc(hidden)]
-    fn wrap(circle_shape : *ffi::sfCircleShape) -> CircleShape {
+    fn wrap(circle_shape : *mut ffi::sfCircleShape) -> CircleShape {
         CircleShape {
             circle_shape :  circle_shape,
             texture :       None
@@ -696,7 +696,7 @@ impl<'s> Wrappable<*ffi::sfCircleShape> for CircleShape<'s> {
     }
 
     #[doc(hidden)]
-    fn unwrap(&self) -> *ffi::sfCircleShape {
+    fn unwrap(&self) -> *mut ffi::sfCircleShape {
         self.circle_shape
     }
 }

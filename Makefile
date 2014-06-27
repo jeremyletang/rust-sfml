@@ -31,6 +31,7 @@ docs:
 	rustdoc -o doc src/rsfml.rs
 
 examples: rsfml
+	mkdir -p bin
 	rustc -o bin/pong -L ./lib src/examples/pong/main.rs
 	rustc -o bin/shape -L ./lib src/examples/shape/main.rs
 	rustc -o bin/custom_drawable -L ./lib src/examples/custom_drawable/main.rs

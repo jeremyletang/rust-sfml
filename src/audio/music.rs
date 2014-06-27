@@ -50,7 +50,7 @@ use ffi = ffi::audio::music;
  */
 pub struct Music {
     #[doc(hidden)]
-    music : *ffi::sfMusic
+    music : *mut ffi::sfMusic
 }
 
 impl Music {
@@ -69,10 +69,10 @@ impl Music {
      * Return Some(Music) or None
      */
     pub fn new_from_file(filename : &str) -> Option<Music> {
-        let mut music_tmp : *ffi::sfMusic = ptr::null();
+        let mut music_tmp : *mut ffi::sfMusic = ptr::mut_null();
         unsafe {
             filename.with_c_str(|c_str| {
-                    music_tmp = ffi::sfMusic_createFromFile(c_str)
+                    music_tmp = ffi::sfMusic_createFromFile(c_str as *mut i8)
                 });
         }
         if music_tmp.is_null() {

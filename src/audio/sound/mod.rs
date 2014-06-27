@@ -48,7 +48,7 @@ pub mod rc;
  */
 pub struct Sound<'s> {
     #[doc(hidden)]
-    sound :    *ffi::sfSound,
+    sound :    *mut ffi::sfSound,
     #[doc(hidden)]
     buffer :   Option<&'s SoundBuffer>
 }
@@ -422,7 +422,7 @@ impl<'s> Sound<'s> {
     }
 
     #[doc(hidden)]
-    pub fn unwrap(&self) -> *ffi::sfSound {
+    pub fn unwrap(&self) -> *mut ffi::sfSound {
         self.sound
     }
 }

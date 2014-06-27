@@ -107,19 +107,19 @@ pub enum Status {
 /// Encapsulation of an HTTP request
 pub struct Request {
     #[doc(hidden)]
-    request : *ffi::sfHttpRequest
+    request : *mut ffi::sfHttpRequest
 }
 
 /// Encapsulation of an HTTP response
 pub struct Response {
     #[doc(hidden)]
-    response : *ffi::sfHttpResponse
+    response : *mut ffi::sfHttpResponse
 }
 
 /// The HTTP client.
 pub struct Http {
     #[doc(hidden)]
-    http : *ffi::sfHttp
+    http : *mut ffi::sfHttp
 }
 
 impl Request {
@@ -156,7 +156,9 @@ impl Request {
         let c_field = field.to_c_str();
         let c_value = value.to_c_str();
         unsafe {
-            ffi::sfHttpRequest_setField(self.request, c_field.unwrap(), c_value.unwrap())
+            ffi::sfHttpRequest_setField(self.request,
+                                        c_field.unwrap() as *mut i8,
+                                        c_value.unwrap() as *mut i8)
         }
     }
 
@@ -189,7 +191,7 @@ impl Request {
     pub fn set_uri(&self, uri : &str) -> () {
         let c_uri = uri.to_c_str();
         unsafe {
-            ffi::sfHttpRequest_setUri(self.request, c_uri.unwrap())
+            ffi::sfHttpRequest_setUri(self.request, c_uri.unwrap() as *mut i8)
         }
     }
 
@@ -220,12 +222,12 @@ impl Request {
     pub fn set_body(&self, body : &str) -> () {
         let c_body = body.to_c_str();
         unsafe {
-            ffi::sfHttpRequest_setBody(self.request, c_body.unwrap())
+            ffi::sfHttpRequest_setBody(self.request, c_body.unwrap() as *mut i8)
         }
     }
 
     #[doc(hidden)]
-    fn unwrap(&self) -> *ffi::sfHttpRequest {
+    fn unwrap(&self) -> *mut ffi::sfHttpRequest {
         self.request
     }
 }
@@ -254,7 +256,7 @@ impl Response {
     pub fn get_field(&self, field : &str) -> String {
         let c_field = field.to_c_str();
         unsafe {
-            CString::new(ffi::sfHttpResponse_getField(self.response, c_field.unwrap()),
+            CString::new(ffi::sfHttpResponse_getField(self.response, c_field.unwrap() as *mut i8) as *i8,
                          false).as_str().unwrap().to_string()
         }
     }
@@ -310,7 +312,7 @@ impl Response {
     */
     pub fn get_body(&self) -> String {
         unsafe {
-            CString::new(ffi::sfHttpResponse_getBody(self.response),
+            CString::new(ffi::sfHttpResponse_getBody(self.response) as *i8,
                          false).as_str().unwrap().to_string()
         }
     }
@@ -359,7 +361,7 @@ impl Http {
     pub fn set_host(&self, host : &str, port : u16) -> () {
         let c_host = host.to_c_str();
         unsafe {
-            ffi::sfHttp_setHost(self.http, c_host.unwrap(), port)
+            ffi::sfHttp_setHost(self.http, c_host.unwrap() as *mut i8, port)
         }
     }
 

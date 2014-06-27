@@ -49,7 +49,7 @@ pub struct View {
     #[doc(hidden)]
     dropable : bool,
     #[doc(hidden)]
-    view :     *ffi::sfView
+    view :     *mut ffi::sfView
 }
 
 impl View {
@@ -347,15 +347,15 @@ impl Clone for View {
     }
 }
 
-impl Wrappable<*ffi::sfView> for View {
-    fn wrap(view : *ffi::sfView) -> View {
+impl Wrappable<*mut ffi::sfView> for View {
+    fn wrap(view : *mut ffi::sfView) -> View {
         View {
             dropable:   false,
             view :      view
         }
     }
 
-    fn unwrap(&self) -> *ffi::sfView {
+    fn unwrap(&self) -> *mut ffi::sfView {
         self.view
     }
 }

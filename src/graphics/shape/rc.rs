@@ -45,22 +45,22 @@ pub struct WrapObj {
 /// Base class for textured shapes with outline
 pub struct Shape {
     #[doc(hidden)]
-    shape :    *ffi::sfShape,
+    shape :    *mut ffi::sfShape,
     #[doc(hidden)]
     texture :  Option<Rc<RefCell<Texture>>>
 }
 
 #[doc(hidden)]
-extern fn get_point_count_callback(obj : *c_void) -> u32 {
-    let shape = unsafe { mem::transmute::<*c_void, Box<Box<WrapObj>>>(obj) };
+extern fn get_point_count_callback(obj : *mut c_void) -> u32 {
+    let shape = unsafe { mem::transmute::<*mut c_void, Box<Box<WrapObj>>>(obj) };
     let ret = shape.shape_impl.get_point_count();
     unsafe { mem::forget(shape) };
     ret
 }
 
 #[doc(hidden)]
-extern fn get_point_callback(point : u32, obj : *c_void) -> Vector2f {
-    let shape = unsafe { mem::transmute::<*c_void, Box<Box<WrapObj>>>(obj) };
+extern fn get_point_callback(point : u32, obj : *mut c_void) -> Vector2f {
+    let shape = unsafe { mem::transmute::<*mut c_void, Box<Box<WrapObj>>>(obj) };
     let ret = shape.shape_impl.get_point(point);
     unsafe { mem::forget(shape) };
     ret
@@ -80,7 +80,7 @@ impl Shape {
         let w_o = box WrapObj { shape_impl : shape_impl};
         let sp = unsafe { ffi::sfShape_create(get_point_count_callback,
                                               get_point_callback,
-                                              mem::transmute::<Box<Box<WrapObj>>, *c_void>(box w_o)) };
+                                              mem::transmute::<Box<Box<WrapObj>>, *mut c_void>(box w_o)) };
         if sp.is_null() {
             None
         } else {
@@ -105,7 +105,7 @@ impl Shape {
         let w_o = box WrapObj { shape_impl : shape_impl };
         let sp = unsafe { ffi::sfShape_create(get_point_count_callback,
                                               get_point_callback,
-                                              mem::transmute::<Box<Box<WrapObj>>, *c_void>(box w_o)) };
+                                              mem::transmute::<Box<Box<WrapObj>>, *mut c_void>(box w_o)) };
         if sp.is_null() {
             None
         } else {
@@ -429,7 +429,7 @@ impl Shape {
     pub fn disable_texture(&mut self) -> () {
         self.texture = None;
         unsafe {
-            ffi::sfShape_setTexture(self.shape, ptr::null(), SFTRUE)
+            ffi::sfShape_setTexture(self.shape, ptr::mut_null(), SFTRUE)
         }
     }
 
@@ -632,7 +632,7 @@ impl Shape {
     }
 
     #[doc(hidden)]
-    pub fn unwrap(&self) -> *ffi::sfShape {
+    pub fn unwrap(&self) -> *mut ffi::sfShape {
         self.shape
     }
 }

@@ -40,7 +40,7 @@ pub mod rc;
 /// Specialized shape representing a rectangle
 pub struct RectangleShape<'s> {
     #[doc(hidden)]
-    rectangle_shape :  *ffi::sfRectangleShape,
+    rectangle_shape :  *mut ffi::sfRectangleShape,
     #[doc(hidden)]
     texture :          Option<&'s Texture>
 }
@@ -471,7 +471,7 @@ impl<'s> RectangleShape<'s> {
         self.texture = None;
         unsafe {
             ffi::sfRectangleShape_setTexture(self.rectangle_shape,
-                                             ptr::null(),
+                                             ptr::mut_null(),
                                              SFTRUE)
         }
     }
@@ -683,15 +683,15 @@ impl<'s> Clone for RectangleShape<'s> {
     }
 }
 
-impl<'s> Wrappable<*ffi::sfRectangleShape> for RectangleShape<'s> {
-    fn wrap(rectangle_shape : *ffi::sfRectangleShape) -> RectangleShape {
+impl<'s> Wrappable<*mut ffi::sfRectangleShape> for RectangleShape<'s> {
+    fn wrap(rectangle_shape : *mut ffi::sfRectangleShape) -> RectangleShape {
         RectangleShape {
             rectangle_shape :   rectangle_shape,
             texture :           None
         }
     }
 
-    fn unwrap(&self) -> *ffi::sfRectangleShape {
+    fn unwrap(&self) -> *mut ffi::sfRectangleShape {
         self.rectangle_shape
     }
 }

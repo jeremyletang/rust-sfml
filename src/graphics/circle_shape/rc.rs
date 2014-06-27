@@ -40,7 +40,7 @@ use ffi = ffi::graphics::circle_shape;
 /// Specialized shape representing a circle.
 pub struct CircleShape {
     #[doc(hidden)]
-    circle_shape : *ffi::sfCircleShape,
+    circle_shape : *mut ffi::sfCircleShape,
     #[doc(hidden)]
     texture :      Option<Rc<RefCell<Texture>>>
 }
@@ -223,7 +223,7 @@ impl CircleShape {
         self.texture = None;
         unsafe {
             ffi::sfCircleShape_setTexture(self.circle_shape,
-                                          ptr::null(),
+                                          ptr::mut_null(),
                                           SFTRUE)
         }
     }
@@ -689,9 +689,9 @@ impl Clone for CircleShape {
     }
 }
 
-impl Wrappable<*ffi::sfCircleShape> for CircleShape {
+impl Wrappable<*mut ffi::sfCircleShape> for CircleShape {
     #[doc(hidden)]
-    fn wrap(circle_shape : *ffi::sfCircleShape) -> CircleShape {
+    fn wrap(circle_shape : *mut ffi::sfCircleShape) -> CircleShape {
         CircleShape {
             circle_shape :  circle_shape,
             texture :       None
@@ -699,7 +699,7 @@ impl Wrappable<*ffi::sfCircleShape> for CircleShape {
     }
 
     #[doc(hidden)]
-    fn unwrap(&self) -> *ffi::sfCircleShape {
+    fn unwrap(&self) -> *mut ffi::sfCircleShape {
         self.circle_shape
     }
 }

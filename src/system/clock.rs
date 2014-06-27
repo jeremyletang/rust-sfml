@@ -40,7 +40,7 @@ use ffi = ffi::system::clock;
  */
 pub struct Clock {
     #[doc(hidden)]
-    clock : *ffi::sfClock
+    clock : *mut ffi::sfClock
 }
 
 impl Clock {
@@ -73,7 +73,7 @@ impl Clock {
     }
 
     #[doc(hidden)]
-    pub fn unwrap(&self) -> *ffi::sfClock {
+    pub fn unwrap(&self) -> *mut ffi::sfClock {
         self.clock
     }
 }

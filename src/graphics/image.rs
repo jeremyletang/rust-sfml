@@ -37,7 +37,7 @@ use ffi = ffi::graphics::image;
 /// Loading, manipulating and saving images.
 pub struct Image {
     #[doc(hidden)]
-    image : *ffi::sfImage
+    image : *mut ffi::sfImage
 }
 
 impl Image {
@@ -105,7 +105,7 @@ impl Image {
     pub fn new_from_file(filename : &str) -> Option<Image> {
         let image = unsafe {
             let c_filename = filename.to_c_str().unwrap();
-            ffi::sfImage_createFromFile(c_filename)
+            ffi::sfImage_createFromFile(c_filename as *mut i8)
         };
         if image.is_null() {
             None
@@ -152,7 +152,7 @@ impl Image {
         let image =
             unsafe { ffi::sfImage_createFromPixels(width as c_uint,
                                                    height as c_uint,
-                                                   pixels.as_ptr()) };
+                                                   pixels.as_ptr() as *mut u8) };
         if image.is_null() {
             None
         } else {
@@ -179,7 +179,7 @@ impl Image {
         let mut return_value = false;
         unsafe {
             filename.with_c_str(|c_str| {
-                    match ffi::sfImage_saveToFile(self.image, c_str) {
+                    match ffi::sfImage_saveToFile(self.image, c_str as *mut i8) {
                         SFFALSE => return_value = false,
                         SFTRUE  => return_value = true
                     }
@@ -330,14 +330,14 @@ impl Clone for Image {
     }
 }
 
-impl Wrappable<*ffi::sfImage> for Image {
-    fn wrap(image : *ffi::sfImage) -> Image {
+impl Wrappable<*mut ffi::sfImage> for Image {
+    fn wrap(image : *mut ffi::sfImage) -> Image {
         Image {
             image : image
         }
     }
 
-    fn unwrap(&self) -> *ffi::sfImage {
+    fn unwrap(&self) -> *mut ffi::sfImage {
         self.image
     }
 }

@@ -50,7 +50,7 @@ pub mod rc;
  */
 pub struct Sprite<'s> {
     #[doc(hidden)]
-    sprite :   *ffi::sfSprite,
+    sprite :   *mut ffi::sfSprite,
     #[doc(hidden)]
     texture :  Option<&'s Texture>
 }
@@ -194,7 +194,7 @@ impl<'s> Sprite<'s> {
     pub fn disable_texture(&mut self) -> () {
         self.texture = None;
         unsafe {
-            ffi::sfSprite_setTexture(self.sprite, ptr::null(), SFTRUE)
+            ffi::sfSprite_setTexture(self.sprite, ptr::mut_null(), SFTRUE)
         }
     }
 
@@ -543,15 +543,15 @@ impl<'s> Clone for Sprite<'s> {
     }
 }
 
-impl<'s> Wrappable<*ffi::sfSprite> for Sprite<'s> {
-    fn wrap(sprite : *ffi::sfSprite) -> Sprite {
+impl<'s> Wrappable<*mut ffi::sfSprite> for Sprite<'s> {
+    fn wrap(sprite : *mut ffi::sfSprite) -> Sprite {
         Sprite {
             sprite :    sprite,
             texture :   None
         }
     }
 
-    fn unwrap(&self) -> *ffi::sfSprite {
+    fn unwrap(&self) -> *mut ffi::sfSprite {
         self.sprite
     }
 }

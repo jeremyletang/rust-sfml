@@ -38,7 +38,7 @@ use ffi = ffi::network::tcp_socket;
 /// Specialized socket using the TCP protocol
 pub struct TcpSocket {
     #[doc(hidden)]
-    socket : *ffi::sfTcpSocket
+    socket : *mut ffi::sfTcpSocket
 }
 
 impl TcpSocket {
@@ -179,7 +179,7 @@ impl TcpSocket {
     */
     pub fn send(&self, data : Vec<i8>) -> SocketStatus {
         unsafe {
-            mem::transmute(ffi::sfTcpSocket_send(self.socket, data.as_ptr(), data.len() as size_t) as i8)
+            mem::transmute(ffi::sfTcpSocket_send(self.socket, data.as_ptr() as *mut i8, data.len() as size_t) as i8)
         }
     }
 
@@ -197,10 +197,10 @@ impl TcpSocket {
     */
     pub fn receive(&self, max_size : size_t) -> (Vec<i8>, SocketStatus, size_t) {
         unsafe {
-            let s : size_t = 0;
-            let datas : *i8 = ptr::null();
-            let stat : SocketStatus = mem::transmute(ffi::sfTcpSocket_receive(self.socket, datas, max_size, &s) as i8);
-            (slice::raw::buf_as_slice(datas, s as uint, Vec::from_slice), stat, s)
+            let mut s : size_t = 0;
+            let datas : *mut i8 = ptr::mut_null();
+            let stat : SocketStatus = mem::transmute(ffi::sfTcpSocket_receive(self.socket, datas, max_size, &mut s) as i8);
+            (slice::raw::buf_as_slice(datas as *i8, s as uint, Vec::from_slice), stat, s)
         }
     }
 
@@ -229,21 +229,21 @@ impl TcpSocket {
     */
     pub fn receive_packet(&self) -> (Packet, SocketStatus) {
         unsafe {
-            let pack : *::ffi::network::packet::sfPacket = ptr::null();
+            let pack : *mut ::ffi::network::packet::sfPacket = ptr::mut_null();
             let stat : SocketStatus = mem::transmute(ffi::sfTcpSocket_receivePacket(self.socket, pack) as i8);
             (Wrappable::wrap(pack), stat)
         }
     }
 }
 
-impl Wrappable<*ffi::sfTcpSocket> for TcpSocket {
-    fn wrap(socket : *ffi::sfTcpSocket) -> TcpSocket {
+impl Wrappable<*mut ffi::sfTcpSocket> for TcpSocket {
+    fn wrap(socket : *mut ffi::sfTcpSocket) -> TcpSocket {
         TcpSocket {
             socket : socket
         }
     }
 
-    fn unwrap(&self) -> *ffi::sfTcpSocket {
+    fn unwrap(&self) -> *mut ffi::sfTcpSocket {
         self.socket
     }
 }

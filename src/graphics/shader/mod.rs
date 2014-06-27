@@ -51,7 +51,7 @@ pub mod rc;
  */
 pub struct Shader<'s> {
     #[doc(hidden)]
-    shader :   *ffi::sfShader,
+    shader :   *mut ffi::sfShader,
     #[doc(hidden)]
     texture :  Option<&'s Texture>
 }
@@ -79,14 +79,14 @@ impl<'s> Shader<'s> {
                          -> Option<Shader<'s>> {
         let shader = unsafe {
             let c_vertex_shader_filename = if vertex_shader_filename.is_none() {
-                ptr::null()
+                ptr::mut_null()
             } else {
-                vertex_shader_filename.unwrap().to_c_str().unwrap()
+                vertex_shader_filename.unwrap().to_c_str().unwrap() as *mut i8
             };
             let c_fragment_shader_filename = if fragment_shader_filename.is_none() {
-                ptr::null()
+                ptr::mut_null()
             } else {
-                fragment_shader_filename.unwrap().to_c_str().unwrap()
+                fragment_shader_filename.unwrap().to_c_str().unwrap() as *mut i8
             };
             ffi::sfShader_createFromFile(c_vertex_shader_filename,
                                          c_fragment_shader_filename)
@@ -123,14 +123,14 @@ impl<'s> Shader<'s> {
                            -> Option<Shader<'s>> {
         let shader = unsafe {
             let c_vertex_shader = if vertex_shader.is_none() {
-                ptr::null()
+                ptr::mut_null()
             } else {
-                vertex_shader.unwrap().to_c_str().unwrap()
+                vertex_shader.unwrap().to_c_str().unwrap() as *mut i8
             };
             let c_fragment_shader = if fragment_shader.is_none() {
-                ptr::null()
+                ptr::mut_null()
             } else {
-                fragment_shader.unwrap().to_c_str().unwrap()
+                fragment_shader.unwrap().to_c_str().unwrap() as *mut i8
             };
             ffi::sfShader_createFromFile(c_vertex_shader, c_fragment_shader)
         };
@@ -154,7 +154,7 @@ impl<'s> Shader<'s> {
     pub fn set_float_parameter(&mut self, name : &str, x : f32) -> () {
         unsafe {
             name.with_c_str(|c_str| {
-                    ffi::sfShader_setFloatParameter(self.shader, c_str, x)
+                    ffi::sfShader_setFloatParameter(self.shader, c_str as *mut i8, x)
                 });
         }
     }
@@ -174,7 +174,7 @@ impl<'s> Shader<'s> {
     pub fn set_float_2_parameter(&mut self, name : &str, x : f32, y : f32) -> () {
         unsafe {
             name.with_c_str(|c_str| {
-                    ffi::sfShader_setFloat2Parameter(self.shader, c_str, x, y)
+                    ffi::sfShader_setFloat2Parameter(self.shader, c_str as *mut i8, x, y)
                 });
         }
     }
@@ -200,7 +200,7 @@ impl<'s> Shader<'s> {
         unsafe {
             name.with_c_str(|c_str| {
                     ffi::sfShader_setFloat3Parameter(self.shader,
-                                                     c_str,
+                                                     c_str as *mut i8,
                                                      x,
                                                      y,
                                                      z)
@@ -231,7 +231,7 @@ impl<'s> Shader<'s> {
         unsafe {
             name.with_c_str(|c_str| {
                     ffi::sfShader_setFloat4Parameter(self.shader,
-                                                     c_str,
+                                                     c_str as *mut i8,
                                                      x,
                                                      y,
                                                      z,
@@ -258,7 +258,7 @@ impl<'s> Shader<'s> {
         unsafe {
             name.with_c_str(|c_str| {
                     ffi::sfShader_setTextureParameter(self.shader,
-                                                      c_str,
+                                                      c_str as *mut i8,
                                                       texture.unwrap())
                 });
         }
@@ -279,7 +279,7 @@ impl<'s> Shader<'s> {
     pub fn set_current_texture_parameter(&self, name : &str) -> () {
         unsafe {
             name.with_c_str(|c_str| {
-                    ffi::sfShader_setCurrentTextureParameter(self.shader, c_str)
+                    ffi::sfShader_setCurrentTextureParameter(self.shader, c_str as *mut i8)
                 });
         }
     }
@@ -330,7 +330,7 @@ impl<'s> Shader<'s> {
         unsafe {
             name.with_c_str(|c_str| {
                     ffi::sfShader_setVector2Parameter(self.shader,
-                                                      c_str,
+                                                      c_str as *mut i8,
                                                       *vector)
                 });
         }
@@ -353,7 +353,7 @@ impl<'s> Shader<'s> {
         unsafe {
             name.with_c_str(|c_str| {
                     ffi::sfShader_setVector3Parameter(self.shader,
-                                                      c_str,
+                                                      c_str as *mut i8,
                                                       *vector)
                 });
         }
@@ -381,21 +381,21 @@ impl<'s> Shader<'s> {
                                color : &Color) -> () {
         unsafe {
             name.with_c_str(|c_str| {
-                    ffi::sfShader_setColorParameter(self.shader, c_str, *color)
+                    ffi::sfShader_setColorParameter(self.shader, c_str as *mut i8, *color)
                 });
         }
     }
 }
 
-impl<'s> Wrappable<*ffi::sfShader> for Shader<'s> {
-    fn wrap(shader : *ffi::sfShader) -> Shader {
+impl<'s> Wrappable<*mut ffi::sfShader> for Shader<'s> {
+    fn wrap(shader : *mut ffi::sfShader) -> Shader {
         Shader {
             shader :    shader,
             texture :   None
         }
     }
 
-    fn unwrap(&self) -> *ffi::sfShader {
+    fn unwrap(&self) -> *mut ffi::sfShader {
         self.shader
     }
 }

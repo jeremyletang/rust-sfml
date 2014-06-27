@@ -131,11 +131,11 @@ impl VideoMode {
      * Return a vector containing all the supported VideoMode
      */
     pub fn get_fullscreen_modes() -> Option<Vec<VideoMode>> {
-        let i : size_t = 0;
+        let mut i : size_t = 0;
         let mut ret_tab : Vec<VideoMode> = Vec::new();
         unsafe {
             let tab : *mut ffi::sfVideoMode =
-                ffi::sfVideoMode_getFullscreenModes(&i) as *mut ffi::sfVideoMode;
+                ffi::sfVideoMode_getFullscreenModes(&mut i) as *mut ffi::sfVideoMode;
             if i == 0 {
                 return None;
             }

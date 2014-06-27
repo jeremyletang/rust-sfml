@@ -49,7 +49,7 @@ use ffi = ffi::window::window;
  */
 pub struct Window {
     #[doc(hidden)]
-    window :       *ffi::sfWindow,
+    window :       *mut ffi::sfWindow,
     #[doc(hidden)]
     event :        ffi::sfEvent,
     #[doc(hidden)]
@@ -83,10 +83,10 @@ impl Window {
                style : WindowStyle,
                settings : &ContextSettings) -> Option<Window> {
 
-        let mut sf_win: *ffi::sfWindow = ptr::null();
+        let mut sf_win: *mut ffi::sfWindow = ptr::mut_null();
         unsafe {
             title.with_c_str(|c_str| {
-                    sf_win = ffi::sfWindow_create(mode.unwrap(), c_str, style as u32, settings)
+                    sf_win = ffi::sfWindow_create(mode.unwrap(), c_str as *mut i8, style as u32, settings)
                 });
         };
         let sf_ev = ffi::sfEvent {
@@ -136,7 +136,7 @@ impl Window {
 
         let sf_win =
             unsafe { ffi::sfWindow_createUnicode(mode.unwrap(),
-                                                 title.as_ptr(),
+                                                 title.as_ptr() as *mut u32,
                                                  style as u32, settings) };
         let sf_ev = ffi::sfEvent {
             typeEvent : 0,
@@ -300,7 +300,7 @@ impl Window {
      */
     pub fn poll_event(&mut self) -> event::Event {
         let haveEvent : bool =  unsafe {
-            match ffi::sfWindow_pollEvent(self.window, &self.event) {
+            match ffi::sfWindow_pollEvent(self.window, &mut self.event) {
                 SFFALSE     => false,
                 SFTRUE      => true
             }
@@ -327,7 +327,7 @@ impl Window {
      */
     pub fn wait_event(&mut self) -> event::Event {
         let haveEvent : bool =  unsafe {
-            match ffi::sfWindow_waitEvent(self.window, &self.event) {
+            match ffi::sfWindow_waitEvent(self.window, &mut self.event) {
                 SFFALSE     => false,
                 SFTRUE      => true
             }
@@ -347,7 +347,7 @@ impl Window {
      */
     pub fn set_unicode_title(&mut self, title : Vec<u32>) -> () {
         unsafe {
-            ffi::sfWindow_setUnicodeTitle(self.window, title.as_ptr())
+            ffi::sfWindow_setUnicodeTitle(self.window, title.as_ptr() as *mut u32)
         }
     }
     /**
@@ -361,7 +361,7 @@ impl Window {
      */
     pub fn set_icon(&mut self, width : uint, height : uint, pixels : Vec<u8>) -> () {
         unsafe {
-            ffi::sfWindow_setIcon(self.window, width as c_uint, height as c_uint, pixels.as_ptr())
+            ffi::sfWindow_setIcon(self.window, width as c_uint, height as c_uint, pixels.as_ptr() as *mut u8)
         }
     }
 
@@ -418,7 +418,7 @@ impl Window {
     pub fn set_title(&mut self, title : &str) -> () {
         unsafe {
             title.with_c_str(|c_str| {
-                    ffi::sfWindow_setTitle(self.window, c_str)
+                    ffi::sfWindow_setTitle(self.window, c_str as *mut i8)
                 });
         }
     }
@@ -648,7 +648,7 @@ impl Window {
     }
 
     #[doc(hidden)]
-    pub fn unwrap(&self) -> *ffi::sfWindow {
+    pub fn unwrap(&self) -> *mut ffi::sfWindow {
         self.window
     }
 }

@@ -52,7 +52,7 @@ pub mod rc;
  */
 pub struct Text<'s> {
     #[doc(hidden)]
-    text :             *ffi::sfText,
+    text :             *mut ffi::sfText,
     #[doc(hidden)]
     string_length :    uint,
     #[doc(hidden)]
@@ -99,7 +99,7 @@ impl<'s> Text<'s> {
         } else {
             unsafe {
                 string.with_c_str(|c_str| {
-                        ffi::sfText_setString(text, c_str)
+                        ffi::sfText_setString(text, c_str as *mut i8)
                     });
                 ffi::sfText_setFont(text, font.unwrap());
                 ffi::sfText_setCharacterSize(text, character_size as c_uint)
@@ -141,7 +141,7 @@ impl<'s> Text<'s> {
     pub fn set_string(&mut self, string : &str) -> () {
         unsafe {
             string.with_c_str(|c_str| {
-                    ffi::sfText_setString(self.text, c_str)
+                    ffi::sfText_setString(self.text, c_str as *mut i8)
                 });
         }
         self.string_length = string.len()
@@ -154,7 +154,7 @@ impl<'s> Text<'s> {
      */
     pub fn get_string(&self) -> String {
         unsafe {
-            CString::new(ffi::sfText_getString(self.text), false).as_str().unwrap().to_string()
+            CString::new(ffi::sfText_getString(self.text) as *i8, false).as_str().unwrap().to_string()
         }
     }
 
@@ -591,7 +591,7 @@ impl<'s> Text<'s> {
     pub fn set_unicode_string(&mut self, string : Vec<u32>) -> () {
         unsafe {
             self.string_length = string.len();
-            ffi::sfText_setUnicodeString(self.text, string.as_ptr())
+            ffi::sfText_setUnicodeString(self.text, string.as_ptr() as *mut u32)
         }
     }
 
@@ -635,8 +635,8 @@ impl<'s> Clone for Text<'s> {
     }
 }
 
-impl<'s> Wrappable<*ffi::sfText> for Text<'s> {
-    fn wrap(text : *ffi::sfText) -> Text {
+impl<'s> Wrappable<*mut ffi::sfText> for Text<'s> {
+    fn wrap(text : *mut ffi::sfText) -> Text {
         Text {
             text :          text,
             string_length : 0,
@@ -644,7 +644,7 @@ impl<'s> Wrappable<*ffi::sfText> for Text<'s> {
         }
     }
 
-    fn unwrap(&self) -> *ffi::sfText {
+    fn unwrap(&self) -> *mut ffi::sfText {
         self.text
     }
 }

@@ -47,7 +47,7 @@ use ffi = ffi::graphics::texture;
  */
 pub struct Texture {
     #[doc(hidden)]
-    texture :  *ffi::sfTexture,
+    texture :  *mut ffi::sfTexture,
     #[doc(hidden)]
     dropable : bool
 }
@@ -84,10 +84,10 @@ impl Texture {
      * Return Some(Texture) or None
     */
     pub fn new_from_file(filename : &str) -> Option<Texture> {
-        let mut tex = ptr::null();
+        let mut tex = ptr::mut_null();
         unsafe {
             filename.with_c_str(|c_str| {
-                    tex = ffi::sfTexture_createFromFile(c_str, ptr::null())
+                    tex = ffi::sfTexture_createFromFile(c_str as *mut i8, ptr::null())
                 });
         }
         if tex.is_null() {
@@ -111,10 +111,10 @@ impl Texture {
      */
     pub fn new_from_file_with_rect(filename : &str,
                                    area : &IntRect) -> Option<Texture> {
-        let mut tex = ptr::null();
+        let mut tex = ptr::mut_null();
         unsafe {
             filename.with_c_str(|c_str| {
-                    tex = ffi::sfTexture_createFromFile(c_str, &*area)
+                    tex = ffi::sfTexture_createFromFile(c_str as *mut i8, &*area)
                 });
         }
         if tex.is_null() {
@@ -278,7 +278,7 @@ impl Texture {
                               y : uint) -> () {
         unsafe {
             ffi::sfTexture_updateFromPixels(self.texture,
-                                            pixels.as_ptr(),
+                                            pixels.as_ptr() as *mut u8,
                                             width as c_uint,
                                             height as c_uint,
                                             x as c_uint,
@@ -408,12 +408,12 @@ impl Clone for Texture {
     }
 }
 
-impl Wrappable<*ffi::sfTexture> for Texture {
-    fn unwrap(&self) -> *ffi::sfTexture {
+impl Wrappable<*mut ffi::sfTexture> for Texture {
+    fn unwrap(&self) -> *mut ffi::sfTexture {
         self.texture
     }
 
-    fn wrap(texture : *ffi::sfTexture) -> Texture {
+    fn wrap(texture : *mut ffi::sfTexture) -> Texture {
         Texture {
             texture :   texture,
             dropable :  false

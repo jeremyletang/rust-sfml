@@ -54,7 +54,7 @@ pub mod rc;
  */
 pub struct ConvexShape<'s> {
     #[doc(hidden)]
-    convex_shape : *ffi::sfConvexShape,
+    convex_shape : *mut ffi::sfConvexShape,
     #[doc(hidden)]
     texture :      Option<&'s Texture>
 }
@@ -62,7 +62,7 @@ pub struct ConvexShape<'s> {
 /// An iterator over the points of a ConvexShape
 pub struct ConvexShapePoints {
     #[doc(hidden)]
-    convex_shape: *ffi::sfConvexShape,
+    convex_shape: *mut ffi::sfConvexShape,
     #[doc(hidden)]
     pos: u32
 }
@@ -457,7 +457,7 @@ impl<'s> ConvexShape<'s> {
         self.texture = None;
         unsafe {
             ffi::sfConvexShape_setTexture(self.convex_shape,
-                                          ptr::null(),
+                                          ptr::mut_null(),
                                           SFTRUE)
         }
     }
@@ -707,9 +707,9 @@ impl<'s> Index<uint, Vector2f> for ConvexShape<'s> {
 }
 
 #[doc(hidden)]
-impl<'s> Wrappable<*ffi::sfConvexShape> for ConvexShape<'s> {
+impl<'s> Wrappable<*mut ffi::sfConvexShape> for ConvexShape<'s> {
     #[doc(hidden)]
-    fn wrap(convex_shape : *ffi::sfConvexShape) -> ConvexShape {
+    fn wrap(convex_shape : *mut ffi::sfConvexShape) -> ConvexShape {
         ConvexShape {
             convex_shape :  convex_shape,
             texture :       None
@@ -717,7 +717,7 @@ impl<'s> Wrappable<*ffi::sfConvexShape> for ConvexShape<'s> {
     }
 
     #[doc(hidden)]
-    fn unwrap(&self) -> *ffi::sfConvexShape {
+    fn unwrap(&self) -> *mut ffi::sfConvexShape {
         self.convex_shape
     }
 }

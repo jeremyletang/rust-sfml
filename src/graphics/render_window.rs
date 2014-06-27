@@ -57,7 +57,7 @@ use ffi = ffi::graphics::render_window;
  */
 pub struct RenderWindow {
     #[doc(hidden)]
-    render_window :    *ffi::sfRenderWindow,
+    render_window :    *mut ffi::sfRenderWindow,
     #[doc(hidden)]
     event :            ffi::sfEvent,
     #[doc(hidden)]
@@ -71,7 +71,7 @@ pub struct RenderWindow {
 /// An iterator over all the events in the events queue (internally call poll_event)
 pub struct Events {
     #[doc(hidden)]
-    render_window: *ffi::sfRenderWindow,
+    render_window: *mut ffi::sfRenderWindow,
     #[doc(hidden)]
     event :            ffi::sfEvent,
 }
@@ -102,11 +102,11 @@ impl RenderWindow {
                title : &str,
                style : WindowStyle,
                settings : &ContextSettings) -> Option<RenderWindow> {
-        let mut sf_render_win: *ffi::sfRenderWindow = ptr::null();
+        let mut sf_render_win: *mut ffi::sfRenderWindow = ptr::mut_null();
         unsafe {
             title.with_c_str(|c_str| {
                     sf_render_win = ffi::sfRenderWindow_create(mode.unwrap(),
-                                                               c_str,
+                                                               c_str as *mut i8,
                                                                style as u32,
                                                                settings);
                 });
@@ -165,10 +165,10 @@ impl RenderWindow {
                             style : WindowStyle,
                             settings : &ContextSettings) -> Option<RenderWindow> {
 
-        let sf_render_win: *ffi::sfRenderWindow;
+        let sf_render_win: *mut ffi::sfRenderWindow;
         unsafe {
             sf_render_win = ffi::sfRenderWindow_createUnicode(mode.unwrap(),
-                                                              title.as_ptr(),
+                                                              title.as_ptr() as *mut u32,
                                                               style as u32,
                                                               settings);
         }
@@ -210,7 +210,7 @@ impl RenderWindow {
         unsafe {
             self.title_length = title.len();
             ffi::sfRenderWindow_setUnicodeTitle(self.render_window,
-                                                title.as_ptr())
+                                                title.as_ptr() as *mut u32)
         }
     }
 
@@ -231,7 +231,7 @@ impl RenderWindow {
             ffi::sfRenderWindow_setIcon(self.render_window,
                                         width as c_uint,
                                         height as c_uint,
-                                        pixels.as_ptr())
+                                        pixels.as_ptr() as *mut u8)
         }
     }
 
@@ -263,7 +263,7 @@ impl RenderWindow {
      */
     pub fn poll_event(&mut self) -> event::Event {
         let haveEvent : bool =  unsafe {
-            match ffi::sfRenderWindow_pollEvent(self.render_window, &self.event) {
+            match ffi::sfRenderWindow_pollEvent(self.render_window, &mut self.event) {
                 SFFALSE     => false,
                 SFTRUE      => true
             }
@@ -290,7 +290,7 @@ impl RenderWindow {
      */
     pub fn wait_event(&mut self) -> event::Event {
         let haveEvent : bool =  unsafe {
-            match ffi::sfRenderWindow_waitEvent(self.render_window, &self.event) {
+            match ffi::sfRenderWindow_waitEvent(self.render_window, &mut self.event) {
                 SFFALSE     => false,
                 SFTRUE      => true
             }
@@ -390,7 +390,7 @@ impl RenderWindow {
     pub fn set_title(&mut self, title : &str) -> () {
         unsafe {
             title.with_c_str(|c_str| {
-                    ffi::sfRenderWindow_setTitle(self.render_window, c_str);
+                    ffi::sfRenderWindow_setTitle(self.render_window, c_str as *mut i8);
                 });
         }
         self.title_length = title.len();
@@ -699,7 +699,7 @@ impl RenderWindow {
         unsafe {
             ffi::sfRenderWindow_drawText(self.render_window,
                                          text.unwrap(),
-                                         ptr::null())
+                                         ptr::mut_null())
         }
     }
 
@@ -708,7 +708,7 @@ impl RenderWindow {
         unsafe {
             ffi::sfRenderWindow_drawText(self.render_window,
                                          text.unwrap(),
-                                         ptr::null())
+                                         ptr::mut_null())
         }
     }
 
@@ -717,7 +717,7 @@ impl RenderWindow {
         unsafe {
             ffi::sfRenderWindow_drawShape(self.render_window,
                                           shape.unwrap(),
-                                          ptr::null())
+                                          ptr::mut_null())
         }
     }
 
@@ -726,7 +726,7 @@ impl RenderWindow {
         unsafe {
             ffi::sfRenderWindow_drawShape(self.render_window,
                                           shape.unwrap(),
-                                          ptr::null())
+                                          ptr::mut_null())
         }
     }
 
@@ -735,7 +735,7 @@ impl RenderWindow {
         unsafe {
             ffi::sfRenderWindow_drawSprite(self.render_window,
                                            sprite.unwrap(),
-                                           ptr::null())
+                                           ptr::mut_null())
         }
     }
 
@@ -744,7 +744,7 @@ impl RenderWindow {
         unsafe {
             ffi::sfRenderWindow_drawSprite(self.render_window,
                                            sprite.unwrap(),
-                                           ptr::null())
+                                           ptr::mut_null())
         }
     }
 
@@ -753,7 +753,7 @@ impl RenderWindow {
         unsafe {
             ffi::sfRenderWindow_drawCircleShape(self.render_window,
                                                 circle_shape.unwrap(),
-                                                ptr::null())
+                                                ptr::mut_null())
         }
     }
 
@@ -762,7 +762,7 @@ impl RenderWindow {
         unsafe {
             ffi::sfRenderWindow_drawCircleShape(self.render_window,
                                                 circle_shape.unwrap(),
-                                                ptr::null())
+                                                ptr::mut_null())
         }
     }
 
@@ -771,7 +771,7 @@ impl RenderWindow {
         unsafe {
             ffi::sfRenderWindow_drawRectangleShape(self.render_window,
                                                    rectangle_shape.unwrap(),
-                                                   ptr::null())
+                                                   ptr::mut_null())
         }
     }
 
@@ -780,7 +780,7 @@ impl RenderWindow {
         unsafe {
             ffi::sfRenderWindow_drawRectangleShape(self.render_window,
                                                    rectangle_shape.unwrap(),
-                                                   ptr::null())
+                                                   ptr::mut_null())
         }
     }
 
@@ -789,7 +789,7 @@ impl RenderWindow {
         unsafe {
             ffi::sfRenderWindow_drawConvexShape(self.render_window,
                                                 convex_shape.unwrap(),
-                                                ptr::null())
+                                                ptr::mut_null())
         }
     }
 
@@ -798,7 +798,7 @@ impl RenderWindow {
         unsafe {
             ffi::sfRenderWindow_drawConvexShape(self.render_window,
                                                 convex_shape.unwrap(),
-                                                ptr::null())
+                                                ptr::mut_null())
         }
     }
 
@@ -807,7 +807,7 @@ impl RenderWindow {
         unsafe {
             ffi::sfRenderWindow_drawVertexArray(self.render_window,
                                                 vertex_array.unwrap(),
-                                                ptr::null())
+                                                ptr::mut_null())
         }
     }
 
@@ -1174,7 +1174,7 @@ impl RenderWindow {
     }
 
     #[doc(hidden)]
-    pub fn unwrap(&self) -> *ffi::sfRenderWindow {
+    pub fn unwrap(&self) -> *mut ffi::sfRenderWindow {
         self.render_window
     }
 }
@@ -1310,7 +1310,7 @@ fn get_wrapped_event(event: &ffi::sfEvent) ->event::Event {
 
 impl Iterator<event::Event> for Events {
     fn next(&mut self) -> Option<event::Event> {
-        match unsafe { ffi::sfRenderWindow_pollEvent(self.render_window, &self.event) } {
+        match unsafe { ffi::sfRenderWindow_pollEvent(self.render_window, &mut self.event) } {
             SFFALSE     => None,
             SFTRUE      => Some(get_wrapped_event(&self.event))
         }

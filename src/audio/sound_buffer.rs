@@ -44,7 +44,7 @@ use ffi = ffi::audio::sound_buffer;
  */
 pub struct SoundBuffer {
     #[doc(hidden)]
-    sound_buffer : *ffi::sfSoundBuffer,
+    sound_buffer : *mut ffi::sfSoundBuffer,
     #[doc(hidden)]
     dropable :     bool
 }
@@ -63,10 +63,10 @@ impl SoundBuffer {
      * Return an option to a SoundBuffer object or None.
      */
     pub fn new(filename : &str) -> Option<SoundBuffer> {
-        let mut sound_buffer : *ffi::sfSoundBuffer = ptr::null();
+        let mut sound_buffer : *mut ffi::sfSoundBuffer = ptr::mut_null();
         unsafe {
             filename.with_c_str(|c_str| {
-                    sound_buffer = ffi::sfSoundBuffer_createFromFile(c_str)
+                    sound_buffer = ffi::sfSoundBuffer_createFromFile(c_str as *mut i8)
                 });
         }
         if sound_buffer.is_null() {
@@ -112,7 +112,7 @@ impl SoundBuffer {
         let mut return_value: bool = false;
         unsafe {
             filename.with_c_str(|c_str| {
-                    match ffi::sfSoundBuffer_saveToFile(self.sound_buffer, c_str) {
+                    match ffi::sfSoundBuffer_saveToFile(self.sound_buffer, c_str as *mut i8) {
                         SFFALSE => return_value = false,
                         SFTRUE  => return_value = true
                     }
@@ -174,15 +174,15 @@ impl SoundBuffer {
     }
 }
 
-impl Wrappable<*ffi::sfSoundBuffer> for SoundBuffer {
-    fn wrap(buffer : *ffi::sfSoundBuffer) -> SoundBuffer {
+impl Wrappable<*mut ffi::sfSoundBuffer> for SoundBuffer {
+    fn wrap(buffer : *mut ffi::sfSoundBuffer) -> SoundBuffer {
         SoundBuffer {
             sound_buffer :  buffer,
             dropable :      false
         }
     }
 
-    fn unwrap(&self) -> *ffi::sfSoundBuffer {
+    fn unwrap(&self) -> *mut ffi::sfSoundBuffer {
         self.sound_buffer
     }
 

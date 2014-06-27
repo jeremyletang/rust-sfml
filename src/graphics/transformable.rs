@@ -35,7 +35,7 @@ use ffi = ffi::graphics::transformable;
 /// Target for off-screen 2D rendering into a texture
 pub struct Transformable{
     #[doc(hidden)]
-    transformable : *ffi::sfTransformable
+    transformable : *mut ffi::sfTransformable
 }
 
 impl Transformable {
@@ -267,14 +267,14 @@ impl Clone for Transformable {
     }
 }
 
-impl Wrappable<*ffi::sfTransformable> for Transformable {
-    fn wrap(transformable : *ffi::sfTransformable) -> Transformable {
+impl Wrappable<*mut ffi::sfTransformable> for Transformable {
+    fn wrap(transformable : *mut ffi::sfTransformable) -> Transformable {
         Transformable {
             transformable : transformable
         }
     }
 
-    fn unwrap(&self) -> *ffi::sfTransformable {
+    fn unwrap(&self) -> *mut ffi::sfTransformable {
         self.transformable
     }
 }

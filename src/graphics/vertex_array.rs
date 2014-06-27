@@ -36,13 +36,13 @@ use ffi = ffi::graphics::vertex_array;
 /// Define a set of one or more 2D primitives
 pub struct VertexArray {
     #[doc(hidden)]
-    vertex_array : *ffi::sfVertexArray
+    vertex_array : *mut ffi::sfVertexArray
 }
 
 /// An iterator over the vertice of a VertexArray
 pub struct Vertices<'s> {
     #[doc(hidden)]
-    vertex_array: *ffi::sfVertexArray,
+    vertex_array: *mut ffi::sfVertexArray,
     #[doc(hidden)]
     pos: u32
 }
@@ -299,19 +299,19 @@ impl<'s> Index<uint, &'s Vertex> for VertexArray {
         unsafe {
             mem::transmute::<*Vertex, &'s Vertex>
                 (ffi::sfVertexArray_getVertex(self.vertex_array,
-                                              *_rhs as c_uint))
+                                              *_rhs as c_uint) as *Vertex)
         }
     }
 }
 
-impl Wrappable<*ffi::sfVertexArray> for VertexArray {
-    fn wrap(vertex_array : *ffi::sfVertexArray) -> VertexArray {
+impl Wrappable<*mut ffi::sfVertexArray> for VertexArray {
+    fn wrap(vertex_array : *mut ffi::sfVertexArray) -> VertexArray {
         VertexArray {
             vertex_array : vertex_array
         }
     }
 
-    fn unwrap(&self) -> *ffi::sfVertexArray {
+    fn unwrap(&self) -> *mut ffi::sfVertexArray {
         self.vertex_array
     }
 }

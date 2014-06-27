@@ -35,7 +35,7 @@ use ffi = ffi::network::packet;
 /// Utility class to build blocks of data to transfer over the network.
 pub struct Packet {
     #[doc(hidden)]
-    pub packet : *ffi::sfPacket
+    pub packet : *mut ffi::sfPacket
 }
 
 impl Packet {
@@ -219,7 +219,7 @@ impl Packet {
     */
     pub fn read_string(&self) -> String {
         unsafe {
-            let string : *u8 = ptr::null();
+            let string : *mut u8 = ptr::mut_null();
             ffi::sfPacket_readString(self.packet, string);
             CString::new(string as *i8, false).as_str().unwrap().to_string()
         }
@@ -305,17 +305,17 @@ impl Packet {
     pub fn write_string(&self, string : &str) -> () {
         let c_string = string.to_c_str();
         unsafe {
-            ffi::sfPacket_writeString(self.packet, c_string.unwrap())
+            ffi::sfPacket_writeString(self.packet, c_string.unwrap() as *mut i8)
         }
     }
 }
 
-impl Wrappable<*ffi::sfPacket> for Packet {
-    fn unwrap(&self) -> *ffi::sfPacket {
+impl Wrappable<*mut ffi::sfPacket> for Packet {
+    fn unwrap(&self) -> *mut ffi::sfPacket {
         self.packet
     }
 
-    fn wrap(packet : *ffi::sfPacket) -> Packet {
+    fn wrap(packet : *mut ffi::sfPacket) -> Packet {
         Packet {
             packet : packet
         }

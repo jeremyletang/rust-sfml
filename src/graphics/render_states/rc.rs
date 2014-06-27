@@ -69,8 +69,8 @@ impl RenderStates {
             sfRenderStates :    ffi::sfRenderStates {
                 blendMode : blend_mode as i32,
                 transform : transform,
-                texture :   ptr::null(),
-                shader :    ptr::null()
+                texture :   ptr::mut_null(),
+                shader :    ptr::mut_null()
             },
             blendMode :         blend_mode,
             transform :         transform,
@@ -95,8 +95,8 @@ impl RenderStates {
             sfRenderStates :    ffi::sfRenderStates {
                 blendMode : BlendAlpha as i32,
                 transform : Transform::new_identity(),
-                texture :   ptr::null(),
-                shader :    ptr::null()
+                texture :   ptr::mut_null(),
+                shader :    ptr::mut_null()
             },
             blendMode :         BlendAlpha,
             transform :         Transform::new_identity(),
@@ -106,20 +106,20 @@ impl RenderStates {
     }
 
     #[doc(hidden)]
-    pub fn unwrap(&mut self) -> *ffi::sfRenderStates {
+    pub fn unwrap(&mut self) -> *mut ffi::sfRenderStates {
         self.sfRenderStates.blendMode = self.blendMode as i32;
         self.sfRenderStates.transform = self.transform;
         self.sfRenderStates.texture = if !self.texture.is_none() {
             self.texture.get_ref().borrow().unwrap()
         } else {
-            ptr::null()
+            ptr::mut_null()
         };
         self.sfRenderStates.shader = if !self.shader.is_none() {
             self.shader.get_ref().borrow().unwrap()
         } else {
-            ptr::null()
+            ptr::mut_null()
         };
 
-        &self.sfRenderStates as *ffi::sfRenderStates
+        &mut self.sfRenderStates as *mut ffi::sfRenderStates
     }
 }

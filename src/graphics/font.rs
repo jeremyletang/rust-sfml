@@ -37,7 +37,7 @@ use ffi = ffi::graphics::font;
 /// Class for loading and manipulating character fonts
 pub struct Font {
     #[doc(hidden)]
-    font :     *ffi::sfFont,
+    font :     *mut ffi::sfFont,
     #[doc(hidden)]
     dropable : bool
 }
@@ -52,10 +52,10 @@ impl Font {
      * Return Some(Font) or None
      */
     pub fn new_from_file(filename : &str) -> Option<Font> {
-        let mut fnt = ptr::null();
+        let mut fnt = ptr::mut_null();
         unsafe {
             filename.with_c_str(|c_str| {
-                    fnt = ffi::sfFont_createFromFile(c_str)
+                    fnt = ffi::sfFont_createFromFile(c_str as *mut i8)
                 });
         }
         if fnt.is_null() {
@@ -187,14 +187,14 @@ impl Clone for Font {
     }
 }
 
-impl Wrappable<*ffi::sfFont> for Font {
-    fn wrap(font : *ffi::sfFont) -> Font {
+impl Wrappable<*mut ffi::sfFont> for Font {
+    fn wrap(font : *mut ffi::sfFont) -> Font {
         Font {
             font :      font,
             dropable :  false
         }
     }
-    fn unwrap(&self) -> *ffi::sfFont {
+    fn unwrap(&self) -> *mut ffi::sfFont {
         self.font
     }
 }

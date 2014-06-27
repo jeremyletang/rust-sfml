@@ -25,7 +25,7 @@
 /*!
  * Store captured audio data in sound Buffer
  *
- * SoundBufferRecorder allows to access a recorded sound through a SoundBuffer, 
+ * SoundBufferRecorder allows to access a recorded sound through a SoundBuffer,
  * so that it can be played, saved to a file, etc.
  */
 
@@ -40,12 +40,12 @@ use ffi = ffi::audio::sound_buffer_recorder;
 /**
  * Store captured audio data in sound Buffer
  *
- * SoundBufferRecorder allows to access a recorded sound through a SoundBuffer, 
+ * SoundBufferRecorder allows to access a recorded sound through a SoundBuffer,
  * so that it can be played, saved to a file, etc.
  */
 pub struct SoundBufferRecorder {
     #[doc(hidden)]
-    sound_buffer_recorder : *ffi::sfSoundBufferRecorder
+    sound_buffer_recorder : *mut ffi::sfSoundBufferRecorder
 }
 
 impl SoundBufferRecorder {

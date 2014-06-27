@@ -53,7 +53,7 @@ impl IpAddress {
     pub fn new_from_string(address : &str) -> IpAddress {
         let c_address = address.to_c_str();
         IpAddress {
-            ip : unsafe { ffi::sfIpAddress_fromString(c_address.unwrap()) }
+            ip : unsafe { ffi::sfIpAddress_fromString(c_address.unwrap() as *mut i8) }
         }
     }
 
@@ -109,7 +109,7 @@ impl IpAddress {
     */
     pub fn to_string(&self) -> String {
         unsafe {
-            let string : *u8 = ptr::null();
+            let string : *mut u8 = ptr::mut_null();
             ffi::sfIpAddress_toString(self.ip, string);
             CString::new(string as *i8, false).as_str().unwrap().to_string()
         }
