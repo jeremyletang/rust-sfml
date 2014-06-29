@@ -54,8 +54,8 @@ pub mod render_window {
     }
 
     extern "C" {
-        pub fn sfRenderWindow_create(mode : sfVideoMode, title : *mut c_char, style : c_uint, settings : *ContextSettings) -> *mut sfRenderWindow;
-        pub fn sfRenderWindow_createUnicode(mode : sfVideoMode, title : *mut u32, style : c_uint, settings : *ContextSettings) -> *mut sfRenderWindow;
+        pub fn sfRenderWindow_create(mode : sfVideoMode, title : *mut c_char, style : c_uint, settings : *const ContextSettings) -> *mut sfRenderWindow;
+        pub fn sfRenderWindow_createUnicode(mode : sfVideoMode, title : *mut u32, style : c_uint, settings : *const ContextSettings) -> *mut sfRenderWindow;
         //fn sfRenderWindow_createFromHandle(handle : sfWindowHandle, settings : *mut sfContextSettings) -> *mut sfRenderWindow;
         pub fn sfRenderWindow_destroy(renderWindow : *mut sfRenderWindow) -> ();
         pub fn sfRenderWindow_close(renderWindow : *mut sfRenderWindow) -> ();
@@ -67,9 +67,9 @@ pub mod render_window {
         pub fn sfRenderWindow_setPosition(renderWindow : *mut sfRenderWindow, position : Vector2i) -> ();
         pub fn sfRenderWindow_getSize(renderWindow : *mut sfRenderWindow) -> Vector2u;
         pub fn sfRenderWindow_setSize(renderWindow : *mut sfRenderWindow, size : Vector2u) -> ();
-        pub fn sfRenderWindow_setTitle(renderWindow : *mut sfRenderWindow, title : *mut c_char) -> ();
-        pub fn sfRenderWindow_setUnicodeTitle(renderWindow : *mut sfRenderWindow, title : *mut u32) -> ();
-        pub fn sfRenderWindow_setIcon(renderWindow : *mut sfRenderWindow, width : c_uint, height : c_uint, pixels : *mut u8) -> ();
+        pub fn sfRenderWindow_setTitle(renderWindow : *mut sfRenderWindow, title : *const c_char) -> ();
+        pub fn sfRenderWindow_setUnicodeTitle(renderWindow : *mut sfRenderWindow, title : *const u32) -> ();
+        pub fn sfRenderWindow_setIcon(renderWindow : *mut sfRenderWindow, width : c_uint, height : c_uint, pixels : *const u8) -> ();
         pub fn sfRenderWindow_setVisible(renderWindow : *mut sfRenderWindow, visible : SfBool) -> ();
         pub fn sfRenderWindow_setMouseCursorVisible(renderWindow : *mut sfRenderWindow, show : SfBool) -> ();
         pub fn sfRenderWindow_setVerticalSyncEnabled(renderWindow : *mut sfRenderWindow, enabled : SfBool) -> ();
@@ -235,7 +235,7 @@ pub mod font {
     }
 
     extern "C" {
-        pub fn sfFont_createFromFile(filename : *mut c_char) -> *mut sfFont;
+        pub fn sfFont_createFromFile(filename : *const c_char) -> *mut sfFont;
         pub fn sfFont_copy(font : *mut sfFont) -> *mut sfFont;
         // fn sfFont_createFromMemory(data : *mut c_void, sizeInBytes : size_t) -> *mut sfFont;
         // fn sfFont_createFromStream(stream : *mut sfInputStream) -> *mut sfFont;
@@ -262,13 +262,13 @@ pub mod image {
     extern "C" {
         pub fn sfImage_create(width : c_uint, height : c_uint) -> *mut sfImage;
         pub fn sfImage_createFromColor(width : c_uint, height : c_uint, color : Color) -> *mut sfImage;
-        pub fn sfImage_createFromPixels(width : c_uint, height : c_uint, pixels : *mut u8) -> *mut sfImage;
-        pub fn sfImage_createFromFile(filename : *mut c_char) -> *mut sfImage;
+        pub fn sfImage_createFromPixels(width : c_uint, height : c_uint, pixels : *const u8) -> *mut sfImage;
+        pub fn sfImage_createFromFile(filename : *const c_char) -> *mut sfImage;
         //fn sfImage_createFromMemory(data : *mut c_void, size : size_t) -> *mut sfImage;
         //fn sfImage_createFromStream(stream : *mut sfInputStream) -> *mut sfImage;
         pub fn sfImage_copy(image : *mut sfImage) -> *mut sfImage;
         pub fn sfImage_destroy(image : *mut sfImage) -> ();
-        pub fn sfImage_saveToFile(image : *mut sfImage, filename : *mut c_char) -> SfBool;
+        pub fn sfImage_saveToFile(image : *mut sfImage, filename : *const c_char) -> SfBool;
         pub fn sfImage_getSize(image : *mut sfImage) -> Vector2u;
         pub fn sfImage_createMaskFromColor(image : *mut sfImage, color : Color, alpha : u8) -> ();
         pub fn sfImage_copyImage(image : *mut sfImage, source : *mut sfImage, destX : c_uint, destY : c_uint, sourceRect : IntRect, applyAlpha : SfBool) -> ();
@@ -287,10 +287,10 @@ pub mod rect {
     use ffi::sfml_types::{SfBool};
 
     extern "C" {
-        pub fn sfIntRect_contains(rect : *IntRect, x : c_int, y : c_int) -> SfBool;
-        pub fn sfIntRect_intersects(rect1 : *IntRect, rect2 : *IntRect, intersectons : *IntRect) -> SfBool;
-        pub fn sfFloatRect_intersects(rect1 : *FloatRect, rect2 : *FloatRect, intersectons : *FloatRect) -> SfBool;
-        pub fn sfFloatRect_contains(rect : *FloatRect, x : f32, y : f32) -> SfBool;
+        pub fn sfIntRect_contains(rect : *const IntRect, x : c_int, y : c_int) -> SfBool;
+        pub fn sfIntRect_intersects(rect1 : *const IntRect, rect2 : *const IntRect, intersectons : *const IntRect) -> SfBool;
+        pub fn sfFloatRect_intersects(rect1 : *const FloatRect, rect2 : *const FloatRect, intersectons : *const FloatRect) -> SfBool;
+        pub fn sfFloatRect_contains(rect : *const FloatRect, x : f32, y : f32) -> SfBool;
     }
 }
 
@@ -376,20 +376,20 @@ pub mod shader {
     }
 
     extern "C" {
-        pub fn sfShader_createFromFile(vertexShaderFilename : *mut c_char, fragmentShaderFilename : *mut c_char) -> *mut sfShader;
-        pub fn sfShader_createFromMemory(vertexShader : *mut c_char, fragmentShader : *mut c_char) -> *mut sfShader;
+        pub fn sfShader_createFromFile(vertexShaderFilename : *const c_char, fragmentShaderFilename : *const c_char) -> *mut sfShader;
+        pub fn sfShader_createFromMemory(vertexShader : *const c_char, fragmentShader : *const c_char) -> *mut sfShader;
         //fn sfShader_createFromStream(vertexShaderStream : *mut sfInputStream, fragmentShaderStream : *mut sfInputStream) -> *mut sfShader;
         pub fn sfShader_destroy(shader : *mut sfShader)-> ();
-        pub fn sfShader_setFloatParameter(shader : *mut sfShader, name : *mut c_char, x : c_float) -> ();
-        pub fn sfShader_setFloat2Parameter(shader : *mut sfShader, name : *mut c_char, x : c_float, y : c_float) -> ();
-        pub fn sfShader_setFloat3Parameter(shader : *mut sfShader, name : *mut c_char, x : c_float, y : c_float, z : c_float) -> ();
-        pub fn sfShader_setFloat4Parameter(shader : *mut sfShader, name : *mut c_char, x : c_float, y : c_float, z : c_float, w : c_float) -> ();
-        pub fn sfShader_setVector2Parameter(shader : *mut sfShader, name : *mut c_char, vector : Vector2f) -> ();
-        pub fn sfShader_setVector3Parameter(shader : *mut sfShader, name : *mut c_char, vector : Vector3f) -> ();
-        pub fn sfShader_setColorParameter(shader : *mut sfShader, name : *mut c_char, color : Color) -> (); 
-        pub fn sfShader_setTransformParameter(shader : *mut sfShader, name : *mut c_char, transform : Transform) -> ();
-        pub fn sfShader_setTextureParameter(shader : *mut sfShader, name : *mut c_char, texture : *mut sfTexture) -> ();
-        pub fn sfShader_setCurrentTextureParameter(shader : *mut sfShader, name : *mut c_char) -> ();
+        pub fn sfShader_setFloatParameter(shader : *mut sfShader, name : *const c_char, x : c_float) -> ();
+        pub fn sfShader_setFloat2Parameter(shader : *mut sfShader, name : *const c_char, x : c_float, y : c_float) -> ();
+        pub fn sfShader_setFloat3Parameter(shader : *mut sfShader, name : *const c_char, x : c_float, y : c_float, z : c_float) -> ();
+        pub fn sfShader_setFloat4Parameter(shader : *mut sfShader, name : *const c_char, x : c_float, y : c_float, z : c_float, w : c_float) -> ();
+        pub fn sfShader_setVector2Parameter(shader : *mut sfShader, name : *const c_char, vector : Vector2f) -> ();
+        pub fn sfShader_setVector3Parameter(shader : *mut sfShader, name : *const c_char, vector : Vector3f) -> ();
+        pub fn sfShader_setColorParameter(shader : *mut sfShader, name : *const c_char, color : Color) -> ();
+        pub fn sfShader_setTransformParameter(shader : *mut sfShader, name : *const c_char, transform : Transform) -> ();
+        pub fn sfShader_setTextureParameter(shader : *mut sfShader, name : *const c_char, texture : *mut sfTexture) -> ();
+        pub fn sfShader_setCurrentTextureParameter(shader : *mut sfShader, name : *const c_char) -> ();
         pub fn sfShader_bind(shader : *mut sfShader) -> ();
         pub fn sfShader_isAvailable() -> SfBool;
    }
@@ -579,14 +579,14 @@ pub mod text {
         pub fn sfText_scale(text : *mut sfText, factors : Vector2f) -> ();
         pub fn sfText_getTransform(text : *mut sfText) -> Transform;
         pub fn sfText_getInverseTransform(text : *mut sfText) -> Transform;
-        pub fn sfText_setString(text : *mut sfText, string : *mut c_char) -> ();
-        pub fn sfText_setUnicodeString(text : *mut sfText, string : *mut u32 ) -> ();
+        pub fn sfText_setString(text : *mut sfText, string : *const c_char) -> ();
+        pub fn sfText_setUnicodeString(text : *mut sfText, string : *const u32 ) -> ();
         pub fn sfText_setFont(text : *mut sfText, font : *mut sfFont) -> ();
         pub fn sfText_setCharacterSize(text : *mut sfText, size : c_uint) -> ();
         pub fn sfText_setStyle(text : *mut sfText, style : u32) -> ();
         pub fn sfText_setColor(text : *mut sfText, color : Color) -> ();
-        pub fn sfText_getString(text : *mut sfText) -> *mut c_char;
-        pub fn sfText_getUnicodeString(text : *mut sfText) -> *mut u32;
+        pub fn sfText_getString(text : *mut sfText) -> *const c_char;
+        pub fn sfText_getUnicodeString(text : *mut sfText) -> *const u32;
         pub fn sfText_getFont(text : *mut sfText) -> *mut sfFont;
         pub fn sfText_getCharacterSize(text : *mut sfText) -> c_uint;
         pub fn sfText_getStyle(text : *mut sfText) -> u32;
@@ -615,10 +615,10 @@ pub mod texture {
 
     extern "C" {
         pub fn sfTexture_create(width : c_uint, height : c_uint) -> *mut sfTexture;
-        pub fn sfTexture_createFromFile(filename : *mut c_char, area : *IntRect) -> *mut sfTexture;
+        pub fn sfTexture_createFromFile(filename : *mut c_char, area : *const IntRect) -> *mut sfTexture;
         //fn sfTexture_createFromMemory(data : *mut c_void, sizeInBytes : size_t , area : *mut sfIntRect) -> *mut sfTexture;
         //fn sfTexture_createFromStream(strea; : *mut sfInputStream, area : *mut sfIntRect) -> *mut sfTexture;
-        pub fn sfTexture_createFromImage(image :*mut sfImage, area : *IntRect) -> *mut sfTexture;
+        pub fn sfTexture_createFromImage(image :*mut sfImage, area : *const IntRect) -> *mut sfTexture;
         pub fn sfTexture_copy(texture : *mut sfTexture) -> *mut sfTexture;
         pub fn sfTexture_destroy(texture : *mut sfTexture) -> ();
         pub fn sfTexture_getSize(texture : *mut sfTexture) -> Vector2u;

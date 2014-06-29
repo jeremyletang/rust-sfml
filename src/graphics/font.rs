@@ -55,7 +55,7 @@ impl Font {
         let mut fnt = ptr::mut_null();
         unsafe {
             filename.with_c_str(|c_str| {
-                    fnt = ffi::sfFont_createFromFile(c_str as *mut i8)
+                    fnt = ffi::sfFont_createFromFile(c_str)
                 });
         }
         if fnt.is_null() {

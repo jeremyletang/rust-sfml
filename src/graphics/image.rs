@@ -105,7 +105,7 @@ impl Image {
     pub fn new_from_file(filename : &str) -> Option<Image> {
         let image = unsafe {
             let c_filename = filename.to_c_str().unwrap();
-            ffi::sfImage_createFromFile(c_filename as *mut i8)
+            ffi::sfImage_createFromFile(c_filename)
         };
         if image.is_null() {
             None
@@ -152,7 +152,7 @@ impl Image {
         let image =
             unsafe { ffi::sfImage_createFromPixels(width as c_uint,
                                                    height as c_uint,
-                                                   pixels.as_ptr() as *mut u8) };
+                                                   pixels.as_ptr()) };
         if image.is_null() {
             None
         } else {
@@ -179,7 +179,7 @@ impl Image {
         let mut return_value = false;
         unsafe {
             filename.with_c_str(|c_str| {
-                    match ffi::sfImage_saveToFile(self.image, c_str as *mut i8) {
+                    match ffi::sfImage_saveToFile(self.image, c_str) {
                         SFFALSE => return_value = false,
                         SFTRUE  => return_value = true
                     }

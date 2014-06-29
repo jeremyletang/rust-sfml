@@ -16,7 +16,7 @@ use rsfml::traits::Drawable;
 
 #[cfg(target_os="macos")]
 #[start]
-fn start(argc: int, argv: **u8) -> int {
+fn start(argc: int, argv: *const *const u8) -> int {
     native::start(argc, argv, main)
 }
 
@@ -34,7 +34,7 @@ impl<'s> CustomDrawable<'s> {
         let mut r = RectangleShape::new_init(&Vector2f {x: 100f32, y: 200f32}).expect("Cannot create the RectangleShape");
         r.set_position2f(100f32, 150f32);
         r.set_fill_color(&Color::blue());
-        
+
         CustomDrawable {
             circle: c,
             rect:   r
@@ -84,7 +84,7 @@ fn main () -> () {
 
         // Draw it ! yeah you create a custome shape!
         window.draw(&custom_drawable);
-        
+
         // Display things on screen
         window.display()
 

@@ -52,7 +52,7 @@ pub mod music {
     }
 
     extern "C" {
-        pub fn sfMusic_createFromFile(filename : *mut c_char) -> *mut sfMusic;
+        pub fn sfMusic_createFromFile(filename : *const c_char) -> *mut sfMusic;
         // sfMusic*mut  sfMusic_createFromMemory(const void*mut  data, size_t sizeInBytes);
         // sfMusic*mut  sfMusic_createFromStream(sfInputStream*mut  stream);
         pub fn sfMusic_destroy(music : *mut sfMusic) -> ();
@@ -138,10 +138,10 @@ pub mod sound_buffer {
     }
 
     extern "C" {
-        pub fn sfSoundBuffer_createFromFile(filename : *mut c_char) -> *mut sfSoundBuffer;
+        pub fn sfSoundBuffer_createFromFile(filename : *const c_char) -> *mut sfSoundBuffer;
         pub fn sfSoundBuffer_copy(soundBuffer : *mut sfSoundBuffer) -> *mut sfSoundBuffer;
         pub fn sfSoundBuffer_destroy(soundBuffer : *mut sfSoundBuffer) -> ();
-        pub fn sfSoundBuffer_saveToFile(soundBuffer : *mut sfSoundBuffer, filename : *mut c_char) -> SfBool;
+        pub fn sfSoundBuffer_saveToFile(soundBuffer : *mut sfSoundBuffer, filename : *const c_char) -> SfBool;
        // fn sfSoundBuffer_getSamples(soundBuffer : *mut sfSoundBuffer) -> *mut i16;
         pub fn sfSoundBuffer_getSampleCount(soundBuffer : *mut sfSoundBuffer) -> size_t;
         pub fn sfSoundBuffer_getChannelCount(soundBuffer : *mut sfSoundBuffer) -> c_uint;

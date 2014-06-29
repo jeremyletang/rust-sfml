@@ -111,7 +111,7 @@ impl IpAddress {
         unsafe {
             let string : *mut u8 = ptr::mut_null();
             ffi::sfIpAddress_toString(self.ip, string);
-            CString::new(string as *i8, false).as_str().unwrap().to_string()
+            CString::new(string as *const i8, false).as_str().unwrap().to_string()
         }
     }
 

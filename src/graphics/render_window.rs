@@ -210,7 +210,7 @@ impl RenderWindow {
         unsafe {
             self.title_length = title.len();
             ffi::sfRenderWindow_setUnicodeTitle(self.render_window,
-                                                title.as_ptr() as *mut u32)
+                                                title.as_ptr())
         }
     }
 
@@ -231,7 +231,7 @@ impl RenderWindow {
             ffi::sfRenderWindow_setIcon(self.render_window,
                                         width as c_uint,
                                         height as c_uint,
-                                        pixels.as_ptr() as *mut u8)
+                                        pixels.as_ptr())
         }
     }
 
@@ -390,7 +390,7 @@ impl RenderWindow {
     pub fn set_title(&mut self, title : &str) -> () {
         unsafe {
             title.with_c_str(|c_str| {
-                    ffi::sfRenderWindow_setTitle(self.render_window, c_str as *mut i8);
+                    ffi::sfRenderWindow_setTitle(self.render_window, c_str);
                 });
         }
         self.title_length = title.len();

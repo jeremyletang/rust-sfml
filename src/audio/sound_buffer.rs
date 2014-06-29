@@ -66,7 +66,7 @@ impl SoundBuffer {
         let mut sound_buffer : *mut ffi::sfSoundBuffer = ptr::mut_null();
         unsafe {
             filename.with_c_str(|c_str| {
-                    sound_buffer = ffi::sfSoundBuffer_createFromFile(c_str as *mut i8)
+                    sound_buffer = ffi::sfSoundBuffer_createFromFile(c_str)
                 });
         }
         if sound_buffer.is_null() {
@@ -112,7 +112,7 @@ impl SoundBuffer {
         let mut return_value: bool = false;
         unsafe {
             filename.with_c_str(|c_str| {
-                    match ffi::sfSoundBuffer_saveToFile(self.sound_buffer, c_str as *mut i8) {
+                    match ffi::sfSoundBuffer_saveToFile(self.sound_buffer, c_str) {
                         SFFALSE => return_value = false,
                         SFTRUE  => return_value = true
                     }

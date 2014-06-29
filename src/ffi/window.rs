@@ -66,16 +66,16 @@ pub mod window {
     }
 
     extern "C" {
-        pub fn sfWindow_create(mode : sfVideoMode, title : *mut c_char, style : c_uint, settings : *ContextSettings) -> *mut sfWindow;
-        pub fn sfWindow_createUnicode(mode : sfVideoMode, title : *mut u32, style : c_uint, setting : *ContextSettings) -> *mut sfWindow;
+        pub fn sfWindow_create(mode : sfVideoMode, title : *const c_char, style : c_uint, settings : *const ContextSettings) -> *mut sfWindow;
+        pub fn sfWindow_createUnicode(mode : sfVideoMode, title : *const u32, style : c_uint, setting : *const ContextSettings) -> *mut sfWindow;
         //fn sfWindow_createFromHandle(handle : sfWindowHandle, settings : *mut sfContextSettings) -> *mut sfWindow;
         pub fn sfWindow_close(window : *mut sfWindow) -> ();
         pub fn sfWindow_destroy(window : *mut sfWindow) -> ();
         pub fn sfWindow_isOpen(window : *mut sfWindow) -> SfBool;
         pub fn sfWindow_getSettings(window : *mut sfWindow) -> ContextSettings;
-        pub fn sfWindow_setTitle(window : *mut sfWindow, title : *mut c_char) -> ();
-        pub fn sfWindow_setUnicodeTitle(window : *mut sfWindow, title : *mut u32) -> ();
-        pub fn sfWindow_setIcon(window : *mut sfWindow, width : c_uint, height : c_uint, pixel : *mut u8) -> ();
+        pub fn sfWindow_setTitle(window : *mut sfWindow, title : *const c_char) -> ();
+        pub fn sfWindow_setUnicodeTitle(window : *mut sfWindow, title : *const u32) -> ();
+        pub fn sfWindow_setIcon(window : *mut sfWindow, width : c_uint, height : c_uint, pixel : *const u8) -> ();
         pub fn sfWindow_setVisible(window : *mut sfWindow, visible : SfBool) -> ();
         pub fn sfWindow_setMouseCursorVisible(window : *mut sfWindow, visible : SfBool) -> ();
         pub fn sfWindow_setVerticalSyncEnabled(window : *mut sfWindow, enabled : SfBool) -> ();

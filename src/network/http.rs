@@ -157,8 +157,8 @@ impl Request {
         let c_value = value.to_c_str();
         unsafe {
             ffi::sfHttpRequest_setField(self.request,
-                                        c_field.unwrap() as *mut i8,
-                                        c_value.unwrap() as *mut i8)
+                                        c_field.unwrap(),
+                                        c_value.unwrap())
         }
     }
 
@@ -191,7 +191,7 @@ impl Request {
     pub fn set_uri(&self, uri : &str) -> () {
         let c_uri = uri.to_c_str();
         unsafe {
-            ffi::sfHttpRequest_setUri(self.request, c_uri.unwrap() as *mut i8)
+            ffi::sfHttpRequest_setUri(self.request, c_uri.unwrap())
         }
     }
 
@@ -222,7 +222,7 @@ impl Request {
     pub fn set_body(&self, body : &str) -> () {
         let c_body = body.to_c_str();
         unsafe {
-            ffi::sfHttpRequest_setBody(self.request, c_body.unwrap() as *mut i8)
+            ffi::sfHttpRequest_setBody(self.request, c_body.unwrap())
         }
     }
 
@@ -256,7 +256,7 @@ impl Response {
     pub fn get_field(&self, field : &str) -> String {
         let c_field = field.to_c_str();
         unsafe {
-            CString::new(ffi::sfHttpResponse_getField(self.response, c_field.unwrap() as *mut i8) as *i8,
+            CString::new(ffi::sfHttpResponse_getField(self.response, c_field.unwrap()),
                          false).as_str().unwrap().to_string()
         }
     }
@@ -312,7 +312,7 @@ impl Response {
     */
     pub fn get_body(&self) -> String {
         unsafe {
-            CString::new(ffi::sfHttpResponse_getBody(self.response) as *i8,
+            CString::new(ffi::sfHttpResponse_getBody(self.response),
                          false).as_str().unwrap().to_string()
         }
     }
@@ -361,7 +361,7 @@ impl Http {
     pub fn set_host(&self, host : &str, port : u16) -> () {
         let c_host = host.to_c_str();
         unsafe {
-            ffi::sfHttp_setHost(self.http, c_host.unwrap() as *mut i8, port)
+            ffi::sfHttp_setHost(self.http, c_host.unwrap(), port)
         }
     }
 

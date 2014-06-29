@@ -72,7 +72,7 @@ impl Music {
         let mut music_tmp : *mut ffi::sfMusic = ptr::mut_null();
         unsafe {
             filename.with_c_str(|c_str| {
-                    music_tmp = ffi::sfMusic_createFromFile(c_str as *mut i8)
+                    music_tmp = ffi::sfMusic_createFromFile(c_str)
                 });
         }
         if music_tmp.is_null() {

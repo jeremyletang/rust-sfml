@@ -179,7 +179,7 @@ impl TcpSocket {
     */
     pub fn send(&self, data : Vec<i8>) -> SocketStatus {
         unsafe {
-            mem::transmute(ffi::sfTcpSocket_send(self.socket, data.as_ptr() as *mut i8, data.len() as size_t) as i8)
+            mem::transmute(ffi::sfTcpSocket_send(self.socket, data.as_ptr(), data.len() as size_t) as i8)
         }
     }
 
@@ -200,7 +200,7 @@ impl TcpSocket {
             let mut s : size_t = 0;
             let datas : *mut i8 = ptr::mut_null();
             let stat : SocketStatus = mem::transmute(ffi::sfTcpSocket_receive(self.socket, datas, max_size, &mut s) as i8);
-            (slice::raw::buf_as_slice(datas as *i8, s as uint, Vec::from_slice), stat, s)
+            (slice::raw::buf_as_slice(datas as *const i8, s as uint, Vec::from_slice), stat, s)
         }
     }
 

@@ -297,9 +297,9 @@ impl<'s> Iterator<&'s Vertex> for Vertices<'s> {
 impl<'s> Index<uint, &'s Vertex> for VertexArray {
     fn index(&self, _rhs: &uint) -> &'s Vertex {
         unsafe {
-            mem::transmute::<*Vertex, &'s Vertex>
+            mem::transmute::<*const Vertex, &'s Vertex>
                 (ffi::sfVertexArray_getVertex(self.vertex_array,
-                                              *_rhs as c_uint) as *Vertex)
+                                              *_rhs as c_uint) as *const Vertex)
         }
     }
 }

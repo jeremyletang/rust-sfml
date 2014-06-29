@@ -99,7 +99,7 @@ impl<'s> Text<'s> {
         } else {
             unsafe {
                 string.with_c_str(|c_str| {
-                        ffi::sfText_setString(text, c_str as *mut i8)
+                        ffi::sfText_setString(text, c_str)
                     });
                 ffi::sfText_setFont(text, font.unwrap());
                 ffi::sfText_setCharacterSize(text, character_size as c_uint)
@@ -141,7 +141,7 @@ impl<'s> Text<'s> {
     pub fn set_string(&mut self, string : &str) -> () {
         unsafe {
             string.with_c_str(|c_str| {
-                    ffi::sfText_setString(self.text, c_str as *mut i8)
+                    ffi::sfText_setString(self.text, c_str)
                 });
         }
         self.string_length = string.len()
@@ -154,7 +154,7 @@ impl<'s> Text<'s> {
      */
     pub fn get_string(&self) -> String {
         unsafe {
-            CString::new(ffi::sfText_getString(self.text) as *i8, false).as_str().unwrap().to_string()
+            CString::new(ffi::sfText_getString(self.text), false).as_str().unwrap().to_string()
         }
     }
 
@@ -166,8 +166,8 @@ impl<'s> Text<'s> {
     pub fn get_unicode_string(&self) -> Vec<u32> {
         unsafe {
             let mut return_unicode : Vec<u32> = Vec::new();
-            let string : *mut u32 = ffi::sfText_getUnicodeString(self.text);
-            let cvec = CVec::new(string, self.string_length);
+            let string : *const u32 = ffi::sfText_getUnicodeString(self.text);
+            let cvec = CVec::new(string as *mut u32, self.string_length);
             let mut d : uint = 0;
             return_unicode.push(*cvec.get(d).unwrap());
             d += 1;
@@ -591,7 +591,7 @@ impl<'s> Text<'s> {
     pub fn set_unicode_string(&mut self, string : Vec<u32>) -> () {
         unsafe {
             self.string_length = string.len();
-            ffi::sfText_setUnicodeString(self.text, string.as_ptr() as *mut u32)
+            ffi::sfText_setUnicodeString(self.text, string.as_ptr())
         }
     }
 
