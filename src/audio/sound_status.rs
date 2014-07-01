@@ -24,8 +24,6 @@
 
 //! Sound and musics statues
 
-use libc::c_int;
-
 use ffi = ffi::audio::sound_status;
 
 /// Enumeration of statuses for sounds and musics
@@ -33,9 +31,9 @@ use ffi = ffi::audio::sound_status;
 #[repr(C)]
 pub enum Status {
     /// Sound is not playing.
-    Stopped =   ffi::SFSTOPPED as c_int,
+    Stopped =   ffi::SFSTOPPED as int,
     /// Sound is paused.
-    Paused =    ffi::SFPAUSED as c_int,
+    Paused =    ffi::SFPAUSED as int,
     /// Sound is playing.
-    Playing =   ffi::SFPLAYING as c_int
+    Playing =   ffi::SFPLAYING as int
 }

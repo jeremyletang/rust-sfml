@@ -24,19 +24,17 @@
 
 //! Status codes that may be returned by socket functions.
 
-use libc::c_int;
-
 use ffi = ffi::network::socket_status;
 
 /// Status codes that may be returned by socket functions.
 #[deriving(Clone, PartialEq, Eq, PartialOrd, Ord, Show)]
 pub enum SocketStatus {
     /// The socket has sent / received the data.
-    SocketNone =            ffi::SOCKETNONE as c_int,
+    SocketNone =            ffi::SOCKETNONE as int,
     /// The socket is not ready to send / receive data yet.
-    SocketNotReady =        ffi::SOCKETNOTREADY as c_int,
+    SocketNotReady =        ffi::SOCKETNOTREADY as int,
     /// The TCP socket has been disconnected.
-    SocketDisconnected =    ffi::SOCKETDISCONNECTED as c_int,
+    SocketDisconnected =    ffi::SOCKETDISCONNECTED as int,
     /// An unexpected error happened.
-    SocketError =           ffi::SOCKETERROR as c_int
+    SocketError =           ffi::SOCKETERROR as int
 }

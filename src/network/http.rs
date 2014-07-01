@@ -26,7 +26,6 @@
 
 use std::mem;
 use std::c_str::CString;
-use libc::c_int;
 
 use traits::Wrappable;
 use system::Time;
@@ -37,11 +36,11 @@ use ffi = ffi::network::http;
 #[deriving(Clone, PartialEq, Eq, PartialOrd, Ord, Show)]
 pub enum Method {
     /// Request in get mode, standard method to retrieve a page
-    Get = ffi::GET as c_int,
+    Get = ffi::GET as int,
     /// Request in post mode, usually to send data to a page
-    Post = ffi::POST as c_int,
+    Post = ffi::POST as int,
     /// Request a page's header only
-    Head = ffi::HEAD as c_int
+    Head = ffi::HEAD as int
 }
 
 /// Status code returned by a serveur.
@@ -49,59 +48,59 @@ pub enum Method {
 pub enum Status {
     // 2xx: success
     /// Most common code returned when operation was successful
-    Ok                  = ffi::OK as c_int,
+    Ok                  = ffi::OK as int,
     /// The resource has successfully been created
-    Created             = ffi::CREATED as c_int,
+    Created             = ffi::CREATED as int,
     /// The request has been accepted, but will be processed later by the server
-    Accepted            = ffi::ACCEPTED as c_int,
+    Accepted            = ffi::ACCEPTED as int,
     /// Sent when the server didn't send any data in return
-    NoContent           = ffi::NOCONTENT as c_int,
+    NoContent           = ffi::NOCONTENT as int,
     /// The server informs the client that it should clear the view (form) that caused the request to be sent
-    ResetContent        = ffi::RESETCONTENT as c_int,
+    ResetContent        = ffi::RESETCONTENT as int,
     /// The server has sent a part of the resource, as a response to a partial GET request
-    PartialContent      = ffi::PARTIALCONTENT as c_int,
+    PartialContent      = ffi::PARTIALCONTENT as int,
 
     // 3xx: redirection
     /// The requested page can be accessed from several locations
-    MultipleChoices     = ffi::MULTIPLECHOICES as c_int,
+    MultipleChoices     = ffi::MULTIPLECHOICES as int,
     /// The requested page has permanently moved to a new location
-    MovedPermanently    = ffi::MOVEDPERMANENTLY as c_int,
+    MovedPermanently    = ffi::MOVEDPERMANENTLY as int,
     /// The requested page has temporarily moved to a new location
-    MovedTemporarily    = ffi::MOVEDTEMPORARILY as c_int,
+    MovedTemporarily    = ffi::MOVEDTEMPORARILY as int,
     /// For conditionnal requests, means the requested page hasn't changed and doesn't need to be refreshed
-    NotModified         = ffi::NOTMODIFIED as c_int,
+    NotModified         = ffi::NOTMODIFIED as int,
 
     // 4xx: client error
     /// The server couldn't understand the request (syntax error)
-    BadRequest          = ffi::BADREQUEST as c_int,
+    BadRequest          = ffi::BADREQUEST as int,
     /// The requested page needs an authentification to be accessed
-    Unauthorized        = ffi::UNAUTHORIZED as c_int,
+    Unauthorized        = ffi::UNAUTHORIZED as int,
     /// The requested page cannot be accessed at all, even with authentification
-    Forbidden           = ffi::FORBIDDEN as c_int,
+    Forbidden           = ffi::FORBIDDEN as int,
     /// The requested page doesn't exist
-    NotFound            = ffi::NOTFOUND as c_int,
+    NotFound            = ffi::NOTFOUND as int,
     /// The server can't satisfy the partial GET request (with a "Range" header field)
-    RangeNotSatisfiable = ffi::RANGENOTSATISFIABLE as c_int,
+    RangeNotSatisfiable = ffi::RANGENOTSATISFIABLE as int,
 
     // 5xx: server error
     /// The server encountered an unexpected error
-    InternalServerError = ffi::INTERNALSERVERERROR as c_int,
+    InternalServerError = ffi::INTERNALSERVERERROR as int,
     /// The server doesn't implement a requested feature
-    NotImplemented      = ffi::NOTIMPLEMENTED as c_int,
+    NotImplemented      = ffi::NOTIMPLEMENTED as int,
     /// The gateway server has received an error from the source server
-    BadGateway          = ffi::BADGATEWAY as c_int,
+    BadGateway          = ffi::BADGATEWAY as int,
     /// The server is temporarily unavailable (overloaded, in maintenance, ...)
-    ServiceNotAvailable = ffi::SERVICENOTAVAILABLE as c_int,
+    ServiceNotAvailable = ffi::SERVICENOTAVAILABLE as int,
     /// The gateway server couldn't receive a response from the source server
-    GatewayTimeout      = ffi::GATEWAYTIMEOUT as c_int,
+    GatewayTimeout      = ffi::GATEWAYTIMEOUT as int,
     /// The server doesn't support the requested HTTP version
-    VersionNotSupported = ffi::VERSIONNOTSUPPORTED as c_int,
+    VersionNotSupported = ffi::VERSIONNOTSUPPORTED as int,
 
     // 10xx: SFML custom codes
     /// Response is not a valid HTTP one
-    InvalidResponse     = ffi::INVALIDRESPONSE as c_int,
+    InvalidResponse     = ffi::INVALIDRESPONSE as int,
     /// Connection with server failed
-    ConnectionFailed    = ffi::CONNECTIONFAILED as c_int
+    ConnectionFailed    = ffi::CONNECTIONFAILED as int
 }
 
 /// Encapsulation of an HTTP request

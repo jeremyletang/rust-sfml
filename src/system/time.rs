@@ -99,20 +99,8 @@ impl PartialEq for Time {
 }
 
 impl PartialOrd for Time {
-    fn lt(&self, other: &Time) -> bool {
-        self.as_microseconds() < other.as_microseconds()
-    }
-
-    fn le(&self, other: &Time) -> bool {
-        self.as_microseconds() <= other.as_microseconds()
-    }
-
-    fn gt(&self, other: &Time) -> bool {
-        self.as_microseconds() > other.as_microseconds()
-    }
-
-    fn ge(&self, other: &Time) -> bool {
-        self.as_microseconds() >= other.as_microseconds()
+    fn partial_cmp(&self, other: &Time) -> Option<Ordering> {
+        self.as_microseconds().partial_cmp(&other.as_microseconds())
     }
 }
 
