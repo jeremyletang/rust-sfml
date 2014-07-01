@@ -93,7 +93,7 @@ impl Window {
             typeEvent : 0,
             p1 :        0,
             p2 :        0,
-            p3 :        0 as c_float,
+            p3 :        0f32 as c_float,
             p4 :        0,
             p5 :        0
         };
@@ -142,7 +142,7 @@ impl Window {
             typeEvent : 0,
             p1 :        0,
             p2 :        0,
-            p3 :        0 as c_float,
+            p3 :        0f32 as c_float,
             p4 :        0,
             p5 :        0
         };
