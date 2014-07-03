@@ -24,12 +24,13 @@ You can build rust-sfml using different version of Rust compiler :
 | Rust version | rust-sfml
 |--------------|----------
 | Rust master  | [link rsfml](https://github.com/JeremyLetang/rust-sfml/)
+| Rust 0.11    | [link rsfml](https://github.com/JeremyLetang/rust-sfml/releases/tag/rust0.11)
 | Rust 0.10    | [link rsfml](https://github.com/JeremyLetang/rust-sfml/releases/tag/rust0.10)
 | Rust 0.9     | [link rsfml](https://github.com/JeremyLetang/rust-sfml/releases/tag/rust0.9)
 | Rust 0.8     | [link rsfml](https://github.com/JeremyLetang/rust-sfml/releases/tag/rust0.8)
 
 
-Rust-sfml is now build with make :
+Rust-sfml is build with make :
 
 ```Shell
 > make
@@ -44,6 +45,14 @@ You can build them separatly too.
 > make examples
 > make docs
 ```
+
+You can use cargo too:
+```Shell
+> cargo build
+```
+this will build rust-sfml and all the examples.
+
+
 
 Rust-sfml works on Linux, windows and OSX.
 
