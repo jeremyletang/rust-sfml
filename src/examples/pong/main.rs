@@ -2,7 +2,7 @@
 * Example from SFML : Pong
 */
 
-#![crate_id = "pong"]
+#![crate_name = "pong"]
 #![desc = "Pong example for rsfml"]
 #![crate_type = "bin"]
 

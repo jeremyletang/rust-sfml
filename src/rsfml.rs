@@ -144,7 +144,7 @@ license.
 Here is a list of all modules :
 */
 
-#![crate_id = "github.com/JeremyLetang/rust-sfml#rsfml:0.2"]
+#![crate_name = "rsfml"]
 #![desc = "Rust binding for sfml"]
 #![license = "Zlib/png"]
 #![doc(html_logo_url = "http://rust-sfml.org/logo_rsfml.png")]

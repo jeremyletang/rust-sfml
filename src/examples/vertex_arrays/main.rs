@@ -2,7 +2,7 @@
 * Example from SFML : Shape
 */
 
-#![crate_id = "vertex_arrays"]
+#![crate_name = "vertex_arrays"]
 #![desc = "VertexArray example for rsfml"]
 #![crate_type = "bin"]
 

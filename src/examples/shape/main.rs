@@ -2,7 +2,7 @@
 * Example from SFML : Shape
 */
 
-#![crate_id = "shape"]
+#![crate_name = "shape"]
 #![desc = "Shape example for rsfml"]
 #![crate_type = "bin"]
 
