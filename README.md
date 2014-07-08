@@ -89,7 +89,7 @@ use rsfml::window::{ContextSettings, VideoMode, event, Close};
 use rsfml::graphics::{RenderWindow, CircleShape, Color};
 
 #[start]
-fn start(argc: int, argv: **u8) -> int {
+fn start(argc: int, argv: *const *const u8) -> int {
     native::start(argc, argv, main)
 }
 
