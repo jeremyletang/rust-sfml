@@ -698,14 +698,6 @@ impl Iterator<Vector2f> for ConvexShapePoints {
     }
 }
 
-impl<'s> Index<uint, Vector2f> for ConvexShape<'s> {
-    fn index(&self, _rhs: &uint) -> Vector2f {
-        unsafe {
-            ffi::sfConvexShape_getPoint(self.convex_shape, *_rhs as c_uint)
-        }
-    }
-}
-
 #[doc(hidden)]
 impl<'s> Wrappable<*mut ffi::sfConvexShape> for ConvexShape<'s> {
     #[doc(hidden)]
