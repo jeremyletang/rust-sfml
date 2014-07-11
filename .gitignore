@@ -1,12 +1,2 @@
-/lib/
-/build/
-/doc/
-.rust/rustpkg_db.json
-bin/pong
-bin/sound
-bin/shape
-bin/sound_capture
-bin/custom_drawable
-bin/rc_res
-bin/borrow_res
-bin/vertex_arrays
+doc
+target
