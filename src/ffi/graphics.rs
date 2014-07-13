@@ -93,7 +93,7 @@ pub mod render_window {
         pub fn sfRenderWindow_drawConvexShape(renderWindow : *mut sfRenderWindow, object : *mut sfConvexShape, states : *mut sfRenderStates) -> ();
         pub fn sfRenderWindow_drawRectangleShape(renderWindow : *mut sfRenderWindow, object : *mut sfRectangleShape, states : *mut sfRenderStates) -> ();
         pub fn sfRenderWindow_drawVertexArray(renderWindow : *mut sfRenderWindow, object : *mut sfVertexArray, states : *mut sfRenderStates) -> ();
-        // fn sfRenderWindow_drawPrimitives(renderWindow : *mut sfRenderWindow, vertices : *mut sfVertex, vertexCount : c_uint, ttype : sfPrimitiveType, states : *mut sfRenderStates) -> ();  
+        // fn sfRenderWindow_drawPrimitives(renderWindow : *mut sfRenderWindow, vertices : *mut sfVertex, vertexCount : c_uint, ttype : sfPrimitiveType, states : *mut sfRenderStates) -> ();
         pub fn sfRenderWindow_pushGLStates(renderWindow : *mut sfRenderWindow) -> ();
         pub fn sfRenderWindow_popGLStates(renderWindow : *mut sfRenderWindow) -> ();
         pub fn sfRenderWindow_resetGLStates(renderWindow : *mut sfRenderWindow) -> ();
@@ -623,7 +623,7 @@ pub mod texture {
         pub fn sfTexture_destroy(texture : *mut sfTexture) -> ();
         pub fn sfTexture_getSize(texture : *mut sfTexture) -> Vector2u;
         pub fn sfTexture_copyToImage(texture : *mut sfTexture) -> *mut sfImage;
-        pub fn sfTexture_updateFromPixels(texture : *mut sfTexture, pixels : *mut u8, width : c_uint, height : c_uint, x : c_uint, y : c_uint) -> ();
+        pub fn sfTexture_updateFromPixels(texture : *mut sfTexture, pixels : *const u8, width : c_uint, height : c_uint, x : c_uint, y : c_uint) -> ();
         pub fn sfTexture_updateFromImage(texture : *mut sfTexture, image : *mut sfImage, x : c_uint, y : c_uint) -> ();
         pub fn sfTexture_updateFromWindow(texture : *mut sfTexture, window : *mut sfWindow, x : c_uint, y : c_uint) -> ();
         pub fn sfTexture_updateFromRenderWindow(texture : *mut sfTexture, renderWindow : *mut sfRenderWindow, x : c_uint, y : c_uint) -> ();

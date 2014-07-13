@@ -226,7 +226,7 @@ impl RenderWindow {
     pub fn set_icon(&mut self,
                     width : uint,
                     height : uint,
-                    pixels : Vec<u8>) -> () {
+                    pixels : &[u8]) -> () {
         unsafe {
             ffi::sfRenderWindow_setIcon(self.render_window,
                                         width as c_uint,

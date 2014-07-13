@@ -177,7 +177,7 @@ impl TcpSocket {
     *
     * Return the status code
     */
-    pub fn send(&self, data : Vec<i8>) -> SocketStatus {
+    pub fn send(&self, data : &[i8]) -> SocketStatus {
         unsafe {
             mem::transmute(ffi::sfTcpSocket_send(self.socket, data.as_ptr(), data.len() as size_t) as i8)
         }
