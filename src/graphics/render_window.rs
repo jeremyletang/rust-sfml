@@ -619,8 +619,8 @@ impl RenderWindow {
      *
      * This function can be used when you mix SFML drawing
      * and direct OpenGL rendering, if you choose not to use
-     * pushGLStates/popGLStates. It makes sure that all OpenGL
-     * states needed by SFML are set, so that subsequent sfRenderWindow_draw*()
+     * push_GL_states/pop_GL_states. It makes sure that all OpenGL
+     * states needed by SFML are set, so that subsequent draw()
      * calls will work as expected.
      */
     pub fn reset_GL_states(&mut self) -> () {
@@ -644,13 +644,13 @@ impl RenderWindow {
     }
 
     /**
-     * Set the current position of the mouse relatively to a render-window
+     * Set the current position of the mouse relatively to a render window
      *
      * This function sets the current position of the mouse cursor relative
-     * to the given render-window
+     * to the given render window
      *
      * # Arguments
-     * * relativeTo - Reference render window
+     * * `position` - the positon to set
      */
     pub fn set_mouse_position(&mut self, position : &Vector2i) -> () {
         unsafe {
@@ -659,7 +659,7 @@ impl RenderWindow {
     }
 
     /**
-     * Draw a drawable object to the render-target
+     * Draw a drawable object to the render target
      *
      * # Arguments
      * * object - Object to draw
@@ -978,10 +978,10 @@ impl RenderWindow {
      * This is a slow operation, whose main purpose is to make
      * screenshots of the application. If you want to update an
      * image with the contents of the window and then use it for
-     * drawing, you should rather use a Texture and its
-     * update(Window) function.
+     * drawing, you should rather use a [Texture](struct.Texture.html) and its
+     * [update(Window)](struct.Texture.html#method.update_from_window) function.
      * You can also draw things directly to a texture with the
-     * sfRenderWindow class.
+     * RenderWindow.
      *
      * Return a new image containing the captured contents
      */
@@ -1044,7 +1044,8 @@ impl RenderWindow {
      * located below the mouse cursor.
      *
      * This version uses a custom view for calculations, see the
-     * map_pixel_to_coords_current_view function if you want to use the current view of the
+     * [map_pixel_to_coords_current_view](#method.map_pixel_to_coords_current_view)
+     * function if you want to use the current view of the
      * render-window.
      *
      * # Arguments
@@ -1081,7 +1082,7 @@ impl RenderWindow {
      * located below the mouse cursor.
      *
      * This version uses the current view for calculations, see the
-     * map_pixel_to_coords function if you want to use a custom view.
+     * [map_pixel_to_coords](#method.map_pixel_to_coords) function if you want to use a custom view.
      *
      * # Arguments
      * * point - Pixel to convert
@@ -1112,8 +1113,8 @@ impl RenderWindow {
      * (10, 50) of your render-window -- if the view is translated by (140, 25).
      *
      * This version uses a custom view for calculations, see
-     * map_coords_to_pixel_current_view if you want to use the current view of the
-     * render-window.
+     * [map_coords_to_pixel_current_view](#method.map_coords_to_pixel_current_view)
+     * if you want to use the current view of the render-window.
      *
      * # Arguments
      * * point - Point to convert
@@ -1143,7 +1144,7 @@ impl RenderWindow {
      * (10, 50) of your render-window -- if the view is translated by (140, 25).
      *
      * This version uses the current view for calculations, see
-     * map_coords_to_pixel if you want to use a custom view.
+     * [map_coords_to_pixel](#method.map_coords_to_pixel) if you want to use a custom view.
      *
      * # Arguments
      * * point - Point to convert
