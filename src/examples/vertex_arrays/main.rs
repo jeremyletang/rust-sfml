@@ -1,6 +1,4 @@
-/*!
-* Example from SFML : Shape
-*/
+//! Example from SFML: Shape
 
 #![crate_name = "vertex_arrays"]
 #![desc = "VertexArray example for rsfml"]
@@ -21,8 +19,8 @@ fn start(argc: int, argv: *const *const u8) -> int {
 
 fn main () -> () {
     // Create the window of the application
-    let setting : ContextSettings = ContextSettings::default();
-    let mut window : RenderWindow = match RenderWindow::new(VideoMode::new_init(800, 600, 32), "SFML VertexArray accessors Example", Close, &setting) {
+    let setting: ContextSettings = ContextSettings::default();
+    let mut window: RenderWindow = match RenderWindow::new(VideoMode::new_init(800, 600, 32), "SFML VertexArray accessors Example", Close, &setting) {
         Some(window) => window,
         None => fail!("Cannot create a new Render Window.")
     };

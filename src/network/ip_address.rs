@@ -35,148 +35,134 @@ use ffi = ffi::network::ip_address;
 /// Encapsulate an IPv4 network address.
 pub struct IpAddress{
     #[doc(hidden)]
-    ip : ffi::sfIpAddress
+    ip: ffi::sfIpAddress
 }
 
 impl IpAddress {
-    /**
-    * Create an address from a string
-    *
-    * Here address can be either a decimal address
-    * (ex: "192.168.1.56") or a network name (ex: "localhost").
-    *
-    * # Arguments
-    * * address - IP address or network name
-    *
-    * Return Resulting address
-    */
-    pub fn new_from_string(address : &str) -> IpAddress {
+    /// Create an address from a string
+    ///
+    /// Here address can be either a decimal address
+    /// (ex: "192.168.1.56") or a network name (ex: "localhost").
+    ///
+    /// # Arguments
+    /// * address - IP address or network name
+    ///
+    /// Return Resulting address
+    pub fn new_from_string(address: &str) -> IpAddress {
         let c_address = address.to_c_str();
         IpAddress {
-            ip : unsafe { ffi::sfIpAddress_fromString(c_address.unwrap() as *mut i8) }
+            ip: unsafe { ffi::sfIpAddress_fromString(c_address.unwrap() as *mut i8) }
         }
     }
 
-    /**
-    * Create an address from 4 bytes
-    *
-    * Calling fromBytes(a, b, c, d) is equivalent
-    * to calling fromString("a.b.c.d"), but safer
-    * as it doesn't have to parse a string to get the address
-    * components.
-    *
-    * # Arguments
-    * * byte0 - First byte of the address
-    * * byte1 - Second byte of the address
-    * * byte2 - Third byte of the address
-    * * byte3 - Fourth byte of the address
-    *
-    * Return the resulting address
-    */
-    pub fn mew_from_bytes(byte0 : u8, byte1 : u8, byte2 : u8, byte3 : u8) -> IpAddress {
+    /// Create an address from 4 bytes
+    ///
+    /// Calling fromBytes(a, b, c, d) is equivalent
+    /// to calling fromString("a.b.c.d"), but safer
+    /// as it doesn't have to parse a string to get the address
+    /// components.
+    ///
+    /// # Arguments
+    /// * byte0 - First byte of the address
+    /// * byte1 - Second byte of the address
+    /// * byte2 - Third byte of the address
+    /// * byte3 - Fourth byte of the address
+    ///
+    /// Return the resulting address
+    pub fn mew_from_bytes(byte0: u8, byte1: u8, byte2: u8, byte3: u8) -> IpAddress {
         IpAddress {
-            ip : unsafe { ffi::sfIpAddress_fromBytes(byte0, byte1, byte2, byte3) }
+            ip: unsafe { ffi::sfIpAddress_fromBytes(byte0, byte1, byte2, byte3) }
         }
     }
 
-    /**
-    * Construct an address from a 32-bits integer
-    *
-    * This function uses the internal representation of
-    * the address directly. It should be used for optimization
-    * purposes, and only if you got that representation from
-    * sfIpAddress_ToInteger.
-    *
-    * # Arguments
-    * * address - 4 bytes of the address packed into a 32-bits integer
-    *
-    * Return the resulting address
-    */
-    pub fn new_from_integer(address : u32) -> IpAddress {
+    /// Construct an address from a 32-bits integer
+    ///
+    /// This function uses the internal representation of
+    /// the address directly. It should be used for optimization
+    /// purposes, and only if you got that representation from
+    /// sfIpAddress_ToInteger.
+    ///
+    /// # Arguments
+    /// * address - 4 bytes of the address packed into a 32-bits integer
+    ///
+    /// Return the resulting address
+    pub fn new_from_integer(address: u32) -> IpAddress {
         IpAddress {
-            ip : unsafe { ffi::sfIpAddress_fromInteger(address) }
+            ip: unsafe { ffi::sfIpAddress_fromInteger(address) }
         }
     }
 
-    /**
-    * Get a string representation of an address
-    *
-    * The returned string is the decimal representation of the
-    * IP address (like "192.168.1.56"), even if it was constructed
-    * from a host name.
-    *
-    * Return a string representation of the address
-    */
+    /// Get a string representation of an address
+    ///
+    /// The returned string is the decimal representation of the
+    /// IP address (like "192.168.1.56"), even if it was constructed
+    /// from a host name.
+    ///
+    /// Return a string representation of the address
     pub fn to_string(&self) -> String {
         unsafe {
-            let string : *mut u8 = ptr::mut_null();
+            let string: *mut u8 = ptr::mut_null();
             ffi::sfIpAddress_toString(self.ip, string);
             CString::new(string as *const i8, false).as_str().unwrap().to_string()
         }
     }
 
-    /**
-    * Get an integer representation of the address
-    *
-    * The returned number is the internal representation of the
-    * address, and should be used for optimization purposes only
-    * (like sending the address through a socket).
-    * The integer produced by this function can then be converted
-    * back to a IpAddress with From_integer.
-    *
-    * Return a 32-bits unsigned integer representation of the address
-    */
+    /// Get an integer representation of the address
+    ///
+    /// The returned number is the internal representation of the
+    /// address, and should be used for optimization purposes only
+    /// (like sending the address through a socket).
+    /// The integer produced by this function can then be converted
+    /// back to a IpAddress with From_integer.
+    ///
+    /// Return a 32-bits unsigned integer representation of the address
     pub fn to_integer(&self) -> u32 {
         unsafe {
             ffi::sfIpAddress_toInteger(self.ip)
         }
     }
 
-    /**
-    * Get the computer's local address
-    *
-    * The local address is the address of the computer from the
-    * LAN point of view, i.e. something like 192.168.1.56. It is
-    * meaningful only for communications over the local network.
-    * Unlike sfIpAddress_getPublicAddress, this function is fast
-    * and may be used safely anywhere.
-    *
-    * Return the local IP address of the computer
-    */
+    /// Get the computer's local address
+    ///
+    /// The local address is the address of the computer from the
+    /// LAN point of view, i.e. something like 192.168.1.56. It is
+    /// meaningful only for communications over the local network.
+    /// Unlike sfIpAddress_getPublicAddress, this function is fast
+    /// and may be used safely anywhere.
+    ///
+    /// Return the local IP address of the computer
     pub fn get_local_address() -> IpAddress {
         IpAddress {
-            ip : unsafe { ffi::sfIpAddress_getLocalAddress() }
+            ip: unsafe { ffi::sfIpAddress_getLocalAddress() }
         }
     }
 
-    /**
-    * Get the computer's public address
-    *
-    * The public address is the address of the computer from the
-    * internet point of view, i.e. something like 89.54.1.169.
-    * It is necessary for communications over the world wide web.
-    * The only way to get a public address is to ask it to a
-    * distant website; as a consequence, this function depends on
-    * both your network connection and the server, and may be
-    * very slow. You should use it as few as possible. Because
-    * this function depends on the network connection and on a distant
-    * server, you may use a time limit if you don't want your program
-    * to be possibly stuck waiting in case there is a problem; use
-    * 0 to deactivate this limit.
-    *
-    * Return the public IP address of the computer
-    */
-    pub fn get_public_address(timeout : &Time) -> IpAddress {
+    /// Get the computer's public address
+    ///
+    /// The public address is the address of the computer from the
+    /// internet point of view, i.e. something like 89.54.1.169.
+    /// It is necessary for communications over the world wide web.
+    /// The only way to get a public address is to ask it to a
+    /// distant website; as a consequence, this function depends on
+    /// both your network connection and the server, and may be
+    /// very slow. You should use it as few as possible. Because
+    /// this function depends on the network connection and on a distant
+    /// server, you may use a time limit if you don't want your program
+    /// to be possibly stuck waiting in case there is a problem; use
+    /// 0 to deactivate this limit.
+    ///
+    /// Return the public IP address of the computer
+    pub fn get_public_address(timeout: &Time) -> IpAddress {
         IpAddress {
-            ip : unsafe { ffi::sfIpAddress_getPublicAddress(timeout.unwrap()) }
+            ip: unsafe { ffi::sfIpAddress_getPublicAddress(timeout.unwrap()) }
         }
     }
 }
 
 impl Wrappable<ffi::sfIpAddress> for IpAddress {
-    fn wrap(ip : ffi::sfIpAddress) -> IpAddress {
+    fn wrap(ip: ffi::sfIpAddress) -> IpAddress {
         IpAddress {
-            ip : ip
+            ip: ip
         }
     }
 

@@ -30,9 +30,9 @@ use graphics::IntRect;
 #[deriving(Clone, PartialEq, Eq, PartialOrd, Ord, Show)]
 pub struct Glyph {
     /// Offset to move horizontically to the next character.
-    pub advance : i32,
+    pub advance: i32,
     /// Bounding rectangle of the glyph, in coordinates relative to the baseline.
-    pub bounds : IntRect,
+    pub bounds: IntRect,
     /// Texture coordinates of the glyph inside the font's texture.
-    pub texture_rect : IntRect
+    pub texture_rect: IntRect
 }

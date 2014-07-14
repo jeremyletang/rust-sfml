@@ -24,95 +24,83 @@
 
 #![allow(non_snake_case_functions)]
 
-/*!
- * Utility class for manpulating RGBA colors
- *
- * Color is a simple color class composed of 4 components: Red, Green, Blue, Alpha
- */
+//! Utility class for manpulating RGBA colors
+//!
+//! Color is a simple color class composed of 4 components: Red, Green, Blue, Alpha
 
 use ffi = ffi::graphics::color;
 
-/**
- * Utility class for manpulating RGBA colors
- *
- * Color is a simple color class composed of 4 components: Red, Green, Blue, Alpha
- */
+/// Utility class for manpulating RGBA colors
+///
+/// Color is a simple color class composed of 4 components: Red, Green, Blue, Alpha
 #[deriving(Clone, PartialEq, Eq, PartialOrd, Ord, Show)]
 pub struct Color {
     /// The red composant of the color
-    pub red :   u8,
+    pub red: u8,
     /// The green composant of the color
-    pub green : u8,
+    pub green: u8,
     /// The blue composant of the color
-    pub blue :  u8,
+    pub blue: u8,
     /// The alpha composant of the color
-    pub alpha : u8
+    pub alpha: u8
 }
 
 impl Color {
 
-    /**
-     * Construct a color from its 3 RGB components
-     *
-     * # Arguments
-     * * red - Red component   (0 .. 255)
-     * * green - -Green component (0 .. 255)
-     * * blue - Blue component  (0 .. 255)
-     *
-     * Return Color object constructed from the components
-     */
-    pub fn new_RGB(red : u8, green : u8, blue : u8) -> Color {
+    /// Construct a color from its 3 RGB components
+    ///
+    /// # Arguments
+    /// * red - Red component   (0 .. 255)
+    /// * green - -Green component (0 .. 255)
+    /// * blue - Blue component  (0 .. 255)
+    ///
+    /// Return Color object constructed from the components
+    pub fn new_RGB(red: u8, green: u8, blue: u8) -> Color {
         Color {
-            red :   red,
-            green : green,
-            blue :  blue,
-            alpha : 255
+            red: red,
+            green: green,
+            blue: blue,
+            alpha: 255
         }
     }
 
-    /**
-     * Construct a color from its 4 RGBA components
-     *
-     * # Arguments
-     * * red - Red component   (0 .. 255)
-     * * green - -Green component (0 .. 255)
-     * * blue - Blue component  (0 .. 255)
-     * * alpha - Alpha component  (0 .. 255)
-     *
-     * Return Color object constructed from the components
-     */
-    pub fn new_RGBA(red : u8, green : u8, blue : u8, alpha : u8) -> Color {
+    /// Construct a color from its 4 RGBA components
+    ///
+    /// # Arguments
+    /// * red - Red component   (0 .. 255)
+    /// * green - -Green component (0 .. 255)
+    /// * blue - Blue component  (0 .. 255)
+    /// * alpha - Alpha component  (0 .. 255)
+    ///
+    /// Return Color object constructed from the components
+    pub fn new_RGBA(red: u8, green: u8, blue: u8, alpha: u8) -> Color {
         Color {
-            red :   red,
-            green : green,
-            blue :  blue,
-            alpha : alpha
+            red: red,
+            green: green,
+            blue: blue,
+            alpha: alpha
         }
     }
 
-    /**
-     * Add two colors
-     *
-     * # Arguments
-     * * color1 - The first color
-     * * color2 - The second color
-     *
-     * Return the component-wise saturated addition of the two colors
-     */
-    pub fn add(color1 : Color, color2 : Color) -> Color {
+    /// Add two colors
+    ///
+    /// # Arguments
+    /// * color1 - The first color
+    /// * color2 - The second color
+    ///
+    /// Return the component-wise saturated addition of the two colors
+    pub fn add(color1: Color, color2: Color) -> Color {
         unsafe {ffi::sfColor_add(color1, color2)}
     }
 
-    /**
-     * Modulate two colors
-     *
-     * # Arguments
-     * * color1 - The first color
-     * * color2 - The second color
-     *
-     * Return the component-wise multiplication of the two colors
-     */
-    pub fn modulate(color1 : Color, color2 : Color) -> Color {
+    /// Modulate two colors
+    ///
+    /// # Arguments
+    /// * color1 - The first color
+    /// * color2 - The second color
+    ///
+    /// Return the component-wise multiplication of the two colors
+    pub fn modulate(color1: Color, color2: Color) -> Color {
         unsafe {ffi::sfColor_modulate(color1, color2)}
     }
 
@@ -164,31 +152,31 @@ impl Color {
 }
 
 impl Add<Color, Color> for Color {
-    fn add(&self, other : &Color) -> Color {
-        let r : i32 = self.red as i32 + other.red as i32;
-        let g : i32 = self.green as i32 + other.green as i32;
-        let b : i32 = self.blue as i32 + other.blue as i32;
-        let a : i32 = self.alpha as i32 + other.alpha as i32;
+    fn add(&self, other: &Color) -> Color {
+        let r: i32 = self.red as i32 + other.red as i32;
+        let g: i32 = self.green as i32 + other.green as i32;
+        let b: i32 = self.blue as i32 + other.blue as i32;
+        let a: i32 = self.alpha as i32 + other.alpha as i32;
         Color {
-            red :   if r > 255 {255} else {r as u8},
-            green : if g > 255 {255} else {g as u8},
-            blue :  if b > 255 {255} else {b as u8},
-            alpha : if a > 255 {255} else {a as u8}
+            red: if r > 255 {255} else {r as u8},
+            green: if g > 255 {255} else {g as u8},
+            blue: if b > 255 {255} else {b as u8},
+            alpha: if a > 255 {255} else {a as u8}
         }
     }
 }
 
 impl Mul<Color, Color> for Color {
-    fn mul(&self, other : &Color) -> Color {
-        let r : i32 = self.red as i32 * (other.red as i32);
-        let g : i32 = self.green as i32 * (other.green as i32);
-        let b : i32 = self.blue as i32 * (other.blue as i32);
-        let a : i32 = self.alpha as i32 * (other.alpha as i32);
+    fn mul(&self, other: &Color) -> Color {
+        let r: i32 = self.red as i32 * (other.red as i32);
+        let g: i32 = self.green as i32 * (other.green as i32);
+        let b: i32 = self.blue as i32 * (other.blue as i32);
+        let a: i32 = self.alpha as i32 * (other.alpha as i32);
         Color {
-            red :   if r > 255 {255} else {r as u8},
-            green : if g > 255 {255} else {g as u8},
-            blue :  if b > 255 {255} else {b as u8},
-            alpha : if a > 255 {255} else {a as u8}
+            red: if r > 255 {255} else {r as u8},
+            green: if g > 255 {255} else {g as u8},
+            blue: if b > 255 {255} else {b as u8},
+            alpha: if a > 255 {255} else {a as u8}
         }
     }
 }

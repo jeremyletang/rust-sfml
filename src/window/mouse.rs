@@ -56,7 +56,7 @@ pub enum MouseButton {
 *
 * Return true if the button is pressed, false otherwise
 */
-pub fn is_button_pressed(button : MouseButton) -> bool {
+pub fn is_button_pressed(button: MouseButton) -> bool {
     unsafe {
         match ffi::sfMouse_isButtonPressed(button as c_uint) {
             SFFALSE   => false,

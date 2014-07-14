@@ -1,6 +1,4 @@
-/*!
-* Example from SFML : Shape
-*/
+//! Example from SFML: Shape
 
 #![crate_name = "shape"]
 #![desc = "Shape example for rsfml"]
@@ -28,7 +26,7 @@ impl ShapeImpl for CustomShape {
         3
     }
 
-    fn get_point(&self, point : u32) -> Vector2f {
+    fn get_point(&self, point: u32) -> Vector2f {
         match point {
             0 => Vector2f {x: 10., y: 10.},
             1 => Vector2f {x: 100., y: 100.},
@@ -40,8 +38,8 @@ impl ShapeImpl for CustomShape {
 
 fn main () -> () {
     // Create the window of the application
-    let setting : ContextSettings = ContextSettings::default();
-    let mut window : RenderWindow = match RenderWindow::new(VideoMode::new_init(800, 600, 32), "SFML Shape Example", Close, &setting) {
+    let setting: ContextSettings = ContextSettings::default();
+    let mut window: RenderWindow = match RenderWindow::new(VideoMode::new_init(800, 600, 32), "SFML Shape Example", Close, &setting) {
         Some(window) => window,
         None => fail!("Cannot create a new Render Window.")
     };

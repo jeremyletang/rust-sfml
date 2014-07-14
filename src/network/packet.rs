@@ -35,15 +35,13 @@ use ffi = ffi::network::packet;
 /// Utility class to build blocks of data to transfer over the network.
 pub struct Packet {
     #[doc(hidden)]
-    pub packet : *mut ffi::sfPacket
+    pub packet: *mut ffi::sfPacket
 }
 
 impl Packet {
-    /**
-    * Create a new packet
-    *
-    * Return Some(Packet) or None
-    */
+    /// Create a new packet
+    ///
+    /// Return Some(Packet) or None
     pub fn new() -> Option<Packet> {
         let pck = unsafe { ffi::sfPacket_create() };
         if pck.is_null() {
@@ -51,16 +49,14 @@ impl Packet {
         }
         else {
             Some(Packet {
-                packet : pck
+                packet: pck
             })
         }
     }
 
-    /**
-    * Create a new packet by copying an existing one
-    *
-    * Return Some(Packet) or None
-    */
+    /// Create a new packet by copying an existing one
+    ///
+    /// Return Some(Packet) or None
     pub fn clone(&self) -> Option<Packet> {
         let pck = unsafe { ffi::sfPacket_copy(self.packet) };
         if pck.is_null() {
@@ -68,45 +64,39 @@ impl Packet {
         }
         else{
             Some(Packet {
-                packet : pck
+                packet: pck
             })
         }
     }
 
-    /**
-    * Clear a packet
-    *
-    * After calling Clear, the packet is empty.
-    */
+    /// Clear a packet
+    ///
+    /// After calling Clear, the packet is empty.
     pub fn clear(&self) -> () {
         unsafe {
             ffi::sfPacket_clear(self.packet)
         }
     }
 
-    /**
-    * Get the size of the data contained in a packet
-    *
-    * This function returns the number of bytes pointed to by
-    * what sfPacket_getData returns.
-    *
-    * Return the data size, in bytes
-    */
+    /// Get the size of the data contained in a packet
+    ///
+    /// This function returns the number of bytes pointed to by
+    /// what sfPacket_getData returns.
+    ///
+    /// Return the data size, in bytes
     pub fn get_data_size(&self) -> u32 {
         unsafe {
             ffi::sfPacket_getDataSize(self.packet) as u32
         }
     }
 
-    /**
-    * Tell if the reading position has reached the
-    * end of a packet
-    *
-    * This function is useful to know if there is some data
-    * left to be read, without actually reading it.
-    *
-    * Return true if all data was read, false otherwise
-    */
+    /// Tell if the reading position has reached the
+    /// end of a packet
+    ///
+    /// This function is useful to know if there is some data
+    /// left to be read, without actually reading it.
+    ///
+    /// Return true if all data was read, false otherwise
     pub fn end_of_packet(&self) -> bool {
         match unsafe { ffi::sfPacket_endOfPacket(self.packet) } {
             SFFALSE => false,
@@ -114,17 +104,15 @@ impl Packet {
         }
     }
 
-    /**
-    * Test the validity of a packet, for reading
-    *
-    * This function allows to test the packet, to check if
-    * a reading operation was successful.
-    *
-    * A packet will be in an invalid state if it has no more
-    * data to read.
-    *
-    * Return true if last data extraction from packet was successful
-    */
+    /// Test the validity of a packet, for reading
+    ///
+    /// This function allows to test the packet, to check if
+    /// a reading operation was successful.
+    ///
+    /// A packet will be in an invalid state if it has no more
+    /// data to read.
+    ///
+    /// Return true if last data extraction from packet was successful
     pub fn can_read(&self) -> bool {
         match unsafe { ffi::sfPacket_canRead(self.packet) } {
             SFFALSE => false,
@@ -132,9 +120,7 @@ impl Packet {
         }
     }
 
-    /**
-    * Function to extract data from a packet
-    */
+    /// Function to extract data from a packet
     pub fn read_bool(&self) -> bool {
         match unsafe { ffi::sfPacket_readBool(self.packet) } {
             SFFALSE => false,
@@ -142,93 +128,73 @@ impl Packet {
         }
     }
 
-    /**
-    * Function to extract data from a packet
-    */
+    /// Function to extract data from a packet
     pub fn read_i8(&self) -> i8 {
         unsafe {
             ffi::sfPacket_readInt8(self.packet)
         }
     }
 
-    /**
-    * Function to extract data from a packet
-    */
+    /// Function to extract data from a packet
     pub fn read_u8(&self) -> u8 {
         unsafe {
             ffi::sfPacket_readUint8(self.packet)
         }
     }
 
-    /**
-    * Function to extract data from a packet
-    */
+    /// Function to extract data from a packet
     pub fn read_i16(&self) -> i16 {
         unsafe {
             ffi::sfPacket_readInt16(self.packet)
         }
     }
 
-    /**
-    * Function to extract data from a packet
-    */
+    /// Function to extract data from a packet
     pub fn read_u16(&self) -> u16 {
         unsafe {
             ffi::sfPacket_readUint16(self.packet)
         }
     }
 
-    /**
-    * Function to extract data from a packet
-    */
+    /// Function to extract data from a packet
     pub fn read_i32(&self) -> i32 {
         unsafe {
             ffi::sfPacket_readInt32(self.packet)
         }
     }
 
-    /**
-    * Function to extract data from a packet
-    */
+    /// Function to extract data from a packet
     pub fn read_u32(&self) -> u32 {
         unsafe {
             ffi::sfPacket_readUint32(self.packet)
         }
     }
 
-    /**
-    * Function to extract data from a packet
-    */
+    /// Function to extract data from a packet
     pub fn read_f32(&self) -> f32 {
         unsafe {
             ffi::sfPacket_readFloat(self.packet) as f32
         }
     }
 
-    /**
-    * Function to extract data from a packet
-    */
+    /// Function to extract data from a packet
     pub fn read_f64(&self) -> f64 {
         unsafe {
             ffi::sfPacket_readDouble(self.packet) as f64
         }
     }
 
-    /**
-    * Function to extract data from a packet
-    */
+    /// Function to extract data from a packet
     pub fn read_string(&self) -> String {
         unsafe {
-            let string : *mut u8 = ptr::mut_null();
+            let string: *mut u8 = ptr::mut_null();
             ffi::sfPacket_readString(self.packet, string);
             CString::new(string as *const i8, false).as_str().unwrap().to_string()
         }
     }
 
-    /**
-    * Function to insert data into a packet
-    */
-    pub fn write_bool(&self, data : bool) -> () {
+    /// Function to insert data into a packet
+    pub fn write_bool(&self, data: bool) -> () {
         unsafe {
             match data {
                 true    => ffi::sfPacket_writeBool(self.packet, SFTRUE),
@@ -237,72 +203,64 @@ impl Packet {
         }
     }
 
-    /**
-    * Function to insert data into a packet
-    */
-    pub fn write_i8(&self, data : i8) -> () {
+    /// Function to insert data into a packet
+    pub fn write_i8(&self, data: i8) -> () {
         unsafe {
             ffi::sfPacket_writeInt8(self.packet, data)
         }
     }
 
-    /**
-    * Function to insert data into a packet
-    */
-    pub fn write_u8(&self, data : u8) -> () {
+    /// Function to insert data into a packet
+    pub fn write_u8(&self, data: u8) -> () {
         unsafe {
             ffi::sfPacket_writeUint8(self.packet, data)
         }
     }
 
-    /**
-    * Function to insert data into a packet
-    */
-    pub fn write_i16(&self, data : i16) -> () {
+    /// Function to insert data into a packet
+    pub fn write_i16(&self, data: i16) -> () {
         unsafe {
             ffi::sfPacket_writeInt16(self.packet, data)
         }
     }
 
-    /**
-    * Function to insert data into a packet
-    */
-    pub fn write_u16(&self, data : u16) -> () {
+    /// Function to insert data into a packet
+    pub fn write_u16(&self, data: u16) -> () {
         unsafe {
             ffi::sfPacket_writeUint16(self.packet, data)
         }
     }
 
     /// Function to insert data into a packet
-    pub fn write_i32(&self, data : i32) -> () {
+    pub fn write_i32(&self, data: i32) -> () {
         unsafe {
             ffi::sfPacket_writeInt32(self.packet, data)
         }
     }
 
     /// Function to insert data into a packet
-    pub fn write_u32(&self, data : u32) -> () {
+    pub fn write_u32(&self, data: u32) -> () {
         unsafe {
             ffi::sfPacket_writeUint32(self.packet, data)
         }
     }
 
     /// Function to insert data into a packet
-    pub fn write_f32(&self, data : f32) -> () {
+    pub fn write_f32(&self, data: f32) -> () {
         unsafe {
             ffi::sfPacket_writeFloat(self.packet, data)
         }
     }
 
     /// Function to insert data into a packet
-    pub fn write_f64(&self, data : f64) -> () {
+    pub fn write_f64(&self, data: f64) -> () {
         unsafe {
             ffi::sfPacket_writeDouble(self.packet, data)
         }
     }
 
     /// Function to insert data into a packet
-    pub fn write_string(&self, string : &str) -> () {
+    pub fn write_string(&self, string: &str) -> () {
         let c_string = string.to_c_str();
         unsafe {
             ffi::sfPacket_writeString(self.packet, c_string.unwrap())
@@ -315,9 +273,9 @@ impl Wrappable<*mut ffi::sfPacket> for Packet {
         self.packet
     }
 
-    fn wrap(packet : *mut ffi::sfPacket) -> Packet {
+    fn wrap(packet: *mut ffi::sfPacket) -> Packet {
         Packet {
-            packet : packet
+            packet: packet
         }
     }
 }

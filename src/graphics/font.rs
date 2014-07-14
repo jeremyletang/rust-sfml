@@ -37,21 +37,19 @@ use ffi = ffi::graphics::font;
 /// Class for loading and manipulating character fonts
 pub struct Font {
     #[doc(hidden)]
-    font :     *mut ffi::sfFont,
+    font: *mut ffi::sfFont,
     #[doc(hidden)]
-    dropable : bool
+    dropable: bool
 }
 
 impl Font {
-    /**
-     * Create a new font from a file
-     *
-     * # Arguments
-     * * filename -  Path of the font file to load
-     *
-     * Return Some(Font) or None
-     */
-    pub fn new_from_file(filename : &str) -> Option<Font> {
+    /// Create a new font from a file
+    ///
+    /// # Arguments
+    /// * filename -  Path of the font file to load
+    ///
+    /// Return Some(Font) or None
+    pub fn new_from_file(filename: &str) -> Option<Font> {
         let mut fnt = ptr::mut_null();
         unsafe {
             filename.with_c_str(|c_str| {
@@ -62,46 +60,42 @@ impl Font {
             None
         } else {
             Some(Font {
-                    font :      fnt,
-                    dropable :  true
+                    font: fnt,
+                    dropable: true
                 })
         }
     }
 
-    /**
-     * Create font from a existing one
-     *
-     * # Arguments
-     * * font - Font to copy
-     *
-     * Return Some(Font) or None
-     */
+    /// Create font from a existing one
+    ///
+    /// # Arguments
+    /// * font - Font to copy
+    ///
+    /// Return Some(Font) or None
     pub fn clone_opt(&self) -> Option<Font> {
         let fnt = unsafe {ffi::sfFont_copy(self.font)};
         if fnt.is_null() {
             None
         } else {
             Some(Font {
-                    font :      fnt,
-                    dropable :  true
+                    font: fnt,
+                    dropable: true
                 })
         }
     }
 
-    /**
-     * Get the kerning value corresponding to a given pair of characters in a font
-     *
-     * # Arguments
-     * * first - Unicode code point of the first character
-     * * second - Unicode code point of the second character
-     * * characterSize - Character size, in pixels
-     *
-     * Return the kerning offset, in pixels
-     */
+    /// Get the kerning value corresponding to a given pair of characters in a font
+    ///
+    /// # Arguments
+    /// * first - Unicode code point of the first character
+    /// * second - Unicode code point of the second character
+    /// * characterSize - Character size, in pixels
+    ///
+    /// Return the kerning offset, in pixels
     pub fn get_kerning(&self,
-                       first : u32,
-                       second : u32,
-                       characterSize : uint) -> int {
+                       first: u32,
+                       second: u32,
+                       characterSize: uint) -> int {
         unsafe {
             ffi::sfFont_getKerning(self.font,
                                    first,
@@ -110,30 +104,26 @@ impl Font {
         }
     }
 
-    /**
-     * Get the line spacing value
-     *
-     * # Arguments
-     * * characterSize - Character size, in pixels
-     *
-     * Return the line spacing, in pixels
-     */
-    pub fn get_line_spacing(&self, character_size : uint) -> int {
+    /// Get the line spacing value
+    ///
+    /// # Arguments
+    /// * characterSize - Character size, in pixels
+    ///
+    /// Return the line spacing, in pixels
+    pub fn get_line_spacing(&self, character_size: uint) -> int {
         unsafe {
             ffi::sfFont_getLineSpacing(self.font,
                                        character_size as c_uint) as int
         }
     }
 
-    /**
-     * Get the texture containing the glyphs of a given size in a font
-     *
-     * # Arguments
-     * * characterSize - Character size, in pixels
-     *
-     * Return the texture
-     */
-    pub fn get_texture(&self, character_size : uint) -> Option<Texture> {
+    /// Get the texture containing the glyphs of a given size in a font
+    ///
+    /// # Arguments
+    /// * characterSize - Character size, in pixels
+    ///
+    /// Return the texture
+    pub fn get_texture(&self, character_size: uint) -> Option<Texture> {
         let tex = unsafe {ffi::sfFont_getTexture(self.font,
                                                  character_size as c_uint)};
         if tex.is_null() {
@@ -143,20 +133,18 @@ impl Font {
         }
     }
 
-    /**
-     * Get a glyph in a font
-     *
-     * # Arguments
-     * * codePoint - Unicode code point of the character to get
-     * * characterSize - Character size, in pixels
-     * * bold - Retrieve the bold version or the regular one?
-     *
-     * Return the corresponding glyph
-     */
+    /// Get a glyph in a font
+    ///
+    /// # Arguments
+    /// * codePoint - Unicode code point of the character to get
+    /// * characterSize - Character size, in pixels
+    /// * bold - Retrieve the bold version or the regular one?
+    ///
+    /// Return the corresponding glyph
     pub fn get_glyph(&self,
-                     codepoint : u32,
-                     character_size : uint,
-                     bold : bool) -> Glyph {
+                     codepoint: u32,
+                     character_size: uint,
+                     bold: bool) -> Glyph {
         unsafe {
             match bold {
                 true        => ffi::sfFont_getGlyph(self.font,
@@ -180,18 +168,18 @@ impl Clone for Font {
             fail!("Not enough memory to clone Font")
         } else {
             Font {
-                font :      fnt,
-                dropable :  true
+                font: fnt,
+                dropable: true
             }
         }
     }
 }
 
 impl Wrappable<*mut ffi::sfFont> for Font {
-    fn wrap(font : *mut ffi::sfFont) -> Font {
+    fn wrap(font: *mut ffi::sfFont) -> Font {
         Font {
-            font :      font,
-            dropable :  false
+            font: font,
+            dropable: false
         }
     }
     fn unwrap(&self) -> *mut ffi::sfFont {

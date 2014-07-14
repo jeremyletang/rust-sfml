@@ -41,28 +41,28 @@ use ffi = ffi::system::time;
  */
 pub struct Time {
     #[doc(hidden)]
-    time : ffi::sfTime
+    time: ffi::sfTime
 }
 
 impl Time {
     /// Construct a time value from a number of seconds
-    pub fn with_seconds(seconds : f32) -> Time {
+    pub fn with_seconds(seconds: f32) -> Time {
         Time {
-            time : unsafe { ffi::sfSeconds(seconds as c_float) }
+            time: unsafe { ffi::sfSeconds(seconds as c_float) }
         }
     }
 
     /// Construct a time value from a number of milliseconds
-    pub fn with_milliseconds(milliseconds : i32) -> Time {
+    pub fn with_milliseconds(milliseconds: i32) -> Time {
         Time {
-            time : unsafe { ffi::sfMilliseconds(milliseconds as c_int) }
+            time: unsafe { ffi::sfMilliseconds(milliseconds as c_int) }
         }
     }
 
     /// Construct a time value from a number of microseconds
-    pub fn with_microseconds(microseconds : i64) -> Time {
+    pub fn with_microseconds(microseconds: i64) -> Time {
         Time {
-            time : unsafe { ffi::sfMicroseconds(microseconds) }
+            time: unsafe { ffi::sfMicroseconds(microseconds) }
         }
     }
 
@@ -89,11 +89,11 @@ impl Time {
 }
 
 impl PartialEq for Time {
-    fn eq(&self, other : &Time) -> bool {
+    fn eq(&self, other: &Time) -> bool {
         self.as_microseconds() == other.as_microseconds()
     }
 
-    fn ne(&self, other : &Time) -> bool {
+    fn ne(&self, other: &Time) -> bool {
         self.as_microseconds() != other.as_microseconds()
     }
 }
@@ -105,34 +105,34 @@ impl PartialOrd for Time {
 }
 
 impl Add<Time, Time> for Time {
-    fn add(&self, other : &Time) -> Time {
+    fn add(&self, other: &Time) -> Time {
          Time::with_microseconds(self.as_microseconds() + other.as_microseconds())
     }
 }
 
 impl Sub<Time, Time> for Time {
-    fn sub(&self, other : &Time) -> Time {
+    fn sub(&self, other: &Time) -> Time {
          Time::with_microseconds(self.as_microseconds() - other.as_microseconds())
     }
 }
 
 impl Mul<Time, Time> for Time {
-    fn mul(&self, other : &Time) -> Time {
+    fn mul(&self, other: &Time) -> Time {
          Time::with_microseconds(self.as_microseconds() * other.as_microseconds())
     }
 }
 
 impl Div<Time, Time> for Time {
-    fn div(&self, other : &Time) -> Time {
+    fn div(&self, other: &Time) -> Time {
          Time::with_microseconds(self.as_microseconds() / other.as_microseconds())
     }
 }
 
 #[doc(hidden)]
 impl Wrappable<ffi::sfTime> for Time {
-    fn wrap(time : ffi::sfTime) -> Time {
+    fn wrap(time: ffi::sfTime) -> Time {
         Time {
-            time : time
+            time: time
         }
     }
 

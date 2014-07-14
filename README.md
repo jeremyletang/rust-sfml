@@ -6,16 +6,16 @@ SFML bindings for Rust
 
 This is a Rust binding for SFML, the Simple and Fast Multimedia Library, developped by Laurent Gomila.
 
-SFML website  : www.sfml-dev.org
+SFML website : www.sfml-dev.org
 
 Installation
 ============
 
 You must install on your computer the SFML2.1 and CSFML2.1 libraries who are used for the binding.
 
-SFML2.1 : http://www.sfml-dev.org/download/sfml/2.1/
+SFML2.1: http://www.sfml-dev.org/download/sfml/2.1/
 
-CSFML2.1 : http://www.sfml-dev.org/download/csfml/
+CSFML2.1: http://www.sfml-dev.org/download/csfml/
 
 Then clone the repo and build the library with the following command.
 
@@ -95,9 +95,9 @@ fn start(argc: int, argv: *const *const u8) -> int {
 
 fn main () -> () {
     // Create the window of the application
-    let mut window = match RenderWindow::new(VideoMode::new_init(800, 600, 32), 
-                                             "SFML Example", 
-                                             Close, 
+    let mut window = match RenderWindow::new(VideoMode::new_init(800, 600, 32),
+                                             "SFML Example",
+                                             Close,
                                              &ContextSettings::default()) {
         Some(window) => window,
         None => fail!("Cannot create a new Render Window.")

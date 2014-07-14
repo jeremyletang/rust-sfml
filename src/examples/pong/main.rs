@@ -1,6 +1,4 @@
-/*!
-* Example from SFML : Pong
-*/
+//! Example from SFML: Pong
 
 #![crate_name = "pong"]
 #![desc = "Pong example for rsfml"]
@@ -25,15 +23,15 @@ fn start(argc: int, argv: *const *const u8) -> int {
 
 fn main () -> () {
     // Define some constants
-    let pi : f32 = 3.14159;
-    let gameWidth : uint = 800;
-    let gameHeight : uint = 600;
-    let paddleSize : Vector2f =  Vector2f::new(25., 100.);
-    let ballRadius : f32 = 10.;
+    let pi: f32 = 3.14159;
+    let gameWidth: uint = 800;
+    let gameHeight: uint = 600;
+    let paddleSize: Vector2f =  Vector2f::new(25., 100.);
+    let ballRadius: f32 = 10.;
 
      // Create the window of the application
-    let setting : ContextSettings = ContextSettings::default();
-    let mut window : RenderWindow =
+    let setting: ContextSettings = ContextSettings::default();
+    let mut window: RenderWindow =
         match RenderWindow::new(VideoMode::new_init(gameWidth, gameHeight, 32),
                                 "SFML Pong",
                                 Close,
@@ -96,7 +94,7 @@ fn main () -> () {
     };
 
      // Initialize the pause message
-    let mut pauseMessage : Text = match Text::new() {
+    let mut pauseMessage: Text = match Text::new() {
         Some(text) => text,
         None       => fail!("Error on creating text")
     };
@@ -108,11 +106,11 @@ fn main () -> () {
 
     // Define the paddles properties
     let mut ai_timer =  Clock::new();
-    let ai_time : Time  = Time::with_seconds(0.1);
+    let ai_time: Time  = Time::with_seconds(0.1);
     let paddleSpeed = 400.;
     let mut rightPaddleSpeed  = 0.;
     let ballSpeed   = 400.;
-    let mut ballAngle : f32  = 0.; // to be changed later
+    let mut ballAngle: f32  = 0.; // to be changed later
 
     let mut clock = Clock::new();
     let mut isPlaying = false;

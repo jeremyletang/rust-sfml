@@ -28,8 +28,8 @@
 #[deriving(Clone, PartialEq, Eq, PartialOrd, Ord, Show)]
 #[repr(C)]
 pub enum TextStyle {
-    Regular =       0,
-    Bold =          1,
-    Italic =        2,
-    Underlined =    4
+    Regular = 0,
+    Bold = 1,
+    Italic = 2,
+    Underlined = 4
 }

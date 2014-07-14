@@ -22,13 +22,11 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-/*!
- * 2D camera that defines what region is shown on screen
- *
- * This is a very powerful concept: you can scroll,
- * rotate or zoom the entire scene without altering
- * the way that your drawable objects are drawn.
- */
+//! 2D camera that defines what region is shown on screen
+//!
+//! This is a very powerful concept: you can scroll,
+//! rotate or zoom the entire scene without altering
+//! the way that your drawable objects are drawn.
 
 use libc::c_float;
 
@@ -38,52 +36,46 @@ use system::vector2::Vector2f;
 
 use ffi = ffi::graphics::view;
 
-/**
- * 2D camera that defines what region is shown on screen
- *
- * This is a very powerful concept: you can scroll,
- * rotate or zoom the entire scene without altering
- * the way that your drawable objects are drawn.
- */
+/// 2D camera that defines what region is shown on screen
+///
+/// This is a very powerful concept: you can scroll,
+/// rotate or zoom the entire scene without altering
+/// the way that your drawable objects are drawn.
 pub struct View {
     #[doc(hidden)]
-    dropable : bool,
+    dropable: bool,
     #[doc(hidden)]
-    view :     *mut ffi::sfView
+    view: *mut ffi::sfView
 }
 
 impl View {
-    /**
-     * Create a default view
-     *
-     * This function creates a default view of (0, 0, 1000, 1000)
-     *
-     * Return Some(View) or None
-     */
+    /// Create a default view
+    ///
+    /// This function creates a default view of (0, 0, 1000, 1000)
+    ///
+    /// Return Some(View) or None
     pub fn new() -> Option<View> {
         let view = unsafe { ffi::sfView_create() };
         if view.is_null() {
             None
         } else {
             Some(View {
-                    dropable:   true,
-                    view :      view
+                    dropable: true,
+                    view: view
                 })
         }
     }
 
-    /**
-     * Create a default view
-     *
-     * This function creates a default view with initialized position and size
-     *
-     * # Arguments
-     * * center - The center of the view
-     * * size - The size of the view
-     *
-     * Return Some(View) or None
-     */
-    pub fn new_init(center : &Vector2f, size : &Vector2f) -> Option<View> {
+    /// Create a default view
+    ///
+    /// This function creates a default view with initialized position and size
+    ///
+    /// # Arguments
+    /// * center - The center of the view
+    /// * size - The size of the view
+    ///
+    /// Return Some(View) or None
+    pub fn new_init(center: &Vector2f, size: &Vector2f) -> Option<View> {
         let view = unsafe { ffi::sfView_create() };
         if view.is_null() {
             None
@@ -93,238 +85,205 @@ impl View {
                 ffi::sfView_setSize(view, *size);
             }
             Some(View {
-                    dropable :  true,
-                    view :      view
+                    dropable: true,
+                    view: view
                 })
         }
     }
 
-    /**
-     * Create a view by copying an existant one.
-     *
-     * Return Some(View) or None
-     */
+    /// Create a view by copying an existant one.
+    ///
+    /// Return Some(View) or None
     pub fn clone_opt(&self) -> Option<View> {
         let view = unsafe { ffi::sfView_copy(self.view) };
         if view.is_null() {
             None
         } else {
             Some(View {
-                dropable:   true,
-                view :      view
+                dropable: true,
+                view: view
             })
         }
     }
 
-    /**
-     * Construct a view from a rectangle
-     *
-     * # Arguments
-     * * rectangle - The rectangle defining the zone to display
-     *
-     * Return Some(View) or None
-     */
-    pub fn new_from_rect(rectangle : &FloatRect) -> Option<View> {
+    /// Construct a view from a rectangle
+    ///
+    /// # Arguments
+    /// * rectangle - The rectangle defining the zone to display
+    ///
+    /// Return Some(View) or None
+    pub fn new_from_rect(rectangle: &FloatRect) -> Option<View> {
         let view = unsafe { ffi::sfView_createFromRect(*rectangle) };
         if view.is_null() {
             None
         } else {
             Some(View {
-                    dropable:   true,
-                    view :      view
+                    dropable: true,
+                    view: view
                 })
         }
     }
 
-    /**
-     * Set the orientation of a view
-     *
-     * The default rotation of a view is 0 degree.
-     *
-     * # Arguments
-     * * angle - New angle, in degrees
-     */
-    pub fn set_rotation(&mut self, angle : f32) -> () {
+    /// Set the orientation of a view
+    ///
+    /// The default rotation of a view is 0 degree.
+    ///
+    /// # Arguments
+    /// * angle - New angle, in degrees
+    pub fn set_rotation(&mut self, angle: f32) -> () {
         unsafe {
             ffi::sfView_setRotation(self.view, angle as c_float)
         }
     }
 
-    /**
-     * Get the current orientation of a view
-     *
-     * Return the rotation angle of the view, in degrees
-     */
+    /// Get the current orientation of a view
+    ///
+    /// Return the rotation angle of the view, in degrees
     pub fn get_rotation(&self) -> f32 {
         unsafe {
             ffi::sfView_getRotation(self.view) as f32
         }
     }
 
-    /**
-     * Rotate a view relatively to its current orientation
-     *
-     * # Arguments
-     * * angle - Angle to rotate, in degrees
-     */
-    pub fn rotate(&mut self, angle : f32) -> () {
+    /// Rotate a view relatively to its current orientation
+    ///
+    /// # Arguments
+    /// * angle - Angle to rotate, in degrees
+    pub fn rotate(&mut self, angle: f32) -> () {
         unsafe {
             ffi::sfView_rotate(self.view, angle as c_float)
         }
     }
 
-    /**
-     * Resize a view rectangle relatively to its current size
-     *
-     * Resizing the view simulates a zoom, as the zone displayed
-     * on screen grows or shrinks.
-     *
-     * # factor is a multiplier:
-     * * 1 keeps the size unchanged
-     * * bigger than 1 makes the view bigger (objects appear smaller)
-     * * smaller than 1 makes the view smaller (objects appear bigger)
-     *
-     * # Arguments
-     * * factor - Zoom factor to apply
-     */
-    pub fn zoom(&mut self, factor : f32) -> () {
+    /// Resize a view rectangle relatively to its current size
+    ///
+    /// Resizing the view simulates a zoom, as the zone displayed
+    /// on screen grows or shrinks.
+    ///
+    /// # factor is a multiplier:
+    /// * 1 keeps the size unchanged
+    /// * bigger than 1 makes the view bigger (objects appear smaller)
+    /// * smaller than 1 makes the view smaller (objects appear bigger)
+    ///
+    /// # Arguments
+    /// * factor - Zoom factor to apply
+    pub fn zoom(&mut self, factor: f32) -> () {
         unsafe {
             ffi::sfView_zoom(self.view, factor as c_float)
         }
     }
 
-    /**
-     * Set the center of a view
-     *
-     * # Arguments
-     * * center - New center
-     */
-    pub fn set_center(&mut self, center : &Vector2f) -> () {
+    /// Set the center of a view
+    ///
+    /// # Arguments
+    /// * center - New center
+    pub fn set_center(&mut self, center: &Vector2f) -> () {
         unsafe {
             ffi::sfView_setCenter(self.view, *center)
         }
     }
 
-    /**
-     * Set the center of a view
-     *
-     * # Arguments
-     * * center_x - New x center coordinate
-     * * center_y - New y center coordinate
-     */
-    pub fn set_center2f(&mut self, center_x : f32, center_y : f32) -> () {
+    /// Set the center of a view
+    ///
+    /// # Arguments
+    /// * center_x - New x center coordinate
+    /// * center_y - New y center coordinate
+    ////
+    pub fn set_center2f(&mut self, center_x: f32, center_y: f32) -> () {
         unsafe {
             ffi::sfView_setCenter(self.view, Vector2f::new(center_x, center_y))
         }
     }
 
-    /**
-     * Set the size of a view
-     *
-     * # Arguments
-     * * size - New size of the view
-     */
-    pub fn set_size(&mut self, size : &Vector2f) -> () {
+    /// Set the size of a view
+    ///
+    /// # Arguments
+    /// * size - New size of the view
+    pub fn set_size(&mut self, size: &Vector2f) -> () {
         unsafe {
             ffi::sfView_setSize(self.view, *size)
         }
     }
 
-    /**
-     * Set the size of a view
-     *
-     * # Arguments
-     * * size_x - New size x of the view
-     * * size_y - New size y of the view
-     */
-    pub fn set_size2f(&mut self, size_x : f32, size_y : f32) -> () {
+    /// Set the size of a view
+    ///
+    /// # Arguments
+    /// * size_x - New size x of the view
+    /// * size_y - New size y of the view
+    pub fn set_size2f(&mut self, size_x: f32, size_y: f32) -> () {
         unsafe {
             ffi::sfView_setSize(self.view, Vector2f::new(size_x, size_y))
         }
     }
 
-    /**
-     * Move a view relatively to its current position
-     *
-     * # Arguments
-     * * offset - Offset
-     */
-    pub fn move(&mut self, offset : &Vector2f) -> () {
+    /// Move a view relatively to its current position
+    ///
+    /// # Arguments
+    /// * offset - Offset
+    pub fn move(&mut self, offset: &Vector2f) -> () {
         unsafe {
             ffi::sfView_move(self.view, *offset)
         }
     }
-    /**
-     * Move a view relatively to its current position
-     *
-     * # Arguments
-     * * offsetX - Offset x
-     * * offsetY - Offset y
-     */
-    pub fn move2f(&mut self, offsetX : f32, offsetY : f32) -> () {
+    /// Move a view relatively to its current position
+    ///
+    /// # Arguments
+    /// * offsetX - Offset x
+    /// * offsetY - Offset y
+    pub fn move2f(&mut self, offsetX: f32, offsetY: f32) -> () {
         unsafe {
             ffi::sfView_move(self.view, Vector2f::new(offsetX, offsetY))
         }
     }
 
-    /**
-     * Get the center of a view
-     *
-     * Return the center of the view
-     */
+    /// Get the center of a view
+    ///
+    /// Return the center of the view
     pub fn get_center(&self) -> Vector2f {
         unsafe {ffi::sfView_getCenter(self.view)}
     }
 
-    /**
-     * Get the size of a view
-     *
-     * Return the size of the view
-     */
+    /// Get the size of a view
+    ///
+    /// Return the size of the view
     pub fn get_size(&self) -> Vector2f {
         unsafe {
             ffi::sfView_getSize(self.view)
         }
     }
 
-    /**
-     * Set the target viewport of a view
-     *
-     * The viewport is the rectangle into which the contents of the
-     * view are displayed, expressed as a factor (between 0 and 1)
-     * of the size of the render target to which the view is applied.
-     * For example, a view which takes the left side of the target would
-     * be defined by a rect of (0, 0, 0.5, 1).
-     * By default, a view has a viewport which covers the entire target.
-     *
-     * # Arguments
-     * * viewport - New viewport rectangle
-     */
-    pub fn set_viewport(&mut self, viewport : &FloatRect) -> () {
+    /// Set the target viewport of a view
+    ///
+    /// The viewport is the rectangle into which the contents of the
+    /// view are displayed, expressed as a factor (between 0 and 1)
+    /// of the size of the render target to which the view is applied.
+    /// For example, a view which takes the left side of the target would
+    /// be defined by a rect of (0, 0, 0.5, 1).
+    /// By default, a view has a viewport which covers the entire target.
+    ///
+    /// # Arguments
+    /// * viewport - New viewport rectangle
+    pub fn set_viewport(&mut self, viewport: &FloatRect) -> () {
         unsafe {
             ffi::sfView_setViewport(self.view, *viewport)
         }
     }
 
-    /**
-     * Reset a view to the given rectangle
-     *
-     * Note that this function resets the rotation angle to 0.
-     *
-     * # Arguments
-     * * rectangle - Rectangle defining the zone to display
-     */
-    pub fn reset(&mut self, rectangle : &FloatRect) -> () {
+    /// Reset a view to the given rectangle
+    ///
+    /// Note that this function resets the rotation angle to 0.
+    ///
+    /// # Arguments
+    /// * rectangle - Rectangle defining the zone to display
+    pub fn reset(&mut self, rectangle: &FloatRect) -> () {
         unsafe {
             ffi::sfView_reset(self.view, *rectangle)
         }
     }
 
-    /**
-     * Get the target viewport rectangle of a view
-     *
-     * Return the viewport rectangle, expressed as a factor of the target size
-     */
+    /// Get the target viewport rectangle of a view
+    ///
+    /// Return the viewport rectangle, expressed as a factor of the target size
     pub fn get_viewport(&self) -> FloatRect {
         unsafe {
             ffi::sfView_getViewport(self.view)
@@ -340,18 +299,18 @@ impl Clone for View {
             fail!("Not enough memory to clone View")
         } else {
             View {
-                dropable:   true,
-                view :      view
+                dropable: true,
+                view: view
             }
         }
     }
 }
 
 impl Wrappable<*mut ffi::sfView> for View {
-    fn wrap(view : *mut ffi::sfView) -> View {
+    fn wrap(view: *mut ffi::sfView) -> View {
         View {
-            dropable:   false,
-            view :      view
+            dropable: false,
+            view: view
         }
     }
 

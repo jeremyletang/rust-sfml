@@ -158,36 +158,34 @@ pub enum Status {
 /// The FTP client
 pub struct Ftp {
     #[doc(hidden)]
-    ftp : *mut ffi::sfFtp
+    ftp: *mut ffi::sfFtp
 }
 
 /// Encapsulation of an Ftp Serveur response
 pub struct Response {
     #[doc(hidden)]
-    response : *mut ffi::sfFtpResponse
+    response: *mut ffi::sfFtpResponse
 }
 
 /// Encapsulation of a response returning a list of filename
 pub struct ListingResponse{
     #[doc(hidden)]
-    listing_response : *mut ffi::sfFtpListingResponse
+    listing_response: *mut ffi::sfFtpListingResponse
 }
 
 /// Encapsulation of a response returning a directory
 pub struct DirectoryResponse{
     #[doc(hidden)]
-    directory_response : *mut ffi::sfFtpDirectoryResponse
+    directory_response: *mut ffi::sfFtpDirectoryResponse
 }
 
 impl ListingResponse {
-    /**
-    * Check if a FTP listing response status code means a success
-    *
-    * This function is defined for convenience, it is
-    * equivalent to testing if the status code is < 400.
-    *
-    * Return true if the status is a success, false if it is a failure
-    */
+    /// Check if a FTP listing response status code means a success
+    ///
+    /// This function is defined for convenience, it is
+    /// equivalent to testing if the status code is < 400.
+    ///
+    /// Return true if the status is a success, false if it is a failure
     pub fn is_ok(&self) -> bool {
         match unsafe { ffi::sfFtpListingResponse_isOk(self.listing_response) } {
             SFFALSE => false,
@@ -195,22 +193,18 @@ impl ListingResponse {
         }
     }
 
-    /**
-    * Get the status code of a FTP listing response
-    *
-    * Return the status code
-    */
+    /// Get the status code of a FTP listing response
+    ///
+    /// Return the status code
     pub fn get_status(&self) -> Status {
         unsafe {
             mem::transmute(ffi::sfFtpListingResponse_getStatus(self.listing_response) as i16)
         }
     }
 
-    /**
-    * Get the full message contained in a FTP listing response
-    *
-    * Return the response message
-    */
+    /// Get the full message contained in a FTP listing response
+    ///
+    /// Return the response message
     pub fn get_message(&self) -> String {
         unsafe {
             CString::new(ffi::sfFtpListingResponse_getMessage(self.listing_response),
@@ -218,26 +212,22 @@ impl ListingResponse {
         }
     }
 
-    /**
-    * Return the number of directory/file names contained in a FTP listing response
-    *
-    * Return the total number of names available
-    */
+    /// Return the number of directory/file names contained in a FTP listing response
+    ///
+    /// Return the total number of names available
     pub fn get_count(&self) -> u64 {
         unsafe {
             ffi::sfFtpListingResponse_getCount(self.listing_response) as u64
         }
     }
 
-    /**
-    * Return a directory/file name contained in a FTP listing response
-    *
-    * # Arguments
-    * * index - Index of the name to get (in range [0 .. getCount])
-    *
-    * Return the requested name
-    */
-    pub fn get_name(&self, index : u64) -> String {
+    /// Return a directory/file name contained in a FTP listing response
+    ///
+    /// # Arguments
+    /// * index - Index of the name to get (in range [0 .. getCount])
+    ///
+    /// Return the requested name
+    pub fn get_name(&self, index: u64) -> String {
         unsafe {
             CString::new(ffi::sfFtpListingResponse_getName(self.listing_response, index as size_t),
                          false).as_str().unwrap().to_string()
@@ -254,14 +244,12 @@ impl Drop for ListingResponse {
 }
 
 impl DirectoryResponse {
-    /**
-    * Check if a FTP directory response status code means a success
-    *
-    * This function is defined for convenience, it is
-    * equivalent to testing if the status code is < 400.
-    *
-    * Return true if the status is a success, false if it is a failure
-    */
+    /// Check if a FTP directory response status code means a success
+    ///
+    /// This function is defined for convenience, it is
+    /// equivalent to testing if the status code is < 400.
+    ///
+    /// Return true if the status is a success, false if it is a failure
     pub fn is_ok(&self) -> bool {
         match unsafe { ffi::sfFtpDirectoryResponse_isOk(self.directory_response) } {
             SFFALSE => false,
@@ -269,22 +257,18 @@ impl DirectoryResponse {
         }
     }
 
-    /**
-    * Get the status code of a FTP directory response
-    *
-    * Return the status code
-    */
+    /// Get the status code of a FTP directory response
+    ///
+    /// Return the status code
     pub fn get_status(&self) -> Status {
         unsafe {
             mem::transmute(ffi::sfFtpDirectoryResponse_getStatus(self.directory_response) as i16)
         }
     }
 
-    /**
-    * Get the full message contained in a FTP directory response
-    *
-    * Return the response message
-    */
+    /// Get the full message contained in a FTP directory response
+    ///
+    /// Return the response message
     pub fn get_message(&self) -> String {
         unsafe {
             CString::new(ffi::sfFtpDirectoryResponse_getMessage(self.directory_response),
@@ -292,11 +276,9 @@ impl DirectoryResponse {
         }
     }
 
-    /**
-    * Get the directory returned in a FTP directory response
-    *
-    * Return the directory name
-    */
+    /// Get the directory returned in a FTP directory response
+    ///
+    /// Return the directory name
     pub fn get_directory(&self) -> String {
         unsafe {
             CString::new(ffi::sfFtpDirectoryResponse_getDirectory(self.directory_response),
@@ -314,14 +296,12 @@ impl Drop for DirectoryResponse {
 }
 
 impl Response {
-    /**
-    * Check if a FTP response status code means a success
-    *
-    * This function is defined for convenience, it is
-    * equivalent to testing if the status code is < 400.
-    *
-    * Return true if the status is a success, false if it is a failure
-    */
+    /// Check if a FTP response status code means a success
+    ///
+    /// This function is defined for convenience, it is
+    /// equivalent to testing if the status code is < 400.
+    ///
+    /// Return true if the status is a success, false if it is a failure
     pub fn is_ok(&self) -> bool {
         match unsafe { ffi::sfFtpResponse_isOk(self.response) } {
             SFFALSE => false,
@@ -329,22 +309,18 @@ impl Response {
         }
     }
 
-    /**
-    * Get the status code of a FTP response
-    *
-    * Return Status code
-    */
+    /// Get the status code of a FTP response
+    ///
+    /// Return Status code
     pub fn get_status(&self) -> Status {
         unsafe {
             mem::transmute(ffi::sfFtpResponse_getStatus(self.response) as i16)
         }
     }
 
-    /**
-    * Get the full message contained in a FTP response
-    *
-    * Return the response message
-    */
+    /// Get the full message contained in a FTP response
+    ///
+    /// Return the response message
     pub fn get_message(&self) -> String {
         unsafe {
             CString::new(ffi::sfFtpResponse_getMessage(self.response),
@@ -362,301 +338,269 @@ impl Drop for Response {
 }
 
 impl Ftp {
-    /**
-    * Create a new Ftp object
-    *
-    * Return Some(Ftp) or None
-    */
+    /// Create a new Ftp object
+    ///
+    /// Return Some(Ftp) or None
     pub fn new() -> Option<Ftp> {
         let ptr = unsafe { ffi::sfFtp_create() };
         if ptr.is_null() {
             None
         } else {
             Some(Ftp {
-                ftp : ptr
+                ftp: ptr
             })
         }
     }
 
-    /**
-    * Connect to the specified FTP server
-    *
-    * The port should be 21, which is the standard
-    * port used by the FTP protocol. You shouldn't use a different
-    * value, unless you really know what you do.
-    * This function tries to connect to the server so it may take
-    * a while to complete, especially if the server is not
-    * reachable. To avoid blocking your application for too long,
-    * you can use a timeout. Using 0 means that the
-    * system timeout will be used (which is usually pretty long).
-    *
-    * # Arguments
-    * * server - Name or address of the FTP server to connect to
-    * * port - Port used for the connection
-    * * timeout - Maximum time to wait
-    *
-    * Return the server response to the request
-    */
-    pub fn connect(&self, server : &IpAddress, port : u16, timeout : &Time) -> Response {
+    /// Connect to the specified FTP server
+    ///
+    /// The port should be 21, which is the standard
+    /// port used by the FTP protocol. You shouldn't use a different
+    /// value, unless you really know what you do.
+    /// This function tries to connect to the server so it may take
+    /// a while to complete, especially if the server is not
+    /// reachable. To avoid blocking your application for too long,
+    /// you can use a timeout. Using 0 means that the
+    /// system timeout will be used (which is usually pretty long).
+    ///
+    /// # Arguments
+    /// * server - Name or address of the FTP server to connect to
+    /// * port - Port used for the connection
+    /// * timeout - Maximum time to wait
+    ///
+    /// Return the server response to the request
+    pub fn connect(&self, server: &IpAddress, port: u16, timeout: &Time) -> Response {
         Response {
-            response : unsafe { ffi::sfFtp_connect(self.ftp, server.unwrap(), port, timeout.unwrap()) }
+            response: unsafe { ffi::sfFtp_connect(self.ftp, server.unwrap(), port, timeout.unwrap()) }
         }
     }
 
-    /**
-    * Log in using an anonymous account
-    *
-    * Logging in is mandatory after connecting to the server.
-    * Users that are not logged in cannot perform any operation.
-    *
-    * Return the server response to the request
-    */
+    /// Log in using an anonymous account
+    ///
+    /// Logging in is mandatory after connecting to the server.
+    /// Users that are not logged in cannot perform any operation.
+    ///
+    /// Return the server response to the request
     pub fn login_anonymous(&self) -> Response {
         Response {
-            response : unsafe { ffi::sfFtp_loginAnonymous(self.ftp) }
+            response: unsafe { ffi::sfFtp_loginAnonymous(self.ftp) }
         }
     }
 
-    /**
-    * Log in using a username and a password
-    *
-    * Logging in is mandatory after connecting to the server.
-    * Users that are not logged in cannot perform any operation.
-    *
-    * # Arguments
-    * * name - User name
-    * * password - Password
-    *
-    * Return the server response to the request
-    */
-    pub fn login(&self, user_name : &str, password : &str) -> Response {
+    /// Log in using a username and a password
+    ///
+    /// Logging in is mandatory after connecting to the server.
+    /// Users that are not logged in cannot perform any operation.
+    ///
+    /// # Arguments
+    /// * name - User name
+    /// * password - Password
+    ///
+    /// Return the server response to the request
+    pub fn login(&self, user_name: &str, password: &str) -> Response {
         let c_user_name = user_name.to_c_str();
         let c_password = password.to_c_str();
         Response {
-            response : unsafe { ffi::sfFtp_login(self.ftp,
+            response: unsafe { ffi::sfFtp_login(self.ftp,
                                                  c_user_name.unwrap(),
                                                  c_password.unwrap()) }
         }
     }
 
-    /**
-    * Close the connection with the server
-    *
-    * Return the server response to the request
-    */
+    /// Close the connection with the server
+    ///
+    /// Return the server response to the request
     pub fn disconnect(&self) -> Response {
         Response {
-            response : unsafe { ffi::sfFtp_disconnect(self.ftp) }
+            response: unsafe { ffi::sfFtp_disconnect(self.ftp) }
         }
     }
 
-    /**
-    * Send a null command to keep the connection alive
-    *
-    * This command is useful because the server may close the
-    * connection automatically if no command is sent.
-    *
-    * Return the server response to the request
-    */
+    /// Send a null command to keep the connection alive
+    ///
+    /// This command is useful because the server may close the
+    /// connection automatically if no command is sent.
+    ///
+    /// Return the server response to the request
     pub fn keep_alive(&self) -> Response {
         Response {
-            response : unsafe { ffi::sfFtp_keepAlive(self.ftp) }
+            response: unsafe { ffi::sfFtp_keepAlive(self.ftp) }
         }
     }
 
-    /**
-    * Get the current working directory
-    *
-    * The working directory is the root path for subsequent
-    * operations involving directories and/or filenames.
-    *
-    * Return the server response to the request
-    */
+    /// Get the current working directory
+    ///
+    /// The working directory is the root path for subsequent
+    /// operations involving directories and/or filenames.
+    ///
+    /// Return the server response to the request
     pub fn get_working_directory(&self) -> DirectoryResponse {
         DirectoryResponse {
-            directory_response : unsafe { ffi::sfFtp_getWorkingDirectory(self.ftp) }
+            directory_response: unsafe { ffi::sfFtp_getWorkingDirectory(self.ftp) }
         }
     }
 
-    /**
-    * Get the contents of the given directory
-    *
-    * This function retrieves the sub-directories and files
-    * contained in the given directory. It is not recursive.
-    * The directory parameter is relative to the current
-    * working directory.
-    *
-    * # Arguments
-    * * directory - Directory to list
-    *
-    * Return the server response to the request
-    */
-    pub fn get_directory_listing(&self, directory : &str) -> ListingResponse {
+    /// Get the contents of the given directory
+    ///
+    /// This function retrieves the sub-directories and files
+    /// contained in the given directory. It is not recursive.
+    /// The directory parameter is relative to the current
+    /// working directory.
+    ///
+    /// # Arguments
+    /// * directory - Directory to list
+    ///
+    /// Return the server response to the request
+    pub fn get_directory_listing(&self, directory: &str) -> ListingResponse {
         let c_directory = directory.to_c_str();
         ListingResponse {
-            listing_response : unsafe { ffi::sfFtp_getDirectoryListing(self.ftp,
+            listing_response: unsafe { ffi::sfFtp_getDirectoryListing(self.ftp,
                                                                        c_directory.unwrap()) }
         }
     }
 
-    /**
-    * Change the current working directory
-    *
-    * The new directory must be relative to the current one.
-    *
-    * # Arguments
-    * * directory - New working directory
-    *
-    * Return the server response to the request
-    */
-    pub fn change_directory(&self, directory : &str) -> Response {
+    /// Change the current working directory
+    ///
+    /// The new directory must be relative to the current one.
+    ///
+    /// # Arguments
+    /// * directory - New working directory
+    ///
+    /// Return the server response to the request
+    pub fn change_directory(&self, directory: &str) -> Response {
         let c_directory = directory.to_c_str();
         Response {
-            response : unsafe { ffi::sfFtp_changeDirectory(self.ftp,
+            response: unsafe { ffi::sfFtp_changeDirectory(self.ftp,
                                                            c_directory.unwrap()) }
         }
     }
 
-    /**
-    * Go to the parent directory of the current one
-    *
-    * Return the server response to the request
-    */
+    /// Go to the parent directory of the current one
+    ///
+    /// Return the server response to the request
     pub fn parent_directory(&self) -> Response {
         Response {
-            response : unsafe { ffi::sfFtp_parentDirectory(self.ftp) }
+            response: unsafe { ffi::sfFtp_parentDirectory(self.ftp) }
         }
     }
 
-    /**
-    * Create a new directory
-    *
-    * The new directory is created as a child of the current
-    * working directory.
-    *
-    * # Arguments
-    * * name - Name of the directory to create
-    *
-    * Return the server response to the request
-    */
-    pub fn create_directory(&self, name : &str) -> Response {
+    /// Create a new directory
+    ///
+    /// The new directory is created as a child of the current
+    /// working directory.
+    ///
+    /// # Arguments
+    /// * name - Name of the directory to create
+    ///
+    /// Return the server response to the request
+    pub fn create_directory(&self, name: &str) -> Response {
         let c_name = name.to_c_str();
         Response {
-            response : unsafe { ffi::sfFtp_createDirectory(self.ftp,
+            response: unsafe { ffi::sfFtp_createDirectory(self.ftp,
                                                            c_name.unwrap()) }
         }
     }
 
-    /**
-    * Remove an existing directory
-    *
-    * he directory to remove must be relative to the
-    * current working directory.
-    * Use this function with caution, the directory will
-    * be removed permanently!
-    *
-    * # Arguments
-    * * name - Name of the directory to remove
-    *
-    * Return the server response to the request
-    */
-    pub fn delete_directory(&self, name : &str) -> Response {
+    /// Remove an existing directory
+    ///
+    /// he directory to remove must be relative to the
+    /// current working directory.
+    /// Use this function with caution, the directory will
+    /// be removed permanently!
+    ///
+    /// # Arguments
+    /// * name - Name of the directory to remove
+    ///
+    /// Return the server response to the request
+    pub fn delete_directory(&self, name: &str) -> Response {
         let c_name = name.to_c_str();
         Response {
-            response : unsafe { ffi::sfFtp_deleteDirectory(self.ftp,
+            response: unsafe { ffi::sfFtp_deleteDirectory(self.ftp,
                                                            c_name.unwrap()) }
         }
     }
 
-    /**
-    * Rename an existing file
-    *
-    * The filenames must be relative to the current working
-    * directory.
-    *
-    * # Arguments
-    * * file - File to rename
-    * * newName - New name of the file
-    *
-    * Return the server response to the request
-    */
-    pub fn rename_file(&self, name : &str, new_name : &str) -> Response {
+    /// Rename an existing file
+    ///
+    /// The filenames must be relative to the current working
+    /// directory.
+    ///
+    /// # Arguments
+    /// * file - File to rename
+    /// * newName - New name of the file
+    ///
+    /// Return the server response to the request
+    pub fn rename_file(&self, name: &str, new_name: &str) -> Response {
         let c_name = name.to_c_str();
         let c_new_name = new_name.to_c_str();
         Response {
-            response : unsafe { ffi::sfFtp_renameFile(self.ftp,
+            response: unsafe { ffi::sfFtp_renameFile(self.ftp,
                                                       c_name.unwrap(),
                                                       c_new_name.unwrap()) }
         }
     }
 
-    /**
-    * Remove an existing file
-    *
-    * The file name must be relative to the current working
-    * directory.
-    * Use this function with caution, the file will be
-    * removed permanently!
-    *
-    * # Arguments
-    * * name File to remove
-    *
-    * Return the server response to the request
-    */
-    pub fn delete_file(&self, name : &str) -> Response {
+    /// Remove an existing file
+    ///
+    /// The file name must be relative to the current working
+    /// directory.
+    /// Use this function with caution, the file will be
+    /// removed permanently!
+    ///
+    /// # Arguments
+    /// * name File to remove
+    ///
+    /// Return the server response to the request
+    pub fn delete_file(&self, name: &str) -> Response {
         let c_name = name.to_c_str();
         Response {
-            response : unsafe { ffi::sfFtp_deleteFile(self.ftp,
+            response: unsafe { ffi::sfFtp_deleteFile(self.ftp,
                                                       c_name.unwrap()) }
         }
     }
 
-    /**
-    * Download a file from a FTP server
-    *
-    * The filename of the distant file is relative to the
-    * current working directory of the server, and the local
-    * destination path is relative to the current directory
-    * of your application.
-    *
-    * # Arguments
-    * * remoteFile - Filename of the distant file to download
-    * * localPath - Where to put to file on the local computer
-    * * mode - Transfer mode
-    *
-    * Return the server response to the request
-    */
-    pub fn download(&self, distant_file : &str, dest_path : &str, mode : TransferMode) -> Response {
+    /// Download a file from a FTP server
+    ///
+    /// The filename of the distant file is relative to the
+    /// current working directory of the server, and the local
+    /// destination path is relative to the current directory
+    /// of your application.
+    ///
+    /// # Arguments
+    /// * remoteFile - Filename of the distant file to download
+    /// * localPath - Where to put to file on the local computer
+    /// * mode - Transfer mode
+    ///
+    /// Return the server response to the request
+    pub fn download(&self, distant_file: &str, dest_path: &str, mode: TransferMode) -> Response {
         let c_distant_file = distant_file.to_c_str();
         let c_dest_path = dest_path.to_c_str();
         Response {
-            response : unsafe { ffi::sfFtp_download(self.ftp,
+            response: unsafe { ffi::sfFtp_download(self.ftp,
                                                     c_distant_file.unwrap(),
                                                     c_dest_path.unwrap(),
                                                     mode as ffi::TransferMode) }
         }
     }
 
-    /**
-    * Upload a file to a FTP server
-    *
-    * The name of the local file is relative to the current
-    * working directory of your application, and the
-    * remote path is relative to the current directory of the
-    * FTP server.
-    *
-    * # Arguments
-    * * localFile - Path of the local file to upload
-    * * remotePath - Where to put to file on the server
-    * * mode - Transfer mode
-    *
-    * Return the server response to the request
-    */
-    pub fn upload(&self, local_file : &str, dest_path : &str, mode : TransferMode) -> Response {
+    /// Upload a file to a FTP server
+    ///
+    /// The name of the local file is relative to the current
+    /// working directory of your application, and the
+    /// remote path is relative to the current directory of the
+    /// FTP server.
+    ///
+    /// # Arguments
+    /// * localFile - Path of the local file to upload
+    /// * remotePath - Where to put to file on the server
+    /// * mode - Transfer mode
+    ///
+    /// Return the server response to the request
+    pub fn upload(&self, local_file: &str, dest_path: &str, mode: TransferMode) -> Response {
         let c_local_file = local_file.to_c_str();
         let c_dest_path = dest_path.to_c_str();
         Response {
-            response : unsafe { ffi::sfFtp_upload(self.ftp,
+            response: unsafe { ffi::sfFtp_upload(self.ftp,
                                                   c_local_file.unwrap(),
                                                   c_dest_path.unwrap(),
                                                   mode as ffi::TransferMode) }

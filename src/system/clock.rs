@@ -22,39 +22,36 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-/*!
- * Measuring elapsed time
- *
- * Utility class that measures the elapsed time
- */
+
+//! Measuring elapsed time
+//!
+//! Utility class that measures the elapsed time
 
 use traits::Wrappable;
 use system::Time;
 
 use ffi = ffi::system::clock;
 
-/**
- * Measuring elapsed time
- *
- * Utility class that measures the elapsed time
- */
+/// Measuring elapsed time
+///
+/// Utility class that measures the elapsed time
 pub struct Clock {
     #[doc(hidden)]
-    clock : *mut ffi::sfClock
+    clock: *mut ffi::sfClock
 }
 
 impl Clock {
     /// Create a new Clock and start it.
     pub fn new() -> Clock {
         Clock {
-            clock : unsafe { ffi::sfClock_create() }
+            clock: unsafe { ffi::sfClock_create() }
         }
     }
 
     /// Create a clock by copying an extant one
     pub fn clone(&self) -> Clock {
         Clock {
-            clock : unsafe { ffi::sfClock_copy(self.clock) }
+            clock: unsafe { ffi::sfClock_copy(self.clock) }
         }
     }
 

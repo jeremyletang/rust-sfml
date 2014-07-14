@@ -33,15 +33,15 @@
 #[repr(C)]
 pub enum WindowStyle {
     /// No border / title bar (this flag and all others are mutually exclusive)
-    NoStyle =         0,
+    NoStyle = 0,
     /// Title bar + fixed border.
-    Titlebar =        1,
+    Titlebar = 1,
     /// Titlebar + resizable border + maximize button.
-    Resize =          2,
+    Resize = 2,
     /// Titlebar + close button.
-    Close =           4,
+    Close = 4,
     /// Fullscreen mode (this flag and all others are mutually exclusive)
-    Fullscreen =      8,
+    Fullscreen = 8,
     /// Default window style.
-    DefaultStyle =    7
+    DefaultStyle = 7
 }

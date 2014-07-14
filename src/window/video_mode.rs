@@ -22,12 +22,10 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-/*!
- * Defines VideoModes
- *
- * A video mode is defined by a width and a height (in pixels) and a depth
- * (in bits per pixel). Video modes are used to setup windows at creation time.
- */
+//! Defines VideoModes
+//!
+//! A video mode is defined by a width and a height (in pixels) and a depth
+//! (in bits per pixel). Video modes are used to setup windows at creation time.
 
 use std::c_vec::CVec;
 use libc::{c_uint, size_t};
@@ -38,64 +36,56 @@ use traits::Wrappable;
 use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi = ffi::window::video_mode;
 
-/**
- * VideoMode defines a video mode (width, height, bpp, frequency)
- *
- * Provides functions for getting modes supported by the display device
- */
+/// VideoMode defines a video mode (width, height, bpp, frequency)
+///
+/// Provides functions for getting modes supported by the display device
 #[deriving(Clone, PartialEq, Eq, PartialOrd, Ord, Show)]
 pub struct VideoMode {
     /// Video mode width, in pixels.
-    pub width:          uint,
+    pub width: uint,
     /// Video mode height, in pixels.
-    pub height:         uint,
+    pub height: uint,
     /// Video mode pixel depth, in bits per pixels.
     pub bits_per_pixel: uint
 }
 
 impl VideoMode {
-    /**
-     * Default constructor for class VideoMode.
-     *
-     * Return a new VideoMode
-     */
+    /// Default constructor for class VideoMode.
+    ///
+    /// Return a new VideoMode
     pub fn new() -> VideoMode {
         VideoMode{
-            width :             0,
-            height :            0,
-            bits_per_pixel :    0
+            width: 0,
+            height: 0,
+            bits_per_pixel: 0
         }
     }
 
-    /**
-     * Constructor with parameters for class VideoMode.
-     *
-     * Return a new VideoMode initialized
-     */
-    pub fn new_init(width : uint,
-                    height : uint,
-                    bits_per_pixel : uint) -> VideoMode {
+    /// Constructor with parameters for class VideoMode.
+    ///
+    /// Return a new VideoMode initialized
+    pub fn new_init(width: uint,
+                    height: uint,
+                    bits_per_pixel: uint) -> VideoMode {
         VideoMode{
-            width :             width,
-            height :            height,
-            bits_per_pixel :    bits_per_pixel
+            width: width,
+            height: height,
+            bits_per_pixel: bits_per_pixel
         }
     }
 
-    /**
-     * Tell whether or not a video mode is valid
-     *
-     * The validity of video modes is only relevant when using
-     * fullscreen windows; otherwise any video mode can be used
-     * with no restriction.
-     *
-     * return true if the video mode is valid for fullscreen mode
-     */
+    /// Tell whether or not a video mode is valid
+    ///
+    /// The validity of video modes is only relevant when using
+    /// fullscreen windows; otherwise any video mode can be used
+    /// with no restriction.
+    ///
+    /// return true if the video mode is valid for fullscreen mode
     pub fn is_valid(&self) -> bool {
         let i = unsafe { ffi::sfVideoMode_isValid(ffi::sfVideoMode {
-                    width : self.width as c_uint,
-                    height : self.height as c_uint,
-                    bits_per_pixel : self.bits_per_pixel as c_uint
+                    width: self.width as c_uint,
+                    height: self.height as c_uint,
+                    bits_per_pixel: self.bits_per_pixel as c_uint
                 }) };
         match i {
             SFFALSE => false,
@@ -103,44 +93,40 @@ impl VideoMode {
         }
     }
 
-    /**
-     * Static Method, get the current desktop video mode
-     *
-     * return the urrent desktop video mode
-     */
+    /// Static Method, get the current desktop video mode
+    ///
+    /// return the urrent desktop video mode
     pub fn get_desktop_mode() -> VideoMode {
         let mode = unsafe { ffi::sfVideoMode_getDesktopMode() };
         VideoMode{
-            width :             mode.width as uint,
-            height :            mode.height as uint,
-            bits_per_pixel :    mode.bits_per_pixel as uint
+            width: mode.width as uint,
+            height: mode.height as uint,
+            bits_per_pixel: mode.bits_per_pixel as uint
         }
     }
 
-    /**
-     * Static Method, retrieve all the video modes supported in fullscreen mode
-     *
-     * When creating a fullscreen window, the video mode is restricted
-     * to be compatible with what the graphics driver and monitor
-     * support. This function returns the complete list of all video
-     * modes that can be used in fullscreen mode.
-     * The returned array is sorted from best to worst, so that
-     * the first element will always give the best mode (higher
-     * width, height and bits_per_pixel).
-     *
-     * Return a vector containing all the supported VideoMode
-     */
+    /// Static Method, retrieve all the video modes supported in fullscreen mode
+    ///
+    /// When creating a fullscreen window, the video mode is restricted
+    /// to be compatible with what the graphics driver and monitor
+    /// support. This function returns the complete list of all video
+    /// modes that can be used in fullscreen mode.
+    /// The returned array is sorted from best to worst, so that
+    /// the first element will always give the best mode (higher
+    /// width, height and bits_per_pixel).
+    ///
+    /// Return a vector containing all the supported VideoMode
     pub fn get_fullscreen_modes() -> Option<Vec<VideoMode>> {
-        let mut i : size_t = 0;
-        let mut ret_tab : Vec<VideoMode> = Vec::new();
+        let mut i: size_t = 0;
+        let mut ret_tab: Vec<VideoMode> = Vec::new();
         unsafe {
-            let tab : *mut ffi::sfVideoMode =
+            let tab: *mut ffi::sfVideoMode =
                 ffi::sfVideoMode_getFullscreenModes(&mut i) as *mut ffi::sfVideoMode;
             if i == 0 {
                 return None;
             }
             let cvec = CVec::new(tab, i as uint);
-            let mut d : uint = 0;
+            let mut d: uint = 0;
             ret_tab.push(Wrappable::wrap(*cvec.get(d).unwrap()));
             d += 1;
             while d != i as uint {
@@ -156,17 +142,17 @@ impl VideoMode {
 impl Wrappable<ffi::sfVideoMode> for VideoMode {
     fn wrap(mode: ffi::sfVideoMode) -> VideoMode {
         VideoMode{
-            width :             mode.width as uint,
-            height :            mode.height as uint,
-            bits_per_pixel :    mode.bits_per_pixel as uint
+            width: mode.width as uint,
+            height: mode.height as uint,
+            bits_per_pixel: mode.bits_per_pixel as uint
         }
     }
 
     fn unwrap(&self) -> ffi::sfVideoMode {
         ffi::sfVideoMode{
-            width :             self.width as c_uint,
-            height :            self.height as c_uint,
-            bits_per_pixel :    self.bits_per_pixel as c_uint
+            width: self.width as c_uint,
+            height: self.height as c_uint,
+            bits_per_pixel: self.bits_per_pixel as c_uint
         }
     }
 }

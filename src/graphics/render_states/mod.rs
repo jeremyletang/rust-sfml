@@ -36,70 +36,66 @@ pub mod rc;
 /// Define the states used for drawing to a RenderTarget
 pub struct RenderStates<'s> {
     #[doc(hidden)]
-    sfRenderStates :   ffi::sfRenderStates,
+    sfRenderStates: ffi::sfRenderStates,
     /// Blending mode.
-    pub blendMode :             BlendMode,
+    pub blendMode: BlendMode,
     /// Transform
-    pub transform :             Transform,
+    pub transform: Transform,
     /// Texture
-    pub texture :               Option<&'s Texture>,
+    pub texture: Option<&'s Texture>,
     /// Shader
-    pub shader :                Option<&'s Shader<'s>>
+    pub shader: Option<&'s Shader<'s>>
 }
 
 impl<'s> RenderStates<'s> {
-    /**
-     * Create a new RenderStates.
-     *
-     * # Arguments
-     * * blend_mode - The BlendMode
-     * * transform - The transform
-     * * texture - Some(texture) if there is a texture, None otherwise
-     * * shader - Some(shader) if there is a shader, None otherwise
-     *
-     * Return a new default RenderStates
-     */
-    pub fn new(blend_mode : BlendMode,
-               transform : Transform,
-               texture : Option<&'s Texture>,
-               shader : Option<&'s Shader<'s>>) -> RenderStates<'s> {
+    /// Create a new RenderStates.
+    ///
+    /// # Arguments
+    /// * blend_mode - The BlendMode
+    /// * transform - The transform
+    /// * texture - Some(texture) if there is a texture, None otherwise
+    /// * shader - Some(shader) if there is a shader, None otherwise
+    ///
+    /// Return a new default RenderStates
+    pub fn new(blend_mode: BlendMode,
+               transform: Transform,
+               texture: Option<&'s Texture>,
+               shader: Option<&'s Shader<'s>>) -> RenderStates<'s> {
         RenderStates {
-            sfRenderStates :    ffi::sfRenderStates {
-                blendMode : blend_mode as i32,
-                transform : transform,
-                texture :   ptr::mut_null(),
-                shader :    ptr::mut_null()
+            sfRenderStates: ffi::sfRenderStates {
+                blendMode: blend_mode as i32,
+                transform: transform,
+                texture: ptr::mut_null(),
+                shader: ptr::mut_null()
             },
-            blendMode :         blend_mode,
-            transform :         transform,
-            texture :           texture,
-            shader :            shader
+            blendMode: blend_mode,
+            transform: transform,
+            texture: texture,
+            shader: shader
         }
     }
 
-    /**
-     * Create a new RenderStates initialized to default.
-     *
-     * # default
-     * * blendMode is initialized to BlendAlpha
-     * * transform is initialized to the identity matrix
-     * * texture is initialized to None
-     * * shader is initialized to None
-     *
-     * Return a new default RenderStates
-     */
+    /// Create a new RenderStates initialized to default.
+    ///
+    /// # default
+    /// * blendMode is initialized to BlendAlpha
+    /// * transform is initialized to the identity matrix
+    /// * texture is initialized to None
+    /// * shader is initialized to None
+    ///
+    /// Return a new default RenderStates
     pub fn default() -> RenderStates<'s> {
         RenderStates {
-            sfRenderStates :    ffi::sfRenderStates {
-                blendMode : BlendAlpha as i32,
-                transform : Transform::new_identity(),
-                texture :   ptr::mut_null(),
-                shader :    ptr::mut_null()
+            sfRenderStates: ffi::sfRenderStates {
+                blendMode: BlendAlpha as i32,
+                transform: Transform::new_identity(),
+                texture: ptr::mut_null(),
+                shader: ptr::mut_null()
             },
-            blendMode :         BlendAlpha,
-            transform :         Transform::new_identity(),
-            texture :           None,
-            shader :            None
+            blendMode: BlendAlpha,
+            transform: Transform::new_identity(),
+            texture: None,
+            shader: None
         }
     }
 

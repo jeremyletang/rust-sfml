@@ -36,7 +36,7 @@ use ffi = ffi::graphics::vertex_array;
 /// Define a set of one or more 2D primitives
 pub struct VertexArray {
     #[doc(hidden)]
-    vertex_array : *mut ffi::sfVertexArray
+    vertex_array: *mut ffi::sfVertexArray
 }
 
 /// An iterator over the vertice of a VertexArray
@@ -48,31 +48,27 @@ pub struct Vertices<'s> {
 }
 
 impl VertexArray {
-    /**
-     * Create a new vertex array
-     *
-     * Return Some(VertexArray) or None
-     */
+    /// Create a new vertex array
+    ///
+    /// Return Some(VertexArray) or None
     pub fn new() -> Option<VertexArray> {
         let ver = unsafe { ffi::sfVertexArray_create() };
         if ver.is_null() {
             None
         } else {
             Some(VertexArray {
-                    vertex_array : ver
+                    vertex_array: ver
                 })
         }
     }
 
-    /**
-     * Create a new initialized vertex array
-     *
-     * # Arguments
-     * * primitive_type - The type of the VertexArray
-     * * vertex_count - The maximal number of vertex
-     *
-     * Return Some(VertexArray) or None
-     */
+    /// Create a new initialized vertex array
+    ///
+    /// # Arguments
+    /// * primitive_type - The type of the VertexArray
+    /// * vertex_count - The maximal number of vertex
+    ///
+    /// Return Some(VertexArray) or None
     pub fn new_init(primitive_type: PrimitiveType,
                     vertex_count: uint) -> Option<VertexArray> {
         let ver = unsafe { ffi::sfVertexArray_create() };
@@ -80,7 +76,7 @@ impl VertexArray {
             None
         } else {
             let mut tmp_vertex = VertexArray {
-                vertex_array : ver
+                vertex_array: ver
             };
             tmp_vertex.set_primitive_type(primitive_type);
             tmp_vertex.resize(vertex_count);
@@ -88,109 +84,95 @@ impl VertexArray {
         }
     }
 
-    /**
-     * Copy an existing vertex array
-     *
-     * # Arguments
-     * * vertexArray - Vertex array to copy
-     *
-     * Return Some(VertexArray) or None
-     */
+    /// Copy an existing vertex array
+    ///
+    /// # Arguments
+    /// * vertexArray - Vertex array to copy
+    ///
+    /// Return Some(VertexArray) or None
     pub fn clone_opt(&self) -> Option<VertexArray> {
         let ver = unsafe { ffi::sfVertexArray_copy(self.vertex_array) };
         if ver.is_null() {
             None
         } else {
             Some(VertexArray {
-                    vertex_array : ver
+                    vertex_array: ver
                 })
         }
     }
 
-    /**
-     * Return the vertex count of a vertex array
-     *
-     * Return the number of vertices in the array
-     */
+    /// Return the vertex count of a vertex array
+    ///
+    /// Return the number of vertices in the array
     pub fn get_vertex_count(&self) -> uint {
         unsafe {
             ffi::sfVertexArray_getVertexCount(self.vertex_array) as uint
         }
     }
 
-    /**
-     * Clear a vertex array
-     *
-     * This function removes all the vertices from the array.
-     * It doesn't deallocate the corresponding memory, so that
-     * adding new vertices after clearing doesn't involve
-     * reallocating all the memory.
-     */
+    /// Clear a vertex array
+    ///
+    /// This function removes all the vertices from the array.
+    /// It doesn't deallocate the corresponding memory, so that
+    /// adding new vertices after clearing doesn't involve
+    /// reallocating all the memory.
     pub fn clear(&mut self) -> () {
         unsafe {
             ffi::sfVertexArray_clear(self.vertex_array)
         }
     }
 
-    /**
-     * Resize the vertex array
-     *
-     * If vertexCount is greater than the current size, the previous
-     * vertices are kept and new (default-constructed) vertices are
-     * added.
-     * If vertexCount is less than the current size, existing vertices
-     * are removed from the array.
-     *
-     * # Arguments
-     * * vertex_count - New size of the array (number of vertices)
-     */
-    pub fn resize(&mut self, vertex_count : uint) -> () {
+    /// Resize the vertex array
+    ///
+    /// If vertexCount is greater than the current size, the previous
+    /// vertices are kept and new (default-constructed) vertices are
+    /// added.
+    /// If vertexCount is less than the current size, existing vertices
+    /// are removed from the array.
+    ///
+    /// # Arguments
+    /// * vertex_count - New size of the array (number of vertices)
+    pub fn resize(&mut self, vertex_count: uint) -> () {
         unsafe {
             ffi::sfVertexArray_resize(self.vertex_array, vertex_count as c_uint)
         }
     }
 
-    /**
-     * Add a vertex to a vertex array array
-     *
-     * # Arguments
-     * * vertex - Vertex to add
-     */
-    pub fn append(&mut self, vertex : &Vertex) -> () {
+    /// Add a vertex to a vertex array array
+    ///
+    /// # Arguments
+    /// * vertex - Vertex to add
+    pub fn append(&mut self, vertex: &Vertex) -> () {
         unsafe {
             ffi::sfVertexArray_append(self.vertex_array, *vertex)
         }
     }
 
-    /**
-     * Compute the bounding rectangle of a vertex array
-     *
-     * This function returns the axis-aligned rectangle that
-     * contains all the vertices of the array.
-     *
-     * Return the bounding rectangle of the vertex array
-     */
+    /// Compute the bounding rectangle of a vertex array
+    ///
+    /// This function returns the axis-aligned rectangle that
+    /// contains all the vertices of the array.
+    ///
+    /// Return the bounding rectangle of the vertex array
     pub fn get_bounds(&self) -> FloatRect {
         unsafe {
             ffi::sfVertexArray_getBounds(self.vertex_array)
         }
     }
 
-    /**
-     * Set the type of primitives of a vertex array
-     *
-     * This function defines how the vertices must be interpreted
-     * when it's time to draw them:
-     * As points
-     * As lines
-     * As triangles
-     * As quads
-     * The default primitive type is Points.
-     *
-     * # Arguments
-     * * type - Type of primitive
-     */
-    pub fn set_primitive_type(&mut self, primitive_type : PrimitiveType) -> () {
+    /// Set the type of primitives of a vertex array
+    ///
+    /// This function defines how the vertices must be interpreted
+    /// when it's time to draw them:
+    /// As points
+    /// As lines
+    /// As triangles
+    /// As quads
+    /// The default primitive type is Points.
+    ///
+    /// # Arguments
+    /// * type - Type of primitive
+    pub fn set_primitive_type(&mut self, primitive_type: PrimitiveType) -> () {
         unsafe {
             match primitive_type {
                 primitive_type::Points              =>
@@ -218,11 +200,9 @@ impl VertexArray {
         }
     }
 
-    /**
-     * Get the type of primitives drawn by a vertex array
-     *
-     * Return the primitive type
-     */
+    /// Get the type of primitives drawn by a vertex array
+    ///
+    /// Return the primitive type
     pub fn get_primitive_type(&self) -> PrimitiveType {
         match unsafe { ffi::sfVertexArray_getPrimitiveType(self.vertex_array) } {
             ffi::SFPOINTS             => primitive_type::Points,
@@ -236,19 +216,17 @@ impl VertexArray {
         }
     }
 
-    /**
-     * Get access to a vertex by its index
-     *
-     * This function doesn't check index, it must be in range
-     * [0, vertex count - 1]. The behaviour is undefined
-     * otherwise.
-     *
-     * # Arguments
-     * * index - Index of the vertex to get
-     *
-     * Return a mutable reference to the index-th vertex
-     */
-    pub fn get_vertex(&self, index : uint) -> &mut Vertex {
+    /// Get access to a vertex by its index
+    ///
+    /// This function doesn't check index, it must be in range
+    /// [0, vertex count - 1]. The behaviour is undefined
+    /// otherwise.
+    ///
+    /// # Arguments
+    /// * index - Index of the vertex to get
+    ///
+    /// Return a mutable reference to the index-th vertex
+    pub fn get_vertex(&self, index: uint) -> &mut Vertex {
         unsafe {
             mem::transmute(ffi::sfVertexArray_getVertex(self.vertex_array,
                                                          index as c_uint))
@@ -272,7 +250,7 @@ impl Clone for VertexArray {
             fail!("Not enough memory to clone Font")
         } else {
             VertexArray {
-                vertex_array : ver
+                vertex_array: ver
             }
         }
     }
@@ -305,9 +283,9 @@ impl Index<uint, Vertex> for VertexArray {
 }
 
 impl Wrappable<*mut ffi::sfVertexArray> for VertexArray {
-    fn wrap(vertex_array : *mut ffi::sfVertexArray) -> VertexArray {
+    fn wrap(vertex_array: *mut ffi::sfVertexArray) -> VertexArray {
         VertexArray {
-            vertex_array : vertex_array
+            vertex_array: vertex_array
         }
     }
 
@@ -317,35 +295,35 @@ impl Wrappable<*mut ffi::sfVertexArray> for VertexArray {
 }
 
 impl Drawable for VertexArray {
-    fn draw_in_render_window(&self, render_window : &mut RenderWindow) -> () {
+    fn draw_in_render_window(&self, render_window: &mut RenderWindow) -> () {
         render_window.draw_vertex_array(self)
     }
 
     fn draw_in_render_window_rs(&self,
-                                render_window : &mut RenderWindow,
-                                render_states : &mut RenderStates) -> () {
+                                render_window: &mut RenderWindow,
+                                render_states: &mut RenderStates) -> () {
         render_window.draw_vertex_array_rs(self, render_states)
     }
 
     fn draw_in_render_window_rs_rc(&self,
-                                   render_window : &mut RenderWindow,
-                                   render_states : &mut rc::RenderStates) -> () {
+                                   render_window: &mut RenderWindow,
+                                   render_states: &mut rc::RenderStates) -> () {
         render_window.draw_vertex_array_rs_rc(self, render_states)
     }
 
-    fn draw_in_render_texture(&self, render_texture : &mut RenderTexture) -> () {
+    fn draw_in_render_texture(&self, render_texture: &mut RenderTexture) -> () {
         render_texture.draw_vertex_array(self)
     }
 
     fn draw_in_render_texture_rs(&self,
-                                 render_texture : &mut RenderTexture,
-                                 render_states : &mut RenderStates) -> () {
+                                 render_texture: &mut RenderTexture,
+                                 render_states: &mut RenderStates) -> () {
         render_texture.draw_vertex_array_rs(self, render_states)
     }
 
     fn draw_in_render_texture_rs_rc(&self,
-                                    render_texture : &mut RenderTexture,
-                                    render_states : &mut rc::RenderStates) -> () {
+                                    render_texture: &mut RenderTexture,
+                                    render_states: &mut rc::RenderStates) -> () {
         render_texture.draw_vertex_array_rs_rc(self, render_states)
     }
 }

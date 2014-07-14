@@ -1,6 +1,4 @@
-/*!
-* Example from SFML : Sound Capture
-*/
+//! Example from SFML: Sound Capture
 
 
 #![crate_name = "sound_capture"]
@@ -25,11 +23,11 @@ fn main() -> () {
     }
 
     // Choose the sample rate
-    println!("Please choose the sample rate for sound capture (44100 is CD quality) : ");
+    println!("Please choose the sample rate for sound capture (44100 is CD quality): ");
     let mut stdin = BufferedReader::new(stdin());
     let mut line = stdin.read_line().unwrap();
     unsafe { line.pop_byte(); }
-    let sample_rate : uint = match strconv::from_str_common(line.as_slice(), 10, false, false, false, strconv::ExpNone, true, false) {
+    let sample_rate: uint = match strconv::from_str_common(line.as_slice(), 10, false, false, false, strconv::ExpNone, true, false) {
         Some(value)     => value,
         None            => fail!("Error, input is not valid")
     };
@@ -39,7 +37,7 @@ fn main() -> () {
     stdin.read_line().unwrap();
 
     // Here we'll use an integrated custom recorder, which saves the captured data into a SoundBuffer
-    let mut recorder : SoundBufferRecorder = match SoundBufferRecorder::new() {
+    let mut recorder: SoundBufferRecorder = match SoundBufferRecorder::new() {
         Some(rec)       => rec,
         None            => fail!("Error, cannot initialize Sound buffer recorder.")
     };
@@ -69,14 +67,14 @@ fn main() -> () {
 
     if unsafe { resp.pop_byte().unwrap() } == 's' as u8 {
         // Choose a filename
-        println!("Choose the file to create : ");
+        println!("Choose the file to create: ");
         let filename = stdin.read_line().unwrap();
 
         // Save the buffer
         (*buffer).borrow().save_to_file(filename.as_slice());
     }
     else {
-        let mut sound : rc::Sound = match rc::Sound::new_with_buffer(buffer.clone()) {
+        let mut sound: rc::Sound = match rc::Sound::new_with_buffer(buffer.clone()) {
             Some(sound)     => sound,
             None            => fail!("Error cannot create Sound")
         };

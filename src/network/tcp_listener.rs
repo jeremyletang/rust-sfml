@@ -35,15 +35,13 @@ use ffi = ffi::network::tcp_listener;
 /// Socket that listens to new TCP connections
 pub struct TcpListener {
     #[doc(hidden)]
-    listener : *mut ffi::sfTcpListener
+    listener: *mut ffi::sfTcpListener
 }
 
 impl TcpListener {
-    /**
-    * Create a new TCP listener
-    *
-    * Return Some(TcpListener) or None
-    */
+    /// Create a new TCP listener
+    ///
+    /// Return Some(TcpListener) or None
     pub fn new() -> Option<TcpListener> {
         let list = unsafe { ffi::sfTcpListener_create() };
         if list.is_null() {
@@ -51,27 +49,25 @@ impl TcpListener {
         }
         else {
             Some(TcpListener {
-                listener : list
+                listener: list
             })
         }
     }
 
-    /**
-    * Set the blocking state of a TCP listener
-    *
-    * In blocking mode, calls will not return until they have
-    * completed their task. For example, a call to
-    * sfTcpListener_accept in blocking mode won't return until
-    * a new connection was actually received.
-    * In non-blocking mode, calls will always return immediately,
-    * using the return code to signal whether there was data
-    * available or not.
-    * By default, all sockets are blocking.
-    *
-    * # Arguments
-    * * blocking - true to set the socket as blocking, false for non-blocking
-    */
-    pub fn set_blocking(&mut self, blocking : bool) -> () {
+    /// Set the blocking state of a TCP listener
+    ///
+    /// In blocking mode, calls will not return until they have
+    /// completed their task. For example, a call to
+    /// sfTcpListener_accept in blocking mode won't return until
+    /// a new connection was actually received.
+    /// In non-blocking mode, calls will always return immediately,
+    /// using the return code to signal whether there was data
+    /// available or not.
+    /// By default, all sockets are blocking.
+    ///
+    /// # Arguments
+    /// * blocking - true to set the socket as blocking, false for non-blocking
+    pub fn set_blocking(&mut self, blocking: bool) -> () {
         unsafe {
             match blocking  {
                 true        => ffi::sfTcpListener_setBlocking(self.listener, SFTRUE),
@@ -80,11 +76,9 @@ impl TcpListener {
         }
     }
 
-    /**
-    * Tell whether a TCP listener is in blocking or non-blocking mode
-    *
-    * Return true if the socket is blocking, false otherwise
-    */
+    /// Tell whether a TCP listener is in blocking or non-blocking mode
+    ///
+    /// Return true if the socket is blocking, false otherwise
     pub fn is_blocking(&self) -> bool {
         match unsafe { ffi::sfTcpListener_isBlocking(self.listener) } {
             SFFALSE => false,
@@ -92,51 +86,45 @@ impl TcpListener {
         }
     }
 
-    /**
-    * Get the port to which a TCP listener is bound locally
-    *
-    * If the socket is not listening to a port, this function
-    * returns 0.
-    *
-    * Return the port to which the TCP listener is bound
-    */
+    /// Get the port to which a TCP listener is bound locally
+    ///
+    /// If the socket is not listening to a port, this function
+    /// returns 0.
+    ///
+    /// Return the port to which the TCP listener is bound
     pub fn get_local_port(&self) -> u16 {
         unsafe {
             ffi::sfTcpListener_getLocalPort(self.listener)
         }
     }
 
-    /**
-    * Start listening for connections
-    *
-    * This functions makes the socket listen to the specified
-    * port, waiting for new connections.
-    * If the socket was previously listening to another port,
-    * it will be stopped first and bound to the new port.
-    *
-    * # Arguments
-    * * port - Port to listen for new connections
-    *
-    * Return status code
-    */
-    pub fn listen(&self, port : u16) -> SocketStatus {
+    /// Start listening for connections
+    ///
+    /// This functions makes the socket listen to the specified
+    /// port, waiting for new connections.
+    /// If the socket was previously listening to another port,
+    /// it will be stopped first and bound to the new port.
+    ///
+    /// # Arguments
+    /// * port - Port to listen for new connections
+    ///
+    /// Return status code
+    pub fn listen(&self, port: u16) -> SocketStatus {
         unsafe {
             mem::transmute(ffi::sfTcpListener_listen(self.listener, port) as i8)
         }
     }
 
-    /**
-    * Accept a new connection
-    *
-    * If the socket is in blocking mode, this function will
-    * not return until a connection is actually received.
-    *
-    * # Arguments
-    * * connected - Socket that will hold the new connection
-    *
-    * Return status code
-    */
-    pub fn accept(&self, connected : &mut TcpSocket) -> SocketStatus {
+    /// Accept a new connection
+    ///
+    /// If the socket is in blocking mode, this function will
+    /// not return until a connection is actually received.
+    ///
+    /// # Arguments
+    /// * connected - Socket that will hold the new connection
+    ///
+    /// Return status code
+    pub fn accept(&self, connected: &mut TcpSocket) -> SocketStatus {
         unsafe {
             mem::transmute(ffi::sfTcpListener_accept(self.listener, &mut connected.unwrap()) as i8)
         }

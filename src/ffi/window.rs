@@ -32,16 +32,16 @@ pub mod window {
     use ffi::sfml_types::SfBool;
 
     pub struct sfWindow {
-        this : *mut c_void
+        this: *mut c_void
     }
 
     pub struct sfEvent {
-        pub typeEvent : c_uint,
-        pub p1 :        c_uint,
-        pub p2 :        c_uint,
-        pub p3 :        c_float,
-        pub p4 :        c_uint,
-        pub p5 :        c_uint
+        pub typeEvent: c_uint,
+        pub p1:        c_uint,
+        pub p2:        c_uint,
+        pub p3:        c_float,
+        pub p4:        c_uint,
+        pub p5:        c_uint
     }
 
     pub enum sfEventType {
@@ -66,33 +66,33 @@ pub mod window {
     }
 
     extern "C" {
-        pub fn sfWindow_create(mode : sfVideoMode, title : *const c_char, style : c_uint, settings : *const ContextSettings) -> *mut sfWindow;
-        pub fn sfWindow_createUnicode(mode : sfVideoMode, title : *const u32, style : c_uint, setting : *const ContextSettings) -> *mut sfWindow;
-        //fn sfWindow_createFromHandle(handle : sfWindowHandle, settings : *mut sfContextSettings) -> *mut sfWindow;
-        pub fn sfWindow_close(window : *mut sfWindow) -> ();
-        pub fn sfWindow_destroy(window : *mut sfWindow) -> ();
-        pub fn sfWindow_isOpen(window : *mut sfWindow) -> SfBool;
-        pub fn sfWindow_getSettings(window : *mut sfWindow) -> ContextSettings;
-        pub fn sfWindow_setTitle(window : *mut sfWindow, title : *const c_char) -> ();
-        pub fn sfWindow_setUnicodeTitle(window : *mut sfWindow, title : *const u32) -> ();
-        pub fn sfWindow_setIcon(window : *mut sfWindow, width : c_uint, height : c_uint, pixel : *const u8) -> ();
-        pub fn sfWindow_setVisible(window : *mut sfWindow, visible : SfBool) -> ();
-        pub fn sfWindow_setMouseCursorVisible(window : *mut sfWindow, visible : SfBool) -> ();
-        pub fn sfWindow_setVerticalSyncEnabled(window : *mut sfWindow, enabled : SfBool) -> ();
-        pub fn sfWindow_setKeyRepeatEnabled(window : *mut sfWindow, enabled : SfBool) -> ();
-        pub fn sfWindow_setActive(window : *mut sfWindow, active : SfBool) -> SfBool;
-        pub fn sfWindow_display(window : *mut sfWindow) -> ();
-        pub fn sfWindow_setFramerateLimit(window : *mut sfWindow, limit : c_uint) -> ();
-        pub fn sfWindow_setJoystickThreshold(window : *mut sfWindow, threshold : c_float) -> ();
-        pub fn sfWindow_getPosition(window : *mut sfWindow) -> Vector2i;
-        pub fn sfWindow_setPosition(window : *mut sfWindow, position : Vector2i) -> ();
-        pub fn sfWindow_getSize(window : *mut sfWindow) -> Vector2u;
-        pub fn sfWindow_setSize(window : *mut sfWindow, size : Vector2u) -> ();
-        pub fn sfWindow_pollEvent(window : *mut sfWindow, event : *mut sfEvent) -> SfBool;
-        pub fn sfWindow_waitEvent(window : *mut sfWindow, event : *mut sfEvent) -> SfBool;
-        pub fn sfMouse_getPosition(relativeTo : *mut sfWindow) -> Vector2i;
-        pub fn sfMouse_setPosition(position : Vector2i, relativeTo : *mut sfWindow) -> ();
-        //fn sfWindow_getSystemHandle(window : *mut sfWindow) -> sfWindowHandle;
+        pub fn sfWindow_create(mode: sfVideoMode, title: *const c_char, style: c_uint, settings: *const ContextSettings) -> *mut sfWindow;
+        pub fn sfWindow_createUnicode(mode: sfVideoMode, title: *const u32, style: c_uint, setting: *const ContextSettings) -> *mut sfWindow;
+        //fn sfWindow_createFromHandle(handle: sfWindowHandle, settings: *mut sfContextSettings) -> *mut sfWindow;
+        pub fn sfWindow_close(window: *mut sfWindow) -> ();
+        pub fn sfWindow_destroy(window: *mut sfWindow) -> ();
+        pub fn sfWindow_isOpen(window: *mut sfWindow) -> SfBool;
+        pub fn sfWindow_getSettings(window: *mut sfWindow) -> ContextSettings;
+        pub fn sfWindow_setTitle(window: *mut sfWindow, title: *const c_char) -> ();
+        pub fn sfWindow_setUnicodeTitle(window: *mut sfWindow, title: *const u32) -> ();
+        pub fn sfWindow_setIcon(window: *mut sfWindow, width: c_uint, height: c_uint, pixel: *const u8) -> ();
+        pub fn sfWindow_setVisible(window: *mut sfWindow, visible: SfBool) -> ();
+        pub fn sfWindow_setMouseCursorVisible(window: *mut sfWindow, visible: SfBool) -> ();
+        pub fn sfWindow_setVerticalSyncEnabled(window: *mut sfWindow, enabled: SfBool) -> ();
+        pub fn sfWindow_setKeyRepeatEnabled(window: *mut sfWindow, enabled: SfBool) -> ();
+        pub fn sfWindow_setActive(window: *mut sfWindow, active: SfBool) -> SfBool;
+        pub fn sfWindow_display(window: *mut sfWindow) -> ();
+        pub fn sfWindow_setFramerateLimit(window: *mut sfWindow, limit: c_uint) -> ();
+        pub fn sfWindow_setJoystickThreshold(window: *mut sfWindow, threshold: c_float) -> ();
+        pub fn sfWindow_getPosition(window: *mut sfWindow) -> Vector2i;
+        pub fn sfWindow_setPosition(window: *mut sfWindow, position: Vector2i) -> ();
+        pub fn sfWindow_getSize(window: *mut sfWindow) -> Vector2u;
+        pub fn sfWindow_setSize(window: *mut sfWindow, size: Vector2u) -> ();
+        pub fn sfWindow_pollEvent(window: *mut sfWindow, event: *mut sfEvent) -> SfBool;
+        pub fn sfWindow_waitEvent(window: *mut sfWindow, event: *mut sfEvent) -> SfBool;
+        pub fn sfMouse_getPosition(relativeTo: *mut sfWindow) -> Vector2i;
+        pub fn sfMouse_setPosition(position: Vector2i, relativeTo: *mut sfWindow) -> ();
+        //fn sfWindow_getSystemHandle(window: *mut sfWindow) -> sfWindowHandle;
     }
 }
 
@@ -107,8 +107,8 @@ pub mod context {
 
     extern "C" {
         pub fn sfContext_create() -> *mut sfContext;
-        pub fn sfContext_destroy(context : *mut sfContext) -> ();
-        pub fn sfContext_setActive(context : *mut sfContext, active : SfBool) -> ();
+        pub fn sfContext_destroy(context: *mut sfContext) -> ();
+        pub fn sfContext_setActive(context: *mut sfContext, active: SfBool) -> ();
     }
 }
 
@@ -118,11 +118,11 @@ pub mod joystick {
     use ffi::sfml_types::SfBool;
 
     extern "C" {
-        pub fn sfJoystick_isConnected(joystick : c_uint) -> SfBool;
-        pub fn sfJoystick_getButtonCount(joystick : c_uint) -> c_uint;
-        pub fn sfJoystick_hasAxis(joystick : c_uint, axis : c_uint) -> SfBool;
-        pub fn sfJoystick_isButtonPressed(joystick : c_uint, button : c_uint) -> SfBool;
-        pub fn sfJoystick_getAxisPosition(joystick : c_uint, axis : c_uint) -> c_float;
+        pub fn sfJoystick_isConnected(joystick: c_uint) -> SfBool;
+        pub fn sfJoystick_getButtonCount(joystick: c_uint) -> c_uint;
+        pub fn sfJoystick_hasAxis(joystick: c_uint, axis: c_uint) -> SfBool;
+        pub fn sfJoystick_isButtonPressed(joystick: c_uint, button: c_uint) -> SfBool;
+        pub fn sfJoystick_getAxisPosition(joystick: c_uint, axis: c_uint) -> c_float;
         pub fn sfJoystick_update() -> ();
     }
 }
@@ -133,7 +133,7 @@ pub mod keyboard {
     use ffi::sfml_types::SfBool;
 
     extern "C" {
-        pub fn sfKeyboard_isKeyPressed(key : c_int) -> SfBool;
+        pub fn sfKeyboard_isKeyPressed(key: c_int) -> SfBool;
     }
 }
 
@@ -144,7 +144,7 @@ pub mod mouse {
     use ffi::sfml_types::SfBool;
 
     extern "C" {
-        pub fn sfMouse_isButtonPressed(button : c_uint) -> SfBool;
+        pub fn sfMouse_isButtonPressed(button: c_uint) -> SfBool;
     }
 }
 
@@ -162,16 +162,16 @@ pub mod video_mode {
     impl Clone for sfVideoMode {
         fn clone(&self) -> sfVideoMode {
            sfVideoMode {
-               width : self.width,
-               height : self.height,
-               bits_per_pixel : self.bits_per_pixel
+               width: self.width,
+               height: self.height,
+               bits_per_pixel: self.bits_per_pixel
             }
         }
     }
 
     extern "C" {
         pub fn sfVideoMode_getDesktopMode() -> sfVideoMode;
-        pub fn sfVideoMode_getFullscreenModes(Count : *mut size_t) -> *mut sfVideoMode;
-        pub fn sfVideoMode_isValid(mode : sfVideoMode) -> SfBool;
+        pub fn sfVideoMode_getFullscreenModes(Count: *mut size_t) -> *mut sfVideoMode;
+        pub fn sfVideoMode_isValid(mode: sfVideoMode) -> SfBool;
     }
 }

@@ -1,6 +1,4 @@
-/*!
-* Example from SFML : borrow_res
-*/
+//! Example from SFML: borrow_res
 
 #![crate_name = "borrow_res"]
 #![desc = "Shape using borrow ressources example for rsfml"]
@@ -25,8 +23,8 @@ fn start(argc: int, argv: *const *const u8) -> int {
 
 fn main () -> () {
     // Create the window of the application
-    let setting : ContextSettings = ContextSettings::default();
-    let mut window : RenderWindow = match RenderWindow::new(VideoMode::new_init(800, 600, 32),
+    let setting: ContextSettings = ContextSettings::default();
+    let mut window: RenderWindow = match RenderWindow::new(VideoMode::new_init(800, 600, 32),
         "SFML borrow ressources Example", Close, &setting) {
         Some(window) => window,
         None => fail!("Cannot create a new Render Window.")

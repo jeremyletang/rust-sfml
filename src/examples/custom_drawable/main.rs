@@ -1,6 +1,4 @@
-/*!
-* Example from SFML : Custom drawable
-*/
+//! Example from SFML: Custom drawable
 
 #![crate_name = "custom_drawable"]
 #![desc = "Custom drawable example for rsfml"]
@@ -44,12 +42,12 @@ impl<'s> CustomDrawable<'s> {
 
 // Implements the drawable trait, only these two method are mendatory.
 impl<'s> Drawable for CustomDrawable<'s> {
-    fn draw_in_render_window(&self, render_window : &mut RenderWindow) -> () {
+    fn draw_in_render_window(&self, render_window: &mut RenderWindow) -> () {
         render_window.draw(&self.circle);
         render_window.draw(&self.rect)
     }
 
-    fn draw_in_render_texture(&self, render_texture : &mut RenderTexture) -> () {
+    fn draw_in_render_texture(&self, render_texture: &mut RenderTexture) -> () {
         render_texture.draw(&self.circle);
         render_texture.draw(&self.rect)
     }
@@ -57,8 +55,8 @@ impl<'s> Drawable for CustomDrawable<'s> {
 
 fn main () -> () {
     // Create the window of the application
-    let setting : ContextSettings = ContextSettings::default();
-    let mut window : RenderWindow = match RenderWindow::new(VideoMode::new_init(800, 600, 32), "SFML Shape Example", Close, &setting) {
+    let setting: ContextSettings = ContextSettings::default();
+    let mut window: RenderWindow = match RenderWindow::new(VideoMode::new_init(800, 600, 32), "SFML Shape Example", Close, &setting) {
         Some(window) => window,
         None => fail!("Cannot create a new Render Window.")
     };

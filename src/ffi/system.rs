@@ -27,15 +27,15 @@ pub mod clock {
     use ffi::system::time::sfTime;
 
     pub struct sfClock {
-        this : *mut c_void
+        this: *mut c_void
     }
 
     extern "C" {
         pub fn sfClock_create() -> *mut sfClock;
-        pub fn sfClock_copy(clock : *mut sfClock) -> *mut sfClock;
-        pub fn sfClock_destroy(clock : *mut sfClock) -> ();
-        pub fn sfClock_getElapsedTime(clock : *mut sfClock) -> sfTime;
-        pub fn sfClock_restart(clock : *mut sfClock) -> sfTime;
+        pub fn sfClock_copy(clock: *mut sfClock) -> *mut sfClock;
+        pub fn sfClock_destroy(clock: *mut sfClock) -> ();
+        pub fn sfClock_getElapsedTime(clock: *mut sfClock) -> sfTime;
+        pub fn sfClock_restart(clock: *mut sfClock) -> sfTime;
     }
 }
 
@@ -43,7 +43,7 @@ pub mod sleep {
     use ffi::system::time::sfTime;
 
     extern "C" {
-        pub fn sfSleep(duration : sfTime) -> ();
+        pub fn sfSleep(duration: sfTime) -> ();
     }
 }
 
@@ -51,15 +51,15 @@ pub mod time {
     pub use libc::{c_longlong, c_float, c_int};
 
     pub struct sfTime {
-        microseconds : c_longlong
+        microseconds: c_longlong
     }
 
     extern "C" {
-        pub fn sfTime_asSeconds(time : sfTime) -> c_float;
-        pub fn sfTime_asMilliseconds(time : sfTime) -> c_int;
-        pub fn sfTime_asMicroseconds(time : sfTime) -> c_longlong;
-        pub fn sfSeconds(amount : c_float) -> sfTime;
-        pub fn sfMilliseconds(amount : c_int) -> sfTime;
-        pub fn sfMicroseconds(amount : c_longlong) -> sfTime;
+        pub fn sfTime_asSeconds(time: sfTime) -> c_float;
+        pub fn sfTime_asMilliseconds(time: sfTime) -> c_int;
+        pub fn sfTime_asMicroseconds(time: sfTime) -> c_longlong;
+        pub fn sfSeconds(amount: c_float) -> sfTime;
+        pub fn sfMilliseconds(amount: c_int) -> sfTime;
+        pub fn sfMicroseconds(amount: c_longlong) -> sfTime;
     }
 }

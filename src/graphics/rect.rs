@@ -22,11 +22,9 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-/*!
- * Manipulating 2D rectangles
- *
- * Utility class for manipulating 2D axis aligned rectangles
- */
+//! Manipulating 2D rectangles
+//!
+//! Utility class for manipulating 2D axis aligned rectangles
 
 use libc::c_int;
 
@@ -37,71 +35,67 @@ use ffi = ffi::graphics::rect;
 #[deriving(Clone, PartialEq, Eq, PartialOrd, Ord, Show)]
 pub struct IntRect {
     /// Left coordinate of the rectangle.
-    pub left :      i32,
+    pub left: i32,
     /// Top coordinate of the rectangle.
-    pub top :       i32,
+    pub top: i32,
     /// Width of the rectangle.
-    pub width :     i32,
+    pub width: i32,
     /// Height coordinate of the rectangle.
-    pub height :    i32
+    pub height: i32
 }
 
 /// Utility classes for manipulating rectangles of f32.
 #[deriving(Clone, PartialEq, PartialOrd, Show)]
 pub struct FloatRect {
     /// Left coordinate of the rectangle.
-    pub left :      f32,
+    pub left: f32,
     /// Top coordinate of the rectangle.
-    pub top :       f32,
+    pub top: f32,
     /// Width of the rectangle.
-    pub width :     f32,
+    pub width: f32,
     /// Height of the rectangle.
-    pub height :    f32
+    pub height: f32
 }
 
 impl IntRect {
     /// Construct a new IntRect
-    pub fn new(left : i32,
-               top : i32,
-               width : i32,
-               height : i32) -> IntRect {
+    pub fn new(left: i32,
+               top: i32,
+               width: i32,
+               height: i32) -> IntRect {
         IntRect {
-            left :      left,
-            top :       top,
-            width :     width,
-            height :    height
+            left: left,
+            top: top,
+            width: width,
+            height: height
         }
     }
 
-    /**
-     *  Check if a point is inside a rectangle's area
-     *
-     * # Arguments
-     * * x - X coordinate of the point to test
-     * * y - Y coordinate of the point to test
-     *
-     * Return true if the point is inside
-     */
-    pub fn contains(self, x : int, y : int) -> bool {
+    ///  Check if a point is inside a rectangle's area
+    ///
+    /// # Arguments
+    /// * x - X coordinate of the point to test
+    /// * y - Y coordinate of the point to test
+    ///
+    /// Return true if the point is inside
+    pub fn contains(self, x: int, y: int) -> bool {
         match unsafe { ffi::sfIntRect_contains(&self, x as c_int, y as c_int) } {
             SFFALSE => false,
             SFTRUE  => true
         }
     }
 
-    /**
-     * Check intersection between two rectangles
-     *
-     * # Arguments
-     * * rect1 - First rectangle to test
-     * * rect2 - Second rectangle to test
-     * * intersection - Rectangle to be filled with overlapping rect
-     *
-     * Return strue if rectangles overlap
-     */
-    pub fn intersects(rect1 : &IntRect,
-                      rect2 : &IntRect,
-                      intersections : &IntRect) -> bool {
+    /// Check intersection between two rectangles
+    ///
+    /// # Arguments
+    /// * rect1 - First rectangle to test
+    /// * rect2 - Second rectangle to test
+    /// * intersection - Rectangle to be filled with overlapping rect
+    ///
+    /// Return strue if rectangles overlap
+    pub fn intersects(rect1: &IntRect,
+                      rect2: &IntRect,
+                      intersections: &IntRect) -> bool {
         match unsafe { ffi::sfIntRect_intersects(rect1, rect2, intersections) } {
             SFFALSE => false,
             SFTRUE  => true
@@ -110,51 +104,45 @@ impl IntRect {
 }
 
 impl FloatRect {
-    /**
-    * Construct a new FloatRect
-    */
-    pub fn new(left : f32,
-        top : f32,
-        width : f32,
-        height : f32) -> FloatRect {
+    /// Construct a new FloatRect
+    pub fn new(left: f32,
+        top: f32,
+        width: f32,
+        height: f32) -> FloatRect {
 
         FloatRect {
-            left :      left,
-            top :       top,
-            width :     width,
-            height :    height
+            left: left,
+            top: top,
+            width: width,
+            height: height
         }
     }
 
-    /**
-    *  Check if a point is inside a rectangle's area
-    *
-    * # Arguments
-    * * x - X coordinate of the point to test
-    * * y - Y coordinate of the point to test
-    *
-    * Return true if the point is inside
-    */
-    pub fn contains(self, x : f32, y : f32) -> bool {
+    ///  Check if a point is inside a rectangle's area
+    ///
+    /// # Arguments
+    /// * x - X coordinate of the point to test
+    /// * y - Y coordinate of the point to test
+    ///
+    /// Return true if the point is inside
+    pub fn contains(self, x: f32, y: f32) -> bool {
         match unsafe { ffi::sfFloatRect_contains(&self, x, y) } {
             SFFALSE => false,
             SFTRUE  => true
         }
     }
 
-    /**
-    * Check intersection between two rectangles
-    *
-    * # Arguments
-    * * rect1 - First rectangle to test
-    * * rect2 - Second rectangle to test
-    * * intersection - Rectangle to be filled with overlapping rect
-    *
-    * Return true if rectangles overlap
-    */
-    pub fn intersects(rect1 : &FloatRect,
-        rect2 : &FloatRect,
-        intersections : &FloatRect) -> bool {
+    /// Check intersection between two rectangles
+    ///
+    /// # Arguments
+    /// * rect1 - First rectangle to test
+    /// * rect2 - Second rectangle to test
+    /// * intersection - Rectangle to be filled with overlapping rect
+    ///
+    /// Return true if rectangles overlap
+    pub fn intersects(rect1: &FloatRect,
+        rect2: &FloatRect,
+        intersections: &FloatRect) -> bool {
 
         match unsafe { ffi::sfFloatRect_intersects(rect1, rect2, intersections) } {
             SFFALSE => false,

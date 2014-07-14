@@ -1,6 +1,4 @@
-/*!
-* Example from SFML : play sound and music
-*/
+//! Example from SFML: play sound and music
 
 #![crate_name = "sound"]
 #![desc = "Sound example for rsfml"]
@@ -26,7 +24,7 @@ fn play_sound() -> () {
     println!(" {} samples / sec", (*buffer).borrow().get_sample_rate());
     println!(" {} channels", (*buffer).borrow().get_channel_count());
 
-    let mut sound : rc::Sound = match rc::Sound::new_with_buffer(buffer.clone()) {
+    let mut sound: rc::Sound = match rc::Sound::new_with_buffer(buffer.clone()) {
         Some(sound)     => sound,
         None            => fail!("Error cannot create Sound")
     };
@@ -49,7 +47,7 @@ fn play_sound() -> () {
 
 /* Play a Music */
 fn play_music() -> () {
-    let mut music : Music = match Music::new_from_file("../resources/orchestral.ogg") {
+    let mut music: Music = match Music::new_from_file("../resources/orchestral.ogg") {
         Some(music)     => music,
         None            => fail!("Error, cannot load music")
     };

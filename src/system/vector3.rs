@@ -31,11 +31,11 @@
 #[deriving(Clone, PartialOrd, PartialEq, Show)]
 pub struct Vector3f {
     /// X coordinate of the vector.
-    pub x : f32,
+    pub x: f32,
     /// Y coordinate of the vector.
-    pub y : f32,
+    pub y: f32,
     /// Z coordinate of the vector.
-    pub z : f32
+    pub z: f32
 }
 
 trait Vector3fOp {
@@ -47,11 +47,11 @@ trait Vector3fOp {
 
 impl Vector3f {
     /// Create a new Vector3f with the given values.
-    pub fn new(x : f32, y : f32, z : f32) -> Vector3f {
+    pub fn new(x: f32, y: f32, z: f32) -> Vector3f {
         Vector3f{
-            x : x,
-            y : y,
-            z : z
+            x: x,
+            y: y,
+            z: z
         }
     }
 }
@@ -83,33 +83,33 @@ impl<R: Vector3fOp> Div<R, Vector3f> for Vector3f {
 impl Vector3fOp for Vector3f {
     fn add_to_Vector3f(&self, lhs: &Vector3f) -> Vector3f {
         Vector3f {
-            x : lhs.x + self.x,
-            y : lhs.y + self.y ,
-            z : lhs.z + self.z
+            x: lhs.x + self.x,
+            y: lhs.y + self.y ,
+            z: lhs.z + self.z
         }
     }
 
     fn sub_to_Vector3f(&self, lhs: &Vector3f) -> Vector3f {
         Vector3f {
-            x : lhs.x - self.x,
-            y : lhs.y - self.y,
-            z : lhs.z - self.z
+            x: lhs.x - self.x,
+            y: lhs.y - self.y,
+            z: lhs.z - self.z
         }
     }
 
     fn div_to_Vector3f(&self, lhs: &Vector3f) -> Vector3f {
         Vector3f {
-            x : lhs.x / self.x,
-            y : lhs.y / self.y,
-            z : lhs.z / self.z
+            x: lhs.x / self.x,
+            y: lhs.y / self.y,
+            z: lhs.z / self.z
         }
     }
 
     fn mul_to_Vector3f(&self, lhs: &Vector3f) -> Vector3f {
         Vector3f {
-            x : lhs.x * self.x,
-            y : lhs.y * self.y,
-            z : lhs.z * self.z
+            x: lhs.x * self.x,
+            y: lhs.y * self.y,
+            z: lhs.z * self.z
         }
     }
 }
@@ -117,33 +117,33 @@ impl Vector3fOp for Vector3f {
 impl Vector3fOp for f32 {
     fn add_to_Vector3f(&self, lhs: &Vector3f) -> Vector3f {
         Vector3f {
-            x : lhs.x + *self as f32,
-            y : lhs.y + *self as f32,
-            z : lhs.z + *self as f32
+            x: lhs.x + *self as f32,
+            y: lhs.y + *self as f32,
+            z: lhs.z + *self as f32
         }
     }
 
     fn sub_to_Vector3f(&self, lhs: &Vector3f) -> Vector3f {
         Vector3f {
-            x : lhs.x - *self as f32,
-            y : lhs.y - *self as f32,
-            z : lhs.z - *self as f32
+            x: lhs.x - *self as f32,
+            y: lhs.y - *self as f32,
+            z: lhs.z - *self as f32
         }
     }
 
     fn mul_to_Vector3f(&self, lhs: &Vector3f) -> Vector3f {
         Vector3f {
-            x : lhs.x * (*self as f32),
-            y : lhs.y * (*self as f32),
-            z : lhs.z * (*self as f32)
+            x: lhs.x * (*self as f32),
+            y: lhs.y * (*self as f32),
+            z: lhs.z * (*self as f32)
         }
     }
 
     fn div_to_Vector3f(&self, lhs: &Vector3f) -> Vector3f {
         Vector3f {
-            x : lhs.x / (*self as f32),
-            y : lhs.y / (*self as f32),
-            z : lhs.z / (*self as f32)
+            x: lhs.x / (*self as f32),
+            y: lhs.y / (*self as f32),
+            z: lhs.z / (*self as f32)
         }
     }
 }

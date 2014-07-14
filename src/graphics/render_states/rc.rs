@@ -36,72 +36,68 @@ use ffi = ffi::graphics::render_states;
 /// Define the states used for drawing to a RenderTarget
 pub struct RenderStates {
     #[doc(hidden)]
-    sfRenderStates :   ffi::sfRenderStates,
+    sfRenderStates: ffi::sfRenderStates,
     /// Blending mode.
-    pub blendMode :             BlendMode,
+    pub blendMode: BlendMode,
     /// Transform
-    pub transform :             Transform,
+    pub transform: Transform,
     /// Texture
-    pub texture :               Option<Rc<RefCell<Texture>>>,
+    pub texture: Option<Rc<RefCell<Texture>>>,
     /// Shader
-    pub shader :                Option<Rc<RefCell<rc::Shader>>>
+    pub shader: Option<Rc<RefCell<rc::Shader>>>
 }
 
 impl RenderStates {
 
-    /**
-     * Create a new RenderStates.
-     *
-     * # Arguments
-     * * blend_mode - The BlendMode
-     * * transform - The transform
-     * * texture - Some(texture) if there is a texture, None otherwise
-     * * shader - Some(shader) if there is a shader, None otherwise
-     *
-     * Return a new initialized RenderState
-     */
-    pub fn new(blend_mode : BlendMode,
-        transform : Transform,
-        texture : Option<Rc<RefCell<Texture>>>,
-        shader : Option<Rc<RefCell<rc::Shader>>>) -> RenderStates {
+    /// Create a new RenderStates.
+    ///
+    /// # Arguments
+    /// * blend_mode - The BlendMode
+    /// * transform - The transform
+    /// * texture - Some(texture) if there is a texture, None otherwise
+    /// * shader - Some(shader) if there is a shader, None otherwise
+    ///
+    /// Return a new initialized RenderState
+    pub fn new(blend_mode: BlendMode,
+        transform: Transform,
+        texture: Option<Rc<RefCell<Texture>>>,
+        shader: Option<Rc<RefCell<rc::Shader>>>) -> RenderStates {
 
         RenderStates {
-            sfRenderStates :    ffi::sfRenderStates {
-                blendMode : blend_mode as i32,
-                transform : transform,
-                texture :   ptr::mut_null(),
-                shader :    ptr::mut_null()
+            sfRenderStates: ffi::sfRenderStates {
+                blendMode: blend_mode as i32,
+                transform: transform,
+                texture: ptr::mut_null(),
+                shader: ptr::mut_null()
             },
-            blendMode :         blend_mode,
-            transform :         transform,
-            texture :           texture,
-            shader :            shader
+            blendMode: blend_mode,
+            transform: transform,
+            texture: texture,
+            shader: shader
         }
     }
 
-    /**
-     * Create a new RenderStates initialized to default.
-     *
-     * # default
-     * * blendMode is initialized to BlendAlpha
-     * * transform is initialized to the identity matrix
-     * * texture is initialized to None
-     * * shader is initialized to None
-     *
-     * Return a new default RenderStates
-     */
+    /// Create a new RenderStates initialized to default.
+    ///
+    /// # default
+    /// * blendMode is initialized to BlendAlpha
+    /// * transform is initialized to the identity matrix
+    /// * texture is initialized to None
+    /// * shader is initialized to None
+    ///
+    /// Return a new default RenderStates
     pub fn default() -> RenderStates {
         RenderStates {
-            sfRenderStates :    ffi::sfRenderStates {
-                blendMode : BlendAlpha as i32,
-                transform : Transform::new_identity(),
-                texture :   ptr::mut_null(),
-                shader :    ptr::mut_null()
+            sfRenderStates: ffi::sfRenderStates {
+                blendMode: BlendAlpha as i32,
+                transform: Transform::new_identity(),
+                texture: ptr::mut_null(),
+                shader: ptr::mut_null()
             },
-            blendMode :         BlendAlpha,
-            transform :         Transform::new_identity(),
-            texture :           None,
-            shader :            None
+            blendMode: BlendAlpha,
+            transform: Transform::new_identity(),
+            texture: None,
+            shader: None
         }
     }
 
