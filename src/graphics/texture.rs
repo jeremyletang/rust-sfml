@@ -30,7 +30,6 @@
 
 use libc::c_uint;
 use std::ptr;
-use std::vec::Vec;
 
 use traits::Wrappable;
 use graphics::{RenderWindow, Image, IntRect};
@@ -271,14 +270,14 @@ impl Texture {
      * * y - Y offset in the texture where to copy the source pixels
      */
     pub fn update_from_pixels(&mut self,
-                              pixels : Vec<u8>,
+                              pixels : &[u8],
                               width : uint,
                               height : uint,
                               x : uint,
                               y : uint) -> () {
         unsafe {
             ffi::sfTexture_updateFromPixels(self.texture,
-                                            pixels.as_ptr() as *mut u8,
+                                            pixels.as_ptr(),
                                             width as c_uint,
                                             height as c_uint,
                                             x as c_uint,

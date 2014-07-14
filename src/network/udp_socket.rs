@@ -153,7 +153,7 @@ impl UdpSocket {
     * * remoteAddress - Address of the receiver
     * * remotePort - Port of the receiver to send the data to
     */
-    pub fn send(&self, data : Vec<i8>, address : &IpAddress, port : u16) -> SocketStatus {
+    pub fn send(&self, data : &[i8], address : &IpAddress, port : u16) -> SocketStatus {
         unsafe {
             mem::transmute(ffi::sfUdpSocket_send(self.socket, data.as_ptr() as *mut i8, data.len() as size_t, address.unwrap(), port) as i8)
         }
