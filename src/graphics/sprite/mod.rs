@@ -480,7 +480,7 @@ impl<'s> Clone for Sprite<'s> {
 }
 
 impl<'s> Wrappable<*mut ffi::sfSprite> for Sprite<'s> {
-    fn wrap(sprite: *mut ffi::sfSprite) -> Sprite {
+    fn wrap(sprite: *mut ffi::sfSprite) -> Sprite<'s> {
         Sprite {
             sprite: sprite,
             texture: None

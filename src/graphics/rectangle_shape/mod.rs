@@ -604,7 +604,7 @@ impl<'s> Clone for RectangleShape<'s> {
 }
 
 impl<'s> Wrappable<*mut ffi::sfRectangleShape> for RectangleShape<'s> {
-    fn wrap(rectangle_shape: *mut ffi::sfRectangleShape) -> RectangleShape {
+    fn wrap(rectangle_shape: *mut ffi::sfRectangleShape) -> RectangleShape<'s> {
         RectangleShape {
             rectangle_shape: rectangle_shape,
             texture: None

@@ -560,7 +560,7 @@ impl<'s> Clone for Text<'s> {
 }
 
 impl<'s> Wrappable<*mut ffi::sfText> for Text<'s> {
-    fn wrap(text: *mut ffi::sfText) -> Text {
+    fn wrap(text: *mut ffi::sfText) -> Text<'s> {
         Text {
             text: text,
             string_length: 0,

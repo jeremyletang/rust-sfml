@@ -359,7 +359,7 @@ impl<'s> Shader<'s> {
 }
 
 impl<'s> Wrappable<*mut ffi::sfShader> for Shader<'s> {
-    fn wrap(shader: *mut ffi::sfShader) -> Shader {
+    fn wrap(shader: *mut ffi::sfShader) -> Shader<'s> {
         Shader {
             shader: shader,
             texture: None

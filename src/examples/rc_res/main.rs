@@ -1,6 +1,6 @@
 //! Example from SFML: borrow_res
 
-#![crate_name = "borrow_res"]
+#![crate_name = "rc_res"]
 #![desc = "Shape using borrow ressources example for rsfml"]
 #![crate_type = "bin"]
 

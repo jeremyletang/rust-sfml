@@ -23,6 +23,7 @@
 */
 
 //! 2D graphics module: sprites, text, shapes
+//! [window](../window/index.html)
 
 pub use graphics::render_states::RenderStates;
 pub use graphics::render_window::{RenderWindow, Events};

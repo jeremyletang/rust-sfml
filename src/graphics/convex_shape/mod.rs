@@ -621,7 +621,7 @@ impl Iterator<Vector2f> for ConvexShapePoints {
 #[doc(hidden)]
 impl<'s> Wrappable<*mut ffi::sfConvexShape> for ConvexShape<'s> {
     #[doc(hidden)]
-    fn wrap(convex_shape: *mut ffi::sfConvexShape) -> ConvexShape {
+    fn wrap(convex_shape: *mut ffi::sfConvexShape) -> ConvexShape<'s> {
         ConvexShape {
             convex_shape: convex_shape,
             texture: None
