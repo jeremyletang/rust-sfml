@@ -32,13 +32,12 @@
 
 use std::rc::Rc;
 use std::cell::RefCell;
-use libc::{c_float, c_uint, c_int};
-use std::{ptr, mem};
+use libc::{c_float, c_uint};
+use std::ptr;
 use std::vec::Vec;
 
 use traits::{Drawable, Wrappable};
-use window::{ContextSettings, VideoMode, event, keyboard, joystick, mouse,
-             WindowStyle};
+use window::{ContextSettings, VideoMode, event, WindowStyle};
 use system::vector2::{Vector2f, Vector2i, Vector2u};
 use graphics::{Text, Color, Sprite, CircleShape, RectangleShape, ConvexShape,
                RenderStates, View, Image, IntRect, VertexArray, Shape, rc};
@@ -53,24 +52,16 @@ use ffi = ffi::graphics::render_window;
 /// It defines an OS window that can be painted using the other classes
 /// of the graphics module.
 pub struct RenderWindow {
-    #[doc(hidden)]
     render_window: *mut ffi::sfRenderWindow,
-    #[doc(hidden)]
-    event: ffi::sfEvent,
-    #[doc(hidden)]
     title_length: uint,
-    #[doc(hidden)]
     current_view: Rc<RefCell<View>>,
-    #[doc(hidden)]
     default_view: Rc<RefCell<View>>
 }
 
 /// An iterator over all the events in the events queue (internally call poll_event)
 pub struct Events {
-    #[doc(hidden)]
     render_window: *mut ffi::sfRenderWindow,
-    #[doc(hidden)]
-    event: ffi::sfEvent,
+    event: event::raw::sfEvent,
 }
 
 impl RenderWindow {
@@ -106,14 +97,6 @@ impl RenderWindow {
                                                                settings);
                 });
         }
-        let sf_ev = ffi::sfEvent {
-            typeEvent: 0,
-            p1: 0,
-            p2: 0,
-            p3: 0f32 as c_float,
-            p4: 0,
-            p5: 0
-        };
         if sf_render_win.is_null() {
             None
         } else {
@@ -125,7 +108,7 @@ impl RenderWindow {
                 let def_view = Rc::new(RefCell::new(Wrappable::wrap(raw_def_view)));
                 Some (RenderWindow {
                         render_window: sf_render_win,
-                        event: sf_ev,
+                        // event: sf_ev,
                         title_length: title.len(),
                         current_view: def_view.clone(),
                         default_view: def_view.clone()
@@ -165,14 +148,6 @@ impl RenderWindow {
                                                               style as u32,
                                                               settings);
         }
-        let sf_ev = ffi::sfEvent {
-            typeEvent: 0,
-            p1: 0,
-            p2: 0,
-            p3: 0f32 as c_float,
-            p4: 0,
-            p5: 0
-        };
         if sf_render_win.is_null() {
             None
         } else {
@@ -184,7 +159,7 @@ impl RenderWindow {
                 let def_view = Rc::new(RefCell::new(Wrappable::wrap(raw_def_view)));
                 Some (RenderWindow {
                         render_window: sf_render_win,
-                        event: sf_ev,
+                        // event: sf_ev,
                         title_length: title.len(),
                         current_view: def_view.clone(),
                         default_view: def_view.clone()
@@ -228,14 +203,7 @@ impl RenderWindow {
     pub fn events(&self) -> Events {
         Events {
             render_window: self.render_window.clone(),
-            event: ffi::sfEvent {
-                typeEvent: 0,
-                p1: 0,
-                p2: 0,
-                p3: 0f32 as c_float,
-                p4: 0,
-                p5: 0
-            }
+            event: event::raw::sfEvent { data: [032, ..6u] }
         }
     }
 
@@ -249,16 +217,17 @@ impl RenderWindow {
     ///
     /// Return the event if an event was returned, or NoEvent if the event queue was empty
     pub fn poll_event(&mut self) -> event::Event {
-        let haveEvent: bool =  unsafe {
-            match ffi::sfRenderWindow_pollEvent(self.render_window, &mut self.event) {
+        let mut event = event::raw::sfEvent { data: [032, ..6u] };
+        let have_event: bool =  unsafe {
+            match ffi::sfRenderWindow_pollEvent(self.render_window, &mut event) {
                 SFFALSE     => false,
                 SFTRUE      => true
             }
         };
-        if haveEvent == false {
+        if have_event == false {
             event::NoEvent
         } else {
-            get_wrapped_event(&self.event)
+            event::raw::get_wrapped_event(&mut event)
         }
     }
 
@@ -274,16 +243,17 @@ impl RenderWindow {
     ///
     /// Return the event or NoEvent if an error has occured
     pub fn wait_event(&mut self) -> event::Event {
-        let haveEvent: bool =  unsafe {
-            match ffi::sfRenderWindow_waitEvent(self.render_window, &mut self.event) {
+        let mut event = event::raw::sfEvent { data: [032, ..6u] };
+        let have_event: bool =  unsafe {
+            match ffi::sfRenderWindow_waitEvent(self.render_window, &mut event) {
                 SFFALSE     => false,
                 SFTRUE      => true
             }
         };
-        if haveEvent == false {
+        if have_event == false {
             event::NoEvent
         } else {
-            get_wrapped_event(&self.event)
+            event::raw::get_wrapped_event(&mut event)
         }
     }
 
@@ -1131,140 +1101,12 @@ impl RenderWindow {
     }
 }
 
-#[doc(hidden)]
-fn get_wrapped_event(event: &ffi::sfEvent) ->event::Event {
-    match event.typeEvent as c_uint {
-        0   => event::Closed,
-        1   => event::Resized{ width: event.p1 as int, height: event.p2 as int },
-        2   => event::LostFocus,
-        3   => event::GainedFocus,
-        4   => {
-            event::TextEntered {
-                code: (event.p1 as u8) as char
-            }
-        },
-        5   => {
-            let al: bool = match event.p2 {
-                0 => false,
-                _ => true
-            };
-            let ct: bool = match event.p3 as int{
-                0 => false,
-                _ => true
-            };
-            let sh: bool = match event.p4  {
-                0 => false,
-                _ => true
-            };
-            let sy: bool = match event.p5 {
-                0 => false,
-                _ => true
-            };
-            let k: keyboard::Key = unsafe { mem::transmute(event.p1 as i64) };
-            event::KeyPressed{
-                code: k,
-                alt: al,
-                ctrl: ct,
-                shift :sh,
-                system: sy
-            }
-        },
-        6   => {
-            let al: bool = match event.p2 {
-                0 => false,
-                _ => true
-            };
-            let ct: bool = match event.p3 as int{
-                0 => false,
-                _ => true
-            };
-            let sh: bool = match event.p4  {
-                0 => false,
-                _ => true
-            };
-            let sy: bool = match event.p5 {
-                0 => false,
-                _ => true
-            };
-            let k: keyboard::Key = unsafe { mem::transmute(event.p1 as i64) };
-            event::KeyReleased {
-                code: k,
-                alt: al,
-                ctrl: ct,
-                shift :sh,
-                system: sy
-            }
-        },
-        7   => {
-            event::MouseWheelMoved{
-                delta: unsafe { mem::transmute::<c_uint, c_int>(event.p1) }  as int,
-                x:     unsafe { mem::transmute::<c_uint, c_int>(event.p2) }  as int,
-                y:     unsafe { mem::transmute::<c_float, c_int>(event.p3) } as int
-            }
-        },
-        8   => {
-            let button: mouse::MouseButton = unsafe {mem::transmute(event.p1 as i8)};
-            event::MouseButtonPressed{
-                button: button,
-                x:      unsafe { mem::transmute::<c_uint, c_int>(event.p2) as int },
-                y:      unsafe { mem::transmute::<c_float, c_int>(event.p3) as int }
-            }
-        },
-        9   => {
-            let button: mouse::MouseButton = unsafe { mem::transmute(event.p1 as i8) };
-            event::MouseButtonReleased{
-                button: button,
-                x:      unsafe { mem::transmute::<c_uint, c_int>(event.p2) as int },
-                y:      unsafe { mem::transmute::<c_float, c_int>(event.p3) as int }
-            }
-        },
-        10  => {
-            event::MouseMoved {
-                x: unsafe { mem::transmute::<c_uint, c_int>(event.p1) } as int,
-                y: unsafe { mem::transmute::<c_uint, c_int>(event.p2) } as int
-            }
-        },
-        11  => event::MouseEntered,
-        12  => event::MouseLeft,
-        13  => {
-            event::JoystickButtonPressed {
-                joystickid: event.p1 as int,
-                button: event.p2 as int
-            }
-        },
-        14  => {
-            event::JoystickButtonReleased{
-                joystickid: event.p1 as int,
-                button: event.p2 as int
-            }
-        },
-        15  => {
-            let ax: joystick::Axis = unsafe { mem::transmute(event.p2 as i8) };
-            event::JoystickMoved{
-                joystickid: event.p1 as uint,
-                axis: ax,
-                position: event.p3 as f32
-            }
-        },
-        16  => {
-            event::JoystickConnected{
-                joystickid: event.p1 as uint
-            }
-        },
-        17  => {
-            event::JoystickDisconnected{
-                joystickid: event.p1 as uint
-            }
-        },
-        _ => event::NoEvent
-    }
-}
-
 impl Iterator<event::Event> for Events {
     fn next(&mut self) -> Option<event::Event> {
-        match unsafe { ffi::sfRenderWindow_pollEvent(self.render_window, &mut self.event) } {
+        let mut event = event::raw::sfEvent { data: [032, ..6u] };
+        match unsafe { ffi::sfRenderWindow_pollEvent(self.render_window, &mut event) } {
             SFFALSE     => None,
-            SFTRUE      => Some(get_wrapped_event(&self.event))
+            SFTRUE      => Some(event::raw::get_wrapped_event(&mut event))
         }
     }
 }

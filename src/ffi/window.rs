@@ -35,36 +35,6 @@ pub mod window {
         this: *mut c_void
     }
 
-    pub struct sfEvent {
-        pub typeEvent: c_uint,
-        pub p1:        c_uint,
-        pub p2:        c_uint,
-        pub p3:        c_float,
-        pub p4:        c_uint,
-        pub p5:        c_uint
-    }
-
-    pub enum sfEventType {
-        sfEvtClosed, // 0
-        sfEvtResized, // 1
-        sfEvtLostFocus, // 2
-        sfEvtGainedFocus, // 3
-        sfEvtTextEntered, // 4
-        sfEvtKeyPressed, // 5
-        sfEvtKeyReleased, // 6
-        sfEvtMouseWheelMoved, // 7
-        sfEvtMouseButtonPressed, // 8
-        sfEvtMouseButtonReleased, // 9
-        sfEvtMouseMoved, // 10
-        sfEvtMouseEntered, // 11
-        sfEvtMouseLeft, // 12
-        sfEvtJoystickButtonPressed, // 13
-        sfEvtJoystickButtonReleased, // 14
-        sfEvtJoystickMoved, // 15
-        sfEvtJoystickConnected, // 16
-        sfEvtJoystickDisconnected // 17
-    }
-
     extern "C" {
         pub fn sfWindow_create(mode: sfVideoMode, title: *const c_char, style: c_uint, settings: *const ContextSettings) -> *mut sfWindow;
         pub fn sfWindow_createUnicode(mode: sfVideoMode, title: *const u32, style: c_uint, setting: *const ContextSettings) -> *mut sfWindow;
@@ -88,8 +58,8 @@ pub mod window {
         pub fn sfWindow_setPosition(window: *mut sfWindow, position: Vector2i) -> ();
         pub fn sfWindow_getSize(window: *mut sfWindow) -> Vector2u;
         pub fn sfWindow_setSize(window: *mut sfWindow, size: Vector2u) -> ();
-        pub fn sfWindow_pollEvent(window: *mut sfWindow, event: *mut sfEvent) -> SfBool;
-        pub fn sfWindow_waitEvent(window: *mut sfWindow, event: *mut sfEvent) -> SfBool;
+        pub fn sfWindow_pollEvent(window: *mut sfWindow, event: *mut ::window::event::raw::sfEvent) -> SfBool;
+        pub fn sfWindow_waitEvent(window: *mut sfWindow, event: *mut ::window::event::raw::sfEvent) -> SfBool;
         pub fn sfMouse_getPosition(relativeTo: *mut sfWindow) -> Vector2i;
         pub fn sfMouse_setPosition(position: Vector2i, relativeTo: *mut sfWindow) -> ();
         //fn sfWindow_getSystemHandle(window: *mut sfWindow) -> sfWindowHandle;

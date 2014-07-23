@@ -28,13 +28,12 @@
 //! Provides OpenGL-based windows,
 //! and abstractions for events and input handling.
 
-use libc::{c_uint, c_float, c_int};
-use std::{ptr, mem};
+use libc::{c_uint, c_float};
+use std::ptr;
 use std::vec::Vec;
 
 use traits::Wrappable;
-use window::{event, keyboard, joystick, mouse,
-             VideoMode, ContextSettings, WindowStyle};
+use window::{event, VideoMode, ContextSettings, WindowStyle};
 use system::vector2::{Vector2i, Vector2u};
 
 use ffi::sfml_types::{SFTRUE, SFFALSE};
@@ -50,9 +49,13 @@ pub struct Window {
     #[doc(hidden)]
     window: *mut ffi::sfWindow,
     #[doc(hidden)]
-    event: ffi::sfEvent,
-    #[doc(hidden)]
     title_length: uint
+}
+
+/// An iterator over all the events in the events queue (internally call poll_event)
+pub struct Events {
+    window: *mut ffi::sfWindow,
+    event: event::raw::sfEvent,
 }
 
 impl Window {
@@ -86,20 +89,11 @@ impl Window {
                     sf_win = ffi::sfWindow_create(mode.unwrap(), c_str, style as u32, settings)
                 });
         };
-        let sf_ev = ffi::sfEvent {
-            typeEvent: 0,
-            p1: 0,
-            p2: 0,
-            p3: 0f32 as c_float,
-            p4: 0,
-            p5: 0
-        };
         if sf_win.is_null() {
             None
         } else {
             Some (Window {
                     window: sf_win,
-                    event: sf_ev,
                     title_length: title.len()
                 })
         }
@@ -133,152 +127,21 @@ impl Window {
             unsafe { ffi::sfWindow_createUnicode(mode.unwrap(),
                                                  title.as_ptr(),
                                                  style as u32, settings) };
-        let sf_ev = ffi::sfEvent {
-            typeEvent: 0,
-            p1: 0,
-            p2: 0,
-            p3: 0f32 as c_float,
-            p4: 0,
-            p5: 0
-        };
         if sf_win.is_null() {
             None
         } else {
             Some (Window {
                     window: sf_win,
-                    event: sf_ev,
                     title_length: title.len()
                 })
         }
     }
 
-    #[doc(hidden)]
-    fn get_wrapped_event(&self) -> event::Event {
-        match self.event.typeEvent as c_uint {
-            0   => event::Closed,
-            1   => {
-                event::Resized{
-                    width: self.event.p1 as int,
-                    height: self.event.p2 as int
-                }
-            },
-            2   => event::LostFocus,
-            3   => event::GainedFocus,
-            4   => {
-                event::TextEntered{
-                    code: (self.event.p1 as u8) as char
-                }
-            },
-            5   => {
-                let al: bool = match self.event.p2 {
-                    0 => false,
-                    _ => true
-                };
-                let ct: bool = match self.event.p3 as int{
-                    0 => false,
-                    _ => true
-                };
-                let sh: bool = match self.event.p4  {
-                    0 => false,
-                    _ => true
-                };
-                let sy: bool = match self.event.p5 {
-                    0 => false,
-                    _ => true
-                };
-                let k: keyboard::Key = unsafe { mem::transmute(self.event.p1 as i64) };
-                event::KeyPressed{
-                    code: k,
-                    alt: al,
-                    ctrl: ct,
-                    shift :sh,
-                    system: sy
-                }
-            },
-            6   => {
-                let al: bool = match self.event.p2 {
-                    0 => false,
-                    _ => true
-                };
-                let ct: bool = match self.event.p3 as int{
-                    0 => false,
-                    _ => true
-                };
-                let sh: bool = match self.event.p4  {
-                    0 => false,
-                    _ => true
-                };
-                let sy: bool = match self.event.p5 {
-                    0 => false,
-                    _ => true
-                };
-                let k: keyboard::Key = unsafe { mem::transmute(self.event.p1 as i64) };
-                event::KeyReleased{
-                    code: k,
-                    alt: al,
-                    ctrl: ct,
-                    shift :sh,
-                    system: sy
-                }
-            },
-            7   =>  event::MouseWheelMoved{
-                delta: unsafe { mem::transmute::<c_uint, c_int>(self.event.p1) }  as int,
-                x:     unsafe { mem::transmute::<c_uint, c_int>(self.event.p2) }  as int,
-                y:     unsafe { mem::transmute::<c_float, c_int>(self.event.p3) } as int
-            },
-            8   => {
-                let button: mouse::MouseButton = unsafe {mem::transmute(self.event.p1 as i8)};
-                event::MouseButtonPressed{
-                    button: button,
-                    x:      unsafe { mem::transmute::<c_uint, c_int>(self.event.p2) as int },
-                    y:      unsafe { mem::transmute::<c_float, c_int>(self.event.p3) as int }
-                }
-            },
-            9   => {
-                let button: mouse::MouseButton = unsafe {mem::transmute(self.event.p1 as i8)};
-                event::MouseButtonReleased{
-                    button: button,
-                    x:      unsafe { mem::transmute::<c_uint, c_int>(self.event.p2) as int },
-                    y:      unsafe { mem::transmute::<c_float, c_int>(self.event.p3) as int }
-                }
-            },
-            10  => event::MouseMoved{
-                x: unsafe { mem::transmute::<c_uint, c_int>(self.event.p1) } as int,
-                y: unsafe { mem::transmute::<c_uint, c_int>(self.event.p2) } as int
-            },
-            11  => event::MouseEntered,
-            12  => event::MouseLeft,
-            13  => {
-                event::JoystickButtonPressed{
-                    joystickid: self.event.p1 as int,
-                    button: self.event.p2 as int
-                }
-            },
-            14  => {
-                event::JoystickButtonReleased{
-                    joystickid: self.event.p1 as int,
-                    button: self.event.p2 as int
-                }
-            },
-            15  => {
-                let ax: joystick::Axis = unsafe {mem::transmute(self.event.p2 as i8)};
-                event::JoystickMoved{
-                    joystickid: self.event.p1 as uint,
-                    axis: ax,
-                    position: self.event.p3 as f32
-                }
-            },
-            16  => {
-                event::JoystickConnected{
-                    joystickid: self.event.p1 as uint
-                }
-            },
-            17  => {
-                event::JoystickDisconnected{
-                    joystickid: self.event.p1 as uint
-                }
-            },
-            _ => event::NoEvent
+    /// Return an iterator over all the event currently in the events queue.
+    pub fn events(&self) -> Events {
+        Events {
+            window: self.window.clone(),
+            event: event::raw::sfEvent { data: [032, ..6u] }
         }
     }
 
@@ -292,16 +155,17 @@ impl Window {
     ///
     /// Return the event if an event was returned, or NoEvent if the event queue was empty
     pub fn poll_event(&mut self) -> event::Event {
-        let haveEvent: bool =  unsafe {
-            match ffi::sfWindow_pollEvent(self.window, &mut self.event) {
+        let mut event = event::raw::sfEvent { data: [032, ..6u] };
+        let have_event: bool =  unsafe {
+            match ffi::sfWindow_pollEvent(self.window, &mut event) {
                 SFFALSE     => false,
                 SFTRUE      => true
             }
         };
-        if haveEvent == false {
+        if have_event == false {
             event::NoEvent
         } else {
-            self.get_wrapped_event()
+            event::raw::get_wrapped_event(&mut event)
         }
     }
 
@@ -317,16 +181,17 @@ impl Window {
     ///
     /// Return the event or NoEvent if an error has occured
     pub fn wait_event(&mut self) -> event::Event {
-        let haveEvent: bool =  unsafe {
-            match ffi::sfWindow_waitEvent(self.window, &mut self.event) {
+        let mut event = event::raw::sfEvent { data: [032, ..6u] };
+        let have_event: bool =  unsafe {
+            match ffi::sfWindow_waitEvent(self.window, &mut event) {
                 SFFALSE     => false,
                 SFTRUE      => true
             }
         };
-        if haveEvent == false {
+        if have_event == false {
             return event::NoEvent;
         } else {
-            self.get_wrapped_event()
+            event::raw::get_wrapped_event(&mut event)
         }
     }
 
@@ -602,6 +467,16 @@ impl Window {
     #[doc(hidden)]
     pub fn unwrap(&self) -> *mut ffi::sfWindow {
         self.window
+    }
+}
+
+impl Iterator<event::Event> for Events {
+    fn next(&mut self) -> Option<event::Event> {
+        let mut event = event::raw::sfEvent { data: [032, ..6u] };
+        match unsafe { ffi::sfWindow_pollEvent(self.window, &mut event) } {
+            SFFALSE     => None,
+            SFTRUE      => Some(event::raw::get_wrapped_event(&mut event))
+        }
     }
 }
 

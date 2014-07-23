@@ -38,9 +38,9 @@ pub enum Event {
     /// The window was resized
     Resized {
        /// The new width of the window
-        pub width: int,
+        pub width: u32,
        /// The new height of the window
-        pub height: int
+        pub height: u32
     },
     /// The window lost the focus
     LostFocus,
@@ -80,36 +80,36 @@ pub enum Event {
     /// The mouse wheel was scrolled
     MouseWheelMoved {
        /// Number of ticks the wheel has moved (positive is up, negative is down)
-        pub delta: int,
+        pub delta: i32,
        /// X position of the mouse pointer, relative to the left of the owner window.
-        pub x: int,
+        pub x: i32,
        /// Y position of the mouse pointer, relative to the top of the owner window.
-        pub y: int
+        pub y: i32
     },
     /// A mouse button was pressed
     MouseButtonPressed {
        /// Code of the button that has been pressed.
         pub button: MouseButton,
        /// X position of the mouse pointer, relative to the left of the owner window.
-        pub x: int,
+        pub x: i32,
        /// Y position of the mouse pointer, relative to the top of the owner window.
-        pub y: int
+        pub y: i32
     },
     /// A mouse button was released
     MouseButtonReleased {
        /// Code of the button that has been pressed.
         pub button: MouseButton,
        /// X position of the mouse pointer, relative to the left of the owner window.
-        pub x: int,
+        pub x: i32,
        /// Y position of the mouse pointer, relative to the top of the owner window.
-        pub y: int
+        pub y: i32
     },
     /// The mouse cursor moved
     MouseMoved {
        /// X position of the mouse pointer, relative to the left of the owner window.
-        pub x: int,
+        pub x: i32,
        /// Y position of the mouse pointer, relative to the top of the owner window.
-        pub y: int
+        pub y: i32
     },
     /// The mouse cursor entered the area of the window
     MouseEntered,
@@ -118,21 +118,21 @@ pub enum Event {
     /// A joystick button was pressed
     JoystickButtonPressed {
        /// Index of the joystick (in range [0 .. joystick::Count - 1])
-        pub joystickid: int,
+        pub joystickid: u32,
        /// Index of the button that has been pressed (in range [0 .. Joystick::button_count - 1])
-        pub button: int
+        pub button: u32
     },
     /// A joystick button was released
     JoystickButtonReleased {
        /// Index of the joystick (in range [0 .. joystick::Count - 1])
-        pub joystickid: int,
+        pub joystickid: u32,
        /// Index of the button that has been pressed (in range [0 .. Joystick::button_count - 1])
-        pub button: int
+        pub button: u32
     },
     /// The joystick moved along an axis
     JoystickMoved {
        /// Index of the joystick (in range [0 .. joystick::Count - 1])
-        pub joystickid: uint,
+        pub joystickid: u32,
        /// Axis on which the joystick moved.
         pub axis: Axis,
        /// New position on the axis (in range [-100 .. 100])
@@ -141,13 +141,247 @@ pub enum Event {
     /// A joystick was connected
     JoystickConnected {
        /// Index of the joystick (in range [0 .. joystick::Count - 1])
-        pub joystickid: uint
+        pub joystickid: u32
     },
     /// A joystick was disconnected
     JoystickDisconnected {
        /// Index of the joystick (in range [0 .. joystick::Count - 1])
-        pub joystickid: uint
+        pub joystickid: u32
     },
     /// No Event
     NoEvent
+}
+
+#[doc(hidden)]
+pub mod raw {
+
+    #![allow(non_uppercase_pattern_statics)]
+
+    use ffi::sfml_types::SfBool;
+
+    pub type sfKeyCode = ::libc::c_int;
+
+    pub type sfMouseButton = ::libc::c_uint;
+    pub type sfJoystickAxis = ::libc::c_uint;
+
+    pub type sfEventType = ::libc::c_uint;
+    pub static sfEvtClosed: ::libc::c_uint = 0;
+    pub static sfEvtResized: ::libc::c_uint = 1;
+    pub static sfEvtLostFocus: ::libc::c_uint = 2;
+    pub static sfEvtGainedFocus: ::libc::c_uint = 3;
+    pub static sfEvtTextEntered: ::libc::c_uint = 4;
+    pub static sfEvtKeyPressed: ::libc::c_uint = 5;
+    pub static sfEvtKeyReleased: ::libc::c_uint = 6;
+    pub static sfEvtMouseWheelMoved: ::libc::c_uint = 7;
+    pub static sfEvtMouseButtonPressed: ::libc::c_uint = 8;
+    pub static sfEvtMouseButtonReleased: ::libc::c_uint = 9;
+    pub static sfEvtMouseMoved: ::libc::c_uint = 10;
+    pub static sfEvtMouseEntered: ::libc::c_uint = 11;
+    pub static sfEvtMouseLeft: ::libc::c_uint = 12;
+    pub static sfEvtJoystickButtonPressed: ::libc::c_uint = 13;
+    pub static sfEvtJoystickButtonReleased: ::libc::c_uint = 14;
+    pub static sfEvtJoystickMoved: ::libc::c_uint = 15;
+    pub static sfEvtJoystickConnected: ::libc::c_uint = 16;
+    pub static sfEvtJoystickDisconnected: ::libc::c_uint = 17;
+
+    #[repr(C)]
+    pub struct sfKeyEvent {
+        pub _type: sfEventType,
+        pub code: sfKeyCode,
+        pub alt: SfBool,
+        pub control: SfBool,
+        pub shift: SfBool,
+        pub system: SfBool,
+    }
+
+    #[repr(C)]
+    pub struct sfTextEvent {
+        pub _type: sfEventType,
+        pub unicode: ::libc::c_uint,
+    }
+
+    #[repr(C)]
+    pub struct sfMouseMoveEvent {
+        pub _type: sfEventType,
+        pub x: ::libc::c_int,
+        pub y: ::libc::c_int,
+    }
+
+    #[repr(C)]
+    pub struct sfMouseButtonEvent {
+        pub _type: sfEventType,
+        pub button: sfMouseButton,
+        pub x: ::libc::c_int,
+        pub y: ::libc::c_int,
+    }
+
+    #[repr(C)]
+    pub struct sfMouseWheelEvent {
+        pub _type: sfEventType,
+        pub delta: ::libc::c_int,
+        pub x: ::libc::c_int,
+        pub y: ::libc::c_int,
+    }
+
+    #[repr(C)]
+    pub struct sfJoystickMoveEvent {
+        pub _type: sfEventType,
+        pub joystickid: ::libc::c_uint,
+        pub axis: sfJoystickAxis,
+        pub position: ::libc::c_float,
+    }
+
+    #[repr(C)]
+    pub struct sfJoystickButtonEvent {
+        pub _type: sfEventType,
+        pub joystickid: ::libc::c_uint,
+        pub button: ::libc::c_uint,
+    }
+
+    #[repr(C)]
+    pub struct sfJoystickConnectEvent {
+        pub _type: sfEventType,
+        pub joystickid: ::libc::c_uint,
+    }
+
+    #[repr(C)]
+    pub struct sfSizeEvent {
+        pub _type: sfEventType,
+        pub width: ::libc::c_uint,
+        pub height: ::libc::c_uint,
+    }
+
+    #[repr(C)]
+    pub struct sfEvent {
+        pub data: [u32, ..6u],
+    }
+
+    impl sfEvent {
+        pub fn _type(&mut self) -> *mut sfEventType {
+            unsafe { ::std::mem::transmute(self) }
+        }
+
+        pub fn size(&mut self) -> super::Event {
+            let e: *mut sfSizeEvent = unsafe { ::std::mem::transmute(self) };
+            unsafe { super::Resized { width: (*e).width, height: (*e).height } }
+        }
+
+        pub fn key(&mut self, _type: sfEventType) -> super::Event {
+            let e: *mut sfKeyEvent = unsafe { ::std::mem::transmute(self) };
+            let code = unsafe { ::std::mem::transmute((*e).code as i64) };
+            let alt = unsafe { (*e).alt.to_bool() };
+            let ctrl = unsafe { (*e).control.to_bool() };
+            let shift = unsafe { (*e).shift.to_bool() };
+            let system = unsafe { (*e).system.to_bool() };
+            match _type {
+                sfEvtKeyPressed => {
+                    super::KeyPressed {
+                        code: code,
+                        alt: alt,
+                        ctrl: ctrl,
+                        shift: shift,
+                        system: system
+                    }
+                },
+                sfEvtKeyReleased => {
+                    super::KeyReleased {
+                        code: code,
+                        alt: alt,
+                        ctrl: ctrl,
+                        shift: shift,
+                        system: system
+                    }
+                },
+                _ => unreachable!()
+            }
+        }
+
+        pub fn text(&mut self) -> super::Event {
+            let e: *mut sfTextEvent = unsafe { ::std::mem::transmute(self) };
+            unsafe { super::TextEntered { code: ((*e).unicode as u8) as char } }
+        }
+
+        pub fn mouse_move(&mut self) -> super::Event {
+            let e: *mut sfMouseMoveEvent = unsafe { ::std::mem::transmute(self) };
+            unsafe { super::MouseMoved {x: (*e).x, y: (*e).y } }
+        }
+
+        pub fn mouse_button(&mut self, _type: sfEventType) -> super::Event {
+            let e: *mut sfMouseButtonEvent = unsafe { ::std::mem::transmute(self) };
+            let button = unsafe { ::std::mem::transmute((*e).button as u8) };
+            let x = unsafe { (*e).x };
+            let y = unsafe { (*e).y };
+
+            match _type {
+                sfEvtMouseButtonReleased => super::MouseButtonReleased { button: button, x: x, y: y },
+                sfEvtMouseButtonPressed => super::MouseButtonPressed { button: button, x: x, y: y },
+                _ => unreachable!()
+            }
+        }
+
+        pub fn mouse_wheel(&mut self) -> super::Event {
+            let e: *mut sfMouseWheelEvent = unsafe { ::std::mem::transmute(self) };
+            unsafe { super::MouseWheelMoved { delta: (*e).delta, x: (*e).x, y: (*e).y } }
+        }
+
+        pub fn joystick_move(&mut self) -> super::Event {
+            let e: *mut sfJoystickMoveEvent = unsafe { ::std::mem::transmute(self) };
+            super::JoystickMoved {
+                joystickid: unsafe { (*e).joystickid },
+                axis: unsafe { ::std::mem::transmute((*e).axis as u8) },
+                position: unsafe { (*e).position }
+            }
+        }
+
+        pub fn joystick_button(&mut self, _type: sfEventType) -> super::Event {
+            let e: *mut sfJoystickButtonEvent = unsafe { ::std::mem::transmute(self) };
+            let jid = unsafe { (*e).joystickid };
+            let btn = unsafe { (*e).button };
+
+            match _type {
+                sfEvtJoystickButtonPressed =>
+                    super::JoystickButtonPressed { joystickid: jid, button: btn },
+                sfEvtJoystickButtonReleased =>
+                    super::JoystickButtonReleased { joystickid: jid, button: btn },
+                _ => unreachable!()
+            }
+        }
+
+        pub fn joystick_connect(&mut self, _type: sfEventType) -> super::Event {
+            let e: *mut sfJoystickConnectEvent = unsafe { ::std::mem::transmute(self) };
+            let jid = unsafe { (*e).joystickid };
+
+            match _type {
+                sfEvtJoystickConnected => super::JoystickConnected { joystickid: jid },
+                sfEvtJoystickDisconnected => super::JoystickDisconnected { joystickid: jid},
+                _ => unreachable!()
+            }
+        }
+    }
+
+    pub fn get_wrapped_event(event: &mut sfEvent) -> super::Event {
+        let _type = unsafe { *event._type() };
+
+        match _type {
+            sfEvtClosed => super::Closed,
+            sfEvtResized => event.size(),
+            sfEvtLostFocus => super::LostFocus,
+            sfEvtGainedFocus => super::GainedFocus,
+            sfEvtTextEntered => event.text(),
+            sfEvtKeyPressed => event.key(_type),
+            sfEvtKeyReleased => event.key(_type),
+            sfEvtMouseWheelMoved => event.mouse_wheel(),
+            sfEvtMouseButtonPressed => event.mouse_button(_type),
+            sfEvtMouseButtonReleased => event.mouse_button(_type),
+            sfEvtMouseMoved => event.mouse_move(),
+            sfEvtMouseEntered => super::MouseLeft,
+            sfEvtMouseLeft => super::MouseEntered,
+            sfEvtJoystickButtonPressed => event.joystick_button(_type),
+            sfEvtJoystickButtonReleased => event.joystick_button(_type),
+            sfEvtJoystickMoved => event.joystick_move(),
+            sfEvtJoystickConnected => event.joystick_connect(_type),
+            sfEvtJoystickDisconnected => event.joystick_connect(_type),
+            _ => super::NoEvent
+        }
+    }
 }

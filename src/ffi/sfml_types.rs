@@ -28,3 +28,19 @@ pub enum SfBool {
     SFFALSE = 0,
     SFTRUE = 1
 }
+
+impl SfBool {
+    pub fn to_bool(&self) -> bool {
+        match self {
+            &SFFALSE => false,
+            &SFTRUE => true
+        }
+    }
+
+    pub fn from_bool(b: bool) -> SfBool {
+        match b {
+            true => SFTRUE,
+            false => SFFALSE
+        }
+    }
+}

@@ -44,15 +44,6 @@ pub mod render_window {
 
     pub struct sfRenderWindow;
 
-    pub struct sfEvent {
-        pub typeEvent: c_uint,
-        pub p1: c_uint,
-        pub p2: c_uint,
-        pub p3: c_float,
-        pub p4: c_uint,
-        pub p5: c_uint
-    }
-
     extern "C" {
         pub fn sfRenderWindow_create(mode: sfVideoMode, title: *mut c_char, style: c_uint, settings: *const ContextSettings) -> *mut sfRenderWindow;
         pub fn sfRenderWindow_createUnicode(mode: sfVideoMode, title: *mut u32, style: c_uint, settings: *const ContextSettings) -> *mut sfRenderWindow;
@@ -61,8 +52,8 @@ pub mod render_window {
         pub fn sfRenderWindow_close(renderWindow: *mut sfRenderWindow) -> ();
         pub fn sfRenderWindow_isOpen(renderWindow: *mut sfRenderWindow) -> SfBool;
         pub fn sfRenderWindow_getSettings(renderWindow: *mut sfRenderWindow) -> ContextSettings;
-        pub fn sfRenderWindow_pollEvent(renderWindow: *mut sfRenderWindow, event: *mut sfEvent) -> SfBool;
-        pub fn sfRenderWindow_waitEvent(renderWindow: *mut sfRenderWindow, event: *mut sfEvent) -> SfBool;
+         pub fn sfRenderWindow_pollEvent(renderWindow: *mut sfRenderWindow, event: *mut ::window::event::raw::sfEvent) -> SfBool;
+        pub fn sfRenderWindow_waitEvent(renderWindow: *mut sfRenderWindow, event: *mut ::window::event::raw::sfEvent) -> SfBool;
         pub fn sfRenderWindow_getPosition(renderWindow: *mut sfRenderWindow) -> Vector2i;
         pub fn sfRenderWindow_setPosition(renderWindow: *mut sfRenderWindow, position: Vector2i) -> ();
         pub fn sfRenderWindow_getSize(renderWindow: *mut sfRenderWindow) -> Vector2u;
