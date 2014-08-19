@@ -29,7 +29,7 @@
 use libc::c_int;
 
 use ffi::sfml_types::{SFTRUE, SFFALSE};
-use ffi = ffi::window::keyboard;
+use ffi::window::keyboard as ffi;
 
 /// Key codes
 #[deriving(Clone, PartialEq, Eq, PartialOrd, Ord, Show)]

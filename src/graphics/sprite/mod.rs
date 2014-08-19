@@ -36,7 +36,7 @@ use graphics::{FloatRect, IntRect, Color, Texture, RenderWindow, RenderTexture,
 use system::vector2::Vector2f;
 
 use ffi::sfml_types::{SFTRUE, SFFALSE};
-use ffi = ffi::graphics::sprite;
+use ffi::graphics::sprite as ffi;
 
 pub mod rc;
 

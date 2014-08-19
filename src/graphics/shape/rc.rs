@@ -35,7 +35,7 @@ use graphics::{RenderWindow, RenderTexture, rc, Texture, Color, Transform,
 use system::vector2::Vector2f;
 
 use ffi::sfml_types::{SFTRUE, SFFALSE};
-use ffi = ffi::graphics::shape;
+use ffi::graphics::shape as ffi;
 
 #[doc(hidden)]
 pub struct WrapObj {

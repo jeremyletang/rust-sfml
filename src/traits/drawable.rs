@@ -22,11 +22,9 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-/*!
-* Drawable trait
-*
-* Implemented by each drawable object to specifiy them type to RenderWindow.
-*/
+//! Drawable trait
+//!
+//! Implemented by each drawable object to specifiy them type to RenderWindow.
 
 #![allow(unused_variable)]
 

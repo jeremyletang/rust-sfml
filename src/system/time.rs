@@ -22,23 +22,19 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-/*!
- * Represents a time value.
- *
- * Time encapsulates a time value in a flexible way.
- */
+//! Represents a time value.
+//!
+//! Time encapsulates a time value in a flexible way.
 
 pub use libc::{c_long, c_float, c_int};
 
 use traits::Wrappable;
 
-use ffi = ffi::system::time;
+use ffi::system::time as ffi;
 
-/**
- * Represents a time value.
- *
- * Time encapsulates a time value in a flexible way.
- */
+/// Represents a time value.
+///
+/// Time encapsulates a time value in a flexible way.
 pub struct Time {
     #[doc(hidden)]
     time: ffi::sfTime

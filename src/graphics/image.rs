@@ -31,7 +31,7 @@ use system::vector2::Vector2u;
 use graphics::{Color, IntRect};
 
 use ffi::sfml_types::{SFTRUE, SFFALSE};
-use ffi = ffi::graphics::image;
+use ffi::graphics::image as ffi;
 
 /// Loading, manipulating and saving images.
 pub struct Image {

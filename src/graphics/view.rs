@@ -34,7 +34,7 @@ use traits::Wrappable;
 use graphics::FloatRect;
 use system::vector2::Vector2f;
 
-use ffi = ffi::graphics::view;
+use ffi::graphics::view as ffi;
 
 /// 2D camera that defines what region is shown on screen
 ///

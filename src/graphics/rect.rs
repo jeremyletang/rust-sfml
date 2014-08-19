@@ -29,7 +29,7 @@
 use libc::c_int;
 
 use ffi::sfml_types::{SFTRUE, SFFALSE};
-use ffi = ffi::graphics::rect;
+use ffi::graphics::rect as ffi;
 
 /// Utility classes for manipulating rectangles of int.
 #[deriving(Clone, PartialEq, Eq, PartialOrd, Ord, Show)]

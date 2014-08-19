@@ -31,7 +31,7 @@ use std::ptr;
 use traits::Wrappable;
 use graphics::{BlendMode, BlendAlpha, Texture, rc, Transform};
 
-use ffi = ffi::graphics::render_states;
+use ffi::graphics::render_states as ffi;
 
 /// Define the states used for drawing to a RenderTarget
 pub struct RenderStates {

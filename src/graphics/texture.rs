@@ -35,7 +35,7 @@ use system::vector2::Vector2u;
 use window::Window;
 
 use ffi::sfml_types::{SFTRUE, SFFALSE};
-use ffi = ffi::graphics::texture;
+use ffi::graphics::texture as ffi;
 
 /// Image used for drawing
 ///

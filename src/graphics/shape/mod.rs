@@ -33,7 +33,7 @@ use graphics::{RenderWindow, RenderTexture, RenderStates, Texture, Color,
 use system::vector2::Vector2f;
 
 use ffi::sfml_types::{SFTRUE, SFFALSE};
-use ffi = ffi::graphics::shape;
+use ffi::graphics::shape as ffi;
 
 pub mod rc;
 

@@ -32,7 +32,7 @@ use traits::Wrappable;
 use graphics::{Texture, Glyph};
 
 use ffi::sfml_types::{SFTRUE, SFFALSE};
-use ffi = ffi::graphics::font;
+use ffi::graphics::font as ffi;
 
 /// Class for loading and manipulating character fonts
 pub struct Font {

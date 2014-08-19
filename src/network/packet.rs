@@ -30,7 +30,7 @@ use std::c_str::CString;
 use traits::Wrappable;
 
 use ffi::sfml_types::{SFTRUE, SFFALSE};
-use ffi = ffi::network::packet;
+use ffi::network::packet as ffi;
 
 /// Utility class to build blocks of data to transfer over the network.
 pub struct Packet {

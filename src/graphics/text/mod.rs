@@ -38,7 +38,7 @@ use graphics::{RenderWindow, RenderTexture, Font, FloatRect, Color, Transform,
                RenderStates, TextStyle};
 use system::vector2::Vector2f;
 
-use ffi = ffi::graphics::text;
+use ffi::graphics::text as ffi;
 
 pub mod rc;
 

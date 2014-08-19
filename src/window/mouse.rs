@@ -31,7 +31,7 @@
 use libc::c_uint;
 
 use ffi::sfml_types::{SFTRUE, SFFALSE};
-use ffi = ffi::window::mouse;
+use ffi::window::mouse as ffi;
 
 /// Mouse buttons
 #[deriving(Clone, PartialEq, Eq, PartialOrd, Ord, Show)]

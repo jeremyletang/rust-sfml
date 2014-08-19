@@ -24,7 +24,7 @@
 
 //! Status codes that may be returned by socket functions.
 
-use ffi = ffi::network::socket_status;
+use ffi::network::socket_status as ffi;
 
 /// Status codes that may be returned by socket functions.
 #[deriving(Clone, PartialEq, Eq, PartialOrd, Ord, Show)]

@@ -33,7 +33,7 @@ use network::IpAddress;
 use system::Time;
 
 use ffi::sfml_types::{SFTRUE, SFFALSE};
-use ffi = ffi::network::ftp;
+use ffi::network::ftp as ffi;
 
 /// The differents FTP modes availables.
 #[deriving(Clone, PartialEq, Eq, PartialOrd, Ord, Show)]

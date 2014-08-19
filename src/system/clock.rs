@@ -30,7 +30,7 @@
 use traits::Wrappable;
 use system::Time;
 
-use ffi = ffi::system::clock;
+use ffi::system::clock as ffi;
 
 /// Measuring elapsed time
 ///

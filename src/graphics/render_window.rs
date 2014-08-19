@@ -43,8 +43,7 @@ use graphics::{Text, Color, Sprite, CircleShape, RectangleShape, ConvexShape,
                RenderStates, View, Image, IntRect, VertexArray, Shape, rc};
 
 use ffi::sfml_types::{SfBool, SFTRUE, SFFALSE};
-use ffi = ffi::graphics::render_window;
-
+use ffi::graphics::render_window as ffi;
 
 /// Window that can serve as a target for 2D drawing.
 ///

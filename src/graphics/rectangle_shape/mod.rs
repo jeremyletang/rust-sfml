@@ -33,7 +33,7 @@ use graphics::{FloatRect, IntRect, Color, Texture, RenderWindow, RenderTexture,
                Transform, RenderStates};
 
 use ffi::sfml_types::{SFTRUE, SFFALSE};
-use ffi = ffi::graphics::rectangle_shape;
+use ffi::graphics::rectangle_shape as ffi;
 
 pub mod rc;
 

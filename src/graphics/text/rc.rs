@@ -40,7 +40,7 @@ use graphics::{RenderWindow, RenderTexture, Font, FloatRect, Color, Transform,
                rc, TextStyle};
 use system::vector2::Vector2f;
 
-use ffi = ffi::graphics::text;
+use ffi::graphics::text as ffi;
 
 /// Graphical text
 ///

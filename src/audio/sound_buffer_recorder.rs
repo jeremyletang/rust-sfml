@@ -33,7 +33,7 @@ use traits::Wrappable;
 use audio::sound_buffer::SoundBuffer;
 
 use ffi::sfml_types::{SFTRUE, SFFALSE};
-use ffi = ffi::audio::sound_buffer_recorder;
+use ffi::audio::sound_buffer_recorder as ffi;
 
 /// Store captured audio data in sound Buffer
 ///

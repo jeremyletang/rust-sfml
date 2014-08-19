@@ -31,7 +31,7 @@
 use libc::{c_uint};
 
 use ffi::sfml_types::{SFFALSE, SFTRUE};
-use ffi = ffi::window::joystick;
+use ffi::window::joystick as ffi;
 
 /// Maximum number of supported joysticks.
 pub static Count: uint  = 8;

@@ -29,7 +29,7 @@ use std::ptr;
 use traits::Wrappable;
 use graphics::{BlendMode, BlendAlpha, Shader, Texture, Transform};
 
-use ffi = ffi::graphics::render_states;
+use ffi::graphics::render_states as ffi;
 
 pub mod rc;
 

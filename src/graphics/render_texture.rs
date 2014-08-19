@@ -36,7 +36,7 @@ use graphics::{View, Sprite, Color, IntRect, Texture, CircleShape,
                Shape, Text, rc};
 
 use ffi::sfml_types::{SFTRUE, SFFALSE};
-use ffi = ffi::graphics::render_texture;
+use ffi::graphics::render_texture as ffi;
 
 /// Target for off-screen 2D rendering into a texture
 pub struct RenderTexture {

@@ -30,7 +30,7 @@ use std::ptr;
 use traits::Wrappable;
 use system::Time;
 
-use ffi = ffi::network::ip_address;
+use ffi::network::ip_address as ffi;
 
 /// Encapsulate an IPv4 network address.
 pub struct IpAddress{

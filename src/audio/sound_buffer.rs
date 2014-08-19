@@ -32,7 +32,7 @@ use traits::Wrappable;
 use system::Time;
 
 use ffi::sfml_types::{SFTRUE, SFFALSE};
-use ffi = ffi::audio::sound_buffer;
+use ffi::audio::sound_buffer as ffi;
 
 /// Storage of audio sample
 ///

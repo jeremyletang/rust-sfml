@@ -28,7 +28,7 @@
 //!
 //! Color is a simple color class composed of 4 components: Red, Green, Blue, Alpha
 
-use ffi = ffi::graphics::color;
+use ffi::graphics::color as ffi;
 
 /// Utility class for manpulating RGBA colors
 ///

@@ -30,7 +30,7 @@ use traits::Wrappable;
 use network::{TcpSocket, SocketStatus};
 
 use ffi::sfml_types::{SFTRUE, SFFALSE};
-use ffi = ffi::network::tcp_listener;
+use ffi::network::tcp_listener as ffi;
 
 /// Socket that listens to new TCP connections
 pub struct TcpListener {

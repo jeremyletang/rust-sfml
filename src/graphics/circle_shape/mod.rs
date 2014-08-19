@@ -33,7 +33,7 @@ use graphics::{IntRect, FloatRect, Color, Texture, RenderWindow, RenderTexture,
 use system::vector2::Vector2f;
 
 use ffi::sfml_types::{SFTRUE, SFFALSE};
-use ffi = ffi::graphics::circle_shape;
+use ffi::graphics::circle_shape as ffi;
 
 pub mod rc;
 

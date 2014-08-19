@@ -30,7 +30,7 @@ use std::c_str::CString;
 use traits::Wrappable;
 use system::Time;
 
-use ffi = ffi::network::http;
+use ffi::network::http as ffi;
 
 /// Method type to send the request
 #[deriving(Clone, PartialEq, Eq, PartialOrd, Ord, Show)]

@@ -38,7 +38,7 @@ use graphics::{Color, Texture, RenderWindow,
 use system::vector2::Vector2f;
 
 use ffi::sfml_types::{SFTRUE, SFFALSE};
-use ffi = ffi::graphics::convex_shape;
+use ffi::graphics::convex_shape as ffi;
 
 pub mod rc;
 

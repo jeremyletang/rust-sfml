@@ -24,7 +24,7 @@
 
 //! Sound and musics statues
 
-use ffi = ffi::audio::sound_status;
+use ffi::audio::sound_status as ffi;
 
 /// Enumeration of statuses for sounds and musics
 #[deriving(Clone, PartialEq, Eq, PartialOrd, Ord, Show)]

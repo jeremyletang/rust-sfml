@@ -38,7 +38,7 @@ use system::vector2::Vector2f;
 use system::vector3::Vector3f;
 
 use ffi::sfml_types::{SFTRUE, SFFALSE};
-use ffi = ffi::graphics::shader;
+use ffi::graphics::shader as ffi;
 
 /// Shader class (vertex and fragment)
 ///

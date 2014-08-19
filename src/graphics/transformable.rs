@@ -30,7 +30,7 @@ use traits::Wrappable;
 use graphics::Transform;
 use system::vector2::Vector2f;
 
-use ffi = ffi::graphics::transformable;
+use ffi::graphics::transformable as ffi;
 
 /// Target for off-screen 2D rendering into a texture
 pub struct Transformable{

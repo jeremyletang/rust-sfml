@@ -22,12 +22,9 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-/*!
-* Wrappable trait
-*
-* Implemented by each object who wrapp an SFML object
-*
-*/
+//! Wrappable trait
+//!
+//! Implemented by each object who wrapp an SFML object
 
 /// The trait wrappable is inherited by each object who needs to be wrapp or unwrapp to call to sfml
 #[doc(hidden)]

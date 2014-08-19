@@ -31,7 +31,7 @@ use traits::{Drawable, Wrappable};
 use graphics::{Vertex, FloatRect, primitive_type, PrimitiveType, RenderWindow,
                RenderTexture, RenderStates, rc};
 
-use ffi = ffi::graphics::vertex_array;
+use ffi::graphics::vertex_array as ffi;
 
 /// Define a set of one or more 2D primitives
 pub struct VertexArray {

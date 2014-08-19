@@ -37,7 +37,7 @@ use system::vector3::Vector3f;
 use traits::Wrappable;
 
 use ffi::sfml_types::{SFTRUE, SFFALSE};
-use ffi = ffi::audio::sound;
+use ffi::audio::sound as ffi;
 
 /// Play sounds.
 ///

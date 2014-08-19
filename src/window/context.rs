@@ -27,7 +27,7 @@
 //! Class holding a valid drawing context.
 
 use ffi::sfml_types::{SFTRUE, SFFALSE};
-use ffi = ffi::window::context;
+use ffi::window::context as ffi;
 
 /// Drawing context
 ///

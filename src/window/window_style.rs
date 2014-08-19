@@ -22,11 +22,9 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-/*!
- * Window styles
- *
- * Availables window styles
- */
+//! Window styles
+//!
+//! Availables window styles
 
 /// Enumeration of window creation styles
 #[deriving(Clone, PartialEq, Eq, PartialOrd, Ord, Show)]

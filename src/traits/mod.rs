@@ -22,9 +22,7 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-/*!
-* Basic traits for internal functionnement of rsfml.
-*/
+//! Basic traits for internal functionnement of rsfml.
 
 pub use traits::drawable::Drawable;
 pub use traits::wrappable::Wrappable;

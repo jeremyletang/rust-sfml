@@ -32,7 +32,7 @@ use traits::Wrappable;
 use network::{Packet, IpAddress, SocketStatus};
 
 use ffi::sfml_types::{SFTRUE, SFFALSE};
-use ffi = ffi::network::udp_socket;
+use ffi::network::udp_socket as ffi;
 
 /// Specialized socket using the UDP protocol.
 pub struct UdpSocket {
