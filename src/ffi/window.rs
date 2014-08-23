@@ -31,6 +31,7 @@ pub mod window {
     use ffi::window::video_mode::sfVideoMode;
     use ffi::sfml_types::SfBool;
 
+    #[repr(C)]
     pub struct sfWindow {
         this: *mut c_void
     }
@@ -71,6 +72,7 @@ pub mod context {
 
     use ffi::sfml_types::SfBool;
 
+    #[repr(C)]
     pub struct sfContext {
         this: *mut c_void
     }
@@ -123,6 +125,7 @@ pub mod video_mode {
 
     use ffi::sfml_types::SfBool;
 
+    #[repr(C)]
     pub struct sfVideoMode {
         pub width:          c_uint,
         pub height:         c_uint,

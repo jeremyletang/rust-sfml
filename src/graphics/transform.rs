@@ -40,6 +40,7 @@ use ffi::graphics::transform as ffi;
 ///
 /// A Transform specifies how to translate,
 /// rotate, scale, shear, project, whatever things.
+#[repr(C)]
 pub struct Transform {
     pub a00: f32,
     pub a01: f32,

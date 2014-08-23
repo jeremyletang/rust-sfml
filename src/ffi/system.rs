@@ -26,6 +26,7 @@ pub mod clock {
     use libc::{c_void};
     use ffi::system::time::sfTime;
 
+    #[repr(C)]
     pub struct sfClock {
         this: *mut c_void
     }
@@ -50,6 +51,7 @@ pub mod sleep {
 pub mod time {
     pub use libc::{c_longlong, c_float, c_int};
 
+    #[repr(C)]
     pub struct sfTime {
         microseconds: c_longlong
     }

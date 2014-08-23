@@ -33,6 +33,7 @@ use ffi::graphics::color as ffi;
 /// Utility class for manpulating RGBA colors
 ///
 /// Color is a simple color class composed of 4 components: Red, Green, Blue, Alpha
+#[repr(C)]
 #[deriving(Clone, PartialEq, Eq, PartialOrd, Ord, Show)]
 pub struct Color {
     /// The red composant of the color

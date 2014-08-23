@@ -38,6 +38,7 @@ pub mod packet {
 
     use ffi::sfml_types::SfBool;
 
+    #[repr(C)]
     pub struct sfPacket {
         this: *mut c_void
     }
@@ -82,6 +83,7 @@ pub mod ip_address {
 
     use ffi::system::time::sfTime;
 
+    #[repr(C)]
     pub struct sfIpAddress {
         c1: u8,
         c2: u8,
@@ -119,6 +121,7 @@ pub mod tcp_listener {
     use ffi::network::socket_status::SocketStatus;
     use ffi::sfml_types::SfBool;
 
+    #[repr(C)]
     pub struct sfTcpListener {
         this: *mut c_void
     }
@@ -143,6 +146,7 @@ pub mod tcp_socket {
     use ffi::network::packet::sfPacket;
     use ffi::sfml_types::SfBool;
 
+    #[repr(C)]
     pub struct sfTcpSocket {
         this: *mut c_void
     }
@@ -173,6 +177,7 @@ pub mod udp_socket {
     use ffi::network::packet::sfPacket;
     use ffi::sfml_types::SfBool;
 
+    #[repr(C)]
     pub struct sfUdpSocket {
         this: *mut c_void
     }
@@ -255,18 +260,22 @@ pub mod ftp {
     pub static CONNECTIONCLOSED:            Status = 1002;
     pub static INVALIDFILE:                 Status = 1003;
 
+    #[repr(C)]
     pub struct sfFtp {
         this: *mut c_void
     }
 
+    #[repr(C)]
     pub struct sfFtpDirectoryResponse {
         this: *mut c_void
     }
 
+    #[repr(C)]
     pub struct sfFtpListingResponse {
         this: *mut c_void
     }
 
+    #[repr(C)]
     pub struct sfFtpResponse {
         this: *mut c_void
     }
@@ -347,14 +356,17 @@ pub mod http {
     pub static INVALIDRESPONSE:     Status = 1000;
     pub static CONNECTIONFAILED:    Status = 1001;
 
+    #[repr(C)]
     pub struct sfHttpRequest {
         this: *mut c_void
     }
 
+    #[repr(C)]
     pub struct sfHttpResponse {
         this: *mut c_void
     }
 
+    #[repr(C)]
     pub struct sfHttp {
         this: *mut c_void
     }

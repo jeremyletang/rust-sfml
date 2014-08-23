@@ -46,6 +46,7 @@ pub mod music {
     use ffi::audio::sound_status::sfSoundStatus;
     use ffi::sfml_types::SfBool;
 
+    #[repr(C)]
     pub struct sfMusic {
         this:  *mut c_void,
         this1: *mut c_void
@@ -93,6 +94,7 @@ pub mod sound {
     use ffi::system::time::sfTime;
     use ffi::sfml_types::SfBool;
 
+    #[repr(C)]
     pub struct sfSound {
         this: *mut c_void,
         this2: *mut c_void
@@ -133,6 +135,7 @@ pub mod sound_buffer {
     use ffi::system::time::sfTime;
     use ffi::sfml_types::SfBool;
 
+    #[repr(C)]
     pub struct sfSoundBuffer {
         this: *mut c_void
     }
@@ -156,6 +159,7 @@ pub mod sound_buffer_recorder {
     use ffi::audio::sound_buffer::sfSoundBuffer;
     use ffi::sfml_types::SfBool;
 
+    #[repr(C)]
     pub struct sfSoundBufferRecorder {
         this: *mut c_void
     }

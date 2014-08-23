@@ -42,6 +42,7 @@ pub mod render_window {
     use ffi::graphics::vertex_array::sfVertexArray;
     use ffi::sfml_types::SfBool;
 
+    #[repr(C)]
     pub struct sfRenderWindow;
 
     extern "C" {
@@ -104,6 +105,7 @@ pub mod circle_shape {
     use ffi::graphics::texture::sfTexture;
     use ffi::sfml_types::SfBool;
 
+    #[repr(C)]
     pub struct sfCircleShape {
         this: *mut c_void,
         texture: *mut sfTexture,
@@ -170,6 +172,7 @@ pub mod convex_shape {
     use ffi::graphics::texture::sfTexture;
     use ffi::sfml_types::SfBool;
 
+    #[repr(C)]
     pub struct sfConvexShape {
         this: *mut c_void,
         texture: *mut sfTexture,
@@ -221,6 +224,7 @@ pub mod font {
     use ffi::graphics::texture::sfTexture;
     use ffi::sfml_types::SfBool;
 
+    #[repr(C)]
     pub struct sfFont {
         this: *mut c_void
     }
@@ -246,6 +250,7 @@ pub mod image {
 
     use ffi::sfml_types::SfBool;
 
+    #[repr(C)]
     pub struct sfImage {
         this: *mut c_void
     }
@@ -294,6 +299,7 @@ pub mod rectangle_shape {
     use ffi::graphics::texture::sfTexture;
     use ffi::sfml_types::SfBool;
 
+    #[repr(C)]
     pub struct sfRectangleShape {
         this: *mut c_void,
         texture: *mut sfTexture,
@@ -343,6 +349,7 @@ pub mod render_states {
     use ffi::graphics::shader::sfShader;
     use ffi::graphics::texture::sfTexture;
 
+    #[repr(C)]
     pub struct sfRenderStates {
         pub blendMode: i32,
         pub transform: Transform,
@@ -362,6 +369,7 @@ pub mod shader {
     use ffi::graphics::texture::sfTexture;
     use ffi::sfml_types::SfBool;
 
+    #[repr(C)]
     pub struct sfShader {
         this: *mut c_void
     }
@@ -405,6 +413,7 @@ pub mod render_texture {
     use ffi::graphics::view::sfView;
     use ffi::sfml_types::SfBool;
 
+    #[repr(C)]
     pub struct sfRenderTexture {
         this: *mut c_void,
         target: *mut sfTexture,
@@ -452,6 +461,7 @@ pub mod shape {
     use ffi::graphics::texture::sfTexture;
     use ffi::sfml_types::SfBool;
 
+    #[repr(C)]
     pub struct sfShape {
         this: *mut c_void,
         texture: *mut sfTexture,
@@ -503,6 +513,7 @@ pub mod sprite {
     use ffi::graphics::texture::sfTexture;
     use ffi::sfml_types::SfBool;
 
+    #[repr(C)]
     pub struct sfSprite {
         this: *mut c_void,
         texture: *mut sfTexture,
@@ -546,6 +557,7 @@ pub mod text {
 
     use ffi::graphics::font::sfFont;
 
+    #[repr(C)]
     pub struct sfText {
         this: *mut c_void,
         font: *mut c_void,
@@ -600,6 +612,7 @@ pub mod texture {
     use ffi::window::window::sfWindow;
     use ffi::sfml_types::SfBool;
 
+    #[repr(C)]
     pub struct sfTexture {
         this: *mut c_void
     }
@@ -656,6 +669,7 @@ pub mod transformable {
     use system::vector2::Vector2f;
     use graphics::Transform;
 
+    #[repr(C)]
     pub struct sfTransformable {
         this: *mut c_void,
         transform: Transform,
@@ -697,6 +711,7 @@ pub mod vertex_array {
     pub static SFTRIANGLESFAN:     sfPrimitiveType = 5;
     pub static SFQUADS:            sfPrimitiveType = 6;
 
+    #[repr(C)]
     pub struct sfVertexArray {
         this: *mut c_void
     }
@@ -723,6 +738,7 @@ pub mod view {
     use system::vector2::Vector2f;
     use graphics::FloatRect;
 
+    #[repr(C)]
     pub struct sfView {
         this: *mut c_void
     }
