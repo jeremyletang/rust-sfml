@@ -39,7 +39,7 @@ use ffi::graphics::shape as ffi;
 
 #[doc(hidden)]
 pub struct WrapObj {
-    shape_impl: Box<ShapeImpl>
+    shape_impl: Box<ShapeImpl + Send>
 }
 
 /// Base class for textured shapes with outline
@@ -74,7 +74,7 @@ impl Shape {
     /// * shape_impl - Implementation of ShapeImpl
     ///
     /// Return Some(Shape) or None
-    pub fn new(shape_impl: Box<ShapeImpl>) -> Option<Shape> {
+    pub fn new(shape_impl: Box<ShapeImpl + Send>) -> Option<Shape> {
         let w_o = box WrapObj { shape_impl: shape_impl};
         let sp = unsafe { ffi::sfShape_create(get_point_count_callback,
                                               get_point_callback,
@@ -96,7 +96,7 @@ impl Shape {
     /// * texture - The texture to bind to the Shape
     ///
     /// Return Some(Shape) or None
-    pub fn new_with_texture(shape_impl: Box<ShapeImpl>,
+    pub fn new_with_texture(shape_impl: Box<ShapeImpl + Send>,
                             texture: Rc<RefCell<Texture>>) -> Option<Shape> {
         let w_o = box WrapObj { shape_impl: shape_impl };
         let sp = unsafe { ffi::sfShape_create(get_point_count_callback,
