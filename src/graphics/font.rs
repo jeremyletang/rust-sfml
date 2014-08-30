@@ -25,7 +25,7 @@
 
 //! Class for loading and manipulating character fonts
 
-use libc::c_uint;
+use libc::{c_uint, size_t};
 use std::ptr;
 
 use traits::Wrappable;
@@ -56,6 +56,26 @@ impl Font {
                     fnt = ffi::sfFont_createFromFile(c_str)
                 });
         }
+        if fnt.is_null() {
+            None
+        } else {
+            Some(Font {
+                    font: fnt,
+                    dropable: true
+                })
+        }
+    }
+
+    /// Create a new font from memory
+    ///
+    /// # Arguments
+    /// * memory -  The in-memory font file
+    ///
+    /// Return Some(Font) or None
+    pub fn new_from_memory(memory: &[u8]) -> Option<Font> {
+        let fnt = unsafe {
+            ffi::sfFont_createFromMemory(&memory[0], memory.len() as size_t)
+        };
         if fnt.is_null() {
             None
         } else {
