@@ -35,7 +35,7 @@ use libc::{c_float, c_uint};
 use std::ptr;
 
 use traits::{Wrappable, Drawable};
-use graphics::{Color, Texture, RenderWindow,
+use graphics::{Color, Texture, RenderTarget, RenderWindow,
                RenderTexture, FloatRect, IntRect, Transform, rc};
 use system::vector2::Vector2f;
 

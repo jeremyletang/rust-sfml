@@ -30,8 +30,8 @@ use libc::{c_void, c_float, c_uint};
 use std::{ptr, mem};
 
 use traits::{Drawable, ShapeImpl, Wrappable};
-use graphics::{RenderWindow, RenderTexture, rc, Texture, Color, Transform,
-               IntRect, FloatRect};
+use graphics::{RenderTarget, RenderWindow, RenderTexture, rc, Texture, Color,
+               Transform, IntRect, FloatRect};
 use system::vector2::Vector2f;
 
 use ffi::sfml_types::{SFTRUE, SFFALSE};

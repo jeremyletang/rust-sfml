@@ -10,7 +10,7 @@ extern crate rsfml;
 use std::rc::Rc;
 use std::cell::RefCell;
 
-use rsfml::graphics::{RenderWindow, Color, Texture, Font};
+use rsfml::graphics::{RenderWindow, Color, Texture, Font, RenderTarget};
 use rsfml::graphics::rc::{CircleShape, Sprite, ConvexShape, Text};
 use rsfml::window::{VideoMode, ContextSettings, event, keyboard, Close};
 use rsfml::system::Vector2f;

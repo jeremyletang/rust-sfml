@@ -7,7 +7,8 @@
 extern crate native;
 extern crate rsfml;
 
-use rsfml::graphics::{RenderWindow, RenderTexture, Color, CircleShape, RectangleShape};
+use rsfml::graphics::{RenderWindow, RenderTexture, Color, CircleShape, RectangleShape,
+                      RenderTarget};
 use rsfml::window::{VideoMode, ContextSettings, event, keyboard, Close};
 use rsfml::system::Vector2f;
 use rsfml::traits::Drawable;

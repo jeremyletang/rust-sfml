@@ -29,7 +29,7 @@ use std::mem;
 
 use traits::{Drawable, Wrappable};
 use graphics::{Vertex, FloatRect, primitive_type, PrimitiveType, RenderWindow,
-               RenderTexture, RenderStates, rc};
+               RenderTexture, RenderTarget, RenderStates, rc};
 
 use ffi::graphics::vertex_array as ffi;
 

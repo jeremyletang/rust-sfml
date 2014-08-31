@@ -31,7 +31,7 @@ use std::ptr;
 
 use traits::{Drawable, Wrappable};
 use graphics::{IntRect, FloatRect, Color, Texture, RenderWindow, RenderTexture,
-               Transform, rc};
+               RenderTarget, Transform, rc};
 use system::vector2::Vector2f;
 
 use ffi::sfml_types::{SFTRUE, SFFALSE};

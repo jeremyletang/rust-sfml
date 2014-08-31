@@ -25,6 +25,7 @@
 //! 2D graphics module: sprites, text, shapes
 //! [window](../window/index.html)
 
+pub use graphics::render_target::RenderTarget;
 pub use graphics::render_states::RenderStates;
 pub use graphics::render_window::{RenderWindow, Events};
 pub use graphics::rect::{FloatRect, IntRect};
@@ -74,6 +75,7 @@ mod platform {
     extern {}
 }
 
+mod render_target;
 mod render_states;
 mod render_window;
 mod rect;

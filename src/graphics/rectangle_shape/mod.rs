@@ -30,7 +30,7 @@ use std::ptr;
 use traits::{Drawable, Wrappable};
 use system::vector2::Vector2f;
 use graphics::{FloatRect, IntRect, Color, Texture, RenderWindow, RenderTexture,
-               Transform, RenderStates};
+               RenderTarget, Transform, RenderStates};
 
 use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi::graphics::rectangle_shape as ffi;
