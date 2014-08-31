@@ -327,7 +327,7 @@ impl RenderTarget for RenderTexture{
     /// # Arguments
     /// * object - Object to draw
     fn draw<T: Drawable>(&mut self, object: &T) -> () {
-        object.draw_in_render_texture(self);
+        object.draw(self);
     }
 
     /// Draw a drawable object to the render-target
@@ -338,7 +338,7 @@ impl RenderTarget for RenderTexture{
     fn draw_with_renderstates<T: Drawable>(&mut self,
                                                 object: &T,
                                                 render_states: &mut RenderStates) {
-        object.draw_in_render_texture_rs(self, render_states);
+        object.draw_rs(self, render_states);
     }
 
     /// Draw a drawable object to the render-target
@@ -349,7 +349,7 @@ impl RenderTarget for RenderTexture{
     fn draw_with_renderstates_rc<T: Drawable>(&mut self,
                                                    object: &T,
                                                    render_states: &mut rc::RenderStates) {
-        object.draw_in_render_texture_rs_rc(self, render_states);
+        object.draw_rs_rc(self, render_states);
     }
 
     /// Draw Text

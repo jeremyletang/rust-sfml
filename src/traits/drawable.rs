@@ -24,40 +24,26 @@
 
 //! Drawable trait
 //!
-//! Implemented by each drawable object to specifiy them type to RenderWindow.
+//! Implemented by each drawable object to specifiy their drawing operations for
+//! RenderTargets.
 
 #![allow(unused_variable)]
 
-use graphics::{RenderWindow, RenderTexture, RenderStates, rc};
+use graphics::{RenderStates, RenderTarget, rc};
 
-/// The trait drawable is inherited by each object who can be drown by the RenderWindow
+/// The trait drawable is inherited by each object who can be drawn in a RenderTarget
 pub trait Drawable {
-    /// Draw the shape in the RenderWindow
-    fn draw_in_render_window(&self, render_window: &mut RenderWindow) -> ();
+    fn draw<RT: RenderTarget>(&self, target: &mut RT);
 
-    /// Draw the shape in the RenderWindow, using a RenderState (the shape should use borrow for internal resources)
-    fn draw_in_render_window_rs(&self, render_window: &mut RenderWindow, render_states: &mut RenderStates) -> () {
-        println!("Bad usage error: you can't draw a reference counted Shape with a non reference counted RenderStates.")
+    fn draw_rs<RT: RenderTarget>(&self,
+                                 target: &mut RT,
+                                 states: &mut RenderStates){
+        println!("Error: Bad Usage: Can't draw a ref-counted drawable with borrow-based RenderStates");
     }
 
-    /// Draw the shape in the RenderWindow, using a RenderState (the shape should use rc for internal resources)
-    fn draw_in_render_window_rs_rc(&self, render_window: &mut RenderWindow, render_states: &mut rc::RenderStates) -> () {
-        println!("Bad usage error: you can't draw a non reference counted Shape with a reference counted RenderStates.")
-
-    }
-
-    /// Draw the shape in the RenderTexture
-    fn draw_in_render_texture(&self, render_texture: &mut RenderTexture) -> ();
-
-    /// Draw the shape in the RenderTexture, using a RenderState (the shape should use borrow for internal resources)
-    fn draw_in_render_texture_rs(&self, render_texture: &mut RenderTexture, render_states: &mut RenderStates) -> () {
-        println!("Bad usage error: you can't draw a reference counted Shape with a non reference counted RenderStates.")
-
-    }
-
-    /// Draw the shape in the RenderTexture, using a RenderState (the shape should use rc for internal resources)
-    fn draw_in_render_texture_rs_rc(&self, render_texture: &mut RenderTexture, render_states: &mut rc::RenderStates) -> () {
-        println!("Bad usage error: you can't draw a non reference counted Shape with a reference counted RenderStates.")
-
+    fn draw_rs_rc<RT: RenderTarget>(&self,
+                                    target: &mut RT,
+                                    states: &mut rc::RenderStates){
+        println!("Error: Bad Usage: Can't draw a borrow-based drawable with refcount based RenderStates");
     }
 }

@@ -619,24 +619,14 @@ impl Wrappable<*mut ffi::sfRectangleShape> for RectangleShape {
 }
 
 impl Drawable for RectangleShape {
-    fn draw_in_render_window(&self, render_window: &mut RenderWindow) -> () {
-        render_window.draw_rectangle_shape_rc(self);
+    fn draw<RT:RenderTarget>(&self, render_target: &mut RT) -> () {
+        render_target.draw_rectangle_shape_rc(self);
     }
 
-    fn draw_in_render_window_rs_rc(&self,
-                                   render_window: &mut RenderWindow,
+    fn draw_rs_rc<RT:RenderTarget>(&self,
+                                   render_target: &mut RT,
                                    render_states: &mut rc::RenderStates) -> () {
-        render_window.draw_rectangle_shape_rs_rc(self, render_states);
-    }
-
-    fn draw_in_render_texture(&self, render_texture: &mut RenderTexture) -> () {
-        render_texture.draw_rectangle_shape_rc(self);
-    }
-
-    fn draw_in_render_texture_rs_rc(&self,
-                                    render_texture: &mut RenderTexture,
-                                    render_states: &mut rc::RenderStates) -> () {
-        render_texture.draw_rectangle_shape_rs_rc(self, render_states);
+        render_target.draw_rectangle_shape_rs_rc(self, render_states);
     }
 }
 

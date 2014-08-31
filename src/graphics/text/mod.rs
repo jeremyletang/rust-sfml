@@ -574,24 +574,14 @@ impl<'s> Wrappable<*mut ffi::sfText> for Text<'s> {
 }
 
 impl<'s> Drawable for Text<'s> {
-    fn draw_in_render_window(&self, render_window: &mut RenderWindow) -> () {
-        render_window.draw_text(self)
+    fn draw<RT:RenderTarget>(&self, render_target: &mut RT) -> () {
+        render_target.draw_text(self)
     }
 
-    fn draw_in_render_window_rs(&self,
-                                render_window: &mut RenderWindow,
+    fn draw_rs<RT:RenderTarget>(&self,
+                                render_target: &mut RT,
                                 render_states: &mut RenderStates) -> () {
-        render_window.draw_text_rs(self, render_states)
-    }
-
-    fn draw_in_render_texture(&self, renderTexture: &mut RenderTexture) -> () {
-        renderTexture.draw_text(self)
-    }
-
-    fn draw_in_render_texture_rs(&self,
-                                 render_texture: &mut RenderTexture,
-                                 render_states: &mut RenderStates) -> () {
-        render_texture.draw_text_rs(self, render_states)
+        render_target.draw_text_rs(self, render_states)
     }
 }
 
