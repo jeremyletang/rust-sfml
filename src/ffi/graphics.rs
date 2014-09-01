@@ -217,7 +217,7 @@ pub mod convex_shape {
 }
 
 pub mod font {
-    use libc::{c_void, c_uint, c_int, c_char};
+    use libc::{c_void, c_uint, c_int, c_char, c_uchar, size_t};
 
     use graphics::Glyph;
 
@@ -232,7 +232,7 @@ pub mod font {
     extern "C" {
         pub fn sfFont_createFromFile(filename: *const c_char) -> *mut sfFont;
         pub fn sfFont_copy(font: *mut sfFont) -> *mut sfFont;
-        // fn sfFont_createFromMemory(data: *mut c_void, sizeInBytes: size_t) -> *mut sfFont;
+        pub fn sfFont_createFromMemory(data: *const c_uchar, sizeInBytes: size_t) -> *mut sfFont;
         // fn sfFont_createFromStream(stream: *mut sfInputStream) -> *mut sfFont;
         pub fn sfFont_destroy(font: *mut sfFont) -> ();
         pub fn sfFont_getGlyph(font: *mut sfFont, codepoint: u32, characterSize: c_uint, bold :SfBool) -> Glyph;
