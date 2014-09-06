@@ -36,8 +36,8 @@ use std::c_str::CString;
 use libc::{c_float, c_uint, size_t};
 
 use traits::{Drawable, Wrappable};
-use graphics::{RenderWindow, RenderTexture, Font, FloatRect, Color, Transform,
-               rc, TextStyle};
+use graphics::{RenderTarget, RenderWindow, RenderTexture, Font, FloatRect,
+               Color, Transform, rc, TextStyle};
 use system::vector2::Vector2f;
 
 use ffi::graphics::text as ffi;
@@ -574,24 +574,14 @@ impl Wrappable<*mut ffi::sfText> for Text {
 }
 
 impl Drawable for Text {
-    fn draw_in_render_window(&self, render_window: &mut RenderWindow) -> () {
-        render_window.draw_text_rc(self)
+    fn draw<RT:RenderTarget>(&self, render_target: &mut RT) -> () {
+        render_target.draw_text_rc(self)
     }
 
-    fn draw_in_render_window_rs_rc(&self,
-                                   render_window: &mut RenderWindow,
+    fn draw_rs_rc<RT:RenderTarget>(&self,
+                                   render_target: &mut RT,
                                    render_states: &mut rc::RenderStates) -> () {
-        render_window.draw_text_rs_rc(self, render_states)
-    }
-
-    fn draw_in_render_texture(&self, renderTexture: &mut RenderTexture) -> () {
-        renderTexture.draw_text_rc(self)
-    }
-
-    fn draw_in_render_texture_rs_rc(&self,
-                                    render_texture: &mut RenderTexture,
-                                    render_states: &mut rc::RenderStates) -> () {
-        render_texture.draw_text_rs_rc(self, render_states)
+        render_target.draw_text_rs_rc(self, render_states)
     }
 }
 

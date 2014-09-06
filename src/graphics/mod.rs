@@ -25,6 +25,7 @@
 //! 2D graphics module: sprites, text, shapes
 //! [window](../window/index.html)
 
+pub use graphics::render_target::RenderTarget;
 pub use graphics::render_states::RenderStates;
 pub use graphics::render_window::{RenderWindow, Events};
 pub use graphics::rect::{FloatRect, IntRect};
@@ -68,12 +69,13 @@ pub mod rc {
 #[doc(hidden)]
 #[cfg(target_os="macos")]
 #[cfg(target_os="linux")]
-#[cfg(target_os="win32")]
+#[cfg(target_os="windows")]
 mod platform {
     #[link(name = "csfml-graphics")]
     extern {}
 }
 
+mod render_target;
 mod render_states;
 mod render_window;
 mod rect;

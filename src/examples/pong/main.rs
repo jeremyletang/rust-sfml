@@ -9,7 +9,8 @@ extern crate rsfml;
 
 use std::rand;
 
-use rsfml::graphics::{RenderWindow, Color, Font, Text, RectangleShape, CircleShape};
+use rsfml::graphics::{RenderWindow, Color, Font, Text, RectangleShape, CircleShape,
+                      RenderTarget};
 use rsfml::window::{VideoMode, ContextSettings, event, keyboard, Close};
 use rsfml::system::{Vector2f, Clock, Time};
 use rsfml::audio::{SoundBuffer, Sound};

@@ -32,7 +32,7 @@ use std::ptr;
 
 use traits::{Drawable, Wrappable};
 use graphics::{FloatRect, IntRect, Color, Texture, RenderWindow, RenderTexture,
-               Transform, RenderStates};
+               RenderTarget, Transform, RenderStates};
 use system::vector2::Vector2f;
 
 use ffi::sfml_types::{SFTRUE, SFFALSE};
@@ -493,24 +493,14 @@ impl<'s> Wrappable<*mut ffi::sfSprite> for Sprite<'s> {
 }
 
 impl<'s> Drawable for Sprite<'s> {
-    fn draw_in_render_window(&self, render_window: &mut RenderWindow) -> () {
-        render_window.draw_sprite(self)
+    fn draw<RT:RenderTarget>(&self, render_target: &mut RT) -> () {
+        render_target.draw_sprite(self)
     }
 
-    fn draw_in_render_window_rs(&self,
-                                render_window: &mut RenderWindow,
+    fn draw_rs<RT:RenderTarget>(&self,
+                                render_target: &mut RT,
                                 render_states: &mut RenderStates) -> () {
-        render_window.draw_sprite_rs(self, render_states)
-    }
-
-    fn draw_in_render_texture(&self, render_texture: &mut RenderTexture) -> () {
-        render_texture.draw_sprite(self)
-    }
-
-    fn draw_in_render_texture_rs(&self,
-                                 render_texture: &mut RenderTexture,
-                                 render_states: &mut RenderStates) -> () {
-        render_texture.draw_sprite_rs(self, render_states)
+        render_target.draw_sprite_rs(self, render_states)
     }
 }
 

@@ -30,8 +30,8 @@ use libc::{c_void, c_float, c_uint};
 use std::{ptr, mem};
 
 use traits::{Drawable, ShapeImpl, Wrappable};
-use graphics::{RenderWindow, RenderTexture, rc, Texture, Color, Transform,
-               IntRect, FloatRect};
+use graphics::{RenderTarget, RenderWindow, RenderTexture, rc, Texture, Color,
+               Transform, IntRect, FloatRect};
 use system::vector2::Vector2f;
 
 use ffi::sfml_types::{SFTRUE, SFFALSE};
@@ -566,24 +566,14 @@ impl Shape {
 }
 
 impl Drawable for Shape {
-    fn draw_in_render_window(&self, render_window: &mut RenderWindow) -> () {
-        render_window.draw_shape_rc(self)
+    fn draw<RT: RenderTarget>(&self, render_target: &mut RT) {
+        render_target.draw_shape_rc(self)
     }
 
-    fn draw_in_render_window_rs_rc(&self,
-                                   render_window: &mut RenderWindow,
-                                   render_states: &mut rc::RenderStates) -> () {
-        render_window.draw_shape_rs_rc(self, render_states)
-    }
-
-    fn draw_in_render_texture(&self, render_texture: &mut RenderTexture) -> () {
-        render_texture.draw_shape_rc(self)
-    }
-
-    fn draw_in_render_texture_rs_rc(&self,
-                                    render_texture: &mut RenderTexture,
+    fn draw_rs_rc<RT: RenderTarget>(&self,
+                                    render_target: &mut RT,
                                     render_states: &mut rc::RenderStates) -> () {
-        render_texture.draw_shape_rs_rc(self, render_states)
+        render_target.draw_shape_rs_rc(self, render_states)
     }
 }
 

@@ -7,7 +7,8 @@
 extern crate native;
 extern crate rsfml;
 
-use rsfml::graphics::{RenderWindow, Color, VertexArray, Vertex, LinesStrip};
+use rsfml::graphics::{RenderWindow, RenderTarget, Color,
+                      VertexArray, Vertex, LinesStrip};
 use rsfml::window::{VideoMode, ContextSettings, event, Close};
 use rsfml::system::Vector2f;
 

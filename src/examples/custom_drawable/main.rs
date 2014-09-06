@@ -7,7 +7,8 @@
 extern crate native;
 extern crate rsfml;
 
-use rsfml::graphics::{RenderWindow, RenderTexture, Color, CircleShape, RectangleShape};
+use rsfml::graphics::{RenderWindow, Color, CircleShape, RectangleShape,
+                      RenderTarget};
 use rsfml::window::{VideoMode, ContextSettings, event, keyboard, Close};
 use rsfml::system::Vector2f;
 use rsfml::traits::Drawable;
@@ -40,16 +41,11 @@ impl<'s> CustomDrawable<'s> {
     }
 }
 
-// Implements the drawable trait, only these two method are mendatory.
+// Implements the drawable trait, only this function is mendatory.
 impl<'s> Drawable for CustomDrawable<'s> {
-    fn draw_in_render_window(&self, render_window: &mut RenderWindow) -> () {
-        render_window.draw(&self.circle);
-        render_window.draw(&self.rect)
-    }
-
-    fn draw_in_render_texture(&self, render_texture: &mut RenderTexture) -> () {
-        render_texture.draw(&self.circle);
-        render_texture.draw(&self.rect)
+    fn draw<RT: RenderTarget>(&self, render_target: &mut RT) -> () {
+        render_target.draw(&self.circle);
+        render_target.draw(&self.rect)
     }
 }
 
