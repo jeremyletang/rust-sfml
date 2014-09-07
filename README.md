@@ -86,7 +86,7 @@ extern crate rsfml;
 
 use rsfml::system::Vector2f;
 use rsfml::window::{ContextSettings, VideoMode, event, Close};
-use rsfml::graphics::{RenderWindow, CircleShape, Color};
+use rsfml::graphics::{RenderWindow, RenderTarget, CircleShape, Color};
 
 #[start]
 fn start(argc: int, argv: *const *const u8) -> int {
