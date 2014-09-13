@@ -3,6 +3,7 @@
 #![crate_name = "pong"]
 #![desc = "Pong example for rsfml"]
 #![crate_type = "bin"]
+#![allow(non_snake_case)]
 
 extern crate native;
 extern crate rsfml;

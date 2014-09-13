@@ -31,7 +31,7 @@ use libc::{c_float};
 use std::ptr;
 
 use traits::{Drawable, Wrappable};
-use graphics::{FloatRect, IntRect, Color, Texture, RenderWindow, RenderTexture,
+use graphics::{FloatRect, IntRect, Color, Texture,
                RenderTarget, Transform, RenderStates};
 use system::vector2::Vector2f;
 

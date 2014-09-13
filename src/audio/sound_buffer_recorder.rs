@@ -70,9 +70,9 @@ impl SoundBufferRecorder {
     ///
     /// # Arguments
     /// * ampleRate - Desired capture rate, in number of samples per second
-    pub fn start(&mut self, sampleRate: uint) -> () {
+    pub fn start(&mut self, sample_rate: uint) -> () {
         unsafe {
-            ffi::sfSoundBufferRecorder_start(self.sound_buffer_recorder, sampleRate as c_uint)
+            ffi::sfSoundBufferRecorder_start(self.sound_buffer_recorder, sample_rate as c_uint)
         }
     }
 

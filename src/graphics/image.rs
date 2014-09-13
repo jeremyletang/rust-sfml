@@ -266,22 +266,22 @@ impl Image {
     /// * applyAlpha - Should the copy take in account the source transparency?
     pub fn copy_image(&mut self,
                       source: &Image,
-                      destX: uint,
-                      destY: uint,
+                      dest_x: uint,
+                      dest_y: uint,
                       source_rect: &IntRect,
                       apply_alpha: bool) -> () {
         unsafe {
             match apply_alpha {
                 true        =>  ffi::sfImage_copyImage(self.image,
                                                        source.unwrap(),
-                                                       destX as c_uint,
-                                                       destY as c_uint,
+                                                       dest_x as c_uint,
+                                                       dest_y as c_uint,
                                                        *source_rect,
                                                        SFFALSE),
                 false       =>  ffi::sfImage_copyImage(self.image,
                                                        source.unwrap(),
-                                                       destX as c_uint,
-                                                       destY as c_uint,
+                                                       dest_x as c_uint,
+                                                       dest_y as c_uint,
                                                        *source_rect,
                                                        SFTRUE)
             }

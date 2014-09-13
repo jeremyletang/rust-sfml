@@ -36,7 +36,7 @@ use std::c_str::CString;
 use libc::{c_float, c_uint, size_t};
 
 use traits::{Drawable, Wrappable};
-use graphics::{RenderTarget, RenderWindow, RenderTexture, Font, FloatRect,
+use graphics::{RenderTarget, Font, FloatRect,
                Color, Transform, rc, TextStyle};
 use system::vector2::Vector2f;
 

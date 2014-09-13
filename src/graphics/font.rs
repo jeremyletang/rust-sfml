@@ -115,12 +115,12 @@ impl Font {
     pub fn get_kerning(&self,
                        first: u32,
                        second: u32,
-                       characterSize: uint) -> int {
+                       character_size: uint) -> int {
         unsafe {
             ffi::sfFont_getKerning(self.font,
                                    first,
                                    second,
-                                   characterSize as c_uint) as int
+                                   character_size as c_uint) as int
         }
     }
 

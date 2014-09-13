@@ -22,7 +22,7 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#![allow(non_snake_case_functions)]
+#![allow(non_snake_case)]
 
 //! Window that can serve as a target for 2D drawing.
 //!
@@ -30,8 +30,6 @@
 //! It defines an OS window that can be painted using the other classes
 //! of the graphics module.
 
-use std::rc::Rc;
-use std::cell::RefCell;
 use libc::{c_float, c_uint};
 use std::ptr;
 use std::vec::Vec;
@@ -563,8 +561,6 @@ impl RenderTarget for RenderWindow{
     /// you know which states have really changed, and need to be
     /// saved and restored). Take a look at the resetGLStates
     /// function if you do so.
-    ///
-    ////
     fn push_GL_states(&mut self) -> () {
         unsafe {
             ffi::sfRenderWindow_pushGLStates(self.render_window)
@@ -585,7 +581,6 @@ impl RenderTarget for RenderWindow{
     /// push_GL_states/pop_GL_states. It makes sure that all OpenGL
     /// states needed by SFML are set, so that subsequent draw()
     /// calls will work as expected.
-    ////
     fn reset_GL_states(&mut self) -> () {
         unsafe {
             ffi::sfRenderWindow_resetGLStates(self.render_window)
@@ -651,10 +646,9 @@ impl RenderTarget for RenderWindow{
     /// * view - The view to use for converting the point
     ///
     /// Return the converted point, in "world" units
-    ////
     fn map_pixel_to_coords(&self,
-                               point: &Vector2i,
-                               view: &View) -> Vector2f {
+                           point: &Vector2i,
+                           view: &View) -> Vector2f {
         unsafe {
             ffi::sfRenderWindow_mapPixelToCoords(self.render_window,
                                                  *point,
@@ -685,7 +679,6 @@ impl RenderTarget for RenderWindow{
     /// * point - Pixel to convert
     ///
     /// Return the converted point, in "world" units
-    ////
     fn map_pixel_to_coords_current_view(&self,
                                             point: &Vector2i) -> Vector2f {
         let view = unsafe {ffi::sfRenderWindow_getView(self.render_window)};
@@ -715,7 +708,6 @@ impl RenderTarget for RenderWindow{
     /// # Arguments
     /// * point - Point to convert
     /// * view - The view to use for converting the point
-    ////
     fn map_coords_to_pixel(&self,
                                point: &Vector2f,
                                view: &View) -> Vector2i {
@@ -743,7 +735,6 @@ impl RenderTarget for RenderWindow{
     ///
     /// # Arguments
     /// * point - Point to convert
-    ////
     fn map_coords_to_pixel_current_view(&self,
                                             point: &Vector2f) -> Vector2i {
         let currView =
@@ -761,7 +752,6 @@ impl RenderTarget for RenderWindow{
     /// * view - Target view
     ///
     /// Return the viewport rectangle, expressed in pixels in the current target
-    ////
     fn get_viewport(&self, view: &View) -> IntRect {
         unsafe {
             ffi::sfRenderWindow_getViewport(self.render_window, view.unwrap())
@@ -773,18 +763,16 @@ impl RenderTarget for RenderWindow{
     /// The size doesn't include the titlebar and borders of the window.
     ///
     /// Return the size in pixels
-    ////
     fn get_size(&self) -> Vector2u {
         unsafe {
             ffi::sfRenderWindow_getSize(self.render_window)
         }
-    } 
+    }
 
     /// Draw a drawable object to the render target
     ///
     /// # Arguments
     /// * object - Object to draw
-    ////
     fn draw<T: Drawable>(&mut self, object: &T) -> () {
         object.draw(self);
     }
@@ -794,7 +782,6 @@ impl RenderTarget for RenderWindow{
     /// # Arguments
     /// * object - Object to draw
     /// * renderStates - The renderStates to associate to the object
-    ////
     fn draw_with_renderstates<T: Drawable>(&mut self,
                                                 object: &T,
                                                 render_states: &mut RenderStates) {
@@ -806,7 +793,6 @@ impl RenderTarget for RenderWindow{
     /// # Arguments
     /// * object - Object to draw
     /// * renderStates - The renderStates to associate to the object
-    ////
     fn draw_with_renderstates_rc<T: Drawable>(&mut self,
                                                    object: &T,
                                                    render_states: &mut rc::RenderStates) {

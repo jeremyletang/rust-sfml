@@ -22,6 +22,8 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
+#![allow(non_snake_case)]
+
 pub mod render_window {
     use libc::{c_uint, c_float, c_char};
 

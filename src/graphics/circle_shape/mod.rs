@@ -28,7 +28,7 @@ use libc::{c_float, c_uint};
 use std::ptr;
 
 use traits::{Drawable, Wrappable};
-use graphics::{IntRect, FloatRect, Color, Texture, RenderWindow, RenderTexture,
+use graphics::{IntRect, FloatRect, Color, Texture,
                RenderTarget, Transform, RenderStates};
 use system::vector2::Vector2f;
 

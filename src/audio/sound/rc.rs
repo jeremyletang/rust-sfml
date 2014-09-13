@@ -256,9 +256,9 @@ impl Sound {
     ///
     /// # Arguments
     /// * timeOffset - New playing position
-    pub fn set_playing_offset(&mut self, timeOffset: Time) -> () {
+    pub fn set_playing_offset(&mut self, time_offset: Time) -> () {
         unsafe {
-            ffi::sfSound_setPlayingOffset(self.sound, timeOffset.unwrap())
+            ffi::sfSound_setPlayingOffset(self.sound, time_offset.unwrap())
         }
     }
 

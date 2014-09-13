@@ -24,44 +24,196 @@
 
 //Authored on 2014-08-30 by Brandon Sanderson
 
+#![allow(non_snake_case)]
+
+
 use graphics::{Color, Text, Shape, Sprite, VertexArray, View, RenderStates,
                ConvexShape, RectangleShape, CircleShape, IntRect, rc};
-use traits::{Drawable, Wrappable};
+use traits::Drawable;
 use system::vector2::{Vector2f, Vector2i, Vector2u};
 
 /// Trait which is the equivalent of the sf::RenderTarget class in SFML.
 /// This is implemented by RenderTarget and RenderWindow structs to provide
 /// a unified interface for rendering.
 pub trait RenderTarget{
+    /// clear the screen
     fn clear(&mut self, color: &Color);
-    
+
+    /// return the current view
     fn get_view(&self) -> View;
+
+    /// get the default view for the render target
     fn get_default_view(&self) -> View;
 
-    fn set_view(&mut self, view:&View);
-    
+    /// set a new view to the target
+    fn set_view(&mut self, view: &View);
+
+    /// get the viewport of the render target
     fn get_viewport(&self, view: &View) -> IntRect;
-  
+
+
+    /// Convert a point from window coordinates to world coordinates
+    ///
+    /// This function finds the 2D position that matches the
+    /// given pixel of the render-window. In other words, it does
+    /// the inverse of what the graphics card does, to find the
+    /// initial position of a rendered pixel.
+    ///
+    /// Initially, both coordinate systems (world units and target pixels)
+    /// match perfectly. But if you define a custom view or resize your
+    /// render window, this assertion is not true anymore, ie. a point
+    /// located at (10, 50) in your render-window may map to the point
+    /// (150, 75) in your 2D world -- if the view is translated by (140, 25).
+    ///
+    /// This function is typically used to find which point (or object) is
+    /// located below the mouse cursor.
+    ///
+    /// This version uses a custom view for calculations, see the
+    /// [map_pixel_to_coords_current_view](#method.map_pixel_to_coords_current_view)
+    /// function if you want to use the current view of the
+    /// render-window.
+    ///
+    /// # Arguments
+    /// * point - Pixel to convert
+    /// * view - The view to use for converting the point
+    ///
+    /// Return the converted point, in "world" units
+    ////
     fn map_pixel_to_coords(&self, point: &Vector2i, view: &View) -> Vector2f;
+
+    /// Convert a point from window coordinates to world coordinates
+    ///
+    /// This function finds the 2D position that matches the
+    /// given pixel of the render-window. In other words, it does
+    /// the inverse of what the graphics card does, to find the
+    /// initial position of a rendered pixel.
+    ///
+    /// Initially, both coordinate systems (world units and target pixels)
+    /// match perfectly. But if you define a custom view or resize your
+    /// render window, this assertion is not true anymore, ie. a point
+    /// located at (10, 50) in your render-window may map to the point
+    /// (150, 75) in your 2D world -- if the view is translated by (140, 25).
+    ///
+    /// This function is typically used to find which point (or object) is
+    /// located below the mouse cursor.
+    ///
+    /// This version uses the current view for calculations, see the
+    /// [map_pixel_to_coords](#method.map_pixel_to_coords) function if you want to use a custom view.
+    ///
+    /// # Arguments
+    /// * point - Pixel to convert
+    ///
+    /// Return the converted point, in "world" units
     fn map_pixel_to_coords_current_view(&self, point: &Vector2i) -> Vector2f;
-  
+
+    /// Convert a point from world coordinates to window coordinates
+    ///
+    /// This function finds the pixel of the render-window that matches
+    /// the given 2D point. In other words, it goes through the same process
+    /// as the graphics card, to compute the final position of a rendered point.
+    ///
+    /// Initially, both coordinate systems (world units and target pixels)
+    /// match perfectly. But if you define a custom view or resize your
+    /// render window, this assertion is not true anymore, ie. a point
+    /// located at (150, 75) in your 2D world may map to the pixel
+    /// (10, 50) of your render-window -- if the view is translated by (140, 25).
+    ///
+    /// This version uses a custom view for calculations, see
+    /// [map_coords_to_pixel_current_view](#method.map_coords_to_pixel_current_view)
+    /// if you want to use the current view of the render-window.
+    ///
+    /// # Arguments
+    /// * point - Point to convert
+    /// * view - The view to use for converting the point
+    ///
+    /// Return the converted point, in "world" units
     fn map_coords_to_pixel(&self, point: &Vector2f, view: &View) -> Vector2i;
+
+    /// Convert a point from window coordinates to world coordinates
+    ///
+    /// This function finds the 2D position that matches the
+    /// given pixel of the render-window. In other words, it does
+    /// the inverse of what the graphics card does, to find the
+    /// initial position of a rendered pixel.
+    ///
+    /// Initially, both coordinate systems (world units and target pixels)
+    /// match perfectly. But if you define a custom view or resize your
+    /// render window, this assertion is not true anymore, ie. a point
+    /// located at (10, 50) in your render-window may map to the point
+    /// (150, 75) in your 2D world -- if the view is translated by (140, 25).
+    ///
+    /// This function is typically used to find which point (or object) is
+    /// located below the mouse cursor.
+    ///
+    /// This version uses the current view for calculations, see the
+    /// [map_pixel_to_coords](#method.map_pixel_to_coords) function if you want to use a custom view.
+    ///
+    /// # Arguments
+    /// * point - Pixel to convert
+    ///
+    /// Return the converted point, in "world" units
     fn map_coords_to_pixel_current_view(&self, point: &Vector2f) -> Vector2i;
-  
+
+    /// Draw a drawable object to the render target
+    ///
+    /// # Arguments
+    /// * object - Object to draw
     fn draw<T: Drawable>(&mut self, object: &T);
-  
+
+    /// Draw a drawable object to the render-target with a RenderStates
+    ///
+    /// # Arguments
+    /// * object - Object to draw
+    /// * renderStates - The renderStates to associate to the object
     fn draw_with_renderstates<T: Drawable>(&mut self,
                                            object: &T,
                                            render_states: &mut RenderStates);
-  
+
+    /// Draw a drawable object to the render-target with a RenderStates
+    ///
+    /// # Arguments
+    /// * object - Object to draw
+    /// * renderStates - The renderStates to associate to the object
     fn draw_with_renderstates_rc<T: Drawable>(&mut self,
                                               object: &T,
                                               render_states: &mut rc::RenderStates);
-  
+
+    /// Get the size of the rendering region of a window
+    ///
+    /// The size doesn't include the titlebar and borders of the window.
+    ///
+    /// Return the size in pixels
     fn get_size(&self) -> Vector2u;
-  
+
+
+    /// Save the current OpenGL render states and matrices
+    ///
+    /// This function can be used when you mix SFML drawing
+    /// and direct OpenGL rendering. Combined with popGLStates,
+    /// it ensures that:
+    /// SFML's internal states are not messed up by your OpenGL code
+    /// and that your OpenGL states are not modified by a call to a SFML function
+    ///
+    /// Note that this function is quite expensive: it saves all the
+    /// possible OpenGL states and matrices, even the ones you
+    /// don't care about. Therefore it should be used wisely.
+    /// It is provided for convenience, but the best results will
+    /// be achieved if you handle OpenGL states yourself (because
+    /// you know which states have really changed, and need to be
+    /// saved and restored). Take a look at the resetGLStates
+    /// function if you do so.
     fn push_GL_states(&mut self);
+
+    /// Restore the previously saved OpenGL render states and matrices
     fn pop_GL_states(&mut self);
+
+    /// Reset the internal OpenGL states so that the target is ready for drawing
+    ///
+    /// This function can be used when you mix SFML drawing
+    /// and direct OpenGL rendering, if you choose not to use
+    /// push_GL_states/pop_GL_states. It makes sure that all OpenGL
+    /// states needed by SFML are set, so that subsequent draw()
+    /// calls will work as expected.
     fn reset_GL_states(&mut self);
 
 
@@ -76,7 +228,7 @@ pub trait RenderTarget{
 
     /// Draw Shape
     fn draw_shape_rc(&self, shape: &rc::Shape);
-    
+
     /// Draw Sprite
     fn draw_sprite(&self, sprite: &Sprite);
 

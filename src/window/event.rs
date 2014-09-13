@@ -155,8 +155,6 @@ pub enum Event {
 #[doc(hidden)]
 pub mod raw {
 
-    #![allow(non_uppercase_pattern_statics)]
-
     use ffi::sfml_types::SfBool;
 
     pub type sfKeyCode = ::libc::c_int;

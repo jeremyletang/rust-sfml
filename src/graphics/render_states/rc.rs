@@ -24,6 +24,8 @@
 
 //! Define the states used for drawing to a RenderTarget
 
+#![allow(non_snake_case)]
+
 use std::rc::Rc;
 use std::cell::RefCell;
 use std::ptr;
