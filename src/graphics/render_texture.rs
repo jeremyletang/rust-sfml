@@ -33,7 +33,7 @@ use traits::{Drawable, Wrappable};
 use system::vector2::{Vector2f, Vector2i, Vector2u};
 use graphics::{View, Sprite, Color, IntRect, Texture, CircleShape,
                RectangleShape, VertexArray, ConvexShape, RenderStates,
-               Shape, Text, RenderTarget, rc};
+               Shape, Text, RenderTarget, rc, Vertex, PrimitiveType};
 
 use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi::graphics::render_texture as ffi;
@@ -620,6 +620,37 @@ impl RenderTarget for RenderTexture{
             ffi::sfRenderTexture_drawVertexArray(self.render_texture,
                                                  vertex_array.unwrap(),
                                                  rs.unwrap())
+        }
+    }
+
+    /// draw primitives
+    fn draw_primitives_rs(&self,
+                          vertices: &[Vertex],
+                          ty: PrimitiveType,
+                          rs: &mut RenderStates) {
+
+        let len = vertices.len() as u32;
+        unsafe {
+            ffi::sfRenderTexture_drawPrimitives(self.render_texture,
+                                                &vertices[0],
+                                                len,
+                                                ty,
+                                                rs.unwrap());
+        }
+    }
+
+    /// draw primitives
+    fn draw_primitives(&self,
+                       vertices: &[Vertex],
+                       ty: PrimitiveType) {
+
+        let len = vertices.len() as u32;
+        unsafe {
+            ffi::sfRenderTexture_drawPrimitives(self.render_texture,
+                                                &vertices[0],
+                                                len,
+                                                ty,
+                                                ptr::mut_null());
         }
     }
 

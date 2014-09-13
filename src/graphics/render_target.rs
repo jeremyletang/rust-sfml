@@ -28,14 +28,14 @@
 
 
 use graphics::{Color, Text, Shape, Sprite, VertexArray, View, RenderStates,
-               ConvexShape, RectangleShape, CircleShape, IntRect, rc};
+               ConvexShape, RectangleShape, CircleShape, IntRect, rc, Vertex, PrimitiveType};
 use traits::Drawable;
 use system::vector2::{Vector2f, Vector2i, Vector2u};
 
 /// Trait which is the equivalent of the sf::RenderTarget class in SFML.
 /// This is implemented by RenderTarget and RenderWindow structs to provide
 /// a unified interface for rendering.
-pub trait RenderTarget{
+pub trait RenderTarget {
     /// clear the screen
     fn clear(&mut self, color: &Color);
 
@@ -326,5 +326,15 @@ pub trait RenderTarget{
                                vertex_array: &VertexArray,
                                rs: &mut rc::RenderStates);
 
+    /// draw primitives
+    fn draw_primitives(&self,
+                       vertices: &[Vertex],
+                       ty: PrimitiveType);
+
+    /// draw primitives
+    fn draw_primitives_rs(&self,
+                          vertices: &[Vertex],
+                          ty: PrimitiveType,
+                          rs: &mut RenderStates);
 
 }

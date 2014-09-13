@@ -4,6 +4,8 @@
 #![desc = "VertexArray example for rsfml"]
 #![crate_type = "bin"]
 
+#![feature(macro_rules)]
+
 extern crate native;
 extern crate rsfml;
 
@@ -18,6 +20,16 @@ fn start(argc: int, argv: *const *const u8) -> int {
     native::start(argc, argv, main)
 }
 
+
+macro_rules! vertices(
+    ($($e:expr),*) => ({
+        // leading _ to allow empty construction without a warning.
+        let mut _temp = VertexArray::new().unwrap();
+        $(_temp.append(&$e);)*
+        _temp
+    });
+)
+
 fn main () -> () {
     // Create the window of the application
     let setting: ContextSettings = ContextSettings::default();
@@ -26,7 +38,6 @@ fn main () -> () {
         None => fail!("Cannot create a new Render Window.")
     };
     window.set_vertical_sync_enabled(true);
-
 
     let mut vertex_array = VertexArray::new().expect("Error, cannot create a VertexArray");
     vertex_array.set_primitive_type(LinesStrip);

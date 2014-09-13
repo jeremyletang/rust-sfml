@@ -39,7 +39,7 @@ use window::{ContextSettings, VideoMode, event, WindowStyle};
 use system::vector2::{Vector2f, Vector2i, Vector2u};
 use graphics::{Text, Color, Sprite, CircleShape, RectangleShape, ConvexShape,
                RenderStates, View, Image, IntRect, VertexArray, Shape, RenderTarget,
-               rc};
+               rc, Vertex, PrimitiveType};
 
 use ffi::sfml_types::{SfBool, SFTRUE, SFFALSE};
 use ffi::graphics::render_window as ffi;
@@ -1067,6 +1067,37 @@ impl RenderTarget for RenderWindow{
             ffi::sfRenderWindow_drawVertexArray(self.render_window,
                                                 vertex_array.unwrap(),
                                                 render_states.unwrap())
+        }
+    }
+
+    /// draw primitives
+    fn draw_primitives_rs(&self,
+                          vertices: &[Vertex],
+                          ty: PrimitiveType,
+                          rs: &mut RenderStates) {
+
+        let len = vertices.len() as u32;
+        unsafe {
+            ffi::sfRenderWindow_drawPrimitives(self.render_window,
+                                               &vertices[0],
+                                               len,
+                                               ty,
+                                               rs.unwrap());
+        }
+    }
+
+    /// draw primitives
+    fn draw_primitives(&self,
+                       vertices: &[Vertex],
+                       ty: PrimitiveType) {
+
+        let len = vertices.len() as u32;
+        unsafe {
+            ffi::sfRenderWindow_drawPrimitives(self.render_window,
+                                               &vertices[0],
+                                               len,
+                                               ty,
+                                               ptr::mut_null());
         }
     }
 

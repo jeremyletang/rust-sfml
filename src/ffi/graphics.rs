@@ -29,7 +29,7 @@ pub mod render_window {
 
     use system::vector2::{Vector2f, Vector2i, Vector2u};
     use window::ContextSettings;
-    use graphics::{Color, IntRect};
+    use graphics::{Color, IntRect, Vertex, PrimitiveType};
 
     use ffi::window::video_mode::sfVideoMode;
     use ffi::graphics::text::sfText;
@@ -87,7 +87,7 @@ pub mod render_window {
         pub fn sfRenderWindow_drawConvexShape(renderWindow: *mut sfRenderWindow, object: *mut sfConvexShape, states: *mut sfRenderStates) -> ();
         pub fn sfRenderWindow_drawRectangleShape(renderWindow: *mut sfRenderWindow, object: *mut sfRectangleShape, states: *mut sfRenderStates) -> ();
         pub fn sfRenderWindow_drawVertexArray(renderWindow: *mut sfRenderWindow, object: *mut sfVertexArray, states: *mut sfRenderStates) -> ();
-        // fn sfRenderWindow_drawPrimitives(renderWindow: *mut sfRenderWindow, vertices: *mut sfVertex, vertexCount: c_uint, ttype: sfPrimitiveType, states: *mut sfRenderStates) -> ();
+        pub fn sfRenderWindow_drawPrimitives(renderWindow: *mut sfRenderWindow, vertices: *const Vertex, vertexCount: c_uint, ttype: PrimitiveType, states: *mut sfRenderStates) -> ();
         pub fn sfRenderWindow_pushGLStates(renderWindow: *mut sfRenderWindow) -> ();
         pub fn sfRenderWindow_popGLStates(renderWindow: *mut sfRenderWindow) -> ();
         pub fn sfRenderWindow_resetGLStates(renderWindow: *mut sfRenderWindow) -> ();
@@ -401,7 +401,7 @@ pub mod render_texture {
     use libc::{c_void, c_uint};
 
     use system::vector2::{Vector2f, Vector2i, Vector2u};
-    use graphics::{Color, IntRect};
+    use graphics::{Color, IntRect, Vertex, PrimitiveType};
 
     use ffi::graphics::sprite::sfSprite;
     use ffi::graphics::render_states::sfRenderStates;
@@ -443,7 +443,7 @@ pub mod render_texture {
         pub fn sfRenderTexture_drawConvexShape(renderTexture: *mut sfRenderTexture, object: *mut sfConvexShape, states: *mut sfRenderStates) -> ();
         pub fn sfRenderTexture_drawRectangleShape(renderTexture: *mut sfRenderTexture, object: *mut sfRectangleShape, states: *mut sfRenderStates) -> ();
         pub fn sfRenderTexture_drawVertexArray(renderTexture: *mut sfRenderTexture, object: *mut sfVertexArray, states: *mut sfRenderStates) -> ();
-        //fn sfRenderTexture_drawPrimitives(renderTexture: *mut sfRenderTexture) -> (); // a modifier
+        pub fn sfRenderTexture_drawPrimitives(renderTexture: *mut sfRenderTexture, vertices: *const Vertex, vertexCount: c_uint, ttype: PrimitiveType, states: *mut sfRenderStates) -> ();
         pub fn sfRenderTexture_pushGLStates(renderTexture: *mut sfRenderTexture) -> ();
         pub fn sfRenderTexture_popGLStates(renderTexture: *mut sfRenderTexture) -> ();
         pub fn sfRenderTexture_resetGLStates(renderTexture: *mut sfRenderTexture) -> ();
