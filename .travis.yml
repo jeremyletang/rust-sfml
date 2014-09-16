@@ -7,7 +7,7 @@ before_install:
   - sudo apt-get update
 install:
   - sudo apt-get install cargo
-  - curl http://www.rust-lang.org/rustup.sh | sudo sh -
+  - curl http://static.rust-lang.org/rustup.sh | sudo sh -
   - wget http://www.sfml-dev.org/download/sfml/2.1/SFML-2.1-linux-gcc-64bits.tar.bz2
   - tar xf SFML-2.1-linux-gcc-64bits.tar.bz2
   - sudo cp -r SFML-2.1/lib/* /usr/local/lib/.
