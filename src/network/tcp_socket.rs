@@ -177,7 +177,7 @@ impl TcpSocket {
     pub fn receive(&self, max_size: size_t) -> (Vec<i8>, SocketStatus, size_t) {
         unsafe {
             let mut s: size_t = 0;
-            let datas: *mut i8 = ptr::mut_null();
+            let datas: *mut i8 = ptr::null_mut();
             let stat: SocketStatus = mem::transmute(ffi::sfTcpSocket_receive(self.socket, datas, max_size, &mut s) as i8);
             (slice::raw::buf_as_slice(datas as *const i8, s as uint, Vec::from_slice), stat, s)
         }
@@ -204,7 +204,7 @@ impl TcpSocket {
     /// Return a packet and a socket status
     pub fn receive_packet(&self) -> (Packet, SocketStatus) {
         unsafe {
-            let pack: *mut ::ffi::network::packet::sfPacket = ptr::mut_null();
+            let pack: *mut ::ffi::network::packet::sfPacket = ptr::null_mut();
             let stat: SocketStatus = mem::transmute(ffi::sfTcpSocket_receivePacket(self.socket, pack) as i8);
             (Wrappable::wrap(pack), stat)
         }

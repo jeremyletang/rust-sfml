@@ -205,7 +205,7 @@ impl CircleShape {
         self.texture = None;
         unsafe {
             ffi::sfCircleShape_setTexture(self.circle_shape,
-                                          ptr::mut_null(),
+                                          ptr::null_mut(),
                                           SFTRUE)
         }
     }

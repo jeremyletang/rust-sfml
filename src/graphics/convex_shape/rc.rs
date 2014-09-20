@@ -405,7 +405,7 @@ impl ConvexShape {
         self.texture = None;
         unsafe {
             ffi::sfConvexShape_setTexture(self.convex_shape,
-                                          ptr::mut_null(),
+                                          ptr::null_mut(),
                                           SFTRUE)
         }
     }

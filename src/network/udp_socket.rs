@@ -159,8 +159,8 @@ impl UdpSocket {
     pub fn receive(&self, max_size: size_t) -> (Vec<i8>, SocketStatus, size_t, IpAddress, u16) {
         unsafe {
             let mut s: size_t = 0;
-            let datas: *mut i8 = ptr::mut_null();
-            let addr: *mut ::ffi::network::ip_address::sfIpAddress = ptr::mut_null();
+            let datas: *mut i8 = ptr::null_mut();
+            let addr: *mut ::ffi::network::ip_address::sfIpAddress = ptr::null_mut();
             let mut port: u16 = 0;
             let stat: SocketStatus = mem::transmute(ffi::sfUdpSocket_receive(self.socket, datas, max_size, &mut s, addr, &mut port) as i8);
             (slice::raw::buf_as_slice(datas as *const i8, s as uint, Vec::from_slice), stat, s, Wrappable::wrap(*addr), port)
@@ -189,8 +189,8 @@ impl UdpSocket {
     /// has been received.
     pub fn receive_packet(&self) -> (Packet, SocketStatus, IpAddress, u16) {
         unsafe {
-            let pack: *mut ::ffi::network::packet::sfPacket = ptr::mut_null();
-            let addr: *mut ::ffi::network::ip_address::sfIpAddress = ptr::mut_null();
+            let pack: *mut ::ffi::network::packet::sfPacket = ptr::null_mut();
+            let addr: *mut ::ffi::network::ip_address::sfIpAddress = ptr::null_mut();
             let mut port: u16 = 0;
             let stat: SocketStatus = mem::transmute(ffi::sfUdpSocket_receivePacket(self.socket, pack, addr, &mut port) as i8);
             (Wrappable::wrap(pack), stat, Wrappable::wrap(*addr), port)

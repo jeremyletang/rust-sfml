@@ -179,7 +179,7 @@ impl Sprite {
     pub fn disable_texture(&mut self) -> () {
         self.texture = None;
         unsafe {
-            ffi::sfSprite_setTexture(self.sprite, ptr::mut_null(), SFTRUE)
+            ffi::sfSprite_setTexture(self.sprite, ptr::null_mut(), SFTRUE)
         }
     }
 

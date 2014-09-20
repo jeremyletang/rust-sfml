@@ -421,7 +421,7 @@ impl RectangleShape {
         self.texture = None;
         unsafe {
             ffi::sfRectangleShape_setTexture(self.rectangle_shape,
-                                             ptr::mut_null(),
+                                             ptr::null_mut(),
                                              SFTRUE)
         }
     }

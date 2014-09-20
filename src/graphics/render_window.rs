@@ -86,7 +86,7 @@ impl RenderWindow {
                title: &str,
                style: WindowStyle,
                settings: &ContextSettings) -> Option<RenderWindow> {
-        let mut sf_render_win: *mut ffi::sfRenderWindow = ptr::mut_null();
+        let mut sf_render_win: *mut ffi::sfRenderWindow = ptr::null_mut();
         unsafe {
             title.with_c_str(|c_str| {
                     sf_render_win = ffi::sfRenderWindow_create(mode.unwrap(),
@@ -804,7 +804,7 @@ impl RenderTarget for RenderWindow{
         unsafe {
             ffi::sfRenderWindow_drawText(self.render_window,
                                          text.unwrap(),
-                                         ptr::mut_null())
+                                         ptr::null_mut())
         }
     }
 
@@ -813,7 +813,7 @@ impl RenderTarget for RenderWindow{
         unsafe {
             ffi::sfRenderWindow_drawText(self.render_window,
                                          text.unwrap(),
-                                         ptr::mut_null())
+                                         ptr::null_mut())
         }
     }
 
@@ -822,7 +822,7 @@ impl RenderTarget for RenderWindow{
         unsafe {
             ffi::sfRenderWindow_drawShape(self.render_window,
                                           shape.unwrap(),
-                                          ptr::mut_null())
+                                          ptr::null_mut())
         }
     }
 
@@ -831,7 +831,7 @@ impl RenderTarget for RenderWindow{
         unsafe {
             ffi::sfRenderWindow_drawShape(self.render_window,
                                           shape.unwrap(),
-                                          ptr::mut_null())
+                                          ptr::null_mut())
         }
     }
 
@@ -840,7 +840,7 @@ impl RenderTarget for RenderWindow{
         unsafe {
             ffi::sfRenderWindow_drawSprite(self.render_window,
                                            sprite.unwrap(),
-                                           ptr::mut_null())
+                                           ptr::null_mut())
         }
     }
 
@@ -849,7 +849,7 @@ impl RenderTarget for RenderWindow{
         unsafe {
             ffi::sfRenderWindow_drawSprite(self.render_window,
                                            sprite.unwrap(),
-                                           ptr::mut_null())
+                                           ptr::null_mut())
         }
     }
 
@@ -858,7 +858,7 @@ impl RenderTarget for RenderWindow{
         unsafe {
             ffi::sfRenderWindow_drawCircleShape(self.render_window,
                                                 circle_shape.unwrap(),
-                                                ptr::mut_null())
+                                                ptr::null_mut())
         }
     }
 
@@ -867,7 +867,7 @@ impl RenderTarget for RenderWindow{
         unsafe {
             ffi::sfRenderWindow_drawCircleShape(self.render_window,
                                                 circle_shape.unwrap(),
-                                                ptr::mut_null())
+                                                ptr::null_mut())
         }
     }
 
@@ -876,7 +876,7 @@ impl RenderTarget for RenderWindow{
         unsafe {
             ffi::sfRenderWindow_drawRectangleShape(self.render_window,
                                                    rectangle_shape.unwrap(),
-                                                   ptr::mut_null())
+                                                   ptr::null_mut())
         }
     }
 
@@ -885,7 +885,7 @@ impl RenderTarget for RenderWindow{
         unsafe {
             ffi::sfRenderWindow_drawRectangleShape(self.render_window,
                                                    rectangle_shape.unwrap(),
-                                                   ptr::mut_null())
+                                                   ptr::null_mut())
         }
     }
 
@@ -894,7 +894,7 @@ impl RenderTarget for RenderWindow{
         unsafe {
             ffi::sfRenderWindow_drawConvexShape(self.render_window,
                                                 convex_shape.unwrap(),
-                                                ptr::mut_null())
+                                                ptr::null_mut())
         }
     }
 
@@ -903,7 +903,7 @@ impl RenderTarget for RenderWindow{
         unsafe {
             ffi::sfRenderWindow_drawConvexShape(self.render_window,
                                                 convex_shape.unwrap(),
-                                                ptr::mut_null())
+                                                ptr::null_mut())
         }
     }
 
@@ -912,7 +912,7 @@ impl RenderTarget for RenderWindow{
         unsafe {
             ffi::sfRenderWindow_drawVertexArray(self.render_window,
                                                 vertex_array.unwrap(),
-                                                ptr::mut_null())
+                                                ptr::null_mut())
         }
     }
 
@@ -1097,7 +1097,7 @@ impl RenderTarget for RenderWindow{
                                                &vertices[0],
                                                len,
                                                ty,
-                                               ptr::mut_null());
+                                               ptr::null_mut());
         }
     }
 

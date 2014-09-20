@@ -101,7 +101,7 @@ impl IpAddress {
     /// Return a string representation of the address
     pub fn to_string(&self) -> String {
         unsafe {
-            let string: *mut u8 = ptr::mut_null();
+            let string: *mut u8 = ptr::null_mut();
             ffi::sfIpAddress_toString(self.ip, string);
             CString::new(string as *const i8, false).as_str().unwrap().to_string()
         }

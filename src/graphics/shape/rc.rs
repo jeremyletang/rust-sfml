@@ -385,7 +385,7 @@ impl Shape {
     pub fn disable_texture(&mut self) -> () {
         self.texture = None;
         unsafe {
-            ffi::sfShape_setTexture(self.shape, ptr::mut_null(), SFTRUE)
+            ffi::sfShape_setTexture(self.shape, ptr::null_mut(), SFTRUE)
         }
     }
 

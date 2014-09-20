@@ -187,7 +187,7 @@ impl Packet {
     /// Function to extract data from a packet
     pub fn read_string(&self) -> String {
         unsafe {
-            let string: *mut u8 = ptr::mut_null();
+            let string: *mut u8 = ptr::null_mut();
             ffi::sfPacket_readString(self.packet, string);
             CString::new(string as *const i8, false).as_str().unwrap().to_string()
         }

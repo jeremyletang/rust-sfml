@@ -75,7 +75,7 @@ impl Texture {
     ///
     /// Return Some(Texture) or None
     pub fn new_from_file(filename: &str) -> Option<Texture> {
-        let mut tex = ptr::mut_null();
+        let mut tex = ptr::null_mut();
         unsafe {
             filename.with_c_str(|c_str| {
                     tex = ffi::sfTexture_createFromFile(c_str as *mut i8, ptr::null())
@@ -100,7 +100,7 @@ impl Texture {
     /// Return Some(Texture) or None
     pub fn new_from_file_with_rect(filename: &str,
                                    area: &IntRect) -> Option<Texture> {
-        let mut tex = ptr::mut_null();
+        let mut tex = ptr::null_mut();
         unsafe {
             filename.with_c_str(|c_str| {
                     tex = ffi::sfTexture_createFromFile(c_str as *mut i8, &*area)

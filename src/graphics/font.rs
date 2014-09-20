@@ -50,7 +50,7 @@ impl Font {
     ///
     /// Return Some(Font) or None
     pub fn new_from_file(filename: &str) -> Option<Font> {
-        let mut fnt = ptr::mut_null();
+        let mut fnt = ptr::null_mut();
         unsafe {
             filename.with_c_str(|c_str| {
                     fnt = ffi::sfFont_createFromFile(c_str)

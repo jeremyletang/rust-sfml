@@ -83,7 +83,7 @@ impl Window {
                style: WindowStyle,
                settings: &ContextSettings) -> Option<Window> {
 
-        let mut sf_win: *mut ffi::sfWindow = ptr::mut_null();
+        let mut sf_win: *mut ffi::sfWindow = ptr::null_mut();
         unsafe {
             title.with_c_str(|c_str| {
                     sf_win = ffi::sfWindow_create(mode.unwrap(), c_str, style as u32, settings)
