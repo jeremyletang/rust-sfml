@@ -4,14 +4,14 @@ rust-sfml [![Build Status](https://api.travis-ci.org/jeremyletang/rust-sfml.png?
 
 SFML bindings for Rust
 
-This is a Rust binding for SFML, the Simple and Fast Multimedia Library, developped by Laurent Gomila.
+This is a Rust binding for SFML, the Simple and Fast Multimedia Library, developed by Laurent Gomila.
 
 SFML website : www.sfml-dev.org
 
 Installation
 ============
 
-You must install on your computer the SFML2.1 and CSFML2.1 libraries who are used for the binding.
+You must install the SFML2.1 and CSFML2.1 libraries on your computer which are used for the binding.
 
 SFML2.1: http://www.sfml-dev.org/download/sfml/2.1/
 
@@ -19,7 +19,7 @@ CSFML2.1: http://www.sfml-dev.org/download/csfml/
 
 Then clone the repo and build the library with the following command.
 
-You can build rust-sfml using different version of Rust compiler :
+You can build rust-sfml using different version of Rust compiler:
 
 | Rust version | rust-sfml
 |--------------|----------
@@ -30,7 +30,7 @@ You can build rust-sfml using different version of Rust compiler :
 | Rust 0.8     | [link rsfml](https://github.com/JeremyLetang/rust-sfml/releases/tag/rust0.8)
 
 
-Rust-sfml is build with make :
+Rust-sfml is built with make:
 
 ```Shell
 > make
@@ -38,7 +38,7 @@ Rust-sfml is build with make :
 
 This command build rsfml, the examples, and the documentation.
 
-You can build them separatly too.
+You can also build them separatly:
 
 ```Shell
 > make rsfml
@@ -46,26 +46,27 @@ You can build them separatly too.
 > make docs
 ```
 
-You can use cargo too:
+Alternatively you can use Cargo:
 ```Shell
 > cargo build
 ```
-this will build rust-sfml and all the examples.
+
+This will build rust-sfml and all the examples.
 
 
 
-Rust-sfml works on Linux, windows and OSX.
+Rust-sfml works on Linux, Windows and OSX.
 
 
 ### Windows 32 bits bug
 
-According to the issue #10, there is problem to use rsfml on windows.
+According to the issue #10, there is problem to use rsfml on Windows.
 It seems to be a bug in the version of llvm used by Rust. Krzat made a patch to solve this problem, you can find it here: mozilla/rust#11198
 
 OSX Specific
 ============
 
-On OSX window must be launched in the main thread. You should override the rust runtime start function.
+On OSX window must be launched in the main thread. You should override the Rust runtime start function.
 
 ```Rust
 #[cfg(target_os="macos")]
