@@ -178,7 +178,7 @@ fn main () -> () {
 
             // Move the ball
             let factor = ballSpeed * deltaTime;
-            ball.move(&Vector2f::new(ballAngle.cos() * factor, ballAngle.sin() * factor));
+            ball.move_(&Vector2f::new(ballAngle.cos() * factor, ballAngle.sin() * factor));
 
             // Check collisions between the ball and the screen
             if ball.get_position().x - ballRadius < 0. {

@@ -264,7 +264,7 @@ impl<'s> RectangleShape<'s> {
     ///
     /// # Arguments
     /// * offset - Offset
-    pub fn move(&mut self, offset: &Vector2f) -> () {
+    pub fn move_(&mut self, offset: &Vector2f) -> () {
         unsafe {
             ffi::sfRectangleShape_move(self.rectangle_shape, *offset)
         }

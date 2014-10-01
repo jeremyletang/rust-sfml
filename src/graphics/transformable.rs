@@ -171,7 +171,7 @@ impl Transformable {
     ///
     /// # Arguments
     /// * offset - Offset
-    pub fn move(&mut self, offset: &Vector2f) -> () {
+    pub fn move_(&mut self, offset: &Vector2f) -> () {
         unsafe {
             ffi::sfTransformable_move(self.transformable, *offset)
         }

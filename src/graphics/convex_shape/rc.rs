@@ -225,7 +225,7 @@ impl ConvexShape {
     ///
     /// # Arguments
     /// * offset - Offset
-    pub fn move(&mut self, offset: &Vector2f) -> () {
+    pub fn move_(&mut self, offset: &Vector2f) -> () {
         unsafe {
             ffi::sfConvexShape_move(self.convex_shape, *offset)
         }

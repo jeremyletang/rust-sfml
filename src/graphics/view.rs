@@ -220,7 +220,7 @@ impl View {
     ///
     /// # Arguments
     /// * offset - Offset
-    pub fn move(&mut self, offset: &Vector2f) -> () {
+    pub fn move_(&mut self, offset: &Vector2f) -> () {
         unsafe {
             ffi::sfView_move(self.view, *offset)
         }

@@ -269,7 +269,7 @@ impl Shape {
     ///
     /// # Arguments
     /// * offset - Offset
-    pub fn move(&mut self, offset: &Vector2f) -> () {
+    pub fn move_(&mut self, offset: &Vector2f) -> () {
         unsafe {
             ffi::sfShape_move(self.shape, *offset)
         }

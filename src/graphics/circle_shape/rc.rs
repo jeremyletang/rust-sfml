@@ -400,7 +400,7 @@ impl CircleShape {
     ///
     /// # Arguments
     /// * offset - Offset
-    pub fn move(&mut self, offset: &Vector2f) -> () {
+    pub fn move_(&mut self, offset: &Vector2f) -> () {
         unsafe {
             ffi::sfCircleShape_move(self.circle_shape, *offset)
         }
