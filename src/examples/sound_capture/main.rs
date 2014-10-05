@@ -26,7 +26,7 @@ fn main() -> () {
     println!("Please choose the sample rate for sound capture (44100 is CD quality): ");
     let mut stdin = BufferedReader::new(stdin());
     let mut line = stdin.read_line().unwrap();
-    unsafe { line.pop_byte(); }
+    unsafe { line.as_mut_vec().pop(); }
     let sample_rate: uint = match strconv::from_str_common(line.as_slice(), 10, false, false, false, strconv::ExpNone, true, false) {
         Some(value)     => value,
         None            => fail!("Error, input is not valid")
@@ -65,7 +65,7 @@ fn main() -> () {
     println!("What do you want to do with captured sound (p = play, s = save) ? ");
     let mut resp = stdin.read_line().unwrap();
 
-    if unsafe { resp.pop_byte().unwrap() } == 's' as u8 {
+    if unsafe { resp.as_mut_vec().pop().unwrap() } == 's' as u8 {
         // Choose a filename
         println!("Choose the file to create: ");
         let filename = stdin.read_line().unwrap();
