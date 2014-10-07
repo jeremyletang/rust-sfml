@@ -1,5 +1,6 @@
 rust-sfml [![Build Status](https://api.travis-ci.org/jeremyletang/rust-sfml.png?branch=master)](https://travis-ci.org/jeremyletang/rust-sfml)
 =========
+[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/jeremyletang/rust-sfml?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 
 SFML bindings for Rust
