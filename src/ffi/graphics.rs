@@ -705,13 +705,13 @@ pub mod vertex_array {
     use graphics::{FloatRect, Vertex};
 
     pub type sfPrimitiveType = c_uint;
-    pub static SFPOINTS:           sfPrimitiveType = 0;
-    pub static SFLINES:            sfPrimitiveType = 1;
-    pub static SFLINESSTRIP:       sfPrimitiveType = 2;
-    pub static SFTRIANGLES:        sfPrimitiveType = 3;
-    pub static SFTRIANGLESSTRIP:   sfPrimitiveType = 4;
-    pub static SFTRIANGLESFAN:     sfPrimitiveType = 5;
-    pub static SFQUADS:            sfPrimitiveType = 6;
+    pub const SFPOINTS:           sfPrimitiveType = 0;
+    pub const SFLINES:            sfPrimitiveType = 1;
+    pub const SFLINESSTRIP:       sfPrimitiveType = 2;
+    pub const SFTRIANGLES:        sfPrimitiveType = 3;
+    pub const SFTRIANGLESSTRIP:   sfPrimitiveType = 4;
+    pub const SFTRIANGLESFAN:     sfPrimitiveType = 5;
+    pub const SFQUADS:            sfPrimitiveType = 6;
 
     #[repr(C)]
     pub struct sfVertexArray {

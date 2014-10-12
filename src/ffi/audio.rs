@@ -179,7 +179,7 @@ pub mod sound_status {
     use libc::c_int;
 
     pub type sfSoundStatus = c_int;
-    pub static SFSTOPPED:   sfSoundStatus = 0;
-    pub static SFPAUSED:    sfSoundStatus = 1;
-    pub static SFPLAYING:   sfSoundStatus = 2;
+    pub const SFSTOPPED:   sfSoundStatus = 0;
+    pub const SFPAUSED:    sfSoundStatus = 1;
+    pub const SFPLAYING:   sfSoundStatus = 2;
 }

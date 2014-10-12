@@ -27,10 +27,10 @@ pub mod socket_status {
     use libc::c_int;
 
     pub type SocketStatus = c_int;
-    pub static SOCKETNONE:          SocketStatus = 0;
-    pub static SOCKETNOTREADY:      SocketStatus = 1;
-    pub static SOCKETDISCONNECTED:  SocketStatus = 2;
-    pub static SOCKETERROR:         SocketStatus = 3;
+    pub const SOCKETNONE:          SocketStatus = 0;
+    pub const SOCKETNOTREADY:      SocketStatus = 1;
+    pub const SOCKETDISCONNECTED:  SocketStatus = 2;
+    pub const SOCKETERROR:         SocketStatus = 3;
 }
 
 pub mod packet {
@@ -206,59 +206,59 @@ pub mod ftp {
     use ffi::sfml_types::SfBool;
 
     pub type TransferMode = c_int;
-    pub static FTPBINARY:   TransferMode = 0;
-    pub static FTPASCII:    TransferMode = 1;
-    pub static FTPEBCDIC:   TransferMode = 2;
+    pub const FTPBINARY:   TransferMode = 0;
+    pub const FTPASCII:    TransferMode = 1;
+    pub const FTPEBCDIC:   TransferMode = 2;
 
     pub type Status = c_int;
-    pub static RESTARTMARKERREPLY:          Status = 110;
-    pub static SERVICEREADYSOON:            Status = 120;
-    pub static DATACONNECTIONALREADYOPENED: Status = 125;
-    pub static OPENINGDATACONNECTION:       Status = 150;
+    pub const RESTARTMARKERREPLY:          Status = 110;
+    pub const SERVICEREADYSOON:            Status = 120;
+    pub const DATACONNECTIONALREADYOPENED: Status = 125;
+    pub const OPENINGDATACONNECTION:       Status = 150;
 
-    pub static OK:                          Status = 200;
-    pub static POINTLESSCOMMAND:            Status = 202;
-    pub static SYSTEMSTATUS:                Status = 211;
-    pub static DIRECTORYSTATUS:             Status = 212;
-    pub static FILESTATUS:                  Status = 213;
-    pub static HELPMESSAGE:                 Status = 214;
-    pub static SYSTEMTYPE:                  Status = 215;
-    pub static SERVICEREADY:                Status = 220;
-    pub static CLOSINGCONNECTION:           Status = 221;
-    pub static DATACONNECTIONOPENED:        Status = 225;
-    pub static CLOSINGDATACONNECTION:       Status = 226;
-    pub static ENTERINGPASSIVEMODE:         Status = 227;
-    pub static LOGGEDIN:                    Status = 230;
-    pub static FILEACTIONOK:                Status = 250;
-    pub static DIRECTORYOK:                 Status = 257;
+    pub const OK:                          Status = 200;
+    pub const POINTLESSCOMMAND:            Status = 202;
+    pub const SYSTEMSTATUS:                Status = 211;
+    pub const DIRECTORYSTATUS:             Status = 212;
+    pub const FILESTATUS:                  Status = 213;
+    pub const HELPMESSAGE:                 Status = 214;
+    pub const SYSTEMTYPE:                  Status = 215;
+    pub const SERVICEREADY:                Status = 220;
+    pub const CLOSINGCONNECTION:           Status = 221;
+    pub const DATACONNECTIONOPENED:        Status = 225;
+    pub const CLOSINGDATACONNECTION:       Status = 226;
+    pub const ENTERINGPASSIVEMODE:         Status = 227;
+    pub const LOGGEDIN:                    Status = 230;
+    pub const FILEACTIONOK:                Status = 250;
+    pub const DIRECTORYOK:                 Status = 257;
 
-    pub static NEEDPASSWORD:                Status = 331;
-    pub static NEEDACCOUNTTOLOGIN:          Status = 332;
-    pub static NEEDINFORMATION:             Status = 350;
+    pub const NEEDPASSWORD:                Status = 331;
+    pub const NEEDACCOUNTTOLOGIN:          Status = 332;
+    pub const NEEDINFORMATION:             Status = 350;
 
-    pub static SERVICEUNAVAILABLE:          Status = 421;
-    pub static DATACONNECTIONUNAVAILABLE:   Status = 425;
-    pub static TRANSFERABORTED:             Status = 426;
-    pub static FILEACTIONABORTED:           Status = 450;
-    pub static LOCALERROR:                  Status = 451;
-    pub static INSUFFICIENTSTORAGESPACE:    Status = 452;
+    pub const SERVICEUNAVAILABLE:          Status = 421;
+    pub const DATACONNECTIONUNAVAILABLE:   Status = 425;
+    pub const TRANSFERABORTED:             Status = 426;
+    pub const FILEACTIONABORTED:           Status = 450;
+    pub const LOCALERROR:                  Status = 451;
+    pub const INSUFFICIENTSTORAGESPACE:    Status = 452;
 
-    pub static COMMANDUNKNOWN:              Status = 500;
-    pub static PARAMETERSUNKNOWN:           Status = 501;
-    pub static COMMANDNOTIMPLEMENTED:       Status = 502;
-    pub static BADCOMMANDSEQUENCE:          Status = 503;
-    pub static PARAMETERNOTIMPLEMENTED:     Status = 504;
-    pub static NOTLOGGEDIN:                 Status = 530;
-    pub static NEEDACCOUNTTOSTORE:          Status = 532;
-    pub static FILEUNAVAILABLE:             Status = 550;
-    pub static PAGETYPEUNKNOWN:             Status = 551;
-    pub static NOTENOUGHMEMORY:             Status = 552;
-    pub static FILENAMENOTALLOWED:          Status = 553;
+    pub const COMMANDUNKNOWN:              Status = 500;
+    pub const PARAMETERSUNKNOWN:           Status = 501;
+    pub const COMMANDNOTIMPLEMENTED:       Status = 502;
+    pub const BADCOMMANDSEQUENCE:          Status = 503;
+    pub const PARAMETERNOTIMPLEMENTED:     Status = 504;
+    pub const NOTLOGGEDIN:                 Status = 530;
+    pub const NEEDACCOUNTTOSTORE:          Status = 532;
+    pub const FILEUNAVAILABLE:             Status = 550;
+    pub const PAGETYPEUNKNOWN:             Status = 551;
+    pub const NOTENOUGHMEMORY:             Status = 552;
+    pub const FILENAMENOTALLOWED:          Status = 553;
 
-    pub static INVALIDRESPONSE:             Status = 1000;
-    pub static CONNECTIONFAILED:            Status = 1001;
-    pub static CONNECTIONCLOSED:            Status = 1002;
-    pub static INVALIDFILE:                 Status = 1003;
+    pub const INVALIDRESPONSE:             Status = 1000;
+    pub const CONNECTIONFAILED:            Status = 1001;
+    pub const CONNECTIONCLOSED:            Status = 1002;
+    pub const INVALIDFILE:                 Status = 1003;
 
     #[repr(C)]
     pub struct sfFtp {
@@ -322,39 +322,39 @@ pub mod http {
     use ffi::system::time::sfTime;
 
     pub type Method = c_int;
-    pub static GET: Method = 0;
-    pub static POST: Method = 1;
-    pub static HEAD: Method = 2;
+    pub const GET: Method = 0;
+    pub const POST: Method = 1;
+    pub const HEAD: Method = 2;
 
     pub type Status = c_int;
-    pub static OK:                  Status = 200;
-    pub static CREATED:             Status = 201;
-    pub static ACCEPTED:            Status = 202;
-    pub static NOCONTENT:           Status = 204;
-    pub static RESETCONTENT:        Status = 205;
-    pub static PARTIALCONTENT:      Status = 206;
+    pub const OK:                  Status = 200;
+    pub const CREATED:             Status = 201;
+    pub const ACCEPTED:            Status = 202;
+    pub const NOCONTENT:           Status = 204;
+    pub const RESETCONTENT:        Status = 205;
+    pub const PARTIALCONTENT:      Status = 206;
 
-    pub static MULTIPLECHOICES:     Status = 300;
-    pub static MOVEDPERMANENTLY:    Status = 301;
-    pub static MOVEDTEMPORARILY:    Status = 302;
-    pub static NOTMODIFIED:         Status = 304;
+    pub const MULTIPLECHOICES:     Status = 300;
+    pub const MOVEDPERMANENTLY:    Status = 301;
+    pub const MOVEDTEMPORARILY:    Status = 302;
+    pub const NOTMODIFIED:         Status = 304;
 
 
-    pub static BADREQUEST:          Status = 400;
-    pub static UNAUTHORIZED:        Status = 401;
-    pub static FORBIDDEN:           Status = 403;
-    pub static NOTFOUND:            Status = 404;
-    pub static RANGENOTSATISFIABLE: Status = 407;
+    pub const BADREQUEST:          Status = 400;
+    pub const UNAUTHORIZED:        Status = 401;
+    pub const FORBIDDEN:           Status = 403;
+    pub const NOTFOUND:            Status = 404;
+    pub const RANGENOTSATISFIABLE: Status = 407;
 
-    pub static INTERNALSERVERERROR: Status = 500;
-    pub static NOTIMPLEMENTED:      Status = 501;
-    pub static BADGATEWAY:          Status = 502;
-    pub static SERVICENOTAVAILABLE: Status = 503;
-    pub static GATEWAYTIMEOUT:      Status = 504;
-    pub static VERSIONNOTSUPPORTED: Status = 505;
+    pub const INTERNALSERVERERROR: Status = 500;
+    pub const NOTIMPLEMENTED:      Status = 501;
+    pub const BADGATEWAY:          Status = 502;
+    pub const SERVICENOTAVAILABLE: Status = 503;
+    pub const GATEWAYTIMEOUT:      Status = 504;
+    pub const VERSIONNOTSUPPORTED: Status = 505;
 
-    pub static INVALIDRESPONSE:     Status = 1000;
-    pub static CONNECTIONFAILED:    Status = 1001;
+    pub const INVALIDRESPONSE:     Status = 1000;
+    pub const CONNECTIONFAILED:    Status = 1001;
 
     #[repr(C)]
     pub struct sfHttpRequest {

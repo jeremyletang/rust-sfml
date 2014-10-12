@@ -22,6 +22,8 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
+#![allow(non_uppercase_statics)]
+
 //! Defines a system event and its parameters
 //!
 //! Event holds all the informations about a system event that just happened.
@@ -163,24 +165,24 @@ pub mod raw {
     pub type sfJoystickAxis = ::libc::c_uint;
 
     pub type sfEventType = ::libc::c_uint;
-    pub static sfEvtClosed: ::libc::c_uint = 0;
-    pub static sfEvtResized: ::libc::c_uint = 1;
-    pub static sfEvtLostFocus: ::libc::c_uint = 2;
-    pub static sfEvtGainedFocus: ::libc::c_uint = 3;
-    pub static sfEvtTextEntered: ::libc::c_uint = 4;
-    pub static sfEvtKeyPressed: ::libc::c_uint = 5;
-    pub static sfEvtKeyReleased: ::libc::c_uint = 6;
-    pub static sfEvtMouseWheelMoved: ::libc::c_uint = 7;
-    pub static sfEvtMouseButtonPressed: ::libc::c_uint = 8;
-    pub static sfEvtMouseButtonReleased: ::libc::c_uint = 9;
-    pub static sfEvtMouseMoved: ::libc::c_uint = 10;
-    pub static sfEvtMouseEntered: ::libc::c_uint = 11;
-    pub static sfEvtMouseLeft: ::libc::c_uint = 12;
-    pub static sfEvtJoystickButtonPressed: ::libc::c_uint = 13;
-    pub static sfEvtJoystickButtonReleased: ::libc::c_uint = 14;
-    pub static sfEvtJoystickMoved: ::libc::c_uint = 15;
-    pub static sfEvtJoystickConnected: ::libc::c_uint = 16;
-    pub static sfEvtJoystickDisconnected: ::libc::c_uint = 17;
+    pub const sfEvtClosed: ::libc::c_uint = 0;
+    pub const sfEvtResized: ::libc::c_uint = 1;
+    pub const sfEvtLostFocus: ::libc::c_uint = 2;
+    pub const sfEvtGainedFocus: ::libc::c_uint = 3;
+    pub const sfEvtTextEntered: ::libc::c_uint = 4;
+    pub const sfEvtKeyPressed: ::libc::c_uint = 5;
+    pub const sfEvtKeyReleased: ::libc::c_uint = 6;
+    pub const sfEvtMouseWheelMoved: ::libc::c_uint = 7;
+    pub const sfEvtMouseButtonPressed: ::libc::c_uint = 8;
+    pub const sfEvtMouseButtonReleased: ::libc::c_uint = 9;
+    pub const sfEvtMouseMoved: ::libc::c_uint = 10;
+    pub const sfEvtMouseEntered: ::libc::c_uint = 11;
+    pub const sfEvtMouseLeft: ::libc::c_uint = 12;
+    pub const sfEvtJoystickButtonPressed: ::libc::c_uint = 13;
+    pub const sfEvtJoystickButtonReleased: ::libc::c_uint = 14;
+    pub const sfEvtJoystickMoved: ::libc::c_uint = 15;
+    pub const sfEvtJoystickConnected: ::libc::c_uint = 16;
+    pub const sfEvtJoystickDisconnected: ::libc::c_uint = 17;
 
     #[repr(C)]
     pub struct sfKeyEvent {

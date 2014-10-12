@@ -34,11 +34,11 @@ use ffi::sfml_types::{SFFALSE, SFTRUE};
 use ffi::window::joystick as ffi;
 
 /// Maximum number of supported joysticks.
-pub static Count: uint  = 8;
+pub const COUNT: uint  = 8;
 /// Maximum number of supported buttons.
-pub static ButtonCount: uint = 32;
+pub const BUTTON_COUNT: uint = 32;
 /// Maximum number of supported axes.
-pub static AxisCount: uint = 8;
+pub const AXIS_COUNT: uint = 8;
 
 /// Axes supported by SFML joysticks
 #[deriving(Clone, PartialEq, Eq, PartialOrd, Ord, Show)]
