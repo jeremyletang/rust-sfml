@@ -3,10 +3,8 @@ env:
     - secure: Q0YTaTb4BGr0ViEo5laf3nBHRCYgvmemeyjPkUpNAYARvYTeLPmIiH12tF7G7D99Xs4ppQHzQ+9BKPLjJnrmY+Z4JSlVSsSZraXbra1XWrkQAWx8esipA1FfmyHlGlaigxqMvMb36wBx0hD0ZM5dmXiKK02JAVxw3qEnCuUcl8Q=
     - LD_LIBRARY_PATH=/usr/local/lib
 before_install:
-  - yes | sudo add-apt-repository ppa:cmrx64/cargo
   - sudo apt-get update
 install:
-  - sudo apt-get install cargo
   - curl http://static.rust-lang.org/rustup.sh | sudo sh -
   - wget http://www.sfml-dev.org/download/sfml/2.1/SFML-2.1-linux-gcc-64bits.tar.bz2
   - tar xf SFML-2.1-linux-gcc-64bits.tar.bz2
@@ -20,6 +18,6 @@ install:
 script:
   - rustc --version
   - cargo build --verbose
-  - rustdoc -o doc src/rsfml.rs
+  - rustdoc -o doc src/lib.rs
 after_script:
   - curl http://www.rust-ci.org/artifacts/put?t=$RUSTCI_TOKEN | sh
