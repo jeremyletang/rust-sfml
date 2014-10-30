@@ -592,11 +592,11 @@ impl<'s> CircleShape<'s> {
 }
 
 impl<'s> Clone for CircleShape<'s> {
-    /// Return a new CircleShape or fail! if there is not enough memory
+    /// Return a new CircleShape or panic! if there is not enough memory
     fn clone(&self) -> CircleShape<'s> {
         let circle = unsafe { ffi::sfCircleShape_copy(self.circle_shape) };
         if circle.is_null() {
-            fail!("Not enough memory to clone CircleShape")
+            panic!("Not enough memory to clone CircleShape")
         } else {
             CircleShape {
                 circle_shape:  circle,

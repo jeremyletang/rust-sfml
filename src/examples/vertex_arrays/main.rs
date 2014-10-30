@@ -35,7 +35,7 @@ fn main () -> () {
     let setting: ContextSettings = ContextSettings::default();
     let mut window: RenderWindow = match RenderWindow::new(VideoMode::new_init(800, 600, 32), "SFML VertexArray accessors Example", Close, &setting) {
         Some(window) => window,
-        None => fail!("Cannot create a new Render Window.")
+        None => panic!("Cannot create a new Render Window.")
     };
     window.set_vertical_sync_enabled(true);
 

@@ -465,11 +465,11 @@ impl<'s> Sprite<'s> {
 }
 
 impl<'s> Clone for Sprite<'s> {
-    /// Return a new Sprite or fail! if there is not enough memory
+    /// Return a new Sprite or panic! if there is not enough memory
     fn clone(&self) -> Sprite<'s> {
         let sp = unsafe { ffi::sfSprite_copy(self.sprite) };
         if sp.is_null() {
-            fail!("Not enough memory to clone RectangleShape")
+            panic!("Not enough memory to clone RectangleShape")
         } else {
             Sprite {
                 sprite: sp,

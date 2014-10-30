@@ -290,11 +290,11 @@ impl Image {
 }
 
 impl Clone for Image {
-    /// Return a new Image or fail! if there is not enough memory
+    /// Return a new Image or panic! if there is not enough memory
     fn clone(&self) -> Image {
         let image = unsafe { ffi::sfImage_copy(self.image) };
         if image.is_null() {
-            fail!("Not enough memory to clone Image")
+            panic!("Not enough memory to clone Image")
         } else {
             Image {
                 image: image

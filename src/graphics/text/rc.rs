@@ -544,11 +544,11 @@ impl Text {
 }
 
 impl Clone for Text{
-    /// Return a new Text or fail! if there is not enough memory
+    /// Return a new Text or panic! if there is not enough memory
     fn clone(&self) -> Text {
         let sp = unsafe { ffi::sfText_copy(self.text) };
         if sp.is_null() {
-            fail!("Not enough memory to clone Text")
+            panic!("Not enough memory to clone Text")
         } else {
             Text {
                 text: self.text,

@@ -292,11 +292,11 @@ impl View {
 }
 
 impl Clone for View {
-    /// Return a new View or fail! if there is not enough memory
+    /// Return a new View or panic! if there is not enough memory
     fn clone(&self) -> View {
         let view = unsafe { ffi::sfView_copy(self.view) };
         if view.is_null() {
-            fail!("Not enough memory to clone View")
+            panic!("Not enough memory to clone View")
         } else {
             View {
                 dropable: true,

@@ -27,7 +27,7 @@ fn main () -> () {
     let mut window: RenderWindow = match RenderWindow::new(VideoMode::new_init(800, 600, 32),
         "SFML borrow ressources Example", Close, &setting) {
         Some(window) => window,
-        None => fail!("Cannot create a new Render Window.")
+        None => panic!("Cannot create a new Render Window.")
     };
     window.set_vertical_sync_enabled(true);
 
@@ -36,13 +36,13 @@ fn main () -> () {
     // Create a new reference counted texture
     let frank: Rc<RefCell<Texture>> = match Texture::new_from_file("../resources/frank.jpeg") {
         Some(tex)   => Rc::new(RefCell::new(tex)),
-        None        => fail!("Cannot found resource: frank.jpeg")
+        None        => panic!("Cannot found resource: frank.jpeg")
     };
 
     // Create a font.
     let font: Rc<RefCell<Font>> = match Font::new_from_file("../resources/sansation.ttf") {
         Some(fnt)   => Rc::new(RefCell::new(fnt)),
-        None        => fail!("Cannot found the font: sansation.ttf")
+        None        => panic!("Cannot found the font: sansation.ttf")
     };
 
     // Create a circle with the Texture.

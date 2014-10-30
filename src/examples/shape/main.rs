@@ -31,7 +31,7 @@ impl ShapeImpl for CustomShape {
             0 => Vector2f {x: 10., y: 10.},
             1 => Vector2f {x: 100., y: 100.},
             2 => Vector2f {x: 200., y: 300.},
-            _ => fail!("error")
+            _ => panic!("error")
         }
     }
 }
@@ -41,7 +41,7 @@ fn main () -> () {
     let setting: ContextSettings = ContextSettings::default();
     let mut window: RenderWindow = match RenderWindow::new(VideoMode::new_init(800, 600, 32), "SFML Shape Example", Close, &setting) {
         Some(window) => window,
-        None => fail!("Cannot create a new Render Window.")
+        None => panic!("Cannot create a new Render Window.")
     };
     window.set_vertical_sync_enabled(true);
 

@@ -101,13 +101,13 @@ fn main () -> () {
                                              Close,
                                              &ContextSettings::default()) {
         Some(window) => window,
-        None => fail!("Cannot create a new Render Window.")
+        None => panic!("Cannot create a new Render Window.")
     };
 
     // Create a CircleShape
     let mut circle = match CircleShape::new() {
         Some(circle) => circle,
-        None       => fail!("Error, cannot create ball")
+        None       => panic!("Error, cannot create ball")
     };
     circle.set_radius(30.);
     circle.set_fill_color(&Color::red());
