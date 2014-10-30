@@ -181,11 +181,11 @@ impl Font {
 }
 
 impl Clone for Font {
-    /// Return a new Font or fail! if there is not enough memory
+    /// Return a new Font or panic! if there is not enough memory
     fn clone(&self) -> Font {
         let fnt = unsafe {ffi::sfFont_copy(self.font)};
         if fnt.is_null() {
-            fail!("Not enough memory to clone Font")
+            panic!("Not enough memory to clone Font")
         } else {
             Font {
                 font: fnt,

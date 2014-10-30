@@ -590,12 +590,12 @@ impl RectangleShape {
 }
 
 impl Clone for RectangleShape {
-    /// Return a new RectangleShape or fail! if there is not enough memory
+    /// Return a new RectangleShape or panic! if there is not enough memory
     fn clone(&self) -> RectangleShape {
         let rectangle =
             unsafe { ffi::sfRectangleShape_copy(self.rectangle_shape) };
         if rectangle.is_null() {
-            fail!("Not enough memory to clone RectangleShape")
+            panic!("Not enough memory to clone RectangleShape")
         } else {
             RectangleShape {
                 rectangle_shape: rectangle,

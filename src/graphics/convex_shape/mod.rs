@@ -587,11 +587,11 @@ impl<'s> ConvexShape<'s> {
 }
 
 impl<'s> Clone for ConvexShape<'s> {
-    /// Return a new ConvexShape or fail! if there is not enough memory
+    /// Return a new ConvexShape or panic! if there is not enough memory
     fn clone(&self) -> ConvexShape<'s> {
         let shape = unsafe { ffi::sfConvexShape_copy(self.convex_shape) };
         if shape.is_null() {
-            fail!("Not enough memory to clone ConvexShape")
+            panic!("Not enough memory to clone ConvexShape")
         } else {
             ConvexShape {
                 convex_shape:  shape,

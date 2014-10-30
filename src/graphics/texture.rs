@@ -353,11 +353,11 @@ impl Texture {
 }
 
 impl Clone for Texture {
-    /// Return a new Texture or fail! if there is not enough memory
+    /// Return a new Texture or panic! if there is not enough memory
     fn clone(&self) -> Texture {
         let tex = unsafe { ffi::sfTexture_copy(self.texture) };
         if tex.is_null() {
-            fail!("Not enough memory to clone Texture")
+            panic!("Not enough memory to clone Texture")
         } else {
             Texture {
                 texture: tex,

@@ -24,7 +24,7 @@ fn main () -> () {
     let mut window: RenderWindow = match RenderWindow::new(VideoMode::new_init(800, 600, 32),
         "SFML borrow ressources Example", Close, &setting) {
         Some(window) => window,
-        None => fail!("Cannot create a new Render Window.")
+        None => panic!("Cannot create a new Render Window.")
     };
     window.set_vertical_sync_enabled(true);
 
@@ -33,13 +33,13 @@ fn main () -> () {
     // Create a new texture (hey frank !)
     let frank = match Texture::new_from_file("../resources/frank.jpeg") {
         Some(tex)   => tex,
-        None        => fail!("Cannot found resource: frank.jpeg")
+        None        => panic!("Cannot found resource: frank.jpeg")
     };
 
     // Create a font.
     let font = match Font::new_from_file("../resources/sansation.ttf") {
         Some(fnt)   => fnt,
-        None        => fail!("Cannot found the font: sansation.ttf")
+        None        => panic!("Cannot found the font: sansation.ttf")
     };
 
     // Create a circle with the Texture.

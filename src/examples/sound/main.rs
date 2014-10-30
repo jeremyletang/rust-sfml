@@ -15,7 +15,7 @@ use rsfml::system::{sleep, Time};
 fn play_sound() -> () {
     let buffer = match SoundBuffer::new("../resources/canary.wav") {
         Some(buffer)    => Rc::new(RefCell::new(buffer)),
-        None            => fail!("Error, cannot load sound buffer!")
+        None            => panic!("Error, cannot load sound buffer!")
     };
 
     // Display sound informations
@@ -26,7 +26,7 @@ fn play_sound() -> () {
 
     let mut sound: rc::Sound = match rc::Sound::new_with_buffer(buffer.clone()) {
         Some(sound)     => sound,
-        None            => fail!("Error cannot create Sound")
+        None            => panic!("Error cannot create Sound")
     };
 
     sound.play();
@@ -49,7 +49,7 @@ fn play_sound() -> () {
 fn play_music() -> () {
     let mut music: Music = match Music::new_from_file("../resources/orchestral.ogg") {
         Some(music)     => music,
-        None            => fail!("Error, cannot load music")
+        None            => panic!("Error, cannot load music")
     };
 
     // Display Music informations

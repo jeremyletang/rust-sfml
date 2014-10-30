@@ -224,11 +224,11 @@ impl Transformable {
 }
 
 impl Clone for Transformable {
-    /// Return a new Transformable or fail! if there is not enough memory
+    /// Return a new Transformable or panic! if there is not enough memory
     fn clone(&self) -> Transformable {
         let tran = unsafe { ffi::sfTransformable_copy(self.transformable) };
         if tran.is_null() {
-            fail!("Not enough memory to clone Transformable")
+            panic!("Not enough memory to clone Transformable")
         } else {
             Transformable {
                 transformable :tran

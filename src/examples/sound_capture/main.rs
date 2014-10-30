@@ -19,7 +19,7 @@ use rsfml::system::{sleep, Time};
 fn main() -> () {
     // Check that the device can capture audio
     if !SoundBufferRecorder::is_available() {
-        fail!("Sorry, audio capture is not supported by your system");
+        panic!("Sorry, audio capture is not supported by your system");
     }
 
     // Choose the sample rate
@@ -29,7 +29,7 @@ fn main() -> () {
     unsafe { line.as_mut_vec().pop(); }
     let sample_rate: uint = match strconv::from_str_common(line.as_slice(), 10, false, false, false, strconv::ExpNone, true, false) {
         Some(value)     => value,
-        None            => fail!("Error, input is not valid")
+        None            => panic!("Error, input is not valid")
     };
 
     // Wait for user input...
@@ -39,7 +39,7 @@ fn main() -> () {
     // Here we'll use an integrated custom recorder, which saves the captured data into a SoundBuffer
     let mut recorder: SoundBufferRecorder = match SoundBufferRecorder::new() {
         Some(rec)       => rec,
-        None            => fail!("Error, cannot initialize Sound buffer recorder.")
+        None            => panic!("Error, cannot initialize Sound buffer recorder.")
     };
 
     // Audio capture is done in a separate thread, so we can block the main thread while it is capturing
@@ -51,7 +51,7 @@ fn main() -> () {
     // Get the buffer containing the captured data
     let buffer = match recorder.get_buffer() {
         Some(buf)       => Rc::new(RefCell::new(buf)),
-        None            => fail!("Error when retreiving buffer.")
+        None            => panic!("Error when retreiving buffer.")
     };
 
     // Display captured sound informations
@@ -76,7 +76,7 @@ fn main() -> () {
     else {
         let mut sound: rc::Sound = match rc::Sound::new_with_buffer(buffer.clone()) {
             Some(sound)     => sound,
-            None            => fail!("Error cannot create Sound")
+            None            => panic!("Error cannot create Sound")
         };
 
          sound.play();
