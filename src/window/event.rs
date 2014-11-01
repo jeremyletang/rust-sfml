@@ -22,7 +22,7 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#![allow(non_uppercase_statics)]
+#![allow(non_upper_case_globals)]
 
 //! Defines a system event and its parameters
 //!
