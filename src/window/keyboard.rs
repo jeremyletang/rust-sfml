@@ -22,7 +22,7 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#![allow(missing_doc)]
+#![allow(missing_docs)]
 
 //! Keyboard inputs Give acces to real-time keyboard input.
 
