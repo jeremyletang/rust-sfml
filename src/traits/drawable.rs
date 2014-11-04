@@ -27,7 +27,7 @@
 //! Implemented by each drawable object to specifiy their drawing operations for
 //! RenderTargets.
 
-#![allow(unused_variable)]
+#![allow(unused_variables)]
 
 use graphics::{RenderStates, RenderTarget, rc};
 
