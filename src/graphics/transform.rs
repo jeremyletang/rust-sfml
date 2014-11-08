@@ -22,7 +22,7 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#![allow(missing_doc)]
+#![allow(missing_docs)]
 
 //! Define a 3x3 transform matrix.
 //!
