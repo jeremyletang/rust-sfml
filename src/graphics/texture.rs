@@ -26,7 +26,7 @@
 //!
 //! Texture stores pixels that can be drawn, with a sprite for example.
 
-use libc::c_uint;
+use libc::{c_uint, size_t};
 use std::ptr;
 
 use traits::Wrappable;
@@ -58,6 +58,27 @@ impl Texture {
     pub fn new(width: uint, height: uint) -> Option<Texture> {
         let tex = unsafe { ffi::sfTexture_create(width as c_uint,
                                                  height as c_uint) };
+        if tex.is_null() {
+            None
+        } else {
+            Some(Texture {
+                    texture: tex,
+                    dropable: true
+                })
+        }
+    }
+
+    /// Create a new texture from memory
+    ///
+    /// # Arguments
+    /// * mem - Pointer to the file data in memory
+    /// * area - Area of the image to load
+    ///
+    /// Return Some(Texture) or None
+    pub fn new_from_memory(mem: &[u8], area: &IntRect) -> Option<Texture> {
+        let tex = unsafe { ffi::sfTexture_createFromMemory(&mem[0],
+                                                           mem.len() as size_t,
+                                                           area) };
         if tex.is_null() {
             None
         } else {

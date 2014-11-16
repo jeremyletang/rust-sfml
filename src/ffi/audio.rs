@@ -38,7 +38,7 @@ pub mod listener {
 }
 
 pub mod music {
-    use libc::{c_void, c_uint, c_float, c_char};
+    use libc::{c_void, c_uint, c_float, c_char, size_t, c_uchar};
 
     use system::vector3::Vector3f;
 
@@ -54,7 +54,7 @@ pub mod music {
 
     extern "C" {
         pub fn sfMusic_createFromFile(filename: *const c_char) -> *mut sfMusic;
-        // sfMusic*mut  sfMusic_createFromMemory(const void*mut  data, size_t sizeInBytes);
+        pub fn sfMusic_createFromMemory(data: *const c_uchar, sizeInBytes: size_t) -> *mut sfMusic;
         // sfMusic*mut  sfMusic_createFromStream(sfInputStream*mut  stream);
         pub fn sfMusic_destroy(music: *mut sfMusic) -> ();
         pub fn sfMusic_setLoop(music: *mut sfMusic, lloop: SfBool) -> ();

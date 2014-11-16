@@ -27,7 +27,7 @@
 //! Streamed music played from an audio file.
 //! Musics are sounds that are streamed rather than completely loaded in memory.
 
-use libc::c_float;
+use libc::{c_float, size_t};
 use std::{ptr, mem};
 
 use audio::Status;
@@ -67,6 +67,29 @@ impl Music {
                     music_tmp = ffi::sfMusic_createFromFile(c_str)
                 });
         }
+        if music_tmp.is_null() {
+            None
+        } else {
+            Some(Music{
+                    music: music_tmp
+                })
+        }
+    }
+
+    /// Create a new music and load it from memory
+    ///
+    /// This function doesn't start playing the music (call
+    /// sfMusic_play to do so).
+    /// Here is a complete list of all the supported audio formats:
+    /// ogg, wav, flac, aiff, au, raw, paf, svx, nist, voc, ircam,
+    /// w64, mat4, mat5 pvf, htk, sds, avr, sd2, caf, wve, mpc2k, rf64.
+    ///
+    /// # Arguments
+    /// * mem - Pointer to the file data in memory
+    ///
+    /// Return Some(Music) or None
+    pub fn new_from_memory(mem: &[u8]) -> Option<Music> {
+        let music_tmp = unsafe { ffi::sfMusic_createFromMemory(&mem[0], mem.len() as size_t) };
         if music_tmp.is_null() {
             None
         } else {

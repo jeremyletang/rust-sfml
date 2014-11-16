@@ -24,7 +24,7 @@
 
 //! Loading, manipulating and saving images.
 
-use libc::c_uint;
+use libc::{c_uint, size_t};
 
 use traits::Wrappable;
 use system::vector2::Vector2u;
@@ -52,6 +52,25 @@ impl Image {
     pub fn new(width: uint, height: uint) -> Option<Image> {
         let image = unsafe { ffi::sfImage_create(width as c_uint,
                                                  height as c_uint) };
+        if image.is_null() {
+            None
+        } else {
+            Some(Image {
+                    image: image
+                })
+        }
+    }
+
+    /// Create an image from memory
+    ///
+    /// This image is filled with black pixels.
+    ///
+    /// # Arguments
+    /// * mem - Pointer to the file data in memory
+    ///
+    /// Return Some(Image) or None
+    pub fn new_from_memory(mem: &[u8]) -> Option<Image> {
+        let image = unsafe { ffi::sfImage_createFromMemory(&mem[0], mem.len() as size_t) };
         if image.is_null() {
             None
         } else {

@@ -245,7 +245,7 @@ pub mod font {
 }
 
 pub mod image {
-    use libc::{c_void, c_uint, c_char};
+    use libc::{c_void, c_uint, c_char, c_uchar, size_t};
 
     use graphics::{Color, IntRect};
     use system::vector2::Vector2u;
@@ -262,7 +262,7 @@ pub mod image {
         pub fn sfImage_createFromColor(width: c_uint, height: c_uint, color: Color) -> *mut sfImage;
         pub fn sfImage_createFromPixels(width: c_uint, height: c_uint, pixels: *const u8) -> *mut sfImage;
         pub fn sfImage_createFromFile(filename: *const c_char) -> *mut sfImage;
-        //fn sfImage_createFromMemory(data: *mut c_void, size: size_t) -> *mut sfImage;
+        pub fn sfImage_createFromMemory(data: *const c_uchar, size: size_t) -> *mut sfImage;
         //fn sfImage_createFromStream(stream: *mut sfInputStream) -> *mut sfImage;
         pub fn sfImage_copy(image: *mut sfImage) -> *mut sfImage;
         pub fn sfImage_destroy(image: *mut sfImage) -> ();
@@ -604,7 +604,7 @@ pub mod text {
 
 pub mod texture {
 
-    use libc::{c_uint, c_void, c_char};
+    use libc::{c_uint, c_void, c_char, c_uchar, size_t};
 
     use system::vector2::Vector2u;
     use graphics::IntRect;
@@ -622,7 +622,7 @@ pub mod texture {
     extern "C" {
         pub fn sfTexture_create(width: c_uint, height: c_uint) -> *mut sfTexture;
         pub fn sfTexture_createFromFile(filename: *mut c_char, area: *const IntRect) -> *mut sfTexture;
-        //fn sfTexture_createFromMemory(data: *mut c_void, sizeInBytes: size_t , area: *mut sfIntRect) -> *mut sfTexture;
+        pub fn sfTexture_createFromMemory(data: *const c_uchar, sizeInBytes: size_t , area: *const IntRect) -> *mut sfTexture;
         //fn sfTexture_createFromStream(strea;: *mut sfInputStream, area: *mut sfIntRect) -> *mut sfTexture;
         pub fn sfTexture_createFromImage(image :*mut sfImage, area: *const IntRect) -> *mut sfTexture;
         pub fn sfTexture_copy(texture: *mut sfTexture) -> *mut sfTexture;
