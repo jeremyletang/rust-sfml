@@ -22,7 +22,6 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#![allow(missing_doc)]
 
 //! Keyboard inputs Give acces to real-time keyboard input.
 
@@ -32,8 +31,9 @@ use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi::window::keyboard as ffi;
 
 /// Key codes
-#[deriving(Clone, PartialEq, Eq, PartialOrd, Ord, Show)]
 #[repr(i64)]
+#[allow(missing_docs)]
+#[deriving(Clone, PartialEq, Eq, PartialOrd, Ord, Show)]
 pub enum Key {
     Unknown = -1,
     A = 0,

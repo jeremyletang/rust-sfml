@@ -144,8 +144,8 @@
 #![doc(html_logo_url = "http://rust-sfml.org/logo_rsfml.png")]
 #![crate_type = "rlib"]
 #![crate_type = "dylib"]
-#![allow(dead_code, non_camel_case_types, unused_attribute)]
-#![warn(missing_doc)]
+#![allow(dead_code, non_camel_case_types)]
+#![warn(missing_docs)]
 #![feature(struct_variant)]
 #![feature(unsafe_destructor)]
 

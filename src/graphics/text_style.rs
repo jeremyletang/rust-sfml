@@ -22,14 +22,16 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#![allow(missing_doc)]
-
 /// Availables texts styles
 #[deriving(Clone, PartialEq, Eq, PartialOrd, Ord, Show)]
 #[repr(C)]
 pub enum TextStyle {
+    /// Regular characters, no style.
     Regular = 0,
+    /// Bold characters.
     Bold = 1,
+    /// Italic characters.
     Italic = 2,
+    /// Underlined characters.
     Underlined = 4
 }

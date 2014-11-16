@@ -22,8 +22,6 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#![allow(non_uppercase_statics)]
-
 //! Defines a system event and its parameters
 //!
 //! Event holds all the informations about a system event that just happened.
@@ -155,6 +153,7 @@ pub enum Event {
 }
 
 #[doc(hidden)]
+#[allow(non_upper_case_globals)]
 pub mod raw {
 
     use ffi::sfml_types::SfBool;

@@ -22,8 +22,6 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#![allow(missing_doc)]
-
 //! Define a 3x3 transform matrix.
 //!
 //! A Transform specifies how to translate,
@@ -41,6 +39,7 @@ use ffi::graphics::transform as ffi;
 /// A Transform specifies how to translate,
 /// rotate, scale, shear, project, whatever things.
 #[repr(C)]
+#[allow(missing_docs)]
 pub struct Transform {
     pub a00: f32,
     pub a01: f32,

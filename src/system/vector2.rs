@@ -22,9 +22,6 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#![allow(missing_doc)]
-#![allow(non_snake_case)]
-
 //! Utility Class providing 2 dimensional vectors for i32, u32, and f32.
 
 /// Implementation of Vector2i
@@ -57,27 +54,6 @@ pub struct Vector2f {
     pub y: f32
 }
 
-trait Vector2iOp {
-    fn add_to_Vector2i(&self, lhs: &Vector2i) -> Vector2i;
-    fn div_to_Vector2i(&self, lhs: &Vector2i) -> Vector2i;
-    fn mul_to_Vector2i(&self, lhs: &Vector2i) -> Vector2i;
-    fn sub_to_Vector2i(&self, lhs: &Vector2i) -> Vector2i;
-}
-
-trait Vector2fOp {
-    fn add_to_Vector2f(&self, lhs: &Vector2f) -> Vector2f;
-    fn div_to_Vector2f(&self, lhs: &Vector2f) -> Vector2f;
-    fn mul_to_Vector2f(&self, lhs: &Vector2f) -> Vector2f;
-    fn sub_to_Vector2f(&self, lhs: &Vector2f) -> Vector2f;
-}
-
-trait Vector2uOp {
-    fn add_to_Vector2u(&self, lhs: &Vector2u) -> Vector2u;
-    fn div_to_Vector2u(&self, lhs: &Vector2u) -> Vector2u;
-    fn mul_to_Vector2u(&self, lhs: &Vector2u) -> Vector2u;
-    fn sub_to_Vector2u(&self, lhs: &Vector2u) -> Vector2u;
-}
-
 impl Vector2i {
     /// Create a new Vector2i with the given values.
     pub fn new(x: i32, y: i32) -> Vector2i {
@@ -88,86 +64,75 @@ impl Vector2i {
     }
 }
 
-impl<R: Vector2iOp> Sub<R, Vector2i> for Vector2i {
-    fn sub(&self, rhs: &R) -> Vector2i {
-        rhs.sub_to_Vector2i(self)
-    }
-}
-
-impl<R: Vector2iOp> Add<R, Vector2i> for Vector2i {
-    fn add(&self, rhs: &R) -> Vector2i {
-         rhs.add_to_Vector2i(self)
-    }
-}
-
-impl<R: Vector2iOp> Mul<R, Vector2i> for Vector2i {
-    fn mul(&self, rhs: &R) -> Vector2i {
-         rhs.mul_to_Vector2i(self)
-    }
-}
-
-impl<R: Vector2iOp> Div<R, Vector2i> for Vector2i {
-    fn div(&self, rhs: &R) -> Vector2i {
-         rhs.div_to_Vector2i(self)
-    }
-}
-
-impl Vector2iOp for Vector2i {
-    fn add_to_Vector2i(&self, lhs: &Vector2i) -> Vector2i {
+impl Add<i32, Vector2i> for Vector2i {
+    fn add(&self, rhs: &i32) -> Vector2i {
         Vector2i {
-            x: lhs.x + self.x,
-            y: lhs.y + self.y
-        }
-    }
-
-    fn sub_to_Vector2i(&self, lhs: &Vector2i) -> Vector2i {
-        Vector2i {
-            x: lhs.x - self.x,
-            y: lhs.y - self.y
-        }
-    }
-
-    fn div_to_Vector2i(&self, lhs: &Vector2i) -> Vector2i {
-        Vector2i {
-            x: lhs.x / self.x,
-            y: lhs.y / self.y
-        }
-    }
-
-    fn mul_to_Vector2i(&self, lhs: &Vector2i) -> Vector2i {
-        Vector2i {
-            x: lhs.x * self.x,
-            y: lhs.y * self.y
+            x: self.x + *rhs,
+            y: self.y + *rhs
         }
     }
 }
 
-impl Vector2iOp for int {
-    fn add_to_Vector2i(&self, lhs: &Vector2i) -> Vector2i {
+impl Sub<i32, Vector2i> for Vector2i {
+    fn sub(&self, rhs: &i32) -> Vector2i {
         Vector2i {
-            x: lhs.x + *self as i32,
-            y: lhs.y + *self as i32
+            x: self.x - *rhs,
+            y: self.y - *rhs
         }
     }
+}
 
-    fn sub_to_Vector2i(&self, lhs: &Vector2i) -> Vector2i {
+impl Mul<i32, Vector2i> for Vector2i {
+    fn mul(&self, rhs: &i32) -> Vector2i {
         Vector2i {
-            x: lhs.x - *self as i32,
-            y: lhs.y - *self as i32
+            x: self.x * *rhs,
+            y: self.y * *rhs
         }
     }
+}
 
-    fn mul_to_Vector2i(&self, lhs: &Vector2i) -> Vector2i {
+impl Div<i32, Vector2i> for Vector2i {
+    fn div(&self, rhs: &i32) -> Vector2i {
         Vector2i {
-            x: lhs.x * (*self as i32),
-            y: lhs.y * (*self as i32)
+            x: self.x / *rhs,
+            y: self.y / *rhs
         }
     }
+}
 
-    fn div_to_Vector2i(&self, lhs: &Vector2i) -> Vector2i {
+
+impl Add<Vector2i, Vector2i> for Vector2i {
+    fn add(&self, rhs: &Vector2i) -> Vector2i {
         Vector2i {
-            x: lhs.x / (*self as i32),
-            y: lhs.y / (*self as i32)
+            x: self.x + rhs.x,
+            y: self.y + rhs.y
+        }
+    }
+}
+
+impl Sub<Vector2i, Vector2i> for Vector2i {
+    fn sub(&self, rhs: &Vector2i) -> Vector2i {
+        Vector2i {
+            x: self.x - rhs.x,
+            y: self.y - rhs.y
+        }
+    }
+}
+
+impl Mul<Vector2i, Vector2i> for Vector2i {
+    fn mul(&self, rhs: &Vector2i) -> Vector2i {
+        Vector2i {
+            x: self.x * rhs.x,
+            y: self.y * rhs.y
+        }
+    }
+}
+
+impl Div<Vector2i, Vector2i> for Vector2i {
+    fn div(&self, rhs: &Vector2i) -> Vector2i {
+        Vector2i {
+            x: self.x / rhs.x,
+            y: self.y / rhs.y
         }
     }
 }
@@ -182,86 +147,75 @@ impl Vector2u {
     }
 }
 
-impl<R: Vector2uOp> Sub<R, Vector2u> for Vector2u {
-    fn sub(&self, rhs: &R) -> Vector2u {
-        rhs.sub_to_Vector2u(self)
-    }
-}
-
-impl<R: Vector2uOp> Add<R, Vector2u> for Vector2u {
-    fn add(&self, rhs: &R) -> Vector2u {
-         rhs.add_to_Vector2u(self)
-    }
-}
-
-impl<R: Vector2uOp> Mul<R, Vector2u> for Vector2u {
-    fn mul(&self, rhs: &R) -> Vector2u {
-         rhs.mul_to_Vector2u(self)
-    }
-}
-
-impl<R: Vector2uOp> Div<R, Vector2u> for Vector2u {
-    fn div(&self, rhs: &R) -> Vector2u {
-         rhs.div_to_Vector2u(self)
-    }
-}
-
-impl Vector2uOp for Vector2u {
-    fn add_to_Vector2u(&self, lhs: &Vector2u) -> Vector2u {
+impl Add<u32, Vector2u> for Vector2u {
+    fn add(&self, rhs: &u32) -> Vector2u {
         Vector2u {
-            x: lhs.x + self.x,
-            y: lhs.y + self.y
-        }
-    }
-
-    fn sub_to_Vector2u(&self, lhs: &Vector2u) -> Vector2u {
-        Vector2u {
-            x: lhs.x - self.x,
-            y: lhs.y - self.y
-        }
-    }
-
-    fn div_to_Vector2u(&self, lhs: &Vector2u) -> Vector2u {
-        Vector2u {
-            x: lhs.x / self.x,
-            y: lhs.y / self.y
-        }
-    }
-
-    fn mul_to_Vector2u(&self, lhs: &Vector2u) -> Vector2u {
-        Vector2u {
-            x: lhs.x * self.x,
-            y: lhs.y * self.y
+            x: self.x + *rhs,
+            y: self.y + *rhs
         }
     }
 }
 
-impl Vector2uOp for uint {
-    fn add_to_Vector2u(&self, lhs: &Vector2u) -> Vector2u {
+impl Sub<u32, Vector2u> for Vector2u {
+    fn sub(&self, rhs: &u32) -> Vector2u {
         Vector2u {
-            x: lhs.x + *self as u32,
-            y: lhs.y + *self as u32
+            x: self.x - *rhs,
+            y: self.y - *rhs
         }
     }
+}
 
-    fn sub_to_Vector2u(&self, lhs: &Vector2u) -> Vector2u {
+impl Mul<u32, Vector2u> for Vector2u {
+    fn mul(&self, rhs: &u32) -> Vector2u {
         Vector2u {
-            x: lhs.x - *self as u32,
-            y: lhs.y - *self as u32
+            x: self.x * *rhs,
+            y: self.y * *rhs
         }
     }
+}
 
-    fn mul_to_Vector2u(&self, lhs: &Vector2u) -> Vector2u {
+impl Div<u32, Vector2u> for Vector2u {
+    fn div(&self, rhs: &u32) -> Vector2u {
         Vector2u {
-            x: lhs.x * (*self as u32),
-            y: lhs.y * (*self as u32)
+            x: self.x / *rhs,
+            y: self.y / *rhs
         }
     }
+}
 
-    fn div_to_Vector2u(&self, lhs: &Vector2u) -> Vector2u {
+
+impl Add<Vector2u, Vector2u> for Vector2u {
+    fn add(&self, rhs: &Vector2u) -> Vector2u {
         Vector2u {
-            x: lhs.x / (*self as u32),
-            y: lhs.y / (*self as u32)
+            x: self.x + rhs.x,
+            y: self.y + rhs.y
+        }
+    }
+}
+
+impl Sub<Vector2u, Vector2u> for Vector2u {
+    fn sub(&self, rhs: &Vector2u) -> Vector2u {
+        Vector2u {
+            x: self.x - rhs.x,
+            y: self.y - rhs.y
+        }
+    }
+}
+
+impl Mul<Vector2u, Vector2u> for Vector2u {
+    fn mul(&self, rhs: &Vector2u) -> Vector2u {
+        Vector2u {
+            x: self.x * rhs.x,
+            y: self.y * rhs.y
+        }
+    }
+}
+
+impl Div<Vector2u, Vector2u> for Vector2u {
+    fn div(&self, rhs: &Vector2u) -> Vector2u {
+        Vector2u {
+            x: self.x / rhs.x,
+            y: self.y / rhs.y
         }
     }
 }
@@ -276,86 +230,75 @@ impl Vector2f {
     }
 }
 
-impl<R: Vector2fOp> Add<R, Vector2f> for Vector2f {
-    fn add(&self, rhs: &R) -> Vector2f {
-         rhs.add_to_Vector2f(self)
-    }
-}
-
-impl<R: Vector2fOp> Sub<R, Vector2f> for Vector2f {
-    fn sub(&self, rhs: &R) -> Vector2f {
-         rhs.sub_to_Vector2f(self)
-    }
-}
-
-impl<R: Vector2fOp> Mul<R, Vector2f> for Vector2f {
-    fn mul(&self, rhs: &R) -> Vector2f {
-         rhs.mul_to_Vector2f(self)
-    }
-}
-
-impl<R: Vector2fOp> Div<R, Vector2f> for Vector2f {
-    fn div(&self, rhs: &R) -> Vector2f {
-         rhs.div_to_Vector2f(self)
-    }
-}
-
-impl Vector2fOp for Vector2f {
-    fn add_to_Vector2f(&self, lhs: &Vector2f) -> Vector2f {
+impl Add<f32, Vector2f> for Vector2f {
+    fn add(&self, rhs: &f32) -> Vector2f {
         Vector2f {
-            x: lhs.x + self.x,
-            y: lhs.y + self.y
-        }
-    }
-
-    fn sub_to_Vector2f(&self, lhs: &Vector2f) -> Vector2f {
-        Vector2f {
-            x: lhs.x - self.x,
-            y: lhs.y - self.y
-        }
-    }
-
-    fn div_to_Vector2f(&self, lhs: &Vector2f) -> Vector2f {
-        Vector2f {
-            x: lhs.x / self.x,
-            y: lhs.y / self.y
-        }
-    }
-
-    fn mul_to_Vector2f(&self, lhs: &Vector2f) -> Vector2f {
-        Vector2f {
-            x: lhs.x * self.x,
-            y: lhs.y * self.y
+            x: self.x + *rhs,
+            y: self.y + *rhs
         }
     }
 }
 
-impl Vector2fOp for f32 {
-    fn add_to_Vector2f(&self, lhs: &Vector2f) -> Vector2f {
+impl Sub<f32, Vector2f> for Vector2f {
+    fn sub(&self, rhs: &f32) -> Vector2f {
         Vector2f {
-            x: lhs.x + *self as f32,
-            y: lhs.y + *self as f32
+            x: self.x - *rhs,
+            y: self.y - *rhs
         }
     }
+}
 
-    fn sub_to_Vector2f(&self, lhs: &Vector2f) -> Vector2f {
+impl Mul<f32, Vector2f> for Vector2f {
+    fn mul(&self, rhs: &f32) -> Vector2f {
         Vector2f {
-            x: lhs.x - *self as f32,
-            y: lhs.y - *self as f32
+            x: self.x * *rhs,
+            y: self.y * *rhs
         }
     }
+}
 
-    fn mul_to_Vector2f(&self, lhs: &Vector2f) -> Vector2f {
+impl Div<f32, Vector2f> for Vector2f {
+    fn div(&self, rhs: &f32) -> Vector2f {
         Vector2f {
-            x: lhs.x * (*self as f32),
-            y: lhs.y * (*self as f32)
+            x: self.x / *rhs,
+            y: self.y / *rhs
         }
     }
+}
 
-    fn div_to_Vector2f(&self, lhs: &Vector2f) -> Vector2f {
+
+impl Add<Vector2f, Vector2f> for Vector2f {
+    fn add(&self, rhs: &Vector2f) -> Vector2f {
         Vector2f {
-            x: lhs.x / (*self as f32),
-            y: lhs.y / (*self as f32)
+            x: self.x + rhs.x,
+            y: self.y + rhs.y
+        }
+    }
+}
+
+impl Sub<Vector2f, Vector2f> for Vector2f {
+    fn sub(&self, rhs: &Vector2f) -> Vector2f {
+        Vector2f {
+            x: self.x - rhs.x,
+            y: self.y - rhs.y
+        }
+    }
+}
+
+impl Mul<Vector2f, Vector2f> for Vector2f {
+    fn mul(&self, rhs: &Vector2f) -> Vector2f {
+        Vector2f {
+            x: self.x * rhs.x,
+            y: self.y * rhs.y
+        }
+    }
+}
+
+impl Div<Vector2f, Vector2f> for Vector2f {
+    fn div(&self, rhs: &Vector2f) -> Vector2f {
+        Vector2f {
+            x: self.x / rhs.x,
+            y: self.y / rhs.y
         }
     }
 }

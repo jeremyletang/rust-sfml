@@ -22,9 +22,6 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#![allow(missing_doc)]
-#![allow(non_snake_case)]
-
 //! Utility Class providing 3 dimensional vectors for f32.
 
 /// Vector3f definition
@@ -39,13 +36,6 @@ pub struct Vector3f {
     pub z: f32
 }
 
-trait Vector3fOp {
-    fn add_to_Vector3f(&self, lhs: &Vector3f) -> Vector3f;
-    fn div_to_Vector3f(&self, lhs: &Vector3f) -> Vector3f;
-    fn mul_to_Vector3f(&self, lhs: &Vector3f) -> Vector3f;
-    fn sub_to_Vector3f(&self, lhs: &Vector3f) -> Vector3f;
-}
-
 impl Vector3f {
     /// Create a new Vector3f with the given values.
     pub fn new(x: f32, y: f32, z: f32) -> Vector3f {
@@ -57,95 +47,83 @@ impl Vector3f {
     }
 }
 
-impl<R: Vector3fOp> Add<R, Vector3f> for Vector3f {
-    fn add(&self, rhs: &R) -> Vector3f {
-         rhs.add_to_Vector3f(self)
-    }
-}
-
-impl<R: Vector3fOp> Sub<R, Vector3f> for Vector3f {
-    fn sub(&self, rhs: &R) -> Vector3f {
-         rhs.sub_to_Vector3f(self)
-    }
-}
-
-impl<R: Vector3fOp> Mul<R, Vector3f> for Vector3f {
-    fn mul(&self, rhs: &R) -> Vector3f {
-         rhs.mul_to_Vector3f(self)
-    }
-}
-
-impl<R: Vector3fOp> Div<R, Vector3f> for Vector3f {
-    fn div(&self, rhs: &R) -> Vector3f {
-         rhs.div_to_Vector3f(self)
-    }
-}
-
-impl Vector3fOp for Vector3f {
-    fn add_to_Vector3f(&self, lhs: &Vector3f) -> Vector3f {
+impl Add<f32, Vector3f> for Vector3f {
+    fn add(&self, rhs: &f32) -> Vector3f {
         Vector3f {
-            x: lhs.x + self.x,
-            y: lhs.y + self.y ,
-            z: lhs.z + self.z
-        }
-    }
-
-    fn sub_to_Vector3f(&self, lhs: &Vector3f) -> Vector3f {
-        Vector3f {
-            x: lhs.x - self.x,
-            y: lhs.y - self.y,
-            z: lhs.z - self.z
-        }
-    }
-
-    fn div_to_Vector3f(&self, lhs: &Vector3f) -> Vector3f {
-        Vector3f {
-            x: lhs.x / self.x,
-            y: lhs.y / self.y,
-            z: lhs.z / self.z
-        }
-    }
-
-    fn mul_to_Vector3f(&self, lhs: &Vector3f) -> Vector3f {
-        Vector3f {
-            x: lhs.x * self.x,
-            y: lhs.y * self.y,
-            z: lhs.z * self.z
+            x: self.x + *rhs,
+            y: self.y + *rhs,
+            z: self.z + *rhs
         }
     }
 }
 
-impl Vector3fOp for f32 {
-    fn add_to_Vector3f(&self, lhs: &Vector3f) -> Vector3f {
+impl Sub<f32, Vector3f> for Vector3f {
+    fn sub(&self, rhs: &f32) -> Vector3f {
         Vector3f {
-            x: lhs.x + *self as f32,
-            y: lhs.y + *self as f32,
-            z: lhs.z + *self as f32
-        }
-    }
-
-    fn sub_to_Vector3f(&self, lhs: &Vector3f) -> Vector3f {
-        Vector3f {
-            x: lhs.x - *self as f32,
-            y: lhs.y - *self as f32,
-            z: lhs.z - *self as f32
-        }
-    }
-
-    fn mul_to_Vector3f(&self, lhs: &Vector3f) -> Vector3f {
-        Vector3f {
-            x: lhs.x * (*self as f32),
-            y: lhs.y * (*self as f32),
-            z: lhs.z * (*self as f32)
-        }
-    }
-
-    fn div_to_Vector3f(&self, lhs: &Vector3f) -> Vector3f {
-        Vector3f {
-            x: lhs.x / (*self as f32),
-            y: lhs.y / (*self as f32),
-            z: lhs.z / (*self as f32)
+            x: self.x - *rhs,
+            y: self.y - *rhs,
+            z: self.z - *rhs
         }
     }
 }
 
+impl Mul<f32, Vector3f> for Vector3f {
+    fn mul(&self, rhs: &f32) -> Vector3f {
+        Vector3f {
+            x: self.x * *rhs,
+            y: self.y * *rhs,
+            z: self.z * *rhs
+        }
+    }
+}
+
+impl Div<f32, Vector3f> for Vector3f {
+    fn div(&self, rhs: &f32) -> Vector3f {
+        Vector3f {
+            x: self.x / *rhs,
+            y: self.y / *rhs,
+            z: self.z / *rhs
+        }
+    }
+}
+
+
+impl Add<Vector3f, Vector3f> for Vector3f {
+    fn add(&self, rhs: &Vector3f) -> Vector3f {
+        Vector3f {
+            x: self.x + rhs.x,
+            y: self.y + rhs.y,
+            z: self.z + rhs.z
+        }
+    }
+}
+
+impl Sub<Vector3f, Vector3f> for Vector3f {
+    fn sub(&self, rhs: &Vector3f) -> Vector3f {
+        Vector3f {
+            x: self.x - rhs.x,
+            y: self.y - rhs.y,
+            z: self.z - rhs.z
+        }
+    }
+}
+
+impl Mul<Vector3f, Vector3f> for Vector3f {
+    fn mul(&self, rhs: &Vector3f) -> Vector3f {
+        Vector3f {
+            x: self.x * rhs.x,
+            y: self.y * rhs.y,
+            z: self.z * rhs.z
+        }
+    }
+}
+
+impl Div<Vector3f, Vector3f> for Vector3f {
+    fn div(&self, rhs: &Vector3f) -> Vector3f {
+        Vector3f {
+            x: self.x / rhs.x,
+            y: self.y / rhs.y,
+            z: self.z / rhs.z
+        }
+    }
+}
