@@ -38,9 +38,9 @@ pub enum Event {
     /// The window was resized
     Resized {
        /// The new width of the window
-        pub width: u32,
+        width: u32,
        /// The new height of the window
-        pub height: u32
+        height: u32
     },
     /// The window lost the focus
     LostFocus,
@@ -49,67 +49,67 @@ pub enum Event {
     /// A character was entered
     TextEntered {
        /// The character entered by the user
-        pub code: char
+        code: char
     },
     /// A key was pressed
     KeyPressed {
        /// The pressed key
-        pub code: Key,
+        code: Key,
        /// Is alt pressed too?
-        pub alt: bool,
+        alt: bool,
        /// Is ctrl pressed too?
-        pub ctrl: bool,
+        ctrl: bool,
        /// Is shift pressed too?
-        pub shift: bool,
+        shift: bool,
        /// Is system pressed too?
-        pub system: bool
+        system: bool
     },
     /// A key was released
     KeyReleased {
        /// The released key
-        pub code: Key,
+        code: Key,
        /// Is alt released too?
-        pub alt: bool,
+        alt: bool,
        /// Is ctrl released too?
-        pub ctrl: bool,
+        ctrl: bool,
        /// Is shift released too?
-        pub shift: bool,
+        shift: bool,
        /// Is system released too?
-        pub system: bool
+        system: bool
     },
     /// The mouse wheel was scrolled
     MouseWheelMoved {
        /// Number of ticks the wheel has moved (positive is up, negative is down)
-        pub delta: i32,
+        delta: i32,
        /// X position of the mouse pointer, relative to the left of the owner window.
-        pub x: i32,
+        x: i32,
        /// Y position of the mouse pointer, relative to the top of the owner window.
-        pub y: i32
+        y: i32
     },
     /// A mouse button was pressed
     MouseButtonPressed {
        /// Code of the button that has been pressed.
-        pub button: MouseButton,
+        button: MouseButton,
        /// X position of the mouse pointer, relative to the left of the owner window.
-        pub x: i32,
+        x: i32,
        /// Y position of the mouse pointer, relative to the top of the owner window.
-        pub y: i32
+        y: i32
     },
     /// A mouse button was released
     MouseButtonReleased {
        /// Code of the button that has been pressed.
-        pub button: MouseButton,
+        button: MouseButton,
        /// X position of the mouse pointer, relative to the left of the owner window.
-        pub x: i32,
+        x: i32,
        /// Y position of the mouse pointer, relative to the top of the owner window.
-        pub y: i32
+        y: i32
     },
     /// The mouse cursor moved
     MouseMoved {
        /// X position of the mouse pointer, relative to the left of the owner window.
-        pub x: i32,
+        x: i32,
        /// Y position of the mouse pointer, relative to the top of the owner window.
-        pub y: i32
+        y: i32
     },
     /// The mouse cursor entered the area of the window
     MouseEntered,
@@ -118,35 +118,35 @@ pub enum Event {
     /// A joystick button was pressed
     JoystickButtonPressed {
        /// Index of the joystick (in range [0 .. joystick::Count - 1])
-        pub joystickid: u32,
+        joystickid: u32,
        /// Index of the button that has been pressed (in range [0 .. Joystick::button_count - 1])
-        pub button: u32
+        button: u32
     },
     /// A joystick button was released
     JoystickButtonReleased {
        /// Index of the joystick (in range [0 .. joystick::Count - 1])
-        pub joystickid: u32,
+        joystickid: u32,
        /// Index of the button that has been pressed (in range [0 .. Joystick::button_count - 1])
-        pub button: u32
+        button: u32
     },
     /// The joystick moved along an axis
     JoystickMoved {
        /// Index of the joystick (in range [0 .. joystick::Count - 1])
-        pub joystickid: u32,
+        joystickid: u32,
        /// Axis on which the joystick moved.
-        pub axis: Axis,
+        axis: Axis,
        /// New position on the axis (in range [-100 .. 100])
-        pub position: f32
+        position: f32
     },
     /// A joystick was connected
     JoystickConnected {
        /// Index of the joystick (in range [0 .. joystick::Count - 1])
-        pub joystickid: u32
+        joystickid: u32
     },
     /// A joystick was disconnected
     JoystickDisconnected {
        /// Index of the joystick (in range [0 .. joystick::Count - 1])
-        pub joystickid: u32
+        joystickid: u32
     },
     /// No Event
     NoEvent
