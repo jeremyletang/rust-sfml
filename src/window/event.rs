@@ -26,6 +26,13 @@
 //!
 //! Event holds all the informations about a system event that just happened.
 
+pub use self::Event::{Closed, Resized, LostFocus, GainedFocus, TextEntered,
+                     KeyPressed, KeyReleased, MouseWheelMoved,
+                     MouseButtonPressed, MouseButtonReleased, MouseMoved,
+                     MouseEntered, MouseLeft, JoystickButtonPressed,
+                     JoystickButtonReleased, JoystickMoved, JoystickConnected,
+                     JoystickDisconnected, NoEvent};
+
 use window::keyboard::Key;
 use window::mouse::MouseButton;
 use window::joystick::Axis;

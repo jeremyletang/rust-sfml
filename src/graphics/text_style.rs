@@ -22,6 +22,8 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
+pub use self::TextStyle::{Regular, Bold, Italic, Underlined};
+
 /// Availables texts styles
 #[deriving(Clone, PartialEq, Eq, PartialOrd, Ord, Show)]
 #[repr(C)]

@@ -24,6 +24,9 @@
 
 //! Status codes that may be returned by socket functions.
 
+pub use self::SocketStatus::{SocketNone, SocketNotReady, SocketDisconnected,
+                             SocketError};
+
 use ffi::network::socket_status as ffi;
 
 /// Status codes that may be returned by socket functions.

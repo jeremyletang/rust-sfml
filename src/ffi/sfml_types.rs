@@ -22,6 +22,8 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
+pub use self::SfBool::{SFFALSE, SFTRUE};
+
 #[repr(C)]
 #[deriving(PartialEq, Eq)]
 pub enum SfBool {

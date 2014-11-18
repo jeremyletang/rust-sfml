@@ -22,6 +22,9 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
+pub use self::PrimitiveType::{Points, Lines, LinesStrip, Triangles,
+                              TrianglesStrip, TrianglesFan, Quads};
+
 /**
  * Types of primitives that a VertexArray can render
  *
