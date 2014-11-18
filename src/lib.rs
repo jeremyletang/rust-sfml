@@ -146,7 +146,6 @@
 #![crate_type = "dylib"]
 #![allow(dead_code, non_camel_case_types)]
 #![warn(missing_docs)]
-#![feature(struct_variant)]
 #![feature(unsafe_destructor)]
 
 extern crate libc;
