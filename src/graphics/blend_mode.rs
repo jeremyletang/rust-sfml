@@ -24,6 +24,8 @@
 
 //! Available blending modes for drawing
 
+pub use self::BlendMode::{BlendAlpha, BlendAdd, BlendMultiply, BlendNone};
+
 ///Available Blending modes for drawing.
 #[deriving(Clone, PartialEq, Eq, PartialOrd, Ord, Show)]
 pub enum BlendMode {
