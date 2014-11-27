@@ -82,17 +82,11 @@ Short example
 Here is a short example, draw a circle shape and display it.
 
 ```Rust
-extern crate native;
 extern crate rsfml;
 
 use rsfml::system::Vector2f;
 use rsfml::window::{ContextSettings, VideoMode, event, Close};
 use rsfml::graphics::{RenderWindow, RenderTarget, CircleShape, Color};
-
-#[start]
-fn start(argc: int, argv: *const *const u8) -> int {
-    native::start(argc, argv, main)
-}
 
 fn main () -> () {
     // Create the window of the application
