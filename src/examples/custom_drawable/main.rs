@@ -4,7 +4,6 @@
 #![desc = "Custom drawable example for rsfml"]
 #![crate_type = "bin"]
 
-extern crate native;
 extern crate rsfml;
 
 use rsfml::graphics::{RenderWindow, Color, CircleShape, RectangleShape,
@@ -12,12 +11,6 @@ use rsfml::graphics::{RenderWindow, Color, CircleShape, RectangleShape,
 use rsfml::window::{VideoMode, ContextSettings, event, keyboard, Close};
 use rsfml::system::Vector2f;
 use rsfml::traits::Drawable;
-
-#[cfg(target_os="macos")]
-#[start]
-fn start(argc: int, argv: *const *const u8) -> int {
-    native::start(argc, argv, main)
-}
 
 // Create a struct who contains two drawable for the example
 struct CustomDrawable<'s> {

@@ -116,7 +116,7 @@ impl Image {
     /// Return Some(Image) or None
     pub fn new_from_file(filename: &str) -> Option<Image> {
         let image = unsafe {
-            let c_filename = filename.to_c_str().unwrap();
+            let c_filename = filename.to_c_str().into_inner();
             ffi::sfImage_createFromFile(c_filename)
         };
         if image.is_null() {

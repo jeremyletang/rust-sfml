@@ -152,8 +152,8 @@ impl Request {
         let c_value = value.to_c_str();
         unsafe {
             ffi::sfHttpRequest_setField(self.request,
-                                        c_field.unwrap(),
-                                        c_value.unwrap())
+                                        c_field.into_inner(),
+                                        c_value.into_inner())
         }
     }
 
@@ -182,7 +182,7 @@ impl Request {
     pub fn set_uri(&self, uri: &str) -> () {
         let c_uri = uri.to_c_str();
         unsafe {
-            ffi::sfHttpRequest_setUri(self.request, c_uri.unwrap())
+            ffi::sfHttpRequest_setUri(self.request, c_uri.into_inner())
         }
     }
 
@@ -209,7 +209,7 @@ impl Request {
     pub fn set_body(&self, body: &str) -> () {
         let c_body = body.to_c_str();
         unsafe {
-            ffi::sfHttpRequest_setBody(self.request, c_body.unwrap())
+            ffi::sfHttpRequest_setBody(self.request, c_body.into_inner())
         }
     }
 
@@ -241,7 +241,7 @@ impl Response {
     pub fn get_field(&self, field: &str) -> String {
         let c_field = field.to_c_str();
         unsafe {
-            CString::new(ffi::sfHttpResponse_getField(self.response, c_field.unwrap()),
+            CString::new(ffi::sfHttpResponse_getField(self.response, c_field.into_inner()),
                          false).as_str().unwrap().to_string()
         }
     }
@@ -334,7 +334,7 @@ impl Http {
     pub fn set_host(&self, host: &str, port: u16) -> () {
         let c_host = host.to_c_str();
         unsafe {
-            ffi::sfHttp_setHost(self.http, c_host.unwrap(), port)
+            ffi::sfHttp_setHost(self.http, c_host.into_inner(), port)
         }
     }
 

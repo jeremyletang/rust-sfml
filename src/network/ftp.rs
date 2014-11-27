@@ -402,8 +402,8 @@ impl Ftp {
         let c_password = password.to_c_str();
         Response {
             response: unsafe { ffi::sfFtp_login(self.ftp,
-                                                 c_user_name.unwrap(),
-                                                 c_password.unwrap()) }
+                                                 c_user_name.into_inner(),
+                                                 c_password.into_inner()) }
         }
     }
 
@@ -455,7 +455,7 @@ impl Ftp {
         let c_directory = directory.to_c_str();
         ListingResponse {
             listing_response: unsafe { ffi::sfFtp_getDirectoryListing(self.ftp,
-                                                                       c_directory.unwrap()) }
+                                                                       c_directory.into_inner()) }
         }
     }
 
@@ -471,7 +471,7 @@ impl Ftp {
         let c_directory = directory.to_c_str();
         Response {
             response: unsafe { ffi::sfFtp_changeDirectory(self.ftp,
-                                                           c_directory.unwrap()) }
+                                                           c_directory.into_inner()) }
         }
     }
 
@@ -497,7 +497,7 @@ impl Ftp {
         let c_name = name.to_c_str();
         Response {
             response: unsafe { ffi::sfFtp_createDirectory(self.ftp,
-                                                           c_name.unwrap()) }
+                                                           c_name.into_inner()) }
         }
     }
 
@@ -516,7 +516,7 @@ impl Ftp {
         let c_name = name.to_c_str();
         Response {
             response: unsafe { ffi::sfFtp_deleteDirectory(self.ftp,
-                                                           c_name.unwrap()) }
+                                                           c_name.into_inner()) }
         }
     }
 
@@ -535,8 +535,8 @@ impl Ftp {
         let c_new_name = new_name.to_c_str();
         Response {
             response: unsafe { ffi::sfFtp_renameFile(self.ftp,
-                                                      c_name.unwrap(),
-                                                      c_new_name.unwrap()) }
+                                                      c_name.into_inner(),
+                                                      c_new_name.into_inner()) }
         }
     }
 
@@ -555,7 +555,7 @@ impl Ftp {
         let c_name = name.to_c_str();
         Response {
             response: unsafe { ffi::sfFtp_deleteFile(self.ftp,
-                                                      c_name.unwrap()) }
+                                                      c_name.into_inner()) }
         }
     }
 
@@ -577,8 +577,8 @@ impl Ftp {
         let c_dest_path = dest_path.to_c_str();
         Response {
             response: unsafe { ffi::sfFtp_download(self.ftp,
-                                                    c_distant_file.unwrap(),
-                                                    c_dest_path.unwrap(),
+                                                    c_distant_file.into_inner(),
+                                                    c_dest_path.into_inner(),
                                                     mode as ffi::TransferMode) }
         }
     }
@@ -601,8 +601,8 @@ impl Ftp {
         let c_dest_path = dest_path.to_c_str();
         Response {
             response: unsafe { ffi::sfFtp_upload(self.ftp,
-                                                  c_local_file.unwrap(),
-                                                  c_dest_path.unwrap(),
+                                                  c_local_file.into_inner(),
+                                                  c_dest_path.into_inner(),
                                                   mode as ffi::TransferMode) }
         }
     }

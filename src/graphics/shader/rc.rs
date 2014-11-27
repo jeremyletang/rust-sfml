@@ -75,12 +75,12 @@ impl Shader {
             let c_vertex_shader_filename = if vertex_shader_filename.is_none() {
                 ptr::null()
             } else {
-                vertex_shader_filename.unwrap().to_c_str().unwrap()
+                vertex_shader_filename.unwrap().to_c_str().into_inner()
             };
             let c_fragment_shader_filename = if fragment_shader_filename.is_none() {
                 ptr::null()
             } else {
-                fragment_shader_filename.unwrap().to_c_str().unwrap()
+                fragment_shader_filename.unwrap().to_c_str().into_inner()
             };
             ffi::sfShader_createFromFile(c_vertex_shader_filename,
                                          c_fragment_shader_filename)
@@ -116,12 +116,12 @@ impl Shader {
             let c_vertex_shader = if vertex_shader.is_none() {
                 ptr::null()
             } else {
-                vertex_shader.unwrap().to_c_str().unwrap()
+                vertex_shader.unwrap().to_c_str().into_inner()
             };
             let c_fragment_shader = if fragment_shader.is_none() {
                 ptr::null()
             } else {
-                fragment_shader.unwrap().to_c_str().unwrap()
+                fragment_shader.unwrap().to_c_str().into_inner()
             };
             ffi::sfShader_createFromFile(c_vertex_shader, c_fragment_shader)
         };

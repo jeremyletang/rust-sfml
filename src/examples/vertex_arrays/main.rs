@@ -6,20 +6,12 @@
 
 #![feature(macro_rules)]
 
-extern crate native;
 extern crate rsfml;
 
 use rsfml::graphics::{RenderWindow, RenderTarget, Color,
                       VertexArray, Vertex, LinesStrip};
 use rsfml::window::{VideoMode, ContextSettings, event, Close};
 use rsfml::system::Vector2f;
-
-#[cfg(target_os="macos")]
-#[start]
-fn start(argc: int, argv: *const *const u8) -> int {
-    native::start(argc, argv, main)
-}
-
 
 macro_rules! vertices(
     ($($e:expr),*) => ({

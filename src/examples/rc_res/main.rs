@@ -4,7 +4,6 @@
 #![desc = "Shape using borrow ressources example for rsfml"]
 #![crate_type = "bin"]
 
-extern crate native;
 extern crate rsfml;
 
 use std::rc::Rc;
@@ -14,12 +13,6 @@ use rsfml::graphics::{RenderWindow, Color, Texture, Font, RenderTarget};
 use rsfml::graphics::rc::{CircleShape, Sprite, ConvexShape, Text};
 use rsfml::window::{VideoMode, ContextSettings, event, keyboard, Close};
 use rsfml::system::Vector2f;
-
-#[cfg(target_os="macos")]
-#[start]
-fn start(argc: int, argv: *const *const u8) -> int {
-    native::start(argc, argv, main)
-}
 
 fn main () -> () {
     // Create the window of the application

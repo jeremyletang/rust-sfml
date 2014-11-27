@@ -179,7 +179,7 @@ impl TcpSocket {
             let mut s: size_t = 0;
             let datas: *mut i8 = ptr::null_mut();
             let stat: SocketStatus = mem::transmute(ffi::sfTcpSocket_receive(self.socket, datas, max_size, &mut s) as i8);
-            (slice::raw::buf_as_slice(datas as *const i8, s as uint, |d| d.to_vec()), stat, s)
+            (slice::from_raw_buf(mem::transmute(&datas), s as uint).to_vec(), stat, s)
         }
     }
 

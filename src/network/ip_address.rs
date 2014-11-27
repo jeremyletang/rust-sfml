@@ -51,7 +51,7 @@ impl IpAddress {
     pub fn new_from_string(address: &str) -> IpAddress {
         let c_address = address.to_c_str();
         IpAddress {
-            ip: unsafe { ffi::sfIpAddress_fromString(c_address.unwrap() as *mut i8) }
+            ip: unsafe { ffi::sfIpAddress_fromString(c_address.into_inner() as *mut i8) }
         }
     }
 

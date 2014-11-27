@@ -5,7 +5,6 @@
 #![crate_type = "bin"]
 #![allow(non_snake_case)]
 
-extern crate native;
 extern crate rsfml;
 
 use std::rand;
@@ -16,13 +15,6 @@ use rsfml::graphics::{RenderWindow, Color, Font, Text, RectangleShape, CircleSha
 use rsfml::window::{VideoMode, ContextSettings, event, keyboard, Close};
 use rsfml::system::{Vector2f, Clock, Time};
 use rsfml::audio::{SoundBuffer, Sound};
-
-#[cfg(target_os="macos")]
-#[start]
-fn start(argc: int, argv: *const *const u8) -> int {
-    native::start(argc, argv, main)
-}
-
 
 fn main () -> () {
     // Define some constants

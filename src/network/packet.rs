@@ -263,7 +263,7 @@ impl Packet {
     pub fn write_string(&self, string: &str) -> () {
         let c_string = string.to_c_str();
         unsafe {
-            ffi::sfPacket_writeString(self.packet, c_string.unwrap())
+            ffi::sfPacket_writeString(self.packet, c_string.into_inner())
         }
     }
 }
