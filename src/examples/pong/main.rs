@@ -12,7 +12,8 @@ use std::num::FloatMath;
 
 use rsfml::graphics::{RenderWindow, Color, Font, Text, RectangleShape, CircleShape,
                       RenderTarget};
-use rsfml::window::{VideoMode, ContextSettings, event, keyboard, Close};
+use rsfml::window::{VideoMode, ContextSettings, event, Close};
+use rsfml::window::keyboard::{mod, Key};
 use rsfml::system::{Vector2f, Clock, Time};
 use rsfml::audio::{SoundBuffer, Sound};
 
@@ -115,8 +116,8 @@ fn main () -> () {
             match window.poll_event() {
                 event::Closed => window.close(),
                 event::KeyPressed{code, ..} => match code {
-                    keyboard::Escape      => {window.close(); break},
-                    keyboard::Space       => {
+                    Key::Escape      => {window.close(); break},
+                    Key::Space       => {
                         if !isPlaying {
                             // (re)start the game
                             isPlaying = true;
@@ -138,11 +139,11 @@ fn main () -> () {
             let deltaTime = clock.restart().as_seconds();
 
             // Move the player's paddle
-            if keyboard::is_key_pressed(keyboard::Up) &&
+            if keyboard::is_key_pressed(Key::Up) &&
                (leftPaddle.get_position().y - paddleSize.y / 2. > 5.) {
                 leftPaddle.move2f(0., -paddleSpeed * deltaTime);
             }
-            if keyboard::is_key_pressed(keyboard::Down) &&
+            if keyboard::is_key_pressed(Key::Down) &&
                (leftPaddle.get_position().y + paddleSize.y / 2. < gameHeight as f32 - 5.) {
                 leftPaddle.move2f(0., paddleSpeed * deltaTime);
             }

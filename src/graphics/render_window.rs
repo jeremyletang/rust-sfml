@@ -22,7 +22,7 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#![allow(non_snake_case)]
+#![allow(non_snake_case, missing_copy_implementations)]
 
 //! Window that can serve as a target for 2D drawing.
 //!

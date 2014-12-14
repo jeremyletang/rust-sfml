@@ -11,7 +11,8 @@ use std::cell::RefCell;
 
 use rsfml::graphics::{RenderWindow, Color, Texture, Font, RenderTarget};
 use rsfml::graphics::rc::{CircleShape, Sprite, ConvexShape, Text};
-use rsfml::window::{VideoMode, ContextSettings, event, keyboard, Close};
+use rsfml::window::{VideoMode, ContextSettings, event, Close};
+use rsfml::window::keyboard::Key;
 use rsfml::system::Vector2f;
 
 fn main () -> () {
@@ -80,7 +81,7 @@ fn main () -> () {
             match window.poll_event() {
                 event::Closed               => window.close(),
                 event::KeyPressed{code, ..} => match code {
-                    keyboard::Escape    => {window.close(); break},
+                    Key::Escape    => {window.close(); break},
                     _                   => {}
                 },
                 event::NoEvent              => break,

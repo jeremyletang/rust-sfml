@@ -29,8 +29,8 @@ pub use self::Status::{Stopped, Paused, Playing};
 use ffi::audio::sound_status as ffi;
 
 /// Enumeration of statuses for sounds and musics
-#[deriving(Clone, PartialEq, Eq, PartialOrd, Ord, Show)]
 #[repr(C)]
+#[deriving(Clone, PartialEq, Eq, PartialOrd, Ord, Show, Copy)]
 pub enum Status {
     /// Sound is not playing.
     Stopped = ffi::SFSTOPPED as int,

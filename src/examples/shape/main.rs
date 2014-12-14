@@ -7,10 +7,12 @@
 extern crate rsfml;
 
 use rsfml::graphics::{RenderWindow, Color, Shape, RenderTarget};
-use rsfml::window::{VideoMode, ContextSettings, event, keyboard, Close};
+use rsfml::window::{VideoMode, ContextSettings, event, Close};
+use rsfml::window::keyboard::Key;
 use rsfml::traits::ShapeImpl;
 use rsfml::system::Vector2f;
 
+#[deriving(Copy)]
 pub struct CustomShape;
 
 impl ShapeImpl for CustomShape {
@@ -47,7 +49,7 @@ fn main () -> () {
             match window.poll_event() {
                 event::Closed               => window.close(),
                 event::KeyPressed{code, ..} => match code {
-                    keyboard::Escape    => {window.close(); break},
+                    Key::Escape    => {window.close(); break},
                     _                   => {}
                 },
                 event::NoEvent              => break,

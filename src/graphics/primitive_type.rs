@@ -34,7 +34,7 @@ pub use self::PrimitiveType::{Points, Lines, LinesStrip, Triangles,
  *
  */
 #[repr(C)]
-#[deriving(Clone, PartialEq, Eq, PartialOrd, Ord, Show)]
+#[deriving(Clone, PartialEq, Eq, PartialOrd, Ord, Show, Copy)]
 pub enum PrimitiveType {
     /// List of individual points.
     Points,

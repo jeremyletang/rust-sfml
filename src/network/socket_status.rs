@@ -30,7 +30,7 @@ pub use self::SocketStatus::{SocketNone, SocketNotReady, SocketDisconnected,
 use ffi::network::socket_status as ffi;
 
 /// Status codes that may be returned by socket functions.
-#[deriving(Clone, PartialEq, Eq, PartialOrd, Ord, Show)]
+#[deriving(Clone, PartialEq, Eq, PartialOrd, Ord, Show, Copy)]
 pub enum SocketStatus {
     /// The socket has sent / received the data.
     SocketNone =            ffi::SOCKETNONE as int,

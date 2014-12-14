@@ -39,7 +39,7 @@ use ffi::window::video_mode as ffi;
 /// VideoMode defines a video mode (width, height, bpp, frequency)
 ///
 /// Provides functions for getting modes supported by the display device
-#[deriving(Clone, PartialEq, Eq, PartialOrd, Ord, Show)]
+#[deriving(Clone, PartialEq, Eq, PartialOrd, Ord, Show, Copy)]
 pub struct VideoMode {
     /// Video mode width, in pixels.
     pub width: uint,
@@ -127,10 +127,10 @@ impl VideoMode {
             }
             let cvec = CVec::new(tab, i as uint);
             let mut d: uint = 0;
-            ret_tab.push(Wrappable::wrap(*cvec.get(d).unwrap()));
+            ret_tab.push(Wrappable::wrap((*cvec.get(d).unwrap()).clone()));
             d += 1;
             while d != i as uint {
-                ret_tab.push(Wrappable::wrap(*cvec.get(d).unwrap()));
+                ret_tab.push(Wrappable::wrap((*cvec.get(d).unwrap()).clone()));
                 d += 1;
             }
         }

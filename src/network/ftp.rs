@@ -36,7 +36,7 @@ use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi::network::ftp as ffi;
 
 /// The differents FTP modes availables.
-#[deriving(Clone, PartialEq, Eq, PartialOrd, Ord, Show)]
+#[deriving(Clone, PartialEq, Eq, PartialOrd, Ord, Show, Copy)]
 pub enum TransferMode {
     /// Ftp Binary Mod
     FtpBinary = 0,
@@ -47,7 +47,7 @@ pub enum TransferMode {
 }
 
 /// The status and commands id's for FTP.
-#[deriving(Clone, PartialEq, Eq, PartialOrd, Ord, Show)]
+#[deriving(Clone, PartialEq, Eq, PartialOrd, Ord, Show, Copy)]
 pub enum Status {
     // 1xx: the requested action is being initiated,
     // expect another reply before proceeding with a new command
