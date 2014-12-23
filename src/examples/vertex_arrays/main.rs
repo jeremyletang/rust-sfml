@@ -4,23 +4,12 @@
 #![desc = "VertexArray example for rsfml"]
 #![crate_type = "bin"]
 
-#![feature(macro_rules)]
-
 extern crate rsfml;
 
 use rsfml::graphics::{RenderWindow, RenderTarget, Color,
                       VertexArray, Vertex, LinesStrip};
 use rsfml::window::{VideoMode, ContextSettings, event, Close};
 use rsfml::system::Vector2f;
-
-macro_rules! vertices(
-    ($($e:expr),*) => ({
-        // leading _ to allow empty construction without a warning.
-        let mut _temp = VertexArray::new().unwrap();
-        $(_temp.append(&$e);)*
-        _temp
-    });
-)
 
 fn main () -> () {
     // Create the window of the application
