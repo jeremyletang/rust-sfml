@@ -1,7 +1,6 @@
 //! Example from SFML: play sound and music
 
 #![crate_name = "sound"]
-#![desc = "Sound example for rsfml"]
 #![crate_type = "bin"]
 
 extern crate rsfml;

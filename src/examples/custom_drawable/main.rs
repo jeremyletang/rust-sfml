@@ -1,7 +1,6 @@
 //! Example from SFML: Custom drawable
 
 #![crate_name = "custom_drawable"]
-#![desc = "Custom drawable example for rsfml"]
 #![crate_type = "bin"]
 
 extern crate rsfml;
