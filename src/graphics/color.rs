@@ -153,7 +153,7 @@ impl Color {
 }
 
 impl Add<Color, Color> for Color {
-    fn add(&self, other: &Color) -> Color {
+    fn add(self, other: Color) -> Color {
         let r: i32 = self.red as i32 + other.red as i32;
         let g: i32 = self.green as i32 + other.green as i32;
         let b: i32 = self.blue as i32 + other.blue as i32;
@@ -168,7 +168,7 @@ impl Add<Color, Color> for Color {
 }
 
 impl Mul<Color, Color> for Color {
-    fn mul(&self, other: &Color) -> Color {
+    fn mul(self, other: Color) -> Color {
         let r: i32 = self.red as i32 * (other.red as i32);
         let g: i32 = self.green as i32 * (other.green as i32);
         let b: i32 = self.blue as i32 * (other.blue as i32);
