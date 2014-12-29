@@ -60,35 +60,16 @@
 //!
 //! __Rust-sfml__ works on Linux, windows and OSX.
 //!
-//! # OSX Specific
-//!
-//! On OSX window must be launched in the main thread. You should override the
-//! rust runtime start function.
-//!
-//! ```rust
-//! #[cfg(target_os="macos")]
-//! #[start]
-//! fn start(argc: int, argv: *const *const u8) -> int {
-//!     std::rt::start_on_main_thread(argc, argv, main)
-//! }
-//! ```
-//!
 //! # Short example
 //!
 //! Here is a short example, draw a circle shape and display it.
 //!
 //! ```rust
-//! extern crate native;
 //! extern crate rsfml;
 //!
 //! use rsfml::system::Vector2f;
 //! use rsfml::window::{ContextSettings, VideoMode, event, Close};
 //! use rsfml::graphics::{RenderWindow, RenderTarget, CircleShape, Color};
-//!
-//! #[start]
-//! fn start(argc: int, argv: *const *const u8) -> int {
-//!     native::start(argc, argv, main)
-//! }
 //!
 //! fn main () -> () {
 //!     // Create the window of the application
