@@ -1,7 +1,6 @@
 //! Example from SFML: Pong
 
 #![crate_name = "pong"]
-#![desc = "Pong example for rsfml"]
 #![crate_type = "bin"]
 #![allow(non_snake_case)]
 

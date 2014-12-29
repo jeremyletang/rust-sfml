@@ -1,7 +1,6 @@
 //! Example from SFML: Shape
 
 #![crate_name = "vertex_arrays"]
-#![desc = "VertexArray example for rsfml"]
 #![crate_type = "bin"]
 
 extern crate rsfml;

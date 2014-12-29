@@ -1,7 +1,6 @@
 //! Example from SFML: Shape
 
 #![crate_name = "shape"]
-#![desc = "Shape example for rsfml"]
 #![crate_type = "bin"]
 
 extern crate rsfml;
