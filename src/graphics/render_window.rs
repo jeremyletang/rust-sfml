@@ -183,7 +183,7 @@ impl RenderWindow {
     pub fn events(&self) -> Events {
         Events {
             render_window: self.render_window.clone(),
-            event: event::raw::sfEvent { data: [032, ..6u] }
+            event: event::raw::sfEvent { data: [032; 6u] }
         }
     }
 
@@ -197,7 +197,7 @@ impl RenderWindow {
     ///
     /// Return the event if an event was returned, or NoEvent if the event queue was empty
     pub fn poll_event(&mut self) -> event::Event {
-        let mut event = event::raw::sfEvent { data: [032, ..6u] };
+        let mut event = event::raw::sfEvent { data: [032; 6u] };
         let have_event: bool =  unsafe {
             match ffi::sfRenderWindow_pollEvent(self.render_window, &mut event) {
                 SFFALSE     => false,
@@ -223,7 +223,7 @@ impl RenderWindow {
     ///
     /// Return the event or NoEvent if an error has occured
     pub fn wait_event(&mut self) -> event::Event {
-        let mut event = event::raw::sfEvent { data: [032, ..6u] };
+        let mut event = event::raw::sfEvent { data: [032; 6u] };
         let have_event: bool =  unsafe {
             match ffi::sfRenderWindow_waitEvent(self.render_window, &mut event) {
                 SFFALSE     => false,
@@ -1112,7 +1112,7 @@ impl RenderTarget for RenderWindow{
 
 impl Iterator<event::Event> for Events {
     fn next(&mut self) -> Option<event::Event> {
-        let mut event = event::raw::sfEvent { data: [032, ..6u] };
+        let mut event = event::raw::sfEvent { data: [032; 6u] };
         match unsafe { ffi::sfRenderWindow_pollEvent(self.render_window, &mut event) } {
             SFFALSE     => None,
             SFTRUE      => Some(event::raw::get_wrapped_event(&mut event))

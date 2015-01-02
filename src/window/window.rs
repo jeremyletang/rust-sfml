@@ -141,7 +141,7 @@ impl Window {
     pub fn events(&self) -> Events {
         Events {
             window: self.window.clone(),
-            event: event::raw::sfEvent { data: [032, ..6u] }
+            event: event::raw::sfEvent { data: [032; 6u] }
         }
     }
 
@@ -155,7 +155,7 @@ impl Window {
     ///
     /// Return the event if an event was returned, or NoEvent if the event queue was empty
     pub fn poll_event(&mut self) -> event::Event {
-        let mut event = event::raw::sfEvent { data: [032, ..6u] };
+        let mut event = event::raw::sfEvent { data: [032; 6u] };
         let have_event: bool =  unsafe {
             match ffi::sfWindow_pollEvent(self.window, &mut event) {
                 SFFALSE     => false,
@@ -181,7 +181,7 @@ impl Window {
     ///
     /// Return the event or NoEvent if an error has occured
     pub fn wait_event(&mut self) -> event::Event {
-        let mut event = event::raw::sfEvent { data: [032, ..6u] };
+        let mut event = event::raw::sfEvent { data: [032; 6u] };
         let have_event: bool =  unsafe {
             match ffi::sfWindow_waitEvent(self.window, &mut event) {
                 SFFALSE     => false,
@@ -472,7 +472,7 @@ impl Window {
 
 impl Iterator<event::Event> for Events {
     fn next(&mut self) -> Option<event::Event> {
-        let mut event = event::raw::sfEvent { data: [032, ..6u] };
+        let mut event = event::raw::sfEvent { data: [032; 6u] };
         match unsafe { ffi::sfWindow_pollEvent(self.window, &mut event) } {
             SFFALSE     => None,
             SFTRUE      => Some(event::raw::get_wrapped_event(&mut event))
