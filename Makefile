@@ -24,7 +24,7 @@ all: rsfml examples docs
 
 rsfml:
 	mkdir -p lib
-	rustc --out-dir=lib src/lib.rs
+	rustc --out-dir=lib src/lib.rs $(LDFLAGS)
 
 docs:
 	mkdir -p doc
@@ -32,24 +32,16 @@ docs:
 
 examples: rsfml
 	mkdir -p bin
-	rustc -o bin/pong -L ./lib src/examples/pong/main.rs
-	rustc -o bin/shape -L ./lib src/examples/shape/main.rs
-	rustc -o bin/custom_drawable -L ./lib src/examples/custom_drawable/main.rs
-	rustc -o bin/sound -L ./lib src/examples/sound/main.rs
-	rustc -o bin/sound_capture -L ./lib src/examples/sound_capture/main.rs
-	rustc -o bin/borrow_res -L ./lib src/examples/borrow_res/main.rs
-	rustc -o bin/rc_res -L ./lib src/examples/rc_res/main.rs
-	rustc -o bin/vertex_arrays -L ./lib src/examples/vertex_arrays/main.rs
-
+	rustc -o bin/pong -L ./lib src/examples/pong/main.rs $(LDFLAGS)
+	rustc -o bin/shape -L ./lib src/examples/shape/main.rs $(LDFLAGS)
+	rustc -o bin/custom_drawable -L ./lib src/examples/custom_drawable/main.rs $(LDFLAGS)
+	rustc -o bin/sound -L ./lib src/examples/sound/main.rs $(LDFLAGS)
+	rustc -o bin/sound_capture -L ./lib src/examples/sound_capture/main.rs $(LDFLAGS)
+	rustc -o bin/borrow_res -L ./lib src/examples/borrow_res/main.rs $(LDFLAGS)
+	rustc -o bin/rc_res -L ./lib src/examples/rc_res/main.rs $(LDFLAGS)
+	rustc -o bin/vertex_arrays -L ./lib src/examples/vertex_arrays/main.rs $(LDFLAGS)
 
 clean:
 	rm -rf lib
 	rm -rf doc
-	rm -rf bin/pong
-	rm -rf bin/shape
-	rm -rf bin/sound
-	rm -rf bin/sound_capture
-	rm -rf bin/custom_drawable
-	rm -rf bin/borrow_res
-	rm -rf bin/rc_res
-	rm -rf bin/vertex_arrays
+	rm -rf bin
