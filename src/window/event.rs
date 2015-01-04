@@ -269,7 +269,7 @@ pub mod raw {
     #[repr(C)]
     #[deriving(Copy)]
     pub struct sfEvent {
-        pub data: [u32, ..6u],
+        pub data: [u32; 6u],
     }
 
     impl sfEvent {
