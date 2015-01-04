@@ -10,7 +10,6 @@ extern crate rsfml;
 use std::rc::Rc;
 use std::cell::RefCell;
 use std::io::{BufferedReader, stdin};
-use std::str::from_str;
 
 use rsfml::audio::{rc, SoundBufferRecorder, Playing};
 use rsfml::system::{sleep, Time};
@@ -26,7 +25,7 @@ fn main() -> () {
     let mut stdin = BufferedReader::new(stdin());
     let mut line = stdin.read_line().unwrap();
     unsafe { line.as_mut_vec().pop(); }
-    let sample_rate: uint = match from_str::<uint>(line.as_slice()) {
+    let sample_rate: uint = match line.as_slice().parse() {
         Some(value)     => value,
         None            => panic!("Error, input is not valid")
     };
