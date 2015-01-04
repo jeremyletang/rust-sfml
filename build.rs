@@ -6,7 +6,7 @@ use std::os;
 fn main(){
   let key = "LDFLAGS";
   match os::getenv(key){
-    Some(val) => println!("cargo:rustc-flags=-L {}", val),
+    Some(val) => println!("cargo:rustc-flags={}", val),
     _ => {}
   }
 }
