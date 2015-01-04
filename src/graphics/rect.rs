@@ -33,7 +33,7 @@ use ffi::graphics::rect as ffi;
 
 /// Utility classes for manipulating rectangles of int.
 #[repr(C)]
-#[deriving(Clone, PartialEq, Eq, PartialOrd, Ord, Show, Copy)]
+#[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Show, Copy)]
 pub struct IntRect {
     /// Left coordinate of the rectangle.
     pub left: i32,
@@ -47,7 +47,7 @@ pub struct IntRect {
 
 /// Utility classes for manipulating rectangles of f32.
 #[repr(C)]
-#[deriving(Clone, PartialEq, PartialOrd, Show, Copy)]
+#[derive(Clone, PartialEq, PartialOrd, Show, Copy)]
 pub struct FloatRect {
     /// Left coordinate of the rectangle.
     pub left: f32,

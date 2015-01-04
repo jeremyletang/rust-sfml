@@ -34,7 +34,7 @@ use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi::window::mouse as ffi;
 
 /// Mouse buttons
-#[deriving(Clone, PartialEq, Eq, PartialOrd, Ord, Show, Copy)]
+#[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Show, Copy)]
 pub enum MouseButton {
     /// The left mouse button.
     MouseLeft,

@@ -33,7 +33,7 @@ use ffi::window::keyboard as ffi;
 /// Key codes
 #[repr(i64)]
 #[allow(missing_docs)]
-#[deriving(Clone, PartialEq, Eq, PartialOrd, Ord, Show, Copy)]
+#[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Show, Copy)]
 pub enum Key {
     Unknown = -1,
     A = 0,

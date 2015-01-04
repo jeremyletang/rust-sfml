@@ -26,7 +26,7 @@
 
 /// Vector3f definition
 #[repr(C)]
-#[deriving(Clone, PartialOrd, PartialEq, Show, Copy)]
+#[derive(Clone, PartialOrd, PartialEq, Show, Copy)]
 pub struct Vector3f {
     /// X coordinate of the vector.
     pub x: f32,

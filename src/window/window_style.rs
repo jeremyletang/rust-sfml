@@ -31,7 +31,7 @@ pub use self::WindowStyle::{NoStyle, Titlebar, Resize, Close, Fullscreen,
 
 /// Enumeration of window creation styles
 #[repr(C)]
-#[deriving(Clone, PartialEq, Eq, PartialOrd, Ord, Show, Copy)]
+#[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Show, Copy)]
 pub enum WindowStyle {
     /// No border / title bar (this flag and all others are mutually exclusive)
     NoStyle = 0,

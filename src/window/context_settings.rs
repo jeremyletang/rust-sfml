@@ -30,7 +30,7 @@
 ///
 /// Structure defining the window's creation settings
 #[repr(C)]
-#[deriving(Clone, PartialEq, Eq, PartialOrd, Ord, Show, Copy)]
+#[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Show, Copy)]
 pub struct ContextSettings {
     /// Bits of the depth buffer.
     pub depth_bits: u32,

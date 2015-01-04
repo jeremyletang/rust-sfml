@@ -84,7 +84,7 @@ pub mod ip_address {
     use ffi::system::time::sfTime;
 
     #[repr(C)]
-    #[deriving(Copy)]
+    #[derive(Copy)]
     pub struct sfIpAddress {
         c1: u8,
         c2: u8,

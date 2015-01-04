@@ -52,7 +52,7 @@ pub mod time {
     pub use libc::{c_longlong, c_float, c_int};
 
     #[repr(C)]
-    #[deriving(Copy)]
+    #[derive(Copy)]
     pub struct sfTime {
         microseconds: c_longlong
     }
