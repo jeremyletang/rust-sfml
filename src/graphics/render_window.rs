@@ -33,6 +33,7 @@
 use libc::{c_float, c_uint};
 use std::ptr;
 use std::vec::Vec;
+use std::c_str::ToCStr;
 
 use traits::{Drawable, Wrappable};
 use window::{ContextSettings, VideoMode, event, WindowStyle};

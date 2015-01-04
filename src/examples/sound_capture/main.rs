@@ -10,6 +10,7 @@ extern crate rsfml;
 use std::rc::Rc;
 use std::cell::RefCell;
 use std::io::{BufferedReader, stdin};
+use std::str::from_str;
 
 use rsfml::audio::{rc, SoundBufferRecorder, Playing};
 use rsfml::system::{sleep, Time};

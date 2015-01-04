@@ -28,6 +28,8 @@
 //!
 //! Color is a simple color class composed of 4 components: Red, Green, Blue, Alpha
 
+use std::ops::{Add, Mul};
+
 use ffi::graphics::color as ffi;
 
 /// Utility class for manpulating RGBA colors

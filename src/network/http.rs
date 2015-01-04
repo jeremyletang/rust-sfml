@@ -25,7 +25,7 @@
 //! A HTTP client
 
 use std::mem;
-use std::c_str::CString;
+use std::c_str::{CString, ToCStr};
 
 use traits::Wrappable;
 use system::Time;

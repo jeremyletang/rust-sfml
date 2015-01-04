@@ -24,6 +24,8 @@
 
 //! Utility Class providing 2 dimensional vectors for i32, u32, and f32.
 
+use std::ops::{Add, Sub, Mul, Div};
+
 /// Implementation of Vector2i
 #[repr(C)]
 #[derive(Clone, PartialOrd, Ord, PartialEq, Eq, Show, Copy)]

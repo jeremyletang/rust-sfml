@@ -27,6 +27,7 @@
 //! A sound buffer holds the data of a sound, which is an array of audio samples.
 
 use std::ptr;
+use std::c_str::ToCStr;
 
 use traits::Wrappable;
 use system::Time;

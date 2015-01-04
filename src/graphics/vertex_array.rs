@@ -26,6 +26,7 @@
 
 use libc::c_uint;
 use std::mem;
+use std::ops::Index;
 
 use traits::{Drawable, Wrappable};
 use graphics::{Vertex, FloatRect, primitive_type, PrimitiveType, RenderTarget, RenderStates, rc};

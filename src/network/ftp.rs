@@ -25,7 +25,7 @@ e* Permission is granted to anyone to use this software for any purpose,
 //! A FTP client.
 
 use std::mem;
-use std::c_str::CString;
+use std::c_str::{CString, ToCStr};
 use libc::size_t;
 
 use traits::Wrappable;

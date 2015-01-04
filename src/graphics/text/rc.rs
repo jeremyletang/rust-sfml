@@ -32,7 +32,7 @@ use std::cell::RefCell;
 use std::mem;
 use std::vec::Vec;
 use std::c_vec::CVec;
-use std::c_str::CString;
+use std::c_str::{CString, ToCStr};
 use libc::{c_float, c_uint, size_t};
 
 use traits::{Drawable, Wrappable};

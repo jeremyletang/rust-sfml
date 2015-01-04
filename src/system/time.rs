@@ -30,6 +30,9 @@
 
 pub use libc::{c_long, c_float, c_int};
 
+use std::ops::{Add, Sub, Mul, Div};
+use std::cmp::Ordering;
+
 use traits::Wrappable;
 
 use ffi::system::time as ffi;

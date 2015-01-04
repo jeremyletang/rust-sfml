@@ -24,6 +24,8 @@
 
 //! Utility Class providing 3 dimensional vectors for f32.
 
+use std::ops::{Add, Sub, Mul, Div};
+
 /// Vector3f definition
 #[repr(C)]
 #[derive(Clone, PartialOrd, PartialEq, Show, Copy)]
