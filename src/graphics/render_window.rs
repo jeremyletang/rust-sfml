@@ -1111,7 +1111,9 @@ impl RenderTarget for RenderWindow{
 
 }
 
-impl Iterator<event::Event> for Events {
+impl Iterator for Events {
+    type Item = event::Event;
+
     fn next(&mut self) -> Option<event::Event> {
         let mut event = event::raw::sfEvent { data: [032; 6u] };
         match unsafe { ffi::sfRenderWindow_pollEvent(self.render_window, &mut event) } {
