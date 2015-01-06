@@ -24,7 +24,7 @@
 
 //! Encapsulate an IPv4 network address.
 
-use std::c_str::CString;
+use std::c_str::{CString, ToCStr};
 use std::ptr;
 
 use traits::Wrappable;
@@ -33,7 +33,7 @@ use system::Time;
 use ffi::network::ip_address as ffi;
 
 /// Encapsulate an IPv4 network address.
-#[deriving(Copy)]
+#[derive(Copy)]
 pub struct IpAddress{
     #[doc(hidden)]
     ip: ffi::sfIpAddress

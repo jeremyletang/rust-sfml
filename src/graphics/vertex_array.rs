@@ -26,6 +26,7 @@
 
 use libc::c_uint;
 use std::mem;
+use std::ops::Index;
 
 use traits::{Drawable, Wrappable};
 use graphics::{Vertex, FloatRect, primitive_type, PrimitiveType, RenderTarget, RenderStates, rc};
@@ -255,7 +256,9 @@ impl Clone for VertexArray {
     }
 }
 
-impl<'s> Iterator<&'s Vertex> for Vertices<'s> {
+impl<'s> Iterator for Vertices<'s> {
+    type Item = &'s Vertex;
+
     fn next(&mut self) -> Option<&'s Vertex> {
         let point_count =
             unsafe { ffi::sfVertexArray_getVertexCount(self.vertex_array) as u32 };
@@ -271,7 +274,9 @@ impl<'s> Iterator<&'s Vertex> for Vertices<'s> {
     }
 }
 
-impl Index<uint, Vertex> for VertexArray {
+impl Index<uint> for VertexArray {
+    type Output = Vertex;
+
     fn index<'s>(&'s self, _rhs: &uint) -> &'s Vertex {
         unsafe {
             mem::transmute::<*const Vertex, &'s Vertex>

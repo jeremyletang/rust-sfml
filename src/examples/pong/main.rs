@@ -12,7 +12,7 @@ use std::num::FloatMath;
 use rsfml::graphics::{RenderWindow, Color, Font, Text, RectangleShape, CircleShape,
                       RenderTarget};
 use rsfml::window::{VideoMode, ContextSettings, event, Close};
-use rsfml::window::keyboard::{mod, Key};
+use rsfml::window::keyboard::{self, Key};
 use rsfml::system::{Vector2f, Clock, Time};
 use rsfml::audio::{SoundBuffer, Sound};
 

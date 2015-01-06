@@ -31,6 +31,7 @@
 use std::rc::Rc;
 use std::cell::RefCell;
 use std::ptr;
+use std::c_str::ToCStr;
 
 use traits::Wrappable;
 use graphics::{Texture, Color};

@@ -25,7 +25,7 @@
 pub use self::SfBool::{SFFALSE, SFTRUE};
 
 #[repr(C)]
-#[deriving(PartialEq, Eq, Copy)]
+#[derive(PartialEq, Eq, Copy)]
 pub enum SfBool {
     SFFALSE = 0,
     SFTRUE = 1

@@ -24,6 +24,8 @@
 
 //! Loading, manipulating and saving images.
 
+use std::c_str::ToCStr;
+
 use libc::{c_uint, size_t};
 
 use traits::Wrappable;

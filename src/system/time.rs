@@ -30,6 +30,9 @@
 
 pub use libc::{c_long, c_float, c_int};
 
+use std::ops::{Add, Sub, Mul, Div};
+use std::cmp::Ordering;
+
 use traits::Wrappable;
 
 use ffi::system::time as ffi;
@@ -102,25 +105,33 @@ impl PartialOrd for Time {
     }
 }
 
-impl Add<Time, Time> for Time {
+impl Add for Time {
+    type Output = Time;
+
     fn add(self, other: Time) -> Time {
          Time::with_microseconds(self.as_microseconds() + other.as_microseconds())
     }
 }
 
-impl Sub<Time, Time> for Time {
+impl Sub for Time {
+    type Output = Time;
+
     fn sub(self, other: Time) -> Time {
          Time::with_microseconds(self.as_microseconds() - other.as_microseconds())
     }
 }
 
-impl Mul<Time, Time> for Time {
+impl Mul for Time {
+    type Output = Time;
+
     fn mul(self, other: Time) -> Time {
          Time::with_microseconds(self.as_microseconds() * other.as_microseconds())
     }
 }
 
-impl Div<Time, Time> for Time {
+impl Div for Time {
+    type Output = Time;
+
     fn div(self, other: Time) -> Time {
          Time::with_microseconds(self.as_microseconds() / other.as_microseconds())
     }

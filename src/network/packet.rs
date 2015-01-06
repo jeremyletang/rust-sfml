@@ -25,7 +25,7 @@
 //! Utility class to build blocks of data to transfer over the network.
 
 use std::ptr;
-use std::c_str::CString;
+use std::c_str::{CString, ToCStr};
 
 use traits::Wrappable;
 

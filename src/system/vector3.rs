@@ -24,9 +24,11 @@
 
 //! Utility Class providing 3 dimensional vectors for f32.
 
+use std::ops::{Add, Sub, Mul, Div};
+
 /// Vector3f definition
 #[repr(C)]
-#[deriving(Clone, PartialOrd, PartialEq, Show, Copy)]
+#[derive(Clone, PartialOrd, PartialEq, Show, Copy)]
 pub struct Vector3f {
     /// X coordinate of the vector.
     pub x: f32,
@@ -47,7 +49,9 @@ impl Vector3f {
     }
 }
 
-impl Add<f32, Vector3f> for Vector3f {
+impl Add<f32> for Vector3f {
+    type Output = Vector3f;
+
     fn add(self, rhs: f32) -> Vector3f {
         Vector3f {
             x: self.x + rhs,
@@ -57,7 +61,9 @@ impl Add<f32, Vector3f> for Vector3f {
     }
 }
 
-impl Sub<f32, Vector3f> for Vector3f {
+impl Sub<f32> for Vector3f {
+    type Output = Vector3f;
+
     fn sub(self, rhs: f32) -> Vector3f {
         Vector3f {
             x: self.x - rhs,
@@ -67,7 +73,9 @@ impl Sub<f32, Vector3f> for Vector3f {
     }
 }
 
-impl Mul<f32, Vector3f> for Vector3f {
+impl Mul<f32> for Vector3f {
+    type Output = Vector3f;
+
     fn mul(self, rhs: f32) -> Vector3f {
         Vector3f {
             x: self.x * rhs,
@@ -77,7 +85,9 @@ impl Mul<f32, Vector3f> for Vector3f {
     }
 }
 
-impl Div<f32, Vector3f> for Vector3f {
+impl Div<f32> for Vector3f {
+    type Output = Vector3f;
+
     fn div(self, rhs: f32) -> Vector3f {
         Vector3f {
             x: self.x / rhs,
@@ -88,7 +98,9 @@ impl Div<f32, Vector3f> for Vector3f {
 }
 
 
-impl Add<Vector3f, Vector3f> for Vector3f {
+impl Add for Vector3f {
+    type Output = Vector3f;
+
     fn add(self, rhs: Vector3f) -> Vector3f {
         Vector3f {
             x: self.x + rhs.x,
@@ -98,7 +110,9 @@ impl Add<Vector3f, Vector3f> for Vector3f {
     }
 }
 
-impl Sub<Vector3f, Vector3f> for Vector3f {
+impl Sub for Vector3f {
+    type Output = Vector3f;
+
     fn sub(self, rhs: Vector3f) -> Vector3f {
         Vector3f {
             x: self.x - rhs.x,
@@ -108,7 +122,9 @@ impl Sub<Vector3f, Vector3f> for Vector3f {
     }
 }
 
-impl Mul<Vector3f, Vector3f> for Vector3f {
+impl Mul for Vector3f {
+    type Output = Vector3f;
+
     fn mul(self, rhs: Vector3f) -> Vector3f {
         Vector3f {
             x: self.x * rhs.x,
@@ -118,7 +134,9 @@ impl Mul<Vector3f, Vector3f> for Vector3f {
     }
 }
 
-impl Div<Vector3f, Vector3f> for Vector3f {
+impl Div for Vector3f {
+    type Output = Vector3f;
+
     fn div(self, rhs: Vector3f) -> Vector3f {
         Vector3f {
             x: self.x / rhs.x,

@@ -603,7 +603,9 @@ impl<'s> Clone for ConvexShape<'s> {
     }
 }
 
-impl Iterator<Vector2f> for ConvexShapePoints {
+impl Iterator for ConvexShapePoints {
+    type Item = Vector2f;
+
     fn next(&mut self) -> Option<Vector2f> {
         let point_count =
             unsafe { ffi::sfConvexShape_getPointCount(self.convex_shape) as u32 };

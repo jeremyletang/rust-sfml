@@ -28,13 +28,15 @@
 //!
 //! Color is a simple color class composed of 4 components: Red, Green, Blue, Alpha
 
+use std::ops::{Add, Mul};
+
 use ffi::graphics::color as ffi;
 
 /// Utility class for manpulating RGBA colors
 ///
 /// Color is a simple color class composed of 4 components: Red, Green, Blue, Alpha
 #[repr(C)]
-#[deriving(Clone, PartialEq, Eq, PartialOrd, Ord, Show, Copy)]
+#[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Show, Copy)]
 pub struct Color {
     /// The red composant of the color
     pub red: u8,
@@ -152,7 +154,9 @@ impl Color {
 
 }
 
-impl Add<Color, Color> for Color {
+impl Add for Color {
+    type Output = Color;
+
     fn add(self, other: Color) -> Color {
         let r: i32 = self.red as i32 + other.red as i32;
         let g: i32 = self.green as i32 + other.green as i32;
@@ -167,7 +171,9 @@ impl Add<Color, Color> for Color {
     }
 }
 
-impl Mul<Color, Color> for Color {
+impl Mul for Color {
+    type Output = Color;
+
     fn mul(self, other: Color) -> Color {
         let r: i32 = self.red as i32 * (other.red as i32);
         let g: i32 = self.green as i32 * (other.green as i32);

@@ -27,6 +27,7 @@
 
 use libc::{c_uint, size_t};
 use std::ptr;
+use std::c_str::ToCStr;
 
 use traits::Wrappable;
 use graphics::{Texture, Glyph};

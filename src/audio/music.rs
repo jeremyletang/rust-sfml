@@ -29,6 +29,7 @@
 
 use libc::{c_float, size_t};
 use std::{ptr, mem};
+use std::c_str::ToCStr;
 
 use audio::Status;
 use system::Time;

@@ -30,6 +30,7 @@
 //!  rendered entities.
 
 use std::ptr;
+use std::c_str::ToCStr;
 
 use traits::Wrappable;
 use graphics::{Texture, Color};
