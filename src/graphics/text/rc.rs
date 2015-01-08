@@ -148,7 +148,6 @@ impl Text {
     ///
     /// Return a string as UTF-32
     pub fn get_unicode_string(&self) -> Vec<u32> {
-        let mut return_unicode: Vec<u32> = Vec::new();
         let string: *const u32 = unsafe {
             ffi::sfText_getUnicodeString(self.text)
         };

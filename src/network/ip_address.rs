@@ -27,7 +27,6 @@
 use std::ffi::{CString, c_str_to_bytes_with_nul};
 use std::ptr;
 use std::str;
-use libc::c_char;
 
 use traits::Wrappable;
 use system::Time;
