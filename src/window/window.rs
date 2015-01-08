@@ -31,7 +31,7 @@
 use libc::{c_uint, c_float};
 use std::ptr;
 use std::vec::Vec;
-use std::c_str::ToCStr;
+use std::ffi::CString;
 
 use traits::Wrappable;
 use window::{event, VideoMode, ContextSettings, WindowStyle};
@@ -85,10 +85,9 @@ impl Window {
                settings: &ContextSettings) -> Option<Window> {
 
         let mut sf_win: *mut ffi::sfWindow = ptr::null_mut();
+        let c_str = CString::from_slice(title.as_bytes()).as_ptr();
         unsafe {
-            title.with_c_str(|c_str| {
-                    sf_win = ffi::sfWindow_create(mode.unwrap(), c_str, style as u32, settings)
-                });
+            sf_win = ffi::sfWindow_create(mode.unwrap(), c_str, style as u32, settings);
         };
         if sf_win.is_null() {
             None
@@ -262,10 +261,9 @@ impl Window {
     /// # Arguments
     /// * title - New title
     pub fn set_title(&mut self, title: &str) -> () {
+        let c_str = CString::from_slice(title.as_bytes()).as_ptr();
         unsafe {
-            title.with_c_str(|c_str| {
-                    ffi::sfWindow_setTitle(self.window, c_str)
-                });
+            ffi::sfWindow_setTitle(self.window, c_str)
         }
     }
 

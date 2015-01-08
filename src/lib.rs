@@ -129,6 +129,7 @@
 #![feature(unsafe_destructor)]
 
 extern crate libc;
+extern crate core;
 
 pub mod traits;
 pub mod system;

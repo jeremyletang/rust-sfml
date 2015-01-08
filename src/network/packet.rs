@@ -25,7 +25,8 @@
 //! Utility class to build blocks of data to transfer over the network.
 
 use std::ptr;
-use std::c_str::{CString, ToCStr};
+use std::ffi::{CString, c_str_to_bytes_with_nul};
+use std::str;
 
 use traits::Wrappable;
 
@@ -189,9 +190,10 @@ impl Packet {
         unsafe {
             let string: *mut u8 = ptr::null_mut();
             ffi::sfPacket_readString(self.packet, string);
-            CString::new(string as *const i8, false).as_str().unwrap().to_string()
+            let string = string as *const i8;
+            str::from_utf8(c_str_to_bytes_with_nul(&string)).unwrap().to_string()
         }
-    }
+}
 
     /// Function to insert data into a packet
     pub fn write_bool(&self, data: bool) -> () {
@@ -261,9 +263,9 @@ impl Packet {
 
     /// Function to insert data into a packet
     pub fn write_string(&self, string: &str) -> () {
-        let c_string = string.to_c_str();
+        let c_string = CString::from_slice(string.as_bytes()).as_ptr();
         unsafe {
-            ffi::sfPacket_writeString(self.packet, c_string.into_inner())
+            ffi::sfPacket_writeString(self.packet, c_string)
         }
     }
 }

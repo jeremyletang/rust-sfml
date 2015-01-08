@@ -24,8 +24,10 @@
 
 //! Encapsulate an IPv4 network address.
 
-use std::c_str::{CString, ToCStr};
+use std::ffi::{CString, c_str_to_bytes_with_nul};
 use std::ptr;
+use std::str;
+use libc::c_char;
 
 use traits::Wrappable;
 use system::Time;
@@ -50,9 +52,9 @@ impl IpAddress {
     ///
     /// Return Resulting address
     pub fn new_from_string(address: &str) -> IpAddress {
-        let c_address = address.to_c_str();
+        let c_address = CString::from_slice(address.as_bytes()).as_ptr();
         IpAddress {
-            ip: unsafe { ffi::sfIpAddress_fromString(c_address.into_inner() as *mut i8) }
+            ip: unsafe { ffi::sfIpAddress_fromString(c_address) }
         }
     }
 
@@ -104,7 +106,7 @@ impl IpAddress {
         unsafe {
             let string: *mut u8 = ptr::null_mut();
             ffi::sfIpAddress_toString(self.ip, string);
-            CString::new(string as *const i8, false).as_str().unwrap().to_string()
+            str::from_utf8(c_str_to_bytes_with_nul(&(string as *const i8))).unwrap().to_string()
         }
     }
 

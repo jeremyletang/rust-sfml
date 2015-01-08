@@ -33,7 +33,7 @@
 use libc::{c_float, c_uint};
 use std::ptr;
 use std::vec::Vec;
-use std::c_str::ToCStr;
+use std::ffi::CString;
 
 use traits::{Drawable, Wrappable};
 use window::{ContextSettings, VideoMode, event, WindowStyle};
@@ -88,13 +88,12 @@ impl RenderWindow {
                style: WindowStyle,
                settings: &ContextSettings) -> Option<RenderWindow> {
         let mut sf_render_win: *mut ffi::sfRenderWindow = ptr::null_mut();
+        let c_str = CString::from_slice(title.as_bytes()).as_ptr();
         unsafe {
-            title.with_c_str(|c_str| {
-                    sf_render_win = ffi::sfRenderWindow_create(mode.unwrap(),
-                                                               c_str as *mut i8,
-                                                               style as u32,
-                                                               settings);
-                });
+            sf_render_win = ffi::sfRenderWindow_create(mode.unwrap(),
+                                                       c_str,
+                                                       style as u32,
+                                                       settings);
         }
         if sf_render_win.is_null() {
             None
@@ -317,10 +316,9 @@ impl RenderWindow {
     /// * title - New title
     ////
     pub fn set_title(&mut self, title: &str) -> () {
+        let c_str = CString::from_slice(title.as_bytes()).as_ptr();
         unsafe {
-            title.with_c_str(|c_str| {
-                    ffi::sfRenderWindow_setTitle(self.render_window, c_str);
-                });
+            ffi::sfRenderWindow_setTitle(self.render_window, c_str);
         }
         self.title_length = title.len();
     }

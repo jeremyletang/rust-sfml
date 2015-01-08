@@ -27,7 +27,7 @@
 //! A sound buffer holds the data of a sound, which is an array of audio samples.
 
 use std::ptr;
-use std::c_str::ToCStr;
+use std::ffi::CString;
 
 use traits::Wrappable;
 use system::Time;
@@ -58,10 +58,9 @@ impl SoundBuffer {
     /// Return an option to a SoundBuffer object or None.
     pub fn new(filename: &str) -> Option<SoundBuffer> {
         let mut sound_buffer: *mut ffi::sfSoundBuffer = ptr::null_mut();
+        let c_str = CString::from_slice(filename.as_bytes()).as_ptr();
         unsafe {
-            filename.with_c_str(|c_str| {
-                    sound_buffer = ffi::sfSoundBuffer_createFromFile(c_str)
-                });
+            sound_buffer = ffi::sfSoundBuffer_createFromFile(c_str)
         }
         if sound_buffer.is_null() {
             None
@@ -100,13 +99,12 @@ impl SoundBuffer {
     /// Return true if saving succeeded, false if it faileds
     pub fn save_to_file(&self, filename: &str) -> bool {
         let mut return_value: bool = false;
+        let c_str = CString::from_slice(filename.as_bytes()).as_ptr();
         unsafe {
-            filename.with_c_str(|c_str| {
-                    match ffi::sfSoundBuffer_saveToFile(self.sound_buffer, c_str) {
-                        SFFALSE => return_value = false,
-                        SFTRUE  => return_value = true
-                    }
-                });
+            match ffi::sfSoundBuffer_saveToFile(self.sound_buffer, c_str) {
+                SFFALSE => return_value = false,
+                SFTRUE  => return_value = true
+            }
         }
         return_value
     }

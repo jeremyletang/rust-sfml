@@ -28,7 +28,7 @@
 
 use libc::{c_uint, size_t};
 use std::ptr;
-use std::c_str::ToCStr;
+use std::ffi::CString;
 
 use traits::Wrappable;
 use graphics::{RenderWindow, Image, IntRect};
@@ -98,10 +98,9 @@ impl Texture {
     /// Return Some(Texture) or None
     pub fn new_from_file(filename: &str) -> Option<Texture> {
         let mut tex = ptr::null_mut();
+        let c_str = CString::from_slice(filename.as_bytes()).as_ptr();
         unsafe {
-            filename.with_c_str(|c_str| {
-                    tex = ffi::sfTexture_createFromFile(c_str as *mut i8, ptr::null())
-                });
+            tex = ffi::sfTexture_createFromFile(c_str as *mut i8, ptr::null())
         }
         if tex.is_null() {
             None
@@ -123,10 +122,9 @@ impl Texture {
     pub fn new_from_file_with_rect(filename: &str,
                                    area: &IntRect) -> Option<Texture> {
         let mut tex = ptr::null_mut();
+        let c_str = CString::from_slice(filename.as_bytes()).as_ptr();
         unsafe {
-            filename.with_c_str(|c_str| {
-                    tex = ffi::sfTexture_createFromFile(c_str as *mut i8, &*area)
-                });
+            tex = ffi::sfTexture_createFromFile(c_str as *mut i8, &*area)
         }
         if tex.is_null() {
             None
