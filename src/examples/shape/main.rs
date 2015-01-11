@@ -39,7 +39,7 @@ fn main () -> () {
     window.set_vertical_sync_enabled(true);
 
 
-    let mut shape = Shape::new(box CustomShape).expect("Error, cannot create a Shape");
+    let mut shape = Shape::new(Box::new(CustomShape)).expect("Error, cannot create a Shape");
     shape.set_fill_color(&Color::red());
     shape.set_outline_color(&Color::green());
     shape.set_outline_thickness(3.);

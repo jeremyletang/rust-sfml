@@ -75,10 +75,10 @@ impl Shape {
     ///
     /// Return Some(Shape) or None
     pub fn new(shape_impl: Box<ShapeImpl + Send>) -> Option<Shape> {
-        let w_o = box WrapObj { shape_impl: shape_impl};
+        let w_o = Box::new(WrapObj { shape_impl: shape_impl});
         let sp = unsafe { ffi::sfShape_create(get_point_count_callback,
                                               get_point_callback,
-                                              mem::transmute::<Box<Box<WrapObj>>, *mut c_void>(box w_o)) };
+                                              mem::transmute::<Box<Box<WrapObj>>, *mut c_void>(Box::new(w_o))) };
         if sp.is_null() {
             None
         } else {
@@ -98,10 +98,10 @@ impl Shape {
     /// Return Some(Shape) or None
     pub fn new_with_texture(shape_impl: Box<ShapeImpl + Send>,
                             texture: Rc<RefCell<Texture>>) -> Option<Shape> {
-        let w_o = box WrapObj { shape_impl: shape_impl };
+        let w_o = Box::new(WrapObj { shape_impl: shape_impl });
         let sp = unsafe { ffi::sfShape_create(get_point_count_callback,
                                               get_point_callback,
-                                              mem::transmute::<Box<Box<WrapObj>>, *mut c_void>(box w_o)) };
+                                              mem::transmute::<Box<Box<WrapObj>>, *mut c_void>(Box::new(w_o))) };
         if sp.is_null() {
             None
         } else {
