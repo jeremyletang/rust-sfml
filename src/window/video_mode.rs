@@ -27,9 +27,10 @@
 //! A video mode is defined by a width and a height (in pixels) and a depth
 //! (in bits per pixel). Video modes are used to setup windows at creation time.
 
-use std::c_vec::CVec;
 use libc::{c_uint, size_t};
 use std::vec::Vec;
+use core::raw;
+use std::mem;
 
 use traits::Wrappable;
 
@@ -117,23 +118,31 @@ impl VideoMode {
     ///
     /// Return a vector containing all the supported VideoMode
     pub fn get_fullscreen_modes() -> Option<Vec<VideoMode>> {
-        let mut i: size_t = 0;
-        let mut ret_tab: Vec<VideoMode> = Vec::new();
-        unsafe {
-            let tab: *mut ffi::sfVideoMode =
-                ffi::sfVideoMode_getFullscreenModes(&mut i) as *mut ffi::sfVideoMode;
-            if i == 0 {
-                return None;
-            }
-            let cvec = CVec::new(tab, i as uint);
-            let mut d: uint = 0;
-            ret_tab.push(Wrappable::wrap((*cvec.get(d).unwrap()).clone()));
-            d += 1;
-            while d != i as uint {
-                ret_tab.push(Wrappable::wrap((*cvec.get(d).unwrap()).clone()));
-                d += 1;
-            }
+        let mut size: size_t = 0;
+        let tab = unsafe {
+            ffi::sfVideoMode_getFullscreenModes(&mut size)
+        };
+        if size == 0 {
+            return None;
         }
+
+        let size = size as uint;
+
+        let tab_slice: &[ffi::sfVideoMode] = unsafe {
+            mem::transmute(
+                raw::Slice {
+                    data: tab,
+                    len: size,
+                }
+            )
+        };
+
+        let mut ret_tab = Vec::with_capacity(size);
+
+        for sf_video_mode in tab_slice.iter() {
+            ret_tab.push(Wrappable::wrap(sf_video_mode.clone()));
+        }
+
         Some(ret_tab)
     }
 }

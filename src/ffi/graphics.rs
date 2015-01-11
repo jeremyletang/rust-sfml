@@ -48,8 +48,8 @@ pub mod render_window {
     pub struct sfRenderWindow;
 
     extern "C" {
-        pub fn sfRenderWindow_create(mode: sfVideoMode, title: *mut c_char, style: c_uint, settings: *const ContextSettings) -> *mut sfRenderWindow;
-        pub fn sfRenderWindow_createUnicode(mode: sfVideoMode, title: *mut u32, style: c_uint, settings: *const ContextSettings) -> *mut sfRenderWindow;
+        pub fn sfRenderWindow_create(mode: sfVideoMode, title: *const c_char, style: c_uint, settings: *const ContextSettings) -> *mut sfRenderWindow;
+        pub fn sfRenderWindow_createUnicode(mode: sfVideoMode, title: *const u32, style: c_uint, settings: *const ContextSettings) -> *mut sfRenderWindow;
         //fn sfRenderWindow_createFromHandle(handle: sfWindowHandle, settings: *mut sfContextSettings) -> *mut sfRenderWindow;
         pub fn sfRenderWindow_destroy(renderWindow: *mut sfRenderWindow) -> ();
         pub fn sfRenderWindow_close(renderWindow: *mut sfRenderWindow) -> ();

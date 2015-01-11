@@ -29,9 +29,10 @@
 
 use std::mem;
 use std::vec::Vec;
-use std::c_vec::CVec;
-use std::c_str::{CString, ToCStr};
+use std::ffi::{CString, c_str_to_bytes_with_nul};
+use std::str;
 use libc::{c_float, c_uint, size_t};
+use core::raw;
 
 use traits::{Drawable, Wrappable};
 use graphics::{RenderTarget, Font, FloatRect,
@@ -89,10 +90,9 @@ impl<'s> Text<'s> {
         if text.is_null() {
             None
         } else {
+            let c_str = CString::from_slice(string.as_bytes()).as_ptr();
             unsafe {
-                string.with_c_str(|c_str| {
-                        ffi::sfText_setString(text, c_str)
-                    });
+                ffi::sfText_setString(text, c_str);
                 ffi::sfText_setFont(text, font.unwrap());
                 ffi::sfText_setCharacterSize(text, character_size as c_uint)
             }
@@ -128,9 +128,8 @@ impl<'s> Text<'s> {
     /// * string - New string
     pub fn set_string(&mut self, string: &str) -> () {
         unsafe {
-            string.with_c_str(|c_str| {
-                    ffi::sfText_setString(self.text, c_str)
-                });
+            let c_str = CString::from_slice(string.as_bytes()).as_ptr();
+            ffi::sfText_setString(self.text, c_str);
         }
         self.string_length = string.len()
     }
@@ -140,7 +139,8 @@ impl<'s> Text<'s> {
     /// Return a string as a locale-dependant ANSI string
     pub fn get_string(&self) -> String {
         unsafe {
-            CString::new(ffi::sfText_getString(self.text), false).as_str().unwrap().to_string()
+            let string = ffi::sfText_getString(self.text);
+            str::from_utf8(c_str_to_bytes_with_nul(&string)).unwrap().to_string()
         }
     }
 
@@ -148,19 +148,20 @@ impl<'s> Text<'s> {
     ///
     /// Return a string as UTF-32
     pub fn get_unicode_string(&self) -> Vec<u32> {
-        unsafe {
-            let mut return_unicode: Vec<u32> = Vec::new();
-            let string: *const u32 = ffi::sfText_getUnicodeString(self.text);
-            let cvec = CVec::new(string as *mut u32, self.string_length);
-            let mut d: uint = 0;
-            return_unicode.push(*cvec.get(d).unwrap());
-            d += 1;
-            while d != 16 {
-                return_unicode.push(*cvec.get(d).unwrap());
-                d += 1;
-            }
-        return_unicode
-        }
+        let string: *const u32 = unsafe {
+            ffi::sfText_getUnicodeString(self.text)
+        };
+
+        let string_slice: &[u32] = unsafe { mem::transmute(
+                raw::Slice{
+                    data: string,
+                    len: self.string_length,
+                }
+            )};
+
+        let result = string_slice.to_vec();
+
+        result
     }
 
     /// Get the size of the characters

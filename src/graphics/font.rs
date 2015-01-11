@@ -27,7 +27,7 @@
 
 use libc::{c_uint, size_t};
 use std::ptr;
-use std::c_str::ToCStr;
+use std::ffi::CString;
 
 use traits::Wrappable;
 use graphics::{Texture, Glyph};
@@ -52,10 +52,9 @@ impl Font {
     /// Return Some(Font) or None
     pub fn new_from_file(filename: &str) -> Option<Font> {
         let mut fnt = ptr::null_mut();
+        let c_str = CString::from_slice(filename.as_bytes()).as_ptr();
         unsafe {
-            filename.with_c_str(|c_str| {
-                    fnt = ffi::sfFont_createFromFile(c_str)
-                });
+            fnt = ffi::sfFont_createFromFile(c_str)
         }
         if fnt.is_null() {
             None

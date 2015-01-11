@@ -24,9 +24,8 @@
 
 //! Loading, manipulating and saving images.
 
-use std::c_str::ToCStr;
-
 use libc::{c_uint, size_t};
+use std::ffi::CString;
 
 use traits::Wrappable;
 use system::vector2::Vector2u;
@@ -117,8 +116,8 @@ impl Image {
     ///
     /// Return Some(Image) or None
     pub fn new_from_file(filename: &str) -> Option<Image> {
+        let c_filename = CString::from_slice(filename.as_bytes()).as_ptr();
         let image = unsafe {
-            let c_filename = filename.to_c_str().into_inner();
             ffi::sfImage_createFromFile(c_filename)
         };
         if image.is_null() {
@@ -185,13 +184,12 @@ impl Image {
     /// Return true if saving was successful
     pub fn save_to_file(&self, filename: &str) -> bool {
         let mut return_value = false;
+        let c_str = CString::from_slice(filename.as_bytes()).as_ptr();
         unsafe {
-            filename.with_c_str(|c_str| {
-                    match ffi::sfImage_saveToFile(self.image, c_str) {
-                        SFFALSE => return_value = false,
-                        SFTRUE  => return_value = true
-                    }
-                });
+            match ffi::sfImage_saveToFile(self.image, c_str) {
+                SFFALSE => return_value = false,
+                SFTRUE  => return_value = true
+            }
         }
         return_value
     }

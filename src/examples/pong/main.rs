@@ -7,7 +7,7 @@
 extern crate rsfml;
 
 use std::rand;
-use std::num::FloatMath;
+use std::num::Float;
 
 use rsfml::graphics::{RenderWindow, Color, Font, Text, RectangleShape, CircleShape,
                       RenderTarget};

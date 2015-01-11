@@ -29,7 +29,7 @@
 
 use libc::{c_float, size_t};
 use std::{ptr, mem};
-use std::c_str::ToCStr;
+use std::ffi::CString;
 
 use audio::Status;
 use system::Time;
@@ -63,10 +63,9 @@ impl Music {
     /// Return Some(Music) or None
     pub fn new_from_file(filename: &str) -> Option<Music> {
         let mut music_tmp: *mut ffi::sfMusic = ptr::null_mut();
+        let c_str = CString::from_slice(filename.as_bytes()).as_ptr();
         unsafe {
-            filename.with_c_str(|c_str| {
-                    music_tmp = ffi::sfMusic_createFromFile(c_str)
-                });
+            music_tmp = ffi::sfMusic_createFromFile(c_str)
         }
         if music_tmp.is_null() {
             None

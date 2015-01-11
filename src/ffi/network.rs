@@ -105,7 +105,7 @@ pub mod ip_address {
     }
 
     extern "C" {
-        pub fn sfIpAddress_fromString(address: *mut c_char) -> sfIpAddress;
+        pub fn sfIpAddress_fromString(address: *const c_char) -> sfIpAddress;
         pub fn sfIpAddress_fromBytes(byte0: u8, byte1: u8, byte2: u8, byte3: u8) -> sfIpAddress;
         pub fn sfIpAddress_fromInteger(address: u32) -> sfIpAddress;
         pub fn sfIpAddress_toString(address: sfIpAddress, string: *mut u8) -> ();

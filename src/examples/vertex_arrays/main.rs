@@ -32,16 +32,16 @@ fn main () -> () {
 
     println!("\nIterate over the vertices of a VertexArray");
     for v in vertex_array.vertices() {
-        println!("Vertex Color: {} | Position: {}", v.color, v.position)
+        println!("Vertex Color: {:?} | Position: {:?}", v.color, v.position)
     }
 
     println!("\nMutable access to a vertex");
-    println!("Before Vertex Color: {} | Position: {}", vertex_array[1].color, vertex_array[1].position);
+    println!("Before Vertex Color: {:?} | Position: {:?}", vertex_array[1].color, vertex_array[1].position);
     vertex_array.get_vertex(1).position.x = 100f32;
-    println!("After Vertex Color: {} | Position: {}", vertex_array[1].color, vertex_array[1].position);
+    println!("After Vertex Color: {:?} | Position: {:?}", vertex_array[1].color, vertex_array[1].position);
 
     println!("\nImmutable access to a vertex");
-    println!("Vertex Color: {} | Position: {}", vertex_array[1].color, vertex_array[1].position);
+    println!("Vertex Color: {:?} | Position: {:?}", vertex_array[1].color, vertex_array[1].position);
 
     while window.is_open() {
         for e in window.events() {

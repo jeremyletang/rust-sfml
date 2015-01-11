@@ -156,8 +156,6 @@ impl Div for Vector2i {
 }
 
 impl Vector2u {
-    type Output = Vector2u;
-
     /// Create a new Vector2u with the given values.
     pub fn new(x: u32, y: u32) -> Vector2u {
         Vector2u{
