@@ -33,11 +33,11 @@ use ffi::network::socket_status as ffi;
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Show, Copy)]
 pub enum SocketStatus {
     /// The socket has sent / received the data.
-    SocketNone =            ffi::SOCKETNONE as int,
+    SocketNone =            ffi::SOCKETNONE as isize,
     /// The socket is not ready to send / receive data yet.
-    SocketNotReady =        ffi::SOCKETNOTREADY as int,
+    SocketNotReady =        ffi::SOCKETNOTREADY as isize,
     /// The TCP socket has been disconnected.
-    SocketDisconnected =    ffi::SOCKETDISCONNECTED as int,
+    SocketDisconnected =    ffi::SOCKETDISCONNECTED as isize,
     /// An unexpected error happened.
-    SocketError =           ffi::SOCKETERROR as int
+    SocketError =           ffi::SOCKETERROR as isize
 }

@@ -70,7 +70,7 @@ impl SoundBufferRecorder {
     ///
     /// # Arguments
     /// * ampleRate - Desired capture rate, in number of samples per second
-    pub fn start(&mut self, sample_rate: uint) -> () {
+    pub fn start(&mut self, sample_rate: usize) -> () {
         unsafe {
             ffi::sfSoundBufferRecorder_start(self.sound_buffer_recorder, sample_rate as c_uint)
         }
@@ -90,9 +90,9 @@ impl SoundBufferRecorder {
     /// (for example, 44100 samples/sec is CD quality).
     ///
     /// Return the sample rate, in samples per second
-    pub fn get_sample_rate(&self) -> uint {
+    pub fn get_sample_rate(&self) -> usize {
         unsafe {
-            ffi::sfSoundBufferRecorder_getSampleRate(self.sound_buffer_recorder) as uint
+            ffi::sfSoundBufferRecorder_getSampleRate(self.sound_buffer_recorder) as usize
         }
     }
 

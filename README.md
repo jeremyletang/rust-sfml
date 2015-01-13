@@ -71,7 +71,7 @@ On OSX window must be launched in the main thread. You should override the Rust 
 ```Rust
 #[cfg(target_os="macos")]
 #[start]
-fn start(argc: int, argv: **u8) -> int {
+fn start(argc: isize, argv: **u8) -> isize {
     native::start(argc, argv, main)
 }
 ```

@@ -54,106 +54,106 @@ pub enum Status {
     // expect another reply before proceeding with a new command
 
     /// Restart marker reply
-    RestartMarkerReply          = ffi::RESTARTMARKERREPLY as int,
+    RestartMarkerReply          = ffi::RESTARTMARKERREPLY as isize,
     /// Service ready in N minutes
-    ServiceReadySoon            = ffi::SERVICEREADYSOON as int,
+    ServiceReadySoon            = ffi::SERVICEREADYSOON as isize,
     /// Data connection already opened, transfer starting
-    DataConnectionAlreadyOpened = ffi::DATACONNECTIONALREADYOPENED as int,
+    DataConnectionAlreadyOpened = ffi::DATACONNECTIONALREADYOPENED as isize,
     /// File status ok, about to open data connection
-    OpeningDataConnection       = ffi::OPENINGDATACONNECTION as int,
+    OpeningDataConnection       = ffi::OPENINGDATACONNECTION as isize,
 
     // 2xx: the requested action has been successfully completed
 
     /// Command ok
-    Ok                          = ffi::OK as int,
+    Ok                          = ffi::OK as isize,
     /// Command not implemented
-    PointlessCommand            = ffi::POINTLESSCOMMAND as int,
+    PointlessCommand            = ffi::POINTLESSCOMMAND as isize,
     /// System status, or system help reply
-    SystemStatus                = ffi::SYSTEMSTATUS as int,
+    SystemStatus                = ffi::SYSTEMSTATUS as isize,
     /// Directory status
-    DirectoryStatus             = ffi::DIRECTORYSTATUS as int,
+    DirectoryStatus             = ffi::DIRECTORYSTATUS as isize,
     /// File status
-    FileStatus                  = ffi::FILESTATUS as int,
+    FileStatus                  = ffi::FILESTATUS as isize,
     /// Help message
-    HelpMessage                 = ffi::HELPMESSAGE as int,
+    HelpMessage                 = ffi::HELPMESSAGE as isize,
     /// NAME system type, where NAME is an official system name from the list in the Assigned Numbers document
-    SystemType                  = ffi::SYSTEMTYPE as int,
+    SystemType                  = ffi::SYSTEMTYPE as isize,
     /// Service ready for new user
-    ServiceReady                = ffi::SERVICEREADY as int,
+    ServiceReady                = ffi::SERVICEREADY as isize,
     /// Service closing control connection
-    ClosingConnection           = ffi::CLOSINGCONNECTION as int,
+    ClosingConnection           = ffi::CLOSINGCONNECTION as isize,
     /// Data connection open, no transfer in progress
-    DataConnectionOpened        = ffi::DATACONNECTIONOPENED as int,
+    DataConnectionOpened        = ffi::DATACONNECTIONOPENED as isize,
     /// Closing data connection, requested file action successful
-    ClosingDataConnection       = ffi::CLOSINGDATACONNECTION as int,
+    ClosingDataConnection       = ffi::CLOSINGDATACONNECTION as isize,
     /// Entering passive mode
-    EnteringPassiveMode         = ffi::ENTERINGPASSIVEMODE as int,
+    EnteringPassiveMode         = ffi::ENTERINGPASSIVEMODE as isize,
     /// User logged in, proceed. Logged out if appropriate
-    LoggedIn                    = ffi::LOGGEDIN as int,
+    LoggedIn                    = ffi::LOGGEDIN as isize,
     /// Requested file action ok
-    FileActionOk                = ffi::FILEACTIONOK as int,
+    FileActionOk                = ffi::FILEACTIONOK as isize,
     /// PATHNAME created
-    DirectoryOk                 = ffi::DIRECTORYOK as int,
+    DirectoryOk                 = ffi::DIRECTORYOK as isize,
 
     // 3xx: the command has been accepted, but the requested action
     // is dormant, pending receipt of further information
     /// User name ok, need password
-    NeedPassword                = ffi::NEEDPASSWORD as int,
+    NeedPassword                = ffi::NEEDPASSWORD as isize,
     /// Need account for login
-    NeedAccountToLogIn          = ffi::NEEDACCOUNTTOLOGIN as int,
+    NeedAccountToLogIn          = ffi::NEEDACCOUNTTOLOGIN as isize,
     /// Requested file action pending further information
-    NeedInformation             = ffi::NEEDINFORMATION as int,
+    NeedInformation             = ffi::NEEDINFORMATION as isize,
 
     // 4xx: the command was not accepted and the requested action did not take place,
     // but the error condition is temporary and the action may be requested again
 
     /// Service not available, closing control connection
-    ServiceUnavailable          = ffi::SERVICEUNAVAILABLE as int,
+    ServiceUnavailable          = ffi::SERVICEUNAVAILABLE as isize,
     /// Can't open data connection
-    DataConnectionUnavailable   = ffi::DATACONNECTIONUNAVAILABLE as int,
+    DataConnectionUnavailable   = ffi::DATACONNECTIONUNAVAILABLE as isize,
     /// Connection closed, transfer aborted
-    TransferAborted             = ffi::TRANSFERABORTED as int,
+    TransferAborted             = ffi::TRANSFERABORTED as isize,
     /// Requested file action not taken
-    FileActionAborted           = ffi::FILEACTIONABORTED as int,
+    FileActionAborted           = ffi::FILEACTIONABORTED as isize,
     /// Requested action aborted, local error in processing
-    LocalError                  = ffi::LOCALERROR as int,
+    LocalError                  = ffi::LOCALERROR as isize,
     /// Requested action not taken; insufficient storage space in system, file unavailable
-    InsufficientStorageSpace    = ffi::INSUFFICIENTSTORAGESPACE as int,
+    InsufficientStorageSpace    = ffi::INSUFFICIENTSTORAGESPACE as isize,
 
     // 5xx: the command was not accepted and
     // the requested action did not take place
     /// Syntax error, command unrecognized
-    CommandUnknown              = ffi::COMMANDUNKNOWN as int,
+    CommandUnknown              = ffi::COMMANDUNKNOWN as isize,
     /// Syntax error in parameters or arguments
-    ParametersUnknown           = ffi::PARAMETERSUNKNOWN as int,
+    ParametersUnknown           = ffi::PARAMETERSUNKNOWN as isize,
     /// Command not implemented
-    CommandNotImplemented       = ffi::COMMANDNOTIMPLEMENTED as int,
+    CommandNotImplemented       = ffi::COMMANDNOTIMPLEMENTED as isize,
     /// Bad sequence of commands
-    BadCommandSequence          = ffi::BADCOMMANDSEQUENCE as int,
+    BadCommandSequence          = ffi::BADCOMMANDSEQUENCE as isize,
     /// Command not implemented for that parameter
-    ParameterNotImplemented     = ffi::PARAMETERNOTIMPLEMENTED as int,
+    ParameterNotImplemented     = ffi::PARAMETERNOTIMPLEMENTED as isize,
     /// Not logged in
-    NotLoggedIn                 = ffi::NOTLOGGEDIN as int,
+    NotLoggedIn                 = ffi::NOTLOGGEDIN as isize,
     /// Need account for storing files
-    NeedAccountToStore          = ffi::NEEDACCOUNTTOSTORE as int,
+    NeedAccountToStore          = ffi::NEEDACCOUNTTOSTORE as isize,
     /// Requested action not taken, file unavailable
-    FileUnavailable             = ffi::FILEUNAVAILABLE as int,
+    FileUnavailable             = ffi::FILEUNAVAILABLE as isize,
     /// Requested action aborted, page type unknown
-    PageTypeUnknown             = ffi::PAGETYPEUNKNOWN as int,
+    PageTypeUnknown             = ffi::PAGETYPEUNKNOWN as isize,
     /// Requested file action aborted, exceeded storage allocation
-    NotEnoughMemory             = ffi::NOTENOUGHMEMORY as int,
+    NotEnoughMemory             = ffi::NOTENOUGHMEMORY as isize,
     /// Requested action not taken, file name not allowed
-    FilenameNotAllowed          = ffi::FILENAMENOTALLOWED as int,
+    FilenameNotAllowed          = ffi::FILENAMENOTALLOWED as isize,
 
     // 10xx: SFML custom codes
     /// Response is not a valid FTP one
-    InvalidResponse             = ffi::INVALIDRESPONSE as int,
+    InvalidResponse             = ffi::INVALIDRESPONSE as isize,
     /// Connection with server failed
-    ConnectionFailed            = ffi::CONNECTIONFAILED as int,
+    ConnectionFailed            = ffi::CONNECTIONFAILED as isize,
     /// Connection with server closed
-    ConnectionClosed            = ffi::CONNECTIONCLOSED as int,
+    ConnectionClosed            = ffi::CONNECTIONCLOSED as isize,
     /// Invalid file to upload / download
-    InvalidFile                 = ffi::INVALIDFILE as int
+    InvalidFile                 = ffi::INVALIDFILE as isize
 }
 
 /// The FTP client

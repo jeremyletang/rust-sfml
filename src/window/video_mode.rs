@@ -43,11 +43,11 @@ use ffi::window::video_mode as ffi;
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Show, Copy)]
 pub struct VideoMode {
     /// Video mode width, in pixels.
-    pub width: uint,
+    pub width: usize,
     /// Video mode height, in pixels.
-    pub height: uint,
+    pub height: usize,
     /// Video mode pixel depth, in bits per pixels.
-    pub bits_per_pixel: uint
+    pub bits_per_pixel: usize
 }
 
 impl VideoMode {
@@ -65,9 +65,9 @@ impl VideoMode {
     /// Constructor with parameters for class VideoMode.
     ///
     /// Return a new VideoMode initialized
-    pub fn new_init(width: uint,
-                    height: uint,
-                    bits_per_pixel: uint) -> VideoMode {
+    pub fn new_init(width: usize,
+                    height: usize,
+                    bits_per_pixel: usize) -> VideoMode {
         VideoMode{
             width: width,
             height: height,
@@ -100,9 +100,9 @@ impl VideoMode {
     pub fn get_desktop_mode() -> VideoMode {
         let mode = unsafe { ffi::sfVideoMode_getDesktopMode() };
         VideoMode{
-            width: mode.width as uint,
-            height: mode.height as uint,
-            bits_per_pixel: mode.bits_per_pixel as uint
+            width: mode.width as usize,
+            height: mode.height as usize,
+            bits_per_pixel: mode.bits_per_pixel as usize
         }
     }
 
@@ -126,7 +126,7 @@ impl VideoMode {
             return None;
         }
 
-        let size = size as uint;
+        let size = size as usize;
 
         let tab_slice: &[ffi::sfVideoMode] = unsafe {
             mem::transmute(
@@ -151,9 +151,9 @@ impl VideoMode {
 impl Wrappable<ffi::sfVideoMode> for VideoMode {
     fn wrap(mode: ffi::sfVideoMode) -> VideoMode {
         VideoMode{
-            width: mode.width as uint,
-            height: mode.height as uint,
-            bits_per_pixel: mode.bits_per_pixel as uint
+            width: mode.width as usize,
+            height: mode.height as usize,
+            bits_per_pixel: mode.bits_per_pixel as usize
         }
     }
 

@@ -33,9 +33,9 @@ use ffi::audio::sound_status as ffi;
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Show, Copy)]
 pub enum Status {
     /// Sound is not playing.
-    Stopped = ffi::SFSTOPPED as int,
+    Stopped = ffi::SFSTOPPED as isize,
     /// Sound is paused.
-    Paused = ffi::SFPAUSED as int,
+    Paused = ffi::SFPAUSED as isize,
     /// Sound is playing.
-    Playing = ffi::SFPLAYING as int
+    Playing = ffi::SFPLAYING as isize
 }

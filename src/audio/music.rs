@@ -28,7 +28,7 @@
 //! Musics are sounds that are streamed rather than completely loaded in memory.
 
 use libc::{c_float, size_t};
-use std::{ptr, mem};
+use std::mem;
 use std::ffi::CString;
 
 use audio::Status;
@@ -62,11 +62,10 @@ impl Music {
     ///
     /// Return Some(Music) or None
     pub fn new_from_file(filename: &str) -> Option<Music> {
-        let mut music_tmp: *mut ffi::sfMusic = ptr::null_mut();
         let c_str = CString::from_slice(filename.as_bytes()).as_ptr();
-        unsafe {
-            music_tmp = ffi::sfMusic_createFromFile(c_str)
-        }
+        let music_tmp: *mut ffi::sfMusic = unsafe {
+            ffi::sfMusic_createFromFile(c_str)
+        };
         if music_tmp.is_null() {
             None
         } else {
@@ -173,9 +172,9 @@ impl Music {
     /// 1 channel means a mono sound, 2 means stereo, etc.
     ///
     /// Return the number of channels
-    pub fn get_channel_count(&self) -> uint {
+    pub fn get_channel_count(&self) -> usize {
         unsafe {
-            ffi::sfMusic_getChannelCount(self.music) as uint
+            ffi::sfMusic_getChannelCount(self.music) as usize
         }
     }
 
@@ -185,9 +184,9 @@ impl Music {
     /// second. The higher, the better the quality.
     ///
     /// Return the sample rate, in number of samples per second
-    pub fn get_sample_rate(&self) -> uint {
+    pub fn get_sample_rate(&self) -> usize {
         unsafe {
-            ffi::sfMusic_getSampleRate(self.music) as uint
+            ffi::sfMusic_getSampleRate(self.music) as usize
         }
     }
 

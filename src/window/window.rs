@@ -29,7 +29,6 @@
 //! and abstractions for events and input handling.
 
 use libc::{c_uint, c_float};
-use std::ptr;
 use std::vec::Vec;
 use std::ffi::CString;
 
@@ -50,7 +49,7 @@ pub struct Window {
     #[doc(hidden)]
     window: *mut ffi::sfWindow,
     #[doc(hidden)]
-    title_length: uint
+    title_length: usize
 }
 
 /// An iterator over all the events in the events queue (internally call poll_event)
@@ -84,10 +83,9 @@ impl Window {
                style: WindowStyle,
                settings: &ContextSettings) -> Option<Window> {
 
-        let mut sf_win: *mut ffi::sfWindow = ptr::null_mut();
         let c_str = CString::from_slice(title.as_bytes()).as_ptr();
-        unsafe {
-            sf_win = ffi::sfWindow_create(mode.unwrap(), c_str, style as u32, settings);
+        let sf_win: *mut ffi::sfWindow = unsafe {
+            ffi::sfWindow_create(mode.unwrap(), c_str, style as u32, settings)
         };
         if sf_win.is_null() {
             None
@@ -141,7 +139,7 @@ impl Window {
     pub fn events(&self) -> Events {
         Events {
             window: self.window.clone(),
-            event: event::raw::sfEvent { data: [032; 6u] }
+            event: event::raw::sfEvent { data: [032; 6us] }
         }
     }
 
@@ -155,7 +153,7 @@ impl Window {
     ///
     /// Return the event if an event was returned, or NoEvent if the event queue was empty
     pub fn poll_event(&mut self) -> event::Event {
-        let mut event = event::raw::sfEvent { data: [032; 6u] };
+        let mut event = event::raw::sfEvent { data: [032; 6us] };
         let have_event: bool =  unsafe {
             match ffi::sfWindow_pollEvent(self.window, &mut event) {
                 SFFALSE     => false,
@@ -181,7 +179,7 @@ impl Window {
     ///
     /// Return the event or NoEvent if an error has occured
     pub fn wait_event(&mut self) -> event::Event {
-        let mut event = event::raw::sfEvent { data: [032; 6u] };
+        let mut event = event::raw::sfEvent { data: [032; 6us] };
         let have_event: bool =  unsafe {
             match ffi::sfWindow_waitEvent(self.window, &mut event) {
                 SFFALSE     => false,
@@ -212,7 +210,7 @@ impl Window {
     /// * width - Icon's width, in pixels
     /// * height - Icon's height, in pixels
     /// * pixels - Vector of pixels
-    pub fn set_icon(&mut self, width: uint, height: uint, pixels: Vec<u8>) -> () {
+    pub fn set_icon(&mut self, width: usize, height: usize, pixels: Vec<u8>) -> () {
         unsafe {
             ffi::sfWindow_setIcon(self.window, width as c_uint, height as c_uint, pixels.as_ptr())
         }
@@ -372,7 +370,7 @@ impl Window {
     ///
     /// # Arguments
     /// * limit - Framerate limit, in frames per seconds (use 0 to disable limit)
-    pub fn set_framerate_limit(&mut self, limit: uint) -> () {
+    pub fn set_framerate_limit(&mut self, limit: usize) -> () {
         unsafe {
             ffi::sfWindow_setFramerateLimit(self.window, limit as c_uint)
         }
@@ -473,7 +471,7 @@ impl Iterator for Events {
     type Item = event::Event;
 
     fn next(&mut self) -> Option<event::Event> {
-        let mut event = event::raw::sfEvent { data: [032; 6u] };
+        let mut event = event::raw::sfEvent { data: [032; 6us] };
         match unsafe { ffi::sfWindow_pollEvent(self.window, &mut event) } {
             SFFALSE     => None,
             SFTRUE      => Some(event::raw::get_wrapped_event(&mut event))

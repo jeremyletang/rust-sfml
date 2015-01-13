@@ -71,7 +71,7 @@ impl<'s> ConvexShape<'s> {
     /// * points_count - The number of point for the convex shape
     ///
     /// Return Some(ConvexShape) or None
-    pub fn new(points_count: uint) -> Option<ConvexShape<'s>> {
+    pub fn new(points_count: usize) -> Option<ConvexShape<'s>> {
         let shape = unsafe { ffi::sfConvexShape_create() };
         if shape.is_null() {
             None
@@ -94,7 +94,7 @@ impl<'s> ConvexShape<'s> {
     ///
     /// Return Some(ConvexShape) or None
     pub fn new_with_texture(texture: &'s Texture,
-                            points_count: uint) -> Option<ConvexShape<'s>> {
+                            points_count: usize) -> Option<ConvexShape<'s>> {
         let shape = unsafe { ffi::sfConvexShape_create() };
         if shape.is_null() {
             None
@@ -284,7 +284,7 @@ impl<'s> ConvexShape<'s> {
     /// # Arguments
     /// * index - Index of the point to change, in range [0 .. getPointCount() - 1]
     /// * point - New position of the point
-    pub fn set_point(&mut self, index: uint, point: &Vector2f) -> () {
+    pub fn set_point(&mut self, index: usize, point: &Vector2f) -> () {
         unsafe {
             ffi::sfConvexShape_setPoint(self.convex_shape,
                                         index as c_uint, *point)
@@ -326,7 +326,7 @@ impl<'s> ConvexShape<'s> {
     /// * index- Index of the point to get, in range [0 .. getPointCount() - 1]
     ///
     /// Return the index-th point of the shape
-    pub fn get_point(&self, index: uint) -> Vector2f {
+    pub fn get_point(&self, index: usize) -> Vector2f {
         unsafe {
             ffi::sfConvexShape_getPoint(self.convex_shape, index as c_uint)
         }
@@ -497,9 +497,9 @@ impl<'s> ConvexShape<'s> {
     /// Get the total number of points of a convex shape
     ///
     /// Return the number of points of the shape
-    pub fn get_point_count(&self) -> uint {
+    pub fn get_point_count(&self) -> usize {
         unsafe {
-            ffi::sfConvexShape_getPointCount(self.convex_shape) as uint
+            ffi::sfConvexShape_getPointCount(self.convex_shape) as usize
         }
     }
 
@@ -507,7 +507,7 @@ impl<'s> ConvexShape<'s> {
     ///
     /// # Arguments
     /// * count - New number of points of the convex
-    pub fn set_point_count(&mut self, count: uint) -> () {
+    pub fn set_point_count(&mut self, count: usize) -> () {
         unsafe {
             ffi::sfConvexShape_setPointCount(self.convex_shape, count as c_uint)
         }

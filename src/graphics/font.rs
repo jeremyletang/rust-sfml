@@ -26,7 +26,6 @@
 //! Class for loading and manipulating character fonts
 
 use libc::{c_uint, size_t};
-use std::ptr;
 use std::ffi::CString;
 
 use traits::Wrappable;
@@ -51,11 +50,10 @@ impl Font {
     ///
     /// Return Some(Font) or None
     pub fn new_from_file(filename: &str) -> Option<Font> {
-        let mut fnt = ptr::null_mut();
         let c_str = CString::from_slice(filename.as_bytes()).as_ptr();
-        unsafe {
-            fnt = ffi::sfFont_createFromFile(c_str)
-        }
+        let fnt = unsafe {
+            ffi::sfFont_createFromFile(c_str)
+        };
         if fnt.is_null() {
             None
         } else {
@@ -115,12 +113,12 @@ impl Font {
     pub fn get_kerning(&self,
                        first: u32,
                        second: u32,
-                       character_size: uint) -> int {
+                       character_size: usize) -> isize {
         unsafe {
             ffi::sfFont_getKerning(self.font,
                                    first,
                                    second,
-                                   character_size as c_uint) as int
+                                   character_size as c_uint) as isize
         }
     }
 
@@ -130,10 +128,10 @@ impl Font {
     /// * characterSize - Character size, in pixels
     ///
     /// Return the line spacing, in pixels
-    pub fn get_line_spacing(&self, character_size: uint) -> int {
+    pub fn get_line_spacing(&self, character_size: usize) -> isize {
         unsafe {
             ffi::sfFont_getLineSpacing(self.font,
-                                       character_size as c_uint) as int
+                                       character_size as c_uint) as isize
         }
     }
 
@@ -143,7 +141,7 @@ impl Font {
     /// * characterSize - Character size, in pixels
     ///
     /// Return the texture
-    pub fn get_texture(&self, character_size: uint) -> Option<Texture> {
+    pub fn get_texture(&self, character_size: usize) -> Option<Texture> {
         let tex = unsafe {ffi::sfFont_getTexture(self.font,
                                                  character_size as c_uint)};
         if tex.is_null() {
@@ -163,7 +161,7 @@ impl Font {
     /// Return the corresponding glyph
     pub fn get_glyph(&self,
                      codepoint: u32,
-                     character_size: uint,
+                     character_size: usize,
                      bold: bool) -> Glyph {
         unsafe {
             match bold {

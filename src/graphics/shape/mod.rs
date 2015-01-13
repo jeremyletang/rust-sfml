@@ -493,9 +493,9 @@ impl<'s> Shape<'s> {
     /// Get the total number of points of a shape
     ///
     /// Return the number of points of the shape
-    pub fn get_point_count(&self) -> uint {
+    pub fn get_point_count(&self) -> usize {
         unsafe {
-            ffi::sfShape_getPointCount(self.shape) as uint
+            ffi::sfShape_getPointCount(self.shape) as usize
         }
     }
 
@@ -507,7 +507,7 @@ impl<'s> Shape<'s> {
     /// * index - The index of the point to get, in range [0 .. getPointCount() - 1]
     ///
     /// Return the index-th point of the shape
-    pub fn get_point(&self, index: uint) -> Vector2f {
+    pub fn get_point(&self, index: usize) -> Vector2f {
         unsafe {
             ffi::sfShape_getPoint(self.shape, index as c_uint)
         }

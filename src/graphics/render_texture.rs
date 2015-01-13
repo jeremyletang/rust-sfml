@@ -53,8 +53,8 @@ impl RenderTexture {
     /// * depthBuffer - Do you want a depth-buffer attached? (useful only if you're doing 3D OpenGL on the rendertexture)
     ///
     /// Return Some(RenderTexture) or None
-    pub fn new(width: uint,
-               height: uint,
+    pub fn new(width: usize,
+               height: usize,
                depth_buffer: bool) -> Option<RenderTexture> {
 
         let tex = match depth_buffer {

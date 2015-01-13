@@ -56,7 +56,7 @@ impl Texture {
     /// * height - Texture height
     ///
     /// Return Some(Texture) or None
-    pub fn new(width: uint, height: uint) -> Option<Texture> {
+    pub fn new(width: usize, height: usize) -> Option<Texture> {
         let tex = unsafe { ffi::sfTexture_create(width as c_uint,
                                                  height as c_uint) };
         if tex.is_null() {
@@ -97,11 +97,10 @@ impl Texture {
     ///
     /// Return Some(Texture) or None
     pub fn new_from_file(filename: &str) -> Option<Texture> {
-        let mut tex = ptr::null_mut();
         let c_str = CString::from_slice(filename.as_bytes()).as_ptr();
-        unsafe {
-            tex = ffi::sfTexture_createFromFile(c_str as *mut i8, ptr::null())
-        }
+        let tex = unsafe {
+            ffi::sfTexture_createFromFile(c_str as *mut i8, ptr::null())
+        };
         if tex.is_null() {
             None
         } else {
@@ -121,11 +120,10 @@ impl Texture {
     /// Return Some(Texture) or None
     pub fn new_from_file_with_rect(filename: &str,
                                    area: &IntRect) -> Option<Texture> {
-        let mut tex = ptr::null_mut();
         let c_str = CString::from_slice(filename.as_bytes()).as_ptr();
-        unsafe {
-            tex = ffi::sfTexture_createFromFile(c_str as *mut i8, &*area)
-        }
+        let tex = unsafe {
+            ffi::sfTexture_createFromFile(c_str as *mut i8, &*area)
+        };
         if tex.is_null() {
             None
         } else {
@@ -211,8 +209,8 @@ impl Texture {
     /// * y - Y offset in the texture where to copy the source pixels
     pub fn update_from_window(&mut self,
                               window: &Window,
-                              x: uint,
-                              y: uint) -> () {
+                              x: u32,
+                              y: u32) -> () {
         unsafe {
             ffi::sfTexture_updateFromWindow(self.texture,
                                             window.unwrap(),
@@ -229,8 +227,8 @@ impl Texture {
     /// * y - Y offset in the texture where to copy the source pixels
     pub fn update_from_render_window(&mut self,
                                      render_window: &RenderWindow,
-                                     x: uint,
-                                     y: uint) -> () {
+                                     x: u32,
+                                     y: u32) -> () {
         unsafe {
             ffi::sfTexture_updateFromRenderWindow(self.texture,
                                                   render_window.unwrap(),
@@ -247,8 +245,8 @@ impl Texture {
     /// * y - Y offset in the texture where to copy the source pixels
     pub fn update_from_image(&mut self,
                              image: &Image,
-                             x: uint,
-                             y: uint) -> () {
+                             x: usize,
+                             y: usize) -> () {
         unsafe {
             ffi::sfTexture_updateFromImage(self.texture,
                                            image.unwrap(),
@@ -265,10 +263,10 @@ impl Texture {
     /// * y - Y offset in the texture where to copy the source pixels
     pub fn update_from_pixels(&mut self,
                               pixels: &[u8],
-                              width: uint,
-                              height: uint,
-                              x: uint,
-                              y: uint) -> () {
+                              width: usize,
+                              height: usize,
+                              x: usize,
+                              y: usize) -> () {
         unsafe {
             ffi::sfTexture_updateFromPixels(self.texture,
                                             pixels.as_ptr(),
@@ -353,9 +351,9 @@ impl Texture {
     /// Get the maximum texture size allowed
     ///
     /// Return the maximum size allowed for textures, in pixels
-    pub fn get_maximum_size() -> uint {
+    pub fn get_maximum_size() -> usize {
         unsafe {
-            ffi::sfTexture_getMaximumSize() as uint
+            ffi::sfTexture_getMaximumSize() as usize
         }
     }
 
