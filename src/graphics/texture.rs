@@ -210,7 +210,7 @@ impl Texture {
     /// * x - X offset in the texture where to copy the source pixels
     /// * y - Y offset in the texture where to copy the source pixels
     pub fn update_from_window(&mut self,
-                              window: Window,
+                              window: &Window,
                               x: uint,
                               y: uint) -> () {
         unsafe {
@@ -228,7 +228,7 @@ impl Texture {
     /// * x - X offset in the texture where to copy the source pixels
     /// * y - Y offset in the texture where to copy the source pixels
     pub fn update_from_render_window(&mut self,
-                                     render_window: RenderWindow,
+                                     render_window: &RenderWindow,
                                      x: uint,
                                      y: uint) -> () {
         unsafe {
