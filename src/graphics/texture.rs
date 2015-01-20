@@ -31,7 +31,8 @@ use std::ptr;
 use std::ffi::CString;
 
 use traits::Wrappable;
-use graphics::{RenderWindow, Image, IntRect};
+// use graphics::{RenderWindow, Image, IntRect};
+use graphics::{Image, IntRect};
 use system::vector2::Vector2u;
 use window::Window;
 
@@ -56,7 +57,7 @@ impl Texture {
     /// * height - Texture height
     ///
     /// Return Some(Texture) or None
-    pub fn new(width: usize, height: usize) -> Option<Texture> {
+    pub fn new(width: u32, height: u32) -> Option<Texture> {
         let tex = unsafe { ffi::sfTexture_create(width as c_uint,
                                                  height as c_uint) };
         if tex.is_null() {
@@ -208,7 +209,11 @@ impl Texture {
     /// * x - X offset in the texture where to copy the source pixels
     /// * y - Y offset in the texture where to copy the source pixels
     pub fn update_from_window(&mut self,
+<<<<<<< HEAD
                               window: &Window,
+=======
+                              window: Window,
+>>>>>>> 894acd2... try to fix llvm assert
                               x: u32,
                               y: u32) -> () {
         unsafe {
@@ -226,7 +231,7 @@ impl Texture {
     /// * x - X offset in the texture where to copy the source pixels
     /// * y - Y offset in the texture where to copy the source pixels
     pub fn update_from_render_window(&mut self,
-                                     render_window: &RenderWindow,
+                                     render_window: RenderWindow,
                                      x: u32,
                                      y: u32) -> () {
         unsafe {
@@ -245,8 +250,8 @@ impl Texture {
     /// * y - Y offset in the texture where to copy the source pixels
     pub fn update_from_image(&mut self,
                              image: &Image,
-                             x: usize,
-                             y: usize) -> () {
+                             x: u32,
+                             y: u32) -> () {
         unsafe {
             ffi::sfTexture_updateFromImage(self.texture,
                                            image.unwrap(),
@@ -263,10 +268,10 @@ impl Texture {
     /// * y - Y offset in the texture where to copy the source pixels
     pub fn update_from_pixels(&mut self,
                               pixels: &[u8],
-                              width: usize,
-                              height: usize,
-                              x: usize,
-                              y: usize) -> () {
+                              width: u32,
+                              height: u32,
+                              x: u32,
+                              y: u32) -> () {
         unsafe {
             ffi::sfTexture_updateFromPixels(self.texture,
                                             pixels.as_ptr(),
@@ -351,9 +356,9 @@ impl Texture {
     /// Get the maximum texture size allowed
     ///
     /// Return the maximum size allowed for textures, in pixels
-    pub fn get_maximum_size() -> usize {
+    pub fn get_maximum_size() -> u32 {
         unsafe {
-            ffi::sfTexture_getMaximumSize() as usize
+            ffi::sfTexture_getMaximumSize() as u32
         }
     }
 

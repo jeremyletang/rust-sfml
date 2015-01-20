@@ -113,12 +113,12 @@ impl Font {
     pub fn get_kerning(&self,
                        first: u32,
                        second: u32,
-                       character_size: usize) -> isize {
+                       character_size: u32) -> i32 {
         unsafe {
             ffi::sfFont_getKerning(self.font,
                                    first,
                                    second,
-                                   character_size as c_uint) as isize
+                                   character_size as c_uint) as i32
         }
     }
 
@@ -128,10 +128,10 @@ impl Font {
     /// * characterSize - Character size, in pixels
     ///
     /// Return the line spacing, in pixels
-    pub fn get_line_spacing(&self, character_size: usize) -> isize {
+    pub fn get_line_spacing(&self, character_size: u32) -> i32 {
         unsafe {
             ffi::sfFont_getLineSpacing(self.font,
-                                       character_size as c_uint) as isize
+                                       character_size as c_uint) as i32
         }
     }
 
@@ -141,7 +141,7 @@ impl Font {
     /// * characterSize - Character size, in pixels
     ///
     /// Return the texture
-    pub fn get_texture(&self, character_size: usize) -> Option<Texture> {
+    pub fn get_texture(&self, character_size: u32) -> Option<Texture> {
         let tex = unsafe {ffi::sfFont_getTexture(self.font,
                                                  character_size as c_uint)};
         if tex.is_null() {
@@ -161,7 +161,7 @@ impl Font {
     /// Return the corresponding glyph
     pub fn get_glyph(&self,
                      codepoint: u32,
-                     character_size: usize,
+                     character_size: u32,
                      bold: bool) -> Glyph {
         unsafe {
             match bold {

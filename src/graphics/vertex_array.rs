@@ -70,7 +70,7 @@ impl VertexArray {
     ///
     /// Return Some(VertexArray) or None
     pub fn new_init(primitive_type: PrimitiveType,
-                    vertex_count: usize) -> Option<VertexArray> {
+                    vertex_count: u32) -> Option<VertexArray> {
         let ver = unsafe { ffi::sfVertexArray_create() };
         if ver.is_null() {
             None
@@ -104,9 +104,9 @@ impl VertexArray {
     /// Return the vertex count of a vertex array
     ///
     /// Return the number of vertices in the array
-    pub fn get_vertex_count(&self) -> usize {
+    pub fn get_vertex_count(&self) -> u32 {
         unsafe {
-            ffi::sfVertexArray_getVertexCount(self.vertex_array) as usize
+            ffi::sfVertexArray_getVertexCount(self.vertex_array) as u32
         }
     }
 
@@ -132,7 +132,7 @@ impl VertexArray {
     ///
     /// # Arguments
     /// * vertex_count - New size of the array (number of vertices)
-    pub fn resize(&mut self, vertex_count: usize) -> () {
+    pub fn resize(&mut self, vertex_count: u32) -> () {
         unsafe {
             ffi::sfVertexArray_resize(self.vertex_array, vertex_count as c_uint)
         }
@@ -226,7 +226,7 @@ impl VertexArray {
     /// * index - Index of the vertex to get
     ///
     /// Return a mutable reference to the index-th vertex
-    pub fn get_vertex(&self, index: usize) -> &mut Vertex {
+    pub fn get_vertex(&self, index: u32) -> &mut Vertex {
         unsafe {
             mem::transmute(ffi::sfVertexArray_getVertex(self.vertex_array,
                                                          index as c_uint))
@@ -274,10 +274,10 @@ impl<'s> Iterator for Vertices<'s> {
     }
 }
 
-impl Index<usize> for VertexArray {
+impl Index<u32> for VertexArray {
     type Output = Vertex;
 
-    fn index<'s>(&'s self, _rhs: &usize) -> &'s Vertex {
+    fn index<'s>(&'s self, _rhs: &u32) -> &'s Vertex {
         unsafe {
             mem::transmute::<*const Vertex, &'s Vertex>
                 (ffi::sfVertexArray_getVertex(self.vertex_array,

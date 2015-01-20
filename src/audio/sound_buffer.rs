@@ -121,9 +121,9 @@ impl SoundBuffer {
     /// be 1, 2 for stereo, etc.
     ///
     /// Return the number of channels
-    pub fn get_channel_count(&self) -> usize {
+    pub fn get_channel_count(&self) -> u32 {
         unsafe {
-            ffi::sfSoundBuffer_getChannelCount(self.sound_buffer) as usize
+            ffi::sfSoundBuffer_getChannelCount(self.sound_buffer) as u32
         }
     }
 
@@ -141,9 +141,9 @@ impl SoundBuffer {
     /// samples/s is CD quality).
     ///
     /// Return the sample rate (number of samples per second)
-    pub fn get_sample_rate(&self) -> usize {
+    pub fn get_sample_rate(&self) -> u32 {
         unsafe {
-            ffi::sfSoundBuffer_getSampleRate(self.sound_buffer) as usize
+            ffi::sfSoundBuffer_getSampleRate(self.sound_buffer) as u32
         }
     }
 }

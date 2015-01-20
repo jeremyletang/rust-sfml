@@ -172,9 +172,9 @@ impl Music {
     /// 1 channel means a mono sound, 2 means stereo, etc.
     ///
     /// Return the number of channels
-    pub fn get_channel_count(&self) -> usize {
+    pub fn get_channel_count(&self) -> u32 {
         unsafe {
-            ffi::sfMusic_getChannelCount(self.music) as usize
+            ffi::sfMusic_getChannelCount(self.music) as u32
         }
     }
 
@@ -184,9 +184,9 @@ impl Music {
     /// second. The higher, the better the quality.
     ///
     /// Return the sample rate, in number of samples per second
-    pub fn get_sample_rate(&self) -> usize {
+    pub fn get_sample_rate(&self) -> u32 {
         unsafe {
-            ffi::sfMusic_getSampleRate(self.music) as usize
+            ffi::sfMusic_getSampleRate(self.music) as u32
         }
     }
 

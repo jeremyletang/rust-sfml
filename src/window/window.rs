@@ -49,7 +49,7 @@ pub struct Window {
     #[doc(hidden)]
     window: *mut ffi::sfWindow,
     #[doc(hidden)]
-    title_length: usize
+    title_length: u32
 }
 
 /// An iterator over all the events in the events queue (internally call poll_event)
@@ -92,7 +92,7 @@ impl Window {
         } else {
             Some (Window {
                     window: sf_win,
-                    title_length: title.len()
+                    title_length: title.len() as u32
                 })
         }
     }
@@ -130,7 +130,7 @@ impl Window {
         } else {
             Some (Window {
                     window: sf_win,
-                    title_length: title.len()
+                    title_length: title.len() as u32
                 })
         }
     }
@@ -210,7 +210,7 @@ impl Window {
     /// * width - Icon's width, in pixels
     /// * height - Icon's height, in pixels
     /// * pixels - Vector of pixels
-    pub fn set_icon(&mut self, width: usize, height: usize, pixels: Vec<u8>) -> () {
+    pub fn set_icon(&mut self, width: u32, height: u32, pixels: Vec<u8>) -> () {
         unsafe {
             ffi::sfWindow_setIcon(self.window, width as c_uint, height as c_uint, pixels.as_ptr())
         }
@@ -370,7 +370,7 @@ impl Window {
     ///
     /// # Arguments
     /// * limit - Framerate limit, in frames per seconds (use 0 to disable limit)
-    pub fn set_framerate_limit(&mut self, limit: usize) -> () {
+    pub fn set_framerate_limit(&mut self, limit: u32) -> () {
         unsafe {
             ffi::sfWindow_setFramerateLimit(self.window, limit as c_uint)
         }

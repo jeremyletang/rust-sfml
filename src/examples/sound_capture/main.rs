@@ -25,7 +25,7 @@ fn main() -> () {
     let mut stdin = BufferedReader::new(stdin());
     let mut line = stdin.read_line().unwrap();
     unsafe { line.as_mut_vec().pop(); }
-    let sample_rate: usize = match line.as_slice().parse() {
+    let sample_rate: u32 = match line.as_slice().parse() {
         Some(value)     => value,
         None            => panic!("Error, input is not valid")
     };

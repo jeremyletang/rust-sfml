@@ -50,7 +50,7 @@ impl Image {
     /// * height - Height of the image
     ///
     /// Return Some(Image) or None
-    pub fn new(width: usize, height: usize) -> Option<Image> {
+    pub fn new(width: u32, height: u32) -> Option<Image> {
         let image = unsafe { ffi::sfImage_create(width as c_uint,
                                                  height as c_uint) };
         if image.is_null() {
@@ -89,8 +89,8 @@ impl Image {
     /// * color - Fill color
     ///
     /// Return Some(Image) or None
-    pub fn new_from_color(width: usize,
-                          height: usize,
+    pub fn new_from_color(width: u32,
+                          height: u32,
                           color: &Color) -> Option<Image> {
         let image =
             unsafe { ffi::sfImage_createFromColor(width as c_uint,
@@ -155,8 +155,8 @@ impl Image {
     /// * pixels - Vector of pixels to copy to the image
     ///
     /// Return Some(Image) or None
-    pub fn create_from_pixels(width: usize,
-                              height: usize,
+    pub fn create_from_pixels(width: u32,
+                              height: u32,
                               pixels: &[u8]) -> Option<Image> {
         let image =
             unsafe { ffi::sfImage_createFromPixels(width as c_uint,
@@ -224,7 +224,7 @@ impl Image {
     /// * x - X coordinate of pixel to change
     /// * y - Y coordinate of pixel to change
     /// * color - New color of the pixel
-    pub fn set_pixel(&mut self, x: usize, y: usize, color: &Color) -> () {
+    pub fn set_pixel(&mut self, x: u32, y: u32, color: &Color) -> () {
         unsafe {
             ffi::sfImage_setPixel(self.image, x as c_uint, y as c_uint, *color)
         }
@@ -241,7 +241,7 @@ impl Image {
     /// * y - Y coordinate of pixel to get
     ///
     /// Return the Color of the pixel at coordinates (x, y)
-    pub fn get_pixel(&self, x: usize, y: usize) -> Color {
+    pub fn get_pixel(&self, x: u32, y: u32) -> Color {
         unsafe {
             ffi::sfImage_getPixel(self.image, x as c_uint, y as c_uint)
         }
@@ -281,8 +281,8 @@ impl Image {
     /// * applyAlpha - Should the copy take in account the source transparency?
     pub fn copy_image(&mut self,
                       source: &Image,
-                      dest_x: usize,
-                      dest_y: usize,
+                      dest_x: u32,
+                      dest_y: u32,
                       source_rect: &IntRect,
                       apply_alpha: bool) -> () {
         unsafe {

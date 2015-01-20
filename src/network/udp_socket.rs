@@ -114,7 +114,7 @@ impl UdpSocket {
     /// Return the tatus code
     pub fn bind(&self, port: u16) -> SocketStatus {
         unsafe {
-            mem::transmute(ffi::sfUdpSocket_bind(self.socket, port) as i8)
+            mem::transmute(ffi::sfUdpSocket_bind(self.socket, port) as i32)
         }
     }
 
@@ -141,7 +141,7 @@ impl UdpSocket {
     /// * remotePort - Port of the receiver to send the data to
     pub fn send(&self, data: &[i8], address: &IpAddress, port: u16) -> SocketStatus {
         unsafe {
-            mem::transmute(ffi::sfUdpSocket_send(self.socket, data.as_ptr() as *mut i8, data.len() as size_t, address.unwrap(), port) as i8)
+            mem::transmute(ffi::sfUdpSocket_send(self.socket, data.as_ptr() as *mut i8, data.len() as size_t, address.unwrap(), port) as i32)
         }
     }
 
@@ -162,7 +162,7 @@ impl UdpSocket {
             let datas: *mut i8 = ptr::null_mut();
             let addr: *mut ::ffi::network::ip_address::sfIpAddress = ptr::null_mut();
             let mut port: u16 = 0;
-            let stat: SocketStatus = mem::transmute(ffi::sfUdpSocket_receive(self.socket, datas, max_size, &mut s, addr, &mut port) as i8);
+            let stat: SocketStatus = mem::transmute(ffi::sfUdpSocket_receive(self.socket, datas, max_size, &mut s, addr, &mut port) as i32);
             (slice::from_raw_buf(mem::transmute(&datas), s as usize).to_vec(), stat, s, Wrappable::wrap(*addr), port)
         }
     }
@@ -179,7 +179,7 @@ impl UdpSocket {
     /// * remotePort - Port of the receiver to send the data to
     pub fn send_packet(&self, packet: &Packet, address: &IpAddress, port: u16) -> SocketStatus {
         unsafe {
-            mem::transmute(ffi::sfUdpSocket_sendPacket(self.socket, packet.unwrap(), address.unwrap(), port) as i8)
+            mem::transmute(ffi::sfUdpSocket_sendPacket(self.socket, packet.unwrap(), address.unwrap(), port) as i32)
         }
     }
 
@@ -192,7 +192,7 @@ impl UdpSocket {
             let pack: *mut ::ffi::network::packet::sfPacket = ptr::null_mut();
             let addr: *mut ::ffi::network::ip_address::sfIpAddress = ptr::null_mut();
             let mut port: u16 = 0;
-            let stat: SocketStatus = mem::transmute(ffi::sfUdpSocket_receivePacket(self.socket, pack, addr, &mut port) as i8);
+            let stat: SocketStatus = mem::transmute(ffi::sfUdpSocket_receivePacket(self.socket, pack, addr, &mut port) as i32);
             (Wrappable::wrap(pack), stat, Wrappable::wrap(*addr), port)
         }
     }

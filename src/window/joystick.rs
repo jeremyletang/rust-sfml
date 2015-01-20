@@ -34,11 +34,11 @@ use ffi::sfml_types::{SFFALSE, SFTRUE};
 use ffi::window::joystick as ffi;
 
 /// Maximum number of supported joysticks.
-pub const COUNT: usize  = 8;
+pub const COUNT: u32  = 8;
 /// Maximum number of supported buttons.
-pub const BUTTON_COUNT: usize = 32;
+pub const BUTTON_COUNT: u32 = 32;
 /// Maximum number of supported axes.
-pub const AXIS_COUNT: usize = 8;
+pub const AXIS_COUNT: u32 = 8;
 
 /// Axes supported by SFML joysticks
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Show, Copy)]
@@ -69,7 +69,7 @@ pub enum Axis {
  *
  * Return true if the joystick is connected, false otherwise
  */
-pub fn is_connected(joystick: usize) -> bool {
+pub fn is_connected(joystick: u32) -> bool {
     unsafe {
         match ffi::sfJoystick_isConnected(joystick as c_uint) {
             SFFALSE   => false,
@@ -86,9 +86,9 @@ pub fn is_connected(joystick: usize) -> bool {
  *
  * Return the number of buttons supported by the joystick.
  */
-pub fn button_count(joystick: usize) -> usize {
+pub fn button_count(joystick: u32) -> u32 {
     unsafe {
-        ffi::sfJoystick_getButtonCount(joystick as c_uint) as usize
+        ffi::sfJoystick_getButtonCount(joystick as c_uint) as u32
     }
 }
 
@@ -103,7 +103,7 @@ pub fn button_count(joystick: usize) -> usize {
  *
  * Return true if the joystick supports the axis, false otherwise
  */
-pub fn has_axis(joystick: usize, axis: Axis) -> bool {
+pub fn has_axis(joystick: u32, axis: Axis) -> bool {
     unsafe {
         match ffi::sfJoystick_hasAxis(joystick as c_uint, axis as c_uint) {
             SFFALSE     => false,
@@ -123,7 +123,7 @@ pub fn has_axis(joystick: usize, axis: Axis) -> bool {
  *
  * Return true if the button is pressed, false otherwise
  */
-pub fn is_button_pressed(joystick: usize, button: usize) -> bool {
+pub fn is_button_pressed(joystick: u32, button: u32) -> bool {
     unsafe {
         match ffi::sfJoystick_isButtonPressed(joystick as c_uint, button as c_uint) {
             SFFALSE    => false,
@@ -144,7 +144,7 @@ pub fn is_button_pressed(joystick: usize, button: usize) -> bool {
  *
  * Return the current position of the axis, in range [-100 .. 100]
  */
-pub fn get_axis_position(joystick: usize, axis: Axis) -> f32 {
+pub fn get_axis_position(joystick: u32, axis: Axis) -> f32 {
     unsafe {
         ffi::sfJoystick_getAxisPosition(joystick as c_uint, axis as c_uint) as f32
     }

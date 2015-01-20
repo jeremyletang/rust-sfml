@@ -51,7 +51,7 @@ pub struct Text<'s> {
     #[doc(hidden)]
     text: *mut ffi::sfText,
     #[doc(hidden)]
-    string_length: usize,
+    string_length: u32,
     #[doc(hidden)]
     font: Option<&'s Font>
 }
@@ -85,7 +85,7 @@ impl<'s> Text<'s> {
     /// Return Some(Text) or None
     pub fn new_init(string: &str,
                     font: &'s Font,
-                    character_size: usize) ->Option<Text<'s>> {
+                    character_size: u32) ->Option<Text<'s>> {
         let text = unsafe { ffi::sfText_create() };
         if text.is_null() {
             None
@@ -98,7 +98,7 @@ impl<'s> Text<'s> {
             }
             Some(Text {
                     text: text,
-                    string_length: string.len(),
+                    string_length: string.len() as u32,
                     font: Some(font)
                 })
         }
@@ -114,7 +114,7 @@ impl<'s> Text<'s> {
         } else {
             Some(Text {
                 text: self.text,
-                string_length: self.string_length,
+                string_length: self.string_length as u32,
                 font: self.font
             })
         }
@@ -131,7 +131,7 @@ impl<'s> Text<'s> {
             let c_str = CString::from_slice(string.as_bytes()).as_ptr();
             ffi::sfText_setString(self.text, c_str);
         }
-        self.string_length = string.len()
+        self.string_length = string.len() as u32
     }
 
     /// Get the string of a text (returns an ANSI string)
@@ -155,7 +155,7 @@ impl<'s> Text<'s> {
         let string_slice: &[u32] = unsafe { mem::transmute(
                 raw::Slice{
                     data: string,
-                    len: self.string_length,
+                    len: self.string_length as usize,
                 }
             )};
 
@@ -167,9 +167,9 @@ impl<'s> Text<'s> {
     /// Get the size of the characters
     ///
     /// Return the size of the characters
-    pub fn get_character_size(&self) -> usize {
+    pub fn get_character_size(&self) -> u32 {
         unsafe {
-            ffi::sfText_getCharacterSize(self.text) as usize
+            ffi::sfText_getCharacterSize(self.text) as u32
         }
     }
 
@@ -248,7 +248,7 @@ impl<'s> Text<'s> {
     ///
     /// # Arguments
     /// * size - The new character size, in pixels
-    pub fn set_character_size(&mut self, size: usize) -> () {
+    pub fn set_character_size(&mut self, size: u32) -> () {
         unsafe {
             ffi::sfText_setCharacterSize(self.text, size as c_uint)
         }
@@ -519,7 +519,7 @@ impl<'s> Text<'s> {
     /// * string - The new string
     pub fn set_unicode_string(&mut self, string: Vec<u32>) -> () {
         unsafe {
-            self.string_length = string.len();
+            self.string_length = string.len() as u32;
             ffi::sfText_setUnicodeString(self.text, string.as_ptr())
         }
     }

@@ -351,7 +351,7 @@ impl RectangleShape {
     /// * index- Index of the point to get, in range [0 .. getPointCount() - 1]
     ///
     /// Return the index-th point of the shape
-    pub fn get_point(&self, index: usize) -> Vector2f {
+    pub fn get_point(&self, index: u32) -> Vector2f {
         unsafe {
             ffi::sfRectangleShape_getPoint(self.rectangle_shape,
                                            index as c_uint) 
@@ -510,9 +510,9 @@ impl RectangleShape {
     /// Get the total number of points of a rectangle shape
     ///
     /// Return the number of points of the shape
-    pub fn get_point_count(&self) -> usize {
+    pub fn get_point_count(&self) -> u32 {
         unsafe {
-            ffi::sfRectangleShape_getPointCount(self.rectangle_shape) as usize
+            ffi::sfRectangleShape_getPointCount(self.rectangle_shape) as u32
         }
     }
 
