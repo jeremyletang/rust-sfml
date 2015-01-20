@@ -31,9 +31,9 @@ use std::ptr;
 
 use traits::{Drawable, Wrappable};
 use system::vector2::{Vector2f, Vector2i, Vector2u};
-use graphics::{View, Sprite, Color, IntRect, Texture, CircleShape,
-               RectangleShape, VertexArray, ConvexShape, RenderStates,
-               Shape, Text, RenderTarget, rc, Vertex, PrimitiveType};
+use graphics::{View, Color, IntRect, Texture, CircleShape, RectangleShape, Text,
+               RenderStates, Sprite, ConvexShape, VertexArray,
+               RenderTarget, rc, Vertex, PrimitiveType};
 
 use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi::graphics::render_texture as ffi;
@@ -53,8 +53,8 @@ impl RenderTexture {
     /// * depthBuffer - Do you want a depth-buffer attached? (useful only if you're doing 3D OpenGL on the rendertexture)
     ///
     /// Return Some(RenderTexture) or None
-    pub fn new(width: uint,
-               height: uint,
+    pub fn new(width: u32,
+               height: u32,
                depth_buffer: bool) -> Option<RenderTexture> {
 
         let tex = match depth_buffer {
@@ -139,7 +139,7 @@ impl RenderTexture {
     }
 }
 
-impl RenderTarget for RenderTexture{
+impl RenderTarget for RenderTexture {
 
     /// Get the size of the rendering region of a render texture
     ///
@@ -370,23 +370,23 @@ impl RenderTarget for RenderTexture{
         }
     }
 
-    /// Draw Shape
-    fn draw_shape(&self, shape: &Shape) -> () {
-        unsafe {
-            ffi::sfRenderTexture_drawShape(self.render_texture,
-                                           shape.unwrap(),
-                                           ptr::null_mut())
-        }
-    }
+    // /// Draw Shape
+    // fn draw_shape(&self, shape: &Shape) -> () {
+    //     unsafe {
+    //         ffi::sfRenderTexture_drawShape(self.render_texture,
+    //                                        shape.unwrap(),
+    //                                        ptr::null_mut())
+    //     }
+    // }
 
-    /// Draw Shape
-    fn draw_shape_rc(&self, shape: &rc::Shape) -> () {
-        unsafe {
-            ffi::sfRenderTexture_drawShape(self.render_texture,
-                                           shape.unwrap(),
-                                           ptr::null_mut())
-        }
-    }
+    // /// Draw Shape
+    // fn draw_shape_rc(&self, shape: &rc::Shape) -> () {
+    //     unsafe {
+    //         ffi::sfRenderTexture_drawShape(self.render_texture,
+    //                                        shape.unwrap(),
+    //                                        ptr::null_mut())
+    //     }
+    // }
 
     /// Draw Sprite
     fn draw_sprite(&self, sprite: &Sprite) -> () {
@@ -491,27 +491,27 @@ impl RenderTarget for RenderTexture{
         }
     }
 
-    /// Draw Shape
-    fn draw_shape_rs(&self,
-                         shape: &Shape,
-                         rs: &mut RenderStates) -> () {
-        unsafe {
-            ffi::sfRenderTexture_drawShape(self.render_texture,
-                                           shape.unwrap(),
-                                           rs.unwrap())
-        }
-    }
+    // /// Draw Shape
+    // fn draw_shape_rs(&self,
+    //                      shape: &Shape,
+    //                      rs: &mut RenderStates) -> () {
+    //     unsafe {
+    //         ffi::sfRenderTexture_drawShape(self.render_texture,
+    //                                        shape.unwrap(),
+    //                                        rs.unwrap())
+    //     }
+    // }
 
-    /// Draw Shape
-    fn draw_shape_rs_rc(&self,
-                            shape: &rc::Shape,
-                            rs: &mut rc::RenderStates) -> () {
-        unsafe {
-            ffi::sfRenderTexture_drawShape(self.render_texture,
-                                           shape.unwrap(),
-                                           rs.unwrap())
-        }
-    }
+    // /// Draw Shape
+    // fn draw_shape_rs_rc(&self,
+    //                         shape: &rc::Shape,
+    //                         rs: &mut rc::RenderStates) -> () {
+    //     unsafe {
+    //         ffi::sfRenderTexture_drawShape(self.render_texture,
+    //                                        shape.unwrap(),
+    //                                        rs.unwrap())
+    //     }
+    // }
 
     /// Draw Sprite
     fn draw_sprite_rs(&self,

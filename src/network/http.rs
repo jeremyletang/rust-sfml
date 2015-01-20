@@ -34,74 +34,76 @@ use system::Time;
 use ffi::network::http as ffi;
 
 /// Method type to send the request
+#[repr(i32)]
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Show, Copy)]
 pub enum Method {
     /// Request in get mode, standard method to retrieve a page
-    Get = ffi::GET as int,
+    Get = ffi::GET as i32,
     /// Request in post mode, usually to send data to a page
-    Post = ffi::POST as int,
+    Post = ffi::POST as i32,
     /// Request a page's header only
-    Head = ffi::HEAD as int
+    Head = ffi::HEAD as i32
 }
 
 /// Status code returned by a serveur.
+#[repr(i32)]
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Show, Copy)]
 pub enum Status {
     // 2xx: success
     /// Most common code returned when operation was successful
-    Ok                  = ffi::OK as int,
+    Ok                  = ffi::OK as i32,
     /// The resource has successfully been created
-    Created             = ffi::CREATED as int,
+    Created             = ffi::CREATED as i32,
     /// The request has been accepted, but will be processed later by the server
-    Accepted            = ffi::ACCEPTED as int,
+    Accepted            = ffi::ACCEPTED as i32,
     /// Sent when the server didn't send any data in return
-    NoContent           = ffi::NOCONTENT as int,
+    NoContent           = ffi::NOCONTENT as i32,
     /// The server informs the client that it should clear the view (form) that caused the request to be sent
-    ResetContent        = ffi::RESETCONTENT as int,
+    ResetContent        = ffi::RESETCONTENT as i32,
     /// The server has sent a part of the resource, as a response to a partial GET request
-    PartialContent      = ffi::PARTIALCONTENT as int,
+    PartialContent      = ffi::PARTIALCONTENT as i32,
 
     // 3xx: redirection
     /// The requested page can be accessed from several locations
-    MultipleChoices     = ffi::MULTIPLECHOICES as int,
+    MultipleChoices     = ffi::MULTIPLECHOICES as i32,
     /// The requested page has permanently moved to a new location
-    MovedPermanently    = ffi::MOVEDPERMANENTLY as int,
+    MovedPermanently    = ffi::MOVEDPERMANENTLY as i32,
     /// The requested page has temporarily moved to a new location
-    MovedTemporarily    = ffi::MOVEDTEMPORARILY as int,
+    MovedTemporarily    = ffi::MOVEDTEMPORARILY as i32,
     /// For conditionnal requests, means the requested page hasn't changed and doesn't need to be refreshed
-    NotModified         = ffi::NOTMODIFIED as int,
+    NotModified         = ffi::NOTMODIFIED as i32,
 
     // 4xx: client error
     /// The server couldn't understand the request (syntax error)
-    BadRequest          = ffi::BADREQUEST as int,
+    BadRequest          = ffi::BADREQUEST as i32,
     /// The requested page needs an authentification to be accessed
-    Unauthorized        = ffi::UNAUTHORIZED as int,
+    Unauthorized        = ffi::UNAUTHORIZED as i32,
     /// The requested page cannot be accessed at all, even with authentification
-    Forbidden           = ffi::FORBIDDEN as int,
+    Forbidden           = ffi::FORBIDDEN as i32,
     /// The requested page doesn't exist
-    NotFound            = ffi::NOTFOUND as int,
+    NotFound            = ffi::NOTFOUND as i32,
     /// The server can't satisfy the partial GET request (with a "Range" header field)
-    RangeNotSatisfiable = ffi::RANGENOTSATISFIABLE as int,
+    RangeNotSatisfiable = ffi::RANGENOTSATISFIABLE as i32,
 
     // 5xx: server error
     /// The server encountered an unexpected error
-    InternalServerError = ffi::INTERNALSERVERERROR as int,
+    InternalServerError = ffi::INTERNALSERVERERROR as i32,
     /// The server doesn't implement a requested feature
-    NotImplemented      = ffi::NOTIMPLEMENTED as int,
+    NotImplemented      = ffi::NOTIMPLEMENTED as i32,
     /// The gateway server has received an error from the source server
-    BadGateway          = ffi::BADGATEWAY as int,
+    BadGateway          = ffi::BADGATEWAY as i32,
     /// The server is temporarily unavailable (overloaded, in maintenance, ...)
-    ServiceNotAvailable = ffi::SERVICENOTAVAILABLE as int,
+    ServiceNotAvailable = ffi::SERVICENOTAVAILABLE as i32,
     /// The gateway server couldn't receive a response from the source server
-    GatewayTimeout      = ffi::GATEWAYTIMEOUT as int,
+    GatewayTimeout      = ffi::GATEWAYTIMEOUT as i32,
     /// The server doesn't support the requested HTTP version
-    VersionNotSupported = ffi::VERSIONNOTSUPPORTED as int,
+    VersionNotSupported = ffi::VERSIONNOTSUPPORTED as i32,
 
     // 10xx: SFML custom codes
     /// Response is not a valid HTTP one
-    InvalidResponse     = ffi::INVALIDRESPONSE as int,
+    InvalidResponse     = ffi::INVALIDRESPONSE as i32,
     /// Connection with server failed
-    ConnectionFailed    = ffi::CONNECTIONFAILED as int
+    ConnectionFailed    = ffi::CONNECTIONFAILED as i32
 }
 
 /// Encapsulation of an HTTP request
@@ -257,7 +259,7 @@ impl Response {
     /// Return the status code
     pub fn get_status(&self) -> Status {
         unsafe {
-            mem::transmute(ffi::sfHttpResponse_getStatus(self.response) as i16)
+            mem::transmute(ffi::sfHttpResponse_getStatus(self.response) as i32)
         }
     }
 

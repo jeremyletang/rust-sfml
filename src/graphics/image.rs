@@ -50,7 +50,7 @@ impl Image {
     /// * height - Height of the image
     ///
     /// Return Some(Image) or None
-    pub fn new(width: uint, height: uint) -> Option<Image> {
+    pub fn new(width: u32, height: u32) -> Option<Image> {
         let image = unsafe { ffi::sfImage_create(width as c_uint,
                                                  height as c_uint) };
         if image.is_null() {
@@ -89,8 +89,8 @@ impl Image {
     /// * color - Fill color
     ///
     /// Return Some(Image) or None
-    pub fn new_from_color(width: uint,
-                          height: uint,
+    pub fn new_from_color(width: u32,
+                          height: u32,
                           color: &Color) -> Option<Image> {
         let image =
             unsafe { ffi::sfImage_createFromColor(width as c_uint,
@@ -155,8 +155,8 @@ impl Image {
     /// * pixels - Vector of pixels to copy to the image
     ///
     /// Return Some(Image) or None
-    pub fn create_from_pixels(width: uint,
-                              height: uint,
+    pub fn create_from_pixels(width: u32,
+                              height: u32,
                               pixels: &[u8]) -> Option<Image> {
         let image =
             unsafe { ffi::sfImage_createFromPixels(width as c_uint,
@@ -183,15 +183,11 @@ impl Image {
     ///
     /// Return true if saving was successful
     pub fn save_to_file(&self, filename: &str) -> bool {
-        let mut return_value = false;
         let c_str = CString::from_slice(filename.as_bytes()).as_ptr();
-        unsafe {
-            match ffi::sfImage_saveToFile(self.image, c_str) {
-                SFFALSE => return_value = false,
-                SFTRUE  => return_value = true
-            }
+        match unsafe { ffi::sfImage_saveToFile(self.image, c_str) } {
+            SFFALSE => false,
+            SFTRUE  => true
         }
-        return_value
     }
 
     /// Return the size of an image
@@ -228,7 +224,7 @@ impl Image {
     /// * x - X coordinate of pixel to change
     /// * y - Y coordinate of pixel to change
     /// * color - New color of the pixel
-    pub fn set_pixel(&mut self, x: uint, y: uint, color: &Color) -> () {
+    pub fn set_pixel(&mut self, x: u32, y: u32, color: &Color) -> () {
         unsafe {
             ffi::sfImage_setPixel(self.image, x as c_uint, y as c_uint, *color)
         }
@@ -245,7 +241,7 @@ impl Image {
     /// * y - Y coordinate of pixel to get
     ///
     /// Return the Color of the pixel at coordinates (x, y)
-    pub fn get_pixel(&self, x: uint, y: uint) -> Color {
+    pub fn get_pixel(&self, x: u32, y: u32) -> Color {
         unsafe {
             ffi::sfImage_getPixel(self.image, x as c_uint, y as c_uint)
         }
@@ -285,8 +281,8 @@ impl Image {
     /// * applyAlpha - Should the copy take in account the source transparency?
     pub fn copy_image(&mut self,
                       source: &Image,
-                      dest_x: uint,
-                      dest_y: uint,
+                      dest_x: u32,
+                      dest_y: u32,
                       source_rect: &IntRect,
                       apply_alpha: bool) -> () {
         unsafe {

@@ -138,7 +138,7 @@ impl TcpSocket {
     /// * timeout - Maximum time to wait
     pub fn connect(&self, host: &IpAddress, port: u16, timeout: Time) -> SocketStatus {
         unsafe {
-            mem::transmute(ffi::sfTcpSocket_connect(self.socket, host.unwrap(), port, timeout.unwrap()) as i8)
+            mem::transmute(ffi::sfTcpSocket_connect(self.socket, host.unwrap(), port, timeout.unwrap()) as i32)
         }
     }
 
@@ -160,7 +160,7 @@ impl TcpSocket {
     /// Return the status code
     pub fn send(&self, data: &[i8]) -> SocketStatus {
         unsafe {
-            mem::transmute(ffi::sfTcpSocket_send(self.socket, data.as_ptr(), data.len() as size_t) as i8)
+            mem::transmute(ffi::sfTcpSocket_send(self.socket, data.as_ptr(), data.len() as size_t) as i32)
         }
     }
 
@@ -178,8 +178,8 @@ impl TcpSocket {
         unsafe {
             let mut s: size_t = 0;
             let datas: *mut i8 = ptr::null_mut();
-            let stat: SocketStatus = mem::transmute(ffi::sfTcpSocket_receive(self.socket, datas, max_size, &mut s) as i8);
-            (slice::from_raw_buf(mem::transmute(&datas), s as uint).to_vec(), stat, s)
+            let stat: SocketStatus = mem::transmute(ffi::sfTcpSocket_receive(self.socket, datas, max_size, &mut s) as i32);
+            (slice::from_raw_buf(mem::transmute(&datas), s as usize).to_vec(), stat, s)
         }
     }
 
@@ -191,7 +191,7 @@ impl TcpSocket {
     /// Return the socket status
     pub fn send_packet(&self, packet: &Packet) -> SocketStatus {
         unsafe {
-            mem::transmute(ffi::sfTcpSocket_sendPacket(self.socket, packet.unwrap()) as i8)
+            mem::transmute(ffi::sfTcpSocket_sendPacket(self.socket, packet.unwrap()) as i32)
         }
     }
 
@@ -205,7 +205,7 @@ impl TcpSocket {
     pub fn receive_packet(&self) -> (Packet, SocketStatus) {
         unsafe {
             let pack: *mut ::ffi::network::packet::sfPacket = ptr::null_mut();
-            let stat: SocketStatus = mem::transmute(ffi::sfTcpSocket_receivePacket(self.socket, pack) as i8);
+            let stat: SocketStatus = mem::transmute(ffi::sfTcpSocket_receivePacket(self.socket, pack) as i32);
             (Wrappable::wrap(pack), stat)
         }
     }

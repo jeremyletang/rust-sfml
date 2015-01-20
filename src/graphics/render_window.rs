@@ -38,9 +38,9 @@ use std::ffi::CString;
 use traits::{Drawable, Wrappable};
 use window::{ContextSettings, VideoMode, event, WindowStyle};
 use system::vector2::{Vector2f, Vector2i, Vector2u};
-use graphics::{Text, Color, Sprite, CircleShape, RectangleShape, ConvexShape,
-               RenderStates, View, Image, IntRect, VertexArray, Shape, RenderTarget,
-               rc, Vertex, PrimitiveType};
+use graphics::{Color, CircleShape, RectangleShape, Text, Sprite, VertexArray,
+               RenderStates, View, Image, IntRect, RenderTarget,
+               rc, Vertex, PrimitiveType, ConvexShape};
 
 use ffi::sfml_types::{SfBool, SFTRUE, SFFALSE};
 use ffi::graphics::render_window as ffi;
@@ -52,7 +52,7 @@ use ffi::graphics::render_window as ffi;
 /// of the graphics module.
 pub struct RenderWindow {
     render_window: *mut ffi::sfRenderWindow,
-    title_length: uint,
+    title_length: u32,
 //    current_view: Rc<RefCell<View>>,
 //    default_view: Rc<RefCell<View>>
 }
@@ -87,21 +87,20 @@ impl RenderWindow {
                title: &str,
                style: WindowStyle,
                settings: &ContextSettings) -> Option<RenderWindow> {
-        let mut sf_render_win: *mut ffi::sfRenderWindow = ptr::null_mut();
         let c_str = CString::from_slice(title.as_bytes()).as_ptr();
-        unsafe {
-            sf_render_win = ffi::sfRenderWindow_create(mode.unwrap(),
-                                                       c_str,
-                                                       style as u32,
-                                                       settings);
-        }
+        let sf_render_win: *mut ffi::sfRenderWindow = unsafe {
+            ffi::sfRenderWindow_create(mode.unwrap(),
+                                       c_str,
+                                       style as u32,
+                                       settings)
+        };
         if sf_render_win.is_null() {
             None
         } else {
             Some (RenderWindow {
                       render_window: sf_render_win,
                       // event: sf_ev,
-                      title_length: title.len()
+                      title_length: title.len() as u32
             })
         }
     }
@@ -143,7 +142,7 @@ impl RenderWindow {
             Some (RenderWindow {
                     render_window: sf_render_win,
                     // event: sf_ev,
-                    title_length: title.len()
+                    title_length: title.len() as u32
             })
         }
     }
@@ -154,7 +153,7 @@ impl RenderWindow {
     /// * title - New title
     pub fn set_unicode_title(&mut self, title: Vec<u32>) -> () {
         unsafe {
-            self.title_length = title.len();
+            self.title_length = title.len() as u32;
             ffi::sfRenderWindow_setUnicodeTitle(self.render_window,
                                                 title.as_ptr())
         }
@@ -168,8 +167,8 @@ impl RenderWindow {
     /// * height - Icon's height, in pixels
     /// * pixels - Vector of pixels
     pub fn set_icon(&mut self,
-                    width: uint,
-                    height: uint,
+                    width: u32,
+                    height: u32,
                     pixels: &[u8]) -> () {
         unsafe {
             ffi::sfRenderWindow_setIcon(self.render_window,
@@ -183,7 +182,7 @@ impl RenderWindow {
     pub fn events(&self) -> Events {
         Events {
             render_window: self.render_window.clone(),
-            event: event::raw::sfEvent { data: [032; 6u] }
+            event: event::raw::sfEvent { data: [032; 6] }
         }
     }
 
@@ -197,7 +196,7 @@ impl RenderWindow {
     ///
     /// Return the event if an event was returned, or NoEvent if the event queue was empty
     pub fn poll_event(&mut self) -> event::Event {
-        let mut event = event::raw::sfEvent { data: [032; 6u] };
+        let mut event = event::raw::sfEvent { data: [032; 6] };
         let have_event: bool =  unsafe {
             match ffi::sfRenderWindow_pollEvent(self.render_window, &mut event) {
                 SFFALSE     => false,
@@ -223,7 +222,7 @@ impl RenderWindow {
     ///
     /// Return the event or NoEvent if an error has occured
     pub fn wait_event(&mut self) -> event::Event {
-        let mut event = event::raw::sfEvent { data: [032; 6u] };
+        let mut event = event::raw::sfEvent { data: [032; 6] };
         let have_event: bool =  unsafe {
             match ffi::sfRenderWindow_waitEvent(self.render_window, &mut event) {
                 SFFALSE     => false,
@@ -288,7 +287,7 @@ impl RenderWindow {
     /// # Arguments
     /// * limit - Framerate limit, in frames per seconds (use 0 to disable limit)
     ////
-    pub fn set_framerate_limit(&mut self, limit: uint) -> () {
+    pub fn set_framerate_limit(&mut self, limit: u32) -> () {
         unsafe {
             ffi::sfRenderWindow_setFramerateLimit(self.render_window,
                                                   limit as c_uint)
@@ -320,7 +319,7 @@ impl RenderWindow {
         unsafe {
             ffi::sfRenderWindow_setTitle(self.render_window, c_str);
         }
-        self.title_length = title.len();
+        self.title_length = title.len() as u32;
     }
 
     /// Show or hide a window
@@ -816,23 +815,23 @@ impl RenderTarget for RenderWindow{
         }
     }
 
-    /// Draw a Shape
-    fn draw_shape(&self, shape: &Shape) -> () {
-        unsafe {
-            ffi::sfRenderWindow_drawShape(self.render_window,
-                                          shape.unwrap(),
-                                          ptr::null_mut())
-        }
-    }
+    // /// Draw a Shape
+    // fn draw_shape(&self, shape: &Shape) -> () {
+    //     unsafe {
+    //         ffi::sfRenderWindow_drawShape(self.render_window,
+    //                                       shape.unwrap(),
+    //                                       ptr::null_mut())
+    //     }
+    // }
 
-    /// Draw a Shape
-    fn draw_shape_rc(&self, shape: &rc::Shape) -> () {
-        unsafe {
-            ffi::sfRenderWindow_drawShape(self.render_window,
-                                          shape.unwrap(),
-                                          ptr::null_mut())
-        }
-    }
+    // /// Draw a Shape
+    // fn draw_shape_rc(&self, shape: &rc::Shape) -> () {
+    //     unsafe {
+    //         ffi::sfRenderWindow_drawShape(self.render_window,
+    //                                       shape.unwrap(),
+    //                                       ptr::null_mut())
+    //     }
+    // }
 
     /// Draw a sprite
     fn draw_sprite(&self, sprite: &Sprite) -> () {
@@ -937,27 +936,27 @@ impl RenderTarget for RenderWindow{
         }
     }
 
-    /// Draw a Shape with a RenderStates
-    fn draw_shape_rs(&self,
-                         shape: &Shape,
-                         render_states: &mut RenderStates) -> () {
-        unsafe {
-            ffi::sfRenderWindow_drawShape(self.render_window,
-                                          shape.unwrap(),
-                                          render_states.unwrap())
-        }
-    }
+    // /// Draw a Shape with a RenderStates
+    // fn draw_shape_rs(&self,
+    //                      shape: &Shape,
+    //                      render_states: &mut RenderStates) -> () {
+    //     unsafe {
+    //         ffi::sfRenderWindow_drawShape(self.render_window,
+    //                                       shape.unwrap(),
+    //                                       render_states.unwrap())
+    //     }
+    // }
 
-    /// Draw a Shape with a RenderStates
-    fn draw_shape_rs_rc(&self,
-                            shape: &rc::Shape,
-                            render_states: &mut rc::RenderStates) -> () {
-        unsafe {
-            ffi::sfRenderWindow_drawShape(self.render_window,
-                                          shape.unwrap(),
-                                          render_states.unwrap())
-        }
-    }
+    // /// Draw a Shape with a RenderStates
+    // fn draw_shape_rs_rc(&self,
+    //                         shape: &rc::Shape,
+    //                         render_states: &mut rc::RenderStates) -> () {
+    //     unsafe {
+    //         ffi::sfRenderWindow_drawShape(self.render_window,
+    //                                       shape.unwrap(),
+    //                                       render_states.unwrap())
+    //     }
+    // }
 
     /// Draw a sprite with a RenderStates
     fn draw_sprite_rs(&self,
@@ -1113,7 +1112,7 @@ impl Iterator for Events {
     type Item = event::Event;
 
     fn next(&mut self) -> Option<event::Event> {
-        let mut event = event::raw::sfEvent { data: [032; 6u] };
+        let mut event = event::raw::sfEvent { data: [032; 6] };
         match unsafe { ffi::sfRenderWindow_pollEvent(self.render_window, &mut event) } {
             SFFALSE     => None,
             SFTRUE      => Some(event::raw::get_wrapped_event(&mut event))

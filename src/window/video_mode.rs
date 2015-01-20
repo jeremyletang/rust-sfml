@@ -43,11 +43,11 @@ use ffi::window::video_mode as ffi;
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Show, Copy)]
 pub struct VideoMode {
     /// Video mode width, in pixels.
-    pub width: uint,
+    pub width: u32,
     /// Video mode height, in pixels.
-    pub height: uint,
+    pub height: u32,
     /// Video mode pixel depth, in bits per pixels.
-    pub bits_per_pixel: uint
+    pub bits_per_pixel: u32
 }
 
 impl VideoMode {
@@ -65,9 +65,9 @@ impl VideoMode {
     /// Constructor with parameters for class VideoMode.
     ///
     /// Return a new VideoMode initialized
-    pub fn new_init(width: uint,
-                    height: uint,
-                    bits_per_pixel: uint) -> VideoMode {
+    pub fn new_init(width: u32,
+                    height: u32,
+                    bits_per_pixel: u32) -> VideoMode {
         VideoMode{
             width: width,
             height: height,
@@ -100,9 +100,9 @@ impl VideoMode {
     pub fn get_desktop_mode() -> VideoMode {
         let mode = unsafe { ffi::sfVideoMode_getDesktopMode() };
         VideoMode{
-            width: mode.width as uint,
-            height: mode.height as uint,
-            bits_per_pixel: mode.bits_per_pixel as uint
+            width: mode.width as u32,
+            height: mode.height as u32,
+            bits_per_pixel: mode.bits_per_pixel as u32
         }
     }
 
@@ -126,18 +126,18 @@ impl VideoMode {
             return None;
         }
 
-        let size = size as uint;
+        let size = size as u32;
 
         let tab_slice: &[ffi::sfVideoMode] = unsafe {
             mem::transmute(
                 raw::Slice {
                     data: tab,
-                    len: size,
+                    len: size as usize,
                 }
             )
         };
 
-        let mut ret_tab = Vec::with_capacity(size);
+        let mut ret_tab = Vec::with_capacity(size as usize);
 
         for sf_video_mode in tab_slice.iter() {
             ret_tab.push(Wrappable::wrap(sf_video_mode.clone()));
@@ -151,9 +151,9 @@ impl VideoMode {
 impl Wrappable<ffi::sfVideoMode> for VideoMode {
     fn wrap(mode: ffi::sfVideoMode) -> VideoMode {
         VideoMode{
-            width: mode.width as uint,
-            height: mode.height as uint,
-            bits_per_pixel: mode.bits_per_pixel as uint
+            width: mode.width as u32,
+            height: mode.height as u32,
+            bits_per_pixel: mode.bits_per_pixel as u32
         }
     }
 

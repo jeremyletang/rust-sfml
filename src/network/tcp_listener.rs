@@ -111,7 +111,7 @@ impl TcpListener {
     /// Return status code
     pub fn listen(&self, port: u16) -> SocketStatus {
         unsafe {
-            mem::transmute(ffi::sfTcpListener_listen(self.listener, port) as i8)
+            mem::transmute(ffi::sfTcpListener_listen(self.listener, port) as i32)
         }
     }
 
@@ -126,7 +126,7 @@ impl TcpListener {
     /// Return status code
     pub fn accept(&self, connected: &mut TcpSocket) -> SocketStatus {
         unsafe {
-            mem::transmute(ffi::sfTcpListener_accept(self.listener, &mut connected.unwrap()) as i8)
+            mem::transmute(ffi::sfTcpListener_accept(self.listener, &mut connected.unwrap()) as i32)
         }
     }
 }

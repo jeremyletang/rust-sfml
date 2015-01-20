@@ -42,10 +42,5 @@ path = "src/examples/custom_drawable/main.rs"
 
 [[bin]]
 
-name = "shape"
-path = "src/examples/shape/main.rs"
-
-[[bin]]
-
 name = "vertex_arrays"
 path = "src/examples/vertex_arrays/main.rs"

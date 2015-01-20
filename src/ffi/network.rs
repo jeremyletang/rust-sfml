@@ -318,16 +318,16 @@ pub mod ftp {
 }
 
 pub mod http {
-    use libc::{c_char, c_void, c_int};
+    use libc::{c_char, c_void,};
 
     use ffi::system::time::sfTime;
 
-    pub type Method = c_int;
+    pub type Method = i32;
     pub const GET: Method = 0;
     pub const POST: Method = 1;
     pub const HEAD: Method = 2;
 
-    pub type Status = c_int;
+    pub type Status = i32;
     pub const OK:                  Status = 200;
     pub const CREATED:             Status = 201;
     pub const ACCEPTED:            Status = 202;

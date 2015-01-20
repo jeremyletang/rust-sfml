@@ -93,7 +93,7 @@ impl CircleShape {
     /// Default value on SFML are radius = 0 / pointCount = 30
     ///
     /// Return Some(CircleShape) or None
-    pub fn new_init(radius: f32, point_count: uint) -> Option<CircleShape> {
+    pub fn new_init(radius: f32, point_count: u32) -> Option<CircleShape> {
         let circle = unsafe { ffi::sfCircleShape_create() };
         if circle.is_null() {
             None
@@ -317,9 +317,9 @@ impl CircleShape {
     /// Get the total number of points of a circle shape
     ///
     /// Return the number of points of the shape
-    pub fn get_point_count(&self) -> uint {
+    pub fn get_point_count(&self) -> u32 {
         unsafe {
-            ffi::sfCircleShape_getPointCount(self.circle_shape) as uint
+            ffi::sfCircleShape_getPointCount(self.circle_shape) as u32
         }
     }
 
@@ -331,7 +331,7 @@ impl CircleShape {
     /// * index- Index of the point to get, in range [0 .. getPointCount() - 1]
     ///
     /// Return the index-th point of the shape
-    pub fn get_point(&self, index: uint) -> () {
+    pub fn get_point(&self, index: u32) -> () {
         unsafe {
             ffi::sfCircleShape_getPoint(self.circle_shape, index as c_uint)
         }
@@ -360,7 +360,7 @@ impl CircleShape {
     ///
     /// # Arguments
     /// * count - New number of points of the circle
-    pub fn set_point_count(&mut self, count: uint) -> () {
+    pub fn set_point_count(&mut self, count: u32) -> () {
         unsafe {
             ffi::sfCircleShape_setPointCount(self.circle_shape, count as c_uint)
         }

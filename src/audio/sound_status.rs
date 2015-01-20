@@ -29,13 +29,13 @@ pub use self::Status::{Stopped, Paused, Playing};
 use ffi::audio::sound_status as ffi;
 
 /// Enumeration of statuses for sounds and musics
-#[repr(C)]
+#[repr(i32)]
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Show, Copy)]
 pub enum Status {
     /// Sound is not playing.
-    Stopped = ffi::SFSTOPPED as int,
+    Stopped = ffi::SFSTOPPED as i32,
     /// Sound is paused.
-    Paused = ffi::SFPAUSED as int,
+    Paused = ffi::SFPAUSED as i32,
     /// Sound is playing.
-    Playing = ffi::SFPLAYING as int
+    Playing = ffi::SFPLAYING as i32
 }

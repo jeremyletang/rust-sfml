@@ -50,7 +50,7 @@ pub use graphics::vertex::Vertex;
 pub use graphics::transformable::Transformable;
 pub use graphics::glyph::Glyph;
 pub use graphics::render_texture::RenderTexture;
-pub use graphics::shape::Shape;
+// pub use graphics::shape::Shape;
 pub use graphics::vertex_array::{VertexArray, Vertices};
 pub use graphics::text_style::{TextStyle, Regular, Bold, Italic, Underlined};
 
@@ -59,7 +59,7 @@ pub mod rc {
     pub use graphics::circle_shape::rc::CircleShape;
     pub use graphics::rectangle_shape::rc::RectangleShape;
     pub use graphics::convex_shape::rc::{ConvexShape, ConvexShapePoints};
-    pub use graphics::shape::rc::Shape;
+    // pub use graphics::shape::rc::Shape;
     pub use graphics::shader::rc::Shader;
     pub use graphics::text::rc::Text;
     pub use graphics::sprite::rc::Sprite;
@@ -97,4 +97,4 @@ mod vertex_array;
 mod transformable;
 mod glyph;
 mod render_texture;
-mod shape;
+// mod shape;

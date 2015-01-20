@@ -30,14 +30,15 @@ pub use self::SocketStatus::{SocketNone, SocketNotReady, SocketDisconnected,
 use ffi::network::socket_status as ffi;
 
 /// Status codes that may be returned by socket functions.
+#[repr(i32)]
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Show, Copy)]
 pub enum SocketStatus {
     /// The socket has sent / received the data.
-    SocketNone =            ffi::SOCKETNONE as int,
+    SocketNone =            ffi::SOCKETNONE as i32,
     /// The socket is not ready to send / receive data yet.
-    SocketNotReady =        ffi::SOCKETNOTREADY as int,
+    SocketNotReady =        ffi::SOCKETNOTREADY as i32,
     /// The TCP socket has been disconnected.
-    SocketDisconnected =    ffi::SOCKETDISCONNECTED as int,
+    SocketDisconnected =    ffi::SOCKETDISCONNECTED as i32,
     /// An unexpected error happened.
-    SocketError =           ffi::SOCKETERROR as int
+    SocketError =           ffi::SOCKETERROR as i32
 }

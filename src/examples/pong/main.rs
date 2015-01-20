@@ -19,8 +19,8 @@ use rsfml::audio::{SoundBuffer, Sound};
 fn main () -> () {
     // Define some constants
     let pi: f32 = 3.14159;
-    let gameWidth: uint = 800;
-    let gameHeight: uint = 600;
+    let gameWidth: u32 = 800;
+    let gameHeight: u32 = 600;
     let paddleSize: Vector2f =  Vector2f::new(25., 100.);
     let ballRadius: f32 = 10.;
 
@@ -202,10 +202,10 @@ fn main () -> () {
                 ball.get_position().y + ballRadius >= leftPaddle.get_position().y - paddleSize.y / 2. &&
                 ball.get_position().y - ballRadius <= leftPaddle.get_position().y + paddleSize.y / 2. {
                 if ball.get_position().y > leftPaddle.get_position().y {
-                    ballAngle = pi - ballAngle + (rand::random::<int>() % 20) as f32 * pi / 180.;
+                    ballAngle = pi - ballAngle + (rand::random::<i32>() % 20) as f32 * pi / 180.;
                 }
                 else {
-                    ballAngle = pi - ballAngle - (rand::random::<int>() % 20) as f32 * pi / 180.;
+                    ballAngle = pi - ballAngle - (rand::random::<i32>() % 20) as f32 * pi / 180.;
                 }
 
                 ballSound.play();
@@ -219,10 +219,10 @@ fn main () -> () {
                 ball.get_position().y + ballRadius >= rightPaddle.get_position().y - paddleSize.y / 2. &&
                 ball.get_position().y - ballRadius <= rightPaddle.get_position().y + paddleSize.y / 2. {
                 if ball.get_position().y > rightPaddle.get_position().y {
-                    ballAngle = pi - ballAngle + (rand::random::<int>() % 20) as f32* pi / 180.;
+                    ballAngle = pi - ballAngle + (rand::random::<i32>() % 20) as f32* pi / 180.;
                 }
                 else {
-                    ballAngle = pi - ballAngle - (rand::random::<int>() % 20) as f32* pi / 180.;
+                    ballAngle = pi - ballAngle - (rand::random::<i32>() % 20) as f32* pi / 180.;
                 }
 
                 ballSound.play();

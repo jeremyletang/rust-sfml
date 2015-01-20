@@ -31,7 +31,7 @@ use libc::c_int;
 use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi::graphics::rect as ffi;
 
-/// Utility classes for manipulating rectangles of int.
+/// Utility classes for manipulating rectangles of i32.
 #[repr(C)]
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Show, Copy)]
 pub struct IntRect {
@@ -80,7 +80,7 @@ impl IntRect {
     /// * y - Y coordinate of the point to test
     ///
     /// Return true if the point is inside
-    pub fn contains(self, x: int, y: int) -> bool {
+    pub fn contains(self, x: i32, y: i32) -> bool {
         match unsafe { ffi::sfIntRect_contains(&self, x as c_int, y as c_int) } {
             SFFALSE => false,
             SFTRUE  => true

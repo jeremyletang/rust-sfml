@@ -26,7 +26,6 @@
 //!
 //! A sound buffer holds the data of a sound, which is an array of audio samples.
 
-use std::ptr;
 use std::ffi::CString;
 
 use traits::Wrappable;
@@ -57,11 +56,10 @@ impl SoundBuffer {
     ///
     /// Return an option to a SoundBuffer object or None.
     pub fn new(filename: &str) -> Option<SoundBuffer> {
-        let mut sound_buffer: *mut ffi::sfSoundBuffer = ptr::null_mut();
         let c_str = CString::from_slice(filename.as_bytes()).as_ptr();
-        unsafe {
-            sound_buffer = ffi::sfSoundBuffer_createFromFile(c_str)
-        }
+        let sound_buffer: *mut ffi::sfSoundBuffer = unsafe {
+            ffi::sfSoundBuffer_createFromFile(c_str)
+        };
         if sound_buffer.is_null() {
             None
         } else {
@@ -98,15 +96,11 @@ impl SoundBuffer {
     ///
     /// Return true if saving succeeded, false if it faileds
     pub fn save_to_file(&self, filename: &str) -> bool {
-        let mut return_value: bool = false;
         let c_str = CString::from_slice(filename.as_bytes()).as_ptr();
-        unsafe {
-            match ffi::sfSoundBuffer_saveToFile(self.sound_buffer, c_str) {
-                SFFALSE => return_value = false,
-                SFTRUE  => return_value = true
-            }
+        match unsafe { ffi::sfSoundBuffer_saveToFile(self.sound_buffer, c_str) } {
+            SFFALSE => false,
+            SFTRUE  => true
         }
-        return_value
     }
 
     /// Get the number of samples stored in a sound buffer
@@ -127,9 +121,9 @@ impl SoundBuffer {
     /// be 1, 2 for stereo, etc.
     ///
     /// Return the number of channels
-    pub fn get_channel_count(&self) -> uint {
+    pub fn get_channel_count(&self) -> u32 {
         unsafe {
-            ffi::sfSoundBuffer_getChannelCount(self.sound_buffer) as uint
+            ffi::sfSoundBuffer_getChannelCount(self.sound_buffer) as u32
         }
     }
 
@@ -147,9 +141,9 @@ impl SoundBuffer {
     /// samples/s is CD quality).
     ///
     /// Return the sample rate (number of samples per second)
-    pub fn get_sample_rate(&self) -> uint {
+    pub fn get_sample_rate(&self) -> u32 {
         unsafe {
-            ffi::sfSoundBuffer_getSampleRate(self.sound_buffer) as uint
+            ffi::sfSoundBuffer_getSampleRate(self.sound_buffer) as u32
         }
     }
 }
