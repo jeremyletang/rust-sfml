@@ -26,9 +26,6 @@
 
 #![allow(non_snake_case)]
 
-
-// use graphics::{Color, Text, Shape, Sprite, VertexArray, View, RenderStates,
-//                ConvexShape, RectangleShape, CircleShape, IntRect, rc, Vertex, PrimitiveType};
 use graphics::{Color, View, RenderStates, CircleShape, RectangleShape, Text, Sprite, VertexArray,
                IntRect, rc, Vertex, PrimitiveType, ConvexShape};
 use traits::Drawable;

@@ -31,9 +31,6 @@ use std::ptr;
 
 use traits::{Drawable, Wrappable};
 use system::vector2::{Vector2f, Vector2i, Vector2u};
-// use graphics::{View, Sprite, Color, IntRect, Texture, CircleShape,
-//                RectangleShape, VertexArray, ConvexShape, RenderStates,
-//                Shape, Text, RenderTarget, rc, Vertex, PrimitiveType};
 use graphics::{View, Color, IntRect, Texture, CircleShape, RectangleShape, Text,
                RenderStates, Sprite, ConvexShape, VertexArray,
                RenderTarget, rc, Vertex, PrimitiveType};

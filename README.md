@@ -54,7 +54,6 @@ Alternatively you can use Cargo:
 This will build rust-sfml and all the examples.
 
 
-
 Rust-sfml works on Linux, Windows and OSX.
 
 
@@ -62,19 +61,6 @@ Rust-sfml works on Linux, Windows and OSX.
 
 According to the issue #10, there is problem to use rsfml on Windows.
 It seems to be a bug in the version of llvm used by Rust. Krzat made a patch to solve this problem, you can find it here: mozilla/rust#11198
-
-OSX Specific
-============
-
-On OSX window must be launched in the main thread. You should override the Rust runtime start function.
-
-```Rust
-#[cfg(target_os="macos")]
-#[start]
-fn start(argc: i32, argv: **u8) -> i32 {
-    native::start(argc, argv, main)
-}
-```
 
 Short example
 =============

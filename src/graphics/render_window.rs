@@ -38,9 +38,6 @@ use std::ffi::CString;
 use traits::{Drawable, Wrappable};
 use window::{ContextSettings, VideoMode, event, WindowStyle};
 use system::vector2::{Vector2f, Vector2i, Vector2u};
-// use graphics::{Text, Color, Sprite, CircleShape, RectangleShape, ConvexShape,
-//                RenderStates, View, Image, IntRect, VertexArray, Shape, RenderTarget,
-//                rc, Vertex, PrimitiveType};
 use graphics::{Color, CircleShape, RectangleShape, Text, Sprite, VertexArray,
                RenderStates, View, Image, IntRect, RenderTarget,
                rc, Vertex, PrimitiveType, ConvexShape};
