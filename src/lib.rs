@@ -120,7 +120,6 @@
 //! Here is a list of all modules :
 
 #![crate_name = "rsfml"]
-#![license = "Zlib/png"]
 #![doc(html_logo_url = "http://rust-sfml.org/logo_rsfml.png")]
 #![crate_type = "rlib"]
 #![crate_type = "dylib"]

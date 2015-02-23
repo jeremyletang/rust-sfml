@@ -40,7 +40,7 @@ pub struct VertexArray {
 }
 
 /// An iterator over the vertice of a VertexArray
-pub struct Vertices<'s> {
+pub struct Vertices {
     #[doc(hidden)]
     vertex_array: *mut ffi::sfVertexArray,
     #[doc(hidden)]
@@ -256,7 +256,7 @@ impl Clone for VertexArray {
     }
 }
 
-impl<'s> Iterator for Vertices<'s> {
+impl<'s> Iterator for Vertices {
     type Item = &'s Vertex;
 
     fn next(&mut self) -> Option<&'s Vertex> {
