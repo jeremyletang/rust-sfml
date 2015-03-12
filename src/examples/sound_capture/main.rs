@@ -67,14 +67,14 @@ fn main() -> () {
     let mut resp = String::new();
     reader.read_line(&mut resp).unwrap();
 
-    if unsafe { resp.as_mut_vec().pop().unwrap() } == 's' as u8 {
+    if resp.trim().chars().last().unwrap() == 's' {
         // Choose a filename
         println!("Choose the file to create: ");
         let mut filename = String::new();
         reader.read_line(&mut filename).unwrap();
 
         // Save the buffer
-        (*buffer).borrow().save_to_file(filename.as_slice());
+        (*buffer).borrow().save_to_file(filename.trim());
     }
     else {
         let mut sound: rc::Sound = match rc::Sound::new_with_buffer(buffer.clone()) {
