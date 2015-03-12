@@ -5,8 +5,8 @@
 #![allow(non_snake_case)]
 
 extern crate rsfml;
+extern crate rand;
 
-use std::rand;
 use std::num::Float;
 
 use rsfml::graphics::{RenderWindow, Color, Font, Text, RectangleShape, CircleShape,
