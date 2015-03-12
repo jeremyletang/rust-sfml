@@ -90,7 +90,7 @@ impl Text {
         if text.is_null() {
             None
         } else {
-            let c_str = CString::from_slice(string.as_bytes()).as_ptr();
+            let c_str = CString::new(string.as_bytes()).unwrap().as_ptr();
             unsafe {
                 ffi::sfText_setString(text, c_str);
                 ffi::sfText_setFont(text, (*font).borrow().unwrap());
@@ -127,7 +127,7 @@ impl Text {
     /// # Arguments
     /// * string - New string
     pub fn set_string(&mut self, string: &str) -> () {
-        let c_str = CString::from_slice(string.as_bytes()).as_ptr();
+        let c_str = CString::new(string.as_bytes()).unwrap().as_ptr();
         unsafe {
             ffi::sfText_setString(self.text, c_str)
         }

@@ -116,7 +116,7 @@ impl Image {
     ///
     /// Return Some(Image) or None
     pub fn new_from_file(filename: &str) -> Option<Image> {
-        let c_filename = CString::from_slice(filename.as_bytes()).as_ptr();
+        let c_filename = CString::new(filename.as_bytes()).unwrap().as_ptr();
         let image = unsafe {
             ffi::sfImage_createFromFile(c_filename)
         };
@@ -183,7 +183,7 @@ impl Image {
     ///
     /// Return true if saving was successful
     pub fn save_to_file(&self, filename: &str) -> bool {
-        let c_str = CString::from_slice(filename.as_bytes()).as_ptr();
+        let c_str = CString::new(filename.as_bytes()).unwrap().as_ptr();
         match unsafe { ffi::sfImage_saveToFile(self.image, c_str) } {
             SFFALSE => false,
             SFTRUE  => true

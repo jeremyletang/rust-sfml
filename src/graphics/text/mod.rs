@@ -90,7 +90,7 @@ impl<'s> Text<'s> {
         if text.is_null() {
             None
         } else {
-            let c_str = CString::from_slice(string.as_bytes()).as_ptr();
+            let c_str = CString::new(string.as_bytes()).unwrap().as_ptr();
             unsafe {
                 ffi::sfText_setString(text, c_str);
                 ffi::sfText_setFont(text, font.unwrap());
@@ -128,7 +128,7 @@ impl<'s> Text<'s> {
     /// * string - New string
     pub fn set_string(&mut self, string: &str) -> () {
         unsafe {
-            let c_str = CString::from_slice(string.as_bytes()).as_ptr();
+            let c_str = CString::new(string.as_bytes()).unwrap().as_ptr();
             ffi::sfText_setString(self.text, c_str);
         }
         self.string_length = string.len() as u32

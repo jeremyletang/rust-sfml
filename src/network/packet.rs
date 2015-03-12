@@ -263,7 +263,7 @@ impl Packet {
 
     /// Function to insert data into a packet
     pub fn write_string(&self, string: &str) -> () {
-        let c_string = CString::from_slice(string.as_bytes()).as_ptr();
+        let c_string = CString::new(string.as_bytes()).unwrap().as_ptr();
         unsafe {
             ffi::sfPacket_writeString(self.packet, c_string)
         }

@@ -87,7 +87,7 @@ impl RenderWindow {
                title: &str,
                style: WindowStyle,
                settings: &ContextSettings) -> Option<RenderWindow> {
-        let c_str = CString::from_slice(title.as_bytes()).as_ptr();
+        let c_str = CString::new(title.as_bytes()).unwrap().as_ptr();
         let sf_render_win: *mut ffi::sfRenderWindow = unsafe {
             ffi::sfRenderWindow_create(mode.unwrap(),
                                        c_str,
@@ -315,7 +315,7 @@ impl RenderWindow {
     /// * title - New title
     ////
     pub fn set_title(&mut self, title: &str) -> () {
-        let c_str = CString::from_slice(title.as_bytes()).as_ptr();
+        let c_str = CString::new(title.as_bytes()).unwrap().as_ptr();
         unsafe {
             ffi::sfRenderWindow_setTitle(self.render_window, c_str);
         }

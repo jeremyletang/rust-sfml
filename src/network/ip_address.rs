@@ -51,7 +51,7 @@ impl IpAddress {
     ///
     /// Return Resulting address
     pub fn new_from_string(address: &str) -> IpAddress {
-        let c_address = CString::from_slice(address.as_bytes()).as_ptr();
+        let c_address = CString::new(address.as_bytes()).unwrap().as_ptr();
         IpAddress {
             ip: unsafe { ffi::sfIpAddress_fromString(c_address) }
         }
