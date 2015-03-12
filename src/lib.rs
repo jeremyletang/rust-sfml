@@ -123,9 +123,9 @@
 #![doc(html_logo_url = "http://rust-sfml.org/logo_rsfml.png")]
 #![crate_type = "rlib"]
 #![crate_type = "dylib"]
-#![allow(dead_code, non_camel_case_types, unused_attributes, unstable)]
+#![allow(dead_code, non_camel_case_types, unused_attributes)]
 #![warn(missing_docs)]
-#![feature(unsafe_destructor)]
+#![feature(unsafe_destructor, libc, core, std_misc)]
 
 extern crate libc;
 extern crate core;
