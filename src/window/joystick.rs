@@ -41,7 +41,7 @@ pub const BUTTON_COUNT: u32 = 32;
 pub const AXIS_COUNT: u32 = 8;
 
 /// Axes supported by SFML joysticks
-#[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Show, Copy)]
+#[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
 pub enum Axis {
     /// The X axis.
     X,

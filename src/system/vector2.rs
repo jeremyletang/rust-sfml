@@ -28,7 +28,7 @@ use std::ops::{Add, Sub, Mul, Div};
 
 /// Implementation of Vector2i
 #[repr(C)]
-#[derive(Clone, PartialOrd, Ord, PartialEq, Eq, Show, Copy)]
+#[derive(Clone, PartialOrd, Ord, PartialEq, Eq, Debug, Copy)]
 pub struct Vector2i {
     /// X coordinate of the vector.
     pub x: i32,
@@ -38,7 +38,7 @@ pub struct Vector2i {
 
 /// Implementation of Vector2u
 #[repr(C)]
-#[derive(Clone, PartialOrd, Ord, PartialEq, Eq, Show, Copy)]
+#[derive(Clone, PartialOrd, Ord, PartialEq, Eq, Debug, Copy)]
 pub struct Vector2u {
     /// X coordinate of the vector.
     pub x: u32,
@@ -48,7 +48,7 @@ pub struct Vector2u {
 
 /// Implementation of Vector2f
 #[repr(C)]
-#[derive(Clone, PartialOrd, PartialEq, Show, Copy)]
+#[derive(Clone, PartialOrd, PartialEq, Debug, Copy)]
 pub struct Vector2f {
     /// X coordinate of the vector.
     pub x: f32,

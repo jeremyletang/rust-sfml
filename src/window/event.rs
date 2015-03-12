@@ -38,7 +38,7 @@ use window::mouse::MouseButton;
 use window::joystick::Axis;
 
 /// Definition of all the event types
-#[derive(Clone, PartialEq, PartialOrd, Show, Copy)]
+#[derive(Clone, PartialEq, PartialOrd, Debug, Copy)]
 pub enum Event {
     /// The window requested to be closed
     Closed,

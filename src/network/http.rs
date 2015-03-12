@@ -35,7 +35,7 @@ use ffi::network::http as ffi;
 
 /// Method type to send the request
 #[repr(i32)]
-#[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Show, Copy)]
+#[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
 pub enum Method {
     /// Request in get mode, standard method to retrieve a page
     Get = ffi::GET as i32,
@@ -47,7 +47,7 @@ pub enum Method {
 
 /// Status code returned by a serveur.
 #[repr(i32)]
-#[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Show, Copy)]
+#[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
 pub enum Status {
     // 2xx: success
     /// Most common code returned when operation was successful

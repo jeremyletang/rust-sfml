@@ -28,7 +28,7 @@ use std::ops::{Add, Sub, Mul, Div};
 
 /// Vector3f definition
 #[repr(C)]
-#[derive(Clone, PartialOrd, PartialEq, Show, Copy)]
+#[derive(Clone, PartialOrd, PartialEq, Debug, Copy)]
 pub struct Vector3f {
     /// X coordinate of the vector.
     pub x: f32,
