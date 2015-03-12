@@ -31,7 +31,7 @@ use std::rc::Rc;
 use std::cell::RefCell;
 use std::mem;
 use std::vec::Vec;
-use std::ffi::{CString, c_str_to_bytes_with_nul};
+use std::ffi::{CString, CStr};
 use libc::{c_float, c_uint, size_t};
 use std::str;
 use core::raw;
@@ -140,7 +140,7 @@ impl Text {
     pub fn get_string(&self) -> String {
         unsafe {
             let string = ffi::sfText_getString(self.text);
-            str::from_utf8(c_str_to_bytes_with_nul(&string)).unwrap().to_string()
+            str::from_utf8(CStr::from_ptr(string).to_bytes_with_nul()).unwrap().to_string()
         }
     }
 

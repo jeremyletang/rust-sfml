@@ -25,7 +25,7 @@
 //! A HTTP client
 
 use std::mem;
-use std::ffi::{CString, c_str_to_bytes_with_nul};
+use std::ffi::{CString, CStr};
 use std::str;
 
 use traits::Wrappable;
@@ -245,7 +245,7 @@ impl Response {
         let c_field = CString::new(field.as_bytes()).unwrap().as_ptr();
         unsafe {
             let string = ffi::sfHttpResponse_getField(self.response, c_field);
-            str::from_utf8(c_str_to_bytes_with_nul(&string)).unwrap().to_string()
+            str::from_utf8(CStr::from_ptr(string).to_bytes_with_nul()).unwrap().to_string()
         }
     }
 
@@ -293,7 +293,7 @@ impl Response {
     pub fn get_body(&self) -> String {
         unsafe {
             let string = ffi::sfHttpResponse_getBody(self.response);
-            str::from_utf8(c_str_to_bytes_with_nul(&string)).unwrap().to_string()
+            str::from_utf8(CStr::from_ptr(string).to_bytes_with_nul()).unwrap().to_string()
         }
     }
 }
