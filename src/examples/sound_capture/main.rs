@@ -4,12 +4,13 @@
 #![crate_name = "sound_capture"]
 #![crate_type = "bin"]
 #![allow(unused_must_use)]
+#![feature(core, io)]
 
 extern crate rsfml;
 
 use std::rc::Rc;
 use std::cell::RefCell;
-use std::io::{BufferedReader, stdin};
+use std::io::BufRead;
 
 use rsfml::audio::{rc, SoundBufferRecorder, Playing};
 use rsfml::system::{sleep, Time};
@@ -22,17 +23,19 @@ fn main() -> () {
 
     // Choose the sample rate
     println!("Please choose the sample rate for sound capture (44100 is CD quality): ");
-    let mut stdin = BufferedReader::new(stdin());
-    let mut line = stdin.read_line().unwrap();
+    let stdin = std::io::stdin();
+    let mut reader = stdin.lock();
+    let mut line = String::new();
+    reader.read_line(&mut line).unwrap();
     unsafe { line.as_mut_vec().pop(); }
     let sample_rate: u32 = match line.as_slice().parse() {
-        Some(value)     => value,
-        None            => panic!("Error, input is not valid")
+        Ok(value)     => value,
+        Err(e)        => panic!("Error, input is not valid: {}", e)
     };
 
     // Wait for user input...
     println!("Press enter to start recording audio");
-    stdin.read_line().unwrap();
+    reader.read_line(&mut String::new()).unwrap();
 
     // Here we'll use an integrated custom recorder, which saves the captured data into a SoundBuffer
     let mut recorder: SoundBufferRecorder = match SoundBufferRecorder::new() {
@@ -43,7 +46,7 @@ fn main() -> () {
     // Audio capture is done in a separate thread, so we can block the main thread while it is capturing
     recorder.start(sample_rate);
     println!("Recording... press enter to stop");
-    stdin.read_line().unwrap();
+    reader.read_line(&mut String::new()).unwrap();
     recorder.stop();
 
     // Get the buffer containing the captured data
@@ -61,12 +64,14 @@ fn main() -> () {
 
     // Choose what to do with the recorded sound data
     println!("What do you want to do with captured sound (p = play, s = save) ? ");
-    let mut resp = stdin.read_line().unwrap();
+    let mut resp = String::new();
+    reader.read_line(&mut resp).unwrap();
 
     if unsafe { resp.as_mut_vec().pop().unwrap() } == 's' as u8 {
         // Choose a filename
         println!("Choose the file to create: ");
-        let filename = stdin.read_line().unwrap();
+        let mut filename = String::new();
+        reader.read_line(&mut filename).unwrap();
 
         // Save the buffer
         (*buffer).borrow().save_to_file(filename.as_slice());
@@ -98,5 +103,5 @@ fn main() -> () {
 
     // Wait until the user presses 'enter' key
     println!("Press enter to exit...");
-    stdin.read_line();
+    reader.read_line(&mut String::new());
 }
