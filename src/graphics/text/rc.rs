@@ -31,7 +31,7 @@ use std::rc::Rc;
 use std::cell::RefCell;
 use std::mem;
 use std::vec::Vec;
-use std::ffi::{CString, c_str_to_bytes_with_nul};
+use std::ffi::{CString, CStr};
 use libc::{c_float, c_uint, size_t};
 use std::str;
 use core::raw;
@@ -90,7 +90,7 @@ impl Text {
         if text.is_null() {
             None
         } else {
-            let c_str = CString::from_slice(string.as_bytes()).as_ptr();
+            let c_str = CString::new(string.as_bytes()).unwrap().as_ptr();
             unsafe {
                 ffi::sfText_setString(text, c_str);
                 ffi::sfText_setFont(text, (*font).borrow().unwrap());
@@ -127,7 +127,7 @@ impl Text {
     /// # Arguments
     /// * string - New string
     pub fn set_string(&mut self, string: &str) -> () {
-        let c_str = CString::from_slice(string.as_bytes()).as_ptr();
+        let c_str = CString::new(string.as_bytes()).unwrap().as_ptr();
         unsafe {
             ffi::sfText_setString(self.text, c_str)
         }
@@ -140,7 +140,7 @@ impl Text {
     pub fn get_string(&self) -> String {
         unsafe {
             let string = ffi::sfText_getString(self.text);
-            str::from_utf8(c_str_to_bytes_with_nul(&string)).unwrap().to_string()
+            str::from_utf8(CStr::from_ptr(string).to_bytes_with_nul()).unwrap().to_string()
         }
     }
 

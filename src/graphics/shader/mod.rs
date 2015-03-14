@@ -77,12 +77,12 @@ impl<'s> Shader<'s> {
             let c_vertex_shader_filename = if vertex_shader_filename.is_none() {
                 ptr::null()
             } else {
-                CString::from_slice(vertex_shader_filename.unwrap().as_bytes()).as_ptr()
+                CString::new(vertex_shader_filename.unwrap().as_bytes()).unwrap().as_ptr()
             };
             let c_fragment_shader_filename = if fragment_shader_filename.is_none() {
                 ptr::null()
             } else {
-                CString::from_slice(fragment_shader_filename.unwrap().as_bytes()).as_ptr()
+                CString::new(fragment_shader_filename.unwrap().as_bytes()).unwrap().as_ptr()
             };
             ffi::sfShader_createFromFile(c_vertex_shader_filename,
                                          c_fragment_shader_filename)
@@ -119,12 +119,12 @@ impl<'s> Shader<'s> {
             let c_vertex_shader = if vertex_shader.is_none() {
                 ptr::null()
             } else {
-                CString::from_slice(vertex_shader.unwrap().as_bytes()).as_ptr()
+                CString::new(vertex_shader.unwrap().as_bytes()).unwrap().as_ptr()
             };
             let c_fragment_shader = if fragment_shader.is_none() {
                 ptr::null()
             } else {
-                CString::from_slice(fragment_shader.unwrap().as_bytes()).as_ptr()
+                CString::new(fragment_shader.unwrap().as_bytes()).unwrap().as_ptr()
             };
             ffi::sfShader_createFromFile(c_vertex_shader, c_fragment_shader)
         };
@@ -144,7 +144,7 @@ impl<'s> Shader<'s> {
     /// * name - Name of the parameter in the shader
     /// * x - Value to assign
     pub fn set_float_parameter(&mut self, name: &str, x: f32) -> () {
-        let c_str = CString::from_slice(name.as_bytes()).as_ptr();
+        let c_str = CString::new(name.as_bytes()).unwrap().as_ptr();
         unsafe {
             ffi::sfShader_setFloatParameter(self.shader, c_str, x)
         }
@@ -161,7 +161,7 @@ impl<'s> Shader<'s> {
     /// * x - First component of the value to assign
     /// * y - Second component of the value to assign
     pub fn set_float_2_parameter(&mut self, name: &str, x: f32, y: f32) -> () {
-        let c_str = CString::from_slice(name.as_bytes()).as_ptr();
+        let c_str = CString::new(name.as_bytes()).unwrap().as_ptr();
         unsafe {
                     ffi::sfShader_setFloat2Parameter(self.shader, c_str, x, y)
         }
@@ -183,7 +183,7 @@ impl<'s> Shader<'s> {
                                  x: f32,
                                  y: f32,
                                  z: f32) -> () {
-        let c_str = CString::from_slice(name.as_bytes()).as_ptr();
+        let c_str = CString::new(name.as_bytes()).unwrap().as_ptr();
         unsafe {
             ffi::sfShader_setFloat3Parameter(self.shader,
                                              c_str,
@@ -211,7 +211,7 @@ impl<'s> Shader<'s> {
                                  y: f32,
                                  z: f32,
                                  w: f32) -> () {
-        let c_str = CString::from_slice(name.as_bytes()).as_ptr();
+        let c_str = CString::new(name.as_bytes()).unwrap().as_ptr();
         unsafe {
             ffi::sfShader_setFloat4Parameter(self.shader,
                                              c_str,
@@ -235,7 +235,7 @@ impl<'s> Shader<'s> {
                                  name: &str,
                                  texture: &'s Texture) -> () {
         self.texture = Some(texture);
-        let c_str = CString::from_slice(name.as_bytes()).as_ptr();
+        let c_str = CString::new(name.as_bytes()).unwrap().as_ptr();
         unsafe {
             ffi::sfShader_setTextureParameter(self.shader,
                                               c_str,
@@ -254,7 +254,7 @@ impl<'s> Shader<'s> {
     /// # Arguments
     /// * name - Name of the texture in the shader
     pub fn set_current_texture_parameter(&self, name: &str) -> () {
-        let c_str = CString::from_slice(name.as_bytes()).as_ptr();
+        let c_str = CString::new(name.as_bytes()).unwrap().as_ptr();
         unsafe {
             ffi::sfShader_setCurrentTextureParameter(self.shader, c_str)
         }
@@ -297,7 +297,7 @@ impl<'s> Shader<'s> {
     pub fn set_vector2_parameter(&mut self,
                                  name: &str,
                                  vector: &Vector2f) -> () {
-        let c_str = CString::from_slice(name.as_bytes()).as_ptr();
+        let c_str = CString::new(name.as_bytes()).unwrap().as_ptr();
         unsafe {
             ffi::sfShader_setVector2Parameter(self.shader,
                                               c_str,
@@ -317,7 +317,7 @@ impl<'s> Shader<'s> {
     pub fn set_vector3_parameter(&mut self,
                                  name: &str,
                                  vector: &Vector3f) -> () {
-        let c_str = CString::from_slice(name.as_bytes()).as_ptr();
+        let c_str = CString::new(name.as_bytes()).unwrap().as_ptr();
         unsafe {
             ffi::sfShader_setVector3Parameter(self.shader,
                                               c_str,
@@ -343,7 +343,7 @@ impl<'s> Shader<'s> {
     pub fn set_color_parameter(&mut self,
                                name: &str,
                                color: &Color) -> () {
-        let c_str = CString::from_slice(name.as_bytes()).as_ptr();
+        let c_str = CString::new(name.as_bytes()).unwrap().as_ptr();
         unsafe {
             ffi::sfShader_setColorParameter(self.shader, c_str, *color)
         }

@@ -25,7 +25,7 @@
 pub use self::TextStyle::{Regular, Bold, Italic, Underlined};
 
 /// Availables texts styles
-#[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Show, Copy)]
+#[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
 #[repr(C)]
 pub enum TextStyle {
     /// Regular characters, no style.

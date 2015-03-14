@@ -163,7 +163,7 @@ impl UdpSocket {
             let addr: *mut ::ffi::network::ip_address::sfIpAddress = ptr::null_mut();
             let mut port: u16 = 0;
             let stat: SocketStatus = mem::transmute(ffi::sfUdpSocket_receive(self.socket, datas, max_size, &mut s, addr, &mut port) as i32);
-            (slice::from_raw_buf(mem::transmute(&datas), s as usize).to_vec(), stat, s, Wrappable::wrap(*addr), port)
+            (slice::from_raw_parts(datas, s as usize).to_vec(), stat, s, Wrappable::wrap(*addr), port)
         }
     }
 

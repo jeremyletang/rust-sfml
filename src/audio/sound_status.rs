@@ -30,7 +30,7 @@ use ffi::audio::sound_status as ffi;
 
 /// Enumeration of statuses for sounds and musics
 #[repr(i32)]
-#[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Show, Copy)]
+#[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
 pub enum Status {
     /// Sound is not playing.
     Stopped = ffi::SFSTOPPED as i32,

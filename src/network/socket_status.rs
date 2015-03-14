@@ -31,7 +31,7 @@ use ffi::network::socket_status as ffi;
 
 /// Status codes that may be returned by socket functions.
 #[repr(i32)]
-#[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Show, Copy)]
+#[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
 pub enum SocketStatus {
     /// The socket has sent / received the data.
     SocketNone =            ffi::SOCKETNONE as i32,

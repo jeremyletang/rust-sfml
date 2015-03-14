@@ -25,7 +25,7 @@ e* Permission is granted to anyone to use this software for any purpose,
 //! A FTP client.
 
 use std::mem;
-use std::ffi::{CString, c_str_to_bytes_with_nul};
+use std::ffi::{CString, CStr};
 use std::str;
 use libc::size_t;
 
@@ -37,7 +37,7 @@ use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi::network::ftp as ffi;
 
 /// The differents FTP modes availables.
-#[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Show, Copy)]
+#[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
 #[repr(i32)]
 pub enum TransferMode {
     /// Ftp Binary Mod
@@ -49,7 +49,7 @@ pub enum TransferMode {
 }
 
 /// The status and commands id's for FTP.
-#[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Show, Copy)]
+#[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
 #[repr(i32)]
 pub enum Status {
     // 1xx: the requested action is being initiated,
@@ -211,7 +211,7 @@ impl ListingResponse {
     pub fn get_message(&self) -> String {
         unsafe {
             let string = ffi::sfFtpListingResponse_getMessage(self.listing_response);
-            str::from_utf8(c_str_to_bytes_with_nul(&string)).unwrap().to_string()
+            str::from_utf8(CStr::from_ptr(string).to_bytes_with_nul()).unwrap().to_string()
         }
     }
 
@@ -233,7 +233,7 @@ impl ListingResponse {
     pub fn get_name(&self, index: u64) -> String {
         unsafe {
             let string = ffi::sfFtpListingResponse_getName(self.listing_response, index as size_t);
-            str::from_utf8(c_str_to_bytes_with_nul(&string)).unwrap().to_string()
+            str::from_utf8(CStr::from_ptr(string).to_bytes_with_nul()).unwrap().to_string()
         }
     }
 }
@@ -275,7 +275,7 @@ impl DirectoryResponse {
     pub fn get_message(&self) -> String {
         unsafe {
             let string = ffi::sfFtpDirectoryResponse_getMessage(self.directory_response);
-            str::from_utf8(c_str_to_bytes_with_nul(&string)).unwrap().to_string()
+            str::from_utf8(CStr::from_ptr(string).to_bytes_with_nul()).unwrap().to_string()
         }
     }
 
@@ -285,7 +285,7 @@ impl DirectoryResponse {
     pub fn get_directory(&self) -> String {
         unsafe {
             let string = ffi::sfFtpDirectoryResponse_getDirectory(self.directory_response);
-            str::from_utf8(c_str_to_bytes_with_nul(&string)).unwrap().to_string()
+            str::from_utf8(CStr::from_ptr(string).to_bytes_with_nul()).unwrap().to_string()
         }
     }
 }
@@ -327,7 +327,7 @@ impl Response {
     pub fn get_message(&self) -> String {
         unsafe {
             let string = ffi::sfFtpResponse_getMessage(self.response);
-            str::from_utf8(c_str_to_bytes_with_nul(&string)).unwrap().to_string()
+            str::from_utf8(CStr::from_ptr(string).to_bytes_with_nul()).unwrap().to_string()
         }
     }
 }
@@ -401,8 +401,8 @@ impl Ftp {
     ///
     /// Return the server response to the request
     pub fn login(&self, user_name: &str, password: &str) -> Response {
-        let c_user_name = CString::from_slice(user_name.as_bytes()).as_ptr();
-        let c_password = CString::from_slice(password.as_bytes()).as_ptr();
+        let c_user_name = CString::new(user_name.as_bytes()).unwrap().as_ptr();
+        let c_password = CString::new(password.as_bytes()).unwrap().as_ptr();
         Response {
             response: unsafe { ffi::sfFtp_login(self.ftp,
                                                  c_user_name,
@@ -455,7 +455,7 @@ impl Ftp {
     ///
     /// Return the server response to the request
     pub fn get_directory_listing(&self, directory: &str) -> ListingResponse {
-        let c_directory = CString::from_slice(directory.as_bytes()).as_ptr();
+        let c_directory = CString::new(directory.as_bytes()).unwrap().as_ptr();
         ListingResponse {
             listing_response: unsafe { ffi::sfFtp_getDirectoryListing(self.ftp,
                                                                        c_directory) }
@@ -471,7 +471,7 @@ impl Ftp {
     ///
     /// Return the server response to the request
     pub fn change_directory(&self, directory: &str) -> Response {
-        let c_directory = CString::from_slice(directory.as_bytes()).as_ptr();
+        let c_directory = CString::new(directory.as_bytes()).unwrap().as_ptr();
         Response {
             response: unsafe { ffi::sfFtp_changeDirectory(self.ftp,
                                                            c_directory) }
@@ -497,7 +497,7 @@ impl Ftp {
     ///
     /// Return the server response to the request
     pub fn create_directory(&self, name: &str) -> Response {
-        let c_name = CString::from_slice(name.as_bytes()).as_ptr();
+        let c_name = CString::new(name.as_bytes()).unwrap().as_ptr();
         Response {
             response: unsafe { ffi::sfFtp_createDirectory(self.ftp,
                                                            c_name) }
@@ -516,7 +516,7 @@ impl Ftp {
     ///
     /// Return the server response to the request
     pub fn delete_directory(&self, name: &str) -> Response {
-        let c_name = CString::from_slice(name.as_bytes()).as_ptr();
+        let c_name = CString::new(name.as_bytes()).unwrap().as_ptr();
         Response {
             response: unsafe { ffi::sfFtp_deleteDirectory(self.ftp,
                                                            c_name) }
@@ -534,8 +534,8 @@ impl Ftp {
     ///
     /// Return the server response to the request
     pub fn rename_file(&self, name: &str, new_name: &str) -> Response {
-        let c_name = CString::from_slice(name.as_bytes()).as_ptr();
-        let c_new_name = CString::from_slice(new_name.as_bytes()).as_ptr();
+        let c_name = CString::new(name.as_bytes()).unwrap().as_ptr();
+        let c_new_name = CString::new(new_name.as_bytes()).unwrap().as_ptr();
         Response {
             response: unsafe { ffi::sfFtp_renameFile(self.ftp,
                                                       c_name,
@@ -555,7 +555,7 @@ impl Ftp {
     ///
     /// Return the server response to the request
     pub fn delete_file(&self, name: &str) -> Response {
-        let c_name = CString::from_slice(name.as_bytes()).as_ptr();
+        let c_name = CString::new(name.as_bytes()).unwrap().as_ptr();
         Response {
             response: unsafe { ffi::sfFtp_deleteFile(self.ftp,
                                                       c_name) }
@@ -576,8 +576,8 @@ impl Ftp {
     ///
     /// Return the server response to the request
     pub fn download(&self, distant_file: &str, dest_path: &str, mode: TransferMode) -> Response {
-        let c_distant_file = CString::from_slice(distant_file.as_bytes()).as_ptr();
-        let c_dest_path = CString::from_slice(dest_path.as_bytes()).as_ptr();
+        let c_distant_file = CString::new(distant_file.as_bytes()).unwrap().as_ptr();
+        let c_dest_path = CString::new(dest_path.as_bytes()).unwrap().as_ptr();
         Response {
             response: unsafe { ffi::sfFtp_download(self.ftp,
                                                     c_distant_file,
@@ -600,8 +600,8 @@ impl Ftp {
     ///
     /// Return the server response to the request
     pub fn upload(&self, local_file: &str, dest_path: &str, mode: TransferMode) -> Response {
-        let c_local_file = CString::from_slice(local_file.as_bytes()).as_ptr();
-        let c_dest_path = CString::from_slice(dest_path.as_bytes()).as_ptr();
+        let c_local_file = CString::new(local_file.as_bytes()).unwrap().as_ptr();
+        let c_dest_path = CString::new(dest_path.as_bytes()).unwrap().as_ptr();
         Response {
             response: unsafe { ffi::sfFtp_upload(self.ftp,
                                                   c_local_file,

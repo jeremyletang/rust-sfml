@@ -29,7 +29,7 @@
 
 use std::mem;
 use std::vec::Vec;
-use std::ffi::{CString, c_str_to_bytes_with_nul};
+use std::ffi::{CString, CStr};
 use std::str;
 use libc::{c_float, c_uint, size_t};
 use core::raw;
@@ -90,7 +90,7 @@ impl<'s> Text<'s> {
         if text.is_null() {
             None
         } else {
-            let c_str = CString::from_slice(string.as_bytes()).as_ptr();
+            let c_str = CString::new(string.as_bytes()).unwrap().as_ptr();
             unsafe {
                 ffi::sfText_setString(text, c_str);
                 ffi::sfText_setFont(text, font.unwrap());
@@ -128,7 +128,7 @@ impl<'s> Text<'s> {
     /// * string - New string
     pub fn set_string(&mut self, string: &str) -> () {
         unsafe {
-            let c_str = CString::from_slice(string.as_bytes()).as_ptr();
+            let c_str = CString::new(string.as_bytes()).unwrap().as_ptr();
             ffi::sfText_setString(self.text, c_str);
         }
         self.string_length = string.len() as u32
@@ -140,7 +140,7 @@ impl<'s> Text<'s> {
     pub fn get_string(&self) -> String {
         unsafe {
             let string = ffi::sfText_getString(self.text);
-            str::from_utf8(c_str_to_bytes_with_nul(&string)).unwrap().to_string()
+            str::from_utf8(CStr::from_ptr(string).to_bytes_with_nul()).unwrap().to_string()
         }
     }
 

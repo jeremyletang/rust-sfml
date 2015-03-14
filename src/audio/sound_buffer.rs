@@ -56,7 +56,7 @@ impl SoundBuffer {
     ///
     /// Return an option to a SoundBuffer object or None.
     pub fn new(filename: &str) -> Option<SoundBuffer> {
-        let c_str = CString::from_slice(filename.as_bytes()).as_ptr();
+        let c_str = CString::new(filename.as_bytes()).unwrap().as_ptr();
         let sound_buffer: *mut ffi::sfSoundBuffer = unsafe {
             ffi::sfSoundBuffer_createFromFile(c_str)
         };
@@ -96,7 +96,7 @@ impl SoundBuffer {
     ///
     /// Return true if saving succeeded, false if it faileds
     pub fn save_to_file(&self, filename: &str) -> bool {
-        let c_str = CString::from_slice(filename.as_bytes()).as_ptr();
+        let c_str = CString::new(filename.as_bytes()).unwrap().as_ptr();
         match unsafe { ffi::sfSoundBuffer_saveToFile(self.sound_buffer, c_str) } {
             SFFALSE => false,
             SFTRUE  => true
