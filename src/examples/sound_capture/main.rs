@@ -4,7 +4,6 @@
 #![crate_name = "sound_capture"]
 #![crate_type = "bin"]
 #![allow(unused_must_use)]
-#![feature(core, io)]
 
 extern crate rsfml;
 
@@ -28,7 +27,7 @@ fn main() -> () {
     let mut line = String::new();
     reader.read_line(&mut line).unwrap();
     unsafe { line.as_mut_vec().pop(); }
-    let sample_rate: u32 = match line.as_slice().parse() {
+    let sample_rate: u32 = match line.parse() {
         Ok(value)     => value,
         Err(e)        => panic!("Error, input is not valid: {}", e)
     };
