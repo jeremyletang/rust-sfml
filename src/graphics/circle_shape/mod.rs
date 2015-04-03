@@ -633,7 +633,6 @@ impl<'s> Drawable for CircleShape<'s> {
     }
 }
 
-#[unsafe_destructor]
 impl<'s> Drop for CircleShape<'s> {
     /// Destroy an existing CircleShape
     fn drop(&mut self) {

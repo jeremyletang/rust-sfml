@@ -649,7 +649,6 @@ impl Drawable for ConvexShape {
     }
 }
 
-#[unsafe_destructor]
 impl Drop for ConvexShape {
     fn drop(&mut self) -> () {
         unsafe {

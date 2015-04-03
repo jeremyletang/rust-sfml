@@ -362,7 +362,6 @@ impl Wrappable<*mut ffi::sfShader> for Shader {
     }
 }
 
-#[unsafe_destructor]
 impl Drop for Shader {
     /// Destroy an existing shader
     fn drop(&mut self) -> () {

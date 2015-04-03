@@ -577,7 +577,6 @@ impl Drawable for Shape {
     }
 }
 
-#[unsafe_destructor]
 impl Drop for Shape {
     fn drop(&mut self) -> () {
         unsafe {

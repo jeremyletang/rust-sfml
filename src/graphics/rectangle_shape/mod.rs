@@ -628,7 +628,6 @@ impl<'s> Drawable for RectangleShape<'s> {
     }
 }
 
-#[unsafe_destructor]
 impl<'s> Drop for RectangleShape<'s> {
     fn drop(&mut self) -> () {
         unsafe {

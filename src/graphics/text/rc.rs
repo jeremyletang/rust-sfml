@@ -586,7 +586,6 @@ impl Drawable for Text {
     }
 }
 
-#[unsafe_destructor]
 impl Drop for Text {
     /// Destructor for class Text. Destroy all the ressource.
     fn drop(&mut self) {
