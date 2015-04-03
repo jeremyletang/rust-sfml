@@ -34,7 +34,7 @@ use system::Time;
 use ffi::network::ip_address as ffi;
 
 /// Encapsulate an IPv4 network address.
-#[derive(Copy)]
+#[derive(Clone, Copy)]
 pub struct IpAddress{
     #[doc(hidden)]
     ip: ffi::sfIpAddress

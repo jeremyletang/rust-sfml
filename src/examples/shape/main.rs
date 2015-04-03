@@ -11,7 +11,7 @@ use rsfml::window::keyboard::Key;
 use rsfml::traits::ShapeImpl;
 use rsfml::system::Vector2f;
 
-#[derive(Copy)]
+#[derive(Clone, Copy)]
 pub struct CustomShape;
 
 impl ShapeImpl for CustomShape {
