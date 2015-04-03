@@ -18,6 +18,6 @@ install:
 script:
   - rustc --version
   - cargo build --verbose
-  - rustdoc -o doc src/lib.rs
+  - cargo doc
 after_script:
   - curl http://www.rust-ci.org/artifacts/put?t=$RUSTCI_TOKEN | sh
