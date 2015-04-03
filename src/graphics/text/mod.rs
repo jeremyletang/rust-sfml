@@ -32,7 +32,6 @@ use std::vec::Vec;
 use std::ffi::{CString, CStr};
 use std::str;
 use libc::{c_float, c_uint, size_t};
-use core::raw;
 
 use traits::{Drawable, Wrappable};
 use graphics::{RenderTarget, Font, FloatRect,
@@ -152,12 +151,9 @@ impl<'s> Text<'s> {
             ffi::sfText_getUnicodeString(self.text)
         };
 
-        let string_slice: &[u32] = unsafe { mem::transmute(
-                raw::Slice{
-                    data: string,
-                    len: self.string_length as usize,
-                }
-            )};
+        let string_slice: &[u32] = unsafe {
+            ::std::slice::from_raw_parts(string, self.string_length as usize)
+        };
 
         let result = string_slice.to_vec();
 

@@ -29,8 +29,6 @@
 
 use libc::{c_uint, size_t};
 use std::vec::Vec;
-use core::raw;
-use std::mem;
 
 use traits::Wrappable;
 
@@ -129,12 +127,7 @@ impl VideoMode {
         let size = size as u32;
 
         let tab_slice: &[ffi::sfVideoMode] = unsafe {
-            mem::transmute(
-                raw::Slice {
-                    data: tab,
-                    len: size as usize,
-                }
-            )
+            ::std::slice::from_raw_parts(tab, size as usize)
         };
 
         let mut ret_tab = Vec::with_capacity(size as usize);

@@ -125,10 +125,8 @@
 #![crate_type = "dylib"]
 #![allow(dead_code, non_camel_case_types, unused_attributes)]
 #![warn(missing_docs)]
-#![feature(core)]
 
 extern crate libc;
-extern crate core;
 
 pub mod traits;
 pub mod system;
