@@ -40,7 +40,7 @@ use ffi::graphics::transform as ffi;
 /// rotate, scale, shear, project, whatever things.
 #[repr(C)]
 #[allow(missing_docs)]
-#[derive(Copy)]
+#[derive(Clone, Copy)]
 pub struct Transform {
     pub a00: f32,
     pub a01: f32,

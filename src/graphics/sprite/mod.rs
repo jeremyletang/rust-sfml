@@ -506,7 +506,6 @@ impl<'s> Drawable for Sprite<'s> {
 
 
 
-#[unsafe_destructor]
 impl<'s> Drop for Sprite<'s> {
     /// Destroy an existing sprite
     fn drop(&mut self) -> () {

@@ -375,7 +375,6 @@ impl Sound {
     }
 }
 
-#[unsafe_destructor]
 impl Drop for Sound {
     /// Destructor for class Sound. Destroy all the ressource.
     fn drop(&mut self) {

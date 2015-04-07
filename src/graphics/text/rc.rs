@@ -34,7 +34,6 @@ use std::vec::Vec;
 use std::ffi::{CString, CStr};
 use libc::{c_float, c_uint, size_t};
 use std::str;
-use core::raw;
 
 use traits::{Drawable, Wrappable};
 use graphics::{RenderTarget, Font, FloatRect,
@@ -152,12 +151,9 @@ impl Text {
             ffi::sfText_getUnicodeString(self.text)
         };
 
-        let string_slice: &[u32] = unsafe { mem::transmute(
-                raw::Slice{
-                    data: string,
-                    len: self.string_length as usize,
-                }
-            )};
+        let string_slice: &[u32] = unsafe {
+            ::std::slice::from_raw_parts(string, self.string_length as usize)
+        };
 
         let result = string_slice.to_vec();
 
@@ -586,7 +582,6 @@ impl Drawable for Text {
     }
 }
 
-#[unsafe_destructor]
 impl Drop for Text {
     /// Destructor for class Text. Destroy all the ressource.
     fn drop(&mut self) {

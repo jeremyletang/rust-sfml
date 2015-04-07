@@ -636,7 +636,6 @@ impl Drawable for CircleShape {
     }
 }
 
-#[unsafe_destructor]
 impl Drop for CircleShape {
     /// Destroy an existing CircleShape
     fn drop(&mut self) {

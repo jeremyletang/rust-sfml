@@ -1120,7 +1120,6 @@ impl Iterator for Events {
     }
 }
 
-#[unsafe_destructor]
 impl Drop for RenderWindow {
     /// Destructor for class RenderWindow. Destroy all the ressource.
     fn drop(&mut self) {

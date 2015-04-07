@@ -191,7 +191,7 @@ pub mod raw {
     pub const sfEvtJoystickDisconnected: ::libc::c_uint = 17;
 
     #[repr(C)]
-    #[derive(Copy)]
+    #[derive(Clone, Copy)]
     pub struct sfKeyEvent {
         pub _type: sfEventType,
         pub code: sfKeyCode,
@@ -202,14 +202,14 @@ pub mod raw {
     }
 
     #[repr(C)]
-    #[derive(Copy)]
+    #[derive(Clone, Copy)]
     pub struct sfTextEvent {
         pub _type: sfEventType,
         pub unicode: ::libc::c_uint,
     }
 
     #[repr(C)]
-    #[derive(Copy)]
+    #[derive(Clone, Copy)]
     pub struct sfMouseMoveEvent {
         pub _type: sfEventType,
         pub x: ::libc::c_int,
@@ -217,7 +217,7 @@ pub mod raw {
     }
 
     #[repr(C)]
-    #[derive(Copy)]
+    #[derive(Clone, Copy)]
     pub struct sfMouseButtonEvent {
         pub _type: sfEventType,
         pub button: sfMouseButton,
@@ -226,7 +226,7 @@ pub mod raw {
     }
 
     #[repr(C)]
-    #[derive(Copy)]
+    #[derive(Clone, Copy)]
     pub struct sfMouseWheelEvent {
         pub _type: sfEventType,
         pub delta: ::libc::c_int,
@@ -235,7 +235,7 @@ pub mod raw {
     }
 
     #[repr(C)]
-    #[derive(Copy)]
+    #[derive(Clone, Copy)]
     pub struct sfJoystickMoveEvent {
         pub _type: sfEventType,
         pub joystickid: ::libc::c_uint,
@@ -244,7 +244,7 @@ pub mod raw {
     }
 
     #[repr(C)]
-    #[derive(Copy)]
+    #[derive(Clone, Copy)]
     pub struct sfJoystickButtonEvent {
         pub _type: sfEventType,
         pub joystickid: ::libc::c_uint,
@@ -252,14 +252,14 @@ pub mod raw {
     }
 
     #[repr(C)]
-    #[derive(Copy)]
+    #[derive(Clone, Copy)]
     pub struct sfJoystickConnectEvent {
         pub _type: sfEventType,
         pub joystickid: ::libc::c_uint,
     }
 
     #[repr(C)]
-    #[derive(Copy)]
+    #[derive(Clone, Copy)]
     pub struct sfSizeEvent {
         pub _type: sfEventType,
         pub width: ::libc::c_uint,
@@ -267,7 +267,7 @@ pub mod raw {
     }
 
     #[repr(C)]
-    #[derive(Copy)]
+    #[derive(Clone, Copy)]
     pub struct sfEvent {
         pub data: [u32; 6],
     }
