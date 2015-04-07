@@ -13,38 +13,3 @@ libc = ">=0.1.5"
 
 name = "rsfml"
 crate-type = ["dylib", "rlib"]
-
-[[bin]]
-
-name = "pong"
-path = "src/examples/pong/main.rs"
-
-[[bin]]
-
-name = "sound"
-path = "src/examples/sound/main.rs"
-
-[[bin]]
-
-name = "sound_capture"
-path = "src/examples/sound_capture/main.rs"
-
-[[bin]]
-
-name = "borrow_res"
-path = "src/examples/borrow_res/main.rs"
-
-[[bin]]
-
-name = "rc_res"
-path = "src/examples/rc_res/main.rs"
-
-[[bin]]
-
-name = "custom_drawable"
-path = "src/examples/custom_drawable/main.rs"
-
-[[bin]]
-
-name = "vertex_arrays"
-path = "src/examples/vertex_arrays/main.rs"
