@@ -4,6 +4,7 @@ name = "rust-sfml"
 description = "Rust binding for sfml"
 version = "0.9.0"
 authors = ["Jeremy Letang <letang.jeremy@gmail.com>"]
+build = "build.rs"
 
 [dependencies]
 rand = ">=0.2.0"

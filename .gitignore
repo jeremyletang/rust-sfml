@@ -1,2 +1,5 @@
 doc
 target
+bin/
+lib/
+Cargo.lock
