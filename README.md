@@ -51,21 +51,16 @@ use rsfml::system::Vector2f;
 use rsfml::window::{ContextSettings, VideoMode, event, Close};
 use rsfml::graphics::{RenderWindow, RenderTarget, CircleShape, Color};
 
-fn main () -> () {
+fn main() {
     // Create the window of the application
-    let mut window = match RenderWindow::new(VideoMode::new_init(800, 600, 32),
-                                             "SFML Example",
-                                             Close,
-                                             &ContextSettings::default()) {
-        Some(window) => window,
-        None => panic!("Cannot create a new Render Window.")
-    };
+    let mut window = RenderWindow::new(VideoMode::new_init(800, 600, 32),
+                                       "SFML Example",
+                                       Close,
+                                       &ContextSettings::default())
+                         .expect("Cannot create a new Render Window.");
 
     // Create a CircleShape
-    let mut circle = match CircleShape::new() {
-        Some(circle) => circle,
-        None       => panic!("Error, cannot create ball")
-    };
+    let mut circle = CircleShape::new().expect("Error, cannot create ball.");
     circle.set_radius(30.);
     circle.set_fill_color(&Color::red());
     circle.set_position(&Vector2f::new(100., 100.));
@@ -87,6 +82,7 @@ fn main () -> () {
         window.display()
     }
 }
+
 ```
 
 
