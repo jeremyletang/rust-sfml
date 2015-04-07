@@ -56,12 +56,6 @@ This will build rust-sfml and all the examples.
 
 Rust-sfml works on Linux, Windows and OSX.
 
-
-### Windows 32 bits bug
-
-According to the issue #10, there is problem to use rsfml on Windows.
-It seems to be a bug in the version of llvm used by Rust. Krzat made a patch to solve this problem, you can find it here: mozilla/rust#11198
-
 Short example
 =============
 
