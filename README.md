@@ -29,24 +29,7 @@ You can build rust-sfml using different version of Rust compiler:
 | Rust 0.9     | [link rsfml](https://github.com/JeremyLetang/rust-sfml/releases/tag/rust0.9)
 | Rust 0.8     | [link rsfml](https://github.com/JeremyLetang/rust-sfml/releases/tag/rust0.8)
 
-
-Rust-sfml is built with make:
-
-```Shell
-> make
-```
-
-This command build rsfml, the examples, and the documentation.
-
-You can also build them separatly:
-
-```Shell
-> make rsfml
-> make examples
-> make docs
-```
-
-Alternatively you can use Cargo:
+You can use Cargo to build rust-sfml:
 ```Shell
 > cargo build
 ```
