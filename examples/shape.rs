@@ -1,8 +1,5 @@
 //! Example from SFML: Shape
 
-#![crate_name = "shape"]
-#![crate_type = "bin"]
-
 extern crate rsfml;
 
 use rsfml::graphics::{RenderWindow, Color, Shape, RenderTarget};

@@ -1,8 +1,5 @@
 //! Example from SFML: borrow_res
 
-#![crate_name = "borrow_res"]
-#![crate_type = "bin"]
-
 extern crate rsfml;
 
 use rsfml::graphics::{RenderWindow, Color, CircleShape, Sprite,
@@ -24,13 +21,13 @@ fn main () -> () {
     let clear_color = Color::black();
 
     // Create a new texture (hey frank !)
-    let frank = match Texture::new_from_file("../resources/frank.jpeg") {
+    let frank = match Texture::new_from_file("resources/frank.jpeg") {
         Some(tex)   => tex,
         None        => panic!("Cannot found resource: frank.jpeg")
     };
 
     // Create a font.
-    let font = match Font::new_from_file("../resources/sansation.ttf") {
+    let font = match Font::new_from_file("resources/sansation.ttf") {
         Some(fnt)   => fnt,
         None        => panic!("Cannot found the font: sansation.ttf")
     };

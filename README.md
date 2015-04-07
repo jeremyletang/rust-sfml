@@ -34,8 +34,8 @@ You can use Cargo to build rust-sfml:
 > cargo build
 ```
 
-This will build rust-sfml and all the examples.
-
+Examples are located under the `examples` directory.
+You can run an example with `cargo run --example example_name`
 
 Rust-sfml works on Linux, Windows and OSX.
 

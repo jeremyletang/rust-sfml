@@ -1,7 +1,5 @@
 //! Example from SFML: Pong
 
-#![crate_name = "pong"]
-#![crate_type = "bin"]
 #![allow(non_snake_case)]
 
 extern crate rsfml;
@@ -37,7 +35,7 @@ fn main () -> () {
     window.set_vertical_sync_enabled(true);
 
     // Load the sounds used in the game
-    let ballSoundBuffer = match SoundBuffer::new("../resources/ball.wav") {
+    let ballSoundBuffer = match SoundBuffer::new("resources/ball.wav") {
         Some(ballSoundBuffer)   => ballSoundBuffer,
         None                    => panic!("Cannot load Ball sound buffer.")
     };
@@ -83,7 +81,7 @@ fn main () -> () {
     ball.set_origin(&Vector2f::new(ballRadius / 2., ballRadius / 2.));
 
     // Load the text font
-    let font = match Font::new_from_file("../resources/sansation.ttf") {
+    let font = match Font::new_from_file("resources/sansation.ttf") {
         Some(font)    => font,
         None          => panic!("Error, cannot load font")
     };

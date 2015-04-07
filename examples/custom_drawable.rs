@@ -1,8 +1,5 @@
 //! Example from SFML: Custom drawable
 
-#![crate_name = "custom_drawable"]
-#![crate_type = "bin"]
-
 extern crate rsfml;
 
 use rsfml::graphics::{RenderWindow, Color, CircleShape, RectangleShape,

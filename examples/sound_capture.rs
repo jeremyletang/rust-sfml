@@ -1,8 +1,5 @@
 //! Example from SFML: Sound Capture
 
-
-#![crate_name = "sound_capture"]
-#![crate_type = "bin"]
 #![allow(unused_must_use)]
 
 extern crate rsfml;

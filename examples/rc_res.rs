@@ -1,8 +1,5 @@
 //! Example from SFML: borrow_res
 
-#![crate_name = "rc_res"]
-#![crate_type = "bin"]
-
 extern crate rsfml;
 
 use std::rc::Rc;
@@ -27,13 +24,13 @@ fn main () -> () {
     let clear_color = Color::black();
 
     // Create a new reference counted texture
-    let frank: Rc<RefCell<Texture>> = match Texture::new_from_file("../resources/frank.jpeg") {
+    let frank: Rc<RefCell<Texture>> = match Texture::new_from_file("resources/frank.jpeg") {
         Some(tex)   => Rc::new(RefCell::new(tex)),
         None        => panic!("Cannot found resource: frank.jpeg")
     };
 
     // Create a font.
-    let font: Rc<RefCell<Font>> = match Font::new_from_file("../resources/sansation.ttf") {
+    let font: Rc<RefCell<Font>> = match Font::new_from_file("resources/sansation.ttf") {
         Some(fnt)   => Rc::new(RefCell::new(fnt)),
         None        => panic!("Cannot found the font: sansation.ttf")
     };

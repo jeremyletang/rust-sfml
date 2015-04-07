@@ -1,8 +1,5 @@
 //! Example from SFML: Shape
 
-#![crate_name = "vertex_arrays"]
-#![crate_type = "bin"]
-
 extern crate rsfml;
 
 use rsfml::graphics::{RenderWindow, RenderTarget, Color,
