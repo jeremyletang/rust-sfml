@@ -5,8 +5,6 @@
 extern crate rsfml;
 extern crate rand;
 
-use std::num::Float;
-
 use rsfml::graphics::{RenderWindow, Color, Font, Text, RectangleShape, CircleShape,
                       RenderTarget};
 use rsfml::window::{VideoMode, ContextSettings, event, Close};
