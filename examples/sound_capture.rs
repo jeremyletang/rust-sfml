@@ -9,7 +9,7 @@ use std::io::BufRead;
 use rsfml::audio::{rc, SoundBufferRecorder, Playing};
 use rsfml::system::{sleep, Time};
 
-fn main() -> () {
+fn main() {
     // Check that the device can capture audio
     if !SoundBufferRecorder::is_available() {
         panic!("Sorry, audio capture is not supported by your system");

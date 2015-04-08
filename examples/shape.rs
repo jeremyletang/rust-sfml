@@ -26,7 +26,7 @@ impl ShapeImpl for CustomShape {
     }
 }
 
-fn main () -> () {
+fn main() {
     // Create the window of the application
     let setting: ContextSettings = ContextSettings::default();
     let mut window: RenderWindow = match RenderWindow::new(VideoMode::new_init(800, 600, 32), "SFML Shape Example", Close, &setting) {

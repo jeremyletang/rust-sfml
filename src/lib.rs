@@ -63,7 +63,7 @@
 //! use rsfml::window::{ContextSettings, VideoMode, event, Close};
 //! use rsfml::graphics::{RenderWindow, RenderTarget, CircleShape, Color};
 //!
-//! fn main () -> () {
+//! fn main() {
 //!     // Create the window of the application
 //!     let mut window = match RenderWindow::new(VideoMode::new_init(800, 600, 32),
 //!                                              "SFML Example",

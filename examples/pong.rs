@@ -10,7 +10,7 @@ use rsfml::window::keyboard::{self, Key};
 use rsfml::system::{Vector2f, Clock, Time};
 use rsfml::audio::{SoundBuffer, Sound};
 
-fn main () -> () {
+fn main() {
     // Define some constants
     let pi: f32 = 3.14159;
     let game_width: u32 = 800;

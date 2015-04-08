@@ -7,7 +7,7 @@ use rsfml::graphics::{RenderWindow, RenderTarget, Color,
 use rsfml::window::{VideoMode, ContextSettings, event, Close};
 use rsfml::system::Vector2f;
 
-fn main () -> () {
+fn main() {
     // Create the window of the application
     let setting: ContextSettings = ContextSettings::default();
     let mut window: RenderWindow = match RenderWindow::new(VideoMode::new_init(800, 600, 32), "SFML VertexArray accessors Example", Close, &setting) {
