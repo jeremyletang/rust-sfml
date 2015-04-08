@@ -27,7 +27,7 @@
 #![allow(non_snake_case)]
 
 use graphics::{Color, View, RenderStates, CircleShape, RectangleShape, Text, Sprite, VertexArray,
-               IntRect, rc, Vertex, PrimitiveType, ConvexShape};
+               IntRect, rc, Vertex, PrimitiveType, ConvexShape, Shape};
 use traits::Drawable;
 use system::vector2::{Vector2f, Vector2i, Vector2u};
 
@@ -222,11 +222,11 @@ pub trait RenderTarget {
     /// Draw Text
     fn draw_text_rc(&self, text: &rc::Text);
 
-    // /// Draw Shape
-    // fn draw_shape(&self, shape: &Shape);
+    /// Draw Shape
+    fn draw_shape(&self, shape: &Shape);
 
-    // /// Draw Shape
-    // fn draw_shape_rc(&self, shape: &rc::Shape);
+    /// Draw Shape
+    fn draw_shape_rc(&self, shape: &rc::Shape);
 
     /// Draw Sprite
     fn draw_sprite(&self, sprite: &Sprite);
@@ -265,15 +265,15 @@ pub trait RenderTarget {
                        text: &rc::Text,
                        rs: &mut rc::RenderStates);
 
-    // /// Draw Shape
-    // fn draw_shape_rs(&self,
-    //                  shape: &Shape,
-    //                  rs: &mut RenderStates);
+    /// Draw Shape
+    fn draw_shape_rs(&self,
+                     shape: &Shape,
+                     rs: &mut RenderStates);
 
-    // /// Draw Shape
-    // fn draw_shape_rs_rc(&self,
-    //                     shape: &rc::Shape,
-    //                     rs: &mut rc::RenderStates);
+    /// Draw Shape
+    fn draw_shape_rs_rc(&self,
+                        shape: &rc::Shape,
+                        rs: &mut rc::RenderStates);
 
     /// Draw Sprite
     fn draw_sprite_rs(&self,
