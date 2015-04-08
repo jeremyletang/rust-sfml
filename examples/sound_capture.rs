@@ -1,7 +1,5 @@
 //! Example from SFML: Sound Capture
 
-#![allow(unused_must_use)]
-
 extern crate rsfml;
 
 use std::rc::Rc;
@@ -99,5 +97,5 @@ fn main() -> () {
 
     // Wait until the user presses 'enter' key
     println!("Press enter to exit...");
-    reader.read_line(&mut String::new());
+    let _ = reader.read_line(&mut String::new());
 }
