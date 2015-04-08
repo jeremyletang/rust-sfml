@@ -41,22 +41,14 @@
 //! CSFML2: http://www.sfml-dev.org/download/csfml/
 //!
 //! Then clone the repo and build the library with the following command.
-//!
-//! __Rust-sfml__ is now build with make :
-//!
-//! ```Shell
-//! > make
-//! ```
-//!
-//! This command build rust-sfml, the examples, and the documentation.
-//!
-//! You can build them separatly too.
+//! You can use Cargo to build rust-sfml:
 //!
 //! ```Shell
-//! > make lib
-//! > make examples
-//! > make doc
+//! > cargo build
 //! ```
+//!
+//! Examples are located under the `examples` directory.
+//! You can run an example with `cargo run --example example_name`.
 //!
 //! __Rust-sfml__ works on Linux, windows and OSX.
 //!
