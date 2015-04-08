@@ -105,12 +105,15 @@ fn main() {
     let mut is_playing = false;
 
     while window.is_open() {
-        loop {
-            match window.poll_event() {
+        for event in window.events() {
+            match event {
                 event::Closed => window.close(),
                 event::KeyPressed{code, ..} => match code {
-                    Key::Escape      => {window.close(); break},
-                    Key::Space       => {
+                    Key::Escape => {
+                        window.close();
+                        break;
+                    },
+                    Key::Space => {
                         if !is_playing {
                             // (re)start the game
                             is_playing = true;
@@ -122,9 +125,8 @@ fn main() {
                             // RANDOM HERE
                         }
                     },
-                    _                      => {}
+                    _  => {}
                 } ,
-                event::NoEvent => break,
                 _ => {}
             }
         }

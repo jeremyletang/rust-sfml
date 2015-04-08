@@ -73,15 +73,17 @@ fn main() {
     third_text.set_color(&Color::red());
 
     while window.is_open() {
-        loop {
-            match window.poll_event() {
-                event::Closed               => window.close(),
+        for event in window.events() {
+            match event {
+                event::Closed => window.close(),
                 event::KeyPressed{code, ..} => match code {
-                    Key::Escape    => {window.close(); break},
-                    _                   => {}
+                    Key::Escape => {
+                        window.close();
+                        break;
+                    },
+                    _ => {}
                 },
-                event::NoEvent              => break,
-                _                           => {}
+                _ => {}
             }
         }
         // Clear the window
