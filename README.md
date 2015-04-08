@@ -19,16 +19,6 @@ CSFML2.1: http://www.sfml-dev.org/download/csfml/
 
 Then clone the repo and build the library with the following command.
 
-You can build rust-sfml using different version of Rust compiler:
-
-| Rust version | rust-sfml
-|--------------|----------
-| Rust master  | [link rsfml](https://github.com/JeremyLetang/rust-sfml/)
-| Rust 0.11    | [link rsfml](https://github.com/JeremyLetang/rust-sfml/releases/tag/rust0.11)
-| Rust 0.10    | [link rsfml](https://github.com/JeremyLetang/rust-sfml/releases/tag/rust0.10)
-| Rust 0.9     | [link rsfml](https://github.com/JeremyLetang/rust-sfml/releases/tag/rust0.9)
-| Rust 0.8     | [link rsfml](https://github.com/JeremyLetang/rust-sfml/releases/tag/rust0.8)
-
 You can use Cargo to build rust-sfml:
 ```Shell
 > cargo build
