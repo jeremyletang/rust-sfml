@@ -112,7 +112,7 @@
 //! Here is a list of all modules :
 
 #![doc(html_logo_url = "http://rust-sfml.org/logo_rsfml.png")]
-#![allow(dead_code, non_camel_case_types, unused_attributes)]
+#![allow(dead_code, non_camel_case_types)]
 #![warn(missing_docs)]
 
 extern crate libc;
