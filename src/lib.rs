@@ -56,7 +56,7 @@
 //!
 //! Here is a short example, draw a circle shape and display it.
 //!
-//! ```rust
+//! ```no_run
 //! extern crate rsfml;
 //!
 //! use rsfml::system::Vector2f;
