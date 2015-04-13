@@ -1,11 +1,11 @@
 //! Example from SFML: Shape
 
-extern crate rsfml;
+extern crate sfml;
 
-use rsfml::graphics::{RenderWindow, RenderTarget, Color,
+use sfml::graphics::{RenderWindow, RenderTarget, Color,
                       VertexArray, Vertex, LinesStrip};
-use rsfml::window::{VideoMode, ContextSettings, event, Close};
-use rsfml::system::Vector2f;
+use sfml::window::{VideoMode, ContextSettings, event, Close};
+use sfml::system::Vector2f;
 
 fn main() {
     // Create the window of the application

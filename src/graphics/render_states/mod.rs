@@ -101,7 +101,7 @@ impl<'s> RenderStates<'s> {
         }
     }
 
-    // Internal rsfml use only
+    // Internal rust-sfml use only
     #[doc(hidden)]
     pub fn unwrap(&mut self) -> *mut ffi::sfRenderStates {
         self.sfRenderStates.blendMode = self.blendMode as i32;

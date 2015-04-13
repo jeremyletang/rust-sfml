@@ -57,11 +57,11 @@
 //! Here is a short example, draw a circle shape and display it.
 //!
 //! ```no_run
-//! extern crate rsfml;
+//! extern crate sfml;
 //!
-//! use rsfml::system::Vector2f;
-//! use rsfml::window::{ContextSettings, VideoMode, event, Close};
-//! use rsfml::graphics::{RenderWindow, RenderTarget, CircleShape, Color};
+//! use sfml::system::Vector2f;
+//! use sfml::window::{ContextSettings, VideoMode, event, Close};
+//! use sfml::graphics::{RenderWindow, RenderTarget, CircleShape, Color};
 //!
 //! fn main() {
 //!     // Create the window of the application

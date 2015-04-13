@@ -1,12 +1,12 @@
 //! Example from SFML: Shape
 
-extern crate rsfml;
+extern crate sfml;
 
-use rsfml::graphics::{RenderWindow, Color, Shape, RenderTarget};
-use rsfml::window::{VideoMode, ContextSettings, event, Close};
-use rsfml::window::keyboard::Key;
-use rsfml::traits::ShapeImpl;
-use rsfml::system::Vector2f;
+use sfml::graphics::{RenderWindow, Color, Shape, RenderTarget};
+use sfml::window::{VideoMode, ContextSettings, event, Close};
+use sfml::window::keyboard::Key;
+use sfml::traits::ShapeImpl;
+use sfml::system::Vector2f;
 
 #[derive(Clone, Copy)]
 pub struct CustomShape;

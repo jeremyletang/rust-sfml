@@ -11,5 +11,5 @@ libc = ">=0.1.5"
 
 [lib]
 
-name = "rsfml"
+name = "sfml"
 crate-type = ["dylib", "rlib"]

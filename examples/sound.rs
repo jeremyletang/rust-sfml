@@ -1,11 +1,11 @@
 //! Example from SFML: play sound and music
 
-extern crate rsfml;
+extern crate sfml;
 
 use std::rc::Rc;
 use std::cell::RefCell;
-use rsfml::audio::{SoundBuffer, rc, Music, Playing};
-use rsfml::system::{sleep, Time};
+use sfml::audio::{SoundBuffer, rc, Music, Playing};
+use sfml::system::{sleep, Time};
 
 /* Play a Sound */
 fn play_sound() {

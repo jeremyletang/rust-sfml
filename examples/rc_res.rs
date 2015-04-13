@@ -1,15 +1,15 @@
 //! Example from SFML: borrow_res
 
-extern crate rsfml;
+extern crate sfml;
 
 use std::rc::Rc;
 use std::cell::RefCell;
 
-use rsfml::graphics::{RenderWindow, Color, Texture, Font, RenderTarget};
-use rsfml::graphics::rc::{CircleShape, Sprite, ConvexShape, Text};
-use rsfml::window::{VideoMode, ContextSettings, event, Close};
-use rsfml::window::keyboard::Key;
-use rsfml::system::Vector2f;
+use sfml::graphics::{RenderWindow, Color, Texture, Font, RenderTarget};
+use sfml::graphics::rc::{CircleShape, Sprite, ConvexShape, Text};
+use sfml::window::{VideoMode, ContextSettings, event, Close};
+use sfml::window::keyboard::Key;
+use sfml::system::Vector2f;
 
 fn main() {
     // Create the window of the application

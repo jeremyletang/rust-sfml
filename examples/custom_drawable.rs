@@ -1,13 +1,13 @@
 //! Example from SFML: Custom drawable
 
-extern crate rsfml;
+extern crate sfml;
 
-use rsfml::graphics::{RenderWindow, Color, CircleShape, RectangleShape,
+use sfml::graphics::{RenderWindow, Color, CircleShape, RectangleShape,
                       RenderTarget};
-use rsfml::window::{VideoMode, ContextSettings, event, Close};
-use rsfml::window::keyboard::Key;
-use rsfml::system::Vector2f;
-use rsfml::traits::Drawable;
+use sfml::window::{VideoMode, ContextSettings, event, Close};
+use sfml::window::keyboard::Key;
+use sfml::system::Vector2f;
+use sfml::traits::Drawable;
 
 // Create a struct who contains two drawable for the example
 struct CustomDrawable<'s> {

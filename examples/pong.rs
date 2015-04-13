@@ -1,14 +1,14 @@
 //! Example from SFML: Pong
 
-extern crate rsfml;
+extern crate sfml;
 extern crate rand;
 
-use rsfml::graphics::{RenderWindow, Color, Font, Text, RectangleShape, CircleShape,
+use sfml::graphics::{RenderWindow, Color, Font, Text, RectangleShape, CircleShape,
                       RenderTarget};
-use rsfml::window::{VideoMode, ContextSettings, event, Close};
-use rsfml::window::keyboard::{self, Key};
-use rsfml::system::{Vector2f, Clock, Time};
-use rsfml::audio::{SoundBuffer, Sound};
+use sfml::window::{VideoMode, ContextSettings, event, Close};
+use sfml::window::keyboard::{self, Key};
+use sfml::system::{Vector2f, Clock, Time};
+use sfml::audio::{SoundBuffer, Sound};
 
 fn main() {
     // Define some constants

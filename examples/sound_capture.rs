@@ -1,13 +1,13 @@
 //! Example from SFML: Sound Capture
 
-extern crate rsfml;
+extern crate sfml;
 
 use std::rc::Rc;
 use std::cell::RefCell;
 use std::io::BufRead;
 
-use rsfml::audio::{rc, SoundBufferRecorder, Playing};
-use rsfml::system::{sleep, Time};
+use sfml::audio::{rc, SoundBufferRecorder, Playing};
+use sfml::system::{sleep, Time};
 
 fn main() {
     // Check that the device can capture audio
