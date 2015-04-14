@@ -22,7 +22,7 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#![allow(dead_code)]
+#![allow(dead_code, non_camel_case_types)]
 
 pub mod graphics;
 pub mod audio;
