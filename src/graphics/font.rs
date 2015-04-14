@@ -36,9 +36,7 @@ use ffi::graphics::font as ffi;
 
 /// Class for loading and manipulating character fonts
 pub struct Font {
-    #[doc(hidden)]
     font: *mut ffi::sfFont,
-    #[doc(hidden)]
     dropable: bool
 }
 

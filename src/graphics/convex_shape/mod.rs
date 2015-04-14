@@ -50,17 +50,13 @@ pub mod rc;
 /// Moreover, the points must be defined in order; using a random
 /// order would result in an incorrect shape.
 pub struct ConvexShape<'s> {
-    #[doc(hidden)]
     convex_shape: *mut ffi::sfConvexShape,
-    #[doc(hidden)]
     texture: Option<&'s Texture>
 }
 
 /// An iterator over the points of a ConvexShape
 pub struct ConvexShapePoints {
-    #[doc(hidden)]
     convex_shape: *mut ffi::sfConvexShape,
-    #[doc(hidden)]
     pos: u32
 }
 

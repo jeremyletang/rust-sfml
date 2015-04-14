@@ -33,7 +33,6 @@ use ffi::window::context as ffi;
 ///
 /// Class holding a valid drawing context.
 pub struct Context {
-    #[doc(hidden)]
     cont: *mut ffi::sfContext
 }
 

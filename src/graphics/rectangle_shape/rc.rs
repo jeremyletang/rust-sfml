@@ -39,9 +39,7 @@ use ffi::graphics::rectangle_shape as ffi;
 
 /// Specialized shape representing a rectangle
 pub struct RectangleShape {
-    #[doc(hidden)]
     rectangle_shape: *mut ffi::sfRectangleShape,
-    #[doc(hidden)]
     texture: Option<Rc<RefCell<Texture>>>
 }
 

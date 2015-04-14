@@ -47,11 +47,8 @@ use ffi::graphics::text as ffi;
 /// Text is a drawable class that allows to easily
 /// display some text with custom style and color on a render target.
 pub struct Text {
-    #[doc(hidden)]
     text: *mut ffi::sfText,
-    #[doc(hidden)]
     string_length: u32,
-    #[doc(hidden)]
     font: Option<Rc<RefCell<Font>>>
 }
 

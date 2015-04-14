@@ -34,7 +34,6 @@ use ffi::network::tcp_listener as ffi;
 
 /// Socket that listens to new TCP connections
 pub struct TcpListener {
-    #[doc(hidden)]
     listener: *mut ffi::sfTcpListener
 }
 

@@ -38,9 +38,7 @@ use ffi::audio::sound_buffer as ffi;
 ///
 /// A sound buffer holds the data of a sound, which is an array of audio samples.
 pub struct SoundBuffer {
-    #[doc(hidden)]
     sound_buffer: *mut ffi::sfSoundBuffer,
-    #[doc(hidden)]
     dropable: bool
 }
 

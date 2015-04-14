@@ -108,19 +108,16 @@ pub enum Status {
 
 /// Encapsulation of an HTTP request
 pub struct Request {
-    #[doc(hidden)]
     request: *mut ffi::sfHttpRequest
 }
 
 /// Encapsulation of an HTTP response
 pub struct Response {
-    #[doc(hidden)]
     response: *mut ffi::sfHttpResponse
 }
 
 /// The HTTP client.
 pub struct Http {
-    #[doc(hidden)]
     http: *mut ffi::sfHttp
 }
 

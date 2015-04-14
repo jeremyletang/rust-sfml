@@ -45,9 +45,7 @@ use ffi::graphics::sprite as ffi;
 /// Sprite is a drawable class that allows to easily
 /// display a texture (or a part of it) on a render target.
 pub struct Sprite {
-    #[doc(hidden)]
     sprite: *mut ffi::sfSprite,
-    #[doc(hidden)]
     texture: Option<Rc<RefCell<Texture>>>
 }
 

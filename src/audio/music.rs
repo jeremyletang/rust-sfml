@@ -44,7 +44,6 @@ use ffi::audio::music as ffi;
 /// Streamed music played from an audio file.
 /// Musics are sounds that are streamed rather than completely loaded in memory.
 pub struct Music {
-    #[doc(hidden)]
     music: *mut ffi::sfMusic
 }
 

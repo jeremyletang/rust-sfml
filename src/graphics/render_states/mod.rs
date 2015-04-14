@@ -37,7 +37,6 @@ pub mod rc;
 
 /// Define the states used for drawing to a RenderTarget
 pub struct RenderStates<'s> {
-    #[doc(hidden)]
     sfRenderStates: ffi::sfRenderStates,
     /// Blending mode.
     pub blendMode: BlendMode,

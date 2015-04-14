@@ -34,7 +34,6 @@ use ffi::graphics::transformable as ffi;
 
 /// Target for off-screen 2D rendering into a texture
 pub struct Transformable{
-    #[doc(hidden)]
     transformable: *mut ffi::sfTransformable
 }
 

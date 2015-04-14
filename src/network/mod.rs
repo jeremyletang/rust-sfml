@@ -38,7 +38,6 @@ pub use network::ftp::Ftp;
 pub use network::http::Http;
 
 
-#[doc(hidden)]
 #[cfg(any(target_os="macos", target_os="linux", target_os="windows"))]
 mod platform {
     #[link(name = "csfml-network")]

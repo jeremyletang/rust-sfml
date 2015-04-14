@@ -46,9 +46,7 @@ use ffi::window::window as ffi;
 /// and abstractions for events and input handling.
 ///
 pub struct Window {
-    #[doc(hidden)]
     window: *mut ffi::sfWindow,
-    #[doc(hidden)]
     title_length: u32
 }
 

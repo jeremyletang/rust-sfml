@@ -39,9 +39,7 @@ pub mod rc;
 
 /// Specialized shape representing a rectangle
 pub struct RectangleShape<'s> {
-    #[doc(hidden)]
     rectangle_shape: *mut ffi::sfRectangleShape,
-    #[doc(hidden)]
     texture: Option<&'s Texture>
 }
 

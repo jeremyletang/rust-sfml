@@ -48,9 +48,7 @@ pub mod rc;
 /// executed directly by the graphics card and allowing to apply
 /// real-time operations to the rendered entities.
 pub struct Shader<'s> {
-    #[doc(hidden)]
     shader: *mut ffi::sfShader,
-    #[doc(hidden)]
     texture: Option<&'s Texture>
 }
 

@@ -37,7 +37,6 @@ use ffi::network::tcp_socket as ffi;
 
 /// Specialized socket using the TCP protocol
 pub struct TcpSocket {
-    #[doc(hidden)]
     socket: *mut ffi::sfTcpSocket
 }
 

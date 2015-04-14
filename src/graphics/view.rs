@@ -42,9 +42,7 @@ use ffi::graphics::view as ffi;
 /// rotate or zoom the entire scene without altering
 /// the way that your drawable objects are drawn.
 pub struct View {
-    #[doc(hidden)]
     dropable: bool,
-    #[doc(hidden)]
     view: *mut ffi::sfView
 }
 

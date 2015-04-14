@@ -34,7 +34,6 @@ pub use system::msleep::sleep;
 pub use system::time::Time;
 pub use system::clock::Clock;
 
-#[doc(hidden)]
 #[cfg(any(target_os="macos", target_os="linux", target_os="windows"))]
 mod platform {
     #[link(name = "csfml-system")]

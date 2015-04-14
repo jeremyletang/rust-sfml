@@ -36,7 +36,6 @@ use ffi::network::udp_socket as ffi;
 
 /// Specialized socket using the UDP protocol.
 pub struct UdpSocket {
-    #[doc(hidden)]
     socket: *mut ffi::sfUdpSocket
 }
 

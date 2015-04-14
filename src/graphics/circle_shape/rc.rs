@@ -39,9 +39,7 @@ use ffi::graphics::circle_shape as ffi;
 
 /// Specialized shape representing a circle.
 pub struct CircleShape {
-    #[doc(hidden)]
     circle_shape: *mut ffi::sfCircleShape,
-    #[doc(hidden)]
     texture: Option<Rc<RefCell<Texture>>>
 }
 

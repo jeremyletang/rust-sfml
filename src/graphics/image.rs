@@ -36,7 +36,6 @@ use ffi::graphics::image as ffi;
 
 /// Loading, manipulating and saving images.
 pub struct Image {
-    #[doc(hidden)]
     image: *mut ffi::sfImage
 }
 

@@ -160,25 +160,21 @@ pub enum Status {
 
 /// The FTP client
 pub struct Ftp {
-    #[doc(hidden)]
     ftp: *mut ffi::sfFtp
 }
 
 /// Encapsulation of an Ftp Serveur response
 pub struct Response {
-    #[doc(hidden)]
     response: *mut ffi::sfFtpResponse
 }
 
 /// Encapsulation of a response returning a list of filename
 pub struct ListingResponse{
-    #[doc(hidden)]
     listing_response: *mut ffi::sfFtpListingResponse
 }
 
 /// Encapsulation of a response returning a directory
 pub struct DirectoryResponse{
-    #[doc(hidden)]
     directory_response: *mut ffi::sfFtpDirectoryResponse
 }
 

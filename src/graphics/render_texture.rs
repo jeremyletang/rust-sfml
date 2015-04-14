@@ -40,7 +40,6 @@ use ffi::graphics::render_texture as ffi;
 
 /// Target for off-screen 2D rendering into a texture
 pub struct RenderTexture {
-    #[doc(hidden)]
     render_texture: *mut ffi::sfRenderTexture
 }
 

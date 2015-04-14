@@ -35,15 +35,12 @@ use ffi::graphics::vertex_array as ffi;
 
 /// Define a set of one or more 2D primitives
 pub struct VertexArray {
-    #[doc(hidden)]
     vertex_array: *mut ffi::sfVertexArray
 }
 
 /// An iterator over the vertice of a VertexArray
 pub struct Vertices {
-    #[doc(hidden)]
     vertex_array: *mut ffi::sfVertexArray,
-    #[doc(hidden)]
     pos: u32
 }
 

@@ -37,7 +37,6 @@ use ffi::graphics::render_states as ffi;
 
 /// Define the states used for drawing to a RenderTarget
 pub struct RenderStates {
-    #[doc(hidden)]
     sfRenderStates: ffi::sfRenderStates,
     /// Blending mode.
     pub blendMode: BlendMode,

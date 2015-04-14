@@ -32,7 +32,6 @@ pub use window::context_settings::ContextSettings;
 pub use window::window_style::{WindowStyle, NoStyle, Titlebar,
                                Resize, Close, Fullscreen, DefaultStyle};
 
-#[doc(hidden)]
 #[cfg(any(target_os="macos", target_os="linux", target_os="windows"))]
 mod platform {
     #[link(name = "csfml-window")]

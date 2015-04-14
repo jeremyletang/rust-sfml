@@ -42,9 +42,7 @@ use ffi::graphics::texture as ffi;
 ///
 /// Texture stores pixels that can be drawn, with a sprite for example.
 pub struct Texture {
-    #[doc(hidden)]
     texture: *mut ffi::sfTexture,
-    #[doc(hidden)]
     dropable: bool
 }
 

@@ -36,7 +36,6 @@ use ffi::system::clock as ffi;
 ///
 /// Utility class that measures the elapsed time
 pub struct Clock {
-    #[doc(hidden)]
     clock: *mut ffi::sfClock
 }
 

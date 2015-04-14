@@ -43,9 +43,7 @@ pub mod rc;
 ///
 /// Regular sound that can be played in the audio environment.
 pub struct Sound<'s> {
-    #[doc(hidden)]
     sound: *mut ffi::sfSound,
-    #[doc(hidden)]
     buffer: Option<&'s SoundBuffer>
 }
 

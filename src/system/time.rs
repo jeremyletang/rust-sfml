@@ -41,7 +41,6 @@ use ffi::system::time as ffi;
 ///
 /// Time encapsulates a time value in a flexible way.
 pub struct Time {
-    #[doc(hidden)]
     time: ffi::sfTime
 }
 

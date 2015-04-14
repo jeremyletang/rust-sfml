@@ -47,9 +47,7 @@ use ffi::graphics::shader as ffi;
 /// executed directly by the graphics card and allowing to apply
 /// real-time operations to the rendered entities.
 pub struct Shader {
-    #[doc(hidden)]
     shader: *mut ffi::sfShader,
-    #[doc(hidden)]
     texture: Option<Rc<RefCell<Texture>>>
 }
 

@@ -40,7 +40,6 @@ use ffi::audio::sound_buffer_recorder as ffi;
 /// SoundBufferRecorder allows to access a recorded sound through a SoundBuffer,
 /// so that it can be played, saved to a file, etc.
 pub struct SoundBufferRecorder {
-    #[doc(hidden)]
     sound_buffer_recorder: *mut ffi::sfSoundBufferRecorder
 }
 
