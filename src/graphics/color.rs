@@ -22,8 +22,6 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#![allow(non_snake_case)]
-
 //! Utility class for manpulating RGBA colors
 //!
 //! Color is a simple color class composed of 4 components: Red, Green, Blue, Alpha
@@ -58,7 +56,7 @@ impl Color {
     /// * blue - Blue component  (0 .. 255)
     ///
     /// Return Color object constructed from the components
-    pub fn new_RGB(red: u8, green: u8, blue: u8) -> Color {
+    pub fn new_rgb(red: u8, green: u8, blue: u8) -> Color {
         Color {
             red: red,
             green: green,
@@ -76,7 +74,7 @@ impl Color {
     /// * alpha - Alpha component  (0 .. 255)
     ///
     /// Return Color object constructed from the components
-    pub fn new_RGBA(red: u8, green: u8, blue: u8, alpha: u8) -> Color {
+    pub fn new_rgba(red: u8, green: u8, blue: u8, alpha: u8) -> Color {
         Color {
             red: red,
             green: green,
@@ -109,47 +107,47 @@ impl Color {
 
     /// Black predefined color
     pub fn black() -> Color {
-        Color::new_RGB(0, 0, 0)
+        Color::new_rgb(0, 0, 0)
     }
 
     /// White predefined color
     pub fn white() -> Color {
-        Color::new_RGB(255, 255, 255)
+        Color::new_rgb(255, 255, 255)
     }
 
     /// Red predefined color
     pub fn red() -> Color {
-        Color::new_RGB(255, 0, 0)
+        Color::new_rgb(255, 0, 0)
     }
 
     /// Green predefined color
     pub fn green() -> Color {
-        Color::new_RGB(0, 255, 0)
+        Color::new_rgb(0, 255, 0)
     }
 
     /// Blue predefined color
     pub fn blue() -> Color {
-        Color::new_RGB(0, 0, 255)
+        Color::new_rgb(0, 0, 255)
     }
 
     /// Yellow predefined color
     pub fn yellow() -> Color {
-        Color::new_RGB(255, 255, 0)
+        Color::new_rgb(255, 255, 0)
     }
 
     /// Magenta predefined color
     pub fn magenta() -> Color {
-        Color::new_RGB(255, 0, 255)
+        Color::new_rgb(255, 0, 255)
     }
 
     /// Cyan predifined color
     pub fn cyan() -> Color {
-        Color::new_RGB(0, 255, 255)
+        Color::new_rgb(0, 255, 255)
     }
 
     /// Tranparent predefined color
     pub fn transparent() -> Color {
-        Color::new_RGBA(0, 0, 0, 0)
+        Color::new_rgba(0, 0, 0, 0)
     }
 
 }

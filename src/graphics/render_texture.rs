@@ -22,8 +22,6 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#![allow(non_snake_case)]
-
 //! Target for off-screen 2D rendering into a texture
 
 use libc::c_uint;
@@ -669,14 +667,14 @@ impl RenderTarget for RenderTexture {
     /// you know which states have really changed, and need to be
     /// saved and restored). Take a look at the resetGLStates
     /// function if you do so.
-    fn push_GL_states(&mut self) -> () {
+    fn push_gl_states(&mut self) -> () {
         unsafe {
             ffi::sfRenderTexture_pushGLStates(self.render_texture)
         }
     }
 
     /// Restore the previously saved OpenGL render states and matrices
-    fn pop_GL_states(&mut self) -> () {
+    fn pop_gl_states(&mut self) -> () {
         unsafe {
             ffi::sfRenderTexture_popGLStates(self.render_texture)
         }
@@ -689,7 +687,7 @@ impl RenderTarget for RenderTexture {
     /// pushGLStates/popGLStates. It makes sure that all OpenGL
     /// states needed by SFML are set, so that subsequent sfRenderWindow_draw*()
     /// calls will work as expected.
-    fn reset_GL_states(&mut self) -> () {
+    fn reset_gl_states(&mut self) -> () {
         unsafe {
             ffi::sfRenderTexture_resetGLStates(self.render_texture)
         }

@@ -22,7 +22,7 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#![allow(non_snake_case, missing_copy_implementations)]
+#![allow(missing_copy_implementations)]
 
 //! Window that can serve as a target for 2D drawing.
 //!
@@ -557,14 +557,14 @@ impl RenderTarget for RenderWindow{
     /// you know which states have really changed, and need to be
     /// saved and restored). Take a look at the resetGLStates
     /// function if you do so.
-    fn push_GL_states(&mut self) -> () {
+    fn push_gl_states(&mut self) -> () {
         unsafe {
             ffi::sfRenderWindow_pushGLStates(self.render_window)
         }
     }
 
     /// Restore the previously saved OpenGL render states and matrices
-    fn pop_GL_states(&mut self) -> () {
+    fn pop_gl_states(&mut self) -> () {
         unsafe {
             ffi::sfRenderWindow_popGLStates(self.render_window)
         }
@@ -574,10 +574,10 @@ impl RenderTarget for RenderWindow{
     ///
     /// This function can be used when you mix SFML drawing
     /// and direct OpenGL rendering, if you choose not to use
-    /// push_GL_states/pop_GL_states. It makes sure that all OpenGL
+    /// push_gl_states/pop_gl_states. It makes sure that all OpenGL
     /// states needed by SFML are set, so that subsequent draw()
     /// calls will work as expected.
-    fn reset_GL_states(&mut self) -> () {
+    fn reset_gl_states(&mut self) -> () {
         unsafe {
             ffi::sfRenderWindow_resetGLStates(self.render_window)
         }
@@ -733,12 +733,12 @@ impl RenderTarget for RenderWindow{
     /// * point - Point to convert
     fn map_coords_to_pixel_current_view(&self,
                                             point: &Vector2f) -> Vector2i {
-        let currView =
+        let curr_view =
             unsafe { ffi::sfRenderWindow_getView(self.render_window) };
         unsafe {
             ffi::sfRenderWindow_mapCoordsToPixel(self.render_window,
                                                  *point,
-                                                 currView)
+                                                 curr_view)
         }
     }
 
