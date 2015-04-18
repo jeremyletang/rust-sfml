@@ -557,14 +557,14 @@ impl RenderTarget for RenderWindow{
     /// you know which states have really changed, and need to be
     /// saved and restored). Take a look at the resetGLStates
     /// function if you do so.
-    fn push_GL_states(&mut self) -> () {
+    fn push_gl_states(&mut self) -> () {
         unsafe {
             ffi::sfRenderWindow_pushGLStates(self.render_window)
         }
     }
 
     /// Restore the previously saved OpenGL render states and matrices
-    fn pop_GL_states(&mut self) -> () {
+    fn pop_gl_states(&mut self) -> () {
         unsafe {
             ffi::sfRenderWindow_popGLStates(self.render_window)
         }
@@ -574,10 +574,10 @@ impl RenderTarget for RenderWindow{
     ///
     /// This function can be used when you mix SFML drawing
     /// and direct OpenGL rendering, if you choose not to use
-    /// push_GL_states/pop_GL_states. It makes sure that all OpenGL
+    /// push_gl_states/pop_gl_states. It makes sure that all OpenGL
     /// states needed by SFML are set, so that subsequent draw()
     /// calls will work as expected.
-    fn reset_GL_states(&mut self) -> () {
+    fn reset_gl_states(&mut self) -> () {
         unsafe {
             ffi::sfRenderWindow_resetGLStates(self.render_window)
         }
