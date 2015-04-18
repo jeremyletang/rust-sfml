@@ -47,13 +47,11 @@ use ffi::window::window as ffi;
 ///
 pub struct Window {
     window: *mut ffi::sfWindow,
-    title_length: u32
 }
 
 /// An iterator over all the events in the events queue (internally call poll_event)
 pub struct Events {
     window: *mut ffi::sfWindow,
-    event: event::raw::sfEvent,
 }
 
 impl Window {
@@ -90,7 +88,6 @@ impl Window {
         } else {
             Some (Window {
                     window: sf_win,
-                    title_length: title.len() as u32
                 })
         }
     }
@@ -128,7 +125,6 @@ impl Window {
         } else {
             Some (Window {
                     window: sf_win,
-                    title_length: title.len() as u32
                 })
         }
     }
@@ -137,7 +133,6 @@ impl Window {
     pub fn events(&self) -> Events {
         Events {
             window: self.window.clone(),
-            event: event::raw::sfEvent { data: [032; 6] }
         }
     }
 
