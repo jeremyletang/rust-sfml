@@ -60,7 +60,6 @@ pub struct RenderWindow {
 /// An iterator over all the events in the events queue (internally call poll_event)
 pub struct Events {
     render_window: *mut ffi::sfRenderWindow,
-    event: event::raw::sfEvent,
 }
 
 impl RenderWindow {
@@ -182,7 +181,6 @@ impl RenderWindow {
     pub fn events(&self) -> Events {
         Events {
             render_window: self.render_window.clone(),
-            event: event::raw::sfEvent { data: [032; 6] }
         }
     }
 
