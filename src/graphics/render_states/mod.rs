@@ -24,8 +24,6 @@
 
 //! Define the states used for drawing to a RenderTarget
 
-#![allow(non_snake_case)]
-
 use std::ptr;
 
 use traits::Wrappable;
@@ -37,9 +35,9 @@ pub mod rc;
 
 /// Define the states used for drawing to a RenderTarget
 pub struct RenderStates<'s> {
-    sfRenderStates: ffi::sfRenderStates,
+    sf_render_states: ffi::sfRenderStates,
     /// Blending mode.
-    pub blendMode: BlendMode,
+    pub blend_mode: BlendMode,
     /// Transform
     pub transform: Transform,
     /// Texture
@@ -63,13 +61,13 @@ impl<'s> RenderStates<'s> {
                texture: Option<&'s Texture>,
                shader: Option<&'s Shader<'s>>) -> RenderStates<'s> {
         RenderStates {
-            sfRenderStates: ffi::sfRenderStates {
+                sf_render_states: ffi::sfRenderStates {
                 blendMode: blend_mode as i32,
                 transform: transform,
                 texture: ptr::null_mut(),
                 shader: ptr::null_mut()
             },
-            blendMode: blend_mode,
+            blend_mode: blend_mode,
             transform: transform,
             texture: texture,
             shader: shader
@@ -87,13 +85,13 @@ impl<'s> RenderStates<'s> {
     /// Return a new default RenderStates
     pub fn default() -> RenderStates<'s> {
         RenderStates {
-            sfRenderStates: ffi::sfRenderStates {
+                sf_render_states: ffi::sfRenderStates {
                 blendMode: BlendAlpha as i32,
                 transform: Transform::new_identity(),
                 texture: ptr::null_mut(),
                 shader: ptr::null_mut()
             },
-            blendMode: BlendAlpha,
+            blend_mode: BlendAlpha,
             transform: Transform::new_identity(),
             texture: None,
             shader: None
@@ -103,19 +101,19 @@ impl<'s> RenderStates<'s> {
     // Internal rust-sfml use only
     #[doc(hidden)]
     pub fn unwrap(&mut self) -> *mut ffi::sfRenderStates {
-        self.sfRenderStates.blendMode = self.blendMode as i32;
-        self.sfRenderStates.transform = self.transform;
-        self.sfRenderStates.texture = if !self.texture.is_none() {
+        self.sf_render_states.blendMode = self.blend_mode as i32;
+        self.sf_render_states.transform = self.transform;
+        self.sf_render_states.texture = if !self.texture.is_none() {
             self.texture.unwrap().unwrap()
         } else {
             ptr::null_mut()
         };
-        self.sfRenderStates.shader = if !self.shader.is_none() {
+        self.sf_render_states.shader = if !self.shader.is_none() {
             self.shader.unwrap().unwrap()
         } else {
             ptr::null_mut()
         };
 
-        &mut self.sfRenderStates as *mut ffi::sfRenderStates
+        &mut self.sf_render_states as *mut ffi::sfRenderStates
     }
 }
