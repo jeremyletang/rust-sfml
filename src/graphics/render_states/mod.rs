@@ -77,7 +77,7 @@ impl<'s> RenderStates<'s> {
     /// Create a new RenderStates initialized to default.
     ///
     /// # default
-    /// * blendMode is initialized to BlendAlpha
+    /// * blend_mode is initialized to BlendAlpha
     /// * transform is initialized to the identity matrix
     /// * texture is initialized to None
     /// * shader is initialized to None
