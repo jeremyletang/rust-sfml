@@ -22,7 +22,7 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#![allow(non_snake_case, missing_copy_implementations)]
+#![allow(missing_copy_implementations)]
 
 //! Window that can serve as a target for 2D drawing.
 //!
@@ -733,12 +733,12 @@ impl RenderTarget for RenderWindow{
     /// * point - Point to convert
     fn map_coords_to_pixel_current_view(&self,
                                             point: &Vector2f) -> Vector2i {
-        let currView =
+        let curr_view =
             unsafe { ffi::sfRenderWindow_getView(self.render_window) };
         unsafe {
             ffi::sfRenderWindow_mapCoordsToPixel(self.render_window,
                                                  *point,
-                                                 currView)
+                                                 curr_view)
         }
     }
 
