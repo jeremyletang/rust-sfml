@@ -35,7 +35,7 @@ use ffi::network::packet as ffi;
 
 /// Utility class to build blocks of data to transfer over the network.
 pub struct Packet {
-    pub packet: *mut ffi::sfPacket
+    packet: *mut ffi::sfPacket
 }
 
 impl Packet {
