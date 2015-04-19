@@ -39,8 +39,8 @@ pub struct VertexArray {
 }
 
 /// An iterator over the vertice of a VertexArray
-pub struct Vertices {
-    vertex_array: *mut ffi::sfVertexArray,
+pub struct Vertices<'a> {
+    vertex_array: &'a VertexArray,
     pos: u32
 }
 
@@ -231,9 +231,9 @@ impl VertexArray {
     }
 
     /// Return an immutable iterator over all the vertice contained by the VertexArray
-    pub fn vertices(&self) -> Vertices {
+    pub fn vertices<'a>(&'a self) -> Vertices<'a> {
         Vertices {
-            vertex_array: self.vertex_array.clone(),
+            vertex_array: self,
             pos: 0
         }
     }
@@ -253,18 +253,18 @@ impl Clone for VertexArray {
     }
 }
 
-impl<'s> Iterator for Vertices {
-    type Item = &'s Vertex;
+impl<'a> Iterator for Vertices<'a> {
+    type Item = &'a Vertex;
 
-    fn next(&mut self) -> Option<&'s Vertex> {
+    fn next(&mut self) -> Option<&'a Vertex> {
         let point_count =
-            unsafe { ffi::sfVertexArray_getVertexCount(self.vertex_array) as u32 };
+            unsafe { ffi::sfVertexArray_getVertexCount(self.vertex_array.vertex_array) as u32 };
         if self.pos == point_count {
             None
         } else {
             self.pos += 1;
             unsafe {
-                mem::transmute(ffi::sfVertexArray_getVertex(self.vertex_array,
+                mem::transmute(ffi::sfVertexArray_getVertex(self.vertex_array.vertex_array,
                                                              self.pos as c_uint))
             }
         }
