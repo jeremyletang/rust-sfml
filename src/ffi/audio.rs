@@ -58,15 +58,15 @@ pub mod music {
         // sfMusic*mut  sfMusic_createFromStream(sfInputStream*mut  stream);
         pub fn sfMusic_destroy(music: *mut sfMusic) -> ();
         pub fn sfMusic_setLoop(music: *mut sfMusic, lloop: SfBool) -> ();
-        pub fn sfMusic_getLoop(music: *mut sfMusic) -> SfBool;
-        pub fn sfMusic_getDuration(music: *mut sfMusic) -> sfTime;
+        pub fn sfMusic_getLoop(music: *const sfMusic) -> SfBool;
+        pub fn sfMusic_getDuration(music: *const sfMusic) -> sfTime;
         pub fn sfMusic_play(music: *mut sfMusic) -> ();
         pub fn sfMusic_pause(music: *mut sfMusic) -> ();
         pub fn sfMusic_stop(music: *mut sfMusic) -> ();
-        pub fn sfMusic_getChannelCount(music: *mut sfMusic) -> c_uint;
-        pub fn sfMusic_getSampleRate(music: *mut sfMusic) -> c_uint;
-        pub fn sfMusic_getStatus(music: *mut sfMusic) -> sfSoundStatus;
-        pub fn sfMusic_getPlayingOffset(music: *mut sfMusic) -> sfTime;
+        pub fn sfMusic_getChannelCount(music: *const sfMusic) -> c_uint;
+        pub fn sfMusic_getSampleRate(music: *const sfMusic) -> c_uint;
+        pub fn sfMusic_getStatus(music: *const sfMusic) -> sfSoundStatus;
+        pub fn sfMusic_getPlayingOffset(music: *const sfMusic) -> sfTime;
         pub fn sfMusic_setPitch(music: *mut sfMusic, pitch: c_float) -> ();
         pub fn sfMusic_setVolume(music: *mut sfMusic, volume: c_float) -> ();
         pub fn sfMusic_setPosition(music: *mut sfMusic, position: Vector3f) -> ();
@@ -74,12 +74,12 @@ pub mod music {
         pub fn sfMusic_setMinDistance(music: *mut sfMusic, distance: c_float) -> ();
         pub fn sfMusic_setAttenuation(music: *mut sfMusic, attenuation: c_float) -> ();
         pub fn sfMusic_setPlayingOffset(music: *mut sfMusic, timeOffset: sfTime) -> ();
-        pub fn sfMusic_getPitch(music: *mut sfMusic) -> c_float;
-        pub fn sfMusic_getVolume(music: *mut sfMusic) -> c_float;
-        pub fn sfMusic_getPosition(music: *mut sfMusic) -> Vector3f;
-        pub fn sfMusic_isRelativeToListener(music: *mut sfMusic) -> SfBool;
-        pub fn sfMusic_getMinDistance(music: *mut sfMusic) -> c_float;
-        pub fn sfMusic_getAttenuation(music: *mut sfMusic) -> c_float;
+        pub fn sfMusic_getPitch(music: *const sfMusic) -> c_float;
+        pub fn sfMusic_getVolume(music: *const sfMusic) -> c_float;
+        pub fn sfMusic_getPosition(music: *const sfMusic) -> Vector3f;
+        pub fn sfMusic_isRelativeToListener(music: *const sfMusic) -> SfBool;
+        pub fn sfMusic_getMinDistance(music: *const sfMusic) -> c_float;
+        pub fn sfMusic_getAttenuation(music: *const sfMusic) -> c_float;
     }
 }
 
@@ -102,16 +102,16 @@ pub mod sound {
 
     extern "C" {
         pub fn sfSound_create() -> *mut sfSound;
-        pub fn sfSound_copy(sound: *mut sfSound) -> *mut sfSound;
+        pub fn sfSound_copy(sound: *const sfSound) -> *mut sfSound;
         pub fn sfSound_destroy(sound: *mut sfSound) -> ();
         pub fn sfSound_play(sound: *mut sfSound) -> ();
         pub fn sfSound_pause(sound: *mut sfSound) -> ();
         pub fn sfSound_stop(sound: *mut sfSound) -> ();
-        pub fn sfSound_setBuffer(sound: *mut sfSound, buffer: *mut sfSoundBuffer) -> (); // todo
-        pub fn sfSound_getBuffer(sound: *mut sfSound) -> *mut sfSoundBuffer; // todo
+        pub fn sfSound_setBuffer(sound: *mut sfSound, buffer: *const sfSoundBuffer) -> ();
+        pub fn sfSound_getBuffer(sound: *const sfSound) -> *const sfSoundBuffer;
         pub fn sfSound_setLoop(sound: *mut sfSound, lloop: SfBool) -> ();
-        pub fn sfSound_getLoop(sound: *mut sfSound) -> SfBool;
-        pub fn sfSound_getStatus(sound: *mut sfSound) -> sfSoundStatus;
+        pub fn sfSound_getLoop(sound: *const sfSound) -> SfBool;
+        pub fn sfSound_getStatus(sound: *const sfSound) -> sfSoundStatus;
         pub fn sfSound_setPitch(sound: *mut sfSound, pitch: c_float) -> ();
         pub fn sfSound_setVolume(sound: *mut sfSound, volume: c_float) -> ();
         pub fn sfSound_setPosition(sound: *mut sfSound, position: Vector3f) -> ();
@@ -119,13 +119,13 @@ pub mod sound {
         pub fn sfSound_setMinDistance(sound: *mut sfSound, distance: c_float) -> ();
         pub fn sfSound_setAttenuation(sound: *mut sfSound, attenuation: c_float) -> ();
         pub fn sfSound_setPlayingOffset(sound: *mut sfSound, timeOffset: sfTime) -> ();
-        pub fn sfSound_getPitch(sound: *mut sfSound) -> c_float;
-        pub fn sfSound_getVolume(sound: *mut sfSound) -> c_float;
-        pub fn sfSound_getPosition(sound: *mut sfSound) -> Vector3f;
-        pub fn sfSound_isRelativeToListener(sound: *mut sfSound) -> SfBool;
-        pub fn sfSound_getMinDistance(sound: *mut sfSound) -> c_float;
-        pub fn sfSound_getAttenuation(sound: *mut sfSound) -> c_float;
-        pub fn sfSound_getPlayingOffset(sound: *mut sfSound) -> sfTime;
+        pub fn sfSound_getPitch(sound: *const sfSound) -> c_float;
+        pub fn sfSound_getVolume(sound: *const sfSound) -> c_float;
+        pub fn sfSound_getPosition(sound: *const sfSound) -> Vector3f;
+        pub fn sfSound_isRelativeToListener(sound: *const sfSound) -> SfBool;
+        pub fn sfSound_getMinDistance(sound: *const sfSound) -> c_float;
+        pub fn sfSound_getAttenuation(sound: *const sfSound) -> c_float;
+        pub fn sfSound_getPlayingOffset(sound: *const sfSound) -> sfTime;
     }
 }
 
@@ -142,14 +142,14 @@ pub mod sound_buffer {
 
     extern "C" {
         pub fn sfSoundBuffer_createFromFile(filename: *const c_char) -> *mut sfSoundBuffer;
-        pub fn sfSoundBuffer_copy(soundBuffer: *mut sfSoundBuffer) -> *mut sfSoundBuffer;
+        pub fn sfSoundBuffer_copy(soundBuffer: *const sfSoundBuffer) -> *mut sfSoundBuffer;
         pub fn sfSoundBuffer_destroy(soundBuffer: *mut sfSoundBuffer) -> ();
-        pub fn sfSoundBuffer_saveToFile(soundBuffer: *mut sfSoundBuffer, filename: *const c_char) -> SfBool;
-       // fn sfSoundBuffer_getSamples(soundBuffer: *mut sfSoundBuffer) -> *mut i16;
-        pub fn sfSoundBuffer_getSampleCount(soundBuffer: *mut sfSoundBuffer) -> size_t;
-        pub fn sfSoundBuffer_getChannelCount(soundBuffer: *mut sfSoundBuffer) -> c_uint;
-        pub fn sfSoundBuffer_getDuration(soundBuffer: *mut sfSoundBuffer) -> sfTime;
-        pub fn sfSoundBuffer_getSampleRate(soundBuffer: *mut sfSoundBuffer) -> c_uint;
+        pub fn sfSoundBuffer_saveToFile(soundBuffer: *const sfSoundBuffer, filename: *const c_char) -> SfBool;
+        //pub fn sfSoundBuffer_getSamples(soundBuffer: *const sfSoundBuffer) -> *const i16;
+        pub fn sfSoundBuffer_getSampleCount(soundBuffer: *const sfSoundBuffer) -> size_t;
+        pub fn sfSoundBuffer_getChannelCount(soundBuffer: *const sfSoundBuffer) -> c_uint;
+        pub fn sfSoundBuffer_getDuration(soundBuffer: *const sfSoundBuffer) -> sfTime;
+        pub fn sfSoundBuffer_getSampleRate(soundBuffer: *const sfSoundBuffer) -> c_uint;
     }
 }
 
@@ -169,8 +169,8 @@ pub mod sound_buffer_recorder {
         pub fn sfSoundBufferRecorder_destroy(soundBufferRecorder: *mut sfSoundBufferRecorder) -> ();
         pub fn sfSoundBufferRecorder_start(soundBufferRecorder: *mut sfSoundBufferRecorder, sampleRate: c_uint) -> ();
         pub fn sfSoundBufferRecorder_stop(soundBufferRecorder: *mut sfSoundBufferRecorder) -> ();
-        pub fn sfSoundBufferRecorder_getSampleRate(soundBufferRecorder: *mut sfSoundBufferRecorder) -> c_uint;
-        pub fn sfSoundBufferRecorder_getBuffer(soundBufferRecorder: *mut sfSoundBufferRecorder) -> *mut sfSoundBuffer;
+        pub fn sfSoundBufferRecorder_getSampleRate(soundBufferRecorder: *const sfSoundBufferRecorder) -> c_uint;
+        pub fn sfSoundBufferRecorder_getBuffer(soundBufferRecorder: *const sfSoundBufferRecorder) -> *const sfSoundBuffer;
         pub fn sfSoundRecorder_isAvailable() -> SfBool;
     }
 }

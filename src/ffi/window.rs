@@ -42,8 +42,8 @@ pub mod window {
         //fn sfWindow_createFromHandle(handle: sfWindowHandle, settings: *mut sfContextSettings) -> *mut sfWindow;
         pub fn sfWindow_close(window: *mut sfWindow) -> ();
         pub fn sfWindow_destroy(window: *mut sfWindow) -> ();
-        pub fn sfWindow_isOpen(window: *mut sfWindow) -> SfBool;
-        pub fn sfWindow_getSettings(window: *mut sfWindow) -> ContextSettings;
+        pub fn sfWindow_isOpen(window: *const sfWindow) -> SfBool;
+        pub fn sfWindow_getSettings(window: *const sfWindow) -> ContextSettings;
         pub fn sfWindow_setTitle(window: *mut sfWindow, title: *const c_char) -> ();
         pub fn sfWindow_setUnicodeTitle(window: *mut sfWindow, title: *const u32) -> ();
         pub fn sfWindow_setIcon(window: *mut sfWindow, width: c_uint, height: c_uint, pixel: *const u8) -> ();
@@ -55,14 +55,14 @@ pub mod window {
         pub fn sfWindow_display(window: *mut sfWindow) -> ();
         pub fn sfWindow_setFramerateLimit(window: *mut sfWindow, limit: c_uint) -> ();
         pub fn sfWindow_setJoystickThreshold(window: *mut sfWindow, threshold: c_float) -> ();
-        pub fn sfWindow_getPosition(window: *mut sfWindow) -> Vector2i;
+        pub fn sfWindow_getPosition(window: *const sfWindow) -> Vector2i;
         pub fn sfWindow_setPosition(window: *mut sfWindow, position: Vector2i) -> ();
-        pub fn sfWindow_getSize(window: *mut sfWindow) -> Vector2u;
+        pub fn sfWindow_getSize(window: *const sfWindow) -> Vector2u;
         pub fn sfWindow_setSize(window: *mut sfWindow, size: Vector2u) -> ();
         pub fn sfWindow_pollEvent(window: *mut sfWindow, event: *mut ::window::event::raw::sfEvent) -> SfBool;
         pub fn sfWindow_waitEvent(window: *mut sfWindow, event: *mut ::window::event::raw::sfEvent) -> SfBool;
-        pub fn sfMouse_getPosition(relativeTo: *mut sfWindow) -> Vector2i;
-        pub fn sfMouse_setPosition(position: Vector2i, relativeTo: *mut sfWindow) -> ();
+        pub fn sfMouse_getPosition(relativeTo: *const sfWindow) -> Vector2i;
+        pub fn sfMouse_setPosition(position: Vector2i, relativeTo: *const sfWindow) -> ();
         //fn sfWindow_getSystemHandle(window: *mut sfWindow) -> sfWindowHandle;
     }
 }
@@ -144,7 +144,7 @@ pub mod video_mode {
 
     extern "C" {
         pub fn sfVideoMode_getDesktopMode() -> sfVideoMode;
-        pub fn sfVideoMode_getFullscreenModes(Count: *mut size_t) -> *mut sfVideoMode;
+        pub fn sfVideoMode_getFullscreenModes(count: *mut size_t) -> *const sfVideoMode;
         pub fn sfVideoMode_isValid(mode: sfVideoMode) -> SfBool;
     }
 }

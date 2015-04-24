@@ -107,7 +107,12 @@ impl SoundBufferRecorder {
         if buff.is_null() {
             None
         } else {
-            Some(Wrappable::wrap(buff))
+			let buff = unsafe { ::ffi::audio::sound_buffer::sfSoundBuffer_copy(buff) };
+			if buff.is_null() {
+				None
+			} else {
+				Some(Wrappable::wrap(buff))
+			}
         }
     }
 
