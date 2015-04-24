@@ -26,7 +26,7 @@
 //!
 //! Class holding a valid drawing context.
 
-use ffi::sfml_types::{SFTRUE, SFFALSE};
+use ffi::sfml_types::SfBool;
 use ffi::window::context as ffi;
 
 /// Drawing context
@@ -55,10 +55,7 @@ impl Context {
     /// * active - True to activate, False to deactivate
     pub fn set_active(&mut self, active: bool) -> () {
         unsafe {
-            match active {
-                true    => ffi::sfContext_setActive(self.cont, SFTRUE),
-                false   => ffi::sfContext_setActive(self.cont, SFFALSE)
-            }
+            ffi::sfContext_setActive(self.cont, SfBool::from_bool(active))
         }
     }
 }

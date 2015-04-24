@@ -31,7 +31,7 @@ use std::vec::Vec;
 use traits::Wrappable;
 use network::{Packet, IpAddress, SocketStatus};
 
-use ffi::sfml_types::{SFTRUE, SFFALSE};
+use ffi::sfml_types::SfBool;
 use ffi::network::udp_socket as ffi;
 
 /// Specialized socket using the UDP protocol.
@@ -70,10 +70,7 @@ impl UdpSocket {
     /// blocking - true to set the socket as blocking, false for non-blocking
     pub fn set_blocking(&self, blocking: bool) -> () {
         unsafe {
-            match blocking  {
-                true        => ffi::sfUdpSocket_setBlocking(self.socket, SFTRUE),
-                false       => ffi::sfUdpSocket_setBlocking(self.socket, SFFALSE)
-            }
+            ffi::sfUdpSocket_setBlocking(self.socket, SfBool::from_bool(blocking))
         }
     }
 
@@ -81,10 +78,7 @@ impl UdpSocket {
     ///
     /// Return true if the socket is blocking, false otherwise
     pub fn is_blocking(&self) -> bool {
-        match unsafe { ffi::sfUdpSocket_isBlocking(self.socket) } {
-            SFFALSE  => false,
-            SFTRUE   => true
-        }
+        unsafe { ffi::sfUdpSocket_isBlocking(self.socket) }.to_bool()
     }
 
     /// Get the port to which a UDP socket is bound locally

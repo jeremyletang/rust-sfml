@@ -22,8 +22,6 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-pub use self::SfBool::{SFFALSE, SFTRUE};
-
 #[repr(C)]
 #[derive(PartialEq, Eq, Clone, Copy)]
 pub enum SfBool {
@@ -32,17 +30,19 @@ pub enum SfBool {
 }
 
 impl SfBool {
+    #[inline(always)]
     pub fn to_bool(&self) -> bool {
-        match self {
-            &SFFALSE => false,
-            &SFTRUE => true
+        match *self {
+            SfBool::SFFALSE => false,
+            SfBool::SFTRUE => true
         }
     }
 
+    #[inline(always)]
     pub fn from_bool(b: bool) -> SfBool {
         match b {
-            true => SFTRUE,
-            false => SFFALSE
+            true => SfBool::SFTRUE,
+            false => SfBool::SFFALSE
         }
     }
 }

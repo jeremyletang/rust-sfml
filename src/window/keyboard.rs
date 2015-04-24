@@ -27,7 +27,6 @@
 
 use libc::c_int;
 
-use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi::window::keyboard as ffi;
 
 /// Key codes
@@ -150,9 +149,6 @@ pub enum Key {
  */
 pub fn is_key_pressed(key: Key) -> bool {
     unsafe {
-        match ffi::sfKeyboard_isKeyPressed(key as c_int) {
-            SFFALSE  => false,
-            SFTRUE   => true
-        }
+        ffi::sfKeyboard_isKeyPressed(key as c_int).to_bool()
     }
 }

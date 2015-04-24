@@ -32,7 +32,7 @@ use traits::Wrappable;
 use network::{IpAddress, Packet, SocketStatus};
 use system::Time;
 
-use ffi::sfml_types::{SFTRUE, SFFALSE};
+use ffi::sfml_types::SfBool;
 use ffi::network::tcp_socket as ffi;
 
 /// Specialized socket using the TCP protocol
@@ -71,10 +71,7 @@ impl TcpSocket {
     /// * blocking - true to set the socket as blocking, false for non-blocking
     pub fn set_blocking(&mut self, blocking: bool) -> () {
         unsafe {
-            match blocking  {
-                true        => ffi::sfTcpSocket_setBlocking(self.socket, SFTRUE),
-                false       => ffi::sfTcpSocket_setBlocking(self.socket, SFFALSE)
-            }
+            ffi::sfTcpSocket_setBlocking(self.socket, SfBool::from_bool(blocking))
         }
     }
 
@@ -82,10 +79,7 @@ impl TcpSocket {
     ///
     /// Return true if the socket is blocking, false otherwise
     pub fn is_blocking(&self) -> bool {
-        match unsafe { ffi::sfTcpSocket_isBlocking(self.socket) } {
-            SFFALSE => false,
-            SFTRUE  => true
-        }
+        unsafe { ffi::sfTcpSocket_isBlocking(self.socket) }.to_bool()
     }
 
     /// Get the port to which a TCP socket is bound locally

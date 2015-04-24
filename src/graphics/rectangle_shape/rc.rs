@@ -34,7 +34,7 @@ use system::vector2::Vector2f;
 use graphics::{FloatRect, IntRect, Color, Texture,
                RenderTarget, Transform, rc, RenderStates};
 
-use ffi::sfml_types::{SFTRUE, SFFALSE};
+use ffi::sfml_types::SfBool;
 use ffi::graphics::rectangle_shape as ffi;
 
 /// Specialized shape representing a rectangle
@@ -71,7 +71,7 @@ impl RectangleShape {
             unsafe {
                 ffi::sfRectangleShape_setTexture(rectangle,
                                                  (*texture).borrow().unwrap(),
-                                                 SFTRUE);
+                                                 SfBool::SFTRUE);
             }
             Some(RectangleShape {
                     rectangle_shape: rectangle,
@@ -398,16 +398,9 @@ impl RectangleShape {
                        texture: Rc<RefCell<Texture>>,
                        reset_rect: bool) -> () {
         unsafe {
-            match reset_rect {
-                false       =>
-                    ffi::sfRectangleShape_setTexture(self.rectangle_shape,
-                                                     (*texture).borrow().unwrap(),
-                                                     SFFALSE),
-                true        =>
-                    ffi::sfRectangleShape_setTexture(self.rectangle_shape,
-                                                     (*texture).borrow().unwrap(),
-                                                     SFTRUE)
-            }
+            ffi::sfRectangleShape_setTexture(self.rectangle_shape,
+                                             (*texture).borrow().unwrap(),
+                                             SfBool::from_bool(reset_rect))
         }
         self.texture = Some(texture);
     }
@@ -420,7 +413,7 @@ impl RectangleShape {
         unsafe {
             ffi::sfRectangleShape_setTexture(self.rectangle_shape,
                                              ptr::null_mut(),
-                                             SFTRUE)
+                                             SfBool::SFTRUE)
         }
     }
 

@@ -32,7 +32,6 @@ use libc::c_uint;
 use traits::Wrappable;
 use audio::sound_buffer::SoundBuffer;
 
-use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi::audio::sound_buffer_recorder as ffi;
 
 /// Store captured audio data in sound Buffer
@@ -120,10 +119,7 @@ impl SoundBufferRecorder {
     ///
     /// Return true if audio capture is supported, false otherwise
     pub fn is_available() -> bool {
-        match unsafe { ffi::sfSoundRecorder_isAvailable() } {
-            SFFALSE => false,
-            SFTRUE  => true,
-        }
+        unsafe { ffi::sfSoundRecorder_isAvailable() }.to_bool()
     }
 
 }

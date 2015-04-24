@@ -32,7 +32,6 @@ use std::vec::Vec;
 
 use traits::Wrappable;
 
-use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi::window::video_mode as ffi;
 
 /// VideoMode defines a video mode (width, height, bpp, frequency)
@@ -81,15 +80,11 @@ impl VideoMode {
     ///
     /// return true if the video mode is valid for fullscreen mode
     pub fn is_valid(&self) -> bool {
-        let i = unsafe { ffi::sfVideoMode_isValid(ffi::sfVideoMode {
+        unsafe { ffi::sfVideoMode_isValid(ffi::sfVideoMode {
                     width: self.width as c_uint,
                     height: self.height as c_uint,
                     bits_per_pixel: self.bits_per_pixel as c_uint
-                }) };
-        match i {
-            SFFALSE => false,
-            SFTRUE  => true
-        }
+                }) }.to_bool()
     }
 
     /// Static Method, get the current desktop video mode
