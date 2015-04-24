@@ -24,8 +24,6 @@
 
 //! Sound and musics statues
 
-pub use self::Status::{Stopped, Paused, Playing};
-
 use ffi::audio::sound_status as ffi;
 
 /// Enumeration of statuses for sounds and musics
