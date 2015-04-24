@@ -28,8 +28,6 @@
 
 use std::ops::{Add, Mul};
 
-use ffi::graphics::color as ffi;
-
 /// Utility class for manpulating RGBA colors
 ///
 /// Color is a simple color class composed of 4 components: Red, Green, Blue, Alpha
@@ -135,7 +133,16 @@ impl Add for Color {
 
     /// Calculate the component-wise saturated addition of two colors.
     fn add(self, other: Color) -> Color {
-        unsafe { ffi::sfColor_add(self, other) }
+        let red = self.red as u16 + other.red as u16;
+		let green = self.green as u16 + other.green as u16;
+		let blue = self.blue as u16 + other.blue as u16;
+		let alpha = self.alpha as u16 + other.alpha as u16;
+		Color::new_rgba(
+			if red > 255 { 255 } else { red as u8 },
+			if green > 255 { 255 } else { green as u8 },
+			if blue > 255 { 255 } else { blue as u8 },
+			if alpha > 255 { 255 } else { alpha as u8 },
+		)
     }
 }
 
@@ -146,6 +153,10 @@ impl Mul for Color {
     ///
     /// For each `X` in `rgba`, `result.X = a.X * b.X / 255`.
     fn mul(self, other: Color) -> Color {
-        unsafe { ffi::sfColor_modulate(self, other) }
+        let red = self.red as u16 * other.red as u16 / 255;
+		let green = self.green as u16 * other.green as u16 / 255;
+		let blue = self.blue as u16 * other.blue as u16 / 255;
+		let alpha = self.alpha as u16 * other.alpha as u16 / 255;
+		Color::new_rgba(red as u8, green as u8, blue as u8, alpha as u8)
     }
 }

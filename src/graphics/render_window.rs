@@ -563,7 +563,7 @@ impl RenderTarget for RenderWindow{
     ////
     fn get_view(&self) -> View {
         unsafe{
-            Wrappable::wrap(ffi::sfRenderWindow_getView(self.render_window))
+            Wrappable::wrap(::ffi::graphics::view::sfView_copy(ffi::sfRenderWindow_getView(self.render_window)))
         }
     }
 
@@ -573,7 +573,7 @@ impl RenderTarget for RenderWindow{
     ////
     fn get_default_view(&self) -> View {
         unsafe{
-            Wrappable::wrap(ffi::sfRenderWindow_getDefaultView(self.render_window))
+            Wrappable::wrap(::ffi::graphics::view::sfView_copy(ffi::sfRenderWindow_getDefaultView(self.render_window)))
         }
     }
 

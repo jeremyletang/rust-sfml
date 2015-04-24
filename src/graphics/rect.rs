@@ -92,9 +92,12 @@ impl IntRect {
     ///
     /// Return strue if rectangles overlap
     pub fn intersects(rect1: &IntRect,
-                      rect2: &IntRect,
-                      intersections: &IntRect) -> bool {
-        unsafe { ffi::sfIntRect_intersects(rect1, rect2, intersections) }.to_bool()
+                      rect2: &IntRect) -> Option<IntRect> {
+		let mut intersections = IntRect::new(0, 0, 0, 0);
+        match unsafe { ffi::sfIntRect_intersects(rect1, rect2, &mut intersections) }.to_bool() {
+			false => None,
+			true => Some(intersections)
+		}
     }
 }
 
@@ -133,8 +136,11 @@ impl FloatRect {
     ///
     /// Return true if rectangles overlap
     pub fn intersects(rect1: &FloatRect,
-        rect2: &FloatRect,
-        intersections: &FloatRect) -> bool {
-        unsafe { ffi::sfFloatRect_intersects(rect1, rect2, intersections) }.to_bool()
+					  rect2: &FloatRect) -> Option<FloatRect> {
+		let mut intersections = FloatRect::new(0., 0., 0., 0.);
+        match unsafe { ffi::sfFloatRect_intersects(rect1, rect2, &mut intersections) }.to_bool() {
+			false => None,
+			true => Some(intersections)
+		}
     }
 }

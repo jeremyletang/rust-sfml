@@ -24,10 +24,8 @@
 
 //! Define a set of one or more 2D primitives
 
-use traits::{Drawable, Wrappable};
+use traits::Drawable;
 use graphics::{Vertex, FloatRect, PrimitiveType, RenderTarget, RenderStates};
-
-use ffi::graphics::vertex_array as ffi;
 
 use std::ops::{Deref, DerefMut};
 
@@ -116,16 +114,6 @@ impl DerefMut for VertexArray {
 	fn deref_mut(&mut self) -> &mut Vec<Vertex> {
 		&mut self.vertices
 	}
-}
-
-impl Wrappable<*mut ffi::sfVertexArray> for VertexArray {
-    fn wrap(_vertex_array: *mut ffi::sfVertexArray) -> VertexArray {
-        unimplemented!()
-    }
-
-    fn unwrap(&self) -> *mut ffi::sfVertexArray {
-        unimplemented!()
-    }
 }
 
 impl Drawable for VertexArray {

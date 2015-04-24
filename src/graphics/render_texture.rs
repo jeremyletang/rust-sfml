@@ -90,7 +90,12 @@ impl RenderTexture {
             None
         }
         else {
-            Some(Wrappable::wrap(tex))
+			let tex = unsafe { ::ffi::graphics::texture::sfTexture_copy(tex) };
+			if tex.is_null() {
+				None
+			} else {
+				Some(Wrappable::wrap(tex))
+			}
         }
     }
 
@@ -148,7 +153,7 @@ impl RenderTarget for RenderTexture {
     /// Return the current active view
     fn get_view(&self) -> View {
         unsafe {
-            Wrappable::wrap(ffi::sfRenderTexture_getView(self.render_texture))
+            Wrappable::wrap(::ffi::graphics::view::sfView_copy(ffi::sfRenderTexture_getView(self.render_texture)))
         }
     }
 
@@ -157,7 +162,7 @@ impl RenderTarget for RenderTexture {
     /// Return the default view of the render texture
     fn get_default_view(&self) -> View {
         unsafe {
-            Wrappable::wrap(ffi::sfRenderTexture_getDefaultView(self.render_texture))
+            Wrappable::wrap(::ffi::graphics::view::sfView_copy(ffi::sfRenderTexture_getDefaultView(self.render_texture)))
         }
     }
 

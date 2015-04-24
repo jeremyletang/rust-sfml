@@ -42,7 +42,6 @@ use ffi::graphics::view as ffi;
 /// rotate or zoom the entire scene without altering
 /// the way that your drawable objects are drawn.
 pub struct View {
-    dropable: bool,
     view: *mut ffi::sfView
 }
 
@@ -58,7 +57,6 @@ impl View {
             None
         } else {
             Some(View {
-                    dropable: true,
                     view: view
                 })
         }
@@ -83,7 +81,6 @@ impl View {
                 ffi::sfView_setSize(view, *size);
             }
             Some(View {
-                    dropable: true,
                     view: view
                 })
         }
@@ -98,7 +95,6 @@ impl View {
             None
         } else {
             Some(View {
-                dropable: true,
                 view: view
             })
         }
@@ -116,7 +112,6 @@ impl View {
             None
         } else {
             Some(View {
-                    dropable: true,
                     view: view
                 })
         }
@@ -297,7 +292,6 @@ impl Clone for View {
             panic!("Not enough memory to clone View")
         } else {
             View {
-                dropable: true,
                 view: view
             }
         }
@@ -307,7 +301,6 @@ impl Clone for View {
 impl Wrappable<*mut ffi::sfView> for View {
     fn wrap(view: *mut ffi::sfView) -> View {
         View {
-            dropable: false,
             view: view
         }
     }
@@ -320,10 +313,8 @@ impl Wrappable<*mut ffi::sfView> for View {
 impl Drop for View {
     /// Destructor for class View
     fn drop(&mut self) -> () {
-        if self.dropable {
-            unsafe {
-                ffi::sfView_destroy(self.view)
-            }
-        }
+		unsafe {
+			ffi::sfView_destroy(self.view)
+		}
     }
 }
