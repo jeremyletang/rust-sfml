@@ -48,7 +48,7 @@ pub use graphics::transformable::{Transformable, TransformableData};
 pub use graphics::glyph::Glyph;
 pub use graphics::render_texture::RenderTexture;
 pub use graphics::shape::Shape;
-pub use graphics::vertex_array::{VertexArray, Vertices};
+pub use graphics::vertex_array::VertexArray;
 pub use graphics::text_style::TextStyle;
 
 /// Shapes implementations using reference counting to manage shared resources
