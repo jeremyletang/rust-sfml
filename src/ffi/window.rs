@@ -52,6 +52,8 @@ pub mod window {
         pub fn sfWindow_setVerticalSyncEnabled(window: *mut sfWindow, enabled: SfBool) -> ();
         pub fn sfWindow_setKeyRepeatEnabled(window: *mut sfWindow, enabled: SfBool) -> ();
         pub fn sfWindow_setActive(window: *mut sfWindow, active: SfBool) -> SfBool;
+		pub fn sfWindow_requestFocus(window: *mut sfWindow) -> ();
+		pub fn sfWindow_hasFocus(window: *const sfWindow) -> SfBool;
         pub fn sfWindow_display(window: *mut sfWindow) -> ();
         pub fn sfWindow_setFramerateLimit(window: *mut sfWindow, limit: c_uint) -> ();
         pub fn sfWindow_setJoystickThreshold(window: *mut sfWindow, threshold: c_float) -> ();
@@ -85,9 +87,16 @@ pub mod context {
 }
 
 pub mod joystick {
-    use libc::{c_float, c_uint};
+    use libc::{c_float, c_uint, c_char};
 
     use ffi::sfml_types::SfBool;
+	
+	#[repr(C)]
+	pub struct sfJoystickIdentification {
+		name: *const c_char,
+		vendor_id: c_uint,
+		product_id: c_uint
+	}
 
     extern "C" {
         pub fn sfJoystick_isConnected(joystick: c_uint) -> SfBool;
@@ -95,6 +104,7 @@ pub mod joystick {
         pub fn sfJoystick_hasAxis(joystick: c_uint, axis: c_uint) -> SfBool;
         pub fn sfJoystick_isButtonPressed(joystick: c_uint, button: c_uint) -> SfBool;
         pub fn sfJoystick_getAxisPosition(joystick: c_uint, axis: c_uint) -> c_float;
+		pub fn sfJoystick_getIdentification(joystick: c_uint) -> sfJoystickIdentification;
         pub fn sfJoystick_update() -> ();
     }
 }

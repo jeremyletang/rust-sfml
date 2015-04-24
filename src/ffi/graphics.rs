@@ -55,7 +55,7 @@ pub mod render_window {
         pub fn sfRenderWindow_close(renderWindow: *mut sfRenderWindow) -> ();
         pub fn sfRenderWindow_isOpen(renderWindow: *const sfRenderWindow) -> SfBool;
         pub fn sfRenderWindow_getSettings(renderWindow: *const sfRenderWindow) -> ContextSettings;
-         pub fn sfRenderWindow_pollEvent(renderWindow: *mut sfRenderWindow, event: *mut ::window::event::raw::sfEvent) -> SfBool;
+		pub fn sfRenderWindow_pollEvent(renderWindow: *mut sfRenderWindow, event: *mut ::window::event::raw::sfEvent) -> SfBool;
         pub fn sfRenderWindow_waitEvent(renderWindow: *mut sfRenderWindow, event: *mut ::window::event::raw::sfEvent) -> SfBool;
         pub fn sfRenderWindow_getPosition(renderWindow: *const sfRenderWindow) -> Vector2i;
         pub fn sfRenderWindow_setPosition(renderWindow: *mut sfRenderWindow, position: Vector2i) -> ();
@@ -69,6 +69,8 @@ pub mod render_window {
         pub fn sfRenderWindow_setVerticalSyncEnabled(renderWindow: *mut sfRenderWindow, enabled: SfBool) -> ();
         pub fn sfRenderWindow_setKeyRepeatEnabled(renderWindow: *mut sfRenderWindow, enabled: SfBool) -> ();
         pub fn sfRenderWindow_setActive(renderWindow: *mut sfRenderWindow, active: SfBool) -> SfBool;
+		pub fn sfRenderWindow_requestFocus(window: *mut sfRenderWindow) -> ();
+		pub fn sfRenderWindow_hasFocus(window: *const sfRenderWindow) -> SfBool;
         pub fn sfRenderWindow_display(renderWindow: *mut sfRenderWindow) -> ();
         pub fn sfRenderWindow_setFramerateLimit(renderWindow: *mut sfRenderWindow, limit: c_uint) -> ();
         pub fn sfRenderWindow_setJoystickThreshold(renderWindow: *mut sfRenderWindow, treshold: c_float) -> ();
@@ -94,6 +96,7 @@ pub mod render_window {
         pub fn sfRenderWindow_capture(renderWindow: *const sfRenderWindow) -> *mut sfImage;
         pub fn sfMouse_getPositionRenderWindow(relativeTo: *const sfRenderWindow) -> Vector2i;
         pub fn sfMouse_setPositionRenderWindow(position: Vector2i, relativeTo: *const sfRenderWindow) -> ();
+		pub fn sfTouch_getPositionRenderWindow(finger: c_uint, relativeTo: *const sfRenderWindow) -> Vector2i;
     }
 }
 
@@ -207,7 +210,7 @@ pub mod convex_shape {
 }
 
 pub mod font {
-    use libc::{c_void, c_uint, c_int, c_char, c_uchar, size_t};
+    use libc::{c_void, c_uint, c_float, c_char, c_uchar, size_t};
 
     use graphics::Glyph;
 
@@ -218,6 +221,11 @@ pub mod font {
     pub struct sfFont {
         this: *mut c_void
     }
+	
+	#[repr(C)]
+	pub struct sfFontInfo {
+		family: *const c_char
+	}
 
     extern "C" {
         pub fn sfFont_createFromFile(filename: *const c_char) -> *mut sfFont;
@@ -226,9 +234,12 @@ pub mod font {
         // fn sfFont_createFromStream(stream: *mut sfInputStream) -> *mut sfFont;
         pub fn sfFont_destroy(font: *mut sfFont) -> ();
         pub fn sfFont_getGlyph(font: *mut sfFont, codepoint: u32, characterSize: c_uint, bold :SfBool) -> Glyph;
-        pub fn sfFont_getKerning(font: *mut sfFont, first: u32, second: u32, characterSize: c_uint) -> c_int;
-        pub fn sfFont_getLineSpacing(font: *mut sfFont, characterSize: c_uint) -> c_int;
+        pub fn sfFont_getKerning(font: *mut sfFont, first: u32, second: u32, characterSize: c_uint) -> c_float;
+        pub fn sfFont_getLineSpacing(font: *mut sfFont, characterSize: c_uint) -> c_float;
         pub fn sfFont_getTexture(font: *mut sfFont, characterSize: c_uint) -> *mut sfTexture;
+		pub fn sfFont_getUnderlinePosition(font: *mut sfFont, characterSize: c_uint) -> c_float;
+		pub fn sfFont_getUnderlineThickness(font: *mut sfFont, characterSize: c_uint) -> c_float;
+		pub fn sfFont_getInfo(font: *const sfFont) -> sfFontInfo;
     }
 }
 
@@ -338,10 +349,11 @@ pub mod render_states {
 
     use ffi::graphics::shader::sfShader;
     use ffi::graphics::texture::sfTexture;
+	use graphics::BlendMode;
 
     #[repr(C)]
     pub struct sfRenderStates {
-        pub blendMode: i32,
+        pub blendMode: BlendMode,
         pub transform: Transform,
         pub texture: *const sfTexture,
         pub shader: *const sfShader

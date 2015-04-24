@@ -32,7 +32,7 @@ use std::ptr;
 
 use traits::{Drawable, Wrappable};
 use graphics::{FloatRect, IntRect, Color, Texture,
-               RenderTarget, Transform, RenderStates};
+               RenderTarget, Transform, Transformable, RenderStates};
 use system::vector2::Vector2f;
 
 use ffi::sfml_types::SfBool;
@@ -458,15 +458,7 @@ impl<'s> Sprite<'s> {
 impl<'s> Clone for Sprite<'s> {
     /// Return a new Sprite or panic! if there is not enough memory
     fn clone(&self) -> Sprite<'s> {
-        let sp = unsafe { ffi::sfSprite_copy(self.sprite) };
-        if sp.is_null() {
-            panic!("Not enough memory to clone RectangleShape")
-        } else {
-            Sprite {
-                sprite: sp,
-                texture: self.texture.clone()
-            }
-        }
+		self.clone_opt().expect("Not enough memory to clone Sprite")
     }
 }
 

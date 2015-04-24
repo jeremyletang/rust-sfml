@@ -24,15 +24,77 @@
 
 //! Available blending modes for drawing
 
-/// Available Blending modes for drawing.
+#[repr(C)]
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
-pub enum BlendMode {
-    /// Pixel = Source * Source.a + Dest * (1 - Source.a)
-    BlendAlpha = 0,
-    /// Pixel = Source + Dest.
-    BlendAdd = 1,
-    /// Pixel = Source * Dest.
-    BlendMultiply = 2,
-    /// Pixel = Source.
-    BlendNone = 3
+pub enum BlendFactor {
+	Zero = 0,
+	One = 1,
+	SrcColor = 2,
+	OneMinusSrcColor = 3,
+	DstColor = 4,
+	OneMinusDstColor = 5,
+	SrcAlpha = 6,
+	OneMinusSrcAlpha = 7,
+	DstAlpha = 8,
+	OneMinusDstAlpha = 9,
+}
+
+#[repr(C)]
+#[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
+pub enum BlendEquation {
+	Add = 0,
+	Subtract = 1,
+}
+
+/// Available Blending modes for drawing.
+#[repr(C)]
+#[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
+pub struct BlendMode {
+	/// The source color factor
+	pub color_src_factor: BlendFactor,
+	/// The dest color factor
+	pub color_dst_factor: BlendFactor,
+	/// The color equation
+	pub color_equation: BlendEquation,
+	/// The source alpha factor
+	pub alpha_src_factor: BlendFactor,
+	/// The dest alpha factor
+	pub alpha_dst_factor: BlendFactor,
+	/// The alpha equation
+	pub alpha_equation: BlendEquation
+}
+
+impl BlendMode {
+	/// Create a new BlendMode with the given factors and equations.
+	pub fn new(color_src_factor: BlendFactor, color_dst_factor: BlendFactor, color_equation: BlendEquation,
+			   alpha_src_factor: BlendFactor, alpha_dst_factor: BlendFactor, alpha_equation: BlendEquation) -> BlendMode {
+		BlendMode {
+			color_src_factor: color_src_factor,
+			color_dst_factor: color_dst_factor,
+			color_equation: color_equation,
+			alpha_src_factor: alpha_src_factor,
+			alpha_dst_factor: alpha_dst_factor,
+			alpha_equation: alpha_equation,
+		}
+	}
+	/// Get the predefined Alpha blend mode.
+	pub fn alpha() -> BlendMode {
+		BlendMode::new(BlendFactor::SrcAlpha, BlendFactor::OneMinusSrcAlpha, BlendEquation::Add,
+					   BlendFactor::One, BlendFactor::OneMinusSrcAlpha, BlendEquation::Add)
+	}
+	/// Get the predefined Add blend mode.
+	pub fn add() -> BlendMode {
+		BlendMode::new(BlendFactor::SrcAlpha, BlendFactor::One, BlendEquation::Add,
+					   BlendFactor::One, BlendFactor::One, BlendEquation::Add)
+	}
+	/// Get the predefined Multiply blend mode.
+	pub fn multiply() -> BlendMode {
+		BlendMode::new(BlendFactor::DstColor, BlendFactor::Zero, BlendEquation::Add,
+					   BlendFactor::DstColor, BlendFactor::Zero, BlendEquation::Add)
+	}
+	/// Get the predefined None blend mode.
+	pub fn none() -> BlendMode {
+		BlendMode::new(BlendFactor::One, BlendFactor::Zero, BlendEquation::Add,
+					   BlendFactor::One, BlendFactor::Zero, BlendEquation::Add)
+	}
 }

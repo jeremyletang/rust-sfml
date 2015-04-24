@@ -63,21 +63,95 @@ fn mark_dirty(data: &mut TransformableData) {
 	data.inverse.set(None);
 }
 
+trait Custom<T> {
+	/// Inner access.
+	fn _data(&self) -> &T;
+	/// Mutable inner access.
+	fn _data_mut(&mut self) -> &mut T;
+}
+
+impl Custom<TransformableData> for TransformableData {
+	fn _data(&self) -> &TransformableData { self }
+	fn _data_mut(&mut self) -> &mut TransformableData { self }
+}
+
 /// Trait that can be applied to transformable objects.
 ///
 /// User types may implement this trait by embedding a `TransformableData` item
 /// and implementing the `_data` and `_data_mut` methods to return it.
 pub trait Transformable {
-	/// Access the data for this Transformable.
-	///
-	/// Generally, should just return `&self.transformable_data`.
-	fn _data(&self) -> &TransformableData;
+	/// Get the position of the transformable
+	fn get_position(&self) -> Vector2f;
 	
-	/// Mutably access the data for this Transformable.
-	///
-	/// Generally, should just return `&mut self.transformable_data`.
-	fn _data_mut(&mut self) -> &mut TransformableData;
+    /// Get the orientation of the transformable
+    ///
+    /// The rotation is always in the range [0, 360].
+	fn get_rotation(&self) -> f32;
+	
+    /// Get the current scale factors of the transformable
+	fn get_scale(&self) -> Vector2f;
+	
+	/// Get the local origin of the transformable
+	fn get_origin(&self) -> Vector2f;
 
+    /// Set the position of a transformable
+    ///
+    /// This function completely overwrites the previous position.
+    /// See move to apply an offset based on the previous position instead.
+    /// The default position of a transformable Transformable object is (0, 0).
+	fn set_position(&mut self, position: Vector2f);
+
+	/// Set the orientation of a transformable
+    ///
+    /// This function completely overwrites the previous rotation.
+    /// See rotate to add an angle based on the previous rotation instead.
+    /// The default rotation of a transformable Transformable object is 0.
+	fn set_rotation(&mut self, angle: f32);
+	
+    /// Set the scale factors of a transformable
+    ///
+    /// This function completely overwrites the previous scale.
+    /// See scale to add a factor based on the previous scale instead.
+    /// The default scale of a transformable Transformable object is (1, 1).
+	fn set_scale(&mut self, scale: Vector2f);
+
+    /// Set the local origin of a transformable
+    ///
+    /// The origin of an object defines the center point for
+    /// all transformations (position, scale, rotation).
+    /// The coordinates of this point must be relative to the
+    /// top-left corner of the object, and ignore all
+    /// transformations (position, scale, rotation).
+    /// The default origin of a transformable Transformable object is (0, 0).
+	fn set_origin(&mut self, origin: Vector2f);
+
+    /// Move a transformable by a given offset
+    ///
+    /// This function adds to the current position of the object,
+    /// unlike set_position which overwrites it.
+	fn move_(&mut self, offset: Vector2f);
+
+    /// Rotate a transformable
+    ///
+    /// This function adds to the current rotation of the object,
+    /// unlike set_rotation which overwrites it.
+	fn rotate(&mut self, angle: f32);
+
+    /// Scale a transformable
+    ///
+    /// This function multiplies the current scale of the object,
+    /// unlike set_scale which overwrites it.
+	fn scale(&mut self, factors: Vector2f);
+
+    /// Get the combined transform of the transformable, including the position,
+	/// rotation, scale, and origin.
+	fn get_transform(&self) -> Transform;
+	
+	/// Get the inverse of the combined transform of the transformable.
+	fn get_inverse_transform(&self) -> Transform;
+}
+
+impl Transformable for Custom<TransformableData> {
 	/// Get the position of the transformable
 	fn get_position(&self) -> Vector2f {
 		self._data().position
@@ -218,9 +292,4 @@ pub trait Transformable {
 			result
 		}
 	}
-}
-
-impl Transformable for TransformableData {
-	fn _data(&self) -> &TransformableData { self }
-	fn _data_mut(&mut self) -> &mut TransformableData { self }
 }

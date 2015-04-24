@@ -148,6 +148,32 @@ pub enum Event {
         /// Index of the joystick (in range [0 .. joystick::Count - 1])
         joystickid: u32
     },
+	/*
+	/// A touch event began
+	TouchBegan {
+		finger: u32,
+		x: i32,
+		y: i32
+	},
+	/// A touch moved
+	TouchMoved {
+		finger: u32,
+		x: i32,
+		y: i32
+	},
+	/// A touch event ended
+	TouchEnded {
+		finger: u32,
+		x: i32,
+		y: i32
+	},
+	/// A sensor value changed
+	SensorChanged {
+		sensor: SensorType,
+		x: f32,
+		y: f32,
+		z: f32
+	},*/
     /// No Event
     NoEvent
 }
@@ -259,6 +285,25 @@ pub mod raw {
         pub width: ::libc::c_uint,
         pub height: ::libc::c_uint,
     }
+	
+	/*#[repr(C)]
+	#[derive(Clone, Copy)]
+	pub struct sfTouchEvent {
+		pub _type: sfEventType,
+		pub finger: ::libc::c_uint,
+		pub x: ::libc::c_int,
+		pub y: ::libc::c_int,
+	}
+	
+	#[repr(C)]
+	#[derive(Clone, Copy)]
+	pub struct sfSensorEvent {
+		pub _type: sfEventType,
+		pub sensor: sfSensorType,
+		pub x: ::libc::c_float,
+		pub y: ::libc::c_float,
+		pub z: ::libc::c_float,
+	}*/
 
     #[repr(C)]
     #[derive(Clone, Copy)]

@@ -34,6 +34,8 @@ pub mod listener {
         pub fn sfListener_getPosition() -> vector3::Vector3f;
         pub fn sfListener_setDirection(orientation: vector3::Vector3f) -> ();
         pub fn sfListener_getDirection() -> vector3::Vector3f;
+		pub fn sfListener_setUpVector(upVector: vector3::Vector3f) -> ();
+		pub fn sfListener_getUpVector() -> vector3::Vector3f;
     }
 }
 
@@ -154,10 +156,11 @@ pub mod sound_buffer {
 }
 
 pub mod sound_buffer_recorder {
-    use libc::{c_uint, c_void};
+    use libc::{size_t, c_uint, c_void, c_char};
 
     use ffi::audio::sound_buffer::sfSoundBuffer;
     use ffi::sfml_types::SfBool;
+    use system::Time as sfTime;
 
     #[repr(C)]
     pub struct sfSoundBufferRecorder {
@@ -167,11 +170,16 @@ pub mod sound_buffer_recorder {
     extern "C" {
         pub fn sfSoundBufferRecorder_create() -> *mut sfSoundBufferRecorder;
         pub fn sfSoundBufferRecorder_destroy(soundBufferRecorder: *mut sfSoundBufferRecorder) -> ();
-        pub fn sfSoundBufferRecorder_start(soundBufferRecorder: *mut sfSoundBufferRecorder, sampleRate: c_uint) -> ();
+        pub fn sfSoundBufferRecorder_start(soundBufferRecorder: *mut sfSoundBufferRecorder, sampleRate: c_uint) -> SfBool;
         pub fn sfSoundBufferRecorder_stop(soundBufferRecorder: *mut sfSoundBufferRecorder) -> ();
         pub fn sfSoundBufferRecorder_getSampleRate(soundBufferRecorder: *const sfSoundBufferRecorder) -> c_uint;
         pub fn sfSoundBufferRecorder_getBuffer(soundBufferRecorder: *const sfSoundBufferRecorder) -> *const sfSoundBuffer;
         pub fn sfSoundRecorder_isAvailable() -> SfBool;
+		pub fn sfSoundRecorder_setProcessingInterval(soundBufferRecorder: *mut sfSoundBufferRecorder, interval: sfTime) -> ();
+		pub fn sfSoundRecorder_getAvailableDevices(count: *mut size_t) -> *const *const c_char;
+		pub fn sfSoundRecorder_getDefaultDevice() -> *const c_char;
+		pub fn sfSoundRecorder_setDevice(soundBufferRecorder: *mut sfSoundBufferRecorder, name: *const c_char) -> SfBool;
+		pub fn sfSoundRecorder_getDevice(soundBufferRecorder: *const sfSoundBufferRecorder) -> *const c_char;
     }
 }
 

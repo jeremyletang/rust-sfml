@@ -24,16 +24,16 @@
 
 //! Glyph describes a glyph (a visual character)
 
-use graphics::IntRect;
+use graphics::{IntRect, FloatRect};
 
 /// Glyph describes a glyph (a visual character)
 #[repr(C)]
-#[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
+#[derive(Clone, PartialEq, PartialOrd, Debug, Copy)]
 pub struct Glyph {
     /// Offset to move horizontically to the next character.
-    pub advance: i32,
+    pub advance: f32,
     /// Bounding rectangle of the glyph, in coordinates relative to the baseline.
-    pub bounds: IntRect,
+    pub bounds: FloatRect,
     /// Texture coordinates of the glyph inside the font's texture.
     pub texture_rect: IntRect
 }
