@@ -550,13 +550,9 @@ impl<'s> Shape<'s> {
 }
 
 impl<'s> Drawable for Shape<'s> {
-    fn draw<RT:RenderTarget>(&self, render_target: &mut RT) {
-        render_target.draw_shape(self)
-    }
-
-    fn draw_rs<RT: RenderTarget>(&self,
+    fn draw<RT: RenderTarget>(&self,
                                  render_target: &mut RT,
-                                 render_states: &mut RenderStates) -> () {
+                                 render_states: &RenderStates) -> () {
         render_target.draw_shape_rs(self, render_states)
     }
 }

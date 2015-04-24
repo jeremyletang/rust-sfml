@@ -31,13 +31,6 @@ use graphics::{RenderStates, RenderTarget};
 
 /// The trait drawable is inherited by each object who can be drawn in a RenderTarget
 pub trait Drawable {
-    /// Draw a drawable object into a RenderTarget
-    fn draw<RT: RenderTarget>(&self, target: &mut RT);
-
     /// Draw a drawable object with a RenderState into a RenderTarget
-    fn draw_rs<RT: RenderTarget>(&self,
-                                 _: &mut RT,
-                                 _: &mut RenderStates){
-        println!("Error: Bad Usage: Can't draw a ref-counted drawable with borrow-based RenderStates");
-    }
+    fn draw<RT: RenderTarget>(&self, target: &mut RT, states: &RenderStates);
 }

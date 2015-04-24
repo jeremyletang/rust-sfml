@@ -484,13 +484,9 @@ impl<'s> Wrappable<*mut ffi::sfSprite> for Sprite<'s> {
 }
 
 impl<'s> Drawable for Sprite<'s> {
-    fn draw<RT:RenderTarget>(&self, render_target: &mut RT) -> () {
-        render_target.draw_sprite(self)
-    }
-
-    fn draw_rs<RT:RenderTarget>(&self,
+    fn draw<RT:RenderTarget>(&self,
                                 render_target: &mut RT,
-                                render_states: &mut RenderStates) -> () {
+                                render_states: &RenderStates) -> () {
         render_target.draw_sprite_rs(self, render_states)
     }
 }

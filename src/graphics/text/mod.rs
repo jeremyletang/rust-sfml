@@ -566,13 +566,9 @@ impl<'s> Wrappable<*mut ffi::sfText> for Text<'s> {
 }
 
 impl<'s> Drawable for Text<'s> {
-    fn draw<RT:RenderTarget>(&self, render_target: &mut RT) -> () {
-        render_target.draw_text(self)
-    }
-
-    fn draw_rs<RT:RenderTarget>(&self,
+    fn draw<RT:RenderTarget>(&self,
                                 render_target: &mut RT,
-                                render_states: &mut RenderStates) -> () {
+                                render_states: &RenderStates) -> () {
         render_target.draw_text_rs(self, render_states)
     }
 }

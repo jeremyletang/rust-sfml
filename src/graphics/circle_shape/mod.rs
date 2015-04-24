@@ -611,13 +611,9 @@ impl<'s> Wrappable<*mut ffi::sfCircleShape> for CircleShape<'s> {
 }
 
 impl<'s> Drawable for CircleShape<'s> {
-    fn draw<RT:RenderTarget>(&self, render_target: &mut RT) -> () {
-        render_target.draw_circle_shape(self)
-    }
-
-    fn draw_rs<RT:RenderTarget>(&self,
+    fn draw<RT:RenderTarget>(&self,
                                 render_target: &mut RT,
-                                render_states: &mut RenderStates) -> () {
+                                render_states: &RenderStates) -> () {
         render_target.draw_circle_shape_rs(self, render_states)
     }
 }

@@ -24,7 +24,7 @@
 
 //Authored on 2014-08-30 by Brandon Sanderson
 
-use graphics::{Color, View, RenderStates, CircleShape, RectangleShape, Text, Sprite, VertexArray,
+use graphics::{Color, View, RenderStates, CircleShape, RectangleShape, Text, Sprite,
                IntRect, Vertex, PrimitiveType, ConvexShape, Shape};
 use traits::Drawable;
 use system::vector2::{Vector2f, Vector2i, Vector2u};
@@ -32,7 +32,7 @@ use system::vector2::{Vector2f, Vector2i, Vector2u};
 /// Trait which is the equivalent of the sf::RenderTarget class in SFML.
 /// This is implemented by RenderTarget and RenderWindow structs to provide
 /// a unified interface for rendering.
-pub trait RenderTarget {
+pub trait RenderTarget: Sized {
     /// clear the screen
     fn clear(&mut self, color: &Color);
 
@@ -155,16 +155,18 @@ pub trait RenderTarget {
     ///
     /// # Arguments
     /// * object - Object to draw
-    fn draw<T: Drawable>(&mut self, object: &T);
+    fn draw<T: Drawable>(&mut self, object: &T) {
+		object.draw(self, &RenderStates::default())
+	}
 
     /// Draw a drawable object to the render-target with a RenderStates
     ///
     /// # Arguments
     /// * object - Object to draw
     /// * renderStates - The renderStates to associate to the object
-    fn draw_with_renderstates<T: Drawable>(&mut self,
-                                           object: &T,
-                                           render_states: &mut RenderStates);
+    fn draw_rs<T: Drawable>(&mut self, object: &T, render_states: &RenderStates) {
+		object.draw(self, render_states)
+	}
 
     /// Get the size of the rendering region of a window
     ///
@@ -206,70 +208,39 @@ pub trait RenderTarget {
 
 
     /// Draw Text
-    fn draw_text(&self, text: &Text);
-
-    /// Draw Shape
-    fn draw_shape(&self, shape: &Shape);
-
-    /// Draw Sprite
-    fn draw_sprite(&self, sprite: &Sprite);
-
-    /// Draw CircleShape
-    fn draw_circle_shape(&self, circle_shape: &CircleShape);
-
-    /// Draw RectangleShape
-    fn draw_rectangle_shape(&self, rectangle_shape: &RectangleShape);
-
-    /// Draw ConvexShape
-    fn draw_convex_shape(&self, convex_shape: &ConvexShape);
-
-    /// Draw VertexArray
-    fn draw_vertex_array(&self, vertex_array: &VertexArray);
-
-    /// Draw Text
     fn draw_text_rs(&self,
                     text: &Text,
-                    rs: &mut RenderStates);
+                    rs: &RenderStates);
 
     /// Draw Shape
     fn draw_shape_rs(&self,
                      shape: &Shape,
-                     rs: &mut RenderStates);
+                     rs: &RenderStates);
 
     /// Draw Sprite
     fn draw_sprite_rs(&self,
                       sprite: &Sprite,
-                      rs: &mut RenderStates);
+                      rs: &RenderStates);
 
     /// Draw CircleShape
     fn draw_circle_shape_rs(&self,
                             circle_shape: &CircleShape,
-                            rs: &mut RenderStates);
+                            rs: &RenderStates);
 
     /// Draw RectangleShape
     fn draw_rectangle_shape_rs(&self,
                                rectangle_shape: &RectangleShape,
-                               rs: &mut RenderStates);
+                               rs: &RenderStates);
 
     /// Draw ConvexShape
     fn draw_convex_shape_rs(&self,
                             convex_shape: &ConvexShape,
-                            rs: &mut RenderStates);
-
-    /// Draw VertexArray
-    fn draw_vertex_array_rs(&self,
-                            vertex_array: &VertexArray,
-                            rs: &mut RenderStates);
-
-    /// draw primitives
-    fn draw_primitives(&self,
-                       vertices: &[Vertex],
-                       ty: PrimitiveType);
+                            rs: &RenderStates);
 
     /// draw primitives
     fn draw_primitives_rs(&self,
                           vertices: &[Vertex],
                           ty: PrimitiveType,
-                          rs: &mut RenderStates);
+                          rs: &RenderStates);
 
 }
