@@ -41,7 +41,7 @@ pub struct Vector3f {
 impl Vector3f {
     /// Create a new Vector3f with the given values.
     pub fn new(x: f32, y: f32, z: f32) -> Vector3f {
-        Vector3f{
+        Vector3f {
             x: x,
             y: y,
             z: z
