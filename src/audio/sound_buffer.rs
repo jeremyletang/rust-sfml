@@ -31,7 +31,6 @@ use std::ffi::CString;
 use traits::Wrappable;
 use system::Time;
 
-use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi::audio::sound_buffer as ffi;
 
 /// Storage of audio sample
@@ -95,10 +94,7 @@ impl SoundBuffer {
     /// Return true if saving succeeded, false if it faileds
     pub fn save_to_file(&self, filename: &str) -> bool {
         let c_str = CString::new(filename.as_bytes()).unwrap().as_ptr();
-        match unsafe { ffi::sfSoundBuffer_saveToFile(self.sound_buffer, c_str) } {
-            SFFALSE => false,
-            SFTRUE  => true
-        }
+        unsafe { ffi::sfSoundBuffer_saveToFile(self.sound_buffer, c_str) }.to_bool()
     }
 
     /// Get the number of samples stored in a sound buffer

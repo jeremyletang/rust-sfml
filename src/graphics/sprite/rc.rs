@@ -37,7 +37,7 @@ use graphics::{FloatRect, IntRect, Color, Texture,
                RenderTarget, Transform, rc};
 use system::vector2::Vector2f;
 
-use ffi::sfml_types::{SFTRUE, SFFALSE};
+use ffi::sfml_types::SfBool;
 use ffi::graphics::sprite as ffi;
 
 /// Drawable representation of a texture
@@ -76,7 +76,7 @@ impl Sprite {
             unsafe {
                 ffi::sfSprite_setTexture(sp,
                                          (*texture).borrow().unwrap(),
-                                         SFTRUE);
+                                         SfBool::SFTRUE);
             }
             Some(Sprite {
                     sprite: sp,
@@ -157,16 +157,9 @@ impl Sprite {
                        texture: Rc<RefCell<Texture>>,
                        reset_rect: bool) -> (){
         unsafe {
-            match reset_rect {
-                true  =>
-                    ffi::sfSprite_setTexture(self.sprite,
-                                             (*texture).borrow().unwrap(),
-                                             SFTRUE),
-                false =>
-                    ffi::sfSprite_setTexture(self.sprite,
-                                             (*texture).borrow().unwrap(),
-                                             SFFALSE)
-            }
+            ffi::sfSprite_setTexture(self.sprite,
+                                     (*texture).borrow().unwrap(),
+                                     SfBool::from_bool(reset_rect))
         }
         self.texture = Some(texture);
     }
@@ -177,7 +170,7 @@ impl Sprite {
     pub fn disable_texture(&mut self) -> () {
         self.texture = None;
         unsafe {
-            ffi::sfSprite_setTexture(self.sprite, ptr::null_mut(), SFTRUE)
+            ffi::sfSprite_setTexture(self.sprite, ptr::null_mut(), SfBool::SFTRUE)
         }
     }
 

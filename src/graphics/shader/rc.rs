@@ -38,7 +38,6 @@ use graphics::{Texture, Color};
 use system::vector2::Vector2f;
 use system::vector3::Vector3f;
 
-use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi::graphics::shader as ffi;
 
 /// Shader class (vertex and fragment)
@@ -278,10 +277,7 @@ impl Shader {
     ///
     /// Return true if the system can use shaders, false otherwise
     pub fn is_available() -> bool {
-        match unsafe { ffi::sfShader_isAvailable() } {
-            SFFALSE   => false,
-            SFTRUE    => true
-        }
+        unsafe { ffi::sfShader_isAvailable() }.to_bool()
     }
 
     /// Change a 2-components vector parameter of a shader

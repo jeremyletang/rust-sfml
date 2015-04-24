@@ -38,7 +38,7 @@ use traits::{Wrappable, Drawable};
 use graphics::{Color, Texture, RenderTarget, FloatRect, IntRect, Transform, RenderStates};
 use system::vector2::Vector2f;
 
-use ffi::sfml_types::{SFTRUE, SFFALSE};
+use ffi::sfml_types::SfBool;
 use ffi::graphics::convex_shape as ffi;
 
 pub mod rc;
@@ -96,7 +96,7 @@ impl<'s> ConvexShape<'s> {
             None
         } else {
             unsafe {
-                ffi::sfConvexShape_setTexture(shape, texture.unwrap(), SFTRUE);
+                ffi::sfConvexShape_setTexture(shape, texture.unwrap(), SfBool::SFTRUE);
                 ffi::sfConvexShape_setPointCount(shape, points_count as c_uint)
             }
             Some(ConvexShape {
@@ -386,14 +386,7 @@ impl<'s> ConvexShape<'s> {
                        reset_rect: bool) -> () {
         self.texture = Some(texture);
         unsafe {
-            match reset_rect {
-                true        => ffi::sfConvexShape_setTexture(self.convex_shape,
-                                                             texture.unwrap(),
-                                                             SFTRUE),
-                false       => ffi::sfConvexShape_setTexture(self.convex_shape,
-                                                             texture.unwrap(),
-                                                             SFFALSE)
-            }
+            ffi::sfConvexShape_setTexture(self.convex_shape, texture.unwrap(), SfBool::from_bool(reset_rect))
         }
     }
 
@@ -405,7 +398,7 @@ impl<'s> ConvexShape<'s> {
         unsafe {
             ffi::sfConvexShape_setTexture(self.convex_shape,
                                           ptr::null_mut(),
-                                          SFTRUE)
+                                          SfBool::SFTRUE)
         }
     }
 

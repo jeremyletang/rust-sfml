@@ -36,7 +36,7 @@ use traits::Wrappable;
 use window::{event, VideoMode, ContextSettings, WindowStyle};
 use system::vector2::{Vector2i, Vector2u};
 
-use ffi::sfml_types::{SFTRUE, SFFALSE};
+use ffi::sfml_types::SfBool;
 use ffi::window::window as ffi;
 
 ///
@@ -147,13 +147,10 @@ impl Window {
     /// Return the event if an event was returned, or NoEvent if the event queue was empty
     pub fn poll_event(&mut self) -> event::Event {
         let mut event = event::raw::sfEvent { data: [032; 6] };
-        let have_event: bool =  unsafe {
-            match ffi::sfWindow_pollEvent(self.window, &mut event) {
-                SFFALSE     => false,
-                SFTRUE      => true
-            }
+        let have_event = unsafe {
+            ffi::sfWindow_pollEvent(self.window, &mut event).to_bool()
         };
-        if have_event == false {
+        if !have_event {
             event::Event::NoEvent
         } else {
             event::raw::get_wrapped_event(&mut event)
@@ -173,13 +170,10 @@ impl Window {
     /// Return the event or NoEvent if an error has occured
     pub fn wait_event(&mut self) -> event::Event {
         let mut event = event::raw::sfEvent { data: [032; 6] };
-        let have_event: bool =  unsafe {
-            match ffi::sfWindow_waitEvent(self.window, &mut event) {
-                SFFALSE     => false,
-                SFTRUE      => true
-            }
+        let have_event = unsafe {
+            ffi::sfWindow_waitEvent(self.window, &mut event).to_bool()
         };
-        if have_event == false {
+        if !have_event {
             return event::Event::NoEvent;
         } else {
             event::raw::get_wrapped_event(&mut event)
@@ -228,11 +222,7 @@ impl Window {
     /// Note that a hidden window (set_visible(false)) will return
     /// true.
     pub fn is_open(&self) -> bool {
-        let tmp = unsafe { ffi::sfWindow_isOpen(self.window) };
-        match tmp {
-            SFFALSE => false,
-            SFTRUE  => true
-        }
+        unsafe { ffi::sfWindow_isOpen(self.window) }.to_bool()
     }
 
     /// Get the settings of the OpenGL context of a window
@@ -264,10 +254,7 @@ impl Window {
     /// * visible - true to show the window, false to hide it
     pub fn set_visible(&mut self, visible: bool) -> () {
         unsafe {
-            match visible {
-                true    => ffi::sfWindow_setVisible(self.window, SFTRUE),
-                false   => ffi::sfWindow_setVisible(self.window, SFFALSE)
-            }
+            ffi::sfWindow_setVisible(self.window, SfBool::from_bool(visible))
         }
     }
 
@@ -277,10 +264,7 @@ impl Window {
     /// * visible - true to  false to hide
     pub fn set_mouse_cursor_visible(&mut self, visible: bool) -> () {
         unsafe {
-            match visible {
-                true    => ffi::sfWindow_setMouseCursorVisible(self.window, SFTRUE),
-                false   => ffi::sfWindow_setMouseCursorVisible(self.window, SFFALSE)
-            }
+            ffi::sfWindow_setMouseCursorVisible(self.window, SfBool::from_bool(visible))
         }
     }
 
@@ -295,10 +279,7 @@ impl Window {
     /// * enabled - true to enable v-sync, false to deactivate
     pub fn set_vertical_sync_enabled(&mut self, enabled: bool) -> () {
         unsafe {
-            match enabled {
-                true    => ffi::sfWindow_setVerticalSyncEnabled(self.window, SFTRUE),
-                false   => ffi::sfWindow_setVerticalSyncEnabled(self.window, SFFALSE)
-            }
+            ffi::sfWindow_setVerticalSyncEnabled(self.window, SfBool::from_bool(enabled))
         }
     }
 
@@ -314,10 +295,7 @@ impl Window {
     /// * enabled - true to enable, false to disable
     pub fn set_key_repeat_enabled(&mut self, enabled: bool) -> () {
         unsafe {
-            match enabled {
-                true    => ffi::sfWindow_setKeyRepeatEnabled(self.window, SFTRUE),
-                false   => ffi::sfWindow_setKeyRepeatEnabled(self.window, SFFALSE)
-            }
+            ffi::sfWindow_setKeyRepeatEnabled(self.window, SfBool::from_bool(enabled))
         }
     }
 
@@ -334,14 +312,7 @@ impl Window {
     ///
     /// Return true if operation was successful, false otherwise
     pub fn set_active(&mut self, enabled: bool) -> bool {
-        let tmp = unsafe { match enabled {
-                true    => ffi::sfWindow_setActive(self.window, SFTRUE),
-                false   => ffi::sfWindow_setActive(self.window, SFFALSE)
-            }};
-        match tmp {
-            SFTRUE   => true,
-            SFFALSE  => false
-        }
+        unsafe { ffi::sfWindow_setActive(self.window, SfBool::from_bool(enabled)) }.to_bool()
     }
 
     /// Display on screen what has been rendered to the window so far
@@ -465,9 +436,9 @@ impl Iterator for Events {
 
     fn next(&mut self) -> Option<event::Event> {
         let mut event = event::raw::sfEvent { data: [032; 6] };
-        match unsafe { ffi::sfWindow_pollEvent(self.window, &mut event) } {
-            SFFALSE     => None,
-            SFTRUE      => Some(event::raw::get_wrapped_event(&mut event))
+        match unsafe { ffi::sfWindow_pollEvent(self.window, &mut event) }.to_bool() {
+            false     => None,
+            true      => Some(event::raw::get_wrapped_event(&mut event))
         }
     }
 }

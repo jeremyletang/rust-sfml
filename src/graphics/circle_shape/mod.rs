@@ -32,7 +32,7 @@ use graphics::{IntRect, FloatRect, Color, Texture,
                RenderTarget, Transform, RenderStates};
 use system::vector2::Vector2f;
 
-use ffi::sfml_types::{SFTRUE, SFFALSE};
+use ffi::sfml_types::SfBool;
 use ffi::graphics::circle_shape as ffi;
 
 pub mod rc;
@@ -71,7 +71,7 @@ impl<'s> CircleShape<'s> {
             None
         } else {
             unsafe {
-                ffi::sfCircleShape_setTexture(circle, texture.unwrap(), SFTRUE);
+                ffi::sfCircleShape_setTexture(circle, texture.unwrap(), SfBool::SFTRUE);
             }
             Some(CircleShape {
                     circle_shape: circle,
@@ -182,14 +182,7 @@ impl<'s> CircleShape<'s> {
                        reset_rect: bool) -> () {
         self.texture = Some(texture);
         unsafe {
-            match reset_rect {
-                true        => ffi::sfCircleShape_setTexture(self.circle_shape,
-                                                             texture.unwrap(),
-                                                             SFTRUE),
-                false       => ffi::sfCircleShape_setTexture(self.circle_shape,
-                                                             texture.unwrap(),
-                                                             SFFALSE),
-            }
+            ffi::sfCircleShape_setTexture(self.circle_shape, texture.unwrap(), SfBool::from_bool(reset_rect))
         }
     }
 
@@ -201,7 +194,7 @@ impl<'s> CircleShape<'s> {
         unsafe {
             ffi::sfCircleShape_setTexture(self.circle_shape,
                                           ptr::null_mut(),
-                                          SFTRUE)
+                                          SfBool::SFTRUE)
         }
     }
 

@@ -35,7 +35,7 @@ use graphics::{FloatRect, IntRect, Color, Texture,
                RenderTarget, Transform, RenderStates};
 use system::vector2::Vector2f;
 
-use ffi::sfml_types::{SFTRUE, SFFALSE};
+use ffi::sfml_types::SfBool;
 use ffi::graphics::sprite as ffi;
 
 pub mod rc;
@@ -74,7 +74,7 @@ impl<'s> Sprite<'s> {
             None
         } else {
             unsafe {
-                ffi::sfSprite_setTexture(sp, texture.unwrap(), SFTRUE);
+                ffi::sfSprite_setTexture(sp, texture.unwrap(), SfBool::SFTRUE);
             }
             Some(Sprite {
                     sprite: sp,
@@ -155,14 +155,9 @@ impl<'s> Sprite<'s> {
     pub fn set_texture(&mut self, texture: &'s Texture, reset_rect: bool) {
         self.texture = Some(texture);
         unsafe {
-            match reset_rect {
-                true        => ffi::sfSprite_setTexture(self.sprite,
-                                                        texture.unwrap(),
-                                                        SFTRUE),
-                false       => ffi::sfSprite_setTexture(self.sprite,
-                                                        texture.unwrap(),
-                                                        SFFALSE)
-            }
+            ffi::sfSprite_setTexture(self.sprite,
+                                     texture.unwrap(),
+                                     SfBool::from_bool(reset_rect))
         }
     }
 
@@ -172,7 +167,7 @@ impl<'s> Sprite<'s> {
     pub fn disable_texture(&mut self) -> () {
         self.texture = None;
         unsafe {
-            ffi::sfSprite_setTexture(self.sprite, ptr::null_mut(), SFTRUE)
+            ffi::sfSprite_setTexture(self.sprite, ptr::null_mut(), SfBool::SFTRUE)
         }
     }
 

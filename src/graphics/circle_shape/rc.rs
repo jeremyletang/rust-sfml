@@ -34,7 +34,7 @@ use graphics::{IntRect, FloatRect, Color, Texture,
                RenderTarget, Transform, rc};
 use system::vector2::Vector2f;
 
-use ffi::sfml_types::{SFTRUE, SFFALSE};
+use ffi::sfml_types::SfBool;
 use ffi::graphics::circle_shape as ffi;
 
 /// Specialized shape representing a circle.
@@ -73,7 +73,7 @@ impl CircleShape {
             unsafe {
                 ffi::sfCircleShape_setTexture(circle,
                                               (*texture).borrow().unwrap(),
-                                              SFTRUE);
+                                              SfBool::SFTRUE);
             }
             Some(CircleShape {
                     circle_shape: circle,
@@ -182,16 +182,7 @@ impl CircleShape {
                        texture: Rc<RefCell<Texture>>,
                        reset_rect: bool) -> () {
         unsafe {
-            match reset_rect {
-                true        =>
-                    ffi::sfCircleShape_setTexture(self.circle_shape,
-                                                  (*texture).borrow().unwrap(),
-                                                  SFTRUE),
-                false       =>
-                    ffi::sfCircleShape_setTexture(self.circle_shape,
-                                                  (*texture).borrow().unwrap(),
-                                                  SFFALSE),
-            };
+            ffi::sfCircleShape_setTexture(self.circle_shape, (*texture).borrow().unwrap(), SfBool::from_bool(reset_rect))
         }
         self.texture = Some(texture);
     }
@@ -204,7 +195,7 @@ impl CircleShape {
         unsafe {
             ffi::sfCircleShape_setTexture(self.circle_shape,
                                           ptr::null_mut(),
-                                          SFTRUE)
+                                          SfBool::SFTRUE)
         }
     }
 

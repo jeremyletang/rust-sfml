@@ -31,7 +31,7 @@ use traits::Wrappable;
 use system::vector2::Vector2u;
 use graphics::{Color, IntRect};
 
-use ffi::sfml_types::{SFTRUE, SFFALSE};
+use ffi::sfml_types::SfBool;
 use ffi::graphics::image as ffi;
 
 /// Loading, manipulating and saving images.
@@ -183,10 +183,7 @@ impl Image {
     /// Return true if saving was successful
     pub fn save_to_file(&self, filename: &str) -> bool {
         let c_str = CString::new(filename.as_bytes()).unwrap().as_ptr();
-        match unsafe { ffi::sfImage_saveToFile(self.image, c_str) } {
-            SFFALSE => false,
-            SFTRUE  => true
-        }
+        unsafe { ffi::sfImage_saveToFile(self.image, c_str) }.to_bool()
     }
 
     /// Return the size of an image
@@ -285,20 +282,12 @@ impl Image {
                       source_rect: &IntRect,
                       apply_alpha: bool) -> () {
         unsafe {
-            match apply_alpha {
-                true        =>  ffi::sfImage_copyImage(self.image,
-                                                       source.unwrap(),
-                                                       dest_x as c_uint,
-                                                       dest_y as c_uint,
-                                                       *source_rect,
-                                                       SFFALSE),
-                false       =>  ffi::sfImage_copyImage(self.image,
-                                                       source.unwrap(),
-                                                       dest_x as c_uint,
-                                                       dest_y as c_uint,
-                                                       *source_rect,
-                                                       SFTRUE)
-            }
+            ffi::sfImage_copyImage(self.image,
+                                   source.unwrap(),
+                                   dest_x as c_uint,
+                                   dest_y as c_uint,
+                                   *source_rect,
+                                   SfBool::from_bool(apply_alpha))
         }
     }
 }

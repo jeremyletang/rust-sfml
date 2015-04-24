@@ -31,7 +31,7 @@ use std::ffi::CString;
 use traits::Wrappable;
 use graphics::{Texture, Glyph};
 
-use ffi::sfml_types::{SFTRUE, SFFALSE};
+use ffi::sfml_types::SfBool;
 use ffi::graphics::font as ffi;
 
 /// Class for loading and manipulating character fonts
@@ -162,16 +162,7 @@ impl Font {
                      character_size: u32,
                      bold: bool) -> Glyph {
         unsafe {
-            match bold {
-                true        => ffi::sfFont_getGlyph(self.font,
-                                                    codepoint,
-                                                    character_size as c_uint,
-                                                    SFFALSE),
-                false       => ffi::sfFont_getGlyph(self.font,
-                                                    codepoint,
-                                                    character_size as c_uint,
-                                                    SFTRUE)
-            }
+            ffi::sfFont_getGlyph(self.font, codepoint, character_size as c_uint, SfBool::from_bool(bold))
         }
     }
 }

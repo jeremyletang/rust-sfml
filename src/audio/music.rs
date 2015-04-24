@@ -36,7 +36,7 @@ use system::Time;
 use system::vector3::Vector3f;
 use traits::Wrappable;
 
-use ffi::sfml_types::{SFTRUE, SFFALSE};
+use ffi::sfml_types::SfBool;
 use ffi::audio::music as ffi;
 
 /// Play Music
@@ -107,22 +107,14 @@ impl Music {
     /// # Arguments
     /// * loop - SFTRUE to play in loop, SFFALSE to play once
     pub fn set_loop(&mut self, lloop: bool) -> () {
-        unsafe {
-            match lloop {
-                true    => ffi::sfMusic_setLoop(self.music, SFTRUE),
-                false   => ffi::sfMusic_setLoop(self.music, SFFALSE)
-            }
-        }
+        unsafe { ffi::sfMusic_setLoop(self.music, SfBool::from_bool(lloop)) }
     }
 
     /// Tell whether or not a music is in loop mode
     ///
     /// Return true if the music is looping, false otherwise
     pub fn get_loop(&self) -> bool {
-        match unsafe { ffi::sfMusic_getLoop(self.music) } {
-            SFFALSE => false,
-            SFTRUE => true
-        }
+        unsafe { ffi::sfMusic_getLoop(self.music) }.to_bool()
     }
 
     /// Get the total duration of a music
@@ -243,12 +235,7 @@ impl Music {
     /// # Arguments
     /// * relative - true to set the position relative, false to set it absolute
     pub fn set_relative_to_listener(&mut self, relative: bool) -> () {
-        unsafe {
-            match relative {
-                true    => ffi::sfMusic_setRelativeToListener(self.music, SFTRUE),
-                false   => ffi::sfMusic_setRelativeToListener(self.music, SFFALSE)
-            }
-        }
+        unsafe { ffi::sfMusic_setRelativeToListener(self.music, SfBool::from_bool(relative)) }
     }
 
     /// Set the minimum distance of a music
@@ -322,10 +309,7 @@ impl Music {
     ///
     /// Return true if the position is relative, false if it's absolute
     pub fn is_relative_to_listener(&self) -> bool {
-        match unsafe { ffi::sfMusic_isRelativeToListener(self.music) } {
-            SFFALSE => false,
-            SFTRUE  => true
-        }
+        unsafe { ffi::sfMusic_isRelativeToListener(self.music) }.to_bool()
     }
 
     /// Get the minimum distance of a music
