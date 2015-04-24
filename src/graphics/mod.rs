@@ -44,7 +44,7 @@ pub use graphics::rectangle_shape::RectangleShape;
 pub use graphics::convex_shape::{ConvexShape, ConvexShapePoints};
 pub use graphics::primitive_type::PrimitiveType;
 pub use graphics::vertex::Vertex;
-pub use graphics::transformable::Transformable;
+pub use graphics::transformable::{Transformable, TransformableData};
 pub use graphics::glyph::Glyph;
 pub use graphics::render_texture::RenderTexture;
 pub use graphics::shape::Shape;

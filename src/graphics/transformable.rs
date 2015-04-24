@@ -22,91 +22,118 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-//! Target for off-screen 2D rendering into a texture
-
-use libc::c_float;
-
-use traits::Wrappable;
 use graphics::Transform;
 use system::vector2::Vector2f;
+use std::cell::Cell;
+use std::default::Default;
 
-use ffi::graphics::transformable as ffi;
-
-/// Target for off-screen 2D rendering into a texture
-pub struct Transformable{
-    transformable: *mut ffi::sfTransformable
+/// The data used to implement Transformable.
+#[derive(Clone, Debug)]
+pub struct TransformableData {
+	origin: Vector2f,
+	position: Vector2f,
+	rotation: f32,
+	scale: Vector2f,
+	transform: Cell<Option<Transform>>,
+	inverse: Cell<Option<Transform>>
 }
 
-impl Transformable {
-    /// Create a new transformable
-    ///
-    /// Return Some(Transformable) or None
-    pub fn new() -> Option<Transformable> {
-        let tran = unsafe { ffi::sfTransformable_create() };
-        if tran.is_null() {
-            None
-        } else {
-            Some(Transformable {
-                    transformable: tran
-                })
-        }
-    }
+impl TransformableData {
+	/// Create a new, default TransformableData.
+	pub fn new() -> TransformableData {
+		TransformableData {
+			origin: Vector2f::new(0., 0.),
+			position: Vector2f::new(0., 0.),
+			rotation: 0.,
+			scale: Vector2f::new(0., 0.),
+			transform: Cell::new(None),
+			inverse: Cell::new(None)
+		}
+	}
+}
 
-    /// Copy an existing transformable
+impl Default for TransformableData {
+	fn default() -> TransformableData {
+		TransformableData::new()
+	}
+}
+
+fn mark_dirty(data: &mut TransformableData) {
+	data.transform.set(None);
+	data.inverse.set(None);
+}
+
+/// Trait that can be applied to transformable objects.
+///
+/// User types may implement this trait by embedding a `TransformableData` item
+/// and implementing the `_data` and `_data_mut` methods to return it.
+pub trait Transformable {
+	/// Access the data for this Transformable.
+	///
+	/// Generally, should just return `&self.transformable_data`.
+	fn _data(&self) -> &TransformableData;
+	
+	/// Mutably access the data for this Transformable.
+	///
+	/// Generally, should just return `&mut self.transformable_data`.
+	fn _data_mut(&mut self) -> &mut TransformableData;
+
+	/// Get the position of the transformable
+	fn get_position(&self) -> Vector2f {
+		self._data().position
+	}
+	
+    /// Get the orientation of the transformable
     ///
-    /// Return Some(Transformable) or None
-    pub fn clone_opt(&self) -> Option<Transformable> {
-        let tran = unsafe { ffi::sfTransformable_copy(self.transformable) };
-        if tran.is_null() {
-            None
-        } else {
-            Some(Transformable {
-                    transformable :tran
-                })
-        }
-    }
+    /// The rotation is always in the range [0, 360].
+	fn get_rotation(&self) -> f32 {
+		self._data().rotation
+	}
+	
+    /// Get the current scale factors of the transformable
+	fn get_scale(&self) -> Vector2f {
+		self._data().scale
+	}
+	
+	/// Get the local origin of the transformable
+	fn get_origin(&self) -> Vector2f {
+		self._data().origin
+	}
 
     /// Set the position of a transformable
     ///
     /// This function completely overwrites the previous position.
     /// See move to apply an offset based on the previous position instead.
     /// The default position of a transformable Transformable object is (0, 0).
-    ///
-    /// # Arguments
-    /// * position - The new position
-    pub fn set_position(&mut self, position: &Vector2f) -> () {
-        unsafe {
-            ffi::sfTransformable_setPosition(self.transformable, *position)
-        }
-    }
+	fn set_position(&mut self, position: Vector2f) {
+		self._data_mut().position = position;
+		mark_dirty(self._data_mut());
+	}
 
-    /// Set the orientation of a transformable
+	/// Set the orientation of a transformable
     ///
     /// This function completely overwrites the previous rotation.
     /// See rotate to add an angle based on the previous rotation instead.
     /// The default rotation of a transformable Transformable object is 0.
-    ///
-    /// # Arguments
-    /// * angle - The new rotation, in degrees
-    pub fn set_rotation(&mut self, angle: f32) -> () {
-        unsafe {
-            ffi::sfTransformable_setRotation(self.transformable, angle as c_float)
-        }
-    }
-
+	fn set_rotation(&mut self, angle: f32) {
+		let angle = angle % 360.;
+		self._data_mut().rotation = if angle < 0. {
+			angle + 360.
+		} else {
+			angle
+		};
+		mark_dirty(self._data_mut());
+	}
+	
     /// Set the scale factors of a transformable
     ///
     /// This function completely overwrites the previous scale.
     /// See scale to add a factor based on the previous scale instead.
     /// The default scale of a transformable Transformable object is (1, 1).
-    ///
-    /// # Arguments
-    /// * scale - New scale factors
-    pub fn set_scale(&mut self, scale: &Vector2f) -> () {
-        unsafe {
-            ffi::sfTransformable_setScale(self.transformable, *scale)
-        }
-    }
+	fn set_scale(&mut self, scale: Vector2f) {
+		self._data_mut().scale = scale;
+		mark_dirty(self._data_mut());
+	}
 
     /// Set the local origin of a transformable
     ///
@@ -116,143 +143,84 @@ impl Transformable {
     /// top-left corner of the object, and ignore all
     /// transformations (position, scale, rotation).
     /// The default origin of a transformable Transformable object is (0, 0).
-    ///
-    /// # Arguments
-    /// * origin - New origin
-    pub fn set_origin(&mut self, origin: &Vector2f) -> () {
-        unsafe {
-            ffi::sfTransformable_setOrigin(self.transformable, *origin)
-        }
-    }
-
-    /// Get the position of a transformable
-    ///
-    /// Return the current position
-    pub fn get_position(&self) -> Vector2f {
-        unsafe {
-            ffi::sfTransformable_getPosition(self.transformable)
-        }
-    }
-
-    /// Get the orientation of a transformable
-    ///
-    /// The rotation is always in the range [0, 360].
-    ///
-    /// Return the current rotation, in degrees
-    pub fn get_rotation(&self) -> f32 {
-        unsafe {
-            ffi::sfTransformable_getRotation(self.transformable) as f32
-        }
-    }
-
-    /// Get the current scale of a transformable
-    ///
-    /// Return the current scale factors
-    pub fn get_scale(&self) -> Vector2f {
-        unsafe {
-            ffi::sfTransformable_getScale(self.transformable)
-        }
-    }
-
-    /// Get the local origin of a transformable
-    ///
-    /// Return the current origin
-    pub fn get_origin(&self) -> Vector2f {
-        unsafe {
-            ffi::sfTransformable_getOrigin(self.transformable)
-        }
-    }
+	fn set_origin(&mut self, origin: Vector2f) {
+		self._data_mut().origin = origin;
+		mark_dirty(self._data_mut());
+	}
 
     /// Move a transformable by a given offset
     ///
     /// This function adds to the current position of the object,
     /// unlike set_position which overwrites it.
-    ///
-    /// # Arguments
-    /// * offset - Offset
-    pub fn move_(&mut self, offset: &Vector2f) -> () {
-        unsafe {
-            ffi::sfTransformable_move(self.transformable, *offset)
-        }
-    }
+	fn move_(&mut self, offset: Vector2f) {
+		self._data_mut().position = self._data().position + offset;
+		mark_dirty(self._data_mut());
+	}
 
     /// Rotate a transformable
     ///
     /// This function adds to the current rotation of the object,
     /// unlike set_rotation which overwrites it.
-    ///
-    /// # Arguments
-    /// * angle - Angle of rotation, in degrees
-    pub fn rotate(&mut self, angle: f32) -> () {
-        unsafe {
-            ffi::sfTransformable_rotate(self.transformable, angle as c_float)
-        }
-    }
+	fn rotate(&mut self, angle: f32) {
+		let angle = self.get_rotation() + angle;
+		self.set_rotation(angle);
+		mark_dirty(self._data_mut());
+	}
 
     /// Scale a transformable
     ///
     /// This function multiplies the current scale of the object,
     /// unlike set_scale which overwrites it.
-    ///
-    /// # Arguments
-    /// * factors - Scale factors
-    pub fn scale(&mut self, factors: &Vector2f) -> () {
-        unsafe {
-            ffi::sfTransformable_scale(self.transformable, *factors)
-        }
-    }
+	fn scale(&mut self, factors: Vector2f) {
+		let scale = self._data().scale;
+		self._data_mut().scale = Vector2f {
+			x: scale.x * factors.x,
+			y: scale.y * factors.y
+		};
+		mark_dirty(self._data_mut());
+	}
 
-    /// Get the combined transform of a transformable
-    ///
-    /// Return the transform combining the
-    /// position/rotation/scale/origin of the object
-    pub fn get_transform(&self) -> Transform {
-        unsafe {
-            ffi::sfTransformable_getTransform(self.transformable)
-        }
-    }
+    /// Get the combined transform of the transformable, including the position,
+	/// rotation, scale, and origin.
+	fn get_transform(&self) -> Transform {
+		if let Some(t) = self._data().transform.get() {
+			t
+		} else {
+			// [SFML sourced]
+			let angle  = -self._data().rotation * 3.141592654 / 180.;
+			let cosine = angle.cos();
+			let sine   = angle.sin();
+			let scale  = self._data().scale;
+			let sxc    = scale.x * cosine;
+			let syc    = scale.y * cosine;
+			let sxs    = scale.x * sine;
+			let sys    = scale.y * sine;
+			let origin = self._data().origin;
+			let pos    = self._data().position;
+			let tx     = -origin.x * sxc - origin.y * sys + pos.x;
+			let ty     =  origin.x * sxs - origin.y * syc + pos.y;
 
-    /// Get the inverse of the combined transform of a transformable
-    ///
-    /// Return the inverse of the combined transformations applied to the object
-    pub fn get_inverse_transform(&self) -> Transform {
-        unsafe {
-            ffi::sfTransformable_getInverseTransform(self.transformable)
-        }
-    }
+			let result = Transform::new(sxc, sys, tx,
+									    -sxs, syc, ty,
+									    0., 0., 1.);
+			self._data().transform.set(Some(result));
+			result
+		}
+	}
+	
+	/// Get the inverse of the combined transform of the transformable.
+	fn get_inverse_transform(&self) -> Transform {
+		if let Some(t) = self._data().inverse.get() {
+			t
+		} else {
+			let result = self.get_transform().get_inverse();
+			self._data().inverse.set(Some(result));
+			result
+		}
+	}
 }
 
-impl Clone for Transformable {
-    /// Return a new Transformable or panic! if there is not enough memory
-    fn clone(&self) -> Transformable {
-        let tran = unsafe { ffi::sfTransformable_copy(self.transformable) };
-        if tran.is_null() {
-            panic!("Not enough memory to clone Transformable")
-        } else {
-            Transformable {
-                transformable :tran
-            }
-        }
-    }
+impl Transformable for TransformableData {
+	fn _data(&self) -> &TransformableData { self }
+	fn _data_mut(&mut self) -> &mut TransformableData { self }
 }
-
-impl Wrappable<*mut ffi::sfTransformable> for Transformable {
-    fn wrap(transformable: *mut ffi::sfTransformable) -> Transformable {
-        Transformable {
-            transformable: transformable
-        }
-    }
-
-    fn unwrap(&self) -> *mut ffi::sfTransformable {
-        self.transformable
-    }
-}
-
-impl Drop for Transformable {
-    fn drop(&mut self) -> () {
-        unsafe {
-            ffi::sfTransformable_destroy(self.transformable)
-        }
-    }
-}
-

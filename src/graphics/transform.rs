@@ -40,7 +40,7 @@ use ffi::graphics::transform as ffi;
 /// rotate, scale, shear, project, whatever things.
 #[repr(C)]
 #[allow(missing_docs)]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Debug)]
 pub struct Transform {
     pub a00: f32,
     pub a01: f32,
@@ -54,27 +54,14 @@ pub struct Transform {
 }
 
 impl Transform {
-    /// Create a new transform from a matrix
-    ///
-    /// # Arguments
-    /// * a00 - Element (0, 0) of the matrix
-    /// * a01 - Element (0, 1) of the matrix
-    /// * a02 - Element (0, 2) of the matrix
-    /// * a10 - Element (1, 0) of the matrix
-    /// * a11 - Element (1, 1) of the matrix
-    /// * a12 - Element (1, 2) of the matrix
-    /// * a20 - Element (2, 0) of the matrix
-    /// * a21 - Element (2, 1) of the matrix
-    /// * a22 - Element (2, 2) of the matrix
-    ///
-    /// Return a new Transform
+    /// Create a new transform from the given 3x3 matrix.
     pub fn new(a00: f32, a01: f32, a02: f32,
-               b10: f32, b11: f32, b12: f32,
-               c20: f32, c21: f32, c22: f32) -> Transform {
+               a10: f32, a11: f32, a12: f32,
+               a20: f32, a21: f32, a22: f32) -> Transform {
         unsafe {
             ffi::sfTransform_fromMatrix(a00, a01, a02,
-                                        b10, b11, b12,
-                                        c20, c21, c22)
+                                        a10, a11, a12,
+                                        a20, a21, a22)
         }
     }
 
