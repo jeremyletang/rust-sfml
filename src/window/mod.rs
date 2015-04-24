@@ -30,6 +30,9 @@ pub use window::video_mode::VideoMode;
 pub use window::context::Context;
 pub use window::context_settings::ContextSettings;
 pub use window::window_style::WindowStyle;
+pub use window::event::Event;
+pub use window::keyboard::Key;
+pub use window::mouse::MouseButton;
 
 #[cfg(any(target_os="macos", target_os="linux", target_os="windows"))]
 mod platform {
@@ -43,7 +46,7 @@ mod video_mode;
 mod context;
 mod context_settings;
 pub mod joystick;
-pub mod keyboard;
-pub mod mouse;
+mod keyboard;
+mod mouse;
 pub mod event;
 mod window_style;

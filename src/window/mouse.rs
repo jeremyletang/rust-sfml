@@ -30,7 +30,6 @@
 
 use libc::c_uint;
 
-use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi::window::mouse as ffi;
 
 /// Mouse buttons
@@ -48,19 +47,10 @@ pub enum MouseButton {
     MouseXButton2
 }
 
-/**
-* Check if a mouse button is pressed
-*
-* # Arguments
-* * button - Button to check
-*
-* Return true if the button is pressed, false otherwise
-*/
-pub fn is_button_pressed(button: MouseButton) -> bool {
-    unsafe {
-        match ffi::sfMouse_isButtonPressed(button as c_uint) {
-            SFFALSE   => false,
-            SFTRUE    => true
-        }
+impl MouseButton {
+    /// Check if this mouse button is currently pressed, returning true if it
+    /// is and false otherwise.
+    pub fn is_pressed(self) -> bool {
+        unsafe { ffi::sfMouse_isButtonPressed(self as c_uint) }.to_bool()
     }
 }

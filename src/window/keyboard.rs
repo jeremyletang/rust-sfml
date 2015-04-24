@@ -27,7 +27,6 @@
 
 use libc::c_int;
 
-use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi::window::keyboard as ffi;
 
 /// Key codes
@@ -140,19 +139,10 @@ pub enum Key {
     KeyCount
 }
 
-/**
- * Check if a key is pressed.
- *
- * # Arguments
- * * key - The key to check
- *
- * Return true if the key is pressed, false otherwise.
- */
-pub fn is_key_pressed(key: Key) -> bool {
-    unsafe {
-        match ffi::sfKeyboard_isKeyPressed(key as c_int) {
-            SFFALSE  => false,
-            SFTRUE   => true
-        }
+impl Key {
+    /// Check if this key is currently pressed, returning true if it is and
+    /// false otherwise.
+    pub fn is_pressed(self) -> bool {
+        unsafe { ffi::sfKeyboard_isKeyPressed(self as c_int) }.to_bool()
     }
 }
