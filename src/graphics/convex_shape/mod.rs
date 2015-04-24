@@ -41,8 +41,6 @@ use system::vector2::Vector2f;
 use ffi::sfml_types::SfBool;
 use ffi::graphics::convex_shape as ffi;
 
-pub mod rc;
-
 /// Specialized shape representing a convex polygon
 ///
 /// It is important to keep in mind that a convex shape must

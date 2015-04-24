@@ -35,8 +35,6 @@ use system::vector2::Vector2f;
 use ffi::sfml_types::SfBool;
 use ffi::graphics::shape as ffi;
 
-pub mod rc;
-
 #[doc(hidden)]
 pub struct WrapObj {
     shape_impl: Box<ShapeImpl + Send>

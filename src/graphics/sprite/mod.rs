@@ -38,8 +38,6 @@ use system::vector2::Vector2f;
 use ffi::sfml_types::SfBool;
 use ffi::graphics::sprite as ffi;
 
-pub mod rc;
-
 /// Drawable representation of a texture
 ///
 /// Sprite is a drawable class that allows to easily

@@ -39,8 +39,6 @@ use system::vector3::Vector3f;
 
 use ffi::graphics::shader as ffi;
 
-pub mod rc;
-
 /// Shader class (vertex and fragment)
 ///
 /// Shaders are programs written using a specific language,

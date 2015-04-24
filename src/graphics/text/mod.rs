@@ -40,8 +40,6 @@ use system::vector2::Vector2f;
 
 use ffi::graphics::text as ffi;
 
-pub mod rc;
-
 /// Graphical text
 ///
 /// Text is a drawable class that allows to easily

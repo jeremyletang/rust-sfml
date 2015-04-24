@@ -35,8 +35,6 @@ use system::vector2::Vector2f;
 use ffi::sfml_types::SfBool;
 use ffi::graphics::circle_shape as ffi;
 
-pub mod rc;
-
 /// Specialized shape representing a circle.
 pub struct CircleShape<'s> {
     circle_shape: *mut ffi::sfCircleShape,

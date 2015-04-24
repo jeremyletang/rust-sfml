@@ -40,7 +40,7 @@ use window::{ContextSettings, VideoMode, event, WindowStyle};
 use system::vector2::{Vector2f, Vector2i, Vector2u};
 use graphics::{Color, CircleShape, RectangleShape, Text, Sprite, VertexArray,
                RenderStates, View, Image, IntRect, RenderTarget,
-               rc, Vertex, PrimitiveType, ConvexShape, Shape};
+               Vertex, PrimitiveType, ConvexShape, Shape};
 
 use ffi::sfml_types::SfBool;
 use ffi::graphics::render_window as ffi;
@@ -746,28 +746,8 @@ impl RenderTarget for RenderWindow{
         object.draw_rs(self, render_states);
     }
 
-    /// Draw a drawable object to the render-target with a RenderStates
-    ///
-    /// # Arguments
-    /// * object - Object to draw
-    /// * renderStates - The renderStates to associate to the object
-    fn draw_with_renderstates_rc<T: Drawable>(&mut self,
-                                                   object: &T,
-                                                   render_states: &mut rc::RenderStates) {
-        object.draw_rs_rc(self, render_states);
-    }
-
     /// Draw a Text
     fn draw_text(&self, text: &Text) -> () {
-        unsafe {
-            ffi::sfRenderWindow_drawText(self.render_window,
-                                         text.unwrap(),
-                                         ptr::null_mut())
-        }
-    }
-
-    /// Draw a Text
-    fn draw_text_rc(&self, text: &rc::Text) -> () {
         unsafe {
             ffi::sfRenderWindow_drawText(self.render_window,
                                          text.unwrap(),
@@ -784,26 +764,8 @@ impl RenderTarget for RenderWindow{
         }
     }
 
-    /// Draw a Shape
-    fn draw_shape_rc(&self, shape: &rc::Shape) -> () {
-        unsafe {
-            ffi::sfRenderWindow_drawShape(self.render_window,
-                                          shape.unwrap(),
-                                          ptr::null_mut())
-        }
-    }
-
     /// Draw a sprite
     fn draw_sprite(&self, sprite: &Sprite) -> () {
-        unsafe {
-            ffi::sfRenderWindow_drawSprite(self.render_window,
-                                           sprite.unwrap(),
-                                           ptr::null_mut())
-        }
-    }
-
-    /// Draw a sprite
-    fn draw_sprite_rc(&self, sprite: &rc::Sprite) -> () {
         unsafe {
             ffi::sfRenderWindow_drawSprite(self.render_window,
                                            sprite.unwrap(),
@@ -820,15 +782,6 @@ impl RenderTarget for RenderWindow{
         }
     }
 
-    /// Draw a CircleShape
-    fn draw_circle_shape_rc(&self, circle_shape: &rc::CircleShape) -> () {
-        unsafe {
-            ffi::sfRenderWindow_drawCircleShape(self.render_window,
-                                                circle_shape.unwrap(),
-                                                ptr::null_mut())
-        }
-    }
-
     /// Draw a RectangleShape
     fn draw_rectangle_shape(&self, rectangle_shape: &RectangleShape) -> () {
         unsafe {
@@ -838,26 +791,8 @@ impl RenderTarget for RenderWindow{
         }
     }
 
-    /// Draw a RectangleShape
-    fn draw_rectangle_shape_rc(&self, rectangle_shape: &rc::RectangleShape) -> () {
-        unsafe {
-            ffi::sfRenderWindow_drawRectangleShape(self.render_window,
-                                                   rectangle_shape.unwrap(),
-                                                   ptr::null_mut())
-        }
-    }
-
     /// Draw a ConvexShape
     fn draw_convex_shape(&self, convex_shape: &ConvexShape) -> () {
-        unsafe {
-            ffi::sfRenderWindow_drawConvexShape(self.render_window,
-                                                convex_shape.unwrap(),
-                                                ptr::null_mut())
-        }
-    }
-
-    /// Draw a ConvexShape
-    fn draw_convex_shape_rc(&self, convex_shape: &rc::ConvexShape) -> () {
         unsafe {
             ffi::sfRenderWindow_drawConvexShape(self.render_window,
                                                 convex_shape.unwrap(),
@@ -885,32 +820,10 @@ impl RenderTarget for RenderWindow{
         }
     }
 
-    /// Draw a Text with a RenderStates
-    fn draw_text_rs_rc(&self,
-                           text: &rc::Text,
-                           render_states: &mut rc::RenderStates) -> () {
-        unsafe {
-            ffi::sfRenderWindow_drawText(self.render_window,
-                                         text.unwrap(),
-                                         render_states.unwrap())
-        }
-    }
-
     /// Draw a Shape with a RenderStates
     fn draw_shape_rs(&self,
                          shape: &Shape,
                          render_states: &mut RenderStates) -> () {
-        unsafe {
-            ffi::sfRenderWindow_drawShape(self.render_window,
-                                          shape.unwrap(),
-                                          render_states.unwrap())
-        }
-    }
-
-    /// Draw a Shape with a RenderStates
-    fn draw_shape_rs_rc(&self,
-                            shape: &rc::Shape,
-                            render_states: &mut rc::RenderStates) -> () {
         unsafe {
             ffi::sfRenderWindow_drawShape(self.render_window,
                                           shape.unwrap(),
@@ -929,32 +842,10 @@ impl RenderTarget for RenderWindow{
         }
     }
 
-    /// Draw a sprite with a RenderStates
-    fn draw_sprite_rs_rc(&self,
-                             sprite: &rc::Sprite,
-                             render_states: &mut rc::RenderStates) -> () {
-        unsafe {
-            ffi::sfRenderWindow_drawSprite(self.render_window,
-                                           sprite.unwrap(),
-                                           render_states.unwrap())
-        }
-    }
-
     /// Draw a CircleShape with a RenderStates
     fn draw_circle_shape_rs(&self,
                                 circle_shape: &CircleShape,
                                 render_states: &mut RenderStates) -> () {
-        unsafe {
-            ffi::sfRenderWindow_drawCircleShape(self.render_window,
-                                                circle_shape.unwrap(),
-                                                render_states.unwrap())
-        }
-    }
-
-    /// Draw a CircleShape with a RenderStates
-    fn draw_circle_shape_rs_rc(&self,
-                                   circle_shape: &rc::CircleShape,
-                                   render_states: &mut rc::RenderStates) -> () {
         unsafe {
             ffi::sfRenderWindow_drawCircleShape(self.render_window,
                                                 circle_shape.unwrap(),
@@ -973,17 +864,6 @@ impl RenderTarget for RenderWindow{
         }
     }
 
-    /// Draw a RectangleShape with a RenderStates
-    fn draw_rectangle_shape_rs_rc(&self,
-                                      rectangle_shape: &rc::RectangleShape,
-                                      render_states: &mut rc::RenderStates) -> () {
-        unsafe {
-            ffi::sfRenderWindow_drawRectangleShape(self.render_window,
-                                                   rectangle_shape.unwrap(),
-                                                   render_states.unwrap())
-        }
-    }
-
     /// Draw a ConvexShape with a RenderStates
     fn draw_convex_shape_rs(&self,
                                 convex_shape: &ConvexShape,
@@ -995,32 +875,10 @@ impl RenderTarget for RenderWindow{
         }
     }
 
-    /// Draw a ConvexShape with a RenderStates
-    fn draw_convex_shape_rs_rc(&self,
-                                   convex_shape: &rc::ConvexShape,
-                                   render_states: &mut rc::RenderStates) -> () {
-        unsafe {
-            ffi::sfRenderWindow_drawConvexShape(self.render_window,
-                                                convex_shape.unwrap(),
-                                                render_states.unwrap())
-        }
-    }
-
     /// Draw a VertexArray with a RenderStates
     fn draw_vertex_array_rs(&self,
                                 vertex_array: &VertexArray,
                                 render_states: &mut RenderStates) -> () {
-        unsafe {
-            ffi::sfRenderWindow_drawVertexArray(self.render_window,
-                                                vertex_array.unwrap(),
-                                                render_states.unwrap())
-        }
-    }
-
-    /// Draw a VertexArray with a RenderStates
-    fn draw_vertex_array_rs_rc(&self,
-                                   vertex_array: &VertexArray,
-                                   render_states: &mut rc::RenderStates) -> () {
         unsafe {
             ffi::sfRenderWindow_drawVertexArray(self.render_window,
                                                 vertex_array.unwrap(),

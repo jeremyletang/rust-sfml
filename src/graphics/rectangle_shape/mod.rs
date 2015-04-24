@@ -35,8 +35,6 @@ use graphics::{FloatRect, IntRect, Color, Texture,
 use ffi::sfml_types::SfBool;
 use ffi::graphics::rectangle_shape as ffi;
 
-pub mod rc;
-
 /// Specialized shape representing a rectangle
 pub struct RectangleShape<'s> {
     rectangle_shape: *mut ffi::sfRectangleShape,

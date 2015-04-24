@@ -51,18 +51,6 @@ pub use graphics::shape::Shape;
 pub use graphics::vertex_array::VertexArray;
 pub use graphics::text_style::TextStyle;
 
-/// Shapes implementations using reference counting to manage shared resources
-pub mod rc {
-    pub use graphics::circle_shape::rc::CircleShape;
-    pub use graphics::rectangle_shape::rc::RectangleShape;
-    pub use graphics::convex_shape::rc::{ConvexShape, ConvexShapePoints};
-    pub use graphics::shape::rc::Shape;
-    pub use graphics::shader::rc::Shader;
-    pub use graphics::text::rc::Text;
-    pub use graphics::sprite::rc::Sprite;
-    pub use graphics::render_states::rc::RenderStates;
-}
-
 #[cfg(any(target_os="macos", target_os="linux", target_os="windows"))]
 mod platform {
     #[link(name = "csfml-graphics")]
