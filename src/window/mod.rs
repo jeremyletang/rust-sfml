@@ -29,8 +29,7 @@ pub use window::window::Window;
 pub use window::video_mode::VideoMode;
 pub use window::context::Context;
 pub use window::context_settings::ContextSettings;
-pub use window::window_style::{WindowStyle, NoStyle, Titlebar,
-                               Resize, Close, Fullscreen, DefaultStyle};
+pub use window::window_style::WindowStyle;
 
 #[cfg(any(target_os="macos", target_os="linux", target_os="windows"))]
 mod platform {

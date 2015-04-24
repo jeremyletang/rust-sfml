@@ -27,7 +27,8 @@
 use std::ptr;
 
 use traits::Wrappable;
-use graphics::{BlendMode, BlendAlpha, Shader, Texture, Transform};
+use graphics::{BlendMode, Shader, Texture, Transform};
+use graphics::BlendMode::BlendAlpha;
 
 use ffi::graphics::render_states as ffi;
 

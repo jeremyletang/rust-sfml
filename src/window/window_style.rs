@@ -26,9 +26,6 @@
 //!
 //! Availables window styles
 
-pub use self::WindowStyle::{NoStyle, Titlebar, Resize, Close, Fullscreen,
-                            DefaultStyle};
-
 /// Enumeration of window creation styles
 #[repr(C)]
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]

@@ -30,7 +30,7 @@ use std::ops::{Index, IndexMut};
 use std::iter::IntoIterator;
 
 use traits::{Drawable, Wrappable};
-use graphics::{Vertex, FloatRect, primitive_type, PrimitiveType, RenderTarget, RenderStates, rc};
+use graphics::{Vertex, FloatRect, PrimitiveType, RenderTarget, RenderStates, rc};
 
 use ffi::graphics::vertex_array as ffi;
 
@@ -178,13 +178,13 @@ impl VertexArray {
     /// * type - Type of primitive
     pub fn set_primitive_type(&mut self, primitive_type: PrimitiveType) -> () {
         let primitive = match primitive_type {
-            primitive_type::Points => ffi::SFPOINTS,
-            primitive_type::Lines => ffi::SFLINES,
-            primitive_type::LinesStrip => ffi::SFLINESSTRIP,
-            primitive_type::Triangles => ffi::SFTRIANGLES,
-            primitive_type::TrianglesStrip => ffi::SFTRIANGLESSTRIP,
-            primitive_type::TrianglesFan => ffi::SFTRIANGLESFAN,
-            primitive_type::Quads => ffi::SFQUADS
+            PrimitiveType::Points => ffi::SFPOINTS,
+            PrimitiveType::Lines => ffi::SFLINES,
+            PrimitiveType::LinesStrip => ffi::SFLINESSTRIP,
+            PrimitiveType::Triangles => ffi::SFTRIANGLES,
+            PrimitiveType::TrianglesStrip => ffi::SFTRIANGLESSTRIP,
+            PrimitiveType::TrianglesFan => ffi::SFTRIANGLESFAN,
+            PrimitiveType::Quads => ffi::SFQUADS
         };
         unsafe {
             ffi::sfVertexArray_setPrimitiveType(self.vertex_array, primitive)
@@ -196,14 +196,14 @@ impl VertexArray {
     /// Return the primitive type
     pub fn get_primitive_type(&self) -> PrimitiveType {
         match unsafe { ffi::sfVertexArray_getPrimitiveType(self.vertex_array) } {
-            ffi::SFPOINTS             => primitive_type::Points,
-            ffi::SFLINES              => primitive_type::Lines,
-            ffi::SFLINESSTRIP         => primitive_type::LinesStrip,
-            ffi::SFTRIANGLES          => primitive_type::Triangles,
-            ffi::SFTRIANGLESSTRIP     => primitive_type::TrianglesStrip,
-            ffi::SFTRIANGLESFAN       => primitive_type::TrianglesFan,
-            ffi::SFQUADS              => primitive_type::Quads,
-            _                         => primitive_type::Points
+            ffi::SFPOINTS             => PrimitiveType::Points,
+            ffi::SFLINES              => PrimitiveType::Lines,
+            ffi::SFLINESSTRIP         => PrimitiveType::LinesStrip,
+            ffi::SFTRIANGLES          => PrimitiveType::Triangles,
+            ffi::SFTRIANGLESSTRIP     => PrimitiveType::TrianglesStrip,
+            ffi::SFTRIANGLESFAN       => PrimitiveType::TrianglesFan,
+            ffi::SFQUADS              => PrimitiveType::Quads,
+            _                         => PrimitiveType::Points
         }
     }
 

@@ -29,7 +29,8 @@ use std::cell::RefCell;
 use std::ptr;
 
 use traits::Wrappable;
-use graphics::{BlendMode, BlendAlpha, Texture, rc, Transform};
+use graphics::{BlendMode, Texture, rc, Transform};
+use graphics::BlendMode::BlendAlpha;
 
 use ffi::graphics::render_states as ffi;
 

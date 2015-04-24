@@ -154,7 +154,7 @@ impl Window {
             }
         };
         if have_event == false {
-            event::NoEvent
+            event::Event::NoEvent
         } else {
             event::raw::get_wrapped_event(&mut event)
         }
@@ -180,7 +180,7 @@ impl Window {
             }
         };
         if have_event == false {
-            return event::NoEvent;
+            return event::Event::NoEvent;
         } else {
             event::raw::get_wrapped_event(&mut event)
         }

@@ -202,7 +202,7 @@ impl RenderWindow {
             }
         };
         if have_event == false {
-            event::NoEvent
+            event::Event::NoEvent
         } else {
             event::raw::get_wrapped_event(&mut event)
         }
@@ -228,7 +228,7 @@ impl RenderWindow {
             }
         };
         if have_event == false {
-            event::NoEvent
+            event::Event::NoEvent
         } else {
             event::raw::get_wrapped_event(&mut event)
         }
