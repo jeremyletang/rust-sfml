@@ -116,6 +116,7 @@
 
 extern crate libc;
 
+#[macro_use]
 pub mod traits;
 pub mod system;
 pub mod window;

@@ -666,19 +666,15 @@ pub mod transform {
     }
 }
 
-/*pub mod transformable {
+pub mod transformable {
 
-    use libc::{c_float, c_void};
+    use libc::c_float;
 
     use system::vector2::Vector2f;
     use graphics::Transform;
 
     #[repr(C)]
-    pub struct sfTransformable {
-        this: *mut c_void,
-        transform: Transform,
-        inverseTransform: Transform
-    }
+    pub struct sfTransformable;
 
     extern "C" {
         pub fn sfTransformable_create() -> *mut sfTransformable;
@@ -698,7 +694,7 @@ pub mod transform {
         pub fn sfTransformable_getTransform(transformable: *mut sfTransformable) -> Transform;
         pub fn sfTransformable_getInverseTransform(transformable: *mut sfTransformable) -> Transform;
     }
-}*/
+}
 
 /*pub mod vertex_array {
 

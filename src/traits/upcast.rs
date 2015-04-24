@@ -22,15 +22,32 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-//! Basic traits for internal functionnement of rust-sfml.
+//! Upcast trait.
 
-pub use traits::drawable::Drawable;
-pub use traits::wrappable::Wrappable;
-pub use traits::shape_impl::ShapeImpl;
-pub use traits::upcast::Upcast;
+/// A type which is upcastable to some parent type.
+pub trait Upcast<T> {
+	/// Upcast to the parent type.
+	fn upcast(&self) -> &T;
+	/// Upcast to the parent type, mutably.
+	fn upcast_mut(&mut self) -> &mut T;
+}
 
-pub mod drawable;
-pub mod shape_impl;
-pub mod wrappable;
-#[macro_use]
-pub mod upcast;
+impl<T> Upcast<T> for T {
+    fn upcast(&self) -> &T { self }
+    fn upcast_mut(&mut self) -> &mut T { self }
+}
+
+macro_rules! upcast {
+    ($child:ty, $field:ident => $parent:ty) => (
+        impl Upcast<$parent> for $child {
+            fn upcast(&self) -> &$parent { &self.$field }
+            fn upcast_mut(&mut self) -> &mut $parent { &mut self.$field }
+        }
+    );
+    ($child:ty => $parent:ty => $grandparent:ty) => (
+        impl Upcast<$grandparent> for $child {
+            fn upcast(&self) -> &$grandparent { Upcast::<$parent>::upcast(self).upcast() }
+            fn upcast_mut(&mut self) -> &mut $grandparent { Upcast::<$parent>::upcast_mut(self).upcast_mut() }
+        }
+    )
+}
