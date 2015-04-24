@@ -22,17 +22,10 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-/*!
-* Mouse events.
-*
-* Give access to the real-time state of the mouse
-*/
-
 use libc::c_uint;
-
 use ffi::window::mouse as ffi;
 
-/// Mouse buttons
+/// Mouse buttons.
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
 pub enum MouseButton {
     /// The left mouse button.
@@ -47,16 +40,13 @@ pub enum MouseButton {
     XButton2
 }
 
-/**
-* Check if a mouse button is pressed
-*
-* # Arguments
-* * button - Button to check
-*
-* Return true if the button is pressed, false otherwise
-*/
-pub fn is_button_pressed(button: MouseButton) -> bool {
-    unsafe {
-        ffi::sfMouse_isButtonPressed(button as c_uint).to_bool()
+impl MouseButton {
+    /// Return whether this mouse button is currently pressed.
+    ///
+    /// Queries the real-time state of the mouse, even if buttons have been
+    /// pressed or released while no window was focused and no events were
+    /// triggered.
+    pub fn is_pressed(self) -> bool {
+        unsafe { ffi::sfMouse_isButtonPressed(self as c_uint) }.to_bool()
     }
 }
