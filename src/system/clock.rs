@@ -22,63 +22,112 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-
-//! Measuring elapsed time
-//!
-//! Utility class that measures the elapsed time
-
-use traits::Wrappable;
 use system::Time;
 
-use ffi::system::clock as ffi;
-
-/// Measuring elapsed time
-///
-/// Utility class that measures the elapsed time
+/// Simple clock capable of measuring elapsed time.
+#[derive(Debug, Clone, Copy)]
 pub struct Clock {
-    clock: *mut ffi::sfClock
+    start_time: Time
 }
 
 impl Clock {
     /// Create a new Clock and start it.
     pub fn new() -> Clock {
         Clock {
-            clock: unsafe { ffi::sfClock_create() }
+            start_time: now()
         }
     }
 
-    /// Create a clock by copying an extant one
-    pub fn clone(&self) -> Clock {
-        Clock {
-            clock: unsafe { ffi::sfClock_copy(self.clock) }
-        }
-    }
-
-    /// Get the time elapsed in a clock
+    /// Get the time elapsed since the Clock was last restarted.
     pub fn get_elapsed_time(&self) -> Time {
-        unsafe {
-            Wrappable::wrap(ffi::sfClock_getElapsedTime(self.clock))
-        }
+        now() - self.start_time
     }
 
-    /// Restart a Clock.
+    /// Restart the Clock and get the time since it was last restarted.
     pub fn restart(&mut self) -> Time {
-        unsafe {
-            Wrappable::wrap(ffi::sfClock_restart(self.clock))
-        }
-    }
-
-    #[doc(hidden)]
-    pub fn unwrap(&self) -> *mut ffi::sfClock {
-        self.clock
+        let now = now();
+        let elapsed = now - self.start_time;
+        self.start_time = now;
+        elapsed
     }
 }
 
-impl Drop for Clock {
-    /// Destroy a clock
-    fn drop(&mut self) {
-        unsafe {
-            ffi::sfClock_destroy(self.clock)
-        }
+fn now() -> Time {
+    unsafe { platform::now() }
+}
+
+#[cfg(target_os = "macos")]
+mod platform {
+    use system::Time;
+    
+    pub unsafe fn now() -> Time {
+        unimplemented!()
+        /*
+        // Mac OS X specific implementation (it doesn't support clock_gettime)
+        static mach_timebase_info_data_t frequency = {0, 0};
+        if (frequency.denom == 0)
+            mach_timebase_info(&frequency);
+        Uint64 nanoseconds = mach_absolute_time() * frequency.numer / frequency.denom;
+        return sf::microseconds(nanoseconds / 1000);
+        */
+    }
+}
+
+#[cfg(target_os = "unix")]
+mod platform {
+    use system::Time;
+    
+    pub unsafe fn now() -> Time {
+        unimplemented!()
+        // POSIX implementation
+        /*
+        timespec time;
+        clock_gettime(CLOCK_MONOTONIC, &time);
+        return sf::microseconds(static_cast<Uint64>(time.tv_sec) * 1000000 + time.tv_nsec / 1000);
+        */
+    }
+}
+
+#[cfg(target_os = "windows")]
+mod platform {
+    use system::Time;
+    use libc::types::os::arch::extra::{HANDLE, DWORD, BOOL, LARGE_INTEGER};
+
+    extern "system" {
+        fn GetCurrentThread() -> HANDLE;
+        fn SetThreadAffinityMask(thread: HANDLE, mask: DWORD) -> DWORD;
+        fn QueryPerformanceFrequency(freq: *mut LARGE_INTEGER) -> BOOL;
+        fn QueryPerformanceCounter(freq: *mut LARGE_INTEGER) -> BOOL;
+    }
+    
+    static mut FREQUENCY: Option<LARGE_INTEGER> = None;
+
+    pub unsafe fn now() -> Time {
+        // Force the following code to run on first core
+        // (see http://msdn.microsoft.com/en-us/library/windows/desktop/ms644904(v=vs.85).aspx)
+        let thread = GetCurrentThread();
+        let previous_mask = SetThreadAffinityMask(thread, 1);
+
+        // Get the frequency of the performance counter
+        // (it is constant across the program lifetime)
+        // NB: a static mut is being accesse here
+        let frequency = match FREQUENCY {
+            Some(value) => value,
+            None => {
+                let mut value: LARGE_INTEGER = 0;
+                QueryPerformanceFrequency(&mut value);
+                FREQUENCY = Some(value);
+                value
+            }
+        };
+        
+        let mut time: LARGE_INTEGER = 0;
+        QueryPerformanceCounter(&mut time);
+
+        // Restore the thread affinity
+        SetThreadAffinityMask(thread, previous_mask);
+
+        // Return the current time as microseconds
+        return Time::with_microseconds(1_000_000 * time / frequency);
     }
 }

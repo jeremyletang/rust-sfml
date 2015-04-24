@@ -28,21 +28,20 @@
  * It provides vector classes, unicode strings and conversion functions, threads and mutexes, timing classes.
  */
 
-pub use system::vector2::{Vector2u, Vector2i, Vector2f, ToVec};
-pub use system::vector3::Vector3f;
-pub use system::msleep::sleep;
-pub use system::time::Time;
-pub use system::clock::Clock;
-
-#[cfg(any(target_os="macos", target_os="linux", target_os="windows"))]
-mod platform {
-    #[link(name = "csfml-system")]
-    extern {}
-}
-
+// Vector support
 pub mod vector2;
 pub mod vector3;
+pub use self::vector2::{Vector2u, Vector2i, Vector2f, ToVec};
+pub use self::vector3::Vector3f;
+
+// Time, clock, and sleep support
 mod time;
 mod clock;
-#[path = "sleep.rs"]
-mod msleep;
+pub use self::time::Time;
+pub use self::clock::Clock;
+
+/// Make the current thread sleep for the given duration.
+pub fn sleep(time: Time) {
+    use std::thread::sleep_ms;
+    sleep_ms(time.as_milliseconds() as u32)
+}

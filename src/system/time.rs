@@ -24,127 +24,80 @@
 
 #![allow(missing_copy_implementations)]
 
-//! Represents a time value.
-//!
-//! Time encapsulates a time value in a flexible way.
-
-pub use libc::{c_long, c_float, c_int};
-
 use std::ops::{Add, Sub, Mul, Div};
-use std::cmp::Ordering;
 
 use traits::Wrappable;
-
 use ffi::system::time as ffi;
+use std::mem;
 
-/// Represents a time value.
-///
-/// Time encapsulates a time value in a flexible way.
+/// Represents a time duration in a flexible way.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Time {
-    time: ffi::sfTime
+    microseconds: i64
 }
 
 impl Time {
     /// Construct a time value from a number of seconds
     pub fn with_seconds(seconds: f32) -> Time {
         Time {
-            time: unsafe { ffi::sfSeconds(seconds as c_float) }
+            microseconds: (seconds * 1_000_000.) as i64
         }
     }
 
     /// Construct a time value from a number of milliseconds
     pub fn with_milliseconds(milliseconds: i32) -> Time {
         Time {
-            time: unsafe { ffi::sfMilliseconds(milliseconds as c_int) }
+            microseconds: (milliseconds * 1_000) as i64
         }
     }
 
     /// Construct a time value from a number of microseconds
     pub fn with_microseconds(microseconds: i64) -> Time {
         Time {
-            time: unsafe { ffi::sfMicroseconds(microseconds) }
+            microseconds: microseconds
         }
     }
 
     /// Return a time value as a number of seconds
     pub fn as_seconds(&self) -> f32 {
-        unsafe {
-            ffi::sfTime_asSeconds(self.time)
-        }
+        ((self.microseconds as f64) / 1_000_000.) as f32
     }
 
     /// Return a time value as a number of milliseconds
     pub fn as_milliseconds(&self) -> i32 {
-        unsafe {
-            ffi::sfTime_asMilliseconds(self.time)
-        }
+        ((self.microseconds as f64) / 1_000.) as i32
     }
 
     /// Return a time value as a number of microseconds
     pub fn as_microseconds(&self) -> i64 {
-        unsafe {
-            ffi::sfTime_asMicroseconds(self.time)
+        self.microseconds
+    }
+}
+
+macro_rules! oper {
+    ($t:ty, $f:ident, $p:path) => {
+        impl $t for Time {
+            type Output = Time;
+            
+            fn $f(self, other: Time) -> Time {
+                Time { microseconds: $p ( self.microseconds, other.microseconds ) }
+            }
         }
     }
 }
 
-impl PartialEq for Time {
-    fn eq(&self, other: &Time) -> bool {
-        self.as_microseconds() == other.as_microseconds()
-    }
-
-    fn ne(&self, other: &Time) -> bool {
-        self.as_microseconds() != other.as_microseconds()
-    }
-}
-
-impl PartialOrd for Time {
-    fn partial_cmp(&self, other: &Time) -> Option<Ordering> {
-        self.as_microseconds().partial_cmp(&other.as_microseconds())
-    }
-}
-
-impl Add for Time {
-    type Output = Time;
-
-    fn add(self, other: Time) -> Time {
-         Time::with_microseconds(self.as_microseconds() + other.as_microseconds())
-    }
-}
-
-impl Sub for Time {
-    type Output = Time;
-
-    fn sub(self, other: Time) -> Time {
-         Time::with_microseconds(self.as_microseconds() - other.as_microseconds())
-    }
-}
-
-impl Mul for Time {
-    type Output = Time;
-
-    fn mul(self, other: Time) -> Time {
-         Time::with_microseconds(self.as_microseconds() * other.as_microseconds())
-    }
-}
-
-impl Div for Time {
-    type Output = Time;
-
-    fn div(self, other: Time) -> Time {
-         Time::with_microseconds(self.as_microseconds() / other.as_microseconds())
-    }
-}
+oper!(Add, add, Add::add);
+oper!(Sub, sub, Sub::sub);
+oper!(Mul, mul, Mul::mul);
+oper!(Div, div, Div::div);
 
 #[doc(hidden)]
 impl Wrappable<ffi::sfTime> for Time {
     fn wrap(time: ffi::sfTime) -> Time {
-        Time {
-            time: time
-        }
+        unsafe { mem::transmute(time) }
     }
 
     fn unwrap(&self) -> ffi::sfTime {
-        self.time
+        unsafe { mem::transmute(*self) }
     }
 }
