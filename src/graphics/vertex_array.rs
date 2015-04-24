@@ -26,7 +26,8 @@
 
 use libc::c_uint;
 use std::mem;
-use std::ops::Index;
+use std::ops::{Index, IndexMut};
+use std::iter::IntoIterator;
 
 use traits::{Drawable, Wrappable};
 use graphics::{Vertex, FloatRect, primitive_type, PrimitiveType, RenderTarget, RenderStates, rc};
@@ -38,9 +39,15 @@ pub struct VertexArray {
     vertex_array: *mut ffi::sfVertexArray
 }
 
-/// An iterator over the vertice of a VertexArray
+/// An iterator over the vertices of a VertexArray
 pub struct Vertices<'a> {
     vertex_array: &'a VertexArray,
+    pos: u32
+}
+
+/// A mutable iterator over the vertices of a VertexArray
+pub struct VerticesMut<'a> {
+    vertex_array: &'a mut VertexArray,
     pos: u32
 }
 
@@ -170,30 +177,17 @@ impl VertexArray {
     /// # Arguments
     /// * type - Type of primitive
     pub fn set_primitive_type(&mut self, primitive_type: PrimitiveType) -> () {
+        let primitive = match primitive_type {
+            primitive_type::Points => ffi::SFPOINTS,
+            primitive_type::Lines => ffi::SFLINES,
+            primitive_type::LinesStrip => ffi::SFLINESSTRIP,
+            primitive_type::Triangles => ffi::SFTRIANGLES,
+            primitive_type::TrianglesStrip => ffi::SFTRIANGLESSTRIP,
+            primitive_type::TrianglesFan => ffi::SFTRIANGLESFAN,
+            primitive_type::Quads => ffi::SFQUADS
+        };
         unsafe {
-            match primitive_type {
-                primitive_type::Points              =>
-                    ffi::sfVertexArray_setPrimitiveType(self.vertex_array,
-                                                        ffi::SFPOINTS),
-                primitive_type::Lines               =>
-                    ffi::sfVertexArray_setPrimitiveType(self.vertex_array,
-                                                        ffi::SFLINES),
-                primitive_type::LinesStrip          =>
-                    ffi::sfVertexArray_setPrimitiveType(self.vertex_array,
-                                                        ffi::SFLINESSTRIP),
-                primitive_type::Triangles           =>
-                    ffi::sfVertexArray_setPrimitiveType(self.vertex_array,
-                                                        ffi::SFTRIANGLES),
-                primitive_type::TrianglesStrip      =>
-                    ffi::sfVertexArray_setPrimitiveType(self.vertex_array,
-                                                        ffi::SFTRIANGLESSTRIP),
-                primitive_type::TrianglesFan        =>
-                    ffi::sfVertexArray_setPrimitiveType(self.vertex_array,
-                                                        ffi::SFTRIANGLESFAN),
-                primitive_type::Quads               =>
-                    ffi::sfVertexArray_setPrimitiveType(self.vertex_array,
-                                                        ffi::SFQUADS)
-            }
+            ffi::sfVertexArray_setPrimitiveType(self.vertex_array, primitive)
         }
     }
 
@@ -223,16 +217,21 @@ impl VertexArray {
     /// * index - Index of the vertex to get
     ///
     /// Return a mutable reference to the index-th vertex
-    pub fn get_vertex(&self, index: u32) -> &mut Vertex {
-        unsafe {
-            mem::transmute(ffi::sfVertexArray_getVertex(self.vertex_array,
-                                                         index as c_uint))
+    pub unsafe fn get_vertex(&mut self, index: u32) -> &mut Vertex {
+        mem::transmute(ffi::sfVertexArray_getVertex(self.vertex_array, index as c_uint))
+    }
+
+    /// Return an immutable iterator over all the vertices contained by the VertexArray
+    pub fn vertices<'a>(&'a self) -> Vertices<'a> {
+        Vertices {
+            vertex_array: self,
+            pos: 0
         }
     }
 
-    /// Return an immutable iterator over all the vertice contained by the VertexArray
-    pub fn vertices<'a>(&'a self) -> Vertices<'a> {
-        Vertices {
+    /// Return a mutable iterator over all the vertices contained by the VertexArray
+    pub fn vertices_mut<'a>(&'a mut self) -> VerticesMut<'a> {
+        VerticesMut {
             vertex_array: self,
             pos: 0
         }
@@ -257,17 +256,51 @@ impl<'a> Iterator for Vertices<'a> {
     type Item = &'a Vertex;
 
     fn next(&mut self) -> Option<&'a Vertex> {
-        let point_count =
-            unsafe { ffi::sfVertexArray_getVertexCount(self.vertex_array.vertex_array) as u32 };
+        let point_count = self.vertex_array.get_vertex_count();
         if self.pos == point_count {
             None
         } else {
+            let pos = self.pos;
             self.pos += 1;
-            unsafe {
-                mem::transmute(ffi::sfVertexArray_getVertex(self.vertex_array.vertex_array,
-                                                             self.pos as c_uint))
-            }
+            Some(unsafe {
+                mem::transmute(ffi::sfVertexArray_getVertex(self.vertex_array.vertex_array, pos as c_uint))
+            })
         }
+    }
+}
+
+impl<'a> Iterator for VerticesMut<'a> {
+    type Item = &'a mut Vertex;
+
+    fn next(&mut self) -> Option<&'a mut Vertex> {
+        let point_count = self.vertex_array.get_vertex_count();
+        if self.pos == point_count {
+            None
+        } else {
+            let pos = self.pos;
+            self.pos += 1;
+            Some(unsafe {
+                mem::transmute(ffi::sfVertexArray_getVertex(self.vertex_array.vertex_array, pos as c_uint))
+            })
+        }
+    }
+}
+
+impl<'a> IntoIterator for &'a VertexArray {
+    type Item = &'a Vertex;
+    type IntoIter = Vertices<'a>;
+
+    fn into_iter(self) -> Vertices<'a> {
+        self.vertices()
+    }
+}
+
+impl<'a> IntoIterator for &'a mut VertexArray {
+    type Item = &'a mut Vertex;
+    type IntoIter = VerticesMut<'a>;
+
+    fn into_iter(self) -> VerticesMut<'a> {
+        self.vertices_mut()
     }
 }
 
@@ -275,10 +308,22 @@ impl Index<u32> for VertexArray {
     type Output = Vertex;
 
     fn index<'s>(&'s self, _rhs: u32) -> &'s Vertex {
+        if _rhs >= self.get_vertex_count() {
+            panic!("vertex out of bounds: {} >= {}", _rhs, self.get_vertex_count());
+        }
         unsafe {
-            mem::transmute::<*const Vertex, &'s Vertex>
-                (ffi::sfVertexArray_getVertex(self.vertex_array,
-                                              _rhs as c_uint) as *const Vertex)
+            mem::transmute(ffi::sfVertexArray_getVertex(self.vertex_array, _rhs as c_uint))
+        }
+    }
+}
+
+impl IndexMut<u32> for VertexArray {
+    fn index_mut(&mut self, _rhs: u32) -> &mut Vertex {
+        if _rhs >= self.get_vertex_count() {
+            panic!("vertex out of bounds: {} >= {}", _rhs, self.get_vertex_count());
+        }
+        unsafe {
+            mem::transmute(ffi::sfVertexArray_getVertex(self.vertex_array, _rhs as c_uint))
         }
     }
 }

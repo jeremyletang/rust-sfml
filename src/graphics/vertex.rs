@@ -121,7 +121,7 @@ impl Vertex {
         }
     }
 
-    /// Create a new Vertex whit the position and the texture coordinates
+    /// Create a new Vertex with the position and the texture coordinates
     ///
     /// # Arguments
     /// * position - Position of the vertex
