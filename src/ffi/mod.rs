@@ -27,5 +27,4 @@
 pub mod graphics;
 pub mod audio;
 pub mod window;
-pub mod system;
 pub mod sfml_types;

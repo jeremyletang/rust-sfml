@@ -125,7 +125,7 @@ impl SoundBuffer {
     ///
     /// Return the sound duration
     pub fn get_duration(&self) -> Time {
-        Wrappable::wrap(unsafe { ffi::sfSoundBuffer_getDuration(self.sound_buffer) })
+        unsafe { ffi::sfSoundBuffer_getDuration(self.sound_buffer) }
     }
 
     /// Get the sample rate of a sound buffer

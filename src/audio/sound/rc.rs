@@ -158,7 +158,7 @@ impl Sound {
     ///
     /// Return the current playing position
     pub fn get_playing_offset(&self) -> Time {
-        Wrappable::wrap( unsafe {ffi::sfSound_getPlayingOffset(self.sound)})
+        unsafe {ffi::sfSound_getPlayingOffset(self.sound)}
     }
 
     /// Set the pitch of a sound
@@ -241,7 +241,7 @@ impl Sound {
     /// * timeOffset - New playing position
     pub fn set_playing_offset(&mut self, time_offset: Time) -> () {
         unsafe {
-            ffi::sfSound_setPlayingOffset(self.sound, time_offset.unwrap())
+            ffi::sfSound_setPlayingOffset(self.sound, time_offset)
         }
     }
 

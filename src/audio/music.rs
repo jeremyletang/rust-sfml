@@ -121,7 +121,7 @@ impl Music {
     ///
     /// Return Music duration
     pub fn get_duration(&self) -> Time {
-        Wrappable::wrap( unsafe { ffi::sfMusic_getDuration(self.music) })
+        unsafe { ffi::sfMusic_getDuration(self.music) }
     }
 
     /// Start or resume playing a music
@@ -192,7 +192,7 @@ impl Music {
     ///
     /// Return the current playing position
     pub fn get_playing_offset(&self) -> Time {
-        Wrappable::wrap(unsafe { ffi::sfMusic_getPlayingOffset(self.music) })
+        unsafe { ffi::sfMusic_getPlayingOffset(self.music) }
     }
 
     /// Set the pitch of a music
@@ -283,7 +283,7 @@ impl Music {
     /// * timeOffset - New playing position
     pub fn set_playing_offset(&mut self, time_offset: Time) -> () {
         unsafe {
-            ffi::sfMusic_setPlayingOffset(self.music, time_offset.unwrap())
+            ffi::sfMusic_setPlayingOffset(self.music, time_offset)
         }
     }
 

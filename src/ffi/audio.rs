@@ -42,7 +42,7 @@ pub mod music {
 
     use system::vector3::Vector3f;
 
-    use ffi::system::time::sfTime;
+    use system::Time as sfTime;
     use ffi::audio::sound_status::sfSoundStatus;
     use ffi::sfml_types::SfBool;
 
@@ -91,7 +91,7 @@ pub mod sound {
 
     use ffi::audio::sound_status::sfSoundStatus;
     use ffi::audio::sound_buffer::sfSoundBuffer;
-    use ffi::system::time::sfTime;
+    use system::Time as sfTime;
     use ffi::sfml_types::SfBool;
 
     #[repr(C)]
@@ -132,7 +132,7 @@ pub mod sound {
 pub mod sound_buffer {
     use libc::{size_t, c_void, c_uint, c_char};
 
-    use ffi::system::time::sfTime;
+    use system::Time as sfTime;
     use ffi::sfml_types::SfBool;
 
     #[repr(C)]

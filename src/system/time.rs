@@ -25,15 +25,19 @@
 #![allow(missing_copy_implementations)]
 
 use std::ops::{Add, Sub, Mul, Div};
-
-use traits::Wrappable;
-use ffi::system::time as ffi;
+use libc::c_longlong;
 use std::mem;
 
 /// Represents a time duration in a flexible way.
+#[repr(C)]
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Time {
     microseconds: i64
+}
+
+// Verify at compile time that i64 == c_longlong
+unsafe fn _assert_sizes_match(x: i64) -> c_longlong {
+	mem::transmute(x)
 }
 
 impl Time {
@@ -90,14 +94,3 @@ oper!(Add, add, Add::add);
 oper!(Sub, sub, Sub::sub);
 oper!(Mul, mul, Mul::mul);
 oper!(Div, div, Div::div);
-
-#[doc(hidden)]
-impl Wrappable<ffi::sfTime> for Time {
-    fn wrap(time: ffi::sfTime) -> Time {
-        unsafe { mem::transmute(time) }
-    }
-
-    fn unwrap(&self) -> ffi::sfTime {
-        unsafe { mem::transmute(*self) }
-    }
-}
