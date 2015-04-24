@@ -121,5 +121,4 @@ pub mod system;
 pub mod window;
 pub mod audio;
 pub mod graphics;
-pub mod network;
 mod ffi;
