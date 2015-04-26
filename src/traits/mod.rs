@@ -27,10 +27,7 @@
 pub use traits::drawable::Drawable;
 pub use traits::wrappable::Wrappable;
 pub use traits::shape_impl::ShapeImpl;
-pub use traits::upcast::Upcast;
 
 pub mod drawable;
 pub mod shape_impl;
 pub mod wrappable;
-#[macro_use]
-pub mod upcast;

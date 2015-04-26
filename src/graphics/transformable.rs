@@ -22,11 +22,12 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-use libc::c_float;
+//use libc::c_float;
 
-use traits::{Wrappable, Upcast};
+use traits::Wrappable;
 use graphics::Transform;
 use system::vector2::Vector2f;
+//use std::convert::{AsRef, AsMut};
 
 use ffi::graphics::transformable as ffi;
 
@@ -198,7 +199,7 @@ pub trait Transformable {
     fn get_inverse_transform(&self) -> Transform;
 }
 
-impl<T: Upcast<TransformableData>> Transformable for T {
+/*impl<T: Upcast<TransformableData>> Transformable for T {
     fn set_position(&mut self, position: &Vector2f) -> () {
         unsafe {
             ffi::sfTransformable_setPosition(self.upcast_mut().raw, *position)
@@ -276,5 +277,5 @@ impl<T: Upcast<TransformableData>> Transformable for T {
             ffi::sfTransformable_getInverseTransform(self.upcast().raw)
         }
     }
-}
+}*/
 
