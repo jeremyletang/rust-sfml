@@ -37,7 +37,7 @@ use system::vector3::Vector3f;
 use traits::Wrappable;
 
 use ffi::sfml_types::SfBool;
-use ffi::audio::music as ffi;
+use ffi::audio as ffi;
 
 /// Play Music
 ///

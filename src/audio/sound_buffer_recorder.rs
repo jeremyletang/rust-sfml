@@ -32,7 +32,7 @@ use libc::c_uint;
 use traits::Wrappable;
 use audio::sound_buffer::SoundBuffer;
 
-use ffi::audio::sound_buffer_recorder as ffi;
+use ffi::audio as ffi;
 
 /// Store captured audio data in sound Buffer
 ///
@@ -107,7 +107,7 @@ impl SoundBufferRecorder {
         if buff.is_null() {
             None
         } else {
-			let buff = unsafe { ::ffi::audio::sound_buffer::sfSoundBuffer_copy(buff) };
+			let buff = unsafe { ffi::sfSoundBuffer_copy(buff) };
 			if buff.is_null() {
 				None
 			} else {

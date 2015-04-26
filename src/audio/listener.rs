@@ -28,7 +28,7 @@
 
 use system::vector3::Vector3f;
 
-use ffi::audio::listener as ffi;
+use ffi::audio as ffi;
 
 /// Change the global volume of all the sounds and musics
 ///

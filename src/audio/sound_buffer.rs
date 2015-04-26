@@ -31,7 +31,7 @@ use std::ffi::CString;
 use traits::Wrappable;
 use system::Time;
 
-use ffi::audio::sound_buffer as ffi;
+use ffi::audio as ffi;
 
 /// Storage of audio sample
 ///
