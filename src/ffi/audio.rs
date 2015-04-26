@@ -40,7 +40,7 @@ pub mod listener {
 }
 
 pub mod music {
-    use libc::{c_void, c_uint, c_float, c_char, size_t, c_uchar};
+    use libc::{c_uint, c_float, c_char, size_t, c_uchar};
 
     use system::vector3::Vector3f;
 
@@ -49,10 +49,7 @@ pub mod music {
     use ffi::sfml_types::SfBool;
 
     #[repr(C)]
-    pub struct sfMusic {
-        this:  *mut c_void,
-        this1: *mut c_void
-    }
+    pub struct sfMusic(());
 
     extern "C" {
         pub fn sfMusic_createFromFile(filename: *const c_char) -> *mut sfMusic;
@@ -87,7 +84,7 @@ pub mod music {
 
 pub mod sound {
 
-    use libc::{c_float, c_void};
+    use libc::{c_float};
 
     use system::vector3::Vector3f;
 
@@ -97,10 +94,7 @@ pub mod sound {
     use ffi::sfml_types::SfBool;
 
     #[repr(C)]
-    pub struct sfSound {
-        this: *mut c_void,
-        this2: *mut c_void
-    }
+    pub struct sfSound(());
 
     extern "C" {
         pub fn sfSound_create() -> *mut sfSound;
@@ -132,15 +126,13 @@ pub mod sound {
 }
 
 pub mod sound_buffer {
-    use libc::{size_t, c_void, c_uint, c_char};
+    use libc::{size_t, c_uint, c_char};
 
     use system::Time as sfTime;
     use ffi::sfml_types::SfBool;
 
     #[repr(C)]
-    pub struct sfSoundBuffer {
-        this: *mut c_void
-    }
+    pub struct sfSoundBuffer(());
 
     extern "C" {
         pub fn sfSoundBuffer_createFromFile(filename: *const c_char) -> *mut sfSoundBuffer;
@@ -156,16 +148,14 @@ pub mod sound_buffer {
 }
 
 pub mod sound_buffer_recorder {
-    use libc::{size_t, c_uint, c_void, c_char};
+    use libc::{size_t, c_uint, c_char};
 
     use ffi::audio::sound_buffer::sfSoundBuffer;
     use ffi::sfml_types::SfBool;
     use system::Time as sfTime;
 
     #[repr(C)]
-    pub struct sfSoundBufferRecorder {
-        this: *mut c_void
-    }
+    pub struct sfSoundBufferRecorder(());
 
     extern "C" {
         pub fn sfSoundBufferRecorder_create() -> *mut sfSoundBufferRecorder;

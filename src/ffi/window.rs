@@ -23,7 +23,7 @@
 */
 
 pub mod window {
-    use libc::{c_void, c_uint, c_float, c_char};
+    use libc::{c_uint, c_float, c_char};
 
     use window::ContextSettings;
     use system::vector2::{Vector2i, Vector2u};
@@ -32,9 +32,7 @@ pub mod window {
     use ffi::sfml_types::SfBool;
 
     #[repr(C)]
-    pub struct sfWindow {
-        this: *mut c_void
-    }
+    pub struct sfWindow(());
 
     extern "C" {
         pub fn sfWindow_create(mode: sfVideoMode, title: *const c_char, style: c_uint, settings: *const ContextSettings) -> *mut sfWindow;
@@ -70,14 +68,10 @@ pub mod window {
 }
 
 pub mod context {
-    use libc::c_void;
-
     use ffi::sfml_types::SfBool;
 
     #[repr(C)]
-    pub struct sfContext {
-        this: *mut c_void
-    }
+    pub struct sfContext(());
 
     extern "C" {
         pub fn sfContext_create() -> *mut sfContext;

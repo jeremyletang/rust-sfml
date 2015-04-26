@@ -45,7 +45,7 @@ pub mod render_window {
     use ffi::sfml_types::SfBool;
 
     #[repr(C)]
-    pub struct sfRenderWindow;
+    pub struct sfRenderWindow(());
 
     extern "C" {
         pub fn sfRenderWindow_create(mode: sfVideoMode, title: *const c_char, style: c_uint, settings: *const ContextSettings) -> *mut sfRenderWindow;
@@ -102,7 +102,7 @@ pub mod render_window {
 
 pub mod circle_shape {
 
-    use libc::{c_void, c_float, c_uint};
+    use libc::{c_float, c_uint};
 
     use system::vector2::Vector2f;
     use graphics::{Color, Transform, IntRect, FloatRect};
@@ -111,12 +111,7 @@ pub mod circle_shape {
     use ffi::sfml_types::SfBool;
 
     #[repr(C)]
-    pub struct sfCircleShape {
-        this: *mut c_void,
-        texture: *mut sfTexture,
-        transform: Transform,
-        inverseTransform: Transform
-    }
+    pub struct sfCircleShape(());
 
     extern "C" {
         pub fn sfCircleShape_create() -> *mut sfCircleShape;
@@ -157,7 +152,7 @@ pub mod circle_shape {
 
 pub mod convex_shape {
 
-    use libc::{c_uint, c_void, c_float};
+    use libc::{c_uint, c_float};
 
     use system::vector2::Vector2f;
     use graphics::{Color, Transform, FloatRect, IntRect};
@@ -166,12 +161,7 @@ pub mod convex_shape {
     use ffi::sfml_types::SfBool;
 
     #[repr(C)]
-    pub struct sfConvexShape {
-        this: *mut c_void,
-        texture: *mut sfTexture,
-        transform: Transform,
-        inverseTransform: Transform
-    }
+    pub struct sfConvexShape(());
 
     extern "C" {
         pub fn sfConvexShape_create() -> *mut sfConvexShape;
@@ -210,7 +200,7 @@ pub mod convex_shape {
 }
 
 pub mod font {
-    use libc::{c_void, c_uint, c_float, c_char, c_uchar, size_t};
+    use libc::{c_uint, c_float, c_char, c_uchar, size_t};
 
     use graphics::Glyph;
 
@@ -218,9 +208,7 @@ pub mod font {
     use ffi::sfml_types::SfBool;
 
     #[repr(C)]
-    pub struct sfFont {
-        this: *mut c_void
-    }
+    pub struct sfFont(());
 	
 	#[repr(C)]
 	pub struct sfFontInfo {
@@ -244,7 +232,7 @@ pub mod font {
 }
 
 pub mod image {
-    use libc::{c_void, c_uint, c_char, c_uchar, size_t};
+    use libc::{c_uint, c_char, c_uchar, size_t};
 
     use graphics::{Color, IntRect};
     use system::vector2::Vector2u;
@@ -252,9 +240,7 @@ pub mod image {
     use ffi::sfml_types::SfBool;
 
     #[repr(C)]
-    pub struct sfImage {
-        this: *mut c_void
-    }
+    pub struct sfImage(());
 
     extern "C" {
         pub fn sfImage_create(width: c_uint, height: c_uint) -> *mut sfImage;
@@ -292,7 +278,7 @@ pub mod rect {
 }
 
 pub mod rectangle_shape {
-    use libc::{c_void, c_float, c_uint};
+    use libc::{c_float, c_uint};
 
     use system::vector2::Vector2f;
     use graphics::{Color, Transform, FloatRect, IntRect};
@@ -301,12 +287,7 @@ pub mod rectangle_shape {
     use ffi::sfml_types::SfBool;
 
     #[repr(C)]
-    pub struct sfRectangleShape {
-        this: *mut c_void,
-        texture: *mut sfTexture,
-        transform: Transform,
-        inverseTransform: Transform
-    }
+    pub struct sfRectangleShape(());
 
     extern "C" {
         pub fn sfRectangleShape_create() -> *mut sfRectangleShape;
@@ -362,7 +343,7 @@ pub mod render_states {
 
 pub mod shader {
 
-    use libc::{c_void, c_float, c_char};
+    use libc::{c_float, c_char};
 
     use graphics::{Transform, Color};
     use system::vector2::Vector2f;
@@ -372,9 +353,7 @@ pub mod shader {
     use ffi::sfml_types::SfBool;
 
     #[repr(C)]
-    pub struct sfShader {
-        this: *mut c_void
-    }
+    pub struct sfShader(());
 
     extern "C" {
         pub fn sfShader_createFromFile(vertexShaderFilename: *const c_char, fragmentShaderFilename: *const c_char) -> *mut sfShader;
@@ -398,7 +377,7 @@ pub mod shader {
 
 #[doc(hidden)]
 pub mod render_texture {
-    use libc::{c_void, c_uint};
+    use libc::{c_uint};
 
     use system::vector2::{Vector2f, Vector2i, Vector2u};
     use graphics::{Color, IntRect, Vertex, PrimitiveType};
@@ -416,12 +395,7 @@ pub mod render_texture {
     use ffi::sfml_types::SfBool;
 
     #[repr(C)]
-    pub struct sfRenderTexture {
-        this: *mut c_void,
-        target: *mut sfTexture,
-        defaultView: sfView,
-        currentView: sfView
-    }
+    pub struct sfRenderTexture(());
 
     extern "C" {
         pub fn sfRenderTexture_create(width: c_uint, height: c_uint, depthBuffer: SfBool) -> *mut sfRenderTexture;
@@ -466,12 +440,7 @@ pub mod shape {
     use ffi::sfml_types::SfBool;
 
     #[repr(C)]
-    pub struct sfShape {
-        this: *mut c_void,
-        texture: *mut sfTexture,
-        transform: Transform,
-        inverseTransform: Transform
-    }
+    pub struct sfShape(());
 
     extern "C" {
         pub fn sfShape_create(getPointCount: extern "C" fn(*mut c_void) -> u32, getPoint: extern "C" fn(u32, *mut c_void) -> Vector2f, userData: *mut c_void) -> *mut sfShape;
@@ -509,7 +478,7 @@ pub mod shape {
 
 pub mod sprite {
 
-    use libc::{c_void, c_float};
+    use libc::{c_float};
 
     use system::vector2::Vector2f;
     use graphics::{Color, Transform, IntRect, FloatRect};
@@ -518,12 +487,7 @@ pub mod sprite {
     use ffi::sfml_types::SfBool;
 
     #[repr(C)]
-    pub struct sfSprite {
-        this: *mut c_void,
-        texture: *mut sfTexture,
-        transform: Transform,
-        inverseTransform: Transform
-    }
+    pub struct sfSprite(());
 
     extern "C" {
         pub fn sfSprite_create() -> *mut sfSprite;
@@ -554,7 +518,7 @@ pub mod sprite {
 }
 
 pub mod text {
-    use libc::{c_uint, c_float, c_void, size_t, c_char};
+    use libc::{c_uint, c_float, size_t, c_char};
 
     use system::vector2::Vector2f;
     use graphics::{Color, Transform, FloatRect};
@@ -562,12 +526,7 @@ pub mod text {
     use ffi::graphics::font::sfFont;
 
     #[repr(C)]
-    pub struct sfText {
-        this: *mut c_void,
-        font: *mut c_void,
-        transform: Transform,
-        transform2: Transform
-    }
+    pub struct sfText(());
 
     extern "C" {
         pub fn sfText_create() -> *mut sfText;
@@ -606,7 +565,7 @@ pub mod text {
 
 pub mod texture {
 
-    use libc::{c_uint, c_void, c_char, c_uchar, size_t};
+    use libc::{c_uint, c_char, c_uchar, size_t};
 
     use system::vector2::Vector2u;
     use graphics::IntRect;
@@ -617,9 +576,7 @@ pub mod texture {
     use ffi::sfml_types::SfBool;
 
     #[repr(C)]
-    pub struct sfTexture {
-        this: *mut c_void
-    }
+    pub struct sfTexture(());
 
     extern "C" {
         pub fn sfTexture_create(width: c_uint, height: c_uint) -> *mut sfTexture;
@@ -674,7 +631,7 @@ pub mod transformable {
     use graphics::Transform;
 
     #[repr(C)]
-    pub struct sfTransformable;
+    pub struct sfTransformable(());
 
     extern "C" {
         pub fn sfTransformable_create() -> *mut sfTransformable;
@@ -733,15 +690,13 @@ pub mod transformable {
 
 pub mod view {
 
-    use libc::{c_float, c_void};
+    use libc::{c_float};
 
     use system::vector2::Vector2f;
     use graphics::FloatRect;
 
     #[repr(C)]
-    pub struct sfView {
-        this: *mut c_void
-    }
+    pub struct sfView(());
 
     extern "C" {
         pub fn sfView_create() -> *mut sfView;
