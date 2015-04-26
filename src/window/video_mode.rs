@@ -32,7 +32,7 @@ use std::vec::Vec;
 
 use traits::Wrappable;
 
-use ffi::window::video_mode as ffi;
+use ffi::window as ffi;
 
 /// VideoMode defines a video mode (width, height, bpp, frequency)
 ///

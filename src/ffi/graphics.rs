@@ -31,7 +31,7 @@ pub mod render_window {
     use window::ContextSettings;
     use graphics::{Color, IntRect, Vertex, PrimitiveType};
 
-    use ffi::window::video_mode::sfVideoMode;
+    use ffi::window::sfVideoMode;
     use ffi::graphics::text::sfText;
     use ffi::graphics::sprite::sfSprite;
     use ffi::graphics::circle_shape::sfCircleShape;
@@ -572,7 +572,7 @@ pub mod texture {
 
     use ffi::graphics::render_window::sfRenderWindow;
     use ffi::graphics::image::sfImage;
-    use ffi::window::window::sfWindow;
+    use ffi::window::sfWindow;
     use ffi::sfml_types::SfBool;
 
     #[repr(C)]

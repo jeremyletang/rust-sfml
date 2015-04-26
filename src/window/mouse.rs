@@ -30,7 +30,7 @@
 
 use libc::c_uint;
 
-use ffi::window::mouse as ffi;
+use ffi::window as ffi;
 
 /// Mouse buttons
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]

@@ -37,7 +37,7 @@ use window::{event, VideoMode, ContextSettings, WindowStyle};
 use system::vector2::{Vector2i, Vector2u};
 
 use ffi::sfml_types::SfBool;
-use ffi::window::window as ffi;
+use ffi::window as ffi;
 
 ///
 /// Window manipulation

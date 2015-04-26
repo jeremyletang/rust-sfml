@@ -27,7 +27,7 @@
 
 use libc::c_int;
 
-use ffi::window::keyboard as ffi;
+use ffi::window as ffi;
 
 /// Key codes
 #[repr(i64)]
