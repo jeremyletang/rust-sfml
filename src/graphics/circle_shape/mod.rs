@@ -33,7 +33,7 @@ use graphics::{IntRect, FloatRect, Color, Texture,
 use system::vector2::Vector2f;
 
 use ffi::sfml_types::SfBool;
-use ffi::graphics::circle_shape as ffi;
+use ffi::graphics as ffi;
 
 /// Specialized shape representing a circle.
 pub struct CircleShape<'s> {

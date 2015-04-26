@@ -33,7 +33,7 @@ use graphics::{FloatRect, IntRect, Color, Texture,
                RenderTarget, Transform, RenderStates};
 
 use ffi::sfml_types::SfBool;
-use ffi::graphics::rectangle_shape as ffi;
+use ffi::graphics as ffi;
 
 /// Specialized shape representing a rectangle
 pub struct RectangleShape<'s> {

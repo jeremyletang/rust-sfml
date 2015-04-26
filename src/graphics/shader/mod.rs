@@ -37,7 +37,7 @@ use graphics::{Texture, Color};
 use system::vector2::Vector2f;
 use system::vector3::Vector3f;
 
-use ffi::graphics::shader as ffi;
+use ffi::graphics as ffi;
 
 /// Shader class (vertex and fragment)
 ///

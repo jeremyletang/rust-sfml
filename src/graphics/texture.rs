@@ -36,7 +36,7 @@ use system::vector2::Vector2u;
 use window::Window;
 
 use ffi::sfml_types::SfBool;
-use ffi::graphics::texture as ffi;
+use ffi::graphics as ffi;
 
 /// Image used for drawing
 ///

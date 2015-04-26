@@ -33,7 +33,7 @@ use graphics::{View, Color, IntRect, Texture, CircleShape, RectangleShape, Text,
                RenderTarget, Vertex, PrimitiveType, Shape};
 
 use ffi::sfml_types::SfBool;
-use ffi::graphics::render_texture as ffi;
+use ffi::graphics as ffi;
 
 /// Target for off-screen 2D rendering into a texture
 pub struct RenderTexture {
@@ -90,7 +90,7 @@ impl RenderTexture {
             None
         }
         else {
-			let tex = unsafe { ::ffi::graphics::texture::sfTexture_copy(tex) };
+			let tex = unsafe { ffi::sfTexture_copy(tex) };
 			if tex.is_null() {
 				None
 			} else {
@@ -153,7 +153,7 @@ impl RenderTarget for RenderTexture {
     /// Return the current active view
     fn get_view(&self) -> View {
         unsafe {
-            Wrappable::wrap(::ffi::graphics::view::sfView_copy(ffi::sfRenderTexture_getView(self.render_texture)))
+            Wrappable::wrap(ffi::sfView_copy(ffi::sfRenderTexture_getView(self.render_texture)))
         }
     }
 
@@ -162,7 +162,7 @@ impl RenderTarget for RenderTexture {
     /// Return the default view of the render texture
     fn get_default_view(&self) -> View {
         unsafe {
-            Wrappable::wrap(::ffi::graphics::view::sfView_copy(ffi::sfRenderTexture_getDefaultView(self.render_texture)))
+            Wrappable::wrap(ffi::sfView_copy(ffi::sfRenderTexture_getDefaultView(self.render_texture)))
         }
     }
 

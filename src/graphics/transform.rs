@@ -32,7 +32,7 @@ use libc::c_float;
 use system::vector2::Vector2f;
 use graphics::FloatRect;
 
-use ffi::graphics::transform as ffi;
+use ffi::graphics as ffi;
 
 /// Define a 3x3 transform matrix.
 ///

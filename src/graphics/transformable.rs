@@ -29,7 +29,7 @@ use graphics::Transform;
 use system::vector2::Vector2f;
 //use std::convert::{AsRef, AsMut};
 
-use ffi::graphics::transformable as ffi;
+use ffi::graphics as ffi;
 
 /// Data container for the `Transformable` trait.
 pub struct TransformableData {

@@ -33,7 +33,7 @@ use graphics::{RenderTarget, RenderStates, Texture, Color,
 use system::vector2::Vector2f;
 
 use ffi::sfml_types::SfBool;
-use ffi::graphics::shape as ffi;
+use ffi::graphics as ffi;
 
 #[doc(hidden)]
 pub struct WrapObj {

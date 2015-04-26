@@ -38,7 +38,7 @@ use graphics::{RenderTarget, Font, FloatRect,
                Color, Transform, RenderStates, TextStyle};
 use system::vector2::Vector2f;
 
-use ffi::graphics::text as ffi;
+use ffi::graphics as ffi;
 
 /// Graphical text
 ///

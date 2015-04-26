@@ -28,7 +28,7 @@
 
 use libc::c_int;
 
-use ffi::graphics::rect as ffi;
+use ffi::graphics as ffi;
 
 /// Utility classes for manipulating rectangles of i32.
 #[repr(C)]

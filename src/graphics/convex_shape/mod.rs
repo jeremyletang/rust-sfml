@@ -39,7 +39,7 @@ use graphics::{Color, Texture, RenderTarget, FloatRect, IntRect, Transform, Rend
 use system::vector2::Vector2f;
 
 use ffi::sfml_types::SfBool;
-use ffi::graphics::convex_shape as ffi;
+use ffi::graphics as ffi;
 
 /// Specialized shape representing a convex polygon
 ///

@@ -32,7 +32,7 @@ use system::vector2::Vector2u;
 use graphics::{Color, IntRect};
 
 use ffi::sfml_types::SfBool;
-use ffi::graphics::image as ffi;
+use ffi::graphics as ffi;
 
 /// Loading, manipulating and saving images.
 pub struct Image {

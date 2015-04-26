@@ -29,7 +29,7 @@ use std::ptr;
 use traits::Wrappable;
 use graphics::{BlendMode, Shader, Texture, Transform};
 
-use ffi::graphics::render_states as ffi;
+use ffi::graphics as ffi;
 
 /// Define the states used for drawing to a RenderTarget
 #[derive(Clone)]

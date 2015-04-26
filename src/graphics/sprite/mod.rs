@@ -36,7 +36,7 @@ use graphics::{FloatRect, IntRect, Color, Texture,
 use system::vector2::Vector2f;
 
 use ffi::sfml_types::SfBool;
-use ffi::graphics::sprite as ffi;
+use ffi::graphics as ffi;
 
 /// Drawable representation of a texture
 ///

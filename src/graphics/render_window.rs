@@ -42,7 +42,7 @@ use graphics::{Color, CircleShape, RectangleShape, Text, Sprite,
                Vertex, PrimitiveType, ConvexShape, Shape};
 
 use ffi::sfml_types::SfBool;
-use ffi::graphics::render_window as ffi;
+use ffi::graphics as ffi;
 
 /// Window that can serve as a target for 2D drawing.
 ///
@@ -301,7 +301,7 @@ impl RenderWindow {
     pub fn set_title(&mut self, title: &str) -> () {
         let c_str = CString::new(title.as_bytes()).unwrap().as_ptr();
         unsafe {
-            ffi::sfRenderWindow_setTitle(self.render_window, c_str);
+			ffi::sfRenderWindow_setTitle(self.render_window, c_str);
         }
         self.title_length = title.len() as u32;
     }
@@ -563,7 +563,7 @@ impl RenderTarget for RenderWindow{
     ////
     fn get_view(&self) -> View {
         unsafe{
-            Wrappable::wrap(::ffi::graphics::view::sfView_copy(ffi::sfRenderWindow_getView(self.render_window)))
+            Wrappable::wrap(ffi::sfView_copy(ffi::sfRenderWindow_getView(self.render_window)))
         }
     }
 
@@ -573,7 +573,7 @@ impl RenderTarget for RenderWindow{
     ////
     fn get_default_view(&self) -> View {
         unsafe{
-            Wrappable::wrap(::ffi::graphics::view::sfView_copy(ffi::sfRenderWindow_getDefaultView(self.render_window)))
+            Wrappable::wrap(ffi::sfView_copy(ffi::sfRenderWindow_getDefaultView(self.render_window)))
         }
     }
 
