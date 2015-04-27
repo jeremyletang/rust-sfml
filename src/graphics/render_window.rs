@@ -85,10 +85,11 @@ impl RenderWindow {
                title: &str,
                style: WindowStyle,
                settings: &ContextSettings) -> Option<RenderWindow> {
-        let c_str = CString::new(title.as_bytes()).unwrap().as_ptr();
+		let mut vec: Vec<u32> = title.chars().map(|ch| ch as u32).collect();
+		vec.push(0);
         let sf_render_win: *mut ffi::sfRenderWindow = unsafe {
-            ffi::sfRenderWindow_create(mode.unwrap(),
-                                       c_str,
+            ffi::sfRenderWindow_createUnicode(mode.unwrap(),
+                                       vec.as_ptr(),
                                        style as u32,
                                        settings)
         };
@@ -100,60 +101,6 @@ impl RenderWindow {
                       // event: sf_ev,
                       title_length: title.len() as u32
             })
-        }
-    }
-
-    /// Construct a new render window (with a UTF-32 title)
-    ///
-    /// This function creates the render window with the size and pixel
-    /// depth defined in mode. An optional style can be passed to
-    /// customize the look and behaviour of the render window (borders,
-    /// title bar, resizable, closable, ...). If style contains
-    /// sfFullscreen, then mode must be a valid video mode.
-    ///
-    /// The fourth parameter is a pointer to a structure specifying
-    /// advanced OpenGL context settings such as antialiasing,
-    /// depth-buffer bits, etc.
-    ///
-    /// # Arguments
-    /// * mode - Video mode to use (defines the width, height and depth of the rendering area of the render window)
-    /// * title - Title of the render window (UTF-32)
-    /// * style - Window style
-    /// * settings - Additional settings for the underlying OpenGL context
-    ///
-    /// Return Some(RenderWindow) or None
-    pub fn new_with_unicode(mode: VideoMode,
-                            title: Vec<u32>,
-                            style: WindowStyle,
-                            settings: &ContextSettings) -> Option<RenderWindow> {
-
-        let sf_render_win: *mut ffi::sfRenderWindow;
-        unsafe {
-            sf_render_win = ffi::sfRenderWindow_createUnicode(mode.unwrap(),
-                                                              title.as_ptr() as *mut u32,
-                                                              style as u32,
-                                                              settings);
-        }
-        if sf_render_win.is_null() {
-            None
-        } else {
-            Some (RenderWindow {
-                    render_window: sf_render_win,
-                    // event: sf_ev,
-                    title_length: title.len() as u32
-            })
-        }
-    }
-
-    /// Change the title of a render window (with a UTF-32 string)
-    ///
-    /// # Arguments
-    /// * title - New title
-    pub fn set_unicode_title(&mut self, title: Vec<u32>) -> () {
-        unsafe {
-            self.title_length = title.len() as u32;
-            ffi::sfRenderWindow_setUnicodeTitle(self.render_window,
-                                                title.as_ptr())
         }
     }
 
@@ -299,9 +246,10 @@ impl RenderWindow {
     /// * title - New title
     ////
     pub fn set_title(&mut self, title: &str) -> () {
-        let c_str = CString::new(title.as_bytes()).unwrap().as_ptr();
+		let mut vec: Vec<u32> = title.chars().map(|ch| ch as u32).collect();
+		vec.push(0);
         unsafe {
-			ffi::sfRenderWindow_setTitle(self.render_window, c_str);
+			ffi::sfRenderWindow_setUnicodeTitle(self.render_window, vec.as_ptr());
         }
         self.title_length = title.len() as u32;
     }

@@ -36,15 +36,12 @@ use traits::Wrappable;
 use window::{event, VideoMode, ContextSettings, WindowStyle};
 use system::vector2::{Vector2i, Vector2u};
 
-use ffi::sfml_types::SfBool;
+use ffi::{SfBool, Foreign};
 use ffi::window as ffi;
 
+/// Window that serves as a target for OpenGL rendering.
 ///
-/// Window manipulation
-///
-/// Provides OpenGL-based windows,
-/// and abstractions for events and input handling.
-///
+/// Also makes available events and input handling.
 pub struct Window {
     window: *mut ffi::sfWindow,
 }
@@ -78,48 +75,11 @@ impl Window {
                title: &str,
                style: WindowStyle,
                settings: &ContextSettings) -> Option<Window> {
-
-        let c_str = CString::new(title.as_bytes()).unwrap().as_ptr();
+		let mut vec: Vec<u32> = title.chars().map(|ch| ch as u32).collect();
+		vec.push(0);
         let sf_win: *mut ffi::sfWindow = unsafe {
-            ffi::sfWindow_create(mode.unwrap(), c_str, style as u32, settings)
+            ffi::sfWindow_createUnicode(mode.unwrap(), vec.as_ptr(), style as u32, settings)
         };
-        if sf_win.is_null() {
-            None
-        } else {
-            Some (Window {
-                    window: sf_win,
-                })
-        }
-    }
-
-    /// Construct a new window (with a UTF-32 title)
-    ///
-    /// This function creates the window with the size and pixel
-    /// depth defined in mode. An optional style can be passed to
-    /// customize the look and behaviour of the window (borders,
-    /// title bar, resizable, closable, ...). If style contains
-    /// sfFullscreen, then mode must be a valid video mode.
-    ///
-    /// The fourth parameter is a pointer to a structure specifying
-    /// advanced OpenGL context settings such as antialiasing,
-    /// depth-buffer bits, etc.
-    ///
-    /// # Arguments
-    /// * mode - Video mode to use (defines the width, height and depth of the rendering area of the window)
-    /// * title - Title of the window (UTF-32)
-    /// * style - Window style
-    /// * settings - Additional settings for the underlying OpenGL context
-    ///
-    /// Return Some(Window) or None
-    pub fn new_with_unicode(mode: VideoMode,
-                            title: Vec<u32>,
-                            style: WindowStyle,
-                            settings: &ContextSettings) -> Option<Window> {
-
-        let sf_win =
-            unsafe { ffi::sfWindow_createUnicode(mode.unwrap(),
-                                                 title.as_ptr(),
-                                                 style as u32, settings) };
         if sf_win.is_null() {
             None
         } else {
@@ -180,16 +140,6 @@ impl Window {
         }
     }
 
-    /// Change the title of a window (with a UTF-32 string)
-    ///
-    /// # Arguments
-    /// * title - New title
-    pub fn set_unicode_title(&mut self, title: Vec<u32>) -> () {
-        unsafe {
-            ffi::sfWindow_setUnicodeTitle(self.window, title.as_ptr())
-        }
-    }
-
     /// Change a window's icon
     /// pixels must be an array of width x height pixels in 32-bits RGBA format.
     ///
@@ -242,9 +192,10 @@ impl Window {
     /// # Arguments
     /// * title - New title
     pub fn set_title(&mut self, title: &str) -> () {
-        let c_str = CString::new(title.as_bytes()).unwrap().as_ptr();
+		let mut vec: Vec<u32> = title.chars().map(|ch| ch as u32).collect();
+		vec.push(0);
         unsafe {
-            ffi::sfWindow_setTitle(self.window, c_str)
+            ffi::sfWindow_setUnicodeTitle(self.window, vec.as_ptr())
         }
     }
 
