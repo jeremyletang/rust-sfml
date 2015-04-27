@@ -26,14 +26,12 @@ use libc::{c_uint, c_float, c_char, c_int, size_t, c_uchar};
 use system::{Vector3f, Time};
 use ffi::sfml_types::SfBool;
 
-#[repr(C)]
-pub struct sfMusic(());
-#[repr(C)]
-pub struct sfSound(());
-#[repr(C)]
-pub struct sfSoundBuffer(());
-#[repr(C)]
-pub struct sfSoundBufferRecorder(());
+foreign_type! {
+	sfMusic, sfMusic_destroy;
+	sfSound, sfSound_destroy;
+	sfSoundBuffer, sfSoundBuffer_destroy;
+	sfSoundBufferRecorder, sfSoundBufferRecorder_destroy;
+}
 
 pub type sfSoundStatus = c_int;
 pub const SFSTOPPED:   sfSoundStatus = 0;

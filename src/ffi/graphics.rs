@@ -31,24 +31,27 @@ use system::{Vector2f, Vector2i, Vector2u, Vector3f};
 use window::ContextSettings;
 use graphics::{BlendMode, FloatRect, Glyph, IntRect, Transform, Color, Vertex, PrimitiveType};
 
-#[repr(C)]
-pub struct sfRenderWindow(());
-#[repr(C)]
-pub struct sfCircleShape(());
-#[repr(C)]
-pub struct sfConvexShape(());
-#[repr(C)]
-pub struct sfFont(());
+foreign_type! {
+	sfRenderWindow, sfRenderWindow_destroy;
+	sfCircleShape, sfCircleShape_destroy;
+	sfConvexShape, sfConvexShape_destroy;
+	sfFont, sfFont_destroy;
+	sfImage, sfImage_destroy;
+	sfRectangleShape, sfRectangleShape_destroy;
+	sfShader, sfShader_destroy;
+	sfRenderTexture, sfRenderTexture_destroy;
+	sfShape, sfShape_destroy;
+	sfSprite, sfSprite_destroy;
+	sfText, sfText_destroy;
+	sfTexture, sfTexture_destroy;
+	sfTransformable, sfTransformable_destroy;
+	sfView, sfView_destroy;
+}
 
 #[repr(C)]
 pub struct sfFontInfo {
     family: *const c_char
 }
-
-#[repr(C)]
-pub struct sfImage(());
-#[repr(C)]
-pub struct sfRectangleShape(());
 
 #[repr(C)]
 pub struct sfRenderStates {
@@ -57,23 +60,6 @@ pub struct sfRenderStates {
     pub texture: *const sfTexture,
     pub shader: *const sfShader
 }
-
-#[repr(C)]
-pub struct sfShader(());
-#[repr(C)]
-pub struct sfRenderTexture(());
-#[repr(C)]
-pub struct sfShape(());
-#[repr(C)]
-pub struct sfSprite(());
-#[repr(C)]
-pub struct sfText(());
-#[repr(C)]
-pub struct sfTexture(());
-#[repr(C)]
-pub struct sfTransformable(());
-#[repr(C)]
-pub struct sfView(());
 
 extern "C" {
     pub fn sfRenderWindow_create(mode: sfVideoMode, title: *const c_char, style: c_uint, settings: *const ContextSettings) -> *mut sfRenderWindow;

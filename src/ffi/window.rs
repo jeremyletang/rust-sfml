@@ -27,10 +27,10 @@ use system::{Vector2i, Vector2u};
 use window::ContextSettings;
 use ffi::sfml_types::SfBool;
 
-#[repr(C)]
-pub struct sfWindow(());
-#[repr(C)]
-pub struct sfContext(());
+foreign_type! {
+	sfWindow, sfWindow_destroy;
+	sfContext, sfContext_destroy;
+}
 
 #[repr(C)]
 pub struct sfJoystickIdentification {
@@ -40,20 +40,11 @@ pub struct sfJoystickIdentification {
 }
 
 #[repr(C)]
+#[derive(Clone)]
 pub struct sfVideoMode {
 	pub width:          c_uint,
 	pub height:         c_uint,
 	pub bits_per_pixel: c_uint
-}
-
-impl Clone for sfVideoMode {
-	fn clone(&self) -> sfVideoMode {
-	   sfVideoMode {
-		   width: self.width,
-		   height: self.height,
-		   bits_per_pixel: self.bits_per_pixel
-		}
-	}
 }
 
 extern "C" {

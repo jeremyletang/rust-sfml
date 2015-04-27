@@ -24,7 +24,23 @@
 
 #![allow(dead_code, non_camel_case_types)]
 
+pub mod sfml_types;
+pub mod foreign_ptr;
+
+macro_rules! foreign_type {
+	($($name:ident, $destroy:ident;)*) => (
+		$(
+			#[repr(C)]
+			pub struct $name (());
+			impl $crate::ffi::foreign_ptr::ForeignType for $name {
+				unsafe fn destroy(ptr: *mut $name) {
+					$destroy(ptr);
+				}
+			}
+		)*
+	)
+}
+
+pub mod window;
 pub mod graphics;
 pub mod audio;
-pub mod window;
-pub mod sfml_types;
