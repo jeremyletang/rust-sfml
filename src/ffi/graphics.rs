@@ -61,6 +61,7 @@ pub struct sfRenderStates {
     pub shader: *const sfShader
 }
 
+#[cfg_attr(any(target_os="macos", target_os="linux", target_os="windows"), link(name="csfml-graphics"))]
 extern "C" {
     pub fn sfRenderWindow_create(mode: sfVideoMode, title: *const c_char, style: c_uint, settings: *const ContextSettings) -> *mut sfRenderWindow;
     pub fn sfRenderWindow_createUnicode(mode: sfVideoMode, title: *const u32, style: c_uint, settings: *const ContextSettings) -> *mut sfRenderWindow;

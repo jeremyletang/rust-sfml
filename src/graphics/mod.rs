@@ -51,12 +51,6 @@ pub use graphics::shape::Shape;
 pub use graphics::vertex_array::VertexArray;
 pub use graphics::text_style::TextStyle;
 
-#[cfg(any(target_os="macos", target_os="linux", target_os="windows"))]
-mod platform {
-    #[link(name = "csfml-graphics")]
-    extern {}
-}
-
 mod render_target;
 mod render_states;
 mod render_window;

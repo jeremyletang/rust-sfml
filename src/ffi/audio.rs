@@ -38,6 +38,7 @@ pub const SFSTOPPED:   sfSoundStatus = 0;
 pub const SFPAUSED:    sfSoundStatus = 1;
 pub const SFPLAYING:   sfSoundStatus = 2;
 
+#[cfg_attr(any(target_os="macos", target_os="linux", target_os="windows"), link(name="csfml-audio"))]
 extern "C" {
 	pub fn sfListener_setGlobalVolume(volume: f32) -> ();
 	pub fn sfListener_getGlobalVolume() -> f32;

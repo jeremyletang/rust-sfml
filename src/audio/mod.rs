@@ -37,12 +37,6 @@ pub mod rc {
     pub use audio::sound::rc::Sound;
 }
 
-#[cfg(any(target_os="macos", target_os="linux", target_os="windows"))]
-mod platform {
-    #[link(name = "csfml-audio")]
-    extern {}
-}
-
 mod sound_buffer;
 pub mod listener;
 mod sound_status;

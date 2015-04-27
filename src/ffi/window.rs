@@ -47,6 +47,7 @@ pub struct sfVideoMode {
 	pub bits_per_pixel: c_uint
 }
 
+#[cfg_attr(any(target_os="macos", target_os="linux", target_os="windows"), link(name="csfml-window"))]
 extern "C" {
 	pub fn sfWindow_create(mode: sfVideoMode, title: *const c_char, style: c_uint, settings: *const ContextSettings) -> *mut sfWindow;
 	pub fn sfWindow_createUnicode(mode: sfVideoMode, title: *const u32, style: c_uint, setting: *const ContextSettings) -> *mut sfWindow;
