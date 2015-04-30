@@ -50,6 +50,7 @@ pub use graphics::render_texture::RenderTexture;
 pub use graphics::shape::Shape;
 pub use graphics::vertex_array::VertexArray;
 pub use graphics::text_style::TextStyle;
+pub use graphics::traits::{Drawable, ShapeImpl};
 
 mod render_target;
 mod render_states;
@@ -76,3 +77,4 @@ mod transformable;
 mod glyph;
 mod render_texture;
 mod shape;
+mod traits;

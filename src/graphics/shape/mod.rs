@@ -27,9 +27,8 @@
 use libc::{c_void, c_float, c_uint};
 use std::{ptr, mem};
 
-use traits::{Drawable, ShapeImpl};
 use graphics::{RenderTarget, RenderStates, Texture, Color,
-               Transform, IntRect, FloatRect};
+               Transform, IntRect, FloatRect, Drawable, ShapeImpl};
 use system::vector2::Vector2f;
 
 use ffi::{SfBool, Foreign};

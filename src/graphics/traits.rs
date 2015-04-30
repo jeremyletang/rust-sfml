@@ -22,11 +22,14 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-//! ShapeImpl trait
-//!
-//! Implement this trait to create a new Shape
+use graphics::{RenderStates, RenderTarget};
+use system::Vector2f;
 
-use system::vector2::Vector2f;
+/// The trait drawable is inherited by each object who can be drawn in a RenderTarget
+pub trait Drawable {
+    /// Draw a drawable object with a RenderState into a RenderTarget
+    fn draw<RT: RenderTarget>(&self, target: &mut RT, states: &RenderStates);
+}
 
 /// ShapeImpl trait
 ///

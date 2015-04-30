@@ -30,9 +30,8 @@
 use libc::{c_float};
 use std::ptr;
 
-use traits::Drawable;
 use graphics::{FloatRect, IntRect, Color, Texture,
-               RenderTarget, Transform, RenderStates};
+               RenderTarget, Transform, RenderStates, Drawable};
 use system::vector2::Vector2f;
 
 use ffi::{SfBool, Foreign};

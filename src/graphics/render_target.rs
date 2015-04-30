@@ -25,8 +25,7 @@
 //Authored on 2014-08-30 by Brandon Sanderson
 
 use graphics::{Color, View, RenderStates, CircleShape, RectangleShape, Text, Sprite,
-               IntRect, Vertex, PrimitiveType, ConvexShape, Shape};
-use traits::Drawable;
+               IntRect, Vertex, PrimitiveType, ConvexShape, Shape, Drawable};
 use system::vector2::{Vector2f, Vector2i, Vector2u};
 
 /// Trait which is the equivalent of the sf::RenderTarget class in SFML.

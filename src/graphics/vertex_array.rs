@@ -24,8 +24,7 @@
 
 //! Define a set of one or more 2D primitives
 
-use traits::Drawable;
-use graphics::{Vertex, FloatRect, PrimitiveType, RenderTarget, RenderStates};
+use graphics::{Vertex, FloatRect, PrimitiveType, RenderTarget, RenderStates, Drawable};
 
 use std::ops::{Deref, DerefMut};
 

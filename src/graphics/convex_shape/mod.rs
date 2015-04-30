@@ -34,8 +34,7 @@
 use libc::{c_float, c_uint};
 use std::ptr;
 
-use traits::Drawable;
-use graphics::{Color, Texture, RenderTarget, FloatRect, IntRect, Transform, RenderStates};
+use graphics::{Color, Texture, RenderTarget, FloatRect, IntRect, Transform, RenderStates, Drawable};
 use system::vector2::Vector2f;
 
 use ffi::{SfBool, Foreign};

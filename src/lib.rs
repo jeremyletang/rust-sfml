@@ -116,7 +116,6 @@
 
 extern crate libc;
 
-pub mod traits;
 pub mod system;
 pub mod window;
 pub mod audio;

@@ -30,8 +30,7 @@
 use std::mem;
 use libc::{c_float, c_uint, size_t};
 
-use traits::Drawable;
-use graphics::{RenderTarget, Font, FloatRect,
+use graphics::{RenderTarget, Font, FloatRect, Drawable,
                Color, Transform, RenderStates, TextStyle};
 use system::vector2::Vector2f;
 
