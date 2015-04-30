@@ -34,7 +34,7 @@
 use libc::{c_float, c_uint};
 use std::ptr;
 
-use traits::{Wrappable, Drawable};
+use traits::Drawable;
 use graphics::{Color, Texture, RenderTarget, FloatRect, IntRect, Transform, RenderStates};
 use system::vector2::Vector2f;
 
@@ -573,6 +573,11 @@ impl<'s> ConvexShape<'s> {
             pos: 0
         }
     }
+
+    #[doc(hidden)]
+    pub unsafe fn unwrap(&self) -> &ffi::sfConvexShape {
+        &*self.convex_shape
+    }
 }
 
 impl<'s> Clone for ConvexShape<'s> {
@@ -605,22 +610,6 @@ impl Iterator for ConvexShapePoints {
                                                  self.pos as c_uint))
             }
         }
-    }
-}
-
-#[doc(hidden)]
-impl<'s> Wrappable<*mut ffi::sfConvexShape> for ConvexShape<'s> {
-    #[doc(hidden)]
-    fn wrap(convex_shape: *mut ffi::sfConvexShape) -> ConvexShape<'s> {
-        ConvexShape {
-            convex_shape: convex_shape,
-            texture: None
-        }
-    }
-
-    #[doc(hidden)]
-    fn unwrap(&self) -> *mut ffi::sfConvexShape {
-        self.convex_shape
     }
 }
 

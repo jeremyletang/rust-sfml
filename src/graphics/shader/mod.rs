@@ -32,7 +32,6 @@
 use std::ptr;
 use std::ffi::CString;
 
-use traits::Wrappable;
 use graphics::{Texture, Color};
 use system::vector2::Vector2f;
 use system::vector3::Vector3f;
@@ -340,18 +339,10 @@ impl<'s> Shader<'s> {
             ffi::sfShader_setColorParameter(self.shader, c_str, *color)
         }
     }
-}
 
-impl<'s> Wrappable<*mut ffi::sfShader> for Shader<'s> {
-    fn wrap(shader: *mut ffi::sfShader) -> Shader<'s> {
-        Shader {
-            shader: shader,
-            texture: None
-        }
-    }
-
-    fn unwrap(&self) -> *mut ffi::sfShader {
-        self.shader
+	#[doc(hidden)]
+    pub fn unwrap(&self) -> &ffi::sfShader {
+        unsafe { &*self.shader }
     }
 }
 

@@ -25,9 +25,7 @@
 //! Basic traits for internal functionnement of rust-sfml.
 
 pub use traits::drawable::Drawable;
-pub use traits::wrappable::Wrappable;
 pub use traits::shape_impl::ShapeImpl;
 
 pub mod drawable;
 pub mod shape_impl;
-pub mod wrappable;

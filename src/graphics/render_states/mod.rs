@@ -26,7 +26,6 @@
 
 use std::ptr;
 
-use traits::Wrappable;
 use graphics::{BlendMode, Shader, Texture, Transform};
 
 use ffi::graphics as ffi;

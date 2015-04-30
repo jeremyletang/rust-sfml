@@ -32,7 +32,6 @@ use std::mem;
 use audio::{Status, SoundBuffer};
 use system::Time;
 use system::vector3::Vector3f;
-use traits::Wrappable;
 
 use ffi::{SfBool, Foreign};
 use ffi::audio as ffi;

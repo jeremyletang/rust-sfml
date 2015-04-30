@@ -33,7 +33,6 @@
 use libc::{c_float, c_uint};
 use std::vec::Vec;
 
-use traits::Wrappable;
 use window::{ContextSettings, VideoMode, event, WindowStyle};
 use system::vector2::{Vector2f, Vector2i, Vector2u};
 use graphics::{Color, CircleShape, RectangleShape, Text, Sprite,

@@ -30,7 +30,6 @@ use libc::{c_uint, size_t};
 use std::ptr;
 use std::ffi::CString;
 
-use traits::Wrappable;
 use graphics::{RenderWindow, Image, IntRect};
 use system::vector2::Vector2u;
 use window::Window;

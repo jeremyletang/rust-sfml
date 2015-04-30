@@ -33,7 +33,7 @@ use std::ffi::{CString, CStr};
 use std::str;
 use libc::{c_float, c_uint, size_t};
 
-use traits::{Drawable, Wrappable};
+use traits::Drawable;
 use graphics::{RenderTarget, Font, FloatRect,
                Color, Transform, RenderStates, TextStyle};
 use system::vector2::Vector2f;
@@ -533,6 +533,11 @@ impl<'s> Text<'s> {
             ffi::sfText_getInverseTransform(self.text)
         }
     }
+
+	#[doc(hidden)]
+    pub unsafe fn unwrap(&self) -> &ffi::sfText {
+        &*self.text
+    }
 }
 
 impl<'s> Clone for Text<'s> {
@@ -548,20 +553,6 @@ impl<'s> Clone for Text<'s> {
                 font: self.font.clone()
             }
         }
-    }
-}
-
-impl<'s> Wrappable<*mut ffi::sfText> for Text<'s> {
-    fn wrap(text: *mut ffi::sfText) -> Text<'s> {
-        Text {
-            text: text,
-            string_length: 0,
-            font: None
-        }
-    }
-
-    fn unwrap(&self) -> *mut ffi::sfText {
-        self.text
     }
 }
 

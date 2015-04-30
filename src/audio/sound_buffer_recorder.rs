@@ -29,7 +29,6 @@
 
 use libc::c_uint;
 
-use traits::Wrappable;
 use audio::sound_buffer::SoundBuffer;
 
 use ffi::Foreign;

@@ -24,7 +24,6 @@
 
 //use libc::c_float;
 
-use traits::Wrappable;
 use graphics::Transform;
 use system::vector2::Vector2f;
 //use std::convert::{AsRef, AsMut};
@@ -73,7 +72,7 @@ impl Clone for TransformableData {
     }
 }
 
-impl Wrappable<*mut ffi::sfTransformable> for TransformableData {
+/*impl Wrappable<*mut ffi::sfTransformable> for TransformableData {
     fn wrap(transformable: *mut ffi::sfTransformable) -> TransformableData {
         TransformableData {
             raw: transformable
@@ -83,7 +82,7 @@ impl Wrappable<*mut ffi::sfTransformable> for TransformableData {
     fn unwrap(&self) -> *mut ffi::sfTransformable {
         self.raw
     }
-}
+}*/
 
 impl Drop for TransformableData {
     fn drop(&mut self) -> () {

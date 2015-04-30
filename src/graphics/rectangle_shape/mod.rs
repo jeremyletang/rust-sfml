@@ -27,7 +27,7 @@
 use libc::{c_float, c_uint};
 use std::ptr;
 
-use traits::{Drawable, Wrappable};
+use traits::Drawable;
 use system::vector2::Vector2f;
 use graphics::{FloatRect, IntRect, Color, Texture,
                RenderTarget, Transform, RenderStates};
@@ -574,6 +574,11 @@ impl<'s> RectangleShape<'s> {
             ffi::sfRectangleShape_getInverseTransform(self.rectangle_shape)
         }
     }
+
+	#[doc(hidden)]
+    pub unsafe fn unwrap(&self) -> &ffi::sfRectangleShape {
+        &*self.rectangle_shape
+    }
 }
 
 impl<'s> Clone for RectangleShape<'s> {
@@ -589,19 +594,6 @@ impl<'s> Clone for RectangleShape<'s> {
                 texture: self.texture.clone()
             }
         }
-    }
-}
-
-impl<'s> Wrappable<*mut ffi::sfRectangleShape> for RectangleShape<'s> {
-    fn wrap(rectangle_shape: *mut ffi::sfRectangleShape) -> RectangleShape<'s> {
-        RectangleShape {
-            rectangle_shape: rectangle_shape,
-            texture: None
-        }
-    }
-
-    fn unwrap(&self) -> *mut ffi::sfRectangleShape {
-        self.rectangle_shape
     }
 }
 

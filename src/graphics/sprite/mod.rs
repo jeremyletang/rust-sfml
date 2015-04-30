@@ -30,7 +30,7 @@
 use libc::{c_float};
 use std::ptr;
 
-use traits::{Drawable, Wrappable};
+use traits::Drawable;
 use graphics::{FloatRect, IntRect, Color, Texture,
                RenderTarget, Transform, RenderStates};
 use system::vector2::Vector2f;
@@ -453,25 +453,17 @@ impl<'s> Sprite<'s> {
             ffi::sfSprite_getInverseTransform(self.sprite)
         }
     }
+
+	#[doc(hidden)]
+    pub unsafe fn unwrap(&self) -> &ffi::sfSprite {
+        &*self.sprite
+    }
 }
 
 impl<'s> Clone for Sprite<'s> {
     /// Return a new Sprite or panic! if there is not enough memory
     fn clone(&self) -> Sprite<'s> {
 		self.clone_opt().expect("Not enough memory to clone Sprite")
-    }
-}
-
-impl<'s> Wrappable<*mut ffi::sfSprite> for Sprite<'s> {
-    fn wrap(sprite: *mut ffi::sfSprite) -> Sprite<'s> {
-        Sprite {
-            sprite: sprite,
-            texture: None
-        }
-    }
-
-    fn unwrap(&self) -> *mut ffi::sfSprite {
-        self.sprite
     }
 }
 

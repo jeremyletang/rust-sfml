@@ -34,7 +34,6 @@ use std::cell::RefCell;
 use audio::{Status, SoundBuffer};
 use system::Time;
 use system::vector3::Vector3f;
-use traits::Wrappable;
 
 use ffi::sfml_types::SfBool;
 use ffi::audio as ffi;

@@ -31,7 +31,6 @@
 use libc::{c_uint, c_float};
 use std::vec::Vec;
 
-use traits::Wrappable;
 use window::{event, VideoMode, ContextSettings, WindowStyle};
 use system::vector2::{Vector2i, Vector2u};
 
