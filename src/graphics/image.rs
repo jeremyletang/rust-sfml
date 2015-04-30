@@ -31,13 +31,11 @@ use traits::Wrappable;
 use system::vector2::Vector2u;
 use graphics::{Color, IntRect};
 
-use ffi::sfml_types::SfBool;
+use ffi::{SfBool, Foreign};
 use ffi::graphics as ffi;
 
 /// Loading, manipulating and saving images.
-pub struct Image {
-    image: *mut ffi::sfImage
-}
+pub struct Image(Foreign<ffi::sfImage>);
 
 impl Image {
     /// Create an image
@@ -50,34 +48,21 @@ impl Image {
     ///
     /// Return Some(Image) or None
     pub fn new(width: u32, height: u32) -> Option<Image> {
-        let image = unsafe { ffi::sfImage_create(width as c_uint,
-                                                 height as c_uint) };
-        if image.is_null() {
-            None
-        } else {
-            Some(Image {
-                    image: image
-                })
-        }
+        unsafe {
+			Foreign::new(ffi::sfImage_create(width as c_uint, height as c_uint))
+		}.map(Image)
     }
 
     /// Create an image from memory
-    ///
-    /// This image is filled with black pixels.
     ///
     /// # Arguments
     /// * mem - Pointer to the file data in memory
     ///
     /// Return Some(Image) or None
     pub fn new_from_memory(mem: &[u8]) -> Option<Image> {
-        let image = unsafe { ffi::sfImage_createFromMemory(&mem[0], mem.len() as size_t) };
-        if image.is_null() {
-            None
-        } else {
-            Some(Image {
-                    image: image
-                })
-        }
+        unsafe {
+			Foreign::new(ffi::sfImage_createFromMemory(mem.as_ptr(), mem.len() as size_t))
+		}.map(Image)
     }
 
     /// Create an image and fill it with a unique color
@@ -91,16 +76,9 @@ impl Image {
     pub fn new_from_color(width: u32,
                           height: u32,
                           color: &Color) -> Option<Image> {
-        let image =
-            unsafe { ffi::sfImage_createFromColor(width as c_uint,
-                                                  height as c_uint, *color) };
-        if image.is_null() {
-            None
-        } else {
-            Some(Image {
-                    image: image
-                })
-        }
+        unsafe {
+			Foreign::new(ffi::sfImage_createFromColor(width as c_uint, height as c_uint, *color))
+		}.map(Image)
     }
 
     /// Create an image from a file on disk
@@ -115,31 +93,22 @@ impl Image {
     ///
     /// Return Some(Image) or None
     pub fn new_from_file(filename: &str) -> Option<Image> {
-        let c_filename = CString::new(filename.as_bytes()).unwrap().as_ptr();
-        let image = unsafe {
-            ffi::sfImage_createFromFile(c_filename)
-        };
-        if image.is_null() {
-            None
-        } else {
-            Some(Image {
-                    image: image
-                })
-        }
+        let c_str = match CString::new(filename.as_bytes()) {
+			Ok(c_str) => c_str,
+			Err(_) => return None
+		};
+        unsafe {
+            Foreign::new(ffi::sfImage_createFromFile(c_str.as_ptr()))
+        }.map(Image)
     }
 
     /// Copy an existing image
     ///
     /// Return Some(Image) or None
     pub fn clone_opt(&self) -> Option<Image> {
-        let image = unsafe { ffi::sfImage_copy(self.image) };
-        if image.is_null() {
-            None
-        } else {
-            Some(Image {
-                    image: image
-                })
-        }
+        unsafe {
+			Foreign::new(ffi::sfImage_copy(self.raw()))
+		}.map(Image)
     }
 
     /// Create an image from an vector of pixels
@@ -157,18 +126,21 @@ impl Image {
     pub fn create_from_pixels(width: u32,
                               height: u32,
                               pixels: &[u8]) -> Option<Image> {
-        let image =
-            unsafe { ffi::sfImage_createFromPixels(width as c_uint,
-                                                   height as c_uint,
-                                                   pixels.as_ptr()) };
-        if image.is_null() {
-            None
-        } else {
-            Some(Image {
-                    image: image
-                })
-        }
+        unsafe {
+			Foreign::new(ffi::sfImage_createFromPixels(width as c_uint,
+				height as c_uint,
+				pixels.as_ptr()))
+		}.map(Image)
     }
+
+	fn raw(&self) -> &ffi::sfImage { self.0.as_ref() }
+	fn raw_mut(&mut self) -> &mut ffi::sfImage { self.0.as_mut() }
+	#[doc(hidden)]
+	pub fn unwrap(&self) -> &ffi::sfImage { self.raw() }
+	#[doc(hidden)]
+	pub unsafe fn wrap(ptr: *mut ffi::sfImage) -> Option<Image> {
+		Foreign::new(ptr).map(Image)
+	}
 
     /// Save an image to a file on disk
     ///
@@ -182,8 +154,11 @@ impl Image {
     ///
     /// Return true if saving was successful
     pub fn save_to_file(&self, filename: &str) -> bool {
-        let c_str = CString::new(filename.as_bytes()).unwrap().as_ptr();
-        unsafe { ffi::sfImage_saveToFile(self.image, c_str) }.to_bool()
+        let c_str = match CString::new(filename.as_bytes()) {
+			Ok(c_str) => c_str,
+			Err(_) => return false
+		};
+        unsafe { ffi::sfImage_saveToFile(self.raw(), c_str.as_ptr()) }.to_bool()
     }
 
     /// Return the size of an image
@@ -191,7 +166,7 @@ impl Image {
     /// Return the size in pixels
     pub fn get_size(&self) -> Vector2u {
         unsafe {
-            ffi::sfImage_getSize(self.image)
+            ffi::sfImage_getSize(self.raw())
         }
     }
 
@@ -204,9 +179,9 @@ impl Image {
     /// # Arguments
     /// * color - Color to make transparent
     /// * alpha - Alpha value to assign to transparent pixels
-    pub fn create_mask_from_color(&self, color: &Color, alpha: u8) -> () {
+    pub fn create_mask_from_color(&mut self, color: &Color, alpha: u8) -> () {
         unsafe {
-            ffi::sfImage_createMaskFromColor(self.image, *color, alpha)
+            ffi::sfImage_createMaskFromColor(self.raw_mut(), *color, alpha)
         }
     }
 
@@ -222,7 +197,7 @@ impl Image {
     /// * color - New color of the pixel
     pub fn set_pixel(&mut self, x: u32, y: u32, color: &Color) -> () {
         unsafe {
-            ffi::sfImage_setPixel(self.image, x as c_uint, y as c_uint, *color)
+            ffi::sfImage_setPixel(self.raw_mut(), x as c_uint, y as c_uint, *color)
         }
     }
 
@@ -239,21 +214,21 @@ impl Image {
     /// Return the Color of the pixel at coordinates (x, y)
     pub fn get_pixel(&self, x: u32, y: u32) -> Color {
         unsafe {
-            ffi::sfImage_getPixel(self.image, x as c_uint, y as c_uint)
+            ffi::sfImage_getPixel(self.raw(), x as c_uint, y as c_uint)
         }
     }
 
     /// Flip an image horizontally (left <-> right)
     pub fn flip_horizontally(&mut self) -> () {
         unsafe {
-            ffi::sfImage_flipHorizontally(self.image)
+            ffi::sfImage_flipHorizontally(self.raw_mut())
         }
     }
 
     /// Flip an image vertically (top <-> bottom)
     pub fn flip_vertically(&mut self) -> () {
         unsafe {
-            ffi::sfImage_flipVertically(self.image)
+            ffi::sfImage_flipVertically(self.raw_mut())
         }
     }
 
@@ -282,7 +257,7 @@ impl Image {
                       source_rect: &IntRect,
                       apply_alpha: bool) -> () {
         unsafe {
-            ffi::sfImage_copyImage(self.image,
+            ffi::sfImage_copyImage(self.raw_mut(),
                                    source.unwrap(),
                                    dest_x as c_uint,
                                    dest_y as c_uint,
@@ -293,36 +268,7 @@ impl Image {
 }
 
 impl Clone for Image {
-    /// Return a new Image or panic! if there is not enough memory
     fn clone(&self) -> Image {
-        let image = unsafe { ffi::sfImage_copy(self.image) };
-        if image.is_null() {
-            panic!("Not enough memory to clone Image")
-        } else {
-            Image {
-                image: image
-            }
-        }
-    }
-}
-
-impl Wrappable<*mut ffi::sfImage> for Image {
-    fn wrap(image: *mut ffi::sfImage) -> Image {
-        Image {
-            image: image
-        }
-    }
-
-    fn unwrap(&self) -> *mut ffi::sfImage {
-        self.image
-    }
-}
-
-impl Drop for Image {
-    /// Destroy an existing image
-    fn drop(&mut self) -> () {
-        unsafe {
-            ffi::sfImage_destroy(self.image)
-        }
+		self.clone_opt().expect("Failed to clone Image")
     }
 }

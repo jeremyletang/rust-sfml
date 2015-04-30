@@ -208,39 +208,26 @@ pub trait RenderTarget: Sized {
 
 
     /// Draw Text
-    fn draw_text_rs(&self,
-                    text: &Text,
-                    rs: &RenderStates);
+    fn draw_text_rs(&mut self, text: &Text, rs: &RenderStates);
 
     /// Draw Shape
-    fn draw_shape_rs(&self,
-                     shape: &Shape,
-                     rs: &RenderStates);
+    fn draw_shape_rs(&mut self, shape: &Shape, rs: &RenderStates);
 
     /// Draw Sprite
-    fn draw_sprite_rs(&self,
-                      sprite: &Sprite,
-                      rs: &RenderStates);
+    fn draw_sprite_rs(&mut self, sprite: &Sprite, rs: &RenderStates);
 
     /// Draw CircleShape
-    fn draw_circle_shape_rs(&self,
-                            circle_shape: &CircleShape,
-                            rs: &RenderStates);
+    fn draw_circle_shape_rs(&mut self, circle_shape: &CircleShape, rs: &RenderStates);
 
     /// Draw RectangleShape
-    fn draw_rectangle_shape_rs(&self,
-                               rectangle_shape: &RectangleShape,
-                               rs: &RenderStates);
+    fn draw_rectangle_shape_rs(&mut self, rectangle_shape: &RectangleShape, rs: &RenderStates);
 
     /// Draw ConvexShape
-    fn draw_convex_shape_rs(&self,
-                            convex_shape: &ConvexShape,
-                            rs: &RenderStates);
+    fn draw_convex_shape_rs(&mut self, convex_shape: &ConvexShape, rs: &RenderStates);
 
-    /// draw primitives
-    fn draw_primitives_rs(&self,
+    /// Draw primitives
+    fn draw_primitives_rs(&mut self,
                           vertices: &[Vertex],
                           ty: PrimitiveType,
                           rs: &RenderStates);
-
 }

@@ -91,7 +91,7 @@ extern "C" {
     pub fn sfRenderWindow_setJoystickThreshold(renderWindow: *mut sfRenderWindow, treshold: c_float) -> ();
     // fn sfRenderWindow_getSystemHandle(renderWindow: *mut sfRenderWindow) -> sfWindowHandle;
     pub fn sfRenderWindow_clear(renderWindow: *mut sfRenderWindow, color: Color) -> ();
-    pub fn sfRenderWindow_setView(renderWindow: *mut sfRenderWindow, view: *mut sfView) -> ();
+    pub fn sfRenderWindow_setView(renderWindow: *mut sfRenderWindow, view: *const sfView) -> ();
     pub fn sfRenderWindow_getView(renderWindow: *const sfRenderWindow) -> *const sfView;
     pub fn sfRenderWindow_getDefaultView(renderWindow: *const sfRenderWindow) -> *const sfView;
     pub fn sfRenderWindow_getViewport(renderWindow: *const sfRenderWindow, view: *const sfView) -> IntRect;
@@ -185,12 +185,12 @@ extern "C" {
     pub fn sfFont_createFromMemory(data: *const c_uchar, sizeInBytes: size_t) -> *mut sfFont;
     // fn sfFont_createFromStream(stream: *mut sfInputStream) -> *mut sfFont;
     pub fn sfFont_destroy(font: *mut sfFont) -> ();
-    pub fn sfFont_getGlyph(font: *mut sfFont, codepoint: u32, characterSize: c_uint, bold :SfBool) -> Glyph;
-    pub fn sfFont_getKerning(font: *mut sfFont, first: u32, second: u32, characterSize: c_uint) -> c_float;
-    pub fn sfFont_getLineSpacing(font: *mut sfFont, characterSize: c_uint) -> c_float;
-    pub fn sfFont_getTexture(font: *mut sfFont, characterSize: c_uint) -> *mut sfTexture;
-    pub fn sfFont_getUnderlinePosition(font: *mut sfFont, characterSize: c_uint) -> c_float;
-    pub fn sfFont_getUnderlineThickness(font: *mut sfFont, characterSize: c_uint) -> c_float;
+    pub fn sfFont_getGlyph(font: *const sfFont, codepoint: u32, characterSize: c_uint, bold :SfBool) -> Glyph;
+    pub fn sfFont_getKerning(font: *const sfFont, first: u32, second: u32, characterSize: c_uint) -> c_float;
+    pub fn sfFont_getLineSpacing(font: *const sfFont, characterSize: c_uint) -> c_float;
+    pub fn sfFont_getTexture(font: *mut sfFont, characterSize: c_uint) -> *const sfTexture;
+    pub fn sfFont_getUnderlinePosition(font: *const sfFont, characterSize: c_uint) -> c_float;
+    pub fn sfFont_getUnderlineThickness(font: *const sfFont, characterSize: c_uint) -> c_float;
     pub fn sfFont_getInfo(font: *const sfFont) -> sfFontInfo;
 
     pub fn sfImage_create(width: c_uint, height: c_uint) -> *mut sfImage;
@@ -261,7 +261,7 @@ extern "C" {
     pub fn sfShader_setVector3Parameter(shader: *mut sfShader, name: *const c_char, vector: Vector3f) -> ();
     pub fn sfShader_setColorParameter(shader: *mut sfShader, name: *const c_char, color: Color) -> ();
     pub fn sfShader_setTransformParameter(shader: *mut sfShader, name: *const c_char, transform: Transform) -> ();
-    pub fn sfShader_setTextureParameter(shader: *mut sfShader, name: *const c_char, texture: *mut sfTexture) -> ();
+    pub fn sfShader_setTextureParameter(shader: *mut sfShader, name: *const c_char, texture: *const sfTexture) -> ();
     pub fn sfShader_setCurrentTextureParameter(shader: *mut sfShader, name: *const c_char) -> ();
     pub fn sfShader_bind(shader: *mut sfShader) -> ();
     pub fn sfShader_isAvailable() -> SfBool;
@@ -384,18 +384,18 @@ extern "C" {
     pub fn sfText_getGlobalBounds(text: *const sfText) -> FloatRect;
 
     pub fn sfTexture_create(width: c_uint, height: c_uint) -> *mut sfTexture;
-    pub fn sfTexture_createFromFile(filename: *mut c_char, area: *const IntRect) -> *mut sfTexture;
+    pub fn sfTexture_createFromFile(filename: *const c_char, area: *const IntRect) -> *mut sfTexture;
     pub fn sfTexture_createFromMemory(data: *const c_uchar, sizeInBytes: size_t , area: *const IntRect) -> *mut sfTexture;
     //fn sfTexture_createFromStream(strea;: *mut sfInputStream, area: *mut sfIntRect) -> *mut sfTexture;
-    pub fn sfTexture_createFromImage(image: *mut sfImage, area: *const IntRect) -> *mut sfTexture;
+    pub fn sfTexture_createFromImage(image: *const sfImage, area: *const IntRect) -> *mut sfTexture;
     pub fn sfTexture_copy(texture: *const sfTexture) -> *mut sfTexture;
     pub fn sfTexture_destroy(texture: *mut sfTexture) -> ();
     pub fn sfTexture_getSize(texture: *const sfTexture) -> Vector2u;
     pub fn sfTexture_copyToImage(texture: *const sfTexture) -> *mut sfImage;
     pub fn sfTexture_updateFromPixels(texture: *mut sfTexture, pixels: *const u8, width: c_uint, height: c_uint, x: c_uint, y: c_uint) -> ();
-    pub fn sfTexture_updateFromImage(texture: *mut sfTexture, image: *mut sfImage, x: c_uint, y: c_uint) -> ();
-    pub fn sfTexture_updateFromWindow(texture: *mut sfTexture, window: *mut sfWindow, x: c_uint, y: c_uint) -> ();
-    pub fn sfTexture_updateFromRenderWindow(texture: *mut sfTexture, renderWindow: *mut sfRenderWindow, x: c_uint, y: c_uint) -> ();
+    pub fn sfTexture_updateFromImage(texture: *mut sfTexture, image: *const sfImage, x: c_uint, y: c_uint) -> ();
+    pub fn sfTexture_updateFromWindow(texture: *mut sfTexture, window: *const sfWindow, x: c_uint, y: c_uint) -> ();
+    pub fn sfTexture_updateFromRenderWindow(texture: *mut sfTexture, renderWindow: *const sfRenderWindow, x: c_uint, y: c_uint) -> ();
     pub fn sfTexture_setSmooth(texture: *mut sfTexture, smooth: SfBool) -> ();
     pub fn sfTexture_isSmooth(texture: *const sfTexture) -> SfBool;
     pub fn sfTexture_setRepeated(texture: *mut sfTexture, repeated: SfBool);

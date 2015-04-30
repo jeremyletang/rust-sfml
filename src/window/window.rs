@@ -73,14 +73,11 @@ impl Window {
             Foreign::new(ffi::sfWindow_createUnicode(mode.unwrap(), vec.as_ptr(), style as u32, settings))
         }.map(Window)
     }
-	
-	fn raw(&self) -> &ffi::sfWindow {
-		self.0.as_ref()
-	}
 
-	fn raw_mut(&mut self) -> &mut ffi::sfWindow {
-		self.0.as_mut()
-	}
+	fn raw(&self) -> &ffi::sfWindow { self.0.as_ref() }
+	fn raw_mut(&mut self) -> &mut ffi::sfWindow { self.0.as_mut() }
+    #[doc(hidden)]
+    pub unsafe fn unwrap(&self) -> &ffi::sfWindow { self.raw() }
 
     /// Return an iterator over all the event currently in the events queue.
     pub fn events(&mut self) -> Events {
@@ -367,11 +364,6 @@ impl Window {
         unsafe {
             ffi::sfMouse_setPosition(*position, self.raw_mut())
         }
-    }
-
-    #[doc(hidden)]
-    pub unsafe fn unwrap(&self) -> *mut ffi::sfWindow {
-        ::std::mem::transmute(self.raw())
     }
 }
 

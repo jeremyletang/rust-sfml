@@ -35,16 +35,13 @@ use graphics::{RenderWindow, Image, IntRect};
 use system::vector2::Vector2u;
 use window::Window;
 
-use ffi::sfml_types::SfBool;
+use ffi::{SfBool, Foreign};
 use ffi::graphics as ffi;
 
 /// Image used for drawing
 ///
 /// Texture stores pixels that can be drawn, with a sprite for example.
-pub struct Texture {
-    texture: *mut ffi::sfTexture,
-    dropable: bool
-}
+pub struct Texture(Foreign<ffi::sfTexture>);
 
 impl Texture {
     /// Create a new texture
@@ -55,16 +52,9 @@ impl Texture {
     ///
     /// Return Some(Texture) or None
     pub fn new(width: u32, height: u32) -> Option<Texture> {
-        let tex = unsafe { ffi::sfTexture_create(width as c_uint,
-                                                 height as c_uint) };
-        if tex.is_null() {
-            None
-        } else {
-            Some(Texture {
-                    texture: tex,
-                    dropable: true
-                })
-        }
+        unsafe {
+			Foreign::new(ffi::sfTexture_create(width as c_uint, height as c_uint))
+		}.map(Texture)
     }
 
     /// Create a new texture from memory
@@ -75,17 +65,9 @@ impl Texture {
     ///
     /// Return Some(Texture) or None
     pub fn new_from_memory(mem: &[u8], area: &IntRect) -> Option<Texture> {
-        let tex = unsafe { ffi::sfTexture_createFromMemory(&mem[0],
-                                                           mem.len() as size_t,
-                                                           area) };
-        if tex.is_null() {
-            None
-        } else {
-            Some(Texture {
-                    texture: tex,
-                    dropable: true
-                })
-        }
+        unsafe {
+			Foreign::new(ffi::sfTexture_createFromMemory(mem.as_ptr(), mem.len() as size_t, area))
+		}.map(Texture)
     }
 
     /// Create a new texture from a file
@@ -95,18 +77,13 @@ impl Texture {
     ///
     /// Return Some(Texture) or None
     pub fn new_from_file(filename: &str) -> Option<Texture> {
-        let c_str = CString::new(filename.as_bytes()).unwrap().as_ptr();
-        let tex = unsafe {
-            ffi::sfTexture_createFromFile(c_str as *mut i8, ptr::null())
-        };
-        if tex.is_null() {
-            None
-        } else {
-            Some(Texture {
-                    texture: tex,
-                    dropable: true
-                })
-        }
+        let c_str = match CString::new(filename.as_bytes()) {
+			Ok(c_str) => c_str,
+			Err(_) => return None
+		};
+        unsafe {
+            Foreign::new(ffi::sfTexture_createFromFile(c_str.as_ptr(), ptr::null()))
+        }.map(Texture)
     }
 
     /// Create a new texture from a file with a given area
@@ -116,59 +93,14 @@ impl Texture {
     /// * area - Area of the source image to load
     ///
     /// Return Some(Texture) or None
-    pub fn new_from_file_with_rect(filename: &str,
-                                   area: &IntRect) -> Option<Texture> {
-        let c_str = CString::new(filename.as_bytes()).unwrap().as_ptr();
-        let tex = unsafe {
-            ffi::sfTexture_createFromFile(c_str as *mut i8, &*area)
-        };
-        if tex.is_null() {
-            None
-        } else {
-            Some(Texture {
-                    texture: tex,
-                    dropable: true
-                })
-        }
-    }
-
-    /// Create a new texture by copying a exitant one
-    ///
-    /// # Arguments
-    /// * texture - Texture to copy
-    ///
-    /// Return Some(Texture) or None
-    pub fn clone_opt(&self) -> Option<Texture> {
-        let tex = unsafe { ffi::sfTexture_copy(self.texture) };
-        if tex.is_null() {
-            None
-        } else {
-            Some(Texture {
-                    texture: tex,
-                    dropable: true
-                })
-        }
-    }
-
-    /// Create a new texture from an image
-    ///
-    /// # Arguments
-    /// * image - Image to upload to the texture
-    /// * area - Area of the source image to load
-    ///
-    /// Return Some(Texture) or None
-    pub fn new_from_image_with_rect(image: &Image,
-                                    area: &IntRect) -> Option<Texture> {
-        let tex = unsafe { ffi::sfTexture_createFromImage(image.unwrap(),
-                                                          &*area) };
-        if tex.is_null() {
-            None
-        } else {
-            Some(Texture {
-                    texture: tex,
-                    dropable: true
-                })
-        }
+    pub fn new_from_file_with_rect(filename: &str, area: &IntRect) -> Option<Texture> {
+        let c_str = match CString::new(filename.as_bytes()) {
+			Ok(c_str) => c_str,
+			Err(_) => return None
+		};
+        unsafe {
+            Foreign::new(ffi::sfTexture_createFromFile(c_str.as_ptr(), area))
+        }.map(Texture)
     }
 
     /// Create a new texture from an image
@@ -178,24 +110,47 @@ impl Texture {
     ///
     /// Return Some(Texture) or None
     pub fn new_from_image(image: &Image) -> Option<Texture> {
-        let tex = unsafe { ffi::sfTexture_createFromImage(image.unwrap(),
-                                                          ptr::null()) };
-        if tex.is_null() {
-            None
-        } else {
-            Some(Texture {
-                    texture: tex,
-                    dropable: true
-                })
-        }
+        unsafe {
+			Foreign::new(ffi::sfTexture_createFromImage(image.unwrap(), ptr::null()))
+		}.map(Texture)
     }
+
+    /// Create a new texture from an image
+    ///
+    /// # Arguments
+    /// * image - Image to upload to the texture
+    /// * area - Area of the source image to load
+    ///
+    /// Return Some(Texture) or None
+    pub fn new_from_image_with_rect(image: &Image, area: &IntRect) -> Option<Texture> {
+        unsafe {
+			Foreign::new(ffi::sfTexture_createFromImage(image.unwrap(), area))
+		}.map(Texture)
+    }
+
+	fn raw(&self) -> &ffi::sfTexture { self.0.as_ref() }
+	fn raw_mut(&mut self) -> &mut ffi::sfTexture { self.0.as_mut() }
+	#[doc(hidden)]
+    pub fn unwrap(&self) -> &ffi::sfTexture { self.raw() }
+
+    /// Create a new texture by copying a exitant one
+    ///
+    /// # Arguments
+    /// * texture - Texture to copy
+    ///
+    /// Return Some(Texture) or None
+    pub fn clone_opt(&self) -> Option<Texture> {
+        unsafe {
+			Foreign::new(ffi::sfTexture_copy(self.raw()))
+		}.map(Texture)
+	}
 
     /// Return the size of the texture
     ///
     /// Return the Size in pixels
     pub fn get_size(&self) -> Vector2u {
         unsafe {
-            ffi::sfTexture_getSize(self.texture)
+            ffi::sfTexture_getSize(self.raw())
         }
     }
 
@@ -210,7 +165,7 @@ impl Texture {
                               x: u32,
                               y: u32) -> () {
         unsafe {
-            ffi::sfTexture_updateFromWindow(self.texture,
+            ffi::sfTexture_updateFromWindow(self.raw_mut(),
                                             window.unwrap(),
                                             x as c_uint,
                                             y as c_uint)
@@ -228,7 +183,7 @@ impl Texture {
                                      x: u32,
                                      y: u32) -> () {
         unsafe {
-            ffi::sfTexture_updateFromRenderWindow(self.texture,
+            ffi::sfTexture_updateFromRenderWindow(self.raw_mut(),
                                                   render_window.unwrap(),
                                                   x as c_uint,
                                                   y as c_uint)
@@ -246,7 +201,7 @@ impl Texture {
                              x: u32,
                              y: u32) -> () {
         unsafe {
-            ffi::sfTexture_updateFromImage(self.texture,
+            ffi::sfTexture_updateFromImage(self.raw_mut(),
                                            image.unwrap(),
                                            x as c_uint,
                                            y as c_uint)
@@ -266,7 +221,7 @@ impl Texture {
                               x: u32,
                               y: u32) -> () {
         unsafe {
-            ffi::sfTexture_updateFromPixels(self.texture,
+            ffi::sfTexture_updateFromPixels(self.raw_mut(),
                                             pixels.as_ptr(),
                                             width as c_uint,
                                             height as c_uint,
@@ -281,7 +236,7 @@ impl Texture {
     /// * smooth - true to enable smoothing, false to disable it
     pub fn set_smooth(&mut self, smooth: bool) -> () {
         unsafe {
-            ffi::sfTexture_setSmooth(self.texture, SfBool::from_bool(smooth))
+            ffi::sfTexture_setSmooth(self.raw_mut(), SfBool::from_bool(smooth))
         }
     }
 
@@ -289,7 +244,7 @@ impl Texture {
     ///
     /// Return true if smoothing is enabled, false if it is disabled
     pub fn is_smooth(&self) -> bool {
-        unsafe { ffi::sfTexture_isSmooth(self.texture) }.to_bool()
+        unsafe { ffi::sfTexture_isSmooth(self.raw()) }.to_bool()
     }
 
     /// Enable or disable repeating for a texture
@@ -312,7 +267,7 @@ impl Texture {
     /// * repeated  - true to repeat the texture, false to disable repeating
     pub fn set_repeated(&mut self, repeated: bool) -> () {
         unsafe {
-            ffi::sfTexture_setRepeated(self.texture, SfBool::from_bool(repeated))
+            ffi::sfTexture_setRepeated(self.raw_mut(), SfBool::from_bool(repeated))
         }
     }
 
@@ -320,7 +275,7 @@ impl Texture {
     ///
     /// Return frue if repeat mode is enabled, false if it is disabled
     pub fn is_repeated(&self) -> bool {
-        unsafe { ffi::sfTexture_isRepeated(self.texture) }.to_bool()
+        unsafe { ffi::sfTexture_isRepeated(self.raw()) }.to_bool()
     }
 
     /// Bind a texture for rendering
@@ -330,8 +285,17 @@ impl Texture {
     /// mix sfTexture with OpenGL code.
     pub fn bind(&mut self) -> () {
         unsafe {
-            ffi::sfTexture_bind(self.texture)
+            ffi::sfTexture_bind(self.raw_mut())
         }
+    }
+
+    /// Copy a texture's pixels to an image
+    ///
+    /// Return an image containing the texture's pixels
+    pub fn copy_to_image(&self) -> Option<Image> {
+		unsafe {
+			Image::wrap(ffi::sfTexture_copyToImage(self.raw()))
+		}
     }
 
     /// Get the maximum texture size allowed
@@ -342,55 +306,10 @@ impl Texture {
             ffi::sfTexture_getMaximumSize() as u32
         }
     }
-
-    /// Copy a texture's pixels to an image
-    ///
-    /// Return an image containing the texture's pixels
-    pub fn copy_to_image(&self) -> Option<Image> {
-        let img = unsafe {ffi::sfTexture_copyToImage(self.texture)};
-        if img.is_null() {
-            None
-        } else {
-            Some(Wrappable::wrap(img))
-        }
-    }
 }
 
 impl Clone for Texture {
-    /// Return a new Texture or panic! if there is not enough memory
     fn clone(&self) -> Texture {
-        let tex = unsafe { ffi::sfTexture_copy(self.texture) };
-        if tex.is_null() {
-            panic!("Not enough memory to clone Texture")
-        } else {
-            Texture {
-                texture: tex,
-                dropable: true
-            }
-        }
-    }
-}
-
-impl Wrappable<*mut ffi::sfTexture> for Texture {
-    fn unwrap(&self) -> *mut ffi::sfTexture {
-        self.texture
-    }
-
-    fn wrap(texture: *mut ffi::sfTexture) -> Texture {
-        Texture {
-            texture: texture,
-            dropable: false
-        }
-    }
-}
-
-impl Drop for Texture {
-    /// Destroy an existing texture
-    fn drop(&mut self) {
-        if self.dropable {
-            unsafe {
-                ffi::sfTexture_destroy(self.texture)
-            }
-        }
+		self.clone_opt().expect("Failed to clone Texture")
     }
 }

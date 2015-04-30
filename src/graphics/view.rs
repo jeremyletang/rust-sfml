@@ -25,15 +25,15 @@
 //! 2D camera that defines what region is shown on screen
 //!
 //! This is a very powerful concept: you can scroll,
-//! rotate or zoom the entire scene without altering
+//! rotate or zoom the entire scene without altering7
 //! the way that your drawable objects are drawn.
 
 use libc::c_float;
 
-use traits::Wrappable;
 use graphics::FloatRect;
 use system::vector2::Vector2f;
 
+use ffi::Foreign;
 use ffi::graphics as ffi;
 
 /// 2D camera that defines what region is shown on screen
@@ -41,9 +41,7 @@ use ffi::graphics as ffi;
 /// This is a very powerful concept: you can scroll,
 /// rotate or zoom the entire scene without altering
 /// the way that your drawable objects are drawn.
-pub struct View {
-    view: *mut ffi::sfView
-}
+pub struct View(Foreign<ffi::sfView>);
 
 impl View {
     /// Create a default view
@@ -52,14 +50,9 @@ impl View {
     ///
     /// Return Some(View) or None
     pub fn new() -> Option<View> {
-        let view = unsafe { ffi::sfView_create() };
-        if view.is_null() {
-            None
-        } else {
-            Some(View {
-                    view: view
-                })
-        }
+		unsafe {
+			Foreign::new(ffi::sfView_create())
+		}.map(View)
     }
 
     /// Create a default view
@@ -72,32 +65,11 @@ impl View {
     ///
     /// Return Some(View) or None
     pub fn new_init(center: &Vector2f, size: &Vector2f) -> Option<View> {
-        let view = unsafe { ffi::sfView_create() };
-        if view.is_null() {
-            None
-        } else {
-            unsafe {
-                ffi::sfView_setCenter(view, *center);
-                ffi::sfView_setSize(view, *size);
-            }
-            Some(View {
-                    view: view
-                })
-        }
-    }
-
-    /// Create a view by copying an existant one.
-    ///
-    /// Return Some(View) or None
-    pub fn clone_opt(&self) -> Option<View> {
-        let view = unsafe { ffi::sfView_copy(self.view) };
-        if view.is_null() {
-            None
-        } else {
-            Some(View {
-                view: view
-            })
-        }
+		View::new().map(|mut view| {
+			view.set_center(center);
+			view.set_size(size);
+			view
+		})
     }
 
     /// Construct a view from a rectangle
@@ -107,15 +79,28 @@ impl View {
     ///
     /// Return Some(View) or None
     pub fn new_from_rect(rectangle: &FloatRect) -> Option<View> {
-        let view = unsafe { ffi::sfView_createFromRect(*rectangle) };
-        if view.is_null() {
-            None
-        } else {
-            Some(View {
-                    view: view
-                })
-        }
+        unsafe {
+			Foreign::new(ffi::sfView_createFromRect(*rectangle))
+		}.map(View)
     }
+
+    /// Create a view by copying an existant one.
+    ///
+    /// Return Some(View) or None
+    pub fn clone_opt(&self) -> Option<View> {
+        unsafe {
+			Foreign::new(ffi::sfView_copy(self.raw()))
+		}.map(View)
+    }
+
+	fn raw(&self) -> &ffi::sfView { self.0.as_ref() }
+	fn raw_mut(&mut self) -> &mut ffi::sfView { self.0.as_mut() }
+	#[doc(hidden)]
+	pub fn unwrap(&self) -> &ffi::sfView { self.raw() }
+	#[doc(hidden)]
+	pub unsafe fn wrap(ptr: *mut ffi::sfView) -> Option<View> {
+		Foreign::new(ptr).map(View)
+	}
 
     /// Set the orientation of a view
     ///
@@ -125,7 +110,7 @@ impl View {
     /// * angle - New angle, in degrees
     pub fn set_rotation(&mut self, angle: f32) -> () {
         unsafe {
-            ffi::sfView_setRotation(self.view, angle as c_float)
+            ffi::sfView_setRotation(self.raw_mut(), angle as c_float)
         }
     }
 
@@ -134,7 +119,7 @@ impl View {
     /// Return the rotation angle of the view, in degrees
     pub fn get_rotation(&self) -> f32 {
         unsafe {
-            ffi::sfView_getRotation(self.view) as f32
+            ffi::sfView_getRotation(self.raw()) as f32
         }
     }
 
@@ -144,7 +129,7 @@ impl View {
     /// * angle - Angle to rotate, in degrees
     pub fn rotate(&mut self, angle: f32) -> () {
         unsafe {
-            ffi::sfView_rotate(self.view, angle as c_float)
+            ffi::sfView_rotate(self.raw_mut(), angle as c_float)
         }
     }
 
@@ -162,7 +147,7 @@ impl View {
     /// * factor - Zoom factor to apply
     pub fn zoom(&mut self, factor: f32) -> () {
         unsafe {
-            ffi::sfView_zoom(self.view, factor as c_float)
+            ffi::sfView_zoom(self.raw_mut(), factor as c_float)
         }
     }
 
@@ -172,7 +157,7 @@ impl View {
     /// * center - New center
     pub fn set_center(&mut self, center: &Vector2f) -> () {
         unsafe {
-            ffi::sfView_setCenter(self.view, *center)
+            ffi::sfView_setCenter(self.raw_mut(), *center)
         }
     }
 
@@ -184,7 +169,7 @@ impl View {
     ////
     pub fn set_center2f(&mut self, center_x: f32, center_y: f32) -> () {
         unsafe {
-            ffi::sfView_setCenter(self.view, Vector2f::new(center_x, center_y))
+            ffi::sfView_setCenter(self.raw_mut(), Vector2f::new(center_x, center_y))
         }
     }
 
@@ -194,7 +179,7 @@ impl View {
     /// * size - New size of the view
     pub fn set_size(&mut self, size: &Vector2f) -> () {
         unsafe {
-            ffi::sfView_setSize(self.view, *size)
+            ffi::sfView_setSize(self.raw_mut(), *size)
         }
     }
 
@@ -205,7 +190,7 @@ impl View {
     /// * size_y - New size y of the view
     pub fn set_size2f(&mut self, size_x: f32, size_y: f32) -> () {
         unsafe {
-            ffi::sfView_setSize(self.view, Vector2f::new(size_x, size_y))
+            ffi::sfView_setSize(self.raw_mut(), Vector2f::new(size_x, size_y))
         }
     }
 
@@ -215,7 +200,7 @@ impl View {
     /// * offset - Offset
     pub fn move_(&mut self, offset: &Vector2f) -> () {
         unsafe {
-            ffi::sfView_move(self.view, *offset)
+            ffi::sfView_move(self.raw_mut(), *offset)
         }
     }
     /// Move a view relatively to its current position
@@ -225,7 +210,7 @@ impl View {
     /// * offsetY - Offset y
     pub fn move2f(&mut self, offset_x: f32, offset_y: f32) -> () {
         unsafe {
-            ffi::sfView_move(self.view, Vector2f::new(offset_x, offset_y))
+            ffi::sfView_move(self.raw_mut(), Vector2f::new(offset_x, offset_y))
         }
     }
 
@@ -233,7 +218,7 @@ impl View {
     ///
     /// Return the center of the view
     pub fn get_center(&self) -> Vector2f {
-        unsafe {ffi::sfView_getCenter(self.view)}
+        unsafe { ffi::sfView_getCenter(self.raw()) }
     }
 
     /// Get the size of a view
@@ -241,7 +226,7 @@ impl View {
     /// Return the size of the view
     pub fn get_size(&self) -> Vector2f {
         unsafe {
-            ffi::sfView_getSize(self.view)
+            ffi::sfView_getSize(self.raw())
         }
     }
 
@@ -258,7 +243,7 @@ impl View {
     /// * viewport - New viewport rectangle
     pub fn set_viewport(&mut self, viewport: &FloatRect) -> () {
         unsafe {
-            ffi::sfView_setViewport(self.view, *viewport)
+            ffi::sfView_setViewport(self.raw_mut(), *viewport)
         }
     }
 
@@ -270,7 +255,7 @@ impl View {
     /// * rectangle - Rectangle defining the zone to display
     pub fn reset(&mut self, rectangle: &FloatRect) -> () {
         unsafe {
-            ffi::sfView_reset(self.view, *rectangle)
+            ffi::sfView_reset(self.raw_mut(), *rectangle)
         }
     }
 
@@ -279,42 +264,13 @@ impl View {
     /// Return the viewport rectangle, expressed as a factor of the target size
     pub fn get_viewport(&self) -> FloatRect {
         unsafe {
-            ffi::sfView_getViewport(self.view)
+            ffi::sfView_getViewport(self.raw())
         }
     }
 }
 
 impl Clone for View {
-    /// Return a new View or panic! if there is not enough memory
     fn clone(&self) -> View {
-        let view = unsafe { ffi::sfView_copy(self.view) };
-        if view.is_null() {
-            panic!("Not enough memory to clone View")
-        } else {
-            View {
-                view: view
-            }
-        }
-    }
-}
-
-impl Wrappable<*mut ffi::sfView> for View {
-    fn wrap(view: *mut ffi::sfView) -> View {
-        View {
-            view: view
-        }
-    }
-
-    fn unwrap(&self) -> *mut ffi::sfView {
-        self.view
-    }
-}
-
-impl Drop for View {
-    /// Destructor for class View
-    fn drop(&mut self) -> () {
-		unsafe {
-			ffi::sfView_destroy(self.view)
-		}
+		self.clone_opt().expect("Failed to clone View")
     }
 }

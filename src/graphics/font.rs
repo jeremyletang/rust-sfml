@@ -28,17 +28,13 @@
 use libc::{c_uint, size_t};
 use std::ffi::CString;
 
-use traits::Wrappable;
-use graphics::{Texture, Glyph};
+use graphics::{Glyph};
 
-use ffi::sfml_types::SfBool;
+use ffi::{SfBool, Foreign};
 use ffi::graphics as ffi;
 
 /// Class for loading and manipulating character fonts
-pub struct Font {
-    font: *mut ffi::sfFont,
-    dropable: bool
-}
+pub struct Font(Foreign<ffi::sfFont>);
 
 impl Font {
     /// Create a new font from a file
@@ -48,18 +44,13 @@ impl Font {
     ///
     /// Return Some(Font) or None
     pub fn new_from_file(filename: &str) -> Option<Font> {
-        let c_str = CString::new(filename.as_bytes()).unwrap().as_ptr();
-        let fnt = unsafe {
-            ffi::sfFont_createFromFile(c_str)
-        };
-        if fnt.is_null() {
-            None
-        } else {
-            Some(Font {
-                    font: fnt,
-                    dropable: true
-                })
-        }
+        let c_str = match CString::new(filename.as_bytes()) {
+			Ok(c_str) => c_str,
+			Err(_) => return None
+		};
+        unsafe {
+            Foreign::new(ffi::sfFont_createFromFile(c_str.as_ptr()))
+        }.map(Font)
     }
 
     /// Create a new font from memory
@@ -69,18 +60,14 @@ impl Font {
     ///
     /// Return Some(Font) or None
     pub fn new_from_memory(memory: &[u8]) -> Option<Font> {
-        let fnt = unsafe {
-            ffi::sfFont_createFromMemory(&memory[0], memory.len() as size_t)
-        };
-        if fnt.is_null() {
-            None
-        } else {
-            Some(Font {
-                    font: fnt,
-                    dropable: true
-                })
-        }
+        unsafe {
+            Foreign::new(ffi::sfFont_createFromMemory(memory.as_ptr(), memory.len() as size_t))
+        }.map(Font)
     }
+	
+	fn raw(&self) -> &ffi::sfFont { self.0.as_ref() }
+	#[doc(hidden)]
+	pub fn unwrap(&self) -> &ffi::sfFont { self.raw() }
 
     /// Create font from a existing one
     ///
@@ -89,15 +76,9 @@ impl Font {
     ///
     /// Return Some(Font) or None
     pub fn clone_opt(&self) -> Option<Font> {
-        let fnt = unsafe {ffi::sfFont_copy(self.font)};
-        if fnt.is_null() {
-            None
-        } else {
-            Some(Font {
-                    font: fnt,
-                    dropable: true
-                })
-        }
+        unsafe {
+			Foreign::new(ffi::sfFont_copy(self.raw()))
+		}.map(Font)
     }
 
     /// Get the kerning value corresponding to a given pair of characters in a font
@@ -113,7 +94,7 @@ impl Font {
                        second: u32,
                        character_size: u32) -> i32 {
         unsafe {
-            ffi::sfFont_getKerning(self.font,
+            ffi::sfFont_getKerning(self.raw(),
                                    first,
                                    second,
                                    character_size as c_uint) as i32
@@ -128,26 +109,26 @@ impl Font {
     /// Return the line spacing, in pixels
     pub fn get_line_spacing(&self, character_size: u32) -> i32 {
         unsafe {
-            ffi::sfFont_getLineSpacing(self.font,
-                                       character_size as c_uint) as i32
+            ffi::sfFont_getLineSpacing(self.raw(), character_size as c_uint) as i32
         }
     }
 
+	/* TODO: return a reference to a Texture
     /// Get the texture containing the glyphs of a given size in a font
     ///
     /// # Arguments
     /// * characterSize - Character size, in pixels
     ///
     /// Return the texture
-    pub fn get_texture(&self, character_size: u32) -> Option<Texture> {
-        let tex = unsafe {ffi::sfFont_getTexture(self.font,
-                                                 character_size as c_uint)};
+    pub fn get_texture(&mut self, character_size: u32) -> Option<Texture> {
+        let tex = unsafe {ffi::sfFont_getTexture(self.raw_mut(), character_size as c_uint)};
         if tex.is_null() {
             None
         } else {
             Some(Wrappable::wrap(tex))
         }
     }
+	*/
 
     /// Get a glyph in a font
     ///
@@ -162,45 +143,14 @@ impl Font {
                      character_size: u32,
                      bold: bool) -> Glyph {
         unsafe {
-            ffi::sfFont_getGlyph(self.font, codepoint, character_size as c_uint, SfBool::from_bool(bold))
+            ffi::sfFont_getGlyph(self.raw(), codepoint, character_size as c_uint, SfBool::from_bool(bold))
         }
     }
 }
 
 impl Clone for Font {
-    /// Return a new Font or panic! if there is not enough memory
     fn clone(&self) -> Font {
-        let fnt = unsafe {ffi::sfFont_copy(self.font)};
-        if fnt.is_null() {
-            panic!("Not enough memory to clone Font")
-        } else {
-            Font {
-                font: fnt,
-                dropable: true
-            }
-        }
+		self.clone_opt().expect("Failed to clone Font")
     }
 }
 
-impl Wrappable<*mut ffi::sfFont> for Font {
-    fn wrap(font: *mut ffi::sfFont) -> Font {
-        Font {
-            font: font,
-            dropable: false
-        }
-    }
-    fn unwrap(&self) -> *mut ffi::sfFont {
-        self.font
-    }
-}
-
-impl Drop for Font {
-    /// Destroy an existing font
-    fn drop(&mut self) -> () {
-        if self.dropable {
-            unsafe {
-                ffi::sfFont_destroy(self.font)
-            }
-        }
-    }
-}

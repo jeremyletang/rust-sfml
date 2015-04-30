@@ -28,17 +28,15 @@ use libc::c_uint;
 
 use traits::Wrappable;
 use system::vector2::{Vector2f, Vector2i, Vector2u};
-use graphics::{View, Color, IntRect, Texture, CircleShape, RectangleShape, Text,
+use graphics::{View, Color, IntRect, CircleShape, RectangleShape, Text,
                RenderStates, Sprite, ConvexShape,
                RenderTarget, Vertex, PrimitiveType, Shape};
 
-use ffi::sfml_types::SfBool;
+use ffi::{SfBool, Foreign};
 use ffi::graphics as ffi;
 
 /// Target for off-screen 2D rendering into a texture
-pub struct RenderTexture {
-    render_texture: *mut ffi::sfRenderTexture
-}
+pub struct RenderTexture(Foreign<ffi::sfRenderTexture>);
 
 impl RenderTexture {
     /// Construct a new render texture
@@ -52,22 +50,19 @@ impl RenderTexture {
     pub fn new(width: u32,
                height: u32,
                depth_buffer: bool) -> Option<RenderTexture> {
-        let tex = unsafe {
-            ffi::sfRenderTexture_create(width as c_uint, height as c_uint, SfBool::from_bool(depth_buffer))
-        };
-        if tex.is_null() {
-            None
-        } else {
-            Some(RenderTexture {
-                    render_texture: tex
-                })
-        }
+        unsafe {
+            Foreign::new(ffi::sfRenderTexture_create(width as c_uint,
+				height as c_uint, SfBool::from_bool(depth_buffer)))
+        }.map(RenderTexture)
     }
 
+	fn raw(&self) -> &ffi::sfRenderTexture { self.0.as_ref() }
+	fn raw_mut(&mut self) -> &mut ffi::sfRenderTexture { self.0.as_mut() }
+
     /// Update the contents of the target texture
-    pub fn display(&self) -> () {
+    pub fn display(&mut self) -> () {
         unsafe {
-            ffi::sfRenderTexture_display(self.render_texture)
+            ffi::sfRenderTexture_display(self.raw_mut())
         }
     }
 
@@ -77,15 +72,16 @@ impl RenderTexture {
     /// * active - true to activate, false to deactivate
     pub fn set_active(&mut self, active: bool) -> bool {
         unsafe {
-            ffi::sfRenderTexture_setActive(self.render_texture, SfBool::from_bool(active))
+            ffi::sfRenderTexture_setActive(self.raw_mut(), SfBool::from_bool(active))
         }.to_bool()
     }
 
+	/* TODO: return a reference
     /// Get the target texture of a render texture
     ///
     /// Return the target texture
     pub fn get_texture(&self) -> Option<Texture> {
-        let tex = unsafe { ffi::sfRenderTexture_getTexture(self.render_texture) };
+        let tex = unsafe { ffi::sfRenderTexture_getTexture(self.raw()) };
         if tex.is_null() {
             None
         }
@@ -97,7 +93,7 @@ impl RenderTexture {
 				Some(Wrappable::wrap(tex))
 			}
         }
-    }
+    }*/
 
     /// Enable or disable the smooth filter on a render texture
     ///
@@ -105,7 +101,7 @@ impl RenderTexture {
     /// * smooth - true to enable smoothing, false to disable it
     pub fn set_smooth(&mut self, smooth: bool) -> () {
         unsafe {
-            ffi::sfRenderTexture_setSmooth(self.render_texture, SfBool::from_bool(smooth))
+            ffi::sfRenderTexture_setSmooth(self.raw_mut(), SfBool::from_bool(smooth))
         }
     }
 
@@ -113,324 +109,175 @@ impl RenderTexture {
     ///
     /// Return true if smoothing is enabled, false if it is disabled
     pub fn is_smooth(&self) -> bool {
-        unsafe { ffi::sfRenderTexture_isSmooth(self.render_texture) }.to_bool()
+        unsafe { ffi::sfRenderTexture_isSmooth(self.raw()) }.to_bool()
     }
 }
 
 impl RenderTarget for RenderTexture {
-
-    /// Get the size of the rendering region of a render texture
-    ///
-    /// Return the size in pixels
     fn get_size(&self) -> Vector2u {
         unsafe {
-            ffi::sfRenderTexture_getSize(self.render_texture)
+            ffi::sfRenderTexture_getSize(self.raw())
         }
     }
 
-    /// Clear the rendertexture with the given color
-    ///
-    /// # Arguments
-    /// * color - Fill color
     fn clear(&mut self, color: &Color) -> () {
         unsafe {
-            ffi::sfRenderTexture_clear(self.render_texture, *color)
+            ffi::sfRenderTexture_clear(self.raw_mut(), *color)
         }
     }
 
-    /// Change the current active view of a render texture
-    ///
-    /// # Arguments
-    /// * view - the new view
     fn set_view(&mut self, view: &View) -> () {
         unsafe {
-            ffi::sfRenderTexture_setView(self.render_texture, view.unwrap())
+            ffi::sfRenderTexture_setView(self.raw_mut(), view.unwrap())
         }
     }
 
-    /// Get the current active view of a render texture
-    ///
-    /// Return the current active view
     fn get_view(&self) -> View {
         unsafe {
-            Wrappable::wrap(ffi::sfView_copy(ffi::sfRenderTexture_getView(self.render_texture)))
+            View::wrap(ffi::sfView_copy(ffi::sfRenderTexture_getView(self.raw())))
+				.expect("Failed to wrap view")
         }
     }
 
-    /// Get the default view of a render texture
-    ///
-    /// Return the default view of the render texture
     fn get_default_view(&self) -> View {
         unsafe {
-            Wrappable::wrap(ffi::sfView_copy(ffi::sfRenderTexture_getDefaultView(self.render_texture)))
+            View::wrap(ffi::sfView_copy(ffi::sfRenderTexture_getDefaultView(self.raw())))
+				.expect("Failed to wrap view")
         }
     }
 
-    /// Get the viewport of a view applied to this target
-    ///
-    /// # Arguments
-    /// * view - Target view
-    ///
-    /// Return the viewport rectangle, expressed in pixels in the current target
     fn get_viewport(&self, view: &View) -> IntRect {
         unsafe {
-            ffi::sfRenderTexture_getViewport(self.render_texture, view.unwrap())
+            ffi::sfRenderTexture_getViewport(self.raw(), view.unwrap())
         }
     }
 
-    /// Convert a point from texture coordinates to world coordinates
-    ///
-    /// This function finds the 2D position that matches the
-    /// given pixel of the render-texture. In other words, it does
-    /// the inverse of what the graphics card does, to find the
-    /// initial position of a rendered pixel.
-    ///
-    /// Initially, both coordinate systems (world units and target pixels)
-    /// match perfectly. But if you define a custom view or resize your
-    /// render texture, this assertion is not true anymore, ie. a point
-    /// located at (10, 50) in your render-texture may map to the point
-    /// (150, 75) in your 2D world -- if the view is translated by (140, 25).
-    ///
-    /// This function is typically used to find which point (or object) is
-    /// located below the mouse cursor.
-    ///
-    /// This version uses a custom view for calculations, see
-    /// map_pixel_to_coords if you want to use the current view of the
-    /// render-texture.
-    ///
-    /// # Arguments
-    /// * point - Pixel to convert
-    /// * view - The view to use for converting the point
-    ///
-    /// Return the converted point, in "world" units
     fn map_pixel_to_coords(&self,
                                point: &Vector2i,
                                view: &View) -> Vector2f {
         unsafe {
-            ffi::sfRenderTexture_mapPixelToCoords(self.render_texture,
+            ffi::sfRenderTexture_mapPixelToCoords(self.raw(),
                                                   *point,
                                                   view.unwrap())
         }
     }
 
-    /// Convert a point from texture coordinates to world coordinates
-    ///
-    /// This function finds the 2D position that matches the
-    /// given pixel of the render-texture. In other words, it does
-    /// the inverse of what the graphics card does, to find the
-    /// initial position of a rendered pixel.
-    ///
-    /// Initially, both coordinate systems (world units and target pixels)
-    /// match perfectly. But if you define a custom view or resize your
-    /// render texture, this assertion is not true anymore, ie. a point
-    /// located at (10, 50) in your render-texture may map to the point
-    /// (150, 75) in your 2D world -- if the view is translated by (140, 25).
-    ///
-    /// This function is typically used to find which point (or object) is
-    /// located below the mouse cursor.
-    ///
-    /// This version the current view for calculations, see
-    /// map_pixel_to_coordss if you want to use a custom view
-    ///
-    /// # Arguments
-    /// * point - Pixel to convert
-    ///
-    /// Return the converted point, in "world" units
     fn map_pixel_to_coords_current_view(&self, point: &Vector2i) -> Vector2f {
-        let view = unsafe { ffi::sfRenderTexture_getView(self.render_texture) };
+        let view = unsafe { ffi::sfRenderTexture_getView(self.raw()) };
         unsafe {
-            ffi::sfRenderTexture_mapPixelToCoords(self.render_texture,
+            ffi::sfRenderTexture_mapPixelToCoords(self.raw(),
                                                   *point,
                                                   view)
         }
     }
 
-    /// Convert a point from world coordinates to render texture coordinates
-    ///
-    /// This function finds the pixel of the render-texture that matches
-    /// the given 2D point. In other words, it goes through the same process
-    /// as the graphics card, to compute the final position of a rendered point.
-    ///
-    /// Initially, both coordinate systems (world units and target pixels)
-    /// match perfectly. But if you define a custom view or resize your
-    /// render texture, this assertion is not true anymore, ie. a point
-    /// located at (150, 75) in your 2D world may map to the pixel
-    /// (10, 50) of your render-texture -- if the view is translated by (140, 25).
-    ///
-    /// This version uses a custom view for calculations, see
-    /// map_coords_to_pixel_current_view if you want to use the current view of the
-    /// render-texture.
-    ///
-    /// # Arguments
-    /// * point - Point to convert
-    /// * view - The view to use for converting the point
     fn map_coords_to_pixel(&self,
                                point: &Vector2f,
                                view: &View) -> Vector2i {
         unsafe {
-            ffi::sfRenderTexture_mapCoordsToPixel(self.render_texture,
+            ffi::sfRenderTexture_mapCoordsToPixel(self.raw(),
                                                   *point,
                                                   view.unwrap())
         }
     }
 
-    /// Convert a point from world coordinates to render texture coordinates
-    ///
-    /// This function finds the pixel of the render-texture that matches
-    /// the given 2D point. In other words, it goes through the same process
-    /// as the graphics card, to compute the final position of a rendered point.
-    ///
-    /// Initially, both coordinate systems (world units and target pixels)
-    /// match perfectly. But if you define a custom view or resize your
-    /// render texture, this assertion is not true anymore, ie. a point
-    /// located at (150, 75) in your 2D world may map to the pixel
-    /// (10, 50) of your render-texture -- if the view is translated by (140, 25).
-    ///
-    /// This version uses the default view for calculations, see
-    /// map_coords_to_pixel if you want to use as custom view.
-    ///
-    /// # Arguments
-    /// * point - Point to convert
     fn map_coords_to_pixel_current_view(&self, point: &Vector2f) -> Vector2i {
-        let view = unsafe { ffi::sfRenderTexture_getView(self.render_texture) };
+        let view = unsafe { ffi::sfRenderTexture_getView(self.raw()) };
         unsafe {
-            ffi::sfRenderTexture_mapCoordsToPixel(self.render_texture,
+            ffi::sfRenderTexture_mapCoordsToPixel(self.raw(),
                                                   *point,
                                                   view)
         }
     }
 
-    /// Draw Text
-    fn draw_text_rs(&self,
+    fn draw_text_rs(&mut self,
                         text: &Text,
                         rs: &RenderStates) -> () {
         unsafe {
-            ffi::sfRenderTexture_drawText(self.render_texture,
+            ffi::sfRenderTexture_drawText(self.raw_mut(),
                                           text.unwrap(),
                                           &rs.unwrap())
         }
     }
 
-    /// Draw Shape
-    fn draw_shape_rs(&self,
+    fn draw_shape_rs(&mut self,
                      shape: &Shape,
                      rs: &RenderStates) -> () {
         unsafe {
-            ffi::sfRenderTexture_drawShape(self.render_texture,
+            ffi::sfRenderTexture_drawShape(self.raw_mut(),
                                            shape.unwrap(),
                                            &rs.unwrap())
         }
     }
 
-    /// Draw Sprite
-    fn draw_sprite_rs(&self,
+    fn draw_sprite_rs(&mut self,
                           sprite: &Sprite,
                           rs: &RenderStates) -> () {
         unsafe {
-            ffi::sfRenderTexture_drawSprite(self.render_texture,
+            ffi::sfRenderTexture_drawSprite(self.raw_mut(),
                                             sprite.unwrap(),
                                             &rs.unwrap())
         }
     }
 
-    /// Draw CircleShape
-    fn draw_circle_shape_rs(&self,
+    fn draw_circle_shape_rs(&mut self,
                                 circle_shape: &CircleShape,
                                 rs: &RenderStates) -> () {
         unsafe {
-            ffi::sfRenderTexture_drawCircleShape(self.render_texture,
+            ffi::sfRenderTexture_drawCircleShape(self.raw_mut(),
                                                  circle_shape.unwrap(),
                                                  &rs.unwrap())
         }
     }
 
-    /// Draw RectangleShape
-    fn draw_rectangle_shape_rs(&self,
+    fn draw_rectangle_shape_rs(&mut self,
                                    rectangle_shape: &RectangleShape,
                                    rs: &RenderStates) -> () {
         unsafe {
-            ffi::sfRenderTexture_drawRectangleShape(self.render_texture,
+            ffi::sfRenderTexture_drawRectangleShape(self.raw_mut(),
                                                     rectangle_shape.unwrap(),
                                                     &rs.unwrap())
         }
     }
 
-    /// Draw ConvexShape
-    fn draw_convex_shape_rs(&self,
+    fn draw_convex_shape_rs(&mut self,
                                 convex_shape: &ConvexShape,
                                 rs: &RenderStates) -> () {
         unsafe {
-            ffi::sfRenderTexture_drawConvexShape(self.render_texture,
+            ffi::sfRenderTexture_drawConvexShape(self.raw_mut(),
                                                  convex_shape.unwrap(),
                                                  &rs.unwrap())
         }
     }
 
-    /// draw primitives
-    fn draw_primitives_rs(&self,
+    fn draw_primitives_rs(&mut self,
                           vertices: &[Vertex],
                           ty: PrimitiveType,
                           rs: &RenderStates) {
-
-        let len = vertices.len() as u32;
         unsafe {
-            ffi::sfRenderTexture_drawPrimitives(self.render_texture,
-                                                &vertices[0],
-                                                len,
+            ffi::sfRenderTexture_drawPrimitives(self.raw_mut(),
+                                                vertices.as_ptr(),
+                                                vertices.len() as u32,
                                                 ty,
                                                 &rs.unwrap());
         }
     }
 
-    /// Save the current OpenGL render states and matrices
-    ///
-    /// This function can be used when you mix SFML drawing
-    /// and direct OpenGL rendering. Combined with popGLStates,
-    /// it ensures that:
-    /// SFML's internal states are not messed up by your OpenGL code
-    /// and that your OpenGL states are not modified by a call to a SFML function
-    ///
-    /// Note that this function is quite expensive: it saves all the
-    /// possible OpenGL states and matrices, even the ones you
-    /// don't care about. Therefore it should be used wisely.
-    /// It is provided for convenience, but the best results will
-    /// be achieved if you handle OpenGL states yourself (because
-    /// you know which states have really changed, and need to be
-    /// saved and restored). Take a look at the resetGLStates
-    /// function if you do so.
     fn push_gl_states(&mut self) -> () {
         unsafe {
-            ffi::sfRenderTexture_pushGLStates(self.render_texture)
+            ffi::sfRenderTexture_pushGLStates(self.raw_mut())
         }
     }
 
-    /// Restore the previously saved OpenGL render states and matrices
     fn pop_gl_states(&mut self) -> () {
         unsafe {
-            ffi::sfRenderTexture_popGLStates(self.render_texture)
+            ffi::sfRenderTexture_popGLStates(self.raw_mut())
         }
     }
 
-    /// Reset the internal OpenGL states so that the target is ready for drawing
-    ///
-    /// This function can be used when you mix SFML drawing
-    /// and direct OpenGL rendering, if you choose not to use
-    /// pushGLStates/popGLStates. It makes sure that all OpenGL
-    /// states needed by SFML are set, so that subsequent sfRenderWindow_draw*()
-    /// calls will work as expected.
     fn reset_gl_states(&mut self) -> () {
         unsafe {
-            ffi::sfRenderTexture_resetGLStates(self.render_texture)
-        }
-    }
-
-
-}
-
-impl Drop for RenderTexture {
-    fn drop(&mut self) -> () {
-        unsafe {
-            ffi::sfRenderTexture_destroy(self.render_texture)
+            ffi::sfRenderTexture_resetGLStates(self.raw_mut())
         }
     }
 }
