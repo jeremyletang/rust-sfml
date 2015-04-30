@@ -31,7 +31,7 @@ use system::vector2::Vector2f;
 /// ShapeImpl trait
 ///
 /// Implement this shape to create a new Shape
-pub trait ShapeImpl {
+pub trait ShapeImpl: Send {
     /// Get the total count of the point for the Shape who implement this trait.
     ///
     /// Return the points count

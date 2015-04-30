@@ -41,7 +41,7 @@ pub use graphics::image::Image;
 pub use graphics::sprite::Sprite;
 pub use graphics::circle_shape::CircleShape;
 pub use graphics::rectangle_shape::RectangleShape;
-pub use graphics::convex_shape::{ConvexShape, ConvexShapePoints};
+pub use graphics::convex_shape::ConvexShape;
 pub use graphics::primitive_type::PrimitiveType;
 pub use graphics::vertex::Vertex;
 pub use graphics::transformable::{Transformable, TransformableData};
