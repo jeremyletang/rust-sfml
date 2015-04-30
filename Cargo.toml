@@ -1,5 +1,4 @@
 [package]
-
 name = "sfml"
 description = "Rust binding for sfml"
 version = "0.9.3"
@@ -11,10 +10,11 @@ repository = "https://github.com/jeremyletang/rust-sfml"
 license = "zlib-acknowledgement"
 
 [dependencies]
-rand = ">=0.2.0"
 libc = ">=0.1.5"
 
-[lib]
+[dev-dependencies]
+rand = ">=0.3.0"
 
+[lib]
 name = "sfml"
 crate-type = ["dylib", "rlib"]
