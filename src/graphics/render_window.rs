@@ -32,7 +32,6 @@
 
 use libc::{c_float, c_uint};
 use std::vec::Vec;
-use std::ffi::CString;
 
 use traits::Wrappable;
 use window::{ContextSettings, VideoMode, event, WindowStyle};

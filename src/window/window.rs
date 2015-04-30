@@ -30,13 +30,12 @@
 
 use libc::{c_uint, c_float};
 use std::vec::Vec;
-use std::ffi::CString;
 
 use traits::Wrappable;
 use window::{event, VideoMode, ContextSettings, WindowStyle};
 use system::vector2::{Vector2i, Vector2u};
 
-use ffi::{SfBool, Foreign};
+use ffi::sfml_types::SfBool;
 use ffi::window as ffi;
 
 /// Window that serves as a target for OpenGL rendering.

@@ -32,7 +32,7 @@ use std::ptr;
 
 use traits::{Drawable, Wrappable};
 use graphics::{FloatRect, IntRect, Color, Texture,
-               RenderTarget, Transform, Transformable, RenderStates};
+               RenderTarget, Transform, RenderStates};
 use system::vector2::Vector2f;
 
 use ffi::sfml_types::SfBool;
