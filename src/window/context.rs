@@ -26,45 +26,24 @@
 //!
 //! Class holding a valid drawing context.
 
-use ffi::sfml_types::SfBool;
+use ffi::{SfBool, Foreign};
 use ffi::window as ffi;
 
-/// Drawing context
-///
-/// Class holding a valid drawing context.
-pub struct Context {
-    cont: *mut ffi::sfContext
-}
+/// Container for an OpenGL drawing context.
+pub struct Context(Foreign<ffi::sfContext>);
 
 impl Context {
-
-    /// Create a new context
-    ///
-    /// This function activates the new context.
-    ///
-    /// Return New Context object
+    /// Create a new context, also activating it.
     pub fn new() -> Context {
-        Context{
-            cont: unsafe { ffi::sfContext_create() }
-        }
+		unsafe {
+			Foreign::new(ffi::sfContext_create())
+		}.map(Context).expect("Failed to create Context")
     }
 
-    /// Activate or deactivate explicitely a context
-    ///
-    /// # Arguments
-    /// * active - True to activate, False to deactivate
+    /// Explicitly activate or deactivate the context.
     pub fn set_active(&mut self, active: bool) -> () {
         unsafe {
-            ffi::sfContext_setActive(self.cont, SfBool::from_bool(active))
-        }
-    }
-}
-
-impl Drop for Context {
-    /// Destructor for class Context.
-    fn drop(&mut self) {
-        unsafe {
-            ffi::sfContext_destroy(self.cont);
+            ffi::sfContext_setActive(self.0.as_mut(), SfBool::from_bool(active))
         }
     }
 }

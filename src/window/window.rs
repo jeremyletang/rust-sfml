@@ -35,20 +35,13 @@ use traits::Wrappable;
 use window::{event, VideoMode, ContextSettings, WindowStyle};
 use system::vector2::{Vector2i, Vector2u};
 
-use ffi::sfml_types::SfBool;
+use ffi::{SfBool, Foreign};
 use ffi::window as ffi;
 
 /// Window that serves as a target for OpenGL rendering.
 ///
 /// Also makes available events and input handling.
-pub struct Window {
-    window: *mut ffi::sfWindow,
-}
-
-/// An iterator over all the events in the events queue (internally call poll_event)
-pub struct Events {
-    window: *mut ffi::sfWindow,
-}
+pub struct Window(Foreign<ffi::sfWindow>);
 
 impl Window {
     /// Construct a new window
@@ -76,26 +69,27 @@ impl Window {
                settings: &ContextSettings) -> Option<Window> {
 		let mut vec: Vec<u32> = title.chars().map(|ch| ch as u32).collect();
 		vec.push(0);
-        let sf_win: *mut ffi::sfWindow = unsafe {
-            ffi::sfWindow_createUnicode(mode.unwrap(), vec.as_ptr(), style as u32, settings)
-        };
-        if sf_win.is_null() {
-            None
-        } else {
-            Some (Window {
-                    window: sf_win,
-                })
-        }
+        unsafe {
+            Foreign::new(ffi::sfWindow_createUnicode(mode.unwrap(), vec.as_ptr(), style as u32, settings))
+        }.map(Window)
     }
+	
+	fn raw(&self) -> &ffi::sfWindow {
+		self.0.as_ref()
+	}
+
+	fn raw_mut(&mut self) -> &mut ffi::sfWindow {
+		self.0.as_mut()
+	}
 
     /// Return an iterator over all the event currently in the events queue.
-    pub fn events(&self) -> Events {
+    pub fn events(&mut self) -> Events {
         Events {
-            window: self.window.clone(),
+            window: self.raw_mut(),
         }
     }
 
-    ///  Pop the event on top of event queue, if any, and return it
+    /// Pop the event on top of event queue, if any, and return it
     ///
     /// This function is not blocking: if there's no pending event then
     /// it will return false and leave \a event unmodified.
@@ -107,7 +101,7 @@ impl Window {
     pub fn poll_event(&mut self) -> event::Event {
         let mut event = event::raw::sfEvent { data: [032; 6] };
         let have_event = unsafe {
-            ffi::sfWindow_pollEvent(self.window, &mut event).to_bool()
+            ffi::sfWindow_pollEvent(self.raw_mut(), &mut event).to_bool()
         };
         if !have_event {
             event::Event::NoEvent
@@ -130,7 +124,7 @@ impl Window {
     pub fn wait_event(&mut self) -> event::Event {
         let mut event = event::raw::sfEvent { data: [032; 6] };
         let have_event = unsafe {
-            ffi::sfWindow_waitEvent(self.window, &mut event).to_bool()
+            ffi::sfWindow_waitEvent(self.raw_mut(), &mut event).to_bool()
         };
         if !have_event {
             return event::Event::NoEvent;
@@ -148,7 +142,7 @@ impl Window {
     /// * pixels - Vector of pixels
     pub fn set_icon(&mut self, width: u32, height: u32, pixels: Vec<u8>) -> () {
         unsafe {
-            ffi::sfWindow_setIcon(self.window, width as c_uint, height as c_uint, pixels.as_ptr())
+            ffi::sfWindow_setIcon(self.raw_mut(), width as c_uint, height as c_uint, pixels.as_ptr())
         }
     }
 
@@ -161,7 +155,7 @@ impl Window {
     /// every time), and will have no effect on closed windows.
     pub fn close(&mut self) -> () {
         unsafe {
-            ffi::sfWindow_close(self.window);
+            ffi::sfWindow_close(self.raw_mut());
         }
     }
 
@@ -171,7 +165,7 @@ impl Window {
     /// Note that a hidden window (set_visible(false)) will return
     /// true.
     pub fn is_open(&self) -> bool {
-        unsafe { ffi::sfWindow_isOpen(self.window) }.to_bool()
+        unsafe { ffi::sfWindow_isOpen(self.raw()) }.to_bool()
     }
 
     /// Get the settings of the OpenGL context of a window
@@ -183,7 +177,7 @@ impl Window {
     ///
     /// Return a structure containing the OpenGL context settings
     pub fn get_settings(&self) -> ContextSettings {
-        unsafe {ffi::sfWindow_getSettings(self.window)}
+        unsafe {ffi::sfWindow_getSettings(self.raw())}
     }
 
     /// Change the title of a window
@@ -194,7 +188,7 @@ impl Window {
 		let mut vec: Vec<u32> = title.chars().map(|ch| ch as u32).collect();
 		vec.push(0);
         unsafe {
-            ffi::sfWindow_setUnicodeTitle(self.window, vec.as_ptr())
+            ffi::sfWindow_setUnicodeTitle(self.raw_mut(), vec.as_ptr())
         }
     }
 
@@ -204,7 +198,7 @@ impl Window {
     /// * visible - true to show the window, false to hide it
     pub fn set_visible(&mut self, visible: bool) -> () {
         unsafe {
-            ffi::sfWindow_setVisible(self.window, SfBool::from_bool(visible))
+            ffi::sfWindow_setVisible(self.raw_mut(), SfBool::from_bool(visible))
         }
     }
 
@@ -214,7 +208,7 @@ impl Window {
     /// * visible - true to  false to hide
     pub fn set_mouse_cursor_visible(&mut self, visible: bool) -> () {
         unsafe {
-            ffi::sfWindow_setMouseCursorVisible(self.window, SfBool::from_bool(visible))
+            ffi::sfWindow_setMouseCursorVisible(self.raw_mut(), SfBool::from_bool(visible))
         }
     }
 
@@ -229,7 +223,7 @@ impl Window {
     /// * enabled - true to enable v-sync, false to deactivate
     pub fn set_vertical_sync_enabled(&mut self, enabled: bool) -> () {
         unsafe {
-            ffi::sfWindow_setVerticalSyncEnabled(self.window, SfBool::from_bool(enabled))
+            ffi::sfWindow_setVerticalSyncEnabled(self.raw_mut(), SfBool::from_bool(enabled))
         }
     }
 
@@ -245,7 +239,7 @@ impl Window {
     /// * enabled - true to enable, false to disable
     pub fn set_key_repeat_enabled(&mut self, enabled: bool) -> () {
         unsafe {
-            ffi::sfWindow_setKeyRepeatEnabled(self.window, SfBool::from_bool(enabled))
+            ffi::sfWindow_setKeyRepeatEnabled(self.raw_mut(), SfBool::from_bool(enabled))
         }
     }
 
@@ -262,7 +256,7 @@ impl Window {
     ///
     /// Return true if operation was successful, false otherwise
     pub fn set_active(&mut self, enabled: bool) -> bool {
-        unsafe { ffi::sfWindow_setActive(self.window, SfBool::from_bool(enabled)) }.to_bool()
+        unsafe { ffi::sfWindow_setActive(self.raw_mut(), SfBool::from_bool(enabled)) }.to_bool()
     }
 
     /// Display on screen what has been rendered to the window so far
@@ -272,7 +266,7 @@ impl Window {
     /// it on screen.
     pub fn display(&mut self) -> () {
         unsafe {
-            ffi::sfWindow_display(self.window)
+            ffi::sfWindow_display(self.raw_mut())
         }
     }
 
@@ -286,7 +280,7 @@ impl Window {
     /// * limit - Framerate limit, in frames per seconds (use 0 to disable limit)
     pub fn set_framerate_limit(&mut self, limit: u32) -> () {
         unsafe {
-            ffi::sfWindow_setFramerateLimit(self.window, limit as c_uint)
+            ffi::sfWindow_setFramerateLimit(self.raw_mut(), limit as c_uint)
         }
     }
 
@@ -299,7 +293,7 @@ impl Window {
     /// * threshold - New threshold, in the range [0, 100]
     pub fn set_joystick_threshold(&mut self, threshold: f32) -> () {
         unsafe {
-            ffi::sfWindow_setJoystickThreshold(self.window, threshold as c_float)
+            ffi::sfWindow_setJoystickThreshold(self.raw_mut(), threshold as c_float)
         }
     }
 
@@ -308,7 +302,7 @@ impl Window {
     /// Return the position in pixels
     pub fn get_position(&self) -> Vector2i {
         unsafe {
-            ffi::sfWindow_getPosition(self.window)
+            ffi::sfWindow_getPosition(self.raw())
         }
     }
 
@@ -322,7 +316,7 @@ impl Window {
     /// * position - New position of the window, in pixels
     pub fn set_position(&mut self, position: &Vector2i) -> () {
         unsafe {
-            ffi::sfWindow_setPosition(self.window, *position)
+            ffi::sfWindow_setPosition(self.raw_mut(), *position)
         }
     }
 
@@ -333,7 +327,7 @@ impl Window {
     /// Return the size in pixels
     pub fn get_size(&self) -> Vector2u {
         unsafe {
-            ffi::sfWindow_getSize(self.window)
+            ffi::sfWindow_getSize(self.raw())
         }
     }
 
@@ -343,7 +337,7 @@ impl Window {
     /// * size - New size, in pixels
     pub fn set_size(&mut self, size: &Vector2u) -> () {
         unsafe {
-            ffi::sfWindow_setSize(self.window, *size)
+            ffi::sfWindow_setSize(self.raw_mut(), *size)
         }
     }
 
@@ -357,7 +351,7 @@ impl Window {
     /// Return the position of the mouse cursor, relative to the given window
     pub fn get_mouse_position(&self) -> Vector2i {
         unsafe {
-            ffi::sfMouse_getPosition(self.window)
+            ffi::sfMouse_getPosition(self.raw())
         }
     }
 
@@ -371,14 +365,19 @@ impl Window {
     ///
     pub fn set_mouse_position(&mut self, position: &Vector2i) -> () {
         unsafe {
-            ffi::sfMouse_setPosition(*position, self.window)
+            ffi::sfMouse_setPosition(*position, self.raw_mut())
         }
     }
 
     #[doc(hidden)]
-    pub fn unwrap(&self) -> *mut ffi::sfWindow {
-        self.window
+    pub unsafe fn unwrap(&self) -> *mut ffi::sfWindow {
+        ::std::mem::transmute(self.raw())
     }
+}
+
+/// An iterator over all the events in the events queue (internally call poll_event)
+pub struct Events {
+    window: *mut ffi::sfWindow,
 }
 
 impl Iterator for Events {
@@ -389,15 +388,6 @@ impl Iterator for Events {
         match unsafe { ffi::sfWindow_pollEvent(self.window, &mut event) }.to_bool() {
             false     => None,
             true      => Some(event::raw::get_wrapped_event(&mut event))
-        }
-    }
-}
-
-impl Drop for Window {
-    /// Destructor for class Window. Destroy all the ressource.
-    fn drop(&mut self) {
-        unsafe {
-            ffi::sfWindow_destroy(self.window);
         }
     }
 }

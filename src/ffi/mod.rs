@@ -27,6 +27,9 @@
 pub mod sfml_types;
 pub mod foreign_ptr;
 
+pub use self::sfml_types::SfBool;
+pub use self::foreign_ptr::Foreign;
+
 macro_rules! foreign_type {
 	($($name:ident, $destroy:ident;)*) => (
 		$(

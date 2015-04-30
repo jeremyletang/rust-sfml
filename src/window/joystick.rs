@@ -33,7 +33,7 @@ use libc::{c_uint};
 use ffi::window as ffi;
 
 /// Maximum number of supported joysticks.
-pub const COUNT: u32  = 8;
+pub const COUNT: u32 = 8;
 /// Maximum number of supported buttons.
 pub const BUTTON_COUNT: u32 = 32;
 /// Maximum number of supported axes.
