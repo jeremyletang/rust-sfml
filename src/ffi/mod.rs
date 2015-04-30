@@ -47,3 +47,10 @@ macro_rules! foreign_type {
 pub mod window;
 pub mod graphics;
 pub mod audio;
+
+/// Encode a string in UTF-32 for passing into SFML.
+pub fn to_utf32(string: &str) -> Vec<u32> {
+	let mut vec: Vec<u32> = string.chars().map(|ch| ch as u32).collect();
+	vec.push(0);
+	vec
+}

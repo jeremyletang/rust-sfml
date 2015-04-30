@@ -66,8 +66,7 @@ impl Window {
                title: &str,
                style: WindowStyle,
                settings: &ContextSettings) -> Option<Window> {
-		let mut vec: Vec<u32> = title.chars().map(|ch| ch as u32).collect();
-		vec.push(0);
+		let vec = ::ffi::to_utf32(title);
         unsafe {
             Foreign::new(ffi::sfWindow_createUnicode(mode, vec.as_ptr(), style as u32, settings))
         }.map(Window)
@@ -181,8 +180,7 @@ impl Window {
     /// # Arguments
     /// * title - New title
     pub fn set_title(&mut self, title: &str) -> () {
-		let mut vec: Vec<u32> = title.chars().map(|ch| ch as u32).collect();
-		vec.push(0);
+		let vec = ::ffi::to_utf32(title);
         unsafe {
             ffi::sfWindow_setUnicodeTitle(self.raw_mut(), vec.as_ptr())
         }

@@ -31,7 +31,6 @@
 //! of the graphics module.
 
 use libc::{c_float, c_uint};
-use std::vec::Vec;
 
 use window::{ContextSettings, VideoMode, event, WindowStyle};
 use system::vector2::{Vector2f, Vector2i, Vector2u};
@@ -73,8 +72,7 @@ impl RenderWindow {
                title: &str,
                style: WindowStyle,
                settings: &ContextSettings) -> Option<RenderWindow> {
-		let mut vec: Vec<u32> = title.chars().map(|ch| ch as u32).collect();
-		vec.push(0);
+		let vec = ::ffi::to_utf32(title);
         unsafe {
             Foreign::new(ffi::sfRenderWindow_createUnicode(mode, vec.as_ptr(), style as u32, settings))
         }.map(RenderWindow)
@@ -218,8 +216,7 @@ impl RenderWindow {
     /// # Arguments
     /// * title - New title
     pub fn set_title(&mut self, title: &str) -> () {
-		let mut vec: Vec<u32> = title.chars().map(|ch| ch as u32).collect();
-		vec.push(0);
+		let vec = ::ffi::to_utf32(title);
         unsafe {
 			ffi::sfRenderWindow_setUnicodeTitle(self.raw_mut(), vec.as_ptr());
         }

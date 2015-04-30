@@ -28,9 +28,6 @@
 //! display some text with custom style and color on a render target.
 
 use std::mem;
-use std::vec::Vec;
-use std::ffi::{CString, CStr};
-use std::str;
 use libc::{c_float, c_uint, size_t};
 
 use traits::Drawable;
@@ -38,6 +35,7 @@ use graphics::{RenderTarget, Font, FloatRect,
                Color, Transform, RenderStates, TextStyle};
 use system::vector2::Vector2f;
 
+use ffi::Foreign;
 use ffi::graphics as ffi;
 
 /// Graphical text
@@ -45,8 +43,7 @@ use ffi::graphics as ffi;
 /// Text is a drawable class that allows to easily
 /// display some text with custom style and color on a render target.
 pub struct Text<'s> {
-    text: *mut ffi::sfText,
-    string_length: u32,
+    text: Foreign<ffi::sfText>,
     font: Option<&'s Font>
 }
 
@@ -55,16 +52,12 @@ impl<'s> Text<'s> {
     ///
     /// Return Some(Text) or None
     pub fn new() -> Option<Text<'s>> {
-        let text  = unsafe { ffi::sfText_create() };
-        if text.is_null() {
-            None
-        } else {
-            Some(Text {
-                    text: text,
-                    string_length: 0,
-                    font: None
-                })
-        }
+        unsafe {
+			Foreign::new(ffi::sfText_create())
+		}.map(|text| Text {
+			text: text,
+			font: None
+		})
     }
 
     /// Create a new text with initialized value
@@ -79,80 +72,57 @@ impl<'s> Text<'s> {
     /// Return Some(Text) or None
     pub fn new_init(string: &str,
                     font: &'s Font,
-                    character_size: u32) ->Option<Text<'s>> {
-        let text = unsafe { ffi::sfText_create() };
-        if text.is_null() {
-            None
-        } else {
-            let c_str = CString::new(string.as_bytes()).unwrap().as_ptr();
-            unsafe {
-                ffi::sfText_setString(text, c_str);
-                ffi::sfText_setFont(text, font.unwrap());
-                ffi::sfText_setCharacterSize(text, character_size as c_uint)
-            }
-            Some(Text {
-                    text: text,
-                    string_length: string.len() as u32,
-                    font: Some(font)
-                })
-        }
+                    character_size: u32) -> Option<Text<'s>> {
+		Text::new().map(|mut text| {
+			text.set_string(string);
+			text.set_font(font);
+			text.set_character_size(character_size);
+			text
+		})
     }
+	
+	fn raw(&self) -> &ffi::sfText { self.text.as_ref() }
+	fn raw_mut(&mut self) -> &mut ffi::sfText { self.text.as_mut() }
+	#[doc(hidden)]
+    pub unsafe fn unwrap(&self) -> &ffi::sfText { self.raw() }
 
     /// Copy an existing Text
     ///
     /// Return Some(Text) or None
     pub fn clone_opt(&self) -> Option<Text<'s>> {
-        let sp = unsafe { ffi::sfText_copy(self.text) };
-        if sp.is_null() {
-            None
-        } else {
-            Some(Text {
-                text: self.text,
-                string_length: self.string_length as u32,
-                font: self.font
-            })
-        }
+        unsafe {
+			Foreign::new(ffi::sfText_copy(self.raw()))
+		}.map(|text| Text {
+			text: text,
+			font: self.font
+		})
     }
 
-    /// Set the string of a text (from an ANSI string)
+    /// Set the string of a text.
     ///
     /// A text's string is empty by default.
     ///
     /// # Arguments
     /// * string - New string
     pub fn set_string(&mut self, string: &str) -> () {
+		let vec = ::ffi::to_utf32(string);
         unsafe {
-            let c_str = CString::new(string.as_bytes()).unwrap().as_ptr();
-            ffi::sfText_setString(self.text, c_str);
+            ffi::sfText_setUnicodeString(self.raw_mut(), vec.as_ptr());
         }
-        self.string_length = string.len() as u32
     }
 
-    /// Get the string of a text (returns an ANSI string)
+    /// Get the string of a text.
     ///
-    /// Return a string as a locale-dependant ANSI string
+    /// Return a string.
     pub fn get_string(&self) -> String {
-        unsafe {
-            let string = ffi::sfText_getString(self.text);
-            str::from_utf8(CStr::from_ptr(string).to_bytes_with_nul()).unwrap().to_string()
-        }
-    }
-
-    /// Get the string of a text (returns a unicode string)
-    ///
-    /// Return a string as UTF-32
-    pub fn get_unicode_string(&self) -> Vec<u32> {
-        let string: *const u32 = unsafe {
-            ffi::sfText_getUnicodeString(self.text)
-        };
-
-        let string_slice: &[u32] = unsafe {
-            ::std::slice::from_raw_parts(string, self.string_length as usize)
-        };
-
-        let result = string_slice.to_vec();
-
-        result
+		unsafe {
+			let pointer = ffi::sfText_getUnicodeString(self.raw());
+			let mut len = 0;
+			while *pointer.offset(len as isize) != 0 {
+				len += 1;
+			}
+			::std::slice::from_raw_parts(pointer, len)
+		}.iter().filter_map(|&ch| ::std::char::from_u32(ch)).collect()
     }
 
     /// Get the size of the characters
@@ -160,7 +130,7 @@ impl<'s> Text<'s> {
     /// Return the size of the characters
     pub fn get_character_size(&self) -> u32 {
         unsafe {
-            ffi::sfText_getCharacterSize(self.text) as u32
+            ffi::sfText_getCharacterSize(self.raw()) as u32
         }
     }
 
@@ -177,7 +147,7 @@ impl<'s> Text<'s> {
     pub fn set_font(&mut self, font: &'s Font) -> () {
         self.font = Some(font);
         unsafe {
-            ffi::sfText_setFont(self.text, font.unwrap())
+            ffi::sfText_setFont(self.raw_mut(), font.unwrap())
         }
     }
 
@@ -191,7 +161,7 @@ impl<'s> Text<'s> {
     /// * angle - New rotation, in degrees
     pub fn set_rotation(&mut self, angle: f32) -> () {
         unsafe {
-            ffi::sfText_setRotation(self.text, angle as c_float)
+            ffi::sfText_setRotation(self.raw_mut(), angle as c_float)
         }
     }
 
@@ -202,7 +172,7 @@ impl<'s> Text<'s> {
     /// Return the current rotation, in degrees
     pub fn get_rotation(&self) -> f32 {
         unsafe {
-            ffi::sfText_getRotation(self.text) as f32
+            ffi::sfText_getRotation(self.raw()) as f32
         }
     }
 
@@ -215,7 +185,7 @@ impl<'s> Text<'s> {
     /// * factors - Scale factors
     pub fn rotate(&mut self, angle: f32) -> () {
         unsafe {
-            ffi::sfText_rotate(self.text, angle as c_float)
+            ffi::sfText_rotate(self.raw_mut(), angle as c_float)
         }
     }
 
@@ -228,8 +198,9 @@ impl<'s> Text<'s> {
     /// # Arguments
     /// * style - New style
     pub fn set_style(&mut self, style: TextStyle) -> () {
+		// TODO: fix TextStyle conversion
         unsafe {
-            ffi::sfText_setStyle(self.text, style as u32)
+            ffi::sfText_setStyle(self.raw_mut(), style as u32)
         }
     }
 
@@ -241,7 +212,7 @@ impl<'s> Text<'s> {
     /// * size - The new character size, in pixels
     pub fn set_character_size(&mut self, size: u32) -> () {
         unsafe {
-            ffi::sfText_setCharacterSize(self.text, size as c_uint)
+            ffi::sfText_setCharacterSize(self.raw_mut(), size as c_uint)
         }
     }
 
@@ -249,7 +220,8 @@ impl<'s> Text<'s> {
     ///
     /// Return the current string style (see Style enum)
     pub fn get_style(&self) -> TextStyle {
-        unsafe { mem::transmute(ffi::sfText_getStyle(self.text)) }
+		// TODO: fix TextStyle conversion
+        unsafe { mem::transmute(ffi::sfText_getStyle(self.raw())) }
     }
 
     /// Get the font of a text
@@ -257,7 +229,7 @@ impl<'s> Text<'s> {
     /// The returned pointer is const, which means that you can't
     /// modify the font when you retrieve it with this function.
     pub fn get_font(&self) -> Option<&'s Font> {
-       self.font
+        self.font
     }
 
     /// Set the global color of used by a text
@@ -268,7 +240,7 @@ impl<'s> Text<'s> {
     /// * color - The new color of the text
     pub fn set_color(&mut self, color: &Color) -> () {
         unsafe {
-            ffi::sfText_setColor(self.text, *color)
+            ffi::sfText_setColor(self.raw_mut(), *color)
         }
     }
 
@@ -277,7 +249,7 @@ impl<'s> Text<'s> {
     /// Return the global color of the text
     pub fn get_color(&self) -> Color {
         unsafe {
-            ffi::sfText_getColor(self.text)
+            ffi::sfText_getColor(self.raw())
         }
     }
 
@@ -290,7 +262,7 @@ impl<'s> Text<'s> {
     /// * factors - Scale factors
     pub fn scale(&mut self, factors: &Vector2f) -> () {
         unsafe {
-            ffi::sfText_scale(self.text, *factors)
+            ffi::sfText_scale(self.raw_mut(), *factors)
         }
     }
 
@@ -304,7 +276,7 @@ impl<'s> Text<'s> {
     /// * factor_y - Scale y factor
     pub fn scale2f(&mut self, factor_x: f32, factor_y: f32) -> () {
         unsafe {
-            ffi::sfText_scale(self.text, Vector2f::new(factor_x, factor_y))
+            ffi::sfText_scale(self.raw_mut(), Vector2f::new(factor_x, factor_y))
         }
     }
 
@@ -318,7 +290,7 @@ impl<'s> Text<'s> {
     /// * scale - The new scale factors
     pub fn set_scale(&mut self, scale: &Vector2f) -> () {
         unsafe {
-            ffi::sfText_setScale(self.text, *scale)
+            ffi::sfText_setScale(self.raw_mut(), *scale)
         }
     }
 
@@ -333,7 +305,7 @@ impl<'s> Text<'s> {
     /// * scale_y - The new y scale factor
     pub fn set_scale2f(&mut self, scale_x: f32, scale_y: f32) -> () {
         unsafe {
-            ffi::sfText_setScale(self.text, Vector2f::new(scale_x, scale_y))
+            ffi::sfText_setScale(self.raw_mut(), Vector2f::new(scale_x, scale_y))
         }
     }
 
@@ -346,7 +318,7 @@ impl<'s> Text<'s> {
     /// * offset - Offset
     pub fn move_(&mut self, offset: &Vector2f) -> () {
         unsafe {
-            ffi::sfText_move(self.text, *offset)
+            ffi::sfText_move(self.raw_mut(), *offset)
         }
     }
 
@@ -360,7 +332,7 @@ impl<'s> Text<'s> {
     /// * offsetY - Offset y
     pub fn move2f(&mut self, offset_x: f32, offset_y: f32) -> () {
         unsafe {
-            ffi::sfText_move(self.text, Vector2f::new(offset_x, offset_y))
+            ffi::sfText_move(self.raw_mut(), Vector2f::new(offset_x, offset_y))
         }
     }
 
@@ -374,7 +346,7 @@ impl<'s> Text<'s> {
     /// * position - The new position
     pub fn set_position(&mut self, position: &Vector2f) -> () {
         unsafe {
-            ffi::sfText_setPosition(self.text, *position)
+            ffi::sfText_setPosition(self.raw_mut(), *position)
         }
     }
 
@@ -389,7 +361,7 @@ impl<'s> Text<'s> {
     /// * y - The new y coordinate
     pub fn set_position2f(&mut self, x: f32, y: f32) -> () {
         unsafe {
-            ffi::sfText_setPosition(self.text, Vector2f::new(x, y))
+            ffi::sfText_setPosition(self.raw_mut(), Vector2f::new(x, y))
         }
     }
 
@@ -406,7 +378,7 @@ impl<'s> Text<'s> {
     /// * origin - New origin
     pub fn set_origin(&mut self, origin: &Vector2f) -> () {
         unsafe {
-            ffi::sfText_setOrigin(self.text, *origin)
+            ffi::sfText_setOrigin(self.raw_mut(), *origin)
         }
     }
 
@@ -424,7 +396,7 @@ impl<'s> Text<'s> {
     /// * y - New y origin coordinate
     pub fn set_origin2f(&mut self, x: f32, y: f32) -> () {
         unsafe {
-            ffi::sfText_setOrigin(self.text, Vector2f::new(x, y))
+            ffi::sfText_setOrigin(self.raw_mut(), Vector2f::new(x, y))
         }
     }
 
@@ -433,7 +405,7 @@ impl<'s> Text<'s> {
     /// Return the current scale factors
     pub fn get_scale(&self) -> Vector2f {
         unsafe {
-            ffi::sfText_getScale(self.text)
+            ffi::sfText_getScale(self.raw())
         }
     }
 
@@ -442,7 +414,7 @@ impl<'s> Text<'s> {
     /// Return the current origin
     pub fn get_origin(&self) -> Vector2f {
         unsafe {
-            ffi::sfText_getOrigin(self.text)
+            ffi::sfText_getOrigin(self.raw())
         }
     }
 
@@ -461,7 +433,7 @@ impl<'s> Text<'s> {
     /// Return the position of the character
     pub fn find_character_pos(&self, index: u64) -> Vector2f {
         unsafe {
-            ffi::sfText_findCharacterPos(self.text, index as size_t)
+            ffi::sfText_findCharacterPos(self.raw(), index as size_t)
         }
     }
 
@@ -470,7 +442,7 @@ impl<'s> Text<'s> {
     /// Return the current position
     pub fn get_position(&self) -> Vector2f {
         unsafe {
-            ffi::sfText_getPosition(self.text)
+            ffi::sfText_getPosition(self.raw())
         }
     }
 
@@ -485,7 +457,7 @@ impl<'s> Text<'s> {
     /// Return the local bounding rectangle of the entity
     pub fn get_local_bounds(&self) -> FloatRect {
         unsafe {
-            ffi::sfText_getLocalBounds(self.text)
+            ffi::sfText_getLocalBounds(self.raw())
         }
     }
 
@@ -500,18 +472,7 @@ impl<'s> Text<'s> {
     /// Return the global bounding rectangle of the entity
     pub fn get_global_bounds(&self) -> FloatRect {
         unsafe {
-            ffi::sfText_getGlobalBounds(self.text)
-        }
-    }
-
-    /// Set the string of a text (from a unicode string)
-    ///
-    /// # Arguments
-    /// * string - The new string
-    pub fn set_unicode_string(&mut self, string: Vec<u32>) -> () {
-        unsafe {
-            self.string_length = string.len() as u32;
-            ffi::sfText_setUnicodeString(self.text, string.as_ptr())
+            ffi::sfText_getGlobalBounds(self.raw())
         }
     }
 
@@ -521,7 +482,7 @@ impl<'s> Text<'s> {
     /// of the object
     pub fn get_transform(&self) -> Transform {
         unsafe {
-            ffi::sfText_getTransform(self.text)
+            ffi::sfText_getTransform(self.raw())
         }
     }
 
@@ -530,29 +491,14 @@ impl<'s> Text<'s> {
     /// Return the inverse of the combined transformations applied to the object
     pub fn get_inverse_transform(&self) -> Transform {
         unsafe {
-            ffi::sfText_getInverseTransform(self.text)
+            ffi::sfText_getInverseTransform(self.raw())
         }
-    }
-
-	#[doc(hidden)]
-    pub unsafe fn unwrap(&self) -> &ffi::sfText {
-        &*self.text
     }
 }
 
 impl<'s> Clone for Text<'s> {
-    /// Return a new Text or panic! if there is not enough memory
     fn clone(&self) -> Text<'s> {
-        let sp = unsafe { ffi::sfText_copy(self.text) };
-        if sp.is_null() {
-            panic!("Not enough memory to clone Text")
-        } else {
-            Text {
-                text: self.text,
-                string_length: self.string_length,
-                font: self.font.clone()
-            }
-        }
+		self.clone_opt().expect("Failed to clone Text")
     }
 }
 
@@ -561,14 +507,5 @@ impl<'s> Drawable for Text<'s> {
                                 render_target: &mut RT,
                                 render_states: &RenderStates) -> () {
         render_target.draw_text_rs(self, render_states)
-    }
-}
-
-impl<'s> Drop for Text<'s> {
-    /// Destructor for class Text. Destroy all the ressource.
-    fn drop(&mut self) {
-        unsafe {
-            ffi::sfText_destroy(self.text);
-        }
     }
 }
