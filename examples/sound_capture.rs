@@ -2,11 +2,10 @@
 
 extern crate sfml;
 
-use std::rc::Rc;
 use std::cell::RefCell;
 use std::io::BufRead;
 
-use sfml::audio::{rc, SoundBufferRecorder, Playing};
+use sfml::audio::{SoundBufferRecorder, Sound, Status};
 use sfml::system::{sleep, Time};
 
 fn main() {
@@ -22,7 +21,7 @@ fn main() {
     let mut line = String::new();
     reader.read_line(&mut line).unwrap();
     unsafe { line.as_mut_vec().pop(); }
-    let sample_rate: u32 = match line.parse() {
+    let sample_rate: u32 = match line.trim().parse() {
         Ok(value)     => value,
         Err(e)        => panic!("Error, input is not valid: {}", e)
     };
@@ -45,15 +44,15 @@ fn main() {
 
     // Get the buffer containing the captured data
     let buffer = match recorder.get_buffer() {
-        Some(buf)       => Rc::new(RefCell::new(buf)),
+        Some(buf)       => buf,
         None            => panic!("Error when retreiving buffer.")
     };
 
     // Display captured sound informations
     println!("Sound informations :");
-    println!(" {} seconds", (*buffer).borrow().get_duration().as_seconds());
-    println!(" {} samples / sec", (*buffer).borrow().get_sample_rate());
-    println!(" {} channels", (*buffer).borrow().get_channel_count());
+    println!(" {} seconds", buffer.get_duration().as_seconds());
+    println!(" {} samples / sec", buffer.get_sample_rate());
+    println!(" {} channels", buffer.get_channel_count());
 
 
     // Choose what to do with the recorded sound data
@@ -68,10 +67,10 @@ fn main() {
         reader.read_line(&mut filename).unwrap();
 
         // Save the buffer
-        (*buffer).borrow().save_to_file(filename.trim());
+        buffer.save_to_file(filename.trim());
     }
     else {
-        let mut sound: rc::Sound = match rc::Sound::new_with_buffer(buffer.clone()) {
+        let mut sound: Sound = match Sound::new_with_buffer(&buffer) {
             Some(sound)     => sound,
             None            => panic!("Error cannot create Sound")
         };
@@ -80,7 +79,7 @@ fn main() {
 
         loop {
             match sound.get_status() {
-                Playing     => {
+                Status::Playing     => {
                 // Display the playing position
                 println!("\rPlaying...   {}", sound.get_playing_offset().as_seconds());
                 // Leave some CPU time for other processes

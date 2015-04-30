@@ -2,10 +2,8 @@
 
 extern crate sfml;
 
-use sfml::graphics::{RenderWindow, Color, Shape, RenderTarget};
-use sfml::window::{VideoMode, ContextSettings, event, Close};
-use sfml::window::keyboard::Key;
-use sfml::traits::ShapeImpl;
+use sfml::graphics::{RenderWindow, Color, Shape, RenderTarget, ShapeImpl};
+use sfml::window::{VideoMode, ContextSettings, Event, WindowStyle, Key};
 use sfml::system::Vector2f;
 
 #[derive(Clone, Copy)]
@@ -29,7 +27,7 @@ impl ShapeImpl for CustomShape {
 fn main() {
     // Create the window of the application
     let setting: ContextSettings = ContextSettings::default();
-    let mut window: RenderWindow = match RenderWindow::new(VideoMode::new_init(800, 600, 32), "SFML Shape Example", Close, &setting) {
+    let mut window: RenderWindow = match RenderWindow::new(VideoMode::new_init(800, 600, 32), "SFML Shape Example", WindowStyle::Close, &setting) {
         Some(window) => window,
         None => panic!("Cannot create a new Render Window.")
     };
@@ -43,8 +41,8 @@ fn main() {
     while window.is_open() {
         for event in window.events() {
             match event {
-                event::Closed => window.close(),
-                event::KeyPressed{code, ..} => match code {
+                Event::Closed => window.close(),
+                Event::KeyPressed{code, ..} => match code {
                     Key::Escape => {
                         window.close();
                         break;

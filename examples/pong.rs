@@ -4,9 +4,8 @@ extern crate sfml;
 extern crate rand;
 
 use sfml::graphics::{RenderWindow, Color, Font, Text, RectangleShape, CircleShape,
-                      RenderTarget};
-use sfml::window::{VideoMode, ContextSettings, event, Close};
-use sfml::window::keyboard::{self, Key};
+                      RenderTarget, Transformable};
+use sfml::window::{VideoMode, ContextSettings, Event, WindowStyle, Key};
 use sfml::system::{Vector2f, Clock, Time};
 use sfml::audio::{SoundBuffer, Sound};
 
@@ -23,7 +22,7 @@ fn main() {
     let mut window: RenderWindow =
         match RenderWindow::new(VideoMode::new_init(game_width, game_height, 32),
                                 "SFML Pong",
-                                Close,
+                                WindowStyle::Close,
                                 &setting) {
             Some(window) => window,
             None => panic!("Cannot create a new Render Window.")
@@ -48,7 +47,7 @@ fn main() {
         Some(paddle)    => paddle,
         None            => panic!("Error, cannot create paddle")
     };
-    left_paddle.set_size(&(paddle_size - 3f32));
+    left_paddle.set_size(&(paddle_size - Vector2f::new(3., 3.)));
     left_paddle.set_outline_thickness(3.);
     left_paddle.set_outline_color(&Color::black());
     left_paddle.set_fill_color(&Color::new_rgb(100, 100, 200));
@@ -59,7 +58,7 @@ fn main() {
         Some(paddle)    => paddle,
         None            => panic!("Error, cannot create paddle")
     };
-    right_paddle.set_size(&(paddle_size - 3f32));
+    right_paddle.set_size(&(paddle_size - Vector2f::new(3., 3.)));
     right_paddle.set_outline_thickness(3.);
     right_paddle.set_outline_color(&Color::black());
     right_paddle.set_fill_color(&Color::new_rgb(200, 100, 100));
@@ -107,8 +106,8 @@ fn main() {
     while window.is_open() {
         for event in window.events() {
             match event {
-                event::Closed => window.close(),
-                event::KeyPressed{code, ..} => match code {
+                Event::Closed => window.close(),
+                Event::KeyPressed{code, ..} => match code {
                     Key::Escape => {
                         window.close();
                         break;
@@ -134,11 +133,11 @@ fn main() {
             let delta_time = clock.restart().as_seconds();
 
             // Move the player's paddle
-            if keyboard::is_key_pressed(Key::Up) &&
+            if Key::Up.is_pressed() &&
                (left_paddle.get_position().y - paddle_size.y / 2. > 5.) {
                 left_paddle.move2f(0., -paddle_speed * delta_time);
             }
-            if keyboard::is_key_pressed(Key::Down) &&
+            if Key::Down.is_pressed() &&
                (left_paddle.get_position().y + paddle_size.y / 2. < game_height as f32 - 5.) {
                 left_paddle.move2f(0., paddle_speed * delta_time);
             }

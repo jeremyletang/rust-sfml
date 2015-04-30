@@ -2,25 +2,23 @@
 
 extern crate sfml;
 
-use std::rc::Rc;
-use std::cell::RefCell;
-use sfml::audio::{SoundBuffer, rc, Music, Playing};
+use sfml::audio::{SoundBuffer, Sound, Music, Status};
 use sfml::system::{sleep, Time};
 
 /* Play a Sound */
 fn play_sound() {
     let buffer = match SoundBuffer::new("resources/canary.wav") {
-        Some(buffer)    => Rc::new(RefCell::new(buffer)),
+        Some(buffer)    => buffer,
         None            => panic!("Error, cannot load sound buffer!")
     };
 
     // Display sound informations
     println!("canary.wav :");
-    println!(" {} seconds", (*buffer).borrow().get_duration().as_seconds());
-    println!(" {} samples / sec", (*buffer).borrow().get_sample_rate());
-    println!(" {} channels", (*buffer).borrow().get_channel_count());
+    println!(" {} seconds", buffer.get_duration().as_seconds());
+    println!(" {} samples / sec", buffer.get_sample_rate());
+    println!(" {} channels", buffer.get_channel_count());
 
-    let mut sound: rc::Sound = match rc::Sound::new_with_buffer(buffer.clone()) {
+    let mut sound = match Sound::new_with_buffer(&buffer) {
         Some(sound)     => sound,
         None            => panic!("Error cannot create Sound")
     };
@@ -29,7 +27,7 @@ fn play_sound() {
 
     loop {
         match sound.get_status() {
-            Playing     => {
+            Status::Playing     => {
                 // Leave some CPU time for other processes
                 sleep(Time::with_milliseconds(100));
                 // Display the playing position
@@ -58,7 +56,7 @@ fn play_music() {
 
     loop {
         match music.get_status() {
-            Playing     => {
+            Status::Playing     => {
                 // Leave some CPU time for other processes
                 sleep(Time::with_milliseconds(100));
                 // Display the playing position
