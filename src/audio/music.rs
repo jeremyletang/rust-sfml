@@ -28,7 +28,6 @@
 //! Musics are sounds that are streamed rather than completely loaded in memory.
 
 use libc::{c_float, size_t};
-use std::mem;
 use std::ffi::CString;
 
 use audio::Status;
@@ -176,7 +175,7 @@ impl Music {
     ///
     /// Return current status
     pub fn get_status(&self) -> Status {
-        unsafe { mem::transmute(ffi::sfMusic_getStatus(self.raw()))}
+        unsafe { ffi::sfMusic_getStatus(self.raw()) }
     }
 
     /// Get the current playing position of a music

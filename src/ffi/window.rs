@@ -24,7 +24,7 @@
 
 use libc::{c_int, c_uint, c_float, c_char, size_t};
 use system::{Vector2i, Vector2u};
-use window::ContextSettings;
+use window::{ContextSettings, VideoMode};
 use ffi::sfml_types::SfBool;
 
 foreign_type! {
@@ -39,18 +39,10 @@ pub struct sfJoystickIdentification {
 	product_id: c_uint
 }
 
-#[repr(C)]
-#[derive(Clone)]
-pub struct sfVideoMode {
-	pub width:          c_uint,
-	pub height:         c_uint,
-	pub bits_per_pixel: c_uint
-}
-
 #[cfg_attr(any(target_os="macos", target_os="linux", target_os="windows"), link(name="csfml-window"))]
 extern "C" {
-	pub fn sfWindow_create(mode: sfVideoMode, title: *const c_char, style: c_uint, settings: *const ContextSettings) -> *mut sfWindow;
-	pub fn sfWindow_createUnicode(mode: sfVideoMode, title: *const u32, style: c_uint, setting: *const ContextSettings) -> *mut sfWindow;
+	pub fn sfWindow_create(mode: VideoMode, title: *const c_char, style: c_uint, settings: *const ContextSettings) -> *mut sfWindow;
+	pub fn sfWindow_createUnicode(mode: VideoMode, title: *const u32, style: c_uint, setting: *const ContextSettings) -> *mut sfWindow;
 	//fn sfWindow_createFromHandle(handle: sfWindowHandle, settings: *mut sfContextSettings) -> *mut sfWindow;
 	pub fn sfWindow_close(window: *mut sfWindow) -> ();
 	pub fn sfWindow_destroy(window: *mut sfWindow) -> ();
@@ -95,7 +87,7 @@ extern "C" {
 
 	pub fn sfMouse_isButtonPressed(button: c_uint) -> SfBool;
 
-	pub fn sfVideoMode_getDesktopMode() -> sfVideoMode;
-	pub fn sfVideoMode_getFullscreenModes(count: *mut size_t) -> *const sfVideoMode;
-	pub fn sfVideoMode_isValid(mode: sfVideoMode) -> SfBool;
+	pub fn sfVideoMode_getDesktopMode() -> VideoMode;
+	pub fn sfVideoMode_getFullscreenModes(count: *mut size_t) -> *const VideoMode;
+	pub fn sfVideoMode_isValid(mode: VideoMode) -> SfBool;
 }

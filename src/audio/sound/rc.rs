@@ -27,7 +27,6 @@
 //! Regular sound that can be played in the audio environment.
 
 use libc::c_float;
-use std::mem;
 use std::rc::Rc;
 use std::cell::RefCell;
 
@@ -150,7 +149,7 @@ impl Sound {
     ///
     /// Return current status
     pub fn get_status(&self) -> Status {
-        unsafe { mem::transmute(ffi::sfSound_getStatus(self.sound)) }
+        unsafe { ffi::sfSound_getStatus(self.sound) }
     }
 
     /// Get the current playing position of a sound

@@ -26,9 +26,9 @@
 
 use libc::{c_float, c_char, c_uint, c_int, c_uchar, size_t, c_void};
 use ffi::sfml_types::SfBool;
-use ffi::window::{sfVideoMode, sfWindow};
+use ffi::window::sfWindow;
 use system::{Vector2f, Vector2i, Vector2u, Vector3f};
-use window::ContextSettings;
+use window::{ContextSettings, VideoMode};
 use graphics::{BlendMode, FloatRect, Glyph, IntRect, Transform, Color, Vertex, PrimitiveType};
 
 foreign_type! {
@@ -63,8 +63,8 @@ pub struct sfRenderStates {
 
 #[cfg_attr(any(target_os="macos", target_os="linux", target_os="windows"), link(name="csfml-graphics"))]
 extern "C" {
-    pub fn sfRenderWindow_create(mode: sfVideoMode, title: *const c_char, style: c_uint, settings: *const ContextSettings) -> *mut sfRenderWindow;
-    pub fn sfRenderWindow_createUnicode(mode: sfVideoMode, title: *const u32, style: c_uint, settings: *const ContextSettings) -> *mut sfRenderWindow;
+    pub fn sfRenderWindow_create(mode: VideoMode, title: *const c_char, style: c_uint, settings: *const ContextSettings) -> *mut sfRenderWindow;
+    pub fn sfRenderWindow_createUnicode(mode: VideoMode, title: *const u32, style: c_uint, settings: *const ContextSettings) -> *mut sfRenderWindow;
     //fn sfRenderWindow_createFromHandle(handle: sfWindowHandle, settings: *mut sfContextSettings) -> *mut sfRenderWindow;
     pub fn sfRenderWindow_destroy(renderWindow: *mut sfRenderWindow) -> ();
     pub fn sfRenderWindow_close(renderWindow: *mut sfRenderWindow) -> ();

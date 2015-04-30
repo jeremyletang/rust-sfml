@@ -27,12 +27,13 @@
 //! A video mode is defined by a width and a height (in pixels) and a depth
 //! (in bits per pixel). Video modes are used to setup windows at creation time.
 
-use libc::{c_uint, size_t};
+use libc::size_t;
 use ffi::window as ffi;
 
 /// VideoMode defines a video mode (width, height, bpp, frequency)
 ///
 /// Provides functions for getting modes supported by the display device
+#[repr(C)]
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
 pub struct VideoMode {
     /// Video mode width, in pixels.
@@ -76,14 +77,14 @@ impl VideoMode {
     ///
     /// return true if the video mode is valid for fullscreen mode
     pub fn is_valid(&self) -> bool {
-        unsafe { ffi::sfVideoMode_isValid(self.unwrap()) }.to_bool()
+        unsafe { ffi::sfVideoMode_isValid(*self) }.to_bool()
     }
 
     /// Static Method, get the current desktop video mode
     ///
     /// return the urrent desktop video mode
     pub fn get_desktop_mode() -> VideoMode {
-		VideoMode::wrap(&unsafe { ffi::sfVideoMode_getDesktopMode() })
+		unsafe { ffi::sfVideoMode_getDesktopMode() }
     }
 
     /// Static Method, retrieve all the video modes supported in fullscreen mode
@@ -108,24 +109,7 @@ impl VideoMode {
 			let table_slice = unsafe {
 				::std::slice::from_raw_parts(table, size as usize)
 			};
-			Some(table_slice.iter().map(VideoMode::wrap).collect())
-		}
-	}
-
-	/// Construct an FFI structure from this VideoMode.
-	pub unsafe fn unwrap(&self) -> ffi::sfVideoMode {
-		ffi::sfVideoMode {
-			width: self.width as c_uint,
-			height: self.height as c_uint,
-			bits_per_pixel: self.bits_per_pixel as c_uint
-		}
-	}
-
-	fn wrap(mode: &ffi::sfVideoMode) -> VideoMode {
-		VideoMode {
-			width: mode.width as u32,
-			height: mode.height as u32,
-			bits_per_pixel: mode.bits_per_pixel as u32
+			Some(table_slice.to_vec())
 		}
 	}
 }
