@@ -48,17 +48,15 @@ pub struct Shape<'s> {
 
 #[doc(hidden)]
 extern fn get_point_count_callback(obj: *mut c_void) -> u32 {
-    let shape = unsafe { mem::transmute::<*mut c_void, Box<Box<WrapObj>>>(obj) };
+    let shape = unsafe { mem::transmute::<*mut c_void, &Box<WrapObj>>(obj) };
     let ret = shape.shape_impl.get_point_count();
-    unsafe { mem::forget(shape) };
     ret
 }
 
 #[doc(hidden)]
 extern fn get_point_callback(point: u32, obj: *mut c_void) -> Vector2f {
-    let shape = unsafe { mem::transmute::<*mut c_void, Box<Box<WrapObj>>>(obj) };
+    let shape = unsafe { mem::transmute::<*mut c_void, &Box<WrapObj>>(obj) };
     let ret = shape.shape_impl.get_point(point);
-    unsafe { mem::forget(shape) };
     ret
 }
 

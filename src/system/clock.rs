@@ -56,6 +56,28 @@ fn now() -> Time {
     unsafe { platform::now() }
 }
 
+// These implementations are derived from the original SFML implementations.
+
+#[cfg(not(target_os = "macos"))]
+#[cfg(not(target_os = "windows"))]
+mod platform {
+    use system::Time;
+    use libc::c_int;
+    use libc::types::os::common::posix01::timespec;
+    use libc::consts::os::posix01::CLOCK_MONOTONIC;
+
+    extern "C" {
+        fn clock_gettime(clk_id: c_int, tp: *mut timespec) -> c_int;
+    }
+
+    pub unsafe fn now() -> Time {
+        let mut time = timespec { tv_sec: 0, tv_nsec: 0 };
+        clock_gettime(CLOCK_MONOTONIC, &mut time);
+        let us = time.tv_sec as i64 * 1_000_000 + time.tv_nsec as i64 / 1_000;
+        Time::with_microseconds(us)
+    }
+}
+
 #[cfg(target_os = "macos")]
 mod platform {
     use system::Time;
@@ -69,21 +91,6 @@ mod platform {
             mach_timebase_info(&frequency);
         Uint64 nanoseconds = mach_absolute_time() * frequency.numer / frequency.denom;
         return sf::microseconds(nanoseconds / 1000);
-        */
-    }
-}
-
-#[cfg(target_os = "unix")]
-mod platform {
-    use system::Time;
-    
-    pub unsafe fn now() -> Time {
-        unimplemented!()
-        // POSIX implementation
-        /*
-        timespec time;
-        clock_gettime(CLOCK_MONOTONIC, &time);
-        return sf::microseconds(static_cast<Uint64>(time.tv_sec) * 1000000 + time.tv_nsec / 1000);
         */
     }
 }
@@ -110,7 +117,7 @@ mod platform {
 
         // Get the frequency of the performance counter
         // (it is constant across the program lifetime)
-        // NB: a static mut is being accesse here
+        // NB: a static mut is being accessed here
         let frequency = match FREQUENCY {
             Some(value) => value,
             None => {
@@ -128,6 +135,6 @@ mod platform {
         SetThreadAffinityMask(thread, previous_mask);
 
         // Return the current time as microseconds
-        return Time::with_microseconds(1_000_000 * time / frequency);
+        Time::with_microseconds(1_000_000 * time / frequency)
     }
 }
