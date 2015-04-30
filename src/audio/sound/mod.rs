@@ -34,16 +34,16 @@ use system::Time;
 use system::vector3::Vector3f;
 use traits::Wrappable;
 
-use ffi::sfml_types::SfBool;
+use ffi::{SfBool, Foreign};
 use ffi::audio as ffi;
 
-pub mod rc;
+//pub mod rc;
 
 /// Play sounds.
 ///
 /// Regular sound that can be played in the audio environment.
 pub struct Sound<'s> {
-    sound: *mut ffi::sfSound,
+    sound: Foreign<ffi::sfSound>,
     buffer: Option<&'s SoundBuffer>
 }
 
@@ -52,66 +52,48 @@ impl<'s> Sound<'s> {
     ///
     /// Return Some(Sound) or None
     pub fn new() -> Option<Sound<'s>> {
-        let s = unsafe {ffi::sfSound_create()};
-        if s.is_null() {
-            None
-        }
-        else {
-            Some(Sound {
-                sound: s,
-                buffer: None
-            })
-        }
+        unsafe {
+			Foreign::new(ffi::sfSound_create())
+		}.map(|s| Sound {
+			sound: s,
+			buffer: None
+		})
     }
 
     /// Create a new Sound
     ///
     /// Return Some(Sound) or None
     pub fn new_with_buffer(buffer: &'s SoundBuffer) -> Option<Sound<'s>> {
-        let s = unsafe {ffi::sfSound_create()};
-        if s.is_null() {
-            None
-        }
-        else {
-            unsafe {
-                ffi::sfSound_setBuffer(s, buffer.unwrap());
-            }
-            Some(Sound {
-                sound: s,
-                buffer: Some(buffer)
-            })
-        }
+		Sound::new().map(|mut sound| { sound.set_buffer(buffer); sound })
     }
 
     /// Create a new sound by copying an existing one
     ///
     /// Return Some(Sound) or None
-    pub fn clone(&self) -> Option<Sound<'s>> {
-        let s = unsafe {ffi::sfSound_copy(self.sound)};
-        if s.is_null() {
-            None
-        }
-        else {
-            let buf = self.get_buffer();
-            Some(Sound {
-                sound: s,
-                buffer: buf
-            })
-        }
+    pub fn clone_opt(&self) -> Option<Sound<'s>> {
+        unsafe {
+			Foreign::new(ffi::sfSound_copy(self.raw()))
+		}.map(|s| Sound {
+			sound: s,
+			buffer: self.get_buffer()
+		})
     }
+
+	fn raw(&self) -> &ffi::sfSound { self.sound.as_ref() }
+	fn raw_mut(&mut self) -> &mut ffi::sfSound { self.sound.as_mut() }
 
     /// Tell whether or not a sound is in loop mode
     ///
     /// Return true if the sound is looping, false otherwise
     pub fn set_loop(&mut self, lloop: bool) -> () {
-        unsafe { ffi::sfSound_setLoop(self.sound, SfBool::from_bool(lloop)) }
+        unsafe { ffi::sfSound_setLoop(self.raw_mut(), SfBool::from_bool(lloop)) }
     }
 
     /// Tell whether or not a sound is in loop mode
     ///
     /// Return true if the sound is looping, false otherwise
     pub fn get_loop(&self) -> bool {
-        unsafe { ffi::sfSound_getLoop(self.sound) }.to_bool()
+        unsafe { ffi::sfSound_getLoop(self.raw()) }.to_bool()
     }
 
     /// Start or resume playing a sound
@@ -122,7 +104,7 @@ impl<'s> Sound<'s> {
     /// This function uses its own thread so that it doesn't block
     /// the rest of the program while the sound is played.
     pub fn play(&mut self) -> () {
-        unsafe {ffi::sfSound_play(self.sound)}
+        unsafe {ffi::sfSound_play(self.raw_mut())}
     }
 
     /// Pause a sound
@@ -130,7 +112,7 @@ impl<'s> Sound<'s> {
     /// This function pauses the sound if it was playing,
     /// otherwise (sound already paused or stopped) it has no effect.
     pub fn pause(&mut self) -> () {
-        unsafe {ffi::sfSound_pause(self.sound)}
+        unsafe {ffi::sfSound_pause(self.raw_mut())}
     }
 
     /// Stop playing a sound
@@ -139,21 +121,21 @@ impl<'s> Sound<'s> {
     /// and does nothing if it was already stopped.
     /// It also resets the playing position (unlike pause).
     pub fn stop(&mut self) -> () {
-        unsafe {ffi::sfSound_stop(self.sound)}
+        unsafe {ffi::sfSound_stop(self.raw_mut())}
     }
 
     /// Get the current status of a sound (stopped, paused, playing)
     ///
     /// Return current status
     pub fn get_status(&self) -> Status {
-        unsafe { mem::transmute(ffi::sfSound_getStatus(self.sound)) }
+        unsafe { mem::transmute(ffi::sfSound_getStatus(self.raw())) }
     }
 
     /// Get the current playing position of a sound
     ///
     /// Return the current playing position
     pub fn get_playing_offset(&self) -> Time {
-        unsafe {ffi::sfSound_getPlayingOffset(self.sound)}
+        unsafe {ffi::sfSound_getPlayingOffset(self.raw())}
     }
 
     /// Set the pitch of a sound
@@ -167,7 +149,7 @@ impl<'s> Sound<'s> {
     /// # Arguments
     /// * pitch - new pitch to apply to the sound
     pub fn set_pitch(&mut self, pitch: f32) -> () {
-        unsafe {ffi::sfSound_setPitch(self.sound, pitch as c_float)}
+        unsafe {ffi::sfSound_setPitch(self.raw_mut(), pitch as c_float)}
     }
 
     /// Set the volume of a sound
@@ -178,7 +160,7 @@ impl<'s> Sound<'s> {
     /// # Arguments
     /// * volume - Volume of the sound
     pub fn set_volume(&mut self, volume: f32) -> () {
-        unsafe {ffi::sfSound_setVolume(self.sound, volume as c_float)}
+        unsafe {ffi::sfSound_setVolume(self.raw_mut(), volume as c_float)}
     }
 
     /// Make a sounds's position relative to the listener or absolute
@@ -192,7 +174,7 @@ impl<'s> Sound<'s> {
     /// # Arguments
     /// * relative - true to set the position relative, false to set it absolute
     pub fn set_relative_to_listener(&mut self, relative: bool) -> () {
-        unsafe { ffi::sfSound_setRelativeToListener(self.sound, SfBool::from_bool(relative)) }
+        unsafe { ffi::sfSound_setRelativeToListener(self.raw_mut(), SfBool::from_bool(relative)) }
     }
 
     /// Set the minimum distance of a sound
@@ -207,7 +189,7 @@ impl<'s> Sound<'s> {
     /// # Arguments
     /// * distance - New minimum distance of the sound
     pub fn set_min_distance(&mut self, distance: f32) -> () {
-        unsafe {ffi::sfSound_setMinDistance(self.sound, distance as c_float)}
+        unsafe {ffi::sfSound_setMinDistance(self.raw_mut(), distance as c_float)}
     }
 
     ///  Set the attenuation factor of a sound
@@ -224,7 +206,7 @@ impl<'s> Sound<'s> {
     /// # Arguments
     /// * attenuation - New attenuation factor of the sound
     pub fn set_attenuation(&mut self, attenuation: f32) -> () {
-        unsafe {ffi::sfSound_setAttenuation(self.sound, attenuation as c_float)}
+        unsafe {ffi::sfSound_setAttenuation(self.raw_mut(), attenuation as c_float)}
     }
 
     /// Change the current playing position of a sound
@@ -236,7 +218,7 @@ impl<'s> Sound<'s> {
     /// * timeOffset - New playing position
     pub fn set_playing_offset(&mut self, time_offset: Time) -> () {
         unsafe {
-            ffi::sfSound_setPlayingOffset(self.sound, time_offset)
+            ffi::sfSound_setPlayingOffset(self.raw_mut(), time_offset)
         }
     }
 
@@ -245,7 +227,7 @@ impl<'s> Sound<'s> {
     /// Return the pitch of the sound
     pub fn get_pitch(&self) -> f32 {
         unsafe {
-            ffi::sfSound_getPitch(self.sound) as f32
+            ffi::sfSound_getPitch(self.raw()) as f32
         }
     }
 
@@ -254,7 +236,7 @@ impl<'s> Sound<'s> {
     /// Return the volume of the sound, in the range [0, 100]
     pub fn get_volume(&self) -> f32 {
         unsafe {
-            ffi::sfSound_getVolume(self.sound) as f32
+            ffi::sfSound_getVolume(self.raw()) as f32
         }
     }
 
@@ -262,7 +244,7 @@ impl<'s> Sound<'s> {
     ///
     /// Return true if the position is relative, false if it's absolute
     pub fn is_relative_to_listener(&self) -> bool {
-        unsafe { ffi::sfSound_isRelativeToListener(self.sound) }.to_bool()
+        unsafe { ffi::sfSound_isRelativeToListener(self.raw()) }.to_bool()
     }
 
     /// Get the minimum distance of a sound
@@ -270,7 +252,7 @@ impl<'s> Sound<'s> {
     /// Return the minimum distance of the sound
     pub fn get_min_distance(&self) -> f32 {
         unsafe {
-           ffi::sfSound_getMinDistance(self.sound) as f32
+           ffi::sfSound_getMinDistance(self.raw()) as f32
         }
     }
 
@@ -279,7 +261,7 @@ impl<'s> Sound<'s> {
     /// Return the attenuation factor of the sound
     pub fn get_attenuation(&self) -> f32 {
         unsafe {
-            ffi::sfSound_getAttenuation(self.sound) as f32
+            ffi::sfSound_getAttenuation(self.raw()) as f32
         }
     }
 
@@ -294,7 +276,7 @@ impl<'s> Sound<'s> {
     pub fn set_buffer(&mut self, buffer: &'s SoundBuffer) -> () {
         self.buffer = Some(buffer);
         unsafe {
-            ffi::sfSound_setBuffer(self.sound, buffer.unwrap())
+            ffi::sfSound_setBuffer(self.raw_mut(), buffer.unwrap())
         }
     }
 
@@ -310,7 +292,7 @@ impl<'s> Sound<'s> {
     /// Return the position of the sound in the world
     pub fn get_position(&self) -> Vector3f {
         unsafe {
-            ffi::sfSound_getPosition(self.sound)
+            ffi::sfSound_getPosition(self.raw())
         }
     }
 
@@ -324,7 +306,7 @@ impl<'s> Sound<'s> {
     /// * position - Position of the sound in the scene
     pub fn set_position(&mut self, position: &Vector3f) -> () {
         unsafe {
-            ffi::sfSound_setPosition(self.sound, *position)
+            ffi::sfSound_setPosition(self.raw_mut(), *position)
         }
     }
 
@@ -339,22 +321,12 @@ impl<'s> Sound<'s> {
     /// * y - Y coordinate of the position of the sound in the scene
     /// * z - Z coordinate of the position of the sound in the scene
     pub fn set_position3f(&mut self, x: f32, y: f32, z: f32) -> () {
-        unsafe {
-            ffi::sfSound_setPosition(self.sound, Vector3f::new(x, y, z))
-        }
-    }
-
-    #[doc(hidden)]
-    pub fn unwrap(&self) -> *mut ffi::sfSound {
-        self.sound
+		self.set_position(&Vector3f::new(x, y, z))
     }
 }
 
-impl<'s> Drop for Sound<'s> {
-    /// Destructor for class Sound. Destroy all the ressource.
-    fn drop(&mut self) {
-        unsafe {
-            ffi::sfSound_destroy(self.sound);
-        }
-    }
+impl<'a> Clone for Sound<'a> {
+	fn clone(&self) -> Sound<'a> {
+		self.clone_opt().expect("Failed to clone Sound")
+	}
 }

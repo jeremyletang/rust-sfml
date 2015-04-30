@@ -34,18 +34,15 @@ use std::ffi::CString;
 use audio::Status;
 use system::Time;
 use system::vector3::Vector3f;
-use traits::Wrappable;
 
-use ffi::sfml_types::SfBool;
+use ffi::{SfBool, Foreign};
 use ffi::audio as ffi;
 
 /// Play Music
 ///
 /// Streamed music played from an audio file.
 /// Musics are sounds that are streamed rather than completely loaded in memory.
-pub struct Music {
-    music: *mut ffi::sfMusic
-}
+pub struct Music(Foreign<ffi::sfMusic>);
 
 impl Music {
     /// Create a new music and load it from a file
@@ -61,17 +58,13 @@ impl Music {
     ///
     /// Return Some(Music) or None
     pub fn new_from_file(filename: &str) -> Option<Music> {
-        let c_str = CString::new(filename.as_bytes()).unwrap().as_ptr();
-        let music_tmp: *mut ffi::sfMusic = unsafe {
-            ffi::sfMusic_createFromFile(c_str)
-        };
-        if music_tmp.is_null() {
-            None
-        } else {
-            Some(Music{
-                    music: music_tmp
-                })
-        }
+        let c_str = match CString::new(filename.as_bytes()) {
+			Ok(c_str) => c_str,
+			Err(_) => return None
+		};
+        unsafe {
+            Foreign::new(ffi::sfMusic_createFromFile(c_str.as_ptr()))
+        }.map(Music)
     }
 
     /// Create a new music and load it from memory
@@ -87,15 +80,13 @@ impl Music {
     ///
     /// Return Some(Music) or None
     pub fn new_from_memory(mem: &[u8]) -> Option<Music> {
-        let music_tmp = unsafe { ffi::sfMusic_createFromMemory(&mem[0], mem.len() as size_t) };
-        if music_tmp.is_null() {
-            None
-        } else {
-            Some(Music{
-                    music: music_tmp
-                })
-        }
+        unsafe {
+			Foreign::new(ffi::sfMusic_createFromMemory(mem.as_ptr(), mem.len() as size_t))
+		}.map(Music)
     }
+
+	fn raw(&self) -> &ffi::sfMusic { self.0.as_ref() }
+	fn raw_mut(&mut self) -> &mut ffi::sfMusic { self.0.as_mut() }
 
     /// Set whether or not a music should loop after reaching the end
     ///
@@ -107,21 +98,21 @@ impl Music {
     /// # Arguments
     /// * loop - SFTRUE to play in loop, SFFALSE to play once
     pub fn set_loop(&mut self, lloop: bool) -> () {
-        unsafe { ffi::sfMusic_setLoop(self.music, SfBool::from_bool(lloop)) }
+        unsafe { ffi::sfMusic_setLoop(self.raw_mut(), SfBool::from_bool(lloop)) }
     }
 
     /// Tell whether or not a music is in loop mode
     ///
     /// Return true if the music is looping, false otherwise
     pub fn get_loop(&self) -> bool {
-        unsafe { ffi::sfMusic_getLoop(self.music) }.to_bool()
+        unsafe { ffi::sfMusic_getLoop(self.raw()) }.to_bool()
     }
 
     /// Get the total duration of a music
     ///
     /// Return Music duration
     pub fn get_duration(&self) -> Time {
-        unsafe { ffi::sfMusic_getDuration(self.music) }
+        unsafe { ffi::sfMusic_getDuration(self.raw()) }
     }
 
     /// Start or resume playing a music
@@ -133,7 +124,7 @@ impl Music {
     /// the rest of the program while the music is played.
     pub fn play(&mut self) -> () {
         unsafe {
-            ffi::sfMusic_play(self.music)
+            ffi::sfMusic_play(self.raw_mut())
         }
     }
 
@@ -143,7 +134,7 @@ impl Music {
     /// otherwise (music already paused or stopped) it has no effect.
     pub fn pause(&mut self) -> () {
         unsafe {
-            ffi::sfMusic_pause(self.music)
+            ffi::sfMusic_pause(self.raw_mut())
         }
     }
 
@@ -154,7 +145,7 @@ impl Music {
     /// It also resets the playing position (unlike pause).
     pub fn stop(&mut self) -> () {
         unsafe {
-            ffi::sfMusic_stop(self.music)
+            ffi::sfMusic_stop(self.raw_mut())
         }
     }
 
@@ -165,7 +156,7 @@ impl Music {
     /// Return the number of channels
     pub fn get_channel_count(&self) -> u32 {
         unsafe {
-            ffi::sfMusic_getChannelCount(self.music) as u32
+            ffi::sfMusic_getChannelCount(self.raw()) as u32
         }
     }
 
@@ -177,7 +168,7 @@ impl Music {
     /// Return the sample rate, in number of samples per second
     pub fn get_sample_rate(&self) -> u32 {
         unsafe {
-            ffi::sfMusic_getSampleRate(self.music) as u32
+            ffi::sfMusic_getSampleRate(self.raw()) as u32
         }
     }
 
@@ -185,14 +176,14 @@ impl Music {
     ///
     /// Return current status
     pub fn get_status(&self) -> Status {
-        unsafe { mem::transmute(ffi::sfMusic_getStatus(self.music))}
+        unsafe { mem::transmute(ffi::sfMusic_getStatus(self.raw()))}
     }
 
     /// Get the current playing position of a music
     ///
     /// Return the current playing position
     pub fn get_playing_offset(&self) -> Time {
-        unsafe { ffi::sfMusic_getPlayingOffset(self.music) }
+        unsafe { ffi::sfMusic_getPlayingOffset(self.raw()) }
     }
 
     /// Set the pitch of a music
@@ -207,7 +198,7 @@ impl Music {
     /// * pitch - new pitch to apply to the music
     pub fn set_pitch(&mut self, pitch: f32) -> () {
         unsafe {
-            ffi::sfMusic_setPitch(self.music, pitch as c_float)
+            ffi::sfMusic_setPitch(self.raw_mut(), pitch as c_float)
         }
     }
 
@@ -220,7 +211,7 @@ impl Music {
     /// * volume - Volume of the music
     pub fn set_volume(&mut self, volume: f32) -> () {
         unsafe {
-            ffi::sfMusic_setVolume(self.music, volume as c_float)
+            ffi::sfMusic_setVolume(self.raw_mut(), volume as c_float)
         }
     }
 
@@ -235,7 +226,7 @@ impl Music {
     /// # Arguments
     /// * relative - true to set the position relative, false to set it absolute
     pub fn set_relative_to_listener(&mut self, relative: bool) -> () {
-        unsafe { ffi::sfMusic_setRelativeToListener(self.music, SfBool::from_bool(relative)) }
+        unsafe { ffi::sfMusic_setRelativeToListener(self.raw_mut(), SfBool::from_bool(relative)) }
     }
 
     /// Set the minimum distance of a music
@@ -251,7 +242,7 @@ impl Music {
     /// * distance - New minimum distance of the music
     pub fn set_min_distance(&mut self, distance: f32) -> () {
         unsafe {
-            ffi::sfMusic_setMinDistance(self.music, distance as c_float)
+            ffi::sfMusic_setMinDistance(self.raw_mut(), distance as c_float)
         }
     }
 
@@ -270,7 +261,7 @@ impl Music {
     /// * attenuation - New attenuation factor of the music
     pub fn set_attenuation(&mut self, attenuation: f32) -> () {
         unsafe {
-            ffi::sfMusic_setAttenuation(self.music, attenuation as c_float)
+            ffi::sfMusic_setAttenuation(self.raw_mut(), attenuation as c_float)
         }
     }
 
@@ -283,7 +274,7 @@ impl Music {
     /// * timeOffset - New playing position
     pub fn set_playing_offset(&mut self, time_offset: Time) -> () {
         unsafe {
-            ffi::sfMusic_setPlayingOffset(self.music, time_offset)
+            ffi::sfMusic_setPlayingOffset(self.raw_mut(), time_offset)
         }
     }
 
@@ -292,7 +283,7 @@ impl Music {
     /// Return the pitch of the music
     pub fn get_pitch(&self) -> f32 {
         unsafe {
-            ffi::sfMusic_getPitch(self.music) as f32
+            ffi::sfMusic_getPitch(self.raw()) as f32
         }
     }
 
@@ -301,7 +292,7 @@ impl Music {
     /// Return the volume of the music, in the range [0, 100]
     pub fn get_volume(&self) -> f32 {
         unsafe {
-            ffi::sfMusic_getVolume(self.music) as f32
+            ffi::sfMusic_getVolume(self.raw()) as f32
         }
     }
 
@@ -309,7 +300,7 @@ impl Music {
     ///
     /// Return true if the position is relative, false if it's absolute
     pub fn is_relative_to_listener(&self) -> bool {
-        unsafe { ffi::sfMusic_isRelativeToListener(self.music) }.to_bool()
+        unsafe { ffi::sfMusic_isRelativeToListener(self.raw()) }.to_bool()
     }
 
     /// Get the minimum distance of a music
@@ -317,7 +308,7 @@ impl Music {
     /// Return the minimum distance of the music
     pub fn get_min_distance(&self) -> f32 {
         unsafe {
-           ffi::sfMusic_getMinDistance(self.music) as f32
+           ffi::sfMusic_getMinDistance(self.raw()) as f32
        }
     }
 
@@ -326,7 +317,7 @@ impl Music {
     /// Return the attenuation factor of the music
     pub fn get_attenuation(&self) -> f32 {
         unsafe {
-            ffi::sfMusic_getAttenuation(self.music) as f32
+            ffi::sfMusic_getAttenuation(self.raw()) as f32
         }
     }
 
@@ -340,7 +331,7 @@ impl Music {
     /// * position - Position of the music in the scene
     pub fn set_position(&mut self, position: &Vector3f) -> () {
         unsafe {
-            ffi::sfMusic_setPosition(self.music, *position)
+            ffi::sfMusic_setPosition(self.raw_mut(), *position)
         }
     }
 
@@ -356,7 +347,7 @@ impl Music {
     /// * z - Z coordinate of the position of the sound in the scene
     pub fn set_position3f(&mut self, x: f32, y: f32, z: f32) -> () {
         unsafe {
-            ffi::sfMusic_setPosition(self.music, Vector3f::new(x, y, z))
+            ffi::sfMusic_setPosition(self.raw_mut(), Vector3f::new(x, y, z))
         }
     }
 
@@ -365,16 +356,7 @@ impl Music {
     /// Return the position of the music in the world
     pub fn get_position(&self) -> Vector3f {
         unsafe {
-            ffi::sfMusic_getPosition(self.music)
-        }
-    }
-}
-
-impl Drop for Music {
-    /// Destructor for class Music. Destroy all the ressource.
-    fn drop(&mut self) {
-        unsafe {
-            ffi::sfMusic_destroy(self.music);
+            ffi::sfMusic_getPosition(self.raw())
         }
     }
 }

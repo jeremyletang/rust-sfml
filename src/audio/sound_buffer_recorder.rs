@@ -32,30 +32,27 @@ use libc::c_uint;
 use traits::Wrappable;
 use audio::sound_buffer::SoundBuffer;
 
+use ffi::Foreign;
 use ffi::audio as ffi;
 
 /// Store captured audio data in sound Buffer
 ///
 /// SoundBufferRecorder allows to access a recorded sound through a SoundBuffer,
 /// so that it can be played, saved to a file, etc.
-pub struct SoundBufferRecorder {
-    sound_buffer_recorder: *mut ffi::sfSoundBufferRecorder
-}
+pub struct SoundBufferRecorder(Foreign<ffi::sfSoundBufferRecorder>);
 
 impl SoundBufferRecorder {
     /// Create a new sound buffer recorder
     ///
     /// Return a new option to SoundBufferRecorder object or None if failed
     pub fn new() -> Option<SoundBufferRecorder> {
-        let buffer = unsafe { ffi::sfSoundBufferRecorder_create() };
-        if buffer.is_null() {
-            None
-        } else {
-            Some(SoundBufferRecorder{
-                    sound_buffer_recorder: buffer
-                })
-        }
+        unsafe {
+			Foreign::new(ffi::sfSoundBufferRecorder_create())
+		}.map(SoundBufferRecorder)
     }
+
+	fn raw(&self) -> &ffi::sfSoundBufferRecorder { self.0.as_ref() }
+	fn raw_mut(&mut self) -> &mut ffi::sfSoundBufferRecorder { self.0.as_mut() }
 
     /// Start the capture of a sound buffer recorder
     ///
@@ -70,14 +67,14 @@ impl SoundBufferRecorder {
     /// * ampleRate - Desired capture rate, in number of samples per second
     pub fn start(&mut self, sample_rate: u32) -> bool {
         unsafe {
-            ffi::sfSoundBufferRecorder_start(self.sound_buffer_recorder, sample_rate as c_uint)
+            ffi::sfSoundBufferRecorder_start(self.raw_mut(), sample_rate as c_uint)
         }.to_bool()
     }
 
     /// Stop the capture of a sound recorder
     pub fn stop(&mut self) -> () {
         unsafe {
-            ffi::sfSoundBufferRecorder_stop(self.sound_buffer_recorder)
+            ffi::sfSoundBufferRecorder_stop(self.raw_mut())
         }
     }
 
@@ -90,7 +87,7 @@ impl SoundBufferRecorder {
     /// Return the sample rate, in samples per second
     pub fn get_sample_rate(&self) -> u32 {
         unsafe {
-            ffi::sfSoundBufferRecorder_getSampleRate(self.sound_buffer_recorder) as u32
+            ffi::sfSoundBufferRecorder_getSampleRate(self.raw()) as u32
         }
     }
 
@@ -103,16 +100,11 @@ impl SoundBufferRecorder {
     ///
     /// Return Read-only access to the sound buffer
     pub fn get_buffer(&self) -> Option<SoundBuffer> {
-        let buff = unsafe { ffi::sfSoundBufferRecorder_getBuffer(self.sound_buffer_recorder) };
+        let buff = unsafe { ffi::sfSoundBufferRecorder_getBuffer(self.raw()) };
         if buff.is_null() {
             None
         } else {
-			let buff = unsafe { ffi::sfSoundBuffer_copy(buff) };
-			if buff.is_null() {
-				None
-			} else {
-				Some(Wrappable::wrap(buff))
-			}
+			unsafe { SoundBuffer::wrap(ffi::sfSoundBuffer_copy(buff)) }
         }
     }
 
@@ -125,15 +117,5 @@ impl SoundBufferRecorder {
     /// Return true if audio capture is supported, false otherwise
     pub fn is_available() -> bool {
         unsafe { ffi::sfSoundRecorder_isAvailable() }.to_bool()
-    }
-
-}
-
-impl Drop for SoundBufferRecorder {
-    /// Destructor for class SoundBufferRecorder. Destroy all the ressource.
-    fn drop(&mut self) {
-        unsafe {
-            ffi::sfSoundBufferRecorder_destroy(self.sound_buffer_recorder);
-        }
     }
 }

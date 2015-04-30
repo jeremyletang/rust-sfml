@@ -28,18 +28,15 @@
 
 use std::ffi::CString;
 
-use traits::Wrappable;
 use system::Time;
 
+use ffi::Foreign;
 use ffi::audio as ffi;
 
 /// Storage of audio sample
 ///
 /// A sound buffer holds the data of a sound, which is an array of audio samples.
-pub struct SoundBuffer {
-    sound_buffer: *mut ffi::sfSoundBuffer,
-    dropable: bool
-}
+pub struct SoundBuffer(Foreign<ffi::sfSoundBuffer>);
 
 impl SoundBuffer {
     /// Create a new sound buffer and load it from a file
@@ -53,33 +50,31 @@ impl SoundBuffer {
     ///
     /// Return an option to a SoundBuffer object or None.
     pub fn new(filename: &str) -> Option<SoundBuffer> {
-        let c_str = CString::new(filename.as_bytes()).unwrap().as_ptr();
-        let sound_buffer: *mut ffi::sfSoundBuffer = unsafe {
-            ffi::sfSoundBuffer_createFromFile(c_str)
-        };
-        if sound_buffer.is_null() {
-            None
-        } else {
-            Some(SoundBuffer{
-                    sound_buffer: sound_buffer,
-                    dropable: true
-                })
-        }
+        let c_str = match CString::new(filename.as_bytes()) {
+			Ok(c_str) => c_str,
+			Err(_) => return None
+		};
+        unsafe {
+            Foreign::new(ffi::sfSoundBuffer_createFromFile(c_str.as_ptr()))
+        }.map(SoundBuffer)
     }
+	
+	#[doc(hidden)]
+	pub unsafe fn wrap(ptr: *mut ffi::sfSoundBuffer) -> Option<SoundBuffer> {
+		Foreign::new(ptr).map(SoundBuffer)
+	}
+
+	fn raw(&self) -> &ffi::sfSoundBuffer { self.0.as_ref() }
+	#[doc(hidden)]
+	pub fn unwrap(&self) -> &ffi::sfSoundBuffer { self.raw() }
 
     /// Create a new sound buffer by copying an existing one
     ///
     /// Return an option to a cloned SoundBuffer object or None.
-    pub fn clone(&self) -> Option<SoundBuffer> {
-        let sound_buffer = unsafe { ffi::sfSoundBuffer_copy(self.sound_buffer) };
-        if sound_buffer.is_null() {
-            None
-        } else {
-            Some(SoundBuffer {
-                    sound_buffer: sound_buffer,
-                    dropable: true
-                })
-        }
+    pub fn clone_opt(&self) -> Option<SoundBuffer> {
+        unsafe {
+			Foreign::new(ffi::sfSoundBuffer_copy(self.raw()))
+		}.map(SoundBuffer)
     }
 
     /// Save a sound buffer to an audio file
@@ -93,8 +88,13 @@ impl SoundBuffer {
     ///
     /// Return true if saving succeeded, false if it faileds
     pub fn save_to_file(&self, filename: &str) -> bool {
-        let c_str = CString::new(filename.as_bytes()).unwrap().as_ptr();
-        unsafe { ffi::sfSoundBuffer_saveToFile(self.sound_buffer, c_str) }.to_bool()
+        let c_str = match CString::new(filename.as_bytes()) {
+			Ok(c_str) => c_str,
+			Err(_) => return false
+		};
+        unsafe {
+			ffi::sfSoundBuffer_saveToFile(self.raw(), c_str.as_ptr())
+		}.to_bool()
     }
 
     /// Get the number of samples stored in a sound buffer
@@ -105,7 +105,7 @@ impl SoundBuffer {
     /// Return the number of samples
     pub fn get_sample_count(&self) -> i64 {
         unsafe {
-            ffi::sfSoundBuffer_getSampleCount(self.sound_buffer) as i64
+            ffi::sfSoundBuffer_getSampleCount(self.raw()) as i64
         }
     }
 
@@ -117,7 +117,7 @@ impl SoundBuffer {
     /// Return the number of channels
     pub fn get_channel_count(&self) -> u32 {
         unsafe {
-            ffi::sfSoundBuffer_getChannelCount(self.sound_buffer) as u32
+            ffi::sfSoundBuffer_getChannelCount(self.raw()) as u32
         }
     }
 
@@ -125,7 +125,7 @@ impl SoundBuffer {
     ///
     /// Return the sound duration
     pub fn get_duration(&self) -> Time {
-        unsafe { ffi::sfSoundBuffer_getDuration(self.sound_buffer) }
+        unsafe { ffi::sfSoundBuffer_getDuration(self.raw()) }
     }
 
     /// Get the sample rate of a sound buffer
@@ -137,33 +137,13 @@ impl SoundBuffer {
     /// Return the sample rate (number of samples per second)
     pub fn get_sample_rate(&self) -> u32 {
         unsafe {
-            ffi::sfSoundBuffer_getSampleRate(self.sound_buffer) as u32
+            ffi::sfSoundBuffer_getSampleRate(self.raw()) as u32
         }
     }
 }
 
-impl Wrappable<*mut ffi::sfSoundBuffer> for SoundBuffer {
-    fn wrap(buffer: *mut ffi::sfSoundBuffer) -> SoundBuffer {
-        SoundBuffer {
-            sound_buffer:  buffer,
-            dropable:      false
-        }
-    }
-
-    fn unwrap(&self) -> *mut ffi::sfSoundBuffer {
-        self.sound_buffer
-    }
-
+impl Clone for SoundBuffer {
+	fn clone(&self) -> SoundBuffer {
+		self.clone_opt().expect("Failed to clone SoundBuffer")
+	}
 }
-
-impl Drop for SoundBuffer {
-    /// Destructor for class SoundBuffer. Destroy all the ressource.
-    fn drop(&mut self) {
-        if self.dropable {
-            unsafe {
-                ffi::sfSoundBuffer_destroy(self.sound_buffer);
-            }
-        }
-    }
-}
-
