@@ -27,7 +27,7 @@
 use libc::{c_float, c_uint};
 use std::ptr;
 
-use graphics::{IntRect, FloatRect, Color, Texture,
+use graphics::{IntRect, FloatRect, Color, Texture, Transformable,
                RenderTarget, Transform, RenderStates, Drawable};
 use system::vector2::Vector2f;
 
@@ -101,44 +101,6 @@ impl<'s> CircleShape<'s> {
 			ptr: ptr,
 			texture: None
 		})
-    }
-
-    /// Set the orientation of a circle shape
-    ///
-    /// This function completely overwrites the previous rotation.
-    /// See rotate to add an angle based on the previous rotation instead.
-    /// The default rotation of a circle Shape object is 0.
-    ///
-    /// # Arguments
-    /// * rotation - New rotation
-    pub fn set_rotation(&mut self, angle: f32) -> () {
-        unsafe {
-            ffi::sfCircleShape_setRotation(self.raw_mut(), angle as c_float)
-        }
-    }
-
-    /// Get the orientation of a circle shape
-    ///
-    /// The rotation is always in the range [0, 360].
-    ///
-    /// Return the current rotation, in degrees
-    pub fn get_rotation(&self) -> f32 {
-        unsafe {
-            ffi::sfCircleShape_getRotation(self.raw()) as f32
-        }
-    }
-
-    /// Rotate a circle shape
-    ///
-    /// This function adds to the current rotation of the object,
-    /// unlike set_rotation which overwrites it.
-    ///
-    /// # Arguments
-    /// * angle - Angle of rotation, in degrees
-    pub fn rotate(&mut self, angle: f32) -> () {
-        unsafe {
-            ffi::sfCircleShape_rotate(self.raw_mut(), angle as c_float)
-        }
     }
 
     /// Change the source texture of a circle shape
@@ -329,184 +291,6 @@ impl<'s> CircleShape<'s> {
         }
     }
 
-    /// Get the position of a circle shape
-    ///
-    /// Return the current position
-    pub fn get_position(&self) -> Vector2f {
-        unsafe {
-            ffi::sfCircleShape_getPosition(self.raw())
-        }
-    }
-
-    /// Get the current scale of a circle shape
-    ///
-    /// Return the current scale factors
-    pub fn get_scale(&self) -> Vector2f {
-        unsafe {
-            ffi::sfCircleShape_getScale(self.raw())
-        }
-    }
-
-    /// Get the local origin of a circle shape
-    ///
-    /// return the current origin
-    pub fn get_origin(&self) -> Vector2f {
-        unsafe {
-            ffi::sfCircleShape_getOrigin(self.raw())
-        }
-    }
-
-    /// Move a circle shape by a given offset
-    ///
-    /// This function adds to the current position of the object,
-    /// unlike sset_position which overwrites it.
-    ///
-    /// # Arguments
-    /// * offset - Offset
-    pub fn move_(&mut self, offset: &Vector2f) -> () {
-        unsafe {
-            ffi::sfCircleShape_move(self.raw_mut(), *offset)
-        }
-    }
-
-    /// Move a circle shape by a given offset
-    ///
-    /// This function adds to the current position of the object,
-    /// unlike sset_position which overwrites it.
-    ///
-    /// # Arguments
-    /// * offsetX - Offset x
-    /// * offsetY - Offset y
-    pub fn move2f(&mut self, offset_x: f32, offset_y: f32) -> () {
-        unsafe {
-            ffi::sfCircleShape_move(self.raw_mut(),
-                                    Vector2f::new(offset_x, offset_y))
-        }
-    }
-
-    /// Scale a circle shape
-    ///
-    /// This function multiplies the current scale of the object,
-    /// unlike sfCircleShape_setScale which overwrites it.
-    ///
-    /// # Arguments
-    /// * factors - Scale factors
-    pub fn scale(&mut self, factors: &Vector2f) -> () {
-        unsafe {
-            ffi::sfCircleShape_scale(self.raw_mut(), *factors)
-        }
-    }
-
-    /// Scale a circle shape
-    ///
-    /// This function multiplies the current scale of the object,
-    /// unlike sfCircleShape_setScale which overwrites it.
-    ///
-    /// # Arguments
-    /// * factor_x - Scale x factor
-    /// * factor_y - Scale y factor
-    pub fn scale2f(&mut self, factor_x: f32, factor_y: f32) -> () {
-        unsafe {
-            ffi::sfCircleShape_scale(self.raw_mut(),
-                                     Vector2f::new(factor_x, factor_y))
-        }
-    }
-
-    /// Set the position of a circle shape
-    ///
-    /// This function completely overwrites the previous position.
-    /// See move to apply an offset based on the previous position instead.
-    /// The default position of a circle Shape object is (0, 0).
-    ///
-    /// # Arguments
-    /// * position - New position
-    pub fn set_position(&mut self, position: &Vector2f) -> () {
-        unsafe {
-            ffi::sfCircleShape_setPosition(self.raw_mut(), *position)
-        }
-    }
-
-    /// Set the position of a circle shape
-    ///
-    /// This function completely overwrites the previous position.
-    /// See move to apply an offset based on the previous position instead.
-    /// The default position of a circle Shape object is (0, 0).
-    ///
-    /// # Arguments
-    /// * x - New x coordinate
-    /// * y - New y coordinate
-    pub fn set_position2f(&mut self, x: f32, y: f32) -> () {
-        unsafe {
-            ffi::sfCircleShape_setPosition(self.raw_mut(),
-                                           Vector2f::new(x, y))
-        }
-    }
-
-    /// Set the scale factors of a circle shape
-    ///
-    /// This function completely overwrites the previous scale.
-    /// See scale to add a factor based on the previous scale instead.
-    /// The default scale of a circle Shape object is (1, 1).
-    ///
-    /// # Arguments
-    /// * scale - New scale factors
-    pub fn set_scale(&mut self, scale: &Vector2f) -> () {
-        unsafe {
-            ffi::sfCircleShape_setScale(self.raw_mut(), *scale)
-        }
-    }
-
-    /// Set the scale factors of a circle shape
-    ///
-    /// This function completely overwrites the previous scale.
-    /// See scale to add a factor based on the previous scale instead.
-    /// The default scale of a circle Shape object is (1, 1).
-    ///
-    /// # Arguments
-    /// * scale_x - New x scale factor
-    /// * scale_y - New y scale factor
-    pub fn set_scale2f(&mut self, scale_x: f32, scale_y: f32) -> () {
-        unsafe {
-            ffi::sfCircleShape_setScale(self.raw_mut(),
-                                        Vector2f::new(scale_x, scale_y))
-        }
-    }
-
-    /// Set the local origin of a circle shape
-    ///
-    /// The origin of an object defines the center point for
-    /// all transformations (position, scale, rotation).
-    /// The coordinates of this point must be relative to the
-    /// top-left corner of the object, and ignore all
-    /// transformations (position, scale, rotation).
-    /// The default origin of a circle Shape object is (0, 0).
-    ///
-    /// # Arguments
-    /// * origin - New origin
-    pub fn set_origin(&mut self, origin: &Vector2f) -> () {
-        unsafe {
-            ffi::sfCircleShape_setOrigin(self.raw_mut(), *origin)
-        }
-    }
-
-    /// Set the local origin of a circle shape
-    ///
-    /// The origin of an object defines the center point for
-    /// all transformations (position, scale, rotation).
-    /// The coordinates of this point must be relative to the
-    /// top-left corner of the object, and ignore all
-    /// transformations (position, scale, rotation).
-    /// The default origin of a circle Shape object is (0, 0).
-    ///
-    /// # Arguments
-    /// * x - New x origin coordinate
-    /// * y - New y origin coordinate
-    pub fn set_origin2f(&mut self, x: f32, y: f32) -> () {
-        unsafe {
-            ffi::sfCircleShape_setOrigin(self.raw_mut(), Vector2f::new(x, y))
-        }
-    }
-
     /// Get the local bounding rectangle of a circle shape
     ///
     /// The returned rectangle is in local coordinates, which means
@@ -536,23 +320,84 @@ impl<'s> CircleShape<'s> {
             ffi::sfCircleShape_getGlobalBounds(self.raw())
         }
     }
+}
 
-    /// Get the combined transform of a circle shape
-    ///
-    /// Return transform combining the position/rotation/scale/origin
-    /// of the object
-    pub fn get_transform(&self) -> Transform {
+impl<'a> Transformable for CircleShape<'a> {
+    fn get_position(&self) -> Vector2f {
+        unsafe {
+            ffi::sfCircleShape_getPosition(self.raw())
+        }
+    }
+
+    fn get_scale(&self) -> Vector2f {
+        unsafe {
+            ffi::sfCircleShape_getScale(self.raw())
+        }
+    }
+
+    fn get_origin(&self) -> Vector2f {
+        unsafe {
+            ffi::sfCircleShape_getOrigin(self.raw())
+        }
+    }
+
+    fn move_(&mut self, offset: &Vector2f) -> () {
+        unsafe {
+            ffi::sfCircleShape_move(self.raw_mut(), *offset)
+        }
+    }
+
+    fn scale(&mut self, factors: &Vector2f) -> () {
+        unsafe {
+            ffi::sfCircleShape_scale(self.raw_mut(), *factors)
+        }
+    }
+
+    fn set_position(&mut self, position: &Vector2f) -> () {
+        unsafe {
+            ffi::sfCircleShape_setPosition(self.raw_mut(), *position)
+        }
+    }
+
+    fn set_scale(&mut self, scale: &Vector2f) -> () {
+        unsafe {
+            ffi::sfCircleShape_setScale(self.raw_mut(), *scale)
+        }
+    }
+
+    fn set_origin(&mut self, origin: &Vector2f) -> () {
+        unsafe {
+            ffi::sfCircleShape_setOrigin(self.raw_mut(), *origin)
+        }
+    }
+
+    fn get_transform(&self) -> Transform {
         unsafe {
             ffi::sfCircleShape_getTransform(self.raw())
         }
     }
 
-    /// Get the inverse of the combined transform of a circle shape
-    ///
-    /// Return inverse of the combined transformations applied to the object
-    pub fn get_inverse_transform(&self) -> Transform {
+    fn get_inverse_transform(&self) -> Transform {
         unsafe {
             ffi::sfCircleShape_getInverseTransform(self.raw())
+        }
+    }
+
+    fn set_rotation(&mut self, angle: f32) -> () {
+        unsafe {
+            ffi::sfCircleShape_setRotation(self.raw_mut(), angle as c_float)
+        }
+    }
+	
+    fn get_rotation(&self) -> f32 {
+        unsafe {
+            ffi::sfCircleShape_getRotation(self.raw()) as f32
+        }
+    }
+
+    fn rotate(&mut self, angle: f32) -> () {
+        unsafe {
+            ffi::sfCircleShape_rotate(self.raw_mut(), angle as c_float)
         }
     }
 }

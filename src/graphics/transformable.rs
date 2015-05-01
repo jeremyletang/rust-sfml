@@ -65,17 +65,23 @@ impl Clone for BasicTransformable {
 /// Holder of a decomposed transform defined by a position, a rotation and a
 /// scale.
 pub trait Transformable {
-    /// Set the position of a transformable
+    /// Set the position of the object.
     ///
     /// This function completely overwrites the previous position.
-    /// See move to apply an offset based on the previous position instead.
-    /// The default position of a transformable Transformable object is (0, 0).
-    ///
-    /// # Arguments
-    /// * position - The new position
+    /// See `move` to apply an offset based on the previous position instead.
+    /// The default position is (0, 0).
     fn set_position(&mut self, position: &Vector2f);
 
-    /// Set the orientation of a transformable
+    /// Set the position of the object.
+    ///
+    /// This function completely overwrites the previous position.
+    /// See `move` to apply an offset based on the previous position instead.
+    /// The default position is (0, 0).
+	fn set_position2f(&mut self, x: f32, y: f32) {
+		self.set_position(&Vector2f::new(x, y));
+	}
+
+    /// Set the orientation of the object.
     ///
     /// This function completely overwrites the previous rotation.
     /// See rotate to add an angle based on the previous rotation instead.
@@ -85,15 +91,24 @@ pub trait Transformable {
     /// * angle - The new rotation, in degrees
     fn set_rotation(&mut self, angle: f32);
 
-    /// Set the scale factors of a transformable
+    /// Set the scale factors of the object.
     ///
     /// This function completely overwrites the previous scale.
     /// See scale to add a factor based on the previous scale instead.
-    /// The default scale of a transformable Transformable object is (1, 1).
+    /// The default scale is (1, 1).
     ///
     /// # Arguments
     /// * scale - New scale factors
     fn set_scale(&mut self, scale: &Vector2f);
+
+    /// Set the scale factors of the object.
+    ///
+    /// This function completely overwrites the previous scale.
+    /// See scale to add a factor based on the previous scale instead.
+    /// The default scale is (1, 1).
+	fn set_scale2f(&mut self, x: f32, y: f32) {
+		self.set_scale(&Vector2f::new(x, y));
+	}
 
     /// Set the local origin of a transformable
     ///
@@ -102,35 +117,39 @@ pub trait Transformable {
     /// The coordinates of this point must be relative to the
     /// top-left corner of the object, and ignore all
     /// transformations (position, scale, rotation).
-    /// The default origin of a transformable Transformable object is (0, 0).
+    /// The default origin is (0, 0).
     ///
     /// # Arguments
     /// * origin - New origin
     fn set_origin(&mut self, origin: &Vector2f);
 
-    /// Get the position of a transformable
+    /// Set the local origin of a transformable
     ///
-    /// Return the current position
+    /// The origin of an object defines the center point for
+    /// all transformations (position, scale, rotation).
+    /// The coordinates of this point must be relative to the
+    /// top-left corner of the object, and ignore all
+    /// transformations (position, scale, rotation).
+    /// The default origin is (0, 0).
+	fn set_origin2f(&mut self, x: f32, y: f32) {
+		self.set_origin(&Vector2f::new(x, y))
+	}
+
+    /// Get the position of the object.
     fn get_position(&self) -> Vector2f;
 
-    /// Get the orientation of a transformable
+    /// Get the orientation of the object, in degrees.
     ///
     /// The rotation is always in the range [0, 360].
-    ///
-    /// Return the current rotation, in degrees
     fn get_rotation(&self) -> f32;
 
-    /// Get the current scale of a transformable
-    ///
-    /// Return the current scale factors
+    /// Get the current scale of the object.
     fn get_scale(&self) -> Vector2f;
 
-    /// Get the local origin of a transformable
-    ///
-    /// Return the current origin
+    /// Get the local origin of the object.
     fn get_origin(&self) -> Vector2f;
 
-    /// Move a transformable by a given offset
+    /// Move the object by a given offset.
     ///
     /// This function adds to the current position of the object,
     /// unlike set_position which overwrites it.
@@ -139,7 +158,15 @@ pub trait Transformable {
     /// * offset - Offset
     fn move_(&mut self, offset: &Vector2f);
 
-    /// Rotate a transformable
+    /// Move the object by a given offset.
+    ///
+    /// This function adds to the current position of the object,
+    /// unlike set_position which overwrites it.
+	fn move2f(&mut self, x: f32, y: f32) {
+		self.move_(&Vector2f::new(x, y));
+	}
+
+    /// Rotate the object.
     ///
     /// This function adds to the current rotation of the object,
     /// unlike set_rotation which overwrites it.
@@ -157,13 +184,21 @@ pub trait Transformable {
     /// * factors - Scale factors
     fn scale(&mut self, factors: &Vector2f);
 
-    /// Get the combined transform of a transformable
+    /// Scale a transformable
+    ///
+    /// This function multiplies the current scale of the object,
+    /// unlike set_scale which overwrites it.
+	fn scale2f(&mut self, x: f32, y: f32) {
+		self.scale(&Vector2f::new(x, y));
+	}
+
+    /// Get the combined transform of the object.
     ///
     /// Return the transform combining the
     /// position/rotation/scale/origin of the object
     fn get_transform(&self) -> Transform;
 
-    /// Get the inverse of the combined transform of a transformable
+    /// Get the inverse of the combined transform of the object.
     ///
     /// Return the inverse of the combined transformations applied to the object
     fn get_inverse_transform(&self) -> Transform;
