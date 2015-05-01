@@ -2,9 +2,9 @@
 
 extern crate sfml;
 
-use sfml::graphics::{RenderWindow, Color, CircleShape, RectangleShape,
+use sfml::graphics::{RenderWindow, Color, CircleShape, RectangleShape, Shape,
                       RenderTarget, RenderStates, Drawable, Transformable};
-use sfml::window::{VideoMode, ContextSettings, Event, WindowStyle, Key};
+use sfml::window::{VideoMode, ContextSettings, Event, window_style, Key};
 use sfml::system::Vector2f;
 
 // Create a struct who contains two drawable for the example
@@ -39,11 +39,11 @@ impl<'s> Drawable for CustomDrawable<'s> {
 
 fn main() {
     // Create the window of the application
-    let setting: ContextSettings = ContextSettings::default();
-    let mut window: RenderWindow = match RenderWindow::new(VideoMode::new_init(800, 600, 32), "SFML Shape Example", WindowStyle::Close, &setting) {
-        Some(window) => window,
-        None => panic!("Cannot create a new Render Window.")
-    };
+    let mut window = RenderWindow::new(
+        VideoMode::new_init(800, 600, 32),
+        "Custom Drawable - SFML Examples",
+        window_style::CLOSE,
+        &ContextSettings::default()).expect("Cannot create a new Render Window.");
     window.set_vertical_sync_enabled(true);
 
     // create our Drawable
@@ -53,25 +53,17 @@ fn main() {
         for event in window.events() {
             match event {
                 Event::Closed => window.close(),
-                Event::KeyPressed{code, ..} => match code {
-                    Key::Escape => {
-                        window.close();
-                        break;
-                    },
-                    _ => {}
-                },
+                Event::KeyPressed { code: Key::Escape , .. } => window.close(),
                 _ => {}
             }
         }
+
         // Clear the window
         window.clear(&Color::black());
-
         // Draw it ! yeah you create a custome shape!
         window.draw(&custom_drawable);
-
         // Display things on screen
-        window.display()
-
+        window.display();
     }
 }
 

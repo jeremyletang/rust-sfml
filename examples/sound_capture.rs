@@ -2,10 +2,9 @@
 
 extern crate sfml;
 
-use std::cell::RefCell;
 use std::io::BufRead;
 
-use sfml::audio::{SoundBufferRecorder, Sound, Status};
+use sfml::audio::{SoundBufferRecorder, Sound, SoundStatus};
 use sfml::system::{sleep, Time};
 
 fn main() {
@@ -21,20 +20,14 @@ fn main() {
     let mut line = String::new();
     reader.read_line(&mut line).unwrap();
     unsafe { line.as_mut_vec().pop(); }
-    let sample_rate: u32 = match line.trim().parse() {
-        Ok(value)     => value,
-        Err(e)        => panic!("Error, input is not valid: {}", e)
-    };
+    let sample_rate: u32 = line.trim().parse().ok().expect("Error, input is not valid.");
 
     // Wait for user input...
     println!("Press enter to start recording audio");
     reader.read_line(&mut String::new()).unwrap();
 
     // Here we'll use an integrated custom recorder, which saves the captured data into a SoundBuffer
-    let mut recorder: SoundBufferRecorder = match SoundBufferRecorder::new() {
-        Some(rec)       => rec,
-        None            => panic!("Error, cannot initialize Sound buffer recorder.")
-    };
+    let mut recorder = SoundBufferRecorder::new().expect("Error, cannot initialize Sound buffer recorder.");
 
     // Audio capture is done in a separate thread, so we can block the main thread while it is capturing
     recorder.start(sample_rate);
@@ -43,10 +36,7 @@ fn main() {
     recorder.stop();
 
     // Get the buffer containing the captured data
-    let buffer = match recorder.get_buffer() {
-        Some(buf)       => buf,
-        None            => panic!("Error when retreiving buffer.")
-    };
+    let buffer = recorder.get_buffer().expect("Error when retreiving buffer.");
 
     // Display captured sound informations
     println!("Sound informations :");
@@ -70,23 +60,18 @@ fn main() {
         buffer.save_to_file(filename.trim());
     }
     else {
-        let mut sound: Sound = match Sound::new_with_buffer(&buffer) {
-            Some(sound)     => sound,
-            None            => panic!("Error cannot create Sound")
-        };
-
-         sound.play();
+        let mut sound = Sound::new_with_buffer(&buffer).expect("Error cannot create Sound");
+        sound.play();
 
         loop {
             match sound.get_status() {
-                Status::Playing     => {
-                // Display the playing position
-                println!("\rPlaying...   {}", sound.get_playing_offset().as_seconds());
-                // Leave some CPU time for other processes
-                sleep(Time::with_milliseconds(100));
+                SoundStatus::Playing => {
+                    // Display the playing position
+                    println!("\rPlaying...   {}", sound.get_playing_offset().as_seconds());
+                    // Leave some CPU time for other processes
+                    sleep(Time::with_milliseconds(100));
                 },
-            _               => break
-
+                _ => break
             }
         }
     }
