@@ -68,7 +68,7 @@ impl Window {
                settings: &ContextSettings) -> Option<Window> {
 		let vec = ::ffi::to_utf32(title);
         unsafe {
-            Foreign::new(ffi::sfWindow_createUnicode(mode, vec.as_ptr(), style as u32, settings))
+            Foreign::new(ffi::sfWindow_createUnicode(mode, vec.as_ptr(), style.bits(), settings))
         }.map(Window)
     }
 

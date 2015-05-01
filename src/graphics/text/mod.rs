@@ -27,7 +27,6 @@
 //! Text is a drawable class that allows to easily
 //! display some text with custom style and color on a render target.
 
-use std::mem;
 use libc::{c_float, c_uint, size_t};
 
 use graphics::{RenderTarget, Font, FloatRect, Drawable, Transformable,
@@ -161,7 +160,7 @@ impl<'s> Text<'s> {
     pub fn set_style(&mut self, style: TextStyle) -> () {
 		// TODO: fix TextStyle conversion
         unsafe {
-            ffi::sfText_setStyle(self.raw_mut(), style as u32)
+            ffi::sfText_setStyle(self.raw_mut(), style.bits())
         }
     }
 
@@ -181,8 +180,7 @@ impl<'s> Text<'s> {
     ///
     /// Return the current string style (see Style enum)
     pub fn get_style(&self) -> TextStyle {
-		// TODO: fix TextStyle conversion
-        unsafe { mem::transmute(ffi::sfText_getStyle(self.raw())) }
+		unsafe { TextStyle::from_bits_truncate(ffi::sfText_getStyle(self.raw())) }
     }
 
     /// Get the font of a text

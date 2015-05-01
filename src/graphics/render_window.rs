@@ -74,7 +74,7 @@ impl RenderWindow {
                settings: &ContextSettings) -> Option<RenderWindow> {
 		let vec = ::ffi::to_utf32(title);
         unsafe {
-            Foreign::new(ffi::sfRenderWindow_createUnicode(mode, vec.as_ptr(), style as u32, settings))
+            Foreign::new(ffi::sfRenderWindow_createUnicode(mode, vec.as_ptr(), style.bits(), settings))
         }.map(RenderWindow)
     }
 
