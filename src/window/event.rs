@@ -183,7 +183,7 @@ pub enum Event {
 pub mod raw {
     use super::Event;
 
-    use ffi::sfml_types::SfBool;
+    use ffi::SfBool;
 
     pub type sfKeyCode = ::libc::c_int;
 

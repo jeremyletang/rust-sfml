@@ -25,7 +25,7 @@
 #![allow(non_snake_case)]
 
 use libc::{c_float, c_char, c_uint, c_int, c_uchar, size_t, c_void};
-use ffi::sfml_types::SfBool;
+use ffi::SfBool;
 use ffi::window::sfWindow;
 use system::{Vector2f, Vector2i, Vector2u, Vector3f};
 use window::{ContextSettings, VideoMode};
@@ -416,21 +416,35 @@ extern "C" {
     pub fn sfTransform_scaleWithCenter(transform: *mut Transform, scale_x: c_float, scale_y: c_float, center_x: c_float, center_y: c_float) -> ();
 
     pub fn sfTransformable_create() -> *mut sfTransformable;
-    pub fn sfTransformable_copy(transformable: *mut sfTransformable) -> *mut sfTransformable;
+    pub fn sfTransformable_copy(transformable: *const sfTransformable) -> *mut sfTransformable;
     pub fn sfTransformable_destroy(transformable: *mut sfTransformable) -> ();
     pub fn sfTransformable_setPosition(transformable: *mut sfTransformable, position: Vector2f) -> ();
     pub fn sfTransformable_setRotation(transformable: *mut sfTransformable, angle: c_float) -> ();
     pub fn sfTransformable_setScale(transformable: *mut sfTransformable, scale: Vector2f) -> ();
     pub fn sfTransformable_setOrigin(transformable: *mut sfTransformable, origin: Vector2f) -> ();
-    pub fn sfTransformable_getPosition(transformable: *mut sfTransformable) -> Vector2f;
-    pub fn sfTransformable_getRotation(transformable: *mut sfTransformable) -> c_float;
-    pub fn sfTransformable_getScale(transformable: *mut sfTransformable) -> Vector2f;
-    pub fn sfTransformable_getOrigin(transformable: *mut sfTransformable) -> Vector2f;
+    pub fn sfTransformable_getPosition(transformable: *const sfTransformable) -> Vector2f;
+    pub fn sfTransformable_getRotation(transformable: *const sfTransformable) -> c_float;
+    pub fn sfTransformable_getScale(transformable: *const sfTransformable) -> Vector2f;
+    pub fn sfTransformable_getOrigin(transformable: *const sfTransformable) -> Vector2f;
     pub fn sfTransformable_move(transformable: *mut sfTransformable, offset: Vector2f) -> ();
     pub fn sfTransformable_rotate(transformable: *mut sfTransformable, angle: c_float) -> ();
     pub fn sfTransformable_scale(transformable: *mut sfTransformable, factors: Vector2f) -> ();
-    pub fn sfTransformable_getTransform(transformable: *mut sfTransformable) -> Transform;
-    pub fn sfTransformable_getInverseTransform(transformable: *mut sfTransformable) -> Transform;
+    pub fn sfTransformable_getTransform(transformable: *const sfTransformable) -> Transform;
+    pub fn sfTransformable_getInverseTransform(transformable: *const sfTransformable) -> Transform;
+
+	/*
+    pub fn sfVertexArray_create() -> *mut sfVertexArray;
+    pub fn sfVertexArray_copy(vertexArray: *const sfVertexArray) -> *mut sfVertexArray;
+    pub fn sfVertexArray_destroy(vertexArray: *mut sfVertexArray) -> ();
+    pub fn sfVertexArray_getVertexCount(vertexArray: *mut sfVertexArray) -> c_uint;
+    pub fn sfVertexArray_getVertex(vertexArray: *mut sfVertexArray, index: c_uint) -> *mut Vertex;
+    pub fn sfVertexArray_clear(vertexArray: *mut sfVertexArray) -> ();
+    pub fn sfVertexArray_resize(vertexArray: *mut sfVertexArray, vertexCount: c_uint) -> ();
+    pub fn sfVertexArray_append(vertexArray: *mut sfVertexArray, vertex: Vertex) -> ();
+    pub fn sfVertexArray_setPrimitiveType(vertexArray: *mut sfVertexArray, stype: sfPrimitiveType) -> ();
+    pub fn sfVertexArray_getPrimitiveType(vertexArray: *mut sfVertexArray) -> sfPrimitiveType;
+    pub fn sfVertexArray_getBounds(vertexArray: *mut sfVertexArray) -> FloatRect;
+	*/
 
     pub fn sfView_create() -> *mut sfView;
     pub fn sfView_createFromRect(rectangle: FloatRect) -> *mut sfView;
@@ -449,38 +463,3 @@ extern "C" {
     pub fn sfView_rotate(view: *mut sfView, angle: c_float) -> ();
     pub fn sfView_zoom(view: *mut sfView, factor: c_float) -> ();
 }
-
-/*pub mod vertex_array {
-
-use libc::{c_uint, c_void};
-
-use graphics::{FloatRect, Vertex};
-
-pub type sfPrimitiveType = c_uint;
-pub const SFPOINTS:           sfPrimitiveType = 0;
-pub const SFLINES:            sfPrimitiveType = 1;
-pub const SFLINESSTRIP:       sfPrimitiveType = 2;
-pub const SFTRIANGLES:        sfPrimitiveType = 3;
-pub const SFTRIANGLESSTRIP:   sfPrimitiveType = 4;
-pub const SFTRIANGLESFAN:     sfPrimitiveType = 5;
-pub const SFQUADS:            sfPrimitiveType = 6;
-
-#[repr(C)]
-pub struct sfVertexArray {
-    this: *mut c_void
-}
-
-extern "C" {
-    pub fn sfVertexArray_create() -> *mut sfVertexArray;
-    pub fn sfVertexArray_copy(vertexArray: *const sfVertexArray) -> *mut sfVertexArray;
-    pub fn sfVertexArray_destroy(vertexArray: *mut sfVertexArray) -> ();
-    pub fn sfVertexArray_getVertexCount(vertexArray: *mut sfVertexArray) -> c_uint;
-    pub fn sfVertexArray_getVertex(vertexArray: *mut sfVertexArray, index: c_uint) -> *mut Vertex;
-    pub fn sfVertexArray_clear(vertexArray: *mut sfVertexArray) -> ();
-    pub fn sfVertexArray_resize(vertexArray: *mut sfVertexArray, vertexCount: c_uint) -> ();
-    pub fn sfVertexArray_append(vertexArray: *mut sfVertexArray, vertex: Vertex) -> ();
-    pub fn sfVertexArray_setPrimitiveType(vertexArray: *mut sfVertexArray, stype: sfPrimitiveType) -> ();
-    pub fn sfVertexArray_getPrimitiveType(vertexArray: *mut sfVertexArray) -> sfPrimitiveType;
-    pub fn sfVertexArray_getBounds(vertexArray: *mut sfVertexArray) -> FloatRect;
-}
-}*/

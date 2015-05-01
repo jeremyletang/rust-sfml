@@ -25,7 +25,7 @@
 use libc::{c_int, c_uint, c_float, c_char, size_t};
 use system::{Vector2i, Vector2u};
 use window::{ContextSettings, VideoMode};
-use ffi::sfml_types::SfBool;
+use ffi::SfBool;
 
 foreign_type! {
 	sfWindow, sfWindow_destroy;

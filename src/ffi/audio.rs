@@ -25,7 +25,7 @@
 use libc::{c_uint, c_float, c_char, size_t, c_uchar};
 use system::{Vector3f, Time};
 use audio::Status;
-use ffi::sfml_types::SfBool;
+use ffi::SfBool;
 
 foreign_type! {
 	sfMusic, sfMusic_destroy;

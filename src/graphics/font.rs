@@ -28,7 +28,7 @@
 use libc::{c_uint, size_t};
 use std::ffi::CString;
 
-use graphics::{Glyph};
+use graphics::{Glyph, Texture};
 
 use ffi::{SfBool, Foreign};
 use ffi::graphics as ffi;
@@ -66,6 +66,7 @@ impl Font {
     }
 	
 	fn raw(&self) -> &ffi::sfFont { self.0.as_ref() }
+	fn raw_mut(&mut self) -> &mut ffi::sfFont { self.0.as_mut() }
 	#[doc(hidden)]
 	pub fn unwrap(&self) -> &ffi::sfFont { self.raw() }
 
@@ -113,7 +114,6 @@ impl Font {
         }
     }
 
-	/* TODO: return a reference to a Texture
     /// Get the texture containing the glyphs of a given size in a font
     ///
     /// # Arguments
@@ -121,14 +121,10 @@ impl Font {
     ///
     /// Return the texture
     pub fn get_texture(&mut self, character_size: u32) -> Option<Texture> {
-        let tex = unsafe {ffi::sfFont_getTexture(self.raw_mut(), character_size as c_uint)};
-        if tex.is_null() {
-            None
-        } else {
-            Some(Wrappable::wrap(tex))
-        }
+		unsafe {
+			Texture::clone_of(ffi::sfFont_getTexture(self.raw_mut(), character_size as c_uint))
+		}
     }
-	*/
 
     /// Get a glyph in a font
     ///

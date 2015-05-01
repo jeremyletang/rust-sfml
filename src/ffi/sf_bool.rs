@@ -22,34 +22,27 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#![allow(dead_code, non_camel_case_types)]
-
-mod sf_bool;
-mod foreign_ptr;
-pub use self::sf_bool::SfBool;
-pub use self::foreign_ptr::Foreign;
-
-macro_rules! foreign_type {
-	($($name:ident, $destroy:ident;)*) => (
-		$(
-			#[repr(C)]
-			pub struct $name (());
-			impl $crate::ffi::foreign_ptr::ForeignType for $name {
-				unsafe fn destroy(ptr: *mut $name) {
-					$destroy(ptr);
-				}
-			}
-		)*
-	)
+#[repr(C)]
+#[derive(PartialEq, Eq, Clone, Copy)]
+pub enum SfBool {
+    SFFALSE = 0,
+    SFTRUE = 1
 }
 
-pub mod window;
-pub mod graphics;
-pub mod audio;
+impl SfBool {
+    #[inline(always)]
+    pub fn to_bool(&self) -> bool {
+        match *self {
+            SfBool::SFFALSE => false,
+            SfBool::SFTRUE => true
+        }
+    }
 
-/// Encode a string in UTF-32 for passing into SFML.
-pub fn to_utf32(string: &str) -> Vec<u32> {
-	let mut vec: Vec<u32> = string.chars().map(|ch| ch as u32).collect();
-	vec.push(0);
-	vec
+    #[inline(always)]
+    pub fn from_bool(b: bool) -> SfBool {
+        match b {
+            true => SfBool::SFTRUE,
+            false => SfBool::SFFALSE
+        }
+    }
 }

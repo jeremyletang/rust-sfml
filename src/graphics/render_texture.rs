@@ -28,7 +28,7 @@ use libc::c_uint;
 
 use system::vector2::{Vector2f, Vector2i, Vector2u};
 use graphics::{View, Color, IntRect, CircleShape, RectangleShape, Text,
-               RenderStates, Sprite, ConvexShape,
+               RenderStates, Sprite, ConvexShape, Texture,
                RenderTarget, Vertex, PrimitiveType, Shape};
 
 use ffi::{SfBool, Foreign};
@@ -75,24 +75,14 @@ impl RenderTexture {
         }.to_bool()
     }
 
-	/* TODO: return a reference
     /// Get the target texture of a render texture
     ///
     /// Return the target texture
     pub fn get_texture(&self) -> Option<Texture> {
-        let tex = unsafe { ffi::sfRenderTexture_getTexture(self.raw()) };
-        if tex.is_null() {
-            None
-        }
-        else {
-			let tex = unsafe { ffi::sfTexture_copy(tex) };
-			if tex.is_null() {
-				None
-			} else {
-				Some(Wrappable::wrap(tex))
-			}
-        }
-    }*/
+		unsafe {
+			Texture::clone_of(ffi::sfRenderTexture_getTexture(self.raw()))
+		}
+    }
 
     /// Enable or disable the smooth filter on a render texture
     ///

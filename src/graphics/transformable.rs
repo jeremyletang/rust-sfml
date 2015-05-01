@@ -22,77 +22,48 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-//use libc::c_float;
+use libc::c_float;
 
 use graphics::Transform;
 use system::vector2::Vector2f;
-//use std::convert::{AsRef, AsMut};
 
+use ffi::Foreign;
 use ffi::graphics as ffi;
 
-/// Data container for the `Transformable` trait.
-pub struct TransformableData {
-    raw: *mut ffi::sfTransformable
-}
+/// Reusable implementation of `Transformable`.
+pub struct BasicTransformable(Foreign<ffi::sfTransformable>);
 
-impl TransformableData {
+impl BasicTransformable {
     /// Create a new transformable
     ///
     /// Return Some(Transformable) or None
-    pub fn new() -> Option<TransformableData> {
-        let tran = unsafe { ffi::sfTransformable_create() };
-        if tran.is_null() {
-            None
-        } else {
-            Some(TransformableData {
-				raw: tran
-			})
-        }
+    pub fn new() -> Option<BasicTransformable> {
+		unsafe {
+			Foreign::new(ffi::sfTransformable_create())
+		}.map(BasicTransformable)
     }
 
     /// Copy an existing transformable
     ///
     /// Return Some(Transformable) or None
-    pub fn clone_opt(&self) -> Option<TransformableData> {
-        let tran = unsafe { ffi::sfTransformable_copy(self.raw) };
-        if tran.is_null() {
-            None
-        } else {
-            Some(TransformableData {
-				raw: tran
-			})
-        }
+    pub fn clone_opt(&self) -> Option<BasicTransformable> {
+        unsafe {
+			Foreign::new(ffi::sfTransformable_copy(self.raw()))
+		}.map(BasicTransformable)
     }
+
+	fn raw(&self) -> &ffi::sfTransformable { self.0.as_ref() }
+	fn raw_mut(&mut self) -> &mut ffi::sfTransformable { self.0.as_mut() }
 }
 
-impl Clone for TransformableData {
-    /// Return a new Transformable or panic! if there is not enough memory
-    fn clone(&self) -> TransformableData {
+impl Clone for BasicTransformable {
+    fn clone(&self) -> BasicTransformable {
 		self.clone_opt().expect("Not enough memory to clone Transformable")
     }
 }
 
-/*impl Wrappable<*mut ffi::sfTransformable> for TransformableData {
-    fn wrap(transformable: *mut ffi::sfTransformable) -> TransformableData {
-        TransformableData {
-            raw: transformable
-        }
-    }
-
-    fn unwrap(&self) -> *mut ffi::sfTransformable {
-        self.raw
-    }
-}*/
-
-impl Drop for TransformableData {
-    fn drop(&mut self) -> () {
-        unsafe {
-            ffi::sfTransformable_destroy(self.raw)
-        }
-    }
-}
-
-/// Decomposed transform defined by a position, a rotation and a scale.
+/// Holder of a decomposed transform defined by a position, a rotation and a
+/// scale.
 pub trait Transformable {
     /// Set the position of a transformable
     ///
@@ -102,7 +73,7 @@ pub trait Transformable {
     ///
     /// # Arguments
     /// * position - The new position
-    fn set_position(&mut self, position: &Vector2f) -> ();
+    fn set_position(&mut self, position: &Vector2f);
 
     /// Set the orientation of a transformable
     ///
@@ -112,7 +83,7 @@ pub trait Transformable {
     ///
     /// # Arguments
     /// * angle - The new rotation, in degrees
-    fn set_rotation(&mut self, angle: f32) -> ();
+    fn set_rotation(&mut self, angle: f32);
 
     /// Set the scale factors of a transformable
     ///
@@ -122,7 +93,7 @@ pub trait Transformable {
     ///
     /// # Arguments
     /// * scale - New scale factors
-    fn set_scale(&mut self, scale: &Vector2f) -> ();
+    fn set_scale(&mut self, scale: &Vector2f);
 
     /// Set the local origin of a transformable
     ///
@@ -135,7 +106,7 @@ pub trait Transformable {
     ///
     /// # Arguments
     /// * origin - New origin
-    fn set_origin(&mut self, origin: &Vector2f) -> ();
+    fn set_origin(&mut self, origin: &Vector2f);
 
     /// Get the position of a transformable
     ///
@@ -166,7 +137,7 @@ pub trait Transformable {
     ///
     /// # Arguments
     /// * offset - Offset
-    fn move_(&mut self, offset: &Vector2f) -> ();
+    fn move_(&mut self, offset: &Vector2f);
 
     /// Rotate a transformable
     ///
@@ -175,7 +146,7 @@ pub trait Transformable {
     ///
     /// # Arguments
     /// * angle - Angle of rotation, in degrees
-    fn rotate(&mut self, angle: f32) -> ();
+    fn rotate(&mut self, angle: f32);
 
     /// Scale a transformable
     ///
@@ -184,7 +155,7 @@ pub trait Transformable {
     ///
     /// # Arguments
     /// * factors - Scale factors
-    fn scale(&mut self, factors: &Vector2f) -> ();
+    fn scale(&mut self, factors: &Vector2f);
 
     /// Get the combined transform of a transformable
     ///
@@ -198,83 +169,82 @@ pub trait Transformable {
     fn get_inverse_transform(&self) -> Transform;
 }
 
-/*impl<T: Upcast<TransformableData>> Transformable for T {
+impl Transformable for BasicTransformable {
     fn set_position(&mut self, position: &Vector2f) -> () {
         unsafe {
-            ffi::sfTransformable_setPosition(self.upcast_mut().raw, *position)
+            ffi::sfTransformable_setPosition(self.raw_mut(), *position)
         }
     }
 
     fn set_rotation(&mut self, angle: f32) -> () {
         unsafe {
-            ffi::sfTransformable_setRotation(self.upcast_mut().raw, angle as c_float)
+            ffi::sfTransformable_setRotation(self.raw_mut(), angle as c_float)
         }
     }
 
     fn set_scale(&mut self, scale: &Vector2f) -> () {
         unsafe {
-            ffi::sfTransformable_setScale(self.upcast_mut().raw, *scale)
+            ffi::sfTransformable_setScale(self.raw_mut(), *scale)
         }
     }
 
     fn set_origin(&mut self, origin: &Vector2f) -> () {
         unsafe {
-            ffi::sfTransformable_setOrigin(self.upcast_mut().raw, *origin)
+            ffi::sfTransformable_setOrigin(self.raw_mut(), *origin)
         }
     }
 
     fn get_position(&self) -> Vector2f {
         unsafe {
-            ffi::sfTransformable_getPosition(self.upcast().raw)
+            ffi::sfTransformable_getPosition(self.raw())
         }
     }
 
     fn get_rotation(&self) -> f32 {
         unsafe {
-            ffi::sfTransformable_getRotation(self.upcast().raw) as f32
+            ffi::sfTransformable_getRotation(self.raw()) as f32
         }
     }
 
     fn get_scale(&self) -> Vector2f {
         unsafe {
-            ffi::sfTransformable_getScale(self.upcast().raw)
+            ffi::sfTransformable_getScale(self.raw())
         }
     }
 
     fn get_origin(&self) -> Vector2f {
         unsafe {
-            ffi::sfTransformable_getOrigin(self.upcast().raw)
+            ffi::sfTransformable_getOrigin(self.raw())
         }
     }
 
     fn move_(&mut self, offset: &Vector2f) -> () {
         unsafe {
-            ffi::sfTransformable_move(self.upcast_mut().raw, *offset)
+            ffi::sfTransformable_move(self.raw_mut(), *offset)
         }
     }
 
     fn rotate(&mut self, angle: f32) -> () {
         unsafe {
-            ffi::sfTransformable_rotate(self.upcast_mut().raw, angle as c_float)
+            ffi::sfTransformable_rotate(self.raw_mut(), angle as c_float)
         }
     }
 
     fn scale(&mut self, factors: &Vector2f) -> () {
         unsafe {
-            ffi::sfTransformable_scale(self.upcast_mut().raw, *factors)
+            ffi::sfTransformable_scale(self.raw_mut(), *factors)
         }
     }
 
     fn get_transform(&self) -> Transform {
         unsafe {
-            ffi::sfTransformable_getTransform(self.upcast().raw)
+            ffi::sfTransformable_getTransform(self.raw())
         }
     }
 
     fn get_inverse_transform(&self) -> Transform {
         unsafe {
-            ffi::sfTransformable_getInverseTransform(self.upcast().raw)
+            ffi::sfTransformable_getInverseTransform(self.raw())
         }
     }
-}*/
-
+}
