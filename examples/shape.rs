@@ -2,14 +2,14 @@
 
 extern crate sfml;
 
-use sfml::graphics::{RenderWindow, Color, Shape, RenderTarget, ShapeImpl};
+use sfml::graphics::{RenderWindow, Color, CustomShape, RenderTarget, ShapeImpl, Shape};
 use sfml::window::{VideoMode, ContextSettings, Event, WindowStyle, Key};
 use sfml::system::Vector2f;
 
 #[derive(Clone, Copy)]
-pub struct CustomShape;
+pub struct MyShape;
 
-impl ShapeImpl for CustomShape {
+impl ShapeImpl for MyShape {
     fn get_point_count(&self) -> u32 {
         3
     }
@@ -34,7 +34,8 @@ fn main() {
     window.set_vertical_sync_enabled(true);
 
 
-    let mut shape = Shape::new(Box::new(CustomShape)).expect("Error, cannot create a Shape");
+	let my_shape = MyShape;
+    let mut shape = CustomShape::new(&my_shape).expect("Error, cannot create a Shape");
     shape.set_fill_color(&Color::red());
     shape.set_outline_color(&Color::green());
     shape.set_outline_thickness(3.);

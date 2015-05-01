@@ -28,47 +28,51 @@ use libc::{c_void, c_float, c_uint};
 use std::{ptr, mem};
 
 use graphics::{RenderTarget, RenderStates, Texture, Color, Transformable,
-               Transform, IntRect, FloatRect, Drawable, ShapeImpl};
+               Transform, IntRect, FloatRect, Drawable, ShapeImpl, Shape};
 use system::vector2::Vector2f;
 
 use ffi::{SfBool, Foreign};
 use ffi::graphics as ffi;
 
 /// Base class for textured shapes with outline
-pub struct Shape<'s> {
+pub struct BaseShape<'s> {
     shape: Foreign<ffi::sfShape>,
-	_impl: Box<Box<ShapeImpl>>,
+	_impl: Box<&'s ShapeImpl>,
     texture: Option<&'s Texture>
 }
 
 extern fn get_point_count_callback(obj: *mut c_void) -> u32 {
 	unsafe {
-		mem::transmute::<*mut c_void, &Box<ShapeImpl>>(obj)
+		mem::transmute::<*mut c_void, &&ShapeImpl>(obj)
 	}.get_point_count()
 }
 
 extern fn get_point_callback(point: u32, obj: *mut c_void) -> Vector2f {
 	unsafe {
-		mem::transmute::<*mut c_void, &Box<ShapeImpl>>(obj)
+		mem::transmute::<*mut c_void, &&ShapeImpl>(obj)
 	}.get_point(point)
 }
 
-impl<'s> Shape<'s> {
+impl<'s> BaseShape<'s> {
     /// Create a new Shape
     ///
     /// # Arguments
     /// * shape_impl - Implementation of ShapeImpl
     ///
     /// Return Some(Shape) or None
-    pub fn new(shape_impl: Box<ShapeImpl>) -> Option<Shape<'s>> {
-		let double_box = Box::new(shape_impl);
+    pub fn new(shape_impl: &'s ShapeImpl) -> Option<BaseShape<'s>> {
+		let boxed = Box::new(shape_impl);
 		unsafe {
-			let raw = mem::transmute::<&Box<ShapeImpl>, *mut c_void>(&*double_box);
+			let raw = mem::transmute::<&&ShapeImpl, *mut c_void>(&*boxed);
 			Foreign::new(ffi::sfShape_create(get_point_count_callback, get_point_callback, raw))
-		}.map(|sp| Shape {
-			shape: sp,
-			_impl: double_box,
-			texture: None
+		}.map(|sp| {
+			let mut shape = BaseShape {
+				shape: sp,
+				_impl: boxed,
+				texture: None
+			};
+			shape.update();
+			shape
 		})
     }
 
@@ -79,8 +83,8 @@ impl<'s> Shape<'s> {
     /// * texture - The texture to bind to the Shape
     ///
     /// Return Some(Shape) or None
-    pub fn new_with_texture(shape_impl: Box<ShapeImpl>, texture: &'s Texture) -> Option<Shape<'s>> {
-		Shape::new(shape_impl).map(|mut shape| {
+    pub fn new_with_texture(shape_impl: &'s ShapeImpl, texture: &'s Texture) -> Option<BaseShape<'s>> {
+		BaseShape::new(shape_impl).map(|mut shape| {
 			shape.set_texture(texture, true);
 			shape
 		})
@@ -137,50 +141,6 @@ impl<'s> Shape<'s> {
         }
     }
 
-    /// Set the fill color of a shape
-    ///
-    /// This color is modulated (multiplied) with the shape's
-    /// texture if any. It can be used to colorize the shape,
-    /// or change its global opacity.
-    /// You can use sfTransparent to make the inside of
-    /// the shape transparent, and have the outline alone.
-    /// By default, the shape's fill color is opaque white.
-    ///
-    /// # Arguments
-    /// * color - The new color of the Shape
-    pub fn set_fill_color(&mut self, color: &Color) -> () {
-        unsafe {
-            ffi::sfShape_setFillColor(self.raw_mut(), *color)
-        }
-    }
-
-    /// Set the outline color of a shape
-    ///
-    /// You can use Transparent to disable the outline.
-    /// By default, the Shape's outline color is opaque white.
-    ///
-    /// # Arguments
-    /// * color - The new outline color of the shape
-    pub fn set_outline_color(&mut self, color: &Color) -> () {
-        unsafe {
-            ffi::sfShape_setOutlineColor(self.raw_mut(), *color)
-        }
-    }
-
-    /// Set the thickness of a shape's outline
-    ///
-    /// This number cannot be negative. Using zero disables
-    /// the outline.
-    /// By default, the outline thickness is 0.
-    ///
-    /// # Arguments
-    /// * thickness - The new outline thickness
-    pub fn set_outline_thickness(&mut self, thickness: f32) -> () {
-        unsafe {
-            ffi::sfShape_setOutlineThickness(self.raw_mut(), thickness as c_float)
-        }
-    }
-
     /// Get the source texture of a shape
     ///
     /// If the shape has no source texture, a None is returned.
@@ -198,56 +158,6 @@ impl<'s> Shape<'s> {
     pub fn get_texture_rect(&self) -> IntRect {
         unsafe {
             ffi::sfShape_getTextureRect(self.raw())
-        }
-    }
-
-    /// Get the fill color of a shape
-    ///
-    /// Return the fill color of the shape
-    pub fn get_fill_color(&self) -> Color {
-        unsafe {
-            ffi::sfShape_getFillColor(self.raw())
-        }
-    }
-
-    /// Get the outline color of a shape
-    ///
-    /// Return the outline color of the shape
-    pub fn get_outline_color(&self) -> Color {
-        unsafe {
-            ffi::sfShape_getOutlineColor(self.raw())
-        }
-    }
-
-    /// Get the outline thickness of a shape
-    ///
-    /// Return the outline thickness of the shape
-    pub fn get_outline_thickness(&self) -> f32 {
-        unsafe {
-            ffi::sfShape_getOutlineThickness(self.raw()) as f32
-        }
-    }
-
-    /// Get the total number of points of a shape
-    ///
-    /// Return the number of points of the shape
-    pub fn get_point_count(&self) -> u32 {
-        unsafe {
-            ffi::sfShape_getPointCount(self.raw()) as u32
-        }
-    }
-
-    /// Get a point of a shape
-    ///
-    /// The result is undefined if index is out of the valid range.
-    ///
-    /// # Arguments
-    /// * index - The index of the point to get, in range [0 .. getPointCount() - 1]
-    ///
-    /// Return the index-th point of the shape
-    pub fn get_point(&self, index: u32) -> Vector2f {
-        unsafe {
-            ffi::sfShape_getPoint(self.raw(), index as c_uint)
         }
     }
 
@@ -293,7 +203,57 @@ impl<'s> Shape<'s> {
     }
 }
 
-impl<'s> Transformable for Shape<'s> {
+impl<'s> Shape for BaseShape<'s> {
+    fn set_fill_color(&mut self, color: &Color) -> () {
+        unsafe {
+            ffi::sfShape_setFillColor(self.raw_mut(), *color)
+        }
+    }
+
+    fn set_outline_color(&mut self, color: &Color) -> () {
+        unsafe {
+            ffi::sfShape_setOutlineColor(self.raw_mut(), *color)
+        }
+    }
+
+    fn set_outline_thickness(&mut self, thickness: f32) -> () {
+        unsafe {
+            ffi::sfShape_setOutlineThickness(self.raw_mut(), thickness as c_float)
+        }
+    }
+
+    fn get_fill_color(&self) -> Color {
+        unsafe {
+            ffi::sfShape_getFillColor(self.raw())
+        }
+    }
+
+    fn get_outline_color(&self) -> Color {
+        unsafe {
+            ffi::sfShape_getOutlineColor(self.raw())
+        }
+    }
+
+    fn get_outline_thickness(&self) -> f32 {
+        unsafe {
+            ffi::sfShape_getOutlineThickness(self.raw()) as f32
+        }
+    }
+
+    fn get_point_count(&self) -> u32 {
+        unsafe {
+            ffi::sfShape_getPointCount(self.raw()) as u32
+        }
+    }
+
+    fn get_point(&self, index: u32) -> Vector2f {
+        unsafe {
+            ffi::sfShape_getPoint(self.raw(), index as c_uint)
+        }
+    }
+}
+
+impl<'s> Transformable for BaseShape<'s> {
     fn set_position(&mut self, position: &Vector2f) -> () {
         unsafe {
             ffi::sfShape_setPosition(self.raw_mut(), *position)
@@ -373,7 +333,7 @@ impl<'s> Transformable for Shape<'s> {
     }
 }
 
-impl<'s> Drawable for Shape<'s> {
+impl<'s> Drawable for BaseShape<'s> {
     fn draw<RT: RenderTarget>(&self,
                                  render_target: &mut RT,
                                  render_states: &RenderStates) -> () {

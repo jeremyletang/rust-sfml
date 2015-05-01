@@ -44,13 +44,40 @@ fn main() {
     sprite.set_scale2f(0.5f32, 0.5f32);
 
     // Create a convex_shape using the texture
-    let mut convex_shape = ConvexShape::new_with_texture(&frank, 6).expect("Cannot create a ConvexShape");
+    /*let mut convex_shape = ConvexShape::new_with_texture(&frank, 6).expect("Cannot create a ConvexShape");
     convex_shape.set_point(0, &Vector2f{x:400f32, y:100f32});
     convex_shape.set_point(1, &Vector2f{x:500f32, y:70f32});
     convex_shape.set_point(2, &Vector2f{x:450f32, y:100f32});
     convex_shape.set_point(3, &Vector2f{x:580f32, y:150f32});
     convex_shape.set_point(4, &Vector2f{x:420f32, y:230f32});
-    convex_shape.set_point(5, &Vector2f{x:420f32, y:120f32});
+    convex_shape.set_point(5, &Vector2f{x:420f32, y:120f32});*/
+	/*let mut convex_shape = ConvexShape::new().unwrap();
+	convex_shape.set_texture(&frank, true);
+	/*{
+		let points = convex_shape.points_mut();
+		points.push(Vector2f::new(400., 100.));
+		points.push(Vector2f::new(500., 70.));
+		points.push(Vector2f::new(450., 100.));
+		points.push(Vector2f::new(580., 150.));
+		points.push(Vector2f::new(420., 230.));
+		points.push(Vector2f::new(420., 120.));
+	}*/
+	convex_shape.set_points(vec![
+		Vector2f::new(400., 100.),
+		Vector2f::new(500., 70.),
+		Vector2f::new(450., 100.),
+		Vector2f::new(580., 150.),
+		Vector2f::new(420., 230.),
+		Vector2f::new(420., 120.),
+	]);*/
+	let convex_shape = ConvexShape::new_with_texture(vec![
+		Vector2f::new(400., 100.),
+		Vector2f::new(500., 70.),
+		Vector2f::new(450., 100.),
+		Vector2f::new(580., 150.),
+		Vector2f::new(420., 230.),
+		Vector2f::new(420., 120.),
+	], &frank).unwrap();
 
     // Create an initialized text
     let title = Text::new_init("Borrow ressources example!", &font, 50).expect("Cannot create a new font");

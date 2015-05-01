@@ -36,7 +36,7 @@ use window::{ContextSettings, VideoMode, event, WindowStyle};
 use system::vector2::{Vector2f, Vector2i, Vector2u};
 use graphics::{Color, CircleShape, RectangleShape, Text, Sprite,
                RenderStates, View, Image, IntRect, RenderTarget,
-               Vertex, PrimitiveType, ConvexShape, Shape};
+               Vertex, PrimitiveType, BaseShape};
 
 use ffi::{SfBool, Foreign};
 use ffi::graphics as ffi;
@@ -488,7 +488,7 @@ impl RenderTarget for RenderWindow {
         }
     }
 
-    fn draw_shape_rs(&mut self, shape: &Shape, render_states: &RenderStates) {
+    fn draw_shape_rs(&mut self, shape: &BaseShape, render_states: &RenderStates) {
         unsafe {
             ffi::sfRenderWindow_drawShape(self.raw_mut(),
                                           shape.unwrap(),
@@ -517,14 +517,6 @@ impl RenderTarget for RenderWindow {
             ffi::sfRenderWindow_drawRectangleShape(self.raw_mut(),
                                                    rectangle_shape.unwrap(),
                                                    &render_states.unwrap())
-        }
-    }
-
-    fn draw_convex_shape_rs(&mut self, convex_shape: &ConvexShape, render_states: &RenderStates) -> () {
-        unsafe {
-            ffi::sfRenderWindow_drawConvexShape(self.raw_mut(),
-                                                convex_shape.unwrap(),
-                                                &render_states.unwrap())
         }
     }
 

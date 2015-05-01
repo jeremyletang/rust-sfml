@@ -28,7 +28,7 @@ use libc::{c_float, c_uint};
 use std::ptr;
 
 use graphics::{IntRect, FloatRect, Color, Texture, Transformable,
-               RenderTarget, Transform, RenderStates, Drawable};
+               RenderTarget, Transform, RenderStates, Drawable, Shape};
 use system::vector2::Vector2f;
 
 use ffi::{SfBool, Foreign};
@@ -149,51 +149,6 @@ impl<'s> CircleShape<'s> {
         }
     }
 
-    /// Set the fill color of a circle shape
-    ///
-    /// This color is modulated (multiplied) with the shape's
-    /// texture if any. It can be used to colorize the shape,
-    /// or change its global opacity.
-    /// You can use sfTransparent to make the inside of
-    /// the shape transparent, and have the outline alone.
-    /// By default, the shape's fill color is opaque white.
-    ///
-    /// # Arguments
-    /// * color - New color of the shape
-    pub fn set_fill_color(&mut self, color: &Color) -> () {
-        unsafe {
-            ffi::sfCircleShape_setFillColor(self.raw_mut(), *color)
-        }
-    }
-
-    /// Set the outline color of a circle shape
-    ///
-    /// You can use Transparent to disable the outline.
-    /// By default, the shape's outline color is opaque white.
-    ///
-    /// # Arguments
-    /// * color - New outline color of the shape
-    pub fn set_outline_color(&mut self, color: &Color) -> () {
-        unsafe {
-            ffi::sfCircleShape_setOutlineColor(self.raw_mut(), *color)
-        }
-    }
-
-    /// Set the thickness of a circle shape's outline
-    ///
-    /// This number cannot be negative. Using zero disables
-    /// the outline.
-    /// By default, the outline thickness is 0.
-    ///
-    /// # Arguments
-    /// * thickness - New outline thickness
-    pub fn set_outline_thickness(&mut self, thickness: f32) -> () {
-        unsafe {
-            ffi::sfCircleShape_setOutlineThickness(self.raw_mut(),
-                                                   thickness as c_float)
-        }
-    }
-
     /// Get the source texture of a circle shape
     ///
     /// You can't modify the texture when you retrieve it with this function.
@@ -209,56 +164,6 @@ impl<'s> CircleShape<'s> {
     pub fn get_texture_rect(&self) -> IntRect {
         unsafe {
             ffi::sfCircleShape_getTextureRect(self.raw())
-        }
-    }
-
-    /// Get the fill color of a circle shape
-    ///
-    /// Return the fill color of the shape
-    pub fn get_fill_color(&self) -> Color {
-        unsafe {
-            ffi::sfCircleShape_getFillColor(self.raw())
-        }
-    }
-
-    /// Get the outline color of a circle shape
-    ///
-    /// Return the outline color of the shape
-    pub fn get_outline_color(&self) -> Color {
-        unsafe {
-            ffi::sfCircleShape_getOutlineColor(self.raw())
-        }
-    }
-
-    /// Get the outline thickness of a circle shape
-    ///
-    /// Return the outline thickness of the shape
-    pub fn get_outline_thickness(&self) -> f32 {
-        unsafe {
-            ffi::sfCircleShape_getOutlineThickness(self.raw()) as f32
-        }
-    }
-
-    /// Get the total number of points of a circle shape
-    ///
-    /// Return the number of points of the shape
-    pub fn get_point_count(&self) -> u32 {
-        unsafe {
-            ffi::sfCircleShape_getPointCount(self.raw()) as u32
-        }
-    }
-
-    /// Get a point of a circle shape
-    ///
-    /// The result is undefined if index is out of the valid range.
-    ///
-    /// # Arguments
-    /// * index - Index of the point to get, in range [0 .. getPointCount() - 1]
-    ///
-    /// Return the index-th point of the shape
-    pub fn get_point(&self, index: u32) -> () {
-        unsafe {
-            ffi::sfCircleShape_getPoint(self.raw(), index as c_uint)
         }
     }
 
@@ -318,6 +223,56 @@ impl<'s> CircleShape<'s> {
     pub fn get_global_bounds(&self) -> FloatRect {
         unsafe {
             ffi::sfCircleShape_getGlobalBounds(self.raw())
+        }
+    }
+}
+
+impl<'a> Shape for CircleShape<'a> {
+    fn set_fill_color(&mut self, color: &Color) -> () {
+        unsafe {
+            ffi::sfCircleShape_setFillColor(self.raw_mut(), *color)
+        }
+    }
+
+    fn set_outline_color(&mut self, color: &Color) -> () {
+        unsafe {
+            ffi::sfCircleShape_setOutlineColor(self.raw_mut(), *color)
+        }
+    }
+
+    fn set_outline_thickness(&mut self, thickness: f32) -> () {
+        unsafe {
+            ffi::sfCircleShape_setOutlineThickness(self.raw_mut(), thickness as c_float)
+        }
+    }
+
+    fn get_fill_color(&self) -> Color {
+        unsafe {
+            ffi::sfCircleShape_getFillColor(self.raw())
+        }
+    }
+
+    fn get_outline_color(&self) -> Color {
+        unsafe {
+            ffi::sfCircleShape_getOutlineColor(self.raw())
+        }
+    }
+
+    fn get_outline_thickness(&self) -> f32 {
+        unsafe {
+            ffi::sfCircleShape_getOutlineThickness(self.raw()) as f32
+        }
+    }
+
+    fn get_point_count(&self) -> u32 {
+        unsafe {
+            ffi::sfCircleShape_getPointCount(self.raw()) as u32
+        }
+    }
+
+    fn get_point(&self, index: u32) -> Vector2f {
+        unsafe {
+            ffi::sfCircleShape_getPoint(self.raw(), index as c_uint)
         }
     }
 }

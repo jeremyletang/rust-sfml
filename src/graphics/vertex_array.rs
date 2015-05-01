@@ -38,7 +38,7 @@ pub struct VertexArray {
 impl VertexArray {
 	/// Create a new vertex array with the given primitive type.
 	pub fn new(primitive_type: PrimitiveType) -> VertexArray {
-		VertexArray::from_vec(primitive_type, vec![])
+		VertexArray::from_vec(primitive_type, Vec::new())
 	}
 
 	/// Create a new vertex array with the given initial capacity.

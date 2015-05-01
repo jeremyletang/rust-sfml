@@ -25,7 +25,7 @@
 //Authored on 2014-08-30 by Brandon Sanderson
 
 use graphics::{Color, View, RenderStates, CircleShape, RectangleShape, Text, Sprite,
-               IntRect, Vertex, PrimitiveType, ConvexShape, Shape, Drawable};
+               IntRect, Vertex, PrimitiveType, BaseShape, Drawable};
 use system::vector2::{Vector2f, Vector2i, Vector2u};
 
 /// Trait which is the equivalent of the sf::RenderTarget class in SFML.
@@ -210,7 +210,7 @@ pub trait RenderTarget: Sized {
     fn draw_text_rs(&mut self, text: &Text, rs: &RenderStates);
 
     /// Draw Shape
-    fn draw_shape_rs(&mut self, shape: &Shape, rs: &RenderStates);
+    fn draw_shape_rs(&mut self, shape: &BaseShape, rs: &RenderStates);
 
     /// Draw Sprite
     fn draw_sprite_rs(&mut self, sprite: &Sprite, rs: &RenderStates);
@@ -220,9 +220,6 @@ pub trait RenderTarget: Sized {
 
     /// Draw RectangleShape
     fn draw_rectangle_shape_rs(&mut self, rectangle_shape: &RectangleShape, rs: &RenderStates);
-
-    /// Draw ConvexShape
-    fn draw_convex_shape_rs(&mut self, convex_shape: &ConvexShape, rs: &RenderStates);
 
     /// Draw primitives
     fn draw_primitives_rs(&mut self,

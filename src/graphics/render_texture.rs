@@ -28,8 +28,8 @@ use libc::c_uint;
 
 use system::vector2::{Vector2f, Vector2i, Vector2u};
 use graphics::{View, Color, IntRect, CircleShape, RectangleShape, Text,
-               RenderStates, Sprite, ConvexShape, Texture,
-               RenderTarget, Vertex, PrimitiveType, Shape};
+               RenderStates, Sprite, Texture,
+               RenderTarget, Vertex, PrimitiveType, BaseShape};
 
 use ffi::{SfBool, Foreign};
 use ffi::graphics as ffi;
@@ -190,7 +190,7 @@ impl RenderTarget for RenderTexture {
     }
 
     fn draw_shape_rs(&mut self,
-                     shape: &Shape,
+                     shape: &BaseShape,
                      rs: &RenderStates) -> () {
         unsafe {
             ffi::sfRenderTexture_drawShape(self.raw_mut(),
@@ -226,16 +226,6 @@ impl RenderTarget for RenderTexture {
             ffi::sfRenderTexture_drawRectangleShape(self.raw_mut(),
                                                     rectangle_shape.unwrap(),
                                                     &rs.unwrap())
-        }
-    }
-
-    fn draw_convex_shape_rs(&mut self,
-                                convex_shape: &ConvexShape,
-                                rs: &RenderStates) -> () {
-        unsafe {
-            ffi::sfRenderTexture_drawConvexShape(self.raw_mut(),
-                                                 convex_shape.unwrap(),
-                                                 &rs.unwrap())
         }
     }
 

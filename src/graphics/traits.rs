@@ -22,29 +22,60 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-use graphics::{RenderStates, RenderTarget};
+use graphics::{RenderStates, RenderTarget, Transformable, Color};
 use system::Vector2f;
 
-/// The trait drawable is inherited by each object who can be drawn in a RenderTarget
+/// Type which can be drawn onto a RenderTarget.
 pub trait Drawable {
-    /// Draw a drawable object with a RenderState into a RenderTarget
+	/// Draw this drawable onto a RenderTarget, with the provided states.
     fn draw<RT: RenderTarget>(&self, target: &mut RT, states: &RenderStates);
 }
 
-/// ShapeImpl trait
-///
-/// Implement this shape to create a new Shape
+/// Shape implementation which determines where and how many points exist.
 pub trait ShapeImpl: Send {
-    /// Get the total count of the point for the Shape who implement this trait.
-    ///
-    /// Return the points count
+    /// Get the total number of points for the shape.
     fn get_point_count(&self) -> u32;
 
-    /// Get a given point of a Shape.
+	/// Get the coordinates of a point of the shape by index.
+    fn get_point(&self, point: u32) -> Vector2f;
+}
+
+/// A textured shape with an outline.
+pub trait Shape: Transformable {
+    /// Set the fill color of a shape
     ///
-    /// # Argument
-    /// * point - The index of the point to return
+    /// This color is modulated (multiplied) with the shape's
+    /// texture if any. It can be used to colorize the shape,
+    /// or change its global opacity.
+    /// You can use Transparent to make the inside of
+    /// the shape transparent, and have the outline alone.
+    /// By default, the shape's fill color is opaque white.
+    fn set_fill_color(&mut self, color: &Color);
+
+    /// Set the outline color of a shape
     ///
-    /// Return a Vector2f who contains the point coordinates.
+    /// You can use Transparent to disable the outline.
+    /// By default, the Shape's outline color is opaque white.
+    fn set_outline_color(&mut self, color: &Color);
+
+    /// Set the thickness of a shape's outline
+    ///
+    /// This number cannot be negative. Using zero (the default) disables
+    /// the outline.
+    fn set_outline_thickness(&mut self, thickness: f32);
+
+    /// Get the fill color of a shape.
+    fn get_fill_color(&self) -> Color;
+
+    /// Get the outline color of a shape.
+    fn get_outline_color(&self) -> Color;
+
+    /// Get the outline thickness of a shape.
+    fn get_outline_thickness(&self) -> f32;
+
+    /// Get the total number of points for the shape.
+    fn get_point_count(&self) -> u32;
+
+	/// Get the coordinates of a point of the shape by index.
     fn get_point(&self, point: u32) -> Vector2f;
 }
