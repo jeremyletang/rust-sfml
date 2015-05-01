@@ -46,4 +46,4 @@ pub mod joystick;
 pub mod keyboard;
 pub mod mouse;
 pub mod event;
-mod window_style;
+pub mod window_style;

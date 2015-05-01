@@ -78,10 +78,9 @@ impl Window {
                title: &str,
                style: WindowStyle,
                settings: &ContextSettings) -> Option<Window> {
-
         let c_str = CString::new(title.as_bytes()).unwrap().as_ptr();
         let sf_win: *mut ffi::sfWindow = unsafe {
-            ffi::sfWindow_create(mode.unwrap(), c_str, style as u32, settings)
+            ffi::sfWindow_create(mode.unwrap(), c_str, style.bits(), settings)
         };
         if sf_win.is_null() {
             None
@@ -119,7 +118,7 @@ impl Window {
         let sf_win =
             unsafe { ffi::sfWindow_createUnicode(mode.unwrap(),
                                                  title.as_ptr(),
-                                                 style as u32, settings) };
+                                                 style.bits(), settings) };
         if sf_win.is_null() {
             None
         } else {

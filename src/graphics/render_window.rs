@@ -89,7 +89,7 @@ impl RenderWindow {
         let sf_render_win: *mut ffi::sfRenderWindow = unsafe {
             ffi::sfRenderWindow_create(mode.unwrap(),
                                        c_str,
-                                       style as u32,
+                                       style.bits(),
                                        settings)
         };
         if sf_render_win.is_null() {
@@ -131,7 +131,7 @@ impl RenderWindow {
         unsafe {
             sf_render_win = ffi::sfRenderWindow_createUnicode(mode.unwrap(),
                                                               title.as_ptr() as *mut u32,
-                                                              style as u32,
+                                                              style.bits(),
                                                               settings);
         }
         if sf_render_win.is_null() {

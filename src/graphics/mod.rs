@@ -82,7 +82,7 @@ mod texture;
 mod blend_mode;
 mod transform;
 mod text;
-mod text_style;
+pub mod text_style;
 mod shader;
 mod color;
 mod font;

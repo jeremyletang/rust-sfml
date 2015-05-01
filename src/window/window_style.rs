@@ -22,24 +22,32 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-//! Window styles
-//!
-//! Availables window styles
+//! Available styles applicable to windows.
 
-/// Enumeration of window creation styles
-#[repr(C)]
-#[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
-pub enum WindowStyle {
-    /// No border / title bar (this flag and all others are mutually exclusive)
-    NoStyle = 0,
-    /// Title bar + fixed border.
-    Titlebar = 1,
-    /// Titlebar + resizable border + maximize button.
-    Resize = 2,
-    /// Titlebar + close button.
-    Close = 4,
-    /// Fullscreen mode (this flag and all others are mutually exclusive)
-    Fullscreen = 8,
-    /// Default window style.
-    DefaultStyle = 7
+// Manual #[doc] tags are to work around rust-lang/rust#23812.
+
+bitflags! {
+    #[doc="Available styles applicable to windows."]
+    #[derive(Debug)]
+    #[repr(C)]
+    flags WindowStyle: u32 {
+        #[doc="No decorations (cannot be combined with other flags)."]
+        const NO_STYLE = 0,
+        #[doc="Title bar and fixed border."]
+        const TITLEBAR = 1,
+        #[doc="Title bar, resizable border, and maximize button."]
+        const RESIZE = 2,
+        #[doc="Title bar and close button."]
+        const CLOSE = 4,
+        #[doc="Fullscreen mode (ignores other flags)."]
+        const FULLSCREEN = 8,
+        #[doc="Default window style: title bar, resizable border, and close button."]
+        const DEFAULT_STYLE = 1 | 2 | 4
+    }
+}
+
+impl Default for WindowStyle {
+    fn default() -> WindowStyle {
+        DEFAULT_STYLE
+    }
 }
