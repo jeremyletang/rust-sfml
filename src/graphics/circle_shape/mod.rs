@@ -29,7 +29,7 @@ use std::ptr;
 
 use graphics::{IntRect, FloatRect, Color, Texture, Transformable,
                RenderTarget, Transform, RenderStates, Drawable, Shape};
-use system::vector2::Vector2f;
+use system::Vector2f;
 
 use ffi::{SfBool, Foreign};
 use ffi::graphics as ffi;

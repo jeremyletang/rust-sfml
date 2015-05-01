@@ -33,7 +33,7 @@
 use libc::{c_float, c_uint};
 
 use window::{ContextSettings, VideoMode, event, WindowStyle};
-use system::vector2::{Vector2f, Vector2i, Vector2u};
+use system::{Vector2f, Vector2i, Vector2u};
 use graphics::{Color, CircleShape, RectangleShape, Text, Sprite,
                RenderStates, View, Image, IntRect, RenderTarget,
                Vertex, PrimitiveType, BaseShape};

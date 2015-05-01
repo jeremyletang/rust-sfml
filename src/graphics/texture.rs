@@ -31,7 +31,7 @@ use std::ptr;
 use std::ffi::CString;
 
 use graphics::{RenderWindow, Image, IntRect};
-use system::vector2::Vector2u;
+use system::Vector2u;
 use window::Window;
 
 use ffi::{SfBool, Foreign};

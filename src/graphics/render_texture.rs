@@ -26,7 +26,7 @@
 
 use libc::c_uint;
 
-use system::vector2::{Vector2f, Vector2i, Vector2u};
+use system::{Vector2f, Vector2i, Vector2u};
 use graphics::{View, Color, IntRect, CircleShape, RectangleShape, Text,
                RenderStates, Sprite, Texture,
                RenderTarget, Vertex, PrimitiveType, BaseShape};

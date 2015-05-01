@@ -22,8 +22,6 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-//! Utility Class providing 2 dimensional vectors for i32, u32, and f32.
-
 use std::ops::{Add, Sub, Mul, Div};
 
 /// Generic two-dimensional vector.
@@ -44,7 +42,7 @@ pub type Vector2u = Vector2<u32>;
 pub type Vector2f = Vector2<f32>;
 
 impl<T> Vector2<T> {
-    /// Create a new Vector2 with the given values.
+    /// Create a new `Vector2` with the given values.
     pub fn new(x: T, y: T) -> Vector2<T> {
         Vector2 {
             x: x,
@@ -92,18 +90,18 @@ impl<T: Copy + Div<Output=T>> Div<T> for Vector2<T> {
     fn div(self, rhs: T) -> Vector2<T> {
         Vector2 {
             x: self.x / rhs,
-            y: self.x / rhs
+            y: self.y / rhs
         }
     }
 }
 
-/// Utility trait to convert a Vector2 on another type
+/// Utility trait for converting between different `Vector2`s.
 pub trait ToVec {
-    /// Convert the current Vector2 to a Vector2f
+    /// Convert the current Vector2 to a `Vector2f`.
     fn to_vector2f(&self) -> Vector2f;
-    /// Convert the current Vector2 to a Vector2i
+    /// Convert the current Vector2 to a `Vector2i`.
     fn to_vector2i(&self) -> Vector2i;
-    /// Convert the current Vector2f to a Vector2u
+    /// Convert the current Vector2f to a `Vector2u`.
     fn to_vector2u(&self) -> Vector2u;
 }
 

@@ -34,8 +34,7 @@ use std::ffi::CString;
 use std::marker::PhantomData;
 
 use graphics::{Texture, Color};
-use system::vector2::Vector2f;
-use system::vector3::Vector3f;
+use system::{Vector2f, Vector3f};
 
 use ffi::Foreign;
 use ffi::graphics as ffi;

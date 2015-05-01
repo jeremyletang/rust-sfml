@@ -32,7 +32,7 @@ use libc::{c_float, c_uint, size_t};
 
 use graphics::{RenderTarget, Font, FloatRect, Drawable, Transformable,
                Color, Transform, RenderStates, TextStyle};
-use system::vector2::Vector2f;
+use system::Vector2f;
 
 use ffi::Foreign;
 use ffi::graphics as ffi;

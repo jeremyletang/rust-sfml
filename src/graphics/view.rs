@@ -31,7 +31,7 @@
 use libc::c_float;
 
 use graphics::FloatRect;
-use system::vector2::Vector2f;
+use system::Vector2f;
 
 use ffi::Foreign;
 use ffi::graphics as ffi;

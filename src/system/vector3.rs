@@ -22,26 +22,27 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-//! Utility Class providing 3 dimensional vectors for f32.
-
 use std::ops::{Add, Sub, Mul, Div};
 
-/// Vector3f definition
+/// Generic three-dimensional vector.
 #[repr(C)]
-#[derive(Clone, PartialOrd, PartialEq, Debug, Copy)]
-pub struct Vector3f {
+#[derive(Clone, PartialOrd, Ord, PartialEq, Eq, Debug, Copy)]
+pub struct Vector3<T> {
     /// X coordinate of the vector.
-    pub x: f32,
+    pub x: T,
     /// Y coordinate of the vector.
-    pub y: f32,
+    pub y: T,
     /// Z coordinate of the vector.
-    pub z: f32
+    pub z: T
 }
 
-impl Vector3f {
-    /// Create a new Vector3f with the given values.
-    pub fn new(x: f32, y: f32, z: f32) -> Vector3f {
-        Vector3f {
+/// Three-dimensional float vector.
+pub type Vector3f = Vector3<f32>;
+
+impl<T> Vector3<T> {
+    /// Create a new `Vector3` with the given values.
+    pub fn new(x: T, y: T, z: T) -> Vector3<T> {
+        Vector3 {
             x: x,
             y: y,
             z: z
@@ -49,99 +50,50 @@ impl Vector3f {
     }
 }
 
-impl Add<f32> for Vector3f {
-    type Output = Vector3f;
+impl<T: Add<Output=T>> Add for Vector3<T> {
+    type Output = Vector3<T>;
 
-    fn add(self, rhs: f32) -> Vector3f {
-        Vector3f {
-            x: self.x + rhs,
-            y: self.y + rhs,
-            z: self.z + rhs
+    fn add(self, other: Vector3<T>) -> Vector3<T> {
+        Vector3 {
+            x: self.x + other.x,
+            y: self.y + other.y,
+			z: self.z + other.z
         }
     }
 }
 
-impl Sub<f32> for Vector3f {
-    type Output = Vector3f;
+impl<T: Sub<Output=T>> Sub for Vector3<T> {
+    type Output = Vector3<T>;
 
-    fn sub(self, rhs: f32) -> Vector3f {
-        Vector3f {
-            x: self.x - rhs,
-            y: self.y - rhs,
-            z: self.z - rhs
+    fn sub(self, other: Vector3<T>) -> Vector3<T> {
+        Vector3 {
+            x: self.x - other.x,
+            y: self.y - other.y,
+			z: self.z - other.z
         }
     }
 }
 
-impl Mul<f32> for Vector3f {
-    type Output = Vector3f;
+impl<T: Copy + Mul<Output=T>> Mul<T> for Vector3<T> {
+    type Output = Vector3<T>;
 
-    fn mul(self, rhs: f32) -> Vector3f {
-        Vector3f {
+    fn mul(self, rhs: T) -> Vector3<T> {
+        Vector3 {
             x: self.x * rhs,
             y: self.y * rhs,
-            z: self.z * rhs
+			z: self.z * rhs
         }
     }
 }
 
-impl Div<f32> for Vector3f {
-    type Output = Vector3f;
+impl<T: Copy + Div<Output=T>> Div<T> for Vector3<T> {
+    type Output = Vector3<T>;
 
-    fn div(self, rhs: f32) -> Vector3f {
-        Vector3f {
+    fn div(self, rhs: T) -> Vector3<T> {
+        Vector3 {
             x: self.x / rhs,
             y: self.y / rhs,
-            z: self.z / rhs
-        }
-    }
-}
-
-
-impl Add for Vector3f {
-    type Output = Vector3f;
-
-    fn add(self, rhs: Vector3f) -> Vector3f {
-        Vector3f {
-            x: self.x + rhs.x,
-            y: self.y + rhs.y,
-            z: self.z + rhs.z
-        }
-    }
-}
-
-impl Sub for Vector3f {
-    type Output = Vector3f;
-
-    fn sub(self, rhs: Vector3f) -> Vector3f {
-        Vector3f {
-            x: self.x - rhs.x,
-            y: self.y - rhs.y,
-            z: self.z - rhs.z
-        }
-    }
-}
-
-impl Mul for Vector3f {
-    type Output = Vector3f;
-
-    fn mul(self, rhs: Vector3f) -> Vector3f {
-        Vector3f {
-            x: self.x * rhs.x,
-            y: self.y * rhs.y,
-            z: self.z * rhs.z
-        }
-    }
-}
-
-impl Div for Vector3f {
-    type Output = Vector3f;
-
-    fn div(self, rhs: Vector3f) -> Vector3f {
-        Vector3f {
-            x: self.x / rhs.x,
-            y: self.y / rhs.y,
-            z: self.z / rhs.z
+			z: self.z / rhs
         }
     }
 }

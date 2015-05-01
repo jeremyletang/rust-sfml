@@ -32,7 +32,7 @@ use libc::{c_uint, c_float};
 use std::vec::Vec;
 
 use window::{event, VideoMode, ContextSettings, WindowStyle};
-use system::vector2::{Vector2i, Vector2u};
+use system::{Vector2i, Vector2u};
 
 use ffi::{SfBool, Foreign};
 use ffi::window as ffi;

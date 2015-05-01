@@ -26,7 +26,7 @@
 //!
 //! The audio listener is the point in the scene from where all the sounds are heard.
 
-use system::vector3::Vector3f;
+use system::Vector3f;
 
 use ffi::audio as ffi;
 

@@ -31,7 +31,7 @@
 //! in SFML, vertices also have a color and a pair of texture coordinates.
 
 use graphics::Color;
-use system::vector2::Vector2f;
+use system::Vector2f;
 
 /// Define a point with color and texture coordinates
 ///

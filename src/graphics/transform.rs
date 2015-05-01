@@ -29,7 +29,7 @@
 
 use libc::c_float;
 
-use system::vector2::Vector2f;
+use system::Vector2f;
 use graphics::FloatRect;
 
 use ffi::graphics as ffi;

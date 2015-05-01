@@ -27,7 +27,7 @@
 use libc::{c_float, c_uint};
 use std::ptr;
 
-use system::vector2::Vector2f;
+use system::Vector2f;
 use graphics::{FloatRect, IntRect, Color, Texture, Transformable,
                RenderTarget, Transform, RenderStates, Drawable, Shape};
 

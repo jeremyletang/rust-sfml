@@ -27,7 +27,7 @@
 use libc::{c_uint, size_t};
 use std::ffi::CString;
 
-use system::vector2::Vector2u;
+use system::Vector2u;
 use graphics::{Color, IntRect};
 
 use ffi::{SfBool, Foreign};

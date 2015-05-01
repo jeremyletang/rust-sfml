@@ -31,8 +31,7 @@ use libc::{c_float, size_t};
 use std::ffi::CString;
 
 use audio::Status;
-use system::Time;
-use system::vector3::Vector3f;
+use system::{Time, Vector3f};
 
 use ffi::{SfBool, Foreign};
 use ffi::audio as ffi;

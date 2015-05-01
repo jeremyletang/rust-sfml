@@ -32,7 +32,7 @@
 use std::ops::{Deref, DerefMut};
 
 use graphics::{Texture, RenderTarget, RenderStates, Drawable, ShapeImpl, Shape, BaseShape};
-use system::vector2::Vector2f;
+use system::Vector2f;
 
 #[derive(Clone)]
 struct ConvexImpl(Vec<Vector2f>);
