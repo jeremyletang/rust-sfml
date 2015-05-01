@@ -30,7 +30,7 @@ use libc::c_float;
 use std::rc::Rc;
 use std::cell::RefCell;
 
-use audio::{Status, SoundBuffer};
+use audio::{SoundStatus, SoundBuffer};
 use system::{Time, Vector3f};
 
 use ffi::sfml_types::SfBool;
@@ -147,7 +147,7 @@ impl Sound {
     /// Get the current status of a sound (stopped, paused, playing)
     ///
     /// Return current status
-    pub fn get_status(&self) -> Status {
+    pub fn get_status(&self) -> SoundStatus {
         unsafe { ffi::sfSound_getStatus(self.sound) }
     }
 

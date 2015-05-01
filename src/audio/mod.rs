@@ -27,7 +27,7 @@
 */
 
 pub use audio::sound_buffer::SoundBuffer;
-pub use audio::sound_status::Status;
+pub use audio::sound_status::SoundStatus;
 pub use audio::music::Music;
 pub use audio::sound::Sound;
 pub use audio::sound_buffer_recorder::SoundBufferRecorder;

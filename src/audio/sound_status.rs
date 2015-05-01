@@ -27,7 +27,7 @@
 /// Enumeration of statuses for sounds and musics
 #[repr(C)]
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
-pub enum Status {
+pub enum SoundStatus {
     /// Sound is not playing.
     Stopped = 0,
     /// Sound is paused.

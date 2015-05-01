@@ -30,7 +30,7 @@
 use libc::{c_float, size_t};
 use std::ffi::CString;
 
-use audio::Status;
+use audio::SoundStatus;
 use system::{Time, Vector3f};
 
 use ffi::{SfBool, Foreign};
@@ -173,7 +173,7 @@ impl Music {
     /// Get the current status of a music (stopped, paused, playing)
     ///
     /// Return current status
-    pub fn get_status(&self) -> Status {
+    pub fn get_status(&self) -> SoundStatus {
         unsafe { ffi::sfMusic_getStatus(self.raw()) }
     }
 

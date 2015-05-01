@@ -24,7 +24,7 @@
 
 use libc::{c_uint, c_float, c_char, size_t, c_uchar};
 use system::{Vector3f, Time};
-use audio::Status;
+use audio::SoundStatus;
 use ffi::SfBool;
 
 foreign_type! {
@@ -57,7 +57,7 @@ extern "C" {
 	pub fn sfMusic_stop(music: *mut sfMusic) -> ();
 	pub fn sfMusic_getChannelCount(music: *const sfMusic) -> c_uint;
 	pub fn sfMusic_getSampleRate(music: *const sfMusic) -> c_uint;
-	pub fn sfMusic_getStatus(music: *const sfMusic) -> Status;
+	pub fn sfMusic_getStatus(music: *const sfMusic) -> SoundStatus;
 	pub fn sfMusic_getPlayingOffset(music: *const sfMusic) -> Time;
 	pub fn sfMusic_setPitch(music: *mut sfMusic, pitch: c_float) -> ();
 	pub fn sfMusic_setVolume(music: *mut sfMusic, volume: c_float) -> ();
@@ -83,7 +83,7 @@ extern "C" {
 	pub fn sfSound_getBuffer(sound: *const sfSound) -> *const sfSoundBuffer;
 	pub fn sfSound_setLoop(sound: *mut sfSound, lloop: SfBool) -> ();
 	pub fn sfSound_getLoop(sound: *const sfSound) -> SfBool;
-	pub fn sfSound_getStatus(sound: *const sfSound) -> Status;
+	pub fn sfSound_getStatus(sound: *const sfSound) -> SoundStatus;
 	pub fn sfSound_setPitch(sound: *mut sfSound, pitch: c_float) -> ();
 	pub fn sfSound_setVolume(sound: *mut sfSound, volume: c_float) -> ();
 	pub fn sfSound_setPosition(sound: *mut sfSound, position: Vector3f) -> ();

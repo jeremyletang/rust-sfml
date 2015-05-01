@@ -28,7 +28,7 @@
 
 use libc::c_float;
 
-use audio::{Status, SoundBuffer};
+use audio::{SoundStatus, SoundBuffer};
 use system::{Time, Vector3f};
 
 use ffi::{SfBool, Foreign};
@@ -124,7 +124,7 @@ impl<'s> Sound<'s> {
     /// Get the current status of a sound (stopped, paused, playing)
     ///
     /// Return current status
-    pub fn get_status(&self) -> Status {
+    pub fn get_status(&self) -> SoundStatus {
         unsafe { ffi::sfSound_getStatus(self.raw()) }
     }
 
