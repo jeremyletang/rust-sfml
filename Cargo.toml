@@ -1,8 +1,11 @@
 [package]
 name = "sfml"
 description = "Rust binding for sfml"
-version = "0.9.3"
-authors = ["Jeremy Letang <letang.jeremy@gmail.com>"]
+version = "0.10.0"
+authors = [
+	"Jeremy Letang <letang.jeremy@gmail.com>",
+	"Tad Hardesty <tad@platymuus.com>"
+]
 
 documentation = "http://www.rust-sfml.org/doc/rsfml/index.html"
 homepage = "http://www.rust-sfml.org/"
