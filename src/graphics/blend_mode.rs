@@ -98,3 +98,9 @@ impl BlendMode {
 					   BlendFactor::One, BlendFactor::Zero, BlendEquation::Add)
 	}
 }
+
+impl Default for BlendMode {
+	fn default() -> BlendMode {
+		BlendMode::alpha()
+	}
+}

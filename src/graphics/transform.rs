@@ -107,7 +107,7 @@ impl Transform {
     ///
     /// # Arguments
     /// * other - Transform to combine to transform
-    pub fn combine(&mut self, other: &mut Transform) -> () {
+    pub fn combine(&mut self, other: &Transform) -> () {
         unsafe {
             ffi::sfTransform_combine(self, other)
         }
@@ -223,4 +223,10 @@ impl Transform {
             ffi::sfTransform_transformRect(self, *rectangle)
         }
     }
+}
+
+impl Default for Transform {
+	fn default() -> Transform {
+		Transform::new_identity()
+	}
 }

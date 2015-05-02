@@ -158,7 +158,6 @@ impl<'s> Text<'s> {
     /// # Arguments
     /// * style - New style
     pub fn set_style(&mut self, style: TextStyle) -> () {
-		// TODO: fix TextStyle conversion
         unsafe {
             ffi::sfText_setStyle(self.raw_mut(), style.bits())
         }

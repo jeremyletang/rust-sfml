@@ -31,7 +31,7 @@ use graphics::{BlendMode, Shader, Texture, Transform};
 use ffi::graphics as ffi;
 
 /// Define the states used for drawing to a RenderTarget
-#[derive(Clone)]
+#[derive(Clone, Default)]
 pub struct RenderStates<'s> {
     /// Blending mode.
     pub blend_mode: BlendMode,
