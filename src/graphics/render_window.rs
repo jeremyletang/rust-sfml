@@ -99,6 +99,15 @@ impl RenderWindow {
         }
     }
 
+    /// Change a window's icon using an image.
+	pub fn set_icon_image(&mut self, image: &Image) {
+		let size = image.get_size();
+		unsafe {
+			let pixels = ffi::sfImage_getPixelsPtr(image.unwrap());
+			ffi::sfRenderWindow_setIcon(self.raw_mut(), size.x as c_uint, size.y as c_uint, pixels);
+		}
+	}
+
     /// Return an iterator over all the event currently in the events queue.
     pub fn events(&mut self) -> Events {
         Events {
