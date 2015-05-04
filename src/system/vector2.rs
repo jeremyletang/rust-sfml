@@ -105,6 +105,12 @@ pub trait ToVec {
     fn to_vector2u(&self) -> Vector2u;
 }
 
+impl<T> From<(T, T)> for Vector2<T> {
+	fn from((x, y): (T, T)) -> Vector2<T> {
+		Vector2 { x: x, y: y }
+	}
+}
+
 macro_rules! to_vec {
     (vec; $vec:ty) => (
         impl ToVec for $vec {
@@ -129,36 +135,9 @@ macro_rules! to_vec {
                 }
             }
         }
-    );
-    (tup; $elem:ty) => (
-        impl ToVec for ($elem, $elem) {
-            fn to_vector2f(&self) -> Vector2f {
-                Vector2f {
-                    x: self.0 as f32,
-                    y: self.1 as f32
-                }
-            }
-
-            fn to_vector2i(&self) -> Vector2i {
-                Vector2i {
-                    x: self.0 as i32,
-                    y: self.1 as i32
-                }
-            }
-
-            fn to_vector2u(&self) -> Vector2u {
-                Vector2u {
-                    x: self.0 as u32,
-                    y: self.1 as u32
-                }
-            }
-        }
     )
 }
 
 to_vec!(vec; Vector2f);
 to_vec!(vec; Vector2i);
 to_vec!(vec; Vector2u);
-to_vec!(tup; f32);
-to_vec!(tup; i32);
-to_vec!(tup; u32);
