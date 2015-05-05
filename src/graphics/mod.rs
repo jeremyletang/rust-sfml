@@ -30,7 +30,7 @@ pub use graphics::render_states::RenderStates;
 pub use graphics::render_window::{RenderWindow, Events};
 pub use graphics::rect::{FloatRect, IntRect};
 pub use graphics::texture::Texture;
-pub use graphics::blend_mode::BlendMode;
+pub use graphics::blend_mode::{BlendMode, BlendFactor, BlendEquation};
 pub use graphics::transform::Transform;
 pub use graphics::text::Text;
 pub use graphics::shader::Shader;

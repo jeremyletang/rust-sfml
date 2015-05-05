@@ -24,29 +24,43 @@
 
 //! Available blending modes for drawing
 
+/// Available factors for blend computations.
 #[repr(C)]
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
 pub enum BlendFactor {
+	/// `0`
 	Zero = 0,
+	/// `X`
 	One = 1,
+	/// `SrcColor * X`
 	SrcColor = 2,
+	/// `(1 - SrcColor) * X`
 	OneMinusSrcColor = 3,
+	/// `DstColor * X`
 	DstColor = 4,
+	/// `(1 - DstColor) * X`
 	OneMinusDstColor = 5,
+	/// `SrcAlpha * X`
 	SrcAlpha = 6,
+	/// `(1 - SrcAlpha) * X`
 	OneMinusSrcAlpha = 7,
+	/// `DstAlpha * X`
 	DstAlpha = 8,
+	/// `(1 - DstAlpha) * X`
 	OneMinusDstAlpha = 9,
 }
 
+/// Available equations for blend computations.
 #[repr(C)]
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
 pub enum BlendEquation {
+	/// Equation of the form `SF * S + DF * D`
 	Add = 0,
+	/// Equation of the form `SF * S - DF * D`
 	Subtract = 1,
 }
 
-/// Available Blending modes for drawing.
+/// A combination of factors and equations describing a blend mode.
 #[repr(C)]
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
 pub struct BlendMode {
