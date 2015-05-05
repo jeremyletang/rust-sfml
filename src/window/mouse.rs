@@ -36,15 +36,15 @@ use ffi::window as ffi;
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
 pub enum MouseButton {
     /// The left mouse button.
-    MouseLeft,
+    Left,
     /// The right mouse button.
-    MouseRight,
+    Right,
     /// The middle (wheel) mouse button.
-    MouseMiddle,
+    Middle,
     /// The first extra mouse button.
-    MouseXButton1,
+    XButton1,
     /// The second extra mouse button.
-    MouseXButton2
+    XButton2
 }
 
 impl MouseButton {
