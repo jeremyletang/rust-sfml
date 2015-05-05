@@ -122,3 +122,27 @@ impl Drawable for VertexArray {
 		render_target.draw_primitives_rs(&self, self.primitive_type, render_states)
     }
 }
+
+impl IntoIterator for VertexArray {
+	type Item = Vertex;
+	type IntoIter = ::std::vec::IntoIter<Vertex>;
+	fn into_iter(self) -> Self::IntoIter {
+		self.vertices.into_iter()
+	}
+}
+
+impl<'a> IntoIterator for &'a VertexArray {
+	type Item = &'a Vertex;
+	type IntoIter = ::std::slice::Iter<'a, Vertex>;
+	fn into_iter(self) -> Self::IntoIter {
+		(&self.vertices).into_iter()
+	}
+}
+
+impl<'a> IntoIterator for &'a mut VertexArray {
+	type Item = &'a mut Vertex;
+	type IntoIter = ::std::slice::IterMut<'a, Vertex>;
+	fn into_iter(self) -> Self::IntoIter {
+		(&mut self.vertices).into_iter()
+	}
+}
