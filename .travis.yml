@@ -3,6 +3,10 @@ env:
     - secure: Q0YTaTb4BGr0ViEo5laf3nBHRCYgvmemeyjPkUpNAYARvYTeLPmIiH12tF7G7D99Xs4ppQHzQ+9BKPLjJnrmY+Z4JSlVSsSZraXbra1XWrkQAWx8esipA1FfmyHlGlaigxqMvMb36wBx0hD0ZM5dmXiKK02JAVxw3qEnCuUcl8Q=
     - LD_LIBRARY_PATH=/usr/local/lib
 language: rust
+script:
+  - cargo build --verbose
+  - cargo test --verbose
+  - cargo doc --verbose
 before_install:
   - sudo apt-get update
 install:
