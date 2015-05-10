@@ -1,3 +1,7 @@
+env:
+  global:
+    - secure: Q0YTaTb4BGr0ViEo5laf3nBHRCYgvmemeyjPkUpNAYARvYTeLPmIiH12tF7G7D99Xs4ppQHzQ+9BKPLjJnrmY+Z4JSlVSsSZraXbra1XWrkQAWx8esipA1FfmyHlGlaigxqMvMb36wBx0hD0ZM5dmXiKK02JAVxw3qEnCuUcl8Q=
+    - LD_LIBRARY_PATH=/usr/local/lib
 language: rust
 before_install:
   - sudo apt-get update
@@ -11,3 +15,5 @@ install:
   - sudo apt-get install libpthread-stubs0-dev libgl1-mesa-dev libx11-dev
   - sudo apt-get install libxrandr-dev libfreetype6-dev libglew1.5-dev
   - sudo apt-get install libjpeg8-dev libgpgme11-dev libsndfile1-dev libopenal-dev libjpeg62
+after_script:
+  - curl http://www.rust-ci.org/artifacts/put?t=$RUSTCI_TOKEN | sh
