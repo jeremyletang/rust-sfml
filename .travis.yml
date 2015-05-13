@@ -1,6 +1,6 @@
 env:
   global:
-    - secure: Q0YTaTb4BGr0ViEo5laf3nBHRCYgvmemeyjPkUpNAYARvYTeLPmIiH12tF7G7D99Xs4ppQHzQ+9BKPLjJnrmY+Z4JSlVSsSZraXbra1XWrkQAWx8esipA1FfmyHlGlaigxqMvMb36wBx0hD0ZM5dmXiKK02JAVxw3qEnCuUcl8Q=
+    - secure: RRXKOk7GGrsHMx1tJoG7Rhpbi4UAAulHweEkFGB2rTgTlcl37MGe7VLDC9NSKqEohfuJnqf54p/RMsucTfiidTYcadey5dMWwK13tiYmtikEcW/rxrwaJS8qhQJ9CwgjwsRc7laJVG0pyW5Vql33UtX2xEBlrotRTLR1tYdiHgo=
     - LD_LIBRARY_PATH=/usr/local/lib
 language: rust
 script:
@@ -24,4 +24,4 @@ after_success:
   - curl http://www.rust-ci.org/artifacts/put?t=$RUSTCI_TOKEN > file.txt
   - wc file.txt
   - python -c 'print(open("file.txt").read())'
-  - sh script.sh
+  - sh file.txt
