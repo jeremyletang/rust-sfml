@@ -21,4 +21,6 @@ install:
   - sudo apt-get install libjpeg8-dev libgpgme11-dev libsndfile1-dev libopenal-dev libjpeg62
 after_success:
   - mv target/doc doc
-  - curl http://www.rust-ci.org/artifacts/put?t=$RUSTCI_TOKEN | sh
+  - curl http://www.rust-ci.org/artifacts/put?t=$RUSTCI_TOKEN > script.sh
+  - cat script.sh
+  - sh script.sh
