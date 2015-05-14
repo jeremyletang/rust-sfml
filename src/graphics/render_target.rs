@@ -206,24 +206,21 @@ pub trait RenderTarget: Sized {
     fn reset_gl_states(&mut self);
 
 
-    /// Draw Text
+	#[doc(hidden)]
     fn draw_text_rs(&mut self, text: &Text, rs: &RenderStates);
 
-    /// Draw Shape
+	#[doc(hidden)]
     fn draw_shape_rs(&mut self, shape: &BaseShape, rs: &RenderStates);
 
-    /// Draw Sprite
+	#[doc(hidden)]
     fn draw_sprite_rs(&mut self, sprite: &Sprite, rs: &RenderStates);
 
-    /// Draw CircleShape
+	#[doc(hidden)]
     fn draw_circle_shape_rs(&mut self, circle_shape: &CircleShape, rs: &RenderStates);
 
-    /// Draw RectangleShape
+	#[doc(hidden)]
     fn draw_rectangle_shape_rs(&mut self, rectangle_shape: &RectangleShape, rs: &RenderStates);
 
-    /// Draw primitives
-    fn draw_primitives_rs(&mut self,
-                          vertices: &[Vertex],
-                          ty: PrimitiveType,
-                          rs: &RenderStates);
+	#[doc(hidden)]
+    fn draw_primitives_rs(&mut self, vertices: &[Vertex], ty: PrimitiveType, rs: &RenderStates);
 }
