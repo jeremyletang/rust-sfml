@@ -22,9 +22,7 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-/*!
-* Sounds, streaming (musics or custom sources), recording, spatialization
-*/
+//! Sounds, streaming (music or custom sources), recording, and spatialization.
 
 pub use audio::sound_buffer::SoundBuffer;
 pub use audio::sound_status::SoundStatus;

@@ -24,7 +24,6 @@
 
 //! Provides OpenGL-based windows, and abstractions for events and input handling.
 
-
 pub use window::window::Window;
 pub use window::video_mode::VideoMode;
 pub use window::context::Context;

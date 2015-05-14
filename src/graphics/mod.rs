@@ -22,8 +22,7 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-//! 2D graphics module: sprites, text, shapes
-//! [window](../window/index.html)
+//! 2D graphics module: sprites, text, shapes, and so on.
 
 pub use graphics::render_target::RenderTarget;
 pub use graphics::render_states::RenderStates;

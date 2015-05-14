@@ -22,72 +22,59 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
+//! # Rust-SFML: __SFML__ bindings for Rust
 //!
-//! # rust-sfml
+//! *This library is an in-progress fork of the
+//! [original Rust-SFML](https://github.com/jeremyletang/rust-sfml).*
 //!
-//! __SFML__ bindings for Rust
+//! This is a Rust binding for [SFML](http://www.sfml-dev.org/), the Simple and
+//! Fast Multimedia Library, developed by Laurent Gomila.
 //!
-//! This is a Rust binding for __SFML__, the Simple and Fast Multimedia Library,
-//! developped by Laurent Gomila.
+//! The binding requires [CSFML 2.2](http://www.sfml-dev.org/download/csfml/) to
+//! be already installed somewhere the compiler will find it. Specifically,
+//! Rust-SFML requires the window, graphics, and audio components available.
 //!
-//! __SFML__ website : www.sfml-dev.org
-//!
-//!
-//! You must install on your computer the SFML2 and CSFML2 libraries
-//! who are used for the binding.
-//!
-//! SFML2: http://www.sfml-dev.org/download/sfml/2.0/
-//!
-//! CSFML2: http://www.sfml-dev.org/download/csfml/
-//!
-//! Then clone the repo and build the library with the following command.
-//! You can use Cargo to build rust-sfml:
-//!
-//! ```Shell
-//! > cargo build
-//! ```
-//!
+//! The library can be built with Cargo, using the usual `cargo build`.
 //! Examples are located under the `examples` directory.
-//! You can run an example with `cargo run --example example_name`.
+//! You can run an example with `cargo run --example <example_name>`.
 //!
-//! __Rust-sfml__ works on Linux, windows and OSX.
+//! Rust-SFML supports Linux, Windows, and OSX.
 //!
-//! # Short example
+//! # Example
 //!
-//! Here is a short example, draw a circle shape and display it.
+//! This short example opens a window, creates a circle shape, and displays the
+//! circle shape to the window until it is closed.
 //!
 //! ```no_run
 //! extern crate sfml;
 //!
 //! use sfml::system::Vector2f;
-//! use sfml::window::{ContextSettings, VideoMode, event, Close};
+//! use sfml::window::{ContextSettings, VideoMode, Event, window_style};
 //! use sfml::graphics::{RenderWindow, RenderTarget, CircleShape, Color};
+//! use sfml::graphics::{Shape, Transformable};
 //!
 //! fn main() {
 //!     // Create the window of the application
-//!     let mut window = match RenderWindow::new(VideoMode::new_init(800, 600, 32),
-//!                                              "SFML Example",
-//!                                              Close,
-//!                                              &ContextSettings::default()) {
-//!         Some(window) => window,
-//!         None => panic!("Cannot create a new Render Window.")
-//!     };
+//!     let mut window = RenderWindow::new(
+//!         VideoMode::new_init(800, 600, 32),
+//!         "SFML Example",
+//!         window_style::CLOSE,
+//!         &ContextSettings::default()
+//!     ).expect("Failed to create RenderWindow.");
 //!
 //!     // Create a CircleShape
-//!     let mut circle = match CircleShape::new() {
-//!         Some(circle) => circle,
-//!         None       => panic!("Error, cannot create ball")
-//!     };
+//!     let mut circle = CircleShape::new().expect("Failed to create CircleShape.");
 //!     circle.set_radius(30.);
 //!     circle.set_fill_color(&Color::red());
 //!     circle.set_position(&Vector2f::new(100., 100.));
-//!
+//! 
+//!     // Loop until the window is closed
 //!     while window.is_open() {
 //!         // Handle events
 //!         for event in window.events() {
 //!             match event {
-//!                 event::Closed => window.close(),
-//!                 _             => {/* do nothing */}
+//!                 Event::Closed => window.close(),
+//!                 _ => {/* do nothing */}
 //!             }
 //!         }
 //!
@@ -103,13 +90,10 @@
 //!
 //! # License
 //!
-//! This software is a binding of the SFML library created by Laurent Gomila, which
-//! is provided under the Zlib/png license.
-//!
-//! This software is provided under the same license than the SFML, the Zlib/png
-//! license.
-//!
-//! Here is a list of all modules :
+//! This software is a binding of the SFML library created by Laurent Gomila,
+//! which is provided under the Zlib/png license. This binding is itself
+//! provided under the same license, the Zlib/png license. See the
+//! `LICENSE.txt` file for details.
 
 #![doc(html_logo_url = "http://rust-sfml.org/logo_rsfml.png")]
 #![warn(missing_docs)]

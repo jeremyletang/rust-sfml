@@ -23,9 +23,10 @@
 */
 
 /*!
- * Base module of SFML, defining various utilities.
+ * The base module of SFML, providing vector types and time measurement.
  *
- * It provides vector classes, unicode strings and conversion functions, threads and mutexes, timing classes.
+ * The C++ version of SFML also provides Unicode and threading functionality.
+ * For these features, use the Rust standard library instead.
  */
 
 // Vector support

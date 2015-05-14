@@ -22,8 +22,6 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#![allow(missing_copy_implementations)]
-
 use std::ops::{Add, Sub, Mul, Div};
 use libc::c_longlong;
 use std::mem;
