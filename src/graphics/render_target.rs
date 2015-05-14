@@ -31,7 +31,7 @@ use system::{Vector2f, Vector2i, Vector2u};
 /// Trait which is the equivalent of the sf::RenderTarget class in SFML.
 /// This is implemented by RenderTarget and RenderWindow structs to provide
 /// a unified interface for rendering.
-pub trait RenderTarget: Sized {
+pub trait RenderTarget {
     /// clear the screen
     fn clear(&mut self, color: &Color);
 
@@ -154,7 +154,7 @@ pub trait RenderTarget: Sized {
     ///
     /// # Arguments
     /// * object - Object to draw
-    fn draw<T: Drawable>(&mut self, object: &T) {
+    fn draw(&mut self, object: &Drawable) where Self: Sized {
 		object.draw(self, &RenderStates::default())
 	}
 
@@ -163,7 +163,7 @@ pub trait RenderTarget: Sized {
     /// # Arguments
     /// * object - Object to draw
     /// * renderStates - The renderStates to associate to the object
-    fn draw_rs<T: Drawable>(&mut self, object: &T, render_states: &RenderStates) {
+    fn draw_rs(&mut self, object: &Drawable, render_states: &RenderStates) where Self: Sized {
 		object.draw(self, render_states)
 	}
 

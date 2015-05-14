@@ -348,9 +348,7 @@ impl<'s> Clone for Text<'s> {
 }
 
 impl<'s> Drawable for Text<'s> {
-    fn draw<RT:RenderTarget>(&self,
-                                render_target: &mut RT,
-                                render_states: &RenderStates) -> () {
-        render_target.draw_text_rs(self, render_states)
+    fn draw(&self, target: &mut RenderTarget, states: &RenderStates) {
+        target.draw_text_rs(self, states)
     }
 }

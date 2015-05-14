@@ -364,9 +364,7 @@ impl<'s> Clone for CircleShape<'s> {
 }
 
 impl<'s> Drawable for CircleShape<'s> {
-    fn draw<RT:RenderTarget>(&self,
-                                render_target: &mut RT,
-                                render_states: &RenderStates) -> () {
-        render_target.draw_circle_shape_rs(self, render_states)
+    fn draw(&self, target: &mut RenderTarget, states: &RenderStates) {
+        target.draw_circle_shape_rs(self, states)
     }
 }

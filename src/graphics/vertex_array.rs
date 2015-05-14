@@ -116,10 +116,8 @@ impl DerefMut for VertexArray {
 }
 
 impl Drawable for VertexArray {
-    fn draw<RT: RenderTarget>(&self,
-                                 render_target: &mut RT,
-                                 render_states: &RenderStates) -> () {
-		render_target.draw_primitives_rs(&self, self.primitive_type, render_states)
+    fn draw(&self, target: &mut RenderTarget, states: &RenderStates) {
+		target.draw_primitives_rs(&self, self.primitive_type, states)
     }
 }
 

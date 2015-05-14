@@ -28,7 +28,7 @@ use system::Vector2f;
 /// Type which can be drawn onto a RenderTarget.
 pub trait Drawable {
 	/// Draw this drawable onto a RenderTarget, with the provided states.
-    fn draw<RT: RenderTarget>(&self, target: &mut RT, states: &RenderStates);
+    fn draw(&self, target: &mut RenderTarget, states: &RenderStates);
 }
 
 /// Shape implementation which determines where and how many points exist.

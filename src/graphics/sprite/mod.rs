@@ -303,9 +303,7 @@ impl<'s> Clone for Sprite<'s> {
 }
 
 impl<'s> Drawable for Sprite<'s> {
-    fn draw<RT:RenderTarget>(&self,
-                                render_target: &mut RT,
-                                render_states: &RenderStates) -> () {
-        render_target.draw_sprite_rs(self, render_states)
+    fn draw(&self, target: &mut RenderTarget, states: &RenderStates) {
+        target.draw_sprite_rs(self, states)
     }
 }

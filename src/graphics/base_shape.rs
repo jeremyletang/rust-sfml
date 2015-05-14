@@ -334,9 +334,7 @@ impl<'s> Transformable for BaseShape<'s> {
 }
 
 impl<'s> Drawable for BaseShape<'s> {
-    fn draw<RT: RenderTarget>(&self,
-                                 render_target: &mut RT,
-                                 render_states: &RenderStates) -> () {
-        render_target.draw_shape_rs(self, render_states)
+    fn draw(&self, target: &mut RenderTarget, states: &RenderStates) {
+		target.draw_shape_rs(self, states)
     }
 }
