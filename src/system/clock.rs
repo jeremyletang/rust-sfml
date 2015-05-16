@@ -62,9 +62,7 @@ fn now() -> Time {
 #[cfg(not(target_os = "windows"))]
 mod platform {
     use system::Time;
-    use libc::c_int;
-    use libc::types::os::common::posix01::timespec;
-    use libc::consts::os::posix01::CLOCK_MONOTONIC;
+    use libc::{c_int, timespec, CLOCK_MONOTONIC};
 
     extern "C" {
         fn clock_gettime(clk_id: c_int, tp: *mut timespec) -> c_int;
@@ -81,7 +79,7 @@ mod platform {
 #[cfg(target_os = "macos")]
 mod platform {
     use system::Time;
-    
+
     pub unsafe fn now() -> Time {
         unimplemented!()
         /*
@@ -98,15 +96,14 @@ mod platform {
 #[cfg(target_os = "windows")]
 mod platform {
     use system::Time;
-    use libc::types::os::arch::extra::{HANDLE, DWORD, BOOL, LARGE_INTEGER};
+    use libc::{HANDLE, DWORD, LARGE_INTEGER};
+    use libc::{QueryPerformanceFrequency, QueryPerformanceCounter};
 
     extern "system" {
         fn GetCurrentThread() -> HANDLE;
         fn SetThreadAffinityMask(thread: HANDLE, mask: DWORD) -> DWORD;
-        fn QueryPerformanceFrequency(freq: *mut LARGE_INTEGER) -> BOOL;
-        fn QueryPerformanceCounter(freq: *mut LARGE_INTEGER) -> BOOL;
     }
-    
+
     static mut FREQUENCY: Option<LARGE_INTEGER> = None;
 
     pub unsafe fn now() -> Time {
@@ -127,7 +124,7 @@ mod platform {
                 value
             }
         };
-        
+
         let mut time: LARGE_INTEGER = 0;
         QueryPerformanceCounter(&mut time);
 
