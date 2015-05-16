@@ -26,7 +26,7 @@
 
 pub use graphics::render_target::RenderTarget;
 pub use graphics::render_states::RenderStates;
-pub use graphics::render_window::{RenderWindow, Events};
+pub use graphics::render_window::RenderWindow;
 pub use graphics::rect::{FloatRect, IntRect};
 pub use graphics::texture::Texture;
 pub use graphics::blend_mode::{BlendMode, BlendFactor, BlendEquation};

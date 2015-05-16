@@ -106,13 +106,6 @@ impl RenderWindow {
 		}
 	}
 
-    /// Return an iterator over all the event currently in the events queue.
-    pub fn events(&mut self) -> Events {
-        Events {
-            render_window: self.raw_mut(),
-        }
-    }
-
     /// Pop the event on top of event queue, if any, and return it
     ///
     /// This function is not blocking: if there's no pending event then
@@ -121,17 +114,24 @@ impl RenderWindow {
     /// thus you should always call this function in a loop
     /// to make sure that you process every pending event.
     ///
-    /// Return the event if an event was returned, or NoEvent if the event queue was empty
-    pub fn poll_event(&mut self) -> event::Event {
-        let mut event = event::raw::sfEvent { data: [032; 6] };
-        let have_event = unsafe {
-            ffi::sfRenderWindow_pollEvent(self.raw_mut(), &mut event)
-        }.to_bool();
-        if !have_event {
-            event::Event::NoEvent
-        } else {
-            event::raw::get_wrapped_event(&mut event)
-        }
+    /// Return Some if an event was returned, or None if the event queue was empty
+    pub fn poll_event(&mut self) -> Option<event::Event> {
+		loop {
+			let mut event = event::raw::sfEvent { data: [0; 6] };
+			let have_event = unsafe {
+				ffi::sfRenderWindow_pollEvent(self.raw_mut(), &mut event).to_bool()
+			};
+			if have_event {
+				// If this returns None, there was actually an event, but it
+				// failed to unwrap. For now, throw it away, but maybe in the
+				// future report this better.
+				if let Some(event) = event::raw::get_wrapped_event(&mut event) {
+					return Some(event)
+				}
+			} else {
+				return None
+			}
+		}
     }
 
     /// Wait for an event and return it
@@ -144,17 +144,17 @@ impl RenderWindow {
     /// is dedicated to events handling: you want to make this thread
     /// sleep as long as no new event is received.
     ///
-    /// Return the event or NoEvent if an error has occured
-    pub fn wait_event(&mut self) -> event::Event {
-        let mut event = event::raw::sfEvent { data: [032; 6] };
-        let have_event: bool = unsafe {
-            ffi::sfRenderWindow_waitEvent(self.raw_mut(), &mut event)
-        }.to_bool();
-        if have_event == false {
-            event::Event::NoEvent
-        } else {
-            event::raw::get_wrapped_event(&mut event)
-        }
+    /// Return Some(event), or None if an error has occured
+    pub fn wait_event(&mut self) -> Option<event::Event> {
+        let mut event = event::raw::sfEvent { data: [0; 6] };
+        let have_event = unsafe {
+            ffi::sfRenderWindow_waitEvent(self.raw_mut(), &mut event).to_bool()
+        };
+		if have_event {
+			event::raw::get_wrapped_event(&mut event)
+		} else {
+			None
+		}
     }
 
     /// Close a render window and destroy all the attached resources
@@ -540,23 +540,6 @@ impl RenderTarget for RenderWindow {
     fn clear(&mut self, color: &Color) -> () {
         unsafe {
             ffi::sfRenderWindow_clear(self.raw_mut(), *color)
-        }
-    }
-}
-
-/// An iterator over all the events in the events queue (internally call poll_event)
-pub struct Events {
-    render_window: *mut ffi::sfRenderWindow,
-}
-
-impl Iterator for Events {
-    type Item = event::Event;
-
-    fn next(&mut self) -> Option<event::Event> {
-        let mut event = event::raw::sfEvent { data: [032; 6] };
-        match unsafe { ffi::sfRenderWindow_pollEvent(self.render_window, &mut event) }.to_bool() {
-            false     => None,
-            true      => Some(event::raw::get_wrapped_event(&mut event))
         }
     }
 }

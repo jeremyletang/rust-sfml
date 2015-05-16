@@ -174,8 +174,6 @@ pub enum Event {
 		y: f32,
 		z: f32
 	},*/
-    /// No Event
-    NoEvent
 }
 
 #[doc(hidden)]
@@ -414,10 +412,10 @@ pub mod raw {
         }
     }
 
-    pub fn get_wrapped_event(event: &mut sfEvent) -> Event {
+    pub fn get_wrapped_event(event: &mut sfEvent) -> Option<Event> {
         let _type = unsafe { *event._type() };
 
-        match _type {
+        Some(match _type {
             sfEvtClosed => Event::Closed,
             sfEvtResized => event.size(),
             sfEvtLostFocus => Event::LostFocus,
@@ -436,7 +434,7 @@ pub mod raw {
             sfEvtJoystickMoved => event.joystick_move(),
             sfEvtJoystickConnected => event.joystick_connect(_type),
             sfEvtJoystickDisconnected => event.joystick_connect(_type),
-            _ => Event::NoEvent
-        }
+            _ => return None
+        })
     }
 }
