@@ -50,10 +50,11 @@ impl<T> Vector3<T> {
     }
 }
 
-impl<T: Add<Output=T>> Add for Vector3<T> {
-    type Output = Vector3<T>;
+/// Component-wise addition.
+impl<T: Add> Add for Vector3<T> {
+    type Output = Vector3<T::Output>;
 
-    fn add(self, other: Vector3<T>) -> Vector3<T> {
+    fn add(self, other: Vector3<T>) -> Vector3<T::Output> {
         Vector3 {
             x: self.x + other.x,
             y: self.y + other.y,
@@ -62,10 +63,11 @@ impl<T: Add<Output=T>> Add for Vector3<T> {
     }
 }
 
-impl<T: Sub<Output=T>> Sub for Vector3<T> {
-    type Output = Vector3<T>;
+/// Component-wise subtraction.
+impl<T: Sub> Sub for Vector3<T> {
+    type Output = Vector3<T::Output>;
 
-    fn sub(self, other: Vector3<T>) -> Vector3<T> {
+    fn sub(self, other: Vector3<T>) -> Vector3<T::Output> {
         Vector3 {
             x: self.x - other.x,
             y: self.y - other.y,
@@ -74,10 +76,11 @@ impl<T: Sub<Output=T>> Sub for Vector3<T> {
     }
 }
 
-impl<T: Copy + Mul<Output=T>> Mul<T> for Vector3<T> {
-    type Output = Vector3<T>;
+/// Scalar multiplication.
+impl<T: Copy + Mul> Mul<T> for Vector3<T> {
+    type Output = Vector3<T::Output>;
 
-    fn mul(self, rhs: T) -> Vector3<T> {
+    fn mul(self, rhs: T) -> Vector3<T::Output> {
         Vector3 {
             x: self.x * rhs,
             y: self.y * rhs,
@@ -86,10 +89,24 @@ impl<T: Copy + Mul<Output=T>> Mul<T> for Vector3<T> {
     }
 }
 
-impl<T: Copy + Div<Output=T>> Div<T> for Vector3<T> {
-    type Output = Vector3<T>;
+/// Component-wise multiplication.
+impl<T: Mul> Mul for Vector3<T> {
+    type Output = Vector3<T::Output>;
 
-    fn div(self, rhs: T) -> Vector3<T> {
+    fn mul(self, rhs: Vector3<T>) -> Vector3<T::Output> {
+        Vector3 {
+            x: self.x * rhs.x,
+            y: self.y * rhs.y,
+			z: self.z * rhs.z
+        }
+    }
+}
+
+/// Scalar division.
+impl<T: Copy + Div> Div<T> for Vector3<T> {
+    type Output = Vector3<T::Output>;
+
+    fn div(self, rhs: T) -> Vector3<T::Output> {
         Vector3 {
             x: self.x / rhs,
             y: self.y / rhs,
@@ -97,3 +114,17 @@ impl<T: Copy + Div<Output=T>> Div<T> for Vector3<T> {
         }
     }
 }
+
+/// Component-wise division.
+impl<T: Div> Div for Vector3<T> {
+    type Output = Vector3<T::Output>;
+
+    fn div(self, rhs: Vector3<T>) -> Vector3<T::Output> {
+        Vector3 {
+            x: self.x / rhs.x,
+            y: self.y / rhs.y,
+			z: self.z / rhs.z
+        }
+    }
+}
+
