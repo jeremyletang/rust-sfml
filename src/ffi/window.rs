@@ -23,8 +23,8 @@
 */
 
 use libc::{c_int, c_uint, c_float, c_char, size_t};
-use system::{Vector2i, Vector2u};
-use window::{ContextSettings, VideoMode};
+use system::{Vector2i, Vector2u, Vector3f};
+use window::{ContextSettings, VideoMode, Sensor};
 use window::raw_event::sfEvent;
 use ffi::SfBool;
 
@@ -87,6 +87,13 @@ extern "C" {
 	pub fn sfKeyboard_isKeyPressed(key: c_int) -> SfBool;
 
 	pub fn sfMouse_isButtonPressed(button: c_uint) -> SfBool;
+
+	pub fn sfSensor_isAvailable(sensor: Sensor) -> SfBool;
+	pub fn sfSensor_setEnabled(sensor: Sensor, enabled: SfBool);
+	pub fn sfSensor_getValue(sensor: Sensor) -> Vector3f;
+
+	pub fn sfTouch_isDown(finger: c_uint) -> SfBool;
+	pub fn sfTouch_getPosition(finger: c_uint, relative_to: *const sfWindow) -> Vector2i;
 
 	pub fn sfVideoMode_getDesktopMode() -> VideoMode;
 	pub fn sfVideoMode_getFullscreenModes(count: *mut size_t) -> *const VideoMode;

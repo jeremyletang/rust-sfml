@@ -24,8 +24,7 @@
 
 //! Module for the `Event` type.
 
-use window::keyboard::Key;
-use window::mouse::MouseButton;
+use window::{Key, MouseButton, Sensor};
 use window::joystick::Axis;
 
 /// Defines a system event and its parameters.
@@ -149,32 +148,44 @@ pub enum Event {
         /// Index of the joystick, in range [0, `joystick::COUNT`).
         joystick: u32
     },
-	/*
 	/// A touch event began.
 	TouchBegan {
+		/// Index of the finger in case of multi-touch events.
 		finger: u32,
+		/// X position of the touch, relative to the left of the owner window.
 		x: i32,
+		/// Y position of the touch, relative to the top of the owner window.
 		y: i32
 	},
 	/// A touch moved.
 	TouchMoved {
+		/// Index of the finger in case of multi-touch events.
 		finger: u32,
+		/// X position of the touch, relative to the left of the owner window.
 		x: i32,
+		/// Y position of the touch, relative to the top of the owner window.
 		y: i32
 	},
 	/// A touch event ended.
 	TouchEnded {
+		/// Index of the finger in case of multi-touch events.
 		finger: u32,
+		/// X position of the touch, relative to the left of the owner window.
 		x: i32,
+		/// Y position of the touch, relative to the top of the owner window.
 		y: i32
 	},
 	/// A sensor value changed.
 	SensorChanged {
-		sensor: SensorType,
+		/// Type of the sensor.
+		sensor: Sensor,
+		/// Current value of the sensor on the X axis.
 		x: f32,
+		/// Current value of the sensor on the Y axis.
 		y: f32,
+		/// Current value of the sensor on the Z axis.
 		z: f32
-	},*/
+	},
 }
 
 #[doc(hidden)]
@@ -182,7 +193,7 @@ pub enum Event {
 pub mod raw {
     use super::Event;
     use ffi::SfBool;
-	use libc::{c_int, c_uint};
+	use libc::{c_int, c_uint, c_float};
 	use std::mem::transmute;
 
     type sfKeyCode = c_int;
@@ -208,6 +219,10 @@ pub mod raw {
     const sfEvtJoystickMoved: sfEventType = 15;
     const sfEvtJoystickConnected: sfEventType = 16;
     const sfEvtJoystickDisconnected: sfEventType = 17;
+	const sfEvtTouchBegan: sfEventType = 18;
+	const sfEvtTouchMoved: sfEventType = 19;
+	const sfEvtTouchEnded: sfEventType = 20;
+	const sfEvtSensorChanged: sfEventType = 21;
 
     #[repr(C)]
     struct sfKeyEvent {
@@ -276,24 +291,22 @@ pub mod raw {
         height: c_uint,
     }
 	
-	/*#[repr(C)]
-	#[derive(Clone, Copy)]
+	#[repr(C)]
 	struct sfTouchEvent {
 		_type: sfEventType,
 		finger: c_uint,
 		x: c_int,
 		y: c_int,
 	}
-	
+
 	#[repr(C)]
-	#[derive(Clone, Copy)]
 	struct sfSensorEvent {
 		_type: sfEventType,
-		sensor: sfSensorType,
-		x: ::libc::c_float,
-		y: ::libc::c_float,
-		z: ::libc::c_float,
-	}*/
+		sensor: c_uint,
+		x: c_float,
+		y: c_float,
+		z: c_float,
+	}
 
 	// Make sure this is always big enough for any event.
     #[repr(C)]
@@ -319,17 +332,20 @@ pub mod raw {
 					sfEvtMouseLeft => Event::MouseLeft,
 					sfEvtResized => self.size(),
 					sfEvtTextEntered => return self.text(),
-					sfEvtKeyPressed => self.key(_type),
-					sfEvtKeyReleased => self.key(_type),
+					sfEvtKeyPressed | sfEvtKeyReleased
+						=> self.key(_type),
 					sfEvtMouseWheelMoved => self.mouse_wheel(),
-					sfEvtMouseButtonPressed => self.mouse_button(_type),
-					sfEvtMouseButtonReleased => self.mouse_button(_type),
+					sfEvtMouseButtonPressed | sfEvtMouseButtonReleased
+						=> self.mouse_button(_type),
 					sfEvtMouseMoved => self.mouse_move(),
-					sfEvtJoystickButtonPressed => self.joystick_button(_type),
-					sfEvtJoystickButtonReleased => self.joystick_button(_type),
+					sfEvtJoystickButtonPressed | sfEvtJoystickButtonReleased
+						=> self.joystick_button(_type),
 					sfEvtJoystickMoved => self.joystick_move(),
-					sfEvtJoystickConnected => self.joystick_connect(_type),
-					sfEvtJoystickDisconnected => self.joystick_connect(_type),
+					sfEvtJoystickConnected | sfEvtJoystickDisconnected
+						=> self.joystick_connect(_type),
+					sfEvtTouchBegan | sfEvtTouchMoved | sfEvtTouchEnded
+						=> self.touch(_type),
+					sfEvtSensorChanged => self.sensor(),
 					_ => return None
 				})
 			}
@@ -420,5 +436,26 @@ pub mod raw {
                 _ => unreachable!()
             }
         }
+
+		unsafe fn touch(&self, _type: sfEventType) -> Event {
+			let e: &sfTouchEvent = transmute(self);
+			let (finger, x, y) = (e.finger, e.x, e.y);
+			match _type {
+				sfEvtTouchBegan => Event::TouchBegan { finger: finger, x: x, y: y },
+				sfEvtTouchMoved => Event::TouchMoved { finger: finger, x: x, y: y },
+				sfEvtTouchEnded => Event::TouchEnded { finger: finger, x: x, y: y },
+				_ => unreachable!()
+			}
+		}
+
+		unsafe fn sensor(&self) -> Event {
+			let e: &sfSensorEvent = transmute(self);
+			Event::SensorChanged {
+				sensor: transmute(e.sensor),
+				x: e.x,
+				y: e.y,
+				z: e.z
+			}
+		}
     }
 }

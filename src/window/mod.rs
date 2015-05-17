@@ -32,6 +32,7 @@ pub use window::window_style::WindowStyle;
 pub use window::event::Event;
 pub use window::keyboard::Key;
 pub use window::mouse::MouseButton;
+pub use window::sensor::Sensor;
 
 // separate 'mod' required because #[doc(hidden)] doesn't work on 'use'
 #[doc(hidden)]
@@ -46,5 +47,7 @@ mod context_settings;
 pub mod joystick;
 mod keyboard;
 mod mouse;
+mod sensor;
 mod event;
+pub mod touch;
 pub mod window_style;
