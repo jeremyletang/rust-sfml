@@ -19,7 +19,7 @@ fn main() {
 
      // Create the window of the application
     let mut window = RenderWindow::new(
-        VideoMode::new_init(game_width, game_height, 32),
+        VideoMode::new(game_width, game_height),
         "SFML Pong",
         window_style::CLOSE,
         &ContextSettings::default()).expect("Cannot create a new Render Window.");
@@ -77,7 +77,7 @@ fn main() {
     let mut is_playing = false;
 
     while window.is_open() {
-        for event in window.events() {
+        while let Some(event) = window.poll_event() {
             match event {
                 Event::Closed => window.close(),
                 Event::KeyPressed{code, ..} => match code {

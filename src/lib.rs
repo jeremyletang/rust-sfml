@@ -56,7 +56,7 @@
 //! fn main() {
 //!     // Create the window of the application
 //!     let mut window = RenderWindow::new(
-//!         VideoMode::new_init(800, 600, 32),
+//!         VideoMode::new(800, 600),
 //!         "SFML Example",
 //!         window_style::CLOSE,
 //!         &ContextSettings::default()
@@ -71,7 +71,7 @@
 //!     // Loop until the window is closed
 //!     while window.is_open() {
 //!         // Handle events
-//!         for event in window.events() {
+//!         while let Some(event) = window.poll_event() {
 //!             match event {
 //!                 Event::Closed => window.close(),
 //!                 _ => {/* do nothing */}

@@ -80,7 +80,7 @@ impl Window {
     /// thus you should always call this function in a loop
     /// to make sure that you process every pending event.
 	///
-	/// ```
+	/// ```ignore
 	/// while let Some(event) = window.poll_event() {
 	///     // process event...
 	/// }

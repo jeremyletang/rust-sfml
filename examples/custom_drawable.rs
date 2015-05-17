@@ -31,7 +31,7 @@ impl<'s> CustomDrawable<'s> {
 
 // Implements the drawable trait, only this function is mendatory.
 impl<'s> Drawable for CustomDrawable<'s> {
-    fn draw<RT: RenderTarget>(&self, render_target: &mut RT, states: &RenderStates) -> () {
+    fn draw(&self, render_target: &mut RenderTarget, states: &RenderStates) -> () {
         self.circle.draw(render_target, states);
         self.rect.draw(render_target, states);
     }
@@ -40,7 +40,7 @@ impl<'s> Drawable for CustomDrawable<'s> {
 fn main() {
     // Create the window of the application
     let mut window = RenderWindow::new(
-        VideoMode::new_init(800, 600, 32),
+        VideoMode::new(800, 600),
         "Custom Drawable - SFML Examples",
         window_style::CLOSE,
         &ContextSettings::default()).expect("Cannot create a new Render Window.");
@@ -50,7 +50,7 @@ fn main() {
     let custom_drawable = CustomDrawable::new();
 
     while window.is_open() {
-        for event in window.events() {
+        while let Some(event) = window.poll_event() {
             match event {
                 Event::Closed => window.close(),
                 Event::KeyPressed { code: Key::Escape , .. } => window.close(),

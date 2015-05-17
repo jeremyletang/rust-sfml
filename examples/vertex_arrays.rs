@@ -10,7 +10,7 @@ use sfml::system::Vector2f;
 fn main() {
     // Create the window of the application
     let mut window = RenderWindow::new(
-        VideoMode::new_init(800, 600, 32),
+        VideoMode::new(800, 600),
         "VertexArray accessors - SFML Examples",
         window_style::CLOSE,
         &ContextSettings::default()).expect("Cannot create a new Render Window.");
@@ -38,7 +38,7 @@ fn main() {
     println!("Vertex Color: {:?} | Position: {:?}", vertex_array[1].color, vertex_array[1].position);
 
     while window.is_open() {
-        for e in window.events() {
+        while let Some(e) = window.poll_event() {
             if e == Event::Closed { window.close() }
         }
         // Clear the window

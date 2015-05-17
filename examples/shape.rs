@@ -27,7 +27,7 @@ impl ShapeImpl for MyShape {
 fn main() {
     // Create the window of the application
     let mut window = RenderWindow::new(
-        VideoMode::new_init(800, 600, 32),
+        VideoMode::new(800, 600),
         "SFML Shape Example",
         window_style::CLOSE,
         &ContextSettings::default()).expect("Cannot create a new Render Window.");
@@ -39,7 +39,7 @@ fn main() {
     shape.set_outline_color(&Color::green());
     shape.set_outline_thickness(3.);
     while window.is_open() {
-        for event in window.events() {
+        while let Some(event) = window.poll_event() {
             match event {
                 Event::Closed => window.close(),
                 Event::KeyPressed { code: Key::Escape, .. } => window.close(),

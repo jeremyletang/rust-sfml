@@ -10,7 +10,7 @@ use sfml::system::Vector2f;
 fn main() {
     // Create the window of the application
     let mut window = RenderWindow::new(
-        VideoMode::new_init(800, 600, 32),
+        VideoMode::new(800, 600),
         "Borrow Resources - SFML Examples",
         window_style::CLOSE,
         &ContextSettings::default()).expect("Failed to create RenderWindow");
@@ -62,7 +62,7 @@ fn main() {
     third_text.set_color(&Color::red());
 
     while window.is_open() {
-        for event in window.events() {
+        while let Some(event) = window.poll_event() {
             match event {
                 Event::Closed => window.close(),
                 Event::KeyPressed { code: Key::Escape, .. } => window.close(),
