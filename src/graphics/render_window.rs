@@ -89,6 +89,10 @@ impl RenderWindow {
     /// * height - Icon's height, in pixels
     /// * pixels - Vector of pixels
     pub fn set_icon(&mut self, width: u32, height: u32, pixels: &[u8]) -> () {
+		if pixels.len() != width as usize * height as usize * 4 {
+			// TODO: emit an error in a more sane way
+			panic!("set_icon was passed ({}, {}), but got {} instead of {} bytes", width, height, pixels.len(), width * height * 4);
+		}
         unsafe {
             ffi::sfRenderWindow_setIcon(self.raw_mut(),
                                         width as c_uint,
@@ -100,10 +104,7 @@ impl RenderWindow {
     /// Change a window's icon using an image.
 	pub fn set_icon_image(&mut self, image: &Image) {
 		let size = image.get_size();
-		unsafe {
-			let pixels = ffi::sfImage_getPixelsPtr(image.unwrap());
-			ffi::sfRenderWindow_setIcon(self.raw_mut(), size.x as c_uint, size.y as c_uint, pixels);
-		}
+		self.set_icon(size.x, size.y, image.get_pixels());
 	}
 
     /// Pop the event on top of event queue, if any, and return it

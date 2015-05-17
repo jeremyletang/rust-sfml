@@ -217,6 +217,37 @@ impl Image {
         }
     }
 
+	/// Get a read-only pointer to the array of pixels.
+	///
+	/// The returned value points to an array of RGBA pixels made of 8-bit
+	/// integer components. The size of the array is `width * height * 4`.
+	pub fn get_pixels(&self) -> &[u8] {
+		unsafe {
+			let pixels = ffi::sfImage_getPixelsPtr(self.raw());
+			if pixels.is_null() {
+				// SFML returns null if the image is empty, i.e. if its size
+				// is (0, 0). In order to present a simpler interface, just
+				// return an empty pixel array.
+				static EMPTY: &'static [u8] = &[];
+				EMPTY
+			} else {
+				let size = self.get_size();
+				let len = 4 * size.x as usize * size.y as usize;
+				::std::slice::from_raw_parts(pixels, len)
+			}
+		}
+	}
+
+	/// Get a read-only pointer to the array of pixels, as a color array.
+	///
+	/// The returned array has the size `width * height`.
+	pub fn get_pixels_colors(&self) -> &[Color] {
+		let pixels = self.get_pixels();
+		unsafe {
+			::std::slice::from_raw_parts(pixels.as_ptr() as *const Color, pixels.len() / 4)
+		}
+	}
+
     /// Flip an image horizontally (left <-> right)
     pub fn flip_horizontally(&mut self) -> () {
         unsafe {

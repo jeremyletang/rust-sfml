@@ -135,6 +135,10 @@ impl Window {
     /// * height - Icon's height, in pixels
     /// * pixels - Vector of pixels
     pub fn set_icon(&mut self, width: u32, height: u32, pixels: &[u8]) -> () {
+		if pixels.len() != width as usize * height as usize * 4 {
+			// TODO: emit an error in a more sane way
+			panic!("set_icon was passed ({}, {}), but got {} instead of {} bytes", width, height, pixels.len(), width * height * 4);
+		}
         unsafe {
             ffi::sfWindow_setIcon(self.raw_mut(), width as c_uint, height as c_uint, pixels.as_ptr())
         }
