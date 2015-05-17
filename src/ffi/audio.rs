@@ -100,10 +100,11 @@ extern "C" {
 	pub fn sfSound_getPlayingOffset(sound: *const sfSound) -> Time;
 
 	pub fn sfSoundBuffer_createFromFile(filename: *const c_char) -> *mut sfSoundBuffer;
+	pub fn sfSoundBuffer_createFromSamples(samples: *const i16, sampleCount: size_t, channelCount: c_uint, sampleRate: c_uint) -> *mut sfSoundBuffer;
 	pub fn sfSoundBuffer_copy(soundBuffer: *const sfSoundBuffer) -> *mut sfSoundBuffer;
 	pub fn sfSoundBuffer_destroy(soundBuffer: *mut sfSoundBuffer) -> ();
 	pub fn sfSoundBuffer_saveToFile(soundBuffer: *const sfSoundBuffer, filename: *const c_char) -> SfBool;
-	//pub fn sfSoundBuffer_getSamples(soundBuffer: *const sfSoundBuffer) -> *const i16;
+	pub fn sfSoundBuffer_getSamples(soundBuffer: *const sfSoundBuffer) -> *const i16;
 	pub fn sfSoundBuffer_getSampleCount(soundBuffer: *const sfSoundBuffer) -> size_t;
 	pub fn sfSoundBuffer_getChannelCount(soundBuffer: *const sfSoundBuffer) -> c_uint;
 	pub fn sfSoundBuffer_getDuration(soundBuffer: *const sfSoundBuffer) -> Time;

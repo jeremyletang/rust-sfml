@@ -22,11 +22,6 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-//! Store captured audio data in sound Buffer
-//!
-//! SoundBufferRecorder allows to access a recorded sound through a SoundBuffer,
-//! so that it can be played, saved to a file, etc.
-
 use libc::c_uint;
 
 use audio::sound_buffer::SoundBuffer;
@@ -34,16 +29,17 @@ use audio::sound_buffer::SoundBuffer;
 use ffi::{Foreign, Ref};
 use ffi::audio as ffi;
 
-/// Store captured audio data in sound Buffer
+/// A sound recorder which stores the captured audio data in a sound buffer.
 ///
-/// SoundBufferRecorder allows to access a recorded sound through a SoundBuffer,
-/// so that it can be played, saved to a file, etc.
+/// `SoundBufferRecorder` allows access to the recorded sound through a
+/// SoundBuffer, so that it can be played, saved to a file, etc.
+// TODO: the rest of the docs.
 pub struct SoundBufferRecorder(Foreign<ffi::sfSoundBufferRecorder>);
 
 impl SoundBufferRecorder {
-    /// Create a new sound buffer recorder
-    ///
-    /// Return a new option to SoundBufferRecorder object or None if failed
+    /// Create a new sound buffer recorder.
+	///
+	/// Returns Some(SoundBufferRecorder) or None on failure.
     pub fn new() -> Option<SoundBufferRecorder> {
         unsafe {
 			Foreign::new(ffi::sfSoundBufferRecorder_create())
@@ -53,62 +49,53 @@ impl SoundBufferRecorder {
 	fn raw(&self) -> &ffi::sfSoundBufferRecorder { self.0.as_ref() }
 	fn raw_mut(&mut self) -> &mut ffi::sfSoundBufferRecorder { self.0.as_mut() }
 
-    /// Start the capture of a sound buffer recorder
+	/// Start the capture.
     ///
-    /// The sampleRate parameter defines the number of audio samples
+    /// The `sample_rate` parameter defines the number of audio samples
     /// captured per second. The higher, the better the quality
     /// (for example, 44100 samples/sec is CD quality).
     /// This function uses its own thread so that it doesn't block
     /// the rest of the program while the capture runs.
     /// Please note that only one capture can happen at the same time.
-    ///
-    /// # Arguments
-    /// * ampleRate - Desired capture rate, in number of samples per second
     pub fn start(&mut self, sample_rate: u32) -> bool {
         unsafe {
             ffi::sfSoundBufferRecorder_start(self.raw_mut(), sample_rate as c_uint)
         }.to_bool()
     }
 
-    /// Stop the capture of a sound recorder
+    /// Stop the capture.
     pub fn stop(&mut self) -> () {
         unsafe {
             ffi::sfSoundBufferRecorder_stop(self.raw_mut())
         }
     }
 
-    /// Get the sample rate of a sound buffer recorder
+    /// Get the sample rate.
     ///
     /// The sample rate defines the number of audio samples
     /// captured per second. The higher, the better the quality
     /// (for example, 44100 samples/sec is CD quality).
-    ///
-    /// Return the sample rate, in samples per second
     pub fn get_sample_rate(&self) -> u32 {
         unsafe {
             ffi::sfSoundBufferRecorder_getSampleRate(self.raw()) as u32
         }
     }
 
-    /// Get the sound buffer containing the captured audio data
+    /// Get the sound buffer containing the captured audio data.
     ///
     /// The sound buffer is valid only after the capture has ended.
     /// This function provides a read-only access to the internal
     /// sound buffer, but it can be copied if you need to
     /// make any modification to it.
-    ///
-    /// Return Read-only access to the sound buffer
     pub fn get_buffer(&self) -> Option<Ref<SoundBuffer>> {
         unsafe { Ref::new(ffi::sfSoundBufferRecorder_getBuffer(self.raw())) }
     }
 
-    /// Check if the system supports audio capture
+    /// Check if the system supports audio capture.
     ///
     /// This function should always be called before using
     /// the audio capture features. If it returns false, then
-    /// any attempt to use sfSoundRecorder will fail.
-    ///
-    /// Return true if audio capture is supported, false otherwise
+    /// any attempt to use sound recording will fail.
     pub fn is_available() -> bool {
         unsafe { ffi::sfSoundRecorder_isAvailable() }.to_bool()
     }

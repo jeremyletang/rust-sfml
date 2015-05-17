@@ -22,9 +22,7 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-//! Sound and musics statues
-
-/// Enumeration of statuses for sounds and musics
+/// Enumeration of the sound source states.
 #[repr(C)]
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
 pub enum SoundStatus {
