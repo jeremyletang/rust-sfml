@@ -30,7 +30,8 @@
 
 use libc::{c_float, c_uint};
 
-use window::{ContextSettings, VideoMode, event, WindowStyle};
+use window::{ContextSettings, VideoMode, Event, WindowStyle};
+use window::raw_event::sfEvent;
 use system::{Vector2f, Vector2i, Vector2u};
 use graphics::{Color, CircleShape, RectangleShape, Text, Sprite,
                RenderStates, View, Image, IntRect, RenderTarget,
@@ -116,9 +117,9 @@ impl RenderWindow {
     /// to make sure that you process every pending event.
     ///
     /// Return Some if an event was returned, or None if the event queue was empty
-    pub fn poll_event(&mut self) -> Option<event::Event> {
+    pub fn poll_event(&mut self) -> Option<Event> {
 		loop {
-			let mut event = event::raw::sfEvent { data: [0; 6] };
+			let mut event = sfEvent::new();
 			let have_event = unsafe {
 				ffi::sfRenderWindow_pollEvent(self.raw_mut(), &mut event).to_bool()
 			};
@@ -126,7 +127,7 @@ impl RenderWindow {
 				// If this returns None, there was actually an event, but it
 				// failed to unwrap. For now, throw it away, but maybe in the
 				// future report this better.
-				if let Some(event) = event::raw::get_wrapped_event(&mut event) {
+				if let Some(event) = event.wrap() {
 					return Some(event)
 				}
 			} else {
@@ -146,13 +147,13 @@ impl RenderWindow {
     /// sleep as long as no new event is received.
     ///
     /// Return Some(event), or None if an error has occured
-    pub fn wait_event(&mut self) -> Option<event::Event> {
-        let mut event = event::raw::sfEvent { data: [0; 6] };
+    pub fn wait_event(&mut self) -> Option<Event> {
+		let mut event = sfEvent::new();
         let have_event = unsafe {
             ffi::sfRenderWindow_waitEvent(self.raw_mut(), &mut event).to_bool()
         };
 		if have_event {
-			event::raw::get_wrapped_event(&mut event)
+			event.wrap()
 		} else {
 			None
 		}

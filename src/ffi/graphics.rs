@@ -29,6 +29,7 @@ use ffi::SfBool;
 use ffi::window::sfWindow;
 use system::{Vector2f, Vector2i, Vector2u, Vector3f};
 use window::{ContextSettings, VideoMode};
+use window::raw_event::sfEvent;
 use graphics::{BlendMode, FloatRect, Glyph, IntRect, Transform, Color, Vertex, PrimitiveType};
 
 foreign_type! {
@@ -70,8 +71,8 @@ extern "C" {
     pub fn sfRenderWindow_close(renderWindow: *mut sfRenderWindow) -> ();
     pub fn sfRenderWindow_isOpen(renderWindow: *const sfRenderWindow) -> SfBool;
     pub fn sfRenderWindow_getSettings(renderWindow: *const sfRenderWindow) -> ContextSettings;
-    pub fn sfRenderWindow_pollEvent(renderWindow: *mut sfRenderWindow, event: *mut ::window::event::raw::sfEvent) -> SfBool;
-    pub fn sfRenderWindow_waitEvent(renderWindow: *mut sfRenderWindow, event: *mut ::window::event::raw::sfEvent) -> SfBool;
+    pub fn sfRenderWindow_pollEvent(renderWindow: *mut sfRenderWindow, event: *mut sfEvent) -> SfBool;
+    pub fn sfRenderWindow_waitEvent(renderWindow: *mut sfRenderWindow, event: *mut sfEvent) -> SfBool;
     pub fn sfRenderWindow_getPosition(renderWindow: *const sfRenderWindow) -> Vector2i;
     pub fn sfRenderWindow_setPosition(renderWindow: *mut sfRenderWindow, position: Vector2i) -> ();
     pub fn sfRenderWindow_getSize(renderWindow: *const sfRenderWindow) -> Vector2u;

@@ -25,6 +25,7 @@
 use libc::{c_int, c_uint, c_float, c_char, size_t};
 use system::{Vector2i, Vector2u};
 use window::{ContextSettings, VideoMode};
+use window::raw_event::sfEvent;
 use ffi::SfBool;
 
 foreign_type! {
@@ -65,8 +66,8 @@ extern "C" {
 	pub fn sfWindow_setPosition(window: *mut sfWindow, position: Vector2i) -> ();
 	pub fn sfWindow_getSize(window: *const sfWindow) -> Vector2u;
 	pub fn sfWindow_setSize(window: *mut sfWindow, size: Vector2u) -> ();
-	pub fn sfWindow_pollEvent(window: *mut sfWindow, event: *mut ::window::event::raw::sfEvent) -> SfBool;
-	pub fn sfWindow_waitEvent(window: *mut sfWindow, event: *mut ::window::event::raw::sfEvent) -> SfBool;
+	pub fn sfWindow_pollEvent(window: *mut sfWindow, event: *mut sfEvent) -> SfBool;
+	pub fn sfWindow_waitEvent(window: *mut sfWindow, event: *mut sfEvent) -> SfBool;
 	pub fn sfMouse_getPosition(relativeTo: *const sfWindow) -> Vector2i;
 	pub fn sfMouse_setPosition(position: Vector2i, relativeTo: *const sfWindow) -> ();
 	//fn sfWindow_getSystemHandle(window: *mut sfWindow) -> sfWindowHandle;

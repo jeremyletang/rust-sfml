@@ -22,7 +22,8 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-use window::{event, VideoMode, ContextSettings, WindowStyle};
+use window::{Event, VideoMode, ContextSettings, WindowStyle};
+use window::raw_event::sfEvent;
 use system::{Vector2i, Vector2u};
 
 use libc::{c_uint, c_float};
@@ -84,9 +85,9 @@ impl Window {
 	///     // process event...
 	/// }
 	/// ```
-    pub fn poll_event(&mut self) -> Option<event::Event> {
+    pub fn poll_event(&mut self) -> Option<Event> {
 		loop {
-			let mut event = event::raw::sfEvent { data: [0; 6] };
+			let mut event = sfEvent::new();
 			let have_event = unsafe {
 				ffi::sfWindow_pollEvent(self.raw_mut(), &mut event).to_bool()
 			};
@@ -94,7 +95,7 @@ impl Window {
 				// If this returns None, there was actually an event, but it
 				// failed to unwrap. For now, throw it away, but maybe in the
 				// future report this better.
-				if let Some(event) = event::raw::get_wrapped_event(&mut event) {
+				if let Some(event) = event.wrap() {
 					return Some(event)
 				}
 			} else {
@@ -114,13 +115,13 @@ impl Window {
     /// sleep as long as no new event is received.
     ///
     /// Returns Some(event), or None if an error has occured.
-    pub fn wait_event(&mut self) -> Option<event::Event> {
-        let mut event = event::raw::sfEvent { data: [0; 6] };
+    pub fn wait_event(&mut self) -> Option<Event> {
+		let mut event = sfEvent::new();
         let have_event = unsafe {
             ffi::sfWindow_waitEvent(self.raw_mut(), &mut event).to_bool()
         };
 		if have_event {
-			event::raw::get_wrapped_event(&mut event)
+			event.wrap()
 		} else {
 			None
 		}

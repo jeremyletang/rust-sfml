@@ -33,6 +33,12 @@ pub use window::event::Event;
 pub use window::keyboard::Key;
 pub use window::mouse::MouseButton;
 
+// separate 'mod' required because #[doc(hidden)] doesn't work on 'use'
+#[doc(hidden)]
+pub mod raw_event {
+	pub use window::event::raw::sfEvent;
+}
+
 mod window;
 mod video_mode;
 mod context;
@@ -40,5 +46,5 @@ mod context_settings;
 pub mod joystick;
 mod keyboard;
 mod mouse;
-pub mod event;
+mod event;
 pub mod window_style;
