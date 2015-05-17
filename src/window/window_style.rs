@@ -24,8 +24,6 @@
 
 //! Available styles applicable to windows.
 
-use std::default::Default;
-
 // Manual #[doc] tags are to work around apparent bitflags! bug where the three
 // slashes are included in the resulting docs.
 
@@ -50,6 +48,7 @@ bitflags! {
 }
 
 impl Default for WindowStyle {
+	/// Returns `window_style::DEFAULT_STYLE`.
 	fn default() -> WindowStyle {
 		DEFAULT_STYLE
 	}

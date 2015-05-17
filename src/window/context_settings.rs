@@ -22,38 +22,44 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-//! OpenGL context settings
-//!
-//! Structure defining the window's creation settings
-
-/// OpenGL context settings
+/// Settings for an OpenGL context attached to a window.
 ///
-/// Structure defining the window's creation settings
+/// Except for the antialiasing level, these settings have no impact on regular
+/// SFML rendering (the graphics module), so usually the defaults will suffice.
+///
+/// Only OpenGL versions greater or equal to 3.0 are relevant; versions lesser
+/// than 3.0 are all handled the same way (i.e. you can use any version < 3.0 if
+/// you don't want an OpenGL 3 context).
+///
+/// Please note that these values are only a hint. No failure will be reported
+/// if one or more of these values are not supported by the system; instead,
+/// SFML will try to find the closest valid match. You can then retrieve the
+/// settings that the window actually used to create its context with
+/// the `get_settings()` method.
 #[repr(C)]
-#[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
+#[derive(Clone, PartialEq, Eq, Debug, Copy)]
 pub struct ContextSettings {
-    /// Bits of the depth buffer.
+    /// Bits per pixel of the depth buffer.
     pub depth_bits: u32,
-    /// Bits of the stencil buffer.
+    /// Bits per pixel of the stencil buffer.
     pub stencil_bits: u32,
-    /// Level of antialiasing.
+    /// The number of multisampling levels for antialiasing.
     pub antialiasing_level: u32,
-    /// Major number of the context version
+    /// Major number of the OpenGL context version.
     pub major_version: u32,
-    /// Minor number of the context version
+    /// Minor number of the OpenGL context version.
     pub minor_version: u32
 }
 
-impl ContextSettings {
-    /// Create a default ContextSettings
-    ///
-    /// # Default values:
+impl Default for ContextSettings {
+	/// A default ContextSettings has the following values:
+	///
     /// * `depth_bits`: 0
     /// * `stencil_bits`: 0
     /// * `antialiasing_level`: 0
     /// * `major_version`: 2
     /// * `minor_version`: 0
-    pub fn default() -> ContextSettings {
+    fn default() -> ContextSettings {
         ContextSettings {
             depth_bits: 0,
             stencil_bits: 0,

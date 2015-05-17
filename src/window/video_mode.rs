@@ -22,17 +22,15 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-//! Defines VideoModes
-//!
-//! A video mode is defined by a width and a height (in pixels) and a depth
-//! (in bits per pixel). Video modes are used to setup windows at creation time.
-
 use libc::size_t;
 use ffi::window as ffi;
 
-/// VideoMode defines a video mode (width, height, bpp, frequency)
+/// A video mode composed of width, height, and bits per pixel.
 ///
-/// Provides functions for getting modes supported by the display device
+/// Video modes are provided to windows at creation time to determine their
+/// size. Video modes are most relevant for fullscreen mode: one of the valid
+/// video modes allowed by the OS (defined by what the monitor and graphics card
+/// support) must be used, otherwise window creation will fail.
 #[repr(C)]
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
 pub struct VideoMode {
@@ -45,23 +43,16 @@ pub struct VideoMode {
 }
 
 impl VideoMode {
-    /// Default constructor for class VideoMode.
-    ///
-    /// Return a new VideoMode
-    pub fn new() -> VideoMode {
-        VideoMode {
-            width: 0,
-            height: 0,
-            bits_per_pixel: 0
-        }
+	/// Construct a VideoMode with the given width and height, and 32 bits per
+	/// pixel.
+	#[inline]
+    pub fn new(width: u32, height: u32) -> VideoMode {
+		VideoMode::new_bpp(width, height, 32)
     }
 
-    /// Constructor with parameters for class VideoMode.
-    ///
-    /// Return a new VideoMode initialized
-    pub fn new_init(width: u32,
-                    height: u32,
-                    bits_per_pixel: u32) -> VideoMode {
+	/// Construct a VideoMode with the given width, height, and bits per pixel.
+	#[inline]
+    pub fn new_bpp(width: u32, height: u32, bits_per_pixel: u32) -> VideoMode {
         VideoMode {
             width: width,
             height: height,
@@ -69,25 +60,21 @@ impl VideoMode {
         }
     }
 
-    /// Tell whether or not a video mode is valid
+    /// Tell whether or not a video mode is valid.
     ///
     /// The validity of video modes is only relevant when using
     /// fullscreen windows; otherwise any video mode can be used
     /// with no restriction.
-    ///
-    /// return true if the video mode is valid for fullscreen mode
     pub fn is_valid(&self) -> bool {
         unsafe { ffi::sfVideoMode_isValid(*self) }.to_bool()
     }
 
-    /// Static Method, get the current desktop video mode
-    ///
-    /// return the urrent desktop video mode
+	/// Get the current desktop video mode.
     pub fn get_desktop_mode() -> VideoMode {
 		unsafe { ffi::sfVideoMode_getDesktopMode() }
     }
 
-    /// Static Method, retrieve all the video modes supported in fullscreen mode
+    /// Retrieve all the video modes supported in fullscreen mode.
     ///
     /// When creating a fullscreen window, the video mode is restricted
     /// to be compatible with what the graphics driver and monitor
@@ -95,21 +82,18 @@ impl VideoMode {
     /// modes that can be used in fullscreen mode.
     /// The returned array is sorted from best to worst, so that
     /// the first element will always give the best mode (higher
-    /// width, height and bits_per_pixel).
-    ///
-    /// Return a vector containing all the supported VideoMode
-    pub fn get_fullscreen_modes() -> Option<Vec<VideoMode>> {
+    /// width, height and bits-per-pixel).
+    pub fn get_fullscreen_modes() -> Vec<VideoMode> {
         let mut size: size_t = 0;
         let table = unsafe {
             ffi::sfVideoMode_getFullscreenModes(&mut size)
         };
 		if size == 0 {
-			None
+			Vec::new()
 		} else {
-			let table_slice = unsafe {
+			unsafe {
 				::std::slice::from_raw_parts(table, size as usize)
-			};
-			Some(table_slice.to_vec())
+			}.to_vec()
 		}
 	}
 }

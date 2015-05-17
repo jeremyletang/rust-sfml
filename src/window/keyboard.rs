@@ -22,18 +22,15 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-
-//! Keyboard inputs Give acces to real-time keyboard input.
-
 use libc::c_int;
-
 use ffi::window as ffi;
 
-/// Key codes
+/// Key codes known to SFML.
 #[repr(i64)]
 #[allow(missing_docs)]
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
 pub enum Key {
+	/// An unhandled key.
     Unknown = -1,
     A = 0,
     B,
@@ -75,10 +72,12 @@ pub enum Key {
     LControl,
     LShift,
     LAlt,
+	/// The left OS-specific key: Window, Apple, so on.
     LSystem,
     RControl,
     RShift,
     RAlt,
+	/// The right OS-specific key: Window, Apple, so on.
     RSystem,
     Menu,
     LBracket,
@@ -102,9 +101,13 @@ pub enum Key {
     Home,
     Insert,
     Delete,
+	/// The numpad addition key.
     Add,
+	/// The numpad subtraction key.
     Subtract,
+	/// The numpad multiplication key.
     Multiply,
+	/// The numpad division key.
     Divide,
     Left,
     Right,
@@ -136,12 +139,16 @@ pub enum Key {
     F14,
     F15,
     Pause,
+	/// The maximum available key code (not a real key).
     KeyCount
 }
 
 impl Key {
-    /// Check if this key is currently pressed, returning true if it is and
-    /// false otherwise.
+    /// Return whether this key is currently pressed.
+	///
+	/// Queries the real-time state of the keyboard, even if keys have been
+	/// pressed or released while no window was focused and no events were
+	/// triggered.
     pub fn is_pressed(self) -> bool {
         unsafe { ffi::sfKeyboard_isKeyPressed(self as c_int) }.to_bool()
     }

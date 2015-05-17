@@ -22,14 +22,23 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-//! Drawing context
-//!
-//! Class holding a valid drawing context.
-
 use ffi::{SfBool, Foreign};
 use ffi::window as ffi;
 
 /// Container for an OpenGL drawing context.
+///
+/// If you need to make OpenGL calls without having an active window (like in a
+/// thread), you can use an instance of this class to get a valid context.
+///
+/// Having a valid context is necessary for every OpenGL call.
+///
+/// Note that a context is only active in its current thread. If you create a
+/// new thread it will have no valid context by default.
+///
+/// To use a sf::Context instance, just construct it and let it live as long as
+/// you need a valid context. No explicit activation is needed, all it has to do
+/// is to exist. Its destructor will take care of deactivating and freeing all
+/// the attached resources.
 pub struct Context(Foreign<ffi::sfContext>);
 
 impl Context {
