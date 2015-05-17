@@ -27,7 +27,7 @@
 mod sf_bool;
 mod foreign_ptr;
 pub use self::sf_bool::SfBool;
-pub use self::foreign_ptr::Foreign;
+pub use self::foreign_ptr::{Foreign, ForeignHolder, Ref};
 
 macro_rules! foreign_type {
 	($($name:ident, $destroy:ident;)*) => (

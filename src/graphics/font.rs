@@ -30,7 +30,7 @@ use std::ffi::CString;
 
 use graphics::{Glyph, Texture};
 
-use ffi::{SfBool, Foreign};
+use ffi::{SfBool, Foreign, Ref};
 use ffi::graphics as ffi;
 
 /// Class for loading and manipulating character fonts
@@ -120,9 +120,9 @@ impl Font {
     /// * characterSize - Character size, in pixels
     ///
     /// Return the texture
-    pub fn get_texture(&mut self, character_size: u32) -> Option<Texture> {
+    pub fn get_texture(&mut self, character_size: u32) -> Option<Ref<Texture>> {
 		unsafe {
-			Texture::clone_of(ffi::sfFont_getTexture(self.raw_mut(), character_size as c_uint))
+			Ref::new(ffi::sfFont_getTexture(self.raw_mut(), character_size as c_uint))
 		}
     }
 

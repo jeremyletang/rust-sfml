@@ -31,7 +31,7 @@ use libc::c_uint;
 
 use audio::sound_buffer::SoundBuffer;
 
-use ffi::Foreign;
+use ffi::{Foreign, Ref};
 use ffi::audio as ffi;
 
 /// Store captured audio data in sound Buffer
@@ -98,13 +98,8 @@ impl SoundBufferRecorder {
     /// make any modification to it.
     ///
     /// Return Read-only access to the sound buffer
-    pub fn get_buffer(&self) -> Option<SoundBuffer> {
-        let buff = unsafe { ffi::sfSoundBufferRecorder_getBuffer(self.raw()) };
-        if buff.is_null() {
-            None
-        } else {
-			unsafe { SoundBuffer::wrap(ffi::sfSoundBuffer_copy(buff)) }
-        }
+    pub fn get_buffer(&self) -> Option<Ref<SoundBuffer>> {
+        unsafe { Ref::new(ffi::sfSoundBufferRecorder_getBuffer(self.raw())) }
     }
 
     /// Check if the system supports audio capture

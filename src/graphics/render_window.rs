@@ -37,7 +37,7 @@ use graphics::{Color, CircleShape, RectangleShape, Text, Sprite,
                RenderStates, View, Image, IntRect, RenderTarget,
                Vertex, PrimitiveType, BaseShape};
 
-use ffi::{SfBool, Foreign};
+use ffi::{SfBool, Foreign, Ref};
 use ffi::graphics as ffi;
 
 /// Window that can serve as a target for 2D drawing.
@@ -427,17 +427,15 @@ impl RenderTarget for RenderWindow {
         }
     }
 
-    fn get_view(&self) -> View {
+    fn get_view(&self) -> Ref<View> {
         unsafe {
-            View::wrap(ffi::sfView_copy(ffi::sfRenderWindow_getView(self.raw())))
-				.expect("Failed to wrap view")
+            Ref::new(ffi::sfRenderWindow_getView(self.raw())).expect("Failed to wrap view")
         }
     }
 
-    fn get_default_view(&self) -> View {
+    fn get_default_view(&self) -> Ref<View> {
         unsafe {
-            View::wrap(ffi::sfView_copy(ffi::sfRenderWindow_getDefaultView(self.raw())))
-				.expect("Failed to wrap view")
+            Ref::new(ffi::sfRenderWindow_getDefaultView(self.raw())).expect("Failed to wrap view")
         }
     }
 

@@ -27,6 +27,7 @@
 use graphics::{Color, View, RenderStates, CircleShape, RectangleShape, Text, Sprite,
                IntRect, Vertex, PrimitiveType, BaseShape, Drawable};
 use system::{Vector2f, Vector2i, Vector2u};
+use ffi::Ref;
 
 /// Trait which is the equivalent of the sf::RenderTarget class in SFML.
 /// This is implemented by RenderTarget and RenderWindow structs to provide
@@ -36,10 +37,10 @@ pub trait RenderTarget {
     fn clear(&mut self, color: &Color);
 
     /// return the current view
-    fn get_view(&self) -> View;
+    fn get_view(&self) -> Ref<View>;
 
     /// get the default view for the render target
-    fn get_default_view(&self) -> View;
+    fn get_default_view(&self) -> Ref<View>;
 
     /// set a new view to the target
     fn set_view(&mut self, view: &View);

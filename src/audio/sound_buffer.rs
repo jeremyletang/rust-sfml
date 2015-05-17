@@ -30,7 +30,7 @@ use std::ffi::CString;
 
 use system::Time;
 
-use ffi::Foreign;
+use ffi::{Foreign, ForeignHolder};
 use ffi::audio as ffi;
 
 /// Storage of audio sample
@@ -146,4 +146,9 @@ impl Clone for SoundBuffer {
 	fn clone(&self) -> SoundBuffer {
 		self.clone_opt().expect("Failed to clone SoundBuffer")
 	}
+}
+
+#[doc(hidden)]
+unsafe impl ForeignHolder for SoundBuffer {
+	type Inner = ffi::sfSoundBuffer;
 }

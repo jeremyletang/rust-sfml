@@ -33,7 +33,7 @@ use libc::c_float;
 use graphics::FloatRect;
 use system::Vector2f;
 
-use ffi::Foreign;
+use ffi::{Foreign, ForeignHolder};
 use ffi::graphics as ffi;
 
 /// 2D camera that defines what region is shown on screen
@@ -273,4 +273,9 @@ impl Clone for View {
     fn clone(&self) -> View {
 		self.clone_opt().expect("Failed to clone View")
     }
+}
+
+#[doc(hidden)]
+unsafe impl ForeignHolder for View {
+	type Inner = ffi::sfView;
 }

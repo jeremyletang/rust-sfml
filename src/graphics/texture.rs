@@ -34,7 +34,7 @@ use graphics::{RenderWindow, Image, IntRect};
 use system::Vector2u;
 use window::Window;
 
-use ffi::{SfBool, Foreign};
+use ffi::{SfBool, Foreign, ForeignHolder};
 use ffi::graphics as ffi;
 
 /// Image used for drawing
@@ -126,11 +126,6 @@ impl Texture {
 			Foreign::new(ffi::sfTexture_createFromImage(image.unwrap(), area))
 		}.map(Texture)
     }
-	
-	#[doc(hidden)]
-	pub unsafe fn clone_of(ptr: *const ffi::sfTexture) -> Option<Texture> {
-		Foreign::new(ffi::sfTexture_copy(ptr)).map(Texture)
-	}
 
 	fn raw(&self) -> &ffi::sfTexture { self.0.as_ref() }
 	fn raw_mut(&mut self) -> &mut ffi::sfTexture { self.0.as_mut() }
@@ -316,4 +311,9 @@ impl Clone for Texture {
     fn clone(&self) -> Texture {
 		self.clone_opt().expect("Failed to clone Texture")
     }
+}
+
+#[doc(hidden)]
+unsafe impl ForeignHolder for Texture {
+	type Inner = ffi::sfTexture;
 }

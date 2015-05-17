@@ -31,7 +31,7 @@ use graphics::{View, Color, IntRect, CircleShape, RectangleShape, Text,
                RenderStates, Sprite, Texture,
                RenderTarget, Vertex, PrimitiveType, BaseShape};
 
-use ffi::{SfBool, Foreign};
+use ffi::{SfBool, Foreign, Ref};
 use ffi::graphics as ffi;
 
 /// Target for off-screen 2D rendering into a texture
@@ -78,10 +78,8 @@ impl RenderTexture {
     /// Get the target texture of a render texture
     ///
     /// Return the target texture
-    pub fn get_texture(&self) -> Option<Texture> {
-		unsafe {
-			Texture::clone_of(ffi::sfRenderTexture_getTexture(self.raw()))
-		}
+    pub fn get_texture(&self) -> Option<Ref<Texture>> {
+		unsafe { Ref::new(ffi::sfRenderTexture_getTexture(self.raw())) }
     }
 
     /// Enable or disable the smooth filter on a render texture
@@ -121,17 +119,15 @@ impl RenderTarget for RenderTexture {
         }
     }
 
-    fn get_view(&self) -> View {
+    fn get_view(&self) -> Ref<View> {
         unsafe {
-            View::wrap(ffi::sfView_copy(ffi::sfRenderTexture_getView(self.raw())))
-				.expect("Failed to wrap view")
+            Ref::new(ffi::sfRenderTexture_getView(self.raw())).expect("Failed to wrap view")
         }
     }
 
-    fn get_default_view(&self) -> View {
+    fn get_default_view(&self) -> Ref<View> {
         unsafe {
-            View::wrap(ffi::sfView_copy(ffi::sfRenderTexture_getDefaultView(self.raw())))
-				.expect("Failed to wrap view")
+            Ref::new(ffi::sfRenderTexture_getDefaultView(self.raw())).expect("Failed to wrap view")
         }
     }
 
