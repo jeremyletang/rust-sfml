@@ -22,8 +22,9 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-use libc::c_float;
+use libc::{c_float, size_t};
 use std::ffi::CString;
+use std::marker::PhantomData;
 
 use audio::SoundStatus;
 use system::{Time, Vector3f};
@@ -49,44 +50,48 @@ use ffi::audio as ffi;
 ///
 /// The supported formats are: ogg, wav, flac, aiff, au, raw, paf, svx, nist,
 /// voc, ircam, w64, mat4, mat5 pvf, htk, sds, avr, sd2, caf, wve, mpc2k, rf64.
-pub struct Music(Foreign<ffi::sfMusic>);
+pub struct Music<'a> {
+	ptr: Foreign<ffi::sfMusic>,
+	phantom: PhantomData<&'a [u8]>
+}
 
-impl Music {
-    /// Create a new music and load it from a file.
+impl<'a> Music<'a> {
+    /// Create a new music and stream it from a file.
     ///
     /// This function doesn't start playing the music (call
     /// `play()` to do so).
     ///
     /// Returns Some(Music) or None.
-    pub fn new_from_file(filename: &str) -> Option<Music> {
+    pub fn new_from_file(filename: &str) -> Option<Music<'a>> {
         let c_str = match CString::new(filename.as_bytes()) {
 			Ok(c_str) => c_str,
 			Err(_) => return None
 		};
         unsafe {
             Foreign::new(ffi::sfMusic_createFromFile(c_str.as_ptr()))
-        }.map(Music)
+        }.map(|ptr| Music {
+			ptr: ptr,
+			phantom: PhantomData
+		})
     }
 
-	// TODO: requires Music to either reference or take ownership of the buffer.
-	/*
-    /// Create a new music and load it from memory.
+    /// Create a new music and stream it from memory.
     ///
     /// This function doesn't start playing the music (call
     /// `play()` to do so).
-    ///
-    /// # Arguments
-    /// * mem - Pointer to the file data in memory
-    ///
-    /// Return Some(Music) or None.
-    pub fn new_from_memory(mem: &[u8]) -> Option<Music> {
+	///
+	/// Returns Some(Music) or None.
+    pub fn new_from_memory(mem: &'a [u8]) -> Option<Music<'a>> {
         unsafe {
 			Foreign::new(ffi::sfMusic_createFromMemory(mem.as_ptr(), mem.len() as size_t))
-		}.map(Music)
-    }*/
+		}.map(|ptr| Music {
+			ptr: ptr,
+			phantom: PhantomData
+		})
+    }
 
-	fn raw(&self) -> &ffi::sfMusic { self.0.as_ref() }
-	fn raw_mut(&mut self) -> &mut ffi::sfMusic { self.0.as_mut() }
+	fn raw(&self) -> &ffi::sfMusic { self.ptr.as_ref() }
+	fn raw_mut(&mut self) -> &mut ffi::sfMusic { self.ptr.as_mut() }
 
     /// Set whether or not the music should loop after reaching the end.
     ///

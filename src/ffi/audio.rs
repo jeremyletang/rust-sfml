@@ -103,6 +103,7 @@ extern "C" {
 	pub fn sfSound_getPlayingOffset(sound: *const sfSound) -> Time;
 
 	pub fn sfSoundBuffer_createFromFile(filename: *const c_char) -> *mut sfSoundBuffer;
+	pub fn sfSoundBuffer_createFromMemory(data: *const c_uchar, sizeInBytes: size_t) -> *mut sfSoundBuffer;
 	pub fn sfSoundBuffer_createFromSamples(samples: *const i16, sampleCount: size_t, channelCount: c_uint, sampleRate: c_uint) -> *mut sfSoundBuffer;
 	pub fn sfSoundBuffer_copy(soundBuffer: *const sfSoundBuffer) -> *mut sfSoundBuffer;
 	pub fn sfSoundBuffer_destroy(soundBuffer: *mut sfSoundBuffer) -> ();

@@ -60,8 +60,8 @@ pub struct SoundBuffer(Foreign<ffi::sfSoundBuffer>);
 
 impl SoundBuffer {
     /// Create a new sound buffer and load it from a file.
-    ///
-	/// Returns Some(SoundBuffer) or None.
+	///
+	/// Returns Some(SoundBuffer) or None on failure.
     pub fn new(filename: &str) -> Option<SoundBuffer> {
         let c_str = match CString::new(filename.as_bytes()) {
 			Ok(c_str) => c_str,
@@ -72,11 +72,22 @@ impl SoundBuffer {
         }.map(SoundBuffer)
     }
 
+	/// Create a new sound buffer and load it from a file already in memory.
+	///
+	/// Returns Some(SoundBuffer) or None on failure.
+	pub fn new_from_memory(contents: &[u8]) -> Option<SoundBuffer> {
+		unsafe {
+			Foreign::new(ffi::sfSoundBuffer_createFromMemory(contents.as_ptr(), contents.len() as size_t))
+		}.map(SoundBuffer)
+	}
+
 	/// Create a new sound buffer from an array of audio samples.
 	///
 	/// The assumed format of the audio samples is 16-bit signed integers.
 	/// The number of channels (1 = mono, 2 = stereo, ...) and the sample rate
 	/// (number of samples to play per second) must be specified.
+	///
+	/// Returns Some(SoundBuffer) or None on failure.
 	pub fn new_from_samples(samples: &[i16], channel_count: u32, sample_rate: u32) -> Option<SoundBuffer> {
 		unsafe {
 			Foreign::new(ffi::sfSoundBuffer_createFromSamples(samples.as_ptr(), samples.len() as size_t, channel_count as c_uint, sample_rate as c_uint))
