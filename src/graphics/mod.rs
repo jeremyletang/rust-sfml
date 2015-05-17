@@ -34,7 +34,7 @@ pub use graphics::transform::Transform;
 pub use graphics::text::Text;
 pub use graphics::shader::Shader;
 pub use graphics::color::Color;
-pub use graphics::font::Font;
+pub use graphics::font::{Font, FontInfo};
 pub use graphics::view::View;
 pub use graphics::image::Image;
 pub use graphics::sprite::Sprite;

@@ -53,3 +53,12 @@ pub fn to_utf32(string: &str) -> Vec<u32> {
 	vec.push(0);
 	vec
 }
+
+/// Perform best-effort decoding of a C string (assumed UTF-8).
+pub unsafe fn from_c_str(ptr: *const ::libc::c_char) -> String {
+	if ptr.is_null() {
+		"".to_owned()
+	} else {
+		String::from_utf8_lossy(::std::ffi::CStr::from_ptr(ptr).to_bytes()).into_owned()
+	}
+}

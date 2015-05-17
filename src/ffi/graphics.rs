@@ -35,7 +35,7 @@ use graphics::{BlendMode, FloatRect, Glyph, IntRect, Transform, Color, Vertex, P
 foreign_type! {
 	sfRenderWindow, sfRenderWindow_destroy;
 	sfCircleShape, sfCircleShape_destroy;
-	sfConvexShape, sfConvexShape_destroy;
+//	sfConvexShape, sfConvexShape_destroy;
 	sfFont, sfFont_destroy;
 	sfImage, sfImage_destroy;
 	sfRectangleShape, sfRectangleShape_destroy;
@@ -51,7 +51,7 @@ foreign_type! {
 
 #[repr(C)]
 pub struct sfFontInfo {
-    family: *const c_char
+    pub family: *const c_char
 }
 
 #[repr(C)]
@@ -64,7 +64,7 @@ pub struct sfRenderStates {
 
 #[cfg_attr(any(target_os="macos", target_os="linux", target_os="windows"), link(name="csfml-graphics"))]
 extern "C" {
-    pub fn sfRenderWindow_create(mode: VideoMode, title: *const c_char, style: c_uint, settings: *const ContextSettings) -> *mut sfRenderWindow;
+    //pub fn sfRenderWindow_create(mode: VideoMode, title: *const c_char, style: c_uint, settings: *const ContextSettings) -> *mut sfRenderWindow;
     pub fn sfRenderWindow_createUnicode(mode: VideoMode, title: *const u32, style: c_uint, settings: *const ContextSettings) -> *mut sfRenderWindow;
     //fn sfRenderWindow_createFromHandle(handle: sfWindowHandle, settings: *mut sfContextSettings) -> *mut sfRenderWindow;
     pub fn sfRenderWindow_destroy(renderWindow: *mut sfRenderWindow) -> ();
@@ -77,7 +77,7 @@ extern "C" {
     pub fn sfRenderWindow_setPosition(renderWindow: *mut sfRenderWindow, position: Vector2i) -> ();
     pub fn sfRenderWindow_getSize(renderWindow: *const sfRenderWindow) -> Vector2u;
     pub fn sfRenderWindow_setSize(renderWindow: *mut sfRenderWindow, size: Vector2u) -> ();
-    pub fn sfRenderWindow_setTitle(renderWindow: *mut sfRenderWindow, title: *const c_char) -> ();
+    //pub fn sfRenderWindow_setTitle(renderWindow: *mut sfRenderWindow, title: *const c_char) -> ();
     pub fn sfRenderWindow_setUnicodeTitle(renderWindow: *mut sfRenderWindow, title: *const u32) -> ();
     pub fn sfRenderWindow_setIcon(renderWindow: *mut sfRenderWindow, width: c_uint, height: c_uint, pixels: *const u8) -> ();
     pub fn sfRenderWindow_setVisible(renderWindow: *mut sfRenderWindow, visible: SfBool) -> ();
@@ -102,7 +102,7 @@ extern "C" {
     pub fn sfRenderWindow_drawText(renderWindow: *mut sfRenderWindow, object: *const sfText, states: *const sfRenderStates) -> ();
     pub fn sfRenderWindow_drawShape(renderWindow: *mut sfRenderWindow, object: *const sfShape, states: *const sfRenderStates) -> ();
     pub fn sfRenderWindow_drawCircleShape(renderWindow: *mut sfRenderWindow, object: *const sfCircleShape, states: *const sfRenderStates) -> ();
-    pub fn sfRenderWindow_drawConvexShape(renderWindow: *mut sfRenderWindow, object: *const sfConvexShape, states: *const sfRenderStates) -> ();
+    //pub fn sfRenderWindow_drawConvexShape(renderWindow: *mut sfRenderWindow, object: *const sfConvexShape, states: *const sfRenderStates) -> ();
     pub fn sfRenderWindow_drawRectangleShape(renderWindow: *mut sfRenderWindow, object: *const sfRectangleShape, states: *const sfRenderStates) -> ();
     //pub fn sfRenderWindow_drawVertexArray(renderWindow: *mut sfRenderWindow, object: *const sfVertexArray, states: *const sfRenderStates) -> ();
     pub fn sfRenderWindow_drawPrimitives(renderWindow: *mut sfRenderWindow, vertices: *const Vertex, vertexCount: c_uint, ttype: PrimitiveType, states: *const sfRenderStates) -> ();
@@ -135,7 +135,7 @@ extern "C" {
     pub fn sfCircleShape_setFillColor(shape: *mut sfCircleShape, color: Color) -> ();
     pub fn sfCircleShape_setOutlineColor(shape: *mut sfCircleShape, color: Color) -> ();
     pub fn sfCircleShape_setOutlineThickness(shape: *mut sfCircleShape, thickness: c_float) -> ();
-    pub fn sfCircleShape_getTexture(shape: *const sfCircleShape) -> *const sfTexture;
+    //pub fn sfCircleShape_getTexture(shape: *const sfCircleShape) -> *const sfTexture;
     pub fn sfCircleShape_getTextureRect(shape: *const sfCircleShape) -> IntRect;
     pub fn sfCircleShape_getFillColor(shape: *const sfCircleShape) -> Color;
     pub fn sfCircleShape_getOutlineColor(shape: *const sfCircleShape) -> Color;
@@ -148,6 +148,7 @@ extern "C" {
     pub fn sfCircleShape_getLocalBounds(shape: *const sfCircleShape) -> FloatRect;
     pub fn sfCircleShape_getGlobalBounds(shape: *const sfCircleShape) -> FloatRect;
 
+	/*
     pub fn sfConvexShape_create() -> *mut sfConvexShape;
     pub fn sfConvexShape_copy(shape: *const sfConvexShape) -> *mut sfConvexShape;
     pub fn sfConvexShape_destroy(shape: *mut sfConvexShape) -> ();
@@ -180,6 +181,7 @@ extern "C" {
     pub fn sfConvexShape_setPoint(shape: *mut sfConvexShape, index: c_uint, point: Vector2f) -> ();
     pub fn sfConvexShape_getLocalBounds(shape: *const sfConvexShape) -> FloatRect;
     pub fn sfConvexShape_getGlobalBounds(shape: *const sfConvexShape) -> FloatRect;
+	*/
 
     pub fn sfFont_createFromFile(filename: *const c_char) -> *mut sfFont;
     pub fn sfFont_copy(font: *const sfFont) -> *mut sfFont;
@@ -238,7 +240,7 @@ extern "C" {
     pub fn sfRectangleShape_setFillColor(shape: *mut sfRectangleShape, color: Color) -> ();
     pub fn sfRectangleShape_setOutlineColor(shape: *mut sfRectangleShape, color: Color) -> ();
     pub fn sfRectangleShape_setOutlineThickness(shape: *mut sfRectangleShape, thickness: c_float) -> ();
-    pub fn sfRectangleShape_getTexture(shape: *const sfRectangleShape) -> *const sfTexture;
+    //pub fn sfRectangleShape_getTexture(shape: *const sfRectangleShape) -> *const sfTexture;
     pub fn sfRectangleShape_getTextureRect(shape: *const sfRectangleShape) -> IntRect;
     pub fn sfRectangleShape_getFillColor(shape: *const sfRectangleShape) -> Color;
     pub fn sfRectangleShape_getOutlineColor(shape: *const sfRectangleShape) -> Color;
@@ -283,7 +285,7 @@ extern "C" {
     pub fn sfRenderTexture_drawText(renderTexture: *mut sfRenderTexture, object: *const sfText, states: *const sfRenderStates) -> ();
     pub fn sfRenderTexture_drawShape(renderTexture: *mut sfRenderTexture, object: *const sfShape, states: *const sfRenderStates) -> ();
     pub fn sfRenderTexture_drawCircleShape(renderTexture: *mut sfRenderTexture, object: *const sfCircleShape, states: *const sfRenderStates) -> ();
-    pub fn sfRenderTexture_drawConvexShape(renderTexture: *mut sfRenderTexture, object: *const sfConvexShape, states: *const sfRenderStates) -> ();
+    //pub fn sfRenderTexture_drawConvexShape(renderTexture: *mut sfRenderTexture, object: *const sfConvexShape, states: *const sfRenderStates) -> ();
     pub fn sfRenderTexture_drawRectangleShape(renderTexture: *mut sfRenderTexture, object: *const sfRectangleShape, states: *const sfRenderStates) -> ();
     //pub fn sfRenderTexture_drawVertexArray(renderTexture: *mut sfRenderTexture, object: *const sfVertexArray, states: *const sfRenderStates) -> ();
     pub fn sfRenderTexture_drawPrimitives(renderTexture: *mut sfRenderTexture, vertices: *const Vertex, vertexCount: c_uint, ttype: PrimitiveType, states: *const sfRenderStates) -> ();
@@ -316,7 +318,7 @@ extern "C" {
     pub fn sfShape_setFillColor(shape: *mut sfShape, color: Color) -> ();
     pub fn sfShape_setOutlineColor(shape: *mut sfShape, color: Color) -> ();
     pub fn sfShape_setOutlineThickness(shape: *mut sfShape, thickness: c_float) -> ();
-    pub fn sfShape_getTexture(shape: *const sfShape) -> *const sfTexture;
+    //pub fn sfShape_getTexture(shape: *const sfShape) -> *const sfTexture;
     pub fn sfShape_getTextureRect(shape: *const sfShape) -> IntRect;
     pub fn sfShape_getFillColor(shape: *const sfShape) -> Color;
     pub fn sfShape_getOutlineColor(shape: *const sfShape) -> Color;
@@ -346,7 +348,7 @@ extern "C" {
     pub fn sfSprite_setTexture(sprite: *mut sfSprite, texture: *const sfTexture, reset_rect: SfBool) -> ();
     pub fn sfSprite_setTextureRect(sprite: *mut sfSprite, rectangle: IntRect) -> ();
     pub fn sfSprite_setColor(sprite: *mut sfSprite, color: Color) -> ();
-    pub fn sfSprite_getTexture(sprite: *const sfSprite) -> *const sfTexture;
+    //pub fn sfSprite_getTexture(sprite: *const sfSprite) -> *const sfTexture;
     pub fn sfSprite_getTextureRect(sprite: *const sfSprite) -> IntRect;
     pub fn sfSprite_getColor(sprite: *const sfSprite) -> Color;
     pub fn sfSprite_getLocalBounds(sprite: *const sfSprite) -> FloatRect;
@@ -368,15 +370,15 @@ extern "C" {
     pub fn sfText_scale(text: *mut sfText, factors: Vector2f) -> ();
     pub fn sfText_getTransform(text: *const sfText) -> Transform;
     pub fn sfText_getInverseTransform(text: *const sfText) -> Transform;
-    pub fn sfText_setString(text: *mut sfText, string: *const c_char) -> ();
+    //pub fn sfText_setString(text: *mut sfText, string: *const c_char) -> ();
     pub fn sfText_setUnicodeString(text: *mut sfText, string: *const u32 ) -> ();
     pub fn sfText_setFont(text: *mut sfText, font: *const sfFont) -> ();
     pub fn sfText_setCharacterSize(text: *mut sfText, size: c_uint) -> ();
     pub fn sfText_setStyle(text: *mut sfText, style: u32) -> ();
     pub fn sfText_setColor(text: *mut sfText, color: Color) -> ();
-    pub fn sfText_getString(text: *const sfText) -> *const c_char;
+    //pub fn sfText_getString(text: *const sfText) -> *const c_char;
     pub fn sfText_getUnicodeString(text: *const sfText) -> *const u32;
-    pub fn sfText_getFont(text: *const sfText) -> *const sfFont;
+    //pub fn sfText_getFont(text: *const sfText) -> *const sfFont;
     pub fn sfText_getCharacterSize(text: *const sfText) -> c_uint;
     pub fn sfText_getStyle(text: *const sfText) -> u32;
     pub fn sfText_getColor(text: *const sfText) -> Color;

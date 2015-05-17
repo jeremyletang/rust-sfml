@@ -98,6 +98,37 @@ impl RenderTexture {
     pub fn is_smooth(&self) -> bool {
         unsafe { ffi::sfRenderTexture_isSmooth(self.raw()) }.to_bool()
     }
+
+    /// Enable or disable repeating for a texture
+    ///
+    /// epeating is involved when using texture coordinates
+    /// outside the texture rectangle [0, 0, width, height].
+    /// In this case, if repeat mode is enabled, the whole texture
+    /// will be repeated as many times as needed to reach the
+    /// coordinate (for example, if the X texture coordinate is
+    /// 3 * width, the texture will be repeated 3 times).
+    /// If repeat mode is disabled, the "extra space" will instead
+    /// be filled with border pixels.
+    /// Warning: on very old graphics cards, white pixels may appear
+    /// when the texture is repeated. With such cards, repeat mode
+    /// can be used reliably only if the texture has power-of-two
+    /// dimensions (such as 256x128).
+    /// Repeating is disabled by default.
+    ///
+    /// # Arguments
+    /// * repeated  - true to repeat the texture, false to disable repeating
+    pub fn set_repeated(&mut self, repeated: bool) -> () {
+        unsafe {
+            ffi::sfRenderTexture_setRepeated(self.raw_mut(), SfBool::from_bool(repeated))
+        }
+    }
+
+    /// Tell whether a texture is repeated or not
+    ///
+    /// Return frue if repeat mode is enabled, false if it is disabled
+    pub fn is_repeated(&self) -> bool {
+        unsafe { ffi::sfRenderTexture_isRepeated(self.raw()) }.to_bool()
+    }
 }
 
 impl RenderTarget for RenderTexture {

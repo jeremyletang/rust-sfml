@@ -30,7 +30,7 @@ use std::ffi::CString;
 
 use graphics::{Glyph, Texture};
 
-use ffi::{SfBool, Foreign, Ref};
+use ffi::{SfBool, Foreign, Ref, from_c_str};
 use ffi::graphics as ffi;
 
 /// Class for loading and manipulating character fonts
@@ -81,6 +81,16 @@ impl Font {
 			Foreign::new(ffi::sfFont_copy(self.raw()))
 		}.map(Font)
     }
+
+	/// Get the font information.
+	pub fn get_info(&self) -> FontInfo {
+		unsafe {
+			let raw = ffi::sfFont_getInfo(self.raw());
+			FontInfo {
+				family: from_c_str(raw.family)
+			}
+		}
+	}
 
     /// Get the kerning value corresponding to a given pair of characters in a font
     ///
@@ -142,6 +152,21 @@ impl Font {
             ffi::sfFont_getGlyph(self.raw(), codepoint, character_size as c_uint, SfBool::from_bool(bold))
         }
     }
+
+	/// Get the position of the underline for a character size.
+	///
+	/// Underline position is the vertical offset to apply between the baseline
+	/// and the underline.
+	pub fn get_underline_position(&self, character_size: u32) -> f32 {
+		unsafe { ffi::sfFont_getUnderlinePosition(self.raw(), character_size as c_uint) as f32 }
+	}
+
+	/// Get the thickness of the underline for a character size.
+	///
+	/// Underline thickness is the vertical size of the underline.
+	pub fn get_underline_thickness(&self, character_size: u32) -> f32 {
+		unsafe { ffi::sfFont_getUnderlineThickness(self.raw(), character_size as c_uint) as f32 }
+	}
 }
 
 impl Clone for Font {
@@ -150,3 +175,8 @@ impl Clone for Font {
     }
 }
 
+/// Holds various information about a font.
+pub struct FontInfo {
+	/// The font family.
+	pub family: String
+}

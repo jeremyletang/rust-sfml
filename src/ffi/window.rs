@@ -42,14 +42,14 @@ pub struct sfJoystickIdentification {
 
 #[cfg_attr(any(target_os="macos", target_os="linux", target_os="windows"), link(name="csfml-window"))]
 extern "C" {
-	pub fn sfWindow_create(mode: VideoMode, title: *const c_char, style: c_uint, settings: *const ContextSettings) -> *mut sfWindow;
+	//pub fn sfWindow_create(mode: VideoMode, title: *const c_char, style: c_uint, settings: *const ContextSettings) -> *mut sfWindow;
 	pub fn sfWindow_createUnicode(mode: VideoMode, title: *const u32, style: c_uint, setting: *const ContextSettings) -> *mut sfWindow;
 	//fn sfWindow_createFromHandle(handle: sfWindowHandle, settings: *mut sfContextSettings) -> *mut sfWindow;
 	pub fn sfWindow_close(window: *mut sfWindow) -> ();
 	pub fn sfWindow_destroy(window: *mut sfWindow) -> ();
 	pub fn sfWindow_isOpen(window: *const sfWindow) -> SfBool;
 	pub fn sfWindow_getSettings(window: *const sfWindow) -> ContextSettings;
-	pub fn sfWindow_setTitle(window: *mut sfWindow, title: *const c_char) -> ();
+	//pub fn sfWindow_setTitle(window: *mut sfWindow, title: *const c_char) -> ();
 	pub fn sfWindow_setUnicodeTitle(window: *mut sfWindow, title: *const u32) -> ();
 	pub fn sfWindow_setIcon(window: *mut sfWindow, width: c_uint, height: c_uint, pixel: *const u8) -> ();
 	pub fn sfWindow_setVisible(window: *mut sfWindow, visible: SfBool) -> ();

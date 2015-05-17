@@ -149,10 +149,27 @@ impl Window {
     /// will still work (i.e. you don't have to test `is_open()`
     /// every time), and will have no effect on closed windows.
     pub fn close(&mut self) {
-        unsafe {
-            ffi::sfWindow_close(self.raw_mut());
-        }
+        unsafe { ffi::sfWindow_close(self.raw_mut()); }
     }
+
+	/// Request the current window to be made the active foreground window.
+	///
+	/// At any given time, only one window may have the input focus to receive
+	/// input events such as keystrokes or mouse events. If a window requests
+	/// focus, it only hints to the operating system, that it would like to be
+	/// focused. The operating system is free to deny the request. This is not
+	/// to be confused with `set_active()`.
+	pub fn request_focus(&mut self) {
+		unsafe { ffi::sfWindow_requestFocus(self.raw_mut()) }
+	}
+
+	/// Check whether the window has the input focus.
+	///
+	/// At any given time, only one window may have the input focus to receive
+	/// input events such as keystrokes or most mouse events.
+	pub fn has_focus(&self) -> bool {
+		unsafe { ffi::sfWindow_hasFocus(self.raw()) }.to_bool()
+	}
 
     /// Tell whether or not the window is open.
     ///

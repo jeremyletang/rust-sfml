@@ -34,6 +34,9 @@ foreign_type! {
 	sfSoundBufferRecorder, sfSoundBufferRecorder_destroy;
 }
 
+#[repr(C)]
+pub struct sfSoundRecorder(());
+
 #[cfg_attr(any(target_os="macos", target_os="linux", target_os="windows"), link(name="csfml-audio"))]
 extern "C" {
 	pub fn sfListener_setGlobalVolume(volume: f32) -> ();
@@ -80,7 +83,7 @@ extern "C" {
 	pub fn sfSound_pause(sound: *mut sfSound) -> ();
 	pub fn sfSound_stop(sound: *mut sfSound) -> ();
 	pub fn sfSound_setBuffer(sound: *mut sfSound, buffer: *const sfSoundBuffer) -> ();
-	pub fn sfSound_getBuffer(sound: *const sfSound) -> *const sfSoundBuffer;
+	//pub fn sfSound_getBuffer(sound: *const sfSound) -> *const sfSoundBuffer;
 	pub fn sfSound_setLoop(sound: *mut sfSound, lloop: SfBool) -> ();
 	pub fn sfSound_getLoop(sound: *const sfSound) -> SfBool;
 	pub fn sfSound_getStatus(sound: *const sfSound) -> SoundStatus;
@@ -117,9 +120,9 @@ extern "C" {
 	pub fn sfSoundBufferRecorder_getSampleRate(soundBufferRecorder: *const sfSoundBufferRecorder) -> c_uint;
 	pub fn sfSoundBufferRecorder_getBuffer(soundBufferRecorder: *const sfSoundBufferRecorder) -> *const sfSoundBuffer;
 	pub fn sfSoundRecorder_isAvailable() -> SfBool;
-	pub fn sfSoundRecorder_setProcessingInterval(soundBufferRecorder: *mut sfSoundBufferRecorder, interval: Time) -> ();
+	pub fn sfSoundRecorder_setProcessingInterval(soundBufferRecorder: *mut sfSoundRecorder, interval: Time) -> ();
 	pub fn sfSoundRecorder_getAvailableDevices(count: *mut size_t) -> *const *const c_char;
 	pub fn sfSoundRecorder_getDefaultDevice() -> *const c_char;
-	pub fn sfSoundRecorder_setDevice(soundBufferRecorder: *mut sfSoundBufferRecorder, name: *const c_char) -> SfBool;
-	pub fn sfSoundRecorder_getDevice(soundBufferRecorder: *const sfSoundBufferRecorder) -> *const c_char;
+	pub fn sfSoundRecorder_setDevice(soundBufferRecorder: *mut sfSoundRecorder, name: *const c_char) -> SfBool;
+	pub fn sfSoundRecorder_getDevice(soundBufferRecorder: *const sfSoundRecorder) -> *const c_char;
 }

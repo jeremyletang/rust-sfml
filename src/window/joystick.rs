@@ -45,8 +45,6 @@
 //! to call anything. If you have no window, or if you want to check joystick
 //! state before creating one, you must call `update()` explicitly.
 
-use std::ffi::CStr;
-
 use libc::c_uint;
 use ffi::window as ffi;
 
@@ -135,13 +133,8 @@ pub fn get_axis_position(joystick: u32, axis: Axis) -> f32 {
 pub fn get_identification(joystick: u32) -> JoystickIdentification {
 	unsafe {
 		let raw = ffi::sfJoystick_getIdentification(joystick as c_uint);
-		let name = if raw.name.is_null() {
-			"".to_owned()
-		} else {
-			String::from_utf8_lossy(CStr::from_ptr(raw.name).to_bytes()).into_owned()
-		};
 		JoystickIdentification {
-			name: name,
+			name: ::ffi::from_c_str(raw.name),
 			product_id: raw.product_id as u32,
 			vendor_id: raw.vendor_id as u32
 		}

@@ -33,7 +33,7 @@ use std::ptr;
 use std::ffi::CString;
 use std::marker::PhantomData;
 
-use graphics::{Texture, Color};
+use graphics::{Texture, Color, Transform};
 use system::{Vector2f, Vector3f};
 
 use ffi::Foreign;
@@ -314,6 +314,18 @@ impl<'s> Shader<'s> {
             ffi::sfShader_setColorParameter(self.raw_mut(), c_str.as_ptr(), *color)
         }
     }
+
+	/// Change a matrix parameter of the shader.
+	///
+	/// `name` is the name of the variable to change in the shader. The
+	/// corresponding parameter in the shader must be a 4x4 matrix (mat4 GLSL
+	/// type).
+	pub fn set_transform_parameter(&mut self, name: &str, transform: &Transform) {
+        let c_str = try_string!(name, ());
+		unsafe {
+			ffi::sfShader_setTransformParameter(self.raw_mut(), c_str.as_ptr(), *transform)
+		}
+	}
 
     /// Tell whether or not the system supports shaders
     ///
