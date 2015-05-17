@@ -35,9 +35,9 @@ foreign_type! {
 
 #[repr(C)]
 pub struct sfJoystickIdentification {
-	name: *const c_char,
-	vendor_id: c_uint,
-	product_id: c_uint
+	pub name: *const c_char,
+	pub vendor_id: c_uint,
+	pub product_id: c_uint
 }
 
 #[cfg_attr(any(target_os="macos", target_os="linux", target_os="windows"), link(name="csfml-window"))]
