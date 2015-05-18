@@ -32,7 +32,7 @@
 // Vector support
 mod vector2;
 mod vector3;
-pub use self::vector2::{Vector2, Vector2u, Vector2i, Vector2f, ToVec};
+pub use self::vector2::{Vector2, Vector2u, Vector2i, Vector2f};
 pub use self::vector3::{Vector3, Vector3f};
 
 // Time, clock, and sleep support

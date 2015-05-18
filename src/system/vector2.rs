@@ -49,6 +49,50 @@ impl<T> Vector2<T> {
             y: y
         }
     }
+
+	/// Convert this `Vector2` into a 2-tuple.
+	pub fn to_tup(self) -> (T, T) {
+		(self.x, self.y)
+	}
+}
+
+impl Vector2<i32> {
+	/// Convert this vector to a Vector2u.
+	pub fn to_vector2u(self) -> Vector2u {
+		Vector2u::new(self.x as u32, self.y as u32)
+	}
+	/// Convert this vector to a Vector2f.
+	pub fn to_vector2f(self) -> Vector2f {
+		Vector2f::new(self.x as f32, self.y as f32)
+	}
+}
+
+impl Vector2<u32> {
+	/// Convert this vector to a Vector2i.
+	pub fn to_vector2i(self) -> Vector2i {
+		Vector2i::new(self.x as i32, self.y as i32)
+	}
+	/// Convert this vector to a Vector2f.
+	pub fn to_vector2f(self) -> Vector2f {
+		Vector2f::new(self.x as f32, self.y as f32)
+	}
+}
+
+impl Vector2<f32> {
+	/// Convert this vector to a Vector2u.
+	pub fn to_vector2u(self) -> Vector2u {
+		Vector2u::new(self.x as u32, self.y as u32)
+	}
+	/// Convert this vector to a Vector2i.
+	pub fn to_vector2i(self) -> Vector2i {
+		Vector2i::new(self.x as i32, self.y as i32)
+	}
+}
+
+impl<T> From<(T, T)> for Vector2<T> {
+	fn from((x, y): (T, T)) -> Vector2<T> {
+		Vector2 { x: x, y: y }
+	}
 }
 
 impl<T: Add> Add for Vector2<T> {
@@ -122,50 +166,3 @@ impl<T: Div> Div for Vector2<T> {
 		}
 	}
 }
-
-/// Utility trait for converting between different `Vector2`s.
-pub trait ToVec {
-    /// Convert the current Vector2 to a `Vector2f`.
-    fn to_vector2f(&self) -> Vector2f;
-    /// Convert the current Vector2 to a `Vector2i`.
-    fn to_vector2i(&self) -> Vector2i;
-    /// Convert the current Vector2f to a `Vector2u`.
-    fn to_vector2u(&self) -> Vector2u;
-}
-
-impl<T> From<(T, T)> for Vector2<T> {
-	fn from((x, y): (T, T)) -> Vector2<T> {
-		Vector2 { x: x, y: y }
-	}
-}
-
-macro_rules! to_vec {
-    (vec; $vec:ty) => (
-        impl ToVec for $vec {
-            fn to_vector2f(&self) -> Vector2f {
-                Vector2f {
-                    x: self.x as f32,
-                    y: self.y as f32
-                }
-            }
-
-            fn to_vector2i(&self) -> Vector2i {
-                Vector2i {
-                    x: self.x as i32,
-                    y: self.y as i32
-                }
-            }
-
-            fn to_vector2u(&self) -> Vector2u {
-                Vector2u {
-                    x: self.x as u32,
-                    y: self.y as u32
-                }
-            }
-        }
-    )
-}
-
-to_vec!(vec; Vector2f);
-to_vec!(vec; Vector2i);
-to_vec!(vec; Vector2u);

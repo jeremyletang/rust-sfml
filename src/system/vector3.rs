@@ -48,6 +48,17 @@ impl<T> Vector3<T> {
             z: z
         }
     }
+
+	/// Convert this `Vector3` into a triple.
+	pub fn to_tup(self) -> (T, T, T) {
+		(self.x, self.y, self.z)
+	}
+}
+
+impl<T> From<(T, T, T)> for Vector3<T> {
+	fn from((x, y, z): (T, T, T)) -> Vector3<T> {
+		Vector3 { x: x, y: y, z: z }
+	}
 }
 
 impl<T: Add> Add for Vector3<T> {
@@ -127,4 +138,3 @@ impl<T: Div> Div for Vector3<T> {
         }
     }
 }
-
