@@ -76,19 +76,58 @@ impl Time {
     }
 }
 
-macro_rules! oper {
-    ($t:ty, $f:ident, $p:path) => {
-        impl $t for Time {
-            type Output = Time;
-            
-            fn $f(self, other: Time) -> Time {
-                Time { microseconds: $p ( self.microseconds, other.microseconds ) }
-            }
-        }
-    }
+impl Add for Time {
+	type Output = Time;
+	fn add(self, other: Time) -> Time {
+		Time { microseconds: self.microseconds + other.microseconds }
+	}
 }
 
-oper!(Add, add, Add::add);
-oper!(Sub, sub, Sub::sub);
-oper!(Mul, mul, Mul::mul);
-oper!(Div, div, Div::div);
+impl Sub for Time {
+	type Output = Time;
+	fn sub(self, other: Time) -> Time {
+		Time { microseconds: self.microseconds - other.microseconds }
+	}
+}
+
+impl Mul<i64> for Time {
+	type Output = Time;
+	fn mul(self, rhs: i64) -> Time {
+		Time { microseconds: self.microseconds * rhs }
+	}
+}
+
+impl Mul<f64> for Time {
+	type Output = Time;
+	fn mul(self, rhs: f64) -> Time {
+		Time { microseconds: (self.microseconds as f64 * rhs) as i64 }
+	}
+}
+
+impl Div for Time {
+	type Output = f32;
+	fn div(self, rhs: Time) -> f32 {
+		self.microseconds as f32 / rhs.microseconds as f32
+	}
+}
+
+impl Div<i64> for Time {
+	type Output = Time;
+	fn div(self, rhs: i64) -> Time {
+		Time { microseconds: self.microseconds / rhs }
+	}
+}
+
+impl Div<f64> for Time {
+	type Output = Time;
+	fn div(self, rhs: f64) -> Time {
+		Time { microseconds: (self.microseconds as f64 / rhs) as i64}
+	}
+}
+
+#[test]
+fn time_tests() {
+	assert_eq!(Time::with_seconds(1.5), Time::with_milliseconds(1500));
+	assert_eq!(Time::with_seconds(8.) / Time::with_seconds(2.), 4.);
+	assert_eq!(Time::with_seconds(8.) / 2., Time::with_seconds(4.));
+}
