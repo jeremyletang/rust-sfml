@@ -28,6 +28,8 @@ pub use audio::sound_buffer::SoundBuffer;
 pub use audio::sound_status::SoundStatus;
 pub use audio::music::Music;
 pub use audio::sound::Sound;
+pub use audio::sound_source::{SoundSource, PlayableSound};
+pub use audio::sound_stream::{SoundStream, SoundStreamImpl};
 pub use audio::sound_buffer_recorder::SoundBufferRecorder;
 
 /// Sound implementation using reference counting to manage shared resources
@@ -40,4 +42,6 @@ pub mod listener;
 mod sound_status;
 mod music;
 mod sound;
+mod sound_source;
+mod sound_stream;
 mod sound_buffer_recorder;

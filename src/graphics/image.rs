@@ -238,8 +238,7 @@ impl Image {
 				// SFML returns null if the image is empty, i.e. if its size
 				// is (0, 0). In order to present a simpler interface, just
 				// return an empty pixel array.
-				static EMPTY: &'static [u8] = &[];
-				EMPTY
+				&[]
 			} else {
 				let size = self.get_size();
 				let len = 4 * size.x as usize * size.y as usize;

@@ -22,7 +22,7 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-use libc::{c_uint, c_float, c_char, size_t, c_uchar};
+use libc::{c_uint, c_float, c_char, size_t, c_uchar, c_void};
 use system::{Vector3f, Time, InputStream};
 use audio::SoundStatus;
 use ffi::SfBool;
@@ -32,10 +32,20 @@ foreign_type! {
 	sfSound, sfSound_destroy;
 	sfSoundBuffer, sfSoundBuffer_destroy;
 	sfSoundBufferRecorder, sfSoundBufferRecorder_destroy;
+	sfSoundStream, sfSoundStream_destroy;
 }
 
 #[repr(C)]
 pub struct sfSoundRecorder(());
+
+#[repr(C)]
+pub struct sfSoundStreamChunk {
+	pub samples: *const i16,
+	pub sample_count: c_uint
+}
+
+pub type sfSoundStreamGetDataCallback = unsafe extern fn(chunk: *mut sfSoundStreamChunk, user: *mut c_void) -> SfBool;
+pub type sfSoundStreamSeekCallback = unsafe extern fn(time: Time, user: *mut c_void);
 
 #[cfg_attr(any(target_os="macos", target_os="linux", target_os="windows"), link(name="csfml-audio"))]
 extern "C" {
@@ -127,6 +137,31 @@ extern "C" {
 	pub fn sfSoundRecorder_getDefaultDevice() -> *const c_char;
 	pub fn sfSoundRecorder_setDevice(soundBufferRecorder: *mut sfSoundRecorder, name: *const c_char) -> SfBool;
 	pub fn sfSoundRecorder_getDevice(soundBufferRecorder: *const sfSoundRecorder) -> *const c_char;
+
+	pub fn sfSoundStream_create(onGetData: sfSoundStreamGetDataCallback, onSeek: sfSoundStreamSeekCallback, channelCount: c_uint, sampleRate: c_uint, userData: *mut c_void) -> *mut sfSoundStream;
+	pub fn sfSoundStream_destroy(music: *mut sfSoundStream) -> ();
+	pub fn sfSoundStream_play(music: *mut sfSoundStream) -> ();
+	pub fn sfSoundStream_pause(music: *mut sfSoundStream) -> ();
+	pub fn sfSoundStream_stop(music: *mut sfSoundStream) -> ();
+	pub fn sfSoundStream_getStatus(music: *const sfSoundStream) -> SoundStatus;
+	pub fn sfSoundStream_getChannelCount(music: *const sfSoundStream) -> c_uint;
+	pub fn sfSoundStream_getSampleRate(music: *const sfSoundStream) -> c_uint;
+	pub fn sfSoundStream_setPitch(music: *mut sfSoundStream, pitch: c_float) -> ();
+	pub fn sfSoundStream_setVolume(music: *mut sfSoundStream, volume: c_float) -> ();
+	pub fn sfSoundStream_setPosition(music: *mut sfSoundStream, position: Vector3f) -> ();
+	pub fn sfSoundStream_setRelativeToListener(music: *mut sfSoundStream, relative: SfBool) -> ();
+	pub fn sfSoundStream_setMinDistance(music: *mut sfSoundStream, distance: c_float) -> ();
+	pub fn sfSoundStream_setAttenuation(music: *mut sfSoundStream, attenuation: c_float) -> ();
+	pub fn sfSoundStream_setPlayingOffset(music: *mut sfSoundStream, timeOffset: Time) -> ();
+	pub fn sfSoundStream_setLoop(music: *mut sfSoundStream, lloop: SfBool) -> ();
+	pub fn sfSoundStream_getPitch(music: *const sfSoundStream) -> c_float;
+	pub fn sfSoundStream_getVolume(music: *const sfSoundStream) -> c_float;
+	pub fn sfSoundStream_getPosition(music: *const sfSoundStream) -> Vector3f;
+	pub fn sfSoundStream_isRelativeToListener(music: *const sfSoundStream) -> SfBool;
+	pub fn sfSoundStream_getMinDistance(music: *const sfSoundStream) -> c_float;
+	pub fn sfSoundStream_getAttenuation(music: *const sfSoundStream) -> c_float;
+	pub fn sfSoundStream_getLoop(music: *const sfSoundStream) -> SfBool;
+	pub fn sfSoundStream_getPlayingOffset(music: *const sfSoundStream) -> Time;
 }
 
 // InputStream isn't properly #[repr(C)] due to containing a PhantomData.
