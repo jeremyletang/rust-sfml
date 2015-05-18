@@ -7,7 +7,7 @@ use sfml::graphics::{RenderWindow, Color, Font, Text, RectangleShape, CircleShap
                       RenderTarget, Transformable, Shape};
 use sfml::window::{VideoMode, ContextSettings, Event, window_style, Key};
 use sfml::system::{Vector2f, Clock, Time};
-use sfml::audio::{SoundBuffer, Sound};
+use sfml::audio::{SoundBuffer, Sound, SoundSource, PlayableSound};
 
 fn main() {
     // Define some constants
