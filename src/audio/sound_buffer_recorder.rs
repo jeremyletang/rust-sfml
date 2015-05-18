@@ -24,7 +24,7 @@
 
 use libc::c_uint;
 
-use audio::sound_buffer::SoundBuffer;
+use audio::{SoundBuffer, SoundRecorder};
 
 use ffi::{Foreign, Ref};
 use ffi::audio as ffi;
@@ -33,7 +33,11 @@ use ffi::audio as ffi;
 ///
 /// `SoundBufferRecorder` allows access to the recorded sound through a
 /// SoundBuffer, so that it can be played, saved to a file, etc.
-// TODO: the rest of the docs.
+///
+/// Capture can be controlled using `start()` and `stop()`, and the captured
+/// buffer retrieved with `get_buffer()`.
+///
+/// See `SoundRecorder` for other important information on sound capture.
 pub struct SoundBufferRecorder(Foreign<ffi::sfSoundBufferRecorder>);
 
 impl SoundBufferRecorder {
@@ -91,12 +95,33 @@ impl SoundBufferRecorder {
         unsafe { Ref::new(ffi::sfSoundBufferRecorder_getBuffer(self.raw())) }
     }
 
+	// TODO: add the methods that CSFML is currently missing support for
+
     /// Check if the system supports audio capture.
     ///
     /// This function should always be called before using
     /// the audio capture features. If it returns false, then
     /// any attempt to use sound recording will fail.
+	#[inline]
     pub fn is_available() -> bool {
-        unsafe { ffi::sfSoundRecorder_isAvailable() }.to_bool()
+		SoundRecorder::is_available()
     }
+
+	/// Get the name of the default audio capture device.
+	///
+	/// This function returns the name of the default audio capture device. If
+	/// none is available, an empty string is returned.
+	#[inline]
+	pub fn get_default_device() -> String {
+		SoundRecorder::get_default_device()
+	}
+
+	/// Get a list of the names of all available audio capture devices.
+	///
+	/// This function returns a vector of strings, containing the names of all
+	/// available audio capture devices.
+	#[inline]
+	pub fn get_available_devices() -> Vec<String> {
+		SoundRecorder::get_available_devices()
+	}
 }

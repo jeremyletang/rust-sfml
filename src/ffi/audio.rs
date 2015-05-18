@@ -33,10 +33,8 @@ foreign_type! {
 	sfSoundBuffer, sfSoundBuffer_destroy;
 	sfSoundBufferRecorder, sfSoundBufferRecorder_destroy;
 	sfSoundStream, sfSoundStream_destroy;
+	sfSoundRecorder, sfSoundRecorder_destroy;
 }
-
-#[repr(C)]
-pub struct sfSoundRecorder(());
 
 #[repr(C)]
 pub struct sfSoundStreamChunk {
@@ -46,6 +44,10 @@ pub struct sfSoundStreamChunk {
 
 pub type sfSoundStreamGetDataCallback = unsafe extern fn(chunk: *mut sfSoundStreamChunk, user: *mut c_void) -> SfBool;
 pub type sfSoundStreamSeekCallback = unsafe extern fn(time: Time, user: *mut c_void);
+
+pub type sfSoundRecorderStartCallback = unsafe extern fn(user: *mut c_void) -> SfBool;
+pub type sfSoundRecorderProcessCallback = unsafe extern fn(buffer: *const i16, size: size_t, user: *mut c_void) -> SfBool;
+pub type sfSoundRecorderStopCallback = unsafe extern fn(user: *mut c_void);
 
 #[cfg_attr(any(target_os="macos", target_os="linux", target_os="windows"), link(name="csfml-audio"))]
 extern "C" {
@@ -131,6 +133,13 @@ extern "C" {
 	pub fn sfSoundBufferRecorder_stop(soundBufferRecorder: *mut sfSoundBufferRecorder) -> ();
 	pub fn sfSoundBufferRecorder_getSampleRate(soundBufferRecorder: *const sfSoundBufferRecorder) -> c_uint;
 	pub fn sfSoundBufferRecorder_getBuffer(soundBufferRecorder: *const sfSoundBufferRecorder) -> *const sfSoundBuffer;
+
+	pub fn sfSoundRecorder_create(onStart: sfSoundRecorderStartCallback, onProcess: sfSoundRecorderProcessCallback, onStop: sfSoundRecorderStopCallback, user: *mut c_void) -> *mut sfSoundRecorder;
+	pub fn sfSoundRecorder_destroy(soundBufferRecorder: *mut sfSoundRecorder) -> ();
+	pub fn sfSoundRecorder_start(soundBufferRecorder: *mut sfSoundRecorder, sampleRate: c_uint) -> SfBool;
+	pub fn sfSoundRecorder_stop(soundBufferRecorder: *mut sfSoundRecorder) -> ();
+	pub fn sfSoundRecorder_getSampleRate(soundBufferRecorder: *const sfSoundRecorder) -> c_uint;
+
 	pub fn sfSoundRecorder_isAvailable() -> SfBool;
 	pub fn sfSoundRecorder_setProcessingInterval(soundBufferRecorder: *mut sfSoundRecorder, interval: Time) -> ();
 	pub fn sfSoundRecorder_getAvailableDevices(count: *mut size_t) -> *const *const c_char;
