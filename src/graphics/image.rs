@@ -26,8 +26,9 @@
 
 use libc::{c_uint, size_t};
 use std::ffi::CString;
+use std::io::{Read, Seek};
 
-use system::Vector2u;
+use system::{Vector2u, InputStream};
 use graphics::{Color, IntRect};
 
 use ffi::{SfBool, Foreign};
@@ -100,6 +101,15 @@ impl Image {
             Foreign::new(ffi::sfImage_createFromFile(c_str.as_ptr()))
         }.map(Image)
     }
+
+	/// Create a new image from an input stream.
+	///
+	/// Returns Some(Image) or None on failure.
+	pub fn new_from_stream<T: Read + Seek>(stream: &mut T) -> Option<Image> {
+		unsafe {
+			Foreign::new(ffi::sfImage_createFromStream(&mut InputStream::new(stream)))
+		}.map(Image)
+	}
 
     /// Copy an existing image
     ///

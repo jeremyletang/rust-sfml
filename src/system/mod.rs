@@ -41,6 +41,10 @@ mod clock;
 pub use self::time::Time;
 pub use self::clock::Clock;
 
+// Custom input stream support
+mod stream;
+pub use self::stream::InputStream;
+
 /// Make the current thread sleep for the given duration.
 pub fn sleep(time: Time) {
     use std::thread::sleep_ms;

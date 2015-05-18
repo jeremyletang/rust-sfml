@@ -29,9 +29,10 @@
 use libc::{c_uint, size_t};
 use std::ptr;
 use std::ffi::CString;
+use std::io::{Read, Seek};
 
 use graphics::{RenderWindow, Image, IntRect};
-use system::Vector2u;
+use system::{Vector2u, InputStream};
 use window::Window;
 
 use ffi::{SfBool, Foreign, ForeignHolder};
@@ -68,6 +69,15 @@ impl Texture {
 			Foreign::new(ffi::sfTexture_createFromMemory(mem.as_ptr(), mem.len() as size_t, area))
 		}.map(Texture)
     }
+
+	/// Create a new texture from an input stream.
+	///
+	/// Returns Some(Texture) or None on failure.
+	pub fn new_from_stream<T: Read + Seek>(stream: &mut T) -> Option<Texture> {
+		unsafe {
+			Foreign::new(ffi::sfTexture_createFromStream(&mut InputStream::new(stream)))
+		}.map(Texture)
+	}
 
     /// Create a new texture from a file
     ///

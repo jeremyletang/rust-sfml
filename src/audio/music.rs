@@ -27,7 +27,7 @@ use std::ffi::CString;
 use std::marker::PhantomData;
 
 use audio::SoundStatus;
-use system::{Time, Vector3f};
+use system::{Time, Vector3f, InputStream};
 
 use ffi::{SfBool, Foreign};
 use ffi::audio as ffi;
@@ -89,6 +89,22 @@ impl<'a> Music<'a> {
 			phantom: PhantomData
 		})
     }
+
+	/// Create a new music and stream it from the given source.
+	///
+	/// Since the music is not loaded completely but rather streamed
+	/// continuously, the `stream` must stay alive as long as the music is
+	/// playing. See the docs for `InputStream` for more information.
+	///
+	/// Returns Some(Music) or None.
+	pub fn new_from_stream(stream: &'a mut InputStream<'a>) -> Option<Music<'a>> {
+		unsafe {
+			Foreign::new(ffi::sfMusic_createFromStream(stream))
+		}.map(|ptr| Music {
+			ptr: ptr,
+			phantom: PhantomData
+		})
+	}
 
 	fn raw(&self) -> &ffi::sfMusic { self.ptr.as_ref() }
 	fn raw_mut(&mut self) -> &mut ffi::sfMusic { self.ptr.as_mut() }

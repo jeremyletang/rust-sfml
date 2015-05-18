@@ -27,7 +27,7 @@
 use libc::{c_float, c_char, c_uint, c_int, c_uchar, size_t, c_void};
 use ffi::SfBool;
 use ffi::window::sfWindow;
-use system::{Vector2f, Vector2i, Vector2u, Vector3f};
+use system::{Vector2f, Vector2i, Vector2u, Vector3f, InputStream};
 use window::{ContextSettings, VideoMode};
 use window::raw_event::sfEvent;
 use graphics::{BlendMode, FloatRect, Glyph, IntRect, Transform, Color, Vertex, PrimitiveType};
@@ -465,4 +465,13 @@ extern "C" {
     pub fn sfView_move(view: *mut sfView, offset: Vector2f) -> ();
     pub fn sfView_rotate(view: *mut sfView, angle: c_float) -> ();
     pub fn sfView_zoom(view: *mut sfView, factor: c_float) -> ();
+}
+
+// InputStream isn't properly #[repr(C)] due to containing a PhantomData.
+#[allow(improper_ctypes)]
+extern "C" {
+	pub fn sfFont_createFromStream(stream: *mut InputStream) -> *mut sfFont;
+	pub fn sfImage_createFromStream(stream: *mut InputStream) -> *mut sfImage;
+	pub fn sfShader_createFromStream(vertex_stream: *mut InputStream, fragment_stream: *mut InputStream) -> *mut sfShader;
+	pub fn sfTexture_createFromStream(stream: *mut InputStream) -> *mut sfTexture;
 }

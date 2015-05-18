@@ -27,7 +27,9 @@
 
 use libc::{c_uint, size_t};
 use std::ffi::CString;
+use std::io::{Read, Seek};
 
+use system::InputStream;
 use graphics::{Glyph, Texture};
 
 use ffi::{SfBool, Foreign, Ref, from_c_str};
@@ -64,6 +66,15 @@ impl Font {
             Foreign::new(ffi::sfFont_createFromMemory(memory.as_ptr(), memory.len() as size_t))
         }.map(Font)
     }
+
+	/// Create a new font from an input stream.
+	///
+	/// Returns Some(Font) or None on failure.
+	pub fn new_from_stream<T: Read + Seek>(stream: &mut T) -> Option<Font> {
+		unsafe {
+			Foreign::new(ffi::sfFont_createFromStream(&mut InputStream::new(stream)))
+		}.map(Font)
+	}
 	
 	fn raw(&self) -> &ffi::sfFont { self.0.as_ref() }
 	fn raw_mut(&mut self) -> &mut ffi::sfFont { self.0.as_mut() }

@@ -24,8 +24,9 @@
 
 use libc::{size_t, c_uint};
 use std::ffi::CString;
+use std::io::{Read, Seek};
 
-use system::Time;
+use system::{Time, InputStream};
 
 use ffi::{Foreign, ForeignHolder};
 use ffi::audio as ffi;
@@ -59,7 +60,7 @@ use ffi::audio as ffi;
 pub struct SoundBuffer(Foreign<ffi::sfSoundBuffer>);
 
 impl SoundBuffer {
-    /// Create a new sound buffer and load it from a file.
+    /// Create a new sound buffer loaded from a file.
 	///
 	/// Returns Some(SoundBuffer) or None on failure.
     pub fn new(filename: &str) -> Option<SoundBuffer> {
@@ -72,12 +73,21 @@ impl SoundBuffer {
         }.map(SoundBuffer)
     }
 
-	/// Create a new sound buffer and load it from a file already in memory.
+	/// Create a new sound buffer loaded from a file already in memory.
 	///
 	/// Returns Some(SoundBuffer) or None on failure.
 	pub fn new_from_memory(contents: &[u8]) -> Option<SoundBuffer> {
 		unsafe {
 			Foreign::new(ffi::sfSoundBuffer_createFromMemory(contents.as_ptr(), contents.len() as size_t))
+		}.map(SoundBuffer)
+	}
+
+	/// Create a new sound buffer loaded from an input stream.
+	///
+	/// Returns Some(SoundBuffer) or None on failure.
+	pub fn new_from_stream<T: Read + Seek>(stream: &mut T) -> Option<SoundBuffer> {
+		unsafe {
+			Foreign::new(ffi::sfSoundBuffer_createFromStream(&mut InputStream::new(stream)))
 		}.map(SoundBuffer)
 	}
 

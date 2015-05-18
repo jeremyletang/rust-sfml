@@ -32,9 +32,10 @@
 use std::ptr;
 use std::ffi::CString;
 use std::marker::PhantomData;
+use std::io::{Read, Seek};
 
 use graphics::{Texture, Color, Transform};
-use system::{Vector2f, Vector3f};
+use system::{Vector2f, Vector3f, InputStream};
 
 use ffi::Foreign;
 use ffi::graphics as ffi;
@@ -140,6 +141,41 @@ impl<'s> Shader<'s> {
             Foreign::new(ffi::sfShader_createFromMemory(vertex_ptr, fragment_ptr))
         }.map(|shader| Shader(shader, PhantomData))
     }
+
+    /// Load both the vertex and fragment shaders from sources in a stream.
+    ///
+    /// This function can load both the vertex and the fragment
+    /// shaders, or only one of them: pass None if you don't want to load
+    /// either the vertex shader or the fragment shader.
+    /// The sources must be valid shaders in GLSL language. GLSL is
+    /// a C-like language dedicated to OpenGL shaders; you'll
+    /// probably need to read a good documentation for it before
+    /// writing your own shaders.
+    ///
+    /// Returns Some(Shader) or None.
+	pub fn new_from_stream<T: Read + Seek, U: Read + Seek>(vertex_shader_stream: Option<&mut T>, fragment_shader_stream: Option<&mut U>) -> Option<Shader<'s>> {
+		let mut v_stream: InputStream;
+		let v_stream_ptr = match vertex_shader_stream {
+			None => ptr::null_mut(),
+			Some(stream) => {
+				v_stream = InputStream::new(stream);
+				&mut v_stream as *mut InputStream
+			}
+		};
+
+		let mut f_stream: InputStream;
+		let f_stream_ptr = match fragment_shader_stream {
+			None => ptr::null_mut(),
+			Some(stream) => {
+				f_stream = InputStream::new(stream);
+				&mut f_stream as *mut InputStream
+			}
+		};
+
+		unsafe {
+			Foreign::new(ffi::sfShader_createFromStream(v_stream_ptr, f_stream_ptr))
+		}.map(|shader| Shader(shader, PhantomData))
+	}
 
 	fn raw(&self) -> &ffi::sfShader { self.0.as_ref() }
 	fn raw_mut(&mut self) -> &mut ffi::sfShader { self.0.as_mut() }

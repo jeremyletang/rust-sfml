@@ -23,7 +23,7 @@
 */
 
 use libc::{c_uint, c_float, c_char, size_t, c_uchar};
-use system::{Vector3f, Time};
+use system::{Vector3f, Time, InputStream};
 use audio::SoundStatus;
 use ffi::SfBool;
 
@@ -50,7 +50,7 @@ extern "C" {
 
 	pub fn sfMusic_createFromFile(filename: *const c_char) -> *mut sfMusic;
 	pub fn sfMusic_createFromMemory(data: *const c_uchar, sizeInBytes: size_t) -> *mut sfMusic;
-	// sfMusic*mut  sfMusic_createFromStream(sfInputStream*mut  stream);
+	//  vv sfMusic_createFromStream(stream: *mut InputStream) -> *mut sfMusic;
 	pub fn sfMusic_destroy(music: *mut sfMusic) -> ();
 	pub fn sfMusic_setLoop(music: *mut sfMusic, lloop: SfBool) -> ();
 	pub fn sfMusic_getLoop(music: *const sfMusic) -> SfBool;
@@ -104,6 +104,7 @@ extern "C" {
 
 	pub fn sfSoundBuffer_createFromFile(filename: *const c_char) -> *mut sfSoundBuffer;
 	pub fn sfSoundBuffer_createFromMemory(data: *const c_uchar, sizeInBytes: size_t) -> *mut sfSoundBuffer;
+	//  vv sfSoundBuffer_createFromStream(stream: *mut InputStream) -> *mut sfSoundBuffer;
 	pub fn sfSoundBuffer_createFromSamples(samples: *const i16, sampleCount: size_t, channelCount: c_uint, sampleRate: c_uint) -> *mut sfSoundBuffer;
 	pub fn sfSoundBuffer_copy(soundBuffer: *const sfSoundBuffer) -> *mut sfSoundBuffer;
 	pub fn sfSoundBuffer_destroy(soundBuffer: *mut sfSoundBuffer) -> ();
@@ -126,4 +127,11 @@ extern "C" {
 	pub fn sfSoundRecorder_getDefaultDevice() -> *const c_char;
 	pub fn sfSoundRecorder_setDevice(soundBufferRecorder: *mut sfSoundRecorder, name: *const c_char) -> SfBool;
 	pub fn sfSoundRecorder_getDevice(soundBufferRecorder: *const sfSoundRecorder) -> *const c_char;
+}
+
+// InputStream isn't properly #[repr(C)] due to containing a PhantomData.
+#[allow(improper_ctypes)]
+extern "C" {
+	pub fn sfMusic_createFromStream(stream: *mut InputStream) -> *mut sfMusic;
+	pub fn sfSoundBuffer_createFromStream(stream: *mut InputStream) -> *mut sfSoundBuffer;
 }
