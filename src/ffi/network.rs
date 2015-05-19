@@ -34,14 +34,12 @@ pub mod socket_status {
 }
 
 pub mod packet {
-    use libc::{c_void, size_t, c_float, c_double, c_char};
+    use libc::{size_t, c_float, c_double, c_char};
 
     use ffi::sfml_types::SfBool;
 
     #[repr(C)]
-    pub struct sfPacket {
-        this: *mut c_void
-    }
+    pub struct sfPacket;
 
     extern "C" {
         pub fn sfPacket_create() -> *mut sfPacket;
@@ -116,16 +114,12 @@ pub mod ip_address {
 }
 
 pub mod tcp_listener {
-    use libc::{c_void};
-
     use ffi::network::tcp_socket::sfTcpSocket;
     use ffi::network::socket_status::SocketStatus;
     use ffi::sfml_types::SfBool;
 
     #[repr(C)]
-    pub struct sfTcpListener {
-        this: *mut c_void
-    }
+    pub struct sfTcpListener;
 
     extern "C" {
         pub fn sfTcpListener_create() -> *mut sfTcpListener;
@@ -139,7 +133,7 @@ pub mod tcp_listener {
 }
 
 pub mod tcp_socket {
-    use libc::{c_void, size_t};
+    use libc::size_t;
 
     use ffi::system::time::sfTime;
     use ffi::network::ip_address::sfIpAddress;
@@ -148,9 +142,7 @@ pub mod tcp_socket {
     use ffi::sfml_types::SfBool;
 
     #[repr(C)]
-    pub struct sfTcpSocket {
-        this: *mut c_void
-    }
+    pub struct sfTcpSocket;
 
     extern "C" {
         pub fn sfTcpSocket_create() -> *mut sfTcpSocket;
@@ -171,7 +163,7 @@ pub mod tcp_socket {
 }
 
 pub mod udp_socket {
-    use libc::{size_t, c_void};
+    use libc::size_t;
 
     use ffi::network::socket_status::SocketStatus;
     use ffi::network::ip_address::sfIpAddress;
@@ -179,9 +171,7 @@ pub mod udp_socket {
     use ffi::sfml_types::SfBool;
 
     #[repr(C)]
-    pub struct sfUdpSocket {
-        this: *mut c_void
-    }
+    pub struct sfUdpSocket;
 
     extern "C" {
         pub fn sfUdpSocket_create() -> *mut sfUdpSocket;
@@ -200,7 +190,7 @@ pub mod udp_socket {
 }
 
 pub mod ftp {
-    use libc::{c_void, c_char, size_t, c_int};
+    use libc::{c_char, size_t, c_int};
 
     use ffi::network::ip_address::sfIpAddress;
     use ffi::system::time::sfTime;
@@ -262,24 +252,16 @@ pub mod ftp {
     pub const INVALIDFILE:                 Status = 1003;
 
     #[repr(C)]
-    pub struct sfFtp {
-        this: *mut c_void
-    }
+    pub struct sfFtp;
 
     #[repr(C)]
-    pub struct sfFtpDirectoryResponse {
-        this: *mut c_void
-    }
+    pub struct sfFtpDirectoryResponse;
 
     #[repr(C)]
-    pub struct sfFtpListingResponse {
-        this: *mut c_void
-    }
+    pub struct sfFtpListingResponse;
 
     #[repr(C)]
-    pub struct sfFtpResponse {
-        this: *mut c_void
-    }
+    pub struct sfFtpResponse;
 
     extern "C" {
         pub fn sfFtpListingResponse_destroy(ftpListingResponse: *mut sfFtpListingResponse) -> ();
@@ -318,7 +300,7 @@ pub mod ftp {
 }
 
 pub mod http {
-    use libc::{c_char, c_void,};
+    use libc::c_char;
 
     use ffi::system::time::sfTime;
 
@@ -358,19 +340,13 @@ pub mod http {
     pub const CONNECTIONFAILED:    Status = 1001;
 
     #[repr(C)]
-    pub struct sfHttpRequest {
-        this: *mut c_void
-    }
+    pub struct sfHttpRequest;
 
     #[repr(C)]
-    pub struct sfHttpResponse {
-        this: *mut c_void
-    }
+    pub struct sfHttpResponse;
 
     #[repr(C)]
-    pub struct sfHttp {
-        this: *mut c_void
-    }
+    pub struct sfHttp;
 
     extern "C" {
         pub fn sfHttpRequest_create() -> *mut sfHttpRequest;
