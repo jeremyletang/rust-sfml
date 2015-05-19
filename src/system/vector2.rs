@@ -26,7 +26,7 @@ use std::ops::{Add, Sub, Mul, Div};
 
 /// Generic two-dimensional vector.
 #[repr(C)]
-#[derive(Clone, PartialOrd, Ord, PartialEq, Eq, Debug, Copy)]
+#[derive(Clone, PartialOrd, Ord, PartialEq, Eq, Debug, Copy, Default)]
 pub struct Vector2<T> {
     /// X coordinate of the vector.
     pub x: T,

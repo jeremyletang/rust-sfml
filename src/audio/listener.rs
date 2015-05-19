@@ -40,41 +40,31 @@ use ffi::audio as ffi;
 /// individual volume of each sound / music.
 /// The default value for the volume is 100 (maximum).
 pub fn set_global_volume(volume: f32) {
-    unsafe {
-        ffi::sfListener_setGlobalVolume(volume as f32)
-    }
+    unsafe { ffi::sfListener_setGlobalVolume(volume as f32) }
 }
 
 /// Get the current value of the global volume, in the range [0, 100].
 pub fn get_global_volume() -> f32 {
-    unsafe {
-        ffi::sfListener_getGlobalVolume() as f32
-    }
+    unsafe { ffi::sfListener_getGlobalVolume() as f32 }
 }
 
 /// Set the position of the listener in the scene.
 ///
 /// The default position of the listener is (0, 0, 0).
 pub fn set_position(position: &Vector3f) {
-    unsafe {
-        ffi::sfListener_setPosition(*position)
-    }
+    unsafe { ffi::sfListener_setPosition(*position) }
 }
 
 /// Set the position of the listener in the scene.
 ///
 /// The default position of the listener is (0, 0, 0).
 pub fn set_position3f(x: f32, y: f32, z: f32) {
-    unsafe {
-        ffi::sfListener_setPosition(Vector3f::new(x, y, z))
-    }
+    unsafe { ffi::sfListener_setPosition(Vector3f::new(x, y, z)) }
 }
 
 /// Get the current position of the listener in the scene.
 pub fn get_position() -> Vector3f {
-    unsafe {
-        ffi::sfListener_getPosition()
-    }
+    unsafe { ffi::sfListener_getPosition() }
 }
 
 /// Set the forward vector of the listener in the scene.
@@ -83,10 +73,8 @@ pub fn get_position() -> Vector3f {
 /// the listener's perspective. Together with the up vector, it defines the 3D
 /// orientation of the listener in the scene. The direction vector doesn't have
 /// to be normalized. The default listener's direction is (0, 0, -1).
-pub fn set_direction(direction: &Vector3f) -> () {
-    unsafe {
-        ffi::sfListener_setDirection(*direction)
-    }
+pub fn set_direction(direction: &Vector3f) {
+    unsafe { ffi::sfListener_setDirection(*direction) }
 }
 
 /// Set the forward vector of the listener in the scene.
@@ -95,17 +83,13 @@ pub fn set_direction(direction: &Vector3f) -> () {
 /// the listener's perspective. Together with the up vector, it defines the 3D
 /// orientation of the listener in the scene. The direction vector doesn't have
 /// to be normalized. The default listener's direction is (0, 0, -1).
-pub fn set_direction3f(x: f32, y: f32, z: f32) -> () {
-    unsafe {
-        ffi::sfListener_setDirection(Vector3f::new(x, y, z))
-    }
+pub fn set_direction3f(x: f32, y: f32, z: f32) {
+    unsafe { ffi::sfListener_setDirection(Vector3f::new(x, y, z)) }
 }
 
 /// Get the current forward vector of the listener in the scene.
 pub fn get_direction() -> Vector3f {
-    unsafe {
-        ffi::sfListener_getDirection()
-    }
+    unsafe { ffi::sfListener_getDirection() }
 }
 
 /// Set the upward vector of the listener in the scene.

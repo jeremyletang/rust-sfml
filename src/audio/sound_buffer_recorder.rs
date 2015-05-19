@@ -68,7 +68,7 @@ impl SoundBufferRecorder {
     }
 
     /// Stop the capture.
-    pub fn stop(&mut self) -> () {
+    pub fn stop(&mut self) {
         unsafe {
             ffi::sfSoundBufferRecorder_stop(self.raw_mut())
         }

@@ -67,7 +67,7 @@ impl<'a> SoundRecorder<'a> {
     }
 
     /// Stop the capture.
-    pub fn stop(&mut self) -> () {
+    pub fn stop(&mut self) {
         unsafe { ffi::sfSoundRecorder_stop(self.raw_mut()) }
     }
 

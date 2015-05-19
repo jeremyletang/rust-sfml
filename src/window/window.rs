@@ -190,7 +190,7 @@ impl Window {
     }
 
     /// Change the title of the window.
-    pub fn set_title(&mut self, title: &str) -> () {
+    pub fn set_title(&mut self, title: &str) {
 		let vec = ::ffi::to_utf32(title);
         unsafe {
             ffi::sfWindow_setUnicodeTitle(self.raw_mut(), vec.as_ptr())
@@ -200,7 +200,7 @@ impl Window {
 	/// Show or hide the window.
 	///
 	/// The window is shown by default.
-    pub fn set_visible(&mut self, visible: bool) -> () {
+    pub fn set_visible(&mut self, visible: bool) {
         unsafe {
             ffi::sfWindow_setVisible(self.raw_mut(), SfBool::from_bool(visible))
         }
@@ -209,7 +209,7 @@ impl Window {
     /// Show or hide the mouse cursor.
 	///
 	/// The mouse cursor is visible by default.
-    pub fn set_mouse_cursor_visible(&mut self, visible: bool) -> () {
+    pub fn set_mouse_cursor_visible(&mut self, visible: bool) {
         unsafe {
             ffi::sfWindow_setMouseCursorVisible(self.raw_mut(), SfBool::from_bool(visible))
         }
@@ -223,7 +223,7 @@ impl Window {
     /// to a good value (but not constant across different computers).
     ///
 	/// Vertical synchronization is disabled by default.
-    pub fn set_vertical_sync_enabled(&mut self, enabled: bool) -> () {
+    pub fn set_vertical_sync_enabled(&mut self, enabled: bool) {
         unsafe {
             ffi::sfWindow_setVerticalSyncEnabled(self.raw_mut(), SfBool::from_bool(enabled))
         }
@@ -236,7 +236,7 @@ impl Window {
     /// you will only get a single event when the key is pressed.
     ///
     /// Key repeat is enabled by default.
-    pub fn set_key_repeat_enabled(&mut self, enabled: bool) -> () {
+    pub fn set_key_repeat_enabled(&mut self, enabled: bool) {
         unsafe {
             ffi::sfWindow_setKeyRepeatEnabled(self.raw_mut(), SfBool::from_bool(enabled))
         }
@@ -261,7 +261,7 @@ impl Window {
     /// This function is typically called after all OpenGL rendering
     /// has been done for the current frame, in order to show
     /// it on screen.
-    pub fn display(&mut self) -> () {
+    pub fn display(&mut self) {
         unsafe {
             ffi::sfWindow_display(self.raw_mut())
         }
@@ -290,7 +290,7 @@ impl Window {
     /// no JoystickMoved events will be generated.
 	///
 	/// The threshold value is 0.1 by default.
-    pub fn set_joystick_threshold(&mut self, threshold: f32) -> () {
+    pub fn set_joystick_threshold(&mut self, threshold: f32) {
         unsafe {
             ffi::sfWindow_setJoystickThreshold(self.raw_mut(), threshold as c_float)
         }
@@ -308,7 +308,7 @@ impl Window {
     /// This function only works for top-level windows
     /// (i.e. it will be ignored for windows created from
     /// the handle of a child window/control).
-    pub fn set_position(&mut self, position: &Vector2i) -> () {
+    pub fn set_position(&mut self, position: &Vector2i) {
         unsafe {
             ffi::sfWindow_setPosition(self.raw_mut(), *position)
         }
@@ -324,7 +324,7 @@ impl Window {
     }
 
     /// Change the size of the rendering region of the window, in pixels.
-    pub fn set_size(&mut self, size: &Vector2u) -> () {
+    pub fn set_size(&mut self, size: &Vector2u) {
         unsafe {
             ffi::sfWindow_setSize(self.raw_mut(), *size)
         }
@@ -338,7 +338,7 @@ impl Window {
     }
 
 	/// Set the current position of the mouse, relative to this window.
-    pub fn set_mouse_position(&mut self, position: &Vector2i) -> () {
+    pub fn set_mouse_position(&mut self, position: &Vector2i) {
         unsafe {
             ffi::sfMouse_setPosition(*position, self.raw_mut())
         }
