@@ -24,14 +24,12 @@
 
 //! Sound and musics statues
 
-pub use self::Status::{Stopped, Paused, Playing};
-
 use ffi::audio::sound_status as ffi;
 
 /// Enumeration of statuses for sounds and musics
 #[repr(i32)]
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
-pub enum Status {
+pub enum SoundStatus {
     /// Sound is not playing.
     Stopped = ffi::SFSTOPPED as i32,
     /// Sound is paused.

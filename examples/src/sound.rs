@@ -4,7 +4,7 @@ extern crate sfml;
 
 use std::rc::Rc;
 use std::cell::RefCell;
-use sfml::audio::{SoundBuffer, rc, Music, Playing};
+use sfml::audio::{SoundBuffer, rc, Music, SoundStatus};
 use sfml::system::{sleep, Time};
 
 /* Play a Sound */
@@ -29,7 +29,7 @@ fn play_sound() {
 
     loop {
         match sound.get_status() {
-            Playing     => {
+            SoundStatus::Playing     => {
                 // Leave some CPU time for other processes
                 sleep(Time::with_milliseconds(100));
                 // Display the playing position
@@ -58,7 +58,7 @@ fn play_music() {
 
     loop {
         match music.get_status() {
-            Playing     => {
+            SoundStatus::Playing     => {
                 // Leave some CPU time for other processes
                 sleep(Time::with_milliseconds(100));
                 // Display the playing position

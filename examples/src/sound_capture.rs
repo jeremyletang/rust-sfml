@@ -6,7 +6,7 @@ use std::rc::Rc;
 use std::cell::RefCell;
 use std::io::BufRead;
 
-use sfml::audio::{rc, SoundBufferRecorder, Playing};
+use sfml::audio::{rc, SoundBufferRecorder, SoundStatus};
 use sfml::system::{sleep, Time};
 
 fn main() {
@@ -80,7 +80,7 @@ fn main() {
 
         loop {
             match sound.get_status() {
-                Playing     => {
+                SoundStatus::Playing     => {
                 // Display the playing position
                 println!("\rPlaying...   {}", sound.get_playing_offset().as_seconds());
                 // Leave some CPU time for other processes

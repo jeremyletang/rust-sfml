@@ -33,7 +33,7 @@ pub use network::packet::Packet;
 pub use network::tcp_socket::TcpSocket;
 pub use network::udp_socket::UdpSocket;
 pub use network::tcp_listener::TcpListener;
-pub use network::socket_status::{SocketStatus, SocketNotReady, SocketDisconnected, SocketError};
+pub use network::socket_status::SocketStatus;
 pub use network::ftp::Ftp;
 pub use network::http::Http;
 

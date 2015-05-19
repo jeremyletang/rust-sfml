@@ -3,7 +3,7 @@
 extern crate sfml;
 
 use sfml::graphics::{RenderWindow, Color, Shape, RenderTarget};
-use sfml::window::{VideoMode, ContextSettings, event, Close};
+use sfml::window::{VideoMode, ContextSettings, event, WindowStyle};
 use sfml::window::keyboard::Key;
 use sfml::traits::ShapeImpl;
 use sfml::system::Vector2f;
@@ -29,7 +29,7 @@ impl ShapeImpl for CustomShape {
 fn main() {
     // Create the window of the application
     let setting: ContextSettings = ContextSettings::default();
-    let mut window: RenderWindow = match RenderWindow::new(VideoMode::new_init(800, 600, 32), "SFML Shape Example", Close, &setting) {
+    let mut window: RenderWindow = match RenderWindow::new(VideoMode::new_init(800, 600, 32), "SFML Shape Example", WindowStyle::Close, &setting) {
         Some(window) => window,
         None => panic!("Cannot create a new Render Window.")
     };

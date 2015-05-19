@@ -24,17 +24,15 @@
 
 //! Available blending modes for drawing
 
-pub use self::BlendMode::{BlendAlpha, BlendAdd, BlendMultiply, BlendNone};
-
 ///Available Blending modes for drawing.
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
 pub enum BlendMode {
     /// Pixel = Source * Source.a + Dest * (1 - Source.a)
-    BlendAlpha = 0,
+    Alpha = 0,
     /// Pixel = Source + Dest.
-    BlendAdd = 1,
+    Add = 1,
     /// Pixel = Source * Dest.
-    BlendMultiply = 2,
+    Multiply = 2,
     /// Pixel = Source.
-    BlendNone = 3
+    None = 3
 }

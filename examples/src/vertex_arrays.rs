@@ -3,21 +3,21 @@
 extern crate sfml;
 
 use sfml::graphics::{RenderWindow, RenderTarget, Color,
-                      VertexArray, Vertex, LinesStrip};
-use sfml::window::{VideoMode, ContextSettings, event, Close};
+                      VertexArray, Vertex, PrimitiveType};
+use sfml::window::{VideoMode, ContextSettings, event, WindowStyle};
 use sfml::system::Vector2f;
 
 fn main() {
     // Create the window of the application
     let setting: ContextSettings = ContextSettings::default();
-    let mut window: RenderWindow = match RenderWindow::new(VideoMode::new_init(800, 600, 32), "SFML VertexArray accessors Example", Close, &setting) {
+    let mut window: RenderWindow = match RenderWindow::new(VideoMode::new_init(800, 600, 32), "SFML VertexArray accessors Example", WindowStyle::Close, &setting) {
         Some(window) => window,
         None => panic!("Cannot create a new Render Window.")
     };
     window.set_vertical_sync_enabled(true);
 
     let mut vertex_array = VertexArray::new().expect("Error, cannot create a VertexArray");
-    vertex_array.set_primitive_type(LinesStrip);
+    vertex_array.set_primitive_type(PrimitiveType::LinesStrip);
 
 
     vertex_array.append(&Vertex::new_with_pos_color(&Vector2f{x: 20f32, y: 30f32}, &Color::green()));

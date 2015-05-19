@@ -4,7 +4,7 @@ extern crate sfml;
 
 use sfml::graphics::{RenderWindow, Color, CircleShape, Sprite,
     RenderTarget, Texture, Text, Font, ConvexShape};
-use sfml::window::{VideoMode, ContextSettings, event, Close};
+use sfml::window::{VideoMode, ContextSettings, event, WindowStyle};
 use sfml::window::keyboard::Key;
 use sfml::system::Vector2f;
 
@@ -12,7 +12,7 @@ fn main() {
     // Create the window of the application
     let setting: ContextSettings = ContextSettings::default();
     let mut window: RenderWindow = match RenderWindow::new(VideoMode::new_init(800, 600, 32),
-        "SFML borrow ressources Example", Close, &setting) {
+        "SFML borrow ressources Example", WindowStyle::Close, &setting) {
         Some(window) => window,
         None => panic!("Cannot create a new Render Window.")
     };

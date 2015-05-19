@@ -27,7 +27,7 @@
 use std::ptr;
 
 use traits::Wrappable;
-use graphics::{BlendMode, BlendAlpha, Shader, Texture, Transform};
+use graphics::{BlendMode, Shader, Texture, Transform};
 
 use ffi::graphics::render_states as ffi;
 
@@ -86,12 +86,12 @@ impl<'s> RenderStates<'s> {
     pub fn default() -> RenderStates<'s> {
         RenderStates {
                 sf_render_states: ffi::sfRenderStates {
-                blendMode: BlendAlpha as i32,
+                blendMode: BlendMode::Alpha as i32,
                 transform: Transform::new_identity(),
                 texture: ptr::null_mut(),
                 shader: ptr::null_mut()
             },
-            blend_mode: BlendAlpha,
+            blend_mode: BlendMode::Alpha,
             transform: Transform::new_identity(),
             texture: None,
             shader: None
