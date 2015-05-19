@@ -29,19 +29,19 @@ use std::ops::{Add, Sub, Mul, Div};
 /// Vector3f definition
 #[repr(C)]
 #[derive(Clone, PartialOrd, PartialEq, Debug, Copy)]
-pub struct Vector3f {
+pub struct Vector3<T> {
     /// X coordinate of the vector.
-    pub x: f32,
+    pub x: T,
     /// Y coordinate of the vector.
-    pub y: f32,
+    pub y: T,
     /// Z coordinate of the vector.
-    pub z: f32
+    pub z: T
 }
 
-impl Vector3f {
+impl<T> Vector3<T> {
     /// Create a new Vector3f with the given values.
-    pub fn new(x: f32, y: f32, z: f32) -> Vector3f {
-        Vector3f{
+    pub fn new(x: T, y: T, z: T) -> Vector3<T> {
+        Vector3 {
             x: x,
             y: y,
             z: z
@@ -49,11 +49,18 @@ impl Vector3f {
     }
 }
 
-impl Add<f32> for Vector3f {
-    type Output = Vector3f;
+/// export Vector3<f32> as Vector3f
+pub type Vector3f = Vector3<f32>;
+/// export Vector3<i32> as Vector3i
+pub type Vector3i = Vector3<i32>;
+/// export Vector3<u32> as Vector3u
+pub type Vector3u = Vector3<u32>;
 
-    fn add(self, rhs: f32) -> Vector3f {
-        Vector3f {
+impl<T: Add + Copy> Add<T> for Vector3<T> {
+    type Output = Vector3<T::Output>;
+
+    fn add(self, rhs: T) -> Vector3<T::Output> {
+        Vector3 {
             x: self.x + rhs,
             y: self.y + rhs,
             z: self.z + rhs
@@ -61,11 +68,11 @@ impl Add<f32> for Vector3f {
     }
 }
 
-impl Sub<f32> for Vector3f {
-    type Output = Vector3f;
+impl<T: Sub + Copy> Sub<T> for Vector3<T> {
+    type Output = Vector3<T::Output>;
 
-    fn sub(self, rhs: f32) -> Vector3f {
-        Vector3f {
+    fn sub(self, rhs: T) -> Vector3<T::Output> {
+        Vector3 {
             x: self.x - rhs,
             y: self.y - rhs,
             z: self.z - rhs
@@ -73,11 +80,11 @@ impl Sub<f32> for Vector3f {
     }
 }
 
-impl Mul<f32> for Vector3f {
-    type Output = Vector3f;
+impl<T: Mul + Copy> Mul<T> for Vector3<T> {
+    type Output = Vector3<T::Output>;
 
-    fn mul(self, rhs: f32) -> Vector3f {
-        Vector3f {
+    fn mul(self, rhs: T) -> Vector3<T::Output> {
+        Vector3 {
             x: self.x * rhs,
             y: self.y * rhs,
             z: self.z * rhs
@@ -85,11 +92,11 @@ impl Mul<f32> for Vector3f {
     }
 }
 
-impl Div<f32> for Vector3f {
-    type Output = Vector3f;
+impl<T: Div + Copy> Div<T> for Vector3<T> {
+    type Output = Vector3<T::Output>;
 
-    fn div(self, rhs: f32) -> Vector3f {
-        Vector3f {
+    fn div(self, rhs: T) -> Vector3<T::Output> {
+        Vector3 {
             x: self.x / rhs,
             y: self.y / rhs,
             z: self.z / rhs
@@ -98,11 +105,11 @@ impl Div<f32> for Vector3f {
 }
 
 
-impl Add for Vector3f {
-    type Output = Vector3f;
+impl<T: Add> Add for Vector3<T> {
+    type Output = Vector3<T::Output>;
 
-    fn add(self, rhs: Vector3f) -> Vector3f {
-        Vector3f {
+    fn add(self, rhs: Vector3<T>) -> Vector3<T::Output> {
+        Vector3 {
             x: self.x + rhs.x,
             y: self.y + rhs.y,
             z: self.z + rhs.z
@@ -110,11 +117,11 @@ impl Add for Vector3f {
     }
 }
 
-impl Sub for Vector3f {
-    type Output = Vector3f;
+impl<T: Sub> Sub for Vector3<T> {
+    type Output = Vector3<T::Output>;
 
-    fn sub(self, rhs: Vector3f) -> Vector3f {
-        Vector3f {
+    fn sub(self, rhs: Vector3<T>) -> Vector3<T::Output> {
+        Vector3 {
             x: self.x - rhs.x,
             y: self.y - rhs.y,
             z: self.z - rhs.z
@@ -122,11 +129,11 @@ impl Sub for Vector3f {
     }
 }
 
-impl Mul for Vector3f {
-    type Output = Vector3f;
+impl<T: Mul> Mul for Vector3<T> {
+    type Output = Vector3<T::Output>;
 
-    fn mul(self, rhs: Vector3f) -> Vector3f {
-        Vector3f {
+    fn mul(self, rhs: Vector3<T>) -> Vector3<T::Output> {
+        Vector3 {
             x: self.x * rhs.x,
             y: self.y * rhs.y,
             z: self.z * rhs.z
@@ -134,11 +141,11 @@ impl Mul for Vector3f {
     }
 }
 
-impl Div for Vector3f {
-    type Output = Vector3f;
+impl<T: Div> Div for Vector3<T> {
+    type Output = Vector3<T::Output>;
 
-    fn div(self, rhs: Vector3f) -> Vector3f {
-        Vector3f {
+    fn div(self, rhs: Vector3<T>) -> Vector3<T::Output> {
+        Vector3 {
             x: self.x / rhs.x,
             y: self.y / rhs.y,
             z: self.z / rhs.z
