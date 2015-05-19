@@ -28,7 +28,7 @@ use libc::{c_void, c_float, c_uint};
 use std::{ptr, mem};
 
 use traits::{ShapeImpl, Wrappable};
-use graphics::{Drawable, RenderTarget, RenderStates, Texture, Color,
+use graphics::{Drawable, Transformable, RenderTarget, RenderStates, Texture, Color,
                Transform, IntRect, FloatRect};
 use system::vector2::Vector2f;
 
@@ -110,237 +110,6 @@ impl<'s> CustomShape<'s> {
                     shape:     sp,
                     texture:   Some(texture)
                 })
-        }
-    }
-
-    /// Set the position of a shape
-    ///
-    /// This function completely overwrites the previous position.
-    /// See move to apply an offset based on the previous position instead.
-    /// The default position of a Shape object is (0, 0).
-    ///
-    /// # Arguments
-    /// * position - The new position of the Shape
-    pub fn set_position(&mut self, position: &Vector2f) -> () {
-        unsafe {
-            ffi::sfShape_setPosition(self.shape, *position)
-        }
-    }
-
-    /// Set the position of a shape
-    ///
-    /// This function completely overwrites the previous position.
-    /// See move to apply an offset based on the previous position instead.
-    /// The default position of a Shape object is (0, 0).
-    ///
-    /// # Arguments
-    /// * x - The new x position of the Shape
-    /// * y - The new y position of the Shape
-    pub fn set_position2f(&mut self, x: f32, y: f32) -> () {
-        unsafe {
-            ffi::sfShape_setPosition(self.shape, Vector2f::new(x, y))
-        }
-    }
-
-    /// Set the orientation of a shape
-    ///
-    /// This function completely overwrites the previous rotation.
-    /// See rotate to add an angle based on the previous rotation instead.
-    /// The default rotation of a Shape object is 0.
-    ///
-    /// # Arguments
-    /// * angle - The new rotation, in degrees
-    pub fn set_rotation(&mut self, angle: f32) -> () {
-        unsafe {
-            ffi::sfShape_setRotation(self.shape, angle as c_float)
-        }
-    }
-
-    /// Set the scale factors of a shape
-    ///
-    /// This function completely overwrites the previous scale.
-    /// See scale to add a factor based on the previous scale instead.
-    /// The default scale of a Shape object is (1, 1).
-    ///
-    /// # Arguments
-    /// scale - The new scale factors
-    pub fn set_scale(&mut self, scale: &Vector2f) -> () {
-        unsafe {
-            ffi::sfShape_setScale(self.shape, *scale)
-        }
-    }
-
-    /// Set the scale factors of a shape
-    ///
-    /// This function completely overwrites the previous scale.
-    /// See scale to add a factor based on the previous scale instead.
-    /// The default scale of a Shape object is (1, 1).
-    ///
-    /// # Arguments
-    /// scale_x - The new x scale factors
-    /// scale_y - The new y scale factors
-    pub fn set_scale2f(&mut self, scale_x: f32, scale_y: f32) -> () {
-        unsafe {
-            ffi::sfShape_setScale(self.shape, Vector2f::new(scale_x, scale_y))
-        }
-    }
-
-    /// Set the local origin of a shape
-    ///
-    /// The origin of an object defines the center point for
-    /// all transformations (position, scale, rotation).
-    /// The coordinates of this point must be relative to the
-    /// top-left corner of the object, and ignore all
-    /// transformations (position, scale, rotation).
-    /// The default origin of a Shape object is (0, 0).
-    ///
-    /// # Arguments
-    /// * origin - The new origin
-    pub fn set_origin(&mut self, origin: &Vector2f) -> () {
-        unsafe {
-            ffi::sfShape_setOrigin(self.shape, *origin)
-        }
-    }
-
-    /// Set the local origin of a shape
-    ///
-    /// The origin of an object defines the center point for
-    /// all transformations (position, scale, rotation).
-    /// The coordinates of this point must be relative to the
-    /// top-left corner of the object, and ignore all
-    /// transformations (position, scale, rotation).
-    /// The default origin of a Shape object is (0, 0).
-    ///
-    /// # Arguments
-    /// * x - The new x origin
-    /// * y - The new y origin
-    pub fn set_origin2f(&mut self, x: f32, y: f32) -> () {
-        unsafe {
-            ffi::sfShape_setOrigin(self.shape, Vector2f::new(x, y))
-        }
-    }
-
-    /// Get the position of a shape
-    ///
-    /// Return the current position
-    pub fn get_position(&self) -> Vector2f {
-        unsafe {
-            ffi::sfShape_getPosition(self.shape)
-        }
-    }
-
-    /// Get the orientation of a shape
-    ///
-    /// The rotation is always in the range [0, 360].
-    ///
-    /// Return the current rotation, in degrees
-    pub fn get_rotation(&self) -> f32 {
-        unsafe {
-            ffi::sfShape_getRotation(self.shape) as f32
-        }
-    }
-
-    /// Get the current scale of a shape
-    ///
-    /// Return the current scale factors
-    pub fn get_scale(&self) -> Vector2f {
-        unsafe {
-            ffi::sfShape_getScale(self.shape)
-        }
-    }
-
-    /// Get the local origin of a shape
-    ///
-    /// Return the current origin
-    pub fn get_origin(&self) -> Vector2f {
-        unsafe {
-            ffi::sfShape_getOrigin(self.shape)
-        }
-    }
-
-    /// Move a shape by a given offset
-    ///
-    /// This function adds to the current position of the object,
-    /// unlike set_position which overwrites it.
-    ///
-    /// # Arguments
-    /// * offset - Offset
-    pub fn move_(&mut self, offset: &Vector2f) -> () {
-        unsafe {
-            ffi::sfShape_move(self.shape, *offset)
-        }
-    }
-
-    /// Move a shape by a given offset
-    ///
-    /// This function adds to the current position of the object,
-    /// unlike set_position which overwrites it.
-    ///
-    /// # Arguments
-    /// * offset_x - Offset x
-    /// * offset_y - Offset y
-    pub fn move2f(&mut self, offset_x: f32, offset_y: f32) -> () {
-        unsafe {
-            ffi::sfShape_move(self.shape, Vector2f::new(offset_x, offset_y))
-        }
-    }
-
-    /// Rotate a shape
-    ///
-    /// This function adds to the current rotation of the object,
-    /// unlike set_rotation which overwrites it.
-    ///
-    /// # Arguments
-    /// * angle - The angle of rotation, in degrees
-    pub fn rotate(&mut self, angle: f32) -> () {
-        unsafe {
-            ffi::sfShape_rotate(self.shape, angle as c_float)
-        }
-    }
-
-    /// Scale a shape
-    ///
-    /// This function multiplies the current scale of the object,
-    /// unlike set_scale which overwrites it.
-    ///
-    /// # Arguments
-    /// * factors - Scale factors
-    pub fn scale(&mut self, factors: &Vector2f) -> () {
-        unsafe {
-            ffi::sfShape_scale(self.shape, *factors)
-        }
-    }
-
-    /// Scale a shape
-    ///
-    /// This function multiplies the current scale of the object,
-    /// unlike set_scale which overwrites it.
-    ///
-    /// # Arguments
-    /// * factor_x - x Scale factors
-    /// * factor_y - y Scale factors
-    pub fn scale2f(&mut self, factor_x: f32, factor_y: f32) -> () {
-        unsafe {
-            ffi::sfShape_scale(self.shape, Vector2f::new(factor_x, factor_y))
-        }
-    }
-
-    /// Get the combined transform of a shape
-    ///
-    /// Return the transform combining the position/rotation/scale/origin
-    /// of the object
-    pub fn get_transform(&self) -> Transform {
-        unsafe {
-            ffi::sfShape_getTransform(self.shape)
-        }
-    }
-
-    /// Get the inverse of the combined transform of a shape
-    ///
-    /// Return the inverse of the combined transformations applied to the object
-    pub fn get_inverse_transform(&self) -> Transform {
-        unsafe {
-            ffi::sfShape_getInverseTransform(self.shape)
         }
     }
 
@@ -564,6 +333,240 @@ impl<'s> Drawable for CustomShape<'s> {
                                  render_states: &mut RenderStates) -> () {
         render_target.draw_shape(self, render_states)
     }
+}
+
+impl<'s> Transformable for CustomShape<'s> {
+    /// Set the position of a shape
+    ///
+    /// This function completely overwrites the previous position.
+    /// See move to apply an offset based on the previous position instead.
+    /// The default position of a Shape object is (0, 0).
+    ///
+    /// # Arguments
+    /// * position - The new position of the Shape
+    fn set_position(&mut self, position: &Vector2f) -> () {
+        unsafe {
+            ffi::sfShape_setPosition(self.shape, *position)
+        }
+    }
+
+    /// Set the position of a shape
+    ///
+    /// This function completely overwrites the previous position.
+    /// See move to apply an offset based on the previous position instead.
+    /// The default position of a Shape object is (0, 0).
+    ///
+    /// # Arguments
+    /// * x - The new x position of the Shape
+    /// * y - The new y position of the Shape
+    fn set_position2f(&mut self, x: f32, y: f32) -> () {
+        unsafe {
+            ffi::sfShape_setPosition(self.shape, Vector2f::new(x, y))
+        }
+    }
+
+    /// Set the orientation of a shape
+    ///
+    /// This function completely overwrites the previous rotation.
+    /// See rotate to add an angle based on the previous rotation instead.
+    /// The default rotation of a Shape object is 0.
+    ///
+    /// # Arguments
+    /// * angle - The new rotation, in degrees
+    fn set_rotation(&mut self, angle: f32) -> () {
+        unsafe {
+            ffi::sfShape_setRotation(self.shape, angle as c_float)
+        }
+    }
+
+    /// Set the scale factors of a shape
+    ///
+    /// This function completely overwrites the previous scale.
+    /// See scale to add a factor based on the previous scale instead.
+    /// The default scale of a Shape object is (1, 1).
+    ///
+    /// # Arguments
+    /// scale - The new scale factors
+    fn set_scale(&mut self, scale: &Vector2f) -> () {
+        unsafe {
+            ffi::sfShape_setScale(self.shape, *scale)
+        }
+    }
+
+    /// Set the scale factors of a shape
+    ///
+    /// This function completely overwrites the previous scale.
+    /// See scale to add a factor based on the previous scale instead.
+    /// The default scale of a Shape object is (1, 1).
+    ///
+    /// # Arguments
+    /// scale_x - The new x scale factors
+    /// scale_y - The new y scale factors
+    fn set_scale2f(&mut self, scale_x: f32, scale_y: f32) -> () {
+        unsafe {
+            ffi::sfShape_setScale(self.shape, Vector2f::new(scale_x, scale_y))
+        }
+    }
+
+    /// Set the local origin of a shape
+    ///
+    /// The origin of an object defines the center point for
+    /// all transformations (position, scale, rotation).
+    /// The coordinates of this point must be relative to the
+    /// top-left corner of the object, and ignore all
+    /// transformations (position, scale, rotation).
+    /// The default origin of a Shape object is (0, 0).
+    ///
+    /// # Arguments
+    /// * origin - The new origin
+    fn set_origin(&mut self, origin: &Vector2f) -> () {
+        unsafe {
+            ffi::sfShape_setOrigin(self.shape, *origin)
+        }
+    }
+
+    /// Set the local origin of a shape
+    ///
+    /// The origin of an object defines the center point for
+    /// all transformations (position, scale, rotation).
+    /// The coordinates of this point must be relative to the
+    /// top-left corner of the object, and ignore all
+    /// transformations (position, scale, rotation).
+    /// The default origin of a Shape object is (0, 0).
+    ///
+    /// # Arguments
+    /// * x - The new x origin
+    /// * y - The new y origin
+    fn set_origin2f(&mut self, x: f32, y: f32) -> () {
+        unsafe {
+            ffi::sfShape_setOrigin(self.shape, Vector2f::new(x, y))
+        }
+    }
+
+    /// Get the position of a shape
+    ///
+    /// Return the current position
+    fn get_position(&self) -> Vector2f {
+        unsafe {
+            ffi::sfShape_getPosition(self.shape)
+        }
+    }
+
+    /// Get the orientation of a shape
+    ///
+    /// The rotation is always in the range [0, 360].
+    ///
+    /// Return the current rotation, in degrees
+    fn get_rotation(&self) -> f32 {
+        unsafe {
+            ffi::sfShape_getRotation(self.shape) as f32
+        }
+    }
+
+    /// Get the current scale of a shape
+    ///
+    /// Return the current scale factors
+    fn get_scale(&self) -> Vector2f {
+        unsafe {
+            ffi::sfShape_getScale(self.shape)
+        }
+    }
+
+    /// Get the local origin of a shape
+    ///
+    /// Return the current origin
+    fn get_origin(&self) -> Vector2f {
+        unsafe {
+            ffi::sfShape_getOrigin(self.shape)
+        }
+    }
+
+    /// Move a shape by a given offset
+    ///
+    /// This function adds to the current position of the object,
+    /// unlike set_position which overwrites it.
+    ///
+    /// # Arguments
+    /// * offset - Offset
+    fn move_(&mut self, offset: &Vector2f) -> () {
+        unsafe {
+            ffi::sfShape_move(self.shape, *offset)
+        }
+    }
+
+    /// Move a shape by a given offset
+    ///
+    /// This function adds to the current position of the object,
+    /// unlike set_position which overwrites it.
+    ///
+    /// # Arguments
+    /// * offset_x - Offset x
+    /// * offset_y - Offset y
+    fn move2f(&mut self, offset_x: f32, offset_y: f32) -> () {
+        unsafe {
+            ffi::sfShape_move(self.shape, Vector2f::new(offset_x, offset_y))
+        }
+    }
+
+    /// Rotate a shape
+    ///
+    /// This function adds to the current rotation of the object,
+    /// unlike set_rotation which overwrites it.
+    ///
+    /// # Arguments
+    /// * angle - The angle of rotation, in degrees
+    fn rotate(&mut self, angle: f32) -> () {
+        unsafe {
+            ffi::sfShape_rotate(self.shape, angle as c_float)
+        }
+    }
+
+    /// Scale a shape
+    ///
+    /// This function multiplies the current scale of the object,
+    /// unlike set_scale which overwrites it.
+    ///
+    /// # Arguments
+    /// * factors - Scale factors
+    fn scale(&mut self, factors: &Vector2f) -> () {
+        unsafe {
+            ffi::sfShape_scale(self.shape, *factors)
+        }
+    }
+
+    /// Scale a shape
+    ///
+    /// This function multiplies the current scale of the object,
+    /// unlike set_scale which overwrites it.
+    ///
+    /// # Arguments
+    /// * factor_x - x Scale factors
+    /// * factor_y - y Scale factors
+    fn scale2f(&mut self, factor_x: f32, factor_y: f32) -> () {
+        unsafe {
+            ffi::sfShape_scale(self.shape, Vector2f::new(factor_x, factor_y))
+        }
+    }
+
+    /// Get the combined transform of a shape
+    ///
+    /// Return the transform combining the position/rotation/scale/origin
+    /// of the object
+    fn get_transform(&self) -> Transform {
+        unsafe {
+            ffi::sfShape_getTransform(self.shape)
+        }
+    }
+
+    /// Get the inverse of the combined transform of a shape
+    ///
+    /// Return the inverse of the combined transformations applied to the object
+    fn get_inverse_transform(&self) -> Transform {
+        unsafe {
+            ffi::sfShape_getInverseTransform(self.shape)
+        }
+    }
+
 }
 
 impl<'s> Drop for CustomShape<'s> {
