@@ -37,7 +37,7 @@ use std::str;
 
 use traits::{Drawable, Wrappable};
 use graphics::{RenderTarget, Font, FloatRect,
-               Color, Transform, rc, TextStyle};
+               Color, Transform, rc, TextStyle, RenderStates};
 use system::vector2::Vector2f;
 
 use ffi::graphics::text as ffi;
@@ -568,14 +568,10 @@ impl Wrappable<*mut ffi::sfText> for Text {
 }
 
 impl Drawable for Text {
-    fn draw<RT:RenderTarget>(&self, render_target: &mut RT) -> () {
-        render_target.draw_text_rc(self)
-    }
-
-    fn draw_rs_rc<RT:RenderTarget>(&self,
+    fn draw<RT:RenderTarget>(&self,
                                    render_target: &mut RT,
-                                   render_states: &mut rc::RenderStates) -> () {
-        render_target.draw_text_rs_rc(self, render_states)
+                                   render_states: &mut RenderStates) -> () {
+        render_target.draw_text(self, render_states)
     }
 }
 

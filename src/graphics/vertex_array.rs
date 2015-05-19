@@ -28,8 +28,8 @@ use libc::c_uint;
 use std::mem;
 use std::ops::Index;
 
-use traits::{Drawable, Wrappable};
-use graphics::{Vertex, FloatRect, primitive_type, PrimitiveType, RenderTarget, RenderStates, rc};
+use traits::Wrappable;
+use graphics::{Drawable, Vertex, FloatRect, primitive_type, PrimitiveType, RenderTarget, RenderStates};
 
 use ffi::graphics::vertex_array as ffi;
 
@@ -296,20 +296,10 @@ impl Wrappable<*mut ffi::sfVertexArray> for VertexArray {
 }
 
 impl Drawable for VertexArray {
-    fn draw<RT: RenderTarget>(&self, render_target: &mut RT) -> () {
-        render_target.draw_vertex_array(self)
-    }
-
-    fn draw_rs<RT: RenderTarget>(&self,
+    fn draw<RT: RenderTarget>(&self,
                                  render_target: &mut RT,
                                  render_states: &mut RenderStates) -> () {
-        render_target.draw_vertex_array_rs(self, render_states)
-    }
-
-    fn draw_rs_rc<RT: RenderTarget>(&self,
-                                    render_target: &mut RT,
-                                    render_states: &mut rc::RenderStates) -> () {
-        render_target.draw_vertex_array_rs_rc(self, render_states)
+        render_target.draw_vertex_array(self, render_states)
     }
 }
 

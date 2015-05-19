@@ -27,24 +27,10 @@
 //! Implemented by each drawable object to specifiy their drawing operations for
 //! RenderTargets.
 
-use graphics::{RenderStates, RenderTarget, rc};
+use graphics::{RenderStates, RenderTarget};
 
 /// The trait drawable is inherited by each object who can be drawn in a RenderTarget
 pub trait Drawable {
     /// Draw a drawable object into a RenderTarget
-    fn draw<RT: RenderTarget>(&self, target: &mut RT);
-
-    /// Draw a drawable object with a RenderState into a RenderTarget
-    fn draw_rs<RT: RenderTarget>(&self,
-                                 _: &mut RT,
-                                 _: &mut RenderStates){
-        println!("Error: Bad Usage: Can't draw a ref-counted drawable with borrow-based RenderStates");
-    }
-
-    /// Draw a borrow-based drawable object with a RenderState into a RenderTarget
-    fn draw_rs_rc<RT: RenderTarget>(&self,
-                                    _: &mut RT,
-                                    _: &mut rc::RenderStates){
-        println!("Error: Bad Usage: Can't draw a borrow-based drawable with refcount based RenderStates");
-    }
+    fn draw<RT: RenderTarget>(&self, target: &mut RT, rs: &mut RenderStates);
 }

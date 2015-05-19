@@ -34,14 +34,14 @@
 use libc::{c_float, c_uint};
 use std::ptr;
 
-use traits::{Wrappable, Drawable};
-use graphics::{Color, Texture, RenderTarget, FloatRect, IntRect, Transform, RenderStates};
+use traits::Wrappable;
+use graphics::{Drawable, Color, Texture, RenderTarget, FloatRect, IntRect, Transform, RenderStates};
 use system::vector2::Vector2f;
 
 use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi::graphics::convex_shape as ffi;
 
-pub mod rc;
+// pub mod rc;
 
 /// Specialized shape representing a convex polygon
 ///
@@ -634,14 +634,8 @@ impl<'s> Wrappable<*mut ffi::sfConvexShape> for ConvexShape<'s> {
 }
 
 impl<'s> Drawable for ConvexShape<'s> {
-    fn draw<RT: RenderTarget>(&self, render_target: &mut RT) -> () {
-        render_target.draw_convex_shape(self)
-    }
-
-    fn draw_rs<RT: RenderTarget>(&self,
-                                 render_target: &mut RT,
-                                 render_states: &mut RenderStates) -> () {
-        render_target.draw_convex_shape_rs(self, render_states)
+    fn draw<RT: RenderTarget>(&self, render_target: &mut RT, render_states: &mut RenderStates) {
+        render_target.draw_convex_shape(self, render_states)
     }
 }
 

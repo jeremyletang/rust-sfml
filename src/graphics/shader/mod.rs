@@ -40,7 +40,7 @@ use system::vector3::Vector3f;
 use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi::graphics::shader as ffi;
 
-pub mod rc;
+// pub mod rc;
 
 /// Shader class (vertex and fragment)
 ///

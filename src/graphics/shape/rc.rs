@@ -31,7 +31,7 @@ use std::{ptr, mem};
 
 use traits::{Drawable, ShapeImpl, Wrappable};
 use graphics::{RenderTarget, rc, Texture, Color,
-               Transform, IntRect, FloatRect};
+               Transform, IntRect, FloatRect, RenderStates};
 use system::vector2::Vector2f;
 
 use ffi::sfml_types::{SFTRUE, SFFALSE};
@@ -564,14 +564,10 @@ impl Shape {
 }
 
 impl Drawable for Shape {
-    fn draw<RT: RenderTarget>(&self, render_target: &mut RT) {
-        render_target.draw_shape_rc(self)
-    }
-
-    fn draw_rs_rc<RT: RenderTarget>(&self,
+    fn draw<RT: RenderTarget>(&self,
                                     render_target: &mut RT,
-                                    render_states: &mut rc::RenderStates) -> () {
-        render_target.draw_shape_rs_rc(self, render_states)
+                                    render_states: &mut RenderStates) -> () {
+        render_target.draw_shape(self, render_states)
     }
 }
 

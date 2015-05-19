@@ -33,14 +33,14 @@ use std::ffi::{CString, CStr};
 use std::str;
 use libc::{c_float, c_uint, size_t};
 
-use traits::{Drawable, Wrappable};
-use graphics::{RenderTarget, Font, FloatRect,
+use traits::Wrappable;
+use graphics::{Drawable, RenderTarget, Font, FloatRect,
                Color, Transform, RenderStates, TextStyle};
 use system::vector2::Vector2f;
 
 use ffi::graphics::text as ffi;
 
-pub mod rc;
+// pub mod rc;
 
 /// Graphical text
 ///
@@ -568,14 +568,10 @@ impl<'s> Wrappable<*mut ffi::sfText> for Text<'s> {
 }
 
 impl<'s> Drawable for Text<'s> {
-    fn draw<RT:RenderTarget>(&self, render_target: &mut RT) -> () {
-        render_target.draw_text(self)
-    }
-
-    fn draw_rs<RT:RenderTarget>(&self,
+    fn draw<RT:RenderTarget>(&self,
                                 render_target: &mut RT,
                                 render_states: &mut RenderStates) -> () {
-        render_target.draw_text_rs(self, render_states)
+        render_target.draw_text(self, render_states)
     }
 }
 

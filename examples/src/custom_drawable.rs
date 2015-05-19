@@ -3,7 +3,7 @@
 extern crate sfml;
 
 use sfml::graphics::{RenderWindow, Color, CircleShape, RectangleShape,
-                      RenderTarget};
+                      RenderTarget, RenderStates};
 use sfml::window::{VideoMode, ContextSettings, event, WindowStyle};
 use sfml::window::keyboard::Key;
 use sfml::system::Vector2f;
@@ -33,7 +33,7 @@ impl<'s> CustomDrawable<'s> {
 
 // Implements the drawable trait, only this function is mendatory.
 impl<'s> Drawable for CustomDrawable<'s> {
-    fn draw<RT: RenderTarget>(&self, render_target: &mut RT) -> () {
+    fn draw<RT: RenderTarget>(&self, render_target: &mut RT, rs: &mut RenderStates) -> () {
         render_target.draw(&self.circle);
         render_target.draw(&self.rect)
     }

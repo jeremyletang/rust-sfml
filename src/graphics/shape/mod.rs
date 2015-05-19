@@ -27,15 +27,15 @@
 use libc::{c_void, c_float, c_uint};
 use std::{ptr, mem};
 
-use traits::{Drawable, ShapeImpl, Wrappable};
-use graphics::{RenderTarget, RenderStates, Texture, Color,
+use traits::{ShapeImpl, Wrappable};
+use graphics::{Drawable, RenderTarget, RenderStates, Texture, Color,
                Transform, IntRect, FloatRect};
 use system::vector2::Vector2f;
 
 use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi::graphics::shape as ffi;
 
-pub mod rc;
+// pub mod rc;
 
 #[doc(hidden)]
 pub struct WrapObj {
@@ -559,14 +559,10 @@ impl<'s> Shape<'s> {
 }
 
 impl<'s> Drawable for Shape<'s> {
-    fn draw<RT:RenderTarget>(&self, render_target: &mut RT) {
-        render_target.draw_shape(self)
-    }
-
-    fn draw_rs<RT: RenderTarget>(&self,
+    fn draw<RT: RenderTarget>(&self,
                                  render_target: &mut RT,
                                  render_states: &mut RenderStates) -> () {
-        render_target.draw_shape_rs(self, render_states)
+        render_target.draw_shape(self, render_states)
     }
 }
 

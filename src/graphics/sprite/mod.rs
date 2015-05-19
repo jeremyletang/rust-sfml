@@ -30,15 +30,15 @@
 use libc::{c_float};
 use std::ptr;
 
-use traits::{Drawable, Wrappable};
-use graphics::{FloatRect, IntRect, Color, Texture,
+use traits::Wrappable;
+use graphics::{Drawable, FloatRect, IntRect, Color, Texture,
                RenderTarget, Transform, RenderStates};
 use system::vector2::Vector2f;
 
 use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi::graphics::sprite as ffi;
 
-pub mod rc;
+// pub mod rc;
 
 /// Drawable representation of a texture
 ///
@@ -491,14 +491,10 @@ impl<'s> Wrappable<*mut ffi::sfSprite> for Sprite<'s> {
 }
 
 impl<'s> Drawable for Sprite<'s> {
-    fn draw<RT:RenderTarget>(&self, render_target: &mut RT) -> () {
-        render_target.draw_sprite(self)
-    }
-
-    fn draw_rs<RT:RenderTarget>(&self,
+    fn draw<RT:RenderTarget>(&self,
                                 render_target: &mut RT,
                                 render_states: &mut RenderStates) -> () {
-        render_target.draw_sprite_rs(self, render_states)
+        render_target.draw_sprite(self, render_states)
     }
 }
 

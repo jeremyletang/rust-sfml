@@ -37,7 +37,7 @@ use libc::{c_float, c_uint};
 use std::ptr;
 
 use traits::{Wrappable, Drawable};
-use graphics::{Color, Texture, RenderTarget, FloatRect, IntRect, Transform, rc};
+use graphics::{Color, Texture, RenderTarget, FloatRect, IntRect, Transform, rc, RenderStates};
 use system::vector2::Vector2f;
 
 use ffi::sfml_types::{SFTRUE, SFFALSE};
@@ -634,14 +634,8 @@ impl Wrappable<*mut ffi::sfConvexShape> for ConvexShape {
 }
 
 impl Drawable for ConvexShape {
-    fn draw<RT: RenderTarget>(&self, render_target: &mut RT) {
-        render_target.draw_convex_shape_rc(self)
-    }
-
-    fn draw_rs_rc<RT: RenderTarget>(&self,
-                                    render_target: &mut RT,
-                                    render_states: &mut rc::RenderStates) {
-        render_target.draw_convex_shape_rs_rc(self, render_states)
+    fn draw<RT: RenderTarget>(&self, render_target: &mut RT, render_states: &mut RenderStates) {
+        render_target.draw_convex_shape(self, render_states)
     }
 }
 

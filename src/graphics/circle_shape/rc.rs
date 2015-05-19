@@ -31,7 +31,7 @@ use std::ptr;
 
 use traits::{Drawable, Wrappable};
 use graphics::{IntRect, FloatRect, Color, Texture,
-               RenderTarget, Transform, rc};
+               RenderTarget, Transform, rc, RenderStates};
 use system::vector2::Vector2f;
 
 use ffi::sfml_types::{SFTRUE, SFFALSE};
@@ -623,14 +623,8 @@ impl Wrappable<*mut ffi::sfCircleShape> for CircleShape {
 }
 
 impl Drawable for CircleShape {
-    fn draw<RT:RenderTarget>(&self, render_target: &mut RT) -> () {
-        render_target.draw_circle_shape_rc(self)
-    }
-
-    fn draw_rs_rc<RT:RenderTarget>(&self,
-                                   render_target: &mut RT,
-                                   render_states: &mut rc::RenderStates) -> () {
-        render_target.draw_circle_shape_rs_rc(self, render_states)
+    fn draw<RT:RenderTarget>(&self, render_target: &mut RT, render_states: &mut RenderStates) {
+        render_target.draw_circle_shape(self, render_states)
     }
 }
 

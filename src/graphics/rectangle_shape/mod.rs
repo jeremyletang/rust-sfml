@@ -27,15 +27,15 @@
 use libc::{c_float, c_uint};
 use std::ptr;
 
-use traits::{Drawable, Wrappable};
+use traits::Wrappable;
 use system::vector2::Vector2f;
-use graphics::{FloatRect, IntRect, Color, Texture,
+use graphics::{Drawable, FloatRect, IntRect, Color, Texture,
                RenderTarget, Transform, RenderStates};
 
 use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi::graphics::rectangle_shape as ffi;
 
-pub mod rc;
+// pub mod rc;
 
 /// Specialized shape representing a rectangle
 pub struct RectangleShape<'s> {
@@ -615,14 +615,10 @@ impl<'s> Wrappable<*mut ffi::sfRectangleShape> for RectangleShape<'s> {
 }
 
 impl<'s> Drawable for RectangleShape<'s> {
-    fn draw<RT: RenderTarget>(&self, render_target: &mut RT) -> () {
-        render_target.draw_rectangle_shape(self);
-    }
-
-    fn draw_rs<RT: RenderTarget>(&self,
-                                 render_target: &mut RT,
-                                 render_states: &mut RenderStates) -> () {
-        render_target.draw_rectangle_shape_rs(self, render_states);
+    fn draw<RT: RenderTarget>(&self,
+                              render_target: &mut RT,
+                              render_states: &mut RenderStates) {
+        render_target.draw_rectangle_shape(self, render_states);
     }
 }
 

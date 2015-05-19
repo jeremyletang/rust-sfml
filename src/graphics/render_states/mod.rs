@@ -31,7 +31,7 @@ use graphics::{BlendMode, Shader, Texture, Transform};
 
 use ffi::graphics::render_states as ffi;
 
-pub mod rc;
+// pub mod rc;
 
 /// Define the states used for drawing to a RenderTarget
 pub struct RenderStates<'s> {

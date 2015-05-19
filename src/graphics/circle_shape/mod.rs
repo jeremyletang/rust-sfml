@@ -27,15 +27,15 @@
 use libc::{c_float, c_uint};
 use std::ptr;
 
-use traits::{Drawable, Wrappable};
-use graphics::{IntRect, FloatRect, Color, Texture,
+use traits::Wrappable;
+use graphics::{Drawable, IntRect, FloatRect, Color, Texture,
                RenderTarget, Transform, RenderStates};
 use system::vector2::Vector2f;
 
 use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi::graphics::circle_shape as ffi;
 
-pub mod rc;
+// pub mod rc;
 
 /// Specialized shape representing a circle.
 pub struct CircleShape<'s> {
@@ -620,14 +620,8 @@ impl<'s> Wrappable<*mut ffi::sfCircleShape> for CircleShape<'s> {
 }
 
 impl<'s> Drawable for CircleShape<'s> {
-    fn draw<RT:RenderTarget>(&self, render_target: &mut RT) -> () {
-        render_target.draw_circle_shape(self)
-    }
-
-    fn draw_rs<RT:RenderTarget>(&self,
-                                render_target: &mut RT,
-                                render_states: &mut RenderStates) -> () {
-        render_target.draw_circle_shape_rs(self, render_states)
+    fn draw<RT:RenderTarget>(&self, render_target: &mut RT, render_states: &mut RenderStates) {
+        render_target.draw_circle_shape(self, render_states)
     }
 }
 
