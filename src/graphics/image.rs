@@ -22,8 +22,6 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-//! Loading, manipulating and saving images.
-
 use libc::{c_uint, size_t};
 use std::ffi::CString;
 use std::io::{Read, Seek};
@@ -34,64 +32,56 @@ use graphics::{Color, IntRect};
 use ffi::{SfBool, Foreign};
 use ffi::graphics as ffi;
 
-/// Loading, manipulating and saving images.
+/// Manipulation of images as a bidimensional array of pixels.
+///
+/// The type provides functions to load, read, write, and save pixels, as well
+/// as many other useful functions.
+///
+/// `Image` can handle a unique internal representation of pixels, which is
+/// 32-bits RGBA. This means that pixels match the representation of `Color`.
+/// All the functions that return an array of pixels follow this rule, and all
+/// parameters that you pass to `Image` functions (such as `load_from_memory()`)
+/// must use this representation as well.
+///
+/// An `Image` can be cloned, but it is a heavy resource and if possible you
+/// should use references or moving to pass or return them.
 pub struct Image(Foreign<ffi::sfImage>);
 
 impl Image {
-    /// Create an image
+    /// Create an image with a specific size filled with black pixels.
     ///
-    /// This image is filled with black pixels.
-    ///
-    /// # Arguments
-    /// * width - Width of the image
-    /// * height - Height of the image
-    ///
-    /// Return Some(Image) or None
+    /// Returns Some(Image) or None on failure.
     pub fn new(width: u32, height: u32) -> Option<Image> {
         unsafe {
 			Foreign::new(ffi::sfImage_create(width as c_uint, height as c_uint))
 		}.map(Image)
     }
 
-    /// Create an image from memory
+    /// Create an image from a file in memory.
     ///
-    /// # Arguments
-    /// * mem - Pointer to the file data in memory
-    ///
-    /// Return Some(Image) or None
+    /// Returns Some(Image) or None on failure.
     pub fn new_from_memory(mem: &[u8]) -> Option<Image> {
         unsafe {
 			Foreign::new(ffi::sfImage_createFromMemory(mem.as_ptr(), mem.len() as size_t))
 		}.map(Image)
     }
 
-    /// Create an image and fill it with a unique color
+	/// Create an image with a specific size and fill color.
     ///
-    /// # Arguments
-    /// * width - Width of the image
-    /// * height - Height of the image
-    /// * color - Fill color
-    ///
-    /// Return Some(Image) or None
-    pub fn new_from_color(width: u32,
-                          height: u32,
-                          color: &Color) -> Option<Image> {
+    /// Returns Some(Image) or None on failure.
+    pub fn new_from_color(width: u32, height: u32, color: &Color) -> Option<Image> {
         unsafe {
 			Foreign::new(ffi::sfImage_createFromColor(width as c_uint, height as c_uint, *color))
 		}.map(Image)
     }
 
-    /// Create an image from a file on disk
+    /// Create an image from a file on disk.
     ///
     /// The supported image formats are bmp, png, tga, jpg, gif,
     /// psd, hdr and pic. Some format options are not supported,
     /// like progressive jpeg.
-    /// If this function fails, the image is left unchanged.
-    ///
-    /// # Arguments
-    /// * filename - Path of the image file to load
-    ///
-    /// Return Some(Image) or None
+	///
+	/// Returns Some(Image) or None on failure.
     pub fn new_from_file(filename: &str) -> Option<Image> {
         let c_str = match CString::new(filename.as_bytes()) {
 			Ok(c_str) => c_str,
@@ -111,30 +101,26 @@ impl Image {
 		}.map(Image)
 	}
 
-    /// Copy an existing image
+    /// Copy an existing image.
     ///
-    /// Return Some(Image) or None
+    /// Returns Some(Image) or None on failure.
     pub fn clone_opt(&self) -> Option<Image> {
         unsafe {
 			Foreign::new(ffi::sfImage_copy(self.raw()))
 		}.map(Image)
     }
 
-    /// Create an image from an vector of pixels
+    /// Create a image from an array of pixels.
+	///
+	/// The `pixels` array is assumed to contain 32-bit RGBA pixels, and have
+	/// the given `width` and `height`. If not, the result is undefined.
     ///
-    /// The pixel vector is assumed to contain 32-bits RGBA pixels,
-    /// and have the given width and height. If not, this is
-    /// an undefined behaviour.
-    ///
-    /// # Arguments
-    /// * width - Width of the image
-    /// * height - Height of the image
-    /// * pixels - Vector of pixels to copy to the image
-    ///
-    /// Return Some(Image) or None
-    pub fn create_from_pixels(width: u32,
-                              height: u32,
-                              pixels: &[u8]) -> Option<Image> {
+    /// Returns Some(Image) or None on failure.
+    pub fn create_from_pixels(width: u32, height: u32, pixels: &[u8]) -> Option<Image> {
+		if width as usize * height as usize * 4 != pixels.len() {
+			// TODO: indicate error better
+			return None
+		}
         unsafe {
 			Foreign::new(ffi::sfImage_createFromPixels(width as c_uint,
 				height as c_uint,
@@ -151,17 +137,14 @@ impl Image {
 		Foreign::new(ptr).map(Image)
 	}
 
-    /// Save an image to a file on disk
+    /// Save the image to a file on disk.
     ///
     /// The format of the image is automatically deduced from
     /// the extension. The supported image formats are bmp, png,
     /// tga and jpg. The destination file is overwritten
     /// if it already exists. This function fails if the image is empty.
     ///
-    /// # Arguments
-    /// * filename - Path of the file to save
-    ///
-    /// Return true if saving was successful
+    /// Returns true if saving was successful.
     pub fn save_to_file(&self, filename: &str) -> bool {
         let c_str = match CString::new(filename.as_bytes()) {
 			Ok(c_str) => c_str,
@@ -170,67 +153,52 @@ impl Image {
         unsafe { ffi::sfImage_saveToFile(self.raw(), c_str.as_ptr()) }.to_bool()
     }
 
-    /// Return the size of an image
-    ///
-    /// Return the size in pixels
+    /// Return the size (width and height) of the image in pixels.
     pub fn get_size(&self) -> Vector2u {
-        unsafe {
-            ffi::sfImage_getSize(self.raw())
-        }
+        unsafe { ffi::sfImage_getSize(self.raw()) }
     }
 
-    /// Create a transparency mask from a specified color-key
+    /// Create a transparency mask from a specified color-key.
     ///
     /// This function sets the alpha value of every pixel matching
     /// the given color to alpha (0 by default), so that they
     /// become transparent.
-    ///
-    /// # Arguments
-    /// * color - Color to make transparent
-    /// * alpha - Alpha value to assign to transparent pixels
-    pub fn create_mask_from_color(&mut self, color: &Color, alpha: u8) -> () {
+    pub fn create_mask_from_color(&mut self, color: &Color, alpha: u8) {
         unsafe {
             ffi::sfImage_createMaskFromColor(self.raw_mut(), *color, alpha)
         }
     }
 
-    /// Change the color of a pixel in an image
-    ///
-    /// This function doesn't check the validity of the pixel
-    /// coordinates, using out-of-range values will result in
-    /// an undefined behaviour.
-    ///
-    /// # Arguments
-    /// * x - X coordinate of pixel to change
-    /// * y - Y coordinate of pixel to change
-    /// * color - New color of the pixel
-    pub fn set_pixel(&mut self, x: u32, y: u32, color: &Color) -> () {
-        unsafe {
-            ffi::sfImage_setPixel(self.raw_mut(), x as c_uint, y as c_uint, *color)
-        }
+    /// Change the color of a pixel.
+	///
+	/// Does nothing if the coordinates are out of range.
+    pub fn set_pixel(&mut self, x: u32, y: u32, color: &Color) {
+		let size = self.get_size();
+		if x < size.x && y < size.y {
+			unsafe {
+				ffi::sfImage_setPixel(self.raw_mut(), x as c_uint, y as c_uint, *color)
+			}
+		}
     }
 
-    /// Get the color of a pixel in an image
-    ///
-    /// This function doesn't check the validity of the pixel
-    /// coordinates, using out-of-range values will result in
-    /// an undefined behaviour.
-    ///
-    /// # Arguments
-    /// * x - X coordinate of pixel to get
-    /// * y - Y coordinate of pixel to get
-    ///
-    /// Return the Color of the pixel at coordinates (x, y)
-    pub fn get_pixel(&self, x: u32, y: u32) -> Color {
-        unsafe {
-            ffi::sfImage_getPixel(self.raw(), x as c_uint, y as c_uint)
-        }
+	/// Get the color of a pixel.
+	///
+	/// Returns None if the coordinates are out of range.
+    pub fn get_pixel(&self, x: u32, y: u32) -> Option<Color> {
+		let size = self.get_size();
+		if x >= size.x || y >= size.y {
+			None
+		} else {
+			Some(unsafe {
+				ffi::sfImage_getPixel(self.raw(), x as c_uint, y as c_uint)
+			})
+		}
     }
 
-	/// Get a read-only pointer to the array of pixels.
+	/// Get a read-only reference to the array of pixels.
 	///
 	/// The returned value points to an array of RGBA pixels made of 8-bit
-	/// integer components. The size of the array is `width * height * 4`.
+	/// integer components. The size of the slice is `width * height * 4`.
 	pub fn get_pixels(&self) -> &[u8] {
 		unsafe {
 			let pixels = ffi::sfImage_getPixelsPtr(self.raw());
@@ -247,9 +215,9 @@ impl Image {
 		}
 	}
 
-	/// Get a read-only pointer to the array of pixels, as a color array.
+	/// Get a read-only reference to the array of pixels, as a color array.
 	///
-	/// The returned array has the size `width * height`.
+	/// The returned slice has the size `width * height`.
 	pub fn get_pixels_colors(&self) -> &[Color] {
 		let pixels = self.get_pixels();
 		unsafe {
@@ -257,44 +225,33 @@ impl Image {
 		}
 	}
 
-    /// Flip an image horizontally (left <-> right)
-    pub fn flip_horizontally(&mut self) -> () {
-        unsafe {
-            ffi::sfImage_flipHorizontally(self.raw_mut())
-        }
+    /// Flip the image horizontally (left <-> right).
+    pub fn flip_horizontally(&mut self) {
+        unsafe { ffi::sfImage_flipHorizontally(self.raw_mut()) }
     }
 
-    /// Flip an image vertically (top <-> bottom)
-    pub fn flip_vertically(&mut self) -> () {
-        unsafe {
-            ffi::sfImage_flipVertically(self.raw_mut())
-        }
+    /// Flip the image vertically (top <-> bottom).
+    pub fn flip_vertically(&mut self) {
+        unsafe { ffi::sfImage_flipVertically(self.raw_mut()) }
     }
 
-    /// Copy pixels from an image onto another
+    /// Copy pixels from another image onto this one.
     ///
     /// This function does a slow pixel copy and should not be
     /// used intensively. It can be used to prepare a complex
     /// static image from several others, but if you need this
-    /// kind of feature in real-time you'd better use sfRenderTexture.
+    /// kind of feature in real-time you'd better use `RenderTexture`.
     ///
-    /// If sourceRect is empty, the whole image is copied.
-    /// If applyAlpha is set to true, the transparency of
+    /// If `source_rect` is empty, the whole image is copied.
+    /// If `apply_alpha` is set to true, the transparency of
     /// source pixels is applied. If it is false, the pixels are
     /// copied unchanged with their alpha value.
-    ///
-    /// # Arguments
-    /// * source - Source image to copy
-    /// * destX - X coordinate of the destination position
-    /// * destY - Y coordinate of the destination position
-    /// * sourceRect - Sub-rectangle of the source image to copy
-    /// * applyAlpha - Should the copy take in account the source transparency?
     pub fn copy_image(&mut self,
                       source: &Image,
                       dest_x: u32,
                       dest_y: u32,
                       source_rect: &IntRect,
-                      apply_alpha: bool) -> () {
+                      apply_alpha: bool) {
         unsafe {
             ffi::sfImage_copyImage(self.raw_mut(),
                                    source.unwrap(),

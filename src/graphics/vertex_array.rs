@@ -22,14 +22,16 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-//! Define a set of one or more 2D primitives
-
 use graphics::{Vertex, FloatRect, PrimitiveType, RenderTarget, RenderStates, Drawable};
 
 use std::ops::{Deref, DerefMut};
 
 #[derive(Clone, Debug, PartialEq)]
-/// A vector of one or more 2D primitives
+/// A vector of one or more 2D primitives.
+///
+/// Vertex arrays are defined by a vector of vertices and the type of primitive
+/// they contain. `VertexArray` implements `Deref` and `DerefMut` to
+/// `Vec<Vertex>`, and can be treated like a `Vec<Vertex>` for most purposes.
 pub struct VertexArray {
 	primitive_type: PrimitiveType,
 	vertices: Vec<Vertex>
@@ -67,14 +69,12 @@ impl VertexArray {
 		self.primitive_type = primitive_type;
 	}
 
-    /// Compute the bounding rectangle of a vertex array
+    /// Compute the bounding rectangle of the vertex array.
     ///
     /// This function returns the axis-aligned rectangle that
     /// contains all the vertices of the array.
-    ///
-    /// Return the bounding rectangle of the vertex array
     pub fn get_bounds(&self) -> FloatRect {
-		// [SFML sourced]
+		// Based on SFML implementation
 		if self.len() == 0 {
 			FloatRect::new(0., 0., 0., 0.)
 		} else {

@@ -22,11 +22,11 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-//! Glyph describes a glyph (a visual character)
-
 use graphics::{IntRect, FloatRect};
 
-/// Glyph describes a glyph (a visual character)
+/// Structure describing a glyph (the visual representation of a character).
+///
+/// The fields of the structure contain the relevant glyph information.
 #[repr(C)]
 #[derive(Clone, PartialEq, PartialOrd, Debug, Copy)]
 pub struct Glyph {

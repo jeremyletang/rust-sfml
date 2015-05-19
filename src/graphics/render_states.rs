@@ -22,37 +22,63 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-//! Define the states used for drawing to a RenderTarget
-
 use std::ptr;
 
 use graphics::{BlendMode, Shader, Texture, Transform};
 
 use ffi::graphics as ffi;
 
-/// Define the states used for drawing to a RenderTarget
+/// Defines the states used for drawing to a `RenderTarget`.
+///
+/// High-level objects such as sprites or text force some of these states when
+/// they are drawn. For example, a sprite will set its own texture, so that you
+/// don't have to care about it when drawing the sprite.
+///
+/// The transform is a special case: sprites, texts and shapes (and it's a good
+/// idea to do it with your own drawable classes too) combine their transform
+/// with the one that is passed in the `RenderStates` structure, so that you can
+/// use a "global" transform on top of each object's transform.
+///
+/// Most objects, especially high-level drawables, can be drawn directly without
+/// defining render states explicitly – the default set of states is ok in most
+/// cases.
+///
+/// When you're inside the `draw()` function of an implementation of `Drawable`,
+/// you can either pass the render states unmodified, or change some of them.
+/// For example, a transformable object will combine the current transform with
+/// its own transform, a sprite will set its texture, and so on.
+///
+/// To easily override just part of an existing RenderStates, code like the
+/// following may be used:
+///
+/// ```ignore
+/// // Applying a texture:
+/// fn draw(&self, target: &mut RenderTarget, states: &RenderStates) {
+///     self.vertices.draw(target, &RenderStates { texture: self.texture, .. *states });
+/// }
+/// // Combining transforms:
+/// fn draw(&self, target: &mut RenderTarget, states: &RenderStates) {
+///     let transform = states.transform.combine(self.transform);
+///     self.child.draw(target, &RenderStates { transform: transform, .. *states });
+/// }
+/// ```
 #[derive(Clone, Default)]
 pub struct RenderStates<'s> {
-    /// Blending mode.
+    /// How pixels of objects are blended with the background.
     pub blend_mode: BlendMode,
-    /// Transform
+    /// How objects are positioned/rotated/scaled.
     pub transform: Transform,
-    /// Texture
+    /// What texture, if any, is applied to objects.
     pub texture: Option<&'s Texture>,
-    /// Shader
+    /// What custom effect, if any, is applied to objects.
     pub shader: Option<&'s Shader<'s>>
 }
 
 impl<'s> RenderStates<'s> {
-    /// Create a new RenderStates.
+    /// Create a new RenderStates with the given fields.
     ///
-    /// # Arguments
-    /// * blend_mode - The BlendMode
-    /// * transform - The transform
-    /// * texture - Some(texture) if there is a texture, None otherwise
-    /// * shader - Some(shader) if there is a shader, None otherwise
-    ///
-    /// Return a new default RenderStates
+	/// Specifying a texture and shader is optional; use None if no texture or
+	/// shader is desired.
     pub fn new(blend_mode: BlendMode,
                transform: Transform,
                texture: Option<&'s Texture>,
@@ -65,25 +91,6 @@ impl<'s> RenderStates<'s> {
         }
     }
 
-    /// Create a new RenderStates initialized to default.
-    ///
-    /// # default
-    /// * blend_mode is initialized to BlendAlpha
-    /// * transform is initialized to the identity matrix
-    /// * texture is initialized to None
-    /// * shader is initialized to None
-    ///
-    /// Return a new default RenderStates
-    pub fn default() -> RenderStates<'s> {
-        RenderStates {
-            blend_mode: BlendMode::alpha(),
-            transform: Transform::new_identity(),
-            texture: None,
-            shader: None
-        }
-    }
-
-    // Internal rust-sfml use only
     #[doc(hidden)]
     pub fn unwrap(&self) -> ffi::sfRenderStates {
 		ffi::sfRenderStates {

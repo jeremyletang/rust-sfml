@@ -22,13 +22,6 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-//! Specialized shape representing a convex polygon
-//!
-//! It is important to keep in mind that a convex shape must
-//! always be... convex, otherwise it may not be drawn correctly.
-//! Moreover, the points must be defined in order; using a random
-//! order would result in an incorrect shape.
-
 use std::ops::{Deref, DerefMut};
 
 use graphics::{Texture, RenderTarget, RenderStates, Drawable, ShapeImpl, Shape, BaseShape};
@@ -49,10 +42,14 @@ impl ShapeImpl for ConvexImpl {
 	}
 }
 
-/// Specialized shape representing a convex polygon
+/// Specialized shape representing a convex polygon.
+///
+/// A `ConvexShape` acts as a `BaseShape` with an implementation that merely
+/// delegates to a `Vec<Vector2f>`, accessible through `points()` and
+/// `points_mut()`.
 ///
 /// It is important to keep in mind that a convex shape must
-/// always be... convex, otherwise it may not be drawn correctly.
+/// always be convex, otherwise it may not be drawn correctly.
 /// Moreover, the points must be defined in order; using a random
 /// order would result in an incorrect shape.
 pub struct ConvexShape<'s> {
@@ -62,11 +59,15 @@ pub struct ConvexShape<'s> {
 
 impl<'s> ConvexShape<'s> {
     /// Create a new convex shape with no points.
+    ///
+    /// Returns Some(ConvexShape) or None on failure.
     pub fn new() -> Option<ConvexShape<'s>> {
 		ConvexShape::from_vec(Vec::new())
     }
 
 	/// Create a new convex shape from the specified points.
+    ///
+    /// Returns Some(ConvexShape) or None on failure.
     pub fn from_vec(points: Vec<Vector2f>) -> Option<ConvexShape<'s>> {
 		let boxed = Box::new(ConvexImpl(points));
 		let ptr = unsafe {
@@ -79,6 +80,8 @@ impl<'s> ConvexShape<'s> {
     }
 
     /// Create a new convex shape with the specified points and texture.
+    ///
+    /// Returns Some(ConvexShape) or None on failure.
     pub fn new_with_texture(points: Vec<Vector2f>, texture: &'s Texture) -> Option<ConvexShape<'s>> {
 		ConvexShape::from_vec(points).map(|mut shape| {
 			shape.set_texture(texture, true);
@@ -86,9 +89,9 @@ impl<'s> ConvexShape<'s> {
 		})
     }
 
-    /// Clone an existing convex shape
+    /// Clone an existing convex shape.
     ///
-    /// Return Some(ConvexShape) or None
+    /// Returns Some(ConvexShape) or None on failure.
     pub fn clone_opt(&self) -> Option<ConvexShape<'s>> {
 		ConvexShape::from_vec(self.points.0.clone()).map(|mut shape| {
 			match self.get_texture() {

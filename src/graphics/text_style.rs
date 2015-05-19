@@ -35,10 +35,12 @@ bitflags! {
 		#[doc="Regular characters, no style."]
 		const REGULAR = 0,
 		#[doc="Bold characters."]
-		const BOLD = 1,
+		const BOLD = 1 << 0,
 		#[doc="Italic characters."]
-		const ITALIC = 2,
+		const ITALIC = 1 << 1,
 		#[doc="Underlined characters."]
-		const UNDERLINED = 4
+		const UNDERLINED = 1 << 2,
+		#[doc="Stuck-through characters."]
+		const STRIKETHROUGH = 1 << 3
 	}
 }

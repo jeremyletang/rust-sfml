@@ -22,8 +22,6 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-//! Base class for textured shapes with outline
-
 use libc::{c_void, c_float, c_uint};
 use std::{ptr, mem};
 
@@ -34,41 +32,39 @@ use system::Vector2f;
 use ffi::{SfBool, Foreign};
 use ffi::graphics as ffi;
 
-/// Base class for textured shapes with outline
+/// Custom textured shape with outline.
+///
+/// Implements most of the `Shape` trait and delegates `get_point_count()` and
+/// `get_point()` to an implementor of `ShapeImpl`.
 pub struct BaseShape<'s> {
     shape: Foreign<ffi::sfShape>,
-	_impl: Box<&'s ShapeImpl>,
     texture: Option<&'s Texture>
 }
 
-extern fn get_point_count_callback(obj: *mut c_void) -> u32 {
-	unsafe {
-		mem::transmute::<*mut c_void, &&ShapeImpl>(obj)
-	}.get_point_count()
+extern fn get_point_count_callback<T: ShapeImpl>(obj: *mut c_void) -> u32 {
+	let shape: &T = unsafe { mem::transmute(obj) };
+	shape.get_point_count()
 }
 
-extern fn get_point_callback(point: u32, obj: *mut c_void) -> Vector2f {
-	unsafe {
-		mem::transmute::<*mut c_void, &&ShapeImpl>(obj)
-	}.get_point(point)
+extern fn get_point_callback<T: ShapeImpl>(point: u32, obj: *mut c_void) -> Vector2f {
+	let shape: &T = unsafe { mem::transmute(obj) };
+	shape.get_point(point)
 }
 
 impl<'s> BaseShape<'s> {
-    /// Create a new Shape
+    /// Create a new Shape with the given implementation.
     ///
-    /// # Arguments
-    /// * shape_impl - Implementation of ShapeImpl
-    ///
-    /// Return Some(Shape) or None
-    pub fn new(shape_impl: &'s ShapeImpl) -> Option<BaseShape<'s>> {
-		let boxed = Box::new(shape_impl);
+    /// Returns Some(Shape) or None on failure.
+    pub fn new<T: ShapeImpl>(shape_impl: &'s T) -> Option<BaseShape<'s>> {
 		unsafe {
-			let raw = mem::transmute::<&&ShapeImpl, *mut c_void>(&*boxed);
-			Foreign::new(ffi::sfShape_create(get_point_count_callback, get_point_callback, raw))
+			Foreign::new(ffi::sfShape_create(
+				get_point_count_callback::<T>,
+				get_point_callback::<T>,
+				mem::transmute(shape_impl)
+			))
 		}.map(|sp| {
 			let mut shape = BaseShape {
 				shape: sp,
-				_impl: boxed,
 				texture: None
 			};
 			shape.update();
@@ -76,14 +72,10 @@ impl<'s> BaseShape<'s> {
 		})
     }
 
-    /// Create a new Shape with a texture
-    ///
-    /// # Arguments
-    /// * shape_impl - Implementation of ShapeImpl trait
-    /// * texture - The texture to bind to the Shape
-    ///
-    /// Return Some(Shape) or None
-    pub fn new_with_texture(shape_impl: &'s ShapeImpl, texture: &'s Texture) -> Option<BaseShape<'s>> {
+    /// Create a new Shape with the given implementation and texture.
+	///
+    /// Returns Some(Shape) or None on failure.
+    pub fn new_with_texture<T: ShapeImpl>(shape_impl: &'s T, texture: &'s Texture) -> Option<BaseShape<'s>> {
 		BaseShape::new(shape_impl).map(|mut shape| {
 			shape.set_texture(texture, true);
 			shape
@@ -95,128 +87,93 @@ impl<'s> BaseShape<'s> {
     #[doc(hidden)]
     pub fn unwrap(&self) -> &ffi::sfShape { self.raw() }
 
-    /// Change the source texture of a shape
+    /// Change the source texture of the shape.
     ///
-    /// The texture argument refers to a texture that must
-    /// exist as long as the shape uses it. Indeed, the shape
-    /// doesn't store its own copy of the texture, but rather keeps
-    /// a pointer to the one that you passed to this function.
     /// If reset_rect is true, the TextureRect property of
     /// the shape is automatically adjusted to the size of the new
     /// texture. If it is false, the texture rect is left unchanged.
-    ///
-    /// # Arguments
-    /// * texture - The new texture
-    /// * reset_rect - Should the texture rect be reset to the size of the new texture?
-    pub fn set_texture(&mut self,
-                       texture: &'s Texture,
-                       reset_rect: bool) -> () {
+    pub fn set_texture(&mut self, texture: &'s Texture, reset_rect: bool) {
         self.texture = Some(texture);
         unsafe {
             ffi::sfShape_setTexture(self.raw_mut(), texture.unwrap(), SfBool::from_bool(reset_rect))
         }
     }
 
-    /// Disable Texturing
-    ///
-    /// Disable the current texture and reset the texture rect
-    pub fn disable_texture(&mut self) -> () {
+    /// Disable the source texture of this shape and reset the texture rect.
+    pub fn disable_texture(&mut self) {
         self.texture = None;
         unsafe {
             ffi::sfShape_setTexture(self.raw_mut(), ptr::null_mut(), SfBool::SFTRUE)
         }
     }
 
-    /// Set the sub-rectangle of the texture that a shape will display
+    /// Get the source texture of the shape.
     ///
-    /// The texture rect is useful when you don't want to display
-    /// the whole texture, but rather a part of it.
-    /// By default, the texture rect covers the entire texture.
-    ///
-    /// # Arguments
-    /// * rect - The rectangle defining the region of the texture to display
-    pub fn set_texture_rect(&mut self, rect: &IntRect) -> () {
-        unsafe {
-            ffi::sfShape_setTextureRect(self.raw_mut(), *rect)
-        }
-    }
-
-    /// Get the source texture of a shape
-    ///
-    /// If the shape has no source texture, a None is returned.
-    /// The returned pointer is const, which means that you can't
-    /// modify the texture when you retrieve it with this function.
-    ///
-    /// Return the pointer to the Shape's texture
+    /// You can't modify the texture when you retrieve it with this function.
     pub fn get_texture(&self) -> Option<&'s Texture> {
         self.texture
     }
 
-    /// Get the sub-rectangle of the texture displayed by a shape
-    ///
-    /// Return the texture rectangle of the shape
-    pub fn get_texture_rect(&self) -> IntRect {
-        unsafe {
-            ffi::sfShape_getTextureRect(self.raw())
-        }
+    /// Set the sub-rectangle of the texture that the shape will display.
+	///
+	/// The texture rect is useful when you don't want to display the whole
+	/// texture, but rather a part of it. By default, the texture rect covers
+	/// the entire texture.
+    pub fn set_texture_rect(&mut self, rect: &IntRect) {
+        unsafe { ffi::sfShape_setTextureRect(self.raw_mut(), *rect) }
     }
 
-    /// Get the local bounding rectangle of a shape
+    /// Get the sub-rectangle of the texture displayed by the shape.
+    pub fn get_texture_rect(&self) -> IntRect {
+        unsafe { ffi::sfShape_getTextureRect(self.raw()) }
+    }
+
+    /// Get the local bounding rectangle of the sprite.
     ///
     /// The returned rectangle is in local coordinates, which means
     /// that it ignores the transformations (translation, rotation,
     /// scale, ...) that are applied to the entity.
     /// In other words, this function returns the bounds of the
     /// entity in the entity's coordinate system.
-    ///
-    /// Return the local bounding rectangle of the entity
     pub fn get_local_bounds(&self) -> FloatRect {
-        unsafe {
-            ffi::sfShape_getLocalBounds(self.raw())
-        }
+        unsafe { ffi::sfShape_getLocalBounds(self.raw()) }
     }
 
-    /// Get the global bounding rectangle of a shape
+    /// Get the global bounding rectangle of the sprite.
     ///
     /// The returned rectangle is in global coordinates, which means
     /// that it takes in account the transformations (translation,
     /// rotation, scale, ...) that are applied to the entity.
     /// In other words, this function returns the bounds of the
     /// sprite in the global 2D world's coordinate system.
-    ///
-    /// Return the global bounding rectangle of the entity
     pub fn get_global_bounds(&self) -> FloatRect {
-        unsafe {
-            ffi::sfShape_getGlobalBounds(self.raw())
-        }
+        unsafe { ffi::sfShape_getGlobalBounds(self.raw()) }
     }
 
-    /// Recompute the internal geometry of a shape
+    /// Recompute the internal geometry of a shape.
     ///
     /// This function must be called by specialized shape objects
-    /// everytime their points change (ie. the result of either
-    /// the getPointCount or getPoint callbacks is different).
-    pub fn update(&mut self) -> () {
-        unsafe {
-            ffi::sfShape_update(self.raw_mut())
-        }
+    /// everytime their points change (i.e. the result of either
+    /// the `get_point_count()` or `get_point()` callbacks is different).
+    pub fn update(&mut self) {
+        unsafe { ffi::sfShape_update(self.raw_mut()) }
     }
 }
 
 impl<'s> Shape for BaseShape<'s> {
-    fn set_fill_color(&mut self, color: &Color) -> () {
+    fn set_fill_color(&mut self, color: &Color) {
         unsafe {
             ffi::sfShape_setFillColor(self.raw_mut(), *color)
         }
     }
 
-    fn set_outline_color(&mut self, color: &Color) -> () {
+    fn set_outline_color(&mut self, color: &Color) {
         unsafe {
             ffi::sfShape_setOutlineColor(self.raw_mut(), *color)
         }
     }
 
-    fn set_outline_thickness(&mut self, thickness: f32) -> () {
+    fn set_outline_thickness(&mut self, thickness: f32) {
         unsafe {
             ffi::sfShape_setOutlineThickness(self.raw_mut(), thickness as c_float)
         }
@@ -254,25 +211,25 @@ impl<'s> Shape for BaseShape<'s> {
 }
 
 impl<'s> Transformable for BaseShape<'s> {
-    fn set_position(&mut self, position: &Vector2f) -> () {
+    fn set_position(&mut self, position: &Vector2f) {
         unsafe {
             ffi::sfShape_setPosition(self.raw_mut(), *position)
         }
     }
 
-    fn set_rotation(&mut self, angle: f32) -> () {
+    fn set_rotation(&mut self, angle: f32) {
         unsafe {
             ffi::sfShape_setRotation(self.raw_mut(), angle as c_float)
         }
     }
 
-    fn set_scale(&mut self, scale: &Vector2f) -> () {
+    fn set_scale(&mut self, scale: &Vector2f) {
         unsafe {
             ffi::sfShape_setScale(self.raw_mut(), *scale)
         }
     }
 
-    fn set_origin(&mut self, origin: &Vector2f) -> () {
+    fn set_origin(&mut self, origin: &Vector2f) {
         unsafe {
             ffi::sfShape_setOrigin(self.raw_mut(), *origin)
         }
@@ -302,19 +259,19 @@ impl<'s> Transformable for BaseShape<'s> {
         }
     }
 
-    fn move_(&mut self, offset: &Vector2f) -> () {
+    fn move_(&mut self, offset: &Vector2f) {
         unsafe {
             ffi::sfShape_move(self.raw_mut(), *offset)
         }
     }
 
-    fn rotate(&mut self, angle: f32) -> () {
+    fn rotate(&mut self, angle: f32) {
         unsafe {
             ffi::sfShape_rotate(self.raw_mut(), angle as c_float)
         }
     }
 
-    fn scale(&mut self, factors: &Vector2f) -> () {
+    fn scale(&mut self, factors: &Vector2f) {
         unsafe {
             ffi::sfShape_scale(self.raw_mut(), *factors)
         }

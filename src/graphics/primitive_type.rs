@@ -22,14 +22,10 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-/**
- * Types of primitives that a VertexArray can render
- *
- * Points and lines have no area, therefore their thickness
- * will always be 1 pixel, regardless the current transform
- * and view.
- *
- */
+/// Types of primitives that a `VertexArray` can render.
+///
+/// Points and lines have no area, therefore their thickness will always be 1
+/// pixel, regardless of the current transform and view.
 #[repr(C)]
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
 pub enum PrimitiveType {
@@ -41,9 +37,11 @@ pub enum PrimitiveType {
     LinesStrip,
     /// List of individual triangles.
     Triangles,
-    /// List of connected triangles, a point uses the two previous points to form a triangle.
+    /// List of connected triangles, a point uses the two previous points to
+	/// form a triangle.
     TrianglesStrip,
-    /// List of connected triangles, a point uses the common center and the previous point to form a triangle.
+    /// List of connected triangles, a point uses the common center and the
+	/// previous point to form a triangle.
     TrianglesFan,
     /// List of individual quads.
     Quads

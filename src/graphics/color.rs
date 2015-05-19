@@ -28,32 +28,29 @@
 
 use std::ops::{Add, Mul};
 
-/// Utility class for manpulating RGBA colors
+/// Utility type for manpulating RGBA colors.
 ///
-/// Color is a simple color class composed of 4 components: Red, Green, Blue, Alpha
+/// `Color` is a simple color struct composed of red, green, blue, and alpha
+/// components. Each component is a `u8` in the range `[0, 255]`. The fourth
+/// component, `alpha`, represents the opacity of the color, with higher values
+/// being more opaque.
 #[repr(C)]
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
 pub struct Color {
-    /// The red composant of the color
+    /// The red composant of the color.
     pub red: u8,
-    /// The green composant of the color
+    /// The green composant of the color.
     pub green: u8,
-    /// The blue composant of the color
+    /// The blue composant of the color.
     pub blue: u8,
-    /// The alpha composant of the color
+    /// The alpha composant of the color.
     pub alpha: u8
 }
 
 impl Color {
-
-    /// Construct a color from its 3 RGB components
-    ///
-    /// # Arguments
-    /// * red - Red component   (0 .. 255)
-    /// * green - -Green component (0 .. 255)
-    /// * blue - Blue component  (0 .. 255)
-    ///
-    /// Return Color object constructed from the components
+    /// Construct a color from its 3 RGB components.
+	///
+	/// The alpha component will be 255 (fully opaque).
     pub fn new_rgb(red: u8, green: u8, blue: u8) -> Color {
         Color {
             red: red,
@@ -63,15 +60,7 @@ impl Color {
         }
     }
 
-    /// Construct a color from its 4 RGBA components
-    ///
-    /// # Arguments
-    /// * red - Red component   (0 .. 255)
-    /// * green - -Green component (0 .. 255)
-    /// * blue - Blue component  (0 .. 255)
-    /// * alpha - Alpha component  (0 .. 255)
-    ///
-    /// Return Color object constructed from the components
+    /// Construct a color from its 4 RGBA components.
     pub fn new_rgba(red: u8, green: u8, blue: u8, alpha: u8) -> Color {
         Color {
             red: red,
@@ -81,47 +70,47 @@ impl Color {
         }
     }
 
-    /// Black predefined color
+    /// Black predefined color.
     pub fn black() -> Color {
         Color::new_rgb(0, 0, 0)
     }
 
-    /// White predefined color
+    /// White predefined color.
     pub fn white() -> Color {
         Color::new_rgb(255, 255, 255)
     }
 
-    /// Red predefined color
+    /// Red predefined color.
     pub fn red() -> Color {
         Color::new_rgb(255, 0, 0)
     }
 
-    /// Green predefined color
+    /// Green predefined color.
     pub fn green() -> Color {
         Color::new_rgb(0, 255, 0)
     }
 
-    /// Blue predefined color
+    /// Blue predefined color.
     pub fn blue() -> Color {
         Color::new_rgb(0, 0, 255)
     }
 
-    /// Yellow predefined color
+    /// Yellow predefined color.
     pub fn yellow() -> Color {
         Color::new_rgb(255, 255, 0)
     }
 
-    /// Magenta predefined color
+    /// Magenta predefined color.
     pub fn magenta() -> Color {
         Color::new_rgb(255, 0, 255)
     }
 
-    /// Cyan predifined color
+    /// Cyan predifined color.
     pub fn cyan() -> Color {
         Color::new_rgb(0, 255, 255)
     }
 
-    /// Tranparent predefined color
+    /// Tranparent predefined color.
     pub fn transparent() -> Color {
         Color::new_rgba(0, 0, 0, 0)
     }

@@ -107,7 +107,7 @@ impl RenderTexture {
 	///
 	/// This function is similar to `Texture::setSmooth`. Smoothing is disabled
 	/// by default.
-    pub fn set_smooth(&mut self, smooth: bool) -> () {
+    pub fn set_smooth(&mut self, smooth: bool) {
         unsafe {
             ffi::sfRenderTexture_setSmooth(self.raw_mut(), SfBool::from_bool(smooth))
         }
@@ -122,7 +122,7 @@ impl RenderTexture {
 	///
 	/// This funtion is similar to `Texture::setRepeated`. Repeating is disabled
 	/// by default.
-    pub fn set_repeated(&mut self, repeated: bool) -> () {
+    pub fn set_repeated(&mut self, repeated: bool) {
         unsafe {
             ffi::sfRenderTexture_setRepeated(self.raw_mut(), SfBool::from_bool(repeated))
         }

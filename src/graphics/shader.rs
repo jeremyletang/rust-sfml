@@ -22,13 +22,6 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-
-//! Shader class (vertex and fragment)
-//!
-//! Shaders are programs written using a specific language, executed directly by
-//! the graphics card and allowing to apply real-time operations to the
-//!  rendered entities.
-
 use std::ptr;
 use std::ffi::CString;
 use std::marker::PhantomData;
@@ -40,11 +33,57 @@ use system::{Vector2f, Vector3f, InputStream};
 use ffi::Foreign;
 use ffi::graphics as ffi;
 
-/// Shader class (vertex and fragment)
+/// Container for a vertex and/or fragment shader.
 ///
-/// Shaders are programs written using a specific language,
-/// executed directly by the graphics card and allowing to apply
-/// real-time operations to the rendered entities.
+/// Shaders are programs written using a specific language which are executed
+/// directly by the graphics card and allow applying real-time operations to
+/// rendered entities.
+///
+/// There are two kinds of shaders: vertex shaders, that process vertices of
+/// geometry, and fragment (pixel) shaders, that process pixels on the screen.
+///
+/// A `Shader` can be composed of one or both of a vertex and fragment shader.
+///
+/// Shaders are written in GLSL, which is a C-like language dedicated to OpenGL
+/// shaders. You'll probably need to learn its basics before writing your own
+/// shaders for SFML.
+///
+/// Like any program, a shader has its own variables that you can set from your
+/// application. `Shader` handles 5 different types of variables: floats,
+/// vectors (2, 3, or 4 components), colors, textures, and transforms. The value
+/// of variables can be changed at any time with the `set_X_parameter()` family
+/// of functions. The `set_current_texture_parameter()` function maps the given
+/// texture variable to the current texture of the object being drawn, which
+/// cannot be known in advance.
+///
+/// To apply a shader to a drawable, you must include it in the `RenderStates`
+/// passed to the `draw()` call for that object.
+///
+/// Shaders can be used on any drawable, but some combinations are not
+/// interesting. For example, using a vertex shader on a `Sprite` is limited
+/// because there are only 4 vertices, the sprite would have to be subdivided in
+/// order to apply wave effects. Another bad example is a fragment shader with
+/// `Text`: the texture of the text is not the actual text that you see on
+/// screen, it is a big texture containing all the characters of the font in an
+/// arbitrary order; thus, texture lookups on pixels other than the current one
+/// may not give you the expected result.
+///
+/// Shaders can also be used to apply global post-effects to the current
+/// contents of the target. This can be done in two different ways:
+///
+/// * Draw everything to a `RenderTexture`, then draw it to the main target
+///   using the shader.
+/// * Draw everything directly to the main target, then use
+///   `Texture::update(Window)` to copy its contents to a texture and draw it to
+///   the main target using the shader.
+///
+/// The first technique is more optimized because it doesn't involve retrieving
+/// the target's pixels to system memory, but the second one doesn't impact the
+/// rendering process and can be easily inserted anywhere without impacting all
+/// the code.
+///
+/// Like `Texture` that can be used as a raw OpenGL texture, `Shader` can also
+/// be used for custom OpenGL geometry by calling `bind()`.
 pub struct Shader<'s>(Foreign<ffi::sfShader>, PhantomData<&'s Texture>);
 
 // The PhantomData represents arguments to set_texture_parameter which must
@@ -60,7 +99,7 @@ macro_rules! try_string {
 }
 
 impl<'s> Shader<'s> {
-    /// Load both the vertex and fragment shaders from files
+	/// Load a vertex and/or fragment shader from files.
     ///
     /// This function can load both the vertex and the fragment
     /// shaders, or only one of them: pass None if you don't want to load
@@ -70,15 +109,11 @@ impl<'s> Shader<'s> {
     /// OpenGL shaders; you'll probably need to read a good documentation
     /// for it before writing your own shaders.
     ///
-    /// # Arguments
-    /// * vertexShaderFilename - Some(Path) of the vertex shader file to load, or None to skip this shader
-    /// * fragmentShaderFilename - Some(Path) of the fragment shader file to load, or None to skip this shader
-    ///
-    /// Return Some(Shader) or None
+    /// Returns Some(Shader) or None on failure.
     pub fn new_from_file(vertex_shader_filename: Option<&str>,
                          fragment_shader_filename: Option<&str>)
                          -> Option<Shader<'s>> {
-		let vertex_fname: CString;
+		let vertex_fname;
 		let vertex_ptr = match vertex_shader_filename {
 			None => ptr::null(),
 			Some(string) => {
@@ -87,7 +122,7 @@ impl<'s> Shader<'s> {
 			}
 		};
 
-		let fragment_fname: CString;
+		let fragment_fname;
 		let fragment_ptr = match fragment_shader_filename {
 			None => ptr::null(),
 			Some(string) => {
@@ -101,7 +136,7 @@ impl<'s> Shader<'s> {
         }.map(|shader| Shader(shader, PhantomData))
     }
 
-    /// Load both the vertex and fragment shaders from source codes in memory
+    /// Load a vertex and/or fragment shader from source code in memory.
     ///
     /// This function can load both the vertex and the fragment
     /// shaders, or only one of them: pass None if you don't want to load
@@ -111,15 +146,11 @@ impl<'s> Shader<'s> {
     /// probably need to read a good documentation for it before
     /// writing your own shaders.
     ///
-    /// # Arguments
-    /// * vertexShader - Some(String) containing the source code of the vertex shader, or None to skip this shader
-    /// * fragmentShader - Some(String) containing the source code of the fragment shader, or None to skip this shader
-    ///
-    /// Return Some(Shader) or None
+    /// Returns Some(Shader) or None on failure.
     pub fn new_from_memory(vertex_shader: Option<&str>,
                            fragment_shader: Option<&str>)
                            -> Option<Shader<'s>> {
-		let vertex_fname: CString;
+		let vertex_fname;
 		let vertex_ptr = match vertex_shader {
 			None => ptr::null(),
 			Some(string) => {
@@ -128,7 +159,7 @@ impl<'s> Shader<'s> {
 			}
 		};
 
-		let fragment_fname: CString;
+		let fragment_fname;
 		let fragment_ptr = match fragment_shader {
 			None => ptr::null(),
 			Some(string) => {
@@ -142,7 +173,7 @@ impl<'s> Shader<'s> {
         }.map(|shader| Shader(shader, PhantomData))
     }
 
-    /// Load both the vertex and fragment shaders from sources in a stream.
+    /// Load a vertex and/or fragment shader from source code in streams.
     ///
     /// This function can load both the vertex and the fragment
     /// shaders, or only one of them: pass None if you don't want to load
@@ -152,9 +183,9 @@ impl<'s> Shader<'s> {
     /// probably need to read a good documentation for it before
     /// writing your own shaders.
     ///
-    /// Returns Some(Shader) or None.
+    /// Returns Some(Shader) or None on failure.
 	pub fn new_from_stream<T: Read + Seek, U: Read + Seek>(vertex_shader_stream: Option<&mut T>, fragment_shader_stream: Option<&mut U>) -> Option<Shader<'s>> {
-		let mut v_stream: InputStream;
+		let mut v_stream;
 		let v_stream_ptr = match vertex_shader_stream {
 			None => ptr::null_mut(),
 			Some(stream) => {
@@ -163,7 +194,7 @@ impl<'s> Shader<'s> {
 			}
 		};
 
-		let mut f_stream: InputStream;
+		let mut f_stream;
 		let f_stream_ptr = match fragment_shader_stream {
 			None => ptr::null_mut(),
 			Some(stream) => {
@@ -182,28 +213,18 @@ impl<'s> Shader<'s> {
 	#[doc(hidden)]
     pub fn unwrap(&self) -> &ffi::sfShader { self.raw() }
 
-    /// Change a f32 parameter of a shader
-    ///
-    /// # Arguments
-    /// * name - Name of the parameter in the shader
-    /// * x - Value to assign
-    pub fn set_float_parameter(&mut self, name: &str, x: f32) -> () {
+	/// Change a float parameter of the shader.
+    pub fn set_float_parameter(&mut self, name: &str, x: f32) {
         let c_str = try_string!(name, ());
         unsafe {
             ffi::sfShader_setFloatParameter(self.raw_mut(), c_str.as_ptr(), x)
         }
     }
 
-    /// Change a 2-components vector parameter of a shader
-    ///
-    /// name is the name of the variable to change in the shader.
-    /// The corresponding parameter in the shader must be a 2x1 vector
-    /// (vec2 GLSL type).
-    ///
-    /// # Arguments
-    /// * name - Name of the parameter in the shader
-    /// * x - First component of the value to assign
-    /// * y - Second component of the value to assign
+	/// Change a 2-component vector parameter of the shader.
+	///
+	/// The corresponding parameter in the shader must be a 2x1 vector
+	/// (`vec2` GLSL type).
     pub fn set_float_2_parameter(&mut self, name: &str, x: f32, y: f32) {
         let c_str = try_string!(name, ());
         unsafe {
@@ -211,17 +232,10 @@ impl<'s> Shader<'s> {
         }
     }
 
-    /// Change a 3-components vector parameter of a shader
+    /// Change a 3-component vector parameter of the shader.
     ///
-    /// name is the name of the variable to change in the shader.
     /// The corresponding parameter in the shader must be a 3x1 vector
-    /// (vec3 GLSL type).
-    ///
-    /// # Arguments
-    /// * name - Name of the parameter in the shader
-    /// * x - First component of the value to assign
-    /// * y - Second component of the value to assign
-    /// * z - Third component of the value to assign
+    /// (`vec3` GLSL type).
     pub fn set_float_3_parameter(&mut self, name: &str, x: f32, y: f32, z: f32) {
 		let c_str = try_string!(name, ());
         unsafe {
@@ -229,39 +243,21 @@ impl<'s> Shader<'s> {
         }
     }
 
-    /// Change a 4-components vector parameter of a shader
+    /// Change a 4-component vector parameter of the shader.
     ///
-    /// name is the name of the variable to change in the shader.
     /// The corresponding parameter in the shader must be a 4x1 vector
-    /// (vec4 GLSL type).
-    ///
-    /// # Arguments
-    /// * name - Name of the parameter in the shader
-    /// * x - First component of the value to assign
-    /// * y - Second component of the value to assign
-    /// * z - Third component of the value to assign
-    /// * w - Fourth component of the value to assign
-    pub fn set_float_4_parameter(&mut self,
-                                 name: &str,
-                                 x: f32,
-                                 y: f32,
-                                 z: f32,
-                                 w: f32) -> () {
+    /// (`vec4` GLSL type).
+    pub fn set_float_4_parameter(&mut self, name: &str, x: f32, y: f32, z: f32, w: f32) {
         let c_str = try_string!(name, ());
         unsafe {
             ffi::sfShader_setFloat4Parameter(self.raw_mut(), c_str.as_ptr(), x, y, z, w)
         }
     }
 
-    /// Change a texture parameter of a shader
+    /// Change a texture parameter of the shader.
     ///
-    /// name is the name of the variable to change in the shader.
     /// The corresponding parameter in the shader must be a 2D texture
-    /// (sampler2D GLSL type).
-    ///
-    /// # Arguments
-    /// * name - Name of the texture in the shader
-    /// * texture - Texture to assign
+    /// (`sampler2D` GLSL type).
     pub fn set_texture_parameter(&mut self, name: &str, texture: &'s Texture) {
         let c_str = try_string!(name, ());
         unsafe {
@@ -269,43 +265,24 @@ impl<'s> Shader<'s> {
         }
     }
 
-    /// Change a texture parameter of a shader
+    /// Change a texture paramater of the shader to the current texture.
     ///
     /// This function maps a shader texture variable to the
     /// texture of the object being drawn, which cannot be
     /// known in advance.
     /// The corresponding parameter in the shader must be a 2D texture
-    /// (sampler2D GLSL type).
-    ///
-    /// # Arguments
-    /// * name - Name of the texture in the shader
-    pub fn set_current_texture_parameter(&mut self, name: &str) -> () {
+    /// (`sampler2D` GLSL type).
+    pub fn set_current_texture_parameter(&mut self, name: &str) {
         let c_str = try_string!(name, ());
         unsafe {
             ffi::sfShader_setCurrentTextureParameter(self.raw_mut(), c_str.as_ptr())
         }
     }
 
-    /// Bind a shader for rendering (activate it)
-    ///
-    /// This function is not part of the graphics API, it mustn't be
-    /// used when drawing SFML entities. It must be used only if you
-    /// mix sfShader with OpenGL code.
-    pub fn bind(&mut self) -> () {
-        unsafe {
-            ffi::sfShader_bind(self.raw_mut())
-        }
-    }
-
-    /// Change a 2-components vector parameter of a shader
-    ///
-    /// name is the name of the variable to change in the shader.
-    /// The corresponding parameter in the shader must be a 2x1 vector
-    /// (vec2 GLSL type).
-    ///
-    /// # Arguments
-    /// * name - Name of the parameter in the shader
-    /// * vector - Vector to assign
+	/// Change a 2-component vector parameter of the shader.
+	///
+	/// The corresponding parameter in the shader must be a 2x1 vector
+	/// (`vec2` GLSL type).
     pub fn set_vector2_parameter(&mut self, name: &str, vector: &Vector2f) {
         let c_str = try_string!(name, ());
         unsafe {
@@ -313,15 +290,10 @@ impl<'s> Shader<'s> {
         }
     }
 
-    /// Change a 3-components vector parameter of a shader
+    /// Change a 3-component vector parameter of the shader.
     ///
-    /// name is the name of the variable to change in the shader.
-    /// The corresponding parameter in the shader must be a 2x1 vector
-    /// (vec2 GLSL type).
-    ///
-    /// # Arguments
-    /// * name - Name of the parameter in the shader
-    /// * vector - Vector to assign
+    /// The corresponding parameter in the shader must be a 3x1 vector
+    /// (`vec3` GLSL type).
     pub fn set_vector3_parameter(&mut self, name: &str, vector: &Vector3f) {
         let c_str = try_string!(name, ());
         unsafe {
@@ -329,21 +301,16 @@ impl<'s> Shader<'s> {
         }
     }
 
-    /// Change a color parameter of a shader
-    ///
-    /// name is the name of the variable to change in the shader.
+    /// Change a color parameter of a shader.
+	///
     /// The corresponding parameter in the shader must be a 4x1 vector
-    /// (vec4 GLSL type).
+    /// (`vec4` GLSL type).
     ///
     /// It is important to note that the components of the color are
     /// normalized before being passed to the shader. Therefore,
     /// they are converted from range [0 .. 255] to range [0 .. 1].
-    /// For example, a sf::Color(255, 125, 0, 255) will be transformed
-    /// to a vec4(1.0, 0.5, 0.0, 1.0) in the shader.
-    ///
-    /// # Arguments
-    /// * name - Name of the parameter in the shader
-    /// * color - Color to assign
+    /// For example, a `Color(255, 128, 0, 255)` will be transformed
+    /// to a `vec4(1.0, 0.5, 0.0, 1.0)` in the shader.
     pub fn set_color_parameter(&mut self, name: &str, color: &Color) {
         let c_str = try_string!(name, ());
         unsafe {
@@ -353,9 +320,8 @@ impl<'s> Shader<'s> {
 
 	/// Change a matrix parameter of the shader.
 	///
-	/// `name` is the name of the variable to change in the shader. The
-	/// corresponding parameter in the shader must be a 4x4 matrix (mat4 GLSL
-	/// type).
+	/// The corresponding parameter in the shader must be a 4x4 matrix
+	/// (`mat4` GLSL type).
 	pub fn set_transform_parameter(&mut self, name: &str, transform: &Transform) {
         let c_str = try_string!(name, ());
 		unsafe {
@@ -363,13 +329,24 @@ impl<'s> Shader<'s> {
 		}
 	}
 
-    /// Tell whether or not the system supports shaders
+    /// Bind a shader for rendering.
+    ///
+    /// This function is not part of the graphics API, and mustn't be
+    /// used when drawing SFML entities. It must be used only if you
+    /// mix `Shader` with OpenGL code.
+    pub fn bind(&mut self) {
+        unsafe {
+            ffi::sfShader_bind(self.raw_mut())
+        }
+    }
+
+    /// Tell whether or not the system supports shaders.
     ///
     /// This function should always be called before using
     /// the shader features. If it returns false, then
-    /// any attempt to use sfShader will fail.
+    /// any attempt to use `Shader` will fail.
     ///
-    /// Return true if the system can use shaders, false otherwise
+    /// Returns true if shaders are supported, false otherwise.
     pub fn is_available() -> bool {
         unsafe { ffi::sfShader_isAvailable() }.to_bool()
     }
