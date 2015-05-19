@@ -30,7 +30,7 @@ use traits::Wrappable;
 use system::vector2::{Vector2f, Vector2i, Vector2u};
 use graphics::{Drawable, View, Color, IntRect, Texture, CircleShape, RectangleShape, Text,
                RenderStates, Sprite, ConvexShape, VertexArray,
-               RenderTarget, Vertex, PrimitiveType, Shape};
+               RenderTarget, Vertex, PrimitiveType, CustomShape};
 
 use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi::graphics::render_texture as ffi;
@@ -350,7 +350,7 @@ impl RenderTarget for RenderTexture {
 
     /// Draw Shape
     fn draw_shape(&self,
-                     shape: &Shape,
+                     shape: &CustomShape,
                      rs: &mut RenderStates) -> () {
         unsafe {
             ffi::sfRenderTexture_drawShape(self.render_texture,

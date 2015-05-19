@@ -39,7 +39,7 @@ use window::{ContextSettings, VideoMode, event, WindowStyle};
 use system::vector2::{Vector2f, Vector2i, Vector2u};
 use graphics::{Drawable, Color, CircleShape, RectangleShape, Text, Sprite, VertexArray,
                RenderStates, View, Image, IntRect, RenderTarget,
-               Vertex, PrimitiveType, ConvexShape, Shape};
+               Vertex, PrimitiveType, ConvexShape, CustomShape};
 
 use ffi::sfml_types::{SfBool, SFTRUE, SFFALSE};
 use ffi::graphics::render_window as ffi;
@@ -807,7 +807,7 @@ impl RenderTarget for RenderWindow{
 
     /// Draw a Shape with a RenderStates
     fn draw_shape(&self,
-                         shape: &Shape,
+                         shape: &CustomShape,
                          render_states: &mut RenderStates) -> () {
         unsafe {
             ffi::sfRenderWindow_drawShape(self.render_window,

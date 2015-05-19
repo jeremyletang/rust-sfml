@@ -3,11 +3,10 @@
 extern crate sfml;
 
 use sfml::graphics::{RenderWindow, Color, CircleShape, RectangleShape,
-                      RenderTarget, RenderStates};
+                      RenderTarget, RenderStates, Drawable, Shape, Transformable};
 use sfml::window::{VideoMode, ContextSettings, event, WindowStyle};
 use sfml::window::keyboard::Key;
 use sfml::system::Vector2f;
-use sfml::traits::Drawable;
 
 // Create a struct who contains two drawable for the example
 struct CustomDrawable<'s> {
@@ -33,7 +32,7 @@ impl<'s> CustomDrawable<'s> {
 
 // Implements the drawable trait, only this function is mendatory.
 impl<'s> Drawable for CustomDrawable<'s> {
-    fn draw<RT: RenderTarget>(&self, render_target: &mut RT, rs: &mut RenderStates) -> () {
+    fn draw<RT: RenderTarget>(&self, render_target: &mut RT, _: &mut RenderStates) {
         render_target.draw(&self.circle);
         render_target.draw(&self.rect)
     }

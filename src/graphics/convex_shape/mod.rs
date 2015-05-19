@@ -35,7 +35,7 @@ use libc::{c_float, c_uint};
 use std::ptr;
 
 use traits::Wrappable;
-use graphics::{Drawable, Color, Texture, RenderTarget, FloatRect, IntRect, Transform, RenderStates};
+use graphics::{Shape, Drawable, Transformable, Color, Texture, RenderTarget, FloatRect, IntRect, Transform, RenderStates};
 use system::vector2::Vector2f;
 
 use ffi::sfml_types::{SFTRUE, SFFALSE};
@@ -121,6 +121,49 @@ impl<'s> ConvexShape<'s> {
         }
     }
 
+    /// Set the position of a point.
+    ///
+    /// Don't forget that the polygon must remain convex, and the points need to stay ordered! 
+    /// set_point_count must be called first in order to set the total number of points. 
+    /// The result is undefined if index is out of the valid range.
+    ///
+    /// # Arguments
+    /// * index - Index of the point to change, in range [0 .. getPointCount() - 1]
+    /// * point - New position of the point
+    pub fn set_point(&mut self, index: u32, point: &Vector2f) -> () {
+        unsafe {
+            ffi::sfConvexShape_setPoint(self.convex_shape,
+                                        index as c_uint, *point)
+        }
+    }
+
+    /// Set the number of points of a convex
+    ///
+    /// # Arguments
+    /// * count - New number of points of the convex
+    pub fn set_point_count(&mut self, count: u32) -> () {
+        unsafe {
+            ffi::sfConvexShape_setPointCount(self.convex_shape, count as c_uint)
+        }
+    }
+
+    /// Return an immutable iterator over all the points of the ConvexShape
+    pub fn points(&self) -> ConvexShapePoints {
+        ConvexShapePoints {
+            convex_shape: self.convex_shape.clone(),
+            pos: 0
+        }
+    }
+}
+
+impl<'s> Drawable for ConvexShape<'s> {
+    fn draw<RT: RenderTarget>(&self, render_target: &mut RT, render_states: &mut RenderStates) {
+        render_target.draw_convex_shape(self, render_states)
+    }
+}
+
+
+impl<'s> Transformable for ConvexShape<'s> {
     /// Set the position of a convex shape
     ///
     /// This function completely overwrites the previous position.
@@ -129,7 +172,7 @@ impl<'s> ConvexShape<'s> {
     ///
     /// # Arguments
     /// * position - New position
-    pub fn set_position(&mut self, position: &Vector2f) -> () {
+    fn set_position(&mut self, position: &Vector2f) -> () {
         unsafe {
             ffi::sfConvexShape_setPosition(self.convex_shape, *position)
         }
@@ -144,9 +187,23 @@ impl<'s> ConvexShape<'s> {
     /// # Arguments
     /// * x - New x coordinate
     /// * y - New y coordinate
-    pub fn set_position2f(&mut self, x: f32, y: f32) -> () {
+    fn set_position2f(&mut self, x: f32, y: f32) -> () {
         unsafe {
             ffi::sfConvexShape_setPosition(self.convex_shape, Vector2f::new(x, y))
+        }
+    }
+
+    /// Set the orientation of a convex shape
+    ///
+    /// This function completely overwrites the previous rotation.
+    /// See rotate to add an angle based on the previous rotation instead.
+    /// The default rotation of a convex Shape object is 0.
+    ///
+    /// # Arguments
+    /// * rotation - New rotation
+    fn set_rotation(&mut self, angle: f32){
+        unsafe {
+            ffi::sfConvexShape_setRotation(self.convex_shape, angle as c_float)
         }
     }
 
@@ -158,7 +215,7 @@ impl<'s> ConvexShape<'s> {
     ///
     /// # Arguments
     /// * scale - New scale factors
-    pub fn set_scale(&mut self, scale: &Vector2f) -> () {
+    fn set_scale(&mut self, scale: &Vector2f) -> () {
         unsafe {
             ffi::sfConvexShape_setScale(self.convex_shape, *scale)
         }
@@ -173,7 +230,7 @@ impl<'s> ConvexShape<'s> {
     /// # Arguments
     /// * scale_x - New x scale factor
     /// * scale_y - New y scale factor
-    pub fn set_scale2f(&mut self, scale_x: f32, scale_y: f32) -> () {
+    fn set_scale2f(&mut self, scale_x: f32, scale_y: f32) -> () {
         unsafe {
             ffi::sfConvexShape_setScale(self.convex_shape,
                                         Vector2f::new(scale_x, scale_y))
@@ -191,7 +248,7 @@ impl<'s> ConvexShape<'s> {
     ///
     /// # Arguments
     /// * origin - New origin
-    pub fn set_origin(&mut self, origin: &Vector2f) -> () {
+    fn set_origin(&mut self, origin: &Vector2f) -> () {
         unsafe {
             ffi::sfConvexShape_setOrigin(self.convex_shape, *origin)
         }
@@ -209,9 +266,47 @@ impl<'s> ConvexShape<'s> {
     /// # Arguments
     /// * x - New x origin coordinate
     /// * y - New y origin coordinate
-    pub fn set_origin2f(&mut self, x: f32, y: f32) -> () {
+    fn set_origin2f(&mut self, x: f32, y: f32) -> () {
         unsafe {
             ffi::sfConvexShape_setOrigin(self.convex_shape, Vector2f::new(x, y))
+        }
+    }
+
+    /// Get the position of a convex shape
+    ///
+    /// Return the current position
+    fn get_position(&self) -> Vector2f {
+        unsafe {
+            ffi::sfConvexShape_getPosition(self.convex_shape)
+        }
+    }
+
+    /// Get the orientation of a convex shape
+    ///
+    /// The rotation is always in the range [0, 360].
+    ///
+    /// Return the current rotation, in degrees
+    fn get_rotation(&self) -> f32 {
+        unsafe {
+            ffi::sfConvexShape_getRotation(self.convex_shape) as f32
+        }
+    }
+
+    /// Get the current scale of a convex shape
+    ///
+    /// Return the current scale factors
+    fn get_scale(&self) -> Vector2f {
+        unsafe {
+            ffi::sfConvexShape_getScale(self.convex_shape)
+        }
+    }
+
+    /// Get the local origin of a convex shape
+    ///
+    /// return the current origin
+    fn get_origin(&self) -> Vector2f {
+        unsafe {
+            ffi::sfConvexShape_getOrigin(self.convex_shape)
         }
     }
 
@@ -222,7 +317,7 @@ impl<'s> ConvexShape<'s> {
     ///
     /// # Arguments
     /// * offset - Offset
-    pub fn move_(&mut self, offset: &Vector2f) -> () {
+    fn move_(&mut self, offset: &Vector2f) -> () {
         unsafe {
             ffi::sfConvexShape_move(self.convex_shape, *offset)
         }
@@ -236,10 +331,23 @@ impl<'s> ConvexShape<'s> {
     /// # Arguments
     /// * offsetX - Offset x
     /// * offsetY - Offset y
-    pub fn move2f(&mut self, offset_x: f32, offset_y: f32) -> () {
+    fn move2f(&mut self, offset_x: f32, offset_y: f32) -> () {
         unsafe {
             ffi::sfConvexShape_move(self.convex_shape,
                                     Vector2f::new(offset_x, offset_y))
+        }
+    }
+
+    /// Rotate a convex shape
+    ///
+    /// This function adds to the current rotation of the object,
+    /// unlike set_rotation which overwrites it.
+    ///
+    /// # Arguments
+    /// * angle - Angle of rotation, in degrees
+    fn rotate(&mut self, angle: f32) -> () {
+        unsafe {
+            ffi::sfConvexShape_rotate(self.convex_shape, angle as c_float)
         }
     }
 
@@ -250,7 +358,7 @@ impl<'s> ConvexShape<'s> {
     ///
     /// # Arguments
     /// * factors - Scale factors
-    pub fn scale(&mut self, factors: &Vector2f) -> () {
+    fn scale(&mut self, factors: &Vector2f) -> () {
         unsafe {
             ffi::sfConvexShape_scale(self.convex_shape, *factors)
         }
@@ -264,108 +372,33 @@ impl<'s> ConvexShape<'s> {
     /// # Arguments
     /// * factor_x - Scale factor x
     /// * factor_y - Scale factor y
-    pub fn scale2f(&mut self, factor_x: f32, factor_y: f32) -> () {
+    fn scale2f(&mut self, factor_x: f32, factor_y: f32) -> () {
         unsafe {
             ffi::sfConvexShape_scale(self.convex_shape,
                                      Vector2f::new(factor_x, factor_y))
         }
     }
 
-    /// Set the position of a point.
+    /// Get the combined transform of a convex shape
     ///
-    /// Don't forget that the polygon must remain convex, and the points need to stay ordered! 
-    /// set_point_count must be called first in order to set the total number of points. 
-    /// The result is undefined if index is out of the valid range.
-    ///
-    /// # Arguments
-    /// * index - Index of the point to change, in range [0 .. getPointCount() - 1]
-    /// * point - New position of the point
-    pub fn set_point(&mut self, index: u32, point: &Vector2f) -> () {
+    /// Return transform combining the position/rotation/scale/origin of the object
+    fn get_transform(&self) -> Transform {
         unsafe {
-            ffi::sfConvexShape_setPoint(self.convex_shape,
-                                        index as c_uint, *point)
+            ffi::sfConvexShape_getTransform(self.convex_shape)
         }
     }
 
-    /// Get the position of a convex shape
+    /// Get the inverse of the combined transform of a convex shape
     ///
-    /// Return the current position
-    pub fn get_position(&self) -> Vector2f {
+    /// Return inverse of the combined transformations applied to the object
+    fn get_inverse_transform(&self) -> Transform {
         unsafe {
-            ffi::sfConvexShape_getPosition(self.convex_shape)
+            ffi::sfConvexShape_getInverseTransform(self.convex_shape)
         }
     }
+}
 
-    /// Get the current scale of a convex shape
-    ///
-    /// Return the current scale factors
-    pub fn get_scale(&self) -> Vector2f {
-        unsafe {
-            ffi::sfConvexShape_getScale(self.convex_shape)
-        }
-    }
-
-    /// Get the local origin of a convex shape
-    ///
-    /// return the current origin
-    pub fn get_origin(&self) -> Vector2f {
-        unsafe {
-            ffi::sfConvexShape_getOrigin(self.convex_shape)
-        }
-    }
-
-    /// Get a point of a convex shape
-    ///
-    /// The result is undefined if index is out of the valid range.
-    ///
-    /// # Arguments
-    /// * index- Index of the point to get, in range [0 .. getPointCount() - 1]
-    ///
-    /// Return the index-th point of the shape
-    pub fn get_point(&self, index: u32) -> Vector2f {
-        unsafe {
-            ffi::sfConvexShape_getPoint(self.convex_shape, index as c_uint)
-        }
-    }
-
-    /// Set the orientation of a convex shape
-    ///
-    /// This function completely overwrites the previous rotation.
-    /// See rotate to add an angle based on the previous rotation instead.
-    /// The default rotation of a convex Shape object is 0.
-    ///
-    /// # Arguments
-    /// * rotation - New rotation
-    pub fn set_rotation(&self, angle: f32) -> () {
-        unsafe {
-            ffi::sfConvexShape_setRotation(self.convex_shape, angle as c_float)
-        }
-    }
-
-    /// Get the orientation of a convex shape
-    ///
-    /// The rotation is always in the range [0, 360].
-    ///
-    /// Return the current rotation, in degrees
-    pub fn get_rotation(&self) -> f32 {
-        unsafe {
-            ffi::sfConvexShape_getRotation(self.convex_shape) as f32
-        }
-    }
-
-    /// Rotate a convex shape
-    ///
-    /// This function adds to the current rotation of the object,
-    /// unlike set_rotation which overwrites it.
-    ///
-    /// # Arguments
-    /// * angle - Angle of rotation, in degrees
-    pub fn rotate(&mut self, angle: f32) -> () {
-        unsafe {
-            ffi::sfConvexShape_rotate(self.convex_shape, angle as c_float)
-        }
-    }
-
+impl<'s> Shape<'s> for ConvexShape<'s> {
     /// Change the source texture of a convex shape
     ///
     /// The texture argument refers to a texture that must
@@ -381,7 +414,7 @@ impl<'s> ConvexShape<'s> {
     /// # Arguments
     /// * texture - New texture
     /// * reset_rect - Should the texture rect be reset to the size of the new texture?
-    pub fn set_texture(&mut self,
+    fn set_texture(&mut self,
                        texture: &'s Texture,
                        reset_rect: bool) -> () {
         self.texture = Some(texture);
@@ -400,12 +433,21 @@ impl<'s> ConvexShape<'s> {
     /// Disable Texturing
     ///
     /// Disable the current texture and reset the texture rect
-    pub fn disable_texture(&mut self) -> () {
+    fn disable_texture(&mut self) -> () {
         self.texture = None;
         unsafe {
             ffi::sfConvexShape_setTexture(self.convex_shape,
                                           ptr::null_mut(),
                                           SFTRUE)
+        }
+    }
+
+    /// Get the sub-rectangle of the texture displayed by a convex shape
+    ///
+    /// Return the texture rectangle of the shape
+    fn set_texture_rect(&mut self, rect: &IntRect) -> () {
+        unsafe {
+            ffi::sfConvexShape_setTextureRect(self.convex_shape, *rect)
         }
     }
 
@@ -420,7 +462,7 @@ impl<'s> ConvexShape<'s> {
     ///
     /// # Arguments
     /// * color - New color of the shape
-    pub fn set_fill_color(&mut self, color: &Color) -> () {
+    fn set_fill_color(&mut self, color: &Color) -> () {
         unsafe {
             ffi::sfConvexShape_setFillColor(self.convex_shape, *color)
         }
@@ -433,7 +475,7 @@ impl<'s> ConvexShape<'s> {
     ///
     /// # Arguments
     /// * color - New outline color of the shape
-    pub fn set_outline_color(&mut self, color: &Color) -> () {
+    fn set_outline_color(&mut self, color: &Color) -> () {
         unsafe {
             ffi::sfConvexShape_setOutlineColor(self.convex_shape, *color)
         }
@@ -447,7 +489,7 @@ impl<'s> ConvexShape<'s> {
     ///
     /// # Arguments
     /// * thickness - New outline thickness
-    pub fn set_outline_thickness(&mut self, thickness: f32) -> () {
+    fn set_outline_thickness(&mut self, thickness: f32) -> () {
         unsafe {
             ffi::sfConvexShape_setOutlineThickness(self.convex_shape,
                                                    thickness as c_float)
@@ -459,14 +501,23 @@ impl<'s> ConvexShape<'s> {
     /// You can't modify the texture when you retrieve it with this function.
     ///
     /// Return the shape's texture
-    pub fn get_texture(&self) -> Option<&'s Texture> {
+    fn get_texture(&self) -> Option<&'s Texture> {
         self.texture
+    }
+
+    /// Get the sub-rectangle of the texture displayed by a convex shape
+    ///
+    /// Return the texture rectangle of the shape
+    fn get_texture_rect(&self) -> IntRect {
+        unsafe {
+            ffi::sfConvexShape_getTextureRect(self.convex_shape)
+        }
     }
 
     /// Get the fill color of a convex shape
     ///
     /// Return the fill color of the shape
-    pub fn get_fill_color(&self) -> Color {
+    fn get_fill_color(&self) -> Color {
         unsafe {
             ffi::sfConvexShape_getFillColor(self.convex_shape)
         }
@@ -475,7 +526,7 @@ impl<'s> ConvexShape<'s> {
     /// Get the outline color of a convex shape
     ///
     /// Return the outline color of the shape
-    pub fn get_outline_color(&self) -> Color {
+    fn get_outline_color(&self) -> Color {
         unsafe {
             ffi::sfConvexShape_getOutlineColor(self.convex_shape)
         }
@@ -484,7 +535,7 @@ impl<'s> ConvexShape<'s> {
     /// Get the outline thickness of a convex shape
     ///
     /// Return the outline thickness of the shape
-    pub fn get_outline_thickness(&self) -> f32 {
+    fn get_outline_thickness(&self) -> f32 {
         unsafe {
             ffi::sfConvexShape_getOutlineThickness(self.convex_shape) as f32
         }
@@ -493,28 +544,23 @@ impl<'s> ConvexShape<'s> {
     /// Get the total number of points of a convex shape
     ///
     /// Return the number of points of the shape
-    pub fn get_point_count(&self) -> u32 {
+    fn get_point_count(&self) -> u32 {
         unsafe {
             ffi::sfConvexShape_getPointCount(self.convex_shape) as u32
         }
     }
 
-    /// Set the number of points of a convex
+    /// Get a point of a convex shape
+    ///
+    /// The result is undefined if index is out of the valid range.
     ///
     /// # Arguments
-    /// * count - New number of points of the convex
-    pub fn set_point_count(&mut self, count: u32) -> () {
-        unsafe {
-            ffi::sfConvexShape_setPointCount(self.convex_shape, count as c_uint)
-        }
-    }
-
-    /// Get the sub-rectangle of the texture displayed by a convex shape
+    /// * index- Index of the point to get, in range [0 .. getPointCount() - 1]
     ///
-    /// Return the texture rectangle of the shape
-    pub fn set_texture_rect(&mut self, rect: &IntRect) -> () {
+    /// Return the index-th point of the shape
+    fn get_point(&self, index: u32) -> Vector2f {
         unsafe {
-            ffi::sfConvexShape_setTextureRect(self.convex_shape, *rect)
+            ffi::sfConvexShape_getPoint(self.convex_shape, index as c_uint)
         }
     }
 
@@ -527,7 +573,7 @@ impl<'s> ConvexShape<'s> {
     /// entity in the entity's coordinate system.
     ///
     /// Return the local bounding rectangle of the entity
-    pub fn get_local_bounds(&self) -> FloatRect {
+    fn get_local_bounds(&self) -> FloatRect {
         unsafe {
             ffi::sfConvexShape_getLocalBounds(self.convex_shape)
         }
@@ -542,44 +588,9 @@ impl<'s> ConvexShape<'s> {
     /// sprite in the global 2D world's coordinate system.
     ///
     /// Return the global bounding rectangle of the entity
-    pub fn get_global_bounds(&self) -> FloatRect {
+    fn get_global_bounds(&self) -> FloatRect {
         unsafe {
             ffi::sfConvexShape_getGlobalBounds(self.convex_shape)
-        }
-    }
-
-    /// Get the sub-rectangle of the texture displayed by a convex shape
-    ///
-    /// Return the texture rectangle of the shape
-    pub fn get_texture_rect(&self) -> IntRect {
-        unsafe {
-            ffi::sfConvexShape_getTextureRect(self.convex_shape)
-        }
-    }
-
-    /// Get the combined transform of a convex shape
-    ///
-    /// Return transform combining the position/rotation/scale/origin of the object
-    pub fn get_transform(&self) -> Transform {
-        unsafe {
-            ffi::sfConvexShape_getTransform(self.convex_shape)
-        }
-    }
-
-    /// Get the inverse of the combined transform of a convex shape
-    ///
-    /// Return inverse of the combined transformations applied to the object
-    pub fn get_inverse_transform(&self) -> Transform {
-        unsafe {
-            ffi::sfConvexShape_getInverseTransform(self.convex_shape)
-        }
-    }
-
-    /// Return an immutable iterator over all the points of the ConvexShape
-    pub fn points(&self) -> ConvexShapePoints {
-        ConvexShapePoints {
-            convex_shape: self.convex_shape.clone(),
-            pos: 0
         }
     }
 }
@@ -630,12 +641,6 @@ impl<'s> Wrappable<*mut ffi::sfConvexShape> for ConvexShape<'s> {
     #[doc(hidden)]
     fn unwrap(&self) -> *mut ffi::sfConvexShape {
         self.convex_shape
-    }
-}
-
-impl<'s> Drawable for ConvexShape<'s> {
-    fn draw<RT: RenderTarget>(&self, render_target: &mut RT, render_states: &mut RenderStates) {
-        render_target.draw_convex_shape(self, render_states)
     }
 }
 

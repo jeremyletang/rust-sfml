@@ -3,7 +3,7 @@
 extern crate sfml;
 extern crate rand;
 
-use sfml::graphics::{RenderWindow, Color, Font, Text, RectangleShape, CircleShape,
+use sfml::graphics::{Shape, Transformable, RenderWindow, Color, Font, Text, RectangleShape, CircleShape,
                       RenderTarget};
 use sfml::window::{VideoMode, ContextSettings, event, WindowStyle};
 use sfml::window::keyboard::{self, Key};

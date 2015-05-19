@@ -43,7 +43,7 @@ pub struct WrapObj {
 }
 
 /// Base class for textured shapes with outline
-pub struct Shape<'s> {
+pub struct CustomShape<'s> {
     shape:     *mut ffi::sfShape,
     texture:  Option<&'s Texture>
 }
@@ -65,14 +65,14 @@ extern fn get_point_callback(point: u32, obj: *mut c_void) -> Vector2f {
 }
 
 
-impl<'s> Shape<'s> {
-    /// Create a new Shape
+impl<'s> CustomShape<'s> {
+    /// Create a new CustomShape
     ///
     /// # Arguments
     /// * shape_impl - Implementation of ShapeImpl
     ///
-    /// Return Some(Shape) or None
-    pub fn new(shape_impl: Box<ShapeImpl + Send>) -> Option<Shape<'s>> {
+    /// Return Some(CustomShape) or None
+    pub fn new(shape_impl: Box<ShapeImpl + Send>) -> Option<CustomShape<'s>> {
         let w_o = Box::new(WrapObj { shape_impl: shape_impl});
         let sp = unsafe { ffi::sfShape_create(get_point_count_callback,
                                               get_point_callback,
@@ -80,22 +80,22 @@ impl<'s> Shape<'s> {
         if sp.is_null() {
             None
         } else {
-            Some(Shape {
+            Some(CustomShape {
                     shape:     sp,
                     texture:   None
                 })
         }
     }
 
-    /// Create a new Shape with a texture
+    /// Create a new CustomShape with a texture
     ///
     /// # Arguments
     /// * shape_impl - Implementation of ShapeImpl trait
-    /// * texture - The texture to bind to the Shape
+    /// * texture - The texture to bind to the CustomShape
     ///
-    /// Return Some(Shape) or None
+    /// Return Some(CustomShape) or None
     pub fn new_with_texture(shape_impl: Box<ShapeImpl + Send>,
-                            texture: &'s Texture) -> Option<Shape<'s>> {
+                            texture: &'s Texture) -> Option<CustomShape<'s>> {
         let w_o = Box::new(WrapObj { shape_impl: shape_impl });
         let sp = unsafe { ffi::sfShape_create(get_point_count_callback,
                                               get_point_callback,
@@ -106,7 +106,7 @@ impl<'s> Shape<'s> {
             unsafe {
                 ffi::sfShape_setTexture(sp, texture.unwrap(), SFTRUE);
             }
-            Some(Shape {
+            Some(CustomShape {
                     shape:     sp,
                     texture:   Some(texture)
                 })
@@ -558,7 +558,7 @@ impl<'s> Shape<'s> {
     }
 }
 
-impl<'s> Drawable for Shape<'s> {
+impl<'s> Drawable for CustomShape<'s> {
     fn draw<RT: RenderTarget>(&self,
                                  render_target: &mut RT,
                                  render_states: &mut RenderStates) -> () {
@@ -566,7 +566,7 @@ impl<'s> Drawable for Shape<'s> {
     }
 }
 
-impl<'s> Drop for Shape<'s> {
+impl<'s> Drop for CustomShape<'s> {
     fn drop(&mut self) -> () {
         unsafe {
             ffi::sfShape_destroy(self.shape)

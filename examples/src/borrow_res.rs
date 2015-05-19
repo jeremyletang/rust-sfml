@@ -2,7 +2,7 @@
 
 extern crate sfml;
 
-use sfml::graphics::{RenderWindow, Color, CircleShape, Sprite,
+use sfml::graphics::{Shape, Transformable, RenderWindow, Color, CircleShape, Sprite,
     RenderTarget, Texture, Text, Font, ConvexShape};
 use sfml::window::{VideoMode, ContextSettings, event, WindowStyle};
 use sfml::window::keyboard::Key;

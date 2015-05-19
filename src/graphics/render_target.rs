@@ -25,7 +25,7 @@
 //Authored on 2014-08-30 by Brandon Sanderson
 
 use graphics::{Drawable, Color, View, RenderStates, CircleShape, RectangleShape, Text, Sprite, VertexArray,
-               IntRect, Vertex, PrimitiveType, ConvexShape, Shape};
+               IntRect, Vertex, PrimitiveType, ConvexShape, CustomShape};
 use system::vector2::{Vector2f, Vector2i, Vector2u};
 
 /// Trait which is the equivalent of the sf::RenderTarget class in SFML.
@@ -219,7 +219,7 @@ pub trait RenderTarget {
 
     /// Draw Shape
     fn draw_shape(&self,
-                  shape: &Shape,
+                  shape: &CustomShape,
                   rs: &mut RenderStates);
 
     /// Draw Sprite

@@ -138,7 +138,7 @@ pub mod circle_shape {
         pub fn sfCircleShape_getOutlineColor(shape: *mut sfCircleShape) -> Color;
         pub fn sfCircleShape_getOutlineThickness(shape: *mut sfCircleShape) -> c_float;
         pub fn sfCircleShape_getPointCount(shape: *mut sfCircleShape) -> c_uint;
-        pub fn sfCircleShape_getPoint(shape: *mut sfCircleShape, index: c_uint) -> ();
+        pub fn sfCircleShape_getPoint(shape: *mut sfCircleShape, index: c_uint) -> Vector2f;
         pub fn sfCircleShape_setRadius(shape: *mut sfCircleShape, radius: c_float) -> ();
         pub fn sfCircleShape_getRadius(shape: *mut sfCircleShape) -> c_float;
         pub fn sfCircleShape_setPointCount(shape: *mut sfCircleShape, count: c_uint) -> ();

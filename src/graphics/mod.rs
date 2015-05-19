@@ -44,13 +44,14 @@ pub use graphics::rectangle_shape::RectangleShape;
 pub use graphics::convex_shape::{ConvexShape, ConvexShapePoints};
 pub use graphics::primitive_type::PrimitiveType;
 pub use graphics::vertex::Vertex;
-pub use graphics::transformable::Transformable;
 pub use graphics::glyph::Glyph;
 pub use graphics::render_texture::RenderTexture;
-pub use graphics::shape::Shape;
+pub use graphics::custom_shape::CustomShape;
 pub use graphics::vertex_array::{VertexArray, Vertices};
 pub use graphics::text_style::TextStyle;
 pub use graphics::drawable::Drawable;
+pub use graphics::shape::Shape;
+pub use graphics::transformable::Transformable;
 
 /// Shapes implementations using reference counting to manage shared resources
 // pub mod rc {
@@ -71,6 +72,8 @@ mod platform {
 }
 
 mod drawable;
+mod shape;
+mod transformable;
 mod render_target;
 mod render_states;
 mod render_window;
@@ -92,7 +95,6 @@ mod convex_shape;
 mod primitive_type;
 mod vertex;
 mod vertex_array;
-mod transformable;
 mod glyph;
 mod render_texture;
-mod shape;
+mod custom_shape;

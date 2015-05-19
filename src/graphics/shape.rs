@@ -22,29 +22,30 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-//! base transformable trait
+//! base shape trait
 #![allow(missing_docs)]
 
-use graphics::Transform;
+use graphics::{Drawable, Transformable, Texture, IntRect, FloatRect, Color};
 use system::Vector2f;
 
-pub trait Transformable {
-    fn set_position(&mut self, position: &Vector2f);
-    fn set_position2f(&mut self, x: f32, y: f32);
-    fn set_rotation(&mut self, angle: f32);
-    fn set_scale(&mut self, scale: &Vector2f);
-    fn set_scale2f(&mut self, scale_x: f32, scale_y: f32);
-    fn set_origin(&mut self, origin: &Vector2f);
-    fn set_origin2f(&mut self, x: f32, y: f32);
-    fn get_position(&self) -> Vector2f;
-    fn get_rotation(&self) -> f32;
-    fn get_scale(&self) -> Vector2f;
-    fn get_origin(&self) -> Vector2f;
-    fn move_(&mut self, offset: &Vector2f);
-    fn move2f(&mut self, offset_x: f32, offset_y: f32);
-    fn rotate(&mut self, angle: f32);
-    fn scale(&mut self, factors: &Vector2f);
-    fn scale2f(&mut self, factor_x: f32, factor_y: f32);
-    fn get_transform(&self) -> Transform;
-    fn get_inverse_transform(&self) -> Transform;
+/// The trait drawable is inherited by each object who can be drawn in a RenderTarget
+pub trait Shape<'s>: Drawable + Transformable {
+    fn set_texture(&mut self,
+                       texture: &'s Texture,
+                       reset_rect: bool);
+    fn disable_texture(&mut self);
+
+    fn set_texture_rect(&mut self, rect: &IntRect);
+    fn set_fill_color(&mut self, color: &Color);
+    fn set_outline_color(&mut self, color: &Color);
+    fn set_outline_thickness(&mut self, thickness: f32);
+    fn get_texture(&self) -> Option<&'s Texture>;
+    fn get_texture_rect(&self) -> IntRect;
+    fn get_fill_color(&self) -> Color;
+    fn get_outline_color(&self) -> Color;
+    fn get_outline_thickness(&self) -> f32;
+    fn get_point_count(&self) -> u32;
+    fn get_point(&self, index: u32) -> Vector2f;
+    fn get_local_bounds(&self) -> FloatRect;
+    fn get_global_bounds(&self) -> FloatRect;
 }
