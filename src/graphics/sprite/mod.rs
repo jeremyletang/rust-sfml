@@ -30,15 +30,15 @@
 use libc::{c_float};
 use std::ptr;
 
-use traits::{Drawable, Wrappable};
-use graphics::{FloatRect, IntRect, Color, Texture,
+use traits::Wrappable;
+use graphics::{Drawable, Transformable, FloatRect, IntRect, Color, Texture,
                RenderTarget, Transform, RenderStates};
 use system::vector2::Vector2f;
 
 use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi::graphics::sprite as ffi;
 
-pub mod rc;
+// pub mod rc;
 
 /// Drawable representation of a texture
 ///
@@ -95,44 +95,6 @@ impl<'s> Sprite<'s> {
                     sprite: sp,
                     texture: self.texture
                 })
-        }
-    }
-
-    /// Set the orientation of a sprite
-    ///
-    /// This function completely overwrites the previous rotation.
-    /// See rotate to add an angle based on the previous rotation instead.
-    /// The default rotation of a sprite Sprite object is 0.
-    ///
-    /// # Arguments
-    /// * angle - New rotation, in degrees
-    pub fn set_rotation(&mut self, angle: f32) -> () {
-        unsafe {
-            ffi::sfSprite_setRotation(self.sprite, angle as c_float)
-        }
-    }
-
-    /// Get the orientation of a sprite
-    ///
-    /// The rotation is always in the range [0, 360].
-    ///
-    /// Return the current rotation, in degrees
-    pub fn get_rotation(&self) -> f32 {
-        unsafe {
-            ffi::sfSprite_getRotation(self.sprite) as f32
-        }
-    }
-
-    /// Rotate a sprite
-    ///
-    /// This function adds to the current rotation of the object,
-    /// unlike sfSprite_setRotation which overwrites it.
-    ///
-    /// # Arguments
-    /// * angle - Angle of rotation, in degrees
-    pub fn rotate(&mut self, angle: f32) -> () {
-        unsafe {
-            ffi::sfSprite_rotate(self.sprite, angle as c_float)
         }
     }
 
@@ -215,180 +177,6 @@ impl<'s> Sprite<'s> {
         }
     }
 
-    /// Set the position of a sprite
-    ///
-    /// This function completely overwrites the previous position.
-    /// See move to apply an offset based on the previous position instead.
-    /// The default position of a sprite Sprite object is (0, 0).
-    ///
-    /// # Arguments
-    /// * position - New position
-    pub fn set_position(&mut self, position: &Vector2f) -> () {
-        unsafe {
-            ffi::sfSprite_setPosition(self.sprite, *position)
-        }
-    }
-
-    /// Set the position of a sprite
-    ///
-    /// This function completely overwrites the previous position.
-    /// See move to apply an offset based on the previous position instead.
-    /// The default position of a sprite Sprite object is (0, 0).
-    ///
-    /// # Arguments
-    /// * x - New x coordinate
-    /// * y - New y coordinate
-    pub fn set_position2f(&mut self, x: f32, y: f32) -> () {
-        unsafe {
-            ffi::sfSprite_setPosition(self.sprite, Vector2f::new(x, y))
-        }
-    }
-
-    /// Scale a sprite
-    ///
-    /// This function multiplies the current scale of the object,
-    /// unlike setScale which overwrites it.
-    ///
-    /// # Arguments
-    /// * factors - Scale factors
-    pub fn scale(&mut self, factors: &Vector2f) -> () {
-        unsafe {
-            ffi::sfSprite_scale(self.sprite, *factors)
-        }
-    }
-
-    /// Scale a sprite
-    ///
-    /// This function multiplies the current scale of the object,
-    /// unlike setScale which overwrites it.
-    ///
-    /// # Arguments
-    /// * factor_x - Scale x factor
-    /// * factor_y - Scale y factor
-    pub fn scale2f(&mut self, factor_x: f32, factor_y: f32) -> () {
-        unsafe {
-            ffi::sfSprite_scale(self.sprite, Vector2f::new(factor_x, factor_y))
-        }
-    }
-
-    /// Get the current scale of a sprite
-    ///
-    /// Return the current scale factors
-    pub fn get_scale(&self) -> Vector2f {
-        unsafe {
-            ffi::sfSprite_getScale(self.sprite)
-        }
-    }
-
-    /// Get the local origin of a sprite
-    ///
-    /// Return the current origin
-    pub fn get_origin(&self) -> Vector2f {
-        unsafe {
-            ffi::sfSprite_getOrigin(self.sprite)
-        }
-    }
-
-    /// Move a sprite by a given offset
-    ///
-    /// This function adds to the current position of the object,
-    /// unlike sfSprite_setPosition which overwrites it.
-    ///
-    /// # Arguments
-    /// * offset - Offset
-    pub fn move_(&mut self, offset: &Vector2f) -> () {
-        unsafe {
-            ffi::sfSprite_move(self.sprite, *offset)
-        }
-    }
-
-    /// Move a sprite by a given offset
-    ///
-    /// This function adds to the current position of the object,
-    /// unlike sfSprite_setPosition which overwrites it.
-    ///
-    /// # Arguments
-    /// * offsetX - Offset x
-    /// * offsetY - Offset y
-    pub fn move2f(&mut self, offset_x: f32, offset_y: f32) -> () {
-        unsafe {
-            ffi::sfSprite_move(self.sprite, Vector2f::new(offset_x, offset_y))
-        }
-    }
-
-    /// Set the scale factors of a sprite
-    ///
-    /// This function completely overwrites the previous scale.
-    /// See scale to add a factor based on the previous scale instead.
-    /// The default scale of a sprite Sprite object is (1, 1).
-    ///
-    /// # Arguments
-    /// * scale - New scale factors
-    pub fn set_scale(&mut self, scale: &Vector2f) -> () {
-        unsafe {
-            ffi::sfSprite_setScale(self.sprite, *scale)
-        }
-    }
-
-    /// Set the scale factors of a sprite
-    ///
-    /// This function completely overwrites the previous scale.
-    /// See scale to add a factor based on the previous scale instead.
-    /// The default scale of a sprite Sprite object is (1, 1).
-    ///
-    /// # Arguments
-    /// * scale_x - New x scale factor
-    /// * scale_y - New y scale factor
-    pub fn set_scale2f(&mut self, scale_x: f32, scale_y: f32) -> () {
-        unsafe {
-            ffi::sfSprite_setScale(self.sprite, Vector2f::new(scale_x, scale_y))
-        }
-    }
-
-    /// Set the local origin of a sprite
-    ///
-    /// The origin of an object defines the center point for
-    /// all transformations (position, scale, rotation).
-    /// The coordinates of this point must be relative to the
-    /// top-left corner of the object, and ignore all
-    /// transformations (position, scale, rotation).
-    /// The default origin of a sprite Sprite object is (0, 0).
-    ///
-    /// # Arguments
-    /// * origin - New origin
-    pub fn set_origin(&mut self, origin: &Vector2f) -> () {
-        unsafe {
-            ffi::sfSprite_setOrigin(self.sprite, *origin)
-        }
-    }
-
-    /// Set the local origin of a sprite
-    ///
-    /// The origin of an object defines the center point for
-    /// all transformations (position, scale, rotation).
-    /// The coordinates of this point must be relative to the
-    /// top-left corner of the object, and ignore all
-    /// transformations (position, scale, rotation).
-    /// The default origin of a sprite Sprite object is (0, 0).
-    ///
-    /// # Arguments
-    /// * x - New x origin coordinate
-    /// * y - New y origin coordinate
-    pub fn set_origin2f(&mut self, x: f32, y: f32) -> () {
-        unsafe {
-            ffi::sfSprite_setOrigin(self.sprite, Vector2f::new(x, y))
-        }
-    }
-
-    /// Get the position of a sprite
-    ///
-    /// Return the current position
-    pub fn get_position(&self) -> Vector2f {
-        unsafe {
-            ffi::sfSprite_getPosition(self.sprite)
-        }
-    }
-
     /// Get the local bounding rectangle of a sprite
     ///
     /// The returned rectangle is in local coordinates, which means
@@ -441,25 +229,6 @@ impl<'s> Sprite<'s> {
             ffi::sfSprite_setTextureRect(self.sprite, *rect)
         }
     }
-
-    /// Get the combined transform of a sprite
-    ///
-    /// Return the transform combining the position/rotation/scale/origin
-    /// of the object
-    pub fn get_transform(&self) -> Transform {
-        unsafe {
-            ffi::sfSprite_getTransform(self.sprite)
-        }
-    }
-
-    /// Get the inverse of the combined transform of a sprite
-    ///
-    /// Return the inverse of the combined transformations applied to the object
-    pub fn get_inverse_transform(&self) -> Transform {
-        unsafe {
-            ffi::sfSprite_getInverseTransform(self.sprite)
-        }
-    }
 }
 
 impl<'s> Clone for Sprite<'s> {
@@ -477,6 +246,247 @@ impl<'s> Clone for Sprite<'s> {
     }
 }
 
+impl<'s> Drawable for Sprite<'s> {
+    fn draw<RT:RenderTarget>(&self,
+                                render_target: &mut RT,
+                                render_states: &mut RenderStates) -> () {
+        render_target.draw_sprite(self, render_states)
+    }
+}
+
+impl<'s> Transformable for Sprite<'s> {
+    /// Set the position of a sprite
+    ///
+    /// This function completely overwrites the previous position.
+    /// See move to apply an offset based on the previous position instead.
+    /// The default position of a sprite Sprite object is (0, 0).
+    ///
+    /// # Arguments
+    /// * position - New position
+    fn set_position(&mut self, position: &Vector2f) -> () {
+        unsafe {
+            ffi::sfSprite_setPosition(self.sprite, *position)
+        }
+    }
+
+    /// Set the position of a sprite
+    ///
+    /// This function completely overwrites the previous position.
+    /// See move to apply an offset based on the previous position instead.
+    /// The default position of a sprite Sprite object is (0, 0).
+    ///
+    /// # Arguments
+    /// * x - New x coordinate
+    /// * y - New y coordinate
+    fn set_position2f(&mut self, x: f32, y: f32) -> () {
+        unsafe {
+            ffi::sfSprite_setPosition(self.sprite, Vector2f::new(x, y))
+        }
+    }
+
+    /// Set the orientation of a sprite
+    ///
+    /// This function completely overwrites the previous rotation.
+    /// See rotate to add an angle based on the previous rotation instead.
+    /// The default rotation of a sprite Sprite object is 0.
+    ///
+    /// # Arguments
+    /// * angle - New rotation, in degrees
+    fn set_rotation(&mut self, angle: f32) -> () {
+        unsafe {
+            ffi::sfSprite_setRotation(self.sprite, angle as c_float)
+        }
+    }
+
+    /// Set the scale factors of a sprite
+    ///
+    /// This function completely overwrites the previous scale.
+    /// See scale to add a factor based on the previous scale instead.
+    /// The default scale of a sprite Sprite object is (1, 1).
+    ///
+    /// # Arguments
+    /// * scale - New scale factors
+    fn set_scale(&mut self, scale: &Vector2f) -> () {
+        unsafe {
+            ffi::sfSprite_setScale(self.sprite, *scale)
+        }
+    }
+
+    /// Set the scale factors of a sprite
+    ///
+    /// This function completely overwrites the previous scale.
+    /// See scale to add a factor based on the previous scale instead.
+    /// The default scale of a sprite Sprite object is (1, 1).
+    ///
+    /// # Arguments
+    /// * scale_x - New x scale factor
+    /// * scale_y - New y scale factor
+    fn set_scale2f(&mut self, scale_x: f32, scale_y: f32) -> () {
+        unsafe {
+            ffi::sfSprite_setScale(self.sprite, Vector2f::new(scale_x, scale_y))
+        }
+    }
+
+    /// Set the local origin of a sprite
+    ///
+    /// The origin of an object defines the center point for
+    /// all transformations (position, scale, rotation).
+    /// The coordinates of this point must be relative to the
+    /// top-left corner of the object, and ignore all
+    /// transformations (position, scale, rotation).
+    /// The default origin of a sprite Sprite object is (0, 0).
+    ///
+    /// # Arguments
+    /// * origin - New origin
+    fn set_origin(&mut self, origin: &Vector2f) -> () {
+        unsafe {
+            ffi::sfSprite_setOrigin(self.sprite, *origin)
+        }
+    }
+
+    /// Set the local origin of a sprite
+    ///
+    /// The origin of an object defines the center point for
+    /// all transformations (position, scale, rotation).
+    /// The coordinates of this point must be relative to the
+    /// top-left corner of the object, and ignore all
+    /// transformations (position, scale, rotation).
+    /// The default origin of a sprite Sprite object is (0, 0).
+    ///
+    /// # Arguments
+    /// * x - New x origin coordinate
+    /// * y - New y origin coordinate
+    fn set_origin2f(&mut self, x: f32, y: f32) -> () {
+        unsafe {
+            ffi::sfSprite_setOrigin(self.sprite, Vector2f::new(x, y))
+        }
+    }
+
+    /// Get the position of a sprite
+    ///
+    /// Return the current position
+    fn get_position(&self) -> Vector2f {
+        unsafe {
+            ffi::sfSprite_getPosition(self.sprite)
+        }
+    }
+
+    /// Get the orientation of a sprite
+    ///
+    /// The rotation is always in the range [0, 360].
+    ///
+    /// Return the current rotation, in degrees
+    fn get_rotation(&self) -> f32 {
+        unsafe {
+            ffi::sfSprite_getRotation(self.sprite) as f32
+        }
+    }
+
+    /// Get the current scale of a sprite
+    ///
+    /// Return the current scale factors
+    fn get_scale(&self) -> Vector2f {
+        unsafe {
+            ffi::sfSprite_getScale(self.sprite)
+        }
+    }
+
+    /// Get the local origin of a sprite
+    ///
+    /// Return the current origin
+    fn get_origin(&self) -> Vector2f {
+        unsafe {
+            ffi::sfSprite_getOrigin(self.sprite)
+        }
+    }
+
+    /// Move a sprite by a given offset
+    ///
+    /// This function adds to the current position of the object,
+    /// unlike sfSprite_setPosition which overwrites it.
+    ///
+    /// # Arguments
+    /// * offset - Offset
+    fn move_(&mut self, offset: &Vector2f) -> () {
+        unsafe {
+            ffi::sfSprite_move(self.sprite, *offset)
+        }
+    }
+
+    /// Move a sprite by a given offset
+    ///
+    /// This function adds to the current position of the object,
+    /// unlike sfSprite_setPosition which overwrites it.
+    ///
+    /// # Arguments
+    /// * offsetX - Offset x
+    /// * offsetY - Offset y
+    fn move2f(&mut self, offset_x: f32, offset_y: f32) -> () {
+        unsafe {
+            ffi::sfSprite_move(self.sprite, Vector2f::new(offset_x, offset_y))
+        }
+    }
+
+    /// Rotate a sprite
+    ///
+    /// This function adds to the current rotation of the object,
+    /// unlike sfSprite_setRotation which overwrites it.
+    ///
+    /// # Arguments
+    /// * angle - Angle of rotation, in degrees
+    fn rotate(&mut self, angle: f32) -> () {
+        unsafe {
+            ffi::sfSprite_rotate(self.sprite, angle as c_float)
+        }
+    }
+
+    /// Scale a sprite
+    ///
+    /// This function multiplies the current scale of the object,
+    /// unlike setScale which overwrites it.
+    ///
+    /// # Arguments
+    /// * factors - Scale factors
+    fn scale(&mut self, factors: &Vector2f) -> () {
+        unsafe {
+            ffi::sfSprite_scale(self.sprite, *factors)
+        }
+    }
+
+    /// Scale a sprite
+    ///
+    /// This function multiplies the current scale of the object,
+    /// unlike setScale which overwrites it.
+    ///
+    /// # Arguments
+    /// * factor_x - Scale x factor
+    /// * factor_y - Scale y factor
+    fn scale2f(&mut self, factor_x: f32, factor_y: f32) -> () {
+        unsafe {
+            ffi::sfSprite_scale(self.sprite, Vector2f::new(factor_x, factor_y))
+        }
+    }
+
+    /// Get the combined transform of a sprite
+    ///
+    /// Return the transform combining the position/rotation/scale/origin
+    /// of the object
+    fn get_transform(&self) -> Transform {
+        unsafe {
+            ffi::sfSprite_getTransform(self.sprite)
+        }
+    }
+
+    /// Get the inverse of the combined transform of a sprite
+    ///
+    /// Return the inverse of the combined transformations applied to the object
+    fn get_inverse_transform(&self) -> Transform {
+        unsafe {
+            ffi::sfSprite_getInverseTransform(self.sprite)
+        }
+    }
+}
+
 impl<'s> Wrappable<*mut ffi::sfSprite> for Sprite<'s> {
     fn wrap(sprite: *mut ffi::sfSprite) -> Sprite<'s> {
         Sprite {
@@ -489,20 +499,6 @@ impl<'s> Wrappable<*mut ffi::sfSprite> for Sprite<'s> {
         self.sprite
     }
 }
-
-impl<'s> Drawable for Sprite<'s> {
-    fn draw<RT:RenderTarget>(&self, render_target: &mut RT) -> () {
-        render_target.draw_sprite(self)
-    }
-
-    fn draw_rs<RT:RenderTarget>(&self,
-                                render_target: &mut RT,
-                                render_states: &mut RenderStates) -> () {
-        render_target.draw_sprite_rs(self, render_states)
-    }
-}
-
-
 
 impl<'s> Drop for Sprite<'s> {
     /// Destroy an existing sprite

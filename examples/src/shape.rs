@@ -2,16 +2,16 @@
 
 extern crate sfml;
 
-use sfml::graphics::{RenderWindow, Color, Shape, RenderTarget};
-use sfml::window::{VideoMode, ContextSettings, event, Close};
+use sfml::graphics::{RenderWindow, Color, CustomShape, RenderTarget};
+use sfml::window::{VideoMode, ContextSettings, event, WindowStyle};
 use sfml::window::keyboard::Key;
 use sfml::traits::ShapeImpl;
 use sfml::system::Vector2f;
 
 #[derive(Clone, Copy)]
-pub struct CustomShape;
+pub struct CustomShapeImpl;
 
-impl ShapeImpl for CustomShape {
+impl ShapeImpl for CustomShapeImpl {
     fn get_point_count(&self) -> u32 {
         3
     }
@@ -29,14 +29,14 @@ impl ShapeImpl for CustomShape {
 fn main() {
     // Create the window of the application
     let setting: ContextSettings = ContextSettings::default();
-    let mut window: RenderWindow = match RenderWindow::new(VideoMode::new_init(800, 600, 32), "SFML Shape Example", Close, &setting) {
+    let mut window: RenderWindow = match RenderWindow::new(VideoMode::new_init(800, 600, 32), "SFML Shape Example", WindowStyle::Close, &setting) {
         Some(window) => window,
         None => panic!("Cannot create a new Render Window.")
     };
     window.set_vertical_sync_enabled(true);
 
 
-    let mut shape = Shape::new(Box::new(CustomShape)).expect("Error, cannot create a Shape");
+    let mut shape = CustomShape::new(Box::new(CustomShapeImpl)).expect("Error, cannot create a Shape");
     shape.set_fill_color(&Color::red());
     shape.set_outline_color(&Color::green());
     shape.set_outline_thickness(3.);

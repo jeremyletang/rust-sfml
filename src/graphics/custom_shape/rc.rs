@@ -31,7 +31,7 @@ use std::{ptr, mem};
 
 use traits::{Drawable, ShapeImpl, Wrappable};
 use graphics::{RenderTarget, rc, Texture, Color,
-               Transform, IntRect, FloatRect};
+               Transform, IntRect, FloatRect, RenderStates};
 use system::vector2::Vector2f;
 
 use ffi::sfml_types::{SFTRUE, SFFALSE};
@@ -52,7 +52,7 @@ pub struct Shape {
 extern fn get_point_count_callback(obj: *mut c_void) -> u32 {
     let shape = unsafe { mem::transmute::<*mut c_void, Box<Box<WrapObj>>>(obj) };
     let ret = shape.shape_impl.get_point_count();
-    unsafe { mem::forget(shape) };
+    mem::forget(shape);
     ret
 }
 
@@ -60,7 +60,7 @@ extern fn get_point_count_callback(obj: *mut c_void) -> u32 {
 extern fn get_point_callback(point: u32, obj: *mut c_void) -> Vector2f {
     let shape = unsafe { mem::transmute::<*mut c_void, Box<Box<WrapObj>>>(obj) };
     let ret = shape.shape_impl.get_point(point);
-    unsafe { mem::forget(shape) };
+    mem::forget(shape);
     ret
 }
 
@@ -564,14 +564,10 @@ impl Shape {
 }
 
 impl Drawable for Shape {
-    fn draw<RT: RenderTarget>(&self, render_target: &mut RT) {
-        render_target.draw_shape_rc(self)
-    }
-
-    fn draw_rs_rc<RT: RenderTarget>(&self,
+    fn draw<RT: RenderTarget>(&self,
                                     render_target: &mut RT,
-                                    render_states: &mut rc::RenderStates) -> () {
-        render_target.draw_shape_rs_rc(self, render_states)
+                                    render_states: &mut RenderStates) -> () {
+        render_target.draw_shape(self, render_states)
     }
 }
 

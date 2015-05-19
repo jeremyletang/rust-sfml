@@ -22,29 +22,30 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-//! Drawable trait
-//!
-//! Implemented by each drawable object to specifiy their drawing operations for
-//! RenderTargets.
+//! base shape trait
+#![allow(missing_docs)]
 
-use graphics::{RenderStates, RenderTarget, rc};
+use graphics::{Drawable, Transformable, Texture, IntRect, FloatRect, Color};
+use system::Vector2f;
 
 /// The trait drawable is inherited by each object who can be drawn in a RenderTarget
-pub trait Drawable {
-    /// Draw a drawable object into a RenderTarget
-    fn draw<RT: RenderTarget>(&self, target: &mut RT);
+pub trait Shape<'s>: Drawable + Transformable {
+    fn set_texture(&mut self,
+                       texture: &'s Texture,
+                       reset_rect: bool);
+    fn disable_texture(&mut self);
 
-    /// Draw a drawable object with a RenderState into a RenderTarget
-    fn draw_rs<RT: RenderTarget>(&self,
-                                 _: &mut RT,
-                                 _: &mut RenderStates){
-        println!("Error: Bad Usage: Can't draw a ref-counted drawable with borrow-based RenderStates");
-    }
-
-    /// Draw a borrow-based drawable object with a RenderState into a RenderTarget
-    fn draw_rs_rc<RT: RenderTarget>(&self,
-                                    _: &mut RT,
-                                    _: &mut rc::RenderStates){
-        println!("Error: Bad Usage: Can't draw a borrow-based drawable with refcount based RenderStates");
-    }
+    fn set_texture_rect(&mut self, rect: &IntRect);
+    fn set_fill_color(&mut self, color: &Color);
+    fn set_outline_color(&mut self, color: &Color);
+    fn set_outline_thickness(&mut self, thickness: f32);
+    fn get_texture(&self) -> Option<&'s Texture>;
+    fn get_texture_rect(&self) -> IntRect;
+    fn get_fill_color(&self) -> Color;
+    fn get_outline_color(&self) -> Color;
+    fn get_outline_thickness(&self) -> f32;
+    fn get_point_count(&self) -> u32;
+    fn get_point(&self, index: u32) -> Vector2f;
+    fn get_local_bounds(&self) -> FloatRect;
+    fn get_global_bounds(&self) -> FloatRect;
 }

@@ -29,7 +29,7 @@
 use libc::c_float;
 use std::mem;
 
-use audio::{Status, SoundBuffer};
+use audio::{SoundStatus, SoundBuffer};
 use system::Time;
 use system::vector3::Vector3f;
 use traits::Wrappable;
@@ -155,7 +155,7 @@ impl<'s> Sound<'s> {
     /// Get the current status of a sound (stopped, paused, playing)
     ///
     /// Return current status
-    pub fn get_status(&self) -> Status {
+    pub fn get_status(&self) -> SoundStatus {
         unsafe { mem::transmute(ffi::sfSound_getStatus(self.sound)) }
     }
 

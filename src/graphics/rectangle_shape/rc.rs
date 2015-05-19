@@ -32,7 +32,7 @@ use std::ptr;
 use traits::{Drawable, Wrappable};
 use system::vector2::Vector2f;
 use graphics::{FloatRect, IntRect, Color, Texture,
-               RenderTarget, Transform, rc};
+               RenderTarget, Transform, rc, RenderStates};
 
 use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi::graphics::rectangle_shape as ffi;
@@ -617,14 +617,10 @@ impl Wrappable<*mut ffi::sfRectangleShape> for RectangleShape {
 }
 
 impl Drawable for RectangleShape {
-    fn draw<RT:RenderTarget>(&self, render_target: &mut RT) -> () {
-        render_target.draw_rectangle_shape_rc(self);
-    }
-
-    fn draw_rs_rc<RT:RenderTarget>(&self,
-                                   render_target: &mut RT,
-                                   render_states: &mut rc::RenderStates) -> () {
-        render_target.draw_rectangle_shape_rs_rc(self, render_states);
+    fn draw<RT:RenderTarget>(&self,
+                             render_target: &mut RT,
+                             render_states: &mut RenderStates) -> () {
+        render_target.draw_rectangle_shape(self, render_states);
     }
 }
 

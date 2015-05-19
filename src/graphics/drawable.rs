@@ -22,16 +22,15 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-/// Availables texts styles
-#[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
-#[repr(C)]
-pub enum TextStyle {
-    /// Regular characters, no style.
-    Regular = 0,
-    /// Bold characters.
-    Bold = 1,
-    /// Italic characters.
-    Italic = 2,
-    /// Underlined characters.
-    Underlined = 4
+//! Drawable trait
+//!
+//! Implemented by each drawable object to specifiy their drawing operations for
+//! RenderTargets.
+
+use graphics::{RenderStates, RenderTarget};
+
+/// The trait drawable is inherited by each object who can be drawn in a RenderTarget
+pub trait Drawable {
+    /// Draw a drawable object into a RenderTarget
+    fn draw<RT: RenderTarget>(&self, target: &mut RT, rs: &mut RenderStates);
 }

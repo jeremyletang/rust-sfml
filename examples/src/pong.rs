@@ -3,9 +3,9 @@
 extern crate sfml;
 extern crate rand;
 
-use sfml::graphics::{RenderWindow, Color, Font, Text, RectangleShape, CircleShape,
+use sfml::graphics::{Shape, Transformable, RenderWindow, Color, Font, Text, RectangleShape, CircleShape,
                       RenderTarget};
-use sfml::window::{VideoMode, ContextSettings, event, Close};
+use sfml::window::{VideoMode, ContextSettings, event, WindowStyle};
 use sfml::window::keyboard::{self, Key};
 use sfml::system::{Vector2f, Clock, Time};
 use sfml::audio::{SoundBuffer, Sound};
@@ -23,7 +23,7 @@ fn main() {
     let mut window: RenderWindow =
         match RenderWindow::new(VideoMode::new_init(game_width, game_height, 32),
                                 "SFML Pong",
-                                Close,
+                                WindowStyle::Close,
                                 &setting) {
             Some(window) => window,
             None => panic!("Cannot create a new Render Window.")

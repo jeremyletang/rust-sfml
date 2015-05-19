@@ -23,13 +23,10 @@
 */
 
 pub mod clock {
-    use libc::{c_void};
     use ffi::system::time::sfTime;
 
     #[repr(C)]
-    pub struct sfClock {
-        this: *mut c_void
-    }
+    pub struct sfClock;
 
     extern "C" {
         pub fn sfClock_create() -> *mut sfClock;

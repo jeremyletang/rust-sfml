@@ -31,7 +31,7 @@ use libc::{c_float, size_t};
 use std::mem;
 use std::ffi::CString;
 
-use audio::Status;
+use audio::SoundStatus;
 use system::Time;
 use system::vector3::Vector3f;
 use traits::Wrappable;
@@ -192,7 +192,7 @@ impl Music {
     /// Get the current status of a music (stopped, paused, playing)
     ///
     /// Return current status
-    pub fn get_status(&self) -> Status {
+    pub fn get_status(&self) -> SoundStatus {
         unsafe { mem::transmute(ffi::sfMusic_getStatus(self.music))}
     }
 

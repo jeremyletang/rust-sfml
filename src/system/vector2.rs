@@ -29,81 +29,68 @@ use std::ops::{Add, Sub, Mul, Div};
 /// Implementation of Vector2i
 #[repr(C)]
 #[derive(Clone, PartialOrd, Ord, PartialEq, Eq, Debug, Copy)]
-pub struct Vector2i {
+pub struct Vector2<T> {
     /// X coordinate of the vector.
-    pub x: i32,
+    pub x: T,
     /// Y coordinate of the vector.
-    pub y: i32
+    pub y: T
 }
 
-/// Implementation of Vector2u
-#[repr(C)]
-#[derive(Clone, PartialOrd, Ord, PartialEq, Eq, Debug, Copy)]
-pub struct Vector2u {
-    /// X coordinate of the vector.
-    pub x: u32,
-    /// Y coordinate of the vector.
-    pub y: u32
-}
+/// export Vector2<i32> as Vector2i
+pub type Vector2i = Vector2<i32>;
+/// export Vector2<u32> as Vector2u
+pub type Vector2u = Vector2<u32>;
+/// export Vector2<f32> as Vector2f
+pub type Vector2f = Vector2<f32>;
 
-/// Implementation of Vector2f
-#[repr(C)]
-#[derive(Clone, PartialOrd, PartialEq, Debug, Copy)]
-pub struct Vector2f {
-    /// X coordinate of the vector.
-    pub x: f32,
-    /// Y coordinate of the vector.
-    pub y: f32
-}
-
-impl Vector2i {
-    /// Create a new Vector2i with the given values.
-    pub fn new(x: i32, y: i32) -> Vector2i {
-        Vector2i{
+impl<T> Vector2<T> {
+    /// Build a new Vector2<T>
+    pub fn new(x: T, y: T) -> Vector2<T> {
+        Vector2 {
             x: x,
             y: y
         }
     }
 }
 
-impl Add<i32> for Vector2i {
-    type Output = Vector2i;
+impl<T: Add + Copy> Add<T> for Vector2<T> {
+    type Output = Vector2<T::Output>;
 
-    fn add(self, rhs: i32) -> Vector2i {
-        Vector2i {
+    fn add(self, rhs: T) -> Vector2<T::Output> {
+        Vector2 {
             x: self.x + rhs,
             y: self.y + rhs
         }
     }
 }
 
-impl Sub<i32> for Vector2i {
-    type Output = Vector2i;
+impl<T: Sub + Copy> Sub<T> for Vector2<T> {
+    type Output = Vector2<T::Output>;
 
-    fn sub(self, rhs: i32) -> Vector2i {
-        Vector2i {
+    fn sub(self, rhs: T) -> Vector2<T::Output> {
+        Vector2 {
             x: self.x - rhs,
             y: self.y - rhs
         }
     }
 }
 
-impl Mul<i32> for Vector2i {
-    type Output = Vector2i;
+impl<T: Mul + Copy> Mul<T> for Vector2<T> {
+    type Output = Vector2<T::Output>;
 
-    fn mul(self, rhs: i32) -> Vector2i {
-        Vector2i {
+    fn mul(self, rhs: T) -> Vector2<T::Output> {
+        Vector2 {
             x: self.x * rhs,
             y: self.y * rhs
         }
     }
 }
 
-impl Div<i32> for Vector2i {
-    type Output = Vector2i;
+impl<T: Div + Copy> Div<T> for Vector2<T> {
+    type Output = Vector2<T::Output>;
 
-    fn div(self, rhs: i32) -> Vector2i {
-        Vector2i {
+    fn div(self, rhs: T) -> Vector2<T::Output> {
+        Vector2 {
             x: self.x / rhs,
             y: self.y / rhs
         }
@@ -111,247 +98,50 @@ impl Div<i32> for Vector2i {
 }
 
 
-impl Add for Vector2i {
-    type Output = Vector2i;
+impl<T: Add> Add for Vector2<T> {
+    type Output = Vector2<T::Output>;
 
-    fn add(self, rhs: Vector2i) -> Vector2i {
-        Vector2i {
+    fn add(self, rhs: Vector2<T>) -> Vector2<T::Output> {
+        Vector2 {
             x: self.x + rhs.x,
             y: self.y + rhs.y
         }
     }
 }
 
-impl Sub for Vector2i {
-    type Output = Vector2i;
+impl<T: Sub> Sub for Vector2<T> {
+    type Output = Vector2<T::Output>;
 
-    fn sub(self, rhs: Vector2i) -> Vector2i {
-        Vector2i {
+    fn sub(self, rhs: Vector2<T>) -> Vector2<T::Output> {
+        Vector2 {
             x: self.x - rhs.x,
             y: self.y - rhs.y
         }
     }
 }
 
-impl Mul for Vector2i {
-    type Output = Vector2i;
+impl<T: Mul> Mul for Vector2<T> {
+    type Output = Vector2<T::Output>;
 
-    fn mul(self, rhs: Vector2i) -> Vector2i {
-        Vector2i {
+    fn mul(self, rhs: Vector2<T>) -> Vector2<T::Output> {
+        Vector2 {
             x: self.x * rhs.x,
             y: self.y * rhs.y
         }
     }
 }
 
-impl Div for Vector2i {
-    type Output = Vector2i;
+impl<T: Div> Div for Vector2<T> {
+    type Output = Vector2<T::Output>;
 
-    fn div(self, rhs: Vector2i) -> Vector2i {
-        Vector2i {
+    fn div(self, rhs: Vector2<T>) -> Vector2<T::Output> {
+        Vector2 {
             x: self.x / rhs.x,
             y: self.y / rhs.y
         }
     }
 }
 
-impl Vector2u {
-    /// Create a new Vector2u with the given values.
-    pub fn new(x: u32, y: u32) -> Vector2u {
-        Vector2u{
-            x: x,
-            y: y
-        }
-    }
-}
-
-impl Add<u32> for Vector2u {
-    type Output = Vector2u;
-
-    fn add(self, rhs: u32) -> Vector2u {
-        Vector2u {
-            x: self.x + rhs,
-            y: self.y + rhs
-        }
-    }
-}
-
-impl Sub<u32> for Vector2u {
-    type Output = Vector2u;
-
-    fn sub(self, rhs: u32) -> Vector2u {
-        Vector2u {
-            x: self.x - rhs,
-            y: self.y - rhs
-        }
-    }
-}
-
-impl Mul<u32> for Vector2u {
-    type Output = Vector2u;
-
-    fn mul(self, rhs: u32) -> Vector2u {
-        Vector2u {
-            x: self.x * rhs,
-            y: self.y * rhs
-        }
-    }
-}
-
-impl Div<u32> for Vector2u {
-    type Output = Vector2u;
-
-    fn div(self, rhs: u32) -> Vector2u {
-        Vector2u {
-            x: self.x / rhs,
-            y: self.y / rhs
-        }
-    }
-}
-
-
-impl Add for Vector2u {
-    type Output = Vector2u;
-
-    fn add(self, rhs: Vector2u) -> Vector2u {
-        Vector2u {
-            x: self.x + rhs.x,
-            y: self.y + rhs.y
-        }
-    }
-}
-
-impl Sub for Vector2u {
-    type Output = Vector2u;
-
-    fn sub(self, rhs: Vector2u) -> Vector2u {
-        Vector2u {
-            x: self.x - rhs.x,
-            y: self.y - rhs.y
-        }
-    }
-}
-
-impl Mul for Vector2u {
-    type Output = Vector2u;
-
-    fn mul(self, rhs: Vector2u) -> Vector2u {
-        Vector2u {
-            x: self.x * rhs.x,
-            y: self.y * rhs.y
-        }
-    }
-}
-
-impl Div for Vector2u {
-    type Output = Vector2u;
-
-    fn div(self, rhs: Vector2u) -> Vector2u {
-        Vector2u {
-            x: self.x / rhs.x,
-            y: self.y / rhs.y
-        }
-    }
-}
-
-impl Vector2f {
-    /// Create a new Vector2f with the given values.
-    pub fn new(x: f32, y: f32) -> Vector2f {
-        Vector2f{
-            x: x,
-            y: y
-        }
-    }
-}
-
-impl Add<f32> for Vector2f {
-    type Output = Vector2f;
-
-    fn add(self, rhs: f32) -> Vector2f {
-        Vector2f {
-            x: self.x + rhs,
-            y: self.y + rhs
-        }
-    }
-}
-
-impl Sub<f32> for Vector2f {
-    type Output = Vector2f;
-
-    fn sub(self, rhs: f32) -> Vector2f {
-        Vector2f {
-            x: self.x - rhs,
-            y: self.y - rhs
-        }
-    }
-}
-
-impl Mul<f32> for Vector2f {
-    type Output = Vector2f;
-
-    fn mul(self, rhs: f32) -> Vector2f {
-        Vector2f {
-            x: self.x * rhs,
-            y: self.y * rhs
-        }
-    }
-}
-
-impl Div<f32> for Vector2f {
-    type Output = Vector2f;
-
-    fn div(self, rhs: f32) -> Vector2f {
-        Vector2f {
-            x: self.x / rhs,
-            y: self.y / rhs
-        }
-    }
-}
-
-
-impl Add for Vector2f {
-    type Output = Vector2f;
-
-    fn add(self, rhs: Vector2f) -> Vector2f {
-        Vector2f {
-            x: self.x + rhs.x,
-            y: self.y + rhs.y
-        }
-    }
-}
-
-impl Sub for Vector2f {
-    type Output = Vector2f;
-
-    fn sub(self, rhs: Vector2f) -> Vector2f {
-        Vector2f {
-            x: self.x - rhs.x,
-            y: self.y - rhs.y
-        }
-    }
-}
-
-impl Mul for Vector2f {
-    type Output = Vector2f;
-
-    fn mul(self, rhs: Vector2f) -> Vector2f {
-        Vector2f {
-            x: self.x * rhs.x,
-            y: self.y * rhs.y
-        }
-    }
-}
-
-impl Div for Vector2f {
-    type Output = Vector2f;
-
-    fn div(self, rhs: Vector2f) -> Vector2f {
-        Vector2f {
-            x: self.x / rhs.x,
-            y: self.y / rhs.y
-        }
-    }
-}
 
 /// Utility trait to convert a Vector2 on another type
 pub trait ToVec {

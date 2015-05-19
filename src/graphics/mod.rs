@@ -30,8 +30,7 @@ pub use graphics::render_states::RenderStates;
 pub use graphics::render_window::{RenderWindow, Events};
 pub use graphics::rect::{FloatRect, IntRect};
 pub use graphics::texture::Texture;
-pub use graphics::blend_mode::{BlendMode, BlendAlpha, BlendAdd, BlendMultiply,
-                               BlendNone};
+pub use graphics::blend_mode::BlendMode;
 pub use graphics::transform::Transform;
 pub use graphics::text::Text;
 pub use graphics::shader::Shader;
@@ -43,28 +42,28 @@ pub use graphics::sprite::Sprite;
 pub use graphics::circle_shape::CircleShape;
 pub use graphics::rectangle_shape::RectangleShape;
 pub use graphics::convex_shape::{ConvexShape, ConvexShapePoints};
-pub use graphics::primitive_type::{PrimitiveType, Points, Lines, LinesStrip,
-                                   Triangles, TrianglesStrip, TrianglesFan,
-                                   Quads};
+pub use graphics::primitive_type::PrimitiveType;
 pub use graphics::vertex::Vertex;
-pub use graphics::transformable::Transformable;
 pub use graphics::glyph::Glyph;
 pub use graphics::render_texture::RenderTexture;
-pub use graphics::shape::Shape;
+pub use graphics::custom_shape::CustomShape;
 pub use graphics::vertex_array::{VertexArray, Vertices};
-pub use graphics::text_style::{TextStyle, Regular, Bold, Italic, Underlined};
+pub use graphics::text_style::TextStyle;
+pub use graphics::drawable::Drawable;
+pub use graphics::shape::Shape;
+pub use graphics::transformable::Transformable;
 
 /// Shapes implementations using reference counting to manage shared resources
-pub mod rc {
-    pub use graphics::circle_shape::rc::CircleShape;
-    pub use graphics::rectangle_shape::rc::RectangleShape;
-    pub use graphics::convex_shape::rc::{ConvexShape, ConvexShapePoints};
-    pub use graphics::shape::rc::Shape;
-    pub use graphics::shader::rc::Shader;
-    pub use graphics::text::rc::Text;
-    pub use graphics::sprite::rc::Sprite;
-    pub use graphics::render_states::rc::RenderStates;
-}
+// pub mod rc {
+//     pub use graphics::circle_shape::rc::CircleShape;
+//     pub use graphics::rectangle_shape::rc::RectangleShape;
+//     pub use graphics::convex_shape::rc::{ConvexShape, ConvexShapePoints};
+//     pub use graphics::shape::rc::Shape;
+//     pub use graphics::shader::rc::Shader;
+//     pub use graphics::text::rc::Text;
+//     pub use graphics::sprite::rc::Sprite;
+//     pub use graphics::render_states::rc::RenderStates;
+// }
 
 #[cfg(any(target_os="macos", target_os="linux", target_os="windows"))]
 mod platform {
@@ -72,6 +71,9 @@ mod platform {
     extern {}
 }
 
+mod drawable;
+mod shape;
+mod transformable;
 mod render_target;
 mod render_states;
 mod render_window;
@@ -93,7 +95,6 @@ mod convex_shape;
 mod primitive_type;
 mod vertex;
 mod vertex_array;
-mod transformable;
 mod glyph;
 mod render_texture;
-mod shape;
+mod custom_shape;
