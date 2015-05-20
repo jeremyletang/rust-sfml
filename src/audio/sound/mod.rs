@@ -29,7 +29,7 @@
 use libc::c_float;
 use std::mem;
 
-use audio::{SoundStatus, SoundBuffer};
+use audio::{SoundStatus, SoundBuffer, SoundSource};
 use system::Time;
 use system::vector3::Vector3f;
 use traits::Wrappable;
@@ -166,83 +166,6 @@ impl<'s> Sound<'s> {
         Wrappable::wrap( unsafe {ffi::sfSound_getPlayingOffset(self.sound)})
     }
 
-    /// Set the pitch of a sound
-    ///
-    /// The pitch represents the perceived fundamental frequency
-    /// of a sound; thus you can make a sound more acute or grave
-    /// by changing its pitch. A side effect of changing the pitch
-    /// is to modify the playing speed of the sound as well.
-    /// The default value for the pitch is 1.
-    ///
-    /// # Arguments
-    /// * pitch - new pitch to apply to the sound
-    pub fn set_pitch(&mut self, pitch: f32) -> () {
-        unsafe {ffi::sfSound_setPitch(self.sound, pitch as c_float)}
-    }
-
-    /// Set the volume of a sound
-    ///
-    /// he volume is a value between 0 (mute) and 100 (full volume).
-    /// The default value for the volume is 100.
-    ///
-    /// # Arguments
-    /// * volume - Volume of the sound
-    pub fn set_volume(&mut self, volume: f32) -> () {
-        unsafe {ffi::sfSound_setVolume(self.sound, volume as c_float)}
-    }
-
-    /// Make a sounds's position relative to the listener or absolute
-    ///
-    /// Making a sound relative to the listener will ensure that it will always
-    /// be played the same way regardless the position of the listener.
-    /// This can be useful for non-spatialized sounds, sounds that are
-    /// produced by the listener, or sounds attached to it.
-    /// The default value is false (position is absolute).
-    ///
-    /// # Arguments
-    /// * relative - true to set the position relative, false to set it absolute
-    pub fn set_relative_to_listener(&mut self, relative: bool) -> () {
-        unsafe {
-            if relative == true {
-                ffi::sfSound_setRelativeToListener(self.sound, SFTRUE);
-            } else {
-                ffi::sfSound_setRelativeToListener(self.sound, SFFALSE);
-            }
-        }
-    }
-
-    /// Set the minimum distance of a sound
-    ///
-    /// The "minimum distance" of a sound is the maximum
-    /// distance at which it is heard at its maximum volume. Further
-    /// than the minimum distance, it will start to fade out according
-    /// to its attenuation factor. A value of 0 ("inside the head
-    /// of the listener") is an invalid value and is forbidden.
-    /// The default value of the minimum distance is 1.
-    ///
-    /// # Arguments
-    /// * distance - New minimum distance of the sound
-    pub fn set_min_distance(&mut self, distance: f32) -> () {
-        unsafe {ffi::sfSound_setMinDistance(self.sound, distance as c_float)}
-    }
-
-    ///  Set the attenuation factor of a sound
-    ///
-    /// The attenuation is a multiplicative factor which makes
-    /// the sound more or less loud according to its distance
-    /// from the listener. An attenuation of 0 will produce a
-    /// non-attenuated sound, i.e. its volume will always be the same
-    /// whether it is heard from near or from far. On the other hand,
-    /// an attenuation value such as 100 will make the sound fade out
-    /// very quickly as it gets further from the listener.
-    /// The default value of the attenuation is 1.
-    ///
-    /// # Arguments
-    /// * attenuation - New attenuation factor of the sound
-    pub fn set_attenuation(&mut self, attenuation: f32) -> () {
-        unsafe {ffi::sfSound_setAttenuation(self.sound, attenuation as c_float)}
-    }
-
     /// Change the current playing position of a sound
     ///
     /// The playing position can be changed when the sound is
@@ -253,52 +176,6 @@ impl<'s> Sound<'s> {
     pub fn set_playing_offset(&mut self, time_offset: Time) -> () {
         unsafe {
             ffi::sfSound_setPlayingOffset(self.sound, time_offset.unwrap())
-        }
-    }
-
-    /// Get the pitch of a sound
-    ///
-    /// Return the pitch of the sound
-    pub fn get_pitch(&self) -> f32 {
-        unsafe {
-            ffi::sfSound_getPitch(self.sound) as f32
-        }
-    }
-
-    /// Get the volume of a sound
-    ///
-    /// Return the volume of the sound, in the range [0, 100]
-    pub fn get_volume(&self) -> f32 {
-        unsafe {
-            ffi::sfSound_getVolume(self.sound) as f32
-        }
-    }
-
-    /// Tell whether a sound's position is relative to the listener or is absolute
-    ///
-    /// Return true if the position is relative, false if it's absolute
-    pub fn is_relative_to_listener(&self) -> bool {
-        match unsafe {ffi::sfSound_isRelativeToListener(self.sound)} {
-            SFFALSE => false,
-            SFTRUE  => true
-        }
-    }
-
-    /// Get the minimum distance of a sound
-    ///
-    /// Return the minimum distance of the sound
-    pub fn get_min_distance(&self) -> f32 {
-        unsafe {
-           ffi::sfSound_getMinDistance(self.sound) as f32
-        }
-    }
-
-    /// Get the attenuation factor of a sound
-    ///
-    /// Return the attenuation factor of the sound
-    pub fn get_attenuation(&self) -> f32 {
-        unsafe {
-            ffi::sfSound_getAttenuation(self.sound) as f32
         }
     }
 
@@ -324,13 +201,36 @@ impl<'s> Sound<'s> {
         self.buffer
     }
 
-    /// Get the 3D position of a sound in the audio scene
+    #[doc(hidden)]
+    pub fn unwrap(&self) -> *mut ffi::sfSound {
+        self.sound
+    }
+}
+
+impl<'s> SoundSource for Sound<'s> {
+    /// Set the pitch of a sound
     ///
-    /// Return the position of the sound in the world
-    pub fn get_position(&self) -> Vector3f {
-        unsafe {
-            ffi::sfSound_getPosition(self.sound)
-        }
+    /// The pitch represents the perceived fundamental frequency
+    /// of a sound; thus you can make a sound more acute or grave
+    /// by changing its pitch. A side effect of changing the pitch
+    /// is to modify the playing speed of the sound as well.
+    /// The default value for the pitch is 1.
+    ///
+    /// # Arguments
+    /// * pitch - new pitch to apply to the sound
+    fn set_pitch(&mut self, pitch: f32) -> () {
+        unsafe {ffi::sfSound_setPitch(self.sound, pitch as c_float)}
+    }
+
+    /// Set the volume of a sound
+    ///
+    /// he volume is a value between 0 (mute) and 100 (full volume).
+    /// The default value for the volume is 100.
+    ///
+    /// # Arguments
+    /// * volume - Volume of the sound
+    fn set_volume(&mut self, volume: f32) -> () {
+        unsafe {ffi::sfSound_setVolume(self.sound, volume as c_float)}
     }
 
     /// Set the 3D position of a sound in the audio scene
@@ -341,7 +241,7 @@ impl<'s> Sound<'s> {
     ///
     /// # Arguments
     /// * position - Position of the sound in the scene
-    pub fn set_position(&mut self, position: &Vector3f) -> () {
+    fn set_position(&mut self, position: &Vector3f) -> () {
         unsafe {
             ffi::sfSound_setPosition(self.sound, *position)
         }
@@ -357,15 +257,117 @@ impl<'s> Sound<'s> {
     /// * x - X coordinate of the position of the sound in the scene
     /// * y - Y coordinate of the position of the sound in the scene
     /// * z - Z coordinate of the position of the sound in the scene
-    pub fn set_position3f(&mut self, x: f32, y: f32, z: f32) -> () {
+    fn set_position3f(&mut self, x: f32, y: f32, z: f32) -> () {
         unsafe {
             ffi::sfSound_setPosition(self.sound, Vector3f::new(x, y, z))
         }
     }
 
-    #[doc(hidden)]
-    pub fn unwrap(&self) -> *mut ffi::sfSound {
-        self.sound
+    /// Make a sounds's position relative to the listener or absolute
+    ///
+    /// Making a sound relative to the listener will ensure that it will always
+    /// be played the same way regardless the position of the listener.
+    /// This can be useful for non-spatialized sounds, sounds that are
+    /// produced by the listener, or sounds attached to it.
+    /// The default value is false (position is absolute).
+    ///
+    /// # Arguments
+    /// * relative - true to set the position relative, false to set it absolute
+    fn set_relative_to_listener(&mut self, relative: bool) -> () {
+        unsafe {
+            if relative == true {
+                ffi::sfSound_setRelativeToListener(self.sound, SFTRUE);
+            } else {
+                ffi::sfSound_setRelativeToListener(self.sound, SFFALSE);
+            }
+        }
+    }
+
+    /// Set the minimum distance of a sound
+    ///
+    /// The "minimum distance" of a sound is the maximum
+    /// distance at which it is heard at its maximum volume. Further
+    /// than the minimum distance, it will start to fade out according
+    /// to its attenuation factor. A value of 0 ("inside the head
+    /// of the listener") is an invalid value and is forbidden.
+    /// The default value of the minimum distance is 1.
+    ///
+    /// # Arguments
+    /// * distance - New minimum distance of the sound
+    fn set_min_distance(&mut self, distance: f32) -> () {
+        unsafe {ffi::sfSound_setMinDistance(self.sound, distance as c_float)}
+    }
+
+    ///  Set the attenuation factor of a sound
+    ///
+    /// The attenuation is a multiplicative factor which makes
+    /// the sound more or less loud according to its distance
+    /// from the listener. An attenuation of 0 will produce a
+    /// non-attenuated sound, i.e. its volume will always be the same
+    /// whether it is heard from near or from far. On the other hand,
+    /// an attenuation value such as 100 will make the sound fade out
+    /// very quickly as it gets further from the listener.
+    /// The default value of the attenuation is 1.
+    ///
+    /// # Arguments
+    /// * attenuation - New attenuation factor of the sound
+    fn set_attenuation(&mut self, attenuation: f32) -> () {
+        unsafe {ffi::sfSound_setAttenuation(self.sound, attenuation as c_float)}
+    }
+
+    /// Get the pitch of a sound
+    ///
+    /// Return the pitch of the sound
+    fn get_pitch(&self) -> f32 {
+        unsafe {
+            ffi::sfSound_getPitch(self.sound) as f32
+        }
+    }
+
+    /// Get the volume of a sound
+    ///
+    /// Return the volume of the sound, in the range [0, 100]
+    fn get_volume(&self) -> f32 {
+        unsafe {
+            ffi::sfSound_getVolume(self.sound) as f32
+        }
+    }
+
+    /// Get the 3D position of a sound in the audio scene
+    ///
+    /// Return the position of the sound in the world
+    fn get_position(&self) -> Vector3f {
+        unsafe {
+            ffi::sfSound_getPosition(self.sound)
+        }
+    }
+
+    /// Tell whether a sound's position is relative to the listener or is absolute
+    ///
+    /// Return true if the position is relative, false if it's absolute
+    fn is_relative_to_listener(&self) -> bool {
+        match unsafe {ffi::sfSound_isRelativeToListener(self.sound)} {
+            SFFALSE => false,
+            SFTRUE  => true
+        }
+    }
+
+    /// Get the minimum distance of a sound
+    ///
+    /// Return the minimum distance of the sound
+    fn get_min_distance(&self) -> f32 {
+        unsafe {
+           ffi::sfSound_getMinDistance(self.sound) as f32
+        }
+    }
+
+    /// Get the attenuation factor of a sound
+    ///
+    /// Return the attenuation factor of the sound
+    fn get_attenuation(&self) -> f32 {
+        unsafe {
+            ffi::sfSound_getAttenuation(self.sound) as f32
+        }
     }
 }
 
