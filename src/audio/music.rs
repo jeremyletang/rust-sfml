@@ -31,7 +31,7 @@ use libc::{c_float, size_t};
 use std::mem;
 use std::ffi::CString;
 
-use audio::SoundStatus;
+use audio::{SoundStatus, SoundSource};
 use system::Time;
 use system::vector3::Vector3f;
 use traits::Wrappable;
@@ -203,6 +203,21 @@ impl Music {
         Wrappable::wrap(unsafe { ffi::sfMusic_getPlayingOffset(self.music) })
     }
 
+    /// Change the current playing position of a music
+    ///
+    /// The playing position can be changed when the music is
+    /// either paused or playing.
+    ///
+    /// # Arguments
+    /// * timeOffset - New playing position
+    pub fn set_playing_offset(&mut self, time_offset: Time) -> () {
+        unsafe {
+            ffi::sfMusic_setPlayingOffset(self.music, time_offset.unwrap())
+        }
+    }
+}
+
+impl SoundSource for Music {
     /// Set the pitch of a music
     ///
     /// The pitch represents the perceived fundamental frequency
@@ -213,7 +228,7 @@ impl Music {
     ///
     /// # Arguments
     /// * pitch - new pitch to apply to the music
-    pub fn set_pitch(&mut self, pitch: f32) -> () {
+    fn set_pitch(&mut self, pitch: f32) -> () {
         unsafe {
             ffi::sfMusic_setPitch(self.music, pitch as c_float)
         }
@@ -226,9 +241,39 @@ impl Music {
     ///
     /// # Arguments
     /// * volume - Volume of the music
-    pub fn set_volume(&mut self, volume: f32) -> () {
+    fn set_volume(&mut self, volume: f32) -> () {
         unsafe {
             ffi::sfMusic_setVolume(self.music, volume as c_float)
+        }
+    }
+
+    /// Set the 3D position of a music in the audio scene
+    ///
+    /// Only musics with one channel (mono musics) can be
+    /// spatialized.
+    /// The default position of a music is (0, 0, 0).
+    ///
+    /// # Arguments
+    /// * position - Position of the music in the scene
+    fn set_position(&mut self, position: &Vector3f) -> () {
+        unsafe {
+            ffi::sfMusic_setPosition(self.music, *position)
+        }
+    }
+
+    /// Set the 3D position of a music in the audio scene
+    ///
+    /// Only musics with one channel (mono musics) can be
+    /// spatialized.
+    /// The default position of a music is (0, 0, 0).
+    ///
+    /// # Arguments
+    /// * x - X coordinate of the position of the sound in the scene
+    /// * y - Y coordinate of the position of the sound in the scene
+    /// * z - Z coordinate of the position of the sound in the scene
+    fn set_position3f(&mut self, x: f32, y: f32, z: f32) -> () {
+        unsafe {
+            ffi::sfMusic_setPosition(self.music, Vector3f::new(x, y, z))
         }
     }
 
@@ -242,7 +287,7 @@ impl Music {
     ///
     /// # Arguments
     /// * relative - true to set the position relative, false to set it absolute
-    pub fn set_relative_to_listener(&mut self, relative: bool) -> () {
+    fn set_relative_to_listener(&mut self, relative: bool) -> () {
         unsafe {
             match relative {
                 true    => ffi::sfMusic_setRelativeToListener(self.music, SFTRUE),
@@ -262,7 +307,7 @@ impl Music {
     ///
     /// # Arguments
     /// * distance - New minimum distance of the music
-    pub fn set_min_distance(&mut self, distance: f32) -> () {
+    fn set_min_distance(&mut self, distance: f32) -> () {
         unsafe {
             ffi::sfMusic_setMinDistance(self.music, distance as c_float)
         }
@@ -281,29 +326,16 @@ impl Music {
     ///
     /// # Arguments
     /// * attenuation - New attenuation factor of the music
-    pub fn set_attenuation(&mut self, attenuation: f32) -> () {
+    fn set_attenuation(&mut self, attenuation: f32) -> () {
         unsafe {
             ffi::sfMusic_setAttenuation(self.music, attenuation as c_float)
-        }
-    }
-
-    /// Change the current playing position of a music
-    ///
-    /// The playing position can be changed when the music is
-    /// either paused or playing.
-    ///
-    /// # Arguments
-    /// * timeOffset - New playing position
-    pub fn set_playing_offset(&mut self, time_offset: Time) -> () {
-        unsafe {
-            ffi::sfMusic_setPlayingOffset(self.music, time_offset.unwrap())
         }
     }
 
     /// Get the pitch of a music
     ///
     /// Return the pitch of the music
-    pub fn get_pitch(&self) -> f32 {
+    fn get_pitch(&self) -> f32 {
         unsafe {
             ffi::sfMusic_getPitch(self.music) as f32
         }
@@ -312,16 +344,25 @@ impl Music {
     /// Get the volume of a music
     ///
     /// Return the volume of the music, in the range [0, 100]
-    pub fn get_volume(&self) -> f32 {
+    fn get_volume(&self) -> f32 {
         unsafe {
             ffi::sfMusic_getVolume(self.music) as f32
+        }
+    }
+
+    /// Get the 3D position of a music in the audio scene
+    ///
+    /// Return the position of the music in the world
+    fn get_position(&self) -> Vector3f {
+        unsafe {
+            ffi::sfMusic_getPosition(self.music)
         }
     }
 
     /// Tell whether a music's position is relative to the listener or is absolute
     ///
     /// Return true if the position is relative, false if it's absolute
-    pub fn is_relative_to_listener(&self) -> bool {
+    fn is_relative_to_listener(&self) -> bool {
         match unsafe { ffi::sfMusic_isRelativeToListener(self.music) } {
             SFFALSE => false,
             SFTRUE  => true
@@ -331,7 +372,7 @@ impl Music {
     /// Get the minimum distance of a music
     ///
     /// Return the minimum distance of the music
-    pub fn get_min_distance(&self) -> f32 {
+    fn get_min_distance(&self) -> f32 {
         unsafe {
            ffi::sfMusic_getMinDistance(self.music) as f32
        }
@@ -340,48 +381,9 @@ impl Music {
     /// Get the attenuation factor of a music
     ///
     /// Return the attenuation factor of the music
-    pub fn get_attenuation(&self) -> f32 {
+    fn get_attenuation(&self) -> f32 {
         unsafe {
             ffi::sfMusic_getAttenuation(self.music) as f32
-        }
-    }
-
-    /// Set the 3D position of a music in the audio scene
-    ///
-    /// Only musics with one channel (mono musics) can be
-    /// spatialized.
-    /// The default position of a music is (0, 0, 0).
-    ///
-    /// # Arguments
-    /// * position - Position of the music in the scene
-    pub fn set_position(&mut self, position: &Vector3f) -> () {
-        unsafe {
-            ffi::sfMusic_setPosition(self.music, *position)
-        }
-    }
-
-    /// Set the 3D position of a music in the audio scene
-    ///
-    /// Only musics with one channel (mono musics) can be
-    /// spatialized.
-    /// The default position of a music is (0, 0, 0).
-    ///
-    /// # Arguments
-    /// * x - X coordinate of the position of the sound in the scene
-    /// * y - Y coordinate of the position of the sound in the scene
-    /// * z - Z coordinate of the position of the sound in the scene
-    pub fn set_position3f(&mut self, x: f32, y: f32, z: f32) -> () {
-        unsafe {
-            ffi::sfMusic_setPosition(self.music, Vector3f::new(x, y, z))
-        }
-    }
-
-    /// Get the 3D position of a music in the audio scene
-    ///
-    /// Return the position of the music in the world
-    pub fn get_position(&self) -> Vector3f {
-        unsafe {
-            ffi::sfMusic_getPosition(self.music)
         }
     }
 }

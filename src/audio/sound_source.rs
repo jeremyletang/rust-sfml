@@ -22,32 +22,23 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-/*!
-* Sounds, streaming (musics or custom sources), recording, spatialization
-*/
+//! Base trait for sounds source (music and sounds)
+#![allow(missing_docs)]
 
-pub use audio::sound_buffer::SoundBuffer;
-pub use audio::sound_status::SoundStatus;
-pub use audio::music::Music;
-pub use audio::sound::Sound;
-pub use audio::sound_buffer_recorder::SoundBufferRecorder;
-pub use audio::sound_source::SoundSource;
+use system::Vector3f;
 
-/// Sound implementation using reference counting to manage shared resources
-pub mod rc {
-    pub use audio::sound::rc::Sound;
+pub trait SoundSource {
+    fn set_pitch(&mut self, pitch: f32);
+    fn set_volume(&mut self, volume: f32);
+    fn set_position3f(&mut self, x: f32, y: f32, z: f32);
+    fn set_position(&mut self, position: &Vector3f);
+    fn set_relative_to_listener(&mut self, relative: bool);
+    fn set_min_distance(&mut self, distance: f32);
+    fn set_attenuation (&mut self, attenuation: f32);
+    fn get_pitch(&self) -> f32;
+    fn get_volume(&self) -> f32;
+    fn get_position(&self) -> Vector3f;
+    fn is_relative_to_listener(&self) -> bool;
+    fn get_min_distance (&self) -> f32;
+    fn get_attenuation(&self) -> f32;
 }
-
-#[cfg(any(target_os="macos", target_os="linux", target_os="windows"))]
-mod platform {
-    #[link(name = "csfml-audio")]
-    extern {}
-}
-
-mod sound_buffer;
-mod sound_source;
-pub mod listener;
-mod sound_status;
-mod music;
-mod sound;
-mod sound_buffer_recorder;
