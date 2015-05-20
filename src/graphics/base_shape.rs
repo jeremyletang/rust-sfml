@@ -119,8 +119,8 @@ impl<'s> BaseShape<'s> {
 	/// The texture rect is useful when you don't want to display the whole
 	/// texture, but rather a part of it. By default, the texture rect covers
 	/// the entire texture.
-    pub fn set_texture_rect(&mut self, rect: &IntRect) {
-        unsafe { ffi::sfShape_setTextureRect(self.raw_mut(), *rect) }
+    pub fn set_texture_rect(&mut self, rect: IntRect) {
+        unsafe { ffi::sfShape_setTextureRect(self.raw_mut(), rect) }
     }
 
     /// Get the sub-rectangle of the texture displayed by the shape.
@@ -161,15 +161,15 @@ impl<'s> BaseShape<'s> {
 }
 
 impl<'s> Shape for BaseShape<'s> {
-    fn set_fill_color(&mut self, color: &Color) {
+    fn set_fill_color(&mut self, color: Color) {
         unsafe {
-            ffi::sfShape_setFillColor(self.raw_mut(), *color)
+            ffi::sfShape_setFillColor(self.raw_mut(), color)
         }
     }
 
-    fn set_outline_color(&mut self, color: &Color) {
+    fn set_outline_color(&mut self, color: Color) {
         unsafe {
-            ffi::sfShape_setOutlineColor(self.raw_mut(), *color)
+            ffi::sfShape_setOutlineColor(self.raw_mut(), color)
         }
     }
 
@@ -211,9 +211,9 @@ impl<'s> Shape for BaseShape<'s> {
 }
 
 impl<'s> Transformable for BaseShape<'s> {
-    fn set_position(&mut self, position: &Vector2f) {
+    fn set_position(&mut self, position: Vector2f) {
         unsafe {
-            ffi::sfShape_setPosition(self.raw_mut(), *position)
+            ffi::sfShape_setPosition(self.raw_mut(), position)
         }
     }
 
@@ -223,15 +223,15 @@ impl<'s> Transformable for BaseShape<'s> {
         }
     }
 
-    fn set_scale(&mut self, scale: &Vector2f) {
+    fn set_scale(&mut self, scale: Vector2f) {
         unsafe {
-            ffi::sfShape_setScale(self.raw_mut(), *scale)
+            ffi::sfShape_setScale(self.raw_mut(), scale)
         }
     }
 
-    fn set_origin(&mut self, origin: &Vector2f) {
+    fn set_origin(&mut self, origin: Vector2f) {
         unsafe {
-            ffi::sfShape_setOrigin(self.raw_mut(), *origin)
+            ffi::sfShape_setOrigin(self.raw_mut(), origin)
         }
     }
 
@@ -259,9 +259,9 @@ impl<'s> Transformable for BaseShape<'s> {
         }
     }
 
-    fn move_(&mut self, offset: &Vector2f) {
+    fn move_(&mut self, offset: Vector2f) {
         unsafe {
-            ffi::sfShape_move(self.raw_mut(), *offset)
+            ffi::sfShape_move(self.raw_mut(), offset)
         }
     }
 
@@ -271,9 +271,9 @@ impl<'s> Transformable for BaseShape<'s> {
         }
     }
 
-    fn scale(&mut self, factors: &Vector2f) {
+    fn scale(&mut self, factors: Vector2f) {
         unsafe {
-            ffi::sfShape_scale(self.raw_mut(), *factors)
+            ffi::sfShape_scale(self.raw_mut(), factors)
         }
     }
 

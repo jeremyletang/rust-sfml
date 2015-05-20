@@ -49,7 +49,7 @@ pub trait RenderTarget {
 	///
 	/// This function is usually called once every frame, to clear the previous
 	/// contents of the target.
-    fn clear(&mut self, color: &Color);
+    fn clear(&mut self, color: Color);
 
 	/// Get the view currently in use in the render target.
     fn get_view(&self) -> Ref<View>;
@@ -101,7 +101,7 @@ pub trait RenderTarget {
 	/// view of the render target.
     ///
     /// Returns the converted point, in "world" units.
-    fn map_pixel_to_coords(&self, point: &Vector2i, view: &View) -> Vector2f;
+    fn map_pixel_to_coords(&self, point: Vector2i, view: &View) -> Vector2f;
 
     /// Convert a point from target coordinates to world coordinates, using the
 	/// current view.
@@ -110,7 +110,7 @@ pub trait RenderTarget {
     ///
     /// Returns the converted point, in "world" units.
 	#[inline]
-    fn map_pixel_to_coords_current_view(&self, point: &Vector2i) -> Vector2f {
+    fn map_pixel_to_coords_current_view(&self, point: Vector2i) -> Vector2f {
 		self.map_pixel_to_coords(point, &self.get_view())
 	}
 
@@ -130,7 +130,7 @@ pub trait RenderTarget {
 	/// view of the render target.
 	///
     /// Returns the converted point, in target coordinates (pixels).
-    fn map_coords_to_pixel(&self, point: &Vector2f, view: &View) -> Vector2i;
+    fn map_coords_to_pixel(&self, point: Vector2f, view: &View) -> Vector2i;
 
     /// Convert a point from world coordinates to target coordinates, using the
 	/// current view.
@@ -139,7 +139,7 @@ pub trait RenderTarget {
 	/// 
     /// Returns the converted point, in target coordinates (pixels).
 	#[inline]
-    fn map_coords_to_pixel_current_view(&self, point: &Vector2f) -> Vector2i {
+    fn map_coords_to_pixel_current_view(&self, point: Vector2f) -> Vector2i {
 		self.map_coords_to_pixel(point, &self.get_view())
 	}
 

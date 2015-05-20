@@ -128,8 +128,8 @@ impl<'a> SoundSource for Sound<'a> {
     fn get_position(&self) -> Vector3f {
         unsafe { ffi::sfSound_getPosition(self.raw()) }
     }
-    fn set_position(&mut self, position: &Vector3f) {
-        unsafe { ffi::sfSound_setPosition(self.raw_mut(), *position) }
+    fn set_position(&mut self, position: Vector3f) {
+        unsafe { ffi::sfSound_setPosition(self.raw_mut(), position) }
     }
     fn get_pitch(&self) -> f32 {
         unsafe { ffi::sfSound_getPitch(self.raw()) as f32 }

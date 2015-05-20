@@ -128,8 +128,8 @@ impl<'s> Sprite<'s> {
     /// texture. It can be used to colorize the sprite, or change
     /// its global opacity.
     /// By default, the sprite's color is opaque white.
-    pub fn set_color(&mut self, color: &Color) {
-        unsafe { ffi::sfSprite_setColor(self.raw_mut(), *color) }
+    pub fn set_color(&mut self, color: Color) {
+        unsafe { ffi::sfSprite_setColor(self.raw_mut(), color) }
     }
 
     /// Get the global color of the sprite.
@@ -142,8 +142,8 @@ impl<'s> Sprite<'s> {
     /// The texture rect is useful when you don't want to display
     /// the whole texture, but rather a part of it.
     /// By default, the texture rect covers the entire texture.
-    pub fn set_texture_rect(&mut self, rect: &IntRect) {
-        unsafe { ffi::sfSprite_setTextureRect(self.raw_mut(), *rect) }
+    pub fn set_texture_rect(&mut self, rect: IntRect) {
+        unsafe { ffi::sfSprite_setTextureRect(self.raw_mut(), rect) }
     }
 
     /// Get the sub-rectangle of the texture displayed by the sprite.
@@ -175,11 +175,11 @@ impl<'s> Sprite<'s> {
 }
 
 impl<'s> Transformable for Sprite<'s> {
-    fn set_position(&mut self, position: &Vector2f) {
-        unsafe { ffi::sfSprite_setPosition(self.raw_mut(), *position) }
+    fn set_position(&mut self, position: Vector2f) {
+        unsafe { ffi::sfSprite_setPosition(self.raw_mut(), position) }
     }
-    fn scale(&mut self, factors: &Vector2f) {
-        unsafe { ffi::sfSprite_scale(self.raw_mut(), *factors) }
+    fn scale(&mut self, factors: Vector2f) {
+        unsafe { ffi::sfSprite_scale(self.raw_mut(), factors) }
     }
     fn get_scale(&self) -> Vector2f {
         unsafe { ffi::sfSprite_getScale(self.raw()) }
@@ -187,14 +187,14 @@ impl<'s> Transformable for Sprite<'s> {
     fn get_origin(&self) -> Vector2f {
         unsafe { ffi::sfSprite_getOrigin(self.raw()) }
     }
-    fn move_(&mut self, offset: &Vector2f) {
-        unsafe { ffi::sfSprite_move(self.raw_mut(), *offset) }
+    fn move_(&mut self, offset: Vector2f) {
+        unsafe { ffi::sfSprite_move(self.raw_mut(), offset) }
     }
-    fn set_scale(&mut self, scale: &Vector2f) {
-        unsafe { ffi::sfSprite_setScale(self.raw_mut(), *scale) }
+    fn set_scale(&mut self, scale: Vector2f) {
+        unsafe { ffi::sfSprite_setScale(self.raw_mut(), scale) }
     }
-    fn set_origin(&mut self, origin: &Vector2f) {
-        unsafe { ffi::sfSprite_setOrigin(self.raw_mut(), *origin) }
+    fn set_origin(&mut self, origin: Vector2f) {
+        unsafe { ffi::sfSprite_setOrigin(self.raw_mut(), origin) }
     }
     fn get_position(&self) -> Vector2f {
         unsafe { ffi::sfSprite_getPosition(self.raw()) }

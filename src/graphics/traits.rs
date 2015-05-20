@@ -69,13 +69,13 @@ pub trait Shape: Transformable + Drawable {
     /// You can use `Color::transparent()` to make the inside of
     /// the shape transparent, and have the outline alone.
     /// By default, the shape's fill color is opaque white.
-    fn set_fill_color(&mut self, color: &Color);
+    fn set_fill_color(&mut self, color: Color);
 
     /// Set the outline color of the shape.
     ///
     /// You can use `Color::transparent()` to disable the outline.
     /// By default, the Shape's outline color is opaque white.
-    fn set_outline_color(&mut self, color: &Color);
+    fn set_outline_color(&mut self, color: Color);
 
     /// Set the thickness of the shape's outline.
 	///

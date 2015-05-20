@@ -53,20 +53,20 @@ pub struct Vertex {
 
 impl Vertex {
     /// Create a new Vertex from its position, color, and texture coordinates.
-    pub fn new(position: &Vector2f, color: &Color, tex_coords: &Vector2f) -> Vertex {
+    pub fn new(position: Vector2f, color: Color, tex_coords: Vector2f) -> Vertex {
         Vertex {
-            position: *position,
-            color: *color,
-            tex_coords: *tex_coords
+            position: position,
+            color: color,
+            tex_coords: tex_coords
         }
     }
 
 	/// Create a new Vertex from its position.
 	///
 	/// The color will be white and the texture coordinates will be (0, 0).
-    pub fn new_with_pos(position: &Vector2f) -> Vertex {
+    pub fn new_with_pos(position: Vector2f) -> Vertex {
         Vertex {
-            position: *position,
+            position: position,
             color: Color::white(),
             tex_coords: Vector2f { x: 0., y: 0. }
         }
@@ -75,10 +75,10 @@ impl Vertex {
 	/// Create a new vertex from its position and color.
 	///
 	/// The texture coordinates will be (0, 0).
-    pub fn new_with_pos_color(position: &Vector2f, color: &Color) -> Vertex {
+    pub fn new_with_pos_color(position: Vector2f, color: Color) -> Vertex {
         Vertex {
-            position: *position,
-            color: *color,
+            position: position,
+            color: color,
             tex_coords: Vector2f { x: 0., y: 0. }
         }
     }
@@ -86,11 +86,11 @@ impl Vertex {
 	/// Create a new Vertex from its position and texture coordinates.
 	///
 	/// The color will be white.
-    pub fn new_with_pos_coords(position: &Vector2f, tex_coords: &Vector2f) -> Vertex {
+    pub fn new_with_pos_coords(position: Vector2f, tex_coords: Vector2f) -> Vertex {
         Vertex {
-            position: *position,
+            position: position,
             color: Color::white(),
-            tex_coords: *tex_coords
+            tex_coords: tex_coords
         }
     }
 }

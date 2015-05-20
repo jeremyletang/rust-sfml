@@ -15,12 +15,12 @@ struct CustomDrawable<'s> {
 
 impl<'s> CustomDrawable<'s> {
     pub fn new() -> CustomDrawable<'s> {
-        let mut c = CircleShape::new_init(50f32, 50).expect("Cannot create the CircleShape");
-        c.set_position2f(100f32, 100f32);
-        c.set_fill_color(&Color::red());
-        let mut r = RectangleShape::new_init(&Vector2f {x: 100f32, y: 200f32}).expect("Cannot create the RectangleShape");
-        r.set_position2f(100f32, 150f32);
-        r.set_fill_color(&Color::blue());
+        let mut c = CircleShape::new_init(50., 50).expect("Cannot create the CircleShape");
+        c.set_position2f(100., 100.);
+        c.set_fill_color(Color::red());
+        let mut r = RectangleShape::new_init(Vector2f::new(100., 200.)).expect("Cannot create the RectangleShape");
+        r.set_position2f(100., 150.);
+        r.set_fill_color(Color::blue());
 
         CustomDrawable {
             circle: c,
@@ -43,7 +43,7 @@ fn main() {
         VideoMode::new(800, 600),
         "Custom Drawable - SFML Examples",
         window_style::CLOSE,
-        &ContextSettings::default()).expect("Cannot create a new Render Window.");
+        ContextSettings::default()).expect("Cannot create a new Render Window.");
     window.set_vertical_sync_enabled(true);
 
     // create our Drawable
@@ -59,7 +59,7 @@ fn main() {
         }
 
         // Clear the window
-        window.clear(&Color::black());
+        window.clear(Color::black());
         // Draw it ! yeah you create a custome shape!
         window.draw(&custom_drawable);
         // Display things on screen

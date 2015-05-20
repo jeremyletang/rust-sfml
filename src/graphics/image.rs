@@ -69,9 +69,9 @@ impl Image {
 	/// Create an image with a specific size and fill color.
     ///
     /// Returns Some(Image) or None on failure.
-    pub fn new_from_color(width: u32, height: u32, color: &Color) -> Option<Image> {
+    pub fn new_from_color(width: u32, height: u32, color: Color) -> Option<Image> {
         unsafe {
-			Foreign::new(ffi::sfImage_createFromColor(width as c_uint, height as c_uint, *color))
+			Foreign::new(ffi::sfImage_createFromColor(width as c_uint, height as c_uint, color))
 		}.map(Image)
     }
 
@@ -163,20 +163,20 @@ impl Image {
     /// This function sets the alpha value of every pixel matching
     /// the given color to alpha (0 by default), so that they
     /// become transparent.
-    pub fn create_mask_from_color(&mut self, color: &Color, alpha: u8) {
+    pub fn create_mask_from_color(&mut self, color: Color, alpha: u8) {
         unsafe {
-            ffi::sfImage_createMaskFromColor(self.raw_mut(), *color, alpha)
+            ffi::sfImage_createMaskFromColor(self.raw_mut(), color, alpha)
         }
     }
 
     /// Change the color of a pixel.
 	///
 	/// Does nothing if the coordinates are out of range.
-    pub fn set_pixel(&mut self, x: u32, y: u32, color: &Color) {
+    pub fn set_pixel(&mut self, x: u32, y: u32, color: Color) {
 		let size = self.get_size();
 		if x < size.x && y < size.y {
 			unsafe {
-				ffi::sfImage_setPixel(self.raw_mut(), x as c_uint, y as c_uint, *color)
+				ffi::sfImage_setPixel(self.raw_mut(), x as c_uint, y as c_uint, color)
 			}
 		}
     }
@@ -250,14 +250,14 @@ impl Image {
                       source: &Image,
                       dest_x: u32,
                       dest_y: u32,
-                      source_rect: &IntRect,
+                      source_rect: IntRect,
                       apply_alpha: bool) {
         unsafe {
             ffi::sfImage_copyImage(self.raw_mut(),
                                    source.unwrap(),
                                    dest_x as c_uint,
                                    dest_y as c_uint,
-                                   *source_rect,
+                                   source_rect,
                                    SfBool::from_bool(apply_alpha))
         }
     }

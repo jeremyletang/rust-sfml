@@ -131,8 +131,8 @@ impl<'a> SoundSource for Music<'a> {
     fn get_attenuation(&self) -> f32 {
         unsafe { ffi::sfMusic_getAttenuation(self.raw()) as f32 }
     }
-    fn set_position(&mut self, position: &Vector3f) {
-        unsafe { ffi::sfMusic_setPosition(self.raw_mut(), *position) }
+    fn set_position(&mut self, position: Vector3f) {
+        unsafe { ffi::sfMusic_setPosition(self.raw_mut(), position) }
     }
     fn get_position(&self) -> Vector3f {
         unsafe { ffi::sfMusic_getPosition(self.raw()) }

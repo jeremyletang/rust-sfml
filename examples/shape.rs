@@ -30,13 +30,13 @@ fn main() {
         VideoMode::new(800, 600),
         "SFML Shape Example",
         window_style::CLOSE,
-        &ContextSettings::default()).expect("Cannot create a new Render Window.");
+        ContextSettings::default()).expect("Cannot create a new Render Window.");
     window.set_vertical_sync_enabled(true);
 
     let my_shape = MyShape;
     let mut shape = BaseShape::new(&my_shape).expect("Error, cannot create a Shape");
-    shape.set_fill_color(&Color::red());
-    shape.set_outline_color(&Color::green());
+    shape.set_fill_color(Color::red());
+    shape.set_outline_color(Color::green());
     shape.set_outline_thickness(3.);
     while window.is_open() {
         while let Some(event) = window.poll_event() {
@@ -47,7 +47,7 @@ fn main() {
             }
         }
         // Clear the window
-        window.clear(&Color::black());
+        window.clear(Color::black());
         window.draw(&shape);
         // Display things on screen
         window.display();

@@ -98,9 +98,9 @@ impl<'s> ConvexShape<'s> {
 				Some(tex) => shape.set_texture(tex, false),
 				None => shape.disable_texture()
 			}
-			shape.set_texture_rect(&self.get_texture_rect());
-			shape.set_fill_color(&self.get_fill_color());
-			shape.set_outline_color(&self.get_outline_color());
+			shape.set_texture_rect(self.get_texture_rect());
+			shape.set_fill_color(self.get_fill_color());
+			shape.set_outline_color(self.get_outline_color());
 			shape.set_outline_thickness(self.get_outline_thickness());
 			shape
 		})

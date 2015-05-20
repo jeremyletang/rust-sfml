@@ -116,7 +116,7 @@ pub trait Transformable {
     /// This function completely overwrites the previous position.
     /// See `move` to apply an offset based on the previous position instead.
     /// The default position is (0, 0).
-    fn set_position(&mut self, position: &Vector2f);
+    fn set_position(&mut self, position: Vector2f);
 
     /// Set the position of the object.
     ///
@@ -124,7 +124,7 @@ pub trait Transformable {
     /// See `move` to apply an offset based on the previous position instead.
     /// The default position is (0, 0).
 	fn set_position2f(&mut self, x: f32, y: f32) {
-		self.set_position(&Vector2f::new(x, y));
+		self.set_position(Vector2f::new(x, y));
 	}
 
     /// Set the orientation of the object, in degrees.
@@ -139,7 +139,7 @@ pub trait Transformable {
     /// This function completely overwrites the previous scale.
     /// See `scale` to add a factor based on the previous scale instead.
     /// The default scale is (1, 1).
-    fn set_scale(&mut self, scale: &Vector2f);
+    fn set_scale(&mut self, scale: Vector2f);
 
     /// Set the scale factors of the object.
     ///
@@ -147,7 +147,7 @@ pub trait Transformable {
     /// See scale to add a factor based on the previous scale instead.
     /// The default scale is (1, 1).
 	fn set_scale2f(&mut self, x: f32, y: f32) {
-		self.set_scale(&Vector2f::new(x, y));
+		self.set_scale(Vector2f::new(x, y));
 	}
 
     /// Set the local origin of the object.
@@ -158,7 +158,7 @@ pub trait Transformable {
     /// top-left corner of the object, and ignore all
     /// transformations (position, scale, rotation).
     /// The default origin is (0, 0).
-    fn set_origin(&mut self, origin: &Vector2f);
+    fn set_origin(&mut self, origin: Vector2f);
 
     /// Set the local origin of the object.
     ///
@@ -169,7 +169,7 @@ pub trait Transformable {
     /// transformations (position, scale, rotation).
     /// The default origin is (0, 0).
 	fn set_origin2f(&mut self, x: f32, y: f32) {
-		self.set_origin(&Vector2f::new(x, y))
+		self.set_origin(Vector2f::new(x, y))
 	}
 
     /// Get the position of the object.
@@ -190,14 +190,14 @@ pub trait Transformable {
     ///
     /// This function adds to the current position of the object,
     /// unlike `set_position` which overwrites it.
-    fn move_(&mut self, offset: &Vector2f);
+    fn move_(&mut self, offset: Vector2f);
 
     /// Move the object by a given offset.
     ///
     /// This function adds to the current position of the object,
     /// unlike `set_position` which overwrites it.
 	fn move2f(&mut self, x: f32, y: f32) {
-		self.move_(&Vector2f::new(x, y));
+		self.move_(Vector2f::new(x, y));
 	}
 
     /// Rotate the object by an angle in degrees.
@@ -210,14 +210,14 @@ pub trait Transformable {
     ///
     /// This function multiplies the current scale of the object,
     /// unlike `set_scale` which overwrites it.
-    fn scale(&mut self, factors: &Vector2f);
+    fn scale(&mut self, factors: Vector2f);
 
     /// Scale the object by the given factors.
     ///
     /// This function multiplies the current scale of the object,
     /// unlike set_scale which overwrites it.
 	fn scale2f(&mut self, x: f32, y: f32) {
-		self.scale(&Vector2f::new(x, y));
+		self.scale(Vector2f::new(x, y));
 	}
 
     /// Get the combined transform of the object, including position, rotation,
@@ -230,17 +230,17 @@ pub trait Transformable {
 }
 
 impl Transformable for BasicTransformable {
-    fn set_position(&mut self, position: &Vector2f) {
-        unsafe { ffi::sfTransformable_setPosition(self.raw_mut(), *position) }
+    fn set_position(&mut self, position: Vector2f) {
+        unsafe { ffi::sfTransformable_setPosition(self.raw_mut(), position) }
     }
     fn set_rotation(&mut self, angle: f32) {
         unsafe { ffi::sfTransformable_setRotation(self.raw_mut(), angle as c_float) }
     }
-    fn set_scale(&mut self, scale: &Vector2f) {
-        unsafe { ffi::sfTransformable_setScale(self.raw_mut(), *scale) }
+    fn set_scale(&mut self, scale: Vector2f) {
+        unsafe { ffi::sfTransformable_setScale(self.raw_mut(), scale) }
     }
-    fn set_origin(&mut self, origin: &Vector2f) {
-        unsafe { ffi::sfTransformable_setOrigin(self.raw_mut(), *origin) }
+    fn set_origin(&mut self, origin: Vector2f) {
+        unsafe { ffi::sfTransformable_setOrigin(self.raw_mut(), origin) }
     }
     fn get_position(&self) -> Vector2f {
         unsafe { ffi::sfTransformable_getPosition(self.raw()) }
@@ -254,14 +254,14 @@ impl Transformable for BasicTransformable {
     fn get_origin(&self) -> Vector2f {
         unsafe { ffi::sfTransformable_getOrigin(self.raw()) }
     }
-    fn move_(&mut self, offset: &Vector2f) {
-        unsafe { ffi::sfTransformable_move(self.raw_mut(), *offset) }
+    fn move_(&mut self, offset: Vector2f) {
+        unsafe { ffi::sfTransformable_move(self.raw_mut(), offset) }
     }
     fn rotate(&mut self, angle: f32) {
         unsafe { ffi::sfTransformable_rotate(self.raw_mut(), angle as c_float) }
     }
-    fn scale(&mut self, factors: &Vector2f) {
-        unsafe { ffi::sfTransformable_scale(self.raw_mut(), *factors) }
+    fn scale(&mut self, factors: Vector2f) {
+        unsafe { ffi::sfTransformable_scale(self.raw_mut(), factors) }
     }
     fn get_transform(&self) -> Transform {
         unsafe { ffi::sfTransformable_getTransform(self.raw()) }

@@ -66,7 +66,7 @@ impl View {
     /// Create a view with the given center position and size.
     ///
     /// Returns Some(View) or None on failure.
-    pub fn new_init(center: &Vector2f, size: &Vector2f) -> Option<View> {
+    pub fn new_init(center: Vector2f, size: Vector2f) -> Option<View> {
 		View::new().map(|mut view| {
 			view.set_center(center);
 			view.set_size(size);
@@ -77,9 +77,9 @@ impl View {
     /// Create a view from the given rectangle.
     ///
     /// Returns Some(View) or None on failure.
-    pub fn new_from_rect(rectangle: &FloatRect) -> Option<View> {
+    pub fn new_from_rect(rectangle: FloatRect) -> Option<View> {
         unsafe {
-			Foreign::new(ffi::sfView_createFromRect(*rectangle))
+			Foreign::new(ffi::sfView_createFromRect(rectangle))
 		}.map(View)
     }
 
@@ -96,10 +96,6 @@ impl View {
 	fn raw_mut(&mut self) -> &mut ffi::sfView { self.0.as_mut() }
 	#[doc(hidden)]
 	pub fn unwrap(&self) -> &ffi::sfView { self.raw() }
-	#[doc(hidden)]
-	pub unsafe fn wrap(ptr: *mut ffi::sfView) -> Option<View> {
-		Foreign::new(ptr).map(View)
-	}
 
     /// Set the orientation of the view, in degrees.
     ///
@@ -131,36 +127,36 @@ impl View {
     }
 
     /// Set the center of the view.
-    pub fn set_center(&mut self, center: &Vector2f) {
-        unsafe { ffi::sfView_setCenter(self.raw_mut(), *center) }
+    pub fn set_center(&mut self, center: Vector2f) {
+        unsafe { ffi::sfView_setCenter(self.raw_mut(), center) }
     }
 
     /// Set the center of the view.
 	#[inline]
     pub fn set_center2f(&mut self, center_x: f32, center_y: f32) {
-		self.set_center(&Vector2f::new(center_x, center_y))
+		self.set_center(Vector2f::new(center_x, center_y))
     }
 
     /// Set the size of the view.
-    pub fn set_size(&mut self, size: &Vector2f) {
-        unsafe { ffi::sfView_setSize(self.raw_mut(), *size) }
+    pub fn set_size(&mut self, size: Vector2f) {
+        unsafe { ffi::sfView_setSize(self.raw_mut(), size) }
     }
 
     /// Set the size of the view.
 	#[inline]
     pub fn set_size2f(&mut self, size_x: f32, size_y: f32) {
-		self.set_size(&Vector2f::new(size_x, size_y))
+		self.set_size(Vector2f::new(size_x, size_y))
     }
 
     /// Move the view relative to its current position.
-    pub fn move_(&mut self, offset: &Vector2f) {
-        unsafe { ffi::sfView_move(self.raw_mut(), *offset) }
+    pub fn move_(&mut self, offset: Vector2f) {
+        unsafe { ffi::sfView_move(self.raw_mut(), offset) }
     }
 
     /// Move the view relative to its current position.
 	#[inline]
     pub fn move2f(&mut self, offset_x: f32, offset_y: f32) {
-		self.move_(&Vector2f::new(offset_x, offset_y))
+		self.move_(Vector2f::new(offset_x, offset_y))
     }
 
     /// Get the center of the view.
@@ -176,8 +172,8 @@ impl View {
     /// Reset the view to the given rectangle.
     ///
     /// Note that this function resets the rotation angle to 0.
-    pub fn reset(&mut self, rectangle: &FloatRect) {
-        unsafe { ffi::sfView_reset(self.raw_mut(), *rectangle) }
+    pub fn reset(&mut self, rectangle: FloatRect) {
+        unsafe { ffi::sfView_reset(self.raw_mut(), rectangle) }
     }
 
     /// Set the target viewport of the view.
@@ -188,8 +184,8 @@ impl View {
     /// For example, a view which takes the left side of the target would
     /// be defined by a viewport rect of (0, 0, 0.5, 1).
     /// By default, a view has a viewport which covers the entire target.
-    pub fn set_viewport(&mut self, viewport: &FloatRect) {
-        unsafe { ffi::sfView_setViewport(self.raw_mut(), *viewport) }
+    pub fn set_viewport(&mut self, viewport: FloatRect) {
+        unsafe { ffi::sfView_setViewport(self.raw_mut(), viewport) }
     }
 
     /// Get the target viewport of the view, as a factor of target size.

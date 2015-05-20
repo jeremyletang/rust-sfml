@@ -58,10 +58,10 @@ impl RenderWindow {
 	/// settings, pass `ContextSettings::default()`.
     ///
     /// Returns Some(RenderWindow) or None on failure.
-    pub fn new(mode: VideoMode, title: &str, style: WindowStyle, settings: &ContextSettings) -> Option<RenderWindow> {
+    pub fn new(mode: VideoMode, title: &str, style: WindowStyle, settings: ContextSettings) -> Option<RenderWindow> {
 		let vec = ::ffi::to_utf32(title);
         unsafe {
-            Foreign::new(ffi::sfRenderWindow_createUnicode(mode, vec.as_ptr(), style.bits(), settings))
+            Foreign::new(ffi::sfRenderWindow_createUnicode(mode, vec.as_ptr(), style.bits(), &settings))
         }.map(RenderWindow)
     }
 
@@ -319,23 +319,23 @@ impl RenderWindow {
     /// This function only works for top-level windows
     /// (i.e. it will be ignored for windows created from
     /// the handle of a child window/control).
-    pub fn set_position(&mut self, position: &Vector2i) {
+    pub fn set_position(&mut self, position: Vector2i) {
         unsafe {
-            ffi::sfRenderWindow_setPosition(self.raw_mut(), *position)
+            ffi::sfRenderWindow_setPosition(self.raw_mut(), position)
         }
     }
 
     /// Change the size of the rendering region of the window, in pixels.
-    pub fn set_size(&mut self, size: &Vector2u) {
+    pub fn set_size(&mut self, size: Vector2u) {
         unsafe {
-            ffi::sfRenderWindow_setSize(self.raw_mut(), *size)
+            ffi::sfRenderWindow_setSize(self.raw_mut(), size)
         }
     }
 
     /// Change the size of the rendering region of the window, in pixels.
 	#[inline]
     pub fn set_size2u(&mut self, x: u32, y: u32) {
-		self.set_size(&Vector2u::new(x, y))
+		self.set_size(Vector2u::new(x, y))
     }
 
     /// Get the current position of the mouse, relative to this window.
@@ -346,9 +346,9 @@ impl RenderWindow {
     }
 
 	/// Set the current position of the mouse, relative to this window.
-    pub fn set_mouse_position(&mut self, position: &Vector2i) {
+    pub fn set_mouse_position(&mut self, position: Vector2i) {
         unsafe {
-            ffi::sfMouse_setPositionRenderWindow(*position, self.raw_mut())
+            ffi::sfMouse_setPositionRenderWindow(position, self.raw_mut())
         }
     }
 
@@ -399,15 +399,15 @@ impl RenderTarget for RenderWindow {
         }
     }
 
-    fn map_pixel_to_coords(&self, point: &Vector2i, view: &View) -> Vector2f {
+    fn map_pixel_to_coords(&self, point: Vector2i, view: &View) -> Vector2f {
         unsafe {
-            ffi::sfRenderWindow_mapPixelToCoords(self.raw(), *point, view.unwrap())
+            ffi::sfRenderWindow_mapPixelToCoords(self.raw(), point, view.unwrap())
         }
     }
 
-    fn map_coords_to_pixel(&self, point: &Vector2f, view: &View) -> Vector2i {
+    fn map_coords_to_pixel(&self, point: Vector2f, view: &View) -> Vector2i {
         unsafe {
-            ffi::sfRenderWindow_mapCoordsToPixel(self.raw(), *point, view.unwrap())
+            ffi::sfRenderWindow_mapCoordsToPixel(self.raw(), point, view.unwrap())
         }
     }
 
@@ -459,7 +459,7 @@ impl RenderTarget for RenderWindow {
         }
     }
 
-    fn clear(&mut self, color: &Color) {
-        unsafe { ffi::sfRenderWindow_clear(self.raw_mut(), *color) }
+    fn clear(&mut self, color: Color) {
+        unsafe { ffi::sfRenderWindow_clear(self.raw_mut(), color) }
     }
 }

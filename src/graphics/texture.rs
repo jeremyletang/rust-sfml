@@ -136,13 +136,13 @@ impl Texture {
 	/// `Texture` from that image.
     ///
     /// Returns Some(Texture) or None on failure.
-    pub fn new_from_file_with_rect(filename: &str, area: &IntRect) -> Option<Texture> {
+    pub fn new_from_file_with_rect(filename: &str, area: IntRect) -> Option<Texture> {
         let c_str = match CString::new(filename.as_bytes()) {
 			Ok(c_str) => c_str,
 			Err(_) => return None
 		};
         unsafe {
-            Foreign::new(ffi::sfTexture_createFromFile(c_str.as_ptr(), area))
+            Foreign::new(ffi::sfTexture_createFromFile(c_str.as_ptr(), &area))
         }.map(Texture)
     }
 

@@ -26,7 +26,7 @@ pub trait SoundSource {
     /// Only sounds with one channel (mono sounds) can be
     /// spatialized.
     /// The default position of a sound is (0, 0, 0).
-    fn set_position(&mut self, position: &Vector3f);
+    fn set_position(&mut self, position: Vector3f);
 
     /// Set the 3D position of the sound in the audio scene.
     ///
@@ -35,7 +35,7 @@ pub trait SoundSource {
     /// The default position of a sound is (0, 0, 0).
 	#[inline]
     fn set_position3f(&mut self, x: f32, y: f32, z: f32) {
-		self.set_position(&Vector3f::new(x, y, z))
+		self.set_position(Vector3f::new(x, y, z))
 	}
 
     /// Make the sounds's position relative to the listener or absolute.

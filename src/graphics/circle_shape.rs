@@ -134,8 +134,8 @@ impl<'s> CircleShape<'s> {
 	/// The texture rect is useful when you don't want to display the whole
 	/// texture, but rather a part of it. By default, the texture rect covers
 	/// the entire texture.
-    pub fn set_texture_rect(&mut self, rect: &IntRect) {
-        unsafe { ffi::sfCircleShape_setTextureRect(self.raw_mut(), *rect) }
+    pub fn set_texture_rect(&mut self, rect: IntRect) {
+        unsafe { ffi::sfCircleShape_setTextureRect(self.raw_mut(), rect) }
     }
 
     /// Get the sub-rectangle of the texture displayed by the shape.
@@ -186,11 +186,11 @@ impl<'s> CircleShape<'s> {
 }
 
 impl<'a> Shape for CircleShape<'a> {
-    fn set_fill_color(&mut self, color: &Color) {
-        unsafe { ffi::sfCircleShape_setFillColor(self.raw_mut(), *color) }
+    fn set_fill_color(&mut self, color: Color) {
+        unsafe { ffi::sfCircleShape_setFillColor(self.raw_mut(), color) }
     }
-    fn set_outline_color(&mut self, color: &Color) {
-        unsafe { ffi::sfCircleShape_setOutlineColor(self.raw_mut(), *color) }
+    fn set_outline_color(&mut self, color: Color) {
+        unsafe { ffi::sfCircleShape_setOutlineColor(self.raw_mut(), color) }
     }
     fn set_outline_thickness(&mut self, thickness: f32) {
         unsafe {
@@ -224,20 +224,20 @@ impl<'a> Transformable for CircleShape<'a> {
     fn get_origin(&self) -> Vector2f {
         unsafe { ffi::sfCircleShape_getOrigin(self.raw()) }
     }
-    fn move_(&mut self, offset: &Vector2f) {
-        unsafe { ffi::sfCircleShape_move(self.raw_mut(), *offset) }
+    fn move_(&mut self, offset: Vector2f) {
+        unsafe { ffi::sfCircleShape_move(self.raw_mut(), offset) }
     }
-    fn scale(&mut self, factors: &Vector2f) {
-        unsafe { ffi::sfCircleShape_scale(self.raw_mut(), *factors) }
+    fn scale(&mut self, factors: Vector2f) {
+        unsafe { ffi::sfCircleShape_scale(self.raw_mut(), factors) }
     }
-    fn set_position(&mut self, position: &Vector2f) {
-        unsafe { ffi::sfCircleShape_setPosition(self.raw_mut(), *position) }
+    fn set_position(&mut self, position: Vector2f) {
+        unsafe { ffi::sfCircleShape_setPosition(self.raw_mut(), position) }
     }
-    fn set_scale(&mut self, scale: &Vector2f) {
-        unsafe { ffi::sfCircleShape_setScale(self.raw_mut(), *scale) }
+    fn set_scale(&mut self, scale: Vector2f) {
+        unsafe { ffi::sfCircleShape_setScale(self.raw_mut(), scale) }
     }
-    fn set_origin(&mut self, origin: &Vector2f) {
-        unsafe { ffi::sfCircleShape_setOrigin(self.raw_mut(), *origin) }
+    fn set_origin(&mut self, origin: Vector2f) {
+        unsafe { ffi::sfCircleShape_setOrigin(self.raw_mut(), origin) }
     }
     fn get_transform(&self) -> Transform {
         unsafe { ffi::sfCircleShape_getTransform(self.raw()) }

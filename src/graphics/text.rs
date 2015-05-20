@@ -178,8 +178,8 @@ impl<'s> Text<'s> {
     /// Set the global color of the text.
     ///
     /// By default, the text's color is opaque white.
-    pub fn set_color(&mut self, color: &Color) {
-        unsafe { ffi::sfText_setColor(self.raw_mut(), *color) }
+    pub fn set_color(&mut self, color: Color) {
+        unsafe { ffi::sfText_setColor(self.raw_mut(), color) }
     }
 
     /// Get the global color of the text.
@@ -223,20 +223,20 @@ impl<'s> Text<'s> {
 }
 
 impl<'s> Transformable for Text<'s> {
-    fn scale(&mut self, factors: &Vector2f) {
-        unsafe { ffi::sfText_scale(self.raw_mut(), *factors) }
+    fn scale(&mut self, factors: Vector2f) {
+        unsafe { ffi::sfText_scale(self.raw_mut(), factors) }
     }
-    fn set_scale(&mut self, scale: &Vector2f) {
-        unsafe { ffi::sfText_setScale(self.raw_mut(), *scale) }
+    fn set_scale(&mut self, scale: Vector2f) {
+        unsafe { ffi::sfText_setScale(self.raw_mut(), scale) }
     }
-    fn move_(&mut self, offset: &Vector2f) {
-        unsafe { ffi::sfText_move(self.raw_mut(), *offset) }
+    fn move_(&mut self, offset: Vector2f) {
+        unsafe { ffi::sfText_move(self.raw_mut(), offset) }
     }
-    fn set_position(&mut self, position: &Vector2f) {
-        unsafe { ffi::sfText_setPosition(self.raw_mut(), *position) }
+    fn set_position(&mut self, position: Vector2f) {
+        unsafe { ffi::sfText_setPosition(self.raw_mut(), position) }
     }
-    fn set_origin(&mut self, origin: &Vector2f) {
-        unsafe { ffi::sfText_setOrigin(self.raw_mut(), *origin) }
+    fn set_origin(&mut self, origin: Vector2f) {
+        unsafe { ffi::sfText_setOrigin(self.raw_mut(), origin) }
     }
     fn get_scale(&self) -> Vector2f {
         unsafe { ffi::sfText_getScale(self.raw()) }

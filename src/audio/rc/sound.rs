@@ -324,7 +324,7 @@ impl Sound {
     ///
     /// # Arguments
     /// * position - Position of the sound in the scene
-    pub fn set_position(&mut self, position: &Vector3f) -> () {
+    pub fn set_position(&mut self, position: Vector3f) -> () {
         unsafe {
             ffi::sfSound_setPosition(self.sound, *position)
         }

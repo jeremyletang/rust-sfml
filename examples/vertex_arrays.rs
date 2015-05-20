@@ -13,16 +13,16 @@ fn main() {
         VideoMode::new(800, 600),
         "VertexArray accessors - SFML Examples",
         window_style::CLOSE,
-        &ContextSettings::default()).expect("Cannot create a new Render Window.");
+        ContextSettings::default()).expect("Cannot create a new Render Window.");
     window.set_vertical_sync_enabled(true);
 
     let mut vertex_array = VertexArray::new(PrimitiveType::LinesStrip);
-    vertex_array.push(Vertex::new_with_pos_color(&Vector2f{x: 20f32, y: 30f32}, &Color::green()));
-    vertex_array.push(Vertex::new_with_pos_color(&Vector2f{x: 30f32, y: 30f32}, &Color::green()));
-    vertex_array.push(Vertex::new_with_pos_color(&Vector2f{x: 40f32, y: 40f32}, &Color::green()));
-    vertex_array.push(Vertex::new_with_pos_color(&Vector2f{x: 50f32, y: 50f32}, &Color::green()));
-    vertex_array.push(Vertex::new_with_pos_color(&Vector2f{x: 60f32, y: 60f32}, &Color::green()));
-    vertex_array.push(Vertex::new_with_pos_color(&Vector2f{x: 50f32, y: 80f32}, &Color::green()));
+    vertex_array.push(Vertex::new_with_pos_color(Vector2f::new(20., 30.), Color::green()));
+    vertex_array.push(Vertex::new_with_pos_color(Vector2f::new(30., 30.), Color::green()));
+    vertex_array.push(Vertex::new_with_pos_color(Vector2f::new(40., 40.), Color::green()));
+    vertex_array.push(Vertex::new_with_pos_color(Vector2f::new(50., 50.), Color::green()));
+    vertex_array.push(Vertex::new_with_pos_color(Vector2f::new(60., 60.), Color::green()));
+    vertex_array.push(Vertex::new_with_pos_color(Vector2f::new(50., 80.), Color::green()));
 
     println!("\nIterate over the vertices of a VertexArray");
     for v in vertex_array.iter() {
@@ -42,7 +42,7 @@ fn main() {
             if e == Event::Closed { window.close() }
         }
         // Clear the window
-        window.clear(&Color::black());
+        window.clear(Color::black());
         window.draw(&vertex_array);
         // Display things on screen
         window.display()

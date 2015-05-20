@@ -139,8 +139,8 @@ impl RenderTarget for RenderTexture {
         unsafe { ffi::sfRenderTexture_getSize(self.raw()) }
     }
 
-    fn clear(&mut self, color: &Color) {
-        unsafe { ffi::sfRenderTexture_clear(self.raw_mut(), *color) }
+    fn clear(&mut self, color: Color) {
+        unsafe { ffi::sfRenderTexture_clear(self.raw_mut(), color) }
     }
 
     fn set_view(&mut self, view: &View) {
@@ -163,15 +163,15 @@ impl RenderTarget for RenderTexture {
         unsafe { ffi::sfRenderTexture_getViewport(self.raw(), view.unwrap()) }
     }
 
-    fn map_pixel_to_coords(&self, point: &Vector2i, view: &View) -> Vector2f {
+    fn map_pixel_to_coords(&self, point: Vector2i, view: &View) -> Vector2f {
         unsafe {
-            ffi::sfRenderTexture_mapPixelToCoords(self.raw(), *point, view.unwrap())
+            ffi::sfRenderTexture_mapPixelToCoords(self.raw(), point, view.unwrap())
         }
     }
 
-    fn map_coords_to_pixel(&self, point: &Vector2f, view: &View) -> Vector2i {
+    fn map_coords_to_pixel(&self, point: Vector2f, view: &View) -> Vector2i {
         unsafe {
-            ffi::sfRenderTexture_mapCoordsToPixel(self.raw(), *point, view.unwrap())
+            ffi::sfRenderTexture_mapCoordsToPixel(self.raw(), point, view.unwrap())
         }
     }
 

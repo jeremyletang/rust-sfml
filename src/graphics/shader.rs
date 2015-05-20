@@ -283,10 +283,10 @@ impl<'s> Shader<'s> {
 	///
 	/// The corresponding parameter in the shader must be a 2x1 vector
 	/// (`vec2` GLSL type).
-    pub fn set_vector2_parameter(&mut self, name: &str, vector: &Vector2f) {
+    pub fn set_vector2_parameter(&mut self, name: &str, vector: Vector2f) {
         let c_str = try_string!(name, ());
         unsafe {
-            ffi::sfShader_setVector2Parameter(self.raw_mut(), c_str.as_ptr(), *vector)
+            ffi::sfShader_setVector2Parameter(self.raw_mut(), c_str.as_ptr(), vector)
         }
     }
 
@@ -294,10 +294,10 @@ impl<'s> Shader<'s> {
     ///
     /// The corresponding parameter in the shader must be a 3x1 vector
     /// (`vec3` GLSL type).
-    pub fn set_vector3_parameter(&mut self, name: &str, vector: &Vector3f) {
+    pub fn set_vector3_parameter(&mut self, name: &str, vector: Vector3f) {
         let c_str = try_string!(name, ());
         unsafe {
-            ffi::sfShader_setVector3Parameter(self.raw_mut(), c_str.as_ptr(), *vector)
+            ffi::sfShader_setVector3Parameter(self.raw_mut(), c_str.as_ptr(), vector)
         }
     }
 
@@ -311,10 +311,10 @@ impl<'s> Shader<'s> {
     /// they are converted from range [0 .. 255] to range [0 .. 1].
     /// For example, a `Color(255, 128, 0, 255)` will be transformed
     /// to a `vec4(1.0, 0.5, 0.0, 1.0)` in the shader.
-    pub fn set_color_parameter(&mut self, name: &str, color: &Color) {
+    pub fn set_color_parameter(&mut self, name: &str, color: Color) {
         let c_str = try_string!(name, ());
         unsafe {
-            ffi::sfShader_setColorParameter(self.raw_mut(), c_str.as_ptr(), *color)
+            ffi::sfShader_setColorParameter(self.raw_mut(), c_str.as_ptr(), color)
         }
     }
 

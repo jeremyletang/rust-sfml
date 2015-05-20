@@ -59,14 +59,14 @@
 //!         VideoMode::new(800, 600),
 //!         "SFML Example",
 //!         window_style::CLOSE,
-//!         &ContextSettings::default()
+//!         ContextSettings::default()
 //!     ).expect("Failed to create RenderWindow.");
 //!
 //!     // Create a CircleShape
 //!     let mut circle = CircleShape::new().expect("Failed to create CircleShape.");
 //!     circle.set_radius(30.);
-//!     circle.set_fill_color(&Color::red());
-//!     circle.set_position(&Vector2f::new(100., 100.));
+//!     circle.set_fill_color(Color::red());
+//!     circle.set_position2f(100., 100.);
 //! 
 //!     // Loop until the window is closed
 //!     while window.is_open() {
@@ -79,7 +79,7 @@
 //!         }
 //!
 //!         // Clear the window
-//!         window.clear(&Color::new_rgb(0, 200, 200));
+//!         window.clear(Color::new_rgb(0, 200, 200));
 //!         // Draw the shape
 //!         window.draw(&circle);
 //!         // Display things on screen

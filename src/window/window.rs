@@ -60,10 +60,10 @@ impl Window {
     pub fn new(mode: VideoMode,
                title: &str,
                style: WindowStyle,
-               settings: &ContextSettings) -> Option<Window> {
+               settings: ContextSettings) -> Option<Window> {
 		let vec = ::ffi::to_utf32(title);
         unsafe {
-            Foreign::new(ffi::sfWindow_createUnicode(mode, vec.as_ptr(), style.bits(), settings))
+            Foreign::new(ffi::sfWindow_createUnicode(mode, vec.as_ptr(), style.bits(), &settings))
         }.map(Window)
     }
 
@@ -308,9 +308,9 @@ impl Window {
     /// This function only works for top-level windows
     /// (i.e. it will be ignored for windows created from
     /// the handle of a child window/control).
-    pub fn set_position(&mut self, position: &Vector2i) {
+    pub fn set_position(&mut self, position: Vector2i) {
         unsafe {
-            ffi::sfWindow_setPosition(self.raw_mut(), *position)
+            ffi::sfWindow_setPosition(self.raw_mut(), position)
         }
     }
 
@@ -324,9 +324,9 @@ impl Window {
     }
 
     /// Change the size of the rendering region of the window, in pixels.
-    pub fn set_size(&mut self, size: &Vector2u) {
+    pub fn set_size(&mut self, size: Vector2u) {
         unsafe {
-            ffi::sfWindow_setSize(self.raw_mut(), *size)
+            ffi::sfWindow_setSize(self.raw_mut(), size)
         }
     }
 
@@ -338,9 +338,9 @@ impl Window {
     }
 
 	/// Set the current position of the mouse, relative to this window.
-    pub fn set_mouse_position(&mut self, position: &Vector2i) {
+    pub fn set_mouse_position(&mut self, position: Vector2i) {
         unsafe {
-            ffi::sfMouse_setPosition(*position, self.raw_mut())
+            ffi::sfMouse_setPosition(position, self.raw_mut())
         }
     }
 }

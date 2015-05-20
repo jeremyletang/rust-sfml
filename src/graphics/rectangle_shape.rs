@@ -66,7 +66,7 @@ impl<'s> RectangleShape<'s> {
     /// Create a new rectangle shape initialized with a size.
     ///
     /// Returns Some(RectangleShape) or None on failure.
-    pub fn new_init(size: &Vector2f) -> Option<RectangleShape<'s>> {
+    pub fn new_init(size: Vector2f) -> Option<RectangleShape<'s>> {
 		RectangleShape::new().map(|mut rect| {
 			rect.set_size(size);
 			rect
@@ -96,14 +96,14 @@ impl<'s> RectangleShape<'s> {
     }
 
 	/// Set the size of the rectangle.
-    pub fn set_size(&mut self, size: &Vector2f) {
-        unsafe { ffi::sfRectangleShape_setSize(self.raw_mut(), *size) }
+    pub fn set_size(&mut self, size: Vector2f) {
+        unsafe { ffi::sfRectangleShape_setSize(self.raw_mut(), size) }
     }
 
 	/// Set the size of the rectangle.
 	#[inline]
     pub fn set_size2f(&mut self, size_x: f32, size_y: f32) {
-		self.set_size(&Vector2f::new(size_x, size_y))
+		self.set_size(Vector2f::new(size_x, size_y))
     }
 
     /// Change the source texture of the shape.
@@ -142,8 +142,8 @@ impl<'s> RectangleShape<'s> {
 	/// The texture rect is useful when you don't want to display the whole
 	/// texture, but rather a part of it. By default, the texture rect covers
 	/// the entire texture.
-    pub fn set_texture_rect(&mut self, rect: &IntRect) {
-        unsafe { ffi::sfRectangleShape_setTextureRect(self.raw_mut(), *rect) }
+    pub fn set_texture_rect(&mut self, rect: IntRect) {
+        unsafe { ffi::sfRectangleShape_setTextureRect(self.raw_mut(), rect) }
     }
 
     /// Get the sub-rectangle of the texture displayed by the shape.
@@ -180,11 +180,11 @@ impl<'s> Shape for RectangleShape<'s> {
     fn get_point(&self, index: u32) -> Vector2f {
         unsafe { ffi::sfRectangleShape_getPoint(self.raw(), index as c_uint) }
     }
-    fn set_fill_color(&mut self, color: &Color) {
-        unsafe { ffi::sfRectangleShape_setFillColor(self.raw_mut(), *color) }
+    fn set_fill_color(&mut self, color: Color) {
+        unsafe { ffi::sfRectangleShape_setFillColor(self.raw_mut(), color) }
     }
-    fn set_outline_color(&mut self, color: &Color) {
-        unsafe { ffi::sfRectangleShape_setOutlineColor(self.raw_mut(), *color) }
+    fn set_outline_color(&mut self, color: Color) {
+        unsafe { ffi::sfRectangleShape_setOutlineColor(self.raw_mut(), color) }
     }
     fn set_outline_thickness(&mut self, thickness: f32) {
         unsafe {
@@ -206,25 +206,25 @@ impl<'s> Shape for RectangleShape<'s> {
 }
 
 impl<'s> Transformable for RectangleShape<'s> {
-    fn set_position(&mut self, position: &Vector2f) {
-        unsafe { ffi::sfRectangleShape_setPosition(self.raw_mut(), *position) }
+    fn set_position(&mut self, position: Vector2f) {
+        unsafe { ffi::sfRectangleShape_setPosition(self.raw_mut(), position) }
     }
     fn set_rotation(&mut self, angle: f32) {
         unsafe {
             ffi::sfRectangleShape_setRotation(self.raw_mut(), angle as c_float)
         }
     }
-    fn set_scale(&mut self, scale: &Vector2f) {
-        unsafe { ffi::sfRectangleShape_setScale(self.raw_mut(), *scale) }
+    fn set_scale(&mut self, scale: Vector2f) {
+        unsafe { ffi::sfRectangleShape_setScale(self.raw_mut(), scale) }
     }
-    fn set_origin(&mut self, origin: &Vector2f) {
-        unsafe { ffi::sfRectangleShape_setOrigin(self.raw_mut(), *origin) }
+    fn set_origin(&mut self, origin: Vector2f) {
+        unsafe { ffi::sfRectangleShape_setOrigin(self.raw_mut(), origin) }
     }
-    fn scale(&mut self, factors: &Vector2f) {
-        unsafe { ffi::sfRectangleShape_scale(self.raw_mut(), *factors) }
+    fn scale(&mut self, factors: Vector2f) {
+        unsafe { ffi::sfRectangleShape_scale(self.raw_mut(), factors) }
     }
-    fn move_(&mut self, offset: &Vector2f) {
-        unsafe { ffi::sfRectangleShape_move(self.raw_mut(), *offset) }
+    fn move_(&mut self, offset: Vector2f) {
+        unsafe { ffi::sfRectangleShape_move(self.raw_mut(), offset) }
     }
     fn get_rotation(&self) -> f32 {
         unsafe { ffi::sfRectangleShape_getRotation(self.raw()) as f32 }

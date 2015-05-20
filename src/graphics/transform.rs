@@ -159,9 +159,9 @@ impl Transform {
     }
 
 	/// Apply this transform to a 2D point.
-    pub fn transform_point(&self, point: &Vector2f) -> Vector2f {
+    pub fn transform_point(&self, point: Vector2f) -> Vector2f {
         unsafe {
-            ffi::sfTransform_transformPoint(self, *point)
+            ffi::sfTransform_transformPoint(self, point)
         }
     }
 
@@ -172,9 +172,9 @@ impl Transform {
     /// rectangle. This means that if the transform contains a
     /// rotation, the bounding rectangle of the transformed rectangle
     /// is returned.
-    pub fn transform_rect(&self, rectangle: &FloatRect) -> FloatRect {
+    pub fn transform_rect(&self, rectangle: FloatRect) -> FloatRect {
         unsafe {
-            ffi::sfTransform_transformRect(self, *rectangle)
+            ffi::sfTransform_transformRect(self, rectangle)
         }
     }
 }

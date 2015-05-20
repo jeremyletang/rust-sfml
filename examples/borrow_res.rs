@@ -13,7 +13,7 @@ fn main() {
         VideoMode::new(800, 600),
         "Borrow Resources - SFML Examples",
         window_style::CLOSE,
-        &ContextSettings::default()).expect("Failed to create RenderWindow");
+        ContextSettings::default()).expect("Failed to create RenderWindow");
     window.set_vertical_sync_enabled(true);
 
     let clear_color = Color::black();
@@ -52,14 +52,14 @@ fn main() {
     let mut second_text = Text::new().expect("Cannot create a new font");
     second_text.set_string("This text shares the same font as the title!");
     second_text.set_font(&font);
-    second_text.set_color(&Color::green());
+    second_text.set_color(Color::green());
     second_text.set_position2f(10., 350.);
     second_text.set_character_size(20);
 
     // another text
     let mut third_text = Text::new_init("This one too!", &font, 20).expect("Cannot create a new text");
     third_text.set_position2f(300., 100.);
-    third_text.set_color(&Color::red());
+    third_text.set_color(Color::red());
 
     while window.is_open() {
         while let Some(event) = window.poll_event() {
@@ -71,7 +71,7 @@ fn main() {
         }
 
         // Clear the window
-        window.clear(&clear_color);
+        window.clear(clear_color);
         // Draw the stuff
         window.draw(&circle);
         window.draw(&sprite);
