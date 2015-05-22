@@ -26,12 +26,12 @@ use graphics::{Vertex, FloatRect, PrimitiveType, RenderTarget, RenderStates, Dra
 
 use std::ops::{Deref, DerefMut};
 
-#[derive(Clone, Debug, PartialEq)]
 /// A vector of one or more 2D primitives.
 ///
 /// Vertex arrays are defined by a vector of vertices and the type of primitive
 /// they contain. `VertexArray` implements `Deref` and `DerefMut` to
 /// `Vec<Vertex>`, and can be treated like a `Vec<Vertex>` for most purposes.
+#[derive(Clone, Debug, PartialEq)]
 pub struct VertexArray {
 	primitive_type: PrimitiveType,
 	vertices: Vec<Vertex>

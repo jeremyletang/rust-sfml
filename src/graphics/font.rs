@@ -205,6 +205,7 @@ impl Clone for Font {
 }
 
 /// Holds various information about a font.
+#[derive(Clone, Debug, Eq, PartialEq)]
 pub struct FontInfo {
 	/// The font family.
 	pub family: String

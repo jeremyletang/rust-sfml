@@ -44,7 +44,7 @@ use ffi::graphics as ffi;
 /// coordinate systems of an entity (such as collision detection).
 #[repr(C)]
 #[allow(missing_docs)]
-#[derive(Clone, Copy, Debug)]
+#[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]
 pub struct Transform {
     pub a00: f32,
     pub a01: f32,
@@ -62,29 +62,25 @@ impl Transform {
     pub fn new(a00: f32, a01: f32, a02: f32,
                a10: f32, a11: f32, a12: f32,
                a20: f32, a21: f32, a22: f32) -> Transform {
-        unsafe {
-            ffi::sfTransform_fromMatrix(a00, a01, a02,
-                                        a10, a11, a12,
-                                        a20, a21, a22)
-        }
+		Transform {
+			a00: a00, a01: a01, a02: a02,
+			a10: a10, a11: a11, a12: a12,
+			a20: a20, a21: a21, a22: a22
+		}
     }
 
     /// Create a new identity transform (one that does nothing).
     ///
 	/// The initial values will be [[1, 0, 0], [0, 1, 0], [0, 0, 1]].
     pub fn new_identity() -> Transform {
-        unsafe {
-            ffi::sfTransform_fromMatrix(1., 0., 0., 0., 1., 0., 0., 0., 1.)
-        }
+		Transform::new(1., 0., 0., 0., 1., 0., 0., 0., 1.)
     }
 
     /// Return the transform as a 4x4 matrix.
     pub fn get_matrix(&self) -> [f32; 16] {
-        unsafe {
-            let mut matrix = [0.; 16];
-            ffi::sfTransform_getMatrix(self, matrix.as_mut_ptr());
-            matrix
-        }
+		let mut matrix = [0.; 16];
+        unsafe { ffi::sfTransform_getMatrix(self, matrix.as_mut_ptr()) }
+		matrix
     }
 
     /// Return the inverse of the transform.
@@ -160,9 +156,7 @@ impl Transform {
 
 	/// Apply this transform to a 2D point.
     pub fn transform_point(&self, point: Vector2f) -> Vector2f {
-        unsafe {
-            ffi::sfTransform_transformPoint(self, point)
-        }
+        unsafe { ffi::sfTransform_transformPoint(self, point) }
     }
 
     /// Apply this transform to a rectangle.
@@ -173,9 +167,7 @@ impl Transform {
     /// rotation, the bounding rectangle of the transformed rectangle
     /// is returned.
     pub fn transform_rect(&self, rectangle: FloatRect) -> FloatRect {
-        unsafe {
-            ffi::sfTransform_transformRect(self, rectangle)
-        }
+        unsafe { ffi::sfTransform_transformRect(self, rectangle) }
     }
 }
 
