@@ -30,7 +30,6 @@
 
 use libc::c_uint;
 
-use ffi::sfml_types::{SFFALSE, SFTRUE};
 use ffi::window::joystick as ffi;
 
 /// Maximum number of supported joysticks.
@@ -71,10 +70,7 @@ pub enum Axis {
  */
 pub fn is_connected(joystick: u32) -> bool {
     unsafe {
-        match ffi::sfJoystick_isConnected(joystick as c_uint) {
-            SFFALSE   => false,
-            SFTRUE    => true
-        }
+        ffi::sfJoystick_isConnected(joystick as c_uint).to_bool()
     }
 }
 
@@ -105,10 +101,7 @@ pub fn button_count(joystick: u32) -> u32 {
  */
 pub fn has_axis(joystick: u32, axis: Axis) -> bool {
     unsafe {
-        match ffi::sfJoystick_hasAxis(joystick as c_uint, axis as c_uint) {
-            SFFALSE     => false,
-            SFTRUE      => true
-        }
+        ffi::sfJoystick_hasAxis(joystick as c_uint, axis as c_uint).to_bool()
     }
 }
 
@@ -125,10 +118,7 @@ pub fn has_axis(joystick: u32, axis: Axis) -> bool {
  */
 pub fn is_button_pressed(joystick: u32, button: u32) -> bool {
     unsafe {
-        match ffi::sfJoystick_isButtonPressed(joystick as c_uint, button as c_uint) {
-            SFFALSE    => false,
-            SFTRUE     => true
-        }
+        ffi::sfJoystick_isButtonPressed(joystick as c_uint, button as c_uint).to_bool()
     }
 }
 

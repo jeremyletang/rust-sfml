@@ -41,7 +41,7 @@ use graphics::{Drawable, Color, CircleShape, RectangleShape, Text, Sprite, Verte
                RenderStates, View, Image, IntRect, RenderTarget,
                Vertex, PrimitiveType, ConvexShape, CustomShape};
 
-use ffi::sfml_types::{SfBool, SFTRUE, SFFALSE};
+use ffi::sfml_types::SfBool;
 use ffi::graphics::render_window as ffi;
 
 /// Window that can serve as a target for 2D drawing.
@@ -194,13 +194,10 @@ impl RenderWindow {
     /// Return the event if an event was returned, or NoEvent if the event queue was empty
     pub fn poll_event(&mut self) -> event::Event {
         let mut event = event::raw::sfEvent { data: [032; 6] };
-        let have_event: bool =  unsafe {
-            match ffi::sfRenderWindow_pollEvent(self.render_window, &mut event) {
-                SFFALSE     => false,
-                SFTRUE      => true
-            }
-        };
-        if have_event == false {
+        let have_event = unsafe {
+            ffi::sfRenderWindow_pollEvent(self.render_window, &mut event)
+        }.to_bool();
+        if !have_event {
             event::NoEvent
         } else {
             event::raw::get_wrapped_event(&mut event)
@@ -220,13 +217,10 @@ impl RenderWindow {
     /// Return the event or NoEvent if an error has occured
     pub fn wait_event(&mut self) -> event::Event {
         let mut event = event::raw::sfEvent { data: [032; 6] };
-        let have_event: bool =  unsafe {
-            match ffi::sfRenderWindow_waitEvent(self.render_window, &mut event) {
-                SFFALSE     => false,
-                SFTRUE      => true
-            }
-        };
-        if have_event == false {
+        let have_event = unsafe {
+            ffi::sfRenderWindow_waitEvent(self.render_window, &mut event)
+        }.to_bool();
+        if !have_event {
             event::NoEvent
         } else {
             event::raw::get_wrapped_event(&mut event)
@@ -253,14 +247,7 @@ impl RenderWindow {
     /// true.
     ////
     pub fn is_open(&self) -> bool {
-        let tmp: SfBool;
-        unsafe {
-            tmp = ffi::sfRenderWindow_isOpen(self.render_window);
-        }
-        match tmp {
-            SFFALSE => false,
-            SFTRUE  => true
-        }
+        unsafe { ffi::sfRenderWindow_isOpen(self.render_window) }.to_bool()
     }
 
     /// Display on screen what has been rendered to the window so far
@@ -325,12 +312,8 @@ impl RenderWindow {
     /// * visible - true to show the window, false to hide it
     ////
     pub fn set_visible(&mut self, visible: bool) -> () {
-        let tmp: SfBool = match visible {
-            true    => SFTRUE,
-            false   => SFFALSE
-        };
         unsafe {
-            ffi::sfRenderWindow_setVisible(self.render_window, tmp);
+            ffi::sfRenderWindow_setVisible(self.render_window, SfBool::from_bool(visible));
         }
     }
 
@@ -340,12 +323,8 @@ impl RenderWindow {
     /// * visible - true to  false to hide
     ////
     pub fn set_mouse_cursor_visible(&mut self, visible: bool) -> () {
-        let tmp: SfBool = match visible {
-            true    => SFTRUE,
-            false   => SFFALSE
-        };
         unsafe {
-            ffi::sfRenderWindow_setMouseCursorVisible(self.render_window, tmp);
+            ffi::sfRenderWindow_setMouseCursorVisible(self.render_window, SfBool::from_bool(visible));
         }
     }
 
@@ -360,13 +339,8 @@ impl RenderWindow {
     /// * enabled - true to enable v-sync, false to deactivate
     ////
     pub fn set_vertical_sync_enabled(&mut self, enabled: bool) -> () {
-        let tmp: SfBool =
-            match enabled {
-            true    => SFTRUE,
-            false   => SFFALSE
-        };
         unsafe {
-            ffi::sfRenderWindow_setVerticalSyncEnabled(self.render_window, tmp);
+            ffi::sfRenderWindow_setVerticalSyncEnabled(self.render_window, SfBool::from_bool(enabled));
         }
     }
 
@@ -382,12 +356,8 @@ impl RenderWindow {
     /// * enabled - true to enable, false to disable
     ////
     pub fn set_key_repeat_enabled(&mut self, enabled: bool) -> () {
-        let tmp: SfBool = match enabled {
-            true    => SFTRUE,
-            false   => SFFALSE
-        };
         unsafe {
-            ffi::sfRenderWindow_setKeyRepeatEnabled(self.render_window, tmp);
+            ffi::sfRenderWindow_setKeyRepeatEnabled(self.render_window, SfBool::from_bool(enabled));
         }
     }
 
@@ -405,17 +375,9 @@ impl RenderWindow {
     /// Return true if operation was successful, false otherwise
     ////
     pub fn set_active(&mut self, enabled: bool) -> bool {
-        let tmp: SfBool = match enabled {
-            true    => SFTRUE,
-            false   => SFFALSE
-        };
-        let res: SfBool = unsafe {
-            ffi::sfRenderWindow_setActive(self.render_window, tmp)
-        };
-        match res {
-            SFTRUE      => true,
-            SFFALSE     => false
-        }
+        unsafe {
+            ffi::sfRenderWindow_setActive(self.render_window, SfBool::from_bool(enabled))
+        }.to_bool()
     }
 
     /// Change the joystick threshold
@@ -901,9 +863,9 @@ impl Iterator for Events {
 
     fn next(&mut self) -> Option<event::Event> {
         let mut event = event::raw::sfEvent { data: [032; 6] };
-        match unsafe { ffi::sfRenderWindow_pollEvent(self.render_window, &mut event) } {
-            SFFALSE     => None,
-            SFTRUE      => Some(event::raw::get_wrapped_event(&mut event))
+        match unsafe { ffi::sfRenderWindow_pollEvent(self.render_window, &mut event) }.to_bool() {
+            false     => None,
+            true      => Some(event::raw::get_wrapped_event(&mut event))
         }
     }
 }

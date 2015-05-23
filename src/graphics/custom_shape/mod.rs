@@ -32,7 +32,7 @@ use graphics::{Drawable, Transformable, RenderTarget, RenderStates, Texture, Col
                Transform, IntRect, FloatRect};
 use system::vector2::Vector2f;
 
-use ffi::sfml_types::{SFTRUE, SFFALSE};
+use ffi::sfml_types::SfBool;
 use ffi::graphics::shape as ffi;
 
 // pub mod rc;
@@ -104,7 +104,7 @@ impl<'s> CustomShape<'s> {
             None
         } else {
             unsafe {
-                ffi::sfShape_setTexture(sp, texture.unwrap(), SFTRUE);
+                ffi::sfShape_setTexture(sp, texture.unwrap(), SfBool::SFTRUE);
             }
             Some(CustomShape {
                     shape:     sp,
@@ -131,14 +131,7 @@ impl<'s> CustomShape<'s> {
                        reset_rect: bool) -> () {
         self.texture = Some(texture);
         unsafe {
-            match reset_rect {
-                true        => ffi::sfShape_setTexture(self.shape,
-                                                       texture.unwrap(),
-                                                       SFTRUE),
-                false       => ffi::sfShape_setTexture(self.shape,
-                                                       texture.unwrap(),
-                                                       SFFALSE),
-            }
+            ffi::sfShape_setTexture(self.shape, texture.unwrap(), SfBool::from_bool(reset_rect))
         }
     }
 
@@ -148,7 +141,7 @@ impl<'s> CustomShape<'s> {
     pub fn disable_texture(&mut self) -> () {
         self.texture = None;
         unsafe {
-            ffi::sfShape_setTexture(self.shape, ptr::null_mut(), SFTRUE)
+            ffi::sfShape_setTexture(self.shape, ptr::null_mut(), SfBool::SFTRUE)
         }
     }
 

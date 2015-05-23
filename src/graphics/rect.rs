@@ -28,7 +28,6 @@
 
 use libc::c_int;
 
-use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi::graphics::rect as ffi;
 
 /// Utility classes for manipulating rectangles of i32.
@@ -81,10 +80,7 @@ impl IntRect {
     ///
     /// Return true if the point is inside
     pub fn contains(self, x: i32, y: i32) -> bool {
-        match unsafe { ffi::sfIntRect_contains(&self, x as c_int, y as c_int) } {
-            SFFALSE => false,
-            SFTRUE  => true
-        }
+        unsafe { ffi::sfIntRect_contains(&self, x as c_int, y as c_int) }.to_bool()
     }
 
     /// Check intersection between two rectangles
@@ -98,10 +94,7 @@ impl IntRect {
     pub fn intersects(rect1: &IntRect,
                       rect2: &IntRect,
                       intersections: &IntRect) -> bool {
-        match unsafe { ffi::sfIntRect_intersects(rect1, rect2, intersections) } {
-            SFFALSE => false,
-            SFTRUE  => true
-        }
+        unsafe { ffi::sfIntRect_intersects(rect1, rect2, intersections) }.to_bool()
     }
 }
 
@@ -128,10 +121,7 @@ impl FloatRect {
     ///
     /// Return true if the point is inside
     pub fn contains(self, x: f32, y: f32) -> bool {
-        match unsafe { ffi::sfFloatRect_contains(&self, x, y) } {
-            SFFALSE => false,
-            SFTRUE  => true
-        }
+        unsafe { ffi::sfFloatRect_contains(&self, x, y) }.to_bool()
     }
 
     /// Check intersection between two rectangles
@@ -145,10 +135,6 @@ impl FloatRect {
     pub fn intersects(rect1: &FloatRect,
         rect2: &FloatRect,
         intersections: &FloatRect) -> bool {
-
-        match unsafe { ffi::sfFloatRect_intersects(rect1, rect2, intersections) } {
-            SFFALSE => false,
-            SFTRUE  => true
-        }
+        unsafe { ffi::sfFloatRect_intersects(rect1, rect2, intersections) }.to_bool()
     }
 }

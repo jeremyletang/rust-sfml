@@ -33,7 +33,6 @@ use traits::Wrappable;
 use network::IpAddress;
 use system::Time;
 
-use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi::network::ftp as ffi;
 
 /// The differents FTP modes availables.
@@ -186,10 +185,7 @@ impl ListingResponse {
     ///
     /// Return true if the status is a success, false if it is a failure
     pub fn is_ok(&self) -> bool {
-        match unsafe { ffi::sfFtpListingResponse_isOk(self.listing_response) } {
-            SFFALSE => false,
-            SFTRUE  => true
-        }
+        unsafe { ffi::sfFtpListingResponse_isOk(self.listing_response) }.to_bool()
     }
 
     /// Get the status code of a FTP listing response
@@ -250,10 +246,7 @@ impl DirectoryResponse {
     ///
     /// Return true if the status is a success, false if it is a failure
     pub fn is_ok(&self) -> bool {
-        match unsafe { ffi::sfFtpDirectoryResponse_isOk(self.directory_response) } {
-            SFFALSE => false,
-            SFTRUE => true
-        }
+        unsafe { ffi::sfFtpDirectoryResponse_isOk(self.directory_response) }.to_bool()
     }
 
     /// Get the status code of a FTP directory response
@@ -302,10 +295,7 @@ impl Response {
     ///
     /// Return true if the status is a success, false if it is a failure
     pub fn is_ok(&self) -> bool {
-        match unsafe { ffi::sfFtpResponse_isOk(self.response) } {
-            SFFALSE => false,
-            SFTRUE => true
-        }
+        unsafe { ffi::sfFtpResponse_isOk(self.response) }.to_bool()
     }
 
     /// Get the status code of a FTP response

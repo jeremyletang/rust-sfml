@@ -36,7 +36,7 @@ use system::Time;
 use system::vector3::Vector3f;
 use traits::Wrappable;
 
-use ffi::sfml_types::{SFTRUE, SFFALSE};
+use ffi::sfml_types::SfBool;
 use ffi::audio::sound as ffi;
 
 /// Play sounds.
@@ -108,12 +108,7 @@ impl Sound {
     /// Return true if the sound is looping, false otherwise
     pub fn set_loop(&mut self, lloop: bool) -> () {
         unsafe {
-            if lloop == true {
-                ffi::sfSound_setLoop(self.sound, SFTRUE)
-            }
-            else {
-                ffi::sfSound_setLoop(self.sound, SFFALSE)
-            }
+            ffi::sfSound_setLoop(self.sound, SfBool::from_bool(lloop))
         }
     }
 
@@ -121,10 +116,7 @@ impl Sound {
     ///
     /// Return true if the sound is looping, false otherwise
     pub fn get_loop(&self) -> bool {
-        match unsafe {ffi::sfSound_getLoop(self.sound)} {
-            SFFALSE => false,
-            SFTRUE  => true
-        }
+        unsafe {ffi::sfSound_getLoop(self.sound)}.to_bool()
     }
 
     /// Start or resume playing a sound
@@ -278,11 +270,7 @@ impl SoundSource for Sound {
     /// * relative - true to set the position relative, false to set it absolute
     fn set_relative_to_listener(&mut self, relative: bool) -> () {
         unsafe {
-            if relative == true {
-                ffi::sfSound_setRelativeToListener(self.sound, SFTRUE);
-            } else {
-                ffi::sfSound_setRelativeToListener(self.sound, SFFALSE);
-            }
+            ffi::sfSound_setRelativeToListener(self.sound, SfBool::from_bool(relative))
         }
     }
 
@@ -349,10 +337,7 @@ impl SoundSource for Sound {
     ///
     /// Return true if the position is relative, false if it's absolute
     fn is_relative_to_listener(&self) -> bool {
-        match unsafe {ffi::sfSound_isRelativeToListener(self.sound)} {
-            SFFALSE => false,
-            SFTRUE  => true
-        }
+        unsafe {ffi::sfSound_isRelativeToListener(self.sound)}.to_bool()
     }
 
     /// Get the minimum distance of a sound

@@ -30,7 +30,6 @@
 
 use libc::c_uint;
 
-use ffi::sfml_types::{SFTRUE, SFFALSE};
 use ffi::window::mouse as ffi;
 
 /// Mouse buttons
@@ -58,9 +57,6 @@ pub enum MouseButton {
 */
 pub fn is_button_pressed(button: MouseButton) -> bool {
     unsafe {
-        match ffi::sfMouse_isButtonPressed(button as c_uint) {
-            SFFALSE   => false,
-            SFTRUE    => true
-        }
+        ffi::sfMouse_isButtonPressed(button as c_uint).to_bool()
     }
 }

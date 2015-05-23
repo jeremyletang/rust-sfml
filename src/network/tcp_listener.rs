@@ -29,7 +29,7 @@ use std::mem;
 use traits::Wrappable;
 use network::{TcpSocket, SocketStatus};
 
-use ffi::sfml_types::{SFTRUE, SFFALSE};
+use ffi::sfml_types::SfBool;
 use ffi::network::tcp_listener as ffi;
 
 /// Socket that listens to new TCP connections
@@ -68,10 +68,7 @@ impl TcpListener {
     /// * blocking - true to set the socket as blocking, false for non-blocking
     pub fn set_blocking(&mut self, blocking: bool) -> () {
         unsafe {
-            match blocking  {
-                true        => ffi::sfTcpListener_setBlocking(self.listener, SFTRUE),
-                false       => ffi::sfTcpListener_setBlocking(self.listener, SFFALSE)
-            }
+            ffi::sfTcpListener_setBlocking(self.listener, SfBool::from_bool(blocking))
         }
     }
 
@@ -79,10 +76,7 @@ impl TcpListener {
     ///
     /// Return true if the socket is blocking, false otherwise
     pub fn is_blocking(&self) -> bool {
-        match unsafe { ffi::sfTcpListener_isBlocking(self.listener) } {
-            SFFALSE => false,
-            SFTRUE  => true
-        }
+        unsafe { ffi::sfTcpListener_isBlocking(self.listener) }.to_bool()
     }
 
     /// Get the port to which a TCP listener is bound locally

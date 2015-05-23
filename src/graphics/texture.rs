@@ -35,7 +35,7 @@ use graphics::{RenderWindow, Image, IntRect};
 use system::vector2::Vector2u;
 use window::Window;
 
-use ffi::sfml_types::{SFTRUE, SFFALSE};
+use ffi::sfml_types::SfBool;
 use ffi::graphics::texture as ffi;
 
 /// Image used for drawing
@@ -281,10 +281,7 @@ impl Texture {
     /// * smooth - true to enable smoothing, false to disable it
     pub fn set_smooth(&mut self, smooth: bool) -> () {
         unsafe {
-            match smooth {
-                true        => ffi::sfTexture_setSmooth(self.texture, SFTRUE),
-                false       => ffi::sfTexture_setSmooth(self.texture, SFFALSE)
-            }
+            ffi::sfTexture_setSmooth(self.texture, SfBool::from_bool(smooth))
         }
     }
 
@@ -292,10 +289,7 @@ impl Texture {
     ///
     /// Return true if smoothing is enabled, false if it is disabled
     pub fn is_smooth(&self) -> bool {
-        match unsafe { ffi::sfTexture_isSmooth(self.texture) } {
-            SFFALSE => false,
-            SFTRUE  => true
-        }
+        unsafe { ffi::sfTexture_isSmooth(self.texture) }.to_bool()
     }
 
     /// Enable or disable repeating for a texture
@@ -318,10 +312,7 @@ impl Texture {
     /// * repeated  - true to repeat the texture, false to disable repeating
     pub fn set_repeated(&mut self, repeated: bool) -> () {
         unsafe {
-            match repeated {
-                true        => ffi::sfTexture_setRepeated(self.texture, SFTRUE),
-                false       => ffi::sfTexture_setRepeated(self.texture, SFFALSE)
-            }
+            ffi::sfTexture_setRepeated(self.texture, SfBool::from_bool(repeated))
         }
     }
 
@@ -329,10 +320,7 @@ impl Texture {
     ///
     /// Return frue if repeat mode is enabled, false if it is disabled
     pub fn is_repeated(&self) -> bool {
-        match unsafe { ffi::sfTexture_isRepeated(self.texture) } {
-            SFFALSE   => false,
-            SFTRUE    => true
-        }
+        unsafe { ffi::sfTexture_isRepeated(self.texture) }.to_bool()
     }
 
     /// Bind a texture for rendering

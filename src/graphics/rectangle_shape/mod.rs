@@ -32,7 +32,7 @@ use system::vector2::Vector2f;
 use graphics::{Drawable, Shape, Transformable, FloatRect, IntRect, Color, Texture,
                RenderTarget, Transform, RenderStates};
 
-use ffi::sfml_types::{SFTRUE, SFFALSE};
+use ffi::sfml_types::SfBool;
 use ffi::graphics::rectangle_shape as ffi;
 
 // pub mod rc;
@@ -70,7 +70,7 @@ impl<'s> RectangleShape<'s> {
             unsafe {
                 ffi::sfRectangleShape_setTexture(rectangle,
                                                  texture.unwrap(),
-                                                 SFTRUE);
+                                                 SfBool::SFTRUE);
             }
             Some(RectangleShape {
                     rectangle_shape: rectangle,
@@ -414,16 +414,9 @@ impl<'s> Shape<'s> for RectangleShape<'s> {
     fn set_texture(&mut self, texture: &'s Texture, reset_rect: bool) -> () {
         self.texture = Some(texture);
         unsafe {
-            match reset_rect {
-                false =>
-                    ffi::sfRectangleShape_setTexture(self.rectangle_shape,
-                                                     texture.unwrap(),
-                                                     SFFALSE),
-                true  =>
-                    ffi::sfRectangleShape_setTexture(self.rectangle_shape,
-                                                     texture.unwrap(),
-                                                     SFTRUE)
-            }
+            ffi::sfRectangleShape_setTexture(self.rectangle_shape,
+                                             texture.unwrap(),
+                                             SfBool::from_bool(reset_rect))
         }
     }
 
@@ -435,7 +428,7 @@ impl<'s> Shape<'s> for RectangleShape<'s> {
         unsafe {
             ffi::sfRectangleShape_setTexture(self.rectangle_shape,
                                              ptr::null_mut(),
-                                             SFTRUE)
+                                             SfBool::SFTRUE)
         }
     }
 

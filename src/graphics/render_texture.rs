@@ -32,7 +32,7 @@ use graphics::{Drawable, View, Color, IntRect, Texture, CircleShape, RectangleSh
                RenderStates, Sprite, ConvexShape, VertexArray,
                RenderTarget, Vertex, PrimitiveType, CustomShape};
 
-use ffi::sfml_types::{SFTRUE, SFFALSE};
+use ffi::sfml_types::SfBool;
 use ffi::graphics::render_texture as ffi;
 
 /// Target for off-screen 2D rendering into a texture
@@ -52,14 +52,8 @@ impl RenderTexture {
     pub fn new(width: u32,
                height: u32,
                depth_buffer: bool) -> Option<RenderTexture> {
-
-        let tex = match depth_buffer {
-            false       => unsafe { ffi::sfRenderTexture_create(width as c_uint,
-                                                                height as c_uint, 
-                                                                SFFALSE) },
-            true        => unsafe { ffi::sfRenderTexture_create(width as c_uint, 
-                                                                height as c_uint, 
-                                                                SFTRUE) }
+        let tex = unsafe {
+            ffi::sfRenderTexture_create(width as c_uint, height as c_uint, SfBool::from_bool(depth_buffer))
         };
         if tex.is_null() {
             None
@@ -82,18 +76,9 @@ impl RenderTexture {
     /// # Arguments
     /// * active - true to activate, false to deactivate
     pub fn set_active(&mut self, active: bool) -> bool {
-        let ret = unsafe {
-            match active {
-                false => ffi::sfRenderTexture_setActive(self.render_texture,
-                                                        SFFALSE),
-                true  => ffi::sfRenderTexture_setActive(self.render_texture,
-                                                        SFTRUE)
-            }
-        };
-        match ret {
-            SFFALSE => false,
-            SFTRUE  => true
-        }
+        unsafe {
+            ffi::sfRenderTexture_setActive(self.render_texture, SfBool::from_bool(active))
+        }.to_bool()
     }
 
     /// Get the target texture of a render texture
@@ -115,12 +100,7 @@ impl RenderTexture {
     /// * smooth - true to enable smoothing, false to disable it
     pub fn set_smooth(&mut self, smooth: bool) -> () {
         unsafe {
-            match smooth {
-                true        => ffi::sfRenderTexture_setSmooth(self.render_texture,
-                                                              SFTRUE),
-                false       => ffi::sfRenderTexture_setSmooth(self.render_texture,
-                                                              SFFALSE)
-            }
+            ffi::sfRenderTexture_setSmooth(self.render_texture, SfBool::from_bool(smooth))
         }
     }
 
@@ -128,10 +108,7 @@ impl RenderTexture {
     ///
     /// Return true if smoothing is enabled, false if it is disabled
     pub fn is_smooth(&self) -> bool {
-        match unsafe { ffi::sfRenderTexture_isSmooth(self.render_texture) } {
-            SFFALSE => false,
-            SFTRUE  => true
-        }
+        unsafe { ffi::sfRenderTexture_isSmooth(self.render_texture) }.to_bool()
     }
 }
 

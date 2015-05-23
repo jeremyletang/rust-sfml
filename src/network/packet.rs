@@ -30,7 +30,7 @@ use std::str;
 
 use traits::Wrappable;
 
-use ffi::sfml_types::{SFTRUE, SFFALSE};
+use ffi::sfml_types::SfBool;
 use ffi::network::packet as ffi;
 
 /// Utility class to build blocks of data to transfer over the network.
@@ -98,10 +98,7 @@ impl Packet {
     ///
     /// Return true if all data was read, false otherwise
     pub fn end_of_packet(&self) -> bool {
-        match unsafe { ffi::sfPacket_endOfPacket(self.packet) } {
-            SFFALSE => false,
-            SFTRUE => true
-        }
+        unsafe { ffi::sfPacket_endOfPacket(self.packet) }.to_bool()
     }
 
     /// Test the validity of a packet, for reading
@@ -114,18 +111,12 @@ impl Packet {
     ///
     /// Return true if last data extraction from packet was successful
     pub fn can_read(&self) -> bool {
-        match unsafe { ffi::sfPacket_canRead(self.packet) } {
-            SFFALSE => false,
-            SFTRUE => true
-        }
+        unsafe { ffi::sfPacket_canRead(self.packet) }.to_bool()
     }
 
     /// Function to extract data from a packet
     pub fn read_bool(&self) -> bool {
-        match unsafe { ffi::sfPacket_readBool(self.packet) } {
-            SFFALSE => false,
-            SFTRUE => true
-        }
+        unsafe { ffi::sfPacket_readBool(self.packet) }.to_bool()
     }
 
     /// Function to extract data from a packet
@@ -197,10 +188,7 @@ impl Packet {
     /// Function to insert data into a packet
     pub fn write_bool(&self, data: bool) -> () {
         unsafe {
-            match data {
-                true    => ffi::sfPacket_writeBool(self.packet, SFTRUE),
-                false    => ffi::sfPacket_writeBool(self.packet, SFFALSE)
-            }
+            ffi::sfPacket_writeBool(self.packet, SfBool::from_bool(data))
         }
     }
 
