@@ -22,49 +22,32 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-//! Manipulating 2D rectangles
-//!
-//! Utility class for manipulating 2D axis aligned rectangles
+use system::vector2::Vector2;
+use std::ops::{Add, Sub};
 
-use libc::c_int;
-
-use ffi::graphics::rect as ffi;
-
-/// Utility classes for manipulating rectangles of i32.
+/// Utility type for manipulating 2D axis-aligned rectangles.
 #[repr(C)]
-#[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
-pub struct IntRect {
+#[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy, Default)]
+pub struct Rect<T> {
     /// Left coordinate of the rectangle.
-    pub left: i32,
+    pub left: T,
     /// Top coordinate of the rectangle.
-    pub top: i32,
+    pub top: T,
     /// Width of the rectangle.
-    pub width: i32,
-    /// Height coordinate of the rectangle.
-    pub height: i32
-}
-
-/// Utility classes for manipulating rectangles of f32.
-#[repr(C)]
-#[derive(Clone, PartialEq, PartialOrd, Debug, Copy)]
-pub struct FloatRect {
-    /// Left coordinate of the rectangle.
-    pub left: f32,
-    /// Top coordinate of the rectangle.
-    pub top: f32,
-    /// Width of the rectangle.
-    pub width: f32,
+    pub width: T,
     /// Height of the rectangle.
-    pub height: f32
+    pub height: T
 }
 
-impl IntRect {
-    /// Construct a new IntRect
-    pub fn new(left: i32,
-               top: i32,
-               width: i32,
-               height: i32) -> IntRect {
-        IntRect {
+/// A `Rect` of `i32`.
+pub type IntRect = Rect<i32>;
+/// A `Rect` of `f32`.
+pub type FloatRect = Rect<f32>;
+
+impl<T> Rect<T> {
+    /// Construct a rectangle from its coordinates.
+    pub fn new(left: T, top: T, width: T, height: T) -> Rect<T> {
+        Rect {
             left: left,
             top: top,
             width: width,
@@ -72,69 +55,69 @@ impl IntRect {
         }
     }
 
-    ///  Check if a point is inside a rectangle's area
-    ///
-    /// # Arguments
-    /// * x - X coordinate of the point to test
-    /// * y - Y coordinate of the point to test
-    ///
-    /// Return true if the point is inside
-    pub fn contains(self, x: i32, y: i32) -> bool {
-        unsafe { ffi::sfIntRect_contains(&self, x as c_int, y as c_int) }.to_bool()
-    }
-
-    /// Check intersection between two rectangles
-    ///
-    /// # Arguments
-    /// * rect1 - First rectangle to test
-    /// * rect2 - Second rectangle to test
-    /// * intersection - Rectangle to be filled with overlapping rect
-    ///
-    /// Return strue if rectangles overlap
-    pub fn intersects(rect1: &IntRect,
-                      rect2: &IntRect,
-                      intersections: &IntRect) -> bool {
-        unsafe { ffi::sfIntRect_intersects(rect1, rect2, intersections) }.to_bool()
+    /// Construct a rectangle from its position and size.
+    pub fn from_vecs(pos: Vector2<T>, size: Vector2<T>) -> Rect<T> {
+        Rect {
+            left: pos.x,
+            top: pos.y,
+            width: size.x,
+            height: size.y
+        }
     }
 }
 
-impl FloatRect {
-    /// Construct a new FloatRect
-    pub fn new(left: f32,
-        top: f32,
-        width: f32,
-        height: f32) -> FloatRect {
+impl<T: PartialOrd + Add<Output=T> + Sub<Output=T> + Copy> Rect<T> {
+    /// Check if a point is inside the rectangle's area.
+    #[inline]
+    pub fn contains(self, point: Vector2<T>) -> bool {
+        self.contains2(point.x, point.y)
+    }
 
-        FloatRect {
-            left: left,
-            top: top,
-            width: width,
-            height: height
+    /// Check if a point is inside the rectangle's area.
+    pub fn contains2(self, x: T, y: T) -> bool {
+        // Based on SFML's implementation.
+        // Rectangles with negative dimensions are allowed.
+        let (min_x, max_x) = min_max(self.left, self.left + self.width);
+        let (min_y, max_y) = min_max(self.top, self.top + self.height);
+        x >= min_x && x < max_x && y >= min_y && y < max_y
+    }
+
+    /// Check the intersection between two rectangles.
+    ///
+    /// If the rectangles intersect, returns Some filled with the intersection
+    /// of the two rectangles. Otherwise, returns None.
+    pub fn intersects(self, other: &Rect<T>) -> Option<Rect<T>> {
+        // Based on SFML's implementation.
+        // Compute the min and max coordinates on various axes.
+        let (r1_min_x, r1_max_x) = min_max(self.left, self.left + self.width);
+        let (r1_min_y, r1_max_y) = min_max(self.top, self.top + self.height);
+        let (r2_min_x, r2_max_x) = min_max(other.left, other.left + other.width);
+        let (r2_min_y, r2_max_y) = min_max(other.top, other.top + other.height);
+        // Compute the intersection.
+        let left   = max(r1_min_x, r2_min_x);
+        let top    = max(r1_min_y, r2_min_y);
+        let right  = min(r1_max_x, r2_max_x);
+        let bottom = min(r1_max_y, r2_max_y);
+        // Return the result.
+        if left < right && top < bottom {
+            Some(Rect::new(left, top, right - left, bottom - top))
+        } else {
+            None
         }
     }
+}
 
-    ///  Check if a point is inside a rectangle's area
-    ///
-    /// # Arguments
-    /// * x - X coordinate of the point to test
-    /// * y - Y coordinate of the point to test
-    ///
-    /// Return true if the point is inside
-    pub fn contains(self, x: f32, y: f32) -> bool {
-        unsafe { ffi::sfFloatRect_contains(&self, x, y) }.to_bool()
-    }
+#[inline]
+fn min<T: PartialOrd>(a: T, b: T) -> T {
+    if a < b { a } else { b }
+}
 
-    /// Check intersection between two rectangles
-    ///
-    /// # Arguments
-    /// * rect1 - First rectangle to test
-    /// * rect2 - Second rectangle to test
-    /// * intersection - Rectangle to be filled with overlapping rect
-    ///
-    /// Return true if rectangles overlap
-    pub fn intersects(rect1: &FloatRect,
-        rect2: &FloatRect,
-        intersections: &FloatRect) -> bool {
-        unsafe { ffi::sfFloatRect_intersects(rect1, rect2, intersections) }.to_bool()
-    }
+#[inline]
+fn max<T: PartialOrd>(a: T, b: T) -> T {
+    if a > b { a } else { b }
+}
+
+#[inline]
+fn min_max<T: PartialOrd + Copy>(a: T, b: T) -> (T, T) {
+    (min(a, b), max(a, b))
 }
