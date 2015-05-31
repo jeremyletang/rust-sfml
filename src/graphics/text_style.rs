@@ -22,16 +22,28 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-/// Availables texts styles
-#[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
-#[repr(C)]
-pub enum TextStyle {
-    /// Regular characters, no style.
-    Regular = 0,
-    /// Bold characters.
-    Bold = 1,
-    /// Italic characters.
-    Italic = 2,
-    /// Underlined characters.
-    Underlined = 4
+//! Available text styles.
+
+// Manual #[doc] tags are to work around rust-lang/rust#23812.
+
+bitflags! {
+    #[doc="Available text styles."]
+    #[derive(Debug)]
+    #[repr(C)]
+    flags TextStyle: u32 {
+        #[doc="Regular characters, no style."]
+        const REGULAR = 0,
+        #[doc="Bold characters."]
+        const BOLD = 1,
+        #[doc="Italic characters."]
+        const ITALIC = 2,
+        #[doc="Underlined characters."]
+        const UNDERLINED = 4
+    }
+}
+
+impl Default for TextStyle {
+    fn default() -> TextStyle {
+        REGULAR
+    }
 }
