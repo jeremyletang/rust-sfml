@@ -85,10 +85,10 @@ impl RenderWindow {
                title: &str,
                style: WindowStyle,
                settings: &ContextSettings) -> Option<RenderWindow> {
-        let c_str = CString::new(title.as_bytes()).unwrap().as_ptr();
+        let c_str = CString::new(title.as_bytes()).unwrap();
         let sf_render_win: *mut ffi::sfRenderWindow = unsafe {
             ffi::sfRenderWindow_create(mode.unwrap(),
-                                       c_str,
+                                       c_str.as_ptr(),
                                        style.bits(),
                                        settings)
         };
