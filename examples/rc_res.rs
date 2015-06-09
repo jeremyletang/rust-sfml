@@ -1,3 +1,6 @@
+fn main() {}
+/* This example does not work currently
+
 //! Example from SFML: borrow_res
 
 extern crate sfml;
@@ -101,4 +104,4 @@ fn main() {
 
     }
 }
-
+*/
