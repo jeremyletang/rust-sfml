@@ -28,7 +28,6 @@
 
 bitflags! {
     #[doc="Available text styles."]
-    #[derive(Debug)]
     #[repr(C)]
     flags TextStyle: u32 {
         #[doc="Regular characters, no style."]

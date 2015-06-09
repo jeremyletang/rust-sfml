@@ -28,7 +28,6 @@
 
 bitflags! {
     #[doc="Available styles applicable to windows."]
-    #[derive(Debug)]
     #[repr(C)]
     flags WindowStyle: u32 {
         #[doc="No decorations (cannot be combined with other flags)."]
