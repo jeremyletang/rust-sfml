@@ -4,8 +4,7 @@ extern crate sfml;
 
 use sfml::graphics::{RenderWindow, Color, CircleShape, RectangleShape,
                       RenderTarget, RenderStates, Drawable, Shape, Transformable};
-use sfml::window::{VideoMode, ContextSettings, event, WindowStyle};
-use sfml::window::keyboard::Key;
+use sfml::window::{VideoMode, ContextSettings, event, window_style, Key};
 use sfml::system::Vector2f;
 
 // Create a struct who contains two drawable for the example
@@ -41,7 +40,7 @@ impl<'s> Drawable for CustomDrawable<'s> {
 fn main() {
     // Create the window of the application
     let setting: ContextSettings = ContextSettings::default();
-    let mut window: RenderWindow = match RenderWindow::new(VideoMode::new_init(800, 600, 32), "SFML Shape Example", WindowStyle::Close, &setting) {
+    let mut window: RenderWindow = match RenderWindow::new(VideoMode::new_init(800, 600, 32), "SFML Shape Example", window_style::CLOSE, &setting) {
         Some(window) => window,
         None => panic!("Cannot create a new Render Window.")
     };
