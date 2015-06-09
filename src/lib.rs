@@ -60,14 +60,14 @@
 //! extern crate sfml;
 //!
 //! use sfml::system::Vector2f;
-//! use sfml::window::{ContextSettings, VideoMode, event, WindowStyle};
+//! use sfml::window::{ContextSettings, VideoMode, event, window_style};
 //! use sfml::graphics::{RenderWindow, RenderTarget, CircleShape, Color, Transformable, Shape};
 //!
 //! fn main() {
 //!     // Create the window of the application
 //!     let mut window = match RenderWindow::new(VideoMode::new_init(800, 600, 32),
 //!                                              "SFML Example",
-//!                                              WindowStyle::Close,
+//!                                              window_style::CLOSE,
 //!                                              &ContextSettings::default()) {
 //!         Some(window) => window,
 //!         None => panic!("Cannot create a new Render Window.")
