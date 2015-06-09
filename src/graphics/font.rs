@@ -48,9 +48,9 @@ impl Font {
     ///
     /// Return Some(Font) or None
     pub fn new_from_file(filename: &str) -> Option<Font> {
-        let c_str = CString::new(filename.as_bytes()).unwrap().as_ptr();
+        let c_str = CString::new(filename.as_bytes()).unwrap();
         let fnt = unsafe {
-            ffi::sfFont_createFromFile(c_str)
+            ffi::sfFont_createFromFile(c_str.as_ptr())
         };
         if fnt.is_null() {
             None

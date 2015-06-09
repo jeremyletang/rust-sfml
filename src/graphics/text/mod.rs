@@ -122,8 +122,8 @@ impl<'s> Text<'s> {
     /// * string - New string
     pub fn set_string(&mut self, string: &str) -> () {
         unsafe {
-            let c_str = CString::new(string.as_bytes()).unwrap().as_ptr();
-            ffi::sfText_setString(self.text, c_str);
+            let c_str = CString::new(string.as_bytes()).unwrap();
+            ffi::sfText_setString(self.text, c_str.as_ptr());
         }
         self.string_length = string.len() as u32
     }

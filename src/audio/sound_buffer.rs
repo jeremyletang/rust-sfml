@@ -53,9 +53,9 @@ impl SoundBuffer {
     ///
     /// Return an option to a SoundBuffer object or None.
     pub fn new(filename: &str) -> Option<SoundBuffer> {
-        let c_str = CString::new(filename.as_bytes()).unwrap().as_ptr();
+        let c_str = CString::new(filename.as_bytes()).unwrap();
         let sound_buffer: *mut ffi::sfSoundBuffer = unsafe {
-            ffi::sfSoundBuffer_createFromFile(c_str)
+            ffi::sfSoundBuffer_createFromFile(c_str.as_ptr())
         };
         if sound_buffer.is_null() {
             None
