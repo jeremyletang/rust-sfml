@@ -5,8 +5,7 @@ extern crate rand;
 
 use sfml::graphics::{Shape, Transformable, RenderWindow, Color, Font, Text, RectangleShape, CircleShape,
                       RenderTarget};
-use sfml::window::{VideoMode, ContextSettings, event, WindowStyle};
-use sfml::window::keyboard::{self, Key};
+use sfml::window::{VideoMode, ContextSettings, event, window_style, Key};
 use sfml::system::{Vector2f, Clock, Time};
 use sfml::audio::{SoundBuffer, Sound, SoundSource};
 
@@ -23,7 +22,7 @@ fn main() {
     let mut window: RenderWindow =
         match RenderWindow::new(VideoMode::new_init(game_width, game_height, 32),
                                 "SFML Pong",
-                                WindowStyle::Close,
+                                window_style::CLOSE,
                                 &setting) {
             Some(window) => window,
             None => panic!("Cannot create a new Render Window.")
@@ -134,11 +133,11 @@ fn main() {
             let delta_time = clock.restart().as_seconds();
 
             // Move the player's paddle
-            if keyboard::is_key_pressed(Key::Up) &&
+            if Key::Up.is_pressed() &&
                (left_paddle.get_position().y - paddle_size.y / 2. > 5.) {
                 left_paddle.move2f(0., -paddle_speed * delta_time);
             }
-            if keyboard::is_key_pressed(Key::Down) &&
+            if Key::Down.is_pressed() &&
                (left_paddle.get_position().y + paddle_size.y / 2. < game_height as f32 - 5.) {
                 left_paddle.move2f(0., paddle_speed * delta_time);
             }
