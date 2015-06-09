@@ -4,13 +4,13 @@ extern crate sfml;
 
 use sfml::graphics::{RenderWindow, RenderTarget, Color,
                       VertexArray, Vertex, PrimitiveType};
-use sfml::window::{VideoMode, ContextSettings, event, WindowStyle};
+use sfml::window::{VideoMode, ContextSettings, event, window_style};
 use sfml::system::Vector2f;
 
 fn main() {
     // Create the window of the application
     let setting: ContextSettings = ContextSettings::default();
-    let mut window: RenderWindow = match RenderWindow::new(VideoMode::new_init(800, 600, 32), "SFML VertexArray accessors Example", WindowStyle::Close, &setting) {
+    let mut window: RenderWindow = match RenderWindow::new(VideoMode::new_init(800, 600, 32), "SFML VertexArray accessors Example", window_style::CLOSE, &setting) {
         Some(window) => window,
         None => panic!("Cannot create a new Render Window.")
     };
