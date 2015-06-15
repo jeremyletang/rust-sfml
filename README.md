@@ -8,32 +8,22 @@ This is a Rust binding for SFML, the Simple and Fast Multimedia Library, develop
 
 SFML website : www.sfml-dev.org
 
-Installation
-============
+Prerequisites
+=============
 
-You must install the SFML2.1 and CSFML2.1 libraries on your computer which are used for the binding.
+SFML 2.1 and CSFML 2.1 must be installed on your computer. You can download them here:
 
-SFML2.1: http://www.sfml-dev.org/download/sfml/2.1/
-
-CSFML2.1: http://www.sfml-dev.org/download/csfml/
-
-Then clone the repo and build the library with the following command.
-
-You can use Cargo to build rust-sfml:
-```Shell
-> cargo build
-```
+- SFML 2.1: http://www.sfml-dev.org/download/sfml/2.1/
+- CSFML 2.1: http://www.sfml-dev.org/download/csfml/
 
 Rust-sfml works on Linux, Windows and OSX.
 
 Examples
 =============
-Examples are located under the `examples` directory.
+Examples are located under the `examples` directory:
 
 - [0.9.3](https://github.com/jeremyletang/rust-sfml/tree/v0.9.3/examples) (Latest release)
 - [master](https://github.com/jeremyletang/rust-sfml/tree/master/examples) (Latest development version)
-
-You can run an example with `cargo run --example example_name`
 
 License
 =======
