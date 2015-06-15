@@ -30,8 +30,8 @@ Examples
 =============
 Examples are located under the `examples` directory.
 
-- [master](https://github.com/jeremyletang/rust-sfml/tree/master/examples)
-- [0.9.3](https://github.com/jeremyletang/rust-sfml/tree/v0.9.3/examples)
+- [0.9.3](https://github.com/jeremyletang/rust-sfml/tree/v0.9.3/examples) (Latest release)
+- [master](https://github.com/jeremyletang/rust-sfml/tree/master/examples) (Latest development version)
 
 You can run an example with `cargo run --example example_name`
 
