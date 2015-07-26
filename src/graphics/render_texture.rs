@@ -65,7 +65,7 @@ impl RenderTexture {
     }
 
     /// Update the contents of the target texture
-    pub fn display(&self) -> () {
+    pub fn display(&self) {
         unsafe {
             ffi::sfRenderTexture_display(self.render_texture)
         }
@@ -98,7 +98,7 @@ impl RenderTexture {
     ///
     /// # Arguments
     /// * smooth - true to enable smoothing, false to disable it
-    pub fn set_smooth(&mut self, smooth: bool) -> () {
+    pub fn set_smooth(&mut self, smooth: bool) {
         unsafe {
             ffi::sfRenderTexture_setSmooth(self.render_texture, SfBool::from_bool(smooth))
         }
@@ -127,7 +127,7 @@ impl RenderTarget for RenderTexture {
     ///
     /// # Arguments
     /// * color - Fill color
-    fn clear(&mut self, color: &Color) -> () {
+    fn clear(&mut self, color: &Color) {
         unsafe {
             ffi::sfRenderTexture_clear(self.render_texture, *color)
         }
@@ -137,7 +137,7 @@ impl RenderTarget for RenderTexture {
     ///
     /// # Arguments
     /// * view - the new view
-    fn set_view(&mut self, view: &View) -> () {
+    fn set_view(&mut self, view: &View) {
         unsafe {
             ffi::sfRenderTexture_setView(self.render_texture, view.unwrap())
         }
@@ -299,7 +299,7 @@ impl RenderTarget for RenderTexture {
     ///
     /// # Arguments
     /// * object - Object to draw
-    fn draw<T: Drawable>(&mut self, object: &T) -> () {
+    fn draw<T: Drawable>(&mut self, object: &T) {
         object.draw(self, &mut RenderStates::default());
     }
 
@@ -317,7 +317,7 @@ impl RenderTarget for RenderTexture {
     /// Draw Text
     fn draw_text(&self,
                         text: &Text,
-                        rs: &mut RenderStates) -> () {
+                        rs: &mut RenderStates) {
         unsafe {
             ffi::sfRenderTexture_drawText(self.render_texture,
                                           text.unwrap(),
@@ -328,7 +328,7 @@ impl RenderTarget for RenderTexture {
     /// Draw Shape
     fn draw_shape(&self,
                      shape: &CustomShape,
-                     rs: &mut RenderStates) -> () {
+                     rs: &mut RenderStates) {
         unsafe {
             ffi::sfRenderTexture_drawShape(self.render_texture,
                                            shape.unwrap(),
@@ -339,7 +339,7 @@ impl RenderTarget for RenderTexture {
     /// Draw Sprite
     fn draw_sprite(&self,
                           sprite: &Sprite,
-                          rs: &mut RenderStates) -> () {
+                          rs: &mut RenderStates) {
         unsafe {
             ffi::sfRenderTexture_drawSprite(self.render_texture,
                                             sprite.unwrap(),
@@ -350,7 +350,7 @@ impl RenderTarget for RenderTexture {
     /// Draw CircleShape
     fn draw_circle_shape(&self,
                                 circle_shape: &CircleShape,
-                                rs: &mut RenderStates) -> () {
+                                rs: &mut RenderStates) {
         unsafe {
             ffi::sfRenderTexture_drawCircleShape(self.render_texture,
                                                  circle_shape.unwrap(),
@@ -361,7 +361,7 @@ impl RenderTarget for RenderTexture {
     /// Draw RectangleShape
     fn draw_rectangle_shape(&self,
                                    rectangle_shape: &RectangleShape,
-                                   rs: &mut RenderStates) -> () {
+                                   rs: &mut RenderStates) {
         unsafe {
             ffi::sfRenderTexture_drawRectangleShape(self.render_texture,
                                                     rectangle_shape.unwrap(),
@@ -372,7 +372,7 @@ impl RenderTarget for RenderTexture {
     /// Draw ConvexShape
     fn draw_convex_shape(&self,
                                 convex_shape: &ConvexShape,
-                                rs: &mut RenderStates) -> () {
+                                rs: &mut RenderStates) {
         unsafe {
             ffi::sfRenderTexture_drawConvexShape(self.render_texture,
                                                  convex_shape.unwrap(),
@@ -383,7 +383,7 @@ impl RenderTarget for RenderTexture {
     /// Draw VertexArray
     fn draw_vertex_array(&self,
                                 vertex_array: &VertexArray,
-                                rs: &mut RenderStates) -> () {
+                                rs: &mut RenderStates) {
         unsafe {
             ffi::sfRenderTexture_drawVertexArray(self.render_texture,
                                                  vertex_array.unwrap(),
@@ -423,14 +423,14 @@ impl RenderTarget for RenderTexture {
     /// you know which states have really changed, and need to be
     /// saved and restored). Take a look at the resetGLStates
     /// function if you do so.
-    fn push_gl_states(&mut self) -> () {
+    fn push_gl_states(&mut self) {
         unsafe {
             ffi::sfRenderTexture_pushGLStates(self.render_texture)
         }
     }
 
     /// Restore the previously saved OpenGL render states and matrices
-    fn pop_gl_states(&mut self) -> () {
+    fn pop_gl_states(&mut self) {
         unsafe {
             ffi::sfRenderTexture_popGLStates(self.render_texture)
         }
@@ -443,7 +443,7 @@ impl RenderTarget for RenderTexture {
     /// pushGLStates/popGLStates. It makes sure that all OpenGL
     /// states needed by SFML are set, so that subsequent sfRenderWindow_draw*()
     /// calls will work as expected.
-    fn reset_gl_states(&mut self) -> () {
+    fn reset_gl_states(&mut self) {
         unsafe {
             ffi::sfRenderTexture_resetGLStates(self.render_texture)
         }
@@ -453,7 +453,7 @@ impl RenderTarget for RenderTexture {
 }
 
 impl Drop for RenderTexture {
-    fn drop(&mut self) -> () {
+    fn drop(&mut self) {
         unsafe {
             ffi::sfRenderTexture_destroy(self.render_texture)
         }

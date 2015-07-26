@@ -208,7 +208,7 @@ impl Texture {
     pub fn update_from_window(&mut self,
                               window: &Window,
                               x: u32,
-                              y: u32) -> () {
+                              y: u32) {
         unsafe {
             ffi::sfTexture_updateFromWindow(self.texture,
                                             window.unwrap(),
@@ -226,7 +226,7 @@ impl Texture {
     pub fn update_from_render_window(&mut self,
                                      render_window: &RenderWindow,
                                      x: u32,
-                                     y: u32) -> () {
+                                     y: u32) {
         unsafe {
             ffi::sfTexture_updateFromRenderWindow(self.texture,
                                                   render_window.unwrap(),
@@ -244,7 +244,7 @@ impl Texture {
     pub fn update_from_image(&mut self,
                              image: &Image,
                              x: u32,
-                             y: u32) -> () {
+                             y: u32) {
         unsafe {
             ffi::sfTexture_updateFromImage(self.texture,
                                            image.unwrap(),
@@ -264,7 +264,7 @@ impl Texture {
                               width: u32,
                               height: u32,
                               x: u32,
-                              y: u32) -> () {
+                              y: u32) {
         unsafe {
             ffi::sfTexture_updateFromPixels(self.texture,
                                             pixels.as_ptr(),
@@ -279,7 +279,7 @@ impl Texture {
     ///
     /// # Arguments
     /// * smooth - true to enable smoothing, false to disable it
-    pub fn set_smooth(&mut self, smooth: bool) -> () {
+    pub fn set_smooth(&mut self, smooth: bool) {
         unsafe {
             ffi::sfTexture_setSmooth(self.texture, SfBool::from_bool(smooth))
         }
@@ -310,7 +310,7 @@ impl Texture {
     ///
     /// # Arguments
     /// * repeated  - true to repeat the texture, false to disable repeating
-    pub fn set_repeated(&mut self, repeated: bool) -> () {
+    pub fn set_repeated(&mut self, repeated: bool) {
         unsafe {
             ffi::sfTexture_setRepeated(self.texture, SfBool::from_bool(repeated))
         }
@@ -328,7 +328,7 @@ impl Texture {
     /// This function is not part of the graphics API, it mustn't be
     /// used when drawing SFML entities. It must be used only if you
     /// mix sfTexture with OpenGL code.
-    pub fn bind(&mut self) -> () {
+    pub fn bind(&mut self) {
         unsafe {
             ffi::sfTexture_bind(self.texture)
         }

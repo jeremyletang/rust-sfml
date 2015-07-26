@@ -204,7 +204,7 @@ impl Image {
     /// # Arguments
     /// * color - Color to make transparent
     /// * alpha - Alpha value to assign to transparent pixels
-    pub fn create_mask_from_color(&self, color: &Color, alpha: u8) -> () {
+    pub fn create_mask_from_color(&self, color: &Color, alpha: u8) {
         unsafe {
             ffi::sfImage_createMaskFromColor(self.image, *color, alpha)
         }
@@ -220,7 +220,7 @@ impl Image {
     /// * x - X coordinate of pixel to change
     /// * y - Y coordinate of pixel to change
     /// * color - New color of the pixel
-    pub fn set_pixel(&mut self, x: u32, y: u32, color: &Color) -> () {
+    pub fn set_pixel(&mut self, x: u32, y: u32, color: &Color) {
         unsafe {
             ffi::sfImage_setPixel(self.image, x as c_uint, y as c_uint, *color)
         }
@@ -244,14 +244,14 @@ impl Image {
     }
 
     /// Flip an image horizontally (left <-> right)
-    pub fn flip_horizontally(&mut self) -> () {
+    pub fn flip_horizontally(&mut self) {
         unsafe {
             ffi::sfImage_flipHorizontally(self.image)
         }
     }
 
     /// Flip an image vertically (top <-> bottom)
-    pub fn flip_vertically(&mut self) -> () {
+    pub fn flip_vertically(&mut self) {
         unsafe {
             ffi::sfImage_flipVertically(self.image)
         }
@@ -280,7 +280,7 @@ impl Image {
                       dest_x: u32,
                       dest_y: u32,
                       source_rect: &IntRect,
-                      apply_alpha: bool) -> () {
+                      apply_alpha: bool) {
         unsafe {
             ffi::sfImage_copyImage(self.image,
                                    source.unwrap(),
@@ -320,7 +320,7 @@ impl Wrappable<*mut ffi::sfImage> for Image {
 
 impl Drop for Image {
     /// Destroy an existing image
-    fn drop(&mut self) -> () {
+    fn drop(&mut self) {
         unsafe {
             ffi::sfImage_destroy(self.image)
         }

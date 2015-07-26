@@ -108,7 +108,7 @@ impl Sprite {
     ///
     /// # Arguments
     /// * angle - New rotation, in degrees
-    pub fn set_rotation(&mut self, angle: f32) -> () {
+    pub fn set_rotation(&mut self, angle: f32) {
         unsafe {
             ffi::sfSprite_setRotation(self.sprite, angle as c_float)
         }
@@ -132,7 +132,7 @@ impl Sprite {
     ///
     /// # Arguments
     /// * angle - Angle of rotation, in degrees
-    pub fn rotate(&mut self, angle: f32) -> () {
+    pub fn rotate(&mut self, angle: f32) {
         unsafe {
             ffi::sfSprite_rotate(self.sprite, angle as c_float)
         }
@@ -167,7 +167,7 @@ impl Sprite {
     /// Disable Texturing
     ///
     /// Disable the current texture and reset the texture rect
-    pub fn disable_texture(&mut self) -> () {
+    pub fn disable_texture(&mut self) {
         self.texture = None;
         unsafe {
             ffi::sfSprite_setTexture(self.sprite, ptr::null_mut(), SfBool::SFTRUE)
@@ -183,7 +183,7 @@ impl Sprite {
     ///
     /// # Arguments
     /// * color - New color of the sprite
-    pub fn set_color(&mut self, color: &Color) -> () {
+    pub fn set_color(&mut self, color: &Color) {
         unsafe {
             ffi::sfSprite_setColor(self.sprite, *color)
         }
@@ -217,7 +217,7 @@ impl Sprite {
     ///
     /// # Arguments
     /// * position - New position
-    pub fn set_position(&mut self, position: &Vector2f) -> () {
+    pub fn set_position(&mut self, position: &Vector2f) {
         unsafe {
             ffi::sfSprite_setPosition(self.sprite, *position)
         }
@@ -232,7 +232,7 @@ impl Sprite {
     /// # Arguments
     /// * x - New x coordinate
     /// * y - New y coordinate
-    pub fn set_position2f(&mut self, x: f32, y: f32) -> () {
+    pub fn set_position2f(&mut self, x: f32, y: f32) {
         unsafe {
             ffi::sfSprite_setPosition(self.sprite, Vector2f::new(x, y))
         }
@@ -245,7 +245,7 @@ impl Sprite {
     ///
     /// # Arguments
     /// * factors - Scale factors
-    pub fn scale(&mut self, factors: &Vector2f) -> () {
+    pub fn scale(&mut self, factors: &Vector2f) {
         unsafe {
             ffi::sfSprite_scale(self.sprite, *factors)
         }
@@ -259,7 +259,7 @@ impl Sprite {
     /// # Arguments
     /// * factor_x - Scale x factor
     /// * factor_y - Scale y factor
-    pub fn scale2f(&mut self, factor_x: f32, factor_y: f32) -> () {
+    pub fn scale2f(&mut self, factor_x: f32, factor_y: f32) {
         unsafe {
             ffi::sfSprite_scale(self.sprite, Vector2f::new(factor_x, factor_y))
         }
@@ -290,7 +290,7 @@ impl Sprite {
     ///
     /// # Arguments
     /// * offset - Offset
-    pub fn move_(&mut self, offset: &Vector2f) -> () {
+    pub fn move_(&mut self, offset: &Vector2f) {
         unsafe {
             ffi::sfSprite_move(self.sprite, *offset)
         }
@@ -304,7 +304,7 @@ impl Sprite {
     /// # Arguments
     /// * offsetX - Offset x
     /// * offsetY - Offset y
-    pub fn move2f(&mut self, offset_x: f32, offset_y: f32) -> () {
+    pub fn move2f(&mut self, offset_x: f32, offset_y: f32) {
         unsafe {
             ffi::sfSprite_move(self.sprite, Vector2f::new(offset_x, offset_y))
         }
@@ -318,7 +318,7 @@ impl Sprite {
     ///
     /// # Arguments
     /// * scale - New scale factors
-    pub fn set_scale(&mut self, scale: &Vector2f) -> () {
+    pub fn set_scale(&mut self, scale: &Vector2f) {
         unsafe {
             ffi::sfSprite_setScale(self.sprite, *scale)
         }
@@ -333,7 +333,7 @@ impl Sprite {
     /// # Arguments
     /// * scale_x - New x scale factor
     /// * scale_y - New y scale factor
-    pub fn set_scale2f(&mut self, scale_x: f32, scale_y: f32) -> () {
+    pub fn set_scale2f(&mut self, scale_x: f32, scale_y: f32) {
         unsafe {
             ffi::sfSprite_setScale(self.sprite, Vector2f::new(scale_x, scale_y))
         }
@@ -350,7 +350,7 @@ impl Sprite {
     ///
     /// # Arguments
     /// * origin - New origin
-    pub fn set_origin(&mut self, origin: &Vector2f) -> () {
+    pub fn set_origin(&mut self, origin: &Vector2f) {
         unsafe {
             ffi::sfSprite_setOrigin(self.sprite, *origin)
         }
@@ -368,7 +368,7 @@ impl Sprite {
     /// # Arguments
     /// * x - New x origin coordinate
     /// * y - New y origin coordinate
-    pub fn set_origin2f(&mut self, x: f32, y: f32) -> () {
+    pub fn set_origin2f(&mut self, x: f32, y: f32) {
         unsafe {
             ffi::sfSprite_setOrigin(self.sprite, Vector2f::new(x, y))
         }
@@ -430,7 +430,7 @@ impl Sprite {
     ///
     /// # Arguments
     /// * rectangle - Rectangle defining the region of the texture to display
-    pub fn set_texture_rect(&mut self, rect: &IntRect) -> () {
+    pub fn set_texture_rect(&mut self, rect: &IntRect) {
         unsafe {
             ffi::sfSprite_setTextureRect(self.sprite, *rect)
         }
@@ -486,7 +486,7 @@ impl Wrappable<*mut ffi::sfSprite> for Sprite {
 impl Drawable for Sprite {
     fn draw<RT:RenderTarget>(&self,
                                    render_target: &mut RT,
-                                   render_states: &mut RenderStates) -> () {
+                                   render_states: &mut RenderStates) {
         render_target.draw_sprite(self, render_states)
     }
 }
@@ -495,7 +495,7 @@ impl Drawable for Sprite {
 
 impl Drop for Sprite {
     /// Destroy an existing sprite
-    fn drop(&mut self) -> () {
+    fn drop(&mut self) {
         unsafe {
             ffi::sfSprite_destroy(self.sprite)
         }

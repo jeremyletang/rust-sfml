@@ -183,7 +183,7 @@ impl Window {
     ///
     /// # Arguments
     /// * title - New title
-    pub fn set_unicode_title(&mut self, title: Vec<u32>) -> () {
+    pub fn set_unicode_title(&mut self, title: Vec<u32>) {
         unsafe {
             ffi::sfWindow_setUnicodeTitle(self.window, title.as_ptr())
         }
@@ -196,7 +196,7 @@ impl Window {
     /// * width - Icon's width, in pixels
     /// * height - Icon's height, in pixels
     /// * pixels - Vector of pixels
-    pub fn set_icon(&mut self, width: u32, height: u32, pixels: Vec<u8>) -> () {
+    pub fn set_icon(&mut self, width: u32, height: u32, pixels: Vec<u8>) {
         unsafe {
             ffi::sfWindow_setIcon(self.window, width as c_uint, height as c_uint, pixels.as_ptr())
         }
@@ -209,7 +209,7 @@ impl Window {
     /// All other functions such as poll_event or display
     /// will still work (i.e. you don't have to test is_open
     /// every time), and will have no effect on closed windows.
-    pub fn close(&mut self) -> () {
+    pub fn close(&mut self) {
         unsafe {
             ffi::sfWindow_close(self.window);
         }
@@ -240,7 +240,7 @@ impl Window {
     ///
     /// # Arguments
     /// * title - New title
-    pub fn set_title(&mut self, title: &str) -> () {
+    pub fn set_title(&mut self, title: &str) {
         let c_str = CString::new(title.as_bytes()).unwrap().as_ptr();
         unsafe {
             ffi::sfWindow_setTitle(self.window, c_str)
@@ -251,7 +251,7 @@ impl Window {
     ///
     /// # Arguments
     /// * visible - true to show the window, false to hide it
-    pub fn set_visible(&mut self, visible: bool) -> () {
+    pub fn set_visible(&mut self, visible: bool) {
         unsafe {
             ffi::sfWindow_setVisible(self.window, SfBool::from_bool(visible))
         }
@@ -261,7 +261,7 @@ impl Window {
     ///
     /// # Arguments
     /// * visible - true to  false to hide
-    pub fn set_mouse_cursor_visible(&mut self, visible: bool) -> () {
+    pub fn set_mouse_cursor_visible(&mut self, visible: bool) {
         unsafe {
             ffi::sfWindow_setMouseCursorVisible(self.window, SfBool::from_bool(visible))
         }
@@ -276,7 +276,7 @@ impl Window {
     ///
     /// # Arguments
     /// * enabled - true to enable v-sync, false to deactivate
-    pub fn set_vertical_sync_enabled(&mut self, enabled: bool) -> () {
+    pub fn set_vertical_sync_enabled(&mut self, enabled: bool) {
         unsafe {
             ffi::sfWindow_setVerticalSyncEnabled(self.window, SfBool::from_bool(enabled))
         }
@@ -292,7 +292,7 @@ impl Window {
     ///
     /// # Arguments
     /// * enabled - true to enable, false to disable
-    pub fn set_key_repeat_enabled(&mut self, enabled: bool) -> () {
+    pub fn set_key_repeat_enabled(&mut self, enabled: bool) {
         unsafe {
             ffi::sfWindow_setKeyRepeatEnabled(self.window, SfBool::from_bool(enabled))
         }
@@ -319,7 +319,7 @@ impl Window {
     /// This function is typically called after all OpenGL rendering
     /// has been done for the current frame, in order to show
     /// it on screen.
-    pub fn display(&mut self) -> () {
+    pub fn display(&mut self) {
         unsafe {
             ffi::sfWindow_display(self.window)
         }
@@ -333,7 +333,7 @@ impl Window {
     ///
     /// # Arguments
     /// * limit - Framerate limit, in frames per seconds (use 0 to disable limit)
-    pub fn set_framerate_limit(&mut self, limit: u32) -> () {
+    pub fn set_framerate_limit(&mut self, limit: u32) {
         unsafe {
             ffi::sfWindow_setFramerateLimit(self.window, limit as c_uint)
         }
@@ -346,7 +346,7 @@ impl Window {
     ///
     /// # Arguments
     /// * threshold - New threshold, in the range [0, 100]
-    pub fn set_joystick_threshold(&mut self, threshold: f32) -> () {
+    pub fn set_joystick_threshold(&mut self, threshold: f32) {
         unsafe {
             ffi::sfWindow_setJoystickThreshold(self.window, threshold as c_float)
         }
@@ -369,7 +369,7 @@ impl Window {
     ///
     /// # Arguments
     /// * position - New position of the window, in pixels
-    pub fn set_position(&mut self, position: &Vector2i) -> () {
+    pub fn set_position(&mut self, position: &Vector2i) {
         unsafe {
             ffi::sfWindow_setPosition(self.window, *position)
         }
@@ -390,7 +390,7 @@ impl Window {
     ///
     /// # Arguments
     /// * size - New size, in pixels
-    pub fn set_size(&mut self, size: &Vector2u) -> () {
+    pub fn set_size(&mut self, size: &Vector2u) {
         unsafe {
             ffi::sfWindow_setSize(self.window, *size)
         }
@@ -418,7 +418,7 @@ impl Window {
     /// * position - New position of the mouse
     /// * relativeTo - Reference Window
     ///
-    pub fn set_mouse_position(&mut self, position: &Vector2i) -> () {
+    pub fn set_mouse_position(&mut self, position: &Vector2i) {
         unsafe {
             ffi::sfMouse_setPosition(*position, self.window)
         }

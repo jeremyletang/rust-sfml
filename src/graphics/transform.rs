@@ -120,7 +120,7 @@ impl Transform {
     ///
     /// # Arguments
     /// * other - Transform to combine to transform
-    pub fn combine(&mut self, other: &mut Transform) -> () {
+    pub fn combine(&mut self, other: &mut Transform) {
         unsafe {
             ffi::sfTransform_combine(self, other)
         }
@@ -131,7 +131,7 @@ impl Transform {
     /// # Arguments
     /// * x - Offset to apply on X axis
     /// * y - Offset to apply on Y axis
-    pub fn translate(&mut self, x: f32, y: f32) -> () {
+    pub fn translate(&mut self, x: f32, y: f32) {
         unsafe {
             ffi::sfTransform_translate(self, x as c_float, y as c_float)
         }
@@ -141,7 +141,7 @@ impl Transform {
     ///
     /// # Arguments
     /// * angle - Rotation angle, in degrees
-    pub fn rotate(&mut self, angle: f32) -> () {
+    pub fn rotate(&mut self, angle: f32) {
         unsafe {
             ffi::sfTransform_rotate(self, angle as c_float)
         }
@@ -161,7 +161,7 @@ impl Transform {
     pub fn rotate_with_center(&mut self,
                               angle: f32,
                               center_x: f32,
-                              center_y: f32) -> () {
+                              center_y: f32) {
         unsafe {
             ffi::sfTransform_rotateWithCenter(self,
                                               angle as c_float,
@@ -175,7 +175,7 @@ impl Transform {
     /// # Arguments
     /// * scale_x - Scaling factor on the X axis
     /// * scale_y - Scaling factor on the Y axis
-    pub fn scale(&mut self, scale_x: f32, scale_y: f32) -> () {
+    pub fn scale(&mut self, scale_x: f32, scale_y: f32) {
         unsafe {
             ffi::sfTransform_scale(self, scale_x as c_float, scale_y as c_float)
         }
@@ -197,7 +197,7 @@ impl Transform {
                              scale_x: f32,
                              scale_y: f32,
                              center_x: f32,
-                             center_y: f32) -> () {
+                             center_y: f32) {
         unsafe {
             ffi::sfTransform_scaleWithCenter(self,
                                              scale_x,

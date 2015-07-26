@@ -140,7 +140,7 @@ impl<'s> Shader<'s> {
     /// # Arguments
     /// * name - Name of the parameter in the shader
     /// * x - Value to assign
-    pub fn set_float_parameter(&mut self, name: &str, x: f32) -> () {
+    pub fn set_float_parameter(&mut self, name: &str, x: f32) {
         let c_str = CString::new(name.as_bytes()).unwrap().as_ptr();
         unsafe {
             ffi::sfShader_setFloatParameter(self.shader, c_str, x)
@@ -157,7 +157,7 @@ impl<'s> Shader<'s> {
     /// * name - Name of the parameter in the shader
     /// * x - First component of the value to assign
     /// * y - Second component of the value to assign
-    pub fn set_float_2_parameter(&mut self, name: &str, x: f32, y: f32) -> () {
+    pub fn set_float_2_parameter(&mut self, name: &str, x: f32, y: f32) {
         let c_str = CString::new(name.as_bytes()).unwrap().as_ptr();
         unsafe {
                     ffi::sfShader_setFloat2Parameter(self.shader, c_str, x, y)
@@ -179,7 +179,7 @@ impl<'s> Shader<'s> {
                                  name: &str,
                                  x: f32,
                                  y: f32,
-                                 z: f32) -> () {
+                                 z: f32) {
         let c_str = CString::new(name.as_bytes()).unwrap().as_ptr();
         unsafe {
             ffi::sfShader_setFloat3Parameter(self.shader,
@@ -207,7 +207,7 @@ impl<'s> Shader<'s> {
                                  x: f32,
                                  y: f32,
                                  z: f32,
-                                 w: f32) -> () {
+                                 w: f32) {
         let c_str = CString::new(name.as_bytes()).unwrap().as_ptr();
         unsafe {
             ffi::sfShader_setFloat4Parameter(self.shader,
@@ -230,7 +230,7 @@ impl<'s> Shader<'s> {
     /// * texture - Texture to assign
     pub fn set_texture_parameter(&mut self,
                                  name: &str,
-                                 texture: &'s Texture) -> () {
+                                 texture: &'s Texture) {
         self.texture = Some(texture);
         let c_str = CString::new(name.as_bytes()).unwrap().as_ptr();
         unsafe {
@@ -250,7 +250,7 @@ impl<'s> Shader<'s> {
     ///
     /// # Arguments
     /// * name - Name of the texture in the shader
-    pub fn set_current_texture_parameter(&self, name: &str) -> () {
+    pub fn set_current_texture_parameter(&self, name: &str) {
         let c_str = CString::new(name.as_bytes()).unwrap().as_ptr();
         unsafe {
             ffi::sfShader_setCurrentTextureParameter(self.shader, c_str)
@@ -262,7 +262,7 @@ impl<'s> Shader<'s> {
     /// This function is not part of the graphics API, it mustn't be
     /// used when drawing SFML entities. It must be used only if you
     /// mix sfShader with OpenGL code.
-    pub fn bind(&mut self) -> () {
+    pub fn bind(&mut self) {
         unsafe {
             ffi::sfShader_bind(self.shader)
         }
@@ -290,7 +290,7 @@ impl<'s> Shader<'s> {
     /// * vector - Vector to assign
     pub fn set_vector2_parameter(&mut self,
                                  name: &str,
-                                 vector: &Vector2f) -> () {
+                                 vector: &Vector2f) {
         let c_str = CString::new(name.as_bytes()).unwrap().as_ptr();
         unsafe {
             ffi::sfShader_setVector2Parameter(self.shader,
@@ -310,7 +310,7 @@ impl<'s> Shader<'s> {
     /// * vector - Vector to assign
     pub fn set_vector3_parameter(&mut self,
                                  name: &str,
-                                 vector: &Vector3f) -> () {
+                                 vector: &Vector3f) {
         let c_str = CString::new(name.as_bytes()).unwrap().as_ptr();
         unsafe {
             ffi::sfShader_setVector3Parameter(self.shader,
@@ -336,7 +336,7 @@ impl<'s> Shader<'s> {
     /// * color - Color to assign
     pub fn set_color_parameter(&mut self,
                                name: &str,
-                               color: &Color) -> () {
+                               color: &Color) {
         let c_str = CString::new(name.as_bytes()).unwrap().as_ptr();
         unsafe {
             ffi::sfShader_setColorParameter(self.shader, c_str, *color)
@@ -359,7 +359,7 @@ impl<'s> Wrappable<*mut ffi::sfShader> for Shader<'s> {
 
 impl<'s> Drop for Shader<'s> {
     /// Destroy an existing shader
-    fn drop(&mut self) -> () {
+    fn drop(&mut self) {
         unsafe {
             ffi::sfShader_destroy(self.shader)
         }

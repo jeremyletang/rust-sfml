@@ -103,7 +103,7 @@ impl<'s> Sound<'s> {
     /// Tell whether or not a sound is in loop mode
     ///
     /// Return true if the sound is looping, false otherwise
-    pub fn set_loop(&mut self, lloop: bool) -> () {
+    pub fn set_loop(&mut self, lloop: bool) {
         unsafe { ffi::sfSound_setLoop(self.sound, SfBool::from_bool(lloop)) }
     }
 
@@ -121,7 +121,7 @@ impl<'s> Sound<'s> {
     /// was it already playing.
     /// This function uses its own thread so that it doesn't block
     /// the rest of the program while the sound is played.
-    pub fn play(&mut self) -> () {
+    pub fn play(&mut self) {
         unsafe {ffi::sfSound_play(self.sound)}
     }
 
@@ -129,7 +129,7 @@ impl<'s> Sound<'s> {
     ///
     /// This function pauses the sound if it was playing,
     /// otherwise (sound already paused or stopped) it has no effect.
-    pub fn pause(&mut self) -> () {
+    pub fn pause(&mut self) {
         unsafe {ffi::sfSound_pause(self.sound)}
     }
 
@@ -138,7 +138,7 @@ impl<'s> Sound<'s> {
     /// This function stops the sound if it was playing or paused,
     /// and does nothing if it was already stopped.
     /// It also resets the playing position (unlike pause).
-    pub fn stop(&mut self) -> () {
+    pub fn stop(&mut self) {
         unsafe {ffi::sfSound_stop(self.sound)}
     }
 
@@ -163,7 +163,7 @@ impl<'s> Sound<'s> {
     ///
     /// # Arguments
     /// * timeOffset - New playing position
-    pub fn set_playing_offset(&mut self, time_offset: Time) -> () {
+    pub fn set_playing_offset(&mut self, time_offset: Time) {
         unsafe {
             ffi::sfSound_setPlayingOffset(self.sound, time_offset.unwrap())
         }
@@ -177,7 +177,7 @@ impl<'s> Sound<'s> {
     ///
     /// # Arguments
     /// * buffer - Sound buffer to attach to the sound
-    pub fn set_buffer(&mut self, buffer: &'s SoundBuffer) -> () {
+    pub fn set_buffer(&mut self, buffer: &'s SoundBuffer) {
         self.buffer = Some(buffer);
         unsafe {
             ffi::sfSound_setBuffer(self.sound, buffer.unwrap())
@@ -208,7 +208,7 @@ impl<'s> SoundSource for Sound<'s> {
     ///
     /// # Arguments
     /// * pitch - new pitch to apply to the sound
-    fn set_pitch(&mut self, pitch: f32) -> () {
+    fn set_pitch(&mut self, pitch: f32) {
         unsafe {ffi::sfSound_setPitch(self.sound, pitch as c_float)}
     }
 
@@ -219,7 +219,7 @@ impl<'s> SoundSource for Sound<'s> {
     ///
     /// # Arguments
     /// * volume - Volume of the sound
-    fn set_volume(&mut self, volume: f32) -> () {
+    fn set_volume(&mut self, volume: f32) {
         unsafe {ffi::sfSound_setVolume(self.sound, volume as c_float)}
     }
 
@@ -231,7 +231,7 @@ impl<'s> SoundSource for Sound<'s> {
     ///
     /// # Arguments
     /// * position - Position of the sound in the scene
-    fn set_position(&mut self, position: &Vector3f) -> () {
+    fn set_position(&mut self, position: &Vector3f) {
         unsafe {
             ffi::sfSound_setPosition(self.sound, *position)
         }
@@ -247,7 +247,7 @@ impl<'s> SoundSource for Sound<'s> {
     /// * x - X coordinate of the position of the sound in the scene
     /// * y - Y coordinate of the position of the sound in the scene
     /// * z - Z coordinate of the position of the sound in the scene
-    fn set_position3f(&mut self, x: f32, y: f32, z: f32) -> () {
+    fn set_position3f(&mut self, x: f32, y: f32, z: f32) {
         unsafe {
             ffi::sfSound_setPosition(self.sound, Vector3f::new(x, y, z))
         }
@@ -263,7 +263,7 @@ impl<'s> SoundSource for Sound<'s> {
     ///
     /// # Arguments
     /// * relative - true to set the position relative, false to set it absolute
-    fn set_relative_to_listener(&mut self, relative: bool) -> () {
+    fn set_relative_to_listener(&mut self, relative: bool) {
         unsafe {
             ffi::sfSound_setRelativeToListener(self.sound, SfBool::from_bool(relative))
         }
@@ -280,7 +280,7 @@ impl<'s> SoundSource for Sound<'s> {
     ///
     /// # Arguments
     /// * distance - New minimum distance of the sound
-    fn set_min_distance(&mut self, distance: f32) -> () {
+    fn set_min_distance(&mut self, distance: f32) {
         unsafe {ffi::sfSound_setMinDistance(self.sound, distance as c_float)}
     }
 
@@ -297,7 +297,7 @@ impl<'s> SoundSource for Sound<'s> {
     ///
     /// # Arguments
     /// * attenuation - New attenuation factor of the sound
-    fn set_attenuation(&mut self, attenuation: f32) -> () {
+    fn set_attenuation(&mut self, attenuation: f32) {
         unsafe {ffi::sfSound_setAttenuation(self.sound, attenuation as c_float)}
     }
 

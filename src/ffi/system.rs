@@ -31,7 +31,7 @@ pub mod clock {
     extern "C" {
         pub fn sfClock_create() -> *mut sfClock;
         pub fn sfClock_copy(clock: *mut sfClock) -> *mut sfClock;
-        pub fn sfClock_destroy(clock: *mut sfClock) -> ();
+        pub fn sfClock_destroy(clock: *mut sfClock);
         pub fn sfClock_getElapsedTime(clock: *mut sfClock) -> sfTime;
         pub fn sfClock_restart(clock: *mut sfClock) -> sfTime;
     }
@@ -41,7 +41,7 @@ pub mod sleep {
     use ffi::system::time::sfTime;
 
     extern "C" {
-        pub fn sfSleep(duration: sfTime) -> ();
+        pub fn sfSleep(duration: sfTime);
     }
 }
 

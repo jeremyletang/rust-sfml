@@ -69,7 +69,7 @@ impl TcpSocket {
     ///
     /// # Arguments
     /// * blocking - true to set the socket as blocking, false for non-blocking
-    pub fn set_blocking(&mut self, blocking: bool) -> () {
+    pub fn set_blocking(&mut self, blocking: bool) {
         unsafe {
             ffi::sfTcpSocket_setBlocking(self.socket, SfBool::from_bool(blocking))
         }
@@ -139,7 +139,7 @@ impl TcpSocket {
     ///
     /// This function gracefully closes the connection. If the
     /// socket is not connected, this function has no effect.
-    pub fn disconnect(&mut self) -> () {
+    pub fn disconnect(&mut self) {
         unsafe {
             ffi::sfTcpSocket_disconnect(self.socket)
         }
@@ -217,7 +217,7 @@ impl Wrappable<*mut ffi::sfTcpSocket> for TcpSocket {
 }
 
 impl Drop for TcpSocket {
-    fn drop(&mut self) -> () {
+    fn drop(&mut self) {
         unsafe {
             ffi::sfTcpSocket_destroy(self.socket)
         }

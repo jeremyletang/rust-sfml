@@ -149,7 +149,7 @@ pub fn get_axis_position(joystick: u32, axis: Axis) -> f32 {
  * in this case the joysticks states are not updated automatically.
  *
  */
-pub fn update() -> () {
+pub fn update() {
     unsafe {
         ffi::sfJoystick_update();
     }

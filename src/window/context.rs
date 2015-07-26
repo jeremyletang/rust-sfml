@@ -53,7 +53,7 @@ impl Context {
     ///
     /// # Arguments
     /// * active - True to activate, False to deactivate
-    pub fn set_active(&mut self, active: bool) -> () {
+    pub fn set_active(&mut self, active: bool) {
         unsafe {
             ffi::sfContext_setActive(self.cont, SfBool::from_bool(active))
         }

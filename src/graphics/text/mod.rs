@@ -120,7 +120,7 @@ impl<'s> Text<'s> {
     ///
     /// # Arguments
     /// * string - New string
-    pub fn set_string(&mut self, string: &str) -> () {
+    pub fn set_string(&mut self, string: &str) {
         unsafe {
             let c_str = CString::new(string.as_bytes()).unwrap();
             ffi::sfText_setString(self.text, c_str.as_ptr());
@@ -174,7 +174,7 @@ impl<'s> Text<'s> {
     /// use it, the behaviour is undefined.
     ///
     /// font - New font
-    pub fn set_font(&mut self, font: &'s Font) -> () {
+    pub fn set_font(&mut self, font: &'s Font) {
         self.font = Some(font);
         unsafe {
             ffi::sfText_setFont(self.text, font.unwrap())
@@ -189,7 +189,7 @@ impl<'s> Text<'s> {
     ///
     /// # Arguments
     /// * style - New style
-    pub fn set_style(&mut self, style: TextStyle) -> () {
+    pub fn set_style(&mut self, style: TextStyle) {
         unsafe {
             ffi::sfText_setStyle(self.text, style.bits())
         }
@@ -201,7 +201,7 @@ impl<'s> Text<'s> {
     ///
     /// # Arguments
     /// * size - The new character size, in pixels
-    pub fn set_character_size(&mut self, size: u32) -> () {
+    pub fn set_character_size(&mut self, size: u32) {
         unsafe {
             ffi::sfText_setCharacterSize(self.text, size as c_uint)
         }
@@ -228,7 +228,7 @@ impl<'s> Text<'s> {
     ///
     /// # Arguments
     /// * color - The new color of the text
-    pub fn set_color(&mut self, color: &Color) -> () {
+    pub fn set_color(&mut self, color: &Color) {
         unsafe {
             ffi::sfText_setColor(self.text, *color)
         }
@@ -296,7 +296,7 @@ impl<'s> Text<'s> {
     ///
     /// # Arguments
     /// * string - The new string
-    pub fn set_unicode_string(&mut self, string: Vec<u32>) -> () {
+    pub fn set_unicode_string(&mut self, string: Vec<u32>) {
         unsafe {
             self.string_length = string.len() as u32;
             ffi::sfText_setUnicodeString(self.text, string.as_ptr())
@@ -323,7 +323,7 @@ impl<'s> Clone for Text<'s> {
 impl<'s> Drawable for Text<'s> {
     fn draw<RT:RenderTarget>(&self,
                                 render_target: &mut RT,
-                                render_states: &mut RenderStates) -> () {
+                                render_states: &mut RenderStates) {
         render_target.draw_text(self, render_states)
     }
 }
@@ -337,7 +337,7 @@ impl<'s> Transformable for Text<'s> {
     ///
     /// # Arguments
     /// * position - The new position
-    fn set_position(&mut self, position: &Vector2f) -> () {
+    fn set_position(&mut self, position: &Vector2f) {
         unsafe {
             ffi::sfText_setPosition(self.text, *position)
         }
@@ -352,7 +352,7 @@ impl<'s> Transformable for Text<'s> {
     /// # Arguments
     /// * x - The new x coordinate
     /// * y - The new y coordinate
-    fn set_position2f(&mut self, x: f32, y: f32) -> () {
+    fn set_position2f(&mut self, x: f32, y: f32) {
         unsafe {
             ffi::sfText_setPosition(self.text, Vector2f::new(x, y))
         }
@@ -366,7 +366,7 @@ impl<'s> Transformable for Text<'s> {
     ///
     /// # Arguments
     /// * angle - New rotation, in degrees
-    fn set_rotation(&mut self, angle: f32) -> () {
+    fn set_rotation(&mut self, angle: f32) {
         unsafe {
             ffi::sfText_setRotation(self.text, angle as c_float)
         }
@@ -380,7 +380,7 @@ impl<'s> Transformable for Text<'s> {
     ///
     /// # Arguments
     /// * scale - The new scale factors
-    fn set_scale(&mut self, scale: &Vector2f) -> () {
+    fn set_scale(&mut self, scale: &Vector2f) {
         unsafe {
             ffi::sfText_setScale(self.text, *scale)
         }
@@ -395,7 +395,7 @@ impl<'s> Transformable for Text<'s> {
     /// # Arguments
     /// * scale_x - The new x scale factor
     /// * scale_y - The new y scale factor
-    fn set_scale2f(&mut self, scale_x: f32, scale_y: f32) -> () {
+    fn set_scale2f(&mut self, scale_x: f32, scale_y: f32) {
         unsafe {
             ffi::sfText_setScale(self.text, Vector2f::new(scale_x, scale_y))
         }
@@ -412,7 +412,7 @@ impl<'s> Transformable for Text<'s> {
     ///
     /// # Arguments
     /// * origin - New origin
-    fn set_origin(&mut self, origin: &Vector2f) -> () {
+    fn set_origin(&mut self, origin: &Vector2f) {
         unsafe {
             ffi::sfText_setOrigin(self.text, *origin)
         }
@@ -430,7 +430,7 @@ impl<'s> Transformable for Text<'s> {
     /// # Arguments
     /// * x - New x origin coordinate
     /// * y - New y origin coordinate
-    fn set_origin2f(&mut self, x: f32, y: f32) -> () {
+    fn set_origin2f(&mut self, x: f32, y: f32) {
         unsafe {
             ffi::sfText_setOrigin(self.text, Vector2f::new(x, y))
         }
@@ -481,7 +481,7 @@ impl<'s> Transformable for Text<'s> {
     ///
     /// # Arguments
     /// * offset - Offset
-    fn move_(&mut self, offset: &Vector2f) -> () {
+    fn move_(&mut self, offset: &Vector2f) {
         unsafe {
             ffi::sfText_move(self.text, *offset)
         }
@@ -495,7 +495,7 @@ impl<'s> Transformable for Text<'s> {
     /// # Arguments
     /// * offsetX - Offset x
     /// * offsetY - Offset y
-    fn move2f(&mut self, offset_x: f32, offset_y: f32) -> () {
+    fn move2f(&mut self, offset_x: f32, offset_y: f32) {
         unsafe {
             ffi::sfText_move(self.text, Vector2f::new(offset_x, offset_y))
         }
@@ -508,7 +508,7 @@ impl<'s> Transformable for Text<'s> {
     ///
     /// # Arguments
     /// * factors - Scale factors
-    fn rotate(&mut self, angle: f32) -> () {
+    fn rotate(&mut self, angle: f32) {
         unsafe {
             ffi::sfText_rotate(self.text, angle as c_float)
         }
@@ -521,7 +521,7 @@ impl<'s> Transformable for Text<'s> {
     ///
     /// # Arguments
     /// * factors - Scale factors
-    fn scale(&mut self, factors: &Vector2f) -> () {
+    fn scale(&mut self, factors: &Vector2f) {
         unsafe {
             ffi::sfText_scale(self.text, *factors)
         }
@@ -535,7 +535,7 @@ impl<'s> Transformable for Text<'s> {
     /// # Arguments
     /// * factor_x - Scale x factor
     /// * factor_y - Scale y factor
-    fn scale2f(&mut self, factor_x: f32, factor_y: f32) -> () {
+    fn scale2f(&mut self, factor_x: f32, factor_y: f32) {
         unsafe {
             ffi::sfText_scale(self.text, Vector2f::new(factor_x, factor_y))
         }

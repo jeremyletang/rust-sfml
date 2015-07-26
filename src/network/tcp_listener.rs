@@ -66,7 +66,7 @@ impl TcpListener {
     ///
     /// # Arguments
     /// * blocking - true to set the socket as blocking, false for non-blocking
-    pub fn set_blocking(&mut self, blocking: bool) -> () {
+    pub fn set_blocking(&mut self, blocking: bool) {
         unsafe {
             ffi::sfTcpListener_setBlocking(self.listener, SfBool::from_bool(blocking))
         }
@@ -125,7 +125,7 @@ impl TcpListener {
 }
 
 impl Drop for TcpListener {
-    fn drop(&mut self) -> () {
+    fn drop(&mut self) {
         unsafe {
             ffi::sfTcpListener_destroy(self.listener)
         }

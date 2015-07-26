@@ -106,7 +106,7 @@ impl Music {
     ///
     /// # Arguments
     /// * loop - SFTRUE to play in loop, SFFALSE to play once
-    pub fn set_loop(&mut self, lloop: bool) -> () {
+    pub fn set_loop(&mut self, lloop: bool) {
         unsafe { ffi::sfMusic_setLoop(self.music, SfBool::from_bool(lloop)) }
     }
 
@@ -131,7 +131,7 @@ impl Music {
     /// was it already playing.
     /// This function uses its own thread so that it doesn't block
     /// the rest of the program while the music is played.
-    pub fn play(&mut self) -> () {
+    pub fn play(&mut self) {
         unsafe {
             ffi::sfMusic_play(self.music)
         }
@@ -141,7 +141,7 @@ impl Music {
     ///
     /// This function pauses the music if it was playing,
     /// otherwise (music already paused or stopped) it has no effect.
-    pub fn pause(&mut self) -> () {
+    pub fn pause(&mut self) {
         unsafe {
             ffi::sfMusic_pause(self.music)
         }
@@ -152,7 +152,7 @@ impl Music {
     /// This function stops the music if it was playing or paused,
     /// and does nothing if it was already stopped.
     /// It also resets the playing position (unlike pause).
-    pub fn stop(&mut self) -> () {
+    pub fn stop(&mut self) {
         unsafe {
             ffi::sfMusic_stop(self.music)
         }
@@ -202,7 +202,7 @@ impl Music {
     ///
     /// # Arguments
     /// * timeOffset - New playing position
-    pub fn set_playing_offset(&mut self, time_offset: Time) -> () {
+    pub fn set_playing_offset(&mut self, time_offset: Time) {
         unsafe {
             ffi::sfMusic_setPlayingOffset(self.music, time_offset.unwrap())
         }
@@ -220,7 +220,7 @@ impl SoundSource for Music {
     ///
     /// # Arguments
     /// * pitch - new pitch to apply to the music
-    fn set_pitch(&mut self, pitch: f32) -> () {
+    fn set_pitch(&mut self, pitch: f32) {
         unsafe {
             ffi::sfMusic_setPitch(self.music, pitch as c_float)
         }
@@ -233,7 +233,7 @@ impl SoundSource for Music {
     ///
     /// # Arguments
     /// * volume - Volume of the music
-    fn set_volume(&mut self, volume: f32) -> () {
+    fn set_volume(&mut self, volume: f32) {
         unsafe {
             ffi::sfMusic_setVolume(self.music, volume as c_float)
         }
@@ -247,7 +247,7 @@ impl SoundSource for Music {
     ///
     /// # Arguments
     /// * position - Position of the music in the scene
-    fn set_position(&mut self, position: &Vector3f) -> () {
+    fn set_position(&mut self, position: &Vector3f) {
         unsafe {
             ffi::sfMusic_setPosition(self.music, *position)
         }
@@ -263,7 +263,7 @@ impl SoundSource for Music {
     /// * x - X coordinate of the position of the sound in the scene
     /// * y - Y coordinate of the position of the sound in the scene
     /// * z - Z coordinate of the position of the sound in the scene
-    fn set_position3f(&mut self, x: f32, y: f32, z: f32) -> () {
+    fn set_position3f(&mut self, x: f32, y: f32, z: f32) {
         unsafe {
             ffi::sfMusic_setPosition(self.music, Vector3f::new(x, y, z))
         }
@@ -279,7 +279,7 @@ impl SoundSource for Music {
     ///
     /// # Arguments
     /// * relative - true to set the position relative, false to set it absolute
-    fn set_relative_to_listener(&mut self, relative: bool) -> () {
+    fn set_relative_to_listener(&mut self, relative: bool) {
         unsafe {
             ffi::sfMusic_setRelativeToListener(self.music, SfBool::from_bool(relative))
         }
@@ -296,7 +296,7 @@ impl SoundSource for Music {
     ///
     /// # Arguments
     /// * distance - New minimum distance of the music
-    fn set_min_distance(&mut self, distance: f32) -> () {
+    fn set_min_distance(&mut self, distance: f32) {
         unsafe {
             ffi::sfMusic_setMinDistance(self.music, distance as c_float)
         }
@@ -315,7 +315,7 @@ impl SoundSource for Music {
     ///
     /// # Arguments
     /// * attenuation - New attenuation factor of the music
-    fn set_attenuation(&mut self, attenuation: f32) -> () {
+    fn set_attenuation(&mut self, attenuation: f32) {
         unsafe {
             ffi::sfMusic_setAttenuation(self.music, attenuation as c_float)
         }

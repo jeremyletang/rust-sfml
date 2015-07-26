@@ -149,7 +149,7 @@ impl RenderWindow {
     ///
     /// # Arguments
     /// * title - New title
-    pub fn set_unicode_title(&mut self, title: Vec<u32>) -> () {
+    pub fn set_unicode_title(&mut self, title: Vec<u32>) {
         unsafe {
             self.title_length = title.len() as u32;
             ffi::sfRenderWindow_setUnicodeTitle(self.render_window,
@@ -167,7 +167,7 @@ impl RenderWindow {
     pub fn set_icon(&mut self,
                     width: u32,
                     height: u32,
-                    pixels: &[u8]) -> () {
+                    pixels: &[u8]) {
         unsafe {
             ffi::sfRenderWindow_setIcon(self.render_window,
                                         width as c_uint,
@@ -234,7 +234,7 @@ impl RenderWindow {
     /// All other functions such as poll_event or display
     /// will still work (i.e. you don't have to test is_open
     /// every time), and will have no effect on closed windows.
-    pub fn close(&mut self) -> () {
+    pub fn close(&mut self) {
         unsafe {
             ffi::sfRenderWindow_close(self.render_window);
         }
@@ -256,7 +256,7 @@ impl RenderWindow {
     /// has been done for the current frame, in order to show
     /// it on screen.
     ////
-    pub fn display(&mut self) -> () {
+    pub fn display(&mut self) {
         unsafe {
             ffi::sfRenderWindow_display(self.render_window)
         }
@@ -271,7 +271,7 @@ impl RenderWindow {
     /// # Arguments
     /// * limit - Framerate limit, in frames per seconds (use 0 to disable limit)
     ////
-    pub fn set_framerate_limit(&mut self, limit: u32) -> () {
+    pub fn set_framerate_limit(&mut self, limit: u32) {
         unsafe {
             ffi::sfRenderWindow_setFramerateLimit(self.render_window,
                                                   limit as c_uint)
@@ -298,7 +298,7 @@ impl RenderWindow {
     /// # Arguments
     /// * title - New title
     ////
-    pub fn set_title(&mut self, title: &str) -> () {
+    pub fn set_title(&mut self, title: &str) {
         let c_str = CString::new(title.as_bytes()).unwrap().as_ptr();
         unsafe {
             ffi::sfRenderWindow_setTitle(self.render_window, c_str);
@@ -311,7 +311,7 @@ impl RenderWindow {
     /// # Arguments
     /// * visible - true to show the window, false to hide it
     ////
-    pub fn set_visible(&mut self, visible: bool) -> () {
+    pub fn set_visible(&mut self, visible: bool) {
         unsafe {
             ffi::sfRenderWindow_setVisible(self.render_window, SfBool::from_bool(visible));
         }
@@ -322,7 +322,7 @@ impl RenderWindow {
     /// # Arguments
     /// * visible - true to  false to hide
     ////
-    pub fn set_mouse_cursor_visible(&mut self, visible: bool) -> () {
+    pub fn set_mouse_cursor_visible(&mut self, visible: bool) {
         unsafe {
             ffi::sfRenderWindow_setMouseCursorVisible(self.render_window, SfBool::from_bool(visible));
         }
@@ -338,7 +338,7 @@ impl RenderWindow {
     /// # Arguments
     /// * enabled - true to enable v-sync, false to deactivate
     ////
-    pub fn set_vertical_sync_enabled(&mut self, enabled: bool) -> () {
+    pub fn set_vertical_sync_enabled(&mut self, enabled: bool) {
         unsafe {
             ffi::sfRenderWindow_setVerticalSyncEnabled(self.render_window, SfBool::from_bool(enabled));
         }
@@ -355,7 +355,7 @@ impl RenderWindow {
     /// # Arguments
     /// * enabled - true to enable, false to disable
     ////
-    pub fn set_key_repeat_enabled(&mut self, enabled: bool) -> () {
+    pub fn set_key_repeat_enabled(&mut self, enabled: bool) {
         unsafe {
             ffi::sfRenderWindow_setKeyRepeatEnabled(self.render_window, SfBool::from_bool(enabled));
         }
@@ -388,7 +388,7 @@ impl RenderWindow {
     /// # Arguments
     /// * threshold - New threshold, in the range [0, 100]
     ////
-    pub fn set_joystick_threshold(&mut self, threshold: f32) -> () {
+    pub fn set_joystick_threshold(&mut self, threshold: f32) {
         unsafe {
             ffi::sfRenderWindow_setJoystickThreshold(self.render_window,
                                                      threshold as c_float)
@@ -414,7 +414,7 @@ impl RenderWindow {
     /// # Arguments
     /// * position - New position of the window, in pixels
     ////
-    pub fn set_position(&mut self, position: &Vector2i) -> () {
+    pub fn set_position(&mut self, position: &Vector2i) {
         unsafe {
             ffi::sfRenderWindow_setPosition(self.render_window, *position)
         }
@@ -427,7 +427,7 @@ impl RenderWindow {
     /// # Arguments
     /// * size - New size, in pixels
     ////
-    pub fn set_size(&mut self, size: &Vector2u) -> () {
+    pub fn set_size(&mut self, size: &Vector2u) {
         unsafe {
             ffi::sfRenderWindow_setSize(self.render_window, *size)
         }
@@ -439,7 +439,7 @@ impl RenderWindow {
     /// * size_x - New size x, in pixels
     /// * size_y - New size x, in pixels
     ////
-    pub fn set_size2u(&mut self, size_x: u32, size_y: u32) -> () {
+    pub fn set_size2u(&mut self, size_x: u32, size_y: u32) {
         unsafe {
             ffi::sfRenderWindow_setSize(self.render_window,
                                         Vector2u::new(size_x, size_y))
@@ -467,7 +467,7 @@ impl RenderWindow {
     /// # Arguments
     /// * `position` - the positon to set
     ////
-    pub fn set_mouse_position(&mut self, position: &Vector2i) -> () {
+    pub fn set_mouse_position(&mut self, position: &Vector2i) {
         unsafe {
             ffi::sfMouse_setPositionRenderWindow(*position, self.render_window)
         }
@@ -518,14 +518,14 @@ impl RenderTarget for RenderWindow{
     /// you know which states have really changed, and need to be
     /// saved and restored). Take a look at the resetGLStates
     /// function if you do so.
-    fn push_gl_states(&mut self) -> () {
+    fn push_gl_states(&mut self) {
         unsafe {
             ffi::sfRenderWindow_pushGLStates(self.render_window)
         }
     }
 
     /// Restore the previously saved OpenGL render states and matrices
-    fn pop_gl_states(&mut self) -> () {
+    fn pop_gl_states(&mut self) {
         unsafe {
             ffi::sfRenderWindow_popGLStates(self.render_window)
         }
@@ -538,7 +538,7 @@ impl RenderTarget for RenderWindow{
     /// push_gl_states/pop_gl_states. It makes sure that all OpenGL
     /// states needed by SFML are set, so that subsequent draw()
     /// calls will work as expected.
-    fn reset_gl_states(&mut self) -> () {
+    fn reset_gl_states(&mut self) {
         unsafe {
             ffi::sfRenderWindow_resetGLStates(self.render_window)
         }
@@ -550,7 +550,7 @@ impl RenderTarget for RenderWindow{
     /// # Arguments
     /// * view - The new view
     ////
-    fn set_view(&mut self, view: &View) -> () {
+    fn set_view(&mut self, view: &View) {
         unsafe {
             ffi::sfRenderWindow_setView(self.render_window,
                                         view.unwrap())
@@ -730,7 +730,7 @@ impl RenderTarget for RenderWindow{
     ///
     /// # Arguments
     /// * object - Object to draw
-    fn draw<T: Drawable>(&mut self, object: &T) -> () {
+    fn draw<T: Drawable>(&mut self, object: &T) {
         object.draw(self, &mut RenderStates::default());
     }
 
@@ -759,7 +759,7 @@ impl RenderTarget for RenderWindow{
     /// Draw a Text with a RenderStates
     fn draw_text(&self,
                         text: &Text,
-                        render_states: &mut RenderStates) -> () {
+                        render_states: &mut RenderStates) {
         unsafe {
             ffi::sfRenderWindow_drawText(self.render_window,
                                          text.unwrap(),
@@ -770,7 +770,7 @@ impl RenderTarget for RenderWindow{
     /// Draw a Shape with a RenderStates
     fn draw_shape(&self,
                          shape: &CustomShape,
-                         render_states: &mut RenderStates) -> () {
+                         render_states: &mut RenderStates) {
         unsafe {
             ffi::sfRenderWindow_drawShape(self.render_window,
                                           shape.unwrap(),
@@ -781,7 +781,7 @@ impl RenderTarget for RenderWindow{
     /// Draw a sprite with a RenderStates
     fn draw_sprite(&self,
                           sprite: &Sprite,
-                          render_states: &mut RenderStates) -> () {
+                          render_states: &mut RenderStates) {
         unsafe {
             ffi::sfRenderWindow_drawSprite(self.render_window,
                                            sprite.unwrap(),
@@ -792,7 +792,7 @@ impl RenderTarget for RenderWindow{
     /// Draw a CircleShape with a RenderStates
     fn draw_circle_shape(&self,
                                 circle_shape: &CircleShape,
-                                render_states: &mut RenderStates) -> () {
+                                render_states: &mut RenderStates) {
         unsafe {
             ffi::sfRenderWindow_drawCircleShape(self.render_window,
                                                 circle_shape.unwrap(),
@@ -803,7 +803,7 @@ impl RenderTarget for RenderWindow{
     /// Draw a RectangleShape with a RenderStates
     fn draw_rectangle_shape(&self,
                                    rectangle_shape: &RectangleShape,
-                                   render_states: &mut RenderStates) -> () {
+                                   render_states: &mut RenderStates) {
         unsafe {
             ffi::sfRenderWindow_drawRectangleShape(self.render_window,
                                                    rectangle_shape.unwrap(),
@@ -814,7 +814,7 @@ impl RenderTarget for RenderWindow{
     /// Draw a ConvexShape with a RenderStates
     fn draw_convex_shape(&self,
                                 convex_shape: &ConvexShape,
-                                render_states: &mut RenderStates) -> () {
+                                render_states: &mut RenderStates) {
         unsafe {
             ffi::sfRenderWindow_drawConvexShape(self.render_window,
                                                 convex_shape.unwrap(),
@@ -825,7 +825,7 @@ impl RenderTarget for RenderWindow{
     /// Draw a VertexArray with a RenderStates
     fn draw_vertex_array(&self,
                                 vertex_array: &VertexArray,
-                                render_states: &mut RenderStates) -> () {
+                                render_states: &mut RenderStates) {
         unsafe {
             ffi::sfRenderWindow_drawVertexArray(self.render_window,
                                                 vertex_array.unwrap(),
@@ -850,7 +850,7 @@ impl RenderTarget for RenderWindow{
     }
 
     /// Clear window with the given color
-    fn clear(&mut self, color: &Color) -> () {
+    fn clear(&mut self, color: &Color) {
         unsafe {
             ffi::sfRenderWindow_clear(self.render_window, *color)
         }

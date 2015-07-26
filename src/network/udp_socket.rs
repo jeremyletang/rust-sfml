@@ -68,7 +68,7 @@ impl UdpSocket {
     ///
     /// #Arguments
     /// blocking - true to set the socket as blocking, false for non-blocking
-    pub fn set_blocking(&self, blocking: bool) -> () {
+    pub fn set_blocking(&self, blocking: bool) {
         unsafe {
             ffi::sfUdpSocket_setBlocking(self.socket, SfBool::from_bool(blocking))
         }
@@ -116,7 +116,7 @@ impl UdpSocket {
     /// The port that the socket was previously using is immediately
     /// available after this function is called. If the
     /// socket is not bound to a port, this function has no effect.
-    pub fn unbind(&self) -> () {
+    pub fn unbind(&self) {
         unsafe {
             ffi::sfUdpSocket_unbind(self.socket)
         }
@@ -214,7 +214,7 @@ impl Wrappable<*mut ffi::sfUdpSocket> for UdpSocket {
 }
 
 impl Drop for UdpSocket {
-    fn drop(&mut self) -> () {
+    fn drop(&mut self) {
         unsafe {
             ffi::sfUdpSocket_destroy(self.socket)
         }

@@ -147,7 +147,7 @@ impl Request {
     /// # Arguments
     /// * field - Name of the field to set
     /// * value - Value of the field
-    pub fn set_field(&self, field: &str, value: &str) -> () {
+    pub fn set_field(&self, field: &str, value: &str) {
         let c_field = CString::new(field.as_bytes()).unwrap().as_ptr();
         let c_value = CString::new(value.as_bytes()).unwrap().as_ptr();
         unsafe {
@@ -165,7 +165,7 @@ impl Request {
     ///
     /// # Arguments
     /// * method - Method to use for the request
-    pub fn set_method(&self, method: Method) -> () {
+    pub fn set_method(&self, method: Method) {
         unsafe {
             ffi::sfHttpRequest_setMethod(self.request, method as ffi::Method)
         }
@@ -179,7 +179,7 @@ impl Request {
     ///
     /// # Arguments
     /// * uri - URI to request, relative to the host
-    pub fn set_uri(&self, uri: &str) -> () {
+    pub fn set_uri(&self, uri: &str) {
         let c_uri = CString::new(uri.as_bytes()).unwrap().as_ptr();
         unsafe {
             ffi::sfHttpRequest_setUri(self.request, c_uri)
@@ -193,7 +193,7 @@ impl Request {
     /// # Arguments
     /// * major - Major HTTP version number
     /// * param minor - Minor HTTP version number
-    pub fn set_http_version(&self, major: u32, minor: u32) -> () {
+    pub fn set_http_version(&self, major: u32, minor: u32) {
         unsafe {
             ffi::sfHttpRequest_setHttpVersion(self.request, major, minor)
         }
@@ -206,7 +206,7 @@ impl Request {
     /// The body is empty by default.
     /// # Arguments
     /// * body - Content of the body
-    pub fn set_body(&self, body: &str) -> () {
+    pub fn set_body(&self, body: &str) {
         let c_body = CString::new(body.as_bytes()).unwrap().as_ptr();
         unsafe {
             ffi::sfHttpRequest_setBody(self.request, c_body)
@@ -220,7 +220,7 @@ impl Request {
 }
 
 impl Drop for Request {
-    fn drop(&mut self) -> () {
+    fn drop(&mut self) {
         unsafe {
             ffi::sfHttpRequest_destroy(self.request)
         }
@@ -296,7 +296,7 @@ impl Response {
 }
 
 impl Drop for Response {
-    fn drop(&mut self) -> () {
+    fn drop(&mut self) {
         unsafe {
             ffi::sfHttpResponse_destroy(self.response)
         }
@@ -331,7 +331,7 @@ impl Http {
     /// # Arguments
     /// * host - Web server to connect to
     /// * port - Port to use for connection
-    pub fn set_host(&self, host: &str, port: u16) -> () {
+    pub fn set_host(&self, host: &str, port: u16) {
         let c_host = CString::new(host.as_bytes()).unwrap().as_ptr();
         unsafe {
             ffi::sfHttp_setHost(self.http, c_host, port)
@@ -360,7 +360,7 @@ impl Http {
 }
 
 impl Drop for Http {
-    fn drop(&mut self) -> () {
+    fn drop(&mut self) {
         unsafe {
             ffi::sfHttp_destroy(self.http)
         }

@@ -122,7 +122,7 @@ impl Text {
     ///
     /// # Arguments
     /// * string - New string
-    pub fn set_string(&mut self, string: &str) -> () {
+    pub fn set_string(&mut self, string: &str) {
         let c_str = CString::new(string.as_bytes()).unwrap().as_ptr();
         unsafe {
             ffi::sfText_setString(self.text, c_str)
@@ -176,7 +176,7 @@ impl Text {
     /// use it, the behaviour is undefined.
     ///
     /// font - New font
-    pub fn set_font(&mut self, font: Rc<RefCell<Font>>) -> () {
+    pub fn set_font(&mut self, font: Rc<RefCell<Font>>) {
         unsafe {
             ffi::sfText_setFont(self.text, (*font).borrow().unwrap())
         }
@@ -191,7 +191,7 @@ impl Text {
     ///
     /// # Arguments
     /// * angle - New rotation, in degrees
-    pub fn set_rotation(&mut self, angle: f32) -> () {
+    pub fn set_rotation(&mut self, angle: f32) {
         unsafe {
             ffi::sfText_setRotation(self.text, angle as c_float)
         }
@@ -215,7 +215,7 @@ impl Text {
     ///
     /// # Arguments
     /// * factors - Scale factors
-    pub fn rotate(&mut self, angle: f32) -> () {
+    pub fn rotate(&mut self, angle: f32) {
         unsafe {
             ffi::sfText_rotate(self.text, angle as c_float)
         }
@@ -229,7 +229,7 @@ impl Text {
     ///
     /// # Arguments
     /// * style - New style
-    pub fn set_style(&mut self, style: TextStyle) -> () {
+    pub fn set_style(&mut self, style: TextStyle) {
         unsafe {
             ffi::sfText_setStyle(self.text, style as u32)
         }
@@ -241,7 +241,7 @@ impl Text {
     ///
     /// # Arguments
     /// * size - The new character size, in pixels
-    pub fn set_character_size(&mut self, size: u32) -> () {
+    pub fn set_character_size(&mut self, size: u32) {
         unsafe {
             ffi::sfText_setCharacterSize(self.text, size as c_uint)
         }
@@ -268,7 +268,7 @@ impl Text {
     ///
     /// # Arguments
     /// * color - The new color of the text
-    pub fn set_color(&mut self, color: &Color) -> () {
+    pub fn set_color(&mut self, color: &Color) {
         unsafe {
             ffi::sfText_setColor(self.text, *color)
         }
@@ -290,7 +290,7 @@ impl Text {
     ///
     /// # Arguments
     /// * factors - Scale factors
-    pub fn scale(&mut self, factors: &Vector2f) -> () {
+    pub fn scale(&mut self, factors: &Vector2f) {
         unsafe {
             ffi::sfText_scale(self.text, *factors)
         }
@@ -304,7 +304,7 @@ impl Text {
     /// # Arguments
     /// * factor_x - Scale x factor
     /// * factor_y - Scale y factor
-    pub fn scale2f(&mut self, factor_x: f32, factor_y: f32) -> () {
+    pub fn scale2f(&mut self, factor_x: f32, factor_y: f32) {
         unsafe {
             ffi::sfText_scale(self.text, Vector2f::new(factor_x, factor_y))
         }
@@ -318,7 +318,7 @@ impl Text {
     ///
     /// # Arguments
     /// * scale - The new scale factors
-    pub fn set_scale(&mut self, scale: &Vector2f) -> () {
+    pub fn set_scale(&mut self, scale: &Vector2f) {
         unsafe {
             ffi::sfText_setScale(self.text, *scale)
         }
@@ -333,7 +333,7 @@ impl Text {
     /// # Arguments
     /// * scale_x - The new x scale factor
     /// * scale_y - The new y scale factor
-    pub fn set_scale2f(&mut self, scale_x: f32, scale_y: f32) -> () {
+    pub fn set_scale2f(&mut self, scale_x: f32, scale_y: f32) {
         unsafe {
             ffi::sfText_setScale(self.text, Vector2f::new(scale_x, scale_y))
         }
@@ -346,7 +346,7 @@ impl Text {
     ///
     /// # Arguments
     /// * offset - Offset
-    pub fn move_(&mut self, offset: &Vector2f) -> () {
+    pub fn move_(&mut self, offset: &Vector2f) {
         unsafe {
             ffi::sfText_move(self.text, *offset)
         }
@@ -360,7 +360,7 @@ impl Text {
     /// # Arguments
     /// * offsetX - Offset x
     /// * offsetY - Offset y
-    pub fn move2f(&mut self, offset_x: f32, offset_y: f32) -> () {
+    pub fn move2f(&mut self, offset_x: f32, offset_y: f32) {
         unsafe {
             ffi::sfText_move(self.text, Vector2f::new(offset_x, offset_y))
         }
@@ -374,7 +374,7 @@ impl Text {
     ///
     /// # Arguments
     /// * position - The new position
-    pub fn set_position(&mut self, position: &Vector2f) -> () {
+    pub fn set_position(&mut self, position: &Vector2f) {
         unsafe {
             ffi::sfText_setPosition(self.text, *position)
         }
@@ -389,7 +389,7 @@ impl Text {
     /// # Arguments
     /// * x - The new x coordinate
     /// * y - The new y coordinate
-    pub fn set_position2f(&mut self, x: f32, y: f32) -> () {
+    pub fn set_position2f(&mut self, x: f32, y: f32) {
         unsafe {
             ffi::sfText_setPosition(self.text, Vector2f::new(x, y))
         }
@@ -406,7 +406,7 @@ impl Text {
     ///
     /// # Arguments
     /// * origin - New origin
-    pub fn set_origin(&mut self, origin: &Vector2f) -> () {
+    pub fn set_origin(&mut self, origin: &Vector2f) {
         unsafe {
             ffi::sfText_setOrigin(self.text, *origin)
         }
@@ -424,7 +424,7 @@ impl Text {
     /// # Arguments
     /// * x - New x origin coordinate
     /// * y - New y origin coordinate
-    pub fn set_origin2f(&mut self, x: f32, y: f32) -> () {
+    pub fn set_origin2f(&mut self, x: f32, y: f32) {
         unsafe {
             ffi::sfText_setOrigin(self.text, Vector2f::new(x, y))
         }
@@ -511,7 +511,7 @@ impl Text {
     ///
     /// # Arguments
     /// * string - The new string
-    pub fn set_unicode_string(&mut self, string: Vec<u32>) -> () {
+    pub fn set_unicode_string(&mut self, string: Vec<u32>) {
         unsafe {
             self.string_length = string.len() as u32;
             ffi::sfText_setUnicodeString(self.text, string.as_ptr())
@@ -570,7 +570,7 @@ impl Wrappable<*mut ffi::sfText> for Text {
 impl Drawable for Text {
     fn draw<RT:RenderTarget>(&self,
                                    render_target: &mut RT,
-                                   render_states: &mut RenderStates) -> () {
+                                   render_states: &mut RenderStates) {
         render_target.draw_text(self, render_states)
     }
 }

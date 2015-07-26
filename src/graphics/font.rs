@@ -196,7 +196,7 @@ impl Wrappable<*mut ffi::sfFont> for Font {
 
 impl Drop for Font {
     /// Destroy an existing font
-    fn drop(&mut self) -> () {
+    fn drop(&mut self) {
         if self.dropable {
             unsafe {
                 ffi::sfFont_destroy(self.font)

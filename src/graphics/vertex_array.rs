@@ -113,7 +113,7 @@ impl VertexArray {
     /// It doesn't deallocate the corresponding memory, so that
     /// adding new vertices after clearing doesn't involve
     /// reallocating all the memory.
-    pub fn clear(&mut self) -> () {
+    pub fn clear(&mut self) {
         unsafe {
             ffi::sfVertexArray_clear(self.vertex_array)
         }
@@ -129,7 +129,7 @@ impl VertexArray {
     ///
     /// # Arguments
     /// * vertex_count - New size of the array (number of vertices)
-    pub fn resize(&mut self, vertex_count: u32) -> () {
+    pub fn resize(&mut self, vertex_count: u32) {
         unsafe {
             ffi::sfVertexArray_resize(self.vertex_array, vertex_count as c_uint)
         }
@@ -139,7 +139,7 @@ impl VertexArray {
     ///
     /// # Arguments
     /// * vertex - Vertex to add
-    pub fn append(&mut self, vertex: &Vertex) -> () {
+    pub fn append(&mut self, vertex: &Vertex) {
         unsafe {
             ffi::sfVertexArray_append(self.vertex_array, *vertex)
         }
@@ -169,7 +169,7 @@ impl VertexArray {
     ///
     /// # Arguments
     /// * type - Type of primitive
-    pub fn set_primitive_type(&mut self, primitive_type: PrimitiveType) -> () {
+    pub fn set_primitive_type(&mut self, primitive_type: PrimitiveType) {
         unsafe {
             match primitive_type {
                 primitive_type::Points              =>
@@ -298,13 +298,13 @@ impl Wrappable<*mut ffi::sfVertexArray> for VertexArray {
 impl Drawable for VertexArray {
     fn draw<RT: RenderTarget>(&self,
                                  render_target: &mut RT,
-                                 render_states: &mut RenderStates) -> () {
+                                 render_states: &mut RenderStates) {
         render_target.draw_vertex_array(self, render_states)
     }
 }
 
 impl Drop for VertexArray {
-    fn drop(&mut self) -> () {
+    fn drop(&mut self) {
         unsafe {
             ffi::sfVertexArray_destroy(self.vertex_array)
         }

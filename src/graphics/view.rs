@@ -128,7 +128,7 @@ impl View {
     ///
     /// # Arguments
     /// * angle - New angle, in degrees
-    pub fn set_rotation(&mut self, angle: f32) -> () {
+    pub fn set_rotation(&mut self, angle: f32) {
         unsafe {
             ffi::sfView_setRotation(self.view, angle as c_float)
         }
@@ -147,7 +147,7 @@ impl View {
     ///
     /// # Arguments
     /// * angle - Angle to rotate, in degrees
-    pub fn rotate(&mut self, angle: f32) -> () {
+    pub fn rotate(&mut self, angle: f32) {
         unsafe {
             ffi::sfView_rotate(self.view, angle as c_float)
         }
@@ -165,7 +165,7 @@ impl View {
     ///
     /// # Arguments
     /// * factor - Zoom factor to apply
-    pub fn zoom(&mut self, factor: f32) -> () {
+    pub fn zoom(&mut self, factor: f32) {
         unsafe {
             ffi::sfView_zoom(self.view, factor as c_float)
         }
@@ -175,7 +175,7 @@ impl View {
     ///
     /// # Arguments
     /// * center - New center
-    pub fn set_center(&mut self, center: &Vector2f) -> () {
+    pub fn set_center(&mut self, center: &Vector2f) {
         unsafe {
             ffi::sfView_setCenter(self.view, *center)
         }
@@ -187,7 +187,7 @@ impl View {
     /// * center_x - New x center coordinate
     /// * center_y - New y center coordinate
     ////
-    pub fn set_center2f(&mut self, center_x: f32, center_y: f32) -> () {
+    pub fn set_center2f(&mut self, center_x: f32, center_y: f32) {
         unsafe {
             ffi::sfView_setCenter(self.view, Vector2f::new(center_x, center_y))
         }
@@ -197,7 +197,7 @@ impl View {
     ///
     /// # Arguments
     /// * size - New size of the view
-    pub fn set_size(&mut self, size: &Vector2f) -> () {
+    pub fn set_size(&mut self, size: &Vector2f) {
         unsafe {
             ffi::sfView_setSize(self.view, *size)
         }
@@ -208,7 +208,7 @@ impl View {
     /// # Arguments
     /// * size_x - New size x of the view
     /// * size_y - New size y of the view
-    pub fn set_size2f(&mut self, size_x: f32, size_y: f32) -> () {
+    pub fn set_size2f(&mut self, size_x: f32, size_y: f32) {
         unsafe {
             ffi::sfView_setSize(self.view, Vector2f::new(size_x, size_y))
         }
@@ -218,7 +218,7 @@ impl View {
     ///
     /// # Arguments
     /// * offset - Offset
-    pub fn move_(&mut self, offset: &Vector2f) -> () {
+    pub fn move_(&mut self, offset: &Vector2f) {
         unsafe {
             ffi::sfView_move(self.view, *offset)
         }
@@ -228,7 +228,7 @@ impl View {
     /// # Arguments
     /// * offsetX - Offset x
     /// * offsetY - Offset y
-    pub fn move2f(&mut self, offset_x: f32, offset_y: f32) -> () {
+    pub fn move2f(&mut self, offset_x: f32, offset_y: f32) {
         unsafe {
             ffi::sfView_move(self.view, Vector2f::new(offset_x, offset_y))
         }
@@ -261,7 +261,7 @@ impl View {
     ///
     /// # Arguments
     /// * viewport - New viewport rectangle
-    pub fn set_viewport(&mut self, viewport: &FloatRect) -> () {
+    pub fn set_viewport(&mut self, viewport: &FloatRect) {
         unsafe {
             ffi::sfView_setViewport(self.view, *viewport)
         }
@@ -273,7 +273,7 @@ impl View {
     ///
     /// # Arguments
     /// * rectangle - Rectangle defining the zone to display
-    pub fn reset(&mut self, rectangle: &FloatRect) -> () {
+    pub fn reset(&mut self, rectangle: &FloatRect) {
         unsafe {
             ffi::sfView_reset(self.view, *rectangle)
         }
@@ -319,7 +319,7 @@ impl Wrappable<*mut ffi::sfView> for View {
 
 impl Drop for View {
     /// Destructor for class View
-    fn drop(&mut self) -> () {
+    fn drop(&mut self) {
         if self.dropable {
             unsafe {
                 ffi::sfView_destroy(self.view)

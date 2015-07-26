@@ -38,7 +38,7 @@ use ffi::audio::listener as ffi;
 ///
 /// # Arguments
 /// * volume - The new global volume, in the range [0, 100]
-pub fn set_global_volume(volume: f32) -> () {
+pub fn set_global_volume(volume: f32) {
     unsafe {
         ffi::sfListener_setGlobalVolume(volume as f32)
     }
@@ -59,7 +59,7 @@ pub fn get_global_volume() -> f32 {
 ///
 /// # Arguments
 /// * * position - the New position of the listener
-pub fn set_position(position: &Vector3f) -> () {
+pub fn set_position(position: &Vector3f) {
     unsafe {
         ffi::sfListener_setPosition(*position)
     }
@@ -73,7 +73,7 @@ pub fn set_position(position: &Vector3f) -> () {
 /// * x - the New position of the listener in x
 /// * y - the New position of the listener in y
 /// * z - the New position of the listener in z
-pub fn set_position3f(x: f32, y: f32, z: f32) -> () {
+pub fn set_position3f(x: f32, y: f32, z: f32) {
     unsafe {
         ffi::sfListener_setPosition(Vector3f::new(x, y, z))
     }
@@ -97,7 +97,7 @@ pub fn get_position() -> Vector3f {
 ///
 /// # Arguments
 /// * direction - New listener's orientation
-pub fn set_direction(direction: &Vector3f) -> () {
+pub fn set_direction(direction: &Vector3f) {
     unsafe {
         ffi::sfListener_setDirection(*direction)
     }
@@ -114,7 +114,7 @@ pub fn set_direction(direction: &Vector3f) -> () {
 /// * x - X coordinate of the listener's orientation
 /// * y - Y coordinate of the listener's orientation
 /// * z - Z coordinate of the listener's orientation
-pub fn set_direction3f(x: f32, y: f32, z: f32) -> () {
+pub fn set_direction3f(x: f32, y: f32, z: f32) {
     unsafe {
         ffi::sfListener_setDirection(Vector3f::new(x, y, z))
     }

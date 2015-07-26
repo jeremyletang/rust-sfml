@@ -123,7 +123,7 @@ impl Shape {
     ///
     /// # Arguments
     /// * position - The new position of the Shape
-    pub fn set_position(&mut self, position: &Vector2f) -> () {
+    pub fn set_position(&mut self, position: &Vector2f) {
         unsafe {
             ffi::sfShape_setPosition(self.shape, *position)
         }
@@ -138,7 +138,7 @@ impl Shape {
     /// # Arguments
     /// * x - The new x position of the Shape
     /// * y - The new y position of the Shape
-    pub fn set_position2f(&mut self, x: f32, y: f32) -> () {
+    pub fn set_position2f(&mut self, x: f32, y: f32) {
         unsafe {
             ffi::sfShape_setPosition(self.shape, Vector2f::new(x, y))
         }
@@ -152,7 +152,7 @@ impl Shape {
     ///
     /// # Arguments
     /// * angle - The new rotation, in degrees
-    pub fn set_rotation(&mut self, angle: f32) -> () {
+    pub fn set_rotation(&mut self, angle: f32) {
         unsafe {
             ffi::sfShape_setRotation(self.shape, angle as c_float)
         }
@@ -166,7 +166,7 @@ impl Shape {
     ///
     /// # Arguments
     /// scale - The new scale factors
-    pub fn set_scale(&mut self, scale: &Vector2f) -> () {
+    pub fn set_scale(&mut self, scale: &Vector2f) {
         unsafe {
             ffi::sfShape_setScale(self.shape, *scale)
         }
@@ -181,7 +181,7 @@ impl Shape {
     /// # Arguments
     /// scale_x - The new x scale factors
     /// scale_y - The new y scale factors
-    pub fn set_scale2f(&mut self, scale_x: f32, scale_y: f32) -> () {
+    pub fn set_scale2f(&mut self, scale_x: f32, scale_y: f32) {
         unsafe {
             ffi::sfShape_setScale(self.shape, Vector2f::new(scale_x, scale_y))
         }
@@ -198,7 +198,7 @@ impl Shape {
     ///
     /// # Arguments
     /// * origin - The new origin
-    pub fn set_origin(&mut self, origin: &Vector2f) -> () {
+    pub fn set_origin(&mut self, origin: &Vector2f) {
         unsafe {
             ffi::sfShape_setOrigin(self.shape, *origin)
         }
@@ -216,7 +216,7 @@ impl Shape {
     /// # Arguments
     /// * x - The new x origin
     /// * y - The new y origin
-    pub fn set_origin2f(&mut self, x: f32, y: f32) -> () {
+    pub fn set_origin2f(&mut self, x: f32, y: f32) {
         unsafe {
             ffi::sfShape_setOrigin(self.shape, Vector2f::new(x, y))
         }
@@ -267,7 +267,7 @@ impl Shape {
     ///
     /// # Arguments
     /// * offset - Offset
-    pub fn move_(&mut self, offset: &Vector2f) -> () {
+    pub fn move_(&mut self, offset: &Vector2f) {
         unsafe {
             ffi::sfShape_move(self.shape, *offset)
         }
@@ -281,7 +281,7 @@ impl Shape {
     /// # Arguments
     /// * offset_x - Offset x
     /// * offset_y - Offset y
-    pub fn move2f(&mut self, offset_x: f32, offset_y: f32) -> () {
+    pub fn move2f(&mut self, offset_x: f32, offset_y: f32) {
         unsafe {
             ffi::sfShape_move(self.shape, Vector2f::new(offset_x, offset_y))
         }
@@ -294,7 +294,7 @@ impl Shape {
     ///
     /// # Arguments
     /// * angle - The angle of rotation, in degrees
-    pub fn rotate(&mut self, angle: f32) -> () {
+    pub fn rotate(&mut self, angle: f32) {
         unsafe {
             ffi::sfShape_rotate(self.shape, angle as c_float)
         }
@@ -307,7 +307,7 @@ impl Shape {
     ///
     /// # Arguments
     /// * factors - Scale factors
-    pub fn scale(&mut self, factors: &Vector2f) -> () {
+    pub fn scale(&mut self, factors: &Vector2f) {
         unsafe {
             ffi::sfShape_scale(self.shape, *factors)
         }
@@ -321,7 +321,7 @@ impl Shape {
     /// # Arguments
     /// * factor_x - x Scale factors
     /// * factor_y - y Scale factors
-    pub fn scale2f(&mut self, factor_x: f32, factor_y: f32) -> () {
+    pub fn scale2f(&mut self, factor_x: f32, factor_y: f32) {
         unsafe {
             ffi::sfShape_scale(self.shape, Vector2f::new(factor_x, factor_y))
         }
@@ -361,7 +361,7 @@ impl Shape {
     /// * reset_rect - Should the texture rect be reset to the size of the new texture?
     pub fn set_texture(&mut self,
                        texture: Rc<RefCell<Texture>>,
-                       reset_rect: bool) -> () {
+                       reset_rect: bool) {
         unsafe {
             ffi::sfShape_setTexture(self.shape,
                                     (*texture).borrow().unwrap(),
@@ -373,7 +373,7 @@ impl Shape {
     /// Disable Texturing
     ///
     /// Disable the current texture and reset the texture rect
-    pub fn disable_texture(&mut self) -> () {
+    pub fn disable_texture(&mut self) {
         self.texture = None;
         unsafe {
             ffi::sfShape_setTexture(self.shape, ptr::null_mut(), SfBool::SFTRUE)
@@ -388,7 +388,7 @@ impl Shape {
     ///
     /// # Arguments
     /// * rect - The rectangle defining the region of the texture to display
-    pub fn set_texture_rect(&mut self, rect: &IntRect) -> () {
+    pub fn set_texture_rect(&mut self, rect: &IntRect) {
         unsafe {
             ffi::sfShape_setTextureRect(self.shape, *rect)
         }
@@ -405,7 +405,7 @@ impl Shape {
     ///
     /// # Arguments
     /// * color - The new color of the Shape
-    pub fn set_fill_color(&mut self, color: &Color) -> () {
+    pub fn set_fill_color(&mut self, color: &Color) {
         unsafe {
             ffi::sfShape_setFillColor(self.shape, *color)
         }
@@ -418,7 +418,7 @@ impl Shape {
     ///
     /// # Arguments
     /// * color - The new outline color of the shape
-    pub fn set_outline_color(&mut self, color: &Color) -> () {
+    pub fn set_outline_color(&mut self, color: &Color) {
         unsafe {
             ffi::sfShape_setOutlineColor(self.shape, *color)
         }
@@ -432,7 +432,7 @@ impl Shape {
     ///
     /// # Arguments
     /// * thickness - The new outline thickness
-    pub fn set_outline_thickness(&mut self, thickness: f32) -> () {
+    pub fn set_outline_thickness(&mut self, thickness: f32) {
         unsafe {
             ffi::sfShape_setOutlineThickness(self.shape, thickness as c_float)
         }
@@ -544,7 +544,7 @@ impl Shape {
     /// This function must be called by specialized shape objects
     /// everytime their points change (ie. the result of either
     /// the getPointCount or getPoint callbacks is different).
-    pub fn update(&mut self) -> () {
+    pub fn update(&mut self) {
         unsafe {
             ffi::sfShape_update(self.shape)
         }
@@ -559,13 +559,13 @@ impl Shape {
 impl Drawable for Shape {
     fn draw<RT: RenderTarget>(&self,
                                     render_target: &mut RT,
-                                    render_states: &mut RenderStates) -> () {
+                                    render_states: &mut RenderStates) {
         render_target.draw_shape(self, render_states)
     }
 }
 
 impl Drop for Shape {
-    fn drop(&mut self) -> () {
+    fn drop(&mut self) {
         unsafe {
             ffi::sfShape_destroy(self.shape)
         }

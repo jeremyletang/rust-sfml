@@ -72,7 +72,7 @@ impl Packet {
     /// Clear a packet
     ///
     /// After calling Clear, the packet is empty.
-    pub fn clear(&self) -> () {
+    pub fn clear(&self) {
         unsafe {
             ffi::sfPacket_clear(self.packet)
         }
@@ -186,70 +186,70 @@ impl Packet {
 }
 
     /// Function to insert data into a packet
-    pub fn write_bool(&self, data: bool) -> () {
+    pub fn write_bool(&self, data: bool) {
         unsafe {
             ffi::sfPacket_writeBool(self.packet, SfBool::from_bool(data))
         }
     }
 
     /// Function to insert data into a packet
-    pub fn write_i8(&self, data: i8) -> () {
+    pub fn write_i8(&self, data: i8) {
         unsafe {
             ffi::sfPacket_writeInt8(self.packet, data)
         }
     }
 
     /// Function to insert data into a packet
-    pub fn write_u8(&self, data: u8) -> () {
+    pub fn write_u8(&self, data: u8) {
         unsafe {
             ffi::sfPacket_writeUint8(self.packet, data)
         }
     }
 
     /// Function to insert data into a packet
-    pub fn write_i16(&self, data: i16) -> () {
+    pub fn write_i16(&self, data: i16) {
         unsafe {
             ffi::sfPacket_writeInt16(self.packet, data)
         }
     }
 
     /// Function to insert data into a packet
-    pub fn write_u16(&self, data: u16) -> () {
+    pub fn write_u16(&self, data: u16) {
         unsafe {
             ffi::sfPacket_writeUint16(self.packet, data)
         }
     }
 
     /// Function to insert data into a packet
-    pub fn write_i32(&self, data: i32) -> () {
+    pub fn write_i32(&self, data: i32) {
         unsafe {
             ffi::sfPacket_writeInt32(self.packet, data)
         }
     }
 
     /// Function to insert data into a packet
-    pub fn write_u32(&self, data: u32) -> () {
+    pub fn write_u32(&self, data: u32) {
         unsafe {
             ffi::sfPacket_writeUint32(self.packet, data)
         }
     }
 
     /// Function to insert data into a packet
-    pub fn write_f32(&self, data: f32) -> () {
+    pub fn write_f32(&self, data: f32) {
         unsafe {
             ffi::sfPacket_writeFloat(self.packet, data)
         }
     }
 
     /// Function to insert data into a packet
-    pub fn write_f64(&self, data: f64) -> () {
+    pub fn write_f64(&self, data: f64) {
         unsafe {
             ffi::sfPacket_writeDouble(self.packet, data)
         }
     }
 
     /// Function to insert data into a packet
-    pub fn write_string(&self, string: &str) -> () {
+    pub fn write_string(&self, string: &str) {
         let c_string = CString::new(string.as_bytes()).unwrap().as_ptr();
         unsafe {
             ffi::sfPacket_writeString(self.packet, c_string)
@@ -270,7 +270,7 @@ impl Wrappable<*mut ffi::sfPacket> for Packet {
 }
 
 impl Drop for Packet {
-    fn drop(&mut self) -> () {
+    fn drop(&mut self) {
         unsafe {
             ffi::sfPacket_destroy(self.packet)
         }
