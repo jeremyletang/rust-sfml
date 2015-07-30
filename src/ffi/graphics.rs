@@ -215,6 +215,7 @@ pub mod font {
 
     use ffi::graphics::texture::sfTexture;
     use ffi::sfml_types::SfBool;
+    use system::inputstream::InputStream as sfInputStream;
 
     #[repr(C)]
     pub struct sfFont;
@@ -223,7 +224,7 @@ pub mod font {
         pub fn sfFont_createFromFile(filename: *const c_char) -> *mut sfFont;
         pub fn sfFont_copy(font: *mut sfFont) -> *mut sfFont;
         pub fn sfFont_createFromMemory(data: *const c_uchar, sizeInBytes: size_t) -> *mut sfFont;
-        // fn sfFont_createFromStream(stream: *mut sfInputStream) -> *mut sfFont;
+        pub fn sfFont_createFromStream(stream: *mut sfInputStream) -> *mut sfFont;
         pub fn sfFont_destroy(font: *mut sfFont);
         pub fn sfFont_getGlyph(font: *mut sfFont, codepoint: u32, characterSize: c_uint, bold :SfBool) -> Glyph;
         pub fn sfFont_getKerning(font: *mut sfFont, first: u32, second: u32, characterSize: c_uint) -> c_int;
@@ -237,6 +238,7 @@ pub mod image {
 
     use graphics::{Color, IntRect};
     use system::vector2::Vector2u;
+    use system::inputstream::InputStream as sfInputStream;
 
     use ffi::sfml_types::SfBool;
 
@@ -249,7 +251,7 @@ pub mod image {
         pub fn sfImage_createFromPixels(width: c_uint, height: c_uint, pixels: *const u8) -> *mut sfImage;
         pub fn sfImage_createFromFile(filename: *const c_char) -> *mut sfImage;
         pub fn sfImage_createFromMemory(data: *const c_uchar, size: size_t) -> *mut sfImage;
-        //fn sfImage_createFromStream(stream: *mut sfInputStream) -> *mut sfImage;
+        pub fn sfImage_createFromStream(stream: *mut sfInputStream) -> *mut sfImage;
         pub fn sfImage_copy(image: *mut sfImage) -> *mut sfImage;
         pub fn sfImage_destroy(image: *mut sfImage);
         pub fn sfImage_saveToFile(image: *mut sfImage, filename: *const c_char) -> SfBool;
@@ -348,6 +350,7 @@ pub mod shader {
     use graphics::{Transform, Color};
     use system::vector2::Vector2f;
     use system::vector3::Vector3f;
+    use system::inputstream::InputStream as sfInputStream;
 
     use ffi::graphics::texture::sfTexture;
     use ffi::sfml_types::SfBool;
@@ -358,7 +361,7 @@ pub mod shader {
     extern "C" {
         pub fn sfShader_createFromFile(vertexShaderFilename: *const c_char, fragmentShaderFilename: *const c_char) -> *mut sfShader;
         pub fn sfShader_createFromMemory(vertexShader: *const c_char, fragmentShader: *const c_char) -> *mut sfShader;
-        //fn sfShader_createFromStream(vertexShaderStream: *mut sfInputStream, fragmentShaderStream: *mut sfInputStream) -> *mut sfShader;
+        pub fn sfShader_createFromStream(vertexShaderStream: *mut sfInputStream, fragmentShaderStream: *mut sfInputStream) -> *mut sfShader;
         pub fn sfShader_destroy(shader: *mut sfShader)-> ();
         pub fn sfShader_setFloatParameter(shader: *mut sfShader, name: *const c_char, x: c_float);
         pub fn sfShader_setFloat2Parameter(shader: *mut sfShader, name: *const c_char, x: c_float, y: c_float);
@@ -567,6 +570,7 @@ pub mod texture {
 
     use system::vector2::Vector2u;
     use graphics::IntRect;
+    use system::inputstream::InputStream as sfInputStream;
 
     use ffi::graphics::render_window::sfRenderWindow;
     use ffi::graphics::image::sfImage;
@@ -580,7 +584,7 @@ pub mod texture {
         pub fn sfTexture_create(width: c_uint, height: c_uint) -> *mut sfTexture;
         pub fn sfTexture_createFromFile(filename: *mut c_char, area: *const IntRect) -> *mut sfTexture;
         pub fn sfTexture_createFromMemory(data: *const c_uchar, sizeInBytes: size_t , area: *const IntRect) -> *mut sfTexture;
-        //fn sfTexture_createFromStream(strea;: *mut sfInputStream, area: *mut sfIntRect) -> *mut sfTexture;
+        pub fn sfTexture_createFromStream(stream: *mut sfInputStream, area: *mut IntRect) -> *mut sfTexture;
         pub fn sfTexture_createFromImage(image :*mut sfImage, area: *const IntRect) -> *mut sfTexture;
         pub fn sfTexture_copy(texture: *mut sfTexture) -> *mut sfTexture;
         pub fn sfTexture_destroy(texture: *mut sfTexture);

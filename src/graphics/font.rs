@@ -34,6 +34,9 @@ use graphics::{Texture, Glyph};
 use ffi::sfml_types::SfBool;
 use ffi::graphics::font as ffi;
 
+use std::io::{Read, Seek};
+use system::inputstream::InputStream;
+
 /// Class for loading and manipulating character fonts
 pub struct Font {
     font: *mut ffi::sfFont,
@@ -51,6 +54,27 @@ impl Font {
         let c_str = CString::new(filename.as_bytes()).unwrap();
         let fnt = unsafe {
             ffi::sfFont_createFromFile(c_str.as_ptr())
+        };
+        if fnt.is_null() {
+            None
+        } else {
+            Some(Font {
+                    font: fnt,
+                    dropable: true
+                })
+        }
+    }
+
+    /// Create a new font from a stream (a struct implementing Read and Seek)
+    ///
+    /// # Arguments
+    /// * stream - Your struct, implementing Read and Seek
+    ///
+    /// Return Some(Font) or None
+    pub fn new_from_stream<T: Read + Seek>(stream: &mut T) -> Option<Font> {
+        let mut input_stream = InputStream::new(stream);
+        let fnt = unsafe {
+            ffi::sfFont_createFromStream(&mut input_stream)
         };
         if fnt.is_null() {
             None
