@@ -41,6 +41,7 @@ pub mod music {
     use libc::{c_uint, c_float, c_char, size_t, c_uchar};
 
     use system::vector3::Vector3f;
+    use system::inputstream::InputStream as sfInputStream;
 
     use ffi::system::time::sfTime;
     use ffi::audio::sound_status::sfSoundStatus;
@@ -52,7 +53,7 @@ pub mod music {
     extern "C" {
         pub fn sfMusic_createFromFile(filename: *const c_char) -> *mut sfMusic;
         pub fn sfMusic_createFromMemory(data: *const c_uchar, sizeInBytes: size_t) -> *mut sfMusic;
-        // sfMusic*mut  sfMusic_createFromStream(sfInputStream*mut  stream);
+        pub fn sfMusic_createFromStream(stream: *mut sfInputStream) -> *mut sfMusic;
         pub fn sfMusic_destroy(music: *mut sfMusic);
         pub fn sfMusic_setLoop(music: *mut sfMusic, lloop: SfBool);
         pub fn sfMusic_getLoop(music: *mut sfMusic) -> SfBool;

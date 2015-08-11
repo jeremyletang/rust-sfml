@@ -30,10 +30,12 @@
 use libc::{c_float, size_t};
 use std::mem;
 use std::ffi::CString;
+use std::io::{Read, Seek};
 
 use audio::{SoundStatus, SoundSource};
 use system::Time;
 use system::vector3::Vector3f;
+use system::inputstream::InputStream;
 use traits::Wrappable;
 
 use ffi::sfml_types::SfBool;
@@ -64,6 +66,32 @@ impl Music {
         let c_str = CString::new(filename.as_bytes()).unwrap().as_ptr();
         let music_tmp: *mut ffi::sfMusic = unsafe {
             ffi::sfMusic_createFromFile(c_str)
+        };
+        if music_tmp.is_null() {
+            None
+        } else {
+            Some(Music{
+                    music: music_tmp
+                })
+        }
+    }
+
+    /// Create a new music and load it from a stream (a struct implementing Read and Seek)
+    ///
+    /// This function doesn't start playing the music (call
+    /// sfMusic_play to do so).
+    /// Here is a complete list of all the supported audio formats:
+    /// ogg, wav, flac, aiff, au, raw, paf, svx, nist, voc, ircam,
+    /// w64, mat4, mat5 pvf, htk, sds, avr, sd2, caf, wve, mpc2k, rf64.
+    ///
+    /// # Arguments
+    /// * stream - Your struct, implementing Read and Seek
+    ///
+    /// Return Some(Music) or None
+    pub fn new_from_stream<T: Read + Seek>(stream: &mut T) -> Option<Music> {
+        let mut input_stream = InputStream::new(stream);
+        let music_tmp: *mut ffi::sfMusic = unsafe {
+            ffi::sfMusic_createFromStream(&mut input_stream)
         };
         if music_tmp.is_null() {
             None

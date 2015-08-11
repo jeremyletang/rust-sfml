@@ -29,10 +29,12 @@
 use libc::{c_uint, size_t};
 use std::ptr;
 use std::ffi::CString;
+use std::io::{Read, Seek};
 
 use traits::Wrappable;
 use graphics::{RenderWindow, Image, IntRect};
 use system::vector2::Vector2u;
+use system::inputstream::InputStream;
 use window::Window;
 
 use ffi::sfml_types::SfBool;
@@ -78,6 +80,27 @@ impl Texture {
         let tex = unsafe { ffi::sfTexture_createFromMemory(&mem[0],
                                                            mem.len() as size_t,
                                                            area) };
+        if tex.is_null() {
+            None
+        } else {
+            Some(Texture {
+                    texture: tex,
+                    dropable: true
+                })
+        }
+    }
+
+    /// Create a new texture from a stream (a struct implementing Read + Seek)
+    ///
+    /// # Arguments
+    /// * stream - Your struct, implementing Read and Seek
+    ///
+    /// Return Some(Texture) or None
+    pub fn new_from_stream<T: Read + Seek>(stream: &mut T, area: &mut IntRect) -> Option<Texture> {
+        let mut input_stream = InputStream::new(stream);
+        let tex = unsafe {
+            ffi::sfTexture_createFromStream(&mut input_stream, area)
+        };
         if tex.is_null() {
             None
         } else {

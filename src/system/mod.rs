@@ -33,6 +33,7 @@ pub use system::vector3::Vector3f;
 pub use system::msleep::sleep;
 pub use system::time::Time;
 pub use system::clock::Clock;
+pub use system::inputstream::InputStream;
 
 #[cfg(any(target_os="macos", target_os="linux", target_os="windows"))]
 mod platform {
@@ -46,3 +47,5 @@ mod time;
 mod clock;
 #[path = "sleep.rs"]
 mod msleep;
+#[doc(hidden)] // this is not meant for external use
+pub mod inputstream;

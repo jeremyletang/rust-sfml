@@ -34,6 +34,9 @@ use graphics::{Color, IntRect};
 use ffi::sfml_types::SfBool;
 use ffi::graphics::image as ffi;
 
+use std::io::{Read, Seek};
+use system::inputstream::InputStream;
+
 /// Loading, manipulating and saving images.
 pub struct Image {
     image: *mut ffi::sfImage
@@ -52,6 +55,26 @@ impl Image {
     pub fn new(width: u32, height: u32) -> Option<Image> {
         let image = unsafe { ffi::sfImage_create(width as c_uint,
                                                  height as c_uint) };
+        if image.is_null() {
+            None
+        } else {
+            Some(Image {
+                    image: image
+                })
+        }
+    }
+
+    /// Create an image from a stream.
+    ///
+    /// This image is filled with black pixels.
+    ///
+    /// # Arguments
+    /// * stream - Your struct, implementing Read and Seek
+    ///
+    /// Return Some(Image) or None
+    pub fn new_from_stream<T: Read + Seek>(stream: &mut T) -> Option<Image> {
+        let mut input_stream = InputStream::new(stream);
+        let image = unsafe { ffi::sfImage_createFromStream(&mut input_stream) };
         if image.is_null() {
             None
         } else {

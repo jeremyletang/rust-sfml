@@ -39,6 +39,9 @@ use system::vector3::Vector3f;
 
 use ffi::graphics::shader as ffi;
 
+use std::io::{Read, Seek};
+use system::inputstream::InputStream;
+
 // pub mod rc;
 
 /// Shader class (vertex and fragment)
@@ -83,6 +86,46 @@ impl<'s> Shader<'s> {
             };
             ffi::sfShader_createFromFile(c_vertex_shader_filename,
                                          c_fragment_shader_filename)
+        };
+        if shader.is_null() {
+            None
+        } else {
+            Some(Shader {
+                    shader: shader,
+                    texture: None
+                })
+        }
+    }
+
+    /// Load both the vertex and fragment shaders from streams
+    ///
+    /// This function can load both the vertex and the fragment
+    /// shaders, or only one of them: pass None if you don't want to load
+    /// either the vertex shader or the fragment shader.
+    /// The sources must be text files containing valid shaders
+    /// in GLSL language. GLSL is a C-like language dedicated to
+    /// OpenGL shaders; you'll probably need to read a good documentation
+    /// for it before writing your own shaders.
+    ///
+    /// # Arguments
+    /// * vertexShaderStream - Some(T: Read + Seek) of the vertex shader stream to load, or None to skip this shader
+    /// * fragmentShaderStream - Some(T: Read + Seek) of the fragment shader stream to load, or None to skip this shader
+    ///
+    /// Return Some(Shader) or None
+    pub fn new_from_stream<T: Read + Seek>(vertex_shader_stream: Option<&mut T>,
+                                           fragment_shader_stream: Option<&mut T>)
+                                           -> Option<Shader<'s>> {
+        let shader = unsafe {
+            let c_vertex_shader_stream = match vertex_shader_stream {
+                Some(stream) => &mut InputStream::new(stream) as *mut InputStream,
+                None => ptr::null_mut()
+            };
+            let c_fragment_shader_stream = match fragment_shader_stream {
+                Some(stream) => &mut InputStream::new(stream) as *mut InputStream,
+                None => ptr::null_mut()
+            };
+            ffi::sfShader_createFromStream(c_vertex_shader_stream,
+                                           c_fragment_shader_stream)
         };
         if shader.is_null() {
             None
