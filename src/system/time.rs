@@ -40,6 +40,7 @@ use ffi::system::time as ffi;
 /// Represents a time value.
 ///
 /// Time encapsulates a time value in a flexible way.
+#[derive(Copy, Clone)]
 pub struct Time {
     time: ffi::sfTime
 }
