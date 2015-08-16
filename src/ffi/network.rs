@@ -38,8 +38,7 @@ pub mod packet {
 
     use ffi::sfml_types::SfBool;
 
-    #[repr(C)]
-    pub struct sfPacket;
+    pub enum sfPacket {}
 
     extern "C" {
         pub fn sfPacket_create() -> *mut sfPacket;
@@ -118,8 +117,7 @@ pub mod tcp_listener {
     use ffi::network::socket_status::SocketStatus;
     use ffi::sfml_types::SfBool;
 
-    #[repr(C)]
-    pub struct sfTcpListener;
+    pub enum sfTcpListener {}
 
     extern "C" {
         pub fn sfTcpListener_create() -> *mut sfTcpListener;
@@ -141,8 +139,7 @@ pub mod tcp_socket {
     use ffi::network::packet::sfPacket;
     use ffi::sfml_types::SfBool;
 
-    #[repr(C)]
-    pub struct sfTcpSocket;
+    pub enum sfTcpSocket {}
 
     extern "C" {
         pub fn sfTcpSocket_create() -> *mut sfTcpSocket;
@@ -170,8 +167,7 @@ pub mod udp_socket {
     use ffi::network::packet::sfPacket;
     use ffi::sfml_types::SfBool;
 
-    #[repr(C)]
-    pub struct sfUdpSocket;
+    pub enum sfUdpSocket {}
 
     extern "C" {
         pub fn sfUdpSocket_create() -> *mut sfUdpSocket;
@@ -251,17 +247,10 @@ pub mod ftp {
     pub const CONNECTIONCLOSED:            Status = 1002;
     pub const INVALIDFILE:                 Status = 1003;
 
-    #[repr(C)]
-    pub struct sfFtp;
-
-    #[repr(C)]
-    pub struct sfFtpDirectoryResponse;
-
-    #[repr(C)]
-    pub struct sfFtpListingResponse;
-
-    #[repr(C)]
-    pub struct sfFtpResponse;
+    pub enum sfFtp {}
+    pub enum sfFtpDirectoryResponse {}
+    pub enum sfFtpListingResponse {}
+    pub enum sfFtpResponse {}
 
     extern "C" {
         pub fn sfFtpListingResponse_destroy(ftpListingResponse: *mut sfFtpListingResponse);
@@ -339,14 +328,9 @@ pub mod http {
     pub const INVALIDRESPONSE:     Status = 1000;
     pub const CONNECTIONFAILED:    Status = 1001;
 
-    #[repr(C)]
-    pub struct sfHttpRequest;
-
-    #[repr(C)]
-    pub struct sfHttpResponse;
-
-    #[repr(C)]
-    pub struct sfHttp;
+    pub enum sfHttpRequest {}
+    pub enum sfHttpResponse {}
+    pub enum sfHttp {}
 
     extern "C" {
         pub fn sfHttpRequest_create() -> *mut sfHttpRequest;

@@ -44,8 +44,7 @@ pub mod render_window {
     use ffi::graphics::vertex_array::sfVertexArray;
     use ffi::sfml_types::SfBool;
 
-    #[repr(C)]
-    pub struct sfRenderWindow;
+    pub enum sfRenderWindow {}
 
     extern "C" {
         pub fn sfRenderWindow_create(mode: sfVideoMode, title: *const c_char, style: c_uint, settings: *const ContextSettings) -> *mut sfRenderWindow;
@@ -107,8 +106,7 @@ pub mod circle_shape {
     use ffi::graphics::texture::sfTexture;
     use ffi::sfml_types::SfBool;
 
-    #[repr(C)]
-    pub struct sfCircleShape;
+    pub enum sfCircleShape {}
 
     extern "C" {
         pub fn sfCircleShape_create() -> *mut sfCircleShape;
@@ -169,8 +167,7 @@ pub mod convex_shape {
     use ffi::graphics::texture::sfTexture;
     use ffi::sfml_types::SfBool;
 
-    #[repr(C)]
-    pub struct sfConvexShape;
+    pub enum sfConvexShape {}
 
     extern "C" {
         pub fn sfConvexShape_create() -> *mut sfConvexShape;
@@ -217,8 +214,7 @@ pub mod font {
     use ffi::sfml_types::SfBool;
     use system::inputstream::InputStream as sfInputStream;
 
-    #[repr(C)]
-    pub struct sfFont;
+    pub enum sfFont {}
 
     extern "C" {
         pub fn sfFont_createFromFile(filename: *const c_char) -> *mut sfFont;
@@ -242,8 +238,7 @@ pub mod image {
 
     use ffi::sfml_types::SfBool;
 
-    #[repr(C)]
-    pub struct sfImage;
+    pub enum sfImage {}
 
     extern "C" {
         pub fn sfImage_create(width: c_uint, height: c_uint) -> *mut sfImage;
@@ -289,8 +284,7 @@ pub mod rectangle_shape {
     use ffi::graphics::texture::sfTexture;
     use ffi::sfml_types::SfBool;
 
-    #[repr(C)]
-    pub struct sfRectangleShape;
+    pub enum sfRectangleShape {}
 
     extern "C" {
         pub fn sfRectangleShape_create() -> *mut sfRectangleShape;
@@ -355,8 +349,7 @@ pub mod shader {
     use ffi::graphics::texture::sfTexture;
     use ffi::sfml_types::SfBool;
 
-    #[repr(C)]
-    pub struct sfShader;
+    pub enum sfShader {}
 
     extern "C" {
         pub fn sfShader_createFromFile(vertexShaderFilename: *const c_char, fragmentShaderFilename: *const c_char) -> *mut sfShader;
@@ -397,8 +390,7 @@ pub mod render_texture {
     use ffi::graphics::view::sfView;
     use ffi::sfml_types::SfBool;
 
-    #[repr(C)]
-    pub struct sfRenderTexture;
+    pub enum sfRenderTexture {}
 
     extern "C" {
         pub fn sfRenderTexture_create(width: c_uint, height: c_uint, depthBuffer: SfBool) -> *mut sfRenderTexture;
@@ -440,8 +432,7 @@ pub mod shape {
     use ffi::graphics::texture::sfTexture;
     use ffi::sfml_types::SfBool;
 
-    #[repr(C)]
-    pub struct sfShape;
+    pub enum sfShape {}
 
     extern "C" {
         pub fn sfShape_create(getPointCount: extern "C" fn(*mut c_void) -> u32, getPoint: extern "C" fn(u32, *mut c_void) -> Vector2f, userData: *mut c_void) -> *mut sfShape;
@@ -487,8 +478,7 @@ pub mod sprite {
     use ffi::graphics::texture::sfTexture;
     use ffi::sfml_types::SfBool;
 
-    #[repr(C)]
-    pub struct sfSprite;
+    pub enum sfSprite {}
 
     extern "C" {
         pub fn sfSprite_create() -> *mut sfSprite;
@@ -526,8 +516,7 @@ pub mod text {
 
     use ffi::graphics::font::sfFont;
 
-    #[repr(C)]
-    pub struct sfText;
+    pub enum sfText {}
 
     extern "C" {
         pub fn sfText_create() -> *mut sfText;
@@ -577,8 +566,7 @@ pub mod texture {
     use ffi::window::window::sfWindow;
     use ffi::sfml_types::SfBool;
 
-    #[repr(C)]
-    pub struct sfTexture;
+    pub enum sfTexture {}
 
     extern "C" {
         pub fn sfTexture_create(width: c_uint, height: c_uint) -> *mut sfTexture;
@@ -632,8 +620,7 @@ pub mod transformable {
     use system::vector2::Vector2f;
     use graphics::Transform;
 
-    #[repr(C)]
-    pub struct sfTransformable;
+    pub enum sfTransformable {}
 
     extern "C" {
         pub fn sfTransformable_create() -> *mut sfTransformable;
@@ -670,8 +657,7 @@ pub mod vertex_array {
     pub const SFTRIANGLESFAN:     sfPrimitiveType = 5;
     pub const SFQUADS:            sfPrimitiveType = 6;
 
-    #[repr(C)]
-    pub struct sfVertexArray;
+    pub enum sfVertexArray {}
 
     extern "C" {
         pub fn sfVertexArray_create() -> *mut sfVertexArray;
@@ -695,8 +681,7 @@ pub mod view {
     use system::vector2::Vector2f;
     use graphics::FloatRect;
 
-    #[repr(C)]
-    pub struct sfView;
+    pub enum sfView {}
 
     extern "C" {
         pub fn sfView_create() -> *mut sfView;

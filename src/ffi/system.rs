@@ -25,8 +25,7 @@
 pub mod clock {
     use ffi::system::time::sfTime;
 
-    #[repr(C)]
-    pub struct sfClock;
+    pub enum sfClock {}
 
     extern "C" {
         pub fn sfClock_create() -> *mut sfClock;

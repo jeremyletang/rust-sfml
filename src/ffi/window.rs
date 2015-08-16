@@ -31,8 +31,7 @@ pub mod window {
     use ffi::window::video_mode::sfVideoMode;
     use ffi::sfml_types::SfBool;
 
-    #[repr(C)]
-    pub struct sfWindow;
+    pub enum sfWindow {}
 
     extern "C" {
         pub fn sfWindow_create(mode: sfVideoMode, title: *const c_char, style: c_uint, settings: *const ContextSettings) -> *mut sfWindow;
@@ -68,8 +67,7 @@ pub mod window {
 pub mod context {
     use ffi::sfml_types::SfBool;
 
-    #[repr(C)]
-    pub struct sfContext;
+    pub enum sfContext {}
 
     extern "C" {
         pub fn sfContext_create() -> *mut sfContext;

@@ -47,8 +47,7 @@ pub mod music {
     use ffi::audio::sound_status::sfSoundStatus;
     use ffi::sfml_types::SfBool;
 
-    #[repr(C)]
-    pub struct sfMusic;
+    pub enum sfMusic {}
 
     extern "C" {
         pub fn sfMusic_createFromFile(filename: *const c_char) -> *mut sfMusic;
@@ -92,8 +91,7 @@ pub mod sound {
     use ffi::system::time::sfTime;
     use ffi::sfml_types::SfBool;
 
-    #[repr(C)]
-    pub struct sfSound;
+    pub enum sfSound {}
 
     extern "C" {
         pub fn sfSound_create() -> *mut sfSound;
@@ -130,8 +128,7 @@ pub mod sound_buffer {
     use ffi::system::time::sfTime;
     use ffi::sfml_types::SfBool;
 
-    #[repr(C)]
-    pub struct sfSoundBuffer;
+    pub enum sfSoundBuffer {}
 
     extern "C" {
         pub fn sfSoundBuffer_createFromFile(filename: *const c_char) -> *mut sfSoundBuffer;
@@ -152,8 +149,7 @@ pub mod sound_buffer_recorder {
     use ffi::audio::sound_buffer::sfSoundBuffer;
     use ffi::sfml_types::SfBool;
 
-    #[repr(C)]
-    pub struct sfSoundBufferRecorder;
+    pub enum sfSoundBufferRecorder {}
 
     extern "C" {
         pub fn sfSoundBufferRecorder_create() -> *mut sfSoundBufferRecorder;
