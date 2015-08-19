@@ -31,7 +31,7 @@ impl<'s> CustomDrawable<'s> {
 
 // Implements the drawable trait, only this function is mendatory.
 impl<'s> Drawable for CustomDrawable<'s> {
-    fn draw<RT: RenderTarget>(&self, render_target: &mut RT, _: &mut RenderStates) {
+    fn draw(&self, render_target: &mut RenderTarget, _: &mut RenderStates) {
         render_target.draw(&self.circle);
         render_target.draw(&self.rect)
     }
