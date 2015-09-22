@@ -104,7 +104,7 @@ impl IpAddress {
         unsafe {
             let string: *mut u8 = ptr::null_mut();
             ffi::sfIpAddress_toString(self.ip, string);
-            str::from_utf8(CStr::from_ptr(string as *const i8).to_bytes_with_nul()).unwrap().to_string()
+            str::from_utf8(CStr::from_ptr(string as *const i8).to_bytes_with_nul()).unwrap().into()
         }
     }
 

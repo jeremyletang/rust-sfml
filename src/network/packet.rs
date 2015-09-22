@@ -181,7 +181,7 @@ impl Packet {
             let string: *mut u8 = ptr::null_mut();
             ffi::sfPacket_readString(self.packet, string);
             let string = string as *const i8;
-            str::from_utf8(CStr::from_ptr(string).to_bytes_with_nul()).unwrap().to_string()
+            str::from_utf8(CStr::from_ptr(string).to_bytes_with_nul()).unwrap().into()
         }
 }
 

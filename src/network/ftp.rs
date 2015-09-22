@@ -203,7 +203,7 @@ impl ListingResponse {
     pub fn get_message(&self) -> String {
         unsafe {
             let string = ffi::sfFtpListingResponse_getMessage(self.listing_response);
-            str::from_utf8(CStr::from_ptr(string).to_bytes_with_nul()).unwrap().to_string()
+            str::from_utf8(CStr::from_ptr(string).to_bytes_with_nul()).unwrap().into()
         }
     }
 
@@ -225,7 +225,7 @@ impl ListingResponse {
     pub fn get_name(&self, index: u64) -> String {
         unsafe {
             let string = ffi::sfFtpListingResponse_getName(self.listing_response, index as size_t);
-            str::from_utf8(CStr::from_ptr(string).to_bytes_with_nul()).unwrap().to_string()
+            str::from_utf8(CStr::from_ptr(string).to_bytes_with_nul()).unwrap().into()
         }
     }
 }
@@ -264,7 +264,7 @@ impl DirectoryResponse {
     pub fn get_message(&self) -> String {
         unsafe {
             let string = ffi::sfFtpDirectoryResponse_getMessage(self.directory_response);
-            str::from_utf8(CStr::from_ptr(string).to_bytes_with_nul()).unwrap().to_string()
+            str::from_utf8(CStr::from_ptr(string).to_bytes_with_nul()).unwrap().into()
         }
     }
 
@@ -274,7 +274,7 @@ impl DirectoryResponse {
     pub fn get_directory(&self) -> String {
         unsafe {
             let string = ffi::sfFtpDirectoryResponse_getDirectory(self.directory_response);
-            str::from_utf8(CStr::from_ptr(string).to_bytes_with_nul()).unwrap().to_string()
+            str::from_utf8(CStr::from_ptr(string).to_bytes_with_nul()).unwrap().into()
         }
     }
 }
@@ -313,7 +313,7 @@ impl Response {
     pub fn get_message(&self) -> String {
         unsafe {
             let string = ffi::sfFtpResponse_getMessage(self.response);
-            str::from_utf8(CStr::from_ptr(string).to_bytes_with_nul()).unwrap().to_string()
+            str::from_utf8(CStr::from_ptr(string).to_bytes_with_nul()).unwrap().into()
         }
     }
 }

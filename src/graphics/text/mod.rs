@@ -134,7 +134,7 @@ impl<'s> Text<'s> {
     pub fn get_string(&self) -> String {
         unsafe {
             let string = ffi::sfText_getString(self.text);
-            str::from_utf8(CStr::from_ptr(string).to_bytes_with_nul()).unwrap().to_string()
+            str::from_utf8(CStr::from_ptr(string).to_bytes_with_nul()).unwrap().into()
         }
     }
 
