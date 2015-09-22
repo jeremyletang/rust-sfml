@@ -41,9 +41,6 @@
 //! - SFML 2.1: http://www.sfml-dev.org/download/sfml/2.1/
 //! - CSFML 2.1: http://www.sfml-dev.org/download/csfml/
 //!
-//! Examples are located under the `examples` directory.
-//! You can run an example with `cargo run --example example_name`.
-//!
 //! __Rust-sfml__ works on Linux, windows and OSX.
 //!
 //! # Short example
