@@ -231,7 +231,7 @@ impl VertexArray {
     }
 
     /// Return an immutable iterator over all the vertice contained by the VertexArray
-    pub fn vertices<'a>(&'a self) -> Vertices<'a> {
+    pub fn vertices(&self) -> Vertices {
         Vertices {
             vertex_array: self,
             pos: 0
@@ -274,9 +274,9 @@ impl<'a> Iterator for Vertices<'a> {
 impl Index<u32> for VertexArray {
     type Output = Vertex;
 
-    fn index<'s>(&'s self, _rhs: u32) -> &'s Vertex {
+    fn index(&self, _rhs: u32) -> &Vertex {
         unsafe {
-            mem::transmute::<*const Vertex, &'s Vertex>
+            mem::transmute::<*const Vertex, &Vertex>
                 (ffi::sfVertexArray_getVertex(self.vertex_array,
                                               _rhs as c_uint) as *const Vertex)
         }
