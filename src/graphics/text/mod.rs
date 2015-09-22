@@ -150,9 +150,7 @@ impl<'s> Text<'s> {
             ::std::slice::from_raw_parts(string, self.string_length as usize)
         };
 
-        let result = string_slice.to_vec();
-
-        result
+        string_slice.to_vec()
     }
 
     /// Get the size of the characters
