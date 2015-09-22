@@ -94,7 +94,6 @@
 //! This software is provided under the same license than the SFML, the Zlib/png
 //! license.
 //!
-//! Here is a list of all modules :
 
 #![doc(html_logo_url = "http://rust-sfml.org/logo_rsfml.png")]
 #![warn(missing_docs)]
