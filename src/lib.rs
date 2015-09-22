@@ -33,12 +33,13 @@
 //! __SFML__ website : www.sfml-dev.org
 //!
 //!
-//! You must install on your computer the SFML2 and CSFML2 libraries
-//! who are used for the binding.
+//! Prerequisites
+//! =============
 //!
-//! SFML2: http://www.sfml-dev.org/download/sfml/2.0/
+//! SFML 2.1 and CSFML 2.1 must be installed on your computer. You can download them here:
 //!
-//! CSFML2: http://www.sfml-dev.org/download/csfml/
+//! - SFML 2.1: http://www.sfml-dev.org/download/sfml/2.1/
+//! - CSFML 2.1: http://www.sfml-dev.org/download/csfml/
 //!
 //! Examples are located under the `examples` directory.
 //! You can run an example with `cargo run --example example_name`.
