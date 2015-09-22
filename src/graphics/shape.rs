@@ -28,6 +28,24 @@
 use graphics::{Drawable, Transformable, Texture, IntRect, FloatRect, Color};
 use system::Vector2f;
 
+/// ShapeImpl trait
+///
+/// Implement this shape to create a new Shape
+pub trait ShapeImpl {
+    /// Get the total count of the point for the Shape who implement this trait.
+    ///
+    /// Return the points count
+    fn get_point_count(&self) -> u32;
+
+    /// Get a given point of a Shape.
+    ///
+    /// # Argument
+    /// * point - The index of the point to return
+    ///
+    /// Return a Vector2f who contains the point coordinates.
+    fn get_point(&self, point: u32) -> Vector2f;
+}
+
 /// The trait drawable is inherited by each object who can be drawn in a RenderTarget
 pub trait Shape<'s>: Drawable + Transformable {
     fn set_texture(&mut self,

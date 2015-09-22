@@ -118,7 +118,7 @@ extern crate libc;
 #[macro_use]
 extern crate bitflags;
 
-pub mod traits;
+mod traits;
 pub mod system;
 pub mod window;
 pub mod audio;

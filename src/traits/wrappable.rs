@@ -27,7 +27,7 @@
 //! Implemented by each object who wrapp an SFML object
 
 /// The trait wrappable is inherited by each object who needs to be wrapp or unwrapp to call to sfml
-#[doc(hidden)]
+#[allow(missing_docs)]
 pub trait Wrappable<T> {
     fn wrap(T) -> Self;
     fn unwrap(&self) -> T;

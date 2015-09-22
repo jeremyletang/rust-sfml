@@ -27,7 +27,8 @@
 use libc::{c_void, c_float, c_uint};
 use std::{ptr, mem};
 
-use traits::{ShapeImpl, Wrappable};
+use traits::Wrappable;
+use graphics::shape::ShapeImpl;
 use graphics::{Drawable, Transformable, RenderTarget, RenderStates, Texture, Color,
                Transform, IntRect, FloatRect};
 use system::vector2::Vector2f;

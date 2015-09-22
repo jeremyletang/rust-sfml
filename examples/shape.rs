@@ -2,9 +2,8 @@
 
 extern crate sfml;
 
-use sfml::graphics::{RenderWindow, Color, CustomShape, RenderTarget};
+use sfml::graphics::{RenderWindow, Color, CustomShape, ShapeImpl, RenderTarget};
 use sfml::window::{VideoMode, ContextSettings, event, window_style, Key};
-use sfml::traits::ShapeImpl;
 use sfml::system::Vector2f;
 
 #[derive(Clone, Copy)]
@@ -61,4 +60,3 @@ fn main() {
 
     }
 }
-
