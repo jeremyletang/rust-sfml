@@ -25,13 +25,7 @@
 //!
 //! # rust-sfml
 //!
-//! __SFML__ bindings for Rust
-//!
-//! This is a Rust binding for __SFML__, the Simple and Fast Multimedia Library,
-//! developped by Laurent Gomila.
-//!
-//! __SFML__ website : www.sfml-dev.org
-//!
+//! Rust bindings for [SFML](http://www.sfml-dev.org), the Simple and Fast Multimedia Library.
 //!
 //! Prerequisites
 //! =============
