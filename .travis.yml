@@ -1,24 +1,44 @@
+sudo: false
 env:
   global:
     - secure: RRXKOk7GGrsHMx1tJoG7Rhpbi4UAAulHweEkFGB2rTgTlcl37MGe7VLDC9NSKqEohfuJnqf54p/RMsucTfiidTYcadey5dMWwK13tiYmtikEcW/rxrwaJS8qhQJ9CwgjwsRc7laJVG0pyW5Vql33UtX2xEBlrotRTLR1tYdiHgo=
-    - LD_LIBRARY_PATH=/usr/local/lib
+    - LD_LIBRARY_PATH=/home/travis/build/jeremyletang/rust-sfml/sfml_install/usr/local/lib
 language: rust
 script:
+  - mkdir sfml_install
+  - wget http://www.sfml-dev.org/files/SFML-2.1-sources.zip
+  - unzip SFML-2.1-sources.zip
+  - pushd SFML-2.1 && mkdir build && cd build && cmake .. && make
+  - make DESTDIR=/home/travis/build/jeremyletang/rust-sfml/sfml_install install
+  - popd
+  - wget http://www.sfml-dev.org/files/CSFML-2.1-sources.zip
+  - unzip CSFML-2.1-sources.zip
+  - pushd CSFML-2.1
+  - mkdir cmake/Modules
+  - cp /home/travis/build/jeremyletang/rust-sfml/sfml_install/usr/local/share/SFML/cmake/Modules/FindSFML.cmake cmake/Modules
+  - mkdir build && cd build && cmake -DSFML_ROOT=/home/travis/build/jeremyletang/rust-sfml/sfml_install/usr/local .. && make
+  - make DESTDIR=/home/travis/build/jeremyletang/rust-sfml/sfml_install install
+  - popd
+  - mkdir .cargo
+  - mv .travis.cargo.config .cargo/config
   - cargo build --verbose
   - cargo test --verbose
   - cargo doc --verbose
-before_install:
-  - sudo apt-get update
-install:
-  - wget http://www.sfml-dev.org/download/sfml/2.1/SFML-2.1-linux-gcc-64bits.tar.bz2
-  - tar xf SFML-2.1-linux-gcc-64bits.tar.bz2
-  - sudo cp -r SFML-2.1/lib/* /usr/local/lib/.
-  - wget http://www.sfml-dev.org/download/csfml/CSFML-2.1-linux-gcc-64bits.tar.bz2
-  - tar xf CSFML-2.1-linux-gcc-64bits.tar.bz2
-  - sudo cp -r CSFML-2.1/lib/* /usr/local/lib/.
-  - sudo apt-get install libpthread-stubs0-dev libgl1-mesa-dev libx11-dev
-  - sudo apt-get install libxrandr-dev libfreetype6-dev libglew1.5-dev
-  - sudo apt-get install libjpeg8-dev libgpgme11-dev libsndfile1-dev libopenal-dev libjpeg62
+addons:
+  apt:
+    packages:
+    - libpthread-stubs0-dev
+    - libgl1-mesa-dev
+    - libx11-dev
+    - libxrandr-dev
+    - libfreetype6-dev
+    - libglew-dev
+    - libjpeg8-dev
+    - libgpgme11-dev
+    - libsndfile1-dev
+    - libopenal-dev
+    - libjpeg62
+    - cmake
 after_success:
   - mv target/doc doc
   - curl http://www.rust-ci.org/artifacts/put?t=$RUSTCI_TOKEN > file.txt
