@@ -26,6 +26,13 @@
 //!
 //! Structure defining the window's creation settings
 
+/// Non-debug, compatibility context (this and the core attribute are mutually exclusive).
+pub const CONTEXT_DEFAULT: u32 = 0;
+/// Core attribute.
+pub const CONTEXT_CORE: u32 = 1 << 0;
+/// Debug attribute.
+pub const CONTEXT_DEBUG: u32 = 1 << 2;
+
 /// OpenGL context settings
 ///
 /// Structure defining the window's creation settings
@@ -41,7 +48,9 @@ pub struct ContextSettings {
     /// Major number of the context version
     pub major_version: u32,
     /// Minor number of the context version
-    pub minor_version: u32
+    pub minor_version: u32,
+    /// The attribute flags to create the context with
+    pub attribute_flags: u32,
 }
 
 impl ContextSettings {
@@ -53,13 +62,15 @@ impl ContextSettings {
     /// * `antialiasing_level`: 0
     /// * `major_version`: 2
     /// * `minor_version`: 0
+    /// * `attribute_flags`: DEFAULT
     pub fn default() -> ContextSettings {
         ContextSettings {
             depth_bits: 0,
             stencil_bits: 0,
             antialiasing_level: 0,
             major_version: 2,
-            minor_version: 0
+            minor_version: 0,
+            attribute_flags: CONTEXT_DEFAULT,
         }
     }
 }
