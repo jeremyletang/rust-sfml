@@ -22,32 +22,11 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-pub use self::PrimitiveType::{Points, Lines, LinesStrip, Triangles,
-                              TrianglesStrip, TrianglesFan, Quads};
-
-/**
- * Types of primitives that a VertexArray can render
- *
- * Points and lines have no area, therefore their thickness
- * will always be 1 pixel, regardless the current transform
- * and view.
- *
- */
-#[repr(C)]
-#[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
-pub enum PrimitiveType {
-    /// List of individual points.
-    Points,
-    /// List of individual lines.
-    Lines,
-    /// List of connected lines, a point uses the previous point to form a line.
-    LinesStrip,
-    /// List of individual triangles.
-    Triangles,
-    /// List of connected triangles, a point uses the two previous points to form a triangle.
-    TrianglesStrip,
-    /// List of connected triangles, a point uses the common center and the previous point to form a triangle.
-    TrianglesFan,
-    /// List of individual quads.
-    Quads
-}
+pub use csfml_graphics_sys::sfPrimitiveType as PrimitiveType;
+pub use csfml_graphics_sys::sfPrimitiveType::sfPoints as Points;
+pub use csfml_graphics_sys::sfPrimitiveType::sfLines as Lines;
+pub use csfml_graphics_sys::sfPrimitiveType::sfLinesStrip as LinesStrip;
+pub use csfml_graphics_sys::sfPrimitiveType::sfTriangles as Triangles;
+pub use csfml_graphics_sys::sfPrimitiveType::sfTrianglesStrip as TrianglesStrip;
+pub use csfml_graphics_sys::sfPrimitiveType::sfTrianglesFan as TrianglesFan;
+pub use csfml_graphics_sys::sfPrimitiveType::sfQuads as Quads;

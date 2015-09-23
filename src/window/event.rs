@@ -162,127 +162,32 @@ pub enum Event {
 #[doc(hidden)]
 #[allow(non_upper_case_globals, non_camel_case_types)]
 pub mod raw {
+    use csfml_window_sys::*;
 
-    use ffi::sfml_types::SfBool;
-
-    pub type sfKeyCode = ::libc::c_int;
-
-    pub type sfMouseButton = ::libc::c_uint;
-    pub type sfJoystickAxis = ::libc::c_uint;
-
-    pub type sfEventType = ::libc::c_uint;
-    pub const sfEvtClosed: ::libc::c_uint = 0;
-    pub const sfEvtResized: ::libc::c_uint = 1;
-    pub const sfEvtLostFocus: ::libc::c_uint = 2;
-    pub const sfEvtGainedFocus: ::libc::c_uint = 3;
-    pub const sfEvtTextEntered: ::libc::c_uint = 4;
-    pub const sfEvtKeyPressed: ::libc::c_uint = 5;
-    pub const sfEvtKeyReleased: ::libc::c_uint = 6;
-    pub const sfEvtMouseWheelMoved: ::libc::c_uint = 7;
-    pub const sfEvtMouseButtonPressed: ::libc::c_uint = 8;
-    pub const sfEvtMouseButtonReleased: ::libc::c_uint = 9;
-    pub const sfEvtMouseMoved: ::libc::c_uint = 10;
-    pub const sfEvtMouseEntered: ::libc::c_uint = 11;
-    pub const sfEvtMouseLeft: ::libc::c_uint = 12;
-    pub const sfEvtJoystickButtonPressed: ::libc::c_uint = 13;
-    pub const sfEvtJoystickButtonReleased: ::libc::c_uint = 14;
-    pub const sfEvtJoystickMoved: ::libc::c_uint = 15;
-    pub const sfEvtJoystickConnected: ::libc::c_uint = 16;
-    pub const sfEvtJoystickDisconnected: ::libc::c_uint = 17;
-
-    #[repr(C)]
-    #[derive(Clone, Copy)]
-    pub struct sfKeyEvent {
-        pub _type: sfEventType,
-        pub code: sfKeyCode,
-        pub alt: SfBool,
-        pub control: SfBool,
-        pub shift: SfBool,
-        pub system: SfBool,
+    trait sfEventExt {
+        fn _type(&mut self) -> *mut sfEventType;
+        fn size(&mut self) -> super::Event;
+        fn key(&mut self, _type: sfEventType) -> super::Event;
+        fn text(&mut self) -> super::Event;
+        fn mouse_move(&mut self) -> super::Event;
+        fn mouse_button(&mut self, _type: sfEventType) -> super::Event;
+        fn mouse_wheel(&mut self) -> super::Event;
+        fn joystick_move(&mut self) -> super::Event;
+        fn joystick_button(&mut self, _type: sfEventType) -> super::Event;
+        fn joystick_connect(&mut self, _type: sfEventType) -> super::Event;
     }
 
-    #[repr(C)]
-    #[derive(Clone, Copy)]
-    pub struct sfTextEvent {
-        pub _type: sfEventType,
-        pub unicode: ::libc::c_uint,
-    }
-
-    #[repr(C)]
-    #[derive(Clone, Copy)]
-    pub struct sfMouseMoveEvent {
-        pub _type: sfEventType,
-        pub x: ::libc::c_int,
-        pub y: ::libc::c_int,
-    }
-
-    #[repr(C)]
-    #[derive(Clone, Copy)]
-    pub struct sfMouseButtonEvent {
-        pub _type: sfEventType,
-        pub button: sfMouseButton,
-        pub x: ::libc::c_int,
-        pub y: ::libc::c_int,
-    }
-
-    #[repr(C)]
-    #[derive(Clone, Copy)]
-    pub struct sfMouseWheelEvent {
-        pub _type: sfEventType,
-        pub delta: ::libc::c_int,
-        pub x: ::libc::c_int,
-        pub y: ::libc::c_int,
-    }
-
-    #[repr(C)]
-    #[derive(Clone, Copy)]
-    pub struct sfJoystickMoveEvent {
-        pub _type: sfEventType,
-        pub joystickid: ::libc::c_uint,
-        pub axis: sfJoystickAxis,
-        pub position: ::libc::c_float,
-    }
-
-    #[repr(C)]
-    #[derive(Clone, Copy)]
-    pub struct sfJoystickButtonEvent {
-        pub _type: sfEventType,
-        pub joystickid: ::libc::c_uint,
-        pub button: ::libc::c_uint,
-    }
-
-    #[repr(C)]
-    #[derive(Clone, Copy)]
-    pub struct sfJoystickConnectEvent {
-        pub _type: sfEventType,
-        pub joystickid: ::libc::c_uint,
-    }
-
-    #[repr(C)]
-    #[derive(Clone, Copy)]
-    pub struct sfSizeEvent {
-        pub _type: sfEventType,
-        pub width: ::libc::c_uint,
-        pub height: ::libc::c_uint,
-    }
-
-    #[repr(C)]
-    #[derive(Clone, Copy)]
-    pub struct sfEvent {
-        pub data: [u32; 6],
-    }
-
-    impl sfEvent {
-        pub fn _type(&mut self) -> *mut sfEventType {
+    impl sfEventExt for sfEvent {
+        fn _type(&mut self) -> *mut sfEventType {
             unsafe { ::std::mem::transmute(self) }
         }
 
-        pub fn size(&mut self) -> super::Event {
+        fn size(&mut self) -> super::Event {
             let e: *mut sfSizeEvent = unsafe { ::std::mem::transmute(self) };
             unsafe { super::Resized { width: (*e).width, height: (*e).height } }
         }
 
-        pub fn key(&mut self, _type: sfEventType) -> super::Event {
+        fn key(&mut self, _type: sfEventType) -> super::Event {
             let e: *mut sfKeyEvent = unsafe { ::std::mem::transmute(self) };
             let code = unsafe { ::std::mem::transmute((*e).code as i64) };
             let alt = unsafe { (*e).alt.to_bool() };
@@ -312,17 +217,17 @@ pub mod raw {
             }
         }
 
-        pub fn text(&mut self) -> super::Event {
+        fn text(&mut self) -> super::Event {
             let e: *mut sfTextEvent = unsafe { ::std::mem::transmute(self) };
             unsafe { super::TextEntered { code: ((*e).unicode as u8) as char } }
         }
 
-        pub fn mouse_move(&mut self) -> super::Event {
+        fn mouse_move(&mut self) -> super::Event {
             let e: *mut sfMouseMoveEvent = unsafe { ::std::mem::transmute(self) };
             unsafe { super::MouseMoved {x: (*e).x, y: (*e).y } }
         }
 
-        pub fn mouse_button(&mut self, _type: sfEventType) -> super::Event {
+        fn mouse_button(&mut self, _type: sfEventType) -> super::Event {
             let e: *mut sfMouseButtonEvent = unsafe { ::std::mem::transmute(self) };
             let button = unsafe { ::std::mem::transmute((*e).button as u8) };
             let x = unsafe { (*e).x };
@@ -335,12 +240,12 @@ pub mod raw {
             }
         }
 
-        pub fn mouse_wheel(&mut self) -> super::Event {
+        fn mouse_wheel(&mut self) -> super::Event {
             let e: *mut sfMouseWheelEvent = unsafe { ::std::mem::transmute(self) };
             unsafe { super::MouseWheelMoved { delta: (*e).delta, x: (*e).x, y: (*e).y } }
         }
 
-        pub fn joystick_move(&mut self) -> super::Event {
+        fn joystick_move(&mut self) -> super::Event {
             let e: *mut sfJoystickMoveEvent = unsafe { ::std::mem::transmute(self) };
             super::JoystickMoved {
                 joystickid: unsafe { (*e).joystickid },
@@ -349,7 +254,7 @@ pub mod raw {
             }
         }
 
-        pub fn joystick_button(&mut self, _type: sfEventType) -> super::Event {
+        fn joystick_button(&mut self, _type: sfEventType) -> super::Event {
             let e: *mut sfJoystickButtonEvent = unsafe { ::std::mem::transmute(self) };
             let jid = unsafe { (*e).joystickid };
             let btn = unsafe { (*e).button };
@@ -363,7 +268,7 @@ pub mod raw {
             }
         }
 
-        pub fn joystick_connect(&mut self, _type: sfEventType) -> super::Event {
+        fn joystick_connect(&mut self, _type: sfEventType) -> super::Event {
             let e: *mut sfJoystickConnectEvent = unsafe { ::std::mem::transmute(self) };
             let jid = unsafe { (*e).joystickid };
 
@@ -375,7 +280,7 @@ pub mod raw {
         }
     }
 
-    pub fn get_wrapped_event(event: &mut sfEvent) -> super::Event {
+    pub fn get_wrapped_event(event: &mut ::csfml_window_sys::sfEvent) -> super::Event {
         let _type = unsafe { *event._type() };
 
         match _type {

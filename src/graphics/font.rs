@@ -31,8 +31,8 @@ use std::ffi::CString;
 use traits::Wrappable;
 use graphics::{Texture, Glyph};
 
-use ffi::sfml_types::SfBool;
-use ffi::graphics::font as ffi;
+use sfml_types::sfBool;
+use csfml_graphics_sys as ffi;
 
 use std::io::{Read, Seek};
 use system::inputstream::InputStream;
@@ -74,7 +74,7 @@ impl Font {
     pub fn new_from_stream<T: Read + Seek>(stream: &mut T) -> Option<Font> {
         let mut input_stream = InputStream::new(stream);
         let fnt = unsafe {
-            ffi::sfFont_createFromStream(&mut input_stream)
+            ffi::sfFont_createFromStream(&mut input_stream.0)
         };
         if fnt.is_null() {
             None
@@ -186,7 +186,7 @@ impl Font {
                      character_size: u32,
                      bold: bool) -> Glyph {
         unsafe {
-            ffi::sfFont_getGlyph(self.font, codepoint, character_size as c_uint, SfBool::from_bool(bold))
+            ffi::sfFont_getGlyph(self.font, codepoint, character_size as c_uint, sfBool::from_bool(bold))
         }
     }
 }

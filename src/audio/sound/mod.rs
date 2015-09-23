@@ -31,11 +31,11 @@ use std::mem;
 
 use audio::{SoundStatus, SoundBuffer, SoundSource};
 use system::Time;
-use system::vector3::Vector3f;
+use sfml_types::Vector3f;
 use traits::Wrappable;
 
-use ffi::sfml_types::SfBool;
-use ffi::audio::sound as ffi;
+use sfml_types::sfBool;
+use csfml_audio_sys as ffi;
 
 pub mod rc;
 
@@ -104,7 +104,7 @@ impl<'s> Sound<'s> {
     ///
     /// Return true if the sound is looping, false otherwise
     pub fn set_loop(&mut self, lloop: bool) {
-        unsafe { ffi::sfSound_setLoop(self.sound, SfBool::from_bool(lloop)) }
+        unsafe { ffi::sfSound_setLoop(self.sound, sfBool::from_bool(lloop)) }
     }
 
     /// Tell whether or not a sound is in loop mode
@@ -265,7 +265,7 @@ impl<'s> SoundSource for Sound<'s> {
     /// * relative - true to set the position relative, false to set it absolute
     fn set_relative_to_listener(&mut self, relative: bool) {
         unsafe {
-            ffi::sfSound_setRelativeToListener(self.sound, SfBool::from_bool(relative))
+            ffi::sfSound_setRelativeToListener(self.sound, sfBool::from_bool(relative))
         }
     }
 

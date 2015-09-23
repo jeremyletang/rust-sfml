@@ -31,7 +31,8 @@
 //! in SFML, vertices also have a color and a pair of texture coordinates.
 
 use graphics::Color;
-use system::vector2::Vector2f;
+use sfml_types::Vector2f;
+use csfml_graphics_sys as ffi;
 
 /// Define a point with color and texture coordinates
 ///
@@ -40,15 +41,7 @@ use system::vector2::Vector2f;
 /// It has a position and other extra attributes that will be used for drawing:
 /// in SFML, vertices also have a color and a pair of texture coordinates.
 #[repr(C)]
-#[derive(Clone, PartialEq, PartialOrd, Debug, Copy)]
-pub struct Vertex {
-    /// 2D position of the vertex
-    pub position: Vector2f,
-    /// Color of the vertex.
-    pub color: Color,
-    /// Coordinates of the texture's pixel to map to the vertex.
-    pub tex_coords: Vector2f
-}
+pub struct Vertex(pub ffi::sfVertex);
 
 impl Vertex {
     /// Create a new Vertex
@@ -62,11 +55,11 @@ impl Vertex {
     pub fn new(position: &Vector2f,
                color: &Color,
                tex_coords: &Vector2f) -> Vertex {
-        Vertex {
+        Vertex(ffi::sfVertex {
             position: *position,
-            color: *color,
+            color: color.0,
             tex_coords: *tex_coords
-        }
+        })
     }
 
     /// Create a new default Vertex
@@ -78,11 +71,11 @@ impl Vertex {
     ///
     /// Return a Vertex
     pub fn default() -> Vertex {
-        Vertex {
+        Vertex(ffi::sfVertex {
             position: Vector2f { x: 0., y: 0. },
-            color: Color::white(),
+            color: Color::white().0,
             tex_coords: Vector2f { x: 0., y: 0. }
-        }
+        })
     }
 
     /// Create a new Vertex whit a position
@@ -96,11 +89,11 @@ impl Vertex {
     ///
     /// Return a Vertex
     pub fn new_with_pos(position: &Vector2f) -> Vertex {
-        Vertex {
+        Vertex(ffi::sfVertex {
             position: *position,
-            color: Color::white(),
+            color: Color::white().0,
             tex_coords: Vector2f { x: 0., y: 0. }
-        }
+        })
     }
 
     /// Create a new Vertex with the position and the color
@@ -114,11 +107,11 @@ impl Vertex {
     ///
     /// Return a Vertex
     pub fn new_with_pos_color(position: &Vector2f, color: &Color) -> Vertex {
-        Vertex {
+        Vertex(ffi::sfVertex {
             position: *position,
-            color: *color,
+            color: color.0,
             tex_coords: Vector2f { x: 0., y: 0. }
-        }
+        })
     }
 
     /// Create a new Vertex whit the position and the texture coordinates
@@ -133,11 +126,10 @@ impl Vertex {
     /// Return a Vertex
     pub fn new_with_pos_coords(position: &Vector2f,
                                tex_coords: &Vector2f) -> Vertex {
-        Vertex {
+        Vertex(ffi::sfVertex {
             position: *position,
-            color: Color::white(),
+            color: Color::white().0,
             tex_coords: *tex_coords
-        }
+        })
     }
 }
-

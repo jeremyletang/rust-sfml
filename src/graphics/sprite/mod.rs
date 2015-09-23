@@ -33,10 +33,10 @@ use std::ptr;
 use traits::Wrappable;
 use graphics::{Drawable, Transformable, FloatRect, IntRect, Color, Texture,
                RenderTarget, Transform, RenderStates};
-use system::vector2::Vector2f;
+use sfml_types::Vector2f;
 
-use ffi::sfml_types::SfBool;
-use ffi::graphics::sprite as ffi;
+use sfml_types::sfBool;
+use csfml_graphics_sys as ffi;
 
 // pub mod rc;
 
@@ -74,7 +74,7 @@ impl<'s> Sprite<'s> {
             None
         } else {
             unsafe {
-                ffi::sfSprite_setTexture(sp, texture.unwrap(), SfBool::SFTRUE);
+                ffi::sfSprite_setTexture(sp, texture.unwrap(), sfBool::SFTRUE);
             }
             Some(Sprite {
                     sprite: sp,
@@ -119,7 +119,7 @@ impl<'s> Sprite<'s> {
         unsafe {
             ffi::sfSprite_setTexture(self.sprite,
                                      texture.unwrap(),
-                                     SfBool::from_bool(reset_rect))
+                                     sfBool::from_bool(reset_rect))
         }
     }
 
@@ -129,7 +129,7 @@ impl<'s> Sprite<'s> {
     pub fn disable_texture(&mut self) {
         self.texture = None;
         unsafe {
-            ffi::sfSprite_setTexture(self.sprite, ptr::null_mut(), SfBool::SFTRUE)
+            ffi::sfSprite_setTexture(self.sprite, ptr::null_mut(), sfBool::SFTRUE)
         }
     }
 
@@ -144,7 +144,7 @@ impl<'s> Sprite<'s> {
     /// * color - New color of the sprite
     pub fn set_color(&mut self, color: &Color) {
         unsafe {
-            ffi::sfSprite_setColor(self.sprite, *color)
+            ffi::sfSprite_setColor(self.sprite, color.0)
         }
     }
 
@@ -168,7 +168,7 @@ impl<'s> Sprite<'s> {
     /// Return the global color of the sprite
     pub fn get_color(&self) -> Color {
         unsafe {
-            ffi::sfSprite_getColor(self.sprite)
+            Color(ffi::sfSprite_getColor(self.sprite))
         }
     }
 
@@ -468,7 +468,7 @@ impl<'s> Transformable for Sprite<'s> {
     /// of the object
     fn get_transform(&self) -> Transform {
         unsafe {
-            ffi::sfSprite_getTransform(self.sprite)
+            Transform(ffi::sfSprite_getTransform(self.sprite))
         }
     }
 
@@ -477,7 +477,7 @@ impl<'s> Transformable for Sprite<'s> {
     /// Return the inverse of the combined transformations applied to the object
     fn get_inverse_transform(&self) -> Transform {
         unsafe {
-            ffi::sfSprite_getInverseTransform(self.sprite)
+            Transform(ffi::sfSprite_getInverseTransform(self.sprite))
         }
     }
 }

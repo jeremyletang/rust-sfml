@@ -27,11 +27,9 @@
 use traits::Wrappable;
 use system::Time;
 
-use ffi::system::sleep as ffi;
-
 /// Make the current thread sleep for a given duration
 pub fn sleep(time: Time) {
     unsafe {
-        ffi::sfSleep(time.unwrap())
+        ::csfml_system_sys::sfSleep(time.unwrap())
     }
 }

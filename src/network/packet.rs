@@ -30,8 +30,8 @@ use std::str;
 
 use traits::Wrappable;
 
-use ffi::sfml_types::SfBool;
-use ffi::network::packet as ffi;
+use sfml_types::sfBool;
+use csfml_network_sys as ffi;
 
 /// Utility class to build blocks of data to transfer over the network.
 pub struct Packet {
@@ -188,7 +188,7 @@ impl Packet {
     /// Function to insert data into a packet
     pub fn write_bool(&self, data: bool) {
         unsafe {
-            ffi::sfPacket_writeBool(self.packet, SfBool::from_bool(data))
+            ffi::sfPacket_writeBool(self.packet, sfBool::from_bool(data))
         }
     }
 

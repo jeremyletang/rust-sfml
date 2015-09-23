@@ -32,7 +32,7 @@ use libc::c_uint;
 use traits::Wrappable;
 use audio::sound_buffer::SoundBuffer;
 
-use ffi::audio::sound_buffer_recorder as ffi;
+use csfml_audio_sys as ffi;
 
 /// Store captured audio data in sound Buffer
 ///

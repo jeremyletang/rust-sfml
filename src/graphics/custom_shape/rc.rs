@@ -32,9 +32,9 @@ use std::{ptr, mem};
 use traits::{Drawable, ShapeImpl, Wrappable};
 use graphics::{RenderTarget, rc, Texture, Color,
                Transform, IntRect, FloatRect, RenderStates};
-use system::vector2::Vector2f;
+use sfml_types::Vector2f;
 
-use ffi::sfml_types::SfBool;
+use sfml_types::sfBool;
 use ffi::graphics::shape as ffi;
 
 #[doc(hidden)]
@@ -106,7 +106,7 @@ impl Shape {
             unsafe {
                 ffi::sfShape_setTexture(sp,
                                         (*texture).borrow().unwrap(),
-                                        SfBool::SFTRUE);
+                                        sfBool::SFTRUE);
             }
             Some(Shape {
                     shape: sp,
@@ -365,7 +365,7 @@ impl Shape {
         unsafe {
             ffi::sfShape_setTexture(self.shape,
                                     (*texture).borrow().unwrap(),
-                                    SfBool::from_bool(reset_rect))
+                                    sfBool::from_bool(reset_rect))
         }
         self.texture = Some(texture);
     }
@@ -376,7 +376,7 @@ impl Shape {
     pub fn disable_texture(&mut self) {
         self.texture = None;
         unsafe {
-            ffi::sfShape_setTexture(self.shape, ptr::null_mut(), SfBool::SFTRUE)
+            ffi::sfShape_setTexture(self.shape, ptr::null_mut(), sfBool::SFTRUE)
         }
     }
 

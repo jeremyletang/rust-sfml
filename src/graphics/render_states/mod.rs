@@ -29,7 +29,7 @@ use std::ptr;
 use traits::Wrappable;
 use graphics::{BlendMode, Shader, Texture, Transform};
 
-use ffi::graphics::render_states as ffi;
+use csfml_graphics_sys as ffi;
 
 // pub mod rc;
 
@@ -63,7 +63,7 @@ impl<'s> RenderStates<'s> {
         RenderStates {
                 sf_render_states: ffi::sfRenderStates {
                 blendMode: blend_mode as i32,
-                transform: transform,
+                transform: transform.0,
                 texture: ptr::null_mut(),
                 shader: ptr::null_mut()
             },
@@ -87,7 +87,7 @@ impl<'s> RenderStates<'s> {
         RenderStates {
                 sf_render_states: ffi::sfRenderStates {
                 blendMode: BlendMode::Alpha as i32,
-                transform: Transform::new_identity(),
+                transform: Transform::new_identity().0,
                 texture: ptr::null_mut(),
                 shader: ptr::null_mut()
             },
@@ -102,7 +102,7 @@ impl<'s> RenderStates<'s> {
     #[doc(hidden)]
     pub fn unwrap(&mut self) -> *mut ffi::sfRenderStates {
         self.sf_render_states.blendMode = self.blend_mode as i32;
-        self.sf_render_states.transform = self.transform;
+        self.sf_render_states.transform = self.transform.0;
         self.sf_render_states.texture = if !self.texture.is_none() {
             self.texture.unwrap().unwrap()
         } else {

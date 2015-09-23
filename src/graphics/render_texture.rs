@@ -27,13 +27,13 @@
 use libc::c_uint;
 
 use traits::Wrappable;
-use system::vector2::{Vector2f, Vector2i, Vector2u};
+use sfml_types::{Vector2f, Vector2i, Vector2u};
 use graphics::{Drawable, View, Color, IntRect, Texture, CircleShape, RectangleShape, Text,
                RenderStates, Sprite, ConvexShape, VertexArray,
                RenderTarget, Vertex, PrimitiveType, CustomShape};
 
-use ffi::sfml_types::SfBool;
-use ffi::graphics::render_texture as ffi;
+use sfml_types::sfBool;
+use csfml_graphics_sys as ffi;
 
 /// Target for off-screen 2D rendering into a texture
 pub struct RenderTexture {
@@ -53,7 +53,7 @@ impl RenderTexture {
                height: u32,
                depth_buffer: bool) -> Option<RenderTexture> {
         let tex = unsafe {
-            ffi::sfRenderTexture_create(width as c_uint, height as c_uint, SfBool::from_bool(depth_buffer))
+            ffi::sfRenderTexture_create(width as c_uint, height as c_uint, sfBool::from_bool(depth_buffer))
         };
         if tex.is_null() {
             None
@@ -77,7 +77,7 @@ impl RenderTexture {
     /// * active - true to activate, false to deactivate
     pub fn set_active(&mut self, active: bool) -> bool {
         unsafe {
-            ffi::sfRenderTexture_setActive(self.render_texture, SfBool::from_bool(active))
+            ffi::sfRenderTexture_setActive(self.render_texture, sfBool::from_bool(active))
         }.to_bool()
     }
 
@@ -100,7 +100,7 @@ impl RenderTexture {
     /// * smooth - true to enable smoothing, false to disable it
     pub fn set_smooth(&mut self, smooth: bool) {
         unsafe {
-            ffi::sfRenderTexture_setSmooth(self.render_texture, SfBool::from_bool(smooth))
+            ffi::sfRenderTexture_setSmooth(self.render_texture, sfBool::from_bool(smooth))
         }
     }
 
@@ -129,7 +129,7 @@ impl RenderTarget for RenderTexture {
     /// * color - Fill color
     fn clear(&mut self, color: &Color) {
         unsafe {
-            ffi::sfRenderTexture_clear(self.render_texture, *color)
+            ffi::sfRenderTexture_clear(self.render_texture, color.0)
         }
     }
 
@@ -400,7 +400,7 @@ impl RenderTarget for RenderTexture {
         let len = vertices.len() as u32;
         unsafe {
             ffi::sfRenderTexture_drawPrimitives(self.render_texture,
-                                                &vertices[0],
+                                                ::std::mem::transmute(&vertices[0]),
                                                 len,
                                                 ty,
                                                 rs.unwrap());

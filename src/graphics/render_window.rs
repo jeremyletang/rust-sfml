@@ -36,13 +36,13 @@ use std::ffi::CString;
 
 use traits::Wrappable;
 use window::{ContextSettings, VideoMode, event, WindowStyle};
-use system::vector2::{Vector2f, Vector2i, Vector2u};
+use sfml_types::{Vector2f, Vector2i, Vector2u};
 use graphics::{Drawable, Color, CircleShape, RectangleShape, Text, Sprite, VertexArray,
                RenderStates, View, Image, IntRect, RenderTarget,
                Vertex, PrimitiveType, ConvexShape, CustomShape};
 
-use ffi::sfml_types::SfBool;
-use ffi::graphics::render_window as ffi;
+use sfml_types::sfBool;
+use csfml_graphics_sys as ffi;
 
 /// Window that can serve as a target for 2D drawing.
 ///
@@ -90,7 +90,7 @@ impl RenderWindow {
             ffi::sfRenderWindow_create(mode.unwrap(),
                                        c_str.as_ptr(),
                                        style.bits(),
-                                       settings)
+                                       &settings.0)
         };
         if sf_render_win.is_null() {
             None
@@ -132,7 +132,7 @@ impl RenderWindow {
             sf_render_win = ffi::sfRenderWindow_createUnicode(mode.unwrap(),
                                                               title.as_ptr() as *mut u32,
                                                               style.bits(),
-                                                              settings);
+                                                              &settings.0);
         }
         if sf_render_win.is_null() {
             None
@@ -193,7 +193,7 @@ impl RenderWindow {
     ///
     /// Return the event if an event was returned, or NoEvent if the event queue was empty
     pub fn poll_event(&mut self) -> event::Event {
-        let mut event = event::raw::sfEvent { data: [032; 6] };
+        let mut event = ::csfml_window_sys::sfEvent { data: [032; 6] };
         let have_event = unsafe {
             ffi::sfRenderWindow_pollEvent(self.render_window, &mut event)
         }.to_bool();
@@ -216,7 +216,7 @@ impl RenderWindow {
     ///
     /// Return the event or NoEvent if an error has occured
     pub fn wait_event(&mut self) -> event::Event {
-        let mut event = event::raw::sfEvent { data: [032; 6] };
+        let mut event = ::csfml_window_sys::sfEvent { data: [032; 6] };
         let have_event = unsafe {
             ffi::sfRenderWindow_waitEvent(self.render_window, &mut event)
         }.to_bool();
@@ -289,7 +289,7 @@ impl RenderWindow {
     ////
     pub fn get_settings(&self) -> ContextSettings {
         unsafe {
-            ffi::sfRenderWindow_getSettings(self.render_window)
+            ContextSettings(ffi::sfRenderWindow_getSettings(self.render_window))
         }
     }
 
@@ -313,7 +313,7 @@ impl RenderWindow {
     ////
     pub fn set_visible(&mut self, visible: bool) {
         unsafe {
-            ffi::sfRenderWindow_setVisible(self.render_window, SfBool::from_bool(visible));
+            ffi::sfRenderWindow_setVisible(self.render_window, sfBool::from_bool(visible));
         }
     }
 
@@ -324,7 +324,7 @@ impl RenderWindow {
     ////
     pub fn set_mouse_cursor_visible(&mut self, visible: bool) {
         unsafe {
-            ffi::sfRenderWindow_setMouseCursorVisible(self.render_window, SfBool::from_bool(visible));
+            ffi::sfRenderWindow_setMouseCursorVisible(self.render_window, sfBool::from_bool(visible));
         }
     }
 
@@ -340,7 +340,7 @@ impl RenderWindow {
     ////
     pub fn set_vertical_sync_enabled(&mut self, enabled: bool) {
         unsafe {
-            ffi::sfRenderWindow_setVerticalSyncEnabled(self.render_window, SfBool::from_bool(enabled));
+            ffi::sfRenderWindow_setVerticalSyncEnabled(self.render_window, sfBool::from_bool(enabled));
         }
     }
 
@@ -357,7 +357,7 @@ impl RenderWindow {
     ////
     pub fn set_key_repeat_enabled(&mut self, enabled: bool) {
         unsafe {
-            ffi::sfRenderWindow_setKeyRepeatEnabled(self.render_window, SfBool::from_bool(enabled));
+            ffi::sfRenderWindow_setKeyRepeatEnabled(self.render_window, sfBool::from_bool(enabled));
         }
     }
 
@@ -376,7 +376,7 @@ impl RenderWindow {
     ////
     pub fn set_active(&mut self, enabled: bool) -> bool {
         unsafe {
-            ffi::sfRenderWindow_setActive(self.render_window, SfBool::from_bool(enabled))
+            ffi::sfRenderWindow_setActive(self.render_window, sfBool::from_bool(enabled))
         }.to_bool()
     }
 
@@ -842,7 +842,7 @@ impl RenderTarget for RenderWindow{
         let len = vertices.len() as u32;
         unsafe {
             ffi::sfRenderWindow_drawPrimitives(self.render_window,
-                                               &vertices[0],
+                                               ::std::mem::transmute(&vertices[0]),
                                                len,
                                                ty,
                                                rs.unwrap());
@@ -852,7 +852,7 @@ impl RenderTarget for RenderWindow{
     /// Clear window with the given color
     fn clear(&mut self, color: &Color) {
         unsafe {
-            ffi::sfRenderWindow_clear(self.render_window, *color)
+            ffi::sfRenderWindow_clear(self.render_window, color.0)
         }
     }
 
@@ -862,7 +862,7 @@ impl Iterator for Events {
     type Item = event::Event;
 
     fn next(&mut self) -> Option<event::Event> {
-        let mut event = event::raw::sfEvent { data: [032; 6] };
+        let mut event = ::csfml_window_sys::sfEvent { data: [032; 6] };
         match unsafe { ffi::sfRenderWindow_pollEvent(self.render_window, &mut event) }.to_bool() {
             false     => None,
             true      => Some(event::raw::get_wrapped_event(&mut event))

@@ -23,7 +23,7 @@
 */
 
 use libc::c_uint;
-use ffi::window::mouse as ffi;
+use csfml_window_sys as ffi;
 
 /// Mouse buttons.
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]

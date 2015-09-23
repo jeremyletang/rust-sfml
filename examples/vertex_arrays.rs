@@ -3,7 +3,7 @@
 extern crate sfml;
 
 use sfml::graphics::{RenderWindow, RenderTarget, Color,
-                      VertexArray, Vertex, PrimitiveType};
+                      VertexArray, Vertex, LinesStrip};
 use sfml::window::{VideoMode, ContextSettings, event, window_style};
 use sfml::system::Vector2f;
 
@@ -17,7 +17,7 @@ fn main() {
     window.set_vertical_sync_enabled(true);
 
     let mut vertex_array = VertexArray::new().expect("Error, cannot create a VertexArray");
-    vertex_array.set_primitive_type(PrimitiveType::LinesStrip);
+    vertex_array.set_primitive_type(LinesStrip);
 
 
     vertex_array.append(&Vertex::new_with_pos_color(&Vector2f{x: 20f32, y: 30f32}, &Color::green()));
@@ -29,16 +29,16 @@ fn main() {
 
     println!("\nIterate over the vertices of a VertexArray");
     for v in vertex_array.vertices() {
-        println!("Vertex Color: {:?} | Position: {:?}", v.color, v.position)
+        println!("Vertex Color: {:?} | Position: {:?}", v.0.color, v.0.position)
     }
 
     println!("\nMutable access to a vertex");
-    println!("Before Vertex Color: {:?} | Position: {:?}", vertex_array[1].color, vertex_array[1].position);
-    vertex_array.get_vertex(1).position.x = 100f32;
-    println!("After Vertex Color: {:?} | Position: {:?}", vertex_array[1].color, vertex_array[1].position);
+    println!("Before Vertex Color: {:?} | Position: {:?}", vertex_array[1].0.color, vertex_array[1].0.position);
+    vertex_array.get_vertex(1).0.position.x = 100f32;
+    println!("After Vertex Color: {:?} | Position: {:?}", vertex_array[1].0.color, vertex_array[1].0.position);
 
     println!("\nImmutable access to a vertex");
-    println!("Vertex Color: {:?} | Position: {:?}", vertex_array[1].color, vertex_array[1].position);
+    println!("Vertex Color: {:?} | Position: {:?}", vertex_array[1].0.color, vertex_array[1].0.position);
 
     while window.is_open() {
         for e in window.events() {
@@ -52,4 +52,3 @@ fn main() {
 
     }
 }
-

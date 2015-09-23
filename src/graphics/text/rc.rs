@@ -38,7 +38,7 @@ use std::str;
 use traits::{Drawable, Wrappable};
 use graphics::{RenderTarget, Font, FloatRect,
                Color, Transform, rc, TextStyle, RenderStates};
-use system::vector2::Vector2f;
+use sfml_types::Vector2f;
 
 use ffi::graphics::text as ffi;
 
@@ -251,7 +251,7 @@ impl Text {
     ///
     /// Return the current string style (see Style enum)
     pub fn get_style(&self) -> TextStyle {
-        unsafe { mem::transmute(ffi::sfText_getStyle(self.text)) }
+        unsafe { ffi::sfText_getStyle(self.text) }
     }
 
     /// Get the font of a text

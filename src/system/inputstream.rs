@@ -25,6 +25,7 @@
 use libc::{c_void, c_longlong};
 use std::io::{Read, Seek, SeekFrom};
 use std::ptr;
+use csfml_system_sys::sfInputStream;
 
 extern fn read<T: Read + Seek>(data: *mut c_void, size: c_longlong, user_data: *mut c_void) -> c_longlong {
     let stream: &mut T = unsafe { &mut *(user_data as *mut T) };
@@ -64,23 +65,16 @@ extern fn seek<T: Read + Seek>(position: c_longlong, user_data: *mut c_void) -> 
 }
 
 #[repr(C)]
-#[allow(non_snake_case)]
-pub struct InputStream {
-    read: extern fn (*mut c_void, c_longlong, *mut c_void) -> c_longlong,
-    seek: extern fn(c_longlong, *mut c_void) -> c_longlong,
-    tell: extern fn(*mut c_void) -> c_longlong,
-    getSize: extern fn(*mut c_void) -> c_longlong,
-    userData: *mut c_void
-}
+pub struct InputStream(pub sfInputStream);
 
 impl InputStream {
     pub fn new<T: Read + Seek>(stream: &mut T) -> Self {
-        InputStream {
+        InputStream(sfInputStream{
             userData: stream as *const _ as *mut c_void,
             read: read::<T>,
             seek: seek::<T>,
             tell: tell::<T>,
             getSize: get_size::<T>
-        }
+        })
     }
 }

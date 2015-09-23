@@ -24,7 +24,7 @@
 
 //! Sound and musics statues
 
-use ffi::audio::sound_status as ffi;
+use csfml_audio_sys as ffi;
 
 /// Enumeration of statuses for sounds and musics
 #[repr(i32)]

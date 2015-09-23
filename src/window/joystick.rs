@@ -30,7 +30,7 @@
 
 use libc::c_uint;
 
-use ffi::window::joystick as ffi;
+use csfml_window_sys as ffi;
 
 /// Maximum number of supported joysticks.
 pub const COUNT: u32  = 8;

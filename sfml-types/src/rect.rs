@@ -22,7 +22,7 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-use system::vector2::Vector2;
+use Vector2;
 use std::ops::{Add, Sub};
 
 /// Utility type for manipulating 2D axis-aligned rectangles.

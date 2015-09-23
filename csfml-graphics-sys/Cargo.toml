@@ -1,0 +1,18 @@
+[package]
+name = "csfml-graphics-sys"
+version = "0.1.0"
+authors = ["Mika Attila <radiantstatue@gmail.com>"]
+links = "csfml-graphics"
+build = "build.rs"
+
+[dependencies]
+libc = "0.1.10"
+
+[dependencies.sfml-types]
+path = "../sfml-types"
+
+[dependencies.csfml-system-sys]
+path = "../csfml-system-sys"
+
+[dependencies.csfml-window-sys]
+path = "../csfml-window-sys"

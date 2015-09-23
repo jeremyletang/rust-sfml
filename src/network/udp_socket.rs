@@ -31,8 +31,8 @@ use std::vec::Vec;
 use traits::Wrappable;
 use network::{Packet, IpAddress, SocketStatus};
 
-use ffi::sfml_types::SfBool;
-use ffi::network::udp_socket as ffi;
+use sfml_types::sfBool;
+use csfml_network_sys as ffi;
 
 /// Specialized socket using the UDP protocol.
 pub struct UdpSocket {
@@ -70,7 +70,7 @@ impl UdpSocket {
     /// blocking - true to set the socket as blocking, false for non-blocking
     pub fn set_blocking(&self, blocking: bool) {
         unsafe {
-            ffi::sfUdpSocket_setBlocking(self.socket, SfBool::from_bool(blocking))
+            ffi::sfUdpSocket_setBlocking(self.socket, sfBool::from_bool(blocking))
         }
     }
 
@@ -153,7 +153,7 @@ impl UdpSocket {
         unsafe {
             let mut s: size_t = 0;
             let datas: *mut i8 = ptr::null_mut();
-            let addr: *mut ::ffi::network::ip_address::sfIpAddress = ptr::null_mut();
+            let addr: *mut ffi::sfIpAddress = ptr::null_mut();
             let mut port: u16 = 0;
             let stat: SocketStatus = mem::transmute(ffi::sfUdpSocket_receive(self.socket, datas, max_size, &mut s, addr, &mut port) as i32);
             (slice::from_raw_parts(datas, s as usize).to_vec(), stat, s, Wrappable::wrap(*addr), port)
@@ -182,8 +182,8 @@ impl UdpSocket {
     /// has been received.
     pub fn receive_packet(&self) -> (Packet, SocketStatus, IpAddress, u16) {
         unsafe {
-            let pack: *mut ::ffi::network::packet::sfPacket = ptr::null_mut();
-            let addr: *mut ::ffi::network::ip_address::sfIpAddress = ptr::null_mut();
+            let pack: *mut ffi::sfPacket = ptr::null_mut();
+            let addr: *mut ffi::sfIpAddress = ptr::null_mut();
             let mut port: u16 = 0;
             let stat: SocketStatus = mem::transmute(ffi::sfUdpSocket_receivePacket(self.socket, pack, addr, &mut port) as i32);
             (Wrappable::wrap(pack), stat, Wrappable::wrap(*addr), port)

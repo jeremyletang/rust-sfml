@@ -32,9 +32,9 @@ use std::ptr;
 use traits::{Drawable, Wrappable};
 use graphics::{IntRect, FloatRect, Color, Texture,
                RenderTarget, Transform, rc, RenderStates};
-use system::vector2::Vector2f;
+use sfml_types::Vector2f;
 
-use ffi::sfml_types::SfBool;
+use sfml_types::sfBool;
 use ffi::graphics::circle_shape as ffi;
 
 /// Specialized shape representing a circle.
@@ -73,7 +73,7 @@ impl CircleShape {
             unsafe {
                 ffi::sfCircleShape_setTexture(circle,
                                               (*texture).borrow().unwrap(),
-                                              SfBool::SFTRUE);
+                                              sfBool::SFTRUE);
             }
             Some(CircleShape {
                     circle_shape: circle,
@@ -182,7 +182,7 @@ impl CircleShape {
                        texture: Rc<RefCell<Texture>>,
                        reset_rect: bool) {
         unsafe {
-            ffi::sfCircleShape_setTexture(self.circle_shape, (*texture).borrow().unwrap(), SfBool::from_bool(reset_rect))
+            ffi::sfCircleShape_setTexture(self.circle_shape, (*texture).borrow().unwrap(), sfBool::from_bool(reset_rect))
         }
         self.texture = Some(texture);
     }
@@ -195,7 +195,7 @@ impl CircleShape {
         unsafe {
             ffi::sfCircleShape_setTexture(self.circle_shape,
                                           ptr::null_mut(),
-                                          SfBool::SFTRUE)
+                                          sfBool::SFTRUE)
         }
     }
 

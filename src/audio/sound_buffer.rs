@@ -31,7 +31,7 @@ use std::ffi::CString;
 use traits::Wrappable;
 use system::Time;
 
-use ffi::audio::sound_buffer as ffi;
+use csfml_audio_sys as ffi;
 
 /// Storage of audio sample
 ///
@@ -166,4 +166,3 @@ impl Drop for SoundBuffer {
         }
     }
 }
-

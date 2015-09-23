@@ -36,10 +36,10 @@ use std::ptr;
 
 use traits::Wrappable;
 use graphics::{Shape, Drawable, Transformable, Color, Texture, RenderTarget, FloatRect, IntRect, Transform, RenderStates};
-use system::vector2::Vector2f;
+use sfml_types::Vector2f;
 
-use ffi::sfml_types::SfBool;
-use ffi::graphics::convex_shape as ffi;
+use sfml_types::sfBool;
+use csfml_graphics_sys as ffi;
 
 // pub mod rc;
 
@@ -96,7 +96,7 @@ impl<'s> ConvexShape<'s> {
             None
         } else {
             unsafe {
-                ffi::sfConvexShape_setTexture(shape, texture.unwrap(), SfBool::SFTRUE);
+                ffi::sfConvexShape_setTexture(shape, texture.unwrap(), sfBool::SFTRUE);
                 ffi::sfConvexShape_setPointCount(shape, points_count as c_uint)
             }
             Some(ConvexShape {
@@ -123,8 +123,8 @@ impl<'s> ConvexShape<'s> {
 
     /// Set the position of a point.
     ///
-    /// Don't forget that the polygon must remain convex, and the points need to stay ordered! 
-    /// set_point_count must be called first in order to set the total number of points. 
+    /// Don't forget that the polygon must remain convex, and the points need to stay ordered!
+    /// set_point_count must be called first in order to set the total number of points.
     /// The result is undefined if index is out of the valid range.
     ///
     /// # Arguments
@@ -384,7 +384,7 @@ impl<'s> Transformable for ConvexShape<'s> {
     /// Return transform combining the position/rotation/scale/origin of the object
     fn get_transform(&self) -> Transform {
         unsafe {
-            ffi::sfConvexShape_getTransform(self.convex_shape)
+            Transform(ffi::sfConvexShape_getTransform(self.convex_shape))
         }
     }
 
@@ -393,7 +393,7 @@ impl<'s> Transformable for ConvexShape<'s> {
     /// Return inverse of the combined transformations applied to the object
     fn get_inverse_transform(&self) -> Transform {
         unsafe {
-            ffi::sfConvexShape_getInverseTransform(self.convex_shape)
+            Transform(ffi::sfConvexShape_getInverseTransform(self.convex_shape))
         }
     }
 }
@@ -419,7 +419,7 @@ impl<'s> Shape<'s> for ConvexShape<'s> {
                        reset_rect: bool) {
         self.texture = Some(texture);
         unsafe {
-            ffi::sfConvexShape_setTexture(self.convex_shape, texture.unwrap(), SfBool::from_bool(reset_rect))
+            ffi::sfConvexShape_setTexture(self.convex_shape, texture.unwrap(), sfBool::from_bool(reset_rect))
         }
     }
 
@@ -431,7 +431,7 @@ impl<'s> Shape<'s> for ConvexShape<'s> {
         unsafe {
             ffi::sfConvexShape_setTexture(self.convex_shape,
                                           ptr::null_mut(),
-                                          SfBool::SFTRUE)
+                                          sfBool::SFTRUE)
         }
     }
 
@@ -457,7 +457,7 @@ impl<'s> Shape<'s> for ConvexShape<'s> {
     /// * color - New color of the shape
     fn set_fill_color(&mut self, color: &Color) {
         unsafe {
-            ffi::sfConvexShape_setFillColor(self.convex_shape, *color)
+            ffi::sfConvexShape_setFillColor(self.convex_shape, color.0)
         }
     }
 
@@ -470,7 +470,7 @@ impl<'s> Shape<'s> for ConvexShape<'s> {
     /// * color - New outline color of the shape
     fn set_outline_color(&mut self, color: &Color) {
         unsafe {
-            ffi::sfConvexShape_setOutlineColor(self.convex_shape, *color)
+            ffi::sfConvexShape_setOutlineColor(self.convex_shape, color.0)
         }
     }
 
@@ -512,7 +512,7 @@ impl<'s> Shape<'s> for ConvexShape<'s> {
     /// Return the fill color of the shape
     fn get_fill_color(&self) -> Color {
         unsafe {
-            ffi::sfConvexShape_getFillColor(self.convex_shape)
+            Color(ffi::sfConvexShape_getFillColor(self.convex_shape))
         }
     }
 
@@ -521,7 +521,7 @@ impl<'s> Shape<'s> for ConvexShape<'s> {
     /// Return the outline color of the shape
     fn get_outline_color(&self) -> Color {
         unsafe {
-            ffi::sfConvexShape_getOutlineColor(self.convex_shape)
+            Color(ffi::sfConvexShape_getOutlineColor(self.convex_shape))
         }
     }
 

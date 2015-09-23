@@ -35,7 +35,7 @@ use std::cmp::Ordering;
 
 use traits::Wrappable;
 
-use ffi::system::time as ffi;
+use csfml_system_sys as ffi;
 
 /// Represents a time value.
 ///

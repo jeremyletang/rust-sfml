@@ -31,10 +31,8 @@ use traits::Wrappable;
 use graphics::shape::ShapeImpl;
 use graphics::{Drawable, Transformable, RenderTarget, RenderStates, Texture, Color,
                Transform, IntRect, FloatRect};
-use system::vector2::Vector2f;
-
-use ffi::sfml_types::SfBool;
-use ffi::graphics::shape as ffi;
+use sfml_types::{sfBool, Vector2f};
+use csfml_graphics_sys as ffi;
 
 // pub mod rc;
 
@@ -105,7 +103,7 @@ impl<'s> CustomShape<'s> {
             None
         } else {
             unsafe {
-                ffi::sfShape_setTexture(sp, texture.unwrap(), SfBool::SFTRUE);
+                ffi::sfShape_setTexture(sp, texture.unwrap(), sfBool::SFTRUE);
             }
             Some(CustomShape {
                     shape:     sp,
@@ -132,7 +130,7 @@ impl<'s> CustomShape<'s> {
                        reset_rect: bool) {
         self.texture = Some(texture);
         unsafe {
-            ffi::sfShape_setTexture(self.shape, texture.unwrap(), SfBool::from_bool(reset_rect))
+            ffi::sfShape_setTexture(self.shape, texture.unwrap(), sfBool::from_bool(reset_rect))
         }
     }
 
@@ -142,7 +140,7 @@ impl<'s> CustomShape<'s> {
     pub fn disable_texture(&mut self) {
         self.texture = None;
         unsafe {
-            ffi::sfShape_setTexture(self.shape, ptr::null_mut(), SfBool::SFTRUE)
+            ffi::sfShape_setTexture(self.shape, ptr::null_mut(), sfBool::SFTRUE)
         }
     }
 
@@ -173,7 +171,7 @@ impl<'s> CustomShape<'s> {
     /// * color - The new color of the Shape
     pub fn set_fill_color(&mut self, color: &Color) {
         unsafe {
-            ffi::sfShape_setFillColor(self.shape, *color)
+            ffi::sfShape_setFillColor(self.shape, color.0)
         }
     }
 
@@ -186,7 +184,7 @@ impl<'s> CustomShape<'s> {
     /// * color - The new outline color of the shape
     pub fn set_outline_color(&mut self, color: &Color) {
         unsafe {
-            ffi::sfShape_setOutlineColor(self.shape, *color)
+            ffi::sfShape_setOutlineColor(self.shape, color.0)
         }
     }
 
@@ -229,7 +227,7 @@ impl<'s> CustomShape<'s> {
     /// Return the fill color of the shape
     pub fn get_fill_color(&self) -> Color {
         unsafe {
-            ffi::sfShape_getFillColor(self.shape)
+            Color(ffi::sfShape_getFillColor(self.shape))
         }
     }
 
@@ -238,7 +236,7 @@ impl<'s> CustomShape<'s> {
     /// Return the outline color of the shape
     pub fn get_outline_color(&self) -> Color {
         unsafe {
-            ffi::sfShape_getOutlineColor(self.shape)
+            Color(ffi::sfShape_getOutlineColor(self.shape))
         }
     }
 
@@ -548,7 +546,7 @@ impl<'s> Transformable for CustomShape<'s> {
     /// of the object
     fn get_transform(&self) -> Transform {
         unsafe {
-            ffi::sfShape_getTransform(self.shape)
+            Transform(ffi::sfShape_getTransform(self.shape))
         }
     }
 
@@ -557,7 +555,7 @@ impl<'s> Transformable for CustomShape<'s> {
     /// Return the inverse of the combined transformations applied to the object
     fn get_inverse_transform(&self) -> Transform {
         unsafe {
-            ffi::sfShape_getInverseTransform(self.shape)
+            Transform(ffi::sfShape_getInverseTransform(self.shape))
         }
     }
 

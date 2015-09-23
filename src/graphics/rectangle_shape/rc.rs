@@ -30,11 +30,11 @@ use libc::{c_float, c_uint};
 use std::ptr;
 
 use traits::{Drawable, Wrappable};
-use system::vector2::Vector2f;
+use sfml_types::Vector2f;
 use graphics::{FloatRect, IntRect, Color, Texture,
                RenderTarget, Transform, rc, RenderStates};
 
-use ffi::sfml_types::SfBool;
+use sfml_types::sfBool;
 use ffi::graphics::rectangle_shape as ffi;
 
 /// Specialized shape representing a rectangle
@@ -71,7 +71,7 @@ impl RectangleShape {
             unsafe {
                 ffi::sfRectangleShape_setTexture(rectangle,
                                                  (*texture).borrow().unwrap(),
-                                                 SfBool::SFTRUE);
+                                                 sfBool::SFTRUE);
             }
             Some(RectangleShape {
                     rectangle_shape: rectangle,
@@ -400,7 +400,7 @@ impl RectangleShape {
         unsafe {
             ffi::sfRectangleShape_setTexture(self.rectangle_shape,
                                              (*texture).borrow().unwrap(),
-                                             SfBool::from_bool(reset_rect))
+                                             sfBool::from_bool(reset_rect))
         }
         self.texture = Some(texture);
     }
@@ -413,7 +413,7 @@ impl RectangleShape {
         unsafe {
             ffi::sfRectangleShape_setTexture(self.rectangle_shape,
                                              ptr::null_mut(),
-                                             SfBool::SFTRUE)
+                                             sfBool::SFTRUE)
         }
     }
 
