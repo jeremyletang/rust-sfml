@@ -25,7 +25,6 @@
 //! Encapsulate an IPv4 network address.
 
 use std::ffi::{CString, CStr};
-use std::ptr;
 use std::str;
 
 use traits::Wrappable;
@@ -102,9 +101,8 @@ impl IpAddress {
     /// Return a string representation of the address
     pub fn to_string(&self) -> String {
         unsafe {
-            let string: *mut u8 = ptr::null_mut();
-            ffi::sfIpAddress_toString(self.ip, string);
-            str::from_utf8(CStr::from_ptr(string as *const i8).to_bytes_with_nul()).unwrap().into()
+            let ptr: *const _ = ::std::mem::transmute(&self.ip);
+            str::from_utf8(CStr::from_ptr(ptr).to_bytes()).unwrap().into()
         }
     }
 
