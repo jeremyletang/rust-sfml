@@ -70,7 +70,7 @@ impl IpAddress {
     /// * byte3 - Fourth byte of the address
     ///
     /// Return the resulting address
-    pub fn mew_from_bytes(byte0: u8, byte1: u8, byte2: u8, byte3: u8) -> IpAddress {
+    pub fn new_from_bytes(byte0: u8, byte1: u8, byte2: u8, byte3: u8) -> IpAddress {
         IpAddress {
             ip: unsafe { ffi::sfIpAddress_fromBytes(byte0, byte1, byte2, byte3) }
         }
