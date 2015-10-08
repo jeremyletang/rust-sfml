@@ -6,10 +6,10 @@ Rust bindings for [SFML](http://www.sfml-dev.org), the Simple and Fast Multimedi
 Prerequisites
 =============
 
-SFML 2.1 and CSFML 2.1 must be installed on your computer. You can download them here:
+SFML 2.3 and CSFML 2.3 must be installed on your computer. You can download them here:
 
-- SFML 2.1: http://www.sfml-dev.org/download/sfml/2.1/
-- CSFML 2.1: http://www.sfml-dev.org/download/csfml/
+- SFML 2.3: http://www.sfml-dev.org/download.php
+- CSFML 2.3: http://www.sfml-dev.org/download/csfml/
 
 Rust-sfml works on Linux, Windows and OSX.
 
@@ -26,4 +26,3 @@ License
 This software is a binding of the SFML library created by Laurent Gomila, which is provided under the Zlib/png license.
 
 This software is provided under the same license than the SFML, the Zlib/png license.
-
