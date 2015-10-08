@@ -1,7 +1,6 @@
 sudo: false
 env:
   global:
-    - secure: RRXKOk7GGrsHMx1tJoG7Rhpbi4UAAulHweEkFGB2rTgTlcl37MGe7VLDC9NSKqEohfuJnqf54p/RMsucTfiidTYcadey5dMWwK13tiYmtikEcW/rxrwaJS8qhQJ9CwgjwsRc7laJVG0pyW5Vql33UtX2xEBlrotRTLR1tYdiHgo=
     - LD_LIBRARY_PATH=/home/travis/build/jeremyletang/rust-sfml/sfml_install/usr/local/lib
 language: rust
 script:
@@ -39,9 +38,3 @@ addons:
     - libopenal-dev
     - libjpeg62
     - cmake
-after_success:
-  - mv target/doc doc
-  - curl http://www.rust-ci.org/artifacts/put?t=$RUSTCI_TOKEN > file.txt
-  - wc file.txt
-  - python -c 'print(open("file.txt").read())'
-  - sh file.txt
