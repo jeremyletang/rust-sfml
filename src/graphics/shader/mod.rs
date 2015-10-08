@@ -34,10 +34,11 @@ use std::ffi::CString;
 
 use traits::Wrappable;
 use graphics::{Texture, Color};
-use system::vector2::Vector2f;
-use system::vector3::Vector3f;
+use sfml_types::Vector2f;
+use sfml_types::Vector3f;
 
-use ffi::graphics::shader as ffi;
+use csfml_graphics_sys as ffi;
+use csfml_system_sys as sys_ffi;
 
 use std::io::{Read, Seek};
 use system::inputstream::InputStream;
@@ -124,8 +125,8 @@ impl<'s> Shader<'s> {
                 Some(stream) => &mut InputStream::new(stream) as *mut InputStream,
                 None => ptr::null_mut()
             };
-            ffi::sfShader_createFromStream(c_vertex_shader_stream,
-                                           c_fragment_shader_stream)
+            ffi::sfShader_createFromStream(&mut (*c_vertex_shader_stream).0 as *mut sys_ffi::sfInputStream,
+                                           &mut (*c_fragment_shader_stream).0 as *mut sys_ffi::sfInputStream)
         };
         if shader.is_null() {
             None
@@ -382,7 +383,7 @@ impl<'s> Shader<'s> {
                                color: &Color) {
         let c_str = CString::new(name.as_bytes()).unwrap().as_ptr();
         unsafe {
-            ffi::sfShader_setColorParameter(self.shader, c_str, *color)
+            ffi::sfShader_setColorParameter(self.shader, c_str, color.0)
         }
     }
 }

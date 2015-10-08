@@ -33,7 +33,7 @@ use traits::Wrappable;
 use network::IpAddress;
 use system::Time;
 
-use ffi::network::ftp as ffi;
+use csfml_network_sys as ffi;
 
 /// The differents FTP modes availables.
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
@@ -66,7 +66,7 @@ pub enum Status {
     // 2xx: the requested action has been successfully completed
 
     /// Command ok
-    Ok                          = ffi::OK as i32,
+    Ok                          = ffi::sfFtpOk as i32,
     /// Command not implemented
     PointlessCommand            = ffi::POINTLESSCOMMAND as i32,
     /// System status, or system help reply
@@ -148,9 +148,9 @@ pub enum Status {
 
     // 10xx: SFML custom codes
     /// Response is not a valid FTP one
-    InvalidResponse             = ffi::INVALIDRESPONSE as i32,
+    InvalidResponse             = ffi::sfFtpInvalidresponse as i32,
     /// Connection with server failed
-    ConnectionFailed            = ffi::CONNECTIONFAILED as i32,
+    ConnectionFailed            = ffi::sfFtpConnectionFailed as i32,
     /// Connection with server closed
     ConnectionClosed            = ffi::CONNECTIONCLOSED as i32,
     /// Invalid file to upload / download

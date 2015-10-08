@@ -28,12 +28,12 @@ use libc::{c_float, c_uint};
 use std::ptr;
 
 use traits::Wrappable;
-use system::vector2::Vector2f;
+use sfml_types::Vector2f;
 use graphics::{Drawable, Shape, Transformable, FloatRect, IntRect, Color, Texture,
                RenderTarget, Transform, RenderStates};
 
-use ffi::sfml_types::SfBool;
-use ffi::graphics::rectangle_shape as ffi;
+use sfml_types::sfBool;
+use csfml_graphics_sys as ffi;
 
 // pub mod rc;
 
@@ -70,7 +70,7 @@ impl<'s> RectangleShape<'s> {
             unsafe {
                 ffi::sfRectangleShape_setTexture(rectangle,
                                                  texture.unwrap(),
-                                                 SfBool::SFTRUE);
+                                                 sfBool::SFTRUE);
             }
             Some(RectangleShape {
                     rectangle_shape: rectangle,
@@ -380,7 +380,7 @@ impl<'s> Transformable for RectangleShape<'s> {
     /// of the object
     fn get_transform(&self) -> Transform {
         unsafe {
-            ffi::sfRectangleShape_getTransform(self.rectangle_shape)
+            Transform(ffi::sfRectangleShape_getTransform(self.rectangle_shape))
         }
     }
 
@@ -389,7 +389,7 @@ impl<'s> Transformable for RectangleShape<'s> {
     /// Return inverse of the combined transformations applied to the object
     fn get_inverse_transform(&self) -> Transform {
         unsafe {
-            ffi::sfRectangleShape_getInverseTransform(self.rectangle_shape)
+            Transform(ffi::sfRectangleShape_getInverseTransform(self.rectangle_shape))
         }
     }
 }
@@ -416,7 +416,7 @@ impl<'s> Shape<'s> for RectangleShape<'s> {
         unsafe {
             ffi::sfRectangleShape_setTexture(self.rectangle_shape,
                                              texture.unwrap(),
-                                             SfBool::from_bool(reset_rect))
+                                             sfBool::from_bool(reset_rect))
         }
     }
 
@@ -428,7 +428,7 @@ impl<'s> Shape<'s> for RectangleShape<'s> {
         unsafe {
             ffi::sfRectangleShape_setTexture(self.rectangle_shape,
                                              ptr::null_mut(),
-                                             SfBool::SFTRUE)
+                                             sfBool::SFTRUE)
         }
     }
 
@@ -459,7 +459,7 @@ impl<'s> Shape<'s> for RectangleShape<'s> {
     /// * color - New color of the shape
     fn set_fill_color(&mut self, color: &Color) {
         unsafe {
-            ffi::sfRectangleShape_setFillColor(self.rectangle_shape, *color)
+            ffi::sfRectangleShape_setFillColor(self.rectangle_shape, color.0)
         }
     }
 
@@ -472,7 +472,7 @@ impl<'s> Shape<'s> for RectangleShape<'s> {
     /// * color - New outline color of the shape
     fn set_outline_color(&mut self, color: &Color) {
         unsafe {
-            ffi::sfRectangleShape_setOutlineColor(self.rectangle_shape, *color)
+            ffi::sfRectangleShape_setOutlineColor(self.rectangle_shape, color.0)
         }
     }
 
@@ -514,7 +514,7 @@ impl<'s> Shape<'s> for RectangleShape<'s> {
     /// Return the fill color of the shape
     fn get_fill_color(&self) -> Color {
         unsafe {
-            ffi::sfRectangleShape_getFillColor(self.rectangle_shape)
+            Color(ffi::sfRectangleShape_getFillColor(self.rectangle_shape))
         }
     }
 
@@ -523,7 +523,7 @@ impl<'s> Shape<'s> for RectangleShape<'s> {
     /// Return the outline color of the shape
     fn get_outline_color(&self) -> Color {
         unsafe {
-            ffi::sfRectangleShape_getOutlineColor(self.rectangle_shape)
+            Color(ffi::sfRectangleShape_getOutlineColor(self.rectangle_shape))
         }
     }
 
@@ -556,7 +556,7 @@ impl<'s> Shape<'s> for RectangleShape<'s> {
     fn get_point(&self, index: u32) -> Vector2f {
         unsafe {
             ffi::sfRectangleShape_getPoint(self.rectangle_shape,
-                                           index as c_uint)
+                                                     index as c_uint)
         }
     }
 

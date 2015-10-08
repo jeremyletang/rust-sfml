@@ -34,9 +34,9 @@ use libc::{c_float, c_uint, size_t};
 use traits::Wrappable;
 use graphics::{Drawable, Transformable, RenderTarget, Font, FloatRect,
                Color, Transform, RenderStates, TextStyle};
-use system::vector2::Vector2f;
+use sfml_types::Vector2f;
 
-use ffi::graphics::text as ffi;
+use csfml_graphics_sys as ffi;
 
 // pub mod rc;
 
@@ -228,7 +228,7 @@ impl<'s> Text<'s> {
     /// * color - The new color of the text
     pub fn set_color(&mut self, color: &Color) {
         unsafe {
-            ffi::sfText_setColor(self.text, *color)
+            ffi::sfText_setColor(self.text, color.0)
         }
     }
 
@@ -237,7 +237,7 @@ impl<'s> Text<'s> {
     /// Return the global color of the text
     pub fn get_color(&self) -> Color {
         unsafe {
-            ffi::sfText_getColor(self.text)
+            Color(ffi::sfText_getColor(self.text))
         }
     }
 
@@ -545,7 +545,7 @@ impl<'s> Transformable for Text<'s> {
     /// of the object
     fn get_transform(&self) -> Transform {
         unsafe {
-            ffi::sfText_getTransform(self.text)
+            Transform(ffi::sfText_getTransform(self.text))
         }
     }
 
@@ -554,7 +554,7 @@ impl<'s> Transformable for Text<'s> {
     /// Return the inverse of the combined transformations applied to the object
     fn get_inverse_transform(&self) -> Transform {
         unsafe {
-            ffi::sfText_getInverseTransform(self.text)
+            Transform(ffi::sfText_getInverseTransform(self.text))
         }
     }
 }

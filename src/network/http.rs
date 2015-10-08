@@ -31,7 +31,7 @@ use std::str;
 use traits::Wrappable;
 use system::Time;
 
-use ffi::network::http as ffi;
+use csfml_network_sys as ffi;
 
 /// Method type to send the request
 #[repr(i32)]
@@ -51,7 +51,7 @@ pub enum Method {
 pub enum Status {
     // 2xx: success
     /// Most common code returned when operation was successful
-    Ok                  = ffi::OK as i32,
+    Ok                  = ffi::sfHttpOk as i32,
     /// The resource has successfully been created
     Created             = ffi::CREATED as i32,
     /// The request has been accepted, but will be processed later by the server
@@ -101,9 +101,9 @@ pub enum Status {
 
     // 10xx: SFML custom codes
     /// Response is not a valid HTTP one
-    InvalidResponse     = ffi::INVALIDRESPONSE as i32,
+    InvalidResponse     = ffi::sfHttpInvalidResponse as i32,
     /// Connection with server failed
-    ConnectionFailed    = ffi::CONNECTIONFAILED as i32
+    ConnectionFailed    = ffi::sfHttpConnectionFailed as i32
 }
 
 /// Encapsulation of an HTTP request

@@ -28,23 +28,13 @@
 
 use std::ops::{Add, Mul};
 
-use ffi::graphics::color as ffi;
+use csfml_graphics_sys as ffi;
 
 /// Utility class for manpulating RGBA colors
 ///
-/// Color is a simple color class composed of 4 components: Red, Green, Blue, Alpha
+/// sfColor is a simple color class composed of 4 components: Red, Green, Blue, Alpha
 #[repr(C)]
-#[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
-pub struct Color {
-    /// The red composant of the color
-    pub red: u8,
-    /// The green composant of the color
-    pub green: u8,
-    /// The blue composant of the color
-    pub blue: u8,
-    /// The alpha composant of the color
-    pub alpha: u8
-}
+pub struct Color(pub ffi::sfColor);
 
 impl Color {
 
@@ -57,12 +47,12 @@ impl Color {
     ///
     /// Return Color object constructed from the components
     pub fn new_rgb(red: u8, green: u8, blue: u8) -> Color {
-        Color {
+        Color(ffi::sfColor {
             red: red,
             green: green,
             blue: blue,
             alpha: 255
-        }
+        })
     }
 
     /// Construct a color from its 4 RGBA components
@@ -75,12 +65,12 @@ impl Color {
     ///
     /// Return Color object constructed from the components
     pub fn new_rgba(red: u8, green: u8, blue: u8, alpha: u8) -> Color {
-        Color {
+        Color(ffi::sfColor {
             red: red,
             green: green,
             blue: blue,
             alpha: alpha
-        }
+        })
     }
 
     /// Add two colors
@@ -91,7 +81,7 @@ impl Color {
     ///
     /// Return the component-wise saturated addition of the two colors
     pub fn add(color1: Color, color2: Color) -> Color {
-        unsafe {ffi::sfColor_add(color1, color2)}
+        Color(unsafe {ffi::sfColor_add(color1.0, color2.0)})
     }
 
     /// Modulate two colors
@@ -102,7 +92,7 @@ impl Color {
     ///
     /// Return the component-wise multiplication of the two colors
     pub fn modulate(color1: Color, color2: Color) -> Color {
-        unsafe {ffi::sfColor_modulate(color1, color2)}
+        Color(unsafe {ffi::sfColor_modulate(color1.0, color2.0)})
     }
 
     /// Black predefined color
@@ -156,16 +146,16 @@ impl Add for Color {
     type Output = Color;
 
     fn add(self, other: Color) -> Color {
-        let r: i32 = self.red as i32 + other.red as i32;
-        let g: i32 = self.green as i32 + other.green as i32;
-        let b: i32 = self.blue as i32 + other.blue as i32;
-        let a: i32 = self.alpha as i32 + other.alpha as i32;
-        Color {
+        let r: i32 = self.0.red as i32 + other.0.red as i32;
+        let g: i32 = self.0.green as i32 + other.0.green as i32;
+        let b: i32 = self.0.blue as i32 + other.0.blue as i32;
+        let a: i32 = self.0.alpha as i32 + other.0.alpha as i32;
+        Color(ffi::sfColor {
             red: if r > 255 {255} else {r as u8},
             green: if g > 255 {255} else {g as u8},
             blue: if b > 255 {255} else {b as u8},
             alpha: if a > 255 {255} else {a as u8}
-        }
+        })
     }
 }
 
@@ -173,15 +163,15 @@ impl Mul for Color {
     type Output = Color;
 
     fn mul(self, other: Color) -> Color {
-        let r: i32 = self.red as i32 * (other.red as i32);
-        let g: i32 = self.green as i32 * (other.green as i32);
-        let b: i32 = self.blue as i32 * (other.blue as i32);
-        let a: i32 = self.alpha as i32 * (other.alpha as i32);
-        Color {
+        let r: i32 = self.0.red as i32 * (other.0.red as i32);
+        let g: i32 = self.0.green as i32 * (other.0.green as i32);
+        let b: i32 = self.0.blue as i32 * (other.0.blue as i32);
+        let a: i32 = self.0.alpha as i32 * (other.0.alpha as i32);
+        Color(ffi::sfColor {
             red: if r > 255 {255} else {r as u8},
             green: if g > 255 {255} else {g as u8},
             blue: if b > 255 {255} else {b as u8},
             alpha: if a > 255 {255} else {a as u8}
-        }
+        })
     }
 }

@@ -34,12 +34,12 @@ use std::io::{Read, Seek};
 
 use audio::{SoundStatus, SoundSource};
 use system::Time;
-use system::vector3::Vector3f;
+use sfml_types::Vector3f;
 use system::inputstream::InputStream;
 use traits::Wrappable;
 
-use ffi::sfml_types::SfBool;
-use ffi::audio::music as ffi;
+use sfml_types::sfBool;
+use csfml_audio_sys as ffi;
 
 /// Play Music
 ///
@@ -91,7 +91,7 @@ impl Music {
     pub fn new_from_stream<T: Read + Seek>(stream: &mut T) -> Option<Music> {
         let mut input_stream = InputStream::new(stream);
         let music_tmp: *mut ffi::sfMusic = unsafe {
-            ffi::sfMusic_createFromStream(&mut input_stream)
+            ffi::sfMusic_createFromStream(&mut input_stream.0)
         };
         if music_tmp.is_null() {
             None
@@ -135,7 +135,7 @@ impl Music {
     /// # Arguments
     /// * loop - SFTRUE to play in loop, SFFALSE to play once
     pub fn set_loop(&mut self, lloop: bool) {
-        unsafe { ffi::sfMusic_setLoop(self.music, SfBool::from_bool(lloop)) }
+        unsafe { ffi::sfMusic_setLoop(self.music, sfBool::from_bool(lloop)) }
     }
 
     /// Tell whether or not a music is in loop mode
@@ -309,7 +309,7 @@ impl SoundSource for Music {
     /// * relative - true to set the position relative, false to set it absolute
     fn set_relative_to_listener(&mut self, relative: bool) {
         unsafe {
-            ffi::sfMusic_setRelativeToListener(self.music, SfBool::from_bool(relative))
+            ffi::sfMusic_setRelativeToListener(self.music, sfBool::from_bool(relative))
         }
     }
 

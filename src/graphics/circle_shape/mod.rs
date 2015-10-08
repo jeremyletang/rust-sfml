@@ -30,10 +30,10 @@ use std::ptr;
 use traits::Wrappable;
 use graphics::{Drawable, Transformable, Shape, IntRect, FloatRect, Color, Texture,
                RenderTarget, Transform, RenderStates};
-use system::vector2::Vector2f;
+use sfml_types::Vector2f;
 
-use ffi::sfml_types::SfBool;
-use ffi::graphics::circle_shape as ffi;
+use sfml_types::sfBool;
+use csfml_graphics_sys as ffi;
 
 // pub mod rc;
 
@@ -71,7 +71,7 @@ impl<'s> CircleShape<'s> {
             None
         } else {
             unsafe {
-                ffi::sfCircleShape_setTexture(circle, texture.unwrap(), SfBool::SFTRUE);
+                ffi::sfCircleShape_setTexture(circle, texture.unwrap(), sfBool::SFTRUE);
             }
             Some(CircleShape {
                     circle_shape: circle,
@@ -383,7 +383,7 @@ impl<'s> Transformable for CircleShape<'s> {
     /// of the object
     fn get_transform(&self) -> Transform {
         unsafe {
-            ffi::sfCircleShape_getTransform(self.circle_shape)
+            Transform(ffi::sfCircleShape_getTransform(self.circle_shape))
         }
     }
 
@@ -392,7 +392,7 @@ impl<'s> Transformable for CircleShape<'s> {
     /// Return inverse of the combined transformations applied to the object
     fn get_inverse_transform(&self) -> Transform {
         unsafe {
-            ffi::sfCircleShape_getInverseTransform(self.circle_shape)
+            Transform(ffi::sfCircleShape_getInverseTransform(self.circle_shape))
         }
     }
 }
@@ -418,7 +418,7 @@ impl<'s> Shape<'s> for CircleShape<'s> {
                        reset_rect: bool) {
         self.texture = Some(texture);
         unsafe {
-            ffi::sfCircleShape_setTexture(self.circle_shape, texture.unwrap(), SfBool::from_bool(reset_rect))
+            ffi::sfCircleShape_setTexture(self.circle_shape, texture.unwrap(), sfBool::from_bool(reset_rect))
         }
     }
 
@@ -430,7 +430,7 @@ impl<'s> Shape<'s> for CircleShape<'s> {
         unsafe {
             ffi::sfCircleShape_setTexture(self.circle_shape,
                                           ptr::null_mut(),
-                                          SfBool::SFTRUE)
+                                          sfBool::SFTRUE)
         }
     }
 
@@ -461,7 +461,7 @@ impl<'s> Shape<'s> for CircleShape<'s> {
     /// * color - New color of the shape
     fn set_fill_color(&mut self, color: &Color) {
         unsafe {
-            ffi::sfCircleShape_setFillColor(self.circle_shape, *color)
+            ffi::sfCircleShape_setFillColor(self.circle_shape, color.0)
         }
     }
 
@@ -474,7 +474,7 @@ impl<'s> Shape<'s> for CircleShape<'s> {
     /// * color - New outline color of the shape
     fn set_outline_color(&mut self, color: &Color) {
         unsafe {
-            ffi::sfCircleShape_setOutlineColor(self.circle_shape, *color)
+            ffi::sfCircleShape_setOutlineColor(self.circle_shape, color.0)
         }
     }
 
@@ -517,7 +517,7 @@ impl<'s> Shape<'s> for CircleShape<'s> {
     /// Return the fill color of the shape
     fn get_fill_color(&self) -> Color {
         unsafe {
-            ffi::sfCircleShape_getFillColor(self.circle_shape)
+            Color(ffi::sfCircleShape_getFillColor(self.circle_shape))
         }
     }
 
@@ -526,7 +526,7 @@ impl<'s> Shape<'s> for CircleShape<'s> {
     /// Return the outline color of the shape
     fn get_outline_color(&self) -> Color {
         unsafe {
-            ffi::sfCircleShape_getOutlineColor(self.circle_shape)
+            Color(ffi::sfCircleShape_getOutlineColor(self.circle_shape))
         }
     }
 

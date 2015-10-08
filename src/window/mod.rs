@@ -33,13 +33,6 @@ pub use window::window_style::WindowStyle;
 pub use window::keyboard::Key;
 pub use window::mouse::MouseButton;
 
-#[cfg(any(target_os="macos", target_os="linux", target_os="windows"))]
-mod platform {
-    #[link(name = "csfml-window")]
-    extern {}
-}
-
-
 mod window;
 mod video_mode;
 mod context;

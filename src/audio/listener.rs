@@ -26,9 +26,8 @@
 //!
 //! The audio listener is the point in the scene from where all the sounds are heard.
 
-use system::vector3::Vector3f;
-
-use ffi::audio::listener as ffi;
+use sfml_types::Vector3f;
+use csfml_audio_sys as ffi;
 
 /// Change the global volume of all the sounds and musics
 ///

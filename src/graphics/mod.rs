@@ -27,7 +27,7 @@
 pub use graphics::render_target::RenderTarget;
 pub use graphics::render_states::RenderStates;
 pub use graphics::render_window::{RenderWindow, Events};
-pub use graphics::rect::{FloatRect, IntRect};
+pub use sfml_types::{FloatRect, IntRect};
 pub use graphics::texture::Texture;
 pub use graphics::blend_mode::BlendMode;
 pub use graphics::transform::Transform;
@@ -41,9 +41,9 @@ pub use graphics::sprite::Sprite;
 pub use graphics::circle_shape::CircleShape;
 pub use graphics::rectangle_shape::RectangleShape;
 pub use graphics::convex_shape::{ConvexShape, ConvexShapePoints};
-pub use graphics::primitive_type::PrimitiveType;
+pub use graphics::primitive_type::*;
 pub use graphics::vertex::Vertex;
-pub use graphics::glyph::Glyph;
+pub use csfml_graphics_sys::Glyph;
 pub use graphics::render_texture::RenderTexture;
 pub use graphics::custom_shape::CustomShape;
 pub use graphics::vertex_array::{VertexArray, Vertices};
@@ -64,19 +64,12 @@ pub use graphics::transformable::Transformable;
 //     pub use graphics::render_states::rc::RenderStates;
 // }
 
-#[cfg(any(target_os="macos", target_os="linux", target_os="windows"))]
-mod platform {
-    #[link(name = "csfml-graphics")]
-    extern {}
-}
-
 mod drawable;
 mod shape;
 mod transformable;
 mod render_target;
 mod render_states;
 mod render_window;
-mod rect;
 mod texture;
 mod blend_mode;
 mod transform;
@@ -94,6 +87,5 @@ mod convex_shape;
 mod primitive_type;
 mod vertex;
 mod vertex_array;
-mod glyph;
 mod render_texture;
 mod custom_shape;

@@ -32,9 +32,9 @@ use libc::c_float;
 
 use traits::Wrappable;
 use graphics::FloatRect;
-use system::vector2::Vector2f;
+use sfml_types::Vector2f;
 
-use ffi::graphics::view as ffi;
+use csfml_graphics_sys as ffi;
 
 /// 2D camera that defines what region is shown on screen
 ///
@@ -238,7 +238,9 @@ impl View {
     ///
     /// Return the center of the view
     pub fn get_center(&self) -> Vector2f {
-        unsafe {ffi::sfView_getCenter(self.view)}
+        unsafe {
+            ffi::sfView_getCenter(self.view)
+        }
     }
 
     /// Get the size of a view

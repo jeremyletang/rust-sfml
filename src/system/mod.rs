@@ -28,21 +28,11 @@
  * It provides vector classes, unicode strings and conversion functions, threads and mutexes, timing classes.
  */
 
-pub use system::vector2::{Vector2u, Vector2i, Vector2f, ToVec};
-pub use system::vector3::Vector3f;
+pub use sfml_types::{Vector2u, Vector2i, Vector2f, ToVec, Vector3f};
 pub use system::msleep::sleep;
 pub use system::time::Time;
 pub use system::clock::Clock;
-pub use system::inputstream::InputStream;
 
-#[cfg(any(target_os="macos", target_os="linux", target_os="windows"))]
-mod platform {
-    #[link(name = "csfml-system")]
-    extern {}
-}
-
-pub mod vector2;
-pub mod vector3;
 mod time;
 mod clock;
 #[path = "sleep.rs"]

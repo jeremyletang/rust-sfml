@@ -26,6 +26,8 @@
 //!
 //! Structure defining the window's creation settings
 
+use csfml_window_sys as ffi;
+
 /// Non-debug, compatibility context (this and the core attribute are mutually exclusive).
 pub const CONTEXT_DEFAULT: u32 = 0;
 /// Core attribute.
@@ -38,20 +40,7 @@ pub const CONTEXT_DEBUG: u32 = 1 << 2;
 /// Structure defining the window's creation settings
 #[repr(C)]
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
-pub struct ContextSettings {
-    /// Bits of the depth buffer.
-    pub depth_bits: u32,
-    /// Bits of the stencil buffer.
-    pub stencil_bits: u32,
-    /// Level of antialiasing.
-    pub antialiasing_level: u32,
-    /// Major number of the context version
-    pub major_version: u32,
-    /// Minor number of the context version
-    pub minor_version: u32,
-    /// The attribute flags to create the context with
-    pub attribute_flags: u32,
-}
+pub struct ContextSettings(pub ffi::sfContextSettings);
 
 impl ContextSettings {
     /// Create a default ContextSettings
@@ -64,13 +53,13 @@ impl ContextSettings {
     /// * `minor_version`: 0
     /// * `attribute_flags`: DEFAULT
     pub fn default() -> ContextSettings {
-        ContextSettings {
+        ContextSettings(ffi::sfContextSettings{
             depth_bits: 0,
             stencil_bits: 0,
             antialiasing_level: 0,
             major_version: 2,
             minor_version: 0,
             attribute_flags: CONTEXT_DEFAULT,
-        }
+        })
     }
 }

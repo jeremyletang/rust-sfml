@@ -29,8 +29,8 @@ use std::mem;
 use traits::Wrappable;
 use network::{TcpSocket, SocketStatus};
 
-use ffi::sfml_types::SfBool;
-use ffi::network::tcp_listener as ffi;
+use sfml_types::sfBool;
+use csfml_network_sys as ffi;
 
 /// Socket that listens to new TCP connections
 pub struct TcpListener {
@@ -68,7 +68,7 @@ impl TcpListener {
     /// * blocking - true to set the socket as blocking, false for non-blocking
     pub fn set_blocking(&mut self, blocking: bool) {
         unsafe {
-            ffi::sfTcpListener_setBlocking(self.listener, SfBool::from_bool(blocking))
+            ffi::sfTcpListener_setBlocking(self.listener, sfBool::from_bool(blocking))
         }
     }
 

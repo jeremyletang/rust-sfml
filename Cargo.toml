@@ -13,6 +13,24 @@ license = "zlib-acknowledgement"
 libc = ">=0.1.5"
 bitflags = ">=0.1"
 
+[dependencies.sfml-types]
+path = "sfml-types"
+
+[dependencies.csfml-system-sys]
+path = "csfml-system-sys"
+
+[dependencies.csfml-window-sys]
+path = "csfml-window-sys"
+
+[dependencies.csfml-graphics-sys]
+path = "csfml-graphics-sys"
+
+[dependencies.csfml-audio-sys]
+path = "csfml-audio-sys"
+
+[dependencies.csfml-network-sys]
+path = "csfml-network-sys"
+
 [dev-dependencies]
 rand = ">=0.2.0"
 

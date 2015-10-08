@@ -101,6 +101,12 @@
 extern crate libc;
 #[macro_use]
 extern crate bitflags;
+extern crate sfml_types;
+extern crate csfml_system_sys;
+extern crate csfml_window_sys;
+extern crate csfml_graphics_sys;
+extern crate csfml_audio_sys;
+extern crate csfml_network_sys;
 
 mod traits;
 pub mod system;
@@ -108,4 +114,3 @@ pub mod window;
 pub mod audio;
 pub mod graphics;
 pub mod network;
-mod ffi;

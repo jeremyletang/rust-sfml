@@ -38,9 +38,9 @@ use std::ptr;
 
 use traits::{Wrappable, Drawable};
 use graphics::{Color, Texture, RenderTarget, FloatRect, IntRect, Transform, rc, RenderStates};
-use system::vector2::Vector2f;
+use sfml_types::Vector2f;
 
-use ffi::sfml_types::SfBool;
+use sfml_types::sfBool;
 use ffi::graphics::convex_shape as ffi;
 
 /// Specialized shape representing a convex polygon
@@ -97,7 +97,7 @@ impl ConvexShape {
             None
         } else {
             unsafe {
-                ffi::sfConvexShape_setTexture(shape, (*texture).borrow().unwrap(), SfBool::SFTRUE);
+                ffi::sfConvexShape_setTexture(shape, (*texture).borrow().unwrap(), sfBool::SFTRUE);
                 ffi::sfConvexShape_setPointCount(shape, points_count as c_uint)
             }
             Some(ConvexShape {
@@ -384,7 +384,7 @@ impl ConvexShape {
     /// * reset_rect - Should the texture rect be reset to the size of the new texture?
     pub fn set_texture(&mut self, texture: Rc<RefCell<Texture>>, reset_rect: bool) {
         unsafe {
-            ffi::sfConvexShape_setTexture(self.convex_shape, (*texture).borrow().unwrap(), SfBool::from_bool(reset_rect))
+            ffi::sfConvexShape_setTexture(self.convex_shape, (*texture).borrow().unwrap(), sfBool::from_bool(reset_rect))
         }
         self.texture = Some(texture);
     }
@@ -397,7 +397,7 @@ impl ConvexShape {
         unsafe {
             ffi::sfConvexShape_setTexture(self.convex_shape,
                                           ptr::null_mut(),
-                                          SfBool::SFTRUE)
+                                          sfBool::SFTRUE)
         }
     }
 

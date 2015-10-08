@@ -31,7 +31,7 @@ use std::ops::Index;
 use traits::Wrappable;
 use graphics::{Drawable, Vertex, FloatRect, primitive_type, PrimitiveType, RenderTarget, RenderStates};
 
-use ffi::graphics::vertex_array as ffi;
+use csfml_graphics_sys as ffi;
 
 /// Define a set of one or more 2D primitives
 pub struct VertexArray {
@@ -141,7 +141,7 @@ impl VertexArray {
     /// * vertex - Vertex to add
     pub fn append(&mut self, vertex: &Vertex) {
         unsafe {
-            ffi::sfVertexArray_append(self.vertex_array, *vertex)
+            ffi::sfVertexArray_append(self.vertex_array, vertex.0)
         }
     }
 
@@ -174,25 +174,25 @@ impl VertexArray {
             match primitive_type {
                 primitive_type::Points              =>
                     ffi::sfVertexArray_setPrimitiveType(self.vertex_array,
-                                                        ffi::SFPOINTS),
+                                                        ffi::sfPoints),
                 primitive_type::Lines               =>
                     ffi::sfVertexArray_setPrimitiveType(self.vertex_array,
-                                                        ffi::SFLINES),
+                                                        ffi::sfLines),
                 primitive_type::LinesStrip          =>
                     ffi::sfVertexArray_setPrimitiveType(self.vertex_array,
-                                                        ffi::SFLINESSTRIP),
+                                                        ffi::sfLinesStrip),
                 primitive_type::Triangles           =>
                     ffi::sfVertexArray_setPrimitiveType(self.vertex_array,
-                                                        ffi::SFTRIANGLES),
+                                                        ffi::sfTriangles),
                 primitive_type::TrianglesStrip      =>
                     ffi::sfVertexArray_setPrimitiveType(self.vertex_array,
-                                                        ffi::SFTRIANGLESSTRIP),
+                                                        ffi::sfTrianglesStrip),
                 primitive_type::TrianglesFan        =>
                     ffi::sfVertexArray_setPrimitiveType(self.vertex_array,
-                                                        ffi::SFTRIANGLESFAN),
+                                                        ffi::sfTrianglesFan),
                 primitive_type::Quads               =>
                     ffi::sfVertexArray_setPrimitiveType(self.vertex_array,
-                                                        ffi::SFQUADS)
+                                                        ffi::sfQuads)
             }
         }
     }
@@ -202,14 +202,13 @@ impl VertexArray {
     /// Return the primitive type
     pub fn get_primitive_type(&self) -> PrimitiveType {
         match unsafe { ffi::sfVertexArray_getPrimitiveType(self.vertex_array) } {
-            ffi::SFPOINTS             => primitive_type::Points,
-            ffi::SFLINES              => primitive_type::Lines,
-            ffi::SFLINESSTRIP         => primitive_type::LinesStrip,
-            ffi::SFTRIANGLES          => primitive_type::Triangles,
-            ffi::SFTRIANGLESSTRIP     => primitive_type::TrianglesStrip,
-            ffi::SFTRIANGLESFAN       => primitive_type::TrianglesFan,
-            ffi::SFQUADS              => primitive_type::Quads,
-            _                         => primitive_type::Points
+            ffi::sfPoints             => primitive_type::Points,
+            ffi::sfLines              => primitive_type::Lines,
+            ffi::sfLinesStrip         => primitive_type::LinesStrip,
+            ffi::sfTriangles          => primitive_type::Triangles,
+            ffi::sfTrianglesStrip     => primitive_type::TrianglesStrip,
+            ffi::sfTrianglesFan       => primitive_type::TrianglesFan,
+            ffi::sfQuads              => primitive_type::Quads,
         }
     }
 

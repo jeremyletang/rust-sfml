@@ -1,0 +1,15 @@
+[package]
+name = "csfml-network-sys"
+version = "0.1.0"
+authors = ["Mika Attila <radiantstatue@gmail.com>"]
+links = "csfml-network"
+build = "build.rs"
+
+[dependencies]
+libc = "0.1.10"
+
+[dependencies.sfml-types]
+path = "../sfml-types"
+
+[dependencies.csfml-system-sys]
+path = "../csfml-system-sys"

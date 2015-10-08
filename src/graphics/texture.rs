@@ -33,12 +33,12 @@ use std::io::{Read, Seek};
 
 use traits::Wrappable;
 use graphics::{RenderWindow, Image, IntRect};
-use system::vector2::Vector2u;
+use sfml_types::Vector2u;
 use system::inputstream::InputStream;
 use window::Window;
 
-use ffi::sfml_types::SfBool;
-use ffi::graphics::texture as ffi;
+use sfml_types::sfBool;
+use csfml_graphics_sys as ffi;
 
 /// Image used for drawing
 ///
@@ -99,7 +99,7 @@ impl Texture {
     pub fn new_from_stream<T: Read + Seek>(stream: &mut T, area: &mut IntRect) -> Option<Texture> {
         let mut input_stream = InputStream::new(stream);
         let tex = unsafe {
-            ffi::sfTexture_createFromStream(&mut input_stream, area)
+            ffi::sfTexture_createFromStream(&mut input_stream.0, area)
         };
         if tex.is_null() {
             None
@@ -143,7 +143,7 @@ impl Texture {
                                    area: &IntRect) -> Option<Texture> {
         let c_str = CString::new(filename.as_bytes()).unwrap().as_ptr();
         let tex = unsafe {
-            ffi::sfTexture_createFromFile(c_str as *mut i8, &*area)
+            ffi::sfTexture_createFromFile(c_str as *mut i8, area)
         };
         if tex.is_null() {
             None
@@ -183,7 +183,7 @@ impl Texture {
     pub fn new_from_image_with_rect(image: &Image,
                                     area: &IntRect) -> Option<Texture> {
         let tex = unsafe { ffi::sfTexture_createFromImage(image.unwrap(),
-                                                          &*area) };
+                                                          area) };
         if tex.is_null() {
             None
         } else {
@@ -304,7 +304,7 @@ impl Texture {
     /// * smooth - true to enable smoothing, false to disable it
     pub fn set_smooth(&mut self, smooth: bool) {
         unsafe {
-            ffi::sfTexture_setSmooth(self.texture, SfBool::from_bool(smooth))
+            ffi::sfTexture_setSmooth(self.texture, sfBool::from_bool(smooth))
         }
     }
 
@@ -335,7 +335,7 @@ impl Texture {
     /// * repeated  - true to repeat the texture, false to disable repeating
     pub fn set_repeated(&mut self, repeated: bool) {
         unsafe {
-            ffi::sfTexture_setRepeated(self.texture, SfBool::from_bool(repeated))
+            ffi::sfTexture_setRepeated(self.texture, sfBool::from_bool(repeated))
         }
     }
 

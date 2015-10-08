@@ -28,11 +28,11 @@ use libc::{c_uint, size_t};
 use std::ffi::CString;
 
 use traits::Wrappable;
-use system::vector2::Vector2u;
+use sfml_types::Vector2u;
 use graphics::{Color, IntRect};
 
-use ffi::sfml_types::SfBool;
-use ffi::graphics::image as ffi;
+use sfml_types::sfBool;
+use csfml_graphics_sys as ffi;
 
 use std::io::{Read, Seek};
 use system::inputstream::InputStream;
@@ -74,7 +74,7 @@ impl Image {
     /// Return Some(Image) or None
     pub fn new_from_stream<T: Read + Seek>(stream: &mut T) -> Option<Image> {
         let mut input_stream = InputStream::new(stream);
-        let image = unsafe { ffi::sfImage_createFromStream(&mut input_stream) };
+        let image = unsafe { ffi::sfImage_createFromStream(&mut input_stream.0) };
         if image.is_null() {
             None
         } else {
@@ -116,7 +116,7 @@ impl Image {
                           color: &Color) -> Option<Image> {
         let image =
             unsafe { ffi::sfImage_createFromColor(width as c_uint,
-                                                  height as c_uint, *color) };
+                                                  height as c_uint, color.0) };
         if image.is_null() {
             None
         } else {
@@ -229,7 +229,7 @@ impl Image {
     /// * alpha - Alpha value to assign to transparent pixels
     pub fn create_mask_from_color(&self, color: &Color, alpha: u8) {
         unsafe {
-            ffi::sfImage_createMaskFromColor(self.image, *color, alpha)
+            ffi::sfImage_createMaskFromColor(self.image, color.0, alpha)
         }
     }
 
@@ -245,7 +245,7 @@ impl Image {
     /// * color - New color of the pixel
     pub fn set_pixel(&mut self, x: u32, y: u32, color: &Color) {
         unsafe {
-            ffi::sfImage_setPixel(self.image, x as c_uint, y as c_uint, *color)
+            ffi::sfImage_setPixel(self.image, x as c_uint, y as c_uint, color.0)
         }
     }
 
@@ -262,7 +262,7 @@ impl Image {
     /// Return the Color of the pixel at coordinates (x, y)
     pub fn get_pixel(&self, x: u32, y: u32) -> Color {
         unsafe {
-            ffi::sfImage_getPixel(self.image, x as c_uint, y as c_uint)
+            Color(ffi::sfImage_getPixel(self.image, x as c_uint, y as c_uint))
         }
     }
 
@@ -310,7 +310,7 @@ impl Image {
                                    dest_x as c_uint,
                                    dest_y as c_uint,
                                    *source_rect,
-                                   SfBool::from_bool(apply_alpha))
+                                   sfBool::from_bool(apply_alpha))
         }
     }
 }

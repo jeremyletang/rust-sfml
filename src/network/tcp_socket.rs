@@ -32,8 +32,8 @@ use traits::Wrappable;
 use network::{IpAddress, Packet, SocketStatus};
 use system::Time;
 
-use ffi::sfml_types::SfBool;
-use ffi::network::tcp_socket as ffi;
+use sfml_types::sfBool;
+use csfml_network_sys as ffi;
 
 /// Specialized socket using the TCP protocol
 pub struct TcpSocket {
@@ -71,7 +71,7 @@ impl TcpSocket {
     /// * blocking - true to set the socket as blocking, false for non-blocking
     pub fn set_blocking(&mut self, blocking: bool) {
         unsafe {
-            ffi::sfTcpSocket_setBlocking(self.socket, SfBool::from_bool(blocking))
+            ffi::sfTcpSocket_setBlocking(self.socket, sfBool::from_bool(blocking))
         }
     }
 
@@ -197,7 +197,7 @@ impl TcpSocket {
     /// Return a packet and a socket status
     pub fn receive_packet(&self) -> (Packet, SocketStatus) {
         unsafe {
-            let pack: *mut ::ffi::network::packet::sfPacket = ptr::null_mut();
+            let pack: *mut ffi::sfPacket = ptr::null_mut();
             let stat: SocketStatus = mem::transmute(ffi::sfTcpSocket_receivePacket(self.socket, pack) as i32);
             (Wrappable::wrap(pack), stat)
         }

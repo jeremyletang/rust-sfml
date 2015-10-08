@@ -35,8 +35,8 @@ use std::ffi::CString;
 
 use traits::Wrappable;
 use graphics::{Texture, Color};
-use system::vector2::Vector2f;
-use system::vector3::Vector3f;
+use sfml_types::Vector2f;
+use sfml_types::Vector3f;
 
 use ffi::graphics::shader as ffi;
 

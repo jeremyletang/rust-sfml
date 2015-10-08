@@ -27,7 +27,7 @@
 pub use self::SocketStatus::{SocketNone, SocketNotReady, SocketDisconnected,
                              SocketError};
 
-use ffi::network::socket_status as ffi;
+use csfml_network_sys as ffi;
 
 /// Status codes that may be returned by socket functions.
 #[repr(i32)]

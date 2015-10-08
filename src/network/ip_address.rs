@@ -30,7 +30,7 @@ use std::str;
 use traits::Wrappable;
 use system::Time;
 
-use ffi::network::ip_address as ffi;
+use csfml_network_sys as ffi;
 
 /// Encapsulate an IPv4 network address.
 #[derive(Clone, Copy)]

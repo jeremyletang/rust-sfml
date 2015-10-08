@@ -23,7 +23,7 @@
 */
 
 use libc::c_int;
-use ffi::window::keyboard as ffi;
+use csfml_window_sys as ffi;
 
 /// Key codes known to SFML.
 #[repr(i64)]

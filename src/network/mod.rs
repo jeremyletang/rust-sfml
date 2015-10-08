@@ -37,13 +37,6 @@ pub use network::socket_status::SocketStatus;
 pub use network::ftp::Ftp;
 pub use network::http::Http;
 
-
-#[cfg(any(target_os="macos", target_os="linux", target_os="windows"))]
-mod platform {
-    #[link(name = "csfml-network")]
-    extern {}
-}
-
 mod ip_address;
 mod packet;
 mod socket_status;
