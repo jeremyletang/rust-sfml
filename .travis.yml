@@ -29,6 +29,7 @@ addons:
     - libpthread-stubs0-dev
     - libgl1-mesa-dev
     - libx11-dev
+    - libx11-xcb-dev
     - libxrandr-dev
     - libfreetype6-dev
     - libglew-dev
