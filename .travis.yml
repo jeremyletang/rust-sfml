@@ -5,17 +5,17 @@ env:
 language: rust
 script:
   - mkdir sfml_install
-  - wget http://www.sfml-dev.org/files/SFML-2.1-sources.zip
-  - unzip SFML-2.1-sources.zip
-  - pushd SFML-2.1 && mkdir build && cd build && cmake .. && make
+  - wget http://www.sfml-dev.org/files/SFML-2.3.2-sources.zip
+  - unzip -q SFML-2.3.2-sources.zip
+  - pushd SFML-2.3.2 && mkdir build && cd build && cmake .. && make
   - make DESTDIR=/home/travis/build/jeremyletang/rust-sfml/sfml_install install
   - popd
-  - wget http://www.sfml-dev.org/files/CSFML-2.1-sources.zip
-  - unzip CSFML-2.1-sources.zip
-  - pushd CSFML-2.1
+  - wget http://www.sfml-dev.org/files/CSFML-2.3-sources.zip
+  - unzip -q CSFML-2.3-sources.zip
+  - pushd CSFML-2.3
   - mkdir cmake/Modules
   - cp /home/travis/build/jeremyletang/rust-sfml/sfml_install/usr/local/share/SFML/cmake/Modules/FindSFML.cmake cmake/Modules
-  - mkdir build && cd build && cmake -DSFML_ROOT=/home/travis/build/jeremyletang/rust-sfml/sfml_install/usr/local .. && make
+  - mkdir build && cd build && cmake -DCMAKE_MODULE_PATH=/home/travis/build/jeremyletang/rust-sfml/CSFML-2.3/cmake/Modules -DSFML_ROOT=/home/travis/build/jeremyletang/rust-sfml/sfml_install/usr/local .. && make
   - make DESTDIR=/home/travis/build/jeremyletang/rust-sfml/sfml_install install
   - popd
   - mkdir .cargo
@@ -29,7 +29,11 @@ addons:
     - libpthread-stubs0-dev
     - libgl1-mesa-dev
     - libx11-dev
+    - libx11-xcb-dev
+    - libxcb-image0-dev
     - libxrandr-dev
+    - libxcb-randr0-dev
+    - libudev-dev
     - libfreetype6-dev
     - libglew-dev
     - libjpeg8-dev
