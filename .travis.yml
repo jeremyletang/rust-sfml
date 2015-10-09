@@ -6,12 +6,12 @@ language: rust
 script:
   - mkdir sfml_install
   - wget http://www.sfml-dev.org/files/SFML-2.3.2-sources.zip
-  - unzip SFML-2.3.2-sources.zip
+  - unzip -q SFML-2.3.2-sources.zip
   - pushd SFML-2.3.2 && mkdir build && cd build && cmake .. && make
   - make DESTDIR=/home/travis/build/jeremyletang/rust-sfml/sfml_install install
   - popd
   - wget http://www.sfml-dev.org/files/CSFML-2.3-sources.zip
-  - unzip CSFML-2.3-sources.zip
+  - unzip -q CSFML-2.3-sources.zip
   - pushd CSFML-2.3
   - mkdir cmake/Modules
   - cp /home/travis/build/jeremyletang/rust-sfml/sfml_install/usr/local/share/SFML/cmake/Modules/FindSFML.cmake cmake/Modules
