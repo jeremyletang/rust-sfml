@@ -23,16 +23,76 @@
 */
 
 //! Available blending modes for drawing
+use csfml_graphics_sys as ffi;
+
+use csfml_graphics_sys::sfBlendEquation::*;
+use csfml_graphics_sys::sfBlendFactor::*;
 
 ///Available Blending modes for drawing.
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
-pub enum BlendMode {
-    /// Pixel = Source * Source.a + Dest * (1 - Source.a)
-    Alpha = 0,
-    /// Pixel = Source + Dest.
-    Add = 1,
-    /// Pixel = Source * Dest.
-    Multiply = 2,
-    /// Pixel = Source.
-    None = 3
+pub struct BlendMode(pub ffi::sfBlendMode);
+
+impl BlendMode {
+
+    ///Create a new BlendMode
+    pub fn new(
+      col_src: ffi::sfBlendFactor,
+      col_dst: ffi::sfBlendFactor,
+      col_equ: ffi::sfBlendEquation,
+      alpha_src: ffi::sfBlendFactor,
+      alpha_dst: ffi::sfBlendFactor,
+      alpha_equ: ffi::sfBlendEquation)
+        -> BlendMode {
+        BlendMode(ffi::sfBlendMode {
+          colorSrcFactor: col_src,
+          colorDstFactor: col_dst,
+          colorEquation: col_equ,
+          alphaSrcFactor: alpha_src,
+          alphaDstFactor: alpha_dst,
+          alphaEquation: alpha_equ,
+        })
+    }
+
+    ///BlendMode ALPHA
+    pub fn blend_alpha() -> BlendMode {
+        BlendMode::new(
+          sfBlendFactorSrcAlpha,
+          sfBlendFactorOneMinusSrcAlpha,
+          sfBlendEquationAdd,
+          sfBlendFactorOne,
+          sfBlendFactorOneMinusSrcAlpha,
+          sfBlendEquationAdd)
+    }
+
+    ///BlendMode ADD
+    pub fn blend_add() -> BlendMode {
+        BlendMode::new(
+          sfBlendFactorSrcAlpha,
+          sfBlendFactorOne,
+          sfBlendEquationAdd,
+          sfBlendFactorOne,
+          sfBlendFactorOne,
+          sfBlendEquationAdd)
+    }
+
+    ///BlendMode MULTIPLY
+    pub fn blend_multiply() -> BlendMode {
+        BlendMode::new(
+          sfBlendFactorDstColor,
+          sfBlendFactorZero,
+          sfBlendEquationAdd,
+          sfBlendFactorDstColor,
+          sfBlendFactorZero,
+          sfBlendEquationAdd)
+    }
+    ///BlendMode NONE
+    pub fn blend_none() -> BlendMode {
+        BlendMode::new(
+          sfBlendFactorOne,
+          sfBlendFactorZero,
+          sfBlendEquationAdd,
+          sfBlendFactorOne,
+          sfBlendFactorZero,
+          sfBlendEquationAdd)
+    }
 }

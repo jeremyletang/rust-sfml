@@ -75,6 +75,45 @@ pub enum sfPrimitiveType {
     sfQuads
 }
 
+/**
+ * BlendMode factor types
+ */
+#[repr(C)]
+#[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
+pub enum sfBlendFactor {
+    sfBlendFactorZero,
+    sfBlendFactorOne,
+    sfBlendFactorSrcColor,
+    sfBlendFactorOneMinusSrcColor,
+    sfBlendFactorDstColor,
+    sfBlendFactorOneMinusDstColor,
+    sfBlendFactorSrcAlpha,
+    sfBlendFactorOneMinusSrcAlpha,
+    sfBlendFactorDstAlpha,
+    sfBlendFactorOneMinusDstAlpha,
+}
+
+/**
+ * BlendMode equations
+ */
+#[repr(C)]
+#[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
+pub enum sfBlendEquation {
+    sfBlendEquationAdd,
+    sfBlendEquationSubtract
+}
+
+#[repr(C)]
+#[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
+pub struct sfBlendMode {
+    pub colorSrcFactor: sfBlendFactor,
+    pub colorDstFactor: sfBlendFactor,
+    pub colorEquation: sfBlendEquation,
+    pub alphaSrcFactor: sfBlendFactor,
+    pub alphaDstFactor: sfBlendFactor,
+    pub alphaEquation: sfBlendEquation,
+}
+
 #[repr(C)]
 #[allow(missing_docs)]
 #[derive(Clone, Copy)]
@@ -329,7 +368,7 @@ extern "C" {
 
 #[repr(C)]
 pub struct sfRenderStates {
-    pub blendMode: i32,
+    pub blendMode: sfBlendMode,
     pub transform: sfTransform,
     pub texture: *mut sfTexture,
     pub shader: *mut sfShader
