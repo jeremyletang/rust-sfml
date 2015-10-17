@@ -62,7 +62,7 @@ impl<'s> RenderStates<'s> {
                shader: Option<&'s Shader<'s>>) -> RenderStates<'s> {
         RenderStates {
                 sf_render_states: ffi::sfRenderStates {
-                blendMode: blend_mode as i32,
+                blendMode: blend_mode.0,
                 transform: transform.0,
                 texture: ptr::null_mut(),
                 shader: ptr::null_mut()
@@ -86,12 +86,12 @@ impl<'s> RenderStates<'s> {
     pub fn default() -> RenderStates<'s> {
         RenderStates {
                 sf_render_states: ffi::sfRenderStates {
-                blendMode: BlendMode::Alpha as i32,
+                blendMode: BlendMode::blend_alpha().0,
                 transform: Transform::new_identity().0,
                 texture: ptr::null_mut(),
                 shader: ptr::null_mut()
             },
-            blend_mode: BlendMode::Alpha,
+            blend_mode: BlendMode::blend_alpha(),
             transform: Transform::new_identity(),
             texture: None,
             shader: None
@@ -101,7 +101,7 @@ impl<'s> RenderStates<'s> {
     // Internal rust-sfml use only
     #[doc(hidden)]
     pub fn unwrap(&mut self) -> *mut ffi::sfRenderStates {
-        self.sf_render_states.blendMode = self.blend_mode as i32;
+        self.sf_render_states.blendMode = self.blend_mode.0;
         self.sf_render_states.transform = self.transform.0;
         self.sf_render_states.texture = if !self.texture.is_none() {
             self.texture.unwrap().unwrap()
