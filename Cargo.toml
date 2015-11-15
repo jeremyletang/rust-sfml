@@ -10,7 +10,7 @@ repository = "https://github.com/jeremyletang/rust-sfml"
 license = "zlib-acknowledgement"
 
 [dependencies]
-libc = ">=0.1.5"
+libc = "0.2.2"
 bitflags = ">=0.1"
 
 [dependencies.sfml-types]

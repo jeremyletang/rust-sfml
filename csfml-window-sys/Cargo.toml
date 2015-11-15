@@ -6,7 +6,7 @@ links = "csfml-window"
 build = "build.rs"
 
 [dependencies]
-libc = "0.1.10"
+libc = "0.2.2"
 
 [dependencies.sfml-types]
 path = "../sfml-types"
