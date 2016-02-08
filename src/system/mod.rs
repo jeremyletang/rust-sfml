@@ -29,13 +29,12 @@
  */
 
 pub use sfml_types::{Vector2u, Vector2i, Vector2f, ToVec, Vector3f};
-pub use system::msleep::sleep;
+pub use system::sleep::sleep;
 pub use system::time::Time;
 pub use system::clock::Clock;
 
 mod time;
 mod clock;
-#[path = "sleep.rs"]
-mod msleep;
+mod sleep;
 #[doc(hidden)] // this is not meant for external use
 pub mod inputstream;
