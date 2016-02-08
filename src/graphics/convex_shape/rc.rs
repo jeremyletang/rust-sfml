@@ -22,8 +22,6 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#![allow(missing_copy_implementations)]
-
 //! Specialized shape representing a convex polygon
 //!
 //! It is important to keep in mind that a convex shape must
@@ -274,8 +272,8 @@ impl ConvexShape {
 
     /// Set the position of a point.
     ///
-    /// Don't forget that the polygon must remain convex, and the points need to stay ordered! 
-    /// set_point_count must be called first in order to set the total number of points. 
+    /// Don't forget that the polygon must remain convex, and the points need to stay ordered!
+    /// set_point_count must be called first in order to set the total number of points.
     /// The result is undefined if index is out of the valid range.
     ///
     /// # Arguments

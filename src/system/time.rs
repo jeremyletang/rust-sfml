@@ -22,8 +22,6 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#![allow(missing_copy_implementations)]
-
 //! Represents a time value.
 //!
 //! Time encapsulates a time value in a flexible way.

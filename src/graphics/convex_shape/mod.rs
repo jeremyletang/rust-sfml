@@ -22,8 +22,6 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#![allow(missing_copy_implementations)]
-
 //! Specialized shape representing a convex polygon
 //!
 //! It is important to keep in mind that a convex shape must
