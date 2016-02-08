@@ -5,12 +5,13 @@ env:
 language: rust
 script:
   - mkdir sfml_install
-  - wget http://www.sfml-dev.org/files/SFML-2.3.2-sources.zip
+  # TODO: Maybe investigate why the certificate checks for the SFML sources fail
+  - wget http://www.sfml-dev.org/files/SFML-2.3.2-sources.zip --no-check-certificate
   - unzip -q SFML-2.3.2-sources.zip
   - pushd SFML-2.3.2 && mkdir build && cd build && cmake .. && make
   - make DESTDIR=/home/travis/build/jeremyletang/rust-sfml/sfml_install install
   - popd
-  - wget http://www.sfml-dev.org/files/CSFML-2.3-sources.zip
+  - wget http://www.sfml-dev.org/files/CSFML-2.3-sources.zip --no-check-certificate
   - unzip -q CSFML-2.3-sources.zip
   - pushd CSFML-2.3
   - mkdir cmake/Modules
