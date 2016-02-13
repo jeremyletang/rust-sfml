@@ -86,23 +86,6 @@ impl Sound {
         }
     }
 
-    /// Create a new sound by copying an existing one
-    ///
-    /// Return Some(Sound) or None
-    pub fn clone(&self) -> Option<Sound> {
-        let s = unsafe {ffi::sfSound_copy(self.sound)};
-        if s.is_null() {
-            None
-        }
-        else {
-            let buf = self.get_buffer();
-            Some(Sound {
-                sound: s,
-                buffer: buf
-            })
-        }
-    }
-
     /// Tell whether or not a sound is in loop mode
     ///
     /// Return true if the sound is looping, false otherwise
@@ -355,6 +338,20 @@ impl SoundSource for Sound {
     fn get_attenuation(&self) -> f32 {
         unsafe {
             ffi::sfSound_getAttenuation(self.sound) as f32
+        }
+    }
+}
+
+impl Clone for Sound {
+    fn clone(&self) -> Self {
+        let s = unsafe {ffi::sfSound_copy(self.sound)};
+        if s.is_null() {
+            panic!("Sound is null");
+        } else {
+            Sound {
+                sound: s,
+                buffer: self.get_buffer()
+            }
         }
     }
 }
