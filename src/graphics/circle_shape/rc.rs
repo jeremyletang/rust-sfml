@@ -599,7 +599,6 @@ impl Clone for CircleShape {
 }
 
 impl Wrappable<*mut ffi::sfCircleShape> for CircleShape {
-    #[doc(hidden)]
     fn wrap(circle_shape: *mut ffi::sfCircleShape) -> CircleShape {
         CircleShape {
             circle_shape: circle_shape,
@@ -607,7 +606,6 @@ impl Wrappable<*mut ffi::sfCircleShape> for CircleShape {
         }
     }
 
-    #[doc(hidden)]
     fn unwrap(&self) -> *mut ffi::sfCircleShape {
         self.circle_shape
     }

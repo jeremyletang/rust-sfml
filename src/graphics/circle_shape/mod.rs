@@ -619,7 +619,6 @@ impl<'s> Drop for CircleShape<'s> {
 }
 
 impl<'s> Wrappable<*mut ffi::sfCircleShape> for CircleShape<'s> {
-    #[doc(hidden)]
     fn wrap(circle_shape: *mut ffi::sfCircleShape) -> CircleShape<'s> {
         CircleShape {
             circle_shape: circle_shape,
@@ -627,7 +626,6 @@ impl<'s> Wrappable<*mut ffi::sfCircleShape> for CircleShape<'s> {
         }
     }
 
-    #[doc(hidden)]
     fn unwrap(&self) -> *mut ffi::sfCircleShape {
         self.circle_shape
     }

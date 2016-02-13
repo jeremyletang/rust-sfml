@@ -608,9 +608,7 @@ impl Iterator for ConvexShapePoints {
     }
 }
 
-#[doc(hidden)]
 impl Wrappable<*mut ffi::sfConvexShape> for ConvexShape {
-    #[doc(hidden)]
     fn wrap(convex_shape: *mut ffi::sfConvexShape) -> ConvexShape {
         ConvexShape {
             convex_shape: convex_shape.clone(),
@@ -618,7 +616,6 @@ impl Wrappable<*mut ffi::sfConvexShape> for ConvexShape {
         }
     }
 
-    #[doc(hidden)]
     fn unwrap(&self) -> *mut ffi::sfConvexShape {
         self.convex_shape
     }
