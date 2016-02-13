@@ -435,9 +435,10 @@ impl Iterator for Events {
 
     fn next(&mut self) -> Option<event::Event> {
         let mut event = ffi::sfEvent { data: [032; 6] };
-        match unsafe { ffi::sfWindow_pollEvent(self.window, &mut event) }.to_bool() {
-            false     => None,
-            true      => Some(event::raw::get_wrapped_event(&mut event))
+        if unsafe { ffi::sfWindow_pollEvent(self.window, &mut event) }.to_bool() {
+            Some(event::raw::get_wrapped_event(&mut event))
+        } else {
+            None
         }
     }
 }

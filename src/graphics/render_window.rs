@@ -861,9 +861,10 @@ impl Iterator for Events {
 
     fn next(&mut self) -> Option<event::Event> {
         let mut event = ::csfml_window_sys::sfEvent { data: [032; 6] };
-        match unsafe { ffi::sfRenderWindow_pollEvent(self.render_window, &mut event) }.to_bool() {
-            false     => None,
-            true      => Some(event::raw::get_wrapped_event(&mut event))
+        if unsafe { ffi::sfRenderWindow_pollEvent(self.render_window, &mut event) }.to_bool() {
+            Some(event::raw::get_wrapped_event(&mut event))
+        } else {
+            None
         }
     }
 }
