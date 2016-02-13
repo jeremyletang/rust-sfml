@@ -74,30 +74,6 @@ impl<'s> RenderStates<'s> {
         }
     }
 
-    /// Create a new RenderStates initialized to default.
-    ///
-    /// # default
-    /// * blend_mode is initialized to BlendAlpha
-    /// * transform is initialized to the identity matrix
-    /// * texture is initialized to None
-    /// * shader is initialized to None
-    ///
-    /// Return a new default RenderStates
-    pub fn default() -> RenderStates<'s> {
-        RenderStates {
-                sf_render_states: ffi::sfRenderStates {
-                blendMode: BlendMode::blend_alpha().0,
-                transform: Transform::new_identity().0,
-                texture: ptr::null_mut(),
-                shader: ptr::null_mut()
-            },
-            blend_mode: BlendMode::blend_alpha(),
-            transform: Transform::new_identity(),
-            texture: None,
-            shader: None
-        }
-    }
-
     // Internal rust-sfml use only
     #[doc(hidden)]
     pub fn unwrap(&mut self) -> *mut ffi::sfRenderStates {
@@ -115,5 +91,31 @@ impl<'s> RenderStates<'s> {
         };
 
         &mut self.sf_render_states as *mut ffi::sfRenderStates
+    }
+}
+
+/// Create a new RenderStates initialized to default.
+///
+/// # default
+/// * blend_mode is initialized to BlendAlpha
+/// * transform is initialized to the identity matrix
+/// * texture is initialized to None
+/// * shader is initialized to None
+///
+/// Return a new default RenderStates
+impl<'s> Default for RenderStates<'s> {
+    fn default() -> RenderStates<'s> {
+        RenderStates {
+                sf_render_states: ffi::sfRenderStates {
+                blendMode: BlendMode::blend_alpha().0,
+                transform: Transform::new_identity().0,
+                texture: ptr::null_mut(),
+                shader: ptr::null_mut()
+            },
+            blend_mode: BlendMode::blend_alpha(),
+            transform: Transform::new_identity(),
+            texture: None,
+            shader: None
+        }
     }
 }
