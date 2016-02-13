@@ -165,20 +165,20 @@ pub mod raw {
     use csfml_window_sys::*;
 
     trait sfEventExt {
-        fn _type(&mut self) -> *mut sfEventType;
+        fn type_(&mut self) -> *mut sfEventType;
         fn size(&mut self) -> super::Event;
-        fn key(&mut self, _type: sfEventType) -> super::Event;
+        fn key(&mut self, type_: sfEventType) -> super::Event;
         fn text(&mut self) -> super::Event;
         fn mouse_move(&mut self) -> super::Event;
-        fn mouse_button(&mut self, _type: sfEventType) -> super::Event;
+        fn mouse_button(&mut self, type_: sfEventType) -> super::Event;
         fn mouse_wheel(&mut self) -> super::Event;
         fn joystick_move(&mut self) -> super::Event;
-        fn joystick_button(&mut self, _type: sfEventType) -> super::Event;
-        fn joystick_connect(&mut self, _type: sfEventType) -> super::Event;
+        fn joystick_button(&mut self, type_: sfEventType) -> super::Event;
+        fn joystick_connect(&mut self, type_: sfEventType) -> super::Event;
     }
 
     impl sfEventExt for sfEvent {
-        fn _type(&mut self) -> *mut sfEventType {
+        fn type_(&mut self) -> *mut sfEventType {
             unsafe { ::std::mem::transmute(self) }
         }
 
@@ -187,14 +187,14 @@ pub mod raw {
             unsafe { super::Resized { width: (*e).width, height: (*e).height } }
         }
 
-        fn key(&mut self, _type: sfEventType) -> super::Event {
+        fn key(&mut self, type_: sfEventType) -> super::Event {
             let e: *mut sfKeyEvent = unsafe { ::std::mem::transmute(self) };
             let code = unsafe { ::std::mem::transmute((*e).code as i64) };
             let alt = unsafe { (*e).alt.to_bool() };
             let ctrl = unsafe { (*e).control.to_bool() };
             let shift = unsafe { (*e).shift.to_bool() };
             let system = unsafe { (*e).system.to_bool() };
-            match _type {
+            match type_ {
                 sfEvtKeyPressed => {
                     super::KeyPressed {
                         code: code,
@@ -227,13 +227,13 @@ pub mod raw {
             unsafe { super::MouseMoved {x: (*e).x, y: (*e).y } }
         }
 
-        fn mouse_button(&mut self, _type: sfEventType) -> super::Event {
+        fn mouse_button(&mut self, type_: sfEventType) -> super::Event {
             let e: *mut sfMouseButtonEvent = unsafe { ::std::mem::transmute(self) };
             let button = unsafe { ::std::mem::transmute((*e).button as u8) };
             let x = unsafe { (*e).x };
             let y = unsafe { (*e).y };
 
-            match _type {
+            match type_ {
                 sfEvtMouseButtonReleased => super::MouseButtonReleased { button: button, x: x, y: y },
                 sfEvtMouseButtonPressed => super::MouseButtonPressed { button: button, x: x, y: y },
                 _ => unreachable!()
@@ -254,12 +254,12 @@ pub mod raw {
             }
         }
 
-        fn joystick_button(&mut self, _type: sfEventType) -> super::Event {
+        fn joystick_button(&mut self, type_: sfEventType) -> super::Event {
             let e: *mut sfJoystickButtonEvent = unsafe { ::std::mem::transmute(self) };
             let jid = unsafe { (*e).joystickid };
             let btn = unsafe { (*e).button };
 
-            match _type {
+            match type_ {
                 sfEvtJoystickButtonPressed =>
                     super::JoystickButtonPressed { joystickid: jid, button: btn },
                 sfEvtJoystickButtonReleased =>
@@ -268,11 +268,11 @@ pub mod raw {
             }
         }
 
-        fn joystick_connect(&mut self, _type: sfEventType) -> super::Event {
+        fn joystick_connect(&mut self, type_: sfEventType) -> super::Event {
             let e: *mut sfJoystickConnectEvent = unsafe { ::std::mem::transmute(self) };
             let jid = unsafe { (*e).joystickid };
 
-            match _type {
+            match type_ {
                 sfEvtJoystickConnected => super::JoystickConnected { joystickid: jid },
                 sfEvtJoystickDisconnected => super::JoystickDisconnected { joystickid: jid},
                 _ => unreachable!()
@@ -281,27 +281,27 @@ pub mod raw {
     }
 
     pub fn get_wrapped_event(event: &mut ::csfml_window_sys::sfEvent) -> super::Event {
-        let _type = unsafe { *event._type() };
+        let type_ = unsafe { *event.type_() };
 
-        match _type {
+        match type_ {
             sfEvtClosed => super::Closed,
             sfEvtResized => event.size(),
             sfEvtLostFocus => super::LostFocus,
             sfEvtGainedFocus => super::GainedFocus,
             sfEvtTextEntered => event.text(),
-            sfEvtKeyPressed => event.key(_type),
-            sfEvtKeyReleased => event.key(_type),
+            sfEvtKeyPressed => event.key(type_),
+            sfEvtKeyReleased => event.key(type_),
             sfEvtMouseWheelMoved => event.mouse_wheel(),
-            sfEvtMouseButtonPressed => event.mouse_button(_type),
-            sfEvtMouseButtonReleased => event.mouse_button(_type),
+            sfEvtMouseButtonPressed => event.mouse_button(type_),
+            sfEvtMouseButtonReleased => event.mouse_button(type_),
             sfEvtMouseMoved => event.mouse_move(),
             sfEvtMouseEntered => super::MouseEntered,
             sfEvtMouseLeft => super::MouseLeft,
-            sfEvtJoystickButtonPressed => event.joystick_button(_type),
-            sfEvtJoystickButtonReleased => event.joystick_button(_type),
+            sfEvtJoystickButtonPressed => event.joystick_button(type_),
+            sfEvtJoystickButtonReleased => event.joystick_button(type_),
             sfEvtJoystickMoved => event.joystick_move(),
-            sfEvtJoystickConnected => event.joystick_connect(_type),
-            sfEvtJoystickDisconnected => event.joystick_connect(_type),
+            sfEvtJoystickConnected => event.joystick_connect(type_),
+            sfEvtJoystickDisconnected => event.joystick_connect(type_),
             _ => super::NoEvent
         }
     }

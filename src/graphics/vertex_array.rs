@@ -273,11 +273,11 @@ impl<'a> Iterator for Vertices<'a> {
 impl Index<u32> for VertexArray {
     type Output = Vertex;
 
-    fn index(&self, _rhs: u32) -> &Vertex {
+    fn index(&self, rhs: u32) -> &Vertex {
         unsafe {
             mem::transmute::<*const Vertex, &Vertex>
                 (ffi::sfVertexArray_getVertex(self.vertex_array,
-                                              _rhs as c_uint) as *const Vertex)
+                                              rhs as c_uint) as *const Vertex)
         }
     }
 }

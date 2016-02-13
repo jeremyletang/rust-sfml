@@ -139,7 +139,7 @@ pub const sfEvtJoystickDisconnected: ::libc::c_uint = 17;
 #[repr(C)]
 #[derive(Clone, Copy)]
 pub struct sfKeyEvent {
-    pub _type: sfEventType,
+    pub type_: sfEventType,
     pub code: sfKeyCode,
     pub alt: sfBool,
     pub control: sfBool,
@@ -150,14 +150,14 @@ pub struct sfKeyEvent {
 #[repr(C)]
 #[derive(Clone, Copy)]
 pub struct sfTextEvent {
-    pub _type: sfEventType,
+    pub type_: sfEventType,
     pub unicode: ::libc::c_uint,
 }
 
 #[repr(C)]
 #[derive(Clone, Copy)]
 pub struct sfMouseMoveEvent {
-    pub _type: sfEventType,
+    pub type_: sfEventType,
     pub x: ::libc::c_int,
     pub y: ::libc::c_int,
 }
@@ -165,7 +165,7 @@ pub struct sfMouseMoveEvent {
 #[repr(C)]
 #[derive(Clone, Copy)]
 pub struct sfMouseButtonEvent {
-    pub _type: sfEventType,
+    pub type_: sfEventType,
     pub button: sfMouseButton,
     pub x: ::libc::c_int,
     pub y: ::libc::c_int,
@@ -174,7 +174,7 @@ pub struct sfMouseButtonEvent {
 #[repr(C)]
 #[derive(Clone, Copy)]
 pub struct sfMouseWheelEvent {
-    pub _type: sfEventType,
+    pub type_: sfEventType,
     pub delta: ::libc::c_int,
     pub x: ::libc::c_int,
     pub y: ::libc::c_int,
@@ -183,7 +183,7 @@ pub struct sfMouseWheelEvent {
 #[repr(C)]
 #[derive(Clone, Copy)]
 pub struct sfJoystickMoveEvent {
-    pub _type: sfEventType,
+    pub type_: sfEventType,
     pub joystickid: ::libc::c_uint,
     pub axis: sfJoystickAxis,
     pub position: ::libc::c_float,
@@ -192,7 +192,7 @@ pub struct sfJoystickMoveEvent {
 #[repr(C)]
 #[derive(Clone, Copy)]
 pub struct sfJoystickButtonEvent {
-    pub _type: sfEventType,
+    pub type_: sfEventType,
     pub joystickid: ::libc::c_uint,
     pub button: ::libc::c_uint,
 }
@@ -200,14 +200,14 @@ pub struct sfJoystickButtonEvent {
 #[repr(C)]
 #[derive(Clone, Copy)]
 pub struct sfJoystickConnectEvent {
-    pub _type: sfEventType,
+    pub type_: sfEventType,
     pub joystickid: ::libc::c_uint,
 }
 
 #[repr(C)]
 #[derive(Clone, Copy)]
 pub struct sfSizeEvent {
-    pub _type: sfEventType,
+    pub type_: sfEventType,
     pub width: ::libc::c_uint,
     pub height: ::libc::c_uint,
 }
