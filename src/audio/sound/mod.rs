@@ -173,11 +173,6 @@ impl<'s> Sound<'s> {
     pub fn get_buffer(&self) -> Option<&'s SoundBuffer> {
         self.buffer
     }
-
-    #[doc(hidden)]
-    pub fn unwrap(&self) -> *mut ffi::sfSound {
-        self.sound
-    }
 }
 
 impl<'s> Clone for Sound<'s> {
