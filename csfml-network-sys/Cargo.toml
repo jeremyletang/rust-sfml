@@ -1,5 +1,6 @@
 [package]
 name = "csfml-network-sys"
+description = "Bindings to csfml-network"
 version = "0.1.0"
 authors = ["Mika Attila <radiantstatue@gmail.com>"]
 links = "csfml-network"

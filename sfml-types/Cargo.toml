@@ -1,5 +1,6 @@
 [package]
 name = "sfml-types"
+description = "Base SFML types"
 version = "0.1.0"
 authors = ["Mika Attila <radiantstatue@gmail.com>"]
 homepage = "http://www.rust-sfml.org/"
