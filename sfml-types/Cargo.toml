@@ -2,3 +2,6 @@
 name = "sfml-types"
 version = "0.1.0"
 authors = ["Mika Attila <radiantstatue@gmail.com>"]
+homepage = "http://www.rust-sfml.org/"
+repository = "https://github.com/jeremyletang/rust-sfml"
+license = "zlib-acknowledgement"
