@@ -36,8 +36,7 @@ use csfml_graphics_sys as ffi;
 
 // pub mod rc;
 
-#[doc(hidden)]
-pub struct WrapObj {
+struct WrapObj {
     shape_impl: Box<ShapeImpl + Send>
 }
 
