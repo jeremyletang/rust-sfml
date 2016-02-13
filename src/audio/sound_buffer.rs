@@ -67,21 +67,6 @@ impl SoundBuffer {
         }
     }
 
-    /// Create a new sound buffer by copying an existing one
-    ///
-    /// Return an option to a cloned SoundBuffer object or None.
-    pub fn clone(&self) -> Option<SoundBuffer> {
-        let sound_buffer = unsafe { ffi::sfSoundBuffer_copy(self.sound_buffer) };
-        if sound_buffer.is_null() {
-            None
-        } else {
-            Some(SoundBuffer {
-                    sound_buffer: sound_buffer,
-                    dropable: true
-                })
-        }
-    }
-
     /// Save a sound buffer to an audio file
     ///
     /// Here is a complete list of all the supported audio formats:
@@ -138,6 +123,20 @@ impl SoundBuffer {
     pub fn get_sample_rate(&self) -> u32 {
         unsafe {
             ffi::sfSoundBuffer_getSampleRate(self.sound_buffer) as u32
+        }
+    }
+}
+
+impl Clone for SoundBuffer {
+    fn clone(&self) -> Self {
+        let sound_buffer = unsafe { ffi::sfSoundBuffer_copy(self.sound_buffer) };
+        if sound_buffer.is_null() {
+            panic!("Sound buffer is null");
+        } else {
+            SoundBuffer {
+                sound_buffer: sound_buffer,
+                dropable: true
+            }
         }
     }
 }
