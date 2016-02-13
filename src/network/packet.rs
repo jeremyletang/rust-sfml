@@ -54,21 +54,6 @@ impl Packet {
         }
     }
 
-    /// Create a new packet by copying an existing one
-    ///
-    /// Return Some(Packet) or None
-    pub fn clone(&self) -> Option<Packet> {
-        let pck = unsafe { ffi::sfPacket_copy(self.packet) };
-        if pck.is_null() {
-            None
-        }
-        else{
-            Some(Packet {
-                packet: pck
-            })
-        }
-    }
-
     /// Clear a packet
     ///
     /// After calling Clear, the packet is empty.
@@ -253,6 +238,19 @@ impl Packet {
         let c_string = CString::new(string.as_bytes()).unwrap().as_ptr();
         unsafe {
             ffi::sfPacket_writeString(self.packet, c_string)
+        }
+    }
+}
+
+impl Clone for Packet {
+    fn clone(&self) -> Self {
+        let pck = unsafe { ffi::sfPacket_copy(self.packet) };
+        if pck.is_null() {
+            panic!("Packet is null")
+        } else {
+            Packet {
+                packet: pck
+            }
         }
     }
 }
