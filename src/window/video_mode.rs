@@ -135,7 +135,6 @@ impl VideoMode {
     }
 }
 
-#[doc(hidden)]
 impl Wrappable<ffi::sfVideoMode> for VideoMode {
     fn wrap(mode: ffi::sfVideoMode) -> VideoMode {
         VideoMode{

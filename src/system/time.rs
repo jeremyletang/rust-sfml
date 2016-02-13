@@ -135,7 +135,6 @@ impl Div for Time {
     }
 }
 
-#[doc(hidden)]
 impl Wrappable<ffi::sfTime> for Time {
     fn wrap(time: ffi::sfTime) -> Time {
         Time {
