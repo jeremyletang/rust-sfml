@@ -178,11 +178,6 @@ impl Sound {
     pub fn get_buffer(&self) -> Option<Rc<RefCell<SoundBuffer>>> {
         self.buffer.clone()
     }
-
-    #[doc(hidden)]
-    pub fn unwrap(&self) -> *mut ffi::sfSound {
-        self.sound
-    }
 }
 
 impl SoundSource for Sound {
