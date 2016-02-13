@@ -62,22 +62,6 @@ impl Vertex {
         })
     }
 
-    /// Create a new default Vertex
-    ///
-    /// # Default
-    /// * position - (0., 0.)
-    /// * color - white
-    /// * tex_coords - (0., 0.)
-    ///
-    /// Return a Vertex
-    pub fn default() -> Vertex {
-        Vertex(ffi::sfVertex {
-            position: Vector2f { x: 0., y: 0. },
-            color: Color::white().0,
-            tex_coords: Vector2f { x: 0., y: 0. }
-        })
-    }
-
     /// Create a new Vertex whit a position
     ///
     /// # Arguments
@@ -130,6 +114,24 @@ impl Vertex {
             position: *position,
             color: Color::white().0,
             tex_coords: *tex_coords
+        })
+    }
+}
+
+/// Create a new default Vertex
+///
+/// # Default
+/// * position - (0., 0.)
+/// * color - white
+/// * tex_coords - (0., 0.)
+///
+/// Return a Vertex
+impl Default for Vertex {
+    fn default() -> Vertex {
+        Vertex(ffi::sfVertex {
+            position: Vector2f { x: 0., y: 0. },
+            color: Color::white().0,
+            tex_coords: Vector2f { x: 0., y: 0. }
         })
     }
 }
