@@ -42,17 +42,17 @@ pub const CONTEXT_DEBUG: u32 = 1 << 2;
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
 pub struct ContextSettings(pub ffi::sfContextSettings);
 
-impl ContextSettings {
-    /// Create a default ContextSettings
-    ///
-    /// # Default values:
-    /// * `depth_bits`: 0
-    /// * `stencil_bits`: 0
-    /// * `antialiasing_level`: 0
-    /// * `major_version`: 2
-    /// * `minor_version`: 0
-    /// * `attribute_flags`: DEFAULT
-    pub fn default() -> ContextSettings {
+/// Create a default ContextSettings
+///
+/// # Default values:
+/// * `depth_bits`: 0
+/// * `stencil_bits`: 0
+/// * `antialiasing_level`: 0
+/// * `major_version`: 2
+/// * `minor_version`: 0
+/// * `attribute_flags`: DEFAULT
+impl Default for ContextSettings {
+    fn default() -> ContextSettings {
         ContextSettings(ffi::sfContextSettings{
             depth_bits: 0,
             stencil_bits: 0,
