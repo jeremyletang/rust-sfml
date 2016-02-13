@@ -31,7 +31,7 @@ use csfml_window_sys as ffi;
 /// Non-debug, compatibility context (this and the core attribute are mutually exclusive).
 pub const CONTEXT_DEFAULT: u32 = 0;
 /// Core attribute.
-pub const CONTEXT_CORE: u32 = 1 << 0;
+pub const CONTEXT_CORE: u32 = 1;
 /// Debug attribute.
 pub const CONTEXT_DEBUG: u32 = 1 << 2;
 
