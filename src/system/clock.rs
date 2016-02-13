@@ -47,13 +47,6 @@ impl Clock {
         }
     }
 
-    /// Create a clock by copying an extant one
-    pub fn clone(&self) -> Clock {
-        Clock {
-            clock: unsafe { ffi::sfClock_copy(self.clock) }
-        }
-    }
-
     /// Get the time elapsed in a clock
     pub fn get_elapsed_time(&self) -> Time {
         unsafe {
@@ -71,6 +64,14 @@ impl Clock {
     #[doc(hidden)]
     pub fn unwrap(&self) -> *mut ffi::sfClock {
         self.clock
+    }
+}
+
+impl Clone for Clock {
+    fn clone(&self) -> Clock {
+        Clock {
+            clock: unsafe { ffi::sfClock_copy(self.clock) }
+        }
     }
 }
 
