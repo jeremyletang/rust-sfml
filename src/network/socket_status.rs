@@ -24,9 +24,6 @@
 
 //! Status codes that may be returned by socket functions.
 
-pub use self::SocketStatus::{SocketNone, SocketNotReady, SocketDisconnected,
-                             SocketError};
-
 use csfml_network_sys as ffi;
 
 /// Status codes that may be returned by socket functions.
@@ -34,11 +31,11 @@ use csfml_network_sys as ffi;
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
 pub enum SocketStatus {
     /// The socket has sent / received the data.
-    SocketNone =            ffi::SOCKETNONE as i32,
+    None =            ffi::SOCKETNONE as i32,
     /// The socket is not ready to send / receive data yet.
-    SocketNotReady =        ffi::SOCKETNOTREADY as i32,
+    NotReady =        ffi::SOCKETNOTREADY as i32,
     /// The TCP socket has been disconnected.
-    SocketDisconnected =    ffi::SOCKETDISCONNECTED as i32,
+    Disconnected =    ffi::SOCKETDISCONNECTED as i32,
     /// An unexpected error happened.
-    SocketError =           ffi::SOCKETERROR as i32
+    Error =           ffi::SOCKETERROR as i32
 }
