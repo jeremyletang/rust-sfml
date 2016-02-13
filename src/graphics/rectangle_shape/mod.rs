@@ -601,7 +601,7 @@ impl<'s> Clone for RectangleShape<'s> {
         } else {
             RectangleShape {
                 rectangle_shape: rectangle,
-                texture: self.texture.clone()
+                texture: self.texture
             }
         }
     }

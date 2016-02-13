@@ -235,7 +235,7 @@ impl<'s> Clone for Sprite<'s> {
         } else {
             Sprite {
                 sprite: sp,
-                texture: self.texture.clone()
+                texture: self.texture
             }
         }
     }

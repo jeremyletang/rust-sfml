@@ -177,7 +177,7 @@ impl RenderWindow {
     /// Return an iterator over all the event currently in the events queue.
     pub fn events(&self) -> Events {
         Events {
-            render_window: self.render_window.clone(),
+            render_window: self.render_window,
         }
     }
 

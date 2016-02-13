@@ -131,7 +131,7 @@ impl Window {
     /// Return an iterator over all the event currently in the events queue.
     pub fn events(&self) -> Events {
         Events {
-            window: self.window.clone(),
+            window: self.window,
         }
     }
 

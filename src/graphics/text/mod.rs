@@ -312,7 +312,7 @@ impl<'s> Clone for Text<'s> {
             Text {
                 text: self.text,
                 string_length: self.string_length,
-                font: self.font.clone()
+                font: self.font
             }
         }
     }

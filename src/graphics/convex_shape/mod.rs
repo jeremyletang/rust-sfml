@@ -148,7 +148,7 @@ impl<'s> ConvexShape<'s> {
     /// Return an immutable iterator over all the points of the ConvexShape
     pub fn points(&self) -> ConvexShapePoints {
         ConvexShapePoints {
-            convex_shape: self.convex_shape.clone(),
+            convex_shape: self.convex_shape,
             pos: 0
         }
     }
@@ -595,7 +595,7 @@ impl<'s> Clone for ConvexShape<'s> {
         } else {
             ConvexShape {
                 convex_shape:  shape,
-                texture:       self.texture.clone()
+                texture:       self.texture
             }
         }
     }

@@ -602,7 +602,7 @@ impl<'s> Clone for CircleShape<'s> {
         } else {
             CircleShape {
                 circle_shape:  circle,
-                texture:       self.texture.clone()
+                texture:       self.texture
             }
         }
     }
