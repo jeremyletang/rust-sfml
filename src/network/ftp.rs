@@ -40,11 +40,11 @@ use csfml_network_sys as ffi;
 #[repr(i32)]
 pub enum TransferMode {
     /// Ftp Binary Mod
-    FtpBinary = 0,
+    Binary = 0,
     /// Ftp ASCII Mod
-    FtpAscii = 1,
+    Ascii = 1,
     /// Ftp Ebcdic Mod
-    FtpEbcdic = 2
+    Ebcdic = 2
 }
 
 /// The status and commands id's for FTP.
