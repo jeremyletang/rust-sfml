@@ -5,7 +5,6 @@ version = "0.1.0"
 authors = ["Mika Attila <radiantstatue@gmail.com>"]
 links = "csfml-audio"
 build = "build.rs"
-homepage = "http://www.rust-sfml.org/"
 documentation = "https://crates.fyi/crates/csfml-audio-sys/0.1.0/"
 repository = "https://github.com/jeremyletang/rust-sfml"
 license = "zlib-acknowledgement"
