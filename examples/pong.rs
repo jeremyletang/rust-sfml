@@ -8,6 +8,7 @@ use sfml::graphics::{Shape, Transformable, RenderWindow, Color, Font, Text, Rect
 use sfml::window::{VideoMode, ContextSettings, event, window_style, Key};
 use sfml::system::{Vector2f, Clock, Time};
 use sfml::audio::{SoundBuffer, Sound, SoundSource};
+use rand::{Rng, thread_rng};
 
 fn main() {
     // Define some constants
@@ -79,6 +80,8 @@ fn main() {
 
     let mut clock = Clock::new();
     let mut is_playing = false;
+
+    let mut rng = thread_rng();
 
     while window.is_open() {
         for event in window.events() {
@@ -174,10 +177,10 @@ fn main() {
                 ball.get_position().y + ball_radius >= left_paddle.get_position().y - paddle_size.y / 2. &&
                 ball.get_position().y - ball_radius <= left_paddle.get_position().y + paddle_size.y / 2. {
                 if ball.get_position().y > left_paddle.get_position().y {
-                    ball_angle = pi - ball_angle + (rand::random::<i32>() % 20) as f32 * pi / 180.;
+                    ball_angle = pi - ball_angle + rng.gen_range(0., 20.) * pi / 180.;
                 }
                 else {
-                    ball_angle = pi - ball_angle - (rand::random::<i32>() % 20) as f32 * pi / 180.;
+                    ball_angle = pi - ball_angle - rng.gen_range(0., 20.) * pi / 180.;
                 }
 
                 ball_sound.play();
@@ -191,10 +194,10 @@ fn main() {
                 ball.get_position().y + ball_radius >= right_paddle.get_position().y - paddle_size.y / 2. &&
                 ball.get_position().y - ball_radius <= right_paddle.get_position().y + paddle_size.y / 2. {
                 if ball.get_position().y > right_paddle.get_position().y {
-                    ball_angle = pi - ball_angle + (rand::random::<i32>() % 20) as f32* pi / 180.;
+                    ball_angle = pi - ball_angle + rng.gen_range(0., 20.) * pi / 180.;
                 }
                 else {
-                    ball_angle = pi - ball_angle - (rand::random::<i32>() % 20) as f32* pi / 180.;
+                    ball_angle = pi - ball_angle - rng.gen_range(0., 20.) * pi / 180.;
                 }
 
                 ball_sound.play();
