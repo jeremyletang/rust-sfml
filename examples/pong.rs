@@ -213,8 +213,6 @@ fn main() {
                 let p = ball.get_position().y;
                 ball.set_position(&Vector2f::new(right_paddle.get_position().x - ball_radius - paddle_size.x / 2. - 0.1, p));
             }
-
-            //let a = r.gen::<float>();
         }
         // Clear the window
         window.clear(&Color::new_rgb(50, 200, 50));
