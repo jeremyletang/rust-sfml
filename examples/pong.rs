@@ -3,8 +3,8 @@
 extern crate sfml;
 extern crate rand;
 
-use sfml::graphics::{Shape, Transformable, RenderWindow, Color, Font, Text, RectangleShape, CircleShape,
-                      RenderTarget};
+use sfml::graphics::{Shape, Transformable, RenderWindow, Color, Font, Text, RectangleShape,
+                     CircleShape, RenderTarget};
 use sfml::window::{VideoMode, ContextSettings, event, window_style, Key};
 use sfml::system::{Vector2f, Clock, Time};
 use sfml::audio::{SoundBuffer, Sound, SoundSource};
@@ -15,24 +15,24 @@ fn main() {
     let pi: f32 = 3.14159;
     let game_width: u32 = 800;
     let game_height: u32 = 600;
-    let paddle_size: Vector2f =  Vector2f::new(25., 100.);
+    let paddle_size: Vector2f = Vector2f::new(25., 100.);
     let ball_radius: f32 = 10.;
 
-     // Create the window of the application
+    // Create the window of the application
     let setting: ContextSettings = ContextSettings::default();
     let mut window = RenderWindow::new(VideoMode::new_init(game_width, game_height, 32),
                                        "SFML Pong",
                                        window_style::CLOSE,
                                        &setting)
-                                  .expect("Failed to create render window.");
+                         .expect("Failed to create render window.");
     window.set_vertical_sync_enabled(true);
 
     // Load the sounds used in the game
     let ball_soundbuffer = SoundBuffer::new("resources/ball.wav")
-                                       .expect("Failed to load Ball sound buffer.");
+                               .expect("Failed to load Ball sound buffer.");
 
     let mut ball_sound = Sound::new_with_buffer(&ball_soundbuffer)
-                               .expect("Failed to create sound.");
+                             .expect("Failed to create sound.");
     ball_sound.set_volume(100.);
 
     // Create the left paddle
@@ -62,7 +62,7 @@ fn main() {
     // Load the text font
     let font = Font::new_from_file("resources/sansation.ttf").expect("Failed to load font.");
 
-     // Initialize the pause message
+    // Initialize the pause message
     let mut pause_message = Text::new().expect("Failed to create text.");
     pause_message.set_font(&font);
     pause_message.set_character_size(40);
@@ -71,12 +71,12 @@ fn main() {
     pause_message.set_string("Welcome to SFML pong!\nPress space to start the game");
 
     // Define the paddles properties
-    let mut ai_timer =  Clock::new();
-    let ai_time: Time  = Time::with_seconds(0.1);
+    let mut ai_timer = Clock::new();
+    let ai_time: Time = Time::with_seconds(0.1);
     let paddle_speed = 400.;
-    let mut right_paddle_speed  = 0.;
-    let ball_speed   = 400.;
-    let mut ball_angle: f32  = 0.; // to be changed later
+    let mut right_paddle_speed = 0.;
+    let ball_speed = 400.;
+    let mut ball_angle: f32 = 0.; // to be changed later
 
     let mut clock = Clock::new();
     let mut is_playing = false;
@@ -87,34 +87,40 @@ fn main() {
         for event in window.events() {
             match event {
                 event::Closed => window.close(),
-                event::KeyPressed{code, ..} => match code {
-                    Key::Escape => {
-                        window.close();
-                        break;
-                    },
-                    Key::Space => {
-                        if !is_playing {
-                            // (re)start the game
-                            is_playing = true;
-                            clock.restart();
-                            // Reset the position of the paddles and ball
-                            left_paddle.set_position(&Vector2f::new(10. + paddle_size.x / 2., game_height as f32 / 2.));
-                            right_paddle.set_position(&Vector2f::new(game_width as f32 - 10. - paddle_size.x / 2., game_height as f32 / 2.));
-                            ball.set_position(&Vector2f::new(game_width as f32 / 2., game_height as f32 / 2.));
-                            // Reset the ball angle
-                            loop {
-                                use std::f32::consts::PI;
-                                // Make sure the ball initial angle is not too much vertical
-                                ball_angle = rng.gen_range(0., 360.) * 2. * PI / 360.;
+                event::KeyPressed { code, .. } => {
+                    match code {
+                        Key::Escape => {
+                            window.close();
+                            break;
+                        }
+                        Key::Space => {
+                            if !is_playing {
+                                // (re)start the game
+                                is_playing = true;
+                                clock.restart();
+                                // Reset the position of the paddles and ball
+                                left_paddle.set_position(&Vector2f::new(10. + paddle_size.x / 2.,
+                                                                        game_height as f32 / 2.));
+                                right_paddle.set_position(&Vector2f::new(game_width as f32 - 10. -
+                                                                         paddle_size.x / 2.,
+                                                                         game_height as f32 / 2.));
+                                ball.set_position(&Vector2f::new(game_width as f32 / 2.,
+                                                                 game_height as f32 / 2.));
+                                // Reset the ball angle
+                                loop {
+                                    use std::f32::consts::PI;
+                                    // Make sure the ball initial angle is not too much vertical
+                                    ball_angle = rng.gen_range(0., 360.) * 2. * PI / 360.;
 
-                                if ball_angle.cos().abs() >= 0.7 {
-                                    break;
+                                    if ball_angle.cos().abs() >= 0.7 {
+                                        break;
+                                    }
                                 }
                             }
                         }
-                    },
-                    _  => {}
-                } ,
+                        _ => {}
+                    }
+                }
                 _ => {}
             }
         }
@@ -122,8 +128,7 @@ fn main() {
             let delta_time = clock.restart().as_seconds();
 
             // Move the player's paddle
-            if Key::Up.is_pressed() &&
-               (left_paddle.get_position().y - paddle_size.y / 2. > 5.) {
+            if Key::Up.is_pressed() && (left_paddle.get_position().y - paddle_size.y / 2. > 5.) {
                 left_paddle.move2f(0., -paddle_speed * delta_time);
             }
             if Key::Down.is_pressed() &&
@@ -132,23 +137,23 @@ fn main() {
             }
 
             // Move the computer's paddle
-            if ((right_paddle_speed < 0.) && (right_paddle.get_position().y - paddle_size.y / 2. > 5.)) ||
-                ((right_paddle_speed > 0.) && (right_paddle.get_position().y + paddle_size.y / 2. < game_height as f32 - 5.)) {
+            if ((right_paddle_speed < 0.) &&
+                (right_paddle.get_position().y - paddle_size.y / 2. > 5.)) ||
+               ((right_paddle_speed > 0.) &&
+                (right_paddle.get_position().y + paddle_size.y / 2. < game_height as f32 - 5.)) {
                 right_paddle.move2f(0., right_paddle_speed * delta_time);
             }
 
             // Update the computer's paddle direction according to the ball position
             if ai_timer.get_elapsed_time().as_microseconds() > ai_time.as_microseconds() {
                 ai_timer.restart();
-                if ball.get_position().y + ball_radius > right_paddle.get_position().y + paddle_size.y / 2. {
+                if ball.get_position().y + ball_radius >
+                   right_paddle.get_position().y + paddle_size.y / 2. {
                     right_paddle_speed = paddle_speed;
-                }
-
-                else if  ball.get_position().y - ball_radius < right_paddle.get_position().y - paddle_size.y / 2. {
+                } else if ball.get_position().y - ball_radius <
+                   right_paddle.get_position().y - paddle_size.y / 2. {
                     right_paddle_speed = -paddle_speed;
-                }
-
-                else {
+                } else {
                     right_paddle_speed = 0.;
                 }
             }
@@ -181,37 +186,47 @@ fn main() {
 
             // Check the collisions between the ball and the paddles
             // Left Paddle
-            if ball.get_position().x - ball_radius < left_paddle.get_position().x + paddle_size.x / 2. &&
-                ball.get_position().x - ball_radius > left_paddle.get_position().x &&
-                ball.get_position().y + ball_radius >= left_paddle.get_position().y - paddle_size.y / 2. &&
-                ball.get_position().y - ball_radius <= left_paddle.get_position().y + paddle_size.y / 2. {
+            if ball.get_position().x - ball_radius <
+               left_paddle.get_position().x + paddle_size.x / 2. &&
+               ball.get_position().x - ball_radius > left_paddle.get_position().x &&
+               ball.get_position().y + ball_radius >=
+               left_paddle.get_position().y - paddle_size.y / 2. &&
+               ball.get_position().y - ball_radius <=
+               left_paddle.get_position().y + paddle_size.y / 2. {
                 if ball.get_position().y > left_paddle.get_position().y {
                     ball_angle = pi - ball_angle + rng.gen_range(0., 20.) * pi / 180.;
-                }
-                else {
+                } else {
                     ball_angle = pi - ball_angle - rng.gen_range(0., 20.) * pi / 180.;
                 }
 
                 ball_sound.play();
                 let p = ball.get_position().y;
-                ball.set_position(&Vector2f::new(left_paddle.get_position().x + ball_radius + paddle_size.x / 2. + 0.1, p));
+                ball.set_position(&Vector2f::new(left_paddle.get_position().x + ball_radius +
+                                                 paddle_size.x / 2. +
+                                                 0.1,
+                                                 p));
             }
 
             // Right Paddle
-            if ball.get_position().x + ball_radius > right_paddle.get_position().x - paddle_size.x / 2. &&
-                ball.get_position().x + ball_radius < right_paddle.get_position().x &&
-                ball.get_position().y + ball_radius >= right_paddle.get_position().y - paddle_size.y / 2. &&
-                ball.get_position().y - ball_radius <= right_paddle.get_position().y + paddle_size.y / 2. {
+            if ball.get_position().x + ball_radius >
+               right_paddle.get_position().x - paddle_size.x / 2. &&
+               ball.get_position().x + ball_radius < right_paddle.get_position().x &&
+               ball.get_position().y + ball_radius >=
+               right_paddle.get_position().y - paddle_size.y / 2. &&
+               ball.get_position().y - ball_radius <=
+               right_paddle.get_position().y + paddle_size.y / 2. {
                 if ball.get_position().y > right_paddle.get_position().y {
                     ball_angle = pi - ball_angle + rng.gen_range(0., 20.) * pi / 180.;
-                }
-                else {
+                } else {
                     ball_angle = pi - ball_angle - rng.gen_range(0., 20.) * pi / 180.;
                 }
 
                 ball_sound.play();
                 let p = ball.get_position().y;
-                ball.set_position(&Vector2f::new(right_paddle.get_position().x - ball_radius - paddle_size.x / 2. - 0.1, p));
+                ball.set_position(&Vector2f::new(right_paddle.get_position().x - ball_radius -
+                                                 paddle_size.x / 2. -
+                                                 0.1,
+                                                 p));
             }
         }
         // Clear the window
@@ -222,9 +237,7 @@ fn main() {
             window.draw(&left_paddle);
             window.draw(&right_paddle);
             window.draw(&ball);
-        }
-        else
-        {
+        } else {
             // Draw the pause message
             window.draw(&pause_message);
         }
