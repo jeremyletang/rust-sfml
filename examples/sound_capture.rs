@@ -4,7 +4,7 @@ extern crate sfml;
 
 use std::rc::Rc;
 use std::cell::RefCell;
-use std::io::BufRead;
+use std::io::{BufRead, Write};
 
 use sfml::audio::{rc, SoundBufferRecorder, SoundStatus};
 use sfml::system::{sleep, Time};
@@ -56,7 +56,8 @@ fn main() {
 
 
     // Choose what to do with the recorded sound data
-    println!("What do you want to do with captured sound (p = play, s = save) ? ");
+    print!("What do you want to do with captured sound (p = play, s = save) ? ");
+    let _ = std::io::stdout().flush();
     let mut resp = String::new();
     reader.read_line(&mut resp).unwrap();
 
@@ -81,7 +82,8 @@ fn main() {
             match sound.get_status() {
                 SoundStatus::Playing     => {
                 // Display the playing position
-                println!("\rPlaying...   {}", sound.get_playing_offset().as_seconds());
+                print!("\rPlaying... {:.2} sec", sound.get_playing_offset().as_seconds());
+                let _ = std::io::stdout().flush();
                 // Leave some CPU time for other processes
                 sleep(Time::with_milliseconds(100));
                 },
@@ -92,7 +94,7 @@ fn main() {
     }
 
     // Finished
-    println!("Done!");
+    println!("\nDone!");
 
     // Wait until the user presses 'enter' key
     println!("Press enter to exit...");
