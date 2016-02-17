@@ -101,7 +101,16 @@ fn main() {
                             left_paddle.set_position(&Vector2f::new(10. + paddle_size.x / 2., game_height as f32 / 2.));
                             right_paddle.set_position(&Vector2f::new(game_width as f32 - 10. - paddle_size.x / 2., game_height as f32 / 2.));
                             ball.set_position(&Vector2f::new(game_width as f32 / 2., game_height as f32 / 2.));
-                            // RANDOM HERE
+                            // Reset the ball angle
+                            loop {
+                                use std::f32::consts::PI;
+                                // Make sure the ball initial angle is not too much vertical
+                                ball_angle = rng.gen_range(0., 360.) * 2. * PI / 360.;
+
+                                if ball_angle.cos().abs() >= 0.7 {
+                                    break;
+                                }
+                            }
                         }
                     },
                     _  => {}
