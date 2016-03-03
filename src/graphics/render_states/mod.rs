@@ -79,15 +79,13 @@ impl<'s> RenderStates<'s> {
     pub fn unwrap(&mut self) -> *mut ffi::sfRenderStates {
         self.sf_render_states.blendMode = self.blend_mode.0;
         self.sf_render_states.transform = self.transform.0;
-        self.sf_render_states.texture = if !self.texture.is_none() {
-            self.texture.unwrap().unwrap()
-        } else {
-            ptr::null_mut()
+        self.sf_render_states.texture = match self.texture {
+            Some(texture) => texture.unwrap(),
+            None => ptr::null_mut(),
         };
-        self.sf_render_states.shader = if !self.shader.is_none() {
-            self.shader.unwrap().unwrap()
-        } else {
-            ptr::null_mut()
+        self.sf_render_states.shader = match self.shader {
+            Some(shader) => shader.unwrap(),
+            None => ptr::null_mut(),
         };
 
         &mut self.sf_render_states as *mut ffi::sfRenderStates

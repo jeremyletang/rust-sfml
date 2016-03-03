@@ -149,10 +149,10 @@ impl Window {
         let have_event = unsafe {
             ffi::sfWindow_pollEvent(self.window, &mut event).to_bool()
         };
-        if !have_event {
-            event::NoEvent
-        } else {
+        if have_event {
             event::raw::get_wrapped_event(&mut event)
+        } else {
+            event::NoEvent
         }
     }
 
@@ -172,10 +172,10 @@ impl Window {
         let have_event = unsafe {
             ffi::sfWindow_waitEvent(self.window, &mut event).to_bool()
         };
-        if !have_event {
-            event::NoEvent
-        } else {
+        if have_event {
             event::raw::get_wrapped_event(&mut event)
+        } else {
+            event::NoEvent
         }
     }
 

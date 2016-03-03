@@ -195,10 +195,10 @@ impl RenderWindow {
         let have_event = unsafe {
             ffi::sfRenderWindow_pollEvent(self.render_window, &mut event)
         }.to_bool();
-        if !have_event {
-            event::NoEvent
-        } else {
+        if have_event {
             event::raw::get_wrapped_event(&mut event)
+        } else {
+            event::NoEvent
         }
     }
 
@@ -218,10 +218,10 @@ impl RenderWindow {
         let have_event = unsafe {
             ffi::sfRenderWindow_waitEvent(self.render_window, &mut event)
         }.to_bool();
-        if !have_event {
-            event::NoEvent
-        } else {
+        if have_event {
             event::raw::get_wrapped_event(&mut event)
+        } else {
+            event::NoEvent
         }
     }
 
