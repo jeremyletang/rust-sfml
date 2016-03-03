@@ -35,7 +35,7 @@ use std::io::{Read, Seek};
 use audio::{SoundStatus, SoundSource};
 use system::Time;
 use sfml_types::Vector3f;
-use system::inputstream::InputStream;
+use inputstream::InputStream;
 use traits::Wrappable;
 
 use sfml_types::sfBool;

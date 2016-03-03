@@ -34,7 +34,7 @@ use std::io::{Read, Seek};
 use traits::Wrappable;
 use graphics::{RenderWindow, Image, IntRect};
 use sfml_types::Vector2u;
-use system::inputstream::InputStream;
+use inputstream::InputStream;
 use window::Window;
 
 use sfml_types::sfBool;

@@ -36,5 +36,3 @@ pub use system::clock::Clock;
 mod time;
 mod clock;
 mod sleep;
-#[doc(hidden)] // this is not meant for external use
-pub mod inputstream;

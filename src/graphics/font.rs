@@ -35,7 +35,7 @@ use sfml_types::sfBool;
 use csfml_graphics_sys as ffi;
 
 use std::io::{Read, Seek};
-use system::inputstream::InputStream;
+use inputstream::InputStream;
 
 /// Class for loading and manipulating character fonts
 pub struct Font {

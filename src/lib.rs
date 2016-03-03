@@ -109,6 +109,8 @@ extern crate csfml_audio_sys;
 extern crate csfml_network_sys;
 
 mod traits;
+mod inputstream;
+
 pub mod system;
 pub mod window;
 pub mod audio;

@@ -41,7 +41,7 @@ use csfml_graphics_sys as ffi;
 use csfml_system_sys as sys_ffi;
 
 use std::io::{Read, Seek};
-use system::inputstream::InputStream;
+use inputstream::InputStream;
 
 // pub mod rc;
 
