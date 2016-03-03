@@ -84,9 +84,9 @@ impl<'s> Text<'s> {
         if text.is_null() {
             None
         } else {
-            let c_str = CString::new(string.as_bytes()).unwrap().as_ptr();
+            let c_str = CString::new(string.as_bytes()).unwrap();
             unsafe {
-                ffi::sfText_setString(text, c_str);
+                ffi::sfText_setString(text, c_str.as_ptr());
                 ffi::sfText_setFont(text, font.unwrap());
                 ffi::sfText_setCharacterSize(text, character_size as c_uint)
             }

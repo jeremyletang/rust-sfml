@@ -86,9 +86,9 @@ impl Text {
         if text.is_null() {
             None
         } else {
-            let c_str = CString::new(string.as_bytes()).unwrap().as_ptr();
+            let c_str = CString::new(string.as_bytes()).unwrap();
             unsafe {
-                ffi::sfText_setString(text, c_str);
+                ffi::sfText_setString(text, c_str.as_ptr());
                 ffi::sfText_setFont(text, (*font).borrow().unwrap());
                 ffi::sfText_setCharacterSize(text, character_size as c_uint)
             }
@@ -123,9 +123,9 @@ impl Text {
     /// # Arguments
     /// * string - New string
     pub fn set_string(&mut self, string: &str) {
-        let c_str = CString::new(string.as_bytes()).unwrap().as_ptr();
+        let c_str = CString::new(string.as_bytes()).unwrap();
         unsafe {
-            ffi::sfText_setString(self.text, c_str)
+            ffi::sfText_setString(self.text, c_str.as_ptr())
         }
         self.string_length = string.len() as u32
     }

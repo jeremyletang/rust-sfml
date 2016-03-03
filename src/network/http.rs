@@ -148,12 +148,12 @@ impl Request {
     /// * field - Name of the field to set
     /// * value - Value of the field
     pub fn set_field(&self, field: &str, value: &str) {
-        let c_field = CString::new(field.as_bytes()).unwrap().as_ptr();
-        let c_value = CString::new(value.as_bytes()).unwrap().as_ptr();
+        let c_field = CString::new(field.as_bytes()).unwrap();
+        let c_value = CString::new(value.as_bytes()).unwrap();
         unsafe {
             ffi::sfHttpRequest_setField(self.request,
-                                        c_field,
-                                        c_value)
+                                        c_field.as_ptr(),
+                                        c_value.as_ptr())
         }
     }
 
@@ -180,9 +180,9 @@ impl Request {
     /// # Arguments
     /// * uri - URI to request, relative to the host
     pub fn set_uri(&self, uri: &str) {
-        let c_uri = CString::new(uri.as_bytes()).unwrap().as_ptr();
+        let c_uri = CString::new(uri.as_bytes()).unwrap();
         unsafe {
-            ffi::sfHttpRequest_setUri(self.request, c_uri)
+            ffi::sfHttpRequest_setUri(self.request, c_uri.as_ptr())
         }
     }
 
@@ -207,9 +207,9 @@ impl Request {
     /// # Arguments
     /// * body - Content of the body
     pub fn set_body(&self, body: &str) {
-        let c_body = CString::new(body.as_bytes()).unwrap().as_ptr();
+        let c_body = CString::new(body.as_bytes()).unwrap();
         unsafe {
-            ffi::sfHttpRequest_setBody(self.request, c_body)
+            ffi::sfHttpRequest_setBody(self.request, c_body.as_ptr())
         }
     }
 
@@ -239,9 +239,9 @@ impl Response {
     ///
     /// Return Value of the field, or empty string if not found
     pub fn get_field(&self, field: &str) -> String {
-        let c_field = CString::new(field.as_bytes()).unwrap().as_ptr();
+        let c_field = CString::new(field.as_bytes()).unwrap();
         unsafe {
-            let string = ffi::sfHttpResponse_getField(self.response, c_field);
+            let string = ffi::sfHttpResponse_getField(self.response, c_field.as_ptr());
             str::from_utf8(CStr::from_ptr(string).to_bytes_with_nul()).unwrap().into()
         }
     }
@@ -332,9 +332,9 @@ impl Http {
     /// * host - Web server to connect to
     /// * port - Port to use for connection
     pub fn set_host(&self, host: &str, port: u16) {
-        let c_host = CString::new(host.as_bytes()).unwrap().as_ptr();
+        let c_host = CString::new(host.as_bytes()).unwrap();
         unsafe {
-            ffi::sfHttp_setHost(self.http, c_host, port)
+            ffi::sfHttp_setHost(self.http, c_host.as_ptr(), port)
         }
     }
 

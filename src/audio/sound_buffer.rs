@@ -78,8 +78,8 @@ impl SoundBuffer {
     ///
     /// Return true if saving succeeded, false if it faileds
     pub fn save_to_file(&self, filename: &str) -> bool {
-        let c_str = CString::new(filename.as_bytes()).unwrap().as_ptr();
-        unsafe { ffi::sfSoundBuffer_saveToFile(self.sound_buffer, c_str) }.to_bool()
+        let c_str = CString::new(filename.as_bytes()).unwrap();
+        unsafe { ffi::sfSoundBuffer_saveToFile(self.sound_buffer, c_str.as_ptr()) }.to_bool()
     }
 
     /// Get the number of samples stored in a sound buffer

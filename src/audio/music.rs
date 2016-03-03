@@ -63,9 +63,9 @@ impl Music {
     ///
     /// Return Some(Music) or None
     pub fn new_from_file(filename: &str) -> Option<Music> {
-        let c_str = CString::new(filename.as_bytes()).unwrap().as_ptr();
+        let c_str = CString::new(filename.as_bytes()).unwrap();
         let music_tmp: *mut ffi::sfMusic = unsafe {
-            ffi::sfMusic_createFromFile(c_str)
+            ffi::sfMusic_createFromFile(c_str.as_ptr())
         };
         if music_tmp.is_null() {
             None

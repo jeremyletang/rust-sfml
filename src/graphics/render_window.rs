@@ -297,9 +297,9 @@ impl RenderWindow {
     /// * title - New title
     ////
     pub fn set_title(&mut self, title: &str) {
-        let c_str = CString::new(title.as_bytes()).unwrap().as_ptr();
+        let c_str = CString::new(title.as_bytes()).unwrap();
         unsafe {
-            ffi::sfRenderWindow_setTitle(self.render_window, c_str);
+            ffi::sfRenderWindow_setTitle(self.render_window, c_str.as_ptr());
         }
         self.title_length = title.len() as u32;
     }

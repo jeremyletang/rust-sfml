@@ -78,9 +78,9 @@ impl Window {
                title: &str,
                style: WindowStyle,
                settings: &ContextSettings) -> Option<Window> {
-        let c_str = CString::new(title.as_bytes()).unwrap().as_ptr();
+        let c_str = CString::new(title.as_bytes()).unwrap();
         let sf_win: *mut ffi::sfWindow = unsafe {
-            ffi::sfWindow_create(mode.unwrap(), c_str, style.bits(), &settings.0)
+            ffi::sfWindow_create(mode.unwrap(), c_str.as_ptr(), style.bits(), &settings.0)
         };
         if sf_win.is_null() {
             None
@@ -241,9 +241,9 @@ impl Window {
     /// # Arguments
     /// * title - New title
     pub fn set_title(&mut self, title: &str) {
-        let c_str = CString::new(title.as_bytes()).unwrap().as_ptr();
+        let c_str = CString::new(title.as_bytes()).unwrap();
         unsafe {
-            ffi::sfWindow_setTitle(self.window, c_str)
+            ffi::sfWindow_setTitle(self.window, c_str.as_ptr())
         }
     }
 

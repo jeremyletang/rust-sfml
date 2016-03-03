@@ -387,12 +387,12 @@ impl Ftp {
     ///
     /// Return the server response to the request
     pub fn login(&self, user_name: &str, password: &str) -> Response {
-        let c_user_name = CString::new(user_name.as_bytes()).unwrap().as_ptr();
-        let c_password = CString::new(password.as_bytes()).unwrap().as_ptr();
+        let c_user_name = CString::new(user_name.as_bytes()).unwrap();
+        let c_password = CString::new(password.as_bytes()).unwrap();
         Response {
             response: unsafe { ffi::sfFtp_login(self.ftp,
-                                                 c_user_name,
-                                                 c_password) }
+                                                 c_user_name.as_ptr(),
+                                                 c_password.as_ptr()) }
         }
     }
 
@@ -441,10 +441,10 @@ impl Ftp {
     ///
     /// Return the server response to the request
     pub fn get_directory_listing(&self, directory: &str) -> ListingResponse {
-        let c_directory = CString::new(directory.as_bytes()).unwrap().as_ptr();
+        let c_directory = CString::new(directory.as_bytes()).unwrap();
         ListingResponse {
             listing_response: unsafe { ffi::sfFtp_getDirectoryListing(self.ftp,
-                                                                       c_directory) }
+                                                                       c_directory.as_ptr()) }
         }
     }
 
@@ -457,10 +457,10 @@ impl Ftp {
     ///
     /// Return the server response to the request
     pub fn change_directory(&self, directory: &str) -> Response {
-        let c_directory = CString::new(directory.as_bytes()).unwrap().as_ptr();
+        let c_directory = CString::new(directory.as_bytes()).unwrap();
         Response {
             response: unsafe { ffi::sfFtp_changeDirectory(self.ftp,
-                                                           c_directory) }
+                                                           c_directory.as_ptr()) }
         }
     }
 
@@ -483,10 +483,10 @@ impl Ftp {
     ///
     /// Return the server response to the request
     pub fn create_directory(&self, name: &str) -> Response {
-        let c_name = CString::new(name.as_bytes()).unwrap().as_ptr();
+        let c_name = CString::new(name.as_bytes()).unwrap();
         Response {
             response: unsafe { ffi::sfFtp_createDirectory(self.ftp,
-                                                           c_name) }
+                                                           c_name.as_ptr()) }
         }
     }
 
@@ -502,10 +502,10 @@ impl Ftp {
     ///
     /// Return the server response to the request
     pub fn delete_directory(&self, name: &str) -> Response {
-        let c_name = CString::new(name.as_bytes()).unwrap().as_ptr();
+        let c_name = CString::new(name.as_bytes()).unwrap();
         Response {
             response: unsafe { ffi::sfFtp_deleteDirectory(self.ftp,
-                                                           c_name) }
+                                                           c_name.as_ptr()) }
         }
     }
 
@@ -520,12 +520,12 @@ impl Ftp {
     ///
     /// Return the server response to the request
     pub fn rename_file(&self, name: &str, new_name: &str) -> Response {
-        let c_name = CString::new(name.as_bytes()).unwrap().as_ptr();
-        let c_new_name = CString::new(new_name.as_bytes()).unwrap().as_ptr();
+        let c_name = CString::new(name.as_bytes()).unwrap();
+        let c_new_name = CString::new(new_name.as_bytes()).unwrap();
         Response {
             response: unsafe { ffi::sfFtp_renameFile(self.ftp,
-                                                      c_name,
-                                                      c_new_name) }
+                                                      c_name.as_ptr(),
+                                                      c_new_name.as_ptr()) }
         }
     }
 
@@ -541,10 +541,10 @@ impl Ftp {
     ///
     /// Return the server response to the request
     pub fn delete_file(&self, name: &str) -> Response {
-        let c_name = CString::new(name.as_bytes()).unwrap().as_ptr();
+        let c_name = CString::new(name.as_bytes()).unwrap();
         Response {
             response: unsafe { ffi::sfFtp_deleteFile(self.ftp,
-                                                      c_name) }
+                                                      c_name.as_ptr()) }
         }
     }
 
@@ -562,12 +562,12 @@ impl Ftp {
     ///
     /// Return the server response to the request
     pub fn download(&self, distant_file: &str, dest_path: &str, mode: TransferMode) -> Response {
-        let c_distant_file = CString::new(distant_file.as_bytes()).unwrap().as_ptr();
-        let c_dest_path = CString::new(dest_path.as_bytes()).unwrap().as_ptr();
+        let c_distant_file = CString::new(distant_file.as_bytes()).unwrap();
+        let c_dest_path = CString::new(dest_path.as_bytes()).unwrap();
         Response {
             response: unsafe { ffi::sfFtp_download(self.ftp,
-                                                    c_distant_file,
-                                                    c_dest_path,
+                                                    c_distant_file.as_ptr(),
+                                                    c_dest_path.as_ptr(),
                                                     mode as ffi::TransferMode) }
         }
     }
@@ -586,12 +586,12 @@ impl Ftp {
     ///
     /// Return the server response to the request
     pub fn upload(&self, local_file: &str, dest_path: &str, mode: TransferMode) -> Response {
-        let c_local_file = CString::new(local_file.as_bytes()).unwrap().as_ptr();
-        let c_dest_path = CString::new(dest_path.as_bytes()).unwrap().as_ptr();
+        let c_local_file = CString::new(local_file.as_bytes()).unwrap();
+        let c_dest_path = CString::new(dest_path.as_bytes()).unwrap();
         Response {
             response: unsafe { ffi::sfFtp_upload(self.ftp,
-                                                  c_local_file,
-                                                  c_dest_path,
+                                                  c_local_file.as_ptr(),
+                                                  c_dest_path.as_ptr(),
                                                   mode as ffi::TransferMode) }
         }
     }
