@@ -29,7 +29,7 @@
 bitflags! {
     #[doc="Available text styles."]
     #[repr(C)]
-    flags TextStyle: u32 {
+    pub flags TextStyle: u32 {
         #[doc="Regular characters, no style."]
         const REGULAR = 0,
         #[doc="Bold characters."]

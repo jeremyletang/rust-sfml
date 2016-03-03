@@ -29,7 +29,7 @@
 bitflags! {
     #[doc="Available styles applicable to windows."]
     #[repr(C)]
-    flags WindowStyle: u32 {
+    pub flags WindowStyle: u32 {
         #[doc="No decorations (cannot be combined with other flags)."]
         const NO_STYLE = 0,
         #[doc="Title bar and fixed border."]
