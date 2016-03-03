@@ -24,23 +24,21 @@
 
 //! Available styles applicable to windows.
 
-// Manual #[doc] tags are to work around rust-lang/rust#23812.
-
 bitflags! {
-    #[doc="Available styles applicable to windows."]
+    /// Available styles applicable to windows.
     #[repr(C)]
     pub flags WindowStyle: u32 {
-        #[doc="No decorations (cannot be combined with other flags)."]
+        /// No decorations (cannot be combined with other flags).
         const NO_STYLE = 0,
-        #[doc="Title bar and fixed border."]
+        /// Title bar and fixed border.
         const TITLEBAR = 1,
-        #[doc="Title bar, resizable border, and maximize button."]
+        /// Title bar, resizable border, and maximize button.
         const RESIZE = 2,
-        #[doc="Title bar and close button."]
+        /// Title bar and close button.
         const CLOSE = 4,
-        #[doc="Fullscreen mode (ignores other flags)."]
+        /// Fullscreen mode (ignores other flags).
         const FULLSCREEN = 8,
-        #[doc="Default window style: title bar, resizable border, and close button."]
+        /// Default window style: title bar, resizable border, and close button.
         const DEFAULT_STYLE = 1 | 2 | 4
     }
 }

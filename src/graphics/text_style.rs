@@ -24,19 +24,17 @@
 
 //! Available text styles.
 
-// Manual #[doc] tags are to work around rust-lang/rust#23812.
-
 bitflags! {
-    #[doc="Available text styles."]
+    /// Available text styles.
     #[repr(C)]
     pub flags TextStyle: u32 {
-        #[doc="Regular characters, no style."]
+        /// Regular characters, no style.
         const REGULAR = 0,
-        #[doc="Bold characters."]
+        /// Bold characters.
         const BOLD = 1,
-        #[doc="Italic characters."]
+        /// Italic characters.
         const ITALIC = 2,
-        #[doc="Underlined characters."]
+        /// Underlined characters.
         const UNDERLINED = 4
     }
 }
