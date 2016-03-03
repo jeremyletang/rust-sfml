@@ -3,6 +3,10 @@ env:
   global:
     - LD_LIBRARY_PATH=/home/travis/build/jeremyletang/rust-sfml/sfml_install/usr/local/lib
 language: rust
+rust:
+  - stable
+  - beta
+  - nightly
 script:
   - mkdir sfml_install
   # TODO: Maybe investigate why the certificate checks for the SFML sources fail
