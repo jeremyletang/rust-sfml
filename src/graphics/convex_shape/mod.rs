@@ -32,7 +32,7 @@
 use libc::{c_float, c_uint};
 use std::ptr;
 
-use traits::Wrappable;
+use raw_conv::Raw;
 use graphics::{Shape, Drawable, Transformable, Color, Texture, RenderTarget, FloatRect, IntRect, Transform, RenderStates};
 use sfml_types::Vector2f;
 
@@ -94,7 +94,7 @@ impl<'s> ConvexShape<'s> {
             None
         } else {
             unsafe {
-                ffi::sfConvexShape_setTexture(shape, texture.unwrap(), sfBool::SFTRUE);
+                ffi::sfConvexShape_setTexture(shape, texture.raw(), sfBool::SFTRUE);
                 ffi::sfConvexShape_setPointCount(shape, points_count as c_uint)
             }
             Some(ConvexShape {
@@ -417,7 +417,7 @@ impl<'s> Shape<'s> for ConvexShape<'s> {
                        reset_rect: bool) {
         self.texture = Some(texture);
         unsafe {
-            ffi::sfConvexShape_setTexture(self.convex_shape, texture.unwrap(), sfBool::from_bool(reset_rect))
+            ffi::sfConvexShape_setTexture(self.convex_shape, texture.raw(), sfBool::from_bool(reset_rect))
         }
     }
 
@@ -619,15 +619,9 @@ impl Iterator for ConvexShapePoints {
     }
 }
 
-impl<'s> Wrappable<*mut ffi::sfConvexShape> for ConvexShape<'s> {
-    fn wrap(convex_shape: *mut ffi::sfConvexShape) -> ConvexShape<'s> {
-        ConvexShape {
-            convex_shape: convex_shape,
-            texture: None
-        }
-    }
-
-    fn unwrap(&self) -> *mut ffi::sfConvexShape {
+impl<'s> Raw for ConvexShape<'s> {
+    type Raw = *mut ffi::sfConvexShape;
+    fn raw(&self) -> Self::Raw {
         self.convex_shape
     }
 }

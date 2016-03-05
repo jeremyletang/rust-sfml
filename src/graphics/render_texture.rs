@@ -26,7 +26,7 @@
 
 use libc::c_uint;
 
-use traits::Wrappable;
+use raw_conv::{Raw, FromRaw};
 use sfml_types::{Vector2f, Vector2i, Vector2u};
 use graphics::{Drawable, View, Color, IntRect, Texture, CircleShape, RectangleShape, Text,
                RenderStates, Sprite, ConvexShape, VertexArray,
@@ -90,7 +90,7 @@ impl RenderTexture {
             None
         }
         else {
-            Some(Wrappable::wrap(tex))
+            Some(Texture::from_raw(tex))
         }
     }
 
@@ -139,7 +139,7 @@ impl RenderTarget for RenderTexture {
     /// * view - the new view
     fn set_view(&mut self, view: &View) {
         unsafe {
-            ffi::sfRenderTexture_setView(self.render_texture, view.unwrap())
+            ffi::sfRenderTexture_setView(self.render_texture, view.raw())
         }
     }
 
@@ -148,7 +148,7 @@ impl RenderTarget for RenderTexture {
     /// Return the current active view
     fn get_view(&self) -> View {
         unsafe {
-            Wrappable::wrap(ffi::sfRenderTexture_getView(self.render_texture))
+            View::from_raw(ffi::sfRenderTexture_getView(self.render_texture))
         }
     }
 
@@ -157,7 +157,7 @@ impl RenderTarget for RenderTexture {
     /// Return the default view of the render texture
     fn get_default_view(&self) -> View {
         unsafe {
-            Wrappable::wrap(ffi::sfRenderTexture_getDefaultView(self.render_texture))
+            View::from_raw(ffi::sfRenderTexture_getDefaultView(self.render_texture))
         }
     }
 
@@ -169,7 +169,7 @@ impl RenderTarget for RenderTexture {
     /// Return the viewport rectangle, expressed in pixels in the current target
     fn get_viewport(&self, view: &View) -> IntRect {
         unsafe {
-            ffi::sfRenderTexture_getViewport(self.render_texture, view.unwrap())
+            ffi::sfRenderTexture_getViewport(self.render_texture, view.raw())
         }
     }
 
@@ -204,7 +204,7 @@ impl RenderTarget for RenderTexture {
         unsafe {
             ffi::sfRenderTexture_mapPixelToCoords(self.render_texture,
                                                   *point,
-                                                  view.unwrap())
+                                                  view.raw())
         }
     }
 
@@ -265,7 +265,7 @@ impl RenderTarget for RenderTexture {
         unsafe {
             ffi::sfRenderTexture_mapCoordsToPixel(self.render_texture,
                                                   *point,
-                                                  view.unwrap())
+                                                  view.raw())
         }
     }
 
@@ -320,7 +320,7 @@ impl RenderTarget for RenderTexture {
                         rs: &mut RenderStates) {
         unsafe {
             ffi::sfRenderTexture_drawText(self.render_texture,
-                                          text.unwrap(),
+                                          text.raw(),
                                           rs.unwrap())
         }
     }
@@ -331,7 +331,7 @@ impl RenderTarget for RenderTexture {
                      rs: &mut RenderStates) {
         unsafe {
             ffi::sfRenderTexture_drawShape(self.render_texture,
-                                           shape.unwrap(),
+                                           shape.raw(),
                                            rs.unwrap())
         }
     }
@@ -342,7 +342,7 @@ impl RenderTarget for RenderTexture {
                           rs: &mut RenderStates) {
         unsafe {
             ffi::sfRenderTexture_drawSprite(self.render_texture,
-                                            sprite.unwrap(),
+                                            sprite.raw(),
                                             rs.unwrap())
         }
     }
@@ -353,7 +353,7 @@ impl RenderTarget for RenderTexture {
                                 rs: &mut RenderStates) {
         unsafe {
             ffi::sfRenderTexture_drawCircleShape(self.render_texture,
-                                                 circle_shape.unwrap(),
+                                                 circle_shape.raw(),
                                                  rs.unwrap())
         }
     }
@@ -364,7 +364,7 @@ impl RenderTarget for RenderTexture {
                                    rs: &mut RenderStates) {
         unsafe {
             ffi::sfRenderTexture_drawRectangleShape(self.render_texture,
-                                                    rectangle_shape.unwrap(),
+                                                    rectangle_shape.raw(),
                                                     rs.unwrap())
         }
     }
@@ -375,7 +375,7 @@ impl RenderTarget for RenderTexture {
                                 rs: &mut RenderStates) {
         unsafe {
             ffi::sfRenderTexture_drawConvexShape(self.render_texture,
-                                                 convex_shape.unwrap(),
+                                                 convex_shape.raw(),
                                                  rs.unwrap())
         }
     }
@@ -386,7 +386,7 @@ impl RenderTarget for RenderTexture {
                                 rs: &mut RenderStates) {
         unsafe {
             ffi::sfRenderTexture_drawVertexArray(self.render_texture,
-                                                 vertex_array.unwrap(),
+                                                 vertex_array.raw(),
                                                  rs.unwrap())
         }
     }

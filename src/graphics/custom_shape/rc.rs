@@ -29,7 +29,6 @@ use std::cell::RefCell;
 use libc::{c_void, c_float, c_uint};
 use std::{ptr, mem};
 
-use traits::{Drawable, ShapeImpl, Wrappable};
 use graphics::{RenderTarget, rc, Texture, Color,
                Transform, IntRect, FloatRect, RenderStates};
 use sfml_types::Vector2f;
@@ -545,11 +544,6 @@ impl Shape {
         unsafe {
             ffi::sfShape_update(self.shape)
         }
-    }
-
-    #[doc(hidden)]
-    pub fn unwrap(&self) -> *mut ffi::sfShape {
-        self.shape
     }
 }
 

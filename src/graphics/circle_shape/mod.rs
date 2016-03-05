@@ -27,7 +27,7 @@
 use libc::{c_float, c_uint};
 use std::ptr;
 
-use traits::Wrappable;
+use raw_conv::Raw;
 use graphics::{Drawable, Transformable, Shape, IntRect, FloatRect, Color, Texture,
                RenderTarget, Transform, RenderStates};
 use sfml_types::Vector2f;
@@ -71,7 +71,7 @@ impl<'s> CircleShape<'s> {
             None
         } else {
             unsafe {
-                ffi::sfCircleShape_setTexture(circle, texture.unwrap(), sfBool::SFTRUE);
+                ffi::sfCircleShape_setTexture(circle, texture.raw(), sfBool::SFTRUE);
             }
             Some(CircleShape {
                     circle_shape: circle,
@@ -418,7 +418,7 @@ impl<'s> Shape<'s> for CircleShape<'s> {
                        reset_rect: bool) {
         self.texture = Some(texture);
         unsafe {
-            ffi::sfCircleShape_setTexture(self.circle_shape, texture.unwrap(), sfBool::from_bool(reset_rect))
+            ffi::sfCircleShape_setTexture(self.circle_shape, texture.raw(), sfBool::from_bool(reset_rect))
         }
     }
 
@@ -618,15 +618,9 @@ impl<'s> Drop for CircleShape<'s> {
     }
 }
 
-impl<'s> Wrappable<*mut ffi::sfCircleShape> for CircleShape<'s> {
-    fn wrap(circle_shape: *mut ffi::sfCircleShape) -> CircleShape<'s> {
-        CircleShape {
-            circle_shape: circle_shape,
-            texture: None
-        }
-    }
-
-    fn unwrap(&self) -> *mut ffi::sfCircleShape {
+impl<'s> Raw for CircleShape<'s> {
+    type Raw = *mut ffi::sfCircleShape;
+    fn raw(&self) -> Self::Raw {
         self.circle_shape
     }
 }

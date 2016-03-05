@@ -28,7 +28,7 @@ use libc::c_uint;
 use std::mem;
 use std::ops::Index;
 
-use traits::Wrappable;
+use raw_conv::Raw;
 use graphics::{Drawable, Vertex, FloatRect, primitive_type, PrimitiveType, RenderTarget, RenderStates};
 
 use csfml_graphics_sys as ffi;
@@ -282,14 +282,9 @@ impl Index<u32> for VertexArray {
     }
 }
 
-impl Wrappable<*mut ffi::sfVertexArray> for VertexArray {
-    fn wrap(vertex_array: *mut ffi::sfVertexArray) -> VertexArray {
-        VertexArray {
-            vertex_array: vertex_array
-        }
-    }
-
-    fn unwrap(&self) -> *mut ffi::sfVertexArray {
+impl Raw for VertexArray {
+    type Raw = *mut ffi::sfVertexArray;
+    fn raw(&self) -> Self::Raw {
         self.vertex_array
     }
 }

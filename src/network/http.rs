@@ -28,7 +28,7 @@ use std::mem;
 use std::ffi::{CString, CStr};
 use std::str;
 
-use traits::Wrappable;
+use raw_conv::Raw;
 use system::Time;
 
 use csfml_network_sys as ffi;
@@ -212,9 +212,11 @@ impl Request {
             ffi::sfHttpRequest_setBody(self.request, c_body.as_ptr())
         }
     }
+}
 
-    #[doc(hidden)]
-    fn unwrap(&self) -> *mut ffi::sfHttpRequest {
+impl Raw for Request {
+    type Raw = *mut ffi::sfHttpRequest;
+    fn raw(&self) -> Self::Raw {
         self.request
     }
 }
@@ -354,7 +356,7 @@ impl Http {
     /// * timeout - Maximum time to wait
     pub fn send_request(&self, request: &Request, timeout: &Time) -> Response {
         Response {
-            response: unsafe { ffi::sfHttp_sendRequest(self.http, request.unwrap(), timeout.unwrap()) }
+            response: unsafe { ffi::sfHttp_sendRequest(self.http, request.raw(), timeout.raw()) }
         }
     }
 }

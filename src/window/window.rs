@@ -32,7 +32,7 @@ use libc::{c_uint, c_float};
 use std::vec::Vec;
 use std::ffi::CString;
 
-use traits::Wrappable;
+use raw_conv::Raw;
 use window::{event, VideoMode, ContextSettings, WindowStyle};
 use sfml_types::{Vector2i, Vector2u};
 
@@ -80,7 +80,7 @@ impl Window {
                settings: &ContextSettings) -> Option<Window> {
         let c_str = CString::new(title.as_bytes()).unwrap();
         let sf_win: *mut ffi::sfWindow = unsafe {
-            ffi::sfWindow_create(mode.unwrap(), c_str.as_ptr(), style.bits(), &settings.0)
+            ffi::sfWindow_create(mode.raw(), c_str.as_ptr(), style.bits(), &settings.0)
         };
         if sf_win.is_null() {
             None
@@ -116,7 +116,7 @@ impl Window {
                             settings: &ContextSettings) -> Option<Window> {
 
         let sf_win =
-            unsafe { ffi::sfWindow_createUnicode(mode.unwrap(),
+            unsafe { ffi::sfWindow_createUnicode(mode.raw(),
                                                  title.as_ptr(),
                                                  style.bits(), &settings.0) };
         if sf_win.is_null() {
@@ -423,9 +423,11 @@ impl Window {
             ffi::sfMouse_setPosition(*position, self.window)
         }
     }
+}
 
-    #[doc(hidden)]
-    pub fn unwrap(&self) -> *mut ffi::sfWindow {
+impl Raw for Window {
+    type Raw = *mut ffi::sfWindow;
+    fn raw(&self) -> Self::Raw {
         self.window
     }
 }

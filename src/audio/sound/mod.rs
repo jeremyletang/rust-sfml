@@ -32,7 +32,7 @@ use std::mem;
 use audio::{SoundStatus, SoundBuffer, SoundSource};
 use system::Time;
 use sfml_types::Vector3f;
-use traits::Wrappable;
+use raw_conv::{Raw, FromRaw};
 
 use sfml_types::sfBool;
 use csfml_audio_sys as ffi;
@@ -74,7 +74,7 @@ impl<'s> Sound<'s> {
         }
         else {
             unsafe {
-                ffi::sfSound_setBuffer(s, buffer.unwrap());
+                ffi::sfSound_setBuffer(s, buffer.raw());
             }
             Some(Sound {
                 sound: s,
@@ -136,7 +136,7 @@ impl<'s> Sound<'s> {
     ///
     /// Return the current playing position
     pub fn get_playing_offset(&self) -> Time {
-        Wrappable::wrap( unsafe {ffi::sfSound_getPlayingOffset(self.sound)})
+        Time::from_raw( unsafe {ffi::sfSound_getPlayingOffset(self.sound)})
     }
 
     /// Change the current playing position of a sound
@@ -148,7 +148,7 @@ impl<'s> Sound<'s> {
     /// * timeOffset - New playing position
     pub fn set_playing_offset(&mut self, time_offset: Time) {
         unsafe {
-            ffi::sfSound_setPlayingOffset(self.sound, time_offset.unwrap())
+            ffi::sfSound_setPlayingOffset(self.sound, time_offset.raw())
         }
     }
 
@@ -163,7 +163,7 @@ impl<'s> Sound<'s> {
     pub fn set_buffer(&mut self, buffer: &'s SoundBuffer) {
         self.buffer = Some(buffer);
         unsafe {
-            ffi::sfSound_setBuffer(self.sound, buffer.unwrap())
+            ffi::sfSound_setBuffer(self.sound, buffer.raw())
         }
     }
 

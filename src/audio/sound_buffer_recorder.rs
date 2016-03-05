@@ -29,7 +29,7 @@
 
 use libc::c_uint;
 
-use traits::Wrappable;
+use raw_conv::FromRaw;
 use audio::sound_buffer::SoundBuffer;
 
 use csfml_audio_sys as ffi;
@@ -107,7 +107,7 @@ impl SoundBufferRecorder {
         if buff.is_null() {
             None
         } else {
-            Some(Wrappable::wrap(buff))
+            Some(SoundBuffer::from_raw(buff))
         }
     }
 

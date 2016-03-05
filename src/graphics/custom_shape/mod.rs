@@ -27,7 +27,7 @@
 use libc::{c_void, c_float, c_uint};
 use std::{ptr, mem};
 
-use traits::Wrappable;
+use raw_conv::Raw;
 use graphics::shape::ShapeImpl;
 use graphics::{Drawable, Transformable, RenderTarget, RenderStates, Texture, Color,
                Transform, IntRect, FloatRect};
@@ -100,7 +100,7 @@ impl<'s> CustomShape<'s> {
             None
         } else {
             unsafe {
-                ffi::sfShape_setTexture(sp, texture.unwrap(), sfBool::SFTRUE);
+                ffi::sfShape_setTexture(sp, texture.raw(), sfBool::SFTRUE);
             }
             Some(CustomShape {
                     shape:     sp,
@@ -127,7 +127,7 @@ impl<'s> CustomShape<'s> {
                        reset_rect: bool) {
         self.texture = Some(texture);
         unsafe {
-            ffi::sfShape_setTexture(self.shape, texture.unwrap(), sfBool::from_bool(reset_rect))
+            ffi::sfShape_setTexture(self.shape, texture.raw(), sfBool::from_bool(reset_rect))
         }
     }
 
@@ -309,9 +309,11 @@ impl<'s> CustomShape<'s> {
             ffi::sfShape_update(self.shape)
         }
     }
+}
 
-    #[doc(hidden)]
-    pub fn unwrap(&self) -> *mut ffi::sfShape {
+impl<'s> Raw for CustomShape<'s> {
+    type Raw = *mut ffi::sfShape;
+    fn raw(&self) -> Self::Raw {
         self.shape
     }
 }

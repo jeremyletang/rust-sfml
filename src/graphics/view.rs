@@ -30,7 +30,7 @@
 
 use libc::c_float;
 
-use traits::Wrappable;
+use raw_conv::{Raw, FromRaw};
 use graphics::FloatRect;
 use sfml_types::Vector2f;
 
@@ -306,16 +306,19 @@ impl Clone for View {
     }
 }
 
-impl Wrappable<*mut ffi::sfView> for View {
-    fn wrap(view: *mut ffi::sfView) -> View {
+impl Raw for View {
+    type Raw = *mut ffi::sfView;
+    fn raw(&self) -> Self::Raw {
+        self.view
+    }
+}
+
+impl FromRaw for View {
+    fn from_raw(raw: Self::Raw) -> Self {
         View {
             dropable: false,
-            view: view
+            view: raw,
         }
-    }
-
-    fn unwrap(&self) -> *mut ffi::sfView {
-        self.view
     }
 }
 

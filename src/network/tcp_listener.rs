@@ -26,7 +26,7 @@
 
 use std::mem;
 
-use traits::Wrappable;
+use raw_conv::Raw;
 use network::{TcpSocket, SocketStatus};
 
 use sfml_types::sfBool;
@@ -119,7 +119,7 @@ impl TcpListener {
     /// Return status code
     pub fn accept(&self, connected: &mut TcpSocket) -> SocketStatus {
         unsafe {
-            mem::transmute(ffi::sfTcpListener_accept(self.listener, &mut connected.unwrap()) as i32)
+            mem::transmute(ffi::sfTcpListener_accept(self.listener, &mut connected.raw()) as i32)
         }
     }
 }

@@ -26,7 +26,7 @@
 
 use std::ptr;
 
-use traits::Wrappable;
+use raw_conv::Raw;
 use graphics::{BlendMode, Shader, Texture, Transform};
 
 use csfml_graphics_sys as ffi;
@@ -80,11 +80,11 @@ impl<'s> RenderStates<'s> {
         self.sf_render_states.blendMode = self.blend_mode.0;
         self.sf_render_states.transform = self.transform.0;
         self.sf_render_states.texture = match self.texture {
-            Some(texture) => texture.unwrap(),
+            Some(texture) => texture.raw(),
             None => ptr::null_mut(),
         };
         self.sf_render_states.shader = match self.shader {
-            Some(shader) => shader.unwrap(),
+            Some(shader) => shader.raw(),
             None => ptr::null_mut(),
         };
 

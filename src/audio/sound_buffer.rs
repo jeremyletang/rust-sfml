@@ -28,7 +28,7 @@
 
 use std::ffi::CString;
 
-use traits::Wrappable;
+use raw_conv::{Raw, FromRaw};
 use system::Time;
 
 use csfml_audio_sys as ffi;
@@ -110,7 +110,7 @@ impl SoundBuffer {
     ///
     /// Return the sound duration
     pub fn get_duration(&self) -> Time {
-        Wrappable::wrap(unsafe { ffi::sfSoundBuffer_getDuration(self.sound_buffer) })
+        Time::from_raw(unsafe { ffi::sfSoundBuffer_getDuration(self.sound_buffer) })
     }
 
     /// Get the sample rate of a sound buffer
@@ -141,18 +141,20 @@ impl Clone for SoundBuffer {
     }
 }
 
-impl Wrappable<*mut ffi::sfSoundBuffer> for SoundBuffer {
-    fn wrap(buffer: *mut ffi::sfSoundBuffer) -> SoundBuffer {
-        SoundBuffer {
-            sound_buffer:  buffer,
-            dropable:      false
-        }
-    }
-
-    fn unwrap(&self) -> *mut ffi::sfSoundBuffer {
+impl Raw for SoundBuffer {
+    type Raw = *mut ffi::sfSoundBuffer;
+    fn raw(&self) -> Self::Raw {
         self.sound_buffer
     }
+}
 
+impl FromRaw for SoundBuffer {
+    fn from_raw(raw: Self::Raw) -> Self {
+        SoundBuffer {
+            sound_buffer: raw,
+            dropable: false,
+        }
+    }
 }
 
 impl Drop for SoundBuffer {

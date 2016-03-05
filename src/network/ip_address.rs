@@ -27,7 +27,7 @@
 use std::ffi::{CString, CStr};
 use std::str;
 
-use traits::Wrappable;
+use raw_conv::{Raw, FromRaw};
 use system::Time;
 
 use csfml_network_sys as ffi;
@@ -153,19 +153,22 @@ impl IpAddress {
     /// Return the public IP address of the computer
     pub fn get_public_address(timeout: &Time) -> IpAddress {
         IpAddress {
-            ip: unsafe { ffi::sfIpAddress_getPublicAddress(timeout.unwrap()) }
+            ip: unsafe { ffi::sfIpAddress_getPublicAddress(timeout.raw()) }
         }
     }
 }
 
-impl Wrappable<ffi::sfIpAddress> for IpAddress {
-    fn wrap(ip: ffi::sfIpAddress) -> IpAddress {
-        IpAddress {
-            ip: ip
-        }
-    }
-
-    fn unwrap(&self) -> ffi::sfIpAddress {
+impl Raw for IpAddress {
+    type Raw = ffi::sfIpAddress;
+    fn raw(&self) -> Self::Raw {
         self.ip
+    }
+}
+
+impl FromRaw for IpAddress {
+    fn from_raw(raw: Self::Raw) -> Self {
+        IpAddress {
+            ip: raw,
+        }
     }
 }

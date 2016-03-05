@@ -27,7 +27,7 @@
 //!
 //! Utility class that measures the elapsed time
 
-use traits::Wrappable;
+use raw_conv::FromRaw;
 use system::Time;
 
 use csfml_system_sys as ffi;
@@ -50,20 +50,15 @@ impl Clock {
     /// Get the time elapsed in a clock
     pub fn get_elapsed_time(&self) -> Time {
         unsafe {
-            Wrappable::wrap(ffi::sfClock_getElapsedTime(self.clock))
+            Time::from_raw(ffi::sfClock_getElapsedTime(self.clock))
         }
     }
 
     /// Restart a Clock.
     pub fn restart(&mut self) -> Time {
         unsafe {
-            Wrappable::wrap(ffi::sfClock_restart(self.clock))
+            Time::from_raw(ffi::sfClock_restart(self.clock))
         }
-    }
-
-    #[doc(hidden)]
-    pub fn unwrap(&self) -> *mut ffi::sfClock {
-        self.clock
     }
 }
 

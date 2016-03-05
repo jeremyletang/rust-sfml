@@ -28,7 +28,7 @@ use std::ptr;
 use std::ffi::{CString, CStr};
 use std::str;
 
-use traits::Wrappable;
+use raw_conv::{Raw, FromRaw};
 
 use sfml_types::sfBool;
 use csfml_network_sys as ffi;
@@ -255,14 +255,17 @@ impl Clone for Packet {
     }
 }
 
-impl Wrappable<*mut ffi::sfPacket> for Packet {
-    fn unwrap(&self) -> *mut ffi::sfPacket {
+impl Raw for Packet {
+    type Raw = *mut ffi::sfPacket;
+    fn raw(&self) -> Self::Raw {
         self.packet
     }
+}
 
-    fn wrap(packet: *mut ffi::sfPacket) -> Packet {
+impl FromRaw for Packet {
+    fn from_raw(raw: Self::Raw) -> Self {
         Packet {
-            packet: packet
+            packet: raw,
         }
     }
 }

@@ -28,7 +28,7 @@ use libc::size_t;
 use std::{slice, ptr, mem};
 use std::vec::Vec;
 
-use traits::Wrappable;
+use raw_conv::{Raw, FromRaw};
 use network::{IpAddress, Packet, SocketStatus};
 use system::Time;
 
@@ -102,7 +102,7 @@ impl TcpSocket {
     /// Return the address of the remote peer
     pub fn get_remote_address(&self) -> IpAddress {
         unsafe {
-            Wrappable::wrap(ffi::sfTcpSocket_getRemoteAddress(self.socket))
+            IpAddress::from_raw(ffi::sfTcpSocket_getRemoteAddress(self.socket))
         }
     }
 
@@ -131,7 +131,7 @@ impl TcpSocket {
     /// * timeout - Maximum time to wait
     pub fn connect(&self, host: &IpAddress, port: u16, timeout: Time) -> SocketStatus {
         unsafe {
-            mem::transmute(ffi::sfTcpSocket_connect(self.socket, host.unwrap(), port, timeout.unwrap()) as i32)
+            mem::transmute(ffi::sfTcpSocket_connect(self.socket, host.raw(), port, timeout.raw()) as i32)
         }
     }
 
@@ -184,7 +184,7 @@ impl TcpSocket {
     /// Return the socket status
     pub fn send_packet(&self, packet: &Packet) -> SocketStatus {
         unsafe {
-            mem::transmute(ffi::sfTcpSocket_sendPacket(self.socket, packet.unwrap()) as i32)
+            mem::transmute(ffi::sfTcpSocket_sendPacket(self.socket, packet.raw()) as i32)
         }
     }
 
@@ -199,19 +199,14 @@ impl TcpSocket {
         unsafe {
             let pack: *mut ffi::sfPacket = ptr::null_mut();
             let stat: SocketStatus = mem::transmute(ffi::sfTcpSocket_receivePacket(self.socket, pack) as i32);
-            (Wrappable::wrap(pack), stat)
+            (Packet::from_raw(pack), stat)
         }
     }
 }
 
-impl Wrappable<*mut ffi::sfTcpSocket> for TcpSocket {
-    fn wrap(socket: *mut ffi::sfTcpSocket) -> TcpSocket {
-        TcpSocket {
-            socket: socket
-        }
-    }
-
-    fn unwrap(&self) -> *mut ffi::sfTcpSocket {
+impl Raw for TcpSocket {
+    type Raw = *mut ffi::sfTcpSocket;
+    fn raw(&self) -> Self::Raw {
         self.socket
     }
 }

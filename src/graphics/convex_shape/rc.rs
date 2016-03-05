@@ -34,7 +34,6 @@ use std::cell::RefCell;
 use libc::{c_float, c_uint};
 use std::ptr;
 
-use traits::{Wrappable, Drawable};
 use graphics::{Color, Texture, RenderTarget, FloatRect, IntRect, Transform, rc, RenderStates};
 use sfml_types::Vector2f;
 
@@ -608,16 +607,19 @@ impl Iterator for ConvexShapePoints {
     }
 }
 
-impl Wrappable<*mut ffi::sfConvexShape> for ConvexShape {
-    fn wrap(convex_shape: *mut ffi::sfConvexShape) -> ConvexShape {
-        ConvexShape {
-            convex_shape: convex_shape.clone(),
-            texture: None
-        }
-    }
-
-    fn unwrap(&self) -> *mut ffi::sfConvexShape {
+impl Raw for ConvexShape {
+    type Raw = *mut ffi::ConvexShape;
+    fn raw(&self) -> Self::Raw {
         self.convex_shape
+    }
+}
+
+impl FromRaw for ConvexShape {
+    fn from_raw(raw: Self::Raw) -> Self {
+        ConvexShape {
+            convex_shape: raw,
+            texture: None,
+        }
     }
 }
 

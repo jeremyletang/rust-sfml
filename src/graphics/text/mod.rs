@@ -31,7 +31,7 @@ use std::ffi::{CString, CStr};
 use std::str;
 use libc::{c_float, c_uint, size_t};
 
-use traits::Wrappable;
+use raw_conv::Raw;
 use graphics::{Drawable, Transformable, RenderTarget, Font, FloatRect,
                Color, Transform, RenderStates, TextStyle};
 use sfml_types::Vector2f;
@@ -87,7 +87,7 @@ impl<'s> Text<'s> {
             let c_str = CString::new(string.as_bytes()).unwrap();
             unsafe {
                 ffi::sfText_setString(text, c_str.as_ptr());
-                ffi::sfText_setFont(text, font.unwrap());
+                ffi::sfText_setFont(text, font.raw());
                 ffi::sfText_setCharacterSize(text, character_size as c_uint)
             }
             Some(Text {
@@ -175,7 +175,7 @@ impl<'s> Text<'s> {
     pub fn set_font(&mut self, font: &'s Font) {
         self.font = Some(font);
         unsafe {
-            ffi::sfText_setFont(self.text, font.unwrap())
+            ffi::sfText_setFont(self.text, font.raw())
         }
     }
 
@@ -559,16 +559,9 @@ impl<'s> Transformable for Text<'s> {
     }
 }
 
-impl<'s> Wrappable<*mut ffi::sfText> for Text<'s> {
-    fn wrap(text: *mut ffi::sfText) -> Text<'s> {
-        Text {
-            text: text,
-            string_length: 0,
-            font: None
-        }
-    }
-
-    fn unwrap(&self) -> *mut ffi::sfText {
+impl<'s> Raw for Text<'s> {
+    type Raw = *mut ffi::sfText;
+    fn raw(&self) -> Self::Raw {
         self.text
     }
 }

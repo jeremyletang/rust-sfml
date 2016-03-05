@@ -27,7 +27,7 @@
 use libc::{c_float, c_uint};
 use std::ptr;
 
-use traits::Wrappable;
+use raw_conv::Raw;
 use sfml_types::Vector2f;
 use graphics::{Drawable, Shape, Transformable, FloatRect, IntRect, Color, Texture,
                RenderTarget, Transform, RenderStates};
@@ -69,7 +69,7 @@ impl<'s> RectangleShape<'s> {
         } else {
             unsafe {
                 ffi::sfRectangleShape_setTexture(rectangle,
-                                                 texture.unwrap(),
+                                                 texture.raw(),
                                                  sfBool::SFTRUE);
             }
             Some(RectangleShape {
@@ -415,7 +415,7 @@ impl<'s> Shape<'s> for RectangleShape<'s> {
         self.texture = Some(texture);
         unsafe {
             ffi::sfRectangleShape_setTexture(self.rectangle_shape,
-                                             texture.unwrap(),
+                                             texture.raw(),
                                              sfBool::from_bool(reset_rect))
         }
     }
@@ -607,15 +607,9 @@ impl<'s> Clone for RectangleShape<'s> {
     }
 }
 
-impl<'s> Wrappable<*mut ffi::sfRectangleShape> for RectangleShape<'s> {
-    fn wrap(rectangle_shape: *mut ffi::sfRectangleShape) -> RectangleShape<'s> {
-        RectangleShape {
-            rectangle_shape: rectangle_shape,
-            texture: None
-        }
-    }
-
-    fn unwrap(&self) -> *mut ffi::sfRectangleShape {
+impl<'s> Raw for RectangleShape<'s> {
+    type Raw = *mut ffi::sfRectangleShape;
+    fn raw(&self) -> Self::Raw {
         self.rectangle_shape
     }
 }

@@ -31,7 +31,7 @@ pub use libc::{c_long, c_float, c_int};
 use std::ops::{Add, Sub, Mul, Div};
 use std::cmp::Ordering;
 
-use traits::Wrappable;
+use raw_conv::{Raw, FromRaw};
 
 use csfml_system_sys as ffi;
 
@@ -135,14 +135,17 @@ impl Div for Time {
     }
 }
 
-impl Wrappable<ffi::sfTime> for Time {
-    fn wrap(time: ffi::sfTime) -> Time {
-        Time {
-            time: time
-        }
-    }
-
-    fn unwrap(&self) -> ffi::sfTime {
+impl Raw for Time {
+    type Raw = ffi::sfTime;
+    fn raw(&self) -> Self::Raw {
         self.time
+    }
+}
+
+impl FromRaw for Time {
+    fn from_raw(raw: Self::Raw) -> Self {
+        Time {
+            time: raw,
+        }
     }
 }

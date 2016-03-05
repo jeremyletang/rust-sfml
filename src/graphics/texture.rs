@@ -31,7 +31,7 @@ use std::ptr;
 use std::ffi::CString;
 use std::io::{Read, Seek};
 
-use traits::Wrappable;
+use raw_conv::{Raw, FromRaw};
 use graphics::{RenderWindow, Image, IntRect};
 use sfml_types::Vector2u;
 use inputstream::InputStream;
@@ -182,7 +182,7 @@ impl Texture {
     /// Return Some(Texture) or None
     pub fn new_from_image_with_rect(image: &Image,
                                     area: &IntRect) -> Option<Texture> {
-        let tex = unsafe { ffi::sfTexture_createFromImage(image.unwrap(),
+        let tex = unsafe { ffi::sfTexture_createFromImage(image.raw(),
                                                           area) };
         if tex.is_null() {
             None
@@ -201,7 +201,7 @@ impl Texture {
     ///
     /// Return Some(Texture) or None
     pub fn new_from_image(image: &Image) -> Option<Texture> {
-        let tex = unsafe { ffi::sfTexture_createFromImage(image.unwrap(),
+        let tex = unsafe { ffi::sfTexture_createFromImage(image.raw(),
                                                           ptr::null()) };
         if tex.is_null() {
             None
@@ -234,7 +234,7 @@ impl Texture {
                               y: u32) {
         unsafe {
             ffi::sfTexture_updateFromWindow(self.texture,
-                                            window.unwrap(),
+                                            window.raw(),
                                             x as c_uint,
                                             y as c_uint)
         }
@@ -252,7 +252,7 @@ impl Texture {
                                      y: u32) {
         unsafe {
             ffi::sfTexture_updateFromRenderWindow(self.texture,
-                                                  render_window.unwrap(),
+                                                  render_window.raw(),
                                                   x as c_uint,
                                                   y as c_uint)
         }
@@ -270,7 +270,7 @@ impl Texture {
                              y: u32) {
         unsafe {
             ffi::sfTexture_updateFromImage(self.texture,
-                                           image.unwrap(),
+                                           image.raw(),
                                            x as c_uint,
                                            y as c_uint)
         }
@@ -374,7 +374,7 @@ impl Texture {
         if img.is_null() {
             None
         } else {
-            Some(Wrappable::wrap(img))
+            Some(Image::from_raw(img))
         }
     }
 }
@@ -394,15 +394,18 @@ impl Clone for Texture {
     }
 }
 
-impl Wrappable<*mut ffi::sfTexture> for Texture {
-    fn unwrap(&self) -> *mut ffi::sfTexture {
+impl Raw for Texture {
+    type Raw = *mut ffi::sfTexture;
+    fn raw(&self) -> Self::Raw {
         self.texture
     }
+}
 
-    fn wrap(texture: *mut ffi::sfTexture) -> Texture {
+impl FromRaw for Texture {
+    fn from_raw(raw: Self::Raw) -> Self {
         Texture {
-            texture: texture,
-            dropable: false
+            texture: raw,
+            dropable: false,
         }
     }
 }

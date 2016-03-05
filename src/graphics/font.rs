@@ -28,7 +28,7 @@
 use libc::{c_uint, size_t};
 use std::ffi::CString;
 
-use traits::Wrappable;
+use raw_conv::{Raw, FromRaw};
 use graphics::{Texture, Glyph};
 
 use sfml_types::sfBool;
@@ -169,7 +169,7 @@ impl Font {
         if tex.is_null() {
             None
         } else {
-            Some(Wrappable::wrap(tex))
+            Some(Texture::from_raw(tex))
         }
     }
 
@@ -206,14 +206,9 @@ impl Clone for Font {
     }
 }
 
-impl Wrappable<*mut ffi::sfFont> for Font {
-    fn wrap(font: *mut ffi::sfFont) -> Font {
-        Font {
-            font: font,
-            dropable: false
-        }
-    }
-    fn unwrap(&self) -> *mut ffi::sfFont {
+impl Raw for Font {
+    type Raw = *mut ffi::sfFont;
+    fn raw(&self) -> Self::Raw {
         self.font
     }
 }

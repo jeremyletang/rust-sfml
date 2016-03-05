@@ -30,7 +30,7 @@
 use libc::{c_float};
 use std::ptr;
 
-use traits::Wrappable;
+use raw_conv::Raw;
 use graphics::{Drawable, Transformable, FloatRect, IntRect, Color, Texture,
                RenderTarget, Transform, RenderStates};
 use sfml_types::Vector2f;
@@ -74,7 +74,7 @@ impl<'s> Sprite<'s> {
             None
         } else {
             unsafe {
-                ffi::sfSprite_setTexture(sp, texture.unwrap(), sfBool::SFTRUE);
+                ffi::sfSprite_setTexture(sp, texture.raw(), sfBool::SFTRUE);
             }
             Some(Sprite {
                     sprite: sp,
@@ -118,7 +118,7 @@ impl<'s> Sprite<'s> {
         self.texture = Some(texture);
         unsafe {
             ffi::sfSprite_setTexture(self.sprite,
-                                     texture.unwrap(),
+                                     texture.raw(),
                                      sfBool::from_bool(reset_rect))
         }
     }
@@ -482,15 +482,9 @@ impl<'s> Transformable for Sprite<'s> {
     }
 }
 
-impl<'s> Wrappable<*mut ffi::sfSprite> for Sprite<'s> {
-    fn wrap(sprite: *mut ffi::sfSprite) -> Sprite<'s> {
-        Sprite {
-            sprite: sprite,
-            texture: None
-        }
-    }
-
-    fn unwrap(&self) -> *mut ffi::sfSprite {
+impl<'s> Raw for Sprite<'s> {
+    type Raw = *mut ffi::sfSprite;
+    fn raw(&self) -> Self::Raw {
         self.sprite
     }
 }

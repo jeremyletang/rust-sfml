@@ -32,7 +32,6 @@ use std::cell::RefCell;
 use libc::{c_float};
 use std::ptr;
 
-use traits::{Drawable, Wrappable};
 use graphics::{FloatRect, IntRect, Color, Texture,
                RenderTarget, Transform, rc, RenderStates};
 use sfml_types::Vector2f;
@@ -470,16 +469,19 @@ impl Clone for Sprite {
     }
 }
 
-impl Wrappable<*mut ffi::sfSprite> for Sprite {
-    fn wrap(sprite: *mut ffi::sfSprite) -> Sprite {
-        Sprite {
-            sprite: sprite,
-            texture: None
-        }
-    }
-
-    fn unwrap(&self) -> *mut ffi::sfSprite {
+impl Raw for Sprite {
+    type Raw = *mut ffi::sfSprite;
+    fn raw(&self) -> Self::Raw {
         self.sprite
+    }
+}
+
+impl FromRaw for Sprite {
+    fn from_raw(raw: Self::Raw) -> Self {
+        Sprite {
+            sprite: raw,
+            texture: None,
+        }
     }
 }
 

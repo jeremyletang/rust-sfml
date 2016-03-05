@@ -27,7 +27,7 @@
 use libc::{c_uint, size_t};
 use std::ffi::CString;
 
-use traits::Wrappable;
+use raw_conv::{Raw, FromRaw};
 use sfml_types::Vector2u;
 use graphics::{Color, IntRect};
 
@@ -306,7 +306,7 @@ impl Image {
                       apply_alpha: bool) {
         unsafe {
             ffi::sfImage_copyImage(self.image,
-                                   source.unwrap(),
+                                   source.raw(),
                                    dest_x as c_uint,
                                    dest_y as c_uint,
                                    *source_rect,
@@ -329,15 +329,18 @@ impl Clone for Image {
     }
 }
 
-impl Wrappable<*mut ffi::sfImage> for Image {
-    fn wrap(image: *mut ffi::sfImage) -> Image {
-        Image {
-            image: image
-        }
-    }
-
-    fn unwrap(&self) -> *mut ffi::sfImage {
+impl Raw for Image {
+    type Raw = *mut ffi::sfImage;
+    fn raw(&self) -> Self::Raw {
         self.image
+    }
+}
+
+impl FromRaw for Image {
+    fn from_raw(raw: Self::Raw) -> Self {
+        Image {
+            image: raw,
+        }
     }
 }
 

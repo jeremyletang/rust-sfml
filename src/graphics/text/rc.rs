@@ -35,7 +35,6 @@ use std::ffi::{CString, CStr};
 use libc::{c_float, c_uint, size_t};
 use std::str;
 
-use traits::{Drawable, Wrappable};
 use graphics::{RenderTarget, Font, FloatRect,
                Color, Transform, rc, TextStyle, RenderStates};
 use sfml_types::Vector2f;
@@ -553,17 +552,20 @@ impl Clone for Text{
     }
 }
 
-impl Wrappable<*mut ffi::sfText> for Text {
-    fn wrap(text: *mut ffi::sfText) -> Text {
-        Text {
-            text: text,
-            string_length: 0,
-            font: None
-        }
-    }
-
-    fn unwrap(&self) -> *mut ffi::sfText {
+impl Raw for Text {
+    type Raw = *mut ffi::sfText;
+    fn raw(&self) -> Self::Raw {
         self.text
+    }
+}
+
+impl FromRaw for Text {
+    fn from_raw(raw: Self::Raw) -> Self {
+        Text {
+            text: raw,
+            string_length: 0,
+            font: None,
+        }
     }
 }
 

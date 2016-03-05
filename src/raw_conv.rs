@@ -22,8 +22,13 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-//! Basic traits for internal functionnement of rust-sfml.
+/// A type that has a raw representation that can be acquired.
+pub trait Raw {
+    type Raw;
+    fn raw(&self) -> Self::Raw;
+}
 
-pub use traits::wrappable::Wrappable;
-
-pub mod wrappable;
+/// A type that can be created from its raw representation.
+pub trait FromRaw: Raw {
+    fn from_raw(raw: Self::Raw) -> Self;
+}

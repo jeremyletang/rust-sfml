@@ -29,7 +29,6 @@ use std::cell::RefCell;
 use libc::{c_float, c_uint};
 use std::ptr;
 
-use traits::{Drawable, Wrappable};
 use graphics::{IntRect, FloatRect, Color, Texture,
                RenderTarget, Transform, rc, RenderStates};
 use sfml_types::Vector2f;
@@ -598,16 +597,19 @@ impl Clone for CircleShape {
     }
 }
 
-impl Wrappable<*mut ffi::sfCircleShape> for CircleShape {
-    fn wrap(circle_shape: *mut ffi::sfCircleShape) -> CircleShape {
-        CircleShape {
-            circle_shape: circle_shape,
-            texture: None
-        }
-    }
-
-    fn unwrap(&self) -> *mut ffi::sfCircleShape {
+impl Raw for CircleShape {
+    type Raw = *mut ffi::sfCircleShape;
+    fn raw(&self) -> Self::Raw {
         self.circle_shape
+    }
+}
+
+impl FromRaw for CircleShape {
+    fn from_raw(raw: Self::Raw) -> Self {
+        CircleShape {
+            circle_shape: raw,
+            texture: None,
+        }
     }
 }
 

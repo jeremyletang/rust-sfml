@@ -33,7 +33,6 @@ use std::cell::RefCell;
 use std::ptr;
 use std::ffi::CString;
 
-use traits::Wrappable;
 use graphics::{Texture, Color};
 use sfml_types::Vector2f;
 use sfml_types::Vector3f;
@@ -351,16 +350,19 @@ impl Shader {
     }
 }
 
-impl Wrappable<*mut ffi::sfShader> for Shader {
-    fn wrap(shader: *mut ffi::sfShader) -> Shader {
-        Shader {
-            shader:    shader,
-            texture:   None
-        }
-    }
-
-    fn unwrap(&self) -> *mut ffi::sfShader {
+impl Raw for Shader {
+    type Raw = *mut ffi::SfShader;
+    fn raw(&self) -> Self::Raw {
         self.shader
+    }
+}
+
+impl FromRaw for Shader {
+    fn from_raw(raw: Self::Raw) -> Self {
+        Shader {
+            shader: raw,
+            texture: None
+        }
     }
 }
 

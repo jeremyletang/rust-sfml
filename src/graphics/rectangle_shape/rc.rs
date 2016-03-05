@@ -29,7 +29,6 @@ use std::cell::RefCell;
 use libc::{c_float, c_uint};
 use std::ptr;
 
-use traits::{Drawable, Wrappable};
 use sfml_types::Vector2f;
 use graphics::{FloatRect, IntRect, Color, Texture,
                RenderTarget, Transform, rc, RenderStates};
@@ -352,7 +351,7 @@ impl RectangleShape {
     pub fn get_point(&self, index: u32) -> Vector2f {
         unsafe {
             ffi::sfRectangleShape_getPoint(self.rectangle_shape,
-                                           index as c_uint) 
+                                           index as c_uint)
         }
     }
 
@@ -596,16 +595,19 @@ impl Clone for RectangleShape {
     }
 }
 
-impl Wrappable<*mut ffi::sfRectangleShape> for RectangleShape {
-    fn wrap(rectangle_shape: *mut ffi::sfRectangleShape) -> RectangleShape {
-        RectangleShape {
-            rectangle_shape: rectangle_shape,
-            texture: None
-        }
-    }
-
-    fn unwrap(&self) -> *mut ffi::sfRectangleShape {
+impl Raw for RectangleShape {
+    type Raw = *mut ffi::sfRectangleShape;
+    fn raw(&self) -> self::Raw {
         self.rectangle_shape
+    }
+}
+
+impl FromRaw for RectangleShape {
+    fn from_raw(raw: Self::Raw) -> Self {
+        RectangleShape {
+            rectangle_shape: raw,
+            texture: None,
+        }
     }
 }
 

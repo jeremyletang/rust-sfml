@@ -108,8 +108,8 @@ extern crate csfml_graphics_sys;
 extern crate csfml_audio_sys;
 extern crate csfml_network_sys;
 
-mod traits;
 mod inputstream;
+mod raw_conv;
 
 pub mod system;
 pub mod window;

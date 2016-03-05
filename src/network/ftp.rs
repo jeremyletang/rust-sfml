@@ -29,7 +29,7 @@ use std::ffi::{CString, CStr};
 use std::str;
 use libc::size_t;
 
-use traits::Wrappable;
+use raw_conv::Raw;
 use network::IpAddress;
 use system::Time;
 
@@ -360,7 +360,7 @@ impl Ftp {
     /// Return the server response to the request
     pub fn connect(&self, server: &IpAddress, port: u16, timeout: &Time) -> Response {
         Response {
-            response: unsafe { ffi::sfFtp_connect(self.ftp, server.unwrap(), port, timeout.unwrap()) }
+            response: unsafe { ffi::sfFtp_connect(self.ftp, server.raw(), port, timeout.raw()) }
         }
     }
 

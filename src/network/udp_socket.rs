@@ -28,7 +28,7 @@ use std::{ptr, slice, mem};
 use libc::size_t;
 use std::vec::Vec;
 
-use traits::Wrappable;
+use raw_conv::{Raw, FromRaw};
 use network::{Packet, IpAddress, SocketStatus};
 
 use sfml_types::sfBool;
@@ -134,7 +134,7 @@ impl UdpSocket {
     /// * remotePort - Port of the receiver to send the data to
     pub fn send(&self, data: &[i8], address: &IpAddress, port: u16) -> SocketStatus {
         unsafe {
-            mem::transmute(ffi::sfUdpSocket_send(self.socket, data.as_ptr() as *mut i8, data.len() as size_t, address.unwrap(), port) as i32)
+            mem::transmute(ffi::sfUdpSocket_send(self.socket, data.as_ptr() as *mut i8, data.len() as size_t, address.raw(), port) as i32)
         }
     }
 
@@ -156,7 +156,7 @@ impl UdpSocket {
             let addr: *mut ffi::sfIpAddress = ptr::null_mut();
             let mut port: u16 = 0;
             let stat: SocketStatus = mem::transmute(ffi::sfUdpSocket_receive(self.socket, datas, max_size, &mut s, addr, &mut port) as i32);
-            (slice::from_raw_parts(datas, s as usize).to_vec(), stat, s, Wrappable::wrap(*addr), port)
+            (slice::from_raw_parts(datas, s as usize).to_vec(), stat, s, IpAddress::from_raw(*addr), port)
         }
     }
 
@@ -172,7 +172,7 @@ impl UdpSocket {
     /// * remotePort - Port of the receiver to send the data to
     pub fn send_packet(&self, packet: &Packet, address: &IpAddress, port: u16) -> SocketStatus {
         unsafe {
-            mem::transmute(ffi::sfUdpSocket_sendPacket(self.socket, packet.unwrap(), address.unwrap(), port) as i32)
+            mem::transmute(ffi::sfUdpSocket_sendPacket(self.socket, packet.raw(), address.raw(), port) as i32)
         }
     }
 
@@ -186,7 +186,7 @@ impl UdpSocket {
             let addr: *mut ffi::sfIpAddress = ptr::null_mut();
             let mut port: u16 = 0;
             let stat: SocketStatus = mem::transmute(ffi::sfUdpSocket_receivePacket(self.socket, pack, addr, &mut port) as i32);
-            (Wrappable::wrap(pack), stat, Wrappable::wrap(*addr), port)
+            (Packet::from_raw(pack), stat, IpAddress::from_raw(*addr), port)
         }
     }
 
@@ -198,18 +198,6 @@ impl UdpSocket {
         unsafe {
             ffi::sfUdpSocket_maxDatagramSize()
         }
-    }
-}
-
-impl Wrappable<*mut ffi::sfUdpSocket> for UdpSocket {
-    fn wrap(socket: *mut ffi::sfUdpSocket) -> UdpSocket {
-        UdpSocket {
-            socket: socket
-        }
-    }
-
-    fn unwrap(&self) -> *mut ffi::sfUdpSocket {
-        self.socket
     }
 }
 

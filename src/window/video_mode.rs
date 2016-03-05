@@ -30,7 +30,7 @@
 use libc::{c_uint, size_t};
 use std::vec::Vec;
 
-use traits::Wrappable;
+use raw_conv::{Raw, FromRaw};
 
 use csfml_window_sys as ffi;
 
@@ -128,27 +128,30 @@ impl VideoMode {
         let mut ret_tab = Vec::with_capacity(size as usize);
 
         for sf_video_mode in tab_slice.iter() {
-            ret_tab.push(Wrappable::wrap(sf_video_mode.clone()));
+            ret_tab.push(VideoMode::from_raw(sf_video_mode.clone()));
         }
 
         Some(ret_tab)
     }
 }
 
-impl Wrappable<ffi::sfVideoMode> for VideoMode {
-    fn wrap(mode: ffi::sfVideoMode) -> VideoMode {
-        VideoMode{
-            width: mode.width as u32,
-            height: mode.height as u32,
-            bits_per_pixel: mode.bits_per_pixel as u32
-        }
-    }
-
-    fn unwrap(&self) -> ffi::sfVideoMode {
+impl Raw for VideoMode {
+    type Raw = ffi::sfVideoMode;
+    fn raw(&self) -> ffi::sfVideoMode {
         ffi::sfVideoMode{
             width: self.width as c_uint,
             height: self.height as c_uint,
             bits_per_pixel: self.bits_per_pixel as c_uint
+        }
+    }
+}
+
+impl FromRaw for VideoMode {
+    fn from_raw(raw: Self::Raw) -> Self {
+        VideoMode{
+            width: raw.width as u32,
+            height: raw.height as u32,
+            bits_per_pixel: raw.bits_per_pixel as u32
         }
     }
 }
