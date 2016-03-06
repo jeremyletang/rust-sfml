@@ -614,7 +614,7 @@ impl FromRaw for CircleShape {
 }
 
 impl Drawable for CircleShape {
-    fn draw<RT:RenderTarget>(&self, render_target: &mut RT, render_states: &mut RenderStates) {
+    fn draw(&self, render_target: &mut RenderTarget, render_states: &mut RenderStates) {
         render_target.draw_circle_shape(self, render_states)
     }
 }

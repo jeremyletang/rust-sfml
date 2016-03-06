@@ -154,16 +154,16 @@ pub trait RenderTarget {
     ///
     /// # Arguments
     /// * object - Object to draw
-    fn draw<T: Drawable>(&mut self, object: &T);
+    fn draw(&mut self, object: &Drawable);
 
     /// Draw a drawable object to the render-target with a RenderStates
     ///
     /// # Arguments
     /// * object - Object to draw
     /// * renderStates - The renderStates to associate to the object
-    fn draw_with_renderstates<T: Drawable>(&mut self,
-                                           object: &T,
-                                           render_states: &mut RenderStates);
+    fn draw_with_renderstates(&mut self,
+                              object: &Drawable,
+                              render_states: &mut RenderStates);
 
     /// Draw a drawable object to the render-target with a RenderStates
     ///

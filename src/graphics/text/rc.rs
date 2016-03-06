@@ -570,9 +570,9 @@ impl FromRaw for Text {
 }
 
 impl Drawable for Text {
-    fn draw<RT:RenderTarget>(&self,
-                                   render_target: &mut RT,
-                                   render_states: &mut RenderStates) {
+    fn draw(&self,
+            render_target: &mut RenderTarget,
+            render_states: &mut RenderStates) {
         render_target.draw_text(self, render_states)
     }
 }
