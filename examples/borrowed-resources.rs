@@ -2,14 +2,14 @@ extern crate sfml;
 
 use sfml::graphics::{CircleShape, Color, ConvexShape, Font, RenderTarget, RenderWindow, Shape,
                      Sprite, Text, Texture, Transformable};
-use sfml::window::{ContextSettings, Key, VideoMode, event, window_style};
+use sfml::window::{Key, VideoMode, event, window_style};
 use sfml::system::Vector2f;
 
 fn main() {
     let mut window = RenderWindow::new(VideoMode::new_init(800, 600, 32),
                                        "Borrowed resources",
                                        window_style::CLOSE,
-                                       &ContextSettings::default())
+                                       &Default::default())
                          .unwrap();
     window.set_vertical_sync_enabled(true);
 
