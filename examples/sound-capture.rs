@@ -1,13 +1,9 @@
-//! Example from SFML: Sound Capture
-
 extern crate sfml;
 
-use std::rc::Rc;
-use std::cell::RefCell;
 use std::io::{BufRead, Write};
 
-use sfml::audio::{rc, SoundBufferRecorder, SoundStatus};
-use sfml::system::{sleep, Time};
+use sfml::audio::{Sound, SoundBufferRecorder, SoundStatus};
+use sfml::system::{Time, sleep};
 
 fn main() {
     // Check that the device can capture audio
@@ -22,37 +18,33 @@ fn main() {
     let mut line = String::new();
     reader.read_line(&mut line).unwrap();
     let sample_rate: u32 = match line.trim_right().parse() {
-        Ok(value)     => value,
-        Err(e)        => panic!("Error, input is not valid: {}", e)
+        Ok(value) => value,
+        Err(e) => panic!("Error, input is not valid: {}", e),
     };
 
     // Wait for user input...
     println!("Press enter to start recording audio");
     reader.read_line(&mut String::new()).unwrap();
 
-    // Here we'll use an integrated custom recorder, which saves the captured data into a SoundBuffer
-    let mut recorder: SoundBufferRecorder = match SoundBufferRecorder::new() {
-        Some(rec)       => rec,
-        None            => panic!("Error, cannot initialize Sound buffer recorder.")
-    };
+    // Here we'll use an integrated custom recorder,
+    // which saves the captured data into a SoundBuffer
+    let mut recorder = SoundBufferRecorder::new().unwrap();
 
-    // Audio capture is done in a separate thread, so we can block the main thread while it is capturing
+    // Audio capture is done in a separate thread,
+    // so we can block the main thread while it is capturing
     recorder.start(sample_rate);
     println!("Recording... press enter to stop");
     reader.read_line(&mut String::new()).unwrap();
     recorder.stop();
 
     // Get the buffer containing the captured data
-    let buffer = match recorder.get_buffer() {
-        Some(buf)       => Rc::new(RefCell::new(buf)),
-        None            => panic!("Error when retreiving buffer.")
-    };
+    let buffer = recorder.get_buffer().unwrap();
 
     // Display captured sound informations
     println!("Sound informations :");
-    println!(" {} seconds", (*buffer).borrow().get_duration().as_seconds());
-    println!(" {} samples / sec", (*buffer).borrow().get_sample_rate());
-    println!(" {} channels", (*buffer).borrow().get_channel_count());
+    println!(" {} seconds", buffer.get_duration().as_seconds());
+    println!(" {} samples / sec", buffer.get_sample_rate());
+    println!(" {} channels", buffer.get_channel_count());
 
 
     // Choose what to do with the recorded sound data
@@ -68,28 +60,19 @@ fn main() {
         reader.read_line(&mut filename).unwrap();
 
         // Save the buffer
-        (*buffer).borrow().save_to_file(filename.trim());
-    }
-    else {
-        let mut sound: rc::Sound = match rc::Sound::new_with_buffer(buffer.clone()) {
-            Some(sound)     => sound,
-            None            => panic!("Error cannot create Sound")
-        };
+        buffer.save_to_file(filename.trim());
+    } else {
+        let mut sound = Sound::new_with_buffer(&buffer).unwrap();
 
-         sound.play();
+        sound.play();
 
-        loop {
-            match sound.get_status() {
-                SoundStatus::Playing     => {
-                // Display the playing position
-                print!("\rPlaying... {:.2} sec", sound.get_playing_offset().as_seconds());
-                let _ = std::io::stdout().flush();
-                // Leave some CPU time for other processes
-                sleep(Time::with_milliseconds(100));
-                },
-            _               => break
-
-            }
+        while sound.get_status() == SoundStatus::Playing {
+            // Display the playing position
+            print!("\rPlaying... {:.2} sec",
+                   sound.get_playing_offset().as_seconds());
+            let _ = std::io::stdout().flush();
+            // Leave some CPU time for other processes
+            sleep(Time::with_milliseconds(100));
         }
     }
 
