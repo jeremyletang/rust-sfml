@@ -3,11 +3,11 @@
 extern crate sfml;
 extern crate rand;
 
-use sfml::graphics::{Shape, Transformable, RenderWindow, Color, Font, Text, RectangleShape,
-                     CircleShape, RenderTarget};
-use sfml::window::{VideoMode, ContextSettings, event, window_style, Key};
-use sfml::system::{Vector2f, Clock, Time};
-use sfml::audio::{SoundBuffer, Sound, SoundSource};
+use sfml::graphics::{CircleShape, Color, Font, RectangleShape, RenderTarget, RenderWindow, Shape,
+                     Text, Transformable};
+use sfml::window::{Key, VideoMode, event, window_style};
+use sfml::system::{Clock, Time, Vector2f};
+use sfml::audio::{Sound, SoundBuffer, SoundSource};
 use rand::{Rng, thread_rng};
 use std::f32::consts::PI;
 
@@ -19,24 +19,21 @@ fn main() {
     let ball_radius: f32 = 10.;
 
     // Create the window of the application
-    let setting: ContextSettings = ContextSettings::default();
     let mut window = RenderWindow::new(VideoMode::new_init(game_width, game_height, 32),
                                        "SFML Pong",
                                        window_style::CLOSE,
-                                       &setting)
-                         .expect("Failed to create render window.");
+                                       &Default::default())
+                         .unwrap();
     window.set_vertical_sync_enabled(true);
 
     // Load the sounds used in the game
-    let ball_soundbuffer = SoundBuffer::new("resources/ball.wav")
-                               .expect("Failed to load Ball sound buffer.");
+    let ball_soundbuffer = SoundBuffer::new("resources/ball.wav").unwrap();
 
-    let mut ball_sound = Sound::new_with_buffer(&ball_soundbuffer)
-                             .expect("Failed to create sound.");
+    let mut ball_sound = Sound::new_with_buffer(&ball_soundbuffer).unwrap();
     ball_sound.set_volume(100.);
 
     // Create the left paddle
-    let mut left_paddle = RectangleShape::new().expect("Failed to create left paddle.");
+    let mut left_paddle = RectangleShape::new().unwrap();
     left_paddle.set_size(&(paddle_size - 3f32));
     left_paddle.set_outline_thickness(3.);
     left_paddle.set_outline_color(&Color::black());
@@ -44,7 +41,7 @@ fn main() {
     left_paddle.set_origin(&(paddle_size / 2f32));
 
     // Create the right paddle
-    let mut right_paddle = RectangleShape::new().expect("Failed to create right paddle.");
+    let mut right_paddle = RectangleShape::new().unwrap();
     right_paddle.set_size(&(paddle_size - 3f32));
     right_paddle.set_outline_thickness(3.);
     right_paddle.set_outline_color(&Color::black());
@@ -52,7 +49,7 @@ fn main() {
     right_paddle.set_origin(&(paddle_size / 2f32));
 
     // Create the ball
-    let mut ball = CircleShape::new().expect("Failed to create ball.");
+    let mut ball = CircleShape::new().unwrap();
     ball.set_radius(ball_radius as f32 - 3.);
     ball.set_outline_thickness(3.);
     ball.set_outline_color(&Color::black());
@@ -60,10 +57,10 @@ fn main() {
     ball.set_origin(&Vector2f::new(ball_radius / 2., ball_radius / 2.));
 
     // Load the text font
-    let font = Font::new_from_file("resources/sansation.ttf").expect("Failed to load font.");
+    let font = Font::new_from_file("resources/sansation.ttf").unwrap();
 
     // Initialize the pause message
-    let mut pause_message = Text::new().expect("Failed to create text.");
+    let mut pause_message = Text::new().unwrap();
     pause_message.set_font(&font);
     pause_message.set_character_size(40);
     pause_message.set_position(&(Vector2f::new(170., 150.)));
@@ -243,7 +240,6 @@ fn main() {
 
         // Display things on screen
         window.display()
-
     }
 
 }
