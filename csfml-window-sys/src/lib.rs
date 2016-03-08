@@ -125,16 +125,17 @@ pub const sfEvtTextEntered: ::libc::c_uint = 4;
 pub const sfEvtKeyPressed: ::libc::c_uint = 5;
 pub const sfEvtKeyReleased: ::libc::c_uint = 6;
 pub const sfEvtMouseWheelMoved: ::libc::c_uint = 7;
-pub const sfEvtMouseButtonPressed: ::libc::c_uint = 8;
-pub const sfEvtMouseButtonReleased: ::libc::c_uint = 9;
-pub const sfEvtMouseMoved: ::libc::c_uint = 10;
-pub const sfEvtMouseEntered: ::libc::c_uint = 11;
-pub const sfEvtMouseLeft: ::libc::c_uint = 12;
-pub const sfEvtJoystickButtonPressed: ::libc::c_uint = 13;
-pub const sfEvtJoystickButtonReleased: ::libc::c_uint = 14;
-pub const sfEvtJoystickMoved: ::libc::c_uint = 15;
-pub const sfEvtJoystickConnected: ::libc::c_uint = 16;
-pub const sfEvtJoystickDisconnected: ::libc::c_uint = 17;
+pub const sfEvtMouseWheelScrolled: ::libc::c_uint = 8;
+pub const sfEvtMouseButtonPressed: ::libc::c_uint = 9;
+pub const sfEvtMouseButtonReleased: ::libc::c_uint = 10;
+pub const sfEvtMouseMoved: ::libc::c_uint = 11;
+pub const sfEvtMouseEntered: ::libc::c_uint = 12;
+pub const sfEvtMouseLeft: ::libc::c_uint = 13;
+pub const sfEvtJoystickButtonPressed: ::libc::c_uint = 14;
+pub const sfEvtJoystickButtonReleased: ::libc::c_uint = 15;
+pub const sfEvtJoystickMoved: ::libc::c_uint = 16;
+pub const sfEvtJoystickConnected: ::libc::c_uint = 17;
+pub const sfEvtJoystickDisconnected: ::libc::c_uint = 18;
 
 #[repr(C)]
 #[derive(Clone, Copy)]
