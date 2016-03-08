@@ -1,7 +1,7 @@
 [package]
 name = "csfml-window-sys"
 description = "Bindings to csfml-window"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["Mika Attila <radiantstatue@gmail.com>"]
 links = "csfml-window"
 build = "build.rs"
