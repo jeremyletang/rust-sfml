@@ -1,5 +1,3 @@
-//! Example from SFML: Pong
-
 extern crate sfml;
 extern crate rand;
 
