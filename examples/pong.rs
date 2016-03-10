@@ -78,16 +78,13 @@ fn main() {
 
     let mut rng = thread_rng();
 
-    while window.is_open() {
+    loop {
         for event in window.events() {
             match event {
-                event::Closed => window.close(),
+                event::Closed => return,
                 event::KeyPressed { code, .. } => {
                     match code {
-                        Key::Escape => {
-                            window.close();
-                            break;
-                        }
+                        Key::Escape => return,
                         Key::Space => {
                             if !is_playing {
                                 // (re)start the game

@@ -41,6 +41,7 @@ use graphics::{Drawable, Color, CircleShape, RectangleShape, Text, Sprite, Verte
 
 use sfml_types::sfBool;
 use csfml_graphics_sys as ffi;
+use std::marker::PhantomData;
 
 /// Window that can serve as a target for 2D drawing.
 ///
@@ -55,8 +56,9 @@ pub struct RenderWindow {
 }
 
 /// An iterator over all the events in the events queue (internally call poll_event)
-pub struct Events {
+pub struct Events<'a> {
     render_window: *mut ffi::sfRenderWindow,
+    winref: PhantomData<&'a mut RenderWindow>,
 }
 
 impl RenderWindow {
@@ -178,6 +180,7 @@ impl RenderWindow {
     pub fn events(&self) -> Events {
         Events {
             render_window: self.render_window,
+            winref: PhantomData,
         }
     }
 
@@ -858,7 +861,7 @@ impl RenderTarget for RenderWindow{
 
 }
 
-impl Iterator for Events {
+impl<'a> Iterator for Events<'a> {
     type Item = event::Event;
 
     fn next(&mut self) -> Option<event::Event> {

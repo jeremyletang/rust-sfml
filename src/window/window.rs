@@ -31,6 +31,7 @@
 use libc::{c_uint, c_float};
 use std::vec::Vec;
 use std::ffi::CString;
+use std::marker::PhantomData;
 
 use raw_conv::Raw;
 use window::{event, VideoMode, ContextSettings, WindowStyle};
@@ -50,8 +51,9 @@ pub struct Window {
 }
 
 /// An iterator over all the events in the events queue (internally call poll_event)
-pub struct Events {
+pub struct Events<'a> {
     window: *mut ffi::sfWindow,
+    winref: PhantomData<&'a mut Window>,
 }
 
 impl Window {
@@ -132,6 +134,7 @@ impl Window {
     pub fn events(&self) -> Events {
         Events {
             window: self.window,
+            winref: PhantomData,
         }
     }
 
@@ -432,7 +435,7 @@ impl Raw for Window {
     }
 }
 
-impl Iterator for Events {
+impl<'a> Iterator for Events<'a> {
     type Item = event::Event;
 
     fn next(&mut self) -> Option<event::Event> {

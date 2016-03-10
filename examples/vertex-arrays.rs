@@ -67,10 +67,10 @@ fn main() {
              vertex_array[1].0.color,
              vertex_array[1].0.position);
 
-    while window.is_open() {
+    loop {
         for e in window.events() {
             if e == event::Closed {
-                window.close()
+                return;
             }
         }
         // Clear the window

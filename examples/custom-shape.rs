@@ -35,10 +35,10 @@ fn main() {
     shape.set_outline_color(&Color::green());
     shape.set_outline_thickness(3.);
 
-    while window.is_open() {
+    loop {
         for event in window.events() {
             match event {
-                event::Closed => window.close(),
+                event::Closed => return,
                 event::KeyPressed { code: Key::Escape, .. } => return,
                 _ => {}
             }

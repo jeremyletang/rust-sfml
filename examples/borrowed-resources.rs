@@ -81,10 +81,10 @@ fn main() {
     third_text.set_position2f(300f32, 100f32);
     third_text.set_color(&Color::red());
 
-    while window.is_open() {
+    loop {
         for event in window.events() {
             match event {
-                event::Closed => window.close(),
+                event::Closed => return,
                 event::KeyPressed { code: Key::Escape, .. } => return,
                 _ => {}
             }
