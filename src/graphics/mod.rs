@@ -27,7 +27,7 @@
 pub use graphics::render_target::RenderTarget;
 pub use graphics::render_states::RenderStates;
 pub use graphics::render_window::{RenderWindow, Events};
-pub use sfml_types::{FloatRect, IntRect};
+pub use sfml_types::{Rect, FloatRect, IntRect};
 pub use graphics::texture::Texture;
 pub use graphics::blend_mode::BlendMode;
 pub use graphics::transform::Transform;
