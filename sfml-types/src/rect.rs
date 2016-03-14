@@ -82,11 +82,11 @@ impl<T: PartialOrd + Add<Output=T> + Sub<Output=T> + Copy> Rect<T> {
         x >= min_x && x < max_x && y >= min_y && y < max_y
     }
 
-    /// Check the intersection between two rectangles.
+    /// Returns the intersection between two rectangles, if any.
     ///
     /// If the rectangles intersect, returns Some filled with the intersection
     /// of the two rectangles. Otherwise, returns None.
-    pub fn intersects(self, other: &Rect<T>) -> Option<Rect<T>> {
+    pub fn intersection(self, other: &Rect<T>) -> Option<Rect<T>> {
         // Based on SFML's implementation.
         // Compute the min and max coordinates on various axes.
         let (r1_min_x, r1_max_x) = min_max(self.left, self.left + self.width);
