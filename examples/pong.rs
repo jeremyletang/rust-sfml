@@ -8,8 +8,18 @@ use sfml::system::{Clock, Time, Vector2f};
 use sfml::audio::{Sound, SoundBuffer, SoundSource};
 use rand::{Rng, thread_rng};
 use std::f32::consts::PI;
+use std::env;
 
 fn main() {
+    let mut aa_level = 0;
+
+    if let Some(arg) = env::args().nth(1) {
+        if let Ok(arg_as_num) = arg.parse::<u32>() {
+            println!("Using {}xAA", arg_as_num);
+            aa_level = arg_as_num;
+        }
+    }
+
     // Define some constants
     let game_width: u32 = 800;
     let game_height: u32 = 600;
@@ -20,7 +30,9 @@ fn main() {
     let mut window = RenderWindow::new(VideoMode::new_init(game_width, game_height, 32),
                                        "SFML Pong",
                                        window_style::CLOSE,
-                                       &ContextSettingsBuilder::new().antialiasing_level(8).build())
+                                       &ContextSettingsBuilder::new()
+                                            .antialiasing_level(aa_level)
+                                            .build())
                          .unwrap();
     window.set_vertical_sync_enabled(true);
 
