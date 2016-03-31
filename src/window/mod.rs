@@ -28,7 +28,7 @@
 pub use window::window::Window;
 pub use window::video_mode::VideoMode;
 pub use window::context::Context;
-pub use window::context_settings::{ContextSettings, ContextSettingsBuilder, CONTEXT_DEFAULT, CONTEXT_CORE, CONTEXT_DEBUG};
+pub use window::context_settings::{ContextSettings, CONTEXT_DEFAULT, CONTEXT_CORE, CONTEXT_DEBUG};
 pub use window::window_style::WindowStyle;
 pub use window::keyboard::Key;
 pub use window::mouse::MouseButton;
