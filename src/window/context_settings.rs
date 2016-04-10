@@ -45,14 +45,7 @@ pub struct ContextSettings(pub ffi::sfContextSettings);
 impl ContextSettings {
     /// Creates a new, default ContextSettings.
     pub fn new() -> ContextSettings {
-        ContextSettings(ffi::sfContextSettings {
-            depth_bits: 0,
-            stencil_bits: 0,
-            antialiasing_level: 0,
-            major_version: 2,
-            minor_version: 0,
-            attribute_flags: CONTEXT_DEFAULT,
-        })
+        Default::default()
     }
 
     /// Modifies `self` to use some specified level of antialiasing.
