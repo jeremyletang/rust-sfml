@@ -48,13 +48,10 @@ impl ContextSettings {
         Default::default()
     }
 
-    /// Modifies `self` to use some specified level of antialiasing.
-    pub fn antialiasing_level(&mut self, level: u32) -> ContextSettings {
-        let ContextSettings(ctx) = *self;
-        ContextSettings(ffi::sfContextSettings {
-            antialiasing_level: level,
-            ..ctx
-        })
+    /// Sets the antialiasing level.
+    pub fn antialiasing(&mut self, level: u32) -> &mut Self {
+        self.0.antialiasing_level = level;
+        self
     }
 }
 
