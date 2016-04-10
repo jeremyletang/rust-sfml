@@ -42,6 +42,29 @@ pub const CONTEXT_DEBUG: u32 = 1 << 2;
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
 pub struct ContextSettings(pub ffi::sfContextSettings);
 
+impl ContextSettings {
+    /// Creates a new, default ContextSettings.
+    pub fn new() -> ContextSettings {
+        ContextSettings(ffi::sfContextSettings {
+            depth_bits: 0,
+            stencil_bits: 0,
+            antialiasing_level: 0,
+            major_version: 2,
+            minor_version: 0,
+            attribute_flags: CONTEXT_DEFAULT,
+        })
+    }
+
+    /// Modifies `self` to use some specified level of antialiasing.
+    pub fn antialiasing_level(&mut self, level: u32) -> ContextSettings {
+        let ContextSettings(ctx) = *self;
+        ContextSettings(ffi::sfContextSettings {
+            antialiasing_level: level,
+            ..ctx
+        })
+    }
+}
+
 /// Create a default ContextSettings
 ///
 /// # Default values:
