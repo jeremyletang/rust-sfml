@@ -26,6 +26,7 @@
 
 use libc::{c_uint, size_t};
 use std::ffi::CString;
+use std::slice;
 
 use raw_conv::{Raw, FromRaw};
 use sfml_types::Vector2u;
@@ -263,6 +264,16 @@ impl Image {
     pub fn get_pixel(&self, x: u32, y: u32) -> Color {
         unsafe {
             Color(ffi::sfImage_getPixel(self.image, x as c_uint, y as c_uint))
+        }
+    }
+
+    /// Return the memory buffer of this image.
+    pub fn get_memory(&self) -> &[u8] {
+        unsafe {
+            let size   = self.get_size();
+            let pixels = ffi::sfImage_getPixelsPtr(self.image);
+
+            slice::from_raw_parts(pixels, (size.x * size.y * 4) as usize)
         }
     }
 
