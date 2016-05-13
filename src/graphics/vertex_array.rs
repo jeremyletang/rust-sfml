@@ -224,8 +224,7 @@ impl VertexArray {
     /// Return a mutable reference to the index-th vertex
     pub fn get_vertex(&self, index: u32) -> &mut Vertex {
         unsafe {
-            mem::transmute(ffi::sfVertexArray_getVertex(self.vertex_array,
-                                                         index as c_uint))
+            &mut *(ffi::sfVertexArray_getVertex(self.vertex_array, index as c_uint) as *mut Vertex)
         }
     }
 
@@ -275,9 +274,7 @@ impl Index<u32> for VertexArray {
 
     fn index(&self, rhs: u32) -> &Vertex {
         unsafe {
-            mem::transmute::<*const Vertex, &Vertex>
-                (ffi::sfVertexArray_getVertex(self.vertex_array,
-                                              rhs as c_uint) as *const Vertex)
+            &*(ffi::sfVertexArray_getVertex(self.vertex_array, rhs as c_uint) as *const Vertex)
         }
     }
 }
