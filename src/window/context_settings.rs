@@ -55,7 +55,7 @@ impl ContextSettings {
     }
 }
 
-/// Create a default ContextSettings
+/// Create a default `ContextSettings`
 ///
 /// # Default values:
 /// * `depth_bits`: 0

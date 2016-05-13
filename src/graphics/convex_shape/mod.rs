@@ -52,7 +52,7 @@ pub struct ConvexShape<'s> {
     texture: Option<&'s Texture>
 }
 
-/// An iterator over the points of a ConvexShape
+/// An iterator over the points of a `ConvexShape`
 pub struct ConvexShapePoints {
     convex_shape: *mut ffi::sfConvexShape,
     pos: u32

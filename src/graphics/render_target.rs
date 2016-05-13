@@ -28,8 +28,8 @@ use graphics::{Drawable, Color, View, RenderStates, CircleShape, RectangleShape,
                IntRect, Vertex, PrimitiveType, ConvexShape, CustomShape};
 use sfml_types::{Vector2f, Vector2i, Vector2u};
 
-/// Trait which is the equivalent of the sf::RenderTarget class in SFML.
-/// This is implemented by RenderTarget and RenderWindow structs to provide
+/// Trait which is the equivalent of the `sf::RenderTarget` class in SFML.
+/// This is implemented by `RenderTarget` and `RenderWindow` structs to provide
 /// a unified interface for rendering.
 pub trait RenderTarget {
     /// clear the screen

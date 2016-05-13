@@ -22,7 +22,7 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-//! Define the states used for drawing to a RenderTarget
+//! Define the states used for drawing to a `RenderTarget`
 
 use std::ptr;
 
@@ -33,7 +33,7 @@ use csfml_graphics_sys as ffi;
 
 // pub mod rc;
 
-/// Define the states used for drawing to a RenderTarget
+/// Define the states used for drawing to a `RenderTarget`
 pub struct RenderStates<'s> {
     sf_render_states: ffi::sfRenderStates,
     /// Blending mode.
@@ -92,15 +92,15 @@ impl<'s> RenderStates<'s> {
     }
 }
 
-/// Create a new RenderStates initialized to default.
+/// Create a new `RenderStates` initialized to default.
 ///
 /// # default
-/// * blend_mode is initialized to BlendAlpha
-/// * transform is initialized to the identity matrix
-/// * texture is initialized to None
-/// * shader is initialized to None
+/// * `blend_mode` is initialized to `BlendMode::blend_alpha()`
+/// * `transform` is initialized to the identity matrix
+/// * `texture` is initialized to `None`
+/// * `shader` is initialized to `None`
 ///
-/// Return a new default RenderStates
+/// Return a new default `RenderStates`
 impl<'s> Default for RenderStates<'s> {
     fn default() -> RenderStates<'s> {
         RenderStates {

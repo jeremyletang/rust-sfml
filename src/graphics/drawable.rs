@@ -25,12 +25,12 @@
 //! Drawable trait
 //!
 //! Implemented by each drawable object to specifiy their drawing operations for
-//! RenderTargets.
+//! `RenderTarget`s.
 
 use graphics::{RenderStates, RenderTarget};
 
-/// The trait drawable is inherited by each object who can be drawn in a RenderTarget
+/// The trait drawable is inherited by each object who can be drawn in a `RenderTarget`
 pub trait Drawable {
-    /// Draw a drawable object into a RenderTarget
+    /// Draw a drawable object into a `RenderTarget`
     fn draw<RT: RenderTarget>(&self, target: &mut RT, rs: &mut RenderStates);
 }

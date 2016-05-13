@@ -24,7 +24,7 @@
 
 //! Window that can serve as a target for 2D drawing.
 //!
-//! RenderWindow is the main class of the Graphics module.
+//! `RenderWindow` is the main class of the Graphics module.
 //! It defines an OS window that can be painted using the other classes
 //! of the graphics module.
 
@@ -45,7 +45,7 @@ use std::marker::PhantomData;
 
 /// Window that can serve as a target for 2D drawing.
 ///
-/// RenderWindow is the main class of the Graphics module.
+/// `RenderWindow` is the main class of the Graphics module.
 /// It defines an OS window that can be painted using the other classes
 /// of the graphics module.
 pub struct RenderWindow {
@@ -55,7 +55,7 @@ pub struct RenderWindow {
 //    default_view: Rc<RefCell<View>>
 }
 
-/// An iterator over all the events in the events queue (internally call poll_event)
+/// An iterator over all the events in the events queue (internally call `poll_event`)
 pub struct Events<'a> {
     render_window: *mut ffi::sfRenderWindow,
     winref: PhantomData<&'a mut RenderWindow>,

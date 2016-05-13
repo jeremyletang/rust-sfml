@@ -22,7 +22,7 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-//! Defines VideoModes
+//! Defines `VideoMode`
 //!
 //! A video mode is defined by a width and a height (in pixels) and a depth
 //! (in bits per pixel). Video modes are used to setup windows at creation time.
@@ -34,7 +34,7 @@ use raw_conv::{Raw, FromRaw};
 
 use csfml_window_sys as ffi;
 
-/// VideoMode defines a video mode (width, height, bpp, frequency)
+/// `VideoMode` defines a video mode (width, height, bpp, frequency)
 ///
 /// Provides functions for getting modes supported by the display device
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]

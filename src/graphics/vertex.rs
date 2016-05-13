@@ -118,14 +118,14 @@ impl Vertex {
     }
 }
 
-/// Create a new default Vertex
+/// Create a new default `Vertex`
 ///
 /// # Default
-/// * position - (0., 0.)
-/// * color - white
-/// * tex_coords - (0., 0.)
+/// * `position` - (0., 0.)
+/// * `color` - white
+/// * `tex_coords` - (0., 0.)
 ///
-/// Return a Vertex
+/// Return a `Vertex`
 impl Default for Vertex {
     fn default() -> Vertex {
         Vertex(ffi::sfVertex {

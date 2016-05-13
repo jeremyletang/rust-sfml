@@ -50,7 +50,7 @@ pub struct Window {
     window: *mut ffi::sfWindow,
 }
 
-/// An iterator over all the events in the events queue (internally call poll_event)
+/// An iterator over all the events in the events queue (internally call `poll_event`)
 pub struct Events<'a> {
     window: *mut ffi::sfWindow,
     winref: PhantomData<&'a mut Window>,
@@ -209,7 +209,7 @@ impl Window {
     ///
     /// After calling this method, the Window object remains
     /// valid.
-    /// All other functions such as poll_event or display
+    /// All other functions such as `poll_event` or display
     /// will still work (i.e. you don't have to test is_open
     /// every time), and will have no effect on closed windows.
     pub fn close(&mut self) {

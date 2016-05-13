@@ -24,7 +24,7 @@
 
 //! Store captured audio data in sound Buffer
 //!
-//! SoundBufferRecorder allows to access a recorded sound through a SoundBuffer,
+//! `SoundBufferRecorder` allows to access a recorded sound through a `SoundBuffer`,
 //! so that it can be played, saved to a file, etc.
 
 use libc::c_uint;
@@ -36,7 +36,7 @@ use csfml_audio_sys as ffi;
 
 /// Store captured audio data in sound Buffer
 ///
-/// SoundBufferRecorder allows to access a recorded sound through a SoundBuffer,
+/// `SoundBufferRecorder` allows to access a recorded sound through a `SoundBuffer`,
 /// so that it can be played, saved to a file, etc.
 pub struct SoundBufferRecorder {
     sound_buffer_recorder: *mut ffi::sfSoundBufferRecorder
@@ -45,7 +45,7 @@ pub struct SoundBufferRecorder {
 impl SoundBufferRecorder {
     /// Create a new sound buffer recorder
     ///
-    /// Return a new option to SoundBufferRecorder object or None if failed
+    /// Return a new option to `SoundBufferRecorder` object or `None` if failed
     pub fn new() -> Option<SoundBufferRecorder> {
         let buffer = unsafe { ffi::sfSoundBufferRecorder_create() };
         if buffer.is_null() {
@@ -125,7 +125,6 @@ impl SoundBufferRecorder {
 }
 
 impl Drop for SoundBufferRecorder {
-    /// Destructor for class SoundBufferRecorder. Destroy all the ressource.
     fn drop(&mut self) {
         unsafe {
             ffi::sfSoundBufferRecorder_destroy(self.sound_buffer_recorder);
