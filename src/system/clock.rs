@@ -78,3 +78,9 @@ impl Drop for Clock {
         }
     }
 }
+
+impl Default for Clock {
+    fn default() -> Self {
+        Clock::new()
+    }
+}
