@@ -68,3 +68,9 @@ impl Drop for Context {
         }
     }
 }
+
+impl Default for Context {
+    fn default() -> Self {
+        Context::new()
+    }
+}
