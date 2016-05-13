@@ -155,3 +155,9 @@ impl FromRaw for VideoMode {
         }
     }
 }
+
+impl Default for VideoMode {
+    fn default() -> Self {
+        VideoMode::new()
+    }
+}
