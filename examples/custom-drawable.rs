@@ -17,10 +17,10 @@ impl<'s> Bullet<'s> {
         head.set_position2f(100f32, 100f32);
         head.set_fill_color(&Color::red());
         let mut torso = RectangleShape::new_init(&Vector2f {
-                            x: 100f32,
-                            y: 200f32,
-                        })
-                            .unwrap();
+                x: 100f32,
+                y: 200f32,
+            })
+            .unwrap();
         torso.set_position2f(100f32, 150f32);
         torso.set_fill_color(&Color::blue());
 
@@ -44,7 +44,7 @@ fn main() {
                                        "Custom drawable",
                                        window_style::CLOSE,
                                        &Default::default())
-                         .unwrap();
+        .unwrap();
     window.set_vertical_sync_enabled(true);
 
     let bullet = Bullet::new();

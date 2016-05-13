@@ -27,7 +27,7 @@ fn main() {
                                        "Custom shape",
                                        window_style::CLOSE,
                                        &Default::default())
-                         .unwrap();
+        .unwrap();
     window.set_vertical_sync_enabled(true);
 
     let mut shape = CustomShape::new(Box::new(TriangleShape)).unwrap();

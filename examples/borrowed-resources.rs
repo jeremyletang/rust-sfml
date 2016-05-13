@@ -1,7 +1,7 @@
 extern crate sfml;
 
-use sfml::graphics::{CircleShape, Color, ConvexShape, Font, RenderTarget, RenderWindow,
-                     Sprite, Text, Texture, Transformable};
+use sfml::graphics::{CircleShape, Color, ConvexShape, Font, RenderTarget, RenderWindow, Sprite,
+                     Text, Texture, Transformable};
 use sfml::window::{Key, VideoMode, event, window_style};
 use sfml::system::Vector2f;
 
@@ -10,7 +10,7 @@ fn main() {
                                        "Borrowed resources",
                                        window_style::CLOSE,
                                        &Default::default())
-                         .unwrap();
+        .unwrap();
     window.set_vertical_sync_enabled(true);
 
     // Create a new texture. (Hey Frank!)

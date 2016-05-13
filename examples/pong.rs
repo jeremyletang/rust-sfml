@@ -30,9 +30,8 @@ fn main() {
     let mut window = RenderWindow::new(VideoMode::new_init(game_width, game_height, 32),
                                        "SFML Pong",
                                        window_style::CLOSE,
-                                       ContextSettings::new()
-                                           .antialiasing(aa_level))
-                         .unwrap();
+                                       ContextSettings::new().antialiasing(aa_level))
+        .unwrap();
     window.set_vertical_sync_enabled(true);
 
     // Load the sounds used in the game
