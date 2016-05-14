@@ -6,9 +6,9 @@ Rust bindings for [SFML](http://www.sfml-dev.org), the Simple and Fast Multimedi
 Prerequisites
 =============
 
-SFML 2.3 and CSFML 2.3 must be installed on your computer. You can download them here:
+SFML 2.3.2 and CSFML 2.3 must be installed on your computer. You can download them here:
 
-- SFML 2.3: http://www.sfml-dev.org/download.php
+- SFML 2.3.2: http://www.sfml-dev.org/download.php
 - CSFML 2.3: http://www.sfml-dev.org/download/csfml/
 
 Rust-sfml works on Linux, Windows and OSX.
