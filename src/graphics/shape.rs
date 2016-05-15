@@ -23,7 +23,6 @@
 */
 
 //! base shape trait
-#![allow(missing_docs)]
 
 use graphics::{Drawable, Transformable, Texture, IntRect, FloatRect, Color};
 use system::Vector2f;
@@ -45,6 +44,7 @@ pub trait ShapeImpl {
 }
 
 /// The trait drawable is inherited by each object who can be drawn in a `RenderTarget`.
+#[allow(missing_docs)]
 pub trait Shape<'s>: Drawable + Transformable {
     fn set_texture(&mut self,
                        texture: &'s Texture,

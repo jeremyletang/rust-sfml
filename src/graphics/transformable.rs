@@ -23,11 +23,11 @@
 */
 
 //! base transformable trait
-#![allow(missing_docs)]
 
 use graphics::Transform;
 use system::Vector2f;
 
+#[allow(missing_docs)]
 pub trait Transformable {
     fn set_position(&mut self, position: &Vector2f);
     fn set_position2f(&mut self, x: f32, y: f32);
