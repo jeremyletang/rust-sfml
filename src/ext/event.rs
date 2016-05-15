@@ -112,18 +112,17 @@ pub fn get_wrapped_event(event: &mut ::csfml_window_sys::sfEvent) -> event::Even
         sys::sfEvtLostFocus => event::LostFocus,
         sys::sfEvtGainedFocus => event::GainedFocus,
         sys::sfEvtTextEntered => text(event),
-        sys::sfEvtKeyPressed => key(event, type_),
-        sys::sfEvtKeyReleased => key(event, type_),
+        sys::sfEvtKeyPressed | sys::sfEvtKeyReleased  => key(event, type_),
         sys::sfEvtMouseWheelMoved => mouse_wheel(event),
-        sys::sfEvtMouseButtonPressed => mouse_button(event, type_),
+        sys::sfEvtMouseButtonPressed |
         sys::sfEvtMouseButtonReleased => mouse_button(event, type_),
         sys::sfEvtMouseMoved => mouse_move(event),
         sys::sfEvtMouseEntered => event::MouseEntered,
         sys::sfEvtMouseLeft => event::MouseLeft,
-        sys::sfEvtJoystickButtonPressed => joystick_button(event, type_),
+        sys::sfEvtJoystickButtonPressed |
         sys::sfEvtJoystickButtonReleased => joystick_button(event, type_),
         sys::sfEvtJoystickMoved => joystick_move(event),
-        sys::sfEvtJoystickConnected => joystick_connect(event, type_),
+        sys::sfEvtJoystickConnected |
         sys::sfEvtJoystickDisconnected => joystick_connect(event, type_),
         _ => event::NoEvent
     }
