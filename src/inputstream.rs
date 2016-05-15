@@ -36,7 +36,7 @@ extern fn read<T: Read + Seek>(data: *mut c_void, size: c_longlong, user_data: *
         let mut buf = vec!();
         let status = chunk.read_to_end(&mut buf);
         if status.is_ok() {
-            unsafe { ptr::copy_nonoverlapping(buf.as_ptr(), data as *mut u8, size as usize) };
+            unsafe { ptr::copy_nonoverlapping(buf.as_ptr(), data as *mut u8, size as usize); }
             return status.unwrap() as i64;
         }
     }
