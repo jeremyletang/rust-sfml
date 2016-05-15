@@ -39,6 +39,7 @@ use sfml_types::{Vector2i, Vector2u};
 
 use sfml_types::sfBool;
 use csfml_window_sys as ffi;
+use ext;
 
 ///
 /// Window manipulation
@@ -153,7 +154,7 @@ impl Window {
             ffi::sfWindow_pollEvent(self.window, &mut event).to_bool()
         };
         if have_event {
-            event::raw::get_wrapped_event(&mut event)
+            ext::event::get_wrapped_event(&mut event)
         } else {
             event::NoEvent
         }
@@ -176,7 +177,7 @@ impl Window {
             ffi::sfWindow_waitEvent(self.window, &mut event).to_bool()
         };
         if have_event {
-            event::raw::get_wrapped_event(&mut event)
+            ext::event::get_wrapped_event(&mut event)
         } else {
             event::NoEvent
         }
@@ -441,7 +442,7 @@ impl<'a> Iterator for Events<'a> {
     fn next(&mut self) -> Option<event::Event> {
         let mut event = ffi::sfEvent { data: [032; 6] };
         if unsafe { ffi::sfWindow_pollEvent(self.window, &mut event) }.to_bool() {
-            Some(event::raw::get_wrapped_event(&mut event))
+            Some(ext::event::get_wrapped_event(&mut event))
         } else {
             None
         }

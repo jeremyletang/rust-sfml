@@ -105,6 +105,9 @@ extern crate csfml_network_sys;
 
 mod inputstream;
 mod raw_conv;
+mod ext {
+    pub mod event;
+}
 
 pub mod system;
 pub mod window;

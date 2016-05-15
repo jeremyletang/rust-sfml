@@ -42,6 +42,7 @@ use graphics::{Drawable, Color, CircleShape, RectangleShape, Text, Sprite, Verte
 use sfml_types::sfBool;
 use csfml_graphics_sys as ffi;
 use std::marker::PhantomData;
+use ext;
 
 /// Window that can serve as a target for 2D drawing.
 ///
@@ -199,7 +200,7 @@ impl RenderWindow {
             ffi::sfRenderWindow_pollEvent(self.render_window, &mut event)
         }.to_bool();
         if have_event {
-            event::raw::get_wrapped_event(&mut event)
+            ext::event::get_wrapped_event(&mut event)
         } else {
             event::NoEvent
         }
@@ -222,7 +223,7 @@ impl RenderWindow {
             ffi::sfRenderWindow_waitEvent(self.render_window, &mut event)
         }.to_bool();
         if have_event {
-            event::raw::get_wrapped_event(&mut event)
+            ext::event::get_wrapped_event(&mut event)
         } else {
             event::NoEvent
         }
@@ -867,7 +868,7 @@ impl<'a> Iterator for Events<'a> {
     fn next(&mut self) -> Option<event::Event> {
         let mut event = ::csfml_window_sys::sfEvent { data: [032; 6] };
         if unsafe { ffi::sfRenderWindow_pollEvent(self.render_window, &mut event) }.to_bool() {
-            Some(event::raw::get_wrapped_event(&mut event))
+            Some(ext::event::get_wrapped_event(&mut event))
         } else {
             None
         }
