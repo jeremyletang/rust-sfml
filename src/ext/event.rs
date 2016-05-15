@@ -3,16 +3,16 @@ use csfml_window_sys::*;
 use window::event;
 
 fn type_(evt: &mut sfEvent) -> *mut sfEventType {
-    unsafe { ::std::mem::transmute(evt) }
+    evt as *mut _ as *mut _
 }
 
 fn size(evt: &mut sfEvent) -> event::Event {
-    let e: *mut sfSizeEvent = unsafe { ::std::mem::transmute(evt) };
+    let e: *mut sfSizeEvent = evt as *mut _ as *mut _;
     unsafe { event::Resized { width: (*e).width, height: (*e).height } }
 }
 
 fn key(evt: &mut sfEvent, type_: sfEventType) -> event::Event {
-    let e: *mut sfKeyEvent = unsafe { ::std::mem::transmute(evt) };
+    let e: *mut sfKeyEvent = evt as *mut _ as *mut _;
     let code = unsafe { ::std::mem::transmute((*e).code as i64) };
     let alt = unsafe { (*e).alt.to_bool() };
     let ctrl = unsafe { (*e).control.to_bool() };
@@ -42,17 +42,17 @@ fn key(evt: &mut sfEvent, type_: sfEventType) -> event::Event {
 }
 
 fn text(evt: &mut sfEvent) -> event::Event {
-    let e: *mut sfTextEvent = unsafe { ::std::mem::transmute(evt) };
+    let e: *mut sfTextEvent = evt as *mut _ as *mut _;
     unsafe { event::TextEntered { code: ((*e).unicode as u8) as char } }
 }
 
 fn mouse_move(evt: &mut sfEvent) -> event::Event {
-    let e: *mut sfMouseMoveEvent = unsafe { ::std::mem::transmute(evt) };
+    let e: *mut sfMouseMoveEvent = evt as *mut _ as *mut _;
     unsafe { event::MouseMoved {x: (*e).x, y: (*e).y } }
 }
 
 fn mouse_button(evt: &mut sfEvent, type_: sfEventType) -> event::Event {
-    let e: *mut sfMouseButtonEvent = unsafe { ::std::mem::transmute(evt) };
+    let e: *mut sfMouseButtonEvent = evt as *mut _ as *mut _;
     let button = unsafe { ::std::mem::transmute((*e).button as u8) };
     let x = unsafe { (*e).x };
     let y = unsafe { (*e).y };
@@ -65,12 +65,12 @@ fn mouse_button(evt: &mut sfEvent, type_: sfEventType) -> event::Event {
 }
 
 fn mouse_wheel(evt: &mut sfEvent) -> event::Event {
-    let e: *mut sfMouseWheelEvent = unsafe { ::std::mem::transmute(evt) };
+    let e: *mut sfMouseWheelEvent = evt as *mut _ as *mut _;
     unsafe { event::MouseWheelMoved { delta: (*e).delta, x: (*e).x, y: (*e).y } }
 }
 
 fn joystick_move(evt: &mut sfEvent) -> event::Event {
-    let e: *mut sfJoystickMoveEvent = unsafe { ::std::mem::transmute(evt) };
+    let e: *mut sfJoystickMoveEvent = evt as *mut _ as *mut _;
     event::JoystickMoved {
         joystickid: unsafe { (*e).joystickid },
         axis: unsafe { ::std::mem::transmute((*e).axis as u8) },
@@ -79,7 +79,7 @@ fn joystick_move(evt: &mut sfEvent) -> event::Event {
 }
 
 fn joystick_button(evt: &mut sfEvent, type_: sfEventType) -> event::Event {
-    let e: *mut sfJoystickButtonEvent = unsafe { ::std::mem::transmute(evt) };
+    let e: *mut sfJoystickButtonEvent = evt as *mut _ as *mut _;
     let jid = unsafe { (*e).joystickid };
     let btn = unsafe { (*e).button };
 
@@ -93,7 +93,7 @@ fn joystick_button(evt: &mut sfEvent, type_: sfEventType) -> event::Event {
 }
 
 fn joystick_connect(evt: &mut sfEvent, type_: sfEventType) -> event::Event {
-    let e: *mut sfJoystickConnectEvent = unsafe { ::std::mem::transmute(evt) };
+    let e: *mut sfJoystickConnectEvent = evt as *mut _ as *mut _;
     let jid = unsafe { (*e).joystickid };
 
     match type_ {
