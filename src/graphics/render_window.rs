@@ -32,7 +32,7 @@ use libc::{c_float, c_uint};
 use std::vec::Vec;
 use std::ffi::CString;
 
-use raw_conv::{Raw, FromRaw};
+use raw_conv::{Raw, RawMut, FromRaw};
 use window::{ContextSettings, VideoMode, event, WindowStyle};
 use sfml_types::{Vector2f, Vector2i, Vector2u};
 use graphics::{Drawable, Color, CircleShape, RectangleShape, Text, Sprite, VertexArray,
@@ -767,7 +767,7 @@ impl RenderTarget for RenderWindow{
         unsafe {
             ffi::sfRenderWindow_drawText(self.render_window,
                                          text.raw(),
-                                         render_states.unwrap())
+                                         render_states.raw_mut())
         }
     }
 
@@ -778,7 +778,7 @@ impl RenderTarget for RenderWindow{
         unsafe {
             ffi::sfRenderWindow_drawShape(self.render_window,
                                           shape.raw(),
-                                          render_states.unwrap())
+                                          render_states.raw_mut())
         }
     }
 
@@ -789,7 +789,7 @@ impl RenderTarget for RenderWindow{
         unsafe {
             ffi::sfRenderWindow_drawSprite(self.render_window,
                                            sprite.raw(),
-                                           render_states.unwrap())
+                                           render_states.raw_mut())
         }
     }
 
@@ -800,7 +800,7 @@ impl RenderTarget for RenderWindow{
         unsafe {
             ffi::sfRenderWindow_drawCircleShape(self.render_window,
                                                 circle_shape.raw(),
-                                                render_states.unwrap())
+                                                render_states.raw_mut())
         }
     }
 
@@ -811,7 +811,7 @@ impl RenderTarget for RenderWindow{
         unsafe {
             ffi::sfRenderWindow_drawRectangleShape(self.render_window,
                                                    rectangle_shape.raw(),
-                                                   render_states.unwrap())
+                                                   render_states.raw_mut())
         }
     }
 
@@ -822,7 +822,7 @@ impl RenderTarget for RenderWindow{
         unsafe {
             ffi::sfRenderWindow_drawConvexShape(self.render_window,
                                                 convex_shape.raw(),
-                                                render_states.unwrap())
+                                                render_states.raw_mut())
         }
     }
 
@@ -833,7 +833,7 @@ impl RenderTarget for RenderWindow{
         unsafe {
             ffi::sfRenderWindow_drawVertexArray(self.render_window,
                                                 vertex_array.raw(),
-                                                render_states.unwrap())
+                                                render_states.raw_mut())
         }
     }
 
@@ -849,7 +849,7 @@ impl RenderTarget for RenderWindow{
                                                ::std::mem::transmute(&vertices[0]),
                                                len,
                                                ty,
-                                               rs.unwrap());
+                                               rs.raw_mut());
         }
     }
 

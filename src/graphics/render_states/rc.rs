@@ -98,9 +98,12 @@ impl RenderStates {
             shader: None
         }
     }
+}
 
-    #[doc(hidden)]
-    pub fn unwrap(&mut self) -> *mut ffi::sfRenderStates {
+impl RawMut for RenderStates {
+    type Raw = *mut ffi::sfRenderStates;
+
+    fn raw_mut(&mut self) -> Self::Raw {
         self.sf_render_states.blendMode = self.blend_mode as i32;
         self.sf_render_states.transform = self.transform;
         self.sf_render_states.texture = if !self.texture.is_none() {

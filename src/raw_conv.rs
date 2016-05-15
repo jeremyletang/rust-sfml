@@ -22,10 +22,16 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-/// A type that has a raw representation that can be acquired.
+/// A type that has a raw representation that can be acquired through `&self`.
 pub trait Raw {
     type Raw;
     fn raw(&self) -> Self::Raw;
+}
+
+/// A type that has a raw representation that can be acquired through `&mut self`.
+pub trait RawMut {
+    type Raw;
+    fn raw_mut(&mut self) -> Self::Raw;
 }
 
 /// A type that can be created from its raw representation.

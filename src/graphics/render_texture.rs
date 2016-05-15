@@ -26,7 +26,7 @@
 
 use libc::c_uint;
 
-use raw_conv::{Raw, FromRaw};
+use raw_conv::{Raw, RawMut, FromRaw};
 use sfml_types::{Vector2f, Vector2i, Vector2u};
 use graphics::{Drawable, View, Color, IntRect, Texture, CircleShape, RectangleShape, Text,
                RenderStates, Sprite, ConvexShape, VertexArray,
@@ -321,7 +321,7 @@ impl RenderTarget for RenderTexture {
         unsafe {
             ffi::sfRenderTexture_drawText(self.render_texture,
                                           text.raw(),
-                                          rs.unwrap())
+                                          rs.raw_mut())
         }
     }
 
@@ -332,7 +332,7 @@ impl RenderTarget for RenderTexture {
         unsafe {
             ffi::sfRenderTexture_drawShape(self.render_texture,
                                            shape.raw(),
-                                           rs.unwrap())
+                                           rs.raw_mut())
         }
     }
 
@@ -343,7 +343,7 @@ impl RenderTarget for RenderTexture {
         unsafe {
             ffi::sfRenderTexture_drawSprite(self.render_texture,
                                             sprite.raw(),
-                                            rs.unwrap())
+                                            rs.raw_mut())
         }
     }
 
@@ -354,7 +354,7 @@ impl RenderTarget for RenderTexture {
         unsafe {
             ffi::sfRenderTexture_drawCircleShape(self.render_texture,
                                                  circle_shape.raw(),
-                                                 rs.unwrap())
+                                                 rs.raw_mut())
         }
     }
 
@@ -365,7 +365,7 @@ impl RenderTarget for RenderTexture {
         unsafe {
             ffi::sfRenderTexture_drawRectangleShape(self.render_texture,
                                                     rectangle_shape.raw(),
-                                                    rs.unwrap())
+                                                    rs.raw_mut())
         }
     }
 
@@ -376,7 +376,7 @@ impl RenderTarget for RenderTexture {
         unsafe {
             ffi::sfRenderTexture_drawConvexShape(self.render_texture,
                                                  convex_shape.raw(),
-                                                 rs.unwrap())
+                                                 rs.raw_mut())
         }
     }
 
@@ -387,7 +387,7 @@ impl RenderTarget for RenderTexture {
         unsafe {
             ffi::sfRenderTexture_drawVertexArray(self.render_texture,
                                                  vertex_array.raw(),
-                                                 rs.unwrap())
+                                                 rs.raw_mut())
         }
     }
 
@@ -403,7 +403,7 @@ impl RenderTarget for RenderTexture {
                                                 ::std::mem::transmute(&vertices[0]),
                                                 len,
                                                 ty,
-                                                rs.unwrap());
+                                                rs.raw_mut());
         }
     }
 
