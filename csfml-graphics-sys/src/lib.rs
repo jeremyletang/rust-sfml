@@ -115,7 +115,6 @@ pub struct sfBlendMode {
 }
 
 #[repr(C)]
-#[allow(missing_docs)]
 #[derive(Clone, Copy)]
 pub struct sfTransform {
     pub a00: f32,
