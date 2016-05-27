@@ -7,7 +7,7 @@ extern crate csfml_system_sys;
 use csfml_system_sys::*;
 // -- End manual additions --
 
-// Manually edited to replace occurences of usize with usize
+// Manually edited to replace occurences of `size_t` with `usize`
 
 #[derive(Copy, Clone)]
 #[repr(u32)]
