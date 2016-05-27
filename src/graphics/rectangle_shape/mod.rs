@@ -24,15 +24,15 @@
 
 //! Specialized shape representing a rectangle
 
-use libc::{c_float, c_uint};
+use libc::{c_float};
 use std::ptr;
 
-use raw_conv::Raw;
+use raw_conv::{Raw, FromRaw};
 use sfml_types::Vector2f;
 use graphics::{Drawable, Shape, Transformable, FloatRect, IntRect, Color, Texture,
                RenderTarget, Transform, RenderStates};
 
-use csfml_system_sys::{sfBool, sfTrue};
+use csfml_system_sys::{sfBool, sfTrue, sfVector2f};
 use csfml_graphics_sys as ffi;
 use ext::sf_bool_ext::SfBoolExt;
 
@@ -91,7 +91,7 @@ impl<'s> RectangleShape<'s> {
             None
         } else {
             unsafe{
-                ffi::sfRectangleShape_setSize(rectangle, *size);
+                ffi::sfRectangleShape_setSize(rectangle, size.raw());
             }
             Some(RectangleShape {
                     rectangle_shape: rectangle,
@@ -121,7 +121,7 @@ impl<'s> RectangleShape<'s> {
     /// Return the height Size of the rectangle
     pub fn get_size(&self) -> Vector2f {
         unsafe {
-            ffi::sfRectangleShape_getSize(self.rectangle_shape)
+            Vector2f::from_raw(ffi::sfRectangleShape_getSize(self.rectangle_shape))
         }
     }
 
@@ -131,7 +131,7 @@ impl<'s> RectangleShape<'s> {
     /// * size - The new size of the rectangle
     pub fn set_size(&mut self, size: &Vector2f) {
         unsafe {
-            ffi::sfRectangleShape_setSize(self.rectangle_shape, *size)
+            ffi::sfRectangleShape_setSize(self.rectangle_shape, size.raw())
         }
     }
 
@@ -143,7 +143,7 @@ impl<'s> RectangleShape<'s> {
     pub fn set_size2f(&mut self, size_x: f32, size_y: f32) {
         unsafe {
             ffi::sfRectangleShape_setSize(self.rectangle_shape,
-                                          Vector2f::new(size_x, size_y))
+                                          sfVector2f{x: size_x, y: size_y})
         }
     }
 }
@@ -168,7 +168,7 @@ impl<'s> Transformable for RectangleShape<'s> {
     /// * position - New position
     fn set_position(&mut self, position: &Vector2f) {
         unsafe {
-            ffi::sfRectangleShape_setPosition(self.rectangle_shape, *position)
+            ffi::sfRectangleShape_setPosition(self.rectangle_shape, position.raw())
         }
     }
 
@@ -184,7 +184,7 @@ impl<'s> Transformable for RectangleShape<'s> {
     fn set_position2f(&mut self, x: f32, y: f32) {
         unsafe {
             ffi::sfRectangleShape_setPosition(self.rectangle_shape,
-                                              Vector2f::new(x, y))
+                                              sfVector2f{x: x, y: y})
         }
     }
 
@@ -213,7 +213,7 @@ impl<'s> Transformable for RectangleShape<'s> {
     /// * scale - New scale factors
     fn set_scale(&mut self, scale: &Vector2f) {
         unsafe {
-            ffi::sfRectangleShape_setScale(self.rectangle_shape, *scale)
+            ffi::sfRectangleShape_setScale(self.rectangle_shape, scale.raw())
         }
     }
 
@@ -230,7 +230,7 @@ impl<'s> Transformable for RectangleShape<'s> {
     fn set_scale2f(&mut self, factor_x: f32, factor_y: f32) {
         unsafe {
             ffi::sfRectangleShape_setScale(self.rectangle_shape,
-                                           Vector2f::new(factor_x, factor_y))
+                                           sfVector2f{x: factor_x, y: factor_y})
         }
     }
 
@@ -247,7 +247,7 @@ impl<'s> Transformable for RectangleShape<'s> {
     /// * origin - New origin
     fn set_origin(&mut self, origin: &Vector2f) {
         unsafe {
-            ffi::sfRectangleShape_setOrigin(self.rectangle_shape, *origin)
+            ffi::sfRectangleShape_setOrigin(self.rectangle_shape, origin.raw())
         }
     }
 
@@ -266,7 +266,7 @@ impl<'s> Transformable for RectangleShape<'s> {
     fn set_origin2f(&mut self, x: f32, y: f32) {
         unsafe {
             ffi::sfRectangleShape_setOrigin(self.rectangle_shape,
-                                            Vector2f::new(x, y))
+                                            sfVector2f{x: x, y: y})
         }
     }
 
@@ -275,7 +275,7 @@ impl<'s> Transformable for RectangleShape<'s> {
     /// Return the current position
     fn get_position(&self) -> Vector2f {
         unsafe {
-            ffi::sfRectangleShape_getPosition(self.rectangle_shape)
+            Vector2f::from_raw(ffi::sfRectangleShape_getPosition(self.rectangle_shape))
         }
     }
 
@@ -295,7 +295,7 @@ impl<'s> Transformable for RectangleShape<'s> {
     /// Return the current scale factors
     fn get_scale(&self) -> Vector2f {
         unsafe {
-            ffi::sfRectangleShape_getScale(self.rectangle_shape)
+            Vector2f::from_raw(ffi::sfRectangleShape_getScale(self.rectangle_shape))
         }
     }
 
@@ -304,7 +304,7 @@ impl<'s> Transformable for RectangleShape<'s> {
     /// return the current origin
     fn get_origin(&self) -> Vector2f {
         unsafe {
-            ffi::sfRectangleShape_getOrigin(self.rectangle_shape)
+            Vector2f::from_raw(ffi::sfRectangleShape_getOrigin(self.rectangle_shape))
         }
     }
 
@@ -317,7 +317,7 @@ impl<'s> Transformable for RectangleShape<'s> {
     /// * offset - Offset
     fn move_(&mut self, offset: &Vector2f) {
         unsafe {
-            ffi::sfRectangleShape_move(self.rectangle_shape, *offset)
+            ffi::sfRectangleShape_move(self.rectangle_shape, offset.raw())
         }
     }
 
@@ -331,7 +331,7 @@ impl<'s> Transformable for RectangleShape<'s> {
     /// * offsetY - Offset in y
     fn move2f(&mut self, offset_x: f32, offset_y: f32) {
         unsafe {ffi::sfRectangleShape_move(self.rectangle_shape,
-                                           Vector2f::new(offset_x, offset_y))}
+                                           sfVector2f{x: offset_x, y: offset_y})}
     }
 
     /// Rotate a rectangle shape
@@ -356,7 +356,7 @@ impl<'s> Transformable for RectangleShape<'s> {
     /// * factors - Scale factors
     fn scale(&mut self, factors: &Vector2f) {
         unsafe {
-            ffi::sfRectangleShape_scale(self.rectangle_shape, *factors)
+            ffi::sfRectangleShape_scale(self.rectangle_shape, factors.raw())
         }
     }
 
@@ -371,7 +371,7 @@ impl<'s> Transformable for RectangleShape<'s> {
     fn scale2f(&mut self, factor_x: f32, factor_y: f32) {
         unsafe {
             ffi::sfRectangleShape_scale(self.rectangle_shape,
-                                        Vector2f::new(factor_x, factor_y))
+                                        sfVector2f{x: factor_x, y: factor_y})
         }
     }
 
@@ -443,7 +443,7 @@ impl<'s> Shape<'s> for RectangleShape<'s> {
     /// * rec - Rectangle defining the region of the texture to display
     fn set_texture_rect(&mut self, rect: &IntRect) {
         unsafe {
-            ffi::sfRectangleShape_setTextureRect(self.rectangle_shape, *rect)
+            ffi::sfRectangleShape_setTextureRect(self.rectangle_shape, rect.raw())
         }
     }
 
@@ -506,7 +506,7 @@ impl<'s> Shape<'s> for RectangleShape<'s> {
     /// Return the texture rectangle of the shape
     fn get_texture_rect(&self) -> IntRect {
         unsafe {
-            ffi::sfRectangleShape_getTextureRect(self.rectangle_shape)
+            IntRect::from_raw(ffi::sfRectangleShape_getTextureRect(self.rectangle_shape))
         }
     }
 
@@ -556,8 +556,8 @@ impl<'s> Shape<'s> for RectangleShape<'s> {
     /// Return the index-th point of the shape
     fn get_point(&self, index: u32) -> Vector2f {
         unsafe {
-            ffi::sfRectangleShape_getPoint(self.rectangle_shape,
-                                                     index as c_uint)
+            Vector2f::from_raw(ffi::sfRectangleShape_getPoint(self.rectangle_shape,
+                                                     index as usize))
         }
     }
 
@@ -572,7 +572,7 @@ impl<'s> Shape<'s> for RectangleShape<'s> {
     /// Return the local bounding rectangle of the entity
     fn get_local_bounds(&self) -> FloatRect {
         unsafe {
-            ffi::sfRectangleShape_getLocalBounds(self.rectangle_shape)
+            FloatRect::from_raw(ffi::sfRectangleShape_getLocalBounds(self.rectangle_shape))
         }
     }
 
@@ -587,7 +587,7 @@ impl<'s> Shape<'s> for RectangleShape<'s> {
     /// Return the global bounding rectangle of the entity
     fn get_global_bounds(&self) -> FloatRect {
         unsafe {
-            ffi::sfRectangleShape_getGlobalBounds(self.rectangle_shape)
+            FloatRect::from_raw(ffi::sfRectangleShape_getGlobalBounds(self.rectangle_shape))
         }
     }
 }

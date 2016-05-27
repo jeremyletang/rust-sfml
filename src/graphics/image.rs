@@ -95,7 +95,7 @@ impl Image {
     ///
     /// Return Some(Image) or None
     pub fn new_from_memory(mem: &[u8]) -> Option<Image> {
-        let image = unsafe { ffi::sfImage_createFromMemory(&mem[0], mem.len() as size_t) };
+        let image = unsafe { ffi::sfImage_createFromMemory(mem.as_ptr() as *const _, mem.len() as size_t) };
         if image.is_null() {
             None
         } else {
@@ -216,7 +216,7 @@ impl Image {
     /// Return the size in pixels
     pub fn get_size(&self) -> Vector2u {
         unsafe {
-            ffi::sfImage_getSize(self.image)
+            Vector2u::from_raw(ffi::sfImage_getSize(self.image))
         }
     }
 
@@ -321,7 +321,7 @@ impl Image {
                                    source.raw(),
                                    dest_x as c_uint,
                                    dest_y as c_uint,
-                                   *source_rect,
+                                   source_rect.raw(),
                                    sfBool::from_bool(apply_alpha))
         }
     }

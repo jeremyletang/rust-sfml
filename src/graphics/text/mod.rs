@@ -31,10 +31,11 @@ use std::ffi::{CString, CStr};
 use std::str;
 use libc::{c_float, c_uint, size_t};
 
-use raw_conv::Raw;
+use raw_conv::{Raw, FromRaw};
 use graphics::{Drawable, Transformable, RenderTarget, Font, FloatRect,
                Color, Transform, RenderStates, TextStyle};
 use sfml_types::Vector2f;
+use csfml_system_sys::sfVector2f;
 
 use csfml_graphics_sys as ffi;
 
@@ -256,7 +257,7 @@ impl<'s> Text<'s> {
     /// Return the position of the character
     pub fn find_character_pos(&self, index: u64) -> Vector2f {
         unsafe {
-            ffi::sfText_findCharacterPos(self.text, index as size_t)
+            Vector2f::from_raw(ffi::sfText_findCharacterPos(self.text, index as size_t))
         }
     }
 
@@ -271,7 +272,7 @@ impl<'s> Text<'s> {
     /// Return the local bounding rectangle of the entity
     pub fn get_local_bounds(&self) -> FloatRect {
         unsafe {
-            ffi::sfText_getLocalBounds(self.text)
+            FloatRect::from_raw(ffi::sfText_getLocalBounds(self.text))
         }
     }
 
@@ -286,7 +287,7 @@ impl<'s> Text<'s> {
     /// Return the global bounding rectangle of the entity
     pub fn get_global_bounds(&self) -> FloatRect {
         unsafe {
-            ffi::sfText_getGlobalBounds(self.text)
+            FloatRect::from_raw(ffi::sfText_getGlobalBounds(self.text))
         }
     }
 
@@ -337,7 +338,7 @@ impl<'s> Transformable for Text<'s> {
     /// * position - The new position
     fn set_position(&mut self, position: &Vector2f) {
         unsafe {
-            ffi::sfText_setPosition(self.text, *position)
+            ffi::sfText_setPosition(self.text, position.raw())
         }
     }
 
@@ -352,7 +353,7 @@ impl<'s> Transformable for Text<'s> {
     /// * y - The new y coordinate
     fn set_position2f(&mut self, x: f32, y: f32) {
         unsafe {
-            ffi::sfText_setPosition(self.text, Vector2f::new(x, y))
+            ffi::sfText_setPosition(self.text, sfVector2f{x: x, y: y})
         }
     }
 
@@ -380,7 +381,7 @@ impl<'s> Transformable for Text<'s> {
     /// * scale - The new scale factors
     fn set_scale(&mut self, scale: &Vector2f) {
         unsafe {
-            ffi::sfText_setScale(self.text, *scale)
+            ffi::sfText_setScale(self.text, scale.raw())
         }
     }
 
@@ -395,7 +396,7 @@ impl<'s> Transformable for Text<'s> {
     /// * scale_y - The new y scale factor
     fn set_scale2f(&mut self, scale_x: f32, scale_y: f32) {
         unsafe {
-            ffi::sfText_setScale(self.text, Vector2f::new(scale_x, scale_y))
+            ffi::sfText_setScale(self.text, sfVector2f{x: scale_x, y: scale_y})
         }
     }
 
@@ -412,7 +413,7 @@ impl<'s> Transformable for Text<'s> {
     /// * origin - New origin
     fn set_origin(&mut self, origin: &Vector2f) {
         unsafe {
-            ffi::sfText_setOrigin(self.text, *origin)
+            ffi::sfText_setOrigin(self.text, origin.raw())
         }
     }
 
@@ -430,7 +431,7 @@ impl<'s> Transformable for Text<'s> {
     /// * y - New y origin coordinate
     fn set_origin2f(&mut self, x: f32, y: f32) {
         unsafe {
-            ffi::sfText_setOrigin(self.text, Vector2f::new(x, y))
+            ffi::sfText_setOrigin(self.text, sfVector2f{x: x, y: y})
         }
     }
 
@@ -439,7 +440,7 @@ impl<'s> Transformable for Text<'s> {
     /// Return the current position
     fn get_position(&self) -> Vector2f {
         unsafe {
-            ffi::sfText_getPosition(self.text)
+            Vector2f::from_raw(ffi::sfText_getPosition(self.text))
         }
     }
 
@@ -459,7 +460,7 @@ impl<'s> Transformable for Text<'s> {
     /// Return the current scale factors
     fn get_scale(&self) -> Vector2f {
         unsafe {
-            ffi::sfText_getScale(self.text)
+            Vector2f::from_raw(ffi::sfText_getScale(self.text))
         }
     }
 
@@ -468,7 +469,7 @@ impl<'s> Transformable for Text<'s> {
     /// Return the current origin
     fn get_origin(&self) -> Vector2f {
         unsafe {
-            ffi::sfText_getOrigin(self.text)
+            Vector2f::from_raw(ffi::sfText_getOrigin(self.text))
         }
     }
 
@@ -481,7 +482,7 @@ impl<'s> Transformable for Text<'s> {
     /// * offset - Offset
     fn move_(&mut self, offset: &Vector2f) {
         unsafe {
-            ffi::sfText_move(self.text, *offset)
+            ffi::sfText_move(self.text, offset.raw())
         }
     }
 
@@ -495,7 +496,7 @@ impl<'s> Transformable for Text<'s> {
     /// * offsetY - Offset y
     fn move2f(&mut self, offset_x: f32, offset_y: f32) {
         unsafe {
-            ffi::sfText_move(self.text, Vector2f::new(offset_x, offset_y))
+            ffi::sfText_move(self.text, sfVector2f{x: offset_x, y: offset_y})
         }
     }
 
@@ -521,7 +522,7 @@ impl<'s> Transformable for Text<'s> {
     /// * factors - Scale factors
     fn scale(&mut self, factors: &Vector2f) {
         unsafe {
-            ffi::sfText_scale(self.text, *factors)
+            ffi::sfText_scale(self.text, factors.raw())
         }
     }
 
@@ -535,7 +536,7 @@ impl<'s> Transformable for Text<'s> {
     /// * factor_y - Scale y factor
     fn scale2f(&mut self, factor_x: f32, factor_y: f32) {
         unsafe {
-            ffi::sfText_scale(self.text, Vector2f::new(factor_x, factor_y))
+            ffi::sfText_scale(self.text, sfVector2f{x: factor_x, y: factor_y})
         }
     }
 

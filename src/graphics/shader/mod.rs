@@ -348,7 +348,7 @@ impl<'s> Shader<'s> {
         unsafe {
             ffi::sfShader_setVector2Parameter(self.shader,
                                               c_str.as_ptr(),
-                                              *vector)
+                                              vector.raw())
         }
     }
 
@@ -368,7 +368,7 @@ impl<'s> Shader<'s> {
         unsafe {
             ffi::sfShader_setVector3Parameter(self.shader,
                                               c_str.as_ptr(),
-                                              *vector)
+                                              vector.raw())
         }
     }
 

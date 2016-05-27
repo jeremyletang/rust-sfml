@@ -30,12 +30,12 @@
 use libc::{c_float};
 use std::ptr;
 
-use raw_conv::Raw;
+use raw_conv::{Raw, FromRaw};
 use graphics::{Drawable, Transformable, FloatRect, IntRect, Color, Texture,
                RenderTarget, Transform, RenderStates};
 use sfml_types::Vector2f;
 
-use csfml_system_sys::{sfBool, sfTrue};
+use csfml_system_sys::{sfBool, sfTrue, sfVector2f};
 use csfml_graphics_sys as ffi;
 use ext::sf_bool_ext::SfBoolExt;
 
@@ -184,7 +184,7 @@ impl<'s> Sprite<'s> {
     /// Return the local bounding rectangle of the entity
     pub fn get_local_bounds(&self) -> FloatRect {
         unsafe {
-            ffi::sfSprite_getLocalBounds(self.sprite)
+            FloatRect::from_raw(ffi::sfSprite_getLocalBounds(self.sprite))
         }
     }
 
@@ -199,7 +199,7 @@ impl<'s> Sprite<'s> {
     /// Return the global bounding rectangle of the entity
     pub fn get_global_bounds(&self) -> FloatRect {
         unsafe {
-            ffi::sfSprite_getGlobalBounds(self.sprite)
+            FloatRect::from_raw(ffi::sfSprite_getGlobalBounds(self.sprite))
         }
     }
 
@@ -208,7 +208,7 @@ impl<'s> Sprite<'s> {
     /// Return the texture rectangle of the sprite
     pub fn get_texture_rect(&self) -> IntRect {
         unsafe {
-            ffi::sfSprite_getTextureRect(self.sprite)
+            IntRect::from_raw(ffi::sfSprite_getTextureRect(self.sprite))
         }
     }
 
@@ -222,7 +222,7 @@ impl<'s> Sprite<'s> {
     /// * rectangle - Rectangle defining the region of the texture to display
     pub fn set_texture_rect(&mut self, rect: &IntRect) {
         unsafe {
-            ffi::sfSprite_setTextureRect(self.sprite, *rect)
+            ffi::sfSprite_setTextureRect(self.sprite, rect.raw())
         }
     }
 }
@@ -261,7 +261,7 @@ impl<'s> Transformable for Sprite<'s> {
     /// * position - New position
     fn set_position(&mut self, position: &Vector2f) {
         unsafe {
-            ffi::sfSprite_setPosition(self.sprite, *position)
+            ffi::sfSprite_setPosition(self.sprite, position.raw())
         }
     }
 
@@ -276,7 +276,7 @@ impl<'s> Transformable for Sprite<'s> {
     /// * y - New y coordinate
     fn set_position2f(&mut self, x: f32, y: f32) {
         unsafe {
-            ffi::sfSprite_setPosition(self.sprite, Vector2f::new(x, y))
+            ffi::sfSprite_setPosition(self.sprite, sfVector2f{x: x, y: y})
         }
     }
 
@@ -304,7 +304,7 @@ impl<'s> Transformable for Sprite<'s> {
     /// * scale - New scale factors
     fn set_scale(&mut self, scale: &Vector2f) {
         unsafe {
-            ffi::sfSprite_setScale(self.sprite, *scale)
+            ffi::sfSprite_setScale(self.sprite, scale.raw())
         }
     }
 
@@ -319,7 +319,7 @@ impl<'s> Transformable for Sprite<'s> {
     /// * scale_y - New y scale factor
     fn set_scale2f(&mut self, scale_x: f32, scale_y: f32) {
         unsafe {
-            ffi::sfSprite_setScale(self.sprite, Vector2f::new(scale_x, scale_y))
+            ffi::sfSprite_setScale(self.sprite, sfVector2f{x: scale_x, y: scale_y})
         }
     }
 
@@ -336,7 +336,7 @@ impl<'s> Transformable for Sprite<'s> {
     /// * origin - New origin
     fn set_origin(&mut self, origin: &Vector2f) {
         unsafe {
-            ffi::sfSprite_setOrigin(self.sprite, *origin)
+            ffi::sfSprite_setOrigin(self.sprite, origin.raw())
         }
     }
 
@@ -354,7 +354,7 @@ impl<'s> Transformable for Sprite<'s> {
     /// * y - New y origin coordinate
     fn set_origin2f(&mut self, x: f32, y: f32) {
         unsafe {
-            ffi::sfSprite_setOrigin(self.sprite, Vector2f::new(x, y))
+            ffi::sfSprite_setOrigin(self.sprite, sfVector2f{x: x, y: y})
         }
     }
 
@@ -363,7 +363,7 @@ impl<'s> Transformable for Sprite<'s> {
     /// Return the current position
     fn get_position(&self) -> Vector2f {
         unsafe {
-            ffi::sfSprite_getPosition(self.sprite)
+            Vector2f::from_raw(ffi::sfSprite_getPosition(self.sprite))
         }
     }
 
@@ -383,7 +383,7 @@ impl<'s> Transformable for Sprite<'s> {
     /// Return the current scale factors
     fn get_scale(&self) -> Vector2f {
         unsafe {
-            ffi::sfSprite_getScale(self.sprite)
+            Vector2f::from_raw(ffi::sfSprite_getScale(self.sprite))
         }
     }
 
@@ -392,7 +392,7 @@ impl<'s> Transformable for Sprite<'s> {
     /// Return the current origin
     fn get_origin(&self) -> Vector2f {
         unsafe {
-            ffi::sfSprite_getOrigin(self.sprite)
+            Vector2f::from_raw(ffi::sfSprite_getOrigin(self.sprite))
         }
     }
 
@@ -405,7 +405,7 @@ impl<'s> Transformable for Sprite<'s> {
     /// * offset - Offset
     fn move_(&mut self, offset: &Vector2f) {
         unsafe {
-            ffi::sfSprite_move(self.sprite, *offset)
+            ffi::sfSprite_move(self.sprite, offset.raw())
         }
     }
 
@@ -419,7 +419,7 @@ impl<'s> Transformable for Sprite<'s> {
     /// * offsetY - Offset y
     fn move2f(&mut self, offset_x: f32, offset_y: f32) {
         unsafe {
-            ffi::sfSprite_move(self.sprite, Vector2f::new(offset_x, offset_y))
+            ffi::sfSprite_move(self.sprite, sfVector2f{x: offset_x, y: offset_y})
         }
     }
 
@@ -445,7 +445,7 @@ impl<'s> Transformable for Sprite<'s> {
     /// * factors - Scale factors
     fn scale(&mut self, factors: &Vector2f) {
         unsafe {
-            ffi::sfSprite_scale(self.sprite, *factors)
+            ffi::sfSprite_scale(self.sprite, factors.raw())
         }
     }
 
@@ -459,7 +459,7 @@ impl<'s> Transformable for Sprite<'s> {
     /// * factor_y - Scale y factor
     fn scale2f(&mut self, factor_x: f32, factor_y: f32) {
         unsafe {
-            ffi::sfSprite_scale(self.sprite, Vector2f::new(factor_x, factor_y))
+            ffi::sfSprite_scale(self.sprite, sfVector2f{x: factor_x, y: factor_y})
         }
     }
 

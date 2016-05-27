@@ -33,6 +33,8 @@
 use graphics::Color;
 use sfml_types::Vector2f;
 use csfml_graphics_sys as ffi;
+use csfml_system_sys::sfVector2f;
+use raw_conv::Raw;
 
 /// Define a point with color and texture coordinates
 ///
@@ -56,9 +58,9 @@ impl Vertex {
                color: &Color,
                tex_coords: &Vector2f) -> Vertex {
         Vertex(ffi::sfVertex {
-            position: *position,
+            position: position.raw(),
             color: color.0,
-            tex_coords: *tex_coords
+            texCoords: tex_coords.raw(),
         })
     }
 
@@ -74,9 +76,9 @@ impl Vertex {
     /// Return a Vertex
     pub fn new_with_pos(position: &Vector2f) -> Vertex {
         Vertex(ffi::sfVertex {
-            position: *position,
+            position: position.raw(),
             color: Color::white().0,
-            tex_coords: Vector2f { x: 0., y: 0. }
+            texCoords: sfVector2f { x: 0., y: 0. }
         })
     }
 
@@ -92,9 +94,9 @@ impl Vertex {
     /// Return a Vertex
     pub fn new_with_pos_color(position: &Vector2f, color: &Color) -> Vertex {
         Vertex(ffi::sfVertex {
-            position: *position,
+            position: position.raw(),
             color: color.0,
-            tex_coords: Vector2f { x: 0., y: 0. }
+            texCoords: sfVector2f { x: 0., y: 0. }
         })
     }
 
@@ -111,9 +113,9 @@ impl Vertex {
     pub fn new_with_pos_coords(position: &Vector2f,
                                tex_coords: &Vector2f) -> Vertex {
         Vertex(ffi::sfVertex {
-            position: *position,
+            position: position.raw(),
             color: Color::white().0,
-            tex_coords: *tex_coords
+            texCoords: tex_coords.raw(),
         })
     }
 }
@@ -129,9 +131,9 @@ impl Vertex {
 impl Default for Vertex {
     fn default() -> Vertex {
         Vertex(ffi::sfVertex {
-            position: Vector2f { x: 0., y: 0. },
+            position: sfVector2f { x: 0., y: 0. },
             color: Color::white().0,
-            tex_coords: Vector2f { x: 0., y: 0. }
+            texCoords: sfVector2f { x: 0., y: 0. }
         })
     }
 }

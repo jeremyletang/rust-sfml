@@ -48,10 +48,10 @@ impl Color {
     /// Return Color object constructed from the components
     pub fn new_rgb(red: u8, green: u8, blue: u8) -> Color {
         Color(ffi::sfColor {
-            red: red,
-            green: green,
-            blue: blue,
-            alpha: 255
+            r: red,
+            g: green,
+            b: blue,
+            a: 255
         })
     }
 
@@ -66,10 +66,10 @@ impl Color {
     /// Return Color object constructed from the components
     pub fn new_rgba(red: u8, green: u8, blue: u8, alpha: u8) -> Color {
         Color(ffi::sfColor {
-            red: red,
-            green: green,
-            blue: blue,
-            alpha: alpha
+            r: red,
+            g: green,
+            b: blue,
+            a: alpha
         })
     }
 
@@ -146,15 +146,15 @@ impl Add for Color {
     type Output = Color;
 
     fn add(self, other: Color) -> Color {
-        let r: i32 = self.0.red as i32 + other.0.red as i32;
-        let g: i32 = self.0.green as i32 + other.0.green as i32;
-        let b: i32 = self.0.blue as i32 + other.0.blue as i32;
-        let a: i32 = self.0.alpha as i32 + other.0.alpha as i32;
+        let r: i32 = self.0.r as i32 + other.0.r as i32;
+        let g: i32 = self.0.g as i32 + other.0.g as i32;
+        let b: i32 = self.0.b as i32 + other.0.b as i32;
+        let a: i32 = self.0.a as i32 + other.0.a as i32;
         Color(ffi::sfColor {
-            red: if r > 255 {255} else {r as u8},
-            green: if g > 255 {255} else {g as u8},
-            blue: if b > 255 {255} else {b as u8},
-            alpha: if a > 255 {255} else {a as u8}
+            r: if r > 255 {255} else {r as u8},
+            g: if g > 255 {255} else {g as u8},
+            b: if b > 255 {255} else {b as u8},
+            a: if a > 255 {255} else {a as u8}
         })
     }
 }
@@ -163,15 +163,15 @@ impl Mul for Color {
     type Output = Color;
 
     fn mul(self, other: Color) -> Color {
-        let r: i32 = self.0.red as i32 * (other.0.red as i32);
-        let g: i32 = self.0.green as i32 * (other.0.green as i32);
-        let b: i32 = self.0.blue as i32 * (other.0.blue as i32);
-        let a: i32 = self.0.alpha as i32 * (other.0.alpha as i32);
+        let r: i32 = self.0.r as i32 * (other.0.r as i32);
+        let g: i32 = self.0.g as i32 * (other.0.g as i32);
+        let b: i32 = self.0.b as i32 * (other.0.b as i32);
+        let a: i32 = self.0.a as i32 * (other.0.a as i32);
         Color(ffi::sfColor {
-            red: if r > 255 {255} else {r as u8},
-            green: if g > 255 {255} else {g as u8},
-            blue: if b > 255 {255} else {b as u8},
-            alpha: if a > 255 {255} else {a as u8}
+            r: if r > 255 {255} else {r as u8},
+            g: if g > 255 {255} else {g as u8},
+            b: if b > 255 {255} else {b as u8},
+            a: if a > 255 {255} else {a as u8}
         })
     }
 }

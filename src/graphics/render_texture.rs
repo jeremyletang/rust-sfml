@@ -28,7 +28,7 @@ use libc::c_uint;
 
 use raw_conv::{Raw, RawMut, FromRaw};
 use sfml_types::{Vector2f, Vector2i, Vector2u};
-use graphics::{Drawable, View, Color, IntRect, Texture, CircleShape, RectangleShape, Text,
+use graphics::{Drawable, View, ViewRef, Color, IntRect, TextureRef, CircleShape, RectangleShape, Text,
                RenderStates, Sprite, ConvexShape, VertexArray,
                RenderTarget, Vertex, PrimitiveType, CustomShape};
 
@@ -85,13 +85,13 @@ impl RenderTexture {
     /// Get the target texture of a render texture
     ///
     /// Return the target texture
-    pub fn get_texture(&self) -> Option<Texture> {
+    pub fn get_texture(&self) -> TextureRef {
         let tex = unsafe { ffi::sfRenderTexture_getTexture(self.render_texture) };
         if tex.is_null() {
-            None
+            panic!("RenderTexture::get_texture: Texture is null")
         }
         else {
-            Some(Texture::from_raw(tex))
+            TextureRef::from_raw(tex)
         }
     }
 
@@ -120,7 +120,7 @@ impl RenderTarget for RenderTexture {
     /// Return the size in pixels
     fn get_size(&self) -> Vector2u {
         unsafe {
-            ffi::sfRenderTexture_getSize(self.render_texture)
+            Vector2u::from_raw(ffi::sfRenderTexture_getSize(self.render_texture))
         }
     }
 
@@ -147,18 +147,18 @@ impl RenderTarget for RenderTexture {
     /// Get the current active view of a render texture
     ///
     /// Return the current active view
-    fn get_view(&self) -> View {
+    fn get_view(&self) -> ViewRef {
         unsafe {
-            View::from_raw(ffi::sfRenderTexture_getView(self.render_texture))
+            ViewRef::from_raw(ffi::sfRenderTexture_getView(self.render_texture))
         }
     }
 
     /// Get the default view of a render texture
     ///
     /// Return the default view of the render texture
-    fn get_default_view(&self) -> View {
+    fn get_default_view(&self) -> ViewRef {
         unsafe {
-            View::from_raw(ffi::sfRenderTexture_getDefaultView(self.render_texture))
+            ViewRef::from_raw(ffi::sfRenderTexture_getDefaultView(self.render_texture))
         }
     }
 
@@ -170,7 +170,7 @@ impl RenderTarget for RenderTexture {
     /// Return the viewport rectangle, expressed in pixels in the current target
     fn get_viewport(&self, view: &View) -> IntRect {
         unsafe {
-            ffi::sfRenderTexture_getViewport(self.render_texture, view.raw())
+            IntRect::from_raw(ffi::sfRenderTexture_getViewport(self.render_texture, view.raw()))
         }
     }
 
@@ -203,9 +203,9 @@ impl RenderTarget for RenderTexture {
                                point: &Vector2i,
                                view: &View) -> Vector2f {
         unsafe {
-            ffi::sfRenderTexture_mapPixelToCoords(self.render_texture,
-                                                  *point,
-                                                  view.raw())
+            Vector2f::from_raw(ffi::sfRenderTexture_mapPixelToCoords(self.render_texture,
+                                                  point.raw(),
+                                                  view.raw()))
         }
     }
 
@@ -235,9 +235,9 @@ impl RenderTarget for RenderTexture {
     fn map_pixel_to_coords_current_view(&self, point: &Vector2i) -> Vector2f {
         let view = unsafe { ffi::sfRenderTexture_getView(self.render_texture) };
         unsafe {
-            ffi::sfRenderTexture_mapPixelToCoords(self.render_texture,
-                                                  *point,
-                                                  view)
+            Vector2f::from_raw(ffi::sfRenderTexture_mapPixelToCoords(self.render_texture,
+                                                  point.raw(),
+                                                  view))
         }
     }
 
@@ -264,9 +264,9 @@ impl RenderTarget for RenderTexture {
                                point: &Vector2f,
                                view: &View) -> Vector2i {
         unsafe {
-            ffi::sfRenderTexture_mapCoordsToPixel(self.render_texture,
-                                                  *point,
-                                                  view.raw())
+            Vector2i::from_raw(ffi::sfRenderTexture_mapCoordsToPixel(self.render_texture,
+                                                  point.raw(),
+                                                  view.raw()))
         }
     }
 
@@ -290,9 +290,9 @@ impl RenderTarget for RenderTexture {
     fn map_coords_to_pixel_current_view(&self, point: &Vector2f) -> Vector2i {
         let view = unsafe { ffi::sfRenderTexture_getView(self.render_texture) };
         unsafe {
-            ffi::sfRenderTexture_mapCoordsToPixel(self.render_texture,
-                                                  *point,
-                                                  view)
+            Vector2i::from_raw(ffi::sfRenderTexture_mapCoordsToPixel(self.render_texture,
+                                                  point.raw(),
+                                                  view))
         }
     }
 
@@ -398,7 +398,7 @@ impl RenderTarget for RenderTexture {
                           ty: PrimitiveType,
                           rs: &mut RenderStates) {
 
-        let len = vertices.len() as u32;
+        let len = vertices.len();
         unsafe {
             ffi::sfRenderTexture_drawPrimitives(self.render_texture,
                                                 ::std::mem::transmute(&vertices[0]),

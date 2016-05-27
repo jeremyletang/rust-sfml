@@ -30,6 +30,7 @@ use libc::{c_uint, size_t};
 use std::ptr;
 use std::ffi::CString;
 use std::io::{Read, Seek};
+use std::marker::PhantomData;
 
 use raw_conv::{Raw, FromRaw};
 use graphics::{RenderWindow, Image, IntRect};
@@ -46,7 +47,46 @@ use ext::sf_bool_ext::SfBoolExt;
 /// Texture stores pixels that can be drawn, with a sprite for example.
 pub struct Texture {
     texture: *mut ffi::sfTexture,
-    dropable: bool
+}
+
+/// An immutable reference to a `Texture`.
+pub struct TextureRef<'a> {
+    texture: *const ffi::sfTexture,
+    _borrow: PhantomData<&'a Texture>,
+}
+
+impl<'a> TextureRef<'a> {
+    /// Return the size of the texture
+    ///
+    /// Return the Size in pixels
+    pub fn get_size(&self) -> Vector2u {
+        unsafe {
+            Vector2u::from_raw(ffi::sfTexture_getSize(self.texture))
+        }
+    }
+    /// Tell whether the smooth filter is enabled or not for a texture
+    ///
+    /// Return true if smoothing is enabled, false if it is disabled
+    pub fn is_smooth(&self) -> bool {
+        unsafe { ffi::sfTexture_isSmooth(self.texture) }.to_bool()
+    }
+    /// Tell whether a texture is repeated or not
+    ///
+    /// Return frue if repeat mode is enabled, false if it is disabled
+    pub fn is_repeated(&self) -> bool {
+        unsafe { ffi::sfTexture_isRepeated(self.texture) }.to_bool()
+    }
+    /// Copy a texture's pixels to an image
+    ///
+    /// Return an image containing the texture's pixels
+    pub fn copy_to_image(&self) -> Option<Image> {
+        let img = unsafe {ffi::sfTexture_copyToImage(self.texture)};
+        if img.is_null() {
+            None
+        } else {
+            Some(Image::from_raw(img))
+        }
+    }
 }
 
 impl Texture {
@@ -65,7 +105,6 @@ impl Texture {
         } else {
             Some(Texture {
                     texture: tex,
-                    dropable: true
                 })
         }
     }
@@ -78,15 +117,14 @@ impl Texture {
     ///
     /// Return Some(Texture) or None
     pub fn new_from_memory(mem: &[u8], area: &IntRect) -> Option<Texture> {
-        let tex = unsafe { ffi::sfTexture_createFromMemory(&mem[0],
+        let tex = unsafe { ffi::sfTexture_createFromMemory(mem.as_ptr() as *const _,
                                                            mem.len() as size_t,
-                                                           area) };
+                                                           &area.raw()) };
         if tex.is_null() {
             None
         } else {
             Some(Texture {
                     texture: tex,
-                    dropable: true
                 })
         }
     }
@@ -100,14 +138,13 @@ impl Texture {
     pub fn new_from_stream<T: Read + Seek>(stream: &mut T, area: &mut IntRect) -> Option<Texture> {
         let mut input_stream = InputStream::new(stream);
         let tex = unsafe {
-            ffi::sfTexture_createFromStream(&mut input_stream.0, area)
+            ffi::sfTexture_createFromStream(&mut input_stream.0, &area.raw())
         };
         if tex.is_null() {
             None
         } else {
             Some(Texture {
                     texture: tex,
-                    dropable: true
                 })
         }
     }
@@ -128,7 +165,6 @@ impl Texture {
         } else {
             Some(Texture {
                     texture: tex,
-                    dropable: true
                 })
         }
     }
@@ -144,14 +180,13 @@ impl Texture {
                                    area: &IntRect) -> Option<Texture> {
         let c_str = CString::new(filename.as_bytes()).unwrap();
         let tex = unsafe {
-            ffi::sfTexture_createFromFile(c_str.as_ptr() as *mut i8, area)
+            ffi::sfTexture_createFromFile(c_str.as_ptr() as *mut i8, &area.raw())
         };
         if tex.is_null() {
             None
         } else {
             Some(Texture {
                     texture: tex,
-                    dropable: true
                 })
         }
     }
@@ -169,7 +204,6 @@ impl Texture {
         } else {
             Some(Texture {
                     texture: tex,
-                    dropable: true
                 })
         }
     }
@@ -184,13 +218,12 @@ impl Texture {
     pub fn new_from_image_with_rect(image: &Image,
                                     area: &IntRect) -> Option<Texture> {
         let tex = unsafe { ffi::sfTexture_createFromImage(image.raw(),
-                                                          area) };
+                                                          &area.raw()) };
         if tex.is_null() {
             None
         } else {
             Some(Texture {
                     texture: tex,
-                    dropable: true
                 })
         }
     }
@@ -209,17 +242,7 @@ impl Texture {
         } else {
             Some(Texture {
                     texture: tex,
-                    dropable: true
                 })
-        }
-    }
-
-    /// Return the size of the texture
-    ///
-    /// Return the Size in pixels
-    pub fn get_size(&self) -> Vector2u {
-        unsafe {
-            ffi::sfTexture_getSize(self.texture)
         }
     }
 
@@ -309,13 +332,6 @@ impl Texture {
         }
     }
 
-    /// Tell whether the smooth filter is enabled or not for a texture
-    ///
-    /// Return true if smoothing is enabled, false if it is disabled
-    pub fn is_smooth(&self) -> bool {
-        unsafe { ffi::sfTexture_isSmooth(self.texture) }.to_bool()
-    }
-
     /// Enable or disable repeating for a texture
     ///
     /// epeating is involved when using texture coordinates
@@ -340,13 +356,6 @@ impl Texture {
         }
     }
 
-    /// Tell whether a texture is repeated or not
-    ///
-    /// Return frue if repeat mode is enabled, false if it is disabled
-    pub fn is_repeated(&self) -> bool {
-        unsafe { ffi::sfTexture_isRepeated(self.texture) }.to_bool()
-    }
-
     /// Bind a texture for rendering
     ///
     /// This function is not part of the graphics API, it mustn't be
@@ -367,16 +376,9 @@ impl Texture {
         }
     }
 
-    /// Copy a texture's pixels to an image
-    ///
-    /// Return an image containing the texture's pixels
-    pub fn copy_to_image(&self) -> Option<Image> {
-        let img = unsafe {ffi::sfTexture_copyToImage(self.texture)};
-        if img.is_null() {
-            None
-        } else {
-            Some(Image::from_raw(img))
-        }
+    /// Acquires a read-only view to this `Texture`.
+    pub fn get_ref(&self) -> TextureRef {
+        TextureRef::from_raw(self.texture)
     }
 }
 
@@ -389,7 +391,6 @@ impl Clone for Texture {
         } else {
             Texture {
                 texture: tex,
-                dropable: true
             }
         }
     }
@@ -406,7 +407,22 @@ impl FromRaw for Texture {
     fn from_raw(raw: Self::Raw) -> Self {
         Texture {
             texture: raw,
-            dropable: false,
+        }
+    }
+}
+
+impl<'a> Raw for TextureRef<'a> {
+    type Raw = *const ffi::sfTexture;
+    fn raw(&self) -> Self::Raw {
+        self.texture
+    }
+}
+
+impl<'a> FromRaw for TextureRef<'a> {
+    fn from_raw(raw: Self::Raw) -> Self {
+        TextureRef {
+            texture: raw,
+            _borrow: PhantomData,
         }
     }
 }
@@ -414,10 +430,8 @@ impl FromRaw for Texture {
 impl Drop for Texture {
     /// Destroy an existing texture
     fn drop(&mut self) {
-        if self.dropable {
-            unsafe {
-                ffi::sfTexture_destroy(self.texture)
-            }
+        unsafe {
+            ffi::sfTexture_destroy(self.texture)
         }
     }
 }

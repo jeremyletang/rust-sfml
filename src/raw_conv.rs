@@ -100,3 +100,71 @@ impl FromRaw for ::sfml_types::Vector2u {
         }
     }
 }
+
+impl Raw for ::sfml_types::Vector2f {
+    type Raw = ::csfml_system_sys::sfVector2f;
+
+    fn raw(&self) -> Self::Raw {
+        ::csfml_system_sys::sfVector2f {
+            x: self.x,
+            y: self.y,
+        }
+    }
+}
+
+impl FromRaw for ::sfml_types::Vector2f {
+    fn from_raw(raw: Self::Raw) -> Self {
+        ::sfml_types::Vector2f {
+            x: raw.x,
+            y: raw.y,
+        }
+    }
+}
+
+impl Raw for ::sfml_types::IntRect {
+    type Raw = ::csfml_graphics_sys::sfIntRect;
+
+    fn raw(&self) -> Self::Raw {
+        ::csfml_graphics_sys::sfIntRect {
+            top: self.top,
+            left: self.left,
+            width: self.width,
+            height: self.height,
+        }
+    }
+}
+
+impl FromRaw for ::sfml_types::IntRect {
+    fn from_raw(raw: Self::Raw) -> Self {
+        ::sfml_types::IntRect {
+            top: raw.top,
+            left: raw.left,
+            width: raw.width,
+            height: raw.height,
+        }
+    }
+}
+
+impl Raw for ::sfml_types::FloatRect {
+    type Raw = ::csfml_graphics_sys::sfFloatRect;
+
+    fn raw(&self) -> Self::Raw {
+        ::csfml_graphics_sys::sfFloatRect {
+            top: self.top,
+            left: self.left,
+            width: self.width,
+            height: self.height,
+        }
+    }
+}
+
+impl FromRaw for ::sfml_types::FloatRect {
+    fn from_raw(raw: Self::Raw) -> Self {
+        ::sfml_types::FloatRect {
+            top: raw.top,
+            left: raw.left,
+            width: raw.width,
+            height: raw.height,
+        }
+    }
+}

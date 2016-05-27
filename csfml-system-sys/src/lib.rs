@@ -78,7 +78,7 @@ impl ::std::default::Default for sfVector2u {
     fn default() -> Self { unsafe { ::std::mem::zeroed() } }
 }
 #[repr(C)]
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Debug)]
 pub struct sfVector2f {
     pub x: ::std::os::raw::c_float,
     pub y: ::std::os::raw::c_float,

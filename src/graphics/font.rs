@@ -29,7 +29,7 @@ use libc::{c_uint, size_t};
 use std::ffi::CString;
 
 use raw_conv::{Raw, FromRaw};
-use graphics::{Texture, Glyph};
+use graphics::{TextureRef, Glyph};
 
 use csfml_system_sys::sfBool;
 use csfml_graphics_sys as ffi;
@@ -95,7 +95,7 @@ impl Font {
     /// Return Some(Font) or None
     pub fn new_from_memory(memory: &[u8]) -> Option<Font> {
         let fnt = unsafe {
-            ffi::sfFont_createFromMemory(&memory[0], memory.len() as size_t)
+            ffi::sfFont_createFromMemory(memory.as_ptr() as *const _, memory.len() as size_t)
         };
         if fnt.is_null() {
             None
@@ -164,13 +164,13 @@ impl Font {
     /// * characterSize - Character size, in pixels
     ///
     /// Return the texture
-    pub fn get_texture(&self, character_size: u32) -> Option<Texture> {
+    pub fn get_texture(&self, character_size: u32) -> TextureRef {
         let tex = unsafe {ffi::sfFont_getTexture(self.font,
                                                  character_size as c_uint)};
         if tex.is_null() {
-            None
+            panic!("Font::get_texture: texture is null");
         } else {
-            Some(Texture::from_raw(tex))
+            TextureRef::from_raw(tex)
         }
     }
 
