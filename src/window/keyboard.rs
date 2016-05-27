@@ -22,12 +22,11 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-use libc::c_int;
 use csfml_window_sys as ffi;
 use ext::sf_bool_ext::SfBoolExt;
 
 /// Key codes known to SFML.
-#[repr(i64)]
+#[repr(i32)]
 #[allow(missing_docs)]
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
 pub enum Key {
@@ -151,6 +150,6 @@ impl Key {
     /// pressed or released while no window was focused and no events were
     /// triggered.
     pub fn is_pressed(self) -> bool {
-        unsafe { ffi::sfKeyboard_isKeyPressed(self as c_int) }.to_bool()
+        unsafe { ffi::sfKeyboard_isKeyPressed(::std::mem::transmute(self)) }.to_bool()
     }
 }

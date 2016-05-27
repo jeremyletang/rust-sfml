@@ -196,7 +196,7 @@ impl RenderWindow {
     ///
     /// Return the event if an event was returned, or NoEvent if the event queue was empty
     pub fn poll_event(&mut self) -> event::Event {
-        let mut event = ::csfml_window_sys::sfEvent { data: [032; 6] };
+        let mut event = ::csfml_window_sys::sfEvent::default();
         let have_event = unsafe {
             ffi::sfRenderWindow_pollEvent(self.render_window, &mut event)
         }.to_bool();
@@ -219,7 +219,7 @@ impl RenderWindow {
     ///
     /// Return the event or NoEvent if an error has occured
     pub fn wait_event(&mut self) -> event::Event {
-        let mut event = ::csfml_window_sys::sfEvent { data: [032; 6] };
+        let mut event = ::csfml_window_sys::sfEvent::default();
         let have_event = unsafe {
             ffi::sfRenderWindow_waitEvent(self.render_window, &mut event)
         }.to_bool();
@@ -867,7 +867,7 @@ impl<'a> Iterator for Events<'a> {
     type Item = event::Event;
 
     fn next(&mut self) -> Option<event::Event> {
-        let mut event = ::csfml_window_sys::sfEvent { data: [032; 6] };
+        let mut event = ::csfml_window_sys::sfEvent::default();
         if unsafe { ffi::sfRenderWindow_pollEvent(self.render_window, &mut event) }.to_bool() {
             Some(ext::event::get_wrapped_event(&mut event))
         } else {

@@ -60,3 +60,43 @@ impl FromRaw for ::sfml_types::Vector3f {
         }
     }
 }
+
+impl Raw for ::sfml_types::Vector2i {
+    type Raw = ::csfml_system_sys::sfVector2i;
+
+    fn raw(&self) -> Self::Raw {
+        ::csfml_system_sys::sfVector2i {
+            x: self.x,
+            y: self.y,
+        }
+    }
+}
+
+impl FromRaw for ::sfml_types::Vector2i {
+    fn from_raw(raw: Self::Raw) -> Self {
+        ::sfml_types::Vector2i {
+            x: raw.x,
+            y: raw.y,
+        }
+    }
+}
+
+impl Raw for ::sfml_types::Vector2u {
+    type Raw = ::csfml_system_sys::sfVector2u;
+
+    fn raw(&self) -> Self::Raw {
+        ::csfml_system_sys::sfVector2u {
+            x: self.x,
+            y: self.y,
+        }
+    }
+}
+
+impl FromRaw for ::sfml_types::Vector2u {
+    fn from_raw(raw: Self::Raw) -> Self {
+        ::sfml_types::Vector2u {
+            x: raw.x,
+            y: raw.y,
+        }
+    }
+}

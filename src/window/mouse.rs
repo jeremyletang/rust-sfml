@@ -22,9 +22,9 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-use libc::c_uint;
 use csfml_window_sys as ffi;
 use ext::sf_bool_ext::SfBoolExt;
+use raw_conv::Raw;
 
 /// Mouse buttons.
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
@@ -41,6 +41,23 @@ pub enum MouseButton {
     XButton2
 }
 
+impl Raw for MouseButton {
+    type Raw = ffi::sfMouseButton;
+
+    fn raw(&self) -> Self::Raw {
+        use csfml_window_sys::sfMouseButton::*;
+        use self::MouseButton::*;
+
+        match *self {
+            Left => sfMouseLeft,
+            Right => sfMouseRight,
+            Middle => sfMouseMiddle,
+            XButton1 => sfMouseXButton1,
+            XButton2 => sfMouseXButton2,
+        }
+    }
+}
+
 impl MouseButton {
     /// Return whether this mouse button is currently pressed.
     ///
@@ -48,6 +65,6 @@ impl MouseButton {
     /// pressed or released while no window was focused and no events were
     /// triggered.
     pub fn is_pressed(self) -> bool {
-        unsafe { ffi::sfMouse_isButtonPressed(self as c_uint) }.to_bool()
+        unsafe { ffi::sfMouse_isButtonPressed(self.raw()) }.to_bool()
     }
 }
