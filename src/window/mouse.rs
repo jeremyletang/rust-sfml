@@ -24,6 +24,7 @@
 
 use libc::c_uint;
 use csfml_window_sys as ffi;
+use ext::sf_bool_ext::SfBoolExt;
 
 /// Mouse buttons.
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]

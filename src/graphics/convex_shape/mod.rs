@@ -36,8 +36,9 @@ use raw_conv::Raw;
 use graphics::{Shape, Drawable, Transformable, Color, Texture, RenderTarget, FloatRect, IntRect, Transform, RenderStates};
 use sfml_types::Vector2f;
 
-use sfml_types::sfBool;
+use csfml_system_sys::{sfBool, sfTrue};
 use csfml_graphics_sys as ffi;
+use ext::sf_bool_ext::SfBoolExt;
 
 // pub mod rc;
 
@@ -94,7 +95,7 @@ impl<'s> ConvexShape<'s> {
             None
         } else {
             unsafe {
-                ffi::sfConvexShape_setTexture(shape, texture.raw(), sfBool::SFTRUE);
+                ffi::sfConvexShape_setTexture(shape, texture.raw(), sfTrue);
                 ffi::sfConvexShape_setPointCount(shape, points_count as c_uint)
             }
             Some(ConvexShape {
@@ -429,7 +430,7 @@ impl<'s> Shape<'s> for ConvexShape<'s> {
         unsafe {
             ffi::sfConvexShape_setTexture(self.convex_shape,
                                           ptr::null_mut(),
-                                          sfBool::SFTRUE)
+                                          sfTrue)
         }
     }
 

@@ -32,11 +32,12 @@ use raw_conv::{Raw, FromRaw};
 use sfml_types::Vector2u;
 use graphics::{Color, IntRect};
 
-use sfml_types::sfBool;
+use csfml_system_sys::sfBool;
 use csfml_graphics_sys as ffi;
 
 use std::io::{Read, Seek};
 use inputstream::InputStream;
+use ext::sf_bool_ext::SfBoolExt;
 
 /// Loading, manipulating and saving images.
 pub struct Image {

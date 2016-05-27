@@ -29,8 +29,7 @@ extern crate sfml_types;
 extern crate csfml_system_sys;
 
 use libc::{size_t, c_float, c_double, c_char, c_int};
-use sfml_types::sfBool;
-use csfml_system_sys::sfTime;
+use csfml_system_sys::*;
 
 pub type SocketStatus = c_int;
 pub const SOCKETNONE:          SocketStatus = 0;

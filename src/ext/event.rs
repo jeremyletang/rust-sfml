@@ -1,6 +1,7 @@
 use csfml_window_sys as sys;
 use csfml_window_sys::*;
 use window::event;
+use ext::sf_bool_ext::SfBoolExt;
 
 fn type_(evt: &mut sfEvent) -> *mut sfEventType {
     evt as *mut _ as *mut _

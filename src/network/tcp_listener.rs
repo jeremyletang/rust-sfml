@@ -29,8 +29,9 @@ use std::mem;
 use raw_conv::Raw;
 use network::{TcpSocket, SocketStatus};
 
-use sfml_types::sfBool;
+use csfml_system_sys::sfBool;
 use csfml_network_sys as ffi;
+use ext::sf_bool_ext::SfBoolExt;
 
 /// Socket that listens to new TCP connections
 pub struct TcpListener {

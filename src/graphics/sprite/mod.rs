@@ -35,8 +35,9 @@ use graphics::{Drawable, Transformable, FloatRect, IntRect, Color, Texture,
                RenderTarget, Transform, RenderStates};
 use sfml_types::Vector2f;
 
-use sfml_types::sfBool;
+use csfml_system_sys::{sfBool, sfTrue};
 use csfml_graphics_sys as ffi;
+use ext::sf_bool_ext::SfBoolExt;
 
 // pub mod rc;
 
@@ -74,7 +75,7 @@ impl<'s> Sprite<'s> {
             None
         } else {
             unsafe {
-                ffi::sfSprite_setTexture(sp, texture.raw(), sfBool::SFTRUE);
+                ffi::sfSprite_setTexture(sp, texture.raw(), sfTrue);
             }
             Some(Sprite {
                     sprite: sp,
@@ -129,7 +130,7 @@ impl<'s> Sprite<'s> {
     pub fn disable_texture(&mut self) {
         self.texture = None;
         unsafe {
-            ffi::sfSprite_setTexture(self.sprite, ptr::null_mut(), sfBool::SFTRUE)
+            ffi::sfSprite_setTexture(self.sprite, ptr::null_mut(), sfTrue)
         }
     }
 

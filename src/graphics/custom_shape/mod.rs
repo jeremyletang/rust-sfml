@@ -31,8 +31,10 @@ use raw_conv::Raw;
 use graphics::shape::ShapeImpl;
 use graphics::{Drawable, Transformable, RenderTarget, RenderStates, Texture, Color,
                Transform, IntRect, FloatRect};
-use sfml_types::{sfBool, Vector2f};
+use sfml_types::Vector2f;
 use csfml_graphics_sys as ffi;
+use csfml_system_sys::{sfBool, sfTrue};
+use ext::sf_bool_ext::SfBoolExt;
 
 // pub mod rc;
 
@@ -100,7 +102,7 @@ impl<'s> CustomShape<'s> {
             None
         } else {
             unsafe {
-                ffi::sfShape_setTexture(sp, texture.raw(), sfBool::SFTRUE);
+                ffi::sfShape_setTexture(sp, texture.raw(), sfTrue);
             }
             Some(CustomShape {
                     shape:     sp,
@@ -137,7 +139,7 @@ impl<'s> CustomShape<'s> {
     pub fn disable_texture(&mut self) {
         self.texture = None;
         unsafe {
-            ffi::sfShape_setTexture(self.shape, ptr::null_mut(), sfBool::SFTRUE)
+            ffi::sfShape_setTexture(self.shape, ptr::null_mut(), sfTrue)
         }
     }
 

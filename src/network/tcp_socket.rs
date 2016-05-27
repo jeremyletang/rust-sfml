@@ -32,8 +32,9 @@ use raw_conv::{Raw, FromRaw};
 use network::{IpAddress, Packet, SocketStatus};
 use system::Time;
 
-use sfml_types::sfBool;
+use csfml_system_sys::sfBool;
 use csfml_network_sys as ffi;
+use ext::sf_bool_ext::SfBoolExt;
 
 /// Specialized socket using the TCP protocol
 pub struct TcpSocket {

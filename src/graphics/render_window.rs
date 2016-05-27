@@ -39,10 +39,11 @@ use graphics::{Drawable, Color, CircleShape, RectangleShape, Text, Sprite, Verte
                RenderStates, View, Image, IntRect, RenderTarget,
                Vertex, PrimitiveType, ConvexShape, CustomShape};
 
-use sfml_types::sfBool;
+use csfml_system_sys::sfBool;
 use csfml_graphics_sys as ffi;
 use std::marker::PhantomData;
 use ext;
+use ext::sf_bool_ext::SfBoolExt;
 
 /// Window that can serve as a target for 2D drawing.
 ///

@@ -42,6 +42,7 @@ use csfml_system_sys as sys_ffi;
 
 use std::io::{Read, Seek};
 use inputstream::InputStream;
+use ext::sf_bool_ext::SfBoolExt;
 
 // pub mod rc;
 

@@ -24,6 +24,7 @@
 
 use libc::c_int;
 use csfml_window_sys as ffi;
+use ext::sf_bool_ext::SfBoolExt;
 
 /// Key codes known to SFML.
 #[repr(i64)]

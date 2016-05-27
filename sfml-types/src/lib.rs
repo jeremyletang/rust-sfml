@@ -29,28 +29,3 @@ mod rect;
 pub use vector2::*;
 pub use vector3::*;
 pub use rect::{Rect, FloatRect, IntRect};
-
-#[repr(C)]
-#[derive(PartialEq, Eq, Clone, Copy)]
-pub enum sfBool {
-    SFFALSE = 0,
-    SFTRUE = 1
-}
-
-impl sfBool {
-    #[inline(always)]
-    pub fn to_bool(&self) -> bool {
-        match *self {
-            sfBool::SFFALSE => false,
-            sfBool::SFTRUE => true
-        }
-    }
-
-    #[inline(always)]
-    pub fn from_bool(b: bool) -> sfBool {
-        match b {
-            true => sfBool::SFTRUE,
-            false => sfBool::SFFALSE
-        }
-    }
-}

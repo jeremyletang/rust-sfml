@@ -37,8 +37,9 @@ use sfml_types::Vector2u;
 use inputstream::InputStream;
 use window::Window;
 
-use sfml_types::sfBool;
+use csfml_system_sys::sfBool;
 use csfml_graphics_sys as ffi;
+use ext::sf_bool_ext::SfBoolExt;
 
 /// Image used for drawing
 ///

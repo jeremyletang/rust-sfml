@@ -26,8 +26,9 @@
 //!
 //! Class holding a valid drawing context.
 
-use sfml_types::sfBool;
+use csfml_system_sys::sfBool;
 use csfml_window_sys as ffi;
+use ext::sf_bool_ext::SfBoolExt;
 
 /// Drawing context
 ///

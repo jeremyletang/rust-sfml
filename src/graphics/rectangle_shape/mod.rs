@@ -32,8 +32,9 @@ use sfml_types::Vector2f;
 use graphics::{Drawable, Shape, Transformable, FloatRect, IntRect, Color, Texture,
                RenderTarget, Transform, RenderStates};
 
-use sfml_types::sfBool;
+use csfml_system_sys::{sfBool, sfTrue};
 use csfml_graphics_sys as ffi;
+use ext::sf_bool_ext::SfBoolExt;
 
 // pub mod rc;
 
@@ -70,7 +71,7 @@ impl<'s> RectangleShape<'s> {
             unsafe {
                 ffi::sfRectangleShape_setTexture(rectangle,
                                                  texture.raw(),
-                                                 sfBool::SFTRUE);
+                                                 sfTrue);
             }
             Some(RectangleShape {
                     rectangle_shape: rectangle,
@@ -428,7 +429,7 @@ impl<'s> Shape<'s> for RectangleShape<'s> {
         unsafe {
             ffi::sfRectangleShape_setTexture(self.rectangle_shape,
                                              ptr::null_mut(),
-                                             sfBool::SFTRUE)
+                                             sfTrue)
         }
     }
 

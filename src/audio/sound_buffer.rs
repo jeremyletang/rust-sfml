@@ -32,6 +32,7 @@ use raw_conv::{Raw, FromRaw};
 use system::Time;
 
 use csfml_audio_sys as ffi;
+use ext::sf_bool_ext::SfBoolExt;
 
 /// Storage of audio sample
 ///

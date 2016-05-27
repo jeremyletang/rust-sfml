@@ -34,6 +34,7 @@ use network::IpAddress;
 use system::Time;
 
 use csfml_network_sys as ffi;
+use ext::sf_bool_ext::SfBoolExt;
 
 /// The differents FTP modes availables.
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]

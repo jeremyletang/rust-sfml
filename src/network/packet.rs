@@ -30,8 +30,9 @@ use std::str;
 
 use raw_conv::{Raw, FromRaw};
 
-use sfml_types::sfBool;
+use csfml_system_sys::sfBool;
 use csfml_network_sys as ffi;
+use ext::sf_bool_ext::SfBoolExt;
 
 /// Utility class to build blocks of data to transfer over the network.
 pub struct Packet {

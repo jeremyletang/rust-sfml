@@ -33,6 +33,7 @@ use raw_conv::FromRaw;
 use audio::sound_buffer::SoundBuffer;
 
 use csfml_audio_sys as ffi;
+use ext::sf_bool_ext::SfBoolExt;
 
 /// Store captured audio data in sound Buffer
 ///

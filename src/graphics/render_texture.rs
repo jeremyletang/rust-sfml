@@ -32,8 +32,9 @@ use graphics::{Drawable, View, Color, IntRect, Texture, CircleShape, RectangleSh
                RenderStates, Sprite, ConvexShape, VertexArray,
                RenderTarget, Vertex, PrimitiveType, CustomShape};
 
-use sfml_types::sfBool;
+use csfml_system_sys::sfBool;
 use csfml_graphics_sys as ffi;
+use ext::sf_bool_ext::SfBoolExt;
 
 /// Target for off-screen 2D rendering into a texture
 pub struct RenderTexture {

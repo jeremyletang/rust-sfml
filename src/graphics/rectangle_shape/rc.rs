@@ -33,7 +33,7 @@ use sfml_types::Vector2f;
 use graphics::{FloatRect, IntRect, Color, Texture,
                RenderTarget, Transform, rc, RenderStates};
 
-use sfml_types::sfBool;
+use csfml_system_sys::sfBool;
 use ffi::graphics::rectangle_shape as ffi;
 
 /// Specialized shape representing a rectangle
@@ -70,7 +70,7 @@ impl RectangleShape {
             unsafe {
                 ffi::sfRectangleShape_setTexture(rectangle,
                                                  (*texture).borrow().unwrap(),
-                                                 sfBool::SFTRUE);
+                                                 sfTrue);
             }
             Some(RectangleShape {
                     rectangle_shape: rectangle,
@@ -412,7 +412,7 @@ impl RectangleShape {
         unsafe {
             ffi::sfRectangleShape_setTexture(self.rectangle_shape,
                                              ptr::null_mut(),
-                                             sfBool::SFTRUE)
+                                             sfTrue)
         }
     }
 

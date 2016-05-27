@@ -29,8 +29,8 @@ extern crate csfml_system_sys;
 extern crate sfml_types;
 
 use libc::{c_char, size_t, c_uchar, c_uint, c_int, c_float};
-use sfml_types::{sfBool, Vector3f};
-use csfml_system_sys::{sfTime, sfInputStream};
+use sfml_types::Vector3f;
+use csfml_system_sys::*;
 
 extern "C" {
     pub fn sfListener_setGlobalVolume(volume: f32);

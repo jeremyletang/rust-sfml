@@ -33,7 +33,7 @@ use graphics::{RenderTarget, rc, Texture, Color,
                Transform, IntRect, FloatRect, RenderStates};
 use sfml_types::Vector2f;
 
-use sfml_types::sfBool;
+use csfml_system_sys::sfBool;
 use ffi::graphics::shape as ffi;
 
 struct WrapObj {
@@ -102,7 +102,7 @@ impl Shape {
             unsafe {
                 ffi::sfShape_setTexture(sp,
                                         (*texture).borrow().unwrap(),
-                                        sfBool::SFTRUE);
+                                        sfTrue);
             }
             Some(Shape {
                     shape: sp,
@@ -372,7 +372,7 @@ impl Shape {
     pub fn disable_texture(&mut self) {
         self.texture = None;
         unsafe {
-            ffi::sfShape_setTexture(self.shape, ptr::null_mut(), sfBool::SFTRUE)
+            ffi::sfShape_setTexture(self.shape, ptr::null_mut(), sfTrue)
         }
     }
 

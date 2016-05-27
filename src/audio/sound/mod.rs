@@ -34,8 +34,9 @@ use system::Time;
 use sfml_types::Vector3f;
 use raw_conv::{Raw, FromRaw};
 
-use sfml_types::sfBool;
+use csfml_system_sys::sfBool;
 use csfml_audio_sys as ffi;
+use ext::sf_bool_ext::SfBoolExt;
 
 pub mod rc;
 

@@ -31,8 +31,9 @@ use std::vec::Vec;
 use raw_conv::{Raw, FromRaw};
 use network::{Packet, IpAddress, SocketStatus};
 
-use sfml_types::sfBool;
+use csfml_system_sys::sfBool;
 use csfml_network_sys as ffi;
+use ext::sf_bool_ext::SfBoolExt;
 
 /// Specialized socket using the UDP protocol.
 pub struct UdpSocket {

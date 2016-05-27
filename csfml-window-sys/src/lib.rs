@@ -29,7 +29,8 @@ extern crate sfml_types;
 extern crate csfml_system_sys;
 
 use libc::{c_uint, c_float, c_char, c_int, size_t};
-use sfml_types::{sfBool, Vector2i, Vector2u};
+use sfml_types::{Vector2i, Vector2u};
+use csfml_system_sys::*;
 
 pub enum sfWindow {}
 
