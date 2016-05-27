@@ -29,12 +29,12 @@
 use libc::c_float;
 use std::mem;
 
-use audio::{SoundStatus, SoundBuffer, SoundSource};
+use audio::{SoundStatus, SoundBufferView, SoundSource};
 use system::Time;
 use sfml_types::Vector3f;
 use raw_conv::{Raw, FromRaw};
 
-use csfml_system_sys::sfBool;
+use csfml_system_sys::{sfBool, sfVector3f};
 use csfml_audio_sys as ffi;
 use ext::sf_bool_ext::SfBoolExt;
 
@@ -45,7 +45,7 @@ pub mod rc;
 /// Regular sound that can be played in the audio environment.
 pub struct Sound<'s> {
     sound: *mut ffi::sfSound,
-    buffer: Option<&'s SoundBuffer>
+    buffer: Option<SoundBufferView<'s>>
 }
 
 impl<'s> Sound<'s> {
@@ -68,7 +68,7 @@ impl<'s> Sound<'s> {
     /// Create a new Sound
     ///
     /// Return Some(Sound) or None
-    pub fn new_with_buffer(buffer: &'s SoundBuffer) -> Option<Sound<'s>> {
+    pub fn new_with_buffer(buffer: SoundBufferView<'s>) -> Option<Sound<'s>> {
         let s = unsafe {ffi::sfSound_create()};
         if s.is_null() {
             None
@@ -161,7 +161,7 @@ impl<'s> Sound<'s> {
     ///
     /// # Arguments
     /// * buffer - Sound buffer to attach to the sound
-    pub fn set_buffer(&mut self, buffer: &'s SoundBuffer) {
+    pub fn set_buffer(&mut self, buffer: SoundBufferView<'s>) {
         self.buffer = Some(buffer);
         unsafe {
             ffi::sfSound_setBuffer(self.sound, buffer.raw())
@@ -171,7 +171,7 @@ impl<'s> Sound<'s> {
     /// Get the audio buffer attached to a sound
     ///
     /// Return an option to Sound buffer attached to the sound or None
-    pub fn get_buffer(&self) -> Option<&'s SoundBuffer> {
+    pub fn get_buffer(&self) -> Option<SoundBufferView<'s>> {
         self.buffer
     }
 }
@@ -226,7 +226,7 @@ impl<'s> SoundSource for Sound<'s> {
     /// * position - Position of the sound in the scene
     fn set_position(&mut self, position: &Vector3f) {
         unsafe {
-            ffi::sfSound_setPosition(self.sound, *position)
+            ffi::sfSound_setPosition(self.sound, position.raw())
         }
     }
 
@@ -242,7 +242,7 @@ impl<'s> SoundSource for Sound<'s> {
     /// * z - Z coordinate of the position of the sound in the scene
     fn set_position3f(&mut self, x: f32, y: f32, z: f32) {
         unsafe {
-            ffi::sfSound_setPosition(self.sound, Vector3f::new(x, y, z))
+            ffi::sfSound_setPosition(self.sound, sfVector3f{x: x, y: y, z: z})
         }
     }
 
@@ -317,7 +317,7 @@ impl<'s> SoundSource for Sound<'s> {
     /// Return the position of the sound in the world
     fn get_position(&self) -> Vector3f {
         unsafe {
-            ffi::sfSound_getPosition(self.sound)
+            Vector3f::from_raw(ffi::sfSound_getPosition(self.sound))
         }
     }
 

@@ -38,3 +38,25 @@ pub trait RawMut {
 pub trait FromRaw: Raw {
     fn from_raw(raw: Self::Raw) -> Self;
 }
+
+impl Raw for ::sfml_types::Vector3f {
+    type Raw = ::csfml_system_sys::sfVector3f;
+
+    fn raw(&self) -> Self::Raw {
+        ::csfml_system_sys::sfVector3f {
+            x: self.x,
+            y: self.y,
+            z: self.z,
+        }
+    }
+}
+
+impl FromRaw for ::sfml_types::Vector3f {
+    fn from_raw(raw: Self::Raw) -> Self {
+        ::sfml_types::Vector3f {
+            x: raw.x,
+            y: raw.y,
+            z: raw.z,
+        }
+    }
+}

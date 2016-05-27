@@ -7,14 +7,15 @@ use std::io::Write;
 // Play a Sound
 fn play_sound() {
     let buffer = SoundBuffer::new("resources/canary.wav").unwrap();
+    let view = buffer.view();
 
     // Display sound informations
     println!("canary.wav :");
-    println!(" {} seconds", buffer.get_duration().as_seconds());
-    println!(" {} samples / sec", buffer.get_sample_rate());
-    println!(" {} channels", buffer.get_channel_count());
+    println!(" {} seconds", view.get_duration().as_seconds());
+    println!(" {} samples / sec", view.get_sample_rate());
+    println!(" {} channels", view.get_channel_count());
 
-    let mut sound = Sound::new_with_buffer(&buffer).unwrap();
+    let mut sound = Sound::new_with_buffer(view).unwrap();
     sound.play();
 
     while sound.get_status() == SoundStatus::Playing {

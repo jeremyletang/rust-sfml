@@ -33,41 +33,23 @@ use system::Time;
 
 use csfml_audio_sys as ffi;
 use ext::sf_bool_ext::SfBoolExt;
+use std::marker::PhantomData;
 
 /// Storage of audio sample
 ///
 /// A sound buffer holds the data of a sound, which is an array of audio samples.
 pub struct SoundBuffer {
     sound_buffer: *mut ffi::sfSoundBuffer,
-    dropable: bool
 }
 
-impl SoundBuffer {
-    /// Create a new sound buffer and load it from a file
-    ///
-    /// Here is a complete list of all the supported audio formats:
-    /// ogg, wav, flac, aiff, au, raw, paf, svx, nist, voc, ircam,
-    /// w64, mat4, mat5 pvf, htk, sds, avr, sd2, caf, wve, mpc2k, rf64.
-    ///
-    /// # Arguments
-    /// * filename - Path of the sound file to load
-    ///
-    /// Return an option to a SoundBuffer object or None.
-    pub fn new(filename: &str) -> Option<SoundBuffer> {
-        let c_str = CString::new(filename.as_bytes()).unwrap();
-        let sound_buffer: *mut ffi::sfSoundBuffer = unsafe {
-            ffi::sfSoundBuffer_createFromFile(c_str.as_ptr())
-        };
-        if sound_buffer.is_null() {
-            None
-        } else {
-            Some(SoundBuffer{
-                    sound_buffer: sound_buffer,
-                    dropable: true
-                })
-        }
-    }
+/// An immutable view into a `SoundBuffer`.
+#[derive(Clone, Copy)]
+pub struct SoundBufferView<'a> {
+    sound_buffer: *const ffi::sfSoundBuffer,
+    _borrow: PhantomData<&'a SoundBuffer>,
+}
 
+impl<'a> SoundBufferView<'a> {
     /// Save a sound buffer to an audio file
     ///
     /// Here is a complete list of all the supported audio formats:
@@ -128,6 +110,34 @@ impl SoundBuffer {
     }
 }
 
+impl SoundBuffer {
+    /// Create a new sound buffer and load it from a file
+    ///
+    /// Here is a complete list of all the supported audio formats:
+    /// ogg, wav, flac, aiff, au, raw, paf, svx, nist, voc, ircam,
+    /// w64, mat4, mat5 pvf, htk, sds, avr, sd2, caf, wve, mpc2k, rf64.
+    ///
+    /// # Arguments
+    /// * filename - Path of the sound file to load
+    ///
+    /// Return an option to a SoundBuffer object or None.
+    pub fn new(filename: &str) -> Option<SoundBuffer> {
+        let c_str = CString::new(filename.as_bytes()).unwrap();
+        let sound_buffer: *mut ffi::sfSoundBuffer = unsafe {
+            ffi::sfSoundBuffer_createFromFile(c_str.as_ptr())
+        };
+        if sound_buffer.is_null() {
+            None
+        } else {
+            Some(SoundBuffer{ sound_buffer: sound_buffer })
+        }
+    }
+    /// Get an immutable view into the contents of the `SoundBuffer`.
+    pub fn view(&self) -> SoundBufferView {
+        SoundBufferView::from_raw(self.sound_buffer)
+    }
+}
+
 impl Clone for SoundBuffer {
     fn clone(&self) -> Self {
         let sound_buffer = unsafe { ffi::sfSoundBuffer_copy(self.sound_buffer) };
@@ -136,7 +146,6 @@ impl Clone for SoundBuffer {
         } else {
             SoundBuffer {
                 sound_buffer: sound_buffer,
-                dropable: true
             }
         }
     }
@@ -149,11 +158,18 @@ impl Raw for SoundBuffer {
     }
 }
 
-impl FromRaw for SoundBuffer {
+impl<'a> Raw for SoundBufferView<'a> {
+    type Raw = *const ffi::sfSoundBuffer;
+    fn raw(&self) -> Self::Raw {
+        self.sound_buffer
+    }
+}
+
+impl<'a> FromRaw for SoundBufferView<'a> {
     fn from_raw(raw: Self::Raw) -> Self {
-        SoundBuffer {
+        SoundBufferView {
             sound_buffer: raw,
-            dropable: false,
+            _borrow: PhantomData,
         }
     }
 }
@@ -161,10 +177,8 @@ impl FromRaw for SoundBuffer {
 impl Drop for SoundBuffer {
     /// Destructor for class SoundBuffer. Destroy all the ressource.
     fn drop(&mut self) {
-        if self.dropable {
-            unsafe {
-                ffi::sfSoundBuffer_destroy(self.sound_buffer);
-            }
+        unsafe {
+            ffi::sfSoundBuffer_destroy(self.sound_buffer);
         }
     }
 }

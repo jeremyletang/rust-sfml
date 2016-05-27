@@ -26,7 +26,7 @@
 * Sounds, streaming (musics or custom sources), recording, spatialization
 */
 
-pub use audio::sound_buffer::SoundBuffer;
+pub use audio::sound_buffer::{SoundBuffer, SoundBufferView};
 pub use audio::sound_status::SoundStatus;
 pub use audio::music::Music;
 pub use audio::sound::Sound;
