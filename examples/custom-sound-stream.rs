@@ -24,7 +24,8 @@ impl SoundStream for BitMelody {
         (&mut self.buf[..], true)
     }
     fn seek(&mut self, offset: Time) {
-        println!("Seek called with offset {:?}", offset.as_milliseconds());
+        // Not exactly correct, but meh.
+        self.t = offset.as_milliseconds();
     }
 }
 
