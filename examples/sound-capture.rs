@@ -38,7 +38,7 @@ fn main() {
     recorder.stop();
 
     // Get the buffer containing the captured data
-    let buffer = recorder.get_buffer().unwrap();
+    let buffer = recorder.get_buffer();
 
     // Display captured sound informations
     println!("Sound informations :");
@@ -62,7 +62,7 @@ fn main() {
         // Save the buffer
         buffer.save_to_file(filename.trim());
     } else {
-        let mut sound = Sound::new_with_buffer(&buffer).unwrap();
+        let mut sound = Sound::new_with_buffer(buffer).unwrap();
 
         sound.play();
 

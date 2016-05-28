@@ -34,15 +34,16 @@ use std::ffi::CString;
 
 use raw_conv::{Raw, RawMut, FromRaw};
 use window::{ContextSettings, VideoMode, event, WindowStyle};
-use sfml_types::{Vector2f, Vector2i, Vector2u};
+use system::{Vector2f, Vector2i, Vector2u};
 use graphics::{Drawable, Color, CircleShape, RectangleShape, Text, Sprite, VertexArray,
-               RenderStates, View, Image, IntRect, RenderTarget,
+               RenderStates, View, ViewRef, Image, IntRect, RenderTarget,
                Vertex, PrimitiveType, ConvexShape, CustomShape};
 
-use sfml_types::sfBool;
+use csfml_system_sys::*;
 use csfml_graphics_sys as ffi;
 use std::marker::PhantomData;
 use ext;
+use ext::sf_bool_ext::SfBoolExt;
 
 /// Window that can serve as a target for 2D drawing.
 ///
@@ -195,7 +196,7 @@ impl RenderWindow {
     ///
     /// Return the event if an event was returned, or NoEvent if the event queue was empty
     pub fn poll_event(&mut self) -> event::Event {
-        let mut event = ::csfml_window_sys::sfEvent { data: [032; 6] };
+        let mut event = ::csfml_window_sys::sfEvent::default();
         let have_event = unsafe {
             ffi::sfRenderWindow_pollEvent(self.render_window, &mut event)
         }.to_bool();
@@ -218,7 +219,7 @@ impl RenderWindow {
     ///
     /// Return the event or NoEvent if an error has occured
     pub fn wait_event(&mut self) -> event::Event {
-        let mut event = ::csfml_window_sys::sfEvent { data: [032; 6] };
+        let mut event = ::csfml_window_sys::sfEvent::default();
         let have_event = unsafe {
             ffi::sfRenderWindow_waitEvent(self.render_window, &mut event)
         }.to_bool();
@@ -403,7 +404,7 @@ impl RenderWindow {
     ////
     pub fn get_position(&self) -> Vector2i {
         unsafe {
-            ffi::sfRenderWindow_getPosition(self.render_window)
+            Vector2i::from_raw(ffi::sfRenderWindow_getPosition(self.render_window))
         }
     }
 
@@ -418,7 +419,7 @@ impl RenderWindow {
     ////
     pub fn set_position(&mut self, position: &Vector2i) {
         unsafe {
-            ffi::sfRenderWindow_setPosition(self.render_window, *position)
+            ffi::sfRenderWindow_setPosition(self.render_window, position.raw())
         }
     }
 
@@ -431,7 +432,7 @@ impl RenderWindow {
     ////
     pub fn set_size(&mut self, size: &Vector2u) {
         unsafe {
-            ffi::sfRenderWindow_setSize(self.render_window, *size)
+            ffi::sfRenderWindow_setSize(self.render_window, size.raw())
         }
     }
 
@@ -444,7 +445,7 @@ impl RenderWindow {
     pub fn set_size2u(&mut self, size_x: u32, size_y: u32) {
         unsafe {
             ffi::sfRenderWindow_setSize(self.render_window,
-                                        Vector2u::new(size_x, size_y))
+                                        sfVector2u{x: size_x, y: size_y} )
         }
     }
 
@@ -457,7 +458,7 @@ impl RenderWindow {
     ////
     pub fn get_mouse_position(&self) -> Vector2i {
         unsafe {
-            ffi::sfMouse_getPositionRenderWindow(self.render_window)
+            Vector2i::from_raw(ffi::sfMouse_getPositionRenderWindow(self.render_window))
         }
     }
 
@@ -471,7 +472,7 @@ impl RenderWindow {
     ////
     pub fn set_mouse_position(&mut self, position: &Vector2i) {
         unsafe {
-            ffi::sfMouse_setPositionRenderWindow(*position, self.render_window)
+            ffi::sfMouse_setPositionRenderWindow(position.raw(), self.render_window)
         }
     }
 
@@ -565,9 +566,9 @@ impl RenderTarget for RenderWindow{
     ///
     /// Return the current active view
     ////
-    fn get_view(&self) -> View {
+    fn get_view(&self) -> ViewRef {
         unsafe{
-            View::from_raw(ffi::sfRenderWindow_getView(self.render_window))
+            ViewRef::from_raw(ffi::sfRenderWindow_getView(self.render_window))
         }
     }
 
@@ -575,9 +576,9 @@ impl RenderTarget for RenderWindow{
     ///
     /// Return the default view of the render window
     ////
-    fn get_default_view(&self) -> View {
+    fn get_default_view(&self) -> ViewRef {
         unsafe{
-            View::from_raw(ffi::sfRenderWindow_getDefaultView(self.render_window))
+            ViewRef::from_raw(ffi::sfRenderWindow_getDefaultView(self.render_window))
         }
     }
 
@@ -611,9 +612,9 @@ impl RenderTarget for RenderWindow{
                            point: &Vector2i,
                            view: &View) -> Vector2f {
         unsafe {
-            ffi::sfRenderWindow_mapPixelToCoords(self.render_window,
-                                                 *point,
-                                                 view.raw())
+            Vector2f::from_raw(ffi::sfRenderWindow_mapPixelToCoords(self.render_window,
+                                                 point.raw(),
+                                                 view.raw()))
         }
     }
 
@@ -644,9 +645,9 @@ impl RenderTarget for RenderWindow{
                                             point: &Vector2i) -> Vector2f {
         let view = unsafe {ffi::sfRenderWindow_getView(self.render_window)};
         unsafe {
-            ffi::sfRenderWindow_mapPixelToCoords(self.render_window,
-                                                 *point,
-                                                 view)
+            Vector2f::from_raw(ffi::sfRenderWindow_mapPixelToCoords(self.render_window,
+                                                 point.raw(),
+                                                 view))
         }
     }
 
@@ -673,9 +674,9 @@ impl RenderTarget for RenderWindow{
                                point: &Vector2f,
                                view: &View) -> Vector2i {
         unsafe {
-            ffi::sfRenderWindow_mapCoordsToPixel(self.render_window,
-                                                 *point,
-                                                 view.raw())
+            Vector2i::from_raw(ffi::sfRenderWindow_mapCoordsToPixel(self.render_window,
+                                                 point.raw(),
+                                                 view.raw()))
         }
     }
 
@@ -701,9 +702,9 @@ impl RenderTarget for RenderWindow{
         let curr_view =
             unsafe { ffi::sfRenderWindow_getView(self.render_window) };
         unsafe {
-            ffi::sfRenderWindow_mapCoordsToPixel(self.render_window,
-                                                 *point,
-                                                 curr_view)
+            Vector2i::from_raw(ffi::sfRenderWindow_mapCoordsToPixel(self.render_window,
+                                                 point.raw(),
+                                                 curr_view))
         }
     }
 
@@ -715,7 +716,7 @@ impl RenderTarget for RenderWindow{
     /// Return the viewport rectangle, expressed in pixels in the current target
     fn get_viewport(&self, view: &View) -> IntRect {
         unsafe {
-            ffi::sfRenderWindow_getViewport(self.render_window, view.raw())
+            IntRect::from_raw(ffi::sfRenderWindow_getViewport(self.render_window, view.raw()))
         }
     }
 
@@ -726,7 +727,7 @@ impl RenderTarget for RenderWindow{
     /// Return the size in pixels
     fn get_size(&self) -> Vector2u {
         unsafe {
-            ffi::sfRenderWindow_getSize(self.render_window)
+            Vector2u::from_raw(ffi::sfRenderWindow_getSize(self.render_window))
         }
     }
 
@@ -843,7 +844,7 @@ impl RenderTarget for RenderWindow{
                           ty: PrimitiveType,
                           rs: &mut RenderStates) {
 
-        let len = vertices.len() as u32;
+        let len = vertices.len();
         unsafe {
             ffi::sfRenderWindow_drawPrimitives(self.render_window,
                                                ::std::mem::transmute(&vertices[0]),
@@ -866,7 +867,7 @@ impl<'a> Iterator for Events<'a> {
     type Item = event::Event;
 
     fn next(&mut self) -> Option<event::Event> {
-        let mut event = ::csfml_window_sys::sfEvent { data: [032; 6] };
+        let mut event = ::csfml_window_sys::sfEvent::default();
         if unsafe { ffi::sfRenderWindow_pollEvent(self.render_window, &mut event) }.to_bool() {
             Some(ext::event::get_wrapped_event(&mut event))
         } else {

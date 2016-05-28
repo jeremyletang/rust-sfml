@@ -34,12 +34,13 @@ use std::io::{Read, Seek};
 
 use audio::{SoundStatus, SoundSource};
 use system::Time;
-use sfml_types::Vector3f;
+use system::Vector3f;
 use inputstream::InputStream;
 use raw_conv::{Raw, FromRaw};
 
-use sfml_types::sfBool;
+use csfml_system_sys::{sfBool, sfVector3f};
 use csfml_audio_sys as ffi;
+use ext::sf_bool_ext::SfBoolExt;
 
 /// Play Music
 ///
@@ -115,7 +116,7 @@ impl Music {
     ///
     /// Return Some(Music) or None
     pub fn new_from_memory(mem: &[u8]) -> Option<Music> {
-        let music_tmp = unsafe { ffi::sfMusic_createFromMemory(&mem[0], mem.len() as size_t) };
+        let music_tmp = unsafe { ffi::sfMusic_createFromMemory(mem.as_ptr() as *const _, mem.len() as size_t) };
         if music_tmp.is_null() {
             None
         } else {
@@ -277,7 +278,7 @@ impl SoundSource for Music {
     /// * position - Position of the music in the scene
     fn set_position(&mut self, position: &Vector3f) {
         unsafe {
-            ffi::sfMusic_setPosition(self.music, *position)
+            ffi::sfMusic_setPosition(self.music, position.raw())
         }
     }
 
@@ -293,7 +294,7 @@ impl SoundSource for Music {
     /// * z - Z coordinate of the position of the sound in the scene
     fn set_position3f(&mut self, x: f32, y: f32, z: f32) {
         unsafe {
-            ffi::sfMusic_setPosition(self.music, Vector3f::new(x, y, z))
+            ffi::sfMusic_setPosition(self.music, sfVector3f{x: x, y: y, z: z})
         }
     }
 
@@ -372,7 +373,7 @@ impl SoundSource for Music {
     /// Return the position of the music in the world
     fn get_position(&self) -> Vector3f {
         unsafe {
-            ffi::sfMusic_getPosition(self.music)
+            Vector3f::from_raw(ffi::sfMusic_getPosition(self.music))
         }
     }
 

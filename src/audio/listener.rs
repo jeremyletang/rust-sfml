@@ -26,8 +26,10 @@
 //!
 //! The audio listener is the point in the scene from where all the sounds are heard.
 
-use sfml_types::Vector3f;
+use system::Vector3f;
 use csfml_audio_sys as ffi;
+use raw_conv::{Raw, FromRaw};
+use csfml_system_sys::{sfVector3f};
 
 /// Change the global volume of all the sounds and musics
 ///
@@ -60,7 +62,7 @@ pub fn get_global_volume() -> f32 {
 /// * * position - the New position of the listener
 pub fn set_position(position: &Vector3f) {
     unsafe {
-        ffi::sfListener_setPosition(*position)
+        ffi::sfListener_setPosition(position.raw())
     }
 }
 
@@ -74,7 +76,7 @@ pub fn set_position(position: &Vector3f) {
 /// * z - the New position of the listener in z
 pub fn set_position3f(x: f32, y: f32, z: f32) {
     unsafe {
-        ffi::sfListener_setPosition(Vector3f::new(x, y, z))
+        ffi::sfListener_setPosition(sfVector3f { x: x, y: y, z: z})
     }
 }
 
@@ -83,7 +85,7 @@ pub fn set_position3f(x: f32, y: f32, z: f32) {
 /// Return the listener's position
 pub fn get_position() -> Vector3f {
     unsafe {
-        ffi::sfListener_getPosition()
+        Vector3f::from_raw(ffi::sfListener_getPosition())
     }
 }
 
@@ -98,7 +100,7 @@ pub fn get_position() -> Vector3f {
 /// * direction - New listener's orientation
 pub fn set_direction(direction: &Vector3f) {
     unsafe {
-        ffi::sfListener_setDirection(*direction)
+        ffi::sfListener_setDirection(direction.raw())
     }
 }
 
@@ -115,7 +117,7 @@ pub fn set_direction(direction: &Vector3f) {
 /// * z - Z coordinate of the listener's orientation
 pub fn set_direction3f(x: f32, y: f32, z: f32) {
     unsafe {
-        ffi::sfListener_setDirection(Vector3f::new(x, y, z))
+        ffi::sfListener_setDirection(sfVector3f{x: x, y: y, z: z})
     }
 }
 
@@ -124,6 +126,6 @@ pub fn set_direction3f(x: f32, y: f32, z: f32) {
 /// Return the listener's direction
 pub fn get_direction() -> Vector3f {
     unsafe {
-        ffi::sfListener_getDirection()
+        Vector3f::from_raw(ffi::sfListener_getDirection())
     }
 }

@@ -33,11 +33,12 @@ use std::cell::RefCell;
 
 use audio::{SoundStatus, SoundBuffer, SoundSource};
 use system::Time;
-use sfml_types::Vector3f;
+use system::Vector3f;
 use raw_conv::{Raw, FromRaw};
 
-use sfml_types::sfBool;
+use csfml_system_sys::{sfBool, sfVector3f};
 use csfml_audio_sys as ffi;
+use ext::sf_bool_ext::SfBoolExt;
 
 /// Play sounds.
 ///
@@ -216,7 +217,7 @@ impl SoundSource for Sound {
     /// * position - Position of the sound in the scene
     fn set_position(&mut self, position: &Vector3f) {
         unsafe {
-            ffi::sfSound_setPosition(self.sound, *position)
+            ffi::sfSound_setPosition(self.sound, position.raw())
         }
     }
 
@@ -232,7 +233,7 @@ impl SoundSource for Sound {
     /// * z - Z coordinate of the position of the sound in the scene
     fn set_position3f(&mut self, x: f32, y: f32, z: f32) {
         unsafe {
-            ffi::sfSound_setPosition(self.sound, Vector3f::new(x, y, z))
+            ffi::sfSound_setPosition(self.sound, sfVector3f{x: x, y: y, z: z})
         }
     }
 
@@ -307,7 +308,7 @@ impl SoundSource for Sound {
     /// Return the position of the sound in the world
     fn get_position(&self) -> Vector3f {
         unsafe {
-            ffi::sfSound_getPosition(self.sound)
+            Vector3f::from_raw(ffi::sfSound_getPosition(self.sound))
         }
     }
 

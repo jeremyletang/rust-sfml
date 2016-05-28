@@ -33,6 +33,7 @@ use std::vec::Vec;
 use raw_conv::{Raw, FromRaw};
 
 use csfml_window_sys as ffi;
+use ext::sf_bool_ext::SfBoolExt;
 
 /// `VideoMode` defines a video mode (width, height, bpp, frequency)
 ///
@@ -83,7 +84,7 @@ impl VideoMode {
         unsafe { ffi::sfVideoMode_isValid(ffi::sfVideoMode {
                     width: self.width as c_uint,
                     height: self.height as c_uint,
-                    bits_per_pixel: self.bits_per_pixel as c_uint
+                    bitsPerPixel: self.bits_per_pixel as c_uint
                 }) }.to_bool()
     }
 
@@ -95,7 +96,7 @@ impl VideoMode {
         VideoMode{
             width: mode.width as u32,
             height: mode.height as u32,
-            bits_per_pixel: mode.bits_per_pixel as u32
+            bits_per_pixel: mode.bitsPerPixel as u32
         }
     }
 
@@ -128,7 +129,7 @@ impl VideoMode {
         let mut ret_tab = Vec::with_capacity(size as usize);
 
         for sf_video_mode in tab_slice.iter() {
-            ret_tab.push(VideoMode::from_raw(sf_video_mode.clone()));
+            ret_tab.push(VideoMode::from_raw(*sf_video_mode));
         }
 
         Some(ret_tab)
@@ -141,7 +142,7 @@ impl Raw for VideoMode {
         ffi::sfVideoMode{
             width: self.width as c_uint,
             height: self.height as c_uint,
-            bits_per_pixel: self.bits_per_pixel as c_uint
+            bitsPerPixel: self.bits_per_pixel as c_uint
         }
     }
 }
@@ -151,7 +152,7 @@ impl FromRaw for VideoMode {
         VideoMode{
             width: raw.width as u32,
             height: raw.height as u32,
-            bits_per_pixel: raw.bits_per_pixel as u32
+            bits_per_pixel: raw.bitsPerPixel as u32
         }
     }
 }

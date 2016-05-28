@@ -31,6 +31,8 @@
 use libc::c_uint;
 
 use csfml_window_sys as ffi;
+use ext::sf_bool_ext::SfBoolExt;
+use raw_conv::Raw;
 
 /// Maximum number of supported joysticks.
 pub const COUNT: u32  = 8;
@@ -58,6 +60,25 @@ pub enum Axis {
     PovX,
     /// The Y axis of the point-of-view hat.
     PovY
+}
+
+impl Raw for Axis {
+    type Raw = ffi::sfJoystickAxis;
+    fn raw(&self) -> Self::Raw {
+        use self::Axis::*;
+        use csfml_window_sys::sfJoystickAxis::*;
+
+        match *self {
+            X => sfJoystickX,
+            Y => sfJoystickY,
+            Z => sfJoystickZ,
+            R => sfJoystickR,
+            U => sfJoystickU,
+            V => sfJoystickV,
+            PovX => sfJoystickPovX,
+            PovY => sfJoystickPovY,
+        }
+    }
 }
 
 /**
@@ -101,7 +122,7 @@ pub fn button_count(joystick: u32) -> u32 {
  */
 pub fn has_axis(joystick: u32, axis: Axis) -> bool {
     unsafe {
-        ffi::sfJoystick_hasAxis(joystick as c_uint, axis as c_uint).to_bool()
+        ffi::sfJoystick_hasAxis(joystick as c_uint, axis.raw()).to_bool()
     }
 }
 
@@ -136,7 +157,7 @@ pub fn is_button_pressed(joystick: u32, button: u32) -> bool {
  */
 pub fn get_axis_position(joystick: u32, axis: Axis) -> f32 {
     unsafe {
-        ffi::sfJoystick_getAxisPosition(joystick as c_uint, axis as c_uint) as f32
+        ffi::sfJoystick_getAxisPosition(joystick as c_uint, axis.raw()) as f32
     }
 }
 

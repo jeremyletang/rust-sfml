@@ -29,8 +29,9 @@
 
 use libc::c_float;
 
-use sfml_types::Vector2f;
+use system::Vector2f;
 use graphics::FloatRect;
+use raw_conv::{Raw, FromRaw};
 
 use csfml_graphics_sys as ffi;
 
@@ -74,7 +75,7 @@ impl Transform {
                  0.,0.,0.,0.,
                  0.,0.,0.,0.,
                  0.,0.,0.,0.];
-            ffi::sfTransform_getMatrix(&mut self.0, matrix.as_ptr() as *mut f32);
+            ffi::sfTransform_getMatrix(&self.0, matrix.as_ptr() as *mut f32);
             matrix
         }
     }
@@ -96,7 +97,7 @@ impl Transform {
     /// Return the inverse matrix
     pub fn get_inverse(&mut self) -> Transform {
         unsafe {
-            Transform(ffi::sfTransform_getInverse(&mut self.0))
+            Transform(ffi::sfTransform_getInverse(&self.0))
         }
     }
 
@@ -110,7 +111,7 @@ impl Transform {
     /// * other - Transform to combine to transform
     pub fn combine(&mut self, other: &mut Transform) {
         unsafe {
-            ffi::sfTransform_combine(&mut self.0, &mut other.0)
+            ffi::sfTransform_combine(&mut self.0, &other.0)
         }
     }
 
@@ -203,7 +204,7 @@ impl Transform {
     /// Return a transformed point
     pub fn transform_point(&mut self, point: &Vector2f) -> Vector2f {
         unsafe {
-            ffi::sfTransform_transformPoint(&mut self.0, *point)
+            Vector2f::from_raw(ffi::sfTransform_transformPoint(&self.0, point.raw()))
         }
     }
 
@@ -221,7 +222,7 @@ impl Transform {
     /// Return the transformed rectangle
     pub fn transform_rect(&mut self, rectangle: &FloatRect) -> FloatRect {
         unsafe {
-            ffi::sfTransform_transformRect(&mut self.0, *rectangle)
+            FloatRect::from_raw(ffi::sfTransform_transformRect(&self.0, rectangle.raw()))
         }
     }
 }

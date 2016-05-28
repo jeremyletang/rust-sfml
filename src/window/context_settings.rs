@@ -50,7 +50,7 @@ impl ContextSettings {
 
     /// Sets the antialiasing level.
     pub fn antialiasing(&mut self, level: u32) -> &mut Self {
-        self.0.antialiasing_level = level;
+        self.0.antialiasingLevel = level;
         self
     }
 }
@@ -67,12 +67,12 @@ impl ContextSettings {
 impl Default for ContextSettings {
     fn default() -> ContextSettings {
         ContextSettings(ffi::sfContextSettings{
-            depth_bits: 0,
-            stencil_bits: 0,
-            antialiasing_level: 0,
-            major_version: 2,
-            minor_version: 0,
-            attribute_flags: CONTEXT_DEFAULT,
+            depthBits: 0,
+            stencilBits: 0,
+            antialiasingLevel: 0,
+            majorVersion: 2,
+            minorVersion: 0,
+            attributeFlags: CONTEXT_DEFAULT,
         })
     }
 }

@@ -25,6 +25,7 @@
 //! Utility Class providing 2 dimensional vectors for i32, u32, and f32.
 
 use std::ops::{Add, Sub, Mul, Div};
+use raw_conv::{Raw, FromRaw};
 
 /// Implementation of Vector2i
 #[repr(C)]
@@ -155,7 +156,7 @@ pub trait ToVec {
 
 impl ToVec for Vector2f {
     fn to_vector2f(&self) -> Vector2f {
-        self.clone()
+        *self
     }
 
     fn to_vector2i(&self) -> Vector2i {
@@ -182,7 +183,7 @@ impl ToVec for Vector2i {
     }
 
     fn to_vector2i(&self) -> Vector2i {
-         self.clone()
+         *self
     }
 
     fn to_vector2u(&self) -> Vector2u {
@@ -209,6 +210,66 @@ impl ToVec for Vector2u {
     }
 
     fn to_vector2u(&self) -> Vector2u {
-        self.clone()
+        *self
+    }
+}
+
+impl Raw for Vector2i {
+    type Raw = ::csfml_system_sys::sfVector2i;
+
+    fn raw(&self) -> Self::Raw {
+        ::csfml_system_sys::sfVector2i {
+            x: self.x,
+            y: self.y,
+        }
+    }
+}
+
+impl FromRaw for Vector2i {
+    fn from_raw(raw: Self::Raw) -> Self {
+        Vector2i {
+            x: raw.x,
+            y: raw.y,
+        }
+    }
+}
+
+impl Raw for Vector2u {
+    type Raw = ::csfml_system_sys::sfVector2u;
+
+    fn raw(&self) -> Self::Raw {
+        ::csfml_system_sys::sfVector2u {
+            x: self.x,
+            y: self.y,
+        }
+    }
+}
+
+impl FromRaw for Vector2u {
+    fn from_raw(raw: Self::Raw) -> Self {
+        Vector2u {
+            x: raw.x,
+            y: raw.y,
+        }
+    }
+}
+
+impl Raw for Vector2f {
+    type Raw = ::csfml_system_sys::sfVector2f;
+
+    fn raw(&self) -> Self::Raw {
+        ::csfml_system_sys::sfVector2f {
+            x: self.x,
+            y: self.y,
+        }
+    }
+}
+
+impl FromRaw for Vector2f {
+    fn from_raw(raw: Self::Raw) -> Self {
+        Vector2f {
+            x: raw.x,
+            y: raw.y,
+        }
     }
 }

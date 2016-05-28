@@ -34,14 +34,15 @@ use std::ffi::CString;
 
 use raw_conv::Raw;
 use graphics::{Texture, Color};
-use sfml_types::Vector2f;
-use sfml_types::Vector3f;
+use system::Vector2f;
+use system::Vector3f;
 
 use csfml_graphics_sys as ffi;
 use csfml_system_sys as sys_ffi;
 
 use std::io::{Read, Seek};
 use inputstream::InputStream;
+use ext::sf_bool_ext::SfBoolExt;
 
 // pub mod rc;
 
@@ -347,7 +348,7 @@ impl<'s> Shader<'s> {
         unsafe {
             ffi::sfShader_setVector2Parameter(self.shader,
                                               c_str.as_ptr(),
-                                              *vector)
+                                              vector.raw())
         }
     }
 
@@ -367,7 +368,7 @@ impl<'s> Shader<'s> {
         unsafe {
             ffi::sfShader_setVector3Parameter(self.shader,
                                               c_str.as_ptr(),
-                                              *vector)
+                                              vector.raw())
         }
     }
 

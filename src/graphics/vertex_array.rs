@@ -24,18 +24,18 @@
 
 //! Define a set of one or more 2D primitives
 
-use libc::c_uint;
 use std::mem;
 use std::ops::Index;
 
-use raw_conv::Raw;
+use raw_conv::{Raw, FromRaw};
 use graphics::{Drawable, Vertex, FloatRect, primitive_type, PrimitiveType, RenderTarget, RenderStates};
 
-use csfml_graphics_sys as ffi;
+use csfml_graphics_sys::*;
+use csfml_graphics_sys::sfPrimitiveType::*;
 
 /// Define a set of one or more 2D primitives
 pub struct VertexArray {
-    vertex_array: *mut ffi::sfVertexArray
+    vertex_array: *mut sfVertexArray
 }
 
 /// An iterator over the vertice of a `VertexArray`
@@ -49,7 +49,7 @@ impl VertexArray {
     ///
     /// Return Some(VertexArray) or None
     pub fn new() -> Option<VertexArray> {
-        let ver = unsafe { ffi::sfVertexArray_create() };
+        let ver = unsafe { sfVertexArray_create() };
         if ver.is_null() {
             None
         } else {
@@ -68,7 +68,7 @@ impl VertexArray {
     /// Return Some(VertexArray) or None
     pub fn new_init(primitive_type: PrimitiveType,
                     vertex_count: u32) -> Option<VertexArray> {
-        let ver = unsafe { ffi::sfVertexArray_create() };
+        let ver = unsafe { sfVertexArray_create() };
         if ver.is_null() {
             None
         } else {
@@ -88,7 +88,7 @@ impl VertexArray {
     ///
     /// Return Some(VertexArray) or None
     pub fn clone_opt(&self) -> Option<VertexArray> {
-        let ver = unsafe { ffi::sfVertexArray_copy(self.vertex_array) };
+        let ver = unsafe { sfVertexArray_copy(self.vertex_array) };
         if ver.is_null() {
             None
         } else {
@@ -103,7 +103,7 @@ impl VertexArray {
     /// Return the number of vertices in the array
     pub fn get_vertex_count(&self) -> u32 {
         unsafe {
-            ffi::sfVertexArray_getVertexCount(self.vertex_array) as u32
+            sfVertexArray_getVertexCount(self.vertex_array) as u32
         }
     }
 
@@ -115,7 +115,7 @@ impl VertexArray {
     /// reallocating all the memory.
     pub fn clear(&mut self) {
         unsafe {
-            ffi::sfVertexArray_clear(self.vertex_array)
+            sfVertexArray_clear(self.vertex_array)
         }
     }
 
@@ -131,7 +131,7 @@ impl VertexArray {
     /// * vertex_count - New size of the array (number of vertices)
     pub fn resize(&mut self, vertex_count: u32) {
         unsafe {
-            ffi::sfVertexArray_resize(self.vertex_array, vertex_count as c_uint)
+            sfVertexArray_resize(self.vertex_array, vertex_count as usize)
         }
     }
 
@@ -141,7 +141,7 @@ impl VertexArray {
     /// * vertex - Vertex to add
     pub fn append(&mut self, vertex: &Vertex) {
         unsafe {
-            ffi::sfVertexArray_append(self.vertex_array, vertex.0)
+            sfVertexArray_append(self.vertex_array, vertex.0)
         }
     }
 
@@ -153,7 +153,7 @@ impl VertexArray {
     /// Return the bounding rectangle of the vertex array
     pub fn get_bounds(&self) -> FloatRect {
         unsafe {
-            ffi::sfVertexArray_getBounds(self.vertex_array)
+            FloatRect::from_raw(sfVertexArray_getBounds(self.vertex_array))
         }
     }
 
@@ -173,26 +173,26 @@ impl VertexArray {
         unsafe {
             match primitive_type {
                 primitive_type::Points              =>
-                    ffi::sfVertexArray_setPrimitiveType(self.vertex_array,
-                                                        ffi::sfPoints),
+                    sfVertexArray_setPrimitiveType(self.vertex_array,
+                                                        sfPoints),
                 primitive_type::Lines               =>
-                    ffi::sfVertexArray_setPrimitiveType(self.vertex_array,
-                                                        ffi::sfLines),
+                    sfVertexArray_setPrimitiveType(self.vertex_array,
+                                                        sfLines),
                 primitive_type::LinesStrip          =>
-                    ffi::sfVertexArray_setPrimitiveType(self.vertex_array,
-                                                        ffi::sfLinesStrip),
+                    sfVertexArray_setPrimitiveType(self.vertex_array,
+                                                        sfLinesStrip),
                 primitive_type::Triangles           =>
-                    ffi::sfVertexArray_setPrimitiveType(self.vertex_array,
-                                                        ffi::sfTriangles),
+                    sfVertexArray_setPrimitiveType(self.vertex_array,
+                                                        sfTriangles),
                 primitive_type::TrianglesStrip      =>
-                    ffi::sfVertexArray_setPrimitiveType(self.vertex_array,
-                                                        ffi::sfTrianglesStrip),
+                    sfVertexArray_setPrimitiveType(self.vertex_array,
+                                                        sfTrianglesStrip),
                 primitive_type::TrianglesFan        =>
-                    ffi::sfVertexArray_setPrimitiveType(self.vertex_array,
-                                                        ffi::sfTrianglesFan),
+                    sfVertexArray_setPrimitiveType(self.vertex_array,
+                                                        sfTrianglesFan),
                 primitive_type::Quads               =>
-                    ffi::sfVertexArray_setPrimitiveType(self.vertex_array,
-                                                        ffi::sfQuads)
+                    sfVertexArray_setPrimitiveType(self.vertex_array,
+                                                        sfQuads)
             }
         }
     }
@@ -201,14 +201,14 @@ impl VertexArray {
     ///
     /// Return the primitive type
     pub fn get_primitive_type(&self) -> PrimitiveType {
-        match unsafe { ffi::sfVertexArray_getPrimitiveType(self.vertex_array) } {
-            ffi::sfPoints             => primitive_type::Points,
-            ffi::sfLines              => primitive_type::Lines,
-            ffi::sfLinesStrip         => primitive_type::LinesStrip,
-            ffi::sfTriangles          => primitive_type::Triangles,
-            ffi::sfTrianglesStrip     => primitive_type::TrianglesStrip,
-            ffi::sfTrianglesFan       => primitive_type::TrianglesFan,
-            ffi::sfQuads              => primitive_type::Quads,
+        match unsafe { sfVertexArray_getPrimitiveType(self.vertex_array) } {
+            sfPoints             => primitive_type::Points,
+            sfLines              => primitive_type::Lines,
+            sfLinesStrip         => primitive_type::LinesStrip,
+            sfTriangles          => primitive_type::Triangles,
+            sfTrianglesStrip     => primitive_type::TrianglesStrip,
+            sfTrianglesFan       => primitive_type::TrianglesFan,
+            sfQuads              => primitive_type::Quads,
         }
     }
 
@@ -224,7 +224,7 @@ impl VertexArray {
     /// Return a mutable reference to the index-th vertex
     pub fn get_vertex(&self, index: u32) -> &mut Vertex {
         unsafe {
-            &mut *(ffi::sfVertexArray_getVertex(self.vertex_array, index as c_uint) as *mut Vertex)
+            &mut *(sfVertexArray_getVertex(self.vertex_array, index as usize) as *mut Vertex)
         }
     }
 
@@ -240,7 +240,7 @@ impl VertexArray {
 impl Clone for VertexArray {
     /// Return a new Font or panic! if there is not enough memory
     fn clone(&self) -> VertexArray {
-        let ver = unsafe { ffi::sfVertexArray_copy(self.vertex_array) };
+        let ver = unsafe { sfVertexArray_copy(self.vertex_array) };
         if ver.is_null() {
             panic!("Not enough memory to clone Font")
         } else {
@@ -256,14 +256,14 @@ impl<'a> Iterator for Vertices<'a> {
 
     fn next(&mut self) -> Option<&'a Vertex> {
         let point_count =
-            unsafe { ffi::sfVertexArray_getVertexCount(self.vertex_array.vertex_array) as u32 };
+            unsafe { sfVertexArray_getVertexCount(self.vertex_array.vertex_array) as u32 };
         if self.pos == point_count {
             None
         } else {
             self.pos += 1;
             unsafe {
-                mem::transmute(ffi::sfVertexArray_getVertex(self.vertex_array.vertex_array,
-                                                             self.pos as c_uint))
+                mem::transmute(sfVertexArray_getVertex(self.vertex_array.vertex_array,
+                                                             self.pos as usize))
             }
         }
     }
@@ -274,13 +274,13 @@ impl Index<u32> for VertexArray {
 
     fn index(&self, rhs: u32) -> &Vertex {
         unsafe {
-            &*(ffi::sfVertexArray_getVertex(self.vertex_array, rhs as c_uint) as *const Vertex)
+            &*(sfVertexArray_getVertex(self.vertex_array, rhs as usize) as *const Vertex)
         }
     }
 }
 
 impl Raw for VertexArray {
-    type Raw = *mut ffi::sfVertexArray;
+    type Raw = *mut sfVertexArray;
     fn raw(&self) -> Self::Raw {
         self.vertex_array
     }
@@ -297,7 +297,7 @@ impl Drawable for VertexArray {
 impl Drop for VertexArray {
     fn drop(&mut self) {
         unsafe {
-            ffi::sfVertexArray_destroy(self.vertex_array)
+            sfVertexArray_destroy(self.vertex_array)
         }
     }
 }

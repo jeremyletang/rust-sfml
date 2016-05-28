@@ -37,7 +37,7 @@ fn main() {
     // Load the sounds used in the game
     let ball_soundbuffer = SoundBuffer::new("resources/ball.wav").unwrap();
 
-    let mut ball_sound = Sound::new_with_buffer(&ball_soundbuffer).unwrap();
+    let mut ball_sound = Sound::new_with_buffer(ball_soundbuffer.view()).unwrap();
     ball_sound.set_volume(100.);
 
     // Create the left paddle

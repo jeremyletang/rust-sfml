@@ -29,14 +29,15 @@ use std::ffi::CString;
 use std::slice;
 
 use raw_conv::{Raw, FromRaw};
-use sfml_types::Vector2u;
+use system::Vector2u;
 use graphics::{Color, IntRect};
 
-use sfml_types::sfBool;
+use csfml_system_sys::sfBool;
 use csfml_graphics_sys as ffi;
 
 use std::io::{Read, Seek};
 use inputstream::InputStream;
+use ext::sf_bool_ext::SfBoolExt;
 
 /// Loading, manipulating and saving images.
 pub struct Image {
@@ -94,7 +95,7 @@ impl Image {
     ///
     /// Return Some(Image) or None
     pub fn new_from_memory(mem: &[u8]) -> Option<Image> {
-        let image = unsafe { ffi::sfImage_createFromMemory(&mem[0], mem.len() as size_t) };
+        let image = unsafe { ffi::sfImage_createFromMemory(mem.as_ptr() as *const _, mem.len() as size_t) };
         if image.is_null() {
             None
         } else {
@@ -215,7 +216,7 @@ impl Image {
     /// Return the size in pixels
     pub fn get_size(&self) -> Vector2u {
         unsafe {
-            ffi::sfImage_getSize(self.image)
+            Vector2u::from_raw(ffi::sfImage_getSize(self.image))
         }
     }
 
@@ -320,7 +321,7 @@ impl Image {
                                    source.raw(),
                                    dest_x as c_uint,
                                    dest_y as c_uint,
-                                   *source_rect,
+                                   source_rect.raw(),
                                    sfBool::from_bool(apply_alpha))
         }
     }

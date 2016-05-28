@@ -24,16 +24,14 @@
 
 //! Sound and musics statues
 
-use csfml_audio_sys as ffi;
-
 /// Enumeration of statuses for sounds and musics
-#[repr(i32)]
+#[repr(u32)]
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
 pub enum SoundStatus {
     /// Sound is not playing.
-    Stopped = ffi::SFSTOPPED as i32,
+    Stopped = 0,
     /// Sound is paused.
-    Paused = ffi::SFPAUSED as i32,
+    Paused = 1,
     /// Sound is playing.
-    Playing = ffi::SFPLAYING as i32
+    Playing = 2,
 }

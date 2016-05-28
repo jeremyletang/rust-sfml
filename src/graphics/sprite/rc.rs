@@ -34,9 +34,9 @@ use std::ptr;
 
 use graphics::{FloatRect, IntRect, Color, Texture,
                RenderTarget, Transform, rc, RenderStates};
-use sfml_types::Vector2f;
+use system::Vector2f;
 
-use sfml_types::sfBool;
+use csfml_system_sys::sfBool;
 use ffi::graphics::sprite as ffi;
 
 /// Drawable representation of a texture
@@ -75,7 +75,7 @@ impl Sprite {
             unsafe {
                 ffi::sfSprite_setTexture(sp,
                                          (*texture).borrow().unwrap(),
-                                         sfBool::SFTRUE);
+                                         sfTrue);
             }
             Some(Sprite {
                     sprite: sp,
@@ -169,7 +169,7 @@ impl Sprite {
     pub fn disable_texture(&mut self) {
         self.texture = None;
         unsafe {
-            ffi::sfSprite_setTexture(self.sprite, ptr::null_mut(), sfBool::SFTRUE)
+            ffi::sfSprite_setTexture(self.sprite, ptr::null_mut(), sfTrue)
         }
     }
 

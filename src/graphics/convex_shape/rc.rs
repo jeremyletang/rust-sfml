@@ -35,9 +35,9 @@ use libc::{c_float, c_uint};
 use std::ptr;
 
 use graphics::{Color, Texture, RenderTarget, FloatRect, IntRect, Transform, rc, RenderStates};
-use sfml_types::Vector2f;
+use system::Vector2f;
 
-use sfml_types::sfBool;
+use csfml_system_sys::sfBool;
 use ffi::graphics::convex_shape as ffi;
 
 /// Specialized shape representing a convex polygon
@@ -94,7 +94,7 @@ impl ConvexShape {
             None
         } else {
             unsafe {
-                ffi::sfConvexShape_setTexture(shape, (*texture).borrow().unwrap(), sfBool::SFTRUE);
+                ffi::sfConvexShape_setTexture(shape, (*texture).borrow().unwrap(), sfTrue);
                 ffi::sfConvexShape_setPointCount(shape, points_count as c_uint)
             }
             Some(ConvexShape {
@@ -394,7 +394,7 @@ impl ConvexShape {
         unsafe {
             ffi::sfConvexShape_setTexture(self.convex_shape,
                                           ptr::null_mut(),
-                                          sfBool::SFTRUE)
+                                          sfTrue)
         }
     }
 

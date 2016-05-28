@@ -33,11 +33,12 @@ use std::vec::Vec;
 use std::ffi::CString;
 use std::marker::PhantomData;
 
-use raw_conv::Raw;
+use raw_conv::{Raw, FromRaw};
 use window::{event, VideoMode, ContextSettings, WindowStyle};
-use sfml_types::{Vector2i, Vector2u};
+use system::{Vector2i, Vector2u};
+use csfml_system_sys::sfBool;
+use ext::sf_bool_ext::SfBoolExt;
 
-use sfml_types::sfBool;
 use csfml_window_sys as ffi;
 use ext;
 
@@ -149,7 +150,7 @@ impl Window {
     ///
     /// Return the event if an event was returned, or NoEvent if the event queue was empty
     pub fn poll_event(&mut self) -> event::Event {
-        let mut event = ffi::sfEvent { data: [032; 6] };
+        let mut event = ffi::sfEvent::default();
         let have_event = unsafe {
             ffi::sfWindow_pollEvent(self.window, &mut event).to_bool()
         };
@@ -172,7 +173,7 @@ impl Window {
     ///
     /// Return the event or NoEvent if an error has occured
     pub fn wait_event(&mut self) -> event::Event {
-        let mut event = ffi::sfEvent { data: [032; 6] };
+        let mut event = ffi::sfEvent::default();
         let have_event = unsafe {
             ffi::sfWindow_waitEvent(self.window, &mut event).to_bool()
         };
@@ -361,7 +362,7 @@ impl Window {
     /// Return the position in pixels
     pub fn get_position(&self) -> Vector2i {
         unsafe {
-            ffi::sfWindow_getPosition(self.window)
+            Vector2i::from_raw(ffi::sfWindow_getPosition(self.window))
         }
     }
 
@@ -375,7 +376,7 @@ impl Window {
     /// * position - New position of the window, in pixels
     pub fn set_position(&mut self, position: &Vector2i) {
         unsafe {
-            ffi::sfWindow_setPosition(self.window, *position)
+            ffi::sfWindow_setPosition(self.window, position.raw())
         }
     }
 
@@ -386,7 +387,7 @@ impl Window {
     /// Return the size in pixels
     pub fn get_size(&self) -> Vector2u {
         unsafe {
-            ffi::sfWindow_getSize(self.window)
+            Vector2u::from_raw(ffi::sfWindow_getSize(self.window))
         }
     }
 
@@ -396,7 +397,7 @@ impl Window {
     /// * size - New size, in pixels
     pub fn set_size(&mut self, size: &Vector2u) {
         unsafe {
-            ffi::sfWindow_setSize(self.window, *size)
+            ffi::sfWindow_setSize(self.window, size.raw())
         }
     }
 
@@ -410,7 +411,7 @@ impl Window {
     /// Return the position of the mouse cursor, relative to the given window
     pub fn get_mouse_position(&self) -> Vector2i {
         unsafe {
-            ffi::sfMouse_getPosition(self.window)
+            Vector2i::from_raw(ffi::sfMouse_getPosition(self.window))
         }
     }
 
@@ -424,7 +425,7 @@ impl Window {
     ///
     pub fn set_mouse_position(&mut self, position: &Vector2i) {
         unsafe {
-            ffi::sfMouse_setPosition(*position, self.window)
+            ffi::sfMouse_setPosition(position.raw(), self.window)
         }
     }
 }
@@ -440,7 +441,7 @@ impl<'a> Iterator for Events<'a> {
     type Item = event::Event;
 
     fn next(&mut self) -> Option<event::Event> {
-        let mut event = ffi::sfEvent { data: [032; 6] };
+        let mut event = ffi::sfEvent::default();
         if unsafe { ffi::sfWindow_pollEvent(self.window, &mut event) }.to_bool() {
             Some(ext::event::get_wrapped_event(&mut event))
         } else {
