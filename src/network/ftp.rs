@@ -38,124 +38,106 @@ use ext::sf_bool_ext::SfBoolExt;
 
 /// The differents FTP modes availables.
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
-#[repr(i32)]
+#[repr(u32)]
 pub enum TransferMode {
-    /// Ftp Binary Mod
+    /// Binary mode (file is transfered as a sequence of bytes)
     Binary = 0,
-    /// Ftp ASCII Mod
+    /// Text mode using ASCII encoding.
     Ascii = 1,
-    /// Ftp Ebcdic Mod
+    /// Text mode using EBCDIC encoding.
     Ebcdic = 2
 }
 
 /// The status and commands id's for FTP.
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
-#[repr(i32)]
+#[repr(u32)]
 pub enum Status {
-    // 1xx: the requested action is being initiated,
-    // expect another reply before proceeding with a new command
-
-    /// Restart marker reply
-    RestartMarkerReply          = ffi::RESTARTMARKERREPLY as i32,
-    /// Service ready in N minutes
-    ServiceReadySoon            = ffi::SERVICEREADYSOON as i32,
-    /// Data connection already opened, transfer starting
-    DataConnectionAlreadyOpened = ffi::DATACONNECTIONALREADYOPENED as i32,
-    /// File status ok, about to open data connection
-    OpeningDataConnection       = ffi::OPENINGDATACONNECTION as i32,
-
-    // 2xx: the requested action has been successfully completed
-
-    /// Command ok
-    Ok                          = ffi::sfFtpOk as i32,
-    /// Command not implemented
-    PointlessCommand            = ffi::POINTLESSCOMMAND as i32,
-    /// System status, or system help reply
-    SystemStatus                = ffi::SYSTEMSTATUS as i32,
-    /// Directory status
-    DirectoryStatus             = ffi::DIRECTORYSTATUS as i32,
-    /// File status
-    FileStatus                  = ffi::FILESTATUS as i32,
-    /// Help message
-    HelpMessage                 = ffi::HELPMESSAGE as i32,
-    /// NAME system type, where NAME is an official system name from the list in the Assigned Numbers document
-    SystemType                  = ffi::SYSTEMTYPE as i32,
-    /// Service ready for new user
-    ServiceReady                = ffi::SERVICEREADY as i32,
-    /// Service closing control connection
-    ClosingConnection           = ffi::CLOSINGCONNECTION as i32,
-    /// Data connection open, no transfer in progress
-    DataConnectionOpened        = ffi::DATACONNECTIONOPENED as i32,
-    /// Closing data connection, requested file action successful
-    ClosingDataConnection       = ffi::CLOSINGDATACONNECTION as i32,
-    /// Entering passive mode
-    EnteringPassiveMode         = ffi::ENTERINGPASSIVEMODE as i32,
-    /// User logged in, proceed. Logged out if appropriate
-    LoggedIn                    = ffi::LOGGEDIN as i32,
-    /// Requested file action ok
-    FileActionOk                = ffi::FILEACTIONOK as i32,
-    /// PATHNAME created
-    DirectoryOk                 = ffi::DIRECTORYOK as i32,
-
-    // 3xx: the command has been accepted, but the requested action
-    // is dormant, pending receipt of further information
-    /// User name ok, need password
-    NeedPassword                = ffi::NEEDPASSWORD as i32,
-    /// Need account for login
-    NeedAccountToLogIn          = ffi::NEEDACCOUNTTOLOGIN as i32,
-    /// Requested file action pending further information
-    NeedInformation             = ffi::NEEDINFORMATION as i32,
-
-    // 4xx: the command was not accepted and the requested action did not take place,
-    // but the error condition is temporary and the action may be requested again
-
-    /// Service not available, closing control connection
-    ServiceUnavailable          = ffi::SERVICEUNAVAILABLE as i32,
-    /// Can't open data connection
-    DataConnectionUnavailable   = ffi::DATACONNECTIONUNAVAILABLE as i32,
-    /// Connection closed, transfer aborted
-    TransferAborted             = ffi::TRANSFERABORTED as i32,
-    /// Requested file action not taken
-    FileActionAborted           = ffi::FILEACTIONABORTED as i32,
-    /// Requested action aborted, local error in processing
-    LocalError                  = ffi::LOCALERROR as i32,
-    /// Requested action not taken; insufficient storage space in system, file unavailable
-    InsufficientStorageSpace    = ffi::INSUFFICIENTSTORAGESPACE as i32,
-
-    // 5xx: the command was not accepted and
-    // the requested action did not take place
-    /// Syntax error, command unrecognized
-    CommandUnknown              = ffi::COMMANDUNKNOWN as i32,
-    /// Syntax error in parameters or arguments
-    ParametersUnknown           = ffi::PARAMETERSUNKNOWN as i32,
-    /// Command not implemented
-    CommandNotImplemented       = ffi::COMMANDNOTIMPLEMENTED as i32,
-    /// Bad sequence of commands
-    BadCommandSequence          = ffi::BADCOMMANDSEQUENCE as i32,
-    /// Command not implemented for that parameter
-    ParameterNotImplemented     = ffi::PARAMETERNOTIMPLEMENTED as i32,
-    /// Not logged in
-    NotLoggedIn                 = ffi::NOTLOGGEDIN as i32,
-    /// Need account for storing files
-    NeedAccountToStore          = ffi::NEEDACCOUNTTOSTORE as i32,
-    /// Requested action not taken, file unavailable
-    FileUnavailable             = ffi::FILEUNAVAILABLE as i32,
-    /// Requested action aborted, page type unknown
-    PageTypeUnknown             = ffi::PAGETYPEUNKNOWN as i32,
-    /// Requested file action aborted, exceeded storage allocation
-    NotEnoughMemory             = ffi::NOTENOUGHMEMORY as i32,
-    /// Requested action not taken, file name not allowed
-    FilenameNotAllowed          = ffi::FILENAMENOTALLOWED as i32,
-
-    // 10xx: SFML custom codes
-    /// Response is not a valid FTP one
-    InvalidResponse             = ffi::sfFtpInvalidresponse as i32,
-    /// Connection with server failed
-    ConnectionFailed            = ffi::sfFtpConnectionFailed as i32,
-    /// Connection with server closed
-    ConnectionClosed            = ffi::CONNECTIONCLOSED as i32,
-    /// Invalid file to upload / download
-    InvalidFile                 = ffi::INVALIDFILE as i32
+    /// Restart marker reply.
+    RestartMarkerReply = 110,
+    /// Service ready in N minutes.
+    ServiceReadySoon = 120,
+    /// Data connection already opened, transfer starting.
+    DataConnectionAlreadyOpened = 125,
+    /// File status ok, about to open data connection.
+    OpeningDataConnection = 150,
+    /// Command ok.
+    Ok = 200,
+    /// Command not implemented.
+    PointlessCommand = 202,
+    /// System status, or system help reply.
+    SystemStatus = 211,
+    /// Directory status.
+    DirectoryStatus = 212,
+    /// File status.
+    FileStatus = 213,
+    /// Help message.
+    HelpMessage = 214,
+    /// NAME system type, where NAME is an official system name from the list in the Assigned Numbers document.
+    SystemType = 215,
+    /// Service ready for new user.
+    ServiceReady = 220,
+    /// Service closing control connection.
+    ClosingConnection = 221,
+    /// Data connection open, no transfer in progress.
+    DataConnectionOpened = 225,
+    /// Closing data connection, requested file action successful.
+    ClosingDataConnection = 226,
+    /// Entering passive mode.
+    EnteringPassiveMode = 227,
+    /// User logged in, proceed. Logged out if appropriate.
+    LoggedIn = 230,
+    /// Requested file action ok.
+    FileActionOk = 250,
+    /// PATHNAME created.
+    DirectoryOk = 257,
+    /// User name ok, need password.
+    NeedPassword = 331,
+    /// Need account for login.
+    NeedAccountToLogIn = 332,
+    /// Requested file action pending further information.
+    NeedInformation = 350,
+    /// Service not available, closing control connection.
+    ServiceUnavailable = 421,
+    /// Can't open data connection.
+    DataConnectionUnavailable = 425,
+    /// Connection closed, transfer aborted.
+    TransferAborted = 426,
+    /// Requested file action not taken.
+    FileActionAborted = 450,
+    /// Requested file action not taken.
+    LocalError = 451,
+    /// Requested action not taken; insufficient storage space in system, file unavailable.
+    InsufficientStorageSpace = 452,
+    /// Syntax error, command unrecognized.
+    CommandUnknown = 500,
+    /// Syntax error in parameters or arguments.
+    ParametersUnknown = 501,
+    /// Command not implemented.
+    CommandNotImplemented = 502,
+    /// Bad sequence of commands.
+    BadCommandSequence = 503,
+    /// Command not implemented for that parameter.
+    ParameterNotImplemented = 504,
+    /// Not logged in.
+    NotLoggedIn = 530,
+    /// Need account for storing files.
+    NeedAccountToStore = 532,
+    /// Requested action not taken, file unavailable.
+    FileUnavailable = 550,
+    /// Requested action aborted, page type unknown.
+    PageTypeUnknown = 551,
+    /// Requested file action aborted, exceeded storage allocation.
+    NotEnoughMemory = 552,
+    /// Requested action not taken, file name not allowed.
+    FilenameNotAllowed = 553,
+    /// Not part of the FTP standard, generated by SFML when a received response cannot be parsed.
+    InvalidResponse = 1000,
+    /// Not part of the FTP standard, generated by SFML when the low-level socket connection with the server fails.
+    ConnectionFailed = 1001,
+    /// Not part of the FTP standard, generated by SFML when the low-level socket connection is unexpectedly closed.
+    ConnectionClosed = 1002,
+    /// Not part of the FTP standard, generated by SFML when a local file cannot be read or written.
+    InvalidFile = 1003,
 }
 
 /// The FTP client
@@ -569,7 +551,7 @@ impl Ftp {
             response: unsafe { ffi::sfFtp_download(self.ftp,
                                                     c_distant_file.as_ptr(),
                                                     c_dest_path.as_ptr(),
-                                                    mode as ffi::TransferMode) }
+                                                    ::std::mem::transmute(mode)) }
         }
     }
 
@@ -593,7 +575,7 @@ impl Ftp {
             response: unsafe { ffi::sfFtp_upload(self.ftp,
                                                   c_local_file.as_ptr(),
                                                   c_dest_path.as_ptr(),
-                                                  mode as ffi::TransferMode) }
+                                                  ::std::mem::transmute(mode)) }
         }
     }
 }

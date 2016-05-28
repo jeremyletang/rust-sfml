@@ -24,18 +24,18 @@
 
 //! Status codes that may be returned by socket functions.
 
-use csfml_network_sys as ffi;
-
 /// Status codes that may be returned by socket functions.
 #[repr(i32)]
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
 pub enum SocketStatus {
     /// The socket has sent / received the data.
-    None =            ffi::SOCKETNONE as i32,
+    Done = 0,
     /// The socket is not ready to send / receive data yet.
-    NotReady =        ffi::SOCKETNOTREADY as i32,
+    NotReady = 1,
+    /// The socket sent a part of the data.
+    Partial = 2,
     /// The TCP socket has been disconnected.
-    Disconnected =    ffi::SOCKETDISCONNECTED as i32,
+    Disconnected = 3,
     /// An unexpected error happened.
-    Error =           ffi::SOCKETERROR as i32
+    Error = 4,
 }

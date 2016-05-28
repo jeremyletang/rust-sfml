@@ -24,9 +24,8 @@
 
 //! Specialized socket using the UDP protocol
 
-use std::{ptr, slice, mem};
+use std::{ptr, mem};
 use libc::size_t;
-use std::vec::Vec;
 
 use raw_conv::{Raw, FromRaw};
 use network::{Packet, IpAddress, SocketStatus};
@@ -135,7 +134,7 @@ impl UdpSocket {
     /// * remotePort - Port of the receiver to send the data to
     pub fn send(&self, data: &[i8], address: &IpAddress, port: u16) -> SocketStatus {
         unsafe {
-            mem::transmute(ffi::sfUdpSocket_send(self.socket, data.as_ptr() as *mut i8, data.len() as size_t, address.raw(), port) as i32)
+            mem::transmute(ffi::sfUdpSocket_send(self.socket, data.as_ptr() as *const _, data.len() as size_t, address.raw(), port) as i32)
         }
     }
 
@@ -150,14 +149,22 @@ impl UdpSocket {
     ///
     /// # Arguments
     /// * size - Maximum number of bytes that can be received
-    pub fn receive(&self, max_size: size_t) -> (Vec<i8>, SocketStatus, size_t, IpAddress, u16) {
+    ///
+    /// Returns the socket status, the actual number of bytes received, the ip address of the
+    /// sender, and the port of the sender.
+    pub fn receive(&self, destination: &mut [u8]) -> (SocketStatus, usize, IpAddress, u16) {
         unsafe {
-            let mut s: size_t = 0;
-            let datas: *mut i8 = ptr::null_mut();
-            let addr: *mut ffi::sfIpAddress = ptr::null_mut();
-            let mut port: u16 = 0;
-            let stat: SocketStatus = mem::transmute(ffi::sfUdpSocket_receive(self.socket, datas, max_size, &mut s, addr, &mut port) as i32);
-            (slice::from_raw_parts(datas, s as usize).to_vec(), stat, s, IpAddress::from_raw(*addr), port)
+            let mut actual_read_len = 0;
+            let mut addr = ffi::sfIpAddress::default();
+            let mut port = 0;
+            let status = ffi::sfUdpSocket_receive(self.socket,
+                                                  destination.as_mut_ptr() as *mut _,
+                                                  destination.len(),
+                                                  &mut actual_read_len,
+                                                  &mut addr,
+                                                  &mut port);
+            let status = mem::transmute(status);
+            (status, actual_read_len, IpAddress::from_raw(addr), port)
         }
     }
 

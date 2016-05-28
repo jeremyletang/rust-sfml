@@ -25,8 +25,7 @@
 //! Specialized socket using the TCP protocol
 
 use libc::size_t;
-use std::{slice, ptr, mem};
-use std::vec::Vec;
+use std::{ptr, mem};
 
 use raw_conv::{Raw, FromRaw};
 use network::{IpAddress, Packet, SocketStatus};
@@ -154,7 +153,7 @@ impl TcpSocket {
     /// Return the status code
     pub fn send(&self, data: &[i8]) -> SocketStatus {
         unsafe {
-            mem::transmute(ffi::sfTcpSocket_send(self.socket, data.as_ptr(), data.len() as size_t) as i32)
+            mem::transmute(ffi::sfTcpSocket_send(self.socket, data.as_ptr() as *const _, data.len() as size_t) as i32)
         }
     }
 
@@ -165,15 +164,18 @@ impl TcpSocket {
     /// This function will fail if the socket is not connected.
     ///
     /// # Arguments
-    /// * size - Maximum number of bytes that can be received
+    /// * destination - The slice to write the bytes into
     ///
-    /// Return a tuple containing the size read, a vector width data and the socket status
-    pub fn receive(&self, max_size: size_t) -> (Vec<i8>, SocketStatus, size_t) {
+    /// Returns a tuple containing the socket status, and the actual number of bytes received.
+    pub fn receive(&self, destination: &mut [u8]) -> (SocketStatus, size_t) {
         unsafe {
-            let mut s: size_t = 0;
-            let datas: *mut i8 = ptr::null_mut();
-            let stat: SocketStatus = mem::transmute(ffi::sfTcpSocket_receive(self.socket, datas, max_size, &mut s) as i32);
-            (slice::from_raw_parts(datas, s as usize).to_vec(), stat, s)
+            let mut actual_read_len = 0;
+            let status = ffi::sfTcpSocket_receive(self.socket,
+                                                  destination.as_mut_ptr() as *mut _,
+                                                  destination.len(),
+                                                  &mut actual_read_len);
+            let status: SocketStatus = mem::transmute(status);
+            (status, actual_read_len)
         }
     }
 
