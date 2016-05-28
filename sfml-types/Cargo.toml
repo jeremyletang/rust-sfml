@@ -1,8 +1,0 @@
-[package]
-name = "sfml-types"
-description = "Base SFML types"
-version = "0.1.0"
-authors = ["Mika Attila <radiantstatue@gmail.com>"]
-documentation = "https://crates.fyi/crates/sfml-types/0.1.0/"
-repository = "https://github.com/jeremyletang/rust-sfml"
-license = "zlib-acknowledgement"

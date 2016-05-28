@@ -26,7 +26,7 @@
 //!
 //! The audio listener is the point in the scene from where all the sounds are heard.
 
-use sfml_types::Vector3f;
+use system::Vector3f;
 use csfml_audio_sys as ffi;
 use raw_conv::{Raw, FromRaw};
 use csfml_system_sys::{sfVector3f};

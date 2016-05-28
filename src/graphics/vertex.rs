@@ -31,7 +31,7 @@
 //! in SFML, vertices also have a color and a pair of texture coordinates.
 
 use graphics::Color;
-use sfml_types::Vector2f;
+use system::Vector2f;
 use csfml_graphics_sys as ffi;
 use csfml_system_sys::sfVector2f;
 use raw_conv::Raw;

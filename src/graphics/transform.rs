@@ -29,7 +29,7 @@
 
 use libc::c_float;
 
-use sfml_types::Vector2f;
+use system::Vector2f;
 use graphics::FloatRect;
 use raw_conv::{Raw, FromRaw};
 

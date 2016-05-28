@@ -29,7 +29,7 @@ use std::ffi::CString;
 use std::slice;
 
 use raw_conv::{Raw, FromRaw};
-use sfml_types::Vector2u;
+use system::Vector2u;
 use graphics::{Color, IntRect};
 
 use csfml_system_sys::sfBool;

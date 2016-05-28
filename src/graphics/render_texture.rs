@@ -27,7 +27,7 @@
 use libc::c_uint;
 
 use raw_conv::{Raw, RawMut, FromRaw};
-use sfml_types::{Vector2f, Vector2i, Vector2u};
+use system::{Vector2f, Vector2i, Vector2u};
 use graphics::{Drawable, View, ViewRef, Color, IntRect, TextureRef, CircleShape, RectangleShape, Text,
                RenderStates, Sprite, ConvexShape, VertexArray,
                RenderTarget, Vertex, PrimitiveType, CustomShape};

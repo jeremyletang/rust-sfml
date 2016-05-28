@@ -34,8 +34,8 @@ use std::ptr;
 use std::ffi::CString;
 
 use graphics::{Texture, Color};
-use sfml_types::Vector2f;
-use sfml_types::Vector3f;
+use system::Vector2f;
+use system::Vector3f;
 
 use ffi::graphics::shader as ffi;
 

@@ -32,7 +32,7 @@ use libc::c_float;
 
 use raw_conv::{Raw, FromRaw};
 use graphics::FloatRect;
-use sfml_types::Vector2f;
+use system::Vector2f;
 use std::marker::PhantomData;
 
 use csfml_graphics_sys as ffi;

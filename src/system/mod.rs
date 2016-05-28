@@ -28,7 +28,8 @@
  * It provides vector classes, unicode strings and conversion functions, threads and mutexes, timing classes.
  */
 
-pub use sfml_types::{Vector2u, Vector2i, Vector2f, ToVec, Vector3f};
+pub use self::vector2::{Vector2, Vector2u, Vector2i, Vector2f, ToVec};
+pub use self::vector3::{Vector3, Vector3f};
 pub use system::sleep::sleep;
 pub use system::time::Time;
 pub use system::clock::Clock;
@@ -36,3 +37,5 @@ pub use system::clock::Clock;
 mod time;
 mod clock;
 mod sleep;
+mod vector2;
+mod vector3;

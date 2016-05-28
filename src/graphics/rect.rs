@@ -22,8 +22,9 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-use Vector2;
+use system::Vector2;
 use std::ops::{Add, Sub};
+use raw_conv::{Raw, FromRaw};
 
 /// Utility type for manipulating 2D axis-aligned rectangles.
 #[repr(C)]
@@ -120,4 +121,52 @@ fn max<T: PartialOrd>(a: T, b: T) -> T {
 #[inline]
 fn min_max<T: PartialOrd + Copy>(a: T, b: T) -> (T, T) {
     (min(a, b), max(a, b))
+}
+
+impl Raw for IntRect {
+    type Raw = ::csfml_graphics_sys::sfIntRect;
+
+    fn raw(&self) -> Self::Raw {
+        ::csfml_graphics_sys::sfIntRect {
+            top: self.top,
+            left: self.left,
+            width: self.width,
+            height: self.height,
+        }
+    }
+}
+
+impl FromRaw for IntRect {
+    fn from_raw(raw: Self::Raw) -> Self {
+        IntRect {
+            top: raw.top,
+            left: raw.left,
+            width: raw.width,
+            height: raw.height,
+        }
+    }
+}
+
+impl Raw for FloatRect {
+    type Raw = ::csfml_graphics_sys::sfFloatRect;
+
+    fn raw(&self) -> Self::Raw {
+        ::csfml_graphics_sys::sfFloatRect {
+            top: self.top,
+            left: self.left,
+            width: self.width,
+            height: self.height,
+        }
+    }
+}
+
+impl FromRaw for FloatRect {
+    fn from_raw(raw: Self::Raw) -> Self {
+        FloatRect {
+            top: raw.top,
+            left: raw.left,
+            width: raw.width,
+            height: raw.height,
+        }
+    }
 }

@@ -31,7 +31,7 @@ use raw_conv::{Raw, FromRaw};
 use graphics::shape::ShapeImpl;
 use graphics::{Drawable, Transformable, RenderTarget, RenderStates, Texture, Color,
                Transform, IntRect, FloatRect};
-use sfml_types::Vector2f;
+use system::Vector2f;
 use csfml_graphics_sys as ffi;
 use csfml_system_sys::{sfBool, sfTrue, sfVector2f};
 use ext::sf_bool_ext::SfBoolExt;

@@ -34,7 +34,7 @@ use libc::{c_float, c_uint, size_t};
 use raw_conv::{Raw, FromRaw};
 use graphics::{Drawable, Transformable, RenderTarget, Font, FloatRect,
                Color, Transform, RenderStates, TextStyle};
-use sfml_types::Vector2f;
+use system::Vector2f;
 use csfml_system_sys::sfVector2f;
 
 use csfml_graphics_sys as ffi;

@@ -35,7 +35,7 @@ use libc::{c_float, c_uint};
 use std::ptr;
 
 use graphics::{Color, Texture, RenderTarget, FloatRect, IntRect, Transform, rc, RenderStates};
-use sfml_types::Vector2f;
+use system::Vector2f;
 
 use csfml_system_sys::sfBool;
 use ffi::graphics::convex_shape as ffi;

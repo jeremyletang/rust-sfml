@@ -96,7 +96,6 @@
 extern crate libc;
 #[macro_use]
 extern crate bitflags;
-extern crate sfml_types;
 extern crate csfml_system_sys;
 extern crate csfml_window_sys;
 extern crate csfml_graphics_sys;

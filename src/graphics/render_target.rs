@@ -26,7 +26,7 @@
 
 use graphics::{Drawable, Color, View, ViewRef, RenderStates, CircleShape, RectangleShape, Text, Sprite, VertexArray,
                IntRect, Vertex, PrimitiveType, ConvexShape, CustomShape};
-use sfml_types::{Vector2f, Vector2i, Vector2u};
+use system::{Vector2f, Vector2i, Vector2u};
 
 /// Trait which is the equivalent of the `sf::RenderTarget` class in SFML.
 /// This is implemented by `RenderTarget` and `RenderWindow` structs to provide

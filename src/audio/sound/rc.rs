@@ -33,7 +33,7 @@ use std::cell::RefCell;
 
 use audio::{SoundStatus, SoundBuffer, SoundSource};
 use system::Time;
-use sfml_types::Vector3f;
+use system::Vector3f;
 use raw_conv::{Raw, FromRaw};
 
 use csfml_system_sys::{sfBool, sfVector3f};

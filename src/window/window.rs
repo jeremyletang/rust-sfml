@@ -35,7 +35,7 @@ use std::marker::PhantomData;
 
 use raw_conv::{Raw, FromRaw};
 use window::{event, VideoMode, ContextSettings, WindowStyle};
-use sfml_types::{Vector2i, Vector2u};
+use system::{Vector2i, Vector2u};
 use csfml_system_sys::sfBool;
 use ext::sf_bool_ext::SfBoolExt;
 

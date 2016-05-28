@@ -34,7 +34,7 @@ use std::ffi::CString;
 
 use raw_conv::{Raw, RawMut, FromRaw};
 use window::{ContextSettings, VideoMode, event, WindowStyle};
-use sfml_types::{Vector2f, Vector2i, Vector2u};
+use system::{Vector2f, Vector2i, Vector2u};
 use graphics::{Drawable, Color, CircleShape, RectangleShape, Text, Sprite, VertexArray,
                RenderStates, View, ViewRef, Image, IntRect, RenderTarget,
                Vertex, PrimitiveType, ConvexShape, CustomShape};

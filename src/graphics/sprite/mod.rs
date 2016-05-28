@@ -33,7 +33,7 @@ use std::ptr;
 use raw_conv::{Raw, FromRaw};
 use graphics::{Drawable, Transformable, FloatRect, IntRect, Color, Texture,
                RenderTarget, Transform, RenderStates};
-use sfml_types::Vector2f;
+use system::Vector2f;
 
 use csfml_system_sys::{sfBool, sfTrue, sfVector2f};
 use csfml_graphics_sys as ffi;

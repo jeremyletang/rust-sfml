@@ -37,7 +37,7 @@ use std::str;
 
 use graphics::{RenderTarget, Font, FloatRect,
                Color, Transform, rc, TextStyle, RenderStates};
-use sfml_types::Vector2f;
+use system::Vector2f;
 
 use ffi::graphics::text as ffi;
 

@@ -34,7 +34,7 @@ use std::io::{Read, Seek};
 
 use audio::{SoundStatus, SoundSource};
 use system::Time;
-use sfml_types::Vector3f;
+use system::Vector3f;
 use inputstream::InputStream;
 use raw_conv::{Raw, FromRaw};
 

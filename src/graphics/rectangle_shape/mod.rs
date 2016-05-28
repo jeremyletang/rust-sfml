@@ -28,7 +28,7 @@ use libc::{c_float};
 use std::ptr;
 
 use raw_conv::{Raw, FromRaw};
-use sfml_types::Vector2f;
+use system::Vector2f;
 use graphics::{Drawable, Shape, Transformable, FloatRect, IntRect, Color, Texture,
                RenderTarget, Transform, RenderStates};
 

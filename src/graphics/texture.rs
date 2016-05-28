@@ -34,7 +34,7 @@ use std::marker::PhantomData;
 
 use raw_conv::{Raw, FromRaw};
 use graphics::{RenderWindow, Image, IntRect};
-use sfml_types::Vector2u;
+use system::Vector2u;
 use inputstream::InputStream;
 use window::Window;
 

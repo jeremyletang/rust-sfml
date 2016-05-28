@@ -27,7 +27,7 @@
 pub use graphics::render_target::RenderTarget;
 pub use graphics::render_states::RenderStates;
 pub use graphics::render_window::{RenderWindow, Events};
-pub use sfml_types::{Rect, FloatRect, IntRect};
+pub use graphics::rect::{Rect, FloatRect, IntRect};
 pub use graphics::texture::{Texture, TextureRef};
 pub use graphics::blend_mode::BlendMode;
 pub use graphics::transform::Transform;
@@ -89,3 +89,4 @@ mod vertex;
 mod vertex_array;
 mod render_texture;
 mod custom_shape;
+mod rect;

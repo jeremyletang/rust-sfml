@@ -29,7 +29,7 @@ use std::cell::RefCell;
 use libc::{c_float, c_uint};
 use std::ptr;
 
-use sfml_types::Vector2f;
+use system::Vector2f;
 use graphics::{FloatRect, IntRect, Color, Texture,
                RenderTarget, Transform, rc, RenderStates};
 

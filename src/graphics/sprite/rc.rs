@@ -34,7 +34,7 @@ use std::ptr;
 
 use graphics::{FloatRect, IntRect, Color, Texture,
                RenderTarget, Transform, rc, RenderStates};
-use sfml_types::Vector2f;
+use system::Vector2f;
 
 use csfml_system_sys::sfBool;
 use ffi::graphics::sprite as ffi;

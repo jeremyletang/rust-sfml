@@ -31,7 +31,7 @@ use std::ptr;
 
 use graphics::{IntRect, FloatRect, Color, Texture,
                RenderTarget, Transform, rc, RenderStates};
-use sfml_types::Vector2f;
+use system::Vector2f;
 
 use csfml_system_sys::sfBool;
 use ffi::graphics::circle_shape as ffi;

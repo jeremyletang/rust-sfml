@@ -34,8 +34,8 @@ use std::ffi::CString;
 
 use raw_conv::Raw;
 use graphics::{Texture, Color};
-use sfml_types::Vector2f;
-use sfml_types::Vector3f;
+use system::Vector2f;
+use system::Vector3f;
 
 use csfml_graphics_sys as ffi;
 use csfml_system_sys as sys_ffi;

@@ -25,6 +25,7 @@
 //! Utility Class providing 3 dimensional vectors for f32.
 
 use std::ops::{Add, Sub, Mul, Div};
+use raw_conv::{Raw, FromRaw};
 
 /// Vector3f definition
 #[repr(C)]
@@ -149,6 +150,28 @@ impl<T: Div> Div for Vector3<T> {
             x: self.x / rhs.x,
             y: self.y / rhs.y,
             z: self.z / rhs.z
+        }
+    }
+}
+
+impl Raw for Vector3f {
+    type Raw = ::csfml_system_sys::sfVector3f;
+
+    fn raw(&self) -> Self::Raw {
+        ::csfml_system_sys::sfVector3f {
+            x: self.x,
+            y: self.y,
+            z: self.z,
+        }
+    }
+}
+
+impl FromRaw for Vector3f {
+    fn from_raw(raw: Self::Raw) -> Self {
+        Vector3f {
+            x: raw.x,
+            y: raw.y,
+            z: raw.z,
         }
     }
 }
