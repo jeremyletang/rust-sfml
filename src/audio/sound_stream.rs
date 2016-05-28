@@ -25,24 +25,29 @@ pub struct SoundStreamPlayer<S: SoundStream> {
 unsafe extern "C" fn get_data_callback<S: SoundStream>(chunk: *mut sfSoundStreamChunk,
                                                        stream: *mut S)
                                                        -> sfBool {
-    let (data, keep_playing) = match panic::catch_unwind(panic::AssertUnwindSafe(|| {
-        (*stream).get_data()
-    })) {
-        Ok(ret) => ret,
-        Err(_) => {
-            use std::io::Write;
-            let _ = writeln!(::std::io::stderr(),
-                             "sound_stream: Stopping playback beacuse get_data_callback panicked.");
-            (&mut [][..], false)
-        }
-    };
+    let (data, keep_playing) =
+        match panic::catch_unwind(panic::AssertUnwindSafe(|| (*stream).get_data())) {
+            Ok(ret) => ret,
+            Err(_) => {
+                use std::io::Write;
+                let _ = writeln!(::std::io::stderr(),
+                                 "sound_stream: Stopping playback beacuse `get_data` panicked.");
+                (&mut [][..], false)
+            }
+        };
     (*chunk).samples = data.as_mut_ptr();
     (*chunk).sampleCount = data.len() as u32;
     sfBool::from_bool(keep_playing)
 }
 
 unsafe extern "C" fn seek_callback<S: SoundStream>(offset: sfTime, stream: *mut S) {
-    (*stream).seek(Time::from_raw(offset));
+    if let Err(_) = panic::catch_unwind(panic::AssertUnwindSafe(|| {
+        (*stream).seek(Time::from_raw(offset))
+    })) {
+        use std::io::Write;
+        let _ = writeln!(::std::io::stderr(),
+                         "sound_stream: Failed to seek because `seek` panicked.");
+    }
 }
 
 impl<S: SoundStream> SoundStreamPlayer<S> {
