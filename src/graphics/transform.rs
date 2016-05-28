@@ -43,27 +43,26 @@ use csfml_graphics_sys as ffi;
 pub struct Transform(pub ffi::sfTransform);
 
 impl Transform {
-    /// Create a new transform from a matrix
+    /// Create a new transform from a 3x3 matrix
     ///
     /// # Arguments
-    /// * a00 - Element (0, 0) of the matrix
-    /// * a01 - Element (0, 1) of the matrix
-    /// * a02 - Element (0, 2) of the matrix
-    /// * a10 - Element (1, 0) of the matrix
-    /// * a11 - Element (1, 1) of the matrix
-    /// * a12 - Element (1, 2) of the matrix
-    /// * a20 - Element (2, 0) of the matrix
-    /// * a21 - Element (2, 1) of the matrix
-    /// * a22 - Element (2, 2) of the matrix
+    ///
+    /// * matrix - An array supplying the matrix
+    ///
+    ///   Here is an illustration of how the array elements correspond to the matrix elements:
+    ///
+    ///   ```text
+    ///   [(0, 0), (0, 1), (0, 2),
+    ///    (1, 0), (1, 1), (1, 2),
+    ///    (2, 0), (2, 1), (2, 2)]
+    ///   ```
     ///
     /// Return a new Transform
-    pub fn new(a00: f32, a01: f32, a02: f32,
-               b10: f32, b11: f32, b12: f32,
-               c20: f32, c21: f32, c22: f32) -> Transform {
+    pub fn new(matrix: [f32; 9]) -> Transform {
         unsafe {
-            Transform(ffi::sfTransform_fromMatrix(a00, a01, a02,
-                                        b10, b11, b12,
-                                        c20, c21, c22))
+            Transform(ffi::sfTransform_fromMatrix(matrix[0], matrix[1], matrix[2],
+                                                  matrix[3], matrix[4], matrix[5],
+                                                  matrix[6], matrix[7], matrix[8]))
         }
     }
 
