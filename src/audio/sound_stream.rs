@@ -5,6 +5,7 @@ use raw_conv::FromRaw;
 use system::Time;
 use std::panic;
 use std::marker::PhantomData;
+use audio::SoundStatus;
 
 /// Trait for streamed audio sources.
 pub trait SoundStream {
@@ -73,6 +74,10 @@ impl<'a, S: SoundStream> SoundStreamPlayer<'a, S> {
         unsafe {
             sfSoundStream_play(self.sf_sound_stream);
         }
+    }
+    /// Get the current status of the stream (stopped, paused, playing)
+    pub fn get_status(&self) -> SoundStatus {
+        unsafe { ::std::mem::transmute(sfSoundStream_getStatus(self.sf_sound_stream)) }
     }
 }
 
