@@ -4,6 +4,7 @@ use ext::sf_bool_ext::SfBoolExt;
 use raw_conv::FromRaw;
 use system::Time;
 use std::panic;
+use std::marker::PhantomData;
 
 /// Trait for streamed audio sources.
 pub trait SoundStream {
@@ -17,9 +18,9 @@ pub trait SoundStream {
 }
 
 /// Player for custom streamed audio sources. See `SoundStream`.
-pub struct SoundStreamPlayer<S: SoundStream> {
-    _sound_stream: Box<S>,
+pub struct SoundStreamPlayer<'a, S: SoundStream + 'a> {
     sf_sound_stream: *mut sfSoundStream,
+    _borrow: PhantomData<&'a mut S>,
 }
 
 unsafe extern "C" fn get_data_callback<S: SoundStream>(chunk: *mut sfSoundStreamChunk,
@@ -50,23 +51,21 @@ unsafe extern "C" fn seek_callback<S: SoundStream>(offset: sfTime, stream: *mut 
     }
 }
 
-impl<S: SoundStream> SoundStreamPlayer<S> {
+impl<'a, S: SoundStream> SoundStreamPlayer<'a, S> {
     /// Create a new `SoundStreamPlayer` with the specified `SoundStream`.
-    pub fn new(sound_stream: S, channels: u32, sample_rate: u32) -> Self {
-        let mut boxed_sound_stream = Box::new(sound_stream);
-        let sound_stream_ptr: *mut SoundStream = &mut *boxed_sound_stream;
+    pub fn new(sound_stream: &mut S, channels: u32, sample_rate: u32) -> Self {
         let get_data_callback =
             get_data_callback::<S> as unsafe extern "C" fn(*mut sfSoundStreamChunk, *mut S) -> sfBool;
         let seek_callback = seek_callback::<S> as unsafe extern "C" fn(sfTime, *mut S);
         SoundStreamPlayer {
-            _sound_stream: boxed_sound_stream,
             sf_sound_stream: unsafe {
                 sfSoundStream_create(Some(::std::mem::transmute(get_data_callback)),
                                      Some(::std::mem::transmute(seek_callback)),
                                      channels, // channel count
                                      sample_rate, // sample rate
-                                     sound_stream_ptr as *mut _)
+                                     sound_stream as *mut SoundStream as *mut _)
             },
+            _borrow: PhantomData,
         }
     }
     /// Start or resume playing the audio stream.
@@ -77,7 +76,7 @@ impl<S: SoundStream> SoundStreamPlayer<S> {
     }
 }
 
-impl<S: SoundStream> Drop for SoundStreamPlayer<S> {
+impl<'a, S: SoundStream> Drop for SoundStreamPlayer<'a, S> {
     fn drop(&mut self) {
         unsafe {
             sfSoundStream_destroy(self.sf_sound_stream);

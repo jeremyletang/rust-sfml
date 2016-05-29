@@ -39,8 +39,8 @@ impl BitMelody {
 }
 
 fn main() {
-    let stream = BitMelody::new();
-    let mut player = SoundStreamPlayer::new(stream, 1, 44100);
+    let mut stream = BitMelody::new();
+    let mut player = SoundStreamPlayer::new(&mut stream, 1, 44100);
     player.play();
     loop {
         ::std::thread::sleep(::std::time::Duration::from_millis(100));
