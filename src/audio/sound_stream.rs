@@ -16,6 +16,10 @@ pub trait SoundStream {
     fn get_data(&mut self) -> (&mut [i16], bool);
     /// Change the current playing position in the stream source.
     fn seek(&mut self, offset: Time);
+    /// Return the number of channels of the stream.
+    fn channel_count(&self) -> u32;
+    /// Get the stream sample rate of the stream.
+    fn sample_rate(&self) -> u32;
 }
 
 /// Player for custom streamed audio sources. See `SoundStream`.
@@ -54,7 +58,7 @@ unsafe extern "C" fn seek_callback<S: SoundStream>(offset: sfTime, stream: *mut 
 
 impl<'a, S: SoundStream> SoundStreamPlayer<'a, S> {
     /// Create a new `SoundStreamPlayer` with the specified `SoundStream`.
-    pub fn new(sound_stream: &mut S, channels: u32, sample_rate: u32) -> Self {
+    pub fn new(sound_stream: &mut S) -> Self {
         let get_data_callback =
             get_data_callback::<S> as unsafe extern "C" fn(*mut sfSoundStreamChunk, *mut S) -> sfBool;
         let seek_callback = seek_callback::<S> as unsafe extern "C" fn(sfTime, *mut S);
@@ -62,8 +66,8 @@ impl<'a, S: SoundStream> SoundStreamPlayer<'a, S> {
             sf_sound_stream: unsafe {
                 sfSoundStream_create(Some(::std::mem::transmute(get_data_callback)),
                                      Some(::std::mem::transmute(seek_callback)),
-                                     channels, // channel count
-                                     sample_rate, // sample rate
+                                     sound_stream.channel_count(),
+                                     sound_stream.sample_rate(),
                                      sound_stream as *mut SoundStream as *mut _)
             },
             _borrow: PhantomData,

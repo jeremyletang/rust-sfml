@@ -5,7 +5,7 @@ use sfml::system::Time;
 
 // Melody by ryg - https://youtu.be/tCRPUv8V22o?t=176
 struct BitMelody {
-    buf: [i16; 1024],
+    buf: [i16; 2048],
     t: i32,
 }
 
@@ -27,12 +27,18 @@ impl SoundStream for BitMelody {
         // Not exactly correct, but meh.
         self.t = offset.as_milliseconds();
     }
+    fn channel_count(&self) -> u32 {
+        1
+    }
+    fn sample_rate(&self) -> u32 {
+        44100
+    }
 }
 
 impl BitMelody {
     fn new() -> Self {
         BitMelody {
-            buf: [0; 1024],
+            buf: [0; 2048],
             t: 0,
         }
     }
@@ -40,7 +46,7 @@ impl BitMelody {
 
 fn main() {
     let mut stream = BitMelody::new();
-    let mut player = SoundStreamPlayer::new(&mut stream, 1, 44100);
+    let mut player = SoundStreamPlayer::new(&mut stream);
     player.play();
     loop {
         ::std::thread::sleep(::std::time::Duration::from_millis(100));
