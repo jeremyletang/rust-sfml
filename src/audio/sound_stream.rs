@@ -97,6 +97,9 @@ impl<'a, S: SoundStream> SoundStreamPlayer<'a, S> {
 impl<'a, S: SoundStream> Drop for SoundStreamPlayer<'a, S> {
     fn drop(&mut self) {
         unsafe {
+            // It seems there can be problems (e.g. "pure virtual method called") if the
+            // stream is not stopped before it's destroyed. So let's make sure it's stopped.
+            sfSoundStream_stop(self.sf_sound_stream);
             sfSoundStream_destroy(self.sf_sound_stream);
         }
     }
