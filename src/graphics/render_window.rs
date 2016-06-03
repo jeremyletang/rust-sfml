@@ -246,7 +246,7 @@ impl RenderWindow {
     /// This function returns whether or not the window exists.
     /// Note that a hidden window (set_visible(false)) will return
     /// true.
-    ////
+    ///
     pub fn is_open(&self) -> bool {
         unsafe { ffi::sfRenderWindow_isOpen(self.render_window) }.to_bool()
     }
@@ -256,7 +256,7 @@ impl RenderWindow {
     /// This function is typically called after all OpenGL rendering
     /// has been done for the current frame, in order to show
     /// it on screen.
-    ////
+    ///
     pub fn display(&mut self) {
         unsafe {
             ffi::sfRenderWindow_display(self.render_window)
@@ -271,7 +271,7 @@ impl RenderWindow {
     ///
     /// # Arguments
     /// * limit - Framerate limit, in frames per seconds (use 0 to disable limit)
-    ////
+    ///
     pub fn set_framerate_limit(&mut self, limit: u32) {
         unsafe {
             ffi::sfRenderWindow_setFramerateLimit(self.render_window,
@@ -287,7 +287,7 @@ impl RenderWindow {
     /// SFML chose the closest match.
     ///
     /// Return a structure containing the OpenGL context settings
-    ////
+    ///
     pub fn get_settings(&self) -> ContextSettings {
         unsafe {
             ContextSettings(ffi::sfRenderWindow_getSettings(self.render_window))
@@ -298,7 +298,7 @@ impl RenderWindow {
     ///
     /// # Arguments
     /// * title - New title
-    ////
+    ///
     pub fn set_title(&mut self, title: &str) {
         let c_str = CString::new(title.as_bytes()).unwrap();
         unsafe {
@@ -311,7 +311,7 @@ impl RenderWindow {
     ///
     /// # Arguments
     /// * visible - true to show the window, false to hide it
-    ////
+    ///
     pub fn set_visible(&mut self, visible: bool) {
         unsafe {
             ffi::sfRenderWindow_setVisible(self.render_window, sfBool::from_bool(visible));
@@ -322,7 +322,7 @@ impl RenderWindow {
     ///
     /// # Arguments
     /// * visible - true to  false to hide
-    ////
+    ///
     pub fn set_mouse_cursor_visible(&mut self, visible: bool) {
         unsafe {
             ffi::sfRenderWindow_setMouseCursorVisible(self.render_window, sfBool::from_bool(visible));
@@ -338,7 +338,7 @@ impl RenderWindow {
     ///
     /// # Arguments
     /// * enabled - true to enable v-sync, false to deactivate
-    ////
+    ///
     pub fn set_vertical_sync_enabled(&mut self, enabled: bool) {
         unsafe {
             ffi::sfRenderWindow_setVerticalSyncEnabled(self.render_window, sfBool::from_bool(enabled));
@@ -355,7 +355,7 @@ impl RenderWindow {
     ///
     /// # Arguments
     /// * enabled - true to enable, false to disable
-    ////
+    ///
     pub fn set_key_repeat_enabled(&mut self, enabled: bool) {
         unsafe {
             ffi::sfRenderWindow_setKeyRepeatEnabled(self.render_window, sfBool::from_bool(enabled));
@@ -374,7 +374,7 @@ impl RenderWindow {
     /// * active - true to activate, false to deactivate
     ///
     /// Return true if operation was successful, false otherwise
-    ////
+    ///
     pub fn set_active(&mut self, enabled: bool) -> bool {
         unsafe {
             ffi::sfRenderWindow_setActive(self.render_window, sfBool::from_bool(enabled))
@@ -388,7 +388,7 @@ impl RenderWindow {
     ///
     /// # Arguments
     /// * threshold - New threshold, in the range [0, 100]
-    ////
+    ///
     pub fn set_joystick_threshold(&mut self, threshold: f32) {
         unsafe {
             ffi::sfRenderWindow_setJoystickThreshold(self.render_window,
@@ -399,7 +399,7 @@ impl RenderWindow {
     /// Get the position of a window
     ///
     /// Return the position in pixels
-    ////
+    ///
     pub fn get_position(&self) -> Vector2i {
         unsafe {
             Vector2i::from_raw(ffi::sfRenderWindow_getPosition(self.render_window))
@@ -414,7 +414,7 @@ impl RenderWindow {
     ///
     /// # Arguments
     /// * position - New position of the window, in pixels
-    ////
+    ///
     pub fn set_position(&mut self, position: &Vector2i) {
         unsafe {
             ffi::sfRenderWindow_setPosition(self.render_window, position.raw())
@@ -427,7 +427,7 @@ impl RenderWindow {
     ///
     /// # Arguments
     /// * size - New size, in pixels
-    ////
+    ///
     pub fn set_size(&mut self, size: &Vector2u) {
         unsafe {
             ffi::sfRenderWindow_setSize(self.render_window, size.raw())
@@ -439,7 +439,7 @@ impl RenderWindow {
     /// # Arguments
     /// * size_x - New size x, in pixels
     /// * size_y - New size x, in pixels
-    ////
+    ///
     pub fn set_size2u(&mut self, size_x: u32, size_y: u32) {
         unsafe {
             ffi::sfRenderWindow_setSize(self.render_window,
@@ -453,7 +453,7 @@ impl RenderWindow {
     /// cursor relative to the given render window.
     ///
     /// Return the position of the mouse cursor, relative to the given render window
-    ////
+    ///
     pub fn get_mouse_position(&self) -> Vector2i {
         unsafe {
             Vector2i::from_raw(ffi::sfMouse_getPositionRenderWindow(self.render_window))
@@ -467,7 +467,7 @@ impl RenderWindow {
     ///
     /// # Arguments
     /// * `position` - the positon to set
-    ////
+    ///
     pub fn set_mouse_position(&mut self, position: &Vector2i) {
         unsafe {
             ffi::sfMouse_setPositionRenderWindow(position.raw(), self.render_window)
@@ -485,7 +485,7 @@ impl RenderWindow {
     /// RenderWindow.
     ///
     /// Return a new image containing the captured contents
-    ////
+    ///
     pub fn capture(&mut self) -> Option<Image> {
         let img = unsafe { ffi::sfRenderWindow_capture(self.render_window) };
         if img.is_null() {
@@ -552,7 +552,7 @@ impl RenderTarget for RenderWindow{
     ///
     /// # Arguments
     /// * view - The new view
-    ////
+    ///
     fn set_view(&mut self, view: &View) {
         unsafe {
             ffi::sfRenderWindow_setView(self.render_window,
@@ -563,7 +563,7 @@ impl RenderTarget for RenderWindow{
     /// Get the current active view of a render window
     ///
     /// Return the current active view
-    ////
+    ///
     fn get_view(&self) -> ViewRef {
         unsafe{
             ViewRef::from_raw(ffi::sfRenderWindow_getView(self.render_window))
@@ -573,7 +573,7 @@ impl RenderTarget for RenderWindow{
     /// Get the default view of a render window
     ///
     /// Return the default view of the render window
-    ////
+    ///
     fn get_default_view(&self) -> ViewRef {
         unsafe{
             ViewRef::from_raw(ffi::sfRenderWindow_getDefaultView(self.render_window))

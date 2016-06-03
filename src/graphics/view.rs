@@ -217,7 +217,7 @@ impl View {
     /// # Arguments
     /// * center_x - New x center coordinate
     /// * center_y - New y center coordinate
-    ////
+    ///
     pub fn set_center2f(&mut self, center_x: f32, center_y: f32) {
         unsafe {
             ffi::sfView_setCenter(self.view, sfVector2f{x: center_x, y: center_y})

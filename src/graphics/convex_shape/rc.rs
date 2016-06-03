@@ -540,7 +540,7 @@ impl ConvexShape {
     /// Get the sub-rectangle of the texture displayed by a convex shape
     ///
     /// Return the texture rectangle of the shape
-    ////
+    ///
     pub fn get_texture_rect(&self) -> IntRect {
         unsafe {
             ffi::sfConvexShape_getTextureRect(self.convex_shape)
