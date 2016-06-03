@@ -53,8 +53,6 @@ use ext::sf_bool_ext::SfBoolExt;
 pub struct RenderWindow {
     render_window: *mut ffi::sfRenderWindow,
     title_length: u32,
-//    current_view: Rc<RefCell<View>>,
-//    default_view: Rc<RefCell<View>>
 }
 
 /// An iterator over all the events in the events queue (internally call `poll_event`)
