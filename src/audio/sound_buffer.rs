@@ -42,14 +42,14 @@ pub struct SoundBuffer {
     sound_buffer: *mut ffi::sfSoundBuffer,
 }
 
-/// An immutable view into a `SoundBuffer`.
+/// An immutable reference to a `SoundBuffer`.
 #[derive(Clone, Copy)]
-pub struct SoundBufferView<'a> {
+pub struct SoundBufferRef<'a> {
     sound_buffer: *const ffi::sfSoundBuffer,
     _borrow: PhantomData<&'a SoundBuffer>,
 }
 
-impl<'a> SoundBufferView<'a> {
+impl<'a> SoundBufferRef<'a> {
     /// Save a sound buffer to an audio file
     ///
     /// Here is a complete list of all the supported audio formats:
@@ -132,9 +132,9 @@ impl SoundBuffer {
             Some(SoundBuffer{ sound_buffer: sound_buffer })
         }
     }
-    /// Get an immutable view into the contents of the `SoundBuffer`.
-    pub fn view(&self) -> SoundBufferView {
-        SoundBufferView::from_raw(self.sound_buffer)
+    /// Get an immutable reference to the `SoundBuffer`.
+    pub fn get_ref(&self) -> SoundBufferRef {
+        SoundBufferRef::from_raw(self.sound_buffer)
     }
 }
 
@@ -158,16 +158,16 @@ impl Raw for SoundBuffer {
     }
 }
 
-impl<'a> Raw for SoundBufferView<'a> {
+impl<'a> Raw for SoundBufferRef<'a> {
     type Raw = *const ffi::sfSoundBuffer;
     fn raw(&self) -> Self::Raw {
         self.sound_buffer
     }
 }
 
-impl<'a> FromRaw for SoundBufferView<'a> {
+impl<'a> FromRaw for SoundBufferRef<'a> {
     fn from_raw(raw: Self::Raw) -> Self {
-        SoundBufferView {
+        SoundBufferRef {
             sound_buffer: raw,
             _borrow: PhantomData,
         }

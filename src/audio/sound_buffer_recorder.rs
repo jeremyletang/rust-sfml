@@ -30,7 +30,7 @@
 use libc::c_uint;
 
 use raw_conv::FromRaw;
-use audio::sound_buffer::SoundBufferView;
+use audio::sound_buffer::SoundBufferRef;
 
 use csfml_audio_sys as ffi;
 use ext::sf_bool_ext::SfBoolExt;
@@ -103,12 +103,12 @@ impl SoundBufferRecorder {
     /// make any modification to it.
     ///
     /// Return Read-only access to the sound buffer
-    pub fn get_buffer(&self) -> SoundBufferView {
+    pub fn get_buffer(&self) -> SoundBufferRef {
         let buff = unsafe { ffi::sfSoundBufferRecorder_getBuffer(self.sound_buffer_recorder) };
         if buff.is_null() {
             panic!("sound_buffer_recorder::get_buffer: buffer was null");
         } else {
-            SoundBufferView::from_raw(buff)
+            SoundBufferRef::from_raw(buff)
         }
     }
 

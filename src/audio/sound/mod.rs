@@ -29,7 +29,7 @@
 use libc::c_float;
 use std::mem;
 
-use audio::{SoundStatus, SoundBufferView, SoundSource};
+use audio::{SoundStatus, SoundBufferRef, SoundSource};
 use system::Time;
 use system::Vector3f;
 use raw_conv::{Raw, FromRaw};
@@ -45,7 +45,7 @@ pub mod rc;
 /// Regular sound that can be played in the audio environment.
 pub struct Sound<'s> {
     sound: *mut ffi::sfSound,
-    buffer: Option<SoundBufferView<'s>>
+    buffer: Option<SoundBufferRef<'s>>
 }
 
 impl<'s> Sound<'s> {
@@ -68,7 +68,7 @@ impl<'s> Sound<'s> {
     /// Create a new Sound
     ///
     /// Return Some(Sound) or None
-    pub fn new_with_buffer(buffer: SoundBufferView<'s>) -> Option<Sound<'s>> {
+    pub fn new_with_buffer(buffer: SoundBufferRef<'s>) -> Option<Sound<'s>> {
         let s = unsafe {ffi::sfSound_create()};
         if s.is_null() {
             None
@@ -161,7 +161,7 @@ impl<'s> Sound<'s> {
     ///
     /// # Arguments
     /// * buffer - Sound buffer to attach to the sound
-    pub fn set_buffer(&mut self, buffer: SoundBufferView<'s>) {
+    pub fn set_buffer(&mut self, buffer: SoundBufferRef<'s>) {
         self.buffer = Some(buffer);
         unsafe {
             ffi::sfSound_setBuffer(self.sound, buffer.raw())
@@ -171,7 +171,7 @@ impl<'s> Sound<'s> {
     /// Get the audio buffer attached to a sound
     ///
     /// Return an option to Sound buffer attached to the sound or None
-    pub fn get_buffer(&self) -> Option<SoundBufferView<'s>> {
+    pub fn get_buffer(&self) -> Option<SoundBufferRef<'s>> {
         self.buffer
     }
 }
