@@ -74,7 +74,7 @@ pub trait RenderTarget {
     /// * view - The view to use for converting the point
     ///
     /// Return the converted point, in "world" units
-    ////
+    ///
     fn map_pixel_to_coords(&self, point: &Vector2i, view: &View) -> Vector2f;
 
     /// Convert a point from window coordinates to world coordinates
