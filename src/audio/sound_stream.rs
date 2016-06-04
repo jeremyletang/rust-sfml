@@ -6,6 +6,7 @@ use system::Time;
 use std::panic;
 use std::marker::PhantomData;
 use audio::SoundStatus;
+use std::os::raw::c_void;
 
 /// Trait for streamed audio sources.
 pub trait SoundStream {
@@ -29,8 +30,9 @@ pub struct SoundStreamPlayer<'a, S: SoundStream + 'a> {
 }
 
 unsafe extern "C" fn get_data_callback<S: SoundStream>(chunk: *mut sfSoundStreamChunk,
-                                                       stream: *mut S)
+                                                       user_data: *mut c_void)
                                                        -> sfBool {
+    let stream = user_data as *mut S;
     let (data, keep_playing) =
         match panic::catch_unwind(panic::AssertUnwindSafe(|| (*stream).get_data())) {
             Ok(ret) => ret,
@@ -46,7 +48,9 @@ unsafe extern "C" fn get_data_callback<S: SoundStream>(chunk: *mut sfSoundStream
     sfBool::from_bool(keep_playing)
 }
 
-unsafe extern "C" fn seek_callback<S: SoundStream>(offset: sfTime, stream: *mut S) {
+unsafe extern "C" fn seek_callback<S: SoundStream>(offset: sfTime, user_data: *mut c_void) {
+    let stream = user_data as *mut S;
+
     if let Err(_) = panic::catch_unwind(panic::AssertUnwindSafe(|| {
         (*stream).seek(Time::from_raw(offset))
     })) {
@@ -59,13 +63,10 @@ unsafe extern "C" fn seek_callback<S: SoundStream>(offset: sfTime, stream: *mut 
 impl<'a, S: SoundStream> SoundStreamPlayer<'a, S> {
     /// Create a new `SoundStreamPlayer` with the specified `SoundStream`.
     pub fn new(sound_stream: &mut S) -> Self {
-        let get_data_callback =
-            get_data_callback::<S> as unsafe extern "C" fn(*mut sfSoundStreamChunk, *mut S) -> sfBool;
-        let seek_callback = seek_callback::<S> as unsafe extern "C" fn(sfTime, *mut S);
         SoundStreamPlayer {
             sf_sound_stream: unsafe {
-                sfSoundStream_create(Some(::std::mem::transmute(get_data_callback)),
-                                     Some(::std::mem::transmute(seek_callback)),
+                sfSoundStream_create(Some(get_data_callback::<S>),
+                                     Some(seek_callback::<S>),
                                      sound_stream.channel_count(),
                                      sound_stream.sample_rate(),
                                      sound_stream as *mut SoundStream as *mut _)
