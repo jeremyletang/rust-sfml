@@ -1,4 +1,4 @@
-use csfml_system_sys::{sfBool, sfTrue, sfFalse};
+use csfml_system_sys::{sfBool, sfFalse, sfTrue};
 
 pub trait SfBoolExt {
     fn to_bool(self) -> bool;
@@ -14,10 +14,6 @@ impl SfBoolExt for sfBool {
         }
     }
     fn from_bool(src: bool) -> Self {
-        if src {
-            sfTrue
-        } else {
-            sfFalse
-        }
+        if src { sfTrue } else { sfFalse }
     }
 }

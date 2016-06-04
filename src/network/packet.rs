@@ -1,32 +1,31 @@
-/*
-* Rust-SFML - Copyright (c) 2013 Letang Jeremy.
-*
-* The original software, SFML library, is provided by Laurent Gomila.
-*
-* This software is provided 'as-is', without any express or implied warranty.
-* In no event will the authors be held liable for any damages arising from
-* the use of this software.
-*
-* Permission is granted to anyone to use this software for any purpose,
-* including commercial applications, and to alter it and redistribute it
-* freely, subject to the following restrictions:
-*
-* 1. The origin of this software must not be misrepresented; you must not claim
-*    that you wrote the original software. If you use this software in a product,
-*    an acknowledgment in the product documentation would be appreciated but is
-*    not required.
-*
-* 2. Altered source versions must be plainly marked as such, and must not be
-*    misrepresented as being the original software.
-*
-* 3. This notice may not be removed or altered from any source distribution.
-*/
+// Rust-SFML - Copyright (c) 2013 Letang Jeremy.
+//
+// The original software, SFML library, is provided by Laurent Gomila.
+//
+// This software is provided 'as-is', without any express or implied warranty.
+// In no event will the authors be held liable for any damages arising from
+// the use of this software.
+//
+// Permission is granted to anyone to use this software for any purpose,
+// including commercial applications, and to alter it and redistribute it
+// freely, subject to the following restrictions:
+//
+// 1. The origin of this software must not be misrepresented; you must not claim
+//    that you wrote the original software. If you use this software in a product,
+//    an acknowledgment in the product documentation would be appreciated but is
+//    not required.
+//
+// 2. Altered source versions must be plainly marked as such, and must not be
+//    misrepresented as being the original software.
+//
+// 3. This notice may not be removed or altered from any source distribution.
+//
 
 //! Utility class to build blocks of data to transfer over the network.
 
-use std::ffi::{CString};
+use std::ffi::CString;
 
-use raw_conv::{Raw, FromRaw};
+use raw_conv::{FromRaw, Raw};
 
 use csfml_system_sys::sfBool;
 use csfml_network_sys as ffi;
@@ -34,7 +33,7 @@ use ext::sf_bool_ext::SfBoolExt;
 
 /// Utility class to build blocks of data to transfer over the network.
 pub struct Packet {
-    packet: *mut ffi::sfPacket
+    packet: *mut ffi::sfPacket,
 }
 
 impl Packet {
@@ -45,11 +44,8 @@ impl Packet {
         let pck = unsafe { ffi::sfPacket_create() };
         if pck.is_null() {
             None
-        }
-        else {
-            Some(Packet {
-                packet: pck
-            })
+        } else {
+            Some(Packet { packet: pck })
         }
     }
 
@@ -57,9 +53,7 @@ impl Packet {
     ///
     /// After calling Clear, the packet is empty.
     pub fn clear(&self) {
-        unsafe {
-            ffi::sfPacket_clear(self.packet)
-        }
+        unsafe { ffi::sfPacket_clear(self.packet) }
     }
 
     /// Get the size of the data contained in a packet
@@ -69,9 +63,7 @@ impl Packet {
     ///
     /// Return the data size, in bytes
     pub fn get_data_size(&self) -> u32 {
-        unsafe {
-            ffi::sfPacket_getDataSize(self.packet) as u32
-        }
+        unsafe { ffi::sfPacket_getDataSize(self.packet) as u32 }
     }
 
     /// Tell if the reading position has reached the
@@ -105,58 +97,42 @@ impl Packet {
 
     /// Function to extract data from a packet
     pub fn read_i8(&self) -> i8 {
-        unsafe {
-            ffi::sfPacket_readInt8(self.packet)
-        }
+        unsafe { ffi::sfPacket_readInt8(self.packet) }
     }
 
     /// Function to extract data from a packet
     pub fn read_u8(&self) -> u8 {
-        unsafe {
-            ffi::sfPacket_readUint8(self.packet)
-        }
+        unsafe { ffi::sfPacket_readUint8(self.packet) }
     }
 
     /// Function to extract data from a packet
     pub fn read_i16(&self) -> i16 {
-        unsafe {
-            ffi::sfPacket_readInt16(self.packet)
-        }
+        unsafe { ffi::sfPacket_readInt16(self.packet) }
     }
 
     /// Function to extract data from a packet
     pub fn read_u16(&self) -> u16 {
-        unsafe {
-            ffi::sfPacket_readUint16(self.packet)
-        }
+        unsafe { ffi::sfPacket_readUint16(self.packet) }
     }
 
     /// Function to extract data from a packet
     pub fn read_i32(&self) -> i32 {
-        unsafe {
-            ffi::sfPacket_readInt32(self.packet)
-        }
+        unsafe { ffi::sfPacket_readInt32(self.packet) }
     }
 
     /// Function to extract data from a packet
     pub fn read_u32(&self) -> u32 {
-        unsafe {
-            ffi::sfPacket_readUint32(self.packet)
-        }
+        unsafe { ffi::sfPacket_readUint32(self.packet) }
     }
 
     /// Function to extract data from a packet
     pub fn read_f32(&self) -> f32 {
-        unsafe {
-            ffi::sfPacket_readFloat(self.packet) as f32
-        }
+        unsafe { ffi::sfPacket_readFloat(self.packet) as f32 }
     }
 
     /// Function to extract data from a packet
     pub fn read_f64(&self) -> f64 {
-        unsafe {
-            ffi::sfPacket_readDouble(self.packet) as f64
-        }
+        unsafe { ffi::sfPacket_readDouble(self.packet) as f64 }
     }
 
     /// Function to extract data from a packet
@@ -171,73 +147,53 @@ impl Packet {
 
     /// Function to insert data into a packet
     pub fn write_bool(&self, data: bool) {
-        unsafe {
-            ffi::sfPacket_writeBool(self.packet, sfBool::from_bool(data))
-        }
+        unsafe { ffi::sfPacket_writeBool(self.packet, sfBool::from_bool(data)) }
     }
 
     /// Function to insert data into a packet
     pub fn write_i8(&self, data: i8) {
-        unsafe {
-            ffi::sfPacket_writeInt8(self.packet, data)
-        }
+        unsafe { ffi::sfPacket_writeInt8(self.packet, data) }
     }
 
     /// Function to insert data into a packet
     pub fn write_u8(&self, data: u8) {
-        unsafe {
-            ffi::sfPacket_writeUint8(self.packet, data)
-        }
+        unsafe { ffi::sfPacket_writeUint8(self.packet, data) }
     }
 
     /// Function to insert data into a packet
     pub fn write_i16(&self, data: i16) {
-        unsafe {
-            ffi::sfPacket_writeInt16(self.packet, data)
-        }
+        unsafe { ffi::sfPacket_writeInt16(self.packet, data) }
     }
 
     /// Function to insert data into a packet
     pub fn write_u16(&self, data: u16) {
-        unsafe {
-            ffi::sfPacket_writeUint16(self.packet, data)
-        }
+        unsafe { ffi::sfPacket_writeUint16(self.packet, data) }
     }
 
     /// Function to insert data into a packet
     pub fn write_i32(&self, data: i32) {
-        unsafe {
-            ffi::sfPacket_writeInt32(self.packet, data)
-        }
+        unsafe { ffi::sfPacket_writeInt32(self.packet, data) }
     }
 
     /// Function to insert data into a packet
     pub fn write_u32(&self, data: u32) {
-        unsafe {
-            ffi::sfPacket_writeUint32(self.packet, data)
-        }
+        unsafe { ffi::sfPacket_writeUint32(self.packet, data) }
     }
 
     /// Function to insert data into a packet
     pub fn write_f32(&self, data: f32) {
-        unsafe {
-            ffi::sfPacket_writeFloat(self.packet, data)
-        }
+        unsafe { ffi::sfPacket_writeFloat(self.packet, data) }
     }
 
     /// Function to insert data into a packet
     pub fn write_f64(&self, data: f64) {
-        unsafe {
-            ffi::sfPacket_writeDouble(self.packet, data)
-        }
+        unsafe { ffi::sfPacket_writeDouble(self.packet, data) }
     }
 
     /// Function to insert data into a packet
     pub fn write_string(&self, string: &str) {
         let c_string = CString::new(string.as_bytes()).unwrap();
-        unsafe {
-            ffi::sfPacket_writeString(self.packet, c_string.as_ptr())
-        }
+        unsafe { ffi::sfPacket_writeString(self.packet, c_string.as_ptr()) }
     }
 }
 
@@ -247,9 +203,7 @@ impl Clone for Packet {
         if pck.is_null() {
             panic!("Packet is null")
         } else {
-            Packet {
-                packet: pck
-            }
+            Packet { packet: pck }
         }
     }
 }
@@ -263,16 +217,12 @@ impl Raw for Packet {
 
 impl FromRaw for Packet {
     fn from_raw(raw: Self::Raw) -> Self {
-        Packet {
-            packet: raw,
-        }
+        Packet { packet: raw }
     }
 }
 
 impl Drop for Packet {
     fn drop(&mut self) {
-        unsafe {
-            ffi::sfPacket_destroy(self.packet)
-        }
+        unsafe { ffi::sfPacket_destroy(self.packet) }
     }
 }
