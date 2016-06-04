@@ -131,7 +131,7 @@ impl TcpSocket {
     /// * timeout - Maximum time to wait
     pub fn connect(&self, host: &IpAddress, port: u16, timeout: Time) -> SocketStatus {
         unsafe {
-            mem::transmute(ffi::sfTcpSocket_connect(self.socket, host.raw(), port, timeout.raw()) as i32)
+            mem::transmute(ffi::sfTcpSocket_connect(self.socket, host.raw(), port, timeout.raw()))
         }
     }
 
