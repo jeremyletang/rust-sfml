@@ -94,7 +94,8 @@ pub trait RenderTarget {
     /// located below the mouse cursor.
     ///
     /// This version uses the current view for calculations, see the
-    /// [map_pixel_to_coords](#method.map_pixel_to_coords) function if you want to use a custom view.
+    /// [map_pixel_to_coords](#method.map_pixel_to_coords) function if
+    /// you want to use a custom view.
     ///
     /// # Arguments
     /// * point - Pixel to convert
@@ -142,7 +143,8 @@ pub trait RenderTarget {
     /// located below the mouse cursor.
     ///
     /// This version uses the current view for calculations, see the
-    /// [map_pixel_to_coords](#method.map_pixel_to_coords) function if you want to use a custom view.
+    /// [map_pixel_to_coords](#method.map_pixel_to_coords) function if
+    /// you want to use a custom view.
     ///
     /// # Arguments
     /// * point - Pixel to convert
