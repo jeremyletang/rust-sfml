@@ -72,7 +72,8 @@ impl Window {
     /// depth-buffer bits, etc.
     ///
     /// # Arguments
-    /// * mode - Video mode to use (defines the width, height and depth of the rendering area of the window)
+    /// * mode - Video mode to use (defines the width, height and depth of the
+    ///                             rendering area of the window)
     /// * title - Title of the window
     /// * style - Window style
     /// * settings - Additional settings for the underlying OpenGL context
@@ -108,7 +109,8 @@ impl Window {
     /// depth-buffer bits, etc.
     ///
     /// # Arguments
-    /// * mode - Video mode to use (defines the width, height and depth of the rendering area of the window)
+    /// * mode - Video mode to use (defines the width, height and depth of the
+    ///                             rendering area of the window)
     /// * title - Title of the window (UTF-32)
     /// * style - Window style
     /// * settings - Additional settings for the underlying OpenGL context
