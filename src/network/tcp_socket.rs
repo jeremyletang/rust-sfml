@@ -153,7 +153,10 @@ impl TcpSocket {
     /// Return the status code
     pub fn send(&self, data: &[i8]) -> SocketStatus {
         unsafe {
-            mem::transmute(ffi::sfTcpSocket_send(self.socket, data.as_ptr() as *const _, data.len() as size_t) as i32)
+            let status = ffi::sfTcpSocket_send(self.socket,
+                                               data.as_ptr() as *const _,
+                                               data.len() as size_t);
+            mem::transmute(status)
         }
     }
 
