@@ -38,7 +38,6 @@ use system::Vector2f;
 use system::Vector3f;
 
 use csfml_graphics_sys as ffi;
-use csfml_system_sys as sys_ffi;
 
 use std::io::{Read, Seek};
 use inputstream::InputStream;
@@ -125,18 +124,12 @@ impl<'s> Shader<'s> {
     pub fn new_from_stream<T: Read + Seek>(vertex_shader_stream: Option<&mut T>,
                                            fragment_shader_stream: Option<&mut T>)
                                            -> Option<Shader<'s>> {
-        let shader = unsafe {
-            let c_vertex_shader_stream = match vertex_shader_stream {
-                Some(stream) => &mut InputStream::new(stream) as *mut InputStream,
-                None => ptr::null_mut()
-            };
-            let c_fragment_shader_stream = match fragment_shader_stream {
-                Some(stream) => &mut InputStream::new(stream) as *mut InputStream,
-                None => ptr::null_mut()
-            };
-            ffi::sfShader_createFromStream(&mut (*c_vertex_shader_stream).0 as *mut sys_ffi::sfInputStream,
-                                           &mut (*c_fragment_shader_stream).0 as *mut sys_ffi::sfInputStream)
-        };
+        let mut vertex_stream = vertex_shader_stream.map(InputStream::new);
+        let mut fragment_stream = fragment_shader_stream.map(InputStream::new);
+        let vertex_ptr = vertex_stream.as_mut().map_or(ptr::null_mut(), |s| &mut s.0);
+        let fragment_ptr = fragment_stream.as_mut().map_or(ptr::null_mut(), |s| &mut s.0);
+
+        let shader = unsafe { ffi::sfShader_createFromStream(vertex_ptr, fragment_ptr) };
         if shader.is_null() {
             None
         } else {
