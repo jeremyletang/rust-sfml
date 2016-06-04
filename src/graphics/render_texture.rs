@@ -47,7 +47,8 @@ impl RenderTexture {
     /// # Arguments
     /// * width - Width of the render texture
     /// * height - Height of the render texture
-    /// * depthBuffer - Do you want a depth-buffer attached? (useful only if you're doing 3D OpenGL on the rendertexture)
+    /// * depthBuffer - Do you want a depth-buffer attached?
+    ///                 (useful only if you're doing 3D OpenGL on the rendertexture)
     ///
     /// Return Some(RenderTexture) or None
     pub fn new(width: u32,
