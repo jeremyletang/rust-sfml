@@ -61,7 +61,8 @@ pub enum Status {
     Accepted = 202,
     /// The server didn't send any data in return.
     NoContent = 204,
-    /// The server informs the client that it should clear the view (form) that caused the request to be sent.
+    /// The server informs the client that it should clear the
+    /// view (form) that caused the request to be sent.
     ResetContent = 205,
     /// The server has sent a part of the resource, as a response to a partial GET request.
     PartialContent = 206,
@@ -71,7 +72,8 @@ pub enum Status {
     MovedPermanently = 301,
     /// The requested page has temporarily moved to a new location.
     MovedTemporarily = 302,
-    /// For conditional requests, means the requested page hasn't changed and doesn't need to be refreshed.
+    /// For conditional requests, means the requested page
+    /// hasn't changed and doesn't need to be refreshed.
     NotModified = 304,
     /// The server couldn't understand the request (syntax error)
     BadRequest = 400,
