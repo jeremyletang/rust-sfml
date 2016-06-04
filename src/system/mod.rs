@@ -25,7 +25,8 @@
 /*!
  * Base module of SFML, defining various utilities.
  *
- * It provides vector classes, unicode strings and conversion functions, threads and mutexes, timing classes.
+ * It provides vector classes, unicode strings and conversion functions,
+ * threads and mutexes, timing classes.
  */
 
 pub use self::vector2::{Vector2, Vector2u, Vector2i, Vector2f, ToVec};
