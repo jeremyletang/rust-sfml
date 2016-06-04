@@ -68,8 +68,10 @@ impl<'s> Shader<'s> {
     /// for it before writing your own shaders.
     ///
     /// # Arguments
-    /// * vertexShaderFilename - Some(Path) of the vertex shader file to load, or None to skip this shader
-    /// * fragmentShaderFilename - Some(Path) of the fragment shader file to load, or None to skip this shader
+    /// * vertexShaderFilename - Some(Path) of the vertex shader file to load,
+    ///                          or None to skip this shader
+    /// * fragmentShaderFilename - Some(Path) of the fragment shader file to load,
+    ///                            or None to skip this shader
     ///
     /// Return Some(Shader) or None
     pub fn new_from_file(vertex_shader_filename: Option<&str>,
@@ -114,8 +116,10 @@ impl<'s> Shader<'s> {
     /// for it before writing your own shaders.
     ///
     /// # Arguments
-    /// * vertexShaderStream - Some(T: Read + Seek) of the vertex shader stream to load, or None to skip this shader
-    /// * fragmentShaderStream - Some(T: Read + Seek) of the fragment shader stream to load, or None to skip this shader
+    /// * vertexShaderStream - Some(T: Read + Seek) of the vertex shader stream to load,
+    ///                        or None to skip this shader
+    /// * fragmentShaderStream - Some(T: Read + Seek) of the fragment shader stream to load,
+    ///                          or None to skip this shader
     ///
     /// Return Some(Shader) or None
     pub fn new_from_stream<T: Read + Seek>(vertex_shader_stream: Option<&mut T>,
@@ -154,8 +158,10 @@ impl<'s> Shader<'s> {
     /// writing your own shaders.
     ///
     /// # Arguments
-    /// * vertexShader - Some(String) containing the source code of the vertex shader, or None to skip this shader
-    /// * fragmentShader - Some(String) containing the source code of the fragment shader, or None to skip this shader
+    /// * vertexShader - Some(String) containing the source code of the vertex shader,
+    ///                  or None to skip this shader
+    /// * fragmentShader - Some(String) containing the source code of the fragment shader,
+    ///                    or None to skip this shader
     ///
     /// Return Some(Shader) or None
     pub fn new_from_memory(vertex_shader: Option<&str>,
