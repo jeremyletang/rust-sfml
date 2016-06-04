@@ -193,8 +193,8 @@ impl UdpSocket {
             let pack: *mut ffi::sfPacket = ptr::null_mut();
             let addr: *mut ffi::sfIpAddress = ptr::null_mut();
             let mut port: u16 = 0;
-            let stat: SocketStatus = mem::transmute(ffi::sfUdpSocket_receivePacket(self.socket, pack, addr, &mut port) as i32);
-            (Packet::from_raw(pack), stat, IpAddress::from_raw(*addr), port)
+            let status = ffi::sfUdpSocket_receivePacket(self.socket, pack, addr, &mut port);
+            (Packet::from_raw(pack), mem::transmute(status), IpAddress::from_raw(*addr), port)
         }
     }
 
