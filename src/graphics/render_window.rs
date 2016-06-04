@@ -75,7 +75,8 @@ impl RenderWindow {
     /// depth-buffer bits, etc.
     ///
     /// # Arguments
-    /// * mode - Video mode to use (defines the width, height and depth of the rendering area of the render window)
+    /// * mode - Video mode to use (defines the width, height and depth of the
+    ///                             rendering area of the render window)
     /// * title - Title of the render window
     /// * style - Window style
     /// * settings - Additional settings for the underlying OpenGL context
@@ -116,7 +117,8 @@ impl RenderWindow {
     /// depth-buffer bits, etc.
     ///
     /// # Arguments
-    /// * mode - Video mode to use (defines the width, height and depth of the rendering area of the render window)
+    /// * mode - Video mode to use (defines the width, height and depth of the
+    ///                             rendering area of the render window)
     /// * title - Title of the render window (UTF-32)
     /// * style - Window style
     /// * settings - Additional settings for the underlying OpenGL context
@@ -633,7 +635,8 @@ impl RenderTarget for RenderWindow{
     /// located below the mouse cursor.
     ///
     /// This version uses the current view for calculations, see the
-    /// [map_pixel_to_coords](#method.map_pixel_to_coords) function if you want to use a custom view.
+    /// [map_pixel_to_coords](#method.map_pixel_to_coords) function if you want to
+    /// use a custom view.
     ///
     /// # Arguments
     /// * point - Pixel to convert
