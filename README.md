@@ -3,15 +3,13 @@ rust-sfml [![Build Status](https://api.travis-ci.org/jeremyletang/rust-sfml.png?
 
 Rust bindings for [SFML](http://www.sfml-dev.org), the Simple and Fast Multimedia Library.
 
-Prerequisites
+Requirements
 =============
 
-SFML 2.3 and CSFML 2.3 must be installed on your computer. You can download them here:
-
-- SFML 2.3: http://www.sfml-dev.org/download.php
-- CSFML 2.3: http://www.sfml-dev.org/download/csfml/
-
-Rust-sfml works on Linux, Windows and OSX.
+- Linux, Windows, or OS X
+- Rust 1.9 or newer
+- [SFML 2.3](http://www.sfml-dev.org/download.php)
+- [CSFML 2.3](http://www.sfml-dev.org/download/csfml/)
 
 Examples
 =============
