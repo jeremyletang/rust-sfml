@@ -36,8 +36,6 @@ use csfml_system_sys::{sfBool, sfTrue, sfVector2f};
 use csfml_graphics_sys as ffi;
 use ext::sf_bool_ext::SfBoolExt;
 
-// pub mod rc;
-
 /// Specialized shape representing a circle.
 pub struct CircleShape<'s> {
     circle_shape: *mut ffi::sfCircleShape,

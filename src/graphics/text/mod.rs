@@ -39,8 +39,6 @@ use csfml_system_sys::sfVector2f;
 
 use csfml_graphics_sys as ffi;
 
-// pub mod rc;
-
 /// Graphical text
 ///
 /// Text is a drawable class that allows to easily

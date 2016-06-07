@@ -52,18 +52,6 @@ pub use graphics::drawable::Drawable;
 pub use graphics::shape::{Shape, ShapeImpl};
 pub use graphics::transformable::Transformable;
 
-/// Shapes implementations using reference counting to manage shared resources
-// pub mod rc {
-//     pub use graphics::circle_shape::rc::CircleShape;
-//     pub use graphics::rectangle_shape::rc::RectangleShape;
-//     pub use graphics::convex_shape::rc::{ConvexShape, ConvexShapePoints};
-//     pub use graphics::shape::rc::Shape;
-//     pub use graphics::shader::rc::Shader;
-//     pub use graphics::text::rc::Text;
-//     pub use graphics::sprite::rc::Sprite;
-//     pub use graphics::render_states::rc::RenderStates;
-// }
-
 mod drawable;
 mod shape;
 mod transformable;

@@ -36,8 +36,6 @@ use csfml_graphics_sys as ffi;
 use csfml_system_sys::{sfBool, sfTrue, sfVector2f};
 use ext::sf_bool_ext::SfBoolExt;
 
-// pub mod rc;
-
 struct WrapObj {
     shape_impl: Box<ShapeImpl + Send>
 }
