@@ -47,7 +47,7 @@ impl ::std::default::Default for sfBlendMode {
     fn default() -> Self { unsafe { ::std::mem::zeroed() } }
 }
 #[repr(C)]
-#[derive(Copy, Clone, Debug)]
+#[derive(Copy, Clone, PartialEq, Eq, Debug)]
 pub struct sfColor {
     pub r: sfUint8,
     pub g: sfUint8,

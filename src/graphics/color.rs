@@ -34,6 +34,7 @@ use csfml_graphics_sys as ffi;
 ///
 /// sfColor is a simple color class composed of 4 components: Red, Green, Blue, Alpha
 #[repr(C)]
+#[derive(Copy, Clone, PartialEq, Eq, Debug)]
 pub struct Color(pub ffi::sfColor);
 
 impl Color {
