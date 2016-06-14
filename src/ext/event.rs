@@ -8,12 +8,17 @@ fn type_(evt: &mut sfEvent) -> *mut sfEventType {
 
 fn size(evt: &mut sfEvent) -> event::Event {
     let e: *mut sfSizeEvent = evt as *mut _ as *mut _;
-    unsafe { event::Resized { width: (*e).width, height: (*e).height } }
+    unsafe {
+        event::Resized {
+            width: (*e).width,
+            height: (*e).height,
+        }
+    }
 }
 
 fn key(evt: &mut sfEvent, type_: sfEventType) -> event::Event {
     let e: *mut sfKeyEvent = evt as *mut _ as *mut _;
-    let code = unsafe { ::std::mem::transmute((*e).code ) };
+    let code = unsafe { ::std::mem::transmute((*e).code) };
     let alt = unsafe { (*e).alt.to_bool() };
     let ctrl = unsafe { (*e).control.to_bool() };
     let shift = unsafe { (*e).shift.to_bool() };
@@ -25,19 +30,19 @@ fn key(evt: &mut sfEvent, type_: sfEventType) -> event::Event {
                 alt: alt,
                 ctrl: ctrl,
                 shift: shift,
-                system: system
+                system: system,
             }
-        },
+        }
         sfEventType::sfEvtKeyReleased => {
             event::KeyReleased {
                 code: code,
                 alt: alt,
                 ctrl: ctrl,
                 shift: shift,
-                system: system
+                system: system,
             }
-        },
-        _ => unreachable!()
+        }
+        _ => unreachable!(),
     }
 }
 
@@ -48,7 +53,12 @@ fn text(evt: &mut sfEvent) -> event::Event {
 
 fn mouse_move(evt: &mut sfEvent) -> event::Event {
     let e: *mut sfMouseMoveEvent = evt as *mut _ as *mut _;
-    unsafe { event::MouseMoved {x: (*e).x, y: (*e).y } }
+    unsafe {
+        event::MouseMoved {
+            x: (*e).x,
+            y: (*e).y,
+        }
+    }
 }
 
 fn mouse_button(evt: &mut sfEvent, type_: sfEventType) -> event::Event {
@@ -58,15 +68,33 @@ fn mouse_button(evt: &mut sfEvent, type_: sfEventType) -> event::Event {
     let y = unsafe { (*e).y };
 
     match type_ {
-        sfEventType::sfEvtMouseButtonReleased => event::MouseButtonReleased { button: button, x: x, y: y },
-        sfEventType::sfEvtMouseButtonPressed => event::MouseButtonPressed { button: button, x: x, y: y },
-        _ => unreachable!()
+        sfEventType::sfEvtMouseButtonReleased => {
+            event::MouseButtonReleased {
+                button: button,
+                x: x,
+                y: y,
+            }
+        }
+        sfEventType::sfEvtMouseButtonPressed => {
+            event::MouseButtonPressed {
+                button: button,
+                x: x,
+                y: y,
+            }
+        }
+        _ => unreachable!(),
     }
 }
 
 fn mouse_wheel(evt: &mut sfEvent) -> event::Event {
     let e: *mut sfMouseWheelEvent = evt as *mut _ as *mut _;
-    unsafe { event::MouseWheelMoved { delta: (*e).delta, x: (*e).x, y: (*e).y } }
+    unsafe {
+        event::MouseWheelMoved {
+            delta: (*e).delta,
+            x: (*e).x,
+            y: (*e).y,
+        }
+    }
 }
 
 fn joystick_move(evt: &mut sfEvent) -> event::Event {
@@ -74,7 +102,7 @@ fn joystick_move(evt: &mut sfEvent) -> event::Event {
     event::JoystickMoved {
         joystickid: unsafe { (*e).joystickId },
         axis: unsafe { ::std::mem::transmute((*e).axis as u8) },
-        position: unsafe { (*e).position }
+        position: unsafe { (*e).position },
     }
 }
 
@@ -84,11 +112,19 @@ fn joystick_button(evt: &mut sfEvent, type_: sfEventType) -> event::Event {
     let btn = unsafe { (*e).button };
 
     match type_ {
-        sfEventType::sfEvtJoystickButtonPressed =>
-            event::JoystickButtonPressed { joystickid: jid, button: btn },
-        sfEventType::sfEvtJoystickButtonReleased =>
-            event::JoystickButtonReleased { joystickid: jid, button: btn },
-        _ => unreachable!()
+        sfEventType::sfEvtJoystickButtonPressed => {
+            event::JoystickButtonPressed {
+                joystickid: jid,
+                button: btn,
+            }
+        }
+        sfEventType::sfEvtJoystickButtonReleased => {
+            event::JoystickButtonReleased {
+                joystickid: jid,
+                button: btn,
+            }
+        }
+        _ => unreachable!(),
     }
 }
 
@@ -98,8 +134,8 @@ fn joystick_connect(evt: &mut sfEvent, type_: sfEventType) -> event::Event {
 
     match type_ {
         sfEventType::sfEvtJoystickConnected => event::JoystickConnected { joystickid: jid },
-        sfEventType::sfEvtJoystickDisconnected => event::JoystickDisconnected { joystickid: jid},
-        _ => unreachable!()
+        sfEventType::sfEvtJoystickDisconnected => event::JoystickDisconnected { joystickid: jid },
+        _ => unreachable!(),
     }
 }
 
@@ -112,7 +148,8 @@ pub fn get_wrapped_event(event: &mut ::csfml_window_sys::sfEvent) -> event::Even
         sfEventType::sfEvtLostFocus => event::LostFocus,
         sfEventType::sfEvtGainedFocus => event::GainedFocus,
         sfEventType::sfEvtTextEntered => text(event),
-        sfEventType::sfEvtKeyPressed | sfEventType::sfEvtKeyReleased  => key(event, type_),
+        sfEventType::sfEvtKeyPressed |
+        sfEventType::sfEvtKeyReleased => key(event, type_),
         sfEventType::sfEvtMouseWheelMoved => mouse_wheel(event),
         sfEventType::sfEvtMouseButtonPressed |
         sfEventType::sfEvtMouseButtonReleased => mouse_button(event, type_),
@@ -124,6 +161,6 @@ pub fn get_wrapped_event(event: &mut ::csfml_window_sys::sfEvent) -> event::Even
         sfEventType::sfEvtJoystickMoved => joystick_move(event),
         sfEventType::sfEvtJoystickConnected |
         sfEventType::sfEvtJoystickDisconnected => joystick_connect(event, type_),
-        _ => event::NoEvent
+        _ => event::NoEvent,
     }
 }

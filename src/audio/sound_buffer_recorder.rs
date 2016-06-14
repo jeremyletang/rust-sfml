@@ -1,26 +1,25 @@
-/*
-* Rust-SFML - Copyright (c) 2013 Letang Jeremy.
-*
-* The original software, SFML library, is provided by Laurent Gomila.
-*
-* This software is provided 'as-is', without any express or implied warranty.
-* In no event will the authors be held liable for any damages arising from
-* the use of this software.
-*
-* Permission is granted to anyone to use this software for any purpose,
-* including commercial applications, and to alter it and redistribute it
-* freely, subject to the following restrictions:
-*
-* 1. The origin of this software must not be misrepresented; you must not claim
-*    that you wrote the original software. If you use this software in a product,
-*    an acknowledgment in the product documentation would be appreciated but is
-*    not required.
-*
-* 2. Altered source versions must be plainly marked as such, and must not be
-*    misrepresented as being the original software.
-*
-* 3. This notice may not be removed or altered from any source distribution.
-*/
+// Rust-SFML - Copyright (c) 2013 Letang Jeremy.
+//
+// The original software, SFML library, is provided by Laurent Gomila.
+//
+// This software is provided 'as-is', without any express or implied warranty.
+// In no event will the authors be held liable for any damages arising from
+// the use of this software.
+//
+// Permission is granted to anyone to use this software for any purpose,
+// including commercial applications, and to alter it and redistribute it
+// freely, subject to the following restrictions:
+//
+// 1. The origin of this software must not be misrepresented; you must not claim
+//    that you wrote the original software. If you use this software in a product,
+//    an acknowledgment in the product documentation would be appreciated but is
+//    not required.
+//
+// 2. Altered source versions must be plainly marked as such, and must not be
+//    misrepresented as being the original software.
+//
+// 3. This notice may not be removed or altered from any source distribution.
+//
 
 //! Store captured audio data in sound Buffer
 //!
@@ -40,7 +39,7 @@ use ext::sf_bool_ext::SfBoolExt;
 /// `SoundBufferRecorder` allows to access a recorded sound through a `SoundBuffer`,
 /// so that it can be played, saved to a file, etc.
 pub struct SoundBufferRecorder {
-    sound_buffer_recorder: *mut ffi::sfSoundBufferRecorder
+    sound_buffer_recorder: *mut ffi::sfSoundBufferRecorder,
 }
 
 impl SoundBufferRecorder {
@@ -52,9 +51,7 @@ impl SoundBufferRecorder {
         if buffer.is_null() {
             None
         } else {
-            Some(SoundBufferRecorder{
-                    sound_buffer_recorder: buffer
-                })
+            Some(SoundBufferRecorder { sound_buffer_recorder: buffer })
         }
     }
 
@@ -77,9 +74,7 @@ impl SoundBufferRecorder {
 
     /// Stop the capture of a sound recorder
     pub fn stop(&mut self) {
-        unsafe {
-            ffi::sfSoundBufferRecorder_stop(self.sound_buffer_recorder)
-        }
+        unsafe { ffi::sfSoundBufferRecorder_stop(self.sound_buffer_recorder) }
     }
 
     /// Get the sample rate of a sound buffer recorder
@@ -90,9 +85,7 @@ impl SoundBufferRecorder {
     ///
     /// Return the sample rate, in samples per second
     pub fn get_sample_rate(&self) -> u32 {
-        unsafe {
-            ffi::sfSoundBufferRecorder_getSampleRate(self.sound_buffer_recorder) as u32
-        }
+        unsafe { ffi::sfSoundBufferRecorder_getSampleRate(self.sound_buffer_recorder) as u32 }
     }
 
     /// Get the sound buffer containing the captured audio data
@@ -122,7 +115,6 @@ impl SoundBufferRecorder {
     pub fn is_available() -> bool {
         unsafe { ffi::sfSoundRecorder_isAvailable() }.to_bool()
     }
-
 }
 
 impl Drop for SoundBufferRecorder {
