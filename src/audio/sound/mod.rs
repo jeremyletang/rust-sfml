@@ -38,8 +38,6 @@ use csfml_system_sys::{sfBool, sfVector3f};
 use csfml_audio_sys as ffi;
 use ext::sf_bool_ext::SfBoolExt;
 
-pub mod rc;
-
 /// Play sounds.
 ///
 /// Regular sound that can be played in the audio environment.

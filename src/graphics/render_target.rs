@@ -167,15 +167,6 @@ pub trait RenderTarget {
                                            object: &T,
                                            render_states: &mut RenderStates);
 
-    /// Draw a drawable object to the render-target with a RenderStates
-    ///
-    /// # Arguments
-    /// * object - Object to draw
-    /// * renderStates - The renderStates to associate to the object
-    // fn draw_with_renderstates_rc<T: Drawable>(&mut self,
-    //                                           object: &T,
-    //                                           render_states: &mut rc::RenderStates);
-
     /// Get the size of the rendering region of a window
     ///
     /// The size doesn't include the titlebar and borders of the window.

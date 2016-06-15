@@ -43,8 +43,6 @@ use std::io::{Read, Seek};
 use inputstream::InputStream;
 use ext::sf_bool_ext::SfBoolExt;
 
-// pub mod rc;
-
 /// Shader class (vertex and fragment)
 ///
 /// Shaders are programs written using a specific language,

@@ -39,8 +39,6 @@ use csfml_system_sys::{sfBool, sfTrue, sfVector2f};
 use csfml_graphics_sys as ffi;
 use ext::sf_bool_ext::SfBoolExt;
 
-// pub mod rc;
-
 /// Drawable representation of a texture
 ///
 /// Sprite is a drawable class that allows to easily

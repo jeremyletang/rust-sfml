@@ -36,8 +36,6 @@ use csfml_system_sys::{sfBool, sfTrue, sfVector2f};
 use csfml_graphics_sys as ffi;
 use ext::sf_bool_ext::SfBoolExt;
 
-// pub mod rc;
-
 /// Specialized shape representing a rectangle
 pub struct RectangleShape<'s> {
     rectangle_shape: *mut ffi::sfRectangleShape,
