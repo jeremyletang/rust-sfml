@@ -29,7 +29,7 @@ bitflags! {
     #[repr(C)]
     pub flags WindowStyle: u32 {
         /// No decorations (cannot be combined with other flags).
-        const NO_STYLE = 0,
+        const NONE = 0,
         /// Title bar and fixed border.
         const TITLEBAR = 1,
         /// Title bar, resizable border, and maximize button.
@@ -39,12 +39,12 @@ bitflags! {
         /// Fullscreen mode (ignores other flags).
         const FULLSCREEN = 8,
         /// Default window style: title bar, resizable border, and close button.
-        const DEFAULT_STYLE = 1 | 2 | 4
+        const DEFAULT = 1 | 2 | 4
     }
 }
 
 impl Default for WindowStyle {
     fn default() -> WindowStyle {
-        DEFAULT_STYLE
+        DEFAULT
     }
 }
