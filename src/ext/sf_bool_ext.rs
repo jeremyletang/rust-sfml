@@ -1,4 +1,4 @@
-use csfml_system_sys::{sfBool, sfTrue, sfFalse};
+use csfml_system_sys::{self, sfBool, sfTrue, sfFalse};
 
 pub trait SfBoolExt {
     fn to_bool(self) -> bool;
@@ -6,10 +6,9 @@ pub trait SfBoolExt {
 }
 
 impl SfBoolExt for sfBool {
-    #![allow(non_upper_case_globals)]
     fn to_bool(self) -> bool {
         match self {
-            sfFalse => false,
+            csfml_system_sys::sfFalse => false,
             _ => true,
         }
     }
