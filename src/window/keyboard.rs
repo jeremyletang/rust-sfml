@@ -140,7 +140,7 @@ pub enum Key {
     F15,
     Pause,
     /// The maximum available key code (not a real key).
-    KeyCount
+    Count
 }
 
 impl Key {
