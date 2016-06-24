@@ -194,8 +194,8 @@ impl RenderWindow {
     /// thus you should always call this function in a loop
     /// to make sure that you process every pending event.
     ///
-    /// Return the event if an event was returned, or NoEvent if the event queue was empty
-    pub fn poll_event(&mut self) -> Event {
+    /// Return Some(event) if an event was returned, or None if the event queue was empty
+    pub fn poll_event(&mut self) -> Option<Event> {
         let mut event = ::csfml_window_sys::sfEvent::default();
         let have_event = unsafe {
             ffi::sfRenderWindow_pollEvent(self.render_window, &mut event)
@@ -203,7 +203,7 @@ impl RenderWindow {
         if have_event {
             ext::event::get_wrapped_event(&mut event)
         } else {
-            Event::NoEvent
+            None
         }
     }
 
@@ -217,8 +217,8 @@ impl RenderWindow {
     /// is dedicated to events handling: you want to make this thread
     /// sleep as long as no new event is received.
     ///
-    /// Return the event or NoEvent if an error has occured
-    pub fn wait_event(&mut self) -> Event {
+    /// Return Some(event) or None if an error has occured
+    pub fn wait_event(&mut self) -> Option<Event> {
         let mut event = ::csfml_window_sys::sfEvent::default();
         let have_event = unsafe {
             ffi::sfRenderWindow_waitEvent(self.render_window, &mut event)
@@ -226,7 +226,7 @@ impl RenderWindow {
         if have_event {
             ext::event::get_wrapped_event(&mut event)
         } else {
-            Event::NoEvent
+            None
         }
     }
 
@@ -859,7 +859,7 @@ impl<'a> Iterator for Events<'a> {
     fn next(&mut self) -> Option<Event> {
         let mut event = ::csfml_window_sys::sfEvent::default();
         if unsafe { ffi::sfRenderWindow_pollEvent(self.render_window, &mut event) }.to_bool() {
-            Some(ext::event::get_wrapped_event(&mut event))
+            ext::event::get_wrapped_event(&mut event)
         } else {
             None
         }

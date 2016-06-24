@@ -103,10 +103,10 @@ fn joystick_connect(evt: &mut sfEvent, type_: sfEventType) -> Event {
     }
 }
 
-pub fn get_wrapped_event(event: &mut ::csfml_window_sys::sfEvent) -> Event {
+pub fn get_wrapped_event(event: &mut ::csfml_window_sys::sfEvent) -> Option<Event> {
     let type_ = unsafe { *type_(event) };
 
-    match type_ {
+    Some(match type_ {
         sfEventType::sfEvtClosed => Event::Closed,
         sfEventType::sfEvtResized => size(event),
         sfEventType::sfEvtLostFocus => Event::LostFocus,
@@ -124,6 +124,6 @@ pub fn get_wrapped_event(event: &mut ::csfml_window_sys::sfEvent) -> Event {
         sfEventType::sfEvtJoystickMoved => joystick_move(event),
         sfEventType::sfEvtJoystickConnected |
         sfEventType::sfEvtJoystickDisconnected => joystick_connect(event, type_),
-        _ => Event::NoEvent
-    }
+        _ => return None,
+    })
 }

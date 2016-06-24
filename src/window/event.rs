@@ -148,6 +148,4 @@ pub enum Event {
        /// Index of the joystick (in range [0 .. joystick::Count - 1])
         joystickid: u32
     },
-    /// No Event
-    NoEvent
 }
