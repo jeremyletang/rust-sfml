@@ -3,7 +3,7 @@ extern crate rand;
 
 use sfml::graphics::{CircleShape, Color, Font, RectangleShape, RenderTarget, RenderWindow, Shape,
                      Text, Transformable};
-use sfml::window::{ContextSettings, Key, VideoMode, event, window_style};
+use sfml::window::{ContextSettings, Key, VideoMode, Event, window_style};
 use sfml::system::{Clock, Time, Vector2f};
 use sfml::audio::{Sound, SoundBuffer, SoundSource};
 use rand::{Rng, thread_rng};
@@ -91,8 +91,8 @@ fn main() {
     loop {
         for event in window.events() {
             match event {
-                event::Closed => return,
-                event::KeyPressed { code, .. } => {
+                Event::Closed => return,
+                Event::KeyPressed { code, .. } => {
                     match code {
                         Key::Escape => return,
                         Key::Space => {

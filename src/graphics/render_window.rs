@@ -33,7 +33,7 @@ use std::vec::Vec;
 use std::ffi::CString;
 
 use raw_conv::{Raw, RawMut, FromRaw};
-use window::{ContextSettings, VideoMode, event, WindowStyle};
+use window::{ContextSettings, VideoMode, Event, WindowStyle};
 use system::{Vector2f, Vector2i, Vector2u};
 use graphics::{Drawable, Color, CircleShape, RectangleShape, Text, Sprite, VertexArray,
                RenderStates, View, ViewRef, Image, IntRect, RenderTarget,
@@ -195,7 +195,7 @@ impl RenderWindow {
     /// to make sure that you process every pending event.
     ///
     /// Return the event if an event was returned, or NoEvent if the event queue was empty
-    pub fn poll_event(&mut self) -> event::Event {
+    pub fn poll_event(&mut self) -> Event {
         let mut event = ::csfml_window_sys::sfEvent::default();
         let have_event = unsafe {
             ffi::sfRenderWindow_pollEvent(self.render_window, &mut event)
@@ -203,7 +203,7 @@ impl RenderWindow {
         if have_event {
             ext::event::get_wrapped_event(&mut event)
         } else {
-            event::NoEvent
+            Event::NoEvent
         }
     }
 
@@ -218,7 +218,7 @@ impl RenderWindow {
     /// sleep as long as no new event is received.
     ///
     /// Return the event or NoEvent if an error has occured
-    pub fn wait_event(&mut self) -> event::Event {
+    pub fn wait_event(&mut self) -> Event {
         let mut event = ::csfml_window_sys::sfEvent::default();
         let have_event = unsafe {
             ffi::sfRenderWindow_waitEvent(self.render_window, &mut event)
@@ -226,7 +226,7 @@ impl RenderWindow {
         if have_event {
             ext::event::get_wrapped_event(&mut event)
         } else {
-            event::NoEvent
+            Event::NoEvent
         }
     }
 
@@ -854,9 +854,9 @@ impl RenderTarget for RenderWindow{
 }
 
 impl<'a> Iterator for Events<'a> {
-    type Item = event::Event;
+    type Item = Event;
 
-    fn next(&mut self) -> Option<event::Event> {
+    fn next(&mut self) -> Option<Event> {
         let mut event = ::csfml_window_sys::sfEvent::default();
         if unsafe { ffi::sfRenderWindow_pollEvent(self.render_window, &mut event) }.to_bool() {
             Some(ext::event::get_wrapped_event(&mut event))

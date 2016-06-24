@@ -32,6 +32,7 @@ pub use window::context_settings::{ContextSettings, CONTEXT_DEFAULT, CONTEXT_COR
 pub use window::window_style::WindowStyle;
 pub use window::keyboard::Key;
 pub use window::mouse::MouseButton;
+pub use window::event::Event;
 
 mod window;
 mod video_mode;
@@ -40,5 +41,5 @@ mod context_settings;
 pub mod joystick;
 mod keyboard;
 mod mouse;
-pub mod event;
+mod event;
 pub mod window_style;

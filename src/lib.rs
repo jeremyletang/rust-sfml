@@ -45,7 +45,7 @@
 //! extern crate sfml;
 //!
 //! use sfml::system::Vector2f;
-//! use sfml::window::{ContextSettings, VideoMode, event, window_style};
+//! use sfml::window::{ContextSettings, VideoMode, Event, window_style};
 //! use sfml::graphics::{CircleShape, Color, RenderTarget, RenderWindow, Shape, Transformable};
 //!
 //! fn main() {
@@ -65,7 +65,7 @@
 //!     loop {
 //!         // Handle events
 //!         for event in window.events() {
-//!             if let event::Closed = event {
+//!             if let Event::Closed = event {
 //!                 return;
 //!             }
 //!         }

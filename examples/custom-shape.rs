@@ -1,7 +1,7 @@
 extern crate sfml;
 
 use sfml::graphics::{Color, CustomShape, RenderTarget, RenderWindow, ShapeImpl};
-use sfml::window::{Key, VideoMode, event, window_style};
+use sfml::window::{Key, VideoMode, Event, window_style};
 use sfml::system::Vector2f;
 
 #[derive(Clone, Copy)]
@@ -38,8 +38,8 @@ fn main() {
     loop {
         for event in window.events() {
             match event {
-                event::Closed => return,
-                event::KeyPressed { code: Key::Escape, .. } => return,
+                Event::Closed => return,
+                Event::KeyPressed { code: Key::Escape, .. } => return,
                 _ => {}
             }
         }

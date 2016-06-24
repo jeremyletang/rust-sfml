@@ -2,7 +2,7 @@ extern crate sfml;
 
 use sfml::graphics::{CircleShape, Color, Drawable, RectangleShape, RenderStates, RenderTarget,
                      RenderWindow, Shape, Transformable};
-use sfml::window::{Key, VideoMode, event, window_style};
+use sfml::window::{Key, VideoMode, Event, window_style};
 use sfml::system::Vector2f;
 
 /// Our custom drawable type. It looks like a bullet.
@@ -52,8 +52,8 @@ fn main() {
     loop {
         for event in window.events() {
             match event {
-                event::Closed => return,
-                event::KeyPressed { code: Key::Escape, .. } => return,
+                Event::Closed => return,
+                Event::KeyPressed { code: Key::Escape, .. } => return,
                 _ => {}
             }
         }

@@ -1,7 +1,7 @@
 extern crate sfml;
 
 use sfml::graphics::{Color, LinesStrip, RenderTarget, RenderWindow, Vertex, VertexArray};
-use sfml::window::{VideoMode, event, window_style};
+use sfml::window::{VideoMode, Event, window_style};
 use sfml::system::Vector2f;
 
 fn main() {
@@ -69,7 +69,7 @@ fn main() {
 
     loop {
         for e in window.events() {
-            if e == event::Closed {
+            if e == Event::Closed {
                 return;
             }
         }
