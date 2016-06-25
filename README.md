@@ -1,4 +1,4 @@
-rust-sfml [![Build Status](https://api.travis-ci.org/jeremyletang/rust-sfml.png?branch=master)](https://travis-ci.org/jeremyletang/rust-sfml) [![crates.io](http://meritbadge.herokuapp.com/sfml)](https://crates.io/crates/sfml) [![Clippy Linting Result](http://clippy.bashy.io/github/jeremyletang/rust-sfml/master/badge.svg)](http://clippy.bashy.io/github/jeremyletang/rust-sfml/master/log)
+rust-sfml [![Build Status](https://api.travis-ci.org/jeremyletang/rust-sfml.png?branch=master)](https://travis-ci.org/jeremyletang/rust-sfml) [![crates.io](http://meritbadge.herokuapp.com/sfml)](https://crates.io/crates/sfml)
 =========
 
 Rust bindings for [SFML](http://www.sfml-dev.org), the Simple and Fast Multimedia Library.
