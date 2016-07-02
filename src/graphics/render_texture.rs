@@ -402,7 +402,7 @@ impl RenderTarget for RenderTexture {
         let len = vertices.len();
         unsafe {
             ffi::sfRenderTexture_drawPrimitives(self.render_texture,
-                                                ::std::mem::transmute(&vertices[0]),
+                                                &vertices[0] as *const _ as *const _,
                                                 len,
                                                 ty,
                                                 rs.raw_mut());

@@ -101,7 +101,7 @@ impl IpAddress {
     /// Return a string representation of the address
     pub fn to_string(&self) -> String {
         unsafe {
-            let ptr: *const _ = ::std::mem::transmute(&self.ip);
+            let ptr = &self.ip as *const _ as *const _;
             str::from_utf8(CStr::from_ptr(ptr).to_bytes()).unwrap().into()
         }
     }
