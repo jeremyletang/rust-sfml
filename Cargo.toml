@@ -9,6 +9,8 @@ repository = "https://github.com/jeremyletang/rust-sfml"
 license = "zlib-acknowledgement"
 
 [features]
+# Used for conditonally setting clippy lint levels.
+# Run cargo clippy with `cargo clippy --features=clippy`.
 clippy = []
 
 [dependencies]
