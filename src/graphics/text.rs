@@ -27,7 +27,6 @@
 //! Text is a drawable class that allows to easily
 //! display some text with custom style and color on a render target.
 
-use std::ffi::{CString, CStr};
 use std::str;
 use libc::{c_float, c_uint, size_t};
 
@@ -45,7 +44,7 @@ use csfml_graphics_sys as ffi;
 /// display some text with custom style and color on a render target.
 pub struct Text<'s> {
     text: *mut ffi::sfText,
-    string_length: u32,
+    string_length: usize,
     font: Option<&'s Font>
 }
 
@@ -78,23 +77,13 @@ impl<'s> Text<'s> {
     /// Return Some(Text) or None
     pub fn new_init(string: &str,
                     font: &'s Font,
-                    character_size: u32) ->Option<Text<'s>> {
-        let text = unsafe { ffi::sfText_create() };
-        if text.is_null() {
-            None
-        } else {
-            let c_str = CString::new(string.as_bytes()).unwrap();
-            unsafe {
-                ffi::sfText_setString(text, c_str.as_ptr());
-                ffi::sfText_setFont(text, font.raw());
-                ffi::sfText_setCharacterSize(text, character_size as c_uint)
-            }
-            Some(Text {
-                    text: text,
-                    string_length: string.len() as u32,
-                    font: Some(font)
-                })
-        }
+                    character_size: u32) -> Option<Text<'s>> {
+        Text::new().map(|mut text| {
+            text.set_string(string);
+            text.set_font(font);
+            text.set_character_size(character_size);
+            text
+        })
     }
 
     /// Copy an existing Text
@@ -107,49 +96,34 @@ impl<'s> Text<'s> {
         } else {
             Some(Text {
                 text: self.text,
-                string_length: self.string_length as u32,
+                string_length: self.string_length,
                 font: self.font
             })
         }
     }
 
-    /// Set the string of a text (from an ANSI string)
+    /// Set the string of a text
     ///
     /// A text's string is empty by default.
     ///
     /// # Arguments
     /// * string - New string
     pub fn set_string(&mut self, string: &str) {
+        let mut utf32: Vec<u32> = string.chars().map(|ch| ch as u32).collect();
+        self.string_length = utf32.len();
+        utf32.push(0);
         unsafe {
-            let c_str = CString::new(string.as_bytes()).unwrap();
-            ffi::sfText_setString(self.text, c_str.as_ptr());
+            ffi::sfText_setUnicodeString(self.text, utf32.as_ptr());
         }
-        self.string_length = string.len() as u32
     }
 
-    /// Get the string of a text (returns an ANSI string)
-    ///
-    /// Return a string as a locale-dependant ANSI string
+    /// Get the string of a text
     pub fn get_string(&self) -> String {
         unsafe {
-            let string = ffi::sfText_getString(self.text);
-            str::from_utf8(CStr::from_ptr(string).to_bytes_with_nul()).unwrap().into()
+            let utf32: *const u32 = ffi::sfText_getUnicodeString(self.text);
+            let slice: &[u32] = ::std::slice::from_raw_parts(utf32, self.string_length);
+            slice.iter().map(|&i| ::std::char::from_u32(i).unwrap()).collect()
         }
-    }
-
-    /// Get the string of a text (returns a unicode string)
-    ///
-    /// Return a string as UTF-32
-    pub fn get_unicode_string(&self) -> Vec<u32> {
-        let string: *const u32 = unsafe {
-            ffi::sfText_getUnicodeString(self.text)
-        };
-
-        let string_slice: &[u32] = unsafe {
-            ::std::slice::from_raw_parts(string, self.string_length as usize)
-        };
-
-        string_slice.to_vec()
     }
 
     /// Get the size of the characters
@@ -286,17 +260,6 @@ impl<'s> Text<'s> {
     pub fn get_global_bounds(&self) -> FloatRect {
         unsafe {
             FloatRect::from_raw(ffi::sfText_getGlobalBounds(self.text))
-        }
-    }
-
-    /// Set the string of a text (from a unicode string)
-    ///
-    /// # Arguments
-    /// * string - The new string
-    pub fn set_unicode_string(&mut self, string: Vec<u32>) {
-        unsafe {
-            self.string_length = string.len() as u32;
-            ffi::sfText_setUnicodeString(self.text, string.as_ptr())
         }
     }
 }
