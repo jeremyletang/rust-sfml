@@ -57,53 +57,40 @@ pub type Vector3i = Vector3<i32>;
 /// export Vector3<u32> as Vector3u
 pub type Vector3u = Vector3<u32>;
 
-impl<T: Add + Copy> Add<T> for Vector3<T> {
-    type Output = Vector3<T::Output>;
+macro_rules! impl_ops {
+    ( $_trait:ident, $_func:ident, $( $_type:ty ),+ ) => {
+        impl<T: $_trait + Copy> $_trait<T> for Vector3<T> {
+            type Output = Vector3<T::Output>;
 
-    fn add(self, rhs: T) -> Vector3<T::Output> {
-        Vector3 {
-            x: self.x + rhs,
-            y: self.y + rhs,
-            z: self.z + rhs
+            fn $_func(self, rhs: T) -> Vector3<T::Output> {
+                Vector3 {
+                    x: $_trait::$_func(self.x, rhs),
+                    y: $_trait::$_func(self.y, rhs),
+                    z: $_trait::$_func(self.z, rhs)
+                }
+            }
         }
+
+        $(
+            impl $_trait<Vector3<$_type>> for $_type {
+                type Output = Vector3<$_type>;
+
+                fn $_func(self, rhs: Vector3<$_type>) -> Vector3<$_type> {
+                    Vector3 {
+                        x: $_trait::$_func(self, rhs.x),
+                        y: $_trait::$_func(self, rhs.y),
+                        z: $_trait::$_func(self, rhs.z)
+                    }
+                }
+            }
+        )+
     }
 }
 
-impl<T: Sub + Copy> Sub<T> for Vector3<T> {
-    type Output = Vector3<T::Output>;
-
-    fn sub(self, rhs: T) -> Vector3<T::Output> {
-        Vector3 {
-            x: self.x - rhs,
-            y: self.y - rhs,
-            z: self.z - rhs
-        }
-    }
-}
-
-impl<T: Mul + Copy> Mul<T> for Vector3<T> {
-    type Output = Vector3<T::Output>;
-
-    fn mul(self, rhs: T) -> Vector3<T::Output> {
-        Vector3 {
-            x: self.x * rhs,
-            y: self.y * rhs,
-            z: self.z * rhs
-        }
-    }
-}
-
-impl<T: Div + Copy> Div<T> for Vector3<T> {
-    type Output = Vector3<T::Output>;
-
-    fn div(self, rhs: T) -> Vector3<T::Output> {
-        Vector3 {
-            x: self.x / rhs,
-            y: self.y / rhs,
-            z: self.z / rhs
-        }
-    }
-}
+impl_ops!(Add, add, i32, u32, f32);
+impl_ops!(Sub, sub, i32, u32, f32);
+impl_ops!(Mul, mul, i32, u32, f32);
+impl_ops!(Div, div, i32, u32, f32);
 
 
 impl<T: Add> Add for Vector3<T> {
@@ -153,6 +140,7 @@ impl<T: Div> Div for Vector3<T> {
         }
     }
 }
+
 
 impl Raw for Vector3f {
     type Raw = ::csfml_system_sys::sfVector3f;
