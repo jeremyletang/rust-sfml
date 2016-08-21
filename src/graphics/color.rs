@@ -74,28 +74,6 @@ impl Color {
         })
     }
 
-    /// Add two colors
-    ///
-    /// # Arguments
-    /// * color1 - The first color
-    /// * color2 - The second color
-    ///
-    /// Return the component-wise saturated addition of the two colors
-    pub fn add(color1: Color, color2: Color) -> Color {
-        Color(unsafe {ffi::sfColor_add(color1.0, color2.0)})
-    }
-
-    /// Modulate two colors
-    ///
-    /// # Arguments
-    /// * color1 - The first color
-    /// * color2 - The second color
-    ///
-    /// Return the component-wise multiplication of the two colors
-    pub fn modulate(color1: Color, color2: Color) -> Color {
-        Color(unsafe {ffi::sfColor_modulate(color1.0, color2.0)})
-    }
-
     /// Black predefined color
     pub fn black() -> Color {
         Color::new_rgb(0, 0, 0)
@@ -146,33 +124,19 @@ impl Color {
 impl Add for Color {
     type Output = Color;
 
+    /// Calculate the component-wise saturated addition of two colors.
     fn add(self, other: Color) -> Color {
-        let r: i32 = self.0.r as i32 + other.0.r as i32;
-        let g: i32 = self.0.g as i32 + other.0.g as i32;
-        let b: i32 = self.0.b as i32 + other.0.b as i32;
-        let a: i32 = self.0.a as i32 + other.0.a as i32;
-        Color(ffi::sfColor {
-            r: if r > 255 {255} else {r as u8},
-            g: if g > 255 {255} else {g as u8},
-            b: if b > 255 {255} else {b as u8},
-            a: if a > 255 {255} else {a as u8}
-        })
+        Color(unsafe {ffi::sfColor_add(self.0, other.0)})
     }
 }
 
 impl Mul for Color {
     type Output = Color;
 
+    /// Calculate the component-wise modulated multiplication of two colors.
+    ///
+    /// For each `X` in `rgba`, `result.X = a.X * b.X / 255`.
     fn mul(self, other: Color) -> Color {
-        let r: i32 = self.0.r as i32 * (other.0.r as i32);
-        let g: i32 = self.0.g as i32 * (other.0.g as i32);
-        let b: i32 = self.0.b as i32 * (other.0.b as i32);
-        let a: i32 = self.0.a as i32 * (other.0.a as i32);
-        Color(ffi::sfColor {
-            r: if r > 255 {255} else {r as u8},
-            g: if g > 255 {255} else {g as u8},
-            b: if b > 255 {255} else {b as u8},
-            a: if a > 255 {255} else {a as u8}
-        })
+        Color(unsafe {ffi::sfColor_modulate(self.0, other.0)})
     }
 }
