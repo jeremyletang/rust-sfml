@@ -4,7 +4,7 @@ description = "Rust binding for sfml"
 version = "0.11.1"
 authors = ["Jeremy Letang <letang.jeremy@gmail.com>"]
 
-documentation = "https://crates.fyi/crates/sfml/0.11.0/"
+documentation = "https://docs.rs/sfml"
 repository = "https://github.com/jeremyletang/rust-sfml"
 license = "zlib-acknowledgement"
 
