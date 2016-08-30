@@ -90,7 +90,6 @@
 //! license.
 //!
 
-#![doc(html_logo_url = "http://rust-sfml.org/logo_rsfml.png")]
 #![warn(missing_docs)]
 
 extern crate libc;
