@@ -65,11 +65,11 @@ fn main() {
                            });
 
     // Create an initialized text using the font.
-    let title = Text::new_init("Borrowed resources example!", &font, 50).unwrap();
+    let title = Text::new_init("Borrowed resources example!", &font, 50);
 
     // Create a second text using the same font.
     // This time, we create and initialize it separately.
-    let mut second_text = Text::new().unwrap();
+    let mut second_text = Text::new();
     second_text.set_string("This text shares the same font with the title!");
     second_text.set_font(&font);
     second_text.set_color(&Color::green());
@@ -77,7 +77,7 @@ fn main() {
     second_text.set_character_size(20);
 
     // Create a third text using the same font.
-    let mut third_text = Text::new_init("This one too!", &font, 20).unwrap();
+    let mut third_text = Text::new_init("This one too!", &font, 20);
     third_text.set_position2f(300f32, 100f32);
     third_text.set_color(&Color::red());
 

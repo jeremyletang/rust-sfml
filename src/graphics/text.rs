@@ -50,18 +50,16 @@ pub struct Text<'s> {
 
 impl<'s> Text<'s> {
     /// Create a new text
-    ///
-    /// Return Some(Text) or None
-    pub fn new() -> Option<Text<'s>> {
+    pub fn new() -> Text<'s> {
         let text  = unsafe { ffi::sfText_create() };
         if text.is_null() {
-            None
+            panic!("sfText_create returned null.")
         } else {
-            Some(Text {
-                    text: text,
-                    string_length: 0,
-                    font: None
-                })
+            Text {
+                text: text,
+                string_length: 0,
+                font: None
+            }
         }
     }
 
@@ -73,17 +71,14 @@ impl<'s> Text<'s> {
     /// * string - The string of the text
     /// * font - The font to display the Text
     /// * characterSize - The size of the Text
-    ///
-    /// Return Some(Text) or None
     pub fn new_init(string: &str,
                     font: &'s Font,
-                    character_size: u32) -> Option<Text<'s>> {
-        Text::new().map(|mut text| {
-            text.set_string(string);
-            text.set_font(font);
-            text.set_character_size(character_size);
-            text
-        })
+                    character_size: u32) -> Text<'s> {
+        let mut text = Text::new();
+        text.set_string(string);
+        text.set_font(font);
+        text.set_character_size(character_size);
+        text
     }
 
     /// Set the string of a text
