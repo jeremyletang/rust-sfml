@@ -71,9 +71,7 @@ impl<'s> Text<'s> {
     /// * string - The string of the text
     /// * font - The font to display the Text
     /// * characterSize - The size of the Text
-    pub fn new_init(string: &str,
-                    font: &'s Font,
-                    character_size: u32) -> Text<'s> {
+    pub fn new_init(string: &str, font: &'s Font, character_size: u32) -> Text<'s> {
         let mut text = Text::new();
         text.set_string(string);
         text.set_font(font);

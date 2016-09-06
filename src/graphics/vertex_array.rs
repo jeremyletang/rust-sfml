@@ -62,8 +62,7 @@ impl VertexArray {
     /// # Arguments
     /// * primitive_type - The type of the VertexArray
     /// * vertex_count - The maximal number of vertex
-    pub fn new_init(primitive_type: PrimitiveType,
-                    vertex_count: u32) -> VertexArray {
+    pub fn new_init(primitive_type: PrimitiveType, vertex_count: u32) -> VertexArray {
         let ver = unsafe { sfVertexArray_create() };
         if ver.is_null() {
             panic!("sfVertexArray_create returned null.")

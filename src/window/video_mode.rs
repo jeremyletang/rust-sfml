@@ -63,9 +63,7 @@ impl VideoMode {
     /// Constructor with parameters for class VideoMode.
     ///
     /// Return a new VideoMode initialized
-    pub fn new_init(width: u32,
-                    height: u32,
-                    bits_per_pixel: u32) -> VideoMode {
+    pub fn new_init(width: u32, height: u32, bits_per_pixel: u32) -> VideoMode {
         VideoMode{
             width: width,
             height: height,
