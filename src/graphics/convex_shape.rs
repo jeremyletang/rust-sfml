@@ -62,20 +62,18 @@ impl<'s> ConvexShape<'s> {
     ///
     /// # Arguments
     /// * points_count - The number of point for the convex shape
-    ///
-    /// Return Some(ConvexShape) or None
-    pub fn new(points_count: u32) -> Option<ConvexShape<'s>> {
+    pub fn new(points_count: u32) -> ConvexShape<'s> {
         let shape = unsafe { ffi::sfConvexShape_create() };
         if shape.is_null() {
-            None
+            panic!("sfConvexShape_create returned null.")
         } else {
             unsafe {
                 ffi::sfConvexShape_setPointCount(shape, points_count as usize);
             }
-            Some(ConvexShape {
-                    convex_shape: shape,
-                    texture: None
-                })
+            ConvexShape {
+                convex_shape: shape,
+                texture: None
+            }
         }
     }
 
@@ -84,22 +82,20 @@ impl<'s> ConvexShape<'s> {
     /// # Arguments
     /// * texture - The texture to apply to the convex shape
     /// * points_count - The number of point for the convex shape
-    ///
-    /// Return Some(ConvexShape) or None
     pub fn with_texture(texture: &'s Texture,
-                            points_count: u32) -> Option<ConvexShape<'s>> {
+                            points_count: u32) -> ConvexShape<'s> {
         let shape = unsafe { ffi::sfConvexShape_create() };
         if shape.is_null() {
-            None
+            panic!("sfConvexShape_create returned null.")
         } else {
             unsafe {
                 ffi::sfConvexShape_setTexture(shape, texture.raw(), sfTrue);
                 ffi::sfConvexShape_setPointCount(shape, points_count as usize)
             }
-            Some(ConvexShape {
-                    convex_shape: shape,
-                    texture: Some(texture)
-                })
+            ConvexShape {
+                convex_shape: shape,
+                texture: Some(texture)
+            }
         }
     }
 
