@@ -81,23 +81,6 @@ impl VertexArray {
         }
     }
 
-    /// Copy an existing vertex array
-    ///
-    /// # Arguments
-    /// * vertexArray - Vertex array to copy
-    ///
-    /// Return Some(VertexArray) or None
-    pub fn clone_opt(&self) -> Option<VertexArray> {
-        let ver = unsafe { sfVertexArray_copy(self.vertex_array) };
-        if ver.is_null() {
-            None
-        } else {
-            Some(VertexArray {
-                    vertex_array: ver
-                })
-        }
-    }
-
     /// Return the vertex count of a vertex array
     ///
     /// Return the number of vertices in the array

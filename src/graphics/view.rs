@@ -131,20 +131,6 @@ impl View {
         }
     }
 
-    /// Create a view by copying an existant one.
-    ///
-    /// Return Some(View) or None
-    pub fn clone_opt(&self) -> Option<View> {
-        let view = unsafe { ffi::sfView_copy(self.view) };
-        if view.is_null() {
-            None
-        } else {
-            Some(View {
-                view: view
-            })
-        }
-    }
-
     /// Construct a view from a rectangle
     ///
     /// # Arguments

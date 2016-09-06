@@ -191,23 +191,6 @@ impl Texture {
         }
     }
 
-    /// Create a new texture by copying a exitant one
-    ///
-    /// # Arguments
-    /// * texture - Texture to copy
-    ///
-    /// Return Some(Texture) or None
-    pub fn clone_opt(&self) -> Option<Texture> {
-        let tex = unsafe { ffi::sfTexture_copy(self.texture) };
-        if tex.is_null() {
-            None
-        } else {
-            Some(Texture {
-                    texture: tex,
-                })
-        }
-    }
-
     /// Create a new texture from an image
     ///
     /// # Arguments

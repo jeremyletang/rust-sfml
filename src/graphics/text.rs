@@ -86,22 +86,6 @@ impl<'s> Text<'s> {
         })
     }
 
-    /// Copy an existing Text
-    ///
-    /// Return Some(Text) or None
-    pub fn clone_opt(&self) -> Option<Text<'s>> {
-        let sp = unsafe { ffi::sfText_copy(self.text) };
-        if sp.is_null() {
-            None
-        } else {
-            Some(Text {
-                text: self.text,
-                string_length: self.string_length,
-                font: self.font
-            })
-        }
-    }
-
     /// Set the string of a text
     ///
     /// A text's string is empty by default.

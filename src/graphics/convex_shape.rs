@@ -103,21 +103,6 @@ impl<'s> ConvexShape<'s> {
         }
     }
 
-    /// Clone an existing convex shape
-    ///
-    /// Return Some(ConvexShape) or None
-    pub fn clone_opt(&self) -> Option<ConvexShape<'s>> {
-        let shape = unsafe { ffi::sfConvexShape_copy(self.convex_shape) };
-        if shape.is_null() {
-            None
-        } else {
-            Some(ConvexShape {
-                    convex_shape: shape,
-                    texture: self.texture
-                })
-        }
-    }
-
     /// Set the position of a point.
     ///
     /// Don't forget that the polygon must remain convex, and the points need to stay ordered!

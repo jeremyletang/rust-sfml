@@ -98,22 +98,6 @@ impl<'s> RectangleShape<'s> {
         }
     }
 
-    /// Clone an existing rectangle shape
-    ///
-    /// Return Some(RectangleShape) or None
-    pub fn clone_opt(&self) -> Option<RectangleShape<'s>> {
-        let rectangle =
-            unsafe { ffi::sfRectangleShape_copy(self.rectangle_shape) };
-        if rectangle.is_null() {
-            None
-        } else {
-            Some(RectangleShape {
-                    rectangle_shape: rectangle,
-                texture: self.texture
-                })
-        }
-    }
-
     /// Get the size of a rectangle shape
     ///
     /// Return the height Size of the rectangle

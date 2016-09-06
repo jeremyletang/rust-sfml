@@ -105,24 +105,6 @@ impl<'s> CircleShape<'s> {
         }
     }
 
-    /// Copy an existing circle shape
-    ///
-    /// # Arguments
-    /// * shape - Shape to copy
-    ///
-    /// Return Some(CircleShape) or None
-    pub fn clone_opt(&self) -> Option<CircleShape<'s>> {
-        let circle = unsafe { ffi::sfCircleShape_copy(self.circle_shape) };
-        if circle.is_null() {
-            None
-        } else {
-            Some(CircleShape {
-                    circle_shape: circle,
-                    texture: self.texture
-                })
-        }
-    }
-
     /// Set the radius of a circle
     ///
     /// # Arguments

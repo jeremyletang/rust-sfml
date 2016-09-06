@@ -153,20 +153,6 @@ impl Image {
         }
     }
 
-    /// Copy an existing image
-    ///
-    /// Return Some(Image) or None
-    pub fn clone_opt(&self) -> Option<Image> {
-        let image = unsafe { ffi::sfImage_copy(self.image) };
-        if image.is_null() {
-            None
-        } else {
-            Some(Image {
-                    image: image
-                })
-        }
-    }
-
     /// Create an image from an vector of pixels
     ///
     /// The pixel vector is assumed to contain 32-bits RGBA pixels,

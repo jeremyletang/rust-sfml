@@ -107,24 +107,6 @@ impl Font {
         }
     }
 
-    /// Create font from a existing one
-    ///
-    /// # Arguments
-    /// * font - Font to copy
-    ///
-    /// Return Some(Font) or None
-    pub fn clone_opt(&self) -> Option<Font> {
-        let fnt = unsafe {ffi::sfFont_copy(self.font)};
-        if fnt.is_null() {
-            None
-        } else {
-            Some(Font {
-                    font: fnt,
-                    dropable: true
-                })
-        }
-    }
-
     /// Get the kerning value corresponding to a given pair of characters in a font
     ///
     /// # Arguments
