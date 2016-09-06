@@ -66,7 +66,7 @@ impl<'s> Sound<'s> {
     /// Create a new Sound
     ///
     /// Return Some(Sound) or None
-    pub fn new_with_buffer(buffer: SoundBufferRef<'s>) -> Option<Sound<'s>> {
+    pub fn with_buffer(buffer: SoundBufferRef<'s>) -> Option<Sound<'s>> {
         let s = unsafe {ffi::sfSound_create()};
         if s.is_null() {
             None

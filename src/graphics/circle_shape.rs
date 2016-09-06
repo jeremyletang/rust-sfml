@@ -64,7 +64,7 @@ impl<'s> CircleShape<'s> {
     /// * texture - The texture to initialize the CircleShape with.
     ///
     /// Return Some(CircleShape) or None
-    pub fn new_with_texture(texture: &'s Texture) -> Option<CircleShape<'s>> {
+    pub fn with_texture(texture: &'s Texture) -> Option<CircleShape<'s>> {
         let circle = unsafe { ffi::sfCircleShape_create() };
         if circle.is_null() {
             None

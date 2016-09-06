@@ -74,7 +74,7 @@ impl Vertex {
     /// * tex_coords - (0., 0.)
     ///
     /// Return a Vertex
-    pub fn new_with_pos(position: &Vector2f) -> Vertex {
+    pub fn with_pos(position: &Vector2f) -> Vertex {
         Vertex(ffi::sfVertex {
             position: position.raw(),
             color: Color::white().0,
@@ -92,7 +92,7 @@ impl Vertex {
     /// * tex_coords - (0., 0)
     ///
     /// Return a Vertex
-    pub fn new_with_pos_color(position: &Vector2f, color: &Color) -> Vertex {
+    pub fn with_pos_color(position: &Vector2f, color: &Color) -> Vertex {
         Vertex(ffi::sfVertex {
             position: position.raw(),
             color: color.0,
@@ -110,7 +110,7 @@ impl Vertex {
     /// * color - white
     ///
     /// Return a Vertex
-    pub fn new_with_pos_coords(position: &Vector2f,
+    pub fn with_pos_coords(position: &Vector2f,
                                tex_coords: &Vector2f) -> Vertex {
         Vertex(ffi::sfVertex {
             position: position.raw(),

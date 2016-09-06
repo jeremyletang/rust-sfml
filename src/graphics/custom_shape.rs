@@ -90,7 +90,7 @@ impl<'s> CustomShape<'s> {
     /// * texture - The texture to bind to the CustomShape
     ///
     /// Return Some(CustomShape) or None
-    pub fn new_with_texture(shape_impl: Box<ShapeImpl + Send>,
+    pub fn with_texture(shape_impl: Box<ShapeImpl + Send>,
                             texture: &'s Texture) -> Option<CustomShape<'s>> {
         let w_o = Box::new(WrapObj { shape_impl: shape_impl });
         let sp = unsafe { ffi::sfShape_create(Some(get_point_count_callback),

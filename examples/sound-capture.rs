@@ -62,7 +62,7 @@ fn main() {
         // Save the buffer
         buffer.save_to_file(filename.trim());
     } else {
-        let mut sound = Sound::new_with_buffer(buffer).unwrap();
+        let mut sound = Sound::with_buffer(buffer).unwrap();
 
         sound.play();
 

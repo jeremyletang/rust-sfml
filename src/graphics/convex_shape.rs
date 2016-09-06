@@ -86,7 +86,7 @@ impl<'s> ConvexShape<'s> {
     /// * points_count - The number of point for the convex shape
     ///
     /// Return Some(ConvexShape) or None
-    pub fn new_with_texture(texture: &'s Texture,
+    pub fn with_texture(texture: &'s Texture,
                             points_count: u32) -> Option<ConvexShape<'s>> {
         let shape = unsafe { ffi::sfConvexShape_create() };
         if shape.is_null() {

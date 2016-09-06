@@ -67,7 +67,7 @@ impl<'s> Sprite<'s> {
     /// Create a new sprite with a texture
     ///
     /// Return Some(Sprite) or None
-    pub fn new_with_texture(texture: &'s Texture) -> Option<Sprite<'s>> {
+    pub fn with_texture(texture: &'s Texture) -> Option<Sprite<'s>> {
         let sp = unsafe { ffi::sfSprite_create() };
         if sp.is_null() {
             None

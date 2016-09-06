@@ -116,7 +116,7 @@ impl Window {
     /// * settings - Additional settings for the underlying OpenGL context
     ///
     /// Return Some(Window) or None
-    pub fn new_with_unicode(mode: VideoMode,
+    pub fn with_unicode(mode: VideoMode,
                             title: Vec<u32>,
                             style: WindowStyle,
                             settings: &ContextSettings) -> Option<Window> {

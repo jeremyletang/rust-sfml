@@ -61,7 +61,7 @@ impl<'s> RectangleShape<'s> {
     /// Create a new rectangle shape with a texture
     ///
     /// Return Some(RectangleShape) or None
-    pub fn new_with_texture(texture: &'s Texture) -> Option<RectangleShape<'s>> {
+    pub fn with_texture(texture: &'s Texture) -> Option<RectangleShape<'s>> {
         let rectangle = unsafe { ffi::sfRectangleShape_create() };
         if rectangle.is_null() {
             None

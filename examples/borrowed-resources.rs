@@ -20,7 +20,7 @@ fn main() {
     let font = Font::new_from_file("resources/sansation.ttf").unwrap();
 
     // Create a circle with the Texture.
-    let mut circle = CircleShape::new_with_texture(&frank).unwrap();
+    let mut circle = CircleShape::with_texture(&frank).unwrap();
     circle.set_radius(70f32);
     circle.set_position2f(100f32, 100f32);
 
@@ -32,7 +32,7 @@ fn main() {
     sprite.set_scale2f(0.5f32, 0.5f32);
 
     // Create a ConvexShape using the same texture.
-    let mut convex_shape = ConvexShape::new_with_texture(&frank, 6).unwrap();
+    let mut convex_shape = ConvexShape::with_texture(&frank, 6).unwrap();
     convex_shape.set_point(0,
                            &Vector2f {
                                x: 400f32,
