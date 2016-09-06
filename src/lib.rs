@@ -57,7 +57,7 @@
 //!                          .unwrap();
 //!
 //!     // Create a CircleShape
-//!     let mut circle = CircleShape::new().unwrap();
+//!     let mut circle = CircleShape::new();
 //!     circle.set_radius(30.);
 //!     circle.set_fill_color(&Color::red());
 //!     circle.set_position(&Vector2f::new(100., 100.));

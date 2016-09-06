@@ -57,7 +57,7 @@ fn main() {
     right_paddle.set_origin(&(paddle_size / 2f32));
 
     // Create the ball
-    let mut ball = CircleShape::new().unwrap();
+    let mut ball = CircleShape::new();
     ball.set_radius(ball_radius as f32 - 3.);
     ball.set_outline_thickness(3.);
     ball.set_outline_color(&Color::black());

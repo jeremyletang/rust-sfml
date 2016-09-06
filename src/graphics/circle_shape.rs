@@ -46,15 +46,15 @@ impl<'s> CircleShape<'s> {
     /// Create a new circle shape
     ///
     /// Return Some(CircleShape) or None
-    pub fn new() -> Option<CircleShape<'s>> {
+    pub fn new() -> CircleShape<'s> {
         let circle = unsafe { ffi::sfCircleShape_create() };
         if circle.is_null() {
-            None
+            panic!("sfCircleShape_create returned null.")
         } else {
-            Some(CircleShape {
-                    circle_shape: circle,
-                    texture: None
-                })
+            CircleShape {
+                circle_shape: circle,
+                texture: None
+            }
         }
     }
 
@@ -64,18 +64,18 @@ impl<'s> CircleShape<'s> {
     /// * texture - The texture to initialize the CircleShape with.
     ///
     /// Return Some(CircleShape) or None
-    pub fn with_texture(texture: &'s Texture) -> Option<CircleShape<'s>> {
+    pub fn with_texture(texture: &'s Texture) -> CircleShape<'s> {
         let circle = unsafe { ffi::sfCircleShape_create() };
         if circle.is_null() {
-            None
+            panic!("sfCircleShape_create returned null.")
         } else {
             unsafe {
                 ffi::sfCircleShape_setTexture(circle, texture.raw(), sfTrue);
             }
-            Some(CircleShape {
-                    circle_shape: circle,
-                    texture: Some(texture)
-                })
+            CircleShape {
+                circle_shape: circle,
+                texture: Some(texture)
+            }
         }
     }
 

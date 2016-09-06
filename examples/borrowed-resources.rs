@@ -20,7 +20,7 @@ fn main() {
     let font = Font::from_file("resources/sansation.ttf").unwrap();
 
     // Create a circle with the Texture.
-    let mut circle = CircleShape::with_texture(&frank).unwrap();
+    let mut circle = CircleShape::with_texture(&frank);
     circle.set_radius(70f32);
     circle.set_position2f(100f32, 100f32);
 
