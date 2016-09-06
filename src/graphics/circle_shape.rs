@@ -86,10 +86,7 @@ impl<'s> CircleShape<'s> {
     /// * point_count - The number of points to define the CircleShape
     ///
     /// Default value on SFML are radius = 0 / pointCount = 30
-    ///
-    /// Return Some(CircleShape) or None
-    pub fn new_init(radius: f32,
-                    point_count: u32) -> Option<CircleShape<'s>> {
+    pub fn new_init(radius: f32, point_count: u32) -> CircleShape<'s> {
         let circle = unsafe { ffi::sfCircleShape_create() };
         if circle.is_null() {
             None
@@ -98,10 +95,10 @@ impl<'s> CircleShape<'s> {
                 ffi::sfCircleShape_setRadius(circle, radius as c_float);
                 ffi::sfCircleShape_setPointCount(circle, point_count as usize);
             }
-            Some(CircleShape {
-                    circle_shape: circle,
-                    texture: None
-                })
+            CircleShape {
+                circle_shape: circle,
+                texture: None
+            }
         }
     }
 
