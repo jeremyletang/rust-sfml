@@ -12,7 +12,7 @@ fn main() {
         .unwrap();
     window.set_vertical_sync_enabled(true);
 
-    let mut vertex_array = VertexArray::new().unwrap();
+    let mut vertex_array = VertexArray::new();
     vertex_array.set_primitive_type(LinesStrip);
 
     vertex_array.append(&Vertex::with_pos_color(&Vector2f {

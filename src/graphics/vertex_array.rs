@@ -46,16 +46,14 @@ pub struct Vertices<'a> {
 
 impl VertexArray {
     /// Create a new vertex array
-    ///
-    /// Return Some(VertexArray) or None
-    pub fn new() -> Option<VertexArray> {
+    pub fn new() -> VertexArray {
         let ver = unsafe { sfVertexArray_create() };
         if ver.is_null() {
-            None
+            panic!("sfVertexArray_create returned null.")
         } else {
-            Some(VertexArray {
-                    vertex_array: ver
-                })
+            VertexArray {
+                vertex_array: ver
+            }
         }
     }
 
@@ -64,20 +62,18 @@ impl VertexArray {
     /// # Arguments
     /// * primitive_type - The type of the VertexArray
     /// * vertex_count - The maximal number of vertex
-    ///
-    /// Return Some(VertexArray) or None
     pub fn new_init(primitive_type: PrimitiveType,
-                    vertex_count: u32) -> Option<VertexArray> {
+                    vertex_count: u32) -> VertexArray {
         let ver = unsafe { sfVertexArray_create() };
         if ver.is_null() {
-            None
+            panic!("sfVertexArray_create returned null.")
         } else {
             let mut tmp_vertex = VertexArray {
                 vertex_array: ver
             };
             tmp_vertex.set_primitive_type(primitive_type);
             tmp_vertex.resize(vertex_count);
-            Some(tmp_vertex)
+            tmp_vertex
         }
     }
 
