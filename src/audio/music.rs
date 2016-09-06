@@ -126,15 +126,13 @@ impl Music {
         }
     }
 
-    /// Set whether or not a music should loop after reaching the end
+    /// Sets whether this music should loop or not.
     ///
-    /// If set, the music will restart from beginning after
+    /// If `true`, the music will restart from beginning after
     /// reaching the end and so on, until it is stopped or
-    /// sfMusic_setLoop(music, SFFALSE) is called.
-    /// The default looping state for musics is false.
+    /// `set_loop(false)` is called.
     ///
-    /// # Arguments
-    /// * loop - SFTRUE to play in loop, SFFALSE to play once
+    /// By default, the music will *not* loop.
     pub fn set_loop(&mut self, loop_: bool) {
         unsafe { ffi::sfMusic_setLoop(self.music, sfBool::from_bool(loop_)) }
     }
