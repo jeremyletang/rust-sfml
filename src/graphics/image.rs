@@ -52,17 +52,15 @@ impl Image {
     /// # Arguments
     /// * width - Width of the image
     /// * height - Height of the image
-    ///
-    /// Return Some(Image) or None
-    pub fn new(width: u32, height: u32) -> Option<Image> {
+    pub fn new(width: u32, height: u32) -> Image {
         let image = unsafe { ffi::sfImage_create(width as c_uint,
                                                  height as c_uint) };
         if image.is_null() {
-            None
+            panic!("sfImage_create returned null.")
         } else {
-            Some(Image {
-                    image: image
-                })
+            Image {
+                image: image
+            }
         }
     }
 
