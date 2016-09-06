@@ -66,20 +66,18 @@ impl<'s> CustomShape<'s> {
     ///
     /// # Arguments
     /// * shape_impl - Implementation of ShapeImpl
-    ///
-    /// Return Some(CustomShape) or None
-    pub fn new(shape_impl: Box<ShapeImpl + Send>) -> Option<CustomShape<'s>> {
+    pub fn new(shape_impl: Box<ShapeImpl + Send>) -> CustomShape<'s> {
         let w_o = Box::new(WrapObj { shape_impl: shape_impl});
         let sp = unsafe { ffi::sfShape_create(Some(get_point_count_callback),
                                               Some(get_point_callback),
                                               mem::transmute::<Box<Box<WrapObj>>, *mut c_void>(Box::new(w_o))) };
         if sp.is_null() {
-            None
+            panic!("sfShape_create returned null.")
         } else {
-            Some(CustomShape {
-                    shape:     sp,
-                    texture:   None
-                })
+            CustomShape {
+                shape:     sp,
+                texture:   None
+            }
         }
     }
 
@@ -88,24 +86,22 @@ impl<'s> CustomShape<'s> {
     /// # Arguments
     /// * shape_impl - Implementation of ShapeImpl trait
     /// * texture - The texture to bind to the CustomShape
-    ///
-    /// Return Some(CustomShape) or None
     pub fn with_texture(shape_impl: Box<ShapeImpl + Send>,
-                            texture: &'s Texture) -> Option<CustomShape<'s>> {
+                            texture: &'s Texture) -> CustomShape<'s> {
         let w_o = Box::new(WrapObj { shape_impl: shape_impl });
         let sp = unsafe { ffi::sfShape_create(Some(get_point_count_callback),
                                               Some(get_point_callback),
                                               mem::transmute::<Box<Box<WrapObj>>, *mut c_void>(Box::new(w_o))) };
         if sp.is_null() {
-            None
+            panic!("sfShape_create returned null.")
         } else {
             unsafe {
                 ffi::sfShape_setTexture(sp, texture.raw(), sfTrue);
             }
-            Some(CustomShape {
-                    shape:     sp,
-                    texture:   Some(texture)
-                })
+            CustomShape {
+                shape:     sp,
+                texture:   Some(texture)
+            }
         }
     }
 
