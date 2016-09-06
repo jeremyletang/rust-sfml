@@ -94,16 +94,14 @@ impl View {
     /// Create a default view
     ///
     /// This function creates a default view of (0, 0, 1000, 1000)
-    ///
-    /// Return Some(View) or None
-    pub fn new() -> Option<View> {
+    pub fn new() -> View {
         let view = unsafe { ffi::sfView_create() };
         if view.is_null() {
-            None
+            panic!("sfView_create returned null.")
         } else {
-            Some(View {
-                    view: view
-                })
+            View {
+                view: view
+            }
         }
     }
 
@@ -114,20 +112,18 @@ impl View {
     /// # Arguments
     /// * center - The center of the view
     /// * size - The size of the view
-    ///
-    /// Return Some(View) or None
-    pub fn new_init(center: &Vector2f, size: &Vector2f) -> Option<View> {
+    pub fn new_init(center: &Vector2f, size: &Vector2f) -> View {
         let view = unsafe { ffi::sfView_create() };
         if view.is_null() {
-            None
+            panic!("sfView_create returned null.")
         } else {
             unsafe {
                 ffi::sfView_setCenter(view, center.raw());
                 ffi::sfView_setSize(view, size.raw());
             }
-            Some(View {
-                    view: view
-                })
+            View {
+                view: view
+            }
         }
     }
 
@@ -135,16 +131,14 @@ impl View {
     ///
     /// # Arguments
     /// * rectangle - The rectangle defining the zone to display
-    ///
-    /// Return Some(View) or None
-    pub fn from_rect(rectangle: &FloatRect) -> Option<View> {
+    pub fn from_rect(rectangle: &FloatRect) -> View {
         let view = unsafe { ffi::sfView_createFromRect(rectangle.raw()) };
         if view.is_null() {
-            None
+            panic!("sfView_createFromRect returned null.")
         } else {
-            Some(View {
-                    view: view
-                })
+            View {
+                view: view
+            }
         }
     }
 
