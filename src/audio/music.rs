@@ -135,8 +135,8 @@ impl Music {
     ///
     /// # Arguments
     /// * loop - SFTRUE to play in loop, SFFALSE to play once
-    pub fn set_loop(&mut self, lloop: bool) {
-        unsafe { ffi::sfMusic_setLoop(self.music, sfBool::from_bool(lloop)) }
+    pub fn set_loop(&mut self, loop_: bool) {
+        unsafe { ffi::sfMusic_setLoop(self.music, sfBool::from_bool(loop_)) }
     }
 
     /// Tell whether or not a music is in loop mode
