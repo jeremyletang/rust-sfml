@@ -74,7 +74,7 @@ impl Image {
     /// * stream - Your struct, implementing Read and Seek
     ///
     /// Return Some(Image) or None
-    pub fn new_from_stream<T: Read + Seek>(stream: &mut T) -> Option<Image> {
+    pub fn from_stream<T: Read + Seek>(stream: &mut T) -> Option<Image> {
         let mut input_stream = InputStream::new(stream);
         let image = unsafe { ffi::sfImage_createFromStream(&mut input_stream.0) };
         if image.is_null() {
@@ -94,7 +94,7 @@ impl Image {
     /// * mem - Pointer to the file data in memory
     ///
     /// Return Some(Image) or None
-    pub fn new_from_memory(mem: &[u8]) -> Option<Image> {
+    pub fn from_memory(mem: &[u8]) -> Option<Image> {
         let image = unsafe { ffi::sfImage_createFromMemory(mem.as_ptr() as *const _, mem.len() as size_t) };
         if image.is_null() {
             None
@@ -113,7 +113,7 @@ impl Image {
     /// * color - Fill color
     ///
     /// Return Some(Image) or None
-    pub fn new_from_color(width: u32,
+    pub fn from_color(width: u32,
                           height: u32,
                           color: &Color) -> Option<Image> {
         let image =
@@ -139,7 +139,7 @@ impl Image {
     /// * filename - Path of the image file to load
     ///
     /// Return Some(Image) or None
-    pub fn new_from_file(filename: &str) -> Option<Image> {
+    pub fn from_file(filename: &str) -> Option<Image> {
         let c_filename = CString::new(filename.as_bytes()).unwrap();
         let image = unsafe {
             ffi::sfImage_createFromFile(c_filename.as_ptr())

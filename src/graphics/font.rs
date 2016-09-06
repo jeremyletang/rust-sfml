@@ -51,7 +51,7 @@ impl Font {
     /// * filename -  Path of the font file to load
     ///
     /// Return Some(Font) or None
-    pub fn new_from_file(filename: &str) -> Option<Font> {
+    pub fn from_file(filename: &str) -> Option<Font> {
         let c_str = CString::new(filename.as_bytes()).unwrap();
         let fnt = unsafe {
             ffi::sfFont_createFromFile(c_str.as_ptr())
@@ -72,7 +72,7 @@ impl Font {
     /// * stream - Your struct, implementing Read and Seek
     ///
     /// Return Some(Font) or None
-    pub fn new_from_stream<T: Read + Seek>(stream: &mut T) -> Option<Font> {
+    pub fn from_stream<T: Read + Seek>(stream: &mut T) -> Option<Font> {
         let mut input_stream = InputStream::new(stream);
         let fnt = unsafe {
             ffi::sfFont_createFromStream(&mut input_stream.0)
@@ -93,7 +93,7 @@ impl Font {
     /// * memory -  The in-memory font file
     ///
     /// Return Some(Font) or None
-    pub fn new_from_memory(memory: &[u8]) -> Option<Font> {
+    pub fn from_memory(memory: &[u8]) -> Option<Font> {
         let fnt = unsafe {
             ffi::sfFont_createFromMemory(memory.as_ptr() as *const _, memory.len() as size_t)
         };

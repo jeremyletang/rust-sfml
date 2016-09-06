@@ -116,7 +116,7 @@ impl Texture {
     /// * area - Area of the image to load
     ///
     /// Return Some(Texture) or None
-    pub fn new_from_memory(mem: &[u8], area: &IntRect) -> Option<Texture> {
+    pub fn from_memory(mem: &[u8], area: &IntRect) -> Option<Texture> {
         let tex = unsafe { ffi::sfTexture_createFromMemory(mem.as_ptr() as *const _,
                                                            mem.len() as size_t,
                                                            &area.raw()) };
@@ -135,7 +135,7 @@ impl Texture {
     /// * stream - Your struct, implementing Read and Seek
     ///
     /// Return Some(Texture) or None
-    pub fn new_from_stream<T: Read + Seek>(stream: &mut T, area: &mut IntRect) -> Option<Texture> {
+    pub fn from_stream<T: Read + Seek>(stream: &mut T, area: &mut IntRect) -> Option<Texture> {
         let mut input_stream = InputStream::new(stream);
         let tex = unsafe {
             ffi::sfTexture_createFromStream(&mut input_stream.0, &area.raw())
@@ -155,7 +155,7 @@ impl Texture {
     /// * filename - Path of the image file to load
     ///
     /// Return Some(Texture) or None
-    pub fn new_from_file(filename: &str) -> Option<Texture> {
+    pub fn from_file(filename: &str) -> Option<Texture> {
         let c_str = CString::new(filename.as_bytes()).unwrap();
         let tex = unsafe {
             ffi::sfTexture_createFromFile(c_str.as_ptr() as *mut i8, ptr::null())
@@ -176,7 +176,7 @@ impl Texture {
     /// * area - Area of the source image to load
     ///
     /// Return Some(Texture) or None
-    pub fn new_from_file_with_rect(filename: &str,
+    pub fn from_file_with_rect(filename: &str,
                                    area: &IntRect) -> Option<Texture> {
         let c_str = CString::new(filename.as_bytes()).unwrap();
         let tex = unsafe {
@@ -215,7 +215,7 @@ impl Texture {
     /// * area - Area of the source image to load
     ///
     /// Return Some(Texture) or None
-    pub fn new_from_image_with_rect(image: &Image,
+    pub fn from_image_with_rect(image: &Image,
                                     area: &IntRect) -> Option<Texture> {
         let tex = unsafe { ffi::sfTexture_createFromImage(image.raw(),
                                                           &area.raw()) };
@@ -234,7 +234,7 @@ impl Texture {
     /// * image - Image to upload to the texture
     ///
     /// Return Some(Texture) or None
-    pub fn new_from_image(image: &Image) -> Option<Texture> {
+    pub fn from_image(image: &Image) -> Option<Texture> {
         let tex = unsafe { ffi::sfTexture_createFromImage(image.raw(),
                                                           ptr::null()) };
         if tex.is_null() {

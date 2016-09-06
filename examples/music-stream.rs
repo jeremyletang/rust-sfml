@@ -7,7 +7,7 @@ use std::io::Write;
 
 fn main() {
     let mut file = File::open("resources/orchestral.ogg").unwrap();
-    let mut music = Music::new_from_stream(&mut file).unwrap();
+    let mut music = Music::from_stream(&mut file).unwrap();
 
     // Display Music informations
     println!("orchestral.ogg :");

@@ -48,7 +48,7 @@ impl IpAddress {
     /// * address - IP address or network name
     ///
     /// Return Resulting address
-    pub fn new_from_string(address: &str) -> IpAddress {
+    pub fn from_string(address: &str) -> IpAddress {
         let c_address = CString::new(address.as_bytes()).unwrap();
         IpAddress {
             ip: unsafe { ffi::sfIpAddress_fromString(c_address.as_ptr()) }
@@ -69,7 +69,7 @@ impl IpAddress {
     /// * byte3 - Fourth byte of the address
     ///
     /// Return the resulting address
-    pub fn new_from_bytes(byte0: u8, byte1: u8, byte2: u8, byte3: u8) -> IpAddress {
+    pub fn from_bytes(byte0: u8, byte1: u8, byte2: u8, byte3: u8) -> IpAddress {
         IpAddress {
             ip: unsafe { ffi::sfIpAddress_fromBytes(byte0, byte1, byte2, byte3) }
         }
@@ -86,7 +86,7 @@ impl IpAddress {
     /// * address - 4 bytes of the address packed into a 32-bits integer
     ///
     /// Return the resulting address
-    pub fn new_from_integer(address: u32) -> IpAddress {
+    pub fn from_integer(address: u32) -> IpAddress {
         IpAddress {
             ip: unsafe { ffi::sfIpAddress_fromInteger(address) }
         }

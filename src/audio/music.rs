@@ -63,7 +63,7 @@ impl Music {
     /// * filename - Path of the music file to open
     ///
     /// Return Some(Music) or None
-    pub fn new_from_file(filename: &str) -> Option<Music> {
+    pub fn from_file(filename: &str) -> Option<Music> {
         let c_str = CString::new(filename.as_bytes()).unwrap();
         let music_tmp: *mut ffi::sfMusic = unsafe {
             ffi::sfMusic_createFromFile(c_str.as_ptr())
@@ -89,7 +89,7 @@ impl Music {
     /// * stream - Your struct, implementing Read and Seek
     ///
     /// Return Some(Music) or None
-    pub fn new_from_stream<T: Read + Seek>(stream: &mut T) -> Option<Music> {
+    pub fn from_stream<T: Read + Seek>(stream: &mut T) -> Option<Music> {
         let mut input_stream = InputStream::new(stream);
         let music_tmp: *mut ffi::sfMusic = unsafe {
             ffi::sfMusic_createFromStream(&mut input_stream.0)
@@ -115,7 +115,7 @@ impl Music {
     /// * mem - Pointer to the file data in memory
     ///
     /// Return Some(Music) or None
-    pub fn new_from_memory(mem: &[u8]) -> Option<Music> {
+    pub fn from_memory(mem: &[u8]) -> Option<Music> {
         let music_tmp = unsafe { ffi::sfMusic_createFromMemory(mem.as_ptr() as *const _, mem.len() as size_t) };
         if music_tmp.is_null() {
             None

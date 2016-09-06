@@ -65,7 +65,7 @@ fn main() {
     ball.set_origin(&Vector2f::new(ball_radius / 2., ball_radius / 2.));
 
     // Load the text font
-    let font = Font::new_from_file("resources/sansation.ttf").unwrap();
+    let font = Font::from_file("resources/sansation.ttf").unwrap();
 
     // Initialize the pause message
     let mut pause_message = Text::new().unwrap();

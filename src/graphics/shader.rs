@@ -71,7 +71,7 @@ impl<'s> Shader<'s> {
     ///                            or None to skip this shader
     ///
     /// Return Some(Shader) or None
-    pub fn new_from_file(vertex_shader_filename: Option<&str>,
+    pub fn from_file(vertex_shader_filename: Option<&str>,
                          fragment_shader_filename: Option<&str>)
                          -> Option<Shader<'s>> {
         let shader = unsafe {
@@ -119,7 +119,7 @@ impl<'s> Shader<'s> {
     ///                          or None to skip this shader
     ///
     /// Return Some(Shader) or None
-    pub fn new_from_stream<T: Read + Seek>(vertex_shader_stream: Option<&mut T>,
+    pub fn from_stream<T: Read + Seek>(vertex_shader_stream: Option<&mut T>,
                                            fragment_shader_stream: Option<&mut T>)
                                            -> Option<Shader<'s>> {
         let mut vertex_stream = vertex_shader_stream.map(InputStream::new);
@@ -155,7 +155,7 @@ impl<'s> Shader<'s> {
     ///                    or None to skip this shader
     ///
     /// Return Some(Shader) or None
-    pub fn new_from_memory(vertex_shader: Option<&str>,
+    pub fn from_memory(vertex_shader: Option<&str>,
                            fragment_shader: Option<&str>)
                            -> Option<Shader<'s>> {
         let shader = unsafe {

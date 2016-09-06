@@ -151,7 +151,7 @@ impl View {
     /// * rectangle - The rectangle defining the zone to display
     ///
     /// Return Some(View) or None
-    pub fn new_from_rect(rectangle: &FloatRect) -> Option<View> {
+    pub fn from_rect(rectangle: &FloatRect) -> Option<View> {
         let view = unsafe { ffi::sfView_createFromRect(rectangle.raw()) };
         if view.is_null() {
             None

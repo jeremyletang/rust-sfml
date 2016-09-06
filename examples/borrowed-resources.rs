@@ -14,10 +14,10 @@ fn main() {
     window.set_vertical_sync_enabled(true);
 
     // Create a new texture. (Hey Frank!)
-    let frank = Texture::new_from_file("resources/frank.jpeg").unwrap();
+    let frank = Texture::from_file("resources/frank.jpeg").unwrap();
 
     // Create a font.
-    let font = Font::new_from_file("resources/sansation.ttf").unwrap();
+    let font = Font::from_file("resources/sansation.ttf").unwrap();
 
     // Create a circle with the Texture.
     let mut circle = CircleShape::with_texture(&frank).unwrap();

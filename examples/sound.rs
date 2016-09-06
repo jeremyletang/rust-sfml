@@ -31,7 +31,7 @@ fn play_sound() {
 
 // Play a Music
 fn play_music() {
-    let mut music = Music::new_from_file("resources/orchestral.ogg").unwrap();
+    let mut music = Music::from_file("resources/orchestral.ogg").unwrap();
 
     // Display Music informations
     println!("orchestral.ogg :");
