@@ -318,14 +318,14 @@ impl Ftp {
     /// Create a new Ftp object
     ///
     /// Return Some(Ftp) or None
-    pub fn new() -> Option<Ftp> {
+    pub fn new() -> Ftp {
         let ptr = unsafe { ffi::sfFtp_create() };
         if ptr.is_null() {
-            None
+            panic!("sfFtp_create returned null.")
         } else {
-            Some(Ftp {
+            Ftp {
                 ftp: ptr
-            })
+            }
         }
     }
 

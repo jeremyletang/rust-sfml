@@ -42,17 +42,15 @@ pub struct TcpSocket {
 
 impl TcpSocket {
     /// Create a new TCP socket
-    ///
-    /// Return Some(TcpSocket) or None
-    pub fn new() -> Option<TcpSocket> {
+    pub fn new() -> TcpSocket {
         let tcp = unsafe { ffi::sfTcpSocket_create() };
         if tcp.is_null() {
-            None
+            panic!("sfTcpSocket_create returned null.")
         }
         else {
-            Some(TcpSocket {
+            TcpSocket {
                 socket: tcp
-            })
+            }
         }
     }
 

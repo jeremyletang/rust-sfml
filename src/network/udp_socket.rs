@@ -41,17 +41,15 @@ pub struct UdpSocket {
 
 impl UdpSocket {
     /// Create a new UDP socket
-    ///
-    /// Return Some(UdpSocket) or None
-    pub fn new() -> Option<UdpSocket> {
+    pub fn new() -> UdpSocket {
         let udp = unsafe { ffi::sfUdpSocket_create() };
         if udp.is_null() {
-            None
+            panic!("sfUdpSocket_create returned null.")
         }
         else {
-            Some(UdpSocket {
+            UdpSocket {
                 socket: udp
-            })
+            }
         }
     }
 

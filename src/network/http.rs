@@ -120,16 +120,14 @@ pub struct Http {
 
 impl Request {
     /// Create a new HTTP request
-    ///
-    /// Return Some(Request) or None
-    pub fn new() -> Option<Request> {
+    pub fn new() -> Request {
         let ptr = unsafe { ffi::sfHttpRequest_create() };
         if ptr.is_null() {
-            None
+            panic!("sfHttpRequest_create returned null.")
         } else {
-            Some(Request {
+            Request {
                 request: ptr
-            })
+            }
         }
     }
 
@@ -304,16 +302,14 @@ impl Drop for Response {
 
 impl Http {
     /// Create a new Http object
-    ///
-    /// Return Some(Http) or None
-    pub fn new() -> Option<Http> {
+    pub fn new() -> Http {
         let ptr = unsafe{ ffi::sfHttp_create() };
         if ptr.is_null() {
-            None
+            panic!("sfHttp_create returned null.")
         } else {
-            Some(Http {
+            Http {
                 http: ptr
-            })
+            }
         }
     }
 

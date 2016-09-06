@@ -40,17 +40,15 @@ pub struct TcpListener {
 
 impl TcpListener {
     /// Create a new TCP listener
-    ///
-    /// Return Some(TcpListener) or None
-    pub fn new() -> Option<TcpListener> {
+    pub fn new() -> TcpListener {
         let list = unsafe { ffi::sfTcpListener_create() };
         if list.is_null() {
-            None
+            panic!("sfTcpListener_create returned null.")
         }
         else {
-            Some(TcpListener {
+            TcpListener {
                 listener: list
-            })
+            }
         }
     }
 

@@ -39,17 +39,15 @@ pub struct Packet {
 
 impl Packet {
     /// Create a new packet
-    ///
-    /// Return Some(Packet) or None
-    pub fn new() -> Option<Packet> {
+    pub fn new() -> Packet {
         let pck = unsafe { ffi::sfPacket_create() };
         if pck.is_null() {
-            None
+            panic!("sfPacket_create returned null.")
         }
         else {
-            Some(Packet {
+            Packet {
                 packet: pck
-            })
+            }
         }
     }
 
