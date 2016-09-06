@@ -41,7 +41,7 @@ fn main() {
     ball_sound.set_volume(100.);
 
     // Create the left paddle
-    let mut left_paddle = RectangleShape::new().unwrap();
+    let mut left_paddle = RectangleShape::new();
     left_paddle.set_size(&(paddle_size - 3f32));
     left_paddle.set_outline_thickness(3.);
     left_paddle.set_outline_color(&Color::black());
@@ -49,7 +49,7 @@ fn main() {
     left_paddle.set_origin(&(paddle_size / 2f32));
 
     // Create the right paddle
-    let mut right_paddle = RectangleShape::new().unwrap();
+    let mut right_paddle = RectangleShape::new();
     right_paddle.set_size(&(paddle_size - 3f32));
     right_paddle.set_outline_thickness(3.);
     right_paddle.set_outline_color(&Color::black());

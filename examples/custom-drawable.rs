@@ -19,8 +19,7 @@ impl<'s> Bullet<'s> {
         let mut torso = RectangleShape::new_init(&Vector2f {
                 x: 100f32,
                 y: 200f32,
-            })
-            .unwrap();
+            });
         torso.set_position2f(100f32, 150f32);
         torso.set_fill_color(&Color::blue());
 

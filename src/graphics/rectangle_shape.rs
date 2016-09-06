@@ -46,35 +46,35 @@ impl<'s> RectangleShape<'s> {
     /// Create a new rectangle shape
     ///
     /// Return Some(RectangleShape) or None
-    pub fn new() -> Option<RectangleShape<'s>> {
+    pub fn new() -> RectangleShape<'s> {
         let rectangle = unsafe { ffi::sfRectangleShape_create() };
         if rectangle.is_null() {
-            None
+            panic!("sfRectangleShape_create returned null.")
         } else {
-            Some(RectangleShape {
-                    rectangle_shape: rectangle,
-                    texture: None
-                })
+            RectangleShape {
+                rectangle_shape: rectangle,
+                texture: None
+            }
         }
     }
 
     /// Create a new rectangle shape with a texture
     ///
     /// Return Some(RectangleShape) or None
-    pub fn with_texture(texture: &'s Texture) -> Option<RectangleShape<'s>> {
+    pub fn with_texture(texture: &'s Texture) -> RectangleShape<'s> {
         let rectangle = unsafe { ffi::sfRectangleShape_create() };
         if rectangle.is_null() {
-            None
+            panic!("sfRectangleShape_create returned null.")
         } else {
             unsafe {
                 ffi::sfRectangleShape_setTexture(rectangle,
                                                  texture.raw(),
                                                  sfTrue);
             }
-            Some(RectangleShape {
-                    rectangle_shape: rectangle,
-                    texture: Some(texture)
-                })
+            RectangleShape {
+                rectangle_shape: rectangle,
+                texture: Some(texture)
+            }
         }
     }
 
@@ -83,18 +83,18 @@ impl<'s> RectangleShape<'s> {
     /// Default value on SFML is size = Vector2f(0, 0)
     ///
     /// Return Some(RectangleShape) or None
-    pub fn new_init(size: &Vector2f) -> Option<RectangleShape<'s>> {
+    pub fn new_init(size: &Vector2f) -> RectangleShape<'s> {
         let rectangle = unsafe { ffi::sfRectangleShape_create() };
         if rectangle.is_null() {
-            None
+            panic!("sfRectangleShape_create returned null.")
         } else {
             unsafe{
                 ffi::sfRectangleShape_setSize(rectangle, size.raw());
             }
-            Some(RectangleShape {
-                    rectangle_shape: rectangle,
-                    texture: None
-                })
+            RectangleShape {
+                rectangle_shape: rectangle,
+                texture: None
+            }
         }
     }
 
