@@ -89,7 +89,7 @@ impl<'s> CircleShape<'s> {
     pub fn new_init(radius: f32, point_count: u32) -> CircleShape<'s> {
         let circle = unsafe { ffi::sfCircleShape_create() };
         if circle.is_null() {
-            None
+            panic!("sfCircleShape_create returned null.")
         } else {
             unsafe {
                 ffi::sfCircleShape_setRadius(circle, radius as c_float);
