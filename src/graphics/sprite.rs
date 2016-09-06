@@ -52,48 +52,33 @@ impl<'s> Sprite<'s> {
     /// Create a new sprite
     ///
     /// Return Some(Sprite) or None
-    pub fn new() -> Option<Sprite<'s>> {
+    pub fn new() -> Sprite<'s> {
         let sp = unsafe { ffi::sfSprite_create() };
         if sp.is_null() {
-            None
+            panic!("sfSprite_create returned null.")
         } else {
-            Some(Sprite {
-                    sprite: sp,
-                    texture: None
-                })
+            Sprite {
+                sprite: sp,
+                texture: None
+            }
         }
     }
 
     /// Create a new sprite with a texture
     ///
     /// Return Some(Sprite) or None
-    pub fn with_texture(texture: &'s Texture) -> Option<Sprite<'s>> {
+    pub fn with_texture(texture: &'s Texture) -> Sprite<'s> {
         let sp = unsafe { ffi::sfSprite_create() };
         if sp.is_null() {
-            None
+            panic!("sfSprite_create returned null.")
         } else {
             unsafe {
                 ffi::sfSprite_setTexture(sp, texture.raw(), sfTrue);
             }
-            Some(Sprite {
-                    sprite: sp,
-                    texture: Some(texture)
-                })
-        }
-    }
-
-    /// Copy an existing sprite
-    ///
-    /// Return Some(Sprite) or None
-    pub fn clone_opt(&self) -> Option<Sprite<'s>> {
-        let sp = unsafe { ffi::sfSprite_copy(self.sprite) };
-        if sp.is_null() {
-            None
-        } else {
-            Some(Sprite {
-                    sprite: sp,
-                    texture: self.texture
-                })
+            Sprite {
+                sprite: sp,
+                texture: Some(texture)
+            }
         }
     }
 
@@ -230,7 +215,7 @@ impl<'s> Clone for Sprite<'s> {
     fn clone(&self) -> Sprite<'s> {
         let sp = unsafe { ffi::sfSprite_copy(self.sprite) };
         if sp.is_null() {
-            panic!("Not enough memory to clone RectangleShape")
+            panic!("sfSprite_copy returned null.")
         } else {
             Sprite {
                 sprite: sp,

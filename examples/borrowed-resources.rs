@@ -25,7 +25,7 @@ fn main() {
     circle.set_position2f(100f32, 100f32);
 
     // Create a Sprite.
-    let mut sprite = Sprite::new().unwrap();
+    let mut sprite = Sprite::new();
     // Have it use the same texture as the circle.
     sprite.set_texture(&frank, true);
     sprite.set_position2f(400f32, 300f32);
