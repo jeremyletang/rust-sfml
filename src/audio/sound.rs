@@ -48,37 +48,33 @@ pub struct Sound<'s> {
 
 impl<'s> Sound<'s> {
     /// Create a new Sound
-    ///
-    /// Return Some(Sound) or None
-    pub fn new() -> Option<Sound<'s>> {
+    pub fn new() -> Sound<'s> {
         let s = unsafe {ffi::sfSound_create()};
         if s.is_null() {
-            None
+            panic!("sfSound_create returned null.")
         }
         else {
-            Some(Sound {
+            Sound {
                 sound: s,
                 buffer: None
-            })
+            }
         }
     }
 
-    /// Create a new Sound
-    ///
-    /// Return Some(Sound) or None
-    pub fn with_buffer(buffer: SoundBufferRef<'s>) -> Option<Sound<'s>> {
+    /// Create a new Sound with a buffer
+    pub fn with_buffer(buffer: SoundBufferRef<'s>) -> Sound<'s> {
         let s = unsafe {ffi::sfSound_create()};
         if s.is_null() {
-            None
+            panic!("sfSound_create returned null.")
         }
         else {
             unsafe {
                 ffi::sfSound_setBuffer(s, buffer.raw());
             }
-            Some(Sound {
+            Sound {
                 sound: s,
                 buffer: Some(buffer)
-            })
+            }
         }
     }
 
