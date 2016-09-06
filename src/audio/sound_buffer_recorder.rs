@@ -45,16 +45,14 @@ pub struct SoundBufferRecorder {
 
 impl SoundBufferRecorder {
     /// Create a new sound buffer recorder
-    ///
-    /// Return a new option to `SoundBufferRecorder` object or `None` if failed
-    pub fn new() -> Option<SoundBufferRecorder> {
+    pub fn new() -> SoundBufferRecorder {
         let buffer = unsafe { ffi::sfSoundBufferRecorder_create() };
         if buffer.is_null() {
-            None
+            panic!("sfSoundBufferRecorder_create returned null.")
         } else {
-            Some(SoundBufferRecorder{
-                    sound_buffer_recorder: buffer
-                })
+            SoundBufferRecorder {
+                sound_buffer_recorder: buffer
+            }
         }
     }
 

@@ -28,7 +28,7 @@ fn main() {
 
     // Here we'll use an integrated custom recorder,
     // which saves the captured data into a SoundBuffer
-    let mut recorder = SoundBufferRecorder::new().unwrap();
+    let mut recorder = SoundBufferRecorder::new();
 
     // Audio capture is done in a separate thread,
     // so we can block the main thread while it is capturing
