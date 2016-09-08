@@ -28,7 +28,7 @@ use ext::sf_bool_ext::SfBoolExt;
 /// Key codes known to SFML.
 #[repr(i32)]
 #[allow(missing_docs)]
-#[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
+#[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy, Hash)]
 pub enum Key {
     /// An unhandled key.
     Unknown = -1,
