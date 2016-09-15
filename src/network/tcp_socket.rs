@@ -1,26 +1,25 @@
-/*
-* Rust-SFML - Copyright (c) 2013 Letang Jeremy.
-*
-* The original software, SFML library, is provided by Laurent Gomila.
-*
-* This software is provided 'as-is', without any express or implied warranty.
-* In no event will the authors be held liable for any damages arising from
-* the use of this software.
-*
-* Permission is granted to anyone to use this software for any purpose,
-* including commercial applications, and to alter it and redistribute it
-* freely, subject to the following restrictions:
-*
-* 1. The origin of this software must not be misrepresented; you must not claim
-*    that you wrote the original software. If you use this software in a product,
-*    an acknowledgment in the product documentation would be appreciated but is
-*    not required.
-*
-* 2. Altered source versions must be plainly marked as such, and must not be
-*    misrepresented as being the original software.
-*
-* 3. This notice may not be removed or altered from any source distribution.
-*/
+// Rust-SFML - Copyright (c) 2013 Letang Jeremy.
+//
+// The original software, SFML library, is provided by Laurent Gomila.
+//
+// This software is provided 'as-is', without any express or implied warranty.
+// In no event will the authors be held liable for any damages arising from
+// the use of this software.
+//
+// Permission is granted to anyone to use this software for any purpose,
+// including commercial applications, and to alter it and redistribute it
+// freely, subject to the following restrictions:
+//
+// 1. The origin of this software must not be misrepresented; you must not claim
+//    that you wrote the original software. If you use this software in a product,
+//    an acknowledgment in the product documentation would be appreciated but is
+//    not required.
+//
+// 2. Altered source versions must be plainly marked as such, and must not be
+//    misrepresented as being the original software.
+//
+// 3. This notice may not be removed or altered from any source distribution.
+//
 
 //! Specialized socket using the TCP protocol
 
@@ -37,7 +36,7 @@ use ext::sf_bool_ext::SfBoolExt;
 
 /// Specialized socket using the TCP protocol
 pub struct TcpSocket {
-    socket: *mut ffi::sfTcpSocket
+    socket: *mut ffi::sfTcpSocket,
 }
 
 impl TcpSocket {
@@ -46,11 +45,8 @@ impl TcpSocket {
         let tcp = unsafe { ffi::sfTcpSocket_create() };
         if tcp.is_null() {
             panic!("sfTcpSocket_create returned null.")
-        }
-        else {
-            TcpSocket {
-                socket: tcp
-            }
+        } else {
+            TcpSocket { socket: tcp }
         }
     }
 
@@ -68,9 +64,7 @@ impl TcpSocket {
     /// # Arguments
     /// * blocking - true to set the socket as blocking, false for non-blocking
     pub fn set_blocking(&mut self, blocking: bool) {
-        unsafe {
-            ffi::sfTcpSocket_setBlocking(self.socket, sfBool::from_bool(blocking))
-        }
+        unsafe { ffi::sfTcpSocket_setBlocking(self.socket, sfBool::from_bool(blocking)) }
     }
 
     /// Tell whether a TCP socket is in blocking or non-blocking mode
@@ -87,9 +81,7 @@ impl TcpSocket {
     ///
     /// Return the port to which the socket is bound
     pub fn get_local_port(&self) -> u16 {
-        unsafe {
-            ffi::sfTcpSocket_getLocalPort(self.socket)
-        }
+        unsafe { ffi::sfTcpSocket_getLocalPort(self.socket) }
     }
 
     /// Get the address of the connected peer of a TCP socket
@@ -99,9 +91,7 @@ impl TcpSocket {
     ///
     /// Return the address of the remote peer
     pub fn get_remote_address(&self) -> IpAddress {
-        unsafe {
-            IpAddress::from_raw(ffi::sfTcpSocket_getRemoteAddress(self.socket))
-        }
+        unsafe { IpAddress::from_raw(ffi::sfTcpSocket_getRemoteAddress(self.socket)) }
     }
 
     /// Get the port of the connected peer to which
@@ -111,9 +101,7 @@ impl TcpSocket {
     ///
     /// Return the remote port to which the socket is connected
     pub fn get_remote_port(&self) -> u16 {
-        unsafe {
-            ffi::sfTcpSocket_getRemotePort(self.socket)
-        }
+        unsafe { ffi::sfTcpSocket_getRemotePort(self.socket) }
     }
 
     /// Connect a TCP socket to a remote peer
@@ -138,9 +126,7 @@ impl TcpSocket {
     /// This function gracefully closes the connection. If the
     /// socket is not connected, this function has no effect.
     pub fn disconnect(&mut self) {
-        unsafe {
-            ffi::sfTcpSocket_disconnect(self.socket)
-        }
+        unsafe { ffi::sfTcpSocket_disconnect(self.socket) }
     }
 
     /// Send raw data to the remote peer of a TCP socket
@@ -151,9 +137,8 @@ impl TcpSocket {
     /// Return the status code
     pub fn send(&self, data: &[i8]) -> SocketStatus {
         unsafe {
-            let status = ffi::sfTcpSocket_send(self.socket,
-                                               data.as_ptr() as *const _,
-                                               data.len() as size_t);
+            let status =
+                ffi::sfTcpSocket_send(self.socket, data.as_ptr() as *const _, data.len() as size_t);
             mem::transmute(status)
         }
     }
@@ -187,9 +172,7 @@ impl TcpSocket {
     ///
     /// Return the socket status
     pub fn send_packet(&self, packet: &Packet) -> SocketStatus {
-        unsafe {
-            mem::transmute(ffi::sfTcpSocket_sendPacket(self.socket, packet.raw()) as i32)
-        }
+        unsafe { mem::transmute(ffi::sfTcpSocket_sendPacket(self.socket, packet.raw()) as i32) }
     }
 
     /// Receive a formatted packet of data from the remote peer
@@ -202,7 +185,8 @@ impl TcpSocket {
     pub fn receive_packet(&self) -> (Packet, SocketStatus) {
         unsafe {
             let pack: *mut ffi::sfPacket = ptr::null_mut();
-            let stat: SocketStatus = mem::transmute(ffi::sfTcpSocket_receivePacket(self.socket, pack) as i32);
+            let stat: SocketStatus =
+                mem::transmute(ffi::sfTcpSocket_receivePacket(self.socket, pack) as i32);
             (Packet::from_raw(pack), stat)
         }
     }
@@ -217,8 +201,6 @@ impl Raw for TcpSocket {
 
 impl Drop for TcpSocket {
     fn drop(&mut self) {
-        unsafe {
-            ffi::sfTcpSocket_destroy(self.socket)
-        }
+        unsafe { ffi::sfTcpSocket_destroy(self.socket) }
     }
 }

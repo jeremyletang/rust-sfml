@@ -1,26 +1,25 @@
-/*
-* Rust-SFML - Copyright (c) 2013 Letang Jeremy.
-*
-* The original software, SFML library, is provided by Laurent Gomila.
-*
-* This software is provided 'as-is', without any express or implied warranty.
-* In no event will the authors be held liable for any damages arising from
-* the use of this software.
-*
-* Permission is granted to anyone to use this software for any purpose,
-* including commercial applications, and to alter it and redistribute it
-* freely, subject to the following restrictions:
-*
-* 1. The origin of this software must not be misrepresented; you must not claim
-*    that you wrote the original software. If you use this software in a product,
-*    an acknowledgment in the product documentation would be appreciated but is
-*    not required.
-*
-* 2. Altered source versions must be plainly marked as such, and must not be
-*    misrepresented as being the original software.
-*
-* 3. This notice may not be removed or altered from any source distribution.
-*/
+// Rust-SFML - Copyright (c) 2013 Letang Jeremy.
+//
+// The original software, SFML library, is provided by Laurent Gomila.
+//
+// This software is provided 'as-is', without any express or implied warranty.
+// In no event will the authors be held liable for any damages arising from
+// the use of this software.
+//
+// Permission is granted to anyone to use this software for any purpose,
+// including commercial applications, and to alter it and redistribute it
+// freely, subject to the following restrictions:
+//
+// 1. The origin of this software must not be misrepresented; you must not claim
+//    that you wrote the original software. If you use this software in a product,
+//    an acknowledgment in the product documentation would be appreciated but is
+//    not required.
+//
+// 2. Altered source versions must be plainly marked as such, and must not be
+//    misrepresented as being the original software.
+//
+// 3. This notice may not be removed or altered from any source distribution.
+//
 
 //! Encapsulate an IPv4 network address.
 
@@ -34,8 +33,8 @@ use csfml_network_sys as ffi;
 
 /// Encapsulate an IPv4 network address.
 #[derive(Clone, Copy)]
-pub struct IpAddress{
-    ip: ffi::sfIpAddress
+pub struct IpAddress {
+    ip: ffi::sfIpAddress,
 }
 
 impl IpAddress {
@@ -50,9 +49,7 @@ impl IpAddress {
     /// Return Resulting address
     pub fn from_string(address: &str) -> IpAddress {
         let c_address = CString::new(address.as_bytes()).unwrap();
-        IpAddress {
-            ip: unsafe { ffi::sfIpAddress_fromString(c_address.as_ptr()) }
-        }
+        IpAddress { ip: unsafe { ffi::sfIpAddress_fromString(c_address.as_ptr()) } }
     }
 
     /// Create an address from 4 bytes
@@ -70,9 +67,7 @@ impl IpAddress {
     ///
     /// Return the resulting address
     pub fn from_bytes(byte0: u8, byte1: u8, byte2: u8, byte3: u8) -> IpAddress {
-        IpAddress {
-            ip: unsafe { ffi::sfIpAddress_fromBytes(byte0, byte1, byte2, byte3) }
-        }
+        IpAddress { ip: unsafe { ffi::sfIpAddress_fromBytes(byte0, byte1, byte2, byte3) } }
     }
 
     /// Construct an address from a 32-bits integer
@@ -87,9 +82,7 @@ impl IpAddress {
     ///
     /// Return the resulting address
     pub fn from_integer(address: u32) -> IpAddress {
-        IpAddress {
-            ip: unsafe { ffi::sfIpAddress_fromInteger(address) }
-        }
+        IpAddress { ip: unsafe { ffi::sfIpAddress_fromInteger(address) } }
     }
 
     /// Get a string representation of an address
@@ -116,9 +109,7 @@ impl IpAddress {
     ///
     /// Return a 32-bits unsigned integer representation of the address
     pub fn to_integer(&self) -> u32 {
-        unsafe {
-            ffi::sfIpAddress_toInteger(self.ip)
-        }
+        unsafe { ffi::sfIpAddress_toInteger(self.ip) }
     }
 
     /// Get the computer's local address
@@ -131,9 +122,7 @@ impl IpAddress {
     ///
     /// Return the local IP address of the computer
     pub fn get_local_address() -> IpAddress {
-        IpAddress {
-            ip: unsafe { ffi::sfIpAddress_getLocalAddress() }
-        }
+        IpAddress { ip: unsafe { ffi::sfIpAddress_getLocalAddress() } }
     }
 
     /// Get the computer's public address
@@ -152,9 +141,7 @@ impl IpAddress {
     ///
     /// Return the public IP address of the computer
     pub fn get_public_address(timeout: &Time) -> IpAddress {
-        IpAddress {
-            ip: unsafe { ffi::sfIpAddress_getPublicAddress(timeout.raw()) }
-        }
+        IpAddress { ip: unsafe { ffi::sfIpAddress_getPublicAddress(timeout.raw()) } }
     }
 }
 
@@ -167,8 +154,6 @@ impl Raw for IpAddress {
 
 impl FromRaw for IpAddress {
     fn from_raw(raw: Self::Raw) -> Self {
-        IpAddress {
-            ip: raw,
-        }
+        IpAddress { ip: raw }
     }
 }

@@ -1,26 +1,25 @@
-/*
-* Rust-SFML - Copyright (c) 2013 Letang Jeremy.
-*
-* The original software, SFML library, is provided by Laurent Gomila.
-*
-* This software is provided 'as-is', without any express or implied warranty.
-* In no event will the authors be held liable for any damages arising from
-* the use of this software.
-*
-* Permission is granted to anyone to use this software for any purpose,
-* including commercial applications, and to alter it and redistribute it
-* freely, subject to the following restrictions:
-*
-* 1. The origin of this software must not be misrepresented; you must not claim
-*    that you wrote the original software. If you use this software in a product,
-*    an acknowledgment in the product documentation would be appreciated but is
-*    not required.
-*
-* 2. Altered source versions must be plainly marked as such, and must not be
-*    misrepresented as being the original software.
-*
-* 3. This notice may not be removed or altered from any source distribution.
-*/
+// Rust-SFML - Copyright (c) 2013 Letang Jeremy.
+//
+// The original software, SFML library, is provided by Laurent Gomila.
+//
+// This software is provided 'as-is', without any express or implied warranty.
+// In no event will the authors be held liable for any damages arising from
+// the use of this software.
+//
+// Permission is granted to anyone to use this software for any purpose,
+// including commercial applications, and to alter it and redistribute it
+// freely, subject to the following restrictions:
+//
+// 1. The origin of this software must not be misrepresented; you must not claim
+//    that you wrote the original software. If you use this software in a product,
+//    an acknowledgment in the product documentation would be appreciated but is
+//    not required.
+//
+// 2. Altered source versions must be plainly marked as such, and must not be
+//    misrepresented as being the original software.
+//
+// 3. This notice may not be removed or altered from any source distribution.
+//
 
 //! A HTTP client
 
@@ -105,17 +104,17 @@ pub enum Status {
 
 /// Encapsulation of an HTTP request
 pub struct Request {
-    request: *mut ffi::sfHttpRequest
+    request: *mut ffi::sfHttpRequest,
 }
 
 /// Encapsulation of an HTTP response
 pub struct Response {
-    response: *mut ffi::sfHttpResponse
+    response: *mut ffi::sfHttpResponse,
 }
 
 /// The HTTP client.
 pub struct Http {
-    http: *mut ffi::sfHttp
+    http: *mut ffi::sfHttp,
 }
 
 impl Request {
@@ -125,9 +124,7 @@ impl Request {
         if ptr.is_null() {
             panic!("sfHttpRequest_create returned null.")
         } else {
-            Request {
-                request: ptr
-            }
+            Request { request: ptr }
         }
     }
 
@@ -145,11 +142,7 @@ impl Request {
     pub fn set_field(&self, field: &str, value: &str) {
         let c_field = CString::new(field.as_bytes()).unwrap();
         let c_value = CString::new(value.as_bytes()).unwrap();
-        unsafe {
-            ffi::sfHttpRequest_setField(self.request,
-                                        c_field.as_ptr(),
-                                        c_value.as_ptr())
-        }
+        unsafe { ffi::sfHttpRequest_setField(self.request, c_field.as_ptr(), c_value.as_ptr()) }
     }
 
     /// Set a HTTP request method
@@ -161,9 +154,7 @@ impl Request {
     /// # Arguments
     /// * method - Method to use for the request
     pub fn set_method(&self, method: Method) {
-        unsafe {
-            ffi::sfHttpRequest_setMethod(self.request, ::std::mem::transmute(method))
-        }
+        unsafe { ffi::sfHttpRequest_setMethod(self.request, ::std::mem::transmute(method)) }
     }
 
     /// Set a HTTP request URI
@@ -176,9 +167,7 @@ impl Request {
     /// * uri - URI to request, relative to the host
     pub fn set_uri(&self, uri: &str) {
         let c_uri = CString::new(uri.as_bytes()).unwrap();
-        unsafe {
-            ffi::sfHttpRequest_setUri(self.request, c_uri.as_ptr())
-        }
+        unsafe { ffi::sfHttpRequest_setUri(self.request, c_uri.as_ptr()) }
     }
 
     /// Set the HTTP version of a HTTP request
@@ -189,9 +178,7 @@ impl Request {
     /// * major - Major HTTP version number
     /// * param minor - Minor HTTP version number
     pub fn set_http_version(&self, major: u32, minor: u32) {
-        unsafe {
-            ffi::sfHttpRequest_setHttpVersion(self.request, major, minor)
-        }
+        unsafe { ffi::sfHttpRequest_setHttpVersion(self.request, major, minor) }
     }
 
     /// Set the body of a HTTP request
@@ -203,9 +190,7 @@ impl Request {
     /// * body - Content of the body
     pub fn set_body(&self, body: &str) {
         let c_body = CString::new(body.as_bytes()).unwrap();
-        unsafe {
-            ffi::sfHttpRequest_setBody(self.request, c_body.as_ptr())
-        }
+        unsafe { ffi::sfHttpRequest_setBody(self.request, c_body.as_ptr()) }
     }
 }
 
@@ -218,9 +203,7 @@ impl Raw for Request {
 
 impl Drop for Request {
     fn drop(&mut self) {
-        unsafe {
-            ffi::sfHttpRequest_destroy(self.request)
-        }
+        unsafe { ffi::sfHttpRequest_destroy(self.request) }
     }
 }
 
@@ -252,27 +235,21 @@ impl Response {
     ///
     /// Return the status code
     pub fn get_status(&self) -> Status {
-        unsafe {
-            mem::transmute(ffi::sfHttpResponse_getStatus(self.response) as i32)
-        }
+        unsafe { mem::transmute(ffi::sfHttpResponse_getStatus(self.response) as i32) }
     }
 
     /// Get the major HTTP version number of a HTTP response
     ///
     /// Return Major HTTP version number
     pub fn get_major_version(&self) -> u32 {
-        unsafe {
-            ffi::sfHttpResponse_getMajorVersion(self.response)
-        }
+        unsafe { ffi::sfHttpResponse_getMajorVersion(self.response) }
     }
 
     /// Get the minor HTTP version number of a HTTP response
     ///
     /// Return the minor HTTP version number
     pub fn get_minor_version(&self) -> u32 {
-        unsafe {
-            ffi::sfHttpResponse_getMinorVersion(self.response)
-        }
+        unsafe { ffi::sfHttpResponse_getMinorVersion(self.response) }
     }
 
     /// Get the body of a HTTP response
@@ -294,22 +271,18 @@ impl Response {
 
 impl Drop for Response {
     fn drop(&mut self) {
-        unsafe {
-            ffi::sfHttpResponse_destroy(self.response)
-        }
+        unsafe { ffi::sfHttpResponse_destroy(self.response) }
     }
 }
 
 impl Http {
     /// Create a new Http object
     pub fn new() -> Http {
-        let ptr = unsafe{ ffi::sfHttp_create() };
+        let ptr = unsafe { ffi::sfHttp_create() };
         if ptr.is_null() {
             panic!("sfHttp_create returned null.")
         } else {
-            Http {
-                http: ptr
-            }
+            Http { http: ptr }
         }
     }
 
@@ -328,9 +301,7 @@ impl Http {
     /// * port - Port to use for connection
     pub fn set_host(&self, host: &str, port: u16) {
         let c_host = CString::new(host.as_bytes()).unwrap();
-        unsafe {
-            ffi::sfHttp_setHost(self.http, c_host.as_ptr(), port)
-        }
+        unsafe { ffi::sfHttp_setHost(self.http, c_host.as_ptr(), port) }
     }
 
     /// Send a HTTP request and return the server's response.
@@ -349,15 +320,13 @@ impl Http {
     /// * timeout - Maximum time to wait
     pub fn send_request(&self, request: &Request, timeout: &Time) -> Response {
         Response {
-            response: unsafe { ffi::sfHttp_sendRequest(self.http, request.raw(), timeout.raw()) }
+            response: unsafe { ffi::sfHttp_sendRequest(self.http, request.raw(), timeout.raw()) },
         }
     }
 }
 
 impl Drop for Http {
     fn drop(&mut self) {
-        unsafe {
-            ffi::sfHttp_destroy(self.http)
-        }
+        unsafe { ffi::sfHttp_destroy(self.http) }
     }
 }
