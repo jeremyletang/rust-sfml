@@ -1,36 +1,35 @@
-/*
-* Rust-SFML - Copyright (c) 2013 Letang Jeremy.
-*
-* The original software, SFML library, is provided by Laurent Gomila.
-*
-* This software is provided 'as-is', without any express or implied warranty.
-* In no event will the authors be held liable for any damages arising from
-* the use of this software.
-*
-* Permission is granted to anyone to use this software for any purpose,
-* including commercial applications, and to alter it and redistribute it
-* freely, subject to the following restrictions:
-*
-* 1. The origin of this software must not be misrepresented; you must not claim
-*    that you wrote the original software. If you use this software in a product,
-*    an acknowledgment in the product documentation would be appreciated but is
-*    not required.
-*
-* 2. Altered source versions must be plainly marked as such, and must not be
-*    misrepresented as being the original software.
-*
-* 3. This notice may not be removed or altered from any source distribution.
-*/
+// Rust-SFML - Copyright (c) 2013 Letang Jeremy.
+//
+// The original software, SFML library, is provided by Laurent Gomila.
+//
+// This software is provided 'as-is', without any express or implied warranty.
+// In no event will the authors be held liable for any damages arising from
+// the use of this software.
+//
+// Permission is granted to anyone to use this software for any purpose,
+// including commercial applications, and to alter it and redistribute it
+// freely, subject to the following restrictions:
+//
+// 1. The origin of this software must not be misrepresented; you must not claim
+//    that you wrote the original software. If you use this software in a product,
+//    an acknowledgment in the product documentation would be appreciated but is
+//    not required.
+//
+// 2. Altered source versions must be plainly marked as such, and must not be
+//    misrepresented as being the original software.
+//
+// 3. This notice may not be removed or altered from any source distribution.
+//
 
 //! Specialized shape representing a rectangle
 
-use libc::{c_float};
+use libc::c_float;
 use std::ptr;
 
 use raw_conv::{Raw, FromRaw};
 use system::Vector2f;
-use graphics::{Drawable, Shape, Transformable, FloatRect, IntRect, Color, Texture,
-               RenderTarget, Transform, RenderStates};
+use graphics::{Drawable, Shape, Transformable, FloatRect, IntRect, Color, Texture, RenderTarget,
+               Transform, RenderStates};
 
 use csfml_system_sys::{sfBool, sfTrue, sfVector2f};
 use csfml_graphics_sys as ffi;
@@ -39,7 +38,7 @@ use ext::sf_bool_ext::SfBoolExt;
 /// Specialized shape representing a rectangle
 pub struct RectangleShape<'s> {
     rectangle_shape: *mut ffi::sfRectangleShape,
-    texture: Option<&'s Texture>
+    texture: Option<&'s Texture>,
 }
 
 impl<'s> RectangleShape<'s> {
@@ -53,7 +52,7 @@ impl<'s> RectangleShape<'s> {
         } else {
             RectangleShape {
                 rectangle_shape: rectangle,
-                texture: None
+                texture: None,
             }
         }
     }
@@ -67,13 +66,11 @@ impl<'s> RectangleShape<'s> {
             panic!("sfRectangleShape_create returned null.")
         } else {
             unsafe {
-                ffi::sfRectangleShape_setTexture(rectangle,
-                                                 texture.raw(),
-                                                 sfTrue);
+                ffi::sfRectangleShape_setTexture(rectangle, texture.raw(), sfTrue);
             }
             RectangleShape {
                 rectangle_shape: rectangle,
-                texture: Some(texture)
+                texture: Some(texture),
             }
         }
     }
@@ -88,12 +85,12 @@ impl<'s> RectangleShape<'s> {
         if rectangle.is_null() {
             panic!("sfRectangleShape_create returned null.")
         } else {
-            unsafe{
+            unsafe {
                 ffi::sfRectangleShape_setSize(rectangle, size.raw());
             }
             RectangleShape {
                 rectangle_shape: rectangle,
-                texture: None
+                texture: None,
             }
         }
     }
@@ -102,9 +99,7 @@ impl<'s> RectangleShape<'s> {
     ///
     /// Return the height Size of the rectangle
     pub fn get_size(&self) -> Vector2f {
-        unsafe {
-            Vector2f::from_raw(ffi::sfRectangleShape_getSize(self.rectangle_shape))
-        }
+        unsafe { Vector2f::from_raw(ffi::sfRectangleShape_getSize(self.rectangle_shape)) }
     }
 
     /// Set the size of a rectangle shape
@@ -112,9 +107,7 @@ impl<'s> RectangleShape<'s> {
     /// # Arguments
     /// * size - The new size of the rectangle
     pub fn set_size(&mut self, size: &Vector2f) {
-        unsafe {
-            ffi::sfRectangleShape_setSize(self.rectangle_shape, size.raw())
-        }
+        unsafe { ffi::sfRectangleShape_setSize(self.rectangle_shape, size.raw()) }
     }
 
     /// Set the size of a rectangle shape
@@ -125,16 +118,17 @@ impl<'s> RectangleShape<'s> {
     pub fn set_size2f(&mut self, size_x: f32, size_y: f32) {
         unsafe {
             ffi::sfRectangleShape_setSize(self.rectangle_shape,
-                                          sfVector2f{x: size_x, y: size_y})
+                                          sfVector2f {
+                                              x: size_x,
+                                              y: size_y,
+                                          })
         }
     }
 }
 
 
 impl<'s> Drawable for RectangleShape<'s> {
-    fn draw<RT: RenderTarget>(&self,
-                              render_target: &mut RT,
-                              render_states: &mut RenderStates) {
+    fn draw<RT: RenderTarget>(&self, render_target: &mut RT, render_states: &mut RenderStates) {
         render_target.draw_rectangle_shape(self, render_states);
     }
 }
@@ -149,9 +143,7 @@ impl<'s> Transformable for RectangleShape<'s> {
     /// # Arguments
     /// * position - New position
     fn set_position(&mut self, position: &Vector2f) {
-        unsafe {
-            ffi::sfRectangleShape_setPosition(self.rectangle_shape, position.raw())
-        }
+        unsafe { ffi::sfRectangleShape_setPosition(self.rectangle_shape, position.raw()) }
     }
 
     /// Set the position of a rectangle shape with 2 f32
@@ -165,8 +157,7 @@ impl<'s> Transformable for RectangleShape<'s> {
     /// * y - Y coordinate of the new position
     fn set_position2f(&mut self, x: f32, y: f32) {
         unsafe {
-            ffi::sfRectangleShape_setPosition(self.rectangle_shape,
-                                              sfVector2f{x: x, y: y})
+            ffi::sfRectangleShape_setPosition(self.rectangle_shape, sfVector2f { x: x, y: y })
         }
     }
 
@@ -179,10 +170,7 @@ impl<'s> Transformable for RectangleShape<'s> {
     /// # Arguments
     /// * rotation - New rotation
     fn set_rotation(&mut self, angle: f32) {
-        unsafe {
-            ffi::sfRectangleShape_setRotation(self.rectangle_shape,
-                                              angle as c_float)
-        }
+        unsafe { ffi::sfRectangleShape_setRotation(self.rectangle_shape, angle as c_float) }
     }
 
     /// Set the scale factors of a rectangle shape
@@ -194,9 +182,7 @@ impl<'s> Transformable for RectangleShape<'s> {
     /// # Arguments
     /// * scale - New scale factors
     fn set_scale(&mut self, scale: &Vector2f) {
-        unsafe {
-            ffi::sfRectangleShape_setScale(self.rectangle_shape, scale.raw())
-        }
+        unsafe { ffi::sfRectangleShape_setScale(self.rectangle_shape, scale.raw()) }
     }
 
 
@@ -212,7 +198,10 @@ impl<'s> Transformable for RectangleShape<'s> {
     fn set_scale2f(&mut self, factor_x: f32, factor_y: f32) {
         unsafe {
             ffi::sfRectangleShape_setScale(self.rectangle_shape,
-                                           sfVector2f{x: factor_x, y: factor_y})
+                                           sfVector2f {
+                                               x: factor_x,
+                                               y: factor_y,
+                                           })
         }
     }
 
@@ -228,9 +217,7 @@ impl<'s> Transformable for RectangleShape<'s> {
     /// # Arguments
     /// * origin - New origin
     fn set_origin(&mut self, origin: &Vector2f) {
-        unsafe {
-            ffi::sfRectangleShape_setOrigin(self.rectangle_shape, origin.raw())
-        }
+        unsafe { ffi::sfRectangleShape_setOrigin(self.rectangle_shape, origin.raw()) }
     }
 
     /// Set the local origin of a rectangle shape
@@ -246,19 +233,14 @@ impl<'s> Transformable for RectangleShape<'s> {
     /// * x - New coordinate x of the origin
     /// * y - New coordinate y of the origin
     fn set_origin2f(&mut self, x: f32, y: f32) {
-        unsafe {
-            ffi::sfRectangleShape_setOrigin(self.rectangle_shape,
-                                            sfVector2f{x: x, y: y})
-        }
+        unsafe { ffi::sfRectangleShape_setOrigin(self.rectangle_shape, sfVector2f { x: x, y: y }) }
     }
 
     /// Get the position of a rectangle shape
     ///
     /// Return the current position
     fn get_position(&self) -> Vector2f {
-        unsafe {
-            Vector2f::from_raw(ffi::sfRectangleShape_getPosition(self.rectangle_shape))
-        }
+        unsafe { Vector2f::from_raw(ffi::sfRectangleShape_getPosition(self.rectangle_shape)) }
     }
 
     /// Get the orientation of a rectangle shape
@@ -267,27 +249,21 @@ impl<'s> Transformable for RectangleShape<'s> {
     ///
     /// Return the current rotation, in degrees
     fn get_rotation(&self) -> f32 {
-        unsafe {
-            ffi::sfRectangleShape_getRotation(self.rectangle_shape) as f32
-        }
+        unsafe { ffi::sfRectangleShape_getRotation(self.rectangle_shape) as f32 }
     }
 
     /// Get the current scale of a rectangle shape
     ///
     /// Return the current scale factors
     fn get_scale(&self) -> Vector2f {
-        unsafe {
-            Vector2f::from_raw(ffi::sfRectangleShape_getScale(self.rectangle_shape))
-        }
+        unsafe { Vector2f::from_raw(ffi::sfRectangleShape_getScale(self.rectangle_shape)) }
     }
 
     /// Get the local origin of a rectangle shape
     ///
     /// return the current origin
     fn get_origin(&self) -> Vector2f {
-        unsafe {
-            Vector2f::from_raw(ffi::sfRectangleShape_getOrigin(self.rectangle_shape))
-        }
+        unsafe { Vector2f::from_raw(ffi::sfRectangleShape_getOrigin(self.rectangle_shape)) }
     }
 
     /// Move a rectangle shape by a given offset
@@ -298,9 +274,7 @@ impl<'s> Transformable for RectangleShape<'s> {
     /// # Arguments
     /// * offset - Offset
     fn move_(&mut self, offset: &Vector2f) {
-        unsafe {
-            ffi::sfRectangleShape_move(self.rectangle_shape, offset.raw())
-        }
+        unsafe { ffi::sfRectangleShape_move(self.rectangle_shape, offset.raw()) }
     }
 
     /// Move a rectangle shape by a given offset of 2 f32
@@ -312,8 +286,13 @@ impl<'s> Transformable for RectangleShape<'s> {
     /// * offsetX - Offset in x
     /// * offsetY - Offset in y
     fn move2f(&mut self, offset_x: f32, offset_y: f32) {
-        unsafe {ffi::sfRectangleShape_move(self.rectangle_shape,
-                                           sfVector2f{x: offset_x, y: offset_y})}
+        unsafe {
+            ffi::sfRectangleShape_move(self.rectangle_shape,
+                                       sfVector2f {
+                                           x: offset_x,
+                                           y: offset_y,
+                                       })
+        }
     }
 
     /// Rotate a rectangle shape
@@ -324,9 +303,7 @@ impl<'s> Transformable for RectangleShape<'s> {
     /// # Arguments
     /// * angle - Angle of rotation, in degrees
     fn rotate(&mut self, angle: f32) {
-        unsafe {
-            ffi::sfRectangleShape_rotate(self.rectangle_shape, angle as c_float)
-        }
+        unsafe { ffi::sfRectangleShape_rotate(self.rectangle_shape, angle as c_float) }
     }
 
     /// Scale a rectangle shape
@@ -337,9 +314,7 @@ impl<'s> Transformable for RectangleShape<'s> {
     /// # Arguments
     /// * factors - Scale factors
     fn scale(&mut self, factors: &Vector2f) {
-        unsafe {
-            ffi::sfRectangleShape_scale(self.rectangle_shape, factors.raw())
-        }
+        unsafe { ffi::sfRectangleShape_scale(self.rectangle_shape, factors.raw()) }
     }
 
     /// Scale a rectangle shape
@@ -353,7 +328,10 @@ impl<'s> Transformable for RectangleShape<'s> {
     fn scale2f(&mut self, factor_x: f32, factor_y: f32) {
         unsafe {
             ffi::sfRectangleShape_scale(self.rectangle_shape,
-                                        sfVector2f{x: factor_x, y: factor_y})
+                                        sfVector2f {
+                                            x: factor_x,
+                                            y: factor_y,
+                                        })
         }
     }
 
@@ -362,18 +340,14 @@ impl<'s> Transformable for RectangleShape<'s> {
     /// Return transform combining the position/rotation/scale/origin
     /// of the object
     fn get_transform(&self) -> Transform {
-        unsafe {
-            Transform(ffi::sfRectangleShape_getTransform(self.rectangle_shape))
-        }
+        unsafe { Transform(ffi::sfRectangleShape_getTransform(self.rectangle_shape)) }
     }
 
     /// Get the inverse of the combined transform of a rectangle shape
     ///
     /// Return inverse of the combined transformations applied to the object
     fn get_inverse_transform(&self) -> Transform {
-        unsafe {
-            Transform(ffi::sfRectangleShape_getInverseTransform(self.rectangle_shape))
-        }
+        unsafe { Transform(ffi::sfRectangleShape_getInverseTransform(self.rectangle_shape)) }
     }
 }
 
@@ -408,11 +382,7 @@ impl<'s> Shape<'s> for RectangleShape<'s> {
     /// Disable the current texture and reset the texture rect
     fn disable_texture(&mut self) {
         self.texture = None;
-        unsafe {
-            ffi::sfRectangleShape_setTexture(self.rectangle_shape,
-                                             ptr::null_mut(),
-                                             sfTrue)
-        }
+        unsafe { ffi::sfRectangleShape_setTexture(self.rectangle_shape, ptr::null_mut(), sfTrue) }
     }
 
     /// Set the sub-rectangle of the texture that a rectangle shape will display
@@ -424,9 +394,7 @@ impl<'s> Shape<'s> for RectangleShape<'s> {
     /// # Arguments
     /// * rec - Rectangle defining the region of the texture to display
     fn set_texture_rect(&mut self, rect: &IntRect) {
-        unsafe {
-            ffi::sfRectangleShape_setTextureRect(self.rectangle_shape, rect.raw())
-        }
+        unsafe { ffi::sfRectangleShape_setTextureRect(self.rectangle_shape, rect.raw()) }
     }
 
     /// Set the fill color of a rectangle shape
@@ -441,9 +409,7 @@ impl<'s> Shape<'s> for RectangleShape<'s> {
     /// # Arguments
     /// * color - New color of the shape
     fn set_fill_color(&mut self, color: &Color) {
-        unsafe {
-            ffi::sfRectangleShape_setFillColor(self.rectangle_shape, color.0)
-        }
+        unsafe { ffi::sfRectangleShape_setFillColor(self.rectangle_shape, color.0) }
     }
 
     /// Set the outline color of a rectangle shape
@@ -454,9 +420,7 @@ impl<'s> Shape<'s> for RectangleShape<'s> {
     /// # Arguments
     /// * color - New outline color of the shape
     fn set_outline_color(&mut self, color: &Color) {
-        unsafe {
-            ffi::sfRectangleShape_setOutlineColor(self.rectangle_shape, color.0)
-        }
+        unsafe { ffi::sfRectangleShape_setOutlineColor(self.rectangle_shape, color.0) }
     }
 
     /// Set the thickness of a rectangle shape's outline
@@ -469,8 +433,7 @@ impl<'s> Shape<'s> for RectangleShape<'s> {
     /// * thickness - New outline thickness
     fn set_outline_thickness(&mut self, thickness: f32) {
         unsafe {
-            ffi::sfRectangleShape_setOutlineThickness(self.rectangle_shape,
-                                                      thickness as c_float)
+            ffi::sfRectangleShape_setOutlineThickness(self.rectangle_shape, thickness as c_float)
         }
     }
 
@@ -487,45 +450,35 @@ impl<'s> Shape<'s> for RectangleShape<'s> {
     ///
     /// Return the texture rectangle of the shape
     fn get_texture_rect(&self) -> IntRect {
-        unsafe {
-            IntRect::from_raw(ffi::sfRectangleShape_getTextureRect(self.rectangle_shape))
-        }
+        unsafe { IntRect::from_raw(ffi::sfRectangleShape_getTextureRect(self.rectangle_shape)) }
     }
 
     /// Get the fill color of a rectangle shape
     ///
     /// Return the fill color of the shape
     fn get_fill_color(&self) -> Color {
-        unsafe {
-            Color(ffi::sfRectangleShape_getFillColor(self.rectangle_shape))
-        }
+        unsafe { Color(ffi::sfRectangleShape_getFillColor(self.rectangle_shape)) }
     }
 
     /// Get the outline color of a rectangle shape
     ///
     /// Return the outline color of the shape
     fn get_outline_color(&self) -> Color {
-        unsafe {
-            Color(ffi::sfRectangleShape_getOutlineColor(self.rectangle_shape))
-        }
+        unsafe { Color(ffi::sfRectangleShape_getOutlineColor(self.rectangle_shape)) }
     }
 
     /// Get the outline thickness of a rectangle shape
     ///
     /// Return the outline thickness of the shape
     fn get_outline_thickness(&self) -> f32 {
-        unsafe {
-            ffi::sfRectangleShape_getOutlineThickness(self.rectangle_shape)
-        }
+        unsafe { ffi::sfRectangleShape_getOutlineThickness(self.rectangle_shape) }
     }
 
     /// Get the total number of points of a rectangle shape
     ///
     /// Return the number of points of the shape
     fn get_point_count(&self) -> u32 {
-        unsafe {
-            ffi::sfRectangleShape_getPointCount(self.rectangle_shape) as u32
-        }
+        unsafe { ffi::sfRectangleShape_getPointCount(self.rectangle_shape) as u32 }
     }
 
     /// Get a point of a rectangle shape
@@ -538,8 +491,7 @@ impl<'s> Shape<'s> for RectangleShape<'s> {
     /// Return the index-th point of the shape
     fn get_point(&self, index: u32) -> Vector2f {
         unsafe {
-            Vector2f::from_raw(ffi::sfRectangleShape_getPoint(self.rectangle_shape,
-                                                     index as usize))
+            Vector2f::from_raw(ffi::sfRectangleShape_getPoint(self.rectangle_shape, index as usize))
         }
     }
 
@@ -553,9 +505,7 @@ impl<'s> Shape<'s> for RectangleShape<'s> {
     ///
     /// Return the local bounding rectangle of the entity
     fn get_local_bounds(&self) -> FloatRect {
-        unsafe {
-            FloatRect::from_raw(ffi::sfRectangleShape_getLocalBounds(self.rectangle_shape))
-        }
+        unsafe { FloatRect::from_raw(ffi::sfRectangleShape_getLocalBounds(self.rectangle_shape)) }
     }
 
     /// Get the global bounding rectangle of a rectangle shape
@@ -568,23 +518,20 @@ impl<'s> Shape<'s> for RectangleShape<'s> {
     ///
     /// Return the global bounding rectangle of the entity
     fn get_global_bounds(&self) -> FloatRect {
-        unsafe {
-            FloatRect::from_raw(ffi::sfRectangleShape_getGlobalBounds(self.rectangle_shape))
-        }
+        unsafe { FloatRect::from_raw(ffi::sfRectangleShape_getGlobalBounds(self.rectangle_shape)) }
     }
 }
 
 impl<'s> Clone for RectangleShape<'s> {
     /// Return a new RectangleShape or panic! if there is not enough memory
     fn clone(&self) -> RectangleShape<'s> {
-        let rectangle =
-            unsafe { ffi::sfRectangleShape_copy(self.rectangle_shape) };
+        let rectangle = unsafe { ffi::sfRectangleShape_copy(self.rectangle_shape) };
         if rectangle.is_null() {
             panic!("Not enough memory to clone RectangleShape")
         } else {
             RectangleShape {
                 rectangle_shape: rectangle,
-                texture: self.texture
+                texture: self.texture,
             }
         }
     }
@@ -599,8 +546,6 @@ impl<'s> Raw for RectangleShape<'s> {
 
 impl<'s> Drop for RectangleShape<'s> {
     fn drop(&mut self) {
-        unsafe {
-            ffi::sfRectangleShape_destroy(self.rectangle_shape)
-        }
+        unsafe { ffi::sfRectangleShape_destroy(self.rectangle_shape) }
     }
 }

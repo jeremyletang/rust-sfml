@@ -1,31 +1,30 @@
-/*
-* Rust-SFML - Copyright (c) 2013 Letang Jeremy.
-*
-* The original software, SFML library, is provided by Laurent Gomila.
-*
-* This software is provided 'as-is', without any express or implied warranty.
-* In no event will the authors be held liable for any damages arising from
-* the use of this software.
-*
-* Permission is granted to anyone to use this software for any purpose,
-* including commercial applications, and to alter it and redistribute it
-* freely, subject to the following restrictions:
-*
-* 1. The origin of this software must not be misrepresented; you must not claim
-*    that you wrote the original software. If you use this software in a product,
-*    an acknowledgment in the product documentation would be appreciated but is
-*    not required.
-*
-* 2. Altered source versions must be plainly marked as such, and must not be
-*    misrepresented as being the original software.
-*
-* 3. This notice may not be removed or altered from any source distribution.
-*/
+// Rust-SFML - Copyright (c) 2013 Letang Jeremy.
+//
+// The original software, SFML library, is provided by Laurent Gomila.
+//
+// This software is provided 'as-is', without any express or implied warranty.
+// In no event will the authors be held liable for any damages arising from
+// the use of this software.
+//
+// Permission is granted to anyone to use this software for any purpose,
+// including commercial applications, and to alter it and redistribute it
+// freely, subject to the following restrictions:
+//
+// 1. The origin of this software must not be misrepresented; you must not claim
+//    that you wrote the original software. If you use this software in a product,
+//    an acknowledgment in the product documentation would be appreciated but is
+//    not required.
+//
+// 2. Altered source versions must be plainly marked as such, and must not be
+//    misrepresented as being the original software.
+//
+// 3. This notice may not be removed or altered from any source distribution.
+//
 
-//Authored on 2014-08-30 by Brandon Sanderson
+// Authored on 2014-08-30 by Brandon Sanderson
 
-use graphics::{Drawable, Color, View, ViewRef, RenderStates, CircleShape, RectangleShape, Text, Sprite, VertexArray,
-               IntRect, Vertex, PrimitiveType, ConvexShape, CustomShape};
+use graphics::{Drawable, Color, View, ViewRef, RenderStates, CircleShape, RectangleShape, Text,
+               Sprite, VertexArray, IntRect, Vertex, PrimitiveType, ConvexShape, CustomShape};
 use system::{Vector2f, Vector2i, Vector2u};
 
 /// Trait which is the equivalent of the `sf::RenderTarget` class in SFML.
@@ -206,45 +205,27 @@ pub trait RenderTarget {
     fn reset_gl_states(&mut self);
 
     /// Draw Text
-    fn draw_text(&self,
-                 text: &Text,
-                 rs: &mut RenderStates);
+    fn draw_text(&self, text: &Text, rs: &mut RenderStates);
 
     /// Draw Shape
-    fn draw_shape(&self,
-                  shape: &CustomShape,
-                  rs: &mut RenderStates);
+    fn draw_shape(&self, shape: &CustomShape, rs: &mut RenderStates);
 
     /// Draw Sprite
-    fn draw_sprite(&self,
-                   sprite: &Sprite,
-                   rs: &mut RenderStates);
+    fn draw_sprite(&self, sprite: &Sprite, rs: &mut RenderStates);
 
     /// Draw CircleShape
-    fn draw_circle_shape(&self,
-                         circle_shape: &CircleShape,
-                         rs: &mut RenderStates);
+    fn draw_circle_shape(&self, circle_shape: &CircleShape, rs: &mut RenderStates);
 
 
     /// Draw RectangleShape
-    fn draw_rectangle_shape(&self,
-                            rectangle_shape: &RectangleShape,
-                            rs: &mut RenderStates);
+    fn draw_rectangle_shape(&self, rectangle_shape: &RectangleShape, rs: &mut RenderStates);
 
     /// Draw ConvexShape
-    fn draw_convex_shape(&self,
-                         convex_shape: &ConvexShape,
-                         rs: &mut RenderStates);
+    fn draw_convex_shape(&self, convex_shape: &ConvexShape, rs: &mut RenderStates);
 
     /// Draw VertexArray
-    fn draw_vertex_array(&self,
-                         vertex_array: &VertexArray,
-                         rs: &mut RenderStates);
+    fn draw_vertex_array(&self, vertex_array: &VertexArray, rs: &mut RenderStates);
 
     /// draw primitives
-    fn draw_primitives(&self,
-                       vertices: &[Vertex],
-                       ty: PrimitiveType,
-                       rs: &mut RenderStates);
-
+    fn draw_primitives(&self, vertices: &[Vertex], ty: PrimitiveType, rs: &mut RenderStates);
 }

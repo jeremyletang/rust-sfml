@@ -1,26 +1,25 @@
-/*
-* Rust-SFML - Copyright (c) 2013 Letang Jeremy.
-*
-* The original software, SFML library, is provided by Laurent Gomila.
-*
-* This software is provided 'as-is', without any express or implied warranty.
-* In no event will the authors be held liable for any damages arising from
-* the use of this software.
-*
-* Permission is granted to anyone to use this software for any purpose,
-* including commercial applications, and to alter it and redistribute it
-* freely, subject to the following restrictions:
-*
-* 1. The origin of this software must not be misrepresented; you must not claim
-*    that you wrote the original software. If you use this software in a product,
-*    an acknowledgment in the product documentation would be appreciated but is
-*    not required.
-*
-* 2. Altered source versions must be plainly marked as such, and must not be
-*    misrepresented as being the original software.
-*
-* 3. This notice may not be removed or altered from any source distribution.
-*/
+// Rust-SFML - Copyright (c) 2013 Letang Jeremy.
+//
+// The original software, SFML library, is provided by Laurent Gomila.
+//
+// This software is provided 'as-is', without any express or implied warranty.
+// In no event will the authors be held liable for any damages arising from
+// the use of this software.
+//
+// Permission is granted to anyone to use this software for any purpose,
+// including commercial applications, and to alter it and redistribute it
+// freely, subject to the following restrictions:
+//
+// 1. The origin of this software must not be misrepresented; you must not claim
+//    that you wrote the original software. If you use this software in a product,
+//    an acknowledgment in the product documentation would be appreciated but is
+//    not required.
+//
+// 2. Altered source versions must be plainly marked as such, and must not be
+//    misrepresented as being the original software.
+//
+// 3. This notice may not be removed or altered from any source distribution.
+//
 
 //! Image used for drawing
 //!
@@ -60,9 +59,7 @@ impl<'a> TextureRef<'a> {
     ///
     /// Return the Size in pixels
     pub fn get_size(&self) -> Vector2u {
-        unsafe {
-            Vector2u::from_raw(ffi::sfTexture_getSize(self.texture))
-        }
+        unsafe { Vector2u::from_raw(ffi::sfTexture_getSize(self.texture)) }
     }
     /// Tell whether the smooth filter is enabled or not for a texture
     ///
@@ -80,7 +77,7 @@ impl<'a> TextureRef<'a> {
     ///
     /// Return an image containing the texture's pixels
     pub fn copy_to_image(&self) -> Option<Image> {
-        let img = unsafe {ffi::sfTexture_copyToImage(self.texture)};
+        let img = unsafe { ffi::sfTexture_copyToImage(self.texture) };
         if img.is_null() {
             None
         } else {
@@ -98,14 +95,11 @@ impl Texture {
     ///
     /// Return Some(Texture) or None
     pub fn new(width: u32, height: u32) -> Option<Texture> {
-        let tex = unsafe { ffi::sfTexture_create(width as c_uint,
-                                                 height as c_uint) };
+        let tex = unsafe { ffi::sfTexture_create(width as c_uint, height as c_uint) };
         if tex.is_null() {
             None
         } else {
-            Some(Texture {
-                    texture: tex,
-                })
+            Some(Texture { texture: tex })
         }
     }
 
@@ -117,15 +111,15 @@ impl Texture {
     ///
     /// Return Some(Texture) or None
     pub fn from_memory(mem: &[u8], area: &IntRect) -> Option<Texture> {
-        let tex = unsafe { ffi::sfTexture_createFromMemory(mem.as_ptr() as *const _,
-                                                           mem.len() as size_t,
-                                                           &area.raw()) };
+        let tex = unsafe {
+            ffi::sfTexture_createFromMemory(mem.as_ptr() as *const _,
+                                            mem.len() as size_t,
+                                            &area.raw())
+        };
         if tex.is_null() {
             None
         } else {
-            Some(Texture {
-                    texture: tex,
-                })
+            Some(Texture { texture: tex })
         }
     }
 
@@ -137,15 +131,11 @@ impl Texture {
     /// Return Some(Texture) or None
     pub fn from_stream<T: Read + Seek>(stream: &mut T, area: &mut IntRect) -> Option<Texture> {
         let mut input_stream = InputStream::new(stream);
-        let tex = unsafe {
-            ffi::sfTexture_createFromStream(&mut input_stream.0, &area.raw())
-        };
+        let tex = unsafe { ffi::sfTexture_createFromStream(&mut input_stream.0, &area.raw()) };
         if tex.is_null() {
             None
         } else {
-            Some(Texture {
-                    texture: tex,
-                })
+            Some(Texture { texture: tex })
         }
     }
 
@@ -157,15 +147,11 @@ impl Texture {
     /// Return Some(Texture) or None
     pub fn from_file(filename: &str) -> Option<Texture> {
         let c_str = CString::new(filename.as_bytes()).unwrap();
-        let tex = unsafe {
-            ffi::sfTexture_createFromFile(c_str.as_ptr() as *mut i8, ptr::null())
-        };
+        let tex = unsafe { ffi::sfTexture_createFromFile(c_str.as_ptr() as *mut i8, ptr::null()) };
         if tex.is_null() {
             None
         } else {
-            Some(Texture {
-                    texture: tex,
-                })
+            Some(Texture { texture: tex })
         }
     }
 
@@ -176,18 +162,13 @@ impl Texture {
     /// * area - Area of the source image to load
     ///
     /// Return Some(Texture) or None
-    pub fn from_file_with_rect(filename: &str,
-                                   area: &IntRect) -> Option<Texture> {
+    pub fn from_file_with_rect(filename: &str, area: &IntRect) -> Option<Texture> {
         let c_str = CString::new(filename.as_bytes()).unwrap();
-        let tex = unsafe {
-            ffi::sfTexture_createFromFile(c_str.as_ptr() as *mut i8, &area.raw())
-        };
+        let tex = unsafe { ffi::sfTexture_createFromFile(c_str.as_ptr() as *mut i8, &area.raw()) };
         if tex.is_null() {
             None
         } else {
-            Some(Texture {
-                    texture: tex,
-                })
+            Some(Texture { texture: tex })
         }
     }
 
@@ -198,16 +179,12 @@ impl Texture {
     /// * area - Area of the source image to load
     ///
     /// Return Some(Texture) or None
-    pub fn from_image_with_rect(image: &Image,
-                                    area: &IntRect) -> Option<Texture> {
-        let tex = unsafe { ffi::sfTexture_createFromImage(image.raw(),
-                                                          &area.raw()) };
+    pub fn from_image_with_rect(image: &Image, area: &IntRect) -> Option<Texture> {
+        let tex = unsafe { ffi::sfTexture_createFromImage(image.raw(), &area.raw()) };
         if tex.is_null() {
             None
         } else {
-            Some(Texture {
-                    texture: tex,
-                })
+            Some(Texture { texture: tex })
         }
     }
 
@@ -218,14 +195,11 @@ impl Texture {
     ///
     /// Return Some(Texture) or None
     pub fn from_image(image: &Image) -> Option<Texture> {
-        let tex = unsafe { ffi::sfTexture_createFromImage(image.raw(),
-                                                          ptr::null()) };
+        let tex = unsafe { ffi::sfTexture_createFromImage(image.raw(), ptr::null()) };
         if tex.is_null() {
             None
         } else {
-            Some(Texture {
-                    texture: tex,
-                })
+            Some(Texture { texture: tex })
         }
     }
 
@@ -235,15 +209,9 @@ impl Texture {
     /// * window - Window to copy to the texture
     /// * x - X offset in the texture where to copy the source pixels
     /// * y - Y offset in the texture where to copy the source pixels
-    pub fn update_from_window(&mut self,
-                              window: &Window,
-                              x: u32,
-                              y: u32) {
+    pub fn update_from_window(&mut self, window: &Window, x: u32, y: u32) {
         unsafe {
-            ffi::sfTexture_updateFromWindow(self.texture,
-                                            window.raw(),
-                                            x as c_uint,
-                                            y as c_uint)
+            ffi::sfTexture_updateFromWindow(self.texture, window.raw(), x as c_uint, y as c_uint)
         }
     }
 
@@ -253,10 +221,7 @@ impl Texture {
     /// * renderWindow - Render-window to copy to the texture
     /// * x - X offset in the texture where to copy the source pixels
     /// * y - Y offset in the texture where to copy the source pixels
-    pub fn update_from_render_window(&mut self,
-                                     render_window: &RenderWindow,
-                                     x: u32,
-                                     y: u32) {
+    pub fn update_from_render_window(&mut self, render_window: &RenderWindow, x: u32, y: u32) {
         unsafe {
             ffi::sfTexture_updateFromRenderWindow(self.texture,
                                                   render_window.raw(),
@@ -271,15 +236,9 @@ impl Texture {
     /// * image - Image to copy to the texture
     /// * x - X offset in the texture where to copy the source pixels
     /// * y - Y offset in the texture where to copy the source pixels
-    pub fn update_from_image(&mut self,
-                             image: &Image,
-                             x: u32,
-                             y: u32) {
+    pub fn update_from_image(&mut self, image: &Image, x: u32, y: u32) {
         unsafe {
-            ffi::sfTexture_updateFromImage(self.texture,
-                                           image.raw(),
-                                           x as c_uint,
-                                           y as c_uint)
+            ffi::sfTexture_updateFromImage(self.texture, image.raw(), x as c_uint, y as c_uint)
         }
     }
 
@@ -289,12 +248,7 @@ impl Texture {
     /// * pixels - Pixels to copy to the texture
     /// * x - X offset in the texture where to copy the source pixels
     /// * y - Y offset in the texture where to copy the source pixels
-    pub fn update_from_pixels(&mut self,
-                              pixels: &[u8],
-                              width: u32,
-                              height: u32,
-                              x: u32,
-                              y: u32) {
+    pub fn update_from_pixels(&mut self, pixels: &[u8], width: u32, height: u32, x: u32, y: u32) {
         unsafe {
             ffi::sfTexture_updateFromPixels(self.texture,
                                             pixels.as_ptr(),
@@ -310,9 +264,7 @@ impl Texture {
     /// # Arguments
     /// * smooth - true to enable smoothing, false to disable it
     pub fn set_smooth(&mut self, smooth: bool) {
-        unsafe {
-            ffi::sfTexture_setSmooth(self.texture, sfBool::from_bool(smooth))
-        }
+        unsafe { ffi::sfTexture_setSmooth(self.texture, sfBool::from_bool(smooth)) }
     }
 
     /// Enable or disable repeating for a texture
@@ -334,9 +286,7 @@ impl Texture {
     /// # Arguments
     /// * repeated  - true to repeat the texture, false to disable repeating
     pub fn set_repeated(&mut self, repeated: bool) {
-        unsafe {
-            ffi::sfTexture_setRepeated(self.texture, sfBool::from_bool(repeated))
-        }
+        unsafe { ffi::sfTexture_setRepeated(self.texture, sfBool::from_bool(repeated)) }
     }
 
     /// Bind a texture for rendering
@@ -345,18 +295,14 @@ impl Texture {
     /// used when drawing SFML entities. It must be used only if you
     /// mix sfTexture with OpenGL code.
     pub fn bind(&mut self) {
-        unsafe {
-            ffi::sfTexture_bind(self.texture)
-        }
+        unsafe { ffi::sfTexture_bind(self.texture) }
     }
 
     /// Get the maximum texture size allowed
     ///
     /// Return the maximum size allowed for textures, in pixels
     pub fn get_maximum_size() -> u32 {
-        unsafe {
-            ffi::sfTexture_getMaximumSize() as u32
-        }
+        unsafe { ffi::sfTexture_getMaximumSize() as u32 }
     }
 
     /// Acquires a read-only view to this `Texture`.
@@ -372,9 +318,7 @@ impl Clone for Texture {
         if tex.is_null() {
             panic!("Not enough memory to clone Texture")
         } else {
-            Texture {
-                texture: tex,
-            }
+            Texture { texture: tex }
         }
     }
 }
@@ -388,9 +332,7 @@ impl Raw for Texture {
 
 impl FromRaw for Texture {
     fn from_raw(raw: Self::Raw) -> Self {
-        Texture {
-            texture: raw,
-        }
+        Texture { texture: raw }
     }
 }
 
@@ -413,8 +355,6 @@ impl<'a> FromRaw for TextureRef<'a> {
 impl Drop for Texture {
     /// Destroy an existing texture
     fn drop(&mut self) {
-        unsafe {
-            ffi::sfTexture_destroy(self.texture)
-        }
+        unsafe { ffi::sfTexture_destroy(self.texture) }
     }
 }

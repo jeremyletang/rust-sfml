@@ -1,26 +1,25 @@
-/*
-* Rust-SFML - Copyright (c) 2013 Letang Jeremy.
-*
-* The original software, SFML library, is provided by Laurent Gomila.
-*
-* This software is provided 'as-is', without any express or implied warranty.
-* In no event will the authors be held liable for any damages arising from
-* the use of this software.
-*
-* Permission is granted to anyone to use this software for any purpose,
-* including commercial applications, and to alter it and redistribute it
-* freely, subject to the following restrictions:
-*
-* 1. The origin of this software must not be misrepresented; you must not claim
-*    that you wrote the original software. If you use this software in a product,
-*    an acknowledgment in the product documentation would be appreciated but is
-*    not required.
-*
-* 2. Altered source versions must be plainly marked as such, and must not be
-*    misrepresented as being the original software.
-*
-* 3. This notice may not be removed or altered from any source distribution.
-*/
+// Rust-SFML - Copyright (c) 2013 Letang Jeremy.
+//
+// The original software, SFML library, is provided by Laurent Gomila.
+//
+// This software is provided 'as-is', without any express or implied warranty.
+// In no event will the authors be held liable for any damages arising from
+// the use of this software.
+//
+// Permission is granted to anyone to use this software for any purpose,
+// including commercial applications, and to alter it and redistribute it
+// freely, subject to the following restrictions:
+//
+// 1. The origin of this software must not be misrepresented; you must not claim
+//    that you wrote the original software. If you use this software in a product,
+//    an acknowledgment in the product documentation would be appreciated but is
+//    not required.
+//
+// 2. Altered source versions must be plainly marked as such, and must not be
+//    misrepresented as being the original software.
+//
+// 3. This notice may not be removed or altered from any source distribution.
+//
 
 //! Define a set of one or more 2D primitives
 
@@ -28,20 +27,21 @@ use std::mem;
 use std::ops::Index;
 
 use raw_conv::{Raw, FromRaw};
-use graphics::{Drawable, Vertex, FloatRect, primitive_type, PrimitiveType, RenderTarget, RenderStates};
+use graphics::{Drawable, Vertex, FloatRect, primitive_type, PrimitiveType, RenderTarget,
+               RenderStates};
 
 use csfml_graphics_sys::*;
 use csfml_graphics_sys::sfPrimitiveType::*;
 
 /// Define a set of one or more 2D primitives
 pub struct VertexArray {
-    vertex_array: *mut sfVertexArray
+    vertex_array: *mut sfVertexArray,
 }
 
 /// An iterator over the vertice of a `VertexArray`
 pub struct Vertices<'a> {
     vertex_array: &'a VertexArray,
-    pos: u32
+    pos: u32,
 }
 
 impl VertexArray {
@@ -51,9 +51,7 @@ impl VertexArray {
         if ver.is_null() {
             panic!("sfVertexArray_create returned null.")
         } else {
-            VertexArray {
-                vertex_array: ver
-            }
+            VertexArray { vertex_array: ver }
         }
     }
 
@@ -67,9 +65,7 @@ impl VertexArray {
         if ver.is_null() {
             panic!("sfVertexArray_create returned null.")
         } else {
-            let mut tmp_vertex = VertexArray {
-                vertex_array: ver
-            };
+            let mut tmp_vertex = VertexArray { vertex_array: ver };
             tmp_vertex.set_primitive_type(primitive_type);
             tmp_vertex.resize(vertex_count);
             tmp_vertex
@@ -80,9 +76,7 @@ impl VertexArray {
     ///
     /// Return the number of vertices in the array
     pub fn get_vertex_count(&self) -> u32 {
-        unsafe {
-            sfVertexArray_getVertexCount(self.vertex_array) as u32
-        }
+        unsafe { sfVertexArray_getVertexCount(self.vertex_array) as u32 }
     }
 
     /// Clear a vertex array
@@ -92,9 +86,7 @@ impl VertexArray {
     /// adding new vertices after clearing doesn't involve
     /// reallocating all the memory.
     pub fn clear(&mut self) {
-        unsafe {
-            sfVertexArray_clear(self.vertex_array)
-        }
+        unsafe { sfVertexArray_clear(self.vertex_array) }
     }
 
     /// Resize the vertex array
@@ -108,9 +100,7 @@ impl VertexArray {
     /// # Arguments
     /// * vertex_count - New size of the array (number of vertices)
     pub fn resize(&mut self, vertex_count: u32) {
-        unsafe {
-            sfVertexArray_resize(self.vertex_array, vertex_count as usize)
-        }
+        unsafe { sfVertexArray_resize(self.vertex_array, vertex_count as usize) }
     }
 
     /// Add a vertex to a vertex array array
@@ -118,9 +108,7 @@ impl VertexArray {
     /// # Arguments
     /// * vertex - Vertex to add
     pub fn append(&mut self, vertex: &Vertex) {
-        unsafe {
-            sfVertexArray_append(self.vertex_array, vertex.0)
-        }
+        unsafe { sfVertexArray_append(self.vertex_array, vertex.0) }
     }
 
     /// Compute the bounding rectangle of a vertex array
@@ -130,9 +118,7 @@ impl VertexArray {
     ///
     /// Return the bounding rectangle of the vertex array
     pub fn get_bounds(&self) -> FloatRect {
-        unsafe {
-            FloatRect::from_raw(sfVertexArray_getBounds(self.vertex_array))
-        }
+        unsafe { FloatRect::from_raw(sfVertexArray_getBounds(self.vertex_array)) }
     }
 
     /// Set the type of primitives of a vertex array
@@ -150,27 +136,23 @@ impl VertexArray {
     pub fn set_primitive_type(&mut self, primitive_type: PrimitiveType) {
         unsafe {
             match primitive_type {
-                primitive_type::Points              =>
-                    sfVertexArray_setPrimitiveType(self.vertex_array,
-                                                        sfPoints),
-                primitive_type::Lines               =>
-                    sfVertexArray_setPrimitiveType(self.vertex_array,
-                                                        sfLines),
-                primitive_type::LinesStrip          =>
-                    sfVertexArray_setPrimitiveType(self.vertex_array,
-                                                        sfLinesStrip),
-                primitive_type::Triangles           =>
-                    sfVertexArray_setPrimitiveType(self.vertex_array,
-                                                        sfTriangles),
-                primitive_type::TrianglesStrip      =>
-                    sfVertexArray_setPrimitiveType(self.vertex_array,
-                                                        sfTrianglesStrip),
-                primitive_type::TrianglesFan        =>
-                    sfVertexArray_setPrimitiveType(self.vertex_array,
-                                                        sfTrianglesFan),
-                primitive_type::Quads               =>
-                    sfVertexArray_setPrimitiveType(self.vertex_array,
-                                                        sfQuads)
+                primitive_type::Points => {
+                    sfVertexArray_setPrimitiveType(self.vertex_array, sfPoints)
+                }
+                primitive_type::Lines => sfVertexArray_setPrimitiveType(self.vertex_array, sfLines),
+                primitive_type::LinesStrip => {
+                    sfVertexArray_setPrimitiveType(self.vertex_array, sfLinesStrip)
+                }
+                primitive_type::Triangles => {
+                    sfVertexArray_setPrimitiveType(self.vertex_array, sfTriangles)
+                }
+                primitive_type::TrianglesStrip => {
+                    sfVertexArray_setPrimitiveType(self.vertex_array, sfTrianglesStrip)
+                }
+                primitive_type::TrianglesFan => {
+                    sfVertexArray_setPrimitiveType(self.vertex_array, sfTrianglesFan)
+                }
+                primitive_type::Quads => sfVertexArray_setPrimitiveType(self.vertex_array, sfQuads),
             }
         }
     }
@@ -180,13 +162,13 @@ impl VertexArray {
     /// Return the primitive type
     pub fn get_primitive_type(&self) -> PrimitiveType {
         match unsafe { sfVertexArray_getPrimitiveType(self.vertex_array) } {
-            sfPoints             => primitive_type::Points,
-            sfLines              => primitive_type::Lines,
-            sfLinesStrip         => primitive_type::LinesStrip,
-            sfTriangles          => primitive_type::Triangles,
-            sfTrianglesStrip     => primitive_type::TrianglesStrip,
-            sfTrianglesFan       => primitive_type::TrianglesFan,
-            sfQuads              => primitive_type::Quads,
+            sfPoints => primitive_type::Points,
+            sfLines => primitive_type::Lines,
+            sfLinesStrip => primitive_type::LinesStrip,
+            sfTriangles => primitive_type::Triangles,
+            sfTrianglesStrip => primitive_type::TrianglesStrip,
+            sfTrianglesFan => primitive_type::TrianglesFan,
+            sfQuads => primitive_type::Quads,
         }
     }
 
@@ -201,16 +183,14 @@ impl VertexArray {
     ///
     /// Return a mutable reference to the index-th vertex
     pub fn get_vertex(&self, index: u32) -> &mut Vertex {
-        unsafe {
-            &mut *(sfVertexArray_getVertex(self.vertex_array, index as usize) as *mut Vertex)
-        }
+        unsafe { &mut *(sfVertexArray_getVertex(self.vertex_array, index as usize) as *mut Vertex) }
     }
 
     /// Return an immutable iterator over all the vertice contained by the VertexArray
     pub fn vertices(&self) -> Vertices {
         Vertices {
             vertex_array: self,
-            pos: 0
+            pos: 0,
         }
     }
 }
@@ -222,9 +202,7 @@ impl Clone for VertexArray {
         if ver.is_null() {
             panic!("Not enough memory to clone Font")
         } else {
-            VertexArray {
-                vertex_array: ver
-            }
+            VertexArray { vertex_array: ver }
         }
     }
 }
@@ -241,7 +219,7 @@ impl<'a> Iterator for Vertices<'a> {
             self.pos += 1;
             unsafe {
                 mem::transmute(sfVertexArray_getVertex(self.vertex_array.vertex_array,
-                                                             self.pos as usize))
+                                                       self.pos as usize))
             }
         }
     }
@@ -251,9 +229,7 @@ impl Index<u32> for VertexArray {
     type Output = Vertex;
 
     fn index(&self, rhs: u32) -> &Vertex {
-        unsafe {
-            &*(sfVertexArray_getVertex(self.vertex_array, rhs as usize) as *const Vertex)
-        }
+        unsafe { &*(sfVertexArray_getVertex(self.vertex_array, rhs as usize) as *const Vertex) }
     }
 }
 
@@ -265,17 +241,13 @@ impl Raw for VertexArray {
 }
 
 impl Drawable for VertexArray {
-    fn draw<RT: RenderTarget>(&self,
-                                 render_target: &mut RT,
-                                 render_states: &mut RenderStates) {
+    fn draw<RT: RenderTarget>(&self, render_target: &mut RT, render_states: &mut RenderStates) {
         render_target.draw_vertex_array(self, render_states)
     }
 }
 
 impl Drop for VertexArray {
     fn drop(&mut self) {
-        unsafe {
-            sfVertexArray_destroy(self.vertex_array)
-        }
+        unsafe { sfVertexArray_destroy(self.vertex_array) }
     }
 }

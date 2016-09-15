@@ -1,26 +1,25 @@
-/*
-* Rust-SFML - Copyright (c) 2013 Letang Jeremy.
-*
-* The original software, SFML library, is provided by Laurent Gomila.
-*
-* This software is provided 'as-is', without any express or implied warranty.
-* In no event will the authors be held liable for any damages arising from
-* the use of this software.
-*
-* Permission is granted to anyone to use this software for any purpose,
-* including commercial applications, and to alter it and redistribute it
-* freely, subject to the following restrictions:
-*
-* 1. The origin of this software must not be misrepresented; you must not claim
-*    that you wrote the original software. If you use this software in a product,
-*    an acknowledgment in the product documentation would be appreciated but is
-*    not required.
-*
-* 2. Altered source versions must be plainly marked as such, and must not be
-*    misrepresented as being the original software.
-*
-* 3. This notice may not be removed or altered from any source distribution.
-*/
+// Rust-SFML - Copyright (c) 2013 Letang Jeremy.
+//
+// The original software, SFML library, is provided by Laurent Gomila.
+//
+// This software is provided 'as-is', without any express or implied warranty.
+// In no event will the authors be held liable for any damages arising from
+// the use of this software.
+//
+// Permission is granted to anyone to use this software for any purpose,
+// including commercial applications, and to alter it and redistribute it
+// freely, subject to the following restrictions:
+//
+// 1. The origin of this software must not be misrepresented; you must not claim
+//    that you wrote the original software. If you use this software in a product,
+//    an acknowledgment in the product documentation would be appreciated but is
+//    not required.
+//
+// 2. Altered source versions must be plainly marked as such, and must not be
+//    misrepresented as being the original software.
+//
+// 3. This notice may not be removed or altered from any source distribution.
+//
 
 
 //! Shader class (vertex and fragment)
@@ -50,7 +49,7 @@ use ext::sf_bool_ext::SfBoolExt;
 /// real-time operations to the rendered entities.
 pub struct Shader<'s> {
     shader: *mut ffi::sfShader,
-    texture: Option<&'s Texture>
+    texture: Option<&'s Texture>,
 }
 
 impl<'s> Shader<'s> {
@@ -72,33 +71,34 @@ impl<'s> Shader<'s> {
     ///
     /// Return Some(Shader) or None
     pub fn from_file(vertex_shader_filename: Option<&str>,
-                         fragment_shader_filename: Option<&str>)
-                         -> Option<Shader<'s>> {
+                     fragment_shader_filename: Option<&str>)
+                     -> Option<Shader<'s>> {
         let shader = unsafe {
             let vertex_shader_cstring;
             let c_vertex_shader_filename = if vertex_shader_filename.is_none() {
                 ptr::null()
             } else {
-                vertex_shader_cstring = CString::new(vertex_shader_filename.unwrap().as_bytes()).unwrap();
+                vertex_shader_cstring = CString::new(vertex_shader_filename.unwrap().as_bytes())
+                    .unwrap();
                 vertex_shader_cstring.as_ptr()
             };
             let fragment_shader_cstring;
             let c_fragment_shader_filename = if fragment_shader_filename.is_none() {
                 ptr::null()
             } else {
-                fragment_shader_cstring = CString::new(fragment_shader_filename.unwrap().as_bytes()).unwrap();
+                fragment_shader_cstring =
+                    CString::new(fragment_shader_filename.unwrap().as_bytes()).unwrap();
                 fragment_shader_cstring.as_ptr()
             };
-            ffi::sfShader_createFromFile(c_vertex_shader_filename,
-                                         c_fragment_shader_filename)
+            ffi::sfShader_createFromFile(c_vertex_shader_filename, c_fragment_shader_filename)
         };
         if shader.is_null() {
             None
         } else {
             Some(Shader {
-                    shader: shader,
-                    texture: None
-                })
+                shader: shader,
+                texture: None,
+            })
         }
     }
 
@@ -120,8 +120,8 @@ impl<'s> Shader<'s> {
     ///
     /// Return Some(Shader) or None
     pub fn from_stream<T: Read + Seek>(vertex_shader_stream: Option<&mut T>,
-                                           fragment_shader_stream: Option<&mut T>)
-                                           -> Option<Shader<'s>> {
+                                       fragment_shader_stream: Option<&mut T>)
+                                       -> Option<Shader<'s>> {
         let mut vertex_stream = vertex_shader_stream.map(InputStream::new);
         let mut fragment_stream = fragment_shader_stream.map(InputStream::new);
         let vertex_ptr = vertex_stream.as_mut().map_or(ptr::null_mut(), |s| &mut s.0);
@@ -132,9 +132,9 @@ impl<'s> Shader<'s> {
             None
         } else {
             Some(Shader {
-                    shader: shader,
-                    texture: None
-                })
+                shader: shader,
+                texture: None,
+            })
         }
     }
 
@@ -156,8 +156,8 @@ impl<'s> Shader<'s> {
     ///
     /// Return Some(Shader) or None
     pub fn from_memory(vertex_shader: Option<&str>,
-                           fragment_shader: Option<&str>)
-                           -> Option<Shader<'s>> {
+                       fragment_shader: Option<&str>)
+                       -> Option<Shader<'s>> {
         let shader = unsafe {
             let vertex_shader_cstring;
             let c_vertex_shader = if vertex_shader.is_none() {
@@ -170,7 +170,8 @@ impl<'s> Shader<'s> {
             let c_fragment_shader = if fragment_shader.is_none() {
                 ptr::null()
             } else {
-                fragment_shader_cstring = CString::new(fragment_shader.unwrap().as_bytes()).unwrap();
+                fragment_shader_cstring = CString::new(fragment_shader.unwrap().as_bytes())
+                    .unwrap();
                 fragment_shader_cstring.as_ptr()
             };
             ffi::sfShader_createFromFile(c_vertex_shader, c_fragment_shader)
@@ -179,9 +180,9 @@ impl<'s> Shader<'s> {
             None
         } else {
             Some(Shader {
-                    shader: shader,
-                    texture: None
-                })
+                shader: shader,
+                texture: None,
+            })
         }
     }
 
@@ -192,9 +193,7 @@ impl<'s> Shader<'s> {
     /// * x - Value to assign
     pub fn set_float_parameter(&mut self, name: &str, x: f32) {
         let c_str = CString::new(name.as_bytes()).unwrap();
-        unsafe {
-            ffi::sfShader_setFloatParameter(self.shader, c_str.as_ptr(), x)
-        }
+        unsafe { ffi::sfShader_setFloatParameter(self.shader, c_str.as_ptr(), x) }
     }
 
     /// Change a 2-components vector parameter of a shader
@@ -209,9 +208,7 @@ impl<'s> Shader<'s> {
     /// * y - Second component of the value to assign
     pub fn set_float_2_parameter(&mut self, name: &str, x: f32, y: f32) {
         let c_str = CString::new(name.as_bytes()).unwrap();
-        unsafe {
-                    ffi::sfShader_setFloat2Parameter(self.shader, c_str.as_ptr(), x, y)
-        }
+        unsafe { ffi::sfShader_setFloat2Parameter(self.shader, c_str.as_ptr(), x, y) }
     }
 
     /// Change a 3-components vector parameter of a shader
@@ -225,19 +222,9 @@ impl<'s> Shader<'s> {
     /// * x - First component of the value to assign
     /// * y - Second component of the value to assign
     /// * z - Third component of the value to assign
-    pub fn set_float_3_parameter(&mut self,
-                                 name: &str,
-                                 x: f32,
-                                 y: f32,
-                                 z: f32) {
+    pub fn set_float_3_parameter(&mut self, name: &str, x: f32, y: f32, z: f32) {
         let c_str = CString::new(name.as_bytes()).unwrap();
-        unsafe {
-            ffi::sfShader_setFloat3Parameter(self.shader,
-                                             c_str.as_ptr(),
-                                             x,
-                                             y,
-                                             z)
-        }
+        unsafe { ffi::sfShader_setFloat3Parameter(self.shader, c_str.as_ptr(), x, y, z) }
     }
 
     /// Change a 4-components vector parameter of a shader
@@ -252,21 +239,9 @@ impl<'s> Shader<'s> {
     /// * y - Second component of the value to assign
     /// * z - Third component of the value to assign
     /// * w - Fourth component of the value to assign
-    pub fn set_float_4_parameter(&mut self,
-                                 name: &str,
-                                 x: f32,
-                                 y: f32,
-                                 z: f32,
-                                 w: f32) {
+    pub fn set_float_4_parameter(&mut self, name: &str, x: f32, y: f32, z: f32, w: f32) {
         let c_str = CString::new(name.as_bytes()).unwrap();
-        unsafe {
-            ffi::sfShader_setFloat4Parameter(self.shader,
-                                             c_str.as_ptr(),
-                                             x,
-                                             y,
-                                             z,
-                                             w)
-        }
+        unsafe { ffi::sfShader_setFloat4Parameter(self.shader, c_str.as_ptr(), x, y, z, w) }
     }
 
     /// Change a texture parameter of a shader
@@ -278,16 +253,10 @@ impl<'s> Shader<'s> {
     /// # Arguments
     /// * name - Name of the texture in the shader
     /// * texture - Texture to assign
-    pub fn set_texture_parameter(&mut self,
-                                 name: &str,
-                                 texture: &'s Texture) {
+    pub fn set_texture_parameter(&mut self, name: &str, texture: &'s Texture) {
         self.texture = Some(texture);
         let c_str = CString::new(name.as_bytes()).unwrap();
-        unsafe {
-            ffi::sfShader_setTextureParameter(self.shader,
-                                              c_str.as_ptr(),
-                                              texture.raw())
-        }
+        unsafe { ffi::sfShader_setTextureParameter(self.shader, c_str.as_ptr(), texture.raw()) }
     }
 
     /// Change a texture parameter of a shader
@@ -302,9 +271,7 @@ impl<'s> Shader<'s> {
     /// * name - Name of the texture in the shader
     pub fn set_current_texture_parameter(&self, name: &str) {
         let c_str = CString::new(name.as_bytes()).unwrap();
-        unsafe {
-            ffi::sfShader_setCurrentTextureParameter(self.shader, c_str.as_ptr())
-        }
+        unsafe { ffi::sfShader_setCurrentTextureParameter(self.shader, c_str.as_ptr()) }
     }
 
     /// Bind a shader for rendering (activate it)
@@ -313,9 +280,7 @@ impl<'s> Shader<'s> {
     /// used when drawing SFML entities. It must be used only if you
     /// mix sfShader with OpenGL code.
     pub fn bind(&mut self) {
-        unsafe {
-            ffi::sfShader_bind(self.shader)
-        }
+        unsafe { ffi::sfShader_bind(self.shader) }
     }
 
     /// Tell whether or not the system supports shaders
@@ -338,15 +303,9 @@ impl<'s> Shader<'s> {
     /// # Arguments
     /// * name - Name of the parameter in the shader
     /// * vector - Vector to assign
-    pub fn set_vector2_parameter(&mut self,
-                                 name: &str,
-                                 vector: &Vector2f) {
+    pub fn set_vector2_parameter(&mut self, name: &str, vector: &Vector2f) {
         let c_str = CString::new(name.as_bytes()).unwrap();
-        unsafe {
-            ffi::sfShader_setVector2Parameter(self.shader,
-                                              c_str.as_ptr(),
-                                              vector.raw())
-        }
+        unsafe { ffi::sfShader_setVector2Parameter(self.shader, c_str.as_ptr(), vector.raw()) }
     }
 
     /// Change a 3-components vector parameter of a shader
@@ -358,15 +317,9 @@ impl<'s> Shader<'s> {
     /// # Arguments
     /// * name - Name of the parameter in the shader
     /// * vector - Vector to assign
-    pub fn set_vector3_parameter(&mut self,
-                                 name: &str,
-                                 vector: &Vector3f) {
+    pub fn set_vector3_parameter(&mut self, name: &str, vector: &Vector3f) {
         let c_str = CString::new(name.as_bytes()).unwrap();
-        unsafe {
-            ffi::sfShader_setVector3Parameter(self.shader,
-                                              c_str.as_ptr(),
-                                              vector.raw())
-        }
+        unsafe { ffi::sfShader_setVector3Parameter(self.shader, c_str.as_ptr(), vector.raw()) }
     }
 
     /// Change a color parameter of a shader
@@ -384,13 +337,9 @@ impl<'s> Shader<'s> {
     /// # Arguments
     /// * name - Name of the parameter in the shader
     /// * color - Color to assign
-    pub fn set_color_parameter(&mut self,
-                               name: &str,
-                               color: &Color) {
+    pub fn set_color_parameter(&mut self, name: &str, color: &Color) {
         let c_str = CString::new(name.as_bytes()).unwrap();
-        unsafe {
-            ffi::sfShader_setColorParameter(self.shader, c_str.as_ptr(), color.0)
-        }
+        unsafe { ffi::sfShader_setColorParameter(self.shader, c_str.as_ptr(), color.0) }
     }
 }
 
@@ -404,8 +353,6 @@ impl<'s> Raw for Shader<'s> {
 impl<'s> Drop for Shader<'s> {
     /// Destroy an existing shader
     fn drop(&mut self) {
-        unsafe {
-            ffi::sfShader_destroy(self.shader)
-        }
+        unsafe { ffi::sfShader_destroy(self.shader) }
     }
 }

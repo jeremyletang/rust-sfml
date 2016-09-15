@@ -1,26 +1,25 @@
-/*
-* Rust-SFML - Copyright (c) 2013 Letang Jeremy.
-*
-* The original software, SFML library, is provided by Laurent Gomila.
-*
-* This software is provided 'as-is', without any express or implied warranty.
-* In no event will the authors be held liable for any damages arising from
-* the use of this software.
-*
-* Permission is granted to anyone to use this software for any purpose,
-* including commercial applications, and to alter it and redistribute it
-* freely, subject to the following restrictions:
-*
-* 1. The origin of this software must not be misrepresented; you must not claim
-*    that you wrote the original software. If you use this software in a product,
-*    an acknowledgment in the product documentation would be appreciated but is
-*    not required.
-*
-* 2. Altered source versions must be plainly marked as such, and must not be
-*    misrepresented as being the original software.
-*
-* 3. This notice may not be removed or altered from any source distribution.
-*/
+// Rust-SFML - Copyright (c) 2013 Letang Jeremy.
+//
+// The original software, SFML library, is provided by Laurent Gomila.
+//
+// This software is provided 'as-is', without any express or implied warranty.
+// In no event will the authors be held liable for any damages arising from
+// the use of this software.
+//
+// Permission is granted to anyone to use this software for any purpose,
+// including commercial applications, and to alter it and redistribute it
+// freely, subject to the following restrictions:
+//
+// 1. The origin of this software must not be misrepresented; you must not claim
+//    that you wrote the original software. If you use this software in a product,
+//    an acknowledgment in the product documentation would be appreciated but is
+//    not required.
+//
+// 2. Altered source versions must be plainly marked as such, and must not be
+//    misrepresented as being the original software.
+//
+// 3. This notice may not be removed or altered from any source distribution.
+//
 
 //! Loading, manipulating and saving images.
 
@@ -41,7 +40,7 @@ use ext::sf_bool_ext::SfBoolExt;
 
 /// Loading, manipulating and saving images.
 pub struct Image {
-    image: *mut ffi::sfImage
+    image: *mut ffi::sfImage,
 }
 
 impl Image {
@@ -53,14 +52,11 @@ impl Image {
     /// * width - Width of the image
     /// * height - Height of the image
     pub fn new(width: u32, height: u32) -> Image {
-        let image = unsafe { ffi::sfImage_create(width as c_uint,
-                                                 height as c_uint) };
+        let image = unsafe { ffi::sfImage_create(width as c_uint, height as c_uint) };
         if image.is_null() {
             panic!("sfImage_create returned null.")
         } else {
-            Image {
-                image: image
-            }
+            Image { image: image }
         }
     }
 
@@ -78,9 +74,7 @@ impl Image {
         if image.is_null() {
             None
         } else {
-            Some(Image {
-                    image: image
-                })
+            Some(Image { image: image })
         }
     }
 
@@ -93,13 +87,12 @@ impl Image {
     ///
     /// Return Some(Image) or None
     pub fn from_memory(mem: &[u8]) -> Option<Image> {
-        let image = unsafe { ffi::sfImage_createFromMemory(mem.as_ptr() as *const _, mem.len() as size_t) };
+        let image =
+            unsafe { ffi::sfImage_createFromMemory(mem.as_ptr() as *const _, mem.len() as size_t) };
         if image.is_null() {
             None
         } else {
-            Some(Image {
-                    image: image
-                })
+            Some(Image { image: image })
         }
     }
 
@@ -111,18 +104,13 @@ impl Image {
     /// * color - Fill color
     ///
     /// Return Some(Image) or None
-    pub fn from_color(width: u32,
-                          height: u32,
-                          color: &Color) -> Option<Image> {
+    pub fn from_color(width: u32, height: u32, color: &Color) -> Option<Image> {
         let image =
-            unsafe { ffi::sfImage_createFromColor(width as c_uint,
-                                                  height as c_uint, color.0) };
+            unsafe { ffi::sfImage_createFromColor(width as c_uint, height as c_uint, color.0) };
         if image.is_null() {
             None
         } else {
-            Some(Image {
-                    image: image
-                })
+            Some(Image { image: image })
         }
     }
 
@@ -139,15 +127,11 @@ impl Image {
     /// Return Some(Image) or None
     pub fn from_file(filename: &str) -> Option<Image> {
         let c_filename = CString::new(filename.as_bytes()).unwrap();
-        let image = unsafe {
-            ffi::sfImage_createFromFile(c_filename.as_ptr())
-        };
+        let image = unsafe { ffi::sfImage_createFromFile(c_filename.as_ptr()) };
         if image.is_null() {
             None
         } else {
-            Some(Image {
-                    image: image
-                })
+            Some(Image { image: image })
         }
     }
 
@@ -163,19 +147,14 @@ impl Image {
     /// * pixels - Vector of pixels to copy to the image
     ///
     /// Return Some(Image) or None
-    pub fn create_from_pixels(width: u32,
-                              height: u32,
-                              pixels: &[u8]) -> Option<Image> {
-        let image =
-            unsafe { ffi::sfImage_createFromPixels(width as c_uint,
-                                                   height as c_uint,
-                                                   pixels.as_ptr()) };
+    pub fn create_from_pixels(width: u32, height: u32, pixels: &[u8]) -> Option<Image> {
+        let image = unsafe {
+            ffi::sfImage_createFromPixels(width as c_uint, height as c_uint, pixels.as_ptr())
+        };
         if image.is_null() {
             None
         } else {
-            Some(Image {
-                    image: image
-                })
+            Some(Image { image: image })
         }
     }
 
@@ -199,9 +178,7 @@ impl Image {
     ///
     /// Return the size in pixels
     pub fn get_size(&self) -> Vector2u {
-        unsafe {
-            Vector2u::from_raw(ffi::sfImage_getSize(self.image))
-        }
+        unsafe { Vector2u::from_raw(ffi::sfImage_getSize(self.image)) }
     }
 
     /// Create a transparency mask from a specified color-key
@@ -214,9 +191,7 @@ impl Image {
     /// * color - Color to make transparent
     /// * alpha - Alpha value to assign to transparent pixels
     pub fn create_mask_from_color(&self, color: &Color, alpha: u8) {
-        unsafe {
-            ffi::sfImage_createMaskFromColor(self.image, color.0, alpha)
-        }
+        unsafe { ffi::sfImage_createMaskFromColor(self.image, color.0, alpha) }
     }
 
     /// Change the color of a pixel in an image
@@ -230,9 +205,7 @@ impl Image {
     /// * y - Y coordinate of pixel to change
     /// * color - New color of the pixel
     pub fn set_pixel(&mut self, x: u32, y: u32, color: &Color) {
-        unsafe {
-            ffi::sfImage_setPixel(self.image, x as c_uint, y as c_uint, color.0)
-        }
+        unsafe { ffi::sfImage_setPixel(self.image, x as c_uint, y as c_uint, color.0) }
     }
 
     /// Get the color of a pixel in an image
@@ -247,15 +220,13 @@ impl Image {
     ///
     /// Return the Color of the pixel at coordinates (x, y)
     pub fn get_pixel(&self, x: u32, y: u32) -> Color {
-        unsafe {
-            Color(ffi::sfImage_getPixel(self.image, x as c_uint, y as c_uint))
-        }
+        unsafe { Color(ffi::sfImage_getPixel(self.image, x as c_uint, y as c_uint)) }
     }
 
     /// Return the memory buffer of this image.
     pub fn get_memory(&self) -> &[u8] {
         unsafe {
-            let size   = self.get_size();
+            let size = self.get_size();
             let pixels = ffi::sfImage_getPixelsPtr(self.image);
 
             slice::from_raw_parts(pixels, (size.x * size.y * 4) as usize)
@@ -264,16 +235,12 @@ impl Image {
 
     /// Flip an image horizontally (left <-> right)
     pub fn flip_horizontally(&mut self) {
-        unsafe {
-            ffi::sfImage_flipHorizontally(self.image)
-        }
+        unsafe { ffi::sfImage_flipHorizontally(self.image) }
     }
 
     /// Flip an image vertically (top <-> bottom)
     pub fn flip_vertically(&mut self) {
-        unsafe {
-            ffi::sfImage_flipVertically(self.image)
-        }
+        unsafe { ffi::sfImage_flipVertically(self.image) }
     }
 
     /// Copy pixels from an image onto another
@@ -318,9 +285,7 @@ impl Clone for Image {
         if image.is_null() {
             panic!("Not enough memory to clone Image")
         } else {
-            Image {
-                image: image
-            }
+            Image { image: image }
         }
     }
 }
@@ -334,17 +299,13 @@ impl Raw for Image {
 
 impl FromRaw for Image {
     fn from_raw(raw: Self::Raw) -> Self {
-        Image {
-            image: raw,
-        }
+        Image { image: raw }
     }
 }
 
 impl Drop for Image {
     /// Destroy an existing image
     fn drop(&mut self) {
-        unsafe {
-            ffi::sfImage_destroy(self.image)
-        }
+        unsafe { ffi::sfImage_destroy(self.image) }
     }
 }
