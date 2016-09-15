@@ -357,7 +357,6 @@ impl SoundSource for Music {
 }
 
 impl Drop for Music {
-    /// Destructor for class Music. Destroy all the ressource.
     fn drop(&mut self) {
         unsafe {
             ffi::sfMusic_destroy(self.music);

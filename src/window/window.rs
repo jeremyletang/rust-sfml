@@ -417,7 +417,6 @@ impl<'a> Iterator for Events<'a> {
 }
 
 impl Drop for Window {
-    /// Destructor for class Window. Destroy all the ressource.
     fn drop(&mut self) {
         unsafe {
             ffi::sfWindow_destroy(self.window);

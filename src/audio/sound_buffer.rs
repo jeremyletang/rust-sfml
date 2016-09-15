@@ -165,7 +165,6 @@ impl<'a> FromRaw for SoundBufferRef<'a> {
 }
 
 impl Drop for SoundBuffer {
-    /// Destructor for class SoundBuffer. Destroy all the ressource.
     fn drop(&mut self) {
         unsafe {
             ffi::sfSoundBuffer_destroy(self.sound_buffer);

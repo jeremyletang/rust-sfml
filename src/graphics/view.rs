@@ -275,7 +275,6 @@ impl Clone for View {
 }
 
 impl Drop for View {
-    /// Destructor for class View
     fn drop(&mut self) {
         unsafe { ffi::sfView_destroy(self.view) }
     }

@@ -473,7 +473,6 @@ impl<'s> Raw for Text<'s> {
 }
 
 impl<'s> Drop for Text<'s> {
-    /// Destructor for class Text. Destroy all the ressource.
     fn drop(&mut self) {
         unsafe {
             ffi::sfText_destroy(self.text);

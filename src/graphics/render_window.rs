@@ -800,7 +800,6 @@ impl<'a> Iterator for Events<'a> {
 }
 
 impl Drop for RenderWindow {
-    /// Destructor for class RenderWindow. Destroy all the ressource.
     fn drop(&mut self) {
         unsafe {
             ffi::sfRenderWindow_destroy(self.render_window);

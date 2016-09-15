@@ -56,7 +56,6 @@ impl Context {
 }
 
 impl Drop for Context {
-    /// Destructor for class Context.
     fn drop(&mut self) {
         unsafe {
             ffi::sfContext_destroy(self.cont);
