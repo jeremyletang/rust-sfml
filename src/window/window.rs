@@ -371,15 +371,8 @@ impl Window {
         unsafe { ffi::sfWindow_setSize(self.window, size.raw()) }
     }
 
-    ///  Get the current position of the mouse
-    ///
-    /// This function returns the current position of the mouse cursor relative to the given window.
-    ///
-    /// # Arguments
-    /// * relativeTo - Reference Window
-    ///
-    /// Return the position of the mouse cursor, relative to the given window
-    pub fn get_mouse_position(&self) -> Vector2i {
+    /// Returns the current position of the mouse relative to the window.
+    pub fn mouse_position(&self) -> Vector2i {
         unsafe { Vector2i::from_raw(ffi::sfMouse_getPosition(self.window)) }
     }
 

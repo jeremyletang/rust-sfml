@@ -431,14 +431,8 @@ impl RenderWindow {
         }
     }
 
-    /// Get the current position of the mouse relatively to a render window
-    ///
-    /// This function returns the current position of the mouse
-    /// cursor relative to the given render window.
-    ///
-    /// Return the position of the mouse cursor, relative to the given render window
-    ///
-    pub fn get_mouse_position(&self) -> Vector2i {
+    /// Returns the current position of the mouse relative to the window.
+    pub fn mouse_position(&self) -> Vector2i {
         unsafe { Vector2i::from_raw(ffi::sfMouse_getPositionRenderWindow(self.render_window)) }
     }
 
