@@ -1,26 +1,25 @@
-/*
-* Rust-SFML - Copyright (c) 2013 Letang Jeremy.
-*
-* The original software, SFML library, is provided by Laurent Gomila.
-*
-* This software is provided 'as-is', without any express or implied warranty.
-* In no event will the authors be held liable for any damages arising from
-* the use of this software.
-*
-* Permission is granted to anyone to use this software for any purpose,
-* including commercial applications, and to alter it and redistribute it
-* freely, subject to the following restrictions:
-*
-* 1. The origin of this software must not be misrepresented; you must not claim
-*    that you wrote the original software. If you use this software in a product,
-*    an acknowledgment in the product documentation would be appreciated but is
-*    not required.
-*
-* 2. Altered source versions must be plainly marked as such, and must not be
-*    misrepresented as being the original software.
-*
-* 3. This notice may not be removed or altered from any source distribution.
-*/
+// Rust-SFML - Copyright (c) 2013 Letang Jeremy.
+//
+// The original software, SFML library, is provided by Laurent Gomila.
+//
+// This software is provided 'as-is', without any express or implied warranty.
+// In no event will the authors be held liable for any damages arising from
+// the use of this software.
+//
+// Permission is granted to anyone to use this software for any purpose,
+// including commercial applications, and to alter it and redistribute it
+// freely, subject to the following restrictions:
+//
+// 1. The origin of this software must not be misrepresented; you must not claim
+//    that you wrote the original software. If you use this software in a product,
+//    an acknowledgment in the product documentation would be appreciated but is
+//    not required.
+//
+// 2. Altered source versions must be plainly marked as such, and must not be
+//    misrepresented as being the original software.
+//
+// 3. This notice may not be removed or altered from any source distribution.
+//
 
 //! Storage of audio sample
 //!
@@ -72,9 +71,7 @@ impl<'a> SoundBufferRef<'a> {
     ///
     /// Return the number of samples
     pub fn get_sample_count(&self) -> i64 {
-        unsafe {
-            ffi::sfSoundBuffer_getSampleCount(self.sound_buffer) as i64
-        }
+        unsafe { ffi::sfSoundBuffer_getSampleCount(self.sound_buffer) as i64 }
     }
 
     /// Get the number of channels used by a sound buffer
@@ -84,9 +81,7 @@ impl<'a> SoundBufferRef<'a> {
     ///
     /// Return the number of channels
     pub fn get_channel_count(&self) -> u32 {
-        unsafe {
-            ffi::sfSoundBuffer_getChannelCount(self.sound_buffer) as u32
-        }
+        unsafe { ffi::sfSoundBuffer_getChannelCount(self.sound_buffer) as u32 }
     }
 
     /// Get the total duration of a sound buffer
@@ -104,9 +99,7 @@ impl<'a> SoundBufferRef<'a> {
     ///
     /// Return the sample rate (number of samples per second)
     pub fn get_sample_rate(&self) -> u32 {
-        unsafe {
-            ffi::sfSoundBuffer_getSampleRate(self.sound_buffer) as u32
-        }
+        unsafe { ffi::sfSoundBuffer_getSampleRate(self.sound_buffer) as u32 }
     }
 }
 
@@ -123,13 +116,12 @@ impl SoundBuffer {
     /// Return an option to a SoundBuffer object or None.
     pub fn new(filename: &str) -> Option<SoundBuffer> {
         let c_str = CString::new(filename.as_bytes()).unwrap();
-        let sound_buffer: *mut ffi::sfSoundBuffer = unsafe {
-            ffi::sfSoundBuffer_createFromFile(c_str.as_ptr())
-        };
+        let sound_buffer: *mut ffi::sfSoundBuffer =
+            unsafe { ffi::sfSoundBuffer_createFromFile(c_str.as_ptr()) };
         if sound_buffer.is_null() {
             None
         } else {
-            Some(SoundBuffer{ sound_buffer: sound_buffer })
+            Some(SoundBuffer { sound_buffer: sound_buffer })
         }
     }
     /// Get an immutable reference to the `SoundBuffer`.
@@ -144,9 +136,7 @@ impl Clone for SoundBuffer {
         if sound_buffer.is_null() {
             panic!("Sound buffer is null");
         } else {
-            SoundBuffer {
-                sound_buffer: sound_buffer,
-            }
+            SoundBuffer { sound_buffer: sound_buffer }
         }
     }
 }
