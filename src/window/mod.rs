@@ -33,6 +33,7 @@ pub use window::keyboard::Key;
 pub use window::mouse::MouseButton;
 pub use window::event::Event;
 
+#[cfg_attr(feature="clippy", allow(module_inception))]
 mod window;
 mod video_mode;
 mod context;
