@@ -42,9 +42,7 @@ pub struct RectangleShape<'s> {
 }
 
 impl<'s> RectangleShape<'s> {
-    /// Create a new rectangle shape
-    ///
-    /// Return Some(RectangleShape) or None
+    /// Returns a new `RectangleShape`.
     pub fn new() -> RectangleShape<'s> {
         let rectangle = unsafe { ffi::sfRectangleShape_create() };
         if rectangle.is_null() {
@@ -57,9 +55,7 @@ impl<'s> RectangleShape<'s> {
         }
     }
 
-    /// Create a new rectangle shape with a texture
-    ///
-    /// Return Some(RectangleShape) or None
+    /// Returns a new `RectangleShape` with the provided texture.
     pub fn with_texture(texture: &'s Texture) -> RectangleShape<'s> {
         let rectangle = unsafe { ffi::sfRectangleShape_create() };
         if rectangle.is_null() {
@@ -75,11 +71,7 @@ impl<'s> RectangleShape<'s> {
         }
     }
 
-    /// Create a new rectangle shape initialized
-    ///
-    /// Default value on SFML is size = Vector2f(0, 0)
-    ///
-    /// Return Some(RectangleShape) or None
+    /// Returns a new `RectangleShape` with the provided size.
     pub fn new_init(size: &Vector2f) -> RectangleShape<'s> {
         let rectangle = unsafe { ffi::sfRectangleShape_create() };
         if rectangle.is_null() {
