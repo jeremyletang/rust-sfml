@@ -72,7 +72,7 @@ impl<'s> RectangleShape<'s> {
     }
 
     /// Returns a new `RectangleShape` with the provided size.
-    pub fn new_init(size: &Vector2f) -> RectangleShape<'s> {
+    pub fn with_size(size: &Vector2f) -> RectangleShape<'s> {
         let rectangle = unsafe { ffi::sfRectangleShape_create() };
         if rectangle.is_null() {
             panic!("sfRectangleShape_create returned null.")

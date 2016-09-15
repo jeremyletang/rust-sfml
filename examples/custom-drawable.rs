@@ -16,7 +16,7 @@ impl<'s> Bullet<'s> {
         let mut head = CircleShape::new_init(50f32, 50);
         head.set_position2f(100f32, 100f32);
         head.set_fill_color(&Color::red());
-        let mut torso = RectangleShape::new_init(&Vector2f {
+        let mut torso = RectangleShape::with_size(&Vector2f {
             x: 100f32,
             y: 200f32,
         });
