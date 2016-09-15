@@ -152,7 +152,7 @@ fn main() {
                    right_paddle.get_position().y + paddle_size.y / 2. {
                     right_paddle_speed = paddle_speed;
                 } else if ball.get_position().y - ball_radius <
-                   right_paddle.get_position().y - paddle_size.y / 2. {
+                          right_paddle.get_position().y - paddle_size.y / 2. {
                     right_paddle_speed = -paddle_speed;
                 } else {
                     right_paddle_speed = 0.;
