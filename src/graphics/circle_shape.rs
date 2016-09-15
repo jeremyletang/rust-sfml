@@ -125,6 +125,12 @@ impl<'s> CircleShape<'s> {
     }
 }
 
+impl<'s> Default for CircleShape<'s> {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl<'s> Drawable for CircleShape<'s> {
     fn draw<RT: RenderTarget>(&self, render_target: &mut RT, render_states: &mut RenderStates) {
         render_target.draw_circle_shape(self, render_states)

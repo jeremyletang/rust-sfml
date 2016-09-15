@@ -256,6 +256,12 @@ impl View {
     }
 }
 
+impl Default for View {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl Clone for View {
     /// Return a new View or panic! if there is not enough memory
     fn clone(&self) -> View {

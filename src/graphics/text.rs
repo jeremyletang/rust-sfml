@@ -222,6 +222,12 @@ impl<'s> Text<'s> {
     }
 }
 
+impl<'s> Default for Text<'s> {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl<'s> Clone for Text<'s> {
     /// Return a new Text or panic! if there is not enough memory
     fn clone(&self) -> Text<'s> {

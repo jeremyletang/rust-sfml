@@ -115,6 +115,12 @@ impl SoundBufferRecorder {
     }
 }
 
+impl Default for SoundBufferRecorder {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl Drop for SoundBufferRecorder {
     fn drop(&mut self) {
         unsafe {

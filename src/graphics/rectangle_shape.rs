@@ -126,6 +126,11 @@ impl<'s> RectangleShape<'s> {
     }
 }
 
+impl<'s> Default for RectangleShape<'s> {
+    fn default() -> Self {
+        Self::new()
+    }
+}
 
 impl<'s> Drawable for RectangleShape<'s> {
     fn draw<RT: RenderTarget>(&self, render_target: &mut RT, render_states: &mut RenderStates) {

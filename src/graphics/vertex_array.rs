@@ -195,6 +195,12 @@ impl VertexArray {
     }
 }
 
+impl Default for VertexArray {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl Clone for VertexArray {
     /// Return a new Font or panic! if there is not enough memory
     fn clone(&self) -> VertexArray {

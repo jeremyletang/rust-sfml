@@ -555,6 +555,12 @@ impl Ftp {
     }
 }
 
+impl Default for Ftp {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl Drop for Ftp {
     fn drop(&mut self) {
         unsafe { ffi::sfFtp_destroy(self.ftp) }

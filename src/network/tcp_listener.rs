@@ -113,6 +113,12 @@ impl TcpListener {
     }
 }
 
+impl Default for TcpListener {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl Drop for TcpListener {
     fn drop(&mut self) {
         unsafe { ffi::sfTcpListener_destroy(self.listener) }

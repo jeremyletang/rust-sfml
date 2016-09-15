@@ -192,6 +192,12 @@ impl TcpSocket {
     }
 }
 
+impl Default for TcpSocket {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl Raw for TcpSocket {
     type Raw = *mut ffi::sfTcpSocket;
     fn raw(&self) -> Self::Raw {

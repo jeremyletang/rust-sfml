@@ -161,6 +161,12 @@ impl<'s> Sound<'s> {
     }
 }
 
+impl<'a> Default for Sound<'a> {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl<'s> Clone for Sound<'s> {
     fn clone(&self) -> Self {
         let s = unsafe { ffi::sfSound_copy(self.sound) };

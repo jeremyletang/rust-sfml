@@ -195,6 +195,12 @@ impl Packet {
     }
 }
 
+impl Default for Packet {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl Clone for Packet {
     fn clone(&self) -> Self {
         let pck = unsafe { ffi::sfPacket_copy(self.packet) };

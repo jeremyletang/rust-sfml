@@ -194,6 +194,12 @@ impl Request {
     }
 }
 
+impl Default for Request {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl Raw for Request {
     type Raw = *mut ffi::sfHttpRequest;
     fn raw(&self) -> Self::Raw {
@@ -322,6 +328,12 @@ impl Http {
         Response {
             response: unsafe { ffi::sfHttp_sendRequest(self.http, request.raw(), timeout.raw()) },
         }
+    }
+}
+
+impl Default for Http {
+    fn default() -> Self {
+        Self::new()
     }
 }
 

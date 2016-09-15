@@ -200,6 +200,12 @@ impl UdpSocket {
     }
 }
 
+impl Default for UdpSocket {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl Drop for UdpSocket {
     fn drop(&mut self) {
         unsafe { ffi::sfUdpSocket_destroy(self.socket) }
