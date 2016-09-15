@@ -49,8 +49,6 @@ impl<T> Vector3<T> {
 pub type Vector3f = Vector3<f32>;
 /// `Vector3` with `i32` coordinates.
 pub type Vector3i = Vector3<i32>;
-/// `Vector3` with `u32` coordinates.
-pub type Vector3u = Vector3<u32>;
 
 macro_rules! impl_ops {
     ( $_trait:ident, $_func:ident, $( $_type:ty ),+ ) => {
