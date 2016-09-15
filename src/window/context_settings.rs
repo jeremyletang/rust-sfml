@@ -57,7 +57,7 @@ impl ContextSettings {
 impl Default for ContextSettings {
     /// Creates a `ContextSettings` with the following values:
     ///
-    /// ```
+    /// ```ignore
     /// depthBits: 0,
     /// stencilBits: 0,
     /// antialiasingLevel: 0,
