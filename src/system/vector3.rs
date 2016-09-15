@@ -45,11 +45,11 @@ impl<T> Vector3<T> {
     }
 }
 
-/// export Vector3<f32> as Vector3f
+/// `Vector3` with `f32` coordinates.
 pub type Vector3f = Vector3<f32>;
-/// export Vector3<i32> as Vector3i
+/// `Vector3` with `i32` coordinates.
 pub type Vector3i = Vector3<i32>;
-/// export Vector3<u32> as Vector3u
+/// `Vector3` with `u32` coordinates.
 pub type Vector3u = Vector3<u32>;
 
 macro_rules! impl_ops {

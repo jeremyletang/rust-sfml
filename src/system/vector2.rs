@@ -36,11 +36,11 @@ pub struct Vector2<T> {
     pub y: T,
 }
 
-/// export Vector2<i32> as Vector2i
+/// `Vector2` with `i32` coordinates.
 pub type Vector2i = Vector2<i32>;
-/// export Vector2<u32> as Vector2u
+/// `Vector2` with `u32` coordinates.
 pub type Vector2u = Vector2<u32>;
-/// export Vector2<f32> as Vector2f
+/// `Vector2` with `f32` coordinates.
 pub type Vector2f = Vector2<f32>;
 
 impl<T> Vector2<T> {
