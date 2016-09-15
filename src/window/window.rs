@@ -1,26 +1,25 @@
-/*
-* Rust-SFML - Copyright (c) 2013 Letang Jeremy.
-*
-* The original software, SFML library, is provided by Laurent Gomila.
-*
-* This software is provided 'as-is', without any express or implied warranty.
-* In no event will the authors be held liable for any damages arising from
-* the use of this software.
-*
-* Permission is granted to anyone to use this software for any purpose,
-* including commercial applications, and to alter it and redistribute it
-* freely, subject to the following restrictions:
-*
-* 1. The origin of this software must not be misrepresented; you must not claim
-*    that you wrote the original software. If you use this software in a product,
-*    an acknowledgment in the product documentation would be appreciated but is
-*    not required.
-*
-* 2. Altered source versions must be plainly marked as such, and must not be
-*    misrepresented as being the original software.
-*
-* 3. This notice may not be removed or altered from any source distribution.
-*/
+// Rust-SFML - Copyright (c) 2013 Letang Jeremy.
+//
+// The original software, SFML library, is provided by Laurent Gomila.
+//
+// This software is provided 'as-is', without any express or implied warranty.
+// In no event will the authors be held liable for any damages arising from
+// the use of this software.
+//
+// Permission is granted to anyone to use this software for any purpose,
+// including commercial applications, and to alter it and redistribute it
+// freely, subject to the following restrictions:
+//
+// 1. The origin of this software must not be misrepresented; you must not claim
+//    that you wrote the original software. If you use this software in a product,
+//    an acknowledgment in the product documentation would be appreciated but is
+//    not required.
+//
+// 2. Altered source versions must be plainly marked as such, and must not be
+//    misrepresented as being the original software.
+//
+// 3. This notice may not be removed or altered from any source distribution.
+//
 
 
 //! Window manipulation
@@ -82,17 +81,15 @@ impl Window {
     pub fn new(mode: VideoMode,
                title: &str,
                style: WindowStyle,
-               settings: &ContextSettings) -> Option<Window> {
+               settings: &ContextSettings)
+               -> Option<Window> {
         let c_str = CString::new(title.as_bytes()).unwrap();
-        let sf_win: *mut ffi::sfWindow = unsafe {
-            ffi::sfWindow_create(mode.raw(), c_str.as_ptr(), style.bits(), &settings.0)
-        };
+        let sf_win: *mut ffi::sfWindow =
+            unsafe { ffi::sfWindow_create(mode.raw(), c_str.as_ptr(), style.bits(), &settings.0) };
         if sf_win.is_null() {
             None
         } else {
-            Some (Window {
-                    window: sf_win,
-                })
+            Some(Window { window: sf_win })
         }
     }
 
@@ -117,20 +114,18 @@ impl Window {
     ///
     /// Return Some(Window) or None
     pub fn with_unicode(mode: VideoMode,
-                            title: Vec<u32>,
-                            style: WindowStyle,
-                            settings: &ContextSettings) -> Option<Window> {
+                        title: Vec<u32>,
+                        style: WindowStyle,
+                        settings: &ContextSettings)
+                        -> Option<Window> {
 
-        let sf_win =
-            unsafe { ffi::sfWindow_createUnicode(mode.raw(),
-                                                 title.as_ptr(),
-                                                 style.bits(), &settings.0) };
+        let sf_win = unsafe {
+            ffi::sfWindow_createUnicode(mode.raw(), title.as_ptr(), style.bits(), &settings.0)
+        };
         if sf_win.is_null() {
             None
         } else {
-            Some (Window {
-                    window: sf_win,
-                })
+            Some(Window { window: sf_win })
         }
     }
 
@@ -153,9 +148,7 @@ impl Window {
     /// Return Some(event) if an event was returned, or None if the event queue was empty
     pub fn poll_event(&mut self) -> Option<Event> {
         let mut event = ffi::sfEvent::default();
-        let have_event = unsafe {
-            ffi::sfWindow_pollEvent(self.window, &mut event).to_bool()
-        };
+        let have_event = unsafe { ffi::sfWindow_pollEvent(self.window, &mut event).to_bool() };
         if have_event {
             ext::event::get_wrapped_event(&mut event)
         } else {
@@ -176,9 +169,7 @@ impl Window {
     /// Return Some(event) or None if an error has occured
     pub fn wait_event(&mut self) -> Option<Event> {
         let mut event = ffi::sfEvent::default();
-        let have_event = unsafe {
-            ffi::sfWindow_waitEvent(self.window, &mut event).to_bool()
-        };
+        let have_event = unsafe { ffi::sfWindow_waitEvent(self.window, &mut event).to_bool() };
         if have_event {
             ext::event::get_wrapped_event(&mut event)
         } else {
@@ -191,9 +182,7 @@ impl Window {
     /// # Arguments
     /// * title - New title
     pub fn set_unicode_title(&mut self, title: Vec<u32>) {
-        unsafe {
-            ffi::sfWindow_setUnicodeTitle(self.window, title.as_ptr())
-        }
+        unsafe { ffi::sfWindow_setUnicodeTitle(self.window, title.as_ptr()) }
     }
 
     /// Change a window's icon
@@ -205,7 +194,10 @@ impl Window {
     /// * pixels - Vector of pixels
     pub fn set_icon(&mut self, width: u32, height: u32, pixels: Vec<u8>) {
         unsafe {
-            ffi::sfWindow_setIcon(self.window, width as c_uint, height as c_uint, pixels.as_ptr())
+            ffi::sfWindow_setIcon(self.window,
+                                  width as c_uint,
+                                  height as c_uint,
+                                  pixels.as_ptr())
         }
     }
 
@@ -240,7 +232,7 @@ impl Window {
     ///
     /// Return a structure containing the OpenGL context settings
     pub fn get_settings(&self) -> ContextSettings {
-        ContextSettings(unsafe {ffi::sfWindow_getSettings(self.window)})
+        ContextSettings(unsafe { ffi::sfWindow_getSettings(self.window) })
     }
 
     /// Change the title of a window
@@ -249,9 +241,7 @@ impl Window {
     /// * title - New title
     pub fn set_title(&mut self, title: &str) {
         let c_str = CString::new(title.as_bytes()).unwrap();
-        unsafe {
-            ffi::sfWindow_setTitle(self.window, c_str.as_ptr())
-        }
+        unsafe { ffi::sfWindow_setTitle(self.window, c_str.as_ptr()) }
     }
 
     /// Show or hide a window
@@ -259,9 +249,7 @@ impl Window {
     /// # Arguments
     /// * visible - true to show the window, false to hide it
     pub fn set_visible(&mut self, visible: bool) {
-        unsafe {
-            ffi::sfWindow_setVisible(self.window, sfBool::from_bool(visible))
-        }
+        unsafe { ffi::sfWindow_setVisible(self.window, sfBool::from_bool(visible)) }
     }
 
     /// Show or hide the mouse cursor
@@ -269,9 +257,7 @@ impl Window {
     /// # Arguments
     /// * visible - true to  false to hide
     pub fn set_mouse_cursor_visible(&mut self, visible: bool) {
-        unsafe {
-            ffi::sfWindow_setMouseCursorVisible(self.window, sfBool::from_bool(visible))
-        }
+        unsafe { ffi::sfWindow_setMouseCursorVisible(self.window, sfBool::from_bool(visible)) }
     }
 
     /// Enable or disable vertical synchronization
@@ -284,9 +270,7 @@ impl Window {
     /// # Arguments
     /// * enabled - true to enable v-sync, false to deactivate
     pub fn set_vertical_sync_enabled(&mut self, enabled: bool) {
-        unsafe {
-            ffi::sfWindow_setVerticalSyncEnabled(self.window, sfBool::from_bool(enabled))
-        }
+        unsafe { ffi::sfWindow_setVerticalSyncEnabled(self.window, sfBool::from_bool(enabled)) }
     }
 
     /// Enable or disable automatic key-repeat
@@ -300,9 +284,7 @@ impl Window {
     /// # Arguments
     /// * enabled - true to enable, false to disable
     pub fn set_key_repeat_enabled(&mut self, enabled: bool) {
-        unsafe {
-            ffi::sfWindow_setKeyRepeatEnabled(self.window, sfBool::from_bool(enabled))
-        }
+        unsafe { ffi::sfWindow_setKeyRepeatEnabled(self.window, sfBool::from_bool(enabled)) }
     }
 
     /// Activate or deactivate a window as the current target for OpenGL rendering
@@ -327,9 +309,7 @@ impl Window {
     /// has been done for the current frame, in order to show
     /// it on screen.
     pub fn display(&mut self) {
-        unsafe {
-            ffi::sfWindow_display(self.window)
-        }
+        unsafe { ffi::sfWindow_display(self.window) }
     }
 
     /// Limit the framerate to a maximum fixed frequency
@@ -341,9 +321,7 @@ impl Window {
     /// # Arguments
     /// * limit - Framerate limit, in frames per seconds (use 0 to disable limit)
     pub fn set_framerate_limit(&mut self, limit: u32) {
-        unsafe {
-            ffi::sfWindow_setFramerateLimit(self.window, limit as c_uint)
-        }
+        unsafe { ffi::sfWindow_setFramerateLimit(self.window, limit as c_uint) }
     }
 
     /// Change the joystick threshold
@@ -354,18 +332,14 @@ impl Window {
     /// # Arguments
     /// * threshold - New threshold, in the range [0, 100]
     pub fn set_joystick_threshold(&mut self, threshold: f32) {
-        unsafe {
-            ffi::sfWindow_setJoystickThreshold(self.window, threshold as c_float)
-        }
+        unsafe { ffi::sfWindow_setJoystickThreshold(self.window, threshold as c_float) }
     }
 
     /// Get the position of a window
     ///
     /// Return the position in pixels
     pub fn get_position(&self) -> Vector2i {
-        unsafe {
-            Vector2i::from_raw(ffi::sfWindow_getPosition(self.window))
-        }
+        unsafe { Vector2i::from_raw(ffi::sfWindow_getPosition(self.window)) }
     }
 
     /// Change the position of a window on screen
@@ -377,9 +351,7 @@ impl Window {
     /// # Arguments
     /// * position - New position of the window, in pixels
     pub fn set_position(&mut self, position: &Vector2i) {
-        unsafe {
-            ffi::sfWindow_setPosition(self.window, position.raw())
-        }
+        unsafe { ffi::sfWindow_setPosition(self.window, position.raw()) }
     }
 
     /// Get the size of the rendering region of a window
@@ -388,9 +360,7 @@ impl Window {
     ///
     /// Return the size in pixels
     pub fn get_size(&self) -> Vector2u {
-        unsafe {
-            Vector2u::from_raw(ffi::sfWindow_getSize(self.window))
-        }
+        unsafe { Vector2u::from_raw(ffi::sfWindow_getSize(self.window)) }
     }
 
     /// Change the size of the rendering region of a window
@@ -398,9 +368,7 @@ impl Window {
     /// # Arguments
     /// * size - New size, in pixels
     pub fn set_size(&mut self, size: &Vector2u) {
-        unsafe {
-            ffi::sfWindow_setSize(self.window, size.raw())
-        }
+        unsafe { ffi::sfWindow_setSize(self.window, size.raw()) }
     }
 
     ///  Get the current position of the mouse
@@ -412,9 +380,7 @@ impl Window {
     ///
     /// Return the position of the mouse cursor, relative to the given window
     pub fn get_mouse_position(&self) -> Vector2i {
-        unsafe {
-            Vector2i::from_raw(ffi::sfMouse_getPosition(self.window))
-        }
+        unsafe { Vector2i::from_raw(ffi::sfMouse_getPosition(self.window)) }
     }
 
     /// Set the current position of the mouse
@@ -426,9 +392,7 @@ impl Window {
     /// * relativeTo - Reference Window
     ///
     pub fn set_mouse_position(&mut self, position: &Vector2i) {
-        unsafe {
-            ffi::sfMouse_setPosition(position.raw(), self.window)
-        }
+        unsafe { ffi::sfMouse_setPosition(position.raw(), self.window) }
     }
 }
 
