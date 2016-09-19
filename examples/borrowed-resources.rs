@@ -84,7 +84,7 @@ fn main() {
     loop {
         for event in window.events() {
             match event {
-                Event::Closed => return,
+                Event::Closed |
                 Event::KeyPressed { code: Key::Escape, .. } => return,
                 _ => {}
             }

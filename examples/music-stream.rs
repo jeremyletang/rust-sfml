@@ -25,5 +25,5 @@ fn main() {
                music.get_playing_offset().as_seconds());
         let _ = std::io::stdout().flush();
     }
-    print!("\n");
+    println!("");
 }
