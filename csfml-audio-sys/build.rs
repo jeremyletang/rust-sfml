@@ -1,24 +1,5 @@
-use std::env::var;
-
-fn lib_path() -> String {
-    let lib = if cfg!(target_env = "msvc") {
-        "csfml-audio"
-    } else {
-        "libcsfml-audio"
-    };
-
-    // check if CSFML is installed somewhere local on the machine
-    if let Ok(csfml_home) = var("CSFML_HOME") {
-        if cfg!(target_env = "msvc") {
-            format!("{}/lib/msvc/{}", csfml_home, lib)
-        } else {
-            format!("{}/lib/gcc/{}", csfml_home, lib)
-        }
-    } else {
-        String::from(lib)
-    }
-}
+#[path="../build_sys_common.rs"] mod build_sys_common;
 
 fn main() {
-    println!("cargo:rustc-link-lib={}", lib_path());
+    println!("cargo:rustc-link-lib={}", build_sys_common::lib_path("audio"));
 }
