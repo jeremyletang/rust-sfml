@@ -1,3 +1,5 @@
+#[path="../build_sys_common.rs"] mod build_sys_common;
+
 fn main() {
-    println!("cargo:rustc-link-lib=csfml-graphics");
+    build_sys_common::link_csfml("graphics");
 }
