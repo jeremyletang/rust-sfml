@@ -4,6 +4,12 @@
          non_camel_case_types,
          non_upper_case_globals,
          non_snake_case)]
+
+// -- Manual additions --
+pub const sfFalse: sfBool = 0;
+pub const sfTrue: sfBool = 1;
+// -- End of manual additions --
+
 pub type sfBool = ::std::os::raw::c_int;
 pub type sfInt8 = ::std::os::raw::c_char;
 pub type sfUint8 = ::std::os::raw::c_uchar;
