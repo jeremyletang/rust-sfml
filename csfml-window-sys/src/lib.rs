@@ -449,6 +449,7 @@ pub enum sfContextAttribute {
 #[repr(C)]
 #[derive(Copy, Clone)]
 #[derive(Debug)]
+#[derive(PartialEq, Eq, PartialOrd, Ord)] // Required by rust-sfml
 pub struct sfContextSettings {
     pub depthBits: ::std::os::raw::c_uint,
     pub stencilBits: ::std::os::raw::c_uint,

@@ -18,6 +18,7 @@ use csfml_window_sys::*;
 #[derive(Copy, Clone)]
 #[repr(u32)]
 #[derive(Debug)]
+#[derive(PartialEq, Eq, PartialOrd, Ord)] // Required by rust-sfml
 pub enum sfBlendFactor {
     sfBlendFactorZero = 0,
     sfBlendFactorOne = 1,
@@ -33,6 +34,7 @@ pub enum sfBlendFactor {
 #[derive(Copy, Clone)]
 #[repr(u32)]
 #[derive(Debug)]
+#[derive(PartialEq, Eq, PartialOrd, Ord)] // Required by rust-sfml
 pub enum sfBlendEquation {
     sfBlendEquationAdd = 0,
     sfBlendEquationSubtract = 1,
@@ -40,6 +42,7 @@ pub enum sfBlendEquation {
 #[repr(C)]
 #[derive(Copy, Clone)]
 #[derive(Debug)]
+#[derive(PartialEq, Eq, PartialOrd, Ord)] // Required by rust-sfml
 pub struct sfBlendMode {
     pub colorSrcFactor: sfBlendFactor,
     pub colorDstFactor: sfBlendFactor,
@@ -54,6 +57,7 @@ impl ::std::default::Default for sfBlendMode {
 #[repr(C)]
 #[derive(Copy, Clone)]
 #[derive(Debug)]
+#[derive(PartialEq, Eq)] // Required by rust-sfml
 pub struct sfColor {
     pub r: sfUint8,
     pub g: sfUint8,
