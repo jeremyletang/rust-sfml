@@ -8,4 +8,4 @@ All unassigned issues are welcome to be tackled, but there are two special label
   This is most likely to happen for issues involving platform-specific problems, and the maintainers can't test
   on that specific platform.
   
-If you need help, you can talk to us on [gitter](https://gitter.im/rust-sfml/rust-sfml). If you prefer IRC, see https://irc.gitter.im/.
+If you need help, you can talk to us on [gitter](https://gitter.im/rust-sfml/Lobby). If you prefer IRC, see https://irc.gitter.im/.
