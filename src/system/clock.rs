@@ -36,7 +36,7 @@ use csfml_system_sys as ffi;
 /// # Usage example
 /// ```
 /// # use sfml::system::Clock;
-/// let mut clock = Clock::new();
+/// let mut clock = Clock::start();
 /// // ...
 /// let time1 = clock.get_elapsed_time();
 /// // ...
@@ -51,7 +51,7 @@ pub struct Clock {
 
 impl Clock {
     /// Creates a new Clock and starts it automatically.
-    pub fn new() -> Clock {
+    pub fn start() -> Clock {
         Clock { clock: unsafe { ffi::sfClock_create() } }
     }
 
@@ -81,6 +81,6 @@ impl Drop for Clock {
 
 impl Default for Clock {
     fn default() -> Self {
-        Clock::new()
+        Clock::start()
     }
 }
