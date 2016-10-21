@@ -55,12 +55,18 @@ impl Clock {
         Clock { clock: unsafe { ffi::sfClock_create() } }
     }
 
-    /// Get the time elapsed in a clock
+    /// Gets the elapsed time.
+    ///
+    /// This function returns the time elapsed since the last call to restart()
+    /// (or the construction of the instance if restart() has not been called).
     pub fn elapsed_time(&self) -> Time {
         unsafe { Time::from_raw(ffi::sfClock_getElapsedTime(self.clock)) }
     }
 
-    /// Restart a Clock.
+    /// Restarts the clock.
+    ///
+    /// This function puts the time counter back to zero.
+    /// It also returns the time elapsed since the clock was started.
     pub fn restart(&mut self) -> Time {
         unsafe { Time::from_raw(ffi::sfClock_restart(self.clock)) }
     }
