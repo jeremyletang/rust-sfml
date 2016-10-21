@@ -21,11 +21,6 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
-//! Measuring elapsed time
-//!
-//! Utility class that measures the elapsed time
-
 use raw_conv::FromRaw;
 use system::Time;
 
