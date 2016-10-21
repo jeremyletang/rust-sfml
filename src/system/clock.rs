@@ -79,7 +79,6 @@ impl Clone for Clock {
 }
 
 impl Drop for Clock {
-    /// Destroy a clock
     fn drop(&mut self) {
         unsafe { ffi::sfClock_destroy(self.clock) }
     }
