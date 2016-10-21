@@ -85,6 +85,7 @@ impl Drop for Clock {
 }
 
 impl Default for Clock {
+    /// Equivalent to `Clock::start()`.
     fn default() -> Self {
         Clock::start()
     }
