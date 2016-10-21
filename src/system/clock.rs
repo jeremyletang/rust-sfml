@@ -50,7 +50,7 @@ pub struct Clock {
 }
 
 impl Clock {
-    /// Create a new Clock and start it.
+    /// Creates a new Clock and starts it automatically.
     pub fn new() -> Clock {
         Clock { clock: unsafe { ffi::sfClock_create() } }
     }
