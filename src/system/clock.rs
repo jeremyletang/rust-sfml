@@ -26,9 +26,25 @@ use system::Time;
 
 use csfml_system_sys as ffi;
 
-/// Measuring elapsed time
+/// Utility class that measures the elapsed time.
 ///
-/// Utility class that measures the elapsed time
+/// Its provides the most precise time that the underlying OS can
+/// achieve (generally microseconds or nanoseconds).
+/// It also ensures monotonicity, which means that the returned time can never go backward,
+/// even if the system time is changed.
+///
+/// # Usage example
+/// ```
+/// # use sfml::system::Clock;
+/// let mut clock = Clock::new();
+/// // ...
+/// let time1 = clock.get_elapsed_time();
+/// // ...
+/// let time2 = clock.restart();
+/// ```
+///
+/// The `Time` value returned by the clock can then be converted to
+/// a number of seconds, milliseconds or even microseconds.
 pub struct Clock {
     clock: *mut ffi::sfClock,
 }
