@@ -38,7 +38,7 @@ use csfml_system_sys as ffi;
 /// # use sfml::system::Clock;
 /// let mut clock = Clock::start();
 /// // ...
-/// let time1 = clock.get_elapsed_time();
+/// let time1 = clock.elapsed_time();
 /// // ...
 /// let time2 = clock.restart();
 /// ```
@@ -56,7 +56,7 @@ impl Clock {
     }
 
     /// Get the time elapsed in a clock
-    pub fn get_elapsed_time(&self) -> Time {
+    pub fn elapsed_time(&self) -> Time {
         unsafe { Time::from_raw(ffi::sfClock_getElapsedTime(self.clock)) }
     }
 

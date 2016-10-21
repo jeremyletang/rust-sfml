@@ -146,7 +146,7 @@ fn main() {
             }
 
             // Update the computer's paddle direction according to the ball position
-            if ai_timer.get_elapsed_time().as_microseconds() > ai_time.as_microseconds() {
+            if ai_timer.elapsed_time().as_microseconds() > ai_time.as_microseconds() {
                 ai_timer.restart();
                 if ball.get_position().y + ball_radius >
                    right_paddle.get_position().y + paddle_size.y / 2. {
