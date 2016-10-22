@@ -25,8 +25,6 @@
 //!
 //! Time encapsulates a time value in a flexible way.
 
-pub use libc::{c_long, c_float, c_int};
-
 use std::ops::{Add, Sub, Mul, Div};
 use std::cmp::Ordering;
 
@@ -73,12 +71,12 @@ pub struct Time {
 impl Time {
     /// Construct a time value from a number of seconds
     pub fn with_seconds(seconds: f32) -> Time {
-        Time { time: unsafe { ffi::sfSeconds(seconds as c_float) } }
+        Time { time: unsafe { ffi::sfSeconds(seconds) } }
     }
 
     /// Construct a time value from a number of milliseconds
     pub fn with_milliseconds(milliseconds: i32) -> Time {
-        Time { time: unsafe { ffi::sfMilliseconds(milliseconds as c_int) } }
+        Time { time: unsafe { ffi::sfMilliseconds(milliseconds) } }
     }
 
     /// Construct a time value from a number of microseconds
