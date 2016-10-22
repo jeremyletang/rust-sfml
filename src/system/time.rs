@@ -64,55 +64,53 @@ use csfml_system_sys::*;
 /// # See also
 /// - `Clock`
 #[derive(Copy, Clone)]
-pub struct Time {
-    time: sfTime,
-}
+pub struct Time(sfTime);
 
 impl Time {
     /// Construct a time value from a number of seconds
     pub fn with_seconds(seconds: f32) -> Time {
-        Time { time: unsafe { sfSeconds(seconds) } }
+        Time(unsafe { sfSeconds(seconds) })
     }
 
     /// Construct a time value from a number of milliseconds
     pub fn with_milliseconds(milliseconds: i32) -> Time {
-        Time { time: unsafe { sfMilliseconds(milliseconds) } }
+        Time(unsafe { sfMilliseconds(milliseconds) })
     }
 
     /// Construct a time value from a number of microseconds
     pub fn with_microseconds(microseconds: i64) -> Time {
-        Time { time: unsafe { sfMicroseconds(microseconds) } }
+        Time(unsafe { sfMicroseconds(microseconds) })
     }
 
     /// Return a time value as a number of seconds
     pub fn as_seconds(&self) -> f32 {
-        unsafe { sfTime_asSeconds(self.time) }
+        unsafe { sfTime_asSeconds(self.0) }
     }
 
     /// Return a time value as a number of milliseconds
     pub fn as_milliseconds(&self) -> i32 {
-        unsafe { sfTime_asMilliseconds(self.time) }
+        unsafe { sfTime_asMilliseconds(self.0) }
     }
 
     /// Return a time value as a number of microseconds
     pub fn as_microseconds(&self) -> i64 {
-        unsafe { sfTime_asMicroseconds(self.time) }
+        unsafe { sfTime_asMicroseconds(self.0) }
     }
 }
 
 impl PartialEq for Time {
     fn eq(&self, other: &Time) -> bool {
-        self.as_microseconds() == other.as_microseconds()
+        self.0.microseconds == other.0.microseconds
     }
 
     fn ne(&self, other: &Time) -> bool {
-        self.as_microseconds() != other.as_microseconds()
+        self.0.microseconds != other.0.microseconds
     }
 }
 
 impl PartialOrd for Time {
     fn partial_cmp(&self, other: &Time) -> Option<Ordering> {
-        self.as_microseconds().partial_cmp(&other.as_microseconds())
+        self.0.microseconds.partial_cmp(&other.0.microseconds)
     }
 }
 
@@ -120,7 +118,7 @@ impl Add for Time {
     type Output = Time;
 
     fn add(self, other: Time) -> Time {
-        Time::with_microseconds(self.as_microseconds() + other.as_microseconds())
+        Time::with_microseconds(self.0.microseconds + other.0.microseconds)
     }
 }
 
@@ -128,7 +126,7 @@ impl Sub for Time {
     type Output = Time;
 
     fn sub(self, other: Time) -> Time {
-        Time::with_microseconds(self.as_microseconds() - other.as_microseconds())
+        Time::with_microseconds(self.0.microseconds - other.0.microseconds)
     }
 }
 
@@ -136,7 +134,7 @@ impl Mul for Time {
     type Output = Time;
 
     fn mul(self, other: Time) -> Time {
-        Time::with_microseconds(self.as_microseconds() * other.as_microseconds())
+        Time::with_microseconds(self.0.microseconds * other.0.microseconds)
     }
 }
 
@@ -144,19 +142,19 @@ impl Div for Time {
     type Output = Time;
 
     fn div(self, other: Time) -> Time {
-        Time::with_microseconds(self.as_microseconds() / other.as_microseconds())
+        Time::with_microseconds(self.0.microseconds / other.0.microseconds)
     }
 }
 
 impl Raw for Time {
     type Raw = sfTime;
     fn raw(&self) -> Self::Raw {
-        self.time
+        self.0
     }
 }
 
 impl FromRaw for Time {
     fn from_raw(raw: Self::Raw) -> Self {
-        Time { time: raw }
+        Time(raw)
     }
 }
