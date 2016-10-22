@@ -30,7 +30,7 @@ use std::cmp::Ordering;
 
 use raw_conv::{Raw, FromRaw};
 
-use csfml_system_sys as ffi;
+use csfml_system_sys::*;
 
 /// Represents a time value.
 ///
@@ -65,38 +65,38 @@ use csfml_system_sys as ffi;
 /// - `Clock`
 #[derive(Copy, Clone)]
 pub struct Time {
-    time: ffi::sfTime,
+    time: sfTime,
 }
 
 impl Time {
     /// Construct a time value from a number of seconds
     pub fn with_seconds(seconds: f32) -> Time {
-        Time { time: unsafe { ffi::sfSeconds(seconds) } }
+        Time { time: unsafe { sfSeconds(seconds) } }
     }
 
     /// Construct a time value from a number of milliseconds
     pub fn with_milliseconds(milliseconds: i32) -> Time {
-        Time { time: unsafe { ffi::sfMilliseconds(milliseconds) } }
+        Time { time: unsafe { sfMilliseconds(milliseconds) } }
     }
 
     /// Construct a time value from a number of microseconds
     pub fn with_microseconds(microseconds: i64) -> Time {
-        Time { time: unsafe { ffi::sfMicroseconds(microseconds) } }
+        Time { time: unsafe { sfMicroseconds(microseconds) } }
     }
 
     /// Return a time value as a number of seconds
     pub fn as_seconds(&self) -> f32 {
-        unsafe { ffi::sfTime_asSeconds(self.time) }
+        unsafe { sfTime_asSeconds(self.time) }
     }
 
     /// Return a time value as a number of milliseconds
     pub fn as_milliseconds(&self) -> i32 {
-        unsafe { ffi::sfTime_asMilliseconds(self.time) }
+        unsafe { sfTime_asMilliseconds(self.time) }
     }
 
     /// Return a time value as a number of microseconds
     pub fn as_microseconds(&self) -> i64 {
-        unsafe { ffi::sfTime_asMicroseconds(self.time) }
+        unsafe { sfTime_asMicroseconds(self.time) }
     }
 }
 
@@ -149,7 +149,7 @@ impl Div for Time {
 }
 
 impl Raw for Time {
-    type Raw = ffi::sfTime;
+    type Raw = sfTime;
     fn raw(&self) -> Self::Raw {
         self.time
     }
