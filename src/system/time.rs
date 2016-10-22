@@ -63,17 +63,17 @@ use csfml_system_sys::*;
 pub struct Time(sfTime);
 
 impl Time {
-    /// Construct a time value from a number of seconds
+    /// Construct a time value from a number of seconds.
     pub fn seconds(seconds: f32) -> Self {
         Time(unsafe { sfSeconds(seconds) })
     }
 
-    /// Construct a time value from a number of milliseconds
+    /// Construct a time value from a number of milliseconds.
     pub fn milliseconds(milliseconds: i32) -> Self {
         Time(unsafe { sfMilliseconds(milliseconds) })
     }
 
-    /// Construct a time value from a number of microseconds
+    /// Construct a time value from a number of microseconds.
     pub fn microseconds(microseconds: i64) -> Self {
         Time(sfTime { microseconds: microseconds })
     }
