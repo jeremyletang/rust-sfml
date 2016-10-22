@@ -21,7 +21,7 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-use std::ops::{Add, Sub, Mul, Div, Neg, AddAssign, SubAssign, MulAssign, DivAssign};
+use std::ops::{Add, Sub, Mul, Div, Neg, AddAssign, SubAssign, MulAssign, DivAssign, Rem, RemAssign};
 
 use raw_conv::{Raw, FromRaw};
 
@@ -153,6 +153,20 @@ impl Div for Time {
 impl DivAssign for Time {
     fn div_assign(&mut self, rhs: Self) {
         self.0.microseconds /= rhs.0.microseconds;
+    }
+}
+
+impl Rem for Time {
+    type Output = Self;
+
+    fn rem(self, rhs: Self) -> Self {
+        Time::microseconds(self.0.microseconds % rhs.0.microseconds)
+    }
+}
+
+impl RemAssign for Time {
+    fn rem_assign(&mut self, rhs: Self) {
+        self.0.microseconds %= rhs.0.microseconds
     }
 }
 
