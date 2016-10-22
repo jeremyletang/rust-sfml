@@ -7,7 +7,7 @@ Requirements
 =============
 
 - Linux, Windows, or OS X
-- Rust 1.9 or newer
+- Latest stable Rust
 - [SFML 2.3](http://www.sfml-dev.org/download.php)
 - [CSFML 2.3](http://www.sfml-dev.org/download/csfml/)
 
