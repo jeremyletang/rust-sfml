@@ -101,10 +101,10 @@ impl Neg for Time {
 }
 
 impl Add for Time {
-    type Output = Time;
+    type Output = Self;
 
-    fn add(self, other: Time) -> Time {
-        Time::microseconds(self.0.microseconds + other.0.microseconds)
+    fn add(self, rhs: Self) -> Self {
+        Time::microseconds(self.0.microseconds + rhs.0.microseconds)
     }
 }
 
@@ -115,10 +115,10 @@ impl AddAssign for Time {
 }
 
 impl Sub for Time {
-    type Output = Time;
+    type Output = Self;
 
-    fn sub(self, other: Time) -> Time {
-        Time::microseconds(self.0.microseconds - other.0.microseconds)
+    fn sub(self, rhs: Self) -> Self {
+        Time::microseconds(self.0.microseconds - rhs.0.microseconds)
     }
 }
 
@@ -129,10 +129,10 @@ impl SubAssign for Time {
 }
 
 impl Mul for Time {
-    type Output = Time;
+    type Output = Self;
 
-    fn mul(self, other: Time) -> Time {
-        Time::microseconds(self.0.microseconds * other.0.microseconds)
+    fn mul(self, rhs: Self) -> Self {
+        Time::microseconds(self.0.microseconds * rhs.0.microseconds)
     }
 }
 
@@ -143,10 +143,10 @@ impl MulAssign for Time {
 }
 
 impl Div for Time {
-    type Output = Time;
+    type Output = Self;
 
-    fn div(self, other: Time) -> Time {
-        Time::microseconds(self.0.microseconds / other.0.microseconds)
+    fn div(self, rhs: Self) -> Self {
+        Time::microseconds(self.0.microseconds / rhs.0.microseconds)
     }
 }
 
