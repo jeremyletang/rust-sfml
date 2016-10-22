@@ -150,3 +150,6 @@ impl FromRaw for Time {
         Time(raw)
     }
 }
+
+/// Predefined "zero" time value.
+pub const ZERO: Time = Time(sfTime { microseconds: 0 });
