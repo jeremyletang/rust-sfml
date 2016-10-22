@@ -24,7 +24,7 @@ fn play_sound() {
                sound.get_playing_offset().as_seconds());
         let _ = std::io::stdout().flush();
         // Leave some CPU time for other processes
-        sleep(Time::with_milliseconds(100));
+        sleep(Time::milliseconds(100));
     }
     println!("");
 }
@@ -47,7 +47,7 @@ fn play_music() {
                music.get_playing_offset().as_seconds());
         let _ = std::io::stdout().flush();
         // Leave some CPU time for other processes
-        sleep(Time::with_milliseconds(100));
+        sleep(Time::milliseconds(100));
     }
 
     println!("");

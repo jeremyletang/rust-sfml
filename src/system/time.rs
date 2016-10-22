@@ -47,13 +47,13 @@ use csfml_system_sys::*;
 /// # Usage example
 /// ```
 /// # use sfml::system::Time;
-/// let t1 = Time::with_seconds(0.1);
+/// let t1 = Time::seconds(0.1);
 /// assert_eq!(t1.as_milliseconds(), 100);
 ///
-/// let t2 = Time::with_milliseconds(30);
+/// let t2 = Time::milliseconds(30);
 /// assert_eq!(t2.as_microseconds(), 30_000);
 ///
-/// let t3 = Time::with_microseconds(-800_000);
+/// let t3 = Time::microseconds(-800_000);
 /// assert_eq!(t3.as_seconds(), -0.8);
 /// ```
 ///
@@ -64,17 +64,17 @@ pub struct Time(sfTime);
 
 impl Time {
     /// Construct a time value from a number of seconds
-    pub fn with_seconds(seconds: f32) -> Time {
+    pub fn seconds(seconds: f32) -> Self {
         Time(unsafe { sfSeconds(seconds) })
     }
 
     /// Construct a time value from a number of milliseconds
-    pub fn with_milliseconds(milliseconds: i32) -> Time {
+    pub fn milliseconds(milliseconds: i32) -> Self {
         Time(unsafe { sfMilliseconds(milliseconds) })
     }
 
     /// Construct a time value from a number of microseconds
-    pub fn with_microseconds(microseconds: i64) -> Time {
+    pub fn microseconds(microseconds: i64) -> Self {
         Time(sfTime { microseconds: microseconds })
     }
 
@@ -110,7 +110,7 @@ impl Add for Time {
     type Output = Time;
 
     fn add(self, other: Time) -> Time {
-        Time::with_microseconds(self.0.microseconds + other.0.microseconds)
+        Time::microseconds(self.0.microseconds + other.0.microseconds)
     }
 }
 
@@ -118,7 +118,7 @@ impl Sub for Time {
     type Output = Time;
 
     fn sub(self, other: Time) -> Time {
-        Time::with_microseconds(self.0.microseconds - other.0.microseconds)
+        Time::microseconds(self.0.microseconds - other.0.microseconds)
     }
 }
 
@@ -126,7 +126,7 @@ impl Mul for Time {
     type Output = Time;
 
     fn mul(self, other: Time) -> Time {
-        Time::with_microseconds(self.0.microseconds * other.0.microseconds)
+        Time::microseconds(self.0.microseconds * other.0.microseconds)
     }
 }
 
@@ -134,7 +134,7 @@ impl Div for Time {
     type Output = Time;
 
     fn div(self, other: Time) -> Time {
-        Time::with_microseconds(self.0.microseconds / other.0.microseconds)
+        Time::microseconds(self.0.microseconds / other.0.microseconds)
     }
 }
 
