@@ -78,17 +78,17 @@ impl Time {
         Time(sfTime { microseconds: microseconds })
     }
 
-    /// Return a time value as a number of seconds
+    /// Returns the time value as a number of seconds.
     pub fn as_seconds(&self) -> f32 {
         unsafe { sfTime_asSeconds(self.0) }
     }
 
-    /// Return a time value as a number of milliseconds
+    /// Returns the time value as a number of milliseconds.
     pub fn as_milliseconds(&self) -> i32 {
         unsafe { sfTime_asMilliseconds(self.0) }
     }
 
-    /// Return a time value as a number of microseconds
+    /// Returns the time value as a number of milliseconds.
     pub fn as_microseconds(&self) -> i64 {
         unsafe { sfTime_asMicroseconds(self.0) }
     }
