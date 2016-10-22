@@ -22,7 +22,6 @@
 //
 
 use std::ops::{Add, Sub, Mul, Div};
-use std::cmp::Ordering;
 
 use raw_conv::{Raw, FromRaw};
 
@@ -59,7 +58,7 @@ use csfml_system_sys::*;
 ///
 /// # See also
 /// - `Clock`
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Time(sfTime);
 
 impl Time {
@@ -91,18 +90,6 @@ impl Time {
     /// Returns the time value as a number of microseconds.
     pub fn as_microseconds(&self) -> i64 {
         unsafe { sfTime_asMicroseconds(self.0) }
-    }
-}
-
-impl PartialEq for Time {
-    fn eq(&self, other: &Time) -> bool {
-        self.0.microseconds == other.0.microseconds
-    }
-}
-
-impl PartialOrd for Time {
-    fn partial_cmp(&self, other: &Time) -> Option<Ordering> {
-        self.0.microseconds.partial_cmp(&other.0.microseconds)
     }
 }
 
