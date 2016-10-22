@@ -75,7 +75,7 @@ impl Time {
 
     /// Construct a time value from a number of microseconds
     pub fn with_microseconds(microseconds: i64) -> Time {
-        Time(unsafe { sfMicroseconds(microseconds) })
+        Time(sfTime { microseconds: microseconds })
     }
 
     /// Return a time value as a number of seconds
