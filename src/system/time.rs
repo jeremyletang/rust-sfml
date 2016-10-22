@@ -102,10 +102,6 @@ impl PartialEq for Time {
     fn eq(&self, other: &Time) -> bool {
         self.0.microseconds == other.0.microseconds
     }
-
-    fn ne(&self, other: &Time) -> bool {
-        self.0.microseconds != other.0.microseconds
-    }
 }
 
 impl PartialOrd for Time {
