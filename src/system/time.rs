@@ -21,7 +21,7 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-use std::ops::{Add, Sub, Mul, Div};
+use std::ops::{Add, Sub, Mul, Div, Neg};
 
 use raw_conv::{Raw, FromRaw};
 
@@ -90,6 +90,13 @@ impl Time {
     /// Returns the time value as a number of microseconds.
     pub fn as_microseconds(&self) -> i64 {
         unsafe { sfTime_asMicroseconds(self.0) }
+    }
+}
+
+impl Neg for Time {
+    type Output = Self;
+    fn neg(self) -> Self {
+        Time(sfTime { microseconds: -self.0.microseconds })
     }
 }
 
