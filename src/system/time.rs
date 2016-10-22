@@ -21,10 +21,6 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-//! Represents a time value.
-//!
-//! Time encapsulates a time value in a flexible way.
-
 use std::ops::{Add, Sub, Mul, Div};
 use std::cmp::Ordering;
 
