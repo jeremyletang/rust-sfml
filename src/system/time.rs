@@ -128,31 +128,94 @@ impl SubAssign for Time {
     }
 }
 
-impl Mul for Time {
+impl Mul<f32> for Time {
     type Output = Self;
 
-    fn mul(self, rhs: Self) -> Self {
-        Time::microseconds(self.0.microseconds * rhs.0.microseconds)
+    /// Overload of binary * operator to scale a time value.
+    fn mul(self, rhs: f32) -> Self {
+        Time::seconds(self.as_seconds() * rhs)
     }
 }
 
-impl MulAssign for Time {
-    fn mul_assign(&mut self, rhs: Self) {
-        self.0.microseconds *= rhs.0.microseconds;
+impl Mul<i64> for Time {
+    type Output = Self;
+
+    /// Overload of binary * operator to scale a time value.
+    fn mul(self, rhs: i64) -> Self {
+        Time::microseconds(self.as_microseconds() * rhs)
+    }
+}
+
+impl Mul<Time> for f32 {
+    type Output = Time;
+
+    /// Overload of binary * operator to scale a time value.
+    fn mul(self, rhs: Time) -> Time {
+        rhs * self
+    }
+}
+
+impl Mul<Time> for i64 {
+    type Output = Time;
+
+    /// Overload of binary * operator to scale a time value.
+    fn mul(self, rhs: Time) -> Time {
+        rhs * self
+    }
+}
+
+impl MulAssign<f32> for Time {
+    /// Overload of binary *= operator to scale/assign a time value.
+    fn mul_assign(&mut self, rhs: f32) {
+        *self = *self * rhs;
+    }
+}
+
+impl MulAssign<i64> for Time {
+    /// Overload of binary *= operator to scale/assign a time value.
+    fn mul_assign(&mut self, rhs: i64) {
+        *self = *self * rhs;
+    }
+}
+
+impl Div<f32> for Time {
+    type Output = Self;
+
+    /// Overload of binary / operator to scale a time value.
+    fn div(self, rhs: f32) -> Self {
+        Time::seconds(self.as_seconds() / rhs)
+    }
+}
+
+impl Div<i64> for Time {
+    type Output = Self;
+
+    /// Overload of binary / operator to scale a time value.
+    fn div(self, rhs: i64) -> Self {
+        Time::microseconds(self.as_microseconds() / rhs)
     }
 }
 
 impl Div for Time {
-    type Output = Self;
+    type Output = f32;
 
-    fn div(self, rhs: Self) -> Self {
-        Time::microseconds(self.0.microseconds / rhs.0.microseconds)
+    /// 	Overload of binary / operator to compute the ratio of two time values.
+    fn div(self, rhs: Self) -> f32 {
+        self.as_seconds() / rhs.as_seconds()
     }
 }
 
-impl DivAssign for Time {
-    fn div_assign(&mut self, rhs: Self) {
-        self.0.microseconds /= rhs.0.microseconds;
+impl DivAssign<f32> for Time {
+    /// Overload of binary /= operator to scale/assign a time value.
+    fn div_assign(&mut self, rhs: f32) {
+        *self = *self / rhs;
+    }
+}
+
+impl DivAssign<i64> for Time {
+    /// Overload of binary /= operator to scale/assign a time value.
+    fn div_assign(&mut self, rhs: i64) {
+        *self = *self / rhs;
     }
 }
 
