@@ -21,12 +21,43 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-//! Utility Class providing 2 dimensional vectors for i32, u32, and f32.
-
 use std::ops::{Add, Div, Mul, Sub};
 use raw_conv::{FromRaw, Raw};
 
-/// Implementation of Vector2i
+/// Utility type for manipulating 2-dimensional vectors.
+///
+/// `Vector2` is a simple type that defines
+/// a mathematical vector with two coordinates (x and y).
+///
+/// It can be used to represent anything that has two dimensions: a size, a point, a velocity, etc.
+///
+/// The type parameter T is the type of the coordinates.
+///
+/// You generally don't have to care about the generic form (`Vector2<T>`), the most common
+/// specializations have special type aliases:
+///
+/// - `Vector2<f32>` is `Vector2f`
+/// - `Vector2<i32>` is `Vector2i`
+/// - `Vector2<u32>` is `Vector2u`
+///
+/// The `Vector2` type has a small and simple interface, its x and y members can be
+/// accessed directly (there are no accessors like `set_x()`, `get_x()`) and it contains no
+/// mathematical function like dot product, cross product, length, etc.
+///
+/// # Usage example
+///
+/// ```
+/// # use sfml::system::Vector2f;
+/// let mut v1 = Vector2f::new(16.5, 24.0);
+/// v1.x = 18.2;
+/// let y = v1.y;
+///
+/// let v2 = v1 * 5.0;
+/// let v3 = v1 + v2;
+/// assert_ne!(v2, v3);
+/// ```
+///
+/// Note: for 3-dimensional vectors, see `Vector3`.
 #[repr(C)]
 #[derive(Clone, PartialOrd, Ord, PartialEq, Eq, Debug, Copy)]
 pub struct Vector2<T> {
