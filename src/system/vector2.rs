@@ -21,7 +21,7 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-use std::ops::{Add, Div, Mul, Sub, Neg};
+use std::ops::{Add, Div, Mul, Sub, Neg, AddAssign, SubAssign};
 use raw_conv::{FromRaw, Raw};
 
 /// Utility type for manipulating 2-dimensional vectors.
@@ -125,6 +125,13 @@ impl<T: Add> Add for Vector2<T> {
     }
 }
 
+impl<T: AddAssign> AddAssign for Vector2<T> {
+    fn add_assign(&mut self, rhs: Self) {
+        self.x += rhs.x;
+        self.y += rhs.y;
+    }
+}
+
 impl<T: Sub> Sub for Vector2<T> {
     type Output = Vector2<T::Output>;
 
@@ -133,6 +140,13 @@ impl<T: Sub> Sub for Vector2<T> {
             x: self.x - rhs.x,
             y: self.y - rhs.y,
         }
+    }
+}
+
+impl<T: SubAssign> SubAssign for Vector2<T> {
+    fn sub_assign(&mut self, rhs: Self) {
+        self.x -= rhs.x;
+        self.y -= rhs.y;
     }
 }
 
