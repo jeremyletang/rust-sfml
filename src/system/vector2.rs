@@ -21,7 +21,7 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-use std::ops::{Add, Div, Mul, Sub};
+use std::ops::{Add, Div, Mul, Sub, Neg};
 use raw_conv::{FromRaw, Raw};
 
 /// Utility type for manipulating 2-dimensional vectors.
@@ -158,6 +158,15 @@ impl<T: Div> Div for Vector2<T> {
     }
 }
 
+impl<T: Neg<Output = T>> Neg for Vector2<T> {
+    type Output = Self;
+    fn neg(self) -> Self {
+        Vector2 {
+            x: -self.x,
+            y: -self.y,
+        }
+    }
+}
 
 /// Utility trait to convert a Vector2 on another type
 pub trait ToVec {
