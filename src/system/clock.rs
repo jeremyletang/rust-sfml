@@ -26,7 +26,7 @@ use system::Time;
 
 use csfml_system_sys as ffi;
 
-/// Utility class that measures the elapsed time.
+/// Utility type that measures the elapsed time.
 ///
 /// Its provides the most precise time that the underlying OS can
 /// achieve (generally microseconds or nanoseconds).
