@@ -40,7 +40,7 @@ use raw_conv::{Raw, FromRaw};
 /// - `Vector3<f32>` is `Vector3f`
 /// - `Vector3<i32>` is `Vector3i`
 ///
-/// The `Vector3` class has a small and simple interface, its x and y members can be
+/// The `Vector3` type has a small and simple interface, its x and y members can be
 /// accessed directly (there are no accessors like `set_x()`, `get_x()`) and it contains no
 /// mathematical function like dot product, cross product, length, etc.
 ///
