@@ -23,7 +23,7 @@
 
 //! Base module of SFML, defining various utilities.
 //!
-//! It provides vector types, unicode strings and conversion functions, timing types.
+//! It provides vector types, timing types.
 //!
 
 pub use self::vector2::{Vector2, Vector2u, Vector2i, Vector2f};
