@@ -22,6 +22,7 @@ pub type sfUint64 = ::std::os::raw::c_ulonglong;
 #[repr(C)]
 #[derive(Copy, Clone)]
 #[derive(Debug)]
+#[derive(PartialEq, Eq, PartialOrd, Ord)] // Required by rust-sfml
 pub struct sfTime {
     pub microseconds: sfInt64,
 }

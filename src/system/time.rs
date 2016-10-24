@@ -21,116 +21,230 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-//! Represents a time value.
-//!
-//! Time encapsulates a time value in a flexible way.
-
-pub use libc::{c_long, c_float, c_int};
-
-use std::ops::{Add, Sub, Mul, Div};
-use std::cmp::Ordering;
+use std::ops::{Add, Sub, Mul, Div, Neg, AddAssign, SubAssign, MulAssign, DivAssign, Rem, RemAssign};
 
 use raw_conv::{Raw, FromRaw};
 
-use csfml_system_sys as ffi;
+use csfml_system_sys::*;
 
 /// Represents a time value.
 ///
 /// Time encapsulates a time value in a flexible way.
-#[derive(Copy, Clone)]
-pub struct Time {
-    time: ffi::sfTime,
-}
+///
+/// It allows to define a time value either as a number of seconds, milliseconds or microseconds.
+/// It also works the other way round: you can read a time value as either a number of seconds,
+/// milliseconds or microseconds.
+///
+/// By using such a flexible interface, the API doesn't impose any fixed type or resolution for
+/// time values, and let the user choose its own favorite representation.
+///
+/// Time values support the usual mathematical operations: you can add or subtract two times,
+/// multiply or divide a time by a number, compare two times, etc.
+///
+/// Since they represent a time span and not an absolute time value, times can also be negative.
+///
+/// # Usage example
+/// ```
+/// # use sfml::system::Time;
+/// let t1 = Time::seconds(0.1);
+/// assert_eq!(t1.as_milliseconds(), 100);
+///
+/// let t2 = Time::milliseconds(30);
+/// assert_eq!(t2.as_microseconds(), 30_000);
+///
+/// let t3 = Time::microseconds(-800_000);
+/// assert_eq!(t3.as_seconds(), -0.8);
+/// ```
+///
+/// # See also
+/// - `Clock`
+#[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord)]
+pub struct Time(sfTime);
 
 impl Time {
-    /// Construct a time value from a number of seconds
-    pub fn with_seconds(seconds: f32) -> Time {
-        Time { time: unsafe { ffi::sfSeconds(seconds as c_float) } }
+    /// Constructs a time value from a number of seconds.
+    pub fn seconds(seconds: f32) -> Self {
+        Time(unsafe { sfSeconds(seconds) })
     }
 
-    /// Construct a time value from a number of milliseconds
-    pub fn with_milliseconds(milliseconds: i32) -> Time {
-        Time { time: unsafe { ffi::sfMilliseconds(milliseconds as c_int) } }
+    /// Constructs a time value from a number of milliseconds.
+    pub fn milliseconds(milliseconds: i32) -> Self {
+        Time(unsafe { sfMilliseconds(milliseconds) })
     }
 
-    /// Construct a time value from a number of microseconds
-    pub fn with_microseconds(microseconds: i64) -> Time {
-        Time { time: unsafe { ffi::sfMicroseconds(microseconds) } }
+    /// Constructs a time value from a number of microseconds.
+    pub fn microseconds(microseconds: i64) -> Self {
+        Time(sfTime { microseconds: microseconds })
     }
 
-    /// Return a time value as a number of seconds
+    /// Returns the time value as a number of seconds.
     pub fn as_seconds(&self) -> f32 {
-        unsafe { ffi::sfTime_asSeconds(self.time) }
+        unsafe { sfTime_asSeconds(self.0) }
     }
 
-    /// Return a time value as a number of milliseconds
+    /// Returns the time value as a number of milliseconds.
     pub fn as_milliseconds(&self) -> i32 {
-        unsafe { ffi::sfTime_asMilliseconds(self.time) }
+        unsafe { sfTime_asMilliseconds(self.0) }
     }
 
-    /// Return a time value as a number of microseconds
+    /// Returns the time value as a number of microseconds.
     pub fn as_microseconds(&self) -> i64 {
-        unsafe { ffi::sfTime_asMicroseconds(self.time) }
+        unsafe { sfTime_asMicroseconds(self.0) }
     }
 }
 
-impl PartialEq for Time {
-    fn eq(&self, other: &Time) -> bool {
-        self.as_microseconds() == other.as_microseconds()
-    }
-
-    fn ne(&self, other: &Time) -> bool {
-        self.as_microseconds() != other.as_microseconds()
-    }
-}
-
-impl PartialOrd for Time {
-    fn partial_cmp(&self, other: &Time) -> Option<Ordering> {
-        self.as_microseconds().partial_cmp(&other.as_microseconds())
+impl Neg for Time {
+    type Output = Self;
+    fn neg(self) -> Self {
+        Time(sfTime { microseconds: -self.0.microseconds })
     }
 }
 
 impl Add for Time {
-    type Output = Time;
+    type Output = Self;
 
-    fn add(self, other: Time) -> Time {
-        Time::with_microseconds(self.as_microseconds() + other.as_microseconds())
+    fn add(self, rhs: Self) -> Self {
+        Time::microseconds(self.0.microseconds + rhs.0.microseconds)
+    }
+}
+
+impl AddAssign for Time {
+    fn add_assign(&mut self, rhs: Self) {
+        self.0.microseconds += rhs.0.microseconds;
     }
 }
 
 impl Sub for Time {
-    type Output = Time;
+    type Output = Self;
 
-    fn sub(self, other: Time) -> Time {
-        Time::with_microseconds(self.as_microseconds() - other.as_microseconds())
+    fn sub(self, rhs: Self) -> Self {
+        Time::microseconds(self.0.microseconds - rhs.0.microseconds)
     }
 }
 
-impl Mul for Time {
+impl SubAssign for Time {
+    fn sub_assign(&mut self, rhs: Self) {
+        self.0.microseconds -= rhs.0.microseconds;
+    }
+}
+
+impl Mul<f32> for Time {
+    type Output = Self;
+
+    /// Overload of binary * operator to scale a time value.
+    fn mul(self, rhs: f32) -> Self {
+        Time::seconds(self.as_seconds() * rhs)
+    }
+}
+
+impl Mul<i64> for Time {
+    type Output = Self;
+
+    /// Overload of binary * operator to scale a time value.
+    fn mul(self, rhs: i64) -> Self {
+        Time::microseconds(self.as_microseconds() * rhs)
+    }
+}
+
+impl Mul<Time> for f32 {
     type Output = Time;
 
-    fn mul(self, other: Time) -> Time {
-        Time::with_microseconds(self.as_microseconds() * other.as_microseconds())
+    /// Overload of binary * operator to scale a time value.
+    fn mul(self, rhs: Time) -> Time {
+        rhs * self
+    }
+}
+
+impl Mul<Time> for i64 {
+    type Output = Time;
+
+    /// Overload of binary * operator to scale a time value.
+    fn mul(self, rhs: Time) -> Time {
+        rhs * self
+    }
+}
+
+impl MulAssign<f32> for Time {
+    /// Overload of binary *= operator to scale/assign a time value.
+    fn mul_assign(&mut self, rhs: f32) {
+        *self = *self * rhs;
+    }
+}
+
+impl MulAssign<i64> for Time {
+    /// Overload of binary *= operator to scale/assign a time value.
+    fn mul_assign(&mut self, rhs: i64) {
+        *self = *self * rhs;
+    }
+}
+
+impl Div<f32> for Time {
+    type Output = Self;
+
+    /// Overload of binary / operator to scale a time value.
+    fn div(self, rhs: f32) -> Self {
+        Time::seconds(self.as_seconds() / rhs)
+    }
+}
+
+impl Div<i64> for Time {
+    type Output = Self;
+
+    /// Overload of binary / operator to scale a time value.
+    fn div(self, rhs: i64) -> Self {
+        Time::microseconds(self.as_microseconds() / rhs)
     }
 }
 
 impl Div for Time {
-    type Output = Time;
+    type Output = f32;
 
-    fn div(self, other: Time) -> Time {
-        Time::with_microseconds(self.as_microseconds() / other.as_microseconds())
+    /// 	Overload of binary / operator to compute the ratio of two time values.
+    fn div(self, rhs: Self) -> f32 {
+        self.as_seconds() / rhs.as_seconds()
+    }
+}
+
+impl DivAssign<f32> for Time {
+    /// Overload of binary /= operator to scale/assign a time value.
+    fn div_assign(&mut self, rhs: f32) {
+        *self = *self / rhs;
+    }
+}
+
+impl DivAssign<i64> for Time {
+    /// Overload of binary /= operator to scale/assign a time value.
+    fn div_assign(&mut self, rhs: i64) {
+        *self = *self / rhs;
+    }
+}
+
+impl Rem for Time {
+    type Output = Self;
+
+    fn rem(self, rhs: Self) -> Self {
+        Time::microseconds(self.0.microseconds % rhs.0.microseconds)
+    }
+}
+
+impl RemAssign for Time {
+    fn rem_assign(&mut self, rhs: Self) {
+        self.0.microseconds %= rhs.0.microseconds
     }
 }
 
 impl Raw for Time {
-    type Raw = ffi::sfTime;
+    type Raw = sfTime;
     fn raw(&self) -> Self::Raw {
-        self.time
+        self.0
     }
 }
 
 impl FromRaw for Time {
     fn from_raw(raw: Self::Raw) -> Self {
-        Time { time: raw }
+        Time(raw)
     }
 }
+
+/// Predefined "zero" time value.
+pub const ZERO: Time = Time(sfTime { microseconds: 0 });

@@ -21,12 +21,44 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-//! Utility Class providing 3 dimensional vectors for f32.
-
-use std::ops::{Add, Sub, Mul, Div};
+use std::ops::{Add, Sub, Mul, Div, Neg, AddAssign, SubAssign, MulAssign, DivAssign};
 use raw_conv::{Raw, FromRaw};
 
-/// Vector3f definition
+/// Utility type for manipulating 3-dimensional vectors.
+///
+/// `Vector3` is a simple type that defines a mathematical vector with
+/// three coordinates (x, y and z).
+///
+/// It can be used to represent anything that has three dimensions:
+/// a size, a point, a velocity, etc.
+///
+/// The type parameter T is the type of the coordinates.
+///
+/// You generally don't have to care about the generic form (`Vector3<T>`),
+/// the most common specializations have special type aliases:
+///
+/// - `Vector3<f32>` is `Vector3f`
+/// - `Vector3<i32>` is `Vector3i`
+///
+/// The `Vector3` class has a small and simple interface, its x and y members can be
+/// accessed directly (there are no accessors like `set_x()`, `get_x()`) and it contains no
+/// mathematical function like dot product, cross product, length, etc.
+///
+/// # Usage example
+/// ```
+/// # use sfml::system::Vector3f;
+/// let mut v1 = Vector3f::new(16.5, 24.0, -8.2);
+/// v1.x = 18.2;
+/// let y = v1.y;
+/// let z = v1.z;
+///
+/// let v2 = v1 * 5.0;
+/// let v3 = v1 + v2;
+///
+/// assert_ne!(v2, v3);
+/// ```
+///
+/// Note: for 2-dimensional vectors, see `Vector2`.
 #[repr(C)]
 #[derive(Clone, PartialOrd, PartialEq, Debug, Copy)]
 pub struct Vector3<T> {
@@ -98,6 +130,14 @@ impl<T: Add> Add for Vector3<T> {
     }
 }
 
+impl<T: AddAssign> AddAssign for Vector3<T> {
+    fn add_assign(&mut self, rhs: Self) {
+        self.x += rhs.x;
+        self.x += rhs.y;
+        self.x += rhs.z;
+    }
+}
+
 impl<T: Sub> Sub for Vector3<T> {
     type Output = Vector3<T::Output>;
 
@@ -107,6 +147,14 @@ impl<T: Sub> Sub for Vector3<T> {
             y: self.y - rhs.y,
             z: self.z - rhs.z,
         }
+    }
+}
+
+impl<T: SubAssign> SubAssign for Vector3<T> {
+    fn sub_assign(&mut self, rhs: Self) {
+        self.x -= rhs.x;
+        self.x -= rhs.y;
+        self.x -= rhs.z;
     }
 }
 
@@ -122,6 +170,14 @@ impl<T: Mul> Mul for Vector3<T> {
     }
 }
 
+impl<T: MulAssign + Copy> MulAssign<T> for Vector3<T> {
+    fn mul_assign(&mut self, rhs: T) {
+        self.x *= rhs;
+        self.y *= rhs;
+        self.z *= rhs;
+    }
+}
+
 impl<T: Div> Div for Vector3<T> {
     type Output = Vector3<T::Output>;
 
@@ -134,6 +190,25 @@ impl<T: Div> Div for Vector3<T> {
     }
 }
 
+impl<T: DivAssign + Copy> DivAssign<T> for Vector3<T> {
+    fn div_assign(&mut self, rhs: T) {
+        self.x /= rhs;
+        self.y /= rhs;
+        self.z /= rhs;
+    }
+}
+
+impl<T: Neg<Output = T>> Neg for Vector3<T> {
+    type Output = Self;
+
+    fn neg(self) -> Self {
+        Vector3 {
+            x: -self.x,
+            y: -self.y,
+            z: -self.z,
+        }
+    }
+}
 
 impl Raw for Vector3f {
     type Raw = ::csfml_system_sys::sfVector3f;

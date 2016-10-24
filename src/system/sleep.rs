@@ -21,12 +21,10 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-//! Make thread sleeping
-
 use raw_conv::Raw;
 use system::Time;
 
-/// Make the current thread sleep for a given duration
+/// Make the current thread sleep for a given duration.
 pub fn sleep(time: Time) {
     unsafe { ::csfml_system_sys::sfSleep(time.raw()) }
 }
