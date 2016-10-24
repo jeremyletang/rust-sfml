@@ -21,8 +21,6 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-//! Utility Class providing 3 dimensional vectors for f32.
-
 use std::ops::{Add, Sub, Mul, Div};
 use raw_conv::{Raw, FromRaw};
 
