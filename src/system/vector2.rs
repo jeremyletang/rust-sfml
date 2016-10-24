@@ -21,7 +21,7 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-use std::ops::{Add, Div, Mul, Sub, Neg, AddAssign, SubAssign};
+use std::ops::{Add, Div, Mul, Sub, Neg, AddAssign, SubAssign, MulAssign, DivAssign};
 use raw_conv::{FromRaw, Raw};
 
 /// Utility type for manipulating 2-dimensional vectors.
@@ -161,6 +161,13 @@ impl<T: Mul> Mul for Vector2<T> {
     }
 }
 
+impl<T: MulAssign + Copy> MulAssign<T> for Vector2<T> {
+    fn mul_assign(&mut self, rhs: T) {
+        self.x *= rhs;
+        self.y *= rhs;
+    }
+}
+
 impl<T: Div> Div for Vector2<T> {
     type Output = Vector2<T::Output>;
 
@@ -169,6 +176,13 @@ impl<T: Div> Div for Vector2<T> {
             x: self.x / rhs.x,
             y: self.y / rhs.y,
         }
+    }
+}
+
+impl<T: DivAssign + Copy> DivAssign<T> for Vector2<T> {
+    fn div_assign(&mut self, rhs: T) {
+        self.x /= rhs;
+        self.y /= rhs;
     }
 }
 
