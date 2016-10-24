@@ -21,12 +21,6 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
-//! Window manipulation
-//!
-//! Provides OpenGL-based windows,
-//! and abstractions for events and input handling.
-
 use libc::{c_uint, c_float};
 use std::vec::Vec;
 use std::ffi::CString;
