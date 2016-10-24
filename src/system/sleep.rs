@@ -21,8 +21,6 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-//! Make thread sleeping
-
 use raw_conv::Raw;
 use system::Time;
 
