@@ -24,14 +24,14 @@
 //! Provides OpenGL-based windows, and abstractions for events and input handling.
 
 
-pub use window::window::Window;
-pub use window::video_mode::VideoMode;
-pub use window::context::Context;
-pub use window::context_settings::{ContextSettings, CONTEXT_DEFAULT, CONTEXT_CORE, CONTEXT_DEBUG};
-pub use window::window_style::WindowStyle;
-pub use window::keyboard::Key;
-pub use window::mouse::MouseButton;
-pub use window::event::Event;
+pub use self::window::Window;
+pub use self::video_mode::VideoMode;
+pub use self::context::Context;
+pub use self::context_settings::{ContextSettings, CONTEXT_DEFAULT, CONTEXT_CORE, CONTEXT_DEBUG};
+pub use self::window_style::WindowStyle;
+pub use self::keyboard::Key;
+pub use self::mouse::MouseButton;
+pub use self::event::Event;
 
 #[cfg_attr(feature="clippy", allow(module_inception))]
 mod window;
