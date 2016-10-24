@@ -21,7 +21,7 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-use std::ops::{Add, Sub, Mul, Div};
+use std::ops::{Add, Sub, Mul, Div, Neg};
 use raw_conv::{Raw, FromRaw};
 
 /// Utility type for manipulating 3-dimensional vectors.
@@ -166,6 +166,17 @@ impl<T: Div> Div for Vector3<T> {
     }
 }
 
+impl<T: Neg<Output = T>> Neg for Vector3<T> {
+    type Output = Self;
+
+    fn neg(self) -> Self {
+        Vector3 {
+            x: -self.x,
+            y: -self.y,
+            z: -self.z,
+        }
+    }
+}
 
 impl Raw for Vector3f {
     type Raw = ::csfml_system_sys::sfVector3f;
