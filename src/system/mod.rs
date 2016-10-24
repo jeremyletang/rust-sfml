@@ -29,9 +29,9 @@
 
 pub use self::vector2::{Vector2, Vector2u, Vector2i, Vector2f, ToVec};
 pub use self::vector3::{Vector3, Vector3i, Vector3f};
-pub use system::sleep::sleep;
-pub use system::time::{Time, ZERO as TIME_ZERO};
-pub use system::clock::Clock;
+pub use self::sleep::sleep;
+pub use self::time::{Time, ZERO as TIME_ZERO};
+pub use self::clock::Clock;
 
 mod time;
 mod clock;
