@@ -23,15 +23,14 @@
 
 //! Base module of SFML, defining various utilities.
 //!
-//! It provides vector classes, unicode strings and conversion functions,
-//! threads and mutexes, timing classes.
+//! It provides vector types, timing types.
 //!
 
-pub use self::vector2::{Vector2, Vector2u, Vector2i, Vector2f, ToVec};
+pub use self::vector2::{Vector2, Vector2u, Vector2i, Vector2f};
 pub use self::vector3::{Vector3, Vector3i, Vector3f};
-pub use system::sleep::sleep;
-pub use system::time::Time;
-pub use system::clock::Clock;
+pub use self::sleep::sleep;
+pub use self::time::{Time, ZERO as TIME_ZERO};
+pub use self::clock::Clock;
 
 mod time;
 mod clock;

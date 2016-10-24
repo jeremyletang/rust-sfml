@@ -19,7 +19,7 @@ fn main() {
 
     while music.get_status() == SoundStatus::Playing {
         // Leave some CPU time for other processes
-        sleep(Time::with_milliseconds(100));
+        sleep(Time::milliseconds(100));
         // Display the playing position
         print!("\rPlaying... {:.2} sec",
                music.get_playing_offset().as_seconds());

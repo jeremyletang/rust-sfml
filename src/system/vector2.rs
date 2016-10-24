@@ -21,12 +21,43 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-//! Utility Class providing 2 dimensional vectors for i32, u32, and f32.
-
-use std::ops::{Add, Div, Mul, Sub};
+use std::ops::{Add, Div, Mul, Sub, Neg, AddAssign, SubAssign, MulAssign, DivAssign};
 use raw_conv::{FromRaw, Raw};
 
-/// Implementation of Vector2i
+/// Utility type for manipulating 2-dimensional vectors.
+///
+/// `Vector2` is a simple type that defines
+/// a mathematical vector with two coordinates (x and y).
+///
+/// It can be used to represent anything that has two dimensions: a size, a point, a velocity, etc.
+///
+/// The type parameter T is the type of the coordinates.
+///
+/// You generally don't have to care about the generic form (`Vector2<T>`), the most common
+/// specializations have special type aliases:
+///
+/// - `Vector2<f32>` is `Vector2f`
+/// - `Vector2<i32>` is `Vector2i`
+/// - `Vector2<u32>` is `Vector2u`
+///
+/// The `Vector2` type has a small and simple interface, its x and y members can be
+/// accessed directly (there are no accessors like `set_x()`, `get_x()`) and it contains no
+/// mathematical function like dot product, cross product, length, etc.
+///
+/// # Usage example
+///
+/// ```
+/// # use sfml::system::Vector2f;
+/// let mut v1 = Vector2f::new(16.5, 24.0);
+/// v1.x = 18.2;
+/// let y = v1.y;
+///
+/// let v2 = v1 * 5.0;
+/// let v3 = v1 + v2;
+/// assert_ne!(v2, v3);
+/// ```
+///
+/// Note: for 3-dimensional vectors, see `Vector3`.
 #[repr(C)]
 #[derive(Clone, PartialOrd, Ord, PartialEq, Eq, Debug, Copy)]
 pub struct Vector2<T> {
@@ -44,8 +75,8 @@ pub type Vector2u = Vector2<u32>;
 pub type Vector2f = Vector2<f32>;
 
 impl<T> Vector2<T> {
-    /// Build a new Vector2<T>
-    pub fn new(x: T, y: T) -> Vector2<T> {
+    /// Creates a new vector from its coordinates.
+    pub fn new(x: T, y: T) -> Self {
         Vector2 { x: x, y: y }
     }
 }
@@ -94,6 +125,13 @@ impl<T: Add> Add for Vector2<T> {
     }
 }
 
+impl<T: AddAssign> AddAssign for Vector2<T> {
+    fn add_assign(&mut self, rhs: Self) {
+        self.x += rhs.x;
+        self.y += rhs.y;
+    }
+}
+
 impl<T: Sub> Sub for Vector2<T> {
     type Output = Vector2<T::Output>;
 
@@ -102,6 +140,13 @@ impl<T: Sub> Sub for Vector2<T> {
             x: self.x - rhs.x,
             y: self.y - rhs.y,
         }
+    }
+}
+
+impl<T: SubAssign> SubAssign for Vector2<T> {
+    fn sub_assign(&mut self, rhs: Self) {
+        self.x -= rhs.x;
+        self.y -= rhs.y;
     }
 }
 
@@ -116,6 +161,13 @@ impl<T: Mul> Mul for Vector2<T> {
     }
 }
 
+impl<T: MulAssign + Copy> MulAssign<T> for Vector2<T> {
+    fn mul_assign(&mut self, rhs: T) {
+        self.x *= rhs;
+        self.y *= rhs;
+    }
+}
+
 impl<T: Div> Div for Vector2<T> {
     type Output = Vector2<T::Output>;
 
@@ -127,74 +179,20 @@ impl<T: Div> Div for Vector2<T> {
     }
 }
 
-
-/// Utility trait to convert a Vector2 on another type
-pub trait ToVec {
-    /// Convert the current Vector2 to a Vector2f
-    fn to_vector2f(&self) -> Vector2f;
-    /// Convert the current Vector2 to a Vector2i
-    fn to_vector2i(&self) -> Vector2i;
-    /// Convert the current Vector2f to a Vector2u
-    fn to_vector2u(&self) -> Vector2u;
-}
-
-impl ToVec for Vector2f {
-    fn to_vector2f(&self) -> Vector2f {
-        *self
-    }
-
-    fn to_vector2i(&self) -> Vector2i {
-        Vector2i {
-            x: self.x as i32,
-            y: self.y as i32,
-        }
-    }
-
-    fn to_vector2u(&self) -> Vector2u {
-        Vector2u {
-            x: self.x as u32,
-            y: self.y as u32,
-        }
+impl<T: DivAssign + Copy> DivAssign<T> for Vector2<T> {
+    fn div_assign(&mut self, rhs: T) {
+        self.x /= rhs;
+        self.y /= rhs;
     }
 }
 
-impl ToVec for Vector2i {
-    fn to_vector2f(&self) -> Vector2f {
-        Vector2f {
-            x: self.x as f32,
-            y: self.y as f32,
+impl<T: Neg<Output = T>> Neg for Vector2<T> {
+    type Output = Self;
+    fn neg(self) -> Self {
+        Vector2 {
+            x: -self.x,
+            y: -self.y,
         }
-    }
-
-    fn to_vector2i(&self) -> Vector2i {
-        *self
-    }
-
-    fn to_vector2u(&self) -> Vector2u {
-        Vector2u {
-            x: self.x as u32,
-            y: self.y as u32,
-        }
-    }
-}
-
-impl ToVec for Vector2u {
-    fn to_vector2f(&self) -> Vector2f {
-        Vector2f {
-            x: self.x as f32,
-            y: self.y as f32,
-        }
-    }
-
-    fn to_vector2i(&self) -> Vector2i {
-        Vector2i {
-            x: self.x as i32,
-            y: self.y as i32,
-        }
-    }
-
-    fn to_vector2u(&self) -> Vector2u {
-        *self
     }
 }
 
