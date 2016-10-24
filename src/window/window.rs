@@ -21,7 +21,7 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-use libc::{c_uint, c_float};
+use std::os::raw::{c_uint, c_float};
 use std::vec::Vec;
 use std::ffi::CString;
 use std::marker::PhantomData;
