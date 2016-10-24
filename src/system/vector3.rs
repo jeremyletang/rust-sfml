@@ -24,7 +24,41 @@
 use std::ops::{Add, Sub, Mul, Div};
 use raw_conv::{Raw, FromRaw};
 
-/// Vector3f definition
+/// Utility type for manipulating 3-dimensional vectors.
+///
+/// `Vector3` is a simple type that defines a mathematical vector with
+/// three coordinates (x, y and z).
+///
+/// It can be used to represent anything that has three dimensions:
+/// a size, a point, a velocity, etc.
+///
+/// The type parameter T is the type of the coordinates.
+///
+/// You generally don't have to care about the generic form (`Vector3<T>`),
+/// the most common specializations have special type aliases:
+///
+/// - `Vector3<f32>` is `Vector3f`
+/// - `Vector3<i32>` is `Vector3i`
+///
+/// The `Vector3` class has a small and simple interface, its x and y members can be
+/// accessed directly (there are no accessors like `set_x()`, `get_x()`) and it contains no
+/// mathematical function like dot product, cross product, length, etc.
+///
+/// # Usage example
+/// ```
+/// # use sfml::system::Vector3f;
+/// let mut v1 = Vector3f::new(16.5, 24.0, -8.2);
+/// v1.x = 18.2;
+/// let y = v1.y;
+/// let z = v1.z;
+///
+/// let v2 = v1 * 5.0;
+/// let v3 = v1 + v2;
+///
+/// assert_ne!(v2, v3);
+/// ```
+///
+/// Note: for 2-dimensional vectors, see `Vector2`.
 #[repr(C)]
 #[derive(Clone, PartialOrd, PartialEq, Debug, Copy)]
 pub struct Vector3<T> {
