@@ -21,7 +21,7 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-use std::ops::{Add, Sub, Mul, Div, Neg};
+use std::ops::{Add, Sub, Mul, Div, Neg, AddAssign, SubAssign, MulAssign, DivAssign};
 use raw_conv::{Raw, FromRaw};
 
 /// Utility type for manipulating 3-dimensional vectors.
@@ -130,6 +130,14 @@ impl<T: Add> Add for Vector3<T> {
     }
 }
 
+impl<T: AddAssign> AddAssign for Vector3<T> {
+    fn add_assign(&mut self, rhs: Self) {
+        self.x += rhs.x;
+        self.x += rhs.y;
+        self.x += rhs.z;
+    }
+}
+
 impl<T: Sub> Sub for Vector3<T> {
     type Output = Vector3<T::Output>;
 
@@ -139,6 +147,14 @@ impl<T: Sub> Sub for Vector3<T> {
             y: self.y - rhs.y,
             z: self.z - rhs.z,
         }
+    }
+}
+
+impl<T: SubAssign> SubAssign for Vector3<T> {
+    fn sub_assign(&mut self, rhs: Self) {
+        self.x -= rhs.x;
+        self.x -= rhs.y;
+        self.x -= rhs.z;
     }
 }
 
@@ -154,6 +170,14 @@ impl<T: Mul> Mul for Vector3<T> {
     }
 }
 
+impl<T: MulAssign + Copy> MulAssign<T> for Vector3<T> {
+    fn mul_assign(&mut self, rhs: T) {
+        self.x *= rhs;
+        self.y *= rhs;
+        self.z *= rhs;
+    }
+}
+
 impl<T: Div> Div for Vector3<T> {
     type Output = Vector3<T::Output>;
 
@@ -163,6 +187,14 @@ impl<T: Div> Div for Vector3<T> {
             y: self.y / rhs.y,
             z: self.z / rhs.z,
         }
+    }
+}
+
+impl<T: DivAssign + Copy> DivAssign<T> for Vector3<T> {
+    fn div_assign(&mut self, rhs: T) {
+        self.x /= rhs;
+        self.y /= rhs;
+        self.z /= rhs;
     }
 }
 
