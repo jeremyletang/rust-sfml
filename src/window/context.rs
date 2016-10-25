@@ -27,9 +27,7 @@ use ext::sf_bool_ext::SfBoolExt;
 /// Drawing context
 ///
 /// Class holding a valid drawing context.
-pub struct Context {
-    cont: *mut ffi::sfContext,
-}
+pub struct Context(*mut ffi::sfContext);
 
 impl Context {
     /// Create a new context
@@ -38,7 +36,7 @@ impl Context {
     ///
     /// Return New Context object
     pub fn new() -> Context {
-        Context { cont: unsafe { ffi::sfContext_create() } }
+        Context(unsafe { ffi::sfContext_create() })
     }
 
     /// Activate or deactivate explicitely a context
@@ -46,14 +44,14 @@ impl Context {
     /// # Arguments
     /// * active - True to activate, False to deactivate
     pub fn set_active(&mut self, active: bool) {
-        unsafe { ffi::sfContext_setActive(self.cont, SfBoolExt::from_bool(active)) }
+        unsafe { ffi::sfContext_setActive(self.0, SfBoolExt::from_bool(active)) }
     }
 }
 
 impl Drop for Context {
     fn drop(&mut self) {
         unsafe {
-            ffi::sfContext_destroy(self.cont);
+            ffi::sfContext_destroy(self.0);
         }
     }
 }
