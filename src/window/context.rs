@@ -53,11 +53,7 @@ use ext::sf_bool_ext::SfBoolExt;
 pub struct Context(*mut ffi::sfContext);
 
 impl Context {
-    /// Create a new context
-    ///
-    /// This function activates the new context.
-    ///
-    /// Return New Context object
+    /// Creates and activates a new context.
     pub fn new() -> Context {
         Context(unsafe { ffi::sfContext_create() })
     }
