@@ -21,10 +21,6 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-//! OpenGL context settings
-//!
-//! Structure defining the window's creation settings
-
 use csfml_window_sys as ffi;
 
 /// Non-debug, compatibility context (this and the core attribute are mutually exclusive).
