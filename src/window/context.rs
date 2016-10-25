@@ -44,12 +44,10 @@ use window::ContextSettings;
 /// # use sfml::window::Context;
 /// # use std::thread;
 /// thread::spawn(|| {
-///     unsafe {
-///         let context = Context::new();
-///         // from now on, you have a valid context
+///     let context = Context::new();
+///     // from now on, you have a valid context
 ///
-///         // you can make OpenGL calls, e.g. glClear(GL_DEPTH_BUFFER_BIT);
-///     }
+///     // you can make OpenGL calls, e.g. glClear(GL_DEPTH_BUFFER_BIT);
 /// }).join().unwrap();
 /// // the context is automatically deactivated and destroyed
 /// // by the `Context` destructor
@@ -58,13 +56,8 @@ pub struct Context(*mut ffi::sfContext);
 
 impl Context {
     /// Creates and activates a new context.
-    ///
-    /// # Unsafety
-    ///
-    /// If the Context outlives the main thread, bad things can happen.
-    /// I'm not sure if this can be prevented somehow.
-    pub unsafe fn new() -> Context {
-        Context(ffi::sfContext_create())
+    pub fn new() -> Context {
+        Context(unsafe { ffi::sfContext_create() })
     }
 
     /// Explicitly activates or deactivates the context.
@@ -96,10 +89,8 @@ fn test_settings() {
     let window = Window::new(video_mode, "test", Default::default(), &Default::default()).unwrap();
     let win_settings = window.get_settings();
     thread::spawn(move || {
-            unsafe {
-                let context = Context::new();
-                assert_eq!(context.settings(), win_settings);
-            }
+            let context = Context::new();
+            assert_eq!(context.settings(), win_settings);
         })
         .join()
         .unwrap();
@@ -111,5 +102,11 @@ impl Drop for Context {
         unsafe {
             ffi::sfContext_destroy(self.0);
         }
+    }
+}
+
+impl Default for Context {
+    fn default() -> Self {
+        Context::new()
     }
 }
