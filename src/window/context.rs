@@ -34,7 +34,7 @@ use ext::sf_bool_ext::SfBoolExt;
 /// Note that a context is only active in its current thread,
 /// if you create a new thread it will have no valid context by default.
 ///
-/// To use a sf::Context instance, just construct it and let it live as long as you need
+/// To use a `Context` instance, just construct it and let it live as long as you need
 /// a valid context. No explicit activation is needed, all it has to do is to exist.
 /// Its destructor will take care of deactivating and freeing all the attached resources.
 ///
