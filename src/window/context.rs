@@ -58,10 +58,10 @@ impl Context {
         Context(unsafe { ffi::sfContext_create() })
     }
 
-    /// Activate or deactivate explicitely a context
+    /// Explicitly activates or deactivates the context.
     ///
     /// # Arguments
-    /// * active - True to activate, False to deactivate
+    /// * active - `true` to activate, `false` to deactivate
     pub fn set_active(&mut self, active: bool) {
         unsafe { ffi::sfContext_setActive(self.0, SfBoolExt::from_bool(active)) }
     }
