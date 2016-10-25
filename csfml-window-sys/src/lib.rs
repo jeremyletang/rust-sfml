@@ -465,6 +465,7 @@ extern "C" {
     pub fn sfContext_create() -> *mut sfContext;
     pub fn sfContext_destroy(context: *mut sfContext);
     pub fn sfContext_setActive(context: *mut sfContext, active: sfBool) -> sfBool;
+    pub fn sfContext_getSettings(context: *const sfContext) -> sfContextSettings;
     pub fn sfJoystick_isConnected(joystick: ::std::os::raw::c_uint) -> sfBool;
     pub fn sfJoystick_getButtonCount(joystick: ::std::os::raw::c_uint)
      -> ::std::os::raw::c_uint;

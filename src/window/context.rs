@@ -23,6 +23,7 @@
 
 use csfml_window_sys as ffi;
 use ext::sf_bool_ext::SfBoolExt;
+use window::ContextSettings;
 
 /// Class holding a valid drawing context.
 ///
@@ -68,6 +69,27 @@ impl Context {
         let result = unsafe { ffi::sfContext_setActive(self.0, SfBoolExt::from_bool(active)) };
         result.to_bool()
     }
+    /// Get the settings of the context.
+    ///
+    /// Note that these settings may be different than the ones passed to the constructor;
+    /// they are indeed adjusted if the original settings are not directly supported by the system.
+    pub fn settings(&self) -> ContextSettings {
+        let settings = unsafe { ffi::sfContext_getSettings(self.0) };
+        ContextSettings(settings)
+    }
+}
+
+#[test]
+fn test_settings() {
+    use window::{VideoMode, Window, Context};
+    use std::thread;
+    let video_mode = VideoMode::new_init(32, 32, 32);
+
+    let _window = Window::new(video_mode, "test", Default::default(), &Default::default()).unwrap();
+    thread::spawn(|| {
+        let context = Context::new();
+        assert_eq!(context.settings(), Default::default());
+    });
 }
 
 impl Drop for Context {
