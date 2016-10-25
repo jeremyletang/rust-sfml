@@ -42,12 +42,13 @@ use window::ContextSettings;
 /// # Usage example
 /// ```
 /// # use sfml::window::Context;
-/// fn thread_function() {
+/// # use std::thread;
+/// thread::spawn(|| {
 ///     let context = Context::new();
 ///     // from now on, you have a valid context
 ///
 ///     // you can make OpenGL calls, e.g. glClear(GL_DEPTH_BUFFER_BIT);
-/// }
+/// }).join().unwrap();
 /// // the context is automatically deactivated and destroyed
 /// // by the `Context` destructor
 /// ```
@@ -85,11 +86,14 @@ fn test_settings() {
     use std::thread;
     let video_mode = VideoMode::new_init(32, 32, 32);
 
-    let _window = Window::new(video_mode, "test", Default::default(), &Default::default()).unwrap();
-    thread::spawn(|| {
-        let context = Context::new();
-        assert_eq!(context.settings(), Default::default());
-    });
+    let window = Window::new(video_mode, "test", Default::default(), &Default::default()).unwrap();
+    let win_settings = window.get_settings();
+    thread::spawn(move || {
+            let context = Context::new();
+            assert_eq!(context.settings(), win_settings);
+        })
+        .join()
+        .unwrap();
 }
 
 impl Drop for Context {
