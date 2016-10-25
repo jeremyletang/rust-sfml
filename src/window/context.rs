@@ -21,10 +21,6 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-//! Drawing context
-//!
-//! Class holding a valid drawing context.
-
 use csfml_system_sys::sfBool;
 use csfml_window_sys as ffi;
 use ext::sf_bool_ext::SfBoolExt;
