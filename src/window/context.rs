@@ -21,7 +21,6 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-use csfml_system_sys::sfBool;
 use csfml_window_sys as ffi;
 use ext::sf_bool_ext::SfBoolExt;
 
@@ -47,7 +46,7 @@ impl Context {
     /// # Arguments
     /// * active - True to activate, False to deactivate
     pub fn set_active(&mut self, active: bool) {
-        unsafe { ffi::sfContext_setActive(self.cont, sfBool::from_bool(active)) }
+        unsafe { ffi::sfContext_setActive(self.cont, SfBoolExt::from_bool(active)) }
     }
 }
 
