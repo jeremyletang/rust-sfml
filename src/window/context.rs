@@ -42,10 +42,10 @@ use ext::sf_bool_ext::SfBoolExt;
 /// ```
 /// # use sfml::window::Context;
 /// fn thread_function() {
-/// let context = Context::new();
-/// // from now on, you have a valid context
+///     let context = Context::new();
+///     // from now on, you have a valid context
 ///
-/// // you can make OpenGL calls, e.g. glClear(GL_DEPTH_BUFFER_BIT);
+///     // you can make OpenGL calls, e.g. glClear(GL_DEPTH_BUFFER_BIT);
 /// }
 /// // the context is automatically deactivated and destroyed
 /// // by the `Context` destructor
