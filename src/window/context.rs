@@ -24,6 +24,7 @@
 use csfml_window_sys as ffi;
 use ext::sf_bool_ext::SfBoolExt;
 use window::ContextSettings;
+use raw_conv::FromRaw;
 
 /// Class holding a valid drawing context.
 ///
@@ -76,7 +77,7 @@ impl Context {
     /// they are indeed adjusted if the original settings are not directly supported by the system.
     pub fn settings(&self) -> ContextSettings {
         let settings = unsafe { ffi::sfContext_getSettings(self.0) };
-        ContextSettings(settings)
+        ContextSettings::from_raw(settings)
     }
 }
 

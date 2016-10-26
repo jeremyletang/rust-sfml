@@ -21,7 +21,10 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-use csfml_window_sys as ffi;
+use csfml_window_sys::sfContextSettings;
+use std::os::raw::c_uint;
+use raw_conv::{FromRaw, Raw};
+use system::{SfBool, SF_FALSE};
 
 /// Non-debug, compatibility context (this and the core attribute are mutually exclusive).
 pub const CONTEXT_DEFAULT: u32 = 0;
@@ -35,7 +38,22 @@ pub const CONTEXT_DEBUG: u32 = 1 << 2;
 /// Structure defining the window's creation settings
 #[repr(C)]
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
-pub struct ContextSettings(pub ffi::sfContextSettings);
+pub struct ContextSettings {
+    /// Bits of the depth buffer.
+    pub depth_bits: c_uint,
+    /// Bits of the stencil buffer.
+    pub stencil_bits: c_uint,
+    /// Level of antialiasing.
+    pub antialiasing_level: c_uint,
+    /// Major number of the context version to create.
+    pub major_version: c_uint,
+    /// Minor number of the context version to create.
+    pub minor_version: c_uint,
+    /// The attribute flags to create the context with.
+    pub attribute_flags: u32,
+    /// Whether the context framebuffer is sRGB capable.
+    pub srgb_capable: SfBool,
+}
 
 impl ContextSettings {
     /// Creates a new, default ContextSettings.
@@ -45,7 +63,7 @@ impl ContextSettings {
 
     /// Sets the antialiasing level.
     pub fn antialiasing(&mut self, level: u32) -> &mut Self {
-        self.0.antialiasingLevel = level;
+        self.antialiasing_level = level;
         self
     }
 }
@@ -62,13 +80,28 @@ impl Default for ContextSettings {
     /// attributeFlags: CONTEXT_DEFAULT,
     /// ```
     fn default() -> ContextSettings {
-        ContextSettings(ffi::sfContextSettings {
-            depthBits: 0,
-            stencilBits: 0,
-            antialiasingLevel: 0,
-            majorVersion: 2,
-            minorVersion: 0,
-            attributeFlags: CONTEXT_DEFAULT,
-        })
+        ContextSettings {
+            depth_bits: 0,
+            stencil_bits: 0,
+            antialiasing_level: 0,
+            major_version: 2,
+            minor_version: 0,
+            attribute_flags: CONTEXT_DEFAULT,
+            srgb_capable: SF_FALSE,
+        }
+    }
+}
+
+impl Raw for ContextSettings {
+    type Raw = sfContextSettings;
+
+    fn raw(&self) -> Self::Raw {
+        unsafe { ::std::mem::transmute(*self) }
+    }
+}
+
+impl FromRaw for ContextSettings {
+    fn from_raw(raw: Self::Raw) -> Self {
+        unsafe { ::std::mem::transmute(raw) }
     }
 }

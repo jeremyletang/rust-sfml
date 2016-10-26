@@ -88,7 +88,7 @@ impl RenderWindow {
                -> Option<RenderWindow> {
         let c_str = CString::new(title).unwrap();
         let sf_render_win: *mut ffi::sfRenderWindow = unsafe {
-            ffi::sfRenderWindow_create(mode.raw(), c_str.as_ptr(), style.bits(), &settings.0)
+            ffi::sfRenderWindow_create(mode.raw(), c_str.as_ptr(), style.bits(), &settings.raw())
         };
         if sf_render_win.is_null() {
             None
@@ -132,7 +132,7 @@ impl RenderWindow {
             sf_render_win = ffi::sfRenderWindow_createUnicode(mode.raw(),
                                                               title.as_ptr() as *mut u32,
                                                               style.bits(),
-                                                              &settings.0);
+                                                              &settings.raw());
         }
         if sf_render_win.is_null() {
             None
@@ -278,7 +278,7 @@ impl RenderWindow {
     /// Return a structure containing the OpenGL context settings
     ///
     pub fn get_settings(&self) -> ContextSettings {
-        unsafe { ContextSettings(ffi::sfRenderWindow_getSettings(self.render_window)) }
+        unsafe { ContextSettings::from_raw(ffi::sfRenderWindow_getSettings(self.render_window)) }
     }
 
     /// Change the title of a window

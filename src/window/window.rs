@@ -78,8 +78,9 @@ impl Window {
                settings: &ContextSettings)
                -> Option<Window> {
         let c_str = CString::new(title.as_bytes()).unwrap();
-        let sf_win: *mut ffi::sfWindow =
-            unsafe { ffi::sfWindow_create(mode.raw(), c_str.as_ptr(), style.bits(), &settings.0) };
+        let sf_win: *mut ffi::sfWindow = unsafe {
+            ffi::sfWindow_create(mode.raw(), c_str.as_ptr(), style.bits(), &settings.raw())
+        };
         if sf_win.is_null() {
             None
         } else {
@@ -114,7 +115,7 @@ impl Window {
                         -> Option<Window> {
 
         let sf_win = unsafe {
-            ffi::sfWindow_createUnicode(mode.raw(), title.as_ptr(), style.bits(), &settings.0)
+            ffi::sfWindow_createUnicode(mode.raw(), title.as_ptr(), style.bits(), &settings.raw())
         };
         if sf_win.is_null() {
             None
@@ -226,7 +227,7 @@ impl Window {
     ///
     /// Return a structure containing the OpenGL context settings
     pub fn get_settings(&self) -> ContextSettings {
-        ContextSettings(unsafe { ffi::sfWindow_getSettings(self.window) })
+        ContextSettings::from_raw(unsafe { ffi::sfWindow_getSettings(self.window) })
     }
 
     /// Change the title of a window
