@@ -71,21 +71,27 @@ impl ContextSettings {
 impl Default for ContextSettings {
     /// Creates a `ContextSettings` with the following values:
     ///
-    /// ```ignore
-    /// depthBits: 0,
-    /// stencilBits: 0,
-    /// antialiasingLevel: 0,
-    /// majorVersion: 2,
-    /// minorVersion: 0,
-    /// attributeFlags: CONTEXT_DEFAULT,
+    /// ```
+    /// # use sfml::window::{ContextSettings, CONTEXT_DEFAULT};
+    /// # use sfml::system::SF_FALSE;
+    /// let values = ContextSettings {
+    ///     depth_bits: 0,
+    ///     stencil_bits: 0,
+    ///     antialiasing_level: 0,
+    ///     major_version: 1,
+    ///     minor_version: 1,
+    ///     attribute_flags: CONTEXT_DEFAULT,
+    ///     srgb_capable: SF_FALSE,
+    /// };
+    /// assert_eq!(ContextSettings::default(), values);
     /// ```
     fn default() -> ContextSettings {
         ContextSettings {
             depth_bits: 0,
             stencil_bits: 0,
             antialiasing_level: 0,
-            major_version: 2,
-            minor_version: 0,
+            major_version: 1,
+            minor_version: 1,
             attribute_flags: CONTEXT_DEFAULT,
             srgb_capable: SF_FALSE,
         }
