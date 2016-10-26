@@ -55,19 +55,6 @@ pub struct ContextSettings {
     pub srgb_capable: SfBool,
 }
 
-impl ContextSettings {
-    /// Creates a new, default ContextSettings.
-    pub fn new() -> ContextSettings {
-        Default::default()
-    }
-
-    /// Sets the antialiasing level.
-    pub fn antialiasing(&mut self, level: u32) -> &mut Self {
-        self.antialiasing_level = level;
-        self
-    }
-}
-
 impl Default for ContextSettings {
     /// Creates a `ContextSettings` with the following values:
     ///
