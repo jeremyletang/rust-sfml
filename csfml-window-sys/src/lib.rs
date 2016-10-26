@@ -449,7 +449,6 @@ pub enum sfContextAttribute {
 #[repr(C)]
 #[derive(Copy, Clone)]
 #[derive(Debug)]
-#[derive(PartialEq, Eq, PartialOrd, Ord)] // Required by rust-sfml
 pub struct sfContextSettings {
     pub depthBits: ::std::os::raw::c_uint,
     pub stencilBits: ::std::os::raw::c_uint,
@@ -457,6 +456,7 @@ pub struct sfContextSettings {
     pub majorVersion: ::std::os::raw::c_uint,
     pub minorVersion: ::std::os::raw::c_uint,
     pub attributeFlags: sfUint32,
+    pub sRgbCapable: sfBool,
 }
 impl ::std::default::Default for sfContextSettings {
     fn default() -> Self { unsafe { ::std::mem::zeroed() } }
