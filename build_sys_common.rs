@@ -19,4 +19,5 @@ pub fn link_csfml(lib: &str) {
 
     // link it
     println!("cargo:rustc-link-lib=csfml-{}", lib);
+    println!("cargo:rustc-link-lib=sfml-{}", lib);
 }
