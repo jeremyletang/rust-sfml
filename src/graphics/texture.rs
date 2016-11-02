@@ -29,7 +29,7 @@ use libc::{c_uint, size_t};
 use std::ptr;
 use std::ffi::CString;
 use std::io::{Read, Seek};
-use std::marker::PhantomData;
+use std::ops::Deref;
 
 use raw_conv::{Raw, FromRaw};
 use graphics::{RenderWindow, Image, IntRect};
@@ -48,36 +48,41 @@ pub struct Texture {
     texture: *mut ffi::sfTexture,
 }
 
-/// An immutable reference to a `Texture`.
-pub struct TextureRef<'a> {
-    texture: *const ffi::sfTexture,
-    _borrow: PhantomData<&'a Texture>,
+impl Deref for Texture {
+    type Target = TextureRef;
+
+    fn deref(&self) -> &TextureRef {
+        unsafe { &*(self.texture as *const TextureRef) }
+    }
 }
 
-impl<'a> TextureRef<'a> {
+/// A non-owning `Texture`.
+pub enum TextureRef {}
+
+impl TextureRef {
     /// Return the size of the texture
     ///
     /// Return the Size in pixels
     pub fn get_size(&self) -> Vector2u {
-        unsafe { Vector2u::from_raw(ffi::sfTexture_getSize(self.texture)) }
+        unsafe { Vector2u::from_raw(ffi::sfTexture_getSize(self as *const _ as _)) }
     }
     /// Tell whether the smooth filter is enabled or not for a texture
     ///
     /// Return true if smoothing is enabled, false if it is disabled
     pub fn is_smooth(&self) -> bool {
-        unsafe { ffi::sfTexture_isSmooth(self.texture) }.to_bool()
+        unsafe { ffi::sfTexture_isSmooth(self as *const _ as _) }.to_bool()
     }
     /// Tell whether a texture is repeated or not
     ///
     /// Return frue if repeat mode is enabled, false if it is disabled
     pub fn is_repeated(&self) -> bool {
-        unsafe { ffi::sfTexture_isRepeated(self.texture) }.to_bool()
+        unsafe { ffi::sfTexture_isRepeated(self as *const _ as _) }.to_bool()
     }
     /// Copy a texture's pixels to an image
     ///
     /// Return an image containing the texture's pixels
     pub fn copy_to_image(&self) -> Option<Image> {
-        let img = unsafe { ffi::sfTexture_copyToImage(self.texture) };
+        let img = unsafe { ffi::sfTexture_copyToImage(self as *const _ as _) };
         if img.is_null() {
             None
         } else {
@@ -304,11 +309,6 @@ impl Texture {
     pub fn get_maximum_size() -> u32 {
         unsafe { ffi::sfTexture_getMaximumSize() as u32 }
     }
-
-    /// Acquires a read-only view to this `Texture`.
-    pub fn get_ref(&self) -> TextureRef {
-        TextureRef::from_raw(self.texture)
-    }
 }
 
 impl Clone for Texture {
@@ -333,22 +333,6 @@ impl Raw for Texture {
 impl FromRaw for Texture {
     fn from_raw(raw: Self::Raw) -> Self {
         Texture { texture: raw }
-    }
-}
-
-impl<'a> Raw for TextureRef<'a> {
-    type Raw = *const ffi::sfTexture;
-    fn raw(&self) -> Self::Raw {
-        self.texture
-    }
-}
-
-impl<'a> FromRaw for TextureRef<'a> {
-    fn from_raw(raw: Self::Raw) -> Self {
-        TextureRef {
-            texture: raw,
-            _borrow: PhantomData,
-        }
     }
 }
 

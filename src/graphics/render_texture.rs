@@ -80,12 +80,12 @@ impl RenderTexture {
     /// Get the target texture of a render texture
     ///
     /// Return the target texture
-    pub fn get_texture(&self) -> TextureRef {
+    pub fn get_texture(&self) -> &TextureRef {
         let tex = unsafe { ffi::sfRenderTexture_getTexture(self.render_texture) };
         if tex.is_null() {
             panic!("RenderTexture::get_texture: Texture is null")
         } else {
-            TextureRef::from_raw(tex)
+            unsafe { &*(tex as *const TextureRef) }
         }
     }
 

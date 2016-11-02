@@ -27,7 +27,7 @@
 use libc::{c_uint, size_t};
 use std::ffi::CString;
 
-use raw_conv::{Raw, FromRaw};
+use raw_conv::Raw;
 use graphics::{TextureRef, Glyph};
 
 use csfml_system_sys::sfBool;
@@ -130,12 +130,12 @@ impl Font {
     /// * characterSize - Character size, in pixels
     ///
     /// Return the texture
-    pub fn get_texture(&self, character_size: u32) -> TextureRef {
+    pub fn get_texture(&self, character_size: u32) -> &TextureRef {
         let tex = unsafe { ffi::sfFont_getTexture(self.font, character_size as c_uint) };
         if tex.is_null() {
             panic!("Font::get_texture: texture is null");
         } else {
-            TextureRef::from_raw(tex)
+            unsafe { &*(tex as *const TextureRef) }
         }
     }
 
