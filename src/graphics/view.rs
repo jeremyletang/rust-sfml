@@ -55,7 +55,7 @@ impl Deref for View {
 }
 
 /// A non-owning `View`.
-pub enum ViewRef{}
+pub enum ViewRef {}
 
 impl ViewRef {
     /// Get the current orientation of a view
