@@ -54,7 +54,7 @@ impl Deref for View {
     }
 }
 
-/// A non-owning, immutable `View`.
+/// A non-owning `View`.
 pub enum ViewRef{}
 
 impl ViewRef {
