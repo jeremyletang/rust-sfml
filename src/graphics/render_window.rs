@@ -528,16 +528,16 @@ impl RenderTarget for RenderWindow {
     ///
     /// Return the current active view
     ///
-    fn get_view(&self) -> ViewRef {
-        unsafe { ViewRef::from_raw(ffi::sfRenderWindow_getView(self.render_window)) }
+    fn get_view(&self) -> &ViewRef {
+        unsafe { &*(ffi::sfRenderWindow_getView(self.render_window) as *const ViewRef) }
     }
 
     /// Get the default view of a render window
     ///
     /// Return the default view of the render window
     ///
-    fn get_default_view(&self) -> ViewRef {
-        unsafe { ViewRef::from_raw(ffi::sfRenderWindow_getDefaultView(self.render_window)) }
+    fn get_default_view(&self) -> &ViewRef {
+        unsafe { &*(ffi::sfRenderWindow_getDefaultView(self.render_window) as *const ViewRef) }
     }
 
     /// Convert a point from window coordinates to world coordinates

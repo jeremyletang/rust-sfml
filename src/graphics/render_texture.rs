@@ -132,15 +132,15 @@ impl RenderTarget for RenderTexture {
     /// Get the current active view of a render texture
     ///
     /// Return the current active view
-    fn get_view(&self) -> ViewRef {
-        unsafe { ViewRef::from_raw(ffi::sfRenderTexture_getView(self.render_texture)) }
+    fn get_view(&self) -> &ViewRef {
+        unsafe { &*(ffi::sfRenderTexture_getView(self.render_texture) as *const ViewRef) }
     }
 
     /// Get the default view of a render texture
     ///
     /// Return the default view of the render texture
-    fn get_default_view(&self) -> ViewRef {
-        unsafe { ViewRef::from_raw(ffi::sfRenderTexture_getDefaultView(self.render_texture)) }
+    fn get_default_view(&self) -> &ViewRef {
+        unsafe { &*(ffi::sfRenderTexture_getDefaultView(self.render_texture) as *const ViewRef) }
     }
 
     /// Get the viewport of a view applied to this target

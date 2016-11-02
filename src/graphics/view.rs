@@ -32,7 +32,7 @@ use libc::c_float;
 use raw_conv::{Raw, FromRaw};
 use graphics::FloatRect;
 use system::Vector2f;
-use std::marker::PhantomData;
+use std::ops::Deref;
 
 use csfml_graphics_sys as ffi;
 use csfml_system_sys::sfVector2f;
@@ -46,38 +46,43 @@ pub struct View {
     view: *mut ffi::sfView,
 }
 
-/// An immutable reference to a `View`.
-pub struct ViewRef<'a> {
-    view: *const ffi::sfView,
-    _borrow: PhantomData<&'a View>,
+impl Deref for View {
+    type Target = ViewRef;
+
+    fn deref(&self) -> &ViewRef {
+        unsafe { &*(self.view as *const ViewRef) }
+    }
 }
 
-impl<'a> ViewRef<'a> {
+/// A non-owning, immutable `View`.
+pub enum ViewRef{}
+
+impl ViewRef {
     /// Get the current orientation of a view
     ///
     /// Return the rotation angle of the view, in degrees
     pub fn get_rotation(&self) -> f32 {
-        unsafe { ffi::sfView_getRotation(self.view) as f32 }
+        unsafe { ffi::sfView_getRotation(self as *const _ as _) as f32 }
     }
     /// Get the center of a view
     ///
     /// Return the center of the view
     pub fn get_center(&self) -> Vector2f {
-        unsafe { Vector2f::from_raw(ffi::sfView_getCenter(self.view)) }
+        unsafe { Vector2f::from_raw(ffi::sfView_getCenter(self as *const _ as _)) }
     }
 
     /// Get the size of a view
     ///
     /// Return the size of the view
     pub fn get_size(&self) -> Vector2f {
-        unsafe { Vector2f::from_raw(ffi::sfView_getSize(self.view)) }
+        unsafe { Vector2f::from_raw(ffi::sfView_getSize(self as *const _ as _)) }
     }
 
     /// Get the target viewport rectangle of a view
     ///
     /// Return the viewport rectangle, expressed as a factor of the target size
     pub fn get_viewport(&self) -> FloatRect {
-        unsafe { FloatRect::from_raw(ffi::sfView_getViewport(self.view)) }
+        unsafe { FloatRect::from_raw(ffi::sfView_getViewport(self as *const _ as _)) }
     }
 }
 
@@ -290,21 +295,5 @@ impl Raw for View {
 impl FromRaw for View {
     fn from_raw(raw: Self::Raw) -> Self {
         View { view: raw }
-    }
-}
-
-impl<'a> Raw for ViewRef<'a> {
-    type Raw = *const ffi::sfView;
-    fn raw(&self) -> Self::Raw {
-        self.view
-    }
-}
-
-impl<'a> FromRaw for ViewRef<'a> {
-    fn from_raw(raw: Self::Raw) -> Self {
-        ViewRef {
-            view: raw,
-            _borrow: PhantomData,
-        }
     }
 }
