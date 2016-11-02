@@ -40,7 +40,6 @@ use ext::sf_bool_ext::SfBoolExt;
 /// Class for loading and manipulating character fonts
 pub struct Font {
     font: *mut ffi::sfFont,
-    dropable: bool,
 }
 
 impl Font {
@@ -56,10 +55,7 @@ impl Font {
         if fnt.is_null() {
             None
         } else {
-            Some(Font {
-                font: fnt,
-                dropable: true,
-            })
+            Some(Font { font: fnt })
         }
     }
 
@@ -75,10 +71,7 @@ impl Font {
         if fnt.is_null() {
             None
         } else {
-            Some(Font {
-                font: fnt,
-                dropable: true,
-            })
+            Some(Font { font: fnt })
         }
     }
 
@@ -95,10 +88,7 @@ impl Font {
         if fnt.is_null() {
             None
         } else {
-            Some(Font {
-                font: fnt,
-                dropable: true,
-            })
+            Some(Font { font: fnt })
         }
     }
 
@@ -164,10 +154,7 @@ impl Clone for Font {
         if fnt.is_null() {
             panic!("Not enough memory to clone Font")
         } else {
-            Font {
-                font: fnt,
-                dropable: true,
-            }
+            Font { font: fnt }
         }
     }
 }
@@ -182,8 +169,6 @@ impl Raw for Font {
 impl Drop for Font {
     /// Destroy an existing font
     fn drop(&mut self) {
-        if self.dropable {
-            unsafe { ffi::sfFont_destroy(self.font) }
-        }
+        unsafe { ffi::sfFont_destroy(self.font) }
     }
 }
