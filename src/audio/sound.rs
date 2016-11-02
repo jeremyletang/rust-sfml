@@ -42,7 +42,7 @@ use ext::sf_bool_ext::SfBoolExt;
 /// Regular sound that can be played in the audio environment.
 pub struct Sound<'s> {
     sound: *mut ffi::sfSound,
-    buffer: Option<SoundBufferRef<'s>>,
+    buffer: Option<&'s SoundBufferRef>,
 }
 
 impl<'s> Sound<'s> {
@@ -60,13 +60,13 @@ impl<'s> Sound<'s> {
     }
 
     /// Create a new Sound with a buffer
-    pub fn with_buffer(buffer: SoundBufferRef<'s>) -> Sound<'s> {
+    pub fn with_buffer(buffer: &SoundBufferRef) -> Sound {
         let s = unsafe { ffi::sfSound_create() };
         if s.is_null() {
             panic!("sfSound_create returned null.")
         } else {
             unsafe {
-                ffi::sfSound_setBuffer(s, buffer.raw());
+                ffi::sfSound_setBuffer(s, buffer as *const _ as _);
             }
             Sound {
                 sound: s,
@@ -148,15 +148,15 @@ impl<'s> Sound<'s> {
     ///
     /// # Arguments
     /// * buffer - Sound buffer to attach to the sound
-    pub fn set_buffer(&mut self, buffer: SoundBufferRef<'s>) {
+    pub fn set_buffer(&mut self, buffer: &'s SoundBufferRef) {
         self.buffer = Some(buffer);
-        unsafe { ffi::sfSound_setBuffer(self.sound, buffer.raw()) }
+        unsafe { ffi::sfSound_setBuffer(self.sound, buffer as *const _ as _) }
     }
 
     /// Get the audio buffer attached to a sound
     ///
     /// Return an option to Sound buffer attached to the sound or None
-    pub fn get_buffer(&self) -> Option<SoundBufferRef<'s>> {
+    pub fn get_buffer(&self) -> Option<&SoundBufferRef> {
         self.buffer
     }
 }
@@ -175,7 +175,7 @@ impl<'s> Clone for Sound<'s> {
         } else {
             Sound {
                 sound: s,
-                buffer: self.get_buffer(),
+                buffer: self.buffer,
             }
         }
     }

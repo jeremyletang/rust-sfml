@@ -32,7 +32,7 @@ use system::Time;
 
 use csfml_audio_sys as ffi;
 use ext::sf_bool_ext::SfBoolExt;
-use std::marker::PhantomData;
+use std::ops::Deref;
 
 /// Storage of audio sample
 ///
@@ -41,14 +41,18 @@ pub struct SoundBuffer {
     sound_buffer: *mut ffi::sfSoundBuffer,
 }
 
-/// An immutable reference to a `SoundBuffer`.
-#[derive(Clone, Copy)]
-pub struct SoundBufferRef<'a> {
-    sound_buffer: *const ffi::sfSoundBuffer,
-    _borrow: PhantomData<&'a SoundBuffer>,
+impl Deref for SoundBuffer {
+    type Target = SoundBufferRef;
+
+    fn deref(&self) -> &SoundBufferRef {
+        unsafe { &*(self.sound_buffer as *const SoundBufferRef) }
+    }
 }
 
-impl<'a> SoundBufferRef<'a> {
+/// A non-owning `SoundBuffer`.
+pub enum SoundBufferRef {}
+
+impl SoundBufferRef {
     /// Save a sound buffer to an audio file
     ///
     /// Here is a complete list of all the supported audio formats:
@@ -61,7 +65,7 @@ impl<'a> SoundBufferRef<'a> {
     /// Return true if saving succeeded, false if it faileds
     pub fn save_to_file(&self, filename: &str) -> bool {
         let c_str = CString::new(filename.as_bytes()).unwrap();
-        unsafe { ffi::sfSoundBuffer_saveToFile(self.sound_buffer, c_str.as_ptr()) }.to_bool()
+        unsafe { ffi::sfSoundBuffer_saveToFile(self as *const _ as _, c_str.as_ptr()) }.to_bool()
     }
 
     /// Get the number of samples stored in a sound buffer
@@ -71,7 +75,7 @@ impl<'a> SoundBufferRef<'a> {
     ///
     /// Return the number of samples
     pub fn get_sample_count(&self) -> i64 {
-        unsafe { ffi::sfSoundBuffer_getSampleCount(self.sound_buffer) as i64 }
+        unsafe { ffi::sfSoundBuffer_getSampleCount(self as *const _ as _) as i64 }
     }
 
     /// Get the number of channels used by a sound buffer
@@ -81,14 +85,14 @@ impl<'a> SoundBufferRef<'a> {
     ///
     /// Return the number of channels
     pub fn get_channel_count(&self) -> u32 {
-        unsafe { ffi::sfSoundBuffer_getChannelCount(self.sound_buffer) as u32 }
+        unsafe { ffi::sfSoundBuffer_getChannelCount(self as *const _ as _) as u32 }
     }
 
     /// Get the total duration of a sound buffer
     ///
     /// Return the sound duration
     pub fn get_duration(&self) -> Time {
-        Time::from_raw(unsafe { ffi::sfSoundBuffer_getDuration(self.sound_buffer) })
+        Time::from_raw(unsafe { ffi::sfSoundBuffer_getDuration(self as *const _ as _) })
     }
 
     /// Get the sample rate of a sound buffer
@@ -99,7 +103,7 @@ impl<'a> SoundBufferRef<'a> {
     ///
     /// Return the sample rate (number of samples per second)
     pub fn get_sample_rate(&self) -> u32 {
-        unsafe { ffi::sfSoundBuffer_getSampleRate(self.sound_buffer) as u32 }
+        unsafe { ffi::sfSoundBuffer_getSampleRate(self as *const _ as _) as u32 }
     }
 }
 
@@ -124,10 +128,6 @@ impl SoundBuffer {
             Some(SoundBuffer { sound_buffer: sound_buffer })
         }
     }
-    /// Get an immutable reference to the `SoundBuffer`.
-    pub fn get_ref(&self) -> SoundBufferRef {
-        SoundBufferRef::from_raw(self.sound_buffer)
-    }
 }
 
 impl Clone for SoundBuffer {
@@ -145,22 +145,6 @@ impl Raw for SoundBuffer {
     type Raw = *mut ffi::sfSoundBuffer;
     fn raw(&self) -> Self::Raw {
         self.sound_buffer
-    }
-}
-
-impl<'a> Raw for SoundBufferRef<'a> {
-    type Raw = *const ffi::sfSoundBuffer;
-    fn raw(&self) -> Self::Raw {
-        self.sound_buffer
-    }
-}
-
-impl<'a> FromRaw for SoundBufferRef<'a> {
-    fn from_raw(raw: Self::Raw) -> Self {
-        SoundBufferRef {
-            sound_buffer: raw,
-            _borrow: PhantomData,
-        }
     }
 }
 
