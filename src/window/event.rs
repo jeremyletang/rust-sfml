@@ -21,10 +21,6 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-//! Defines a system event and its parameters
-//!
-//! Event holds all the informations about a system event that just happened.
-
 use window::keyboard::Key;
 use window::mouse::MouseButton;
 use window::joystick::Axis;
