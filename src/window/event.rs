@@ -25,7 +25,35 @@ use window::keyboard::Key;
 use window::mouse::MouseButton;
 use window::joystick::Axis;
 
-/// Definition of all the event types
+/// Defines a system event and its parameters.
+///
+/// `Event` holds all the informations about a system event that just happened.
+///
+/// Events are retrieved using the
+/// `Window::pollEvent`, `Window::waitEvent`, or `Window::events` functions.
+///
+/// An `Event` instance contains the type of the event
+/// (mouse moved, key pressed, window closed, ...) as well as the details about this
+/// particular event.
+///
+/// # Usage example
+///
+/// ```
+/// # use sfml::graphics::RenderWindow;
+/// # use sfml::window::{Event, VideoMode, window_style, Key};
+/// # let mut window = RenderWindow::new(VideoMode::new_init(32, 32, 32),
+/// #                                    "test",
+/// #                                    window_style::CLOSE,
+/// #                                    &Default::default()).unwrap();
+/// # fn do_something_with_the_new_size(_x: u32, _y: u32) {}
+/// while let Some(event) = window.poll_event() {
+///     match event {
+///         Event::Closed | Event::KeyPressed { code: Key::Escape, .. } => window.close(),
+///         Event::Resized { width, height } => do_something_with_the_new_size(width, height),
+///         _ => { /* Do nothing */ }
+///     }
+/// }
+/// ```
 #[derive(Clone, PartialEq, PartialOrd, Debug, Copy)]
 pub enum Event {
     /// The window requested to be closed
