@@ -93,6 +93,9 @@ impl<'a, S: SoundStream> SoundStreamPlayer<'a, S> {
             sfSoundStream_stop(self.sf_sound_stream);
         }
     }
+    pub fn get_playing_offset(&self) -> Time {
+        unsafe { Time::from_raw(sfSoundStream_getPlayingOffset(self.sf_sound_stream)) }
+    }
 }
 
 impl<'a, S: SoundStream> Drop for SoundStreamPlayer<'a, S> {
