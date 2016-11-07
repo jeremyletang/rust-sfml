@@ -62,7 +62,7 @@ unsafe extern "C" fn seek_callback<S: SoundStream>(offset: sfTime, user_data: *m
 
 impl<'a, S: SoundStream> SoundStreamPlayer<'a, S> {
     /// Create a new `SoundStreamPlayer` with the specified `SoundStream`.
-    pub fn new(sound_stream: &mut S) -> Self {
+    pub fn new(sound_stream: &'a mut S) -> Self {
         SoundStreamPlayer {
             sf_sound_stream: unsafe {
                 sfSoundStream_create(Some(get_data_callback::<S>),
