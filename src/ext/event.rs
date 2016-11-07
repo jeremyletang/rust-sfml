@@ -48,7 +48,12 @@ fn key(evt: &mut sfEvent, type_: sfEventType) -> Event {
 
 fn text(evt: &mut sfEvent) -> Event {
     let e: *mut sfTextEvent = evt as *mut _ as *mut _;
-    unsafe { Event::TextEntered { code: ((*e).unicode as u8) as char } }
+    unsafe {
+        Event::TextEntered {
+            unicode: ::std::char::from_u32((*e).unicode)
+                .expect("Invalid unicode encountered on TextEntered event"),
+        }
+    }
 }
 
 fn mouse_move(evt: &mut sfEvent) -> Event {

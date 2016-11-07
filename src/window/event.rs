@@ -72,7 +72,7 @@ pub enum Event {
     /// A character was entered
     TextEntered {
         /// The character entered by the user
-        code: char,
+        unicode: char,
     },
     /// A key was pressed
     KeyPressed {
