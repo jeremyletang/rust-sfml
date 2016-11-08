@@ -5,23 +5,24 @@ use raw_conv::FromRaw;
 
 pub fn get_wrapped_event(event: &mut sfEvent) -> Option<Event> {
     use csfml_window_sys::sfEventType::*;
+    use window::Event::*;
 
     let type_ = unsafe { *event.type_() };
 
     Some(match type_ {
-        sfEvtClosed => Event::Closed,
+        sfEvtClosed => Closed,
         sfEvtResized => {
             let e = unsafe { &*event.size() };
 
-            Event::Resized {
+            Resized {
                 width: e.width,
                 height: e.height,
             }
         }
-        sfEvtLostFocus => Event::LostFocus,
-        sfEvtGainedFocus => Event::GainedFocus,
+        sfEvtLostFocus => LostFocus,
+        sfEvtGainedFocus => GainedFocus,
         sfEvtTextEntered => {
-            Event::TextEntered {
+            TextEntered {
                 unicode: unsafe {
                     ::std::char::from_u32((*event.text()).unicode)
                         .expect("Invalid unicode encountered on TextEntered event")
@@ -31,7 +32,7 @@ pub fn get_wrapped_event(event: &mut sfEvent) -> Option<Event> {
         sfEvtKeyPressed => {
             let e = unsafe { &*event.key() };
 
-            Event::KeyPressed {
+            KeyPressed {
                 code: unsafe { ::std::mem::transmute(e.code) },
                 alt: e.alt.to_bool(),
                 ctrl: e.control.to_bool(),
@@ -42,7 +43,7 @@ pub fn get_wrapped_event(event: &mut sfEvent) -> Option<Event> {
         sfEvtKeyReleased => {
             let e = unsafe { &*event.key() };
 
-            Event::KeyReleased {
+            KeyReleased {
                 code: unsafe { ::std::mem::transmute(e.code) },
                 alt: e.alt.to_bool(),
                 ctrl: e.control.to_bool(),
@@ -52,7 +53,7 @@ pub fn get_wrapped_event(event: &mut sfEvent) -> Option<Event> {
         }
         sfEvtMouseWheelScrolled => {
             let e = unsafe { &*event.mouseWheelScroll() };
-            Event::MouseWheelScrolled {
+            MouseWheelScrolled {
                 wheel: FromRaw::from_raw(e.wheel),
                 delta: e.delta,
                 x: e.x,
@@ -62,7 +63,7 @@ pub fn get_wrapped_event(event: &mut sfEvent) -> Option<Event> {
         sfEvtMouseButtonPressed => {
             let e = unsafe { &*event.mouseButton() };
 
-            Event::MouseButtonPressed {
+            MouseButtonPressed {
                 button: FromRaw::from_raw(e.button),
                 x: e.x,
                 y: e.y,
@@ -71,7 +72,7 @@ pub fn get_wrapped_event(event: &mut sfEvent) -> Option<Event> {
         sfEvtMouseButtonReleased => {
             let e = unsafe { &*event.mouseButton() };
 
-            Event::MouseButtonReleased {
+            MouseButtonReleased {
                 button: FromRaw::from_raw(e.button),
                 x: e.x,
                 y: e.y,
@@ -79,14 +80,14 @@ pub fn get_wrapped_event(event: &mut sfEvent) -> Option<Event> {
         }
         sfEvtMouseMoved => {
             let e = unsafe { &*event.mouseMove() };
-            Event::MouseMoved { x: e.x, y: e.y }
+            MouseMoved { x: e.x, y: e.y }
         }
-        sfEvtMouseEntered => Event::MouseEntered,
-        sfEvtMouseLeft => Event::MouseLeft,
+        sfEvtMouseEntered => MouseEntered,
+        sfEvtMouseLeft => MouseLeft,
         sfEvtJoystickButtonPressed => {
             let e = unsafe { &*event.joystickButton() };
 
-            Event::JoystickButtonPressed {
+            JoystickButtonPressed {
                 joystickid: (*e).joystickId,
                 button: (*e).button,
             }
@@ -94,7 +95,7 @@ pub fn get_wrapped_event(event: &mut sfEvent) -> Option<Event> {
         sfEvtJoystickButtonReleased => {
             let e = unsafe { &*event.joystickButton() };
 
-            Event::JoystickButtonReleased {
+            JoystickButtonReleased {
                 joystickid: (*e).joystickId,
                 button: (*e).button,
             }
@@ -102,21 +103,17 @@ pub fn get_wrapped_event(event: &mut sfEvent) -> Option<Event> {
         sfEvtJoystickMoved => {
             let e = unsafe { &*event.joystickMove() };
 
-            Event::JoystickMoved {
+            JoystickMoved {
                 joystickid: e.joystickId,
                 axis: FromRaw::from_raw(e.axis),
                 position: e.position,
             }
         }
         sfEvtJoystickConnected => {
-            Event::JoystickConnected {
-                joystickid: unsafe { (*event.joystickConnect()).joystickId },
-            }
+            JoystickConnected { joystickid: unsafe { (*event.joystickConnect()).joystickId } }
         }
         sfEvtJoystickDisconnected => {
-            Event::JoystickDisconnected {
-                joystickid: unsafe { (*event.joystickConnect()).joystickId },
-            }
+            JoystickDisconnected { joystickid: unsafe { (*event.joystickConnect()).joystickId } }
         }
         // Ignore deprecated events
         sfEvtMouseWheelMoved => return None,
