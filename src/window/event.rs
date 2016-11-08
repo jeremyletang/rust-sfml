@@ -22,7 +22,7 @@
 //
 
 use window::keyboard::Key;
-use window::mouse::MouseButton;
+use window::mouse::{MouseButton, MouseWheel};
 use window::joystick::Axis;
 
 /// Defines a system event and its parameters.
@@ -101,12 +101,15 @@ pub enum Event {
         system: bool,
     },
     /// The mouse wheel was scrolled
-    MouseWheelMoved {
-        /// Number of ticks the wheel has moved (positive is up, negative is down)
-        delta: i32,
+    MouseWheelScrolled {
+        /// Which wheel (for mice with multiple ones).
+        wheel: MouseWheel,
+        /// Wheel offset (positive is up/left, negative is down/right).
+        /// High-precision mice may use non-integral offsets.
+        delta: f32,
         /// X position of the mouse pointer, relative to the left of the owner window.
         x: i32,
-        /// Y position of the mouse pointer, relative to the top of the owner window.
+        /// X position of the mouse pointer, relative to the left of the owner window.
         y: i32,
     },
     /// A mouse button was pressed

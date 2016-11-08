@@ -1,6 +1,7 @@
 use csfml_window_sys::*;
 use window::Event;
 use ext::sf_bool_ext::SfBoolExt;
+use raw_conv::FromRaw;
 
 fn type_(evt: &mut sfEvent) -> *mut sfEventType {
     evt as *mut _ as *mut _
@@ -92,13 +93,12 @@ fn mouse_button(evt: &mut sfEvent, type_: sfEventType) -> Event {
 }
 
 fn mouse_wheel(evt: &mut sfEvent) -> Event {
-    let e: *mut sfMouseWheelEvent = evt as *mut _ as *mut _;
-    unsafe {
-        Event::MouseWheelMoved {
-            delta: (*e).delta,
-            x: (*e).x,
-            y: (*e).y,
-        }
+    let e = unsafe { &mut *evt.mouseWheelScroll() };
+    Event::MouseWheelScrolled {
+        wheel: FromRaw::from_raw(e.wheel),
+        delta: e.delta,
+        x: e.x,
+        y: e.y,
     }
 }
 
@@ -155,7 +155,7 @@ pub fn get_wrapped_event(event: &mut ::csfml_window_sys::sfEvent) -> Option<Even
         sfEventType::sfEvtTextEntered => text(event),
         sfEventType::sfEvtKeyPressed |
         sfEventType::sfEvtKeyReleased => key(event, type_),
-        sfEventType::sfEvtMouseWheelMoved => mouse_wheel(event),
+        sfEventType::sfEvtMouseWheelScrolled => mouse_wheel(event),
         sfEventType::sfEvtMouseButtonPressed |
         sfEventType::sfEvtMouseButtonReleased => mouse_button(event, type_),
         sfEventType::sfEvtMouseMoved => mouse_move(event),

@@ -23,7 +23,7 @@
 
 use csfml_window_sys as ffi;
 use ext::sf_bool_ext::SfBoolExt;
-use raw_conv::Raw;
+use raw_conv::{Raw, FromRaw};
 
 /// Mouse buttons.
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
@@ -38,6 +38,35 @@ pub enum MouseButton {
     XButton1,
     /// The second extra mouse button.
     XButton2,
+}
+
+#[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
+/// Mouse wheels.
+pub enum MouseWheel {
+    /// The vertical mouse wheel.
+    Vertical,
+    /// The horizontal mouse wheel.
+    Horizontal,
+}
+
+impl Raw for MouseWheel {
+    type Raw = ffi::sfMouseWheel;
+
+    fn raw(&self) -> Self::Raw {
+        match *self {
+            MouseWheel::Vertical => ffi::sfMouseWheel::sfMouseVerticalWheel,
+            MouseWheel::Horizontal => ffi::sfMouseWheel::sfMouseHorizontalWheel,
+        }
+    }
+}
+
+impl FromRaw for MouseWheel {
+    fn from_raw(raw: Self::Raw) -> Self {
+        match raw {
+            ffi::sfMouseWheel::sfMouseVerticalWheel => MouseWheel::Vertical,
+            ffi::sfMouseWheel::sfMouseHorizontalWheel => MouseWheel::Horizontal,
+        }
+    }
 }
 
 impl Raw for MouseButton {
