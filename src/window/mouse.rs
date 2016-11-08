@@ -27,17 +27,20 @@ use raw_conv::{Raw, FromRaw};
 
 /// Mouse buttons.
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
+#[repr(u32)]
 pub enum MouseButton {
     /// The left mouse button.
-    Left,
+    Left = 0,
     /// The right mouse button.
-    Right,
+    Right = 1,
     /// The middle (wheel) mouse button.
-    Middle,
+    Middle = 2,
     /// The first extra mouse button.
-    XButton1,
+    XButton1 = 3,
     /// The second extra mouse button.
-    XButton2,
+    XButton2 = 4,
+    #[doc(hidden)]
+    Count = 5,
 }
 
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
@@ -73,16 +76,13 @@ impl Raw for MouseButton {
     type Raw = ffi::sfMouseButton;
 
     fn raw(&self) -> Self::Raw {
-        use csfml_window_sys::sfMouseButton::*;
-        use self::MouseButton::*;
+        unsafe { ::std::mem::transmute(*self) }
+    }
+}
 
-        match *self {
-            Left => sfMouseLeft,
-            Right => sfMouseRight,
-            Middle => sfMouseMiddle,
-            XButton1 => sfMouseXButton1,
-            XButton2 => sfMouseXButton2,
-        }
+impl FromRaw for MouseButton {
+    fn from_raw(raw: Self::Raw) -> Self {
+        unsafe { ::std::mem::transmute(raw) }
     }
 }
 

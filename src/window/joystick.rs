@@ -30,7 +30,7 @@ use libc::c_uint;
 
 use csfml_window_sys as ffi;
 use ext::sf_bool_ext::SfBoolExt;
-use raw_conv::Raw;
+use raw_conv::{Raw, FromRaw};
 
 /// Maximum number of supported joysticks.
 pub const COUNT: u32 = 8;
@@ -41,41 +41,36 @@ pub const AXIS_COUNT: u32 = 8;
 
 /// Axes supported by SFML joysticks
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
+#[repr(u32)]
 pub enum Axis {
     /// The X axis.
-    X,
+    X = 0,
     /// The Y axis.
-    Y,
+    Y = 1,
     /// The Z axis.
-    Z,
+    Z = 2,
     /// The R axis.
-    R,
+    R = 3,
     /// The U axis.
-    U,
+    U = 4,
     /// The V axis.
-    V,
+    V = 5,
     /// The X axis of the point-of-view hat.
-    PovX,
+    PovX = 6,
     /// The Y axis of the point-of-view hat.
-    PovY,
+    PovY = 7,
 }
 
 impl Raw for Axis {
     type Raw = ffi::sfJoystickAxis;
     fn raw(&self) -> Self::Raw {
-        use self::Axis::*;
-        use csfml_window_sys::sfJoystickAxis::*;
+        unsafe { ::std::mem::transmute(*self) }
+    }
+}
 
-        match *self {
-            X => sfJoystickX,
-            Y => sfJoystickY,
-            Z => sfJoystickZ,
-            R => sfJoystickR,
-            U => sfJoystickU,
-            V => sfJoystickV,
-            PovX => sfJoystickPovX,
-            PovY => sfJoystickPovY,
-        }
+impl FromRaw for Axis {
+    fn from_raw(raw: Self::Raw) -> Self {
+        unsafe { ::std::mem::transmute(raw) }
     }
 }
 
