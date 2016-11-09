@@ -104,3 +104,10 @@ impl MouseButton {
 pub fn desktop_position() -> Vector2i {
     FromRaw::from_raw(unsafe { ffi::sfMouse_getPosition(::std::ptr::null()) })
 }
+
+/// Set the current position of the mouse in desktop coordinates.
+///
+/// This function sets the global position of the mouse cursor on the desktop.
+pub fn set_desktop_position(position: &Vector2i) {
+    unsafe { ffi::sfMouse_setPosition(position.raw(), ::std::ptr::null()) }
+}

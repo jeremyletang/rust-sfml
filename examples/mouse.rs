@@ -2,6 +2,7 @@ extern crate sfml;
 
 use sfml::graphics::*;
 use sfml::window::*;
+use sfml::system::*;
 
 fn main() {
     let mut window = RenderWindow::new(VideoMode::new_init(800, 600, 32),
@@ -25,7 +26,7 @@ fn main() {
     }
 
     loop {
-        for ev in window.events() {
+        while let Some(ev) = window.poll_event() {
             match ev {
                 Event::Closed => return,
                 Event::MouseWheelScrolled { wheel, delta, x, y } => {
@@ -37,13 +38,25 @@ fn main() {
                 Event::MouseButtonReleased { button, x, y } => {
                     push_text!(x, y, "Release: {:?}, {}, {}", button, x, y);
                 }
+                Event::KeyPressed { code, .. } => {
+                    if code == Key::W {
+                        window.set_mouse_position(&Vector2i::new(400, 300));
+                    } else if code == Key::D {
+                        let dm = VideoMode::get_desktop_mode();
+                        let center = Vector2i::new(dm.width as i32 / 2, dm.height as i32 / 2);
+                        sfml::window::mouse::set_desktop_position(&center);
+                    }
+                }
                 _ => {}
             }
         }
 
         let mp = window.mouse_position();
         let dmp = sfml::window::mouse::desktop_position();
-        mp_text.set_string(&format!("x: {}, y: {} (Window)\nx:{}, y: {} (Desktop)",
+        mp_text.set_string(&format!("x: {}, y: {} (Window)\n\
+                                     x: {}, y: {} (Desktop)\n\
+                                     'W' to center mouse on window\n\
+                                     'D' to center mouse on desktop",
                                     mp.x,
                                     mp.y,
                                     dmp.x,
