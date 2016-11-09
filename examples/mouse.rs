@@ -44,7 +44,7 @@ fn main() {
                     } else if code == Key::D {
                         let dm = VideoMode::get_desktop_mode();
                         let center = Vector2i::new(dm.width as i32 / 2, dm.height as i32 / 2);
-                        sfml::window::mouse::set_desktop_position(&center);
+                        mouse::set_desktop_position(&center);
                     }
                 }
                 _ => {}
@@ -52,7 +52,7 @@ fn main() {
         }
 
         let mp = window.mouse_position();
-        let dmp = sfml::window::mouse::desktop_position();
+        let dmp = mouse::desktop_position();
         mp_text.set_string(&format!("x: {}, y: {} (Window)\n\
                                      x: {}, y: {} (Desktop)\n\
                                      'W' to center mouse on window\n\
