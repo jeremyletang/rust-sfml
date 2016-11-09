@@ -152,3 +152,13 @@ impl Key {
         unsafe { ffi::sfKeyboard_isKeyPressed(::std::mem::transmute(self)) }.to_bool()
     }
 }
+
+/// Show or hide the virtual keyboard.
+///
+/// Warning: the virtual keyboard is not supported on all systems. It will typically be
+/// implemented on mobile OSes (Android, iOS) but not on desktop OSes (Windows, Linux, ...).
+///
+/// If the virtual keyboard is not available, this function does nothing.
+pub fn set_virtual_keyboard_visible(visible: bool) {
+    unsafe { ffi::sfKeyboard_setVirtualKeyboardVisible(SfBoolExt::from_bool(visible)) }
+}

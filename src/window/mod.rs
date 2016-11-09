@@ -29,7 +29,7 @@ pub use self::video_mode::VideoMode;
 pub use self::context::Context;
 pub use self::context_settings::{ContextSettings, CONTEXT_DEFAULT, CONTEXT_CORE, CONTEXT_DEBUG};
 pub use self::window_style::WindowStyle;
-pub use self::keyboard::Key;
+pub use self::keyboard::{Key, set_virtual_keyboard_visible};
 pub use self::mouse::MouseButton;
 pub use self::event::Event;
 

@@ -480,6 +480,7 @@ extern "C" {
      -> sfJoystickIdentification;
     pub fn sfJoystick_update();
     pub fn sfKeyboard_isKeyPressed(key: sfKeyCode) -> sfBool;
+    pub fn sfKeyboard_setVirtualKeyboardVisible(visible: sfBool);
     pub fn sfMouse_isButtonPressed(button: sfMouseButton) -> sfBool;
     pub fn sfMouse_getPosition(relativeTo: *const sfWindow) -> sfVector2i;
     pub fn sfMouse_setPosition(position: sfVector2i,
