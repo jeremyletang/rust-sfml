@@ -25,13 +25,10 @@ fn main() {
     let game_height: u32 = 600;
     let paddle_size: Vector2f = Vector2f::new(25., 100.);
     let ball_radius: f32 = 10.;
-    let context_settings = ContextSettings {
-        antialiasing_level: aa_level,
-        ..Default::default()
-    };
+    let context_settings = ContextSettings { antialiasing_level: aa_level, ..Default::default() };
 
     // Create the window of the application
-    let mut window = RenderWindow::new(VideoMode::new_init(game_width, game_height, 32),
+    let mut window = RenderWindow::new(VideoMode::new(game_width, game_height, 32),
                                        "SFML Pong",
                                        window_style::CLOSE,
                                        &context_settings)

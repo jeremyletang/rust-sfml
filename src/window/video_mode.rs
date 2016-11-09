@@ -48,21 +48,10 @@ pub struct VideoMode {
 }
 
 impl VideoMode {
-    /// Default constructor for class VideoMode.
-    ///
-    /// Return a new VideoMode
-    pub fn new() -> VideoMode {
-        VideoMode {
-            width: 0,
-            height: 0,
-            bits_per_pixel: 0,
-        }
-    }
-
     /// Constructor with parameters for class VideoMode.
     ///
     /// Return a new VideoMode initialized
-    pub fn new_init(width: u32, height: u32, bits_per_pixel: u32) -> VideoMode {
+    pub fn new(width: u32, height: u32, bits_per_pixel: u32) -> VideoMode {
         VideoMode {
             width: width,
             height: height,
@@ -156,6 +145,10 @@ impl FromRaw for VideoMode {
 
 impl Default for VideoMode {
     fn default() -> Self {
-        VideoMode::new()
+        VideoMode {
+            width: 0,
+            height: 0,
+            bits_per_pixel: 0,
+        }
     }
 }

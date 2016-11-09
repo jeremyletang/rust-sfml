@@ -39,7 +39,7 @@ impl<'s> Drawable for Bullet<'s> {
 }
 
 fn main() {
-    let mut window = RenderWindow::new(VideoMode::new_init(800, 600, 32),
+    let mut window = RenderWindow::new(VideoMode::new(800, 600, 32),
                                        "Custom drawable",
                                        window_style::CLOSE,
                                        &Default::default())

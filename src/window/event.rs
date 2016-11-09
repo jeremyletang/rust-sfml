@@ -41,7 +41,7 @@ use window::joystick::Axis;
 /// ```
 /// # use sfml::graphics::RenderWindow;
 /// # use sfml::window::{Event, VideoMode, window_style, Key};
-/// # let mut window = RenderWindow::new(VideoMode::new_init(32, 32, 32),
+/// # let mut window = RenderWindow::new(VideoMode::new(32, 32, 32),
 /// #                                    "test",
 /// #                                    window_style::CLOSE,
 /// #                                    &Default::default()).unwrap();

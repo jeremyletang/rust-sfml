@@ -5,7 +5,7 @@ use sfml::system::Vector2f;
 use sfml::window::{VideoMode, Event, window_style};
 
 fn main() {
-    let mut window = RenderWindow::new(VideoMode::new_init(800, 600, 32),
+    let mut window = RenderWindow::new(VideoMode::new(800, 600, 32),
                                        "SFML VertexArray accessors Example",
                                        window_style::CLOSE,
                                        &Default::default())
