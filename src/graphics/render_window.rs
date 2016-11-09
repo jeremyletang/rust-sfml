@@ -448,6 +448,13 @@ impl RenderWindow {
         unsafe { ffi::sfMouse_setPositionRenderWindow(position.raw(), self.render_window) }
     }
 
+    /// Returns the current position of a touch in window coordinates.
+    pub fn touch_position(&self, finger: u32) -> Vector2i {
+        unsafe {
+            FromRaw::from_raw(ffi::sfTouch_getPositionRenderWindow(finger, self.render_window))
+        }
+    }
+
     /// Copy the current contents of a render window to an image
     ///
     /// This is a slow operation, whose main purpose is to make

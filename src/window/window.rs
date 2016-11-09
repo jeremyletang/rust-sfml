@@ -382,6 +382,11 @@ impl Window {
     pub fn set_mouse_position(&mut self, position: &Vector2i) {
         unsafe { ffi::sfMouse_setPosition(position.raw(), self.window) }
     }
+
+    /// Returns the current position of a touch in window coordinates.
+    pub fn touch_position(&self, finger: u32) -> Vector2i {
+        unsafe { FromRaw::from_raw(ffi::sfTouch_getPosition(finger, self.window)) }
+    }
 }
 
 impl Raw for Window {

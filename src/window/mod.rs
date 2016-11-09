@@ -23,7 +23,6 @@
 
 //! Provides OpenGL-based windows, and abstractions for events and input handling.
 
-
 pub use self::window::Window;
 pub use self::video_mode::VideoMode;
 pub use self::context::Context;
@@ -43,3 +42,4 @@ pub mod mouse;
 mod event;
 pub mod window_style;
 pub mod sensor;
+pub mod touch;
