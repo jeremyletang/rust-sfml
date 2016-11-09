@@ -29,9 +29,45 @@ use raw_conv::{Raw, FromRaw};
 use csfml_window_sys as ffi;
 use ext::sf_bool_ext::SfBoolExt;
 
-/// `VideoMode` defines a video mode (width, height, bpp, frequency)
+/// `VideoMode` defines a video mode (width, height, bpp)
 ///
-/// Provides functions for getting modes supported by the display device
+/// A video mode is defined by a width and a height (in pixels) and a depth (in bits per pixel).
+///
+/// Video modes are used to setup windows at creation time.
+///
+/// The main usage of video modes is for fullscreen mode: indeed you must use one of the valid
+/// video modes allowed by the OS (which are defined by what the monitor and
+/// the graphics card support), otherwise your window creation will just fail.
+///
+/// `VideoMode` provides an associated function for retrieving the list of all the video modes
+/// supported by the system: `get_fullscreen_modes()`.
+///
+/// A custom video mode can also be checked directly for fullscreen compatibility
+/// with its `is_valid()` function.
+///
+/// Additionally, `VideoMode` provides a static function to get the mode currently used by
+/// the desktop: `get_desktop_mode`. This allows to build windows with the same size or
+/// pixel depth as the current resolution.
+///
+/// # Usage example
+///
+/// ```
+/// use sfml::window::{VideoMode, Window, window_style};
+///
+/// // Display the list of all the video modes available for fullscreen
+/// let modes = VideoMode::get_fullscreen_modes();
+///
+/// for mode in modes {
+///     println!("{:?}", mode);
+/// }
+///
+/// // Create a window with the same pixel depth as the desktop
+/// let desktop = VideoMode::get_desktop_mode();
+/// let _window = Window::new(VideoMode::new(1024, 768, desktop.bits_per_pixel),
+///                           "SFML window",
+///                           window_style::CLOSE,
+///                           &Default::default()).unwrap();
+/// ```
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
 pub struct VideoMode {
     /// Video mode width, in pixels.
