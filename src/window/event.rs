@@ -201,4 +201,15 @@ pub enum Event {
         /// Y position of the touch, relative to the top of the owner window.
         y: i32,
     },
+    /// A sensor value changed
+    SensorChanged {
+        /// Type of the sensor.
+        type_: ::window::sensor::Type,
+        /// Current value of the sensor on X axis.
+        x: f32,
+        /// 	Current value of the sensor on Y axis.
+        y: f32,
+        /// Current value of the sensor on Z axis.
+        z: f32,
+    },
 }

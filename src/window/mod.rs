@@ -43,3 +43,4 @@ mod keyboard;
 mod mouse;
 mod event;
 pub mod window_style;
+pub mod sensor;

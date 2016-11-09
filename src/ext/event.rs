@@ -142,11 +142,19 @@ pub fn get_wrapped_event(event: &mut sfEvent) -> Option<Event> {
                 y: e.y,
             }
         }
+        sfEvtSensorChanged => {
+            let e = unsafe { &*event.sensor() };
+
+            SensorChanged {
+                type_: FromRaw::from_raw(e.sensorType),
+                x: e.x,
+                y: e.y,
+                z: e.z,
+            }
+        }
 
         // Ignore deprecated events
         sfEvtMouseWheelMoved => return None,
-        // Events not yet implemented
-        sfEvtSensorChanged => unimplemented!(),
         sfEvtCount => unreachable!(),
     })
 }
