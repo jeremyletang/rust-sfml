@@ -117,45 +117,13 @@ impl Window {
                style: Style,
                settings: &ContextSettings)
                -> Option<Window> {
-        let c_str = CString::new(title.as_bytes()).unwrap();
+        let mut codepoints: Vec<u32> = title.chars().map(|c| c as u32).collect();
+        codepoints.push(0);
         let sf_win: *mut ffi::sfWindow = unsafe {
-            ffi::sfWindow_create(mode.raw(), c_str.as_ptr(), style.bits(), &settings.raw())
-        };
-        if sf_win.is_null() {
-            None
-        } else {
-            Some(Window { window: sf_win })
-        }
-    }
-
-    /// Construct a new window (with a UTF-32 title)
-    ///
-    /// This function creates the window with the size and pixel
-    /// depth defined in mode. An optional style can be passed to
-    /// customize the look and behaviour of the window (borders,
-    /// title bar, resizable, closable, ...). If style contains
-    /// sfFullscreen, then mode must be a valid video mode.
-    ///
-    /// The fourth parameter is a pointer to a structure specifying
-    /// advanced OpenGL context settings such as antialiasing,
-    /// depth-buffer bits, etc.
-    ///
-    /// # Arguments
-    /// * mode - Video mode to use (defines the width, height and depth of the
-    ///                             rendering area of the window)
-    /// * title - Title of the window (UTF-32)
-    /// * style - Window style
-    /// * settings - Additional settings for the underlying OpenGL context
-    ///
-    /// Return Some(Window) or None
-    pub fn with_unicode(mode: VideoMode,
-                        title: Vec<u32>,
-                        style: Style,
-                        settings: &ContextSettings)
-                        -> Option<Window> {
-
-        let sf_win = unsafe {
-            ffi::sfWindow_createUnicode(mode.raw(), title.as_ptr(), style.bits(), &settings.raw())
+            ffi::sfWindow_createUnicode(mode.raw(),
+                                        codepoints.as_ptr(),
+                                        style.bits(),
+                                        &settings.raw())
         };
         if sf_win.is_null() {
             None
