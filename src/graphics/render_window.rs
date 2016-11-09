@@ -32,7 +32,7 @@ use std::vec::Vec;
 use std::ffi::CString;
 
 use raw_conv::{Raw, RawMut, FromRaw};
-use window::{ContextSettings, VideoMode, Event, WindowStyle};
+use window::{ContextSettings, VideoMode, Event, Style};
 use system::{Vector2f, Vector2i, Vector2u};
 use graphics::{Drawable, Color, CircleShape, RectangleShape, Text, Sprite, VertexArray,
                RenderStates, View, ViewRef, Image, IntRect, RenderTarget, Vertex, PrimitiveType,
@@ -83,7 +83,7 @@ impl RenderWindow {
     /// Return Some(RenderWindow) or None
     pub fn new(mode: VideoMode,
                title: &str,
-               style: WindowStyle,
+               style: Style,
                settings: &ContextSettings)
                -> Option<RenderWindow> {
         let c_str = CString::new(title).unwrap();
@@ -123,7 +123,7 @@ impl RenderWindow {
     /// Return Some(RenderWindow) or None
     pub fn with_unicode(mode: VideoMode,
                         title: Vec<u32>,
-                        style: WindowStyle,
+                        style: Style,
                         settings: &ContextSettings)
                         -> Option<RenderWindow> {
 

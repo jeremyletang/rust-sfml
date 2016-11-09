@@ -27,7 +27,7 @@ use std::ffi::CString;
 use std::marker::PhantomData;
 
 use raw_conv::{Raw, FromRaw};
-use window::{Event, VideoMode, ContextSettings, WindowStyle};
+use window::{Event, VideoMode, ContextSettings, Style};
 use system::{Vector2i, Vector2u};
 use csfml_system_sys::sfBool;
 use ext::sf_bool_ext::SfBoolExt;
@@ -114,7 +114,7 @@ impl Window {
     /// Return Some(Window) or None
     pub fn new(mode: VideoMode,
                title: &str,
-               style: WindowStyle,
+               style: Style,
                settings: &ContextSettings)
                -> Option<Window> {
         let c_str = CString::new(title.as_bytes()).unwrap();
@@ -150,7 +150,7 @@ impl Window {
     /// Return Some(Window) or None
     pub fn with_unicode(mode: VideoMode,
                         title: Vec<u32>,
-                        style: WindowStyle,
+                        style: Style,
                         settings: &ContextSettings)
                         -> Option<Window> {
 
