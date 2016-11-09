@@ -187,7 +187,7 @@ impl Window {
     /// * width - Icon's width, in pixels
     /// * height - Icon's height, in pixels
     /// * pixels - Vector of pixels
-    pub fn set_icon(&mut self, width: u32, height: u32, pixels: Vec<u8>) {
+    pub fn set_icon(&mut self, width: u32, height: u32, pixels: &[u8]) {
         unsafe {
             ffi::sfWindow_setIcon(self.window,
                                   width as c_uint,
