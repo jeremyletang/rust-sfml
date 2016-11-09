@@ -3,7 +3,7 @@ extern crate rand;
 
 use sfml::graphics::{CircleShape, Color, Font, RectangleShape, RenderTarget, RenderWindow, Shape,
                      Text, Transformable};
-use sfml::window::{ContextSettings, Key, VideoMode, Event, window_style};
+use sfml::window::{ContextSettings, Key, VideoMode, Event, style};
 use sfml::system::{Clock, Time, Vector2f};
 use sfml::audio::{Sound, SoundBuffer, SoundSource};
 use rand::{Rng, thread_rng};
@@ -30,7 +30,7 @@ fn main() {
     // Create the window of the application
     let mut window = RenderWindow::new(VideoMode::new(game_width, game_height, 32),
                                        "SFML Pong",
-                                       window_style::CLOSE,
+                                       style::CLOSE,
                                        &context_settings)
         .unwrap();
     window.set_vertical_sync_enabled(true);

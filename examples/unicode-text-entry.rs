@@ -6,7 +6,7 @@ use sfml::window::*;
 fn main() {
     let mut window = RenderWindow::new(VideoMode::new(800, 600, 32),
                                        "Unicode text entry",
-                                       window_style::CLOSE,
+                                       style::CLOSE,
                                        &Default::default())
         .unwrap();
 

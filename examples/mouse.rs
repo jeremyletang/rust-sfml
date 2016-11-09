@@ -7,7 +7,7 @@ use sfml::system::*;
 fn main() {
     let mut window = RenderWindow::new(VideoMode::new(800, 600, 32),
                                        "Mouse events",
-                                       window_style::CLOSE,
+                                       style::CLOSE,
                                        &Default::default())
         .unwrap();
     window.set_mouse_cursor_visible(false);

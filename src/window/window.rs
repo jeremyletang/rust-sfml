@@ -53,11 +53,11 @@ use ext;
 /// # Usage example
 ///
 /// ```no_run
-/// use sfml::window::{Window, VideoMode, Event, window_style};
+/// use sfml::window::{Window, VideoMode, Event, style};
 /// // Create a new window
 /// let mut window = Window::new(VideoMode::new(800, 600, 32),
 ///                              "SFML window",
-///                              window_style::CLOSE,
+///                              style::CLOSE,
 ///                              &Default::default()).unwrap();
 /// // Limit the framerate to 60 frames per second (this step is optional)
 /// window.set_framerate_limit(60);

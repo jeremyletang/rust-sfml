@@ -1,7 +1,7 @@
 extern crate sfml;
 
 use sfml::graphics::{Color, CustomShape, RenderTarget, RenderWindow, ShapeImpl};
-use sfml::window::{Key, VideoMode, Event, window_style};
+use sfml::window::{Key, VideoMode, Event, style};
 use sfml::system::Vector2f;
 
 #[derive(Clone, Copy)]
@@ -25,7 +25,7 @@ impl ShapeImpl for TriangleShape {
 fn main() {
     let mut window = RenderWindow::new(VideoMode::new(800, 600, 32),
                                        "Custom shape",
-                                       window_style::CLOSE,
+                                       style::CLOSE,
                                        &Default::default())
         .unwrap();
     window.set_vertical_sync_enabled(true);

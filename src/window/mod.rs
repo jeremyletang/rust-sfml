@@ -27,7 +27,7 @@ pub use self::window::Window;
 pub use self::video_mode::VideoMode;
 pub use self::context::Context;
 pub use self::context_settings::{ContextSettings, CONTEXT_DEFAULT, CONTEXT_CORE, CONTEXT_DEBUG};
-pub use self::window_style::WindowStyle;
+pub use self::style::WindowStyle;
 pub use self::keyboard::{Key, set_virtual_keyboard_visible};
 pub use self::event::Event;
 
@@ -40,6 +40,6 @@ pub mod joystick;
 mod keyboard;
 pub mod mouse;
 mod event;
-pub mod window_style;
+pub mod style;
 pub mod sensor;
 pub mod touch;

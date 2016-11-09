@@ -40,10 +40,10 @@ use window::joystick::Axis;
 ///
 /// ```
 /// # use sfml::graphics::RenderWindow;
-/// # use sfml::window::{Event, VideoMode, window_style, Key};
+/// # use sfml::window::{Event, VideoMode, style, Key};
 /// # let mut window = RenderWindow::new(VideoMode::new(32, 32, 32),
 /// #                                    "test",
-/// #                                    window_style::CLOSE,
+/// #                                    style::CLOSE,
 /// #                                    &Default::default()).unwrap();
 /// # fn do_something_with_the_new_size(_x: u32, _y: u32) {}
 /// while let Some(event) = window.poll_event() {
