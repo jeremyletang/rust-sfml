@@ -21,6 +21,33 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
+//! Access to the real-time state of the mouse.
+//!
+//! `mouse` provides an interface to the state of the mouse.
+//!
+//! This module allows users to query the mouse state at any time and directly, without having to
+//! deal with a window and its events. Compared to the `MouseMoved`, `MouseButtonPressed` and
+//! `MouseButtonReleased` events, `mouse` can retrieve the state of the cursor and
+//! the buttons at any time (you don't need to store and update a boolean on your side in order to
+//! know if a button is pressed or released), and you always get the real state of the mouse, even
+//! if it is moved, pressed or released when your window is out of focus and no event is triggered.
+//!
+//! # Usage example
+//!
+//! ```ignore
+//! use sfml::window::mouse::{self, MouseButton};
+//!
+//! if MouseButton::Left.is_pressed() {
+//!     // left click
+//! }
+//!
+//! // get global mouse position
+//! let _position = mouse::get_desktop_position();
+//!
+//! // set mouse position relative to a window
+//! window.set_mouse_position(Vector2i::new(100, 200));
+//! ```
+
 use csfml_window_sys as ffi;
 use ext::sf_bool_ext::SfBoolExt;
 use raw_conv::{Raw, FromRaw};
