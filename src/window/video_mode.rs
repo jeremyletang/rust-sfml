@@ -111,11 +111,11 @@ impl VideoMode {
     /// width, height and bits_per_pixel).
     ///
     /// Return a vector containing all the supported VideoMode
-    pub fn get_fullscreen_modes() -> Option<Vec<VideoMode>> {
+    pub fn get_fullscreen_modes() -> Vec<VideoMode> {
         let mut size: size_t = 0;
         let tab = unsafe { ffi::sfVideoMode_getFullscreenModes(&mut size) };
         if size == 0 {
-            return None;
+            return Vec::new();
         }
 
         let size = size as u32;
@@ -129,7 +129,7 @@ impl VideoMode {
             ret_tab.push(VideoMode::from_raw(*sf_video_mode));
         }
 
-        Some(ret_tab)
+        ret_tab
     }
 }
 
