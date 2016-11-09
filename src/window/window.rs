@@ -35,12 +35,52 @@ use ext::sf_bool_ext::SfBoolExt;
 use csfml_window_sys as ffi;
 use ext;
 
+/// Window that serves as a target for OpenGL rendering.
 ///
-/// Window manipulation
+/// `Window` is the main class of the Window module.
 ///
-/// Provides OpenGL-based windows,
-/// and abstractions for events and input handling.
+/// It defines an OS window that is able to receive an OpenGL rendering.
 ///
+/// The `Window` type provides a simple interface for manipulating the window:
+/// move, resize, show/hide, control mouse cursor, etc.
+/// It also provides event handling through its `poll_event()` and `wait_event()` functions.
+///
+/// Note that OpenGL experts can pass their own parameters
+/// (antialiasing level, bits for the depth and stencil buffers, etc.) to the OpenGL context
+/// attached to the window, with the sf::ContextSettings structure which is passed as an
+/// optional argument when creating the window.
+///
+/// # Usage example
+///
+/// ```no_run
+/// use sfml::window::{Window, VideoMode, Event, window_style};
+/// // Create a new window
+/// let mut window = Window::new(VideoMode::new(800, 600, 32),
+///                              "SFML window",
+///                              window_style::CLOSE,
+///                              &Default::default()).unwrap();
+/// // Limit the framerate to 60 frames per second (this step is optional)
+/// window.set_framerate_limit(60);
+///
+/// // The main loop - ends as soon as the window is closed
+/// while window.is_open() {
+///     // Event processing
+///     while let Some(event) = window.poll_event() {
+///         // Request closing for the window
+///         if event == Event::Closed {
+///             window.close();
+///         }
+///     }
+///
+///     // Activate the window for OpenGL rendering
+///     window.set_active(true);
+///
+///     // OpenGL drawing commands go here...
+///
+///     // End the current frame and display its contents on screen
+///     window.display();
+/// }
+/// ```
 pub struct Window {
     window: *mut ffi::sfWindow,
 }
