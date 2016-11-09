@@ -42,7 +42,12 @@ fn main() {
         }
 
         let mp = window.mouse_position();
-        mp_text.set_string(&format!("x: {}, y: {}", mp.x, mp.y));
+        let dmp = sfml::window::mouse::desktop_position();
+        mp_text.set_string(&format!("x: {}, y: {} (Window)\nx:{}, y: {} (Desktop)",
+                                    mp.x,
+                                    mp.y,
+                                    dmp.x,
+                                    dmp.y));
 
         circle.set_position2f(mp.x as f32, mp.y as f32);
 

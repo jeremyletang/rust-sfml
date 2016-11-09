@@ -40,7 +40,7 @@ mod context;
 mod context_settings;
 pub mod joystick;
 mod keyboard;
-mod mouse;
+pub mod mouse;
 mod event;
 pub mod window_style;
 pub mod sensor;

@@ -24,6 +24,7 @@
 use csfml_window_sys as ffi;
 use ext::sf_bool_ext::SfBoolExt;
 use raw_conv::{Raw, FromRaw};
+use system::Vector2i;
 
 /// Mouse buttons.
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
@@ -95,4 +96,11 @@ impl MouseButton {
     pub fn is_pressed(self) -> bool {
         unsafe { ffi::sfMouse_isButtonPressed(self.raw()) }.to_bool()
     }
+}
+
+/// Get the current position of the mouse in desktop coordinates.
+///
+/// This function returns the global position of the mouse cursor on the desktop.
+pub fn desktop_position() -> Vector2i {
+    FromRaw::from_raw(unsafe { ffi::sfMouse_getPosition(::std::ptr::null()) })
 }
