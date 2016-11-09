@@ -449,7 +449,6 @@ pub enum sfContextAttribute {
 #[repr(C)]
 #[derive(Copy, Clone)]
 #[derive(Debug)]
-#[derive(PartialEq, Eq, PartialOrd, Ord)] // Required by rust-sfml
 pub struct sfContextSettings {
     pub depthBits: ::std::os::raw::c_uint,
     pub stencilBits: ::std::os::raw::c_uint,
@@ -457,6 +456,7 @@ pub struct sfContextSettings {
     pub majorVersion: ::std::os::raw::c_uint,
     pub minorVersion: ::std::os::raw::c_uint,
     pub attributeFlags: sfUint32,
+    pub sRgbCapable: sfBool,
 }
 impl ::std::default::Default for sfContextSettings {
     fn default() -> Self { unsafe { ::std::mem::zeroed() } }
@@ -464,7 +464,8 @@ impl ::std::default::Default for sfContextSettings {
 extern "C" {
     pub fn sfContext_create() -> *mut sfContext;
     pub fn sfContext_destroy(context: *mut sfContext);
-    pub fn sfContext_setActive(context: *mut sfContext, active: sfBool);
+    pub fn sfContext_setActive(context: *mut sfContext, active: sfBool) -> sfBool;
+    pub fn sfContext_getSettings(context: *const sfContext) -> sfContextSettings;
     pub fn sfJoystick_isConnected(joystick: ::std::os::raw::c_uint) -> sfBool;
     pub fn sfJoystick_getButtonCount(joystick: ::std::os::raw::c_uint)
      -> ::std::os::raw::c_uint;
@@ -479,6 +480,7 @@ extern "C" {
      -> sfJoystickIdentification;
     pub fn sfJoystick_update();
     pub fn sfKeyboard_isKeyPressed(key: sfKeyCode) -> sfBool;
+    pub fn sfKeyboard_setVirtualKeyboardVisible(visible: sfBool);
     pub fn sfMouse_isButtonPressed(button: sfMouseButton) -> sfBool;
     pub fn sfMouse_getPosition(relativeTo: *const sfWindow) -> sfVector2i;
     pub fn sfMouse_setPosition(position: sfVector2i,

@@ -43,14 +43,14 @@
 //! extern crate sfml;
 //!
 //! use sfml::system::Vector2f;
-//! use sfml::window::{ContextSettings, VideoMode, Event, window_style};
+//! use sfml::window::{ContextSettings, VideoMode, Event, style};
 //! use sfml::graphics::{CircleShape, Color, RenderTarget, RenderWindow, Shape, Transformable};
 //!
 //! fn main() {
 //!     // Create the window of the application
-//!     let mut window = RenderWindow::new(VideoMode::new_init(800, 600, 32),
+//!     let mut window = RenderWindow::new(VideoMode::new(800, 600, 32),
 //!                                        "SFML Example",
-//!                                        window_style::CLOSE,
+//!                                        style::CLOSE,
 //!                                        &ContextSettings::default())
 //!                          .unwrap();
 //!

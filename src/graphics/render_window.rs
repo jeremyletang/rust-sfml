@@ -32,7 +32,7 @@ use std::vec::Vec;
 use std::ffi::CString;
 
 use raw_conv::{Raw, RawMut, FromRaw};
-use window::{ContextSettings, VideoMode, Event, WindowStyle};
+use window::{ContextSettings, VideoMode, Event, Style};
 use system::{Vector2f, Vector2i, Vector2u};
 use graphics::{Drawable, Color, CircleShape, RectangleShape, Text, Sprite, VertexArray,
                RenderStates, View, ViewRef, Image, IntRect, RenderTarget, Vertex, PrimitiveType,
@@ -83,57 +83,18 @@ impl RenderWindow {
     /// Return Some(RenderWindow) or None
     pub fn new(mode: VideoMode,
                title: &str,
-               style: WindowStyle,
+               style: Style,
                settings: &ContextSettings)
                -> Option<RenderWindow> {
-        let c_str = CString::new(title).unwrap();
-        let sf_render_win: *mut ffi::sfRenderWindow = unsafe {
-            ffi::sfRenderWindow_create(mode.raw(), c_str.as_ptr(), style.bits(), &settings.0)
-        };
-        if sf_render_win.is_null() {
-            None
-        } else {
-            Some(RenderWindow {
-                render_window: sf_render_win,
-                // event: sf_ev,
-                title_length: title.len() as u32,
-            })
-        }
-    }
-
-    /// Construct a new render window (with a UTF-32 title)
-    ///
-    /// This function creates the render window with the size and pixel
-    /// depth defined in mode. An optional style can be passed to
-    /// customize the look and behaviour of the render window (borders,
-    /// title bar, resizable, closable, ...). If style contains
-    /// sfFullscreen, then mode must be a valid video mode.
-    ///
-    /// The fourth parameter is a pointer to a structure specifying
-    /// advanced OpenGL context settings such as antialiasing,
-    /// depth-buffer bits, etc.
-    ///
-    /// # Arguments
-    /// * mode - Video mode to use (defines the width, height and depth of the
-    ///                             rendering area of the render window)
-    /// * title - Title of the render window (UTF-32)
-    /// * style - Window style
-    /// * settings - Additional settings for the underlying OpenGL context
-    ///
-    /// Return Some(RenderWindow) or None
-    pub fn with_unicode(mode: VideoMode,
-                        title: Vec<u32>,
-                        style: WindowStyle,
-                        settings: &ContextSettings)
-                        -> Option<RenderWindow> {
-
-        let sf_render_win: *mut ffi::sfRenderWindow;
-        unsafe {
-            sf_render_win = ffi::sfRenderWindow_createUnicode(mode.raw(),
-                                                              title.as_ptr() as *mut u32,
-                                                              style.bits(),
-                                                              &settings.0);
-        }
+        let mut codepoints: Vec<u32> = title.chars().map(|c| c as u32).collect();
+        codepoints.push(0);
+        let sf_render_win: *mut ffi::sfRenderWindow =
+            unsafe {
+                ffi::sfRenderWindow_createUnicode(mode.raw(),
+                                                  codepoints.as_ptr(),
+                                                  style.bits(),
+                                                  &settings.raw())
+            };
         if sf_render_win.is_null() {
             None
         } else {
@@ -278,7 +239,7 @@ impl RenderWindow {
     /// Return a structure containing the OpenGL context settings
     ///
     pub fn get_settings(&self) -> ContextSettings {
-        unsafe { ContextSettings(ffi::sfRenderWindow_getSettings(self.render_window)) }
+        unsafe { ContextSettings::from_raw(ffi::sfRenderWindow_getSettings(self.render_window)) }
     }
 
     /// Change the title of a window
@@ -448,6 +409,13 @@ impl RenderWindow {
         unsafe { ffi::sfMouse_setPositionRenderWindow(position.raw(), self.render_window) }
     }
 
+    /// Returns the current position of a touch in window coordinates.
+    pub fn touch_position(&self, finger: u32) -> Vector2i {
+        unsafe {
+            FromRaw::from_raw(ffi::sfTouch_getPositionRenderWindow(finger, self.render_window))
+        }
+    }
+
     /// Copy the current contents of a render window to an image
     ///
     /// This is a slow operation, whose main purpose is to make
@@ -467,6 +435,24 @@ impl RenderWindow {
         } else {
             Some(Image::from_raw(img))
         }
+    }
+
+    /// Check whether the window has the input focus.
+    ///
+    /// At any given time, only one window may have the input focus to receive input events
+    /// such as keystrokes or most mouse events.
+    pub fn has_focus(&self) -> bool {
+        unsafe { ffi::sfRenderWindow_hasFocus(self.render_window).to_bool() }
+    }
+
+    /// Request the current window to be made the active foreground window.
+    ///
+    /// At any given time, only one window may have the input focus to receive input events
+    /// such as keystrokes or mouse events. If a window requests focus, it only hints to the
+    /// operating system, that it would like to be focused. The operating system is free to
+    /// deny the request. This is not to be confused with `set_active()`.
+    pub fn request_focus(&self) {
+        unsafe { ffi::sfRenderWindow_requestFocus(self.render_window) }
     }
 }
 

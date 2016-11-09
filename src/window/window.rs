@@ -21,19 +21,13 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
-//! Window manipulation
-//!
-//! Provides OpenGL-based windows,
-//! and abstractions for events and input handling.
-
-use libc::{c_uint, c_float};
+use std::os::raw::{c_uint, c_float};
 use std::vec::Vec;
 use std::ffi::CString;
 use std::marker::PhantomData;
 
 use raw_conv::{Raw, FromRaw};
-use window::{Event, VideoMode, ContextSettings, WindowStyle};
+use window::{Event, VideoMode, ContextSettings, Style};
 use system::{Vector2i, Vector2u};
 use csfml_system_sys::sfBool;
 use ext::sf_bool_ext::SfBoolExt;
@@ -41,12 +35,52 @@ use ext::sf_bool_ext::SfBoolExt;
 use csfml_window_sys as ffi;
 use ext;
 
+/// Window that serves as a target for OpenGL rendering.
 ///
-/// Window manipulation
+/// `Window` is the main class of the Window module.
 ///
-/// Provides OpenGL-based windows,
-/// and abstractions for events and input handling.
+/// It defines an OS window that is able to receive an OpenGL rendering.
 ///
+/// The `Window` type provides a simple interface for manipulating the window:
+/// move, resize, show/hide, control mouse cursor, etc.
+/// It also provides event handling through its `poll_event()` and `wait_event()` functions.
+///
+/// Note that OpenGL experts can pass their own parameters
+/// (antialiasing level, bits for the depth and stencil buffers, etc.) to the OpenGL context
+/// attached to the window, with the sf::ContextSettings structure which is passed as an
+/// optional argument when creating the window.
+///
+/// # Usage example
+///
+/// ```no_run
+/// use sfml::window::{Window, VideoMode, Event, style};
+/// // Create a new window
+/// let mut window = Window::new(VideoMode::new(800, 600, 32),
+///                              "SFML window",
+///                              style::CLOSE,
+///                              &Default::default()).unwrap();
+/// // Limit the framerate to 60 frames per second (this step is optional)
+/// window.set_framerate_limit(60);
+///
+/// // The main loop - ends as soon as the window is closed
+/// while window.is_open() {
+///     // Event processing
+///     while let Some(event) = window.poll_event() {
+///         // Request closing for the window
+///         if event == Event::Closed {
+///             window.close();
+///         }
+///     }
+///
+///     // Activate the window for OpenGL rendering
+///     window.set_active(true);
+///
+///     // OpenGL drawing commands go here...
+///
+///     // End the current frame and display its contents on screen
+///     window.display();
+/// }
+/// ```
 pub struct Window {
     window: *mut ffi::sfWindow,
 }
@@ -80,47 +114,16 @@ impl Window {
     /// Return Some(Window) or None
     pub fn new(mode: VideoMode,
                title: &str,
-               style: WindowStyle,
+               style: Style,
                settings: &ContextSettings)
                -> Option<Window> {
-        let c_str = CString::new(title.as_bytes()).unwrap();
-        let sf_win: *mut ffi::sfWindow =
-            unsafe { ffi::sfWindow_create(mode.raw(), c_str.as_ptr(), style.bits(), &settings.0) };
-        if sf_win.is_null() {
-            None
-        } else {
-            Some(Window { window: sf_win })
-        }
-    }
-
-    /// Construct a new window (with a UTF-32 title)
-    ///
-    /// This function creates the window with the size and pixel
-    /// depth defined in mode. An optional style can be passed to
-    /// customize the look and behaviour of the window (borders,
-    /// title bar, resizable, closable, ...). If style contains
-    /// sfFullscreen, then mode must be a valid video mode.
-    ///
-    /// The fourth parameter is a pointer to a structure specifying
-    /// advanced OpenGL context settings such as antialiasing,
-    /// depth-buffer bits, etc.
-    ///
-    /// # Arguments
-    /// * mode - Video mode to use (defines the width, height and depth of the
-    ///                             rendering area of the window)
-    /// * title - Title of the window (UTF-32)
-    /// * style - Window style
-    /// * settings - Additional settings for the underlying OpenGL context
-    ///
-    /// Return Some(Window) or None
-    pub fn with_unicode(mode: VideoMode,
-                        title: Vec<u32>,
-                        style: WindowStyle,
-                        settings: &ContextSettings)
-                        -> Option<Window> {
-
-        let sf_win = unsafe {
-            ffi::sfWindow_createUnicode(mode.raw(), title.as_ptr(), style.bits(), &settings.0)
+        let mut codepoints: Vec<u32> = title.chars().map(|c| c as u32).collect();
+        codepoints.push(0);
+        let sf_win: *mut ffi::sfWindow = unsafe {
+            ffi::sfWindow_createUnicode(mode.raw(),
+                                        codepoints.as_ptr(),
+                                        style.bits(),
+                                        &settings.raw())
         };
         if sf_win.is_null() {
             None
@@ -192,7 +195,7 @@ impl Window {
     /// * width - Icon's width, in pixels
     /// * height - Icon's height, in pixels
     /// * pixels - Vector of pixels
-    pub fn set_icon(&mut self, width: u32, height: u32, pixels: Vec<u8>) {
+    pub fn set_icon(&mut self, width: u32, height: u32, pixels: &[u8]) {
         unsafe {
             ffi::sfWindow_setIcon(self.window,
                                   width as c_uint,
@@ -232,7 +235,7 @@ impl Window {
     ///
     /// Return a structure containing the OpenGL context settings
     pub fn get_settings(&self) -> ContextSettings {
-        ContextSettings(unsafe { ffi::sfWindow_getSettings(self.window) })
+        ContextSettings::from_raw(unsafe { ffi::sfWindow_getSettings(self.window) })
     }
 
     /// Change the title of a window
@@ -386,6 +389,29 @@ impl Window {
     ///
     pub fn set_mouse_position(&mut self, position: &Vector2i) {
         unsafe { ffi::sfMouse_setPosition(position.raw(), self.window) }
+    }
+
+    /// Returns the current position of a touch in window coordinates.
+    pub fn touch_position(&self, finger: u32) -> Vector2i {
+        unsafe { FromRaw::from_raw(ffi::sfTouch_getPosition(finger, self.window)) }
+    }
+
+    /// Check whether the window has the input focus.
+    ///
+    /// At any given time, only one window may have the input focus to receive input events
+    /// such as keystrokes or most mouse events.
+    pub fn has_focus(&self) -> bool {
+        unsafe { ffi::sfWindow_hasFocus(self.window).to_bool() }
+    }
+
+    /// Request the current window to be made the active foreground window.
+    ///
+    /// At any given time, only one window may have the input focus to receive input events
+    /// such as keystrokes or mouse events. If a window requests focus, it only hints to the
+    /// operating system, that it would like to be focused. The operating system is free to
+    /// deny the request. This is not to be confused with `set_active()`.
+    pub fn request_focus(&self) {
+        unsafe { ffi::sfWindow_requestFocus(self.window) }
     }
 }
 
