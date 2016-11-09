@@ -22,7 +22,7 @@
 //
 
 use window::keyboard::Key;
-use window::mouse::{MouseButton, MouseWheel};
+use window::mouse::{Button, Wheel};
 use window::joystick::Axis;
 
 /// Defines a system event and its parameters.
@@ -103,7 +103,7 @@ pub enum Event {
     /// The mouse wheel was scrolled
     MouseWheelScrolled {
         /// Which wheel (for mice with multiple ones).
-        wheel: MouseWheel,
+        wheel: Wheel,
         /// Wheel offset (positive is up/left, negative is down/right).
         /// High-precision mice may use non-integral offsets.
         delta: f32,
@@ -115,7 +115,7 @@ pub enum Event {
     /// A mouse button was pressed
     MouseButtonPressed {
         /// Code of the button that has been pressed.
-        button: MouseButton,
+        button: Button,
         /// X position of the mouse pointer, relative to the left of the owner window.
         x: i32,
         /// Y position of the mouse pointer, relative to the top of the owner window.
@@ -124,7 +124,7 @@ pub enum Event {
     /// A mouse button was released
     MouseButtonReleased {
         /// Code of the button that has been pressed.
-        button: MouseButton,
+        button: Button,
         /// X position of the mouse pointer, relative to the left of the owner window.
         x: i32,
         /// Y position of the mouse pointer, relative to the top of the owner window.

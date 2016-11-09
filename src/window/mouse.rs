@@ -35,9 +35,9 @@
 //! # Usage example
 //!
 //! ```ignore
-//! use sfml::window::mouse::{self, MouseButton};
+//! use sfml::window::mouse;
 //!
-//! if MouseButton::Left.is_pressed() {
+//! if mouse::Button::Left.is_pressed() {
 //!     // left click
 //! }
 //!
@@ -56,7 +56,7 @@ use system::Vector2i;
 /// Mouse buttons.
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
 #[repr(u32)]
-pub enum MouseButton {
+pub enum Button {
     /// The left mouse button.
     Left = 0,
     /// The right mouse button.
@@ -73,34 +73,34 @@ pub enum MouseButton {
 
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
 /// Mouse wheels.
-pub enum MouseWheel {
+pub enum Wheel {
     /// The vertical mouse wheel.
     Vertical,
     /// The horizontal mouse wheel.
     Horizontal,
 }
 
-impl Raw for MouseWheel {
+impl Raw for Wheel {
     type Raw = ffi::sfMouseWheel;
 
     fn raw(&self) -> Self::Raw {
         match *self {
-            MouseWheel::Vertical => ffi::sfMouseWheel::sfMouseVerticalWheel,
-            MouseWheel::Horizontal => ffi::sfMouseWheel::sfMouseHorizontalWheel,
+            Wheel::Vertical => ffi::sfMouseWheel::sfMouseVerticalWheel,
+            Wheel::Horizontal => ffi::sfMouseWheel::sfMouseHorizontalWheel,
         }
     }
 }
 
-impl FromRaw for MouseWheel {
+impl FromRaw for Wheel {
     fn from_raw(raw: Self::Raw) -> Self {
         match raw {
-            ffi::sfMouseWheel::sfMouseVerticalWheel => MouseWheel::Vertical,
-            ffi::sfMouseWheel::sfMouseHorizontalWheel => MouseWheel::Horizontal,
+            ffi::sfMouseWheel::sfMouseVerticalWheel => Wheel::Vertical,
+            ffi::sfMouseWheel::sfMouseHorizontalWheel => Wheel::Horizontal,
         }
     }
 }
 
-impl Raw for MouseButton {
+impl Raw for Button {
     type Raw = ffi::sfMouseButton;
 
     fn raw(&self) -> Self::Raw {
@@ -108,13 +108,13 @@ impl Raw for MouseButton {
     }
 }
 
-impl FromRaw for MouseButton {
+impl FromRaw for Button {
     fn from_raw(raw: Self::Raw) -> Self {
         unsafe { ::std::mem::transmute(raw) }
     }
 }
 
-impl MouseButton {
+impl Button {
     /// Return whether this mouse button is currently pressed.
     ///
     /// Queries the real-time state of the mouse, even if buttons have been
