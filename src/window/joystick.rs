@@ -21,9 +21,48 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-//! Handle Joysticks
+//! Access to the real-time state of the joysticks.
 //!
-//! Offers a set of function for manage joystick
+//! `joystick` provides an interface to the state of the joysticks.
+//!
+//! Each joystick is identified by an index that is passed to the functions of this module.
+//!
+//! This module allows users to query the state of joysticks at any time and directly,
+//! without having to deal with a window and its events. Compared to the `JoystickMoved`,
+//! `JoystickButtonPressed` and `JoystickButtonReleased` events, `Joystick` can retrieve the
+//! state of axes and buttons of joysticks at any time (you don't need to store and update a
+//! boolean on your side in order to know if a button is pressed or released), and you always get
+//! the real state of joysticks, even if they are moved, pressed or released when your window is
+//! out of focus and no event is triggered.
+//!
+//! SFML supports:
+//!
+//! - 8 joysticks (`COUNT`)
+//! - 32 buttons per joystick (`BUTTON_COUNT`)
+//! - 8 axes per joystick (`AXIS_COUNT`)
+//!
+//! Unlike the keyboard or mouse, the state of joysticks is sometimes not directly
+//! available (depending on the OS), therefore an `update()` function must be called in order to
+//! update the current state of joysticks. When you have a window with event handling, this is
+//! done automatically, you don't need to call anything. But if you have no window, or if you want
+//! to check joysticks state before creating one, you must call `joystick::update` explicitly.
+//! # Usage example
+//!
+//! ```
+//! use sfml::window::joystick;
+//!
+//! // If joystick #0 is connected
+//! if joystick::is_connected(0) {
+//!     // How many buttons does joystick #0 support?
+//!     let _buttons = joystick::button_count(0);
+//!     // Does joystick #0 define a X axis?
+//!     let _hax_x = joystick::has_axis(0, joystick::Axis::X);
+//!     // Is button #2 pressed on joystick #0?
+//!     let _pressed = joystick::is_button_pressed(0, 2);
+//!     // What's the current position of the Y axis on joystick #0?
+//!     let _position = joystick::get_axis_position(0, joystick::Axis::Y);
+//! }
+//! ```
 //!
 
 use libc::c_uint;
