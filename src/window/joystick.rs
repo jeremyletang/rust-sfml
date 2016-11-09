@@ -113,6 +113,16 @@ impl FromRaw for Axis {
     }
 }
 
+/// Structure holding a joystick's identification.
+pub struct Identification {
+    /// Name of the joystick.
+    pub name: String,
+    /// Manufacturer identifier.
+    pub vendor_id: u32,
+    /// Product identifier.
+    pub product_id: u32,
+}
+
 /**
  * Check if the joystick is connected
  *
@@ -195,5 +205,18 @@ pub fn get_axis_position(joystick: u32, axis: Axis) -> f32 {
 pub fn update() {
     unsafe {
         ffi::sfJoystick_update();
+    }
+}
+
+/// Get the joystick information.
+pub fn get_identification(joystick: u32) -> Identification {
+    use std::ffi::CStr;
+
+    let raw = unsafe { ffi::sfJoystick_getIdentification(joystick) };
+
+    Identification {
+        name: unsafe { CStr::from_ptr(raw.name).to_string_lossy().into_owned() },
+        vendor_id: raw.vendorId,
+        product_id: raw.productId,
     }
 }
