@@ -115,10 +115,38 @@ pub fn get_wrapped_event(event: &mut sfEvent) -> Option<Event> {
         sfEvtJoystickDisconnected => {
             JoystickDisconnected { joystickid: unsafe { (*event.joystickConnect()).joystickId } }
         }
+        sfEvtTouchBegan => {
+            let e = unsafe { &*event.touch() };
+
+            TouchBegan {
+                finger: e.finger,
+                x: e.x,
+                y: e.y,
+            }
+        }
+        sfEvtTouchMoved => {
+            let e = unsafe { &*event.touch() };
+
+            TouchMoved {
+                finger: e.finger,
+                x: e.x,
+                y: e.y,
+            }
+        }
+        sfEvtTouchEnded => {
+            let e = unsafe { &*event.touch() };
+
+            TouchEnded {
+                finger: e.finger,
+                x: e.x,
+                y: e.y,
+            }
+        }
+
         // Ignore deprecated events
         sfEvtMouseWheelMoved => return None,
         // Events not yet implemented
-        sfEvtTouchBegan | sfEvtTouchMoved | sfEvtTouchEnded | sfEvtSensorChanged => unimplemented!(),
+        sfEvtSensorChanged => unimplemented!(),
         sfEvtCount => unreachable!(),
     })
 }

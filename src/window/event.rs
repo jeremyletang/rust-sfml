@@ -174,4 +174,31 @@ pub enum Event {
         /// Index of the joystick (in range [0 .. joystick::Count - 1])
         joystickid: u32,
     },
+    /// A touch event began
+    TouchBegan {
+        /// Index of the finger in case of multi-touch events.
+        finger: u32,
+        /// X position of the touch, relative to the left of the owner window.
+        x: i32,
+        /// Y position of the touch, relative to the top of the owner window.
+        y: i32,
+    },
+    /// A touch moved
+    TouchMoved {
+        /// Index of the finger in case of multi-touch events.
+        finger: u32,
+        /// X position of the touch, relative to the left of the owner window.
+        x: i32,
+        /// Y position of the touch, relative to the top of the owner window.
+        y: i32,
+    },
+    /// A touch event ended
+    TouchEnded {
+        /// Index of the finger in case of multi-touch events.
+        finger: u32,
+        /// X position of the touch, relative to the left of the owner window.
+        x: i32,
+        /// Y position of the touch, relative to the top of the owner window.
+        y: i32,
+    },
 }
