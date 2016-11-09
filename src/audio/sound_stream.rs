@@ -93,6 +93,7 @@ impl<'a, S: SoundStream> SoundStreamPlayer<'a, S> {
             sfSoundStream_stop(self.sf_sound_stream);
         }
     }
+    /// Get the current playing position, from the beginning of the stream
     pub fn get_playing_offset(&self) -> Time {
         unsafe { Time::from_raw(sfSoundStream_getPlayingOffset(self.sf_sound_stream)) }
     }
