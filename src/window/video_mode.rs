@@ -21,11 +21,6 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-//! Defines `VideoMode`
-//!
-//! A video mode is defined by a width and a height (in pixels) and a depth
-//! (in bits per pixel). Video modes are used to setup windows at creation time.
-
 use libc::{c_uint, size_t};
 use std::vec::Vec;
 
