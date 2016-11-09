@@ -2,12 +2,12 @@ extern crate sfml;
 
 use sfml::graphics::{Color, LinesStrip, RenderTarget, RenderWindow, Vertex, VertexArray};
 use sfml::system::Vector2f;
-use sfml::window::{VideoMode, Event, window_style};
+use sfml::window::{VideoMode, Event, style};
 
 fn main() {
-    let mut window = RenderWindow::new(VideoMode::new_init(800, 600, 32),
+    let mut window = RenderWindow::new(VideoMode::new(800, 600, 32),
                                        "SFML VertexArray accessors Example",
-                                       window_style::CLOSE,
+                                       style::CLOSE,
                                        &Default::default())
         .unwrap();
     window.set_vertical_sync_enabled(true);

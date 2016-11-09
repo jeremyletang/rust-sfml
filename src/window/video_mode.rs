@@ -21,11 +21,6 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-//! Defines `VideoMode`
-//!
-//! A video mode is defined by a width and a height (in pixels) and a depth
-//! (in bits per pixel). Video modes are used to setup windows at creation time.
-
 use libc::{c_uint, size_t};
 use std::vec::Vec;
 
@@ -34,9 +29,45 @@ use raw_conv::{Raw, FromRaw};
 use csfml_window_sys as ffi;
 use ext::sf_bool_ext::SfBoolExt;
 
-/// `VideoMode` defines a video mode (width, height, bpp, frequency)
+/// `VideoMode` defines a video mode (width, height, bpp)
 ///
-/// Provides functions for getting modes supported by the display device
+/// A video mode is defined by a width and a height (in pixels) and a depth (in bits per pixel).
+///
+/// Video modes are used to setup windows at creation time.
+///
+/// The main usage of video modes is for fullscreen mode: indeed you must use one of the valid
+/// video modes allowed by the OS (which are defined by what the monitor and
+/// the graphics card support), otherwise your window creation will just fail.
+///
+/// `VideoMode` provides an associated function for retrieving the list of all the video modes
+/// supported by the system: `get_fullscreen_modes()`.
+///
+/// A custom video mode can also be checked directly for fullscreen compatibility
+/// with its `is_valid()` function.
+///
+/// Additionally, `VideoMode` provides a static function to get the mode currently used by
+/// the desktop: `get_desktop_mode`. This allows to build windows with the same size or
+/// pixel depth as the current resolution.
+///
+/// # Usage example
+///
+/// ```
+/// use sfml::window::{VideoMode, Window, style};
+///
+/// // Display the list of all the video modes available for fullscreen
+/// let modes = VideoMode::get_fullscreen_modes();
+///
+/// for mode in modes {
+///     println!("{:?}", mode);
+/// }
+///
+/// // Create a window with the same pixel depth as the desktop
+/// let desktop = VideoMode::get_desktop_mode();
+/// let _window = Window::new(VideoMode::new(1024, 768, desktop.bits_per_pixel),
+///                           "SFML window",
+///                           style::CLOSE,
+///                           &Default::default()).unwrap();
+/// ```
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
 pub struct VideoMode {
     /// Video mode width, in pixels.
@@ -48,21 +79,10 @@ pub struct VideoMode {
 }
 
 impl VideoMode {
-    /// Default constructor for class VideoMode.
-    ///
-    /// Return a new VideoMode
-    pub fn new() -> VideoMode {
-        VideoMode {
-            width: 0,
-            height: 0,
-            bits_per_pixel: 0,
-        }
-    }
-
     /// Constructor with parameters for class VideoMode.
     ///
     /// Return a new VideoMode initialized
-    pub fn new_init(width: u32, height: u32, bits_per_pixel: u32) -> VideoMode {
+    pub fn new(width: u32, height: u32, bits_per_pixel: u32) -> VideoMode {
         VideoMode {
             width: width,
             height: height,
@@ -111,11 +131,11 @@ impl VideoMode {
     /// width, height and bits_per_pixel).
     ///
     /// Return a vector containing all the supported VideoMode
-    pub fn get_fullscreen_modes() -> Option<Vec<VideoMode>> {
+    pub fn get_fullscreen_modes() -> Vec<VideoMode> {
         let mut size: size_t = 0;
         let tab = unsafe { ffi::sfVideoMode_getFullscreenModes(&mut size) };
         if size == 0 {
-            return None;
+            return Vec::new();
         }
 
         let size = size as u32;
@@ -129,7 +149,7 @@ impl VideoMode {
             ret_tab.push(VideoMode::from_raw(*sf_video_mode));
         }
 
-        Some(ret_tab)
+        ret_tab
     }
 }
 
@@ -156,6 +176,10 @@ impl FromRaw for VideoMode {
 
 impl Default for VideoMode {
     fn default() -> Self {
-        VideoMode::new()
+        VideoMode {
+            width: 0,
+            height: 0,
+            bits_per_pixel: 0,
+        }
     }
 }
