@@ -387,6 +387,24 @@ impl Window {
     pub fn touch_position(&self, finger: u32) -> Vector2i {
         unsafe { FromRaw::from_raw(ffi::sfTouch_getPosition(finger, self.window)) }
     }
+
+    /// Check whether the window has the input focus.
+    ///
+    /// At any given time, only one window may have the input focus to receive input events
+    /// such as keystrokes or most mouse events.
+    pub fn has_focus(&self) -> bool {
+        unsafe { ffi::sfWindow_hasFocus(self.window).to_bool() }
+    }
+
+    /// Request the current window to be made the active foreground window.
+    ///
+    /// At any given time, only one window may have the input focus to receive input events
+    /// such as keystrokes or mouse events. If a window requests focus, it only hints to the
+    /// operating system, that it would like to be focused. The operating system is free to
+    /// deny the request. This is not to be confused with `set_active()`.
+    pub fn request_focus(&self) {
+        unsafe { ffi::sfWindow_requestFocus(self.window) }
+    }
 }
 
 impl Raw for Window {

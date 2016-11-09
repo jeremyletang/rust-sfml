@@ -475,6 +475,24 @@ impl RenderWindow {
             Some(Image::from_raw(img))
         }
     }
+
+    /// Check whether the window has the input focus.
+    ///
+    /// At any given time, only one window may have the input focus to receive input events
+    /// such as keystrokes or most mouse events.
+    pub fn has_focus(&self) -> bool {
+        unsafe { ffi::sfRenderWindow_hasFocus(self.render_window).to_bool() }
+    }
+
+    /// Request the current window to be made the active foreground window.
+    ///
+    /// At any given time, only one window may have the input focus to receive input events
+    /// such as keystrokes or mouse events. If a window requests focus, it only hints to the
+    /// operating system, that it would like to be focused. The operating system is free to
+    /// deny the request. This is not to be confused with `set_active()`.
+    pub fn request_focus(&self) {
+        unsafe { ffi::sfRenderWindow_requestFocus(self.render_window) }
+    }
 }
 
 impl Raw for RenderWindow {
