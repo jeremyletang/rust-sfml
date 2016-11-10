@@ -51,9 +51,9 @@ unsafe extern "C" fn get_data_callback<S: SoundStream>(chunk: *mut sfSoundStream
 unsafe extern "C" fn seek_callback<S: SoundStream>(offset: sfTime, user_data: *mut c_void) {
     let stream = user_data as *mut S;
 
-    if let Err(_) = panic::catch_unwind(panic::AssertUnwindSafe(|| {
-        (*stream).seek(Time::from_raw(offset))
-    })) {
+    let result =
+        panic::catch_unwind(panic::AssertUnwindSafe(|| (*stream).seek(Time::from_raw(offset))));
+    if result.is_err() {
         use std::io::Write;
         let _ = writeln!(::std::io::stderr(),
                          "sound_stream: Failed to seek because `seek` panicked.");
