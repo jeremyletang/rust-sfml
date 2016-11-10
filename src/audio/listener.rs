@@ -112,3 +112,18 @@ pub fn set_direction3f(x: f32, y: f32, z: f32) {
 pub fn get_direction() -> Vector3f {
     unsafe { Vector3f::from_raw(ffi::sfListener_getDirection()) }
 }
+
+/// Set the upward vector of the listener in the scene.
+///
+/// The up vector is the vector that points upward from the listener's perspective.
+/// Together with the direction, it defines the 3D orientation of the listener in the scene.
+/// The up vector doesn't have to be normalized. The default listener's up vector is (0, 1, 0).
+/// It is usually not necessary to change it, especially in 2D scenarios.
+pub fn set_up_vector(value: &Vector3f) {
+    unsafe { ffi::sfListener_setUpVector(value.raw()) }
+}
+
+/// Get the current upward vector of the listener in the scene. (not normalized)
+pub fn up_vector() -> Vector3f {
+    unsafe { Vector3f::from_raw(ffi::sfListener_getUpVector()) }
+}
