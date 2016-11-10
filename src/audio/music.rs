@@ -21,11 +21,6 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-//! Play Music
-//!
-//! Streamed music played from an audio file.
-//! Musics are sounds that are streamed rather than completely loaded in memory.
-
 use libc::{c_float, size_t};
 use std::mem;
 use std::ffi::CString;
