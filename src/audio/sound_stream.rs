@@ -4,7 +4,6 @@ use ext::sf_bool_ext::SfBoolExt;
 use raw_conv::FromRaw;
 use system::Time;
 use std::panic;
-use std::marker::PhantomData;
 use audio::SoundStatus;
 use std::os::raw::c_void;
 
@@ -26,7 +25,7 @@ pub trait SoundStream {
 /// Player for custom streamed audio sources. See `SoundStream`.
 pub struct SoundStreamPlayer<'a, S: SoundStream + 'a> {
     sf_sound_stream: *mut sfSoundStream,
-    _borrow: PhantomData<&'a mut S>,
+    stream: &'a mut S,
 }
 
 unsafe extern "C" fn get_data_callback<S: SoundStream>(chunk: *mut sfSoundStreamChunk,
@@ -71,7 +70,7 @@ impl<'a, S: SoundStream> SoundStreamPlayer<'a, S> {
                                      sound_stream.sample_rate(),
                                      sound_stream as *mut SoundStream as *mut _)
             },
-            _borrow: PhantomData,
+            stream: sound_stream,
         }
     }
     /// Start or resume playing the audio stream.
@@ -84,14 +83,36 @@ impl<'a, S: SoundStream> SoundStreamPlayer<'a, S> {
     pub fn get_status(&self) -> SoundStatus {
         unsafe { ::std::mem::transmute(sfSoundStream_getStatus(self.sf_sound_stream)) }
     }
-    /// Stop playing the audio stream.
+    /// Stop playing, lending out the underlying `SoundStream`.
     ///
     /// This function stops the stream if it was playing or paused, and does nothing if it was
     /// already stopped. It also resets the playing position (unlike pause()).
-    pub fn stop(&mut self) {
+    ///
+    /// It lends out the underlying `SoundStream`, allowing it to be manipulated.
+    ///
+    /// # Example
+    ///
+    /// ```ignore
+    /// let mut music_stream = MusicStream::load("cool_song.ogg");
+    /// let mut player = SoundStreamPlayer::new(&mut music_stream);
+    /// player.play();
+    /// // ...
+    /// // Let's say we want to change the song being played.
+    /// // We can't just simply reassign `music_stream`, since it's being borrowed by `player`.
+    /// // Manipulating the stream while it's being played is _unsafe_, so it's not allowed.
+    /// //
+    /// // Instead, let's stop the player first, reassign the stream, then restart the player.
+    /// {
+    ///    let stream = player.stop();
+    ///    *stream = MusicStream::load("another_cool_song.ogg");
+    /// }
+    /// player.play();
+    /// ```
+    pub fn stop(&mut self) -> &mut S {
         unsafe {
             sfSoundStream_stop(self.sf_sound_stream);
         }
+        &mut self.stream
     }
     /// Get the current playing position, from the beginning of the stream
     pub fn get_playing_offset(&self) -> Time {
