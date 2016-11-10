@@ -1,11 +1,12 @@
 use csfml_audio_sys::*;
 use csfml_system_sys::*;
 use ext::sf_bool_ext::SfBoolExt;
-use raw_conv::FromRaw;
-use system::Time;
+use raw_conv::{Raw, FromRaw};
+use system::{Time, Vector3f};
 use std::panic;
 use audio::SoundStatus;
 use std::os::raw::c_void;
+use audio::SoundSource;
 
 /// Trait for streamed audio sources.
 pub trait SoundStream {
@@ -117,6 +118,51 @@ impl<'a, S: SoundStream> SoundStreamPlayer<'a, S> {
     /// Get the current playing position, from the beginning of the stream
     pub fn get_playing_offset(&self) -> Time {
         unsafe { Time::from_raw(sfSoundStream_getPlayingOffset(self.sf_sound_stream)) }
+    }
+}
+
+impl<'a, S: SoundStream> SoundSource for SoundStreamPlayer<'a, S> {
+    fn set_pitch(&mut self, pitch: f32) {
+        unsafe { sfSoundStream_setPitch(self.sf_sound_stream, pitch) }
+    }
+    fn set_volume(&mut self, volume: f32) {
+        unsafe { sfSoundStream_setVolume(self.sf_sound_stream, volume) }
+    }
+    fn set_position3f(&mut self, x: f32, y: f32, z: f32) {
+        unsafe { sfSoundStream_setPosition(self.sf_sound_stream, sfVector3f { x: x, y: y, z: z }) }
+    }
+    fn set_position(&mut self, position: &Vector3f) {
+        unsafe { sfSoundStream_setPosition(self.sf_sound_stream, position.raw()) }
+    }
+    fn set_relative_to_listener(&mut self, relative: bool) {
+        unsafe {
+            sfSoundStream_setRelativeToListener(self.sf_sound_stream,
+                                                SfBoolExt::from_bool(relative))
+        }
+    }
+    fn set_min_distance(&mut self, distance: f32) {
+        unsafe { sfSoundStream_setMinDistance(self.sf_sound_stream, distance) }
+    }
+    fn set_attenuation(&mut self, attenuation: f32) {
+        unsafe { sfSoundStream_setAttenuation(self.sf_sound_stream, attenuation) }
+    }
+    fn get_pitch(&self) -> f32 {
+        unsafe { sfSoundStream_getPitch(self.sf_sound_stream) }
+    }
+    fn get_volume(&self) -> f32 {
+        unsafe { sfSoundStream_getVolume(self.sf_sound_stream) }
+    }
+    fn get_position(&self) -> Vector3f {
+        Vector3f::from_raw(unsafe { sfSoundStream_getPosition(self.sf_sound_stream) })
+    }
+    fn is_relative_to_listener(&self) -> bool {
+        unsafe { sfSoundStream_isRelativeToListener(self.sf_sound_stream).to_bool() }
+    }
+    fn get_min_distance(&self) -> f32 {
+        unsafe { sfSoundStream_getMinDistance(self.sf_sound_stream) }
+    }
+    fn get_attenuation(&self) -> f32 {
+        unsafe { sfSoundStream_getAttenuation(self.sf_sound_stream) }
     }
 }
 
