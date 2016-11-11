@@ -103,6 +103,14 @@ impl SoundBufferRecorder {
         }
     }
 
+    /// Get the name of the current audio capture device.
+    pub fn device(&self) -> String {
+        unsafe {
+            let c_str_ptr = ffi::sfSoundRecorder_getDevice(self.sound_buffer_recorder as _);
+            CStr::from_ptr(c_str_ptr).to_string_lossy().into_owned()
+        }
+    }
+
     /// Check if the system supports audio capture
     ///
     /// This function should always be called before using
@@ -146,11 +154,14 @@ impl SoundBufferRecorder {
 
 #[test]
 fn test_devices() {
-    println!("Default device: {}", SoundBufferRecorder::default_device());
+    let default = SoundBufferRecorder::default_device();
+    println!("Default device: {}", default);
     println!("Available devices:");
     for device in SoundBufferRecorder::available_devices() {
         println!("{}", device);
     }
+    let recorder = SoundBufferRecorder::new();
+    assert_eq!(recorder.device(), default);
 }
 
 impl Default for SoundBufferRecorder {
