@@ -134,6 +134,13 @@ impl<'a, S: SoundStream> SoundStreamPlayer<'a, S> {
     pub fn channel_count(&self) -> u32 {
         unsafe { sfSoundStream_getChannelCount(self.sf_sound_stream) }
     }
+    /// Get the stream sample rate of the stream.
+    ///
+    /// The sample rate is the number of audio samples played per second.
+    /// The higher, the better the quality.
+    pub fn sample_rate(&self) -> u32 {
+        unsafe { sfSoundStream_getSampleRate(self.sf_sound_stream) }
+    }
 }
 
 impl<'a, S: SoundStream> SoundSource for SoundStreamPlayer<'a, S> {
