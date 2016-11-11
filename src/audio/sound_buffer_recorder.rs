@@ -32,7 +32,7 @@ use audio::sound_buffer::SoundBufferRef;
 
 use csfml_audio_sys as ffi;
 use ext::sf_bool_ext::SfBoolExt;
-use std::ffi::CStr;
+use std::ffi::{CStr, CString};
 
 /// Store captured audio data in sound Buffer
 ///
@@ -41,6 +41,9 @@ use std::ffi::CStr;
 pub struct SoundBufferRecorder {
     sound_buffer_recorder: *mut ffi::sfSoundBufferRecorder,
 }
+
+#[derive(Debug)]
+pub struct SetDeviceError;
 
 impl SoundBufferRecorder {
     /// Create a new sound buffer recorder
@@ -111,6 +114,19 @@ impl SoundBufferRecorder {
         }
     }
 
+    /// Set the audio capture device.
+    ///
+    /// This function sets the audio capture device to the device with the given name.
+    /// It can be called on the fly (i.e: while recording).
+    /// If you do so while recording and opening the device fails, it stops the recording.
+    pub fn set_device(&mut self, name: &str) -> Result<(), SetDeviceError> {
+        let name = CString::new(name).unwrap();
+        let success = unsafe {
+            ffi::sfSoundRecorder_setDevice(self.sound_buffer_recorder as _, name.as_ptr()).to_bool()
+        };
+        if success { Ok(()) } else { Err(SetDeviceError) }
+    }
+
     /// Check if the system supports audio capture
     ///
     /// This function should always be called before using
@@ -157,11 +173,16 @@ fn test_devices() {
     let default = SoundBufferRecorder::default_device();
     println!("Default device: {}", default);
     println!("Available devices:");
-    for device in SoundBufferRecorder::available_devices() {
+    let devices = SoundBufferRecorder::available_devices();
+    for device in &devices {
         println!("{}", device);
     }
-    let recorder = SoundBufferRecorder::new();
+    let mut recorder = SoundBufferRecorder::new();
     assert_eq!(recorder.device(), default);
+    if let Some(device) = devices.last() {
+        recorder.set_device(device).unwrap();
+        assert_eq!(&recorder.device(), device);
+    }
 }
 
 impl Default for SoundBufferRecorder {
