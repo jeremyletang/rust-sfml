@@ -128,6 +128,14 @@ impl<'a, S: SoundStream> SoundStreamPlayer<'a, S> {
     pub fn get_playing_offset(&self) -> Time {
         unsafe { Time::from_raw(sfSoundStream_getPlayingOffset(self.sf_sound_stream)) }
     }
+    /// Change the current playing position of the stream.
+    ///
+    /// The playing position can be changed when the stream is either paused or playing.
+    /// Changing the playing position when the stream is stopped has no effect,
+    /// since playing the stream would reset its position.
+    pub fn set_playing_offset(&mut self, offset: Time) {
+        unsafe { sfSoundStream_setPlayingOffset(self.sf_sound_stream, offset.raw()) }
+    }
     /// Return the number of channels of the stream.
     ///
     /// 1 channel means a mono sound, 2 means stereo, etc.
