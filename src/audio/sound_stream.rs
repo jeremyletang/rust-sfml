@@ -128,6 +128,12 @@ impl<'a, S: SoundStream> SoundStreamPlayer<'a, S> {
     pub fn get_playing_offset(&self) -> Time {
         unsafe { Time::from_raw(sfSoundStream_getPlayingOffset(self.sf_sound_stream)) }
     }
+    /// Return the number of channels of the stream.
+    ///
+    /// 1 channel means a mono sound, 2 means stereo, etc.
+    pub fn channel_count(&self) -> u32 {
+        unsafe { sfSoundStream_getChannelCount(self.sf_sound_stream) }
+    }
 }
 
 impl<'a, S: SoundStream> SoundSource for SoundStreamPlayer<'a, S> {
