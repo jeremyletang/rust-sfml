@@ -112,6 +112,32 @@ impl SoundBufferRecorder {
     pub fn is_available() -> bool {
         unsafe { ffi::sfSoundRecorder_isAvailable() }.to_bool()
     }
+
+    /// Get a list of the names of all available audio capture devices.
+    ///
+    /// This function returns a vector of strings, containing the names of all available
+    /// audio capture devices.
+    pub fn available_devices() -> Vec<String> {
+        unsafe {
+            let mut count = 0;
+            let device_names = ffi::sfSoundRecorder_getAvailableDevices(&mut count);
+            let device_names = ::std::slice::from_raw_parts(device_names, count as usize);
+            let mut names = Vec::new();
+            for c_str_ptr in device_names {
+                use std::ffi::CStr;
+                let name = CStr::from_ptr(*c_str_ptr).to_string_lossy().into_owned();
+                names.push(name);
+            }
+            names
+        }
+    }
+}
+
+#[test]
+fn test_available_devices() {
+    for device in SoundBufferRecorder::available_devices() {
+        println!("{}", device);
+    }
 }
 
 impl Default for SoundBufferRecorder {
