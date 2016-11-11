@@ -149,6 +149,18 @@ impl<'a, S: SoundStream> SoundStreamPlayer<'a, S> {
     pub fn sample_rate(&self) -> u32 {
         unsafe { sfSoundStream_getSampleRate(self.sf_sound_stream) }
     }
+    /// Tell whether or not the stream is in loop mode.
+    pub fn get_loop(&self) -> bool {
+        unsafe { sfSoundStream_getLoop(self.sf_sound_stream).to_bool() }
+    }
+    /// Set whether or not the stream should loop after reaching the end.
+    ///
+    /// If set, the stream will restart from beginning after reaching the end and so on,
+    /// until it is stopped or setLoop(false) is called.
+    /// The default looping state for streams is false.
+    pub fn set_loop(&mut self, loop_: bool) {
+        unsafe { sfSoundStream_setLoop(self.sf_sound_stream, SfBoolExt::from_bool(loop_)) }
+    }
 }
 
 impl<'a, S: SoundStream> SoundSource for SoundStreamPlayer<'a, S> {
