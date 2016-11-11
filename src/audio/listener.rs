@@ -21,9 +21,31 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-//! Audio listener
-//!
 //! The audio listener is the point in the scene from where all the sounds are heard.
+//!
+//! The audio listener defines the global properties of the audio environment,
+//! it defines where and how sounds and musics are heard.
+//!
+//! If `View` is the eyes of the user, then `listener` is his ears (by the way, they are often
+//! linked together – same position, orientation, etc.).
+//!
+//! `listener` is a simple interface, which allows to setup the listener in the 3D audio environment
+//! (position, direction and up vector), and to adjust the global volume.
+//!
+//! # Usage example
+//!
+//! ```
+//! use sfml::audio::listener;
+//!
+//! // Move the listener to the position (1, 0, -5)
+//! listener::set_position3f(1., 0., -5.);
+//!
+//! // Make it face the right axis (1, 0, 0)
+//! listener::set_direction3f(1., 0., 0.);
+//!
+//! // Reduce the global volume
+//! listener::set_global_volume(50.);
+//! ```
 
 use system::Vector3f;
 use csfml_audio_sys as ffi;
@@ -111,4 +133,19 @@ pub fn set_direction3f(x: f32, y: f32, z: f32) {
 /// Return the listener's direction
 pub fn get_direction() -> Vector3f {
     unsafe { Vector3f::from_raw(ffi::sfListener_getDirection()) }
+}
+
+/// Set the upward vector of the listener in the scene.
+///
+/// The up vector is the vector that points upward from the listener's perspective.
+/// Together with the direction, it defines the 3D orientation of the listener in the scene.
+/// The up vector doesn't have to be normalized. The default listener's up vector is (0, 1, 0).
+/// It is usually not necessary to change it, especially in 2D scenarios.
+pub fn set_up_vector(value: &Vector3f) {
+    unsafe { ffi::sfListener_setUpVector(value.raw()) }
+}
+
+/// Get the current upward vector of the listener in the scene. (not normalized)
+pub fn up_vector() -> Vector3f {
+    unsafe { Vector3f::from_raw(ffi::sfListener_getUpVector()) }
 }

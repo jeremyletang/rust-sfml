@@ -21,10 +21,6 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-//! Play sounds.
-//!
-//! Regular sound that can be played in the audio environment.
-
 use libc::c_float;
 use std::mem;
 
@@ -37,9 +33,34 @@ use csfml_system_sys::{sfBool, sfVector3f};
 use csfml_audio_sys as ffi;
 use ext::sf_bool_ext::SfBoolExt;
 
-/// Play sounds.
-///
 /// Regular sound that can be played in the audio environment.
+///
+/// `Sound` is the type to use to play sounds.
+///
+/// It provides:
+///
+/// - Control (play, pause, stop)
+/// - Ability to modify output parameters in real-time (pitch, volume, ...)
+/// - 3D spatial features (position, attenuation, ...).
+///
+/// `Sound` is perfect for playing short sounds that can fit in memory and require no latency,
+/// like foot steps or gun shots. For longer sounds, like background musics or long speeches,
+/// rather see `Music` (which is based on streaming).
+///
+/// In order to work, a sound must be given a buffer of audio data to play.
+/// Audio data (samples) is stored in `SoundBuffer`, and attached to a sound with the
+/// `set_buffer()` function. The buffer object attached to a sound must remain alive as long as
+/// the sound uses it. Note that multiple sounds can use the same sound buffer at the same time.
+///
+/// # Usage example
+///
+/// ```no_run
+/// use sfml::audio::{Sound, SoundBuffer};
+///
+/// let buffer = SoundBuffer::from_file("sound.wav").unwrap();
+/// let mut sound = Sound::with_buffer(&buffer);
+/// sound.play();
+/// ```
 pub struct Sound<'s> {
     sound: *mut ffi::sfSound,
     buffer: Option<&'s SoundBufferRef>,

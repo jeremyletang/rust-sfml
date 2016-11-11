@@ -21,11 +21,6 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-//! Play Music
-//!
-//! Streamed music played from an audio file.
-//! Musics are sounds that are streamed rather than completely loaded in memory.
-
 use libc::{c_float, size_t};
 use std::mem;
 use std::ffi::CString;
@@ -41,10 +36,40 @@ use csfml_system_sys::{sfBool, sfVector3f};
 use csfml_audio_sys as ffi;
 use ext::sf_bool_ext::SfBoolExt;
 
-/// Play Music
-///
 /// Streamed music played from an audio file.
-/// Musics are sounds that are streamed rather than completely loaded in memory.
+///
+/// `Music`s are sounds that are streamed rather than completely loaded in memory.
+///
+/// This is especially useful for compressed musics that usually take hundreds of MB when they are
+/// uncompressed: by streaming it instead of loading it entirely, you avoid saturating the memory
+/// and have almost no loading delay. This implies that the underlying resource
+/// (file, stream or memory buffer) must remain valid for the lifetime of the `Music` object.
+///
+/// Apart from that, a `Music` has almost the same features as the
+/// `SoundBuffer` / `Sound` pair: you can play/pause/stop it, request its parameters
+/// (channels, sample rate), change the way it is played (pitch, volume, 3D position, ...), etc.
+///
+/// As a sound stream, a music is played in its own thread in order not to block the rest of the
+/// program. This means that you can leave the music alone after calling `play()`,
+/// it will manage itself very well.
+///
+/// # Usage example
+///
+/// ```no_run
+/// use sfml::audio::{Music, SoundSource};
+///
+/// // Open a new music from an audio file
+/// let mut music = Music::from_file("music.ogg").unwrap();
+///
+/// // Change some parameters
+/// music.set_position3f(0., 1., 10.); // change its 3D position
+/// music.set_pitch(2.); // increase the pitch
+/// music.set_volume(50.); // reduce the volume
+/// music.set_loop(true); // make it loop
+///
+/// // Play it
+/// music.play();
+/// ```
 pub struct Music {
     music: *mut ffi::sfMusic,
 }
