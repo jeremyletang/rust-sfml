@@ -32,9 +32,54 @@ use std::ops::Deref;
 use inputstream::InputStream;
 use std::io::{Read, Seek};
 
-/// Storage of audio sample
+
+/// Storage for audio samples defining a sound.
 ///
 /// A sound buffer holds the data of a sound, which is an array of audio samples.
+///
+/// A sample is a 16 bits signed integer that defines the amplitude of the sound at a given time.
+/// The sound is then reconstituted by playing these samples at a high rate
+/// (for example, 44100 samples per second is the standard rate used for playing CDs).
+/// In short, audio samples are like texture pixels, and a `SoundBuffer` is similar to a `Texture`.
+///
+/// A sound buffer can be loaded from a file (see `from_file()` for the complete list of
+/// supported formats), from memory, from a custom stream or directly from an array of samples.
+/// It can also be saved back to a file.
+///
+/// Sound buffers alone are not very useful: they hold the audio data but cannot be played.
+/// To do so, you need to use the sf::Sound class, which provides functions to play/pause/stop
+/// the sound as well as changing the way it is outputted (volume, pitch, 3D position, ...).
+/// This separation allows more flexibility and better performances: indeed a `SoundBuffer` is
+/// a heavy resource, and any operation on it is slow (often too slow for real-time applications).
+/// On the other side, a `Sound` is a lightweight object, which can use the audio data of a sound
+/// buffer and change the way it is played without actually modifying that data.
+/// Note that it is also possible to bind several `Sound` instances to the same `SoundBuffer`.
+///
+/// It is important to note that the `Sound` instance doesn't copy the buffer that it uses,
+/// it only keeps a reference to it. Thus, a `SoundBuffer` can not be destructed while it is
+/// borrowed by a `Sound`.
+///
+/// # Usage example
+///
+/// ```no_run
+/// use sfml::audio::{Sound, SoundBuffer, SoundSource};
+///
+/// // Load a new sound buffer
+/// let buffer = SoundBuffer::from_file("sound.wav").unwrap();
+///
+/// // Create a sound source and bind it to the buffer
+/// let mut sound_1 = Sound::with_buffer(&buffer);
+///
+/// // Play the sound
+/// sound_1.play();
+///
+/// // Create another sound source bound to the same buffer
+/// let mut sound_2 = Sound::with_buffer(&buffer);
+///
+/// // Play it with a higher pitch -- the first sound remains unchanged
+/// sound_2.set_pitch(2.0);
+/// sound_2.play();
+/// ```
 pub struct SoundBuffer {
     sound_buffer: *mut ffi::sfSoundBuffer,
 }
