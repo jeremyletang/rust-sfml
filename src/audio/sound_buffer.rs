@@ -29,6 +29,8 @@ use system::Time;
 use csfml_audio_sys as ffi;
 use ext::sf_bool_ext::SfBoolExt;
 use std::ops::Deref;
+use inputstream::InputStream;
+use std::io::{Read, Seek};
 
 /// Storage of audio sample
 ///
@@ -122,6 +124,42 @@ impl SoundBuffer {
             None
         } else {
             Some(SoundBuffer { sound_buffer: sound_buffer })
+        }
+    }
+    /// Load the sound buffer from a file in memory.
+    pub fn from_memory(data: &[u8]) -> Option<Self> {
+        let sound_buffer =
+            unsafe { ffi::sfSoundBuffer_createFromMemory(data.as_ptr() as _, data.len()) };
+        if sound_buffer.is_null() {
+            None
+        } else {
+            Some(SoundBuffer { sound_buffer: sound_buffer })
+        }
+    }
+    /// Load the sound buffer from a custom stream.
+    pub fn from_stream<T: Read + Seek>(stream: &mut T) -> Option<Self> {
+        let mut stream = InputStream::new(stream);
+        let buffer = unsafe { ffi::sfSoundBuffer_createFromStream(&mut stream.0) };
+        if buffer.is_null() {
+            None
+        } else {
+            Some(SoundBuffer { sound_buffer: buffer })
+        }
+    }
+    /// Load the sound buffer from a slice of audio samples.
+    ///
+    /// The assumed format of the audio samples is 16 bits signed integer.
+    pub fn from_samples(samples: &[i16], channel_count: u32, sample_rate: u32) -> Option<Self> {
+        let buffer = unsafe {
+            ffi::sfSoundBuffer_createFromSamples(samples.as_ptr(),
+                                                 samples.len() as _,
+                                                 channel_count,
+                                                 sample_rate)
+        };
+        if buffer.is_null() {
+            None
+        } else {
+            Some(SoundBuffer { sound_buffer: buffer })
         }
     }
 }
