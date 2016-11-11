@@ -80,6 +80,15 @@ impl<'a, S: SoundStream> SoundStreamPlayer<'a, S> {
             sfSoundStream_play(self.sf_sound_stream);
         }
     }
+    /// Pause the audio stream.
+    ///
+    /// This function pauses the stream if it was playing,
+    /// otherwise (stream already paused or stopped) it has no effect.
+    pub fn pause(&mut self) {
+        unsafe {
+            sfSoundStream_pause(self.sf_sound_stream);
+        }
+    }
     /// Get the current status of the stream (stopped, paused, playing)
     pub fn get_status(&self) -> SoundStatus {
         unsafe { ::std::mem::transmute(sfSoundStream_getStatus(self.sf_sound_stream)) }
