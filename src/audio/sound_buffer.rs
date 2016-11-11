@@ -21,10 +21,6 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-//! Storage of audio sample
-//!
-//! A sound buffer holds the data of a sound, which is an array of audio samples.
-
 use std::ffi::CString;
 
 use raw_conv::{Raw, FromRaw};
