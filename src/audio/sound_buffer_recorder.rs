@@ -32,6 +32,7 @@ use audio::sound_buffer::SoundBufferRef;
 
 use csfml_audio_sys as ffi;
 use ext::sf_bool_ext::SfBoolExt;
+use std::ffi::CStr;
 
 /// Store captured audio data in sound Buffer
 ///
@@ -113,6 +114,17 @@ impl SoundBufferRecorder {
         unsafe { ffi::sfSoundRecorder_isAvailable() }.to_bool()
     }
 
+    /// Get the name of the default audio capture device.
+    ///
+    /// This function returns the name of the default audio capture device.
+    /// If none is available, an empty string is returned.
+    pub fn default_device() -> String {
+        unsafe {
+            let c_str_ptr = ffi::sfSoundRecorder_getDefaultDevice();
+            CStr::from_ptr(c_str_ptr).to_string_lossy().into_owned()
+        }
+    }
+
     /// Get a list of the names of all available audio capture devices.
     ///
     /// This function returns a vector of strings, containing the names of all available
@@ -124,7 +136,6 @@ impl SoundBufferRecorder {
             let device_names = ::std::slice::from_raw_parts(device_names, count as usize);
             let mut names = Vec::new();
             for c_str_ptr in device_names {
-                use std::ffi::CStr;
                 let name = CStr::from_ptr(*c_str_ptr).to_string_lossy().into_owned();
                 names.push(name);
             }
@@ -134,7 +145,9 @@ impl SoundBufferRecorder {
 }
 
 #[test]
-fn test_available_devices() {
+fn test_devices() {
+    println!("Default device: {}", SoundBufferRecorder::default_device());
+    println!("Available devices:");
     for device in SoundBufferRecorder::available_devices() {
         println!("{}", device);
     }
