@@ -21,10 +21,6 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-//! Play sounds.
-//!
-//! Regular sound that can be played in the audio environment.
-
 use libc::c_float;
 use std::mem;
 
