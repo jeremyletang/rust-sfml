@@ -57,7 +57,7 @@ use ext::sf_bool_ext::SfBoolExt;
 /// ```no_run
 /// use sfml::audio::{Sound, SoundBuffer};
 ///
-/// let buffer = SoundBuffer::new("sound.wav").unwrap();
+/// let buffer = SoundBuffer::from_file("sound.wav").unwrap();
 /// let mut sound = Sound::with_buffer(&buffer);
 /// sound.play();
 /// ```

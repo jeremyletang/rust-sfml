@@ -36,7 +36,7 @@ fn main() {
     window.set_vertical_sync_enabled(true);
 
     // Load the sounds used in the game
-    let ball_soundbuffer = SoundBuffer::new("resources/ball.wav").unwrap();
+    let ball_soundbuffer = SoundBuffer::from_file("resources/ball.wav").unwrap();
 
     let mut ball_sound = Sound::with_buffer(&ball_soundbuffer);
     ball_sound.set_volume(100.);

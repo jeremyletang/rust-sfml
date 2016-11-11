@@ -114,7 +114,7 @@ impl SoundBuffer {
     /// * filename - Path of the sound file to load
     ///
     /// Return an option to a SoundBuffer object or None.
-    pub fn new(filename: &str) -> Option<SoundBuffer> {
+    pub fn from_file(filename: &str) -> Option<SoundBuffer> {
         let c_str = CString::new(filename.as_bytes()).unwrap();
         let sound_buffer: *mut ffi::sfSoundBuffer =
             unsafe { ffi::sfSoundBuffer_createFromFile(c_str.as_ptr()) };

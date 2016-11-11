@@ -6,7 +6,7 @@ use std::io::Write;
 
 // Play a Sound
 fn play_sound() {
-    let buffer = SoundBuffer::new("resources/canary.wav").unwrap();
+    let buffer = SoundBuffer::from_file("resources/canary.wav").unwrap();
 
     // Display sound informations
     println!("canary.wav :");
