@@ -93,6 +93,13 @@ impl TextureRef {
     pub fn is_srgb(&self) -> bool {
         unsafe { ffi::sfTexture_isSrgb(self as *const _ as _).to_bool() }
     }
+    /// Get the underlying OpenGL handle of the texture.
+    ///
+    /// You shouldn't need to use this function, unless you have very specific stuff to implement
+    /// that SFML doesn't support, or implement a temporary workaround until a bug is fixed.
+    pub fn native_handle(&self) -> u32 {
+        unsafe { ffi::sfTexture_getNativeHandle(self as *const _ as _) }
+    }
 }
 
 impl Texture {
