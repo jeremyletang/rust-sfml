@@ -89,6 +89,10 @@ impl TextureRef {
             Some(Image::from_raw(img))
         }
     }
+    /// Tell whether the texture source is converted from sRGB or not.
+    pub fn is_srgb(&self) -> bool {
+        unsafe { ffi::sfTexture_isSrgb(self as *const _ as _).to_bool() }
+    }
 }
 
 impl Texture {
@@ -326,11 +330,6 @@ impl Texture {
     /// This can be requested during window creation.
     pub fn set_srgb(&mut self, srgb: bool) {
         unsafe { ffi::sfTexture_setSrgb(self.texture, SfBoolExt::from_bool(srgb)) }
-    }
-
-    /// Tell whether the texture source is converted from sRGB or not.
-    pub fn is_srgb(&self) -> bool {
-        unsafe { ffi::sfTexture_isSrgb(self.texture).to_bool() }
     }
 
     /// Generate a mipmap using the current texture data.
