@@ -51,7 +51,6 @@ use ext::sf_bool_ext::SfBoolExt;
 /// of the graphics module.
 pub struct RenderWindow {
     render_window: *mut ffi::sfRenderWindow,
-    title_length: u32,
 }
 
 /// An iterator over all the events in the events queue (internally call `poll_event`)
@@ -98,11 +97,7 @@ impl RenderWindow {
         if sf_render_win.is_null() {
             None
         } else {
-            Some(RenderWindow {
-                render_window: sf_render_win,
-                // event: sf_ev,
-                title_length: title.len() as u32,
-            })
+            Some(RenderWindow { render_window: sf_render_win })
         }
     }
 
@@ -111,10 +106,7 @@ impl RenderWindow {
     /// # Arguments
     /// * title - New title
     pub fn set_unicode_title(&mut self, title: Vec<u32>) {
-        unsafe {
-            self.title_length = title.len() as u32;
-            ffi::sfRenderWindow_setUnicodeTitle(self.render_window, title.as_ptr())
-        }
+        unsafe { ffi::sfRenderWindow_setUnicodeTitle(self.render_window, title.as_ptr()) }
     }
 
     /// Change a render window's icon
@@ -252,7 +244,6 @@ impl RenderWindow {
         unsafe {
             ffi::sfRenderWindow_setTitle(self.render_window, c_str.as_ptr());
         }
-        self.title_length = title.len() as u32;
     }
 
     /// Show or hide a window
