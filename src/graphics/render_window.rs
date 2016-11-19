@@ -33,7 +33,7 @@ use raw_conv::{Raw, RawMut, FromRaw};
 use window::{ContextSettings, VideoMode, Event, Style};
 use system::{Vector2f, Vector2i, Vector2u};
 use graphics::{Drawable, Color, CircleShape, RectangleShape, Text, Sprite, VertexArray,
-               RenderStates, View, ViewRef, Image, IntRect, RenderTarget, Vertex, PrimitiveType,
+               RenderStates, View, ViewRef, IntRect, RenderTarget, Vertex, PrimitiveType,
                ConvexShape, CustomShape};
 
 use csfml_system_sys::*;
@@ -393,27 +393,6 @@ impl RenderWindow {
     pub fn touch_position(&self, finger: u32) -> Vector2i {
         unsafe {
             FromRaw::from_raw(ffi::sfTouch_getPositionRenderWindow(finger, self.render_window))
-        }
-    }
-
-    /// Copy the current contents of a render window to an image
-    ///
-    /// This is a slow operation, whose main purpose is to make
-    /// screenshots of the application. If you want to update an
-    /// image with the contents of the window and then use it for
-    /// drawing, you should rather use a [Texture](struct.Texture.html) and its
-    /// [update(Window)](struct.Texture.html#method.update_from_window) function.
-    /// You can also draw things directly to a texture with the
-    /// RenderWindow.
-    ///
-    /// Return a new image containing the captured contents
-    ///
-    pub fn capture(&mut self) -> Option<Image> {
-        let img = unsafe { ffi::sfRenderWindow_capture(self.render_window) };
-        if img.is_null() {
-            None
-        } else {
-            Some(Image::from_raw(img))
         }
     }
 
