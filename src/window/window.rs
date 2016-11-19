@@ -252,6 +252,14 @@ impl Window {
         unsafe { ffi::sfWindow_setMouseCursorVisible(self.window, sfBool::from_bool(visible)) }
     }
 
+    /// Grab or release the mouse cursor.
+    ///
+    /// If set, grabs the mouse cursor inside this window's client area so it may no longer be
+    /// moved outside its bounds. Note that grabbing is only active while the window has focus.
+    pub fn set_mouse_cursor_grabbed(&mut self, grabbed: bool) {
+        unsafe { ffi::sfWindow_setMouseCursorGrabbed(self.window, sfBool::from_bool(grabbed)) }
+    }
+
     /// Enable or disable vertical synchronization
     ///
     /// Activating vertical synchronization will limit the number

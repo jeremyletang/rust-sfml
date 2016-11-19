@@ -934,4 +934,5 @@ extern "C" {
     pub fn sfView_move(view: *mut sfView, offset: sfVector2f);
     pub fn sfView_rotate(view: *mut sfView, angle: f32);
     pub fn sfView_zoom(view: *mut sfView, factor: f32);
+    pub fn sfRenderWindow_setMouseCursorGrabbed(window: *const sfRenderWindow, grabbed: sfBool);
 }
