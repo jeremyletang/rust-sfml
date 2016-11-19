@@ -22,8 +22,6 @@
 //
 
 use std::os::raw::{c_uint, c_float};
-use std::vec::Vec;
-use std::ffi::CString;
 use std::marker::PhantomData;
 
 use raw_conv::{Raw, FromRaw};
@@ -117,11 +115,10 @@ impl Window {
                style: Style,
                settings: &ContextSettings)
                -> Option<Window> {
-        let mut codepoints: Vec<u32> = title.chars().map(|c| c as u32).collect();
-        codepoints.push(0);
+        let utf32 = ::unicode_conv::str_to_csfml(title);
         let sf_win: *mut ffi::sfWindow = unsafe {
             ffi::sfWindow_createUnicode(mode.raw(),
-                                        codepoints.as_ptr(),
+                                        utf32.as_ptr() as _,
                                         style.bits(),
                                         &settings.raw())
         };
@@ -180,14 +177,6 @@ impl Window {
         }
     }
 
-    /// Change the title of a window (with a UTF-32 string)
-    ///
-    /// # Arguments
-    /// * title - New title
-    pub fn set_unicode_title(&mut self, title: Vec<u32>) {
-        unsafe { ffi::sfWindow_setUnicodeTitle(self.window, title.as_ptr()) }
-    }
-
     /// Change a window's icon
     /// pixels must be an array of width x height pixels in 32-bits RGBA format.
     ///
@@ -243,8 +232,8 @@ impl Window {
     /// # Arguments
     /// * title - New title
     pub fn set_title(&mut self, title: &str) {
-        let c_str = CString::new(title.as_bytes()).unwrap();
-        unsafe { ffi::sfWindow_setTitle(self.window, c_str.as_ptr()) }
+        let utf32 = ::unicode_conv::str_to_csfml(title);
+        unsafe { ffi::sfWindow_setUnicodeTitle(self.window, utf32.as_ptr() as _) }
     }
 
     /// Show or hide a window

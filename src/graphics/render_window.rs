@@ -28,8 +28,6 @@
 //! of the graphics module.
 
 use libc::{c_float, c_uint};
-use std::vec::Vec;
-use std::ffi::CString;
 
 use raw_conv::{Raw, RawMut, FromRaw};
 use window::{ContextSettings, VideoMode, Event, Style};
@@ -85,12 +83,11 @@ impl RenderWindow {
                style: Style,
                settings: &ContextSettings)
                -> Option<RenderWindow> {
-        let mut codepoints: Vec<u32> = title.chars().map(|c| c as u32).collect();
-        codepoints.push(0);
+        let utf32 = ::unicode_conv::str_to_csfml(title);
         let sf_render_win: *mut ffi::sfRenderWindow =
             unsafe {
                 ffi::sfRenderWindow_createUnicode(mode.raw(),
-                                                  codepoints.as_ptr(),
+                                                  utf32.as_ptr() as _,
                                                   style.bits(),
                                                   &settings.raw())
             };
@@ -99,14 +96,6 @@ impl RenderWindow {
         } else {
             Some(RenderWindow { render_window: sf_render_win })
         }
-    }
-
-    /// Change the title of a render window (with a UTF-32 string)
-    ///
-    /// # Arguments
-    /// * title - New title
-    pub fn set_unicode_title(&mut self, title: Vec<u32>) {
-        unsafe { ffi::sfRenderWindow_setUnicodeTitle(self.render_window, title.as_ptr()) }
     }
 
     /// Change a render window's icon
@@ -240,9 +229,9 @@ impl RenderWindow {
     /// * title - New title
     ///
     pub fn set_title(&mut self, title: &str) {
-        let c_str = CString::new(title.as_bytes()).unwrap();
+        let utf32 = ::unicode_conv::str_to_csfml(title);
         unsafe {
-            ffi::sfRenderWindow_setTitle(self.render_window, c_str.as_ptr());
+            ffi::sfRenderWindow_setUnicodeTitle(self.render_window, utf32.as_ptr() as _);
         }
     }
 
