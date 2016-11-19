@@ -100,6 +100,15 @@ impl TextureRef {
     pub fn native_handle(&self) -> u32 {
         unsafe { ffi::sfTexture_getNativeHandle(self as *const _ as _) }
     }
+
+    /// Bind a texture for rendering
+    ///
+    /// This function is not part of the graphics API, it mustn't be
+    /// used when drawing SFML entities. It must be used only if you
+    /// mix `Texture` with OpenGL code.
+    pub fn bind(&self) {
+        unsafe { ffi::sfTexture_bind(self as *const _ as _) }
+    }
 }
 
 impl Texture {
@@ -303,15 +312,6 @@ impl Texture {
     /// * repeated  - true to repeat the texture, false to disable repeating
     pub fn set_repeated(&mut self, repeated: bool) {
         unsafe { ffi::sfTexture_setRepeated(self.texture, sfBool::from_bool(repeated)) }
-    }
-
-    /// Bind a texture for rendering
-    ///
-    /// This function is not part of the graphics API, it mustn't be
-    /// used when drawing SFML entities. It must be used only if you
-    /// mix sfTexture with OpenGL code.
-    pub fn bind(&mut self) {
-        unsafe { ffi::sfTexture_bind(self.texture) }
     }
 
     /// Get the maximum texture size allowed
