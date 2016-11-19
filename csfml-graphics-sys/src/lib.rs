@@ -870,6 +870,7 @@ extern "C" {
     pub fn sfTexture_getMaximumSize() -> ::std::os::raw::c_uint;
     pub fn sfTexture_setSrgb(texture: *mut sfTexture, sRgb: sfBool);
     pub fn sfTexture_isSrgb(texture: *const sfTexture) -> sfBool;
+    pub fn sfTexture_generateMipmap(texture: *mut sfTexture) -> sfBool;
     pub fn sfTransformable_create() -> *mut sfTransformable;
     pub fn sfTransformable_copy(transformable: *const sfTransformable)
      -> *mut sfTransformable;
