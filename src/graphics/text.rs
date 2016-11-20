@@ -168,14 +168,14 @@ impl<'s> Text<'s> {
     /// # Arguments
     /// * color - The new color of the text
     pub fn set_color(&mut self, color: &Color) {
-        unsafe { ffi::sfText_setColor(self.text, color.0) }
+        unsafe { ffi::sfText_setColor(self.text, color.raw()) }
     }
 
     /// Get the global color of a text
     ///
     /// Return the global color of the text
     pub fn get_color(&self) -> Color {
-        unsafe { Color(ffi::sfText_getColor(self.text)) }
+        unsafe { Color::from_raw(ffi::sfText_getColor(self.text)) }
     }
 
     /// Return the position of the index-th character in a text

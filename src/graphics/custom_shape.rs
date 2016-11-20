@@ -159,7 +159,7 @@ impl<'s> CustomShape<'s> {
     /// # Arguments
     /// * color - The new color of the Shape
     pub fn set_fill_color(&mut self, color: &Color) {
-        unsafe { ffi::sfShape_setFillColor(self.shape, color.0) }
+        unsafe { ffi::sfShape_setFillColor(self.shape, color.raw()) }
     }
 
     /// Set the outline color of a shape
@@ -170,7 +170,7 @@ impl<'s> CustomShape<'s> {
     /// # Arguments
     /// * color - The new outline color of the shape
     pub fn set_outline_color(&mut self, color: &Color) {
-        unsafe { ffi::sfShape_setOutlineColor(self.shape, color.0) }
+        unsafe { ffi::sfShape_setOutlineColor(self.shape, color.raw()) }
     }
 
     /// Set the thickness of a shape's outline
@@ -207,14 +207,14 @@ impl<'s> CustomShape<'s> {
     ///
     /// Return the fill color of the shape
     pub fn get_fill_color(&self) -> Color {
-        unsafe { Color(ffi::sfShape_getFillColor(self.shape)) }
+        unsafe { Color::from_raw(ffi::sfShape_getFillColor(self.shape)) }
     }
 
     /// Get the outline color of a shape
     ///
     /// Return the outline color of the shape
     pub fn get_outline_color(&self) -> Color {
-        unsafe { Color(ffi::sfShape_getOutlineColor(self.shape)) }
+        unsafe { Color::from_raw(ffi::sfShape_getOutlineColor(self.shape)) }
     }
 
     /// Get the outline thickness of a shape

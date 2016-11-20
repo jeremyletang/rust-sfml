@@ -29,12 +29,37 @@ use std::ops::{Add, Mul};
 
 use csfml_graphics_sys as ffi;
 
+use raw_conv::{Raw, FromRaw};
+
 /// Utility class for manpulating RGBA colors
 ///
 /// sfColor is a simple color class composed of 4 components: Red, Green, Blue, Alpha
 #[repr(C)]
 #[derive(Copy, Clone, PartialEq, Eq, Debug)]
-pub struct Color(pub ffi::sfColor);
+pub struct Color {
+    /// 	Red component.
+    pub r: u8,
+    /// Green component.
+    pub g: u8,
+    /// Blue component.
+    pub b: u8,
+    /// Alpha (opacity) component.
+    pub a: u8,
+}
+
+impl Raw for Color {
+    type Raw = ffi::sfColor;
+
+    fn raw(&self) -> Self::Raw {
+        unsafe { ::std::mem::transmute(*self) }
+    }
+}
+
+impl FromRaw for Color {
+    fn from_raw(src: Self::Raw) -> Self {
+        unsafe { ::std::mem::transmute(src) }
+    }
+}
 
 impl Color {
     /// Construct a color from its 3 RGB components
@@ -46,12 +71,12 @@ impl Color {
     ///
     /// Return Color object constructed from the components
     pub fn new_rgb(red: u8, green: u8, blue: u8) -> Color {
-        Color(ffi::sfColor {
+        Color {
             r: red,
             g: green,
             b: blue,
             a: 255,
-        })
+        }
     }
 
     /// Construct a color from its 4 RGBA components
@@ -64,12 +89,12 @@ impl Color {
     ///
     /// Return Color object constructed from the components
     pub fn new_rgba(red: u8, green: u8, blue: u8, alpha: u8) -> Color {
-        Color(ffi::sfColor {
+        Color {
             r: red,
             g: green,
             b: blue,
             a: alpha,
-        })
+        }
     }
 
     /// Black predefined color
@@ -123,7 +148,7 @@ impl Add for Color {
 
     /// Calculate the component-wise saturated addition of two colors.
     fn add(self, other: Color) -> Color {
-        Color(unsafe { ffi::sfColor_add(self.0, other.0) })
+        Color::from_raw(unsafe { ffi::sfColor_add(self.raw(), other.raw()) })
     }
 }
 
@@ -134,6 +159,6 @@ impl Mul for Color {
     ///
     /// For each `X` in `rgba`, `result.X = a.X * b.X / 255`.
     fn mul(self, other: Color) -> Color {
-        Color(unsafe { ffi::sfColor_modulate(self.0, other.0) })
+        Color::from_raw(unsafe { ffi::sfColor_modulate(self.raw(), other.raw()) })
     }
 }

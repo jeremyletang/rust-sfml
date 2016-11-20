@@ -406,7 +406,7 @@ impl<'s> Shape<'s> for RectangleShape<'s> {
     /// # Arguments
     /// * color - New color of the shape
     fn set_fill_color(&mut self, color: &Color) {
-        unsafe { ffi::sfRectangleShape_setFillColor(self.rectangle_shape, color.0) }
+        unsafe { ffi::sfRectangleShape_setFillColor(self.rectangle_shape, color.raw()) }
     }
 
     /// Set the outline color of a rectangle shape
@@ -417,7 +417,7 @@ impl<'s> Shape<'s> for RectangleShape<'s> {
     /// # Arguments
     /// * color - New outline color of the shape
     fn set_outline_color(&mut self, color: &Color) {
-        unsafe { ffi::sfRectangleShape_setOutlineColor(self.rectangle_shape, color.0) }
+        unsafe { ffi::sfRectangleShape_setOutlineColor(self.rectangle_shape, color.raw()) }
     }
 
     /// Set the thickness of a rectangle shape's outline
@@ -454,14 +454,14 @@ impl<'s> Shape<'s> for RectangleShape<'s> {
     ///
     /// Return the fill color of the shape
     fn get_fill_color(&self) -> Color {
-        unsafe { Color(ffi::sfRectangleShape_getFillColor(self.rectangle_shape)) }
+        unsafe { Color::from_raw(ffi::sfRectangleShape_getFillColor(self.rectangle_shape)) }
     }
 
     /// Get the outline color of a rectangle shape
     ///
     /// Return the outline color of the shape
     fn get_outline_color(&self) -> Color {
-        unsafe { Color(ffi::sfRectangleShape_getOutlineColor(self.rectangle_shape)) }
+        unsafe { Color::from_raw(ffi::sfRectangleShape_getOutlineColor(self.rectangle_shape)) }
     }
 
     /// Get the outline thickness of a rectangle shape

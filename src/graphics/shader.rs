@@ -339,7 +339,7 @@ impl<'s> Shader<'s> {
     /// * color - Color to assign
     pub fn set_color_parameter(&mut self, name: &str, color: &Color) {
         let c_str = CString::new(name.as_bytes()).unwrap();
-        unsafe { ffi::sfShader_setColorParameter(self.shader, c_str.as_ptr(), color.0) }
+        unsafe { ffi::sfShader_setColorParameter(self.shader, c_str.as_ptr(), color.raw()) }
     }
 }
 

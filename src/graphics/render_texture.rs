@@ -118,7 +118,7 @@ impl RenderTarget for RenderTexture {
     /// # Arguments
     /// * color - Fill color
     fn clear(&mut self, color: &Color) {
-        unsafe { ffi::sfRenderTexture_clear(self.render_texture, color.0) }
+        unsafe { ffi::sfRenderTexture_clear(self.render_texture, color.raw()) }
     }
 
     /// Change the current active view of a render texture

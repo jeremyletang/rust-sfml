@@ -409,7 +409,7 @@ impl<'s> Shape<'s> for CircleShape<'s> {
     /// # Arguments
     /// * color - New color of the shape
     fn set_fill_color(&mut self, color: &Color) {
-        unsafe { ffi::sfCircleShape_setFillColor(self.circle_shape, color.0) }
+        unsafe { ffi::sfCircleShape_setFillColor(self.circle_shape, color.raw()) }
     }
 
     /// Set the outline color of a circle shape
@@ -420,7 +420,7 @@ impl<'s> Shape<'s> for CircleShape<'s> {
     /// # Arguments
     /// * color - New outline color of the shape
     fn set_outline_color(&mut self, color: &Color) {
-        unsafe { ffi::sfCircleShape_setOutlineColor(self.circle_shape, color.0) }
+        unsafe { ffi::sfCircleShape_setOutlineColor(self.circle_shape, color.raw()) }
     }
 
     /// Set the thickness of a circle shape's outline
@@ -456,14 +456,14 @@ impl<'s> Shape<'s> for CircleShape<'s> {
     ///
     /// Return the fill color of the shape
     fn get_fill_color(&self) -> Color {
-        unsafe { Color(ffi::sfCircleShape_getFillColor(self.circle_shape)) }
+        unsafe { Color::from_raw(ffi::sfCircleShape_getFillColor(self.circle_shape)) }
     }
 
     /// Get the outline color of a circle shape
     ///
     /// Return the outline color of the shape
     fn get_outline_color(&self) -> Color {
-        unsafe { Color(ffi::sfCircleShape_getOutlineColor(self.circle_shape)) }
+        unsafe { Color::from_raw(ffi::sfCircleShape_getOutlineColor(self.circle_shape)) }
     }
 
     /// Get the outline thickness of a circle shape

@@ -92,10 +92,10 @@ fn main() {
                 }
             }
         }
-        texts.retain(|txt| txt.get_color().0.a > 0);
+        texts.retain(|txt| txt.get_color().a > 0);
         for txt in &mut texts {
             let mut color = txt.get_color();
-            color.0.a -= 1;
+            color.a -= 1;
             txt.set_color(&color);
             window.draw(txt);
         }

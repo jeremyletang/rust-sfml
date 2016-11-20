@@ -732,7 +732,7 @@ impl RenderTarget for RenderWindow {
 
     /// Clear window with the given color
     fn clear(&mut self, color: &Color) {
-        unsafe { ffi::sfRenderWindow_clear(self.render_window, color.0) }
+        unsafe { ffi::sfRenderWindow_clear(self.render_window, color.raw()) }
     }
 }
 
