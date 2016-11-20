@@ -37,7 +37,7 @@ use raw_conv::{Raw, FromRaw};
 #[repr(C)]
 #[derive(Copy, Clone, PartialEq, Eq, Debug)]
 pub struct Color {
-    /// 	Red component.
+    /// Red component.
     pub r: u8,
     /// Green component.
     pub g: u8,
