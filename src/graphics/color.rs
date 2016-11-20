@@ -143,6 +143,22 @@ impl Color {
     }
 }
 
+impl From<u32> for Color {
+    /// Construct the color from 32-bit unsigned integer.
+    ///
+    /// The number should contain the components in RGBA order.
+    fn from(src: u32) -> Self {
+        unsafe { Color::from_raw(ffi::sfColor_fromInteger(src)) }
+    }
+}
+
+impl Into<u32> for Color {
+    /// Retrieve the color as a 32-bit unsigned integer.
+    fn into(self) -> u32 {
+        unsafe { ffi::sfColor_toInteger(self.raw()) }
+    }
+}
+
 impl Add for Color {
     type Output = Color;
 
