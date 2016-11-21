@@ -25,7 +25,7 @@
 //! Class for loading and manipulating character fonts
 
 use libc::{c_uint, size_t};
-use std::ffi::CString;
+use std::ffi::{CStr, CString};
 
 use raw_conv::Raw;
 use graphics::{TextureRef, Glyph};
@@ -40,6 +40,12 @@ use ext::sf_bool_ext::SfBoolExt;
 /// Class for loading and manipulating character fonts
 pub struct Font {
     font: *mut ffi::sfFont,
+}
+
+/// Holds various information about a font.
+pub struct Info {
+    /// The font family.
+    pub family: String,
 }
 
 impl Font {
@@ -145,6 +151,21 @@ impl Font {
                                  sfBool::from_bool(bold))
         }
     }
+    /// Returns the font information.
+    pub fn info(&self) -> Info {
+        unsafe {
+            let raw = ffi::sfFont_getInfo(self.font);
+            let family = CStr::from_ptr(raw.family).to_string_lossy().into_owned();
+
+            Info { family: family }
+        }
+    }
+}
+
+#[test]
+fn test_info() {
+    let font = Font::from_file("examples/resources/sansation.ttf").unwrap();
+    assert_eq!(font.info().family, "Sansation");
 }
 
 impl Clone for Font {

@@ -64,7 +64,7 @@ mod text;
 pub mod text_style;
 mod shader;
 mod color;
-mod font;
+pub mod font;
 mod view;
 mod image;
 mod sprite;
