@@ -160,6 +160,14 @@ impl Font {
             Info { family: family }
         }
     }
+    /// Returns the position of the underline.
+    pub fn underline_position(&self, character_size: u32) -> f32 {
+        unsafe { ffi::sfFont_getUnderlinePosition(self.font, character_size) }
+    }
+    /// Returns the thickness of the underline.
+    pub fn underline_thickness(&self, character_size: u32) -> f32 {
+        unsafe { ffi::sfFont_getUnderlineThickness(self.font, character_size) }
+    }
 }
 
 #[test]
