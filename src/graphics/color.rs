@@ -25,7 +25,7 @@
 //!
 //! Color is a simple color class composed of 4 components: Red, Green, Blue, Alpha
 
-use std::ops::{Add, Mul};
+use std::ops::{Add, Mul, Sub};
 
 use csfml_graphics_sys as ffi;
 
@@ -165,6 +165,15 @@ impl Add for Color {
     /// Calculate the component-wise saturated addition of two colors.
     fn add(self, other: Color) -> Color {
         Color::from_raw(unsafe { ffi::sfColor_add(self.raw(), other.raw()) })
+    }
+}
+
+impl Sub for Color {
+    type Output = Self;
+
+    /// Component-wise subtraction of two colors. Components below 0 are clamped to 0.
+    fn sub(self, other: Self) -> Self {
+        Self::from_raw(unsafe { ffi::sfColor_subtract(self.raw(), other.raw()) })
     }
 }
 
