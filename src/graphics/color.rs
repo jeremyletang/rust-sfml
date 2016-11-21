@@ -25,7 +25,7 @@
 //!
 //! Color is a simple color class composed of 4 components: Red, Green, Blue, Alpha
 
-use std::ops::{Add, Mul, Sub};
+use std::ops::{Add, Mul, Sub, AddAssign, MulAssign, SubAssign};
 
 use csfml_graphics_sys as ffi;
 
@@ -168,12 +168,24 @@ impl Add for Color {
     }
 }
 
+impl AddAssign for Color {
+    fn add_assign(&mut self, rhs: Self) {
+        *self = *self + rhs;
+    }
+}
+
 impl Sub for Color {
     type Output = Self;
 
     /// Component-wise subtraction of two colors. Components below 0 are clamped to 0.
     fn sub(self, other: Self) -> Self {
         Self::from_raw(unsafe { ffi::sfColor_subtract(self.raw(), other.raw()) })
+    }
+}
+
+impl SubAssign for Color {
+    fn sub_assign(&mut self, rhs: Self) {
+        *self = *self - rhs;
     }
 }
 
@@ -185,5 +197,11 @@ impl Mul for Color {
     /// For each `X` in `rgba`, `result.X = a.X * b.X / 255`.
     fn mul(self, other: Color) -> Color {
         Color::from_raw(unsafe { ffi::sfColor_modulate(self.raw(), other.raw()) })
+    }
+}
+
+impl MulAssign for Color {
+    fn mul_assign(&mut self, rhs: Self) {
+        *self = *self * rhs;
     }
 }
