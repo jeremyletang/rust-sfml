@@ -811,6 +811,9 @@ extern "C" {
                                    size: ::std::os::raw::c_uint);
     pub fn sfText_setStyle(text: *mut sfText, style: sfUint32);
     pub fn sfText_setColor(text: *mut sfText, color: sfColor);
+    pub fn sfText_setFillColor(text: *mut sfText, color: sfColor);
+    pub fn sfText_setOutlineColor(text: *mut sfText, color: sfColor);
+    pub fn sfText_setOutlineThickness(text: *mut sfText, thickness: f32);
     pub fn sfText_getString(text: *const sfText)
      -> *const ::std::os::raw::c_char;
     pub fn sfText_getUnicodeString(text: *const sfText) -> *const sfUint32;
@@ -819,6 +822,9 @@ extern "C" {
      -> ::std::os::raw::c_uint;
     pub fn sfText_getStyle(text: *const sfText) -> sfUint32;
     pub fn sfText_getColor(text: *const sfText) -> sfColor;
+    pub fn sfText_getFillColor(text: *const sfText) -> sfColor;
+    pub fn sfText_getOutlineColor(text: *const sfText) -> sfColor;
+    pub fn sfText_getOutlineThickness(text: *const sfText) -> f32;
     pub fn sfText_findCharacterPos(text: *const sfText, index: usize)
      -> sfVector2f;
     pub fn sfText_getLocalBounds(text: *const sfText) -> sfFloatRect;

@@ -14,6 +14,16 @@ fn main() {
     let mut string = String::from("This text can be edited.\nTry it!");
 
     let mut text = Text::new_init(&string, &font, 24);
+    text.set_fill_color(&Color::red());
+    text.set_outline_color(&Color::yellow());
+    text.set_outline_thickness(2.0);
+    println!("== Text information ==\n\
+              fill color: {:?}\n\
+              outline color: {:?}\n\
+              outline thickness: {:?}",
+             text.fill_color(),
+             text.outline_color(),
+             text.outline_thickness());
 
     loop {
         for ev in window.events() {

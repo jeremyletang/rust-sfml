@@ -161,21 +161,44 @@ impl<'s> Text<'s> {
         self.font
     }
 
-    /// Set the global color of used by a text
+    /// Set the fill color of the text.
     ///
-    /// By default, the text's color is opaque white.
-    ///
-    /// # Arguments
-    /// * color - The new color of the text
-    pub fn set_color(&mut self, color: &Color) {
-        unsafe { ffi::sfText_setColor(self.text, color.raw()) }
+    /// By default, the text's fill color is opaque white. Setting the fill color to a transparent
+    /// color with an outline will cause the outline to be displayed in the fill area of the text.
+    pub fn set_fill_color(&mut self, color: &Color) {
+        unsafe { ffi::sfText_setFillColor(self.text, color.raw()) }
     }
 
-    /// Get the global color of a text
+    /// Set the outline color of the text.
     ///
-    /// Return the global color of the text
-    pub fn get_color(&self) -> Color {
-        unsafe { Color::from_raw(ffi::sfText_getColor(self.text)) }
+    /// By default, the text's outline color is opaque black.
+    pub fn set_outline_color(&mut self, color: &Color) {
+        unsafe { ffi::sfText_setOutlineColor(self.text, color.raw()) }
+    }
+
+    /// Set the thickness of the text's outline.
+    ///
+    /// By default, the outline thickness is 0.
+    ///
+    /// Be aware that using a negative value for the outline thickness will cause distorted
+    /// rendering.
+    pub fn set_outline_thickness(&mut self, thickness: f32) {
+        unsafe { ffi::sfText_setOutlineThickness(self.text, thickness) }
+    }
+
+    /// Returns the fill color of the text.
+    pub fn fill_color(&self) -> Color {
+        FromRaw::from_raw(unsafe { ffi::sfText_getFillColor(self.text) })
+    }
+
+    /// Returns the outline color of the text.
+    pub fn outline_color(&self) -> Color {
+        FromRaw::from_raw(unsafe { ffi::sfText_getOutlineColor(self.text) })
+    }
+
+    /// Returns the outline thickness of the text, in pixels.
+    pub fn outline_thickness(&self) -> f32 {
+        unsafe { ffi::sfText_getOutlineThickness(self.text) }
     }
 
     /// Return the position of the index-th character in a text
