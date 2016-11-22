@@ -103,6 +103,18 @@ impl RenderTexture {
     pub fn is_smooth(&self) -> bool {
         unsafe { ffi::sfRenderTexture_isSmooth(self.render_texture) }.to_bool()
     }
+    /// Enable or disable texture repeating.
+    ///
+    /// This function is similar to Texture::setRepeated. This parameter is disabled by default.
+    pub fn set_repeated(&mut self, repeated: bool) {
+        unsafe {
+            ffi::sfRenderTexture_setRepeated(self.render_texture, SfBoolExt::from_bool(repeated))
+        }
+    }
+    /// Tell whether the texture is repeated or not.
+    pub fn is_repeated(&self) -> bool {
+        unsafe { ffi::sfRenderTexture_isRepeated(self.render_texture).to_bool() }
+    }
 }
 
 impl RenderTarget for RenderTexture {
