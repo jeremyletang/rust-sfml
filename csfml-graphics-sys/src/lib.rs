@@ -38,6 +38,7 @@ pub enum sfBlendFactor {
 pub enum sfBlendEquation {
     sfBlendEquationAdd = 0,
     sfBlendEquationSubtract = 1,
+    sfBlendEquationReverseSubtract = 2,
 }
 #[repr(C)]
 #[derive(Copy, Clone)]

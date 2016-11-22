@@ -26,7 +26,7 @@
 use std::ptr;
 
 use raw_conv::{Raw, RawMut};
-use graphics::{BlendMode, Shader, Texture, Transform};
+use graphics::{BlendMode, blend_mode, Shader, Texture, Transform};
 
 use csfml_graphics_sys as ffi;
 
@@ -60,7 +60,7 @@ impl<'s> RenderStates<'s> {
                -> RenderStates<'s> {
         RenderStates {
             sf_render_states: ffi::sfRenderStates {
-                blendMode: blend_mode.0,
+                blendMode: blend_mode.raw(),
                 transform: transform.0,
                 texture: ptr::null_mut(),
                 shader: ptr::null_mut(),
@@ -76,7 +76,7 @@ impl<'s> RenderStates<'s> {
 impl<'s> RawMut for RenderStates<'s> {
     type Raw = *mut ffi::sfRenderStates;
     fn raw_mut(&mut self) -> Self::Raw {
-        self.sf_render_states.blendMode = self.blend_mode.0;
+        self.sf_render_states.blendMode = self.blend_mode.raw();
         self.sf_render_states.transform = self.transform.0;
         self.sf_render_states.texture = match self.texture {
             Some(texture) => texture.raw(),
@@ -104,12 +104,12 @@ impl<'s> Default for RenderStates<'s> {
     fn default() -> RenderStates<'s> {
         RenderStates {
             sf_render_states: ffi::sfRenderStates {
-                blendMode: BlendMode::blend_alpha().0,
+                blendMode: blend_mode::ALPHA.raw(),
                 transform: Transform::new_identity().0,
                 texture: ptr::null_mut(),
                 shader: ptr::null_mut(),
             },
-            blend_mode: BlendMode::blend_alpha(),
+            blend_mode: blend_mode::ALPHA,
             transform: Transform::new_identity(),
             texture: None,
             shader: None,

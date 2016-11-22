@@ -58,7 +58,7 @@ mod render_target;
 mod render_states;
 mod render_window;
 mod texture;
-mod blend_mode;
+pub mod blend_mode;
 mod transform;
 mod text;
 pub mod text_style;
