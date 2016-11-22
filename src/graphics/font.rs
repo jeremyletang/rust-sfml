@@ -27,7 +27,7 @@
 use libc::{c_uint, size_t};
 use std::ffi::{CStr, CString};
 
-use raw_conv::Raw;
+use raw_conv::{Raw, FromRaw};
 use graphics::{TextureRef, Glyph};
 
 use csfml_system_sys::sfBool;
@@ -145,10 +145,10 @@ impl Font {
     /// Return the corresponding glyph
     pub fn get_glyph(&self, codepoint: u32, character_size: u32, bold: bool) -> Glyph {
         unsafe {
-            ffi::sfFont_getGlyph(self.font,
-                                 codepoint,
-                                 character_size as c_uint,
-                                 sfBool::from_bool(bold))
+            Glyph::from_raw(ffi::sfFont_getGlyph(self.font,
+                                                 codepoint,
+                                                 character_size as c_uint,
+                                                 sfBool::from_bool(bold)))
         }
     }
     /// Returns the font information.
