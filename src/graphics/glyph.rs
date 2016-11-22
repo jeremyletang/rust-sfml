@@ -13,6 +13,7 @@ use raw_conv::{Raw, FromRaw};
 /// - its bounding rectangle
 /// - the offset to apply to get the starting position of the next glyph
 #[derive(Clone, Copy, Debug, Default)]
+#[repr(C)]
 pub struct Glyph {
     /// Offset to move horizontally to the next character.
     pub advance: f32,
