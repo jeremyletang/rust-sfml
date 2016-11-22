@@ -556,6 +556,7 @@ extern "C" {
                                        repeated: sfBool);
     pub fn sfRenderTexture_isRepeated(renderTexture: *const sfRenderTexture)
      -> sfBool;
+    pub fn sfRenderTexture_generateMipmap(renderTexture: *mut sfRenderTexture) -> sfBool;
     pub fn sfRenderWindow_create(mode: sfVideoMode,
                                  title: *const ::std::os::raw::c_char,
                                  style: sfUint32,

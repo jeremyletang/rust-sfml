@@ -115,6 +115,16 @@ impl RenderTexture {
     pub fn is_repeated(&self) -> bool {
         unsafe { ffi::sfRenderTexture_isRepeated(self.render_texture).to_bool() }
     }
+    /// Generate a mipmap using the current texture data.
+    ///
+    /// This function is similar to `Texture::generate_mipmap` and operates on the texture used as
+    /// the target for drawing. Be aware that any draw operation may modify the base level
+    /// image data. For this reason, calling this function only makes sense after all drawing
+    /// is completed and display has been called. Not calling display after subsequent drawing
+    /// will lead to __undefined behavior__ if a mipmap had been previously generated.
+    pub unsafe fn generate_mipmap(&mut self) -> bool {
+        ffi::sfRenderTexture_generateMipmap(self.render_texture).to_bool()
+    }
 }
 
 impl RenderTarget for RenderTexture {
