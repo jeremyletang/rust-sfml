@@ -277,7 +277,7 @@ impl RenderTarget for RenderTexture {
     ///
     /// # Arguments
     /// * object - Object to draw
-    fn draw<T: Drawable>(&mut self, object: &T) {
+    fn draw(&mut self, object: &Drawable) {
         object.draw(self, &mut RenderStates::default());
     }
 
@@ -286,9 +286,9 @@ impl RenderTarget for RenderTexture {
     /// # Arguments
     /// * object - Object to draw
     /// * renderStates - The RenderStates to associate to the object
-    fn draw_with_renderstates<T: Drawable>(&mut self,
-                                           object: &T,
-                                           render_states: &mut RenderStates) {
+    fn draw_with_renderstates(&mut self,
+                              object: &Drawable,
+                              render_states: &mut RenderStates) {
         object.draw(self, render_states);
     }
 

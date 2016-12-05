@@ -31,5 +31,5 @@ use graphics::{RenderStates, RenderTarget};
 /// The trait drawable is inherited by each object who can be drawn in a `RenderTarget`
 pub trait Drawable {
     /// Draw a drawable object into a `RenderTarget`
-    fn draw<RT: RenderTarget>(&self, target: &mut RT, rs: &mut RenderStates);
+    fn draw(&self, target: &mut RenderTarget, rs: &mut RenderStates);
 }
