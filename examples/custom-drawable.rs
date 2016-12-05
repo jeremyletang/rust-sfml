@@ -32,7 +32,7 @@ impl<'s> Bullet<'s> {
 
 // Implement the Drawable trait for our custom drawable.
 impl<'s> Drawable for Bullet<'s> {
-    fn draw<RT: RenderTarget>(&self, render_target: &mut RT, _: &mut RenderStates) {
+    fn draw(&self, render_target: &mut RenderTarget, _: &mut RenderStates) {
         render_target.draw(&self.head);
         render_target.draw(&self.torso)
     }
