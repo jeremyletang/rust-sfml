@@ -1,7 +1,7 @@
 [package]
 name = "sfml"
 description = "Rust binding for sfml"
-version = "0.11.1"
+version = "0.11.3"
 authors = ["Jeremy Letang <letang.jeremy@gmail.com>"]
 
 documentation = "https://docs.rs/sfml"
@@ -19,23 +19,23 @@ bitflags = "0.5"
 
 [dependencies.csfml-system-sys]
 path = "csfml-system-sys"
-version = "0.1.0"
+version = "0.1.1"
 
 [dependencies.csfml-window-sys]
 path = "csfml-window-sys"
-version = "0.1.0"
+version = "0.1.2"
 
 [dependencies.csfml-graphics-sys]
 path = "csfml-graphics-sys"
-version = "0.1.0"
+version = "0.1.1"
 
 [dependencies.csfml-audio-sys]
 path = "csfml-audio-sys"
-version = "0.1.0"
+version = "0.1.1"
 
 [dependencies.csfml-network-sys]
 path = "csfml-network-sys"
-version = "0.1.0"
+version = "0.1.1"
 
 [dev-dependencies]
 rand = "0.3"
