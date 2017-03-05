@@ -6,18 +6,18 @@ pub fn link_csfml(lib_name: &str) {
     // based on the operating system
     let lib_path = if cfg!(target_family = "windows") {
         if cfg!(target_env = "msvc") {
-            "\\lib\\msvc"
+            "lib/msvc"
         } else {
-            "\\lib\\gcc"
+            "lib/gcc"
         }
     } else {
-        "/lib"
+        "lib"
     };
 
     // CSFML_HOME points to the base CSFML directory
     // Let cargo find the CSFML library files there
     if let Ok(csfml_home) = var("CSFML_HOME") {
-        println!("cargo:rustc-link-search=native={}{}", csfml_home, lib_path);
+        println!("cargo:rustc-link-search=native={}/{}", csfml_home, lib_path);
     }
 
     // Link to the csfml library
@@ -26,18 +26,11 @@ pub fn link_csfml(lib_name: &str) {
 
 // Add search path for SFML library files
 pub fn link_sfml(lib_name: &str) {
-    // Figure out the path to libraries within the CSFML base folder
-    // based on the operating system
-    let lib_path = if cfg!(target_family = "windows") {
-        "\\lib"
-    } else {
-        "/lib"
-    };
 
     // SFML_HOME points to the base SFML directory
     // Let cargo find the SFML library files there
     if let Ok(sfml_home) = var("SFML_HOME") {
-        println!("cargo:rustc-link-search=native={}{}", sfml_home, lib_path);
+        println!("cargo:rustc-link-search=native={}/lib", sfml_home);
     }
 
     // Link to the sfml library
