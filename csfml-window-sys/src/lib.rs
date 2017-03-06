@@ -545,4 +545,5 @@ extern "C" {
                                          threshold: f32);
     pub fn sfWindow_getSystemHandle(window: *const sfWindow)
      -> sfWindowHandle;
+    pub fn sfWindow_setMouseCursorGrabbed(window: *const sfWindow, grabbed: sfBool);
 }

@@ -105,6 +105,7 @@ mod ext {
     pub mod event;
     pub mod sf_bool_ext;
 }
+mod unicode_conv;
 
 pub mod system;
 pub mod window;

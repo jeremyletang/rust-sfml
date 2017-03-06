@@ -73,7 +73,7 @@ fn main() {
     pause_message.set_font(&font);
     pause_message.set_character_size(40);
     pause_message.set_position(&(Vector2f::new(170., 150.)));
-    pause_message.set_color(&Color::white());
+    pause_message.set_fill_color(&Color::white());
     pause_message.set_string("Welcome to SFML pong!\nPress space to start the game");
 
     // Define the paddles properties

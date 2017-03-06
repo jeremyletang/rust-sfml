@@ -17,6 +17,8 @@ fn main() {
     let mut circle = CircleShape::new_init(4., 30);
     let mut texts: Vec<Text> = Vec::new();
     let mut mp_text = Text::new_init("", &font, 14);
+    let mut cursor_visible = false;
+    let mut grabbed = false;
     macro_rules! push_text {
         ($x:expr, $y:expr, $fmt:expr, $($arg:tt)*) => {
             let mut text = Text::new_init(&format!($fmt, $($arg)*), &font, 14);
@@ -45,6 +47,12 @@ fn main() {
                         let dm = VideoMode::get_desktop_mode();
                         let center = Vector2i::new(dm.width as i32 / 2, dm.height as i32 / 2);
                         mouse::set_desktop_position(&center);
+                    } else if code == Key::V {
+                        cursor_visible = !cursor_visible;
+                        window.set_mouse_cursor_visible(cursor_visible);
+                    } else if code == Key::G {
+                        grabbed = !grabbed;
+                        window.set_mouse_cursor_grabbed(grabbed);
                     }
                 }
                 _ => {}
@@ -53,14 +61,23 @@ fn main() {
 
         let mp = window.mouse_position();
         let dmp = mouse::desktop_position();
+        let cur_vis_msg = if cursor_visible {
+            "visible"
+        } else {
+            "invisible"
+        };
+        let grab_msg = if grabbed { "grabbed" } else { "not grabbed" };
         mp_text.set_string(&format!("x: {}, y: {} (Window)\n\
                                      x: {}, y: {} (Desktop)\n\
+                                     [{}] [{}] ('V'/'G') to toggle\n\
                                      'W' to center mouse on window\n\
                                      'D' to center mouse on desktop",
                                     mp.x,
                                     mp.y,
                                     dmp.x,
-                                    dmp.y));
+                                    dmp.y,
+                                    cur_vis_msg,
+                                    grab_msg));
 
         circle.set_position2f(mp.x as f32, mp.y as f32);
 
@@ -75,14 +92,16 @@ fn main() {
                 }
             }
         }
-        texts.retain(|txt| txt.get_color().0.a > 0);
+        texts.retain(|txt| txt.fill_color().a > 0);
         for txt in &mut texts {
-            let mut color = txt.get_color();
-            color.0.a -= 1;
-            txt.set_color(&color);
+            let mut color = txt.fill_color();
+            color.a -= 1;
+            txt.set_fill_color(&color);
             window.draw(txt);
         }
-        window.draw(&circle);
+        if !cursor_visible {
+            window.draw(&circle);
+        }
         window.draw(&mp_text);
         window.display();
     }

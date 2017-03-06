@@ -103,6 +103,28 @@ impl RenderTexture {
     pub fn is_smooth(&self) -> bool {
         unsafe { ffi::sfRenderTexture_isSmooth(self.render_texture) }.to_bool()
     }
+    /// Enable or disable texture repeating.
+    ///
+    /// This function is similar to Texture::setRepeated. This parameter is disabled by default.
+    pub fn set_repeated(&mut self, repeated: bool) {
+        unsafe {
+            ffi::sfRenderTexture_setRepeated(self.render_texture, SfBoolExt::from_bool(repeated))
+        }
+    }
+    /// Tell whether the texture is repeated or not.
+    pub fn is_repeated(&self) -> bool {
+        unsafe { ffi::sfRenderTexture_isRepeated(self.render_texture).to_bool() }
+    }
+    /// Generate a mipmap using the current texture data.
+    ///
+    /// This function is similar to `Texture::generate_mipmap` and operates on the texture used as
+    /// the target for drawing. Be aware that any draw operation may modify the base level
+    /// image data. For this reason, calling this function only makes sense after all drawing
+    /// is completed and display has been called. Not calling display after subsequent drawing
+    /// will lead to __undefined behavior__ if a mipmap had been previously generated.
+    pub unsafe fn generate_mipmap(&mut self) -> bool {
+        ffi::sfRenderTexture_generateMipmap(self.render_texture).to_bool()
+    }
 }
 
 impl RenderTarget for RenderTexture {
@@ -118,7 +140,7 @@ impl RenderTarget for RenderTexture {
     /// # Arguments
     /// * color - Fill color
     fn clear(&mut self, color: &Color) {
-        unsafe { ffi::sfRenderTexture_clear(self.render_texture, color.0) }
+        unsafe { ffi::sfRenderTexture_clear(self.render_texture, color.raw()) }
     }
 
     /// Change the current active view of a render texture

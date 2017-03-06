@@ -25,9 +25,9 @@
 //! Class for loading and manipulating character fonts
 
 use libc::{c_uint, size_t};
-use std::ffi::CString;
+use std::ffi::{CStr, CString};
 
-use raw_conv::Raw;
+use raw_conv::{Raw, FromRaw};
 use graphics::{TextureRef, Glyph};
 
 use csfml_system_sys::sfBool;
@@ -40,6 +40,12 @@ use ext::sf_bool_ext::SfBoolExt;
 /// Class for loading and manipulating character fonts
 pub struct Font {
     font: *mut ffi::sfFont,
+}
+
+/// Holds various information about a font.
+pub struct Info {
+    /// The font family.
+    pub family: String,
 }
 
 impl Font {
@@ -139,12 +145,35 @@ impl Font {
     /// Return the corresponding glyph
     pub fn get_glyph(&self, codepoint: u32, character_size: u32, bold: bool) -> Glyph {
         unsafe {
-            ffi::sfFont_getGlyph(self.font,
-                                 codepoint,
-                                 character_size as c_uint,
-                                 sfBool::from_bool(bold))
+            Glyph::from_raw(ffi::sfFont_getGlyph(self.font,
+                                                 codepoint,
+                                                 character_size as c_uint,
+                                                 sfBool::from_bool(bold)))
         }
     }
+    /// Returns the font information.
+    pub fn info(&self) -> Info {
+        unsafe {
+            let raw = ffi::sfFont_getInfo(self.font);
+            let family = CStr::from_ptr(raw.family).to_string_lossy().into_owned();
+
+            Info { family: family }
+        }
+    }
+    /// Returns the position of the underline.
+    pub fn underline_position(&self, character_size: u32) -> f32 {
+        unsafe { ffi::sfFont_getUnderlinePosition(self.font, character_size) }
+    }
+    /// Returns the thickness of the underline.
+    pub fn underline_thickness(&self, character_size: u32) -> f32 {
+        unsafe { ffi::sfFont_getUnderlineThickness(self.font, character_size) }
+    }
+}
+
+#[test]
+fn test_info() {
+    let font = Font::from_file("examples/resources/sansation.ttf").unwrap();
+    assert_eq!(font.info().family, "Sansation");
 }
 
 impl Clone for Font {

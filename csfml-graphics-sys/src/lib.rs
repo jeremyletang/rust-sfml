@@ -38,6 +38,7 @@ pub enum sfBlendFactor {
 pub enum sfBlendEquation {
     sfBlendEquationAdd = 0,
     sfBlendEquationSubtract = 1,
+    sfBlendEquationReverseSubtract = 2,
 }
 #[repr(C)]
 #[derive(Copy, Clone)]
@@ -556,6 +557,7 @@ extern "C" {
                                        repeated: sfBool);
     pub fn sfRenderTexture_isRepeated(renderTexture: *const sfRenderTexture)
      -> sfBool;
+    pub fn sfRenderTexture_generateMipmap(renderTexture: *mut sfRenderTexture) -> sfBool;
     pub fn sfRenderWindow_create(mode: sfVideoMode,
                                  title: *const ::std::os::raw::c_char,
                                  style: sfUint32,
@@ -811,6 +813,9 @@ extern "C" {
                                    size: ::std::os::raw::c_uint);
     pub fn sfText_setStyle(text: *mut sfText, style: sfUint32);
     pub fn sfText_setColor(text: *mut sfText, color: sfColor);
+    pub fn sfText_setFillColor(text: *mut sfText, color: sfColor);
+    pub fn sfText_setOutlineColor(text: *mut sfText, color: sfColor);
+    pub fn sfText_setOutlineThickness(text: *mut sfText, thickness: f32);
     pub fn sfText_getString(text: *const sfText)
      -> *const ::std::os::raw::c_char;
     pub fn sfText_getUnicodeString(text: *const sfText) -> *const sfUint32;
@@ -819,6 +824,9 @@ extern "C" {
      -> ::std::os::raw::c_uint;
     pub fn sfText_getStyle(text: *const sfText) -> sfUint32;
     pub fn sfText_getColor(text: *const sfText) -> sfColor;
+    pub fn sfText_getFillColor(text: *const sfText) -> sfColor;
+    pub fn sfText_getOutlineColor(text: *const sfText) -> sfColor;
+    pub fn sfText_getOutlineThickness(text: *const sfText) -> f32;
     pub fn sfText_findCharacterPos(text: *const sfText, index: usize)
      -> sfVector2f;
     pub fn sfText_getLocalBounds(text: *const sfText) -> sfFloatRect;
@@ -868,6 +876,9 @@ extern "C" {
      -> ::std::os::raw::c_uint;
     pub fn sfTexture_bind(texture: *const sfTexture);
     pub fn sfTexture_getMaximumSize() -> ::std::os::raw::c_uint;
+    pub fn sfTexture_setSrgb(texture: *mut sfTexture, sRgb: sfBool);
+    pub fn sfTexture_isSrgb(texture: *const sfTexture) -> sfBool;
+    pub fn sfTexture_generateMipmap(texture: *mut sfTexture) -> sfBool;
     pub fn sfTransformable_create() -> *mut sfTransformable;
     pub fn sfTransformable_copy(transformable: *const sfTransformable)
      -> *mut sfTransformable;
@@ -934,4 +945,5 @@ extern "C" {
     pub fn sfView_move(view: *mut sfView, offset: sfVector2f);
     pub fn sfView_rotate(view: *mut sfView, angle: f32);
     pub fn sfView_zoom(view: *mut sfView, factor: f32);
+    pub fn sfRenderWindow_setMouseCursorGrabbed(window: *const sfRenderWindow, grabbed: sfBool);
 }

@@ -28,14 +28,12 @@
 //! of the graphics module.
 
 use libc::{c_float, c_uint};
-use std::vec::Vec;
-use std::ffi::CString;
 
 use raw_conv::{Raw, RawMut, FromRaw};
 use window::{ContextSettings, VideoMode, Event, Style};
 use system::{Vector2f, Vector2i, Vector2u};
 use graphics::{Drawable, Color, CircleShape, RectangleShape, Text, Sprite, VertexArray,
-               RenderStates, View, ViewRef, Image, IntRect, RenderTarget, Vertex, PrimitiveType,
+               RenderStates, View, ViewRef, IntRect, RenderTarget, Vertex, PrimitiveType,
                ConvexShape, CustomShape};
 
 use csfml_system_sys::*;
@@ -51,7 +49,6 @@ use ext::sf_bool_ext::SfBoolExt;
 /// of the graphics module.
 pub struct RenderWindow {
     render_window: *mut ffi::sfRenderWindow,
-    title_length: u32,
 }
 
 /// An iterator over all the events in the events queue (internally call `poll_event`)
@@ -86,34 +83,18 @@ impl RenderWindow {
                style: Style,
                settings: &ContextSettings)
                -> Option<RenderWindow> {
-        let mut codepoints: Vec<u32> = title.chars().map(|c| c as u32).collect();
-        codepoints.push(0);
+        let utf32 = ::unicode_conv::str_to_csfml(title);
         let sf_render_win: *mut ffi::sfRenderWindow =
             unsafe {
                 ffi::sfRenderWindow_createUnicode(mode.raw(),
-                                                  codepoints.as_ptr(),
+                                                  utf32.as_ptr() as _,
                                                   style.bits(),
                                                   &settings.raw())
             };
         if sf_render_win.is_null() {
             None
         } else {
-            Some(RenderWindow {
-                render_window: sf_render_win,
-                // event: sf_ev,
-                title_length: title.len() as u32,
-            })
-        }
-    }
-
-    /// Change the title of a render window (with a UTF-32 string)
-    ///
-    /// # Arguments
-    /// * title - New title
-    pub fn set_unicode_title(&mut self, title: Vec<u32>) {
-        unsafe {
-            self.title_length = title.len() as u32;
-            ffi::sfRenderWindow_setUnicodeTitle(self.render_window, title.as_ptr())
+            Some(RenderWindow { render_window: sf_render_win })
         }
     }
 
@@ -248,11 +229,10 @@ impl RenderWindow {
     /// * title - New title
     ///
     pub fn set_title(&mut self, title: &str) {
-        let c_str = CString::new(title.as_bytes()).unwrap();
+        let utf32 = ::unicode_conv::str_to_csfml(title);
         unsafe {
-            ffi::sfRenderWindow_setTitle(self.render_window, c_str.as_ptr());
+            ffi::sfRenderWindow_setUnicodeTitle(self.render_window, utf32.as_ptr() as _);
         }
-        self.title_length = title.len() as u32;
     }
 
     /// Show or hide a window
@@ -275,6 +255,17 @@ impl RenderWindow {
         unsafe {
             ffi::sfRenderWindow_setMouseCursorVisible(self.render_window,
                                                       sfBool::from_bool(visible));
+        }
+    }
+
+    /// Grab or release the mouse cursor.
+    ///
+    /// If set, grabs the mouse cursor inside this window's client area so it may no longer be
+    /// moved outside its bounds. Note that grabbing is only active while the window has focus.
+    pub fn set_mouse_cursor_grabbed(&mut self, grabbed: bool) {
+        unsafe {
+            ffi::sfRenderWindow_setMouseCursorGrabbed(self.render_window,
+                                                      sfBool::from_bool(grabbed))
         }
     }
 
@@ -413,27 +404,6 @@ impl RenderWindow {
     pub fn touch_position(&self, finger: u32) -> Vector2i {
         unsafe {
             FromRaw::from_raw(ffi::sfTouch_getPositionRenderWindow(finger, self.render_window))
-        }
-    }
-
-    /// Copy the current contents of a render window to an image
-    ///
-    /// This is a slow operation, whose main purpose is to make
-    /// screenshots of the application. If you want to update an
-    /// image with the contents of the window and then use it for
-    /// drawing, you should rather use a [Texture](struct.Texture.html) and its
-    /// [update(Window)](struct.Texture.html#method.update_from_window) function.
-    /// You can also draw things directly to a texture with the
-    /// RenderWindow.
-    ///
-    /// Return a new image containing the captured contents
-    ///
-    pub fn capture(&mut self) -> Option<Image> {
-        let img = unsafe { ffi::sfRenderWindow_capture(self.render_window) };
-        if img.is_null() {
-            None
-        } else {
-            Some(Image::from_raw(img))
         }
     }
 
@@ -762,7 +732,7 @@ impl RenderTarget for RenderWindow {
 
     /// Clear window with the given color
     fn clear(&mut self, color: &Color) {
-        unsafe { ffi::sfRenderWindow_clear(self.render_window, color.0) }
+        unsafe { ffi::sfRenderWindow_clear(self.render_window, color.raw()) }
     }
 }
 
