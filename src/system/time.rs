@@ -58,8 +58,28 @@ use csfml_system_sys::*;
 ///
 /// # See also
 /// - `Clock`
-#[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Copy, Clone)]
 pub struct Time(sfTime);
+
+impl PartialEq for Time {
+    fn eq(&self, other: &Self) -> bool {
+        self.0.microseconds == other.0.microseconds
+    }
+}
+
+impl Eq for Time {}
+
+impl PartialOrd for Time {
+    fn partial_cmp(&self, other: &Self) -> Option<::std::cmp::Ordering> {
+        self.0.microseconds.partial_cmp(&other.0.microseconds)
+    }
+}
+
+impl Ord for Time {
+    fn cmp(&self, other: &Self) -> ::std::cmp::Ordering {
+        self.0.microseconds.cmp(&other.0.microseconds)
+    }
+}
 
 impl Time {
     /// Constructs a time value from a number of seconds.
