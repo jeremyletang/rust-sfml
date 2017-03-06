@@ -10,17 +10,17 @@ rust:
 script:
   - mkdir sfml_install
   # TODO: Maybe investigate why the certificate checks for the SFML sources fail
-  - wget http://www.sfml-dev.org/files/SFML-2.3.2-sources.zip --no-check-certificate
-  - unzip -q SFML-2.3.2-sources.zip
-  - pushd SFML-2.3.2 && mkdir build && cd build && cmake .. && make
+  - wget http://www.sfml-dev.org/files/SFML-2.4.2-sources.zip --no-check-certificate
+  - unzip -q SFML-2.4.2-sources.zip
+  - pushd SFML-2.4.2 && mkdir build && cd build && cmake .. && make
   - make DESTDIR=/home/travis/build/jeremyletang/rust-sfml/sfml_install install
   - popd
-  - wget http://www.sfml-dev.org/files/CSFML-2.3-sources.zip --no-check-certificate
-  - unzip -q CSFML-2.3-sources.zip
-  - pushd CSFML-2.3
+  - wget http://www.sfml-dev.org/files/CSFML-2.4-sources.zip --no-check-certificate
+  - unzip -q CSFML-2.4-sources.zip
+  - pushd CSFML-2.4
   - mkdir cmake/Modules
   - cp /home/travis/build/jeremyletang/rust-sfml/sfml_install/usr/local/share/SFML/cmake/Modules/FindSFML.cmake cmake/Modules
-  - mkdir build && cd build && cmake -DCMAKE_MODULE_PATH=/home/travis/build/jeremyletang/rust-sfml/CSFML-2.3/cmake/Modules -DSFML_ROOT=/home/travis/build/jeremyletang/rust-sfml/sfml_install/usr/local .. && make
+  - mkdir build && cd build && cmake -DCMAKE_MODULE_PATH=/home/travis/build/jeremyletang/rust-sfml/CSFML-2.4/cmake/Modules -DSFML_ROOT=/home/travis/build/jeremyletang/rust-sfml/sfml_install/usr/local .. && make
   - make DESTDIR=/home/travis/build/jeremyletang/rust-sfml/sfml_install install
   - popd
   - mkdir .cargo
