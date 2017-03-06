@@ -8,8 +8,8 @@ Requirements
 
 - Linux, Windows, or OS X
 - Latest stable Rust
-- [SFML 2.3](http://www.sfml-dev.org/download.php)
-- [CSFML 2.3](http://www.sfml-dev.org/download/csfml/)
+- [SFML 2.4](http://www.sfml-dev.org/download.php)
+- [CSFML 2.4](http://www.sfml-dev.org/download/csfml/)
 
 Examples
 =============

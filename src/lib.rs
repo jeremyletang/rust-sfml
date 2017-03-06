@@ -28,10 +28,10 @@
 //! Prerequisites
 //! =============
 //!
-//! SFML 2.3 and CSFML 2.3 must be installed on your computer. You can download them here:
+//! SFML 2.4 and CSFML 2.4 must be installed on your computer. You can download them here:
 //!
-//! - SFML 2.3: http://www.sfml-dev.org/download.php
-//! - CSFML 2.3: http://www.sfml-dev.org/download/csfml/
+//! - SFML 2.4: http://www.sfml-dev.org/download.php
+//! - CSFML 2.4: http://www.sfml-dev.org/download/csfml/
 //!
 //! __Rust-sfml__ works on Linux, windows and OSX.
 //!
