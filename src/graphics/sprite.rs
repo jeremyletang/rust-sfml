@@ -30,8 +30,8 @@ use libc::c_float;
 use std::ptr;
 
 use raw_conv::{Raw, FromRaw};
-use graphics::{Drawable, Transformable, FloatRect, IntRect, Color, Texture, RenderTarget,
-               Transform, RenderStates};
+use graphics::{Drawable, Transformable, FloatRect, IntRect, Color, Texture, RenderTarget, Transform,
+               RenderStates};
 use system::Vector2f;
 
 use csfml_system_sys::{sfBool, sfTrue, sfVector2f};
