@@ -45,7 +45,7 @@ use ext;
 ///
 /// Note that OpenGL experts can pass their own parameters
 /// (antialiasing level, bits for the depth and stencil buffers, etc.) to the OpenGL context
-/// attached to the window, with the sf::ContextSettings structure which is passed as an
+/// attached to the window, with the `ContextSettings` structure which is passed as an
 /// optional argument when creating the window.
 ///
 /// # Usage example

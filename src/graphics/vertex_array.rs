@@ -182,7 +182,7 @@ impl VertexArray {
     /// * index - Index of the vertex to get
     ///
     /// Return a mutable reference to the index-th vertex
-    pub fn get_vertex(&self, index: u32) -> &mut Vertex {
+    pub fn get_vertex(&mut self, index: u32) -> &mut Vertex {
         unsafe { &mut *(sfVertexArray_getVertex(self.vertex_array, index as usize) as *mut Vertex) }
     }
 

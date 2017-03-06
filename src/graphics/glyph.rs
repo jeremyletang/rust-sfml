@@ -7,7 +7,7 @@ use raw_conv::{Raw, FromRaw};
 ///
 /// A glyph is the visual representation of a character.
 ///
-/// The sf::Glyph structure provides the information needed to handle the glyph:
+/// The `Glyph` structure provides the information needed to handle the glyph:
 ///
 /// - its coordinates in the font's texture
 /// - its bounding rectangle

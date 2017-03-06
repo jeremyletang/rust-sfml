@@ -3,7 +3,7 @@ pub fn str_to_csfml(utf8: &str) -> Vec<char> {
     let mut vec = Vec::with_capacity(utf8.len() + 1);
     for c in utf8.chars() {
         if c == '\0' {
-            panic!("Interior null found in string {:?}");
+            panic!("Interior null found in string {:?}", utf8);
         }
         vec.push(c);
     }
