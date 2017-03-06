@@ -3,7 +3,7 @@ extern crate rand;
 
 use sfml::graphics::{CircleShape, Color, Font, RectangleShape, RenderTarget, RenderWindow, Shape,
                      Text, Transformable};
-use sfml::window::{ContextSettings, Key, VideoMode, Event, window_style};
+use sfml::window::{ContextSettings, Key, VideoMode, Event, style};
 use sfml::system::{Clock, Time, Vector2f};
 use sfml::audio::{Sound, SoundBuffer, SoundSource};
 use rand::{Rng, thread_rng};
@@ -25,17 +25,18 @@ fn main() {
     let game_height: u32 = 600;
     let paddle_size: Vector2f = Vector2f::new(25., 100.);
     let ball_radius: f32 = 10.;
+    let context_settings = ContextSettings { antialiasing_level: aa_level, ..Default::default() };
 
     // Create the window of the application
-    let mut window = RenderWindow::new(VideoMode::new_init(game_width, game_height, 32),
+    let mut window = RenderWindow::new(VideoMode::new(game_width, game_height, 32),
                                        "SFML Pong",
-                                       window_style::CLOSE,
-                                       ContextSettings::new().antialiasing(aa_level))
+                                       style::CLOSE,
+                                       &context_settings)
         .unwrap();
     window.set_vertical_sync_enabled(true);
 
     // Load the sounds used in the game
-    let ball_soundbuffer = SoundBuffer::new("resources/ball.wav").unwrap();
+    let ball_soundbuffer = SoundBuffer::from_file("resources/ball.wav").unwrap();
 
     let mut ball_sound = Sound::with_buffer(&ball_soundbuffer);
     ball_sound.set_volume(100.);
@@ -76,14 +77,14 @@ fn main() {
     pause_message.set_string("Welcome to SFML pong!\nPress space to start the game");
 
     // Define the paddles properties
-    let mut ai_timer = Clock::new();
-    let ai_time: Time = Time::with_seconds(0.1);
+    let mut ai_timer = Clock::start();
+    let ai_time: Time = Time::seconds(0.1);
     let paddle_speed = 400.;
     let mut right_paddle_speed = 0.;
     let ball_speed = 400.;
     let mut ball_angle: f32 = 0.; // to be changed later
 
-    let mut clock = Clock::new();
+    let mut clock = Clock::start();
     let mut is_playing = false;
 
     let mut rng = thread_rng();
@@ -146,7 +147,7 @@ fn main() {
             }
 
             // Update the computer's paddle direction according to the ball position
-            if ai_timer.get_elapsed_time().as_microseconds() > ai_time.as_microseconds() {
+            if ai_timer.elapsed_time().as_microseconds() > ai_time.as_microseconds() {
                 ai_timer.restart();
                 if ball.get_position().y + ball_radius >
                    right_paddle.get_position().y + paddle_size.y / 2. {

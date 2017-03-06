@@ -26,7 +26,7 @@
 bitflags! {
     /// Available styles applicable to windows.
     #[repr(C)]
-    pub flags WindowStyle: u32 {
+    pub flags Style: u32 {
         /// No decorations (cannot be combined with other flags).
         const NONE = 0,
         /// Title bar and fixed border.
@@ -42,8 +42,8 @@ bitflags! {
     }
 }
 
-impl Default for WindowStyle {
-    fn default() -> WindowStyle {
+impl Default for Style {
+    fn default() -> Self {
         DEFAULT
     }
 }

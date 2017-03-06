@@ -6,7 +6,7 @@ use std::io::Write;
 
 // Play a Sound
 fn play_sound() {
-    let buffer = SoundBuffer::new("resources/canary.wav").unwrap();
+    let buffer = SoundBuffer::from_file("resources/canary.wav").unwrap();
 
     // Display sound informations
     println!("canary.wav :");
@@ -23,7 +23,7 @@ fn play_sound() {
                sound.get_playing_offset().as_seconds());
         let _ = std::io::stdout().flush();
         // Leave some CPU time for other processes
-        sleep(Time::with_milliseconds(100));
+        sleep(Time::milliseconds(100));
     }
     println!("");
 }
@@ -46,7 +46,7 @@ fn play_music() {
                music.get_playing_offset().as_seconds());
         let _ = std::io::stdout().flush();
         // Leave some CPU time for other processes
-        sleep(Time::with_milliseconds(100));
+        sleep(Time::milliseconds(100));
     }
 
     println!("");

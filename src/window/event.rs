@@ -21,15 +21,39 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-//! Defines a system event and its parameters
-//!
-//! Event holds all the informations about a system event that just happened.
-
 use window::keyboard::Key;
-use window::mouse::MouseButton;
+use window::mouse::{Button, Wheel};
 use window::joystick::Axis;
 
-/// Definition of all the event types
+/// Defines a system event and its parameters.
+///
+/// `Event` holds all the informations about a system event that just happened.
+///
+/// Events are retrieved using the
+/// `Window::pollEvent`, `Window::waitEvent`, or `Window::events` functions.
+///
+/// An `Event` instance contains the type of the event
+/// (mouse moved, key pressed, window closed, ...) as well as the details about this
+/// particular event.
+///
+/// # Usage example
+///
+/// ```
+/// # use sfml::graphics::RenderWindow;
+/// # use sfml::window::{Event, VideoMode, style, Key};
+/// # let mut window = RenderWindow::new(VideoMode::new(32, 32, 32),
+/// #                                    "test",
+/// #                                    style::CLOSE,
+/// #                                    &Default::default()).unwrap();
+/// # fn do_something_with_the_new_size(_x: u32, _y: u32) {}
+/// while let Some(event) = window.poll_event() {
+///     match event {
+///         Event::Closed | Event::KeyPressed { code: Key::Escape, .. } => window.close(),
+///         Event::Resized { width, height } => do_something_with_the_new_size(width, height),
+///         _ => { /* Do nothing */ }
+///     }
+/// }
+/// ```
 #[derive(Clone, PartialEq, PartialOrd, Debug, Copy)]
 pub enum Event {
     /// The window requested to be closed
@@ -48,7 +72,7 @@ pub enum Event {
     /// A character was entered
     TextEntered {
         /// The character entered by the user
-        code: char,
+        unicode: char,
     },
     /// A key was pressed
     KeyPressed {
@@ -77,18 +101,21 @@ pub enum Event {
         system: bool,
     },
     /// The mouse wheel was scrolled
-    MouseWheelMoved {
-        /// Number of ticks the wheel has moved (positive is up, negative is down)
-        delta: i32,
+    MouseWheelScrolled {
+        /// Which wheel (for mice with multiple ones).
+        wheel: Wheel,
+        /// Wheel offset (positive is up/left, negative is down/right).
+        /// High-precision mice may use non-integral offsets.
+        delta: f32,
         /// X position of the mouse pointer, relative to the left of the owner window.
         x: i32,
-        /// Y position of the mouse pointer, relative to the top of the owner window.
+        /// X position of the mouse pointer, relative to the left of the owner window.
         y: i32,
     },
     /// A mouse button was pressed
     MouseButtonPressed {
         /// Code of the button that has been pressed.
-        button: MouseButton,
+        button: Button,
         /// X position of the mouse pointer, relative to the left of the owner window.
         x: i32,
         /// Y position of the mouse pointer, relative to the top of the owner window.
@@ -97,7 +124,7 @@ pub enum Event {
     /// A mouse button was released
     MouseButtonReleased {
         /// Code of the button that has been pressed.
-        button: MouseButton,
+        button: Button,
         /// X position of the mouse pointer, relative to the left of the owner window.
         x: i32,
         /// Y position of the mouse pointer, relative to the top of the owner window.
@@ -146,5 +173,43 @@ pub enum Event {
     JoystickDisconnected {
         /// Index of the joystick (in range [0 .. joystick::Count - 1])
         joystickid: u32,
+    },
+    /// A touch event began
+    TouchBegan {
+        /// Index of the finger in case of multi-touch events.
+        finger: u32,
+        /// X position of the touch, relative to the left of the owner window.
+        x: i32,
+        /// Y position of the touch, relative to the top of the owner window.
+        y: i32,
+    },
+    /// A touch moved
+    TouchMoved {
+        /// Index of the finger in case of multi-touch events.
+        finger: u32,
+        /// X position of the touch, relative to the left of the owner window.
+        x: i32,
+        /// Y position of the touch, relative to the top of the owner window.
+        y: i32,
+    },
+    /// A touch event ended
+    TouchEnded {
+        /// Index of the finger in case of multi-touch events.
+        finger: u32,
+        /// X position of the touch, relative to the left of the owner window.
+        x: i32,
+        /// Y position of the touch, relative to the top of the owner window.
+        y: i32,
+    },
+    /// A sensor value changed
+    SensorChanged {
+        /// Type of the sensor.
+        type_: ::window::sensor::Type,
+        /// Current value of the sensor on X axis.
+        x: f32,
+        /// 	Current value of the sensor on Y axis.
+        y: f32,
+        /// Current value of the sensor on Z axis.
+        z: f32,
     },
 }
