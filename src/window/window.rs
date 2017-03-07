@@ -147,7 +147,7 @@ impl Window {
     ///
     /// Return Some(event) if an event was returned, or None if the event queue was empty
     pub fn poll_event(&mut self) -> Option<Event> {
-        let mut event = ffi::sfEvent::default();
+        let mut event = unsafe { ::std::mem::zeroed() };
         let have_event = unsafe { ffi::sfWindow_pollEvent(self.window, &mut event).to_bool() };
         if have_event {
             ext::event::get_wrapped_event(&mut event)
@@ -168,7 +168,7 @@ impl Window {
     ///
     /// Return Some(event) or None if an error has occured
     pub fn wait_event(&mut self) -> Option<Event> {
-        let mut event = ffi::sfEvent::default();
+        let mut event = unsafe { ::std::mem::zeroed() };
         let have_event = unsafe { ffi::sfWindow_waitEvent(self.window, &mut event).to_bool() };
         if have_event {
             ext::event::get_wrapped_event(&mut event)
@@ -423,7 +423,7 @@ impl<'a> Iterator for Events<'a> {
     type Item = Event;
 
     fn next(&mut self) -> Option<Event> {
-        let mut event = ffi::sfEvent::default();
+        let mut event = unsafe { ::std::mem::zeroed() };
         if unsafe { ffi::sfWindow_pollEvent(self.window, &mut event) }.to_bool() {
             ext::event::get_wrapped_event(&mut event)
         } else {

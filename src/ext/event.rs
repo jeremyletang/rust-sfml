@@ -7,12 +7,12 @@ pub fn get_wrapped_event(event: &mut sfEvent) -> Option<Event> {
     use csfml_window_sys::sfEventType::*;
     use window::Event::*;
 
-    let type_ = unsafe { *event.type_() };
+    let type_ = unsafe { *event.type_.as_ref() };
 
     Some(match type_ {
         sfEvtClosed => Closed,
         sfEvtResized => {
-            let e = unsafe { &*event.size() };
+            let e = unsafe { *event.size.as_ref() };
 
             Resized {
                 width: e.width,
@@ -24,13 +24,13 @@ pub fn get_wrapped_event(event: &mut sfEvent) -> Option<Event> {
         sfEvtTextEntered => {
             TextEntered {
                 unicode: unsafe {
-                    ::std::char::from_u32((*event.text()).unicode)
+                    ::std::char::from_u32((*event.text.as_ref()).unicode)
                         .expect("Invalid unicode encountered on TextEntered event")
                 },
             }
         }
         sfEvtKeyPressed => {
-            let e = unsafe { &*event.key() };
+            let e = unsafe { event.key.as_ref() };
 
             KeyPressed {
                 code: unsafe { ::std::mem::transmute(e.code) },
@@ -41,7 +41,7 @@ pub fn get_wrapped_event(event: &mut sfEvent) -> Option<Event> {
             }
         }
         sfEvtKeyReleased => {
-            let e = unsafe { &*event.key() };
+            let e = unsafe { event.key.as_ref() };
 
             KeyReleased {
                 code: unsafe { ::std::mem::transmute(e.code) },
@@ -52,7 +52,7 @@ pub fn get_wrapped_event(event: &mut sfEvent) -> Option<Event> {
             }
         }
         sfEvtMouseWheelScrolled => {
-            let e = unsafe { &*event.mouseWheelScroll() };
+            let e = unsafe { event.mouseWheelScroll.as_ref() };
             MouseWheelScrolled {
                 wheel: FromRaw::from_raw(e.wheel),
                 delta: e.delta,
@@ -61,7 +61,7 @@ pub fn get_wrapped_event(event: &mut sfEvent) -> Option<Event> {
             }
         }
         sfEvtMouseButtonPressed => {
-            let e = unsafe { &*event.mouseButton() };
+            let e = unsafe { event.mouseButton.as_ref() };
 
             MouseButtonPressed {
                 button: FromRaw::from_raw(e.button),
@@ -70,7 +70,7 @@ pub fn get_wrapped_event(event: &mut sfEvent) -> Option<Event> {
             }
         }
         sfEvtMouseButtonReleased => {
-            let e = unsafe { &*event.mouseButton() };
+            let e = unsafe { event.mouseButton.as_ref() };
 
             MouseButtonReleased {
                 button: FromRaw::from_raw(e.button),
@@ -79,13 +79,13 @@ pub fn get_wrapped_event(event: &mut sfEvent) -> Option<Event> {
             }
         }
         sfEvtMouseMoved => {
-            let e = unsafe { &*event.mouseMove() };
+            let e = unsafe { event.mouseMove.as_ref() };
             MouseMoved { x: e.x, y: e.y }
         }
         sfEvtMouseEntered => MouseEntered,
         sfEvtMouseLeft => MouseLeft,
         sfEvtJoystickButtonPressed => {
-            let e = unsafe { &*event.joystickButton() };
+            let e = unsafe { event.joystickButton.as_ref() };
 
             JoystickButtonPressed {
                 joystickid: (*e).joystickId,
@@ -93,7 +93,7 @@ pub fn get_wrapped_event(event: &mut sfEvent) -> Option<Event> {
             }
         }
         sfEvtJoystickButtonReleased => {
-            let e = unsafe { &*event.joystickButton() };
+            let e = unsafe { event.joystickButton.as_ref() };
 
             JoystickButtonReleased {
                 joystickid: (*e).joystickId,
@@ -101,7 +101,7 @@ pub fn get_wrapped_event(event: &mut sfEvent) -> Option<Event> {
             }
         }
         sfEvtJoystickMoved => {
-            let e = unsafe { &*event.joystickMove() };
+            let e = unsafe { event.joystickMove.as_ref() };
 
             JoystickMoved {
                 joystickid: e.joystickId,
@@ -110,13 +110,17 @@ pub fn get_wrapped_event(event: &mut sfEvent) -> Option<Event> {
             }
         }
         sfEvtJoystickConnected => {
-            JoystickConnected { joystickid: unsafe { (*event.joystickConnect()).joystickId } }
+            JoystickConnected {
+                joystickid: unsafe { (*event.joystickConnect.as_ref()).joystickId },
+            }
         }
         sfEvtJoystickDisconnected => {
-            JoystickDisconnected { joystickid: unsafe { (*event.joystickConnect()).joystickId } }
+            JoystickDisconnected {
+                joystickid: unsafe { (*event.joystickConnect.as_ref()).joystickId },
+            }
         }
         sfEvtTouchBegan => {
-            let e = unsafe { &*event.touch() };
+            let e = unsafe { event.touch.as_ref() };
 
             TouchBegan {
                 finger: e.finger,
@@ -125,7 +129,7 @@ pub fn get_wrapped_event(event: &mut sfEvent) -> Option<Event> {
             }
         }
         sfEvtTouchMoved => {
-            let e = unsafe { &*event.touch() };
+            let e = unsafe { event.touch.as_ref() };
 
             TouchMoved {
                 finger: e.finger,
@@ -134,7 +138,7 @@ pub fn get_wrapped_event(event: &mut sfEvent) -> Option<Event> {
             }
         }
         sfEvtTouchEnded => {
-            let e = unsafe { &*event.touch() };
+            let e = unsafe { event.touch.as_ref() };
 
             TouchEnded {
                 finger: e.finger,
@@ -143,7 +147,7 @@ pub fn get_wrapped_event(event: &mut sfEvent) -> Option<Event> {
             }
         }
         sfEvtSensorChanged => {
-            let e = unsafe { &*event.sensor() };
+            let e = unsafe { event.sensor.as_ref() };
 
             SensorChanged {
                 type_: FromRaw::from_raw(e.sensorType),
