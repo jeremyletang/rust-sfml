@@ -23,7 +23,6 @@
 
 //! Loading, manipulating and saving images.
 
-use libc::{c_uint, size_t};
 use std::ffi::CString;
 use std::slice;
 
@@ -52,7 +51,7 @@ impl Image {
     /// * width - Width of the image
     /// * height - Height of the image
     pub fn new(width: u32, height: u32) -> Image {
-        let image = unsafe { ffi::sfImage_create(width as c_uint, height as c_uint) };
+        let image = unsafe { ffi::sfImage_create(width, height) };
         if image.is_null() {
             panic!("sfImage_create returned null.")
         } else {
@@ -87,8 +86,7 @@ impl Image {
     ///
     /// Return Some(Image) or None
     pub fn from_memory(mem: &[u8]) -> Option<Image> {
-        let image =
-            unsafe { ffi::sfImage_createFromMemory(mem.as_ptr() as *const _, mem.len() as size_t) };
+        let image = unsafe { ffi::sfImage_createFromMemory(mem.as_ptr() as *const _, mem.len()) };
         if image.is_null() {
             None
         } else {
@@ -105,8 +103,7 @@ impl Image {
     ///
     /// Return Some(Image) or None
     pub fn from_color(width: u32, height: u32, color: &Color) -> Option<Image> {
-        let image =
-            unsafe { ffi::sfImage_createFromColor(width as c_uint, height as c_uint, color.raw()) };
+        let image = unsafe { ffi::sfImage_createFromColor(width, height, color.raw()) };
         if image.is_null() {
             None
         } else {
@@ -148,9 +145,7 @@ impl Image {
     ///
     /// Return Some(Image) or None
     pub fn create_from_pixels(width: u32, height: u32, pixels: &[u8]) -> Option<Image> {
-        let image = unsafe {
-            ffi::sfImage_createFromPixels(width as c_uint, height as c_uint, pixels.as_ptr())
-        };
+        let image = unsafe { ffi::sfImage_createFromPixels(width, height, pixels.as_ptr()) };
         if image.is_null() {
             None
         } else {
@@ -205,7 +200,7 @@ impl Image {
     /// * y - Y coordinate of pixel to change
     /// * color - New color of the pixel
     pub fn set_pixel(&mut self, x: u32, y: u32, color: &Color) {
-        unsafe { ffi::sfImage_setPixel(self.image, x as c_uint, y as c_uint, color.raw()) }
+        unsafe { ffi::sfImage_setPixel(self.image, x, y, color.raw()) }
     }
 
     /// Get the color of a pixel in an image
@@ -220,7 +215,7 @@ impl Image {
     ///
     /// Return the Color of the pixel at coordinates (x, y)
     pub fn get_pixel(&self, x: u32, y: u32) -> Color {
-        unsafe { Color::from_raw(ffi::sfImage_getPixel(self.image, x as c_uint, y as c_uint)) }
+        unsafe { Color::from_raw(ffi::sfImage_getPixel(self.image, x, y)) }
     }
 
     /// Return the memory buffer of this image.
@@ -270,8 +265,8 @@ impl Image {
         unsafe {
             ffi::sfImage_copyImage(self.image,
                                    source.raw(),
-                                   dest_x as c_uint,
-                                   dest_y as c_uint,
+                                   dest_x,
+                                   dest_y,
                                    source_rect.raw(),
                                    sfBool::from_bool(apply_alpha))
         }

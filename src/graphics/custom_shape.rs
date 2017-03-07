@@ -23,7 +23,7 @@
 
 //! Base class for textured shapes with outline
 
-use std::os::raw::{c_void, c_float};
+use std::os::raw::c_void;
 use std::ptr;
 
 use raw_conv::{Raw, FromRaw};
@@ -179,7 +179,7 @@ impl<'s> CustomShape<'s> {
     /// # Arguments
     /// * thickness - The new outline thickness
     pub fn set_outline_thickness(&mut self, thickness: f32) {
-        unsafe { ffi::sfShape_setOutlineThickness(self.shape, thickness as c_float) }
+        unsafe { ffi::sfShape_setOutlineThickness(self.shape, thickness) }
     }
 
     /// Get the source texture of a shape
@@ -324,7 +324,7 @@ impl<'s> Transformable for CustomShape<'s> {
     /// # Arguments
     /// * angle - The new rotation, in degrees
     fn set_rotation(&mut self, angle: f32) {
-        unsafe { ffi::sfShape_setRotation(self.shape, angle as c_float) }
+        unsafe { ffi::sfShape_setRotation(self.shape, angle) }
     }
 
     /// Set the scale factors of a shape
@@ -456,7 +456,7 @@ impl<'s> Transformable for CustomShape<'s> {
     /// # Arguments
     /// * angle - The angle of rotation, in degrees
     fn rotate(&mut self, angle: f32) {
-        unsafe { ffi::sfShape_rotate(self.shape, angle as c_float) }
+        unsafe { ffi::sfShape_rotate(self.shape, angle) }
     }
 
     /// Scale a shape

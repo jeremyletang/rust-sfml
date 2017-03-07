@@ -27,7 +27,6 @@
 //! It defines an OS window that can be painted using the other classes
 //! of the graphics module.
 
-use libc::{c_float, c_uint};
 
 use raw_conv::{Raw, RawMut, FromRaw};
 use window::{ContextSettings, VideoMode, Event, Style};
@@ -106,12 +105,7 @@ impl RenderWindow {
     /// * height - Icon's height, in pixels
     /// * pixels - Vector of pixels
     pub fn set_icon(&mut self, width: u32, height: u32, pixels: &[u8]) {
-        unsafe {
-            ffi::sfRenderWindow_setIcon(self.render_window,
-                                        width as c_uint,
-                                        height as c_uint,
-                                        pixels.as_ptr())
-        }
+        unsafe { ffi::sfRenderWindow_setIcon(self.render_window, width, height, pixels.as_ptr()) }
     }
 
     /// Return an iterator over all the event currently in the events queue.
@@ -207,7 +201,7 @@ impl RenderWindow {
     /// * limit - Framerate limit, in frames per seconds (use 0 to disable limit)
     ///
     pub fn set_framerate_limit(&mut self, limit: u32) {
-        unsafe { ffi::sfRenderWindow_setFramerateLimit(self.render_window, limit as c_uint) }
+        unsafe { ffi::sfRenderWindow_setFramerateLimit(self.render_window, limit) }
     }
 
     /// Get the settings of the OpenGL context of a window
@@ -330,9 +324,7 @@ impl RenderWindow {
     /// * threshold - New threshold, in the range [0, 100]
     ///
     pub fn set_joystick_threshold(&mut self, threshold: f32) {
-        unsafe {
-            ffi::sfRenderWindow_setJoystickThreshold(self.render_window, threshold as c_float)
-        }
+        unsafe { ffi::sfRenderWindow_setJoystickThreshold(self.render_window, threshold) }
     }
 
     /// Get the position of a window

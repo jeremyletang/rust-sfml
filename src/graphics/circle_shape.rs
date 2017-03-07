@@ -23,7 +23,6 @@
 
 //! Specialized shape representing a circle.
 
-use libc::c_float;
 use std::ptr;
 
 use raw_conv::{Raw, FromRaw};
@@ -91,7 +90,7 @@ impl<'s> CircleShape<'s> {
             panic!("sfCircleShape_create returned null.")
         } else {
             unsafe {
-                ffi::sfCircleShape_setRadius(circle, radius as c_float);
+                ffi::sfCircleShape_setRadius(circle, radius);
                 ffi::sfCircleShape_setPointCount(circle, point_count as usize);
             }
             CircleShape {
@@ -106,7 +105,7 @@ impl<'s> CircleShape<'s> {
     /// # Arguments
     /// * radius - New radius of the circle
     pub fn set_radius(&self, radius: f32) {
-        unsafe { ffi::sfCircleShape_setRadius(self.circle_shape, radius as c_float) }
+        unsafe { ffi::sfCircleShape_setRadius(self.circle_shape, radius) }
     }
 
     /// Set the radius of a circle
@@ -172,7 +171,7 @@ impl<'s> Transformable for CircleShape<'s> {
     /// # Arguments
     /// * rotation - New rotation
     fn set_rotation(&mut self, angle: f32) {
-        unsafe { ffi::sfCircleShape_setRotation(self.circle_shape, angle as c_float) }
+        unsafe { ffi::sfCircleShape_setRotation(self.circle_shape, angle) }
     }
 
     /// Set the scale factors of a circle shape
@@ -304,7 +303,7 @@ impl<'s> Transformable for CircleShape<'s> {
     /// # Arguments
     /// * angle - Angle of rotation, in degrees
     fn rotate(&mut self, angle: f32) {
-        unsafe { ffi::sfCircleShape_rotate(self.circle_shape, angle as c_float) }
+        unsafe { ffi::sfCircleShape_rotate(self.circle_shape, angle) }
     }
 
     /// Scale a circle shape
@@ -432,7 +431,7 @@ impl<'s> Shape<'s> for CircleShape<'s> {
     /// # Arguments
     /// * thickness - New outline thickness
     fn set_outline_thickness(&mut self, thickness: f32) {
-        unsafe { ffi::sfCircleShape_setOutlineThickness(self.circle_shape, thickness as c_float) }
+        unsafe { ffi::sfCircleShape_setOutlineThickness(self.circle_shape, thickness) }
     }
 
     /// Get the source texture of a circle shape

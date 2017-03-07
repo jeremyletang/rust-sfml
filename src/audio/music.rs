@@ -21,7 +21,6 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-use libc::{c_float, size_t};
 use std::mem;
 use std::ffi::CString;
 use std::io::{Read, Seek};
@@ -134,7 +133,7 @@ impl Music {
     /// Return Some(Music) or None
     pub fn from_memory(mem: &[u8]) -> Option<Music> {
         let music_tmp =
-            unsafe { ffi::sfMusic_createFromMemory(mem.as_ptr() as *const _, mem.len() as size_t) };
+            unsafe { ffi::sfMusic_createFromMemory(mem.as_ptr() as *const _, mem.len()) };
         if music_tmp.is_null() {
             None
         } else {
@@ -252,7 +251,7 @@ impl SoundSource for Music {
     /// # Arguments
     /// * pitch - new pitch to apply to the music
     fn set_pitch(&mut self, pitch: f32) {
-        unsafe { ffi::sfMusic_setPitch(self.music, pitch as c_float) }
+        unsafe { ffi::sfMusic_setPitch(self.music, pitch) }
     }
 
     /// Set the volume of a music
@@ -263,7 +262,7 @@ impl SoundSource for Music {
     /// # Arguments
     /// * volume - Volume of the music
     fn set_volume(&mut self, volume: f32) {
-        unsafe { ffi::sfMusic_setVolume(self.music, volume as c_float) }
+        unsafe { ffi::sfMusic_setVolume(self.music, volume) }
     }
 
     /// Set the 3D position of a music in the audio scene
@@ -318,7 +317,7 @@ impl SoundSource for Music {
     /// # Arguments
     /// * distance - New minimum distance of the music
     fn set_min_distance(&mut self, distance: f32) {
-        unsafe { ffi::sfMusic_setMinDistance(self.music, distance as c_float) }
+        unsafe { ffi::sfMusic_setMinDistance(self.music, distance) }
     }
 
     ///  Set the attenuation factor of a music
@@ -335,7 +334,7 @@ impl SoundSource for Music {
     /// # Arguments
     /// * attenuation - New attenuation factor of the music
     fn set_attenuation(&mut self, attenuation: f32) {
-        unsafe { ffi::sfMusic_setAttenuation(self.music, attenuation as c_float) }
+        unsafe { ffi::sfMusic_setAttenuation(self.music, attenuation) }
     }
 
     /// Get the pitch of a music

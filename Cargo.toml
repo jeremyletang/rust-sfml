@@ -14,7 +14,6 @@ license = "zlib-acknowledgement"
 clippy = []
 
 [dependencies]
-libc = "0.2.2"
 bitflags = "0.5"
 
 [dependencies.csfml-system-sys]

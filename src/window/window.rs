@@ -21,7 +21,6 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-use std::os::raw::{c_uint, c_float};
 use std::marker::PhantomData;
 
 use raw_conv::{Raw, FromRaw};
@@ -185,12 +184,7 @@ impl Window {
     /// * height - Icon's height, in pixels
     /// * pixels - Vector of pixels
     pub fn set_icon(&mut self, width: u32, height: u32, pixels: &[u8]) {
-        unsafe {
-            ffi::sfWindow_setIcon(self.window,
-                                  width as c_uint,
-                                  height as c_uint,
-                                  pixels.as_ptr())
-        }
+        unsafe { ffi::sfWindow_setIcon(self.window, width, height, pixels.as_ptr()) }
     }
 
     /// Close a window and destroy all the attached resources
@@ -321,7 +315,7 @@ impl Window {
     /// # Arguments
     /// * limit - Framerate limit, in frames per seconds (use 0 to disable limit)
     pub fn set_framerate_limit(&mut self, limit: u32) {
-        unsafe { ffi::sfWindow_setFramerateLimit(self.window, limit as c_uint) }
+        unsafe { ffi::sfWindow_setFramerateLimit(self.window, limit) }
     }
 
     /// Change the joystick threshold
@@ -332,7 +326,7 @@ impl Window {
     /// # Arguments
     /// * threshold - New threshold, in the range [0, 100]
     pub fn set_joystick_threshold(&mut self, threshold: f32) {
-        unsafe { ffi::sfWindow_setJoystickThreshold(self.window, threshold as c_float) }
+        unsafe { ffi::sfWindow_setJoystickThreshold(self.window, threshold) }
     }
 
     /// Get the position of a window

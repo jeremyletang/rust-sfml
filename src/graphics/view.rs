@@ -27,8 +27,6 @@
 //! rotate or zoom the entire scene without altering
 //! the way that your drawable objects are drawn.
 
-use libc::c_float;
-
 use raw_conv::{Raw, FromRaw};
 use graphics::FloatRect;
 use system::Vector2f;
@@ -139,7 +137,7 @@ impl View {
     /// # Arguments
     /// * angle - New angle, in degrees
     pub fn set_rotation(&mut self, angle: f32) {
-        unsafe { ffi::sfView_setRotation(self.view, angle as c_float) }
+        unsafe { ffi::sfView_setRotation(self.view, angle) }
     }
 
     /// Rotate a view relatively to its current orientation
@@ -147,7 +145,7 @@ impl View {
     /// # Arguments
     /// * angle - Angle to rotate, in degrees
     pub fn rotate(&mut self, angle: f32) {
-        unsafe { ffi::sfView_rotate(self.view, angle as c_float) }
+        unsafe { ffi::sfView_rotate(self.view, angle) }
     }
 
     /// Resize a view rectangle relatively to its current size
@@ -163,7 +161,7 @@ impl View {
     /// # Arguments
     /// * factor - Zoom factor to apply
     pub fn zoom(&mut self, factor: f32) {
-        unsafe { ffi::sfView_zoom(self.view, factor as c_float) }
+        unsafe { ffi::sfView_zoom(self.view, factor) }
     }
 
     /// Set the center of a view

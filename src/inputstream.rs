@@ -21,8 +21,7 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-use libc::c_longlong;
-use std::os::raw::c_void;
+use std::os::raw::{c_void, c_longlong};
 use std::io::{Read, Seek, SeekFrom};
 use std::ptr;
 use csfml_system_sys::sfInputStream;

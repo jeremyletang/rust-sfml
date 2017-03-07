@@ -23,7 +23,6 @@
 
 //! Specialized shape representing a rectangle
 
-use libc::c_float;
 use std::ptr;
 
 use raw_conv::{Raw, FromRaw};
@@ -167,7 +166,7 @@ impl<'s> Transformable for RectangleShape<'s> {
     /// # Arguments
     /// * rotation - New rotation
     fn set_rotation(&mut self, angle: f32) {
-        unsafe { ffi::sfRectangleShape_setRotation(self.rectangle_shape, angle as c_float) }
+        unsafe { ffi::sfRectangleShape_setRotation(self.rectangle_shape, angle) }
     }
 
     /// Set the scale factors of a rectangle shape
@@ -300,7 +299,7 @@ impl<'s> Transformable for RectangleShape<'s> {
     /// # Arguments
     /// * angle - Angle of rotation, in degrees
     fn rotate(&mut self, angle: f32) {
-        unsafe { ffi::sfRectangleShape_rotate(self.rectangle_shape, angle as c_float) }
+        unsafe { ffi::sfRectangleShape_rotate(self.rectangle_shape, angle) }
     }
 
     /// Scale a rectangle shape
@@ -429,9 +428,7 @@ impl<'s> Shape<'s> for RectangleShape<'s> {
     /// # Arguments
     /// * thickness - New outline thickness
     fn set_outline_thickness(&mut self, thickness: f32) {
-        unsafe {
-            ffi::sfRectangleShape_setOutlineThickness(self.rectangle_shape, thickness as c_float)
-        }
+        unsafe { ffi::sfRectangleShape_setOutlineThickness(self.rectangle_shape, thickness) }
     }
 
     /// Get the source texture of a rectangle shape

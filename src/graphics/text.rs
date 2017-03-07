@@ -27,7 +27,6 @@
 //! display some text with custom style and color on a render target.
 
 use std::str;
-use libc::{c_float, c_uint, size_t};
 
 use raw_conv::{Raw, FromRaw};
 use graphics::{Drawable, Transformable, RenderTarget, Font, FloatRect, Color, Transform,
@@ -143,7 +142,7 @@ impl<'s> Text<'s> {
     /// # Arguments
     /// * size - The new character size, in pixels
     pub fn set_character_size(&mut self, size: u32) {
-        unsafe { ffi::sfText_setCharacterSize(self.text, size as c_uint) }
+        unsafe { ffi::sfText_setCharacterSize(self.text, size) }
     }
 
     /// Get the style of a text
@@ -214,8 +213,8 @@ impl<'s> Text<'s> {
     /// * index - The index of the character
     ///
     /// Return the position of the character
-    pub fn find_character_pos(&self, index: u64) -> Vector2f {
-        unsafe { Vector2f::from_raw(ffi::sfText_findCharacterPos(self.text, index as size_t)) }
+    pub fn find_character_pos(&self, index: usize) -> Vector2f {
+        unsafe { Vector2f::from_raw(ffi::sfText_findCharacterPos(self.text, index)) }
     }
 
     /// Get the local bounding rectangle of a text
@@ -308,7 +307,7 @@ impl<'s> Transformable for Text<'s> {
     /// # Arguments
     /// * angle - New rotation, in degrees
     fn set_rotation(&mut self, angle: f32) {
-        unsafe { ffi::sfText_setRotation(self.text, angle as c_float) }
+        unsafe { ffi::sfText_setRotation(self.text, angle) }
     }
 
     /// Set the scale factors of a text
@@ -440,7 +439,7 @@ impl<'s> Transformable for Text<'s> {
     /// # Arguments
     /// * factors - Scale factors
     fn rotate(&mut self, angle: f32) {
-        unsafe { ffi::sfText_rotate(self.text, angle as c_float) }
+        unsafe { ffi::sfText_rotate(self.text, angle) }
     }
 
     /// Scale a text

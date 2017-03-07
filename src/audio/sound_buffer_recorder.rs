@@ -26,8 +26,6 @@
 //! `SoundBufferRecorder` allows to access a recorded sound through a `SoundBuffer`,
 //! so that it can be played, saved to a file, etc.
 
-use libc::c_uint;
-
 use audio::sound_buffer::SoundBufferRef;
 
 use csfml_audio_sys as ffi;
@@ -70,8 +68,7 @@ impl SoundBufferRecorder {
     /// * sample_rate - Desired capture rate, in number of samples per second
     pub fn start(&mut self, sample_rate: u32) -> bool {
         unsafe {
-            ffi::sfSoundBufferRecorder_start(self.sound_buffer_recorder, sample_rate as c_uint) ==
-            sfTrue
+            ffi::sfSoundBufferRecorder_start(self.sound_buffer_recorder, sample_rate) == sfTrue
         }
     }
 

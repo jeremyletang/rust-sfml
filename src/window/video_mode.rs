@@ -21,7 +21,6 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-use libc::{c_uint, size_t};
 use std::vec::Vec;
 
 use raw_conv::{Raw, FromRaw};
@@ -100,9 +99,9 @@ impl VideoMode {
     pub fn is_valid(&self) -> bool {
         unsafe {
                 ffi::sfVideoMode_isValid(ffi::sfVideoMode {
-                    width: self.width as c_uint,
-                    height: self.height as c_uint,
-                    bitsPerPixel: self.bits_per_pixel as c_uint,
+                    width: self.width,
+                    height: self.height,
+                    bitsPerPixel: self.bits_per_pixel,
                 })
             }
             .to_bool()
@@ -132,7 +131,7 @@ impl VideoMode {
     ///
     /// Return a vector containing all the supported VideoMode
     pub fn get_fullscreen_modes() -> Vec<VideoMode> {
-        let mut size: size_t = 0;
+        let mut size = 0;
         let tab = unsafe { ffi::sfVideoMode_getFullscreenModes(&mut size) };
         if size == 0 {
             return Vec::new();
@@ -157,9 +156,9 @@ impl Raw for VideoMode {
     type Raw = ffi::sfVideoMode;
     fn raw(&self) -> ffi::sfVideoMode {
         ffi::sfVideoMode {
-            width: self.width as c_uint,
-            height: self.height as c_uint,
-            bitsPerPixel: self.bits_per_pixel as c_uint,
+            width: self.width,
+            height: self.height,
+            bitsPerPixel: self.bits_per_pixel,
         }
     }
 }

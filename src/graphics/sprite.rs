@@ -26,7 +26,6 @@
 //! Sprite is a drawable class that allows to easily
 //! display a texture (or a part of it) on a render target.
 
-use libc::c_float;
 use std::ptr;
 
 use raw_conv::{Raw, FromRaw};
@@ -255,7 +254,7 @@ impl<'s> Transformable for Sprite<'s> {
     /// # Arguments
     /// * angle - New rotation, in degrees
     fn set_rotation(&mut self, angle: f32) {
-        unsafe { ffi::sfSprite_setRotation(self.sprite, angle as c_float) }
+        unsafe { ffi::sfSprite_setRotation(self.sprite, angle) }
     }
 
     /// Set the scale factors of a sprite
@@ -387,7 +386,7 @@ impl<'s> Transformable for Sprite<'s> {
     /// # Arguments
     /// * angle - Angle of rotation, in degrees
     fn rotate(&mut self, angle: f32) {
-        unsafe { ffi::sfSprite_rotate(self.sprite, angle as c_float) }
+        unsafe { ffi::sfSprite_rotate(self.sprite, angle) }
     }
 
     /// Scale a sprite

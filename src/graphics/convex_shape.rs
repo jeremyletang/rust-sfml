@@ -28,7 +28,6 @@
 //! Moreover, the points must be defined in order; using a random
 //! order would result in an incorrect shape.
 
-use libc::c_float;
 use std::ptr;
 
 use raw_conv::{Raw, FromRaw};
@@ -170,7 +169,7 @@ impl<'s> Transformable for ConvexShape<'s> {
     /// # Arguments
     /// * rotation - New rotation
     fn set_rotation(&mut self, angle: f32) {
-        unsafe { ffi::sfConvexShape_setRotation(self.convex_shape, angle as c_float) }
+        unsafe { ffi::sfConvexShape_setRotation(self.convex_shape, angle) }
     }
 
     /// Set the scale factors of a convex shape
@@ -302,7 +301,7 @@ impl<'s> Transformable for ConvexShape<'s> {
     /// # Arguments
     /// * angle - Angle of rotation, in degrees
     fn rotate(&mut self, angle: f32) {
-        unsafe { ffi::sfConvexShape_rotate(self.convex_shape, angle as c_float) }
+        unsafe { ffi::sfConvexShape_rotate(self.convex_shape, angle) }
     }
 
     /// Scale a convex shape
@@ -424,7 +423,7 @@ impl<'s> Shape<'s> for ConvexShape<'s> {
     /// # Arguments
     /// * thickness - New outline thickness
     fn set_outline_thickness(&mut self, thickness: f32) {
-        unsafe { ffi::sfConvexShape_setOutlineThickness(self.convex_shape, thickness as c_float) }
+        unsafe { ffi::sfConvexShape_setOutlineThickness(self.convex_shape, thickness) }
     }
 
     /// Get the source texture of a convex shape

@@ -90,7 +90,6 @@
 
 #![warn(missing_docs)]
 
-extern crate libc;
 #[macro_use]
 extern crate bitflags;
 extern crate csfml_system_sys;

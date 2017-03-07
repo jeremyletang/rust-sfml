@@ -24,7 +24,6 @@
 //! Specialized socket using the UDP protocol
 
 use std::{ptr, mem};
-use libc::size_t;
 
 use raw_conv::{Raw, FromRaw};
 use network::{Packet, IpAddress, SocketStatus};
@@ -122,7 +121,7 @@ impl UdpSocket {
         unsafe {
             mem::transmute(ffi::sfUdpSocket_send(self.socket,
                                                  data.as_ptr() as *const _,
-                                                 data.len() as size_t,
+                                                 data.len(),
                                                  address.raw(),
                                                  port) as i32)
         }

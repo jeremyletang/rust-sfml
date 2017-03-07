@@ -23,7 +23,6 @@
 
 //! Specialized socket using the TCP protocol
 
-use libc::size_t;
 use std::{ptr, mem};
 
 use raw_conv::{Raw, FromRaw};
@@ -137,8 +136,7 @@ impl TcpSocket {
     /// Return the status code
     pub fn send(&self, data: &[i8]) -> SocketStatus {
         unsafe {
-            let status =
-                ffi::sfTcpSocket_send(self.socket, data.as_ptr() as *const _, data.len() as size_t);
+            let status = ffi::sfTcpSocket_send(self.socket, data.as_ptr() as *const _, data.len());
             mem::transmute(status)
         }
     }
@@ -153,7 +151,7 @@ impl TcpSocket {
     /// * destination - The slice to write the bytes into
     ///
     /// Returns a tuple containing the socket status, and the actual number of bytes received.
-    pub fn receive(&self, destination: &mut [u8]) -> (SocketStatus, size_t) {
+    pub fn receive(&self, destination: &mut [u8]) -> (SocketStatus, usize) {
         unsafe {
             let mut actual_read_len = 0;
             let status = ffi::sfTcpSocket_receive(self.socket,

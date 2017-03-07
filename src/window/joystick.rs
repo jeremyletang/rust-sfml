@@ -65,8 +65,6 @@
 //! ```
 //!
 
-use libc::c_uint;
-
 use csfml_window_sys as ffi;
 use ext::sf_bool_ext::SfBoolExt;
 use raw_conv::{Raw, FromRaw};
@@ -132,7 +130,7 @@ pub struct Identification {
  * Return true if the joystick is connected, false otherwise
  */
 pub fn is_connected(joystick: u32) -> bool {
-    unsafe { ffi::sfJoystick_isConnected(joystick as c_uint).to_bool() }
+    unsafe { ffi::sfJoystick_isConnected(joystick).to_bool() }
 }
 
 /**
@@ -144,7 +142,7 @@ pub fn is_connected(joystick: u32) -> bool {
  * Return the number of buttons supported by the joystick.
  */
 pub fn button_count(joystick: u32) -> u32 {
-    unsafe { ffi::sfJoystick_getButtonCount(joystick as c_uint) as u32 }
+    unsafe { ffi::sfJoystick_getButtonCount(joystick) as u32 }
 }
 
 /**
@@ -159,7 +157,7 @@ pub fn button_count(joystick: u32) -> u32 {
  * Return true if the joystick supports the axis, false otherwise
  */
 pub fn has_axis(joystick: u32, axis: Axis) -> bool {
-    unsafe { ffi::sfJoystick_hasAxis(joystick as c_uint, axis.raw()).to_bool() }
+    unsafe { ffi::sfJoystick_hasAxis(joystick, axis.raw()).to_bool() }
 }
 
 /**
@@ -174,7 +172,7 @@ pub fn has_axis(joystick: u32, axis: Axis) -> bool {
  * Return true if the button is pressed, false otherwise
  */
 pub fn is_button_pressed(joystick: u32, button: u32) -> bool {
-    unsafe { ffi::sfJoystick_isButtonPressed(joystick as c_uint, button as c_uint).to_bool() }
+    unsafe { ffi::sfJoystick_isButtonPressed(joystick, button).to_bool() }
 }
 
 
@@ -190,7 +188,7 @@ pub fn is_button_pressed(joystick: u32, button: u32) -> bool {
  * Return the current position of the axis, in range [-100 .. 100]
  */
 pub fn get_axis_position(joystick: u32, axis: Axis) -> f32 {
-    unsafe { ffi::sfJoystick_getAxisPosition(joystick as c_uint, axis.raw()) as f32 }
+    unsafe { ffi::sfJoystick_getAxisPosition(joystick, axis.raw()) as f32 }
 }
 
 /**

@@ -24,7 +24,6 @@
 
 //! Class for loading and manipulating character fonts
 
-use libc::{c_uint, size_t};
 use std::ffi::{CStr, CString};
 
 use raw_conv::{Raw, FromRaw};
@@ -88,9 +87,8 @@ impl Font {
     ///
     /// Return Some(Font) or None
     pub fn from_memory(memory: &[u8]) -> Option<Font> {
-        let fnt = unsafe {
-            ffi::sfFont_createFromMemory(memory.as_ptr() as *const _, memory.len() as size_t)
-        };
+        let fnt =
+            unsafe { ffi::sfFont_createFromMemory(memory.as_ptr() as *const _, memory.len()) };
         if fnt.is_null() {
             None
         } else {
@@ -107,7 +105,7 @@ impl Font {
     ///
     /// Return the kerning offset, in pixels
     pub fn get_kerning(&self, first: u32, second: u32, character_size: u32) -> i32 {
-        unsafe { ffi::sfFont_getKerning(self.font, first, second, character_size as c_uint) as i32 }
+        unsafe { ffi::sfFont_getKerning(self.font, first, second, character_size) as i32 }
     }
 
     /// Get the line spacing value
@@ -117,7 +115,7 @@ impl Font {
     ///
     /// Return the line spacing, in pixels
     pub fn get_line_spacing(&self, character_size: u32) -> i32 {
-        unsafe { ffi::sfFont_getLineSpacing(self.font, character_size as c_uint) as i32 }
+        unsafe { ffi::sfFont_getLineSpacing(self.font, character_size) as i32 }
     }
 
     /// Get the texture containing the glyphs of a given size in a font
@@ -127,7 +125,7 @@ impl Font {
     ///
     /// Return the texture
     pub fn get_texture(&self, character_size: u32) -> &TextureRef {
-        let tex = unsafe { ffi::sfFont_getTexture(self.font, character_size as c_uint) };
+        let tex = unsafe { ffi::sfFont_getTexture(self.font, character_size) };
         if tex.is_null() {
             panic!("Font::get_texture: texture is null");
         } else {
@@ -152,7 +150,7 @@ impl Font {
         unsafe {
             Glyph::from_raw(ffi::sfFont_getGlyph(self.font,
                                                  codepoint,
-                                                 character_size as c_uint,
+                                                 character_size,
                                                  sfBool::from_bool(bold),
                                                  outline_thickness))
         }

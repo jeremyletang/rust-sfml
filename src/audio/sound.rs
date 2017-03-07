@@ -21,7 +21,6 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-use libc::c_float;
 use std::mem;
 
 use audio::{SoundStatus, SoundBufferRef, SoundSource};
@@ -214,7 +213,7 @@ impl<'s> SoundSource for Sound<'s> {
     /// # Arguments
     /// * pitch - new pitch to apply to the sound
     fn set_pitch(&mut self, pitch: f32) {
-        unsafe { ffi::sfSound_setPitch(self.sound, pitch as c_float) }
+        unsafe { ffi::sfSound_setPitch(self.sound, pitch) }
     }
 
     /// Set the volume of a sound
@@ -225,7 +224,7 @@ impl<'s> SoundSource for Sound<'s> {
     /// # Arguments
     /// * volume - Volume of the sound
     fn set_volume(&mut self, volume: f32) {
-        unsafe { ffi::sfSound_setVolume(self.sound, volume as c_float) }
+        unsafe { ffi::sfSound_setVolume(self.sound, volume) }
     }
 
     /// Set the 3D position of a sound in the audio scene
@@ -280,7 +279,7 @@ impl<'s> SoundSource for Sound<'s> {
     /// # Arguments
     /// * distance - New minimum distance of the sound
     fn set_min_distance(&mut self, distance: f32) {
-        unsafe { ffi::sfSound_setMinDistance(self.sound, distance as c_float) }
+        unsafe { ffi::sfSound_setMinDistance(self.sound, distance) }
     }
 
     ///  Set the attenuation factor of a sound
@@ -297,7 +296,7 @@ impl<'s> SoundSource for Sound<'s> {
     /// # Arguments
     /// * attenuation - New attenuation factor of the sound
     fn set_attenuation(&mut self, attenuation: f32) {
-        unsafe { ffi::sfSound_setAttenuation(self.sound, attenuation as c_float) }
+        unsafe { ffi::sfSound_setAttenuation(self.sound, attenuation) }
     }
 
     /// Get the pitch of a sound

@@ -26,8 +26,6 @@
 //! A Transform specifies how to translate,
 //! rotate, scale, shear, project, whatever things.
 
-use libc::c_float;
-
 use system::Vector2f;
 use graphics::FloatRect;
 use raw_conv::{Raw, FromRaw};
@@ -116,7 +114,7 @@ impl Transform {
     /// * x - Offset to apply on X axis
     /// * y - Offset to apply on Y axis
     pub fn translate(&mut self, x: f32, y: f32) {
-        unsafe { ffi::sfTransform_translate(&mut self.0, x as c_float, y as c_float) }
+        unsafe { ffi::sfTransform_translate(&mut self.0, x, y) }
     }
 
     /// Combine the current transform with a rotation
@@ -124,7 +122,7 @@ impl Transform {
     /// # Arguments
     /// * angle - Rotation angle, in degrees
     pub fn rotate(&mut self, angle: f32) {
-        unsafe { ffi::sfTransform_rotate(&mut self.0, angle as c_float) }
+        unsafe { ffi::sfTransform_rotate(&mut self.0, angle) }
     }
 
     /// Combine the current transform with a rotation
@@ -139,12 +137,7 @@ impl Transform {
     /// * center_x - X coordinate of the center of rotation
     /// * center_y - Y coordinate of the center of rotation
     pub fn rotate_with_center(&mut self, angle: f32, center_x: f32, center_y: f32) {
-        unsafe {
-            ffi::sfTransform_rotateWithCenter(&mut self.0,
-                                              angle as c_float,
-                                              center_x as c_float,
-                                              center_y as c_float)
-        }
+        unsafe { ffi::sfTransform_rotateWithCenter(&mut self.0, angle, center_x, center_y) }
     }
 
     /// Combine the current transform with a scaling
@@ -153,7 +146,7 @@ impl Transform {
     /// * scale_x - Scaling factor on the X axis
     /// * scale_y - Scaling factor on the Y axis
     pub fn scale(&mut self, scale_x: f32, scale_y: f32) {
-        unsafe { ffi::sfTransform_scale(&mut self.0, scale_x as c_float, scale_y as c_float) }
+        unsafe { ffi::sfTransform_scale(&mut self.0, scale_x, scale_y) }
     }
 
     /// Combine the current transform with a scaling

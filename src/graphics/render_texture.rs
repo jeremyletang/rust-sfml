@@ -23,8 +23,6 @@
 
 //! Target for off-screen 2D rendering into a texture
 
-use libc::c_uint;
-
 use raw_conv::{Raw, RawMut, FromRaw};
 use system::{Vector2f, Vector2i, Vector2u};
 use graphics::{Drawable, View, ViewRef, Color, IntRect, TextureRef, CircleShape, RectangleShape,
@@ -51,11 +49,8 @@ impl RenderTexture {
     ///
     /// Return Some(RenderTexture) or None
     pub fn new(width: u32, height: u32, depth_buffer: bool) -> Option<RenderTexture> {
-        let tex = unsafe {
-            ffi::sfRenderTexture_create(width as c_uint,
-                                        height as c_uint,
-                                        sfBool::from_bool(depth_buffer))
-        };
+        let tex =
+            unsafe { ffi::sfRenderTexture_create(width, height, sfBool::from_bool(depth_buffer)) };
         if tex.is_null() {
             None
         } else {

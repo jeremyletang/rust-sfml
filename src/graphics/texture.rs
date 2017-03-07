@@ -25,7 +25,6 @@
 //!
 //! Texture stores pixels that can be drawn, with a sprite for example.
 
-use libc::{c_uint, size_t};
 use std::ptr;
 use std::ffi::CString;
 use std::io::{Read, Seek};
@@ -120,7 +119,7 @@ impl Texture {
     ///
     /// Return Some(Texture) or None
     pub fn new(width: u32, height: u32) -> Option<Texture> {
-        let tex = unsafe { ffi::sfTexture_create(width as c_uint, height as c_uint) };
+        let tex = unsafe { ffi::sfTexture_create(width, height) };
         if tex.is_null() {
             None
         } else {
@@ -137,9 +136,7 @@ impl Texture {
     /// Return Some(Texture) or None
     pub fn from_memory(mem: &[u8], area: &IntRect) -> Option<Texture> {
         let tex = unsafe {
-            ffi::sfTexture_createFromMemory(mem.as_ptr() as *const _,
-                                            mem.len() as size_t,
-                                            &area.raw())
+            ffi::sfTexture_createFromMemory(mem.as_ptr() as *const _, mem.len(), &area.raw())
         };
         if tex.is_null() {
             None
@@ -235,9 +232,7 @@ impl Texture {
     /// * x - X offset in the texture where to copy the source pixels
     /// * y - Y offset in the texture where to copy the source pixels
     pub fn update_from_window(&mut self, window: &Window, x: u32, y: u32) {
-        unsafe {
-            ffi::sfTexture_updateFromWindow(self.texture, window.raw(), x as c_uint, y as c_uint)
-        }
+        unsafe { ffi::sfTexture_updateFromWindow(self.texture, window.raw(), x, y) }
     }
 
     /// Update a texture from the contents of a render window
@@ -247,12 +242,7 @@ impl Texture {
     /// * x - X offset in the texture where to copy the source pixels
     /// * y - Y offset in the texture where to copy the source pixels
     pub fn update_from_render_window(&mut self, render_window: &RenderWindow, x: u32, y: u32) {
-        unsafe {
-            ffi::sfTexture_updateFromRenderWindow(self.texture,
-                                                  render_window.raw(),
-                                                  x as c_uint,
-                                                  y as c_uint)
-        }
+        unsafe { ffi::sfTexture_updateFromRenderWindow(self.texture, render_window.raw(), x, y) }
     }
 
     /// Update a texture from the contents of an image
@@ -262,9 +252,7 @@ impl Texture {
     /// * x - X offset in the texture where to copy the source pixels
     /// * y - Y offset in the texture where to copy the source pixels
     pub fn update_from_image(&mut self, image: &Image, x: u32, y: u32) {
-        unsafe {
-            ffi::sfTexture_updateFromImage(self.texture, image.raw(), x as c_uint, y as c_uint)
-        }
+        unsafe { ffi::sfTexture_updateFromImage(self.texture, image.raw(), x, y) }
     }
 
     /// Update a texture from the contents of a Vector of pixels
@@ -275,12 +263,7 @@ impl Texture {
     /// * y - Y offset in the texture where to copy the source pixels
     pub fn update_from_pixels(&mut self, pixels: &[u8], width: u32, height: u32, x: u32, y: u32) {
         unsafe {
-            ffi::sfTexture_updateFromPixels(self.texture,
-                                            pixels.as_ptr(),
-                                            width as c_uint,
-                                            height as c_uint,
-                                            x as c_uint,
-                                            y as c_uint)
+            ffi::sfTexture_updateFromPixels(self.texture, pixels.as_ptr(), width, height, x, y)
         }
     }
 

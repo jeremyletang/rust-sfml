@@ -26,7 +26,6 @@
 use std::mem;
 use std::ffi::{CString, CStr};
 use std::str;
-use libc::size_t;
 
 use raw_conv::Raw;
 use network::IpAddress;
@@ -205,9 +204,9 @@ impl ListingResponse {
     /// * index - Index of the name to get (in range [0 .. getCount])
     ///
     /// Return the requested name
-    pub fn get_name(&self, index: u64) -> String {
+    pub fn get_name(&self, index: usize) -> String {
         unsafe {
-            let string = ffi::sfFtpListingResponse_getName(self.listing_response, index as size_t);
+            let string = ffi::sfFtpListingResponse_getName(self.listing_response, index);
             str::from_utf8(CStr::from_ptr(string).to_bytes_with_nul()).unwrap().into()
         }
     }
