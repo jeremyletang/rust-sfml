@@ -26,7 +26,7 @@
 use std::mem;
 
 use raw_conv::Raw;
-use network::{TcpSocket, SocketStatus};
+use network::{TcpSocket, SocketStatus, IpAddress};
 
 use csfml_system_sys::sfBool;
 use csfml_network_sys as ffi;
@@ -93,8 +93,10 @@ impl TcpListener {
     /// * port - Port to listen for new connections
     ///
     /// Return status code
-    pub fn listen(&self, port: u16) -> SocketStatus {
-        unsafe { mem::transmute(ffi::sfTcpListener_listen(self.listener, port) as i32) }
+    pub fn listen(&self, port: u16, address: IpAddress) -> SocketStatus {
+        unsafe {
+            mem::transmute(ffi::sfTcpListener_listen(self.listener, port, address.raw()) as i32)
+        }
     }
 
     /// Accept a new connection

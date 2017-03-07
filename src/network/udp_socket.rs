@@ -95,8 +95,8 @@ impl UdpSocket {
     /// * port - Port to bind the socket to
     ///
     /// Return the tatus code
-    pub fn bind(&self, port: u16) -> SocketStatus {
-        unsafe { mem::transmute(ffi::sfUdpSocket_bind(self.socket, port) as i32) }
+    pub fn bind(&self, port: u16, address: IpAddress) -> SocketStatus {
+        unsafe { mem::transmute(ffi::sfUdpSocket_bind(self.socket, port, address.raw()) as i32) }
     }
 
     /// Unbind a UDP socket from the local port to which it is bound
@@ -145,7 +145,7 @@ impl UdpSocket {
     pub fn receive(&self, destination: &mut [u8]) -> (SocketStatus, usize, IpAddress, u16) {
         unsafe {
             let mut actual_read_len = 0;
-            let mut addr = ffi::sfIpAddress::default();
+            let mut addr = ::std::mem::zeroed();
             let mut port = 0;
             let status = ffi::sfUdpSocket_receive(self.socket,
                                                   destination.as_mut_ptr() as *mut _,
