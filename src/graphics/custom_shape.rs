@@ -24,7 +24,7 @@
 //! Base class for textured shapes with outline
 
 use std::os::raw::{c_void, c_float};
-use std::{ptr, mem};
+use std::ptr;
 
 use raw_conv::{Raw, FromRaw};
 use graphics::shape::ShapeImpl;
@@ -35,27 +35,22 @@ use csfml_graphics_sys as ffi;
 use csfml_system_sys::{sfBool, sfTrue, sfVector2f};
 use ext::sf_bool_ext::SfBoolExt;
 
-struct WrapObj {
-    shape_impl: Box<ShapeImpl + Send>,
-}
-
 /// Base class for textured shapes with outline
 pub struct CustomShape<'s> {
     shape: *mut ffi::sfShape,
     texture: Option<&'s Texture>,
+    shape_impl: *mut Box<ShapeImpl + Send>,
 }
 
 unsafe extern "C" fn get_point_count_callback(obj: *mut c_void) -> usize {
-    let shape = mem::transmute::<*mut c_void, Box<Box<WrapObj>>>(obj);
-    let ret = shape.shape_impl.get_point_count();
-    mem::forget(shape);
+    let shape = obj as *mut Box<ShapeImpl + Send>;
+    let ret = (*shape).get_point_count();
     ret as usize
 }
 
 unsafe extern "C" fn get_point_callback(point: usize, obj: *mut c_void) -> sfVector2f {
-    let shape = mem::transmute::<*mut c_void, Box<Box<WrapObj>>>(obj);
-    let ret = shape.shape_impl.get_point(point as u32);
-    mem::forget(shape);
+    let shape = obj as *mut Box<ShapeImpl + Send>;
+    let ret = (*shape).get_point(point as u32);
     ret.raw()
 }
 
@@ -66,11 +61,11 @@ impl<'s> CustomShape<'s> {
     /// # Arguments
     /// * shape_impl - Implementation of ShapeImpl
     pub fn new(shape_impl: Box<ShapeImpl + Send>) -> CustomShape<'s> {
-        let w_o = Box::new(WrapObj { shape_impl: shape_impl });
+        let raw_impl = Box::into_raw(Box::new(shape_impl));
         let sp = unsafe {
             ffi::sfShape_create(Some(get_point_count_callback),
                                 Some(get_point_callback),
-                                mem::transmute::<Box<Box<WrapObj>>, *mut c_void>(Box::new(w_o)))
+                                raw_impl as *mut _)
         };
         if sp.is_null() {
             panic!("sfShape_create returned null.")
@@ -78,6 +73,7 @@ impl<'s> CustomShape<'s> {
             CustomShape {
                 shape: sp,
                 texture: None,
+                shape_impl: raw_impl,
             }
         }
     }
@@ -90,11 +86,11 @@ impl<'s> CustomShape<'s> {
     pub fn with_texture(shape_impl: Box<ShapeImpl + Send>,
                         texture: &'s Texture)
                         -> CustomShape<'s> {
-        let w_o = Box::new(WrapObj { shape_impl: shape_impl });
+        let raw_impl = Box::into_raw(Box::new(shape_impl));
         let sp = unsafe {
             ffi::sfShape_create(Some(get_point_count_callback),
                                 Some(get_point_callback),
-                                mem::transmute::<Box<Box<WrapObj>>, *mut c_void>(Box::new(w_o)))
+                                raw_impl as *mut _)
         };
         if sp.is_null() {
             panic!("sfShape_create returned null.")
@@ -105,6 +101,7 @@ impl<'s> CustomShape<'s> {
             CustomShape {
                 shape: sp,
                 texture: Some(texture),
+                shape_impl: raw_impl,
             }
         }
     }
@@ -509,6 +506,9 @@ impl<'s> Transformable for CustomShape<'s> {
 
 impl<'s> Drop for CustomShape<'s> {
     fn drop(&mut self) {
-        unsafe { ffi::sfShape_destroy(self.shape) }
+        unsafe {
+            ffi::sfShape_destroy(self.shape);
+            Box::from_raw(self.shape_impl);
+        }
     }
 }
