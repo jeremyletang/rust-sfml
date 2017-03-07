@@ -9,9 +9,6 @@ documentation = "https://crates.fyi/crates/csfml-network-sys/0.1.0/"
 repository = "https://github.com/jeremyletang/rust-sfml"
 license = "zlib-acknowledgement"
 
-[dependencies]
-libc = "0.2.2"
-
 [dependencies.csfml-system-sys]
 path = "../csfml-system-sys"
 version = "0.1.0"
