@@ -52,6 +52,18 @@ pub struct Shader<'s> {
     texture: Option<&'s Texture>,
 }
 
+macro_rules! cstring_then_ptr {
+    ($cstring:ident, $shader:expr) => {
+        match $shader {
+            Some(s) => {
+                $cstring = CString::new(s.as_bytes()).unwrap();
+                $cstring.as_ptr()
+            }
+            None => ptr::null(),
+        }
+    }
+}
+
 impl<'s> Shader<'s> {
     /// Load both the vertex and fragment shaders from files
     ///
@@ -70,40 +82,17 @@ impl<'s> Shader<'s> {
     ///                            or None to skip this shader
     ///
     /// Return Some(Shader) or None
-    pub fn from_file(vertex_shader_filename: Option<&str>,
-                     geometry_shader_filename: Option<&str>,
-                     fragment_shader_filename: Option<&str>)
+    pub fn from_file(vertex: Option<&str>,
+                     geometry: Option<&str>,
+                     fragment: Option<&str>)
                      -> Option<Shader<'s>> {
-        let shader = unsafe {
-            let vertex_shader_cstring;
-            let c_vertex_shader_filename = if vertex_shader_filename.is_none() {
-                ptr::null()
-            } else {
-                vertex_shader_cstring = CString::new(vertex_shader_filename.unwrap().as_bytes())
-                    .unwrap();
-                vertex_shader_cstring.as_ptr()
-            };
-            let geometry_shader_cstring;
-            let c_geometry_shader_filename = if geometry_shader_filename.is_none() {
-                ptr::null()
-            } else {
-                geometry_shader_cstring =
-                    CString::new(geometry_shader_filename.unwrap().as_bytes()).unwrap();
-                geometry_shader_cstring.as_ptr()
-            };
-            let fragment_shader_cstring;
-            let c_fragment_shader_filename = if fragment_shader_filename.is_none() {
-                ptr::null()
-            } else {
-                fragment_shader_cstring =
-                    CString::new(fragment_shader_filename.unwrap().as_bytes()).unwrap();
-                fragment_shader_cstring.as_ptr()
-            };
-            // TODO: ffi API changed
-            ffi::sfShader_createFromFile(c_vertex_shader_filename,
-                                         c_geometry_shader_filename,
-                                         c_fragment_shader_filename)
-        };
+        let cstring;
+        let vert = cstring_then_ptr!(cstring, vertex);
+        let cstring;
+        let geom = cstring_then_ptr!(cstring, geometry);
+        let cstring;
+        let frag = cstring_then_ptr!(cstring, fragment);
+        let shader = unsafe { ffi::sfShader_createFromFile(vert, geom, frag) };
         if shader.is_null() {
             None
         } else {
@@ -170,36 +159,17 @@ impl<'s> Shader<'s> {
     ///                    or None to skip this shader
     ///
     /// Return Some(Shader) or None
-    pub fn from_memory(vertex_shader: Option<&str>,
-                       geometry_shader: Option<&str>,
-                       fragment_shader: Option<&str>)
+    pub fn from_memory(vertex: Option<&str>,
+                       geometry: Option<&str>,
+                       fragment: Option<&str>)
                        -> Option<Shader<'s>> {
-        let shader = unsafe {
-            let vertex_shader_cstring;
-            let c_vertex_shader = if vertex_shader.is_none() {
-                ptr::null()
-            } else {
-                vertex_shader_cstring = CString::new(vertex_shader.unwrap().as_bytes()).unwrap();
-                vertex_shader_cstring.as_ptr()
-            };
-            let geometry_shader_cstring;
-            let c_geometry_shader = if geometry_shader.is_none() {
-                ptr::null()
-            } else {
-                geometry_shader_cstring = CString::new(geometry_shader.unwrap().as_bytes())
-                    .unwrap();
-                geometry_shader_cstring.as_ptr()
-            };
-            let fragment_shader_cstring;
-            let c_fragment_shader = if fragment_shader.is_none() {
-                ptr::null()
-            } else {
-                fragment_shader_cstring = CString::new(fragment_shader.unwrap().as_bytes())
-                    .unwrap();
-                fragment_shader_cstring.as_ptr()
-            };
-            ffi::sfShader_createFromMemory(c_vertex_shader, c_geometry_shader, c_fragment_shader)
-        };
+        let cstring;
+        let vert = cstring_then_ptr!(cstring, vertex);
+        let cstring;
+        let geom = cstring_then_ptr!(cstring, geometry);
+        let cstring;
+        let frag = cstring_then_ptr!(cstring, fragment);
+        let shader = unsafe { ffi::sfShader_createFromMemory(vert, geom, frag) };
         if shader.is_null() {
             None
         } else {
