@@ -24,8 +24,8 @@
 pub use csfml_graphics_sys::sfPrimitiveType as PrimitiveType;
 pub use csfml_graphics_sys::sfPrimitiveType::sfPoints as Points;
 pub use csfml_graphics_sys::sfPrimitiveType::sfLines as Lines;
-pub use csfml_graphics_sys::sfPrimitiveType::sfLinesStrip as LinesStrip;
+pub use csfml_graphics_sys::sfPrimitiveType::sfLineStrip as LineStrip;
 pub use csfml_graphics_sys::sfPrimitiveType::sfTriangles as Triangles;
-pub use csfml_graphics_sys::sfPrimitiveType::sfTrianglesStrip as TrianglesStrip;
-pub use csfml_graphics_sys::sfPrimitiveType::sfTrianglesFan as TrianglesFan;
+pub use csfml_graphics_sys::sfPrimitiveType::sfTriangleStrip as TriangleStrip;
+pub use csfml_graphics_sys::sfPrimitiveType::sfTriangleFan as TriangleFan;
 pub use csfml_graphics_sys::sfPrimitiveType::sfQuads as Quads;

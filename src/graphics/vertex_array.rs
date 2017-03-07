@@ -140,17 +140,17 @@ impl VertexArray {
                     sfVertexArray_setPrimitiveType(self.vertex_array, sfPoints)
                 }
                 primitive_type::Lines => sfVertexArray_setPrimitiveType(self.vertex_array, sfLines),
-                primitive_type::LinesStrip => {
-                    sfVertexArray_setPrimitiveType(self.vertex_array, sfLinesStrip)
+                primitive_type::LineStrip => {
+                    sfVertexArray_setPrimitiveType(self.vertex_array, sfLineStrip)
                 }
                 primitive_type::Triangles => {
                     sfVertexArray_setPrimitiveType(self.vertex_array, sfTriangles)
                 }
-                primitive_type::TrianglesStrip => {
-                    sfVertexArray_setPrimitiveType(self.vertex_array, sfTrianglesStrip)
+                primitive_type::TriangleStrip => {
+                    sfVertexArray_setPrimitiveType(self.vertex_array, sfTriangleStrip)
                 }
-                primitive_type::TrianglesFan => {
-                    sfVertexArray_setPrimitiveType(self.vertex_array, sfTrianglesFan)
+                primitive_type::TriangleFan => {
+                    sfVertexArray_setPrimitiveType(self.vertex_array, sfTriangleFan)
                 }
                 primitive_type::Quads => sfVertexArray_setPrimitiveType(self.vertex_array, sfQuads),
             }
@@ -164,10 +164,10 @@ impl VertexArray {
         match unsafe { sfVertexArray_getPrimitiveType(self.vertex_array) } {
             sfPoints => primitive_type::Points,
             sfLines => primitive_type::Lines,
-            sfLinesStrip => primitive_type::LinesStrip,
+            sfLineStrip => primitive_type::LineStrip,
             sfTriangles => primitive_type::Triangles,
-            sfTrianglesStrip => primitive_type::TrianglesStrip,
-            sfTrianglesFan => primitive_type::TrianglesFan,
+            sfTriangleStrip => primitive_type::TriangleStrip,
+            sfTriangleFan => primitive_type::TriangleFan,
             sfQuads => primitive_type::Quads,
         }
     }

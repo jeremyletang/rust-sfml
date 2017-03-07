@@ -143,12 +143,18 @@ impl Font {
     /// * bold - Retrieve the bold version or the regular one?
     ///
     /// Return the corresponding glyph
-    pub fn get_glyph(&self, codepoint: u32, character_size: u32, bold: bool) -> Glyph {
+    pub fn get_glyph(&self,
+                     codepoint: u32,
+                     character_size: u32,
+                     bold: bool,
+                     outline_thickness: f32)
+                     -> Glyph {
         unsafe {
             Glyph::from_raw(ffi::sfFont_getGlyph(self.font,
                                                  codepoint,
                                                  character_size as c_uint,
-                                                 sfBool::from_bool(bold)))
+                                                 sfBool::from_bool(bold),
+                                                 outline_thickness))
         }
     }
     /// Returns the font information.
