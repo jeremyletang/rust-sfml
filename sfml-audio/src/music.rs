@@ -25,15 +25,15 @@ use std::mem;
 use std::ffi::CString;
 use std::io::{Read, Seek};
 
-use audio::{SoundStatus, SoundSource};
-use system::Time;
-use system::Vector3f;
+use {SoundStatus, SoundSource};
+use sfml::system::Time;
+use sfml::system::Vector3f;
 use inputstream::InputStream;
-use system::raw_conv::{Raw, FromRaw};
+use sfml::system::raw_conv::{Raw, FromRaw};
 
 use csfml_system_sys::{sfBool, sfVector3f};
 use csfml_audio_sys as ffi;
-use system::SfBoolExt;
+use sfml::system::SfBoolExt;
 
 /// Streamed music played from an audio file.
 ///
@@ -55,7 +55,7 @@ use system::SfBoolExt;
 /// # Usage example
 ///
 /// ```no_run
-/// use sfml::audio::{Music, SoundSource};
+/// use sfml_audio::{Music, SoundSource};
 ///
 /// // Open a new music from an audio file
 /// let mut music = Music::from_file("music.ogg").unwrap();

@@ -24,13 +24,17 @@
 //! Sounds, streaming (musics or custom sources), recording, spatialization
 //!
 
-pub use audio::sound_buffer::{SoundBuffer, SoundBufferRef};
-pub use audio::sound_status::SoundStatus;
-pub use audio::music::Music;
-pub use audio::sound::Sound;
-pub use audio::sound_buffer_recorder::SoundBufferRecorder;
-pub use audio::sound_source::SoundSource;
-pub use audio::sound_stream::{SoundStream, SoundStreamPlayer};
+extern crate sfml;
+extern crate csfml_system_sys;
+extern crate csfml_audio_sys;
+
+pub use sound_buffer::{SoundBuffer, SoundBufferRef};
+pub use sound_status::SoundStatus;
+pub use music::Music;
+pub use sound::Sound;
+pub use sound_buffer_recorder::SoundBufferRecorder;
+pub use sound_source::SoundSource;
+pub use sound_stream::{SoundStream, SoundStreamPlayer};
 
 mod sound_buffer;
 mod sound_source;
@@ -40,3 +44,5 @@ mod music;
 mod sound;
 mod sound_buffer_recorder;
 mod sound_stream;
+#[path="../../src/inputstream.rs"]
+mod inputstream;

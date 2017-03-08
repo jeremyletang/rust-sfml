@@ -39,9 +39,12 @@ version = "0.1.0"
 [dev-dependencies]
 rand = "0.3"
 
+[dev-dependencies.sfml-audio]
+path = "sfml-audio"
+
 [lib]
 name = "sfml"
 crate-type = ["dylib", "rlib"]
 
 [workspace]
-members = ["sfml-network"]
+members = ["sfml-network", "sfml-audio"]

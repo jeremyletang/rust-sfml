@@ -23,11 +23,11 @@
 
 use std::ffi::CString;
 
-use system::raw_conv::{Raw, FromRaw};
-use system::Time;
+use sfml::system::raw_conv::{Raw, FromRaw};
+use sfml::system::Time;
 
 use csfml_audio_sys as ffi;
-use system::SfBoolExt;
+use sfml::system::SfBoolExt;
 use std::ops::Deref;
 use inputstream::InputStream;
 use std::io::{Read, Seek};
@@ -62,7 +62,7 @@ use std::io::{Read, Seek};
 /// # Usage example
 ///
 /// ```no_run
-/// use sfml::audio::{Sound, SoundBuffer, SoundSource};
+/// use sfml_audio::{Sound, SoundBuffer, SoundSource};
 ///
 /// // Load a new sound buffer
 /// let buffer = SoundBuffer::from_file("sound.wav").unwrap();

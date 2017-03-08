@@ -35,7 +35,7 @@
 //! # Usage example
 //!
 //! ```
-//! use sfml::audio::listener;
+//! use sfml_audio::listener;
 //!
 //! // Move the listener to the position (1, 0, -5)
 //! listener::set_position3f(1., 0., -5.);
@@ -47,9 +47,9 @@
 //! listener::set_global_volume(50.);
 //! ```
 
-use system::Vector3f;
+use sfml::system::Vector3f;
 use csfml_audio_sys as ffi;
-use system::raw_conv::{Raw, FromRaw};
+use sfml::system::raw_conv::{Raw, FromRaw};
 use csfml_system_sys::sfVector3f;
 
 /// Change the global volume of all the sounds and musics

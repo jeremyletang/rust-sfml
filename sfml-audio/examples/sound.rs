@@ -1,6 +1,7 @@
 extern crate sfml;
+extern crate sfml_audio;
 
-use sfml::audio::{Music, Sound, SoundBuffer, SoundStatus};
+use sfml_audio::{Music, Sound, SoundBuffer, SoundStatus};
 use sfml::system::{Time, sleep};
 use std::io::Write;
 

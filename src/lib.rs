@@ -95,7 +95,6 @@ extern crate bitflags;
 extern crate csfml_system_sys;
 extern crate csfml_window_sys;
 extern crate csfml_graphics_sys;
-extern crate csfml_audio_sys;
 
 mod inputstream;
 mod ext {
@@ -105,5 +104,4 @@ mod unicode_conv;
 
 pub mod system;
 pub mod window;
-pub mod audio;
 pub mod graphics;

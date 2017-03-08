@@ -1,6 +1,7 @@
 extern crate sfml;
+extern crate sfml_audio;
 
-use sfml::audio::{SoundStatus, SoundStream, SoundStreamPlayer};
+use sfml_audio::{SoundStatus, SoundStream, SoundStreamPlayer};
 use sfml::system::Time;
 
 // Melody by ryg - https://youtu.be/tCRPUv8V22o?t=176

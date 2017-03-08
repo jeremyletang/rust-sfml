@@ -23,14 +23,14 @@
 
 use std::mem;
 
-use audio::{SoundStatus, SoundBufferRef, SoundSource};
-use system::Time;
-use system::Vector3f;
-use system::raw_conv::{Raw, FromRaw};
+use {SoundStatus, SoundBufferRef, SoundSource};
+use sfml::system::Time;
+use sfml::system::Vector3f;
+use sfml::system::raw_conv::{Raw, FromRaw};
 
 use csfml_system_sys::{sfBool, sfVector3f};
 use csfml_audio_sys as ffi;
-use system::SfBoolExt;
+use sfml::system::SfBoolExt;
 
 /// Regular sound that can be played in the audio environment.
 ///
@@ -54,7 +54,7 @@ use system::SfBoolExt;
 /// # Usage example
 ///
 /// ```no_run
-/// use sfml::audio::{Sound, SoundBuffer};
+/// use sfml_audio::{Sound, SoundBuffer};
 ///
 /// let buffer = SoundBuffer::from_file("sound.wav").unwrap();
 /// let mut sound = Sound::with_buffer(&buffer);
