@@ -146,7 +146,7 @@ impl<'s> Sound<'s> {
     ///
     /// Return the current playing position
     pub fn get_playing_offset(&self) -> Time {
-        Time::from_raw(unsafe { ffi::sfSound_getPlayingOffset(self.sound) })
+        unsafe { Time::from_raw(ffi::sfSound_getPlayingOffset(self.sound)) }
     }
 
     /// Change the current playing position of a sound

@@ -77,7 +77,7 @@ impl Context {
     /// they are indeed adjusted if the original settings are not directly supported by the system.
     pub fn settings(&self) -> ContextSettings {
         let settings = unsafe { ffi::sfContext_getSettings(self.0) };
-        ContextSettings::from_raw(settings)
+        unsafe { ContextSettings::from_raw(settings) }
     }
 }
 

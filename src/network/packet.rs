@@ -220,7 +220,7 @@ impl Raw for Packet {
 }
 
 impl FromRaw for Packet {
-    fn from_raw(raw: Self::Raw) -> Self {
+    unsafe fn from_raw(raw: Self::Raw) -> Self {
         Packet { packet: raw }
     }
 }

@@ -85,7 +85,7 @@ impl TextureRef {
         if img.is_null() {
             None
         } else {
-            Some(Image::from_raw(img))
+            Some(unsafe { Image::from_raw(img) })
         }
     }
     /// Tell whether the texture source is converted from sRGB or not.
@@ -364,7 +364,7 @@ impl Raw for Texture {
 }
 
 impl FromRaw for Texture {
-    fn from_raw(raw: Self::Raw) -> Self {
+    unsafe fn from_raw(raw: Self::Raw) -> Self {
         Texture { texture: raw }
     }
 }

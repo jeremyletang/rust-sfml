@@ -35,5 +35,5 @@ pub trait RawMut {
 
 /// A type that can be created from its raw representation.
 pub trait FromRaw: Raw {
-    fn from_raw(raw: Self::Raw) -> Self;
+    unsafe fn from_raw(raw: Self::Raw) -> Self;
 }

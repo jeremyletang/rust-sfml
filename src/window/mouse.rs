@@ -92,7 +92,7 @@ impl Raw for Wheel {
 }
 
 impl FromRaw for Wheel {
-    fn from_raw(raw: Self::Raw) -> Self {
+    unsafe fn from_raw(raw: Self::Raw) -> Self {
         match raw {
             ffi::sfMouseWheel::sfMouseVerticalWheel => Wheel::Vertical,
             ffi::sfMouseWheel::sfMouseHorizontalWheel => Wheel::Horizontal,
@@ -109,8 +109,8 @@ impl Raw for Button {
 }
 
 impl FromRaw for Button {
-    fn from_raw(raw: Self::Raw) -> Self {
-        unsafe { ::std::mem::transmute(raw) }
+    unsafe fn from_raw(raw: Self::Raw) -> Self {
+        ::std::mem::transmute(raw)
     }
 }
 
@@ -129,7 +129,7 @@ impl Button {
 ///
 /// This function returns the global position of the mouse cursor on the desktop.
 pub fn desktop_position() -> Vector2i {
-    FromRaw::from_raw(unsafe { ffi::sfMouse_getPosition(::std::ptr::null()) })
+    unsafe { FromRaw::from_raw(ffi::sfMouse_getPosition(::std::ptr::null())) }
 }
 
 /// Set the current position of the mouse in desktop coordinates.

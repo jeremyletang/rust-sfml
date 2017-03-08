@@ -163,7 +163,7 @@ impl Music {
     ///
     /// Return Music duration
     pub fn get_duration(&self) -> Time {
-        Time::from_raw(unsafe { ffi::sfMusic_getDuration(self.music) })
+        unsafe { Time::from_raw(ffi::sfMusic_getDuration(self.music)) }
     }
 
     /// Start or resume playing a music
@@ -224,7 +224,7 @@ impl Music {
     ///
     /// Return the current playing position
     pub fn get_playing_offset(&self) -> Time {
-        Time::from_raw(unsafe { ffi::sfMusic_getPlayingOffset(self.music) })
+        unsafe { Time::from_raw(ffi::sfMusic_getPlayingOffset(self.music)) }
     }
 
     /// Change the current playing position of a music

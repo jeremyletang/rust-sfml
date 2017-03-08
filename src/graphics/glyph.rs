@@ -32,7 +32,7 @@ impl Raw for Glyph {
 }
 
 impl FromRaw for Glyph {
-    fn from_raw(raw: Self::Raw) -> Self {
-        unsafe { ::std::mem::transmute(raw) }
+    unsafe fn from_raw(raw: Self::Raw) -> Self {
+        ::std::mem::transmute(raw)
     }
 }

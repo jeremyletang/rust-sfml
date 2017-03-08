@@ -145,7 +145,7 @@ impl VideoMode {
         let mut ret_tab = Vec::with_capacity(size as usize);
 
         for sf_video_mode in tab_slice.iter() {
-            ret_tab.push(VideoMode::from_raw(*sf_video_mode));
+            ret_tab.push(unsafe { VideoMode::from_raw(*sf_video_mode) });
         }
 
         ret_tab
@@ -164,7 +164,7 @@ impl Raw for VideoMode {
 }
 
 impl FromRaw for VideoMode {
-    fn from_raw(raw: Self::Raw) -> Self {
+    unsafe fn from_raw(raw: Self::Raw) -> Self {
         VideoMode {
             width: raw.width as u32,
             height: raw.height as u32,

@@ -291,7 +291,7 @@ impl Raw for View {
 }
 
 impl FromRaw for View {
-    fn from_raw(raw: Self::Raw) -> Self {
+    unsafe fn from_raw(raw: Self::Raw) -> Self {
         View { view: raw }
     }
 }

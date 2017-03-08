@@ -153,7 +153,7 @@ impl Raw for IpAddress {
 }
 
 impl FromRaw for IpAddress {
-    fn from_raw(raw: Self::Raw) -> Self {
+    unsafe fn from_raw(raw: Self::Raw) -> Self {
         IpAddress { ip: raw }
     }
 }

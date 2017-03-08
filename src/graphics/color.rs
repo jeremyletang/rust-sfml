@@ -56,8 +56,8 @@ impl Raw for Color {
 }
 
 impl FromRaw for Color {
-    fn from_raw(src: Self::Raw) -> Self {
-        unsafe { ::std::mem::transmute(src) }
+    unsafe fn from_raw(src: Self::Raw) -> Self {
+        ::std::mem::transmute(src)
     }
 }
 
@@ -164,7 +164,7 @@ impl Add for Color {
 
     /// Calculate the component-wise saturated addition of two colors.
     fn add(self, other: Color) -> Color {
-        Color::from_raw(unsafe { ffi::sfColor_add(self.raw(), other.raw()) })
+        unsafe { Color::from_raw(ffi::sfColor_add(self.raw(), other.raw())) }
     }
 }
 
@@ -179,7 +179,7 @@ impl Sub for Color {
 
     /// Component-wise subtraction of two colors. Components below 0 are clamped to 0.
     fn sub(self, other: Self) -> Self {
-        Self::from_raw(unsafe { ffi::sfColor_subtract(self.raw(), other.raw()) })
+        unsafe { Self::from_raw(ffi::sfColor_subtract(self.raw(), other.raw())) }
     }
 }
 
@@ -196,7 +196,7 @@ impl Mul for Color {
     ///
     /// For each `X` in `rgba`, `result.X = a.X * b.X / 255`.
     fn mul(self, other: Color) -> Color {
-        Color::from_raw(unsafe { ffi::sfColor_modulate(self.raw(), other.raw()) })
+        unsafe { Color::from_raw(ffi::sfColor_modulate(self.raw(), other.raw())) }
     }
 }
 

@@ -54,7 +54,7 @@ pub fn get_wrapped_event(event: &mut sfEvent) -> Option<Event> {
         sfEvtMouseWheelScrolled => {
             let e = unsafe { event.mouseWheelScroll.as_ref() };
             MouseWheelScrolled {
-                wheel: FromRaw::from_raw(e.wheel),
+                wheel: unsafe { FromRaw::from_raw(e.wheel) },
                 delta: e.delta,
                 x: e.x,
                 y: e.y,
@@ -64,7 +64,7 @@ pub fn get_wrapped_event(event: &mut sfEvent) -> Option<Event> {
             let e = unsafe { event.mouseButton.as_ref() };
 
             MouseButtonPressed {
-                button: FromRaw::from_raw(e.button),
+                button: unsafe { FromRaw::from_raw(e.button) },
                 x: e.x,
                 y: e.y,
             }
@@ -73,7 +73,7 @@ pub fn get_wrapped_event(event: &mut sfEvent) -> Option<Event> {
             let e = unsafe { event.mouseButton.as_ref() };
 
             MouseButtonReleased {
-                button: FromRaw::from_raw(e.button),
+                button: unsafe { FromRaw::from_raw(e.button) },
                 x: e.x,
                 y: e.y,
             }
@@ -105,7 +105,7 @@ pub fn get_wrapped_event(event: &mut sfEvent) -> Option<Event> {
 
             JoystickMoved {
                 joystickid: e.joystickId,
-                axis: FromRaw::from_raw(e.axis),
+                axis: unsafe { FromRaw::from_raw(e.axis) },
                 position: e.position,
             }
         }
@@ -150,7 +150,7 @@ pub fn get_wrapped_event(event: &mut sfEvent) -> Option<Event> {
             let e = unsafe { event.sensor.as_ref() };
 
             SensorChanged {
-                type_: FromRaw::from_raw(e.sensorType),
+                type_: unsafe { FromRaw::from_raw(e.sensorType) },
                 x: e.x,
                 y: e.y,
                 z: e.z,

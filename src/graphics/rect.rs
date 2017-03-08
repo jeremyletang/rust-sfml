@@ -136,7 +136,7 @@ impl Raw for IntRect {
 }
 
 impl FromRaw for IntRect {
-    fn from_raw(raw: Self::Raw) -> Self {
+    unsafe fn from_raw(raw: Self::Raw) -> Self {
         IntRect {
             top: raw.top,
             left: raw.left,
@@ -160,7 +160,7 @@ impl Raw for FloatRect {
 }
 
 impl FromRaw for FloatRect {
-    fn from_raw(raw: Self::Raw) -> Self {
+    unsafe fn from_raw(raw: Self::Raw) -> Self {
         FloatRect {
             top: raw.top,
             left: raw.left,

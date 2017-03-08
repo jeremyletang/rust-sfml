@@ -195,7 +195,7 @@ impl<'a, S: SoundStream> SoundSource for SoundStreamPlayer<'a, S> {
         unsafe { sfSoundStream_getVolume(self.sf_sound_stream) }
     }
     fn get_position(&self) -> Vector3f {
-        Vector3f::from_raw(unsafe { sfSoundStream_getPosition(self.sf_sound_stream) })
+        unsafe { Vector3f::from_raw(sfSoundStream_getPosition(self.sf_sound_stream)) }
     }
     fn is_relative_to_listener(&self) -> bool {
         unsafe { sfSoundStream_isRelativeToListener(self.sf_sound_stream).to_bool() }

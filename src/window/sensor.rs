@@ -89,7 +89,7 @@ impl Raw for Type {
 }
 
 impl FromRaw for Type {
-    fn from_raw(raw: Self::Raw) -> Self {
-        unsafe { ::std::mem::transmute(raw) }
+    unsafe fn from_raw(raw: Self::Raw) -> Self {
+        ::std::mem::transmute(raw)
     }
 }

@@ -218,7 +218,7 @@ impl Window {
     ///
     /// Return a structure containing the OpenGL context settings
     pub fn get_settings(&self) -> ContextSettings {
-        ContextSettings::from_raw(unsafe { ffi::sfWindow_getSettings(self.window) })
+        unsafe { ContextSettings::from_raw(ffi::sfWindow_getSettings(self.window)) }
     }
 
     /// Change the title of a window

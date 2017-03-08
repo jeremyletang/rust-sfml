@@ -208,7 +208,7 @@ impl Raw for Vector2i {
 }
 
 impl FromRaw for Vector2i {
-    fn from_raw(raw: Self::Raw) -> Self {
+    unsafe fn from_raw(raw: Self::Raw) -> Self {
         Vector2i {
             x: raw.x,
             y: raw.y,
@@ -228,7 +228,7 @@ impl Raw for Vector2u {
 }
 
 impl FromRaw for Vector2u {
-    fn from_raw(raw: Self::Raw) -> Self {
+    unsafe fn from_raw(raw: Self::Raw) -> Self {
         Vector2u {
             x: raw.x,
             y: raw.y,
@@ -248,7 +248,7 @@ impl Raw for Vector2f {
 }
 
 impl FromRaw for Vector2f {
-    fn from_raw(raw: Self::Raw) -> Self {
+    unsafe fn from_raw(raw: Self::Raw) -> Self {
         Vector2f {
             x: raw.x,
             y: raw.y,

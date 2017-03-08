@@ -187,12 +187,12 @@ impl<'s> Text<'s> {
 
     /// Returns the fill color of the text.
     pub fn fill_color(&self) -> Color {
-        FromRaw::from_raw(unsafe { ffi::sfText_getFillColor(self.text) })
+        unsafe { FromRaw::from_raw(ffi::sfText_getFillColor(self.text)) }
     }
 
     /// Returns the outline color of the text.
     pub fn outline_color(&self) -> Color {
-        FromRaw::from_raw(unsafe { ffi::sfText_getOutlineColor(self.text) })
+        unsafe { FromRaw::from_raw(ffi::sfText_getOutlineColor(self.text)) }
     }
 
     /// Returns the outline thickness of the text, in pixels.

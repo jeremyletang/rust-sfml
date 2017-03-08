@@ -293,7 +293,7 @@ impl Raw for Image {
 }
 
 impl FromRaw for Image {
-    fn from_raw(raw: Self::Raw) -> Self {
+    unsafe fn from_raw(raw: Self::Raw) -> Self {
         Image { image: raw }
     }
 }

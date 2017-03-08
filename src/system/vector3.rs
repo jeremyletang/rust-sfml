@@ -223,7 +223,7 @@ impl Raw for Vector3f {
 }
 
 impl FromRaw for Vector3f {
-    fn from_raw(raw: Self::Raw) -> Self {
+    unsafe fn from_raw(raw: Self::Raw) -> Self {
         Vector3f {
             x: raw.x,
             y: raw.y,
