@@ -90,15 +90,6 @@
 
 #![warn(missing_docs)]
 
-#[macro_use]
-extern crate bitflags;
 extern crate csfml_system_sys;
-extern crate csfml_window_sys;
-
-mod ext {
-    pub mod event;
-}
-mod unicode_conv;
 
 pub mod system;
-pub mod window;

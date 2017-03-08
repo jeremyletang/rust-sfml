@@ -22,9 +22,9 @@
 //
 
 use csfml_window_sys as ffi;
-use system::SfBoolExt;
-use window::ContextSettings;
-use system::raw_conv::FromRaw;
+use sfml::system::SfBoolExt;
+use ContextSettings;
+use sfml::system::raw_conv::FromRaw;
 
 /// Class holding a valid drawing context.
 ///
@@ -42,7 +42,7 @@ use system::raw_conv::FromRaw;
 ///
 /// # Usage example
 /// ```
-/// # use sfml::window::Context;
+/// # use sfml_window::Context;
 /// # use std::thread;
 /// thread::spawn(|| {
 ///     let context = Context::new();
@@ -83,7 +83,7 @@ impl Context {
 
 #[test]
 fn test_settings() {
-    use window::{VideoMode, Window, Context};
+    use {VideoMode, Window, Context};
     use std::thread;
     let video_mode = VideoMode::new(32, 32, 32);
 

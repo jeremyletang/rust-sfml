@@ -1,9 +1,10 @@
 extern crate sfml;
+extern crate sfml_window;
 extern crate sfml_graphics;
 
 use sfml_graphics::{Color, LineStrip, RenderTarget, RenderWindow, Vertex, VertexArray};
 use sfml::system::Vector2f;
-use sfml::window::{VideoMode, Event, style};
+use sfml_window::{VideoMode, Event, style};
 
 fn main() {
     let mut window = RenderWindow::new(VideoMode::new(800, 600, 32),

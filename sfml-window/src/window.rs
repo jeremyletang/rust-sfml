@@ -23,14 +23,14 @@
 
 use std::marker::PhantomData;
 
-use system::raw_conv::{Raw, FromRaw};
-use window::{Event, VideoMode, ContextSettings, Style};
-use system::{Vector2i, Vector2u};
+use sfml::system::raw_conv::{Raw, FromRaw};
+use {Event, VideoMode, ContextSettings, Style};
+use sfml::system::{Vector2i, Vector2u};
 use csfml_system_sys::sfBool;
-use system::SfBoolExt;
+use sfml::system::SfBoolExt;
 
 use csfml_window_sys as ffi;
-use ext;
+use event_ext;
 
 /// Window that serves as a target for OpenGL rendering.
 ///
@@ -50,7 +50,7 @@ use ext;
 /// # Usage example
 ///
 /// ```no_run
-/// use sfml::window::{Window, VideoMode, Event, style};
+/// use sfml_window::{Window, VideoMode, Event, style};
 /// // Create a new window
 /// let mut window = Window::new(VideoMode::new(800, 600, 32),
 ///                              "SFML window",
@@ -149,7 +149,7 @@ impl Window {
         let mut event = unsafe { ::std::mem::zeroed() };
         let have_event = unsafe { ffi::sfWindow_pollEvent(self.window, &mut event).to_bool() };
         if have_event {
-            ext::event::get_wrapped_event(&mut event)
+            event_ext::get_wrapped_event(&mut event)
         } else {
             None
         }
@@ -170,7 +170,7 @@ impl Window {
         let mut event = unsafe { ::std::mem::zeroed() };
         let have_event = unsafe { ffi::sfWindow_waitEvent(self.window, &mut event).to_bool() };
         if have_event {
-            ext::event::get_wrapped_event(&mut event)
+            event_ext::get_wrapped_event(&mut event)
         } else {
             None
         }
@@ -419,7 +419,7 @@ impl<'a> Iterator for Events<'a> {
     fn next(&mut self) -> Option<Event> {
         let mut event = unsafe { ::std::mem::zeroed() };
         if unsafe { ffi::sfWindow_pollEvent(self.window, &mut event) }.to_bool() {
-            ext::event::get_wrapped_event(&mut event)
+            event_ext::get_wrapped_event(&mut event)
         } else {
             None
         }

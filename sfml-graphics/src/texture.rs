@@ -34,7 +34,7 @@ use sfml::system::raw_conv::{Raw, FromRaw};
 use {RenderWindow, Image, IntRect};
 use sfml::system::Vector2u;
 use inputstream::InputStream;
-use sfml::window::Window;
+use sfml_window::Window;
 
 use csfml_system_sys::sfBool;
 use csfml_graphics_sys as ffi;

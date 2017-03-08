@@ -1,8 +1,9 @@
 extern crate sfml;
+extern crate sfml_window;
 extern crate sfml_graphics;
 
 use sfml_graphics::{Color, CustomShape, RenderTarget, RenderWindow, ShapeImpl};
-use sfml::window::{Key, VideoMode, Event, style};
+use sfml_window::{Key, VideoMode, Event, style};
 use sfml::system::Vector2f;
 
 #[derive(Clone, Copy)]

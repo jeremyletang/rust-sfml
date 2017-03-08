@@ -49,7 +49,7 @@
 //! # Usage example
 //!
 //! ```
-//! use sfml::window::joystick;
+//! use sfml_window::joystick;
 //!
 //! // If joystick #0 is connected
 //! if joystick::is_connected(0) {
@@ -66,8 +66,8 @@
 //!
 
 use csfml_window_sys as ffi;
-use system::SfBoolExt;
-use system::raw_conv::{Raw, FromRaw};
+use sfml::system::SfBoolExt;
+use sfml::system::raw_conv::{Raw, FromRaw};
 
 /// Maximum number of supported joysticks.
 pub const COUNT: u32 = 8;

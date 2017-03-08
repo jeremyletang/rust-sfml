@@ -21,84 +21,46 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-//! 2D graphics module: sprites, text, shapes..
+//! Provides OpenGL-based windows, and abstractions for events and input handling.
 
 extern crate sfml;
-extern crate sfml_window;
 extern crate csfml_system_sys;
 extern crate csfml_window_sys;
-extern crate csfml_graphics_sys;
 #[macro_use]
 extern crate bitflags;
 
-pub use render_target::RenderTarget;
-pub use render_states::RenderStates;
-pub use render_window::{RenderWindow, Events};
-pub use rect::{Rect, FloatRect, IntRect};
-pub use texture::{Texture, TextureRef};
-pub use blend_mode::BlendMode;
-pub use transform::Transform;
-pub use text::Text;
-pub use shader::Shader;
-pub use color::Color;
-pub use font::Font;
-pub use view::{View, ViewRef};
-pub use image::Image;
-pub use sprite::Sprite;
-pub use circle_shape::CircleShape;
-pub use rectangle_shape::RectangleShape;
-pub use convex_shape::{ConvexShape, ConvexShapePoints};
-pub use primitive_type::*;
-pub use vertex::Vertex;
-pub use glyph::Glyph;
-pub use render_texture::RenderTexture;
-pub use custom_shape::CustomShape;
-pub use vertex_array::{VertexArray, Vertices};
-pub use text_style::TextStyle;
-pub use drawable::Drawable;
-pub use shape::{Shape, ShapeImpl};
-pub use transformable::Transformable;
+pub use window::Window;
+pub use video_mode::VideoMode;
+pub use context::Context;
+pub use context_settings::{ContextSettings, CONTEXT_DEFAULT, CONTEXT_CORE, CONTEXT_DEBUG};
+pub use style::Style;
+pub use keyboard::{Key, set_virtual_keyboard_visible};
+pub use event::Event;
 
-mod drawable;
-mod shape;
-mod transformable;
-mod render_target;
-mod render_states;
-mod render_window;
-mod texture;
-pub mod blend_mode;
-mod transform;
-mod text;
-pub mod text_style;
-mod shader;
-mod color;
-pub mod font;
-mod view;
-mod image;
-mod sprite;
-mod circle_shape;
-mod rectangle_shape;
-mod convex_shape;
-mod primitive_type;
-mod vertex;
-mod vertex_array;
-mod render_texture;
-mod custom_shape;
-mod rect;
-mod glyph;
-#[path="../../src/inputstream.rs"]
-mod inputstream;
+mod window;
+mod video_mode;
+mod context;
+mod context_settings;
+pub mod joystick;
+mod keyboard;
+pub mod mouse;
+mod event;
+pub mod style;
+pub mod sensor;
+pub mod touch;
+
 #[path="../../src/unicode_conv.rs"]
 mod unicode_conv;
+
 mod event_ext {
     use csfml_window_sys::*;
-    use sfml_window::Event;
+    use Event;
     use sfml::system::SfBoolExt;
     use sfml::system::raw_conv::FromRaw;
 
     pub fn get_wrapped_event(event: &mut sfEvent) -> Option<Event> {
         use csfml_window_sys::sfEventType::*;
-        use sfml_window::Event::*;
+        use Event::*;
 
         let type_ = unsafe { *event.type_.as_ref() };
 

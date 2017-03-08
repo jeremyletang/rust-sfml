@@ -1,9 +1,10 @@
 extern crate sfml;
+extern crate sfml_window;
 extern crate sfml_graphics;
 
 use sfml_graphics::{CircleShape, Color, ConvexShape, Font, RenderTarget, RenderWindow, Sprite, Text,
                     Texture, Transformable};
-use sfml::window::{Key, VideoMode, Event, style};
+use sfml_window::{Key, VideoMode, Event, style};
 use sfml::system::Vector2f;
 
 fn main() {

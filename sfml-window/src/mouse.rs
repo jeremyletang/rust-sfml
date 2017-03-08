@@ -35,7 +35,7 @@
 //! # Usage example
 //!
 //! ```ignore
-//! use sfml::window::mouse;
+//! use sfml_window::mouse;
 //!
 //! if mouse::Button::Left.is_pressed() {
 //!     // left click
@@ -49,9 +49,9 @@
 //! ```
 
 use csfml_window_sys as ffi;
-use system::SfBoolExt;
-use system::raw_conv::{Raw, FromRaw};
-use system::Vector2i;
+use sfml::system::SfBoolExt;
+use sfml::system::raw_conv::{Raw, FromRaw};
+use sfml::system::Vector2i;
 
 /// Mouse buttons.
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]

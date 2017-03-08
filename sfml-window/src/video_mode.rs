@@ -23,10 +23,10 @@
 
 use std::vec::Vec;
 
-use system::raw_conv::{Raw, FromRaw};
+use sfml::system::raw_conv::{Raw, FromRaw};
 
 use csfml_window_sys as ffi;
-use system::SfBoolExt;
+use sfml::system::SfBoolExt;
 
 /// `VideoMode` defines a video mode (width, height, bpp)
 ///
@@ -51,7 +51,7 @@ use system::SfBoolExt;
 /// # Usage example
 ///
 /// ```
-/// use sfml::window::{VideoMode, Window, style};
+/// use sfml_window::{VideoMode, Window, style};
 ///
 /// // Display the list of all the video modes available for fullscreen
 /// let modes = VideoMode::get_fullscreen_modes();

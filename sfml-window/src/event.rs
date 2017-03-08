@@ -21,9 +21,9 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-use window::keyboard::Key;
-use window::mouse::{Button, Wheel};
-use window::joystick::Axis;
+use keyboard::Key;
+use mouse::{Button, Wheel};
+use joystick::Axis;
 
 /// Defines a system event and its parameters.
 ///
@@ -38,9 +38,9 @@ use window::joystick::Axis;
 ///
 /// # Usage example
 ///
-/// ```
+/// ```ignore
 /// # use sfml::graphics::RenderWindow;
-/// # use sfml::window::{Event, VideoMode, style, Key};
+/// # use sfml_window::{Event, VideoMode, style, Key};
 /// # let mut window = RenderWindow::new(VideoMode::new(32, 32, 32),
 /// #                                    "test",
 /// #                                    style::CLOSE,
@@ -204,7 +204,7 @@ pub enum Event {
     /// A sensor value changed
     SensorChanged {
         /// Type of the sensor.
-        type_: ::window::sensor::Type,
+        type_: ::sensor::Type,
         /// Current value of the sensor on X axis.
         x: f32,
         /// 	Current value of the sensor on Y axis.

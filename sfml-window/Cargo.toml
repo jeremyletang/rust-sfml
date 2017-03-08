@@ -1,5 +1,5 @@
 [package]
-name = "sfml-graphics"
+name = "sfml-window"
 version = "0.1.0"
 authors = ["Mika Attila <radiantstatue@gmail.com>"]
 
@@ -9,20 +9,8 @@ bitflags = "0.5"
 [dependencies.sfml]
 path = ".."
 
-[dependencies.sfml-window]
-path = "../sfml-window"
-
 [dependencies.csfml-system-sys]
 path = "../csfml-system-sys"
 
 [dependencies.csfml-window-sys]
 path = "../csfml-window-sys"
-
-[dependencies.csfml-graphics-sys]
-path = "../csfml-graphics-sys"
-
-[dev-dependencies]
-rand = "0.3"
-
-[dev-dependencies.sfml-audio]
-path = "../sfml-audio"

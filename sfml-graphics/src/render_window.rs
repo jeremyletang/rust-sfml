@@ -29,7 +29,7 @@
 
 
 use sfml::system::raw_conv::{Raw, RawMut, FromRaw};
-use sfml::window::{ContextSettings, VideoMode, Event, Style};
+use sfml_window::{ContextSettings, VideoMode, Event, Style};
 use sfml::system::{Vector2f, Vector2i, Vector2u};
 use {Drawable, Color, CircleShape, RectangleShape, Text, Sprite, VertexArray, RenderStates, View,
      ViewRef, IntRect, RenderTarget, Vertex, PrimitiveType, ConvexShape, CustomShape};

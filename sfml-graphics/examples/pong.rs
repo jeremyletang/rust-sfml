@@ -1,11 +1,12 @@
 extern crate sfml;
+extern crate sfml_window;
 extern crate sfml_graphics;
 extern crate sfml_audio;
 extern crate rand;
 
 use sfml_graphics::{CircleShape, Color, Font, RectangleShape, RenderTarget, RenderWindow, Shape,
                     Text, Transformable};
-use sfml::window::{ContextSettings, Key, VideoMode, Event, style};
+use sfml_window::{ContextSettings, Key, VideoMode, Event, style};
 use sfml::system::{Clock, Time, Vector2f};
 use sfml_audio::{Sound, SoundBuffer, SoundSource};
 use rand::{Rng, thread_rng};

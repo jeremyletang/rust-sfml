@@ -23,8 +23,8 @@
 
 use csfml_window_sys::sfContextSettings;
 use std::os::raw::c_uint;
-use system::raw_conv::{FromRaw, Raw};
-use system::{SfBool, SF_FALSE};
+use sfml::system::raw_conv::{FromRaw, Raw};
+use sfml::system::{SfBool, SF_FALSE};
 
 /// Non-debug, compatibility context (this and the core attribute are mutually exclusive).
 pub const CONTEXT_DEFAULT: u32 = 0;
@@ -95,8 +95,8 @@ pub struct ContextSettings {
 impl Default for ContextSettings {
     /// Creates a `ContextSettings` with the following values:
     ///
-    /// ```
-    /// # use sfml::window::{ContextSettings, CONTEXT_DEFAULT};
+    /// ```ignore
+    /// # use sfml_window::{ContextSettings, CONTEXT_DEFAULT};
     /// # use sfml::system::SF_FALSE;
     /// let values = ContextSettings {
     ///     depth_bits: 0,

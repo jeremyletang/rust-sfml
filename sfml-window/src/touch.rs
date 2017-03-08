@@ -21,7 +21,7 @@
 //!
 //! # Usage example
 //! ```ignore
-//! use sfml::window::touch;
+//! use sfml_window::touch;
 //!
 //! if touch::is_down(0) {
 //!     // touch 0 is down
@@ -34,10 +34,10 @@
 //! let _relative_pos = window.touch_position(1);
 //! ```
 
-use system::Vector2i;
+use sfml::system::Vector2i;
 use csfml_window_sys::*;
-use system::SfBoolExt;
-use system::raw_conv::FromRaw;
+use sfml::system::SfBoolExt;
+use sfml::system::raw_conv::FromRaw;
 
 /// Check if a touch event is currently down.
 pub fn is_down(finger: u32) -> bool {

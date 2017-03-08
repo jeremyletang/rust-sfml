@@ -22,7 +22,7 @@
 //
 
 use csfml_window_sys as ffi;
-use system::SfBoolExt;
+use sfml::system::SfBoolExt;
 
 /// Key codes known to SFML.
 #[repr(i32)]

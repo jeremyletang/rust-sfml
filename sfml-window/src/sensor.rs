@@ -24,7 +24,7 @@
 //! # Usage example
 //!
 //! ```
-//! use sfml::window::sensor;
+//! use sfml_window::sensor;
 //!
 //! if sensor::is_available(sensor::Type::Gravity) {
 //!     // enable the gravity sensor
@@ -34,10 +34,10 @@
 //! }
 //! ```
 
-use system::Vector3f;
+use sfml::system::Vector3f;
 use csfml_window_sys::*;
-use system::SfBoolExt;
-use system::raw_conv::{Raw, FromRaw};
+use sfml::system::SfBoolExt;
+use sfml::system::raw_conv::{Raw, FromRaw};
 
 /// Get the current sensor value.
 pub fn get_value(sensor: Type) -> Vector3f {
