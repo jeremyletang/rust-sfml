@@ -27,12 +27,12 @@ use std::mem;
 use std::ffi::{CString, CStr};
 use std::str;
 
-use sfml::system::raw_conv::Raw;
+use sfml_system::raw_conv::Raw;
 use IpAddress;
-use sfml::system::Time;
+use sfml_system::Time;
 
 use csfml_network_sys as ffi;
-use sfml::system::SfBoolExt;
+use sfml_system::SfBoolExt;
 
 /// The differents FTP modes availables.
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]

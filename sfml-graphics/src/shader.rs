@@ -31,16 +31,16 @@
 use std::ptr;
 use std::ffi::CString;
 
-use sfml::system::raw_conv::Raw;
+use sfml_system::raw_conv::Raw;
 use {Texture, Color};
-use sfml::system::Vector2f;
-use sfml::system::Vector3f;
+use sfml_system::Vector2f;
+use sfml_system::Vector3f;
 
 use csfml_graphics_sys as ffi;
 
 use std::io::{Read, Seek};
 use inputstream::InputStream;
-use sfml::system::SfBoolExt;
+use sfml_system::SfBoolExt;
 
 /// Shader class (vertex and fragment)
 ///

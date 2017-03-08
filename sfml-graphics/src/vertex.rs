@@ -30,10 +30,10 @@
 //! in SFML, vertices also have a color and a pair of texture coordinates.
 
 use Color;
-use sfml::system::Vector2f;
+use sfml_system::Vector2f;
 use csfml_graphics_sys as ffi;
 use csfml_system_sys::sfVector2f;
-use sfml::system::raw_conv::Raw;
+use sfml_system::raw_conv::Raw;
 
 /// Define a point with color and texture coordinates
 ///

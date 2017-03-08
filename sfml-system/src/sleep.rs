@@ -21,41 +21,10 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-//! Base module of SFML, defining various utilities.
-//!
-//! It provides vector types, timing types.
-//!
+use raw_conv::Raw;
+use Time;
 
-pub use self::vector2::{Vector2, Vector2u, Vector2i, Vector2f};
-pub use self::vector3::{Vector3, Vector3i, Vector3f};
-pub use self::sleep::sleep;
-pub use self::time::{Time, ZERO as TIME_ZERO};
-pub use self::clock::Clock;
-pub use self::sf_bool::{SfBool, TRUE as SF_TRUE, FALSE as SF_FALSE};
-use csfml_system_sys::{self, sfBool, sfTrue, sfFalse};
-
-mod time;
-mod clock;
-mod sleep;
-mod vector2;
-mod vector3;
-mod sf_bool;
-pub mod raw_conv;
-
-#[doc(hidden)]
-pub trait SfBoolExt {
-    fn to_bool(self) -> bool;
-    fn from_bool(src: bool) -> Self;
-}
-
-impl SfBoolExt for sfBool {
-    fn to_bool(self) -> bool {
-        match self {
-            csfml_system_sys::sfFalse => false,
-            _ => true,
-        }
-    }
-    fn from_bool(src: bool) -> Self {
-        if src { sfTrue } else { sfFalse }
-    }
+/// Make the current thread sleep for a given duration.
+pub fn sleep(time: Time) {
+    unsafe { ::csfml_system_sys::sfSleep(time.raw()) }
 }

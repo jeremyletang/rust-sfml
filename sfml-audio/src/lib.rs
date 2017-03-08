@@ -24,7 +24,7 @@
 //! Sounds, streaming (musics or custom sources), recording, spatialization
 //!
 
-extern crate sfml;
+extern crate sfml_system;
 extern crate csfml_system_sys;
 extern crate csfml_audio_sys;
 

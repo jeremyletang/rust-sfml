@@ -22,9 +22,9 @@
 //
 
 use csfml_window_sys as ffi;
-use sfml::system::SfBoolExt;
+use sfml_system::SfBoolExt;
 use ContextSettings;
-use sfml::system::raw_conv::FromRaw;
+use sfml_system::raw_conv::FromRaw;
 
 /// Class holding a valid drawing context.
 ///

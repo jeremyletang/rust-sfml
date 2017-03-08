@@ -23,11 +23,11 @@
 
 use std::marker::PhantomData;
 
-use sfml::system::raw_conv::{Raw, FromRaw};
+use sfml_system::raw_conv::{Raw, FromRaw};
 use {Event, VideoMode, ContextSettings, Style};
-use sfml::system::{Vector2i, Vector2u};
+use sfml_system::{Vector2i, Vector2u};
 use csfml_system_sys::sfBool;
-use sfml::system::SfBoolExt;
+use sfml_system::SfBoolExt;
 
 use csfml_window_sys as ffi;
 use event_ext;

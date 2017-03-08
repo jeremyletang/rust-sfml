@@ -23,15 +23,15 @@
 
 //! Target for off-screen 2D rendering into a texture
 
-use sfml::system::raw_conv::{Raw, RawMut, FromRaw};
-use sfml::system::{Vector2f, Vector2i, Vector2u};
+use sfml_system::raw_conv::{Raw, RawMut, FromRaw};
+use sfml_system::{Vector2f, Vector2i, Vector2u};
 use {Drawable, View, ViewRef, Color, IntRect, TextureRef, CircleShape, RectangleShape, Text,
      RenderStates, Sprite, ConvexShape, VertexArray, RenderTarget, Vertex, PrimitiveType,
      CustomShape};
 
 use csfml_system_sys::sfBool;
 use csfml_graphics_sys as ffi;
-use sfml::system::SfBoolExt;
+use sfml_system::SfBoolExt;
 
 /// Target for off-screen 2D rendering into a texture
 pub struct RenderTexture {

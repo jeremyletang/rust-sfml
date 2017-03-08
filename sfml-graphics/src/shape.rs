@@ -24,7 +24,7 @@
 //! base shape trait
 
 use {Drawable, Transformable, Texture, IntRect, FloatRect, Color};
-use sfml::system::Vector2f;
+use sfml_system::Vector2f;
 
 /// Implement this shape to create a new `Shape`
 pub trait ShapeImpl {

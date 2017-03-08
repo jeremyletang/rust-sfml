@@ -3,8 +3,8 @@ name = "sfml-network"
 version = "0.1.0"
 authors = ["Mika Attila <radiantstatue@gmail.com>"]
 
-[dependencies.sfml]
-path =".."
+[dependencies.sfml-system]
+path ="../sfml-system"
 
 [dependencies.csfml-network-sys]
 path = "../csfml-network-sys"

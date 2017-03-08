@@ -25,13 +25,13 @@
 
 use std::{ptr, mem};
 
-use sfml::system::raw_conv::{Raw, FromRaw};
+use sfml_system::raw_conv::{Raw, FromRaw};
 use {IpAddress, Packet, SocketStatus};
-use sfml::system::Time;
+use sfml_system::Time;
 
 use csfml_system_sys::sfBool;
 use csfml_network_sys as ffi;
-use sfml::system::SfBoolExt;
+use sfml_system::SfBoolExt;
 
 /// Specialized socket using the TCP protocol
 pub struct TcpSocket {

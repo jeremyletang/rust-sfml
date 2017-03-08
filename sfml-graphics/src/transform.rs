@@ -26,9 +26,9 @@
 //! A Transform specifies how to translate,
 //! rotate, scale, shear, project, whatever things.
 
-use sfml::system::Vector2f;
+use sfml_system::Vector2f;
 use FloatRect;
-use sfml::system::raw_conv::{Raw, FromRaw};
+use sfml_system::raw_conv::{Raw, FromRaw};
 
 use csfml_graphics_sys as ffi;
 

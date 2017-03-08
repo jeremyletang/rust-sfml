@@ -25,11 +25,11 @@
 
 use std::ffi::CString;
 
-use sfml::system::raw_conv::{Raw, FromRaw};
+use sfml_system::raw_conv::{Raw, FromRaw};
 
 use csfml_system_sys::sfBool;
 use csfml_network_sys as ffi;
-use sfml::system::SfBoolExt;
+use sfml_system::SfBoolExt;
 
 /// Utility class to build blocks of data to transfer over the network.
 pub struct Packet {

@@ -27,8 +27,8 @@ use std::mem;
 use std::ffi::{CString, CStr};
 use std::str;
 
-use sfml::system::raw_conv::Raw;
-use sfml::system::Time;
+use sfml_system::raw_conv::Raw;
+use sfml_system::Time;
 
 use csfml_network_sys as ffi;
 

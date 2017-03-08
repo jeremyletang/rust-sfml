@@ -66,8 +66,8 @@
 //!
 
 use csfml_window_sys as ffi;
-use sfml::system::SfBoolExt;
-use sfml::system::raw_conv::{Raw, FromRaw};
+use sfml_system::SfBoolExt;
+use sfml_system::raw_conv::{Raw, FromRaw};
 
 /// Maximum number of supported joysticks.
 pub const COUNT: u32 = 8;

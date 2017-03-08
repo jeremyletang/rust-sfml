@@ -22,7 +22,7 @@
 //
 
 use std::ops::{Add, Div, Mul, Sub, Neg, AddAssign, SubAssign, MulAssign, DivAssign};
-use system::raw_conv::{FromRaw, Raw};
+use raw_conv::{FromRaw, Raw};
 
 /// Utility type for manipulating 2-dimensional vectors.
 ///
@@ -47,7 +47,7 @@ use system::raw_conv::{FromRaw, Raw};
 /// # Usage example
 ///
 /// ```
-/// # use sfml::system::Vector2f;
+/// # use sfml_system::Vector2f;
 /// let mut v1 = Vector2f::new(16.5, 24.0);
 /// v1.x = 18.2;
 /// let y = v1.y;

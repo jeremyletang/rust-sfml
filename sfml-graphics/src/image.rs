@@ -26,8 +26,8 @@
 use std::ffi::CString;
 use std::slice;
 
-use sfml::system::raw_conv::{Raw, FromRaw};
-use sfml::system::Vector2u;
+use sfml_system::raw_conv::{Raw, FromRaw};
+use sfml_system::Vector2u;
 use {Color, IntRect};
 
 use csfml_system_sys::sfBool;
@@ -35,7 +35,7 @@ use csfml_graphics_sys as ffi;
 
 use std::io::{Read, Seek};
 use inputstream::InputStream;
-use sfml::system::SfBoolExt;
+use sfml_system::SfBoolExt;
 
 /// Loading, manipulating and saving images.
 pub struct Image {

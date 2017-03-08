@@ -29,7 +29,7 @@ use std::ops::{Add, Mul, Sub, AddAssign, MulAssign, SubAssign};
 
 use csfml_graphics_sys as ffi;
 
-use sfml::system::raw_conv::{Raw, FromRaw};
+use sfml_system::raw_conv::{Raw, FromRaw};
 
 /// Utility class for manpulating RGBA colors
 ///

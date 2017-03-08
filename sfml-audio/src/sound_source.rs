@@ -23,7 +23,7 @@
 
 //! Base trait for sounds source (music and sounds)
 
-use sfml::system::Vector3f;
+use sfml_system::Vector3f;
 
 /// Base trait defining a sound's properties.
 pub trait SoundSource {

@@ -1,8 +1,8 @@
-extern crate sfml;
+extern crate sfml_system;
 extern crate sfml_audio;
 
 use sfml_audio::{SoundStatus, SoundStream, SoundStreamPlayer};
-use sfml::system::Time;
+use sfml_system::Time;
 
 // Melody by ryg - https://youtu.be/tCRPUv8V22o?t=176
 struct BitMelody {

@@ -23,7 +23,7 @@
 
 //! 2D graphics module: sprites, text, shapes..
 
-extern crate sfml;
+extern crate sfml_system;
 extern crate sfml_window;
 extern crate csfml_system_sys;
 extern crate csfml_window_sys;
@@ -93,8 +93,8 @@ mod unicode_conv;
 mod event_ext {
     use csfml_window_sys::*;
     use sfml_window::Event;
-    use sfml::system::SfBoolExt;
-    use sfml::system::raw_conv::FromRaw;
+    use sfml_system::SfBoolExt;
+    use sfml_system::raw_conv::FromRaw;
 
     pub fn get_wrapped_event(event: &mut sfEvent) -> Option<Event> {
         use csfml_window_sys::sfEventType::*;

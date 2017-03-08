@@ -1,11 +1,11 @@
-extern crate sfml;
+extern crate sfml_system;
 extern crate sfml_window;
 extern crate sfml_graphics;
 
 use sfml_graphics::{CircleShape, Color, ConvexShape, Font, RenderTarget, RenderWindow, Sprite, Text,
                     Texture, Transformable};
 use sfml_window::{Key, VideoMode, Event, style};
-use sfml::system::Vector2f;
+use sfml_system::Vector2f;
 
 fn main() {
     let mut window = RenderWindow::new(VideoMode::new(800, 600, 32),

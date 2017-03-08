@@ -6,8 +6,8 @@ authors = ["Mika Attila <radiantstatue@gmail.com>"]
 [dependencies]
 bitflags = "0.5"
 
-[dependencies.sfml]
-path = ".."
+[dependencies.sfml-system]
+path = "../sfml-system"
 
 [dependencies.csfml-system-sys]
 path = "../csfml-system-sys"

@@ -1,11 +1,11 @@
-extern crate sfml;
+extern crate sfml_system;
 extern crate sfml_window;
 extern crate sfml_graphics;
 
 use sfml_graphics::{CircleShape, Color, Drawable, RectangleShape, RenderStates, RenderTarget,
                     RenderWindow, Shape, Transformable};
 use sfml_window::{Key, VideoMode, Event, style};
-use sfml::system::Vector2f;
+use sfml_system::Vector2f;
 
 /// Our custom drawable type. It looks like a bullet.
 struct Bullet<'s> {

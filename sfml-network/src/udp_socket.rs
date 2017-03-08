@@ -25,12 +25,12 @@
 
 use std::{ptr, mem};
 
-use sfml::system::raw_conv::{Raw, FromRaw};
+use sfml_system::raw_conv::{Raw, FromRaw};
 use {Packet, IpAddress, SocketStatus};
 
 use csfml_system_sys::sfBool;
 use csfml_network_sys as ffi;
-use sfml::system::SfBoolExt;
+use sfml_system::SfBoolExt;
 
 /// Specialized socket using the UDP protocol.
 pub struct UdpSocket {

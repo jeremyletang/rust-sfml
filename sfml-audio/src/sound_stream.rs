@@ -1,8 +1,8 @@
 use csfml_audio_sys::*;
 use csfml_system_sys::*;
-use sfml::system::SfBoolExt;
-use sfml::system::raw_conv::{Raw, FromRaw};
-use sfml::system::{Time, Vector3f};
+use sfml_system::SfBoolExt;
+use sfml_system::raw_conv::{Raw, FromRaw};
+use sfml_system::{Time, Vector3f};
 use std::panic;
 use SoundStatus;
 use std::os::raw::c_void;

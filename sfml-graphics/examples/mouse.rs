@@ -1,10 +1,10 @@
-extern crate sfml;
+extern crate sfml_system;
 extern crate sfml_window;
 extern crate sfml_graphics;
 
 use sfml_graphics::*;
 use sfml_window::*;
-use sfml::system::*;
+use sfml_system::*;
 
 fn main() {
     let mut window = RenderWindow::new(VideoMode::new(800, 600, 32),

@@ -24,7 +24,7 @@
 //! base transformable trait
 
 use Transform;
-use sfml::system::Vector2f;
+use sfml_system::Vector2f;
 
 #[allow(missing_docs)]
 pub trait Transformable {

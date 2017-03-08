@@ -26,7 +26,7 @@
 
 use std::ffi::{CStr, CString};
 
-use sfml::system::raw_conv::{Raw, FromRaw};
+use sfml_system::raw_conv::{Raw, FromRaw};
 use {TextureRef, Glyph};
 
 use csfml_system_sys::sfBool;
@@ -34,7 +34,7 @@ use csfml_graphics_sys as ffi;
 
 use std::io::{Read, Seek};
 use inputstream::InputStream;
-use sfml::system::SfBoolExt;
+use sfml_system::SfBoolExt;
 
 /// Class for loading and manipulating character fonts
 pub struct Font {

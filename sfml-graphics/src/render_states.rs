@@ -25,7 +25,7 @@
 
 use std::ptr;
 
-use sfml::system::raw_conv::{Raw, RawMut};
+use sfml_system::raw_conv::{Raw, RawMut};
 use {BlendMode, blend_mode, Shader, Texture, Transform};
 
 use csfml_graphics_sys as ffi;

@@ -23,7 +23,7 @@
 
 use std::ops::{Add, Sub, Mul, Div, Neg, AddAssign, SubAssign, MulAssign, DivAssign, Rem, RemAssign};
 
-use system::raw_conv::{Raw, FromRaw};
+use raw_conv::{Raw, FromRaw};
 
 use csfml_system_sys::*;
 
@@ -45,7 +45,7 @@ use csfml_system_sys::*;
 ///
 /// # Usage example
 /// ```
-/// # use sfml::system::Time;
+/// # use sfml_system::Time;
 /// let t1 = Time::seconds(0.1);
 /// assert_eq!(t1.as_milliseconds(), 100);
 ///

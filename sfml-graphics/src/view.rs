@@ -27,9 +27,9 @@
 //! rotate or zoom the entire scene without altering
 //! the way that your drawable objects are drawn.
 
-use sfml::system::raw_conv::{Raw, FromRaw};
+use sfml_system::raw_conv::{Raw, FromRaw};
 use FloatRect;
-use sfml::system::Vector2f;
+use sfml_system::Vector2f;
 use std::ops::Deref;
 
 use csfml_graphics_sys as ffi;

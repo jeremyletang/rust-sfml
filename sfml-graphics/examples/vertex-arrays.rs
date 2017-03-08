@@ -1,9 +1,9 @@
-extern crate sfml;
+extern crate sfml_system;
 extern crate sfml_window;
 extern crate sfml_graphics;
 
 use sfml_graphics::{Color, LineStrip, RenderTarget, RenderWindow, Vertex, VertexArray};
-use sfml::system::Vector2f;
+use sfml_system::Vector2f;
 use sfml_window::{VideoMode, Event, style};
 
 fn main() {

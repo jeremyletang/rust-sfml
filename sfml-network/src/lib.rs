@@ -26,7 +26,7 @@
 //! utilities and higher-level network protocols (HTTP, FTP)
 //!
 
-extern crate sfml;
+extern crate sfml_system;
 extern crate csfml_network_sys;
 extern crate csfml_system_sys;
 

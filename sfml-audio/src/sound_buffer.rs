@@ -23,11 +23,11 @@
 
 use std::ffi::CString;
 
-use sfml::system::raw_conv::{Raw, FromRaw};
-use sfml::system::Time;
+use sfml_system::raw_conv::{Raw, FromRaw};
+use sfml_system::Time;
 
 use csfml_audio_sys as ffi;
-use sfml::system::SfBoolExt;
+use sfml_system::SfBoolExt;
 use std::ops::Deref;
 use inputstream::InputStream;
 use std::io::{Read, Seek};

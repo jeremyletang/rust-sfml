@@ -1,4 +1,4 @@
-extern crate sfml;
+extern crate sfml_system;
 extern crate sfml_window;
 extern crate sfml_graphics;
 

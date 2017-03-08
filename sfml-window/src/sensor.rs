@@ -34,10 +34,10 @@
 //! }
 //! ```
 
-use sfml::system::Vector3f;
+use sfml_system::Vector3f;
 use csfml_window_sys::*;
-use sfml::system::SfBoolExt;
-use sfml::system::raw_conv::{Raw, FromRaw};
+use sfml_system::SfBoolExt;
+use sfml_system::raw_conv::{Raw, FromRaw};
 
 /// Get the current sensor value.
 pub fn get_value(sensor: Type) -> Vector3f {

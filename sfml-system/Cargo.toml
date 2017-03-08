@@ -1,13 +1,7 @@
 [package]
-name = "sfml-audio"
+name = "sfml-system"
 version = "0.1.0"
 authors = ["Mika Attila <radiantstatue@gmail.com>"]
 
-[dependencies.sfml-system]
-path = "../sfml-system"
-
 [dependencies.csfml-system-sys]
 path = "../csfml-system-sys"
-
-[dependencies.csfml-audio-sys]
-path = "../csfml-audio-sys"

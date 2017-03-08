@@ -28,10 +28,10 @@
 
 use std::str;
 
-use sfml::system::raw_conv::{Raw, FromRaw};
+use sfml_system::raw_conv::{Raw, FromRaw};
 use {Drawable, Transformable, RenderTarget, Font, FloatRect, Color, Transform, RenderStates,
      TextStyle};
-use sfml::system::Vector2f;
+use sfml_system::Vector2f;
 use csfml_system_sys::sfVector2f;
 
 use csfml_graphics_sys as ffi;

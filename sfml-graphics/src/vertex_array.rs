@@ -26,7 +26,7 @@
 use std::mem;
 use std::ops::Index;
 
-use sfml::system::raw_conv::{Raw, FromRaw};
+use sfml_system::raw_conv::{Raw, FromRaw};
 use {Drawable, Vertex, FloatRect, primitive_type, PrimitiveType, RenderTarget, RenderStates};
 
 use csfml_graphics_sys::*;

@@ -21,8 +21,8 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-use system::raw_conv::FromRaw;
-use system::Time;
+use raw_conv::FromRaw;
+use Time;
 
 use csfml_system_sys as ffi;
 
@@ -35,7 +35,7 @@ use csfml_system_sys as ffi;
 ///
 /// # Usage example
 /// ```
-/// # use sfml::system::Clock;
+/// # use sfml_system::Clock;
 /// let mut clock = Clock::start();
 /// // ...
 /// let time1 = clock.elapsed_time();

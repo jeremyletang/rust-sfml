@@ -25,12 +25,12 @@
 
 use std::mem;
 
-use sfml::system::raw_conv::Raw;
+use sfml_system::raw_conv::Raw;
 use {TcpSocket, SocketStatus, IpAddress};
 
 use csfml_system_sys::sfBool;
 use csfml_network_sys as ffi;
-use sfml::system::SfBoolExt;
+use sfml_system::SfBoolExt;
 
 /// Socket that listens to new TCP connections
 pub struct TcpListener {

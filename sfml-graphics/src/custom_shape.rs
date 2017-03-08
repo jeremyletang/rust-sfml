@@ -26,14 +26,14 @@
 use std::os::raw::c_void;
 use std::ptr;
 
-use sfml::system::raw_conv::{Raw, FromRaw};
+use sfml_system::raw_conv::{Raw, FromRaw};
 use shape::ShapeImpl;
 use {Drawable, Transformable, RenderTarget, RenderStates, Texture, Color, Transform, IntRect,
      FloatRect};
-use sfml::system::Vector2f;
+use sfml_system::Vector2f;
 use csfml_graphics_sys as ffi;
 use csfml_system_sys::{sfBool, sfTrue, sfVector2f};
-use sfml::system::SfBoolExt;
+use sfml_system::SfBoolExt;
 
 /// Base class for textured shapes with outline
 pub struct CustomShape<'s> {

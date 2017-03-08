@@ -23,7 +23,7 @@
 
 //! Provides OpenGL-based windows, and abstractions for events and input handling.
 
-extern crate sfml;
+extern crate sfml_system;
 extern crate csfml_system_sys;
 extern crate csfml_window_sys;
 #[macro_use]
@@ -55,8 +55,8 @@ mod unicode_conv;
 mod event_ext {
     use csfml_window_sys::*;
     use Event;
-    use sfml::system::SfBoolExt;
-    use sfml::system::raw_conv::FromRaw;
+    use sfml_system::SfBoolExt;
+    use sfml_system::raw_conv::FromRaw;
 
     pub fn get_wrapped_event(event: &mut sfEvent) -> Option<Event> {
         use csfml_window_sys::sfEventType::*;

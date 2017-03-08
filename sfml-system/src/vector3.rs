@@ -22,7 +22,7 @@
 //
 
 use std::ops::{Add, Sub, Mul, Div, Neg, AddAssign, SubAssign, MulAssign, DivAssign};
-use system::raw_conv::{Raw, FromRaw};
+use raw_conv::{Raw, FromRaw};
 
 /// Utility type for manipulating 3-dimensional vectors.
 ///
@@ -46,7 +46,7 @@ use system::raw_conv::{Raw, FromRaw};
 ///
 /// # Usage example
 /// ```
-/// # use sfml::system::Vector3f;
+/// # use sfml_system::Vector3f;
 /// let mut v1 = Vector3f::new(16.5, 24.0, -8.2);
 /// v1.x = 18.2;
 /// let y = v1.y;

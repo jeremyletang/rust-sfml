@@ -28,14 +28,14 @@
 
 use std::ptr;
 
-use sfml::system::raw_conv::{Raw, FromRaw};
+use sfml_system::raw_conv::{Raw, FromRaw};
 use {Drawable, Transformable, FloatRect, IntRect, Color, Texture, RenderTarget, Transform,
      RenderStates};
-use sfml::system::Vector2f;
+use sfml_system::Vector2f;
 
 use csfml_system_sys::{sfBool, sfTrue, sfVector2f};
 use csfml_graphics_sys as ffi;
-use sfml::system::SfBoolExt;
+use sfml_system::SfBoolExt;
 
 /// Drawable representation of a texture
 ///

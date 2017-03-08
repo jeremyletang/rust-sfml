@@ -49,9 +49,9 @@
 //! ```
 
 use csfml_window_sys as ffi;
-use sfml::system::SfBoolExt;
-use sfml::system::raw_conv::{Raw, FromRaw};
-use sfml::system::Vector2i;
+use sfml_system::SfBoolExt;
+use sfml_system::raw_conv::{Raw, FromRaw};
+use sfml_system::Vector2i;
 
 /// Mouse buttons.
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]

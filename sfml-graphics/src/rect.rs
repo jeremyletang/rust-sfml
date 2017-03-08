@@ -21,9 +21,9 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-use sfml::system::Vector2;
+use sfml_system::Vector2;
 use std::ops::{Add, Sub};
-use sfml::system::raw_conv::{Raw, FromRaw};
+use sfml_system::raw_conv::{Raw, FromRaw};
 
 /// Utility type for manipulating 2D axis-aligned rectangles.
 #[repr(C)]

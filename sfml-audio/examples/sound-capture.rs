@@ -1,10 +1,10 @@
-extern crate sfml;
+extern crate sfml_system;
 extern crate sfml_audio;
 
 use std::io::{BufRead, Write};
 
 use sfml_audio::{Sound, SoundBufferRecorder, SoundStatus};
-use sfml::system::{Time, sleep};
+use sfml_system::{Time, sleep};
 
 fn main() {
     // Check that the device can capture audio
