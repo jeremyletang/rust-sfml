@@ -37,7 +37,7 @@ use system::Vector2f;
 
 use csfml_system_sys::{sfBool, sfTrue, sfVector2f};
 use csfml_graphics_sys as ffi;
-use ext::sf_bool_ext::SfBoolExt;
+use system::SfBoolExt;
 
 /// Specialized shape representing a convex polygon
 ///

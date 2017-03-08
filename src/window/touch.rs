@@ -36,7 +36,7 @@
 
 use system::Vector2i;
 use csfml_window_sys::*;
-use ext::sf_bool_ext::SfBoolExt;
+use system::SfBoolExt;
 use system::raw_conv::FromRaw;
 
 /// Check if a touch event is currently down.

@@ -27,7 +27,7 @@ use system::raw_conv::{Raw, FromRaw};
 use window::{Event, VideoMode, ContextSettings, Style};
 use system::{Vector2i, Vector2u};
 use csfml_system_sys::sfBool;
-use ext::sf_bool_ext::SfBoolExt;
+use system::SfBoolExt;
 
 use csfml_window_sys as ffi;
 use ext;

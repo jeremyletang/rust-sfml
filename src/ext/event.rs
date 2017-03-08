@@ -1,6 +1,6 @@
 use csfml_window_sys::*;
 use window::Event;
-use ext::sf_bool_ext::SfBoolExt;
+use system::SfBoolExt;
 use system::raw_conv::FromRaw;
 
 pub fn get_wrapped_event(event: &mut sfEvent) -> Option<Event> {

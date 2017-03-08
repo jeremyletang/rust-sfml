@@ -31,7 +31,7 @@ use graphics::{Drawable, View, ViewRef, Color, IntRect, TextureRef, CircleShape,
 
 use csfml_system_sys::sfBool;
 use csfml_graphics_sys as ffi;
-use ext::sf_bool_ext::SfBoolExt;
+use system::SfBoolExt;
 
 /// Target for off-screen 2D rendering into a texture
 pub struct RenderTexture {

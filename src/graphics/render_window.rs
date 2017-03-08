@@ -39,7 +39,7 @@ use csfml_system_sys::*;
 use csfml_graphics_sys as ffi;
 use std::marker::PhantomData;
 use ext;
-use ext::sf_bool_ext::SfBoolExt;
+use system::SfBoolExt;
 
 /// Window that can serve as a target for 2D drawing.
 ///

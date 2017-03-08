@@ -33,7 +33,7 @@ use system::raw_conv::{Raw, FromRaw};
 
 use csfml_system_sys::{sfBool, sfVector3f};
 use csfml_audio_sys as ffi;
-use ext::sf_bool_ext::SfBoolExt;
+use system::SfBoolExt;
 
 /// Streamed music played from an audio file.
 ///

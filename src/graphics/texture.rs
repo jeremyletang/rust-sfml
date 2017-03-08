@@ -38,7 +38,7 @@ use window::Window;
 
 use csfml_system_sys::sfBool;
 use csfml_graphics_sys as ffi;
-use ext::sf_bool_ext::SfBoolExt;
+use system::SfBoolExt;
 
 /// Image used for drawing
 ///

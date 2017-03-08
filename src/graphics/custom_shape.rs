@@ -33,7 +33,7 @@ use graphics::{Drawable, Transformable, RenderTarget, RenderStates, Texture, Col
 use system::Vector2f;
 use csfml_graphics_sys as ffi;
 use csfml_system_sys::{sfBool, sfTrue, sfVector2f};
-use ext::sf_bool_ext::SfBoolExt;
+use system::SfBoolExt;
 
 /// Base class for textured shapes with outline
 pub struct CustomShape<'s> {

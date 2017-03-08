@@ -26,8 +26,8 @@
 use std::ffi::{CString, CStr};
 use std::str;
 
-use system::raw_conv::{Raw, FromRaw};
-use system::Time;
+use sfml::system::raw_conv::{Raw, FromRaw};
+use sfml::system::Time;
 
 use csfml_network_sys as ffi;
 
@@ -156,4 +156,10 @@ impl FromRaw for IpAddress {
     unsafe fn from_raw(raw: Self::Raw) -> Self {
         IpAddress { ip: raw }
     }
+}
+
+#[test]
+fn ip_to_string() {
+    let ip = IpAddress::from_integer(101010);
+    assert_eq!(ip.to_string(), "0.1.138.146");
 }

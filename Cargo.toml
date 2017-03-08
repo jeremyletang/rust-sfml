@@ -44,3 +44,4 @@ name = "sfml"
 crate-type = ["dylib", "rlib"]
 
 [workspace]
+members = ["sfml-network"]

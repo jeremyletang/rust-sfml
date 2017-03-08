@@ -66,7 +66,7 @@
 //!
 
 use csfml_window_sys as ffi;
-use ext::sf_bool_ext::SfBoolExt;
+use system::SfBoolExt;
 use system::raw_conv::{Raw, FromRaw};
 
 /// Maximum number of supported joysticks.

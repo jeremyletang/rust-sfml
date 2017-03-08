@@ -30,7 +30,7 @@ use audio::sound_buffer::SoundBufferRef;
 
 use csfml_audio_sys as ffi;
 use csfml_system_sys::*;
-use ext::sf_bool_ext::SfBoolExt;
+use system::SfBoolExt;
 use std::ffi::{CStr, CString};
 
 /// Store captured audio data in sound Buffer

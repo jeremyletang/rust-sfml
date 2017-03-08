@@ -26,14 +26,18 @@
 //! utilities and higher-level network protocols (HTTP, FTP)
 //!
 
-pub use network::ip_address::IpAddress;
-pub use network::packet::Packet;
-pub use network::tcp_socket::TcpSocket;
-pub use network::udp_socket::UdpSocket;
-pub use network::tcp_listener::TcpListener;
-pub use network::socket_status::SocketStatus;
-pub use network::ftp::Ftp;
-pub use network::http::Http;
+extern crate sfml;
+extern crate csfml_network_sys;
+extern crate csfml_system_sys;
+
+pub use ip_address::IpAddress;
+pub use packet::Packet;
+pub use tcp_socket::TcpSocket;
+pub use udp_socket::UdpSocket;
+pub use tcp_listener::TcpListener;
+pub use socket_status::SocketStatus;
+pub use ftp::Ftp;
+pub use http::Http;
 
 mod ip_address;
 mod packet;

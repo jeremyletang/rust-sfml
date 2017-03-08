@@ -26,7 +26,7 @@ use std::vec::Vec;
 use system::raw_conv::{Raw, FromRaw};
 
 use csfml_window_sys as ffi;
-use ext::sf_bool_ext::SfBoolExt;
+use system::SfBoolExt;
 
 /// `VideoMode` defines a video mode (width, height, bpp)
 ///

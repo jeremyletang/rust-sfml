@@ -1,6 +1,6 @@
 use csfml_audio_sys::*;
 use csfml_system_sys::*;
-use ext::sf_bool_ext::SfBoolExt;
+use system::SfBoolExt;
 use system::raw_conv::{Raw, FromRaw};
 use system::{Time, Vector3f};
 use std::panic;
