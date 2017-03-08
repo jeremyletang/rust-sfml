@@ -94,9 +94,7 @@
 extern crate bitflags;
 extern crate csfml_system_sys;
 extern crate csfml_window_sys;
-extern crate csfml_graphics_sys;
 
-mod inputstream;
 mod ext {
     pub mod event;
 }
@@ -104,4 +102,3 @@ mod unicode_conv;
 
 pub mod system;
 pub mod window;
-pub mod graphics;
