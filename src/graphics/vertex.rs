@@ -33,7 +33,7 @@ use graphics::Color;
 use system::Vector2f;
 use csfml_graphics_sys as ffi;
 use csfml_system_sys::sfVector2f;
-use raw_conv::Raw;
+use system::raw_conv::Raw;
 
 /// Define a point with color and texture coordinates
 ///

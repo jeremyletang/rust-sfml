@@ -28,7 +28,7 @@
 //! of the graphics module.
 
 
-use raw_conv::{Raw, RawMut, FromRaw};
+use system::raw_conv::{Raw, RawMut, FromRaw};
 use window::{ContextSettings, VideoMode, Event, Style};
 use system::{Vector2f, Vector2i, Vector2u};
 use graphics::{Drawable, Color, CircleShape, RectangleShape, Text, Sprite, VertexArray,

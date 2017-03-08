@@ -23,7 +23,7 @@
 
 use system::Vector2;
 use std::ops::{Add, Sub};
-use raw_conv::{Raw, FromRaw};
+use system::raw_conv::{Raw, FromRaw};
 
 /// Utility type for manipulating 2D axis-aligned rectangles.
 #[repr(C)]

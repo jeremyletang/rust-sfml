@@ -26,7 +26,7 @@
 use std::os::raw::c_void;
 use std::ptr;
 
-use raw_conv::{Raw, FromRaw};
+use system::raw_conv::{Raw, FromRaw};
 use graphics::shape::ShapeImpl;
 use graphics::{Drawable, Transformable, RenderTarget, RenderStates, Texture, Color, Transform,
                IntRect, FloatRect};

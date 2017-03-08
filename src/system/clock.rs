@@ -21,7 +21,7 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-use raw_conv::FromRaw;
+use system::raw_conv::FromRaw;
 use system::Time;
 
 use csfml_system_sys as ffi;

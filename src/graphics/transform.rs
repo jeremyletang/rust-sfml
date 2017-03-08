@@ -28,7 +28,7 @@
 
 use system::Vector2f;
 use graphics::FloatRect;
-use raw_conv::{Raw, FromRaw};
+use system::raw_conv::{Raw, FromRaw};
 
 use csfml_graphics_sys as ffi;
 

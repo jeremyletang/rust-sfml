@@ -23,7 +23,7 @@
 
 //! Available blending modes for drawing
 use csfml_graphics_sys as ffi;
-use raw_conv::{Raw, FromRaw};
+use system::raw_conv::{Raw, FromRaw};
 
 /// Blending modes for drawing.
 ///

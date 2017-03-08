@@ -30,7 +30,7 @@ use std::ffi::CString;
 use std::io::{Read, Seek};
 use std::ops::Deref;
 
-use raw_conv::{Raw, FromRaw};
+use system::raw_conv::{Raw, FromRaw};
 use graphics::{RenderWindow, Image, IntRect};
 use system::Vector2u;
 use inputstream::InputStream;

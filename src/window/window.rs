@@ -23,7 +23,7 @@
 
 use std::marker::PhantomData;
 
-use raw_conv::{Raw, FromRaw};
+use system::raw_conv::{Raw, FromRaw};
 use window::{Event, VideoMode, ContextSettings, Style};
 use system::{Vector2i, Vector2u};
 use csfml_system_sys::sfBool;

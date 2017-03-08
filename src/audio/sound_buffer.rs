@@ -23,7 +23,7 @@
 
 use std::ffi::CString;
 
-use raw_conv::{Raw, FromRaw};
+use system::raw_conv::{Raw, FromRaw};
 use system::Time;
 
 use csfml_audio_sys as ffi;

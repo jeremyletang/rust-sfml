@@ -31,7 +31,7 @@
 use std::ptr;
 use std::ffi::CString;
 
-use raw_conv::Raw;
+use system::raw_conv::Raw;
 use graphics::{Texture, Color};
 use system::Vector2f;
 use system::Vector3f;

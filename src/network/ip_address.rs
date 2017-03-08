@@ -26,7 +26,7 @@
 use std::ffi::{CString, CStr};
 use std::str;
 
-use raw_conv::{Raw, FromRaw};
+use system::raw_conv::{Raw, FromRaw};
 use system::Time;
 
 use csfml_network_sys as ffi;

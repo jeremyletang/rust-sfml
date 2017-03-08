@@ -30,7 +30,7 @@
 
 use std::ptr;
 
-use raw_conv::{Raw, FromRaw};
+use system::raw_conv::{Raw, FromRaw};
 use graphics::{Shape, Drawable, Transformable, Color, Texture, RenderTarget, FloatRect, IntRect,
                Transform, RenderStates};
 use system::Vector2f;

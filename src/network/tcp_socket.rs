@@ -25,7 +25,7 @@
 
 use std::{ptr, mem};
 
-use raw_conv::{Raw, FromRaw};
+use system::raw_conv::{Raw, FromRaw};
 use network::{IpAddress, Packet, SocketStatus};
 use system::Time;
 

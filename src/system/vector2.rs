@@ -22,7 +22,7 @@
 //
 
 use std::ops::{Add, Div, Mul, Sub, Neg, AddAssign, SubAssign, MulAssign, DivAssign};
-use raw_conv::{FromRaw, Raw};
+use system::raw_conv::{FromRaw, Raw};
 
 /// Utility type for manipulating 2-dimensional vectors.
 ///

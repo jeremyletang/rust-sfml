@@ -1,7 +1,7 @@
 use csfml_graphics_sys as ffi;
 use graphics::{FloatRect, IntRect};
 
-use raw_conv::{Raw, FromRaw};
+use system::raw_conv::{Raw, FromRaw};
 
 /// Structure describing a glyph.
 ///

@@ -29,7 +29,7 @@ use audio::{SoundStatus, SoundSource};
 use system::Time;
 use system::Vector3f;
 use inputstream::InputStream;
-use raw_conv::{Raw, FromRaw};
+use system::raw_conv::{Raw, FromRaw};
 
 use csfml_system_sys::{sfBool, sfVector3f};
 use csfml_audio_sys as ffi;

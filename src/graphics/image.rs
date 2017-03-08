@@ -26,7 +26,7 @@
 use std::ffi::CString;
 use std::slice;
 
-use raw_conv::{Raw, FromRaw};
+use system::raw_conv::{Raw, FromRaw};
 use system::Vector2u;
 use graphics::{Color, IntRect};
 

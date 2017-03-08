@@ -99,7 +99,6 @@ extern crate csfml_audio_sys;
 extern crate csfml_network_sys;
 
 mod inputstream;
-mod raw_conv;
 mod ext {
     pub mod event;
     pub mod sf_bool_ext;

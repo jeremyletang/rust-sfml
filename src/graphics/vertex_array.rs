@@ -26,7 +26,7 @@
 use std::mem;
 use std::ops::Index;
 
-use raw_conv::{Raw, FromRaw};
+use system::raw_conv::{Raw, FromRaw};
 use graphics::{Drawable, Vertex, FloatRect, primitive_type, PrimitiveType, RenderTarget,
                RenderStates};
 

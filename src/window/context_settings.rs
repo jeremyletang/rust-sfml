@@ -23,7 +23,7 @@
 
 use csfml_window_sys::sfContextSettings;
 use std::os::raw::c_uint;
-use raw_conv::{FromRaw, Raw};
+use system::raw_conv::{FromRaw, Raw};
 use system::{SfBool, SF_FALSE};
 
 /// Non-debug, compatibility context (this and the core attribute are mutually exclusive).

@@ -37,7 +37,7 @@
 use system::Vector3f;
 use csfml_window_sys::*;
 use ext::sf_bool_ext::SfBoolExt;
-use raw_conv::{Raw, FromRaw};
+use system::raw_conv::{Raw, FromRaw};
 
 /// Get the current sensor value.
 pub fn get_value(sensor: Type) -> Vector3f {

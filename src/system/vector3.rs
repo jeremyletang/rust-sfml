@@ -22,7 +22,7 @@
 //
 
 use std::ops::{Add, Sub, Mul, Div, Neg, AddAssign, SubAssign, MulAssign, DivAssign};
-use raw_conv::{Raw, FromRaw};
+use system::raw_conv::{Raw, FromRaw};
 
 /// Utility type for manipulating 3-dimensional vectors.
 ///

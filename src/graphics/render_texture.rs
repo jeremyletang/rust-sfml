@@ -23,7 +23,7 @@
 
 //! Target for off-screen 2D rendering into a texture
 
-use raw_conv::{Raw, RawMut, FromRaw};
+use system::raw_conv::{Raw, RawMut, FromRaw};
 use system::{Vector2f, Vector2i, Vector2u};
 use graphics::{Drawable, View, ViewRef, Color, IntRect, TextureRef, CircleShape, RectangleShape,
                Text, RenderStates, Sprite, ConvexShape, VertexArray, RenderTarget, Vertex,

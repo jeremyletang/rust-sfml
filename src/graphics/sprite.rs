@@ -28,7 +28,7 @@
 
 use std::ptr;
 
-use raw_conv::{Raw, FromRaw};
+use system::raw_conv::{Raw, FromRaw};
 use graphics::{Drawable, Transformable, FloatRect, IntRect, Color, Texture, RenderTarget, Transform,
                RenderStates};
 use system::Vector2f;

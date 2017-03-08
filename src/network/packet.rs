@@ -25,7 +25,7 @@
 
 use std::ffi::CString;
 
-use raw_conv::{Raw, FromRaw};
+use system::raw_conv::{Raw, FromRaw};
 
 use csfml_system_sys::sfBool;
 use csfml_network_sys as ffi;

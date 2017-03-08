@@ -27,7 +27,7 @@
 //! rotate or zoom the entire scene without altering
 //! the way that your drawable objects are drawn.
 
-use raw_conv::{Raw, FromRaw};
+use system::raw_conv::{Raw, FromRaw};
 use graphics::FloatRect;
 use system::Vector2f;
 use std::ops::Deref;

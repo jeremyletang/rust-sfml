@@ -26,7 +26,7 @@
 
 use std::ffi::{CStr, CString};
 
-use raw_conv::{Raw, FromRaw};
+use system::raw_conv::{Raw, FromRaw};
 use graphics::{TextureRef, Glyph};
 
 use csfml_system_sys::sfBool;

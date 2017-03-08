@@ -49,7 +49,7 @@
 
 use system::Vector3f;
 use csfml_audio_sys as ffi;
-use raw_conv::{Raw, FromRaw};
+use system::raw_conv::{Raw, FromRaw};
 use csfml_system_sys::sfVector3f;
 
 /// Change the global volume of all the sounds and musics

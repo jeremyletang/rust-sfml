@@ -28,7 +28,7 @@
 
 use std::str;
 
-use raw_conv::{Raw, FromRaw};
+use system::raw_conv::{Raw, FromRaw};
 use graphics::{Drawable, Transformable, RenderTarget, Font, FloatRect, Color, Transform,
                RenderStates, TextStyle};
 use system::Vector2f;

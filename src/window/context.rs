@@ -24,7 +24,7 @@
 use csfml_window_sys as ffi;
 use ext::sf_bool_ext::SfBoolExt;
 use window::ContextSettings;
-use raw_conv::FromRaw;
+use system::raw_conv::FromRaw;
 
 /// Class holding a valid drawing context.
 ///

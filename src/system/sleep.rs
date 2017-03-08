@@ -21,7 +21,7 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-use raw_conv::Raw;
+use system::raw_conv::Raw;
 use system::Time;
 
 /// Make the current thread sleep for a given duration.

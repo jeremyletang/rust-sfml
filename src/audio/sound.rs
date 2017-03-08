@@ -26,7 +26,7 @@ use std::mem;
 use audio::{SoundStatus, SoundBufferRef, SoundSource};
 use system::Time;
 use system::Vector3f;
-use raw_conv::{Raw, FromRaw};
+use system::raw_conv::{Raw, FromRaw};
 
 use csfml_system_sys::{sfBool, sfVector3f};
 use csfml_audio_sys as ffi;

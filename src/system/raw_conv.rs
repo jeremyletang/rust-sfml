@@ -21,19 +21,28 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
+//! Conversion between the raw and wrapped forms of SFML types.
+
 /// A type that has a raw representation that can be acquired through `&self`.
 pub trait Raw {
+    /// The raw representation of this type.
     type Raw;
+    /// Acquires the raw representation of this type through `&self`.
     fn raw(&self) -> Self::Raw;
 }
 
 /// A type that has a raw representation that can be acquired through `&mut self`.
 pub trait RawMut {
+    /// The raw representation of this type.
     type Raw;
+    /// Acquires the raw representation of this type through `&mut self`.
     fn raw_mut(&mut self) -> Self::Raw;
 }
 
 /// A type that can be created from its raw representation.
 pub trait FromRaw: Raw {
+    /// Creates `Self` from its raw representation.
+    ///
+    /// Doing this is not always safe, so this function is `unsafe`.
     unsafe fn from_raw(raw: Self::Raw) -> Self;
 }

@@ -25,7 +25,7 @@
 
 use std::mem;
 
-use raw_conv::Raw;
+use system::raw_conv::Raw;
 use network::{TcpSocket, SocketStatus, IpAddress};
 
 use csfml_system_sys::sfBool;
