@@ -1,0 +1,7 @@
+[package]
+name = "sfml-system"
+version = "0.1.0"
+authors = ["Mika Attila <radiantstatue@gmail.com>"]
+
+[dependencies.csfml-system-sys]
+path = "../csfml-system-sys"

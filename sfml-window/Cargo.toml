@@ -1,0 +1,16 @@
+[package]
+name = "sfml-window"
+version = "0.1.0"
+authors = ["Mika Attila <radiantstatue@gmail.com>"]
+
+[dependencies]
+bitflags = "0.5"
+
+[dependencies.sfml-system]
+path = "../sfml-system"
+
+[dependencies.csfml-system-sys]
+path = "../csfml-system-sys"
+
+[dependencies.csfml-window-sys]
+path = "../csfml-window-sys"

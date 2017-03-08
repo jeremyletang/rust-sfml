@@ -1,6 +1,6 @@
 [package]
 name = "sfml"
-description = "Rust binding for sfml"
+description = "Deprecated. Use sfml-system, sfml-window, sfml-graphics, sfml-audio and sfml-network."
 version = "0.11.1"
 authors = ["Jeremy Letang <letang.jeremy@gmail.com>"]
 
@@ -8,39 +8,5 @@ documentation = "https://docs.rs/sfml"
 repository = "https://github.com/jeremyletang/rust-sfml"
 license = "zlib-acknowledgement"
 
-[features]
-# Used for conditonally setting clippy lint levels.
-# Run cargo clippy with `cargo clippy --features=clippy`.
-clippy = []
-
-[dependencies]
-bitflags = "0.5"
-
-[dependencies.csfml-system-sys]
-path = "csfml-system-sys"
-version = "0.1.0"
-
-[dependencies.csfml-window-sys]
-path = "csfml-window-sys"
-version = "0.1.0"
-
-[dependencies.csfml-graphics-sys]
-path = "csfml-graphics-sys"
-version = "0.1.0"
-
-[dependencies.csfml-audio-sys]
-path = "csfml-audio-sys"
-version = "0.1.0"
-
-[dependencies.csfml-network-sys]
-path = "csfml-network-sys"
-version = "0.1.0"
-
-[dev-dependencies]
-rand = "0.3"
-
-[lib]
-name = "sfml"
-crate-type = ["dylib", "rlib"]
-
 [workspace]
+members = ["sfml-network", "sfml-audio", "sfml-graphics", "sfml-window", "sfml-system"]
