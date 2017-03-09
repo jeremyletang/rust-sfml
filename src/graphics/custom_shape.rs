@@ -32,19 +32,19 @@ use csfml_graphics_sys as ffi;
 use csfml_system_sys::{sfBool, sfTrue, sfVector2f};
 use ext::sf_bool_ext::SfBoolExt;
 
-/// Implement this shape to create a new `Shape`
-pub trait ShapeImpl {
-    /// Get the total count of the point for the Shape who implement this trait.
+/// The points of a custom shape.
+pub trait CustomShapePoints {
+    /// Gets the total count of points.
     ///
     /// Return the points count
     fn get_point_count(&self) -> u32;
 
-    /// Get a given point of a `Shape`.
+    /// Gets a given point.
     ///
     /// # Argument
     /// * point - The index of the point to return
     ///
-    /// Return a `Vector2f` who contains the point coordinates.
+    /// Returns a `Vector2f` containing the coordinates.
     fn get_point(&self, point: u32) -> Vector2f;
 }
 
@@ -52,17 +52,17 @@ pub trait ShapeImpl {
 pub struct CustomShape<'s> {
     shape: *mut ffi::sfShape,
     texture: Option<&'s Texture>,
-    shape_impl: *mut Box<ShapeImpl + Send>,
+    points: *mut Box<CustomShapePoints + Send>,
 }
 
 unsafe extern "C" fn get_point_count_callback(obj: *mut c_void) -> usize {
-    let shape = obj as *mut Box<ShapeImpl + Send>;
+    let shape = obj as *mut Box<CustomShapePoints + Send>;
     let ret = (*shape).get_point_count();
     ret as usize
 }
 
 unsafe extern "C" fn get_point_callback(point: usize, obj: *mut c_void) -> sfVector2f {
-    let shape = obj as *mut Box<ShapeImpl + Send>;
+    let shape = obj as *mut Box<CustomShapePoints + Send>;
     let ret = (*shape).get_point(point as u32);
     ret.raw()
 }
@@ -72,9 +72,9 @@ impl<'s> CustomShape<'s> {
     /// Create a new CustomShape
     ///
     /// # Arguments
-    /// * shape_impl - Implementation of ShapeImpl
-    pub fn new(shape_impl: Box<ShapeImpl + Send>) -> CustomShape<'s> {
-        let raw_impl = Box::into_raw(Box::new(shape_impl));
+    /// * points - Implementation of CustomShapePoints
+    pub fn new(points: Box<CustomShapePoints + Send>) -> CustomShape<'s> {
+        let raw_impl = Box::into_raw(Box::new(points));
         let sp = unsafe {
             ffi::sfShape_create(Some(get_point_count_callback),
                                 Some(get_point_callback),
@@ -86,7 +86,7 @@ impl<'s> CustomShape<'s> {
             CustomShape {
                 shape: sp,
                 texture: None,
-                shape_impl: raw_impl,
+                points: raw_impl,
             }
         }
     }
@@ -94,12 +94,12 @@ impl<'s> CustomShape<'s> {
     /// Create a new CustomShape with a texture
     ///
     /// # Arguments
-    /// * shape_impl - Implementation of ShapeImpl trait
+    /// * points - Implementation of CustomShapePoints trait
     /// * texture - The texture to bind to the CustomShape
-    pub fn with_texture(shape_impl: Box<ShapeImpl + Send>,
+    pub fn with_texture(points: Box<CustomShapePoints + Send>,
                         texture: &'s Texture)
                         -> CustomShape<'s> {
-        let raw_impl = Box::into_raw(Box::new(shape_impl));
+        let raw_impl = Box::into_raw(Box::new(points));
         let sp = unsafe {
             ffi::sfShape_create(Some(get_point_count_callback),
                                 Some(get_point_callback),
@@ -114,7 +114,7 @@ impl<'s> CustomShape<'s> {
             CustomShape {
                 shape: sp,
                 texture: Some(texture),
-                shape_impl: raw_impl,
+                points: raw_impl,
             }
         }
     }
@@ -271,7 +271,7 @@ impl<'s> Drop for CustomShape<'s> {
     fn drop(&mut self) {
         unsafe {
             ffi::sfShape_destroy(self.shape);
-            Box::from_raw(self.shape_impl);
+            Box::from_raw(self.points);
         }
     }
 }

@@ -44,7 +44,7 @@ pub use graphics::primitive_type::*;
 pub use graphics::vertex::Vertex;
 pub use graphics::glyph::Glyph;
 pub use graphics::render_texture::RenderTexture;
-pub use graphics::custom_shape::{CustomShape, ShapeImpl};
+pub use graphics::custom_shape::{CustomShape, CustomShapePoints};
 pub use graphics::vertex_array::{VertexArray, Vertices};
 pub use graphics::text_style::TextStyle;
 pub use graphics::drawable::Drawable;

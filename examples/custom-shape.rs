@@ -1,13 +1,13 @@
 extern crate sfml;
 
-use sfml::graphics::{Color, CustomShape, RenderTarget, RenderWindow, ShapeImpl, Shape};
+use sfml::graphics::{Color, CustomShape, CustomShapePoints, RenderTarget, RenderWindow, Shape};
 use sfml::window::{Key, VideoMode, Event, style};
 use sfml::system::Vector2f;
 
 #[derive(Clone, Copy)]
 pub struct TriangleShape;
 
-impl ShapeImpl for TriangleShape {
+impl CustomShapePoints for TriangleShape {
     fn get_point_count(&self) -> u32 {
         3
     }
