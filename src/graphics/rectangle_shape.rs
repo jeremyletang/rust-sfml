@@ -157,7 +157,7 @@ impl<'s> Transformable for RectangleShape<'s> {
     fn set_origin2f(&mut self, x: f32, y: f32) {
         unsafe { ffi::sfRectangleShape_setOrigin(self.rectangle_shape, sfVector2f { x: x, y: y }) }
     }
-    fn get_position(&self) -> Vector2f {
+    fn position(&self) -> Vector2f {
         unsafe { Vector2f::from_raw(ffi::sfRectangleShape_getPosition(self.rectangle_shape)) }
     }
     fn get_rotation(&self) -> f32 {

@@ -226,19 +226,19 @@ impl<'s> SoundSource for Sound<'s> {
     fn get_pitch(&self) -> f32 {
         unsafe { ffi::sfSound_getPitch(self.sound) as f32 }
     }
-    fn get_volume(&self) -> f32 {
+    fn volume(&self) -> f32 {
         unsafe { ffi::sfSound_getVolume(self.sound) as f32 }
     }
-    fn get_position(&self) -> Vector3f {
+    fn position(&self) -> Vector3f {
         unsafe { Vector3f::from_raw(ffi::sfSound_getPosition(self.sound)) }
     }
     fn is_relative_to_listener(&self) -> bool {
         unsafe { ffi::sfSound_isRelativeToListener(self.sound).to_bool() }
     }
-    fn get_min_distance(&self) -> f32 {
+    fn min_distance(&self) -> f32 {
         unsafe { ffi::sfSound_getMinDistance(self.sound) as f32 }
     }
-    fn get_attenuation(&self) -> f32 {
+    fn attenuation(&self) -> f32 {
         unsafe { ffi::sfSound_getAttenuation(self.sound) as f32 }
     }
 }

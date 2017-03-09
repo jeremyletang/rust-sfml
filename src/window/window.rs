@@ -332,7 +332,7 @@ impl Window {
     /// Get the position of a window
     ///
     /// Return the position in pixels
-    pub fn get_position(&self) -> Vector2i {
+    pub fn position(&self) -> Vector2i {
         unsafe { Vector2i::from_raw(ffi::sfWindow_getPosition(self.window)) }
     }
 

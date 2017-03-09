@@ -324,7 +324,7 @@ impl RenderWindow {
     ///
     /// Return the position in pixels
     ///
-    pub fn get_position(&self) -> Vector2i {
+    pub fn position(&self) -> Vector2i {
         unsafe { Vector2i::from_raw(ffi::sfRenderWindow_getPosition(self.render_window)) }
     }
 

@@ -73,7 +73,7 @@ pub trait Transformable {
     /// The default origin of a transformable object is (0, 0).
     fn set_origin2f(&mut self, x: f32, y: f32);
     /// Gets the position of the object.
-    fn get_position(&self) -> Vector2f;
+    fn position(&self) -> Vector2f;
     /// Gets the rotation of the object.
     ///
     /// The rotation is always in the range [0, 360].

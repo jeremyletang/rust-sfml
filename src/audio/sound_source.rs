@@ -106,17 +106,17 @@ pub trait SoundSource {
     /// Get the volume of the sound.
     ///
     /// Returns the volume of the sound, in the range [0, 100]
-    fn get_volume(&self) -> f32;
+    fn volume(&self) -> f32;
 
     /// Get the 3D position of the sound in the audio scene.
-    fn get_position(&self) -> Vector3f;
+    fn position(&self) -> Vector3f;
 
     /// Tell whether the sound's position is relative to the listener or is absolute.
     fn is_relative_to_listener(&self) -> bool;
 
     /// Get the minimum distance of the sound.
-    fn get_min_distance(&self) -> f32;
+    fn min_distance(&self) -> f32;
 
     /// Get the attenuation factor of the sound.
-    fn get_attenuation(&self) -> f32;
+    fn attenuation(&self) -> f32;
 }

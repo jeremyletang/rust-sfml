@@ -220,7 +220,7 @@ impl<'s> Transformable for CustomShape<'s> {
     fn set_origin2f(&mut self, x: f32, y: f32) {
         unsafe { ffi::sfShape_setOrigin(self.shape, sfVector2f { x: x, y: y }) }
     }
-    fn get_position(&self) -> Vector2f {
+    fn position(&self) -> Vector2f {
         unsafe { Vector2f::from_raw(ffi::sfShape_getPosition(self.shape)) }
     }
     fn get_rotation(&self) -> f32 {

@@ -295,7 +295,7 @@ impl<'s> Transformable for Text<'s> {
     fn set_origin2f(&mut self, x: f32, y: f32) {
         unsafe { ffi::sfText_setOrigin(self.text, sfVector2f { x: x, y: y }) }
     }
-    fn get_position(&self) -> Vector2f {
+    fn position(&self) -> Vector2f {
         unsafe { Vector2f::from_raw(ffi::sfText_getPosition(self.text)) }
     }
     fn get_rotation(&self) -> f32 {

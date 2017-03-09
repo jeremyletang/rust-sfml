@@ -191,19 +191,19 @@ impl<'a, S: SoundStream> SoundSource for SoundStreamPlayer<'a, S> {
     fn get_pitch(&self) -> f32 {
         unsafe { sfSoundStream_getPitch(self.sf_sound_stream) }
     }
-    fn get_volume(&self) -> f32 {
+    fn volume(&self) -> f32 {
         unsafe { sfSoundStream_getVolume(self.sf_sound_stream) }
     }
-    fn get_position(&self) -> Vector3f {
+    fn position(&self) -> Vector3f {
         unsafe { Vector3f::from_raw(sfSoundStream_getPosition(self.sf_sound_stream)) }
     }
     fn is_relative_to_listener(&self) -> bool {
         unsafe { sfSoundStream_isRelativeToListener(self.sf_sound_stream).to_bool() }
     }
-    fn get_min_distance(&self) -> f32 {
+    fn min_distance(&self) -> f32 {
         unsafe { sfSoundStream_getMinDistance(self.sf_sound_stream) }
     }
-    fn get_attenuation(&self) -> f32 {
+    fn attenuation(&self) -> f32 {
         unsafe { sfSoundStream_getAttenuation(self.sf_sound_stream) }
     }
 }

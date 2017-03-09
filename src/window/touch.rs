@@ -28,7 +28,7 @@
 //! }
 //!
 //! // get global position of touch 1
-//! let _global_pos = touch::get_position(1);
+//! let _global_pos = touch::desktop_position(1);
 //!
 //! // get position of touch 1 relative to a window
 //! let _relative_pos = window.touch_position(1);
@@ -47,6 +47,6 @@ pub fn is_down(finger: u32) -> bool {
 /// Get the current position of a touch in desktop coordinates.
 ///
 /// This function returns the current touch position in global (desktop) coordinates.
-pub fn get_desktop_position(finger: u32) -> Vector2i {
+pub fn desktop_position(finger: u32) -> Vector2i {
     unsafe { FromRaw::from_raw(sfTouch_getPosition(finger, ::std::ptr::null())) }
 }

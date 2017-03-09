@@ -164,7 +164,7 @@ impl<'s> Transformable for CircleShape<'s> {
     fn set_origin2f(&mut self, x: f32, y: f32) {
         unsafe { ffi::sfCircleShape_setOrigin(self.circle_shape, sfVector2f { x: x, y: y }) }
     }
-    fn get_position(&self) -> Vector2f {
+    fn position(&self) -> Vector2f {
         unsafe { Vector2f::from_raw(ffi::sfCircleShape_getPosition(self.circle_shape)) }
     }
     fn get_rotation(&self) -> f32 {

@@ -130,30 +130,30 @@ fn main() {
             let delta_time = clock.restart().as_seconds();
 
             // Move the player's paddle
-            if Key::Up.is_pressed() && (left_paddle.get_position().y - paddle_size.y / 2. > 5.) {
+            if Key::Up.is_pressed() && (left_paddle.position().y - paddle_size.y / 2. > 5.) {
                 left_paddle.move2f(0., -paddle_speed * delta_time);
             }
             if Key::Down.is_pressed() &&
-               (left_paddle.get_position().y + paddle_size.y / 2. < game_height as f32 - 5.) {
+               (left_paddle.position().y + paddle_size.y / 2. < game_height as f32 - 5.) {
                 left_paddle.move2f(0., paddle_speed * delta_time);
             }
 
             // Move the computer's paddle
             if ((right_paddle_speed < 0.) &&
-                (right_paddle.get_position().y - paddle_size.y / 2. > 5.)) ||
+                (right_paddle.position().y - paddle_size.y / 2. > 5.)) ||
                ((right_paddle_speed > 0.) &&
-                (right_paddle.get_position().y + paddle_size.y / 2. < game_height as f32 - 5.)) {
+                (right_paddle.position().y + paddle_size.y / 2. < game_height as f32 - 5.)) {
                 right_paddle.move2f(0., right_paddle_speed * delta_time);
             }
 
             // Update the computer's paddle direction according to the ball position
             if ai_timer.elapsed_time().as_microseconds() > ai_time.as_microseconds() {
                 ai_timer.restart();
-                if ball.get_position().y + ball_radius >
-                   right_paddle.get_position().y + paddle_size.y / 2. {
+                if ball.position().y + ball_radius >
+                   right_paddle.position().y + paddle_size.y / 2. {
                     right_paddle_speed = paddle_speed;
-                } else if ball.get_position().y - ball_radius <
-                          right_paddle.get_position().y - paddle_size.y / 2. {
+                } else if ball.position().y - ball_radius <
+                          right_paddle.position().y - paddle_size.y / 2. {
                     right_paddle_speed = -paddle_speed;
                 } else {
                     right_paddle_speed = 0.;
@@ -165,67 +165,67 @@ fn main() {
             ball.move_(&Vector2f::new(ball_angle.cos() * factor, ball_angle.sin() * factor));
 
             // Check collisions between the ball and the screen
-            if ball.get_position().x - ball_radius < 0. {
+            if ball.position().x - ball_radius < 0. {
                 is_playing = false;
                 pause_message.set_string("You lost !\nPress space to restart or\nescape to exit");
             }
-            if ball.get_position().x + ball_radius > game_width as f32 {
+            if ball.position().x + ball_radius > game_width as f32 {
                 is_playing = false;
                 pause_message.set_string("You won !\nPress space to restart or\nescape to exit");
             }
-            if ball.get_position().y - ball_radius < 0. {
+            if ball.position().y - ball_radius < 0. {
                 ball_sound.play();
                 ball_angle = -ball_angle;
-                let p = ball.get_position().x;
+                let p = ball.position().x;
                 ball.set_position(&Vector2f::new(p, ball_radius + 0.1));
             }
-            if ball.get_position().y + ball_radius > game_height as f32 {
+            if ball.position().y + ball_radius > game_height as f32 {
                 ball_sound.play();
                 ball_angle = -ball_angle;
-                let p = ball.get_position().x;
+                let p = ball.position().x;
                 ball.set_position(&Vector2f::new(p, game_height as f32 - ball_radius - 0.1));
             }
 
             // Check the collisions between the ball and the paddles
             // Left Paddle
-            if ball.get_position().x - ball_radius <
-               left_paddle.get_position().x + paddle_size.x / 2. &&
-               ball.get_position().x - ball_radius > left_paddle.get_position().x &&
-               ball.get_position().y + ball_radius >=
-               left_paddle.get_position().y - paddle_size.y / 2. &&
-               ball.get_position().y - ball_radius <=
-               left_paddle.get_position().y + paddle_size.y / 2. {
-                if ball.get_position().y > left_paddle.get_position().y {
+            if ball.position().x - ball_radius <
+               left_paddle.position().x + paddle_size.x / 2. &&
+               ball.position().x - ball_radius > left_paddle.position().x &&
+               ball.position().y + ball_radius >=
+               left_paddle.position().y - paddle_size.y / 2. &&
+               ball.position().y - ball_radius <=
+               left_paddle.position().y + paddle_size.y / 2. {
+                if ball.position().y > left_paddle.position().y {
                     ball_angle = PI - ball_angle + rng.gen_range(0., 20.) * PI / 180.;
                 } else {
                     ball_angle = PI - ball_angle - rng.gen_range(0., 20.) * PI / 180.;
                 }
 
                 ball_sound.play();
-                let p = ball.get_position().y;
-                ball.set_position(&Vector2f::new(left_paddle.get_position().x + ball_radius +
+                let p = ball.position().y;
+                ball.set_position(&Vector2f::new(left_paddle.position().x + ball_radius +
                                                  paddle_size.x / 2. +
                                                  0.1,
                                                  p));
             }
 
             // Right Paddle
-            if ball.get_position().x + ball_radius >
-               right_paddle.get_position().x - paddle_size.x / 2. &&
-               ball.get_position().x + ball_radius < right_paddle.get_position().x &&
-               ball.get_position().y + ball_radius >=
-               right_paddle.get_position().y - paddle_size.y / 2. &&
-               ball.get_position().y - ball_radius <=
-               right_paddle.get_position().y + paddle_size.y / 2. {
-                if ball.get_position().y > right_paddle.get_position().y {
+            if ball.position().x + ball_radius >
+               right_paddle.position().x - paddle_size.x / 2. &&
+               ball.position().x + ball_radius < right_paddle.position().x &&
+               ball.position().y + ball_radius >=
+               right_paddle.position().y - paddle_size.y / 2. &&
+               ball.position().y - ball_radius <=
+               right_paddle.position().y + paddle_size.y / 2. {
+                if ball.position().y > right_paddle.position().y {
                     ball_angle = PI - ball_angle + rng.gen_range(0., 20.) * PI / 180.;
                 } else {
                     ball_angle = PI - ball_angle - rng.gen_range(0., 20.) * PI / 180.;
                 }
 
                 ball_sound.play();
-                let p = ball.get_position().y;
-                ball.set_position(&Vector2f::new(right_paddle.get_position().x - ball_radius -
+                let p = ball.position().y;
+                ball.set_position(&Vector2f::new(right_paddle.position().x - ball_radius -
                                                  paddle_size.x / 2. -
                                                  0.1,
                                                  p));

@@ -242,7 +242,7 @@ impl<'s> Transformable for Sprite<'s> {
     fn set_origin2f(&mut self, x: f32, y: f32) {
         unsafe { ffi::sfSprite_setOrigin(self.sprite, sfVector2f { x: x, y: y }) }
     }
-    fn get_position(&self) -> Vector2f {
+    fn position(&self) -> Vector2f {
         unsafe { Vector2f::from_raw(ffi::sfSprite_getPosition(self.sprite)) }
     }
     fn get_rotation(&self) -> f32 {

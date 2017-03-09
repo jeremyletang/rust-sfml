@@ -96,7 +96,7 @@ pub fn set_position3f(x: f32, y: f32, z: f32) {
 /// Get the current position of the listener in the scene
 ///
 /// Return the listener's position
-pub fn get_position() -> Vector3f {
+pub fn position() -> Vector3f {
     unsafe { Vector3f::from_raw(ffi::sfListener_getPosition()) }
 }
 

@@ -155,7 +155,7 @@ impl<'s> Transformable for ConvexShape<'s> {
     fn set_origin2f(&mut self, x: f32, y: f32) {
         unsafe { ffi::sfConvexShape_setOrigin(self.convex_shape, sfVector2f { x: x, y: y }) }
     }
-    fn get_position(&self) -> Vector2f {
+    fn position(&self) -> Vector2f {
         unsafe { Vector2f::from_raw(ffi::sfConvexShape_getPosition(self.convex_shape)) }
     }
     fn get_rotation(&self) -> f32 {
