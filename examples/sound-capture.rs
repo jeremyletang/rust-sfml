@@ -42,9 +42,9 @@ fn main() {
 
     // Display captured sound informations
     println!("Sound informations :");
-    println!(" {} seconds", buffer.get_duration().as_seconds());
-    println!(" {} samples / sec", buffer.get_sample_rate());
-    println!(" {} channels", buffer.get_channel_count());
+    println!(" {} seconds", buffer.duration().as_seconds());
+    println!(" {} samples / sec", buffer.sample_rate());
+    println!(" {} channels", buffer.channel_count());
 
 
     // Choose what to do with the recorded sound data

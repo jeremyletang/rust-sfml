@@ -117,7 +117,7 @@ impl SoundBufferRef {
     /// get_samples function.
     ///
     /// Return the number of samples
-    pub fn get_sample_count(&self) -> i64 {
+    pub fn sample_count(&self) -> i64 {
         unsafe { ffi::sfSoundBuffer_getSampleCount(self as *const _ as _) as i64 }
     }
 
@@ -127,14 +127,14 @@ impl SoundBufferRef {
     /// be 1, 2 for stereo, etc.
     ///
     /// Return the number of channels
-    pub fn get_channel_count(&self) -> u32 {
+    pub fn channel_count(&self) -> u32 {
         unsafe { ffi::sfSoundBuffer_getChannelCount(self as *const _ as _) as u32 }
     }
 
     /// Get the total duration of a sound buffer
     ///
     /// Return the sound duration
-    pub fn get_duration(&self) -> Time {
+    pub fn duration(&self) -> Time {
         unsafe { Time::from_raw(ffi::sfSoundBuffer_getDuration(self as *const _ as _)) }
     }
 
@@ -145,7 +145,7 @@ impl SoundBufferRef {
     /// samples/s is CD quality).
     ///
     /// Return the sample rate (number of samples per second)
-    pub fn get_sample_rate(&self) -> u32 {
+    pub fn sample_rate(&self) -> u32 {
         unsafe { ffi::sfSoundBuffer_getSampleRate(self as *const _ as _) as u32 }
     }
 }

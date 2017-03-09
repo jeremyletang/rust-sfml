@@ -10,9 +10,9 @@ fn play_sound() {
 
     // Display sound informations
     println!("canary.wav :");
-    println!(" {} seconds", buffer.get_duration().as_seconds());
-    println!(" {} samples / sec", buffer.get_sample_rate());
-    println!(" {} channels", buffer.get_channel_count());
+    println!(" {} seconds", buffer.duration().as_seconds());
+    println!(" {} samples / sec", buffer.sample_rate());
+    println!(" {} channels", buffer.channel_count());
 
     let mut sound = Sound::with_buffer(&buffer);
     sound.play();
