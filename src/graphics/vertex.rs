@@ -21,14 +21,6 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
-//! Define a point with color and texture coordinates
-//!
-//! A vertex is an improved point.
-//!
-//! It has a position and other extra attributes that will be used for drawing:
-//! in SFML, vertices also have a color and a pair of texture coordinates.
-
 use graphics::Color;
 use system::Vector2f;
 use csfml_graphics_sys as ffi;

@@ -21,12 +21,6 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-//! 2D camera that defines what region is shown on screen
-//!
-//! This is a very powerful concept: you can scroll,
-//! rotate or zoom the entire scene without altering
-//! the way that your drawable objects are drawn.
-
 use system::raw_conv::{Raw, FromRaw};
 use graphics::FloatRect;
 use system::Vector2f;

@@ -21,8 +21,6 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-//! Specialized socket using the UDP protocol
-
 use std::{ptr, mem};
 
 use system::raw_conv::{Raw, FromRaw};

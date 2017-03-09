@@ -21,8 +21,6 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-//! base transformable trait
-
 use graphics::Transform;
 use system::Vector2f;
 

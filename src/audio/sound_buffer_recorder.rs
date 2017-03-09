@@ -21,11 +21,6 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-//! Store captured audio data in sound Buffer
-//!
-//! `SoundBufferRecorder` allows to access a recorded sound through a `SoundBuffer`,
-//! so that it can be played, saved to a file, etc.
-
 use audio::sound_buffer::SoundBufferRef;
 
 use csfml_audio_sys as ffi;

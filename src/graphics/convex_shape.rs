@@ -21,13 +21,6 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-//! Specialized shape representing a convex polygon
-//!
-//! It is important to keep in mind that a convex shape must
-//! always be... convex, otherwise it may not be drawn correctly.
-//! Moreover, the points must be defined in order; using a random
-//! order would result in an incorrect shape.
-
 use std::ptr;
 
 use system::raw_conv::{Raw, FromRaw};

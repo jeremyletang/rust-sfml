@@ -21,11 +21,6 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-//! Drawable trait
-//!
-//! Implemented by each drawable object to specifiy their drawing operations for
-//! `RenderTarget`s.
-
 use graphics::{RenderStates, RenderTarget};
 
 /// The trait drawable is inherited by each object who can be drawn in a `RenderTarget`

@@ -21,11 +21,6 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-//! Graphical text
-//!
-//! Text is a drawable class that allows to easily
-//! display some text with custom style and color on a render target.
-
 use std::str;
 
 use system::raw_conv::{Raw, FromRaw};

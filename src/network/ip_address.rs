@@ -21,8 +21,6 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-//! Encapsulate an IPv4 network address.
-
 use std::ffi::{CString, CStr};
 use std::str;
 

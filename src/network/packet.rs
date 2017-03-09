@@ -21,8 +21,6 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-//! Utility class to build blocks of data to transfer over the network.
-
 use std::ffi::CString;
 
 use system::raw_conv::{Raw, FromRaw};

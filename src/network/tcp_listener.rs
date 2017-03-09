@@ -21,8 +21,6 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-//! Socket that listens to new TCP connections
-
 use std::mem;
 
 use system::raw_conv::Raw;

@@ -21,8 +21,6 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-//! Specialized shape representing a rectangle
-
 use std::ptr;
 
 use system::raw_conv::{Raw, FromRaw};

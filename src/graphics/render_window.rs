@@ -21,13 +21,6 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-//! Window that can serve as a target for 2D drawing.
-//!
-//! `RenderWindow` is the main class of the Graphics module.
-//! It defines an OS window that can be painted using the other classes
-//! of the graphics module.
-
-
 use system::raw_conv::{Raw, RawMut, FromRaw};
 use window::{ContextSettings, VideoMode, Event, Style};
 use system::{Vector2f, Vector2i, Vector2u};

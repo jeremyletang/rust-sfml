@@ -21,10 +21,6 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-//! Image used for drawing
-//!
-//! Texture stores pixels that can be drawn, with a sprite for example.
-
 use std::ptr;
 use std::ffi::CString;
 use std::io::{Read, Seek};

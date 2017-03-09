@@ -21,8 +21,6 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-//! Target for off-screen 2D rendering into a texture
-
 use system::raw_conv::{Raw, RawMut, FromRaw};
 use system::{Vector2f, Vector2i, Vector2u};
 use graphics::{Drawable, View, ViewRef, Color, IntRect, TextureRef, CircleShape, RectangleShape,

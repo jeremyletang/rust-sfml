@@ -21,8 +21,6 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-//! Define the states used for drawing to a `RenderTarget`
-
 use std::ptr;
 
 use system::raw_conv::{Raw, RawMut};

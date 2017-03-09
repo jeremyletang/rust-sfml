@@ -21,11 +21,6 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-//! Drawable representation of a texture
-//!
-//! Sprite is a drawable class that allows to easily
-//! display a texture (or a part of it) on a render target.
-
 use std::ptr;
 
 use system::raw_conv::{Raw, FromRaw};

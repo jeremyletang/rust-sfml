@@ -21,11 +21,6 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-//! Define a 3x3 transform matrix.
-//!
-//! A Transform specifies how to translate,
-//! rotate, scale, shear, project, whatever things.
-
 use system::Vector2f;
 use graphics::FloatRect;
 use system::raw_conv::{Raw, FromRaw};

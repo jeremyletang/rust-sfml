@@ -21,8 +21,6 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-//! Define a set of one or more 2D primitives
-
 use std::mem;
 use std::ops::Index;
 

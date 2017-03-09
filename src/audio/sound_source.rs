@@ -21,8 +21,6 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-//! Base trait for sounds source (music and sounds)
-
 use system::Vector3f;
 
 /// Base trait defining a sound's properties.

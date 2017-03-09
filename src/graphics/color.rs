@@ -21,10 +21,6 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-//! Utility class for manpulating RGBA colors
-//!
-//! Color is a simple color class composed of 4 components: Red, Green, Blue, Alpha
-
 use std::ops::{Add, Mul, Sub, AddAssign, MulAssign, SubAssign};
 
 use csfml_graphics_sys as ffi;

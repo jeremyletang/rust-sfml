@@ -21,13 +21,6 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
-//! Shader class (vertex and fragment)
-//!
-//! Shaders are programs written using a specific language, executed directly by
-//! the graphics card and allowing to apply real-time operations to the
-//!  rendered entities.
-
 use std::ptr;
 use std::ffi::CString;
 
