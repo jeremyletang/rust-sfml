@@ -42,7 +42,7 @@
 //! }
 //!
 //! // get global mouse position
-//! let _position = mouse::get_desktop_position();
+//! let _position = mouse::desktop_position();
 //!
 //! // set mouse position relative to a window
 //! window.set_mouse_position(Vector2i::new(100, 200));

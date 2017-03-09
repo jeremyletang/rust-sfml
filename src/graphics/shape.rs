@@ -59,30 +59,30 @@ pub trait Shape<'s>: Drawable + Transformable {
     /// Gets the source texture of the shape.
     ///
     /// If the shape has no source texture, None is returned.
-    fn get_texture(&self) -> Option<&'s Texture>;
+    fn texture(&self) -> Option<&'s Texture>;
     /// Gets the sub-rectangle of the texture displayed by the shape.
-    fn get_texture_rect(&self) -> IntRect;
+    fn texture_rect(&self) -> IntRect;
     /// Gets the fill color of this shape.
-    fn get_fill_color(&self) -> Color;
+    fn fill_color(&self) -> Color;
     /// Gets the outline color of this shape.
-    fn get_outline_color(&self) -> Color;
+    fn outline_color(&self) -> Color;
     /// Gets the outline thickness of this shape.
-    fn get_outline_thickness(&self) -> f32;
+    fn outline_thickness(&self) -> f32;
     /// Gets the total number of points of the shape.
-    fn get_point_count(&self) -> u32;
+    fn point_count(&self) -> u32;
     /// Gets a point of the shape.
     ///
     /// The returned point is in local coordinates, that is, the shape's transforms
     /// (position, rotation, scale) are not taken into account.
-    /// The result is unspecified if index is out of the valid range (`0..get_point_count()`).
-    fn get_point(&self, index: u32) -> Vector2f;
+    /// The result is unspecified if index is out of the valid range (`0..point_count()`).
+    fn point(&self, index: u32) -> Vector2f;
     /// Gets the local bounding rectangle of the entity.
     ///
     /// The returned rectangle is in local coordinates, which means that it ignores the
     /// transformations (translation, rotation, scale, ...) that are applied to the entity.
     /// In other words, this function returns the bounds of the entity in the entity's
     /// coordinate system.
-    fn get_local_bounds(&self) -> FloatRect;
+    fn local_bounds(&self) -> FloatRect;
     /// Gets the global (non-minimal) bounding rectangle of the entity.
     ///
     /// The returned rectangle is in global coordinates,
@@ -95,5 +95,5 @@ pub trait Shape<'s>: Drawable + Transformable {
     /// It merely ensures that the returned rectangle covers all the vertices (but possibly more).
     /// This allows for a fast approximation of the bounds as a first check;
     /// you may want to use more precise checks on top of that.
-    fn get_global_bounds(&self) -> FloatRect;
+    fn global_bounds(&self) -> FloatRect;
 }

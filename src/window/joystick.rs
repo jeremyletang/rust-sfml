@@ -60,7 +60,7 @@
 //!     // Is button #2 pressed on joystick #0?
 //!     let _pressed = joystick::is_button_pressed(0, 2);
 //!     // What's the current position of the Y axis on joystick #0?
-//!     let _position = joystick::get_axis_position(0, joystick::Axis::Y);
+//!     let _position = joystick::axis_position(0, joystick::Axis::Y);
 //! }
 //! ```
 //!
@@ -187,7 +187,7 @@ pub fn is_button_pressed(joystick: u32, button: u32) -> bool {
  *
  * Return the current position of the axis, in range [-100 .. 100]
  */
-pub fn get_axis_position(joystick: u32, axis: Axis) -> f32 {
+pub fn axis_position(joystick: u32, axis: Axis) -> f32 {
     unsafe { ffi::sfJoystick_getAxisPosition(joystick, axis.raw()) as f32 }
 }
 
@@ -207,7 +207,7 @@ pub fn update() {
 }
 
 /// Get the joystick information.
-pub fn get_identification(joystick: u32) -> Identification {
+pub fn identification(joystick: u32) -> Identification {
     use std::ffi::CStr;
 
     let raw = unsafe { ffi::sfJoystick_getIdentification(joystick) };

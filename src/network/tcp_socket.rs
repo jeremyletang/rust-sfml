@@ -77,7 +77,7 @@ impl TcpSocket {
     /// returns 0.
     ///
     /// Return the port to which the socket is bound
-    pub fn get_local_port(&self) -> u16 {
+    pub fn local_port(&self) -> u16 {
         unsafe { ffi::sfTcpSocket_getLocalPort(self.socket) }
     }
 
@@ -87,7 +87,7 @@ impl TcpSocket {
     /// sfIpAddress_None.
     ///
     /// Return the address of the remote peer
-    pub fn get_remote_address(&self) -> IpAddress {
+    pub fn remote_address(&self) -> IpAddress {
         unsafe { IpAddress::from_raw(ffi::sfTcpSocket_getRemoteAddress(self.socket)) }
     }
 
@@ -97,7 +97,7 @@ impl TcpSocket {
     /// If the socket is not connected, this function returns 0.
     ///
     /// Return the remote port to which the socket is connected
-    pub fn get_remote_port(&self) -> u16 {
+    pub fn remote_port(&self) -> u16 {
         unsafe { ffi::sfTcpSocket_getRemotePort(self.socket) }
     }
 

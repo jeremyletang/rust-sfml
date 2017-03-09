@@ -212,12 +212,12 @@ impl Image {
     /// * y - Y coordinate of pixel to get
     ///
     /// Return the Color of the pixel at coordinates (x, y)
-    pub fn get_pixel(&self, x: u32, y: u32) -> Color {
+    pub fn pixel_at(&self, x: u32, y: u32) -> Color {
         unsafe { Color::from_raw(ffi::sfImage_getPixel(self.image, x, y)) }
     }
 
     /// Return the memory buffer of this image.
-    pub fn get_memory(&self) -> &[u8] {
+    pub fn pixel_data(&self) -> &[u8] {
         unsafe {
             let size = self.size();
             let pixels = ffi::sfImage_getPixelsPtr(self.image);

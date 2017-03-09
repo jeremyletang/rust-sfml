@@ -88,7 +88,7 @@ impl<'s> Text<'s> {
     }
 
     /// Get the string of a text
-    pub fn get_string(&self) -> String {
+    pub fn string(&self) -> String {
         unsafe {
             let utf32: *const u32 = ffi::sfText_getUnicodeString(self.text);
             let slice: &[u32] = ::std::slice::from_raw_parts(utf32, self.string_length);
@@ -99,7 +99,7 @@ impl<'s> Text<'s> {
     /// Get the size of the characters
     ///
     /// Return the size of the characters
-    pub fn get_character_size(&self) -> u32 {
+    pub fn character_size(&self) -> u32 {
         unsafe { ffi::sfText_getCharacterSize(self.text) as u32 }
     }
 
@@ -143,7 +143,7 @@ impl<'s> Text<'s> {
     /// Get the style of a text
     ///
     /// Return the current string style (see Style enum)
-    pub fn get_style(&self) -> TextStyle {
+    pub fn style(&self) -> TextStyle {
         unsafe { TextStyle::from_bits_truncate(ffi::sfText_getStyle(self.text)) }
     }
 
@@ -151,7 +151,7 @@ impl<'s> Text<'s> {
     /// If the text has no font attached, a None is returned.
     /// The returned pointer is const, which means that you can't
     /// modify the font when you retrieve it with this function.
-    pub fn get_font(&self) -> Option<&'s Font> {
+    pub fn font(&self) -> Option<&'s Font> {
         self.font
     }
 
@@ -221,7 +221,7 @@ impl<'s> Text<'s> {
     /// entity in the entity's coordinate system.
     ///
     /// Return the local bounding rectangle of the entity
-    pub fn get_local_bounds(&self) -> FloatRect {
+    pub fn local_bounds(&self) -> FloatRect {
         unsafe { FloatRect::from_raw(ffi::sfText_getLocalBounds(self.text)) }
     }
 
@@ -234,7 +234,7 @@ impl<'s> Text<'s> {
     /// text in the global 2D world's coordinate system.
     ///
     /// Return the global bounding rectangle of the entity
-    pub fn get_global_bounds(&self) -> FloatRect {
+    pub fn global_bounds(&self) -> FloatRect {
         unsafe { FloatRect::from_raw(ffi::sfText_getGlobalBounds(self.text)) }
     }
 }
@@ -298,13 +298,13 @@ impl<'s> Transformable for Text<'s> {
     fn position(&self) -> Vector2f {
         unsafe { Vector2f::from_raw(ffi::sfText_getPosition(self.text)) }
     }
-    fn get_rotation(&self) -> f32 {
+    fn rotation(&self) -> f32 {
         unsafe { ffi::sfText_getRotation(self.text) as f32 }
     }
     fn get_scale(&self) -> Vector2f {
         unsafe { Vector2f::from_raw(ffi::sfText_getScale(self.text)) }
     }
-    fn get_origin(&self) -> Vector2f {
+    fn origin(&self) -> Vector2f {
         unsafe { Vector2f::from_raw(ffi::sfText_getOrigin(self.text)) }
     }
     fn move_(&mut self, offset: &Vector2f) {
@@ -334,10 +334,10 @@ impl<'s> Transformable for Text<'s> {
                               })
         }
     }
-    fn get_transform(&self) -> Transform {
+    fn transform(&self) -> Transform {
         unsafe { Transform(ffi::sfText_getTransform(self.text)) }
     }
-    fn get_inverse_transform(&self) -> Transform {
+    fn inverse_transform(&self) -> Transform {
         unsafe { Transform(ffi::sfText_getInverseTransform(self.text)) }
     }
 }

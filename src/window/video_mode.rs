@@ -39,13 +39,13 @@ use ext::sf_bool_ext::SfBoolExt;
 /// the graphics card support), otherwise your window creation will just fail.
 ///
 /// `VideoMode` provides an associated function for retrieving the list of all the video modes
-/// supported by the system: `get_fullscreen_modes()`.
+/// supported by the system: `fullscreen_modes()`.
 ///
 /// A custom video mode can also be checked directly for fullscreen compatibility
 /// with its `is_valid()` function.
 ///
 /// Additionally, `VideoMode` provides a static function to get the mode currently used by
-/// the desktop: `get_desktop_mode`. This allows to build windows with the same size or
+/// the desktop: `desktop_mode`. This allows to build windows with the same size or
 /// pixel depth as the current resolution.
 ///
 /// # Usage example
@@ -54,14 +54,14 @@ use ext::sf_bool_ext::SfBoolExt;
 /// use sfml::window::{VideoMode, Window, style};
 ///
 /// // Display the list of all the video modes available for fullscreen
-/// let modes = VideoMode::get_fullscreen_modes();
+/// let modes = VideoMode::fullscreen_modes();
 ///
 /// for mode in modes {
 ///     println!("{:?}", mode);
 /// }
 ///
 /// // Create a window with the same pixel depth as the desktop
-/// let desktop = VideoMode::get_desktop_mode();
+/// let desktop = VideoMode::desktop_mode();
 /// let _window = Window::new(VideoMode::new(1024, 768, desktop.bits_per_pixel),
 ///                           "SFML window",
 ///                           style::CLOSE,
@@ -110,7 +110,7 @@ impl VideoMode {
     /// Static Method, get the current desktop video mode
     ///
     /// return the urrent desktop video mode
-    pub fn get_desktop_mode() -> VideoMode {
+    pub fn desktop_mode() -> VideoMode {
         let mode = unsafe { ffi::sfVideoMode_getDesktopMode() };
         VideoMode {
             width: mode.width as u32,
@@ -130,7 +130,7 @@ impl VideoMode {
     /// width, height and bits_per_pixel).
     ///
     /// Return a vector containing all the supported VideoMode
-    pub fn get_fullscreen_modes() -> Vec<VideoMode> {
+    pub fn fullscreen_modes() -> Vec<VideoMode> {
         let mut size = 0;
         let tab = unsafe { ffi::sfVideoMode_getFullscreenModes(&mut size) };
         if size == 0 {

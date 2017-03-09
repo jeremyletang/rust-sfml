@@ -184,7 +184,7 @@ impl ListingResponse {
     /// Get the full message contained in a FTP listing response
     ///
     /// Return the response message
-    pub fn get_message(&self) -> String {
+    pub fn message(&self) -> String {
         unsafe {
             let string = ffi::sfFtpListingResponse_getMessage(self.listing_response);
             str::from_utf8(CStr::from_ptr(string).to_bytes_with_nul()).unwrap().into()
@@ -194,7 +194,7 @@ impl ListingResponse {
     /// Return the number of directory/file names contained in a FTP listing response
     ///
     /// Return the total number of names available
-    pub fn get_count(&self) -> u64 {
+    pub fn count(&self) -> u64 {
         unsafe { ffi::sfFtpListingResponse_getCount(self.listing_response) as u64 }
     }
 
@@ -204,7 +204,7 @@ impl ListingResponse {
     /// * index - Index of the name to get (in range [0 .. getCount])
     ///
     /// Return the requested name
-    pub fn get_name(&self, index: usize) -> String {
+    pub fn name(&self, index: usize) -> String {
         unsafe {
             let string = ffi::sfFtpListingResponse_getName(self.listing_response, index);
             str::from_utf8(CStr::from_ptr(string).to_bytes_with_nul()).unwrap().into()
@@ -241,7 +241,7 @@ impl DirectoryResponse {
     /// Get the full message contained in a FTP directory response
     ///
     /// Return the response message
-    pub fn get_message(&self) -> String {
+    pub fn message(&self) -> String {
         unsafe {
             let string = ffi::sfFtpDirectoryResponse_getMessage(self.directory_response);
             str::from_utf8(CStr::from_ptr(string).to_bytes_with_nul()).unwrap().into()
@@ -251,7 +251,7 @@ impl DirectoryResponse {
     /// Get the directory returned in a FTP directory response
     ///
     /// Return the directory name
-    pub fn get_directory(&self) -> String {
+    pub fn directory(&self) -> String {
         unsafe {
             let string = ffi::sfFtpDirectoryResponse_getDirectory(self.directory_response);
             str::from_utf8(CStr::from_ptr(string).to_bytes_with_nul()).unwrap().into()
@@ -286,7 +286,7 @@ impl Response {
     /// Get the full message contained in a FTP response
     ///
     /// Return the response message
-    pub fn get_message(&self) -> String {
+    pub fn message(&self) -> String {
         unsafe {
             let string = ffi::sfFtpResponse_getMessage(self.response);
             str::from_utf8(CStr::from_ptr(string).to_bytes_with_nul()).unwrap().into()
@@ -389,7 +389,7 @@ impl Ftp {
     /// operations involving directories and/or filenames.
     ///
     /// Return the server response to the request
-    pub fn get_working_directory(&self) -> DirectoryResponse {
+    pub fn working_directory(&self) -> DirectoryResponse {
         DirectoryResponse {
             directory_response: unsafe { ffi::sfFtp_getWorkingDirectory(self.ftp) },
         }
@@ -406,7 +406,7 @@ impl Ftp {
     /// * directory - Directory to list
     ///
     /// Return the server response to the request
-    pub fn get_directory_listing(&self, directory: &str) -> ListingResponse {
+    pub fn directory_listing(&self, directory: &str) -> ListingResponse {
         let c_directory = CString::new(directory.as_bytes()).unwrap();
         ListingResponse {
             listing_response: unsafe {

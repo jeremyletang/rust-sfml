@@ -44,7 +44,7 @@ fn main() {
                     if code == Key::W {
                         window.set_mouse_position(&Vector2i::new(400, 300));
                     } else if code == Key::D {
-                        let dm = VideoMode::get_desktop_mode();
+                        let dm = VideoMode::desktop_mode();
                         let center = Vector2i::new(dm.width as i32 / 2, dm.height as i32 / 2);
                         mouse::set_desktop_position(&center);
                     } else if code == Key::V {
@@ -86,8 +86,8 @@ fn main() {
         for i in (0..texts.len()).rev() {
             for j in (0..i).rev() {
                 if let Some(intersect) = texts[i]
-                    .get_global_bounds()
-                    .intersection(&texts[j].get_global_bounds()) {
+                    .global_bounds()
+                    .intersection(&texts[j].global_bounds()) {
                     texts[j].move2f(0., -intersect.height);
                 }
             }

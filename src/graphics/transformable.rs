@@ -77,11 +77,11 @@ pub trait Transformable {
     /// Gets the rotation of the object.
     ///
     /// The rotation is always in the range [0, 360].
-    fn get_rotation(&self) -> f32;
+    fn rotation(&self) -> f32;
     /// Gets the current scale of the object.
     fn get_scale(&self) -> Vector2f;
     /// Gets the local origin of the object.
-    fn get_origin(&self) -> Vector2f;
+    fn origin(&self) -> Vector2f;
     /// Moves the object by a given offset.
     ///
     /// This function adds to the current position of the object,
@@ -108,7 +108,7 @@ pub trait Transformable {
     /// which overwrites it.
     fn scale2f(&mut self, factor_x: f32, factor_y: f32);
     /// Gets the combined transform of the object.
-    fn get_transform(&self) -> Transform;
+    fn transform(&self) -> Transform;
     /// Gets the inverse combined transform of the object.
-    fn get_inverse_transform(&self) -> Transform;
+    fn inverse_transform(&self) -> Transform;
 }

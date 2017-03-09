@@ -30,7 +30,7 @@
 //!     // enable the gravity sensor
 //!     sensor::set_enabled(sensor::Type::Gravity, true);
 //!     // get the current value of gravity
-//!     let _gravity = sensor::get_value(sensor::Type::Gravity);
+//!     let _gravity = sensor::value(sensor::Type::Gravity);
 //! }
 //! ```
 
@@ -40,7 +40,7 @@ use ext::sf_bool_ext::SfBoolExt;
 use system::raw_conv::{Raw, FromRaw};
 
 /// Get the current sensor value.
-pub fn get_value(sensor: Type) -> Vector3f {
+pub fn value(sensor: Type) -> Vector3f {
     unsafe { FromRaw::from_raw(sfSensor_getValue(sensor.raw())) }
 }
 

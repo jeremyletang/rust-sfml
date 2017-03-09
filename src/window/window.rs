@@ -217,7 +217,7 @@ impl Window {
     /// SFML chose the closest match.
     ///
     /// Return a structure containing the OpenGL context settings
-    pub fn get_settings(&self) -> ContextSettings {
+    pub fn settings(&self) -> ContextSettings {
         unsafe { ContextSettings::from_raw(ffi::sfWindow_getSettings(self.window)) }
     }
 

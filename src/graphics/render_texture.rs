@@ -73,10 +73,10 @@ impl RenderTexture {
     /// Get the target texture of a render texture
     ///
     /// Return the target texture
-    pub fn get_texture(&self) -> &TextureRef {
+    pub fn texture(&self) -> &TextureRef {
         let tex = unsafe { ffi::sfRenderTexture_getTexture(self.render_texture) };
         if tex.is_null() {
-            panic!("RenderTexture::get_texture: Texture is null")
+            panic!("RenderTexture::texture: Texture is null")
         } else {
             unsafe { &*(tex as *const TextureRef) }
         }
@@ -147,14 +147,14 @@ impl RenderTarget for RenderTexture {
     /// Get the current active view of a render texture
     ///
     /// Return the current active view
-    fn get_view(&self) -> &ViewRef {
+    fn view(&self) -> &ViewRef {
         unsafe { &*(ffi::sfRenderTexture_getView(self.render_texture) as *const ViewRef) }
     }
 
     /// Get the default view of a render texture
     ///
     /// Return the default view of the render texture
-    fn get_default_view(&self) -> &ViewRef {
+    fn default_view(&self) -> &ViewRef {
         unsafe { &*(ffi::sfRenderTexture_getDefaultView(self.render_texture) as *const ViewRef) }
     }
 
@@ -164,7 +164,7 @@ impl RenderTarget for RenderTexture {
     /// * view - Target view
     ///
     /// Return the viewport rectangle, expressed in pixels in the current target
-    fn get_viewport(&self, view: &View) -> IntRect {
+    fn viewport(&self, view: &View) -> IntRect {
         unsafe {
             IntRect::from_raw(ffi::sfRenderTexture_getViewport(self.render_texture, view.raw()))
         }

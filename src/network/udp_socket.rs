@@ -76,7 +76,7 @@ impl UdpSocket {
     /// returns 0.
     ///
     /// Return the port to which the socket is bound
-    pub fn get_local_port(&self) -> u16 {
+    pub fn local_port(&self) -> u16 {
         unsafe { ffi::sfUdpSocket_getLocalPort(self.socket) }
     }
 

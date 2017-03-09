@@ -111,7 +111,7 @@ impl<'s> CircleShape<'s> {
     /// Set the radius of a circle
     ///
     /// Return the radius of the circle
-    pub fn get_radius(&self) -> f32 {
+    pub fn radius(&self) -> f32 {
         unsafe { ffi::sfCircleShape_getRadius(self.circle_shape) as f32 }
     }
 
@@ -167,13 +167,13 @@ impl<'s> Transformable for CircleShape<'s> {
     fn position(&self) -> Vector2f {
         unsafe { Vector2f::from_raw(ffi::sfCircleShape_getPosition(self.circle_shape)) }
     }
-    fn get_rotation(&self) -> f32 {
+    fn rotation(&self) -> f32 {
         unsafe { ffi::sfCircleShape_getRotation(self.circle_shape) as f32 }
     }
     fn get_scale(&self) -> Vector2f {
         unsafe { Vector2f::from_raw(ffi::sfCircleShape_getScale(self.circle_shape)) }
     }
-    fn get_origin(&self) -> Vector2f {
+    fn origin(&self) -> Vector2f {
         unsafe { Vector2f::from_raw(ffi::sfCircleShape_getOrigin(self.circle_shape)) }
     }
     fn move_(&mut self, offset: &Vector2f) {
@@ -203,10 +203,10 @@ impl<'s> Transformable for CircleShape<'s> {
                                      })
         }
     }
-    fn get_transform(&self) -> Transform {
+    fn transform(&self) -> Transform {
         unsafe { Transform(ffi::sfCircleShape_getTransform(self.circle_shape)) }
     }
-    fn get_inverse_transform(&self) -> Transform {
+    fn inverse_transform(&self) -> Transform {
         unsafe { Transform(ffi::sfCircleShape_getInverseTransform(self.circle_shape)) }
     }
 }
@@ -236,33 +236,33 @@ impl<'s> Shape<'s> for CircleShape<'s> {
     fn set_outline_thickness(&mut self, thickness: f32) {
         unsafe { ffi::sfCircleShape_setOutlineThickness(self.circle_shape, thickness) }
     }
-    fn get_texture(&self) -> Option<&'s Texture> {
+    fn texture(&self) -> Option<&'s Texture> {
         self.texture
     }
-    fn get_texture_rect(&self) -> IntRect {
+    fn texture_rect(&self) -> IntRect {
         unsafe { IntRect::from_raw(ffi::sfCircleShape_getTextureRect(self.circle_shape)) }
     }
-    fn get_fill_color(&self) -> Color {
+    fn fill_color(&self) -> Color {
         unsafe { Color::from_raw(ffi::sfCircleShape_getFillColor(self.circle_shape)) }
     }
-    fn get_outline_color(&self) -> Color {
+    fn outline_color(&self) -> Color {
         unsafe { Color::from_raw(ffi::sfCircleShape_getOutlineColor(self.circle_shape)) }
     }
-    fn get_outline_thickness(&self) -> f32 {
+    fn outline_thickness(&self) -> f32 {
         unsafe { ffi::sfCircleShape_getOutlineThickness(self.circle_shape) as f32 }
     }
-    fn get_point_count(&self) -> u32 {
+    fn point_count(&self) -> u32 {
         unsafe { ffi::sfCircleShape_getPointCount(self.circle_shape) as u32 }
     }
-    fn get_point(&self, index: u32) -> Vector2f {
+    fn point(&self, index: u32) -> Vector2f {
         unsafe {
             Vector2f::from_raw(ffi::sfCircleShape_getPoint(self.circle_shape, index as usize))
         }
     }
-    fn get_local_bounds(&self) -> FloatRect {
+    fn local_bounds(&self) -> FloatRect {
         unsafe { FloatRect::from_raw(ffi::sfCircleShape_getLocalBounds(self.circle_shape)) }
     }
-    fn get_global_bounds(&self) -> FloatRect {
+    fn global_bounds(&self) -> FloatRect {
         unsafe { FloatRect::from_raw(ffi::sfCircleShape_getGlobalBounds(self.circle_shape)) }
     }
 }

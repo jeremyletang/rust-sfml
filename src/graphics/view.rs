@@ -53,13 +53,13 @@ impl ViewRef {
     /// Get the current orientation of a view
     ///
     /// Return the rotation angle of the view, in degrees
-    pub fn get_rotation(&self) -> f32 {
+    pub fn rotation(&self) -> f32 {
         unsafe { ffi::sfView_getRotation(self as *const _ as _) as f32 }
     }
     /// Get the center of a view
     ///
     /// Return the center of the view
-    pub fn get_center(&self) -> Vector2f {
+    pub fn center(&self) -> Vector2f {
         unsafe { Vector2f::from_raw(ffi::sfView_getCenter(self as *const _ as _)) }
     }
 
@@ -73,7 +73,7 @@ impl ViewRef {
     /// Get the target viewport rectangle of a view
     ///
     /// Return the viewport rectangle, expressed as a factor of the target size
-    pub fn get_viewport(&self) -> FloatRect {
+    pub fn viewport(&self) -> FloatRect {
         unsafe { FloatRect::from_raw(ffi::sfView_getViewport(self as *const _ as _)) }
     }
 }

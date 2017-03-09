@@ -9,7 +9,7 @@
 //! order to know if a touch is down), and you always get the real state of the touches,
 //! even if they happen when your window is out of focus and no event is triggered.
 //!
-//! The `get_position` function can be used to retrieve the current position of a touch.
+//! The `position` function can be used to retrieve the current position of a touch.
 //! There are two versions: one that operates in global coordinates (relative to the desktop)
 //! and one that operates in window coordinates (relative to a specific window).
 //!

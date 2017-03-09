@@ -104,7 +104,7 @@ impl Font {
     /// * characterSize - Character size, in pixels
     ///
     /// Return the kerning offset, in pixels
-    pub fn get_kerning(&self, first: u32, second: u32, character_size: u32) -> i32 {
+    pub fn kerning(&self, first: u32, second: u32, character_size: u32) -> i32 {
         unsafe { ffi::sfFont_getKerning(self.font, first, second, character_size) as i32 }
     }
 
@@ -114,7 +114,7 @@ impl Font {
     /// * characterSize - Character size, in pixels
     ///
     /// Return the line spacing, in pixels
-    pub fn get_line_spacing(&self, character_size: u32) -> i32 {
+    pub fn line_spacing(&self, character_size: u32) -> i32 {
         unsafe { ffi::sfFont_getLineSpacing(self.font, character_size) as i32 }
     }
 
@@ -124,10 +124,10 @@ impl Font {
     /// * characterSize - Character size, in pixels
     ///
     /// Return the texture
-    pub fn get_texture(&self, character_size: u32) -> &TextureRef {
+    pub fn texture(&self, character_size: u32) -> &TextureRef {
         let tex = unsafe { ffi::sfFont_getTexture(self.font, character_size) };
         if tex.is_null() {
-            panic!("Font::get_texture: texture is null");
+            panic!("Font::texture: texture is null");
         } else {
             unsafe { &*(tex as *const TextureRef) }
         }
@@ -141,7 +141,7 @@ impl Font {
     /// * bold - Retrieve the bold version or the regular one?
     ///
     /// Return the corresponding glyph
-    pub fn get_glyph(&self,
+    pub fn glyph(&self,
                      codepoint: u32,
                      character_size: u32,
                      bold: bool,

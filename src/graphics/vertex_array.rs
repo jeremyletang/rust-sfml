@@ -73,7 +73,7 @@ impl VertexArray {
     /// Return the vertex count of a vertex array
     ///
     /// Return the number of vertices in the array
-    pub fn get_vertex_count(&self) -> u32 {
+    pub fn vertex_count(&self) -> u32 {
         unsafe { sfVertexArray_getVertexCount(self.vertex_array) as u32 }
     }
 
@@ -115,7 +115,7 @@ impl VertexArray {
     /// contains all the vertices of the array.
     ///
     /// Return the bounding rectangle of the vertex array
-    pub fn get_bounds(&self) -> FloatRect {
+    pub fn bounds(&self) -> FloatRect {
         unsafe { FloatRect::from_raw(sfVertexArray_getBounds(self.vertex_array)) }
     }
 
@@ -158,7 +158,7 @@ impl VertexArray {
     /// Get the type of primitives drawn by a vertex array
     ///
     /// Return the primitive type
-    pub fn get_primitive_type(&self) -> PrimitiveType {
+    pub fn primitive_type(&self) -> PrimitiveType {
         match unsafe { sfVertexArray_getPrimitiveType(self.vertex_array) } {
             sfPoints => primitive_type::Points,
             sfLines => primitive_type::Lines,
@@ -180,7 +180,7 @@ impl VertexArray {
     /// * index - Index of the vertex to get
     ///
     /// Return a mutable reference to the index-th vertex
-    pub fn get_vertex(&mut self, index: u32) -> &mut Vertex {
+    pub fn vertex(&mut self, index: u32) -> &mut Vertex {
         unsafe { &mut *(sfVertexArray_getVertex(self.vertex_array, index as usize) as *mut Vertex) }
     }
 

@@ -49,16 +49,16 @@ pub trait RenderTarget {
     fn clear(&mut self, color: &Color);
 
     /// return the current view
-    fn get_view(&self) -> &ViewRef;
+    fn view(&self) -> &ViewRef;
 
     /// get the default view for the render target
-    fn get_default_view(&self) -> &ViewRef;
+    fn default_view(&self) -> &ViewRef;
 
     /// set a new view to the target
     fn set_view(&mut self, view: &View);
 
     /// get the viewport of the render target
-    fn get_viewport(&self, view: &View) -> IntRect;
+    fn viewport(&self, view: &View) -> IntRect;
 
 
     /// Convert a point from window coordinates to world coordinates

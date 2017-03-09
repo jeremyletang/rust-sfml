@@ -158,13 +158,13 @@ impl<'s> Transformable for ConvexShape<'s> {
     fn position(&self) -> Vector2f {
         unsafe { Vector2f::from_raw(ffi::sfConvexShape_getPosition(self.convex_shape)) }
     }
-    fn get_rotation(&self) -> f32 {
+    fn rotation(&self) -> f32 {
         unsafe { ffi::sfConvexShape_getRotation(self.convex_shape) as f32 }
     }
     fn get_scale(&self) -> Vector2f {
         unsafe { Vector2f::from_raw(ffi::sfConvexShape_getScale(self.convex_shape)) }
     }
-    fn get_origin(&self) -> Vector2f {
+    fn origin(&self) -> Vector2f {
         unsafe { Vector2f::from_raw(ffi::sfConvexShape_getOrigin(self.convex_shape)) }
     }
     fn move_(&mut self, offset: &Vector2f) {
@@ -194,10 +194,10 @@ impl<'s> Transformable for ConvexShape<'s> {
                                      })
         }
     }
-    fn get_transform(&self) -> Transform {
+    fn transform(&self) -> Transform {
         unsafe { Transform(ffi::sfConvexShape_getTransform(self.convex_shape)) }
     }
-    fn get_inverse_transform(&self) -> Transform {
+    fn inverse_transform(&self) -> Transform {
         unsafe { Transform(ffi::sfConvexShape_getInverseTransform(self.convex_shape)) }
     }
 }
@@ -227,38 +227,38 @@ impl<'s> Shape<'s> for ConvexShape<'s> {
     fn set_outline_thickness(&mut self, thickness: f32) {
         unsafe { ffi::sfConvexShape_setOutlineThickness(self.convex_shape, thickness) }
     }
-    fn get_texture(&self) -> Option<&'s Texture> {
+    fn texture(&self) -> Option<&'s Texture> {
         self.texture
     }
-    fn get_texture_rect(&self) -> IntRect {
+    fn texture_rect(&self) -> IntRect {
         unsafe { IntRect::from_raw(ffi::sfConvexShape_getTextureRect(self.convex_shape)) }
     }
-    fn get_fill_color(&self) -> Color {
+    fn fill_color(&self) -> Color {
         unsafe { Color::from_raw(ffi::sfConvexShape_getFillColor(self.convex_shape)) }
     }
-    fn get_outline_color(&self) -> Color {
+    fn outline_color(&self) -> Color {
         unsafe { Color::from_raw(ffi::sfConvexShape_getOutlineColor(self.convex_shape)) }
     }
-    fn get_outline_thickness(&self) -> f32 {
+    fn outline_thickness(&self) -> f32 {
         unsafe { ffi::sfConvexShape_getOutlineThickness(self.convex_shape) as f32 }
     }
-    fn get_point_count(&self) -> u32 {
+    fn point_count(&self) -> u32 {
         unsafe { ffi::sfConvexShape_getPointCount(self.convex_shape) as u32 }
     }
-    fn get_point(&self, index: u32) -> Vector2f {
+    fn point(&self, index: u32) -> Vector2f {
         unsafe {
             // ConvexShape stores items in a vector, and does unchecked indexing.
             // To retain safety, we check for OOB here.
-            if index > self.get_point_count() {
-                panic!("Index out of bounds. Index: {}, len: {}", index, self.get_point_count());
+            if index > self.point_count() {
+                panic!("Index out of bounds. Index: {}, len: {}", index, self.point_count());
             }
             Vector2f::from_raw(ffi::sfConvexShape_getPoint(self.convex_shape, index as usize))
         }
     }
-    fn get_local_bounds(&self) -> FloatRect {
+    fn local_bounds(&self) -> FloatRect {
         unsafe { FloatRect::from_raw(ffi::sfConvexShape_getLocalBounds(self.convex_shape)) }
     }
-    fn get_global_bounds(&self) -> FloatRect {
+    fn global_bounds(&self) -> FloatRect {
         unsafe { FloatRect::from_raw(ffi::sfConvexShape_getGlobalBounds(self.convex_shape)) }
     }
 }

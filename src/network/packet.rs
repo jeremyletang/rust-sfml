@@ -58,7 +58,7 @@ impl Packet {
     /// what sfPacket_getData returns.
     ///
     /// Return the data size, in bytes
-    pub fn get_data_size(&self) -> u32 {
+    pub fn data_size(&self) -> u32 {
         unsafe { ffi::sfPacket_getDataSize(self.packet) as u32 }
     }
 

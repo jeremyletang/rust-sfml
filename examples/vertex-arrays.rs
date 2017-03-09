@@ -57,7 +57,7 @@ fn main() {
     println!("Before Vertex Color: {:?} | Position: {:?}",
              vertex_array[1].0.color,
              vertex_array[1].0.position);
-    vertex_array.get_vertex(1).0.position.x = 100.0;
+    vertex_array.vertex(1).0.position.x = 100.0;
     println!("After Vertex Color: {:?} | Position: {:?}",
              vertex_array[1].0.color,
              vertex_array[1].0.position);

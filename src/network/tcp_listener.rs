@@ -76,7 +76,7 @@ impl TcpListener {
     /// returns 0.
     ///
     /// Return the port to which the TCP listener is bound
-    pub fn get_local_port(&self) -> u16 {
+    pub fn local_port(&self) -> u16 {
         unsafe { ffi::sfTcpListener_getLocalPort(self.listener) }
     }
 

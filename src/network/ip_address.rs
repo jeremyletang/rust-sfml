@@ -119,7 +119,7 @@ impl IpAddress {
     /// and may be used safely anywhere.
     ///
     /// Return the local IP address of the computer
-    pub fn get_local_address() -> IpAddress {
+    pub fn local_address() -> IpAddress {
         IpAddress { ip: unsafe { ffi::sfIpAddress_getLocalAddress() } }
     }
 
@@ -138,7 +138,7 @@ impl IpAddress {
     /// 0 to deactivate this limit.
     ///
     /// Return the public IP address of the computer
-    pub fn get_public_address(timeout: &Time) -> IpAddress {
+    pub fn public_address(timeout: &Time) -> IpAddress {
         IpAddress { ip: unsafe { ffi::sfIpAddress_getPublicAddress(timeout.raw()) } }
     }
 }

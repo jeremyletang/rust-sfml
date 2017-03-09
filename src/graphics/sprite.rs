@@ -126,7 +126,7 @@ impl<'s> Sprite<'s> {
     /// modify the texture when you retrieve it with this function.
     ///
     /// Return an Option to the sprite's texture
-    pub fn get_texture(&self) -> Option<&'s Texture> {
+    pub fn texture(&self) -> Option<&'s Texture> {
         if self.texture.is_none() {
             None
         } else {
@@ -137,7 +137,7 @@ impl<'s> Sprite<'s> {
     /// Get the global color of a sprite
     ///
     /// Return the global color of the sprite
-    pub fn get_color(&self) -> Color {
+    pub fn color(&self) -> Color {
         unsafe { Color::from_raw(ffi::sfSprite_getColor(self.sprite)) }
     }
 
@@ -150,7 +150,7 @@ impl<'s> Sprite<'s> {
     /// entity in the entity's coordinate system.
     ///
     /// Return the local bounding rectangle of the entity
-    pub fn get_local_bounds(&self) -> FloatRect {
+    pub fn local_bounds(&self) -> FloatRect {
         unsafe { FloatRect::from_raw(ffi::sfSprite_getLocalBounds(self.sprite)) }
     }
 
@@ -163,14 +163,14 @@ impl<'s> Sprite<'s> {
     /// sprite in the global 2D world's coordinate system.
     ///
     /// Return the global bounding rectangle of the entity
-    pub fn get_global_bounds(&self) -> FloatRect {
+    pub fn global_bounds(&self) -> FloatRect {
         unsafe { FloatRect::from_raw(ffi::sfSprite_getGlobalBounds(self.sprite)) }
     }
 
     /// Get the sub-rectangle of the texture displayed by a sprite
     ///
     /// Return the texture rectangle of the sprite
-    pub fn get_texture_rect(&self) -> IntRect {
+    pub fn texture_rect(&self) -> IntRect {
         unsafe { IntRect::from_raw(ffi::sfSprite_getTextureRect(self.sprite)) }
     }
 
@@ -245,13 +245,13 @@ impl<'s> Transformable for Sprite<'s> {
     fn position(&self) -> Vector2f {
         unsafe { Vector2f::from_raw(ffi::sfSprite_getPosition(self.sprite)) }
     }
-    fn get_rotation(&self) -> f32 {
+    fn rotation(&self) -> f32 {
         unsafe { ffi::sfSprite_getRotation(self.sprite) as f32 }
     }
     fn get_scale(&self) -> Vector2f {
         unsafe { Vector2f::from_raw(ffi::sfSprite_getScale(self.sprite)) }
     }
-    fn get_origin(&self) -> Vector2f {
+    fn origin(&self) -> Vector2f {
         unsafe { Vector2f::from_raw(ffi::sfSprite_getOrigin(self.sprite)) }
     }
     fn move_(&mut self, offset: &Vector2f) {
@@ -281,10 +281,10 @@ impl<'s> Transformable for Sprite<'s> {
                                 })
         }
     }
-    fn get_transform(&self) -> Transform {
+    fn transform(&self) -> Transform {
         unsafe { Transform(ffi::sfSprite_getTransform(self.sprite)) }
     }
-    fn get_inverse_transform(&self) -> Transform {
+    fn inverse_transform(&self) -> Transform {
         unsafe { Transform(ffi::sfSprite_getInverseTransform(self.sprite)) }
     }
 }

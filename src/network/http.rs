@@ -224,7 +224,7 @@ impl Response {
     /// * field - Name of the field to get
     ///
     /// Return Value of the field, or empty string if not found
-    pub fn get_field(&self, field: &str) -> String {
+    pub fn field(&self, field: &str) -> String {
         let c_field = CString::new(field.as_bytes()).unwrap();
         unsafe {
             let string = ffi::sfHttpResponse_getField(self.response, c_field.as_ptr());
@@ -247,14 +247,14 @@ impl Response {
     /// Get the major HTTP version number of a HTTP response
     ///
     /// Return Major HTTP version number
-    pub fn get_major_version(&self) -> u32 {
+    pub fn major_version(&self) -> u32 {
         unsafe { ffi::sfHttpResponse_getMajorVersion(self.response) }
     }
 
     /// Get the minor HTTP version number of a HTTP response
     ///
     /// Return the minor HTTP version number
-    pub fn get_minor_version(&self) -> u32 {
+    pub fn minor_version(&self) -> u32 {
         unsafe { ffi::sfHttpResponse_getMinorVersion(self.response) }
     }
 
@@ -267,7 +267,7 @@ impl Response {
     /// an error message (in case of an error)
     ///
     /// Return the response body
-    pub fn get_body(&self) -> String {
+    pub fn body(&self) -> String {
         unsafe {
             let string = ffi::sfHttpResponse_getBody(self.response);
             str::from_utf8(CStr::from_ptr(string).to_bytes_with_nul()).unwrap().into()

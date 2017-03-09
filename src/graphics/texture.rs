@@ -296,7 +296,7 @@ impl Texture {
     /// Get the maximum texture size allowed
     ///
     /// Return the maximum size allowed for textures, in pixels
-    pub fn get_maximum_size() -> u32 {
+    pub fn maximum_size() -> u32 {
         unsafe { ffi::sfTexture_getMaximumSize() as u32 }
     }
 

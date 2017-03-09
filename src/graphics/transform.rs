@@ -65,7 +65,7 @@ impl Transform {
     }
 
     /// Return the matrix
-    pub fn get_matrix(&mut self) -> [f32; 16] {
+    pub fn matrix(&mut self) -> [f32; 16] {
         unsafe {
             let matrix: [f32; 16] = [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,
                                      0.];
@@ -87,7 +87,7 @@ impl Transform {
     /// is returned.
     ///
     /// Return the inverse matrix
-    pub fn get_inverse(&mut self) -> Transform {
+    pub fn inverse(&mut self) -> Transform {
         unsafe { Transform(ffi::sfTransform_getInverse(&self.0)) }
     }
 

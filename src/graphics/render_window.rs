@@ -206,7 +206,7 @@ impl RenderWindow {
     ///
     /// Return a structure containing the OpenGL context settings
     ///
-    pub fn get_settings(&self) -> ContextSettings {
+    pub fn settings(&self) -> ContextSettings {
         unsafe { ContextSettings::from_raw(ffi::sfRenderWindow_getSettings(self.render_window)) }
     }
 
@@ -469,7 +469,7 @@ impl RenderTarget for RenderWindow {
     ///
     /// Return the current active view
     ///
-    fn get_view(&self) -> &ViewRef {
+    fn view(&self) -> &ViewRef {
         unsafe { &*(ffi::sfRenderWindow_getView(self.render_window) as *const ViewRef) }
     }
 
@@ -477,7 +477,7 @@ impl RenderTarget for RenderWindow {
     ///
     /// Return the default view of the render window
     ///
-    fn get_default_view(&self) -> &ViewRef {
+    fn default_view(&self) -> &ViewRef {
         unsafe { &*(ffi::sfRenderWindow_getDefaultView(self.render_window) as *const ViewRef) }
     }
 
@@ -607,7 +607,7 @@ impl RenderTarget for RenderWindow {
     /// * view - Target view
     ///
     /// Return the viewport rectangle, expressed in pixels in the current target
-    fn get_viewport(&self, view: &View) -> IntRect {
+    fn viewport(&self, view: &View) -> IntRect {
         unsafe {
             IntRect::from_raw(ffi::sfRenderWindow_getViewport(self.render_window, view.raw()))
         }
