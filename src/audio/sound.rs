@@ -96,14 +96,14 @@ impl<'s> Sound<'s> {
     }
 
     /// Sets whether this sound should loop or not.
-    pub fn set_loop(&mut self, loop_: bool) {
-        unsafe { ffi::sfSound_setLoop(self.sound, sfBool::from_bool(loop_)) }
+    pub fn set_looping(&mut self, looping: bool) {
+        unsafe { ffi::sfSound_setLoop(self.sound, sfBool::from_bool(looping)) }
     }
 
     /// Tell whether or not a sound is in loop mode
     ///
     /// Return true if the sound is looping, false otherwise
-    pub fn get_loop(&self) -> bool {
+    pub fn is_looping(&self) -> bool {
         unsafe { ffi::sfSound_getLoop(self.sound) }.to_bool()
     }
 

@@ -64,7 +64,7 @@ use ext::sf_bool_ext::SfBoolExt;
 /// music.set_position3f(0., 1., 10.); // change its 3D position
 /// music.set_pitch(2.); // increase the pitch
 /// music.set_volume(50.); // reduce the volume
-/// music.set_loop(true); // make it loop
+/// music.set_looping(true); // make it loop
 ///
 /// // Play it
 /// music.play();
@@ -145,17 +145,17 @@ impl Music {
     ///
     /// If `true`, the music will restart from beginning after
     /// reaching the end and so on, until it is stopped or
-    /// `set_loop(false)` is called.
+    /// `set_looping(false)` is called.
     ///
     /// By default, the music will *not* loop.
-    pub fn set_loop(&mut self, loop_: bool) {
-        unsafe { ffi::sfMusic_setLoop(self.music, sfBool::from_bool(loop_)) }
+    pub fn set_looping(&mut self, looping: bool) {
+        unsafe { ffi::sfMusic_setLoop(self.music, sfBool::from_bool(looping)) }
     }
 
     /// Tell whether or not a music is in loop mode
     ///
     /// Return true if the music is looping, false otherwise
-    pub fn get_loop(&self) -> bool {
+    pub fn is_looping(&self) -> bool {
         unsafe { ffi::sfMusic_getLoop(self.music) }.to_bool()
     }
 
