@@ -124,7 +124,7 @@ impl RenderTarget for RenderTexture {
     /// Get the size of the rendering region of a render texture
     ///
     /// Return the size in pixels
-    fn get_size(&self) -> Vector2u {
+    fn size(&self) -> Vector2u {
         unsafe { Vector2u::from_raw(ffi::sfRenderTexture_getSize(self.render_texture)) }
     }
 

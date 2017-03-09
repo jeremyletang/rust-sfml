@@ -66,7 +66,7 @@ impl ViewRef {
     /// Get the size of a view
     ///
     /// Return the size of the view
-    pub fn get_size(&self) -> Vector2f {
+    pub fn size(&self) -> Vector2f {
         unsafe { Vector2f::from_raw(ffi::sfView_getSize(self as *const _ as _)) }
     }
 

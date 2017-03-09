@@ -58,7 +58,7 @@ impl TextureRef {
     /// Return the size of the texture
     ///
     /// Return the Size in pixels
-    pub fn get_size(&self) -> Vector2u {
+    pub fn size(&self) -> Vector2u {
         unsafe { Vector2u::from_raw(ffi::sfTexture_getSize(self as *const _ as _)) }
     }
     /// Tell whether the smooth filter is enabled or not for a texture

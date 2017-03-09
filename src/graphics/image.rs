@@ -170,7 +170,7 @@ impl Image {
     /// Return the size of an image
     ///
     /// Return the size in pixels
-    pub fn get_size(&self) -> Vector2u {
+    pub fn size(&self) -> Vector2u {
         unsafe { Vector2u::from_raw(ffi::sfImage_getSize(self.image)) }
     }
 
@@ -219,7 +219,7 @@ impl Image {
     /// Return the memory buffer of this image.
     pub fn get_memory(&self) -> &[u8] {
         unsafe {
-            let size = self.get_size();
+            let size = self.size();
             let pixels = ffi::sfImage_getPixelsPtr(self.image);
 
             slice::from_raw_parts(pixels, (size.x * size.y * 4) as usize)

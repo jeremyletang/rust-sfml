@@ -353,7 +353,7 @@ impl Window {
     /// The size doesn't include the titlebar and borders of the window.
     ///
     /// Return the size in pixels
-    pub fn get_size(&self) -> Vector2u {
+    pub fn size(&self) -> Vector2u {
         unsafe { Vector2u::from_raw(ffi::sfWindow_getSize(self.window)) }
     }
 

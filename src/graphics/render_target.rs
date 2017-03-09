@@ -183,7 +183,7 @@ pub trait RenderTarget {
     /// The size doesn't include the titlebar and borders of the window.
     ///
     /// Return the size in pixels
-    fn get_size(&self) -> Vector2u;
+    fn size(&self) -> Vector2u;
 
 
     /// Save the current OpenGL render states and matrices

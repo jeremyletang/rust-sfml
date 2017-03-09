@@ -618,7 +618,7 @@ impl RenderTarget for RenderWindow {
     /// The size doesn't include the titlebar and borders of the window.
     ///
     /// Return the size in pixels
-    fn get_size(&self) -> Vector2u {
+    fn size(&self) -> Vector2u {
         unsafe { Vector2u::from_raw(ffi::sfRenderWindow_getSize(self.render_window)) }
     }
 

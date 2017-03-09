@@ -87,7 +87,7 @@ impl<'s> RectangleShape<'s> {
     /// Get the size of a rectangle shape
     ///
     /// Return the height Size of the rectangle
-    pub fn get_size(&self) -> Vector2f {
+    pub fn size(&self) -> Vector2f {
         unsafe { Vector2f::from_raw(ffi::sfRectangleShape_getSize(self.rectangle_shape)) }
     }
 
