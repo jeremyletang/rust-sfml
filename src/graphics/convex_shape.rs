@@ -128,64 +128,18 @@ impl<'s> Drawable for ConvexShape<'s> {
 
 
 impl<'s> Transformable for ConvexShape<'s> {
-    /// Set the position of a convex shape
-    ///
-    /// This function completely overwrites the previous position.
-    /// See move to apply an offset based on the previous position instead.
-    /// The default position of a convex Shape object is (0, 0).
-    ///
-    /// # Arguments
-    /// * position - New position
     fn set_position(&mut self, position: &Vector2f) {
         unsafe { ffi::sfConvexShape_setPosition(self.convex_shape, position.raw()) }
     }
-
-    /// Set the position of a convex shape
-    ///
-    /// This function completely overwrites the previous position.
-    /// See move to apply an offset based on the previous position instead.
-    /// The default position of a convex Shape object is (0, 0).
-    ///
-    /// # Arguments
-    /// * x - New x coordinate
-    /// * y - New y coordinate
     fn set_position2f(&mut self, x: f32, y: f32) {
         unsafe { ffi::sfConvexShape_setPosition(self.convex_shape, sfVector2f { x: x, y: y }) }
     }
-
-    /// Set the orientation of a convex shape
-    ///
-    /// This function completely overwrites the previous rotation.
-    /// See rotate to add an angle based on the previous rotation instead.
-    /// The default rotation of a convex Shape object is 0.
-    ///
-    /// # Arguments
-    /// * rotation - New rotation
     fn set_rotation(&mut self, angle: f32) {
         unsafe { ffi::sfConvexShape_setRotation(self.convex_shape, angle) }
     }
-
-    /// Set the scale factors of a convex shape
-    ///
-    /// This function completely overwrites the previous scale.
-    /// See scale to add a factor based on the previous scale instead.
-    /// The default scale of a convex Shape object is (1, 1).
-    ///
-    /// # Arguments
-    /// * scale - New scale factors
     fn set_scale(&mut self, scale: &Vector2f) {
         unsafe { ffi::sfConvexShape_setScale(self.convex_shape, scale.raw()) }
     }
-
-    /// Set the scale factors of a convex shape
-    ///
-    /// This function completely overwrites the previous scale.
-    /// See scale to add a factor based on the previous scale instead.
-    /// The default scale of a convex Shape object is (1, 1).
-    ///
-    /// # Arguments
-    /// * scale_x - New x scale factor
-    /// * scale_y - New y scale factor
     fn set_scale2f(&mut self, scale_x: f32, scale_y: f32) {
         unsafe {
             ffi::sfConvexShape_setScale(self.convex_shape,
@@ -195,87 +149,27 @@ impl<'s> Transformable for ConvexShape<'s> {
                                         })
         }
     }
-
-    /// Set the local origin of a convex shape
-    ///
-    /// The origin of an object defines the center point for
-    /// all transformations (position, scale, rotation).
-    /// The coordinates of this point must be relative to the
-    /// top-left corner of the object, and ignore all
-    /// transformations (position, scale, rotation).
-    /// The default origin of a convex Shape object is (0, 0).
-    ///
-    /// # Arguments
-    /// * origin - New origin
     fn set_origin(&mut self, origin: &Vector2f) {
         unsafe { ffi::sfConvexShape_setOrigin(self.convex_shape, origin.raw()) }
     }
-
-    /// Set the local origin of a convex shape
-    ///
-    /// The origin of an object defines the center point for
-    /// all transformations (position, scale, rotation).
-    /// The coordinates of this point must be relative to the
-    /// top-left corner of the object, and ignore all
-    /// transformations (position, scale, rotation).
-    /// The default origin of a convex Shape object is (0, 0).
-    ///
-    /// # Arguments
-    /// * x - New x origin coordinate
-    /// * y - New y origin coordinate
     fn set_origin2f(&mut self, x: f32, y: f32) {
         unsafe { ffi::sfConvexShape_setOrigin(self.convex_shape, sfVector2f { x: x, y: y }) }
     }
-
-    /// Get the position of a convex shape
-    ///
-    /// Return the current position
     fn get_position(&self) -> Vector2f {
         unsafe { Vector2f::from_raw(ffi::sfConvexShape_getPosition(self.convex_shape)) }
     }
-
-    /// Get the orientation of a convex shape
-    ///
-    /// The rotation is always in the range [0, 360].
-    ///
-    /// Return the current rotation, in degrees
     fn get_rotation(&self) -> f32 {
         unsafe { ffi::sfConvexShape_getRotation(self.convex_shape) as f32 }
     }
-
-    /// Get the current scale of a convex shape
-    ///
-    /// Return the current scale factors
     fn get_scale(&self) -> Vector2f {
         unsafe { Vector2f::from_raw(ffi::sfConvexShape_getScale(self.convex_shape)) }
     }
-
-    /// Get the local origin of a convex shape
-    ///
-    /// return the current origin
     fn get_origin(&self) -> Vector2f {
         unsafe { Vector2f::from_raw(ffi::sfConvexShape_getOrigin(self.convex_shape)) }
     }
-
-    /// Move a convex shape by a given offset
-    ///
-    /// This function adds to the current position of the object,
-    /// unlike sfconvexShape_setPosition which overwrites it.
-    ///
-    /// # Arguments
-    /// * offset - Offset
     fn move_(&mut self, offset: &Vector2f) {
         unsafe { ffi::sfConvexShape_move(self.convex_shape, offset.raw()) }
     }
-
-    /// Move a convex shape by a given offset
-    ///
-    /// This function adds to the current position of the object,
-    /// unlike sfconvexShape_setPosition which overwrites it.
-    ///
-    /// # Arguments
-    /// * offsetX - Offset x
-    /// * offsetY - Offset y
     fn move2f(&mut self, offset_x: f32, offset_y: f32) {
         unsafe {
             ffi::sfConvexShape_move(self.convex_shape,
@@ -285,37 +179,12 @@ impl<'s> Transformable for ConvexShape<'s> {
                                     })
         }
     }
-
-    /// Rotate a convex shape
-    ///
-    /// This function adds to the current rotation of the object,
-    /// unlike set_rotation which overwrites it.
-    ///
-    /// # Arguments
-    /// * angle - Angle of rotation, in degrees
     fn rotate(&mut self, angle: f32) {
         unsafe { ffi::sfConvexShape_rotate(self.convex_shape, angle) }
     }
-
-    /// Scale a convex shape
-    ///
-    /// This function multiplies the current scale of the object,
-    /// unlike sfconvexShape_setScale which overwrites it.
-    ///
-    /// # Arguments
-    /// * factors - Scale factors
     fn scale(&mut self, factors: &Vector2f) {
         unsafe { ffi::sfConvexShape_scale(self.convex_shape, factors.raw()) }
     }
-
-    /// Scale a convex shape
-    ///
-    /// This function multiplies the current scale of the object,
-    /// unlike sfconvexShape_setScale which overwrites it.
-    ///
-    /// # Arguments
-    /// * factor_x - Scale factor x
-    /// * factor_y - Scale factor y
     fn scale2f(&mut self, factor_x: f32, factor_y: f32) {
         unsafe {
             ffi::sfConvexShape_scale(self.convex_shape,
@@ -325,17 +194,9 @@ impl<'s> Transformable for ConvexShape<'s> {
                                      })
         }
     }
-
-    /// Get the combined transform of a convex shape
-    ///
-    /// Return transform combining the position/rotation/scale/origin of the object
     fn get_transform(&self) -> Transform {
         unsafe { Transform(ffi::sfConvexShape_getTransform(self.convex_shape)) }
     }
-
-    /// Get the inverse of the combined transform of a convex shape
-    ///
-    /// Return inverse of the combined transformations applied to the object
     fn get_inverse_transform(&self) -> Transform {
         unsafe { Transform(ffi::sfConvexShape_getInverseTransform(self.convex_shape)) }
     }

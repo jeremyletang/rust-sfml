@@ -128,67 +128,20 @@ impl<'s> Drawable for RectangleShape<'s> {
 }
 
 impl<'s> Transformable for RectangleShape<'s> {
-    /// Set the position of a rectangle shape
-    ///
-    /// This function completely overwrites the previous position.
-    /// See move to apply an offset based on the previous position instead.
-    /// The default position of a rectangle Shape object is (0, 0).
-    ///
-    /// # Arguments
-    /// * position - New position
     fn set_position(&mut self, position: &Vector2f) {
         unsafe { ffi::sfRectangleShape_setPosition(self.rectangle_shape, position.raw()) }
     }
-
-    /// Set the position of a rectangle shape with 2 f32
-    ///
-    /// This function completely overwrites the previous position.
-    /// See move to apply an offset based on the previous position instead.
-    /// The default position of a rectangle Shape object is (0, 0).
-    ///
-    /// # Arguments
-    /// * x - X coordinate of the new position
-    /// * y - Y coordinate of the new position
     fn set_position2f(&mut self, x: f32, y: f32) {
         unsafe {
             ffi::sfRectangleShape_setPosition(self.rectangle_shape, sfVector2f { x: x, y: y })
         }
     }
-
-    /// Set the orientation of a rectangle shape
-    ///
-    /// This function completely overwrites the previous rotation.
-    /// See rotate to add an angle based on the previous rotation instead.
-    /// The default rotation of a rectangle Shape object is 0.
-    ///
-    /// # Arguments
-    /// * rotation - New rotation
     fn set_rotation(&mut self, angle: f32) {
         unsafe { ffi::sfRectangleShape_setRotation(self.rectangle_shape, angle) }
     }
-
-    /// Set the scale factors of a rectangle shape
-    ///
-    /// This function completely overwrites the previous scale.
-    /// See scale to add a factor based on the previous scale instead.
-    /// The default scale of a rectangle Shape object is (1, 1).
-    ///
-    /// # Arguments
-    /// * scale - New scale factors
     fn set_scale(&mut self, scale: &Vector2f) {
         unsafe { ffi::sfRectangleShape_setScale(self.rectangle_shape, scale.raw()) }
     }
-
-
-    /// Set the scale factors of a rectangle shape
-    ///
-    /// This function completely overwrites the previous scale.
-    /// See scale to add a factor based on the previous scale instead.
-    /// The default scale of a rectangle Shape object is (1, 1).
-    ///
-    /// # Arguments
-    /// * factor_x - New x scale factor
-    /// * factor_y - New y scale factor
     fn set_scale2f(&mut self, factor_x: f32, factor_y: f32) {
         unsafe {
             ffi::sfRectangleShape_setScale(self.rectangle_shape,
@@ -198,87 +151,27 @@ impl<'s> Transformable for RectangleShape<'s> {
                                            })
         }
     }
-
-    /// Set the local origin of a rectangle shape
-    ///
-    /// The origin of an object defines the center point for
-    /// all transformations (position, scale, rotation).
-    /// The coordinates of this point must be relative to the
-    /// top-left corner of the object, and ignore all
-    /// transformations (position, scale, rotation).
-    /// The default origin of a rectangle Shape object is (0, 0).
-    ///
-    /// # Arguments
-    /// * origin - New origin
     fn set_origin(&mut self, origin: &Vector2f) {
         unsafe { ffi::sfRectangleShape_setOrigin(self.rectangle_shape, origin.raw()) }
     }
-
-    /// Set the local origin of a rectangle shape
-    ///
-    /// The origin of an object defines the center point for
-    /// all transformations (position, scale, rotation).
-    /// The coordinates of this point must be relative to the
-    /// top-left corner of the object, and ignore all
-    /// transformations (position, scale, rotation).
-    /// The default origin of a rectangle Shape object is (0, 0).
-    ///
-    /// # Arguments
-    /// * x - New coordinate x of the origin
-    /// * y - New coordinate y of the origin
     fn set_origin2f(&mut self, x: f32, y: f32) {
         unsafe { ffi::sfRectangleShape_setOrigin(self.rectangle_shape, sfVector2f { x: x, y: y }) }
     }
-
-    /// Get the position of a rectangle shape
-    ///
-    /// Return the current position
     fn get_position(&self) -> Vector2f {
         unsafe { Vector2f::from_raw(ffi::sfRectangleShape_getPosition(self.rectangle_shape)) }
     }
-
-    /// Get the orientation of a rectangle shape
-    ///
-    /// The rotation is always in the range [0, 360].
-    ///
-    /// Return the current rotation, in degrees
     fn get_rotation(&self) -> f32 {
         unsafe { ffi::sfRectangleShape_getRotation(self.rectangle_shape) as f32 }
     }
-
-    /// Get the current scale of a rectangle shape
-    ///
-    /// Return the current scale factors
     fn get_scale(&self) -> Vector2f {
         unsafe { Vector2f::from_raw(ffi::sfRectangleShape_getScale(self.rectangle_shape)) }
     }
-
-    /// Get the local origin of a rectangle shape
-    ///
-    /// return the current origin
     fn get_origin(&self) -> Vector2f {
         unsafe { Vector2f::from_raw(ffi::sfRectangleShape_getOrigin(self.rectangle_shape)) }
     }
-
-    /// Move a rectangle shape by a given offset
-    ///
-    /// This function adds to the current position of the object,
-    /// unlike set_position which overwrites it.
-    ///
-    /// # Arguments
-    /// * offset - Offset
     fn move_(&mut self, offset: &Vector2f) {
         unsafe { ffi::sfRectangleShape_move(self.rectangle_shape, offset.raw()) }
     }
-
-    /// Move a rectangle shape by a given offset of 2 f32
-    ///
-    /// This function adds to the current position of the object,
-    /// unlike set_position which overwrites it.
-    ///
-    /// # Arguments
-    /// * offsetX - Offset in x
-    /// * offsetY - Offset in y
     fn move2f(&mut self, offset_x: f32, offset_y: f32) {
         unsafe {
             ffi::sfRectangleShape_move(self.rectangle_shape,
@@ -288,37 +181,12 @@ impl<'s> Transformable for RectangleShape<'s> {
                                        })
         }
     }
-
-    /// Rotate a rectangle shape
-    ///
-    /// This function adds to the current rotation of the object,
-    /// unlike set_rotation which overwrites it.
-    ///
-    /// # Arguments
-    /// * angle - Angle of rotation, in degrees
     fn rotate(&mut self, angle: f32) {
         unsafe { ffi::sfRectangleShape_rotate(self.rectangle_shape, angle) }
     }
-
-    /// Scale a rectangle shape
-    ///
-    /// This function multiplies the current scale of the object,
-    /// unlike set_scale which overwrites it.
-    ///
-    /// # Arguments
-    /// * factors - Scale factors
     fn scale(&mut self, factors: &Vector2f) {
         unsafe { ffi::sfRectangleShape_scale(self.rectangle_shape, factors.raw()) }
     }
-
-    /// Scale a rectangle shape
-    ///
-    /// This function multiplies the current scale of the object,
-    /// unlike set_scale which overwrites it.
-    ///
-    /// # Arguments
-    /// * factor_x - Scale x factor
-    /// * factor_y - Scale y factor
     fn scale2f(&mut self, factor_x: f32, factor_y: f32) {
         unsafe {
             ffi::sfRectangleShape_scale(self.rectangle_shape,
@@ -328,18 +196,9 @@ impl<'s> Transformable for RectangleShape<'s> {
                                         })
         }
     }
-
-    /// Get the combined transform of a rectangle shape
-    ///
-    /// Return transform combining the position/rotation/scale/origin
-    /// of the object
     fn get_transform(&self) -> Transform {
         unsafe { Transform(ffi::sfRectangleShape_getTransform(self.rectangle_shape)) }
     }
-
-    /// Get the inverse of the combined transform of a rectangle shape
-    ///
-    /// Return inverse of the combined transformations applied to the object
     fn get_inverse_transform(&self) -> Transform {
         unsafe { Transform(ffi::sfRectangleShape_getInverseTransform(self.rectangle_shape)) }
     }

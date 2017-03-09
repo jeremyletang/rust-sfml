@@ -268,64 +268,18 @@ impl<'s> Drawable for Text<'s> {
 }
 
 impl<'s> Transformable for Text<'s> {
-    /// Set the position of a text
-    ///
-    /// This function completely overwrites the previous position.
-    /// See move to apply an offset based on the previous position instead.
-    /// The default position of a text Text object is (0, 0).
-    ///
-    /// # Arguments
-    /// * position - The new position
     fn set_position(&mut self, position: &Vector2f) {
         unsafe { ffi::sfText_setPosition(self.text, position.raw()) }
     }
-
-    /// Set the position of a text
-    ///
-    /// This function completely overwrites the previous position.
-    /// See move to apply an offset based on the previous position instead.
-    /// The default position of a text Text object is (0, 0).
-    ///
-    /// # Arguments
-    /// * x - The new x coordinate
-    /// * y - The new y coordinate
     fn set_position2f(&mut self, x: f32, y: f32) {
         unsafe { ffi::sfText_setPosition(self.text, sfVector2f { x: x, y: y }) }
     }
-
-    /// Set the orientation of a text
-    ///
-    /// This function completely overwrites the previous rotation.
-    /// See rotate to add an angle based on the previous rotation instead.
-    /// The default rotation of a text Text object is 0.
-    ///
-    /// # Arguments
-    /// * angle - New rotation, in degrees
     fn set_rotation(&mut self, angle: f32) {
         unsafe { ffi::sfText_setRotation(self.text, angle) }
     }
-
-    /// Set the scale factors of a text
-    ///
-    /// This function completely overwrites the previous scale.
-    /// See scale to add a factor based on the previous scale instead.
-    /// The default scale of a text Text object is (1, 1).
-    ///
-    /// # Arguments
-    /// * scale - The new scale factors
     fn set_scale(&mut self, scale: &Vector2f) {
         unsafe { ffi::sfText_setScale(self.text, scale.raw()) }
     }
-
-    /// Set the scale factors of a text
-    ///
-    /// This function completely overwrites the previous scale.
-    /// See scale to add a factor based on the previous scale instead.
-    /// The default scale of a text Text object is (1, 1).
-    ///
-    /// # Arguments
-    /// * scale_x - The new x scale factor
-    /// * scale_y - The new y scale factor
     fn set_scale2f(&mut self, scale_x: f32, scale_y: f32) {
         unsafe {
             ffi::sfText_setScale(self.text,
@@ -335,87 +289,27 @@ impl<'s> Transformable for Text<'s> {
                                  })
         }
     }
-
-    /// Set the local origin of a text
-    ///
-    /// The origin of an object defines the center point for
-    /// all transformations (position, scale, rotation).
-    /// The coordinates of this point must be relative to the
-    /// top-left corner of the object, and ignore all
-    /// transformations (position, scale, rotation).
-    /// The default origin of a text object is (0, 0).
-    ///
-    /// # Arguments
-    /// * origin - New origin
     fn set_origin(&mut self, origin: &Vector2f) {
         unsafe { ffi::sfText_setOrigin(self.text, origin.raw()) }
     }
-
-    /// Set the local origin of a text
-    ///
-    /// The origin of an object defines the center point for
-    /// all transformations (position, scale, rotation).
-    /// The coordinates of this point must be relative to the
-    /// top-left corner of the object, and ignore all
-    /// transformations (position, scale, rotation).
-    /// The default origin of a text object is (0, 0).
-    ///
-    /// # Arguments
-    /// * x - New x origin coordinate
-    /// * y - New y origin coordinate
     fn set_origin2f(&mut self, x: f32, y: f32) {
         unsafe { ffi::sfText_setOrigin(self.text, sfVector2f { x: x, y: y }) }
     }
-
-    /// Get the position of a text
-    ///
-    /// Return the current position
     fn get_position(&self) -> Vector2f {
         unsafe { Vector2f::from_raw(ffi::sfText_getPosition(self.text)) }
     }
-
-    /// Get the orientation of a text
-    ///
-    /// The rotation is always in the range [0, 360].
-    ///
-    /// Return the current rotation, in degrees
     fn get_rotation(&self) -> f32 {
         unsafe { ffi::sfText_getRotation(self.text) as f32 }
     }
-
-    /// Get the current scale of a text
-    ///
-    /// Return the current scale factors
     fn get_scale(&self) -> Vector2f {
         unsafe { Vector2f::from_raw(ffi::sfText_getScale(self.text)) }
     }
-
-    /// Get the local origin of a text
-    ///
-    /// Return the current origin
     fn get_origin(&self) -> Vector2f {
         unsafe { Vector2f::from_raw(ffi::sfText_getOrigin(self.text)) }
     }
-
-    /// Move a text by a given offset
-    ///
-    /// This function adds to the current position of the object,
-    /// unlike set_position which overwrites it.
-    ///
-    /// # Arguments
-    /// * offset - Offset
     fn move_(&mut self, offset: &Vector2f) {
         unsafe { ffi::sfText_move(self.text, offset.raw()) }
     }
-
-    /// Move a text by a given offset
-    ///
-    /// This function adds to the current position of the object,
-    /// unlike set_position which overwrites it.
-    ///
-    /// # Arguments
-    /// * offsetX - Offset x
-    /// * offsetY - Offset y
     fn move2f(&mut self, offset_x: f32, offset_y: f32) {
         unsafe {
             ffi::sfText_move(self.text,
@@ -425,37 +319,12 @@ impl<'s> Transformable for Text<'s> {
                              })
         }
     }
-
-    /// Rotate a text
-    ///
-    /// This function adds to the current rotation of the object,
-    /// unlike set_rotation which overwrites it.
-    ///
-    /// # Arguments
-    /// * factors - Scale factors
     fn rotate(&mut self, angle: f32) {
         unsafe { ffi::sfText_rotate(self.text, angle) }
     }
-
-    /// Scale a text
-    ///
-    /// This function multiplies the current scale of the object,
-    /// unlike set_Scale which overwrites it.
-    ///
-    /// # Arguments
-    /// * factors - Scale factors
     fn scale(&mut self, factors: &Vector2f) {
         unsafe { ffi::sfText_scale(self.text, factors.raw()) }
     }
-
-    /// Scale a text
-    ///
-    /// This function multiplies the current scale of the object,
-    /// unlike set_Scale which overwrites it.
-    ///
-    /// # Arguments
-    /// * factor_x - Scale x factor
-    /// * factor_y - Scale y factor
     fn scale2f(&mut self, factor_x: f32, factor_y: f32) {
         unsafe {
             ffi::sfText_scale(self.text,
@@ -465,18 +334,9 @@ impl<'s> Transformable for Text<'s> {
                               })
         }
     }
-
-    /// Get the combined transform of a text
-    ///
-    /// Return the transform combining the position/rotation/scale/origin
-    /// of the object
     fn get_transform(&self) -> Transform {
         unsafe { Transform(ffi::sfText_getTransform(self.text)) }
     }
-
-    /// Get the inverse of the combined transform of a text
-    ///
-    /// Return the inverse of the combined transformations applied to the object
     fn get_inverse_transform(&self) -> Transform {
         unsafe { Transform(ffi::sfText_getInverseTransform(self.text)) }
     }
