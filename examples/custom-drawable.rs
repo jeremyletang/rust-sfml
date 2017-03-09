@@ -13,14 +13,14 @@ struct Bullet<'s> {
 
 impl<'s> Bullet<'s> {
     pub fn new() -> Self {
-        let mut head = CircleShape::new_init(50f32, 50);
-        head.set_position2f(100f32, 100f32);
+        let mut head = CircleShape::new_init(50.0, 50);
+        head.set_position2f(100.0, 100.0);
         head.set_fill_color(&Color::red());
         let mut torso = RectangleShape::with_size(&Vector2f {
-            x: 100f32,
-            y: 200f32,
+            x: 100.0,
+            y: 200.0,
         });
-        torso.set_position2f(100f32, 150f32);
+        torso.set_position2f(100.0, 150.0);
         torso.set_fill_color(&Color::blue());
 
         Bullet {

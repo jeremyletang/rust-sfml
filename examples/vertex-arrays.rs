@@ -16,33 +16,33 @@ fn main() {
     vertex_array.set_primitive_type(LineStrip);
 
     vertex_array.append(&Vertex::with_pos_color(&Vector2f {
-                                                    x: 20f32,
-                                                    y: 30f32,
+                                                    x: 20.0,
+                                                    y: 30.0,
                                                 },
                                                 &Color::green()));
     vertex_array.append(&Vertex::with_pos_color(&Vector2f {
-                                                    x: 30f32,
-                                                    y: 30f32,
+                                                    x: 30.0,
+                                                    y: 30.0,
                                                 },
                                                 &Color::green()));
     vertex_array.append(&Vertex::with_pos_color(&Vector2f {
-                                                    x: 40f32,
-                                                    y: 40f32,
+                                                    x: 40.0,
+                                                    y: 40.0,
                                                 },
                                                 &Color::green()));
     vertex_array.append(&Vertex::with_pos_color(&Vector2f {
-                                                    x: 50f32,
-                                                    y: 50f32,
+                                                    x: 50.0,
+                                                    y: 50.0,
                                                 },
                                                 &Color::green()));
     vertex_array.append(&Vertex::with_pos_color(&Vector2f {
-                                                    x: 60f32,
-                                                    y: 60f32,
+                                                    x: 60.0,
+                                                    y: 60.0,
                                                 },
                                                 &Color::green()));
     vertex_array.append(&Vertex::with_pos_color(&Vector2f {
-                                                    x: 50f32,
-                                                    y: 80f32,
+                                                    x: 50.0,
+                                                    y: 80.0,
                                                 },
                                                 &Color::green()));
 
@@ -57,7 +57,7 @@ fn main() {
     println!("Before Vertex Color: {:?} | Position: {:?}",
              vertex_array[1].0.color,
              vertex_array[1].0.position);
-    vertex_array.get_vertex(1).0.position.x = 100f32;
+    vertex_array.get_vertex(1).0.position.x = 100.0;
     println!("After Vertex Color: {:?} | Position: {:?}",
              vertex_array[1].0.color,
              vertex_array[1].0.position);
