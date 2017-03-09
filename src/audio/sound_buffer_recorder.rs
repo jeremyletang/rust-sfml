@@ -79,7 +79,7 @@ impl SoundBufferRecorder {
     /// (for example, 44100 samples/sec is CD quality).
     ///
     /// Return the sample rate, in samples per second
-    pub fn get_sample_rate(&self) -> u32 {
+    pub fn sample_rate(&self) -> u32 {
         unsafe { ffi::sfSoundBufferRecorder_getSampleRate(self.sound_buffer_recorder) as u32 }
     }
 
@@ -91,7 +91,7 @@ impl SoundBufferRecorder {
     /// make any modification to it.
     ///
     /// Return Read-only access to the sound buffer
-    pub fn get_buffer(&self) -> &SoundBufferRef {
+    pub fn buffer(&self) -> &SoundBufferRef {
         let buff = unsafe { ffi::sfSoundBufferRecorder_getBuffer(self.sound_buffer_recorder) };
         if buff.is_null() {
             panic!("sound_buffer_recorder::get_buffer: buffer was null");

@@ -38,10 +38,10 @@ fn main() {
     recorder.stop();
 
     // Get the buffer containing the captured data
-    let buffer = recorder.get_buffer();
+    let buffer = recorder.buffer();
 
-    // Display captured sound informations
-    println!("Sound informations :");
+    // Display captured sound information
+    println!("Sound information :");
     println!(" {} seconds", buffer.duration().as_seconds());
     println!(" {} samples / sec", buffer.sample_rate());
     println!(" {} channels", buffer.channel_count());
