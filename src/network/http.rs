@@ -240,7 +240,7 @@ impl Response {
     /// enumeration).
     ///
     /// Return the status code
-    pub fn get_status(&self) -> Status {
+    pub fn status(&self) -> Status {
         unsafe { mem::transmute(ffi::sfHttpResponse_getStatus(self.response) as i32) }
     }
 

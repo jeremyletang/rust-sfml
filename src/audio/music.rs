@@ -162,7 +162,7 @@ impl Music {
     /// Get the total duration of a music
     ///
     /// Return Music duration
-    pub fn get_duration(&self) -> Time {
+    pub fn duration(&self) -> Time {
         unsafe { Time::from_raw(ffi::sfMusic_getDuration(self.music)) }
     }
 
@@ -199,7 +199,7 @@ impl Music {
     /// 1 channel means a mono sound, 2 means stereo, etc.
     ///
     /// Return the number of channels
-    pub fn get_channel_count(&self) -> u32 {
+    pub fn channel_count(&self) -> u32 {
         unsafe { ffi::sfMusic_getChannelCount(self.music) as u32 }
     }
 
@@ -209,21 +209,21 @@ impl Music {
     /// second. The higher, the better the quality.
     ///
     /// Return the sample rate, in number of samples per second
-    pub fn get_sample_rate(&self) -> u32 {
+    pub fn sample_rate(&self) -> u32 {
         unsafe { ffi::sfMusic_getSampleRate(self.music) as u32 }
     }
 
     /// Get the current status of a music (stopped, paused, playing)
     ///
     /// Return current status
-    pub fn get_status(&self) -> SoundStatus {
+    pub fn status(&self) -> SoundStatus {
         unsafe { mem::transmute(ffi::sfMusic_getStatus(self.music)) }
     }
 
     /// Get the current playing position of a music
     ///
     /// Return the current playing position
-    pub fn get_playing_offset(&self) -> Time {
+    pub fn playing_offset(&self) -> Time {
         unsafe { Time::from_raw(ffi::sfMusic_getPlayingOffset(self.music)) }
     }
 

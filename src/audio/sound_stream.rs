@@ -90,7 +90,7 @@ impl<'a, S: SoundStream> SoundStreamPlayer<'a, S> {
         }
     }
     /// Get the current status of the stream (stopped, paused, playing)
-    pub fn get_status(&self) -> SoundStatus {
+    pub fn status(&self) -> SoundStatus {
         unsafe { ::std::mem::transmute(sfSoundStream_getStatus(self.sf_sound_stream)) }
     }
     /// Stop playing, lending out the underlying `SoundStream`.
@@ -125,7 +125,7 @@ impl<'a, S: SoundStream> SoundStreamPlayer<'a, S> {
         &mut self.stream
     }
     /// Get the current playing position, from the beginning of the stream
-    pub fn get_playing_offset(&self) -> Time {
+    pub fn playing_offset(&self) -> Time {
         unsafe { Time::from_raw(sfSoundStream_getPlayingOffset(self.sf_sound_stream)) }
     }
     /// Change the current playing position of the stream.

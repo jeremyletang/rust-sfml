@@ -177,7 +177,7 @@ impl ListingResponse {
     /// Get the status code of a FTP listing response
     ///
     /// Return the status code
-    pub fn get_status(&self) -> Status {
+    pub fn status(&self) -> Status {
         unsafe { mem::transmute(ffi::sfFtpListingResponse_getStatus(self.listing_response) as i32) }
     }
 
@@ -232,7 +232,7 @@ impl DirectoryResponse {
     /// Get the status code of a FTP directory response
     ///
     /// Return the status code
-    pub fn get_status(&self) -> Status {
+    pub fn status(&self) -> Status {
         unsafe {
             mem::transmute(ffi::sfFtpDirectoryResponse_getStatus(self.directory_response) as i32)
         }
@@ -279,7 +279,7 @@ impl Response {
     /// Get the status code of a FTP response
     ///
     /// Return Status code
-    pub fn get_status(&self) -> Status {
+    pub fn status(&self) -> Status {
         unsafe { mem::transmute(ffi::sfFtpResponse_getStatus(self.response) as i32) }
     }
 
