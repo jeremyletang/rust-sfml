@@ -67,7 +67,7 @@ pub fn set_global_volume(volume: f32) {
 /// Get the current value of the global volume
 ///
 /// Return the current global volume, in the range [0, 100]
-pub fn get_global_volume() -> f32 {
+pub fn global_volume() -> f32 {
     unsafe { ffi::sfListener_getGlobalVolume() as f32 }
 }
 
@@ -131,7 +131,7 @@ pub fn set_direction3f(x: f32, y: f32, z: f32) {
 /// Get the current orientation of the listener in the scene
 ///
 /// Return the listener's direction
-pub fn get_direction() -> Vector3f {
+pub fn direction() -> Vector3f {
     unsafe { Vector3f::from_raw(ffi::sfListener_getDirection()) }
 }
 
