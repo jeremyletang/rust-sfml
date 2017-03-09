@@ -34,7 +34,7 @@ use ext::sf_bool_ext::SfBoolExt;
 
 /// Drawable representation of a texture
 ///
-/// Sprite is a drawable class that allows to easily
+/// Sprite is a drawable type that allows to easily
 /// display a texture (or a part of it) on a render target.
 pub struct Sprite<'s> {
     sprite: *mut ffi::sfSprite,

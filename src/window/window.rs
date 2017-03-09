@@ -34,7 +34,7 @@ use ext;
 
 /// Window that serves as a target for OpenGL rendering.
 ///
-/// `Window` is the main class of the Window module.
+/// `Window` is the main type of the window module.
 ///
 /// It defines an OS window that is able to receive an OpenGL rendering.
 ///

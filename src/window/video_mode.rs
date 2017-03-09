@@ -78,7 +78,7 @@ pub struct VideoMode {
 }
 
 impl VideoMode {
-    /// Constructor with parameters for class VideoMode.
+    /// Constructs a new `VideoMode` from the given parameters.
     ///
     /// Return a new VideoMode initialized
     pub fn new(width: u32, height: u32, bits_per_pixel: u32) -> VideoMode {

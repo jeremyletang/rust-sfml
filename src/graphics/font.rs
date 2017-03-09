@@ -22,7 +22,7 @@
 //
 
 
-//! Class for loading and manipulating character fonts
+//! Type for loading and manipulating character fonts
 
 use std::ffi::{CStr, CString};
 
@@ -36,7 +36,7 @@ use std::io::{Read, Seek};
 use inputstream::InputStream;
 use ext::sf_bool_ext::SfBoolExt;
 
-/// Class for loading and manipulating character fonts
+/// Type for loading and manipulating character fonts
 pub struct Font {
     font: *mut ffi::sfFont,
 }

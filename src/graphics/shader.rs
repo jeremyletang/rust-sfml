@@ -35,7 +35,7 @@ use std::io::{Read, Seek};
 use inputstream::InputStream;
 use ext::sf_bool_ext::SfBoolExt;
 
-/// Shader class (vertex and fragment)
+/// Shader type (vertex and fragment)
 ///
 /// Shaders are programs written using a specific language,
 /// executed directly by the graphics card and allowing to apply

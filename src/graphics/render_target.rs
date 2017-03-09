@@ -27,9 +27,23 @@ use graphics::{Drawable, Color, View, ViewRef, RenderStates, CircleShape, Rectan
                Sprite, VertexArray, IntRect, Vertex, PrimitiveType, ConvexShape, CustomShape};
 use system::{Vector2f, Vector2i, Vector2u};
 
-/// Trait which is the equivalent of the `sf::RenderTarget` class in SFML.
-/// This is implemented by `RenderTarget` and `RenderWindow` structs to provide
-/// a unified interface for rendering.
+/// Trait for all render targets (window, texture, ...)
+///
+/// `RenderTarget` defines the common behavior of all the 2D render targets usable in
+/// the graphics module.
+///
+/// It makes it possible to draw 2D entities like sprites, shapes, text
+/// without using any OpenGL command directly.
+///
+/// A `RenderTarget` is also able to use views (`View`), which are a kind of 2D cameras.
+/// With views you can globally scroll, rotate or zoom everything that is drawn,
+/// without having to transform every single entity.
+/// See the documentation of `View` for more details and sample pieces of code about this type.
+///
+/// On top of that, render targets are still able to render direct OpenGL stuff.
+/// It is even possible to mix together OpenGL calls and regular SFML drawing commands.
+/// When doing so, make sure that OpenGL states are not messed up by calling the
+/// `pushGLStates`/`popGLStates` functions.
 pub trait RenderTarget {
     /// clear the screen
     fn clear(&mut self, color: &Color);

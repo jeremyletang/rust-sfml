@@ -36,7 +36,7 @@ use ext::sf_bool_ext::SfBoolExt;
 
 /// Window that can serve as a target for 2D drawing.
 ///
-/// `RenderWindow` is the main class of the Graphics module.
+/// `RenderWindow` is the main type of the graphics module.
 /// It defines an OS window that can be painted using the other classes
 /// of the graphics module.
 pub struct RenderWindow {

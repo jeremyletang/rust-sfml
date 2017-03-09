@@ -48,7 +48,7 @@ pub trait ShapeImpl {
     fn get_point(&self, point: u32) -> Vector2f;
 }
 
-/// Base class for textured shapes with outline
+/// A custom textured shape with outline.
 pub struct CustomShape<'s> {
     shape: *mut ffi::sfShape,
     texture: Option<&'s Texture>,

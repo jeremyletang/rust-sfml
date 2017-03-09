@@ -29,7 +29,7 @@ use csfml_system_sys::sfBool;
 use csfml_network_sys as ffi;
 use ext::sf_bool_ext::SfBoolExt;
 
-/// Utility class to build blocks of data to transfer over the network.
+/// Utility type to build blocks of data to transfer over the network.
 pub struct Packet {
     packet: *mut ffi::sfPacket,
 }

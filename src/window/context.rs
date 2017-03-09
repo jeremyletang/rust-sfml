@@ -26,10 +26,10 @@ use ext::sf_bool_ext::SfBoolExt;
 use window::ContextSettings;
 use system::raw_conv::FromRaw;
 
-/// Class holding a valid drawing context.
+/// Type holding a valid drawing context.
 ///
 /// If you need to make OpenGL calls without having an active window (like in a thread),
-/// you can use an instance of this class to get a valid context.
+/// you can use an instance of this type to get a valid context.
 ///
 /// Having a valid context is necessary for every OpenGL call.
 ///

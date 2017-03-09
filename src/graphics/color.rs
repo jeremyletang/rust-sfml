@@ -27,9 +27,9 @@ use csfml_graphics_sys as ffi;
 
 use system::raw_conv::{Raw, FromRaw};
 
-/// Utility class for manpulating RGBA colors
+/// Utility type for manpulating RGBA colors
 ///
-/// sfColor is a simple color class composed of 4 components: Red, Green, Blue, Alpha
+/// sfColor is a simple color type composed of 4 components: Red, Green, Blue, Alpha
 #[repr(C)]
 #[derive(Copy, Clone, PartialEq, Eq, Debug)]
 pub struct Color {
