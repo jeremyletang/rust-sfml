@@ -223,7 +223,7 @@ impl<'s> SoundSource for Sound<'s> {
     fn set_attenuation(&mut self, attenuation: f32) {
         unsafe { ffi::sfSound_setAttenuation(self.sound, attenuation) }
     }
-    fn get_pitch(&self) -> f32 {
+    fn pitch(&self) -> f32 {
         unsafe { ffi::sfSound_getPitch(self.sound) as f32 }
     }
     fn volume(&self) -> f32 {

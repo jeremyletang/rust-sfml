@@ -188,7 +188,7 @@ impl<'a, S: SoundStream> SoundSource for SoundStreamPlayer<'a, S> {
     fn set_attenuation(&mut self, attenuation: f32) {
         unsafe { sfSoundStream_setAttenuation(self.sf_sound_stream, attenuation) }
     }
-    fn get_pitch(&self) -> f32 {
+    fn pitch(&self) -> f32 {
         unsafe { sfSoundStream_getPitch(self.sf_sound_stream) }
     }
     fn volume(&self) -> f32 {

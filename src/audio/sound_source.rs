@@ -101,7 +101,7 @@ pub trait SoundSource {
     fn set_attenuation(&mut self, attenuation: f32);
 
     /// Get the pitch of the sound.
-    fn get_pitch(&self) -> f32;
+    fn pitch(&self) -> f32;
 
     /// Get the volume of the sound.
     ///
