@@ -66,10 +66,10 @@ fn main() {
 
         sound.play();
 
-        while sound.get_status() == SoundStatus::Playing {
+        while sound.status() == SoundStatus::Playing {
             // Display the playing position
             print!("\rPlaying... {:.2} sec",
-                   sound.get_playing_offset().as_seconds());
+                   sound.playing_offset().as_seconds());
             let _ = std::io::stdout().flush();
             // Leave some CPU time for other processes
             sleep(Time::milliseconds(100));

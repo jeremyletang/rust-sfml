@@ -138,14 +138,14 @@ impl<'s> Sound<'s> {
     /// Get the current status of a sound (stopped, paused, playing)
     ///
     /// Return current status
-    pub fn get_status(&self) -> SoundStatus {
+    pub fn status(&self) -> SoundStatus {
         unsafe { mem::transmute(ffi::sfSound_getStatus(self.sound)) }
     }
 
     /// Get the current playing position of a sound
     ///
     /// Return the current playing position
-    pub fn get_playing_offset(&self) -> Time {
+    pub fn playing_offset(&self) -> Time {
         unsafe { Time::from_raw(ffi::sfSound_getPlayingOffset(self.sound)) }
     }
 
@@ -176,7 +176,7 @@ impl<'s> Sound<'s> {
     /// Get the audio buffer attached to a sound
     ///
     /// Return an option to Sound buffer attached to the sound or None
-    pub fn get_buffer(&self) -> Option<&SoundBufferRef> {
+    pub fn buffer(&self) -> Option<&SoundBufferRef> {
         self.buffer
     }
 }
