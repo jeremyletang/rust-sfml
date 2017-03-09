@@ -67,7 +67,7 @@ pub enum Button {
     XButton1 = 3,
     /// The second extra mouse button.
     XButton2 = 4,
-    #[doc(hidden)]
+    /// The total number of mouse buttons.
     Count = 5,
 }
 

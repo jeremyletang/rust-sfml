@@ -76,7 +76,7 @@ pub enum Type {
     UserAcceleration = 4,
     /// Measures the absolute 3D orientation (degrees)
     Orientation = 5,
-    #[doc(hidden)]
+    /// The total number of sensor types.
     Count = 6,
 }
 
