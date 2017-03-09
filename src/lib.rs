@@ -39,7 +39,7 @@
 //!
 //! Here is a short example, draw a circle shape and display it.
 //!
-//! ```no_run
+//! ```ignore
 //! extern crate sfml;
 //!
 //! use sfml::system::Vector2f;
@@ -90,23 +90,35 @@
 
 #![warn(missing_docs)]
 
+#[cfg(feature="window")]
 #[macro_use]
 extern crate bitflags;
 extern crate csfml_system_sys;
+#[cfg(feature="window")]
 extern crate csfml_window_sys;
+#[cfg(feature="graphics")]
 extern crate csfml_graphics_sys;
+#[cfg(feature="audio")]
 extern crate csfml_audio_sys;
+#[cfg(feature="network")]
 extern crate csfml_network_sys;
 
+#[cfg(any(feature="graphics", feature="audio"))]
 mod inputstream;
 mod ext {
+    #[cfg(feature="window")]
     pub mod event;
     pub mod sf_bool_ext;
 }
+#[cfg(feature="window")]
 mod unicode_conv;
 
 pub mod system;
+#[cfg(feature="window")]
 pub mod window;
+#[cfg(feature="audio")]
 pub mod audio;
+#[cfg(feature="graphics")]
 pub mod graphics;
+#[cfg(feature="network")]
 pub mod network;

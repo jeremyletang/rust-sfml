@@ -157,3 +157,9 @@ impl FromRaw for IpAddress {
         IpAddress { ip: raw }
     }
 }
+
+#[test]
+fn ip_to_string() {
+    let ip = IpAddress::from_integer(101010);
+    assert_eq!(ip.to_string(), "0.1.138.146");
+}
