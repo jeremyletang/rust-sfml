@@ -37,7 +37,7 @@ pub trait CustomShapePoints {
     /// Gets the total count of points.
     ///
     /// Return the points count
-    fn get_point_count(&self) -> u32;
+    fn point_count(&self) -> u32;
 
     /// Gets a given point.
     ///
@@ -45,7 +45,7 @@ pub trait CustomShapePoints {
     /// * point - The index of the point to return
     ///
     /// Returns a `Vector2f` containing the coordinates.
-    fn get_point(&self, point: u32) -> Vector2f;
+    fn point(&self, point: u32) -> Vector2f;
 }
 
 /// A custom textured shape with outline.
@@ -57,13 +57,13 @@ pub struct CustomShape<'s> {
 
 unsafe extern "C" fn get_point_count_callback(obj: *mut c_void) -> usize {
     let shape = obj as *mut Box<CustomShapePoints + Send>;
-    let ret = (*shape).get_point_count();
+    let ret = (*shape).point_count();
     ret as usize
 }
 
 unsafe extern "C" fn get_point_callback(point: usize, obj: *mut c_void) -> sfVector2f {
     let shape = obj as *mut Box<CustomShapePoints + Send>;
-    let ret = (*shape).get_point(point as u32);
+    let ret = (*shape).point(point as u32);
     ret.raw()
 }
 

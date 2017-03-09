@@ -8,11 +8,11 @@ use sfml::system::Vector2f;
 pub struct TriangleShape;
 
 impl CustomShapePoints for TriangleShape {
-    fn get_point_count(&self) -> u32 {
+    fn point_count(&self) -> u32 {
         3
     }
 
-    fn get_point(&self, point: u32) -> Vector2f {
+    fn point(&self, point: u32) -> Vector2f {
         match point {
             0 => Vector2f { x: 20., y: 580. },
             1 => Vector2f { x: 400., y: 20. },
