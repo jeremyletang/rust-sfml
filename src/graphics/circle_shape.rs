@@ -24,10 +24,11 @@
 //! Specialized shape representing a circle.
 
 use std::ptr;
+use std::marker::PhantomData;
 
 use system::raw_conv::{Raw, FromRaw};
-use graphics::{Drawable, Transformable, Shape, IntRect, FloatRect, Color, Texture, RenderTarget,
-               Transform, RenderStates};
+use graphics::{Drawable, Transformable, Shape, IntRect, FloatRect, Color, Texture, TextureRef,
+               RenderTarget, Transform, RenderStates};
 use system::Vector2f;
 
 use csfml_system_sys::{sfBool, sfTrue, sfVector2f};
@@ -37,7 +38,7 @@ use ext::sf_bool_ext::SfBoolExt;
 /// Specialized shape representing a circle.
 pub struct CircleShape<'s> {
     circle_shape: *mut ffi::sfCircleShape,
-    texture: Option<&'s Texture>,
+    texture: PhantomData<&'s Texture>,
 }
 
 impl<'s> CircleShape<'s> {
@@ -51,7 +52,7 @@ impl<'s> CircleShape<'s> {
         } else {
             CircleShape {
                 circle_shape: circle,
-                texture: None,
+                texture: PhantomData,
             }
         }
     }
@@ -72,7 +73,7 @@ impl<'s> CircleShape<'s> {
             }
             CircleShape {
                 circle_shape: circle,
-                texture: Some(texture),
+                texture: PhantomData,
             }
         }
     }
@@ -95,7 +96,7 @@ impl<'s> CircleShape<'s> {
             }
             CircleShape {
                 circle_shape: circle,
-                texture: None,
+                texture: PhantomData,
             }
         }
     }
@@ -213,7 +214,6 @@ impl<'s> Transformable for CircleShape<'s> {
 
 impl<'s> Shape<'s> for CircleShape<'s> {
     fn set_texture(&mut self, texture: &'s Texture, reset_rect: bool) {
-        self.texture = Some(texture);
         unsafe {
             ffi::sfCircleShape_setTexture(self.circle_shape,
                                           texture.raw(),
@@ -221,7 +221,6 @@ impl<'s> Shape<'s> for CircleShape<'s> {
         }
     }
     fn disable_texture(&mut self) {
-        self.texture = None;
         unsafe { ffi::sfCircleShape_setTexture(self.circle_shape, ptr::null_mut(), sfTrue) }
     }
     fn set_texture_rect(&mut self, rect: &IntRect) {
@@ -236,8 +235,16 @@ impl<'s> Shape<'s> for CircleShape<'s> {
     fn set_outline_thickness(&mut self, thickness: f32) {
         unsafe { ffi::sfCircleShape_setOutlineThickness(self.circle_shape, thickness) }
     }
-    fn texture(&self) -> Option<&'s Texture> {
-        self.texture
+    fn texture(&self) -> Option<&'s TextureRef> {
+        unsafe {
+            let raw = ffi::sfCircleShape_getTexture(self.circle_shape);
+
+            if raw == ptr::null() {
+                None
+            } else {
+                Some(&*(raw as *const TextureRef))
+            }
+        }
     }
     fn texture_rect(&self) -> IntRect {
         unsafe { IntRect::from_raw(ffi::sfCircleShape_getTextureRect(self.circle_shape)) }

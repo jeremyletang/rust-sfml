@@ -22,11 +22,12 @@
 //
 
 use std::ptr;
+use std::marker::PhantomData;
 
 use system::raw_conv::{Raw, FromRaw};
 use system::Vector2f;
-use graphics::{Drawable, Shape, Transformable, FloatRect, IntRect, Color, Texture, RenderTarget,
-               Transform, RenderStates};
+use graphics::{Drawable, Shape, Transformable, FloatRect, IntRect, Color, Texture, TextureRef,
+               RenderTarget, Transform, RenderStates};
 
 use csfml_system_sys::{sfBool, sfTrue, sfVector2f};
 use csfml_graphics_sys as ffi;
@@ -35,7 +36,7 @@ use ext::sf_bool_ext::SfBoolExt;
 /// Specialized shape representing a rectangle
 pub struct RectangleShape<'s> {
     rectangle_shape: *mut ffi::sfRectangleShape,
-    texture: Option<&'s Texture>,
+    texture: PhantomData<&'s Texture>,
 }
 
 impl<'s> RectangleShape<'s> {
@@ -47,7 +48,7 @@ impl<'s> RectangleShape<'s> {
         } else {
             RectangleShape {
                 rectangle_shape: rectangle,
-                texture: None,
+                texture: PhantomData,
             }
         }
     }
@@ -63,7 +64,7 @@ impl<'s> RectangleShape<'s> {
             }
             RectangleShape {
                 rectangle_shape: rectangle,
-                texture: Some(texture),
+                texture: PhantomData,
             }
         }
     }
@@ -79,7 +80,7 @@ impl<'s> RectangleShape<'s> {
             }
             RectangleShape {
                 rectangle_shape: rectangle,
-                texture: None,
+                texture: PhantomData,
             }
         }
     }
@@ -206,7 +207,6 @@ impl<'s> Transformable for RectangleShape<'s> {
 
 impl<'s> Shape<'s> for RectangleShape<'s> {
     fn set_texture(&mut self, texture: &'s Texture, reset_rect: bool) {
-        self.texture = Some(texture);
         unsafe {
             ffi::sfRectangleShape_setTexture(self.rectangle_shape,
                                              texture.raw(),
@@ -214,7 +214,6 @@ impl<'s> Shape<'s> for RectangleShape<'s> {
         }
     }
     fn disable_texture(&mut self) {
-        self.texture = None;
         unsafe { ffi::sfRectangleShape_setTexture(self.rectangle_shape, ptr::null_mut(), sfTrue) }
     }
     fn set_texture_rect(&mut self, rect: &IntRect) {
@@ -229,8 +228,16 @@ impl<'s> Shape<'s> for RectangleShape<'s> {
     fn set_outline_thickness(&mut self, thickness: f32) {
         unsafe { ffi::sfRectangleShape_setOutlineThickness(self.rectangle_shape, thickness) }
     }
-    fn texture(&self) -> Option<&'s Texture> {
-        self.texture
+    fn texture(&self) -> Option<&'s TextureRef> {
+        unsafe {
+            let raw = ffi::sfRectangleShape_getTexture(self.rectangle_shape);
+
+            if raw == ptr::null() {
+                None
+            } else {
+                Some(&*(raw as *const TextureRef))
+            }
+        }
     }
     fn texture_rect(&self) -> IntRect {
         unsafe { IntRect::from_raw(ffi::sfRectangleShape_getTextureRect(self.rectangle_shape)) }

@@ -21,7 +21,7 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-use graphics::{Drawable, Transformable, Texture, IntRect, FloatRect, Color};
+use graphics::{Drawable, Transformable, Texture, TextureRef, IntRect, FloatRect, Color};
 use system::Vector2f;
 
 /// Trait for textured shapes with outline.
@@ -59,7 +59,7 @@ pub trait Shape<'s>: Drawable + Transformable {
     /// Gets the source texture of the shape.
     ///
     /// If the shape has no source texture, None is returned.
-    fn texture(&self) -> Option<&'s Texture>;
+    fn texture(&self) -> Option<&'s TextureRef>;
     /// Gets the sub-rectangle of the texture displayed by the shape.
     fn texture_rect(&self) -> IntRect;
     /// Gets the fill color of this shape.

@@ -22,10 +22,11 @@
 //
 
 use std::ptr;
+use std::marker::PhantomData;
 
 use system::raw_conv::{Raw, FromRaw};
-use graphics::{Shape, Drawable, Transformable, Color, Texture, RenderTarget, FloatRect, IntRect,
-               Transform, RenderStates};
+use graphics::{Shape, Drawable, Transformable, Color, Texture, TextureRef, RenderTarget, FloatRect,
+               IntRect, Transform, RenderStates};
 use system::Vector2f;
 
 use csfml_system_sys::{sfBool, sfTrue, sfVector2f};
@@ -40,7 +41,7 @@ use ext::sf_bool_ext::SfBoolExt;
 /// order would result in an incorrect shape.
 pub struct ConvexShape<'s> {
     convex_shape: *mut ffi::sfConvexShape,
-    texture: Option<&'s Texture>,
+    texture: PhantomData<&'s Texture>,
 }
 
 /// An iterator over the points of a `ConvexShape`
@@ -64,7 +65,7 @@ impl<'s> ConvexShape<'s> {
             }
             ConvexShape {
                 convex_shape: shape,
-                texture: None,
+                texture: PhantomData,
             }
         }
     }
@@ -85,7 +86,7 @@ impl<'s> ConvexShape<'s> {
             }
             ConvexShape {
                 convex_shape: shape,
-                texture: Some(texture),
+                texture: PhantomData,
             }
         }
     }
@@ -204,7 +205,6 @@ impl<'s> Transformable for ConvexShape<'s> {
 
 impl<'s> Shape<'s> for ConvexShape<'s> {
     fn set_texture(&mut self, texture: &'s Texture, reset_rect: bool) {
-        self.texture = Some(texture);
         unsafe {
             ffi::sfConvexShape_setTexture(self.convex_shape,
                                           texture.raw(),
@@ -212,7 +212,6 @@ impl<'s> Shape<'s> for ConvexShape<'s> {
         }
     }
     fn disable_texture(&mut self) {
-        self.texture = None;
         unsafe { ffi::sfConvexShape_setTexture(self.convex_shape, ptr::null_mut(), sfTrue) }
     }
     fn set_texture_rect(&mut self, rect: &IntRect) {
@@ -227,8 +226,16 @@ impl<'s> Shape<'s> for ConvexShape<'s> {
     fn set_outline_thickness(&mut self, thickness: f32) {
         unsafe { ffi::sfConvexShape_setOutlineThickness(self.convex_shape, thickness) }
     }
-    fn texture(&self) -> Option<&'s Texture> {
-        self.texture
+    fn texture(&self) -> Option<&'s TextureRef> {
+        unsafe {
+            let raw = ffi::sfConvexShape_getTexture(self.convex_shape);
+
+            if raw == ptr::null() {
+                None
+            } else {
+                Some(&*(raw as *const TextureRef))
+            }
+        }
     }
     fn texture_rect(&self) -> IntRect {
         unsafe { IntRect::from_raw(ffi::sfConvexShape_getTextureRect(self.convex_shape)) }

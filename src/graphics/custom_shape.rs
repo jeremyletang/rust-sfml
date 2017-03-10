@@ -23,10 +23,11 @@
 
 use std::os::raw::c_void;
 use std::ptr;
+use std::marker::PhantomData;
 
 use system::raw_conv::{Raw, FromRaw};
-use graphics::{Drawable, Transformable, RenderTarget, RenderStates, Texture, Color, Transform,
-               IntRect, FloatRect, Shape};
+use graphics::{Drawable, Transformable, RenderTarget, RenderStates, Texture, TextureRef, Color,
+               Transform, IntRect, FloatRect, Shape};
 use system::Vector2f;
 use csfml_graphics_sys as ffi;
 use csfml_system_sys::{sfBool, sfTrue, sfVector2f};
@@ -51,7 +52,7 @@ pub trait CustomShapePoints {
 /// A custom textured shape with outline.
 pub struct CustomShape<'s> {
     shape: *mut ffi::sfShape,
-    texture: Option<&'s Texture>,
+    texture: PhantomData<&'s Texture>,
     points: *mut Box<CustomShapePoints + Send>,
 }
 
@@ -85,7 +86,7 @@ impl<'s> CustomShape<'s> {
         } else {
             CustomShape {
                 shape: sp,
-                texture: None,
+                texture: PhantomData,
                 points: raw_impl,
             }
         }
@@ -113,7 +114,7 @@ impl<'s> CustomShape<'s> {
             }
             CustomShape {
                 shape: sp,
-                texture: Some(texture),
+                texture: PhantomData,
                 points: raw_impl,
             }
         }
@@ -131,11 +132,9 @@ impl<'s> CustomShape<'s> {
 
 impl<'s> Shape<'s> for CustomShape<'s> {
     fn set_texture(&mut self, texture: &'s Texture, reset_rect: bool) {
-        self.texture = Some(texture);
         unsafe { ffi::sfShape_setTexture(self.shape, texture.raw(), sfBool::from_bool(reset_rect)) }
     }
     fn disable_texture(&mut self) {
-        self.texture = None;
         unsafe { ffi::sfShape_setTexture(self.shape, ptr::null_mut(), sfTrue) }
     }
     fn set_texture_rect(&mut self, rect: &IntRect) {
@@ -150,8 +149,16 @@ impl<'s> Shape<'s> for CustomShape<'s> {
     fn set_outline_thickness(&mut self, thickness: f32) {
         unsafe { ffi::sfShape_setOutlineThickness(self.shape, thickness) }
     }
-    fn texture(&self) -> Option<&'s Texture> {
-        self.texture
+    fn texture(&self) -> Option<&'s TextureRef> {
+        unsafe {
+            let raw = ffi::sfShape_getTexture(self.shape);
+
+            if raw == ptr::null() {
+                None
+            } else {
+                Some(&*(raw as *const TextureRef))
+            }
+        }
     }
     fn texture_rect(&self) -> IntRect {
         unsafe { IntRect::from_raw(ffi::sfShape_getTextureRect(self.shape)) }
