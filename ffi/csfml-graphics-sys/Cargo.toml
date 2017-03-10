@@ -1,21 +1,21 @@
 [package]
 name = "csfml-graphics-sys"
 description = "Bindings to csfml-graphics"
-version = "0.1.0"
-authors = ["Mika Attila <radiantstatue@gmail.com>"]
+version = "0.2.0"
+authors = ["rust-sfml developers"]
 links = "csfml-graphics"
 build = "build.rs"
-documentation = "https://crates.fyi/crates/csfml-graphics-sys/0.1.0/"
+documentation = "https://docs.rs/csfml-graphics-sys"
 repository = "https://github.com/jeremyletang/rust-sfml"
 license = "zlib-acknowledgement"
 
 [dependencies.csfml-system-sys]
 path = "../csfml-system-sys"
-version = "0.2.0"
+version = "0.2.1"
 
 [dependencies.csfml-window-sys]
 path = "../csfml-window-sys"
-version = "0.1.0"
+version = "0.2.0"
 
 [build-dependencies.sfml-build]
 path = "../sfml-build"
