@@ -22,26 +22,26 @@ network = ["csfml-network-sys"]
 bitflags = {version = "0.5", optional = true }
 
 [dependencies.csfml-system-sys]
-path = "csfml-system-sys"
+path = "ffi/csfml-system-sys"
 version = "0.1.0"
 
 [dependencies.csfml-window-sys]
-path = "csfml-window-sys"
+path = "ffi/csfml-window-sys"
 version = "0.1.0"
 optional = true
 
 [dependencies.csfml-graphics-sys]
-path = "csfml-graphics-sys"
+path = "ffi/csfml-graphics-sys"
 version = "0.1.0"
 optional = true
 
 [dependencies.csfml-audio-sys]
-path = "csfml-audio-sys"
+path = "ffi/csfml-audio-sys"
 version = "0.1.0"
 optional = true
 
 [dependencies.csfml-network-sys]
-path = "csfml-network-sys"
+path = "ffi/csfml-network-sys"
 version = "0.1.0"
 optional = true
 
