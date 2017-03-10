@@ -8,6 +8,7 @@ build = "build.rs"
 documentation = "https://docs.rs/csfml-system-sys"
 repository = "https://github.com/jeremyletang/rust-sfml"
 license = "zlib-acknowledgement"
+keywords = ["sfml", "multimedia", "game"]
 
 [build-dependencies.sfml-build]
 path = "../sfml-build"

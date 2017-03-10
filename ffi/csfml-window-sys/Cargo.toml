@@ -8,6 +8,7 @@ build = "build.rs"
 documentation = "https://docs.rs/csfml-window-sys"
 repository = "https://github.com/jeremyletang/rust-sfml"
 license = "zlib-acknowledgement"
+keywords = ["sfml", "multimedia", "game"]
 
 [dependencies.csfml-system-sys]
 path = "../csfml-system-sys"
