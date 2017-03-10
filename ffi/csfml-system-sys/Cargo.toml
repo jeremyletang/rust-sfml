@@ -1,11 +1,11 @@
 [package]
 name = "csfml-system-sys"
 description = "Bindings to csfml-system"
-version = "0.2.0"
+version = "0.2.1"
 authors = ["rust-sfml developers"]
 links = "csfml-system"
 build = "build.rs"
-documentation = "https://docs.rs/csfml-system"
+documentation = "https://docs.rs/csfml-system-sys"
 repository = "https://github.com/jeremyletang/rust-sfml"
 license = "zlib-acknowledgement"
 
