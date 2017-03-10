@@ -179,7 +179,7 @@ impl<'s> Sound<'s> {
     pub fn buffer(&self) -> Option<&SoundBufferRef> {
         unsafe {
             let ptr = ffi::sfSound_getBuffer(self.sound);
-            if ptr == ::std::ptr::null() {
+            if ptr.is_null() {
                 None
             } else {
                 Some(&*(ptr as *const SoundBufferRef))

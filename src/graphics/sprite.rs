@@ -128,7 +128,7 @@ impl<'s> Sprite<'s> {
     pub fn texture(&self) -> Option<&'s TextureRef> {
         unsafe {
             let ptr = ffi::sfSprite_getTexture(self.sprite);
-            if ptr == ptr::null() {
+            if ptr.is_null() {
                 None
             } else {
                 Some(&*(ptr as *const TextureRef))

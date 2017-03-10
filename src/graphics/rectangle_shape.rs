@@ -232,7 +232,7 @@ impl<'s> Shape<'s> for RectangleShape<'s> {
         unsafe {
             let raw = ffi::sfRectangleShape_getTexture(self.rectangle_shape);
 
-            if raw == ptr::null() {
+            if raw.is_null() {
                 None
             } else {
                 Some(&*(raw as *const TextureRef))

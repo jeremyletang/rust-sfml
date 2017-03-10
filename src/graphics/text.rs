@@ -155,7 +155,7 @@ impl<'s> Text<'s> {
         unsafe {
             let raw = ffi::sfText_getFont(self.text);
 
-            if raw == ::std::ptr::null() {
+            if raw.is_null() {
                 None
             } else {
                 Some(&*(raw as *const FontRef))

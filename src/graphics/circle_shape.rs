@@ -239,7 +239,7 @@ impl<'s> Shape<'s> for CircleShape<'s> {
         unsafe {
             let raw = ffi::sfCircleShape_getTexture(self.circle_shape);
 
-            if raw == ptr::null() {
+            if raw.is_null() {
                 None
             } else {
                 Some(&*(raw as *const TextureRef))
