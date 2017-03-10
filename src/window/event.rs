@@ -39,12 +39,11 @@ use window::joystick::Axis;
 /// # Usage example
 ///
 /// ```
-/// # use sfml::graphics::RenderWindow;
-/// # use sfml::window::{Event, VideoMode, style, Key};
-/// # let mut window = RenderWindow::new(VideoMode::new(32, 32, 32),
-/// #                                    "test",
-/// #                                    style::CLOSE,
-/// #                                    &Default::default()).unwrap();
+/// # use sfml::window::{Event, VideoMode, style, Key, Window};
+/// # let mut window = Window::new(VideoMode::new(32, 32, 32),
+/// #                              "test",
+/// #                              style::CLOSE,
+/// #                              &Default::default()).unwrap();
 /// # fn do_something_with_the_new_size(_x: u32, _y: u32) {}
 /// while let Some(event) = window.poll_event() {
 ///     match event {

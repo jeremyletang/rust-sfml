@@ -9,12 +9,17 @@ repository = "https://github.com/jeremyletang/rust-sfml"
 license = "zlib-acknowledgement"
 
 [features]
+default = ["graphics", "audio", "network"]
 # Used for conditonally setting clippy lint levels.
 # Run cargo clippy with `cargo clippy --features=clippy`.
 clippy = []
+window = ["csfml-window-sys", "bitflags"]
+graphics = ["window", "csfml-graphics-sys"]
+audio = ["csfml-audio-sys"]
+network = ["csfml-network-sys"]
 
 [dependencies]
-bitflags = "0.5"
+bitflags = {version = "0.5", optional = true }
 
 [dependencies.csfml-system-sys]
 path = "csfml-system-sys"
@@ -23,18 +28,22 @@ version = "0.1.0"
 [dependencies.csfml-window-sys]
 path = "csfml-window-sys"
 version = "0.1.0"
+optional = true
 
 [dependencies.csfml-graphics-sys]
 path = "csfml-graphics-sys"
 version = "0.1.0"
+optional = true
 
 [dependencies.csfml-audio-sys]
 path = "csfml-audio-sys"
 version = "0.1.0"
+optional = true
 
 [dependencies.csfml-network-sys]
 path = "csfml-network-sys"
 version = "0.1.0"
+optional = true
 
 [dev-dependencies]
 rand = "0.3"
@@ -42,5 +51,49 @@ rand = "0.3"
 [lib]
 name = "sfml"
 crate-type = ["dylib", "rlib"]
+
+[[example]]
+name = "borrowed-resources"
+required-features = ["graphics"]
+
+[[example]]
+name = "custom-drawable"
+required-features = ["graphics"]
+
+[[example]]
+name = "custom-shape"
+required-features = ["graphics"]
+
+[[example]]
+name = "custom-sound-stream"
+required-features = ["audio"]
+
+[[example]]
+name = "mouse"
+required-features = ["graphics"]
+
+[[example]]
+name = "music-stream"
+required-features = ["audio"]
+
+[[example]]
+name = "pong"
+required-features = ["graphics", "audio"]
+
+[[example]]
+name = "sound-capture"
+required-features = ["audio"]
+
+[[example]]
+name = "sound"
+required-features = ["audio"]
+
+[[example]]
+name = "unicode-text-entry"
+required-features = ["graphics"]
+
+[[example]]
+name = "vertex-arrays"
+required-features = ["graphics"]
 
 [workspace]

@@ -8,7 +8,7 @@ use csfml_system_sys::{sfBool, sfTrue, sfFalse};
 /// between the two types.
 ///
 /// # Example
-/// ```
+/// ```ignore
 /// use sfml::window::ContextSettings;
 /// let mut context_settings = ContextSettings::default();
 /// // We can't use `true` directly, but we can use the `.into()` method.
