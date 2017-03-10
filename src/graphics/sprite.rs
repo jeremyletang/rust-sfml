@@ -22,10 +22,11 @@
 //
 
 use std::ptr;
+use std::marker::PhantomData;
 
 use system::raw_conv::{Raw, FromRaw};
 use graphics::{Drawable, Transformable, FloatRect, IntRect, Color, Texture, RenderTarget, Transform,
-               RenderStates};
+               RenderStates, TextureRef};
 use system::Vector2f;
 
 use csfml_system_sys::{sfBool, sfTrue, sfVector2f};
@@ -38,7 +39,7 @@ use ext::sf_bool_ext::SfBoolExt;
 /// display a texture (or a part of it) on a render target.
 pub struct Sprite<'s> {
     sprite: *mut ffi::sfSprite,
-    texture: Option<&'s Texture>,
+    texture: PhantomData<&'s Texture>,
 }
 
 impl<'s> Sprite<'s> {
@@ -52,7 +53,7 @@ impl<'s> Sprite<'s> {
         } else {
             Sprite {
                 sprite: sp,
-                texture: None,
+                texture: PhantomData,
             }
         }
     }
@@ -70,7 +71,7 @@ impl<'s> Sprite<'s> {
             }
             Sprite {
                 sprite: sp,
-                texture: Some(texture),
+                texture: PhantomData,
             }
         }
     }
@@ -92,7 +93,6 @@ impl<'s> Sprite<'s> {
     /// * reset_rect - Should the texture rect be reset to the size
     /// of the new texture?
     pub fn set_texture(&mut self, texture: &'s Texture, reset_rect: bool) {
-        self.texture = Some(texture);
         unsafe {
             ffi::sfSprite_setTexture(self.sprite, texture.raw(), sfBool::from_bool(reset_rect))
         }
@@ -102,7 +102,6 @@ impl<'s> Sprite<'s> {
     ///
     /// Disable the current texture and reset the texture rect
     pub fn disable_texture(&mut self) {
-        self.texture = None;
         unsafe { ffi::sfSprite_setTexture(self.sprite, ptr::null_mut(), sfTrue) }
     }
 
@@ -126,11 +125,14 @@ impl<'s> Sprite<'s> {
     /// modify the texture when you retrieve it with this function.
     ///
     /// Return an Option to the sprite's texture
-    pub fn texture(&self) -> Option<&'s Texture> {
-        if self.texture.is_none() {
-            None
-        } else {
-            self.texture
+    pub fn texture(&self) -> Option<&'s TextureRef> {
+        unsafe {
+            let ptr = ffi::sfSprite_getTexture(self.sprite);
+            if ptr == ptr::null() {
+                None
+            } else {
+                Some(&*(ptr as *const TextureRef))
+            }
         }
     }
 
@@ -202,7 +204,7 @@ impl<'s> Clone for Sprite<'s> {
         } else {
             Sprite {
                 sprite: sp,
-                texture: self.texture,
+                texture: PhantomData,
             }
         }
     }
