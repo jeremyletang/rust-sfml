@@ -1,11 +1,11 @@
 [package]
 name = "csfml-system-sys"
 description = "Bindings to csfml-system"
-version = "0.1.0"
-authors = ["Mika Attila <radiantstatue@gmail.com>"]
+version = "0.2.0"
+authors = ["rust-sfml developers"]
 links = "csfml-system"
 build = "build.rs"
-documentation = "https://crates.fyi/crates/csfml-system-sys/0.1.0/"
+documentation = "https://docs.rs/csfml-system"
 repository = "https://github.com/jeremyletang/rust-sfml"
 license = "zlib-acknowledgement"
 

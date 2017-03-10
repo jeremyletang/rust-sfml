@@ -23,7 +23,7 @@ bitflags = {version = "0.5", optional = true }
 
 [dependencies.csfml-system-sys]
 path = "ffi/csfml-system-sys"
-version = "0.1.0"
+version = "0.2.0"
 
 [dependencies.csfml-window-sys]
 path = "ffi/csfml-window-sys"
