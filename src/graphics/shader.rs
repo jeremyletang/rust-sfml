@@ -90,9 +90,9 @@ impl<'s> Shader<'s> {
             None
         } else {
             Some(Shader {
-                shader: shader,
-                texture: None,
-            })
+                     shader: shader,
+                     texture: None,
+                 })
         }
     }
 
@@ -129,9 +129,9 @@ impl<'s> Shader<'s> {
             None
         } else {
             Some(Shader {
-                shader: shader,
-                texture: None,
-            })
+                     shader: shader,
+                     texture: None,
+                 })
         }
     }
 
@@ -167,9 +167,9 @@ impl<'s> Shader<'s> {
             None
         } else {
             Some(Shader {
-                shader: shader,
-                texture: None,
-            })
+                     shader: shader,
+                     texture: None,
+                 })
         }
     }
 

@@ -47,10 +47,10 @@ impl Vertex {
     /// Return a Vertex
     pub fn new(position: &Vector2f, color: &Color, tex_coords: &Vector2f) -> Vertex {
         Vertex(ffi::sfVertex {
-            position: position.raw(),
-            color: color.raw(),
-            texCoords: tex_coords.raw(),
-        })
+                   position: position.raw(),
+                   color: color.raw(),
+                   texCoords: tex_coords.raw(),
+               })
     }
 
     /// Create a new Vertex whit a position
@@ -65,10 +65,10 @@ impl Vertex {
     /// Return a Vertex
     pub fn with_pos(position: &Vector2f) -> Vertex {
         Vertex(ffi::sfVertex {
-            position: position.raw(),
-            color: Color::white().raw(),
-            texCoords: sfVector2f { x: 0., y: 0. },
-        })
+                   position: position.raw(),
+                   color: Color::white().raw(),
+                   texCoords: sfVector2f { x: 0., y: 0. },
+               })
     }
 
     /// Create a new Vertex with the position and the color
@@ -83,10 +83,10 @@ impl Vertex {
     /// Return a Vertex
     pub fn with_pos_color(position: &Vector2f, color: &Color) -> Vertex {
         Vertex(ffi::sfVertex {
-            position: position.raw(),
-            color: color.raw(),
-            texCoords: sfVector2f { x: 0., y: 0. },
-        })
+                   position: position.raw(),
+                   color: color.raw(),
+                   texCoords: sfVector2f { x: 0., y: 0. },
+               })
     }
 
     /// Create a new Vertex whit the position and the texture coordinates
@@ -101,10 +101,10 @@ impl Vertex {
     /// Return a Vertex
     pub fn with_pos_coords(position: &Vector2f, tex_coords: &Vector2f) -> Vertex {
         Vertex(ffi::sfVertex {
-            position: position.raw(),
-            color: Color::white().raw(),
-            texCoords: tex_coords.raw(),
-        })
+                   position: position.raw(),
+                   color: Color::white().raw(),
+                   texCoords: tex_coords.raw(),
+               })
     }
 }
 
@@ -119,9 +119,9 @@ impl Vertex {
 impl Default for Vertex {
     fn default() -> Vertex {
         Vertex(ffi::sfVertex {
-            position: sfVector2f { x: 0., y: 0. },
-            color: Color::white().raw(),
-            texCoords: sfVector2f { x: 0., y: 0. },
-        })
+                   position: sfVector2f { x: 0., y: 0. },
+                   color: Color::white().raw(),
+                   texCoords: sfVector2f { x: 0., y: 0. },
+               })
     }
 }

@@ -142,11 +142,11 @@ impl Font {
     ///
     /// Return the corresponding glyph
     pub fn glyph(&self,
-                     codepoint: u32,
-                     character_size: u32,
-                     bold: bool,
-                     outline_thickness: f32)
-                     -> Glyph {
+                 codepoint: u32,
+                 character_size: u32,
+                 bold: bool,
+                 outline_thickness: f32)
+                 -> Glyph {
         unsafe {
             Glyph::from_raw(ffi::sfFont_getGlyph(self.font,
                                                  codepoint,

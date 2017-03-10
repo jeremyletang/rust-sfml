@@ -250,7 +250,9 @@ impl<'s> Shape<'s> for ConvexShape<'s> {
             // ConvexShape stores items in a vector, and does unchecked indexing.
             // To retain safety, we check for OOB here.
             if index > self.point_count() {
-                panic!("Index out of bounds. Index: {}, len: {}", index, self.point_count());
+                panic!("Index out of bounds. Index: {}, len: {}",
+                       index,
+                       self.point_count());
             }
             Vector2f::from_raw(ffi::sfConvexShape_getPoint(self.convex_shape, index as usize))
         }

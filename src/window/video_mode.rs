@@ -99,10 +99,10 @@ impl VideoMode {
     pub fn is_valid(&self) -> bool {
         unsafe {
                 ffi::sfVideoMode_isValid(ffi::sfVideoMode {
-                    width: self.width,
-                    height: self.height,
-                    bitsPerPixel: self.bits_per_pixel,
-                })
+                                             width: self.width,
+                                             height: self.height,
+                                             bitsPerPixel: self.bits_per_pixel,
+                                         })
             }
             .to_bool()
     }

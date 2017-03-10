@@ -9,7 +9,7 @@ pub fn get_wrapped_event(event: &mut sfEvent) -> Option<Event> {
 
     let type_ = unsafe { *event.type_.as_ref() };
 
-    Some(match type_ {
+    let evt = match type_ {
         sfEvtClosed => Closed,
         sfEvtResized => {
             let e = unsafe { *event.size.as_ref() };
@@ -160,5 +160,6 @@ pub fn get_wrapped_event(event: &mut sfEvent) -> Option<Event> {
         // Ignore deprecated events
         sfEvtMouseWheelMoved => return None,
         sfEvtCount => unreachable!(),
-    })
+    };
+    Some(evt)
 }

@@ -55,7 +55,7 @@ pub trait Transformable {
     /// This function completely overwrites the previous scale.
     /// See the scale function to add a factor based on the previous scale instead.
     /// The default scale of a transformable object is (1, 1).
-    fn set_scale2f(&mut self, scale_x: f32, scale_y: f32); 
+    fn set_scale2f(&mut self, scale_x: f32, scale_y: f32);
     /// Sets the local origin of the object.
     ///
     /// The origin of an object defines the center point for all transformations

@@ -19,8 +19,7 @@ fn play_sound() {
 
     while sound.status() == SoundStatus::Playing {
         // Display the playing position
-        print!("\rPlaying... {:.2}",
-               sound.playing_offset().as_seconds());
+        print!("\rPlaying... {:.2}", sound.playing_offset().as_seconds());
         let _ = std::io::stdout().flush();
         // Leave some CPU time for other processes
         sleep(Time::milliseconds(100));
@@ -42,8 +41,7 @@ fn play_music() {
 
     while music.status() == SoundStatus::Playing {
         // Display the playing position
-        print!("\rPlaying... {:.2}",
-               music.playing_offset().as_seconds());
+        print!("\rPlaying... {:.2}", music.playing_offset().as_seconds());
         let _ = std::io::stdout().flush();
         // Leave some CPU time for other processes
         sleep(Time::milliseconds(100));

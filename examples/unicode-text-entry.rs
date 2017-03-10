@@ -8,7 +8,7 @@ fn main() {
                                        "◢◤ Unicode text entry ◥◣",
                                        style::CLOSE,
                                        &Default::default())
-        .unwrap();
+            .unwrap();
 
     let font = Font::from_file("resources/sansation.ttf").unwrap();
     let mut string = String::from("This text can be edited.\nTry it!");

@@ -90,11 +90,11 @@ fn test_settings() {
     let window = Window::new(video_mode, "test", Default::default(), &Default::default()).unwrap();
     let win_settings = window.settings();
     thread::spawn(move || {
-            let context = Context::new();
-            assert_eq!(context.settings(), win_settings);
-        })
-        .join()
-        .unwrap();
+                      let context = Context::new();
+                      assert_eq!(context.settings(), win_settings);
+                  })
+            .join()
+            .unwrap();
 }
 
 impl Drop for Context {

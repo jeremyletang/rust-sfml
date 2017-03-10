@@ -32,7 +32,7 @@ fn main() {
                                        "SFML Pong",
                                        style::CLOSE,
                                        &context_settings)
-        .unwrap();
+            .unwrap();
     window.set_vertical_sync_enabled(true);
 
     // Load the sounds used in the game
@@ -188,13 +188,10 @@ fn main() {
 
             // Check the collisions between the ball and the paddles
             // Left Paddle
-            if ball.position().x - ball_radius <
-               left_paddle.position().x + paddle_size.x / 2. &&
+            if ball.position().x - ball_radius < left_paddle.position().x + paddle_size.x / 2. &&
                ball.position().x - ball_radius > left_paddle.position().x &&
-               ball.position().y + ball_radius >=
-               left_paddle.position().y - paddle_size.y / 2. &&
-               ball.position().y - ball_radius <=
-               left_paddle.position().y + paddle_size.y / 2. {
+               ball.position().y + ball_radius >= left_paddle.position().y - paddle_size.y / 2. &&
+               ball.position().y - ball_radius <= left_paddle.position().y + paddle_size.y / 2. {
                 if ball.position().y > left_paddle.position().y {
                     ball_angle = PI - ball_angle + rng.gen_range(0., 20.) * PI / 180.;
                 } else {
@@ -210,13 +207,10 @@ fn main() {
             }
 
             // Right Paddle
-            if ball.position().x + ball_radius >
-               right_paddle.position().x - paddle_size.x / 2. &&
+            if ball.position().x + ball_radius > right_paddle.position().x - paddle_size.x / 2. &&
                ball.position().x + ball_radius < right_paddle.position().x &&
-               ball.position().y + ball_radius >=
-               right_paddle.position().y - paddle_size.y / 2. &&
-               ball.position().y - ball_radius <=
-               right_paddle.position().y + paddle_size.y / 2. {
+               ball.position().y + ball_radius >= right_paddle.position().y - paddle_size.y / 2. &&
+               ball.position().y - ball_radius <= right_paddle.position().y + paddle_size.y / 2. {
                 if ball.position().y > right_paddle.position().y {
                     ball_angle = PI - ball_angle + rng.gen_range(0., 20.) * PI / 180.;
                 } else {

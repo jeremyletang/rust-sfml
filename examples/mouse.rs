@@ -9,7 +9,7 @@ fn main() {
                                        "Mouse events",
                                        style::CLOSE,
                                        &Default::default())
-        .unwrap();
+            .unwrap();
     window.set_mouse_cursor_visible(false);
     window.set_framerate_limit(60);
 
@@ -86,8 +86,8 @@ fn main() {
         for i in (0..texts.len()).rev() {
             for j in (0..i).rev() {
                 if let Some(intersect) = texts[i]
-                    .global_bounds()
-                    .intersection(&texts[j].global_bounds()) {
+                       .global_bounds()
+                       .intersection(&texts[j].global_bounds()) {
                     texts[j].move2f(0., -intersect.height);
                 }
             }

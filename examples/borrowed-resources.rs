@@ -10,7 +10,7 @@ fn main() {
                                        "Borrowed resources",
                                        style::CLOSE,
                                        &Default::default())
-        .unwrap();
+            .unwrap();
     window.set_vertical_sync_enabled(true);
 
     // Create a new texture. (Hey Frank!)
@@ -35,34 +35,34 @@ fn main() {
     let mut convex_shape = ConvexShape::with_texture(&frank, 6);
     convex_shape.set_point(0,
                            &Vector2f {
-                               x: 400.0,
-                               y: 100.0,
-                           });
+                                x: 400.0,
+                                y: 100.0,
+                            });
     convex_shape.set_point(1,
                            &Vector2f {
-                               x: 500.0,
-                               y: 70.0,
-                           });
+                                x: 500.0,
+                                y: 70.0,
+                            });
     convex_shape.set_point(2,
                            &Vector2f {
-                               x: 450.0,
-                               y: 100.0,
-                           });
+                                x: 450.0,
+                                y: 100.0,
+                            });
     convex_shape.set_point(3,
                            &Vector2f {
-                               x: 580.0,
-                               y: 150.0,
-                           });
+                                x: 580.0,
+                                y: 150.0,
+                            });
     convex_shape.set_point(4,
                            &Vector2f {
-                               x: 420.0,
-                               y: 230.0,
-                           });
+                                x: 420.0,
+                                y: 230.0,
+                            });
     convex_shape.set_point(5,
                            &Vector2f {
-                               x: 420.0,
-                               y: 120.0,
-                           });
+                                x: 420.0,
+                                y: 120.0,
+                            });
 
     // Create an initialized text using the font.
     let title = Text::new_init("Borrowed resources example!", &font, 50);

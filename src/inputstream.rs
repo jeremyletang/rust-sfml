@@ -74,11 +74,11 @@ pub struct InputStream(pub sfInputStream);
 impl InputStream {
     pub fn new<T: Read + Seek>(stream: &mut T) -> Self {
         InputStream(sfInputStream {
-            userData: stream as *const _ as *mut c_void,
-            read: Some(read::<T>),
-            seek: Some(seek::<T>),
-            tell: Some(tell::<T>),
-            getSize: Some(get_size::<T>),
-        })
+                        userData: stream as *const _ as *mut c_void,
+                        read: Some(read::<T>),
+                        seek: Some(seek::<T>),
+                        tell: Some(tell::<T>),
+                        getSize: Some(get_size::<T>),
+                    })
     }
 }
