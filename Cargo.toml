@@ -23,26 +23,26 @@ bitflags = {version = "0.5", optional = true }
 
 [dependencies.csfml-system-sys]
 path = "ffi/csfml-system-sys"
-version = "0.2.0"
+version = "0.2.1"
 
 [dependencies.csfml-window-sys]
 path = "ffi/csfml-window-sys"
-version = "0.1.0"
+version = "0.2.0"
 optional = true
 
 [dependencies.csfml-graphics-sys]
 path = "ffi/csfml-graphics-sys"
-version = "0.1.0"
+version = "0.2.0"
 optional = true
 
 [dependencies.csfml-audio-sys]
 path = "ffi/csfml-audio-sys"
-version = "0.1.0"
+version = "0.2.0"
 optional = true
 
 [dependencies.csfml-network-sys]
 path = "ffi/csfml-network-sys"
-version = "0.1.0"
+version = "0.2.0"
 optional = true
 
 [dev-dependencies]
