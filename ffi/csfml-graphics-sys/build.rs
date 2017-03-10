@@ -1,6 +1,6 @@
-#[path="../build_common.rs"] mod build_sys_common;
+extern crate sfml_build;
 
 fn main() {
-    build_sys_common::link_sfml("graphics");
-    build_sys_common::link_csfml("graphics");
+    sfml_build::link_sfml("graphics");
+    sfml_build::link_csfml("graphics");
 }

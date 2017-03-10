@@ -8,3 +8,7 @@ build = "build.rs"
 documentation = "https://crates.fyi/crates/csfml-system-sys/0.1.0/"
 repository = "https://github.com/jeremyletang/rust-sfml"
 license = "zlib-acknowledgement"
+
+[build-dependencies.sfml-build]
+path = "../sfml-build"
+version = "0.1.0"

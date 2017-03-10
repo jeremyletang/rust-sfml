@@ -16,3 +16,7 @@ version = "0.1.0"
 [dependencies.csfml-window-sys]
 path = "../csfml-window-sys"
 version = "0.1.0"
+
+[build-dependencies.sfml-build]
+path = "../sfml-build"
+version = "0.1.0"

@@ -1,6 +1,6 @@
-#[path="../build_common.rs"] mod build_sys_common;
+extern crate sfml_build;
 
 fn main() {
-    build_sys_common::link_sfml("audio");
-    build_sys_common::link_csfml("audio");
+    sfml_build::link_sfml("audio");
+    sfml_build::link_csfml("audio");
 }

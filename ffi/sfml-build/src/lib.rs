@@ -21,7 +21,7 @@ pub fn link_csfml(lib_name: &str) {
     }
 
     // Link to the csfml library
-    println!("cargo:rustc-link-lib=csfml-{}", lib_name);    
+    println!("cargo:rustc-link-lib=csfml-{}", lib_name);
 }
 
 // Add search path for SFML library files

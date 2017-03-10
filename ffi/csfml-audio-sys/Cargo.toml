@@ -12,3 +12,7 @@ license = "zlib-acknowledgement"
 [dependencies.csfml-system-sys]
 path = "../csfml-system-sys"
 version = "0.1.0"
+
+[build-dependencies.sfml-build]
+path = "../sfml-build"
+version = "0.1.0"
