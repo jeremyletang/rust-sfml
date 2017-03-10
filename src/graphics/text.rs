@@ -22,9 +22,10 @@
 //
 
 use std::str;
+use std::marker::PhantomData;
 
 use system::raw_conv::{Raw, FromRaw};
-use graphics::{Drawable, Transformable, RenderTarget, Font, FloatRect, Color, Transform,
+use graphics::{Drawable, Transformable, RenderTarget, Font, FontRef, FloatRect, Color, Transform,
                RenderStates, TextStyle};
 use system::Vector2f;
 use csfml_system_sys::sfVector2f;
@@ -38,7 +39,7 @@ use csfml_graphics_sys as ffi;
 pub struct Text<'s> {
     text: *mut ffi::sfText,
     string_length: usize,
-    font: Option<&'s Font>,
+    font: PhantomData<&'s Font>,
 }
 
 impl<'s> Text<'s> {
@@ -51,7 +52,7 @@ impl<'s> Text<'s> {
             Text {
                 text: text,
                 string_length: 0,
-                font: None,
+                font: PhantomData,
             }
         }
     }
@@ -114,7 +115,6 @@ impl<'s> Text<'s> {
     ///
     /// font - New font
     pub fn set_font(&mut self, font: &'s Font) {
-        self.font = Some(font);
         unsafe { ffi::sfText_setFont(self.text, font.raw()) }
     }
 
@@ -151,8 +151,16 @@ impl<'s> Text<'s> {
     /// If the text has no font attached, a None is returned.
     /// The returned pointer is const, which means that you can't
     /// modify the font when you retrieve it with this function.
-    pub fn font(&self) -> Option<&'s Font> {
-        self.font
+    pub fn font(&self) -> Option<&'s FontRef> {
+        unsafe {
+            let raw = ffi::sfText_getFont(self.text);
+
+            if raw == ::std::ptr::null() {
+                None
+            } else {
+                Some(&*(raw as *const FontRef))
+            }
+        }
     }
 
     /// Set the fill color of the text.
@@ -255,7 +263,7 @@ impl<'s> Clone for Text<'s> {
             Text {
                 text: self.text,
                 string_length: self.string_length,
-                font: self.font,
+                font: PhantomData,
             }
         }
     }
