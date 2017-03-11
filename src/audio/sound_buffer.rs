@@ -231,7 +231,7 @@ impl ToOwned for SoundBufferRef {
 
 impl Clone for SoundBuffer {
     fn clone(&self) -> Self {
-        Borrow::<SoundBufferRef>::borrow(self).to_owned()
+        (*self).to_owned()
     }
 }
 
