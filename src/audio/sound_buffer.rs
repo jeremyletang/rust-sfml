@@ -22,6 +22,7 @@
 //
 
 use std::ffi::CString;
+use std::borrow::{Borrow, ToOwned};
 
 use system::raw_conv::{Raw, FromRaw};
 use system::Time;
@@ -209,14 +210,28 @@ impl SoundBuffer {
     }
 }
 
-impl Clone for SoundBuffer {
-    fn clone(&self) -> Self {
-        let sound_buffer = unsafe { ffi::sfSoundBuffer_copy(self.sound_buffer) };
+impl Borrow<SoundBufferRef> for SoundBuffer {
+    fn borrow(&self) -> &SoundBufferRef {
+        &*self
+    }
+}
+
+impl ToOwned for SoundBufferRef {
+    type Owned = SoundBuffer;
+
+    fn to_owned(&self) -> Self::Owned {
+        let sound_buffer = unsafe { ffi::sfSoundBuffer_copy(self as *const _ as _) };
         if sound_buffer.is_null() {
             panic!("Sound buffer is null");
         } else {
             SoundBuffer { sound_buffer: sound_buffer }
         }
+    }
+}
+
+impl Clone for SoundBuffer {
+    fn clone(&self) -> Self {
+        Borrow::<SoundBufferRef>::borrow(self).to_owned()
     }
 }
 
