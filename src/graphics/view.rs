@@ -281,7 +281,7 @@ impl ToOwned for ViewRef {
 impl Clone for View {
     /// Return a new View or panic! if there is not enough memory
     fn clone(&self) -> View {
-        (*self).to_owned()
+        (**self).to_owned()
     }
 }
 

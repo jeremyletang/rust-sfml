@@ -362,7 +362,7 @@ impl ToOwned for TextureRef {
 
 impl Clone for Texture {
     fn clone(&self) -> Texture {
-        (*self).to_owned()
+        (**self).to_owned()
     }
 }
 
