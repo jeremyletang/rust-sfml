@@ -26,6 +26,7 @@
 
 use std::ffi::{CStr, CString};
 use std::ops::Deref;
+use std::borrow::{Borrow, ToOwned};
 
 use system::raw_conv::{Raw, FromRaw};
 use graphics::{TextureRef, Glyph};
@@ -196,15 +197,28 @@ fn test_info() {
     assert_eq!(font.info().family, "Sansation");
 }
 
-impl Clone for Font {
-    /// Return a new Font or panic! if there is not enough memory
-    fn clone(&self) -> Font {
-        let fnt = unsafe { ffi::sfFont_copy(self.font) };
+impl Borrow<FontRef> for Font {
+    fn borrow(&self) -> &FontRef {
+        &*self
+    }
+}
+
+impl ToOwned for FontRef {
+    type Owned = Font;
+    fn to_owned(&self) -> Self::Owned {
+        let fnt = unsafe { ffi::sfFont_copy(self as *const _ as _) };
         if fnt.is_null() {
             panic!("Not enough memory to clone Font")
         } else {
             Font { font: fnt }
         }
+    }
+}
+
+impl Clone for Font {
+    /// Return a new Font or panic! if there is not enough memory
+    fn clone(&self) -> Font {
+        (**self).to_owned()
     }
 }
 
