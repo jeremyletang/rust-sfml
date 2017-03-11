@@ -72,8 +72,8 @@ impl<'s> RenderStates<'s> {
 }
 
 impl<'s> RawMut for RenderStates<'s> {
-    type Raw = *mut ffi::sfRenderStates;
-    fn raw_mut(&mut self) -> Self::Raw {
+    type RawMut = *mut ffi::sfRenderStates;
+    fn raw_mut(&mut self) -> Self::RawMut {
         self.sf_render_states.blendMode = self.blend_mode.raw();
         self.sf_render_states.transform = self.transform.0;
         self.sf_render_states.texture = match self.texture {

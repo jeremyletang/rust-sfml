@@ -34,9 +34,9 @@ pub trait Raw {
 /// A type that has a raw representation that can be acquired through `&mut self`.
 pub trait RawMut {
     /// The raw representation of this type.
-    type Raw;
+    type RawMut;
     /// Acquires the raw representation of this type through `&mut self`.
-    fn raw_mut(&mut self) -> Self::Raw;
+    fn raw_mut(&mut self) -> Self::RawMut;
 }
 
 /// A type that can be created from its raw representation.
