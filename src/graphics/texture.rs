@@ -60,25 +60,25 @@ impl TextureRef {
     ///
     /// Return the Size in pixels
     pub fn size(&self) -> Vector2u {
-        unsafe { Vector2u::from_raw(ffi::sfTexture_getSize(self as *const _ as _)) }
+        unsafe { Vector2u::from_raw(ffi::sfTexture_getSize(self.raw())) }
     }
     /// Tell whether the smooth filter is enabled or not for a texture
     ///
     /// Return true if smoothing is enabled, false if it is disabled
     pub fn is_smooth(&self) -> bool {
-        unsafe { ffi::sfTexture_isSmooth(self as *const _ as _) }.to_bool()
+        unsafe { ffi::sfTexture_isSmooth(self.raw()) }.to_bool()
     }
     /// Tell whether a texture is repeated or not
     ///
     /// Return frue if repeat mode is enabled, false if it is disabled
     pub fn is_repeated(&self) -> bool {
-        unsafe { ffi::sfTexture_isRepeated(self as *const _ as _) }.to_bool()
+        unsafe { ffi::sfTexture_isRepeated(self.raw()) }.to_bool()
     }
     /// Copy a texture's pixels to an image
     ///
     /// Return an image containing the texture's pixels
     pub fn copy_to_image(&self) -> Option<Image> {
-        let img = unsafe { ffi::sfTexture_copyToImage(self as *const _ as _) };
+        let img = unsafe { ffi::sfTexture_copyToImage(self.raw()) };
         if img.is_null() {
             None
         } else {
@@ -87,14 +87,14 @@ impl TextureRef {
     }
     /// Tell whether the texture source is converted from sRGB or not.
     pub fn is_srgb(&self) -> bool {
-        unsafe { ffi::sfTexture_isSrgb(self as *const _ as _).to_bool() }
+        unsafe { ffi::sfTexture_isSrgb(self.raw()).to_bool() }
     }
     /// Get the underlying OpenGL handle of the texture.
     ///
     /// You shouldn't need to use this function, unless you have very specific stuff to implement
     /// that SFML doesn't support, or implement a temporary workaround until a bug is fixed.
     pub fn native_handle(&self) -> u32 {
-        unsafe { ffi::sfTexture_getNativeHandle(self as *const _ as _) }
+        unsafe { ffi::sfTexture_getNativeHandle(self.raw()) }
     }
 
     /// Bind a texture for rendering
@@ -103,7 +103,7 @@ impl TextureRef {
     /// used when drawing SFML entities. It must be used only if you
     /// mix `Texture` with OpenGL code.
     pub fn bind(&self) {
-        unsafe { ffi::sfTexture_bind(self as *const _ as _) }
+        unsafe { ffi::sfTexture_bind(self.raw()) }
     }
 }
 
@@ -351,7 +351,7 @@ impl ToOwned for TextureRef {
     type Owned = Texture;
 
     fn to_owned(&self) -> Self::Owned {
-        let tex = unsafe { ffi::sfTexture_copy(self as *const _ as _) };
+        let tex = unsafe { ffi::sfTexture_copy(self.raw()) };
         if tex.is_null() {
             panic!("Not enough memory to clone Texture")
         } else {

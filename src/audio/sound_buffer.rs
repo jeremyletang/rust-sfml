@@ -109,7 +109,7 @@ impl SoundBufferRef {
     /// Return true if saving succeeded, false if it faileds
     pub fn save_to_file(&self, filename: &str) -> bool {
         let c_str = CString::new(filename.as_bytes()).unwrap();
-        unsafe { ffi::sfSoundBuffer_saveToFile(self as *const _ as _, c_str.as_ptr()) }.to_bool()
+        unsafe { ffi::sfSoundBuffer_saveToFile(self.raw(), c_str.as_ptr()) }.to_bool()
     }
 
     /// Get the number of samples stored in a sound buffer
@@ -119,7 +119,7 @@ impl SoundBufferRef {
     ///
     /// Return the number of samples
     pub fn sample_count(&self) -> i64 {
-        unsafe { ffi::sfSoundBuffer_getSampleCount(self as *const _ as _) as i64 }
+        unsafe { ffi::sfSoundBuffer_getSampleCount(self.raw()) as i64 }
     }
 
     /// Get the number of channels used by a sound buffer
@@ -129,14 +129,14 @@ impl SoundBufferRef {
     ///
     /// Return the number of channels
     pub fn channel_count(&self) -> u32 {
-        unsafe { ffi::sfSoundBuffer_getChannelCount(self as *const _ as _) as u32 }
+        unsafe { ffi::sfSoundBuffer_getChannelCount(self.raw()) as u32 }
     }
 
     /// Get the total duration of a sound buffer
     ///
     /// Return the sound duration
     pub fn duration(&self) -> Time {
-        unsafe { Time::from_raw(ffi::sfSoundBuffer_getDuration(self as *const _ as _)) }
+        unsafe { Time::from_raw(ffi::sfSoundBuffer_getDuration(self.raw())) }
     }
 
     /// Get the sample rate of a sound buffer
@@ -147,7 +147,7 @@ impl SoundBufferRef {
     ///
     /// Return the sample rate (number of samples per second)
     pub fn sample_rate(&self) -> u32 {
-        unsafe { ffi::sfSoundBuffer_getSampleRate(self as *const _ as _) as u32 }
+        unsafe { ffi::sfSoundBuffer_getSampleRate(self.raw()) as u32 }
     }
 }
 
@@ -220,7 +220,7 @@ impl ToOwned for SoundBufferRef {
     type Owned = SoundBuffer;
 
     fn to_owned(&self) -> Self::Owned {
-        let sound_buffer = unsafe { ffi::sfSoundBuffer_copy(self as *const _ as _) };
+        let sound_buffer = unsafe { ffi::sfSoundBuffer_copy(self.raw()) };
         if sound_buffer.is_null() {
             panic!("Sound buffer is null");
         } else {

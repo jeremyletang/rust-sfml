@@ -55,27 +55,27 @@ impl ViewRef {
     ///
     /// Return the rotation angle of the view, in degrees
     pub fn rotation(&self) -> f32 {
-        unsafe { ffi::sfView_getRotation(self as *const _ as _) as f32 }
+        unsafe { ffi::sfView_getRotation(self.raw()) as f32 }
     }
     /// Get the center of a view
     ///
     /// Return the center of the view
     pub fn center(&self) -> Vector2f {
-        unsafe { Vector2f::from_raw(ffi::sfView_getCenter(self as *const _ as _)) }
+        unsafe { Vector2f::from_raw(ffi::sfView_getCenter(self.raw())) }
     }
 
     /// Get the size of a view
     ///
     /// Return the size of the view
     pub fn size(&self) -> Vector2f {
-        unsafe { Vector2f::from_raw(ffi::sfView_getSize(self as *const _ as _)) }
+        unsafe { Vector2f::from_raw(ffi::sfView_getSize(self.raw())) }
     }
 
     /// Get the target viewport rectangle of a view
     ///
     /// Return the viewport rectangle, expressed as a factor of the target size
     pub fn viewport(&self) -> FloatRect {
-        unsafe { FloatRect::from_raw(ffi::sfView_getViewport(self as *const _ as _)) }
+        unsafe { FloatRect::from_raw(ffi::sfView_getViewport(self.raw())) }
     }
 }
 
@@ -269,7 +269,7 @@ impl Borrow<ViewRef> for View {
 impl ToOwned for ViewRef {
     type Owned = View;
     fn to_owned(&self) -> Self::Owned {
-        let view = unsafe { ffi::sfView_copy(self as *const _ as _) };
+        let view = unsafe { ffi::sfView_copy(self.raw()) };
         if view.is_null() {
             panic!("Not enough memory to clone View")
         } else {

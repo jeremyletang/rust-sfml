@@ -28,7 +28,7 @@ use std::ffi::{CStr, CString};
 use std::ops::Deref;
 use std::borrow::{Borrow, ToOwned};
 
-use system::raw_conv::{Raw, FromRaw};
+use system::raw_conv::{Raw, RawMut, FromRaw};
 use graphics::{TextureRef, Glyph};
 
 use csfml_system_sys::sfBool;
@@ -64,9 +64,7 @@ impl FontRef {
     ///
     /// Return the kerning offset, in pixels
     pub fn kerning(&self, first: u32, second: u32, character_size: u32) -> i32 {
-        unsafe {
-            ffi::sfFont_getKerning(self as *const _ as _, first, second, character_size) as i32
-        }
+        unsafe { ffi::sfFont_getKerning(self.raw(), first, second, character_size) as i32 }
     }
 
     /// Get the line spacing value
@@ -76,22 +74,7 @@ impl FontRef {
     ///
     /// Return the line spacing, in pixels
     pub fn line_spacing(&self, character_size: u32) -> i32 {
-        unsafe { ffi::sfFont_getLineSpacing(self as *const _ as _, character_size) as i32 }
-    }
-
-    /// Get the texture containing the glyphs of a given size in a font
-    ///
-    /// # Arguments
-    /// * characterSize - Character size, in pixels
-    ///
-    /// Return the texture
-    pub fn texture(&self, character_size: u32) -> &TextureRef {
-        let tex = unsafe { ffi::sfFont_getTexture(self as *const _ as _, character_size) };
-        if tex.is_null() {
-            panic!("Font::texture: texture is null");
-        } else {
-            unsafe { &*(tex as *const TextureRef) }
-        }
+        unsafe { ffi::sfFont_getLineSpacing(self.raw(), character_size) as i32 }
     }
 
     /// Get a glyph in a font
@@ -109,7 +92,7 @@ impl FontRef {
                  outline_thickness: f32)
                  -> Glyph {
         unsafe {
-            Glyph::from_raw(ffi::sfFont_getGlyph(self as *const _ as _,
+            Glyph::from_raw(ffi::sfFont_getGlyph(self.raw(),
                                                  codepoint,
                                                  character_size,
                                                  sfBool::from_bool(bold),
@@ -119,7 +102,7 @@ impl FontRef {
     /// Returns the font information.
     pub fn info(&self) -> Info {
         unsafe {
-            let raw = ffi::sfFont_getInfo(self as *const _ as _);
+            let raw = ffi::sfFont_getInfo(self.raw());
             let family = CStr::from_ptr(raw.family).to_string_lossy().into_owned();
 
             Info { family: family }
@@ -127,11 +110,11 @@ impl FontRef {
     }
     /// Returns the position of the underline.
     pub fn underline_position(&self, character_size: u32) -> f32 {
-        unsafe { ffi::sfFont_getUnderlinePosition(self as *const _ as _, character_size) }
+        unsafe { ffi::sfFont_getUnderlinePosition(self.raw(), character_size) }
     }
     /// Returns the thickness of the underline.
     pub fn underline_thickness(&self, character_size: u32) -> f32 {
-        unsafe { ffi::sfFont_getUnderlineThickness(self as *const _ as _, character_size) }
+        unsafe { ffi::sfFont_getUnderlineThickness(self.raw(), character_size) }
     }
 }
 
@@ -189,6 +172,21 @@ impl Font {
             Some(Font { font: fnt })
         }
     }
+
+    /// Get the texture containing the glyphs of a given size in a font
+    ///
+    /// # Arguments
+    /// * characterSize - Character size, in pixels
+    ///
+    /// Return the texture
+    pub fn texture(&mut self, character_size: u32) -> &TextureRef {
+        let tex = unsafe { ffi::sfFont_getTexture(self.raw_mut(), character_size) };
+        if tex.is_null() {
+            panic!("Font::texture: texture is null");
+        } else {
+            unsafe { &*(tex as *const TextureRef) }
+        }
+    }
 }
 
 #[test]
@@ -206,7 +204,7 @@ impl Borrow<FontRef> for Font {
 impl ToOwned for FontRef {
     type Owned = Font;
     fn to_owned(&self) -> Self::Owned {
-        let fnt = unsafe { ffi::sfFont_copy(self as *const _ as _) };
+        let fnt = unsafe { ffi::sfFont_copy(self.raw()) };
         if fnt.is_null() {
             panic!("Not enough memory to clone Font")
         } else {
@@ -226,6 +224,13 @@ impl Raw for FontRef {
     type Raw = *const ffi::sfFont;
     fn raw(&self) -> Self::Raw {
         self as *const _ as _
+    }
+}
+
+impl RawMut for Font {
+    type RawMut = *mut ffi::sfFont;
+    fn raw_mut(&mut self) -> Self::RawMut {
+        self.font
     }
 }
 
