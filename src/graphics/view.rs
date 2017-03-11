@@ -25,6 +25,7 @@ use system::raw_conv::{Raw, FromRaw};
 use graphics::FloatRect;
 use system::Vector2f;
 use std::ops::Deref;
+use std::borrow::{Borrow, ToOwned};
 
 use csfml_graphics_sys as ffi;
 use csfml_system_sys::sfVector2f;
@@ -259,15 +260,28 @@ impl Default for View {
     }
 }
 
-impl Clone for View {
-    /// Return a new View or panic! if there is not enough memory
-    fn clone(&self) -> View {
-        let view = unsafe { ffi::sfView_copy(self.view) };
+impl Borrow<ViewRef> for View {
+    fn borrow(&self) -> &ViewRef {
+        &*self
+    }
+}
+
+impl ToOwned for ViewRef {
+    type Owned = View;
+    fn to_owned(&self) -> Self::Owned {
+        let view = unsafe { ffi::sfView_copy(self as *const _ as _) };
         if view.is_null() {
             panic!("Not enough memory to clone View")
         } else {
             View { view: view }
         }
+    }
+}
+
+impl Clone for View {
+    /// Return a new View or panic! if there is not enough memory
+    fn clone(&self) -> View {
+        (*self).to_owned()
     }
 }
 
