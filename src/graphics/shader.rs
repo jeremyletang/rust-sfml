@@ -338,7 +338,6 @@ impl<'s> Raw for Shader<'s> {
 }
 
 impl<'s> Drop for Shader<'s> {
-    /// Destroy an existing shader
     fn drop(&mut self) {
         unsafe { ffi::sfShader_destroy(self.shader) }
     }

@@ -297,7 +297,6 @@ impl FromRaw for Image {
 }
 
 impl Drop for Image {
-    /// Destroy an existing image
     fn drop(&mut self) {
         unsafe { ffi::sfImage_destroy(self.image) }
     }

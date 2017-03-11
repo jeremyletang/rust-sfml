@@ -230,7 +230,6 @@ impl Raw for Font {
 }
 
 impl Drop for Font {
-    /// Destroy an existing font
     fn drop(&mut self) {
         unsafe { ffi::sfFont_destroy(self.font) }
     }

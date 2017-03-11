@@ -380,7 +380,6 @@ impl FromRaw for Texture {
 }
 
 impl Drop for Texture {
-    /// Destroy an existing texture
     fn drop(&mut self) {
         unsafe { ffi::sfTexture_destroy(self.texture) }
     }

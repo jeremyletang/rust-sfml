@@ -299,7 +299,6 @@ impl<'s> Raw for Sprite<'s> {
 }
 
 impl<'s> Drop for Sprite<'s> {
-    /// Destroy an existing sprite
     fn drop(&mut self) {
         unsafe { ffi::sfSprite_destroy(self.sprite) }
     }
