@@ -25,6 +25,7 @@ use std::ptr;
 use std::ffi::CString;
 use std::io::{Read, Seek};
 use std::ops::Deref;
+use std::borrow::{Borrow, ToOwned};
 
 use system::raw_conv::{Raw, FromRaw};
 use graphics::{RenderWindow, Image, IntRect};
@@ -340,15 +341,28 @@ impl Texture {
     }
 }
 
-impl Clone for Texture {
-    /// Return a new Texture or panic! if there is not enough memory
-    fn clone(&self) -> Texture {
-        let tex = unsafe { ffi::sfTexture_copy(self.texture) };
+impl Borrow<TextureRef> for Texture {
+    fn borrow(&self) -> &TextureRef {
+        &*self
+    }
+}
+
+impl ToOwned for TextureRef {
+    type Owned = Texture;
+
+    fn to_owned(&self) -> Self::Owned {
+        let tex = unsafe { ffi::sfTexture_copy(self as *const _ as _) };
         if tex.is_null() {
             panic!("Not enough memory to clone Texture")
         } else {
             Texture { texture: tex }
         }
+    }
+}
+
+impl Clone for Texture {
+    fn clone(&self) -> Texture {
+        (*self).to_owned()
     }
 }
 
