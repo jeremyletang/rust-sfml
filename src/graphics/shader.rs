@@ -23,6 +23,7 @@
 
 use std::ptr;
 use std::ffi::CString;
+use std::marker::PhantomData;
 
 use system::raw_conv::Raw;
 use graphics::{Texture, Color};
@@ -42,7 +43,7 @@ use ext::sf_bool_ext::SfBoolExt;
 /// real-time operations to the rendered entities.
 pub struct Shader<'s> {
     shader: *mut ffi::sfShader,
-    texture: Option<&'s Texture>,
+    texture: PhantomData<&'s Texture>,
 }
 
 macro_rules! cstring_then_ptr {
@@ -91,7 +92,7 @@ impl<'s> Shader<'s> {
         } else {
             Some(Shader {
                      shader: shader,
-                     texture: None,
+                     texture: PhantomData,
                  })
         }
     }
@@ -130,7 +131,7 @@ impl<'s> Shader<'s> {
         } else {
             Some(Shader {
                      shader: shader,
-                     texture: None,
+                     texture: PhantomData,
                  })
         }
     }
@@ -168,7 +169,7 @@ impl<'s> Shader<'s> {
         } else {
             Some(Shader {
                      shader: shader,
-                     texture: None,
+                     texture: PhantomData,
                  })
         }
     }
@@ -241,7 +242,6 @@ impl<'s> Shader<'s> {
     /// * name - Name of the texture in the shader
     /// * texture - Texture to assign
     pub fn set_texture_parameter(&mut self, name: &str, texture: &'s Texture) {
-        self.texture = Some(texture);
         let c_str = CString::new(name.as_bytes()).unwrap();
         unsafe { ffi::sfShader_setTextureParameter(self.shader, c_str.as_ptr(), texture.raw()) }
     }
