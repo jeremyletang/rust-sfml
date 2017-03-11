@@ -367,7 +367,7 @@ impl Clone for Texture {
 }
 
 impl Raw for Texture {
-    type Raw = *mut ffi::sfTexture;
+    type Raw = *const ffi::sfTexture;
     fn raw(&self) -> Self::Raw {
         self.texture
     }

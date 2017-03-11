@@ -283,7 +283,7 @@ impl<'s> Clone for RectangleShape<'s> {
 }
 
 impl<'s> Raw for RectangleShape<'s> {
-    type Raw = *mut ffi::sfRectangleShape;
+    type Raw = *const ffi::sfRectangleShape;
     fn raw(&self) -> Self::Raw {
         self.rectangle_shape
     }

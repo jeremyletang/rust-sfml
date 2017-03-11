@@ -305,7 +305,7 @@ impl Iterator for ConvexShapePoints {
 }
 
 impl<'s> Raw for ConvexShape<'s> {
-    type Raw = *mut ffi::sfConvexShape;
+    type Raw = *const ffi::sfConvexShape;
     fn raw(&self) -> Self::Raw {
         self.convex_shape
     }

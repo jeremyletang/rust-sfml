@@ -187,7 +187,7 @@ impl<'s> Shape<'s> for CustomShape<'s> {
 }
 
 impl<'s> Raw for CustomShape<'s> {
-    type Raw = *mut ffi::sfShape;
+    type Raw = *const ffi::sfShape;
     fn raw(&self) -> Self::Raw {
         self.shape
     }

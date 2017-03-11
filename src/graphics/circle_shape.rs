@@ -297,7 +297,7 @@ impl<'s> Drop for CircleShape<'s> {
 }
 
 impl<'s> Raw for CircleShape<'s> {
-    type Raw = *mut ffi::sfCircleShape;
+    type Raw = *const ffi::sfCircleShape;
     fn raw(&self) -> Self::Raw {
         self.circle_shape
     }

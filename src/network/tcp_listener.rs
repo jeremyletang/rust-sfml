@@ -23,7 +23,7 @@
 
 use std::mem;
 
-use system::raw_conv::Raw;
+use system::raw_conv::{Raw, RawMut};
 use network::{TcpSocket, SocketStatus, IpAddress};
 
 use csfml_system_sys::sfBool;
@@ -108,7 +108,8 @@ impl TcpListener {
     /// Return status code
     pub fn accept(&self, connected: &mut TcpSocket) -> SocketStatus {
         unsafe {
-            mem::transmute(ffi::sfTcpListener_accept(self.listener, &mut connected.raw()) as i32)
+            mem::transmute(ffi::sfTcpListener_accept(self.listener, &mut connected.raw_mut()) as
+                           i32)
         }
     }
 }

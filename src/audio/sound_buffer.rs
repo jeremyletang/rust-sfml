@@ -236,7 +236,7 @@ impl Clone for SoundBuffer {
 }
 
 impl Raw for SoundBuffer {
-    type Raw = *mut ffi::sfSoundBuffer;
+    type Raw = *const ffi::sfSoundBuffer;
     fn raw(&self) -> Self::Raw {
         self.sound_buffer
     }

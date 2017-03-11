@@ -201,7 +201,7 @@ impl Default for Request {
 }
 
 impl Raw for Request {
-    type Raw = *mut ffi::sfHttpRequest;
+    type Raw = *const ffi::sfHttpRequest;
     fn raw(&self) -> Self::Raw {
         self.request
     }

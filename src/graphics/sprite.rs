@@ -292,7 +292,7 @@ impl<'s> Transformable for Sprite<'s> {
 }
 
 impl<'s> Raw for Sprite<'s> {
-    type Raw = *mut ffi::sfSprite;
+    type Raw = *const ffi::sfSprite;
     fn raw(&self) -> Self::Raw {
         self.sprite
     }

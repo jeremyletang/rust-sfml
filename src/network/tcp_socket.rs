@@ -23,7 +23,7 @@
 
 use std::{ptr, mem};
 
-use system::raw_conv::{Raw, FromRaw};
+use system::raw_conv::{Raw, RawMut, FromRaw};
 use network::{IpAddress, Packet, SocketStatus};
 use system::Time;
 
@@ -167,8 +167,8 @@ impl TcpSocket {
     /// * packet - Packet to send
     ///
     /// Return the socket status
-    pub fn send_packet(&self, packet: &Packet) -> SocketStatus {
-        unsafe { mem::transmute(ffi::sfTcpSocket_sendPacket(self.socket, packet.raw()) as i32) }
+    pub fn send_packet(&self, packet: &mut Packet) -> SocketStatus {
+        unsafe { mem::transmute(ffi::sfTcpSocket_sendPacket(self.socket, packet.raw_mut()) as i32) }
     }
 
     /// Receive a formatted packet of data from the remote peer
@@ -195,8 +195,15 @@ impl Default for TcpSocket {
 }
 
 impl Raw for TcpSocket {
-    type Raw = *mut ffi::sfTcpSocket;
+    type Raw = *const ffi::sfTcpSocket;
     fn raw(&self) -> Self::Raw {
+        self.socket
+    }
+}
+
+impl RawMut for TcpSocket {
+    type RawMut = *mut ffi::sfTcpSocket;
+    fn raw_mut(&mut self) -> Self::RawMut {
         self.socket
     }
 }

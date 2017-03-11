@@ -292,7 +292,7 @@ impl Drop for View {
 }
 
 impl Raw for View {
-    type Raw = *mut ffi::sfView;
+    type Raw = *const ffi::sfView;
     fn raw(&self) -> Self::Raw {
         self.view
     }

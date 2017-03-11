@@ -331,7 +331,7 @@ impl<'s> Shader<'s> {
 }
 
 impl<'s> Raw for Shader<'s> {
-    type Raw = *mut ffi::sfShader;
+    type Raw = *const ffi::sfShader;
     fn raw(&self) -> Self::Raw {
         self.shader
     }

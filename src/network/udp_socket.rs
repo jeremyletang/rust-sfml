@@ -23,7 +23,7 @@
 
 use std::{ptr, mem};
 
-use system::raw_conv::{Raw, FromRaw};
+use system::raw_conv::{Raw, RawMut, FromRaw};
 use network::{Packet, IpAddress, SocketStatus};
 
 use csfml_system_sys::sfBool;
@@ -165,10 +165,10 @@ impl UdpSocket {
     /// * packet - Packet to send
     /// * remoteAddress - Address of the receiver
     /// * remotePort - Port of the receiver to send the data to
-    pub fn send_packet(&self, packet: &Packet, address: &IpAddress, port: u16) -> SocketStatus {
+    pub fn send_packet(&self, packet: &mut Packet, address: &IpAddress, port: u16) -> SocketStatus {
         unsafe {
             mem::transmute(ffi::sfUdpSocket_sendPacket(self.socket,
-                                                       packet.raw(),
+                                                       packet.raw_mut(),
                                                        address.raw(),
                                                        port) as i32)
         }

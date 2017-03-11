@@ -407,7 +407,7 @@ impl Window {
 }
 
 impl Raw for Window {
-    type Raw = *mut ffi::sfWindow;
+    type Raw = *const ffi::sfWindow;
     fn raw(&self) -> Self::Raw {
         self.window
     }

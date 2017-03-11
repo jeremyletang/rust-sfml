@@ -238,7 +238,7 @@ impl Index<u32> for VertexArray {
 }
 
 impl Raw for VertexArray {
-    type Raw = *mut sfVertexArray;
+    type Raw = *const sfVertexArray;
     fn raw(&self) -> Self::Raw {
         self.vertex_array
     }

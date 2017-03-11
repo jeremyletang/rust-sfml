@@ -284,7 +284,7 @@ impl Clone for Image {
 }
 
 impl Raw for Image {
-    type Raw = *mut ffi::sfImage;
+    type Raw = *const ffi::sfImage;
     fn raw(&self) -> Self::Raw {
         self.image
     }

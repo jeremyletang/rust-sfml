@@ -351,7 +351,7 @@ impl<'s> Transformable for Text<'s> {
 }
 
 impl<'s> Raw for Text<'s> {
-    type Raw = *mut ffi::sfText;
+    type Raw = *const ffi::sfText;
     fn raw(&self) -> Self::Raw {
         self.text
     }

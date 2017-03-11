@@ -23,7 +23,7 @@
 
 use std::ffi::CString;
 
-use system::raw_conv::{Raw, FromRaw};
+use system::raw_conv::{Raw, RawMut, FromRaw};
 
 use csfml_system_sys::sfBool;
 use csfml_network_sys as ffi;
@@ -211,8 +211,15 @@ impl Clone for Packet {
 }
 
 impl Raw for Packet {
-    type Raw = *mut ffi::sfPacket;
+    type Raw = *const ffi::sfPacket;
     fn raw(&self) -> Self::Raw {
+        self.packet
+    }
+}
+
+impl RawMut for Packet {
+    type RawMut = *mut ffi::sfPacket;
+    fn raw_mut(&mut self) -> Self::RawMut {
         self.packet
     }
 }

@@ -223,7 +223,7 @@ impl Clone for Font {
 }
 
 impl Raw for Font {
-    type Raw = *mut ffi::sfFont;
+    type Raw = *const ffi::sfFont;
     fn raw(&self) -> Self::Raw {
         self.font
     }

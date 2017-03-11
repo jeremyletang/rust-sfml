@@ -412,7 +412,7 @@ impl RenderWindow {
 }
 
 impl Raw for RenderWindow {
-    type Raw = *mut ffi::sfRenderWindow;
+    type Raw = *const ffi::sfRenderWindow;
     fn raw(&self) -> Self::Raw {
         self.render_window
     }
