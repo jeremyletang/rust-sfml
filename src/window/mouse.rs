@@ -92,7 +92,8 @@ impl Raw for Wheel {
 }
 
 impl FromRaw for Wheel {
-    unsafe fn from_raw(raw: Self::Raw) -> Self {
+    type RawFrom = ffi::sfMouseWheel;
+    unsafe fn from_raw(raw: Self::RawFrom) -> Self {
         match raw {
             ffi::sfMouseWheel::sfMouseVerticalWheel => Wheel::Vertical,
             ffi::sfMouseWheel::sfMouseHorizontalWheel => Wheel::Horizontal,
@@ -109,7 +110,8 @@ impl Raw for Button {
 }
 
 impl FromRaw for Button {
-    unsafe fn from_raw(raw: Self::Raw) -> Self {
+    type RawFrom = ffi::sfMouseButton;
+    unsafe fn from_raw(raw: Self::RawFrom) -> Self {
         ::std::mem::transmute(raw)
     }
 }

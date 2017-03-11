@@ -218,7 +218,8 @@ impl Raw for Packet {
 }
 
 impl FromRaw for Packet {
-    unsafe fn from_raw(raw: Self::Raw) -> Self {
+    type RawFrom = *mut ffi::sfPacket;
+    unsafe fn from_raw(raw: Self::RawFrom) -> Self {
         Packet { packet: raw }
     }
 }

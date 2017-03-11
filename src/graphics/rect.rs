@@ -136,7 +136,8 @@ impl Raw for IntRect {
 }
 
 impl FromRaw for IntRect {
-    unsafe fn from_raw(raw: Self::Raw) -> Self {
+    type RawFrom = ::csfml_graphics_sys::sfIntRect;
+    unsafe fn from_raw(raw: Self::RawFrom) -> Self {
         IntRect {
             top: raw.top,
             left: raw.left,
@@ -160,7 +161,8 @@ impl Raw for FloatRect {
 }
 
 impl FromRaw for FloatRect {
-    unsafe fn from_raw(raw: Self::Raw) -> Self {
+    type RawFrom = ::csfml_graphics_sys::sfFloatRect;
+    unsafe fn from_raw(raw: Self::RawFrom) -> Self {
         FloatRect {
             top: raw.top,
             left: raw.left,

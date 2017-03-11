@@ -106,7 +106,8 @@ impl Raw for Axis {
 }
 
 impl FromRaw for Axis {
-    unsafe fn from_raw(raw: Self::Raw) -> Self {
+    type RawFrom = ffi::sfJoystickAxis;
+    unsafe fn from_raw(raw: Self::RawFrom) -> Self {
         ::std::mem::transmute(raw)
     }
 }

@@ -261,7 +261,8 @@ impl Raw for Time {
 }
 
 impl FromRaw for Time {
-    unsafe fn from_raw(raw: Self::Raw) -> Self {
+    type RawFrom = sfTime;
+    unsafe fn from_raw(raw: Self::RawFrom) -> Self {
         Time(raw)
     }
 }

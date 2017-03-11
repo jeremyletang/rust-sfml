@@ -208,7 +208,8 @@ impl Raw for Vector2i {
 }
 
 impl FromRaw for Vector2i {
-    unsafe fn from_raw(raw: Self::Raw) -> Self {
+    type RawFrom = ::csfml_system_sys::sfVector2i;
+    unsafe fn from_raw(raw: Self::RawFrom) -> Self {
         Vector2i {
             x: raw.x,
             y: raw.y,
@@ -228,7 +229,8 @@ impl Raw for Vector2u {
 }
 
 impl FromRaw for Vector2u {
-    unsafe fn from_raw(raw: Self::Raw) -> Self {
+    type RawFrom = ::csfml_system_sys::sfVector2u;
+    unsafe fn from_raw(raw: Self::RawFrom) -> Self {
         Vector2u {
             x: raw.x,
             y: raw.y,
@@ -248,7 +250,8 @@ impl Raw for Vector2f {
 }
 
 impl FromRaw for Vector2f {
-    unsafe fn from_raw(raw: Self::Raw) -> Self {
+    type RawFrom = ::csfml_system_sys::sfVector2f;
+    unsafe fn from_raw(raw: Self::RawFrom) -> Self {
         Vector2f {
             x: raw.x,
             y: raw.y,

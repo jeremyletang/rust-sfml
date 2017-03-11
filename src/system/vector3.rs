@@ -223,7 +223,8 @@ impl Raw for Vector3f {
 }
 
 impl FromRaw for Vector3f {
-    unsafe fn from_raw(raw: Self::Raw) -> Self {
+    type RawFrom = ::csfml_system_sys::sfVector3f;
+    unsafe fn from_raw(raw: Self::RawFrom) -> Self {
         Vector3f {
             x: raw.x,
             y: raw.y,

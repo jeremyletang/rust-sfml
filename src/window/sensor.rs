@@ -89,7 +89,8 @@ impl Raw for Type {
 }
 
 impl FromRaw for Type {
-    unsafe fn from_raw(raw: Self::Raw) -> Self {
+    type RawFrom = sfSensorType;
+    unsafe fn from_raw(raw: Self::RawFrom) -> Self {
         ::std::mem::transmute(raw)
     }
 }

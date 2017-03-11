@@ -164,7 +164,8 @@ impl Raw for VideoMode {
 }
 
 impl FromRaw for VideoMode {
-    unsafe fn from_raw(raw: Self::Raw) -> Self {
+    type RawFrom = ffi::sfVideoMode;
+    unsafe fn from_raw(raw: Self::RawFrom) -> Self {
         VideoMode {
             width: raw.width as u32,
             height: raw.height as u32,

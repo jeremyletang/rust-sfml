@@ -52,8 +52,9 @@ impl Raw for Color {
 }
 
 impl FromRaw for Color {
-    unsafe fn from_raw(src: Self::Raw) -> Self {
-        ::std::mem::transmute(src)
+    type RawFrom = ffi::sfColor;
+    unsafe fn from_raw(raw: Self::RawFrom) -> Self {
+        ::std::mem::transmute(raw)
     }
 }
 

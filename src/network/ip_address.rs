@@ -151,7 +151,8 @@ impl Raw for IpAddress {
 }
 
 impl FromRaw for IpAddress {
-    unsafe fn from_raw(raw: Self::Raw) -> Self {
+    type RawFrom = ffi::sfIpAddress;
+    unsafe fn from_raw(raw: Self::RawFrom) -> Self {
         IpAddress { ip: raw }
     }
 }

@@ -299,7 +299,8 @@ impl Raw for View {
 }
 
 impl FromRaw for View {
-    unsafe fn from_raw(raw: Self::Raw) -> Self {
+    type RawFrom = *mut ffi::sfView;
+    unsafe fn from_raw(raw: Self::RawFrom) -> Self {
         View { view: raw }
     }
 }

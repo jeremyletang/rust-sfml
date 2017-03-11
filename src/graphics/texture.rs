@@ -374,7 +374,8 @@ impl Raw for Texture {
 }
 
 impl FromRaw for Texture {
-    unsafe fn from_raw(raw: Self::Raw) -> Self {
+    type RawFrom = *mut ffi::sfTexture;
+    unsafe fn from_raw(raw: Self::RawFrom) -> Self {
         Texture { texture: raw }
     }
 }

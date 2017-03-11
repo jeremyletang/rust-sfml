@@ -291,7 +291,8 @@ impl Raw for Image {
 }
 
 impl FromRaw for Image {
-    unsafe fn from_raw(raw: Self::Raw) -> Self {
+    type RawFrom = *mut ffi::sfImage;
+    unsafe fn from_raw(raw: Self::RawFrom) -> Self {
         Image { image: raw }
     }
 }

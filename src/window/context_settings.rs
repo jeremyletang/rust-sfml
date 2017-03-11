@@ -131,7 +131,8 @@ impl Raw for ContextSettings {
 }
 
 impl FromRaw for ContextSettings {
-    unsafe fn from_raw(raw: Self::Raw) -> Self {
+    type RawFrom = sfContextSettings;
+    unsafe fn from_raw(raw: Self::RawFrom) -> Self {
         ::std::mem::transmute(raw)
     }
 }

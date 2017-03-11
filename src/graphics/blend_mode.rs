@@ -133,7 +133,8 @@ impl Raw for BlendMode {
 }
 
 impl FromRaw for BlendMode {
-    unsafe fn from_raw(raw: Self::Raw) -> Self {
+    type RawFrom = ffi::sfBlendMode;
+    unsafe fn from_raw(raw: Self::RawFrom) -> Self {
         ::std::mem::transmute(raw)
     }
 }
