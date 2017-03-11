@@ -734,27 +734,27 @@ extern "C" {
     pub fn sfFont_destroy(font: *mut sfFont);
 }
 extern "C" {
-    pub fn sfFont_getGlyph(font: *mut sfFont, codePoint: sfUint32,
+    pub fn sfFont_getGlyph(font: *const sfFont, codePoint: sfUint32,
                            characterSize: ::std::os::raw::c_uint,
                            bold: sfBool, outlineThickness: f32) -> sfGlyph;
 }
 extern "C" {
-    pub fn sfFont_getKerning(font: *mut sfFont, first: sfUint32,
+    pub fn sfFont_getKerning(font: *const sfFont, first: sfUint32,
                              second: sfUint32,
                              characterSize: ::std::os::raw::c_uint) -> f32;
 }
 extern "C" {
-    pub fn sfFont_getLineSpacing(font: *mut sfFont,
+    pub fn sfFont_getLineSpacing(font: *const sfFont,
                                  characterSize: ::std::os::raw::c_uint)
      -> f32;
 }
 extern "C" {
-    pub fn sfFont_getUnderlinePosition(font: *mut sfFont,
+    pub fn sfFont_getUnderlinePosition(font: *const sfFont,
                                        characterSize: ::std::os::raw::c_uint)
      -> f32;
 }
 extern "C" {
-    pub fn sfFont_getUnderlineThickness(font: *mut sfFont,
+    pub fn sfFont_getUnderlineThickness(font: *const sfFont,
                                         characterSize: ::std::os::raw::c_uint)
      -> f32;
 }
