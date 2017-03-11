@@ -222,10 +222,10 @@ impl Clone for Font {
     }
 }
 
-impl Raw for Font {
+impl Raw for FontRef {
     type Raw = *const ffi::sfFont;
     fn raw(&self) -> Self::Raw {
-        self.font
+        self as *const _ as _
     }
 }
 
