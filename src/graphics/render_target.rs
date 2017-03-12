@@ -176,7 +176,7 @@ pub trait RenderTarget {
     /// # Arguments
     /// * object - Object to draw
     /// * renderStates - The renderStates to associate to the object
-    fn draw_with_renderstates(&mut self, object: &Drawable, render_states: &mut RenderStates);
+    fn draw_with_renderstates(&mut self, object: &Drawable, render_states: RenderStates);
 
     /// Get the size of the rendering region of a window
     ///
@@ -217,27 +217,27 @@ pub trait RenderTarget {
     fn reset_gl_states(&mut self);
 
     /// Draw Text
-    fn draw_text(&self, text: &Text, rs: &mut RenderStates);
+    fn draw_text(&self, text: &Text, rs: RenderStates);
 
     /// Draw Shape
-    fn draw_shape(&self, shape: &CustomShape, rs: &mut RenderStates);
+    fn draw_shape(&self, shape: &CustomShape, rs: RenderStates);
 
     /// Draw Sprite
-    fn draw_sprite(&self, sprite: &Sprite, rs: &mut RenderStates);
+    fn draw_sprite(&self, sprite: &Sprite, rs: RenderStates);
 
     /// Draw CircleShape
-    fn draw_circle_shape(&self, circle_shape: &CircleShape, rs: &mut RenderStates);
+    fn draw_circle_shape(&self, circle_shape: &CircleShape, rs: RenderStates);
 
 
     /// Draw RectangleShape
-    fn draw_rectangle_shape(&self, rectangle_shape: &RectangleShape, rs: &mut RenderStates);
+    fn draw_rectangle_shape(&self, rectangle_shape: &RectangleShape, rs: RenderStates);
 
     /// Draw ConvexShape
-    fn draw_convex_shape(&self, convex_shape: &ConvexShape, rs: &mut RenderStates);
+    fn draw_convex_shape(&self, convex_shape: &ConvexShape, rs: RenderStates);
 
     /// Draw VertexArray
-    fn draw_vertex_array(&self, vertex_array: &VertexArray, rs: &mut RenderStates);
+    fn draw_vertex_array(&self, vertex_array: &VertexArray, rs: RenderStates);
 
     /// draw primitives
-    fn draw_primitives(&self, vertices: &[Vertex], ty: PrimitiveType, rs: &mut RenderStates);
+    fn draw_primitives(&self, vertices: &[Vertex], ty: PrimitiveType, rs: RenderStates);
 }

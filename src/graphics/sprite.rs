@@ -61,7 +61,7 @@ impl<'s> Sprite<'s> {
     /// Create a new sprite with a texture
     ///
     /// Return Some(Sprite) or None
-    pub fn with_texture(texture: &'s Texture) -> Sprite<'s> {
+    pub fn with_texture(texture: &'s TextureRef) -> Sprite<'s> {
         let sp = unsafe { ffi::sfSprite_create() };
         if sp.is_null() {
             panic!("sfSprite_create returned null.")
@@ -211,8 +211,12 @@ impl<'s> Clone for Sprite<'s> {
 }
 
 impl<'s> Drawable for Sprite<'s> {
-    fn draw(&self, render_target: &mut RenderTarget, render_states: &mut RenderStates) {
-        render_target.draw_sprite(self, render_states)
+    fn draw<'se, 'tex, 'sh, 'shte>(&'se self,
+                                   target: &mut RenderTarget,
+                                   states: RenderStates<'tex, 'sh, 'shte>)
+        where 'se: 'sh
+    {
+        target.draw_sprite(self, states)
     }
 }
 

@@ -96,4 +96,8 @@ required-features = ["graphics"]
 name = "vertex-arrays"
 required-features = ["graphics"]
 
+[[example]]
+name = "shader"
+required-features = ["graphics"]
+
 [workspace]

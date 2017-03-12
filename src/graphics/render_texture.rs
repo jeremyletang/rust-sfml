@@ -293,7 +293,7 @@ impl RenderTarget for RenderTexture {
     /// # Arguments
     /// * object - Object to draw
     fn draw(&mut self, object: &Drawable) {
-        object.draw(self, &mut RenderStates::default());
+        object.draw(self, RenderStates::default());
     }
 
     /// Draw a drawable object to the render-target
@@ -301,27 +301,27 @@ impl RenderTarget for RenderTexture {
     /// # Arguments
     /// * object - Object to draw
     /// * renderStates - The RenderStates to associate to the object
-    fn draw_with_renderstates(&mut self, object: &Drawable, render_states: &mut RenderStates) {
+    fn draw_with_renderstates(&mut self, object: &Drawable, render_states: RenderStates) {
         object.draw(self, render_states);
     }
 
     /// Draw Text
-    fn draw_text(&self, text: &Text, rs: &mut RenderStates) {
+    fn draw_text(&self, text: &Text, mut rs: RenderStates) {
         unsafe { ffi::sfRenderTexture_drawText(self.render_texture, text.raw(), rs.raw_mut()) }
     }
 
     /// Draw Shape
-    fn draw_shape(&self, shape: &CustomShape, rs: &mut RenderStates) {
+    fn draw_shape(&self, shape: &CustomShape, mut rs: RenderStates) {
         unsafe { ffi::sfRenderTexture_drawShape(self.render_texture, shape.raw(), rs.raw_mut()) }
     }
 
     /// Draw Sprite
-    fn draw_sprite(&self, sprite: &Sprite, rs: &mut RenderStates) {
+    fn draw_sprite(&self, sprite: &Sprite, mut rs: RenderStates) {
         unsafe { ffi::sfRenderTexture_drawSprite(self.render_texture, sprite.raw(), rs.raw_mut()) }
     }
 
     /// Draw CircleShape
-    fn draw_circle_shape(&self, circle_shape: &CircleShape, rs: &mut RenderStates) {
+    fn draw_circle_shape(&self, circle_shape: &CircleShape, mut rs: RenderStates) {
         unsafe {
             ffi::sfRenderTexture_drawCircleShape(self.render_texture,
                                                  circle_shape.raw(),
@@ -330,7 +330,7 @@ impl RenderTarget for RenderTexture {
     }
 
     /// Draw RectangleShape
-    fn draw_rectangle_shape(&self, rectangle_shape: &RectangleShape, rs: &mut RenderStates) {
+    fn draw_rectangle_shape(&self, rectangle_shape: &RectangleShape, mut rs: RenderStates) {
         unsafe {
             ffi::sfRenderTexture_drawRectangleShape(self.render_texture,
                                                     rectangle_shape.raw(),
@@ -339,7 +339,7 @@ impl RenderTarget for RenderTexture {
     }
 
     /// Draw ConvexShape
-    fn draw_convex_shape(&self, convex_shape: &ConvexShape, rs: &mut RenderStates) {
+    fn draw_convex_shape(&self, convex_shape: &ConvexShape, mut rs: RenderStates) {
         unsafe {
             ffi::sfRenderTexture_drawConvexShape(self.render_texture,
                                                  convex_shape.raw(),
@@ -348,7 +348,7 @@ impl RenderTarget for RenderTexture {
     }
 
     /// Draw VertexArray
-    fn draw_vertex_array(&self, vertex_array: &VertexArray, rs: &mut RenderStates) {
+    fn draw_vertex_array(&self, vertex_array: &VertexArray, mut rs: RenderStates) {
         unsafe {
             ffi::sfRenderTexture_drawVertexArray(self.render_texture,
                                                  vertex_array.raw(),
@@ -357,7 +357,7 @@ impl RenderTarget for RenderTexture {
     }
 
     /// draw primitives
-    fn draw_primitives(&self, vertices: &[Vertex], ty: PrimitiveType, rs: &mut RenderStates) {
+    fn draw_primitives(&self, vertices: &[Vertex], ty: PrimitiveType, mut rs: RenderStates) {
 
         let len = vertices.len();
         unsafe {

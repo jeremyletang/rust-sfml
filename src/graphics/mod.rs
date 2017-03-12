@@ -78,3 +78,4 @@ mod render_texture;
 mod custom_shape;
 mod rect;
 mod glyph;
+pub mod glsl;

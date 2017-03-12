@@ -122,8 +122,10 @@ impl<'s> ConvexShape<'s> {
 }
 
 impl<'s> Drawable for ConvexShape<'s> {
-    fn draw(&self, render_target: &mut RenderTarget, render_states: &mut RenderStates) {
-        render_target.draw_convex_shape(self, render_states)
+    fn draw<'se: 'sh, 'tex, 'sh, 'shte>(&'se self,
+                                        target: &mut RenderTarget,
+                                        states: RenderStates<'tex, 'sh, 'shte>) {
+        target.draw_convex_shape(self, states)
     }
 }
 

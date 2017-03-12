@@ -29,19 +29,21 @@ use graphics::{BlendMode, blend_mode, Shader, Texture, Transform};
 use csfml_graphics_sys as ffi;
 
 /// Define the states used for drawing to a `RenderTarget`
-pub struct RenderStates<'s> {
+pub struct RenderStates<'te, 'sh, 'shte>
+    where 'shte: 'sh
+{
     sf_render_states: ffi::sfRenderStates,
     /// Blending mode.
     pub blend_mode: BlendMode,
     /// Transform
     pub transform: Transform,
     /// Texture
-    pub texture: Option<&'s Texture>,
+    pub texture: Option<&'te Texture>,
     /// Shader
-    pub shader: Option<&'s Shader<'s>>,
+    pub shader: Option<&'sh Shader<'shte>>,
 }
 
-impl<'s> RenderStates<'s> {
+impl<'te, 'sh, 'shte> RenderStates<'te, 'sh, 'shte> {
     /// Create a new RenderStates.
     ///
     /// # Arguments
@@ -53,9 +55,9 @@ impl<'s> RenderStates<'s> {
     /// Return a new default RenderStates
     pub fn new(blend_mode: BlendMode,
                transform: Transform,
-               texture: Option<&'s Texture>,
-               shader: Option<&'s Shader<'s>>)
-               -> RenderStates<'s> {
+               texture: Option<&'te Texture>,
+               shader: Option<&'sh Shader<'shte>>)
+               -> RenderStates<'te, 'sh, 'shte> {
         RenderStates {
             sf_render_states: ffi::sfRenderStates {
                 blendMode: blend_mode.raw(),
@@ -71,7 +73,7 @@ impl<'s> RenderStates<'s> {
     }
 }
 
-impl<'s> RawMut for RenderStates<'s> {
+impl<'te, 'sh, 'shte> RawMut for RenderStates<'te, 'sh, 'shte> {
     type RawMut = *mut ffi::sfRenderStates;
     fn raw_mut(&mut self) -> Self::RawMut {
         self.sf_render_states.blendMode = self.blend_mode.raw();
@@ -98,8 +100,8 @@ impl<'s> RawMut for RenderStates<'s> {
 /// * `shader` is initialized to `None`
 ///
 /// Return a new default `RenderStates`
-impl<'s> Default for RenderStates<'s> {
-    fn default() -> RenderStates<'s> {
+impl<'te, 'sh, 'shte> Default for RenderStates<'te, 'sh, 'shte> {
+    fn default() -> RenderStates<'te, 'sh, 'shte> {
         RenderStates {
             sf_render_states: ffi::sfRenderStates {
                 blendMode: blend_mode::ALPHA.raw(),

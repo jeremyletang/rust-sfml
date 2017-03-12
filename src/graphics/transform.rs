@@ -65,7 +65,7 @@ impl Transform {
     }
 
     /// Return the matrix
-    pub fn matrix(&mut self) -> [f32; 16] {
+    pub fn matrix(&self) -> [f32; 16] {
         unsafe {
             let matrix: [f32; 16] = [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,
                                      0.];
