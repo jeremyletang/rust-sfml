@@ -133,7 +133,10 @@ impl StormBlink {
                                        None,
                                        Some("resources/blink.frag"))
                 .unwrap();
-        Self { points, shader }
+        Self {
+            points: points,
+            shader: shader,
+        }
     }
 }
 
