@@ -190,10 +190,10 @@ impl<'te> Edge<'te> {
         shader.set_uniform_current_texture("texture");
 
         Self {
-            surface,
-            bg_sprite,
-            entities,
-            shader,
+            surface: surface,
+            bg_sprite: bg_sprite,
+            entities: entities,
+            shader: shader,
         }
     }
 }
