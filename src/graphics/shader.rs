@@ -26,7 +26,7 @@ use std::ffi::CString;
 use std::marker::PhantomData;
 
 use system::raw_conv::Raw;
-use graphics::{Texture, glsl};
+use graphics::{glsl, TextureRef};
 
 use csfml_graphics_sys as ffi;
 
@@ -142,7 +142,7 @@ use ext::sf_bool_ext::SfBoolExt;
 /// ```
 pub struct Shader<'te> {
     shader: *mut ffi::sfShader,
-    texture: PhantomData<&'te Texture>,
+    texture: PhantomData<&'te TextureRef>,
 }
 
 macro_rules! cstring_then_ptr {
@@ -466,7 +466,7 @@ impl<'te> Shader<'te> {
     ///
     /// To use the texture of the object being drawn, which cannot be known in advance,
     /// use `set_uniform_current_texture`.
-    pub fn set_uniform_texture(&mut self, name: &str, value: &'te Texture) {
+    pub fn set_uniform_texture(&mut self, name: &str, value: &'te TextureRef) {
         unsafe {
             let cstring = CString::new(name).unwrap();
             let name = cstring.as_ptr();

@@ -25,8 +25,8 @@ use std::ptr;
 use std::marker::PhantomData;
 
 use system::raw_conv::{Raw, FromRaw};
-use graphics::{Shape, Drawable, Transformable, Color, Texture, TextureRef, RenderTarget, FloatRect,
-               IntRect, Transform, RenderStates};
+use graphics::{Shape, Drawable, Transformable, Color, TextureRef, RenderTarget, FloatRect, IntRect,
+               Transform, RenderStates};
 use system::Vector2f;
 
 use csfml_system_sys::{sfBool, sfTrue, sfVector2f};
@@ -41,7 +41,7 @@ use ext::sf_bool_ext::SfBoolExt;
 /// order would result in an incorrect shape.
 pub struct ConvexShape<'s> {
     convex_shape: *mut ffi::sfConvexShape,
-    texture: PhantomData<&'s Texture>,
+    texture: PhantomData<&'s TextureRef>,
 }
 
 /// An iterator over the points of a `ConvexShape`
@@ -75,7 +75,7 @@ impl<'s> ConvexShape<'s> {
     /// # Arguments
     /// * texture - The texture to apply to the convex shape
     /// * points_count - The number of point for the convex shape
-    pub fn with_texture(texture: &'s Texture, points_count: u32) -> ConvexShape<'s> {
+    pub fn with_texture(texture: &'s TextureRef, points_count: u32) -> ConvexShape<'s> {
         let shape = unsafe { ffi::sfConvexShape_create() };
         if shape.is_null() {
             panic!("sfConvexShape_create returned null.")
@@ -206,7 +206,7 @@ impl<'s> Transformable for ConvexShape<'s> {
 }
 
 impl<'s> Shape<'s> for ConvexShape<'s> {
-    fn set_texture(&mut self, texture: &'s Texture, reset_rect: bool) {
+    fn set_texture(&mut self, texture: &'s TextureRef, reset_rect: bool) {
         unsafe {
             ffi::sfConvexShape_setTexture(self.convex_shape,
                                           texture.raw(),

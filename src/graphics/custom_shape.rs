@@ -26,8 +26,8 @@ use std::ptr;
 use std::marker::PhantomData;
 
 use system::raw_conv::{Raw, FromRaw};
-use graphics::{Drawable, Transformable, RenderTarget, RenderStates, Texture, TextureRef, Color,
-               Transform, IntRect, FloatRect, Shape};
+use graphics::{Drawable, Transformable, RenderTarget, RenderStates, TextureRef, Color, Transform,
+               IntRect, FloatRect, Shape};
 use system::Vector2f;
 use csfml_graphics_sys as ffi;
 use csfml_system_sys::{sfBool, sfTrue, sfVector2f};
@@ -52,7 +52,7 @@ pub trait CustomShapePoints {
 /// A custom textured shape with outline.
 pub struct CustomShape<'s> {
     shape: *mut ffi::sfShape,
-    texture: PhantomData<&'s Texture>,
+    texture: PhantomData<&'s TextureRef>,
     points: *mut Box<CustomShapePoints + Send>,
 }
 
@@ -98,7 +98,7 @@ impl<'s> CustomShape<'s> {
     /// * points - Implementation of CustomShapePoints trait
     /// * texture - The texture to bind to the CustomShape
     pub fn with_texture(points: Box<CustomShapePoints + Send>,
-                        texture: &'s Texture)
+                        texture: &'s TextureRef)
                         -> CustomShape<'s> {
         let raw_impl = Box::into_raw(Box::new(points));
         let sp = unsafe {
@@ -131,7 +131,7 @@ impl<'s> CustomShape<'s> {
 }
 
 impl<'s> Shape<'s> for CustomShape<'s> {
-    fn set_texture(&mut self, texture: &'s Texture, reset_rect: bool) {
+    fn set_texture(&mut self, texture: &'s TextureRef, reset_rect: bool) {
         unsafe { ffi::sfShape_setTexture(self.shape, texture.raw(), sfBool::from_bool(reset_rect)) }
     }
     fn disable_texture(&mut self) {

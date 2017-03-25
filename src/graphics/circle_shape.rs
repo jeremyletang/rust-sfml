@@ -27,8 +27,8 @@ use std::ptr;
 use std::marker::PhantomData;
 
 use system::raw_conv::{Raw, FromRaw};
-use graphics::{Drawable, Transformable, Shape, IntRect, FloatRect, Color, Texture, TextureRef,
-               RenderTarget, Transform, RenderStates};
+use graphics::{Drawable, Transformable, Shape, IntRect, FloatRect, Color, TextureRef, RenderTarget,
+               Transform, RenderStates};
 use system::Vector2f;
 
 use csfml_system_sys::{sfBool, sfTrue, sfVector2f};
@@ -38,7 +38,7 @@ use ext::sf_bool_ext::SfBoolExt;
 /// Specialized shape representing a circle.
 pub struct CircleShape<'s> {
     circle_shape: *mut ffi::sfCircleShape,
-    texture: PhantomData<&'s Texture>,
+    texture: PhantomData<&'s TextureRef>,
 }
 
 impl<'s> CircleShape<'s> {
@@ -63,7 +63,7 @@ impl<'s> CircleShape<'s> {
     /// * texture - The texture to initialize the CircleShape with.
     ///
     /// Return Some(CircleShape) or None
-    pub fn with_texture(texture: &'s Texture) -> CircleShape<'s> {
+    pub fn with_texture(texture: &'s TextureRef) -> CircleShape<'s> {
         let circle = unsafe { ffi::sfCircleShape_create() };
         if circle.is_null() {
             panic!("sfCircleShape_create returned null.")
@@ -217,7 +217,7 @@ impl<'s> Transformable for CircleShape<'s> {
 }
 
 impl<'s> Shape<'s> for CircleShape<'s> {
-    fn set_texture(&mut self, texture: &'s Texture, reset_rect: bool) {
+    fn set_texture(&mut self, texture: &'s TextureRef, reset_rect: bool) {
         unsafe {
             ffi::sfCircleShape_setTexture(self.circle_shape,
                                           texture.raw(),

@@ -24,7 +24,7 @@
 use std::ptr;
 
 use system::raw_conv::Raw;
-use graphics::{BlendMode, blend_mode, Shader, Texture, Transform};
+use graphics::{BlendMode, blend_mode, Shader, Transform, TextureRef};
 
 use csfml_graphics_sys as ffi;
 
@@ -77,7 +77,7 @@ pub struct RenderStates<'te, 'sh, 'shte>
     /// Transform
     pub transform: Transform,
     /// Texture
-    pub texture: Option<&'te Texture>,
+    pub texture: Option<&'te TextureRef>,
     /// Shader
     pub shader: Option<&'sh Shader<'shte>>,
 }
@@ -94,7 +94,7 @@ impl<'te, 'sh, 'shte> RenderStates<'te, 'sh, 'shte> {
     /// Return a new default RenderStates
     pub fn new(blend_mode: BlendMode,
                transform: Transform,
-               texture: Option<&'te Texture>,
+               texture: Option<&'te TextureRef>,
                shader: Option<&'sh Shader<'shte>>)
                -> RenderStates<'te, 'sh, 'shte> {
         RenderStates {

@@ -17,7 +17,7 @@ struct Pixelate<'te> {
 }
 
 impl<'te> Pixelate<'te> {
-    fn new(texture: &'te Texture) -> Self {
+    fn new(texture: &'te TextureRef) -> Self {
         let mut sprite = Sprite::new();
         sprite.set_texture(texture, false);
         Pixelate {
@@ -173,7 +173,7 @@ struct Edge<'te> {
 }
 
 impl<'te> Edge<'te> {
-    fn new(bg_texture: &'te Texture, entity_texture: &'te Texture) -> Self {
+    fn new(bg_texture: &'te TextureRef, entity_texture: &'te TextureRef) -> Self {
         let mut surface = RenderTexture::new(800, 600, false).unwrap();
         surface.set_smooth(true);
         let mut bg_sprite = Sprite::with_texture(bg_texture);

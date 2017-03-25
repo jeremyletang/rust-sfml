@@ -21,7 +21,7 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-use graphics::{Drawable, Transformable, Texture, TextureRef, IntRect, FloatRect, Color};
+use graphics::{Drawable, Transformable, TextureRef, IntRect, FloatRect, Color};
 use system::Vector2f;
 
 /// Trait for textured shapes with outline.
@@ -31,7 +31,7 @@ pub trait Shape<'s>: Drawable + Transformable {
     /// If `reset_rect` is `true`, the `texture_rect` property of the shape is automatically
     /// adjusted to the size of the new texture.
     /// If it is `false`, the texture rect is left unchanged.
-    fn set_texture(&mut self, texture: &'s Texture, reset_rect: bool);
+    fn set_texture(&mut self, texture: &'s TextureRef, reset_rect: bool);
     /// Disables texturing for this shape.
     fn disable_texture(&mut self);
     /// Sets the sub-rectangle of the texture that the shape will display.

@@ -25,7 +25,7 @@ use std::ptr;
 use std::marker::PhantomData;
 
 use system::raw_conv::{Raw, FromRaw};
-use graphics::{Drawable, Transformable, FloatRect, IntRect, Color, Texture, RenderTarget, Transform,
+use graphics::{Drawable, Transformable, FloatRect, IntRect, Color, RenderTarget, Transform,
                RenderStates, TextureRef};
 use system::Vector2f;
 
@@ -39,7 +39,7 @@ use ext::sf_bool_ext::SfBoolExt;
 /// display a texture (or a part of it) on a render target.
 pub struct Sprite<'s> {
     sprite: *mut ffi::sfSprite,
-    texture: PhantomData<&'s Texture>,
+    texture: PhantomData<&'s TextureRef>,
 }
 
 impl<'s> Sprite<'s> {
@@ -92,7 +92,7 @@ impl<'s> Sprite<'s> {
     /// * texture - New texture
     /// * reset_rect - Should the texture rect be reset to the size
     /// of the new texture?
-    pub fn set_texture(&mut self, texture: &'s Texture, reset_rect: bool) {
+    pub fn set_texture(&mut self, texture: &'s TextureRef, reset_rect: bool) {
         unsafe {
             ffi::sfSprite_setTexture(self.sprite, texture.raw(), sfBool::from_bool(reset_rect))
         }

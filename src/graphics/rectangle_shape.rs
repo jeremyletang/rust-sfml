@@ -26,8 +26,8 @@ use std::marker::PhantomData;
 
 use system::raw_conv::{Raw, FromRaw};
 use system::Vector2f;
-use graphics::{Drawable, Shape, Transformable, FloatRect, IntRect, Color, Texture, TextureRef,
-               RenderTarget, Transform, RenderStates};
+use graphics::{Drawable, Shape, Transformable, FloatRect, IntRect, Color, TextureRef, RenderTarget,
+               Transform, RenderStates};
 
 use csfml_system_sys::{sfBool, sfTrue, sfVector2f};
 use csfml_graphics_sys as ffi;
@@ -36,7 +36,7 @@ use ext::sf_bool_ext::SfBoolExt;
 /// Specialized shape representing a rectangle
 pub struct RectangleShape<'s> {
     rectangle_shape: *mut ffi::sfRectangleShape,
-    texture: PhantomData<&'s Texture>,
+    texture: PhantomData<&'s TextureRef>,
 }
 
 impl<'s> RectangleShape<'s> {
@@ -54,7 +54,7 @@ impl<'s> RectangleShape<'s> {
     }
 
     /// Returns a new `RectangleShape` with the provided texture.
-    pub fn with_texture(texture: &'s Texture) -> RectangleShape<'s> {
+    pub fn with_texture(texture: &'s TextureRef) -> RectangleShape<'s> {
         let rectangle = unsafe { ffi::sfRectangleShape_create() };
         if rectangle.is_null() {
             panic!("sfRectangleShape_create returned null.")
@@ -210,7 +210,7 @@ impl<'s> Transformable for RectangleShape<'s> {
 }
 
 impl<'s> Shape<'s> for RectangleShape<'s> {
-    fn set_texture(&mut self, texture: &'s Texture, reset_rect: bool) {
+    fn set_texture(&mut self, texture: &'s TextureRef, reset_rect: bool) {
         unsafe {
             ffi::sfRectangleShape_setTexture(self.rectangle_shape,
                                              texture.raw(),
