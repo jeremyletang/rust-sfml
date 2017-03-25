@@ -63,6 +63,8 @@ use system::raw_conv::Raw;
 /// Note: although texture coordinates are supposed to be an integer amount of pixels,
 /// their type is float because of some buggy graphics drivers that are not able to
 /// process integer coordinates correctly.
+#[repr(C)]
+#[derive(Debug, Clone, Copy)]
 pub struct Vertex {
     /// 2D position of the vertex
     pub position: Vector2f,
