@@ -43,7 +43,7 @@ use csfml_graphics_sys as ffi;
 ///
 /// The transform is a special case: sprites, texts and shapes
 /// (and it's a good idea to do it with your own drawable classes too) combine their transform
-/// with the one that is passed in the RenderStates structure.
+/// with the one that is passed in the `RenderStates` structure.
 /// So that you can use a "global" transform on top of each object's transform.
 ///
 /// Most objects, especially high-level drawables, can be drawn directly without defining
