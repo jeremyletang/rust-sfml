@@ -29,7 +29,7 @@ use csfml_graphics_sys as ffi;
 
 /// Define a 3x3 transform matrix.
 ///
-/// A sfTransform specifies how to translate,
+/// A `Transform` specifies how to translate,
 /// rotate, scale, shear, project, whatever things.
 #[repr(C)]
 pub struct Transform(pub ffi::sfTransform);

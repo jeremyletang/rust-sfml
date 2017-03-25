@@ -56,7 +56,7 @@ impl RenderWindow {
     /// depth defined in mode. An optional style can be passed to
     /// customize the look and behaviour of the window (borders,
     /// title bar, resizable, closable, ...). If style contains
-    /// sfFullscreen, then mode must be a valid video mode.
+    /// `FULLSCREEN`, then mode must be a valid video mode.
     ///
     /// The fourth parameter is a pointer to a structure specifying
     /// advanced OpenGL context settings such as antialiasing,
@@ -187,7 +187,7 @@ impl RenderWindow {
     /// Limit the framerate to a maximum fixed frequency
     ///
     /// If a limit is set, the window will use a small delay after
-    /// each call to sfWindow_display to ensure that the current frame
+    /// each call to `RenderWindow::display` to ensure that the current frame
     /// lasted long enough to match the framerate limit.
     ///
     /// # Arguments
@@ -200,7 +200,7 @@ impl RenderWindow {
     /// Get the settings of the OpenGL context of a window
     ///
     /// Note that these settings may be different from what was
-    /// passed to the sfWindow_create function,
+    /// passed to the `RenderWindow::create` function,
     /// if one or more settings were not supported. In this case,
     /// SFML chose the closest match.
     ///

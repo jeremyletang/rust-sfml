@@ -50,7 +50,7 @@ impl UdpSocket {
     ///
     /// In blocking mode, calls will not return until they have
     /// completed their task. For example, a call to
-    /// sfUDPSocket_receive in blocking mode won't return until
+    /// `UdpSocket::receive` in blocking mode won't return until
     /// new data was actually received.
     /// In non-blocking mode, calls will always return immediately,
     /// using the return code to signal whether there was data
@@ -86,7 +86,7 @@ impl UdpSocket {
     /// able to receive data on that port.
     /// You can use the special value 0 to tell the
     /// system to automatically pick an available port, and then
-    /// call sfUdpSocket_getLocalPort to retrieve the chosen port.
+    /// call `UdpSocket::local_port` to retrieve the chosen port.
     ///
     /// # Arguments
     /// * port - Port to bind the socket to

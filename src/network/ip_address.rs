@@ -73,7 +73,7 @@ impl IpAddress {
     /// This function uses the internal representation of
     /// the address directly. It should be used for optimization
     /// purposes, and only if you got that representation from
-    /// sfIpAddress_ToInteger.
+    /// `IpAddress::to_integer`.
     ///
     /// # Arguments
     /// * address - 4 bytes of the address packed into a 32-bits integer
@@ -115,7 +115,7 @@ impl IpAddress {
     /// The local address is the address of the computer from the
     /// LAN point of view, i.e. something like 192.168.1.56. It is
     /// meaningful only for communications over the local network.
-    /// Unlike sfIpAddress_getPublicAddress, this function is fast
+    /// Unlike `IpAddress::public_address`, this function is fast
     /// and may be used safely anywhere.
     ///
     /// Return the local IP address of the computer

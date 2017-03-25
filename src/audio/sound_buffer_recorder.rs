@@ -125,7 +125,7 @@ impl SoundBufferRecorder {
     ///
     /// This function should always be called before using
     /// the audio capture features. If it returns false, then
-    /// any attempt to use sfSoundRecorder will fail.
+    /// any attempt to use `SoundRecorder` will fail.
     ///
     /// Return true if audio capture is supported, false otherwise
     pub fn is_available() -> bool {

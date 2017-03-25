@@ -393,7 +393,7 @@ impl RenderTarget for RenderTexture {
     /// This function can be used when you mix SFML drawing
     /// and direct OpenGL rendering, if you choose not to use
     /// pushGLStates/popGLStates. It makes sure that all OpenGL
-    /// states needed by SFML are set, so that subsequent sfRenderWindow_draw*()
+    /// states needed by SFML are set, so that subsequent SFML draw
     /// calls will work as expected.
     fn reset_gl_states(&mut self) {
         unsafe { ffi::sfRenderTexture_resetGLStates(self.render_texture) }

@@ -50,7 +50,7 @@ impl TcpListener {
     ///
     /// In blocking mode, calls will not return until they have
     /// completed their task. For example, a call to
-    /// sfTcpListener_accept in blocking mode won't return until
+    /// `TcpListener::accept` in blocking mode won't return until
     /// a new connection was actually received.
     /// In non-blocking mode, calls will always return immediately,
     /// using the return code to signal whether there was data

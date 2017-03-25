@@ -77,7 +77,7 @@ impl Music {
     /// Create a new music and load it from a file
     ///
     /// This function doesn't start playing the music (call
-    /// sfMusic_play to do so).
+    /// `Music::play` to do so).
     /// Here is a complete list of all the supported audio formats:
     /// ogg, wav, flac, aiff, au, raw, paf, svx, nist, voc, ircam,
     /// w64, mat4, mat5 pvf, htk, sds, avr, sd2, caf, wve, mpc2k, rf64.
@@ -99,7 +99,7 @@ impl Music {
     /// Create a new music and load it from a stream (a struct implementing Read and Seek)
     ///
     /// This function doesn't start playing the music (call
-    /// sfMusic_play to do so).
+    /// `Music::play` to do so).
     /// Here is a complete list of all the supported audio formats:
     /// ogg, wav, flac, aiff, au, raw, paf, svx, nist, voc, ircam,
     /// w64, mat4, mat5 pvf, htk, sds, avr, sd2, caf, wve, mpc2k, rf64.
@@ -122,7 +122,7 @@ impl Music {
     /// Create a new music and load it from memory
     ///
     /// This function doesn't start playing the music (call
-    /// sfMusic_play to do so).
+    /// `Music::play` to do so).
     /// Here is a complete list of all the supported audio formats:
     /// ogg, wav, flac, aiff, au, raw, paf, svx, nist, voc, ircam,
     /// w64, mat4, mat5 pvf, htk, sds, avr, sd2, caf, wve, mpc2k, rf64.

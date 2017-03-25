@@ -51,7 +51,7 @@ impl TcpSocket {
     ///
     /// In blocking mode, calls will not return until they have
     /// completed their task. For example, a call to
-    /// sfUDPSocket_receive in blocking mode won't return until
+    /// `UdpSocket::receive` in blocking mode won't return until
     /// new data was actually received.
     /// In non-blocking mode, calls will always return immediately,
     /// using the return code to signal whether there was data
@@ -83,8 +83,7 @@ impl TcpSocket {
 
     /// Get the address of the connected peer of a TCP socket
     ///
-    /// It the socket is not connected, this function returns
-    /// sfIpAddress_None.
+    /// It the socket is not connected, this function returns a "none" (invalid) ip address.
     ///
     /// Return the address of the remote peer
     pub fn remote_address(&self) -> IpAddress {

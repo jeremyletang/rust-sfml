@@ -163,10 +163,6 @@ impl<'s> Sound<'s> {
 
     /// Set the source buffer containing the audio data to play
     ///
-    /// It is important to note that the sound buffer is not copied,
-    /// thus the sfSoundBuffer object must remain alive as long
-    /// as it is attached to the sound.
-    ///
     /// # Arguments
     /// * buffer - Sound buffer to attach to the sound
     pub fn set_buffer(&mut self, buffer: &'s SoundBufferRef) {

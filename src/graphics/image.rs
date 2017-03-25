@@ -241,7 +241,7 @@ impl Image {
     /// This function does a slow pixel copy and should not be
     /// used intensively. It can be used to prepare a complex
     /// static image from several others, but if you need this
-    /// kind of feature in real-time you'd better use sfRenderTexture.
+    /// kind of feature in real-time you'd better use `RenderTexture`.
     ///
     /// If sourceRect is empty, the whole image is copied.
     /// If applyAlpha is set to true, the transparency of

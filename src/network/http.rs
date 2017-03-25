@@ -236,8 +236,7 @@ impl Response {
     ///
     /// The status code should be the first thing to be checked
     /// after receiving a response, it defines whether it is a
-    /// success, a failure or anything else (see the sfHttpStatus
-    /// enumeration).
+    /// success, a failure or anything else (see `Status`).
     ///
     /// Return the status code
     pub fn status(&self) -> Status {
@@ -312,7 +311,7 @@ impl Http {
 
     /// Send a HTTP request and return the server's response.
     ///
-    /// You must have a valid host before sending a request (see sfHttp_setHost).
+    /// You must have a valid host before sending a request (see `Http::set_host`).
     /// Any missing mandatory header field in the request will be added
     /// with an appropriate value.
     /// Warning: this function waits for the server's response and may

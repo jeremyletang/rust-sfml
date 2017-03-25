@@ -54,9 +54,6 @@ impl Packet {
 
     /// Get the size of the data contained in a packet
     ///
-    /// This function returns the number of bytes pointed to by
-    /// what sfPacket_getData returns.
-    ///
     /// Return the data size, in bytes
     pub fn data_size(&self) -> u32 {
         unsafe { ffi::sfPacket_getDataSize(self.packet) as u32 }
