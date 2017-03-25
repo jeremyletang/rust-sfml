@@ -22,7 +22,7 @@
 //
 
 use std::mem;
-use std::ops::Index;
+use std::ops::{Index, IndexMut};
 
 use system::raw_conv::{Raw, FromRaw};
 use graphics::{Drawable, Vertex, FloatRect, primitive_type, PrimitiveType, RenderTarget,
@@ -170,20 +170,6 @@ impl VertexArray {
         }
     }
 
-    /// Get access to a vertex by its index
-    ///
-    /// This function doesn't check index, it must be in range
-    /// [0, vertex count - 1]. The behaviour is undefined
-    /// otherwise.
-    ///
-    /// # Arguments
-    /// * index - Index of the vertex to get
-    ///
-    /// Return a mutable reference to the index-th vertex
-    pub fn vertex(&mut self, index: u32) -> &mut Vertex {
-        unsafe { &mut *(sfVertexArray_getVertex(self.vertex_array, index as usize) as *mut Vertex) }
-    }
-
     /// Return an immutable iterator over all the vertice contained by the VertexArray
     pub fn vertices(&self) -> Vertices {
         Vertices {
@@ -234,6 +220,12 @@ impl Index<usize> for VertexArray {
 
     fn index(&self, idx: usize) -> &Vertex {
         unsafe { &*(sfVertexArray_getVertex(self.vertex_array, idx) as *const Vertex) }
+    }
+}
+
+impl IndexMut<usize> for VertexArray {
+    fn index_mut(&mut self, idx: usize) -> &mut Vertex {
+        unsafe { &mut *(sfVertexArray_getVertex(self.vertex_array, idx) as *mut Vertex) }
     }
 }
 

@@ -31,7 +31,7 @@ fn main() {
     println!("Before Vertex Color: {:?} | Position: {:?}",
              vertex_array[1].color,
              vertex_array[1].position);
-    vertex_array.vertex(1).position.x = 100.0;
+    vertex_array[1].position.x = 100.0;
     println!("After Vertex Color: {:?} | Position: {:?}",
              vertex_array[1].color,
              vertex_array[1].position);
