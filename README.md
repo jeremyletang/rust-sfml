@@ -15,7 +15,7 @@ Examples
 =============
 Examples are located under the `examples` directory:
 
-- [0.11.0](https://github.com/jeremyletang/rust-sfml/tree/v0.11.0/examples) (Latest release)
+- [0.12.0](https://github.com/jeremyletang/rust-sfml/tree/v0.12.0/examples) (Latest release)
 - [master](https://github.com/jeremyletang/rust-sfml/tree/master/examples) (Latest development version)
 
 License
