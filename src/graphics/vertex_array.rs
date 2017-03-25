@@ -73,8 +73,8 @@ impl VertexArray {
     /// Return the vertex count of a vertex array
     ///
     /// Return the number of vertices in the array
-    pub fn vertex_count(&self) -> u32 {
-        unsafe { sfVertexArray_getVertexCount(self.vertex_array) as u32 }
+    pub fn vertex_count(&self) -> usize {
+        unsafe { sfVertexArray_getVertexCount(self.vertex_array) }
     }
 
     /// Clear a vertex array
