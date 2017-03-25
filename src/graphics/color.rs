@@ -67,7 +67,7 @@ impl Color {
     /// * blue - Blue component  (0 .. 255)
     ///
     /// Return Color object constructed from the components
-    pub fn new_rgb(red: u8, green: u8, blue: u8) -> Color {
+    pub fn rgb(red: u8, green: u8, blue: u8) -> Color {
         Color {
             r: red,
             g: green,
@@ -85,7 +85,7 @@ impl Color {
     /// * alpha - Alpha component  (0 .. 255)
     ///
     /// Return Color object constructed from the components
-    pub fn new_rgba(red: u8, green: u8, blue: u8, alpha: u8) -> Color {
+    pub fn rgba(red: u8, green: u8, blue: u8, alpha: u8) -> Color {
         Color {
             r: red,
             g: green,
@@ -96,47 +96,47 @@ impl Color {
 
     /// Black predefined color
     pub fn black() -> Color {
-        Color::new_rgb(0, 0, 0)
+        Color::rgb(0, 0, 0)
     }
 
     /// White predefined color
     pub fn white() -> Color {
-        Color::new_rgb(255, 255, 255)
+        Color::rgb(255, 255, 255)
     }
 
     /// Red predefined color
     pub fn red() -> Color {
-        Color::new_rgb(255, 0, 0)
+        Color::rgb(255, 0, 0)
     }
 
     /// Green predefined color
     pub fn green() -> Color {
-        Color::new_rgb(0, 255, 0)
+        Color::rgb(0, 255, 0)
     }
 
     /// Blue predefined color
     pub fn blue() -> Color {
-        Color::new_rgb(0, 0, 255)
+        Color::rgb(0, 0, 255)
     }
 
     /// Yellow predefined color
     pub fn yellow() -> Color {
-        Color::new_rgb(255, 255, 0)
+        Color::rgb(255, 255, 0)
     }
 
     /// Magenta predefined color
     pub fn magenta() -> Color {
-        Color::new_rgb(255, 0, 255)
+        Color::rgb(255, 0, 255)
     }
 
     /// Cyan predifined color
     pub fn cyan() -> Color {
-        Color::new_rgb(0, 255, 255)
+        Color::rgb(0, 255, 255)
     }
 
     /// Tranparent predefined color
     pub fn transparent() -> Color {
-        Color::new_rgba(0, 0, 0, 0)
+        Color::rgba(0, 0, 0, 0)
     }
 }
 
