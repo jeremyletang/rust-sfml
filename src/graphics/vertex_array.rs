@@ -58,7 +58,7 @@ impl VertexArray {
     /// # Arguments
     /// * primitive_type - The type of the VertexArray
     /// * vertex_count - The maximal number of vertex
-    pub fn new_init(primitive_type: PrimitiveType, vertex_count: u32) -> VertexArray {
+    pub fn new_init(primitive_type: PrimitiveType, vertex_count: usize) -> VertexArray {
         let ver = unsafe { sfVertexArray_create() };
         if ver.is_null() {
             panic!("sfVertexArray_create returned null.")
@@ -97,8 +97,8 @@ impl VertexArray {
     ///
     /// # Arguments
     /// * vertex_count - New size of the array (number of vertices)
-    pub fn resize(&mut self, vertex_count: u32) {
-        unsafe { sfVertexArray_resize(self.vertex_array, vertex_count as usize) }
+    pub fn resize(&mut self, vertex_count: usize) {
+        unsafe { sfVertexArray_resize(self.vertex_array, vertex_count ) }
     }
 
     /// Add a vertex to a vertex array array
