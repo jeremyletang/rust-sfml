@@ -219,12 +219,20 @@ impl Index<usize> for VertexArray {
     type Output = Vertex;
 
     fn index(&self, idx: usize) -> &Vertex {
+        assert!(idx < self.vertex_count(),
+                "Out of bounds: {}, max {}",
+                idx,
+                self.vertex_count());
         unsafe { &*(sfVertexArray_getVertex(self.vertex_array, idx) as *const Vertex) }
     }
 }
 
 impl IndexMut<usize> for VertexArray {
     fn index_mut(&mut self, idx: usize) -> &mut Vertex {
+        assert!(idx < self.vertex_count(),
+                "Out of bounds: {}, max {}",
+                idx,
+                self.vertex_count());
         unsafe { &mut *(sfVertexArray_getVertex(self.vertex_array, idx) as *mut Vertex) }
     }
 }
