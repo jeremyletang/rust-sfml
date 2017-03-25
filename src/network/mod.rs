@@ -23,8 +23,13 @@
 
 //! Socket-based communication
 //!
-//! utilities and higher-level network protocols (HTTP, FTP)
+//! Utilities and higher-level network protocols (HTTP, FTP)
 //!
+//! # Note from maintainer
+//!
+//! The `network` module is currently considered a second class citizen, and is not receiving
+//! much maintentance. Use it at your own risk!
+//! Consider using native Rust solutions for networking.
 
 pub use network::ip_address::IpAddress;
 pub use network::packet::Packet;

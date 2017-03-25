@@ -9,7 +9,7 @@ license = "zlib-acknowledgement"
 keywords = ["sfml", "multimedia", "game"]
 
 [features]
-default = ["graphics", "audio", "network"]
+default = ["graphics", "audio"]
 # Used for conditonally setting clippy lint levels.
 # Run cargo clippy with `cargo clippy --features=clippy`.
 clippy = []
