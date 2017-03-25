@@ -74,11 +74,9 @@ impl Transform {
         }
     }
 
-    /// Create a new identity transform
-    ///
-    /// Return a new Transform initialized at 1, 0, 0, 0, 1, 0, 0, 0, 1
-    pub fn new_identity() -> Transform {
-        unsafe { Transform(ffi::sfTransform_fromMatrix(1., 0., 0., 0., 1., 0., 0., 0., 1.)) }
+    /// The identity transform (does nothing)
+    pub fn identity() -> Self {
+        unsafe { Transform(ffi::sfTransform_Identity) }
     }
 
     /// Return the inverse of a transform
@@ -186,5 +184,11 @@ impl Transform {
     /// Return the transformed rectangle
     pub fn transform_rect(&mut self, rectangle: &FloatRect) -> FloatRect {
         unsafe { FloatRect::from_raw(ffi::sfTransform_transformRect(&self.0, rectangle.raw())) }
+    }
+}
+
+impl Default for Transform {
+    fn default() -> Self {
+        Self::identity()
     }
 }

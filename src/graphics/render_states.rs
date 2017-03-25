@@ -136,7 +136,7 @@ impl<'te, 'sh, 'shte> Default for RenderStates<'te, 'sh, 'shte> {
     fn default() -> Self {
         Self {
             blend_mode: blend_mode::ALPHA,
-            transform: Transform::new_identity(),
+            transform: Transform::default(),
             texture: None,
             shader: None,
         }
