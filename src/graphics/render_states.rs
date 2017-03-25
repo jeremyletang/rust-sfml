@@ -84,18 +84,17 @@ impl<'te, 'sh, 'shte> Raw for RenderStates<'te, 'sh, 'shte> {
     }
 }
 
-/// Create a new `RenderStates` initialized to default.
-///
-/// # default
-/// * `blend_mode` is initialized to `BlendMode::blend_alpha()`
-/// * `transform` is initialized to the identity matrix
-/// * `texture` is initialized to `None`
-/// * `shader` is initialized to `None`
-///
-/// Return a new default `RenderStates`
 impl<'te, 'sh, 'shte> Default for RenderStates<'te, 'sh, 'shte> {
-    fn default() -> RenderStates<'te, 'sh, 'shte> {
-        RenderStates {
+    /// Default values:
+    ///
+    /// ```ignore
+    /// blend_mode: blend_mode::ALPHA,
+    /// transform: Transform::new_identity(),
+    /// texture: None,
+    /// shader: None,
+    /// ```
+    fn default() -> Self {
+        Self {
             blend_mode: blend_mode::ALPHA,
             transform: Transform::new_identity(),
             texture: None,
