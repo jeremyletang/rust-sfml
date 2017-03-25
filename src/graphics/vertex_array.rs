@@ -204,7 +204,7 @@ impl Clone for VertexArray {
     fn clone(&self) -> VertexArray {
         let ver = unsafe { sfVertexArray_copy(self.vertex_array) };
         if ver.is_null() {
-            panic!("Not enough memory to clone Font")
+            panic!("Not enough memory to clone VertexArray")
         } else {
             VertexArray { vertex_array: ver }
         }
