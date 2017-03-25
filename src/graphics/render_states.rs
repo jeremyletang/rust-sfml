@@ -24,7 +24,7 @@
 use std::ptr;
 
 use system::raw_conv::Raw;
-use graphics::{BlendMode, blend_mode, Shader, Transform, TextureRef};
+use graphics::{BlendMode, Shader, Transform, TextureRef};
 
 use csfml_graphics_sys as ffi;
 
@@ -69,6 +69,7 @@ use csfml_graphics_sys as ffi;
 /// you can either pass the render states unmodified, or change some of them.
 /// For example, a transformable object will combine the current transform with its own transform.
 /// A sprite will set its texture. Etc.
+#[derive(Default)]
 pub struct RenderStates<'te, 'sh, 'shte>
     where 'shte: 'sh
 {
@@ -120,25 +121,6 @@ impl<'te, 'sh, 'shte> Raw for RenderStates<'te, 'sh, 'shte> {
                 Some(shader) => shader.raw(),
                 None => ptr::null_mut(),
             },
-        }
-    }
-}
-
-impl<'te, 'sh, 'shte> Default for RenderStates<'te, 'sh, 'shte> {
-    /// Default values:
-    ///
-    /// ```ignore
-    /// blend_mode: blend_mode::ALPHA,
-    /// transform: Transform::new_identity(),
-    /// texture: None,
-    /// shader: None,
-    /// ```
-    fn default() -> Self {
-        Self {
-            blend_mode: blend_mode::ALPHA,
-            transform: Transform::default(),
-            texture: None,
-            shader: None,
         }
     }
 }
