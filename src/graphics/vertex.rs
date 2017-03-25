@@ -57,7 +57,7 @@ use system::raw_conv::Raw;
 ///     Vertex::new(Vector2f::new(100.,   0.), Color::red(), Vector2f::new(10.,  0.)),
 /// ];
 /// // draw it
-/// window.draw_primitives(&vertices, PrimitiveType::sfQuads, RenderStates::default());
+/// window.draw_primitives(&vertices, PrimitiveType::Quads, RenderStates::default());
 /// ```
 ///
 /// Note: although texture coordinates are supposed to be an integer amount of pixels,

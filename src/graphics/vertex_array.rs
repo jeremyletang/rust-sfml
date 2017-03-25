@@ -25,11 +25,9 @@ use std::mem;
 use std::ops::{Index, IndexMut};
 
 use system::raw_conv::{Raw, FromRaw};
-use graphics::{Drawable, Vertex, FloatRect, primitive_type, PrimitiveType, RenderTarget,
-               RenderStates};
+use graphics::{Drawable, Vertex, FloatRect, PrimitiveType, RenderTarget, RenderStates};
 
 use csfml_graphics_sys::*;
-use csfml_graphics_sys::sfPrimitiveType::*;
 
 /// Define a set of one or more 2D primitives
 pub struct VertexArray {
@@ -98,7 +96,7 @@ impl VertexArray {
     /// # Arguments
     /// * vertex_count - New size of the array (number of vertices)
     pub fn resize(&mut self, vertex_count: usize) {
-        unsafe { sfVertexArray_resize(self.vertex_array, vertex_count ) }
+        unsafe { sfVertexArray_resize(self.vertex_array, vertex_count) }
     }
 
     /// Add a vertex to a vertex array array
@@ -133,25 +131,7 @@ impl VertexArray {
     /// * type - Type of primitive
     pub fn set_primitive_type(&mut self, primitive_type: PrimitiveType) {
         unsafe {
-            match primitive_type {
-                primitive_type::Points => {
-                    sfVertexArray_setPrimitiveType(self.vertex_array, sfPoints)
-                }
-                primitive_type::Lines => sfVertexArray_setPrimitiveType(self.vertex_array, sfLines),
-                primitive_type::LineStrip => {
-                    sfVertexArray_setPrimitiveType(self.vertex_array, sfLineStrip)
-                }
-                primitive_type::Triangles => {
-                    sfVertexArray_setPrimitiveType(self.vertex_array, sfTriangles)
-                }
-                primitive_type::TriangleStrip => {
-                    sfVertexArray_setPrimitiveType(self.vertex_array, sfTriangleStrip)
-                }
-                primitive_type::TriangleFan => {
-                    sfVertexArray_setPrimitiveType(self.vertex_array, sfTriangleFan)
-                }
-                primitive_type::Quads => sfVertexArray_setPrimitiveType(self.vertex_array, sfQuads),
-            }
+            sfVertexArray_setPrimitiveType(self.vertex_array, primitive_type.raw());
         }
     }
 
@@ -159,15 +139,7 @@ impl VertexArray {
     ///
     /// Return the primitive type
     pub fn primitive_type(&self) -> PrimitiveType {
-        match unsafe { sfVertexArray_getPrimitiveType(self.vertex_array) } {
-            sfPoints => primitive_type::Points,
-            sfLines => primitive_type::Lines,
-            sfLineStrip => primitive_type::LineStrip,
-            sfTriangles => primitive_type::Triangles,
-            sfTriangleStrip => primitive_type::TriangleStrip,
-            sfTriangleFan => primitive_type::TriangleFan,
-            sfQuads => primitive_type::Quads,
-        }
+        unsafe { FromRaw::from_raw(sfVertexArray_getPrimitiveType(self.vertex_array)) }
     }
 
     /// Return an immutable iterator over all the vertice contained by the VertexArray

@@ -121,7 +121,7 @@ impl StormBlink {
         let mut rng = thread_rng();
 
         let mut points = VertexArray::new();
-        points.set_primitive_type(PrimitiveType::sfPoints);
+        points.set_primitive_type(PrimitiveType::Points);
         for _ in 0..40_000 {
             let x = rng.gen_range(0., 800.);
             let y = rng.gen_range(0., 600.);

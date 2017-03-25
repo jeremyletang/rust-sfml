@@ -358,7 +358,7 @@ impl RenderTarget for RenderTexture {
             ffi::sfRenderTexture_drawPrimitives(self.render_texture,
                                                 &vertices[0] as *const _ as *const _,
                                                 len,
-                                                ty,
+                                                ty.raw(),
                                                 &rs.raw());
         }
     }

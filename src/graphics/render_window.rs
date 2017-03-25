@@ -704,7 +704,7 @@ impl RenderTarget for RenderWindow {
             ffi::sfRenderWindow_drawPrimitives(self.render_window,
                                                &vertices[0] as *const _ as *const _,
                                                len,
-                                               ty,
+                                               ty.raw(),
                                                &rs.raw());
         }
     }

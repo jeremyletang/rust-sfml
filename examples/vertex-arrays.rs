@@ -1,6 +1,6 @@
 extern crate sfml;
 
-use sfml::graphics::{Color, LineStrip, RenderTarget, RenderWindow, Vertex, VertexArray};
+use sfml::graphics::{Color, PrimitiveType, RenderTarget, RenderWindow, Vertex, VertexArray};
 use sfml::system::Vector2f;
 use sfml::window::{VideoMode, Event, style};
 
@@ -13,7 +13,7 @@ fn main() {
     window.set_vertical_sync_enabled(true);
 
     let mut vertex_array = VertexArray::new();
-    vertex_array.set_primitive_type(LineStrip);
+    vertex_array.set_primitive_type(PrimitiveType::LineStrip);
 
     vertex_array.append(&Vertex::with_pos_color(Vector2f { x: 20.0, y: 30.0 }, Color::green()));
     vertex_array.append(&Vertex::with_pos_color(Vector2f { x: 30.0, y: 30.0 }, Color::green()));
