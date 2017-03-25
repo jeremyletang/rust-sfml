@@ -84,6 +84,13 @@ pub struct BlendMode {
     pub alpha_equation: Equation,
 }
 
+impl Default for BlendMode {
+    /// Default blending mode is alpha blending.
+    fn default() -> Self {
+        ALPHA
+    }
+}
+
 /// "Alpha" blend mode
 pub const ALPHA: BlendMode = BlendMode {
     color_src_factor: Factor::SrcAlpha,
