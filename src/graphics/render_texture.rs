@@ -21,7 +21,7 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-use system::raw_conv::{Raw, RawMut, FromRaw};
+use system::raw_conv::{Raw, FromRaw};
 use system::{Vector2f, Vector2i, Vector2u};
 use graphics::{Drawable, View, ViewRef, Color, IntRect, TextureRef, CircleShape, RectangleShape,
                Text, RenderStates, Sprite, ConvexShape, VertexArray, RenderTarget, Vertex,
@@ -306,58 +306,52 @@ impl RenderTarget for RenderTexture {
     }
 
     /// Draw Text
-    fn draw_text(&self, text: &Text, mut rs: RenderStates) {
-        unsafe { ffi::sfRenderTexture_drawText(self.render_texture, text.raw(), rs.raw_mut()) }
+    fn draw_text(&self, text: &Text, rs: RenderStates) {
+        unsafe { ffi::sfRenderTexture_drawText(self.render_texture, text.raw(), &rs.raw()) }
     }
 
     /// Draw Shape
-    fn draw_shape(&self, shape: &CustomShape, mut rs: RenderStates) {
-        unsafe { ffi::sfRenderTexture_drawShape(self.render_texture, shape.raw(), rs.raw_mut()) }
+    fn draw_shape(&self, shape: &CustomShape, rs: RenderStates) {
+        unsafe { ffi::sfRenderTexture_drawShape(self.render_texture, shape.raw(), &rs.raw()) }
     }
 
     /// Draw Sprite
-    fn draw_sprite(&self, sprite: &Sprite, mut rs: RenderStates) {
-        unsafe { ffi::sfRenderTexture_drawSprite(self.render_texture, sprite.raw(), rs.raw_mut()) }
+    fn draw_sprite(&self, sprite: &Sprite, rs: RenderStates) {
+        unsafe { ffi::sfRenderTexture_drawSprite(self.render_texture, sprite.raw(), &rs.raw()) }
     }
 
     /// Draw CircleShape
-    fn draw_circle_shape(&self, circle_shape: &CircleShape, mut rs: RenderStates) {
+    fn draw_circle_shape(&self, circle_shape: &CircleShape, rs: RenderStates) {
         unsafe {
-            ffi::sfRenderTexture_drawCircleShape(self.render_texture,
-                                                 circle_shape.raw(),
-                                                 rs.raw_mut())
+            ffi::sfRenderTexture_drawCircleShape(self.render_texture, circle_shape.raw(), &rs.raw())
         }
     }
 
     /// Draw RectangleShape
-    fn draw_rectangle_shape(&self, rectangle_shape: &RectangleShape, mut rs: RenderStates) {
+    fn draw_rectangle_shape(&self, rectangle_shape: &RectangleShape, rs: RenderStates) {
         unsafe {
             ffi::sfRenderTexture_drawRectangleShape(self.render_texture,
                                                     rectangle_shape.raw(),
-                                                    rs.raw_mut())
+                                                    &rs.raw())
         }
     }
 
     /// Draw ConvexShape
-    fn draw_convex_shape(&self, convex_shape: &ConvexShape, mut rs: RenderStates) {
+    fn draw_convex_shape(&self, convex_shape: &ConvexShape, rs: RenderStates) {
         unsafe {
-            ffi::sfRenderTexture_drawConvexShape(self.render_texture,
-                                                 convex_shape.raw(),
-                                                 rs.raw_mut())
+            ffi::sfRenderTexture_drawConvexShape(self.render_texture, convex_shape.raw(), &rs.raw())
         }
     }
 
     /// Draw VertexArray
-    fn draw_vertex_array(&self, vertex_array: &VertexArray, mut rs: RenderStates) {
+    fn draw_vertex_array(&self, vertex_array: &VertexArray, rs: RenderStates) {
         unsafe {
-            ffi::sfRenderTexture_drawVertexArray(self.render_texture,
-                                                 vertex_array.raw(),
-                                                 rs.raw_mut())
+            ffi::sfRenderTexture_drawVertexArray(self.render_texture, vertex_array.raw(), &rs.raw())
         }
     }
 
     /// draw primitives
-    fn draw_primitives(&self, vertices: &[Vertex], ty: PrimitiveType, mut rs: RenderStates) {
+    fn draw_primitives(&self, vertices: &[Vertex], ty: PrimitiveType, rs: RenderStates) {
 
         let len = vertices.len();
         unsafe {
@@ -365,7 +359,7 @@ impl RenderTarget for RenderTexture {
                                                 &vertices[0] as *const _ as *const _,
                                                 len,
                                                 ty,
-                                                rs.raw_mut());
+                                                &rs.raw());
         }
     }
 

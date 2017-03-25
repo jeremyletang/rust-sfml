@@ -23,7 +23,7 @@
 
 use std::ptr;
 
-use system::raw_conv::{Raw, RawMut};
+use system::raw_conv::Raw;
 use graphics::{BlendMode, blend_mode, Shader, Texture, Transform};
 
 use csfml_graphics_sys as ffi;
@@ -32,7 +32,6 @@ use csfml_graphics_sys as ffi;
 pub struct RenderStates<'te, 'sh, 'shte>
     where 'shte: 'sh
 {
-    sf_render_states: ffi::sfRenderStates,
     /// Blending mode.
     pub blend_mode: BlendMode,
     /// Transform
@@ -59,12 +58,6 @@ impl<'te, 'sh, 'shte> RenderStates<'te, 'sh, 'shte> {
                shader: Option<&'sh Shader<'shte>>)
                -> RenderStates<'te, 'sh, 'shte> {
         RenderStates {
-            sf_render_states: ffi::sfRenderStates {
-                blendMode: blend_mode.raw(),
-                transform: transform.0,
-                texture: ptr::null_mut(),
-                shader: ptr::null_mut(),
-            },
             blend_mode: blend_mode,
             transform: transform,
             texture: texture,
@@ -73,21 +66,21 @@ impl<'te, 'sh, 'shte> RenderStates<'te, 'sh, 'shte> {
     }
 }
 
-impl<'te, 'sh, 'shte> RawMut for RenderStates<'te, 'sh, 'shte> {
-    type RawMut = *mut ffi::sfRenderStates;
-    fn raw_mut(&mut self) -> Self::RawMut {
-        self.sf_render_states.blendMode = self.blend_mode.raw();
-        self.sf_render_states.transform = self.transform.0;
-        self.sf_render_states.texture = match self.texture {
-            Some(texture) => texture.raw(),
-            None => ptr::null_mut(),
-        };
-        self.sf_render_states.shader = match self.shader {
-            Some(shader) => shader.raw(),
-            None => ptr::null_mut(),
-        };
-
-        &mut self.sf_render_states as *mut ffi::sfRenderStates
+impl<'te, 'sh, 'shte> Raw for RenderStates<'te, 'sh, 'shte> {
+    type Raw = ffi::sfRenderStates;
+    fn raw(&self) -> Self::Raw {
+        ffi::sfRenderStates {
+            blendMode: self.blend_mode.raw(),
+            transform: self.transform.0,
+            texture: match self.texture {
+                Some(texture) => texture.raw(),
+                None => ptr::null_mut(),
+            },
+            shader: match self.shader {
+                Some(shader) => shader.raw(),
+                None => ptr::null_mut(),
+            },
+        }
     }
 }
 
@@ -103,12 +96,6 @@ impl<'te, 'sh, 'shte> RawMut for RenderStates<'te, 'sh, 'shte> {
 impl<'te, 'sh, 'shte> Default for RenderStates<'te, 'sh, 'shte> {
     fn default() -> RenderStates<'te, 'sh, 'shte> {
         RenderStates {
-            sf_render_states: ffi::sfRenderStates {
-                blendMode: blend_mode::ALPHA.raw(),
-                transform: Transform::new_identity().0,
-                texture: ptr::null_mut(),
-                shader: ptr::null_mut(),
-            },
             blend_mode: blend_mode::ALPHA,
             transform: Transform::new_identity(),
             texture: None,

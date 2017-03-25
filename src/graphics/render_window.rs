@@ -21,7 +21,7 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-use system::raw_conv::{Raw, RawMut, FromRaw};
+use system::raw_conv::{Raw, FromRaw};
 use window::{ContextSettings, VideoMode, Event, Style};
 use system::{Vector2f, Vector2i, Vector2u};
 use graphics::{Drawable, Color, CircleShape, RectangleShape, Text, Sprite, VertexArray,
@@ -640,68 +640,64 @@ impl RenderTarget for RenderWindow {
     }
 
     /// Draw a Text with a RenderStates
-    fn draw_text(&self, text: &Text, mut render_states: RenderStates) {
+    fn draw_text(&self, text: &Text, render_states: RenderStates) {
         unsafe {
-            ffi::sfRenderWindow_drawText(self.render_window, text.raw(), render_states.raw_mut())
+            ffi::sfRenderWindow_drawText(self.render_window, text.raw(), &render_states.raw())
         }
     }
 
     /// Draw a Shape with a RenderStates
-    fn draw_shape(&self, shape: &CustomShape, mut render_states: RenderStates) {
+    fn draw_shape(&self, shape: &CustomShape, render_states: RenderStates) {
         unsafe {
-            ffi::sfRenderWindow_drawShape(self.render_window, shape.raw(), render_states.raw_mut())
+            ffi::sfRenderWindow_drawShape(self.render_window, shape.raw(), &render_states.raw())
         }
     }
 
     /// Draw a sprite with a RenderStates
-    fn draw_sprite(&self, sprite: &Sprite, mut render_states: RenderStates) {
+    fn draw_sprite(&self, sprite: &Sprite, render_states: RenderStates) {
         unsafe {
-            ffi::sfRenderWindow_drawSprite(self.render_window,
-                                           sprite.raw(),
-                                           render_states.raw_mut())
+            ffi::sfRenderWindow_drawSprite(self.render_window, sprite.raw(), &render_states.raw())
         }
     }
 
     /// Draw a CircleShape with a RenderStates
-    fn draw_circle_shape(&self, circle_shape: &CircleShape, mut render_states: RenderStates) {
+    fn draw_circle_shape(&self, circle_shape: &CircleShape, render_states: RenderStates) {
         unsafe {
             ffi::sfRenderWindow_drawCircleShape(self.render_window,
                                                 circle_shape.raw(),
-                                                render_states.raw_mut())
+                                                &render_states.raw())
         }
     }
 
     /// Draw a RectangleShape with a RenderStates
-    fn draw_rectangle_shape(&self,
-                            rectangle_shape: &RectangleShape,
-                            mut render_states: RenderStates) {
+    fn draw_rectangle_shape(&self, rectangle_shape: &RectangleShape, render_states: RenderStates) {
         unsafe {
             ffi::sfRenderWindow_drawRectangleShape(self.render_window,
                                                    rectangle_shape.raw(),
-                                                   render_states.raw_mut())
+                                                   &render_states.raw())
         }
     }
 
     /// Draw a ConvexShape with a RenderStates
-    fn draw_convex_shape(&self, convex_shape: &ConvexShape, mut render_states: RenderStates) {
+    fn draw_convex_shape(&self, convex_shape: &ConvexShape, render_states: RenderStates) {
         unsafe {
             ffi::sfRenderWindow_drawConvexShape(self.render_window,
                                                 convex_shape.raw(),
-                                                render_states.raw_mut())
+                                                &render_states.raw())
         }
     }
 
     /// Draw a VertexArray with a RenderStates
-    fn draw_vertex_array(&self, vertex_array: &VertexArray, mut render_states: RenderStates) {
+    fn draw_vertex_array(&self, vertex_array: &VertexArray, render_states: RenderStates) {
         unsafe {
             ffi::sfRenderWindow_drawVertexArray(self.render_window,
                                                 vertex_array.raw(),
-                                                render_states.raw_mut())
+                                                &render_states.raw())
         }
     }
 
     /// draw primitives
-    fn draw_primitives(&self, vertices: &[Vertex], ty: PrimitiveType, mut rs: RenderStates) {
+    fn draw_primitives(&self, vertices: &[Vertex], ty: PrimitiveType, rs: RenderStates) {
 
         let len = vertices.len();
         unsafe {
@@ -709,7 +705,7 @@ impl RenderTarget for RenderWindow {
                                                &vertices[0] as *const _ as *const _,
                                                len,
                                                ty,
-                                               rs.raw_mut());
+                                               &rs.raw());
         }
     }
 
