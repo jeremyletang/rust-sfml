@@ -229,11 +229,11 @@ impl<'a> Iterator for Vertices<'a> {
     }
 }
 
-impl Index<u32> for VertexArray {
+impl Index<usize> for VertexArray {
     type Output = Vertex;
 
-    fn index(&self, rhs: u32) -> &Vertex {
-        unsafe { &*(sfVertexArray_getVertex(self.vertex_array, rhs as usize) as *const Vertex) }
+    fn index(&self, idx: usize) -> &Vertex {
+        unsafe { &*(sfVertexArray_getVertex(self.vertex_array, idx) as *const Vertex) }
     }
 }
 
