@@ -126,7 +126,7 @@ impl StormBlink {
             let x = rng.gen_range(0., 800.);
             let y = rng.gen_range(0., 600.);
             let (r, g, b) = (rng.gen(), rng.gen(), rng.gen());
-            points.append(&Vertex::with_pos_color(&Vector2f::new(x, y), &Color::rgb(r, g, b)));
+            points.append(&Vertex::with_pos_color(Vector2f::new(x, y), Color::rgb(r, g, b)));
         }
 
         let shader = Shader::from_file(Some("resources/storm.vert"),

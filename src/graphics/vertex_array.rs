@@ -106,7 +106,7 @@ impl VertexArray {
     /// # Arguments
     /// * vertex - Vertex to add
     pub fn append(&mut self, vertex: &Vertex) {
-        unsafe { sfVertexArray_append(self.vertex_array, vertex.0) }
+        unsafe { sfVertexArray_append(self.vertex_array, vertex.raw()) }
     }
 
     /// Compute the bounding rectangle of a vertex array
