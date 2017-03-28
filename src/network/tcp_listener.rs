@@ -16,11 +16,8 @@ impl TcpListener {
     /// Create a new TCP listener
     pub fn new() -> TcpListener {
         let list = unsafe { ffi::sfTcpListener_create() };
-        if list.is_null() {
-            panic!("sfTcpListener_create returned null.")
-        } else {
-            TcpListener { listener: list }
-        }
+        assert!(!list.is_null(), "Failed to create TcpListener");
+        TcpListener { listener: list }
     }
 
     /// Set the blocking state of a TCP listener

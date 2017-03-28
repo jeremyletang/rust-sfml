@@ -20,46 +20,25 @@ impl<'s> RectangleShape<'s> {
     /// Returns a new `RectangleShape`.
     pub fn new() -> RectangleShape<'s> {
         let rectangle = unsafe { ffi::sfRectangleShape_create() };
-        if rectangle.is_null() {
-            panic!("sfRectangleShape_create returned null.")
-        } else {
-            RectangleShape {
-                rectangle_shape: rectangle,
-                texture: PhantomData,
-            }
+        assert!(!rectangle.is_null(), "Failed to create RectangleShape");
+        RectangleShape {
+            rectangle_shape: rectangle,
+            texture: PhantomData,
         }
     }
 
     /// Returns a new `RectangleShape` with the provided texture.
     pub fn with_texture(texture: &'s TextureRef) -> RectangleShape<'s> {
-        let rectangle = unsafe { ffi::sfRectangleShape_create() };
-        if rectangle.is_null() {
-            panic!("sfRectangleShape_create returned null.")
-        } else {
-            unsafe {
-                ffi::sfRectangleShape_setTexture(rectangle, texture.raw(), sfTrue);
-            }
-            RectangleShape {
-                rectangle_shape: rectangle,
-                texture: PhantomData,
-            }
-        }
+        let mut shape = Self::new();
+        shape.set_texture(texture, true);
+        shape
     }
 
     /// Returns a new `RectangleShape` with the provided size.
     pub fn with_size(size: &Vector2f) -> RectangleShape<'s> {
-        let rectangle = unsafe { ffi::sfRectangleShape_create() };
-        if rectangle.is_null() {
-            panic!("sfRectangleShape_create returned null.")
-        } else {
-            unsafe {
-                ffi::sfRectangleShape_setSize(rectangle, size.raw());
-            }
-            RectangleShape {
-                rectangle_shape: rectangle,
-                texture: PhantomData,
-            }
-        }
+        let mut shape = Self::new();
+        shape.set_size(size);
+        shape
     }
 
     /// Get the size of a rectangle shape

@@ -283,11 +283,8 @@ impl Ftp {
     /// Return Some(Ftp) or None
     pub fn new() -> Ftp {
         let ptr = unsafe { ffi::sfFtp_create() };
-        if ptr.is_null() {
-            panic!("sfFtp_create returned null.")
-        } else {
-            Ftp { ftp: ptr }
-        }
+        assert!(!ptr.is_null(), "Failed to create Ftp");
+        Ftp { ftp: ptr }
     }
 
     /// Connect to the specified FTP server

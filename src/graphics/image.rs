@@ -27,11 +27,8 @@ impl Image {
     /// * height - Height of the image
     pub fn new(width: u32, height: u32) -> Image {
         let image = unsafe { ffi::sfImage_create(width, height) };
-        if image.is_null() {
-            panic!("sfImage_create returned null.")
-        } else {
-            Image { image: image }
-        }
+        assert!(!image.is_null(), "Failed to create Image");
+        Image { image: image }
     }
 
     /// Create an image from a stream.

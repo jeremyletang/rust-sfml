@@ -20,11 +20,8 @@ impl SoundBufferRecorder {
     /// Create a new sound buffer recorder
     pub fn new() -> SoundBufferRecorder {
         let buffer = unsafe { ffi::sfSoundBufferRecorder_create() };
-        if buffer.is_null() {
-            panic!("sfSoundBufferRecorder_create returned null.")
-        } else {
-            SoundBufferRecorder { sound_buffer_recorder: buffer }
-        }
+        assert!(!buffer.is_null(), "Failed to create SoundBufferRecorder");
+        SoundBufferRecorder { sound_buffer_recorder: buffer }
     }
 
     /// Start the capture of a sound buffer recorder
@@ -70,11 +67,8 @@ impl SoundBufferRecorder {
     /// Return Read-only access to the sound buffer
     pub fn buffer(&self) -> &SoundBufferRef {
         let buff = unsafe { ffi::sfSoundBufferRecorder_getBuffer(self.sound_buffer_recorder) };
-        if buff.is_null() {
-            panic!("sound_buffer_recorder::get_buffer: buffer was null");
-        } else {
-            unsafe { &*(buff as *const SoundBufferRef) }
-        }
+        assert!(!buff.is_null(), "sfSoundBufferRecorder_getBuffer failed");
+        unsafe { &*(buff as *const SoundBufferRef) }
     }
 
     /// Get the name of the current audio capture device.

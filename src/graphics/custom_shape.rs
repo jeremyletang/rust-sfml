@@ -58,14 +58,11 @@ impl<'s> CustomShape<'s> {
                                 Some(get_point_callback),
                                 raw_impl as *mut _)
         };
-        if sp.is_null() {
-            panic!("sfShape_create returned null.")
-        } else {
-            CustomShape {
-                shape: sp,
-                texture: PhantomData,
-                points: raw_impl,
-            }
+        assert!(!sp.is_null(), "Failed to create CustomShape");
+        CustomShape {
+            shape: sp,
+            texture: PhantomData,
+            points: raw_impl,
         }
     }
 
@@ -77,24 +74,9 @@ impl<'s> CustomShape<'s> {
     pub fn with_texture(points: Box<CustomShapePoints + Send>,
                         texture: &'s TextureRef)
                         -> CustomShape<'s> {
-        let raw_impl = Box::into_raw(Box::new(points));
-        let sp = unsafe {
-            ffi::sfShape_create(Some(get_point_count_callback),
-                                Some(get_point_callback),
-                                raw_impl as *mut _)
-        };
-        if sp.is_null() {
-            panic!("sfShape_create returned null.")
-        } else {
-            unsafe {
-                ffi::sfShape_setTexture(sp, texture.raw(), sfTrue);
-            }
-            CustomShape {
-                shape: sp,
-                texture: PhantomData,
-                points: raw_impl,
-            }
-        }
+        let mut shape = Self::new(points);
+        shape.set_texture(texture, true);
+        shape
     }
 
     /// Recompute the internal geometry of a shape

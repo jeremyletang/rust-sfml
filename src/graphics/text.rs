@@ -23,14 +23,11 @@ impl<'s> Text<'s> {
     /// Create a new text
     pub fn new() -> Text<'s> {
         let text = unsafe { ffi::sfText_create() };
-        if text.is_null() {
-            panic!("sfText_create returned null.")
-        } else {
-            Text {
-                text: text,
-                string_length: 0,
-                font: PhantomData,
-            }
+        assert!(!text.is_null(), "Failed to create Text");
+        Text {
+            text: text,
+            string_length: 0,
+            font: PhantomData,
         }
     }
 

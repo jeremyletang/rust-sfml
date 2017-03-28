@@ -98,11 +98,8 @@ impl Request {
     /// Create a new HTTP request
     pub fn new() -> Request {
         let ptr = unsafe { ffi::sfHttpRequest_create() };
-        if ptr.is_null() {
-            panic!("sfHttpRequest_create returned null.")
-        } else {
-            Request { request: ptr }
-        }
+        assert!(!ptr.is_null(), "Failed to create Http Request");
+        Request { request: ptr }
     }
 
     /// Set the value of a header field of a HTTP request
@@ -261,11 +258,8 @@ impl Http {
     /// Create a new Http object
     pub fn new() -> Http {
         let ptr = unsafe { ffi::sfHttp_create() };
-        if ptr.is_null() {
-            panic!("sfHttp_create returned null.")
-        } else {
-            Http { http: ptr }
-        }
+        assert!(!ptr.is_null(), "Failed to create Http");
+        Http { http: ptr }
     }
 
     /// Set the target host of a HTTP object

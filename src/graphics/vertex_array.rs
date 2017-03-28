@@ -21,11 +21,8 @@ impl VertexArray {
     /// Create a new vertex array
     pub fn new() -> VertexArray {
         let ver = unsafe { sfVertexArray_create() };
-        if ver.is_null() {
-            panic!("sfVertexArray_create returned null.")
-        } else {
-            VertexArray { vertex_array: ver }
-        }
+        assert!(!ver.is_null(), "Failed to create VertexArray");
+        VertexArray { vertex_array: ver }
     }
 
     /// Create a new initialized vertex array
@@ -34,15 +31,10 @@ impl VertexArray {
     /// * primitive_type - The type of the VertexArray
     /// * vertex_count - The maximal number of vertex
     pub fn new_init(primitive_type: PrimitiveType, vertex_count: usize) -> VertexArray {
-        let ver = unsafe { sfVertexArray_create() };
-        if ver.is_null() {
-            panic!("sfVertexArray_create returned null.")
-        } else {
-            let mut tmp_vertex = VertexArray { vertex_array: ver };
-            tmp_vertex.set_primitive_type(primitive_type);
-            tmp_vertex.resize(vertex_count);
-            tmp_vertex
-        }
+        let mut arr = Self::new();
+        arr.set_primitive_type(primitive_type);
+        arr.resize(vertex_count);
+        arr
     }
 
     /// Return the vertex count of a vertex array

@@ -17,11 +17,8 @@ impl TcpSocket {
     /// Create a new TCP socket
     pub fn new() -> TcpSocket {
         let tcp = unsafe { ffi::sfTcpSocket_create() };
-        if tcp.is_null() {
-            panic!("sfTcpSocket_create returned null.")
-        } else {
-            TcpSocket { socket: tcp }
-        }
+        assert!(!tcp.is_null(), "Failed to create TcpSocket");
+        TcpSocket { socket: tcp }
     }
 
     /// Set the blocking state of a TCP listener

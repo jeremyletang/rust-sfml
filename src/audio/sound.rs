@@ -47,30 +47,18 @@ impl<'s> Sound<'s> {
     /// Create a new Sound
     pub fn new() -> Sound<'s> {
         let s = unsafe { ffi::sfSound_create() };
-        if s.is_null() {
-            panic!("sfSound_create returned null.")
-        } else {
-            Sound {
-                sound: s,
-                buffer: PhantomData,
-            }
+        assert!(!s.is_null(), "Failed to create Sound");
+        Sound {
+            sound: s,
+            buffer: PhantomData,
         }
     }
 
     /// Create a new Sound with a buffer
     pub fn with_buffer(buffer: &SoundBufferRef) -> Sound {
-        let s = unsafe { ffi::sfSound_create() };
-        if s.is_null() {
-            panic!("sfSound_create returned null.")
-        } else {
-            unsafe {
-                ffi::sfSound_setBuffer(s, buffer as *const _ as _);
-            }
-            Sound {
-                sound: s,
-                buffer: PhantomData,
-            }
-        }
+        let mut s = Sound::new();
+        s.set_buffer(buffer);
+        s
     }
 
     /// Sets whether this sound should loop or not.
@@ -170,13 +158,10 @@ impl<'a> Default for Sound<'a> {
 impl<'s> Clone for Sound<'s> {
     fn clone(&self) -> Self {
         let s = unsafe { ffi::sfSound_copy(self.sound) };
-        if s.is_null() {
-            panic!("Sound is null");
-        } else {
-            Sound {
-                sound: s,
-                buffer: self.buffer,
-            }
+        assert!(!s.is_null(), "Failed to copy Sound");
+        Sound {
+            sound: s,
+            buffer: self.buffer,
         }
     }
 }

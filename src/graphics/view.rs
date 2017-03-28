@@ -62,11 +62,8 @@ impl View {
     /// This function creates a default view of (0, 0, 1000, 1000)
     pub fn new() -> View {
         let view = unsafe { ffi::sfView_create() };
-        if view.is_null() {
-            panic!("sfView_create returned null.")
-        } else {
-            View { view: view }
-        }
+        assert!(!view.is_null(), "Failed to create View");
+        View { view: view }
     }
 
     /// Create a default view
@@ -77,16 +74,10 @@ impl View {
     /// * center - The center of the view
     /// * size - The size of the view
     pub fn new_init(center: &Vector2f, size: &Vector2f) -> View {
-        let view = unsafe { ffi::sfView_create() };
-        if view.is_null() {
-            panic!("sfView_create returned null.")
-        } else {
-            unsafe {
-                ffi::sfView_setCenter(view, center.raw());
-                ffi::sfView_setSize(view, size.raw());
-            }
-            View { view: view }
-        }
+        let mut view = View::new();
+        view.set_center(center);
+        view.set_size(size);
+        view
     }
 
     /// Construct a view from a rectangle
@@ -95,11 +86,8 @@ impl View {
     /// * rectangle - The rectangle defining the zone to display
     pub fn from_rect(rectangle: &FloatRect) -> View {
         let view = unsafe { ffi::sfView_createFromRect(rectangle.raw()) };
-        if view.is_null() {
-            panic!("sfView_createFromRect returned null.")
-        } else {
-            View { view: view }
-        }
+        assert!(!view.is_null(), "Failed to create View from Rect");
+        View { view: view }
     }
 
     /// Set the orientation of a view

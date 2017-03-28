@@ -34,17 +34,13 @@ impl<'s> ConvexShape<'s> {
     /// * points_count - The number of point for the convex shape
     pub fn new(points_count: u32) -> ConvexShape<'s> {
         let shape = unsafe { ffi::sfConvexShape_create() };
-        if shape.is_null() {
-            panic!("sfConvexShape_create returned null.")
-        } else {
-            unsafe {
-                ffi::sfConvexShape_setPointCount(shape, points_count as usize);
-            }
-            ConvexShape {
-                convex_shape: shape,
-                texture: PhantomData,
-            }
-        }
+        assert!(!shape.is_null(), "Failed to create ConvexShape");
+        let mut shape = ConvexShape {
+            convex_shape: shape,
+            texture: PhantomData,
+        };
+        shape.set_point_count(points_count);
+        shape
     }
 
     /// Create a new convex shape with a texture
@@ -52,20 +48,10 @@ impl<'s> ConvexShape<'s> {
     /// # Arguments
     /// * texture - The texture to apply to the convex shape
     /// * points_count - The number of point for the convex shape
-    pub fn with_texture(texture: &'s TextureRef, points_count: u32) -> ConvexShape<'s> {
-        let shape = unsafe { ffi::sfConvexShape_create() };
-        if shape.is_null() {
-            panic!("sfConvexShape_create returned null.")
-        } else {
-            unsafe {
-                ffi::sfConvexShape_setTexture(shape, texture.raw(), sfTrue);
-                ffi::sfConvexShape_setPointCount(shape, points_count as usize)
-            }
-            ConvexShape {
-                convex_shape: shape,
-                texture: PhantomData,
-            }
-        }
+    pub fn with_texture(points_count: u32, texture: &'s TextureRef) -> ConvexShape<'s> {
+        let mut shape = ConvexShape::new(points_count);
+        shape.set_texture(texture, true);
+        shape
     }
 
     /// Set the position of a point.

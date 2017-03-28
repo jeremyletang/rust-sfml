@@ -32,7 +32,7 @@ fn main() {
     sprite.set_scale2f(0.5, 0.5);
 
     // Create a ConvexShape using the same texture.
-    let mut convex_shape = ConvexShape::with_texture(&frank, 6);
+    let mut convex_shape = ConvexShape::with_texture(6, &frank);
     convex_shape.set_point(0,
                            &Vector2f {
                                 x: 400.0,

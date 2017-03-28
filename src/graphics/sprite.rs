@@ -25,13 +25,10 @@ impl<'s> Sprite<'s> {
     /// Return Some(Sprite) or None
     pub fn new() -> Sprite<'s> {
         let sp = unsafe { ffi::sfSprite_create() };
-        if sp.is_null() {
-            panic!("sfSprite_create returned null.")
-        } else {
-            Sprite {
-                sprite: sp,
-                texture: PhantomData,
-            }
+        assert!(!sp.is_null(), "Failed to create Sprite");
+        Sprite {
+            sprite: sp,
+            texture: PhantomData,
         }
     }
 
@@ -39,18 +36,9 @@ impl<'s> Sprite<'s> {
     ///
     /// Return Some(Sprite) or None
     pub fn with_texture(texture: &'s TextureRef) -> Sprite<'s> {
-        let sp = unsafe { ffi::sfSprite_create() };
-        if sp.is_null() {
-            panic!("sfSprite_create returned null.")
-        } else {
-            unsafe {
-                ffi::sfSprite_setTexture(sp, texture.raw(), sfTrue);
-            }
-            Sprite {
-                sprite: sp,
-                texture: PhantomData,
-            }
-        }
+        let mut sprite = Sprite::new();
+        sprite.set_texture(texture, true);
+        sprite
     }
 
     /// Change the source texture of a sprite
@@ -176,13 +164,10 @@ impl<'s> Clone for Sprite<'s> {
     /// Return a new Sprite or panic! if there is not enough memory
     fn clone(&self) -> Sprite<'s> {
         let sp = unsafe { ffi::sfSprite_copy(self.sprite) };
-        if sp.is_null() {
-            panic!("sfSprite_copy returned null.")
-        } else {
-            Sprite {
-                sprite: sp,
-                texture: PhantomData,
-            }
+        assert!(!sp.is_null(), "Failed to copy Sprite");
+        Sprite {
+            sprite: sp,
+            texture: PhantomData,
         }
     }
 }

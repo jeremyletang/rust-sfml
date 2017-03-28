@@ -16,11 +16,8 @@ impl UdpSocket {
     /// Create a new UDP socket
     pub fn new() -> UdpSocket {
         let udp = unsafe { ffi::sfUdpSocket_create() };
-        if udp.is_null() {
-            panic!("sfUdpSocket_create returned null.")
-        } else {
-            UdpSocket { socket: udp }
-        }
+        assert!(!udp.is_null(), "Failed to create UdpSocket");
+        UdpSocket { socket: udp }
     }
 
     /// Set the blocking state of a UDP listener

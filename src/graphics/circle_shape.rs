@@ -19,18 +19,13 @@ pub struct CircleShape<'s> {
 }
 
 impl<'s> CircleShape<'s> {
-    /// Create a new circle shape
-    ///
-    /// Return Some(CircleShape) or None
+    /// Creates a new circle shape.
     pub fn new() -> CircleShape<'s> {
         let circle = unsafe { ffi::sfCircleShape_create() };
-        if circle.is_null() {
-            panic!("sfCircleShape_create returned null.")
-        } else {
-            CircleShape {
-                circle_shape: circle,
-                texture: PhantomData,
-            }
+        assert!(!circle.is_null(), "Failed to create CircleShape");
+        CircleShape {
+            circle_shape: circle,
+            texture: PhantomData,
         }
     }
 
@@ -41,18 +36,9 @@ impl<'s> CircleShape<'s> {
     ///
     /// Return Some(CircleShape) or None
     pub fn with_texture(texture: &'s TextureRef) -> CircleShape<'s> {
-        let circle = unsafe { ffi::sfCircleShape_create() };
-        if circle.is_null() {
-            panic!("sfCircleShape_create returned null.")
-        } else {
-            unsafe {
-                ffi::sfCircleShape_setTexture(circle, texture.raw(), sfTrue);
-            }
-            CircleShape {
-                circle_shape: circle,
-                texture: PhantomData,
-            }
-        }
+        let mut shape = CircleShape::new();
+        shape.set_texture(texture, true);
+        shape
     }
 
     /// Create a new CircleShape and initialize it.
@@ -63,19 +49,10 @@ impl<'s> CircleShape<'s> {
     ///
     /// Default value on SFML are radius = 0 / pointCount = 30
     pub fn new_init(radius: f32, point_count: u32) -> CircleShape<'s> {
-        let circle = unsafe { ffi::sfCircleShape_create() };
-        if circle.is_null() {
-            panic!("sfCircleShape_create returned null.")
-        } else {
-            unsafe {
-                ffi::sfCircleShape_setRadius(circle, radius);
-                ffi::sfCircleShape_setPointCount(circle, point_count as usize);
-            }
-            CircleShape {
-                circle_shape: circle,
-                texture: PhantomData,
-            }
-        }
+        let mut shape = CircleShape::new();
+        shape.set_radius(radius);
+        shape.set_point_count(point_count);
+        shape
     }
 
     /// Set the radius of a circle

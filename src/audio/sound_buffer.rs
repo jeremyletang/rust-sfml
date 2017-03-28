@@ -198,11 +198,8 @@ impl ToOwned for SoundBufferRef {
 
     fn to_owned(&self) -> Self::Owned {
         let sound_buffer = unsafe { ffi::sfSoundBuffer_copy(self.raw()) };
-        if sound_buffer.is_null() {
-            panic!("Sound buffer is null");
-        } else {
-            SoundBuffer { sound_buffer: sound_buffer }
-        }
+        assert!(!sound_buffer.is_null(), "Failed to copy SoundBuffer");
+        SoundBuffer { sound_buffer: sound_buffer }
     }
 }
 

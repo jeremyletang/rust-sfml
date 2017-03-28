@@ -15,11 +15,8 @@ impl Packet {
     /// Create a new packet
     pub fn new() -> Packet {
         let pck = unsafe { ffi::sfPacket_create() };
-        if pck.is_null() {
-            panic!("sfPacket_create returned null.")
-        } else {
-            Packet { packet: pck }
-        }
+        assert!(!pck.is_null(), "Failed to create Packet");
+        Packet { packet: pck }
     }
 
     /// Clear a packet
@@ -176,11 +173,8 @@ impl Default for Packet {
 impl Clone for Packet {
     fn clone(&self) -> Self {
         let pck = unsafe { ffi::sfPacket_copy(self.packet) };
-        if pck.is_null() {
-            panic!("Packet is null")
-        } else {
-            Packet { packet: pck }
-        }
+        assert!(!pck.is_null(), "Failed to copy Packet");
+        Packet { packet: pck }
     }
 }
 

@@ -157,11 +157,8 @@ impl Font {
     /// Return the texture
     pub fn texture(&mut self, character_size: u32) -> &TextureRef {
         let tex = unsafe { ffi::sfFont_getTexture(self.raw_mut(), character_size) };
-        if tex.is_null() {
-            panic!("Font::texture: texture is null");
-        } else {
-            unsafe { &*(tex as *const TextureRef) }
-        }
+        assert!(!tex.is_null(), "sfFont_getTexture failed");
+        unsafe { &*(tex as *const TextureRef) }
     }
 }
 
