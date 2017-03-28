@@ -45,13 +45,11 @@ impl RenderWindow {
     /// * title - Title of the render window
     /// * style - Window style
     /// * settings - Additional settings for the underlying OpenGL context
-    ///
-    /// Return Some(RenderWindow) or None
     pub fn new(mode: VideoMode,
                title: &str,
                style: Style,
                settings: &ContextSettings)
-               -> Option<RenderWindow> {
+               -> RenderWindow {
         let utf32 = ::unicode_conv::str_to_csfml(title);
         let sf_render_win: *mut ffi::sfRenderWindow =
             unsafe {
@@ -60,11 +58,8 @@ impl RenderWindow {
                                                   style.bits(),
                                                   &settings.raw())
             };
-        if sf_render_win.is_null() {
-            None
-        } else {
-            Some(RenderWindow { render_window: sf_render_win })
-        }
+        assert!(!sf_render_win.is_null(), "Failed to create RenderWindow");
+        RenderWindow { render_window: sf_render_win }
     }
 
     /// Change a render window's icon

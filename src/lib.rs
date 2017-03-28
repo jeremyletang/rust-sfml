@@ -16,7 +16,7 @@
 //!
 //! Here is a short example, draw a circle shape and display it.
 //!
-//! ```ignore
+//! ```no_run
 //! extern crate sfml;
 //!
 //! use sfml::system::Vector2f;
@@ -28,8 +28,7 @@
 //!     let mut window = RenderWindow::new(VideoMode::new(800, 600, 32),
 //!                                        "SFML Example",
 //!                                        style::CLOSE,
-//!                                        &ContextSettings::default())
-//!                          .unwrap();
+//!                                        &ContextSettings::default());
 //!
 //!     // Create a CircleShape
 //!     let mut circle = CircleShape::new();
@@ -50,7 +49,7 @@
 //!         // Draw the shape
 //!         window.draw(&circle);
 //!         // Display things on screen
-//!         window.display()
+//!         window.display();
 //!     }
 //! }
 //!

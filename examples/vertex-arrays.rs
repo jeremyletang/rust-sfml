@@ -8,8 +8,7 @@ fn main() {
     let mut window = RenderWindow::new(VideoMode::new(800, 600, 32),
                                        "SFML VertexArray accessors Example",
                                        style::CLOSE,
-                                       &Default::default())
-            .unwrap();
+                                       &Default::default());
     window.set_vertical_sync_enabled(true);
 
     let mut vertex_array = VertexArray::new();

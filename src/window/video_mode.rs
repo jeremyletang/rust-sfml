@@ -40,7 +40,7 @@ use ext::sf_bool_ext::SfBoolExt;
 /// let _window = Window::new(VideoMode::new(1024, 768, desktop.bits_per_pixel),
 ///                           "SFML window",
 ///                           style::CLOSE,
-///                           &Default::default()).unwrap();
+///                           &Default::default());
 /// ```
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
 pub struct VideoMode {

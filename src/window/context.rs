@@ -64,7 +64,7 @@ fn test_settings() {
     use std::thread;
     let video_mode = VideoMode::new(32, 32, 32);
 
-    let window = Window::new(video_mode, "test", Default::default(), &Default::default()).unwrap();
+    let window = Window::new(video_mode, "test", Default::default(), &Default::default());
     let win_settings = window.settings();
     thread::spawn(move || {
                       let context = Context::new();

@@ -20,7 +20,7 @@ use window::joystick::Axis;
 /// # let mut window = Window::new(VideoMode::new(32, 32, 32),
 /// #                              "test",
 /// #                              style::CLOSE,
-/// #                              &Default::default()).unwrap();
+/// #                              &Default::default());
 /// # fn do_something_with_the_new_size(_x: u32, _y: u32) {}
 /// while let Some(event) = window.poll_event() {
 ///     match event {

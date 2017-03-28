@@ -9,8 +9,7 @@ fn main() {
     let mut window = RenderWindow::new(VideoMode::new(800, 600, 32),
                                        "Borrowed resources",
                                        style::CLOSE,
-                                       &Default::default())
-            .unwrap();
+                                       &Default::default());
     window.set_vertical_sync_enabled(true);
 
     // Create a new texture. (Hey Frank!)

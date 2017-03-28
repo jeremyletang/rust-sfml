@@ -32,7 +32,7 @@ use ext;
 /// let mut window = Window::new(VideoMode::new(800, 600, 32),
 ///                              "SFML window",
 ///                              style::CLOSE,
-///                              &Default::default()).unwrap();
+///                              &Default::default());
 /// // Limit the framerate to 60 frames per second (this step is optional)
 /// window.set_framerate_limit(60);
 ///
@@ -84,13 +84,7 @@ impl Window {
     /// * title - Title of the window
     /// * style - Window style
     /// * settings - Additional settings for the underlying OpenGL context
-    ///
-    /// Return Some(Window) or None
-    pub fn new(mode: VideoMode,
-               title: &str,
-               style: Style,
-               settings: &ContextSettings)
-               -> Option<Window> {
+    pub fn new(mode: VideoMode, title: &str, style: Style, settings: &ContextSettings) -> Window {
         let utf32 = ::unicode_conv::str_to_csfml(title);
         let sf_win: *mut ffi::sfWindow = unsafe {
             ffi::sfWindow_createUnicode(mode.raw(),
@@ -98,11 +92,8 @@ impl Window {
                                         style.bits(),
                                         &settings.raw())
         };
-        if sf_win.is_null() {
-            None
-        } else {
-            Some(Window { window: sf_win })
-        }
+        assert!(!sf_win.is_null(), "Failed to create Window");
+        Window { window: sf_win }
     }
 
     /// Return an iterator over all the event currently in the events queue.

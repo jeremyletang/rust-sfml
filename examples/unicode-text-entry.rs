@@ -7,8 +7,7 @@ fn main() {
     let mut window = RenderWindow::new(VideoMode::new(800, 600, 32),
                                        "◢◤ Unicode text entry ◥◣",
                                        style::CLOSE,
-                                       &Default::default())
-            .unwrap();
+                                       &Default::default());
 
     let font = Font::from_file("resources/sansation.ttf").unwrap();
     let mut string = String::from("This text can be edited.\nTry it!");

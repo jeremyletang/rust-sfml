@@ -238,8 +238,7 @@ fn main() {
     let mut window = RenderWindow::new(VideoMode::new(800, 600, 32),
                                        "SFML Shader",
                                        style::TITLEBAR | style::CLOSE,
-                                       &Default::default())
-            .unwrap();
+                                       &Default::default());
     window.set_vertical_sync_enabled(true);
     let font = Font::from_file("resources/sansation.ttf").unwrap();
     let bg = Texture::from_file("resources/background.jpg").unwrap();

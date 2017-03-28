@@ -44,8 +44,7 @@ fn main() {
     let mut window = RenderWindow::new(VideoMode::new(800, 600, 32),
                                        "Custom drawable",
                                        style::CLOSE,
-                                       &Default::default())
-            .unwrap();
+                                       &Default::default());
     window.set_vertical_sync_enabled(true);
 
     let bullet = Bullet::new();

@@ -8,8 +8,7 @@ fn main() {
     let mut window = RenderWindow::new(VideoMode::new(800, 600, 32),
                                        "Mouse events",
                                        style::CLOSE,
-                                       &Default::default())
-            .unwrap();
+                                       &Default::default());
     window.set_mouse_cursor_visible(false);
     window.set_framerate_limit(60);
 
