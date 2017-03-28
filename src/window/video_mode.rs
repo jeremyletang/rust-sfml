@@ -1,5 +1,3 @@
-use std::vec::Vec;
-
 use system::raw_conv::{Raw, FromRaw};
 
 use csfml_window_sys as ffi;
