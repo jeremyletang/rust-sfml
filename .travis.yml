@@ -8,6 +8,7 @@ rust:
   - beta
   - nightly
 script:
+  set -e
   - mkdir sfml_install
   # TODO: Maybe investigate why the certificate checks for the SFML sources fail
   - wget http://www.sfml-dev.org/files/SFML-2.4.2-sources.zip --no-check-certificate
