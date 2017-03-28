@@ -99,85 +99,72 @@ pub struct Identification {
     pub product_id: u32,
 }
 
-/**
- * Check if the joystick is connected
- *
- * # Arguments
- * * joystick - Index of the joystick to check
- *
- * Return true if the joystick is connected, false otherwise
- */
+/// Check if the joystick is connected
+///
+/// # Arguments
+/// * joystick - Index of the joystick to check
+///
+/// Return true if the joystick is connected, false otherwise
 pub fn is_connected(joystick: u32) -> bool {
     unsafe { ffi::sfJoystick_isConnected(joystick).to_bool() }
 }
 
-/**
- * Return the number of buttons supported by a joystick
- *
- * # Arguments
- * * joystick - Index of the joystick
- *
- * Return the number of buttons supported by the joystick.
- */
+/// Return the number of buttons supported by a joystick
+///
+/// # Arguments
+/// * joystick - Index of the joystick
+///
+/// Return the number of buttons supported by the joystick.
 pub fn button_count(joystick: u32) -> u32 {
     unsafe { ffi::sfJoystick_getButtonCount(joystick) as u32 }
 }
 
-/**
- * Check if the joystick support a given Axis
- *
- * If the joystick is not connected, this function returns false.
- *
- * # Arguments
- * * joystick - Index of the joystick
- * * axis - Axis to check
- *
- * Return true if the joystick supports the axis, false otherwise
- */
+/// Check if the joystick support a given Axis
+///
+/// If the joystick is not connected, this function returns false.
+///
+/// # Arguments
+/// * joystick - Index of the joystick
+/// * axis - Axis to check
+///
+/// Return true if the joystick supports the axis, false otherwise
 pub fn has_axis(joystick: u32, axis: Axis) -> bool {
     unsafe { ffi::sfJoystick_hasAxis(joystick, axis.raw()).to_bool() }
 }
 
-/**
- * Check if the button is pressed on a given joystick.
- *
- * If the joystick is not connected, this function returns false.
- *
- * # Arguments
- * * joystick - Index of the joystick
- * * button - Button to check
- *
- * Return true if the button is pressed, false otherwise
- */
+/// Check if the button is pressed on a given joystick.
+///
+/// If the joystick is not connected, this function returns false.
+///
+/// # Arguments
+/// * joystick - Index of the joystick
+/// * button - Button to check
+///
+/// Return true if the button is pressed, false otherwise
 pub fn is_button_pressed(joystick: u32, button: u32) -> bool {
     unsafe { ffi::sfJoystick_isButtonPressed(joystick, button).to_bool() }
 }
 
 
-/**
- * Get the current position on a given Axis, on a given joystick.
- *
- * If the joystick is not connected, this function returns 0.
- *
- * # Arguments
- * * joystick - Index of the joystick
- * * axis - Axis to check
- *
- * Return the current position of the axis, in range [-100 .. 100]
- */
+/// Get the current position on a given Axis, on a given joystick.
+///
+/// If the joystick is not connected, this function returns 0.
+///
+/// # Arguments
+/// * joystick - Index of the joystick
+/// * axis - Axis to check
+///
+/// Return the current position of the axis, in range [-100 .. 100]
 pub fn axis_position(joystick: u32, axis: Axis) -> f32 {
     unsafe { ffi::sfJoystick_getAxisPosition(joystick, axis.raw()) as f32 }
 }
 
-/**
- * Update the states of all joysticks
- *
- * This function is used internally by SFML, so you normally
- * don't have to call it explicitely. However, you may need to
- * call it if you have no window yet (or no window at all):
- * in this case the joysticks states are not updated automatically.
- *
- */
+/// Update the states of all joysticks
+///
+/// This function is used internally by SFML, so you normally
+/// don't have to call it explicitely. However, you may need to
+/// call it if you have no window yet (or no window at all):
+/// in this case the joysticks states are not updated automatically.
 pub fn update() {
     unsafe {
         ffi::sfJoystick_update();
