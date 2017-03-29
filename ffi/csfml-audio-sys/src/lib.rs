@@ -77,7 +77,7 @@ impl Clone for max_align_t {
     fn clone(&self) -> Self { *self }
 }
 extern "C" {
-    pub fn sfMusic_createFromFile(filename: *const ::std::os::raw::c_schar)
+    pub fn sfMusic_createFromFile(filename: *const ::std::os::raw::c_char)
      -> *mut sfMusic;
 }
 extern "C" {
@@ -242,7 +242,7 @@ extern "C" {
 }
 extern "C" {
     pub fn sfSoundBuffer_createFromFile(filename:
-                                            *const ::std::os::raw::c_schar)
+                                            *const ::std::os::raw::c_char)
      -> *mut sfSoundBuffer;
 }
 extern "C" {
@@ -271,7 +271,7 @@ extern "C" {
 }
 extern "C" {
     pub fn sfSoundBuffer_saveToFile(soundBuffer: *const sfSoundBuffer,
-                                    filename: *const ::std::os::raw::c_schar)
+                                    filename: *const ::std::os::raw::c_char)
      -> sfBool;
 }
 extern "C" {
@@ -325,13 +325,13 @@ extern "C" {
     pub fn sfSoundBufferRecorder_setDevice(soundBufferRecorder:
                                                *mut sfSoundBufferRecorder,
                                            name:
-                                               *const ::std::os::raw::c_schar)
+                                               *const ::std::os::raw::c_char)
      -> sfBool;
 }
 extern "C" {
     pub fn sfSoundBufferRecorder_getDevice(soundBufferRecorder:
                                                *mut sfSoundBufferRecorder)
-     -> *const ::std::os::raw::c_schar;
+     -> *const ::std::os::raw::c_char;
 }
 pub type sfSoundRecorderStartCallback =
     ::std::option::Option<unsafe extern "C" fn(arg1:
@@ -379,20 +379,20 @@ extern "C" {
 }
 extern "C" {
     pub fn sfSoundRecorder_getAvailableDevices(count: *mut usize)
-     -> *mut *const ::std::os::raw::c_schar;
+     -> *mut *const ::std::os::raw::c_char;
 }
 extern "C" {
     pub fn sfSoundRecorder_getDefaultDevice()
-     -> *const ::std::os::raw::c_schar;
+     -> *const ::std::os::raw::c_char;
 }
 extern "C" {
     pub fn sfSoundRecorder_setDevice(soundRecorder: *mut sfSoundRecorder,
-                                     name: *const ::std::os::raw::c_schar)
+                                     name: *const ::std::os::raw::c_char)
      -> sfBool;
 }
 extern "C" {
     pub fn sfSoundRecorder_getDevice(soundRecorder: *mut sfSoundRecorder)
-     -> *const ::std::os::raw::c_schar;
+     -> *const ::std::os::raw::c_char;
 }
 extern "C" {
     pub fn sfSoundRecorder_setChannelCount(soundRecorder:

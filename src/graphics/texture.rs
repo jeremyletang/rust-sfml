@@ -143,7 +143,7 @@ impl Texture {
     /// Return Some(Texture) or None
     pub fn from_file(filename: &str) -> Option<Texture> {
         let c_str = CString::new(filename.as_bytes()).unwrap();
-        let tex = unsafe { ffi::sfTexture_createFromFile(c_str.as_ptr() as *mut i8, ptr::null()) };
+        let tex = unsafe { ffi::sfTexture_createFromFile(c_str.as_ptr(), ptr::null()) };
         if tex.is_null() {
             None
         } else {
@@ -160,7 +160,7 @@ impl Texture {
     /// Return Some(Texture) or None
     pub fn from_file_with_rect(filename: &str, area: &IntRect) -> Option<Texture> {
         let c_str = CString::new(filename.as_bytes()).unwrap();
-        let tex = unsafe { ffi::sfTexture_createFromFile(c_str.as_ptr() as *mut i8, &area.raw()) };
+        let tex = unsafe { ffi::sfTexture_createFromFile(c_str.as_ptr(), &area.raw()) };
         if tex.is_null() {
             None
         } else {

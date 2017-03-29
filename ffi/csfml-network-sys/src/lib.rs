@@ -40,7 +40,7 @@ extern "C" {
     pub static sfIpAddress_Broadcast: sfIpAddress;
 }
 extern "C" {
-    pub fn sfIpAddress_fromString(address: *const ::std::os::raw::c_schar)
+    pub fn sfIpAddress_fromString(address: *const ::std::os::raw::c_char)
      -> sfIpAddress;
 }
 extern "C" {
@@ -53,7 +53,7 @@ extern "C" {
 }
 extern "C" {
     pub fn sfIpAddress_toString(address: sfIpAddress,
-                                string: *mut ::std::os::raw::c_schar);
+                                string: *mut ::std::os::raw::c_char);
 }
 extern "C" {
     pub fn sfIpAddress_toInteger(address: sfIpAddress) -> sfUint32;
@@ -199,7 +199,7 @@ extern "C" {
 extern "C" {
     pub fn sfFtpListingResponse_getMessage(ftpListingResponse:
                                                *const sfFtpListingResponse)
-     -> *const ::std::os::raw::c_schar;
+     -> *const ::std::os::raw::c_char;
 }
 extern "C" {
     pub fn sfFtpListingResponse_getCount(ftpListingResponse:
@@ -210,7 +210,7 @@ extern "C" {
     pub fn sfFtpListingResponse_getName(ftpListingResponse:
                                             *const sfFtpListingResponse,
                                         index: usize)
-     -> *const ::std::os::raw::c_schar;
+     -> *const ::std::os::raw::c_char;
 }
 extern "C" {
     pub fn sfFtpDirectoryResponse_destroy(ftpDirectoryResponse:
@@ -229,12 +229,12 @@ extern "C" {
 extern "C" {
     pub fn sfFtpDirectoryResponse_getMessage(ftpDirectoryResponse:
                                                  *const sfFtpDirectoryResponse)
-     -> *const ::std::os::raw::c_schar;
+     -> *const ::std::os::raw::c_char;
 }
 extern "C" {
     pub fn sfFtpDirectoryResponse_getDirectory(ftpDirectoryResponse:
                                                    *const sfFtpDirectoryResponse)
-     -> *const ::std::os::raw::c_schar;
+     -> *const ::std::os::raw::c_char;
 }
 extern "C" {
     pub fn sfFtpResponse_destroy(ftpResponse: *mut sfFtpResponse);
@@ -248,7 +248,7 @@ extern "C" {
 }
 extern "C" {
     pub fn sfFtpResponse_getMessage(ftpResponse: *const sfFtpResponse)
-     -> *const ::std::os::raw::c_schar;
+     -> *const ::std::os::raw::c_char;
 }
 extern "C" {
     pub fn sfFtp_create() -> *mut sfFtp;
@@ -265,8 +265,8 @@ extern "C" {
     pub fn sfFtp_loginAnonymous(ftp: *mut sfFtp) -> *mut sfFtpResponse;
 }
 extern "C" {
-    pub fn sfFtp_login(ftp: *mut sfFtp, name: *const ::std::os::raw::c_schar,
-                       password: *const ::std::os::raw::c_schar)
+    pub fn sfFtp_login(ftp: *mut sfFtp, name: *const ::std::os::raw::c_char,
+                       password: *const ::std::os::raw::c_char)
      -> *mut sfFtpResponse;
 }
 extern "C" {
@@ -282,12 +282,12 @@ extern "C" {
 extern "C" {
     pub fn sfFtp_getDirectoryListing(ftp: *mut sfFtp,
                                      directory:
-                                         *const ::std::os::raw::c_schar)
+                                         *const ::std::os::raw::c_char)
      -> *mut sfFtpListingResponse;
 }
 extern "C" {
     pub fn sfFtp_changeDirectory(ftp: *mut sfFtp,
-                                 directory: *const ::std::os::raw::c_schar)
+                                 directory: *const ::std::os::raw::c_char)
      -> *mut sfFtpResponse;
 }
 extern "C" {
@@ -295,41 +295,41 @@ extern "C" {
 }
 extern "C" {
     pub fn sfFtp_createDirectory(ftp: *mut sfFtp,
-                                 name: *const ::std::os::raw::c_schar)
+                                 name: *const ::std::os::raw::c_char)
      -> *mut sfFtpResponse;
 }
 extern "C" {
     pub fn sfFtp_deleteDirectory(ftp: *mut sfFtp,
-                                 name: *const ::std::os::raw::c_schar)
+                                 name: *const ::std::os::raw::c_char)
      -> *mut sfFtpResponse;
 }
 extern "C" {
     pub fn sfFtp_renameFile(ftp: *mut sfFtp,
-                            file: *const ::std::os::raw::c_schar,
-                            newName: *const ::std::os::raw::c_schar)
+                            file: *const ::std::os::raw::c_char,
+                            newName: *const ::std::os::raw::c_char)
      -> *mut sfFtpResponse;
 }
 extern "C" {
     pub fn sfFtp_deleteFile(ftp: *mut sfFtp,
-                            name: *const ::std::os::raw::c_schar)
+                            name: *const ::std::os::raw::c_char)
      -> *mut sfFtpResponse;
 }
 extern "C" {
     pub fn sfFtp_download(ftp: *mut sfFtp,
-                          remoteFile: *const ::std::os::raw::c_schar,
-                          localPath: *const ::std::os::raw::c_schar,
+                          remoteFile: *const ::std::os::raw::c_char,
+                          localPath: *const ::std::os::raw::c_char,
                           mode: sfFtpTransferMode) -> *mut sfFtpResponse;
 }
 extern "C" {
     pub fn sfFtp_upload(ftp: *mut sfFtp,
-                        localFile: *const ::std::os::raw::c_schar,
-                        remotePath: *const ::std::os::raw::c_schar,
+                        localFile: *const ::std::os::raw::c_char,
+                        remotePath: *const ::std::os::raw::c_char,
                         mode: sfFtpTransferMode) -> *mut sfFtpResponse;
 }
 extern "C" {
     pub fn sfFtp_sendCommand(ftp: *mut sfFtp,
-                             command: *const ::std::os::raw::c_schar,
-                             parameter: *const ::std::os::raw::c_schar)
+                             command: *const ::std::os::raw::c_char,
+                             parameter: *const ::std::os::raw::c_char)
      -> *mut sfFtpResponse;
 }
 #[repr(u32)]
@@ -376,8 +376,8 @@ extern "C" {
 }
 extern "C" {
     pub fn sfHttpRequest_setField(httpRequest: *mut sfHttpRequest,
-                                  field: *const ::std::os::raw::c_schar,
-                                  value: *const ::std::os::raw::c_schar);
+                                  field: *const ::std::os::raw::c_char,
+                                  value: *const ::std::os::raw::c_char);
 }
 extern "C" {
     pub fn sfHttpRequest_setMethod(httpRequest: *mut sfHttpRequest,
@@ -385,7 +385,7 @@ extern "C" {
 }
 extern "C" {
     pub fn sfHttpRequest_setUri(httpRequest: *mut sfHttpRequest,
-                                uri: *const ::std::os::raw::c_schar);
+                                uri: *const ::std::os::raw::c_char);
 }
 extern "C" {
     pub fn sfHttpRequest_setHttpVersion(httpRequest: *mut sfHttpRequest,
@@ -394,15 +394,15 @@ extern "C" {
 }
 extern "C" {
     pub fn sfHttpRequest_setBody(httpRequest: *mut sfHttpRequest,
-                                 body: *const ::std::os::raw::c_schar);
+                                 body: *const ::std::os::raw::c_char);
 }
 extern "C" {
     pub fn sfHttpResponse_destroy(httpResponse: *mut sfHttpResponse);
 }
 extern "C" {
     pub fn sfHttpResponse_getField(httpResponse: *const sfHttpResponse,
-                                   field: *const ::std::os::raw::c_schar)
-     -> *const ::std::os::raw::c_schar;
+                                   field: *const ::std::os::raw::c_char)
+     -> *const ::std::os::raw::c_char;
 }
 extern "C" {
     pub fn sfHttpResponse_getStatus(httpResponse: *const sfHttpResponse)
@@ -418,7 +418,7 @@ extern "C" {
 }
 extern "C" {
     pub fn sfHttpResponse_getBody(httpResponse: *const sfHttpResponse)
-     -> *const ::std::os::raw::c_schar;
+     -> *const ::std::os::raw::c_char;
 }
 extern "C" {
     pub fn sfHttp_create() -> *mut sfHttp;
@@ -428,7 +428,7 @@ extern "C" {
 }
 extern "C" {
     pub fn sfHttp_setHost(http: *mut sfHttp,
-                          host: *const ::std::os::raw::c_schar,
+                          host: *const ::std::os::raw::c_char,
                           port: ::std::os::raw::c_ushort);
 }
 extern "C" {
@@ -495,7 +495,7 @@ extern "C" {
 }
 extern "C" {
     pub fn sfPacket_readString(packet: *mut sfPacket,
-                               string: *mut ::std::os::raw::c_schar);
+                               string: *mut ::std::os::raw::c_char);
 }
 extern "C" {
     pub fn sfPacket_readWideString(packet: *mut sfPacket,
@@ -530,7 +530,7 @@ extern "C" {
 }
 extern "C" {
     pub fn sfPacket_writeString(packet: *mut sfPacket,
-                                string: *const ::std::os::raw::c_schar);
+                                string: *const ::std::os::raw::c_char);
 }
 extern "C" {
     pub fn sfPacket_writeWideString(packet: *mut sfPacket,

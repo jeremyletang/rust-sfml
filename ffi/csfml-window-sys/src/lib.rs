@@ -38,7 +38,7 @@ pub struct sfWindow([u8; 0]);
 #[repr(C)]
 #[derive(Debug, Copy)]
 pub struct sfJoystickIdentification {
-    pub name: *const ::std::os::raw::c_schar,
+    pub name: *const ::std::os::raw::c_char,
     pub vendorId: ::std::os::raw::c_uint,
     pub productId: ::std::os::raw::c_uint,
 }
@@ -988,7 +988,7 @@ impl Clone for sfContextSettings {
 }
 extern "C" {
     pub fn sfWindow_create(mode: sfVideoMode,
-                           title: *const ::std::os::raw::c_schar,
+                           title: *const ::std::os::raw::c_char,
                            style: sfUint32,
                            settings: *const sfContextSettings)
      -> *mut sfWindow;
@@ -1038,7 +1038,7 @@ extern "C" {
 }
 extern "C" {
     pub fn sfWindow_setTitle(window: *mut sfWindow,
-                             title: *const ::std::os::raw::c_schar);
+                             title: *const ::std::os::raw::c_char);
 }
 extern "C" {
     pub fn sfWindow_setUnicodeTitle(window: *mut sfWindow,

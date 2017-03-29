@@ -667,7 +667,7 @@ extern "C" {
 #[repr(C)]
 #[derive(Debug, Copy)]
 pub struct sfFontInfo {
-    pub family: *const ::std::os::raw::c_schar,
+    pub family: *const ::std::os::raw::c_char,
 }
 #[test]
 fn bindgen_test_layout_sfFontInfo() {
@@ -717,7 +717,7 @@ impl Clone for sfGlyph {
     fn clone(&self) -> Self { *self }
 }
 extern "C" {
-    pub fn sfFont_createFromFile(filename: *const ::std::os::raw::c_schar)
+    pub fn sfFont_createFromFile(filename: *const ::std::os::raw::c_char)
      -> *mut sfFont;
 }
 extern "C" {
@@ -781,7 +781,7 @@ extern "C" {
                                     pixels: *const sfUint8) -> *mut sfImage;
 }
 extern "C" {
-    pub fn sfImage_createFromFile(filename: *const ::std::os::raw::c_schar)
+    pub fn sfImage_createFromFile(filename: *const ::std::os::raw::c_char)
      -> *mut sfImage;
 }
 extern "C" {
@@ -800,7 +800,7 @@ extern "C" {
 }
 extern "C" {
     pub fn sfImage_saveToFile(image: *const sfImage,
-                              filename: *const ::std::os::raw::c_schar)
+                              filename: *const ::std::os::raw::c_char)
      -> sfBool;
 }
 extern "C" {
@@ -1184,7 +1184,7 @@ extern "C" {
 }
 extern "C" {
     pub fn sfRenderWindow_create(mode: sfVideoMode,
-                                 title: *const ::std::os::raw::c_schar,
+                                 title: *const ::std::os::raw::c_char,
                                  style: sfUint32,
                                  settings: *const sfContextSettings)
      -> *mut sfRenderWindow;
@@ -1241,7 +1241,7 @@ extern "C" {
 }
 extern "C" {
     pub fn sfRenderWindow_setTitle(renderWindow: *mut sfRenderWindow,
-                                   title: *const ::std::os::raw::c_schar);
+                                   title: *const ::std::os::raw::c_char);
 }
 extern "C" {
     pub fn sfRenderWindow_setUnicodeTitle(renderWindow: *mut sfRenderWindow,
@@ -1654,20 +1654,20 @@ impl Clone for sfGlslMat4 {
 }
 extern "C" {
     pub fn sfShader_createFromFile(vertexShaderFilename:
-                                       *const ::std::os::raw::c_schar,
+                                       *const ::std::os::raw::c_char,
                                    geometryShaderFilename:
-                                       *const ::std::os::raw::c_schar,
+                                       *const ::std::os::raw::c_char,
                                    fragmentShaderFilename:
-                                       *const ::std::os::raw::c_schar)
+                                       *const ::std::os::raw::c_char)
      -> *mut sfShader;
 }
 extern "C" {
     pub fn sfShader_createFromMemory(vertexShader:
-                                         *const ::std::os::raw::c_schar,
+                                         *const ::std::os::raw::c_char,
                                      geometryShader:
-                                         *const ::std::os::raw::c_schar,
+                                         *const ::std::os::raw::c_char,
                                      fragmentShader:
-                                         *const ::std::os::raw::c_schar)
+                                         *const ::std::os::raw::c_char)
      -> *mut sfShader;
 }
 extern "C" {
@@ -1681,180 +1681,180 @@ extern "C" {
 }
 extern "C" {
     pub fn sfShader_setFloatUniform(shader: *mut sfShader,
-                                    name: *const ::std::os::raw::c_schar,
+                                    name: *const ::std::os::raw::c_char,
                                     x: f32);
 }
 extern "C" {
     pub fn sfShader_setVec2Uniform(shader: *mut sfShader,
-                                   name: *const ::std::os::raw::c_schar,
+                                   name: *const ::std::os::raw::c_char,
                                    vector: sfGlslVec2);
 }
 extern "C" {
     pub fn sfShader_setVec3Uniform(shader: *mut sfShader,
-                                   name: *const ::std::os::raw::c_schar,
+                                   name: *const ::std::os::raw::c_char,
                                    vector: sfGlslVec3);
 }
 extern "C" {
     pub fn sfShader_setVec4Uniform(shader: *mut sfShader,
-                                   name: *const ::std::os::raw::c_schar,
+                                   name: *const ::std::os::raw::c_char,
                                    vector: sfGlslVec4);
 }
 extern "C" {
     pub fn sfShader_setColorUniform(shader: *mut sfShader,
-                                    name: *const ::std::os::raw::c_schar,
+                                    name: *const ::std::os::raw::c_char,
                                     color: sfColor);
 }
 extern "C" {
     pub fn sfShader_setIntUniform(shader: *mut sfShader,
-                                  name: *const ::std::os::raw::c_schar,
+                                  name: *const ::std::os::raw::c_char,
                                   x: ::std::os::raw::c_int);
 }
 extern "C" {
     pub fn sfShader_setIvec2Uniform(shader: *mut sfShader,
-                                    name: *const ::std::os::raw::c_schar,
+                                    name: *const ::std::os::raw::c_char,
                                     vector: sfGlslIvec2);
 }
 extern "C" {
     pub fn sfShader_setIvec3Uniform(shader: *mut sfShader,
-                                    name: *const ::std::os::raw::c_schar,
+                                    name: *const ::std::os::raw::c_char,
                                     vector: sfGlslIvec3);
 }
 extern "C" {
     pub fn sfShader_setIvec4Uniform(shader: *mut sfShader,
-                                    name: *const ::std::os::raw::c_schar,
+                                    name: *const ::std::os::raw::c_char,
                                     vector: sfGlslIvec4);
 }
 extern "C" {
     pub fn sfShader_setIntColorUniform(shader: *mut sfShader,
-                                       name: *const ::std::os::raw::c_schar,
+                                       name: *const ::std::os::raw::c_char,
                                        color: sfColor);
 }
 extern "C" {
     pub fn sfShader_setBoolUniform(shader: *mut sfShader,
-                                   name: *const ::std::os::raw::c_schar,
+                                   name: *const ::std::os::raw::c_char,
                                    x: sfBool);
 }
 extern "C" {
     pub fn sfShader_setBvec2Uniform(shader: *mut sfShader,
-                                    name: *const ::std::os::raw::c_schar,
+                                    name: *const ::std::os::raw::c_char,
                                     vector: sfGlslBvec2);
 }
 extern "C" {
     pub fn sfShader_setBvec3Uniform(shader: *mut sfShader,
-                                    name: *const ::std::os::raw::c_schar,
+                                    name: *const ::std::os::raw::c_char,
                                     vector: sfGlslBvec3);
 }
 extern "C" {
     pub fn sfShader_setBvec4Uniform(shader: *mut sfShader,
-                                    name: *const ::std::os::raw::c_schar,
+                                    name: *const ::std::os::raw::c_char,
                                     vector: sfGlslBvec4);
 }
 extern "C" {
     pub fn sfShader_setMat3Uniform(shader: *mut sfShader,
-                                   name: *const ::std::os::raw::c_schar,
+                                   name: *const ::std::os::raw::c_char,
                                    matrix: *const sfGlslMat3);
 }
 extern "C" {
     pub fn sfShader_setMat4Uniform(shader: *mut sfShader,
-                                   name: *const ::std::os::raw::c_schar,
+                                   name: *const ::std::os::raw::c_char,
                                    matrix: *const sfGlslMat4);
 }
 extern "C" {
     pub fn sfShader_setTextureUniform(shader: *mut sfShader,
-                                      name: *const ::std::os::raw::c_schar,
+                                      name: *const ::std::os::raw::c_char,
                                       texture: *const sfTexture);
 }
 extern "C" {
     pub fn sfShader_setCurrentTextureUniform(shader: *mut sfShader,
                                              name:
-                                                 *const ::std::os::raw::c_schar);
+                                                 *const ::std::os::raw::c_char);
 }
 extern "C" {
     pub fn sfShader_setFloatUniformArray(shader: *mut sfShader,
-                                         name: *const ::std::os::raw::c_schar,
+                                         name: *const ::std::os::raw::c_char,
                                          scalarArray: *const f32,
                                          length: usize);
 }
 extern "C" {
     pub fn sfShader_setVec2UniformArray(shader: *mut sfShader,
-                                        name: *const ::std::os::raw::c_schar,
+                                        name: *const ::std::os::raw::c_char,
                                         vectorArray: *const sfGlslVec2,
                                         length: usize);
 }
 extern "C" {
     pub fn sfShader_setVec3UniformArray(shader: *mut sfShader,
-                                        name: *const ::std::os::raw::c_schar,
+                                        name: *const ::std::os::raw::c_char,
                                         vectorArray: *const sfGlslVec3,
                                         length: usize);
 }
 extern "C" {
     pub fn sfShader_setVec4UniformArray(shader: *mut sfShader,
-                                        name: *const ::std::os::raw::c_schar,
+                                        name: *const ::std::os::raw::c_char,
                                         vectorArray: *const sfGlslVec4,
                                         length: usize);
 }
 extern "C" {
     pub fn sfShader_setMat3UniformArray(shader: *mut sfShader,
-                                        name: *const ::std::os::raw::c_schar,
+                                        name: *const ::std::os::raw::c_char,
                                         matrixArray: *const sfGlslMat3,
                                         length: usize);
 }
 extern "C" {
     pub fn sfShader_setMat4UniformArray(shader: *mut sfShader,
-                                        name: *const ::std::os::raw::c_schar,
+                                        name: *const ::std::os::raw::c_char,
                                         matrixArray: *const sfGlslMat4,
                                         length: usize);
 }
 extern "C" {
     pub fn sfShader_setFloatParameter(shader: *mut sfShader,
-                                      name: *const ::std::os::raw::c_schar,
+                                      name: *const ::std::os::raw::c_char,
                                       x: f32);
 }
 extern "C" {
     pub fn sfShader_setFloat2Parameter(shader: *mut sfShader,
-                                       name: *const ::std::os::raw::c_schar,
+                                       name: *const ::std::os::raw::c_char,
                                        x: f32, y: f32);
 }
 extern "C" {
     pub fn sfShader_setFloat3Parameter(shader: *mut sfShader,
-                                       name: *const ::std::os::raw::c_schar,
+                                       name: *const ::std::os::raw::c_char,
                                        x: f32, y: f32, z: f32);
 }
 extern "C" {
     pub fn sfShader_setFloat4Parameter(shader: *mut sfShader,
-                                       name: *const ::std::os::raw::c_schar,
+                                       name: *const ::std::os::raw::c_char,
                                        x: f32, y: f32, z: f32, w: f32);
 }
 extern "C" {
     pub fn sfShader_setVector2Parameter(shader: *mut sfShader,
-                                        name: *const ::std::os::raw::c_schar,
+                                        name: *const ::std::os::raw::c_char,
                                         vector: sfVector2f);
 }
 extern "C" {
     pub fn sfShader_setVector3Parameter(shader: *mut sfShader,
-                                        name: *const ::std::os::raw::c_schar,
+                                        name: *const ::std::os::raw::c_char,
                                         vector: sfVector3f);
 }
 extern "C" {
     pub fn sfShader_setColorParameter(shader: *mut sfShader,
-                                      name: *const ::std::os::raw::c_schar,
+                                      name: *const ::std::os::raw::c_char,
                                       color: sfColor);
 }
 extern "C" {
     pub fn sfShader_setTransformParameter(shader: *mut sfShader,
                                           name:
-                                              *const ::std::os::raw::c_schar,
+                                              *const ::std::os::raw::c_char,
                                           transform: sfTransform);
 }
 extern "C" {
     pub fn sfShader_setTextureParameter(shader: *mut sfShader,
-                                        name: *const ::std::os::raw::c_schar,
+                                        name: *const ::std::os::raw::c_char,
                                         texture: *const sfTexture);
 }
 extern "C" {
     pub fn sfShader_setCurrentTextureParameter(shader: *mut sfShader,
                                                name:
-                                                   *const ::std::os::raw::c_schar);
+                                                   *const ::std::os::raw::c_char);
 }
 extern "C" {
     pub fn sfShader_getNativeHandle(shader: *const sfShader)
@@ -2107,7 +2107,7 @@ extern "C" {
 }
 extern "C" {
     pub fn sfText_setString(text: *mut sfText,
-                            string: *const ::std::os::raw::c_schar);
+                            string: *const ::std::os::raw::c_char);
 }
 extern "C" {
     pub fn sfText_setUnicodeString(text: *mut sfText,
@@ -2137,7 +2137,7 @@ extern "C" {
 }
 extern "C" {
     pub fn sfText_getString(text: *const sfText)
-     -> *const ::std::os::raw::c_schar;
+     -> *const ::std::os::raw::c_char;
 }
 extern "C" {
     pub fn sfText_getUnicodeString(text: *const sfText) -> *const sfUint32;
@@ -2179,7 +2179,7 @@ extern "C" {
                             height: ::std::os::raw::c_uint) -> *mut sfTexture;
 }
 extern "C" {
-    pub fn sfTexture_createFromFile(filename: *const ::std::os::raw::c_schar,
+    pub fn sfTexture_createFromFile(filename: *const ::std::os::raw::c_char,
                                     area: *const sfIntRect) -> *mut sfTexture;
 }
 extern "C" {
