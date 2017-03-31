@@ -59,6 +59,7 @@ impl<T> Vector2<T> {
 }
 
 impl<T> From<(T, T)> for Vector2<T> {
+    /// Constructs a `Vector2` from `(x, y)`.
     fn from(src: (T, T)) -> Self {
         Self {
             x: src.0,

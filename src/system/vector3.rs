@@ -188,6 +188,7 @@ impl<T: Neg<Output = T>> Neg for Vector3<T> {
 }
 
 impl<T> From<(T, T, T)> for Vector3<T> {
+    /// Constructs a `Vector3` from `(x, y, z)`.
     fn from(src: (T, T, T)) -> Self {
         Self {
             x: src.0,
