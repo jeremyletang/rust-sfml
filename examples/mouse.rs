@@ -5,7 +5,7 @@ use sfml::window::*;
 use sfml::system::*;
 
 fn main() {
-    let mut window = RenderWindow::new(VideoMode::new(800, 600, 32),
+    let mut window = RenderWindow::new((800, 600),
                                        "Mouse events",
                                        style::CLOSE,
                                        &Default::default());

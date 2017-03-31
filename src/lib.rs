@@ -24,7 +24,7 @@
 //!
 //! fn main() {
 //!     // Create the window of the application
-//!     let mut window = RenderWindow::new(VideoMode::new(800, 600, 32),
+//!     let mut window = RenderWindow::new((800, 600),
 //!                                        "SFML Example",
 //!                                        style::CLOSE,
 //!                                        &ContextSettings::default());

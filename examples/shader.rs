@@ -233,7 +233,7 @@ impl<'te> Effect for Edge<'te> {
 }
 
 fn main() {
-    let mut window = RenderWindow::new(VideoMode::new(800, 600, 32),
+    let mut window = RenderWindow::new((800, 600),
                                        "SFML Shader",
                                        style::TITLEBAR | style::CLOSE,
                                        &Default::default());

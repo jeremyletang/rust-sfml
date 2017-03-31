@@ -2,10 +2,10 @@ extern crate sfml;
 
 use sfml::graphics::{CircleShape, Color, ConvexShape, Font, RenderTarget, RenderWindow, Sprite,
                      Text, Texture, Transformable};
-use sfml::window::{Key, VideoMode, Event, style};
+use sfml::window::{Key, Event, style};
 
 fn main() {
-    let mut window = RenderWindow::new(VideoMode::new(800, 600, 32),
+    let mut window = RenderWindow::new((800, 600),
                                        "Borrowed resources",
                                        style::CLOSE,
                                        &Default::default());

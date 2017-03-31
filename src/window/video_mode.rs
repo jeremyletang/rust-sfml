@@ -127,6 +127,16 @@ impl VideoMode {
     }
 }
 
+impl From<(u32, u32)> for VideoMode {
+    fn from(src: (u32, u32)) -> Self {
+        Self {
+            width: src.0,
+            height: src.1,
+            bits_per_pixel: 32,
+        }
+    }
+}
+
 impl Raw for VideoMode {
     type Raw = ffi::sfVideoMode;
     fn raw(&self) -> ffi::sfVideoMode {

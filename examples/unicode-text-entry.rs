@@ -4,7 +4,7 @@ use sfml::graphics::*;
 use sfml::window::*;
 
 fn main() {
-    let mut window = RenderWindow::new(VideoMode::new(800, 600, 32),
+    let mut window = RenderWindow::new((800, 600),
                                        "◢◤ Unicode text entry ◥◣",
                                        style::CLOSE,
                                        &Default::default());

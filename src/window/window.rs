@@ -29,7 +29,7 @@ use ext;
 /// ```no_run
 /// use sfml::window::{Window, VideoMode, Event, style};
 /// // Create a new window
-/// let mut window = Window::new(VideoMode::new(800, 600, 32),
+/// let mut window = Window::new((800, 600),
 ///                              "SFML window",
 ///                              style::CLOSE,
 ///                              &Default::default());
@@ -84,10 +84,14 @@ impl Window {
     /// * title - Title of the window
     /// * style - Window style
     /// * settings - Additional settings for the underlying OpenGL context
-    pub fn new(mode: VideoMode, title: &str, style: Style, settings: &ContextSettings) -> Window {
+    pub fn new<V: Into<VideoMode>>(mode: V,
+                                   title: &str,
+                                   style: Style,
+                                   settings: &ContextSettings)
+                                   -> Window {
         let utf32 = ::unicode_conv::str_to_csfml(title);
         let sf_win: *mut ffi::sfWindow = unsafe {
-            ffi::sfWindow_createUnicode(mode.raw(),
+            ffi::sfWindow_createUnicode(mode.into().raw(),
                                         utf32.as_ptr() as _,
                                         style.bits(),
                                         &settings.raw())

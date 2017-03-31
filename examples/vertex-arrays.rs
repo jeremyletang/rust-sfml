@@ -2,10 +2,10 @@ extern crate sfml;
 
 use sfml::graphics::{Color, PrimitiveType, RenderTarget, RenderWindow, Vertex, VertexArray};
 use sfml::system::Vector2f;
-use sfml::window::{VideoMode, Event, style};
+use sfml::window::{Event, style};
 
 fn main() {
-    let mut window = RenderWindow::new(VideoMode::new(800, 600, 32),
+    let mut window = RenderWindow::new((800, 600),
                                        "SFML VertexArray accessors Example",
                                        style::CLOSE,
                                        &Default::default());

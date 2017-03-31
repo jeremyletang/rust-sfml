@@ -45,15 +45,15 @@ impl RenderWindow {
     /// * title - Title of the render window
     /// * style - Window style
     /// * settings - Additional settings for the underlying OpenGL context
-    pub fn new(mode: VideoMode,
-               title: &str,
-               style: Style,
-               settings: &ContextSettings)
-               -> RenderWindow {
+    pub fn new<V: Into<VideoMode>>(mode: V,
+                                   title: &str,
+                                   style: Style,
+                                   settings: &ContextSettings)
+                                   -> RenderWindow {
         let utf32 = ::unicode_conv::str_to_csfml(title);
         let sf_render_win: *mut ffi::sfRenderWindow =
             unsafe {
-                ffi::sfRenderWindow_createUnicode(mode.raw(),
+                ffi::sfRenderWindow_createUnicode(mode.into().raw(),
                                                   utf32.as_ptr() as _,
                                                   style.bits(),
                                                   &settings.raw())

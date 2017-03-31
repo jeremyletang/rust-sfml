@@ -1,7 +1,7 @@
 extern crate sfml;
 
 use sfml::graphics::{Color, CustomShape, CustomShapePoints, RenderTarget, RenderWindow, Shape};
-use sfml::window::{Key, VideoMode, Event, style};
+use sfml::window::{Key, Event, style};
 use sfml::system::Vector2f;
 
 #[derive(Clone, Copy)]
@@ -23,7 +23,7 @@ impl CustomShapePoints for TriangleShape {
 }
 
 fn main() {
-    let mut window = RenderWindow::new(VideoMode::new(800, 600, 32),
+    let mut window = RenderWindow::new((800, 600),
                                        "Custom shape",
                                        style::CLOSE,
                                        &Default::default());

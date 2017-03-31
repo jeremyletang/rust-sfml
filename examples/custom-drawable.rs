@@ -2,7 +2,7 @@ extern crate sfml;
 
 use sfml::graphics::{CircleShape, Color, Drawable, RectangleShape, RenderStates, RenderTarget,
                      RenderWindow, Shape, Transformable};
-use sfml::window::{Key, VideoMode, Event, style};
+use sfml::window::{Key, Event, style};
 
 /// Our custom drawable type. It looks like a bullet.
 struct Bullet<'s> {
@@ -37,7 +37,7 @@ impl<'s> Drawable for Bullet<'s> {
 }
 
 fn main() {
-    let mut window = RenderWindow::new(VideoMode::new(800, 600, 32),
+    let mut window = RenderWindow::new((800, 600),
                                        "Custom drawable",
                                        style::CLOSE,
                                        &Default::default());
