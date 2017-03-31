@@ -60,9 +60,9 @@ impl Vertex {
     /// * tex_coords - Texture coordinate of the vertex
     ///
     /// Return a Vertex
-    pub fn new(position: Vector2f, color: Color, tex_coords: Vector2f) -> Self {
+    pub fn new<P: Into<Vector2f>>(position: P, color: Color, tex_coords: Vector2f) -> Self {
         Self {
-            position: position,
+            position: position.into(),
             color: color,
             tex_coords: tex_coords,
         }
@@ -78,7 +78,7 @@ impl Vertex {
     /// * tex_coords - (0., 0.)
     ///
     /// Return a Vertex
-    pub fn with_pos(position: Vector2f) -> Self {
+    pub fn with_pos<P: Into<Vector2f>>(position: P) -> Self {
         Self::new(position, Color::white(), Vector2f::new(0., 0.))
     }
 
@@ -92,7 +92,7 @@ impl Vertex {
     /// * tex_coords - (0., 0)
     ///
     /// Return a Vertex
-    pub fn with_pos_color(position: Vector2f, color: Color) -> Vertex {
+    pub fn with_pos_color<P: Into<Vector2f>>(position: P, color: Color) -> Vertex {
         Self::new(position, color, Vector2f::new(0., 0.))
     }
 
@@ -106,7 +106,7 @@ impl Vertex {
     /// * color - white
     ///
     /// Return a Vertex
-    pub fn with_pos_coords(position: Vector2f, tex_coords: Vector2f) -> Vertex {
+    pub fn with_pos_coords<P: Into<Vector2f>>(position: P, tex_coords: Vector2f) -> Vertex {
         Self::new(position, Color::white(), tex_coords)
     }
 }

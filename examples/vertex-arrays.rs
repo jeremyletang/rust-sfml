@@ -1,7 +1,6 @@
 extern crate sfml;
 
 use sfml::graphics::{Color, PrimitiveType, RenderTarget, RenderWindow, Vertex, VertexArray};
-use sfml::system::Vector2f;
 use sfml::window::{Event, style};
 
 fn main() {
@@ -14,12 +13,12 @@ fn main() {
     let mut vertex_array = VertexArray::new();
     vertex_array.set_primitive_type(PrimitiveType::LineStrip);
 
-    vertex_array.append(&Vertex::with_pos_color(Vector2f { x: 20.0, y: 30.0 }, Color::green()));
-    vertex_array.append(&Vertex::with_pos_color(Vector2f { x: 30.0, y: 30.0 }, Color::green()));
-    vertex_array.append(&Vertex::with_pos_color(Vector2f { x: 40.0, y: 40.0 }, Color::green()));
-    vertex_array.append(&Vertex::with_pos_color(Vector2f { x: 50.0, y: 50.0 }, Color::green()));
-    vertex_array.append(&Vertex::with_pos_color(Vector2f { x: 60.0, y: 60.0 }, Color::green()));
-    vertex_array.append(&Vertex::with_pos_color(Vector2f { x: 50.0, y: 80.0 }, Color::green()));
+    vertex_array.append(&Vertex::with_pos_color((20.0, 30.0), Color::green()));
+    vertex_array.append(&Vertex::with_pos_color((30.0, 30.0), Color::green()));
+    vertex_array.append(&Vertex::with_pos_color((40.0, 40.0), Color::green()));
+    vertex_array.append(&Vertex::with_pos_color((50.0, 50.0), Color::green()));
+    vertex_array.append(&Vertex::with_pos_color((60.0, 60.0), Color::green()));
+    vertex_array.append(&Vertex::with_pos_color((50.0, 80.0), Color::green()));
 
     println!("\nIterate over the vertices of a VertexArray");
     for v in vertex_array.vertices() {
