@@ -3,7 +3,6 @@ extern crate sfml;
 use sfml::graphics::{CircleShape, Color, ConvexShape, Font, RenderTarget, RenderWindow, Sprite,
                      Text, Texture, Transformable};
 use sfml::window::{Key, VideoMode, Event, style};
-use sfml::system::Vector2f;
 
 fn main() {
     let mut window = RenderWindow::new(VideoMode::new(800, 600, 32),
@@ -32,36 +31,12 @@ fn main() {
 
     // Create a ConvexShape using the same texture.
     let mut convex_shape = ConvexShape::with_texture(6, &frank);
-    convex_shape.set_point(0,
-                           &Vector2f {
-                                x: 400.0,
-                                y: 100.0,
-                            });
-    convex_shape.set_point(1,
-                           &Vector2f {
-                                x: 500.0,
-                                y: 70.0,
-                            });
-    convex_shape.set_point(2,
-                           &Vector2f {
-                                x: 450.0,
-                                y: 100.0,
-                            });
-    convex_shape.set_point(3,
-                           &Vector2f {
-                                x: 580.0,
-                                y: 150.0,
-                            });
-    convex_shape.set_point(4,
-                           &Vector2f {
-                                x: 420.0,
-                                y: 230.0,
-                            });
-    convex_shape.set_point(5,
-                           &Vector2f {
-                                x: 420.0,
-                                y: 120.0,
-                            });
+    convex_shape.set_point(0, (400., 100.));
+    convex_shape.set_point(1, (500., 70.));
+    convex_shape.set_point(2, (450., 100.));
+    convex_shape.set_point(3, (580., 150.));
+    convex_shape.set_point(4, (420., 230.));
+    convex_shape.set_point(5, (420., 120.));
 
     // Create an initialized text using the font.
     let title = Text::new_init("Borrowed resources example!", &font, 50);

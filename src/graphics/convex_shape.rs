@@ -63,8 +63,10 @@ impl<'s> ConvexShape<'s> {
     /// # Arguments
     /// * index - Index of the point to change, in range [0 .. getPointCount() - 1]
     /// * point - New position of the point
-    pub fn set_point(&mut self, index: u32, point: &Vector2f) {
-        unsafe { ffi::sfConvexShape_setPoint(self.convex_shape, index as usize, point.raw()) }
+    pub fn set_point<P: Into<Vector2f>>(&mut self, index: u32, point: P) {
+        unsafe {
+            ffi::sfConvexShape_setPoint(self.convex_shape, index as usize, point.into().raw())
+        }
     }
 
     /// Set the number of points of a convex
