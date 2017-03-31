@@ -187,6 +187,16 @@ impl<T: Neg<Output = T>> Neg for Vector3<T> {
     }
 }
 
+impl<T> From<(T, T, T)> for Vector3<T> {
+    fn from(src: (T, T, T)) -> Self {
+        Self {
+            x: src.0,
+            y: src.1,
+            z: src.2,
+        }
+    }
+}
+
 impl Raw for Vector3f {
     type Raw = ::csfml_system_sys::sfVector3f;
 

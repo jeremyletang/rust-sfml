@@ -15,10 +15,10 @@
 //! use sfml::audio::listener;
 //!
 //! // Move the listener to the position (1, 0, -5)
-//! listener::set_position3f(1., 0., -5.);
+//! listener::set_position((1., 0., -5.));
 //!
 //! // Make it face the right axis (1, 0, 0)
-//! listener::set_direction3f(1., 0., 0.);
+//! listener::set_direction((1., 0., 0.));
 //!
 //! // Reduce the global volume
 //! listener::set_global_volume(50.);
@@ -27,7 +27,6 @@
 use system::Vector3f;
 use csfml_audio_sys as ffi;
 use system::raw_conv::{Raw, FromRaw};
-use csfml_system_sys::sfVector3f;
 
 /// Change the global volume of all the sounds and musics
 ///
@@ -54,20 +53,8 @@ pub fn global_volume() -> f32 {
 ///
 /// # Arguments
 /// * * position - the New position of the listener
-pub fn set_position(position: &Vector3f) {
-    unsafe { ffi::sfListener_setPosition(position.raw()) }
-}
-
-/// Set the position of the listener in the scene
-///
-/// The default listener's position is (0, 0, 0).
-///
-/// # Arguments
-/// * x - the New position of the listener in x
-/// * y - the New position of the listener in y
-/// * z - the New position of the listener in z
-pub fn set_position3f(x: f32, y: f32, z: f32) {
-    unsafe { ffi::sfListener_setPosition(sfVector3f { x: x, y: y, z: z }) }
+pub fn set_position<P: Into<Vector3f>>(position: P) {
+    unsafe { ffi::sfListener_setPosition(position.into().raw()) }
 }
 
 /// Get the current position of the listener in the scene
@@ -86,23 +73,8 @@ pub fn position() -> Vector3f {
 ///
 /// # Arguments
 /// * direction - New listener's orientation
-pub fn set_direction(direction: &Vector3f) {
-    unsafe { ffi::sfListener_setDirection(direction.raw()) }
-}
-
-/// Set the orientation of the listener in the scene
-///
-/// The orientation defines the 3D axes of the listener
-/// (left, up, front) in the scene. The orientation vector
-/// doesn't have to be normalized.
-/// The default listener's orientation is (0, 0, -1).
-///
-/// # Arguments
-/// * x - X coordinate of the listener's orientation
-/// * y - Y coordinate of the listener's orientation
-/// * z - Z coordinate of the listener's orientation
-pub fn set_direction3f(x: f32, y: f32, z: f32) {
-    unsafe { ffi::sfListener_setDirection(sfVector3f { x: x, y: y, z: z }) }
+pub fn set_direction<D: Into<Vector3f>>(direction: D) {
+    unsafe { ffi::sfListener_setDirection(direction.into().raw()) }
 }
 
 /// Get the current orientation of the listener in the scene

@@ -8,7 +8,7 @@ use graphics::{Drawable, Transformable, Shape, IntRect, FloatRect, Color, Textur
                Transform, RenderStates};
 use system::Vector2f;
 
-use csfml_system_sys::{sfBool, sfTrue, sfVector2f};
+use csfml_system_sys::{sfBool, sfTrue};
 use csfml_graphics_sys as ffi;
 use ext::sf_bool_ext::SfBoolExt;
 
@@ -96,32 +96,17 @@ impl<'s> Drawable for CircleShape<'s> {
 }
 
 impl<'s> Transformable for CircleShape<'s> {
-    fn set_position(&mut self, position: &Vector2f) {
-        unsafe { ffi::sfCircleShape_setPosition(self.circle_shape, position.raw()) }
-    }
-    fn set_position2f(&mut self, x: f32, y: f32) {
-        unsafe { ffi::sfCircleShape_setPosition(self.circle_shape, sfVector2f { x: x, y: y }) }
+    fn set_position<P: Into<Vector2f>>(&mut self, position: P) {
+        unsafe { ffi::sfCircleShape_setPosition(self.circle_shape, position.into().raw()) }
     }
     fn set_rotation(&mut self, angle: f32) {
         unsafe { ffi::sfCircleShape_setRotation(self.circle_shape, angle) }
     }
-    fn set_scale(&mut self, scale: &Vector2f) {
-        unsafe { ffi::sfCircleShape_setScale(self.circle_shape, scale.raw()) }
+    fn set_scale<S: Into<Vector2f>>(&mut self, scale: S) {
+        unsafe { ffi::sfCircleShape_setScale(self.circle_shape, scale.into().raw()) }
     }
-    fn set_scale2f(&mut self, scale_x: f32, scale_y: f32) {
-        unsafe {
-            ffi::sfCircleShape_setScale(self.circle_shape,
-                                        sfVector2f {
-                                            x: scale_x,
-                                            y: scale_y,
-                                        })
-        }
-    }
-    fn set_origin(&mut self, origin: &Vector2f) {
-        unsafe { ffi::sfCircleShape_setOrigin(self.circle_shape, origin.raw()) }
-    }
-    fn set_origin2f(&mut self, x: f32, y: f32) {
-        unsafe { ffi::sfCircleShape_setOrigin(self.circle_shape, sfVector2f { x: x, y: y }) }
+    fn set_origin<O: Into<Vector2f>>(&mut self, origin: O) {
+        unsafe { ffi::sfCircleShape_setOrigin(self.circle_shape, origin.into().raw()) }
     }
     fn position(&self) -> Vector2f {
         unsafe { Vector2f::from_raw(ffi::sfCircleShape_getPosition(self.circle_shape)) }
@@ -135,32 +120,14 @@ impl<'s> Transformable for CircleShape<'s> {
     fn origin(&self) -> Vector2f {
         unsafe { Vector2f::from_raw(ffi::sfCircleShape_getOrigin(self.circle_shape)) }
     }
-    fn move_(&mut self, offset: &Vector2f) {
-        unsafe { ffi::sfCircleShape_move(self.circle_shape, offset.raw()) }
-    }
-    fn move2f(&mut self, offset_x: f32, offset_y: f32) {
-        unsafe {
-            ffi::sfCircleShape_move(self.circle_shape,
-                                    sfVector2f {
-                                        x: offset_x,
-                                        y: offset_y,
-                                    })
-        }
+    fn move_<O: Into<Vector2f>>(&mut self, offset: O) {
+        unsafe { ffi::sfCircleShape_move(self.circle_shape, offset.into().raw()) }
     }
     fn rotate(&mut self, angle: f32) {
         unsafe { ffi::sfCircleShape_rotate(self.circle_shape, angle) }
     }
-    fn scale(&mut self, factors: &Vector2f) {
-        unsafe { ffi::sfCircleShape_scale(self.circle_shape, factors.raw()) }
-    }
-    fn scale2f(&mut self, factor_x: f32, factor_y: f32) {
-        unsafe {
-            ffi::sfCircleShape_scale(self.circle_shape,
-                                     sfVector2f {
-                                         x: factor_x,
-                                         y: factor_y,
-                                     })
-        }
+    fn scale<F: Into<Vector2f>>(&mut self, factors: F) {
+        unsafe { ffi::sfCircleShape_scale(self.circle_shape, factors.into().raw()) }
     }
     fn transform(&self) -> Transform {
         unsafe { Transform(ffi::sfCircleShape_getTransform(self.circle_shape)) }

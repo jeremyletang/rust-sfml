@@ -21,14 +21,14 @@ fn main() {
     // Create a circle with the Texture.
     let mut circle = CircleShape::with_texture(&frank);
     circle.set_radius(70.0);
-    circle.set_position2f(100.0, 100.0);
+    circle.set_position((100.0, 100.0));
 
     // Create a Sprite.
     let mut sprite = Sprite::new();
     // Have it use the same texture as the circle.
     sprite.set_texture(&frank, true);
-    sprite.set_position2f(400.0, 300.0);
-    sprite.set_scale2f(0.5, 0.5);
+    sprite.set_position((400.0, 300.0));
+    sprite.set_scale((0.5, 0.5));
 
     // Create a ConvexShape using the same texture.
     let mut convex_shape = ConvexShape::with_texture(6, &frank);
@@ -72,12 +72,12 @@ fn main() {
     second_text.set_string("This text shares the same font with the title!");
     second_text.set_font(&font);
     second_text.set_fill_color(&Color::green());
-    second_text.set_position2f(10.0, 350.0);
+    second_text.set_position((10.0, 350.0));
     second_text.set_character_size(20);
 
     // Create a third text using the same font.
     let mut third_text = Text::new_init("This one too!", &font, 20);
-    third_text.set_position2f(300.0, 100.0);
+    third_text.set_position((300.0, 100.0));
     third_text.set_fill_color(&Color::red());
 
     loop {

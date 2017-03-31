@@ -8,7 +8,7 @@ use system::Vector3f;
 use inputstream::InputStream;
 use system::raw_conv::{Raw, FromRaw};
 
-use csfml_system_sys::{sfBool, sfVector3f};
+use csfml_system_sys::sfBool;
 use csfml_audio_sys as ffi;
 use ext::sf_bool_ext::SfBoolExt;
 
@@ -38,7 +38,7 @@ use ext::sf_bool_ext::SfBoolExt;
 /// let mut music = Music::from_file("music.ogg").unwrap();
 ///
 /// // Change some parameters
-/// music.set_position3f(0., 1., 10.); // change its 3D position
+/// music.set_position((0., 1., 10.)); // change its 3D position
 /// music.set_pitch(2.); // increase the pitch
 /// music.set_volume(50.); // reduce the volume
 /// music.set_looping(true); // make it loop
@@ -223,11 +223,8 @@ impl SoundSource for Music {
     fn set_volume(&mut self, volume: f32) {
         unsafe { ffi::sfMusic_setVolume(self.music, volume) }
     }
-    fn set_position(&mut self, position: &Vector3f) {
-        unsafe { ffi::sfMusic_setPosition(self.music, position.raw()) }
-    }
-    fn set_position3f(&mut self, x: f32, y: f32, z: f32) {
-        unsafe { ffi::sfMusic_setPosition(self.music, sfVector3f { x: x, y: y, z: z }) }
+    fn set_position<P: Into<Vector3f>>(&mut self, position: P) {
+        unsafe { ffi::sfMusic_setPosition(self.music, position.into().raw()) }
     }
     fn set_relative_to_listener(&mut self, relative: bool) {
         unsafe { ffi::sfMusic_setRelativeToListener(self.music, sfBool::from_bool(relative)) }

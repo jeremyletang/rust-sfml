@@ -6,7 +6,7 @@ use system::Vector2f;
 use graphics::{Drawable, Shape, Transformable, FloatRect, IntRect, Color, TextureRef, RenderTarget,
                Transform, RenderStates};
 
-use csfml_system_sys::{sfBool, sfTrue, sfVector2f};
+use csfml_system_sys::{sfBool, sfTrue};
 use csfml_graphics_sys as ffi;
 use ext::sf_bool_ext::SfBoolExt;
 
@@ -35,7 +35,7 @@ impl<'s> RectangleShape<'s> {
     }
 
     /// Returns a new `RectangleShape` with the provided size.
-    pub fn with_size(size: &Vector2f) -> RectangleShape<'s> {
+    pub fn with_size(size: Vector2f) -> RectangleShape<'s> {
         let mut shape = Self::new();
         shape.set_size(size);
         shape
@@ -52,23 +52,8 @@ impl<'s> RectangleShape<'s> {
     ///
     /// # Arguments
     /// * size - The new size of the rectangle
-    pub fn set_size(&mut self, size: &Vector2f) {
-        unsafe { ffi::sfRectangleShape_setSize(self.rectangle_shape, size.raw()) }
-    }
-
-    /// Set the size of a rectangle shape
-    ///
-    /// # Arguments
-    /// * size_x - The new size x of the rectangle
-    /// * size_y - The new size y of the rectangle
-    pub fn set_size2f(&mut self, size_x: f32, size_y: f32) {
-        unsafe {
-            ffi::sfRectangleShape_setSize(self.rectangle_shape,
-                                          sfVector2f {
-                                              x: size_x,
-                                              y: size_y,
-                                          })
-        }
+    pub fn set_size<S: Into<Vector2f>>(&mut self, size: S) {
+        unsafe { ffi::sfRectangleShape_setSize(self.rectangle_shape, size.into().raw()) }
     }
 }
 
@@ -89,34 +74,17 @@ impl<'s> Drawable for RectangleShape<'s> {
 }
 
 impl<'s> Transformable for RectangleShape<'s> {
-    fn set_position(&mut self, position: &Vector2f) {
-        unsafe { ffi::sfRectangleShape_setPosition(self.rectangle_shape, position.raw()) }
-    }
-    fn set_position2f(&mut self, x: f32, y: f32) {
-        unsafe {
-            ffi::sfRectangleShape_setPosition(self.rectangle_shape, sfVector2f { x: x, y: y })
-        }
+    fn set_position<P: Into<Vector2f>>(&mut self, position: P) {
+        unsafe { ffi::sfRectangleShape_setPosition(self.rectangle_shape, position.into().raw()) }
     }
     fn set_rotation(&mut self, angle: f32) {
         unsafe { ffi::sfRectangleShape_setRotation(self.rectangle_shape, angle) }
     }
-    fn set_scale(&mut self, scale: &Vector2f) {
-        unsafe { ffi::sfRectangleShape_setScale(self.rectangle_shape, scale.raw()) }
+    fn set_scale<S: Into<Vector2f>>(&mut self, scale: S) {
+        unsafe { ffi::sfRectangleShape_setScale(self.rectangle_shape, scale.into().raw()) }
     }
-    fn set_scale2f(&mut self, factor_x: f32, factor_y: f32) {
-        unsafe {
-            ffi::sfRectangleShape_setScale(self.rectangle_shape,
-                                           sfVector2f {
-                                               x: factor_x,
-                                               y: factor_y,
-                                           })
-        }
-    }
-    fn set_origin(&mut self, origin: &Vector2f) {
-        unsafe { ffi::sfRectangleShape_setOrigin(self.rectangle_shape, origin.raw()) }
-    }
-    fn set_origin2f(&mut self, x: f32, y: f32) {
-        unsafe { ffi::sfRectangleShape_setOrigin(self.rectangle_shape, sfVector2f { x: x, y: y }) }
+    fn set_origin<O: Into<Vector2f>>(&mut self, origin: O) {
+        unsafe { ffi::sfRectangleShape_setOrigin(self.rectangle_shape, origin.into().raw()) }
     }
     fn position(&self) -> Vector2f {
         unsafe { Vector2f::from_raw(ffi::sfRectangleShape_getPosition(self.rectangle_shape)) }
@@ -130,32 +98,14 @@ impl<'s> Transformable for RectangleShape<'s> {
     fn origin(&self) -> Vector2f {
         unsafe { Vector2f::from_raw(ffi::sfRectangleShape_getOrigin(self.rectangle_shape)) }
     }
-    fn move_(&mut self, offset: &Vector2f) {
-        unsafe { ffi::sfRectangleShape_move(self.rectangle_shape, offset.raw()) }
-    }
-    fn move2f(&mut self, offset_x: f32, offset_y: f32) {
-        unsafe {
-            ffi::sfRectangleShape_move(self.rectangle_shape,
-                                       sfVector2f {
-                                           x: offset_x,
-                                           y: offset_y,
-                                       })
-        }
+    fn move_<O: Into<Vector2f>>(&mut self, offset: O) {
+        unsafe { ffi::sfRectangleShape_move(self.rectangle_shape, offset.into().raw()) }
     }
     fn rotate(&mut self, angle: f32) {
         unsafe { ffi::sfRectangleShape_rotate(self.rectangle_shape, angle) }
     }
-    fn scale(&mut self, factors: &Vector2f) {
-        unsafe { ffi::sfRectangleShape_scale(self.rectangle_shape, factors.raw()) }
-    }
-    fn scale2f(&mut self, factor_x: f32, factor_y: f32) {
-        unsafe {
-            ffi::sfRectangleShape_scale(self.rectangle_shape,
-                                        sfVector2f {
-                                            x: factor_x,
-                                            y: factor_y,
-                                        })
-        }
+    fn scale<F: Into<Vector2f>>(&mut self, factors: F) {
+        unsafe { ffi::sfRectangleShape_scale(self.rectangle_shape, factors.into().raw()) }
     }
     fn transform(&self) -> Transform {
         unsafe { Transform(ffi::sfRectangleShape_getTransform(self.rectangle_shape)) }

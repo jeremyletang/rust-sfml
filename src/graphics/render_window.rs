@@ -320,24 +320,8 @@ impl RenderWindow {
     /// # Arguments
     /// * size - New size, in pixels
     ///
-    pub fn set_size(&mut self, size: &Vector2u) {
-        unsafe { ffi::sfRenderWindow_setSize(self.render_window, size.raw()) }
-    }
-
-    /// Change the size of the rendering region of a window
-    ///
-    /// # Arguments
-    /// * size_x - New size x, in pixels
-    /// * size_y - New size x, in pixels
-    ///
-    pub fn set_size2u(&mut self, size_x: u32, size_y: u32) {
-        unsafe {
-            ffi::sfRenderWindow_setSize(self.render_window,
-                                        sfVector2u {
-                                            x: size_x,
-                                            y: size_y,
-                                        })
-        }
+    pub fn set_size<S: Into<Vector2u>>(&mut self, size: S) {
+        unsafe { ffi::sfRenderWindow_setSize(self.render_window, size.into().raw()) }
     }
 
     /// Returns the current position of the mouse relative to the window.

@@ -6,7 +6,7 @@ use graphics::{Drawable, Transformable, FloatRect, IntRect, Color, RenderTarget,
                RenderStates, TextureRef};
 use system::Vector2f;
 
-use csfml_system_sys::{sfBool, sfTrue, sfVector2f};
+use csfml_system_sys::{sfBool, sfTrue};
 use csfml_graphics_sys as ffi;
 use ext::sf_bool_ext::SfBoolExt;
 
@@ -183,32 +183,17 @@ impl<'s> Drawable for Sprite<'s> {
 }
 
 impl<'s> Transformable for Sprite<'s> {
-    fn set_position(&mut self, position: &Vector2f) {
-        unsafe { ffi::sfSprite_setPosition(self.sprite, position.raw()) }
-    }
-    fn set_position2f(&mut self, x: f32, y: f32) {
-        unsafe { ffi::sfSprite_setPosition(self.sprite, sfVector2f { x: x, y: y }) }
+    fn set_position<P: Into<Vector2f>>(&mut self, position: P) {
+        unsafe { ffi::sfSprite_setPosition(self.sprite, position.into().raw()) }
     }
     fn set_rotation(&mut self, angle: f32) {
         unsafe { ffi::sfSprite_setRotation(self.sprite, angle) }
     }
-    fn set_scale(&mut self, scale: &Vector2f) {
-        unsafe { ffi::sfSprite_setScale(self.sprite, scale.raw()) }
+    fn set_scale<S: Into<Vector2f>>(&mut self, scale: S) {
+        unsafe { ffi::sfSprite_setScale(self.sprite, scale.into().raw()) }
     }
-    fn set_scale2f(&mut self, scale_x: f32, scale_y: f32) {
-        unsafe {
-            ffi::sfSprite_setScale(self.sprite,
-                                   sfVector2f {
-                                       x: scale_x,
-                                       y: scale_y,
-                                   })
-        }
-    }
-    fn set_origin(&mut self, origin: &Vector2f) {
-        unsafe { ffi::sfSprite_setOrigin(self.sprite, origin.raw()) }
-    }
-    fn set_origin2f(&mut self, x: f32, y: f32) {
-        unsafe { ffi::sfSprite_setOrigin(self.sprite, sfVector2f { x: x, y: y }) }
+    fn set_origin<O: Into<Vector2f>>(&mut self, origin: O) {
+        unsafe { ffi::sfSprite_setOrigin(self.sprite, origin.into().raw()) }
     }
     fn position(&self) -> Vector2f {
         unsafe { Vector2f::from_raw(ffi::sfSprite_getPosition(self.sprite)) }
@@ -222,32 +207,14 @@ impl<'s> Transformable for Sprite<'s> {
     fn origin(&self) -> Vector2f {
         unsafe { Vector2f::from_raw(ffi::sfSprite_getOrigin(self.sprite)) }
     }
-    fn move_(&mut self, offset: &Vector2f) {
-        unsafe { ffi::sfSprite_move(self.sprite, offset.raw()) }
-    }
-    fn move2f(&mut self, offset_x: f32, offset_y: f32) {
-        unsafe {
-            ffi::sfSprite_move(self.sprite,
-                               sfVector2f {
-                                   x: offset_x,
-                                   y: offset_y,
-                               })
-        }
+    fn move_<O: Into<Vector2f>>(&mut self, offset: O) {
+        unsafe { ffi::sfSprite_move(self.sprite, offset.into().raw()) }
     }
     fn rotate(&mut self, angle: f32) {
         unsafe { ffi::sfSprite_rotate(self.sprite, angle) }
     }
-    fn scale(&mut self, factors: &Vector2f) {
-        unsafe { ffi::sfSprite_scale(self.sprite, factors.raw()) }
-    }
-    fn scale2f(&mut self, factor_x: f32, factor_y: f32) {
-        unsafe {
-            ffi::sfSprite_scale(self.sprite,
-                                sfVector2f {
-                                    x: factor_x,
-                                    y: factor_y,
-                                })
-        }
+    fn scale<F: Into<Vector2f>>(&mut self, factors: F) {
+        unsafe { ffi::sfSprite_scale(self.sprite, factors.into().raw()) }
     }
     fn transform(&self) -> Transform {
         unsafe { Transform(ffi::sfSprite_getTransform(self.sprite)) }

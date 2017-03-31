@@ -6,7 +6,7 @@ use graphics::{Shape, Drawable, Transformable, Color, TextureRef, RenderTarget, 
                Transform, RenderStates};
 use system::Vector2f;
 
-use csfml_system_sys::{sfBool, sfTrue, sfVector2f};
+use csfml_system_sys::{sfBool, sfTrue};
 use csfml_graphics_sys as ffi;
 use ext::sf_bool_ext::SfBoolExt;
 
@@ -94,32 +94,17 @@ impl<'s> Drawable for ConvexShape<'s> {
 
 
 impl<'s> Transformable for ConvexShape<'s> {
-    fn set_position(&mut self, position: &Vector2f) {
-        unsafe { ffi::sfConvexShape_setPosition(self.convex_shape, position.raw()) }
-    }
-    fn set_position2f(&mut self, x: f32, y: f32) {
-        unsafe { ffi::sfConvexShape_setPosition(self.convex_shape, sfVector2f { x: x, y: y }) }
+    fn set_position<P: Into<Vector2f>>(&mut self, position: P) {
+        unsafe { ffi::sfConvexShape_setPosition(self.convex_shape, position.into().raw()) }
     }
     fn set_rotation(&mut self, angle: f32) {
         unsafe { ffi::sfConvexShape_setRotation(self.convex_shape, angle) }
     }
-    fn set_scale(&mut self, scale: &Vector2f) {
-        unsafe { ffi::sfConvexShape_setScale(self.convex_shape, scale.raw()) }
+    fn set_scale<S: Into<Vector2f>>(&mut self, scale: S) {
+        unsafe { ffi::sfConvexShape_setScale(self.convex_shape, scale.into().raw()) }
     }
-    fn set_scale2f(&mut self, scale_x: f32, scale_y: f32) {
-        unsafe {
-            ffi::sfConvexShape_setScale(self.convex_shape,
-                                        sfVector2f {
-                                            x: scale_x,
-                                            y: scale_y,
-                                        })
-        }
-    }
-    fn set_origin(&mut self, origin: &Vector2f) {
-        unsafe { ffi::sfConvexShape_setOrigin(self.convex_shape, origin.raw()) }
-    }
-    fn set_origin2f(&mut self, x: f32, y: f32) {
-        unsafe { ffi::sfConvexShape_setOrigin(self.convex_shape, sfVector2f { x: x, y: y }) }
+    fn set_origin<O: Into<Vector2f>>(&mut self, origin: O) {
+        unsafe { ffi::sfConvexShape_setOrigin(self.convex_shape, origin.into().raw()) }
     }
     fn position(&self) -> Vector2f {
         unsafe { Vector2f::from_raw(ffi::sfConvexShape_getPosition(self.convex_shape)) }
@@ -133,32 +118,14 @@ impl<'s> Transformable for ConvexShape<'s> {
     fn origin(&self) -> Vector2f {
         unsafe { Vector2f::from_raw(ffi::sfConvexShape_getOrigin(self.convex_shape)) }
     }
-    fn move_(&mut self, offset: &Vector2f) {
-        unsafe { ffi::sfConvexShape_move(self.convex_shape, offset.raw()) }
-    }
-    fn move2f(&mut self, offset_x: f32, offset_y: f32) {
-        unsafe {
-            ffi::sfConvexShape_move(self.convex_shape,
-                                    sfVector2f {
-                                        x: offset_x,
-                                        y: offset_y,
-                                    })
-        }
+    fn move_<O: Into<Vector2f>>(&mut self, offset: O) {
+        unsafe { ffi::sfConvexShape_move(self.convex_shape, offset.into().raw()) }
     }
     fn rotate(&mut self, angle: f32) {
         unsafe { ffi::sfConvexShape_rotate(self.convex_shape, angle) }
     }
-    fn scale(&mut self, factors: &Vector2f) {
-        unsafe { ffi::sfConvexShape_scale(self.convex_shape, factors.raw()) }
-    }
-    fn scale2f(&mut self, factor_x: f32, factor_y: f32) {
-        unsafe {
-            ffi::sfConvexShape_scale(self.convex_shape,
-                                     sfVector2f {
-                                         x: factor_x,
-                                         y: factor_y,
-                                     })
-        }
+    fn scale<F: Into<Vector2f>>(&mut self, factors: F) {
+        unsafe { ffi::sfConvexShape_scale(self.convex_shape, factors.into().raw()) }
     }
     fn transform(&self) -> Transform {
         unsafe { Transform(ffi::sfConvexShape_getTransform(self.convex_shape)) }

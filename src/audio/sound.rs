@@ -6,7 +6,7 @@ use system::Time;
 use system::Vector3f;
 use system::raw_conv::{Raw, FromRaw};
 
-use csfml_system_sys::{sfBool, sfVector3f};
+use csfml_system_sys::sfBool;
 use csfml_audio_sys as ffi;
 use ext::sf_bool_ext::SfBoolExt;
 
@@ -173,11 +173,8 @@ impl<'s> SoundSource for Sound<'s> {
     fn set_volume(&mut self, volume: f32) {
         unsafe { ffi::sfSound_setVolume(self.sound, volume) }
     }
-    fn set_position(&mut self, position: &Vector3f) {
-        unsafe { ffi::sfSound_setPosition(self.sound, position.raw()) }
-    }
-    fn set_position3f(&mut self, x: f32, y: f32, z: f32) {
-        unsafe { ffi::sfSound_setPosition(self.sound, sfVector3f { x: x, y: y, z: z }) }
+    fn set_position<P: Into<Vector3f>>(&mut self, position: P) {
+        unsafe { ffi::sfSound_setPosition(self.sound, position.into().raw()) }
     }
     fn set_relative_to_listener(&mut self, relative: bool) {
         unsafe { ffi::sfSound_setRelativeToListener(self.sound, sfBool::from_bool(relative)) }

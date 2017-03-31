@@ -21,7 +21,7 @@ fn main() {
     macro_rules! push_text {
         ($x:expr, $y:expr, $fmt:expr, $($arg:tt)*) => {
             let mut text = Text::new_init(&format!($fmt, $($arg)*), &font, 14);
-            text.set_position2f($x as f32, $y as f32);
+            text.set_position(($x as f32, $y as f32));
             texts.push(text);
         }
     }
@@ -78,7 +78,7 @@ fn main() {
                                     cur_vis_msg,
                                     grab_msg));
 
-        circle.set_position2f(mp.x as f32, mp.y as f32);
+        circle.set_position((mp.x as f32, mp.y as f32));
 
         window.clear(&Color::black());
         // Push texts out of each other's way
@@ -87,7 +87,7 @@ fn main() {
                 if let Some(intersect) = texts[i]
                        .global_bounds()
                        .intersection(&texts[j].global_bounds()) {
-                    texts[j].move2f(0., -intersect.height);
+                    texts[j].move_((0., -intersect.height));
                 }
             }
         }

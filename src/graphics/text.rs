@@ -5,7 +5,6 @@ use system::raw_conv::{Raw, FromRaw};
 use graphics::{Drawable, Transformable, RenderTarget, Font, FontRef, FloatRect, Color, Transform,
                RenderStates, TextStyle};
 use system::Vector2f;
-use csfml_system_sys::sfVector2f;
 
 use csfml_graphics_sys as ffi;
 
@@ -254,32 +253,17 @@ impl<'s> Drawable for Text<'s> {
 }
 
 impl<'s> Transformable for Text<'s> {
-    fn set_position(&mut self, position: &Vector2f) {
-        unsafe { ffi::sfText_setPosition(self.text, position.raw()) }
-    }
-    fn set_position2f(&mut self, x: f32, y: f32) {
-        unsafe { ffi::sfText_setPosition(self.text, sfVector2f { x: x, y: y }) }
+    fn set_position<P: Into<Vector2f>>(&mut self, position: P) {
+        unsafe { ffi::sfText_setPosition(self.text, position.into().raw()) }
     }
     fn set_rotation(&mut self, angle: f32) {
         unsafe { ffi::sfText_setRotation(self.text, angle) }
     }
-    fn set_scale(&mut self, scale: &Vector2f) {
-        unsafe { ffi::sfText_setScale(self.text, scale.raw()) }
+    fn set_scale<S: Into<Vector2f>>(&mut self, scale: S) {
+        unsafe { ffi::sfText_setScale(self.text, scale.into().raw()) }
     }
-    fn set_scale2f(&mut self, scale_x: f32, scale_y: f32) {
-        unsafe {
-            ffi::sfText_setScale(self.text,
-                                 sfVector2f {
-                                     x: scale_x,
-                                     y: scale_y,
-                                 })
-        }
-    }
-    fn set_origin(&mut self, origin: &Vector2f) {
-        unsafe { ffi::sfText_setOrigin(self.text, origin.raw()) }
-    }
-    fn set_origin2f(&mut self, x: f32, y: f32) {
-        unsafe { ffi::sfText_setOrigin(self.text, sfVector2f { x: x, y: y }) }
+    fn set_origin<O: Into<Vector2f>>(&mut self, origin: O) {
+        unsafe { ffi::sfText_setOrigin(self.text, origin.into().raw()) }
     }
     fn position(&self) -> Vector2f {
         unsafe { Vector2f::from_raw(ffi::sfText_getPosition(self.text)) }
@@ -293,32 +277,14 @@ impl<'s> Transformable for Text<'s> {
     fn origin(&self) -> Vector2f {
         unsafe { Vector2f::from_raw(ffi::sfText_getOrigin(self.text)) }
     }
-    fn move_(&mut self, offset: &Vector2f) {
-        unsafe { ffi::sfText_move(self.text, offset.raw()) }
-    }
-    fn move2f(&mut self, offset_x: f32, offset_y: f32) {
-        unsafe {
-            ffi::sfText_move(self.text,
-                             sfVector2f {
-                                 x: offset_x,
-                                 y: offset_y,
-                             })
-        }
+    fn move_<O: Into<Vector2f>>(&mut self, offset: O) {
+        unsafe { ffi::sfText_move(self.text, offset.into().raw()) }
     }
     fn rotate(&mut self, angle: f32) {
         unsafe { ffi::sfText_rotate(self.text, angle) }
     }
-    fn scale(&mut self, factors: &Vector2f) {
-        unsafe { ffi::sfText_scale(self.text, factors.raw()) }
-    }
-    fn scale2f(&mut self, factor_x: f32, factor_y: f32) {
-        unsafe {
-            ffi::sfText_scale(self.text,
-                              sfVector2f {
-                                  x: factor_x,
-                                  y: factor_y,
-                              })
-        }
+    fn scale<F: Into<Vector2f>>(&mut self, factors: F) {
+        unsafe { ffi::sfText_scale(self.text, factors.into().raw()) }
     }
     fn transform(&self) -> Transform {
         unsafe { Transform(ffi::sfText_getTransform(self.text)) }

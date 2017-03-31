@@ -19,7 +19,6 @@
 //! ```no_run
 //! extern crate sfml;
 //!
-//! use sfml::system::Vector2f;
 //! use sfml::window::{ContextSettings, VideoMode, Event, style};
 //! use sfml::graphics::{CircleShape, Color, RenderTarget, RenderWindow, Shape, Transformable};
 //!
@@ -34,7 +33,7 @@
 //!     let mut circle = CircleShape::new();
 //!     circle.set_radius(30.);
 //!     circle.set_fill_color(&Color::red());
-//!     circle.set_position(&Vector2f::new(100., 100.));
+//!     circle.set_position((100., 100.));
 //!
 //!     loop {
 //!         // Handle events

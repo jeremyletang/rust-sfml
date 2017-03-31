@@ -5,7 +5,6 @@ use std::ops::Deref;
 use std::borrow::{Borrow, ToOwned};
 
 use csfml_graphics_sys as ffi;
-use csfml_system_sys::sfVector2f;
 
 /// 2D camera that defines what region is shown on screen
 ///
@@ -73,7 +72,7 @@ impl View {
     /// # Arguments
     /// * center - The center of the view
     /// * size - The size of the view
-    pub fn new_init(center: &Vector2f, size: &Vector2f) -> View {
+    pub fn new_init(center: Vector2f, size: Vector2f) -> View {
         let mut view = View::new();
         view.set_center(center);
         view.set_size(size);
@@ -128,69 +127,24 @@ impl View {
     ///
     /// # Arguments
     /// * center - New center
-    pub fn set_center(&mut self, center: &Vector2f) {
-        unsafe { ffi::sfView_setCenter(self.view, center.raw()) }
-    }
-
-    /// Set the center of a view
-    ///
-    /// # Arguments
-    /// * center_x - New x center coordinate
-    /// * center_y - New y center coordinate
-    ///
-    pub fn set_center2f(&mut self, center_x: f32, center_y: f32) {
-        unsafe {
-            ffi::sfView_setCenter(self.view,
-                                  sfVector2f {
-                                      x: center_x,
-                                      y: center_y,
-                                  })
-        }
+    pub fn set_center<C: Into<Vector2f>>(&mut self, center: C) {
+        unsafe { ffi::sfView_setCenter(self.view, center.into().raw()) }
     }
 
     /// Set the size of a view
     ///
     /// # Arguments
     /// * size - New size of the view
-    pub fn set_size(&mut self, size: &Vector2f) {
-        unsafe { ffi::sfView_setSize(self.view, size.raw()) }
-    }
-
-    /// Set the size of a view
-    ///
-    /// # Arguments
-    /// * size_x - New size x of the view
-    /// * size_y - New size y of the view
-    pub fn set_size2f(&mut self, size_x: f32, size_y: f32) {
-        unsafe {
-            ffi::sfView_setSize(self.view,
-                                sfVector2f {
-                                    x: size_x,
-                                    y: size_y,
-                                })
-        }
+    pub fn set_size<S: Into<Vector2f>>(&mut self, size: S) {
+        unsafe { ffi::sfView_setSize(self.view, size.into().raw()) }
     }
 
     /// Move a view relatively to its current position
     ///
     /// # Arguments
     /// * offset - Offset
-    pub fn move_(&mut self, offset: &Vector2f) {
-        unsafe { ffi::sfView_move(self.view, offset.raw()) }
-    }
-    /// Move a view relatively to its current position
-    ///
-    /// # Arguments
-    /// * offsetX - Offset x
-    /// * offsetY - Offset y
-    pub fn move2f(&mut self, offset_x: f32, offset_y: f32) {
-        unsafe {
-            ffi::sfView_move(self.view,
-                             sfVector2f {
-                                 x: offset_x,
-                                 y: offset_y,
-                             })
-        }
+    pub fn move_<O: Into<Vector2f>>(&mut self, offset: O) {
+        unsafe { ffi::sfView_move(self.view, offset.into().raw()) }
     }
 
     /// Set the target viewport of a view

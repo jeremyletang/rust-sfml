@@ -76,7 +76,7 @@ In hac habitasse platea dictumst. Etiam fringilla est id odio dapibus sit amet s
 impl<'fo> WaveBlur<'fo> {
     fn new(font: &'fo Font) -> Self {
         let mut text = Text::new_init(WAVEBLUR_TEXT, font, 22);
-        text.set_position2f(30., 20.);
+        text.set_position((30., 20.));
         WaveBlur {
             text: text,
             shader: Shader::from_file(Some("resources/wave.vert"),
@@ -177,7 +177,7 @@ impl<'te> Edge<'te> {
         let mut surface = RenderTexture::new(800, 600, false).unwrap();
         surface.set_smooth(true);
         let mut bg_sprite = Sprite::with_texture(bg_texture);
-        bg_sprite.set_position2f(135., 100.);
+        bg_sprite.set_position((135., 100.));
         let mut entities = Vec::new();
 
         for i in 0..6 {
@@ -213,11 +213,9 @@ impl<'te> Effect for Edge<'te> {
         let entities_len = self.entities.len() as f32;
 
         for (i, en) in self.entities.iter_mut().enumerate() {
-            let pos = Vector2f::new((0.25 * (t * i as f32 + (entities_len - i as f32)))
-                                        .cos() * 300. + 350.,
-                                    (0.25 * (t * (entities_len - i as f32) + i as f32))
-                                        .cos() * 200. + 250.);
-            en.set_position(&pos);
+            let pos = ((0.25 * (t * i as f32 + (entities_len - i as f32))).cos() * 300. + 350.,
+                       (0.25 * (t * (entities_len - i as f32) + i as f32)).cos() * 200. + 250.);
+            en.set_position(pos);
         }
         self.surface.clear(&Color::white());
         self.surface.draw(&self.bg_sprite);
@@ -253,15 +251,15 @@ fn main() {
     let mut current = 0;
     let text_bg_texture = Texture::from_file("resources/text-background.png").unwrap();
     let mut text_bg = Sprite::with_texture(&text_bg_texture);
-    text_bg.set_position2f(0., 520.);
+    text_bg.set_position((0., 520.));
     text_bg.set_color(&Color::rgba(255, 255, 255, 200));
     let msg = format!("Current effect: {}", effects[current].name());
     let mut desc = Text::new_init(&msg, &font, 20);
-    desc.set_position2f(10., 530.);
+    desc.set_position((10., 530.));
     desc.set_fill_color(&Color::rgb(80, 80, 80));
     let msg = "Press left and right arrows to change the current shader";
     let mut instructions = Text::new_init(msg, &font, 20);
-    instructions.set_position2f(280., 555.);
+    instructions.set_position((280., 555.));
     instructions.set_fill_color(&Color::rgb(80, 80, 80));
     let clock = Clock::start();
 

@@ -58,6 +58,15 @@ impl<T> Vector2<T> {
     }
 }
 
+impl<T> From<(T, T)> for Vector2<T> {
+    fn from(src: (T, T)) -> Self {
+        Self {
+            x: src.0,
+            y: src.1,
+        }
+    }
+}
+
 macro_rules! impl_ops {
     ( $_trait:ident, $_func:ident, $( $_type:ty ),+ ) => {
         impl<T: $_trait + Copy> $_trait<T> for Vector2<T> {

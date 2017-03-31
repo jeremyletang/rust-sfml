@@ -8,13 +8,7 @@ pub trait Transformable {
     /// This function completely overwrites the previous position.
     /// See the move function to apply an offset based on the previous position instead.
     /// The default position of a transformable object is (0, 0).
-    fn set_position(&mut self, position: &Vector2f);
-    /// Sets the position of the object.
-    ///
-    /// This function completely overwrites the previous position.
-    /// See the move function to apply an offset based on the previous position instead.
-    /// The default position of a transformable object is (0, 0).
-    fn set_position2f(&mut self, x: f32, y: f32);
+    fn set_position<P: Into<Vector2f>>(&mut self, position: P);
     /// Set the orientation of the object.
     ///
     /// This function completely overwrites the previous rotation.
@@ -26,13 +20,7 @@ pub trait Transformable {
     /// This function completely overwrites the previous scale.
     /// See the scale function to add a factor based on the previous scale instead.
     /// The default scale of a transformable object is (1, 1).
-    fn set_scale(&mut self, scale: &Vector2f);
-    /// Sets the scale factors of the object.
-    ///
-    /// This function completely overwrites the previous scale.
-    /// See the scale function to add a factor based on the previous scale instead.
-    /// The default scale of a transformable object is (1, 1).
-    fn set_scale2f(&mut self, scale_x: f32, scale_y: f32);
+    fn set_scale<S: Into<Vector2f>>(&mut self, scale: S);
     /// Sets the local origin of the object.
     ///
     /// The origin of an object defines the center point for all transformations
@@ -40,15 +28,7 @@ pub trait Transformable {
     /// The coordinates of this point must be relative to the top-left corner of the object,
     /// and ignore all transformations (position, scale, rotation).
     /// The default origin of a transformable object is (0, 0).
-    fn set_origin(&mut self, origin: &Vector2f);
-    /// Sets the local origin of the object.
-    ///
-    /// The origin of an object defines the center point for all transformations
-    /// (position, scale, rotation).
-    /// The coordinates of this point must be relative to the top-left corner of the object,
-    /// and ignore all transformations (position, scale, rotation).
-    /// The default origin of a transformable object is (0, 0).
-    fn set_origin2f(&mut self, x: f32, y: f32);
+    fn set_origin<O: Into<Vector2f>>(&mut self, origin: O);
     /// Gets the position of the object.
     fn position(&self) -> Vector2f;
     /// Gets the rotation of the object.
@@ -63,12 +43,7 @@ pub trait Transformable {
     ///
     /// This function adds to the current position of the object,
     /// unlike `set_position` which overwrites it.
-    fn move_(&mut self, offset: &Vector2f);
-    /// Moves the object by a given offset.
-    ///
-    /// This function adds to the current position of the object,
-    /// unlike `set_position` which overwrites it.
-    fn move2f(&mut self, offset_x: f32, offset_y: f32);
+    fn move_<O: Into<Vector2f>>(&mut self, offset: O);
     /// Rotates the object.
     ///
     /// This function adds to the current rotation of the object, unlike `set_rotation`
@@ -78,12 +53,7 @@ pub trait Transformable {
     ///
     /// This function multiplies the current scale of the object, unlike `set_scale`
     /// which overwrites it.
-    fn scale(&mut self, factors: &Vector2f);
-    /// Scales the object.
-    ///
-    /// This function multiplies the current scale of the object, unlike `set_scale`
-    /// which overwrites it.
-    fn scale2f(&mut self, factor_x: f32, factor_y: f32);
+    fn scale<F: Into<Vector2f>>(&mut self, factors: F);
     /// Gets the combined transform of the object.
     fn transform(&self) -> Transform;
     /// Gets the inverse combined transform of the object.

@@ -163,32 +163,17 @@ impl<'s> Drawable for CustomShape<'s> {
 }
 
 impl<'s> Transformable for CustomShape<'s> {
-    fn set_position(&mut self, position: &Vector2f) {
-        unsafe { ffi::sfShape_setPosition(self.shape, position.raw()) }
-    }
-    fn set_position2f(&mut self, x: f32, y: f32) {
-        unsafe { ffi::sfShape_setPosition(self.shape, sfVector2f { x: x, y: y }) }
+    fn set_position<P: Into<Vector2f>>(&mut self, position: P) {
+        unsafe { ffi::sfShape_setPosition(self.shape, position.into().raw()) }
     }
     fn set_rotation(&mut self, angle: f32) {
         unsafe { ffi::sfShape_setRotation(self.shape, angle) }
     }
-    fn set_scale(&mut self, scale: &Vector2f) {
-        unsafe { ffi::sfShape_setScale(self.shape, scale.raw()) }
+    fn set_scale<S: Into<Vector2f>>(&mut self, scale: S) {
+        unsafe { ffi::sfShape_setScale(self.shape, scale.into().raw()) }
     }
-    fn set_scale2f(&mut self, scale_x: f32, scale_y: f32) {
-        unsafe {
-            ffi::sfShape_setScale(self.shape,
-                                  sfVector2f {
-                                      x: scale_x,
-                                      y: scale_y,
-                                  })
-        }
-    }
-    fn set_origin(&mut self, origin: &Vector2f) {
-        unsafe { ffi::sfShape_setOrigin(self.shape, origin.raw()) }
-    }
-    fn set_origin2f(&mut self, x: f32, y: f32) {
-        unsafe { ffi::sfShape_setOrigin(self.shape, sfVector2f { x: x, y: y }) }
+    fn set_origin<O: Into<Vector2f>>(&mut self, origin: O) {
+        unsafe { ffi::sfShape_setOrigin(self.shape, origin.into().raw()) }
     }
     fn position(&self) -> Vector2f {
         unsafe { Vector2f::from_raw(ffi::sfShape_getPosition(self.shape)) }
@@ -202,32 +187,14 @@ impl<'s> Transformable for CustomShape<'s> {
     fn origin(&self) -> Vector2f {
         unsafe { Vector2f::from_raw(ffi::sfShape_getOrigin(self.shape)) }
     }
-    fn move_(&mut self, offset: &Vector2f) {
-        unsafe { ffi::sfShape_move(self.shape, offset.raw()) }
-    }
-    fn move2f(&mut self, offset_x: f32, offset_y: f32) {
-        unsafe {
-            ffi::sfShape_move(self.shape,
-                              sfVector2f {
-                                  x: offset_x,
-                                  y: offset_y,
-                              })
-        }
+    fn move_<O: Into<Vector2f>>(&mut self, offset: O) {
+        unsafe { ffi::sfShape_move(self.shape, offset.into().raw()) }
     }
     fn rotate(&mut self, angle: f32) {
         unsafe { ffi::sfShape_rotate(self.shape, angle) }
     }
-    fn scale(&mut self, factors: &Vector2f) {
-        unsafe { ffi::sfShape_scale(self.shape, factors.raw()) }
-    }
-    fn scale2f(&mut self, factor_x: f32, factor_y: f32) {
-        unsafe {
-            ffi::sfShape_scale(self.shape,
-                               sfVector2f {
-                                   x: factor_x,
-                                   y: factor_y,
-                               })
-        }
+    fn scale<F: Into<Vector2f>>(&mut self, factors: F) {
+        unsafe { ffi::sfShape_scale(self.shape, factors.into().raw()) }
     }
     fn transform(&self) -> Transform {
         unsafe { Transform(ffi::sfShape_getTransform(self.shape)) }

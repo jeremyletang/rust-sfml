@@ -170,11 +170,8 @@ impl<'a, S: SoundStream> SoundSource for SoundStreamPlayer<'a, S> {
     fn set_volume(&mut self, volume: f32) {
         unsafe { sfSoundStream_setVolume(self.sf_sound_stream, volume) }
     }
-    fn set_position3f(&mut self, x: f32, y: f32, z: f32) {
-        unsafe { sfSoundStream_setPosition(self.sf_sound_stream, sfVector3f { x: x, y: y, z: z }) }
-    }
-    fn set_position(&mut self, position: &Vector3f) {
-        unsafe { sfSoundStream_setPosition(self.sf_sound_stream, position.raw()) }
+    fn set_position<P: Into<Vector3f>>(&mut self, position: P) {
+        unsafe { sfSoundStream_setPosition(self.sf_sound_stream, position.into().raw()) }
     }
     fn set_relative_to_listener(&mut self, relative: bool) {
         unsafe {
