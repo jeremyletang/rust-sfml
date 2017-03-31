@@ -21,10 +21,10 @@ fn main() {
     }
 
     // Define some constants
-    let game_width: u32 = 800;
-    let game_height: u32 = 600;
-    let paddle_size: Vector2f = Vector2f::new(25., 100.);
-    let ball_radius: f32 = 10.;
+    let game_width = 800;
+    let game_height = 600;
+    let paddle_size = Vector2f::new(25., 100.);
+    let ball_radius = 10.;
     let context_settings = ContextSettings { antialiasing_level: aa_level, ..Default::default() };
 
     // Create the window of the application
@@ -77,11 +77,11 @@ fn main() {
 
     // Define the paddles properties
     let mut ai_timer = Clock::start();
-    let ai_time: Time = Time::seconds(0.1);
+    let ai_time = Time::seconds(0.1);
     let paddle_speed = 400.;
     let mut right_paddle_speed = 0.;
     let ball_speed = 400.;
-    let mut ball_angle: f32 = 0.; // to be changed later
+    let mut ball_angle = 0.;
 
     let mut clock = Clock::start();
     let mut is_playing = false;
