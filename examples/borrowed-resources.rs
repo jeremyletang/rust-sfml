@@ -2,7 +2,7 @@ extern crate sfml;
 
 use sfml::graphics::{CircleShape, Color, ConvexShape, Font, RenderTarget, RenderWindow, Sprite,
                      Text, Texture, Transformable};
-use sfml::window::{Key, Event, style};
+use sfml::window::{Event, Key, style};
 
 fn main() {
     let mut window = RenderWindow::new((800, 600),

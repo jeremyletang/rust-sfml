@@ -1,9 +1,9 @@
 use std::str;
 use std::marker::PhantomData;
 
-use system::raw_conv::{Raw, FromRaw};
-use graphics::{Drawable, Transformable, RenderTarget, Font, FontRef, FloatRect, Color, Transform,
-               RenderStates, TextStyle};
+use system::raw_conv::{FromRaw, Raw};
+use graphics::{Color, Drawable, FloatRect, Font, FontRef, RenderStates, RenderTarget, TextStyle,
+               Transform, Transformable};
 use system::Vector2f;
 
 use csfml_graphics_sys as ffi;

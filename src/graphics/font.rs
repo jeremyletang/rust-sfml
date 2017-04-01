@@ -4,8 +4,8 @@ use std::ffi::{CStr, CString};
 use std::ops::Deref;
 use std::borrow::{Borrow, ToOwned};
 
-use system::raw_conv::{Raw, RawMut, FromRaw};
-use graphics::{TextureRef, Glyph};
+use system::raw_conv::{FromRaw, Raw, RawMut};
+use graphics::{Glyph, TextureRef};
 
 use csfml_system_sys::sfBool;
 use csfml_graphics_sys as ffi;

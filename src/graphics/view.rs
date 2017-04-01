@@ -1,4 +1,4 @@
-use system::raw_conv::{Raw, FromRaw};
+use system::raw_conv::{FromRaw, Raw};
 use graphics::FloatRect;
 use system::Vector2f;
 use std::ops::Deref;

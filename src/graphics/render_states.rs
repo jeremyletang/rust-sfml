@@ -1,7 +1,7 @@
 use std::ptr;
 
 use system::raw_conv::Raw;
-use graphics::{BlendMode, Shader, Transform, TextureRef};
+use graphics::{BlendMode, Shader, TextureRef, Transform};
 
 use csfml_graphics_sys as ffi;
 

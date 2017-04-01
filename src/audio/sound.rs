@@ -1,10 +1,10 @@
 use std::mem;
 use std::marker::PhantomData;
 
-use audio::{SoundStatus, SoundBufferRef, SoundSource};
+use audio::{SoundBufferRef, SoundSource, SoundStatus};
 use system::Time;
 use system::Vector3f;
-use system::raw_conv::{Raw, FromRaw};
+use system::raw_conv::{FromRaw, Raw};
 
 use csfml_system_sys::sfBool;
 use csfml_audio_sys as ffi;

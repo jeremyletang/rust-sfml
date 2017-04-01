@@ -1,6 +1,6 @@
-use std::{ptr, mem};
+use std::{mem, ptr};
 
-use system::raw_conv::{Raw, RawMut, FromRaw};
+use system::raw_conv::{FromRaw, Raw, RawMut};
 use network::{IpAddress, Packet, SocketStatus};
 use system::Time;
 

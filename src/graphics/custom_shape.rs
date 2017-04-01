@@ -2,9 +2,9 @@ use std::os::raw::c_void;
 use std::ptr;
 use std::marker::PhantomData;
 
-use system::raw_conv::{Raw, FromRaw};
-use graphics::{Drawable, Transformable, RenderTarget, RenderStates, TextureRef, Color, Transform,
-               IntRect, FloatRect, Shape};
+use system::raw_conv::{FromRaw, Raw};
+use graphics::{Color, Drawable, FloatRect, IntRect, RenderStates, RenderTarget, Shape, TextureRef,
+               Transform, Transformable};
 use system::Vector2f;
 use csfml_graphics_sys as ffi;
 use csfml_system_sys::{sfBool, sfTrue, sfVector2f};

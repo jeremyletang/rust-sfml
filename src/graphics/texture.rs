@@ -4,8 +4,8 @@ use std::io::{Read, Seek};
 use std::ops::Deref;
 use std::borrow::{Borrow, ToOwned};
 
-use system::raw_conv::{Raw, FromRaw};
-use graphics::{RenderWindow, Image, IntRect};
+use system::raw_conv::{FromRaw, Raw};
+use graphics::{Image, IntRect, RenderWindow};
 use system::Vector2u;
 use inputstream::InputStream;
 use window::Window;

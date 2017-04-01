@@ -1,7 +1,7 @@
 extern crate sfml;
 
 use sfml::graphics::{Color, CustomShape, CustomShapePoints, RenderTarget, RenderWindow, Shape};
-use sfml::window::{Key, Event, style};
+use sfml::window::{Event, Key, style};
 use sfml::system::Vector2f;
 
 #[derive(Clone, Copy)]

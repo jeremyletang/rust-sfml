@@ -60,7 +60,7 @@ impl Context {
 
 #[test]
 fn test_settings() {
-    use window::{VideoMode, Window, Context};
+    use window::{Context, VideoMode, Window};
     use std::thread;
     let video_mode = VideoMode::new(32, 32, 32);
 

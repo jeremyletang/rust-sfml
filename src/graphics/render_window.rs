@@ -1,9 +1,9 @@
-use system::raw_conv::{Raw, FromRaw};
-use window::{ContextSettings, VideoMode, Event, Style};
+use system::raw_conv::{FromRaw, Raw};
+use window::{ContextSettings, Event, Style, VideoMode};
 use system::{Vector2f, Vector2i, Vector2u};
-use graphics::{Drawable, Color, CircleShape, RectangleShape, Text, Sprite, VertexArray,
-               RenderStates, View, ViewRef, IntRect, RenderTarget, Vertex, PrimitiveType,
-               ConvexShape, CustomShape};
+use graphics::{CircleShape, Color, ConvexShape, CustomShape, Drawable, IntRect, PrimitiveType,
+               RectangleShape, RenderStates, RenderTarget, Sprite, Text, Vertex, VertexArray, View,
+               ViewRef};
 
 use csfml_system_sys::*;
 use csfml_graphics_sys as ffi;

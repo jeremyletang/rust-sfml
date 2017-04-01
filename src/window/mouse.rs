@@ -27,7 +27,7 @@
 
 use csfml_window_sys as ffi;
 use ext::sf_bool_ext::SfBoolExt;
-use system::raw_conv::{Raw, FromRaw};
+use system::raw_conv::{FromRaw, Raw};
 use system::Vector2i;
 
 /// Mouse buttons.

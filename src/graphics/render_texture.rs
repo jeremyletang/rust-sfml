@@ -1,8 +1,8 @@
-use system::raw_conv::{Raw, FromRaw};
+use system::raw_conv::{FromRaw, Raw};
 use system::{Vector2f, Vector2i, Vector2u};
-use graphics::{Drawable, View, ViewRef, Color, IntRect, TextureRef, CircleShape, RectangleShape,
-               Text, RenderStates, Sprite, ConvexShape, VertexArray, RenderTarget, Vertex,
-               PrimitiveType, CustomShape};
+use graphics::{CircleShape, Color, ConvexShape, CustomShape, Drawable, IntRect, PrimitiveType,
+               RectangleShape, RenderStates, RenderTarget, Sprite, Text, TextureRef, Vertex,
+               VertexArray, View, ViewRef};
 
 use csfml_system_sys::sfBool;
 use csfml_graphics_sys as ffi;

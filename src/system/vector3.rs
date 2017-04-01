@@ -1,5 +1,5 @@
-use std::ops::{Add, Sub, Mul, Div, Neg, AddAssign, SubAssign, MulAssign, DivAssign};
-use system::raw_conv::{Raw, FromRaw};
+use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssign};
+use system::raw_conv::{FromRaw, Raw};
 
 /// Utility type for manipulating 3-dimensional vectors.
 ///

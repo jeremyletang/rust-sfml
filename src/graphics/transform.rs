@@ -1,6 +1,6 @@
 use system::Vector2f;
 use graphics::FloatRect;
-use system::raw_conv::{Raw, FromRaw};
+use system::raw_conv::{FromRaw, Raw};
 
 use csfml_graphics_sys as ffi;
 

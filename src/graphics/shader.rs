@@ -3,7 +3,7 @@ use std::ffi::CString;
 use std::marker::PhantomData;
 
 use system::raw_conv::Raw;
-use graphics::{glsl, TextureRef};
+use graphics::{TextureRef, glsl};
 
 use csfml_graphics_sys as ffi;
 

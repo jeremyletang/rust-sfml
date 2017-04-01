@@ -1,9 +1,9 @@
 use std::ptr;
 use std::marker::PhantomData;
 
-use system::raw_conv::{Raw, FromRaw};
-use graphics::{Drawable, Transformable, FloatRect, IntRect, Color, RenderTarget, Transform,
-               RenderStates, TextureRef};
+use system::raw_conv::{FromRaw, Raw};
+use graphics::{Color, Drawable, FloatRect, IntRect, RenderStates, RenderTarget, TextureRef,
+               Transform, Transformable};
 use system::Vector2f;
 
 use csfml_system_sys::{sfBool, sfTrue};

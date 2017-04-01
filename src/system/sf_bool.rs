@@ -1,4 +1,4 @@
-use csfml_system_sys::{sfBool, sfTrue, sfFalse};
+use csfml_system_sys::{sfBool, sfFalse, sfTrue};
 
 #[repr(C)]
 #[derive(Clone, Copy, Debug, Eq, PartialEq, PartialOrd, Ord)]

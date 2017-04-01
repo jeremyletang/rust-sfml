@@ -1,4 +1,4 @@
-use graphics::{Drawable, Transformable, TextureRef, IntRect, FloatRect, Color};
+use graphics::{Color, Drawable, FloatRect, IntRect, TextureRef, Transformable};
 use system::Vector2f;
 
 /// Trait for textured shapes with outline.

@@ -1,10 +1,10 @@
 use std::ptr;
 use std::marker::PhantomData;
 
-use system::raw_conv::{Raw, FromRaw};
+use system::raw_conv::{FromRaw, Raw};
 use system::Vector2f;
-use graphics::{Drawable, Shape, Transformable, FloatRect, IntRect, Color, TextureRef, RenderTarget,
-               Transform, RenderStates};
+use graphics::{Color, Drawable, FloatRect, IntRect, RenderStates, RenderTarget, Shape, TextureRef,
+               Transform, Transformable};
 
 use csfml_system_sys::{sfBool, sfTrue};
 use csfml_graphics_sys as ffi;

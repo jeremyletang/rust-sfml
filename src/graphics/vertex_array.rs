@@ -1,8 +1,8 @@
 use std::mem;
 use std::ops::{Index, IndexMut};
 
-use system::raw_conv::{Raw, FromRaw};
-use graphics::{Drawable, Vertex, FloatRect, PrimitiveType, RenderTarget, RenderStates};
+use system::raw_conv::{FromRaw, Raw};
+use graphics::{Drawable, FloatRect, PrimitiveType, RenderStates, RenderTarget, Vertex};
 
 use csfml_graphics_sys::*;
 

@@ -1,5 +1,5 @@
-use graphics::{Drawable, Color, View, ViewRef, RenderStates, CircleShape, RectangleShape, Text,
-               Sprite, VertexArray, IntRect, Vertex, PrimitiveType, ConvexShape, CustomShape};
+use graphics::{CircleShape, Color, ConvexShape, CustomShape, Drawable, IntRect, PrimitiveType,
+               RectangleShape, RenderStates, Sprite, Text, Vertex, VertexArray, View, ViewRef};
 use system::{Vector2f, Vector2i, Vector2u};
 
 /// Trait for all render targets (window, texture, ...)

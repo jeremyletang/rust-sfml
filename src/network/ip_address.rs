@@ -1,7 +1,7 @@
-use std::ffi::{CString, CStr};
+use std::ffi::{CStr, CString};
 use std::str;
 
-use system::raw_conv::{Raw, FromRaw};
+use system::raw_conv::{FromRaw, Raw};
 use system::Time;
 
 use csfml_network_sys as ffi;

@@ -1,7 +1,7 @@
 use std::ffi::CString;
 use std::borrow::{Borrow, ToOwned};
 
-use system::raw_conv::{Raw, FromRaw};
+use system::raw_conv::{FromRaw, Raw};
 use system::Time;
 
 use csfml_audio_sys as ffi;

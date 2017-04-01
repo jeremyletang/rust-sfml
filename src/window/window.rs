@@ -1,7 +1,7 @@
 use std::marker::PhantomData;
 
-use system::raw_conv::{Raw, FromRaw};
-use window::{Event, VideoMode, ContextSettings, Style};
+use system::raw_conv::{FromRaw, Raw};
+use window::{ContextSettings, Event, Style, VideoMode};
 use system::{Vector2i, Vector2u};
 use csfml_system_sys::sfBool;
 use ext::sf_bool_ext::SfBoolExt;

@@ -1,7 +1,7 @@
-use std::{ptr, mem};
+use std::{mem, ptr};
 
-use system::raw_conv::{Raw, RawMut, FromRaw};
-use network::{Packet, IpAddress, SocketStatus};
+use system::raw_conv::{FromRaw, Raw, RawMut};
+use network::{IpAddress, Packet, SocketStatus};
 
 use csfml_system_sys::sfBool;
 use csfml_network_sys as ffi;

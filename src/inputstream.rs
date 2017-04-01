@@ -1,4 +1,4 @@
-use std::os::raw::{c_void, c_longlong};
+use std::os::raw::{c_longlong, c_void};
 use std::io::{Read, Seek, SeekFrom};
 use std::ptr;
 use csfml_system_sys::sfInputStream;

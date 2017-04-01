@@ -2,11 +2,11 @@ use std::mem;
 use std::ffi::CString;
 use std::io::{Read, Seek};
 
-use audio::{SoundStatus, SoundSource};
+use audio::{SoundSource, SoundStatus};
 use system::Time;
 use system::Vector3f;
 use inputstream::InputStream;
-use system::raw_conv::{Raw, FromRaw};
+use system::raw_conv::{FromRaw, Raw};
 
 use csfml_system_sys::sfBool;
 use csfml_audio_sys as ffi;

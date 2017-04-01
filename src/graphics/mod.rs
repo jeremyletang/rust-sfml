@@ -2,8 +2,8 @@
 
 pub use graphics::render_target::RenderTarget;
 pub use graphics::render_states::RenderStates;
-pub use graphics::render_window::{RenderWindow, Events};
-pub use graphics::rect::{Rect, FloatRect, IntRect};
+pub use graphics::render_window::{Events, RenderWindow};
+pub use graphics::rect::{FloatRect, IntRect, Rect};
 pub use graphics::texture::{Texture, TextureRef};
 pub use graphics::blend_mode::BlendMode;
 pub use graphics::transform::Transform;

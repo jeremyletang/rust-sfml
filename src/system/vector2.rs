@@ -1,4 +1,4 @@
-use std::ops::{Add, Div, Mul, Sub, Neg, AddAssign, SubAssign, MulAssign, DivAssign};
+use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssign};
 use system::raw_conv::{FromRaw, Raw};
 
 /// Utility type for manipulating 2-dimensional vectors.

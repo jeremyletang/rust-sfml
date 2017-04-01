@@ -1,7 +1,7 @@
 use std::ffi::CString;
 use std::slice;
 
-use system::raw_conv::{Raw, FromRaw};
+use system::raw_conv::{FromRaw, Raw};
 use system::Vector2u;
 use graphics::{Color, IntRect};
 
