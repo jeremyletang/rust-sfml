@@ -1,12 +1,11 @@
-use system::raw_conv::{FromRaw, Raw};
-use system::{Vector2f, Vector2i, Vector2u};
+use csfml_graphics_sys as ffi;
+use csfml_system_sys::sfBool;
+use ext::sf_bool_ext::SfBoolExt;
 use graphics::{CircleShape, Color, ConvexShape, CustomShape, Drawable, IntRect, PrimitiveType,
                RectangleShape, RenderStates, RenderTarget, Sprite, Text, TextureRef, Vertex,
                VertexArray, View, ViewRef};
-
-use csfml_system_sys::sfBool;
-use csfml_graphics_sys as ffi;
-use ext::sf_bool_ext::SfBoolExt;
+use system::{Vector2f, Vector2i, Vector2u};
+use system::raw_conv::{FromRaw, Raw};
 
 /// Target for off-screen 2D rendering into a texture
 pub struct RenderTexture {

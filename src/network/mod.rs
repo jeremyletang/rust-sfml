@@ -8,14 +8,14 @@
 //! much maintentance. Use it at your own risk!
 //! Consider using native Rust solutions for networking.
 
-pub use network::ip_address::IpAddress;
-pub use network::packet::Packet;
-pub use network::tcp_socket::TcpSocket;
-pub use network::udp_socket::UdpSocket;
-pub use network::tcp_listener::TcpListener;
-pub use network::socket_status::SocketStatus;
 pub use network::ftp::Ftp;
 pub use network::http::Http;
+pub use network::ip_address::IpAddress;
+pub use network::packet::Packet;
+pub use network::socket_status::SocketStatus;
+pub use network::tcp_listener::TcpListener;
+pub use network::tcp_socket::TcpSocket;
+pub use network::udp_socket::UdpSocket;
 
 mod ip_address;
 mod packet;

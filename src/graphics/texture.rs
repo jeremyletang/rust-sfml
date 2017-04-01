@@ -1,18 +1,16 @@
-use std::ptr;
+use csfml_graphics_sys as ffi;
+use csfml_system_sys::sfBool;
+use ext::sf_bool_ext::SfBoolExt;
+use graphics::{Image, IntRect, RenderWindow};
+use inputstream::InputStream;
+use std::borrow::{Borrow, ToOwned};
 use std::ffi::CString;
 use std::io::{Read, Seek};
 use std::ops::Deref;
-use std::borrow::{Borrow, ToOwned};
-
-use system::raw_conv::{FromRaw, Raw};
-use graphics::{Image, IntRect, RenderWindow};
+use std::ptr;
 use system::Vector2u;
-use inputstream::InputStream;
+use system::raw_conv::{FromRaw, Raw};
 use window::Window;
-
-use csfml_system_sys::sfBool;
-use csfml_graphics_sys as ffi;
-use ext::sf_bool_ext::SfBoolExt;
 
 /// Image used for drawing
 ///

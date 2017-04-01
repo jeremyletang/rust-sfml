@@ -1,10 +1,9 @@
-use system::raw_conv::{FromRaw, Raw};
-use graphics::FloatRect;
-use system::Vector2f;
-use std::ops::Deref;
-use std::borrow::{Borrow, ToOwned};
-
 use csfml_graphics_sys as ffi;
+use graphics::FloatRect;
+use std::borrow::{Borrow, ToOwned};
+use std::ops::Deref;
+use system::Vector2f;
+use system::raw_conv::{FromRaw, Raw};
 
 /// 2D camera that defines what region is shown on screen
 ///

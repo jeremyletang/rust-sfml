@@ -1,14 +1,12 @@
-use std::mem;
-use std::marker::PhantomData;
-
 use audio::{SoundBufferRef, SoundSource, SoundStatus};
+use csfml_audio_sys as ffi;
+use csfml_system_sys::sfBool;
+use ext::sf_bool_ext::SfBoolExt;
+use std::marker::PhantomData;
+use std::mem;
 use system::Time;
 use system::Vector3f;
 use system::raw_conv::{FromRaw, Raw};
-
-use csfml_system_sys::sfBool;
-use csfml_audio_sys as ffi;
-use ext::sf_bool_ext::SfBoolExt;
 
 /// Regular sound that can be played in the audio environment.
 ///

@@ -1,10 +1,8 @@
+use csfml_graphics_sys::*;
+use graphics::{Drawable, FloatRect, PrimitiveType, RenderStates, RenderTarget, Vertex};
 use std::mem;
 use std::ops::{Index, IndexMut};
-
 use system::raw_conv::{FromRaw, Raw};
-use graphics::{Drawable, FloatRect, PrimitiveType, RenderStates, RenderTarget, Vertex};
-
-use csfml_graphics_sys::*;
 
 /// Define a set of one or more 2D primitives
 pub struct VertexArray {

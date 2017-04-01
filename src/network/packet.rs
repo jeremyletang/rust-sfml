@@ -1,10 +1,8 @@
-use std::ffi::CString;
-
-use system::raw_conv::{FromRaw, Raw, RawMut};
-
-use csfml_system_sys::sfBool;
 use csfml_network_sys as ffi;
+use csfml_system_sys::sfBool;
 use ext::sf_bool_ext::SfBoolExt;
+use std::ffi::CString;
+use system::raw_conv::{FromRaw, Raw, RawMut};
 
 /// Utility type to build blocks of data to transfer over the network.
 pub struct Packet {

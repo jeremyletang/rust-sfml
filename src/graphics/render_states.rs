@@ -1,9 +1,7 @@
-use std::ptr;
-
-use system::raw_conv::Raw;
-use graphics::{BlendMode, Shader, TextureRef, Transform};
-
 use csfml_graphics_sys as ffi;
+use graphics::{BlendMode, Shader, TextureRef, Transform};
+use std::ptr;
+use system::raw_conv::Raw;
 
 /// Define the states used for drawing to a `RenderTarget`.
 ///

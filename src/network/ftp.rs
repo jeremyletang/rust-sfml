@@ -1,15 +1,13 @@
 //! A FTP client.
 
-use std::mem;
-use std::ffi::{CStr, CString};
-use std::str;
-
-use system::raw_conv::Raw;
-use network::IpAddress;
-use system::Time;
-
 use csfml_network_sys as ffi;
 use ext::sf_bool_ext::SfBoolExt;
+use network::IpAddress;
+use std::ffi::{CStr, CString};
+use std::mem;
+use std::str;
+use system::Time;
+use system::raw_conv::Raw;
 
 /// The differents FTP modes availables.
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]

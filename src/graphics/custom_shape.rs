@@ -1,14 +1,13 @@
-use std::os::raw::c_void;
-use std::ptr;
-use std::marker::PhantomData;
-
-use system::raw_conv::{FromRaw, Raw};
-use graphics::{Color, Drawable, FloatRect, IntRect, RenderStates, RenderTarget, Shape, TextureRef,
-               Transform, Transformable};
-use system::Vector2f;
 use csfml_graphics_sys as ffi;
 use csfml_system_sys::{sfBool, sfTrue, sfVector2f};
 use ext::sf_bool_ext::SfBoolExt;
+use graphics::{Color, Drawable, FloatRect, IntRect, RenderStates, RenderTarget, Shape, TextureRef,
+               Transform, Transformable};
+use std::marker::PhantomData;
+use std::os::raw::c_void;
+use std::ptr;
+use system::Vector2f;
+use system::raw_conv::{FromRaw, Raw};
 
 /// The points of a custom shape.
 pub trait CustomShapePoints {

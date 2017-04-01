@@ -1,11 +1,9 @@
-use std::{mem, ptr};
-
-use system::raw_conv::{FromRaw, Raw, RawMut};
-use network::{IpAddress, Packet, SocketStatus};
-
-use csfml_system_sys::sfBool;
 use csfml_network_sys as ffi;
+use csfml_system_sys::sfBool;
 use ext::sf_bool_ext::SfBoolExt;
+use network::{IpAddress, Packet, SocketStatus};
+use std::{mem, ptr};
+use system::raw_conv::{FromRaw, Raw, RawMut};
 
 /// Specialized socket using the UDP protocol.
 pub struct UdpSocket {

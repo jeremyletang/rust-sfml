@@ -1,15 +1,12 @@
-use std::ptr;
-use std::ffi::CString;
-use std::marker::PhantomData;
-
-use system::raw_conv::Raw;
-use graphics::{TextureRef, glsl};
-
 use csfml_graphics_sys as ffi;
-
-use std::io::{Read, Seek};
-use inputstream::InputStream;
 use ext::sf_bool_ext::SfBoolExt;
+use graphics::{TextureRef, glsl};
+use inputstream::InputStream;
+use std::ffi::CString;
+use std::io::{Read, Seek};
+use std::marker::PhantomData;
+use std::ptr;
+use system::raw_conv::Raw;
 
 /// Shader type (vertex, geometry and fragment).
 ///

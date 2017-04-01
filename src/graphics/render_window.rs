@@ -1,15 +1,14 @@
-use system::raw_conv::{FromRaw, Raw};
-use window::{ContextSettings, Event, Style, VideoMode};
-use system::{Vector2f, Vector2i, Vector2u};
+use csfml_graphics_sys as ffi;
+use csfml_system_sys::*;
+use ext;
+use ext::sf_bool_ext::SfBoolExt;
 use graphics::{CircleShape, Color, ConvexShape, CustomShape, Drawable, IntRect, PrimitiveType,
                RectangleShape, RenderStates, RenderTarget, Sprite, Text, Vertex, VertexArray, View,
                ViewRef};
-
-use csfml_system_sys::*;
-use csfml_graphics_sys as ffi;
 use std::marker::PhantomData;
-use ext;
-use ext::sf_bool_ext::SfBoolExt;
+use system::{Vector2f, Vector2i, Vector2u};
+use system::raw_conv::{FromRaw, Raw};
+use window::{ContextSettings, Event, Style, VideoMode};
 
 /// Window that can serve as a target for 2D drawing.
 ///

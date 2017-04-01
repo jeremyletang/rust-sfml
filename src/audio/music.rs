@@ -1,16 +1,14 @@
-use std::mem;
+use audio::{SoundSource, SoundStatus};
+use csfml_audio_sys as ffi;
+use csfml_system_sys::sfBool;
+use ext::sf_bool_ext::SfBoolExt;
+use inputstream::InputStream;
 use std::ffi::CString;
 use std::io::{Read, Seek};
-
-use audio::{SoundSource, SoundStatus};
+use std::mem;
 use system::Time;
 use system::Vector3f;
-use inputstream::InputStream;
 use system::raw_conv::{FromRaw, Raw};
-
-use csfml_system_sys::sfBool;
-use csfml_audio_sys as ffi;
-use ext::sf_bool_ext::SfBoolExt;
 
 /// Streamed music played from an audio file.
 ///

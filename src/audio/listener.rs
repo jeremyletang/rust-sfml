@@ -24,8 +24,8 @@
 //! listener::set_global_volume(50.);
 //! ```
 
-use system::Vector3f;
 use csfml_audio_sys as ffi;
+use system::Vector3f;
 use system::raw_conv::{FromRaw, Raw};
 
 /// Change the global volume of all the sounds and musics

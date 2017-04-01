@@ -1,7 +1,7 @@
-use std::os::raw::{c_longlong, c_void};
-use std::io::{Read, Seek, SeekFrom};
-use std::ptr;
 use csfml_system_sys::sfInputStream;
+use std::io::{Read, Seek, SeekFrom};
+use std::os::raw::{c_longlong, c_void};
+use std::ptr;
 
 unsafe extern "C" fn read<T: Read + Seek>(data: *mut c_void,
                                           size: c_longlong,

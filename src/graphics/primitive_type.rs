@@ -1,5 +1,5 @@
-use system::raw_conv::{FromRaw, Raw};
 use csfml_graphics_sys::sfPrimitiveType;
+use system::raw_conv::{FromRaw, Raw};
 
 /// Types of primitives that a `VertexArray` can render.
 ///

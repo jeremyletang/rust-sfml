@@ -1,12 +1,10 @@
-use std::str;
-use std::marker::PhantomData;
-
-use system::raw_conv::{FromRaw, Raw};
+use csfml_graphics_sys as ffi;
 use graphics::{Color, Drawable, FloatRect, Font, FontRef, RenderStates, RenderTarget, TextStyle,
                Transform, Transformable};
+use std::marker::PhantomData;
+use std::str;
 use system::Vector2f;
-
-use csfml_graphics_sys as ffi;
+use system::raw_conv::{FromRaw, Raw};
 
 /// Graphical text
 ///

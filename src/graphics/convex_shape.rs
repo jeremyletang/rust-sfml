@@ -1,14 +1,12 @@
-use std::ptr;
-use std::marker::PhantomData;
-
-use system::raw_conv::{FromRaw, Raw};
+use csfml_graphics_sys as ffi;
+use csfml_system_sys::{sfBool, sfTrue};
+use ext::sf_bool_ext::SfBoolExt;
 use graphics::{Color, Drawable, FloatRect, IntRect, RenderStates, RenderTarget, Shape, TextureRef,
                Transform, Transformable};
+use std::marker::PhantomData;
+use std::ptr;
 use system::Vector2f;
-
-use csfml_system_sys::{sfBool, sfTrue};
-use csfml_graphics_sys as ffi;
-use ext::sf_bool_ext::SfBoolExt;
+use system::raw_conv::{FromRaw, Raw};
 
 /// Specialized shape representing a convex polygon
 ///

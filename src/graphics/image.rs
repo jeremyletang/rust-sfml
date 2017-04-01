@@ -1,16 +1,13 @@
-use std::ffi::CString;
-use std::slice;
-
-use system::raw_conv::{FromRaw, Raw};
-use system::Vector2u;
-use graphics::{Color, IntRect};
-
-use csfml_system_sys::sfBool;
 use csfml_graphics_sys as ffi;
-
-use std::io::{Read, Seek};
-use inputstream::InputStream;
+use csfml_system_sys::sfBool;
 use ext::sf_bool_ext::SfBoolExt;
+use graphics::{Color, IntRect};
+use inputstream::InputStream;
+use std::ffi::CString;
+use std::io::{Read, Seek};
+use std::slice;
+use system::Vector2u;
+use system::raw_conv::{FromRaw, Raw};
 
 /// Loading, manipulating and saving images.
 pub struct Image {

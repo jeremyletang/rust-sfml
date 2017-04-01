@@ -1,14 +1,12 @@
-use std::ffi::CString;
-use std::borrow::{Borrow, ToOwned};
-
-use system::raw_conv::{FromRaw, Raw};
-use system::Time;
-
 use csfml_audio_sys as ffi;
 use ext::sf_bool_ext::SfBoolExt;
-use std::ops::Deref;
 use inputstream::InputStream;
+use std::borrow::{Borrow, ToOwned};
+use std::ffi::CString;
 use std::io::{Read, Seek};
+use std::ops::Deref;
+use system::Time;
+use system::raw_conv::{FromRaw, Raw};
 
 
 /// Storage for audio samples defining a sound.

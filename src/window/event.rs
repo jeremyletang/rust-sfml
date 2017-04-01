@@ -1,6 +1,6 @@
+use window::joystick::Axis;
 use window::keyboard::Key;
 use window::mouse::{Button, Wheel};
-use window::joystick::Axis;
 
 /// Defines a system event and its parameters.
 ///

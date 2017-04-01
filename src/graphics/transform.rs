@@ -1,8 +1,7 @@
-use system::Vector2f;
-use graphics::FloatRect;
-use system::raw_conv::{FromRaw, Raw};
-
 use csfml_graphics_sys as ffi;
+use graphics::FloatRect;
+use system::Vector2f;
+use system::raw_conv::{FromRaw, Raw};
 
 /// Define a 3x3 transform matrix.
 ///

@@ -1,18 +1,13 @@
-//! Type for loading and manipulating character fonts
-
-use std::ffi::{CStr, CString};
-use std::ops::Deref;
-use std::borrow::{Borrow, ToOwned};
-
-use system::raw_conv::{FromRaw, Raw, RawMut};
-use graphics::{Glyph, TextureRef};
-
-use csfml_system_sys::sfBool;
 use csfml_graphics_sys as ffi;
-
-use std::io::{Read, Seek};
-use inputstream::InputStream;
+use csfml_system_sys::sfBool;
 use ext::sf_bool_ext::SfBoolExt;
+use graphics::{Glyph, TextureRef};
+use inputstream::InputStream;
+use std::borrow::{Borrow, ToOwned};
+use std::ffi::{CStr, CString};
+use std::io::{Read, Seek};
+use std::ops::Deref;
+use system::raw_conv::{FromRaw, Raw, RawMut};
 
 /// Type for loading and manipulating character fonts
 pub struct Font {

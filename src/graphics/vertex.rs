@@ -1,6 +1,6 @@
+use csfml_graphics_sys as ffi;
 use graphics::Color;
 use system::Vector2f;
-use csfml_graphics_sys as ffi;
 use system::raw_conv::Raw;
 
 /// Define a point with color and texture coordinates.

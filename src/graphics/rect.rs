@@ -1,5 +1,5 @@
-use system::Vector2;
 use std::ops::{Add, Sub};
+use system::Vector2;
 use system::raw_conv::{FromRaw, Raw};
 
 /// Utility type for manipulating 2D axis-aligned rectangles.

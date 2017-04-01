@@ -1,13 +1,11 @@
-use std::marker::PhantomData;
-
-use system::raw_conv::{FromRaw, Raw};
-use window::{ContextSettings, Event, Style, VideoMode};
-use system::{Vector2i, Vector2u};
 use csfml_system_sys::sfBool;
-use ext::sf_bool_ext::SfBoolExt;
-
 use csfml_window_sys as ffi;
 use ext;
+use ext::sf_bool_ext::SfBoolExt;
+use std::marker::PhantomData;
+use system::{Vector2i, Vector2u};
+use system::raw_conv::{FromRaw, Raw};
+use window::{ContextSettings, Event, Style, VideoMode};
 
 /// Window that serves as a target for OpenGL rendering.
 ///

@@ -1,8 +1,6 @@
-use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Rem, RemAssign, Sub, SubAssign};
-
-use system::raw_conv::{FromRaw, Raw};
-
 use csfml_system_sys::*;
+use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Rem, RemAssign, Sub, SubAssign};
+use system::raw_conv::{FromRaw, Raw};
 
 /// Represents a time value.
 ///

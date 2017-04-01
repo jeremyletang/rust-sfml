@@ -1,14 +1,14 @@
 extern crate sfml;
 extern crate rand;
 
+use rand::{Rng, thread_rng};
+use sfml::audio::{Sound, SoundBuffer};
 use sfml::graphics::{CircleShape, Color, Font, RectangleShape, RenderTarget, RenderWindow, Shape,
                      Text, Transformable};
-use sfml::window::{ContextSettings, Event, Key, style};
 use sfml::system::{Clock, Time, Vector2f};
-use sfml::audio::{Sound, SoundBuffer};
-use rand::{Rng, thread_rng};
-use std::f32::consts::PI;
+use sfml::window::{ContextSettings, Event, Key, style};
 use std::env;
+use std::f32::consts::PI;
 
 fn main() {
     let mut rng = thread_rng();

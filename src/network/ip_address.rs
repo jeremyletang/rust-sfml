@@ -1,10 +1,8 @@
+use csfml_network_sys as ffi;
 use std::ffi::{CStr, CString};
 use std::str;
-
-use system::raw_conv::{FromRaw, Raw};
 use system::Time;
-
-use csfml_network_sys as ffi;
+use system::raw_conv::{FromRaw, Raw};
 
 /// Encapsulate an IPv4 network address.
 #[derive(Clone, Copy)]

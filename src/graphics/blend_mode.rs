@@ -1,4 +1,5 @@
 //! Available blending modes for drawing
+
 use csfml_graphics_sys as ffi;
 use system::raw_conv::{FromRaw, Raw};
 
