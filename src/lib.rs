@@ -19,7 +19,7 @@
 //! ```no_run
 //! extern crate sfml;
 //!
-//! use sfml::window::{ContextSettings, VideoMode, Event, style};
+//! use sfml::window::{Event, style};
 //! use sfml::graphics::{CircleShape, Color, RenderTarget, RenderWindow, Shape, Transformable};
 //!
 //! fn main() {
@@ -27,7 +27,7 @@
 //!     let mut window = RenderWindow::new((800, 600),
 //!                                        "SFML Example",
 //!                                        style::CLOSE,
-//!                                        &ContextSettings::default());
+//!                                        &Default::default());
 //!
 //!     // Create a CircleShape
 //!     let mut circle = CircleShape::new();
