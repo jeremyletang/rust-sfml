@@ -95,27 +95,24 @@ fn main() {
                 Event::KeyPressed { code, .. } => {
                     match code {
                         Key::Escape => return,
-                        Key::Space => {
-                            if !is_playing {
-                                // (re)start the game
-                                is_playing = true;
-                                clock.restart();
-                                // Reset the position of the paddles and ball
-                                left_paddle.set_position((10. + paddle_size.x / 2.,
-                                                          game_height as f32 / 2.));
-                                right_paddle.set_position((game_width as f32 - 10. -
-                                                           paddle_size.x / 2.,
-                                                           game_height as f32 / 2.));
-                                ball.set_position((game_width as f32 / 2.,
-                                                   game_height as f32 / 2.));
-                                // Reset the ball angle
-                                loop {
-                                    // Make sure the ball initial angle is not too much vertical
-                                    ball_angle = rng.gen_range(0., 360.) * 2. * PI / 360.;
+                        Key::Space if !is_playing => {
+                            // (re)start the game
+                            is_playing = true;
+                            clock.restart();
+                            // Reset the position of the paddles and ball
+                            left_paddle.set_position((10. + paddle_size.x / 2.,
+                                                      game_height as f32 / 2.));
+                            right_paddle.set_position((game_width as f32 - 10. -
+                                                       paddle_size.x / 2.,
+                                                       game_height as f32 / 2.));
+                            ball.set_position((game_width as f32 / 2., game_height as f32 / 2.));
+                            // Reset the ball angle
+                            loop {
+                                // Make sure the ball initial angle is not too much vertical
+                                ball_angle = rng.gen_range(0., 360.) * 2. * PI / 360.;
 
-                                    if ball_angle.cos().abs() >= 0.7 {
-                                        break;
-                                    }
+                                if ball_angle.cos().abs() >= 0.7 {
+                                    break;
                                 }
                             }
                         }
