@@ -5,12 +5,15 @@ use sfml::graphics::{CircleShape, Color, Font, RectangleShape, RenderTarget, Ren
                      Text, Transformable};
 use sfml::window::{ContextSettings, Key, Event, style};
 use sfml::system::{Clock, Time, Vector2f};
-use sfml::audio::{Sound, SoundBuffer, SoundSource};
+use sfml::audio::{Sound, SoundBuffer};
 use rand::{Rng, thread_rng};
 use std::f32::consts::PI;
 use std::env;
 
 fn main() {
+    let mut rng = thread_rng();
+
+    // Optional antialiasing
     let mut aa_level = 0;
 
     if let Some(arg) = env::args().nth(1) {
@@ -25,9 +28,9 @@ fn main() {
     let game_height = 600;
     let paddle_size = Vector2f::new(25., 100.);
     let ball_radius = 10.;
-    let context_settings = ContextSettings { antialiasing_level: aa_level, ..Default::default() };
 
     // Create the window of the application
+    let context_settings = ContextSettings { antialiasing_level: aa_level, ..Default::default() };
     let mut window = RenderWindow::new((game_width, game_height),
                                        "SFML Pong",
                                        style::CLOSE,
@@ -36,29 +39,27 @@ fn main() {
 
     // Load the sounds used in the game
     let ball_soundbuffer = SoundBuffer::from_file("resources/ball.wav").unwrap();
-
     let mut ball_sound = Sound::with_buffer(&ball_soundbuffer);
-    ball_sound.set_volume(100.);
 
     // Create the left paddle
     let mut left_paddle = RectangleShape::new();
-    left_paddle.set_size(paddle_size - 3f32);
+    left_paddle.set_size(paddle_size - 3.);
     left_paddle.set_outline_thickness(3.);
     left_paddle.set_outline_color(&Color::black());
     left_paddle.set_fill_color(&Color::rgb(100, 100, 200));
-    left_paddle.set_origin(paddle_size / 2f32);
+    left_paddle.set_origin(paddle_size / 2.);
 
     // Create the right paddle
     let mut right_paddle = RectangleShape::new();
-    right_paddle.set_size(paddle_size - 3f32);
+    right_paddle.set_size(paddle_size - 3.);
     right_paddle.set_outline_thickness(3.);
     right_paddle.set_outline_color(&Color::black());
     right_paddle.set_fill_color(&Color::rgb(200, 100, 100));
-    right_paddle.set_origin(paddle_size / 2f32);
+    right_paddle.set_origin(paddle_size / 2.);
 
     // Create the ball
     let mut ball = CircleShape::new();
-    ball.set_radius(ball_radius as f32 - 3.);
+    ball.set_radius(ball_radius - 3.);
     ball.set_outline_thickness(3.);
     ball.set_outline_color(&Color::black());
     ball.set_fill_color(&Color::white());
@@ -85,8 +86,6 @@ fn main() {
 
     let mut clock = Clock::start();
     let mut is_playing = false;
-
-    let mut rng = thread_rng();
 
     loop {
         for event in window.events() {
