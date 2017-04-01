@@ -60,11 +60,10 @@ impl Context {
 
 #[test]
 fn test_settings() {
-    use window::{Context, VideoMode, Window};
+    use window::{Context, Window};
     use std::thread;
-    let video_mode = VideoMode::new(32, 32, 32);
 
-    let window = Window::new(video_mode, "test", Default::default(), &Default::default());
+    let window = Window::new((32, 32), "test", Default::default(), &Default::default());
     let win_settings = window.settings();
     thread::spawn(move || {
                       let context = Context::new();

@@ -16,8 +16,8 @@ use window::mouse::{Button, Wheel};
 /// # Usage example
 ///
 /// ```
-/// # use sfml::window::{Event, VideoMode, style, Key, Window};
-/// # let mut window = Window::new(VideoMode::new(32, 32, 32),
+/// # use sfml::window::{Event, style, Key, Window};
+/// # let mut window = Window::new((32, 32),
 /// #                              "test",
 /// #                              style::CLOSE,
 /// #                              &Default::default());
