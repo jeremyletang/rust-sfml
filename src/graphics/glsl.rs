@@ -163,7 +163,7 @@ impl From<::graphics::Transform> for Mat3 {
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 /// GLSL `mat4` type.
-pub struct Mat4(pub [f32; 16usize]);
+pub struct Mat4(pub [f32; 16]);
 
 impl From<::graphics::Transform> for Mat4 {
     fn from(src: ::graphics::Transform) -> Self {
