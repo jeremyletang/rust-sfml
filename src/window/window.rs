@@ -25,7 +25,7 @@ use window::{ContextSettings, Event, Style, VideoMode};
 /// # Usage example
 ///
 /// ```no_run
-/// use sfml::window::{Window, VideoMode, Event, style};
+/// use sfml::window::{Window, Event, style};
 /// // Create a new window
 /// let mut window = Window::new((800, 600),
 ///                              "SFML window",
