@@ -71,26 +71,14 @@ impl VideoMode {
     ///
     /// return true if the video mode is valid for fullscreen mode
     pub fn is_valid(&self) -> bool {
-        unsafe {
-                ffi::sfVideoMode_isValid(ffi::sfVideoMode {
-                                             width: self.width,
-                                             height: self.height,
-                                             bitsPerPixel: self.bits_per_pixel,
-                                         })
-            }
-            .to_bool()
+        unsafe { ffi::sfVideoMode_isValid(self.raw()) }.to_bool()
     }
 
     /// Static Method, get the current desktop video mode
     ///
     /// return the urrent desktop video mode
     pub fn desktop_mode() -> VideoMode {
-        let mode = unsafe { ffi::sfVideoMode_getDesktopMode() };
-        VideoMode {
-            width: mode.width as u32,
-            height: mode.height as u32,
-            bits_per_pixel: mode.bitsPerPixel as u32,
-        }
+        unsafe { Self::from_raw(ffi::sfVideoMode_getDesktopMode()) }
     }
 
     /// Static Method, retrieve all the video modes supported in fullscreen mode
@@ -129,11 +117,7 @@ impl VideoMode {
 impl From<(u32, u32)> for VideoMode {
     /// Constructs a `VideoMode` from `(w, h)`. Bit depth is 32.
     fn from(src: (u32, u32)) -> Self {
-        Self {
-            width: src.0,
-            height: src.1,
-            bits_per_pixel: 32,
-        }
+        Self::new(src.0, src.1, 32)
     }
 }
 
@@ -151,20 +135,12 @@ impl Raw for VideoMode {
 impl FromRaw for VideoMode {
     type RawFrom = ffi::sfVideoMode;
     unsafe fn from_raw(raw: Self::RawFrom) -> Self {
-        VideoMode {
-            width: raw.width as u32,
-            height: raw.height as u32,
-            bits_per_pixel: raw.bitsPerPixel as u32,
-        }
+        Self::new(raw.width, raw.height, raw.bitsPerPixel)
     }
 }
 
 impl Default for VideoMode {
     fn default() -> Self {
-        VideoMode {
-            width: 0,
-            height: 0,
-            bits_per_pixel: 0,
-        }
+        Self::new(0, 0, 0)
     }
 }
