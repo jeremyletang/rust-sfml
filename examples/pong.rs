@@ -69,7 +69,7 @@ fn main() {
     let font = Font::from_file("resources/sansation.ttf").unwrap();
 
     // Initialize the pause message
-    let mut pause_message = Text::new();
+    let mut pause_message = Text::default();
     pause_message.set_font(&font);
     pause_message.set_character_size(40);
     pause_message.set_position((170., 150.));

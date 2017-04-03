@@ -15,12 +15,12 @@ fn main() {
     let font = Font::from_file("resources/sansation.ttf").unwrap();
     let mut circle = CircleShape::new_init(4., 30);
     let mut texts: Vec<Text> = Vec::new();
-    let mut mp_text = Text::new_init("", &font, 14);
+    let mut mp_text = Text::new("", &font, 14);
     let mut cursor_visible = false;
     let mut grabbed = false;
     macro_rules! push_text {
         ($x:expr, $y:expr, $fmt:expr, $($arg:tt)*) => {
-            let mut text = Text::new_init(&format!($fmt, $($arg)*), &font, 14);
+            let mut text = Text::new(&format!($fmt, $($arg)*), &font, 14);
             text.set_position(($x as f32, $y as f32));
             texts.push(text);
         }

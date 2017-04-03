@@ -75,7 +75,7 @@ In hac habitasse platea dictumst. Etiam fringilla est id odio dapibus sit amet s
 
 impl<'fo> WaveBlur<'fo> {
     fn new(font: &'fo Font) -> Self {
-        let mut text = Text::new_init(WAVEBLUR_TEXT, font, 22);
+        let mut text = Text::new(WAVEBLUR_TEXT, font, 22);
         text.set_position((30., 20.));
         WaveBlur {
             text: text,
@@ -254,11 +254,11 @@ fn main() {
     text_bg.set_position((0., 520.));
     text_bg.set_color(&Color::rgba(255, 255, 255, 200));
     let msg = format!("Current effect: {}", effects[current].name());
-    let mut desc = Text::new_init(&msg, &font, 20);
+    let mut desc = Text::new(&msg, &font, 20);
     desc.set_position((10., 530.));
     desc.set_fill_color(&Color::rgb(80, 80, 80));
     let msg = "Press left and right arrows to change the current shader";
-    let mut instructions = Text::new_init(msg, &font, 20);
+    let mut instructions = Text::new(msg, &font, 20);
     instructions.set_position((280., 555.));
     instructions.set_fill_color(&Color::rgb(80, 80, 80));
     let clock = Clock::start();

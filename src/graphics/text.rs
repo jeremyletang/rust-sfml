@@ -17,17 +17,6 @@ pub struct Text<'s> {
 }
 
 impl<'s> Text<'s> {
-    /// Create a new text
-    pub fn new() -> Text<'s> {
-        let text = unsafe { ffi::sfText_create() };
-        assert!(!text.is_null(), "Failed to create Text");
-        Text {
-            text: text,
-            string_length: 0,
-            font: PhantomData,
-        }
-    }
-
     /// Create a new text with initialized value
     ///
     /// Default value for characterSize on SFML is 30.
@@ -36,8 +25,8 @@ impl<'s> Text<'s> {
     /// * string - The string of the text
     /// * font - The font to display the Text
     /// * characterSize - The size of the Text
-    pub fn new_init(string: &str, font: &'s Font, character_size: u32) -> Text<'s> {
-        let mut text = Text::new();
+    pub fn new(string: &str, font: &'s Font, character_size: u32) -> Text<'s> {
+        let mut text = Text::default();
         text.set_string(string);
         text.set_font(font);
         text.set_character_size(character_size);
@@ -220,7 +209,13 @@ impl<'s> Text<'s> {
 
 impl<'s> Default for Text<'s> {
     fn default() -> Self {
-        Self::new()
+        let text = unsafe { ffi::sfText_create() };
+        assert!(!text.is_null(), "Failed to create Text");
+        Self {
+            text: text,
+            string_length: 0,
+            font: PhantomData,
+        }
     }
 }
 
