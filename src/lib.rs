@@ -30,7 +30,7 @@
 //!                                        &Default::default());
 //!
 //!     // Create a CircleShape
-//!     let mut circle = CircleShape::new();
+//!     let mut circle = CircleShape::default();
 //!     circle.set_radius(30.);
 //!     circle.set_fill_color(&Color::red());
 //!     circle.set_position((100., 100.));

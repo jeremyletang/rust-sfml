@@ -12,7 +12,7 @@ struct Bullet<'s> {
 
 impl<'s> Bullet<'s> {
     pub fn new() -> Self {
-        let mut head = CircleShape::new_init(50.0, 50);
+        let mut head = CircleShape::new(50.0, 50);
         head.set_position((100.0, 100.0));
         head.set_fill_color(&Color::red());
         let mut torso = RectangleShape::with_size((100., 200.).into());

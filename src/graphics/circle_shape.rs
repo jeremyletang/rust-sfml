@@ -15,16 +15,6 @@ pub struct CircleShape<'s> {
 }
 
 impl<'s> CircleShape<'s> {
-    /// Creates a new circle shape.
-    pub fn new() -> CircleShape<'s> {
-        let circle = unsafe { ffi::sfCircleShape_create() };
-        assert!(!circle.is_null(), "Failed to create CircleShape");
-        CircleShape {
-            circle_shape: circle,
-            texture: PhantomData,
-        }
-    }
-
     /// Create a new circle shape initialized with a texture
     ///
     /// # Arguments
@@ -32,7 +22,7 @@ impl<'s> CircleShape<'s> {
     ///
     /// Return Some(CircleShape) or None
     pub fn with_texture(texture: &'s TextureRef) -> CircleShape<'s> {
-        let mut shape = CircleShape::new();
+        let mut shape = CircleShape::default();
         shape.set_texture(texture, true);
         shape
     }
@@ -44,8 +34,8 @@ impl<'s> CircleShape<'s> {
     /// * point_count - The number of points to define the CircleShape
     ///
     /// Default value on SFML are radius = 0 / pointCount = 30
-    pub fn new_init(radius: f32, point_count: u32) -> CircleShape<'s> {
-        let mut shape = CircleShape::new();
+    pub fn new(radius: f32, point_count: u32) -> CircleShape<'s> {
+        let mut shape = CircleShape::default();
         shape.set_radius(radius);
         shape.set_point_count(point_count);
         shape
@@ -77,7 +67,12 @@ impl<'s> CircleShape<'s> {
 
 impl<'s> Default for CircleShape<'s> {
     fn default() -> Self {
-        Self::new()
+        let circle = unsafe { ffi::sfCircleShape_create() };
+        assert!(!circle.is_null(), "Failed to create CircleShape");
+        CircleShape {
+            circle_shape: circle,
+            texture: PhantomData,
+        }
     }
 }
 

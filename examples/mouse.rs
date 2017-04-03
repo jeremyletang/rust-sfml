@@ -13,7 +13,7 @@ fn main() {
     window.set_framerate_limit(60);
 
     let font = Font::from_file("resources/sansation.ttf").unwrap();
-    let mut circle = CircleShape::new_init(4., 30);
+    let mut circle = CircleShape::new(4., 30);
     let mut texts: Vec<Text> = Vec::new();
     let mut mp_text = Text::new("", &font, 14);
     let mut cursor_visible = false;
