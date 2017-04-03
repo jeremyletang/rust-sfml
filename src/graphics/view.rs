@@ -55,24 +55,13 @@ impl ViewRef {
 }
 
 impl View {
-    /// Create a default view
-    ///
-    /// This function creates a default view of (0, 0, 1000, 1000)
-    pub fn new() -> View {
-        let view = unsafe { ffi::sfView_create() };
-        assert!(!view.is_null(), "Failed to create View");
-        View { view: view }
-    }
-
-    /// Create a default view
-    ///
-    /// This function creates a default view with initialized position and size
+    /// Creates a view with position and size
     ///
     /// # Arguments
     /// * center - The center of the view
     /// * size - The size of the view
-    pub fn new_init(center: Vector2f, size: Vector2f) -> View {
-        let mut view = View::new();
+    pub fn new(center: Vector2f, size: Vector2f) -> View {
+        let mut view = View::default();
         view.set_center(center);
         view.set_size(size);
         view
@@ -174,7 +163,9 @@ impl View {
 
 impl Default for View {
     fn default() -> Self {
-        Self::new()
+        let view = unsafe { ffi::sfView_create() };
+        assert!(!view.is_null(), "Failed to create View");
+        View { view: view }
     }
 }
 
