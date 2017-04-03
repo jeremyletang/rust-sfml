@@ -10,7 +10,7 @@ fn main() {
                                        &Default::default());
     window.set_vertical_sync_enabled(true);
 
-    let mut vertex_array = VertexArray::new();
+    let mut vertex_array = VertexArray::default();
     vertex_array.set_primitive_type(PrimitiveType::LineStrip);
 
     vertex_array.append(&Vertex::with_pos_color((20.0, 30.0), Color::green()));

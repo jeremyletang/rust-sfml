@@ -120,7 +120,7 @@ impl StormBlink {
         use rand::{Rng, thread_rng};
         let mut rng = thread_rng();
 
-        let mut points = VertexArray::new();
+        let mut points = VertexArray::default();
         points.set_primitive_type(PrimitiveType::Points);
         for _ in 0..40_000 {
             let x = rng.gen_range(0., 800.);

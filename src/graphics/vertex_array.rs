@@ -16,20 +16,13 @@ pub struct Vertices<'a> {
 }
 
 impl VertexArray {
-    /// Create a new vertex array
-    pub fn new() -> VertexArray {
-        let ver = unsafe { sfVertexArray_create() };
-        assert!(!ver.is_null(), "Failed to create VertexArray");
-        VertexArray { vertex_array: ver }
-    }
-
     /// Create a new initialized vertex array
     ///
     /// # Arguments
     /// * primitive_type - The type of the VertexArray
     /// * vertex_count - The maximal number of vertex
-    pub fn new_init(primitive_type: PrimitiveType, vertex_count: usize) -> VertexArray {
-        let mut arr = Self::new();
+    pub fn new(primitive_type: PrimitiveType, vertex_count: usize) -> VertexArray {
+        let mut arr = Self::default();
         arr.set_primitive_type(primitive_type);
         arr.resize(vertex_count);
         arr
@@ -120,7 +113,9 @@ impl VertexArray {
 
 impl Default for VertexArray {
     fn default() -> Self {
-        Self::new()
+        let ver = unsafe { sfVertexArray_create() };
+        assert!(!ver.is_null(), "Failed to create VertexArray");
+        VertexArray { vertex_array: ver }
     }
 }
 
