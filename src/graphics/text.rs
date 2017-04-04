@@ -53,7 +53,10 @@ impl<'s> Text<'s> {
         unsafe {
             let utf32: *const u32 = ffi::sfText_getUnicodeString(self.text);
             let slice: &[u32] = ::std::slice::from_raw_parts(utf32, self.string_length);
-            slice.iter().map(|&i| ::std::char::from_u32(i).unwrap()).collect()
+            slice
+                .iter()
+                .map(|&i| ::std::char::from_u32(i).unwrap())
+                .collect()
         }
     }
 

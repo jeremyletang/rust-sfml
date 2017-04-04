@@ -52,10 +52,7 @@ fn main() {
     let mut resp = String::new();
     reader.read_line(&mut resp).unwrap();
 
-    if resp.trim()
-           .chars()
-           .last()
-           .unwrap() == 's' {
+    if resp.trim().chars().last().unwrap() == 's' {
         // Choose a filename
         println!("Choose the file to create: ");
         let mut filename = String::new();

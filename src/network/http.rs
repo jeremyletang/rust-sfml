@@ -200,7 +200,9 @@ impl Response {
         let c_field = CString::new(field.as_bytes()).unwrap();
         unsafe {
             let string = ffi::sfHttpResponse_getField(self.response, c_field.as_ptr());
-            str::from_utf8(CStr::from_ptr(string).to_bytes_with_nul()).unwrap().into()
+            str::from_utf8(CStr::from_ptr(string).to_bytes_with_nul())
+                .unwrap()
+                .into()
         }
     }
 
@@ -241,7 +243,9 @@ impl Response {
     pub fn body(&self) -> String {
         unsafe {
             let string = ffi::sfHttpResponse_getBody(self.response);
-            str::from_utf8(CStr::from_ptr(string).to_bytes_with_nul()).unwrap().into()
+            str::from_utf8(CStr::from_ptr(string).to_bytes_with_nul())
+                .unwrap()
+                .into()
         }
     }
 }

@@ -162,7 +162,9 @@ impl ListingResponse {
     pub fn message(&self) -> String {
         unsafe {
             let string = ffi::sfFtpListingResponse_getMessage(self.listing_response);
-            str::from_utf8(CStr::from_ptr(string).to_bytes_with_nul()).unwrap().into()
+            str::from_utf8(CStr::from_ptr(string).to_bytes_with_nul())
+                .unwrap()
+                .into()
         }
     }
 
@@ -182,7 +184,9 @@ impl ListingResponse {
     pub fn name(&self, index: usize) -> String {
         unsafe {
             let string = ffi::sfFtpListingResponse_getName(self.listing_response, index);
-            str::from_utf8(CStr::from_ptr(string).to_bytes_with_nul()).unwrap().into()
+            str::from_utf8(CStr::from_ptr(string).to_bytes_with_nul())
+                .unwrap()
+                .into()
         }
     }
 }
@@ -219,7 +223,9 @@ impl DirectoryResponse {
     pub fn message(&self) -> String {
         unsafe {
             let string = ffi::sfFtpDirectoryResponse_getMessage(self.directory_response);
-            str::from_utf8(CStr::from_ptr(string).to_bytes_with_nul()).unwrap().into()
+            str::from_utf8(CStr::from_ptr(string).to_bytes_with_nul())
+                .unwrap()
+                .into()
         }
     }
 
@@ -229,7 +235,9 @@ impl DirectoryResponse {
     pub fn directory(&self) -> String {
         unsafe {
             let string = ffi::sfFtpDirectoryResponse_getDirectory(self.directory_response);
-            str::from_utf8(CStr::from_ptr(string).to_bytes_with_nul()).unwrap().into()
+            str::from_utf8(CStr::from_ptr(string).to_bytes_with_nul())
+                .unwrap()
+                .into()
         }
     }
 }
@@ -264,7 +272,9 @@ impl Response {
     pub fn message(&self) -> String {
         unsafe {
             let string = ffi::sfFtpResponse_getMessage(self.response);
-            str::from_utf8(CStr::from_ptr(string).to_bytes_with_nul()).unwrap().into()
+            str::from_utf8(CStr::from_ptr(string).to_bytes_with_nul())
+                .unwrap()
+                .into()
         }
     }
 }

@@ -38,7 +38,8 @@ impl<'te> Drawable for Pixelate<'te> {
 
 impl<'te> Effect for Pixelate<'te> {
     fn update(&mut self, _t: f32, x: f32, y: f32) {
-        self.shader.set_uniform_float("pixel_threshold", (x + y) / 30.0);
+        self.shader
+            .set_uniform_float("pixel_threshold", (x + y) / 30.0);
     }
     fn name(&self) -> &str {
         "pixelate"
@@ -99,8 +100,10 @@ impl<'fo> Drawable for WaveBlur<'fo> {
 impl<'fo> Effect for WaveBlur<'fo> {
     fn update(&mut self, t: f32, x: f32, y: f32) {
         self.shader.set_uniform_float("wave_phase", t);
-        self.shader.set_uniform_vec2("wave_amplitude", Vector2f::new(x * 40., y * 40.));
-        self.shader.set_uniform_float("blur_radius", (x + y) * 0.008);
+        self.shader
+            .set_uniform_vec2("wave_amplitude", Vector2f::new(x * 40., y * 40.));
+        self.shader
+            .set_uniform_float("blur_radius", (x + y) * 0.008);
     }
     fn name(&self) -> &str {
         "wave + blur"
@@ -152,10 +155,14 @@ impl Drawable for StormBlink {
 impl Effect for StormBlink {
     fn update(&mut self, t: f32, x: f32, y: f32) {
         let radius = 200. + t.cos() * 150.;
-        self.shader.set_uniform_vec2("storm_position", Vector2f::new(x * 800., y * 600.));
-        self.shader.set_uniform_float("storm_inner_radius", radius / 3.);
-        self.shader.set_uniform_float("storm_total_radius", radius);
-        self.shader.set_uniform_float("blink_alpha", 0.5 + (t * 3.).cos() * 0.25);
+        self.shader
+            .set_uniform_vec2("storm_position", Vector2f::new(x * 800., y * 600.));
+        self.shader
+            .set_uniform_float("storm_inner_radius", radius / 3.);
+        self.shader
+            .set_uniform_float("storm_total_radius", radius);
+        self.shader
+            .set_uniform_float("blink_alpha", 0.5 + (t * 3.).cos() * 0.25);
     }
     fn name(&self) -> &str {
         "storm + blink"
@@ -209,7 +216,8 @@ impl<'te> Drawable for Edge<'te> {
 
 impl<'te> Effect for Edge<'te> {
     fn update(&mut self, t: f32, x: f32, y: f32) {
-        self.shader.set_uniform_float("edge_threshold", 1. - (x + y) / 2.);
+        self.shader
+            .set_uniform_float("edge_threshold", 1. - (x + y) / 2.);
         let entities_len = self.entities.len() as f32;
 
         for (i, en) in self.entities.iter_mut().enumerate() {

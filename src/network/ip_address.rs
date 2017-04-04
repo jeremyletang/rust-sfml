@@ -68,7 +68,9 @@ impl IpAddress {
     pub fn to_string(&self) -> String {
         unsafe {
             let ptr = &self.ip as *const _ as *const _;
-            str::from_utf8(CStr::from_ptr(ptr).to_bytes()).unwrap().into()
+            str::from_utf8(CStr::from_ptr(ptr).to_bytes())
+                .unwrap()
+                .into()
         }
     }
 

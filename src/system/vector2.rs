@@ -61,10 +61,7 @@ impl<T> Vector2<T> {
 impl<T> From<(T, T)> for Vector2<T> {
     /// Constructs a `Vector2` from `(x, y)`.
     fn from(src: (T, T)) -> Self {
-        Self {
-            x: src.0,
-            y: src.1,
-        }
+        Self { x: src.0, y: src.1 }
     }
 }
 
@@ -197,10 +194,7 @@ impl Raw for Vector2i {
 impl FromRaw for Vector2i {
     type RawFrom = ::csfml_system_sys::sfVector2i;
     unsafe fn from_raw(raw: Self::RawFrom) -> Self {
-        Vector2i {
-            x: raw.x,
-            y: raw.y,
-        }
+        Vector2i { x: raw.x, y: raw.y }
     }
 }
 
@@ -218,10 +212,7 @@ impl Raw for Vector2u {
 impl FromRaw for Vector2u {
     type RawFrom = ::csfml_system_sys::sfVector2u;
     unsafe fn from_raw(raw: Self::RawFrom) -> Self {
-        Vector2u {
-            x: raw.x,
-            y: raw.y,
-        }
+        Vector2u { x: raw.x, y: raw.y }
     }
 }
 
@@ -239,9 +230,6 @@ impl Raw for Vector2f {
 impl FromRaw for Vector2f {
     type RawFrom = ::csfml_system_sys::sfVector2f;
     unsafe fn from_raw(raw: Self::RawFrom) -> Self {
-        Vector2f {
-            x: raw.x,
-            y: raw.y,
-        }
+        Vector2f { x: raw.x, y: raw.y }
     }
 }
