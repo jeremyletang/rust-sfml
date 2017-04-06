@@ -422,8 +422,8 @@ impl<'te> Shader<'te> {
             let cstring = CString::new(name).unwrap();
             let name = cstring.as_ptr();
             let value = value.into();
-            let ptr = (&value.0) as *const _ as *const ffi::sfGlslMat3;
-            ffi::sfShader_setMat3Uniform(self.shader, name, ptr);
+            let ptr: *const _ = &value.0;
+            ffi::sfShader_setMat3Uniform(self.shader, name, ptr as *const _);
         }
     }
 
@@ -435,8 +435,8 @@ impl<'te> Shader<'te> {
             let cstring = CString::new(name).unwrap();
             let name = cstring.as_ptr();
             let value = value.into();
-            let ptr = (&value.0) as *const _ as *const ffi::sfGlslMat4;
-            ffi::sfShader_setMat4Uniform(self.shader, name, ptr);
+            let ptr: *const _ = &value.0;
+            ffi::sfShader_setMat4Uniform(self.shader, name, ptr as *const _);
         }
     }
 

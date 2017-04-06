@@ -659,7 +659,7 @@ impl RenderTarget for RenderWindow {
         let len = vertices.len();
         unsafe {
             ffi::sfRenderWindow_drawPrimitives(self.render_window,
-                                               &vertices[0] as *const _ as *const _,
+                                               vertices.as_ptr() as *const _,
                                                len,
                                                ty.raw(),
                                                &rs.raw());

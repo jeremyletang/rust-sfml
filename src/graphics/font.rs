@@ -195,7 +195,8 @@ impl Clone for Font {
 impl Raw for FontRef {
     type Raw = *const ffi::sfFont;
     fn raw(&self) -> Self::Raw {
-        self as *const _ as _
+        let ptr: *const Self = self;
+        ptr as Self::Raw
     }
 }
 

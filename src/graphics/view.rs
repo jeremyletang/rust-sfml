@@ -206,7 +206,8 @@ impl Drop for View {
 impl Raw for ViewRef {
     type Raw = *const ffi::sfView;
     fn raw(&self) -> Self::Raw {
-        self as *const _ as _
+        let ptr: *const Self = self;
+        ptr as Self::Raw
     }
 }
 
