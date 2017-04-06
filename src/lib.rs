@@ -76,8 +76,6 @@ extern crate csfml_window_sys;
 #[cfg(any(feature="graphics", feature="audio"))]
 mod inputstream;
 mod ext {
-    #[cfg(feature="window")]
-    pub mod event;
     pub mod sf_bool_ext;
 }
 #[cfg(feature="window")]

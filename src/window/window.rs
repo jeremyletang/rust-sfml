@@ -1,6 +1,5 @@
 use csfml_system_sys::sfBool;
 use csfml_window_sys as ffi;
-use ext;
 use ext::sf_bool_ext::SfBoolExt;
 use std::marker::PhantomData;
 use system::{Vector2i, Vector2u};
@@ -121,7 +120,7 @@ impl Window {
         let mut event = unsafe { ::std::mem::zeroed() };
         let have_event = unsafe { ffi::sfWindow_pollEvent(self.window, &mut event).to_bool() };
         if have_event {
-            ext::event::get_wrapped_event(&mut event)
+            unsafe { Event::from_raw(&event) }
         } else {
             None
         }
@@ -142,7 +141,7 @@ impl Window {
         let mut event = unsafe { ::std::mem::zeroed() };
         let have_event = unsafe { ffi::sfWindow_waitEvent(self.window, &mut event).to_bool() };
         if have_event {
-            ext::event::get_wrapped_event(&mut event)
+            unsafe { Event::from_raw(&event) }
         } else {
             None
         }
@@ -391,7 +390,7 @@ impl<'a> Iterator for Events<'a> {
     fn next(&mut self) -> Option<Event> {
         let mut event = unsafe { ::std::mem::zeroed() };
         if unsafe { ffi::sfWindow_pollEvent(self.window, &mut event) }.to_bool() {
-            ext::event::get_wrapped_event(&mut event)
+            unsafe { Event::from_raw(&event) }
         } else {
             None
         }

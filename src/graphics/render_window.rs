@@ -1,5 +1,4 @@
 use csfml_system_sys::*;
-use ext;
 use ext::sf_bool_ext::SfBoolExt;
 use graphics::{CircleShape, Color, ConvexShape, CustomShape, Drawable, IntRect, PrimitiveType,
                RectangleShape, RenderStates, RenderTarget, Sprite, Text, Vertex, VertexArray,
@@ -96,7 +95,7 @@ impl RenderWindow {
         let have_event = unsafe { ffi::sfRenderWindow_pollEvent(self.render_window, &mut event) }
             .to_bool();
         if have_event {
-            ext::event::get_wrapped_event(&mut event)
+            unsafe { Event::from_raw(&event) }
         } else {
             None
         }
@@ -118,7 +117,7 @@ impl RenderWindow {
         let have_event = unsafe { ffi::sfRenderWindow_waitEvent(self.render_window, &mut event) }
             .to_bool();
         if have_event {
-            ext::event::get_wrapped_event(&mut event)
+            unsafe { Event::from_raw(&event) }
         } else {
             None
         }
@@ -678,7 +677,7 @@ impl<'a> Iterator for Events<'a> {
     fn next(&mut self) -> Option<Event> {
         let mut event = unsafe { ::std::mem::zeroed() };
         if unsafe { ffi::sfRenderWindow_pollEvent(self.render_window, &mut event) }.to_bool() {
-            ext::event::get_wrapped_event(&mut event)
+            unsafe { Event::from_raw(&event) }
         } else {
             None
         }

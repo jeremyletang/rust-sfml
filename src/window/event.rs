@@ -1,3 +1,5 @@
+
+use csfml_window_sys as ffi;
 use window::joystick::Axis;
 use window::keyboard::Key;
 use window::mouse::{Button, Wheel};
@@ -188,4 +190,164 @@ pub enum Event {
         /// Current value of the sensor on Z axis.
         z: f32,
     },
+}
+
+impl Event {
+    /// Creates an event from a raw `csfml_window_sys::sfEvent`.
+    pub unsafe fn from_raw(event: &ffi::sfEvent) -> Option<Self> {
+        use csfml_window_sys::sfEventType::*;
+        use window::Event::*;
+        use ext::sf_bool_ext::SfBoolExt;
+        use system::raw_conv::FromRaw;
+
+        let type_ = *event.type_.as_ref();
+
+        let evt = match type_ {
+            sfEvtClosed => Closed,
+            sfEvtResized => {
+                let e = *event.size.as_ref();
+
+                Resized {
+                    width: e.width,
+                    height: e.height,
+                }
+            }
+            sfEvtLostFocus => LostFocus,
+            sfEvtGainedFocus => GainedFocus,
+            sfEvtTextEntered => {
+            TextEntered {
+                unicode: ::std::char::from_u32((*event.text.as_ref()).unicode)
+                        .expect("Invalid unicode encountered on TextEntered event"),
+            }
+        }
+            sfEvtKeyPressed => {
+                let e = event.key.as_ref();
+
+                KeyPressed {
+                    code: ::std::mem::transmute(e.code),
+                    alt: e.alt.to_bool(),
+                    ctrl: e.control.to_bool(),
+                    shift: e.shift.to_bool(),
+                    system: e.system.to_bool(),
+                }
+            }
+            sfEvtKeyReleased => {
+                let e = event.key.as_ref();
+
+                KeyReleased {
+                    code: ::std::mem::transmute(e.code),
+                    alt: e.alt.to_bool(),
+                    ctrl: e.control.to_bool(),
+                    shift: e.shift.to_bool(),
+                    system: e.system.to_bool(),
+                }
+            }
+            sfEvtMouseWheelScrolled => {
+                let e = event.mouseWheelScroll.as_ref();
+                MouseWheelScrolled {
+                    wheel: FromRaw::from_raw(e.wheel),
+                    delta: e.delta,
+                    x: e.x,
+                    y: e.y,
+                }
+            }
+            sfEvtMouseButtonPressed => {
+                let e = event.mouseButton.as_ref();
+
+                MouseButtonPressed {
+                    button: FromRaw::from_raw(e.button),
+                    x: e.x,
+                    y: e.y,
+                }
+            }
+            sfEvtMouseButtonReleased => {
+                let e = event.mouseButton.as_ref();
+
+                MouseButtonReleased {
+                    button: FromRaw::from_raw(e.button),
+                    x: e.x,
+                    y: e.y,
+                }
+            }
+            sfEvtMouseMoved => {
+                let e = event.mouseMove.as_ref();
+                MouseMoved { x: e.x, y: e.y }
+            }
+            sfEvtMouseEntered => MouseEntered,
+            sfEvtMouseLeft => MouseLeft,
+            sfEvtJoystickButtonPressed => {
+                let e = event.joystickButton.as_ref();
+
+                JoystickButtonPressed {
+                    joystickid: (*e).joystickId,
+                    button: (*e).button,
+                }
+            }
+            sfEvtJoystickButtonReleased => {
+                let e = event.joystickButton.as_ref();
+
+                JoystickButtonReleased {
+                    joystickid: (*e).joystickId,
+                    button: (*e).button,
+                }
+            }
+            sfEvtJoystickMoved => {
+                let e = event.joystickMove.as_ref();
+
+                JoystickMoved {
+                    joystickid: e.joystickId,
+                    axis: FromRaw::from_raw(e.axis),
+                    position: e.position,
+                }
+            }
+            sfEvtJoystickConnected => {
+                JoystickConnected { joystickid: (*event.joystickConnect.as_ref()).joystickId }
+            }
+            sfEvtJoystickDisconnected => {
+                JoystickDisconnected { joystickid: (*event.joystickConnect.as_ref()).joystickId }
+            }
+            sfEvtTouchBegan => {
+                let e = event.touch.as_ref();
+
+                TouchBegan {
+                    finger: e.finger,
+                    x: e.x,
+                    y: e.y,
+                }
+            }
+            sfEvtTouchMoved => {
+                let e = event.touch.as_ref();
+
+                TouchMoved {
+                    finger: e.finger,
+                    x: e.x,
+                    y: e.y,
+                }
+            }
+            sfEvtTouchEnded => {
+                let e = event.touch.as_ref();
+
+                TouchEnded {
+                    finger: e.finger,
+                    x: e.x,
+                    y: e.y,
+                }
+            }
+            sfEvtSensorChanged => {
+                let e = event.sensor.as_ref();
+
+                SensorChanged {
+                    type_: FromRaw::from_raw(e.sensorType),
+                    x: e.x,
+                    y: e.y,
+                    z: e.z,
+                }
+            }
+
+            // Ignore deprecated events
+            sfEvtMouseWheelMoved => return None,
+            sfEvtCount => unreachable!(),
+        };
+        Some(evt)
+    }
 }
