@@ -8,6 +8,8 @@
 //! much maintentance. Use it at your own risk!
 //! Consider using native Rust solutions for networking.
 
+extern crate csfml_network_sys;
+
 pub use network::ftp::Ftp;
 pub use network::http::Http;
 pub use network::ip_address::IpAddress;

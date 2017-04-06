@@ -1,4 +1,4 @@
-use csfml_network_sys as ffi;
+use network::csfml_network_sys as ffi;
 use csfml_system_sys::sfBool;
 use ext::sf_bool_ext::SfBoolExt;
 use network::{IpAddress, Packet, SocketStatus};

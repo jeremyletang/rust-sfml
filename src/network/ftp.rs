@@ -1,6 +1,6 @@
 //! A FTP client.
 
-use csfml_network_sys as ffi;
+use network::csfml_network_sys as ffi;
 use ext::sf_bool_ext::SfBoolExt;
 use network::IpAddress;
 use std::ffi::{CStr, CString};

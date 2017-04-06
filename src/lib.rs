@@ -71,8 +71,6 @@ extern crate bitflags;
 extern crate csfml_system_sys;
 #[cfg(feature="window")]
 extern crate csfml_window_sys;
-#[cfg(feature="network")]
-extern crate csfml_network_sys;
 
 #[cfg(any(feature="graphics", feature="audio"))]
 mod inputstream;

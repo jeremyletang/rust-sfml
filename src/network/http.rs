@@ -1,6 +1,6 @@
 //! A HTTP client
 
-use csfml_network_sys as ffi;
+use network::csfml_network_sys as ffi;
 use std::ffi::{CStr, CString};
 use std::mem;
 use std::str;
