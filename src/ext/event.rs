@@ -3,7 +3,7 @@ use ext::sf_bool_ext::SfBoolExt;
 use system::raw_conv::FromRaw;
 use window::Event;
 
-pub fn get_wrapped_event(event: &mut sfEvent) -> Option<Event> {
+pub fn get_wrapped_event(event: &sfEvent) -> Option<Event> {
     use csfml_window_sys::sfEventType::*;
     use window::Event::*;
 
