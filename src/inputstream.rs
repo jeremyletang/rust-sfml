@@ -8,8 +8,8 @@ unsafe extern "C" fn read<T: Read + Seek>(data: *mut c_void,
                                           user_data: *mut c_void)
                                           -> c_longlong {
     let stream: &mut T = &mut *(user_data as *mut T);
-    if size == (0 as i64) {
-        return 0 as i64;
+    if size == 0 {
+        return 0;
     } else if size > 0 {
         let mut chunk = stream.take(size as u64);
         let mut buf = vec![];
@@ -41,7 +41,7 @@ unsafe extern "C" fn seek<T: Read + Seek>(position: c_longlong,
     let stream: &mut T = &mut *(user_data as *mut T);
     match stream.seek(SeekFrom::Start(position as u64)) {
         Ok(n) => n as i64,
-        Err(_) => -1 as i64,
+        Err(_) => -1,
     }
 }
 

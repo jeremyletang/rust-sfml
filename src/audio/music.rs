@@ -175,7 +175,7 @@ impl Music {
     ///
     /// Return the number of channels
     pub fn channel_count(&self) -> u32 {
-        unsafe { ffi::sfMusic_getChannelCount(self.music) as u32 }
+        unsafe { ffi::sfMusic_getChannelCount(self.music) }
     }
 
     /// Get the sample rate of a music
@@ -185,7 +185,7 @@ impl Music {
     ///
     /// Return the sample rate, in number of samples per second
     pub fn sample_rate(&self) -> u32 {
-        unsafe { ffi::sfMusic_getSampleRate(self.music) as u32 }
+        unsafe { ffi::sfMusic_getSampleRate(self.music) }
     }
 
     /// Get the current status of a music (stopped, paused, playing)
@@ -234,10 +234,10 @@ impl SoundSource for Music {
         unsafe { ffi::sfMusic_setAttenuation(self.music, attenuation) }
     }
     fn pitch(&self) -> f32 {
-        unsafe { ffi::sfMusic_getPitch(self.music) as f32 }
+        unsafe { ffi::sfMusic_getPitch(self.music) }
     }
     fn volume(&self) -> f32 {
-        unsafe { ffi::sfMusic_getVolume(self.music) as f32 }
+        unsafe { ffi::sfMusic_getVolume(self.music) }
     }
     fn position(&self) -> Vector3f {
         unsafe { Vector3f::from_raw(ffi::sfMusic_getPosition(self.music)) }
@@ -246,10 +246,10 @@ impl SoundSource for Music {
         unsafe { ffi::sfMusic_isRelativeToListener(self.music).to_bool() }
     }
     fn min_distance(&self) -> f32 {
-        unsafe { ffi::sfMusic_getMinDistance(self.music) as f32 }
+        unsafe { ffi::sfMusic_getMinDistance(self.music) }
     }
     fn attenuation(&self) -> f32 {
-        unsafe { ffi::sfMusic_getAttenuation(self.music) as f32 }
+        unsafe { ffi::sfMusic_getAttenuation(self.music) }
     }
 }
 

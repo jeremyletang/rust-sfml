@@ -116,7 +116,7 @@ pub fn is_connected(joystick: u32) -> bool {
 ///
 /// Return the number of buttons supported by the joystick.
 pub fn button_count(joystick: u32) -> u32 {
-    unsafe { ffi::sfJoystick_getButtonCount(joystick) as u32 }
+    unsafe { ffi::sfJoystick_getButtonCount(joystick) }
 }
 
 /// Check if the joystick support a given Axis
@@ -156,7 +156,7 @@ pub fn is_button_pressed(joystick: u32, button: u32) -> bool {
 ///
 /// Return the current position of the axis, in range [-100 .. 100]
 pub fn axis_position(joystick: u32, axis: Axis) -> f32 {
-    unsafe { ffi::sfJoystick_getAxisPosition(joystick, axis.raw()) as f32 }
+    unsafe { ffi::sfJoystick_getAxisPosition(joystick, axis.raw()) }
 }
 
 /// Update the states of all joysticks

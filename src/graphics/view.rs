@@ -30,7 +30,7 @@ impl ViewRef {
     ///
     /// Return the rotation angle of the view, in degrees
     pub fn rotation(&self) -> f32 {
-        unsafe { ffi::sfView_getRotation(self.raw()) as f32 }
+        unsafe { ffi::sfView_getRotation(self.raw()) }
     }
     /// Get the center of a view
     ///

@@ -37,14 +37,14 @@ use system::raw_conv::{FromRaw, Raw};
 /// # Arguments
 /// * volume - The new global volume, in the range [0, 100]
 pub fn set_global_volume(volume: f32) {
-    unsafe { ffi::sfListener_setGlobalVolume(volume as f32) }
+    unsafe { ffi::sfListener_setGlobalVolume(volume) }
 }
 
 /// Get the current value of the global volume
 ///
 /// Return the current global volume, in the range [0, 100]
 pub fn global_volume() -> f32 {
-    unsafe { ffi::sfListener_getGlobalVolume() as f32 }
+    unsafe { ffi::sfListener_getGlobalVolume() }
 }
 
 /// Set the position of the listener in the scene

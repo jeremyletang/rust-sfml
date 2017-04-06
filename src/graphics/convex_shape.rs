@@ -110,7 +110,7 @@ impl<'s> Transformable for ConvexShape<'s> {
         unsafe { Vector2f::from_raw(ffi::sfConvexShape_getPosition(self.convex_shape)) }
     }
     fn rotation(&self) -> f32 {
-        unsafe { ffi::sfConvexShape_getRotation(self.convex_shape) as f32 }
+        unsafe { ffi::sfConvexShape_getRotation(self.convex_shape) }
     }
     fn get_scale(&self) -> Vector2f {
         unsafe { Vector2f::from_raw(ffi::sfConvexShape_getScale(self.convex_shape)) }
@@ -179,7 +179,7 @@ impl<'s> Shape<'s> for ConvexShape<'s> {
         unsafe { Color::from_raw(ffi::sfConvexShape_getOutlineColor(self.convex_shape)) }
     }
     fn outline_thickness(&self) -> f32 {
-        unsafe { ffi::sfConvexShape_getOutlineThickness(self.convex_shape) as f32 }
+        unsafe { ffi::sfConvexShape_getOutlineThickness(self.convex_shape) }
     }
     fn point_count(&self) -> u32 {
         unsafe { ffi::sfConvexShape_getPointCount(self.convex_shape) as u32 }

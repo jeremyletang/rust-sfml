@@ -104,7 +104,7 @@ impl SoundBufferRef {
     ///
     /// Return the number of channels
     pub fn channel_count(&self) -> u32 {
-        unsafe { ffi::sfSoundBuffer_getChannelCount(self.raw()) as u32 }
+        unsafe { ffi::sfSoundBuffer_getChannelCount(self.raw()) }
     }
 
     /// Get the total duration of a sound buffer
@@ -122,7 +122,7 @@ impl SoundBufferRef {
     ///
     /// Return the sample rate (number of samples per second)
     pub fn sample_rate(&self) -> u32 {
-        unsafe { ffi::sfSoundBuffer_getSampleRate(self.raw()) as u32 }
+        unsafe { ffi::sfSoundBuffer_getSampleRate(self.raw()) }
     }
 }
 

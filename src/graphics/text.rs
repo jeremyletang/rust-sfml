@@ -64,7 +64,7 @@ impl<'s> Text<'s> {
     ///
     /// Return the size of the characters
     pub fn character_size(&self) -> u32 {
-        unsafe { ffi::sfText_getCharacterSize(self.text) as u32 }
+        unsafe { ffi::sfText_getCharacterSize(self.text) }
     }
 
     /// Set the font of the text
@@ -265,7 +265,7 @@ impl<'s> Transformable for Text<'s> {
         unsafe { Vector2f::from_raw(ffi::sfText_getPosition(self.text)) }
     }
     fn rotation(&self) -> f32 {
-        unsafe { ffi::sfText_getRotation(self.text) as f32 }
+        unsafe { ffi::sfText_getRotation(self.text) }
     }
     fn get_scale(&self) -> Vector2f {
         unsafe { Vector2f::from_raw(ffi::sfText_getScale(self.text)) }

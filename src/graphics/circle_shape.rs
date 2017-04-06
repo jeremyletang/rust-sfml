@@ -53,7 +53,7 @@ impl<'s> CircleShape<'s> {
     ///
     /// Return the radius of the circle
     pub fn radius(&self) -> f32 {
-        unsafe { ffi::sfCircleShape_getRadius(self.circle_shape) as f32 }
+        unsafe { ffi::sfCircleShape_getRadius(self.circle_shape) }
     }
 
     /// Set the number of points of a circle
@@ -103,7 +103,7 @@ impl<'s> Transformable for CircleShape<'s> {
         unsafe { Vector2f::from_raw(ffi::sfCircleShape_getPosition(self.circle_shape)) }
     }
     fn rotation(&self) -> f32 {
-        unsafe { ffi::sfCircleShape_getRotation(self.circle_shape) as f32 }
+        unsafe { ffi::sfCircleShape_getRotation(self.circle_shape) }
     }
     fn get_scale(&self) -> Vector2f {
         unsafe { Vector2f::from_raw(ffi::sfCircleShape_getScale(self.circle_shape)) }
@@ -172,7 +172,7 @@ impl<'s> Shape<'s> for CircleShape<'s> {
         unsafe { Color::from_raw(ffi::sfCircleShape_getOutlineColor(self.circle_shape)) }
     }
     fn outline_thickness(&self) -> f32 {
-        unsafe { ffi::sfCircleShape_getOutlineThickness(self.circle_shape) as f32 }
+        unsafe { ffi::sfCircleShape_getOutlineThickness(self.circle_shape) }
     }
     fn point_count(&self) -> u32 {
         unsafe { ffi::sfCircleShape_getPointCount(self.circle_shape) as u32 }

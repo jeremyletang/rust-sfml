@@ -197,7 +197,7 @@ impl<'s> Transformable for Sprite<'s> {
         unsafe { Vector2f::from_raw(ffi::sfSprite_getPosition(self.sprite)) }
     }
     fn rotation(&self) -> f32 {
-        unsafe { ffi::sfSprite_getRotation(self.sprite) as f32 }
+        unsafe { ffi::sfSprite_getRotation(self.sprite) }
     }
     fn get_scale(&self) -> Vector2f {
         unsafe { Vector2f::from_raw(ffi::sfSprite_getScale(self.sprite)) }

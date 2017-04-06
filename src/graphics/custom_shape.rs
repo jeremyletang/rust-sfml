@@ -128,7 +128,7 @@ impl<'s> Shape<'s> for CustomShape<'s> {
         unsafe { Color::from_raw(ffi::sfShape_getOutlineColor(self.shape)) }
     }
     fn outline_thickness(&self) -> f32 {
-        unsafe { ffi::sfShape_getOutlineThickness(self.shape) as f32 }
+        unsafe { ffi::sfShape_getOutlineThickness(self.shape) }
     }
     fn point_count(&self) -> u32 {
         unsafe { ffi::sfShape_getPointCount(self.shape) as u32 }
@@ -178,7 +178,7 @@ impl<'s> Transformable for CustomShape<'s> {
         unsafe { Vector2f::from_raw(ffi::sfShape_getPosition(self.shape)) }
     }
     fn rotation(&self) -> f32 {
-        unsafe { ffi::sfShape_getRotation(self.shape) as f32 }
+        unsafe { ffi::sfShape_getRotation(self.shape) }
     }
     fn get_scale(&self) -> Vector2f {
         unsafe { Vector2f::from_raw(ffi::sfShape_getScale(self.shape)) }

@@ -54,7 +54,7 @@ impl SoundBufferRecorder {
     ///
     /// Return the sample rate, in samples per second
     pub fn sample_rate(&self) -> u32 {
-        unsafe { ffi::sfSoundBufferRecorder_getSampleRate(self.sound_buffer_recorder) as u32 }
+        unsafe { ffi::sfSoundBufferRecorder_getSampleRate(self.sound_buffer_recorder) }
     }
 
     /// Get the sound buffer containing the captured audio data
@@ -122,7 +122,7 @@ impl SoundBufferRecorder {
         unsafe {
             let mut count = 0;
             let device_names = ffi::sfSoundRecorder_getAvailableDevices(&mut count);
-            let device_names = ::std::slice::from_raw_parts(device_names, count as usize);
+            let device_names = ::std::slice::from_raw_parts(device_names, count);
             let mut names = Vec::new();
             for c_str_ptr in device_names {
                 let name = CStr::from_ptr(*c_str_ptr).to_string_lossy().into_owned();

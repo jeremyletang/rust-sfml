@@ -88,7 +88,7 @@ impl<'s> Transformable for RectangleShape<'s> {
         unsafe { Vector2f::from_raw(ffi::sfRectangleShape_getPosition(self.rectangle_shape)) }
     }
     fn rotation(&self) -> f32 {
-        unsafe { ffi::sfRectangleShape_getRotation(self.rectangle_shape) as f32 }
+        unsafe { ffi::sfRectangleShape_getRotation(self.rectangle_shape) }
     }
     fn get_scale(&self) -> Vector2f {
         unsafe { Vector2f::from_raw(ffi::sfRectangleShape_getScale(self.rectangle_shape)) }

@@ -273,7 +273,7 @@ impl Texture {
     ///
     /// Return the maximum size allowed for textures, in pixels
     pub fn maximum_size() -> u32 {
-        unsafe { ffi::sfTexture_getMaximumSize() as u32 }
+        unsafe { ffi::sfTexture_getMaximumSize() }
     }
 
     /// Enable or disable conversion from sRGB.

@@ -184,10 +184,10 @@ impl<'s> SoundSource for Sound<'s> {
         unsafe { ffi::sfSound_setAttenuation(self.sound, attenuation) }
     }
     fn pitch(&self) -> f32 {
-        unsafe { ffi::sfSound_getPitch(self.sound) as f32 }
+        unsafe { ffi::sfSound_getPitch(self.sound) }
     }
     fn volume(&self) -> f32 {
-        unsafe { ffi::sfSound_getVolume(self.sound) as f32 }
+        unsafe { ffi::sfSound_getVolume(self.sound) }
     }
     fn position(&self) -> Vector3f {
         unsafe { Vector3f::from_raw(ffi::sfSound_getPosition(self.sound)) }
@@ -196,10 +196,10 @@ impl<'s> SoundSource for Sound<'s> {
         unsafe { ffi::sfSound_isRelativeToListener(self.sound).to_bool() }
     }
     fn min_distance(&self) -> f32 {
-        unsafe { ffi::sfSound_getMinDistance(self.sound) as f32 }
+        unsafe { ffi::sfSound_getMinDistance(self.sound) }
     }
     fn attenuation(&self) -> f32 {
-        unsafe { ffi::sfSound_getAttenuation(self.sound) as f32 }
+        unsafe { ffi::sfSound_getAttenuation(self.sound) }
     }
 }
 
