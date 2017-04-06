@@ -1,8 +1,8 @@
 use audio::{SoundSource, SoundStatus};
 use audio::csfml_audio_sys as ffi;
 use csfml_system_sys::sfBool;
-use ext::sf_bool_ext::SfBoolExt;
 use inputstream::InputStream;
+use sf_bool_ext::SfBoolExt;
 use std::ffi::CString;
 use std::io::{Read, Seek};
 use std::mem;

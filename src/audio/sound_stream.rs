@@ -2,7 +2,7 @@ use audio::SoundSource;
 use audio::SoundStatus;
 use audio::csfml_audio_sys::*;
 use csfml_system_sys::*;
-use ext::sf_bool_ext::SfBoolExt;
+use sf_bool_ext::SfBoolExt;
 use std::os::raw::c_void;
 use std::panic;
 use system::{Time, Vector3f};

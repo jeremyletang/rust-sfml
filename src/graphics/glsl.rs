@@ -105,7 +105,7 @@ impl Into<ffi::sfGlslIvec3> for IVec3 {
 
 impl Into<ffi::sfGlslBvec2> for BVec2 {
     fn into(self) -> ffi::sfGlslBvec2 {
-        use ext::sf_bool_ext::SfBoolExt;
+        use sf_bool_ext::SfBoolExt;
         ffi::sfGlslBvec2 {
             x: SfBoolExt::from_bool(self.x),
             y: SfBoolExt::from_bool(self.y),
@@ -115,7 +115,7 @@ impl Into<ffi::sfGlslBvec2> for BVec2 {
 
 impl Into<ffi::sfGlslBvec3> for BVec3 {
     fn into(self) -> ffi::sfGlslBvec3 {
-        use ext::sf_bool_ext::SfBoolExt;
+        use sf_bool_ext::SfBoolExt;
         ffi::sfGlslBvec3 {
             x: SfBoolExt::from_bool(self.x),
             y: SfBoolExt::from_bool(self.y),
@@ -139,7 +139,7 @@ pub struct BVec4 {
 
 impl Into<ffi::sfGlslBvec4> for BVec4 {
     fn into(self) -> ffi::sfGlslBvec4 {
-        use ext::sf_bool_ext::SfBoolExt;
+        use sf_bool_ext::SfBoolExt;
         ffi::sfGlslBvec4 {
             x: SfBoolExt::from_bool(self.x),
             y: SfBoolExt::from_bool(self.y),

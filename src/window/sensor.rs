@@ -35,7 +35,7 @@
 //! ```
 
 use csfml_window_sys::*;
-use ext::sf_bool_ext::SfBoolExt;
+use sf_bool_ext::SfBoolExt;
 use system::Vector3f;
 use system::raw_conv::{FromRaw, Raw};
 

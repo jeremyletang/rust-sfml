@@ -1,6 +1,6 @@
 use csfml_system_sys::sfBool;
-use ext::sf_bool_ext::SfBoolExt;
 use network::csfml_network_sys as ffi;
+use sf_bool_ext::SfBoolExt;
 use std::ffi::CString;
 use system::raw_conv::{FromRaw, Raw, RawMut};
 

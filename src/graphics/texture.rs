@@ -1,8 +1,8 @@
 use csfml_system_sys::sfBool;
-use ext::sf_bool_ext::SfBoolExt;
 use graphics::{Image, IntRect, RenderWindow};
 use graphics::csfml_graphics_sys as ffi;
 use inputstream::InputStream;
+use sf_bool_ext::SfBoolExt;
 use std::borrow::{Borrow, ToOwned};
 use std::ffi::CString;
 use std::io::{Read, Seek};

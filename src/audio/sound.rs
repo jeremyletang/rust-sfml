@@ -1,7 +1,7 @@
 use audio::{SoundBufferRef, SoundSource, SoundStatus};
 use audio::csfml_audio_sys as ffi;
 use csfml_system_sys::sfBool;
-use ext::sf_bool_ext::SfBoolExt;
+use sf_bool_ext::SfBoolExt;
 use std::marker::PhantomData;
 use std::mem;
 use system::Time;

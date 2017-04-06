@@ -1,6 +1,6 @@
 use csfml_system_sys::sfBool;
 use csfml_window_sys as ffi;
-use ext::sf_bool_ext::SfBoolExt;
+use sf_bool_ext::SfBoolExt;
 use std::marker::PhantomData;
 use system::{Vector2i, Vector2u};
 use system::raw_conv::{FromRaw, Raw};

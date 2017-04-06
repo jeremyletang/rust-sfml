@@ -1,9 +1,9 @@
 use csfml_system_sys::sfBool;
-use ext::sf_bool_ext::SfBoolExt;
 use graphics::{CircleShape, Color, ConvexShape, CustomShape, Drawable, IntRect, PrimitiveType,
                RectangleShape, RenderStates, RenderTarget, Sprite, Text, TextureRef, Vertex,
                VertexArray, View, ViewRef};
 use graphics::csfml_graphics_sys as ffi;
+use sf_bool_ext::SfBoolExt;
 use system::{Vector2f, Vector2i, Vector2u};
 use system::raw_conv::{FromRaw, Raw};
 

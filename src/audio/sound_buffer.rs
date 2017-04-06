@@ -1,6 +1,6 @@
 use audio::csfml_audio_sys as ffi;
-use ext::sf_bool_ext::SfBoolExt;
 use inputstream::InputStream;
+use sf_bool_ext::SfBoolExt;
 use std::borrow::{Borrow, ToOwned};
 use std::ffi::CString;
 use std::io::{Read, Seek};

@@ -1,4 +1,3 @@
-
 use csfml_window_sys as ffi;
 use window::joystick::Axis;
 use window::keyboard::Key;
@@ -197,7 +196,7 @@ impl Event {
     pub unsafe fn from_raw(event: &ffi::sfEvent) -> Option<Self> {
         use csfml_window_sys::sfEventType::*;
         use window::Event::*;
-        use ext::sf_bool_ext::SfBoolExt;
+        use sf_bool_ext::SfBoolExt;
         use system::raw_conv::FromRaw;
 
         let type_ = *event.type_.as_ref();
