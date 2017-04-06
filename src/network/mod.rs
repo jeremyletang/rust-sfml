@@ -10,14 +10,14 @@
 
 extern crate csfml_network_sys;
 
-pub use network::ftp::Ftp;
-pub use network::http::Http;
-pub use network::ip_address::IpAddress;
-pub use network::packet::Packet;
-pub use network::socket_status::SocketStatus;
-pub use network::tcp_listener::TcpListener;
-pub use network::tcp_socket::TcpSocket;
-pub use network::udp_socket::UdpSocket;
+pub use self::ftp::Ftp;
+pub use self::http::Http;
+pub use self::ip_address::IpAddress;
+pub use self::packet::Packet;
+pub use self::socket_status::SocketStatus;
+pub use self::tcp_listener::TcpListener;
+pub use self::tcp_socket::TcpSocket;
+pub use self::udp_socket::UdpSocket;
 
 mod ip_address;
 mod packet;

@@ -3,13 +3,13 @@
 
 extern crate csfml_audio_sys;
 
-pub use audio::music::Music;
-pub use audio::sound::Sound;
-pub use audio::sound_buffer::{SoundBuffer, SoundBufferRef};
-pub use audio::sound_buffer_recorder::SoundBufferRecorder;
-pub use audio::sound_source::SoundSource;
-pub use audio::sound_status::SoundStatus;
-pub use audio::sound_stream::{SoundStream, SoundStreamPlayer};
+pub use self::music::Music;
+pub use self::sound::Sound;
+pub use self::sound_buffer::{SoundBuffer, SoundBufferRef};
+pub use self::sound_buffer_recorder::SoundBufferRecorder;
+pub use self::sound_source::SoundSource;
+pub use self::sound_status::SoundStatus;
+pub use self::sound_stream::{SoundStream, SoundStreamPlayer};
 
 mod sound_buffer;
 mod sound_source;
