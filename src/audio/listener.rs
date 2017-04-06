@@ -24,7 +24,7 @@
 //! listener::set_global_volume(50.);
 //! ```
 
-use csfml_audio_sys as ffi;
+use audio::csfml_audio_sys as ffi;
 use system::Vector3f;
 use system::raw_conv::{FromRaw, Raw};
 

@@ -1,6 +1,8 @@
 //! Sounds, streaming (musics or custom sources), recording, spatialization
 //!
 
+extern crate csfml_audio_sys;
+
 pub use audio::music::Music;
 pub use audio::sound::Sound;
 pub use audio::sound_buffer::{SoundBuffer, SoundBufferRef};

@@ -1,4 +1,4 @@
-use csfml_audio_sys as ffi;
+use audio::csfml_audio_sys as ffi;
 use ext::sf_bool_ext::SfBoolExt;
 use inputstream::InputStream;
 use std::borrow::{Borrow, ToOwned};

@@ -1,6 +1,6 @@
 use audio::SoundSource;
 use audio::SoundStatus;
-use csfml_audio_sys::*;
+use audio::csfml_audio_sys::*;
 use csfml_system_sys::*;
 use ext::sf_bool_ext::SfBoolExt;
 use std::os::raw::c_void;

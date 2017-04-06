@@ -73,8 +73,6 @@ extern crate csfml_system_sys;
 extern crate csfml_window_sys;
 #[cfg(feature="graphics")]
 extern crate csfml_graphics_sys;
-#[cfg(feature="audio")]
-extern crate csfml_audio_sys;
 #[cfg(feature="network")]
 extern crate csfml_network_sys;
 
