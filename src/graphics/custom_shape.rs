@@ -208,7 +208,7 @@ impl<'s> Drop for CustomShape<'s> {
     fn drop(&mut self) {
         unsafe {
             ffi::sfShape_destroy(self.shape);
-            Box::from_raw(self.points);
+            let _ = Box::from_raw(self.points);
         }
     }
 }

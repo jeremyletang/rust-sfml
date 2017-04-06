@@ -64,7 +64,7 @@
 //!
 
 #![warn(missing_docs, trivial_numeric_casts, missing_copy_implementations,
-        missing_debug_implementations)]
+        missing_debug_implementations, unused_results)]
 
 #[cfg(feature="window")]
 #[macro_use]
