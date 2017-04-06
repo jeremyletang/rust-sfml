@@ -30,6 +30,7 @@ use window::ContextSettings;
 /// // the context is automatically deactivated and destroyed
 /// // by the `Context` destructor
 /// ```
+#[derive(Debug)]
 pub struct Context(*mut ffi::sfContext);
 
 impl Context {

@@ -63,7 +63,8 @@
 //! license.
 //!
 
-#![warn(missing_docs, trivial_numeric_casts)]
+#![warn(missing_docs, trivial_numeric_casts, missing_copy_implementations,
+        missing_debug_implementations)]
 
 #[cfg(feature="window")]
 #[macro_use]

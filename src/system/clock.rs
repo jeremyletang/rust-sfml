@@ -21,6 +21,7 @@ use system::raw_conv::FromRaw;
 ///
 /// The `Time` value returned by the clock can then be converted to
 /// a number of seconds, milliseconds or even microseconds.
+#[derive(Debug)]
 pub struct Clock(*mut ffi::sfClock);
 
 impl Clock {

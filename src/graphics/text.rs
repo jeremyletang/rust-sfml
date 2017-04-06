@@ -1,6 +1,6 @@
-use graphics::csfml_graphics_sys as ffi;
 use graphics::{Color, Drawable, FloatRect, Font, FontRef, RenderStates, RenderTarget, TextStyle,
                Transform, Transformable};
+use graphics::csfml_graphics_sys as ffi;
 use std::marker::PhantomData;
 use std::str;
 use system::Vector2f;
@@ -10,6 +10,7 @@ use system::raw_conv::{FromRaw, Raw};
 ///
 /// Text is a drawable type that allows to easily
 /// display some text with custom style and color on a render target.
+#[derive(Debug)]
 pub struct Text<'s> {
     text: *mut ffi::sfText,
     string_length: usize,

@@ -1,7 +1,7 @@
-use graphics::csfml_graphics_sys as ffi;
 use csfml_system_sys::sfBool;
 use ext::sf_bool_ext::SfBoolExt;
 use graphics::{Image, IntRect, RenderWindow};
+use graphics::csfml_graphics_sys as ffi;
 use inputstream::InputStream;
 use std::borrow::{Borrow, ToOwned};
 use std::ffi::CString;
@@ -15,6 +15,7 @@ use window::Window;
 /// Image used for drawing
 ///
 /// Texture stores pixels that can be drawn, with a sprite for example.
+#[derive(Debug)]
 pub struct Texture {
     texture: *mut ffi::sfTexture,
 }
@@ -28,6 +29,8 @@ impl Deref for Texture {
 }
 
 /// A non-owning `Texture`.
+#[derive(Debug)]
+#[allow(missing_copy_implementations)]
 pub enum TextureRef {}
 
 impl TextureRef {

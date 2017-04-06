@@ -1,7 +1,7 @@
 //! GLSL types.
 
-use graphics::csfml_graphics_sys as ffi;
 use graphics::Color;
+use graphics::csfml_graphics_sys as ffi;
 use system::{Vector2, Vector3};
 use system::raw_conv::Raw;
 

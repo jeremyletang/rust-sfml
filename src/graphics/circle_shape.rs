@@ -1,14 +1,15 @@
-use graphics::csfml_graphics_sys as ffi;
 use csfml_system_sys::{sfBool, sfTrue};
 use ext::sf_bool_ext::SfBoolExt;
 use graphics::{Color, Drawable, FloatRect, IntRect, RenderStates, RenderTarget, Shape, TextureRef,
                Transform, Transformable};
+use graphics::csfml_graphics_sys as ffi;
 use std::marker::PhantomData;
 use std::ptr;
 use system::Vector2f;
 use system::raw_conv::{FromRaw, Raw};
 
 /// Specialized shape representing a circle.
+#[derive(Debug)]
 pub struct CircleShape<'s> {
     circle_shape: *mut ffi::sfCircleShape,
     texture: PhantomData<&'s TextureRef>,

@@ -33,7 +33,7 @@ use system::raw_conv::{FromRaw, Raw};
 ///
 /// # See also
 /// - `Clock`
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Debug)]
 pub struct Time(sfTime);
 
 impl PartialEq for Time {

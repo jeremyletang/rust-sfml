@@ -1,7 +1,7 @@
-use graphics::csfml_graphics_sys as ffi;
 use csfml_system_sys::sfBool;
 use ext::sf_bool_ext::SfBoolExt;
 use graphics::{Glyph, TextureRef};
+use graphics::csfml_graphics_sys as ffi;
 use inputstream::InputStream;
 use std::borrow::{Borrow, ToOwned};
 use std::ffi::{CStr, CString};
@@ -10,6 +10,7 @@ use std::ops::Deref;
 use system::raw_conv::{FromRaw, Raw, RawMut};
 
 /// Type for loading and manipulating character fonts
+#[derive(Debug)]
 pub struct Font {
     font: *mut ffi::sfFont,
 }
@@ -23,6 +24,8 @@ impl Deref for Font {
 }
 
 /// A non-owning `Font`.
+#[derive(Debug)]
+#[allow(missing_copy_implementations)]
 pub enum FontRef {}
 
 impl FontRef {
@@ -90,6 +93,7 @@ impl FontRef {
 }
 
 /// Holds various information about a font.
+#[derive(Debug)]
 pub struct Info {
     /// The font family.
     pub family: String,

@@ -90,6 +90,7 @@ impl FromRaw for Axis {
 }
 
 /// Structure holding a joystick's identification.
+#[derive(Debug)]
 pub struct Identification {
     /// Name of the joystick.
     pub name: String,

@@ -1,15 +1,17 @@
-use graphics::csfml_graphics_sys::*;
 use graphics::{Drawable, FloatRect, PrimitiveType, RenderStates, RenderTarget, Vertex};
+use graphics::csfml_graphics_sys::*;
 use std::mem;
 use std::ops::{Index, IndexMut};
 use system::raw_conv::{FromRaw, Raw};
 
 /// Define a set of one or more 2D primitives
+#[derive(Debug)]
 pub struct VertexArray {
     vertex_array: *mut sfVertexArray,
 }
 
 /// An iterator over the vertice of a `VertexArray`
+#[derive(Debug)]
 pub struct Vertices<'a> {
     vertex_array: &'a VertexArray,
     pos: u32,

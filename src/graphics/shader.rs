@@ -1,6 +1,6 @@
-use graphics::csfml_graphics_sys as ffi;
 use ext::sf_bool_ext::SfBoolExt;
 use graphics::{TextureRef, glsl};
+use graphics::csfml_graphics_sys as ffi;
 use inputstream::InputStream;
 use std::ffi::CString;
 use std::io::{Read, Seek};
@@ -114,6 +114,7 @@ use system::raw_conv::Raw;
 /// // ... render OpenGL geometry ...
 /// Shader::bind(None);
 /// ```
+#[derive(Debug)]
 pub struct Shader<'te> {
     shader: *mut ffi::sfShader,
     texture: PhantomData<&'te TextureRef>,

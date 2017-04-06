@@ -36,6 +36,7 @@ use system::raw_conv::{FromRaw, Raw};
 /// let mut sound = Sound::with_buffer(&buffer);
 /// sound.play();
 /// ```
+#[derive(Debug)]
 pub struct Sound<'s> {
     sound: *mut ffi::sfSound,
     buffer: PhantomData<&'s SoundBufferRef>,

@@ -1,5 +1,5 @@
-use graphics::csfml_graphics_sys as ffi;
 use graphics::FloatRect;
+use graphics::csfml_graphics_sys as ffi;
 use std::borrow::{Borrow, ToOwned};
 use std::ops::Deref;
 use system::Vector2f;
@@ -10,6 +10,7 @@ use system::raw_conv::{FromRaw, Raw};
 /// This is a very powerful concept: you can scroll,
 /// rotate or zoom the entire scene without altering
 /// the way that your drawable objects are drawn.
+#[derive(Debug)]
 pub struct View {
     view: *mut ffi::sfView,
 }
@@ -23,6 +24,8 @@ impl Deref for View {
 }
 
 /// A non-owning `View`.
+#[derive(Debug)]
+#[allow(missing_copy_implementations)]
 pub enum ViewRef {}
 
 impl ViewRef {

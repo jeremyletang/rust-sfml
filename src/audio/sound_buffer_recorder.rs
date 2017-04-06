@@ -1,6 +1,5 @@
-use audio::sound_buffer::SoundBufferRef;
-
 use audio::csfml_audio_sys as ffi;
+use audio::sound_buffer::SoundBufferRef;
 use csfml_system_sys::*;
 use ext::sf_bool_ext::SfBoolExt;
 use std::ffi::{CStr, CString};
@@ -9,11 +8,12 @@ use std::ffi::{CStr, CString};
 ///
 /// `SoundBufferRecorder` allows to access a recorded sound through a `SoundBuffer`,
 /// so that it can be played, saved to a file, etc.
+#[derive(Debug)]
 pub struct SoundBufferRecorder {
     sound_buffer_recorder: *mut ffi::sfSoundBufferRecorder,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy)]
 pub struct SetDeviceError;
 
 impl SoundBufferRecorder {

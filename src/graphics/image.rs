@@ -1,7 +1,7 @@
-use graphics::csfml_graphics_sys as ffi;
 use csfml_system_sys::sfBool;
 use ext::sf_bool_ext::SfBoolExt;
 use graphics::{Color, IntRect};
+use graphics::csfml_graphics_sys as ffi;
 use inputstream::InputStream;
 use std::ffi::CString;
 use std::io::{Read, Seek};
@@ -10,6 +10,7 @@ use system::Vector2u;
 use system::raw_conv::{FromRaw, Raw};
 
 /// Loading, manipulating and saving images.
+#[derive(Debug)]
 pub struct Image {
     image: *mut ffi::sfImage,
 }

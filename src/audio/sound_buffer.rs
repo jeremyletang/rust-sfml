@@ -56,6 +56,7 @@ use system::raw_conv::{FromRaw, Raw};
 /// sound_2.set_pitch(2.0);
 /// sound_2.play();
 /// ```
+#[derive(Debug)]
 pub struct SoundBuffer {
     sound_buffer: *mut ffi::sfSoundBuffer,
 }
@@ -69,6 +70,8 @@ impl Deref for SoundBuffer {
 }
 
 /// A non-owning `SoundBuffer`.
+#[derive(Debug)]
+#[allow(missing_copy_implementations)]
 pub enum SoundBufferRef {}
 
 impl SoundBufferRef {

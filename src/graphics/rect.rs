@@ -1,7 +1,7 @@
+use graphics::csfml_graphics_sys as ffi;
 use std::ops::{Add, Sub};
 use system::Vector2;
 use system::raw_conv::{FromRaw, Raw};
-use graphics::csfml_graphics_sys as ffi;
 
 /// Utility type for manipulating 2D axis-aligned rectangles.
 #[repr(C)]

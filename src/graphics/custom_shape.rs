@@ -1,8 +1,8 @@
-use graphics::csfml_graphics_sys as ffi;
 use csfml_system_sys::{sfBool, sfTrue, sfVector2f};
 use ext::sf_bool_ext::SfBoolExt;
 use graphics::{Color, Drawable, FloatRect, IntRect, RenderStates, RenderTarget, Shape, TextureRef,
                Transform, Transformable};
+use graphics::csfml_graphics_sys as ffi;
 use std::marker::PhantomData;
 use std::os::raw::c_void;
 use std::ptr;
@@ -26,6 +26,7 @@ pub trait CustomShapePoints {
 }
 
 /// A custom textured shape with outline.
+#[derive(Debug)]
 pub struct CustomShape<'s> {
     shape: *mut ffi::sfShape,
     texture: PhantomData<&'s TextureRef>,

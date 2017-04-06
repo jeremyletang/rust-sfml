@@ -44,6 +44,7 @@ use system::raw_conv::{FromRaw, Raw};
 /// // Play it
 /// music.play();
 /// ```
+#[derive(Debug)]
 pub struct Music {
     music: *mut ffi::sfMusic,
 }

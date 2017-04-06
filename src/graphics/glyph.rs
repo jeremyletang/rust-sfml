@@ -1,5 +1,5 @@
-use graphics::csfml_graphics_sys as ffi;
 use graphics::{FloatRect, IntRect};
+use graphics::csfml_graphics_sys as ffi;
 
 use system::raw_conv::{FromRaw, Raw};
 

@@ -1,5 +1,5 @@
-use graphics::csfml_graphics_sys as ffi;
 use graphics::FloatRect;
+use graphics::csfml_graphics_sys as ffi;
 use system::Vector2f;
 use system::raw_conv::{FromRaw, Raw};
 
@@ -8,6 +8,7 @@ use system::raw_conv::{FromRaw, Raw};
 /// A `Transform` specifies how to translate,
 /// rotate, scale, shear, project, whatever things.
 #[repr(C)]
+#[derive(Debug, Clone, Copy)]
 pub struct Transform(pub ffi::sfTransform);
 
 impl Transform {

@@ -1,10 +1,10 @@
-use graphics::csfml_graphics_sys as ffi;
 use csfml_system_sys::*;
 use ext;
 use ext::sf_bool_ext::SfBoolExt;
 use graphics::{CircleShape, Color, ConvexShape, CustomShape, Drawable, IntRect, PrimitiveType,
                RectangleShape, RenderStates, RenderTarget, Sprite, Text, Vertex, VertexArray,
                View, ViewRef};
+use graphics::csfml_graphics_sys as ffi;
 use std::marker::PhantomData;
 use system::{Vector2f, Vector2i, Vector2u};
 use system::raw_conv::{FromRaw, Raw};
@@ -15,11 +15,13 @@ use window::{ContextSettings, Event, Style, VideoMode};
 /// `RenderWindow` is the main type of the graphics module.
 /// It defines an OS window that can be painted using the other classes
 /// of the graphics module.
+#[derive(Debug)]
 pub struct RenderWindow {
     render_window: *mut ffi::sfRenderWindow,
 }
 
 /// An iterator over all the events in the events queue (internally call `poll_event`)
+#[derive(Debug)]
 pub struct Events<'a> {
     render_window: *mut ffi::sfRenderWindow,
     winref: PhantomData<&'a mut RenderWindow>,

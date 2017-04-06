@@ -53,11 +53,13 @@ use window::{ContextSettings, Event, Style, VideoMode};
 ///     window.display();
 /// }
 /// ```
+#[derive(Debug)]
 pub struct Window {
     window: *mut ffi::sfWindow,
 }
 
 /// An iterator over all the events in the events queue (internally call `poll_event`)
+#[derive(Debug)]
 pub struct Events<'a> {
     window: *mut ffi::sfWindow,
     winref: PhantomData<&'a mut Window>,

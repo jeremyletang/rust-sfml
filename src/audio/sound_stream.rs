@@ -24,6 +24,7 @@ pub trait SoundStream {
 }
 
 /// Player for custom streamed audio sources. See `SoundStream`.
+#[derive(Debug)]
 pub struct SoundStreamPlayer<'a, S: SoundStream + 'a> {
     sf_sound_stream: *mut sfSoundStream,
     stream: &'a mut S,

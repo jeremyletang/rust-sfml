@@ -1,8 +1,8 @@
-use graphics::csfml_graphics_sys as ffi;
 use csfml_system_sys::{sfBool, sfTrue};
 use ext::sf_bool_ext::SfBoolExt;
 use graphics::{Color, Drawable, FloatRect, IntRect, RenderStates, RenderTarget, Shape, TextureRef,
                Transform, Transformable};
+use graphics::csfml_graphics_sys as ffi;
 use std::marker::PhantomData;
 use std::ptr;
 use system::Vector2f;
@@ -14,12 +14,15 @@ use system::raw_conv::{FromRaw, Raw};
 /// always be... convex, otherwise it may not be drawn correctly.
 /// Moreover, the points must be defined in order; using a random
 /// order would result in an incorrect shape.
+#[derive(Debug)]
 pub struct ConvexShape<'s> {
     convex_shape: *mut ffi::sfConvexShape,
     texture: PhantomData<&'s TextureRef>,
 }
 
 /// An iterator over the points of a `ConvexShape`
+#[derive(Debug)]
+#[allow(missing_copy_implementations)]
 pub struct ConvexShapePoints {
     convex_shape: *mut ffi::sfConvexShape,
     pos: u32,
