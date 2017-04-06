@@ -1,4 +1,4 @@
-use csfml_graphics_sys as ffi;
+use graphics::csfml_graphics_sys as ffi;
 use std::ops::{Add, AddAssign, Mul, MulAssign, Sub, SubAssign};
 use system::raw_conv::{FromRaw, Raw};
 

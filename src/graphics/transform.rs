@@ -1,4 +1,4 @@
-use csfml_graphics_sys as ffi;
+use graphics::csfml_graphics_sys as ffi;
 use graphics::FloatRect;
 use system::Vector2f;
 use system::raw_conv::{FromRaw, Raw};

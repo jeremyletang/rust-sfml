@@ -1,4 +1,4 @@
-use csfml_graphics_sys as ffi;
+use graphics::csfml_graphics_sys as ffi;
 use graphics::{BlendMode, Shader, TextureRef, Transform};
 use std::ptr;
 use system::raw_conv::Raw;

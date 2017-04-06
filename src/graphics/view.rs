@@ -1,4 +1,4 @@
-use csfml_graphics_sys as ffi;
+use graphics::csfml_graphics_sys as ffi;
 use graphics::FloatRect;
 use std::borrow::{Borrow, ToOwned};
 use std::ops::Deref;

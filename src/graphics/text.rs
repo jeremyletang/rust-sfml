@@ -1,4 +1,4 @@
-use csfml_graphics_sys as ffi;
+use graphics::csfml_graphics_sys as ffi;
 use graphics::{Color, Drawable, FloatRect, Font, FontRef, RenderStates, RenderTarget, TextStyle,
                Transform, Transformable};
 use std::marker::PhantomData;

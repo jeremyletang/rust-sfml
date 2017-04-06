@@ -1,6 +1,7 @@
 use std::ops::{Add, Sub};
 use system::Vector2;
 use system::raw_conv::{FromRaw, Raw};
+use graphics::csfml_graphics_sys as ffi;
 
 /// Utility type for manipulating 2D axis-aligned rectangles.
 #[repr(C)]
@@ -100,10 +101,10 @@ fn min_max<T: PartialOrd + Copy>(a: T, b: T) -> (T, T) {
 }
 
 impl Raw for IntRect {
-    type Raw = ::csfml_graphics_sys::sfIntRect;
+    type Raw = ffi::sfIntRect;
 
     fn raw(&self) -> Self::Raw {
-        ::csfml_graphics_sys::sfIntRect {
+        ffi::sfIntRect {
             top: self.top,
             left: self.left,
             width: self.width,
@@ -113,7 +114,7 @@ impl Raw for IntRect {
 }
 
 impl FromRaw for IntRect {
-    type RawFrom = ::csfml_graphics_sys::sfIntRect;
+    type RawFrom = ffi::sfIntRect;
     unsafe fn from_raw(raw: Self::RawFrom) -> Self {
         IntRect {
             top: raw.top,
@@ -125,10 +126,10 @@ impl FromRaw for IntRect {
 }
 
 impl Raw for FloatRect {
-    type Raw = ::csfml_graphics_sys::sfFloatRect;
+    type Raw = ffi::sfFloatRect;
 
     fn raw(&self) -> Self::Raw {
-        ::csfml_graphics_sys::sfFloatRect {
+        ffi::sfFloatRect {
             top: self.top,
             left: self.left,
             width: self.width,
@@ -138,7 +139,7 @@ impl Raw for FloatRect {
 }
 
 impl FromRaw for FloatRect {
-    type RawFrom = ::csfml_graphics_sys::sfFloatRect;
+    type RawFrom = ffi::sfFloatRect;
     unsafe fn from_raw(raw: Self::RawFrom) -> Self {
         FloatRect {
             top: raw.top,
