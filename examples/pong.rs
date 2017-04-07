@@ -93,7 +93,7 @@ fn main() {
     loop {
         for event in window.events() {
             match event {
-                Event::Closed => return,
+                Event::Closed |
                 Event::KeyPressed { code: Key::Escape, .. } => return,
                 Event::KeyPressed { code: Key::Space, .. } if !is_playing => {
                     // (re)start the game
