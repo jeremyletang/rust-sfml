@@ -12,48 +12,6 @@
 //!
 //! __Rust-sfml__ works on Linux, windows and OSX.
 //!
-//! # Short example
-//!
-//! Here is a short example, draw a circle shape and display it.
-//!
-//! ```no_run
-//! extern crate sfml;
-//!
-//! use sfml::window::{Event, style};
-//! use sfml::graphics::{CircleShape, Color, RenderTarget, RenderWindow, Shape, Transformable};
-//!
-//! fn main() {
-//!     // Create the window of the application
-//!     let mut window = RenderWindow::new((800, 600),
-//!                                        "SFML Example",
-//!                                        style::CLOSE,
-//!                                        &Default::default());
-//!
-//!     // Create a CircleShape
-//!     let mut circle = CircleShape::default();
-//!     circle.set_radius(30.);
-//!     circle.set_fill_color(&Color::red());
-//!     circle.set_position((100., 100.));
-//!
-//!     loop {
-//!         // Handle events
-//!         for event in window.events() {
-//!             if let Event::Closed = event {
-//!                 return;
-//!             }
-//!         }
-//!
-//!         // Clear the window
-//!         window.clear(&Color::rgb(0, 200, 200));
-//!         // Draw the shape
-//!         window.draw(&circle);
-//!         // Display things on screen
-//!         window.display();
-//!     }
-//! }
-//!
-//! ```
-//!
 //! # License
 //!
 //! This software is a binding of the SFML library created by Laurent Gomila, which
