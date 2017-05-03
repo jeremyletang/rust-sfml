@@ -214,11 +214,11 @@ impl Event {
             sfEvtLostFocus => LostFocus,
             sfEvtGainedFocus => GainedFocus,
             sfEvtTextEntered => {
-            TextEntered {
-                unicode: ::std::char::from_u32((*event.text.as_ref()).unicode)
+                TextEntered {
+                    unicode: ::std::char::from_u32((*event.text.as_ref()).unicode)
                         .expect("Invalid unicode encountered on TextEntered event"),
+                }
             }
-        }
             sfEvtKeyPressed => {
                 let e = event.key.as_ref();
 

@@ -195,9 +195,7 @@ impl<'te> Shader<'te> {
         let mut vertex_stream = vertex_shader_stream.map(InputStream::new);
         let mut geometry_stream = geometry_shader_stream.map(InputStream::new);
         let mut fragment_stream = fragment_shader_stream.map(InputStream::new);
-        let vertex_ptr = vertex_stream
-            .as_mut()
-            .map_or(ptr::null_mut(), |s| &mut s.0);
+        let vertex_ptr = vertex_stream.as_mut().map_or(ptr::null_mut(), |s| &mut s.0);
         let geometry_ptr = geometry_stream
             .as_mut()
             .map_or(ptr::null_mut(), |s| &mut s.0);

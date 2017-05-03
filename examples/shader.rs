@@ -159,8 +159,7 @@ impl Effect for StormBlink {
             .set_uniform_vec2("storm_position", Vector2f::new(x * 800., y * 600.));
         self.shader
             .set_uniform_float("storm_inner_radius", radius / 3.);
-        self.shader
-            .set_uniform_float("storm_total_radius", radius);
+        self.shader.set_uniform_float("storm_total_radius", radius);
         self.shader
             .set_uniform_float("blink_alpha", 0.5 + (t * 3.).cos() * 0.25);
     }
@@ -286,7 +285,7 @@ fn main() {
                                 current -= 1;
                             }
                             desc.set_string(&format!("Current effect: {}",
-                                                     effects[current].name()));
+                                                    effects[current].name()));
                         }
                         Key::Right => {
                             if current == effects.len() - 1 {
@@ -295,7 +294,7 @@ fn main() {
                                 current += 1;
                             }
                             desc.set_string(&format!("Current effect: {}",
-                                                     effects[current].name()));
+                                                    effects[current].name()));
                         }
                         _ => {}
                     }
