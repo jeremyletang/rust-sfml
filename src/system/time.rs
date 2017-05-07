@@ -194,7 +194,7 @@ impl Div<i64> for Time {
 impl Div for Time {
     type Output = f32;
 
-    /// 	Overload of binary / operator to compute the ratio of two time values.
+    /// Overload of binary / operator to compute the ratio of two time values.
     fn div(self, rhs: Self) -> f32 {
         self.as_seconds() / rhs.as_seconds()
     }
