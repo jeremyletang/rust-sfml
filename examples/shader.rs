@@ -224,7 +224,7 @@ impl<'te> Effect for Edge<'te> {
                        (0.25 * (t * (entities_len - i as f32) + i as f32)).cos() * 200. + 250.);
             en.set_position(pos);
         }
-        self.surface.clear(&Color::white());
+        self.surface.clear(&Color::WHITE);
         self.surface.draw(&self.bg_sprite);
         for en in &self.entities {
             self.surface.draw(en);

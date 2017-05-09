@@ -28,10 +28,10 @@ use system::raw_conv::Raw;
 /// # let mut window: RenderWindow = unimplemented!();
 /// // define a 100x100 square, red, with a 10x10 texture mapped on it
 /// let vertices = [
-///     Vertex::new(Vector2f::new(  0.,   0.), Color::red(), Vector2f::new( 0.,  0.)),
-///     Vertex::new(Vector2f::new(  0., 100.), Color::red(), Vector2f::new( 0., 10.)),
-///     Vertex::new(Vector2f::new(100., 100.), Color::red(), Vector2f::new(10., 10.)),
-///     Vertex::new(Vector2f::new(100.,   0.), Color::red(), Vector2f::new(10.,  0.)),
+///     Vertex::new(Vector2f::new(  0.,   0.), Color::RED, Vector2f::new( 0.,  0.)),
+///     Vertex::new(Vector2f::new(  0., 100.), Color::RED, Vector2f::new( 0., 10.)),
+///     Vertex::new(Vector2f::new(100., 100.), Color::RED, Vector2f::new(10., 10.)),
+///     Vertex::new(Vector2f::new(100.,   0.), Color::RED, Vector2f::new(10.,  0.)),
 /// ];
 /// // draw it
 /// window.draw_primitives(&vertices, PrimitiveType::Quads, RenderStates::default());
@@ -79,7 +79,7 @@ impl Vertex {
     ///
     /// Return a Vertex
     pub fn with_pos<P: Into<Vector2f>>(position: P) -> Self {
-        Self::new(position, Color::white(), Vector2f::new(0., 0.))
+        Self::new(position, Color::WHITE, Vector2f::new(0., 0.))
     }
 
     /// Create a new Vertex with the position and the color
@@ -107,7 +107,7 @@ impl Vertex {
     ///
     /// Return a Vertex
     pub fn with_pos_coords<P: Into<Vector2f>>(position: P, tex_coords: Vector2f) -> Vertex {
-        Self::new(position, Color::white(), tex_coords)
+        Self::new(position, Color::WHITE, tex_coords)
     }
 }
 
@@ -121,7 +121,7 @@ impl Vertex {
 /// Return a `Vertex`
 impl Default for Vertex {
     fn default() -> Vertex {
-        Self::new(Vector2f::new(0., 0.), Color::white(), Vector2f::new(0., 0.))
+        Self::new(Vector2f::new(0., 0.), Color::WHITE, Vector2f::new(0., 0.))
     }
 }
 

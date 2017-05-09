@@ -46,14 +46,14 @@ fn main() {
     let mut second_text = Text::default();
     second_text.set_string("This text shares the same font with the title!");
     second_text.set_font(&font);
-    second_text.set_fill_color(&Color::green());
+    second_text.set_fill_color(&Color::GREEN);
     second_text.set_position((10.0, 350.0));
     second_text.set_character_size(20);
 
     // Create a third text using the same font.
     let mut third_text = Text::new("This one too!", &font, 20);
     third_text.set_position((300.0, 100.0));
-    third_text.set_fill_color(&Color::red());
+    third_text.set_fill_color(&Color::RED);
 
     loop {
         for event in window.events() {
@@ -64,7 +64,7 @@ fn main() {
             }
         }
 
-        window.clear(&Color::black());
+        window.clear(&Color::BLACK);
         window.draw(&circle);
         window.draw(&sprite);
         window.draw(&convex_shape);

@@ -13,8 +13,8 @@ fn main() {
     let mut string = String::from("This text can be edited.\nTry it!");
 
     let mut text = Text::new(&string, &font, 24);
-    text.set_fill_color(&Color::red());
-    text.set_outline_color(&Color::yellow());
+    text.set_fill_color(&Color::RED);
+    text.set_outline_color(&Color::YELLOW);
     text.set_outline_thickness(2.0);
     println!("== Text information ==\n\
               fill color: {:?}\n\
@@ -42,7 +42,7 @@ fn main() {
             }
         }
 
-        window.clear(&Color::black());
+        window.clear(&Color::BLACK);
         window.draw(&text);
         window.display();
     }

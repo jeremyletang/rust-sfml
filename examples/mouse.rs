@@ -80,7 +80,7 @@ fn main() {
 
         circle.set_position((mp.x as f32, mp.y as f32));
 
-        window.clear(&Color::black());
+        window.clear(&Color::BLACK);
         // Push texts out of each other's way
         for i in (0..texts.len()).rev() {
             for j in (0..i).rev() {

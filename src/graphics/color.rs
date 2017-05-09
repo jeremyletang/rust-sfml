@@ -70,49 +70,76 @@ impl Color {
     }
 
     /// Black predefined color
-    pub fn black() -> Color {
-        Color::rgb(0, 0, 0)
-    }
+    pub const BLACK: Self = Self {
+        r: 0,
+        g: 0,
+        b: 0,
+        a: 255,
+    };
 
     /// White predefined color
-    pub fn white() -> Color {
-        Color::rgb(255, 255, 255)
-    }
+    pub const WHITE: Self = Self {
+        r: 255,
+        g: 255,
+        b: 255,
+        a: 255,
+    };
 
     /// Red predefined color
-    pub fn red() -> Color {
-        Color::rgb(255, 0, 0)
-    }
+    pub const RED: Self = Self {
+        r: 255,
+        g: 0,
+        b: 0,
+        a: 255,
+    };
 
     /// Green predefined color
-    pub fn green() -> Color {
-        Color::rgb(0, 255, 0)
-    }
+    pub const GREEN: Self = Self {
+        r: 0,
+        g: 255,
+        b: 0,
+        a: 255,
+    };
 
     /// Blue predefined color
-    pub fn blue() -> Color {
-        Color::rgb(0, 0, 255)
-    }
+    pub const BLUE: Self = Self {
+        r: 0,
+        g: 0,
+        b: 255,
+        a: 255,
+    };
 
     /// Yellow predefined color
-    pub fn yellow() -> Color {
-        Color::rgb(255, 255, 0)
-    }
+    pub const YELLOW: Self = Self {
+        r: 255,
+        g: 255,
+        b: 0,
+        a: 255,
+    };
 
     /// Magenta predefined color
-    pub fn magenta() -> Color {
-        Color::rgb(255, 0, 255)
-    }
+    pub const MAGENTA: Self = Self {
+        r: 255,
+        g: 0,
+        b: 255,
+        a: 255,
+    };
 
     /// Cyan predifined color
-    pub fn cyan() -> Color {
-        Color::rgb(0, 255, 255)
-    }
+    pub const CYAN: Self = Self {
+        r: 0,
+        g: 255,
+        b: 255,
+        a: 255,
+    };
 
     /// Tranparent predefined color
-    pub fn transparent() -> Color {
-        Color::rgba(0, 0, 0, 0)
-    }
+    pub const TRANSPARENT: Self = Self {
+        r: 0,
+        g: 0,
+        b: 0,
+        a: 0,
+    };
 }
 
 impl From<u32> for Color {
