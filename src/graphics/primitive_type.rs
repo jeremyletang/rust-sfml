@@ -25,10 +25,10 @@ pub enum PrimitiveType {
 }
 
 impl PrimitiveType {
-    pub fn raw(&self) -> sfPrimitiveType {
+    pub(super) fn raw(&self) -> sfPrimitiveType {
         unsafe { ::std::mem::transmute(*self) }
     }
-    pub unsafe fn from_raw(raw: sfPrimitiveType) -> Self {
+    pub(super) unsafe fn from_raw(raw: sfPrimitiveType) -> Self {
         ::std::mem::transmute(raw)
     }
 }
