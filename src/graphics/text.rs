@@ -208,7 +208,7 @@ impl<'s> Text<'s> {
     pub fn global_bounds(&self) -> FloatRect {
         unsafe { FloatRect::from_raw(ffi::sfText_getGlobalBounds(self.text)) }
     }
-    pub fn raw(&self) -> *const ffi::sfText {
+    pub(super) fn raw(&self) -> *const ffi::sfText {
         self.text
     }
 }
