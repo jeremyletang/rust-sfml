@@ -23,10 +23,7 @@ pub struct Glyph {
 }
 
 impl Glyph {
-    pub fn raw(&self) -> ffi::sfGlyph {
-        unsafe { ::std::mem::transmute(*self) }
-    }
-    pub unsafe fn from_raw(raw: ffi::sfGlyph) -> Self {
+    pub(super) unsafe fn from_raw(raw: ffi::sfGlyph) -> Self {
         ::std::mem::transmute(raw)
     }
 }
