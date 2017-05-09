@@ -240,10 +240,10 @@ impl Image {
                                    sfBool::from_bool(apply_alpha))
         }
     }
-    pub fn raw(&self) -> *const ffi::sfImage {
+    pub(super) fn raw(&self) -> *const ffi::sfImage {
         self.image
     }
-    pub unsafe fn from_raw(raw: *mut ffi::sfImage) -> Self {
+    pub(super) unsafe fn from_raw(raw: *mut ffi::sfImage) -> Self {
         Image { image: raw }
     }
 }
