@@ -79,7 +79,7 @@ impl<'te, 'sh, 'shte> RenderStates<'te, 'sh, 'shte> {
             shader: shader,
         }
     }
-    pub fn raw(&self) -> ffi::sfRenderStates {
+    pub(super) fn raw(&self) -> ffi::sfRenderStates {
         ffi::sfRenderStates {
             blendMode: self.blend_mode.raw(),
             transform: self.transform.0,
