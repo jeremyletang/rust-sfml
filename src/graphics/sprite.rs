@@ -150,7 +150,7 @@ impl<'s> Sprite<'s> {
     pub fn set_texture_rect(&mut self, rect: &IntRect) {
         unsafe { ffi::sfSprite_setTextureRect(self.sprite, rect.raw()) }
     }
-    pub fn raw(&self) -> *const ffi::sfSprite {
+    pub(super) fn raw(&self) -> *const ffi::sfSprite {
         self.sprite
     }
 }
