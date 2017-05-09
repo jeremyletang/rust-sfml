@@ -69,10 +69,10 @@ pub struct ContextSettings {
 }
 
 impl ContextSettings {
-    pub fn raw(&self) -> sfContextSettings {
+    pub(crate) fn raw(&self) -> sfContextSettings {
         unsafe { ::std::mem::transmute(*self) }
     }
-    pub unsafe fn from_raw(raw: sfContextSettings) -> Self {
+    pub(crate) unsafe fn from_raw(raw: sfContextSettings) -> Self {
         ::std::mem::transmute(raw)
     }
 }
