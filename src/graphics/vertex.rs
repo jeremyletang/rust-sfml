@@ -108,7 +108,7 @@ impl Vertex {
     pub fn with_pos_coords<P: Into<Vector2f>>(position: P, tex_coords: Vector2f) -> Vertex {
         Self::new(position, Color::WHITE, tex_coords)
     }
-    pub fn raw(&self) -> ffi::sfVertex {
+    pub(super) fn raw(&self) -> ffi::sfVertex {
         ffi::sfVertex {
             position: self.position.raw(),
             color: self.color.raw(),
