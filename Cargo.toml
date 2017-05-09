@@ -18,8 +18,9 @@ graphics = ["window", "csfml-graphics-sys"]
 audio = ["csfml-audio-sys"]
 network = ["csfml-network-sys"]
 
-[dependencies]
-bitflags = {version = "0.5", optional = true }
+[dependencies.bitflags]
+git = "https://github.com/rust-lang-nursery/bitflags.git"
+optional = true
 
 [dependencies.csfml-system-sys]
 path = "ffi/csfml-system-sys"

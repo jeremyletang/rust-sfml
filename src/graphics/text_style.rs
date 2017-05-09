@@ -3,15 +3,15 @@
 bitflags! {
     /// Available text styles.
     #[repr(C)]
-    pub flags TextStyle: u32 {
+    pub struct TextStyle: u32 {
         /// Regular characters, no style.
-        const REGULAR = 0,
+        const REGULAR = 0;
         /// Bold characters.
-        const BOLD = 1,
+        const BOLD = 1;
         /// Italic characters.
-        const ITALIC = 2,
+        const ITALIC = 2;
         /// Underlined characters.
-        const UNDERLINED = 4
+        const UNDERLINED = 4;
     }
 }
 
