@@ -86,7 +86,7 @@ impl<'s> CustomShape<'s> {
     pub fn update(&mut self) {
         unsafe { ffi::sfShape_update(self.shape) }
     }
-    pub fn raw(&self) -> *const ffi::sfShape {
+    pub(super) fn raw(&self) -> *const ffi::sfShape {
         self.shape
     }
 }
