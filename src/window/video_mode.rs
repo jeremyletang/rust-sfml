@@ -52,10 +52,8 @@ pub struct VideoMode {
 
 impl VideoMode {
     /// Constructs a new `VideoMode` from the given parameters.
-    ///
-    /// Return a new VideoMode initialized
-    pub fn new(width: u32, height: u32, bits_per_pixel: u32) -> VideoMode {
-        VideoMode {
+    pub fn new(width: u32, height: u32, bits_per_pixel: u32) -> Self {
+        Self {
             width: width,
             height: height,
             bits_per_pixel: bits_per_pixel,
@@ -76,7 +74,7 @@ impl VideoMode {
     /// Static Method, get the current desktop video mode
     ///
     /// return the urrent desktop video mode
-    pub fn desktop_mode() -> VideoMode {
+    pub fn desktop_mode() -> Self {
         unsafe { Self::from_raw(ffi::sfVideoMode_getDesktopMode()) }
     }
 
@@ -91,7 +89,7 @@ impl VideoMode {
     /// width, height and bits_per_pixel).
     ///
     /// Return a vector containing all the supported VideoMode
-    pub fn fullscreen_modes() -> Vec<VideoMode> {
+    pub fn fullscreen_modes() -> Vec<Self> {
         let mut size = 0;
         let tab = unsafe { ffi::sfVideoMode_getFullscreenModes(&mut size) };
         if size == 0 {
