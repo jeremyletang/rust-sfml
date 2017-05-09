@@ -85,10 +85,10 @@ impl Time {
     pub fn as_microseconds(&self) -> i64 {
         unsafe { sfTime_asMicroseconds(self.0) }
     }
-    pub fn raw(&self) -> sfTime {
+    pub(crate) fn raw(&self) -> sfTime {
         self.0
     }
-    pub unsafe fn from_raw(raw: sfTime) -> Self {
+    pub(crate) unsafe fn from_raw(raw: sfTime) -> Self {
         Time(raw)
     }
 }
