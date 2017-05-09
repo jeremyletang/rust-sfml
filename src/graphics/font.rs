@@ -89,7 +89,7 @@ impl FontRef {
     pub fn underline_thickness(&self, character_size: u32) -> f32 {
         unsafe { ffi::sfFont_getUnderlineThickness(self.raw(), character_size) }
     }
-    pub fn raw(&self) -> *const ffi::sfFont {
+    pub(super) fn raw(&self) -> *const ffi::sfFont {
         let ptr: *const Self = self;
         ptr as _
     }
@@ -158,12 +158,9 @@ impl Font {
     ///
     /// Return the texture
     pub fn texture(&mut self, character_size: u32) -> &TextureRef {
-        let tex = unsafe { ffi::sfFont_getTexture(self.raw_mut(), character_size) };
+        let tex = unsafe { ffi::sfFont_getTexture(self.font, character_size) };
         assert!(!tex.is_null(), "sfFont_getTexture failed");
         unsafe { &*(tex as *const TextureRef) }
-    }
-    pub fn raw_mut(&mut self) -> *mut ffi::sfFont {
-        self.font
     }
 }
 
