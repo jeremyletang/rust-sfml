@@ -84,7 +84,7 @@ impl<'s> ConvexShape<'s> {
             pos: 0,
         }
     }
-    pub fn raw(&self) -> *const ffi::sfConvexShape {
+    pub(super) fn raw(&self) -> *const ffi::sfConvexShape {
         self.convex_shape
     }
 }
