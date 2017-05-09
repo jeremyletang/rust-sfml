@@ -54,7 +54,7 @@ impl ViewRef {
     pub fn viewport(&self) -> FloatRect {
         unsafe { FloatRect::from_raw(ffi::sfView_getViewport(self.raw())) }
     }
-    pub fn raw(&self) -> *const ffi::sfView {
+    pub(super) fn raw(&self) -> *const ffi::sfView {
         let ptr: *const Self = self;
         ptr as _
     }
@@ -164,9 +164,6 @@ impl View {
     /// * rectangle - Rectangle defining the zone to display
     pub fn reset(&mut self, rectangle: &FloatRect) {
         unsafe { ffi::sfView_reset(self.view, rectangle.raw()) }
-    }
-    pub unsafe fn from_raw(raw: *mut ffi::sfView) -> Self {
-        View { view: raw }
     }
 }
 
