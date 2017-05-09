@@ -88,7 +88,7 @@ impl Time {
     pub(crate) fn raw(&self) -> sfTime {
         self.0
     }
-    pub(crate) unsafe fn from_raw(raw: sfTime) -> Self {
+    pub(crate) fn from_raw(raw: sfTime) -> Self {
         Time(raw)
     }
 }

@@ -205,7 +205,7 @@ impl Vector3f {
             z: self.z,
         }
     }
-    pub(crate) unsafe fn from_raw(raw: ::csfml_system_sys::sfVector3f) -> Self {
+    pub(crate) fn from_raw(raw: ::csfml_system_sys::sfVector3f) -> Self {
         Self {
             x: raw.x,
             y: raw.y,

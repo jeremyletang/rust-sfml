@@ -106,7 +106,7 @@ impl VideoMode {
         let mut ret_tab = Vec::with_capacity(size as usize);
 
         for sf_video_mode in tab_slice.iter() {
-            ret_tab.push(unsafe { VideoMode::from_raw(*sf_video_mode) });
+            ret_tab.push(Self::from_raw(*sf_video_mode));
         }
 
         ret_tab
@@ -118,7 +118,7 @@ impl VideoMode {
             bitsPerPixel: self.bits_per_pixel,
         }
     }
-    unsafe fn from_raw(raw: ffi::sfVideoMode) -> Self {
+    fn from_raw(raw: ffi::sfVideoMode) -> Self {
         Self::new(raw.width, raw.height, raw.bitsPerPixel)
     }
 }

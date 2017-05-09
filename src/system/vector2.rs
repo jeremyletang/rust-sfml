@@ -186,7 +186,7 @@ impl Vector2i {
             y: self.y,
         }
     }
-    pub(crate) unsafe fn from_raw(raw: ::csfml_system_sys::sfVector2i) -> Self {
+    pub(crate) fn from_raw(raw: ::csfml_system_sys::sfVector2i) -> Self {
         Self { x: raw.x, y: raw.y }
     }
 }
@@ -198,7 +198,7 @@ impl Vector2u {
             y: self.y,
         }
     }
-    pub(crate) unsafe fn from_raw(raw: ::csfml_system_sys::sfVector2u) -> Self {
+    pub(crate) fn from_raw(raw: ::csfml_system_sys::sfVector2u) -> Self {
         Self { x: raw.x, y: raw.y }
     }
 }
@@ -210,7 +210,7 @@ impl Vector2f {
             y: self.y,
         }
     }
-    pub(crate) unsafe fn from_raw(raw: ::csfml_system_sys::sfVector2f) -> Self {
+    pub(crate) fn from_raw(raw: ::csfml_system_sys::sfVector2f) -> Self {
         Self { x: raw.x, y: raw.y }
     }
 }

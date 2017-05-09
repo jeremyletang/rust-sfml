@@ -108,7 +108,7 @@ impl IntRect {
             height: self.height,
         }
     }
-    pub(super) unsafe fn from_raw(raw: ffi::sfIntRect) -> Self {
+    pub(super) fn from_raw(raw: ffi::sfIntRect) -> Self {
         Self {
             top: raw.top,
             left: raw.left,
@@ -127,7 +127,7 @@ impl FloatRect {
             height: self.height,
         }
     }
-    pub(super) unsafe fn from_raw(raw: ffi::sfFloatRect) -> Self {
+    pub(super) fn from_raw(raw: ffi::sfFloatRect) -> Self {
         Self {
             top: raw.top,
             left: raw.left,
