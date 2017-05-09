@@ -32,7 +32,7 @@ pub struct Vec4 {
 }
 
 impl Vec4 {
-    pub fn raw(&self) -> ffi::sfGlslVec4 {
+    pub(super) fn raw(&self) -> ffi::sfGlslVec4 {
         ffi::sfGlslVec4 {
             x: self.x,
             y: self.y,
@@ -67,7 +67,7 @@ pub struct IVec4 {
 }
 
 impl IVec4 {
-    pub fn raw(&self) -> ffi::sfGlslIvec4 {
+    pub(super) fn raw(&self) -> ffi::sfGlslIvec4 {
         ffi::sfGlslIvec4 {
             x: self.x,
             y: self.y,
