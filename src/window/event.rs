@@ -192,8 +192,7 @@ pub enum Event {
 }
 
 impl Event {
-    /// Creates an event from a raw `csfml_window_sys::sfEvent`.
-    pub unsafe fn from_raw(event: &ffi::sfEvent) -> Option<Self> {
+    pub(crate) unsafe fn from_raw(event: &ffi::sfEvent) -> Option<Self> {
         use csfml_window_sys::sfEventType::*;
         use window::Event::*;
         use sf_bool_ext::SfBoolExt;
