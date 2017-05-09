@@ -126,7 +126,7 @@ impl SoundBufferRef {
     pub fn sample_rate(&self) -> u32 {
         unsafe { ffi::sfSoundBuffer_getSampleRate(self.raw()) }
     }
-    pub fn raw(&self) -> *const ffi::sfSoundBuffer {
+    fn raw(&self) -> *const ffi::sfSoundBuffer {
         let ptr: *const Self = self;
         ptr as *const ffi::sfSoundBuffer
     }
