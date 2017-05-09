@@ -63,7 +63,7 @@ impl<'s> CircleShape<'s> {
     pub fn set_point_count(&mut self, count: u32) {
         unsafe { ffi::sfCircleShape_setPointCount(self.circle_shape, count as usize) }
     }
-    pub fn raw(&self) -> *const ffi::sfCircleShape {
+    pub(super) fn raw(&self) -> *const ffi::sfCircleShape {
         self.circle_shape
     }
 }

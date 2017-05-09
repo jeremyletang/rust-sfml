@@ -53,7 +53,7 @@ impl<'s> RectangleShape<'s> {
     pub fn set_size<S: Into<Vector2f>>(&mut self, size: S) {
         unsafe { ffi::sfRectangleShape_setSize(self.rectangle_shape, size.into().raw()) }
     }
-    pub fn raw(&self) -> *const ffi::sfRectangleShape {
+    pub(super) fn raw(&self) -> *const ffi::sfRectangleShape {
         self.rectangle_shape
     }
 }
