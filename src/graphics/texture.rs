@@ -82,7 +82,7 @@ impl TextureRef {
     pub fn bind(&self) {
         unsafe { ffi::sfTexture_bind(self.raw()) }
     }
-    pub fn raw(&self) -> *const ffi::sfTexture {
+    pub(super) fn raw(&self) -> *const ffi::sfTexture {
         let ptr: *const Self = self;
         ptr as _
     }
@@ -319,9 +319,6 @@ impl Texture {
     /// Returns true if mipmap generation was successful, false if unsuccessful.
     pub fn generate_mipmap(&mut self) -> bool {
         unsafe { ffi::sfTexture_generateMipmap(self.texture).to_bool() }
-    }
-    pub unsafe fn from_raw(raw: *mut ffi::sfTexture) -> Self {
-        Self { texture: raw }
     }
 }
 
