@@ -80,10 +80,10 @@ pub enum Type {
 }
 
 impl Type {
-    pub unsafe fn from_raw(raw: sfSensorType) -> Self {
+    pub(super) unsafe fn from_raw(raw: sfSensorType) -> Self {
         ::std::mem::transmute(raw)
     }
-    pub fn raw(&self) -> sfSensorType {
+    fn raw(&self) -> sfSensorType {
         unsafe { ::std::mem::transmute(*self) }
     }
 }
