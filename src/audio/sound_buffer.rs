@@ -6,7 +6,6 @@ use std::ffi::CString;
 use std::io::{Read, Seek};
 use std::ops::Deref;
 use system::Time;
-use system::raw_conv::{FromRaw, Raw};
 
 
 /// Storage for audio samples defining a sound.
@@ -127,6 +126,10 @@ impl SoundBufferRef {
     pub fn sample_rate(&self) -> u32 {
         unsafe { ffi::sfSoundBuffer_getSampleRate(self.raw()) }
     }
+    pub fn raw(&self) -> *const ffi::sfSoundBuffer {
+        let ptr: *const Self = self;
+        ptr as *const ffi::sfSoundBuffer
+    }
 }
 
 impl SoundBuffer {
@@ -207,14 +210,6 @@ impl ToOwned for SoundBufferRef {
 impl Clone for SoundBuffer {
     fn clone(&self) -> Self {
         (**self).to_owned()
-    }
-}
-
-impl Raw for SoundBufferRef {
-    type Raw = *const ffi::sfSoundBuffer;
-    fn raw(&self) -> Self::Raw {
-        let ptr: *const Self = self;
-        ptr as Self::Raw
     }
 }
 

@@ -4,7 +4,6 @@ use network::csfml_network_sys as ffi;
 use sf_bool_ext::SfBoolExt;
 use std::{mem, ptr};
 use system::Time;
-use system::raw_conv::{FromRaw, Raw, RawMut};
 
 /// Specialized socket using the TCP protocol
 pub struct TcpSocket {

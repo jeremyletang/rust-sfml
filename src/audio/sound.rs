@@ -6,7 +6,6 @@ use std::marker::PhantomData;
 use std::mem;
 use system::Time;
 use system::Vector3f;
-use system::raw_conv::{FromRaw, Raw};
 
 /// Regular sound that can be played in the audio environment.
 ///

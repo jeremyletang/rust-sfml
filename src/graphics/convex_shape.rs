@@ -6,7 +6,6 @@ use sf_bool_ext::SfBoolExt;
 use std::marker::PhantomData;
 use std::ptr;
 use system::Vector2f;
-use system::raw_conv::{FromRaw, Raw};
 
 /// Specialized shape representing a convex polygon
 ///
@@ -84,6 +83,9 @@ impl<'s> ConvexShape<'s> {
             convex_shape: self.convex_shape,
             pos: 0,
         }
+    }
+    pub fn raw(&self) -> *const ffi::sfConvexShape {
+        self.convex_shape
     }
 }
 
@@ -236,13 +238,6 @@ impl Iterator for ConvexShapePoints {
                                                                     self.pos as usize)))
             }
         }
-    }
-}
-
-impl<'s> Raw for ConvexShape<'s> {
-    type Raw = *const ffi::sfConvexShape;
-    fn raw(&self) -> Self::Raw {
-        self.convex_shape
     }
 }
 

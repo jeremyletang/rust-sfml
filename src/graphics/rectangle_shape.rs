@@ -6,7 +6,6 @@ use sf_bool_ext::SfBoolExt;
 use std::marker::PhantomData;
 use std::ptr;
 use system::Vector2f;
-use system::raw_conv::{FromRaw, Raw};
 
 /// Specialized shape representing a rectangle
 #[derive(Debug)]
@@ -53,6 +52,9 @@ impl<'s> RectangleShape<'s> {
     /// * size - The new size of the rectangle
     pub fn set_size<S: Into<Vector2f>>(&mut self, size: S) {
         unsafe { ffi::sfRectangleShape_setSize(self.rectangle_shape, size.into().raw()) }
+    }
+    pub fn raw(&self) -> *const ffi::sfRectangleShape {
+        self.rectangle_shape
     }
 }
 
@@ -188,13 +190,6 @@ impl<'s> Clone for RectangleShape<'s> {
                 texture: self.texture,
             }
         }
-    }
-}
-
-impl<'s> Raw for RectangleShape<'s> {
-    type Raw = *const ffi::sfRectangleShape;
-    fn raw(&self) -> Self::Raw {
-        self.rectangle_shape
     }
 }
 

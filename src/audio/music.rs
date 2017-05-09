@@ -8,7 +8,6 @@ use std::io::{Read, Seek};
 use std::mem;
 use system::Time;
 use system::Vector3f;
-use system::raw_conv::{FromRaw, Raw};
 
 /// Streamed music played from an audio file.
 ///

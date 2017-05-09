@@ -6,7 +6,6 @@ use graphics::csfml_graphics_sys as ffi;
 use sf_bool_ext::SfBoolExt;
 use std::marker::PhantomData;
 use system::{Vector2f, Vector2i, Vector2u};
-use system::raw_conv::{FromRaw, Raw};
 use window::{ContextSettings, Event, Style, VideoMode};
 
 /// Window that can serve as a target for 2D drawing.
@@ -344,7 +343,7 @@ impl RenderWindow {
     /// Returns the current position of a touch in window coordinates.
     pub fn touch_position(&self, finger: u32) -> Vector2i {
         unsafe {
-            FromRaw::from_raw(ffi::sfTouch_getPositionRenderWindow(finger, self.render_window))
+            Vector2i::from_raw(ffi::sfTouch_getPositionRenderWindow(finger, self.render_window))
         }
     }
 
@@ -365,11 +364,7 @@ impl RenderWindow {
     pub fn request_focus(&self) {
         unsafe { ffi::sfRenderWindow_requestFocus(self.render_window) }
     }
-}
-
-impl Raw for RenderWindow {
-    type Raw = *const ffi::sfRenderWindow;
-    fn raw(&self) -> Self::Raw {
+    pub fn raw(&self) -> *const ffi::sfRenderWindow {
         self.render_window
     }
 }

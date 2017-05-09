@@ -7,7 +7,6 @@ use std::ffi::{CStr, CString};
 use std::mem;
 use std::str;
 use system::Time;
-use system::raw_conv::Raw;
 
 /// The differents FTP modes availables.
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]

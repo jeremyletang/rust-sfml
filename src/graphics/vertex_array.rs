@@ -2,7 +2,6 @@ use graphics::{Drawable, FloatRect, PrimitiveType, RenderStates, RenderTarget, V
 use graphics::csfml_graphics_sys::*;
 use std::mem;
 use std::ops::{Index, IndexMut};
-use system::raw_conv::{FromRaw, Raw};
 
 /// Define a set of one or more 2D primitives
 #[derive(Debug)]
@@ -101,7 +100,7 @@ impl VertexArray {
     ///
     /// Return the primitive type
     pub fn primitive_type(&self) -> PrimitiveType {
-        unsafe { FromRaw::from_raw(sfVertexArray_getPrimitiveType(self.vertex_array)) }
+        unsafe { PrimitiveType::from_raw(sfVertexArray_getPrimitiveType(self.vertex_array)) }
     }
 
     /// Return an immutable iterator over all the vertice contained by the VertexArray
@@ -110,6 +109,9 @@ impl VertexArray {
             vertex_array: self,
             pos: 0,
         }
+    }
+    pub fn raw(&self) -> *const sfVertexArray {
+        self.vertex_array
     }
 }
 
@@ -170,13 +172,6 @@ impl IndexMut<usize> for VertexArray {
                 idx,
                 self.vertex_count());
         unsafe { &mut *(sfVertexArray_getVertex(self.vertex_array, idx) as *mut Vertex) }
-    }
-}
-
-impl Raw for VertexArray {
-    type Raw = *const sfVertexArray;
-    fn raw(&self) -> Self::Raw {
-        self.vertex_array
     }
 }
 

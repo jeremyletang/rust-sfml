@@ -1,6 +1,5 @@
 use graphics::csfml_graphics_sys as ffi;
 use std::ops::{Add, AddAssign, Mul, MulAssign, Sub, SubAssign};
-use system::raw_conv::{FromRaw, Raw};
 
 /// Utility type for manpulating RGBA colors
 ///
@@ -16,21 +15,6 @@ pub struct Color {
     pub b: u8,
     /// Alpha (opacity) component.
     pub a: u8,
-}
-
-impl Raw for Color {
-    type Raw = ffi::sfColor;
-
-    fn raw(&self) -> Self::Raw {
-        unsafe { ::std::mem::transmute(*self) }
-    }
-}
-
-impl FromRaw for Color {
-    type RawFrom = ffi::sfColor;
-    unsafe fn from_raw(raw: Self::RawFrom) -> Self {
-        ::std::mem::transmute(raw)
-    }
 }
 
 impl Color {
@@ -67,6 +51,14 @@ impl Color {
             b: blue,
             a: alpha,
         }
+    }
+
+    pub fn raw(&self) -> ffi::sfColor {
+        unsafe { ::std::mem::transmute(*self) }
+    }
+
+    pub unsafe fn from_raw(raw: ffi::sfColor) -> Self {
+        ::std::mem::transmute(raw)
     }
 
     /// Black predefined color

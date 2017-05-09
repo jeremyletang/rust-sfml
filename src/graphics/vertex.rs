@@ -1,7 +1,6 @@
 use graphics::Color;
 use graphics::csfml_graphics_sys as ffi;
 use system::Vector2f;
-use system::raw_conv::Raw;
 
 /// Define a point with color and texture coordinates.
 ///
@@ -109,6 +108,13 @@ impl Vertex {
     pub fn with_pos_coords<P: Into<Vector2f>>(position: P, tex_coords: Vector2f) -> Vertex {
         Self::new(position, Color::WHITE, tex_coords)
     }
+    pub fn raw(&self) -> ffi::sfVertex {
+        ffi::sfVertex {
+            position: self.position.raw(),
+            color: self.color.raw(),
+            texCoords: self.tex_coords.raw(),
+        }
+    }
 }
 
 /// Create a new default `Vertex`
@@ -122,17 +128,5 @@ impl Vertex {
 impl Default for Vertex {
     fn default() -> Vertex {
         Self::new(Vector2f::new(0., 0.), Color::WHITE, Vector2f::new(0., 0.))
-    }
-}
-
-impl Raw for Vertex {
-    type Raw = ffi::sfVertex;
-
-    fn raw(&self) -> Self::Raw {
-        ffi::sfVertex {
-            position: self.position.raw(),
-            color: self.color.raw(),
-            texCoords: self.tex_coords.raw(),
-        }
     }
 }

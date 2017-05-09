@@ -5,7 +5,6 @@ use std::ffi::{CStr, CString};
 use std::mem;
 use std::str;
 use system::Time;
-use system::raw_conv::Raw;
 
 /// Method type to send the request
 #[repr(u32)]

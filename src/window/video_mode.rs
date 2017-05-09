@@ -1,6 +1,5 @@
 use csfml_window_sys as ffi;
 use sf_bool_ext::SfBoolExt;
-use system::raw_conv::{FromRaw, Raw};
 
 /// `VideoMode` defines a video mode (width, height, bpp)
 ///
@@ -112,30 +111,22 @@ impl VideoMode {
 
         ret_tab
     }
-}
-
-impl From<(u32, u32)> for VideoMode {
-    /// Constructs a `VideoMode` from `(w, h)`. Bit depth is 32.
-    fn from(src: (u32, u32)) -> Self {
-        Self::new(src.0, src.1, 32)
-    }
-}
-
-impl Raw for VideoMode {
-    type Raw = ffi::sfVideoMode;
-    fn raw(&self) -> ffi::sfVideoMode {
+    pub fn raw(&self) -> ffi::sfVideoMode {
         ffi::sfVideoMode {
             width: self.width,
             height: self.height,
             bitsPerPixel: self.bits_per_pixel,
         }
     }
+    pub unsafe fn from_raw(raw: ffi::sfVideoMode) -> Self {
+        Self::new(raw.width, raw.height, raw.bitsPerPixel)
+    }
 }
 
-impl FromRaw for VideoMode {
-    type RawFrom = ffi::sfVideoMode;
-    unsafe fn from_raw(raw: Self::RawFrom) -> Self {
-        Self::new(raw.width, raw.height, raw.bitsPerPixel)
+impl From<(u32, u32)> for VideoMode {
+    /// Constructs a `VideoMode` from `(w, h)`. Bit depth is 32.
+    fn from(src: (u32, u32)) -> Self {
+        Self::new(src.0, src.1, 32)
     }
 }
 

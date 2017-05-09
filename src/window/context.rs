@@ -1,6 +1,5 @@
 use csfml_window_sys as ffi;
 use sf_bool_ext::SfBoolExt;
-use system::raw_conv::FromRaw;
 use window::ContextSettings;
 
 /// Type holding a valid drawing context.

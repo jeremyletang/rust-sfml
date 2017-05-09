@@ -3,7 +3,6 @@ use graphics::csfml_graphics_sys as ffi;
 use std::borrow::{Borrow, ToOwned};
 use std::ops::Deref;
 use system::Vector2f;
-use system::raw_conv::{FromRaw, Raw};
 
 /// 2D camera that defines what region is shown on screen
 ///
@@ -54,6 +53,10 @@ impl ViewRef {
     /// Return the viewport rectangle, expressed as a factor of the target size
     pub fn viewport(&self) -> FloatRect {
         unsafe { FloatRect::from_raw(ffi::sfView_getViewport(self.raw())) }
+    }
+    pub fn raw(&self) -> *const ffi::sfView {
+        let ptr: *const Self = self;
+        ptr as _
     }
 }
 
@@ -162,6 +165,9 @@ impl View {
     pub fn reset(&mut self, rectangle: &FloatRect) {
         unsafe { ffi::sfView_reset(self.view, rectangle.raw()) }
     }
+    pub unsafe fn from_raw(raw: *mut ffi::sfView) -> Self {
+        View { view: raw }
+    }
 }
 
 impl Default for View {
@@ -200,20 +206,5 @@ impl Clone for View {
 impl Drop for View {
     fn drop(&mut self) {
         unsafe { ffi::sfView_destroy(self.view) }
-    }
-}
-
-impl Raw for ViewRef {
-    type Raw = *const ffi::sfView;
-    fn raw(&self) -> Self::Raw {
-        let ptr: *const Self = self;
-        ptr as Self::Raw
-    }
-}
-
-impl FromRaw for View {
-    type RawFrom = *mut ffi::sfView;
-    unsafe fn from_raw(raw: Self::RawFrom) -> Self {
-        View { view: raw }
     }
 }

@@ -6,7 +6,6 @@ use sf_bool_ext::SfBoolExt;
 use std::marker::PhantomData;
 use std::ptr;
 use system::Vector2f;
-use system::raw_conv::{FromRaw, Raw};
 
 /// Drawable representation of a texture
 ///
@@ -151,6 +150,9 @@ impl<'s> Sprite<'s> {
     pub fn set_texture_rect(&mut self, rect: &IntRect) {
         unsafe { ffi::sfSprite_setTextureRect(self.sprite, rect.raw()) }
     }
+    pub fn raw(&self) -> *const ffi::sfSprite {
+        self.sprite
+    }
 }
 
 impl<'s> Default for Sprite<'s> {
@@ -220,13 +222,6 @@ impl<'s> Transformable for Sprite<'s> {
     }
     fn inverse_transform(&self) -> Transform {
         unsafe { Transform(ffi::sfSprite_getInverseTransform(self.sprite)) }
-    }
-}
-
-impl<'s> Raw for Sprite<'s> {
-    type Raw = *const ffi::sfSprite;
-    fn raw(&self) -> Self::Raw {
-        self.sprite
     }
 }
 

@@ -3,7 +3,6 @@ use csfml_window_sys as ffi;
 use sf_bool_ext::SfBoolExt;
 use std::marker::PhantomData;
 use system::{Vector2i, Vector2u};
-use system::raw_conv::{FromRaw, Raw};
 use window::{ContextSettings, Event, Style, VideoMode};
 
 /// Window that serves as a target for OpenGL rendering.
@@ -355,7 +354,7 @@ impl Window {
 
     /// Returns the current position of a touch in window coordinates.
     pub fn touch_position(&self, finger: u32) -> Vector2i {
-        unsafe { FromRaw::from_raw(ffi::sfTouch_getPosition(finger, self.window)) }
+        unsafe { Vector2i::from_raw(ffi::sfTouch_getPosition(finger, self.window)) }
     }
 
     /// Check whether the window has the input focus.
@@ -375,11 +374,7 @@ impl Window {
     pub fn request_focus(&self) {
         unsafe { ffi::sfWindow_requestFocus(self.window) }
     }
-}
-
-impl Raw for Window {
-    type Raw = *const ffi::sfWindow;
-    fn raw(&self) -> Self::Raw {
+    pub fn raw(&self) -> *const ffi::sfWindow {
         self.window
     }
 }

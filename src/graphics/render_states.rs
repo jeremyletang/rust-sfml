@@ -1,7 +1,6 @@
 use graphics::{BlendMode, Shader, TextureRef, Transform};
 use graphics::csfml_graphics_sys as ffi;
 use std::ptr;
-use system::raw_conv::Raw;
 
 /// Define the states used for drawing to a `RenderTarget`.
 ///
@@ -80,11 +79,7 @@ impl<'te, 'sh, 'shte> RenderStates<'te, 'sh, 'shte> {
             shader: shader,
         }
     }
-}
-
-impl<'te, 'sh, 'shte> Raw for RenderStates<'te, 'sh, 'shte> {
-    type Raw = ffi::sfRenderStates;
-    fn raw(&self) -> Self::Raw {
+    pub fn raw(&self) -> ffi::sfRenderStates {
         ffi::sfRenderStates {
             blendMode: self.blend_mode.raw(),
             transform: self.transform.0,

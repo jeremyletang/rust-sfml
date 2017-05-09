@@ -1,5 +1,4 @@
 use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssign};
-use system::raw_conv::{FromRaw, Raw};
 
 /// Utility type for manipulating 2-dimensional vectors.
 ///
@@ -180,56 +179,38 @@ impl<T: Neg<Output = T>> Neg for Vector2<T> {
     }
 }
 
-impl Raw for Vector2i {
-    type Raw = ::csfml_system_sys::sfVector2i;
-
-    fn raw(&self) -> Self::Raw {
+impl Vector2i {
+    pub fn raw(&self) -> ::csfml_system_sys::sfVector2i {
         ::csfml_system_sys::sfVector2i {
             x: self.x,
             y: self.y,
         }
     }
-}
-
-impl FromRaw for Vector2i {
-    type RawFrom = ::csfml_system_sys::sfVector2i;
-    unsafe fn from_raw(raw: Self::RawFrom) -> Self {
-        Vector2i { x: raw.x, y: raw.y }
+    pub unsafe fn from_raw(raw: ::csfml_system_sys::sfVector2i) -> Self {
+        Self { x: raw.x, y: raw.y }
     }
 }
 
-impl Raw for Vector2u {
-    type Raw = ::csfml_system_sys::sfVector2u;
-
-    fn raw(&self) -> Self::Raw {
+impl Vector2u {
+    pub fn raw(&self) -> ::csfml_system_sys::sfVector2u {
         ::csfml_system_sys::sfVector2u {
             x: self.x,
             y: self.y,
         }
     }
-}
-
-impl FromRaw for Vector2u {
-    type RawFrom = ::csfml_system_sys::sfVector2u;
-    unsafe fn from_raw(raw: Self::RawFrom) -> Self {
-        Vector2u { x: raw.x, y: raw.y }
+    pub unsafe fn from_raw(raw: ::csfml_system_sys::sfVector2u) -> Self {
+        Self { x: raw.x, y: raw.y }
     }
 }
 
-impl Raw for Vector2f {
-    type Raw = ::csfml_system_sys::sfVector2f;
-
-    fn raw(&self) -> Self::Raw {
+impl Vector2f {
+    pub fn raw(&self) -> ::csfml_system_sys::sfVector2f {
         ::csfml_system_sys::sfVector2f {
             x: self.x,
             y: self.y,
         }
     }
-}
-
-impl FromRaw for Vector2f {
-    type RawFrom = ::csfml_system_sys::sfVector2f;
-    unsafe fn from_raw(raw: Self::RawFrom) -> Self {
-        Vector2f { x: raw.x, y: raw.y }
+    pub unsafe fn from_raw(raw: ::csfml_system_sys::sfVector2f) -> Self {
+        Self { x: raw.x, y: raw.y }
     }
 }

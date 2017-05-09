@@ -197,7 +197,6 @@ impl Event {
         use csfml_window_sys::sfEventType::*;
         use window::Event::*;
         use sf_bool_ext::SfBoolExt;
-        use system::raw_conv::FromRaw;
 
         let type_ = *event.type_.as_ref();
 
@@ -244,7 +243,7 @@ impl Event {
             sfEvtMouseWheelScrolled => {
                 let e = event.mouseWheelScroll.as_ref();
                 MouseWheelScrolled {
-                    wheel: FromRaw::from_raw(e.wheel),
+                    wheel: Wheel::from_raw(e.wheel),
                     delta: e.delta,
                     x: e.x,
                     y: e.y,
@@ -254,7 +253,7 @@ impl Event {
                 let e = event.mouseButton.as_ref();
 
                 MouseButtonPressed {
-                    button: FromRaw::from_raw(e.button),
+                    button: Button::from_raw(e.button),
                     x: e.x,
                     y: e.y,
                 }
@@ -263,7 +262,7 @@ impl Event {
                 let e = event.mouseButton.as_ref();
 
                 MouseButtonReleased {
-                    button: FromRaw::from_raw(e.button),
+                    button: Button::from_raw(e.button),
                     x: e.x,
                     y: e.y,
                 }
@@ -295,7 +294,7 @@ impl Event {
 
                 JoystickMoved {
                     joystickid: e.joystickId,
-                    axis: FromRaw::from_raw(e.axis),
+                    axis: Axis::from_raw(e.axis),
                     position: e.position,
                 }
             }
@@ -336,7 +335,7 @@ impl Event {
                 let e = event.sensor.as_ref();
 
                 SensorChanged {
-                    type_: FromRaw::from_raw(e.sensorType),
+                    type_: ::window::sensor::Type::from_raw(e.sensorType),
                     x: e.x,
                     y: e.y,
                     z: e.z,

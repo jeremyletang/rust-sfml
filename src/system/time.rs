@@ -1,6 +1,5 @@
 use csfml_system_sys::*;
 use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Rem, RemAssign, Sub, SubAssign};
-use system::raw_conv::{FromRaw, Raw};
 
 /// Represents a time value.
 ///
@@ -85,6 +84,12 @@ impl Time {
     /// Returns the time value as a number of microseconds.
     pub fn as_microseconds(&self) -> i64 {
         unsafe { sfTime_asMicroseconds(self.0) }
+    }
+    pub fn raw(&self) -> sfTime {
+        self.0
+    }
+    pub unsafe fn from_raw(raw: sfTime) -> Self {
+        Time(raw)
     }
 }
 
@@ -225,20 +230,6 @@ impl Rem for Time {
 impl RemAssign for Time {
     fn rem_assign(&mut self, rhs: Self) {
         self.0.microseconds %= rhs.0.microseconds
-    }
-}
-
-impl Raw for Time {
-    type Raw = sfTime;
-    fn raw(&self) -> Self::Raw {
-        self.0
-    }
-}
-
-impl FromRaw for Time {
-    type RawFrom = sfTime;
-    unsafe fn from_raw(raw: Self::RawFrom) -> Self {
-        Time(raw)
     }
 }
 

@@ -1,6 +1,5 @@
 use csfml_system_sys as ffi;
 use system::Time;
-use system::raw_conv::FromRaw;
 
 /// Utility type that measures the elapsed time.
 ///

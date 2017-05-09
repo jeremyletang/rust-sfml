@@ -6,7 +6,6 @@ use std::ffi::CString;
 use std::io::{Read, Seek};
 use std::marker::PhantomData;
 use std::ptr;
-use system::raw_conv::Raw;
 
 /// Shader type (vertex, geometry and fragment).
 ///
@@ -530,11 +529,7 @@ impl<'te> Shader<'te> {
             ffi::sfShader_setMat4UniformArray(self.shader, name, ptr, len);
         }
     }
-}
-
-impl<'te> Raw for Shader<'te> {
-    type Raw = *const ffi::sfShader;
-    fn raw(&self) -> Self::Raw {
+    pub fn raw(&self) -> *const ffi::sfShader {
         self.shader
     }
 }

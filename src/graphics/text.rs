@@ -4,7 +4,6 @@ use graphics::csfml_graphics_sys as ffi;
 use std::marker::PhantomData;
 use std::str;
 use system::Vector2f;
-use system::raw_conv::{FromRaw, Raw};
 
 /// Graphical text
 ///
@@ -154,12 +153,12 @@ impl<'s> Text<'s> {
 
     /// Returns the fill color of the text.
     pub fn fill_color(&self) -> Color {
-        unsafe { FromRaw::from_raw(ffi::sfText_getFillColor(self.text)) }
+        unsafe { Color::from_raw(ffi::sfText_getFillColor(self.text)) }
     }
 
     /// Returns the outline color of the text.
     pub fn outline_color(&self) -> Color {
-        unsafe { FromRaw::from_raw(ffi::sfText_getOutlineColor(self.text)) }
+        unsafe { Color::from_raw(ffi::sfText_getOutlineColor(self.text)) }
     }
 
     /// Returns the outline thickness of the text, in pixels.
@@ -208,6 +207,9 @@ impl<'s> Text<'s> {
     /// Return the global bounding rectangle of the entity
     pub fn global_bounds(&self) -> FloatRect {
         unsafe { FloatRect::from_raw(ffi::sfText_getGlobalBounds(self.text)) }
+    }
+    pub fn raw(&self) -> *const ffi::sfText {
+        self.text
     }
 }
 
@@ -288,13 +290,6 @@ impl<'s> Transformable for Text<'s> {
     }
     fn inverse_transform(&self) -> Transform {
         unsafe { Transform(ffi::sfText_getInverseTransform(self.text)) }
-    }
-}
-
-impl<'s> Raw for Text<'s> {
-    type Raw = *const ffi::sfText;
-    fn raw(&self) -> Self::Raw {
-        self.text
     }
 }
 

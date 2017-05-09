@@ -44,7 +44,6 @@
 
 use csfml_window_sys as ffi;
 use sf_bool_ext::SfBoolExt;
-use system::raw_conv::{FromRaw, Raw};
 
 /// Maximum number of supported joysticks.
 pub const COUNT: u32 = 8;
@@ -75,16 +74,11 @@ pub enum Axis {
     PovY = 7,
 }
 
-impl Raw for Axis {
-    type Raw = ffi::sfJoystickAxis;
-    fn raw(&self) -> Self::Raw {
+impl Axis {
+    pub fn raw(&self) -> ffi::sfJoystickAxis {
         unsafe { ::std::mem::transmute(*self) }
     }
-}
-
-impl FromRaw for Axis {
-    type RawFrom = ffi::sfJoystickAxis;
-    unsafe fn from_raw(raw: Self::RawFrom) -> Self {
+    pub unsafe fn from_raw(raw: ffi::sfJoystickAxis) -> Self {
         ::std::mem::transmute(raw)
     }
 }

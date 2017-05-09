@@ -6,7 +6,6 @@ use sf_bool_ext::SfBoolExt;
 use std::os::raw::c_void;
 use std::panic;
 use system::{Time, Vector3f};
-use system::raw_conv::{FromRaw, Raw};
 
 /// Trait for streamed audio sources.
 pub trait SoundStream {

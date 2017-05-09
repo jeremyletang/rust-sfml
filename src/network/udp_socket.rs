@@ -3,7 +3,6 @@ use network::{IpAddress, Packet, SocketStatus};
 use network::csfml_network_sys as ffi;
 use sf_bool_ext::SfBoolExt;
 use std::{mem, ptr};
-use system::raw_conv::{FromRaw, Raw, RawMut};
 
 /// Specialized socket using the UDP protocol.
 pub struct UdpSocket {

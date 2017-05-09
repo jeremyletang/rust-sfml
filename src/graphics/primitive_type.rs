@@ -1,5 +1,4 @@
 use graphics::csfml_graphics_sys::sfPrimitiveType;
-use system::raw_conv::{FromRaw, Raw};
 
 /// Types of primitives that a `VertexArray` can render.
 ///
@@ -25,18 +24,11 @@ pub enum PrimitiveType {
     Quads = 6,
 }
 
-impl Raw for PrimitiveType {
-    type Raw = sfPrimitiveType;
-
-    fn raw(&self) -> sfPrimitiveType {
+impl PrimitiveType {
+    pub fn raw(&self) -> sfPrimitiveType {
         unsafe { ::std::mem::transmute(*self) }
     }
-}
-
-impl FromRaw for PrimitiveType {
-    type RawFrom = sfPrimitiveType;
-
-    unsafe fn from_raw(raw: sfPrimitiveType) -> Self {
+    pub unsafe fn from_raw(raw: sfPrimitiveType) -> Self {
         ::std::mem::transmute(raw)
     }
 }

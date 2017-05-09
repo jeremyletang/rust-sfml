@@ -28,7 +28,6 @@
 use csfml_window_sys as ffi;
 use sf_bool_ext::SfBoolExt;
 use system::Vector2i;
-use system::raw_conv::{FromRaw, Raw};
 
 /// Mouse buttons.
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
@@ -57,39 +56,18 @@ pub enum Wheel {
     Horizontal,
 }
 
-impl Raw for Wheel {
-    type Raw = ffi::sfMouseWheel;
-
-    fn raw(&self) -> Self::Raw {
+impl Wheel {
+    pub fn raw(&self) -> ffi::sfMouseWheel {
         match *self {
             Wheel::Vertical => ffi::sfMouseWheel::sfMouseVerticalWheel,
             Wheel::Horizontal => ffi::sfMouseWheel::sfMouseHorizontalWheel,
         }
     }
-}
-
-impl FromRaw for Wheel {
-    type RawFrom = ffi::sfMouseWheel;
-    unsafe fn from_raw(raw: Self::RawFrom) -> Self {
+    pub unsafe fn from_raw(raw: ffi::sfMouseWheel) -> Self {
         match raw {
             ffi::sfMouseWheel::sfMouseVerticalWheel => Wheel::Vertical,
             ffi::sfMouseWheel::sfMouseHorizontalWheel => Wheel::Horizontal,
         }
-    }
-}
-
-impl Raw for Button {
-    type Raw = ffi::sfMouseButton;
-
-    fn raw(&self) -> Self::Raw {
-        unsafe { ::std::mem::transmute(*self) }
-    }
-}
-
-impl FromRaw for Button {
-    type RawFrom = ffi::sfMouseButton;
-    unsafe fn from_raw(raw: Self::RawFrom) -> Self {
-        ::std::mem::transmute(raw)
     }
 }
 
@@ -102,13 +80,19 @@ impl Button {
     pub fn is_pressed(self) -> bool {
         unsafe { ffi::sfMouse_isButtonPressed(self.raw()) }.to_bool()
     }
+    pub fn raw(&self) -> ffi::sfMouseButton {
+        unsafe { ::std::mem::transmute(*self) }
+    }
+    pub unsafe fn from_raw(raw: ffi::sfMouseButton) -> Self {
+        ::std::mem::transmute(raw)
+    }
 }
 
 /// Get the current position of the mouse in desktop coordinates.
 ///
 /// This function returns the global position of the mouse cursor on the desktop.
 pub fn desktop_position() -> Vector2i {
-    unsafe { FromRaw::from_raw(ffi::sfMouse_getPosition(::std::ptr::null())) }
+    unsafe { Vector2i::from_raw(ffi::sfMouse_getPosition(::std::ptr::null())) }
 }
 
 /// Set the current position of the mouse in desktop coordinates.

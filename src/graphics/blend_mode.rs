@@ -1,7 +1,6 @@
 //! Available blending modes for drawing
 
 use graphics::csfml_graphics_sys as ffi;
-use system::raw_conv::{FromRaw, Raw};
 
 /// Blending modes for drawing.
 ///
@@ -109,21 +108,6 @@ pub const NONE: BlendMode = BlendMode {
     alpha_equation: Equation::Add,
 };
 
-impl Raw for BlendMode {
-    type Raw = ffi::sfBlendMode;
-
-    fn raw(&self) -> Self::Raw {
-        unsafe { ::std::mem::transmute(*self) }
-    }
-}
-
-impl FromRaw for BlendMode {
-    type RawFrom = ffi::sfBlendMode;
-    unsafe fn from_raw(raw: Self::RawFrom) -> Self {
-        ::std::mem::transmute(raw)
-    }
-}
-
 /// Enumeration of the blending factors.
 ///
 /// The factors are mapped directly to their OpenGL equivalents, specified by
@@ -185,5 +169,11 @@ impl BlendMode {
             alpha_dst_factor: alpha_dst,
             alpha_equation: alpha_equ,
         }
+    }
+    pub fn raw(&self) -> ffi::sfBlendMode {
+        unsafe { ::std::mem::transmute(*self) }
+    }
+    pub unsafe fn from_raw(raw: ffi::sfBlendMode) -> Self {
+        ::std::mem::transmute(raw)
     }
 }

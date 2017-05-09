@@ -7,7 +7,6 @@ use std::marker::PhantomData;
 use std::os::raw::c_void;
 use std::ptr;
 use system::Vector2f;
-use system::raw_conv::{FromRaw, Raw};
 
 /// The points of a custom shape.
 pub trait CustomShapePoints {
@@ -87,6 +86,9 @@ impl<'s> CustomShape<'s> {
     pub fn update(&mut self) {
         unsafe { ffi::sfShape_update(self.shape) }
     }
+    pub fn raw(&self) -> *const ffi::sfShape {
+        self.shape
+    }
 }
 
 impl<'s> Shape<'s> for CustomShape<'s> {
@@ -142,13 +144,6 @@ impl<'s> Shape<'s> for CustomShape<'s> {
     }
     fn global_bounds(&self) -> FloatRect {
         unsafe { FloatRect::from_raw(ffi::sfShape_getGlobalBounds(self.shape)) }
-    }
-}
-
-impl<'s> Raw for CustomShape<'s> {
-    type Raw = *const ffi::sfShape;
-    fn raw(&self) -> Self::Raw {
-        self.shape
     }
 }
 

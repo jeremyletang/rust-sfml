@@ -6,7 +6,6 @@ use sf_bool_ext::SfBoolExt;
 use std::marker::PhantomData;
 use std::ptr;
 use system::Vector2f;
-use system::raw_conv::{FromRaw, Raw};
 
 /// Specialized shape representing a circle.
 #[derive(Debug)]
@@ -63,6 +62,9 @@ impl<'s> CircleShape<'s> {
     /// * count - New number of points of the circle
     pub fn set_point_count(&mut self, count: u32) {
         unsafe { ffi::sfCircleShape_setPointCount(self.circle_shape, count as usize) }
+    }
+    pub fn raw(&self) -> *const ffi::sfCircleShape {
+        self.circle_shape
     }
 }
 
@@ -210,12 +212,5 @@ impl<'s> Clone for CircleShape<'s> {
 impl<'s> Drop for CircleShape<'s> {
     fn drop(&mut self) {
         unsafe { ffi::sfCircleShape_destroy(self.circle_shape) }
-    }
-}
-
-impl<'s> Raw for CircleShape<'s> {
-    type Raw = *const ffi::sfCircleShape;
-    fn raw(&self) -> Self::Raw {
-        self.circle_shape
     }
 }

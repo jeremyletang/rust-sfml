@@ -1,5 +1,4 @@
 use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssign};
-use system::raw_conv::{FromRaw, Raw};
 
 /// Utility type for manipulating 3-dimensional vectors.
 ///
@@ -198,22 +197,16 @@ impl<T> From<(T, T, T)> for Vector3<T> {
     }
 }
 
-impl Raw for Vector3f {
-    type Raw = ::csfml_system_sys::sfVector3f;
-
-    fn raw(&self) -> Self::Raw {
+impl Vector3f {
+    pub fn raw(&self) -> ::csfml_system_sys::sfVector3f {
         ::csfml_system_sys::sfVector3f {
             x: self.x,
             y: self.y,
             z: self.z,
         }
     }
-}
-
-impl FromRaw for Vector3f {
-    type RawFrom = ::csfml_system_sys::sfVector3f;
-    unsafe fn from_raw(raw: Self::RawFrom) -> Self {
-        Vector3f {
+    pub unsafe fn from_raw(raw: ::csfml_system_sys::sfVector3f) -> Self {
+        Self {
             x: raw.x,
             y: raw.y,
             z: raw.z,

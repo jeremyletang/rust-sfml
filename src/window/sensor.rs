@@ -37,11 +37,10 @@
 use csfml_window_sys::*;
 use sf_bool_ext::SfBoolExt;
 use system::Vector3f;
-use system::raw_conv::{FromRaw, Raw};
 
 /// Get the current sensor value.
 pub fn value(sensor: Type) -> Vector3f {
-    unsafe { FromRaw::from_raw(sfSensor_getValue(sensor.raw())) }
+    unsafe { Vector3f::from_raw(sfSensor_getValue(sensor.raw())) }
 }
 
 /// Check if a sensor is available on the underlying platform.
@@ -80,17 +79,11 @@ pub enum Type {
     Count = 6,
 }
 
-impl Raw for Type {
-    type Raw = sfSensorType;
-
-    fn raw(&self) -> Self::Raw {
-        unsafe { ::std::mem::transmute(*self) }
-    }
-}
-
-impl FromRaw for Type {
-    type RawFrom = sfSensorType;
-    unsafe fn from_raw(raw: Self::RawFrom) -> Self {
+impl Type {
+    pub unsafe fn from_raw(raw: sfSensorType) -> Self {
         ::std::mem::transmute(raw)
+    }
+    pub fn raw(&self) -> sfSensorType {
+        unsafe { ::std::mem::transmute(*self) }
     }
 }

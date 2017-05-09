@@ -3,7 +3,6 @@ use network::{IpAddress, SocketStatus, TcpSocket};
 use network::csfml_network_sys as ffi;
 use sf_bool_ext::SfBoolExt;
 use std::mem;
-use system::raw_conv::{Raw, RawMut};
 
 /// Socket that listens to new TCP connections
 pub struct TcpListener {

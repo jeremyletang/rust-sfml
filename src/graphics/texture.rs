@@ -9,7 +9,6 @@ use std::io::{Read, Seek};
 use std::ops::Deref;
 use std::ptr;
 use system::Vector2u;
-use system::raw_conv::{FromRaw, Raw};
 use window::Window;
 
 /// Image used for drawing
@@ -82,6 +81,10 @@ impl TextureRef {
     /// mix `Texture` with OpenGL code.
     pub fn bind(&self) {
         unsafe { ffi::sfTexture_bind(self.raw()) }
+    }
+    pub fn raw(&self) -> *const ffi::sfTexture {
+        let ptr: *const Self = self;
+        ptr as _
     }
 }
 
@@ -317,6 +320,9 @@ impl Texture {
     pub fn generate_mipmap(&mut self) -> bool {
         unsafe { ffi::sfTexture_generateMipmap(self.texture).to_bool() }
     }
+    pub unsafe fn from_raw(raw: *mut ffi::sfTexture) -> Self {
+        Self { texture: raw }
+    }
 }
 
 impl Borrow<TextureRef> for Texture {
@@ -341,21 +347,6 @@ impl ToOwned for TextureRef {
 impl Clone for Texture {
     fn clone(&self) -> Texture {
         (**self).to_owned()
-    }
-}
-
-impl Raw for TextureRef {
-    type Raw = *const ffi::sfTexture;
-    fn raw(&self) -> Self::Raw {
-        let ptr: *const Self = self;
-        ptr as _
-    }
-}
-
-impl FromRaw for Texture {
-    type RawFrom = *mut ffi::sfTexture;
-    unsafe fn from_raw(raw: Self::RawFrom) -> Self {
-        Texture { texture: raw }
     }
 }
 

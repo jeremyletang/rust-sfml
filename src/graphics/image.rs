@@ -7,7 +7,6 @@ use std::ffi::CString;
 use std::io::{Read, Seek};
 use std::slice;
 use system::Vector2u;
-use system::raw_conv::{FromRaw, Raw};
 
 /// Loading, manipulating and saving images.
 #[derive(Debug)]
@@ -241,6 +240,12 @@ impl Image {
                                    sfBool::from_bool(apply_alpha))
         }
     }
+    pub fn raw(&self) -> *const ffi::sfImage {
+        self.image
+    }
+    pub unsafe fn from_raw(raw: *mut ffi::sfImage) -> Self {
+        Image { image: raw }
+    }
 }
 
 impl Clone for Image {
@@ -252,20 +257,6 @@ impl Clone for Image {
         } else {
             Image { image: image }
         }
-    }
-}
-
-impl Raw for Image {
-    type Raw = *const ffi::sfImage;
-    fn raw(&self) -> Self::Raw {
-        self.image
-    }
-}
-
-impl FromRaw for Image {
-    type RawFrom = *mut ffi::sfImage;
-    unsafe fn from_raw(raw: Self::RawFrom) -> Self {
-        Image { image: raw }
     }
 }
 

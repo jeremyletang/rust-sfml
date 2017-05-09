@@ -5,7 +5,6 @@ use graphics::{CircleShape, Color, ConvexShape, CustomShape, Drawable, IntRect, 
 use graphics::csfml_graphics_sys as ffi;
 use sf_bool_ext::SfBoolExt;
 use system::{Vector2f, Vector2i, Vector2u};
-use system::raw_conv::{FromRaw, Raw};
 
 /// Target for off-screen 2D rendering into a texture
 #[derive(Debug)]

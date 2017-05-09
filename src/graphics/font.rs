@@ -7,7 +7,6 @@ use std::borrow::{Borrow, ToOwned};
 use std::ffi::{CStr, CString};
 use std::io::{Read, Seek};
 use std::ops::Deref;
-use system::raw_conv::{FromRaw, Raw, RawMut};
 
 /// Type for loading and manipulating character fonts
 #[derive(Debug)]
@@ -90,6 +89,10 @@ impl FontRef {
     pub fn underline_thickness(&self, character_size: u32) -> f32 {
         unsafe { ffi::sfFont_getUnderlineThickness(self.raw(), character_size) }
     }
+    pub fn raw(&self) -> *const ffi::sfFont {
+        let ptr: *const Self = self;
+        ptr as _
+    }
 }
 
 /// Holds various information about a font.
@@ -159,6 +162,9 @@ impl Font {
         assert!(!tex.is_null(), "sfFont_getTexture failed");
         unsafe { &*(tex as *const TextureRef) }
     }
+    pub fn raw_mut(&mut self) -> *mut ffi::sfFont {
+        self.font
+    }
 }
 
 #[test]
@@ -189,21 +195,6 @@ impl Clone for Font {
     /// Return a new Font or panic! if there is not enough memory
     fn clone(&self) -> Font {
         (**self).to_owned()
-    }
-}
-
-impl Raw for FontRef {
-    type Raw = *const ffi::sfFont;
-    fn raw(&self) -> Self::Raw {
-        let ptr: *const Self = self;
-        ptr as Self::Raw
-    }
-}
-
-impl RawMut for Font {
-    type RawMut = *mut ffi::sfFont;
-    fn raw_mut(&mut self) -> Self::RawMut {
-        self.font
     }
 }
 

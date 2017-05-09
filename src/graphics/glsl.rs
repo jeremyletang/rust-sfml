@@ -3,7 +3,6 @@
 use graphics::Color;
 use graphics::csfml_graphics_sys as ffi;
 use system::{Vector2, Vector3};
-use system::raw_conv::Raw;
 
 /// 2D float vector (`vec2` in GLSL).
 pub type Vec2 = Vector2<f32>;
@@ -32,11 +31,9 @@ pub struct Vec4 {
     pub w: f32,
 }
 
-impl Raw for Vec4 {
-    type Raw = ffi::sfGlslVec4;
-
-    fn raw(&self) -> Self::Raw {
-        Self::Raw {
+impl Vec4 {
+    pub fn raw(&self) -> ffi::sfGlslVec4 {
+        ffi::sfGlslVec4 {
             x: self.x,
             y: self.y,
             z: self.z,
@@ -69,11 +66,9 @@ pub struct IVec4 {
     pub w: i32,
 }
 
-impl Raw for IVec4 {
-    type Raw = ffi::sfGlslIvec4;
-
-    fn raw(&self) -> Self::Raw {
-        Self::Raw {
+impl IVec4 {
+    pub fn raw(&self) -> ffi::sfGlslIvec4 {
+        ffi::sfGlslIvec4 {
             x: self.x,
             y: self.y,
             z: self.z,

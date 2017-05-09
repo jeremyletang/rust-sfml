@@ -1,7 +1,6 @@
 use graphics::{FloatRect, IntRect};
 use graphics::csfml_graphics_sys as ffi;
 
-use system::raw_conv::{FromRaw, Raw};
 
 /// Structure describing a glyph.
 ///
@@ -23,17 +22,11 @@ pub struct Glyph {
     pub texture_rect: IntRect,
 }
 
-impl Raw for Glyph {
-    type Raw = ffi::sfGlyph;
-
-    fn raw(&self) -> Self::Raw {
+impl Glyph {
+    pub fn raw(&self) -> ffi::sfGlyph {
         unsafe { ::std::mem::transmute(*self) }
     }
-}
-
-impl FromRaw for Glyph {
-    type RawFrom = ffi::sfGlyph;
-    unsafe fn from_raw(raw: Self::RawFrom) -> Self {
+    pub unsafe fn from_raw(raw: ffi::sfGlyph) -> Self {
         ::std::mem::transmute(raw)
     }
 }

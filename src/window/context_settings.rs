@@ -1,7 +1,6 @@
 use csfml_window_sys::sfContextSettings;
 use std::os::raw::c_uint;
 use system::{SF_FALSE, SfBool};
-use system::raw_conv::{FromRaw, Raw};
 
 /// Non-debug, compatibility context (this and the core attribute are mutually exclusive).
 pub const CONTEXT_DEFAULT: u32 = 0;
@@ -69,6 +68,15 @@ pub struct ContextSettings {
     pub srgb_capable: SfBool,
 }
 
+impl ContextSettings {
+    pub fn raw(&self) -> sfContextSettings {
+        unsafe { ::std::mem::transmute(*self) }
+    }
+    pub unsafe fn from_raw(raw: sfContextSettings) -> Self {
+        ::std::mem::transmute(raw)
+    }
+}
+
 impl Default for ContextSettings {
     /// Creates a `ContextSettings` with the following values:
     ///
@@ -96,20 +104,5 @@ impl Default for ContextSettings {
             attribute_flags: CONTEXT_DEFAULT,
             srgb_capable: SF_FALSE,
         }
-    }
-}
-
-impl Raw for ContextSettings {
-    type Raw = sfContextSettings;
-
-    fn raw(&self) -> Self::Raw {
-        unsafe { ::std::mem::transmute(*self) }
-    }
-}
-
-impl FromRaw for ContextSettings {
-    type RawFrom = sfContextSettings;
-    unsafe fn from_raw(raw: Self::RawFrom) -> Self {
-        ::std::mem::transmute(raw)
     }
 }
