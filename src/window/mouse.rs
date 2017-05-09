@@ -57,13 +57,7 @@ pub enum Wheel {
 }
 
 impl Wheel {
-    pub fn raw(&self) -> ffi::sfMouseWheel {
-        match *self {
-            Wheel::Vertical => ffi::sfMouseWheel::sfMouseVerticalWheel,
-            Wheel::Horizontal => ffi::sfMouseWheel::sfMouseHorizontalWheel,
-        }
-    }
-    pub unsafe fn from_raw(raw: ffi::sfMouseWheel) -> Self {
+    pub(super) unsafe fn from_raw(raw: ffi::sfMouseWheel) -> Self {
         match raw {
             ffi::sfMouseWheel::sfMouseVerticalWheel => Wheel::Vertical,
             ffi::sfMouseWheel::sfMouseHorizontalWheel => Wheel::Horizontal,
