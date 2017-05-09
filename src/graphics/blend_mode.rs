@@ -170,10 +170,7 @@ impl BlendMode {
             alpha_equation: alpha_equ,
         }
     }
-    pub fn raw(&self) -> ffi::sfBlendMode {
+    pub(super) fn raw(&self) -> ffi::sfBlendMode {
         unsafe { ::std::mem::transmute(*self) }
-    }
-    pub unsafe fn from_raw(raw: ffi::sfBlendMode) -> Self {
-        ::std::mem::transmute(raw)
     }
 }
