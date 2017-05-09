@@ -110,7 +110,7 @@ impl VertexArray {
             pos: 0,
         }
     }
-    pub fn raw(&self) -> *const sfVertexArray {
+    pub(super) fn raw(&self) -> *const sfVertexArray {
         self.vertex_array
     }
 }
