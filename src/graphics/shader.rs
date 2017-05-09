@@ -529,7 +529,7 @@ impl<'te> Shader<'te> {
             ffi::sfShader_setMat4UniformArray(self.shader, name, ptr, len);
         }
     }
-    pub fn raw(&self) -> *const ffi::sfShader {
+    pub(super) fn raw(&self) -> *const ffi::sfShader {
         self.shader
     }
 }
