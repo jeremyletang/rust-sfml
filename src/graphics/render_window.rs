@@ -364,7 +364,7 @@ impl RenderWindow {
     pub fn request_focus(&self) {
         unsafe { ffi::sfRenderWindow_requestFocus(self.render_window) }
     }
-    pub fn raw(&self) -> *const ffi::sfRenderWindow {
+    pub(super) fn raw(&self) -> *const ffi::sfRenderWindow {
         self.render_window
     }
 }
