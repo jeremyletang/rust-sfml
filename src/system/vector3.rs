@@ -198,14 +198,14 @@ impl<T> From<(T, T, T)> for Vector3<T> {
 }
 
 impl Vector3f {
-    pub fn raw(&self) -> ::csfml_system_sys::sfVector3f {
+    pub(crate) fn raw(&self) -> ::csfml_system_sys::sfVector3f {
         ::csfml_system_sys::sfVector3f {
             x: self.x,
             y: self.y,
             z: self.z,
         }
     }
-    pub unsafe fn from_raw(raw: ::csfml_system_sys::sfVector3f) -> Self {
+    pub(crate) unsafe fn from_raw(raw: ::csfml_system_sys::sfVector3f) -> Self {
         Self {
             x: raw.x,
             y: raw.y,
