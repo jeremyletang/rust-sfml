@@ -111,14 +111,14 @@ impl VideoMode {
 
         ret_tab
     }
-    pub fn raw(&self) -> ffi::sfVideoMode {
+    pub(crate) fn raw(&self) -> ffi::sfVideoMode {
         ffi::sfVideoMode {
             width: self.width,
             height: self.height,
             bitsPerPixel: self.bits_per_pixel,
         }
     }
-    pub unsafe fn from_raw(raw: ffi::sfVideoMode) -> Self {
+    unsafe fn from_raw(raw: ffi::sfVideoMode) -> Self {
         Self::new(raw.width, raw.height, raw.bitsPerPixel)
     }
 }
