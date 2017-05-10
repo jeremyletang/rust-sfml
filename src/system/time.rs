@@ -91,6 +91,9 @@ impl Time {
     pub(crate) fn from_raw(raw: sfTime) -> Self {
         Time(raw)
     }
+
+    /// Predefined "zero" time value.
+    pub const ZERO: Time = Time(sfTime { microseconds: 0 });
 }
 
 impl Neg for Time {
@@ -232,6 +235,3 @@ impl RemAssign for Time {
         self.0.microseconds %= rhs.0.microseconds
     }
 }
-
-/// Predefined "zero" time value.
-pub const ZERO: Time = Time(sfTime { microseconds: 0 });
