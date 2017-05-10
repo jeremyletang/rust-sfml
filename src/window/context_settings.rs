@@ -2,13 +2,6 @@ use csfml_window_sys::sfContextSettings;
 use std::os::raw::c_uint;
 use system::Bool;
 
-/// Non-debug, compatibility context (this and the core attribute are mutually exclusive).
-pub const CONTEXT_DEFAULT: u32 = 0;
-/// Core attribute.
-pub const CONTEXT_CORE: u32 = 1;
-/// Debug attribute.
-pub const CONTEXT_DEBUG: u32 = 1 << 2;
-
 /// Structure defining the settings of the OpenGL context attached to a window.
 ///
 /// `ContextSettings` allows to define several advanced settings of the OpenGL context attached
@@ -69,6 +62,12 @@ pub struct ContextSettings {
 }
 
 impl ContextSettings {
+    /// Non-debug, compatibility context (this and the core attribute are mutually exclusive).
+    pub const ATTRIB_DEFAULT: u32 = 0;
+    /// Core attribute.
+    pub const ATTRIB_CORE: u32 = 1;
+    /// Debug attribute.
+    pub const ATTRIB_DEBUG: u32 = 1 << 2;
     pub(crate) fn raw(&self) -> sfContextSettings {
         unsafe { ::std::mem::transmute(*self) }
     }
@@ -81,7 +80,7 @@ impl Default for ContextSettings {
     /// Creates a `ContextSettings` with the following values:
     ///
     /// ```
-    /// # use sfml::window::{ContextSettings, CONTEXT_DEFAULT};
+    /// # use sfml::window::ContextSettings;
     /// # use sfml::system::Bool;
     /// let values = ContextSettings {
     ///     depth_bits: 0,
@@ -89,7 +88,7 @@ impl Default for ContextSettings {
     ///     antialiasing_level: 0,
     ///     major_version: 1,
     ///     minor_version: 1,
-    ///     attribute_flags: CONTEXT_DEFAULT,
+    ///     attribute_flags: ContextSettings::ATTRIB_DEFAULT,
     ///     srgb_capable: Bool::FALSE,
     /// };
     /// assert_eq!(ContextSettings::default(), values);
@@ -101,7 +100,7 @@ impl Default for ContextSettings {
             antialiasing_level: 0,
             major_version: 1,
             minor_version: 1,
-            attribute_flags: CONTEXT_DEFAULT,
+            attribute_flags: Self::ATTRIB_DEFAULT,
             srgb_capable: Bool::FALSE,
         }
     }

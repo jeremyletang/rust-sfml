@@ -1,7 +1,7 @@
 //! Provides OpenGL-based windows, and abstractions for events and input handling.
 
 pub use self::context::Context;
-pub use self::context_settings::{CONTEXT_CORE, CONTEXT_DEBUG, CONTEXT_DEFAULT, ContextSettings};
+pub use self::context_settings::ContextSettings;
 pub use self::event::Event;
 pub use self::keyboard::{Key, set_virtual_keyboard_visible};
 pub use self::style::Style;
