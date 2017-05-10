@@ -1,5 +1,3 @@
-//! # rust-sfml
-//!
 //! Rust bindings for [SFML](http://www.sfml-dev.org), the Simple and Fast Multimedia Library.
 //!
 //! Prerequisites
