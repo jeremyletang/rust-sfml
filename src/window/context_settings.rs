@@ -1,6 +1,6 @@
 use csfml_window_sys::sfContextSettings;
 use std::os::raw::c_uint;
-use system::{SF_FALSE, SfBool};
+use system::{FALSE, SfBool};
 
 /// Non-debug, compatibility context (this and the core attribute are mutually exclusive).
 pub const CONTEXT_DEFAULT: u32 = 0;
@@ -82,7 +82,7 @@ impl Default for ContextSettings {
     ///
     /// ```
     /// # use sfml::window::{ContextSettings, CONTEXT_DEFAULT};
-    /// # use sfml::system::SF_FALSE;
+    /// # use sfml::system::FALSE;
     /// let values = ContextSettings {
     ///     depth_bits: 0,
     ///     stencil_bits: 0,
@@ -90,7 +90,7 @@ impl Default for ContextSettings {
     ///     major_version: 1,
     ///     minor_version: 1,
     ///     attribute_flags: CONTEXT_DEFAULT,
-    ///     srgb_capable: SF_FALSE,
+    ///     srgb_capable: FALSE,
     /// };
     /// assert_eq!(ContextSettings::default(), values);
     /// ```
@@ -102,7 +102,7 @@ impl Default for ContextSettings {
             major_version: 1,
             minor_version: 1,
             attribute_flags: CONTEXT_DEFAULT,
-            srgb_capable: SF_FALSE,
+            srgb_capable: FALSE,
         }
     }
 }
