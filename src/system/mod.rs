@@ -4,7 +4,7 @@
 //!
 
 pub use self::clock::Clock;
-pub use self::sf_bool::SfBool;
+pub use self::bool_::Bool;
 pub use self::sleep::sleep;
 pub use self::time::Time;
 pub use self::vector2::{Vector2, Vector2f, Vector2i, Vector2u};
@@ -15,4 +15,4 @@ mod clock;
 mod sleep;
 mod vector2;
 mod vector3;
-mod sf_bool;
+mod bool_;

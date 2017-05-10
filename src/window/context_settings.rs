@@ -1,6 +1,6 @@
 use csfml_window_sys::sfContextSettings;
 use std::os::raw::c_uint;
-use system::SfBool;
+use system::Bool;
 
 /// Non-debug, compatibility context (this and the core attribute are mutually exclusive).
 pub const CONTEXT_DEFAULT: u32 = 0;
@@ -65,7 +65,7 @@ pub struct ContextSettings {
     /// The attribute flags to create the context with.
     pub attribute_flags: u32,
     /// Whether the context framebuffer is sRGB capable.
-    pub srgb_capable: SfBool,
+    pub srgb_capable: Bool,
 }
 
 impl ContextSettings {
@@ -82,7 +82,7 @@ impl Default for ContextSettings {
     ///
     /// ```
     /// # use sfml::window::{ContextSettings, CONTEXT_DEFAULT};
-    /// # use sfml::system::SfBool;
+    /// # use sfml::system::Bool;
     /// let values = ContextSettings {
     ///     depth_bits: 0,
     ///     stencil_bits: 0,
@@ -90,7 +90,7 @@ impl Default for ContextSettings {
     ///     major_version: 1,
     ///     minor_version: 1,
     ///     attribute_flags: CONTEXT_DEFAULT,
-    ///     srgb_capable: SfBool::FALSE,
+    ///     srgb_capable: Bool::FALSE,
     /// };
     /// assert_eq!(ContextSettings::default(), values);
     /// ```
@@ -102,7 +102,7 @@ impl Default for ContextSettings {
             major_version: 1,
             minor_version: 1,
             attribute_flags: CONTEXT_DEFAULT,
-            srgb_capable: SfBool::FALSE,
+            srgb_capable: Bool::FALSE,
         }
     }
 }
