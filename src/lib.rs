@@ -8,7 +8,7 @@
 //! - SFML 2.4: http://www.sfml-dev.org/download.php
 //! - CSFML 2.4: http://www.sfml-dev.org/download/csfml/
 //!
-//! __Rust-sfml__ works on Linux, windows and OSX.
+//! The supported platforms are Linux, Windows and OS X.
 //!
 //! # License
 //!
