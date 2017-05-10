@@ -15,19 +15,21 @@ use csfml_system_sys::{sfBool, sfFalse, sfTrue};
 /// context_settings.srgb_capable = true.into();
 pub struct SfBool(sfBool);
 
-/// The `false` boolean value.
-pub const FALSE: SfBool = SfBool(sfFalse);
-/// The `true` boolean value.
-pub const TRUE: SfBool = SfBool(sfTrue);
+impl SfBool {
+    /// The `false` boolean value.
+    pub const FALSE: SfBool = SfBool(sfFalse);
+    /// The `true` boolean value.
+    pub const TRUE: SfBool = SfBool(sfTrue);
+}
 
 impl From<bool> for SfBool {
     fn from(src: bool) -> Self {
-        if src { TRUE } else { FALSE }
+        if src { Self::TRUE } else { Self::FALSE }
     }
 }
 
 impl Into<bool> for SfBool {
     fn into(self) -> bool {
-        self == TRUE
+        self == Self::TRUE
     }
 }
