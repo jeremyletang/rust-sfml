@@ -179,39 +179,37 @@ fn main() {
 
             // Check the collisions between the ball and the paddles
             // Left Paddle
-            if ball.position().x - ball_radius < left_paddle.position().x + paddle_size.x / 2. &&
-               ball.position().x - ball_radius > left_paddle.position().x &&
-               ball.position().y + ball_radius >= left_paddle.position().y - paddle_size.y / 2. &&
-               ball.position().y - ball_radius <= left_paddle.position().y + paddle_size.y / 2. {
-                if ball.position().y > left_paddle.position().y {
+            let (ball_pos, paddle_pos) = (ball.position(), left_paddle.position());
+            if ball_pos.x - ball_radius < paddle_pos.x + paddle_size.x / 2. &&
+               ball_pos.x - ball_radius > paddle_pos.x &&
+               ball_pos.y + ball_radius >= paddle_pos.y - paddle_size.y / 2. &&
+               ball_pos.y - ball_radius <= paddle_pos.y + paddle_size.y / 2. {
+                if ball_pos.y > paddle_pos.y {
                     ball_angle = PI - ball_angle + rng.gen_range(0., 20.) * PI / 180.;
                 } else {
                     ball_angle = PI - ball_angle - rng.gen_range(0., 20.) * PI / 180.;
                 }
 
                 ball_sound.play();
-                let p = ball.position().y;
-                ball.set_position((left_paddle.position().x + ball_radius + paddle_size.x / 2. +
-                                   0.1,
-                                   p));
+                ball.set_position((paddle_pos.x + ball_radius + paddle_size.x / 2. + 0.1,
+                                   ball_pos.y));
             }
 
             // Right Paddle
-            if ball.position().x + ball_radius > right_paddle.position().x - paddle_size.x / 2. &&
-               ball.position().x + ball_radius < right_paddle.position().x &&
-               ball.position().y + ball_radius >= right_paddle.position().y - paddle_size.y / 2. &&
-               ball.position().y - ball_radius <= right_paddle.position().y + paddle_size.y / 2. {
-                if ball.position().y > right_paddle.position().y {
+            let (ball_pos, paddle_pos) = (ball.position(), right_paddle.position());
+            if ball_pos.x + ball_radius > paddle_pos.x - paddle_size.x / 2. &&
+               ball_pos.x + ball_radius < paddle_pos.x &&
+               ball_pos.y + ball_radius >= paddle_pos.y - paddle_size.y / 2. &&
+               ball_pos.y - ball_radius <= paddle_pos.y + paddle_size.y / 2. {
+                if ball_pos.y > paddle_pos.y {
                     ball_angle = PI - ball_angle + rng.gen_range(0., 20.) * PI / 180.;
                 } else {
                     ball_angle = PI - ball_angle - rng.gen_range(0., 20.) * PI / 180.;
                 }
 
                 ball_sound.play();
-                let p = ball.position().y;
-                ball.set_position((right_paddle.position().x - ball_radius -
-                                   paddle_size.x / 2. - 0.1,
-                                   p));
+                ball.set_position((paddle_pos.x - ball_radius - paddle_size.x / 2. - 0.1,
+                                   ball_pos.y));
             }
         }
         // Clear the window
