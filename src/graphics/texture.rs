@@ -27,7 +27,7 @@ impl Deref for Texture {
     }
 }
 
-/// A non-owning `Texture`.
+/// A `Texture` that's owned by something else.
 #[derive(Debug)]
 #[allow(missing_copy_implementations)]
 pub enum TextureRef {}

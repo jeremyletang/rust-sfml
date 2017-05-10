@@ -22,7 +22,7 @@ impl Deref for Font {
     }
 }
 
-/// A non-owning `Font`.
+/// A `Font` that's owned by something else.
 #[derive(Debug)]
 #[allow(missing_copy_implementations)]
 pub enum FontRef {}

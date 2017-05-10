@@ -22,7 +22,7 @@ impl Deref for View {
     }
 }
 
-/// A non-owning `View`.
+/// A `View` that's owned by something else.
 #[derive(Debug)]
 #[allow(missing_copy_implementations)]
 pub enum ViewRef {}

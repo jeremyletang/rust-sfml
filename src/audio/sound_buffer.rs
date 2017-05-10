@@ -68,7 +68,7 @@ impl Deref for SoundBuffer {
     }
 }
 
-/// A non-owning `SoundBuffer`.
+/// A `SoundBuffer` that's owned by something else.
 #[derive(Debug)]
 #[allow(missing_copy_implementations)]
 pub enum SoundBufferRef {}
