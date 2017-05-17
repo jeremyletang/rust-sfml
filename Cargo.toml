@@ -10,9 +10,6 @@ keywords = ["sfml", "multimedia", "game"]
 
 [features]
 default = ["graphics", "audio"]
-# Used for conditonally setting clippy lint levels.
-# Run cargo clippy with `cargo clippy --features=clippy`.
-clippy = []
 window = ["csfml-window-sys", "bitflags"]
 graphics = ["window", "csfml-graphics-sys"]
 audio = ["csfml-audio-sys"]

@@ -23,7 +23,7 @@ pub enum TransferMode {
 /// The status and commands id's for FTP.
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
 #[repr(u32)]
-#[cfg_attr(feature="clippy", allow(enum_variant_names))]
+#[cfg_attr(feature="cargo-clippy", allow(enum_variant_names))]
 pub enum Status {
     /// Restart marker reply.
     RestartMarkerReply = 110,
