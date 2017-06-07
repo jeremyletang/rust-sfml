@@ -91,7 +91,7 @@ fn main() {
     let mut is_playing = false;
 
     loop {
-        for event in window.events() {
+        while let Some(event) = window.poll_event() {
             match event {
                 Event::Closed |
                 Event::KeyPressed { code: Key::Escape, .. } => return,

@@ -1,7 +1,6 @@
 use csfml_system_sys::sfBool;
 use csfml_window_sys as ffi;
 use sf_bool_ext::SfBoolExt;
-use std::marker::PhantomData;
 use system::{Vector2i, Vector2u};
 use window::{ContextSettings, Event, Style, VideoMode};
 
@@ -56,13 +55,6 @@ pub struct Window {
     window: *mut ffi::sfWindow,
 }
 
-/// An iterator over all the events in the events queue (internally call `poll_event`)
-#[derive(Debug)]
-pub struct Events<'a> {
-    window: *mut ffi::sfWindow,
-    winref: PhantomData<&'a mut Window>,
-}
-
 impl Window {
     /// Construct a new window
     ///
@@ -96,14 +88,6 @@ impl Window {
         };
         assert!(!sf_win.is_null(), "Failed to create Window");
         Window { window: sf_win }
-    }
-
-    /// Return an iterator over all the event currently in the events queue.
-    pub fn events(&self) -> Events {
-        Events {
-            window: self.window,
-            winref: PhantomData,
-        }
     }
 
     ///  Pop the event on top of event queue, if any, and return it
@@ -376,19 +360,6 @@ impl Window {
     }
     pub(crate) fn raw(&self) -> *const ffi::sfWindow {
         self.window
-    }
-}
-
-impl<'a> Iterator for Events<'a> {
-    type Item = Event;
-
-    fn next(&mut self) -> Option<Event> {
-        let mut event = unsafe { ::std::mem::zeroed() };
-        if unsafe { ffi::sfWindow_pollEvent(self.window, &mut event) }.to_bool() {
-            unsafe { Event::from_raw(&event) }
-        } else {
-            None
-        }
     }
 }
 

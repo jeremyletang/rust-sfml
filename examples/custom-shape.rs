@@ -35,7 +35,7 @@ fn main() {
     shape.set_outline_thickness(3.);
 
     loop {
-        for event in window.events() {
+        while let Some(event) = window.poll_event() {
             match event {
                 Event::Closed |
                 Event::KeyPressed { code: Key::Escape, .. } => return,

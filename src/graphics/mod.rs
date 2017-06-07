@@ -17,7 +17,7 @@ pub use self::rectangle_shape::RectangleShape;
 pub use self::render_states::RenderStates;
 pub use self::render_target::RenderTarget;
 pub use self::render_texture::RenderTexture;
-pub use self::render_window::{Events, RenderWindow};
+pub use self::render_window::RenderWindow;
 pub use self::shader::Shader;
 pub use self::shape::Shape;
 pub use self::sprite::Sprite;

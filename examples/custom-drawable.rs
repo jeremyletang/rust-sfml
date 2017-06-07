@@ -46,7 +46,7 @@ fn main() {
     let bullet = Bullet::new();
 
     loop {
-        for event in window.events() {
+        while let Some(event) = window.poll_event() {
             match event {
                 Event::Closed |
                 Event::KeyPressed { code: Key::Escape, .. } => return,

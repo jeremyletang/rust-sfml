@@ -40,7 +40,7 @@ fn main() {
              vertex_array[1].position);
 
     loop {
-        for e in window.events() {
+        while let Some(e) = window.poll_event() {
             if e == Event::Closed {
                 return;
             }

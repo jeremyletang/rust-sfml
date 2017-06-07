@@ -25,7 +25,7 @@ fn main() {
              text.outline_thickness());
 
     loop {
-        for ev in window.events() {
+        while let Some(ev) = window.poll_event() {
             match ev {
                 Event::Closed => return,
                 Event::TextEntered { unicode } => {

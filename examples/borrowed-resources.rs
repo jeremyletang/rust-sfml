@@ -56,7 +56,7 @@ fn main() {
     third_text.set_fill_color(&Color::RED);
 
     loop {
-        for event in window.events() {
+        while let Some(event) = window.poll_event() {
             match event {
                 Event::Closed |
                 Event::KeyPressed { code: Key::Escape, .. } => return,

@@ -4,7 +4,6 @@ use graphics::{CircleShape, Color, ConvexShape, CustomShape, Drawable, IntRect, 
                View, ViewRef};
 use graphics::csfml_graphics_sys as ffi;
 use sf_bool_ext::SfBoolExt;
-use std::marker::PhantomData;
 use system::{Vector2f, Vector2i, Vector2u};
 use window::{ContextSettings, Event, Style, VideoMode};
 
@@ -16,13 +15,6 @@ use window::{ContextSettings, Event, Style, VideoMode};
 #[derive(Debug)]
 pub struct RenderWindow {
     render_window: *mut ffi::sfRenderWindow,
-}
-
-/// An iterator over all the events in the events queue (internally call `poll_event`)
-#[derive(Debug)]
-pub struct Events<'a> {
-    render_window: *mut ffi::sfRenderWindow,
-    winref: PhantomData<&'a mut RenderWindow>,
 }
 
 impl RenderWindow {
@@ -70,14 +62,6 @@ impl RenderWindow {
     /// * pixels - Vector of pixels
     pub fn set_icon(&mut self, width: u32, height: u32, pixels: &[u8]) {
         unsafe { ffi::sfRenderWindow_setIcon(self.render_window, width, height, pixels.as_ptr()) }
-    }
-
-    /// Return an iterator over all the event currently in the events queue.
-    pub fn events(&self) -> Events {
-        Events {
-            render_window: self.render_window,
-            winref: PhantomData,
-        }
     }
 
     /// Pop the event on top of event queue, if any, and return it
@@ -663,19 +647,6 @@ impl RenderTarget for RenderWindow {
     /// Clear window with the given color
     fn clear(&mut self, color: &Color) {
         unsafe { ffi::sfRenderWindow_clear(self.render_window, color.raw()) }
-    }
-}
-
-impl<'a> Iterator for Events<'a> {
-    type Item = Event;
-
-    fn next(&mut self) -> Option<Event> {
-        let mut event = unsafe { ::std::mem::zeroed() };
-        if unsafe { ffi::sfRenderWindow_pollEvent(self.render_window, &mut event) }.to_bool() {
-            unsafe { Event::from_raw(&event) }
-        } else {
-            None
-        }
     }
 }
 
