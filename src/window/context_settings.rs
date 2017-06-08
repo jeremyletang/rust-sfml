@@ -1,6 +1,6 @@
 use csfml_window_sys::sfContextSettings;
 use std::os::raw::c_uint;
-use system::Bool;
+use system::{Bool, FALSE};
 
 /// Structure defining the settings of the OpenGL context attached to a window.
 ///
@@ -81,7 +81,7 @@ impl Default for ContextSettings {
     ///
     /// ```
     /// # use sfml::window::ContextSettings;
-    /// # use sfml::system::Bool;
+    /// # use sfml::system;
     /// let values = ContextSettings {
     ///     depth_bits: 0,
     ///     stencil_bits: 0,
@@ -89,7 +89,7 @@ impl Default for ContextSettings {
     ///     major_version: 1,
     ///     minor_version: 1,
     ///     attribute_flags: ContextSettings::ATTRIB_DEFAULT,
-    ///     srgb_capable: Bool::FALSE,
+    ///     srgb_capable: system::FALSE,
     /// };
     /// assert_eq!(ContextSettings::default(), values);
     /// ```
@@ -101,7 +101,7 @@ impl Default for ContextSettings {
             major_version: 1,
             minor_version: 1,
             attribute_flags: Self::ATTRIB_DEFAULT,
-            srgb_capable: Bool::FALSE,
+            srgb_capable: FALSE,
         }
     }
 }
