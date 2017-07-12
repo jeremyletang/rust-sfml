@@ -29,9 +29,10 @@ pub struct SoundStreamPlayer<'a, S: SoundStream + 'a> {
     stream: &'a mut S,
 }
 
-unsafe extern "C" fn get_data_callback<S: SoundStream>(chunk: *mut sfSoundStreamChunk,
-                                                       user_data: *mut c_void)
-                                                       -> sfBool {
+unsafe extern "C" fn get_data_callback<S: SoundStream>(
+    chunk: *mut sfSoundStreamChunk,
+    user_data: *mut c_void,
+) -> sfBool {
     let stream = user_data as *mut S;
     let (data, keep_playing) =
         match panic::catch_unwind(panic::AssertUnwindSafe(|| (*stream).get_data())) {
@@ -49,8 +50,9 @@ unsafe extern "C" fn get_data_callback<S: SoundStream>(chunk: *mut sfSoundStream
 unsafe extern "C" fn seek_callback<S: SoundStream>(offset: sfTime, user_data: *mut c_void) {
     let stream = user_data as *mut S;
 
-    let result =
-        panic::catch_unwind(panic::AssertUnwindSafe(|| (*stream).seek(Time::from_raw(offset))));
+    let result = panic::catch_unwind(panic::AssertUnwindSafe(
+        || (*stream).seek(Time::from_raw(offset)),
+    ));
     if result.is_err() {
         eprintln!("sound_stream: Failed to seek because `seek` panicked.");
     }
@@ -62,11 +64,13 @@ impl<'a, S: SoundStream> SoundStreamPlayer<'a, S> {
         let ptr: *mut S = sound_stream;
         SoundStreamPlayer {
             sf_sound_stream: unsafe {
-                sfSoundStream_create(Some(get_data_callback::<S>),
-                                     Some(seek_callback::<S>),
-                                     sound_stream.channel_count(),
-                                     sound_stream.sample_rate(),
-                                     ptr as *mut _)
+                sfSoundStream_create(
+                    Some(get_data_callback::<S>),
+                    Some(seek_callback::<S>),
+                    sound_stream.channel_count(),
+                    sound_stream.sample_rate(),
+                    ptr as *mut _,
+                )
             },
             stream: sound_stream,
         }
@@ -172,8 +176,10 @@ impl<'a, S: SoundStream> SoundSource for SoundStreamPlayer<'a, S> {
     }
     fn set_relative_to_listener(&mut self, relative: bool) {
         unsafe {
-            sfSoundStream_setRelativeToListener(self.sf_sound_stream,
-                                                SfBoolExt::from_bool(relative))
+            sfSoundStream_setRelativeToListener(
+                self.sf_sound_stream,
+                SfBoolExt::from_bool(relative),
+            )
         }
     }
     fn set_min_distance(&mut self, distance: f32) {

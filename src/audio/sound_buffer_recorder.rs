@@ -21,7 +21,9 @@ impl SoundBufferRecorder {
     pub fn new() -> SoundBufferRecorder {
         let buffer = unsafe { ffi::sfSoundBufferRecorder_create() };
         assert!(!buffer.is_null(), "Failed to create SoundBufferRecorder");
-        SoundBufferRecorder { sound_buffer_recorder: buffer }
+        SoundBufferRecorder {
+            sound_buffer_recorder: buffer,
+        }
     }
 
     /// Start the capture of a sound buffer recorder
@@ -89,7 +91,11 @@ impl SoundBufferRecorder {
         let success = unsafe {
             ffi::sfSoundRecorder_setDevice(self.sound_buffer_recorder as _, name.as_ptr()).to_bool()
         };
-        if success { Ok(()) } else { Err(SetDeviceError) }
+        if success {
+            Ok(())
+        } else {
+            Err(SetDeviceError)
+        }
     }
 
     /// Check if the system supports audio capture

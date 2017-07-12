@@ -22,25 +22,25 @@
 #![warn(missing_docs, trivial_numeric_casts, missing_copy_implementations,
         missing_debug_implementations, unused_results, trivial_casts)]
 
-#[cfg(feature="window")]
+#[cfg(feature = "window")]
 #[macro_use]
 extern crate bitflags;
 extern crate csfml_system_sys;
-#[cfg(feature="window")]
+#[cfg(feature = "window")]
 extern crate csfml_window_sys;
 
-#[cfg(any(feature="graphics", feature="audio"))]
+#[cfg(any(feature = "graphics", feature = "audio"))]
 mod inputstream;
 mod sf_bool_ext;
-#[cfg(feature="window")]
+#[cfg(feature = "window")]
 mod unicode_conv;
 
 pub mod system;
-#[cfg(feature="window")]
+#[cfg(feature = "window")]
 pub mod window;
-#[cfg(feature="audio")]
+#[cfg(feature = "audio")]
 pub mod audio;
-#[cfg(feature="graphics")]
+#[cfg(feature = "graphics")]
 pub mod graphics;
-#[cfg(feature="network")]
+#[cfg(feature = "network")]
 pub mod network;

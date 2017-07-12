@@ -21,8 +21,10 @@ fn main() {
         // Leave some CPU time for other processes
         sleep(Time::milliseconds(100));
         // Display the playing position
-        print!("\rPlaying... {:.2} sec",
-               music.playing_offset().as_seconds());
+        print!(
+            "\rPlaying... {:.2} sec",
+            music.playing_offset().as_seconds()
+        );
         let _ = std::io::stdout().flush();
     }
     println!("");

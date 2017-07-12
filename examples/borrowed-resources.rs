@@ -5,10 +5,12 @@ use sfml::graphics::{CircleShape, Color, ConvexShape, Font, RenderTarget, Render
 use sfml::window::{Event, Key, style};
 
 fn main() {
-    let mut window = RenderWindow::new((800, 600),
-                                       "Borrowed resources",
-                                       style::CLOSE,
-                                       &Default::default());
+    let mut window = RenderWindow::new(
+        (800, 600),
+        "Borrowed resources",
+        style::CLOSE,
+        &Default::default(),
+    );
     window.set_vertical_sync_enabled(true);
 
     // Create a new texture. (Hey Frank!)
@@ -59,7 +61,9 @@ fn main() {
         while let Some(event) = window.poll_event() {
             match event {
                 Event::Closed |
-                Event::KeyPressed { code: Key::Escape, .. } => return,
+                Event::KeyPressed {
+                    code: Key::Escape, ..
+                } => return,
                 _ => {}
             }
         }

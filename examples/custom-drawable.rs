@@ -28,19 +28,23 @@ impl<'s> Bullet<'s> {
 
 // Implement the Drawable trait for our custom drawable.
 impl<'s> Drawable for Bullet<'s> {
-    fn draw<'a: 'sh, 'tex, 'sh, 'shte>(&'a self,
-                                       render_target: &mut RenderTarget,
-                                       _: RenderStates<'tex, 'sh, 'shte>) {
+    fn draw<'a: 'sh, 'tex, 'sh, 'shte>(
+        &'a self,
+        render_target: &mut RenderTarget,
+        _: RenderStates<'tex, 'sh, 'shte>,
+    ) {
         render_target.draw(&self.head);
         render_target.draw(&self.torso)
     }
 }
 
 fn main() {
-    let mut window = RenderWindow::new((800, 600),
-                                       "Custom drawable",
-                                       style::CLOSE,
-                                       &Default::default());
+    let mut window = RenderWindow::new(
+        (800, 600),
+        "Custom drawable",
+        style::CLOSE,
+        &Default::default(),
+    );
     window.set_vertical_sync_enabled(true);
 
     let bullet = Bullet::new();
@@ -49,7 +53,9 @@ fn main() {
         while let Some(event) = window.poll_event() {
             match event {
                 Event::Closed |
-                Event::KeyPressed { code: Key::Escape, .. } => return,
+                Event::KeyPressed {
+                    code: Key::Escape, ..
+                } => return,
                 _ => {}
             }
         }

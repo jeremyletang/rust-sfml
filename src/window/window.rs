@@ -74,17 +74,20 @@ impl Window {
     /// * title - Title of the window
     /// * style - Window style
     /// * settings - Additional settings for the underlying OpenGL context
-    pub fn new<V: Into<VideoMode>>(mode: V,
-                                   title: &str,
-                                   style: Style,
-                                   settings: &ContextSettings)
-                                   -> Window {
+    pub fn new<V: Into<VideoMode>>(
+        mode: V,
+        title: &str,
+        style: Style,
+        settings: &ContextSettings,
+    ) -> Window {
         let utf32 = ::unicode_conv::str_to_csfml(title);
         let sf_win: *mut ffi::sfWindow = unsafe {
-            ffi::sfWindow_createUnicode(mode.into().raw(),
-                                        utf32.as_ptr() as _,
-                                        style.bits(),
-                                        &settings.raw())
+            ffi::sfWindow_createUnicode(
+                mode.into().raw(),
+                utf32.as_ptr() as _,
+                style.bits(),
+                &settings.raw(),
+            )
         };
         assert!(!sf_win.is_null(), "Failed to create Window");
         Window { window: sf_win }

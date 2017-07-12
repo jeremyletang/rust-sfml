@@ -45,7 +45,8 @@ use std::ptr;
 /// A sprite will set its texture. Etc.
 #[derive(Default, Debug)]
 pub struct RenderStates<'te, 'sh, 'shte>
-    where 'shte: 'sh
+where
+    'shte: 'sh,
 {
     /// Blending mode.
     pub blend_mode: BlendMode,
@@ -67,11 +68,12 @@ impl<'te, 'sh, 'shte> RenderStates<'te, 'sh, 'shte> {
     /// * shader - Some(shader) if there is a shader, None otherwise
     ///
     /// Return a new default RenderStates
-    pub fn new(blend_mode: BlendMode,
-               transform: Transform,
-               texture: Option<&'te TextureRef>,
-               shader: Option<&'sh Shader<'shte>>)
-               -> RenderStates<'te, 'sh, 'shte> {
+    pub fn new(
+        blend_mode: BlendMode,
+        transform: Transform,
+        texture: Option<&'te TextureRef>,
+        shader: Option<&'sh Shader<'shte>>,
+    ) -> RenderStates<'te, 'sh, 'shte> {
         RenderStates {
             blend_mode: blend_mode,
             transform: transform,

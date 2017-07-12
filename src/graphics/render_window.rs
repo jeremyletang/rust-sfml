@@ -36,21 +36,25 @@ impl RenderWindow {
     /// * title - Title of the render window
     /// * style - Window style
     /// * settings - Additional settings for the underlying OpenGL context
-    pub fn new<V: Into<VideoMode>>(mode: V,
-                                   title: &str,
-                                   style: Style,
-                                   settings: &ContextSettings)
-                                   -> RenderWindow {
+    pub fn new<V: Into<VideoMode>>(
+        mode: V,
+        title: &str,
+        style: Style,
+        settings: &ContextSettings,
+    ) -> RenderWindow {
         let utf32 = ::unicode_conv::str_to_csfml(title);
-        let sf_render_win: *mut ffi::sfRenderWindow =
-            unsafe {
-                ffi::sfRenderWindow_createUnicode(mode.into().raw(),
-                                                  utf32.as_ptr() as _,
-                                                  style.bits(),
-                                                  &settings.raw())
-            };
+        let sf_render_win: *mut ffi::sfRenderWindow = unsafe {
+            ffi::sfRenderWindow_createUnicode(
+                mode.into().raw(),
+                utf32.as_ptr() as _,
+                style.bits(),
+                &settings.raw(),
+            )
+        };
         assert!(!sf_render_win.is_null(), "Failed to create RenderWindow");
-        RenderWindow { render_window: sf_render_win }
+        RenderWindow {
+            render_window: sf_render_win,
+        }
     }
 
     /// Change a render window's icon
@@ -75,8 +79,8 @@ impl RenderWindow {
     /// Return Some(event) if an event was returned, or None if the event queue was empty
     pub fn poll_event(&mut self) -> Option<Event> {
         let mut event = unsafe { ::std::mem::zeroed() };
-        let have_event = unsafe { ffi::sfRenderWindow_pollEvent(self.render_window, &mut event) }
-            .to_bool();
+        let have_event =
+            unsafe { ffi::sfRenderWindow_pollEvent(self.render_window, &mut event) }.to_bool();
         if have_event {
             unsafe { Event::from_raw(&event) }
         } else {
@@ -97,8 +101,8 @@ impl RenderWindow {
     /// Return Some(event) or None if an error has occured
     pub fn wait_event(&mut self) -> Option<Event> {
         let mut event = unsafe { ::std::mem::zeroed() };
-        let have_event = unsafe { ffi::sfRenderWindow_waitEvent(self.render_window, &mut event) }
-            .to_bool();
+        let have_event =
+            unsafe { ffi::sfRenderWindow_waitEvent(self.render_window, &mut event) }.to_bool();
         if have_event {
             unsafe { Event::from_raw(&event) }
         } else {
@@ -195,8 +199,10 @@ impl RenderWindow {
     ///
     pub fn set_mouse_cursor_visible(&mut self, visible: bool) {
         unsafe {
-            ffi::sfRenderWindow_setMouseCursorVisible(self.render_window,
-                                                      sfBool::from_bool(visible));
+            ffi::sfRenderWindow_setMouseCursorVisible(
+                self.render_window,
+                sfBool::from_bool(visible),
+            );
         }
     }
 
@@ -206,8 +212,10 @@ impl RenderWindow {
     /// moved outside its bounds. Note that grabbing is only active while the window has focus.
     pub fn set_mouse_cursor_grabbed(&mut self, grabbed: bool) {
         unsafe {
-            ffi::sfRenderWindow_setMouseCursorGrabbed(self.render_window,
-                                                      sfBool::from_bool(grabbed))
+            ffi::sfRenderWindow_setMouseCursorGrabbed(
+                self.render_window,
+                sfBool::from_bool(grabbed),
+            )
         }
     }
 
@@ -223,8 +231,10 @@ impl RenderWindow {
     ///
     pub fn set_vertical_sync_enabled(&mut self, enabled: bool) {
         unsafe {
-            ffi::sfRenderWindow_setVerticalSyncEnabled(self.render_window,
-                                                       sfBool::from_bool(enabled));
+            ffi::sfRenderWindow_setVerticalSyncEnabled(
+                self.render_window,
+                sfBool::from_bool(enabled),
+            );
         }
     }
 
@@ -327,7 +337,10 @@ impl RenderWindow {
     /// Returns the current position of a touch in window coordinates.
     pub fn touch_position(&self, finger: u32) -> Vector2i {
         unsafe {
-            Vector2i::from_raw(ffi::sfTouch_getPositionRenderWindow(finger, self.render_window))
+            Vector2i::from_raw(ffi::sfTouch_getPositionRenderWindow(
+                finger,
+                self.render_window,
+            ))
         }
     }
 
@@ -444,9 +457,11 @@ impl RenderTarget for RenderWindow {
     /// Return the converted point, in "world" units
     fn map_pixel_to_coords(&self, point: &Vector2i, view: &View) -> Vector2f {
         unsafe {
-            Vector2f::from_raw(ffi::sfRenderWindow_mapPixelToCoords(self.render_window,
-                                                                    point.raw(),
-                                                                    view.raw()))
+            Vector2f::from_raw(ffi::sfRenderWindow_mapPixelToCoords(
+                self.render_window,
+                point.raw(),
+                view.raw(),
+            ))
         }
     }
 
@@ -477,9 +492,11 @@ impl RenderTarget for RenderWindow {
     fn map_pixel_to_coords_current_view(&self, point: &Vector2i) -> Vector2f {
         let view = unsafe { ffi::sfRenderWindow_getView(self.render_window) };
         unsafe {
-            Vector2f::from_raw(ffi::sfRenderWindow_mapPixelToCoords(self.render_window,
-                                                                    point.raw(),
-                                                                    view))
+            Vector2f::from_raw(ffi::sfRenderWindow_mapPixelToCoords(
+                self.render_window,
+                point.raw(),
+                view,
+            ))
         }
     }
 
@@ -504,9 +521,11 @@ impl RenderTarget for RenderWindow {
     /// * view - The view to use for converting the point
     fn map_coords_to_pixel(&self, point: &Vector2f, view: &View) -> Vector2i {
         unsafe {
-            Vector2i::from_raw(ffi::sfRenderWindow_mapCoordsToPixel(self.render_window,
-                                                                    point.raw(),
-                                                                    view.raw()))
+            Vector2i::from_raw(ffi::sfRenderWindow_mapCoordsToPixel(
+                self.render_window,
+                point.raw(),
+                view.raw(),
+            ))
         }
     }
 
@@ -530,9 +549,11 @@ impl RenderTarget for RenderWindow {
     fn map_coords_to_pixel_current_view(&self, point: &Vector2f) -> Vector2i {
         let curr_view = unsafe { ffi::sfRenderWindow_getView(self.render_window) };
         unsafe {
-            Vector2i::from_raw(ffi::sfRenderWindow_mapCoordsToPixel(self.render_window,
-                                                                    point.raw(),
-                                                                    curr_view))
+            Vector2i::from_raw(ffi::sfRenderWindow_mapCoordsToPixel(
+                self.render_window,
+                point.raw(),
+                curr_view,
+            ))
         }
     }
 
@@ -544,7 +565,10 @@ impl RenderTarget for RenderWindow {
     /// Return the viewport rectangle, expressed in pixels in the current target
     fn viewport(&self, view: &View) -> IntRect {
         unsafe {
-            IntRect::from_raw(ffi::sfRenderWindow_getViewport(self.render_window, view.raw()))
+            IntRect::from_raw(ffi::sfRenderWindow_getViewport(
+                self.render_window,
+                view.raw(),
+            ))
         }
     }
 
@@ -598,36 +622,44 @@ impl RenderTarget for RenderWindow {
     /// Draw a CircleShape with a RenderStates
     fn draw_circle_shape(&self, circle_shape: &CircleShape, render_states: RenderStates) {
         unsafe {
-            ffi::sfRenderWindow_drawCircleShape(self.render_window,
-                                                circle_shape.raw(),
-                                                &render_states.raw())
+            ffi::sfRenderWindow_drawCircleShape(
+                self.render_window,
+                circle_shape.raw(),
+                &render_states.raw(),
+            )
         }
     }
 
     /// Draw a RectangleShape with a RenderStates
     fn draw_rectangle_shape(&self, rectangle_shape: &RectangleShape, render_states: RenderStates) {
         unsafe {
-            ffi::sfRenderWindow_drawRectangleShape(self.render_window,
-                                                   rectangle_shape.raw(),
-                                                   &render_states.raw())
+            ffi::sfRenderWindow_drawRectangleShape(
+                self.render_window,
+                rectangle_shape.raw(),
+                &render_states.raw(),
+            )
         }
     }
 
     /// Draw a ConvexShape with a RenderStates
     fn draw_convex_shape(&self, convex_shape: &ConvexShape, render_states: RenderStates) {
         unsafe {
-            ffi::sfRenderWindow_drawConvexShape(self.render_window,
-                                                convex_shape.raw(),
-                                                &render_states.raw())
+            ffi::sfRenderWindow_drawConvexShape(
+                self.render_window,
+                convex_shape.raw(),
+                &render_states.raw(),
+            )
         }
     }
 
     /// Draw a VertexArray with a RenderStates
     fn draw_vertex_array(&self, vertex_array: &VertexArray, render_states: RenderStates) {
         unsafe {
-            ffi::sfRenderWindow_drawVertexArray(self.render_window,
-                                                vertex_array.raw(),
-                                                &render_states.raw())
+            ffi::sfRenderWindow_drawVertexArray(
+                self.render_window,
+                vertex_array.raw(),
+                &render_states.raw(),
+            )
         }
     }
 
@@ -636,11 +668,13 @@ impl RenderTarget for RenderWindow {
 
         let len = vertices.len();
         unsafe {
-            ffi::sfRenderWindow_drawPrimitives(self.render_window,
-                                               vertices.as_ptr() as *const _,
-                                               len,
-                                               ty.raw(),
-                                               &rs.raw());
+            ffi::sfRenderWindow_drawPrimitives(
+                self.render_window,
+                vertices.as_ptr() as *const _,
+                len,
+                ty.raw(),
+                &rs.raw(),
+            );
         }
     }
 

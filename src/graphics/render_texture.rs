@@ -28,7 +28,9 @@ impl RenderTexture {
         if tex.is_null() {
             None
         } else {
-            Some(RenderTexture { render_texture: tex })
+            Some(RenderTexture {
+                render_texture: tex,
+            })
         }
     }
 
@@ -139,7 +141,10 @@ impl RenderTarget for RenderTexture {
     /// Return the viewport rectangle, expressed in pixels in the current target
     fn viewport(&self, view: &View) -> IntRect {
         unsafe {
-            IntRect::from_raw(ffi::sfRenderTexture_getViewport(self.render_texture, view.raw()))
+            IntRect::from_raw(ffi::sfRenderTexture_getViewport(
+                self.render_texture,
+                view.raw(),
+            ))
         }
     }
 
@@ -170,9 +175,11 @@ impl RenderTarget for RenderTexture {
     /// Return the converted point, in "world" units
     fn map_pixel_to_coords(&self, point: &Vector2i, view: &View) -> Vector2f {
         unsafe {
-            Vector2f::from_raw(ffi::sfRenderTexture_mapPixelToCoords(self.render_texture,
-                                                                     point.raw(),
-                                                                     view.raw()))
+            Vector2f::from_raw(ffi::sfRenderTexture_mapPixelToCoords(
+                self.render_texture,
+                point.raw(),
+                view.raw(),
+            ))
         }
     }
 
@@ -202,9 +209,11 @@ impl RenderTarget for RenderTexture {
     fn map_pixel_to_coords_current_view(&self, point: &Vector2i) -> Vector2f {
         let view = unsafe { ffi::sfRenderTexture_getView(self.render_texture) };
         unsafe {
-            Vector2f::from_raw(ffi::sfRenderTexture_mapPixelToCoords(self.render_texture,
-                                                                     point.raw(),
-                                                                     view))
+            Vector2f::from_raw(ffi::sfRenderTexture_mapPixelToCoords(
+                self.render_texture,
+                point.raw(),
+                view,
+            ))
         }
     }
 
@@ -229,9 +238,11 @@ impl RenderTarget for RenderTexture {
     /// * view - The view to use for converting the point
     fn map_coords_to_pixel(&self, point: &Vector2f, view: &View) -> Vector2i {
         unsafe {
-            Vector2i::from_raw(ffi::sfRenderTexture_mapCoordsToPixel(self.render_texture,
-                                                                     point.raw(),
-                                                                     view.raw()))
+            Vector2i::from_raw(ffi::sfRenderTexture_mapCoordsToPixel(
+                self.render_texture,
+                point.raw(),
+                view.raw(),
+            ))
         }
     }
 
@@ -255,9 +266,11 @@ impl RenderTarget for RenderTexture {
     fn map_coords_to_pixel_current_view(&self, point: &Vector2f) -> Vector2i {
         let view = unsafe { ffi::sfRenderTexture_getView(self.render_texture) };
         unsafe {
-            Vector2i::from_raw(ffi::sfRenderTexture_mapCoordsToPixel(self.render_texture,
-                                                                     point.raw(),
-                                                                     view))
+            Vector2i::from_raw(ffi::sfRenderTexture_mapCoordsToPixel(
+                self.render_texture,
+                point.raw(),
+                view,
+            ))
         }
     }
 
@@ -303,9 +316,11 @@ impl RenderTarget for RenderTexture {
     /// Draw RectangleShape
     fn draw_rectangle_shape(&self, rectangle_shape: &RectangleShape, rs: RenderStates) {
         unsafe {
-            ffi::sfRenderTexture_drawRectangleShape(self.render_texture,
-                                                    rectangle_shape.raw(),
-                                                    &rs.raw())
+            ffi::sfRenderTexture_drawRectangleShape(
+                self.render_texture,
+                rectangle_shape.raw(),
+                &rs.raw(),
+            )
         }
     }
 
@@ -328,11 +343,13 @@ impl RenderTarget for RenderTexture {
 
         let len = vertices.len();
         unsafe {
-            ffi::sfRenderTexture_drawPrimitives(self.render_texture,
-                                                vertices.as_ptr() as *const _,
-                                                len,
-                                                ty.raw(),
-                                                &rs.raw());
+            ffi::sfRenderTexture_drawPrimitives(
+                self.render_texture,
+                vertices.as_ptr() as *const _,
+                len,
+                ty.raw(),
+                &rs.raw(),
+            );
         }
     }
 

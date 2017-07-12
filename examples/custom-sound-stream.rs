@@ -19,7 +19,7 @@ impl SoundStream for BitMelody {
             let index = t >> 13 & 7;
             let note = t * (melody[index as usize] as i32 & 15);
             let sample = ((note / 12) & 128) +
-                         ((((((t >> 12) ^ ((t >> 12) - 2)) % 11 * t) / 4) | t >> 13) & 127);
+                ((((((t >> 12) ^ ((t >> 12) - 2)) % 11 * t) / 4) | t >> 13) & 127);
             *buf_sample = sample as i16 * self.amp;
             // Fade out after a while
             if t > 1_048_576 && t % 4096 == 0 {

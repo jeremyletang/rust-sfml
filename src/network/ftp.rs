@@ -23,7 +23,7 @@ pub enum TransferMode {
 /// The status and commands id's for FTP.
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
 #[repr(u32)]
-#[cfg_attr(feature="cargo-clippy", allow(enum_variant_names))]
+#[cfg_attr(feature = "cargo-clippy", allow(enum_variant_names))]
 pub enum Status {
     /// Restart marker reply.
     RestartMarkerReply = 110,
@@ -152,7 +152,11 @@ impl ListingResponse {
     ///
     /// Return the status code
     pub fn status(&self) -> Status {
-        unsafe { mem::transmute(ffi::sfFtpListingResponse_getStatus(self.listing_response) as i32) }
+        unsafe {
+            mem::transmute(ffi::sfFtpListingResponse_getStatus(
+                self.listing_response,
+            ) as i32)
+        }
     }
 
     /// Get the full message contained in a FTP listing response
@@ -212,7 +216,9 @@ impl DirectoryResponse {
     /// Return the status code
     pub fn status(&self) -> Status {
         unsafe {
-            mem::transmute(ffi::sfFtpDirectoryResponse_getStatus(self.directory_response) as i32)
+            mem::transmute(ffi::sfFtpDirectoryResponse_getStatus(
+                self.directory_response,
+            ) as i32)
         }
     }
 
@@ -324,7 +330,9 @@ impl Ftp {
     ///
     /// Return the server response to the request
     pub fn login_anonymous(&self) -> Response {
-        Response { response: unsafe { ffi::sfFtp_loginAnonymous(self.ftp) } }
+        Response {
+            response: unsafe { ffi::sfFtp_loginAnonymous(self.ftp) },
+        }
     }
 
     /// Log in using a username and a password
@@ -351,7 +359,9 @@ impl Ftp {
     ///
     /// Return the server response to the request
     pub fn disconnect(&self) -> Response {
-        Response { response: unsafe { ffi::sfFtp_disconnect(self.ftp) } }
+        Response {
+            response: unsafe { ffi::sfFtp_disconnect(self.ftp) },
+        }
     }
 
     /// Send a null command to keep the connection alive
@@ -361,7 +371,9 @@ impl Ftp {
     ///
     /// Return the server response to the request
     pub fn keep_alive(&self) -> Response {
-        Response { response: unsafe { ffi::sfFtp_keepAlive(self.ftp) } }
+        Response {
+            response: unsafe { ffi::sfFtp_keepAlive(self.ftp) },
+        }
     }
 
     /// Get the current working directory
@@ -406,14 +418,18 @@ impl Ftp {
     /// Return the server response to the request
     pub fn change_directory(&self, directory: &str) -> Response {
         let c_directory = CString::new(directory.as_bytes()).unwrap();
-        Response { response: unsafe { ffi::sfFtp_changeDirectory(self.ftp, c_directory.as_ptr()) } }
+        Response {
+            response: unsafe { ffi::sfFtp_changeDirectory(self.ftp, c_directory.as_ptr()) },
+        }
     }
 
     /// Go to the parent directory of the current one
     ///
     /// Return the server response to the request
     pub fn parent_directory(&self) -> Response {
-        Response { response: unsafe { ffi::sfFtp_parentDirectory(self.ftp) } }
+        Response {
+            response: unsafe { ffi::sfFtp_parentDirectory(self.ftp) },
+        }
     }
 
     /// Create a new directory
@@ -427,7 +443,9 @@ impl Ftp {
     /// Return the server response to the request
     pub fn create_directory(&self, name: &str) -> Response {
         let c_name = CString::new(name.as_bytes()).unwrap();
-        Response { response: unsafe { ffi::sfFtp_createDirectory(self.ftp, c_name.as_ptr()) } }
+        Response {
+            response: unsafe { ffi::sfFtp_createDirectory(self.ftp, c_name.as_ptr()) },
+        }
     }
 
     /// Remove an existing directory
@@ -443,7 +461,9 @@ impl Ftp {
     /// Return the server response to the request
     pub fn delete_directory(&self, name: &str) -> Response {
         let c_name = CString::new(name.as_bytes()).unwrap();
-        Response { response: unsafe { ffi::sfFtp_deleteDirectory(self.ftp, c_name.as_ptr()) } }
+        Response {
+            response: unsafe { ffi::sfFtp_deleteDirectory(self.ftp, c_name.as_ptr()) },
+        }
     }
 
     /// Rename an existing file
@@ -479,7 +499,9 @@ impl Ftp {
     /// Return the server response to the request
     pub fn delete_file(&self, name: &str) -> Response {
         let c_name = CString::new(name.as_bytes()).unwrap();
-        Response { response: unsafe { ffi::sfFtp_deleteFile(self.ftp, c_name.as_ptr()) } }
+        Response {
+            response: unsafe { ffi::sfFtp_deleteFile(self.ftp, c_name.as_ptr()) },
+        }
     }
 
     /// Download a file from a FTP server
@@ -500,10 +522,12 @@ impl Ftp {
         let c_dest_path = CString::new(dest_path.as_bytes()).unwrap();
         Response {
             response: unsafe {
-                ffi::sfFtp_download(self.ftp,
-                                    c_distant_file.as_ptr(),
-                                    c_dest_path.as_ptr(),
-                                    ::std::mem::transmute(mode))
+                ffi::sfFtp_download(
+                    self.ftp,
+                    c_distant_file.as_ptr(),
+                    c_dest_path.as_ptr(),
+                    ::std::mem::transmute(mode),
+                )
             },
         }
     }
@@ -526,10 +550,12 @@ impl Ftp {
         let c_dest_path = CString::new(dest_path.as_bytes()).unwrap();
         Response {
             response: unsafe {
-                ffi::sfFtp_upload(self.ftp,
-                                  c_local_file.as_ptr(),
-                                  c_dest_path.as_ptr(),
-                                  ::std::mem::transmute(mode))
+                ffi::sfFtp_upload(
+                    self.ftp,
+                    c_local_file.as_ptr(),
+                    c_dest_path.as_ptr(),
+                    ::std::mem::transmute(mode),
+                )
             },
         }
     }

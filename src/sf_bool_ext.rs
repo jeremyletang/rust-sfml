@@ -13,6 +13,10 @@ impl SfBoolExt for sfBool {
         }
     }
     fn from_bool(src: bool) -> Self {
-        if src { sfTrue } else { sfFalse }
+        if src {
+            sfTrue
+        } else {
+            sfFalse
+        }
     }
 }

@@ -3,10 +3,11 @@ use std::io::{Read, Seek, SeekFrom};
 use std::os::raw::{c_longlong, c_void};
 use std::ptr;
 
-unsafe extern "C" fn read<T: Read + Seek>(data: *mut c_void,
-                                          size: c_longlong,
-                                          user_data: *mut c_void)
-                                          -> c_longlong {
+unsafe extern "C" fn read<T: Read + Seek>(
+    data: *mut c_void,
+    size: c_longlong,
+    user_data: *mut c_void,
+) -> c_longlong {
     let stream: &mut T = &mut *(user_data as *mut T);
     if size == 0 {
         return 0;
@@ -35,9 +36,10 @@ unsafe extern "C" fn tell<T: Read + Seek>(user_data: *mut c_void) -> c_longlong 
     stream.seek(SeekFrom::Current(0)).unwrap() as i64
 }
 
-unsafe extern "C" fn seek<T: Read + Seek>(position: c_longlong,
-                                          user_data: *mut c_void)
-                                          -> c_longlong {
+unsafe extern "C" fn seek<T: Read + Seek>(
+    position: c_longlong,
+    user_data: *mut c_void,
+) -> c_longlong {
     let stream: &mut T = &mut *(user_data as *mut T);
     match stream.seek(SeekFrom::Start(position as u64)) {
         Ok(n) => n as i64,
@@ -52,11 +54,11 @@ impl InputStream {
     pub fn new<T: Read + Seek>(stream: &mut T) -> Self {
         let user_data: *const T = stream;
         InputStream(sfInputStream {
-                        userData: user_data as *mut c_void,
-                        read: Some(read::<T>),
-                        seek: Some(seek::<T>),
-                        tell: Some(tell::<T>),
-                        getSize: Some(get_size::<T>),
-                    })
+            userData: user_data as *mut c_void,
+            read: Some(read::<T>),
+            seek: Some(seek::<T>),
+            tell: Some(tell::<T>),
+            getSize: Some(get_size::<T>),
+        })
     }
 }

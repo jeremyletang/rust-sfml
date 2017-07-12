@@ -8,7 +8,7 @@ pub use self::style::Style;
 pub use self::video_mode::VideoMode;
 pub use self::window::Window;
 
-#[cfg_attr(feature="cargo-clippy", allow(module_inception))]
+#[cfg_attr(feature = "cargo-clippy", allow(module_inception))]
 mod window;
 mod video_mode;
 mod context;

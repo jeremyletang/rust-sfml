@@ -4,10 +4,12 @@ use sfml::graphics::{Color, PrimitiveType, RenderTarget, RenderWindow, Vertex, V
 use sfml::window::{Event, style};
 
 fn main() {
-    let mut window = RenderWindow::new((800, 600),
-                                       "SFML VertexArray accessors Example",
-                                       style::CLOSE,
-                                       &Default::default());
+    let mut window = RenderWindow::new(
+        (800, 600),
+        "SFML VertexArray accessors Example",
+        style::CLOSE,
+        &Default::default(),
+    );
     window.set_vertical_sync_enabled(true);
 
     let mut vertex_array = VertexArray::default();
@@ -26,18 +28,24 @@ fn main() {
     }
 
     println!("\nMutable access to a vertex");
-    println!("Before Vertex Color: {:?} | Position: {:?}",
-             vertex_array[1].color,
-             vertex_array[1].position);
+    println!(
+        "Before Vertex Color: {:?} | Position: {:?}",
+        vertex_array[1].color,
+        vertex_array[1].position
+    );
     vertex_array[1].position.x = 100.0;
-    println!("After Vertex Color: {:?} | Position: {:?}",
-             vertex_array[1].color,
-             vertex_array[1].position);
+    println!(
+        "After Vertex Color: {:?} | Position: {:?}",
+        vertex_array[1].color,
+        vertex_array[1].position
+    );
 
     println!("\nImmutable access to a vertex");
-    println!("Vertex Color: {:?} | Position: {:?}",
-             vertex_array[1].color,
-             vertex_array[1].position);
+    println!(
+        "Vertex Color: {:?} | Position: {:?}",
+        vertex_array[1].color,
+        vertex_array[1].position
+    );
 
     loop {
         while let Some(e) = window.poll_event() {

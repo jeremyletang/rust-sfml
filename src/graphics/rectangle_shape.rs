@@ -65,10 +65,12 @@ impl<'s> Default for RectangleShape<'s> {
 }
 
 impl<'s> Drawable for RectangleShape<'s> {
-    fn draw<'se, 'tex, 'sh, 'shte>(&'se self,
-                                   target: &mut RenderTarget,
-                                   states: RenderStates<'tex, 'sh, 'shte>)
-        where 'se: 'sh
+    fn draw<'se, 'tex, 'sh, 'shte>(
+        &'se self,
+        target: &mut RenderTarget,
+        states: RenderStates<'tex, 'sh, 'shte>,
+    ) where
+        'se: 'sh,
     {
         target.draw_rectangle_shape(self, states);
     }
@@ -112,16 +114,22 @@ impl<'s> Transformable for RectangleShape<'s> {
         unsafe { Transform(ffi::sfRectangleShape_getTransform(self.rectangle_shape)) }
     }
     fn inverse_transform(&self) -> Transform {
-        unsafe { Transform(ffi::sfRectangleShape_getInverseTransform(self.rectangle_shape)) }
+        unsafe {
+            Transform(ffi::sfRectangleShape_getInverseTransform(
+                self.rectangle_shape,
+            ))
+        }
     }
 }
 
 impl<'s> Shape<'s> for RectangleShape<'s> {
     fn set_texture(&mut self, texture: &'s TextureRef, reset_rect: bool) {
         unsafe {
-            ffi::sfRectangleShape_setTexture(self.rectangle_shape,
-                                             texture.raw(),
-                                             sfBool::from_bool(reset_rect))
+            ffi::sfRectangleShape_setTexture(
+                self.rectangle_shape,
+                texture.raw(),
+                sfBool::from_bool(reset_rect),
+            )
         }
     }
     fn disable_texture(&mut self) {
@@ -167,7 +175,10 @@ impl<'s> Shape<'s> for RectangleShape<'s> {
     }
     fn point(&self, index: u32) -> Vector2f {
         unsafe {
-            Vector2f::from_raw(ffi::sfRectangleShape_getPoint(self.rectangle_shape, index as usize))
+            Vector2f::from_raw(ffi::sfRectangleShape_getPoint(
+                self.rectangle_shape,
+                index as usize,
+            ))
         }
     }
     fn local_bounds(&self) -> FloatRect {

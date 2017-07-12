@@ -211,12 +211,10 @@ impl Event {
             }
             sfEvtLostFocus => LostFocus,
             sfEvtGainedFocus => GainedFocus,
-            sfEvtTextEntered => {
-                TextEntered {
-                    unicode: ::std::char::from_u32((*event.text.as_ref()).unicode)
-                        .expect("Invalid unicode encountered on TextEntered event"),
-                }
-            }
+            sfEvtTextEntered => TextEntered {
+                unicode: ::std::char::from_u32((*event.text.as_ref()).unicode)
+                    .expect("Invalid unicode encountered on TextEntered event"),
+            },
             sfEvtKeyPressed => {
                 let e = event.key.as_ref();
 
@@ -297,12 +295,12 @@ impl Event {
                     position: e.position,
                 }
             }
-            sfEvtJoystickConnected => {
-                JoystickConnected { joystickid: (*event.joystickConnect.as_ref()).joystickId }
-            }
-            sfEvtJoystickDisconnected => {
-                JoystickDisconnected { joystickid: (*event.joystickConnect.as_ref()).joystickId }
-            }
+            sfEvtJoystickConnected => JoystickConnected {
+                joystickid: (*event.joystickConnect.as_ref()).joystickId,
+            },
+            sfEvtJoystickDisconnected => JoystickDisconnected {
+                joystickid: (*event.joystickConnect.as_ref()).joystickId,
+            },
             sfEvtTouchBegan => {
                 let e = event.touch.as_ref();
 

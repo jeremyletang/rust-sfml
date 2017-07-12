@@ -53,9 +53,11 @@ impl<'s> CustomShape<'s> {
     pub fn new(points: Box<CustomShapePoints + Send>) -> CustomShape<'s> {
         let raw_impl = Box::into_raw(Box::new(points));
         let sp = unsafe {
-            ffi::sfShape_create(Some(get_point_count_callback),
-                                Some(get_point_callback),
-                                raw_impl as *mut _)
+            ffi::sfShape_create(
+                Some(get_point_count_callback),
+                Some(get_point_callback),
+                raw_impl as *mut _,
+            )
         };
         assert!(!sp.is_null(), "Failed to create CustomShape");
         CustomShape {
@@ -70,9 +72,10 @@ impl<'s> CustomShape<'s> {
     /// # Arguments
     /// * points - Implementation of CustomShapePoints trait
     /// * texture - The texture to bind to the CustomShape
-    pub fn with_texture(points: Box<CustomShapePoints + Send>,
-                        texture: &'s TextureRef)
-                        -> CustomShape<'s> {
+    pub fn with_texture(
+        points: Box<CustomShapePoints + Send>,
+        texture: &'s TextureRef,
+    ) -> CustomShape<'s> {
         let mut shape = Self::new(points);
         shape.set_texture(texture, true);
         shape
@@ -148,10 +151,12 @@ impl<'s> Shape<'s> for CustomShape<'s> {
 }
 
 impl<'s> Drawable for CustomShape<'s> {
-    fn draw<'se, 'tex, 'sh, 'shte>(&'se self,
-                                   target: &mut RenderTarget,
-                                   states: RenderStates<'tex, 'sh, 'shte>)
-        where 'se: 'sh
+    fn draw<'se, 'tex, 'sh, 'shte>(
+        &'se self,
+        target: &mut RenderTarget,
+        states: RenderStates<'tex, 'sh, 'shte>,
+    ) where
+        'se: 'sh,
     {
         target.draw_shape(self, states)
     }

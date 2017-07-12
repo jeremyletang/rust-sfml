@@ -225,19 +225,23 @@ impl Image {
     /// * destY - Y coordinate of the destination position
     /// * sourceRect - Sub-rectangle of the source image to copy
     /// * applyAlpha - Should the copy take in account the source transparency?
-    pub fn copy_image(&mut self,
-                      source: &Image,
-                      dest_x: u32,
-                      dest_y: u32,
-                      source_rect: &IntRect,
-                      apply_alpha: bool) {
+    pub fn copy_image(
+        &mut self,
+        source: &Image,
+        dest_x: u32,
+        dest_y: u32,
+        source_rect: &IntRect,
+        apply_alpha: bool,
+    ) {
         unsafe {
-            ffi::sfImage_copyImage(self.image,
-                                   source.raw(),
-                                   dest_x,
-                                   dest_y,
-                                   source_rect.raw(),
-                                   sfBool::from_bool(apply_alpha))
+            ffi::sfImage_copyImage(
+                self.image,
+                source.raw(),
+                dest_x,
+                dest_y,
+                source_rect.raw(),
+                sfBool::from_bool(apply_alpha),
+            )
         }
     }
     pub(super) fn raw(&self) -> *const ffi::sfImage {

@@ -21,7 +21,9 @@ impl IpAddress {
     /// Return Resulting address
     pub fn from_string(address: &str) -> IpAddress {
         let c_address = CString::new(address.as_bytes()).unwrap();
-        IpAddress { ip: unsafe { ffi::sfIpAddress_fromString(c_address.as_ptr()) } }
+        IpAddress {
+            ip: unsafe { ffi::sfIpAddress_fromString(c_address.as_ptr()) },
+        }
     }
 
     /// Create an address from 4 bytes
@@ -39,7 +41,9 @@ impl IpAddress {
     ///
     /// Return the resulting address
     pub fn from_bytes(byte0: u8, byte1: u8, byte2: u8, byte3: u8) -> IpAddress {
-        IpAddress { ip: unsafe { ffi::sfIpAddress_fromBytes(byte0, byte1, byte2, byte3) } }
+        IpAddress {
+            ip: unsafe { ffi::sfIpAddress_fromBytes(byte0, byte1, byte2, byte3) },
+        }
     }
 
     /// Construct an address from a 32-bits integer
@@ -54,7 +58,9 @@ impl IpAddress {
     ///
     /// Return the resulting address
     pub fn from_integer(address: u32) -> IpAddress {
-        IpAddress { ip: unsafe { ffi::sfIpAddress_fromInteger(address) } }
+        IpAddress {
+            ip: unsafe { ffi::sfIpAddress_fromInteger(address) },
+        }
     }
 
     /// Get a string representation of an address
@@ -96,7 +102,9 @@ impl IpAddress {
     ///
     /// Return the local IP address of the computer
     pub fn local_address() -> IpAddress {
-        IpAddress { ip: unsafe { ffi::sfIpAddress_getLocalAddress() } }
+        IpAddress {
+            ip: unsafe { ffi::sfIpAddress_getLocalAddress() },
+        }
     }
 
     /// Get the computer's public address
@@ -115,7 +123,9 @@ impl IpAddress {
     ///
     /// Return the public IP address of the computer
     pub fn public_address(timeout: &Time) -> IpAddress {
-        IpAddress { ip: unsafe { ffi::sfIpAddress_getPublicAddress(timeout.raw()) } }
+        IpAddress {
+            ip: unsafe { ffi::sfIpAddress_getPublicAddress(timeout.raw()) },
+        }
     }
 }
 

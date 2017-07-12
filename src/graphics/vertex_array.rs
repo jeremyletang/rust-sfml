@@ -146,8 +146,10 @@ impl<'a> Iterator for Vertices<'a> {
         } else {
             self.pos += 1;
             unsafe {
-                mem::transmute(sfVertexArray_getVertex(self.vertex_array.vertex_array,
-                                                       self.pos as usize))
+                mem::transmute(sfVertexArray_getVertex(
+                    self.vertex_array.vertex_array,
+                    self.pos as usize,
+                ))
             }
         }
     }
@@ -157,29 +159,35 @@ impl Index<usize> for VertexArray {
     type Output = Vertex;
 
     fn index(&self, idx: usize) -> &Vertex {
-        assert!(idx < self.vertex_count(),
-                "Out of bounds: {}, max {}",
-                idx,
-                self.vertex_count());
+        assert!(
+            idx < self.vertex_count(),
+            "Out of bounds: {}, max {}",
+            idx,
+            self.vertex_count()
+        );
         unsafe { &*(sfVertexArray_getVertex(self.vertex_array, idx) as *const Vertex) }
     }
 }
 
 impl IndexMut<usize> for VertexArray {
     fn index_mut(&mut self, idx: usize) -> &mut Vertex {
-        assert!(idx < self.vertex_count(),
-                "Out of bounds: {}, max {}",
-                idx,
-                self.vertex_count());
+        assert!(
+            idx < self.vertex_count(),
+            "Out of bounds: {}, max {}",
+            idx,
+            self.vertex_count()
+        );
         unsafe { &mut *(sfVertexArray_getVertex(self.vertex_array, idx) as *mut Vertex) }
     }
 }
 
 impl Drawable for VertexArray {
-    fn draw<'se, 'tex, 'sh, 'shte>(&'se self,
-                                   target: &mut RenderTarget,
-                                   states: RenderStates<'tex, 'sh, 'shte>)
-        where 'se: 'sh
+    fn draw<'se, 'tex, 'sh, 'shte>(
+        &'se self,
+        target: &mut RenderTarget,
+        states: RenderStates<'tex, 'sh, 'shte>,
+    ) where
+        'se: 'sh,
     {
         target.draw_vertex_array(self, states)
     }

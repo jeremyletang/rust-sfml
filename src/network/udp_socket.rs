@@ -64,7 +64,10 @@ impl UdpSocket {
     ///
     /// Return the tatus code
     pub fn bind(&self, port: u16, address: IpAddress) -> SocketStatus {
-        unsafe { mem::transmute(ffi::sfUdpSocket_bind(self.socket, port, address.raw()) as i32) }
+        unsafe {
+            mem::transmute(ffi::sfUdpSocket_bind(self.socket, port, address.raw()) as
+                i32)
+        }
     }
 
     /// Unbind a UDP socket from the local port to which it is bound
@@ -88,11 +91,13 @@ impl UdpSocket {
     /// * remotePort - Port of the receiver to send the data to
     pub fn send(&self, data: &[i8], address: &IpAddress, port: u16) -> SocketStatus {
         unsafe {
-            mem::transmute(ffi::sfUdpSocket_send(self.socket,
-                                                 data.as_ptr() as *const _,
-                                                 data.len(),
-                                                 address.raw(),
-                                                 port) as i32)
+            mem::transmute(ffi::sfUdpSocket_send(
+                self.socket,
+                data.as_ptr() as *const _,
+                data.len(),
+                address.raw(),
+                port,
+            ) as i32)
         }
     }
 
@@ -115,12 +120,14 @@ impl UdpSocket {
             let mut actual_read_len = 0;
             let mut addr = ::std::mem::zeroed();
             let mut port = 0;
-            let status = ffi::sfUdpSocket_receive(self.socket,
-                                                  destination.as_mut_ptr() as *mut _,
-                                                  destination.len(),
-                                                  &mut actual_read_len,
-                                                  &mut addr,
-                                                  &mut port);
+            let status = ffi::sfUdpSocket_receive(
+                self.socket,
+                destination.as_mut_ptr() as *mut _,
+                destination.len(),
+                &mut actual_read_len,
+                &mut addr,
+                &mut port,
+            );
             let status = mem::transmute(status);
             (status, actual_read_len, IpAddress::from_raw(addr), port)
         }
@@ -138,10 +145,12 @@ impl UdpSocket {
     /// * remotePort - Port of the receiver to send the data to
     pub fn send_packet(&self, packet: &mut Packet, address: &IpAddress, port: u16) -> SocketStatus {
         unsafe {
-            mem::transmute(ffi::sfUdpSocket_sendPacket(self.socket,
-                                                       packet.raw_mut(),
-                                                       address.raw(),
-                                                       port) as i32)
+            mem::transmute(ffi::sfUdpSocket_sendPacket(
+                self.socket,
+                packet.raw_mut(),
+                address.raw(),
+                port,
+            ) as i32)
         }
     }
 
@@ -155,7 +164,12 @@ impl UdpSocket {
             let addr: *mut ffi::sfIpAddress = ptr::null_mut();
             let mut port: u16 = 0;
             let status = ffi::sfUdpSocket_receivePacket(self.socket, pack, addr, &mut port);
-            (Packet::from_raw(pack), mem::transmute(status), IpAddress::from_raw(*addr), port)
+            (
+                Packet::from_raw(pack),
+                mem::transmute(status),
+                IpAddress::from_raw(*addr),
+                port,
+            )
         }
     }
 

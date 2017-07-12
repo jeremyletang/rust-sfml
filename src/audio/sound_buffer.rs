@@ -150,7 +150,9 @@ impl SoundBuffer {
         if sound_buffer.is_null() {
             None
         } else {
-            Some(SoundBuffer { sound_buffer: sound_buffer })
+            Some(SoundBuffer {
+                sound_buffer: sound_buffer,
+            })
         }
     }
     /// Load the sound buffer from a file in memory.
@@ -160,7 +162,9 @@ impl SoundBuffer {
         if sound_buffer.is_null() {
             None
         } else {
-            Some(SoundBuffer { sound_buffer: sound_buffer })
+            Some(SoundBuffer {
+                sound_buffer: sound_buffer,
+            })
         }
     }
     /// Load the sound buffer from a custom stream.
@@ -170,7 +174,9 @@ impl SoundBuffer {
         if buffer.is_null() {
             None
         } else {
-            Some(SoundBuffer { sound_buffer: buffer })
+            Some(SoundBuffer {
+                sound_buffer: buffer,
+            })
         }
     }
     /// Load the sound buffer from a slice of audio samples.
@@ -178,15 +184,19 @@ impl SoundBuffer {
     /// The assumed format of the audio samples is 16 bits signed integer.
     pub fn from_samples(samples: &[i16], channel_count: u32, sample_rate: u32) -> Option<Self> {
         let buffer = unsafe {
-            ffi::sfSoundBuffer_createFromSamples(samples.as_ptr(),
-                                                 samples.len() as _,
-                                                 channel_count,
-                                                 sample_rate)
+            ffi::sfSoundBuffer_createFromSamples(
+                samples.as_ptr(),
+                samples.len() as _,
+                channel_count,
+                sample_rate,
+            )
         };
         if buffer.is_null() {
             None
         } else {
-            Some(SoundBuffer { sound_buffer: buffer })
+            Some(SoundBuffer {
+                sound_buffer: buffer,
+            })
         }
     }
 }
@@ -203,7 +213,9 @@ impl ToOwned for SoundBufferRef {
     fn to_owned(&self) -> Self::Owned {
         let sound_buffer = unsafe { ffi::sfSoundBuffer_copy(self.raw()) };
         assert!(!sound_buffer.is_null(), "Failed to copy SoundBuffer");
-        SoundBuffer { sound_buffer: sound_buffer }
+        SoundBuffer {
+            sound_buffer: sound_buffer,
+        }
     }
 }
 

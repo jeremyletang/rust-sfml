@@ -4,10 +4,12 @@ use sfml::graphics::*;
 use sfml::window::*;
 
 fn main() {
-    let mut window = RenderWindow::new((800, 600),
-                                       "◢◤ Unicode text entry ◥◣",
-                                       style::CLOSE,
-                                       &Default::default());
+    let mut window = RenderWindow::new(
+        (800, 600),
+        "◢◤ Unicode text entry ◥◣",
+        style::CLOSE,
+        &Default::default(),
+    );
 
     let font = Font::from_file("resources/sansation.ttf").unwrap();
     let mut string = String::from("This text can be edited.\nTry it!");
@@ -16,13 +18,15 @@ fn main() {
     text.set_fill_color(&Color::RED);
     text.set_outline_color(&Color::YELLOW);
     text.set_outline_thickness(2.0);
-    println!("== Text information ==\n\
-              fill color: {:?}\n\
-              outline color: {:?}\n\
-              outline thickness: {:?}",
-             text.fill_color(),
-             text.outline_color(),
-             text.outline_thickness());
+    println!(
+        "== Text information ==\n\
+         fill color: {:?}\n\
+         outline color: {:?}\n\
+         outline thickness: {:?}",
+        text.fill_color(),
+        text.outline_color(),
+        text.outline_thickness()
+    );
 
     loop {
         while let Some(ev) = window.poll_event() {

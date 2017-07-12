@@ -149,10 +149,11 @@ impl<'te> Shader<'te> {
     ///                            or None to skip this shader
     ///
     /// Return Some(Shader) or None
-    pub fn from_file(vertex: Option<&str>,
-                     geometry: Option<&str>,
-                     fragment: Option<&str>)
-                     -> Option<Shader<'te>> {
+    pub fn from_file(
+        vertex: Option<&str>,
+        geometry: Option<&str>,
+        fragment: Option<&str>,
+    ) -> Option<Shader<'te>> {
         let cstring;
         let vert = cstring_then_ptr!(cstring, vertex);
         let cstring;
@@ -164,9 +165,9 @@ impl<'te> Shader<'te> {
             None
         } else {
             Some(Shader {
-                     shader: shader,
-                     texture: PhantomData,
-                 })
+                shader: shader,
+                texture: PhantomData,
+            })
         }
     }
 
@@ -187,10 +188,11 @@ impl<'te> Shader<'te> {
     ///                          or None to skip this shader
     ///
     /// Return Some(Shader) or None
-    pub fn from_stream<T: Read + Seek>(vertex_shader_stream: Option<&mut T>,
-                                       geometry_shader_stream: Option<&mut T>,
-                                       fragment_shader_stream: Option<&mut T>)
-                                       -> Option<Shader<'te>> {
+    pub fn from_stream<T: Read + Seek>(
+        vertex_shader_stream: Option<&mut T>,
+        geometry_shader_stream: Option<&mut T>,
+        fragment_shader_stream: Option<&mut T>,
+    ) -> Option<Shader<'te>> {
         let mut vertex_stream = vertex_shader_stream.map(InputStream::new);
         let mut geometry_stream = geometry_shader_stream.map(InputStream::new);
         let mut fragment_stream = fragment_shader_stream.map(InputStream::new);
@@ -207,9 +209,9 @@ impl<'te> Shader<'te> {
             None
         } else {
             Some(Shader {
-                     shader: shader,
-                     texture: PhantomData,
-                 })
+                shader: shader,
+                texture: PhantomData,
+            })
         }
     }
 
@@ -230,10 +232,11 @@ impl<'te> Shader<'te> {
     ///                    or None to skip this shader
     ///
     /// Return Some(Shader) or None
-    pub fn from_memory(vertex: Option<&str>,
-                       geometry: Option<&str>,
-                       fragment: Option<&str>)
-                       -> Option<Shader<'te>> {
+    pub fn from_memory(
+        vertex: Option<&str>,
+        geometry: Option<&str>,
+        fragment: Option<&str>,
+    ) -> Option<Shader<'te>> {
         let cstring;
         let vert = cstring_then_ptr!(cstring, vertex);
         let cstring;
@@ -245,9 +248,9 @@ impl<'te> Shader<'te> {
             None
         } else {
             Some(Shader {
-                     shader: shader,
-                     texture: PhantomData,
-                 })
+                shader: shader,
+                texture: PhantomData,
+            })
         }
     }
 
@@ -322,7 +325,8 @@ impl<'te> Shader<'te> {
     /// `[0 .. 1]`. For example, a `Color{r: 255, g: 127, b: 0, a: 255}`
     /// will be transformed to a `Vec4{x: 1.0, y: 0.5, z: 0.0, w: 1.0}` in the shader.
     pub fn set_uniform_vec4<V>(&mut self, name: &str, value: V)
-        where V: Into<glsl::Vec4>
+    where
+        V: Into<glsl::Vec4>,
     {
         unsafe {
             let cstring = CString::new(name).unwrap();
@@ -366,7 +370,8 @@ impl<'te> Shader<'te> {
     /// as the original `Color` instance. For example, `Color{r: 255, g: 127, b: 0, a: 255}`
     /// is mapped to `IVec4{x: 255, y: 127, z: 0, w: 255}`.
     pub fn set_uniform_ivec4<V>(&mut self, name: &str, value: V)
-        where V: Into<glsl::IVec4>
+    where
+        V: Into<glsl::IVec4>,
     {
         unsafe {
             let cstring = CString::new(name).unwrap();
@@ -413,7 +418,8 @@ impl<'te> Shader<'te> {
 
     /// Specify value for `mat3` matrix.
     pub fn set_uniform_mat3<V>(&mut self, name: &str, value: V)
-        where V: Into<glsl::Mat3>
+    where
+        V: Into<glsl::Mat3>,
     {
         unsafe {
             let cstring = CString::new(name).unwrap();
@@ -426,7 +432,8 @@ impl<'te> Shader<'te> {
 
     /// Specify value for `mat4` matrix.
     pub fn set_uniform_mat4<V>(&mut self, name: &str, value: V)
-        where V: Into<glsl::Mat4>
+    where
+        V: Into<glsl::Mat4>,
     {
         unsafe {
             let cstring = CString::new(name).unwrap();

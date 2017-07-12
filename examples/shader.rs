@@ -28,9 +28,11 @@ impl<'te> Pixelate<'te> {
 }
 
 impl<'te> Drawable for Pixelate<'te> {
-    fn draw<'se: 'sh, 'tex, 'sh, 'shte>(&'se self,
-                                        target: &mut RenderTarget,
-                                        mut states: RenderStates<'tex, 'sh, 'shte>) {
+    fn draw<'se: 'sh, 'tex, 'sh, 'shte>(
+        &'se self,
+        target: &mut RenderTarget,
+        mut states: RenderStates<'tex, 'sh, 'shte>,
+    ) {
         states.shader = Some(&self.shader);
         target.draw_with_renderstates(&self.sprite, states);
     }
@@ -80,18 +82,21 @@ impl<'fo> WaveBlur<'fo> {
         text.set_position((30., 20.));
         WaveBlur {
             text: text,
-            shader: Shader::from_file(Some("resources/wave.vert"),
-                                      None,
-                                      Some("resources/blur.frag"))
-                    .unwrap(),
+            shader: Shader::from_file(
+                Some("resources/wave.vert"),
+                None,
+                Some("resources/blur.frag"),
+            ).unwrap(),
         }
     }
 }
 
 impl<'fo> Drawable for WaveBlur<'fo> {
-    fn draw<'se: 'sh, 'tex, 'sh, 'shte>(&'se self,
-                                        target: &mut RenderTarget,
-                                        mut states: RenderStates<'tex, 'sh, 'shte>) {
+    fn draw<'se: 'sh, 'tex, 'sh, 'shte>(
+        &'se self,
+        target: &mut RenderTarget,
+        mut states: RenderStates<'tex, 'sh, 'shte>,
+    ) {
         states.shader = Some(&self.shader);
         target.draw_with_renderstates(&self.text, states);
     }
@@ -129,13 +134,17 @@ impl StormBlink {
             let x = rng.gen_range(0., 800.);
             let y = rng.gen_range(0., 600.);
             let (r, g, b) = (rng.gen(), rng.gen(), rng.gen());
-            points.append(&Vertex::with_pos_color(Vector2f::new(x, y), Color::rgb(r, g, b)));
+            points.append(&Vertex::with_pos_color(
+                Vector2f::new(x, y),
+                Color::rgb(r, g, b),
+            ));
         }
 
-        let shader = Shader::from_file(Some("resources/storm.vert"),
-                                       None,
-                                       Some("resources/blink.frag"))
-                .unwrap();
+        let shader = Shader::from_file(
+            Some("resources/storm.vert"),
+            None,
+            Some("resources/blink.frag"),
+        ).unwrap();
         Self {
             points: points,
             shader: shader,
@@ -144,9 +153,11 @@ impl StormBlink {
 }
 
 impl Drawable for StormBlink {
-    fn draw<'a: 'sh, 'tex, 'sh, 'shte>(&'a self,
-                                       target: &mut RenderTarget,
-                                       mut states: RenderStates<'tex, 'sh, 'shte>) {
+    fn draw<'a: 'sh, 'tex, 'sh, 'shte>(
+        &'a self,
+        target: &mut RenderTarget,
+        mut states: RenderStates<'tex, 'sh, 'shte>,
+    ) {
         states.shader = Some(&self.shader);
         target.draw_with_renderstates(&self.points, states);
     }
@@ -205,9 +216,11 @@ impl<'te> Edge<'te> {
 }
 
 impl<'te> Drawable for Edge<'te> {
-    fn draw<'a: 'sh, 'tex, 'sh, 'shte>(&'a self,
-                                       target: &mut RenderTarget,
-                                       mut states: RenderStates<'tex, 'sh, 'shte>) {
+    fn draw<'a: 'sh, 'tex, 'sh, 'shte>(
+        &'a self,
+        target: &mut RenderTarget,
+        mut states: RenderStates<'tex, 'sh, 'shte>,
+    ) {
         states.shader = Some(&self.shader);
         target.draw_with_renderstates(&Sprite::with_texture(self.surface.texture()), states);
     }
@@ -220,8 +233,10 @@ impl<'te> Effect for Edge<'te> {
         let entities_len = self.entities.len() as f32;
 
         for (i, en) in self.entities.iter_mut().enumerate() {
-            let pos = ((0.25 * (t * i as f32 + (entities_len - i as f32))).cos() * 300. + 350.,
-                       (0.25 * (t * (entities_len - i as f32) + i as f32)).cos() * 200. + 250.);
+            let pos = (
+                (0.25 * (t * i as f32 + (entities_len - i as f32))).cos() * 300. + 350.,
+                (0.25 * (t * (entities_len - i as f32) + i as f32)).cos() * 200. + 250.,
+            );
             en.set_position(pos);
         }
         self.surface.clear(&Color::WHITE);
@@ -240,10 +255,12 @@ impl<'te> Effect for Edge<'te> {
 }
 
 fn main() {
-    let mut window = RenderWindow::new((800, 600),
-                                       "SFML Shader",
-                                       style::TITLEBAR | style::CLOSE,
-                                       &Default::default());
+    let mut window = RenderWindow::new(
+        (800, 600),
+        "SFML Shader",
+        style::TITLEBAR | style::CLOSE,
+        &Default::default(),
+    );
     window.set_vertical_sync_enabled(true);
     let font = Font::from_file("resources/sansation.ttf").unwrap();
     let bg = Texture::from_file("resources/background.jpg").unwrap();
@@ -251,10 +268,12 @@ fn main() {
     bg_texture.set_smooth(true);
     let mut entity_texture = Texture::from_file("resources/devices.png").unwrap();
     entity_texture.set_smooth(true);
-    let mut effects: [Box<Effect>; 4] = [Box::new(Pixelate::new(&bg)),
-                                         Box::new(WaveBlur::new(&font)),
-                                         Box::new(StormBlink::new()),
-                                         Box::new(Edge::new(&bg_texture, &entity_texture))];
+    let mut effects: [Box<Effect>; 4] = [
+        Box::new(Pixelate::new(&bg)),
+        Box::new(WaveBlur::new(&font)),
+        Box::new(StormBlink::new()),
+        Box::new(Edge::new(&bg_texture, &entity_texture)),
+    ];
     let mut current = 0;
     let text_bg_texture = Texture::from_file("resources/text-background.png").unwrap();
     let mut text_bg = Sprite::with_texture(&text_bg_texture);
@@ -275,30 +294,26 @@ fn main() {
             use Event::*;
             match event {
                 Closed => window.close(),
-                KeyPressed { code, .. } => {
-                    match code {
-                        Key::Escape => window.close(),
-                        Key::Left => {
-                            if current == 0 {
-                                current = effects.len() - 1;
-                            } else {
-                                current -= 1;
-                            }
-                            desc.set_string(&format!("Current effect: {}",
-                                                    effects[current].name()));
+                KeyPressed { code, .. } => match code {
+                    Key::Escape => window.close(),
+                    Key::Left => {
+                        if current == 0 {
+                            current = effects.len() - 1;
+                        } else {
+                            current -= 1;
                         }
-                        Key::Right => {
-                            if current == effects.len() - 1 {
-                                current = 0;
-                            } else {
-                                current += 1;
-                            }
-                            desc.set_string(&format!("Current effect: {}",
-                                                    effects[current].name()));
-                        }
-                        _ => {}
+                        desc.set_string(&format!("Current effect: {}", effects[current].name()));
                     }
-                }
+                    Key::Right => {
+                        if current == effects.len() - 1 {
+                            current = 0;
+                        } else {
+                            current += 1;
+                        }
+                        desc.set_string(&format!("Current effect: {}", effects[current].name()));
+                    }
+                    _ => {}
+                },
                 _ => {}
             }
         }

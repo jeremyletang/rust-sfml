@@ -84,7 +84,12 @@ impl TcpSocket {
     /// * timeout - Maximum time to wait
     pub fn connect(&self, host: &IpAddress, port: u16, timeout: Time) -> SocketStatus {
         unsafe {
-            mem::transmute(ffi::sfTcpSocket_connect(self.socket, host.raw(), port, timeout.raw()))
+            mem::transmute(ffi::sfTcpSocket_connect(
+                self.socket,
+                host.raw(),
+                port,
+                timeout.raw(),
+            ))
         }
     }
 
@@ -122,10 +127,12 @@ impl TcpSocket {
     pub fn receive(&self, destination: &mut [u8]) -> (SocketStatus, usize) {
         unsafe {
             let mut actual_read_len = 0;
-            let status = ffi::sfTcpSocket_receive(self.socket,
-                                                  destination.as_mut_ptr() as *mut _,
-                                                  destination.len(),
-                                                  &mut actual_read_len);
+            let status = ffi::sfTcpSocket_receive(
+                self.socket,
+                destination.as_mut_ptr() as *mut _,
+                destination.len(),
+                &mut actual_read_len,
+            );
             let status: SocketStatus = mem::transmute(status);
             (status, actual_read_len)
         }
@@ -138,7 +145,12 @@ impl TcpSocket {
     ///
     /// Return the socket status
     pub fn send_packet(&self, packet: &mut Packet) -> SocketStatus {
-        unsafe { mem::transmute(ffi::sfTcpSocket_sendPacket(self.socket, packet.raw_mut()) as i32) }
+        unsafe {
+            mem::transmute(ffi::sfTcpSocket_sendPacket(
+                self.socket,
+                packet.raw_mut(),
+            ) as i32)
+        }
     }
 
     /// Receive a formatted packet of data from the remote peer

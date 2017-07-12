@@ -154,13 +154,14 @@ pub enum Equation {
 
 impl BlendMode {
     /// Create a new BlendMode
-    pub fn new(col_src: Factor,
-               col_dst: Factor,
-               col_equ: Equation,
-               alpha_src: Factor,
-               alpha_dst: Factor,
-               alpha_equ: Equation)
-               -> Self {
+    pub fn new(
+        col_src: Factor,
+        col_dst: Factor,
+        col_equ: Equation,
+        alpha_src: Factor,
+        alpha_dst: Factor,
+        alpha_equ: Equation,
+    ) -> Self {
         BlendMode {
             color_src_factor: col_src,
             color_dst_factor: col_dst,

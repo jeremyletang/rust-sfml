@@ -34,10 +34,12 @@ fn main() {
         antialiasing_level: aa_level,
         ..Default::default()
     };
-    let mut window = RenderWindow::new((game_width, game_height),
-                                       "SFML Pong",
-                                       style::CLOSE,
-                                       &context_settings);
+    let mut window = RenderWindow::new(
+        (game_width, game_height),
+        "SFML Pong",
+        style::CLOSE,
+        &context_settings,
+    );
     window.set_vertical_sync_enabled(true);
 
     // Load the sounds used in the game
@@ -94,15 +96,22 @@ fn main() {
         while let Some(event) = window.poll_event() {
             match event {
                 Event::Closed |
-                Event::KeyPressed { code: Key::Escape, .. } => return,
-                Event::KeyPressed { code: Key::Space, .. } if !is_playing => {
+                Event::KeyPressed {
+                    code: Key::Escape, ..
+                } => return,
+                Event::KeyPressed {
+                    code: Key::Space, ..
+                } if !is_playing =>
+                {
                     // (re)start the game
                     is_playing = true;
                     clock.restart();
                     // Reset the position of the paddles and ball
                     left_paddle.set_position((10. + paddle_size.x / 2., game_height as f32 / 2.));
-                    right_paddle.set_position((game_width as f32 - 10. - paddle_size.x / 2.,
-                                               game_height as f32 / 2.));
+                    right_paddle.set_position((
+                        game_width as f32 - 10. - paddle_size.x / 2.,
+                        game_height as f32 / 2.,
+                    ));
                     ball.set_position((game_width as f32 / 2., game_height as f32 / 2.));
                     // Reset the ball angle
                     loop {
@@ -125,15 +134,17 @@ fn main() {
                 left_paddle.move_((0., -paddle_speed * delta_time));
             }
             if Key::Down.is_pressed() &&
-               (left_paddle.position().y + paddle_size.y / 2. < game_height as f32 - 5.) {
+                (left_paddle.position().y + paddle_size.y / 2. < game_height as f32 - 5.)
+            {
                 left_paddle.move_((0., paddle_speed * delta_time));
             }
 
             // Move the computer's paddle
             if ((right_paddle_speed < 0.) &&
-                (right_paddle.position().y - paddle_size.y / 2. > 5.)) ||
-               ((right_paddle_speed > 0.) &&
-                (right_paddle.position().y + paddle_size.y / 2. < game_height as f32 - 5.)) {
+                    (right_paddle.position().y - paddle_size.y / 2. > 5.)) ||
+                ((right_paddle_speed > 0.) &&
+                     (right_paddle.position().y + paddle_size.y / 2. < game_height as f32 - 5.))
+            {
                 right_paddle.move_((0., right_paddle_speed * delta_time));
             }
 
@@ -141,10 +152,12 @@ fn main() {
             if ai_timer.elapsed_time().as_microseconds() > ai_time.as_microseconds() {
                 ai_timer.restart();
                 if ball.position().y + ball_radius >
-                   right_paddle.position().y + paddle_size.y / 2. {
+                    right_paddle.position().y + paddle_size.y / 2.
+                {
                     right_paddle_speed = paddle_speed;
                 } else if ball.position().y - ball_radius <
-                          right_paddle.position().y - paddle_size.y / 2. {
+                           right_paddle.position().y - paddle_size.y / 2.
+                {
                     right_paddle_speed = -paddle_speed;
                 } else {
                     right_paddle_speed = 0.;
@@ -181,9 +194,10 @@ fn main() {
             // Left Paddle
             let (ball_pos, paddle_pos) = (ball.position(), left_paddle.position());
             if ball_pos.x - ball_radius < paddle_pos.x + paddle_size.x / 2. &&
-               ball_pos.x - ball_radius > paddle_pos.x &&
-               ball_pos.y + ball_radius >= paddle_pos.y - paddle_size.y / 2. &&
-               ball_pos.y - ball_radius <= paddle_pos.y + paddle_size.y / 2. {
+                ball_pos.x - ball_radius > paddle_pos.x &&
+                ball_pos.y + ball_radius >= paddle_pos.y - paddle_size.y / 2. &&
+                ball_pos.y - ball_radius <= paddle_pos.y + paddle_size.y / 2.
+            {
                 if ball_pos.y > paddle_pos.y {
                     ball_angle = PI - ball_angle + rng.gen_range(0., 20.) * PI / 180.;
                 } else {
@@ -191,16 +205,19 @@ fn main() {
                 }
 
                 ball_sound.play();
-                ball.set_position((paddle_pos.x + ball_radius + paddle_size.x / 2. + 0.1,
-                                   ball_pos.y));
+                ball.set_position((
+                    paddle_pos.x + ball_radius + paddle_size.x / 2. + 0.1,
+                    ball_pos.y,
+                ));
             }
 
             // Right Paddle
             let (ball_pos, paddle_pos) = (ball.position(), right_paddle.position());
             if ball_pos.x + ball_radius > paddle_pos.x - paddle_size.x / 2. &&
-               ball_pos.x + ball_radius < paddle_pos.x &&
-               ball_pos.y + ball_radius >= paddle_pos.y - paddle_size.y / 2. &&
-               ball_pos.y - ball_radius <= paddle_pos.y + paddle_size.y / 2. {
+                ball_pos.x + ball_radius < paddle_pos.x &&
+                ball_pos.y + ball_radius >= paddle_pos.y - paddle_size.y / 2. &&
+                ball_pos.y - ball_radius <= paddle_pos.y + paddle_size.y / 2.
+            {
                 if ball_pos.y > paddle_pos.y {
                     ball_angle = PI - ball_angle + rng.gen_range(0., 20.) * PI / 180.;
                 } else {
@@ -208,8 +225,10 @@ fn main() {
                 }
 
                 ball_sound.play();
-                ball.set_position((paddle_pos.x - ball_radius - paddle_size.x / 2. - 0.1,
-                                   ball_pos.y));
+                ball.set_position((
+                    paddle_pos.x - ball_radius - paddle_size.x / 2. - 0.1,
+                    ball_pos.y,
+                ));
             }
         }
         // Clear the window

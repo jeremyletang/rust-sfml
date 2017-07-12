@@ -68,7 +68,9 @@ impl Time {
 
     /// Constructs a time value from a number of microseconds.
     pub fn microseconds(microseconds: i64) -> Self {
-        Time(sfTime { microseconds: microseconds })
+        Time(sfTime {
+            microseconds: microseconds,
+        })
     }
 
     /// Returns the time value as a number of seconds.
@@ -99,7 +101,9 @@ impl Time {
 impl Neg for Time {
     type Output = Self;
     fn neg(self) -> Self {
-        Time(sfTime { microseconds: -self.0.microseconds })
+        Time(sfTime {
+            microseconds: -self.0.microseconds,
+        })
     }
 }
 

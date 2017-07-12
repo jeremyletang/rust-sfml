@@ -90,9 +90,11 @@ impl<'s> ConvexShape<'s> {
 }
 
 impl<'s> Drawable for ConvexShape<'s> {
-    fn draw<'se: 'sh, 'tex, 'sh, 'shte>(&'se self,
-                                        target: &mut RenderTarget,
-                                        states: RenderStates<'tex, 'sh, 'shte>) {
+    fn draw<'se: 'sh, 'tex, 'sh, 'shte>(
+        &'se self,
+        target: &mut RenderTarget,
+        states: RenderStates<'tex, 'sh, 'shte>,
+    ) {
         target.draw_convex_shape(self, states)
     }
 }
@@ -143,9 +145,11 @@ impl<'s> Transformable for ConvexShape<'s> {
 impl<'s> Shape<'s> for ConvexShape<'s> {
     fn set_texture(&mut self, texture: &'s TextureRef, reset_rect: bool) {
         unsafe {
-            ffi::sfConvexShape_setTexture(self.convex_shape,
-                                          texture.raw(),
-                                          sfBool::from_bool(reset_rect))
+            ffi::sfConvexShape_setTexture(
+                self.convex_shape,
+                texture.raw(),
+                sfBool::from_bool(reset_rect),
+            )
         }
     }
     fn disable_texture(&mut self) {
@@ -194,11 +198,16 @@ impl<'s> Shape<'s> for ConvexShape<'s> {
             // ConvexShape stores items in a vector, and does unchecked indexing.
             // To retain safety, we check for OOB here.
             if index > self.point_count() {
-                panic!("Index out of bounds. Index: {}, len: {}",
-                       index,
-                       self.point_count());
+                panic!(
+                    "Index out of bounds. Index: {}, len: {}",
+                    index,
+                    self.point_count()
+                );
             }
-            Vector2f::from_raw(ffi::sfConvexShape_getPoint(self.convex_shape, index as usize))
+            Vector2f::from_raw(ffi::sfConvexShape_getPoint(
+                self.convex_shape,
+                index as usize,
+            ))
         }
     }
     fn local_bounds(&self) -> FloatRect {
@@ -234,8 +243,10 @@ impl Iterator for ConvexShapePoints {
         } else {
             self.pos += 1;
             unsafe {
-                Some(Vector2f::from_raw(ffi::sfConvexShape_getPoint(self.convex_shape,
-                                                                    self.pos as usize)))
+                Some(Vector2f::from_raw(ffi::sfConvexShape_getPoint(
+                    self.convex_shape,
+                    self.pos as usize,
+                )))
             }
         }
     }

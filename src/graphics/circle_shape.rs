@@ -80,10 +80,12 @@ impl<'s> Default for CircleShape<'s> {
 }
 
 impl<'s> Drawable for CircleShape<'s> {
-    fn draw<'se, 'tex, 'sh, 'shte>(&'se self,
-                                   target: &mut RenderTarget,
-                                   states: RenderStates<'tex, 'sh, 'shte>)
-        where 'se: 'sh
+    fn draw<'se, 'tex, 'sh, 'shte>(
+        &'se self,
+        target: &mut RenderTarget,
+        states: RenderStates<'tex, 'sh, 'shte>,
+    ) where
+        'se: 'sh,
     {
         target.draw_circle_shape(self, states)
     }
@@ -134,9 +136,11 @@ impl<'s> Transformable for CircleShape<'s> {
 impl<'s> Shape<'s> for CircleShape<'s> {
     fn set_texture(&mut self, texture: &'s TextureRef, reset_rect: bool) {
         unsafe {
-            ffi::sfCircleShape_setTexture(self.circle_shape,
-                                          texture.raw(),
-                                          sfBool::from_bool(reset_rect))
+            ffi::sfCircleShape_setTexture(
+                self.circle_shape,
+                texture.raw(),
+                sfBool::from_bool(reset_rect),
+            )
         }
     }
     fn disable_texture(&mut self) {
@@ -182,7 +186,10 @@ impl<'s> Shape<'s> for CircleShape<'s> {
     }
     fn point(&self, index: u32) -> Vector2f {
         unsafe {
-            Vector2f::from_raw(ffi::sfCircleShape_getPoint(self.circle_shape, index as usize))
+            Vector2f::from_raw(ffi::sfCircleShape_getPoint(
+                self.circle_shape,
+                index as usize,
+            ))
         }
     }
     fn local_bounds(&self) -> FloatRect {

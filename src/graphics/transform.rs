@@ -28,23 +28,41 @@ impl Transform {
     /// Return a new Transform
     pub fn new(matrix: [f32; 9]) -> Transform {
         unsafe {
-            Transform(ffi::sfTransform_fromMatrix(matrix[0],
-                                                  matrix[1],
-                                                  matrix[2],
-                                                  matrix[3],
-                                                  matrix[4],
-                                                  matrix[5],
-                                                  matrix[6],
-                                                  matrix[7],
-                                                  matrix[8]))
+            Transform(ffi::sfTransform_fromMatrix(
+                matrix[0],
+                matrix[1],
+                matrix[2],
+                matrix[3],
+                matrix[4],
+                matrix[5],
+                matrix[6],
+                matrix[7],
+                matrix[8],
+            ))
         }
     }
 
     /// Return the matrix
     pub fn matrix(&self) -> [f32; 16] {
         unsafe {
-            let matrix: [f32; 16] = [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,
-                                     0.];
+            let matrix: [f32; 16] = [
+                0.,
+                0.,
+                0.,
+                0.,
+                0.,
+                0.,
+                0.,
+                0.,
+                0.,
+                0.,
+                0.,
+                0.,
+                0.,
+                0.,
+                0.,
+                0.,
+            ];
             ffi::sfTransform_getMatrix(&self.0, matrix.as_ptr() as *mut f32);
             matrix
         }
