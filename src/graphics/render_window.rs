@@ -409,7 +409,7 @@ impl RenderTarget for RenderWindow {
     /// # Arguments
     /// * view - The new view
     ///
-    fn set_view(&mut self, view: &View) {
+    fn set_view(&mut self, view: &ViewRef) {
         unsafe { ffi::sfRenderWindow_setView(self.render_window, view.raw()) }
     }
 

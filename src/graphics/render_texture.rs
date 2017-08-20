@@ -115,7 +115,7 @@ impl RenderTarget for RenderTexture {
     ///
     /// # Arguments
     /// * view - the new view
-    fn set_view(&mut self, view: &View) {
+    fn set_view(&mut self, view: &ViewRef) {
         unsafe { ffi::sfRenderTexture_setView(self.render_texture, view.raw()) }
     }
 

@@ -30,7 +30,7 @@ pub trait RenderTarget {
     fn default_view(&self) -> &ViewRef;
 
     /// set a new view to the target
-    fn set_view(&mut self, view: &View);
+    fn set_view(&mut self, view: &ViewRef);
 
     /// get the viewport of the render target
     fn viewport(&self, view: &View) -> IntRect;
