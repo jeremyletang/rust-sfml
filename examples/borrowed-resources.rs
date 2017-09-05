@@ -2,13 +2,13 @@ extern crate sfml;
 
 use sfml::graphics::{CircleShape, Color, ConvexShape, Font, RenderTarget, RenderWindow, Sprite,
                      Text, Texture, Transformable};
-use sfml::window::{Event, Key, style};
+use sfml::window::{Event, Key, Style};
 
 fn main() {
     let mut window = RenderWindow::new(
         (800, 600),
         "Borrowed resources",
-        style::CLOSE,
+        Style::CLOSE,
         &Default::default(),
     );
     window.set_vertical_sync_enabled(true);

@@ -2,7 +2,7 @@ extern crate sfml;
 
 use sfml::graphics::{Color, CustomShape, CustomShapePoints, RenderTarget, RenderWindow, Shape};
 use sfml::system::Vector2f;
-use sfml::window::{Event, Key, style};
+use sfml::window::{Event, Key, Style};
 
 #[derive(Clone, Copy)]
 pub struct TriangleShape;
@@ -26,7 +26,7 @@ fn main() {
     let mut window = RenderWindow::new(
         (800, 600),
         "Custom shape",
-        style::CLOSE,
+        Style::CLOSE,
         &Default::default(),
     );
     window.set_vertical_sync_enabled(true);

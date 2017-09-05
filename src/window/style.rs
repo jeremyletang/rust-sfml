@@ -21,6 +21,6 @@ bitflags! {
 
 impl Default for Style {
     fn default() -> Self {
-        DEFAULT
+        Self::DEFAULT
     }
 }

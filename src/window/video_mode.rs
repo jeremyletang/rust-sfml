@@ -24,7 +24,7 @@ use sf_bool_ext::SfBoolExt;
 /// # Usage example
 ///
 /// ```
-/// use sfml::window::{VideoMode, Window, style};
+/// use sfml::window::{VideoMode, Window, Style};
 ///
 /// // Display the list of all the video modes available for fullscreen
 /// let modes = VideoMode::fullscreen_modes();
@@ -37,7 +37,7 @@ use sf_bool_ext::SfBoolExt;
 /// let desktop = VideoMode::desktop_mode();
 /// let _window = Window::new(VideoMode::new(1024, 768, desktop.bits_per_pixel),
 ///                           "SFML window",
-///                           style::CLOSE,
+///                           Style::CLOSE,
 ///                           &Default::default());
 /// ```
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]

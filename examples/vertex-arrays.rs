@@ -1,13 +1,13 @@
 extern crate sfml;
 
 use sfml::graphics::{Color, PrimitiveType, RenderTarget, RenderWindow, Vertex, VertexArray};
-use sfml::window::{Event, style};
+use sfml::window::{Event, Style};
 
 fn main() {
     let mut window = RenderWindow::new(
         (800, 600),
         "SFML VertexArray accessors Example",
-        style::CLOSE,
+        Style::CLOSE,
         &Default::default(),
     );
     window.set_vertical_sync_enabled(true);

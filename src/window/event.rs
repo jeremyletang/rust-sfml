@@ -17,10 +17,10 @@ use window::mouse::{Button, Wheel};
 /// # Usage example
 ///
 /// ```
-/// # use sfml::window::{Event, style, Key, Window};
+/// # use sfml::window::{Event, Style, Key, Window};
 /// # let mut window = Window::new((32, 32),
 /// #                              "test",
-/// #                              style::CLOSE,
+/// #                              Style::CLOSE,
 /// #                              &Default::default());
 /// # fn do_something_with_the_new_size(_x: u32, _y: u32) {}
 /// while let Some(event) = window.poll_event() {

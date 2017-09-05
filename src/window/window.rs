@@ -22,11 +22,11 @@ use window::{ContextSettings, Event, Style, VideoMode};
 /// # Usage example
 ///
 /// ```no_run
-/// use sfml::window::{Window, Event, style};
+/// use sfml::window::{Window, Event, Style};
 /// // Create a new window
 /// let mut window = Window::new((800, 600),
 ///                              "SFML window",
-///                              style::CLOSE,
+///                              Style::CLOSE,
 ///                              &Default::default());
 /// // Limit the framerate to 60 frames per second (this step is optional)
 /// window.set_framerate_limit(60);

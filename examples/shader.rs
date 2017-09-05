@@ -258,7 +258,7 @@ fn main() {
     let mut window = RenderWindow::new(
         (800, 600),
         "SFML Shader",
-        style::TITLEBAR | style::CLOSE,
+        Style::TITLEBAR | Style::CLOSE,
         &Default::default(),
     );
     window.set_vertical_sync_enabled(true);

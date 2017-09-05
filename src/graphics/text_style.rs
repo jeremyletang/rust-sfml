@@ -16,7 +16,7 @@ bitflags! {
 }
 
 impl Default for TextStyle {
-    fn default() -> TextStyle {
-        REGULAR
+    fn default() -> Self {
+        Self::REGULAR
     }
 }

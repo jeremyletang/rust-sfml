@@ -6,7 +6,7 @@ use sfml::audio::{Sound, SoundBuffer};
 use sfml::graphics::{CircleShape, Color, Font, RectangleShape, RenderTarget, RenderWindow, Shape,
                      Text, Transformable};
 use sfml::system::{Clock, Time, Vector2f};
-use sfml::window::{ContextSettings, Event, Key, style};
+use sfml::window::{ContextSettings, Event, Key, Style};
 use std::env;
 use std::f32::consts::PI;
 
@@ -37,7 +37,7 @@ fn main() {
     let mut window = RenderWindow::new(
         (game_width, game_height),
         "SFML Pong",
-        style::CLOSE,
+        Style::CLOSE,
         &context_settings,
     );
     window.set_vertical_sync_enabled(true);

@@ -2,7 +2,7 @@ extern crate sfml;
 
 use sfml::graphics::{CircleShape, Color, Drawable, RectangleShape, RenderStates, RenderTarget,
                      RenderWindow, Shape, Transformable};
-use sfml::window::{Event, Key, style};
+use sfml::window::{Event, Key, Style};
 
 /// Our custom drawable type. It looks like a bullet.
 struct Bullet<'s> {
@@ -42,7 +42,7 @@ fn main() {
     let mut window = RenderWindow::new(
         (800, 600),
         "Custom drawable",
-        style::CLOSE,
+        Style::CLOSE,
         &Default::default(),
     );
     window.set_vertical_sync_enabled(true);

@@ -8,7 +8,7 @@ fn main() {
     let mut window = RenderWindow::new(
         (800, 600),
         "Mouse events",
-        style::CLOSE,
+        Style::CLOSE,
         &Default::default(),
     );
     window.set_mouse_cursor_visible(false);

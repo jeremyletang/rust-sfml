@@ -7,7 +7,7 @@ fn main() {
     let mut window = RenderWindow::new(
         (800, 600),
         "◢◤ Unicode text entry ◥◣",
-        style::CLOSE,
+        Style::CLOSE,
         &Default::default(),
     );
 
