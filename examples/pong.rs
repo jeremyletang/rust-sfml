@@ -1,7 +1,7 @@
-extern crate sfml;
 extern crate rand;
+extern crate sfml;
 
-use rand::{Rng, thread_rng};
+use rand::{thread_rng, Rng};
 use sfml::audio::{Sound, SoundBuffer};
 use sfml::graphics::{CircleShape, Color, Font, RectangleShape, RenderTarget, RenderWindow, Shape,
                      Text, Transformable};
@@ -141,9 +141,9 @@ fn main() {
 
             // Move the computer's paddle
             if ((right_paddle_speed < 0.) &&
-                    (right_paddle.position().y - paddle_size.y / 2. > 5.)) ||
+                (right_paddle.position().y - paddle_size.y / 2. > 5.)) ||
                 ((right_paddle_speed > 0.) &&
-                     (right_paddle.position().y + paddle_size.y / 2. < game_height as f32 - 5.))
+                    (right_paddle.position().y + paddle_size.y / 2. < game_height as f32 - 5.))
             {
                 right_paddle.move_((0., right_paddle_speed * delta_time));
             }
@@ -151,12 +151,11 @@ fn main() {
             // Update the computer's paddle direction according to the ball position
             if ai_timer.elapsed_time().as_microseconds() > ai_time.as_microseconds() {
                 ai_timer.restart();
-                if ball.position().y + ball_radius >
-                    right_paddle.position().y + paddle_size.y / 2.
+                if ball.position().y + ball_radius > right_paddle.position().y + paddle_size.y / 2.
                 {
                     right_paddle_speed = paddle_speed;
                 } else if ball.position().y - ball_radius <
-                           right_paddle.position().y - paddle_size.y / 2.
+                    right_paddle.position().y - paddle_size.y / 2.
                 {
                     right_paddle_speed = -paddle_speed;
                 } else {
@@ -247,5 +246,4 @@ fn main() {
         // Display things on screen
         window.display()
     }
-
 }

@@ -145,12 +145,10 @@ impl UdpSocket {
     /// * remotePort - Port of the receiver to send the data to
     pub fn send_packet(&self, packet: &mut Packet, address: &IpAddress, port: u16) -> SocketStatus {
         unsafe {
-            mem::transmute(ffi::sfUdpSocket_sendPacket(
-                self.socket,
-                packet.raw_mut(),
-                address.raw(),
-                port,
-            ) as i32)
+            mem::transmute(
+                ffi::sfUdpSocket_sendPacket(self.socket, packet.raw_mut(), address.raw(), port) as
+                    i32,
+            )
         }
     }
 

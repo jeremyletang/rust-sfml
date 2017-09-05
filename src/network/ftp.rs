@@ -153,9 +153,9 @@ impl ListingResponse {
     /// Return the status code
     pub fn status(&self) -> Status {
         unsafe {
-            mem::transmute(ffi::sfFtpListingResponse_getStatus(
-                self.listing_response,
-            ) as i32)
+            mem::transmute(
+                ffi::sfFtpListingResponse_getStatus(self.listing_response) as i32,
+            )
         }
     }
 
@@ -216,9 +216,9 @@ impl DirectoryResponse {
     /// Return the status code
     pub fn status(&self) -> Status {
         unsafe {
-            mem::transmute(ffi::sfFtpDirectoryResponse_getStatus(
-                self.directory_response,
-            ) as i32)
+            mem::transmute(
+                ffi::sfFtpDirectoryResponse_getStatus(self.directory_response) as i32,
+            )
         }
     }
 

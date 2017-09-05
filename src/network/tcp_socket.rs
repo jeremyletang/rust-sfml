@@ -146,10 +146,9 @@ impl TcpSocket {
     /// Return the socket status
     pub fn send_packet(&self, packet: &mut Packet) -> SocketStatus {
         unsafe {
-            mem::transmute(ffi::sfTcpSocket_sendPacket(
-                self.socket,
-                packet.raw_mut(),
-            ) as i32)
+            mem::transmute(
+                ffi::sfTcpSocket_sendPacket(self.socket, packet.raw_mut()) as i32,
+            )
         }
     }
 

@@ -1,5 +1,5 @@
-extern crate sfml;
 extern crate rand;
+extern crate sfml;
 
 use sfml::graphics::*;
 use sfml::system::*;
@@ -125,7 +125,7 @@ struct StormBlink {
 
 impl StormBlink {
     fn new() -> Self {
-        use rand::{Rng, thread_rng};
+        use rand::{thread_rng, Rng};
         let mut rng = thread_rng();
 
         let mut points = VertexArray::default();

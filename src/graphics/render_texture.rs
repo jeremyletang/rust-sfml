@@ -340,7 +340,6 @@ impl RenderTarget for RenderTexture {
 
     /// draw primitives
     fn draw_primitives(&self, vertices: &[Vertex], ty: PrimitiveType, rs: RenderStates) {
-
         let len = vertices.len();
         unsafe {
             ffi::sfRenderTexture_drawPrimitives(

@@ -1,4 +1,4 @@
-use graphics::{TextureRef, glsl};
+use graphics::{glsl, TextureRef};
 use graphics::csfml_graphics_sys as ffi;
 use inputstream::InputStream;
 use sf_bool_ext::SfBoolExt;

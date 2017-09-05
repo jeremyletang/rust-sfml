@@ -3,7 +3,7 @@
 pub use self::context::Context;
 pub use self::context_settings::ContextSettings;
 pub use self::event::Event;
-pub use self::keyboard::{Key, set_virtual_keyboard_visible};
+pub use self::keyboard::{set_virtual_keyboard_visible, Key};
 pub use self::style::Style;
 pub use self::video_mode::VideoMode;
 pub use self::window::Window;

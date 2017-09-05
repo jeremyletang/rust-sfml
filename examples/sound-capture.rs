@@ -1,7 +1,7 @@
 extern crate sfml;
 
 use sfml::audio::{Sound, SoundBufferRecorder, SoundStatus};
-use sfml::system::{Time, sleep};
+use sfml::system::{sleep, Time};
 use std::io::{BufRead, Write};
 
 fn main() {

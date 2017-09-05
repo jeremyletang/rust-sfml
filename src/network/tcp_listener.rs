@@ -64,11 +64,9 @@ impl TcpListener {
     /// Return status code
     pub fn listen(&self, port: u16, address: IpAddress) -> SocketStatus {
         unsafe {
-            mem::transmute(ffi::sfTcpListener_listen(
-                self.listener,
-                port,
-                address.raw(),
-            ) as i32)
+            mem::transmute(
+                ffi::sfTcpListener_listen(self.listener, port, address.raw()) as i32,
+            )
         }
     }
 
@@ -83,10 +81,9 @@ impl TcpListener {
     /// Return status code
     pub fn accept(&self, connected: &mut TcpSocket) -> SocketStatus {
         unsafe {
-            mem::transmute(ffi::sfTcpListener_accept(
-                self.listener,
-                &mut connected.raw_mut(),
-            ) as i32)
+            mem::transmute(
+                ffi::sfTcpListener_accept(self.listener, &mut connected.raw_mut()) as i32,
+            )
         }
     }
 }

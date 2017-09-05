@@ -1,7 +1,7 @@
 extern crate sfml;
 
 use sfml::audio::{Music, Sound, SoundBuffer, SoundStatus};
-use sfml::system::{Time, sleep};
+use sfml::system::{sleep, Time};
 use std::io::Write;
 
 // Play a Sound

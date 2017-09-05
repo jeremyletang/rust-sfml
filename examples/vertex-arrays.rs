@@ -58,6 +58,5 @@ fn main() {
         window.draw(&vertex_array);
         // Display things on screen
         window.display()
-
     }
 }
