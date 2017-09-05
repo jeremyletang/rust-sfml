@@ -17,6 +17,6 @@ pub mod joystick;
 mod keyboard;
 pub mod mouse;
 mod event;
-pub mod style;
+mod style;
 pub mod sensor;
 pub mod touch;

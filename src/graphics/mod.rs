@@ -40,7 +40,7 @@ mod texture;
 pub mod blend_mode;
 mod transform;
 mod text;
-pub mod text_style;
+mod text_style;
 mod shader;
 mod color;
 mod font;
