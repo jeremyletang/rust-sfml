@@ -197,12 +197,12 @@ impl Event {
         use window::Event::*;
         use sf_bool_ext::SfBoolExt;
 
-        let type_ = *event.type_.as_ref();
+        let type_ = event.type_;
 
         let evt = match type_ {
             sfEvtClosed => Closed,
             sfEvtResized => {
-                let e = *event.size.as_ref();
+                let e = event.size;
 
                 Resized {
                     width: e.width,
@@ -212,11 +212,11 @@ impl Event {
             sfEvtLostFocus => LostFocus,
             sfEvtGainedFocus => GainedFocus,
             sfEvtTextEntered => TextEntered {
-                unicode: ::std::char::from_u32((*event.text.as_ref()).unicode)
+                unicode: ::std::char::from_u32(event.text.unicode)
                     .expect("Invalid unicode encountered on TextEntered event"),
             },
             sfEvtKeyPressed => {
-                let e = event.key.as_ref();
+                let e = event.key;
 
                 KeyPressed {
                     code: ::std::mem::transmute(e.code),
@@ -227,7 +227,7 @@ impl Event {
                 }
             }
             sfEvtKeyReleased => {
-                let e = event.key.as_ref();
+                let e = event.key;
 
                 KeyReleased {
                     code: ::std::mem::transmute(e.code),
@@ -238,7 +238,7 @@ impl Event {
                 }
             }
             sfEvtMouseWheelScrolled => {
-                let e = event.mouseWheelScroll.as_ref();
+                let e = event.mouseWheelScroll;
                 MouseWheelScrolled {
                     wheel: Wheel::from_raw(e.wheel),
                     delta: e.delta,
@@ -247,7 +247,7 @@ impl Event {
                 }
             }
             sfEvtMouseButtonPressed => {
-                let e = event.mouseButton.as_ref();
+                let e = event.mouseButton;
 
                 MouseButtonPressed {
                     button: Button::from_raw(e.button),
@@ -256,7 +256,7 @@ impl Event {
                 }
             }
             sfEvtMouseButtonReleased => {
-                let e = event.mouseButton.as_ref();
+                let e = event.mouseButton;
 
                 MouseButtonReleased {
                     button: Button::from_raw(e.button),
@@ -265,29 +265,29 @@ impl Event {
                 }
             }
             sfEvtMouseMoved => {
-                let e = event.mouseMove.as_ref();
+                let e = event.mouseMove;
                 MouseMoved { x: e.x, y: e.y }
             }
             sfEvtMouseEntered => MouseEntered,
             sfEvtMouseLeft => MouseLeft,
             sfEvtJoystickButtonPressed => {
-                let e = event.joystickButton.as_ref();
+                let e = event.joystickButton;
 
                 JoystickButtonPressed {
-                    joystickid: (*e).joystickId,
-                    button: (*e).button,
+                    joystickid: e.joystickId,
+                    button: e.button,
                 }
             }
             sfEvtJoystickButtonReleased => {
-                let e = event.joystickButton.as_ref();
+                let e = event.joystickButton;
 
                 JoystickButtonReleased {
-                    joystickid: (*e).joystickId,
-                    button: (*e).button,
+                    joystickid: e.joystickId,
+                    button: e.button,
                 }
             }
             sfEvtJoystickMoved => {
-                let e = event.joystickMove.as_ref();
+                let e = event.joystickMove;
 
                 JoystickMoved {
                     joystickid: e.joystickId,
@@ -296,13 +296,13 @@ impl Event {
                 }
             }
             sfEvtJoystickConnected => JoystickConnected {
-                joystickid: (*event.joystickConnect.as_ref()).joystickId,
+                joystickid: event.joystickConnect.joystickId,
             },
             sfEvtJoystickDisconnected => JoystickDisconnected {
-                joystickid: (*event.joystickConnect.as_ref()).joystickId,
+                joystickid: event.joystickConnect.joystickId,
             },
             sfEvtTouchBegan => {
-                let e = event.touch.as_ref();
+                let e = event.touch;
 
                 TouchBegan {
                     finger: e.finger,
@@ -311,7 +311,7 @@ impl Event {
                 }
             }
             sfEvtTouchMoved => {
-                let e = event.touch.as_ref();
+                let e = event.touch;
 
                 TouchMoved {
                     finger: e.finger,
@@ -320,7 +320,7 @@ impl Event {
                 }
             }
             sfEvtTouchEnded => {
-                let e = event.touch.as_ref();
+                let e = event.touch;
 
                 TouchEnded {
                     finger: e.finger,
@@ -329,7 +329,7 @@ impl Event {
                 }
             }
             sfEvtSensorChanged => {
-                let e = event.sensor.as_ref();
+                let e = event.sensor;
 
                 SensorChanged {
                     type_: ::window::sensor::Type::from_raw(e.sensorType),
