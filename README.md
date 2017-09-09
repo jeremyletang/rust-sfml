@@ -11,13 +11,6 @@ Requirements
 - [SFML 2.4](http://www.sfml-dev.org/download.php)
 - [CSFML 2.4](http://www.sfml-dev.org/download/csfml/)
 
-Examples
-=============
-Examples are located under the `examples` directory:
-
-- [0.12.0](https://github.com/jeremyletang/rust-sfml/tree/v0.12.0/examples) (Latest release)
-- [master](https://github.com/jeremyletang/rust-sfml/tree/master/examples) (Latest development version)
-
 License
 =======
 
