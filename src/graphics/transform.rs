@@ -11,33 +11,42 @@ use system::Vector2f;
 pub struct Transform(pub ffi::sfTransform);
 
 impl Transform {
-    /// Create a new transform from a 3x3 matrix
+    /// Creates a new transform from a 3x3 matrix.
     ///
     /// # Arguments
     ///
-    /// * matrix - An array supplying the matrix
-    ///
-    ///   Here is an illustration of how the array elements correspond to the matrix elements:
-    ///
-    ///   ```text
-    ///   [(0, 0), (0, 1), (0, 2),
-    ///    (1, 0), (1, 1), (1, 2),
-    ///    (2, 0), (2, 1), (2, 2)]
-    ///   ```
-    ///
-    /// Return a new Transform
-    pub fn new(matrix: [f32; 9]) -> Transform {
+    /// - *a00* : Element (0, 0) of the matrix
+    /// - *a01* : Element (0, 1) of the matrix
+    /// - *a02* : Element (0, 2) of the matrix
+    /// - *a10* : Element (1, 0) of the matrix
+    /// - *a11* : Element (1, 1) of the matrix
+    /// - *a12* : Element (1, 2) of the matrix
+    /// - *a20* : Element (2, 0) of the matrix
+    /// - *a21* : Element (2, 1) of the matrix
+    /// - *a22* : Element (2, 2) of the matrix
+    #[cfg_attr(feature = "cargo-clippy", allow(too_many_arguments))]
+    pub fn new(
+        a00: f32,
+        a01: f32,
+        a02: f32,
+        a10: f32,
+        a11: f32,
+        a12: f32,
+        a20: f32,
+        a21: f32,
+        a22: f32,
+    ) -> Transform {
         unsafe {
             Transform(ffi::sfTransform_fromMatrix(
-                matrix[0],
-                matrix[1],
-                matrix[2],
-                matrix[3],
-                matrix[4],
-                matrix[5],
-                matrix[6],
-                matrix[7],
-                matrix[8],
+                a00,
+                a01,
+                a02,
+                a10,
+                a11,
+                a12,
+                a20,
+                a21,
+                a22,
             ))
         }
     }
