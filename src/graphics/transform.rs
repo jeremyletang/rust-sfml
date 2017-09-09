@@ -78,9 +78,9 @@ impl Transform {
     }
 
     /// The identity transform (does nothing)
-    pub fn identity() -> Self {
-        unsafe { Transform(ffi::sfTransform_Identity) }
-    }
+    pub const IDENTITY: Self = Transform(ffi::sfTransform {
+        matrix: [1., 0., 0., 0., 1., 0., 0., 0., 1.],
+    });
 
     /// Return the inverse of a transform
     ///
@@ -192,6 +192,6 @@ impl Transform {
 
 impl Default for Transform {
     fn default() -> Self {
-        Self::identity()
+        Self::IDENTITY
     }
 }
