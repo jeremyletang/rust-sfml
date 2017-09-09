@@ -242,13 +242,11 @@ impl<'s> Clone for Text<'s> {
 }
 
 impl<'s> Drawable for Text<'s> {
-    fn draw<'se, 'tex, 'sh, 'shte>(
+    fn draw<'se: 'sh, 'tex, 'sh, 'shte>(
         &'se self,
         target: &mut RenderTarget,
         states: RenderStates<'tex, 'sh, 'shte>,
-    ) where
-        'se: 'sh,
-    {
+    ) {
         target.draw_text(self, states)
     }
 }

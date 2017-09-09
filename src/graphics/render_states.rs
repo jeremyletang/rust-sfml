@@ -44,10 +44,7 @@ use std::ptr;
 /// For example, a transformable object will combine the current transform with its own transform.
 /// A sprite will set its texture. Etc.
 #[derive(Default, Debug)]
-pub struct RenderStates<'te, 'sh, 'shte>
-where
-    'shte: 'sh,
-{
+pub struct RenderStates<'te, 'sh, 'shte: 'sh> {
     /// Blending mode.
     pub blend_mode: BlendMode,
     /// Transform

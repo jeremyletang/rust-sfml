@@ -174,13 +174,11 @@ impl<'s> Clone for Sprite<'s> {
 }
 
 impl<'s> Drawable for Sprite<'s> {
-    fn draw<'se, 'tex, 'sh, 'shte>(
+    fn draw<'se: 'sh, 'tex, 'sh, 'shte>(
         &'se self,
         target: &mut RenderTarget,
         states: RenderStates<'tex, 'sh, 'shte>,
-    ) where
-        'se: 'sh,
-    {
+    ) {
         target.draw_sprite(self, states)
     }
 }

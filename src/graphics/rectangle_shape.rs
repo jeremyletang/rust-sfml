@@ -65,13 +65,11 @@ impl<'s> Default for RectangleShape<'s> {
 }
 
 impl<'s> Drawable for RectangleShape<'s> {
-    fn draw<'se, 'tex, 'sh, 'shte>(
+    fn draw<'se: 'sh, 'tex, 'sh, 'shte>(
         &'se self,
         target: &mut RenderTarget,
         states: RenderStates<'tex, 'sh, 'shte>,
-    ) where
-        'se: 'sh,
-    {
+    ) {
         target.draw_rectangle_shape(self, states);
     }
 }

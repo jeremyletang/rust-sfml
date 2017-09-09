@@ -151,13 +151,11 @@ impl<'s> Shape<'s> for CustomShape<'s> {
 }
 
 impl<'s> Drawable for CustomShape<'s> {
-    fn draw<'se, 'tex, 'sh, 'shte>(
+    fn draw<'se: 'sh, 'tex, 'sh, 'shte>(
         &'se self,
         target: &mut RenderTarget,
         states: RenderStates<'tex, 'sh, 'shte>,
-    ) where
-        'se: 'sh,
-    {
+    ) {
         target.draw_shape(self, states)
     }
 }
