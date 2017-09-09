@@ -44,18 +44,18 @@ use std::ptr;
 /// For example, a transformable object will combine the current transform with its own transform.
 /// A sprite will set its texture. Etc.
 #[derive(Default, Debug)]
-pub struct RenderStates<'te, 'sh, 'shte: 'sh> {
+pub struct RenderStates<'texture, 'shader, 'shader_texture: 'shader> {
     /// Blending mode.
     pub blend_mode: BlendMode,
     /// Transform
     pub transform: Transform,
     /// Texture
-    pub texture: Option<&'te TextureRef>,
+    pub texture: Option<&'texture TextureRef>,
     /// Shader
-    pub shader: Option<&'sh Shader<'shte>>,
+    pub shader: Option<&'shader Shader<'shader_texture>>,
 }
 
-impl<'te, 'sh, 'shte> RenderStates<'te, 'sh, 'shte> {
+impl<'texture, 'shader, 'shader_texture> RenderStates<'texture, 'shader, 'shader_texture> {
     /// Create a new RenderStates.
     ///
     /// # Arguments
@@ -68,9 +68,9 @@ impl<'te, 'sh, 'shte> RenderStates<'te, 'sh, 'shte> {
     pub fn new(
         blend_mode: BlendMode,
         transform: Transform,
-        texture: Option<&'te TextureRef>,
-        shader: Option<&'sh Shader<'shte>>,
-    ) -> RenderStates<'te, 'sh, 'shte> {
+        texture: Option<&'texture TextureRef>,
+        shader: Option<&'shader Shader<'shader_texture>>,
+    ) -> RenderStates<'texture, 'shader, 'shader_texture> {
         RenderStates {
             blend_mode: blend_mode,
             transform: transform,

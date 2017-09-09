@@ -99,7 +99,7 @@ use std::ptr;
 /// - draw everything directly to the main target, then use `Texture::update_from_window` to copy
 ///   its contents to a texture and draw it to the main target using the shader.
 ///
-/// The first technique is more optimized because it doesn't involve retrieving the target'te
+/// The first technique is more optimized because it doesn't involve retrieving the target's
 /// pixels to system memory, but the second one doesn't impact the rendering process and can
 /// be easily inserted anywhere without impacting all the code.
 ///
@@ -114,9 +114,9 @@ use std::ptr;
 /// Shader::bind(None);
 /// ```
 #[derive(Debug)]
-pub struct Shader<'te> {
+pub struct Shader<'texture> {
     shader: *mut ffi::sfShader,
-    texture: PhantomData<&'te TextureRef>,
+    texture: PhantomData<&'texture TextureRef>,
 }
 
 macro_rules! cstring_then_ptr {
@@ -131,7 +131,7 @@ macro_rules! cstring_then_ptr {
     }
 }
 
-impl<'te> Shader<'te> {
+impl<'texture> Shader<'texture> {
     /// Load both the vertex and fragment shaders from files
     ///
     /// This function can load both the vertex and the fragment
@@ -153,7 +153,7 @@ impl<'te> Shader<'te> {
         vertex: Option<&str>,
         geometry: Option<&str>,
         fragment: Option<&str>,
-    ) -> Option<Shader<'te>> {
+    ) -> Option<Shader<'texture>> {
         let cstring;
         let vert = cstring_then_ptr!(cstring, vertex);
         let cstring;
@@ -192,7 +192,7 @@ impl<'te> Shader<'te> {
         vertex_shader_stream: Option<&mut T>,
         geometry_shader_stream: Option<&mut T>,
         fragment_shader_stream: Option<&mut T>,
-    ) -> Option<Shader<'te>> {
+    ) -> Option<Shader<'texture>> {
         let mut vertex_stream = vertex_shader_stream.map(InputStream::new);
         let mut geometry_stream = geometry_shader_stream.map(InputStream::new);
         let mut fragment_stream = fragment_shader_stream.map(InputStream::new);
@@ -236,7 +236,7 @@ impl<'te> Shader<'te> {
         vertex: Option<&str>,
         geometry: Option<&str>,
         fragment: Option<&str>,
-    ) -> Option<Shader<'te>> {
+    ) -> Option<Shader<'texture>> {
         let cstring;
         let vert = cstring_then_ptr!(cstring, vertex);
         let cstring;
@@ -451,7 +451,7 @@ impl<'te> Shader<'te> {
     ///
     /// To use the texture of the object being drawn, which cannot be known in advance,
     /// use `set_uniform_current_texture`.
-    pub fn set_uniform_texture(&mut self, name: &str, value: &'te TextureRef) {
+    pub fn set_uniform_texture(&mut self, name: &str, value: &'texture TextureRef) {
         unsafe {
             let cstring = CString::new(name).unwrap();
             let name = cstring.as_ptr();
@@ -541,7 +541,7 @@ impl<'te> Shader<'te> {
     }
 }
 
-impl<'te> Drop for Shader<'te> {
+impl<'texture> Drop for Shader<'texture> {
     fn drop(&mut self) {
         unsafe { ffi::sfShader_destroy(self.shader) }
     }

@@ -242,10 +242,10 @@ impl<'s> Clone for Text<'s> {
 }
 
 impl<'s> Drawable for Text<'s> {
-    fn draw<'se: 'sh, 'tex, 'sh, 'shte>(
-        &'se self,
+    fn draw<'a: 'shader, 'texture, 'shader, 'shader_texture>(
+        &'a self,
         target: &mut RenderTarget,
-        states: RenderStates<'tex, 'sh, 'shte>,
+        states: RenderStates<'texture, 'shader, 'shader_texture>,
     ) {
         target.draw_text(self, states)
     }

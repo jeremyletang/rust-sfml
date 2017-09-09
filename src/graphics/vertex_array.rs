@@ -182,10 +182,10 @@ impl IndexMut<usize> for VertexArray {
 }
 
 impl Drawable for VertexArray {
-    fn draw<'se: 'sh, 'tex, 'sh, 'shte>(
-        &'se self,
+    fn draw<'a: 'shader, 'texture, 'shader, 'shader_texture>(
+        &'a self,
         target: &mut RenderTarget,
-        states: RenderStates<'tex, 'sh, 'shte>,
+        states: RenderStates<'texture, 'shader, 'shader_texture>,
     ) {
         target.draw_vertex_array(self, states)
     }

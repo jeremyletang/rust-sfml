@@ -11,13 +11,13 @@ trait Effect: Drawable {
     fn as_drawable(&self) -> &Drawable;
 }
 
-struct Pixelate<'te> {
-    sprite: Sprite<'te>,
+struct Pixelate<'t> {
+    sprite: Sprite<'t>,
     shader: Shader<'static>,
 }
 
-impl<'te> Pixelate<'te> {
-    fn new(texture: &'te TextureRef) -> Self {
+impl<'t> Pixelate<'t> {
+    fn new(texture: &'t TextureRef) -> Self {
         let mut sprite = Sprite::new();
         sprite.set_texture(texture, false);
         Pixelate {
@@ -27,18 +27,18 @@ impl<'te> Pixelate<'te> {
     }
 }
 
-impl<'te> Drawable for Pixelate<'te> {
-    fn draw<'se: 'sh, 'tex, 'sh, 'shte>(
-        &'se self,
+impl<'t> Drawable for Pixelate<'t> {
+    fn draw<'a: 'shader, 'texture, 'shader, 'shader_texture>(
+        &'a self,
         target: &mut RenderTarget,
-        mut states: RenderStates<'tex, 'sh, 'shte>,
+        mut states: RenderStates<'texture, 'shader, 'shader_texture>,
     ) {
         states.shader = Some(&self.shader);
         target.draw_with_renderstates(&self.sprite, states);
     }
 }
 
-impl<'te> Effect for Pixelate<'te> {
+impl<'t> Effect for Pixelate<'t> {
     fn update(&mut self, _t: f32, x: f32, y: f32) {
         self.shader
             .set_uniform_float("pixel_threshold", (x + y) / 30.0);
@@ -92,10 +92,10 @@ impl<'fo> WaveBlur<'fo> {
 }
 
 impl<'fo> Drawable for WaveBlur<'fo> {
-    fn draw<'se: 'sh, 'tex, 'sh, 'shte>(
-        &'se self,
+    fn draw<'a: 'shader, 'texture, 'shader, 'shader_texture>(
+        &'a self,
         target: &mut RenderTarget,
-        mut states: RenderStates<'tex, 'sh, 'shte>,
+        mut states: RenderStates<'texture, 'shader, 'shader_texture>,
     ) {
         states.shader = Some(&self.shader);
         target.draw_with_renderstates(&self.text, states);
@@ -153,10 +153,10 @@ impl StormBlink {
 }
 
 impl Drawable for StormBlink {
-    fn draw<'a: 'sh, 'tex, 'sh, 'shte>(
+    fn draw<'a: 'shader, 'texture, 'shader, 'shader_texture>(
         &'a self,
         target: &mut RenderTarget,
-        mut states: RenderStates<'tex, 'sh, 'shte>,
+        mut states: RenderStates<'texture, 'shader, 'shader_texture>,
     ) {
         states.shader = Some(&self.shader);
         target.draw_with_renderstates(&self.points, states);
@@ -182,15 +182,15 @@ impl Effect for StormBlink {
     }
 }
 
-struct Edge<'te> {
+struct Edge<'t> {
     surface: RenderTexture,
-    bg_sprite: Sprite<'te>,
-    entities: Vec<Sprite<'te>>,
+    bg_sprite: Sprite<'t>,
+    entities: Vec<Sprite<'t>>,
     shader: Shader<'static>,
 }
 
-impl<'te> Edge<'te> {
-    fn new(bg_texture: &'te TextureRef, entity_texture: &'te TextureRef) -> Self {
+impl<'t> Edge<'t> {
+    fn new(bg_texture: &'t TextureRef, entity_texture: &'t TextureRef) -> Self {
         let mut surface = RenderTexture::new(800, 600, false).unwrap();
         surface.set_smooth(true);
         let mut bg_sprite = Sprite::with_texture(bg_texture);
@@ -215,18 +215,18 @@ impl<'te> Edge<'te> {
     }
 }
 
-impl<'te> Drawable for Edge<'te> {
-    fn draw<'a: 'sh, 'tex, 'sh, 'shte>(
+impl<'t> Drawable for Edge<'t> {
+    fn draw<'a: 'shader, 'texture, 'shader, 'shader_texture>(
         &'a self,
         target: &mut RenderTarget,
-        mut states: RenderStates<'tex, 'sh, 'shte>,
+        mut states: RenderStates<'texture, 'shader, 'shader_texture>,
     ) {
         states.shader = Some(&self.shader);
         target.draw_with_renderstates(&Sprite::with_texture(self.surface.texture()), states);
     }
 }
 
-impl<'te> Effect for Edge<'te> {
+impl<'t> Effect for Edge<'t> {
     fn update(&mut self, t: f32, x: f32, y: f32) {
         self.shader
             .set_uniform_float("edge_threshold", 1. - (x + y) / 2.);
