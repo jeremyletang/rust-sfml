@@ -7,5 +7,3 @@ All unassigned issues are welcome to be tackled, but there are two special label
 - [**Help required!!!**](https://github.com/jeremyletang/rust-sfml/labels/Help%20required%21%21%21) marks issues that the maintainers can't resolve without help from external contributors.
   This is most likely to happen for issues involving platform-specific problems, where the maintainers can't test
   on that specific platform.
-  
-If you need help, you can talk to us on [gitter](https://gitter.im/rust-sfml/Lobby). If you prefer IRC, see https://irc.gitter.im/.
