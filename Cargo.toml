@@ -1,12 +1,13 @@
 [package]
 name = "sfml"
 description = "Rust binding for sfml"
-version = "0.13.0"
+version = "0.13.1"
 authors = ["Jeremy Letang <letang.jeremy@gmail.com>"]
 documentation = "https://docs.rs/sfml"
 repository = "https://github.com/jeremyletang/rust-sfml"
 license = "zlib-acknowledgement"
 keywords = ["sfml", "multimedia", "game"]
+readme = "README.md"
 
 [features]
 default = ["graphics", "audio"]
