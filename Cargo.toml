@@ -21,7 +21,7 @@ optional = true
 
 [dependencies.csfml-system-sys]
 path = "ffi/csfml-system-sys"
-version = "0.2.1"
+version = "0.4.0"
 
 [dependencies.csfml-window-sys]
 path = "ffi/csfml-window-sys"

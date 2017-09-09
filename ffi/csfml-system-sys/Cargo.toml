@@ -1,7 +1,7 @@
 [package]
 name = "csfml-system-sys"
 description = "Bindings to csfml-system"
-version = "0.2.1"
+version = "0.4.0"
 authors = ["rust-sfml developers"]
 links = "csfml-system"
 build = "build.rs"
