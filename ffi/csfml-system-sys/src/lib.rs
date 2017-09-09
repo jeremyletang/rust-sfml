@@ -60,13 +60,19 @@ extern "C" {
 }
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct sfClock([u8; 0]);
+pub struct sfClock {
+    _unused: [u8; 0],
+}
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct sfMutex([u8; 0]);
+pub struct sfMutex {
+    _unused: [u8; 0],
+}
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct sfThread([u8; 0]);
+pub struct sfThread {
+    _unused: [u8; 0],
+}
 extern "C" {
     pub fn sfClock_create() -> *mut sfClock;
 }
