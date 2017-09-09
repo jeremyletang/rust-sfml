@@ -17,7 +17,7 @@ impl SoundStream for BitMelody {
             let t = self.t;
             let melody = b"36364689";
             let index = t >> 13 & 7;
-            let note = t * (melody[index as usize] as i32 & 15);
+            let note = t * (i32::from(melody[index as usize]) & 15);
             let sample = ((note / 12) & 128) +
                 ((((((t >> 12) ^ ((t >> 12) - 2)) % 11 * t) / 4) | t >> 13) & 127);
             *buf_sample = sample as i16 * self.amp;
@@ -36,7 +36,7 @@ impl SoundStream for BitMelody {
         1
     }
     fn sample_rate(&self) -> u32 {
-        44100
+        44_100
     }
 }
 
