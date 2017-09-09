@@ -30,7 +30,7 @@ optional = true
 
 [dependencies.csfml-graphics-sys]
 path = "ffi/csfml-graphics-sys"
-version = "0.3.0"
+version = "0.4.0"
 optional = true
 
 [dependencies.csfml-audio-sys]
