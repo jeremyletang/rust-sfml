@@ -16,7 +16,7 @@ audio = ["csfml-audio-sys"]
 network = ["csfml-network-sys"]
 
 [dependencies.bitflags]
-git = "https://github.com/rust-lang-nursery/bitflags.git"
+version = "1.0"
 optional = true
 
 [dependencies.csfml-system-sys]
