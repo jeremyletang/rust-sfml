@@ -5,6 +5,7 @@ use std::borrow::{Borrow, ToOwned};
 use std::ffi::CString;
 use std::io::{Read, Seek};
 use std::ops::Deref;
+use std::slice;
 use system::Time;
 
 
@@ -97,6 +98,11 @@ impl SoundBufferRef {
     /// Return the number of samples
     pub fn sample_count(&self) -> u64 {
         unsafe { ffi::sfSoundBuffer_getSampleCount(self.raw()) }
+    }
+
+    /// Get the samples stored in the buffer
+    pub fn get_samples(&self) -> &[i16] {
+        unsafe { slice::from_raw_parts(ffi::sfSoundBuffer_getSamples(self.raw()), self.sample_count() as usize) }
     }
 
     /// Get the number of channels used by a sound buffer
