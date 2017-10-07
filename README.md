@@ -16,4 +16,4 @@ License
 
 This software is a binding of the SFML library created by Laurent Gomila, which is provided under the Zlib/png license.
 
-This software is provided under the same license than the SFML, the Zlib/png license.
+This software is provided under the same license as SFML, the Zlib/png license.
