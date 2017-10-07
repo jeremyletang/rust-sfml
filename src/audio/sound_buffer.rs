@@ -101,6 +101,8 @@ impl SoundBufferRef {
     }
 
     /// Get the samples stored in the buffer
+    ///
+    /// Panic if the sample count exceeds usize range
     pub fn samples(&self) -> &[i16] {
         let len = self.sample_count();
         if len > usize::max_value() as u64 {
