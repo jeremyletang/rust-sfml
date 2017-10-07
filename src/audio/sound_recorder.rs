@@ -56,15 +56,15 @@ impl<T1: Fn() -> bool, T2: Fn(&[i16]) -> bool, T3: Fn()> SoundRecorder<T1, T2, T
         }
     }
 
-    pub fn start(&self, sample_rate: u32) -> bool {
+    pub fn start(&mut self, sample_rate: u32) -> bool {
         unsafe { sfSoundRecorder_start(self.sf_sound_recorder, sample_rate) == sfTrue }
     }
 
-    pub fn stop(&self) {
+    pub fn stop(&mut self) {
         unsafe { sfSoundRecorder_stop(self.sf_sound_recorder) };
     }
 
-    pub fn set_device(&self, name: &str) -> Result<(), SetDeviceError> {
+    pub fn set_device(&mut self, name: &str) -> Result<(), SetDeviceError> {
         let name = CString::new(name).unwrap();
         let success = unsafe {
             sfSoundRecorder_setDevice(self.sf_sound_recorder, name.as_ptr()).to_bool()
@@ -76,7 +76,7 @@ impl<T1: Fn() -> bool, T2: Fn(&[i16]) -> bool, T3: Fn()> SoundRecorder<T1, T2, T
         }
     }
 
-    pub fn set_processing_interval(&self, interval: Duration) {
+    pub fn set_processing_interval(&mut self, interval: Duration) {
         if interval.as_secs() > i64::max_value() as u64 {
             panic!("Interval too big");
         }

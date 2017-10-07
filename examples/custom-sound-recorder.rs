@@ -5,7 +5,7 @@ use sfml::audio::SoundRecorder;
 
 fn main(){
 
-    let sr = SoundRecorder::new(
+    let mut sr = SoundRecorder::new(
         || {
             println!("Recording started!");
             true
