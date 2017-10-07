@@ -104,8 +104,12 @@ impl SoundBufferRef {
     /// Panic if the sample count exceeds usize range
     pub fn samples(&self) -> &[i16] {
         let len = self.sample_count();
-        if len > usize::max_value() as u64 {
-            panic!("Sample count {} too big to fit into usize", len);
+        // TODO: Replace with TryFrom, or a similar standard library API, once available
+        #[cfg(target_pointer_width = 32)]
+        {
+            if len > usize::max_value() as u64 {
+                panic!("Sample count {} too big to fit into usize", len);
+            }
         }
         unsafe { slice::from_raw_parts(ffi::sfSoundBuffer_getSamples(self.raw()), len as usize) }
     }
