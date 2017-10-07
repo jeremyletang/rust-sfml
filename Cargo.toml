@@ -1,7 +1,7 @@
 [package]
 name = "sfml"
 description = "Rust binding for sfml"
-version = "0.13.2"
+version = "0.14.0"
 authors = ["Jeremy Letang <letang.jeremy@gmail.com>"]
 documentation = "https://docs.rs/sfml"
 repository = "https://github.com/jeremyletang/rust-sfml"
