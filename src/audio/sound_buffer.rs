@@ -95,8 +95,8 @@ impl SoundBufferRef {
     /// get_samples function.
     ///
     /// Return the number of samples
-    pub fn sample_count(&self) -> i64 {
-        unsafe { ffi::sfSoundBuffer_getSampleCount(self.raw()) as i64 }
+    pub fn sample_count(&self) -> u64 {
+        unsafe { ffi::sfSoundBuffer_getSampleCount(self.raw()) }
     }
 
     /// Get the number of channels used by a sound buffer
