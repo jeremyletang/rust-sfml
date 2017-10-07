@@ -5,6 +5,7 @@ env:
 language: rust
 rust:
   - nightly
+  - 1.20
 script:
   - set -e
   - mkdir sfml_install
