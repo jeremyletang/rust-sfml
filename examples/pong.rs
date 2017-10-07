@@ -133,17 +133,16 @@ fn main() {
             if Key::Up.is_pressed() && (left_paddle.position().y - paddle_size.y / 2. > 5.) {
                 left_paddle.move_((0., -paddle_speed * delta_time));
             }
-            if Key::Down.is_pressed() &&
-                (left_paddle.position().y + paddle_size.y / 2. < game_height as f32 - 5.)
+            if Key::Down.is_pressed()
+                && (left_paddle.position().y + paddle_size.y / 2. < game_height as f32 - 5.)
             {
                 left_paddle.move_((0., paddle_speed * delta_time));
             }
 
             // Move the computer's paddle
-            if ((right_paddle_speed < 0.) &&
-                (right_paddle.position().y - paddle_size.y / 2. > 5.)) ||
-                ((right_paddle_speed > 0.) &&
-                    (right_paddle.position().y + paddle_size.y / 2. < game_height as f32 - 5.))
+            if ((right_paddle_speed < 0.) && (right_paddle.position().y - paddle_size.y / 2. > 5.))
+                || ((right_paddle_speed > 0.)
+                    && (right_paddle.position().y + paddle_size.y / 2. < game_height as f32 - 5.))
             {
                 right_paddle.move_((0., right_paddle_speed * delta_time));
             }
@@ -154,8 +153,8 @@ fn main() {
                 if ball.position().y + ball_radius > right_paddle.position().y + paddle_size.y / 2.
                 {
                     right_paddle_speed = paddle_speed;
-                } else if ball.position().y - ball_radius <
-                    right_paddle.position().y - paddle_size.y / 2.
+                } else if ball.position().y - ball_radius
+                    < right_paddle.position().y - paddle_size.y / 2.
                 {
                     right_paddle_speed = -paddle_speed;
                 } else {
@@ -192,10 +191,10 @@ fn main() {
             // Check the collisions between the ball and the paddles
             // Left Paddle
             let (ball_pos, paddle_pos) = (ball.position(), left_paddle.position());
-            if ball_pos.x - ball_radius < paddle_pos.x + paddle_size.x / 2. &&
-                ball_pos.x - ball_radius > paddle_pos.x &&
-                ball_pos.y + ball_radius >= paddle_pos.y - paddle_size.y / 2. &&
-                ball_pos.y - ball_radius <= paddle_pos.y + paddle_size.y / 2.
+            if ball_pos.x - ball_radius < paddle_pos.x + paddle_size.x / 2.
+                && ball_pos.x - ball_radius > paddle_pos.x
+                && ball_pos.y + ball_radius >= paddle_pos.y - paddle_size.y / 2.
+                && ball_pos.y - ball_radius <= paddle_pos.y + paddle_size.y / 2.
             {
                 if ball_pos.y > paddle_pos.y {
                     ball_angle = PI - ball_angle + rng.gen_range(0., 20.) * PI / 180.;
@@ -212,10 +211,10 @@ fn main() {
 
             // Right Paddle
             let (ball_pos, paddle_pos) = (ball.position(), right_paddle.position());
-            if ball_pos.x + ball_radius > paddle_pos.x - paddle_size.x / 2. &&
-                ball_pos.x + ball_radius < paddle_pos.x &&
-                ball_pos.y + ball_radius >= paddle_pos.y - paddle_size.y / 2. &&
-                ball_pos.y - ball_radius <= paddle_pos.y + paddle_size.y / 2.
+            if ball_pos.x + ball_radius > paddle_pos.x - paddle_size.x / 2.
+                && ball_pos.x + ball_radius < paddle_pos.x
+                && ball_pos.y + ball_radius >= paddle_pos.y - paddle_size.y / 2.
+                && ball_pos.y - ball_radius <= paddle_pos.y + paddle_size.y / 2.
             {
                 if ball_pos.y > paddle_pos.y {
                     ball_angle = PI - ball_angle + rng.gen_range(0., 20.) * PI / 180.;

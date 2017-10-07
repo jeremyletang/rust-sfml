@@ -65,8 +65,8 @@ impl UdpSocket {
     /// Return the tatus code
     pub fn bind(&self, port: u16, address: IpAddress) -> SocketStatus {
         unsafe {
-            mem::transmute(ffi::sfUdpSocket_bind(self.socket, port, address.raw()) as
-                i32)
+            mem::transmute(ffi::sfUdpSocket_bind(self.socket, port, address.raw())
+                as i32)
         }
     }
 
@@ -146,8 +146,8 @@ impl UdpSocket {
     pub fn send_packet(&self, packet: &mut Packet, address: &IpAddress, port: u16) -> SocketStatus {
         unsafe {
             mem::transmute(
-                ffi::sfUdpSocket_sendPacket(self.socket, packet.raw_mut(), address.raw(), port) as
-                    i32,
+                ffi::sfUdpSocket_sendPacket(self.socket, packet.raw_mut(), address.raw(), port)
+                    as i32,
             )
         }
     }
