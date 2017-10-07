@@ -92,8 +92,7 @@ impl SoundBufferRef {
 
     /// Get the number of samples stored in a sound buffer
     ///
-    /// The array of samples can be accessed with the
-    /// get_samples function.
+    /// The array of samples can be accessed with `samples()`.
     ///
     /// Return the number of samples
     pub fn sample_count(&self) -> u64 {
