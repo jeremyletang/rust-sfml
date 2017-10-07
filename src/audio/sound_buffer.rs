@@ -101,8 +101,9 @@ impl SoundBufferRef {
     }
 
     /// Get the samples stored in the buffer
-    pub fn get_samples(&self) -> &[i16] {
-        unsafe { slice::from_raw_parts(ffi::sfSoundBuffer_getSamples(self.raw()), self.sample_count() as usize) }
+    pub fn samples(&self) -> &[i16] {
+        let len = self.sample_count().max(0).min(usize::max_value() as i64) as usize;
+        unsafe { slice::from_raw_parts(ffi::sfSoundBuffer_getSamples(self.raw()), len) }
     }
 
     /// Get the number of channels used by a sound buffer
