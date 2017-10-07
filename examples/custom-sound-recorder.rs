@@ -10,8 +10,8 @@ fn main(){
             println!("Recording started!");
             true
         },
-        |_| {
-            println!("Samples received!");
+        |samples| {
+            println!("Samples received! {}", samples.len());
             true
         },
         || {
@@ -19,6 +19,7 @@ fn main(){
         }
     );
 
+    sr.set_processing_interval(time::Duration::from_millis(10));
     sr.start(44100);
     thread::sleep(time::Duration::from_secs(3));
     sr.stop();
