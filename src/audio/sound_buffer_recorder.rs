@@ -3,6 +3,7 @@ use audio::sound_buffer::SoundBufferRef;
 use csfml_system_sys::*;
 use sf_bool_ext::SfBoolExt;
 use std::ffi::{CStr, CString};
+use super::SetDeviceError;
 
 /// Store captured audio data in sound Buffer
 ///
@@ -12,9 +13,6 @@ use std::ffi::{CStr, CString};
 pub struct SoundBufferRecorder {
     sound_buffer_recorder: *mut ffi::sfSoundBufferRecorder,
 }
-
-#[derive(Debug, Clone, Copy)]
-pub struct SetDeviceError;
 
 impl SoundBufferRecorder {
     /// Create a new sound buffer recorder

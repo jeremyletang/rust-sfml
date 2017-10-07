@@ -64,6 +64,10 @@ name = "custom-shape"
 required-features = ["graphics"]
 
 [[example]]
+name = "custom-sound-recorder"
+required-features = ["audio"]
+
+[[example]]
 name = "custom-sound-stream"
 required-features = ["audio"]
 
