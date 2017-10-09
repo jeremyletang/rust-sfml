@@ -53,10 +53,35 @@ use system::Time;
 /// It is important to keep this in mind, because you may have to take care of
 /// synchronization issues if you share data between threads.
 pub trait SoundRecorder {
+    /// Start capturing audio data.
+    ///
+    /// This method may be overridden by an implementer if something has
+    /// to be done every time a new capture starts.
+    /// If not, this function can be ignored; the default implementation does nothing.
+    ///
+    /// Returns `true` to start the capture, or `false` to abort it.
+    ///
+    /// Reimplemented in `SoundBufferRecorder`.
     fn on_start(&mut self) -> bool {
         true
     }
+    /// Process a new chunk of recorded samples.
+    ///
+    /// This method is called every time a new chunk of recorded data is available.
+    /// The implementer can then do whatever it
+    /// wants with it (storing it, playing it, sending it over the network, etc.).
+    ///
+    /// Returns `true` to continue the capture, or `false` to stop it.
+    ///
+    /// Implemented in `SoundBufferRecorder`.
     fn on_process_samples(&mut self, samples: &[i16]) -> bool;
+    /// Stop capturing audio data.
+    ///
+    /// This method may be overridden by an implementer if something has
+    /// to be done every time the capture ends.
+    /// If not, this function can be ignored; the default implementation does nothing.
+    ///
+    /// Reimplemented in `SoundBufferRecorder`.
     fn on_stop(&mut self) {}
 }
 
