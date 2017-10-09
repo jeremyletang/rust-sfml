@@ -3,6 +3,7 @@ use csfml_system_sys::{sfBool, sfInt16};
 use std::os::raw::c_void;
 use sf_bool_ext::SfBoolExt;
 use std::ffi::{CStr, CString};
+use system::Time;
 
 pub trait SoundRecorder {
     fn on_start(&mut self) -> bool {
@@ -80,6 +81,9 @@ impl<'a, R: SoundRecorder> SoundRecorderDriver<'a, R> {
     }
     pub fn get_channel_count(&self) -> u32 {
         unsafe { sfSoundRecorder_getChannelCount(self.sf_sound_recorder) }
+    }
+    pub fn set_processing_interval(&mut self, interval: Time) {
+        unsafe { sfSoundRecorder_setProcessingInterval(self.sf_sound_recorder, interval.raw()) }
     }
 }
 
