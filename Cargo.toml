@@ -99,4 +99,8 @@ required-features = ["graphics"]
 name = "shader"
 required-features = ["graphics"]
 
+[[example]]
+name = "custom-sound-recorder"
+required-features = ["audio"]
+
 [workspace]
