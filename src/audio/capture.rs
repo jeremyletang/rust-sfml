@@ -36,7 +36,7 @@ use system::Time;
 ///
 /// If you have multiple sound input devices connected to your computer
 /// (for example: microphone, external soundcard, webcam mic, ...)
-/// you can get a list of all available devices through the `get_available_devices` function.
+/// you can get a list of all available devices through the `available_devices` function.
 /// You can then select a device by calling `set_device` with the appropriate device.
 /// Otherwise the default capturing device will be used.
 ///
@@ -171,7 +171,7 @@ impl<'a, R: SoundRecorder> SoundRecorderDriver<'a, R> {
     /// `set_device` method.
     /// If none was selected before, the default capture device will be used.
     /// You can get a list of the names of all available capture devices by
-    /// calling `get_available_devices`.
+    /// calling `available_devices`.
     ///
     /// # Parameters
     /// * `sample_rate`	Desired capture rate, in number of samples per second
@@ -191,7 +191,7 @@ impl<'a, R: SoundRecorder> SoundRecorderDriver<'a, R> {
     ///
     /// The sample rate defines the number of audio samples captured per second.
     /// The higher, the better the quality (for example, 44100 samples/sec is CD quality).
-    pub fn get_sample_rate(&self) -> u32 {
+    pub fn sample_rate(&self) -> u32 {
         unsafe { sfSoundRecorder_getSampleRate(self.ffi_handle) }
     }
     /// Set the channel count of the audio capture device.
@@ -209,7 +209,7 @@ impl<'a, R: SoundRecorder> SoundRecorderDriver<'a, R> {
     ///
     /// Currently only mono and stereo are supported,
     /// so the value is either 1 (for mono) or 2 (for stereo).
-    pub fn get_channel_count(&self) -> u32 {
+    pub fn channel_count(&self) -> u32 {
         unsafe { sfSoundRecorder_getChannelCount(self.ffi_handle) }
     }
     /// Set the processing interval.
