@@ -85,6 +85,9 @@ pub trait SoundRecorder {
     fn on_stop(&mut self) {}
 }
 
+/// Type that "drives" custom sound recorders.
+///
+/// It does the actual recording, and feeds the custom sound recorder with the recorded data.
 #[derive(Debug)]
 pub struct SoundRecorderDriver<'a, R: 'a> {
     sf_sound_recorder: *mut sfSoundRecorder,
@@ -111,6 +114,7 @@ unsafe extern "C" fn on_stop_callback<R: SoundRecorder>(user_data: *mut c_void) 
 }
 
 impl<'a, R: SoundRecorder> SoundRecorderDriver<'a, R> {
+    /// Creates a new `SoundRecorderDriver` with the specified `SoundRecorder`.
     pub fn new(sound_recorder: &'a mut R) -> Self {
         let ptr: *mut R = sound_recorder;
         Self {
@@ -125,22 +129,55 @@ impl<'a, R: SoundRecorder> SoundRecorderDriver<'a, R> {
             recorder: sound_recorder,
         }
     }
+    /// Start the capture.
+    ///
+    /// The `sample_rate` parameter defines the number of audio samples captured per second.
+    /// The higher, the better the quality (for example, 44100 samples/sec is CD quality).
+    /// This function uses its own thread so that it doesn't block the rest of the program
+    /// while the capture runs.
+    /// Please note that only one capture can happen at the same time.
+    /// You can select which capture device will be used, by passing the name to the
+    /// `set_device` method.
+    /// If none was selected before, the default capture device will be used.
+    /// You can get a list of the names of all available capture devices by
+    /// calling `get_available_devices`.
+    ///
+    /// # Parameters
+    /// * `sample_rate`	Desired capture rate, in number of samples per second
+    ///
+    /// Returns `true`, if start of capture was successful.
     pub fn start(&mut self, sample_rate: u32) -> bool {
         unsafe { sfSoundRecorder_start(self.sf_sound_recorder, sample_rate).to_bool() }
     }
+    /// Stop the capture, lending out the underlying `SoundRecorder`.
     pub fn stop(&mut self) -> &mut R {
         unsafe {
             sfSoundRecorder_stop(self.sf_sound_recorder);
         }
         self.recorder
     }
+    /// Get the sample rate.
+    ///
+    /// The sample rate defines the number of audio samples captured per second.
+    /// The higher, the better the quality (for example, 44100 samples/sec is CD quality).
     pub fn get_sample_rate(&self) -> u32 {
         unsafe { sfSoundRecorder_getSampleRate(self.sf_sound_recorder) }
     }
+    /// Set the audio capture device.
+    ///
+    /// This function sets the audio capture device to the device with the given name.
+    /// It can be called on the fly (i.e: while recording).
+    /// If you do so while recording and opening the device fails, it stops the recording.
+    ///
+    /// # Parameters
+    /// * `name`	The name of the audio capture device
+    ///
+    /// Returns `true`, if it was able to set the requested device
     pub fn set_device(&mut self, name: &str) -> bool {
         let name = CString::new(name).unwrap();
         unsafe { sfSoundRecorder_setDevice(self.sf_sound_recorder, name.as_ptr()).to_bool() }
     }
+    /// Get the name of the current audio capture device.
     pub fn get_device(&self) -> &str {
         unsafe {
             CStr::from_ptr(sfSoundRecorder_getDevice(self.sf_sound_recorder))
@@ -148,12 +185,35 @@ impl<'a, R: SoundRecorder> SoundRecorderDriver<'a, R> {
                 .unwrap()
         }
     }
+    /// Set the channel count of the audio capture device.
+    ///
+    /// This method allows you to specify the number of channels used for recording.
+    /// Currently only 16-bit mono and 16-bit stereo are supported.
+    ///
+    /// # Parameters
+    /// * `channel_count`   Number of channels.
+    ///                     Currently only mono (1) and stereo (2) are supported.
     pub fn set_channel_count(&mut self, channel_count: u32) {
         unsafe { sfSoundRecorder_setChannelCount(self.sf_sound_recorder, channel_count) }
     }
+    /// Get the number of channels used by this recorder.
+    ///
+    /// Currently only mono and stereo are supported,
+    /// so the value is either 1 (for mono) or 2 (for stereo).
     pub fn get_channel_count(&self) -> u32 {
         unsafe { sfSoundRecorder_getChannelCount(self.sf_sound_recorder) }
     }
+    /// Set the processing interval.
+    ///
+    /// The processing interval controls the period between calls to the
+    /// `on_process_samples` function.
+    /// You may want to use a small interval if you want to process the recorded data in real time,
+    /// for example.
+    ///
+    /// Note: this is only a hint, the actual period may vary.
+    /// So don't rely on this parameter to implement precise timing.
+    ///
+    /// The default processing interval is 100 ms.
     pub fn set_processing_interval(&mut self, interval: Time) {
         unsafe { sfSoundRecorder_setProcessingInterval(self.sf_sound_recorder, interval.raw()) }
     }
