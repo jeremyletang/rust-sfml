@@ -20,5 +20,4 @@ mod music;
 mod sound;
 mod sound_buffer_recorder;
 mod sound_stream;
-#[allow(missing_docs)]
 mod sound_recorder;
