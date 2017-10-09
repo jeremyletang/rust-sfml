@@ -24,8 +24,7 @@ use system::Time;
 /// `on_start` is called before the capture happens, to perform custom initializations
 /// `on_stop` is called after the capture ends, to perform custom cleanup
 /// You can also control the frequency of the `on_process_samples` calls,
-/// with the `set_processing_interval` method.
-/// TODO: `set_processing_interval` is on `SoundRecorderDriver`.
+/// with `SoundRecorderDriver::set_processing_interval`.
 /// The default interval is chosen so that recording thread doesn't consume too much CPU,
 /// but it can be changed to a smaller value if you need to process the recorded data in real time,
 /// for example.
