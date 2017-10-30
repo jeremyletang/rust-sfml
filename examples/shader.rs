@@ -56,7 +56,7 @@ struct WaveBlur<'fo> {
     shader: Shader<'static>,
 }
 
-const WAVEBLUR_TEXT: &'static str = "\
+const WAVEBLUR_TEXT: &str = "\
 Praesent suscipit augue in velit pulvinar hendrerit varius purus aliquam.
 Mauris mi odio, bibendum quis fringilla a, laoreet vel orci. Proin vitae vulputate tortor.
 Praesent cursus ultrices justo, ut feugiat ante vehicula quis.

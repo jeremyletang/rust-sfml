@@ -5,8 +5,8 @@
 //!
 //! SFML 2.4 and CSFML 2.4 must be installed on your computer. You can download them here:
 //!
-//! - SFML 2.4: http://www.sfml-dev.org/download.php
-//! - CSFML 2.4: http://www.sfml-dev.org/download/csfml/
+//! - SFML 2.4: <http://www.sfml-dev.org/download.php>
+//! - CSFML 2.4: <http://www.sfml-dev.org/download/csfml/>
 //!
 //! The supported platforms are Linux, Windows and OS X.
 //!

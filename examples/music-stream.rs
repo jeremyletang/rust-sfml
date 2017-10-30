@@ -27,5 +27,5 @@ fn main() {
         );
         let _ = std::io::stdout().flush();
     }
-    println!("");
+    println!();
 }

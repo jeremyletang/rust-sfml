@@ -24,7 +24,7 @@ fn play_sound() {
         // Leave some CPU time for other processes
         sleep(Time::milliseconds(100));
     }
-    println!("");
+    println!();
 }
 
 // Play a Music
@@ -47,7 +47,7 @@ fn play_music() {
         sleep(Time::milliseconds(100));
     }
 
-    println!("");
+    println!();
 }
 
 fn main() {
