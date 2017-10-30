@@ -26,7 +26,6 @@ pub fn link_csfml(lib_name: &str) {
 
 // Add search path for SFML library files
 pub fn link_sfml(lib_name: &str) {
-
     // SFML_HOME points to the base SFML directory
     // Let cargo find the SFML library files there
     if let Ok(sfml_home) = var("SFML_HOME") {

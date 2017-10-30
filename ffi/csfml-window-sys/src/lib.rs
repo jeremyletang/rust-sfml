@@ -25,40 +25,61 @@ pub struct sfJoystickIdentification {
 }
 #[test]
 fn bindgen_test_layout_sfJoystickIdentification() {
-    assert_eq!(::std::mem::size_of::<sfJoystickIdentification>() , 16usize ,
-               concat ! (
-               "Size of: " , stringify ! ( sfJoystickIdentification ) ));
-    assert_eq! (::std::mem::align_of::<sfJoystickIdentification>() , 8usize ,
-                concat ! (
-                "Alignment of " , stringify ! ( sfJoystickIdentification ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfJoystickIdentification ) ) . name as *
-                const _ as usize } , 0usize , concat ! (
-                "Alignment of field: " , stringify ! (
-                sfJoystickIdentification ) , "::" , stringify ! ( name ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfJoystickIdentification ) ) . vendorId
-                as * const _ as usize } , 8usize , concat ! (
-                "Alignment of field: " , stringify ! (
-                sfJoystickIdentification ) , "::" , stringify ! ( vendorId )
-                ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfJoystickIdentification ) ) . productId
-                as * const _ as usize } , 12usize , concat ! (
-                "Alignment of field: " , stringify ! (
-                sfJoystickIdentification ) , "::" , stringify ! ( productId )
-                ));
+    assert_eq!(
+        ::std::mem::size_of::<sfJoystickIdentification>(),
+        16usize,
+        concat!("Size of: ", stringify!(sfJoystickIdentification))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<sfJoystickIdentification>(),
+        8usize,
+        concat!("Alignment of ", stringify!(sfJoystickIdentification))
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfJoystickIdentification)).name as *const _ as usize },
+        0usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfJoystickIdentification),
+            "::",
+            stringify!(name)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfJoystickIdentification)).vendorId as *const _ as usize },
+        8usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfJoystickIdentification),
+            "::",
+            stringify!(vendorId)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfJoystickIdentification)).productId as *const _ as usize },
+        12usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfJoystickIdentification),
+            "::",
+            stringify!(productId)
+        )
+    );
 }
 impl Clone for sfJoystickIdentification {
-    fn clone(&self) -> Self { *self }
+    fn clone(&self) -> Self {
+        *self
+    }
 }
 pub const sfJoystickCount: _bindgen_ty_1 = _bindgen_ty_1::sfJoystickCount;
-pub const sfJoystickButtonCount: _bindgen_ty_1 =
-    _bindgen_ty_1::sfJoystickButtonCount;
+pub const sfJoystickButtonCount: _bindgen_ty_1 = _bindgen_ty_1::sfJoystickButtonCount;
 pub const sfJoystickAxisCount: _bindgen_ty_1 = _bindgen_ty_1::sfJoystickCount;
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
-pub enum _bindgen_ty_1 { sfJoystickCount = 8, sfJoystickButtonCount = 32, }
+pub enum _bindgen_ty_1 {
+    sfJoystickCount = 8,
+    sfJoystickButtonCount = 32,
+}
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
 pub enum sfJoystickAxis {
@@ -75,25 +96,27 @@ extern "C" {
     pub fn sfJoystick_isConnected(joystick: ::std::os::raw::c_uint) -> sfBool;
 }
 extern "C" {
-    pub fn sfJoystick_getButtonCount(joystick: ::std::os::raw::c_uint)
-     -> ::std::os::raw::c_uint;
+    pub fn sfJoystick_getButtonCount(joystick: ::std::os::raw::c_uint) -> ::std::os::raw::c_uint;
 }
 extern "C" {
-    pub fn sfJoystick_hasAxis(joystick: ::std::os::raw::c_uint,
-                              axis: sfJoystickAxis) -> sfBool;
+    pub fn sfJoystick_hasAxis(joystick: ::std::os::raw::c_uint, axis: sfJoystickAxis) -> sfBool;
 }
 extern "C" {
-    pub fn sfJoystick_isButtonPressed(joystick: ::std::os::raw::c_uint,
-                                      button: ::std::os::raw::c_uint)
-     -> sfBool;
+    pub fn sfJoystick_isButtonPressed(
+        joystick: ::std::os::raw::c_uint,
+        button: ::std::os::raw::c_uint,
+    ) -> sfBool;
 }
 extern "C" {
-    pub fn sfJoystick_getAxisPosition(joystick: ::std::os::raw::c_uint,
-                                      axis: sfJoystickAxis) -> f32;
+    pub fn sfJoystick_getAxisPosition(
+        joystick: ::std::os::raw::c_uint,
+        axis: sfJoystickAxis,
+    ) -> f32;
 }
 extern "C" {
-    pub fn sfJoystick_getIdentification(joystick: ::std::os::raw::c_uint)
-     -> sfJoystickIdentification;
+    pub fn sfJoystick_getIdentification(
+        joystick: ::std::os::raw::c_uint,
+    ) -> sfJoystickIdentification;
 }
 extern "C" {
     pub fn sfJoystick_update();
@@ -234,8 +257,7 @@ extern "C" {
     pub fn sfMouse_getPosition(relativeTo: *const sfWindow) -> sfVector2i;
 }
 extern "C" {
-    pub fn sfMouse_setPosition(position: sfVector2i,
-                               relativeTo: *const sfWindow);
+    pub fn sfMouse_setPosition(position: sfVector2i, relativeTo: *const sfWindow);
 }
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
@@ -297,43 +319,81 @@ pub struct sfKeyEvent {
 }
 #[test]
 fn bindgen_test_layout_sfKeyEvent() {
-    assert_eq!(::std::mem::size_of::<sfKeyEvent>() , 24usize , concat ! (
-               "Size of: " , stringify ! ( sfKeyEvent ) ));
-    assert_eq! (::std::mem::align_of::<sfKeyEvent>() , 4usize , concat ! (
-                "Alignment of " , stringify ! ( sfKeyEvent ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfKeyEvent ) ) . type_ as * const _ as
-                usize } , 0usize , concat ! (
-                "Alignment of field: " , stringify ! ( sfKeyEvent ) , "::" ,
-                stringify ! ( type_ ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfKeyEvent ) ) . code as * const _ as
-                usize } , 4usize , concat ! (
-                "Alignment of field: " , stringify ! ( sfKeyEvent ) , "::" ,
-                stringify ! ( code ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfKeyEvent ) ) . alt as * const _ as
-                usize } , 8usize , concat ! (
-                "Alignment of field: " , stringify ! ( sfKeyEvent ) , "::" ,
-                stringify ! ( alt ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfKeyEvent ) ) . control as * const _ as
-                usize } , 12usize , concat ! (
-                "Alignment of field: " , stringify ! ( sfKeyEvent ) , "::" ,
-                stringify ! ( control ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfKeyEvent ) ) . shift as * const _ as
-                usize } , 16usize , concat ! (
-                "Alignment of field: " , stringify ! ( sfKeyEvent ) , "::" ,
-                stringify ! ( shift ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfKeyEvent ) ) . system as * const _ as
-                usize } , 20usize , concat ! (
-                "Alignment of field: " , stringify ! ( sfKeyEvent ) , "::" ,
-                stringify ! ( system ) ));
+    assert_eq!(
+        ::std::mem::size_of::<sfKeyEvent>(),
+        24usize,
+        concat!("Size of: ", stringify!(sfKeyEvent))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<sfKeyEvent>(),
+        4usize,
+        concat!("Alignment of ", stringify!(sfKeyEvent))
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfKeyEvent)).type_ as *const _ as usize },
+        0usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfKeyEvent),
+            "::",
+            stringify!(type_)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfKeyEvent)).code as *const _ as usize },
+        4usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfKeyEvent),
+            "::",
+            stringify!(code)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfKeyEvent)).alt as *const _ as usize },
+        8usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfKeyEvent),
+            "::",
+            stringify!(alt)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfKeyEvent)).control as *const _ as usize },
+        12usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfKeyEvent),
+            "::",
+            stringify!(control)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfKeyEvent)).shift as *const _ as usize },
+        16usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfKeyEvent),
+            "::",
+            stringify!(shift)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfKeyEvent)).system as *const _ as usize },
+        20usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfKeyEvent),
+            "::",
+            stringify!(system)
+        )
+    );
 }
 impl Clone for sfKeyEvent {
-    fn clone(&self) -> Self { *self }
+    fn clone(&self) -> Self {
+        *self
+    }
 }
 #[repr(C)]
 #[derive(Debug, Copy)]
@@ -343,23 +403,41 @@ pub struct sfTextEvent {
 }
 #[test]
 fn bindgen_test_layout_sfTextEvent() {
-    assert_eq!(::std::mem::size_of::<sfTextEvent>() , 8usize , concat ! (
-               "Size of: " , stringify ! ( sfTextEvent ) ));
-    assert_eq! (::std::mem::align_of::<sfTextEvent>() , 4usize , concat ! (
-                "Alignment of " , stringify ! ( sfTextEvent ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfTextEvent ) ) . type_ as * const _ as
-                usize } , 0usize , concat ! (
-                "Alignment of field: " , stringify ! ( sfTextEvent ) , "::" ,
-                stringify ! ( type_ ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfTextEvent ) ) . unicode as * const _ as
-                usize } , 4usize , concat ! (
-                "Alignment of field: " , stringify ! ( sfTextEvent ) , "::" ,
-                stringify ! ( unicode ) ));
+    assert_eq!(
+        ::std::mem::size_of::<sfTextEvent>(),
+        8usize,
+        concat!("Size of: ", stringify!(sfTextEvent))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<sfTextEvent>(),
+        4usize,
+        concat!("Alignment of ", stringify!(sfTextEvent))
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfTextEvent)).type_ as *const _ as usize },
+        0usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfTextEvent),
+            "::",
+            stringify!(type_)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfTextEvent)).unicode as *const _ as usize },
+        4usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfTextEvent),
+            "::",
+            stringify!(unicode)
+        )
+    );
 }
 impl Clone for sfTextEvent {
-    fn clone(&self) -> Self { *self }
+    fn clone(&self) -> Self {
+        *self
+    }
 }
 #[repr(C)]
 #[derive(Debug, Copy)]
@@ -370,28 +448,51 @@ pub struct sfMouseMoveEvent {
 }
 #[test]
 fn bindgen_test_layout_sfMouseMoveEvent() {
-    assert_eq!(::std::mem::size_of::<sfMouseMoveEvent>() , 12usize , concat !
-               ( "Size of: " , stringify ! ( sfMouseMoveEvent ) ));
-    assert_eq! (::std::mem::align_of::<sfMouseMoveEvent>() , 4usize , concat !
-                ( "Alignment of " , stringify ! ( sfMouseMoveEvent ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfMouseMoveEvent ) ) . type_ as * const _
-                as usize } , 0usize , concat ! (
-                "Alignment of field: " , stringify ! ( sfMouseMoveEvent ) ,
-                "::" , stringify ! ( type_ ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfMouseMoveEvent ) ) . x as * const _ as
-                usize } , 4usize , concat ! (
-                "Alignment of field: " , stringify ! ( sfMouseMoveEvent ) ,
-                "::" , stringify ! ( x ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfMouseMoveEvent ) ) . y as * const _ as
-                usize } , 8usize , concat ! (
-                "Alignment of field: " , stringify ! ( sfMouseMoveEvent ) ,
-                "::" , stringify ! ( y ) ));
+    assert_eq!(
+        ::std::mem::size_of::<sfMouseMoveEvent>(),
+        12usize,
+        concat!("Size of: ", stringify!(sfMouseMoveEvent))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<sfMouseMoveEvent>(),
+        4usize,
+        concat!("Alignment of ", stringify!(sfMouseMoveEvent))
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfMouseMoveEvent)).type_ as *const _ as usize },
+        0usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfMouseMoveEvent),
+            "::",
+            stringify!(type_)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfMouseMoveEvent)).x as *const _ as usize },
+        4usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfMouseMoveEvent),
+            "::",
+            stringify!(x)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfMouseMoveEvent)).y as *const _ as usize },
+        8usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfMouseMoveEvent),
+            "::",
+            stringify!(y)
+        )
+    );
 }
 impl Clone for sfMouseMoveEvent {
-    fn clone(&self) -> Self { *self }
+    fn clone(&self) -> Self {
+        *self
+    }
 }
 #[repr(C)]
 #[derive(Debug, Copy)]
@@ -403,33 +504,61 @@ pub struct sfMouseButtonEvent {
 }
 #[test]
 fn bindgen_test_layout_sfMouseButtonEvent() {
-    assert_eq!(::std::mem::size_of::<sfMouseButtonEvent>() , 16usize , concat
-               ! ( "Size of: " , stringify ! ( sfMouseButtonEvent ) ));
-    assert_eq! (::std::mem::align_of::<sfMouseButtonEvent>() , 4usize , concat
-                ! ( "Alignment of " , stringify ! ( sfMouseButtonEvent ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfMouseButtonEvent ) ) . type_ as * const
-                _ as usize } , 0usize , concat ! (
-                "Alignment of field: " , stringify ! ( sfMouseButtonEvent ) ,
-                "::" , stringify ! ( type_ ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfMouseButtonEvent ) ) . button as *
-                const _ as usize } , 4usize , concat ! (
-                "Alignment of field: " , stringify ! ( sfMouseButtonEvent ) ,
-                "::" , stringify ! ( button ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfMouseButtonEvent ) ) . x as * const _
-                as usize } , 8usize , concat ! (
-                "Alignment of field: " , stringify ! ( sfMouseButtonEvent ) ,
-                "::" , stringify ! ( x ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfMouseButtonEvent ) ) . y as * const _
-                as usize } , 12usize , concat ! (
-                "Alignment of field: " , stringify ! ( sfMouseButtonEvent ) ,
-                "::" , stringify ! ( y ) ));
+    assert_eq!(
+        ::std::mem::size_of::<sfMouseButtonEvent>(),
+        16usize,
+        concat!("Size of: ", stringify!(sfMouseButtonEvent))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<sfMouseButtonEvent>(),
+        4usize,
+        concat!("Alignment of ", stringify!(sfMouseButtonEvent))
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfMouseButtonEvent)).type_ as *const _ as usize },
+        0usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfMouseButtonEvent),
+            "::",
+            stringify!(type_)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfMouseButtonEvent)).button as *const _ as usize },
+        4usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfMouseButtonEvent),
+            "::",
+            stringify!(button)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfMouseButtonEvent)).x as *const _ as usize },
+        8usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfMouseButtonEvent),
+            "::",
+            stringify!(x)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfMouseButtonEvent)).y as *const _ as usize },
+        12usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfMouseButtonEvent),
+            "::",
+            stringify!(y)
+        )
+    );
 }
 impl Clone for sfMouseButtonEvent {
-    fn clone(&self) -> Self { *self }
+    fn clone(&self) -> Self {
+        *self
+    }
 }
 #[repr(C)]
 #[derive(Debug, Copy)]
@@ -441,33 +570,61 @@ pub struct sfMouseWheelEvent {
 }
 #[test]
 fn bindgen_test_layout_sfMouseWheelEvent() {
-    assert_eq!(::std::mem::size_of::<sfMouseWheelEvent>() , 16usize , concat !
-               ( "Size of: " , stringify ! ( sfMouseWheelEvent ) ));
-    assert_eq! (::std::mem::align_of::<sfMouseWheelEvent>() , 4usize , concat
-                ! ( "Alignment of " , stringify ! ( sfMouseWheelEvent ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfMouseWheelEvent ) ) . type_ as * const
-                _ as usize } , 0usize , concat ! (
-                "Alignment of field: " , stringify ! ( sfMouseWheelEvent ) ,
-                "::" , stringify ! ( type_ ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfMouseWheelEvent ) ) . delta as * const
-                _ as usize } , 4usize , concat ! (
-                "Alignment of field: " , stringify ! ( sfMouseWheelEvent ) ,
-                "::" , stringify ! ( delta ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfMouseWheelEvent ) ) . x as * const _ as
-                usize } , 8usize , concat ! (
-                "Alignment of field: " , stringify ! ( sfMouseWheelEvent ) ,
-                "::" , stringify ! ( x ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfMouseWheelEvent ) ) . y as * const _ as
-                usize } , 12usize , concat ! (
-                "Alignment of field: " , stringify ! ( sfMouseWheelEvent ) ,
-                "::" , stringify ! ( y ) ));
+    assert_eq!(
+        ::std::mem::size_of::<sfMouseWheelEvent>(),
+        16usize,
+        concat!("Size of: ", stringify!(sfMouseWheelEvent))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<sfMouseWheelEvent>(),
+        4usize,
+        concat!("Alignment of ", stringify!(sfMouseWheelEvent))
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfMouseWheelEvent)).type_ as *const _ as usize },
+        0usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfMouseWheelEvent),
+            "::",
+            stringify!(type_)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfMouseWheelEvent)).delta as *const _ as usize },
+        4usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfMouseWheelEvent),
+            "::",
+            stringify!(delta)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfMouseWheelEvent)).x as *const _ as usize },
+        8usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfMouseWheelEvent),
+            "::",
+            stringify!(x)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfMouseWheelEvent)).y as *const _ as usize },
+        12usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfMouseWheelEvent),
+            "::",
+            stringify!(y)
+        )
+    );
 }
 impl Clone for sfMouseWheelEvent {
-    fn clone(&self) -> Self { *self }
+    fn clone(&self) -> Self {
+        *self
+    }
 }
 #[repr(C)]
 #[derive(Debug, Copy)]
@@ -480,40 +637,71 @@ pub struct sfMouseWheelScrollEvent {
 }
 #[test]
 fn bindgen_test_layout_sfMouseWheelScrollEvent() {
-    assert_eq!(::std::mem::size_of::<sfMouseWheelScrollEvent>() , 20usize ,
-               concat ! (
-               "Size of: " , stringify ! ( sfMouseWheelScrollEvent ) ));
-    assert_eq! (::std::mem::align_of::<sfMouseWheelScrollEvent>() , 4usize ,
-                concat ! (
-                "Alignment of " , stringify ! ( sfMouseWheelScrollEvent ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfMouseWheelScrollEvent ) ) . type_ as *
-                const _ as usize } , 0usize , concat ! (
-                "Alignment of field: " , stringify ! ( sfMouseWheelScrollEvent
-                ) , "::" , stringify ! ( type_ ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfMouseWheelScrollEvent ) ) . wheel as *
-                const _ as usize } , 4usize , concat ! (
-                "Alignment of field: " , stringify ! ( sfMouseWheelScrollEvent
-                ) , "::" , stringify ! ( wheel ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfMouseWheelScrollEvent ) ) . delta as *
-                const _ as usize } , 8usize , concat ! (
-                "Alignment of field: " , stringify ! ( sfMouseWheelScrollEvent
-                ) , "::" , stringify ! ( delta ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfMouseWheelScrollEvent ) ) . x as *
-                const _ as usize } , 12usize , concat ! (
-                "Alignment of field: " , stringify ! ( sfMouseWheelScrollEvent
-                ) , "::" , stringify ! ( x ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfMouseWheelScrollEvent ) ) . y as *
-                const _ as usize } , 16usize , concat ! (
-                "Alignment of field: " , stringify ! ( sfMouseWheelScrollEvent
-                ) , "::" , stringify ! ( y ) ));
+    assert_eq!(
+        ::std::mem::size_of::<sfMouseWheelScrollEvent>(),
+        20usize,
+        concat!("Size of: ", stringify!(sfMouseWheelScrollEvent))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<sfMouseWheelScrollEvent>(),
+        4usize,
+        concat!("Alignment of ", stringify!(sfMouseWheelScrollEvent))
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfMouseWheelScrollEvent)).type_ as *const _ as usize },
+        0usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfMouseWheelScrollEvent),
+            "::",
+            stringify!(type_)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfMouseWheelScrollEvent)).wheel as *const _ as usize },
+        4usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfMouseWheelScrollEvent),
+            "::",
+            stringify!(wheel)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfMouseWheelScrollEvent)).delta as *const _ as usize },
+        8usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfMouseWheelScrollEvent),
+            "::",
+            stringify!(delta)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfMouseWheelScrollEvent)).x as *const _ as usize },
+        12usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfMouseWheelScrollEvent),
+            "::",
+            stringify!(x)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfMouseWheelScrollEvent)).y as *const _ as usize },
+        16usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfMouseWheelScrollEvent),
+            "::",
+            stringify!(y)
+        )
+    );
 }
 impl Clone for sfMouseWheelScrollEvent {
-    fn clone(&self) -> Self { *self }
+    fn clone(&self) -> Self {
+        *self
+    }
 }
 #[repr(C)]
 #[derive(Debug, Copy)]
@@ -525,34 +713,61 @@ pub struct sfJoystickMoveEvent {
 }
 #[test]
 fn bindgen_test_layout_sfJoystickMoveEvent() {
-    assert_eq!(::std::mem::size_of::<sfJoystickMoveEvent>() , 16usize , concat
-               ! ( "Size of: " , stringify ! ( sfJoystickMoveEvent ) ));
-    assert_eq! (::std::mem::align_of::<sfJoystickMoveEvent>() , 4usize ,
-                concat ! (
-                "Alignment of " , stringify ! ( sfJoystickMoveEvent ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfJoystickMoveEvent ) ) . type_ as *
-                const _ as usize } , 0usize , concat ! (
-                "Alignment of field: " , stringify ! ( sfJoystickMoveEvent ) ,
-                "::" , stringify ! ( type_ ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfJoystickMoveEvent ) ) . joystickId as *
-                const _ as usize } , 4usize , concat ! (
-                "Alignment of field: " , stringify ! ( sfJoystickMoveEvent ) ,
-                "::" , stringify ! ( joystickId ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfJoystickMoveEvent ) ) . axis as * const
-                _ as usize } , 8usize , concat ! (
-                "Alignment of field: " , stringify ! ( sfJoystickMoveEvent ) ,
-                "::" , stringify ! ( axis ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfJoystickMoveEvent ) ) . position as *
-                const _ as usize } , 12usize , concat ! (
-                "Alignment of field: " , stringify ! ( sfJoystickMoveEvent ) ,
-                "::" , stringify ! ( position ) ));
+    assert_eq!(
+        ::std::mem::size_of::<sfJoystickMoveEvent>(),
+        16usize,
+        concat!("Size of: ", stringify!(sfJoystickMoveEvent))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<sfJoystickMoveEvent>(),
+        4usize,
+        concat!("Alignment of ", stringify!(sfJoystickMoveEvent))
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfJoystickMoveEvent)).type_ as *const _ as usize },
+        0usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfJoystickMoveEvent),
+            "::",
+            stringify!(type_)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfJoystickMoveEvent)).joystickId as *const _ as usize },
+        4usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfJoystickMoveEvent),
+            "::",
+            stringify!(joystickId)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfJoystickMoveEvent)).axis as *const _ as usize },
+        8usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfJoystickMoveEvent),
+            "::",
+            stringify!(axis)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfJoystickMoveEvent)).position as *const _ as usize },
+        12usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfJoystickMoveEvent),
+            "::",
+            stringify!(position)
+        )
+    );
 }
 impl Clone for sfJoystickMoveEvent {
-    fn clone(&self) -> Self { *self }
+    fn clone(&self) -> Self {
+        *self
+    }
 }
 #[repr(C)]
 #[derive(Debug, Copy)]
@@ -563,30 +778,51 @@ pub struct sfJoystickButtonEvent {
 }
 #[test]
 fn bindgen_test_layout_sfJoystickButtonEvent() {
-    assert_eq!(::std::mem::size_of::<sfJoystickButtonEvent>() , 12usize ,
-               concat ! ( "Size of: " , stringify ! ( sfJoystickButtonEvent )
-               ));
-    assert_eq! (::std::mem::align_of::<sfJoystickButtonEvent>() , 4usize ,
-                concat ! (
-                "Alignment of " , stringify ! ( sfJoystickButtonEvent ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfJoystickButtonEvent ) ) . type_ as *
-                const _ as usize } , 0usize , concat ! (
-                "Alignment of field: " , stringify ! ( sfJoystickButtonEvent )
-                , "::" , stringify ! ( type_ ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfJoystickButtonEvent ) ) . joystickId as
-                * const _ as usize } , 4usize , concat ! (
-                "Alignment of field: " , stringify ! ( sfJoystickButtonEvent )
-                , "::" , stringify ! ( joystickId ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfJoystickButtonEvent ) ) . button as *
-                const _ as usize } , 8usize , concat ! (
-                "Alignment of field: " , stringify ! ( sfJoystickButtonEvent )
-                , "::" , stringify ! ( button ) ));
+    assert_eq!(
+        ::std::mem::size_of::<sfJoystickButtonEvent>(),
+        12usize,
+        concat!("Size of: ", stringify!(sfJoystickButtonEvent))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<sfJoystickButtonEvent>(),
+        4usize,
+        concat!("Alignment of ", stringify!(sfJoystickButtonEvent))
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfJoystickButtonEvent)).type_ as *const _ as usize },
+        0usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfJoystickButtonEvent),
+            "::",
+            stringify!(type_)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfJoystickButtonEvent)).joystickId as *const _ as usize },
+        4usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfJoystickButtonEvent),
+            "::",
+            stringify!(joystickId)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfJoystickButtonEvent)).button as *const _ as usize },
+        8usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfJoystickButtonEvent),
+            "::",
+            stringify!(button)
+        )
+    );
 }
 impl Clone for sfJoystickButtonEvent {
-    fn clone(&self) -> Self { *self }
+    fn clone(&self) -> Self {
+        *self
+    }
 }
 #[repr(C)]
 #[derive(Debug, Copy)]
@@ -596,25 +832,41 @@ pub struct sfJoystickConnectEvent {
 }
 #[test]
 fn bindgen_test_layout_sfJoystickConnectEvent() {
-    assert_eq!(::std::mem::size_of::<sfJoystickConnectEvent>() , 8usize ,
-               concat ! ( "Size of: " , stringify ! ( sfJoystickConnectEvent )
-               ));
-    assert_eq! (::std::mem::align_of::<sfJoystickConnectEvent>() , 4usize ,
-                concat ! (
-                "Alignment of " , stringify ! ( sfJoystickConnectEvent ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfJoystickConnectEvent ) ) . type_ as *
-                const _ as usize } , 0usize , concat ! (
-                "Alignment of field: " , stringify ! ( sfJoystickConnectEvent
-                ) , "::" , stringify ! ( type_ ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfJoystickConnectEvent ) ) . joystickId
-                as * const _ as usize } , 4usize , concat ! (
-                "Alignment of field: " , stringify ! ( sfJoystickConnectEvent
-                ) , "::" , stringify ! ( joystickId ) ));
+    assert_eq!(
+        ::std::mem::size_of::<sfJoystickConnectEvent>(),
+        8usize,
+        concat!("Size of: ", stringify!(sfJoystickConnectEvent))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<sfJoystickConnectEvent>(),
+        4usize,
+        concat!("Alignment of ", stringify!(sfJoystickConnectEvent))
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfJoystickConnectEvent)).type_ as *const _ as usize },
+        0usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfJoystickConnectEvent),
+            "::",
+            stringify!(type_)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfJoystickConnectEvent)).joystickId as *const _ as usize },
+        4usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfJoystickConnectEvent),
+            "::",
+            stringify!(joystickId)
+        )
+    );
 }
 impl Clone for sfJoystickConnectEvent {
-    fn clone(&self) -> Self { *self }
+    fn clone(&self) -> Self {
+        *self
+    }
 }
 #[repr(C)]
 #[derive(Debug, Copy)]
@@ -625,28 +877,51 @@ pub struct sfSizeEvent {
 }
 #[test]
 fn bindgen_test_layout_sfSizeEvent() {
-    assert_eq!(::std::mem::size_of::<sfSizeEvent>() , 12usize , concat ! (
-               "Size of: " , stringify ! ( sfSizeEvent ) ));
-    assert_eq! (::std::mem::align_of::<sfSizeEvent>() , 4usize , concat ! (
-                "Alignment of " , stringify ! ( sfSizeEvent ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfSizeEvent ) ) . type_ as * const _ as
-                usize } , 0usize , concat ! (
-                "Alignment of field: " , stringify ! ( sfSizeEvent ) , "::" ,
-                stringify ! ( type_ ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfSizeEvent ) ) . width as * const _ as
-                usize } , 4usize , concat ! (
-                "Alignment of field: " , stringify ! ( sfSizeEvent ) , "::" ,
-                stringify ! ( width ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfSizeEvent ) ) . height as * const _ as
-                usize } , 8usize , concat ! (
-                "Alignment of field: " , stringify ! ( sfSizeEvent ) , "::" ,
-                stringify ! ( height ) ));
+    assert_eq!(
+        ::std::mem::size_of::<sfSizeEvent>(),
+        12usize,
+        concat!("Size of: ", stringify!(sfSizeEvent))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<sfSizeEvent>(),
+        4usize,
+        concat!("Alignment of ", stringify!(sfSizeEvent))
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfSizeEvent)).type_ as *const _ as usize },
+        0usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfSizeEvent),
+            "::",
+            stringify!(type_)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfSizeEvent)).width as *const _ as usize },
+        4usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfSizeEvent),
+            "::",
+            stringify!(width)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfSizeEvent)).height as *const _ as usize },
+        8usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfSizeEvent),
+            "::",
+            stringify!(height)
+        )
+    );
 }
 impl Clone for sfSizeEvent {
-    fn clone(&self) -> Self { *self }
+    fn clone(&self) -> Self {
+        *self
+    }
 }
 #[repr(C)]
 #[derive(Debug, Copy)]
@@ -658,33 +933,61 @@ pub struct sfTouchEvent {
 }
 #[test]
 fn bindgen_test_layout_sfTouchEvent() {
-    assert_eq!(::std::mem::size_of::<sfTouchEvent>() , 16usize , concat ! (
-               "Size of: " , stringify ! ( sfTouchEvent ) ));
-    assert_eq! (::std::mem::align_of::<sfTouchEvent>() , 4usize , concat ! (
-                "Alignment of " , stringify ! ( sfTouchEvent ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfTouchEvent ) ) . type_ as * const _ as
-                usize } , 0usize , concat ! (
-                "Alignment of field: " , stringify ! ( sfTouchEvent ) , "::" ,
-                stringify ! ( type_ ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfTouchEvent ) ) . finger as * const _ as
-                usize } , 4usize , concat ! (
-                "Alignment of field: " , stringify ! ( sfTouchEvent ) , "::" ,
-                stringify ! ( finger ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfTouchEvent ) ) . x as * const _ as
-                usize } , 8usize , concat ! (
-                "Alignment of field: " , stringify ! ( sfTouchEvent ) , "::" ,
-                stringify ! ( x ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfTouchEvent ) ) . y as * const _ as
-                usize } , 12usize , concat ! (
-                "Alignment of field: " , stringify ! ( sfTouchEvent ) , "::" ,
-                stringify ! ( y ) ));
+    assert_eq!(
+        ::std::mem::size_of::<sfTouchEvent>(),
+        16usize,
+        concat!("Size of: ", stringify!(sfTouchEvent))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<sfTouchEvent>(),
+        4usize,
+        concat!("Alignment of ", stringify!(sfTouchEvent))
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfTouchEvent)).type_ as *const _ as usize },
+        0usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfTouchEvent),
+            "::",
+            stringify!(type_)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfTouchEvent)).finger as *const _ as usize },
+        4usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfTouchEvent),
+            "::",
+            stringify!(finger)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfTouchEvent)).x as *const _ as usize },
+        8usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfTouchEvent),
+            "::",
+            stringify!(x)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfTouchEvent)).y as *const _ as usize },
+        12usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfTouchEvent),
+            "::",
+            stringify!(y)
+        )
+    );
 }
 impl Clone for sfTouchEvent {
-    fn clone(&self) -> Self { *self }
+    fn clone(&self) -> Self {
+        *self
+    }
 }
 #[repr(C)]
 #[derive(Debug, Copy)]
@@ -697,38 +1000,71 @@ pub struct sfSensorEvent {
 }
 #[test]
 fn bindgen_test_layout_sfSensorEvent() {
-    assert_eq!(::std::mem::size_of::<sfSensorEvent>() , 20usize , concat ! (
-               "Size of: " , stringify ! ( sfSensorEvent ) ));
-    assert_eq! (::std::mem::align_of::<sfSensorEvent>() , 4usize , concat ! (
-                "Alignment of " , stringify ! ( sfSensorEvent ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfSensorEvent ) ) . type_ as * const _ as
-                usize } , 0usize , concat ! (
-                "Alignment of field: " , stringify ! ( sfSensorEvent ) , "::"
-                , stringify ! ( type_ ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfSensorEvent ) ) . sensorType as * const
-                _ as usize } , 4usize , concat ! (
-                "Alignment of field: " , stringify ! ( sfSensorEvent ) , "::"
-                , stringify ! ( sensorType ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfSensorEvent ) ) . x as * const _ as
-                usize } , 8usize , concat ! (
-                "Alignment of field: " , stringify ! ( sfSensorEvent ) , "::"
-                , stringify ! ( x ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfSensorEvent ) ) . y as * const _ as
-                usize } , 12usize , concat ! (
-                "Alignment of field: " , stringify ! ( sfSensorEvent ) , "::"
-                , stringify ! ( y ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfSensorEvent ) ) . z as * const _ as
-                usize } , 16usize , concat ! (
-                "Alignment of field: " , stringify ! ( sfSensorEvent ) , "::"
-                , stringify ! ( z ) ));
+    assert_eq!(
+        ::std::mem::size_of::<sfSensorEvent>(),
+        20usize,
+        concat!("Size of: ", stringify!(sfSensorEvent))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<sfSensorEvent>(),
+        4usize,
+        concat!("Alignment of ", stringify!(sfSensorEvent))
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfSensorEvent)).type_ as *const _ as usize },
+        0usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfSensorEvent),
+            "::",
+            stringify!(type_)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfSensorEvent)).sensorType as *const _ as usize },
+        4usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfSensorEvent),
+            "::",
+            stringify!(sensorType)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfSensorEvent)).x as *const _ as usize },
+        8usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfSensorEvent),
+            "::",
+            stringify!(x)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfSensorEvent)).y as *const _ as usize },
+        12usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfSensorEvent),
+            "::",
+            stringify!(y)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfSensorEvent)).z as *const _ as usize },
+        16usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfSensorEvent),
+            "::",
+            stringify!(z)
+        )
+    );
 }
 impl Clone for sfSensorEvent {
-    fn clone(&self) -> Self { *self }
+    fn clone(&self) -> Self {
+        *self
+    }
 }
 #[repr(C)]
 #[derive(Copy)]
@@ -750,78 +1086,151 @@ pub union sfEvent {
 }
 #[test]
 fn bindgen_test_layout_sfEvent() {
-    assert_eq!(::std::mem::size_of::<sfEvent>() , 24usize , concat ! (
-               "Size of: " , stringify ! ( sfEvent ) ));
-    assert_eq! (::std::mem::align_of::<sfEvent>() , 4usize , concat ! (
-                "Alignment of " , stringify ! ( sfEvent ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfEvent ) ) . type_ as * const _ as usize
-                } , 0usize , concat ! (
-                "Alignment of field: " , stringify ! ( sfEvent ) , "::" ,
-                stringify ! ( type_ ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfEvent ) ) . size as * const _ as usize
-                } , 0usize , concat ! (
-                "Alignment of field: " , stringify ! ( sfEvent ) , "::" ,
-                stringify ! ( size ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfEvent ) ) . key as * const _ as usize }
-                , 0usize , concat ! (
-                "Alignment of field: " , stringify ! ( sfEvent ) , "::" ,
-                stringify ! ( key ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfEvent ) ) . text as * const _ as usize
-                } , 0usize , concat ! (
-                "Alignment of field: " , stringify ! ( sfEvent ) , "::" ,
-                stringify ! ( text ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfEvent ) ) . mouseMove as * const _ as
-                usize } , 0usize , concat ! (
-                "Alignment of field: " , stringify ! ( sfEvent ) , "::" ,
-                stringify ! ( mouseMove ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfEvent ) ) . mouseButton as * const _ as
-                usize } , 0usize , concat ! (
-                "Alignment of field: " , stringify ! ( sfEvent ) , "::" ,
-                stringify ! ( mouseButton ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfEvent ) ) . mouseWheel as * const _ as
-                usize } , 0usize , concat ! (
-                "Alignment of field: " , stringify ! ( sfEvent ) , "::" ,
-                stringify ! ( mouseWheel ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfEvent ) ) . mouseWheelScroll as * const
-                _ as usize } , 0usize , concat ! (
-                "Alignment of field: " , stringify ! ( sfEvent ) , "::" ,
-                stringify ! ( mouseWheelScroll ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfEvent ) ) . joystickMove as * const _
-                as usize } , 0usize , concat ! (
-                "Alignment of field: " , stringify ! ( sfEvent ) , "::" ,
-                stringify ! ( joystickMove ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfEvent ) ) . joystickButton as * const _
-                as usize } , 0usize , concat ! (
-                "Alignment of field: " , stringify ! ( sfEvent ) , "::" ,
-                stringify ! ( joystickButton ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfEvent ) ) . joystickConnect as * const
-                _ as usize } , 0usize , concat ! (
-                "Alignment of field: " , stringify ! ( sfEvent ) , "::" ,
-                stringify ! ( joystickConnect ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfEvent ) ) . touch as * const _ as usize
-                } , 0usize , concat ! (
-                "Alignment of field: " , stringify ! ( sfEvent ) , "::" ,
-                stringify ! ( touch ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfEvent ) ) . sensor as * const _ as
-                usize } , 0usize , concat ! (
-                "Alignment of field: " , stringify ! ( sfEvent ) , "::" ,
-                stringify ! ( sensor ) ));
+    assert_eq!(
+        ::std::mem::size_of::<sfEvent>(),
+        24usize,
+        concat!("Size of: ", stringify!(sfEvent))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<sfEvent>(),
+        4usize,
+        concat!("Alignment of ", stringify!(sfEvent))
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfEvent)).type_ as *const _ as usize },
+        0usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfEvent),
+            "::",
+            stringify!(type_)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfEvent)).size as *const _ as usize },
+        0usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfEvent),
+            "::",
+            stringify!(size)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfEvent)).key as *const _ as usize },
+        0usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfEvent),
+            "::",
+            stringify!(key)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfEvent)).text as *const _ as usize },
+        0usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfEvent),
+            "::",
+            stringify!(text)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfEvent)).mouseMove as *const _ as usize },
+        0usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfEvent),
+            "::",
+            stringify!(mouseMove)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfEvent)).mouseButton as *const _ as usize },
+        0usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfEvent),
+            "::",
+            stringify!(mouseButton)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfEvent)).mouseWheel as *const _ as usize },
+        0usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfEvent),
+            "::",
+            stringify!(mouseWheel)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfEvent)).mouseWheelScroll as *const _ as usize },
+        0usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfEvent),
+            "::",
+            stringify!(mouseWheelScroll)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfEvent)).joystickMove as *const _ as usize },
+        0usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfEvent),
+            "::",
+            stringify!(joystickMove)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfEvent)).joystickButton as *const _ as usize },
+        0usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfEvent),
+            "::",
+            stringify!(joystickButton)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfEvent)).joystickConnect as *const _ as usize },
+        0usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfEvent),
+            "::",
+            stringify!(joystickConnect)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfEvent)).touch as *const _ as usize },
+        0usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfEvent),
+            "::",
+            stringify!(touch)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfEvent)).sensor as *const _ as usize },
+        0usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfEvent),
+            "::",
+            stringify!(sensor)
+        )
+    );
 }
 impl Clone for sfEvent {
-    fn clone(&self) -> Self { *self }
+    fn clone(&self) -> Self {
+        *self
+    }
 }
 #[repr(C)]
 #[derive(Debug, Copy)]
@@ -832,35 +1241,57 @@ pub struct sfVideoMode {
 }
 #[test]
 fn bindgen_test_layout_sfVideoMode() {
-    assert_eq!(::std::mem::size_of::<sfVideoMode>() , 12usize , concat ! (
-               "Size of: " , stringify ! ( sfVideoMode ) ));
-    assert_eq! (::std::mem::align_of::<sfVideoMode>() , 4usize , concat ! (
-                "Alignment of " , stringify ! ( sfVideoMode ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfVideoMode ) ) . width as * const _ as
-                usize } , 0usize , concat ! (
-                "Alignment of field: " , stringify ! ( sfVideoMode ) , "::" ,
-                stringify ! ( width ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfVideoMode ) ) . height as * const _ as
-                usize } , 4usize , concat ! (
-                "Alignment of field: " , stringify ! ( sfVideoMode ) , "::" ,
-                stringify ! ( height ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfVideoMode ) ) . bitsPerPixel as * const
-                _ as usize } , 8usize , concat ! (
-                "Alignment of field: " , stringify ! ( sfVideoMode ) , "::" ,
-                stringify ! ( bitsPerPixel ) ));
+    assert_eq!(
+        ::std::mem::size_of::<sfVideoMode>(),
+        12usize,
+        concat!("Size of: ", stringify!(sfVideoMode))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<sfVideoMode>(),
+        4usize,
+        concat!("Alignment of ", stringify!(sfVideoMode))
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfVideoMode)).width as *const _ as usize },
+        0usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfVideoMode),
+            "::",
+            stringify!(width)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfVideoMode)).height as *const _ as usize },
+        4usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfVideoMode),
+            "::",
+            stringify!(height)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfVideoMode)).bitsPerPixel as *const _ as usize },
+        8usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfVideoMode),
+            "::",
+            stringify!(bitsPerPixel)
+        )
+    );
 }
 impl Clone for sfVideoMode {
-    fn clone(&self) -> Self { *self }
+    fn clone(&self) -> Self {
+        *self
+    }
 }
 extern "C" {
     pub fn sfVideoMode_getDesktopMode() -> sfVideoMode;
 }
 extern "C" {
-    pub fn sfVideoMode_getFullscreenModes(count: *mut usize)
-     -> *const sfVideoMode;
+    pub fn sfVideoMode_getFullscreenModes(count: *mut usize) -> *const sfVideoMode;
 }
 extern "C" {
     pub fn sfVideoMode_isValid(mode: sfVideoMode) -> sfBool;
@@ -896,66 +1327,113 @@ pub struct sfContextSettings {
 }
 #[test]
 fn bindgen_test_layout_sfContextSettings() {
-    assert_eq!(::std::mem::size_of::<sfContextSettings>() , 28usize , concat !
-               ( "Size of: " , stringify ! ( sfContextSettings ) ));
-    assert_eq! (::std::mem::align_of::<sfContextSettings>() , 4usize , concat
-                ! ( "Alignment of " , stringify ! ( sfContextSettings ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfContextSettings ) ) . depthBits as *
-                const _ as usize } , 0usize , concat ! (
-                "Alignment of field: " , stringify ! ( sfContextSettings ) ,
-                "::" , stringify ! ( depthBits ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfContextSettings ) ) . stencilBits as *
-                const _ as usize } , 4usize , concat ! (
-                "Alignment of field: " , stringify ! ( sfContextSettings ) ,
-                "::" , stringify ! ( stencilBits ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfContextSettings ) ) . antialiasingLevel
-                as * const _ as usize } , 8usize , concat ! (
-                "Alignment of field: " , stringify ! ( sfContextSettings ) ,
-                "::" , stringify ! ( antialiasingLevel ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfContextSettings ) ) . majorVersion as *
-                const _ as usize } , 12usize , concat ! (
-                "Alignment of field: " , stringify ! ( sfContextSettings ) ,
-                "::" , stringify ! ( majorVersion ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfContextSettings ) ) . minorVersion as *
-                const _ as usize } , 16usize , concat ! (
-                "Alignment of field: " , stringify ! ( sfContextSettings ) ,
-                "::" , stringify ! ( minorVersion ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfContextSettings ) ) . attributeFlags as
-                * const _ as usize } , 20usize , concat ! (
-                "Alignment of field: " , stringify ! ( sfContextSettings ) ,
-                "::" , stringify ! ( attributeFlags ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const sfContextSettings ) ) . sRgbCapable as *
-                const _ as usize } , 24usize , concat ! (
-                "Alignment of field: " , stringify ! ( sfContextSettings ) ,
-                "::" , stringify ! ( sRgbCapable ) ));
+    assert_eq!(
+        ::std::mem::size_of::<sfContextSettings>(),
+        28usize,
+        concat!("Size of: ", stringify!(sfContextSettings))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<sfContextSettings>(),
+        4usize,
+        concat!("Alignment of ", stringify!(sfContextSettings))
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfContextSettings)).depthBits as *const _ as usize },
+        0usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfContextSettings),
+            "::",
+            stringify!(depthBits)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfContextSettings)).stencilBits as *const _ as usize },
+        4usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfContextSettings),
+            "::",
+            stringify!(stencilBits)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfContextSettings)).antialiasingLevel as *const _ as usize },
+        8usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfContextSettings),
+            "::",
+            stringify!(antialiasingLevel)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfContextSettings)).majorVersion as *const _ as usize },
+        12usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfContextSettings),
+            "::",
+            stringify!(majorVersion)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfContextSettings)).minorVersion as *const _ as usize },
+        16usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfContextSettings),
+            "::",
+            stringify!(minorVersion)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfContextSettings)).attributeFlags as *const _ as usize },
+        20usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfContextSettings),
+            "::",
+            stringify!(attributeFlags)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(0 as *const sfContextSettings)).sRgbCapable as *const _ as usize },
+        24usize,
+        concat!(
+            "Alignment of field: ",
+            stringify!(sfContextSettings),
+            "::",
+            stringify!(sRgbCapable)
+        )
+    );
 }
 impl Clone for sfContextSettings {
-    fn clone(&self) -> Self { *self }
+    fn clone(&self) -> Self {
+        *self
+    }
 }
 extern "C" {
-    pub fn sfWindow_create(mode: sfVideoMode,
-                           title: *const ::std::os::raw::c_char,
-                           style: sfUint32,
-                           settings: *const sfContextSettings)
-     -> *mut sfWindow;
+    pub fn sfWindow_create(
+        mode: sfVideoMode,
+        title: *const ::std::os::raw::c_char,
+        style: sfUint32,
+        settings: *const sfContextSettings,
+    ) -> *mut sfWindow;
 }
 extern "C" {
-    pub fn sfWindow_createUnicode(mode: sfVideoMode, title: *const sfUint32,
-                                  style: sfUint32,
-                                  settings: *const sfContextSettings)
-     -> *mut sfWindow;
+    pub fn sfWindow_createUnicode(
+        mode: sfVideoMode,
+        title: *const sfUint32,
+        style: sfUint32,
+        settings: *const sfContextSettings,
+    ) -> *mut sfWindow;
 }
 extern "C" {
-    pub fn sfWindow_createFromHandle(handle: sfWindowHandle,
-                                     settings: *const sfContextSettings)
-     -> *mut sfWindow;
+    pub fn sfWindow_createFromHandle(
+        handle: sfWindowHandle,
+        settings: *const sfContextSettings,
+    ) -> *mut sfWindow;
 }
 extern "C" {
     pub fn sfWindow_destroy(window: *mut sfWindow);
@@ -970,12 +1448,10 @@ extern "C" {
     pub fn sfWindow_getSettings(window: *const sfWindow) -> sfContextSettings;
 }
 extern "C" {
-    pub fn sfWindow_pollEvent(window: *mut sfWindow, event: *mut sfEvent)
-     -> sfBool;
+    pub fn sfWindow_pollEvent(window: *mut sfWindow, event: *mut sfEvent) -> sfBool;
 }
 extern "C" {
-    pub fn sfWindow_waitEvent(window: *mut sfWindow, event: *mut sfEvent)
-     -> sfBool;
+    pub fn sfWindow_waitEvent(window: *mut sfWindow, event: *mut sfEvent) -> sfBool;
 }
 extern "C" {
     pub fn sfWindow_getPosition(window: *const sfWindow) -> sfVector2i;
@@ -990,49 +1466,42 @@ extern "C" {
     pub fn sfWindow_setSize(window: *mut sfWindow, size: sfVector2u);
 }
 extern "C" {
-    pub fn sfWindow_setTitle(window: *mut sfWindow,
-                             title: *const ::std::os::raw::c_char);
+    pub fn sfWindow_setTitle(window: *mut sfWindow, title: *const ::std::os::raw::c_char);
 }
 extern "C" {
-    pub fn sfWindow_setUnicodeTitle(window: *mut sfWindow,
-                                    title: *const sfUint32);
+    pub fn sfWindow_setUnicodeTitle(window: *mut sfWindow, title: *const sfUint32);
 }
 extern "C" {
-    pub fn sfWindow_setIcon(window: *mut sfWindow,
-                            width: ::std::os::raw::c_uint,
-                            height: ::std::os::raw::c_uint,
-                            pixels: *const sfUint8);
+    pub fn sfWindow_setIcon(
+        window: *mut sfWindow,
+        width: ::std::os::raw::c_uint,
+        height: ::std::os::raw::c_uint,
+        pixels: *const sfUint8,
+    );
 }
 extern "C" {
     pub fn sfWindow_setVisible(window: *mut sfWindow, visible: sfBool);
 }
 extern "C" {
-    pub fn sfWindow_setVerticalSyncEnabled(window: *mut sfWindow,
-                                           enabled: sfBool);
+    pub fn sfWindow_setVerticalSyncEnabled(window: *mut sfWindow, enabled: sfBool);
 }
 extern "C" {
-    pub fn sfWindow_setMouseCursorVisible(window: *mut sfWindow,
-                                          visible: sfBool);
+    pub fn sfWindow_setMouseCursorVisible(window: *mut sfWindow, visible: sfBool);
 }
 extern "C" {
-    pub fn sfWindow_setMouseCursorGrabbed(window: *mut sfWindow,
-                                          grabbed: sfBool);
+    pub fn sfWindow_setMouseCursorGrabbed(window: *mut sfWindow, grabbed: sfBool);
 }
 extern "C" {
-    pub fn sfWindow_setKeyRepeatEnabled(window: *mut sfWindow,
-                                        enabled: sfBool);
+    pub fn sfWindow_setKeyRepeatEnabled(window: *mut sfWindow, enabled: sfBool);
 }
 extern "C" {
-    pub fn sfWindow_setFramerateLimit(window: *mut sfWindow,
-                                      limit: ::std::os::raw::c_uint);
+    pub fn sfWindow_setFramerateLimit(window: *mut sfWindow, limit: ::std::os::raw::c_uint);
 }
 extern "C" {
-    pub fn sfWindow_setJoystickThreshold(window: *mut sfWindow,
-                                         threshold: f32);
+    pub fn sfWindow_setJoystickThreshold(window: *mut sfWindow, threshold: f32);
 }
 extern "C" {
-    pub fn sfWindow_setActive(window: *mut sfWindow, active: sfBool)
-     -> sfBool;
+    pub fn sfWindow_setActive(window: *mut sfWindow, active: sfBool) -> sfBool;
 }
 extern "C" {
     pub fn sfWindow_requestFocus(window: *mut sfWindow);
@@ -1044,8 +1513,7 @@ extern "C" {
     pub fn sfWindow_display(window: *mut sfWindow);
 }
 extern "C" {
-    pub fn sfWindow_getSystemHandle(window: *const sfWindow)
-     -> sfWindowHandle;
+    pub fn sfWindow_getSystemHandle(window: *const sfWindow) -> sfWindowHandle;
 }
 extern "C" {
     pub fn sfContext_create() -> *mut sfContext;
@@ -1054,17 +1522,17 @@ extern "C" {
     pub fn sfContext_destroy(context: *mut sfContext);
 }
 extern "C" {
-    pub fn sfContext_setActive(context: *mut sfContext, active: sfBool)
-     -> sfBool;
+    pub fn sfContext_setActive(context: *mut sfContext, active: sfBool) -> sfBool;
 }
 extern "C" {
-    pub fn sfContext_getSettings(context: *const sfContext)
-     -> sfContextSettings;
+    pub fn sfContext_getSettings(context: *const sfContext) -> sfContextSettings;
 }
 extern "C" {
     pub fn sfTouch_isDown(finger: ::std::os::raw::c_uint) -> sfBool;
 }
 extern "C" {
-    pub fn sfTouch_getPosition(finger: ::std::os::raw::c_uint,
-                               relativeTo: *const sfWindow) -> sfVector2i;
+    pub fn sfTouch_getPosition(
+        finger: ::std::os::raw::c_uint,
+        relativeTo: *const sfWindow,
+    ) -> sfVector2i;
 }
