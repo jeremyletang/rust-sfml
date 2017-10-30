@@ -51,7 +51,8 @@ pub fn global_volume() -> f32 {
 /// The default listener's position is (0, 0, 0).
 ///
 /// # Arguments
-/// * * position - the New position of the listener
+///
+/// * position - the New position of the listener
 pub fn set_position<P: Into<Vector3f>>(position: P) {
     unsafe { ffi::sfListener_setPosition(position.into().raw()) }
 }

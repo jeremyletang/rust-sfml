@@ -62,16 +62,16 @@ pub fn set_enabled(sensor: Type, enabled: bool) {
 #[derive(Copy, Clone, Debug, Eq, PartialEq, Ord, PartialOrd)]
 #[repr(u32)]
 pub enum Type {
-    /// Measures the raw acceleration (m/s^2)
+    /// Measures the raw acceleration (`m/s^2`)
     Accelerometer = 0,
     /// Measures the raw rotation rates (degrees/s)
     Gyroscope = 1,
     /// Measures the ambient magnetic field (micro-teslas)
     Magnetometer = 2,
-    /// Measures the direction and intensity of gravity, independent of device acceleration (m/s^2)
+    /// Measures the direction and intensity of gravity, independent of device acceleration (`m/s^2`)
     Gravity = 3,
     /// Measures the direction and intensity of device acceleration,
-    /// independent of the gravity (m/s^2)
+    /// independent of the gravity (`m/s^2`)
     UserAcceleration = 4,
     /// Measures the absolute 3D orientation (degrees)
     Orientation = 5,
