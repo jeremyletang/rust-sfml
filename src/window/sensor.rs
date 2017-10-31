@@ -68,7 +68,8 @@ pub enum Type {
     Gyroscope = 1,
     /// Measures the ambient magnetic field (micro-teslas)
     Magnetometer = 2,
-    /// Measures the direction and intensity of gravity, independent of device acceleration (`m/s^2`)
+    /// Measures the direction and intensity of gravity,
+    /// independent of device acceleration (`m/s^2`)
     Gravity = 3,
     /// Measures the direction and intensity of device acceleration,
     /// independent of the gravity (`m/s^2`)
