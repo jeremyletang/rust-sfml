@@ -154,6 +154,14 @@ impl<T: MulAssign + Copy> MulAssign<T> for Vector3<T> {
     }
 }
 
+impl<T: MulAssign + Copy> MulAssign<Vector3<T>> for Vector3<T> {
+    fn mul_assign(&mut self, rhs: Vector3<T>) {
+        self.x *= rhs.x;
+        self.y *= rhs.y;
+        self.z *= rhs.z;
+    }
+}
+
 impl<T: Div> Div for Vector3<T> {
     type Output = Vector3<T::Output>;
 
@@ -171,6 +179,14 @@ impl<T: DivAssign + Copy> DivAssign<T> for Vector3<T> {
         self.x /= rhs;
         self.y /= rhs;
         self.z /= rhs;
+    }
+}
+
+impl<T: DivAssign + Copy> DivAssign<Vector3<T>> for Vector3<T> {
+    fn div_assign(&mut self, rhs: Vector3<T>) {
+        self.x /= rhs.x;
+        self.y /= rhs.y;
+        self.z /= rhs.z;
     }
 }
 
