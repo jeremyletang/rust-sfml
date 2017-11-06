@@ -151,6 +151,13 @@ impl<T: MulAssign + Copy> MulAssign<T> for Vector2<T> {
     }
 }
 
+impl<T: MulAssign + Copy> MulAssign<Vector2<T>> for Vector2<T> {
+    fn mul_assign(&mut self, rhs: Vector2<T>) {
+        self.x *= rhs.x;
+        self.y *= rhs.y;
+    }
+}
+
 impl<T: Div> Div for Vector2<T> {
     type Output = Vector2<T::Output>;
 
@@ -166,6 +173,13 @@ impl<T: DivAssign + Copy> DivAssign<T> for Vector2<T> {
     fn div_assign(&mut self, rhs: T) {
         self.x /= rhs;
         self.y /= rhs;
+    }
+}
+
+impl<T: DivAssign + Copy> DivAssign<Vector2<T>> for Vector2<T> {
+    fn div_assign(&mut self, rhs: Vector2<T>) {
+        self.x /= rhs.x;
+        self.y /= rhs.y;
     }
 }
 
