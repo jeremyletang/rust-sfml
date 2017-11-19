@@ -233,16 +233,24 @@ impl Texture {
         unsafe { ffi::sfTexture_updateFromImage(self.texture, image.raw(), x, y) }
     }
 
-    /// Update a texture from the contents of a Vector of pixels
+    /// Update a part of the texture from an array of pixels.
     ///
-    /// # Arguments
-    /// * pixels - Pixels to copy to the texture
-    /// * x - X offset in the texture where to copy the source pixels
-    /// * y - Y offset in the texture where to copy the source pixels
-    pub fn update_from_pixels(&mut self, pixels: &[u8], width: u32, height: u32, x: u32, y: u32) {
-        unsafe {
-            ffi::sfTexture_updateFromPixels(self.texture, pixels.as_ptr(), width, height, x, y)
-        }
+    /// The size of the pixel array must match the width and height arguments,
+    /// and it must contain 32-bits RGBA pixels.
+
+    /// No additional check is performed on the size of the pixel array or the bounds of the
+    /// area to update, passing invalid arguments will lead to an _undefined behavior_.
+    ///
+    /// This function does nothing if pixels is null or if the texture was not previously created.
+    pub unsafe fn update_from_pixels(
+        &mut self,
+        pixels: &[u8],
+        width: u32,
+        height: u32,
+        x: u32,
+        y: u32,
+    ) {
+        ffi::sfTexture_updateFromPixels(self.texture, pixels.as_ptr(), width, height, x, y)
     }
 
     /// Enable or disable the smooth filter on a texture
