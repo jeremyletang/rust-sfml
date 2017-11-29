@@ -2336,8 +2336,7 @@ pub type sfShapeGetPointCountCallback = ::std::option::Option<
     unsafe extern "C" fn(arg1: *mut ::std::os::raw::c_void) -> usize,
 >;
 pub type sfShapeGetPointCallback = ::std::option::Option<
-    unsafe extern "C" fn(arg1: usize, arg2: *mut ::std::os::raw::c_void)
-        -> sfVector2f,
+    unsafe extern "C" fn(arg1: usize, arg2: *mut ::std::os::raw::c_void) -> sfVector2f,
 >;
 extern "C" {
     pub fn sfShape_create(

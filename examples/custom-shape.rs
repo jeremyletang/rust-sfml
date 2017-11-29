@@ -39,8 +39,8 @@ fn main() {
     loop {
         while let Some(event) = window.poll_event() {
             match event {
-                Event::Closed |
-                Event::KeyPressed {
+                Event::Closed
+                | Event::KeyPressed {
                     code: Key::Escape, ..
                 } => return,
                 _ => {}

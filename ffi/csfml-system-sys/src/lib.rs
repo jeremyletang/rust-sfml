@@ -109,8 +109,7 @@ pub type sfInputStreamReadFunc = ::std::option::Option<
     ) -> sfInt64,
 >;
 pub type sfInputStreamSeekFunc = ::std::option::Option<
-    unsafe extern "C" fn(position: sfInt64, userData: *mut ::std::os::raw::c_void)
-        -> sfInt64,
+    unsafe extern "C" fn(position: sfInt64, userData: *mut ::std::os::raw::c_void) -> sfInt64,
 >;
 pub type sfInputStreamTellFunc = ::std::option::Option<
     unsafe extern "C" fn(userData: *mut ::std::os::raw::c_void) -> sfInt64,
