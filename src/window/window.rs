@@ -103,7 +103,7 @@ impl Window {
     ///
     /// Return Some(event) if an event was returned, or None if the event queue was empty
     pub fn poll_event(&mut self) -> Option<Event> {
-        let mut event = unsafe { ::std::mem::zeroed() };
+        let mut event = unsafe { ::std::mem::uninitialized() };
         let have_event = unsafe { ffi::sfWindow_pollEvent(self.window, &mut event).to_bool() };
         if have_event {
             unsafe { Event::from_raw(&event) }
@@ -124,7 +124,7 @@ impl Window {
     ///
     /// Return Some(event) or None if an error has occured
     pub fn wait_event(&mut self) -> Option<Event> {
-        let mut event = unsafe { ::std::mem::zeroed() };
+        let mut event = unsafe { ::std::mem::uninitialized() };
         let have_event = unsafe { ffi::sfWindow_waitEvent(self.window, &mut event).to_bool() };
         if have_event {
             unsafe { Event::from_raw(&event) }

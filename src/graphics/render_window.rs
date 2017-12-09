@@ -78,7 +78,7 @@ impl RenderWindow {
     ///
     /// Return Some(event) if an event was returned, or None if the event queue was empty
     pub fn poll_event(&mut self) -> Option<Event> {
-        let mut event = unsafe { ::std::mem::zeroed() };
+        let mut event = unsafe { ::std::mem::uninitialized() };
         let have_event =
             unsafe { ffi::sfRenderWindow_pollEvent(self.render_window, &mut event) }.to_bool();
         if have_event {
@@ -100,7 +100,7 @@ impl RenderWindow {
     ///
     /// Return Some(event) or None if an error has occured
     pub fn wait_event(&mut self) -> Option<Event> {
-        let mut event = unsafe { ::std::mem::zeroed() };
+        let mut event = unsafe { ::std::mem::uninitialized() };
         let have_event =
             unsafe { ffi::sfRenderWindow_waitEvent(self.render_window, &mut event) }.to_bool();
         if have_event {
