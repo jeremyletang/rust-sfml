@@ -1,7 +1,7 @@
 use graphics::FloatRect;
 use graphics::csfml_graphics_sys as ffi;
 use std::borrow::{Borrow, ToOwned};
-use std::ops::Deref;
+use std::ops::{Deref, DerefMut};
 use system::Vector2f;
 
 /// 2D camera that defines what region is shown on screen
@@ -10,24 +10,10 @@ use system::Vector2f;
 /// rotate or zoom the entire scene without altering
 /// the way that your drawable objects are drawn.
 #[derive(Debug)]
-pub struct View {
-    view: *mut ffi::sfView,
-}
-
-impl Deref for View {
-    type Target = ViewRef;
-
-    fn deref(&self) -> &ViewRef {
-        unsafe { &*(self.view as *const ViewRef) }
-    }
-}
-
-/// A `View` that's owned by something else.
-#[derive(Debug)]
 #[allow(missing_copy_implementations)]
-pub enum ViewRef {}
+pub enum View {}
 
-impl ViewRef {
+impl View {
     /// Get the current orientation of a view
     ///
     /// Return the rotation angle of the view, in degrees
@@ -54,20 +40,13 @@ impl ViewRef {
     pub fn viewport(&self) -> FloatRect {
         unsafe { FloatRect::from_raw(ffi::sfView_getViewport(self.raw())) }
     }
-    pub(super) fn raw(&self) -> *const ffi::sfView {
-        let ptr: *const Self = self;
-        ptr as _
-    }
-}
-
-impl View {
     /// Creates a view with position and size
     ///
     /// # Arguments
     /// * center - The center of the view
     /// * size - The size of the view
-    pub fn new(center: Vector2f, size: Vector2f) -> View {
-        let mut view = View::default();
+    pub fn new(center: Vector2f, size: Vector2f) -> ViewBox {
+        let mut view = ViewBox::default();
         view.set_center(center);
         view.set_size(size);
         view
@@ -77,10 +56,10 @@ impl View {
     ///
     /// # Arguments
     /// * rectangle - The rectangle defining the zone to display
-    pub fn from_rect(rectangle: &FloatRect) -> View {
+    pub fn from_rect(rectangle: &FloatRect) -> ViewBox {
         let view = unsafe { ffi::sfView_createFromRect(rectangle.raw()) };
-        assert!(!view.is_null(), "Failed to create View from Rect");
-        View { view: view }
+        assert!(!view.is_null(), "Failed to create ViewBox from Rect");
+        ViewBox { view: view }
     }
 
     /// Set the orientation of a view
@@ -90,7 +69,7 @@ impl View {
     /// # Arguments
     /// * angle - New angle, in degrees
     pub fn set_rotation(&mut self, angle: f32) {
-        unsafe { ffi::sfView_setRotation(self.view, angle) }
+        unsafe { ffi::sfView_setRotation(self.raw_mut(), angle) }
     }
 
     /// Rotate a view relatively to its current orientation
@@ -98,7 +77,7 @@ impl View {
     /// # Arguments
     /// * angle - Angle to rotate, in degrees
     pub fn rotate(&mut self, angle: f32) {
-        unsafe { ffi::sfView_rotate(self.view, angle) }
+        unsafe { ffi::sfView_rotate(self.raw_mut(), angle) }
     }
 
     /// Resize a view rectangle relatively to its current size
@@ -114,7 +93,7 @@ impl View {
     /// # Arguments
     /// * factor - Zoom factor to apply
     pub fn zoom(&mut self, factor: f32) {
-        unsafe { ffi::sfView_zoom(self.view, factor) }
+        unsafe { ffi::sfView_zoom(self.raw_mut(), factor) }
     }
 
     /// Set the center of a view
@@ -122,7 +101,7 @@ impl View {
     /// # Arguments
     /// * center - New center
     pub fn set_center<C: Into<Vector2f>>(&mut self, center: C) {
-        unsafe { ffi::sfView_setCenter(self.view, center.into().raw()) }
+        unsafe { ffi::sfView_setCenter(self.raw_mut(), center.into().raw()) }
     }
 
     /// Set the size of a view
@@ -130,7 +109,7 @@ impl View {
     /// # Arguments
     /// * size - New size of the view
     pub fn set_size<S: Into<Vector2f>>(&mut self, size: S) {
-        unsafe { ffi::sfView_setSize(self.view, size.into().raw()) }
+        unsafe { ffi::sfView_setSize(self.raw_mut(), size.into().raw()) }
     }
 
     /// Move a view relatively to its current position
@@ -138,7 +117,7 @@ impl View {
     /// # Arguments
     /// * offset - Offset
     pub fn move_<O: Into<Vector2f>>(&mut self, offset: O) {
-        unsafe { ffi::sfView_move(self.view, offset.into().raw()) }
+        unsafe { ffi::sfView_move(self.raw_mut(), offset.into().raw()) }
     }
 
     /// Set the target viewport of a view
@@ -153,7 +132,7 @@ impl View {
     /// # Arguments
     /// * viewport - New viewport rectangle
     pub fn set_viewport(&mut self, viewport: &FloatRect) {
-        unsafe { ffi::sfView_setViewport(self.view, viewport.raw()) }
+        unsafe { ffi::sfView_setViewport(self.raw_mut(), viewport.raw()) }
     }
 
     /// Reset a view to the given rectangle
@@ -163,44 +142,72 @@ impl View {
     /// # Arguments
     /// * rectangle - Rectangle defining the zone to display
     pub fn reset(&mut self, rectangle: &FloatRect) {
-        unsafe { ffi::sfView_reset(self.view, rectangle.raw()) }
+        unsafe { ffi::sfView_reset(self.raw_mut(), rectangle.raw()) }
+    }
+    pub(super) fn raw(&self) -> *const ffi::sfView {
+        let ptr: *const Self = self;
+        ptr as _
+    }
+    fn raw_mut(&mut self) -> *mut ffi::sfView {
+        let ptr: *mut Self = self;
+        ptr as _
     }
 }
 
-impl Default for View {
-    fn default() -> Self {
-        let view = unsafe { ffi::sfView_create() };
-        assert!(!view.is_null(), "Failed to create View");
-        View { view: view }
-    }
-}
-
-impl Borrow<ViewRef> for View {
-    fn borrow(&self) -> &ViewRef {
-        &*self
-    }
-}
-
-impl ToOwned for ViewRef {
-    type Owned = View;
+impl ToOwned for View {
+    type Owned = ViewBox;
     fn to_owned(&self) -> Self::Owned {
         let view = unsafe { ffi::sfView_copy(self.raw()) };
         if view.is_null() {
-            panic!("Not enough memory to clone View")
+            panic!("Not enough memory to clone ViewBox")
         } else {
-            View { view: view }
+            ViewBox { view: view }
         }
     }
 }
 
-impl Clone for View {
-    /// Return a new View or panic! if there is not enough memory
-    fn clone(&self) -> View {
+/// An owning handle to a `View` allocated by CSFML.
+#[derive(Debug)]
+pub struct ViewBox {
+    view: *mut ffi::sfView,
+}
+
+impl Deref for ViewBox {
+    type Target = View;
+
+    fn deref(&self) -> &View {
+        unsafe { &*(self.view as *const View) }
+    }
+}
+
+impl DerefMut for ViewBox {
+    fn deref_mut(&mut self) -> &mut View {
+        unsafe { &mut *(self.view as *mut View) }
+    }
+}
+
+impl Default for ViewBox {
+    fn default() -> Self {
+        let view = unsafe { ffi::sfView_create() };
+        assert!(!view.is_null(), "Failed to create ViewBox");
+        ViewBox { view: view }
+    }
+}
+
+impl Borrow<View> for ViewBox {
+    fn borrow(&self) -> &View {
+        &*self
+    }
+}
+
+impl Clone for ViewBox {
+    /// Return a new ViewBox or panic! if there is not enough memory
+    fn clone(&self) -> ViewBox {
         (**self).to_owned()
     }
 }
 
-impl Drop for View {
+impl Drop for ViewBox {
     fn drop(&mut self) {
         unsafe { ffi::sfView_destroy(self.view) }
     }

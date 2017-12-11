@@ -28,7 +28,7 @@ pub use self::transform::Transform;
 pub use self::transformable::Transformable;
 pub use self::vertex::Vertex;
 pub use self::vertex_array::{VertexArray, Vertices};
-pub use self::view::{View, ViewRef};
+pub use self::view::{View, ViewBox};
 
 mod drawable;
 mod shape;

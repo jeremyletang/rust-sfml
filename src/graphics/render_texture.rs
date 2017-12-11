@@ -1,7 +1,7 @@
 use csfml_system_sys::sfBool;
 use graphics::{CircleShape, Color, ConvexShape, CustomShape, Drawable, IntRect, PrimitiveType,
                RectangleShape, RenderStates, RenderTarget, Sprite, Text, Texture, Vertex,
-               VertexArray, View, ViewRef};
+               VertexArray, View};
 use graphics::csfml_graphics_sys as ffi;
 use sf_bool_ext::SfBoolExt;
 use system::{Vector2f, Vector2i, Vector2u};
@@ -119,23 +119,23 @@ impl RenderTarget for RenderTexture {
     ///
     /// # Arguments
     /// * view - the new view
-    fn set_view(&mut self, view: &ViewRef) {
+    fn set_view(&mut self, view: &View) {
         unsafe { ffi::sfRenderTexture_setView(self.render_texture, view.raw()) }
     }
 
     /// Get the current active view of a render texture
     ///
     /// Return the current active view
-    fn view(&self) -> &ViewRef {
-        unsafe { &*(ffi::sfRenderTexture_getView(self.render_texture) as *const ViewRef) }
+    fn view(&self) -> &View {
+        unsafe { &*(ffi::sfRenderTexture_getView(self.render_texture) as *const View) }
     }
 
     /// Get the default view of a render texture
     ///
     /// Return the default view of the render texture
-    fn default_view(&self) -> &ViewRef {
+    fn default_view(&self) -> &View {
         unsafe {
-            &*(ffi::sfRenderTexture_getDefaultView(self.render_texture) as *const ViewRef)
+            &*(ffi::sfRenderTexture_getDefaultView(self.render_texture) as *const View)
         }
     }
 

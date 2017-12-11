@@ -1,7 +1,6 @@
 use csfml_system_sys::*;
 use graphics::{CircleShape, Color, ConvexShape, CustomShape, Drawable, IntRect, PrimitiveType,
-               RectangleShape, RenderStates, RenderTarget, Sprite, Text, Vertex, VertexArray,
-               View, ViewRef};
+               RectangleShape, RenderStates, RenderTarget, Sprite, Text, Vertex, VertexArray, View};
 use graphics::csfml_graphics_sys as ffi;
 use sf_bool_ext::SfBoolExt;
 use system::{Vector2f, Vector2i, Vector2u};
@@ -413,7 +412,7 @@ impl RenderTarget for RenderWindow {
     /// # Arguments
     /// * view - The new view
     ///
-    fn set_view(&mut self, view: &ViewRef) {
+    fn set_view(&mut self, view: &View) {
         unsafe { ffi::sfRenderWindow_setView(self.render_window, view.raw()) }
     }
 
@@ -421,18 +420,16 @@ impl RenderTarget for RenderWindow {
     ///
     /// Return the current active view
     ///
-    fn view(&self) -> &ViewRef {
-        unsafe { &*(ffi::sfRenderWindow_getView(self.render_window) as *const ViewRef) }
+    fn view(&self) -> &View {
+        unsafe { &*(ffi::sfRenderWindow_getView(self.render_window) as *const View) }
     }
 
     /// Get the default view of a render window
     ///
     /// Return the default view of the render window
     ///
-    fn default_view(&self) -> &ViewRef {
-        unsafe {
-            &*(ffi::sfRenderWindow_getDefaultView(self.render_window) as *const ViewRef)
-        }
+    fn default_view(&self) -> &View {
+        unsafe { &*(ffi::sfRenderWindow_getDefaultView(self.render_window) as *const View) }
     }
 
     /// Convert a point from window coordinates to world coordinates

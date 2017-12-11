@@ -1,5 +1,5 @@
 use graphics::{CircleShape, Color, ConvexShape, CustomShape, Drawable, IntRect, PrimitiveType,
-               RectangleShape, RenderStates, Sprite, Text, Vertex, VertexArray, View, ViewRef};
+               RectangleShape, RenderStates, Sprite, Text, Vertex, VertexArray, View};
 use system::{Vector2f, Vector2i, Vector2u};
 
 /// Trait for all render targets (window, texture, ...)
@@ -24,13 +24,13 @@ pub trait RenderTarget {
     fn clear(&mut self, color: &Color);
 
     /// return the current view
-    fn view(&self) -> &ViewRef;
+    fn view(&self) -> &View;
 
     /// get the default view for the render target
-    fn default_view(&self) -> &ViewRef;
+    fn default_view(&self) -> &View;
 
     /// set a new view to the target
-    fn set_view(&mut self, view: &ViewRef);
+    fn set_view(&mut self, view: &View);
 
     /// get the viewport of the render target
     fn viewport(&self, view: &View) -> IntRect;
