@@ -124,7 +124,7 @@ impl Default for VertexArray {
 }
 
 impl Clone for VertexArray {
-    /// Return a new Font or panic! if there is not enough memory
+    /// Return a new VertexArray or panic! if there is not enough memory
     fn clone(&self) -> VertexArray {
         let ver = unsafe { sfVertexArray_copy(self.vertex_array) };
         if ver.is_null() {

@@ -33,7 +33,7 @@ use window::Window;
 /// most common cases.
 /// However, if you want to perform some modifications on the pixels before creating the
 /// final texture, you can load your file to a `Image`, do whatever you need with the pixels,
-/// and then call `Texture::load_from_image`.
+/// and then call `Texture::from_image`.
 ///
 /// Since they live in the graphics card memory,
 /// the pixels of a texture cannot be accessed without a slow copy first.
