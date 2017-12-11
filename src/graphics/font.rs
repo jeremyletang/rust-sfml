@@ -6,28 +6,50 @@ use sf_bool_ext::SfBoolExt;
 use std::borrow::{Borrow, ToOwned};
 use std::ffi::{CStr, CString};
 use std::io::{Read, Seek};
-use std::ops::Deref;
+use std::ops::{Deref, DerefMut};
 
-/// Type for loading and manipulating character fonts
-#[derive(Debug)]
-pub struct Font {
-    font: *mut ffi::sfFont,
-}
-
-impl Deref for Font {
-    type Target = FontRef;
-
-    fn deref(&self) -> &FontRef {
-        unsafe { &*(self.font as *const FontRef) }
-    }
-}
-
-/// A `Font` that's owned by something else.
+/// Type for loading and manipulating character fonts.
+///
+/// Fonts can be loaded from a file, from memory or from a custom stream,
+/// and supports the most common types of fonts.
+///
+/// See the `from_file` function for the complete list of supported formats.
+///
+/// Once it is loaded, a `Font` instance provides three types of information about the font:
+///
+/// - Global metrics, such as the line spacing
+/// - Per-glyph metrics, such as bounding box or kerning
+/// - Pixel representation of glyphs
+///
+/// Fonts alone are not very useful: they hold the font data but cannot make anything useful of it.
+/// To do so you need to use the `Text` type, which is able to properly output text with
+/// several options such as character size, style, color, position, rotation, etc.
+/// This separation allows more flexibility and better performances:
+/// indeed a `Font` is a heavy resource, and any operation on it is
+/// slow (often too slow for real-time applications).
+/// On the other side, a `Text` is a lightweight object which can combine the
+/// glyphs data and metrics of a `Font` to display any text on a render target.
+/// Note that it is also possible to bind several `Text` instances to the same `Font`.
+///
+/// It is important to note that the `Text` instance doesn't copy the font that it uses,
+/// it only keeps a reference to it.
+/// Thus, a `Font` must not be destructed while it is used by a
+/// `Text` (i.e. never write a function that uses a local `Font` instance for creating a text).
+///
+/// Apart from loading font files, and passing them to instances of `Text`,
+/// you should normally not have to deal directly with this type.
+/// However, it may be useful to access the font metrics or rasterized glyphs for advanced usage.
+///
+/// Note that if the font is a bitmap font, it is not scalable,
+/// thus not all requested sizes will be available to use.
+/// This needs to be taken into consideration when using `Text`.
+/// If you need to display text of a certain size, make sure the corresponding bitmap font that
+/// supports that size is used.
 #[derive(Debug)]
 #[allow(missing_copy_implementations)]
-pub enum FontRef {}
+pub enum Font {}
 
-impl FontRef {
+impl Font {
     /// Get the kerning value corresponding to a given pair of characters in a font
     ///
     /// # Arguments
@@ -92,9 +114,133 @@ impl FontRef {
     pub fn underline_thickness(&self, character_size: u32) -> f32 {
         unsafe { ffi::sfFont_getUnderlineThickness(self.raw(), character_size) }
     }
+    /// Load the font from a file.
+    ///
+    /// The supported font formats are: TrueType, Type 1, CFF, OpenType, SFNT, X11 PCF,
+    /// Windows FNT, BDF, PFR and Type 42.
+    /// Note that this function know nothing about the standard fonts installed on the
+    /// user's system, thus you can't load them directly.
+    ///
+    /// # Warning
+    /// SFML cannot preload all the font data in this function,
+    /// so the file has to remain accessible until the `Font` object loads a new font or
+    /// is destroyed.
+    pub fn from_file(filename: &str) -> Option<FontBox> {
+        let c_str = CString::new(filename.as_bytes()).unwrap();
+        let fnt = unsafe { ffi::sfFont_createFromFile(c_str.as_ptr()) };
+        if fnt.is_null() {
+            None
+        } else {
+            Some(FontBox { font: fnt })
+        }
+    }
+
+    /// Create a new font from a stream (a struct implementing Read and Seek)
+    ///
+    /// # Arguments
+    /// * stream - Your struct, implementing Read and Seek
+    ///
+    /// Return Some(FontBox) or None
+    pub fn from_stream<T: Read + Seek>(stream: &mut T) -> Option<FontBox> {
+        let mut input_stream = InputStream::new(stream);
+        let fnt = unsafe { ffi::sfFont_createFromStream(&mut input_stream.0) };
+        if fnt.is_null() {
+            None
+        } else {
+            Some(FontBox { font: fnt })
+        }
+    }
+
+    /// Create a new font from memory
+    ///
+    /// # Arguments
+    /// * memory -  The in-memory font file
+    ///
+    /// Return Some(FontBox) or None
+    pub fn from_memory(memory: &[u8]) -> Option<FontBox> {
+        let fnt = unsafe {
+            ffi::sfFont_createFromMemory(memory.as_ptr() as *const _, memory.len())
+        };
+        if fnt.is_null() {
+            None
+        } else {
+            Some(FontBox { font: fnt })
+        }
+    }
+
+    /// Get the texture containing the glyphs of a given size in a font
+    ///
+    /// # Arguments
+    /// * characterSize - Character size, in pixels
+    ///
+    /// Return the texture
+    ///
+    /// Note: Unfortunately, this method requires mutable access, because CSFML
+    /// uses a texture cache or something that it must update every time this function
+    /// is called.
+    pub fn texture(&mut self, character_size: u32) -> &Texture {
+        let tex = unsafe { ffi::sfFont_getTexture(self.raw_mut(), character_size) };
+        assert!(!tex.is_null(), "sfFont_getTexture failed");
+        unsafe { &*(tex as *const Texture) }
+    }
     pub(super) fn raw(&self) -> *const ffi::sfFont {
         let ptr: *const Self = self;
         ptr as _
+    }
+    fn raw_mut(&mut self) -> *mut ffi::sfFont {
+        let ptr: *mut Self = self;
+        ptr as _
+    }
+}
+
+impl ToOwned for Font {
+    type Owned = FontBox;
+    fn to_owned(&self) -> Self::Owned {
+        let fnt = unsafe { ffi::sfFont_copy(self.raw()) };
+        if fnt.is_null() {
+            panic!("Not enough memory to clone Font")
+        } else {
+            FontBox { font: fnt }
+        }
+    }
+}
+
+/// Owning handle to a `Font` allocated by CSFML.
+#[derive(Debug)]
+pub struct FontBox {
+    font: *mut ffi::sfFont,
+}
+
+impl Deref for FontBox {
+    type Target = Font;
+
+    fn deref(&self) -> &Font {
+        unsafe { &*(self.font as *const Font) }
+    }
+}
+
+impl DerefMut for FontBox {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        unsafe { &mut *(self.font as *mut Font) }
+    }
+}
+
+impl Borrow<Font> for FontBox {
+    fn borrow(&self) -> &Font {
+        &*self
+    }
+}
+
+impl Clone for FontBox {
+    /// Return a new FontBox or panic! if there is not enough memory
+    fn clone(&self) -> FontBox {
+        (**self).to_owned()
+    }
+}
+
+impl Drop for FontBox {
+    fn drop(&mut self) {
+        unsafe { ffi::sfFont_destroy(self.font) }
     }
 }
 
@@ -105,102 +251,8 @@ pub struct Info {
     pub family: String,
 }
 
-impl Font {
-    /// Create a new font from a file
-    ///
-    /// # Arguments
-    /// * filename -  Path of the font file to load
-    ///
-    /// Return Some(Font) or None
-    pub fn from_file(filename: &str) -> Option<Font> {
-        let c_str = CString::new(filename.as_bytes()).unwrap();
-        let fnt = unsafe { ffi::sfFont_createFromFile(c_str.as_ptr()) };
-        if fnt.is_null() {
-            None
-        } else {
-            Some(Font { font: fnt })
-        }
-    }
-
-    /// Create a new font from a stream (a struct implementing Read and Seek)
-    ///
-    /// # Arguments
-    /// * stream - Your struct, implementing Read and Seek
-    ///
-    /// Return Some(Font) or None
-    pub fn from_stream<T: Read + Seek>(stream: &mut T) -> Option<Font> {
-        let mut input_stream = InputStream::new(stream);
-        let fnt = unsafe { ffi::sfFont_createFromStream(&mut input_stream.0) };
-        if fnt.is_null() {
-            None
-        } else {
-            Some(Font { font: fnt })
-        }
-    }
-
-    /// Create a new font from memory
-    ///
-    /// # Arguments
-    /// * memory -  The in-memory font file
-    ///
-    /// Return Some(Font) or None
-    pub fn from_memory(memory: &[u8]) -> Option<Font> {
-        let fnt = unsafe {
-            ffi::sfFont_createFromMemory(memory.as_ptr() as *const _, memory.len())
-        };
-        if fnt.is_null() {
-            None
-        } else {
-            Some(Font { font: fnt })
-        }
-    }
-
-    /// Get the texture containing the glyphs of a given size in a font
-    ///
-    /// # Arguments
-    /// * characterSize - Character size, in pixels
-    ///
-    /// Return the texture
-    pub fn texture(&mut self, character_size: u32) -> &Texture {
-        let tex = unsafe { ffi::sfFont_getTexture(self.font, character_size) };
-        assert!(!tex.is_null(), "sfFont_getTexture failed");
-        unsafe { &*(tex as *const Texture) }
-    }
-}
-
 #[test]
 fn test_info() {
     let font = Font::from_file("examples/resources/sansation.ttf").unwrap();
     assert_eq!(font.info().family, "Sansation");
-}
-
-impl Borrow<FontRef> for Font {
-    fn borrow(&self) -> &FontRef {
-        &*self
-    }
-}
-
-impl ToOwned for FontRef {
-    type Owned = Font;
-    fn to_owned(&self) -> Self::Owned {
-        let fnt = unsafe { ffi::sfFont_copy(self.raw()) };
-        if fnt.is_null() {
-            panic!("Not enough memory to clone Font")
-        } else {
-            Font { font: fnt }
-        }
-    }
-}
-
-impl Clone for Font {
-    /// Return a new Font or panic! if there is not enough memory
-    fn clone(&self) -> Font {
-        (**self).to_owned()
-    }
-}
-
-impl Drop for Font {
-    fn drop(&mut self) {
-        unsafe { ffi::sfFont_destroy(self.font) }
-    }
 }

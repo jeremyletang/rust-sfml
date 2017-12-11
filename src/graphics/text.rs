@@ -1,5 +1,5 @@
-use graphics::{Color, Drawable, FloatRect, Font, FontRef, RenderStates, RenderTarget, TextStyle,
-               Transform, Transformable};
+use graphics::{Color, Drawable, FloatRect, Font, RenderStates, RenderTarget, TextStyle, Transform,
+               Transformable};
 use graphics::csfml_graphics_sys as ffi;
 use std::marker::PhantomData;
 use std::str;
@@ -114,14 +114,14 @@ impl<'s> Text<'s> {
     /// If the text has no font attached, a None is returned.
     /// The returned pointer is const, which means that you can't
     /// modify the font when you retrieve it with this function.
-    pub fn font(&self) -> Option<&'s FontRef> {
+    pub fn font(&self) -> Option<&'s Font> {
         unsafe {
             let raw = ffi::sfText_getFont(self.text);
 
             if raw.is_null() {
                 None
             } else {
-                Some(&*(raw as *const FontRef))
+                Some(&*(raw as *const Font))
             }
         }
     }
