@@ -69,7 +69,7 @@ impl Transform {
     /// is returned.
     ///
     /// Return the inverse matrix
-    pub fn inverse(&mut self) -> Transform {
+    pub fn inverse(&self) -> Transform {
         unsafe { Transform(ffi::sfTransform_getInverse(&self.0)) }
     }
 
@@ -150,7 +150,7 @@ impl Transform {
     /// * point - Point to transform
     ///
     /// Return a transformed point
-    pub fn transform_point(&mut self, point: &Vector2f) -> Vector2f {
+    pub fn transform_point(&self, point: &Vector2f) -> Vector2f {
         unsafe { Vector2f::from_raw(ffi::sfTransform_transformPoint(&self.0, point.raw())) }
     }
 
@@ -166,7 +166,7 @@ impl Transform {
     /// rectangle - Rectangle to transform
     ///
     /// Return the transformed rectangle
-    pub fn transform_rect(&mut self, rectangle: &FloatRect) -> FloatRect {
+    pub fn transform_rect(&self, rectangle: &FloatRect) -> FloatRect {
         unsafe {
             FloatRect::from_raw(ffi::sfTransform_transformRect(&self.0, rectangle.raw()))
         }
