@@ -99,7 +99,6 @@ impl<'s> Drawable for ConvexShape<'s> {
     }
 }
 
-
 impl<'s> Transformable for ConvexShape<'s> {
     fn set_position<P: Into<Vector2f>>(&mut self, position: P) {
         unsafe { ffi::sfConvexShape_setPosition(self.convex_shape, position.into().raw()) }
@@ -237,7 +236,8 @@ impl Iterator for ConvexShapePoints {
     type Item = Vector2f;
 
     fn next(&mut self) -> Option<Vector2f> {
-        let point_count = unsafe { ffi::sfConvexShape_getPointCount(self.convex_shape) as u32 };
+        let point_count =
+            unsafe { ffi::sfConvexShape_getPointCount(self.convex_shape) as u32 };
         if self.pos == point_count {
             None
         } else {

@@ -55,22 +55,7 @@ impl Transform {
     pub fn matrix(&self) -> [f32; 16] {
         unsafe {
             let matrix: [f32; 16] = [
-                0.,
-                0.,
-                0.,
-                0.,
-                0.,
-                0.,
-                0.,
-                0.,
-                0.,
-                0.,
-                0.,
-                0.,
-                0.,
-                0.,
-                0.,
-                0.,
+                0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.
             ];
             ffi::sfTransform_getMatrix(&self.0, matrix.as_ptr() as *mut f32);
             matrix
@@ -186,7 +171,9 @@ impl Transform {
     ///
     /// Return the transformed rectangle
     pub fn transform_rect(&mut self, rectangle: &FloatRect) -> FloatRect {
-        unsafe { FloatRect::from_raw(ffi::sfTransform_transformRect(&self.0, rectangle.raw())) }
+        unsafe {
+            FloatRect::from_raw(ffi::sfTransform_transformRect(&self.0, rectangle.raw()))
+        }
     }
 }
 

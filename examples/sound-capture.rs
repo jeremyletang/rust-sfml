@@ -45,7 +45,6 @@ fn main() {
     println!(" {} samples / sec", buffer.sample_rate());
     println!(" {} channels", buffer.channel_count());
 
-
     // Choose what to do with the recorded sound data
     print!("What do you want to do with captured sound (p = play, s = save) ? ");
     let _ = std::io::stdout().flush();

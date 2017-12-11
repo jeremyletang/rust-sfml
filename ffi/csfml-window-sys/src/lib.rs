@@ -1358,7 +1358,9 @@ fn bindgen_test_layout_sfContextSettings() {
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfContextSettings)).antialiasingLevel as *const _ as usize },
+        unsafe {
+            &(*(0 as *const sfContextSettings)).antialiasingLevel as *const _ as usize
+        },
         8usize,
         concat!(
             "Alignment of field: ",

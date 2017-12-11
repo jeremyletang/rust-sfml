@@ -203,8 +203,9 @@ impl<'texture> Shader<'texture> {
         let fragment_ptr = fragment_stream
             .as_mut()
             .map_or(ptr::null_mut(), |s| &mut s.0);
-        let shader =
-            unsafe { ffi::sfShader_createFromStream(vertex_ptr, geometry_ptr, fragment_ptr) };
+        let shader = unsafe {
+            ffi::sfShader_createFromStream(vertex_ptr, geometry_ptr, fragment_ptr)
+        };
         if shader.is_null() {
             None
         } else {

@@ -130,7 +130,9 @@ fn bindgen_test_layout_max_align_t() {
         concat!("Size of: ", stringify!(max_align_t))
     );
     assert_eq!(
-        unsafe { &(*(0 as *const max_align_t)).__clang_max_align_nonce1 as *const _ as usize },
+        unsafe {
+            &(*(0 as *const max_align_t)).__clang_max_align_nonce1 as *const _ as usize
+        },
         0usize,
         concat!(
             "Alignment of field: ",
@@ -140,7 +142,9 @@ fn bindgen_test_layout_max_align_t() {
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const max_align_t)).__clang_max_align_nonce2 as *const _ as usize },
+        unsafe {
+            &(*(0 as *const max_align_t)).__clang_max_align_nonce2 as *const _ as usize
+        },
         16usize,
         concat!(
             "Alignment of field: ",

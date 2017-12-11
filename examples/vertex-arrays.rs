@@ -30,21 +30,18 @@ fn main() {
     println!("\nMutable access to a vertex");
     println!(
         "Before Vertex Color: {:?} | Position: {:?}",
-        vertex_array[1].color,
-        vertex_array[1].position
+        vertex_array[1].color, vertex_array[1].position
     );
     vertex_array[1].position.x = 100.0;
     println!(
         "After Vertex Color: {:?} | Position: {:?}",
-        vertex_array[1].color,
-        vertex_array[1].position
+        vertex_array[1].color, vertex_array[1].position
     );
 
     println!("\nImmutable access to a vertex");
     println!(
         "Vertex Color: {:?} | Position: {:?}",
-        vertex_array[1].color,
-        vertex_array[1].position
+        vertex_array[1].color, vertex_array[1].position
     );
 
     loop {

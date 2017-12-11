@@ -1,7 +1,6 @@
 use graphics::{FloatRect, IntRect};
 use graphics::csfml_graphics_sys as ffi;
 
-
 /// Structure describing a glyph.
 ///
 /// A glyph is the visual representation of a character.

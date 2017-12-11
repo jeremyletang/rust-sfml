@@ -140,7 +140,6 @@ pub fn is_button_pressed(joystick: u32, button: u32) -> bool {
     unsafe { ffi::sfJoystick_isButtonPressed(joystick, button).to_bool() }
 }
 
-
 /// Get the current position on a given Axis, on a given joystick.
 ///
 /// If the joystick is not connected, this function returns 0.

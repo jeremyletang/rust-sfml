@@ -8,7 +8,6 @@ use std::ops::Deref;
 use std::slice;
 use system::Time;
 
-
 /// Storage for audio samples defining a sound.
 ///
 /// A sound buffer holds the data of a sound, which is an array of audio samples.
@@ -111,7 +110,9 @@ impl SoundBufferRef {
                 panic!("Sample count {} too big to fit into usize", len);
             }
         }
-        unsafe { slice::from_raw_parts(ffi::sfSoundBuffer_getSamples(self.raw()), len as usize) }
+        unsafe {
+            slice::from_raw_parts(ffi::sfSoundBuffer_getSamples(self.raw()), len as usize)
+        }
     }
 
     /// Get the number of channels used by a sound buffer

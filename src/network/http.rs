@@ -113,7 +113,9 @@ impl Request {
     pub fn set_field(&self, field: &str, value: &str) {
         let c_field = CString::new(field.as_bytes()).unwrap();
         let c_value = CString::new(value.as_bytes()).unwrap();
-        unsafe { ffi::sfHttpRequest_setField(self.request, c_field.as_ptr(), c_value.as_ptr()) }
+        unsafe {
+            ffi::sfHttpRequest_setField(self.request, c_field.as_ptr(), c_value.as_ptr())
+        }
     }
 
     /// Set a HTTP request method
@@ -297,7 +299,9 @@ impl Http {
     /// * timeout - Maximum time to wait
     pub fn send_request(&self, request: &Request, timeout: &Time) -> Response {
         Response {
-            response: unsafe { ffi::sfHttp_sendRequest(self.http, request.raw(), timeout.raw()) },
+            response: unsafe {
+                ffi::sfHttp_sendRequest(self.http, request.raw(), timeout.raw())
+            },
         }
     }
 }

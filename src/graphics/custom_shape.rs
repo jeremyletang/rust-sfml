@@ -44,7 +44,6 @@ unsafe extern "C" fn get_point_callback(point: usize, obj: *mut c_void) -> sfVec
     ret.raw()
 }
 
-
 impl<'s> CustomShape<'s> {
     /// Create a new CustomShape
     ///
@@ -96,7 +95,9 @@ impl<'s> CustomShape<'s> {
 
 impl<'s> Shape<'s> for CustomShape<'s> {
     fn set_texture(&mut self, texture: &'s TextureRef, reset_rect: bool) {
-        unsafe { ffi::sfShape_setTexture(self.shape, texture.raw(), sfBool::from_bool(reset_rect)) }
+        unsafe {
+            ffi::sfShape_setTexture(self.shape, texture.raw(), sfBool::from_bool(reset_rect))
+        }
     }
     fn disable_texture(&mut self) {
         unsafe { ffi::sfShape_setTexture(self.shape, ptr::null_mut(), sfTrue) }

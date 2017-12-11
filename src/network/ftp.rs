@@ -316,7 +316,9 @@ impl Ftp {
     /// Return the server response to the request
     pub fn connect(&self, server: &IpAddress, port: u16, timeout: &Time) -> Response {
         Response {
-            response: unsafe { ffi::sfFtp_connect(self.ftp, server.raw(), port, timeout.raw()) },
+            response: unsafe {
+                ffi::sfFtp_connect(self.ftp, server.raw(), port, timeout.raw())
+            },
         }
     }
 

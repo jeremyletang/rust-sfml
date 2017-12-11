@@ -76,7 +76,9 @@ impl<'s> Drawable for RectangleShape<'s> {
 
 impl<'s> Transformable for RectangleShape<'s> {
     fn set_position<P: Into<Vector2f>>(&mut self, position: P) {
-        unsafe { ffi::sfRectangleShape_setPosition(self.rectangle_shape, position.into().raw()) }
+        unsafe {
+            ffi::sfRectangleShape_setPosition(self.rectangle_shape, position.into().raw())
+        }
     }
     fn set_rotation(&mut self, angle: f32) {
         unsafe { ffi::sfRectangleShape_setRotation(self.rectangle_shape, angle) }
@@ -88,7 +90,9 @@ impl<'s> Transformable for RectangleShape<'s> {
         unsafe { ffi::sfRectangleShape_setOrigin(self.rectangle_shape, origin.into().raw()) }
     }
     fn position(&self) -> Vector2f {
-        unsafe { Vector2f::from_raw(ffi::sfRectangleShape_getPosition(self.rectangle_shape)) }
+        unsafe {
+            Vector2f::from_raw(ffi::sfRectangleShape_getPosition(self.rectangle_shape))
+        }
     }
     fn rotation(&self) -> f32 {
         unsafe { ffi::sfRectangleShape_getRotation(self.rectangle_shape) }
@@ -131,7 +135,9 @@ impl<'s> Shape<'s> for RectangleShape<'s> {
         }
     }
     fn disable_texture(&mut self) {
-        unsafe { ffi::sfRectangleShape_setTexture(self.rectangle_shape, ptr::null_mut(), sfTrue) }
+        unsafe {
+            ffi::sfRectangleShape_setTexture(self.rectangle_shape, ptr::null_mut(), sfTrue)
+        }
     }
     fn set_texture_rect(&mut self, rect: &IntRect) {
         unsafe { ffi::sfRectangleShape_setTextureRect(self.rectangle_shape, rect.raw()) }
@@ -157,13 +163,17 @@ impl<'s> Shape<'s> for RectangleShape<'s> {
         }
     }
     fn texture_rect(&self) -> IntRect {
-        unsafe { IntRect::from_raw(ffi::sfRectangleShape_getTextureRect(self.rectangle_shape)) }
+        unsafe {
+            IntRect::from_raw(ffi::sfRectangleShape_getTextureRect(self.rectangle_shape))
+        }
     }
     fn fill_color(&self) -> Color {
         unsafe { Color::from_raw(ffi::sfRectangleShape_getFillColor(self.rectangle_shape)) }
     }
     fn outline_color(&self) -> Color {
-        unsafe { Color::from_raw(ffi::sfRectangleShape_getOutlineColor(self.rectangle_shape)) }
+        unsafe {
+            Color::from_raw(ffi::sfRectangleShape_getOutlineColor(self.rectangle_shape))
+        }
     }
     fn outline_thickness(&self) -> f32 {
         unsafe { ffi::sfRectangleShape_getOutlineThickness(self.rectangle_shape) }
@@ -180,10 +190,14 @@ impl<'s> Shape<'s> for RectangleShape<'s> {
         }
     }
     fn local_bounds(&self) -> FloatRect {
-        unsafe { FloatRect::from_raw(ffi::sfRectangleShape_getLocalBounds(self.rectangle_shape)) }
+        unsafe {
+            FloatRect::from_raw(ffi::sfRectangleShape_getLocalBounds(self.rectangle_shape))
+        }
     }
     fn global_bounds(&self) -> FloatRect {
-        unsafe { FloatRect::from_raw(ffi::sfRectangleShape_getGlobalBounds(self.rectangle_shape)) }
+        unsafe {
+            FloatRect::from_raw(ffi::sfRectangleShape_getGlobalBounds(self.rectangle_shape))
+        }
     }
 }
 

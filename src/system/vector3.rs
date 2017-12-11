@@ -93,7 +93,6 @@ impl_ops!(Sub, sub, i32, u32, f32);
 impl_ops!(Mul, mul, i32, u32, f32);
 impl_ops!(Div, div, i32, u32, f32);
 
-
 impl<T: Add> Add for Vector3<T> {
     type Output = Vector3<T::Output>;
 

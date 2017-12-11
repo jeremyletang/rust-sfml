@@ -213,7 +213,6 @@ impl<'s> Clone for CircleShape<'s> {
     }
 }
 
-
 impl<'s> Drop for CircleShape<'s> {
     fn drop(&mut self) {
         unsafe { ffi::sfCircleShape_destroy(self.circle_shape) }

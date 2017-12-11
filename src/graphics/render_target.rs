@@ -35,7 +35,6 @@ pub trait RenderTarget {
     /// get the viewport of the render target
     fn viewport(&self, view: &View) -> IntRect;
 
-
     /// Convert a point from window coordinates to world coordinates
     ///
     /// This function finds the 2D position that matches the
@@ -160,7 +159,6 @@ pub trait RenderTarget {
     /// Return the size in pixels
     fn size(&self) -> Vector2u;
 
-
     /// Save the current OpenGL render states and matrices
     ///
     /// This function can be used when you mix SFML drawing
@@ -202,7 +200,6 @@ pub trait RenderTarget {
 
     /// Draw CircleShape
     fn draw_circle_shape(&self, circle_shape: &CircleShape, rs: RenderStates);
-
 
     /// Draw RectangleShape
     fn draw_rectangle_shape(&self, rectangle_shape: &RectangleShape, rs: RenderStates);
