@@ -1,6 +1,6 @@
 use csfml_system_sys::sfBool;
 use graphics::{CircleShape, Color, ConvexShape, CustomShape, Drawable, IntRect, PrimitiveType,
-               RectangleShape, RenderStates, RenderTarget, Sprite, Text, TextureRef, Vertex,
+               RectangleShape, RenderStates, RenderTarget, Sprite, Text, Texture, Vertex,
                VertexArray, View, ViewRef};
 use graphics::csfml_graphics_sys as ffi;
 use sf_bool_ext::SfBoolExt;
@@ -53,10 +53,10 @@ impl RenderTexture {
     /// Get the target texture of a render texture
     ///
     /// Return the target texture
-    pub fn texture(&self) -> &TextureRef {
+    pub fn texture(&self) -> &Texture {
         let tex = unsafe { ffi::sfRenderTexture_getTexture(self.render_texture) };
         assert!(!tex.is_null(), "sfRenderTexture_getTexture failed");
-        unsafe { &*(tex as *const TextureRef) }
+        unsafe { &*(tex as *const Texture) }
     }
 
     /// Enable or disable the smooth filter on a render texture

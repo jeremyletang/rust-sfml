@@ -1,4 +1,4 @@
-use graphics::{glsl, TextureRef};
+use graphics::{glsl, Texture};
 use graphics::csfml_graphics_sys as ffi;
 use inputstream::InputStream;
 use sf_bool_ext::SfBoolExt;
@@ -55,7 +55,7 @@ use std::ptr;
 /// ```no_run
 /// # use sfml::graphics::*;
 /// # use sfml::system::*;
-/// # let texture: Texture = unimplemented!();
+/// # let texture: TextureBox = unimplemented!();
 /// # let mut shader: Shader = unimplemented!();
 /// # let color: Color = unimplemented!();
 /// # let transform: Transform = unimplemented!();
@@ -63,7 +63,7 @@ use std::ptr;
 /// shader.set_uniform_vec3("point", Vector3f::new(0.5, 0.8, 0.3));
 /// shader.set_uniform_vec4("color", color); // color is a `Color`
 /// shader.set_uniform_mat4("matrix", transform); // transform is a `Transform`
-/// shader.set_uniform_texture("overlay", &texture); // texture is a `Texture`
+/// shader.set_uniform_texture("overlay", &texture); // texture is a `TextureBox`
 /// shader.set_uniform_current_texture("current");
 /// ```
 ///
@@ -116,7 +116,7 @@ use std::ptr;
 #[derive(Debug)]
 pub struct Shader<'texture> {
     shader: *mut ffi::sfShader,
-    texture: PhantomData<&'texture TextureRef>,
+    texture: PhantomData<&'texture Texture>,
 }
 
 macro_rules! cstring_then_ptr {
@@ -452,7 +452,7 @@ impl<'texture> Shader<'texture> {
     ///
     /// To use the texture of the object being drawn, which cannot be known in advance,
     /// use `set_uniform_current_texture`.
-    pub fn set_uniform_texture(&mut self, name: &str, value: &'texture TextureRef) {
+    pub fn set_uniform_texture(&mut self, name: &str, value: &'texture Texture) {
         unsafe {
             let cstring = CString::new(name).unwrap();
             let name = cstring.as_ptr();

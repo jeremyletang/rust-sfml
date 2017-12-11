@@ -1,4 +1,4 @@
-use graphics::{Color, Drawable, FloatRect, IntRect, TextureRef, Transformable};
+use graphics::{Color, Drawable, FloatRect, IntRect, Texture, Transformable};
 use system::Vector2f;
 
 /// Trait for textured shapes with outline.
@@ -8,7 +8,7 @@ pub trait Shape<'s>: Drawable + Transformable {
     /// If `reset_rect` is `true`, the `texture_rect` property of the shape is automatically
     /// adjusted to the size of the new texture.
     /// If it is `false`, the texture rect is left unchanged.
-    fn set_texture(&mut self, texture: &'s TextureRef, reset_rect: bool);
+    fn set_texture(&mut self, texture: &'s Texture, reset_rect: bool);
     /// Disables texturing for this shape.
     fn disable_texture(&mut self);
     /// Sets the sub-rectangle of the texture that the shape will display.
@@ -36,7 +36,7 @@ pub trait Shape<'s>: Drawable + Transformable {
     /// Gets the source texture of the shape.
     ///
     /// If the shape has no source texture, None is returned.
-    fn texture(&self) -> Option<&'s TextureRef>;
+    fn texture(&self) -> Option<&'s Texture>;
     /// Gets the sub-rectangle of the texture displayed by the shape.
     fn texture_rect(&self) -> IntRect;
     /// Gets the fill color of this shape.

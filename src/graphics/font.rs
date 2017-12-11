@@ -1,5 +1,5 @@
 use csfml_system_sys::sfBool;
-use graphics::{Glyph, TextureRef};
+use graphics::{Glyph, Texture};
 use graphics::csfml_graphics_sys as ffi;
 use inputstream::InputStream;
 use sf_bool_ext::SfBoolExt;
@@ -161,10 +161,10 @@ impl Font {
     /// * characterSize - Character size, in pixels
     ///
     /// Return the texture
-    pub fn texture(&mut self, character_size: u32) -> &TextureRef {
+    pub fn texture(&mut self, character_size: u32) -> &Texture {
         let tex = unsafe { ffi::sfFont_getTexture(self.font, character_size) };
         assert!(!tex.is_null(), "sfFont_getTexture failed");
-        unsafe { &*(tex as *const TextureRef) }
+        unsafe { &*(tex as *const Texture) }
     }
 }
 

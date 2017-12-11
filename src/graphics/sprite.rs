@@ -1,5 +1,5 @@
 use csfml_system_sys::{sfBool, sfTrue};
-use graphics::{Color, Drawable, FloatRect, IntRect, RenderStates, RenderTarget, TextureRef,
+use graphics::{Color, Drawable, FloatRect, IntRect, RenderStates, RenderTarget, Texture,
                Transform, Transformable};
 use graphics::csfml_graphics_sys as ffi;
 use sf_bool_ext::SfBoolExt;
@@ -14,7 +14,7 @@ use system::Vector2f;
 #[derive(Debug)]
 pub struct Sprite<'s> {
     sprite: *mut ffi::sfSprite,
-    texture: PhantomData<&'s TextureRef>,
+    texture: PhantomData<&'s Texture>,
 }
 
 impl<'s> Sprite<'s> {
@@ -33,7 +33,7 @@ impl<'s> Sprite<'s> {
     /// Create a new sprite with a texture
     ///
     /// Return Some(Sprite) or None
-    pub fn with_texture(texture: &'s TextureRef) -> Sprite<'s> {
+    pub fn with_texture(texture: &'s Texture) -> Sprite<'s> {
         let mut sprite = Sprite::new();
         sprite.set_texture(texture, true);
         sprite
@@ -55,7 +55,7 @@ impl<'s> Sprite<'s> {
     /// * texture - New texture
     /// * reset_rect - Should the texture rect be reset to the size
     /// of the new texture?
-    pub fn set_texture(&mut self, texture: &'s TextureRef, reset_rect: bool) {
+    pub fn set_texture(&mut self, texture: &'s Texture, reset_rect: bool) {
         unsafe {
             ffi::sfSprite_setTexture(self.sprite, texture.raw(), sfBool::from_bool(reset_rect))
         }
@@ -88,13 +88,13 @@ impl<'s> Sprite<'s> {
     /// modify the texture when you retrieve it with this function.
     ///
     /// Return an Option to the sprite's texture
-    pub fn texture(&self) -> Option<&'s TextureRef> {
+    pub fn texture(&self) -> Option<&'s Texture> {
         unsafe {
             let ptr = ffi::sfSprite_getTexture(self.sprite);
             if ptr.is_null() {
                 None
             } else {
-                Some(&*(ptr as *const TextureRef))
+                Some(&*(ptr as *const Texture))
             }
         }
     }

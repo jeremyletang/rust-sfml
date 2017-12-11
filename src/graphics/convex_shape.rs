@@ -1,5 +1,5 @@
 use csfml_system_sys::{sfBool, sfTrue};
-use graphics::{Color, Drawable, FloatRect, IntRect, RenderStates, RenderTarget, Shape, TextureRef,
+use graphics::{Color, Drawable, FloatRect, IntRect, RenderStates, RenderTarget, Shape, Texture,
                Transform, Transformable};
 use graphics::csfml_graphics_sys as ffi;
 use sf_bool_ext::SfBoolExt;
@@ -16,7 +16,7 @@ use system::Vector2f;
 #[derive(Debug)]
 pub struct ConvexShape<'s> {
     convex_shape: *mut ffi::sfConvexShape,
-    texture: PhantomData<&'s TextureRef>,
+    texture: PhantomData<&'s Texture>,
 }
 
 /// An iterator over the points of a `ConvexShape`
@@ -48,7 +48,7 @@ impl<'s> ConvexShape<'s> {
     /// # Arguments
     /// * texture - The texture to apply to the convex shape
     /// * points_count - The number of point for the convex shape
-    pub fn with_texture(points_count: u32, texture: &'s TextureRef) -> ConvexShape<'s> {
+    pub fn with_texture(points_count: u32, texture: &'s Texture) -> ConvexShape<'s> {
         let mut shape = ConvexShape::new(points_count);
         shape.set_texture(texture, true);
         shape
@@ -142,7 +142,7 @@ impl<'s> Transformable for ConvexShape<'s> {
 }
 
 impl<'s> Shape<'s> for ConvexShape<'s> {
-    fn set_texture(&mut self, texture: &'s TextureRef, reset_rect: bool) {
+    fn set_texture(&mut self, texture: &'s Texture, reset_rect: bool) {
         unsafe {
             ffi::sfConvexShape_setTexture(
                 self.convex_shape,
@@ -166,14 +166,14 @@ impl<'s> Shape<'s> for ConvexShape<'s> {
     fn set_outline_thickness(&mut self, thickness: f32) {
         unsafe { ffi::sfConvexShape_setOutlineThickness(self.convex_shape, thickness) }
     }
-    fn texture(&self) -> Option<&'s TextureRef> {
+    fn texture(&self) -> Option<&'s Texture> {
         unsafe {
             let raw = ffi::sfConvexShape_getTexture(self.convex_shape);
 
             if raw.is_null() {
                 None
             } else {
-                Some(&*(raw as *const TextureRef))
+                Some(&*(raw as *const Texture))
             }
         }
     }

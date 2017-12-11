@@ -1,4 +1,4 @@
-use graphics::{BlendMode, Shader, TextureRef, Transform};
+use graphics::{BlendMode, Shader, Texture, Transform};
 use graphics::csfml_graphics_sys as ffi;
 use std::ptr;
 
@@ -50,7 +50,7 @@ pub struct RenderStates<'texture, 'shader, 'shader_texture: 'shader> {
     /// Transform
     pub transform: Transform,
     /// Texture
-    pub texture: Option<&'texture TextureRef>,
+    pub texture: Option<&'texture Texture>,
     /// Shader
     pub shader: Option<&'shader Shader<'shader_texture>>,
 }
@@ -68,7 +68,7 @@ impl<'texture, 'shader, 'shader_texture> RenderStates<'texture, 'shader, 'shader
     pub fn new(
         blend_mode: BlendMode,
         transform: Transform,
-        texture: Option<&'texture TextureRef>,
+        texture: Option<&'texture Texture>,
         shader: Option<&'shader Shader<'shader_texture>>,
     ) -> RenderStates<'texture, 'shader, 'shader_texture> {
         RenderStates {

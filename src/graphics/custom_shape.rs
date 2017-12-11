@@ -1,5 +1,5 @@
 use csfml_system_sys::{sfBool, sfTrue, sfVector2f};
-use graphics::{Color, Drawable, FloatRect, IntRect, RenderStates, RenderTarget, Shape, TextureRef,
+use graphics::{Color, Drawable, FloatRect, IntRect, RenderStates, RenderTarget, Shape, Texture,
                Transform, Transformable};
 use graphics::csfml_graphics_sys as ffi;
 use sf_bool_ext::SfBoolExt;
@@ -28,7 +28,7 @@ pub trait CustomShapePoints {
 #[derive(Debug)]
 pub struct CustomShape<'s> {
     shape: *mut ffi::sfShape,
-    texture: PhantomData<&'s TextureRef>,
+    texture: PhantomData<&'s Texture>,
     points: *mut Box<CustomShapePoints + Send>,
 }
 
@@ -73,7 +73,7 @@ impl<'s> CustomShape<'s> {
     /// * texture - The texture to bind to the CustomShape
     pub fn with_texture(
         points: Box<CustomShapePoints + Send>,
-        texture: &'s TextureRef,
+        texture: &'s Texture,
     ) -> CustomShape<'s> {
         let mut shape = Self::new(points);
         shape.set_texture(texture, true);
@@ -94,7 +94,7 @@ impl<'s> CustomShape<'s> {
 }
 
 impl<'s> Shape<'s> for CustomShape<'s> {
-    fn set_texture(&mut self, texture: &'s TextureRef, reset_rect: bool) {
+    fn set_texture(&mut self, texture: &'s Texture, reset_rect: bool) {
         unsafe {
             ffi::sfShape_setTexture(self.shape, texture.raw(), sfBool::from_bool(reset_rect))
         }
@@ -114,14 +114,14 @@ impl<'s> Shape<'s> for CustomShape<'s> {
     fn set_outline_thickness(&mut self, thickness: f32) {
         unsafe { ffi::sfShape_setOutlineThickness(self.shape, thickness) }
     }
-    fn texture(&self) -> Option<&'s TextureRef> {
+    fn texture(&self) -> Option<&'s Texture> {
         unsafe {
             let raw = ffi::sfShape_getTexture(self.shape);
 
             if raw.is_null() {
                 None
             } else {
-                Some(&*(raw as *const TextureRef))
+                Some(&*(raw as *const Texture))
             }
         }
     }

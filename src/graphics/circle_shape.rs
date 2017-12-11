@@ -1,5 +1,5 @@
 use csfml_system_sys::{sfBool, sfTrue};
-use graphics::{Color, Drawable, FloatRect, IntRect, RenderStates, RenderTarget, Shape, TextureRef,
+use graphics::{Color, Drawable, FloatRect, IntRect, RenderStates, RenderTarget, Shape, Texture,
                Transform, Transformable};
 use graphics::csfml_graphics_sys as ffi;
 use sf_bool_ext::SfBoolExt;
@@ -11,7 +11,7 @@ use system::Vector2f;
 #[derive(Debug)]
 pub struct CircleShape<'s> {
     circle_shape: *mut ffi::sfCircleShape,
-    texture: PhantomData<&'s TextureRef>,
+    texture: PhantomData<&'s Texture>,
 }
 
 impl<'s> CircleShape<'s> {
@@ -21,7 +21,7 @@ impl<'s> CircleShape<'s> {
     /// * texture - The texture to initialize the CircleShape with.
     ///
     /// Return Some(CircleShape) or None
-    pub fn with_texture(texture: &'s TextureRef) -> CircleShape<'s> {
+    pub fn with_texture(texture: &'s Texture) -> CircleShape<'s> {
         let mut shape = CircleShape::default();
         shape.set_texture(texture, true);
         shape
@@ -132,7 +132,7 @@ impl<'s> Transformable for CircleShape<'s> {
 }
 
 impl<'s> Shape<'s> for CircleShape<'s> {
-    fn set_texture(&mut self, texture: &'s TextureRef, reset_rect: bool) {
+    fn set_texture(&mut self, texture: &'s Texture, reset_rect: bool) {
         unsafe {
             ffi::sfCircleShape_setTexture(
                 self.circle_shape,
@@ -156,14 +156,14 @@ impl<'s> Shape<'s> for CircleShape<'s> {
     fn set_outline_thickness(&mut self, thickness: f32) {
         unsafe { ffi::sfCircleShape_setOutlineThickness(self.circle_shape, thickness) }
     }
-    fn texture(&self) -> Option<&'s TextureRef> {
+    fn texture(&self) -> Option<&'s Texture> {
         unsafe {
             let raw = ffi::sfCircleShape_getTexture(self.circle_shape);
 
             if raw.is_null() {
                 None
             } else {
-                Some(&*(raw as *const TextureRef))
+                Some(&*(raw as *const Texture))
             }
         }
     }
