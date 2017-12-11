@@ -1,4 +1,4 @@
-use audio::{SoundBufferRef, SoundSource, SoundStatus};
+use audio::{SoundBuffer, SoundSource, SoundStatus};
 use audio::csfml_audio_sys as ffi;
 use csfml_system_sys::sfBool;
 use sf_bool_ext::SfBoolExt;
@@ -38,7 +38,7 @@ use system::Vector3f;
 #[derive(Debug)]
 pub struct Sound<'s> {
     sound: *mut ffi::sfSound,
-    buffer: PhantomData<&'s SoundBufferRef>,
+    buffer: PhantomData<&'s SoundBuffer>,
 }
 
 impl<'s> Sound<'s> {
@@ -53,7 +53,7 @@ impl<'s> Sound<'s> {
     }
 
     /// Create a new Sound with a buffer
-    pub fn with_buffer(buffer: &SoundBufferRef) -> Sound {
+    pub fn with_buffer(buffer: &SoundBuffer) -> Sound {
         let mut s = Sound::new();
         s.set_buffer(buffer);
         s
@@ -128,21 +128,21 @@ impl<'s> Sound<'s> {
     ///
     /// # Arguments
     /// * buffer - Sound buffer to attach to the sound
-    pub fn set_buffer(&mut self, buffer: &'s SoundBufferRef) {
-        let ptr: *const SoundBufferRef = buffer;
+    pub fn set_buffer(&mut self, buffer: &'s SoundBuffer) {
+        let ptr: *const SoundBuffer = buffer;
         unsafe { ffi::sfSound_setBuffer(self.sound, ptr as _) }
     }
 
     /// Get the audio buffer attached to a sound
     ///
     /// Return an option to Sound buffer attached to the sound or None
-    pub fn buffer(&self) -> Option<&SoundBufferRef> {
+    pub fn buffer(&self) -> Option<&SoundBuffer> {
         unsafe {
             let ptr = ffi::sfSound_getBuffer(self.sound);
             if ptr.is_null() {
                 None
             } else {
-                Some(&*(ptr as *const SoundBufferRef))
+                Some(&*(ptr as *const SoundBuffer))
             }
         }
     }

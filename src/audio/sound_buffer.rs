@@ -56,24 +56,10 @@ use system::Time;
 /// sound_2.play();
 /// ```
 #[derive(Debug)]
-pub struct SoundBuffer {
-    sound_buffer: *mut ffi::sfSoundBuffer,
-}
-
-impl Deref for SoundBuffer {
-    type Target = SoundBufferRef;
-
-    fn deref(&self) -> &SoundBufferRef {
-        unsafe { &*(self.sound_buffer as *const SoundBufferRef) }
-    }
-}
-
-/// A `SoundBuffer` that's owned by something else.
-#[derive(Debug)]
 #[allow(missing_copy_implementations)]
-pub enum SoundBufferRef {}
+pub enum SoundBuffer {}
 
-impl SoundBufferRef {
+impl SoundBuffer {
     /// Save a sound buffer to an audio file
     ///
     /// Here is a complete list of all the supported audio formats:
@@ -146,9 +132,6 @@ impl SoundBufferRef {
         let ptr: *const Self = self;
         ptr as *const ffi::sfSoundBuffer
     }
-}
-
-impl SoundBuffer {
     /// Create a new sound buffer and load it from a file
     ///
     /// Here is a complete list of all the supported audio formats:
@@ -158,39 +141,39 @@ impl SoundBuffer {
     /// # Arguments
     /// * filename - Path of the sound file to load
     ///
-    /// Return an option to a SoundBuffer object or None.
-    pub fn from_file(filename: &str) -> Option<SoundBuffer> {
+    /// Return an option to a SoundBufferBox object or None.
+    pub fn from_file(filename: &str) -> Option<SoundBufferBox> {
         let c_str = CString::new(filename.as_bytes()).unwrap();
         let sound_buffer: *mut ffi::sfSoundBuffer =
             unsafe { ffi::sfSoundBuffer_createFromFile(c_str.as_ptr()) };
         if sound_buffer.is_null() {
             None
         } else {
-            Some(SoundBuffer {
+            Some(SoundBufferBox {
                 sound_buffer: sound_buffer,
             })
         }
     }
     /// Load the sound buffer from a file in memory.
-    pub fn from_memory(data: &[u8]) -> Option<Self> {
+    pub fn from_memory(data: &[u8]) -> Option<SoundBufferBox> {
         let sound_buffer =
             unsafe { ffi::sfSoundBuffer_createFromMemory(data.as_ptr() as _, data.len()) };
         if sound_buffer.is_null() {
             None
         } else {
-            Some(SoundBuffer {
+            Some(SoundBufferBox {
                 sound_buffer: sound_buffer,
             })
         }
     }
     /// Load the sound buffer from a custom stream.
-    pub fn from_stream<T: Read + Seek>(stream: &mut T) -> Option<Self> {
+    pub fn from_stream<T: Read + Seek>(stream: &mut T) -> Option<SoundBufferBox> {
         let mut stream = InputStream::new(stream);
         let buffer = unsafe { ffi::sfSoundBuffer_createFromStream(&mut stream.0) };
         if buffer.is_null() {
             None
         } else {
-            Some(SoundBuffer {
+            Some(SoundBufferBox {
                 sound_buffer: buffer,
             })
         }
@@ -198,7 +181,11 @@ impl SoundBuffer {
     /// Load the sound buffer from a slice of audio samples.
     ///
     /// The assumed format of the audio samples is 16 bits signed integer.
-    pub fn from_samples(samples: &[i16], channel_count: u32, sample_rate: u32) -> Option<Self> {
+    pub fn from_samples(
+        samples: &[i16],
+        channel_count: u32,
+        sample_rate: u32,
+    ) -> Option<SoundBufferBox> {
         let buffer = unsafe {
             ffi::sfSoundBuffer_createFromSamples(
                 samples.as_ptr(),
@@ -210,38 +197,52 @@ impl SoundBuffer {
         if buffer.is_null() {
             None
         } else {
-            Some(SoundBuffer {
+            Some(SoundBufferBox {
                 sound_buffer: buffer,
             })
         }
     }
 }
 
-impl Borrow<SoundBufferRef> for SoundBuffer {
-    fn borrow(&self) -> &SoundBufferRef {
-        &*self
-    }
-}
-
-impl ToOwned for SoundBufferRef {
-    type Owned = SoundBuffer;
+impl ToOwned for SoundBuffer {
+    type Owned = SoundBufferBox;
 
     fn to_owned(&self) -> Self::Owned {
         let sound_buffer = unsafe { ffi::sfSoundBuffer_copy(self.raw()) };
         assert!(!sound_buffer.is_null(), "Failed to copy SoundBuffer");
-        SoundBuffer {
+        SoundBufferBox {
             sound_buffer: sound_buffer,
         }
     }
 }
 
-impl Clone for SoundBuffer {
+/// Owning handle to a `SoundBuffer` allocated by CSFML.
+#[derive(Debug)]
+pub struct SoundBufferBox {
+    sound_buffer: *mut ffi::sfSoundBuffer,
+}
+
+impl Deref for SoundBufferBox {
+    type Target = SoundBuffer;
+
+    fn deref(&self) -> &SoundBuffer {
+        unsafe { &*(self.sound_buffer as *const SoundBuffer) }
+    }
+}
+
+impl Borrow<SoundBuffer> for SoundBufferBox {
+    fn borrow(&self) -> &SoundBuffer {
+        &*self
+    }
+}
+
+impl Clone for SoundBufferBox {
     fn clone(&self) -> Self {
         (**self).to_owned()
     }
 }
 
-impl Drop for SoundBuffer {
+impl Drop for SoundBufferBox {
     fn drop(&mut self) {
         unsafe {
             ffi::sfSoundBuffer_destroy(self.sound_buffer);

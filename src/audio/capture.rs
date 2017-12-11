@@ -1,5 +1,5 @@
 use audio::csfml_audio_sys::*;
-use audio::SoundBufferRef;
+use audio::SoundBuffer;
 use csfml_system_sys::{sfBool, sfInt16, sfTrue};
 use std::os::raw::c_void;
 use sf_bool_ext::SfBoolExt;
@@ -299,10 +299,10 @@ impl SoundBufferRecorder {
     /// make any modification to it.
     ///
     /// Return Read-only access to the sound buffer
-    pub fn buffer(&self) -> &SoundBufferRef {
+    pub fn buffer(&self) -> &SoundBuffer {
         let buff = unsafe { sfSoundBufferRecorder_getBuffer(self.ffi_handle) };
         assert!(!buff.is_null(), "sfSoundBufferRecorder_getBuffer failed");
-        unsafe { &*(buff as *const SoundBufferRef) }
+        unsafe { &*(buff as *const SoundBuffer) }
     }
     device_common!();
 }
