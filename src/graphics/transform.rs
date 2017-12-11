@@ -52,13 +52,9 @@ impl Transform {
     }
 
     /// Return the matrix
-    pub fn matrix(&self) -> [f32; 16] {
+    pub fn get_matrix(&self, matrix: &mut [f32; 16]) {
         unsafe {
-            let matrix: [f32; 16] = [
-                0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.
-            ];
-            ffi::sfTransform_getMatrix(&self.0, matrix.as_ptr() as *mut f32);
-            matrix
+            ffi::sfTransform_getMatrix(&self.0, matrix.as_mut_ptr());
         }
     }
 

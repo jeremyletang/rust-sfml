@@ -162,6 +162,8 @@ pub struct Mat4(pub [f32; 16]);
 
 impl From<::graphics::Transform> for Mat4 {
     fn from(src: ::graphics::Transform) -> Self {
-        Mat4(src.matrix())
+        let mut mat = unsafe { ::std::mem::uninitialized() };
+        src.get_matrix(&mut mat);
+        Mat4(mat)
     }
 }
