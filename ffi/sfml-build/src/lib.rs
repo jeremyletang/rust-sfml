@@ -28,7 +28,7 @@ pub fn link_csfml(lib_name: &str) {
 pub fn link_sfml(lib_name: &str) {
     // The windows build of CSFML links SFML libraries statically, so no
     // need to link them to the rust executable as well.
-    if !cfg!(target_family = "windows") {
+    if var("CARGO_CFG_TARGET_OS").unwrap_or_default() != "windows" {
         // SFML_HOME points to the base SFML directory
         // Let cargo find the SFML library files there
         if let Ok(sfml_home) = var("SFML_HOME") {
