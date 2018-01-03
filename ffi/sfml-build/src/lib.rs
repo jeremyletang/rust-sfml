@@ -23,19 +23,3 @@ pub fn link_csfml(lib_name: &str) {
     // Link to the csfml library
     println!("cargo:rustc-link-lib=csfml-{}", lib_name);
 }
-
-// Add search path for SFML library files
-pub fn link_sfml(lib_name: &str) {
-    // The windows build of CSFML links SFML libraries statically, so no
-    // need to link them to the rust executable as well.
-    if var("CARGO_CFG_TARGET_OS").unwrap_or_default() != "windows" {
-        // SFML_HOME points to the base SFML directory
-        // Let cargo find the SFML library files there
-        if let Ok(sfml_home) = var("SFML_HOME") {
-            println!("cargo:rustc-link-search=native={}/lib", sfml_home);
-        }
-
-        // Link to the sfml library
-        println!("cargo:rustc-link-lib=sfml-{}", lib_name);
-    }
-}
