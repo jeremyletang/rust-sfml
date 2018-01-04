@@ -55,15 +55,15 @@ use std::ptr;
 /// ```no_run
 /// # use sfml::graphics::*;
 /// # use sfml::system::*;
-/// # let texture: TextureBox = unimplemented!();
-/// # let mut shader: Shader = unimplemented!();
-/// # let color: Color = unimplemented!();
-/// # let transform: Transform = unimplemented!();
+/// let texture: SfBox<Texture> = unimplemented!();
+/// let mut shader: Shader = unimplemented!();
+/// let color: Color = unimplemented!();
+/// let transform: Transform = unimplemented!();
 /// shader.set_uniform_float("offset", 2.);
 /// shader.set_uniform_vec3("point", Vector3f::new(0.5, 0.8, 0.3));
-/// shader.set_uniform_vec4("color", color); // color is a `Color`
-/// shader.set_uniform_mat4("matrix", transform); // transform is a `Transform`
-/// shader.set_uniform_texture("overlay", &texture); // texture is a `TextureBox`
+/// shader.set_uniform_vec4("color", color);
+/// shader.set_uniform_mat4("matrix", transform);
+/// shader.set_uniform_texture("overlay", &texture);
 /// shader.set_uniform_current_texture("current");
 /// ```
 ///

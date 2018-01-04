@@ -3,13 +3,12 @@ use graphics::{Image, IntRect, RenderWindow};
 use graphics::csfml_graphics_sys as ffi;
 use inputstream::InputStream;
 use sf_bool_ext::SfBoolExt;
-use std::borrow::{Borrow, ToOwned};
 use std::ffi::CString;
 use std::io::{Read, Seek};
-use std::ops::{Deref, DerefMut};
 use std::ptr;
-use system::Vector2u;
+use system::{Dispose, SfBox, Vector2u};
 use window::Window;
+use std::borrow::ToOwned;
 
 /// `Image` living on the graphics card that can be used for drawing.
 ///
@@ -96,7 +95,7 @@ impl Texture {
     ///
     /// This function is not part of the graphics API, it mustn't be
     /// used when drawing SFML entities. It must be used only if you
-    /// mix `TextureBox` with OpenGL code.
+    /// mix `Texture` with OpenGL code.
     pub fn bind(&self) {
         unsafe { ffi::sfTexture_bind(self.raw()) }
     }
@@ -110,17 +109,13 @@ impl Texture {
     }
     /// Create a new texture
     ///
-    /// # Arguments
-    /// * width - TextureBox width
-    /// * height - TextureBox height
-    ///
-    /// Return Some(TextureBox) or None
-    pub fn new(width: u32, height: u32) -> Option<TextureBox> {
+    /// Returns `None` on failure.
+    pub fn new(width: u32, height: u32) -> Option<SfBox<Texture>> {
         let tex = unsafe { ffi::sfTexture_create(width, height) };
         if tex.is_null() {
             None
         } else {
-            Some(TextureBox { texture: tex })
+            Some(SfBox(tex as _))
         }
     }
 
@@ -130,15 +125,15 @@ impl Texture {
     /// * mem - Pointer to the file data in memory
     /// * area - Area of the image to load
     ///
-    /// Return Some(TextureBox) or None
-    pub fn from_memory(mem: &[u8], area: &IntRect) -> Option<TextureBox> {
+    /// Returns `None` on failure.
+    pub fn from_memory(mem: &[u8], area: &IntRect) -> Option<SfBox<Texture>> {
         let tex = unsafe {
             ffi::sfTexture_createFromMemory(mem.as_ptr() as *const _, mem.len(), &area.raw())
         };
         if tex.is_null() {
             None
         } else {
-            Some(TextureBox { texture: tex })
+            Some(SfBox(tex as _))
         }
     }
 
@@ -147,14 +142,17 @@ impl Texture {
     /// # Arguments
     /// * stream - Your struct, implementing Read and Seek
     ///
-    /// Return Some(TextureBox) or None
-    pub fn from_stream<T: Read + Seek>(stream: &mut T, area: &mut IntRect) -> Option<TextureBox> {
+    /// Returns `None` on failure.
+    pub fn from_stream<T: Read + Seek>(
+        stream: &mut T,
+        area: &mut IntRect,
+    ) -> Option<SfBox<Texture>> {
         let mut input_stream = InputStream::new(stream);
         let tex = unsafe { ffi::sfTexture_createFromStream(&mut input_stream.0, &area.raw()) };
         if tex.is_null() {
             None
         } else {
-            Some(TextureBox { texture: tex })
+            Some(SfBox(tex as _))
         }
     }
 
@@ -163,14 +161,14 @@ impl Texture {
     /// # Arguments
     /// * filename - Path of the image file to load
     ///
-    /// Return Some(TextureBox) or None
-    pub fn from_file(filename: &str) -> Option<TextureBox> {
+    /// Returns `None` on failure.
+    pub fn from_file(filename: &str) -> Option<SfBox<Texture>> {
         let c_str = CString::new(filename.as_bytes()).unwrap();
         let tex = unsafe { ffi::sfTexture_createFromFile(c_str.as_ptr(), ptr::null()) };
         if tex.is_null() {
             None
         } else {
-            Some(TextureBox { texture: tex })
+            Some(SfBox(tex as _))
         }
     }
 
@@ -180,14 +178,14 @@ impl Texture {
     /// * filename - Path of the image file to load
     /// * area - Area of the source image to load
     ///
-    /// Return Some(TextureBox) or None
-    pub fn from_file_with_rect(filename: &str, area: &IntRect) -> Option<TextureBox> {
+    /// Returns `None` on failure.
+    pub fn from_file_with_rect(filename: &str, area: &IntRect) -> Option<SfBox<Texture>> {
         let c_str = CString::new(filename.as_bytes()).unwrap();
         let tex = unsafe { ffi::sfTexture_createFromFile(c_str.as_ptr(), &area.raw()) };
         if tex.is_null() {
             None
         } else {
-            Some(TextureBox { texture: tex })
+            Some(SfBox(tex as _))
         }
     }
 
@@ -197,13 +195,13 @@ impl Texture {
     /// * image - Image to upload to the texture
     /// * area - Area of the source image to load
     ///
-    /// Return Some(TextureBox) or None
-    pub fn from_image_with_rect(image: &Image, area: &IntRect) -> Option<TextureBox> {
+    /// Returns `None` on failure.
+    pub fn from_image_with_rect(image: &Image, area: &IntRect) -> Option<SfBox<Texture>> {
         let tex = unsafe { ffi::sfTexture_createFromImage(image.raw(), &area.raw()) };
         if tex.is_null() {
             None
         } else {
-            Some(TextureBox { texture: tex })
+            Some(SfBox(tex as _))
         }
     }
 
@@ -212,13 +210,13 @@ impl Texture {
     /// # Arguments
     /// * image - Image to upload to the texture
     ///
-    /// Return Some(TextureBox) or None
-    pub fn from_image(image: &Image) -> Option<TextureBox> {
+    /// Returns `None` on failure.
+    pub fn from_image(image: &Image) -> Option<SfBox<Texture>> {
         let tex = unsafe { ffi::sfTexture_createFromImage(image.raw(), ptr::null()) };
         if tex.is_null() {
             None
         } else {
-            Some(TextureBox { texture: tex })
+            Some(SfBox(tex as _))
         }
     }
 
@@ -350,52 +348,21 @@ impl Texture {
 }
 
 impl ToOwned for Texture {
-    type Owned = TextureBox;
+    type Owned = SfBox<Texture>;
 
     fn to_owned(&self) -> Self::Owned {
         let tex = unsafe { ffi::sfTexture_copy(self.raw()) };
         if tex.is_null() {
-            panic!("Not enough memory to clone TextureBox")
+            panic!("Not enough memory to copy texture.")
         } else {
-            TextureBox { texture: tex }
+            SfBox(tex as _)
         }
     }
 }
 
-/// Owning handle to a `Texture` allocated by CSFML.
-#[derive(Debug)]
-pub struct TextureBox {
-    texture: *mut ffi::sfTexture,
-}
-
-impl Deref for TextureBox {
-    type Target = Texture;
-
-    fn deref(&self) -> &Texture {
-        unsafe { &*(self.texture as *const Texture) }
-    }
-}
-
-impl DerefMut for TextureBox {
-    fn deref_mut(&mut self) -> &mut Self::Target {
-        unsafe { &mut *(self.texture as *mut Texture) }
-    }
-}
-
-impl Borrow<Texture> for TextureBox {
-    fn borrow(&self) -> &Texture {
-        &*self
-    }
-}
-
-impl Clone for TextureBox {
-    fn clone(&self) -> TextureBox {
-        (**self).to_owned()
-    }
-}
-
-impl Drop for TextureBox {
-    fn drop(&mut self) {
-        unsafe { ffi::sfTexture_destroy(self.texture) }
+impl Dispose for Texture {
+    unsafe fn dispose(&mut self) {
+        let ptr: *mut Self = self;
+        ffi::sfTexture_destroy(ptr as _)
     }
 }

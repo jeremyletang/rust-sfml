@@ -23,7 +23,7 @@ pub use self::shape::Shape;
 pub use self::sprite::Sprite;
 pub use self::text::Text;
 pub use self::text_style::TextStyle;
-pub use self::texture::{Texture, TextureBox};
+pub use self::texture::Texture;
 pub use self::transform::Transform;
 pub use self::transformable::Transformable;
 pub use self::vertex::Vertex;
