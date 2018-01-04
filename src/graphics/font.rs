@@ -3,10 +3,10 @@ use graphics::{Glyph, Texture};
 use graphics::csfml_graphics_sys as ffi;
 use inputstream::InputStream;
 use sf_bool_ext::SfBoolExt;
-use std::borrow::{Borrow, ToOwned};
+use std::borrow::ToOwned;
 use std::ffi::{CStr, CString};
 use std::io::{Read, Seek};
-use std::ops::{Deref, DerefMut};
+use system::{Dispose, SfBox};
 
 /// Type for loading and manipulating character fonts.
 ///
@@ -125,13 +125,13 @@ impl Font {
     /// SFML cannot preload all the font data in this function,
     /// so the file has to remain accessible until the `Font` object loads a new font or
     /// is destroyed.
-    pub fn from_file(filename: &str) -> Option<FontBox> {
+    pub fn from_file(filename: &str) -> Option<SfBox<Self>> {
         let c_str = CString::new(filename.as_bytes()).unwrap();
         let fnt = unsafe { ffi::sfFont_createFromFile(c_str.as_ptr()) };
         if fnt.is_null() {
             None
         } else {
-            Some(FontBox { font: fnt })
+            Some(SfBox(fnt as _))
         }
     }
 
@@ -140,14 +140,14 @@ impl Font {
     /// # Arguments
     /// * stream - Your struct, implementing Read and Seek
     ///
-    /// Return Some(FontBox) or None
-    pub fn from_stream<T: Read + Seek>(stream: &mut T) -> Option<FontBox> {
+    /// Returns `None` on failure.
+    pub fn from_stream<T: Read + Seek>(stream: &mut T) -> Option<SfBox<Self>> {
         let mut input_stream = InputStream::new(stream);
         let fnt = unsafe { ffi::sfFont_createFromStream(&mut input_stream.0) };
         if fnt.is_null() {
             None
         } else {
-            Some(FontBox { font: fnt })
+            Some(SfBox(fnt as _))
         }
     }
 
@@ -156,14 +156,14 @@ impl Font {
     /// # Arguments
     /// * memory -  The in-memory font file
     ///
-    /// Return Some(FontBox) or None
-    pub fn from_memory(memory: &[u8]) -> Option<FontBox> {
+    /// Returns `None` on failure.
+    pub fn from_memory(memory: &[u8]) -> Option<SfBox<Self>> {
         let fnt =
             unsafe { ffi::sfFont_createFromMemory(memory.as_ptr() as *const _, memory.len()) };
         if fnt.is_null() {
             None
         } else {
-            Some(FontBox { font: fnt })
+            Some(SfBox(fnt as _))
         }
     }
 
@@ -193,53 +193,21 @@ impl Font {
 }
 
 impl ToOwned for Font {
-    type Owned = FontBox;
+    type Owned = SfBox<Font>;
     fn to_owned(&self) -> Self::Owned {
         let fnt = unsafe { ffi::sfFont_copy(self.raw()) };
         if fnt.is_null() {
             panic!("Not enough memory to clone Font")
         } else {
-            FontBox { font: fnt }
+            SfBox(fnt as _)
         }
     }
 }
 
-/// Owning handle to a `Font` allocated by CSFML.
-#[derive(Debug)]
-pub struct FontBox {
-    font: *mut ffi::sfFont,
-}
-
-impl Deref for FontBox {
-    type Target = Font;
-
-    fn deref(&self) -> &Font {
-        unsafe { &*(self.font as *const Font) }
-    }
-}
-
-impl DerefMut for FontBox {
-    fn deref_mut(&mut self) -> &mut Self::Target {
-        unsafe { &mut *(self.font as *mut Font) }
-    }
-}
-
-impl Borrow<Font> for FontBox {
-    fn borrow(&self) -> &Font {
-        &*self
-    }
-}
-
-impl Clone for FontBox {
-    /// Return a new FontBox or panic! if there is not enough memory
-    fn clone(&self) -> FontBox {
-        (**self).to_owned()
-    }
-}
-
-impl Drop for FontBox {
-    fn drop(&mut self) {
-        unsafe { ffi::sfFont_destroy(self.font) }
+impl Dispose for Font {
+    unsafe fn dispose(&mut self) {
+        let ptr: *mut Self = self;
+        ffi::sfFont_destroy(ptr as _)
     }
 }
 

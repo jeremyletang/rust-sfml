@@ -8,7 +8,7 @@ pub use self::color::Color;
 pub use self::convex_shape::{ConvexShape, ConvexShapePoints};
 pub use self::custom_shape::{CustomShape, CustomShapePoints};
 pub use self::drawable::Drawable;
-pub use self::font::{Font, FontBox, Info as FontInfo};
+pub use self::font::{Font, Info as FontInfo};
 pub use self::glyph::Glyph;
 pub use self::image::Image;
 pub use self::primitive_type::PrimitiveType;
