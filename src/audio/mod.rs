@@ -5,7 +5,7 @@ extern crate csfml_audio_sys;
 
 pub use self::music::Music;
 pub use self::sound::Sound;
-pub use self::sound_buffer::{SoundBuffer, SoundBufferBox};
+pub use self::sound_buffer::SoundBuffer;
 pub use self::sound_source::SoundSource;
 pub use self::sound_status::SoundStatus;
 pub use self::sound_stream::{SoundStream, SoundStreamPlayer};

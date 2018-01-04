@@ -1,12 +1,11 @@
 use audio::csfml_audio_sys as ffi;
 use inputstream::InputStream;
 use sf_bool_ext::SfBoolExt;
-use std::borrow::{Borrow, ToOwned};
+use std::borrow::ToOwned;
 use std::ffi::CString;
 use std::io::{Read, Seek};
-use std::ops::Deref;
 use std::slice;
-use system::Time;
+use system::{Dispose, SfBox, Time};
 
 /// Storage for audio samples defining a sound.
 ///
@@ -139,41 +138,35 @@ impl SoundBuffer {
     /// # Arguments
     /// * filename - Path of the sound file to load
     ///
-    /// Return an option to a SoundBufferBox object or None.
-    pub fn from_file(filename: &str) -> Option<SoundBufferBox> {
+    /// Returns `None` on failure.
+    pub fn from_file(filename: &str) -> Option<SfBox<SoundBuffer>> {
         let c_str = CString::new(filename.as_bytes()).unwrap();
         let sound_buffer: *mut ffi::sfSoundBuffer =
             unsafe { ffi::sfSoundBuffer_createFromFile(c_str.as_ptr()) };
         if sound_buffer.is_null() {
             None
         } else {
-            Some(SoundBufferBox {
-                sound_buffer: sound_buffer,
-            })
+            Some(SfBox(sound_buffer as _))
         }
     }
     /// Load the sound buffer from a file in memory.
-    pub fn from_memory(data: &[u8]) -> Option<SoundBufferBox> {
+    pub fn from_memory(data: &[u8]) -> Option<SfBox<SoundBuffer>> {
         let sound_buffer =
             unsafe { ffi::sfSoundBuffer_createFromMemory(data.as_ptr() as _, data.len()) };
         if sound_buffer.is_null() {
             None
         } else {
-            Some(SoundBufferBox {
-                sound_buffer: sound_buffer,
-            })
+            Some(SfBox(sound_buffer as _))
         }
     }
     /// Load the sound buffer from a custom stream.
-    pub fn from_stream<T: Read + Seek>(stream: &mut T) -> Option<SoundBufferBox> {
+    pub fn from_stream<T: Read + Seek>(stream: &mut T) -> Option<SfBox<SoundBuffer>> {
         let mut stream = InputStream::new(stream);
         let buffer = unsafe { ffi::sfSoundBuffer_createFromStream(&mut stream.0) };
         if buffer.is_null() {
             None
         } else {
-            Some(SoundBufferBox {
-                sound_buffer: buffer,
-            })
+            Some(SfBox(buffer as _))
         }
     }
     /// Load the sound buffer from a slice of audio samples.
@@ -183,7 +176,7 @@ impl SoundBuffer {
         samples: &[i16],
         channel_count: u32,
         sample_rate: u32,
-    ) -> Option<SoundBufferBox> {
+    ) -> Option<SfBox<SoundBuffer>> {
         let buffer = unsafe {
             ffi::sfSoundBuffer_createFromSamples(
                 samples.as_ptr(),
@@ -195,55 +188,24 @@ impl SoundBuffer {
         if buffer.is_null() {
             None
         } else {
-            Some(SoundBufferBox {
-                sound_buffer: buffer,
-            })
+            Some(SfBox(buffer as _))
         }
     }
 }
 
 impl ToOwned for SoundBuffer {
-    type Owned = SoundBufferBox;
+    type Owned = SfBox<Self>;
 
     fn to_owned(&self) -> Self::Owned {
         let sound_buffer = unsafe { ffi::sfSoundBuffer_copy(self.raw()) };
         assert!(!sound_buffer.is_null(), "Failed to copy SoundBuffer");
-        SoundBufferBox {
-            sound_buffer: sound_buffer,
-        }
+        SfBox(sound_buffer as _)
     }
 }
 
-/// Owning handle to a `SoundBuffer` allocated by CSFML.
-#[derive(Debug)]
-pub struct SoundBufferBox {
-    sound_buffer: *mut ffi::sfSoundBuffer,
-}
-
-impl Deref for SoundBufferBox {
-    type Target = SoundBuffer;
-
-    fn deref(&self) -> &SoundBuffer {
-        unsafe { &*(self.sound_buffer as *const SoundBuffer) }
-    }
-}
-
-impl Borrow<SoundBuffer> for SoundBufferBox {
-    fn borrow(&self) -> &SoundBuffer {
-        &*self
-    }
-}
-
-impl Clone for SoundBufferBox {
-    fn clone(&self) -> Self {
-        (**self).to_owned()
-    }
-}
-
-impl Drop for SoundBufferBox {
-    fn drop(&mut self) {
-        unsafe {
-            ffi::sfSoundBuffer_destroy(self.sound_buffer);
-        }
+impl Dispose for SoundBuffer {
+    unsafe fn dispose(&mut self) {
+        let ptr: *mut Self = self;
+        ffi::sfSoundBuffer_destroy(ptr as _);
     }
 }
