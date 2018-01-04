@@ -158,9 +158,8 @@ impl Font {
     ///
     /// Return Some(FontBox) or None
     pub fn from_memory(memory: &[u8]) -> Option<FontBox> {
-        let fnt = unsafe {
-            ffi::sfFont_createFromMemory(memory.as_ptr() as *const _, memory.len())
-        };
+        let fnt =
+            unsafe { ffi::sfFont_createFromMemory(memory.as_ptr() as *const _, memory.len()) };
         if fnt.is_null() {
             None
         } else {

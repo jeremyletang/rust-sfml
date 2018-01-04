@@ -176,9 +176,7 @@ impl<'s> SoundSource for Sound<'s> {
         unsafe { ffi::sfSound_setPosition(self.sound, position.into().raw()) }
     }
     fn set_relative_to_listener(&mut self, relative: bool) {
-        unsafe {
-            ffi::sfSound_setRelativeToListener(self.sound, sfBool::from_bool(relative))
-        }
+        unsafe { ffi::sfSound_setRelativeToListener(self.sound, sfBool::from_bool(relative)) }
     }
     fn set_min_distance(&mut self, distance: f32) {
         unsafe { ffi::sfSound_setMinDistance(self.sound, distance) }

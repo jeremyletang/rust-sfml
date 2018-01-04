@@ -96,9 +96,7 @@ impl SoundBuffer {
                 panic!("Sample count {} too big to fit into usize", len);
             }
         }
-        unsafe {
-            slice::from_raw_parts(ffi::sfSoundBuffer_getSamples(self.raw()), len as usize)
-        }
+        unsafe { slice::from_raw_parts(ffi::sfSoundBuffer_getSamples(self.raw()), len as usize) }
     }
 
     /// Get the number of channels used by a sound buffer

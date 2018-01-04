@@ -64,9 +64,7 @@ impl RenderWindow {
     /// * height - Icon's height, in pixels
     /// * pixels - Vector of pixels
     pub fn set_icon(&mut self, width: u32, height: u32, pixels: &[u8]) {
-        unsafe {
-            ffi::sfRenderWindow_setIcon(self.render_window, width, height, pixels.as_ptr())
-        }
+        unsafe { ffi::sfRenderWindow_setIcon(self.render_window, width, height, pixels.as_ptr()) }
     }
 
     /// Pop the event on top of event queue, if any, and return it
@@ -167,9 +165,7 @@ impl RenderWindow {
     /// Return a structure containing the OpenGL context settings
     ///
     pub fn settings(&self) -> ContextSettings {
-        unsafe {
-            ContextSettings::from_raw(ffi::sfRenderWindow_getSettings(self.render_window))
-        }
+        unsafe { ContextSettings::from_raw(ffi::sfRenderWindow_getSettings(self.render_window)) }
     }
 
     /// Change the title of a window
@@ -272,9 +268,8 @@ impl RenderWindow {
     /// Return true if operation was successful, false otherwise
     ///
     pub fn set_active(&mut self, enabled: bool) -> bool {
-        unsafe {
-            ffi::sfRenderWindow_setActive(self.render_window, sfBool::from_bool(enabled))
-        }.to_bool()
+        unsafe { ffi::sfRenderWindow_setActive(self.render_window, sfBool::from_bool(enabled)) }
+            .to_bool()
     }
 
     /// Change the joystick threshold
@@ -321,9 +316,7 @@ impl RenderWindow {
 
     /// Returns the current position of the mouse relative to the window.
     pub fn mouse_position(&self) -> Vector2i {
-        unsafe {
-            Vector2i::from_raw(ffi::sfMouse_getPositionRenderWindow(self.render_window))
-        }
+        unsafe { Vector2i::from_raw(ffi::sfMouse_getPositionRenderWindow(self.render_window)) }
     }
 
     /// Set the current position of the mouse relatively to a render window

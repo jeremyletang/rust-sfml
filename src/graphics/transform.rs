@@ -167,9 +167,7 @@ impl Transform {
     ///
     /// Return the transformed rectangle
     pub fn transform_rect(&self, rectangle: &FloatRect) -> FloatRect {
-        unsafe {
-            FloatRect::from_raw(ffi::sfTransform_transformRect(&self.0, rectangle.raw()))
-        }
+        unsafe { FloatRect::from_raw(ffi::sfTransform_transformRect(&self.0, rectangle.raw())) }
     }
 }
 

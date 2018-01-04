@@ -95,9 +95,7 @@ impl<'s> CustomShape<'s> {
 
 impl<'s> Shape<'s> for CustomShape<'s> {
     fn set_texture(&mut self, texture: &'s Texture, reset_rect: bool) {
-        unsafe {
-            ffi::sfShape_setTexture(self.shape, texture.raw(), sfBool::from_bool(reset_rect))
-        }
+        unsafe { ffi::sfShape_setTexture(self.shape, texture.raw(), sfBool::from_bool(reset_rect)) }
     }
     fn disable_texture(&mut self) {
         unsafe { ffi::sfShape_setTexture(self.shape, ptr::null_mut(), sfTrue) }

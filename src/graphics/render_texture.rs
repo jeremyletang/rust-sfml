@@ -23,9 +23,8 @@ impl RenderTexture {
     ///
     /// Return Some(RenderTexture) or None
     pub fn new(width: u32, height: u32, depth_buffer: bool) -> Option<RenderTexture> {
-        let tex = unsafe {
-            ffi::sfRenderTexture_create(width, height, sfBool::from_bool(depth_buffer))
-        };
+        let tex =
+            unsafe { ffi::sfRenderTexture_create(width, height, sfBool::from_bool(depth_buffer)) };
         if tex.is_null() {
             None
         } else {
@@ -45,9 +44,8 @@ impl RenderTexture {
     /// # Arguments
     /// * active - true to activate, false to deactivate
     pub fn set_active(&mut self, active: bool) -> bool {
-        unsafe {
-            ffi::sfRenderTexture_setActive(self.render_texture, sfBool::from_bool(active))
-        }.to_bool()
+        unsafe { ffi::sfRenderTexture_setActive(self.render_texture, sfBool::from_bool(active)) }
+            .to_bool()
     }
 
     /// Get the target texture of a render texture
@@ -64,9 +62,7 @@ impl RenderTexture {
     /// # Arguments
     /// * smooth - true to enable smoothing, false to disable it
     pub fn set_smooth(&mut self, smooth: bool) {
-        unsafe {
-            ffi::sfRenderTexture_setSmooth(self.render_texture, sfBool::from_bool(smooth))
-        }
+        unsafe { ffi::sfRenderTexture_setSmooth(self.render_texture, sfBool::from_bool(smooth)) }
     }
 
     /// Tell whether the smooth filter is enabled or not for a render texture
@@ -134,9 +130,7 @@ impl RenderTarget for RenderTexture {
     ///
     /// Return the default view of the render texture
     fn default_view(&self) -> &View {
-        unsafe {
-            &*(ffi::sfRenderTexture_getDefaultView(self.render_texture) as *const View)
-        }
+        unsafe { &*(ffi::sfRenderTexture_getDefaultView(self.render_texture) as *const View) }
     }
 
     /// Get the viewport of a view applied to this target
@@ -304,16 +298,12 @@ impl RenderTarget for RenderTexture {
 
     /// Draw Shape
     fn draw_shape(&self, shape: &CustomShape, rs: RenderStates) {
-        unsafe {
-            ffi::sfRenderTexture_drawShape(self.render_texture, shape.raw(), &rs.raw())
-        }
+        unsafe { ffi::sfRenderTexture_drawShape(self.render_texture, shape.raw(), &rs.raw()) }
     }
 
     /// Draw Sprite
     fn draw_sprite(&self, sprite: &Sprite, rs: RenderStates) {
-        unsafe {
-            ffi::sfRenderTexture_drawSprite(self.render_texture, sprite.raw(), &rs.raw())
-        }
+        unsafe { ffi::sfRenderTexture_drawSprite(self.render_texture, sprite.raw(), &rs.raw()) }
     }
 
     /// Draw CircleShape

@@ -236,8 +236,7 @@ impl Iterator for ConvexShapePoints {
     type Item = Vector2f;
 
     fn next(&mut self) -> Option<Vector2f> {
-        let point_count =
-            unsafe { ffi::sfConvexShape_getPointCount(self.convex_shape) as u32 };
+        let point_count = unsafe { ffi::sfConvexShape_getPointCount(self.convex_shape) as u32 };
         if self.pos == point_count {
             None
         } else {

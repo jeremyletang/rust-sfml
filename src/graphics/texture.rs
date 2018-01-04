@@ -150,8 +150,7 @@ impl Texture {
     /// Return Some(TextureBox) or None
     pub fn from_stream<T: Read + Seek>(stream: &mut T, area: &mut IntRect) -> Option<TextureBox> {
         let mut input_stream = InputStream::new(stream);
-        let tex =
-            unsafe { ffi::sfTexture_createFromStream(&mut input_stream.0, &area.raw()) };
+        let tex = unsafe { ffi::sfTexture_createFromStream(&mut input_stream.0, &area.raw()) };
         if tex.is_null() {
             None
         } else {
@@ -240,9 +239,7 @@ impl Texture {
     /// * x - X offset in the texture where to copy the source pixels
     /// * y - Y offset in the texture where to copy the source pixels
     pub fn update_from_render_window(&mut self, render_window: &RenderWindow, x: u32, y: u32) {
-        unsafe {
-            ffi::sfTexture_updateFromRenderWindow(self.raw_mut(), render_window.raw(), x, y)
-        }
+        unsafe { ffi::sfTexture_updateFromRenderWindow(self.raw_mut(), render_window.raw(), x, y) }
     }
 
     /// Update a texture from the contents of an image

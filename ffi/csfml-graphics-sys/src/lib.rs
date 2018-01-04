@@ -2332,9 +2332,8 @@ extern "C" {
 extern "C" {
     pub fn sfShader_isGeometryAvailable() -> sfBool;
 }
-pub type sfShapeGetPointCountCallback = ::std::option::Option<
-    unsafe extern "C" fn(arg1: *mut ::std::os::raw::c_void) -> usize,
->;
+pub type sfShapeGetPointCountCallback =
+    ::std::option::Option<unsafe extern "C" fn(arg1: *mut ::std::os::raw::c_void) -> usize>;
 pub type sfShapeGetPointCallback = ::std::option::Option<
     unsafe extern "C" fn(arg1: usize, arg2: *mut ::std::os::raw::c_void) -> sfVector2f,
 >;

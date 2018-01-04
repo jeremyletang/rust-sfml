@@ -104,8 +104,7 @@ impl Window {
     /// Return Some(event) if an event was returned, or None if the event queue was empty
     pub fn poll_event(&mut self) -> Option<Event> {
         let mut event = unsafe { ::std::mem::uninitialized() };
-        let have_event =
-            unsafe { ffi::sfWindow_pollEvent(self.window, &mut event).to_bool() };
+        let have_event = unsafe { ffi::sfWindow_pollEvent(self.window, &mut event).to_bool() };
         if have_event {
             unsafe { Event::from_raw(&event) }
         } else {
@@ -126,8 +125,7 @@ impl Window {
     /// Return Some(event) or None if an error has occured
     pub fn wait_event(&mut self) -> Option<Event> {
         let mut event = unsafe { ::std::mem::uninitialized() };
-        let have_event =
-            unsafe { ffi::sfWindow_waitEvent(self.window, &mut event).to_bool() };
+        let have_event = unsafe { ffi::sfWindow_waitEvent(self.window, &mut event).to_bool() };
         if have_event {
             unsafe { Event::from_raw(&event) }
         } else {
@@ -202,9 +200,7 @@ impl Window {
     /// # Arguments
     /// * visible - true to  false to hide
     pub fn set_mouse_cursor_visible(&mut self, visible: bool) {
-        unsafe {
-            ffi::sfWindow_setMouseCursorVisible(self.window, sfBool::from_bool(visible))
-        }
+        unsafe { ffi::sfWindow_setMouseCursorVisible(self.window, sfBool::from_bool(visible)) }
     }
 
     /// Grab or release the mouse cursor.
@@ -212,9 +208,7 @@ impl Window {
     /// If set, grabs the mouse cursor inside this window's client area so it may no longer be
     /// moved outside its bounds. Note that grabbing is only active while the window has focus.
     pub fn set_mouse_cursor_grabbed(&mut self, grabbed: bool) {
-        unsafe {
-            ffi::sfWindow_setMouseCursorGrabbed(self.window, sfBool::from_bool(grabbed))
-        }
+        unsafe { ffi::sfWindow_setMouseCursorGrabbed(self.window, sfBool::from_bool(grabbed)) }
     }
 
     /// Enable or disable vertical synchronization
@@ -227,9 +221,7 @@ impl Window {
     /// # Arguments
     /// * enabled - true to enable v-sync, false to deactivate
     pub fn set_vertical_sync_enabled(&mut self, enabled: bool) {
-        unsafe {
-            ffi::sfWindow_setVerticalSyncEnabled(self.window, sfBool::from_bool(enabled))
-        }
+        unsafe { ffi::sfWindow_setVerticalSyncEnabled(self.window, sfBool::from_bool(enabled)) }
     }
 
     /// Enable or disable automatic key-repeat

@@ -111,12 +111,10 @@ pub type sfInputStreamReadFunc = ::std::option::Option<
 pub type sfInputStreamSeekFunc = ::std::option::Option<
     unsafe extern "C" fn(position: sfInt64, userData: *mut ::std::os::raw::c_void) -> sfInt64,
 >;
-pub type sfInputStreamTellFunc = ::std::option::Option<
-    unsafe extern "C" fn(userData: *mut ::std::os::raw::c_void) -> sfInt64,
->;
-pub type sfInputStreamGetSizeFunc = ::std::option::Option<
-    unsafe extern "C" fn(userData: *mut ::std::os::raw::c_void) -> sfInt64,
->;
+pub type sfInputStreamTellFunc =
+    ::std::option::Option<unsafe extern "C" fn(userData: *mut ::std::os::raw::c_void) -> sfInt64>;
+pub type sfInputStreamGetSizeFunc =
+    ::std::option::Option<unsafe extern "C" fn(userData: *mut ::std::os::raw::c_void) -> sfInt64>;
 #[repr(C)]
 #[derive(Debug, Copy)]
 pub struct sfInputStream {

@@ -55,8 +55,7 @@ impl Image {
     ///
     /// Return Some(Image) or None
     pub fn from_memory(mem: &[u8]) -> Option<Image> {
-        let image =
-            unsafe { ffi::sfImage_createFromMemory(mem.as_ptr() as *const _, mem.len()) };
+        let image = unsafe { ffi::sfImage_createFromMemory(mem.as_ptr() as *const _, mem.len()) };
         if image.is_null() {
             None
         } else {
