@@ -1,8 +1,7 @@
 use graphics::FloatRect;
 use graphics::csfml_graphics_sys as ffi;
-use std::borrow::{Borrow, ToOwned};
-use std::ops::{Deref, DerefMut};
-use system::Vector2f;
+use std::borrow::ToOwned;
+use system::{Dispose, RawDefault, SfBox, Vector2f};
 
 /// 2D camera that defines what region is shown on screen
 ///
@@ -45,8 +44,8 @@ impl View {
     /// # Arguments
     /// * center - The center of the view
     /// * size - The size of the view
-    pub fn new(center: Vector2f, size: Vector2f) -> ViewBox {
-        let mut view = ViewBox::default();
+    pub fn new(center: Vector2f, size: Vector2f) -> SfBox<View> {
+        let mut view: SfBox<View> = Default::default();
         view.set_center(center);
         view.set_size(size);
         view
@@ -56,10 +55,10 @@ impl View {
     ///
     /// # Arguments
     /// * rectangle - The rectangle defining the zone to display
-    pub fn from_rect(rectangle: &FloatRect) -> ViewBox {
+    pub fn from_rect(rectangle: &FloatRect) -> SfBox<View> {
         let view = unsafe { ffi::sfView_createFromRect(rectangle.raw()) };
-        assert!(!view.is_null(), "Failed to create ViewBox from Rect");
-        ViewBox { view: view }
+        assert!(!view.is_null(), "Failed to create View from Rect");
+        SfBox(view as _)
     }
 
     /// Set the orientation of a view
@@ -155,60 +154,28 @@ impl View {
 }
 
 impl ToOwned for View {
-    type Owned = ViewBox;
+    type Owned = SfBox<Self>;
     fn to_owned(&self) -> Self::Owned {
         let view = unsafe { ffi::sfView_copy(self.raw()) };
         if view.is_null() {
-            panic!("Not enough memory to clone ViewBox")
+            panic!("Not enough memory to clone View")
         } else {
-            ViewBox { view: view }
+            SfBox(view as _)
         }
     }
 }
 
-/// An owning handle to a `View` allocated by CSFML.
-#[derive(Debug)]
-pub struct ViewBox {
-    view: *mut ffi::sfView,
-}
-
-impl Deref for ViewBox {
-    type Target = View;
-
-    fn deref(&self) -> &View {
-        unsafe { &*(self.view as *const View) }
-    }
-}
-
-impl DerefMut for ViewBox {
-    fn deref_mut(&mut self) -> &mut View {
-        unsafe { &mut *(self.view as *mut View) }
-    }
-}
-
-impl Default for ViewBox {
-    fn default() -> Self {
+impl RawDefault for View {
+    fn raw_default() -> *mut Self {
         let view = unsafe { ffi::sfView_create() };
-        assert!(!view.is_null(), "Failed to create ViewBox");
-        ViewBox { view: view }
+        assert!(!view.is_null(), "Failed to create View");
+        view as _
     }
 }
 
-impl Borrow<View> for ViewBox {
-    fn borrow(&self) -> &View {
-        &*self
-    }
-}
-
-impl Clone for ViewBox {
-    /// Return a new ViewBox or panic! if there is not enough memory
-    fn clone(&self) -> ViewBox {
-        (**self).to_owned()
-    }
-}
-
-impl Drop for ViewBox {
-    fn drop(&mut self) {
-        unsafe { ffi::sfView_destroy(self.view) }
+impl Dispose for View {
+    unsafe fn dispose(&mut self) {
+        let ptr: *mut Self = self;
+        ffi::sfView_destroy(ptr as _)
     }
 }

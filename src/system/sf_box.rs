@@ -42,3 +42,13 @@ impl<T: Dispose> Drop for SfBox<T> {
 pub trait Dispose {
     unsafe fn dispose(&mut self);
 }
+
+pub trait RawDefault {
+    fn raw_default() -> *mut Self;
+}
+
+impl<T: Dispose + RawDefault> Default for SfBox<T> {
+    fn default() -> Self {
+        SfBox(T::raw_default())
+    }
+}
