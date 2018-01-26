@@ -152,10 +152,7 @@ impl ListingResponse {
     ///
     /// Return the status code
     pub fn status(&self) -> Status {
-        unsafe {
-            mem::transmute(ffi::sfFtpListingResponse_getStatus(self.listing_response)
-                as i32)
-        }
+        unsafe { mem::transmute(ffi::sfFtpListingResponse_getStatus(self.listing_response) as i32) }
     }
 
     /// Get the full message contained in a FTP listing response

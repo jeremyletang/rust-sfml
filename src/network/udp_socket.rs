@@ -64,10 +64,7 @@ impl UdpSocket {
     ///
     /// Return the tatus code
     pub fn bind(&self, port: u16, address: IpAddress) -> SocketStatus {
-        unsafe {
-            mem::transmute(ffi::sfUdpSocket_bind(self.socket, port, address.raw())
-                as i32)
-        }
+        unsafe { mem::transmute(ffi::sfUdpSocket_bind(self.socket, port, address.raw()) as i32) }
     }
 
     /// Unbind a UDP socket from the local port to which it is bound
