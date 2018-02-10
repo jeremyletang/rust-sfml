@@ -81,7 +81,7 @@ impl Transform {
     ///
     /// # Arguments
     /// * other - Transform to combine to transform
-    pub fn combine(&mut self, other: &mut Transform) {
+    pub fn combine(&mut self, other: &Transform) {
         unsafe { ffi::sfTransform_combine(&mut self.0, &other.0) }
     }
 
