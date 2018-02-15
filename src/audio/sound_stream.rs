@@ -4,7 +4,6 @@ use audio::csfml_audio_sys::*;
 use csfml_system_sys::*;
 use sf_bool_ext::SfBoolExt;
 use std::os::raw::c_void;
-use std::panic;
 use system::{Time, Vector3f};
 
 /// Trait for streamed audio sources.
@@ -34,14 +33,7 @@ unsafe extern "C" fn get_data_callback<S: SoundStream>(
     user_data: *mut c_void,
 ) -> sfBool {
     let stream = user_data as *mut S;
-    let (data, keep_playing) =
-        match panic::catch_unwind(panic::AssertUnwindSafe(|| (*stream).get_data())) {
-            Ok(ret) => ret,
-            Err(_) => {
-                eprintln!("sound_stream: Stopping playback beacuse `get_data` panicked.");
-                (&mut [][..], false)
-            }
-        };
+    let (data, keep_playing) = (*stream).get_data();
     (*chunk).samples = data.as_mut_ptr();
     (*chunk).sampleCount = data.len() as u32;
     sfBool::from_bool(keep_playing)
@@ -49,13 +41,7 @@ unsafe extern "C" fn get_data_callback<S: SoundStream>(
 
 unsafe extern "C" fn seek_callback<S: SoundStream>(offset: sfTime, user_data: *mut c_void) {
     let stream = user_data as *mut S;
-
-    let result = panic::catch_unwind(panic::AssertUnwindSafe(|| {
-        (*stream).seek(Time::from_raw(offset))
-    }));
-    if result.is_err() {
-        eprintln!("sound_stream: Failed to seek because `seek` panicked.");
-    }
+    (*stream).seek(Time::from_raw(offset));
 }
 
 impl<'a, S: SoundStream> SoundStreamPlayer<'a, S> {
