@@ -26,7 +26,7 @@ use csfml_system_sys::{sfBool, sfFalse, sfTrue};
 /// ```
 pub type Bool = sfBool;
 
-/// Boolean false value used by CSFML.
+/// Boolean `false` value used by CSFML.
 pub const FALSE: Bool = sfFalse;
 /// Boolean `true` value used by CSFML.
 pub const TRUE: Bool = sfTrue;
