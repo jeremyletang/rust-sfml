@@ -11,7 +11,7 @@ use system::{Time, Vector3f};
 pub trait SoundStream {
     /// Request a new chunk of audio samples from the stream source.
     ///
-    /// Returns (`chunk`, `keep_playing`), where `chunk` is the chunk of audio samples,
+    /// Returns `(chunk, keep_playing)`, where `chunk` is the chunk of audio samples,
     /// and `keep_playing` tells the streaming loop whether to keep playing or to stop.
     fn get_data(&mut self) -> (&mut [i16], bool);
     /// Change the current playing position in the stream source.
@@ -22,7 +22,7 @@ pub trait SoundStream {
     fn sample_rate(&self) -> u32;
 }
 
-/// Player for custom streamed audio sources. See `SoundStream`.
+/// Player for custom streamed audio sources. See [`SoundStream`].
 #[derive(Debug)]
 pub struct SoundStreamPlayer<'a, S: SoundStream + 'a> {
     sf_sound_stream: *mut sfSoundStream,
@@ -59,7 +59,7 @@ unsafe extern "C" fn seek_callback<S: SoundStream>(offset: sfTime, user_data: *m
 }
 
 impl<'a, S: SoundStream> SoundStreamPlayer<'a, S> {
-    /// Create a new `SoundStreamPlayer` with the specified `SoundStream`.
+    /// Create a new `SoundStreamPlayer` with the specified [`SoundStream`].
     pub fn new(sound_stream: &'a mut S) -> Self {
         let ptr: *mut S = sound_stream;
         SoundStreamPlayer {
@@ -94,10 +94,12 @@ impl<'a, S: SoundStream> SoundStreamPlayer<'a, S> {
     pub fn status(&self) -> SoundStatus {
         unsafe { ::std::mem::transmute(sfSoundStream_getStatus(self.sf_sound_stream)) }
     }
-    /// Stop playing, lending out the underlying `SoundStream`.
+    /// Stop playing, lending out the underlying [`SoundStream`].
     ///
     /// This function stops the stream if it was playing or paused, and does nothing if it was
-    /// already stopped. It also resets the playing position (unlike pause()).
+    /// already stopped. It also resets the playing position (unlike [`pause`]).
+    ///
+    /// [`pause`]: SoundStreamPlayer::pause
     ///
     /// It lends out the underlying `SoundStream`, allowing it to be manipulated.
     ///
@@ -157,7 +159,7 @@ impl<'a, S: SoundStream> SoundStreamPlayer<'a, S> {
     /// Set whether or not the stream should loop after reaching the end.
     ///
     /// If set, the stream will restart from beginning after reaching the end and so on,
-    /// until it is stopped or setLoop(false) is called.
+    /// until it is stopped or `set_looping(false)` is called.
     /// The default looping state for streams is false.
     pub fn set_looping(&mut self, looping: bool) {
         unsafe { sfSoundStream_setLoop(self.sf_sound_stream, SfBoolExt::from_bool(looping)) }

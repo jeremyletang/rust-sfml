@@ -34,8 +34,8 @@ use std::ptr;
 ///
 /// Some SFML-specific types can be converted:
 ///
-/// - `Color` as a 4D vector (`vec4`)
-/// - `Transform` as matrices (`mat3` or `mat4`)
+/// - [`Color`] as a 4D vector (`vec4`)
+/// - [`Transform`] as matrices (`mat3` or `mat4`)
 /// Every uniform variable in a shader can be set through one of the
 /// `set_uniform_*()` or `set_uniform_array_*()` methods.
 /// For example, if you have a shader with the following uniforms:
@@ -68,8 +68,8 @@ use std::ptr;
 /// ```
 ///
 /// To apply a shader to a drawable,
-/// you must set the `shader` field of a `RenderStates` instance, and use
-/// `RenderTarget::draw_with_renderstates`. Example:
+/// you must set the `shader` field of a [`RenderStates`] instance, and use
+/// [`RenderTarget::draw_with_renderstates`]. Example:
 ///
 /// ```no_run
 /// # use sfml::graphics::*;
@@ -82,10 +82,10 @@ use std::ptr;
 /// ```
 ///
 /// Shaders can be used on any drawable, but some combinations are not interesting.
-/// For example, using a vertex shader on a `Sprite` is limited
+/// For example, using a vertex shader on a [`Sprite`] is limited
 /// because there are only 4 vertices,
 /// the sprite would have to be subdivided in order to apply wave effects.
-/// Another bad example is a fragment shader with `Text`: the texture of the text is
+/// Another bad example is a fragment shader with [`Text`]: the texture of the text is
 /// not the actual text that you see on screen,
 /// it is a big texture containing all the characters of the font in an arbitrary order;
 /// thus, texture lookups on pixels other than the current one may not give you
@@ -94,16 +94,16 @@ use std::ptr;
 /// Shaders can also be used to apply global post-effects to the current contents of the
 /// target (like the old `sf::PostFx` class in SFML 1). This can be done in two different ways:
 ///
-/// - draw everything to a `RenderTexture`, then draw it to the main target using the shader
+/// - draw everything to a [`RenderTexture`], then draw it to the main target using the shader
 ///
-/// - draw everything directly to the main target, then use `Texture::update_from_window` to copy
+/// - draw everything directly to the main target, then use [`Texture::update_from_window`] to copy
 ///   its contents to a texture and draw it to the main target using the shader.
 ///
 /// The first technique is more optimized because it doesn't involve retrieving the target's
 /// pixels to system memory, but the second one doesn't impact the rendering process and can
 /// be easily inserted anywhere without impacting all the code.
 ///
-/// Like `Texture` that can be used as a raw OpenGL texture, `Shader` can also be used
+/// Like [`Texture`] that can be used as a raw OpenGL texture, `Shader` can also be used
 /// directly as a raw shader for custom OpenGL geometry.
 ///
 /// ```no_run
@@ -278,7 +278,7 @@ impl<'texture> Shader<'texture> {
     /// If it returns `false`,
     /// then any attempt to use `Shader` geometry shader features will fail.
     ///
-    /// This function can only return true if `is_available()` would also return `true`,
+    /// This function can only return true if [`Shader::is_available`] would also return `true`,
     /// since shaders in general have to be supported in order for geometry shaders
     /// to be supported as well.
     ///
@@ -317,8 +317,10 @@ impl<'texture> Shader<'texture> {
 
     /// Specify value for vec4 uniform.
     ///
-    /// This function can also be called with `Color` objects that are converted to
-    /// `glsl::Vec4`.
+    /// This function can also be called with [`Color`] objects that are converted to
+    /// [`glsl::Vec4`].
+    ///
+    /// [`Color`]: ::graphics::Color
     ///
     /// It is important to note that the components of the color are normalized before being
     /// passed to the shader. Therefore, they are converted from range `[0 .. 255]` to range
@@ -364,10 +366,13 @@ impl<'texture> Shader<'texture> {
 
     /// Specify value for `ivec4` uniform.
     ///
-    /// This overload can also be called with `Color` objects that are converted to `glsl::Ivec4`.
+    /// This overload can also be called with [`Color`] objects that are
+    /// converted to [`glsl::IVec4`].
+    ///
+    /// [`Color`]: ::graphics::Color
     ///
     /// If color conversions are used, the `ivec4` uniform in GLSL will hold the same values
-    /// as the original `Color` instance. For example, `Color{r: 255, g: 127, b: 0, a: 255}`
+    /// as the original [`Color`] instance. For example, `Color{r: 255, g: 127, b: 0, a: 255}`
     /// is mapped to `IVec4{x: 255, y: 127, z: 0, w: 255}`.
     pub fn set_uniform_ivec4<V>(&mut self, name: &str, value: V)
     where
@@ -450,7 +455,7 @@ impl<'texture> Shader<'texture> {
     /// The corresponding parameter in the shader must be a 2D texture (`sampler2D` GLSL type).
     ///
     /// To use the texture of the object being drawn, which cannot be known in advance,
-    /// use `set_uniform_current_texture`.
+    /// use [`Shader::set_uniform_current_texture`].
     pub fn set_uniform_texture(&mut self, name: &str, value: &'texture Texture) {
         unsafe {
             let cstring = CString::new(name).unwrap();

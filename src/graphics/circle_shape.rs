@@ -18,7 +18,7 @@ impl<'s> CircleShape<'s> {
     /// Create a new circle shape initialized with a texture
     ///
     /// # Arguments
-    /// * texture - The texture to initialize the CircleShape with.
+    /// * texture - The texture to initialize the `CircleShape` with.
     ///
     /// Return Some(CircleShape) or None
     pub fn with_texture(texture: &'s Texture) -> CircleShape<'s> {
@@ -27,11 +27,11 @@ impl<'s> CircleShape<'s> {
         shape
     }
 
-    /// Create a new CircleShape and initialize it.
+    /// Create a new `CircleShape` and initialize it.
     ///
     /// # Arguments:
-    /// * radius - The radius of the CircleShape
-    /// * point_count - The number of points to define the CircleShape
+    /// * radius - The radius of the `CircleShape`
+    /// * point_count - The number of points to define the `CircleShape`
     ///
     /// Default value on SFML are radius = 0 / pointCount = 30
     pub fn new(radius: f32, point_count: u32) -> CircleShape<'s> {
@@ -199,7 +199,7 @@ impl<'s> Shape<'s> for CircleShape<'s> {
 }
 
 impl<'s> Clone for CircleShape<'s> {
-    /// Return a new CircleShape or panic! if there is not enough memory
+    /// Return a new `CircleShape` or panic if there is not enough memory
     fn clone(&self) -> CircleShape<'s> {
         let circle = unsafe { ffi::sfCircleShape_copy(self.circle_shape) };
         if circle.is_null() {

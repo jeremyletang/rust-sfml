@@ -41,7 +41,7 @@ use system::{Bool, FALSE};
 /// Please note that these values are only a hint. No failure will be reported if one or more
 /// of these values are not supported by the system; instead, SFML will try to find the closest
 /// valid match. You can then retrieve the settings that the window actually used to create
-/// its context, with `Window::settings()`.
+/// its context, with [`Window::settings`].
 #[repr(C)]
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
 pub struct ContextSettings {

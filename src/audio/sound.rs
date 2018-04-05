@@ -19,12 +19,14 @@ use system::Vector3f;
 ///
 /// `Sound` is perfect for playing short sounds that can fit in memory and require no latency,
 /// like foot steps or gun shots. For longer sounds, like background musics or long speeches,
-/// rather see `Music` (which is based on streaming).
+/// rather see [`Music`] (which is based on streaming).
 ///
 /// In order to work, a sound must be given a buffer of audio data to play.
-/// Audio data (samples) is stored in `SoundBuffer`, and attached to a sound with the
-/// `set_buffer()` function. The buffer object attached to a sound must remain alive as long as
+/// Audio data (samples) is stored in [`SoundBuffer`], and attached to a sound with the
+/// [`set_buffer`] function. The buffer object attached to a sound must remain alive as long as
 /// the sound uses it. Note that multiple sounds can use the same sound buffer at the same time.
+///
+/// [`set_buffer`]: Sound::set_buffer
 ///
 /// # Usage example
 ///
@@ -42,7 +44,7 @@ pub struct Sound<'s> {
 }
 
 impl<'s> Sound<'s> {
-    /// Create a new Sound
+    /// Create a new `Sound`
     pub fn new() -> Sound<'s> {
         let s = unsafe { ffi::sfSound_create() };
         assert!(!s.is_null(), "Failed to create Sound");
@@ -52,7 +54,7 @@ impl<'s> Sound<'s> {
         }
     }
 
-    /// Create a new Sound with a buffer
+    /// Create a new `Sound` with a buffer
     pub fn with_buffer(buffer: &SoundBuffer) -> Sound {
         let mut s = Sound::new();
         s.set_buffer(buffer);

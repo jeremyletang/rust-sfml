@@ -18,7 +18,7 @@ use system::Time;
 /// let time2 = clock.restart();
 /// ```
 ///
-/// The `Time` value returned by the clock can then be converted to
+/// The [`Time`] value returned by the clock can then be converted to
 /// a number of seconds, milliseconds or even microseconds.
 #[derive(Debug)]
 pub struct Clock(*mut ffi::sfClock);
@@ -31,8 +31,10 @@ impl Clock {
 
     /// Gets the elapsed time.
     ///
-    /// This function returns the time elapsed since the last call to restart()
-    /// (or the construction of the instance if restart() has not been called).
+    /// This function returns the time elapsed since the last call to [`restart`]
+    /// (or the construction of the instance if [`restart`] has not been called).
+    ///
+    /// [`restart`]: Clock::restart
     pub fn elapsed_time(&self) -> Time {
         unsafe { Time::from_raw(ffi::sfClock_getElapsedTime(self.0)) }
     }

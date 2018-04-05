@@ -3,7 +3,7 @@ use std::borrow::{Borrow, ToOwned};
 
 /// An owning pointer to an SFML-allocated object.
 ///
-/// On `Drop`, it calls the appropriate SFML destructor for the object.
+/// On [`Drop`], it calls the appropriate SFML destructor for the object.
 #[derive(Debug)]
 pub struct SfBox<T: Dispose>(pub(crate) *mut T);
 

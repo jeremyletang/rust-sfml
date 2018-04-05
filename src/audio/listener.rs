@@ -3,7 +3,7 @@
 //! The audio listener defines the global properties of the audio environment,
 //! it defines where and how sounds and musics are heard.
 //!
-//! If `View` is the eyes of the user, then `listener` is his ears (by the way, they are often
+//! If [`View`] is the eyes of the user, then `listener` is his ears (by the way, they are often
 //! linked together – same position, orientation, etc.).
 //!
 //! `listener` is a simple interface, which allows to setup the listener in the 3D audio environment
@@ -23,6 +23,9 @@
 //! // Reduce the global volume
 //! listener::set_global_volume(50.);
 //! ```
+//!
+//! [`View`]: ::graphics::View
+//!
 
 use audio::csfml_audio_sys as ffi;
 use system::Vector3f;

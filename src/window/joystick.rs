@@ -5,24 +5,28 @@
 //! Each joystick is identified by an index that is passed to the functions of this module.
 //!
 //! This module allows users to query the state of joysticks at any time and directly,
-//! without having to deal with a window and its events. Compared to the `JoystickMoved`,
-//! `JoystickButtonPressed` and `JoystickButtonReleased` events, `Joystick` can retrieve the
+//! without having to deal with a window and its events. Compared to the [`JoystickMoved`],
+//! [`JoystickButtonPressed`] and [`JoystickButtonReleased`] events, `Joystick` can retrieve the
 //! state of axes and buttons of joysticks at any time (you don't need to store and update a
-//! boolean on your side in order to know if a button is pressed or released), and you always get
-//! the real state of joysticks, even if they are moved, pressed or released when your window is
-//! out of focus and no event is triggered.
+//! boolean on your side in order to know if a button is pressed or released),
+//! and you always get the real state of joysticks, even if they are moved,
+//! pressed or released when your window is out of focus and no event is triggered.
+//!
+//! [`JoystickMoved`]: ::window::Event::JoystickMoved
+//! [`JoystickButtonPressed`]: ::window::Event::JoystickButtonPressed
+//! [`JoystickButtonReleased`]: ::window::Event::JoystickButtonReleased
 //!
 //! SFML supports:
 //!
-//! - 8 joysticks (`COUNT`)
-//! - 32 buttons per joystick (`BUTTON_COUNT`)
-//! - 8 axes per joystick (`AXIS_COUNT`)
+//! - 8 joysticks ([`COUNT`])
+//! - 32 buttons per joystick ([`BUTTON_COUNT`])
+//! - 8 axes per joystick ([`AXIS_COUNT`])
 //!
 //! Unlike the keyboard or mouse, the state of joysticks is sometimes not directly
-//! available (depending on the OS), therefore an `update()` function must be called in order to
+//! available (depending on the OS), therefore an [`update`] function must be called in order to
 //! update the current state of joysticks. When you have a window with event handling, this is
 //! done automatically, you don't need to call anything. But if you have no window, or if you want
-//! to check joysticks state before creating one, you must call `joystick::update` explicitly.
+//! to check joysticks state before creating one, you must call [`update`] explicitly.
 //! # Usage example
 //!
 //! ```
@@ -114,7 +118,7 @@ pub fn button_count(joystick: u32) -> u32 {
     unsafe { ffi::sfJoystick_getButtonCount(joystick) }
 }
 
-/// Check if the joystick support a given Axis
+/// Check if the joystick support a given axis
 ///
 /// If the joystick is not connected, this function returns false.
 ///
@@ -140,7 +144,7 @@ pub fn is_button_pressed(joystick: u32, button: u32) -> bool {
     unsafe { ffi::sfJoystick_isButtonPressed(joystick, button).to_bool() }
 }
 
-/// Get the current position on a given Axis, on a given joystick.
+/// Get the current position on a given axis, on a given joystick.
 ///
 /// If the joystick is not connected, this function returns 0.
 ///

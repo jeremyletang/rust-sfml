@@ -5,9 +5,11 @@ use system::Vector2f;
 pub trait Shape<'s>: Drawable + Transformable {
     /// Changes the source texture of the shape.
     ///
-    /// If `reset_rect` is `true`, the `texture_rect` property of the shape is automatically
+    /// If `reset_rect` is `true`, the [`texture_rect`] property of the shape is automatically
     /// adjusted to the size of the new texture.
     /// If it is `false`, the texture rect is left unchanged.
+    ///
+    /// [`texture_rect`]: Shape::texture_rect
     fn set_texture(&mut self, texture: &'s Texture, reset_rect: bool);
     /// Disables texturing for this shape.
     fn disable_texture(&mut self);
@@ -20,7 +22,7 @@ pub trait Shape<'s>: Drawable + Transformable {
     ///
     /// This color is modulated (multiplied) with the shape's texture if any.
     /// It can be used to colorize the shape, or change its global opacity.
-    /// You can use `Color::transparent()` to make the inside of the shape transparent,
+    /// You can use [`Color::TRANSPARENT`] to make the inside of the shape transparent,
     /// and have the outline alone. By default, the shape's fill color is opaque white.
     fn set_fill_color(&mut self, color: &Color);
     /// Sets the outline color of the shape.

@@ -6,11 +6,13 @@ use sf_bool_ext::SfBoolExt;
 use system::{Vector2f, Vector2i, Vector2u};
 use window::{ContextSettings, Event, Style, VideoMode};
 
-/// Window that can serve as a target for 2D drawing.
+/// [`Window`] that can serve as a target for 2D drawing.
 ///
 /// `RenderWindow` is the main type of the graphics module.
 /// It defines an OS window that can be painted using the other classes
 /// of the graphics module.
+///
+/// [`Window`]: ::window::Window
 #[derive(Debug)]
 pub struct RenderWindow {
     render_window: *mut ffi::sfRenderWindow,
@@ -23,7 +25,7 @@ impl RenderWindow {
     /// depth defined in mode. An optional style can be passed to
     /// customize the look and behaviour of the window (borders,
     /// title bar, resizable, closable, ...). If style contains
-    /// `FULLSCREEN`, then mode must be a valid video mode.
+    /// [`Style::FULLSCREEN`], then mode must be a valid video mode.
     ///
     /// The fourth parameter is a pointer to a structure specifying
     /// advanced OpenGL context settings such as antialiasing,
@@ -145,7 +147,7 @@ impl RenderWindow {
     /// Limit the framerate to a maximum fixed frequency
     ///
     /// If a limit is set, the window will use a small delay after
-    /// each call to `RenderWindow::display` to ensure that the current frame
+    /// each call to [`RenderWindow::display`] to ensure that the current frame
     /// lasted long enough to match the framerate limit.
     ///
     /// # Arguments
@@ -158,7 +160,7 @@ impl RenderWindow {
     /// Get the settings of the OpenGL context of a window
     ///
     /// Note that these settings may be different from what was
-    /// passed to the `RenderWindow::create` function,
+    /// passed to the [`RenderWindow::new`] function,
     /// if one or more settings were not supported. In this case,
     /// SFML chose the closest match.
     ///
@@ -240,8 +242,8 @@ impl RenderWindow {
     /// Enable or disable automatic key-repeat
     ///
     /// If key repeat is enabled, you will receive repeated
-    /// KeyPress events while keeping a key pressed. If it is disabled,
-    /// you will only get a single event when the key is pressed.
+    /// [`::window::Event::KeyPressed`] events while keeping a key pressed.
+    /// If it is disabled, you will only get a single event when the key is pressed.
     ///
     /// Key repeat is enabled by default.
     ///
@@ -275,7 +277,7 @@ impl RenderWindow {
     /// Change the joystick threshold
     ///
     /// The joystick threshold is the value below which
-    /// no JoyMoved event will be generated.
+    /// no [`::window::Event::JoystickMoved`] event will be generated.
     ///
     /// # Arguments
     /// * threshold - New threshold, in the range [0, 100]
@@ -354,7 +356,7 @@ impl RenderWindow {
     /// At any given time, only one window may have the input focus to receive input events
     /// such as keystrokes or mouse events. If a window requests focus, it only hints to the
     /// operating system, that it would like to be focused. The operating system is free to
-    /// deny the request. This is not to be confused with `set_active()`.
+    /// deny the request. This is not to be confused with [`RenderWindow::set_active`].
     pub fn request_focus(&self) {
         unsafe { ffi::sfRenderWindow_requestFocus(self.render_window) }
     }
@@ -364,93 +366,24 @@ impl RenderWindow {
 }
 
 impl RenderTarget for RenderWindow {
-    /// Save the current OpenGL render states and matrices
-    ///
-    /// This function can be used when you mix SFML drawing
-    /// and direct OpenGL rendering. Combined with popGLStates,
-    /// it ensures that:
-    /// SFML's internal states are not messed up by your OpenGL code
-    /// and that your OpenGL states are not modified by a call to a SFML function
-    ///
-    /// Note that this function is quite expensive: it saves all the
-    /// possible OpenGL states and matrices, even the ones you
-    /// don't care about. Therefore it should be used wisely.
-    /// It is provided for convenience, but the best results will
-    /// be achieved if you handle OpenGL states yourself (because
-    /// you know which states have really changed, and need to be
-    /// saved and restored). Take a look at the resetGLStates
-    /// function if you do so.
     fn push_gl_states(&mut self) {
         unsafe { ffi::sfRenderWindow_pushGLStates(self.render_window) }
     }
-
-    /// Restore the previously saved OpenGL render states and matrices
     fn pop_gl_states(&mut self) {
         unsafe { ffi::sfRenderWindow_popGLStates(self.render_window) }
     }
-
-    /// Reset the internal OpenGL states so that the target is ready for drawing
-    ///
-    /// This function can be used when you mix SFML drawing
-    /// and direct OpenGL rendering, if you choose not to use
-    /// push_gl_states/pop_gl_states. It makes sure that all OpenGL
-    /// states needed by SFML are set, so that subsequent draw()
-    /// calls will work as expected.
     fn reset_gl_states(&mut self) {
         unsafe { ffi::sfRenderWindow_resetGLStates(self.render_window) }
     }
-
-    /// Change the current active view of a render window
-    ///
-    /// # Arguments
-    /// * view - The new view
-    ///
     fn set_view(&mut self, view: &View) {
         unsafe { ffi::sfRenderWindow_setView(self.render_window, view.raw()) }
     }
-
-    /// Get the current active view of a render window
-    ///
-    /// Return the current active view
-    ///
     fn view(&self) -> &View {
         unsafe { &*(ffi::sfRenderWindow_getView(self.render_window) as *const View) }
     }
-
-    /// Get the default view of a render window
-    ///
-    /// Return the default view of the render window
-    ///
     fn default_view(&self) -> &View {
         unsafe { &*(ffi::sfRenderWindow_getDefaultView(self.render_window) as *const View) }
     }
-
-    /// Convert a point from window coordinates to world coordinates
-    ///
-    /// This function finds the 2D position that matches the
-    /// given pixel of the render-window. In other words, it does
-    /// the inverse of what the graphics card does, to find the
-    /// initial position of a rendered pixel.
-    ///
-    /// Initially, both coordinate systems (world units and target pixels)
-    /// match perfectly. But if you define a custom view or resize your
-    /// render window, this assertion is not true anymore, ie. a point
-    /// located at (10, 50) in your render-window may map to the point
-    /// (150, 75) in your 2D world -- if the view is translated by (140, 25).
-    ///
-    /// This function is typically used to find which point (or object) is
-    /// located below the mouse cursor.
-    ///
-    /// This version uses a custom view for calculations, see the
-    /// [map_pixel_to_coords_current_view](#method.map_pixel_to_coords_current_view)
-    /// function if you want to use the current view of the
-    /// render-window.
-    ///
-    /// # Arguments
-    /// * point - Pixel to convert
-    /// * view - The view to use for converting the point
-    ///
-    /// Return the converted point, in "world" units
     fn map_pixel_to_coords(&self, point: &Vector2i, view: &View) -> Vector2f {
         unsafe {
             Vector2f::from_raw(ffi::sfRenderWindow_mapPixelToCoords(
@@ -460,31 +393,6 @@ impl RenderTarget for RenderWindow {
             ))
         }
     }
-
-    /// Convert a point from window coordinates to world coordinates
-    ///
-    /// This function finds the 2D position that matches the
-    /// given pixel of the render-window. In other words, it does
-    /// the inverse of what the graphics card does, to find the
-    /// initial position of a rendered pixel.
-    ///
-    /// Initially, both coordinate systems (world units and target pixels)
-    /// match perfectly. But if you define a custom view or resize your
-    /// render window, this assertion is not true anymore, ie. a point
-    /// located at (10, 50) in your render-window may map to the point
-    /// (150, 75) in your 2D world -- if the view is translated by (140, 25).
-    ///
-    /// This function is typically used to find which point (or object) is
-    /// located below the mouse cursor.
-    ///
-    /// This version uses the current view for calculations, see the
-    /// [map_pixel_to_coords](#method.map_pixel_to_coords) function if you want to
-    /// use a custom view.
-    ///
-    /// # Arguments
-    /// * point - Pixel to convert
-    ///
-    /// Return the converted point, in "world" units
     fn map_pixel_to_coords_current_view(&self, point: &Vector2i) -> Vector2f {
         let view = unsafe { ffi::sfRenderWindow_getView(self.render_window) };
         unsafe {
@@ -495,26 +403,6 @@ impl RenderTarget for RenderWindow {
             ))
         }
     }
-
-    /// Convert a point from world coordinates to window coordinates
-    ///
-    /// This function finds the pixel of the render-window that matches
-    /// the given 2D point. In other words, it goes through the same process
-    /// as the graphics card, to compute the final position of a rendered point.
-    ///
-    /// Initially, both coordinate systems (world units and target pixels)
-    /// match perfectly. But if you define a custom view or resize your
-    /// render window, this assertion is not true anymore, ie. a point
-    /// located at (150, 75) in your 2D world may map to the pixel
-    /// (10, 50) of your render-window -- if the view is translated by (140, 25).
-    ///
-    /// This version uses a custom view for calculations, see
-    /// [map_coords_to_pixel_current_view](#method.map_coords_to_pixel_current_view)
-    /// if you want to use the current view of the render-window.
-    ///
-    /// # Arguments
-    /// * point - Point to convert
-    /// * view - The view to use for converting the point
     fn map_coords_to_pixel(&self, point: &Vector2f, view: &View) -> Vector2i {
         unsafe {
             Vector2i::from_raw(ffi::sfRenderWindow_mapCoordsToPixel(
@@ -524,24 +412,6 @@ impl RenderTarget for RenderWindow {
             ))
         }
     }
-
-    /// Convert a point from world coordinates to window coordinates
-    ///
-    /// This function finds the pixel of the render-window that matches
-    /// the given 2D point. In other words, it goes through the same process
-    /// as the graphics card, to compute the final position of a rendered point.
-    ///
-    /// Initially, both coordinate systems (world units and target pixels)
-    /// match perfectly. But if you define a custom view or resize your
-    /// render window, this assertion is not true anymore, ie. a point
-    /// located at (150, 75) in your 2D world may map to the pixel
-    /// (10, 50) of your render-window -- if the view is translated by (140, 25).
-    ///
-    /// This version uses the current view for calculations, see
-    /// [map_coords_to_pixel](#method.map_coords_to_pixel) if you want to use a custom view.
-    ///
-    /// # Arguments
-    /// * point - Point to convert
     fn map_coords_to_pixel_current_view(&self, point: &Vector2f) -> Vector2i {
         let curr_view = unsafe { ffi::sfRenderWindow_getView(self.render_window) };
         unsafe {
@@ -552,13 +422,6 @@ impl RenderTarget for RenderWindow {
             ))
         }
     }
-
-    /// Get the viewport of a view applied to this target
-    ///
-    /// # Arguments
-    /// * view - Target view
-    ///
-    /// Return the viewport rectangle, expressed in pixels in the current target
     fn viewport(&self, view: &View) -> IntRect {
         unsafe {
             IntRect::from_raw(ffi::sfRenderWindow_getViewport(
@@ -567,55 +430,30 @@ impl RenderTarget for RenderWindow {
             ))
         }
     }
-
-    /// Get the size of the rendering region of a window
-    ///
-    /// The size doesn't include the titlebar and borders of the window.
-    ///
-    /// Return the size in pixels
     fn size(&self) -> Vector2u {
         unsafe { Vector2u::from_raw(ffi::sfRenderWindow_getSize(self.render_window)) }
     }
-
-    /// Draw a drawable object to the render target
-    ///
-    /// # Arguments
-    /// * object - Object to draw
     fn draw(&mut self, object: &Drawable) {
         object.draw(self, RenderStates::default());
     }
-
-    /// Draw a drawable object to the render-target with a RenderStates
-    ///
-    /// # Arguments
-    /// * object - Object to draw
-    /// * renderStates - The renderStates to associate to the object
     fn draw_with_renderstates(&mut self, object: &Drawable, render_states: RenderStates) {
         object.draw(self, render_states);
     }
-
-    /// Draw a Text with a RenderStates
     fn draw_text(&self, text: &Text, render_states: RenderStates) {
         unsafe {
             ffi::sfRenderWindow_drawText(self.render_window, text.raw(), &render_states.raw())
         }
     }
-
-    /// Draw a Shape with a RenderStates
     fn draw_shape(&self, shape: &CustomShape, render_states: RenderStates) {
         unsafe {
             ffi::sfRenderWindow_drawShape(self.render_window, shape.raw(), &render_states.raw())
         }
     }
-
-    /// Draw a sprite with a RenderStates
     fn draw_sprite(&self, sprite: &Sprite, render_states: RenderStates) {
         unsafe {
             ffi::sfRenderWindow_drawSprite(self.render_window, sprite.raw(), &render_states.raw())
         }
     }
-
-    /// Draw a CircleShape with a RenderStates
     fn draw_circle_shape(&self, circle_shape: &CircleShape, render_states: RenderStates) {
         unsafe {
             ffi::sfRenderWindow_drawCircleShape(
@@ -625,8 +463,6 @@ impl RenderTarget for RenderWindow {
             )
         }
     }
-
-    /// Draw a RectangleShape with a RenderStates
     fn draw_rectangle_shape(&self, rectangle_shape: &RectangleShape, render_states: RenderStates) {
         unsafe {
             ffi::sfRenderWindow_drawRectangleShape(
@@ -636,8 +472,6 @@ impl RenderTarget for RenderWindow {
             )
         }
     }
-
-    /// Draw a ConvexShape with a RenderStates
     fn draw_convex_shape(&self, convex_shape: &ConvexShape, render_states: RenderStates) {
         unsafe {
             ffi::sfRenderWindow_drawConvexShape(
@@ -647,8 +481,6 @@ impl RenderTarget for RenderWindow {
             )
         }
     }
-
-    /// Draw a VertexArray with a RenderStates
     fn draw_vertex_array(&self, vertex_array: &VertexArray, render_states: RenderStates) {
         unsafe {
             ffi::sfRenderWindow_drawVertexArray(
@@ -658,8 +490,6 @@ impl RenderTarget for RenderWindow {
             )
         }
     }
-
-    /// draw primitives
     fn draw_primitives(&self, vertices: &[Vertex], ty: PrimitiveType, rs: RenderStates) {
         let len = vertices.len();
         unsafe {
@@ -672,8 +502,6 @@ impl RenderTarget for RenderWindow {
             );
         }
     }
-
-    /// Clear window with the given color
     fn clear(&mut self, color: &Color) {
         unsafe { ffi::sfRenderWindow_clear(self.render_window, color.raw()) }
     }

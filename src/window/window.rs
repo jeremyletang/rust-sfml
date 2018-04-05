@@ -12,11 +12,11 @@ use window::{ContextSettings, Event, Style, VideoMode};
 ///
 /// The `Window` type provides a simple interface for manipulating the window:
 /// move, resize, show/hide, control mouse cursor, etc.
-/// It also provides event handling through its `poll_event()` and `wait_event()` functions.
+/// It also provides event handling through [`Window::poll_event`] and [`Window::wait_event`].
 ///
 /// Note that OpenGL experts can pass their own parameters
 /// (antialiasing level, bits for the depth and stencil buffers, etc.) to the OpenGL context
-/// attached to the window, with the `ContextSettings` structure which is passed as an
+/// attached to the window, with the [`ContextSettings`] structure which is passed as an
 /// optional argument when creating the window.
 ///
 /// # Usage example
@@ -62,7 +62,7 @@ impl Window {
     /// depth defined in mode. An optional style can be passed to
     /// customize the look and behaviour of the window (borders,
     /// title bar, resizable, closable, ...). If style contains
-    /// `FULLSCREEN`, then mode must be a valid video mode.
+    /// [`Style::FULLSCREEN`], then mode must be a valid video mode.
     ///
     /// The fourth parameter is a pointer to a structure specifying
     /// advanced OpenGL context settings such as antialiasing,
@@ -148,8 +148,8 @@ impl Window {
     ///
     /// After calling this method, the Window object remains
     /// valid.
-    /// All other functions such as `poll_event` or display
-    /// will still work (i.e. you don't have to test is_open
+    /// All other functions such as [`Window::poll_event`] or [`Window::display`]
+    /// will still work (i.e. you don't have to test [`Window::is_open`]
     /// every time), and will have no effect on closed windows.
     pub fn close(&mut self) {
         unsafe {
@@ -160,7 +160,7 @@ impl Window {
     /// Tell whether or not a window is opened
     ///
     /// This function returns whether or not the window exists.
-    /// Note that a hidden window (set_visible(false)) will return
+    /// Note that a hidden window (`set_visible(false)`) will return
     /// true.
     pub fn is_open(&self) -> bool {
         unsafe { ffi::sfWindow_isOpen(self.window) }.to_bool()
@@ -169,7 +169,7 @@ impl Window {
     /// Get the settings of the OpenGL context of a window
     ///
     /// Note that these settings may be different from what was
-    /// passed to the `Window::create` function,
+    /// passed to the [`Window::new`] function,
     /// if one or more settings were not supported. In this case,
     /// SFML chose the closest match.
     ///
@@ -227,7 +227,7 @@ impl Window {
     /// Enable or disable automatic key-repeat
     ///
     /// If key repeat is enabled, you will receive repeated
-    /// KeyPress events while keeping a key pressed. If it is disabled,
+    /// [`Event::KeyPressed`] events while keeping a key pressed. If it is disabled,
     /// you will only get a single event when the key is pressed.
     ///
     /// Key repeat is enabled by default.
@@ -266,7 +266,7 @@ impl Window {
     /// Limit the framerate to a maximum fixed frequency
     ///
     /// If a limit is set, the window will use a small delay after
-    /// each call to `Window::display` to ensure that the current frame
+    /// each call to [`Window::display`] to ensure that the current frame
     /// lasted long enough to match the framerate limit.
     ///
     /// # Arguments
@@ -278,7 +278,7 @@ impl Window {
     /// Change the joystick threshold
     ///
     /// The joystick threshold is the value below which
-    /// no JoyMoved event will be generated.
+    /// no [`Event::JoystickMoved`] event will be generated.
     ///
     /// # Arguments
     /// * threshold - New threshold, in the range [0, 100]
@@ -357,7 +357,7 @@ impl Window {
     /// At any given time, only one window may have the input focus to receive input events
     /// such as keystrokes or mouse events. If a window requests focus, it only hints to the
     /// operating system, that it would like to be focused. The operating system is free to
-    /// deny the request. This is not to be confused with `set_active()`.
+    /// deny the request. This is not to be confused with [`Window::set_active`].
     pub fn request_focus(&self) {
         unsafe { ffi::sfWindow_requestFocus(self.window) }
     }

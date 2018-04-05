@@ -19,11 +19,11 @@ use system::Vector3f;
 /// (file, stream or memory buffer) must remain valid for the lifetime of the `Music` object.
 ///
 /// Apart from that, a `Music` has almost the same features as the
-/// `SoundBuffer` / `Sound` pair: you can play/pause/stop it, request its parameters
+/// [`SoundBuffer`] / [`Sound`] pair: you can play/pause/stop it, request its parameters
 /// (channels, sample rate), change the way it is played (pitch, volume, 3D position, ...), etc.
 ///
 /// As a sound stream, a music is played in its own thread in order not to block the rest of the
-/// program. This means that you can leave the music alone after calling `play()`,
+/// program. This means that you can leave the music alone after calling [`play`],
 /// it will manage itself very well.
 ///
 /// # Usage example
@@ -43,6 +43,9 @@ use system::Vector3f;
 /// // Play it
 /// music.play();
 /// ```
+///
+/// [`play`]: Music::play
+///
 #[derive(Debug)]
 pub struct Music {
     music: *mut ffi::sfMusic,
@@ -51,8 +54,7 @@ pub struct Music {
 impl Music {
     /// Create a new music and load it from a file
     ///
-    /// This function doesn't start playing the music (call
-    /// `Music::play` to do so).
+    /// This function doesn't start playing the music (call [`play`] to do so).
     /// Here is a complete list of all the supported audio formats:
     /// ogg, wav, flac, aiff, au, raw, paf, svx, nist, voc, ircam,
     /// w64, mat4, mat5 pvf, htk, sds, avr, sd2, caf, wve, mpc2k, rf64.
@@ -61,6 +63,8 @@ impl Music {
     /// * filename - Path of the music file to open
     ///
     /// Return Some(Music) or None
+    ///
+    /// [`play`]: Music::play
     pub fn from_file(filename: &str) -> Option<Music> {
         let c_str = CString::new(filename.as_bytes()).unwrap();
         let music_tmp: *mut ffi::sfMusic = unsafe { ffi::sfMusic_createFromFile(c_str.as_ptr()) };
@@ -73,8 +77,7 @@ impl Music {
 
     /// Create a new music and load it from a stream (a struct implementing Read and Seek)
     ///
-    /// This function doesn't start playing the music (call
-    /// `Music::play` to do so).
+    /// This function doesn't start playing the music (call [`play`] to do so).
     /// Here is a complete list of all the supported audio formats:
     /// ogg, wav, flac, aiff, au, raw, paf, svx, nist, voc, ircam,
     /// w64, mat4, mat5 pvf, htk, sds, avr, sd2, caf, wve, mpc2k, rf64.
@@ -83,6 +86,8 @@ impl Music {
     /// * stream - Your struct, implementing Read and Seek
     ///
     /// Return Some(Music) or None
+    ///
+    /// [`play`]: Music::play
     pub fn from_stream<T: Read + Seek>(stream: &mut T) -> Option<Music> {
         let mut input_stream = InputStream::new(stream);
         let music_tmp: *mut ffi::sfMusic =
@@ -96,8 +101,7 @@ impl Music {
 
     /// Create a new music and load it from memory
     ///
-    /// This function doesn't start playing the music (call
-    /// `Music::play` to do so).
+    /// This function doesn't start playing the music (call [`play`] to do so).
     /// Here is a complete list of all the supported audio formats:
     /// ogg, wav, flac, aiff, au, raw, paf, svx, nist, voc, ircam,
     /// w64, mat4, mat5 pvf, htk, sds, avr, sd2, caf, wve, mpc2k, rf64.
@@ -106,6 +110,8 @@ impl Music {
     /// * mem - Pointer to the file data in memory
     ///
     /// Return Some(Music) or None
+    ///
+    /// [`play`]: Music::play
     pub fn from_memory(mem: &[u8]) -> Option<Music> {
         let music_tmp =
             unsafe { ffi::sfMusic_createFromMemory(mem.as_ptr() as *const _, mem.len()) };

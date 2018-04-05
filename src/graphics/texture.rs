@@ -10,7 +10,7 @@ use system::{Dispose, SfBox, Vector2u};
 use window::Window;
 use std::borrow::ToOwned;
 
-/// `Image` living on the graphics card that can be used for drawing.
+/// [`Image`] living on the graphics card that can be used for drawing.
 ///
 /// `Texture` stores pixels that can be drawn, with a sprite for example.
 ///
@@ -19,11 +19,11 @@ use std::borrow::ToOwned;
 /// or copy a render target to a texture (the graphics card can access both directly).
 ///
 /// Being stored in the graphics card memory has some drawbacks.
-/// A texture cannot be manipulated as freely as a `Image`,
+/// A texture cannot be manipulated as freely as a [`Image`],
 /// you need to prepare the pixels first and then upload them to the texture in a
-/// single operation (see `Texture::update`).
+/// single operation (see the various update methods below).
 ///
-/// `Texture` makes it easy to convert from/to `Image`,
+/// `Texture` makes it easy to convert from/to [`Image`],
 /// but keep in mind that these calls require transfers between the graphics card and
 /// the central memory, therefore they are slow operations.
 ///
@@ -31,8 +31,8 @@ use std::borrow::ToOwned;
 /// The necessary shortcuts are defined so that you don't need an image first for the
 /// most common cases.
 /// However, if you want to perform some modifications on the pixels before creating the
-/// final texture, you can load your file to a `Image`, do whatever you need with the pixels,
-/// and then call `Texture::from_image`.
+/// final texture, you can load your file to a [`Image`], do whatever you need with the pixels,
+/// and then call [`Texture::from_image`].
 ///
 /// Since they live in the graphics card memory,
 /// the pixels of a texture cannot be accessed without a slow copy first.
@@ -41,10 +41,10 @@ use std::borrow::ToOwned;
 /// it is recommended to store the collision information separately,
 /// for example in an array of booleans.
 ///
-/// Like `Image`, `Texture` can handle a unique internal representation of pixels,
+/// Like [`Image`], `Texture` can handle a unique internal representation of pixels,
 /// which is RGBA 32 bits.
 /// This means that a pixel must be composed of
-/// 8 bits red, green, blue and alpha channels – just like a `Color`.
+/// 8 bits red, green, blue and alpha channels – just like a [`Color`].
 #[derive(Debug)]
 #[allow(missing_copy_implementations)]
 pub enum Texture {}

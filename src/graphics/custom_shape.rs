@@ -20,7 +20,9 @@ pub trait CustomShapePoints {
     /// # Argument
     /// * point - The index of the point to return
     ///
-    /// Returns a `Vector2f` containing the coordinates.
+    /// Returns a [`Vector2f`] containing the coordinates.
+    ///
+    /// [`Vector2f`]: ::system::Vector2f
     fn point(&self, point: u32) -> Vector2f;
 }
 
@@ -45,10 +47,10 @@ unsafe extern "C" fn get_point_callback(point: usize, obj: *mut c_void) -> sfVec
 }
 
 impl<'s> CustomShape<'s> {
-    /// Create a new CustomShape
+    /// Create a new `CustomShape`
     ///
     /// # Arguments
-    /// * points - Implementation of CustomShapePoints
+    /// * points - Implementation of [`CustomShapePoints`]
     pub fn new(points: Box<CustomShapePoints + Send>) -> CustomShape<'s> {
         let raw_impl = Box::into_raw(Box::new(points));
         let sp = unsafe {
@@ -66,11 +68,11 @@ impl<'s> CustomShape<'s> {
         }
     }
 
-    /// Create a new CustomShape with a texture
+    /// Create a new `CustomShape` with a texture
     ///
     /// # Arguments
-    /// * points - Implementation of CustomShapePoints trait
-    /// * texture - The texture to bind to the CustomShape
+    /// * points - Implementation of [`CustomShapePoints`] trait
+    /// * texture - The texture to bind to the `CustomShape`
     pub fn with_texture(
         points: Box<CustomShapePoints + Send>,
         texture: &'s Texture,
@@ -84,7 +86,10 @@ impl<'s> CustomShape<'s> {
     ///
     /// This function must be called by specialized shape objects
     /// everytime their points change (ie. the result of either
-    /// the getPointCount or getPoint callbacks is different).
+    /// the [`point_count`] or [`point`] callbacks is different).
+    ///
+    /// [`point_count`]: CustomShapePoints::point_count
+    /// [`point`]: CustomShapePoints::point
     pub fn update(&mut self) {
         unsafe { ffi::sfShape_update(self.shape) }
     }

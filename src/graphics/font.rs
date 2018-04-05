@@ -13,7 +13,9 @@ use system::{Dispose, SfBox};
 /// Fonts can be loaded from a file, from memory or from a custom stream,
 /// and supports the most common types of fonts.
 ///
-/// See the `from_file` function for the complete list of supported formats.
+/// See the [`from_file`] function for the complete list of supported formats.
+///
+/// [`from_file`]: Font::from_file
 ///
 /// Once it is loaded, a `Font` instance provides three types of information about the font:
 ///
@@ -22,27 +24,27 @@ use system::{Dispose, SfBox};
 /// - Pixel representation of glyphs
 ///
 /// Fonts alone are not very useful: they hold the font data but cannot make anything useful of it.
-/// To do so you need to use the `Text` type, which is able to properly output text with
+/// To do so you need to use the [`Text`] type, which is able to properly output text with
 /// several options such as character size, style, color, position, rotation, etc.
 /// This separation allows more flexibility and better performances:
 /// indeed a `Font` is a heavy resource, and any operation on it is
 /// slow (often too slow for real-time applications).
-/// On the other side, a `Text` is a lightweight object which can combine the
+/// On the other side, a [`Text`] is a lightweight object which can combine the
 /// glyphs data and metrics of a `Font` to display any text on a render target.
-/// Note that it is also possible to bind several `Text` instances to the same `Font`.
+/// Note that it is also possible to bind several [`Text`] instances to the same `Font`.
 ///
-/// It is important to note that the `Text` instance doesn't copy the font that it uses,
+/// It is important to note that the [`Text`] instance doesn't copy the font that it uses,
 /// it only keeps a reference to it.
 /// Thus, a `Font` must not be destructed while it is used by a
-/// `Text` (i.e. never write a function that uses a local `Font` instance for creating a text).
+/// [`Text`] (i.e. never write a function that uses a local `Font` instance for creating a text).
 ///
-/// Apart from loading font files, and passing them to instances of `Text`,
+/// Apart from loading font files, and passing them to instances of [`Text`],
 /// you should normally not have to deal directly with this type.
 /// However, it may be useful to access the font metrics or rasterized glyphs for advanced usage.
 ///
 /// Note that if the font is a bitmap font, it is not scalable,
 /// thus not all requested sizes will be available to use.
-/// This needs to be taken into consideration when using `Text`.
+/// This needs to be taken into consideration when using [`Text`].
 /// If you need to display text of a certain size, make sure the corresponding bitmap font that
 /// supports that size is used.
 #[derive(Debug)]

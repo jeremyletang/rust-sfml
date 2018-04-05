@@ -10,15 +10,18 @@ use system::{Vector2f, Vector2i, Vector2u};
 /// It makes it possible to draw 2D entities like sprites, shapes, text
 /// without using any OpenGL command directly.
 ///
-/// A `RenderTarget` is also able to use views (`View`), which are a kind of 2D cameras.
+/// A `RenderTarget` is also able to use views ([`View`]), which are a kind of 2D cameras.
 /// With views you can globally scroll, rotate or zoom everything that is drawn,
 /// without having to transform every single entity.
-/// See the documentation of `View` for more details and sample pieces of code about this type.
+/// See the documentation of [`View`] for more details and sample pieces of code about this type.
 ///
 /// On top of that, render targets are still able to render direct OpenGL stuff.
 /// It is even possible to mix together OpenGL calls and regular SFML drawing commands.
 /// When doing so, make sure that OpenGL states are not messed up by calling the
-/// `pushGLStates`/`popGLStates` functions.
+/// [`push_gl_states`]/[`pop_gl_states`] functions.
+///
+/// [`push_gl_states`]: RenderTarget::push_gl_states
+/// [`pop_gl_states`]: RenderTarget::pop_gl_states
 pub trait RenderTarget {
     /// clear the screen
     fn clear(&mut self, color: &Color);
@@ -52,7 +55,7 @@ pub trait RenderTarget {
     /// located below the mouse cursor.
     ///
     /// This version uses a custom view for calculations, see the
-    /// [map_pixel_to_coords_current_view](#method.map_pixel_to_coords_current_view)
+    /// [map_pixel_to_coords_current_view](RenderTarget::map_pixel_to_coords_current_view)
     /// function if you want to use the current view of the
     /// render-window.
     ///
@@ -81,7 +84,7 @@ pub trait RenderTarget {
     /// located below the mouse cursor.
     ///
     /// This version uses the current view for calculations, see the
-    /// [map_pixel_to_coords](#method.map_pixel_to_coords) function if
+    /// [map_pixel_to_coords](RenderTarget::map_pixel_to_coords) function if
     /// you want to use a custom view.
     ///
     /// # Arguments
@@ -103,7 +106,7 @@ pub trait RenderTarget {
     /// (10, 50) of your render-window -- if the view is translated by (140, 25).
     ///
     /// This version uses a custom view for calculations, see
-    /// [map_coords_to_pixel_current_view](#method.map_coords_to_pixel_current_view)
+    /// [map_coords_to_pixel_current_view](RenderTarget::map_coords_to_pixel_current_view)
     /// if you want to use the current view of the render-window.
     ///
     /// # Arguments
@@ -130,7 +133,7 @@ pub trait RenderTarget {
     /// located below the mouse cursor.
     ///
     /// This version uses the current view for calculations, see the
-    /// [map_pixel_to_coords](#method.map_pixel_to_coords) function if
+    /// [map_pixel_to_coords](RenderTarget::map_pixel_to_coords) function if
     /// you want to use a custom view.
     ///
     /// # Arguments
@@ -145,7 +148,7 @@ pub trait RenderTarget {
     /// * object - Object to draw
     fn draw(&mut self, object: &Drawable);
 
-    /// Draw a drawable object to the render-target with a RenderStates
+    /// Draw a drawable object to the render-target with a [`RenderStates`]
     ///
     /// # Arguments
     /// * object - Object to draw
@@ -173,8 +176,10 @@ pub trait RenderTarget {
     /// It is provided for convenience, but the best results will
     /// be achieved if you handle OpenGL states yourself (because
     /// you know which states have really changed, and need to be
-    /// saved and restored). Take a look at the resetGLStates
+    /// saved and restored). Take a look at the [`reset_gl_states`]
     /// function if you do so.
+    ///
+    /// [`reset_gl_states`]: RenderTarget::reset_gl_states
     fn push_gl_states(&mut self);
 
     /// Restore the previously saved OpenGL render states and matrices
@@ -184,9 +189,12 @@ pub trait RenderTarget {
     ///
     /// This function can be used when you mix SFML drawing
     /// and direct OpenGL rendering, if you choose not to use
-    /// push_gl_states/pop_gl_states. It makes sure that all OpenGL
+    /// [`push_gl_states`]/[`pop_gl_states`]. It makes sure that all OpenGL
     /// states needed by SFML are set, so that subsequent draw()
     /// calls will work as expected.
+    ///
+    /// [`push_gl_states`]: RenderTarget::push_gl_states
+    /// [`pop_gl_states`]: RenderTarget::pop_gl_states
     fn reset_gl_states(&mut self);
 
     /// Draw Text

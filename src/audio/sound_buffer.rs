@@ -14,24 +14,27 @@ use system::{Dispose, SfBox, Time};
 /// A sample is a 16 bits signed integer that defines the amplitude of the sound at a given time.
 /// The sound is then reconstituted by playing these samples at a high rate
 /// (for example, 44100 samples per second is the standard rate used for playing CDs).
-/// In short, audio samples are like texture pixels, and a `SoundBuffer` is similar to a `Texture`.
+/// In short, audio samples are like texture pixels, and a `SoundBuffer` is
+/// similar to a [`::graphics::Texture`].
 ///
-/// A sound buffer can be loaded from a file (see `from_file()` for the complete list of
+/// A sound buffer can be loaded from a file (see [`from_file`] for the complete list of
 /// supported formats), from memory, from a custom stream or directly from an array of samples.
 /// It can also be saved back to a file.
 ///
+/// [`from_file`]: SoundBuffer::from_file
+///
 /// Sound buffers alone are not very useful: they hold the audio data but cannot be played.
-/// To do so, you need to use the `Sound` type, which provides functions to play/pause/stop
+/// To do so, you need to use the [`Sound`] type, which provides functions to play/pause/stop
 /// the sound as well as changing the way it is outputted (volume, pitch, 3D position, ...).
 /// This separation allows more flexibility and better performances: indeed a `SoundBuffer` is
 /// a heavy resource, and any operation on it is slow (often too slow for real-time applications).
-/// On the other side, a `Sound` is a lightweight object, which can use the audio data of a sound
+/// On the other side, a [`Sound`] is a lightweight object, which can use the audio data of a sound
 /// buffer and change the way it is played without actually modifying that data.
-/// Note that it is also possible to bind several `Sound` instances to the same `SoundBuffer`.
+/// Note that it is also possible to bind several [`Sound`] instances to the same `SoundBuffer`.
 ///
-/// It is important to note that the `Sound` instance doesn't copy the buffer that it uses,
+/// It is important to note that the [`Sound`] instance doesn't copy the buffer that it uses,
 /// it only keeps a reference to it. Thus, a `SoundBuffer` can not be destructed while it is
-/// borrowed by a `Sound`.
+/// borrowed by a [`Sound`].
 ///
 /// # Usage example
 ///
@@ -76,7 +79,7 @@ impl SoundBuffer {
 
     /// Get the number of samples stored in a sound buffer
     ///
-    /// The array of samples can be accessed with `samples()`.
+    /// The array of samples can be accessed with [`samples`](SoundBuffer::samples).
     ///
     /// Return the number of samples
     pub fn sample_count(&self) -> u64 {

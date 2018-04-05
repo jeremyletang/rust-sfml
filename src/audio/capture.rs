@@ -14,43 +14,49 @@ use system::Time;
 /// As a trait, it only cares about capturing sound samples,
 /// the task of making something useful with them is left to the implementer.
 /// Note that SFML provides a built-in implementation for saving the captured data to
-/// a sound buffer (see `SoundBufferRecorder`).
+/// a sound buffer (see [`SoundBufferRecorder`]).
 ///
 /// Only one method is required to be implemented.
 ///
-/// `on_process_samples` provides the new chunks of audio samples while the capture happens
+/// [`on_process_samples`] provides the new chunks of audio samples while the capture happens
 /// Moreover, two additional methods can be overridden as well if necessary:
 ///
-/// `on_start` is called before the capture happens, to perform custom initializations
-/// `on_stop` is called after the capture ends, to perform custom cleanup
-/// You can also control the frequency of the `on_process_samples` calls,
-/// with `SoundRecorderDriver::set_processing_interval`.
+/// [`on_start`] is called before the capture happens, to perform custom initializations.
+///
+/// [`on_stop`] is called after the capture ends, to perform custom cleanup.
+///
+/// You can also control the frequency of the [`on_process_samples`] calls,
+/// with [`SoundRecorderDriver::set_processing_interval`].
 /// The default interval is chosen so that recording thread doesn't consume too much CPU,
 /// but it can be changed to a smaller value if you need to process the recorded data in real time,
 /// for example.
 ///
 /// The audio capture feature may not be supported or activated on every platform,
-/// thus it is recommended to check its availability with the `is_available` function.
+/// thus it is recommended to check its availability with the [`is_available`] function.
 /// If it returns `false`, then any attempt to use an audio recorder will fail.
 ///
 /// If you have multiple sound input devices connected to your computer
 /// (for example: microphone, external soundcard, webcam mic, ...)
-/// you can get a list of all available devices through the `available_devices` function.
-/// You can then select a device by calling `set_device` with the appropriate device.
-/// Otherwise the default capturing device will be used.
+/// you can get a list of all available devices through the [`available_devices`] function.
+/// You can then select a device by calling [`SoundRecorderDriver::set_device`] with the
+/// appropriate device. Otherwise the default capturing device will be used.
 ///
 /// By default the recording is in 16-bit mono.
-/// Using the `set_channel_count` method you can change the number of channels used by
-/// the audio capture device to record.
+/// Using the [`SoundRecorderDriver::set_channel_count`] method you can change the number of
+/// channels used by the audio capture device to record.
 /// Note that you have to decide whether you want to record in mono or stereo before
 /// starting the recording.
 ///
 /// It is important to note that the audio capture happens in a separate thread,
 /// so that it doesn't block the rest of the program. In particular,
-/// the `on_process_samples` function (but not `on_start` and not `on_stop`)
+/// the [`on_process_samples`] function (but not [`on_start`] and not [`on_stop`])
 /// will be called from this separate thread.
 /// It is important to keep this in mind, because you may have to take care of
 /// synchronization issues if you share data between threads.
+///
+/// [`on_start`]: SoundRecorder::on_start
+/// [`on_stop`]: SoundRecorder::on_stop
+/// [`on_process_samples`]: SoundRecorder::on_process_samples
 pub trait SoundRecorder {
     /// Start capturing audio data.
     ///
@@ -59,8 +65,6 @@ pub trait SoundRecorder {
     /// If not, this function can be ignored; the default implementation does nothing.
     ///
     /// Returns `true` to start the capture, or `false` to abort it.
-    ///
-    /// Reimplemented in `SoundBufferRecorder`.
     fn on_start(&mut self) -> bool {
         true
     }
@@ -71,16 +75,12 @@ pub trait SoundRecorder {
     /// wants with it (storing it, playing it, sending it over the network, etc.).
     ///
     /// Returns `true` to continue the capture, or `false` to stop it.
-    ///
-    /// Implemented in `SoundBufferRecorder`.
     fn on_process_samples(&mut self, samples: &[i16]) -> bool;
     /// Stop capturing audio data.
     ///
     /// This method may be overridden by an implementer if something has
     /// to be done every time the capture ends.
     /// If not, this function can be ignored; the default implementation does nothing.
-    ///
-    /// Reimplemented in `SoundBufferRecorder`.
     fn on_stop(&mut self) {}
 }
 
@@ -144,7 +144,7 @@ macro_rules! device_common {
 }
 
 impl<'a, R: SoundRecorder> SoundRecorderDriver<'a, R> {
-    /// Creates a new `SoundRecorderDriver` with the specified `SoundRecorder`.
+    /// Creates a new `SoundRecorderDriver` with the specified [`SoundRecorder`].
     pub fn new(sound_recorder: &'a mut R) -> Self {
         let ptr: *mut R = sound_recorder;
         Self {
@@ -167,19 +167,18 @@ impl<'a, R: SoundRecorder> SoundRecorderDriver<'a, R> {
     /// while the capture runs.
     /// Please note that only one capture can happen at the same time.
     /// You can select which capture device will be used, by passing the name to the
-    /// `set_device` method.
+    /// [`set_device`] method.
     /// If none was selected before, the default capture device will be used.
     /// You can get a list of the names of all available capture devices by
-    /// calling `available_devices`.
+    /// calling [`available_devices`].
     ///
-    /// # Parameters
-    /// * `sample_rate`	Desired capture rate, in number of samples per second
+    /// Returns whether the start of capture was successful.
     ///
-    /// Returns `true`, if start of capture was successful.
+    /// [`set_device`]: SoundRecorderDriver::set_device
     pub fn start(&mut self, sample_rate: u32) -> bool {
         unsafe { sfSoundRecorder_start(self.ffi_handle, sample_rate).to_bool() }
     }
-    /// Stop the capture, lending out the underlying `SoundRecorder`.
+    /// Stop the capture, lending out the underlying [`SoundRecorder`].
     pub fn stop(&mut self) -> &mut R {
         unsafe {
             sfSoundRecorder_stop(self.ffi_handle);
@@ -213,8 +212,8 @@ impl<'a, R: SoundRecorder> SoundRecorderDriver<'a, R> {
     }
     /// Set the processing interval.
     ///
-    /// The processing interval controls the period between calls to the
-    /// `on_process_samples` function.
+    /// The processing interval controls the period between calls to
+    /// [`SoundRecorder::on_process_samples`].
     /// You may want to use a small interval if you want to process the recorded data in real time,
     /// for example.
     ///
@@ -239,10 +238,13 @@ impl<'a, S> Drop for SoundRecorderDriver<'a, S> {
     }
 }
 
-/// Store captured audio data in sound Buffer
+/// Specialized [`SoundRecorder`] which stores the captured audio data into a sound buffer.
 ///
-/// `SoundBufferRecorder` allows to access a recorded sound through a `SoundBuffer`,
+/// `SoundBufferRecorder` allows to access a recorded sound through a [`SoundBuffer`],
 /// so that it can be played, saved to a file, etc.
+///
+/// As usual, don't forget to call the [`is_available`] function before using this type
+/// (see [`SoundRecorder`] for more details about this).
 #[derive(Debug)]
 pub struct SoundBufferRecorder {
     ffi_handle: *mut sfSoundBufferRecorder,

@@ -42,17 +42,17 @@ pub trait Transformable {
     /// Moves the object by a given offset.
     ///
     /// This function adds to the current position of the object,
-    /// unlike `set_position` which overwrites it.
+    /// unlike [`Transformable::set_position`] which overwrites it.
     fn move_<O: Into<Vector2f>>(&mut self, offset: O);
     /// Rotates the object.
     ///
-    /// This function adds to the current rotation of the object, unlike `set_rotation`
-    /// which overwrites it.
+    /// This function adds to the current rotation of the object, unlike
+    /// [`Transformable::set_rotation`], which overwrites it.
     fn rotate(&mut self, angle: f32);
     /// Scales the object.
     ///
-    /// This function multiplies the current scale of the object, unlike `set_scale`
-    /// which overwrites it.
+    /// This function multiplies the current scale of the object, unlike
+    /// [`Transformable::set_scale`], which overwrites it.
     fn scale<F: Into<Vector2f>>(&mut self, factors: F);
     /// Gets the combined transform of the object.
     fn transform(&self) -> Transform;

@@ -8,7 +8,7 @@ use window::mouse::{Button, Wheel};
 /// `Event` holds all the informations about a system event that just happened.
 ///
 /// Events are retrieved using the
-/// `Window::pollEvent`, `Window::waitEvent`, or `Window::events` functions.
+/// [`Window::poll_event`] or [`Window::wait_event`] functions.
 ///
 /// An `Event` instance contains the type of the event
 /// (mouse moved, key pressed, window closed, ...) as well as the details about this

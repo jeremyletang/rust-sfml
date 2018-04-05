@@ -12,9 +12,9 @@ use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssi
 /// You generally don't have to care about the generic form (`Vector2<T>`), the most common
 /// specializations have special type aliases:
 ///
-/// - `Vector2<f32>` is `Vector2f`
-/// - `Vector2<i32>` is `Vector2i`
-/// - `Vector2<u32>` is `Vector2u`
+/// - `Vector2<f32>` is [`Vector2f`]
+/// - `Vector2<i32>` is [`Vector2i`]
+/// - `Vector2<u32>` is [`Vector2u`]
 ///
 /// The `Vector2` type has a small and simple interface, its x and y members can be
 /// accessed directly (there are no accessors like `set_x()`, `get_x()`) and it contains no
@@ -33,7 +33,7 @@ use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssi
 /// assert_ne!(v2, v3);
 /// ```
 ///
-/// Note: for 3-dimensional vectors, see `Vector3`.
+/// Note: for 3-dimensional vectors, see [`Vector3`].
 #[repr(C)]
 #[derive(Clone, PartialOrd, Ord, PartialEq, Eq, Debug, Copy, Default)]
 pub struct Vector2<T> {
@@ -43,11 +43,11 @@ pub struct Vector2<T> {
     pub y: T,
 }
 
-/// `Vector2` with `i32` coordinates.
+/// [`Vector2`] with `i32` coordinates.
 pub type Vector2i = Vector2<i32>;
-/// `Vector2` with `u32` coordinates.
+/// [`Vector2`] with `u32` coordinates.
 pub type Vector2u = Vector2<u32>;
-/// `Vector2` with `f32` coordinates.
+/// [`Vector2`] with `f32` coordinates.
 pub type Vector2f = Vector2<f32>;
 
 impl<T> Vector2<T> {

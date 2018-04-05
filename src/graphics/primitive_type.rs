@@ -1,6 +1,6 @@
 use graphics::csfml_graphics_sys::sfPrimitiveType;
 
-/// Types of primitives that a `VertexArray` can render.
+/// Types of primitives that a [`VertexArray`] can render.
 ///
 /// Points and lines have no area, therefore their thickness will always be 1 pixel,
 /// regardless the current transform and view.

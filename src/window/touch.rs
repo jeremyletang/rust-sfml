@@ -4,14 +4,20 @@
 //!
 //! This module allows users to query the touches state at any time and directly,
 //! without having to deal with a window and its events.
-//! Compared to the `TouchBegan`, `TouchMoved` and `TouchEnded` events, `touch` can retrieve the
-//! state of the touches at any time (you don't need to store and update a boolean on your side in
+//! Compared to the [`TouchBegan`], [`TouchMoved`] and [`TouchEnded`] events,
+//! `touch` can retrieve the state of the touches at any time
+//! (you don't need to store and update a boolean on your side in
 //! order to know if a touch is down), and you always get the real state of the touches,
 //! even if they happen when your window is out of focus and no event is triggered.
 //!
-//! The `position` function can be used to retrieve the current position of a touch.
-//! There are two versions: one that operates in global coordinates (relative to the desktop)
-//! and one that operates in window coordinates (relative to a specific window).
+//! [`TouchBegan`]: ::window::Event::TouchBegan
+//! [`TouchMoved`]: ::window::Event::TouchMoved
+//! [`TouchEnded`]: ::window::Event::TouchEnded
+//!
+//! There are two functions that can be used to retrieve the current position of a touch.
+//! 1. [`desktop_position`]: operates in global coordinates (relative to the desktop)
+//! 2. [`::window::Window::touch_position`]: operates in window coordinates
+//! (relative to a specific window).
 //!
 //! Touches are identified by an index (the "finger"), so that in multi-touch events, individual
 //! touches can be tracked correctly. As long as a finger touches the screen, it will keep the same

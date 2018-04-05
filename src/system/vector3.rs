@@ -13,8 +13,8 @@ use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssi
 /// You generally don't have to care about the generic form (`Vector3<T>`),
 /// the most common specializations have special type aliases:
 ///
-/// - `Vector3<f32>` is `Vector3f`
-/// - `Vector3<i32>` is `Vector3i`
+/// - `Vector3<f32>` is [`Vector3f`]
+/// - `Vector3<i32>` is [`Vector3i`]
 ///
 /// The `Vector3` type has a small and simple interface, its x and y members can be
 /// accessed directly (there are no accessors like `set_x()`, `get_x()`) and it contains no
@@ -34,7 +34,7 @@ use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssi
 /// assert_ne!(v2, v3);
 /// ```
 ///
-/// Note: for 2-dimensional vectors, see `Vector2`.
+/// Note: for 2-dimensional vectors, see [`Vector2`].
 #[repr(C)]
 #[derive(Clone, PartialOrd, PartialEq, Debug, Copy, Default)]
 pub struct Vector3<T> {
@@ -47,15 +47,15 @@ pub struct Vector3<T> {
 }
 
 impl<T> Vector3<T> {
-    /// Create a new Vector3f with the given values.
+    /// Create a new `Vector3` with the given values.
     pub fn new(x: T, y: T, z: T) -> Vector3<T> {
         Vector3 { x: x, y: y, z: z }
     }
 }
 
-/// `Vector3` with `f32` coordinates.
+/// [`Vector3`] with `f32` coordinates.
 pub type Vector3f = Vector3<f32>;
-/// `Vector3` with `i32` coordinates.
+/// [`Vector3`] with `i32` coordinates.
 pub type Vector3i = Vector3<i32>;
 
 macro_rules! impl_ops {

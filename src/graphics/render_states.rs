@@ -2,7 +2,7 @@ use graphics::{BlendMode, Shader, Texture, Transform};
 use graphics::csfml_graphics_sys as ffi;
 use std::ptr;
 
-/// Define the states used for drawing to a `RenderTarget`.
+/// Define the states used for drawing to a [`RenderTarget`].
 ///
 /// There are four global states that can be applied to the drawn objects:
 ///
@@ -27,7 +27,7 @@ use std::ptr;
 /// window.draw(sprite);
 /// ```
 ///
-/// To draw with a specific render state, use `RenderTarget::draw_with_renderstates`.
+/// To draw with a specific render state, use [`RenderTarget::draw_with_renderstates`].
 ///
 /// ```no_run
 /// # use sfml::graphics::*;
@@ -39,7 +39,7 @@ use std::ptr;
 /// window.draw_with_renderstates(&sprite, states);
 /// ```
 ///
-/// When you're inside the `draw` function of a drawable object (implementing `Drawable`),
+/// When you're inside the `draw` function of a drawable object (implementing [`Drawable`]),
 /// you can either pass the render states unmodified, or change some of them.
 /// For example, a transformable object will combine the current transform with its own transform.
 /// A sprite will set its texture. Etc.

@@ -10,7 +10,7 @@ use system::Vector2f;
 /// Drawable representation of a texture
 ///
 /// Sprite is a drawable type that allows to easily
-/// display a texture (or a part of it) on a render target.
+/// display a [`Texture`] (or a part of it) on a render target.
 #[derive(Debug)]
 pub struct Sprite<'s> {
     sprite: *mut ffi::sfSprite,
@@ -47,9 +47,11 @@ impl<'s> Sprite<'s> {
     /// a pointer to the one that you passed to this function.
     /// If the source texture is destroyed and the sprite tries to
     /// use it, the behaviour is undefined.
-    /// If reset_rect is true, the TextureRect property of
+    /// If reset_rect is true, the [`texture_rect`] property of
     /// the sprite is automatically adjusted to the size of the new
     /// texture. If it is false, the texture rect is left unchanged.
+    ///
+    /// [`texture_rect`]: Sprite::texture_rect
     ///
     /// # Arguments
     /// * texture - New texture

@@ -16,9 +16,9 @@ pub struct Rect<T> {
     pub height: T,
 }
 
-/// A `Rect` of `i32`.
+/// A [`Rect`] of `i32`.
 pub type IntRect = Rect<i32>;
-/// A `Rect` of `f32`.
+/// A [`Rect`] of `f32`.
 pub type FloatRect = Rect<f32>;
 
 impl<T> Rect<T> {

@@ -212,7 +212,9 @@ impl Image {
     /// This function does a slow pixel copy and should not be
     /// used intensively. It can be used to prepare a complex
     /// static image from several others, but if you need this
-    /// kind of feature in real-time you'd better use `RenderTexture`.
+    /// kind of feature in real-time you'd better use [`RenderTexture`].
+    ///
+    /// [`RenderTexture`]: ::graphics::RenderTexture
     ///
     /// If sourceRect is empty, the whole image is copied.
     /// If applyAlpha is set to true, the transparency of
@@ -253,7 +255,7 @@ impl Image {
 }
 
 impl Clone for Image {
-    /// Return a new Image or panic! if there is not enough memory
+    /// Return a new `Image` or panic! if there is not enough memory
     fn clone(&self) -> Image {
         let image = unsafe { ffi::sfImage_copy(self.image) };
         if image.is_null() {

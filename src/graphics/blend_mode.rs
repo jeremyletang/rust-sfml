@@ -41,9 +41,13 @@ use graphics::csfml_graphics_sys as ffi;
 /// All factors and colors are represented as floating point numbers between 0 and 1.
 /// Where necessary, the result is clamped to fit in that range.
 ///
-/// In SFML, a blend mode can be specified every time you draw a `Drawable` object to
-/// a render target. It is part of the `RenderStates` compound that is passed to
-/// `RenderTarget::draw()`.
+/// In SFML, a blend mode can be specified every time you draw a [`Drawable`] object to
+/// a render target. It is part of the [`RenderStates`] compound that is passed to
+/// [`RenderTarget::draw`].
+///
+/// [`Drawable`]: ::graphics::Drawable
+/// [`RenderStates`]: ::graphics::RenderStates
+/// [`RenderTarget::draw`]: ::graphics::RenderTarget::draw
 #[derive(Clone, PartialEq, Eq, Debug, Copy)]
 #[repr(C)]
 pub struct BlendMode {

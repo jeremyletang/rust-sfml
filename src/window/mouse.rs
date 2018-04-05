@@ -3,11 +3,15 @@
 //! `mouse` provides an interface to the state of the mouse.
 //!
 //! This module allows users to query the mouse state at any time and directly, without having to
-//! deal with a window and its events. Compared to the `MouseMoved`, `MouseButtonPressed` and
-//! `MouseButtonReleased` events, `mouse` can retrieve the state of the cursor and
+//! deal with a window and its events. Compared to the [`MouseMoved`], [`MouseButtonPressed`] and
+//! [`MouseButtonReleased`] events, `mouse` can retrieve the state of the cursor and
 //! the buttons at any time (you don't need to store and update a boolean on your side in order to
 //! know if a button is pressed or released), and you always get the real state of the mouse, even
 //! if it is moved, pressed or released when your window is out of focus and no event is triggered.
+//!
+//! [`MouseMoved`]: ::window::Event::MouseMoved
+//! [`MouseButtonPressed`]: ::window::Event::MouseButtonPressed
+//! [`MouseButtonReleased`]: ::window::Event::MouseButtonReleased
 //!
 //! # Usage example
 //!

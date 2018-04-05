@@ -12,13 +12,13 @@ use sf_bool_ext::SfBoolExt;
 /// the graphics card support), otherwise your window creation will just fail.
 ///
 /// `VideoMode` provides an associated function for retrieving the list of all the video modes
-/// supported by the system: `fullscreen_modes()`.
+/// supported by the system: [`VideoMode::fullscreen_modes`].
 ///
 /// A custom video mode can also be checked directly for fullscreen compatibility
-/// with its `is_valid()` function.
+/// with its [`VideoMode::is_valid`] function.
 ///
 /// Additionally, `VideoMode` provides a static function to get the mode currently used by
-/// the desktop: `desktop_mode`. This allows to build windows with the same size or
+/// the desktop: [`VideoMode::desktop_mode`]. This allows to build windows with the same size or
 /// pixel depth as the current resolution.
 ///
 /// # Usage example
