@@ -48,8 +48,8 @@ pub struct Vector3<T> {
 
 impl<T> Vector3<T> {
     /// Create a new `Vector3` with the given values.
-    pub fn new(x: T, y: T, z: T) -> Vector3<T> {
-        Vector3 { x: x, y: y, z: z }
+    pub fn new(x: T, y: T, z: T) -> Self {
+        Self { x, y, z }
     }
 }
 

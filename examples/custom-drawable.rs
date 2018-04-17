@@ -19,10 +19,7 @@ impl<'s> Bullet<'s> {
         torso.set_position((100.0, 150.0));
         torso.set_fill_color(&Color::BLUE);
 
-        Bullet {
-            head: head,
-            torso: torso,
-        }
+        Self { head, torso }
     }
 }
 

@@ -54,9 +54,9 @@ impl VideoMode {
     /// Constructs a new `VideoMode` from the given parameters.
     pub fn new(width: u32, height: u32, bits_per_pixel: u32) -> Self {
         Self {
-            width: width,
-            height: height,
-            bits_per_pixel: bits_per_pixel,
+            width,
+            height,
+            bits_per_pixel,
         }
     }
 

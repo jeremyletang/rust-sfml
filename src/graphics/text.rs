@@ -218,7 +218,7 @@ impl<'s> Default for Text<'s> {
         let text = unsafe { ffi::sfText_create() };
         assert!(!text.is_null(), "Failed to create Text");
         Self {
-            text: text,
+            text,
             string_length: 0,
             font: PhantomData,
         }

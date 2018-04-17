@@ -20,8 +20,8 @@ impl<'t> Pixelate<'t> {
     fn new(texture: &'t Texture) -> Self {
         let mut sprite = Sprite::new();
         sprite.set_texture(texture, false);
-        Pixelate {
-            sprite: sprite,
+        Self {
+            sprite,
             shader: Shader::from_file(None, None, Some("resources/pixelate.frag")).unwrap(),
         }
     }
@@ -80,8 +80,8 @@ impl<'fo> WaveBlur<'fo> {
     fn new(font: &'fo Font) -> Self {
         let mut text = Text::new(WAVEBLUR_TEXT, font, 22);
         text.set_position((30., 20.));
-        WaveBlur {
-            text: text,
+        Self {
+            text,
             shader: Shader::from_file(
                 Some("resources/wave.vert"),
                 None,
@@ -145,10 +145,7 @@ impl StormBlink {
             None,
             Some("resources/blink.frag"),
         ).unwrap();
-        Self {
-            points: points,
-            shader: shader,
-        }
+        Self { points, shader }
     }
 }
 
@@ -207,10 +204,10 @@ impl<'t> Edge<'t> {
         shader.set_uniform_current_texture("texture");
 
         Self {
-            surface: surface,
-            bg_sprite: bg_sprite,
-            entities: entities,
-            shader: shader,
+            surface,
+            bg_sprite,
+            entities,
+            shader,
         }
     }
 }

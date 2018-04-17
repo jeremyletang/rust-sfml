@@ -105,7 +105,7 @@ impl Font {
             let raw = ffi::sfFont_getInfo(self.raw());
             let family = CStr::from_ptr(raw.family).to_string_lossy().into_owned();
 
-            Info { family: family }
+            Info { family }
         }
     }
     /// Returns the position of the underline.

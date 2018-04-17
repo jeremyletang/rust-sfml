@@ -153,7 +153,7 @@ impl<'texture> Shader<'texture> {
         vertex: Option<&str>,
         geometry: Option<&str>,
         fragment: Option<&str>,
-    ) -> Option<Shader<'texture>> {
+    ) -> Option<Self> {
         let cstring;
         let vert = cstring_then_ptr!(cstring, vertex);
         let cstring;
@@ -164,8 +164,8 @@ impl<'texture> Shader<'texture> {
         if shader.is_null() {
             None
         } else {
-            Some(Shader {
-                shader: shader,
+            Some(Self {
+                shader,
                 texture: PhantomData,
             })
         }
@@ -192,7 +192,7 @@ impl<'texture> Shader<'texture> {
         vertex_shader_stream: Option<&mut T>,
         geometry_shader_stream: Option<&mut T>,
         fragment_shader_stream: Option<&mut T>,
-    ) -> Option<Shader<'texture>> {
+    ) -> Option<Self> {
         let mut vertex_stream = vertex_shader_stream.map(InputStream::new);
         let mut geometry_stream = geometry_shader_stream.map(InputStream::new);
         let mut fragment_stream = fragment_shader_stream.map(InputStream::new);
@@ -208,8 +208,8 @@ impl<'texture> Shader<'texture> {
         if shader.is_null() {
             None
         } else {
-            Some(Shader {
-                shader: shader,
+            Some(Self {
+                shader,
                 texture: PhantomData,
             })
         }
@@ -236,7 +236,7 @@ impl<'texture> Shader<'texture> {
         vertex: Option<&str>,
         geometry: Option<&str>,
         fragment: Option<&str>,
-    ) -> Option<Shader<'texture>> {
+    ) -> Option<Self> {
         let cstring;
         let vert = cstring_then_ptr!(cstring, vertex);
         let cstring;
@@ -247,8 +247,8 @@ impl<'texture> Shader<'texture> {
         if shader.is_null() {
             None
         } else {
-            Some(Shader {
-                shader: shader,
+            Some(Self {
+                shader,
                 texture: PhantomData,
             })
         }

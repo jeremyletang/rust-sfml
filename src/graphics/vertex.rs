@@ -62,8 +62,8 @@ impl Vertex {
     pub fn new<P: Into<Vector2f>>(position: P, color: Color, tex_coords: Vector2f) -> Self {
         Self {
             position: position.into(),
-            color: color,
-            tex_coords: tex_coords,
+            color,
+            tex_coords,
         }
     }
 

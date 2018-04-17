@@ -70,12 +70,12 @@ impl<'texture, 'shader, 'shader_texture> RenderStates<'texture, 'shader, 'shader
         transform: Transform,
         texture: Option<&'texture Texture>,
         shader: Option<&'shader Shader<'shader_texture>>,
-    ) -> RenderStates<'texture, 'shader, 'shader_texture> {
-        RenderStates {
-            blend_mode: blend_mode,
-            transform: transform,
-            texture: texture,
-            shader: shader,
+    ) -> Self {
+        Self {
+            blend_mode,
+            transform,
+            texture,
+            shader,
         }
     }
     pub(super) fn raw(&self) -> ffi::sfRenderStates {

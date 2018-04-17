@@ -53,7 +53,7 @@ pub type Vector2f = Vector2<f32>;
 impl<T> Vector2<T> {
     /// Creates a new vector from its coordinates.
     pub fn new(x: T, y: T) -> Self {
-        Vector2 { x: x, y: y }
+        Self { x, y }
     }
 }
 
