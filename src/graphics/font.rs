@@ -130,11 +130,7 @@ impl Font {
     pub fn from_file(filename: &str) -> Option<SfBox<Self>> {
         let c_str = CString::new(filename.as_bytes()).unwrap();
         let fnt = unsafe { ffi::sfFont_createFromFile(c_str.as_ptr()) };
-        if fnt.is_null() {
-            None
-        } else {
-            Some(SfBox(fnt as _))
-        }
+        SfBox::new(fnt as *mut Self)
     }
 
     /// Create a new font from a stream (a struct implementing Read and Seek)
@@ -146,11 +142,7 @@ impl Font {
     pub fn from_stream<T: Read + Seek>(stream: &mut T) -> Option<SfBox<Self>> {
         let mut input_stream = InputStream::new(stream);
         let fnt = unsafe { ffi::sfFont_createFromStream(&mut input_stream.0) };
-        if fnt.is_null() {
-            None
-        } else {
-            Some(SfBox(fnt as _))
-        }
+        SfBox::new(fnt as *mut Self)
     }
 
     /// Create a new font from memory
@@ -162,11 +154,7 @@ impl Font {
     pub fn from_memory(memory: &[u8]) -> Option<SfBox<Self>> {
         let fnt =
             unsafe { ffi::sfFont_createFromMemory(memory.as_ptr() as *const _, memory.len()) };
-        if fnt.is_null() {
-            None
-        } else {
-            Some(SfBox(fnt as _))
-        }
+        SfBox::new(fnt as *mut Self)
     }
 
     /// Get the texture containing the glyphs of a given size in a font
@@ -198,11 +186,7 @@ impl ToOwned for Font {
     type Owned = SfBox<Font>;
     fn to_owned(&self) -> Self::Owned {
         let fnt = unsafe { ffi::sfFont_copy(self.raw()) };
-        if fnt.is_null() {
-            panic!("Not enough memory to clone Font")
-        } else {
-            SfBox(fnt as _)
-        }
+        SfBox::new(fnt as *mut Self).expect("Failed to copy Font")
     }
 }
 

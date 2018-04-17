@@ -112,11 +112,7 @@ impl Texture {
     /// Returns `None` on failure.
     pub fn new(width: u32, height: u32) -> Option<SfBox<Texture>> {
         let tex = unsafe { ffi::sfTexture_create(width, height) };
-        if tex.is_null() {
-            None
-        } else {
-            Some(SfBox(tex as _))
-        }
+        SfBox::new(tex as *mut Self)
     }
 
     /// Create a new texture from memory
@@ -130,11 +126,7 @@ impl Texture {
         let tex = unsafe {
             ffi::sfTexture_createFromMemory(mem.as_ptr() as *const _, mem.len(), &area.raw())
         };
-        if tex.is_null() {
-            None
-        } else {
-            Some(SfBox(tex as _))
-        }
+        SfBox::new(tex as *mut Self)
     }
 
     /// Create a new texture from a stream (a struct implementing Read + Seek)
@@ -149,11 +141,7 @@ impl Texture {
     ) -> Option<SfBox<Texture>> {
         let mut input_stream = InputStream::new(stream);
         let tex = unsafe { ffi::sfTexture_createFromStream(&mut input_stream.0, &area.raw()) };
-        if tex.is_null() {
-            None
-        } else {
-            Some(SfBox(tex as _))
-        }
+        SfBox::new(tex as *mut Self)
     }
 
     /// Create a new texture from a file
@@ -165,11 +153,7 @@ impl Texture {
     pub fn from_file(filename: &str) -> Option<SfBox<Texture>> {
         let c_str = CString::new(filename.as_bytes()).unwrap();
         let tex = unsafe { ffi::sfTexture_createFromFile(c_str.as_ptr(), ptr::null()) };
-        if tex.is_null() {
-            None
-        } else {
-            Some(SfBox(tex as _))
-        }
+        SfBox::new(tex as *mut Self)
     }
 
     /// Create a new texture from a file with a given area
@@ -182,11 +166,7 @@ impl Texture {
     pub fn from_file_with_rect(filename: &str, area: &IntRect) -> Option<SfBox<Texture>> {
         let c_str = CString::new(filename.as_bytes()).unwrap();
         let tex = unsafe { ffi::sfTexture_createFromFile(c_str.as_ptr(), &area.raw()) };
-        if tex.is_null() {
-            None
-        } else {
-            Some(SfBox(tex as _))
-        }
+        SfBox::new(tex as *mut Self)
     }
 
     /// Create a new texture from an image
@@ -198,11 +178,7 @@ impl Texture {
     /// Returns `None` on failure.
     pub fn from_image_with_rect(image: &Image, area: &IntRect) -> Option<SfBox<Texture>> {
         let tex = unsafe { ffi::sfTexture_createFromImage(image.raw(), &area.raw()) };
-        if tex.is_null() {
-            None
-        } else {
-            Some(SfBox(tex as _))
-        }
+        SfBox::new(tex as *mut Self)
     }
 
     /// Create a new texture from an image
@@ -213,11 +189,7 @@ impl Texture {
     /// Returns `None` on failure.
     pub fn from_image(image: &Image) -> Option<SfBox<Texture>> {
         let tex = unsafe { ffi::sfTexture_createFromImage(image.raw(), ptr::null()) };
-        if tex.is_null() {
-            None
-        } else {
-            Some(SfBox(tex as _))
-        }
+        SfBox::new(tex as *mut Self)
     }
 
     /// Update a texture from the contents of a window
@@ -352,11 +324,7 @@ impl ToOwned for Texture {
 
     fn to_owned(&self) -> Self::Owned {
         let tex = unsafe { ffi::sfTexture_copy(self.raw()) };
-        if tex.is_null() {
-            panic!("Not enough memory to copy texture.")
-        } else {
-            SfBox(tex as _)
-        }
+        SfBox::new(tex as *mut Self).expect("Failed to copy texture")
     }
 }
 

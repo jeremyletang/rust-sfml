@@ -57,8 +57,7 @@ impl View {
     /// * rectangle - The rectangle defining the zone to display
     pub fn from_rect(rectangle: &FloatRect) -> SfBox<View> {
         let view = unsafe { ffi::sfView_createFromRect(rectangle.raw()) };
-        assert!(!view.is_null(), "Failed to create View from Rect");
-        SfBox(view as _)
+        SfBox::new(view as *mut Self).expect("Failed to create View from Rect")
     }
 
     /// Set the orientation of a view
@@ -157,18 +156,13 @@ impl ToOwned for View {
     type Owned = SfBox<Self>;
     fn to_owned(&self) -> Self::Owned {
         let view = unsafe { ffi::sfView_copy(self.raw()) };
-        if view.is_null() {
-            panic!("Not enough memory to clone View")
-        } else {
-            SfBox(view as _)
-        }
+        SfBox::new(view as *mut Self).expect("Failed to copy View")
     }
 }
 
 impl RawDefault for View {
     fn raw_default() -> *mut Self {
         let view = unsafe { ffi::sfView_create() };
-        assert!(!view.is_null(), "Failed to create View");
         view as _
     }
 }

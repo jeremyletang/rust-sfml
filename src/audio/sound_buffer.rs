@@ -142,35 +142,23 @@ impl SoundBuffer {
     /// * filename - Path of the sound file to load
     ///
     /// Returns `None` on failure.
-    pub fn from_file(filename: &str) -> Option<SfBox<SoundBuffer>> {
+    pub fn from_file(filename: &str) -> Option<SfBox<Self>> {
         let c_str = CString::new(filename.as_bytes()).unwrap();
         let sound_buffer: *mut ffi::sfSoundBuffer =
             unsafe { ffi::sfSoundBuffer_createFromFile(c_str.as_ptr()) };
-        if sound_buffer.is_null() {
-            None
-        } else {
-            Some(SfBox(sound_buffer as _))
-        }
+        SfBox::new(sound_buffer as *mut Self)
     }
     /// Load the sound buffer from a file in memory.
-    pub fn from_memory(data: &[u8]) -> Option<SfBox<SoundBuffer>> {
+    pub fn from_memory(data: &[u8]) -> Option<SfBox<Self>> {
         let sound_buffer =
             unsafe { ffi::sfSoundBuffer_createFromMemory(data.as_ptr() as _, data.len()) };
-        if sound_buffer.is_null() {
-            None
-        } else {
-            Some(SfBox(sound_buffer as _))
-        }
+        SfBox::new(sound_buffer as *mut Self)
     }
     /// Load the sound buffer from a custom stream.
-    pub fn from_stream<T: Read + Seek>(stream: &mut T) -> Option<SfBox<SoundBuffer>> {
+    pub fn from_stream<T: Read + Seek>(stream: &mut T) -> Option<SfBox<Self>> {
         let mut stream = InputStream::new(stream);
         let buffer = unsafe { ffi::sfSoundBuffer_createFromStream(&mut stream.0) };
-        if buffer.is_null() {
-            None
-        } else {
-            Some(SfBox(buffer as _))
-        }
+        SfBox::new(buffer as *mut Self)
     }
     /// Load the sound buffer from a slice of audio samples.
     ///
@@ -179,7 +167,7 @@ impl SoundBuffer {
         samples: &[i16],
         channel_count: u32,
         sample_rate: u32,
-    ) -> Option<SfBox<SoundBuffer>> {
+    ) -> Option<SfBox<Self>> {
         let buffer = unsafe {
             ffi::sfSoundBuffer_createFromSamples(
                 samples.as_ptr(),
@@ -188,11 +176,7 @@ impl SoundBuffer {
                 sample_rate,
             )
         };
-        if buffer.is_null() {
-            None
-        } else {
-            Some(SfBox(buffer as _))
-        }
+        SfBox::new(buffer as *mut Self)
     }
 }
 
@@ -201,8 +185,7 @@ impl ToOwned for SoundBuffer {
 
     fn to_owned(&self) -> Self::Owned {
         let sound_buffer = unsafe { ffi::sfSoundBuffer_copy(self.raw()) };
-        assert!(!sound_buffer.is_null(), "Failed to copy SoundBuffer");
-        SfBox(sound_buffer as _)
+        SfBox::new(sound_buffer as *mut Self).expect("Failed to copy SoundBuffer")
     }
 }
 
