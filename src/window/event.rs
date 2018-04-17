@@ -31,7 +31,7 @@ use window::mouse::{Button, Wheel};
 ///     }
 /// }
 /// ```
-#[derive(Clone, PartialEq, PartialOrd, Debug, Copy)]
+#[derive(Clone, PartialEq, Debug, Copy)]
 pub enum Event {
     /// The window requested to be closed
     Closed,
