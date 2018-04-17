@@ -34,12 +34,14 @@ pub struct CustomShape<'s> {
     points: *mut Box<CustomShapePoints + Send>,
 }
 
+#[cfg_attr(feature = "cargo-clippy", allow(cast_ptr_alignment))]
 unsafe extern "C" fn get_point_count_callback(obj: *mut c_void) -> usize {
     let shape = obj as *mut Box<CustomShapePoints + Send>;
     let ret = (*shape).point_count();
     ret as usize
 }
 
+#[cfg_attr(feature = "cargo-clippy", allow(cast_ptr_alignment))]
 unsafe extern "C" fn get_point_callback(point: usize, obj: *mut c_void) -> sfVector2f {
     let shape = obj as *mut Box<CustomShapePoints + Send>;
     let ret = (*shape).point(point as u32);
