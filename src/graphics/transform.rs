@@ -1,5 +1,5 @@
-use graphics::FloatRect;
 use graphics::csfml_graphics_sys as ffi;
+use graphics::FloatRect;
 use system::Vector2f;
 
 /// Define a 3x3 transform matrix.
@@ -38,15 +38,7 @@ impl Transform {
     ) -> Transform {
         unsafe {
             Transform(ffi::sfTransform_fromMatrix(
-                a00,
-                a01,
-                a02,
-                a10,
-                a11,
-                a12,
-                a20,
-                a21,
-                a22,
+                a00, a01, a02, a10, a11, a12, a20, a21, a22,
             ))
         }
     }

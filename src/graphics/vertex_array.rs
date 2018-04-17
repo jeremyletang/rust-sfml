@@ -1,5 +1,5 @@
-use graphics::{Drawable, FloatRect, PrimitiveType, RenderStates, RenderTarget, Vertex};
 use graphics::csfml_graphics_sys::*;
+use graphics::{Drawable, FloatRect, PrimitiveType, RenderStates, RenderTarget, Vertex};
 use std::mem;
 use std::ops::{Index, IndexMut};
 

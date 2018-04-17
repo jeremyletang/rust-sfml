@@ -1,6 +1,6 @@
 use csfml_system_sys::sfBool;
-use graphics::{Color, IntRect};
 use graphics::csfml_graphics_sys as ffi;
+use graphics::{Color, IntRect};
 use inputstream::InputStream;
 use sf_bool_ext::SfBoolExt;
 use std::ffi::CString;

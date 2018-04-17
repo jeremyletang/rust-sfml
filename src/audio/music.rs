@@ -1,5 +1,5 @@
-use audio::{SoundSource, SoundStatus};
 use audio::csfml_audio_sys as ffi;
+use audio::{SoundSource, SoundStatus};
 use csfml_system_sys::sfBool;
 use inputstream::InputStream;
 use sf_bool_ext::SfBoolExt;

@@ -60,8 +60,8 @@ impl Context {
 
 #[test]
 fn test_settings() {
-    use window::{Context, Window};
     use std::thread;
+    use window::{Context, Window};
 
     let window = Window::new((32, 32), "test", Default::default(), &Default::default());
     let win_settings = window.settings();

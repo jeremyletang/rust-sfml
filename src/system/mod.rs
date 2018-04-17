@@ -4,12 +4,12 @@
 //!
 
 pub use self::clock::Clock;
+pub use self::sf_box::SfBox;
+pub(crate) use self::sf_box::{Dispose, RawDefault};
 pub use self::sleep::sleep;
 pub use self::time::Time;
 pub use self::vector2::{Vector2, Vector2f, Vector2i, Vector2u};
 pub use self::vector3::{Vector3, Vector3f, Vector3i};
-pub use self::sf_box::SfBox;
-pub(crate) use self::sf_box::{Dispose, RawDefault};
 use csfml_system_sys::{sfBool, sfFalse, sfTrue};
 
 /// Boolean type used by CSFML.
@@ -31,9 +31,9 @@ pub const FALSE: Bool = sfFalse;
 /// Boolean `true` value used by CSFML.
 pub const TRUE: Bool = sfTrue;
 
-mod time;
 mod clock;
+mod sf_box;
 mod sleep;
+mod time;
 mod vector2;
 mod vector3;
-mod sf_box;

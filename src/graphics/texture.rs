@@ -1,14 +1,14 @@
 use csfml_system_sys::sfBool;
-use graphics::{Image, IntRect, RenderWindow};
 use graphics::csfml_graphics_sys as ffi;
+use graphics::{Image, IntRect, RenderWindow};
 use inputstream::InputStream;
 use sf_bool_ext::SfBoolExt;
+use std::borrow::ToOwned;
 use std::ffi::CString;
 use std::io::{Read, Seek};
 use std::ptr;
 use system::{Dispose, SfBox, Vector2u};
 use window::Window;
-use std::borrow::ToOwned;
 
 /// [`Image`] living on the graphics card that can be used for drawing.
 ///

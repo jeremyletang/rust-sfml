@@ -19,8 +19,10 @@
 //! license.
 //!
 
-#![warn(missing_docs, trivial_numeric_casts, missing_copy_implementations,
-        missing_debug_implementations, unused_results, trivial_casts)]
+#![warn(
+    missing_docs, trivial_numeric_casts, missing_copy_implementations,
+    missing_debug_implementations, unused_results, trivial_casts
+)]
 
 #[cfg(feature = "window")]
 #[macro_use]
@@ -35,12 +37,12 @@ mod sf_bool_ext;
 #[cfg(feature = "window")]
 mod unicode_conv;
 
-pub mod system;
-#[cfg(feature = "window")]
-pub mod window;
 #[cfg(feature = "audio")]
 pub mod audio;
 #[cfg(feature = "graphics")]
 pub mod graphics;
 #[cfg(feature = "network")]
 pub mod network;
+pub mod system;
+#[cfg(feature = "window")]
+pub mod window;

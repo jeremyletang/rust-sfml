@@ -1,5 +1,5 @@
-use graphics::{glsl, Texture};
 use graphics::csfml_graphics_sys as ffi;
+use graphics::{glsl, Texture};
 use inputstream::InputStream;
 use sf_bool_ext::SfBoolExt;
 use std::ffi::CString;
@@ -128,7 +128,7 @@ macro_rules! cstring_then_ptr {
             }
             None => ptr::null(),
         }
-    }
+    };
 }
 
 impl<'texture> Shader<'texture> {

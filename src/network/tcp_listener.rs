@@ -1,6 +1,6 @@
 use csfml_system_sys::sfBool;
-use network::{IpAddress, SocketStatus, TcpSocket};
 use network::csfml_network_sys as ffi;
+use network::{IpAddress, SocketStatus, TcpSocket};
 use sf_bool_ext::SfBoolExt;
 use std::mem;
 

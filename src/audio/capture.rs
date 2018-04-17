@@ -1,9 +1,9 @@
 use audio::csfml_audio_sys::*;
 use audio::SoundBuffer;
 use csfml_system_sys::{sfBool, sfInt16, sfTrue};
-use std::os::raw::c_void;
 use sf_bool_ext::SfBoolExt;
 use std::ffi::{CStr, CString};
+use std::os::raw::c_void;
 use system::Time;
 
 /// Trait for processing captured sound data.

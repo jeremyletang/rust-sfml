@@ -1,5 +1,5 @@
-use std::ops::{Deref, DerefMut};
 use std::borrow::{Borrow, ToOwned};
+use std::ops::{Deref, DerefMut};
 
 /// An owning pointer to an SFML-allocated object.
 ///

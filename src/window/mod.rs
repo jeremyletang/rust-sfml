@@ -8,15 +8,15 @@ pub use self::style::Style;
 pub use self::video_mode::VideoMode;
 pub use self::window::Window;
 
-#[cfg_attr(feature = "cargo-clippy", allow(module_inception))]
-mod window;
-mod video_mode;
 mod context;
 mod context_settings;
+mod event;
 pub mod joystick;
 mod keyboard;
 pub mod mouse;
-mod event;
-mod style;
 pub mod sensor;
+mod style;
 pub mod touch;
+mod video_mode;
+#[cfg_attr(feature = "cargo-clippy", allow(module_inception))]
+mod window;

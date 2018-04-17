@@ -19,11 +19,11 @@ pub use self::tcp_listener::TcpListener;
 pub use self::tcp_socket::TcpSocket;
 pub use self::udp_socket::UdpSocket;
 
+pub mod ftp;
+pub mod http;
 mod ip_address;
 mod packet;
 mod socket_status;
+mod tcp_listener;
 mod tcp_socket;
 mod udp_socket;
-mod tcp_listener;
-pub mod ftp;
-pub mod http;

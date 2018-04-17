@@ -194,8 +194,8 @@ pub enum Event {
 impl Event {
     pub(crate) unsafe fn from_raw(event: &ffi::sfEvent) -> Option<Self> {
         use csfml_window_sys::sfEventType::*;
-        use window::Event::*;
         use sf_bool_ext::SfBoolExt;
+        use window::Event::*;
 
         let type_ = event.type_;
 

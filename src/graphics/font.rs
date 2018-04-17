@@ -1,6 +1,6 @@
 use csfml_system_sys::sfBool;
-use graphics::{Glyph, Texture};
 use graphics::csfml_graphics_sys as ffi;
+use graphics::{Glyph, Texture};
 use inputstream::InputStream;
 use sf_bool_ext::SfBoolExt;
 use std::borrow::ToOwned;

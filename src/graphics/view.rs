@@ -1,5 +1,5 @@
-use graphics::FloatRect;
 use graphics::csfml_graphics_sys as ffi;
+use graphics::FloatRect;
 use std::borrow::ToOwned;
 use system::{Dispose, RawDefault, SfBox, Vector2f};
 

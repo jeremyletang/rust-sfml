@@ -1,5 +1,5 @@
-use graphics::Color;
 use graphics::csfml_graphics_sys as ffi;
+use graphics::Color;
 use system::Vector2f;
 
 /// Define a point with color and texture coordinates.

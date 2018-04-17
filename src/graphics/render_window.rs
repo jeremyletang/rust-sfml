@@ -1,7 +1,7 @@
 use csfml_system_sys::*;
+use graphics::csfml_graphics_sys as ffi;
 use graphics::{CircleShape, Color, ConvexShape, CustomShape, Drawable, IntRect, PrimitiveType,
                RectangleShape, RenderStates, RenderTarget, Sprite, Text, Vertex, VertexArray, View};
-use graphics::csfml_graphics_sys as ffi;
 use sf_bool_ext::SfBoolExt;
 use system::{Vector2f, Vector2i, Vector2u};
 use window::{ContextSettings, Event, Style, VideoMode};

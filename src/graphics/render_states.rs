@@ -1,5 +1,5 @@
-use graphics::{BlendMode, Shader, Texture, Transform};
 use graphics::csfml_graphics_sys as ffi;
+use graphics::{BlendMode, Shader, Texture, Transform};
 use std::ptr;
 
 /// Define the states used for drawing to a [`RenderTarget`].

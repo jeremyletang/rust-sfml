@@ -1,5 +1,5 @@
-use audio::{SoundBuffer, SoundSource, SoundStatus};
 use audio::csfml_audio_sys as ffi;
+use audio::{SoundBuffer, SoundSource, SoundStatus};
 use csfml_system_sys::sfBool;
 use sf_bool_ext::SfBoolExt;
 use std::marker::PhantomData;
