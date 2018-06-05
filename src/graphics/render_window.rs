@@ -58,6 +58,32 @@ impl RenderWindow {
         }
     }
 
+    /// Create a render window from an existing platform-specific window handle
+    ///
+    /// This function creates a render window based on an existing platform
+    /// specific window handle which has been allocated outside of SFML. This is
+    /// only intended to be used in cases where you need to integrate SFML with
+    /// some other windowing library.
+    ///
+    /// This function is unsafe because it is the caller's responsibility to
+    /// ensure that it is called with a valid window handle.
+    ///
+    /// # Arguments
+    /// * handle - The handle to the platform-specific window handle to use for
+    ///            the window.
+    /// * settings - Additional settings for the underlying OpenGL context
+    pub unsafe fn from_handle(
+        handle: ::csfml_window_sys::sfWindowHandle,
+        settings: &ContextSettings,
+    ) -> RenderWindow {
+        let sf_render_win: *mut ffi::sfRenderWindow =
+            ffi::sfRenderWindow_createFromHandle(handle, &settings.raw());
+        assert!(!sf_render_win.is_null(), "Failed to create Window");
+        RenderWindow {
+            render_window: sf_render_win,
+        }
+    }
+
     /// Change a render window's icon
     /// pixels must be an array of width x height pixels in 32-bits RGBA format.
     ///

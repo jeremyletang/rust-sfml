@@ -93,6 +93,26 @@ impl Window {
         Window { window: sf_win }
     }
 
+    /// Create a window from an existing platform-specific window handle
+    ///
+    /// This function creates a window based on an existing platform specific
+    /// window handle which has been allocated outside of SFML. This is only
+    /// intended to be used in cases where you need to integrate SFML with some
+    /// other windowing library.
+    ///
+    /// This function is unsafe because it is the caller's responsibility to
+    /// ensure that it is called with a valid window handle.
+    ///
+    /// # Arguments
+    /// * handle - The handle to the platform-specific window handle to use for
+    ///            the window.
+    /// * settings - Additional settings for the underlying OpenGL context
+    pub unsafe fn from_handle(handle: ffi::sfWindowHandle, settings: &ContextSettings) -> Window {
+        let sf_win: *mut ffi::sfWindow = ffi::sfWindow_createFromHandle(handle, &settings.raw());
+        assert!(!sf_win.is_null(), "Failed to create Window");
+        Window { window: sf_win }
+    }
+
     ///  Pop the event on top of event queue, if any, and return it
     ///
     /// This function is not blocking: if there's no pending event then
