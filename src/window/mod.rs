@@ -6,7 +6,7 @@ pub use self::event::Event;
 pub use self::keyboard::{set_virtual_keyboard_visible, Key};
 pub use self::style::Style;
 pub use self::video_mode::VideoMode;
-pub use self::window::Window;
+pub use self::window::{Handle, Window};
 
 mod context;
 mod context_settings;

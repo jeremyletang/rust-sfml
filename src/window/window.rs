@@ -4,6 +4,10 @@ use sf_bool_ext::SfBoolExt;
 use system::{Vector2i, Vector2u};
 use window::{ContextSettings, Event, Style, VideoMode};
 
+/// The system native window handle type. Can be used to initialize SFMl within
+/// an existing window.
+pub type Handle = ffi::sfWindowHandle;
+
 /// Window that serves as a target for OpenGL rendering.
 ///
 /// `Window` is the main type of the window module.
@@ -107,7 +111,7 @@ impl Window {
     /// * handle - The handle to the platform-specific window handle to use for
     ///            the window.
     /// * settings - Additional settings for the underlying OpenGL context
-    pub unsafe fn from_handle(handle: ffi::sfWindowHandle, settings: &ContextSettings) -> Window {
+    pub unsafe fn from_handle(handle: Handle, settings: &ContextSettings) -> Window {
         let sf_win: *mut ffi::sfWindow = ffi::sfWindow_createFromHandle(handle, &settings.raw());
         assert!(!sf_win.is_null(), "Failed to create Window");
         Window { window: sf_win }

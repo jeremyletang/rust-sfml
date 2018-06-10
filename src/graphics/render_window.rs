@@ -4,7 +4,7 @@ use graphics::{CircleShape, Color, ConvexShape, CustomShape, Drawable, IntRect, 
                RectangleShape, RenderStates, RenderTarget, Sprite, Text, Vertex, VertexArray, View};
 use sf_bool_ext::SfBoolExt;
 use system::{Vector2f, Vector2i, Vector2u};
-use window::{ContextSettings, Event, Style, VideoMode};
+use window::{ContextSettings, Event, Handle, Style, VideoMode};
 
 /// [`Window`] that can serve as a target for 2D drawing.
 ///
@@ -72,10 +72,7 @@ impl RenderWindow {
     /// * handle - The handle to the platform-specific window handle to use for
     ///            the window.
     /// * settings - Additional settings for the underlying OpenGL context
-    pub unsafe fn from_handle(
-        handle: ::csfml_window_sys::sfWindowHandle,
-        settings: &ContextSettings,
-    ) -> RenderWindow {
+    pub unsafe fn from_handle(handle: Handle, settings: &ContextSettings) -> RenderWindow {
         let sf_render_win: *mut ffi::sfRenderWindow =
             ffi::sfRenderWindow_createFromHandle(handle, &settings.raw());
         assert!(!sf_render_win.is_null(), "Failed to create Window");
