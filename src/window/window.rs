@@ -4,8 +4,8 @@ use sf_bool_ext::SfBoolExt;
 use system::{Vector2i, Vector2u};
 use window::{ContextSettings, Event, Style, VideoMode};
 
-/// The system native window handle type. Can be used to initialize SFMl within
-/// an existing window.
+/// The system native window handle type. Can be used to create an SFML Window
+/// from an existing system window.
 pub type Handle = ffi::sfWindowHandle;
 
 /// Window that serves as a target for OpenGL rendering.
