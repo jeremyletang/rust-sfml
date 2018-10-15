@@ -71,7 +71,7 @@ impl Image {
     /// * color - Fill color
     ///
     /// Return Some(Image) or None
-    pub fn from_color(width: u32, height: u32, color: &Color) -> Option<Self> {
+    pub fn from_color(width: u32, height: u32, color: Color) -> Option<Self> {
         let image = unsafe { ffi::sfImage_createFromColor(width, height, color.raw()) };
         if image.is_null() {
             None
@@ -154,7 +154,7 @@ impl Image {
     /// # Arguments
     /// * color - Color to make transparent
     /// * alpha - Alpha value to assign to transparent pixels
-    pub fn create_mask_from_color(&self, color: &Color, alpha: u8) {
+    pub fn create_mask_from_color(&self, color: Color, alpha: u8) {
         unsafe { ffi::sfImage_createMaskFromColor(self.image, color.raw(), alpha) }
     }
 
@@ -168,7 +168,7 @@ impl Image {
     /// * x - X coordinate of pixel to change
     /// * y - Y coordinate of pixel to change
     /// * color - New color of the pixel
-    pub fn set_pixel(&mut self, x: u32, y: u32, color: &Color) {
+    pub fn set_pixel(&mut self, x: u32, y: u32, color: Color) {
         unsafe { ffi::sfImage_setPixel(self.image, x, y, color.raw()) }
     }
 

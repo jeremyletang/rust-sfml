@@ -72,20 +72,20 @@ impl Time {
     }
 
     /// Returns the time value as a number of seconds.
-    pub fn as_seconds(&self) -> f32 {
+    pub fn as_seconds(self) -> f32 {
         unsafe { sfTime_asSeconds(self.0) }
     }
 
     /// Returns the time value as a number of milliseconds.
-    pub fn as_milliseconds(&self) -> i32 {
+    pub fn as_milliseconds(self) -> i32 {
         unsafe { sfTime_asMilliseconds(self.0) }
     }
 
     /// Returns the time value as a number of microseconds.
-    pub fn as_microseconds(&self) -> i64 {
+    pub fn as_microseconds(self) -> i64 {
         unsafe { sfTime_asMicroseconds(self.0) }
     }
-    pub(crate) fn raw(&self) -> sfTime {
+    pub(crate) fn raw(self) -> sfTime {
         self.0
     }
     pub(crate) fn from_raw(raw: sfTime) -> Self {

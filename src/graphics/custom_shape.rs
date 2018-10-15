@@ -110,10 +110,10 @@ impl<'s> Shape<'s> for CustomShape<'s> {
     fn set_texture_rect(&mut self, rect: &IntRect) {
         unsafe { ffi::sfShape_setTextureRect(self.shape, rect.raw()) }
     }
-    fn set_fill_color(&mut self, color: &Color) {
+    fn set_fill_color(&mut self, color: Color) {
         unsafe { ffi::sfShape_setFillColor(self.shape, color.raw()) }
     }
-    fn set_outline_color(&mut self, color: &Color) {
+    fn set_outline_color(&mut self, color: Color) {
         unsafe { ffi::sfShape_setOutlineColor(self.shape, color.raw()) }
     }
     fn set_outline_thickness(&mut self, thickness: f32) {

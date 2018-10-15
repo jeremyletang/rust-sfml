@@ -236,7 +236,7 @@ impl<'t> Effect for Edge<'t> {
             );
             en.set_position(pos);
         }
-        self.surface.clear(&Color::WHITE);
+        self.surface.clear(Color::WHITE);
         self.surface.draw(&self.bg_sprite);
         for en in &self.entities {
             self.surface.draw(en);
@@ -275,15 +275,15 @@ fn main() {
     let text_bg_texture = Texture::from_file("resources/text-background.png").unwrap();
     let mut text_bg = Sprite::with_texture(&text_bg_texture);
     text_bg.set_position((0., 520.));
-    text_bg.set_color(&Color::rgba(255, 255, 255, 200));
+    text_bg.set_color(Color::rgba(255, 255, 255, 200));
     let msg = format!("Current effect: {}", effects[current].name());
     let mut desc = Text::new(&msg, &font, 20);
     desc.set_position((10., 530.));
-    desc.set_fill_color(&Color::rgb(80, 80, 80));
+    desc.set_fill_color(Color::rgb(80, 80, 80));
     let msg = "Press left and right arrows to change the current shader";
     let mut instructions = Text::new(msg, &font, 20);
     instructions.set_position((280., 555.));
-    instructions.set_fill_color(&Color::rgb(80, 80, 80));
+    instructions.set_fill_color(Color::rgb(80, 80, 80));
     let clock = Clock::start();
 
     while window.is_open() {
@@ -320,7 +320,7 @@ fn main() {
 
         effects[current].update(clock.elapsed_time().as_seconds(), x, y);
 
-        window.clear(&Color::rgb(255, 128, 0));
+        window.clear(Color::rgb(255, 128, 0));
         window.draw(effects[current].as_drawable());
         window.draw(&text_bg);
         window.draw(&instructions);

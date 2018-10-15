@@ -51,7 +51,7 @@ fn main() {
             }
         }
         // Clear the window
-        window.clear(&Color::BLACK);
+        window.clear(Color::BLACK);
         window.draw(&vertex_array);
         // Display things on screen
         window.display()

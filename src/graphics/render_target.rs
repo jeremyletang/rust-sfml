@@ -24,7 +24,7 @@ use system::{Vector2f, Vector2i, Vector2u};
 /// [`pop_gl_states`]: RenderTarget::pop_gl_states
 pub trait RenderTarget {
     /// clear the screen
-    fn clear(&mut self, color: &Color);
+    fn clear(&mut self, color: Color);
 
     /// return the current view
     fn view(&self) -> &View;
@@ -65,7 +65,7 @@ pub trait RenderTarget {
     ///
     /// Return the converted point, in "world" units
     ///
-    fn map_pixel_to_coords(&self, point: &Vector2i, view: &View) -> Vector2f;
+    fn map_pixel_to_coords(&self, point: Vector2i, view: &View) -> Vector2f;
 
     /// Convert a point from window coordinates to world coordinates
     ///
@@ -91,7 +91,7 @@ pub trait RenderTarget {
     /// * point - Pixel to convert
     ///
     /// Return the converted point, in "world" units
-    fn map_pixel_to_coords_current_view(&self, point: &Vector2i) -> Vector2f;
+    fn map_pixel_to_coords_current_view(&self, point: Vector2i) -> Vector2f;
 
     /// Convert a point from world coordinates to window coordinates
     ///
@@ -114,7 +114,7 @@ pub trait RenderTarget {
     /// * view - The view to use for converting the point
     ///
     /// Return the converted point, in "world" units
-    fn map_coords_to_pixel(&self, point: &Vector2f, view: &View) -> Vector2i;
+    fn map_coords_to_pixel(&self, point: Vector2f, view: &View) -> Vector2i;
 
     /// Convert a point from window coordinates to world coordinates
     ///
@@ -140,7 +140,7 @@ pub trait RenderTarget {
     /// * point - Pixel to convert
     ///
     /// Return the converted point, in "world" units
-    fn map_coords_to_pixel_current_view(&self, point: &Vector2f) -> Vector2i;
+    fn map_coords_to_pixel_current_view(&self, point: Vector2f) -> Vector2i;
 
     /// Draw a drawable object to the render target
     ///

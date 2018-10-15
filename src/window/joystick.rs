@@ -79,8 +79,8 @@ pub enum Axis {
 }
 
 impl Axis {
-    fn raw(&self) -> ffi::sfJoystickAxis {
-        unsafe { ::std::mem::transmute(*self) }
+    fn raw(self) -> ffi::sfJoystickAxis {
+        unsafe { ::std::mem::transmute(self) }
     }
     pub(super) unsafe fn from_raw(raw: ffi::sfJoystickAxis) -> Self {
         ::std::mem::transmute(raw)

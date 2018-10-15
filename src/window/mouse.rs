@@ -78,8 +78,8 @@ impl Button {
     pub fn is_pressed(self) -> bool {
         unsafe { ffi::sfMouse_isButtonPressed(self.raw()) }.to_bool()
     }
-    fn raw(&self) -> ffi::sfMouseButton {
-        unsafe { ::std::mem::transmute(*self) }
+    fn raw(self) -> ffi::sfMouseButton {
+        unsafe { ::std::mem::transmute(self) }
     }
     pub(super) unsafe fn from_raw(raw: ffi::sfMouseButton) -> Self {
         ::std::mem::transmute(raw)
@@ -96,6 +96,6 @@ pub fn desktop_position() -> Vector2i {
 /// Set the current position of the mouse in desktop coordinates.
 ///
 /// This function sets the global position of the mouse cursor on the desktop.
-pub fn set_desktop_position(position: &Vector2i) {
+pub fn set_desktop_position(position: Vector2i) {
     unsafe { ffi::sfMouse_setPosition(position.raw(), ::std::ptr::null()) }
 }

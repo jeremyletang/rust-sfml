@@ -142,7 +142,7 @@ impl Transform {
     /// * point - Point to transform
     ///
     /// Return a transformed point
-    pub fn transform_point(&self, point: &Vector2f) -> Vector2f {
+    pub fn transform_point(&self, point: Vector2f) -> Vector2f {
         unsafe { Vector2f::from_raw(ffi::sfTransform_transformPoint(&self.0, point.raw())) }
     }
 

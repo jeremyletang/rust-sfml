@@ -147,10 +147,10 @@ impl<'s> Shape<'s> for CircleShape<'s> {
     fn set_texture_rect(&mut self, rect: &IntRect) {
         unsafe { ffi::sfCircleShape_setTextureRect(self.circle_shape, rect.raw()) }
     }
-    fn set_fill_color(&mut self, color: &Color) {
+    fn set_fill_color(&mut self, color: Color) {
         unsafe { ffi::sfCircleShape_setFillColor(self.circle_shape, color.raw()) }
     }
-    fn set_outline_color(&mut self, color: &Color) {
+    fn set_outline_color(&mut self, color: Color) {
         unsafe { ffi::sfCircleShape_setOutlineColor(self.circle_shape, color.raw()) }
     }
     fn set_outline_thickness(&mut self, thickness: f32) {

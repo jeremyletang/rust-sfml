@@ -79,7 +79,7 @@ impl<'s> Sprite<'s> {
     ///
     /// # Arguments
     /// * color - New color of the sprite
-    pub fn set_color(&mut self, color: &Color) {
+    pub fn set_color(&mut self, color: Color) {
         unsafe { ffi::sfSprite_setColor(self.sprite, color.raw()) }
     }
 

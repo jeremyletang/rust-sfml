@@ -24,11 +24,11 @@ pub trait Shape<'s>: Drawable + Transformable {
     /// It can be used to colorize the shape, or change its global opacity.
     /// You can use [`Color::TRANSPARENT`] to make the inside of the shape transparent,
     /// and have the outline alone. By default, the shape's fill color is opaque white.
-    fn set_fill_color(&mut self, color: &Color);
+    fn set_fill_color(&mut self, color: Color);
     /// Sets the outline color of the shape.
     ///
     /// By default, the shape's outline color is opaque white.
-    fn set_outline_color(&mut self, color: &Color);
+    fn set_outline_color(&mut self, color: Color);
     /// Sets the thickness of the shape's outline.
     ///
     /// Note that negative values are allowed

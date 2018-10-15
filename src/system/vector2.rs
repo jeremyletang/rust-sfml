@@ -180,7 +180,7 @@ impl<T: Neg<Output = T>> Neg for Vector2<T> {
 }
 
 impl Vector2i {
-    pub(crate) fn raw(&self) -> ::csfml_system_sys::sfVector2i {
+    pub(crate) fn raw(self) -> ::csfml_system_sys::sfVector2i {
         ::csfml_system_sys::sfVector2i {
             x: self.x,
             y: self.y,
@@ -192,7 +192,7 @@ impl Vector2i {
 }
 
 impl Vector2u {
-    pub(crate) fn raw(&self) -> ::csfml_system_sys::sfVector2u {
+    pub(crate) fn raw(self) -> ::csfml_system_sys::sfVector2u {
         ::csfml_system_sys::sfVector2u {
             x: self.x,
             y: self.y,
@@ -204,7 +204,7 @@ impl Vector2u {
 }
 
 impl Vector2f {
-    pub(crate) fn raw(&self) -> ::csfml_system_sys::sfVector2f {
+    pub(crate) fn raw(self) -> ::csfml_system_sys::sfVector2f {
         ::csfml_system_sys::sfVector2f {
             x: self.x,
             y: self.y,

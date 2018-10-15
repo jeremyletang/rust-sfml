@@ -42,11 +42,11 @@ fn main() {
                     push_text!(x, y, "Release: {:?}, {}, {}", button, x, y);
                 }
                 Event::KeyPressed { code, .. } => if code == Key::W {
-                    window.set_mouse_position(&Vector2i::new(400, 300));
+                    window.set_mouse_position(Vector2i::new(400, 300));
                 } else if code == Key::D {
                     let dm = VideoMode::desktop_mode();
                     let center = Vector2i::new(dm.width as i32 / 2, dm.height as i32 / 2);
-                    mouse::set_desktop_position(&center);
+                    mouse::set_desktop_position(center);
                 } else if code == Key::V {
                     cursor_visible = !cursor_visible;
                     window.set_mouse_cursor_visible(cursor_visible);
@@ -77,7 +77,7 @@ fn main() {
 
         circle.set_position((mp.x as f32, mp.y as f32));
 
-        window.clear(&Color::BLACK);
+        window.clear(Color::BLACK);
         // Push texts out of each other's way
         for i in (0..texts.len()).rev() {
             for j in (0..i).rev() {
@@ -93,7 +93,7 @@ fn main() {
         for txt in &mut texts {
             let mut color = txt.fill_color();
             color.a -= 1;
-            txt.set_fill_color(&color);
+            txt.set_fill_color(color);
             window.draw(txt);
         }
         if !cursor_visible {

@@ -130,14 +130,14 @@ impl<'s> Text<'s> {
     ///
     /// By default, the text's fill color is opaque white. Setting the fill color to a transparent
     /// color with an outline will cause the outline to be displayed in the fill area of the text.
-    pub fn set_fill_color(&mut self, color: &Color) {
+    pub fn set_fill_color(&mut self, color: Color) {
         unsafe { ffi::sfText_setFillColor(self.text, color.raw()) }
     }
 
     /// Set the outline color of the text.
     ///
     /// By default, the text's outline color is opaque black.
-    pub fn set_outline_color(&mut self, color: &Color) {
+    pub fn set_outline_color(&mut self, color: Color) {
         unsafe { ffi::sfText_setOutlineColor(self.text, color.raw()) }
     }
 

@@ -50,24 +50,24 @@ fn main() {
     let mut left_paddle = RectangleShape::new();
     left_paddle.set_size(paddle_size - 3.);
     left_paddle.set_outline_thickness(3.);
-    left_paddle.set_outline_color(&Color::BLACK);
-    left_paddle.set_fill_color(&Color::rgb(100, 100, 200));
+    left_paddle.set_outline_color(Color::BLACK);
+    left_paddle.set_fill_color(Color::rgb(100, 100, 200));
     left_paddle.set_origin(paddle_size / 2.);
 
     // Create the right paddle
     let mut right_paddle = RectangleShape::new();
     right_paddle.set_size(paddle_size - 3.);
     right_paddle.set_outline_thickness(3.);
-    right_paddle.set_outline_color(&Color::BLACK);
-    right_paddle.set_fill_color(&Color::rgb(200, 100, 100));
+    right_paddle.set_outline_color(Color::BLACK);
+    right_paddle.set_fill_color(Color::rgb(200, 100, 100));
     right_paddle.set_origin(paddle_size / 2.);
 
     // Create the ball
     let mut ball = CircleShape::default();
     ball.set_radius(ball_radius - 3.);
     ball.set_outline_thickness(3.);
-    ball.set_outline_color(&Color::BLACK);
-    ball.set_fill_color(&Color::WHITE);
+    ball.set_outline_color(Color::BLACK);
+    ball.set_fill_color(Color::WHITE);
     ball.set_origin((ball_radius / 2., ball_radius / 2.));
 
     // Load the text font
@@ -78,7 +78,7 @@ fn main() {
     pause_message.set_font(&font);
     pause_message.set_character_size(40);
     pause_message.set_position((170., 150.));
-    pause_message.set_fill_color(&Color::WHITE);
+    pause_message.set_fill_color(Color::WHITE);
     pause_message.set_string("Welcome to SFML pong!\nPress space to start the game");
 
     // Define the paddles properties
@@ -230,7 +230,7 @@ fn main() {
             }
         }
         // Clear the window
-        window.clear(&Color::rgb(50, 200, 50));
+        window.clear(Color::rgb(50, 200, 50));
 
         if is_playing {
             // Draw the paddles and the ball

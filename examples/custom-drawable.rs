@@ -14,10 +14,10 @@ impl<'s> Bullet<'s> {
     pub fn new() -> Self {
         let mut head = CircleShape::new(50.0, 50);
         head.set_position((100.0, 100.0));
-        head.set_fill_color(&Color::RED);
+        head.set_fill_color(Color::RED);
         let mut torso = RectangleShape::with_size((100., 200.).into());
         torso.set_position((100.0, 150.0));
-        torso.set_fill_color(&Color::BLUE);
+        torso.set_fill_color(Color::BLUE);
 
         Self { head, torso }
     }
@@ -57,7 +57,7 @@ fn main() {
             }
         }
 
-        window.clear(&Color::BLACK);
+        window.clear(Color::BLACK);
         window.draw(&bullet);
         window.display()
     }

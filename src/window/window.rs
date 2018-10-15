@@ -325,7 +325,7 @@ impl Window {
     ///
     /// # Arguments
     /// * position - New position of the window, in pixels
-    pub fn set_position(&mut self, position: &Vector2i) {
+    pub fn set_position(&mut self, position: Vector2i) {
         unsafe { ffi::sfWindow_setPosition(self.window, position.raw()) }
     }
 
@@ -342,7 +342,7 @@ impl Window {
     ///
     /// # Arguments
     /// * size - New size, in pixels
-    pub fn set_size(&mut self, size: &Vector2u) {
+    pub fn set_size(&mut self, size: Vector2u) {
         unsafe { ffi::sfWindow_setSize(self.window, size.raw()) }
     }
 
@@ -359,7 +359,7 @@ impl Window {
     /// * position - New position of the mouse
     /// * relativeTo - Reference Window
     ///
-    pub fn set_mouse_position(&mut self, position: &Vector2i) {
+    pub fn set_mouse_position(&mut self, position: Vector2i) {
         unsafe { ffi::sfMouse_setPosition(position.raw(), self.window) }
     }
 

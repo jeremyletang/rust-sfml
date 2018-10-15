@@ -87,7 +87,7 @@ impl Type {
     pub(super) unsafe fn from_raw(raw: sfSensorType) -> Self {
         ::std::mem::transmute(raw)
     }
-    fn raw(&self) -> sfSensorType {
-        unsafe { ::std::mem::transmute(*self) }
+    fn raw(self) -> sfSensorType {
+        unsafe { ::std::mem::transmute(self) }
     }
 }

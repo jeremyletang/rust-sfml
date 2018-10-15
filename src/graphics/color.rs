@@ -53,8 +53,8 @@ impl Color {
         }
     }
 
-    pub(super) fn raw(&self) -> ffi::sfColor {
-        unsafe { ::std::mem::transmute(*self) }
+    pub(super) fn raw(self) -> ffi::sfColor {
+        unsafe { ::std::mem::transmute(self) }
     }
 
     pub(super) unsafe fn from_raw(raw: ffi::sfColor) -> Self {
