@@ -1,7 +1,9 @@
 use csfml_system_sys::{sfBool, sfTrue};
 use graphics::csfml_graphics_sys as ffi;
-use graphics::{Color, Drawable, FloatRect, IntRect, RenderStates, RenderTarget, Texture,
-               Transform, Transformable};
+use graphics::{
+    Color, Drawable, FloatRect, IntRect, RenderStates, RenderTarget, Texture, Transform,
+    Transformable,
+};
 use sf_bool_ext::SfBoolExt;
 use std::marker::PhantomData;
 use std::ptr;
