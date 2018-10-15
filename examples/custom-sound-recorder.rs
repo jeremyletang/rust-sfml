@@ -13,8 +13,7 @@ impl SoundRecorder for FileRecorder {
         self.file
             .write_all(unsafe {
                 ::std::slice::from_raw_parts(data.as_ptr() as *const u8, data.len() * 2)
-            })
-            .unwrap();
+            }).unwrap();
         true
     }
 }
