@@ -86,7 +86,8 @@ impl<'fo> WaveBlur<'fo> {
                 Some("resources/wave.vert"),
                 None,
                 Some("resources/blur.frag"),
-            ).unwrap(),
+            )
+            .unwrap(),
         }
     }
 }
@@ -144,7 +145,8 @@ impl StormBlink {
             Some("resources/storm.vert"),
             None,
             Some("resources/blink.frag"),
-        ).unwrap();
+        )
+        .unwrap();
         Self { points, shader }
     }
 }

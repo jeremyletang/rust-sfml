@@ -103,8 +103,7 @@ fn main() {
                 } => return,
                 Event::KeyPressed {
                     code: Key::Space, ..
-                } if !is_playing =>
-                {
+                } if !is_playing => {
                     // (re)start the game
                     is_playing = true;
                     clock.restart();
