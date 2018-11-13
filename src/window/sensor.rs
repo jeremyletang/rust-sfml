@@ -37,9 +37,9 @@
 //! }
 //! ```
 
+use crate::sf_bool_ext::SfBoolExt;
+use crate::system::Vector3f;
 use csfml_window_sys::*;
-use sf_bool_ext::SfBoolExt;
-use system::Vector3f;
 
 /// Get the current sensor value.
 pub fn value(sensor: Type) -> Vector3f {

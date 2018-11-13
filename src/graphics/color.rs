@@ -1,4 +1,4 @@
-use graphics::csfml_graphics_sys as ffi;
+use crate::graphics::csfml_graphics_sys as ffi;
 use std::ops::{Add, AddAssign, Mul, MulAssign, Sub, SubAssign};
 
 /// Utility type for manpulating RGBA colors

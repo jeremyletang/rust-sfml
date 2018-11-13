@@ -1,11 +1,11 @@
-use audio::csfml_audio_sys as ffi;
-use inputstream::InputStream;
-use sf_bool_ext::SfBoolExt;
+use crate::audio::csfml_audio_sys as ffi;
+use crate::inputstream::InputStream;
+use crate::sf_bool_ext::SfBoolExt;
+use crate::system::{Dispose, SfBox, Time};
 use std::borrow::ToOwned;
 use std::ffi::CString;
 use std::io::{Read, Seek};
 use std::slice;
-use system::{Dispose, SfBox, Time};
 
 /// Storage for audio samples defining a sound.
 ///

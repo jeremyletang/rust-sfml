@@ -1,8 +1,8 @@
+use crate::sf_bool_ext::SfBoolExt;
+use crate::system::{Vector2i, Vector2u};
+use crate::window::{ContextSettings, Event, Style, VideoMode};
 use csfml_system_sys::sfBool;
 use csfml_window_sys as ffi;
-use sf_bool_ext::SfBoolExt;
-use system::{Vector2i, Vector2u};
-use window::{ContextSettings, Event, Style, VideoMode};
 
 /// The system native window handle type. Can be used to create an SFML Window
 /// from an existing system window.
@@ -84,7 +84,7 @@ impl Window {
         style: Style,
         settings: &ContextSettings,
     ) -> Window {
-        let utf32 = ::unicode_conv::str_to_csfml(title);
+        let utf32 = crate::unicode_conv::str_to_csfml(title);
         let sf_win: *mut ffi::sfWindow = unsafe {
             ffi::sfWindow_createUnicode(
                 mode.into().raw(),
@@ -207,7 +207,7 @@ impl Window {
     /// # Arguments
     /// * title - New title
     pub fn set_title(&mut self, title: &str) {
-        let utf32 = ::unicode_conv::str_to_csfml(title);
+        let utf32 = crate::unicode_conv::str_to_csfml(title);
         unsafe { ffi::sfWindow_setUnicodeTitle(self.window, utf32.as_ptr() as _) }
     }
 

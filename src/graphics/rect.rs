@@ -1,6 +1,6 @@
-use graphics::csfml_graphics_sys as ffi;
+use crate::graphics::csfml_graphics_sys as ffi;
+use crate::system::Vector2;
 use std::ops::{Add, Sub};
-use system::Vector2;
 
 /// Utility type for manipulating 2D axis-aligned rectangles.
 #[repr(C)]

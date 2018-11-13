@@ -1,6 +1,6 @@
+use crate::sf_bool_ext::SfBoolExt;
+use crate::window::ContextSettings;
 use csfml_window_sys as ffi;
-use sf_bool_ext::SfBoolExt;
-use window::ContextSettings;
 
 /// Type holding a valid drawing context.
 ///
@@ -60,8 +60,8 @@ impl Context {
 
 #[test]
 fn test_settings() {
+    use crate::window::{Context, Window};
     use std::thread;
-    use window::{Context, Window};
 
     let window = Window::new((32, 32), "test", Default::default(), &Default::default());
     let win_settings = window.settings();

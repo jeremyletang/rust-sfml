@@ -1,5 +1,5 @@
+use crate::sf_bool_ext::SfBoolExt;
 use csfml_window_sys as ffi;
-use sf_bool_ext::SfBoolExt;
 
 /// `VideoMode` defines a video mode (width, height, bpp)
 ///

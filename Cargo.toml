@@ -8,6 +8,7 @@ repository = "https://github.com/jeremyletang/rust-sfml"
 license = "zlib-acknowledgement"
 keywords = ["sfml", "multimedia", "game"]
 readme = "README.md"
+edition = "2018"
 
 [features]
 default = ["graphics", "audio"]

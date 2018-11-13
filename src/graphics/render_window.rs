@@ -1,12 +1,12 @@
-use csfml_system_sys::*;
-use graphics::csfml_graphics_sys as ffi;
-use graphics::{
+use crate::graphics::csfml_graphics_sys as ffi;
+use crate::graphics::{
     CircleShape, Color, ConvexShape, CustomShape, Drawable, IntRect, PrimitiveType, RectangleShape,
     RenderStates, RenderTarget, Sprite, Text, Vertex, VertexArray, View,
 };
-use sf_bool_ext::SfBoolExt;
-use system::{Vector2f, Vector2i, Vector2u};
-use window::{ContextSettings, Event, Handle, Style, VideoMode};
+use crate::sf_bool_ext::SfBoolExt;
+use crate::system::{Vector2f, Vector2i, Vector2u};
+use crate::window::{ContextSettings, Event, Handle, Style, VideoMode};
+use csfml_system_sys::*;
 
 /// [`Window`] that can serve as a target for 2D drawing.
 ///
@@ -45,7 +45,7 @@ impl RenderWindow {
         style: Style,
         settings: &ContextSettings,
     ) -> RenderWindow {
-        let utf32 = ::unicode_conv::str_to_csfml(title);
+        let utf32 = crate::unicode_conv::str_to_csfml(title);
         let sf_render_win: *mut ffi::sfRenderWindow = unsafe {
             ffi::sfRenderWindow_createUnicode(
                 mode.into().raw(),
@@ -201,7 +201,7 @@ impl RenderWindow {
     /// * title - New title
     ///
     pub fn set_title(&mut self, title: &str) {
-        let utf32 = ::unicode_conv::str_to_csfml(title);
+        let utf32 = crate::unicode_conv::str_to_csfml(title);
         unsafe {
             ffi::sfRenderWindow_setUnicodeTitle(self.render_window, utf32.as_ptr() as _);
         }

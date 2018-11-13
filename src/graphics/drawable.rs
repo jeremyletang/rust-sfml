@@ -1,4 +1,4 @@
-use graphics::{RenderStates, RenderTarget};
+use crate::graphics::{RenderStates, RenderTarget};
 
 /// The trait drawable is inherited by each object who can be drawn in a [`RenderTarget`]
 pub trait Drawable {

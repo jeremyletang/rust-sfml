@@ -1,13 +1,13 @@
-use audio::csfml_audio_sys as ffi;
-use audio::{SoundSource, SoundStatus};
+use crate::audio::csfml_audio_sys as ffi;
+use crate::audio::{SoundSource, SoundStatus};
+use crate::inputstream::InputStream;
+use crate::sf_bool_ext::SfBoolExt;
+use crate::system::Time;
+use crate::system::Vector3f;
 use csfml_system_sys::sfBool;
-use inputstream::InputStream;
-use sf_bool_ext::SfBoolExt;
 use std::ffi::CString;
 use std::io::{Read, Seek};
 use std::mem;
-use system::Time;
-use system::Vector3f;
 
 /// Streamed music played from an audio file.
 ///

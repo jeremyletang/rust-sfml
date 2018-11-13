@@ -1,6 +1,6 @@
 //! Available blending modes for drawing
 
-use graphics::csfml_graphics_sys as ffi;
+use crate::graphics::csfml_graphics_sys as ffi;
 
 /// Blending modes for drawing.
 ///

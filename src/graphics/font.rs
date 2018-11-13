@@ -1,12 +1,12 @@
+use crate::graphics::csfml_graphics_sys as ffi;
+use crate::graphics::{Glyph, Texture};
+use crate::inputstream::InputStream;
+use crate::sf_bool_ext::SfBoolExt;
+use crate::system::{Dispose, SfBox};
 use csfml_system_sys::sfBool;
-use graphics::csfml_graphics_sys as ffi;
-use graphics::{Glyph, Texture};
-use inputstream::InputStream;
-use sf_bool_ext::SfBoolExt;
 use std::borrow::ToOwned;
 use std::ffi::{CStr, CString};
 use std::io::{Read, Seek};
-use system::{Dispose, SfBox};
 
 /// Type for loading and manipulating character fonts.
 ///

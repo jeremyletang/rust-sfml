@@ -1,10 +1,10 @@
-use audio::csfml_audio_sys::*;
-use audio::SoundBuffer;
+use crate::audio::csfml_audio_sys::*;
+use crate::audio::SoundBuffer;
+use crate::sf_bool_ext::SfBoolExt;
+use crate::system::Time;
 use csfml_system_sys::{sfBool, sfInt16, sfTrue};
-use sf_bool_ext::SfBoolExt;
 use std::ffi::{CStr, CString};
 use std::os::raw::c_void;
-use system::Time;
 
 /// Trait for processing captured sound data.
 ///

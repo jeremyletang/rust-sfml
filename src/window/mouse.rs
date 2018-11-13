@@ -29,9 +29,9 @@
 //! window.set_mouse_position(Vector2i::new(100, 200));
 //! ```
 
+use crate::sf_bool_ext::SfBoolExt;
+use crate::system::Vector2i;
 use csfml_window_sys as ffi;
-use sf_bool_ext::SfBoolExt;
-use system::Vector2i;
 
 /// Mouse buttons.
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]

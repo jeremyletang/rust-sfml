@@ -290,7 +290,7 @@ fn main() {
 
     while window.is_open() {
         while let Some(event) = window.poll_event() {
-            use Event::*;
+            use crate::Event::*;
             match event {
                 Closed => window.close(),
                 KeyPressed { code, .. } => match code {

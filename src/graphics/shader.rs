@@ -1,7 +1,7 @@
-use graphics::csfml_graphics_sys as ffi;
-use graphics::{glsl, Texture};
-use inputstream::InputStream;
-use sf_bool_ext::SfBoolExt;
+use crate::graphics::csfml_graphics_sys as ffi;
+use crate::graphics::{glsl, Texture};
+use crate::inputstream::InputStream;
+use crate::sf_bool_ext::SfBoolExt;
 use std::ffi::CString;
 use std::io::{Read, Seek};
 use std::marker::PhantomData;

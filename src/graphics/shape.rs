@@ -1,5 +1,5 @@
-use graphics::{Color, Drawable, FloatRect, IntRect, Texture, Transformable};
-use system::Vector2f;
+use crate::graphics::{Color, Drawable, FloatRect, IntRect, Texture, Transformable};
+use crate::system::Vector2f;
 
 /// Trait for textured shapes with outline.
 pub trait Shape<'s>: Drawable + Transformable {
