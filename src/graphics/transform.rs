@@ -24,7 +24,7 @@ impl Transform {
     /// - *a20* : Element (2, 0) of the matrix
     /// - *a21* : Element (2, 1) of the matrix
     /// - *a22* : Element (2, 2) of the matrix
-    #[cfg_attr(feature = "cargo-clippy", allow(too_many_arguments))]
+    #[allow(clippy::too_many_arguments)]
     pub fn new(
         a00: f32,
         a01: f32,
