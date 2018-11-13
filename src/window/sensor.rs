@@ -13,13 +13,13 @@
 //! not be available. You should always check the availability of a sensor before trying to
 //! read it, with the [`is_available`] function.
 //!
-//! You may wonder why some sensor types look so similar, for example [`Type::Accelerometer`] and
-//! [`Type::Gravity`] / [`Type::UserAcceleration`].
+//! You may wonder why some sensor types look so similar, for example [`Accelerometer`] and
+//! [`Gravity`] / [`UserAcceleration`].
 //! The first one is the raw measurement of the acceleration,
 //! and takes into account both the earth gravity and the user movement. The others are more
 //! precise: they provide these components separately, which is usually more useful.
 //! In fact they are not direct sensors, they are computed internally based on the raw acceleration
-//! and other sensors. This is exactly the same for [`Type::Gyroscope`] vs [`Type::Orientation`].
+//! and other sensors. This is exactly the same for [`Gyroscope`] vs [`Orientation`].
 //!
 //! Because sensors consume a non-negligible amount of current, they are all disabled by default.
 //! You must call [`set_enabled`] for each sensor in which you are interested.
@@ -36,6 +36,15 @@
 //!     let _gravity = sensor::value(sensor::Type::Gravity);
 //! }
 //! ```
+//!
+//! [`is_available`]: sensor::is_available
+//! [`set_enabled`]: sensor::set_enabled
+//! [`Accelerometer`]: sensor::Type::Accelerometer
+//! [`Gravity`]: sensor::Type::Gravity
+//! [`UserAcceleration`]: sensor::Type::UserAcceleration
+//! [`Gyroscope`]: sensor::Type::Gyroscope
+//! [`Orientation`]: sensor::Type::Orientation
+//!
 
 use csfml_window_sys::*;
 use sf_bool_ext::SfBoolExt;

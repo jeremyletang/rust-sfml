@@ -43,6 +43,10 @@ use std::ptr;
 /// you can either pass the render states unmodified, or change some of them.
 /// For example, a transformable object will combine the current transform with its own transform.
 /// A sprite will set its texture. Etc.
+///
+/// [`RenderTarget`]: crate::graphics::RenderTarget
+/// [`RenderTarget::draw_with_renderstates`]: crate::graphics::RenderTarget::draw_with_renderstates
+/// [`Drawable`]: crate::graphics::Drawable
 #[derive(Default, Debug)]
 pub struct RenderStates<'texture, 'shader, 'shader_texture: 'shader> {
     /// Blending mode.

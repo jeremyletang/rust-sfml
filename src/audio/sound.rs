@@ -37,6 +37,8 @@ use system::Vector3f;
 /// let mut sound = Sound::with_buffer(&buffer);
 /// sound.play();
 /// ```
+///
+/// [`Music`]: crate::audio::Music
 #[derive(Debug)]
 pub struct Sound<'s> {
     sound: *mut ffi::sfSound,

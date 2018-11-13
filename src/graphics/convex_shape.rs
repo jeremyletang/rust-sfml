@@ -21,7 +21,7 @@ pub struct ConvexShape<'s> {
     texture: PhantomData<&'s Texture>,
 }
 
-/// An iterator over the points of a `ConvexShape`
+/// An iterator over the points of a [`ConvexShape`].
 #[derive(Debug)]
 #[allow(missing_copy_implementations)]
 pub struct ConvexShapePoints {

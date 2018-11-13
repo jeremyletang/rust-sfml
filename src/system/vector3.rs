@@ -35,6 +35,8 @@ use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssi
 /// ```
 ///
 /// Note: for 2-dimensional vectors, see [`Vector2`].
+///
+/// [`Vector2`]: crate::system::Vector2
 #[repr(C)]
 #[derive(Clone, PartialOrd, PartialEq, Debug, Copy, Default)]
 pub struct Vector3<T> {

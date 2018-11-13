@@ -4,6 +4,9 @@ use graphics::csfml_graphics_sys::sfPrimitiveType;
 ///
 /// Points and lines have no area, therefore their thickness will always be 1 pixel,
 /// regardless the current transform and view.
+///
+/// [`VertexArray`]: crate::graphics::VertexArray
+///
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
 pub enum PrimitiveType {

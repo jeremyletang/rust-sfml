@@ -57,6 +57,8 @@ use system::{Dispose, SfBox, Time};
 /// sound_2.set_pitch(2.0);
 /// sound_2.play();
 /// ```
+///
+/// [`Sound`]: crate::audio::Sound
 #[derive(Debug)]
 #[allow(missing_copy_implementations)]
 pub enum SoundBuffer {}

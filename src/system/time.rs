@@ -33,7 +33,9 @@ use std::ops::{
 /// ```
 ///
 /// # See also
-/// - `Clock`
+/// - [`Clock`]
+///
+/// [`Clock`]: crate::system::Clock
 #[derive(Copy, Clone, Debug)]
 pub struct Time(sfTime);
 

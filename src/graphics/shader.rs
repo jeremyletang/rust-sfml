@@ -113,6 +113,15 @@ use std::ptr;
 /// // ... render OpenGL geometry ...
 /// Shader::bind(None);
 /// ```
+///
+/// [`Color`]: crate::graphics::Color
+/// [`Transform`]: crate::graphics::Transform
+/// [`RenderStates`]: crate::graphics::RenderStates
+/// [`RenderTarget::draw_with_renderstates`]: crate::graphics::RenderTarget::draw_with_renderstates
+/// [`Sprite`]: crate::graphics::Sprite
+/// [`Text`]: crate::graphics::Text
+/// [`RenderTexture`]: crate::graphics::RenderTexture
+///
 #[derive(Debug)]
 pub struct Shader<'texture> {
     shader: *mut ffi::sfShader,

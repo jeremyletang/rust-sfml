@@ -31,6 +31,10 @@ use window::mouse::{Button, Wheel};
 ///     }
 /// }
 /// ```
+///
+/// [`Window::poll_event`]: crate::window::Window::poll_event
+/// [`Window::wait_event`]: crate::window::Window::wait_event
+///
 #[derive(Clone, PartialEq, Debug, Copy)]
 pub enum Event {
     /// The window requested to be closed

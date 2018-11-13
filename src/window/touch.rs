@@ -39,6 +39,9 @@
 //! // get position of touch 1 relative to a window
 //! let _relative_pos = window.touch_position(1);
 //! ```
+//!
+//! [`desktop_position`]: touch::desktop_position
+//!
 
 use csfml_window_sys::*;
 use sf_bool_ext::SfBoolExt;

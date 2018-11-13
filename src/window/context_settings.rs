@@ -42,6 +42,8 @@ use system::{Bool, FALSE};
 /// of these values are not supported by the system; instead, SFML will try to find the closest
 /// valid match. You can then retrieve the settings that the window actually used to create
 /// its context, with [`Window::settings`].
+///
+/// [`Window::settings`]: crate::window::Window::settings
 #[repr(C)]
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
 pub struct ContextSettings {

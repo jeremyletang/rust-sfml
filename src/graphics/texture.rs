@@ -45,6 +45,8 @@ use window::Window;
 /// which is RGBA 32 bits.
 /// This means that a pixel must be composed of
 /// 8 bits red, green, blue and alpha channels – just like a [`Color`].
+///
+/// [`Color`]: crate::graphics::Color
 #[derive(Debug)]
 #[allow(missing_copy_implementations)]
 pub enum Texture {}

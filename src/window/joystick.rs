@@ -45,6 +45,11 @@
 //! }
 //! ```
 //!
+//! [`COUNT`]: joystick::COUNT
+//! [`BUTTON_COUNT`]: joystick::BUTTON_COUNT
+//! [`AXIS_COUNT`]: joystick::AXIS_COUNT
+//! [`update`]: joystick::update
+//!
 
 use csfml_window_sys as ffi;
 use sf_bool_ext::SfBoolExt;

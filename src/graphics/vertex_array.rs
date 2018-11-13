@@ -9,7 +9,7 @@ pub struct VertexArray {
     vertex_array: *mut sfVertexArray,
 }
 
-/// An iterator over the vertice of a `VertexArray`
+/// An iterator over the vertice of a [`VertexArray`].
 #[derive(Debug)]
 pub struct Vertices<'a> {
     vertex_array: &'a VertexArray,
