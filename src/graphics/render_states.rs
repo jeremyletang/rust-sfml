@@ -47,7 +47,7 @@ use std::ptr;
 /// [`RenderTarget`]: crate::graphics::RenderTarget
 /// [`RenderTarget::draw_with_renderstates`]: crate::graphics::RenderTarget::draw_with_renderstates
 /// [`Drawable`]: crate::graphics::Drawable
-#[derive(Default, Debug)]
+#[derive(Default, Debug, Clone, Copy)]
 pub struct RenderStates<'texture, 'shader, 'shader_texture: 'shader> {
     /// Blending mode.
     pub blend_mode: BlendMode,
