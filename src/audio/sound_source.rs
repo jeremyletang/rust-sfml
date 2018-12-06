@@ -1,4 +1,4 @@
-use system::Vector3f;
+use crate::system::Vector3f;
 
 /// Base trait defining a sound's properties.
 pub trait SoundSource {

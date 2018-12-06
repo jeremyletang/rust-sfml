@@ -1,7 +1,7 @@
+use crate::window::joystick::Axis;
+use crate::window::keyboard::Key;
+use crate::window::mouse::{Button, Wheel};
 use csfml_window_sys as ffi;
-use window::joystick::Axis;
-use window::keyboard::Key;
-use window::mouse::{Button, Wheel};
 
 /// Defines a system event and its parameters.
 ///
@@ -185,7 +185,7 @@ pub enum Event {
     /// A sensor value changed
     SensorChanged {
         /// Type of the sensor.
-        type_: ::window::sensor::Type,
+        type_: crate::window::sensor::Type,
         /// Current value of the sensor on X axis.
         x: f32,
         /// 	Current value of the sensor on Y axis.
@@ -197,9 +197,9 @@ pub enum Event {
 
 impl Event {
     pub(crate) unsafe fn from_raw(event: &ffi::sfEvent) -> Option<Self> {
+        use crate::sf_bool_ext::SfBoolExt;
+        use crate::window::Event::*;
         use csfml_window_sys::sfEventType::*;
-        use sf_bool_ext::SfBoolExt;
-        use window::Event::*;
 
         let type_ = event.type_;
 
@@ -336,7 +336,7 @@ impl Event {
                 let e = event.sensor;
 
                 SensorChanged {
-                    type_: ::window::sensor::Type::from_raw(e.sensorType),
+                    type_: crate::window::sensor::Type::from_raw(e.sensorType),
                     x: e.x,
                     y: e.y,
                     z: e.z,

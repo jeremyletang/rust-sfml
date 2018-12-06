@@ -18,5 +18,5 @@ pub mod sensor;
 mod style;
 pub mod touch;
 mod video_mode;
-#[cfg_attr(feature = "cargo-clippy", allow(module_inception))]
+#[allow(clippy::module_inception)]
 mod window;

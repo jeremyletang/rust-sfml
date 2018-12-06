@@ -1,8 +1,8 @@
 //! GLSL types.
 
-use graphics::csfml_graphics_sys as ffi;
-use graphics::Color;
-use system::{Vector2, Vector3};
+use crate::graphics::csfml_graphics_sys as ffi;
+use crate::graphics::Color;
+use crate::system::{Vector2, Vector3};
 
 /// 2D float vector (`vec2` in GLSL).
 pub type Vec2 = Vector2<f32>;
@@ -100,7 +100,7 @@ impl Into<ffi::sfGlslIvec3> for IVec3 {
 
 impl Into<ffi::sfGlslBvec2> for BVec2 {
     fn into(self) -> ffi::sfGlslBvec2 {
-        use sf_bool_ext::SfBoolExt;
+        use crate::sf_bool_ext::SfBoolExt;
         ffi::sfGlslBvec2 {
             x: SfBoolExt::from_bool(self.x),
             y: SfBoolExt::from_bool(self.y),
@@ -110,7 +110,7 @@ impl Into<ffi::sfGlslBvec2> for BVec2 {
 
 impl Into<ffi::sfGlslBvec3> for BVec3 {
     fn into(self) -> ffi::sfGlslBvec3 {
-        use sf_bool_ext::SfBoolExt;
+        use crate::sf_bool_ext::SfBoolExt;
         ffi::sfGlslBvec3 {
             x: SfBoolExt::from_bool(self.x),
             y: SfBoolExt::from_bool(self.y),
@@ -134,7 +134,7 @@ pub struct BVec4 {
 
 impl Into<ffi::sfGlslBvec4> for BVec4 {
     fn into(self) -> ffi::sfGlslBvec4 {
-        use sf_bool_ext::SfBoolExt;
+        use crate::sf_bool_ext::SfBoolExt;
         ffi::sfGlslBvec4 {
             x: SfBoolExt::from_bool(self.x),
             y: SfBoolExt::from_bool(self.y),
@@ -149,8 +149,8 @@ impl Into<ffi::sfGlslBvec4> for BVec4 {
 /// GLSL `mat3` type.
 pub struct Mat3(pub [f32; 9]);
 
-impl From<::graphics::Transform> for Mat3 {
-    fn from(src: ::graphics::Transform) -> Self {
+impl From<crate::graphics::Transform> for Mat3 {
+    fn from(src: crate::graphics::Transform) -> Self {
         Mat3(src.0.matrix)
     }
 }
@@ -160,8 +160,8 @@ impl From<::graphics::Transform> for Mat3 {
 /// GLSL `mat4` type.
 pub struct Mat4(pub [f32; 16]);
 
-impl From<::graphics::Transform> for Mat4 {
-    fn from(src: ::graphics::Transform) -> Self {
+impl From<crate::graphics::Transform> for Mat4 {
+    fn from(src: crate::graphics::Transform) -> Self {
         let mut mat = unsafe { ::std::mem::uninitialized() };
         src.get_matrix(&mut mat);
         Mat4(mat)

@@ -1,14 +1,14 @@
-use csfml_system_sys::{sfBool, sfTrue, sfVector2f};
-use graphics::csfml_graphics_sys as ffi;
-use graphics::{
+use crate::graphics::csfml_graphics_sys as ffi;
+use crate::graphics::{
     Color, Drawable, FloatRect, IntRect, RenderStates, RenderTarget, Shape, Texture, Transform,
     Transformable,
 };
-use sf_bool_ext::SfBoolExt;
+use crate::sf_bool_ext::SfBoolExt;
+use crate::system::Vector2f;
+use csfml_system_sys::{sfBool, sfTrue, sfVector2f};
 use std::marker::PhantomData;
 use std::os::raw::c_void;
 use std::ptr;
-use system::Vector2f;
 
 /// The points of a custom shape.
 pub trait CustomShapePoints {
@@ -36,14 +36,14 @@ pub struct CustomShape<'s> {
     points: *mut Box<CustomShapePoints + Send>,
 }
 
-#[cfg_attr(feature = "cargo-clippy", allow(cast_ptr_alignment))]
+#[allow(clippy::cast_ptr_alignment)]
 unsafe extern "C" fn get_point_count_callback(obj: *mut c_void) -> usize {
     let shape = obj as *mut Box<CustomShapePoints + Send>;
     let ret = (*shape).point_count();
     ret as usize
 }
 
-#[cfg_attr(feature = "cargo-clippy", allow(cast_ptr_alignment))]
+#[allow(clippy::cast_ptr_alignment)]
 unsafe extern "C" fn get_point_callback(point: usize, obj: *mut c_void) -> sfVector2f {
     let shape = obj as *mut Box<CustomShapePoints + Send>;
     let ret = (*shape).point(point as u32);

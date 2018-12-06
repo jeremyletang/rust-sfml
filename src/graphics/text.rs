@@ -1,11 +1,11 @@
-use graphics::csfml_graphics_sys as ffi;
-use graphics::{
+use crate::graphics::csfml_graphics_sys as ffi;
+use crate::graphics::{
     Color, Drawable, FloatRect, Font, RenderStates, RenderTarget, TextStyle, Transform,
     Transformable,
 };
+use crate::system::Vector2f;
 use std::marker::PhantomData;
 use std::str;
-use system::Vector2f;
 
 /// Graphical text
 ///

@@ -43,9 +43,9 @@
 //! [`desktop_position`]: touch::desktop_position
 //!
 
+use crate::sf_bool_ext::SfBoolExt;
+use crate::system::Vector2i;
 use csfml_window_sys::*;
-use sf_bool_ext::SfBoolExt;
-use system::Vector2i;
 
 /// Check if a touch event is currently down.
 pub fn is_down(finger: u32) -> bool {

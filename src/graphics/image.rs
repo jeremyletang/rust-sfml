@@ -1,12 +1,12 @@
+use crate::graphics::csfml_graphics_sys as ffi;
+use crate::graphics::{Color, IntRect};
+use crate::inputstream::InputStream;
+use crate::sf_bool_ext::SfBoolExt;
+use crate::system::Vector2u;
 use csfml_system_sys::sfBool;
-use graphics::csfml_graphics_sys as ffi;
-use graphics::{Color, IntRect};
-use inputstream::InputStream;
-use sf_bool_ext::SfBoolExt;
 use std::ffi::CString;
 use std::io::{Read, Seek};
 use std::slice;
-use system::Vector2u;
 
 /// Loading, manipulating and saving images.
 #[derive(Debug)]

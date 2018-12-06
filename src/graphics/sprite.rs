@@ -1,13 +1,13 @@
-use csfml_system_sys::{sfBool, sfTrue};
-use graphics::csfml_graphics_sys as ffi;
-use graphics::{
+use crate::graphics::csfml_graphics_sys as ffi;
+use crate::graphics::{
     Color, Drawable, FloatRect, IntRect, RenderStates, RenderTarget, Texture, Transform,
     Transformable,
 };
-use sf_bool_ext::SfBoolExt;
+use crate::sf_bool_ext::SfBoolExt;
+use crate::system::Vector2f;
+use csfml_system_sys::{sfBool, sfTrue};
 use std::marker::PhantomData;
 use std::ptr;
-use system::Vector2f;
 
 /// Drawable representation of a texture
 ///

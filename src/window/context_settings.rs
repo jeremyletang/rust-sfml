@@ -1,6 +1,6 @@
+use crate::system::{Bool, FALSE};
 use csfml_window_sys::sfContextSettings;
 use std::os::raw::c_uint;
-use system::{Bool, FALSE};
 
 /// Structure defining the settings of the OpenGL context attached to a window.
 ///
