@@ -317,8 +317,11 @@ extern "C" {
 pub type sfSoundRecorderStartCallback =
     ::std::option::Option<unsafe extern "C" fn(arg1: *mut ::std::os::raw::c_void) -> sfBool>;
 pub type sfSoundRecorderProcessCallback = ::std::option::Option<
-    unsafe extern "C" fn(arg1: *const sfInt16, arg2: usize, arg3: *mut ::std::os::raw::c_void)
-        -> sfBool,
+    unsafe extern "C" fn(
+        arg1: *const sfInt16,
+        arg2: usize,
+        arg3: *mut ::std::os::raw::c_void,
+    ) -> sfBool,
 >;
 pub type sfSoundRecorderStopCallback =
     ::std::option::Option<unsafe extern "C" fn(arg1: *mut ::std::os::raw::c_void)>;
@@ -431,8 +434,10 @@ impl Clone for sfSoundStreamChunk {
     }
 }
 pub type sfSoundStreamGetDataCallback = ::std::option::Option<
-    unsafe extern "C" fn(arg1: *mut sfSoundStreamChunk, arg2: *mut ::std::os::raw::c_void)
-        -> sfBool,
+    unsafe extern "C" fn(
+        arg1: *mut sfSoundStreamChunk,
+        arg2: *mut ::std::os::raw::c_void,
+    ) -> sfBool,
 >;
 pub type sfSoundStreamSeekCallback =
     ::std::option::Option<unsafe extern "C" fn(arg1: sfTime, arg2: *mut ::std::os::raw::c_void)>;
