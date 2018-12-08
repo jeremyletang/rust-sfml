@@ -13,11 +13,28 @@ pub struct sfContext {
 }
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct sfWindow {
+pub struct sfCursor {
     _unused: [u8; 0],
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Copy, Clone)]
+pub struct sfWindow {
+    _unused: [u8; 0],
+}
+extern "C" {
+    pub fn sfClipboard_getString() -> *const ::std::os::raw::c_char;
+}
+extern "C" {
+    pub fn sfClipboard_getUnicodeString() -> *const sfUint32;
+}
+extern "C" {
+    pub fn sfClipboard_setString(text: *const ::std::os::raw::c_char);
+}
+extern "C" {
+    pub fn sfClipboard_setUnicodeString(text: *const sfUint32);
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
 pub struct sfJoystickIdentification {
     pub name: *const ::std::os::raw::c_char,
     pub vendorId: ::std::os::raw::c_uint,
@@ -36,62 +53,53 @@ fn bindgen_test_layout_sfJoystickIdentification() {
         concat!("Alignment of ", stringify!(sfJoystickIdentification))
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfJoystickIdentification)).name as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfJoystickIdentification>())).name as *const _ as usize },
         0usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfJoystickIdentification),
             "::",
             stringify!(name)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfJoystickIdentification)).vendorId as *const _ as usize },
+        unsafe {
+            &(*(::std::ptr::null::<sfJoystickIdentification>())).vendorId as *const _ as usize
+        },
         8usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfJoystickIdentification),
             "::",
             stringify!(vendorId)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfJoystickIdentification)).productId as *const _ as usize },
+        unsafe {
+            &(*(::std::ptr::null::<sfJoystickIdentification>())).productId as *const _ as usize
+        },
         12usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfJoystickIdentification),
             "::",
             stringify!(productId)
         )
     );
 }
-impl Clone for sfJoystickIdentification {
-    fn clone(&self) -> Self {
-        *self
-    }
-}
-pub const sfJoystickCount: _bindgen_ty_1 = _bindgen_ty_1::sfJoystickCount;
-pub const sfJoystickButtonCount: _bindgen_ty_1 = _bindgen_ty_1::sfJoystickButtonCount;
-pub const sfJoystickAxisCount: _bindgen_ty_1 = _bindgen_ty_1::sfJoystickCount;
-#[repr(u32)]
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
-pub enum _bindgen_ty_1 {
-    sfJoystickCount = 8,
-    sfJoystickButtonCount = 32,
-}
-#[repr(u32)]
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
-pub enum sfJoystickAxis {
-    sfJoystickX = 0,
-    sfJoystickY = 1,
-    sfJoystickZ = 2,
-    sfJoystickR = 3,
-    sfJoystickU = 4,
-    sfJoystickV = 5,
-    sfJoystickPovX = 6,
-    sfJoystickPovY = 7,
-}
+pub const sfJoystickCount: _bindgen_ty_1 = 8;
+pub const sfJoystickButtonCount: _bindgen_ty_1 = 32;
+pub const sfJoystickAxisCount: _bindgen_ty_1 = 8;
+pub type _bindgen_ty_1 = u32;
+pub const sfJoystickAxis_sfJoystickX: sfJoystickAxis = 0;
+pub const sfJoystickAxis_sfJoystickY: sfJoystickAxis = 1;
+pub const sfJoystickAxis_sfJoystickZ: sfJoystickAxis = 2;
+pub const sfJoystickAxis_sfJoystickR: sfJoystickAxis = 3;
+pub const sfJoystickAxis_sfJoystickU: sfJoystickAxis = 4;
+pub const sfJoystickAxis_sfJoystickV: sfJoystickAxis = 5;
+pub const sfJoystickAxis_sfJoystickPovX: sfJoystickAxis = 6;
+pub const sfJoystickAxis_sfJoystickPovY: sfJoystickAxis = 7;
+pub type sfJoystickAxis = u32;
 extern "C" {
     pub fn sfJoystick_isConnected(joystick: ::std::os::raw::c_uint) -> sfBool;
 }
@@ -121,135 +129,131 @@ extern "C" {
 extern "C" {
     pub fn sfJoystick_update();
 }
-#[repr(i32)]
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
-pub enum sfKeyCode {
-    sfKeyUnknown = -1,
-    sfKeyA = 0,
-    sfKeyB = 1,
-    sfKeyC = 2,
-    sfKeyD = 3,
-    sfKeyE = 4,
-    sfKeyF = 5,
-    sfKeyG = 6,
-    sfKeyH = 7,
-    sfKeyI = 8,
-    sfKeyJ = 9,
-    sfKeyK = 10,
-    sfKeyL = 11,
-    sfKeyM = 12,
-    sfKeyN = 13,
-    sfKeyO = 14,
-    sfKeyP = 15,
-    sfKeyQ = 16,
-    sfKeyR = 17,
-    sfKeyS = 18,
-    sfKeyT = 19,
-    sfKeyU = 20,
-    sfKeyV = 21,
-    sfKeyW = 22,
-    sfKeyX = 23,
-    sfKeyY = 24,
-    sfKeyZ = 25,
-    sfKeyNum0 = 26,
-    sfKeyNum1 = 27,
-    sfKeyNum2 = 28,
-    sfKeyNum3 = 29,
-    sfKeyNum4 = 30,
-    sfKeyNum5 = 31,
-    sfKeyNum6 = 32,
-    sfKeyNum7 = 33,
-    sfKeyNum8 = 34,
-    sfKeyNum9 = 35,
-    sfKeyEscape = 36,
-    sfKeyLControl = 37,
-    sfKeyLShift = 38,
-    sfKeyLAlt = 39,
-    sfKeyLSystem = 40,
-    sfKeyRControl = 41,
-    sfKeyRShift = 42,
-    sfKeyRAlt = 43,
-    sfKeyRSystem = 44,
-    sfKeyMenu = 45,
-    sfKeyLBracket = 46,
-    sfKeyRBracket = 47,
-    sfKeySemiColon = 48,
-    sfKeyComma = 49,
-    sfKeyPeriod = 50,
-    sfKeyQuote = 51,
-    sfKeySlash = 52,
-    sfKeyBackSlash = 53,
-    sfKeyTilde = 54,
-    sfKeyEqual = 55,
-    sfKeyDash = 56,
-    sfKeySpace = 57,
-    sfKeyReturn = 58,
-    sfKeyBack = 59,
-    sfKeyTab = 60,
-    sfKeyPageUp = 61,
-    sfKeyPageDown = 62,
-    sfKeyEnd = 63,
-    sfKeyHome = 64,
-    sfKeyInsert = 65,
-    sfKeyDelete = 66,
-    sfKeyAdd = 67,
-    sfKeySubtract = 68,
-    sfKeyMultiply = 69,
-    sfKeyDivide = 70,
-    sfKeyLeft = 71,
-    sfKeyRight = 72,
-    sfKeyUp = 73,
-    sfKeyDown = 74,
-    sfKeyNumpad0 = 75,
-    sfKeyNumpad1 = 76,
-    sfKeyNumpad2 = 77,
-    sfKeyNumpad3 = 78,
-    sfKeyNumpad4 = 79,
-    sfKeyNumpad5 = 80,
-    sfKeyNumpad6 = 81,
-    sfKeyNumpad7 = 82,
-    sfKeyNumpad8 = 83,
-    sfKeyNumpad9 = 84,
-    sfKeyF1 = 85,
-    sfKeyF2 = 86,
-    sfKeyF3 = 87,
-    sfKeyF4 = 88,
-    sfKeyF5 = 89,
-    sfKeyF6 = 90,
-    sfKeyF7 = 91,
-    sfKeyF8 = 92,
-    sfKeyF9 = 93,
-    sfKeyF10 = 94,
-    sfKeyF11 = 95,
-    sfKeyF12 = 96,
-    sfKeyF13 = 97,
-    sfKeyF14 = 98,
-    sfKeyF15 = 99,
-    sfKeyPause = 100,
-    sfKeyCount = 101,
-}
+pub const sfKeyCode_sfKeyUnknown: sfKeyCode = -1;
+pub const sfKeyCode_sfKeyA: sfKeyCode = 0;
+pub const sfKeyCode_sfKeyB: sfKeyCode = 1;
+pub const sfKeyCode_sfKeyC: sfKeyCode = 2;
+pub const sfKeyCode_sfKeyD: sfKeyCode = 3;
+pub const sfKeyCode_sfKeyE: sfKeyCode = 4;
+pub const sfKeyCode_sfKeyF: sfKeyCode = 5;
+pub const sfKeyCode_sfKeyG: sfKeyCode = 6;
+pub const sfKeyCode_sfKeyH: sfKeyCode = 7;
+pub const sfKeyCode_sfKeyI: sfKeyCode = 8;
+pub const sfKeyCode_sfKeyJ: sfKeyCode = 9;
+pub const sfKeyCode_sfKeyK: sfKeyCode = 10;
+pub const sfKeyCode_sfKeyL: sfKeyCode = 11;
+pub const sfKeyCode_sfKeyM: sfKeyCode = 12;
+pub const sfKeyCode_sfKeyN: sfKeyCode = 13;
+pub const sfKeyCode_sfKeyO: sfKeyCode = 14;
+pub const sfKeyCode_sfKeyP: sfKeyCode = 15;
+pub const sfKeyCode_sfKeyQ: sfKeyCode = 16;
+pub const sfKeyCode_sfKeyR: sfKeyCode = 17;
+pub const sfKeyCode_sfKeyS: sfKeyCode = 18;
+pub const sfKeyCode_sfKeyT: sfKeyCode = 19;
+pub const sfKeyCode_sfKeyU: sfKeyCode = 20;
+pub const sfKeyCode_sfKeyV: sfKeyCode = 21;
+pub const sfKeyCode_sfKeyW: sfKeyCode = 22;
+pub const sfKeyCode_sfKeyX: sfKeyCode = 23;
+pub const sfKeyCode_sfKeyY: sfKeyCode = 24;
+pub const sfKeyCode_sfKeyZ: sfKeyCode = 25;
+pub const sfKeyCode_sfKeyNum0: sfKeyCode = 26;
+pub const sfKeyCode_sfKeyNum1: sfKeyCode = 27;
+pub const sfKeyCode_sfKeyNum2: sfKeyCode = 28;
+pub const sfKeyCode_sfKeyNum3: sfKeyCode = 29;
+pub const sfKeyCode_sfKeyNum4: sfKeyCode = 30;
+pub const sfKeyCode_sfKeyNum5: sfKeyCode = 31;
+pub const sfKeyCode_sfKeyNum6: sfKeyCode = 32;
+pub const sfKeyCode_sfKeyNum7: sfKeyCode = 33;
+pub const sfKeyCode_sfKeyNum8: sfKeyCode = 34;
+pub const sfKeyCode_sfKeyNum9: sfKeyCode = 35;
+pub const sfKeyCode_sfKeyEscape: sfKeyCode = 36;
+pub const sfKeyCode_sfKeyLControl: sfKeyCode = 37;
+pub const sfKeyCode_sfKeyLShift: sfKeyCode = 38;
+pub const sfKeyCode_sfKeyLAlt: sfKeyCode = 39;
+pub const sfKeyCode_sfKeyLSystem: sfKeyCode = 40;
+pub const sfKeyCode_sfKeyRControl: sfKeyCode = 41;
+pub const sfKeyCode_sfKeyRShift: sfKeyCode = 42;
+pub const sfKeyCode_sfKeyRAlt: sfKeyCode = 43;
+pub const sfKeyCode_sfKeyRSystem: sfKeyCode = 44;
+pub const sfKeyCode_sfKeyMenu: sfKeyCode = 45;
+pub const sfKeyCode_sfKeyLBracket: sfKeyCode = 46;
+pub const sfKeyCode_sfKeyRBracket: sfKeyCode = 47;
+pub const sfKeyCode_sfKeySemicolon: sfKeyCode = 48;
+pub const sfKeyCode_sfKeyComma: sfKeyCode = 49;
+pub const sfKeyCode_sfKeyPeriod: sfKeyCode = 50;
+pub const sfKeyCode_sfKeyQuote: sfKeyCode = 51;
+pub const sfKeyCode_sfKeySlash: sfKeyCode = 52;
+pub const sfKeyCode_sfKeyBackslash: sfKeyCode = 53;
+pub const sfKeyCode_sfKeyTilde: sfKeyCode = 54;
+pub const sfKeyCode_sfKeyEqual: sfKeyCode = 55;
+pub const sfKeyCode_sfKeyHyphen: sfKeyCode = 56;
+pub const sfKeyCode_sfKeySpace: sfKeyCode = 57;
+pub const sfKeyCode_sfKeyEnter: sfKeyCode = 58;
+pub const sfKeyCode_sfKeyBackspace: sfKeyCode = 59;
+pub const sfKeyCode_sfKeyTab: sfKeyCode = 60;
+pub const sfKeyCode_sfKeyPageUp: sfKeyCode = 61;
+pub const sfKeyCode_sfKeyPageDown: sfKeyCode = 62;
+pub const sfKeyCode_sfKeyEnd: sfKeyCode = 63;
+pub const sfKeyCode_sfKeyHome: sfKeyCode = 64;
+pub const sfKeyCode_sfKeyInsert: sfKeyCode = 65;
+pub const sfKeyCode_sfKeyDelete: sfKeyCode = 66;
+pub const sfKeyCode_sfKeyAdd: sfKeyCode = 67;
+pub const sfKeyCode_sfKeySubtract: sfKeyCode = 68;
+pub const sfKeyCode_sfKeyMultiply: sfKeyCode = 69;
+pub const sfKeyCode_sfKeyDivide: sfKeyCode = 70;
+pub const sfKeyCode_sfKeyLeft: sfKeyCode = 71;
+pub const sfKeyCode_sfKeyRight: sfKeyCode = 72;
+pub const sfKeyCode_sfKeyUp: sfKeyCode = 73;
+pub const sfKeyCode_sfKeyDown: sfKeyCode = 74;
+pub const sfKeyCode_sfKeyNumpad0: sfKeyCode = 75;
+pub const sfKeyCode_sfKeyNumpad1: sfKeyCode = 76;
+pub const sfKeyCode_sfKeyNumpad2: sfKeyCode = 77;
+pub const sfKeyCode_sfKeyNumpad3: sfKeyCode = 78;
+pub const sfKeyCode_sfKeyNumpad4: sfKeyCode = 79;
+pub const sfKeyCode_sfKeyNumpad5: sfKeyCode = 80;
+pub const sfKeyCode_sfKeyNumpad6: sfKeyCode = 81;
+pub const sfKeyCode_sfKeyNumpad7: sfKeyCode = 82;
+pub const sfKeyCode_sfKeyNumpad8: sfKeyCode = 83;
+pub const sfKeyCode_sfKeyNumpad9: sfKeyCode = 84;
+pub const sfKeyCode_sfKeyF1: sfKeyCode = 85;
+pub const sfKeyCode_sfKeyF2: sfKeyCode = 86;
+pub const sfKeyCode_sfKeyF3: sfKeyCode = 87;
+pub const sfKeyCode_sfKeyF4: sfKeyCode = 88;
+pub const sfKeyCode_sfKeyF5: sfKeyCode = 89;
+pub const sfKeyCode_sfKeyF6: sfKeyCode = 90;
+pub const sfKeyCode_sfKeyF7: sfKeyCode = 91;
+pub const sfKeyCode_sfKeyF8: sfKeyCode = 92;
+pub const sfKeyCode_sfKeyF9: sfKeyCode = 93;
+pub const sfKeyCode_sfKeyF10: sfKeyCode = 94;
+pub const sfKeyCode_sfKeyF11: sfKeyCode = 95;
+pub const sfKeyCode_sfKeyF12: sfKeyCode = 96;
+pub const sfKeyCode_sfKeyF13: sfKeyCode = 97;
+pub const sfKeyCode_sfKeyF14: sfKeyCode = 98;
+pub const sfKeyCode_sfKeyF15: sfKeyCode = 99;
+pub const sfKeyCode_sfKeyPause: sfKeyCode = 100;
+pub const sfKeyCode_sfKeyCount: sfKeyCode = 101;
+pub const sfKeyCode_sfKeyDash: sfKeyCode = 56;
+pub const sfKeyCode_sfKeyBack: sfKeyCode = 59;
+pub const sfKeyCode_sfKeyBackSlash: sfKeyCode = 53;
+pub const sfKeyCode_sfKeySemiColon: sfKeyCode = 48;
+pub const sfKeyCode_sfKeyReturn: sfKeyCode = 58;
+pub type sfKeyCode = i32;
 extern "C" {
     pub fn sfKeyboard_isKeyPressed(key: sfKeyCode) -> sfBool;
 }
 extern "C" {
     pub fn sfKeyboard_setVirtualKeyboardVisible(visible: sfBool);
 }
-#[repr(u32)]
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
-pub enum sfMouseButton {
-    sfMouseLeft = 0,
-    sfMouseRight = 1,
-    sfMouseMiddle = 2,
-    sfMouseXButton1 = 3,
-    sfMouseXButton2 = 4,
-    sfMouseButtonCount = 5,
-}
-#[repr(u32)]
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
-pub enum sfMouseWheel {
-    sfMouseVerticalWheel = 0,
-    sfMouseHorizontalWheel = 1,
-}
+pub const sfMouseButton_sfMouseLeft: sfMouseButton = 0;
+pub const sfMouseButton_sfMouseRight: sfMouseButton = 1;
+pub const sfMouseButton_sfMouseMiddle: sfMouseButton = 2;
+pub const sfMouseButton_sfMouseXButton1: sfMouseButton = 3;
+pub const sfMouseButton_sfMouseXButton2: sfMouseButton = 4;
+pub const sfMouseButton_sfMouseButtonCount: sfMouseButton = 5;
+pub type sfMouseButton = u32;
+pub const sfMouseWheel_sfMouseVerticalWheel: sfMouseWheel = 0;
+pub const sfMouseWheel_sfMouseHorizontalWheel: sfMouseWheel = 1;
+pub type sfMouseWheel = u32;
 extern "C" {
     pub fn sfMouse_isButtonPressed(button: sfMouseButton) -> sfBool;
 }
@@ -259,17 +263,14 @@ extern "C" {
 extern "C" {
     pub fn sfMouse_setPosition(position: sfVector2i, relativeTo: *const sfWindow);
 }
-#[repr(u32)]
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
-pub enum sfSensorType {
-    sfSensorAccelerometer = 0,
-    sfSensorGyroscope = 1,
-    sfSensorMagnetometer = 2,
-    sfSensorGravity = 3,
-    sfSensorUserAcceleration = 4,
-    sfSensorOrientation = 5,
-    sfSensorCount = 6,
-}
+pub const sfSensorType_sfSensorAccelerometer: sfSensorType = 0;
+pub const sfSensorType_sfSensorGyroscope: sfSensorType = 1;
+pub const sfSensorType_sfSensorMagnetometer: sfSensorType = 2;
+pub const sfSensorType_sfSensorGravity: sfSensorType = 3;
+pub const sfSensorType_sfSensorUserAcceleration: sfSensorType = 4;
+pub const sfSensorType_sfSensorOrientation: sfSensorType = 5;
+pub const sfSensorType_sfSensorCount: sfSensorType = 6;
+pub type sfSensorType = u32;
 extern "C" {
     pub fn sfSensor_isAvailable(sensor: sfSensorType) -> sfBool;
 }
@@ -279,36 +280,33 @@ extern "C" {
 extern "C" {
     pub fn sfSensor_getValue(sensor: sfSensorType) -> sfVector3f;
 }
-#[repr(u32)]
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
-pub enum sfEventType {
-    sfEvtClosed = 0,
-    sfEvtResized = 1,
-    sfEvtLostFocus = 2,
-    sfEvtGainedFocus = 3,
-    sfEvtTextEntered = 4,
-    sfEvtKeyPressed = 5,
-    sfEvtKeyReleased = 6,
-    sfEvtMouseWheelMoved = 7,
-    sfEvtMouseWheelScrolled = 8,
-    sfEvtMouseButtonPressed = 9,
-    sfEvtMouseButtonReleased = 10,
-    sfEvtMouseMoved = 11,
-    sfEvtMouseEntered = 12,
-    sfEvtMouseLeft = 13,
-    sfEvtJoystickButtonPressed = 14,
-    sfEvtJoystickButtonReleased = 15,
-    sfEvtJoystickMoved = 16,
-    sfEvtJoystickConnected = 17,
-    sfEvtJoystickDisconnected = 18,
-    sfEvtTouchBegan = 19,
-    sfEvtTouchMoved = 20,
-    sfEvtTouchEnded = 21,
-    sfEvtSensorChanged = 22,
-    sfEvtCount = 23,
-}
+pub const sfEventType_sfEvtClosed: sfEventType = 0;
+pub const sfEventType_sfEvtResized: sfEventType = 1;
+pub const sfEventType_sfEvtLostFocus: sfEventType = 2;
+pub const sfEventType_sfEvtGainedFocus: sfEventType = 3;
+pub const sfEventType_sfEvtTextEntered: sfEventType = 4;
+pub const sfEventType_sfEvtKeyPressed: sfEventType = 5;
+pub const sfEventType_sfEvtKeyReleased: sfEventType = 6;
+pub const sfEventType_sfEvtMouseWheelMoved: sfEventType = 7;
+pub const sfEventType_sfEvtMouseWheelScrolled: sfEventType = 8;
+pub const sfEventType_sfEvtMouseButtonPressed: sfEventType = 9;
+pub const sfEventType_sfEvtMouseButtonReleased: sfEventType = 10;
+pub const sfEventType_sfEvtMouseMoved: sfEventType = 11;
+pub const sfEventType_sfEvtMouseEntered: sfEventType = 12;
+pub const sfEventType_sfEvtMouseLeft: sfEventType = 13;
+pub const sfEventType_sfEvtJoystickButtonPressed: sfEventType = 14;
+pub const sfEventType_sfEvtJoystickButtonReleased: sfEventType = 15;
+pub const sfEventType_sfEvtJoystickMoved: sfEventType = 16;
+pub const sfEventType_sfEvtJoystickConnected: sfEventType = 17;
+pub const sfEventType_sfEvtJoystickDisconnected: sfEventType = 18;
+pub const sfEventType_sfEvtTouchBegan: sfEventType = 19;
+pub const sfEventType_sfEvtTouchMoved: sfEventType = 20;
+pub const sfEventType_sfEvtTouchEnded: sfEventType = 21;
+pub const sfEventType_sfEvtSensorChanged: sfEventType = 22;
+pub const sfEventType_sfEvtCount: sfEventType = 23;
+pub type sfEventType = u32;
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Copy, Clone)]
 pub struct sfKeyEvent {
     pub type_: sfEventType,
     pub code: sfKeyCode,
@@ -330,73 +328,68 @@ fn bindgen_test_layout_sfKeyEvent() {
         concat!("Alignment of ", stringify!(sfKeyEvent))
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfKeyEvent)).type_ as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfKeyEvent>())).type_ as *const _ as usize },
         0usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfKeyEvent),
             "::",
             stringify!(type_)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfKeyEvent)).code as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfKeyEvent>())).code as *const _ as usize },
         4usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfKeyEvent),
             "::",
             stringify!(code)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfKeyEvent)).alt as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfKeyEvent>())).alt as *const _ as usize },
         8usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfKeyEvent),
             "::",
             stringify!(alt)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfKeyEvent)).control as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfKeyEvent>())).control as *const _ as usize },
         12usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfKeyEvent),
             "::",
             stringify!(control)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfKeyEvent)).shift as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfKeyEvent>())).shift as *const _ as usize },
         16usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfKeyEvent),
             "::",
             stringify!(shift)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfKeyEvent)).system as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfKeyEvent>())).system as *const _ as usize },
         20usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfKeyEvent),
             "::",
             stringify!(system)
         )
     );
 }
-impl Clone for sfKeyEvent {
-    fn clone(&self) -> Self {
-        *self
-    }
-}
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Copy, Clone)]
 pub struct sfTextEvent {
     pub type_: sfEventType,
     pub unicode: sfUint32,
@@ -414,33 +407,28 @@ fn bindgen_test_layout_sfTextEvent() {
         concat!("Alignment of ", stringify!(sfTextEvent))
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfTextEvent)).type_ as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfTextEvent>())).type_ as *const _ as usize },
         0usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfTextEvent),
             "::",
             stringify!(type_)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfTextEvent)).unicode as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfTextEvent>())).unicode as *const _ as usize },
         4usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfTextEvent),
             "::",
             stringify!(unicode)
         )
     );
 }
-impl Clone for sfTextEvent {
-    fn clone(&self) -> Self {
-        *self
-    }
-}
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Copy, Clone)]
 pub struct sfMouseMoveEvent {
     pub type_: sfEventType,
     pub x: ::std::os::raw::c_int,
@@ -459,43 +447,38 @@ fn bindgen_test_layout_sfMouseMoveEvent() {
         concat!("Alignment of ", stringify!(sfMouseMoveEvent))
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfMouseMoveEvent)).type_ as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfMouseMoveEvent>())).type_ as *const _ as usize },
         0usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfMouseMoveEvent),
             "::",
             stringify!(type_)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfMouseMoveEvent)).x as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfMouseMoveEvent>())).x as *const _ as usize },
         4usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfMouseMoveEvent),
             "::",
             stringify!(x)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfMouseMoveEvent)).y as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfMouseMoveEvent>())).y as *const _ as usize },
         8usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfMouseMoveEvent),
             "::",
             stringify!(y)
         )
     );
 }
-impl Clone for sfMouseMoveEvent {
-    fn clone(&self) -> Self {
-        *self
-    }
-}
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Copy, Clone)]
 pub struct sfMouseButtonEvent {
     pub type_: sfEventType,
     pub button: sfMouseButton,
@@ -515,53 +498,48 @@ fn bindgen_test_layout_sfMouseButtonEvent() {
         concat!("Alignment of ", stringify!(sfMouseButtonEvent))
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfMouseButtonEvent)).type_ as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfMouseButtonEvent>())).type_ as *const _ as usize },
         0usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfMouseButtonEvent),
             "::",
             stringify!(type_)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfMouseButtonEvent)).button as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfMouseButtonEvent>())).button as *const _ as usize },
         4usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfMouseButtonEvent),
             "::",
             stringify!(button)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfMouseButtonEvent)).x as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfMouseButtonEvent>())).x as *const _ as usize },
         8usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfMouseButtonEvent),
             "::",
             stringify!(x)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfMouseButtonEvent)).y as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfMouseButtonEvent>())).y as *const _ as usize },
         12usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfMouseButtonEvent),
             "::",
             stringify!(y)
         )
     );
 }
-impl Clone for sfMouseButtonEvent {
-    fn clone(&self) -> Self {
-        *self
-    }
-}
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Copy, Clone)]
 pub struct sfMouseWheelEvent {
     pub type_: sfEventType,
     pub delta: ::std::os::raw::c_int,
@@ -581,53 +559,48 @@ fn bindgen_test_layout_sfMouseWheelEvent() {
         concat!("Alignment of ", stringify!(sfMouseWheelEvent))
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfMouseWheelEvent)).type_ as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfMouseWheelEvent>())).type_ as *const _ as usize },
         0usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfMouseWheelEvent),
             "::",
             stringify!(type_)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfMouseWheelEvent)).delta as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfMouseWheelEvent>())).delta as *const _ as usize },
         4usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfMouseWheelEvent),
             "::",
             stringify!(delta)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfMouseWheelEvent)).x as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfMouseWheelEvent>())).x as *const _ as usize },
         8usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfMouseWheelEvent),
             "::",
             stringify!(x)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfMouseWheelEvent)).y as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfMouseWheelEvent>())).y as *const _ as usize },
         12usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfMouseWheelEvent),
             "::",
             stringify!(y)
         )
     );
 }
-impl Clone for sfMouseWheelEvent {
-    fn clone(&self) -> Self {
-        *self
-    }
-}
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Copy, Clone)]
 pub struct sfMouseWheelScrollEvent {
     pub type_: sfEventType,
     pub wheel: sfMouseWheel,
@@ -648,63 +621,58 @@ fn bindgen_test_layout_sfMouseWheelScrollEvent() {
         concat!("Alignment of ", stringify!(sfMouseWheelScrollEvent))
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfMouseWheelScrollEvent)).type_ as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfMouseWheelScrollEvent>())).type_ as *const _ as usize },
         0usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfMouseWheelScrollEvent),
             "::",
             stringify!(type_)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfMouseWheelScrollEvent)).wheel as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfMouseWheelScrollEvent>())).wheel as *const _ as usize },
         4usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfMouseWheelScrollEvent),
             "::",
             stringify!(wheel)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfMouseWheelScrollEvent)).delta as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfMouseWheelScrollEvent>())).delta as *const _ as usize },
         8usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfMouseWheelScrollEvent),
             "::",
             stringify!(delta)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfMouseWheelScrollEvent)).x as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfMouseWheelScrollEvent>())).x as *const _ as usize },
         12usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfMouseWheelScrollEvent),
             "::",
             stringify!(x)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfMouseWheelScrollEvent)).y as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfMouseWheelScrollEvent>())).y as *const _ as usize },
         16usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfMouseWheelScrollEvent),
             "::",
             stringify!(y)
         )
     );
 }
-impl Clone for sfMouseWheelScrollEvent {
-    fn clone(&self) -> Self {
-        *self
-    }
-}
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Copy, Clone)]
 pub struct sfJoystickMoveEvent {
     pub type_: sfEventType,
     pub joystickId: ::std::os::raw::c_uint,
@@ -724,53 +692,48 @@ fn bindgen_test_layout_sfJoystickMoveEvent() {
         concat!("Alignment of ", stringify!(sfJoystickMoveEvent))
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfJoystickMoveEvent)).type_ as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfJoystickMoveEvent>())).type_ as *const _ as usize },
         0usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfJoystickMoveEvent),
             "::",
             stringify!(type_)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfJoystickMoveEvent)).joystickId as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfJoystickMoveEvent>())).joystickId as *const _ as usize },
         4usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfJoystickMoveEvent),
             "::",
             stringify!(joystickId)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfJoystickMoveEvent)).axis as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfJoystickMoveEvent>())).axis as *const _ as usize },
         8usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfJoystickMoveEvent),
             "::",
             stringify!(axis)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfJoystickMoveEvent)).position as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfJoystickMoveEvent>())).position as *const _ as usize },
         12usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfJoystickMoveEvent),
             "::",
             stringify!(position)
         )
     );
 }
-impl Clone for sfJoystickMoveEvent {
-    fn clone(&self) -> Self {
-        *self
-    }
-}
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Copy, Clone)]
 pub struct sfJoystickButtonEvent {
     pub type_: sfEventType,
     pub joystickId: ::std::os::raw::c_uint,
@@ -789,43 +752,40 @@ fn bindgen_test_layout_sfJoystickButtonEvent() {
         concat!("Alignment of ", stringify!(sfJoystickButtonEvent))
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfJoystickButtonEvent)).type_ as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfJoystickButtonEvent>())).type_ as *const _ as usize },
         0usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfJoystickButtonEvent),
             "::",
             stringify!(type_)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfJoystickButtonEvent)).joystickId as *const _ as usize },
+        unsafe {
+            &(*(::std::ptr::null::<sfJoystickButtonEvent>())).joystickId as *const _ as usize
+        },
         4usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfJoystickButtonEvent),
             "::",
             stringify!(joystickId)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfJoystickButtonEvent)).button as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfJoystickButtonEvent>())).button as *const _ as usize },
         8usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfJoystickButtonEvent),
             "::",
             stringify!(button)
         )
     );
 }
-impl Clone for sfJoystickButtonEvent {
-    fn clone(&self) -> Self {
-        *self
-    }
-}
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Copy, Clone)]
 pub struct sfJoystickConnectEvent {
     pub type_: sfEventType,
     pub joystickId: ::std::os::raw::c_uint,
@@ -843,33 +803,30 @@ fn bindgen_test_layout_sfJoystickConnectEvent() {
         concat!("Alignment of ", stringify!(sfJoystickConnectEvent))
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfJoystickConnectEvent)).type_ as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfJoystickConnectEvent>())).type_ as *const _ as usize },
         0usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfJoystickConnectEvent),
             "::",
             stringify!(type_)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfJoystickConnectEvent)).joystickId as *const _ as usize },
+        unsafe {
+            &(*(::std::ptr::null::<sfJoystickConnectEvent>())).joystickId as *const _ as usize
+        },
         4usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfJoystickConnectEvent),
             "::",
             stringify!(joystickId)
         )
     );
 }
-impl Clone for sfJoystickConnectEvent {
-    fn clone(&self) -> Self {
-        *self
-    }
-}
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Copy, Clone)]
 pub struct sfSizeEvent {
     pub type_: sfEventType,
     pub width: ::std::os::raw::c_uint,
@@ -888,43 +845,38 @@ fn bindgen_test_layout_sfSizeEvent() {
         concat!("Alignment of ", stringify!(sfSizeEvent))
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfSizeEvent)).type_ as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfSizeEvent>())).type_ as *const _ as usize },
         0usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfSizeEvent),
             "::",
             stringify!(type_)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfSizeEvent)).width as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfSizeEvent>())).width as *const _ as usize },
         4usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfSizeEvent),
             "::",
             stringify!(width)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfSizeEvent)).height as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfSizeEvent>())).height as *const _ as usize },
         8usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfSizeEvent),
             "::",
             stringify!(height)
         )
     );
 }
-impl Clone for sfSizeEvent {
-    fn clone(&self) -> Self {
-        *self
-    }
-}
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Copy, Clone)]
 pub struct sfTouchEvent {
     pub type_: sfEventType,
     pub finger: ::std::os::raw::c_uint,
@@ -944,53 +896,48 @@ fn bindgen_test_layout_sfTouchEvent() {
         concat!("Alignment of ", stringify!(sfTouchEvent))
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfTouchEvent)).type_ as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfTouchEvent>())).type_ as *const _ as usize },
         0usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfTouchEvent),
             "::",
             stringify!(type_)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfTouchEvent)).finger as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfTouchEvent>())).finger as *const _ as usize },
         4usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfTouchEvent),
             "::",
             stringify!(finger)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfTouchEvent)).x as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfTouchEvent>())).x as *const _ as usize },
         8usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfTouchEvent),
             "::",
             stringify!(x)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfTouchEvent)).y as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfTouchEvent>())).y as *const _ as usize },
         12usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfTouchEvent),
             "::",
             stringify!(y)
         )
     );
 }
-impl Clone for sfTouchEvent {
-    fn clone(&self) -> Self {
-        *self
-    }
-}
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Copy, Clone)]
 pub struct sfSensorEvent {
     pub type_: sfEventType,
     pub sensorType: sfSensorType,
@@ -1011,63 +958,58 @@ fn bindgen_test_layout_sfSensorEvent() {
         concat!("Alignment of ", stringify!(sfSensorEvent))
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfSensorEvent)).type_ as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfSensorEvent>())).type_ as *const _ as usize },
         0usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfSensorEvent),
             "::",
             stringify!(type_)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfSensorEvent)).sensorType as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfSensorEvent>())).sensorType as *const _ as usize },
         4usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfSensorEvent),
             "::",
             stringify!(sensorType)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfSensorEvent)).x as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfSensorEvent>())).x as *const _ as usize },
         8usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfSensorEvent),
             "::",
             stringify!(x)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfSensorEvent)).y as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfSensorEvent>())).y as *const _ as usize },
         12usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfSensorEvent),
             "::",
             stringify!(y)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfSensorEvent)).z as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfSensorEvent>())).z as *const _ as usize },
         16usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfSensorEvent),
             "::",
             stringify!(z)
         )
     );
 }
-impl Clone for sfSensorEvent {
-    fn clone(&self) -> Self {
-        *self
-    }
-}
 #[repr(C)]
-#[derive(Copy)]
+#[derive(Copy, Clone)]
 pub union sfEvent {
     pub type_: sfEventType,
     pub size: sfSizeEvent,
@@ -1097,143 +1039,178 @@ fn bindgen_test_layout_sfEvent() {
         concat!("Alignment of ", stringify!(sfEvent))
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfEvent)).type_ as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfEvent>())).type_ as *const _ as usize },
         0usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfEvent),
             "::",
             stringify!(type_)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfEvent)).size as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfEvent>())).size as *const _ as usize },
         0usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfEvent),
             "::",
             stringify!(size)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfEvent)).key as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfEvent>())).key as *const _ as usize },
         0usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfEvent),
             "::",
             stringify!(key)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfEvent)).text as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfEvent>())).text as *const _ as usize },
         0usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfEvent),
             "::",
             stringify!(text)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfEvent)).mouseMove as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfEvent>())).mouseMove as *const _ as usize },
         0usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfEvent),
             "::",
             stringify!(mouseMove)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfEvent)).mouseButton as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfEvent>())).mouseButton as *const _ as usize },
         0usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfEvent),
             "::",
             stringify!(mouseButton)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfEvent)).mouseWheel as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfEvent>())).mouseWheel as *const _ as usize },
         0usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfEvent),
             "::",
             stringify!(mouseWheel)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfEvent)).mouseWheelScroll as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfEvent>())).mouseWheelScroll as *const _ as usize },
         0usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfEvent),
             "::",
             stringify!(mouseWheelScroll)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfEvent)).joystickMove as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfEvent>())).joystickMove as *const _ as usize },
         0usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfEvent),
             "::",
             stringify!(joystickMove)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfEvent)).joystickButton as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfEvent>())).joystickButton as *const _ as usize },
         0usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfEvent),
             "::",
             stringify!(joystickButton)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfEvent)).joystickConnect as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfEvent>())).joystickConnect as *const _ as usize },
         0usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfEvent),
             "::",
             stringify!(joystickConnect)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfEvent)).touch as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfEvent>())).touch as *const _ as usize },
         0usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfEvent),
             "::",
             stringify!(touch)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfEvent)).sensor as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfEvent>())).sensor as *const _ as usize },
         0usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfEvent),
             "::",
             stringify!(sensor)
         )
     );
 }
-impl Clone for sfEvent {
-    fn clone(&self) -> Self {
-        *self
-    }
+pub type wchar_t = ::std::os::raw::c_int;
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct max_align_t {
+    pub __clang_max_align_nonce1: ::std::os::raw::c_longlong,
+    pub __bindgen_padding_0: u64,
+    pub __clang_max_align_nonce2: f64,
+}
+#[test]
+fn bindgen_test_layout_max_align_t() {
+    assert_eq!(
+        ::std::mem::size_of::<max_align_t>(),
+        32usize,
+        concat!("Size of: ", stringify!(max_align_t))
+    );
+    assert_eq!(
+        unsafe {
+            &(*(::std::ptr::null::<max_align_t>())).__clang_max_align_nonce1 as *const _ as usize
+        },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(max_align_t),
+            "::",
+            stringify!(__clang_max_align_nonce1)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            &(*(::std::ptr::null::<max_align_t>())).__clang_max_align_nonce2 as *const _ as usize
+        },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(max_align_t),
+            "::",
+            stringify!(__clang_max_align_nonce2)
+        )
+    );
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Copy, Clone)]
 pub struct sfVideoMode {
     pub width: ::std::os::raw::c_uint,
     pub height: ::std::os::raw::c_uint,
@@ -1252,40 +1229,35 @@ fn bindgen_test_layout_sfVideoMode() {
         concat!("Alignment of ", stringify!(sfVideoMode))
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfVideoMode)).width as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfVideoMode>())).width as *const _ as usize },
         0usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfVideoMode),
             "::",
             stringify!(width)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfVideoMode)).height as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfVideoMode>())).height as *const _ as usize },
         4usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfVideoMode),
             "::",
             stringify!(height)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfVideoMode)).bitsPerPixel as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfVideoMode>())).bitsPerPixel as *const _ as usize },
         8usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfVideoMode),
             "::",
             stringify!(bitsPerPixel)
         )
     );
-}
-impl Clone for sfVideoMode {
-    fn clone(&self) -> Self {
-        *self
-    }
 }
 extern "C" {
     pub fn sfVideoMode_getDesktopMode() -> sfVideoMode;
@@ -1297,25 +1269,19 @@ extern "C" {
     pub fn sfVideoMode_isValid(mode: sfVideoMode) -> sfBool;
 }
 pub type sfWindowHandle = ::std::os::raw::c_ulong;
-#[repr(u32)]
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
-pub enum sfWindowStyle {
-    sfNone = 0,
-    sfTitlebar = 1,
-    sfResize = 2,
-    sfClose = 4,
-    sfFullscreen = 8,
-    sfDefaultStyle = 7,
-}
-#[repr(u32)]
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
-pub enum sfContextAttribute {
-    sfContextDefault = 0,
-    sfContextCore = 1,
-    sfContextDebug = 4,
-}
+pub const sfWindowStyle_sfNone: sfWindowStyle = 0;
+pub const sfWindowStyle_sfTitlebar: sfWindowStyle = 1;
+pub const sfWindowStyle_sfResize: sfWindowStyle = 2;
+pub const sfWindowStyle_sfClose: sfWindowStyle = 4;
+pub const sfWindowStyle_sfFullscreen: sfWindowStyle = 8;
+pub const sfWindowStyle_sfDefaultStyle: sfWindowStyle = 7;
+pub type sfWindowStyle = u32;
+pub const sfContextAttribute_sfContextDefault: sfContextAttribute = 0;
+pub const sfContextAttribute_sfContextCore: sfContextAttribute = 1;
+pub const sfContextAttribute_sfContextDebug: sfContextAttribute = 4;
+pub type sfContextAttribute = u32;
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Copy, Clone)]
 pub struct sfContextSettings {
     pub depthBits: ::std::os::raw::c_uint,
     pub stencilBits: ::std::os::raw::c_uint,
@@ -1338,80 +1304,79 @@ fn bindgen_test_layout_sfContextSettings() {
         concat!("Alignment of ", stringify!(sfContextSettings))
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfContextSettings)).depthBits as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfContextSettings>())).depthBits as *const _ as usize },
         0usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfContextSettings),
             "::",
             stringify!(depthBits)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfContextSettings)).stencilBits as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfContextSettings>())).stencilBits as *const _ as usize },
         4usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfContextSettings),
             "::",
             stringify!(stencilBits)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfContextSettings)).antialiasingLevel as *const _ as usize },
+        unsafe {
+            &(*(::std::ptr::null::<sfContextSettings>())).antialiasingLevel as *const _ as usize
+        },
         8usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfContextSettings),
             "::",
             stringify!(antialiasingLevel)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfContextSettings)).majorVersion as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfContextSettings>())).majorVersion as *const _ as usize },
         12usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfContextSettings),
             "::",
             stringify!(majorVersion)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfContextSettings)).minorVersion as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfContextSettings>())).minorVersion as *const _ as usize },
         16usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfContextSettings),
             "::",
             stringify!(minorVersion)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfContextSettings)).attributeFlags as *const _ as usize },
+        unsafe {
+            &(*(::std::ptr::null::<sfContextSettings>())).attributeFlags as *const _ as usize
+        },
         20usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfContextSettings),
             "::",
             stringify!(attributeFlags)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfContextSettings)).sRgbCapable as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfContextSettings>())).sRgbCapable as *const _ as usize },
         24usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfContextSettings),
             "::",
             stringify!(sRgbCapable)
         )
     );
-}
-impl Clone for sfContextSettings {
-    fn clone(&self) -> Self {
-        *self
-    }
 }
 extern "C" {
     pub fn sfWindow_create(
@@ -1492,6 +1457,9 @@ extern "C" {
     pub fn sfWindow_setMouseCursorGrabbed(window: *mut sfWindow, grabbed: sfBool);
 }
 extern "C" {
+    pub fn sfWindow_setMouseCursor(window: *mut sfWindow, cursor: *const sfCursor);
+}
+extern "C" {
     pub fn sfWindow_setKeyRepeatEnabled(window: *mut sfWindow, enabled: sfBool);
 }
 extern "C" {
@@ -1526,6 +1494,36 @@ extern "C" {
 }
 extern "C" {
     pub fn sfContext_getSettings(context: *const sfContext) -> sfContextSettings;
+}
+extern "C" {
+    pub fn sfContext_getActiveContextId() -> sfUint64;
+}
+pub const sfCursorType_sfCursorArrow: sfCursorType = 0;
+pub const sfCursorType_sfCursorArrowWait: sfCursorType = 1;
+pub const sfCursorType_sfCursorWait: sfCursorType = 2;
+pub const sfCursorType_sfCursorText: sfCursorType = 3;
+pub const sfCursorType_sfCursorHand: sfCursorType = 4;
+pub const sfCursorType_sfCursorSizeHorizontal: sfCursorType = 5;
+pub const sfCursorType_sfCursorSizeVertical: sfCursorType = 6;
+pub const sfCursorType_sfCursorSizeTopLeftBottomRight: sfCursorType = 7;
+pub const sfCursorType_sfCursorSizeBottomLeftTopRight: sfCursorType = 8;
+pub const sfCursorType_sfCursorSizeAll: sfCursorType = 9;
+pub const sfCursorType_sfCursorCross: sfCursorType = 10;
+pub const sfCursorType_sfCursorHelp: sfCursorType = 11;
+pub const sfCursorType_sfCursorNotAllowed: sfCursorType = 12;
+pub type sfCursorType = u32;
+extern "C" {
+    pub fn sfCursor_createFromPixels(
+        pixels: *const sfUint8,
+        size: sfVector2u,
+        hotspot: sfVector2u,
+    ) -> *mut sfCursor;
+}
+extern "C" {
+    pub fn sfCursor_createFromSystem(type_: sfCursorType) -> *mut sfCursor;
+}
+extern "C" {
+    pub fn sfCursor_destroy(cursor: *mut sfCursor);
 }
 extern "C" {
     pub fn sfTouch_isDown(finger: ::std::os::raw::c_uint) -> sfBool;

@@ -63,8 +63,9 @@ pub enum Wheel {
 impl Wheel {
     pub(super) fn from_raw(raw: ffi::sfMouseWheel) -> Self {
         match raw {
-            ffi::sfMouseWheel::sfMouseVerticalWheel => Wheel::Vertical,
-            ffi::sfMouseWheel::sfMouseHorizontalWheel => Wheel::Horizontal,
+            ffi::sfMouseWheel_sfMouseVerticalWheel => Wheel::Vertical,
+            ffi::sfMouseWheel_sfMouseHorizontalWheel => Wheel::Horizontal,
+            _ => unreachable!(),
         }
     }
 }
