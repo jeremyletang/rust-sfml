@@ -9,29 +9,23 @@ use csfml_system_sys::*;
 use csfml_window_sys::*;
 // </manually added>
 
-#[repr(u32)]
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
-pub enum sfBlendFactor {
-    sfBlendFactorZero = 0,
-    sfBlendFactorOne = 1,
-    sfBlendFactorSrcColor = 2,
-    sfBlendFactorOneMinusSrcColor = 3,
-    sfBlendFactorDstColor = 4,
-    sfBlendFactorOneMinusDstColor = 5,
-    sfBlendFactorSrcAlpha = 6,
-    sfBlendFactorOneMinusSrcAlpha = 7,
-    sfBlendFactorDstAlpha = 8,
-    sfBlendFactorOneMinusDstAlpha = 9,
-}
-#[repr(u32)]
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
-pub enum sfBlendEquation {
-    sfBlendEquationAdd = 0,
-    sfBlendEquationSubtract = 1,
-    sfBlendEquationReverseSubtract = 2,
-}
+pub const sfBlendFactor_sfBlendFactorZero: sfBlendFactor = 0;
+pub const sfBlendFactor_sfBlendFactorOne: sfBlendFactor = 1;
+pub const sfBlendFactor_sfBlendFactorSrcColor: sfBlendFactor = 2;
+pub const sfBlendFactor_sfBlendFactorOneMinusSrcColor: sfBlendFactor = 3;
+pub const sfBlendFactor_sfBlendFactorDstColor: sfBlendFactor = 4;
+pub const sfBlendFactor_sfBlendFactorOneMinusDstColor: sfBlendFactor = 5;
+pub const sfBlendFactor_sfBlendFactorSrcAlpha: sfBlendFactor = 6;
+pub const sfBlendFactor_sfBlendFactorOneMinusSrcAlpha: sfBlendFactor = 7;
+pub const sfBlendFactor_sfBlendFactorDstAlpha: sfBlendFactor = 8;
+pub const sfBlendFactor_sfBlendFactorOneMinusDstAlpha: sfBlendFactor = 9;
+pub type sfBlendFactor = u32;
+pub const sfBlendEquation_sfBlendEquationAdd: sfBlendEquation = 0;
+pub const sfBlendEquation_sfBlendEquationSubtract: sfBlendEquation = 1;
+pub const sfBlendEquation_sfBlendEquationReverseSubtract: sfBlendEquation = 2;
+pub type sfBlendEquation = u32;
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Copy, Clone)]
 pub struct sfBlendMode {
     pub colorSrcFactor: sfBlendFactor,
     pub colorDstFactor: sfBlendFactor,
@@ -53,89 +47,84 @@ fn bindgen_test_layout_sfBlendMode() {
         concat!("Alignment of ", stringify!(sfBlendMode))
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfBlendMode)).colorSrcFactor as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfBlendMode>())).colorSrcFactor as *const _ as usize },
         0usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfBlendMode),
             "::",
             stringify!(colorSrcFactor)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfBlendMode)).colorDstFactor as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfBlendMode>())).colorDstFactor as *const _ as usize },
         4usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfBlendMode),
             "::",
             stringify!(colorDstFactor)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfBlendMode)).colorEquation as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfBlendMode>())).colorEquation as *const _ as usize },
         8usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfBlendMode),
             "::",
             stringify!(colorEquation)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfBlendMode)).alphaSrcFactor as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfBlendMode>())).alphaSrcFactor as *const _ as usize },
         12usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfBlendMode),
             "::",
             stringify!(alphaSrcFactor)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfBlendMode)).alphaDstFactor as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfBlendMode>())).alphaDstFactor as *const _ as usize },
         16usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfBlendMode),
             "::",
             stringify!(alphaDstFactor)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfBlendMode)).alphaEquation as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfBlendMode>())).alphaEquation as *const _ as usize },
         20usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfBlendMode),
             "::",
             stringify!(alphaEquation)
         )
     );
 }
-impl Clone for sfBlendMode {
-    fn clone(&self) -> Self {
-        *self
-    }
-}
 extern "C" {
-    #[link_name = "sfBlendAlpha"]
+    #[link_name = "\u{1}sfBlendAlpha"]
     pub static sfBlendAlpha: sfBlendMode;
 }
 extern "C" {
-    #[link_name = "sfBlendAdd"]
+    #[link_name = "\u{1}sfBlendAdd"]
     pub static sfBlendAdd: sfBlendMode;
 }
 extern "C" {
-    #[link_name = "sfBlendMultiply"]
+    #[link_name = "\u{1}sfBlendMultiply"]
     pub static sfBlendMultiply: sfBlendMode;
 }
 extern "C" {
-    #[link_name = "sfBlendNone"]
+    #[link_name = "\u{1}sfBlendNone"]
     pub static sfBlendNone: sfBlendMode;
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Copy, Clone)]
 pub struct sfColor {
     pub r: sfUint8,
     pub g: sfUint8,
@@ -155,85 +144,80 @@ fn bindgen_test_layout_sfColor() {
         concat!("Alignment of ", stringify!(sfColor))
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfColor)).r as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfColor>())).r as *const _ as usize },
         0usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfColor),
             "::",
             stringify!(r)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfColor)).g as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfColor>())).g as *const _ as usize },
         1usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfColor),
             "::",
             stringify!(g)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfColor)).b as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfColor>())).b as *const _ as usize },
         2usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfColor),
             "::",
             stringify!(b)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfColor)).a as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfColor>())).a as *const _ as usize },
         3usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfColor),
             "::",
             stringify!(a)
         )
     );
 }
-impl Clone for sfColor {
-    fn clone(&self) -> Self {
-        *self
-    }
-}
 extern "C" {
-    #[link_name = "sfBlack"]
+    #[link_name = "\u{1}sfBlack"]
     pub static mut sfBlack: sfColor;
 }
 extern "C" {
-    #[link_name = "sfWhite"]
+    #[link_name = "\u{1}sfWhite"]
     pub static mut sfWhite: sfColor;
 }
 extern "C" {
-    #[link_name = "sfRed"]
+    #[link_name = "\u{1}sfRed"]
     pub static mut sfRed: sfColor;
 }
 extern "C" {
-    #[link_name = "sfGreen"]
+    #[link_name = "\u{1}sfGreen"]
     pub static mut sfGreen: sfColor;
 }
 extern "C" {
-    #[link_name = "sfBlue"]
+    #[link_name = "\u{1}sfBlue"]
     pub static mut sfBlue: sfColor;
 }
 extern "C" {
-    #[link_name = "sfYellow"]
+    #[link_name = "\u{1}sfYellow"]
     pub static mut sfYellow: sfColor;
 }
 extern "C" {
-    #[link_name = "sfMagenta"]
+    #[link_name = "\u{1}sfMagenta"]
     pub static mut sfMagenta: sfColor;
 }
 extern "C" {
-    #[link_name = "sfCyan"]
+    #[link_name = "\u{1}sfCyan"]
     pub static mut sfCyan: sfColor;
 }
 extern "C" {
-    #[link_name = "sfTransparent"]
+    #[link_name = "\u{1}sfTransparent"]
     pub static mut sfTransparent: sfColor;
 }
 extern "C" {
@@ -259,7 +243,7 @@ extern "C" {
     pub fn sfColor_modulate(color1: sfColor, color2: sfColor) -> sfColor;
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Copy, Clone)]
 pub struct sfFloatRect {
     pub left: f32,
     pub top: f32,
@@ -279,53 +263,48 @@ fn bindgen_test_layout_sfFloatRect() {
         concat!("Alignment of ", stringify!(sfFloatRect))
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfFloatRect)).left as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfFloatRect>())).left as *const _ as usize },
         0usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfFloatRect),
             "::",
             stringify!(left)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfFloatRect)).top as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfFloatRect>())).top as *const _ as usize },
         4usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfFloatRect),
             "::",
             stringify!(top)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfFloatRect)).width as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfFloatRect>())).width as *const _ as usize },
         8usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfFloatRect),
             "::",
             stringify!(width)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfFloatRect)).height as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfFloatRect>())).height as *const _ as usize },
         12usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfFloatRect),
             "::",
             stringify!(height)
         )
     );
 }
-impl Clone for sfFloatRect {
-    fn clone(&self) -> Self {
-        *self
-    }
-}
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Copy, Clone)]
 pub struct sfIntRect {
     pub left: ::std::os::raw::c_int,
     pub top: ::std::os::raw::c_int,
@@ -345,50 +324,45 @@ fn bindgen_test_layout_sfIntRect() {
         concat!("Alignment of ", stringify!(sfIntRect))
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfIntRect)).left as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfIntRect>())).left as *const _ as usize },
         0usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfIntRect),
             "::",
             stringify!(left)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfIntRect)).top as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfIntRect>())).top as *const _ as usize },
         4usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfIntRect),
             "::",
             stringify!(top)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfIntRect)).width as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfIntRect>())).width as *const _ as usize },
         8usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfIntRect),
             "::",
             stringify!(width)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfIntRect)).height as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfIntRect>())).height as *const _ as usize },
         12usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfIntRect),
             "::",
             stringify!(height)
         )
     );
-}
-impl Clone for sfIntRect {
-    fn clone(&self) -> Self {
-        *self
-    }
 }
 extern "C" {
     pub fn sfFloatRect_contains(rect: *const sfFloatRect, x: f32, y: f32) -> sfBool;
@@ -486,11 +460,16 @@ pub struct sfVertexArray {
 }
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
+pub struct sfVertexBuffer {
+    _unused: [u8; 0],
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
 pub struct sfView {
     _unused: [u8; 0],
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Copy, Clone)]
 pub struct sfTransform {
     pub matrix: [f32; 9usize],
 }
@@ -507,23 +486,18 @@ fn bindgen_test_layout_sfTransform() {
         concat!("Alignment of ", stringify!(sfTransform))
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfTransform)).matrix as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfTransform>())).matrix as *const _ as usize },
         0usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfTransform),
             "::",
             stringify!(matrix)
         )
     );
 }
-impl Clone for sfTransform {
-    fn clone(&self) -> Self {
-        *self
-    }
-}
 extern "C" {
-    #[link_name = "sfTransform_Identity"]
+    #[link_name = "\u{1}sfTransform_Identity"]
     pub static sfTransform_Identity: sfTransform;
 }
 extern "C" {
@@ -585,6 +559,9 @@ extern "C" {
         centerX: f32,
         centerY: f32,
     );
+}
+extern "C" {
+    pub fn sfTransform_equal(left: *mut sfTransform, right: *mut sfTransform) -> sfBool;
 }
 extern "C" {
     pub fn sfCircleShape_create() -> *mut sfCircleShape;
@@ -790,7 +767,7 @@ extern "C" {
     pub fn sfConvexShape_getGlobalBounds(shape: *const sfConvexShape) -> sfFloatRect;
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Copy, Clone)]
 pub struct sfFontInfo {
     pub family: *const ::std::os::raw::c_char,
 }
@@ -807,23 +784,18 @@ fn bindgen_test_layout_sfFontInfo() {
         concat!("Alignment of ", stringify!(sfFontInfo))
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfFontInfo)).family as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfFontInfo>())).family as *const _ as usize },
         0usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfFontInfo),
             "::",
             stringify!(family)
         )
     );
 }
-impl Clone for sfFontInfo {
-    fn clone(&self) -> Self {
-        *self
-    }
-}
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Copy, Clone)]
 pub struct sfGlyph {
     pub advance: f32,
     pub bounds: sfFloatRect,
@@ -842,40 +814,35 @@ fn bindgen_test_layout_sfGlyph() {
         concat!("Alignment of ", stringify!(sfGlyph))
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfGlyph)).advance as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfGlyph>())).advance as *const _ as usize },
         0usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfGlyph),
             "::",
             stringify!(advance)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfGlyph)).bounds as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfGlyph>())).bounds as *const _ as usize },
         4usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfGlyph),
             "::",
             stringify!(bounds)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfGlyph)).textureRect as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfGlyph>())).textureRect as *const _ as usize },
         20usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfGlyph),
             "::",
             stringify!(textureRect)
         )
     );
-}
-impl Clone for sfGlyph {
-    fn clone(&self) -> Self {
-        *self
-    }
 }
 extern "C" {
     pub fn sfFont_createFromFile(filename: *const ::std::os::raw::c_char) -> *mut sfFont;
@@ -1021,20 +988,17 @@ extern "C" {
 extern "C" {
     pub fn sfImage_flipVertically(image: *mut sfImage);
 }
-pub const sfPrimitiveType_sfLinesStrip: sfPrimitiveType = sfPrimitiveType::sfLineStrip;
-pub const sfPrimitiveType_sfTrianglesStrip: sfPrimitiveType = sfPrimitiveType::sfTriangleStrip;
-pub const sfPrimitiveType_sfTrianglesFan: sfPrimitiveType = sfPrimitiveType::sfTriangleFan;
-#[repr(u32)]
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
-pub enum sfPrimitiveType {
-    sfPoints = 0,
-    sfLines = 1,
-    sfLineStrip = 2,
-    sfTriangles = 3,
-    sfTriangleStrip = 4,
-    sfTriangleFan = 5,
-    sfQuads = 6,
-}
+pub const sfPrimitiveType_sfPoints: sfPrimitiveType = 0;
+pub const sfPrimitiveType_sfLines: sfPrimitiveType = 1;
+pub const sfPrimitiveType_sfLineStrip: sfPrimitiveType = 2;
+pub const sfPrimitiveType_sfTriangles: sfPrimitiveType = 3;
+pub const sfPrimitiveType_sfTriangleStrip: sfPrimitiveType = 4;
+pub const sfPrimitiveType_sfTriangleFan: sfPrimitiveType = 5;
+pub const sfPrimitiveType_sfQuads: sfPrimitiveType = 6;
+pub const sfPrimitiveType_sfLinesStrip: sfPrimitiveType = 2;
+pub const sfPrimitiveType_sfTrianglesStrip: sfPrimitiveType = 4;
+pub const sfPrimitiveType_sfTrianglesFan: sfPrimitiveType = 5;
+pub type sfPrimitiveType = u32;
 extern "C" {
     pub fn sfRectangleShape_create() -> *mut sfRectangleShape;
 }
@@ -1136,7 +1100,7 @@ extern "C" {
     pub fn sfRectangleShape_getGlobalBounds(shape: *const sfRectangleShape) -> sfFloatRect;
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Copy, Clone)]
 pub struct sfRenderStates {
     pub blendMode: sfBlendMode,
     pub transform: sfTransform,
@@ -1156,53 +1120,48 @@ fn bindgen_test_layout_sfRenderStates() {
         concat!("Alignment of ", stringify!(sfRenderStates))
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfRenderStates)).blendMode as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfRenderStates>())).blendMode as *const _ as usize },
         0usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfRenderStates),
             "::",
             stringify!(blendMode)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfRenderStates)).transform as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfRenderStates>())).transform as *const _ as usize },
         24usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfRenderStates),
             "::",
             stringify!(transform)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfRenderStates)).texture as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfRenderStates>())).texture as *const _ as usize },
         64usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfRenderStates),
             "::",
             stringify!(texture)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfRenderStates)).shader as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfRenderStates>())).shader as *const _ as usize },
         72usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfRenderStates),
             "::",
             stringify!(shader)
         )
     );
 }
-impl Clone for sfRenderStates {
-    fn clone(&self) -> Self {
-        *self
-    }
-}
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Copy, Clone)]
 pub struct sfVertex {
     pub position: sfVector2f,
     pub color: sfColor,
@@ -1221,46 +1180,48 @@ fn bindgen_test_layout_sfVertex() {
         concat!("Alignment of ", stringify!(sfVertex))
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfVertex)).position as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfVertex>())).position as *const _ as usize },
         0usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfVertex),
             "::",
             stringify!(position)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfVertex)).color as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfVertex>())).color as *const _ as usize },
         8usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfVertex),
             "::",
             stringify!(color)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfVertex)).texCoords as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfVertex>())).texCoords as *const _ as usize },
         12usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfVertex),
             "::",
             stringify!(texCoords)
         )
     );
 }
-impl Clone for sfVertex {
-    fn clone(&self) -> Self {
-        *self
-    }
-}
 extern "C" {
     pub fn sfRenderTexture_create(
         width: ::std::os::raw::c_uint,
         height: ::std::os::raw::c_uint,
         depthBuffer: sfBool,
+    ) -> *mut sfRenderTexture;
+}
+extern "C" {
+    pub fn sfRenderTexture_createWithSettings(
+        width: ::std::os::raw::c_uint,
+        height: ::std::os::raw::c_uint,
+        settings: sfContextSettings,
     ) -> *mut sfRenderTexture;
 }
 extern "C" {
@@ -1358,6 +1319,13 @@ extern "C" {
     );
 }
 extern "C" {
+    pub fn sfRenderTexture_drawVertexBuffer(
+        renderTexture: *mut sfRenderTexture,
+        object: *const sfVertexBuffer,
+        states: *const sfRenderStates,
+    );
+}
+extern "C" {
     pub fn sfRenderTexture_drawPrimitives(
         renderTexture: *mut sfRenderTexture,
         vertices: *const sfVertex,
@@ -1377,6 +1345,9 @@ extern "C" {
 }
 extern "C" {
     pub fn sfRenderTexture_getTexture(renderTexture: *const sfRenderTexture) -> *const sfTexture;
+}
+extern "C" {
+    pub fn sfRenderTexture_getMaximumAntialiasingLevel() -> ::std::os::raw::c_uint;
 }
 extern "C" {
     pub fn sfRenderTexture_setSmooth(renderTexture: *mut sfRenderTexture, smooth: sfBool);
@@ -1487,6 +1458,9 @@ extern "C" {
     pub fn sfRenderWindow_setMouseCursorGrabbed(renderWindow: *mut sfRenderWindow, grabbed: sfBool);
 }
 extern "C" {
+    pub fn sfRenderWindow_setMouseCursor(window: *mut sfRenderWindow, cursor: *const sfCursor);
+}
+extern "C" {
     pub fn sfRenderWindow_setKeyRepeatEnabled(renderWindow: *mut sfRenderWindow, enabled: sfBool);
 }
 extern "C" {
@@ -1595,6 +1569,13 @@ extern "C" {
     );
 }
 extern "C" {
+    pub fn sfRenderWindow_drawVertexBuffer(
+        renderWindow: *mut sfRenderWindow,
+        object: *const sfVertexBuffer,
+        states: *const sfRenderStates,
+    );
+}
+extern "C" {
     pub fn sfRenderWindow_drawPrimitives(
         renderWindow: *mut sfRenderWindow,
         vertices: *const sfVertex,
@@ -1630,7 +1611,7 @@ extern "C" {
 pub type sfGlslVec2 = sfVector2f;
 pub type sfGlslIvec2 = sfVector2i;
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Copy, Clone)]
 pub struct sfGlslBvec2 {
     pub x: sfBool,
     pub y: sfBool,
@@ -1648,34 +1629,29 @@ fn bindgen_test_layout_sfGlslBvec2() {
         concat!("Alignment of ", stringify!(sfGlslBvec2))
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfGlslBvec2)).x as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfGlslBvec2>())).x as *const _ as usize },
         0usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfGlslBvec2),
             "::",
             stringify!(x)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfGlslBvec2)).y as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfGlslBvec2>())).y as *const _ as usize },
         4usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfGlslBvec2),
             "::",
             stringify!(y)
         )
     );
 }
-impl Clone for sfGlslBvec2 {
-    fn clone(&self) -> Self {
-        *self
-    }
-}
 pub type sfGlslVec3 = sfVector3f;
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Copy, Clone)]
 pub struct sfGlslIvec3 {
     pub x: ::std::os::raw::c_int,
     pub y: ::std::os::raw::c_int,
@@ -1694,43 +1670,38 @@ fn bindgen_test_layout_sfGlslIvec3() {
         concat!("Alignment of ", stringify!(sfGlslIvec3))
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfGlslIvec3)).x as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfGlslIvec3>())).x as *const _ as usize },
         0usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfGlslIvec3),
             "::",
             stringify!(x)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfGlslIvec3)).y as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfGlslIvec3>())).y as *const _ as usize },
         4usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfGlslIvec3),
             "::",
             stringify!(y)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfGlslIvec3)).z as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfGlslIvec3>())).z as *const _ as usize },
         8usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfGlslIvec3),
             "::",
             stringify!(z)
         )
     );
 }
-impl Clone for sfGlslIvec3 {
-    fn clone(&self) -> Self {
-        *self
-    }
-}
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Copy, Clone)]
 pub struct sfGlslBvec3 {
     pub x: sfBool,
     pub y: sfBool,
@@ -1749,43 +1720,38 @@ fn bindgen_test_layout_sfGlslBvec3() {
         concat!("Alignment of ", stringify!(sfGlslBvec3))
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfGlslBvec3)).x as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfGlslBvec3>())).x as *const _ as usize },
         0usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfGlslBvec3),
             "::",
             stringify!(x)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfGlslBvec3)).y as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfGlslBvec3>())).y as *const _ as usize },
         4usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfGlslBvec3),
             "::",
             stringify!(y)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfGlslBvec3)).z as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfGlslBvec3>())).z as *const _ as usize },
         8usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfGlslBvec3),
             "::",
             stringify!(z)
         )
     );
 }
-impl Clone for sfGlslBvec3 {
-    fn clone(&self) -> Self {
-        *self
-    }
-}
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Copy, Clone)]
 pub struct sfGlslVec4 {
     pub x: f32,
     pub y: f32,
@@ -1805,53 +1771,48 @@ fn bindgen_test_layout_sfGlslVec4() {
         concat!("Alignment of ", stringify!(sfGlslVec4))
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfGlslVec4)).x as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfGlslVec4>())).x as *const _ as usize },
         0usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfGlslVec4),
             "::",
             stringify!(x)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfGlslVec4)).y as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfGlslVec4>())).y as *const _ as usize },
         4usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfGlslVec4),
             "::",
             stringify!(y)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfGlslVec4)).z as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfGlslVec4>())).z as *const _ as usize },
         8usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfGlslVec4),
             "::",
             stringify!(z)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfGlslVec4)).w as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfGlslVec4>())).w as *const _ as usize },
         12usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfGlslVec4),
             "::",
             stringify!(w)
         )
     );
 }
-impl Clone for sfGlslVec4 {
-    fn clone(&self) -> Self {
-        *self
-    }
-}
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Copy, Clone)]
 pub struct sfGlslIvec4 {
     pub x: ::std::os::raw::c_int,
     pub y: ::std::os::raw::c_int,
@@ -1871,53 +1832,48 @@ fn bindgen_test_layout_sfGlslIvec4() {
         concat!("Alignment of ", stringify!(sfGlslIvec4))
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfGlslIvec4)).x as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfGlslIvec4>())).x as *const _ as usize },
         0usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfGlslIvec4),
             "::",
             stringify!(x)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfGlslIvec4)).y as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfGlslIvec4>())).y as *const _ as usize },
         4usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfGlslIvec4),
             "::",
             stringify!(y)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfGlslIvec4)).z as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfGlslIvec4>())).z as *const _ as usize },
         8usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfGlslIvec4),
             "::",
             stringify!(z)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfGlslIvec4)).w as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfGlslIvec4>())).w as *const _ as usize },
         12usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfGlslIvec4),
             "::",
             stringify!(w)
         )
     );
 }
-impl Clone for sfGlslIvec4 {
-    fn clone(&self) -> Self {
-        *self
-    }
-}
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Copy, Clone)]
 pub struct sfGlslBvec4 {
     pub x: sfBool,
     pub y: sfBool,
@@ -1937,53 +1893,48 @@ fn bindgen_test_layout_sfGlslBvec4() {
         concat!("Alignment of ", stringify!(sfGlslBvec4))
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfGlslBvec4)).x as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfGlslBvec4>())).x as *const _ as usize },
         0usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfGlslBvec4),
             "::",
             stringify!(x)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfGlslBvec4)).y as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfGlslBvec4>())).y as *const _ as usize },
         4usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfGlslBvec4),
             "::",
             stringify!(y)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfGlslBvec4)).z as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfGlslBvec4>())).z as *const _ as usize },
         8usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfGlslBvec4),
             "::",
             stringify!(z)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfGlslBvec4)).w as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfGlslBvec4>())).w as *const _ as usize },
         12usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfGlslBvec4),
             "::",
             stringify!(w)
         )
     );
 }
-impl Clone for sfGlslBvec4 {
-    fn clone(&self) -> Self {
-        *self
-    }
-}
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Copy, Clone)]
 pub struct sfGlslMat3 {
     pub array: [f32; 9usize],
 }
@@ -2000,23 +1951,18 @@ fn bindgen_test_layout_sfGlslMat3() {
         concat!("Alignment of ", stringify!(sfGlslMat3))
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfGlslMat3)).array as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfGlslMat3>())).array as *const _ as usize },
         0usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfGlslMat3),
             "::",
             stringify!(array)
         )
     );
 }
-impl Clone for sfGlslMat3 {
-    fn clone(&self) -> Self {
-        *self
-    }
-}
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Copy, Clone)]
 pub struct sfGlslMat4 {
     pub array: [f32; 16usize],
 }
@@ -2033,20 +1979,15 @@ fn bindgen_test_layout_sfGlslMat4() {
         concat!("Alignment of ", stringify!(sfGlslMat4))
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfGlslMat4)).array as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfGlslMat4>())).array as *const _ as usize },
         0usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfGlslMat4),
             "::",
             stringify!(array)
         )
     );
-}
-impl Clone for sfGlslMat4 {
-    fn clone(&self) -> Self {
-        *self
-    }
 }
 extern "C" {
     pub fn sfShader_createFromFile(
@@ -2503,15 +2444,12 @@ extern "C" {
 extern "C" {
     pub fn sfSprite_getGlobalBounds(sprite: *const sfSprite) -> sfFloatRect;
 }
-#[repr(u32)]
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
-pub enum sfTextStyle {
-    sfTextRegular = 0,
-    sfTextBold = 1,
-    sfTextItalic = 2,
-    sfTextUnderlined = 4,
-    sfTextStrikeThrough = 8,
-}
+pub const sfTextStyle_sfTextRegular: sfTextStyle = 0;
+pub const sfTextStyle_sfTextBold: sfTextStyle = 1;
+pub const sfTextStyle_sfTextItalic: sfTextStyle = 2;
+pub const sfTextStyle_sfTextUnderlined: sfTextStyle = 4;
+pub const sfTextStyle_sfTextStrikeThrough: sfTextStyle = 8;
+pub type sfTextStyle = u32;
 extern "C" {
     pub fn sfText_create() -> *mut sfText;
 }
@@ -2573,6 +2511,12 @@ extern "C" {
     pub fn sfText_setCharacterSize(text: *mut sfText, size: ::std::os::raw::c_uint);
 }
 extern "C" {
+    pub fn sfText_setLineSpacing(text: *mut sfText, spacingFactor: f32);
+}
+extern "C" {
+    pub fn sfText_setLetterSpacing(text: *mut sfText, spacingFactor: f32);
+}
+extern "C" {
     pub fn sfText_setStyle(text: *mut sfText, style: sfUint32);
 }
 extern "C" {
@@ -2598,6 +2542,12 @@ extern "C" {
 }
 extern "C" {
     pub fn sfText_getCharacterSize(text: *const sfText) -> ::std::os::raw::c_uint;
+}
+extern "C" {
+    pub fn sfText_getLetterSpacing(text: *const sfText) -> f32;
+}
+extern "C" {
+    pub fn getLineSpacing(text: *const sfText) -> f32;
 }
 extern "C" {
     pub fn sfText_getStyle(text: *const sfText) -> sfUint32;
@@ -2677,6 +2627,14 @@ extern "C" {
     );
 }
 extern "C" {
+    pub fn sfTexture_updateFromTexture(
+        destination: *mut sfTexture,
+        source: *const sfTexture,
+        x: ::std::os::raw::c_uint,
+        y: ::std::os::raw::c_uint,
+    );
+}
+extern "C" {
     pub fn sfTexture_updateFromImage(
         texture: *mut sfTexture,
         image: *const sfImage,
@@ -2720,6 +2678,9 @@ extern "C" {
 }
 extern "C" {
     pub fn sfTexture_generateMipmap(texture: *mut sfTexture) -> sfBool;
+}
+extern "C" {
+    pub fn sfTexture_swap(left: *mut sfTexture, right: *mut sfTexture);
 }
 extern "C" {
     pub fn sfTexture_getNativeHandle(texture: *const sfTexture) -> ::std::os::raw::c_uint;
@@ -2812,6 +2773,71 @@ extern "C" {
 }
 extern "C" {
     pub fn sfVertexArray_getBounds(vertexArray: *mut sfVertexArray) -> sfFloatRect;
+}
+pub const sfVertexBufferUsage_sfVertexBufferStream: sfVertexBufferUsage = 0;
+pub const sfVertexBufferUsage_sfVertexBufferDynamic: sfVertexBufferUsage = 1;
+pub const sfVertexBufferUsage_sfVertexBufferStatic: sfVertexBufferUsage = 2;
+pub type sfVertexBufferUsage = u32;
+extern "C" {
+    pub fn sfVertexBuffer_create(
+        vertexCount: ::std::os::raw::c_uint,
+        type_: sfPrimitiveType,
+        usage: sfVertexBufferUsage,
+    ) -> *mut sfVertexBuffer;
+}
+extern "C" {
+    pub fn sfVertexBuffer_copy(vertexBuffer: *const sfVertexBuffer) -> *mut sfVertexBuffer;
+}
+extern "C" {
+    pub fn sfVertexBuffer_destroy(vertexBuffer: *mut sfVertexBuffer);
+}
+extern "C" {
+    pub fn sfVertexBuffer_getVertexCount(
+        vertexBuffer: *const sfVertexBuffer,
+    ) -> ::std::os::raw::c_uint;
+}
+extern "C" {
+    pub fn sfVertexBuffer_update(
+        vertexBuffer: *mut sfVertexBuffer,
+        vertices: *const sfVertex,
+        vertexCount: ::std::os::raw::c_uint,
+        offset: ::std::os::raw::c_uint,
+    ) -> sfBool;
+}
+extern "C" {
+    pub fn sfVertexBuffer_updateFromVertexBuffer(
+        vertexBuffer: *mut sfVertexBuffer,
+        other: *const sfVertexBuffer,
+    ) -> sfBool;
+}
+extern "C" {
+    pub fn sfVertexBuffer_swap(left: *mut sfVertexBuffer, right: *mut sfVertexBuffer);
+}
+extern "C" {
+    pub fn sfVertexBuffer_getNativeHandle(
+        vertexBuffer: *mut sfVertexBuffer,
+    ) -> ::std::os::raw::c_uint;
+}
+extern "C" {
+    pub fn sfVertexBuffer_setPrimitiveType(
+        vertexBuffer: *mut sfVertexBuffer,
+        type_: sfPrimitiveType,
+    );
+}
+extern "C" {
+    pub fn sfVertexBuffer_getPrimitiveType(vertexBuffer: *const sfVertexBuffer) -> sfPrimitiveType;
+}
+extern "C" {
+    pub fn sfVertexBuffer_setUsage(vertexBuffer: *mut sfVertexBuffer, usage: sfVertexBufferUsage);
+}
+extern "C" {
+    pub fn sfVertexBuffer_getUsage(vertexBuffer: *const sfVertexBuffer) -> sfVertexBufferUsage;
+}
+extern "C" {
+    pub fn sfVertexBuffer_bind(vertexBuffer: *const sfVertexBuffer);
+}
+extern "C" {
+    pub fn sfVertexBuffer_isAvailable() -> sfBool;
 }
 extern "C" {
     pub fn sfView_create() -> *mut sfView;
