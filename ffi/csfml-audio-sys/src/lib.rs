@@ -30,13 +30,10 @@ extern "C" {
 extern "C" {
     pub fn sfListener_getUpVector() -> sfVector3f;
 }
-#[repr(u32)]
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
-pub enum sfSoundStatus {
-    sfStopped = 0,
-    sfPaused = 1,
-    sfPlaying = 2,
-}
+pub const sfSoundStatus_sfStopped: sfSoundStatus = 0;
+pub const sfSoundStatus_sfPaused: sfSoundStatus = 1;
+pub const sfSoundStatus_sfPlaying: sfSoundStatus = 2;
+pub type sfSoundStatus = u32;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct sfMusic {
@@ -67,6 +64,85 @@ pub struct sfSoundRecorder {
 pub struct sfSoundStream {
     _unused: [u8; 0],
 }
+pub type wchar_t = ::std::os::raw::c_int;
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct max_align_t {
+    pub __clang_max_align_nonce1: ::std::os::raw::c_longlong,
+    pub __bindgen_padding_0: u64,
+    pub __clang_max_align_nonce2: f64,
+}
+#[test]
+fn bindgen_test_layout_max_align_t() {
+    assert_eq!(
+        ::std::mem::size_of::<max_align_t>(),
+        32usize,
+        concat!("Size of: ", stringify!(max_align_t))
+    );
+    assert_eq!(
+        unsafe {
+            &(*(::std::ptr::null::<max_align_t>())).__clang_max_align_nonce1 as *const _ as usize
+        },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(max_align_t),
+            "::",
+            stringify!(__clang_max_align_nonce1)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            &(*(::std::ptr::null::<max_align_t>())).__clang_max_align_nonce2 as *const _ as usize
+        },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(max_align_t),
+            "::",
+            stringify!(__clang_max_align_nonce2)
+        )
+    );
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct sfTimeSpan {
+    pub offset: sfTime,
+    pub length: sfTime,
+}
+#[test]
+fn bindgen_test_layout_sfTimeSpan() {
+    assert_eq!(
+        ::std::mem::size_of::<sfTimeSpan>(),
+        16usize,
+        concat!("Size of: ", stringify!(sfTimeSpan))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<sfTimeSpan>(),
+        8usize,
+        concat!("Alignment of ", stringify!(sfTimeSpan))
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<sfTimeSpan>())).offset as *const _ as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(sfTimeSpan),
+            "::",
+            stringify!(offset)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<sfTimeSpan>())).length as *const _ as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(sfTimeSpan),
+            "::",
+            stringify!(length)
+        )
+    );
+}
 extern "C" {
     pub fn sfMusic_createFromFile(filename: *const ::std::os::raw::c_char) -> *mut sfMusic;
 }
@@ -90,6 +166,12 @@ extern "C" {
 }
 extern "C" {
     pub fn sfMusic_getDuration(music: *const sfMusic) -> sfTime;
+}
+extern "C" {
+    pub fn sfMusic_getLoopPoints(music: *const sfMusic) -> sfTimeSpan;
+}
+extern "C" {
+    pub fn sfMusic_setLoopPoints(music: *mut sfMusic, timePoints: sfTimeSpan);
 }
 extern "C" {
     pub fn sfMusic_play(music: *mut sfMusic);
@@ -390,7 +472,7 @@ extern "C" {
     ) -> ::std::os::raw::c_uint;
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Copy, Clone)]
 pub struct sfSoundStreamChunk {
     pub samples: *mut sfInt16,
     pub sampleCount: ::std::os::raw::c_uint,
@@ -408,30 +490,25 @@ fn bindgen_test_layout_sfSoundStreamChunk() {
         concat!("Alignment of ", stringify!(sfSoundStreamChunk))
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfSoundStreamChunk)).samples as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfSoundStreamChunk>())).samples as *const _ as usize },
         0usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfSoundStreamChunk),
             "::",
             stringify!(samples)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfSoundStreamChunk)).sampleCount as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfSoundStreamChunk>())).sampleCount as *const _ as usize },
         8usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfSoundStreamChunk),
             "::",
             stringify!(sampleCount)
         )
     );
-}
-impl Clone for sfSoundStreamChunk {
-    fn clone(&self) -> Self {
-        *self
-    }
 }
 pub type sfSoundStreamGetDataCallback = ::std::option::Option<
     unsafe extern "C" fn(
