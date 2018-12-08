@@ -2,11 +2,11 @@
 
 #![allow(non_snake_case, non_camel_case_types, non_upper_case_globals)] // added manually
 
-pub const CSFML_VERSION_MAJOR: ::std::os::raw::c_uint = 2;
-pub const CSFML_VERSION_MINOR: ::std::os::raw::c_uint = 4;
-pub const CSFML_VERSION_PATCH: ::std::os::raw::c_uint = 0;
-pub const sfFalse: ::std::os::raw::c_int = 0; // edited manually
-pub const sfTrue: ::std::os::raw::c_int = 1; // edited manually
+pub const CSFML_VERSION_MAJOR: u32 = 2;
+pub const CSFML_VERSION_MINOR: u32 = 5;
+pub const CSFML_VERSION_PATCH: u32 = 0;
+pub const sfFalse: sfBool = 0; // edited manually
+pub const sfTrue: sfBool = 1; // edited manually
 pub type sfBool = ::std::os::raw::c_int;
 pub type sfInt8 = ::std::os::raw::c_schar;
 pub type sfUint8 = ::std::os::raw::c_uchar;
@@ -17,7 +17,7 @@ pub type sfUint32 = ::std::os::raw::c_uint;
 pub type sfInt64 = ::std::os::raw::c_longlong;
 pub type sfUint64 = ::std::os::raw::c_ulonglong;
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Copy, Clone)]
 pub struct sfTime {
     pub microseconds: sfInt64,
 }
@@ -34,23 +34,18 @@ fn bindgen_test_layout_sfTime() {
         concat!("Alignment of ", stringify!(sfTime))
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfTime)).microseconds as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfTime>())).microseconds as *const _ as usize },
         0usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfTime),
             "::",
             stringify!(microseconds)
         )
     );
 }
-impl Clone for sfTime {
-    fn clone(&self) -> Self {
-        *self
-    }
-}
 extern "C" {
-    #[link_name = "sfTime_Zero"]
+    #[link_name = "\u{1}sfTime_Zero"]
     pub static mut sfTime_Zero: sfTime;
 }
 extern "C" {
@@ -116,7 +111,7 @@ pub type sfInputStreamTellFunc =
 pub type sfInputStreamGetSizeFunc =
     ::std::option::Option<unsafe extern "C" fn(userData: *mut ::std::os::raw::c_void) -> sfInt64>;
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Copy, Clone)]
 pub struct sfInputStream {
     pub read: sfInputStreamReadFunc,
     pub seek: sfInputStreamSeekFunc,
@@ -137,60 +132,55 @@ fn bindgen_test_layout_sfInputStream() {
         concat!("Alignment of ", stringify!(sfInputStream))
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfInputStream)).read as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfInputStream>())).read as *const _ as usize },
         0usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfInputStream),
             "::",
             stringify!(read)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfInputStream)).seek as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfInputStream>())).seek as *const _ as usize },
         8usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfInputStream),
             "::",
             stringify!(seek)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfInputStream)).tell as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfInputStream>())).tell as *const _ as usize },
         16usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfInputStream),
             "::",
             stringify!(tell)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfInputStream)).getSize as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfInputStream>())).getSize as *const _ as usize },
         24usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfInputStream),
             "::",
             stringify!(getSize)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfInputStream)).userData as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfInputStream>())).userData as *const _ as usize },
         32usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfInputStream),
             "::",
             stringify!(userData)
         )
     );
-}
-impl Clone for sfInputStream {
-    fn clone(&self) -> Self {
-        *self
-    }
 }
 extern "C" {
     pub fn sfMutex_create() -> *mut sfMutex;
@@ -226,7 +216,7 @@ extern "C" {
     pub fn sfThread_terminate(thread: *mut sfThread);
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Copy, Clone)]
 pub struct sfVector2i {
     pub x: ::std::os::raw::c_int,
     pub y: ::std::os::raw::c_int,
@@ -244,33 +234,28 @@ fn bindgen_test_layout_sfVector2i() {
         concat!("Alignment of ", stringify!(sfVector2i))
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfVector2i)).x as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfVector2i>())).x as *const _ as usize },
         0usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfVector2i),
             "::",
             stringify!(x)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfVector2i)).y as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfVector2i>())).y as *const _ as usize },
         4usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfVector2i),
             "::",
             stringify!(y)
         )
     );
 }
-impl Clone for sfVector2i {
-    fn clone(&self) -> Self {
-        *self
-    }
-}
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Copy, Clone)]
 pub struct sfVector2u {
     pub x: ::std::os::raw::c_uint,
     pub y: ::std::os::raw::c_uint,
@@ -288,33 +273,28 @@ fn bindgen_test_layout_sfVector2u() {
         concat!("Alignment of ", stringify!(sfVector2u))
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfVector2u)).x as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfVector2u>())).x as *const _ as usize },
         0usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfVector2u),
             "::",
             stringify!(x)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfVector2u)).y as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfVector2u>())).y as *const _ as usize },
         4usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfVector2u),
             "::",
             stringify!(y)
         )
     );
 }
-impl Clone for sfVector2u {
-    fn clone(&self) -> Self {
-        *self
-    }
-}
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Copy, Clone)]
 pub struct sfVector2f {
     pub x: f32,
     pub y: f32,
@@ -332,33 +312,28 @@ fn bindgen_test_layout_sfVector2f() {
         concat!("Alignment of ", stringify!(sfVector2f))
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfVector2f)).x as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfVector2f>())).x as *const _ as usize },
         0usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfVector2f),
             "::",
             stringify!(x)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfVector2f)).y as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfVector2f>())).y as *const _ as usize },
         4usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfVector2f),
             "::",
             stringify!(y)
         )
     );
 }
-impl Clone for sfVector2f {
-    fn clone(&self) -> Self {
-        *self
-    }
-}
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Copy, Clone)]
 pub struct sfVector3f {
     pub x: f32,
     pub y: f32,
@@ -377,38 +352,33 @@ fn bindgen_test_layout_sfVector3f() {
         concat!("Alignment of ", stringify!(sfVector3f))
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfVector3f)).x as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfVector3f>())).x as *const _ as usize },
         0usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfVector3f),
             "::",
             stringify!(x)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfVector3f)).y as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfVector3f>())).y as *const _ as usize },
         4usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfVector3f),
             "::",
             stringify!(y)
         )
     );
     assert_eq!(
-        unsafe { &(*(0 as *const sfVector3f)).z as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<sfVector3f>())).z as *const _ as usize },
         8usize,
         concat!(
-            "Alignment of field: ",
+            "Offset of field: ",
             stringify!(sfVector3f),
             "::",
             stringify!(z)
         )
     );
-}
-impl Clone for sfVector3f {
-    fn clone(&self) -> Self {
-        *self
-    }
 }
