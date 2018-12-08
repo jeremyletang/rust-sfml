@@ -18,9 +18,7 @@ script:
   - wget http://www.sfml-dev.org/files/CSFML-2.5-sources.zip --no-check-certificate
   - unzip -q CSFML-2.5-sources.zip
   - pushd CSFML-2.5
-  - mkdir cmake/Modules
-  - cp /home/travis/build/jeremyletang/rust-sfml/sfml_install/usr/local/share/SFML/cmake/Modules/FindSFML.cmake cmake/Modules
-  - mkdir build && cd build && cmake -DCMAKE_MODULE_PATH=/home/travis/build/jeremyletang/rust-sfml/CSFML-2.5/cmake/Modules -DSFML_ROOT=/home/travis/build/jeremyletang/rust-sfml/sfml_install/usr/local .. && make
+  - mkdir build && cd build && cmake -DSFML_DIR='/home/travis/build/jeremyletang/rust-sfml/sfml_install/usr/local/lib/cmake/SFML/' .. && make
   - make DESTDIR=/home/travis/build/jeremyletang/rust-sfml/sfml_install install
   - popd
   - mkdir .cargo
