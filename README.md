@@ -8,8 +8,8 @@ Requirements
 
 - Linux, Windows, or OS X
 - Rust 1.31 or later
-- [SFML 2.4](http://www.sfml-dev.org/download.php)
-- [CSFML 2.4](http://www.sfml-dev.org/download/csfml/)
+- [SFML 2.5](http://www.sfml-dev.org/download.php)
+- [CSFML 2.5](http://www.sfml-dev.org/download/csfml/)
 
 License
 =======
