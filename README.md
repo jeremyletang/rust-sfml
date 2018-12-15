@@ -11,6 +11,10 @@ Requirements
 - [SFML 2.5](http://www.sfml-dev.org/download.php)
 - [CSFML 2.5](http://www.sfml-dev.org/download/csfml/)
 
+Usage
+=====
+You can find documentation about `rust-sfml` into the [dedicated wiki](https://github.com/jeremyletang/rust-sfml/wiki)
+
 License
 =======
 
