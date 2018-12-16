@@ -11,9 +11,15 @@ Requirements
 - [SFML 2.5](http://www.sfml-dev.org/download.php)
 - [CSFML 2.5](http://www.sfml-dev.org/download/csfml/)
 
-Usage
+Documentation
 =====
-You can find documentation about `rust-sfml` into the [dedicated wiki](https://github.com/jeremyletang/rust-sfml/wiki)
+The SFML official API (C++) is available here: https://docs.rs/sfml/0.14.0/sfml/
+
+To reference and install `rust-sfml`, you can take a look at the [github wiki](https://github.com/jeremyletang/rust-sfml/wiki)\
+Please take note that:
+   * This wiki is supported by the community
+   * The `rust-sfml` core team doeesn't review it
+   * Your contribution is welcome
 
 License
 =======
