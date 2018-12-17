@@ -13,12 +13,12 @@ Requirements
 
 Documentation
 =====
-The SFML official API (C++) is available here: https://docs.rs/sfml/0.14.0/sfml/
+The API documentation is available at: https://docs.rs/sfml/
 
-To reference and install `rust-sfml`, you can take a look at the [github wiki](https://github.com/jeremyletang/rust-sfml/wiki)\
+If you need help with setting up `rust-sfml` on your system, you can take a look at the [wiki](https://github.com/jeremyletang/rust-sfml/wiki).\
 Please take note that:
    * This wiki is supported by the community
-   * The `rust-sfml` core team doeesn't review it
+   * The `rust-sfml` core team doesn't review it
    * Your contribution is welcome
 
 License
