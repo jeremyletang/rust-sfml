@@ -32,8 +32,8 @@ fn main() {
     window.set_vertical_sync_enabled(true);
 
     let mut shape = CustomShape::new(Box::new(TriangleShape));
-    shape.set_fill_color(Color::RED);
-    shape.set_outline_color(Color::GREEN);
+    shape.set_fill_color(&Color::RED);
+    shape.set_outline_color(&Color::GREEN);
     shape.set_outline_thickness(3.);
 
     loop {
@@ -47,7 +47,7 @@ fn main() {
             }
         }
 
-        window.clear(Color::BLACK);
+        window.clear(&Color::BLACK);
         window.draw(&shape);
         window.display();
     }
