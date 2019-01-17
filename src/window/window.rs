@@ -26,12 +26,12 @@ pub type Handle = ffi::sfWindowHandle;
 /// # Usage example
 ///
 /// ```no_run
-/// use sfml::window::{Window, Event, Style};
+/// use sfml::window::{Window, Event, Style, ContextSettings};
 /// // Create a new window
 /// let mut window = Window::new((800, 600),
 ///                              "SFML window",
 ///                              Style::CLOSE,
-///                              &Default::default());
+///                              &ContextSettings::default());
 /// // Limit the framerate to 60 frames per second (this step is optional)
 /// window.set_framerate_limit(60);
 ///
