@@ -241,3 +241,9 @@ impl RemAssign for Time {
         self.0.microseconds %= rhs.0.microseconds
     }
 }
+
+impl Default for Time {
+    fn default() -> Self {
+        Self::ZERO
+    }
+}

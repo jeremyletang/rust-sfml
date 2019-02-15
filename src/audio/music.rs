@@ -1,5 +1,5 @@
 use crate::audio::csfml_audio_sys as ffi;
-use crate::audio::{SoundSource, SoundStatus};
+use crate::audio::{SoundSource, SoundStatus, TimeSpan};
 use crate::inputstream::InputStream;
 use crate::sf_bool_ext::SfBoolExt;
 use crate::system::Time;
@@ -220,6 +220,33 @@ impl Music {
     /// * timeOffset - New playing position
     pub fn set_playing_offset(&mut self, time_offset: Time) {
         unsafe { ffi::sfMusic_setPlayingOffset(self.music, time_offset.raw()) }
+    }
+    /// Get the positions of the of the music's looping sequence.
+    ///
+    /// # Warning
+    /// Since [`set_loop_points`] performs some adjustments on the provided values and
+    /// rounds them to internal samples, a call to [`loop_points`] is not guaranteed to
+    /// return the same times passed into a previous call to [`set_loop_points`].
+    /// However, it is guaranteed to return times that will map to the
+    /// valid internal samples of this [`Music`] if they are later passed to [`set_loop_points`].
+    ///
+    /// [`set_loop_points`]: Music::set_loop_points
+    /// [`loop_points`]: Music::loop_points
+    pub fn loop_points(&self) -> TimeSpan {
+        TimeSpan::from_raw(unsafe { ffi::sfMusic_getLoopPoints(self.music) })
+    }
+    /// Sets the beginning and end of the music's looping sequence.
+    ///
+    /// Loop points allow one to specify a pair of positions such that, when the music is
+    /// enabled for looping, it will seamlessly seek to the beginning whenever it encounters
+    /// the end. Valid ranges for timePoints.offset and timePoints.length are
+    /// `[0, Dur)` and `(0, Dur-offset]` respectively, where `Dur` is the value returned by
+    /// `duration`. Note that the EOF "loop point" from the end to the beginning of the
+    /// stream is still honored, in case the caller seeks to a point after the end of the
+    /// loop range. This function can be safely called at any point after a stream is opened,
+    /// and will be applied to a playing sound without affecting the current playing offset.
+    pub fn set_loop_points(&mut self, time_points: TimeSpan) {
+        unsafe { ffi::sfMusic_setLoopPoints(self.music, time_points.into_raw()) }
     }
 }
 
