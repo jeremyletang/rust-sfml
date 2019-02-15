@@ -14,7 +14,7 @@ use csfml_system_sys::*;
 /// It defines an OS window that can be painted using the other classes
 /// of the graphics module.
 ///
-/// [`Window`]: ::window::Window
+/// [`Window`]: crate::window::Window
 #[derive(Debug)]
 pub struct RenderWindow {
     render_window: *mut ffi::sfRenderWindow,
@@ -267,7 +267,7 @@ impl RenderWindow {
     /// Enable or disable automatic key-repeat
     ///
     /// If key repeat is enabled, you will receive repeated
-    /// [`::window::Event::KeyPressed`] events while keeping a key pressed.
+    /// [`crate::window::Event::KeyPressed`] events while keeping a key pressed.
     /// If it is disabled, you will only get a single event when the key is pressed.
     ///
     /// Key repeat is enabled by default.
@@ -302,7 +302,7 @@ impl RenderWindow {
     /// Change the joystick threshold
     ///
     /// The joystick threshold is the value below which
-    /// no [`::window::Event::JoystickMoved`] event will be generated.
+    /// no [`crate::window::Event::JoystickMoved`] event will be generated.
     ///
     /// # Arguments
     /// * threshold - New threshold, in the range [0, 100]

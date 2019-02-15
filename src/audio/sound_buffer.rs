@@ -15,7 +15,7 @@ use std::slice;
 /// The sound is then reconstituted by playing these samples at a high rate
 /// (for example, 44100 samples per second is the standard rate used for playing CDs).
 /// In short, audio samples are like texture pixels, and a `SoundBuffer` is
-/// similar to a [`::graphics::Texture`].
+/// similar to a [`crate::graphics::Texture`].
 ///
 /// A sound buffer can be loaded from a file (see [`from_file`] for the complete list of
 /// supported formats), from memory, from a custom stream or directly from an array of samples.

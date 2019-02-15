@@ -24,7 +24,7 @@
 //! listener::set_global_volume(50.);
 //! ```
 //!
-//! [`View`]: ::graphics::View
+//! [`View`]: crate::graphics::View
 //!
 
 use crate::audio::csfml_audio_sys as ffi;

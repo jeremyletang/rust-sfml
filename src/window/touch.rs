@@ -10,13 +10,13 @@
 //! order to know if a touch is down), and you always get the real state of the touches,
 //! even if they happen when your window is out of focus and no event is triggered.
 //!
-//! [`TouchBegan`]: ::window::Event::TouchBegan
-//! [`TouchMoved`]: ::window::Event::TouchMoved
-//! [`TouchEnded`]: ::window::Event::TouchEnded
+//! [`TouchBegan`]: crate::window::Event::TouchBegan
+//! [`TouchMoved`]: crate::window::Event::TouchMoved
+//! [`TouchEnded`]: crate::window::Event::TouchEnded
 //!
 //! There are two functions that can be used to retrieve the current position of a touch.
 //! 1. [`desktop_position`]: operates in global coordinates (relative to the desktop)
-//! 2. [`::window::Window::touch_position`]: operates in window coordinates
+//! 2. [`crate::window::Window::touch_position`]: operates in window coordinates
 //! (relative to a specific window).
 //!
 //! Touches are identified by an index (the "finger"), so that in multi-touch events, individual

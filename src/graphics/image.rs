@@ -214,7 +214,7 @@ impl Image {
     /// static image from several others, but if you need this
     /// kind of feature in real-time you'd better use [`RenderTexture`].
     ///
-    /// [`RenderTexture`]: ::graphics::RenderTexture
+    /// [`RenderTexture`]: crate::graphics::RenderTexture
     ///
     /// If sourceRect is empty, the whole image is copied.
     /// If applyAlpha is set to true, the transparency of

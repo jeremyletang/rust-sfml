@@ -329,7 +329,7 @@ impl<'texture> Shader<'texture> {
     /// This function can also be called with [`Color`] objects that are converted to
     /// [`glsl::Vec4`].
     ///
-    /// [`Color`]: ::graphics::Color
+    /// [`Color`]: crate::graphics::Color
     ///
     /// It is important to note that the components of the color are normalized before being
     /// passed to the shader. Therefore, they are converted from range `[0 .. 255]` to range
@@ -378,7 +378,7 @@ impl<'texture> Shader<'texture> {
     /// This overload can also be called with [`Color`] objects that are
     /// converted to [`glsl::IVec4`].
     ///
-    /// [`Color`]: ::graphics::Color
+    /// [`Color`]: crate::graphics::Color
     ///
     /// If color conversions are used, the `ivec4` uniform in GLSL will hold the same values
     /// as the original [`Color`] instance. For example, `Color{r: 255, g: 127, b: 0, a: 255}`

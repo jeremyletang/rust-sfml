@@ -7,7 +7,7 @@
 //! retrieve the state of a sensor at any time (you don't need to store and update its current
 //! value on your side).
 //!
-//! [`SensorChanged`]: ::window::Event::SensorChanged
+//! [`SensorChanged`]: crate::window::Event::SensorChanged
 //!
 //! Depending on the OS and hardware of the device (phone, tablet, ...), some sensor types may
 //! not be available. You should always check the availability of a sensor before trying to

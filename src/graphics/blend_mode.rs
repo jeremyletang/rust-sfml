@@ -45,9 +45,9 @@ use crate::graphics::csfml_graphics_sys as ffi;
 /// a render target. It is part of the [`RenderStates`] compound that is passed to
 /// [`RenderTarget::draw`].
 ///
-/// [`Drawable`]: ::graphics::Drawable
-/// [`RenderStates`]: ::graphics::RenderStates
-/// [`RenderTarget::draw`]: ::graphics::RenderTarget::draw
+/// [`Drawable`]: crate::graphics::Drawable
+/// [`RenderStates`]: crate::graphics::RenderStates
+/// [`RenderTarget::draw`]: crate::graphics::RenderTarget::draw
 #[derive(Clone, PartialEq, Eq, Debug, Copy)]
 #[repr(C)]
 pub struct BlendMode {

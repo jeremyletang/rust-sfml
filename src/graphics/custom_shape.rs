@@ -24,7 +24,7 @@ pub trait CustomShapePoints {
     ///
     /// Returns a [`Vector2f`] containing the coordinates.
     ///
-    /// [`Vector2f`]: ::system::Vector2f
+    /// [`Vector2f`]: crate::system::Vector2f
     fn point(&self, point: u32) -> Vector2f;
 }
 

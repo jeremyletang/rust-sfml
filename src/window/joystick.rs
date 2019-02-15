@@ -12,9 +12,9 @@
 //! and you always get the real state of joysticks, even if they are moved,
 //! pressed or released when your window is out of focus and no event is triggered.
 //!
-//! [`JoystickMoved`]: ::window::Event::JoystickMoved
-//! [`JoystickButtonPressed`]: ::window::Event::JoystickButtonPressed
-//! [`JoystickButtonReleased`]: ::window::Event::JoystickButtonReleased
+//! [`JoystickMoved`]: crate::window::Event::JoystickMoved
+//! [`JoystickButtonPressed`]: crate::window::Event::JoystickButtonPressed
+//! [`JoystickButtonReleased`]: crate::window::Event::JoystickButtonReleased
 //!
 //! SFML supports:
 //!
