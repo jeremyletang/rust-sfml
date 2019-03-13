@@ -1,5 +1,5 @@
 use crate::sf_bool_ext::SfBoolExt;
-use crate::system::{Vector2i, Vector2u};
+use crate::system::{SfString, Vector2i, Vector2u};
 use crate::window::{ContextSettings, Event, Style, VideoMode};
 use csfml_system_sys::sfBool;
 use csfml_window_sys as ffi;
@@ -78,17 +78,17 @@ impl Window {
     /// * title - Title of the window
     /// * style - Window style
     /// * settings - Additional settings for the underlying OpenGL context
-    pub fn new<V: Into<VideoMode>>(
+    pub fn new<V: Into<VideoMode>, S: Into<SfString>>(
         mode: V,
-        title: &str,
+        title: S,
         style: Style,
         settings: &ContextSettings,
     ) -> Window {
-        let utf32 = crate::unicode_conv::str_to_csfml(title);
+        let utf32 = title.into();
         let sf_win: *mut ffi::sfWindow = unsafe {
             ffi::sfWindow_createUnicode(
                 mode.into().raw(),
-                utf32.as_ptr() as _,
+                utf32.as_ptr(),
                 style.bits(),
                 &settings.raw(),
             )
@@ -206,9 +206,9 @@ impl Window {
     ///
     /// # Arguments
     /// * title - New title
-    pub fn set_title(&mut self, title: &str) {
-        let utf32 = crate::unicode_conv::str_to_csfml(title);
-        unsafe { ffi::sfWindow_setUnicodeTitle(self.window, utf32.as_ptr() as _) }
+    pub fn set_title<S: Into<SfString>>(&mut self, title: S) {
+        let utf32 = title.into();
+        unsafe { ffi::sfWindow_setUnicodeTitle(self.window, utf32.as_ptr()) }
     }
 
     /// Show or hide a window

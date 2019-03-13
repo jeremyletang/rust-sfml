@@ -12,10 +12,14 @@ edition = "2018"
 
 [features]
 default = ["graphics", "audio"]
-window = ["csfml-window-sys", "bitflags"]
+window = ["csfml-window-sys", "bitflags", "widestring"]
 graphics = ["window", "csfml-graphics-sys"]
 audio = ["csfml-audio-sys"]
 network = ["csfml-network-sys"]
+
+[dependencies.widestring]
+version = "0.4.0"
+optional = true
 
 [dependencies.bitflags]
 version = "1.0"

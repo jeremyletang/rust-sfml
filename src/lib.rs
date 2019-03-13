@@ -43,8 +43,6 @@ extern crate csfml_window_sys;
 #[cfg(any(feature = "graphics", feature = "audio"))]
 mod inputstream;
 mod sf_bool_ext;
-#[cfg(feature = "window")]
-mod unicode_conv;
 
 #[cfg(feature = "audio")]
 pub mod audio;
