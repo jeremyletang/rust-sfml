@@ -3,7 +3,7 @@ use crate::graphics::{
     Color, Drawable, FloatRect, Font, RenderStates, RenderTarget, TextStyle, Transform,
     Transformable,
 };
-use crate::system::{SfStr, SfString, Vector2f};
+use crate::system::{SfStr, SfStrConv, Vector2f};
 use std::marker::PhantomData;
 
 /// Graphical text
@@ -26,7 +26,7 @@ impl<'s> Text<'s> {
     /// * string - The string of the text
     /// * font - The font to display the Text
     /// * characterSize - The size of the Text
-    pub fn new<S: Into<SfString>>(string: S, font: &'s Font, character_size: u32) -> Text<'s> {
+    pub fn new<S: SfStrConv>(string: S, font: &'s Font, character_size: u32) -> Text<'s> {
         let mut text = Text::default();
         text.set_string(string);
         text.set_font(font);
@@ -40,11 +40,10 @@ impl<'s> Text<'s> {
     ///
     /// # Arguments
     /// * string - New string
-    pub fn set_string<S: Into<SfString>>(&mut self, string: S) {
-        let utf32 = string.into();
-        unsafe {
-            ffi::sfText_setUnicodeString(self.text, utf32.as_ptr());
-        }
+    pub fn set_string<S: SfStrConv>(&mut self, string: S) {
+        string.with_as_sfstr(|sfstr| unsafe {
+            ffi::sfText_setUnicodeString(self.text, sfstr.as_ptr());
+        })
     }
 
     /// Get the string of a text

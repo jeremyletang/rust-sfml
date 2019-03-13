@@ -8,6 +8,7 @@ pub use self::style::Style;
 pub use self::video_mode::VideoMode;
 pub use self::window::{Handle, Window};
 
+pub mod clipboard;
 mod context;
 mod context_settings;
 mod event;

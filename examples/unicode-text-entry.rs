@@ -37,10 +37,28 @@ fn main() {
                         string.pop();
                     } else if unicode == 0xD as char {
                         string.push('\n');
-                    } else {
+                    } else
+                    // Ignore ctrl+v/ctrl+v generated chars
+                    if unicode != 0x16 as char && unicode != 0x03 as char {
                         string.push(unicode);
                     }
                     text.set_string(&string);
+                }
+                Event::KeyPressed {
+                    code: Key::V,
+                    ctrl: true,
+                    ..
+                } => {
+                    let clipstring = clipboard::get_string();
+                    string.push_str(&clipstring.to_rust_string());
+                    text.set_string(&string);
+                }
+                Event::KeyPressed {
+                    code: Key::C,
+                    ctrl: true,
+                    ..
+                } => {
+                    clipboard::set_string(text.string());
                 }
                 _ => {}
             }

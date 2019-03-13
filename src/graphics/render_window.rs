@@ -4,7 +4,7 @@ use crate::graphics::{
     RenderStates, RenderTarget, Sprite, Text, Vertex, VertexArray, View,
 };
 use crate::sf_bool_ext::SfBoolExt;
-use crate::system::{SfString, Vector2f, Vector2i, Vector2u};
+use crate::system::{SfStrConv, Vector2f, Vector2i, Vector2u};
 use crate::window::{ContextSettings, Event, Handle, Style, VideoMode};
 use csfml_system_sys::*;
 
@@ -39,25 +39,26 @@ impl RenderWindow {
     /// * title - Title of the render window
     /// * style - Window style
     /// * settings - Additional settings for the underlying OpenGL context
-    pub fn new<V: Into<VideoMode>, S: Into<SfString>>(
+    pub fn new<V: Into<VideoMode>, S: SfStrConv>(
         mode: V,
         title: S,
         style: Style,
         settings: &ContextSettings,
     ) -> RenderWindow {
-        let utf32 = title.into();
-        let sf_render_win: *mut ffi::sfRenderWindow = unsafe {
-            ffi::sfRenderWindow_createUnicode(
-                mode.into().raw(),
-                utf32.as_ptr(),
-                style.bits(),
-                &settings.raw(),
-            )
-        };
-        assert!(!sf_render_win.is_null(), "Failed to create RenderWindow");
-        RenderWindow {
-            render_window: sf_render_win,
-        }
+        title.with_as_sfstr(|sfstr| {
+            let sf_render_win: *mut ffi::sfRenderWindow = unsafe {
+                ffi::sfRenderWindow_createUnicode(
+                    mode.into().raw(),
+                    sfstr.as_ptr(),
+                    style.bits(),
+                    &settings.raw(),
+                )
+            };
+            assert!(!sf_render_win.is_null(), "Failed to create RenderWindow");
+            RenderWindow {
+                render_window: sf_render_win,
+            }
+        })
     }
 
     /// Create a render window from an existing platform-specific window handle
@@ -200,11 +201,10 @@ impl RenderWindow {
     /// # Arguments
     /// * title - New title
     ///
-    pub fn set_title<S: Into<SfString>>(&mut self, title: S) {
-        let utf32 = title.into();
-        unsafe {
-            ffi::sfRenderWindow_setUnicodeTitle(self.render_window, utf32.as_ptr());
-        }
+    pub fn set_title<S: SfStrConv>(&mut self, title: S) {
+        title.with_as_sfstr(|sfstr| unsafe {
+            ffi::sfRenderWindow_setUnicodeTitle(self.render_window, sfstr.as_ptr());
+        })
     }
 
     /// Show or hide a window
