@@ -16,7 +16,7 @@ fn main() {
     let mut reader = stdin.lock();
     let mut line = String::new();
     reader.read_line(&mut line).unwrap();
-    let sample_rate: u32 = match line.trim_right().parse() {
+    let sample_rate: u32 = match line.trim_end().parse() {
         Ok(value) => value,
         Err(e) => panic!("Error, input is not valid: {}", e),
     };
