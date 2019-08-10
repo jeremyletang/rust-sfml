@@ -8,7 +8,7 @@ use sfml::window::*;
 trait Effect: Drawable {
     fn update(&mut self, t: f32, x: f32, y: f32);
     fn name(&self) -> &str;
-    fn as_drawable(&self) -> &Drawable;
+    fn as_drawable(&self) -> &dyn Drawable;
 }
 
 struct Pixelate<'t> {
@@ -30,7 +30,7 @@ impl<'t> Pixelate<'t> {
 impl<'t> Drawable for Pixelate<'t> {
     fn draw<'a: 'shader, 'texture, 'shader, 'shader_texture>(
         &'a self,
-        target: &mut RenderTarget,
+        target: &mut dyn RenderTarget,
         mut states: RenderStates<'texture, 'shader, 'shader_texture>,
     ) {
         states.shader = Some(&self.shader);
@@ -46,7 +46,7 @@ impl<'t> Effect for Pixelate<'t> {
     fn name(&self) -> &str {
         "pixelate"
     }
-    fn as_drawable(&self) -> &Drawable {
+    fn as_drawable(&self) -> &dyn Drawable {
         self
     }
 }
@@ -95,7 +95,7 @@ impl<'fo> WaveBlur<'fo> {
 impl<'fo> Drawable for WaveBlur<'fo> {
     fn draw<'a: 'shader, 'texture, 'shader, 'shader_texture>(
         &'a self,
-        target: &mut RenderTarget,
+        target: &mut dyn RenderTarget,
         mut states: RenderStates<'texture, 'shader, 'shader_texture>,
     ) {
         states.shader = Some(&self.shader);
@@ -114,7 +114,7 @@ impl<'fo> Effect for WaveBlur<'fo> {
     fn name(&self) -> &str {
         "wave + blur"
     }
-    fn as_drawable(&self) -> &Drawable {
+    fn as_drawable(&self) -> &dyn Drawable {
         self
     }
 }
@@ -154,7 +154,7 @@ impl StormBlink {
 impl Drawable for StormBlink {
     fn draw<'a: 'shader, 'texture, 'shader, 'shader_texture>(
         &'a self,
-        target: &mut RenderTarget,
+        target: &mut dyn RenderTarget,
         mut states: RenderStates<'texture, 'shader, 'shader_texture>,
     ) {
         states.shader = Some(&self.shader);
@@ -176,7 +176,7 @@ impl Effect for StormBlink {
     fn name(&self) -> &str {
         "storm + blink"
     }
-    fn as_drawable(&self) -> &Drawable {
+    fn as_drawable(&self) -> &dyn Drawable {
         self
     }
 }
@@ -217,7 +217,7 @@ impl<'t> Edge<'t> {
 impl<'t> Drawable for Edge<'t> {
     fn draw<'a: 'shader, 'texture, 'shader, 'shader_texture>(
         &'a self,
-        target: &mut RenderTarget,
+        target: &mut dyn RenderTarget,
         mut states: RenderStates<'texture, 'shader, 'shader_texture>,
     ) {
         states.shader = Some(&self.shader);
@@ -245,7 +245,7 @@ impl<'t> Effect for Edge<'t> {
         }
         self.surface.display();
     }
-    fn as_drawable(&self) -> &Drawable {
+    fn as_drawable(&self) -> &dyn Drawable {
         self
     }
     fn name(&self) -> &str {
@@ -267,7 +267,7 @@ fn main() {
     bg_texture.set_smooth(true);
     let mut entity_texture = Texture::from_file("resources/devices.png").unwrap();
     entity_texture.set_smooth(true);
-    let mut effects: [Box<Effect>; 4] = [
+    let mut effects: [Box<dyn Effect>; 4] = [
         Box::new(Pixelate::new(&bg)),
         Box::new(WaveBlur::new(&font)),
         Box::new(StormBlink::new()),

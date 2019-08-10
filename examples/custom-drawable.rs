@@ -29,7 +29,7 @@ impl<'s> Bullet<'s> {
 impl<'s> Drawable for Bullet<'s> {
     fn draw<'a: 'shader, 'texture, 'shader, 'shader_texture>(
         &'a self,
-        render_target: &mut RenderTarget,
+        render_target: &mut dyn RenderTarget,
         _: RenderStates<'texture, 'shader, 'shader_texture>,
     ) {
         render_target.draw(&self.head);

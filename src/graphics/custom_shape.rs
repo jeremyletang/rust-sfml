@@ -33,19 +33,19 @@ pub trait CustomShapePoints {
 pub struct CustomShape<'s> {
     shape: *mut ffi::sfShape,
     texture: PhantomData<&'s Texture>,
-    points: *mut Box<CustomShapePoints + Send>,
+    points: *mut Box<dyn CustomShapePoints + Send>,
 }
 
 #[allow(clippy::cast_ptr_alignment)]
 unsafe extern "C" fn get_point_count_callback(obj: *mut c_void) -> usize {
-    let shape = obj as *mut Box<CustomShapePoints + Send>;
+    let shape = obj as *mut Box<dyn CustomShapePoints + Send>;
     let ret = (*shape).point_count();
     ret as usize
 }
 
 #[allow(clippy::cast_ptr_alignment)]
 unsafe extern "C" fn get_point_callback(point: usize, obj: *mut c_void) -> sfVector2f {
-    let shape = obj as *mut Box<CustomShapePoints + Send>;
+    let shape = obj as *mut Box<dyn CustomShapePoints + Send>;
     let ret = (*shape).point(point as u32);
     ret.raw()
 }
@@ -55,7 +55,7 @@ impl<'s> CustomShape<'s> {
     ///
     /// # Arguments
     /// * points - Implementation of [`CustomShapePoints`]
-    pub fn new(points: Box<CustomShapePoints + Send>) -> CustomShape<'s> {
+    pub fn new(points: Box<dyn CustomShapePoints + Send>) -> CustomShape<'s> {
         let raw_impl = Box::into_raw(Box::new(points));
         let sp = unsafe {
             ffi::sfShape_create(
@@ -78,7 +78,7 @@ impl<'s> CustomShape<'s> {
     /// * points - Implementation of [`CustomShapePoints`] trait
     /// * texture - The texture to bind to the `CustomShape`
     pub fn with_texture(
-        points: Box<CustomShapePoints + Send>,
+        points: Box<dyn CustomShapePoints + Send>,
         texture: &'s Texture,
     ) -> CustomShape<'s> {
         let mut shape = Self::new(points);
@@ -161,7 +161,7 @@ impl<'s> Shape<'s> for CustomShape<'s> {
 impl<'s> Drawable for CustomShape<'s> {
     fn draw<'a: 'shader, 'texture, 'shader, 'shader_texture>(
         &'a self,
-        target: &mut RenderTarget,
+        target: &mut dyn RenderTarget,
         states: RenderStates<'texture, 'shader, 'shader_texture>,
     ) {
         target.draw_shape(self, states)
