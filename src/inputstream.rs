@@ -14,10 +14,10 @@ unsafe extern "C" fn read<T: Read + Seek>(
     } else if size > 0 {
         let mut chunk = stream.take(size as u64);
         let mut buf = vec![];
-        let status = chunk.read_to_end(&mut buf);
-        if status.is_ok() {
+        let result = chunk.read_to_end(&mut buf);
+        if let Ok(bytes_read) = result {
             ptr::copy_nonoverlapping(buf.as_ptr(), data as *mut u8, size as usize);
-            return status.unwrap() as i64;
+            return bytes_read as _;
         }
     }
     -1
