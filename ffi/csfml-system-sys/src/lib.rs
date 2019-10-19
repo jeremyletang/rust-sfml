@@ -45,7 +45,6 @@ fn bindgen_test_layout_sfTime() {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}sfTime_Zero"]
     pub static mut sfTime_Zero: sfTime;
 }
 extern "C" {
