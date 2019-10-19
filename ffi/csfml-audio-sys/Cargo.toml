@@ -1,7 +1,7 @@
 [package]
 name = "csfml-audio-sys"
 description = "Bindings to csfml-audio"
-version = "0.4.0"
+version = "0.5.0"
 authors = ["rust-sfml developers"]
 links = "csfml-audio"
 build = "build.rs"
@@ -12,8 +12,8 @@ keywords = ["sfml", "multimedia", "game"]
 
 [dependencies.csfml-system-sys]
 path = "../csfml-system-sys"
-version = "0.4.0"
+version = "0.5.0"
 
 [build-dependencies.sfml-build]
 path = "../sfml-build"
-version = "0.2.0"
+version = "0.3.0"
