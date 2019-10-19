@@ -3,6 +3,7 @@ use std::io::{Read, Seek, SeekFrom};
 use std::os::raw::{c_longlong, c_void};
 use std::ptr;
 
+#[allow(clippy::comparison_chain)]
 unsafe extern "C" fn read<T: Read + Seek>(
     data: *mut c_void,
     size: c_longlong,
