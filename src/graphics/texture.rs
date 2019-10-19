@@ -228,11 +228,13 @@ impl Texture {
     ///
     /// The size of the pixel array must match the width and height arguments,
     /// and it must contain 32-bits RGBA pixels.
-
-    /// No additional check is performed on the size of the pixel array or the bounds of the
-    /// area to update, passing invalid arguments will lead to an _undefined behavior_.
     ///
     /// This function does nothing if pixels is null or if the texture was not previously created.
+    ///
+    /// # Safety
+    ///
+    /// No additional check is performed on the size of the pixel array or the bounds of the
+    /// area to update, passing invalid arguments will lead to an _undefined behavior_.
     pub unsafe fn update_from_pixels(
         &mut self,
         pixels: &[u8],

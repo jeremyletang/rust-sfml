@@ -105,8 +105,9 @@ impl Window {
     /// intended to be used in cases where you need to integrate SFML with some
     /// other windowing library.
     ///
-    /// This function is unsafe because it is the caller's responsibility to
-    /// ensure that it is called with a valid window handle.
+    /// # Safety
+    ///
+    /// It is the caller's responsibility to ensure that it is called with a valid window handle.
     ///
     /// # Arguments
     /// * handle - The handle to the platform-specific window handle to use for

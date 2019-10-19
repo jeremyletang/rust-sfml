@@ -88,6 +88,9 @@ impl RenderTexture {
     ///
     /// This function is similar to [`Texture::generate_mipmap`] and
     /// operates on the texture used as the target for drawing.
+    ///
+    /// # Safety
+    ///
     /// Be aware that any draw operation may modify the base level image data.
     /// For this reason, calling this function only makes sense after all drawing is
     /// completed and display has been called. Not calling display after subsequent drawing
