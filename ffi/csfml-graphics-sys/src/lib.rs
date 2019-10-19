@@ -108,19 +108,15 @@ fn bindgen_test_layout_sfBlendMode() {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}sfBlendAlpha"]
     pub static sfBlendAlpha: sfBlendMode;
 }
 extern "C" {
-    #[link_name = "\u{1}sfBlendAdd"]
     pub static sfBlendAdd: sfBlendMode;
 }
 extern "C" {
-    #[link_name = "\u{1}sfBlendMultiply"]
     pub static sfBlendMultiply: sfBlendMode;
 }
 extern "C" {
-    #[link_name = "\u{1}sfBlendNone"]
     pub static sfBlendNone: sfBlendMode;
 }
 #[repr(C)]
@@ -185,39 +181,30 @@ fn bindgen_test_layout_sfColor() {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}sfBlack"]
     pub static mut sfBlack: sfColor;
 }
 extern "C" {
-    #[link_name = "\u{1}sfWhite"]
     pub static mut sfWhite: sfColor;
 }
 extern "C" {
-    #[link_name = "\u{1}sfRed"]
     pub static mut sfRed: sfColor;
 }
 extern "C" {
-    #[link_name = "\u{1}sfGreen"]
     pub static mut sfGreen: sfColor;
 }
 extern "C" {
-    #[link_name = "\u{1}sfBlue"]
     pub static mut sfBlue: sfColor;
 }
 extern "C" {
-    #[link_name = "\u{1}sfYellow"]
     pub static mut sfYellow: sfColor;
 }
 extern "C" {
-    #[link_name = "\u{1}sfMagenta"]
     pub static mut sfMagenta: sfColor;
 }
 extern "C" {
-    #[link_name = "\u{1}sfCyan"]
     pub static mut sfCyan: sfColor;
 }
 extern "C" {
-    #[link_name = "\u{1}sfTransparent"]
     pub static mut sfTransparent: sfColor;
 }
 extern "C" {
@@ -497,7 +484,6 @@ fn bindgen_test_layout_sfTransform() {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}sfTransform_Identity"]
     pub static sfTransform_Identity: sfTransform;
 }
 extern "C" {
