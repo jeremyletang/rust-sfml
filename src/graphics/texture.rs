@@ -49,7 +49,10 @@ use std::ptr;
 /// [`Color`]: crate::graphics::Color
 #[derive(Debug)]
 #[allow(missing_copy_implementations)]
-pub enum Texture {}
+#[repr(C)]
+pub struct Texture {
+    _opaque: [u8; 0],
+}
 
 impl Texture {
     /// Return the size of the texture

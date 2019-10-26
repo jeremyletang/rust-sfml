@@ -51,7 +51,10 @@ use std::io::{Read, Seek};
 /// [`Text`]: crate::graphics::Text
 #[derive(Debug)]
 #[allow(missing_copy_implementations)]
-pub enum Font {}
+#[repr(C)]
+pub struct Font {
+    _opaque: [u8; 0],
+}
 
 impl Font {
     /// Get the kerning value corresponding to a given pair of characters in a font

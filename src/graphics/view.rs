@@ -10,7 +10,10 @@ use std::borrow::ToOwned;
 /// the way that your drawable objects are drawn.
 #[derive(Debug)]
 #[allow(missing_copy_implementations)]
-pub enum View {}
+#[repr(C)]
+pub struct View {
+    _opaque: [u8; 0],
+}
 
 impl View {
     /// Get the current orientation of a view
