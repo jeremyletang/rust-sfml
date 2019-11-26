@@ -28,6 +28,7 @@ pub use self::transform::Transform;
 pub use self::transformable::Transformable;
 pub use self::vertex::Vertex;
 pub use self::vertex_array::{VertexArray, Vertices};
+pub use self::vertex_buffer::{VertexBuffer, VertexBufferUsage};
 pub use self::view::View;
 
 pub mod blend_mode;
@@ -57,4 +58,5 @@ mod transform;
 mod transformable;
 mod vertex;
 mod vertex_array;
+mod vertex_buffer;
 mod view;

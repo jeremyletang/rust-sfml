@@ -1,7 +1,7 @@
 use crate::graphics::csfml_graphics_sys as ffi;
 use crate::graphics::{
     CircleShape, Color, ConvexShape, CustomShape, Drawable, IntRect, PrimitiveType, RectangleShape,
-    RenderStates, RenderTarget, Sprite, Text, Texture, Vertex, VertexArray, View,
+    RenderStates, RenderTarget, Sprite, Text, Texture, Vertex, VertexArray, VertexBuffer, View,
 };
 use crate::sf_bool_ext::SfBoolExt;
 use crate::system::{Vector2f, Vector2i, Vector2u};
@@ -199,6 +199,15 @@ impl RenderTarget for RenderTexture {
     fn draw_vertex_array(&self, vertex_array: &VertexArray, rs: RenderStates) {
         unsafe {
             ffi::sfRenderTexture_drawVertexArray(self.render_texture, vertex_array.raw(), &rs.raw())
+        }
+    }
+    fn draw_vertex_buffer(&self, vertex_buffer: &VertexBuffer, rs: RenderStates) {
+        unsafe {
+            ffi::sfRenderTexture_drawVertexBuffer(
+                self.render_texture,
+                vertex_buffer.raw(),
+                &rs.raw(),
+            )
         }
     }
     fn draw_primitives(&self, vertices: &[Vertex], ty: PrimitiveType, rs: RenderStates) {

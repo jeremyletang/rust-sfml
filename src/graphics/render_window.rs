@@ -1,7 +1,7 @@
 use crate::graphics::csfml_graphics_sys as ffi;
 use crate::graphics::{
     CircleShape, Color, ConvexShape, CustomShape, Drawable, IntRect, PrimitiveType, RectangleShape,
-    RenderStates, RenderTarget, Sprite, Text, Vertex, VertexArray, View,
+    RenderStates, RenderTarget, Sprite, Text, Vertex, VertexArray, VertexBuffer, View,
 };
 use crate::sf_bool_ext::SfBoolExt;
 use crate::system::{SfStrConv, Vector2f, Vector2i, Vector2u};
@@ -514,6 +514,15 @@ impl RenderTarget for RenderWindow {
             ffi::sfRenderWindow_drawVertexArray(
                 self.render_window,
                 vertex_array.raw(),
+                &render_states.raw(),
+            )
+        }
+    }
+    fn draw_vertex_buffer(&self, vertex_buffer: &VertexBuffer, render_states: RenderStates) {
+        unsafe {
+            ffi::sfRenderWindow_drawVertexBuffer(
+                self.render_window,
+                vertex_buffer.raw(),
                 &render_states.raw(),
             )
         }
