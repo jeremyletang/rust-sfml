@@ -20,7 +20,7 @@ pub enum VertexBufferUsage {
 
 impl VertexBufferUsage {
     pub(super) fn raw(self) -> sfVertexBufferUsage {
-        unsafe { ::std::mem::transmute(self) }
+        self as sfVertexBufferUsage
     }
     pub(super) unsafe fn from_raw(raw: sfVertexBufferUsage) -> Self {
         ::std::mem::transmute(raw)
