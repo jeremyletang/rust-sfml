@@ -173,9 +173,13 @@ impl VertexBuffer {
     /// entities. It must be used only if you mix sf::VertexBuffer with OpenGL code.
     ///
     /// ```
-    /// let mut vb1 = VertexBuffer::new(/* ... */);
-    /// let mut vb2 = VertexBuffer::new(/* ... */);
-    /// ...
+    /// use sfml::graphics::{PrimitiveType, VertexBuffer, VertexBufferUsage};
+    ///
+    /// let mut vb1 = VertexBuffer::new(PrimitiveType::Triangles, 32, VertexBufferUsage::Static);
+    /// let mut vb2 = VertexBuffer::new(PrimitiveType::Quads, 12, VertexBufferUsage::Dynamic);
+    ///
+    /// // ...
+    ///
     /// VertexBuffer::bind(Some(&vb1));
     /// // draw OpenGL stuff that use vb1...
     /// VertexBuffer::bind(Some(&vb2));
