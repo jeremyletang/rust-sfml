@@ -309,8 +309,7 @@ impl SoundBufferRecorder {
     device_common!();
 }
 
-#[cfg(not(feature="ci-headless"))]
-#[test]
+#[cfg_attr(not(feature = "ci-headless"), test)]
 fn test_devices() {
     let default = default_device();
     println!("Default device: {}", default);
