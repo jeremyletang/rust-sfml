@@ -17,7 +17,7 @@ use csfml_window_sys as ffi;
 /// Its destructor will take care of deactivating and freeing all the attached resources.
 ///
 /// # Usage example
-/// ```
+/// ```no_run
 /// # use sfml::window::Context;
 /// # use std::thread;
 /// thread::spawn(|| {
@@ -58,6 +58,7 @@ impl Context {
     }
 }
 
+#[cfg(not(feature = "ci-headless"))]
 #[test]
 fn test_settings() {
     use crate::window::{Context, Window};

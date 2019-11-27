@@ -23,7 +23,7 @@ use csfml_window_sys as ffi;
 ///
 /// # Usage example
 ///
-/// ```
+/// ```no_run
 /// use sfml::window::{VideoMode, Window, Style};
 ///
 /// // Display the list of all the video modes available for fullscreen

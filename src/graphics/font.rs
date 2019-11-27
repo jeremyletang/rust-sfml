@@ -209,6 +209,7 @@ pub struct Info {
     pub family: String,
 }
 
+#[cfg(not(feature = "ci-headless"))]
 #[test]
 fn test_info() {
     let font = Font::from_file("examples/resources/sansation.ttf").unwrap();

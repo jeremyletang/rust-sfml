@@ -16,6 +16,8 @@ window = ["csfml-window-sys", "bitflags", "widestring"]
 graphics = ["window", "csfml-graphics-sys"]
 audio = ["csfml-audio-sys"]
 network = ["csfml-network-sys"]
+# Used to skip running certain tests on CI, since it's running in a headless environment.
+ci-headless = []
 
 [dependencies.widestring]
 version = "0.4.0"
