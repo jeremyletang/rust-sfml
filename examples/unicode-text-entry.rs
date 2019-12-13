@@ -37,9 +37,9 @@ fn main() {
                         string.pop();
                     } else if unicode == 0xD as char {
                         string.push('\n');
-                    } else
+                    }
                     // Ignore ctrl+v/ctrl+v generated chars
-                    if unicode != 0x16 as char && unicode != 0x03 as char {
+                    else if unicode != 0x16 as char && unicode != 0x03 as char {
                         string.push(unicode);
                     }
                     text.set_string(&string);
