@@ -134,10 +134,10 @@ impl StormBlink {
         for _ in 0..40_000 {
             let x = rng.gen_range(0., 800.);
             let y = rng.gen_range(0., 600.);
-            let (r, g, b) = (rng.gen(), rng.gen(), rng.gen());
+            let (red, green, blue) = (rng.gen(), rng.gen(), rng.gen());
             points.append(&Vertex::with_pos_color(
                 Vector2f::new(x, y),
-                Color::rgb(r, g, b),
+                Color::rgb(red, green, blue),
             ));
         }
 
