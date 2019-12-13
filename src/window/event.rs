@@ -189,7 +189,7 @@ pub enum Event {
         type_: crate::window::sensor::Type,
         /// Current value of the sensor on X axis.
         x: f32,
-        /// 	Current value of the sensor on Y axis.
+        /// Current value of the sensor on Y axis.
         y: f32,
         /// Current value of the sensor on Z axis.
         z: f32,
