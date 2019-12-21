@@ -130,7 +130,7 @@ impl<'a, S: SoundStream> SoundStreamPlayer<'a, S> {
         unsafe {
             sfSoundStream_stop(self.sf_sound_stream);
         }
-        &mut self.stream
+        self.stream
     }
     /// Get the current playing position, from the beginning of the stream
     #[must_use]
