@@ -61,31 +61,37 @@ impl Ord for Time {
 
 impl Time {
     /// Constructs a time value from a number of seconds.
+    #[must_use]
     pub fn seconds(seconds: f32) -> Self {
         Time(unsafe { sfSeconds(seconds) })
     }
 
     /// Constructs a time value from a number of milliseconds.
+    #[must_use]
     pub fn milliseconds(milliseconds: i32) -> Self {
         Time(unsafe { sfMilliseconds(milliseconds) })
     }
 
     /// Constructs a time value from a number of microseconds.
+    #[must_use]
     pub fn microseconds(microseconds: i64) -> Self {
         Time(sfTime { microseconds })
     }
 
     /// Returns the time value as a number of seconds.
+    #[must_use]
     pub fn as_seconds(self) -> f32 {
         unsafe { sfTime_asSeconds(self.0) }
     }
 
     /// Returns the time value as a number of milliseconds.
+    #[must_use]
     pub fn as_milliseconds(self) -> i32 {
         unsafe { sfTime_asMilliseconds(self.0) }
     }
 
     /// Returns the time value as a number of microseconds.
+    #[must_use]
     pub fn as_microseconds(self) -> i64 {
         unsafe { sfTime_asMicroseconds(self.0) }
     }

@@ -23,6 +23,7 @@ impl RenderTexture {
     ///                 (useful only if you're doing 3D OpenGL on the rendertexture)
     ///
     /// Return Some(RenderTexture) or None
+    #[must_use]
     pub fn new(width: u32, height: u32, depth_buffer: bool) -> Option<RenderTexture> {
         let tex =
             unsafe { ffi::sfRenderTexture_create(width, height, sfBool::from_bool(depth_buffer)) };
@@ -52,6 +53,7 @@ impl RenderTexture {
     /// Get the target texture of a render texture
     ///
     /// Return the target texture
+    #[must_use]
     pub fn texture(&self) -> &Texture {
         let tex = unsafe { ffi::sfRenderTexture_getTexture(self.render_texture) };
         assert!(!tex.is_null(), "sfRenderTexture_getTexture failed");
@@ -69,6 +71,7 @@ impl RenderTexture {
     /// Tell whether the smooth filter is enabled or not for a render texture
     ///
     /// Return true if smoothing is enabled, false if it is disabled
+    #[must_use]
     pub fn is_smooth(&self) -> bool {
         unsafe { ffi::sfRenderTexture_isSmooth(self.render_texture) }.to_bool()
     }
@@ -81,6 +84,7 @@ impl RenderTexture {
         }
     }
     /// Tell whether the texture is repeated or not.
+    #[must_use]
     pub fn is_repeated(&self) -> bool {
         unsafe { ffi::sfRenderTexture_isRepeated(self.render_texture).to_bool() }
     }

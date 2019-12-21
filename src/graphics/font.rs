@@ -65,6 +65,7 @@ impl Font {
     /// * characterSize - Character size, in pixels
     ///
     /// Return the kerning offset, in pixels
+    #[must_use]
     pub fn kerning(&self, first: u32, second: u32, character_size: u32) -> i32 {
         unsafe { ffi::sfFont_getKerning(self.raw(), first, second, character_size) as i32 }
     }
@@ -75,6 +76,7 @@ impl Font {
     /// * characterSize - Character size, in pixels
     ///
     /// Return the line spacing, in pixels
+    #[must_use]
     pub fn line_spacing(&self, character_size: u32) -> i32 {
         unsafe { ffi::sfFont_getLineSpacing(self.raw(), character_size) as i32 }
     }
@@ -87,6 +89,7 @@ impl Font {
     /// * bold - Retrieve the bold version or the regular one?
     ///
     /// Return the corresponding glyph
+    #[must_use]
     pub fn glyph(
         &self,
         codepoint: u32,
@@ -105,6 +108,7 @@ impl Font {
         }
     }
     /// Returns the font information.
+    #[must_use]
     pub fn info(&self) -> Info {
         unsafe {
             let raw = ffi::sfFont_getInfo(self.raw());
@@ -114,10 +118,12 @@ impl Font {
         }
     }
     /// Returns the position of the underline.
+    #[must_use]
     pub fn underline_position(&self, character_size: u32) -> f32 {
         unsafe { ffi::sfFont_getUnderlinePosition(self.raw(), character_size) }
     }
     /// Returns the thickness of the underline.
+    #[must_use]
     pub fn underline_thickness(&self, character_size: u32) -> f32 {
         unsafe { ffi::sfFont_getUnderlineThickness(self.raw(), character_size) }
     }
@@ -132,6 +138,7 @@ impl Font {
     /// SFML cannot preload all the font data in this function,
     /// so the file has to remain accessible until the `Font` object loads a new font or
     /// is destroyed.
+    #[must_use]
     pub fn from_file(filename: &str) -> Option<SfBox<Self>> {
         let c_str = CString::new(filename.as_bytes()).unwrap();
         let fnt = unsafe { ffi::sfFont_createFromFile(c_str.as_ptr()) };
@@ -156,6 +163,7 @@ impl Font {
     /// * memory -  The in-memory font file
     ///
     /// Returns `None` on failure.
+    #[must_use]
     pub fn from_memory(memory: &[u8]) -> Option<SfBox<Self>> {
         let fnt =
             unsafe { ffi::sfFont_createFromMemory(memory.as_ptr() as *const _, memory.len()) };

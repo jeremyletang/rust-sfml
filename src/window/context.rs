@@ -35,6 +35,7 @@ pub struct Context(*mut ffi::sfContext);
 
 impl Context {
     /// Creates and activates a new context.
+    #[must_use]
     pub fn new() -> Context {
         Context(unsafe { ffi::sfContext_create() })
     }
@@ -53,6 +54,7 @@ impl Context {
     ///
     /// Note that these settings may be different than the ones passed to the constructor;
     /// they are indeed adjusted if the original settings are not directly supported by the system.
+    #[must_use]
     pub fn settings(&self) -> ContextSettings {
         let settings = unsafe { ffi::sfContext_getSettings(self.0) };
         unsafe { ContextSettings::from_raw(settings) }

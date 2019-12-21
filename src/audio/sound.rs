@@ -47,6 +47,7 @@ pub struct Sound<'s> {
 
 impl<'s> Sound<'s> {
     /// Create a new `Sound`
+    #[must_use]
     pub fn new() -> Sound<'s> {
         let s = unsafe { ffi::sfSound_create() };
         assert!(!s.is_null(), "Failed to create Sound");
@@ -57,6 +58,7 @@ impl<'s> Sound<'s> {
     }
 
     /// Create a new `Sound` with a buffer
+    #[must_use]
     pub fn with_buffer(buffer: &SoundBuffer) -> Sound {
         let mut s = Sound::new();
         s.set_buffer(buffer);
@@ -71,6 +73,7 @@ impl<'s> Sound<'s> {
     /// Tell whether or not a sound is in loop mode
     ///
     /// Return true if the sound is looping, false otherwise
+    #[must_use]
     pub fn is_looping(&self) -> bool {
         unsafe { ffi::sfSound_getLoop(self.sound) }.to_bool()
     }
@@ -106,6 +109,7 @@ impl<'s> Sound<'s> {
     /// Get the current status of a sound (stopped, paused, playing)
     ///
     /// Return current status
+    #[must_use]
     pub fn status(&self) -> SoundStatus {
         unsafe { mem::transmute(ffi::sfSound_getStatus(self.sound)) }
     }
@@ -113,6 +117,7 @@ impl<'s> Sound<'s> {
     /// Get the current playing position of a sound
     ///
     /// Return the current playing position
+    #[must_use]
     pub fn playing_offset(&self) -> Time {
         unsafe { Time::from_raw(ffi::sfSound_getPlayingOffset(self.sound)) }
     }
@@ -140,6 +145,7 @@ impl<'s> Sound<'s> {
     /// Get the audio buffer attached to a sound
     ///
     /// Return an option to Sound buffer attached to the sound or None
+    #[must_use]
     pub fn buffer(&self) -> Option<&SoundBuffer> {
         unsafe {
             let ptr = ffi::sfSound_getBuffer(self.sound);

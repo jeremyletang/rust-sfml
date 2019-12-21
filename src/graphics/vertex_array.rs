@@ -22,6 +22,7 @@ impl VertexArray {
     /// # Arguments
     /// * primitive_type - The type of the VertexArray
     /// * vertex_count - The maximal number of vertex
+    #[must_use]
     pub fn new(primitive_type: PrimitiveType, vertex_count: usize) -> VertexArray {
         let mut arr = Self::default();
         arr.set_primitive_type(primitive_type);
@@ -32,6 +33,7 @@ impl VertexArray {
     /// Return the vertex count of a vertex array
     ///
     /// Return the number of vertices in the array
+    #[must_use]
     pub fn vertex_count(&self) -> usize {
         unsafe { sfVertexArray_getVertexCount(self.vertex_array) }
     }
@@ -74,6 +76,7 @@ impl VertexArray {
     /// contains all the vertices of the array.
     ///
     /// Return the bounding rectangle of the vertex array
+    #[must_use]
     pub fn bounds(&self) -> FloatRect {
         unsafe { FloatRect::from_raw(sfVertexArray_getBounds(self.vertex_array)) }
     }
@@ -99,11 +102,13 @@ impl VertexArray {
     /// Get the type of primitives drawn by a vertex array
     ///
     /// Return the primitive type
+    #[must_use]
     pub fn primitive_type(&self) -> PrimitiveType {
         unsafe { PrimitiveType::from_raw(sfVertexArray_getPrimitiveType(self.vertex_array)) }
     }
 
     /// Return an immutable iterator over all the vertice contained by the VertexArray
+    #[must_use]
     pub fn vertices(&self) -> Vertices {
         Vertices {
             vertex_array: self,

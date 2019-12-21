@@ -25,6 +25,7 @@ pub struct Clock(*mut ffi::sfClock);
 
 impl Clock {
     /// Creates a new Clock and starts it automatically.
+    #[must_use]
     pub fn start() -> Clock {
         Clock(unsafe { ffi::sfClock_create() })
     }
@@ -35,6 +36,7 @@ impl Clock {
     /// (or the construction of the instance if [`restart`] has not been called).
     ///
     /// [`restart`]: Clock::restart
+    #[must_use]
     pub fn elapsed_time(&self) -> Time {
         unsafe { Time::from_raw(ffi::sfClock_getElapsedTime(self.0)) }
     }

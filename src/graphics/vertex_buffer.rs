@@ -39,6 +39,7 @@ impl VertexBuffer {
     /// # Arguments
     /// * primitive_type - The type of the VertexBuffer
     /// * vertex_count - The maximal number of vertex
+    #[must_use]
     pub fn new(
         primitive_type: PrimitiveType,
         vertex_count: u32,
@@ -52,6 +53,7 @@ impl VertexBuffer {
     /// Return the vertex count of a vertex buffer
     ///
     /// Return the number of vertices in the buffer
+    #[must_use]
     pub fn vertex_count(&self) -> u32 {
         unsafe { sfVertexBuffer_getVertexCount(self.vertex_buffer) }
     }
@@ -119,6 +121,7 @@ impl VertexBuffer {
     /// that SFML doesn't support, or implement a temporary workaround until a bug is fixed.
     ///
     /// Return OpenGL handle of the vertex buffer or 0 if not yet created
+    #[must_use]
     pub fn native_handle(&self) -> u32 {
         unsafe { sfVertexBuffer_getNativeHandle(self.vertex_buffer) }
     }
@@ -126,6 +129,7 @@ impl VertexBuffer {
     /// Get the type of primitives drawn by the vertex buffer.
     ///
     /// Return Primitive type
+    #[must_use]
     pub fn primitive_type(&self) -> PrimitiveType {
         unsafe { PrimitiveType::from_raw(sfVertexBuffer_getPrimitiveType(self.vertex_buffer)) }
     }
@@ -147,6 +151,7 @@ impl VertexBuffer {
     /// Get the usage specifier of this vertex buffer.
     ///
     /// Return Usage specifier
+    #[must_use]
     pub fn usage(&self) -> VertexBufferUsage {
         unsafe { VertexBufferUsage::from_raw(sfVertexBuffer_getUsage(self.vertex_buffer)) }
     }
@@ -207,6 +212,7 @@ impl VertexBuffer {
     /// returns false, then any attempt to use sf::VertexBuffer will fail.
     ///
     /// Return True if vertex buffers are supported, false otherwise
+    #[must_use]
     pub fn available() -> bool {
         unsafe { sfVertexBuffer_isAvailable() != 0 }
     }

@@ -158,6 +158,7 @@ impl<'texture> Shader<'texture> {
     ///                            or None to skip this shader
     ///
     /// Return Some(Shader) or None
+    #[must_use]
     pub fn from_file(
         vertex: Option<&str>,
         geometry: Option<&str>,
@@ -241,6 +242,7 @@ impl<'texture> Shader<'texture> {
     ///                    or None to skip this shader
     ///
     /// Return Some(Shader) or None
+    #[must_use]
     pub fn from_memory(
         vertex: Option<&str>,
         geometry: Option<&str>,
@@ -277,6 +279,7 @@ impl<'texture> Shader<'texture> {
     /// This function should always be called before using
     /// the shader features. If it returns false, then
     /// any attempt to use `Shader` will fail.
+    #[must_use]
     pub fn is_available() -> bool {
         unsafe { ffi::sfShader_isAvailable() }.to_bool()
     }
@@ -293,6 +296,7 @@ impl<'texture> Shader<'texture> {
     ///
     /// Note: The first call to this function, whether by your code or SFML will result
     /// in a context switch.
+    #[must_use]
     pub fn is_geometry_available() -> bool {
         unsafe { ffi::sfShader_isGeometryAvailable() }.to_bool()
     }

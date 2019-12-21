@@ -113,6 +113,7 @@ impl Window {
     /// * handle - The handle to the platform-specific window handle to use for
     ///            the window.
     /// * settings - Additional settings for the underlying OpenGL context
+    #[must_use]
     pub unsafe fn from_handle(handle: Handle, settings: &ContextSettings) -> Window {
         let sf_win: *mut ffi::sfWindow = ffi::sfWindow_createFromHandle(handle, &settings.raw());
         assert!(!sf_win.is_null(), "Failed to create Window");
@@ -190,6 +191,7 @@ impl Window {
     /// This function returns whether or not the window exists.
     /// Note that a hidden window (`set_visible(false)`) will return
     /// true.
+    #[must_use]
     pub fn is_open(&self) -> bool {
         unsafe { ffi::sfWindow_isOpen(self.window) }.to_bool()
     }
@@ -202,6 +204,7 @@ impl Window {
     /// SFML chose the closest match.
     ///
     /// Return a structure containing the OpenGL context settings
+    #[must_use]
     pub fn settings(&self) -> ContextSettings {
         unsafe { ContextSettings::from_raw(ffi::sfWindow_getSettings(self.window)) }
     }
@@ -318,6 +321,7 @@ impl Window {
     /// Get the position of a window
     ///
     /// Return the position in pixels
+    #[must_use]
     pub fn position(&self) -> Vector2i {
         unsafe { Vector2i::from_raw(ffi::sfWindow_getPosition(self.window)) }
     }
@@ -339,6 +343,7 @@ impl Window {
     /// The size doesn't include the titlebar and borders of the window.
     ///
     /// Return the size in pixels
+    #[must_use]
     pub fn size(&self) -> Vector2u {
         unsafe { Vector2u::from_raw(ffi::sfWindow_getSize(self.window)) }
     }
@@ -352,6 +357,7 @@ impl Window {
     }
 
     /// Returns the current position of the mouse relative to the window.
+    #[must_use]
     pub fn mouse_position(&self) -> Vector2i {
         unsafe { Vector2i::from_raw(ffi::sfMouse_getPosition(self.window)) }
     }
@@ -369,6 +375,7 @@ impl Window {
     }
 
     /// Returns the current position of a touch in window coordinates.
+    #[must_use]
     pub fn touch_position(&self, finger: u32) -> Vector2i {
         unsafe { Vector2i::from_raw(ffi::sfTouch_getPosition(finger, self.window)) }
     }
@@ -377,6 +384,7 @@ impl Window {
     ///
     /// At any given time, only one window may have the input focus to receive input events
     /// such as keystrokes or most mouse events.
+    #[must_use]
     pub fn has_focus(&self) -> bool {
         unsafe { ffi::sfWindow_hasFocus(self.window).to_bool() }
     }

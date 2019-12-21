@@ -22,6 +22,7 @@ impl Image {
     /// # Arguments
     /// * width - Width of the image
     /// * height - Height of the image
+    #[must_use]
     pub fn new(width: u32, height: u32) -> Self {
         let image = unsafe { ffi::sfImage_create(width, height) };
         assert!(!image.is_null(), "Failed to create Image");
@@ -54,6 +55,7 @@ impl Image {
     /// * mem - Pointer to the file data in memory
     ///
     /// Return Some(Image) or None
+    #[must_use]
     pub fn from_memory(mem: &[u8]) -> Option<Self> {
         let image = unsafe { ffi::sfImage_createFromMemory(mem.as_ptr() as *const _, mem.len()) };
         if image.is_null() {
@@ -71,6 +73,7 @@ impl Image {
     /// * color - Fill color
     ///
     /// Return Some(Image) or None
+    #[must_use]
     pub fn from_color(width: u32, height: u32, color: Color) -> Option<Self> {
         let image = unsafe { ffi::sfImage_createFromColor(width, height, color.raw()) };
         if image.is_null() {
@@ -91,6 +94,7 @@ impl Image {
     /// * filename - Path of the image file to load
     ///
     /// Return Some(Image) or None
+    #[must_use]
     pub fn from_file(filename: &str) -> Option<Self> {
         let c_filename = CString::new(filename.as_bytes()).unwrap();
         let image = unsafe { ffi::sfImage_createFromFile(c_filename.as_ptr()) };
@@ -113,6 +117,7 @@ impl Image {
     /// * pixels - Vector of pixels to copy to the image
     ///
     /// Return Some(Image) or None
+    #[must_use]
     pub fn create_from_pixels(width: u32, height: u32, pixels: &[u8]) -> Option<Self> {
         let image = unsafe { ffi::sfImage_createFromPixels(width, height, pixels.as_ptr()) };
         if image.is_null() {
@@ -133,6 +138,7 @@ impl Image {
     /// * filename - Path of the file to save
     ///
     /// Return true if saving was successful
+    #[must_use]
     pub fn save_to_file(&self, filename: &str) -> bool {
         let c_str = CString::new(filename.as_bytes()).unwrap();
         unsafe { ffi::sfImage_saveToFile(self.image, c_str.as_ptr()) }.to_bool()
@@ -141,6 +147,7 @@ impl Image {
     /// Return the size of an image
     ///
     /// Return the size in pixels
+    #[must_use]
     pub fn size(&self) -> Vector2u {
         unsafe { Vector2u::from_raw(ffi::sfImage_getSize(self.image)) }
     }
@@ -183,11 +190,13 @@ impl Image {
     /// * y - Y coordinate of pixel to get
     ///
     /// Return the Color of the pixel at coordinates (x, y)
+    #[must_use]
     pub fn pixel_at(&self, x: u32, y: u32) -> Color {
         unsafe { Color::from_raw(ffi::sfImage_getPixel(self.image, x, y)) }
     }
 
     /// Return the memory buffer of this image.
+    #[must_use]
     pub fn pixel_data(&self) -> &[u8] {
         unsafe {
             let size = self.size();

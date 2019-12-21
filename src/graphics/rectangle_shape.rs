@@ -18,6 +18,7 @@ pub struct RectangleShape<'s> {
 
 impl<'s> RectangleShape<'s> {
     /// Returns a new `RectangleShape`.
+    #[must_use]
     pub fn new() -> RectangleShape<'s> {
         let rectangle = unsafe { ffi::sfRectangleShape_create() };
         assert!(!rectangle.is_null(), "Failed to create RectangleShape");
@@ -28,6 +29,7 @@ impl<'s> RectangleShape<'s> {
     }
 
     /// Returns a new `RectangleShape` with the provided texture.
+    #[must_use]
     pub fn with_texture(texture: &'s Texture) -> RectangleShape<'s> {
         let mut shape = Self::new();
         shape.set_texture(texture, true);
@@ -35,6 +37,7 @@ impl<'s> RectangleShape<'s> {
     }
 
     /// Returns a new `RectangleShape` with the provided size.
+    #[must_use]
     pub fn with_size(size: Vector2f) -> RectangleShape<'s> {
         let mut shape = Self::new();
         shape.set_size(size);
@@ -44,6 +47,7 @@ impl<'s> RectangleShape<'s> {
     /// Get the size of a rectangle shape
     ///
     /// Return the height Size of the rectangle
+    #[must_use]
     pub fn size(&self) -> Vector2f {
         unsafe { Vector2f::from_raw(ffi::sfRectangleShape_getSize(self.rectangle_shape)) }
     }

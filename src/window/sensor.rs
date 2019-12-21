@@ -51,11 +51,13 @@ use crate::system::Vector3f;
 use csfml_window_sys::*;
 
 /// Get the current sensor value.
+#[must_use]
 pub fn value(sensor: Type) -> Vector3f {
     unsafe { Vector3f::from_raw(sfSensor_getValue(sensor.raw())) }
 }
 
 /// Check if a sensor is available on the underlying platform.
+#[must_use]
 pub fn is_available(sensor: Type) -> bool {
     unsafe { sfSensor_isAvailable(sensor.raw()).to_bool() }
 }

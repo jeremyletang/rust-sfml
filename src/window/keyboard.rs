@@ -125,6 +125,7 @@ impl Key {
     /// Queries the real-time state of the keyboard, even if keys have been
     /// pressed or released while no window was focused and no events were
     /// triggered.
+    #[must_use]
     pub fn is_pressed(self) -> bool {
         unsafe { ffi::sfKeyboard_isKeyPressed(::std::mem::transmute(self)) }.to_bool()
     }

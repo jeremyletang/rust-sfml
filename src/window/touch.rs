@@ -48,6 +48,7 @@ use crate::system::Vector2i;
 use csfml_window_sys::*;
 
 /// Check if a touch event is currently down.
+#[must_use]
 pub fn is_down(finger: u32) -> bool {
     unsafe { sfTouch_isDown(finger).to_bool() }
 }
@@ -55,6 +56,7 @@ pub fn is_down(finger: u32) -> bool {
 /// Get the current position of a touch in desktop coordinates.
 ///
 /// This function returns the current touch position in global (desktop) coordinates.
+#[must_use]
 pub fn desktop_position(finger: u32) -> Vector2i {
     unsafe { Vector2i::from_raw(sfTouch_getPosition(finger, ::std::ptr::null())) }
 }

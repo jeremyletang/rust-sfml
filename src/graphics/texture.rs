@@ -58,24 +58,28 @@ impl Texture {
     /// Return the size of the texture
     ///
     /// Return the Size in pixels
+    #[must_use]
     pub fn size(&self) -> Vector2u {
         unsafe { Vector2u::from_raw(ffi::sfTexture_getSize(self.raw())) }
     }
     /// Tell whether the smooth filter is enabled or not for a texture
     ///
     /// Return true if smoothing is enabled, false if it is disabled
+    #[must_use]
     pub fn is_smooth(&self) -> bool {
         unsafe { ffi::sfTexture_isSmooth(self.raw()) }.to_bool()
     }
     /// Tell whether a texture is repeated or not
     ///
     /// Return frue if repeat mode is enabled, false if it is disabled
+    #[must_use]
     pub fn is_repeated(&self) -> bool {
         unsafe { ffi::sfTexture_isRepeated(self.raw()) }.to_bool()
     }
     /// Copy a texture's pixels to an image
     ///
     /// Return an image containing the texture's pixels
+    #[must_use]
     pub fn copy_to_image(&self) -> Option<Image> {
         let img = unsafe { ffi::sfTexture_copyToImage(self.raw()) };
         if img.is_null() {
@@ -85,6 +89,7 @@ impl Texture {
         }
     }
     /// Tell whether the texture source is converted from sRGB or not.
+    #[must_use]
     pub fn is_srgb(&self) -> bool {
         unsafe { ffi::sfTexture_isSrgb(self.raw()).to_bool() }
     }
@@ -92,6 +97,7 @@ impl Texture {
     ///
     /// You shouldn't need to use this function, unless you have very specific stuff to implement
     /// that SFML doesn't support, or implement a temporary workaround until a bug is fixed.
+    #[must_use]
     pub fn native_handle(&self) -> u32 {
         unsafe { ffi::sfTexture_getNativeHandle(self.raw()) }
     }
@@ -115,6 +121,7 @@ impl Texture {
     /// Create a new texture
     ///
     /// Returns `None` on failure.
+    #[must_use]
     pub fn new(width: u32, height: u32) -> Option<SfBox<Texture>> {
         let tex = unsafe { ffi::sfTexture_create(width, height) };
         SfBox::new(tex as *mut Self)
@@ -127,6 +134,7 @@ impl Texture {
     /// * area - Area of the image to load
     ///
     /// Returns `None` on failure.
+    #[must_use]
     pub fn from_memory(mem: &[u8], area: &IntRect) -> Option<SfBox<Texture>> {
         let tex = unsafe {
             ffi::sfTexture_createFromMemory(mem.as_ptr() as *const _, mem.len(), &area.raw())
@@ -155,6 +163,7 @@ impl Texture {
     /// * filename - Path of the image file to load
     ///
     /// Returns `None` on failure.
+    #[must_use]
     pub fn from_file(filename: &str) -> Option<SfBox<Texture>> {
         let c_str = CString::new(filename.as_bytes()).unwrap();
         let tex = unsafe { ffi::sfTexture_createFromFile(c_str.as_ptr(), ptr::null()) };
@@ -168,6 +177,7 @@ impl Texture {
     /// * area - Area of the source image to load
     ///
     /// Returns `None` on failure.
+    #[must_use]
     pub fn from_file_with_rect(filename: &str, area: &IntRect) -> Option<SfBox<Texture>> {
         let c_str = CString::new(filename.as_bytes()).unwrap();
         let tex = unsafe { ffi::sfTexture_createFromFile(c_str.as_ptr(), &area.raw()) };
@@ -181,6 +191,7 @@ impl Texture {
     /// * area - Area of the source image to load
     ///
     /// Returns `None` on failure.
+    #[must_use]
     pub fn from_image_with_rect(image: &Image, area: &IntRect) -> Option<SfBox<Texture>> {
         let tex = unsafe { ffi::sfTexture_createFromImage(image.raw(), &area.raw()) };
         SfBox::new(tex as *mut Self)
@@ -192,6 +203,7 @@ impl Texture {
     /// * image - Image to upload to the texture
     ///
     /// Returns `None` on failure.
+    #[must_use]
     pub fn from_image(image: &Image) -> Option<SfBox<Texture>> {
         let tex = unsafe { ffi::sfTexture_createFromImage(image.raw(), ptr::null()) };
         SfBox::new(tex as *mut Self)
@@ -282,6 +294,7 @@ impl Texture {
     /// Get the maximum texture size allowed
     ///
     /// Return the maximum size allowed for textures, in pixels
+    #[must_use]
     pub fn maximum_size() -> u32 {
         unsafe { ffi::sfTexture_getMaximumSize() }
     }

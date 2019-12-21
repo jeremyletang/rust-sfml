@@ -19,12 +19,14 @@ impl View {
     /// Get the current orientation of a view
     ///
     /// Return the rotation angle of the view, in degrees
+    #[must_use]
     pub fn rotation(&self) -> f32 {
         unsafe { ffi::sfView_getRotation(self.raw()) }
     }
     /// Get the center of a view
     ///
     /// Return the center of the view
+    #[must_use]
     pub fn center(&self) -> Vector2f {
         unsafe { Vector2f::from_raw(ffi::sfView_getCenter(self.raw())) }
     }
@@ -32,6 +34,7 @@ impl View {
     /// Get the size of a view
     ///
     /// Return the size of the view
+    #[must_use]
     pub fn size(&self) -> Vector2f {
         unsafe { Vector2f::from_raw(ffi::sfView_getSize(self.raw())) }
     }
@@ -39,6 +42,7 @@ impl View {
     /// Get the target viewport rectangle of a view
     ///
     /// Return the viewport rectangle, expressed as a factor of the target size
+    #[must_use]
     pub fn viewport(&self) -> FloatRect {
         unsafe { FloatRect::from_raw(ffi::sfView_getViewport(self.raw())) }
     }
@@ -47,6 +51,7 @@ impl View {
     /// # Arguments
     /// * center - The center of the view
     /// * size - The size of the view
+    #[must_use]
     pub fn new(center: Vector2f, size: Vector2f) -> SfBox<View> {
         let mut view: SfBox<View> = Default::default();
         view.set_center(center);
@@ -58,6 +63,7 @@ impl View {
     ///
     /// # Arguments
     /// * rectangle - The rectangle defining the zone to display
+    #[must_use]
     pub fn from_rect(rectangle: &FloatRect) -> SfBox<View> {
         let view = unsafe { ffi::sfView_createFromRect(rectangle.raw()) };
         SfBox::new(view as *mut Self).expect("Failed to create View from Rect")

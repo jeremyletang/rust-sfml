@@ -68,6 +68,7 @@ impl Music {
     /// Return Some(Music) or None
     ///
     /// [`play`]: Music::play
+    #[must_use]
     pub fn from_file(filename: &str) -> Option<Music> {
         let c_str = CString::new(filename.as_bytes()).unwrap();
         let music_tmp: *mut ffi::sfMusic = unsafe { ffi::sfMusic_createFromFile(c_str.as_ptr()) };
@@ -115,6 +116,7 @@ impl Music {
     /// Return Some(Music) or None
     ///
     /// [`play`]: Music::play
+    #[must_use]
     pub fn from_memory(mem: &[u8]) -> Option<Music> {
         let music_tmp =
             unsafe { ffi::sfMusic_createFromMemory(mem.as_ptr() as *const _, mem.len()) };
@@ -139,6 +141,7 @@ impl Music {
     /// Tell whether or not a music is in loop mode
     ///
     /// Return true if the music is looping, false otherwise
+    #[must_use]
     pub fn is_looping(&self) -> bool {
         unsafe { ffi::sfMusic_getLoop(self.music) }.to_bool()
     }
@@ -146,6 +149,7 @@ impl Music {
     /// Get the total duration of a music
     ///
     /// Return Music duration
+    #[must_use]
     pub fn duration(&self) -> Time {
         unsafe { Time::from_raw(ffi::sfMusic_getDuration(self.music)) }
     }
@@ -183,6 +187,7 @@ impl Music {
     /// 1 channel means a mono sound, 2 means stereo, etc.
     ///
     /// Return the number of channels
+    #[must_use]
     pub fn channel_count(&self) -> u32 {
         unsafe { ffi::sfMusic_getChannelCount(self.music) }
     }
@@ -193,6 +198,7 @@ impl Music {
     /// second. The higher, the better the quality.
     ///
     /// Return the sample rate, in number of samples per second
+    #[must_use]
     pub fn sample_rate(&self) -> u32 {
         unsafe { ffi::sfMusic_getSampleRate(self.music) }
     }
@@ -200,6 +206,7 @@ impl Music {
     /// Get the current status of a music (stopped, paused, playing)
     ///
     /// Return current status
+    #[must_use]
     pub fn status(&self) -> SoundStatus {
         unsafe { mem::transmute(ffi::sfMusic_getStatus(self.music)) }
     }
@@ -207,6 +214,7 @@ impl Music {
     /// Get the current playing position of a music
     ///
     /// Return the current playing position
+    #[must_use]
     pub fn playing_offset(&self) -> Time {
         unsafe { Time::from_raw(ffi::sfMusic_getPlayingOffset(self.music)) }
     }
@@ -232,6 +240,7 @@ impl Music {
     ///
     /// [`set_loop_points`]: Music::set_loop_points
     /// [`loop_points`]: Music::loop_points
+    #[must_use]
     pub fn loop_points(&self) -> TimeSpan {
         TimeSpan::from_raw(unsafe { ffi::sfMusic_getLoopPoints(self.music) })
     }

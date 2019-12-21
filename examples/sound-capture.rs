@@ -58,7 +58,9 @@ fn main() {
         reader.read_line(&mut filename).unwrap();
 
         // Save the buffer
-        buffer.save_to_file(filename.trim());
+        if !buffer.save_to_file(filename.trim()) {
+            eprintln!("Error saving buffer to {}!", filename.trim());
+        }
     } else {
         let mut sound = Sound::with_buffer(buffer);
 

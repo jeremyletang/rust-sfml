@@ -115,6 +115,7 @@ unsafe extern "C" fn on_stop_callback<R: SoundRecorder>(user_data: *mut c_void) 
 macro_rules! device_common {
     () => {
         /// Get the name of the current audio capture device.
+        #[must_use]
         pub fn device(&self) -> String {
             unsafe {
                 #[allow(trivial_casts)]
@@ -189,6 +190,7 @@ impl<'a, R: SoundRecorder> SoundRecorderDriver<'a, R> {
     ///
     /// The sample rate defines the number of audio samples captured per second.
     /// The higher, the better the quality (for example, 44100 samples/sec is CD quality).
+    #[must_use]
     pub fn sample_rate(&self) -> u32 {
         unsafe { sfSoundRecorder_getSampleRate(self.ffi_handle) }
     }
@@ -207,6 +209,7 @@ impl<'a, R: SoundRecorder> SoundRecorderDriver<'a, R> {
     ///
     /// Currently only mono and stereo are supported,
     /// so the value is either 1 (for mono) or 2 (for stereo).
+    #[must_use]
     pub fn channel_count(&self) -> u32 {
         unsafe { sfSoundRecorder_getChannelCount(self.ffi_handle) }
     }
@@ -256,6 +259,7 @@ pub struct SetDeviceError;
 
 impl SoundBufferRecorder {
     /// Create a new sound buffer recorder
+    #[must_use]
     pub fn new() -> SoundBufferRecorder {
         let buffer = unsafe { sfSoundBufferRecorder_create() };
         assert!(!buffer.is_null(), "Failed to create SoundBufferRecorder");
@@ -289,6 +293,7 @@ impl SoundBufferRecorder {
     /// (for example, 44100 samples/sec is CD quality).
     ///
     /// Return the sample rate, in samples per second
+    #[must_use]
     pub fn sample_rate(&self) -> u32 {
         unsafe { sfSoundBufferRecorder_getSampleRate(self.ffi_handle) }
     }
@@ -301,6 +306,7 @@ impl SoundBufferRecorder {
     /// make any modification to it.
     ///
     /// Return Read-only access to the sound buffer
+    #[must_use]
     pub fn buffer(&self) -> &SoundBuffer {
         let buff = unsafe { sfSoundBufferRecorder_getBuffer(self.ffi_handle) };
         assert!(!buff.is_null(), "sfSoundBufferRecorder_getBuffer failed");
@@ -347,6 +353,7 @@ impl Drop for SoundBufferRecorder {
 /// any attempt to use `SoundRecorder` will fail.
 ///
 /// Return true if audio capture is supported, false otherwise
+#[must_use]
 pub fn is_available() -> bool {
     unsafe { sfSoundRecorder_isAvailable() }.to_bool()
 }
@@ -354,6 +361,7 @@ pub fn is_available() -> bool {
 ///
 /// This function returns the name of the default audio capture device.
 /// If none is available, an empty string is returned.
+#[must_use]
 pub fn default_device() -> String {
     unsafe {
         let c_str_ptr = sfSoundRecorder_getDefaultDevice();
@@ -365,6 +373,7 @@ pub fn default_device() -> String {
 ///
 /// This function returns a vector of strings, containing the names of all available
 /// audio capture devices.
+#[must_use]
 pub fn available_devices() -> Vec<String> {
     unsafe {
         let mut count = 0;

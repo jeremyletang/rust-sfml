@@ -41,6 +41,7 @@ use csfml_window_sys as ffi;
 ///
 /// This function returns the content of the clipboard as an SFML string.
 /// If the clipboard does not contain string it returns an empty string.
+#[must_use]
 pub fn get_string() -> &'static SfStr {
     unsafe {
         let raw = ffi::sfClipboard_getUnicodeString();

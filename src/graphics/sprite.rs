@@ -23,6 +23,7 @@ impl<'s> Sprite<'s> {
     /// Create a new sprite
     ///
     /// Return Some(Sprite) or None
+    #[must_use]
     pub fn new() -> Sprite<'s> {
         let sp = unsafe { ffi::sfSprite_create() };
         assert!(!sp.is_null(), "Failed to create Sprite");
@@ -35,6 +36,7 @@ impl<'s> Sprite<'s> {
     /// Create a new sprite with a texture
     ///
     /// Return Some(Sprite) or None
+    #[must_use]
     pub fn with_texture(texture: &'s Texture) -> Sprite<'s> {
         let mut sprite = Sprite::new();
         sprite.set_texture(texture, true);
@@ -92,6 +94,7 @@ impl<'s> Sprite<'s> {
     /// modify the texture when you retrieve it with this function.
     ///
     /// Return an Option to the sprite's texture
+    #[must_use]
     pub fn texture(&self) -> Option<&'s Texture> {
         unsafe {
             let ptr = ffi::sfSprite_getTexture(self.sprite);
@@ -106,6 +109,7 @@ impl<'s> Sprite<'s> {
     /// Get the global color of a sprite
     ///
     /// Return the global color of the sprite
+    #[must_use]
     pub fn color(&self) -> Color {
         unsafe { Color::from_raw(ffi::sfSprite_getColor(self.sprite)) }
     }
@@ -119,6 +123,7 @@ impl<'s> Sprite<'s> {
     /// entity in the entity's coordinate system.
     ///
     /// Return the local bounding rectangle of the entity
+    #[must_use]
     pub fn local_bounds(&self) -> FloatRect {
         unsafe { FloatRect::from_raw(ffi::sfSprite_getLocalBounds(self.sprite)) }
     }
@@ -132,6 +137,7 @@ impl<'s> Sprite<'s> {
     /// sprite in the global 2D world's coordinate system.
     ///
     /// Return the global bounding rectangle of the entity
+    #[must_use]
     pub fn global_bounds(&self) -> FloatRect {
         unsafe { FloatRect::from_raw(ffi::sfSprite_getGlobalBounds(self.sprite)) }
     }
@@ -139,6 +145,7 @@ impl<'s> Sprite<'s> {
     /// Get the sub-rectangle of the texture displayed by a sprite
     ///
     /// Return the texture rectangle of the sprite
+    #[must_use]
     pub fn texture_rect(&self) -> IntRect {
         unsafe { IntRect::from_raw(ffi::sfSprite_getTextureRect(self.sprite)) }
     }

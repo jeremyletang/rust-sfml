@@ -76,6 +76,7 @@ impl Button {
     /// Queries the real-time state of the mouse, even if buttons have been
     /// pressed or released while no window was focused and no events were
     /// triggered.
+    #[must_use]
     pub fn is_pressed(self) -> bool {
         unsafe { ffi::sfMouse_isButtonPressed(self.raw()) }.to_bool()
     }
@@ -90,6 +91,7 @@ impl Button {
 /// Get the current position of the mouse in desktop coordinates.
 ///
 /// This function returns the global position of the mouse cursor on the desktop.
+#[must_use]
 pub fn desktop_position() -> Vector2i {
     unsafe { Vector2i::from_raw(ffi::sfMouse_getPosition(::std::ptr::null())) }
 }

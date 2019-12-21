@@ -30,7 +30,8 @@
     missing_copy_implementations,
     missing_debug_implementations,
     unused_results,
-    trivial_casts
+    trivial_casts,
+    clippy::must_use_candidate
 )]
 
 #[cfg(feature = "window")]

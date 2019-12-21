@@ -23,6 +23,7 @@ impl<'s> CircleShape<'s> {
     /// * texture - The texture to initialize the `CircleShape` with.
     ///
     /// Return Some(CircleShape) or None
+    #[must_use]
     pub fn with_texture(texture: &'s Texture) -> CircleShape<'s> {
         let mut shape = CircleShape::default();
         shape.set_texture(texture, true);
@@ -36,6 +37,7 @@ impl<'s> CircleShape<'s> {
     /// * point_count - The number of points to define the `CircleShape`
     ///
     /// Default value on SFML are radius = 0 / pointCount = 30
+    #[must_use]
     pub fn new(radius: f32, point_count: u32) -> CircleShape<'s> {
         let mut shape = CircleShape::default();
         shape.set_radius(radius);
@@ -54,6 +56,7 @@ impl<'s> CircleShape<'s> {
     /// Set the radius of a circle
     ///
     /// Return the radius of the circle
+    #[must_use]
     pub fn radius(&self) -> f32 {
         unsafe { ffi::sfCircleShape_getRadius(self.circle_shape) }
     }

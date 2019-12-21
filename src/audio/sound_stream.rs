@@ -91,6 +91,7 @@ impl<'a, S: SoundStream> SoundStreamPlayer<'a, S> {
         }
     }
     /// Get the current status of the stream (stopped, paused, playing)
+    #[must_use]
     pub fn status(&self) -> SoundStatus {
         unsafe { ::std::mem::transmute(sfSoundStream_getStatus(self.sf_sound_stream)) }
     }
@@ -128,6 +129,7 @@ impl<'a, S: SoundStream> SoundStreamPlayer<'a, S> {
         &mut self.stream
     }
     /// Get the current playing position, from the beginning of the stream
+    #[must_use]
     pub fn playing_offset(&self) -> Time {
         unsafe { Time::from_raw(sfSoundStream_getPlayingOffset(self.sf_sound_stream)) }
     }
@@ -142,6 +144,7 @@ impl<'a, S: SoundStream> SoundStreamPlayer<'a, S> {
     /// Return the number of channels of the stream.
     ///
     /// 1 channel means a mono sound, 2 means stereo, etc.
+    #[must_use]
     pub fn channel_count(&self) -> u32 {
         unsafe { sfSoundStream_getChannelCount(self.sf_sound_stream) }
     }
@@ -149,10 +152,12 @@ impl<'a, S: SoundStream> SoundStreamPlayer<'a, S> {
     ///
     /// The sample rate is the number of audio samples played per second.
     /// The higher, the better the quality.
+    #[must_use]
     pub fn sample_rate(&self) -> u32 {
         unsafe { sfSoundStream_getSampleRate(self.sf_sound_stream) }
     }
     /// Tell whether or not the stream is in loop mode.
+    #[must_use]
     pub fn is_looping(&self) -> bool {
         unsafe { sfSoundStream_getLoop(self.sf_sound_stream).to_bool() }
     }

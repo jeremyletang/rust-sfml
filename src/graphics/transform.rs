@@ -25,6 +25,7 @@ impl Transform {
     /// - *a21* : Element (2, 1) of the matrix
     /// - *a22* : Element (2, 2) of the matrix
     #[allow(clippy::too_many_arguments)]
+    #[must_use]
     pub fn new(
         a00: f32,
         a01: f32,
@@ -61,6 +62,7 @@ impl Transform {
     /// is returned.
     ///
     /// Return the inverse matrix
+    #[must_use]
     pub fn inverse(&self) -> Transform {
         unsafe { Transform(ffi::sfTransform_getInverse(&self.0)) }
     }
@@ -142,6 +144,7 @@ impl Transform {
     /// * point - Point to transform
     ///
     /// Return a transformed point
+    #[must_use]
     pub fn transform_point(&self, point: Vector2f) -> Vector2f {
         unsafe { Vector2f::from_raw(ffi::sfTransform_transformPoint(&self.0, point.raw())) }
     }
@@ -158,6 +161,7 @@ impl Transform {
     /// rectangle - Rectangle to transform
     ///
     /// Return the transformed rectangle
+    #[must_use]
     pub fn transform_rect(&self, rectangle: &FloatRect) -> FloatRect {
         unsafe { FloatRect::from_raw(ffi::sfTransform_transformRect(&self.0, rectangle.raw())) }
     }
