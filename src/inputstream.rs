@@ -1,4 +1,5 @@
 use csfml_system_sys::sfInputStream;
+use std::convert::TryInto;
 use std::io::{Read, Seek, SeekFrom};
 use std::os::raw::{c_longlong, c_void};
 use std::ptr;
@@ -9,12 +10,11 @@ unsafe extern "C" fn read<T: Read + Seek>(
     size: c_longlong,
     user_data: *mut c_void,
 ) -> c_longlong {
-    use std::convert::TryInto;
     let stream: &mut T = &mut *(user_data as *mut T);
     if size == 0 {
         return 0;
     } else if size > 0 {
-        let mut chunk = stream.take(size as u64);
+        let mut chunk = stream.take(size.try_into().unwrap());
         let mut buf = vec![];
         let result = chunk.read_to_end(&mut buf);
         if let Ok(bytes_read) = result {
@@ -30,12 +30,16 @@ unsafe extern "C" fn get_size<T: Read + Seek>(user_data: *mut c_void) -> c_longl
     let pos = stream.seek(SeekFrom::Current(0)).unwrap();
     let size = stream.seek(SeekFrom::End(0)).unwrap();
     let _ = stream.seek(SeekFrom::Start(pos));
-    size as i64
+    size.try_into().unwrap()
 }
 
 unsafe extern "C" fn tell<T: Read + Seek>(user_data: *mut c_void) -> c_longlong {
     let stream: &mut T = &mut *(user_data as *mut T);
-    stream.seek(SeekFrom::Current(0)).unwrap() as i64
+    stream
+        .seek(SeekFrom::Current(0))
+        .unwrap()
+        .try_into()
+        .unwrap()
 }
 
 unsafe extern "C" fn seek<T: Read + Seek>(
@@ -43,8 +47,8 @@ unsafe extern "C" fn seek<T: Read + Seek>(
     user_data: *mut c_void,
 ) -> c_longlong {
     let stream: &mut T = &mut *(user_data as *mut T);
-    match stream.seek(SeekFrom::Start(position as u64)) {
-        Ok(n) => n as i64,
+    match stream.seek(SeekFrom::Start(position.try_into().unwrap())) {
+        Ok(n) => n.try_into().unwrap(),
         Err(_) => -1,
     }
 }
