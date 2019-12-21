@@ -37,8 +37,8 @@ impl VertexBuffer {
     /// Create a new initialized vertex buffer
     ///
     /// # Arguments
-    /// * primitive_type - The type of the VertexBuffer
-    /// * vertex_count - The maximal number of vertex
+    /// * `primitive_type` - The type of the `VertexBuffer`
+    /// * `vertex_count` - The maximal number of vertex
     #[must_use]
     pub fn new(
         primitive_type: PrimitiveType,
@@ -138,10 +138,10 @@ impl VertexBuffer {
     ///
     /// This function defines how the vertices must be interpreted when it's time to draw them.
     ///
-    /// The default primitive type is sf::Points.
+    /// The default primitive type is `Points`.
     ///
     /// # Arguments
-    /// * primitive_type - Type of primitive
+    /// * `primitive_type` - Type of primitive
     pub fn set_primitive_type(&mut self, primitive_type: PrimitiveType) {
         unsafe {
             sfVertexBuffer_setPrimitiveType(self.vertex_buffer, primitive_type.raw());
@@ -164,7 +164,7 @@ impl VertexBuffer {
     /// After changing the usage specifier, the vertex buffer has to be updated with new data for
     /// the usage specifier to take effect.
     ///
-    /// The default primitive type is sf::VertexBuffer::Stream.
+    /// The default primitive type is `Stream`.
     ///
     /// # Arguments
     /// * usage - Usage specifier
@@ -209,7 +209,7 @@ impl VertexBuffer {
     /// Tell whether or not the system supports vertex buffers.
 
     /// This  function should always be called before using the vertex buffer features. If it
-    /// returns false, then any attempt to use sf::VertexBuffer will fail.
+    /// returns false, then any attempt to use `VertexBuffer` will fail.
     ///
     /// Return True if vertex buffers are supported, false otherwise
     #[must_use]
@@ -223,7 +223,7 @@ impl VertexBuffer {
 }
 
 impl Clone for VertexBuffer {
-    /// Return a new VertexArray or panic! if the copy fails
+    /// Return a new `VertexBuffer` or panic! if the copy fails
     fn clone(&self) -> VertexBuffer {
         let vertex_buffer = unsafe { sfVertexBuffer_copy(self.vertex_buffer) };
         if vertex_buffer.is_null() {

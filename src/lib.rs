@@ -31,7 +31,8 @@
     missing_debug_implementations,
     unused_results,
     trivial_casts,
-    clippy::must_use_candidate
+    clippy::must_use_candidate,
+    clippy::doc_markdown
 )]
 
 #[cfg(feature = "window")]

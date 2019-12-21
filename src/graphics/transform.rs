@@ -105,8 +105,8 @@ impl Transform {
     ///
     /// # Arguments
     /// * angle - Rotation angle, in degrees
-    /// * center_x - X coordinate of the center of rotation
-    /// * center_y - Y coordinate of the center of rotation
+    /// * `center_x` - X coordinate of the center of rotation
+    /// * `center_y` - Y coordinate of the center of rotation
     pub fn rotate_with_center(&mut self, angle: f32, center_x: f32, center_y: f32) {
         unsafe { ffi::sfTransform_rotateWithCenter(&mut self.0, angle, center_x, center_y) }
     }
@@ -114,8 +114,8 @@ impl Transform {
     /// Combine the current transform with a scaling
     ///
     /// # Arguments
-    /// * scale_x - Scaling factor on the X axis
-    /// * scale_y - Scaling factor on the Y axis
+    /// * `scale_x` - Scaling factor on the X axis
+    /// * `scale_y` - Scaling factor on the Y axis
     pub fn scale(&mut self, scale_x: f32, scale_y: f32) {
         unsafe { ffi::sfTransform_scale(&mut self.0, scale_x, scale_y) }
     }
@@ -128,10 +128,10 @@ impl Transform {
     /// [translate(-center), scale(factors), translate(center)]
     ///
     /// # Arguments
-    /// * scale_x - Scaling factor on X axis
-    /// * scale_y - Scaling factor on Y axis
-    /// * center_x - X coordinate of the center of scaling
-    /// * center_y - Y coordinate of the center of scaling
+    /// * `scale_x` - Scaling factor on X axis
+    /// * `scale_y` - Scaling factor on Y axis
+    /// * `center_x` - X coordinate of the center of scaling
+    /// * `center_y` - Y coordinate of the center of scaling
     pub fn scale_with_center(&mut self, scale_x: f32, scale_y: f32, center_x: f32, center_y: f32) {
         unsafe {
             ffi::sfTransform_scaleWithCenter(&mut self.0, scale_x, scale_y, center_x, center_y)

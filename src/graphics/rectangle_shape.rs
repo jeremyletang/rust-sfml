@@ -194,7 +194,7 @@ impl<'s> Shape<'s> for RectangleShape<'s> {
 }
 
 impl<'s> Clone for RectangleShape<'s> {
-    /// Return a new RectangleShape or panic! if there is not enough memory
+    /// Return a new `RectangleShape` or panic! if there is not enough memory
     fn clone(&self) -> RectangleShape<'s> {
         let rectangle = unsafe { ffi::sfRectangleShape_copy(self.rectangle_shape) };
         if rectangle.is_null() {

@@ -24,7 +24,7 @@ impl SfStr {
     }
 }
 
-/// Trait for types that can be converted into SfStr
+/// Trait for types that can be converted into `SfStr`
 pub trait SfStrConv {
     #[doc(hidden)]
     fn with_as_sfstr<F, R>(self, fun: F) -> R

@@ -276,7 +276,7 @@ impl SoundBufferRecorder {
     /// Please note that only one capture can happen at the same time.
     ///
     /// # Arguments
-    /// * sample_rate - Desired capture rate, in number of samples per second
+    /// * `sample_rate` - Desired capture rate, in number of samples per second
     pub fn start(&mut self, sample_rate: u32) -> bool {
         unsafe { sfSoundBufferRecorder_start(self.ffi_handle, sample_rate) == sfTrue }
     }

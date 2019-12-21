@@ -90,9 +90,9 @@ impl VideoMode {
     /// modes that can be used in fullscreen mode.
     /// The returned array is sorted from best to worst, so that
     /// the first element will always give the best mode (higher
-    /// width, height and bits_per_pixel).
+    /// `width`, `height` and `bits_per_pixel`).
     ///
-    /// Return a vector containing all the supported VideoMode
+    /// Return a vector containing all the supported `VideoMode`s
     #[must_use]
     pub fn fullscreen_modes() -> Vec<Self> {
         let mut size = 0;

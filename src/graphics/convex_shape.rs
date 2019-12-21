@@ -33,7 +33,7 @@ impl<'s> ConvexShape<'s> {
     /// Create a new convex shape
     ///
     /// # Arguments
-    /// * points_count - The number of point for the convex shape
+    /// * `points_count` - The number of point for the convex shape
     #[must_use]
     pub fn new(points_count: u32) -> ConvexShape<'s> {
         let shape = unsafe { ffi::sfConvexShape_create() };
@@ -50,7 +50,7 @@ impl<'s> ConvexShape<'s> {
     ///
     /// # Arguments
     /// * texture - The texture to apply to the convex shape
-    /// * points_count - The number of point for the convex shape
+    /// * `points_count` - The number of point for the convex shape
     #[must_use]
     pub fn with_texture(points_count: u32, texture: &'s Texture) -> ConvexShape<'s> {
         let mut shape = ConvexShape::new(points_count);
@@ -232,7 +232,7 @@ impl<'s> Shape<'s> for ConvexShape<'s> {
 }
 
 impl<'s> Clone for ConvexShape<'s> {
-    /// Return a new ConvexShape or panic! if there is not enough memory
+    /// Return a new `ConvexShape` or panic if there is not enough memory
     fn clone(&self) -> ConvexShape<'s> {
         let shape = unsafe { ffi::sfConvexShape_copy(self.convex_shape) };
         if shape.is_null() {

@@ -145,8 +145,8 @@ impl RenderWindow {
     ///
     /// After calling this method, the Window object remains
     /// valid.
-    /// All other functions such as poll_event or display
-    /// will still work (i.e. you don't have to test is_open
+    /// All other functions such as `poll_event` or display
+    /// will still work (i.e. you don't have to test `is_open`
     /// every time), and will have no effect on closed windows.
     pub fn close(&mut self) {
         unsafe {
@@ -157,7 +157,7 @@ impl RenderWindow {
     /// Tell whether or not a window is opened
     ///
     /// This function returns whether or not the window exists.
-    /// Note that a hidden window (set_visible(false)) will return
+    /// Note that a hidden window `(set_visible(false))` will return
     /// true.
     ///
     #[must_use]

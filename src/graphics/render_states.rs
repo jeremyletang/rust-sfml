@@ -60,15 +60,15 @@ pub struct RenderStates<'texture, 'shader, 'shader_texture: 'shader> {
 }
 
 impl<'texture, 'shader, 'shader_texture> RenderStates<'texture, 'shader, 'shader_texture> {
-    /// Create a new RenderStates.
+    /// Create a new `RenderStates`.
     ///
     /// # Arguments
-    /// * blend_mode - The BlendMode
+    /// * `blend_mode` - The `BlendMode`
     /// * transform - The transform
     /// * texture - Some(texture) if there is a texture, None otherwise
     /// * shader - Some(shader) if there is a shader, None otherwise
     ///
-    /// Return a new default RenderStates
+    /// Return a new default `RenderStates`
     #[must_use]
     pub fn new(
         blend_mode: BlendMode,

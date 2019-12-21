@@ -20,8 +20,8 @@ impl VertexArray {
     /// Create a new initialized vertex array
     ///
     /// # Arguments
-    /// * primitive_type - The type of the VertexArray
-    /// * vertex_count - The maximal number of vertex
+    /// * `primitive_type` - The type of the `VertexArray`
+    /// * `vertex_count` - The maximal number of vertex
     #[must_use]
     pub fn new(primitive_type: PrimitiveType, vertex_count: usize) -> VertexArray {
         let mut arr = Self::default();
@@ -57,7 +57,7 @@ impl VertexArray {
     /// are removed from the array.
     ///
     /// # Arguments
-    /// * vertex_count - New size of the array (number of vertices)
+    /// * `vertex_count` - New size of the array (number of vertices)
     pub fn resize(&mut self, vertex_count: usize) {
         unsafe { sfVertexArray_resize(self.vertex_array, vertex_count) }
     }
@@ -107,7 +107,7 @@ impl VertexArray {
         unsafe { PrimitiveType::from_raw(sfVertexArray_getPrimitiveType(self.vertex_array)) }
     }
 
-    /// Return an immutable iterator over all the vertice contained by the VertexArray
+    /// Return an immutable iterator over all the vertice contained by the `VertexArray`
     #[must_use]
     pub fn vertices(&self) -> Vertices {
         Vertices {
@@ -129,7 +129,7 @@ impl Default for VertexArray {
 }
 
 impl Clone for VertexArray {
-    /// Return a new VertexArray or panic! if there is not enough memory
+    /// Return a new `VertexArray` or panic! if there is not enough memory
     fn clone(&self) -> VertexArray {
         let ver = unsafe { sfVertexArray_copy(self.vertex_array) };
         if ver.is_null() {

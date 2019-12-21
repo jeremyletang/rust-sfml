@@ -56,7 +56,7 @@ impl Vertex {
     /// # Arguments
     /// * position - Position of the vertex
     /// * color - Color of the vertex
-    /// * tex_coords - Texture coordinate of the vertex
+    /// * `tex_coords` - Texture coordinate of the vertex
     ///
     /// Return a Vertex
     pub fn new<P: Into<Vector2f>>(position: P, color: Color, tex_coords: Vector2f) -> Self {
@@ -74,7 +74,7 @@ impl Vertex {
     ///
     /// # Default
     /// * color - white
-    /// * tex_coords - (0., 0.)
+    /// * `tex_coords` - (0., 0.)
     ///
     /// Return a Vertex
     pub fn with_pos<P: Into<Vector2f>>(position: P) -> Self {
@@ -88,7 +88,7 @@ impl Vertex {
     /// * color - Color of the vertex
     ///
     /// # Default
-    /// * tex_coords - (0., 0)
+    /// * `tex_coords` - (0., 0)
     ///
     /// Return a Vertex
     pub fn with_pos_color<P: Into<Vector2f>>(position: P, color: Color) -> Vertex {
@@ -99,7 +99,7 @@ impl Vertex {
     ///
     /// # Arguments
     /// * position - Position of the vertex
-    /// * tex_coords - Texture coordinate of the vertex
+    /// * `tex_coords` - Texture coordinate of the vertex
     ///
     /// # Default
     /// * color - white

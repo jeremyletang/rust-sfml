@@ -77,7 +77,7 @@ impl RenderTexture {
     }
     /// Enable or disable texture repeating.
     ///
-    /// This function is similar to Texture::setRepeated. This parameter is disabled by default.
+    /// This function is similar to `Texture::setRepeated`. This parameter is disabled by default.
     pub fn set_repeated(&mut self, repeated: bool) {
         unsafe {
             ffi::sfRenderTexture_setRepeated(self.render_texture, SfBoolExt::from_bool(repeated))

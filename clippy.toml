@@ -1,1 +1,1 @@
-doc-valid-idents = ["OSes", "OpenGL", "IPv4", "iOS"]
+doc-valid-idents = ["OSes", "OpenGL", "IPv4", "iOS", "TrueType", "OpenType", "sRGB"]

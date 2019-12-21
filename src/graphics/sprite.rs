@@ -51,15 +51,15 @@ impl<'s> Sprite<'s> {
     /// a pointer to the one that you passed to this function.
     /// If the source texture is destroyed and the sprite tries to
     /// use it, the behaviour is undefined.
-    /// If reset_rect is true, the [`texture_rect`] property of
+    /// If `reset_rect` is true, the [`texture_rect`] property of
     /// the sprite is automatically adjusted to the size of the new
     /// texture. If it is false, the texture rect is left unchanged.
     ///
     /// [`texture_rect`]: Sprite::texture_rect
     ///
     /// # Arguments
-    /// * texture - New texture
-    /// * reset_rect - Should the texture rect be reset to the size
+    /// * `texture` - New texture
+    /// * `reset_rect` - Should the texture rect be reset to the size
     /// of the new texture?
     pub fn set_texture(&mut self, texture: &'s Texture, reset_rect: bool) {
         unsafe {

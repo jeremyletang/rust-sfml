@@ -57,7 +57,7 @@ pub trait RenderTarget {
     /// located below the mouse cursor.
     ///
     /// This version uses a custom view for calculations, see the
-    /// [map_pixel_to_coords_current_view](RenderTarget::map_pixel_to_coords_current_view)
+    /// [`map_pixel_to_coords_current_view`](RenderTarget::map_pixel_to_coords_current_view)
     /// function if you want to use the current view of the
     /// render-window.
     ///
@@ -86,7 +86,7 @@ pub trait RenderTarget {
     /// located below the mouse cursor.
     ///
     /// This version uses the current view for calculations, see the
-    /// [map_pixel_to_coords](RenderTarget::map_pixel_to_coords) function if
+    /// [`map_pixel_to_coords`](RenderTarget::map_pixel_to_coords) function if
     /// you want to use a custom view.
     ///
     /// # Arguments
@@ -108,7 +108,7 @@ pub trait RenderTarget {
     /// (10, 50) of your render-window -- if the view is translated by (140, 25).
     ///
     /// This version uses a custom view for calculations, see
-    /// [map_coords_to_pixel_current_view](RenderTarget::map_coords_to_pixel_current_view)
+    /// [`map_coords_to_pixel_current_view`](RenderTarget::map_coords_to_pixel_current_view)
     /// if you want to use the current view of the render-window.
     ///
     /// # Arguments
@@ -135,7 +135,7 @@ pub trait RenderTarget {
     /// located below the mouse cursor.
     ///
     /// This version uses the current view for calculations, see the
-    /// [map_pixel_to_coords](RenderTarget::map_pixel_to_coords) function if
+    /// [`map_pixel_to_coords`](RenderTarget::map_pixel_to_coords) function if
     /// you want to use a custom view.
     ///
     /// # Arguments
@@ -167,7 +167,7 @@ pub trait RenderTarget {
     /// Save the current OpenGL render states and matrices
     ///
     /// This function can be used when you mix SFML drawing
-    /// and direct OpenGL rendering. Combined with popGLStates,
+    /// and direct OpenGL rendering. Combined with `pop_gl_states`,
     /// it ensures that:
     /// SFML's internal states are not messed up by your OpenGL code
     /// and that your OpenGL states are not modified by a call to a SFML function
@@ -208,19 +208,19 @@ pub trait RenderTarget {
     /// Draw Sprite
     fn draw_sprite(&self, sprite: &Sprite, rs: RenderStates);
 
-    /// Draw CircleShape
+    /// Draw `CircleShape`
     fn draw_circle_shape(&self, circle_shape: &CircleShape, rs: RenderStates);
 
-    /// Draw RectangleShape
+    /// Draw `RectangleShape`
     fn draw_rectangle_shape(&self, rectangle_shape: &RectangleShape, rs: RenderStates);
 
-    /// Draw ConvexShape
+    /// Draw `ConvexShape`
     fn draw_convex_shape(&self, convex_shape: &ConvexShape, rs: RenderStates);
 
-    /// Draw VertexArray
+    /// Draw `VertexArray`
     fn draw_vertex_array(&self, vertex_array: &VertexArray, rs: RenderStates);
 
-    /// Draw VertexBuffer
+    /// Draw `VertexBuffer`
     fn draw_vertex_buffer(&self, vertex_buffer: &VertexBuffer, rs: RenderStates);
 
     /// draw primitives

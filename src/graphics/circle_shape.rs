@@ -34,7 +34,7 @@ impl<'s> CircleShape<'s> {
     ///
     /// # Arguments:
     /// * radius - The radius of the `CircleShape`
-    /// * point_count - The number of points to define the `CircleShape`
+    /// * `point_count` - The number of points to define the `CircleShape`
     ///
     /// Default value on SFML are radius = 0 / pointCount = 30
     #[must_use]
