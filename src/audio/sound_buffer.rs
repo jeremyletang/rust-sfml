@@ -98,15 +98,12 @@ impl SoundBuffer {
     /// Panic if the sample count exceeds usize range
     #[must_use]
     pub fn samples(&self) -> &[i16] {
-        let len = self.sample_count();
-        // TODO: Replace with TryFrom, or a similar standard library API, once available
-        #[cfg(target_pointer_width = "32")]
-        {
-            if len > usize::max_value() as u64 {
-                panic!("Sample count {} too big to fit into usize", len);
-            }
-        }
-        unsafe { slice::from_raw_parts(ffi::sfSoundBuffer_getSamples(self.raw()), len as usize) }
+        use std::convert::TryInto;
+        let len: usize = self
+            .sample_count()
+            .try_into()
+            .expect("Overflow when casting sample count to usize");
+        unsafe { slice::from_raw_parts(ffi::sfSoundBuffer_getSamples(self.raw()), len) }
     }
 
     /// Get the number of channels used by a sound buffer

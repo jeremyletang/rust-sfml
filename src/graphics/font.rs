@@ -66,8 +66,8 @@ impl Font {
     ///
     /// Return the kerning offset, in pixels
     #[must_use]
-    pub fn kerning(&self, first: u32, second: u32, character_size: u32) -> i32 {
-        unsafe { ffi::sfFont_getKerning(self.raw(), first, second, character_size) as i32 }
+    pub fn kerning(&self, first: u32, second: u32, character_size: u32) -> f32 {
+        unsafe { ffi::sfFont_getKerning(self.raw(), first, second, character_size) }
     }
 
     /// Get the line spacing value
@@ -77,8 +77,8 @@ impl Font {
     ///
     /// Return the line spacing, in pixels
     #[must_use]
-    pub fn line_spacing(&self, character_size: u32) -> i32 {
-        unsafe { ffi::sfFont_getLineSpacing(self.raw(), character_size) as i32 }
+    pub fn line_spacing(&self, character_size: u32) -> f32 {
+        unsafe { ffi::sfFont_getLineSpacing(self.raw(), character_size) }
     }
 
     /// Get a glyph in a font

@@ -185,7 +185,12 @@ impl<'s> Shape<'s> for CircleShape<'s> {
         unsafe { ffi::sfCircleShape_getOutlineThickness(self.circle_shape) }
     }
     fn point_count(&self) -> u32 {
-        unsafe { ffi::sfCircleShape_getPointCount(self.circle_shape) as u32 }
+        use std::convert::TryInto;
+        unsafe {
+            ffi::sfCircleShape_getPointCount(self.circle_shape)
+                .try_into()
+                .unwrap()
+        }
     }
     fn point(&self, index: u32) -> Vector2f {
         unsafe {

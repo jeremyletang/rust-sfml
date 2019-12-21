@@ -175,7 +175,12 @@ impl<'s> Shape<'s> for RectangleShape<'s> {
         unsafe { ffi::sfRectangleShape_getOutlineThickness(self.rectangle_shape) }
     }
     fn point_count(&self) -> u32 {
-        unsafe { ffi::sfRectangleShape_getPointCount(self.rectangle_shape) as u32 }
+        use std::convert::TryInto;
+        unsafe {
+            ffi::sfRectangleShape_getPointCount(self.rectangle_shape)
+                .try_into()
+                .unwrap()
+        }
     }
     fn point(&self, index: u32) -> Vector2f {
         unsafe {

@@ -9,6 +9,7 @@ unsafe extern "C" fn read<T: Read + Seek>(
     size: c_longlong,
     user_data: *mut c_void,
 ) -> c_longlong {
+    use std::convert::TryInto;
     let stream: &mut T = &mut *(user_data as *mut T);
     if size == 0 {
         return 0;
@@ -17,7 +18,7 @@ unsafe extern "C" fn read<T: Read + Seek>(
         let mut buf = vec![];
         let result = chunk.read_to_end(&mut buf);
         if let Ok(bytes_read) = result {
-            ptr::copy_nonoverlapping(buf.as_ptr(), data as *mut u8, size as usize);
+            ptr::copy_nonoverlapping(buf.as_ptr(), data as *mut u8, size.try_into().unwrap());
             return bytes_read as _;
         }
     }

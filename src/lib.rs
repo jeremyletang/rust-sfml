@@ -32,7 +32,8 @@
     unused_results,
     trivial_casts,
     clippy::must_use_candidate,
-    clippy::doc_markdown
+    clippy::doc_markdown,
+    clippy::cast_possible_truncation
 )]
 
 #[cfg(feature = "window")]

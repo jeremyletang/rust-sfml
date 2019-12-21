@@ -33,6 +33,7 @@ unsafe extern "C" fn get_data_callback<S: SoundStream>(
     chunk: *mut sfSoundStreamChunk,
     user_data: *mut c_void,
 ) -> sfBool {
+    use std::convert::TryInto;
     let stream = user_data as *mut S;
     let (data, keep_playing) =
         match panic::catch_unwind(panic::AssertUnwindSafe(|| (*stream).get_data())) {
@@ -43,7 +44,10 @@ unsafe extern "C" fn get_data_callback<S: SoundStream>(
             }
         };
     (*chunk).samples = data.as_mut_ptr();
-    (*chunk).sampleCount = data.len() as u32;
+    (*chunk).sampleCount = data
+        .len()
+        .try_into()
+        .expect("Overflow casting data length to sample count");
     sfBool::from_bool(keep_playing)
 }
 
