@@ -268,7 +268,7 @@ impl<'texture> Shader<'texture> {
     /// it mustn't be used when drawing SFML entities.
     /// It must be used only if you mix `Shader` with OpenGL code.
     pub fn bind(shader: Option<&Self>) {
-        unsafe { ffi::sfShader_bind(shader.map(|s| s.shader).unwrap_or(ptr::null_mut())) }
+        unsafe { ffi::sfShader_bind(shader.map_or(ptr::null_mut(), |s| s.shader)) }
     }
 
     /// Tell whether or not the system supports shaders
