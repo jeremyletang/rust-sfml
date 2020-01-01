@@ -37,13 +37,13 @@
 //! }
 //! ```
 //!
-//! [`is_available`]: sensor::is_available
-//! [`set_enabled`]: sensor::set_enabled
-//! [`Accelerometer`]: sensor::Type::Accelerometer
-//! [`Gravity`]: sensor::Type::Gravity
-//! [`UserAcceleration`]: sensor::Type::UserAcceleration
-//! [`Gyroscope`]: sensor::Type::Gyroscope
-//! [`Orientation`]: sensor::Type::Orientation
+//! [`is_available`]: is_available
+//! [`set_enabled`]: set_enabled
+//! [`Accelerometer`]: Type::Accelerometer
+//! [`Gravity`]: Type::Gravity
+//! [`UserAcceleration`]: Type::UserAcceleration
+//! [`Gyroscope`]: Type::Gyroscope
+//! [`Orientation`]: Type::Orientation
 //!
 
 use crate::sf_bool_ext::SfBoolExt;

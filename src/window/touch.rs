@@ -16,7 +16,7 @@
 //!
 //! There are two functions that can be used to retrieve the current position of a touch.
 //! 1. [`desktop_position`]: operates in global coordinates (relative to the desktop)
-//! 2. [`crate::window::Window::touch_position`]: operates in window coordinates
+//! 2. [`Window::touch_position`]: operates in window coordinates
 //! (relative to a specific window).
 //!
 //! Touches are identified by an index (the "finger"), so that in multi-touch events, individual
@@ -40,7 +40,8 @@
 //! let _relative_pos = window.touch_position(1);
 //! ```
 //!
-//! [`desktop_position`]: touch::desktop_position
+//! [`desktop_position`]: desktop_position
+//! [`Window::touch_position`]: crate::window::Window::touch_position
 //!
 
 use crate::sf_bool_ext::SfBoolExt;
