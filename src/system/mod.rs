@@ -4,8 +4,8 @@
 //!
 
 pub use self::clock::Clock;
-pub use self::sf_box::SfBox;
 pub(crate) use self::sf_box::{Dispose, RawDefault};
+pub use self::sf_box::{SfBox, SfResource};
 pub use self::sleep::sleep;
 #[cfg(feature = "window")]
 pub use self::string::{SfStr, SfStrConv};
