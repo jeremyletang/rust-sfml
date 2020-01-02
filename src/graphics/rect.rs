@@ -23,7 +23,7 @@ pub type FloatRect = Rect<f32>;
 
 impl<T> Rect<T> {
     /// Construct a rectangle from its coordinates.
-    pub fn new(left: T, top: T, width: T, height: T) -> Self {
+    pub const fn new(left: T, top: T, width: T, height: T) -> Self {
         Rect {
             left,
             top,

@@ -50,7 +50,7 @@ pub struct Vector3<T> {
 
 impl<T> Vector3<T> {
     /// Create a new `Vector3` with the given values.
-    pub fn new(x: T, y: T, z: T) -> Self {
+    pub const fn new(x: T, y: T, z: T) -> Self {
         Self { x, y, z }
     }
 }
