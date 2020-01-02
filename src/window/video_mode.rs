@@ -54,7 +54,7 @@ pub struct VideoMode {
 impl VideoMode {
     /// Constructs a new `VideoMode` from the given parameters.
     #[must_use]
-    pub fn new(width: u32, height: u32, bits_per_pixel: u32) -> Self {
+    pub const fn new(width: u32, height: u32, bits_per_pixel: u32) -> Self {
         Self {
             width,
             height,

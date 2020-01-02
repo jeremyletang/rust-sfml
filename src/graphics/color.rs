@@ -27,7 +27,7 @@ impl Color {
     ///
     /// Return Color object constructed from the components
     #[must_use]
-    pub fn rgb(red: u8, green: u8, blue: u8) -> Color {
+    pub const fn rgb(red: u8, green: u8, blue: u8) -> Color {
         Color {
             r: red,
             g: green,
@@ -46,7 +46,7 @@ impl Color {
     ///
     /// Return Color object constructed from the components
     #[must_use]
-    pub fn rgba(red: u8, green: u8, blue: u8, alpha: u8) -> Color {
+    pub const fn rgba(red: u8, green: u8, blue: u8, alpha: u8) -> Color {
         Color {
             r: red,
             g: green,

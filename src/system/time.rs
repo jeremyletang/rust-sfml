@@ -74,7 +74,7 @@ impl Time {
 
     /// Constructs a time value from a number of microseconds.
     #[must_use]
-    pub fn microseconds(microseconds: i64) -> Self {
+    pub const fn microseconds(microseconds: i64) -> Self {
         Time(sfTime { microseconds })
     }
 
