@@ -2,6 +2,7 @@
 
 extern crate csfml_graphics_sys;
 
+#[doc(inline)]
 pub use self::blend_mode::BlendMode;
 pub use self::circle_shape::CircleShape;
 pub use self::color::Color;
