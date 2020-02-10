@@ -1,10 +1,12 @@
-use crate::graphics::csfml_graphics_sys as ffi;
-use crate::graphics::{
-    CircleShape, Color, ConvexShape, CustomShape, Drawable, IntRect, PrimitiveType, RectangleShape,
-    RenderStates, RenderTarget, Sprite, Text, Texture, Vertex, VertexArray, VertexBuffer, View,
+use crate::{
+    graphics::{
+        csfml_graphics_sys as ffi, CircleShape, Color, ConvexShape, CustomShape, Drawable, IntRect,
+        PrimitiveType, RectangleShape, RenderStates, RenderTarget, Sprite, Text, Texture, Vertex,
+        VertexArray, VertexBuffer, View,
+    },
+    sf_bool_ext::SfBoolExt,
+    system::{Vector2f, Vector2i, Vector2u},
 };
-use crate::sf_bool_ext::SfBoolExt;
-use crate::system::{Vector2f, Vector2i, Vector2u};
 use csfml_system_sys::sfBool;
 
 /// Target for off-screen 2D rendering into a texture

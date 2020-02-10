@@ -1,6 +1,8 @@
-use crate::sf_bool_ext::SfBoolExt;
-use crate::system::{SfStrConv, Vector2i, Vector2u};
-use crate::window::{ContextSettings, Event, Style, VideoMode};
+use crate::{
+    sf_bool_ext::SfBoolExt,
+    system::{SfStrConv, Vector2i, Vector2u},
+    window::{ContextSettings, Event, Style, VideoMode},
+};
 use csfml_system_sys::sfBool;
 use csfml_window_sys as ffi;
 

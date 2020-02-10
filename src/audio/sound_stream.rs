@@ -1,11 +1,10 @@
-use crate::audio::csfml_audio_sys::*;
-use crate::audio::SoundSource;
-use crate::audio::SoundStatus;
-use crate::sf_bool_ext::SfBoolExt;
-use crate::system::{Time, Vector3f};
+use crate::{
+    audio::{csfml_audio_sys::*, SoundSource, SoundStatus},
+    sf_bool_ext::SfBoolExt,
+    system::{Time, Vector3f},
+};
 use csfml_system_sys::*;
-use std::os::raw::c_void;
-use std::panic;
+use std::{os::raw::c_void, panic};
 
 /// Trait for streamed audio sources.
 pub trait SoundStream {

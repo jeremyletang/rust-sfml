@@ -29,8 +29,7 @@
 //! window.set_mouse_position(Vector2i::new(100, 200));
 //! ```
 
-use crate::sf_bool_ext::SfBoolExt;
-use crate::system::Vector2i;
+use crate::{sf_bool_ext::SfBoolExt, system::Vector2i};
 use csfml_window_sys as ffi;
 
 /// Mouse buttons.

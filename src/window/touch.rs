@@ -44,8 +44,7 @@
 //! [`Window::touch_position`]: crate::window::Window::touch_position
 //!
 
-use crate::sf_bool_ext::SfBoolExt;
-use crate::system::Vector2i;
+use crate::{sf_bool_ext::SfBoolExt, system::Vector2i};
 use csfml_window_sys::*;
 
 /// Check if a touch event is currently down.

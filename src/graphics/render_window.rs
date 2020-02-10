@@ -1,11 +1,13 @@
-use crate::graphics::csfml_graphics_sys as ffi;
-use crate::graphics::{
-    CircleShape, Color, ConvexShape, CustomShape, Drawable, IntRect, PrimitiveType, RectangleShape,
-    RenderStates, RenderTarget, Sprite, Text, Vertex, VertexArray, VertexBuffer, View,
+use crate::{
+    graphics::{
+        csfml_graphics_sys as ffi, CircleShape, Color, ConvexShape, CustomShape, Drawable, IntRect,
+        PrimitiveType, RectangleShape, RenderStates, RenderTarget, Sprite, Text, Vertex,
+        VertexArray, VertexBuffer, View,
+    },
+    sf_bool_ext::SfBoolExt,
+    system::{SfStrConv, Vector2f, Vector2i, Vector2u},
+    window::{ContextSettings, Event, Handle, Style, VideoMode},
 };
-use crate::sf_bool_ext::SfBoolExt;
-use crate::system::{SfStrConv, Vector2f, Vector2i, Vector2u};
-use crate::window::{ContextSettings, Event, Handle, Style, VideoMode};
 use csfml_system_sys::*;
 
 /// [`Window`] that can serve as a target for 2D drawing.

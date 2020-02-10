@@ -1,11 +1,14 @@
-use crate::graphics::csfml_graphics_sys as ffi;
-use crate::graphics::{glsl, Texture};
-use crate::inputstream::InputStream;
-use crate::sf_bool_ext::SfBoolExt;
-use std::ffi::CString;
-use std::io::{Read, Seek};
-use std::marker::PhantomData;
-use std::ptr;
+use crate::{
+    graphics::{csfml_graphics_sys as ffi, glsl, Texture},
+    inputstream::InputStream,
+    sf_bool_ext::SfBoolExt,
+};
+use std::{
+    ffi::CString,
+    io::{Read, Seek},
+    marker::PhantomData,
+    ptr,
+};
 
 /// Shader type (vertex, geometry and fragment).
 ///

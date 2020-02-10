@@ -1,9 +1,11 @@
 extern crate sfml;
 
-use sfml::graphics::{
-    Color, PrimitiveType, RenderTarget, RenderWindow, Vertex, VertexBuffer, VertexBufferUsage,
+use sfml::{
+    graphics::{
+        Color, PrimitiveType, RenderTarget, RenderWindow, Vertex, VertexBuffer, VertexBufferUsage,
+    },
+    window::{Event, Style},
 };
-use sfml::window::{Event, Style};
 
 fn main() {
     let mut window = RenderWindow::new(

@@ -1,8 +1,10 @@
 extern crate sfml;
 
-use sfml::graphics::{Color, CustomShape, CustomShapePoints, RenderTarget, RenderWindow, Shape};
-use sfml::system::Vector2f;
-use sfml::window::{Event, Key, Style};
+use sfml::{
+    graphics::{Color, CustomShape, CustomShapePoints, RenderTarget, RenderWindow, Shape},
+    system::Vector2f,
+    window::{Event, Key, Style},
+};
 
 #[derive(Clone, Copy)]
 pub struct TriangleShape;

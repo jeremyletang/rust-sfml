@@ -1,8 +1,7 @@
 extern crate sfml;
 
 use sfml::audio::{SoundRecorder, SoundRecorderDriver};
-use std::fs::File;
-use std::io::Write;
+use std::{fs::File, io::Write};
 
 struct FileRecorder {
     file: File,

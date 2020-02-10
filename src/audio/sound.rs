@@ -1,11 +1,10 @@
-use crate::audio::csfml_audio_sys as ffi;
-use crate::audio::{SoundBuffer, SoundSource, SoundStatus};
-use crate::sf_bool_ext::SfBoolExt;
-use crate::system::Time;
-use crate::system::Vector3f;
+use crate::{
+    audio::{csfml_audio_sys as ffi, SoundBuffer, SoundSource, SoundStatus},
+    sf_bool_ext::SfBoolExt,
+    system::{Time, Vector3f},
+};
 use csfml_system_sys::sfBool;
-use std::marker::PhantomData;
-use std::mem;
+use std::{marker::PhantomData, mem};
 
 /// Regular sound that can be played in the audio environment.
 ///

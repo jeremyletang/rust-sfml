@@ -5,13 +5,15 @@ extern crate csfml_audio_sys;
 
 #[doc(inline)]
 pub use self::capture::{SoundBufferRecorder, SoundRecorder, SoundRecorderDriver};
-pub use self::music::Music;
-pub use self::sound::Sound;
-pub use self::sound_buffer::SoundBuffer;
-pub use self::sound_source::SoundSource;
-pub use self::sound_status::SoundStatus;
-pub use self::sound_stream::{SoundStream, SoundStreamPlayer};
-pub use self::time_span::TimeSpan;
+pub use self::{
+    music::Music,
+    sound::Sound,
+    sound_buffer::SoundBuffer,
+    sound_source::SoundSource,
+    sound_status::SoundStatus,
+    sound_stream::{SoundStream, SoundStreamPlayer},
+    time_span::TimeSpan,
+};
 
 /// Types and helper functions dealing with audio capture.
 pub mod capture;

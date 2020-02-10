@@ -1,5 +1,4 @@
-use crate::graphics::Transform;
-use crate::system::Vector2f;
+use crate::{graphics::Transform, system::Vector2f};
 
 /// Decomposed transform defined by a position, a rotation and a scale.
 pub trait Transformable {

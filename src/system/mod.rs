@@ -3,15 +3,17 @@
 //! It provides vector types, timing types.
 //!
 
-pub use self::clock::Clock;
 pub(crate) use self::sf_box::{Dispose, RawDefault};
-pub use self::sf_box::{SfBox, SfResource};
-pub use self::sleep::sleep;
 #[cfg(feature = "window")]
 pub use self::string::{SfStr, SfStrConv};
-pub use self::time::Time;
-pub use self::vector2::{Vector2, Vector2f, Vector2i, Vector2u};
-pub use self::vector3::{Vector3, Vector3f, Vector3i};
+pub use self::{
+    clock::Clock,
+    sf_box::{SfBox, SfResource},
+    sleep::sleep,
+    time::Time,
+    vector2::{Vector2, Vector2f, Vector2i, Vector2u},
+    vector3::{Vector3, Vector3f, Vector3i},
+};
 use csfml_system_sys::{sfBool, sfFalse, sfTrue};
 
 /// Boolean type used by CSFML.

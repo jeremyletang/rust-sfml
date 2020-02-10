@@ -1,7 +1,9 @@
 extern crate sfml;
 
-use sfml::graphics::{Color, PrimitiveType, RenderTarget, RenderWindow, Vertex, VertexArray};
-use sfml::window::{Event, Style};
+use sfml::{
+    graphics::{Color, PrimitiveType, RenderTarget, RenderWindow, Vertex, VertexArray},
+    window::{Event, Style},
+};
 
 fn main() {
     let mut window = RenderWindow::new(

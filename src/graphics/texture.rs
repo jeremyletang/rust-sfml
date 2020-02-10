@@ -1,14 +1,17 @@
-use crate::graphics::csfml_graphics_sys as ffi;
-use crate::graphics::{Image, IntRect, RenderWindow};
-use crate::inputstream::InputStream;
-use crate::sf_bool_ext::SfBoolExt;
-use crate::system::{Dispose, SfBox, Vector2u};
-use crate::window::Window;
+use crate::{
+    graphics::{csfml_graphics_sys as ffi, Image, IntRect, RenderWindow},
+    inputstream::InputStream,
+    sf_bool_ext::SfBoolExt,
+    system::{Dispose, SfBox, Vector2u},
+    window::Window,
+};
 use csfml_system_sys::sfBool;
-use std::borrow::ToOwned;
-use std::ffi::CString;
-use std::io::{Read, Seek};
-use std::ptr;
+use std::{
+    borrow::ToOwned,
+    ffi::CString,
+    io::{Read, Seek},
+    ptr,
+};
 
 /// [`Image`] living on the graphics card that can be used for drawing.
 ///

@@ -4,33 +4,35 @@ extern crate csfml_graphics_sys;
 
 #[doc(inline)]
 pub use self::blend_mode::BlendMode;
-pub use self::circle_shape::CircleShape;
-pub use self::color::Color;
-pub use self::convex_shape::{ConvexShape, ConvexShapePoints};
-pub use self::custom_shape::{CustomShape, CustomShapePoints};
-pub use self::drawable::Drawable;
-pub use self::font::{Font, Info as FontInfo};
-pub use self::glyph::Glyph;
-pub use self::image::Image;
-pub use self::primitive_type::PrimitiveType;
-pub use self::rect::{FloatRect, IntRect, Rect};
-pub use self::rectangle_shape::RectangleShape;
-pub use self::render_states::RenderStates;
-pub use self::render_target::RenderTarget;
-pub use self::render_texture::RenderTexture;
-pub use self::render_window::RenderWindow;
-pub use self::shader::Shader;
-pub use self::shape::Shape;
-pub use self::sprite::Sprite;
-pub use self::text::Text;
-pub use self::text_style::TextStyle;
-pub use self::texture::Texture;
-pub use self::transform::Transform;
-pub use self::transformable::Transformable;
-pub use self::vertex::Vertex;
-pub use self::vertex_array::{VertexArray, Vertices};
-pub use self::vertex_buffer::{VertexBuffer, VertexBufferUsage};
-pub use self::view::View;
+pub use self::{
+    circle_shape::CircleShape,
+    color::Color,
+    convex_shape::{ConvexShape, ConvexShapePoints},
+    custom_shape::{CustomShape, CustomShapePoints},
+    drawable::Drawable,
+    font::{Font, Info as FontInfo},
+    glyph::Glyph,
+    image::Image,
+    primitive_type::PrimitiveType,
+    rect::{FloatRect, IntRect, Rect},
+    rectangle_shape::RectangleShape,
+    render_states::RenderStates,
+    render_target::RenderTarget,
+    render_texture::RenderTexture,
+    render_window::RenderWindow,
+    shader::Shader,
+    shape::Shape,
+    sprite::Sprite,
+    text::Text,
+    text_style::TextStyle,
+    texture::Texture,
+    transform::Transform,
+    transformable::Transformable,
+    vertex::Vertex,
+    vertex_array::{VertexArray, Vertices},
+    vertex_buffer::{VertexBuffer, VertexBufferUsage},
+    view::View,
+};
 
 pub mod blend_mode;
 mod circle_shape;

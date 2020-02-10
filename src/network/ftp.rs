@@ -1,11 +1,11 @@
 //! A FTP client.
 
-use network::csfml_network_sys as ffi;
-use network::IpAddress;
+use network::{csfml_network_sys as ffi, IpAddress};
 use sf_bool_ext::SfBoolExt;
-use std::ffi::{CStr, CString};
-use std::mem;
-use std::str;
+use std::{
+    ffi::{CStr, CString},
+    mem, str,
+};
 use system::Time;
 
 /// The differents FTP modes availables.

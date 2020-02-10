@@ -1,6 +1,8 @@
-use crate::window::joystick::Axis;
-use crate::window::keyboard::Key;
-use crate::window::mouse::{Button, Wheel};
+use crate::window::{
+    joystick::Axis,
+    keyboard::Key,
+    mouse::{Button, Wheel},
+};
 use csfml_window_sys as ffi;
 
 /// Defines a system event and its parameters.
@@ -198,8 +200,7 @@ pub enum Event {
 
 impl Event {
     pub(crate) unsafe fn from_raw(event: &ffi::sfEvent) -> Option<Self> {
-        use crate::sf_bool_ext::SfBoolExt;
-        use crate::window::Event::*;
+        use crate::{sf_bool_ext::SfBoolExt, window::Event::*};
 
         let type_ = event.type_;
 

@@ -1,6 +1,8 @@
 use network::csfml_network_sys as ffi;
-use std::ffi::{CStr, CString};
-use std::str;
+use std::{
+    ffi::{CStr, CString},
+    str,
+};
 use system::Time;
 
 /// Encapsulate an IPv4 network address.

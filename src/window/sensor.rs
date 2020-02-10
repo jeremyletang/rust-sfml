@@ -46,8 +46,7 @@
 //! [`Orientation`]: Type::Orientation
 //!
 
-use crate::sf_bool_ext::SfBoolExt;
-use crate::system::Vector3f;
+use crate::{sf_bool_ext::SfBoolExt, system::Vector3f};
 use csfml_window_sys::*;
 
 /// Get the current sensor value.

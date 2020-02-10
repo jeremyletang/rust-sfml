@@ -1,11 +1,12 @@
 //! `ResourceHolder` class from the SFML game dev book
 
-use sfml::audio::{Sound, SoundBuffer};
-use sfml::graphics::{Color, RenderTarget, RenderWindow, Sprite, Texture};
-use sfml::system::{SfBox, SfResource};
-use sfml::window::{Event, Key, Style};
-use std::collections::HashMap;
-use std::hash::Hash;
+use sfml::{
+    audio::{Sound, SoundBuffer},
+    graphics::{Color, RenderTarget, RenderWindow, Sprite, Texture},
+    system::{SfBox, SfResource},
+    window::{Event, Key, Style},
+};
+use std::{collections::HashMap, hash::Hash};
 
 struct ResourceHolder<Resource: SfResource, Identifier: Hash + Eq> {
     resource_map: HashMap<Identifier, SfBox<Resource>>,

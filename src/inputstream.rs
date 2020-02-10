@@ -1,8 +1,10 @@
 use csfml_system_sys::sfInputStream;
-use std::convert::TryInto;
-use std::io::{Read, Seek, SeekFrom};
-use std::os::raw::{c_longlong, c_void};
-use std::ptr;
+use std::{
+    convert::TryInto,
+    io::{Read, Seek, SeekFrom},
+    os::raw::{c_longlong, c_void},
+    ptr,
+};
 
 #[allow(clippy::comparison_chain)]
 unsafe extern "C" fn read<T: Read + Seek>(

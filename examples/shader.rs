@@ -1,9 +1,7 @@
 extern crate rand;
 extern crate sfml;
 
-use sfml::graphics::*;
-use sfml::system::*;
-use sfml::window::*;
+use sfml::{graphics::*, system::*, window::*};
 
 trait Effect: Drawable {
     fn update(&mut self, t: f32, x: f32, y: f32);
