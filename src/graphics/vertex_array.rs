@@ -24,7 +24,7 @@ impl VertexArray {
     ///
     /// # Arguments
     /// * `primitive_type` - The type of the `VertexArray`
-    /// * `vertex_count` - The maximal number of vertex
+    /// * `vertex_count` - The initial number of vertex
     #[must_use]
     pub fn new(primitive_type: PrimitiveType, vertex_count: usize) -> VertexArray {
         let mut arr = Self::default();
@@ -65,7 +65,7 @@ impl VertexArray {
         unsafe { sfVertexArray_resize(self.vertex_array, vertex_count) }
     }
 
-    /// Add a vertex to a vertex array array
+    /// Add a vertex to a vertex array
     ///
     /// # Arguments
     /// * vertex - Vertex to add
@@ -118,6 +118,29 @@ impl VertexArray {
             pos: 0,
         }
     }
+
+    /// Returns an immutable reference to the `index`-th vertex in the `VertexArray`.
+    /// Panics if `index >= self.vertex_count()`.
+    #[must_use]
+    pub fn get_vertex(&self, index: usize) -> &Vertex {
+        assert!(
+            index < self.vertex_count(),
+            "get_vertex(): tried to get an inexisting vertex!"
+        );
+        unsafe { &*(sfVertexArray_getVertex(self.vertex_array, index) as *const _) }
+    }
+
+    /// Returns a mutable reference to the `index`-th vertex in the `VertexArray`.
+    /// Panics if `index >= self.vertex_count()`.
+    #[must_use]
+    pub fn get_vertex_mut(&mut self, index: usize) -> &mut Vertex {
+        assert!(
+            index < self.vertex_count(),
+            "get_vertex_mut(): tried to get an inexisting vertex!"
+        );
+        unsafe { &mut *(sfVertexArray_getVertex(self.vertex_array, index) as *mut _) }
+    }
+
     pub(super) fn raw(&self) -> *const sfVertexArray {
         self.vertex_array
     }
