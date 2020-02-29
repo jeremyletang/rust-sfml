@@ -148,6 +148,33 @@ impl VertexArray {
         *v = *vertex;
     }
 
+    /// Returns an immutable reference to the `index`-th vertex in the `VertexArray`.
+    ///
+    /// # Safety
+    /// The behaviour is undefined if `index >= self.vertex_count()`.
+    #[must_use]
+    pub unsafe fn get_vertex_unchecked(&self, index: usize) -> &Vertex {
+        &*(sfVertexArray_getVertex(self.vertex_array, index) as *const _)
+    }
+
+    /// Returns a mutable reference to the `index`-th vertex in the `VertexArray`.
+    ///
+    /// # Safety
+    /// The behaviour is undefined if `index >= self.vertex_count()`.
+    #[must_use]
+    pub unsafe fn get_vertex_mut_unchecked(&mut self, index: usize) -> &mut Vertex {
+        &mut *(sfVertexArray_getVertex(self.vertex_array, index) as *mut _)
+    }
+
+    /// Sets the `index`-th vertex to `vertex`.
+    ///
+    /// # Safety
+    /// The behaviour is undefined if `index >= self.vertex_count()`.
+    pub unsafe fn set_vertex_unchecked(&mut self, index: usize, vertex: &Vertex) {
+        let v = self.get_vertex_mut_unchecked(index);
+        *v = *vertex;
+    }
+
     pub(super) fn raw(&self) -> *const sfVertexArray {
         self.vertex_array
     }
