@@ -141,6 +141,13 @@ impl VertexArray {
         unsafe { &mut *(sfVertexArray_getVertex(self.vertex_array, index) as *mut _) }
     }
 
+    /// Sets the `index`-th vertex to `vertex`.
+    /// Panics if `index >= self.vertex_count()`.
+    pub fn set_vertex(&mut self, index: usize, vertex: &Vertex) {
+        let v = self.get_vertex_mut(index);
+        *v = *vertex;
+    }
+
     pub(super) fn raw(&self) -> *const sfVertexArray {
         self.vertex_array
     }
