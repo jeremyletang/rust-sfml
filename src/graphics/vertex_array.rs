@@ -120,35 +120,6 @@ impl VertexArray {
     }
 
     /// Returns an immutable reference to the `index`-th vertex in the `VertexArray`.
-    /// Panics if `index >= self.vertex_count()`.
-    #[must_use]
-    pub fn get_vertex(&self, index: usize) -> &Vertex {
-        assert!(
-            index < self.vertex_count(),
-            "get_vertex(): tried to get an inexisting vertex!"
-        );
-        unsafe { self.get_vertex_unchecked(index) }
-    }
-
-    /// Returns a mutable reference to the `index`-th vertex in the `VertexArray`.
-    /// Panics if `index >= self.vertex_count()`.
-    #[must_use]
-    pub fn get_vertex_mut(&mut self, index: usize) -> &mut Vertex {
-        assert!(
-            index < self.vertex_count(),
-            "get_vertex_mut(): tried to get an inexisting vertex!"
-        );
-        unsafe { self.get_vertex_mut_unchecked(index) }
-    }
-
-    /// Sets the `index`-th vertex to `vertex`.
-    /// Panics if `index >= self.vertex_count()`.
-    pub fn set_vertex(&mut self, index: usize, vertex: &Vertex) {
-        let v = self.get_vertex_mut(index);
-        *v = *vertex;
-    }
-
-    /// Returns an immutable reference to the `index`-th vertex in the `VertexArray`.
     ///
     /// # Safety
     /// The behaviour is undefined if `index >= self.vertex_count()`.
@@ -234,7 +205,7 @@ impl Index<usize> for VertexArray {
             idx,
             self.vertex_count()
         );
-        unsafe { &*(sfVertexArray_getVertex(self.vertex_array, idx) as *const Vertex) }
+        unsafe { self.get_vertex_unchecked(idx) }
     }
 }
 
@@ -246,7 +217,7 @@ impl IndexMut<usize> for VertexArray {
             idx,
             self.vertex_count()
         );
-        unsafe { &mut *(sfVertexArray_getVertex(self.vertex_array, idx) as *mut Vertex) }
+        unsafe { self.get_vertex_mut_unchecked(idx) }
     }
 }
 
