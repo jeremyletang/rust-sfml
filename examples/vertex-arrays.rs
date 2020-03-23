@@ -46,6 +46,35 @@ fn main() {
         vertex_array[1].color, vertex_array[1].position
     );
 
+    unsafe {
+        println!("\nMutable unchecked access to a vertex");
+        let vertex = vertex_array.get_vertex_mut_unchecked(1);
+        println!(
+            "Before Vertex Color: {:?} | Position: {:?}",
+            vertex.color, vertex.position
+        );
+        vertex.position.x = 100.0;
+        println!(
+            "After Vertex Color: {:?} | Position: {:?}",
+            vertex.color, vertex.position
+        );
+    }
+
+    // Or:
+    unsafe {
+        vertex_array.set_vertex_unchecked(1, &Vertex::with_pos((20., 40.)));
+        println!("[2] After Vertex Position: {:?}", vertex_array[1].position);
+    }
+
+    println!("\nImmutable unchecked access to a vertex");
+    unsafe {
+        println!(
+            "Vertex Color: {:?} | Position: {:?}",
+            vertex_array.get_vertex_unchecked(1).color,
+            vertex_array.get_vertex_unchecked(1).position
+        );
+    }
+
     loop {
         while let Some(e) = window.poll_event() {
             if e == Event::Closed {
