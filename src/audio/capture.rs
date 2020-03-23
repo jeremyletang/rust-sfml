@@ -144,7 +144,7 @@ macro_rules! device_common {
                 Err(SetDeviceError)
             }
         }
-    }
+    };
 }
 
 impl<'a, R: SoundRecorder> SoundRecorderDriver<'a, R> {
