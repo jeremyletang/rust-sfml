@@ -60,9 +60,10 @@ impl Vertex {
     /// * `tex_coords` - Texture coordinate of the vertex
     ///
     /// Return a Vertex
-    pub fn new<P: Into<Vector2f>>(position: P, color: Color, tex_coords: Vector2f) -> Self {
+    #[must_use]
+    pub fn new(position: Vector2f, color: Color, tex_coords: Vector2f) -> Self {
         Self {
-            position: position.into(),
+            position,
             color,
             tex_coords,
         }
@@ -78,7 +79,8 @@ impl Vertex {
     /// * `tex_coords` - (0., 0.)
     ///
     /// Return a Vertex
-    pub fn with_pos<P: Into<Vector2f>>(position: P) -> Self {
+    #[must_use]
+    pub fn with_pos(position: Vector2f) -> Self {
         Self::new(position, Color::WHITE, Vector2f::new(0., 0.))
     }
 
@@ -92,7 +94,8 @@ impl Vertex {
     /// * `tex_coords` - (0., 0)
     ///
     /// Return a Vertex
-    pub fn with_pos_color<P: Into<Vector2f>>(position: P, color: Color) -> Vertex {
+    #[must_use]
+    pub fn with_pos_color(position: Vector2f, color: Color) -> Vertex {
         Self::new(position, color, Vector2f::new(0., 0.))
     }
 
@@ -106,7 +109,8 @@ impl Vertex {
     /// * color - white
     ///
     /// Return a Vertex
-    pub fn with_pos_coords<P: Into<Vector2f>>(position: P, tex_coords: Vector2f) -> Vertex {
+    #[must_use]
+    pub fn with_pos_coords(position: Vector2f, tex_coords: Vector2f) -> Vertex {
         Self::new(position, Color::WHITE, tex_coords)
     }
     pub(super) fn raw(&self) -> ffi::sfVertex {

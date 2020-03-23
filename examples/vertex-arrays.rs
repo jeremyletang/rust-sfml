@@ -17,12 +17,12 @@ fn main() {
     let mut vertex_array = VertexArray::default();
     vertex_array.set_primitive_type(PrimitiveType::LineStrip);
 
-    vertex_array.append(&Vertex::with_pos_color((20.0, 30.0), Color::GREEN));
-    vertex_array.append(&Vertex::with_pos_color((30.0, 30.0), Color::GREEN));
-    vertex_array.append(&Vertex::with_pos_color((40.0, 40.0), Color::GREEN));
-    vertex_array.append(&Vertex::with_pos_color((50.0, 50.0), Color::GREEN));
-    vertex_array.append(&Vertex::with_pos_color((60.0, 60.0), Color::GREEN));
-    vertex_array.append(&Vertex::with_pos_color((50.0, 80.0), Color::GREEN));
+    vertex_array.append(&Vertex::with_pos_color((20.0, 30.0).into(), Color::GREEN));
+    vertex_array.append(&Vertex::with_pos_color((30.0, 30.0).into(), Color::GREEN));
+    vertex_array.append(&Vertex::with_pos_color((40.0, 40.0).into(), Color::GREEN));
+    vertex_array.append(&Vertex::with_pos_color((50.0, 50.0).into(), Color::GREEN));
+    vertex_array.append(&Vertex::with_pos_color((60.0, 60.0).into(), Color::GREEN));
+    vertex_array.append(&Vertex::with_pos_color((50.0, 80.0).into(), Color::GREEN));
 
     println!("\nIterate over the vertices of a VertexArray");
     for v in vertex_array.vertices() {

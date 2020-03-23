@@ -20,12 +20,12 @@ fn main() {
         VertexBuffer::new(PrimitiveType::LineStrip, 6, VertexBufferUsage::Static);
 
     let vertices = vec![
-        Vertex::with_pos_color((20.0, 30.0), Color::GREEN),
-        Vertex::with_pos_color((30.0, 30.0), Color::GREEN),
-        Vertex::with_pos_color((40.0, 40.0), Color::GREEN),
-        Vertex::with_pos_color((50.0, 50.0), Color::GREEN),
-        Vertex::with_pos_color((60.0, 60.0), Color::GREEN),
-        Vertex::with_pos_color((50.0, 80.0), Color::GREEN),
+        Vertex::with_pos_color((20.0, 30.0).into(), Color::GREEN),
+        Vertex::with_pos_color((30.0, 30.0).into(), Color::GREEN),
+        Vertex::with_pos_color((40.0, 40.0).into(), Color::GREEN),
+        Vertex::with_pos_color((50.0, 50.0).into(), Color::GREEN),
+        Vertex::with_pos_color((60.0, 60.0).into(), Color::GREEN),
+        Vertex::with_pos_color((50.0, 80.0).into(), Color::GREEN),
     ];
     vertex_buffer.update(&vertices, 0);
 
