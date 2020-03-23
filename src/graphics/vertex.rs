@@ -61,7 +61,7 @@ impl Vertex {
     ///
     /// Return a Vertex
     #[must_use]
-    pub fn new(position: Vector2f, color: Color, tex_coords: Vector2f) -> Self {
+    pub const fn new(position: Vector2f, color: Color, tex_coords: Vector2f) -> Self {
         Self {
             position,
             color,
@@ -80,7 +80,7 @@ impl Vertex {
     ///
     /// Return a Vertex
     #[must_use]
-    pub fn with_pos(position: Vector2f) -> Self {
+    pub const fn with_pos(position: Vector2f) -> Self {
         Self::new(position, Color::WHITE, Vector2f::new(0., 0.))
     }
 
@@ -95,7 +95,7 @@ impl Vertex {
     ///
     /// Return a Vertex
     #[must_use]
-    pub fn with_pos_color(position: Vector2f, color: Color) -> Vertex {
+    pub const fn with_pos_color(position: Vector2f, color: Color) -> Vertex {
         Self::new(position, color, Vector2f::new(0., 0.))
     }
 
@@ -110,7 +110,7 @@ impl Vertex {
     ///
     /// Return a Vertex
     #[must_use]
-    pub fn with_pos_coords(position: Vector2f, tex_coords: Vector2f) -> Vertex {
+    pub const fn with_pos_coords(position: Vector2f, tex_coords: Vector2f) -> Vertex {
         Self::new(position, Color::WHITE, tex_coords)
     }
     pub(super) fn raw(&self) -> ffi::sfVertex {
