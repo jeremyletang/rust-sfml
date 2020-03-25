@@ -62,7 +62,7 @@ fn main() {
 
     // Or:
     unsafe {
-        vertex_array.set_vertex_unchecked(1, &Vertex::with_pos((20., 40.)));
+        vertex_array.set_vertex_unchecked(1, &Vertex::with_pos((20., 40.).into()));
         println!("[2] After Vertex Position: {:?}", vertex_array[1].position);
     }
 
