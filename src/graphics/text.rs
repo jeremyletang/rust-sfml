@@ -236,7 +236,7 @@ impl<'s> Clone for Text<'s> {
             panic!("Not enough memory to clone Text")
         } else {
             Text {
-                text: self.text,
+                text: sp,
                 font: PhantomData,
             }
         }
