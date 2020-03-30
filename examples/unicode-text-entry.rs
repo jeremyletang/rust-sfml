@@ -9,6 +9,7 @@ fn main() {
         Style::CLOSE,
         &Default::default(),
     );
+    window.set_vertical_sync_enabled(true);
 
     let font = Font::from_file("resources/sansation.ttf").unwrap();
     let mut string = String::from("This text can be edited.\nTry it!");
