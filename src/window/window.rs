@@ -1,7 +1,7 @@
 use crate::{
     sf_bool_ext::SfBoolExt,
     system::{SfStrConv, Vector2i, Vector2u},
-    window::{ContextSettings, Event, Style, VideoMode},
+    window::{ContextSettings, Cursor, Event, Style, VideoMode},
 };
 use csfml_system_sys::sfBool;
 use csfml_window_sys as ffi;
@@ -374,6 +374,14 @@ impl Window {
     ///
     pub fn set_mouse_position(&mut self, position: Vector2i) {
         unsafe { ffi::sfMouse_setPosition(position.raw(), self.window) }
+    }
+
+    /// Set the displayed cursor to a native system cursor.
+    ///
+    /// Upon window creation, the arrow cursor is used by default.
+    /// The cursor can not be destroyed while in use by the window.
+    pub fn set_mouse_cursor(&mut self, cursor: &Cursor) {
+        unsafe { ffi::sfWindow_setMouseCursor(self.window, cursor.raw()) }
     }
 
     /// Returns the current position of a touch in window coordinates.
