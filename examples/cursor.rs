@@ -202,14 +202,12 @@ fn main() {
                     hotspot_selected = true;
                     hotspot = Vector2::new(gx as u32, gy as u32);
                     modif = true;
-                } else {
-                    if mouse::Button::Left.is_pressed() {
-                        *cell = true;
-                        modif = true;
-                    } else if mouse::Button::Right.is_pressed() {
-                        *cell = false;
-                        modif = true;
-                    }
+                } else if mouse::Button::Left.is_pressed() {
+                    *cell = true;
+                    modif = true;
+                } else if mouse::Button::Right.is_pressed() {
+                    *cell = false;
+                    modif = true;
                 }
             }
         }
