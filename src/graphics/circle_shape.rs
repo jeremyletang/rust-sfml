@@ -49,7 +49,7 @@ impl<'s> CircleShape<'s> {
     ///
     /// # Arguments
     /// * radius - New radius of the circle
-    pub fn set_radius(&self, radius: f32) {
+    pub fn set_radius(&mut self, radius: f32) {
         unsafe { ffi::sfCircleShape_setRadius(self.circle_shape, radius) }
     }
 
