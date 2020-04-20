@@ -132,6 +132,11 @@ impl Texture {
 
     /// Create a new texture from memory
     ///
+    /// The `area` argument can be used to load only a sub-rectangle of the whole image.
+    /// If you want the entire image then use a default [`IntRect`].
+    /// If the area rectangle crosses the bounds of the image,
+    /// it is adjusted to fit the image size.
+    ///
     /// # Arguments
     /// * mem - Pointer to the file data in memory
     /// * area - Area of the image to load
@@ -147,8 +152,14 @@ impl Texture {
 
     /// Create a new texture from a stream (a struct implementing Read + Seek)
     ///
+    /// The `area` argument can be used to load only a sub-rectangle of the whole image.
+    /// If you want the entire image then use a default [`IntRect`].
+    /// If the area rectangle crosses the bounds of the image,
+    /// it is adjusted to fit the image size.
+    ///
     /// # Arguments
     /// * stream - Your struct, implementing Read and Seek
+    /// * area - Area of the image to load
     ///
     /// Returns `None` on failure.
     pub fn from_stream<T: Read + Seek>(

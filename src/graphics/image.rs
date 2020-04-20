@@ -32,9 +32,11 @@ impl Image {
         Self { image }
     }
 
-    /// Create an image from a stream.
+    /// Create an image from a custom stream.
     ///
-    /// This image is filled with black pixels.
+    /// The supported image formats are bmp, png, tga, jpg, gif, psd, hdr and pic.
+    /// Some format options are not supported, like progressive jpeg.
+    /// If this function fails, the image is left unchanged.
     ///
     /// # Arguments
     /// * stream - Your struct, implementing Read and Seek
@@ -50,9 +52,11 @@ impl Image {
         }
     }
 
-    /// Create an image from memory
+    /// Create an image from a file in memory
     ///
-    /// This image is filled with black pixels.
+    /// The supported image formats are bmp, png, tga, jpg, gif, psd, hdr and pic.
+    /// Some format options are not supported, like progressive jpeg.
+    /// If this function fails, the image is left unchanged.
     ///
     /// # Arguments
     /// * mem - Pointer to the file data in memory
