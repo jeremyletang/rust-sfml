@@ -195,9 +195,10 @@ impl<'t> Edge<'t> {
         let mut entities = Vec::new();
 
         for i in 0..6 {
-            let mut entity = Sprite::with_texture(entity_texture);
-            entity.set_texture_rect(&IntRect::new(96 * i, 0, 96, 96));
-            entities.push(entity);
+            entities.push(Sprite::with_texture_and_rect(
+                entity_texture,
+                &IntRect::new(96 * i, 0, 96, 96),
+            ));
         }
 
         let mut shader = Shader::from_file(None, None, Some("resources/edge.frag")).unwrap();

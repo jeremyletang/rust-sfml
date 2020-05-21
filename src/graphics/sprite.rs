@@ -39,6 +39,14 @@ impl<'s> Sprite<'s> {
         sprite
     }
 
+    /// Create a new sprite with a texture and a source rectangle
+    #[must_use]
+    pub fn with_texture_and_rect(texture: &'s Texture, rect: &IntRect) -> Self {
+        let mut sprite = Sprite::with_texture(texture);
+        sprite.set_texture_rect(rect);
+        sprite
+    }
+
     /// Change the source texture of a sprite
     ///
     /// The texture argument refers to a texture that must
