@@ -125,7 +125,7 @@ impl Window {
     ///  Pop the event on top of event queue, if any, and return it
     ///
     /// This function is not blocking: if there's no pending event then
-    /// it will return false and leave \a event unmodified.
+    /// it will return `None`.
     /// Note that more than one event may be present in the event queue,
     /// thus you should always call this function in a loop
     /// to make sure that you process every pending event.
@@ -146,8 +146,7 @@ impl Window {
     ///
     /// This function is blocking: if there's no pending event then
     /// it will wait until an event is received.
-    /// After this function returns (and no error occured),
-    /// the event object is always valid and filled properly.
+    ///
     /// This function is typically used when you have a thread that
     /// is dedicated to events handling: you want to make this thread
     /// sleep as long as no new event is received.
