@@ -21,8 +21,6 @@ impl<'s> CircleShape<'s> {
     ///
     /// # Arguments
     /// * texture - The texture to initialize the `CircleShape` with.
-    ///
-    /// Return Some(CircleShape) or None
     #[must_use]
     pub fn with_texture(texture: &'s Texture) -> CircleShape<'s> {
         let mut shape = CircleShape::default();

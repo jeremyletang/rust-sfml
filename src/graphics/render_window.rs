@@ -107,7 +107,7 @@ impl RenderWindow {
     /// thus you should always call this function in a loop
     /// to make sure that you process every pending event.
     ///
-    /// Return Some(event) if an event was returned, or None if the event queue was empty
+    /// Returns `Some(event)` if an event was returned, or `None` if the event queue was empty
     pub fn poll_event(&mut self) -> Option<Event> {
         let mut event = std::mem::MaybeUninit::uninit();
         let have_event =
@@ -130,7 +130,7 @@ impl RenderWindow {
     /// is dedicated to events handling: you want to make this thread
     /// sleep as long as no new event is received.
     ///
-    /// Return Some(event) or None if an error has occured
+    /// Returns `Some(event)` or `None` if an error has occured
     pub fn wait_event(&mut self) -> Option<Event> {
         let mut event = std::mem::MaybeUninit::uninit();
         let have_event =

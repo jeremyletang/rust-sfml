@@ -41,7 +41,7 @@ impl Image {
     /// # Arguments
     /// * stream - Your struct, implementing Read and Seek
     ///
-    /// Return Some(Image) or None
+    /// Returns `None` if loading fails
     pub fn from_stream<T: Read + Seek>(stream: &mut T) -> Option<Self> {
         let mut input_stream = InputStream::new(stream);
         let image = unsafe { ffi::sfImage_createFromStream(&mut input_stream.0) };
@@ -61,7 +61,7 @@ impl Image {
     /// # Arguments
     /// * mem - Pointer to the file data in memory
     ///
-    /// Return Some(Image) or None
+    /// Returns `None` if loading fails.
     #[must_use]
     pub fn from_memory(mem: &[u8]) -> Option<Self> {
         let image = unsafe { ffi::sfImage_createFromMemory(mem.as_ptr() as *const _, mem.len()) };
@@ -79,7 +79,7 @@ impl Image {
     /// * height - Height of the image
     /// * color - Fill color
     ///
-    /// Return Some(Image) or None
+    /// Returns `None` if creation fails.
     #[must_use]
     pub fn from_color(width: u32, height: u32, color: Color) -> Option<Self> {
         let image = unsafe { ffi::sfImage_createFromColor(width, height, color.raw()) };
@@ -100,7 +100,7 @@ impl Image {
     /// # Arguments
     /// * filename - Path of the image file to load
     ///
-    /// Return Some(Image) or None
+    /// Returns `None` if loading fails
     #[must_use]
     pub fn from_file(filename: &str) -> Option<Self> {
         let c_filename = CString::new(filename.as_bytes()).unwrap();
@@ -123,7 +123,7 @@ impl Image {
     /// * height - Height of the image
     /// * pixels - Vector of pixels to copy to the image
     ///
-    /// Return Some(Image) or None
+    /// Returns `None` if creation fails.
     #[must_use]
     pub fn create_from_pixels(width: u32, height: u32, pixels: &[u8]) -> Option<Self> {
         let image = unsafe { ffi::sfImage_createFromPixels(width, height, pixels.as_ptr()) };

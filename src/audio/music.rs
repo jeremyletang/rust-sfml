@@ -67,7 +67,7 @@ impl Music {
     /// # Arguments
     /// * filename - Path of the music file to open
     ///
-    /// Return Some(Music) or None
+    /// Returns `None` if loading fails.
     ///
     /// [`play`]: Music::play
     #[must_use]
@@ -91,7 +91,7 @@ impl Music {
     /// # Arguments
     /// * stream - Your struct, implementing Read and Seek
     ///
-    /// Return Some(Music) or None
+    /// Returns `None` if loading fails.
     ///
     /// [`play`]: Music::play
     pub fn from_stream<T: Read + Seek>(stream: &mut T) -> Option<Music> {
@@ -115,7 +115,7 @@ impl Music {
     /// # Arguments
     /// * mem - Pointer to the file data in memory
     ///
-    /// Return Some(Music) or None
+    /// Returns `None` if loading fails.
     ///
     /// [`play`]: Music::play
     #[must_use]

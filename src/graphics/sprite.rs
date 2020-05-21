@@ -21,8 +21,6 @@ pub struct Sprite<'s> {
 
 impl<'s> Sprite<'s> {
     /// Create a new sprite
-    ///
-    /// Return Some(Sprite) or None
     #[must_use]
     pub fn new() -> Sprite<'s> {
         let sp = unsafe { ffi::sfSprite_create() };
@@ -34,8 +32,6 @@ impl<'s> Sprite<'s> {
     }
 
     /// Create a new sprite with a texture
-    ///
-    /// Return Some(Sprite) or None
     #[must_use]
     pub fn with_texture(texture: &'s Texture) -> Sprite<'s> {
         let mut sprite = Sprite::new();
