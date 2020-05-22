@@ -15,7 +15,6 @@ default = ["graphics", "audio"]
 window = ["csfml-window-sys", "bitflags", "widestring"]
 graphics = ["window", "csfml-graphics-sys"]
 audio = ["csfml-audio-sys"]
-network = ["csfml-network-sys"]
 # Used to skip running certain tests on CI, since it's running in a headless environment.
 ci-headless = []
 
@@ -44,11 +43,6 @@ optional = true
 [dependencies.csfml-audio-sys]
 path = "ffi/csfml-audio-sys"
 version = "0.5.0"
-optional = true
-
-[dependencies.csfml-network-sys]
-path = "ffi/csfml-network-sys"
-version = "0.2.0"
 optional = true
 
 [dev-dependencies]
