@@ -127,6 +127,7 @@ impl Window {
     /// The type of the returned handle is Handle, which is a typedef to the handle type defined by the OS.
     /// You shouldn't need to use this function, unless you have very specific stuff to implement that SFML
     /// doesn't support, or implement a temporary workaround until a bug is fixed.
+    #[must_use]
     pub fn system_handle(&self) -> Handle {
         unsafe { ffi::sfWindow_getSystemHandle(self.window) }
     }
