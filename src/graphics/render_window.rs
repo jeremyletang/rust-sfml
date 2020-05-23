@@ -88,6 +88,15 @@ impl RenderWindow {
         }
     }
 
+    /// Get the OS-specific handle of the window.
+    ///
+    /// The type of the returned handle is sf::WindowHandle, which is a typedef to the handle type defined by the OS.
+    /// You shouldn't need to use this function, unless you have very specific stuff to implement that SFML
+    /// doesn't support, or implement a temporary workaround until a bug is fixed.
+    pub fn handle(&self) -> Handle {
+        unsafe { ffi::sfRenderWindow_getSystemHandle(self.render_window) }
+    }
+
     /// Change a render window's icon
     /// pixels must be an array of width x height pixels in 32-bits RGBA format.
     ///
