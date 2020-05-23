@@ -86,7 +86,7 @@ impl<'s> Drawable for CircleShape<'s> {
     fn draw<'a: 'shader, 'texture, 'shader, 'shader_texture>(
         &'a self,
         target: &mut dyn RenderTarget,
-        states: RenderStates<'texture, 'shader, 'shader_texture>,
+        states: &RenderStates<'texture, 'shader, 'shader_texture>,
     ) {
         target.draw_circle_shape(self, states)
     }

@@ -169,54 +169,66 @@ impl RenderTarget for RenderTexture {
         }
     }
     fn draw(&mut self, object: &dyn Drawable) {
-        object.draw(self, RenderStates::default());
+        object.draw(self, &RenderStates::default());
     }
-    fn draw_with_renderstates(&mut self, object: &dyn Drawable, render_states: RenderStates) {
+    fn draw_with_renderstates(&mut self, object: &dyn Drawable, render_states: &RenderStates) {
         object.draw(self, render_states);
     }
-    fn draw_text(&self, text: &Text, rs: RenderStates) {
-        unsafe { ffi::sfRenderTexture_drawText(self.render_texture, text.raw(), &rs.raw()) }
+    fn draw_text(&self, text: &Text, rs: &RenderStates) {
+        unsafe { ffi::sfRenderTexture_drawText(self.render_texture, text.raw(), rs.raw_ref()) }
     }
-    fn draw_shape(&self, shape: &CustomShape, rs: RenderStates) {
-        unsafe { ffi::sfRenderTexture_drawShape(self.render_texture, shape.raw(), &rs.raw()) }
+    fn draw_shape(&self, shape: &CustomShape, rs: &RenderStates) {
+        unsafe { ffi::sfRenderTexture_drawShape(self.render_texture, shape.raw(), rs.raw_ref()) }
     }
-    fn draw_sprite(&self, sprite: &Sprite, rs: RenderStates) {
-        unsafe { ffi::sfRenderTexture_drawSprite(self.render_texture, sprite.raw(), &rs.raw()) }
+    fn draw_sprite(&self, sprite: &Sprite, rs: &RenderStates) {
+        unsafe { ffi::sfRenderTexture_drawSprite(self.render_texture, sprite.raw(), rs.raw_ref()) }
     }
-    fn draw_circle_shape(&self, circle_shape: &CircleShape, rs: RenderStates) {
+    fn draw_circle_shape(&self, circle_shape: &CircleShape, rs: &RenderStates) {
         unsafe {
-            ffi::sfRenderTexture_drawCircleShape(self.render_texture, circle_shape.raw(), &rs.raw())
+            ffi::sfRenderTexture_drawCircleShape(
+                self.render_texture,
+                circle_shape.raw(),
+                rs.raw_ref(),
+            )
         }
     }
-    fn draw_rectangle_shape(&self, rectangle_shape: &RectangleShape, rs: RenderStates) {
+    fn draw_rectangle_shape(&self, rectangle_shape: &RectangleShape, rs: &RenderStates) {
         unsafe {
             ffi::sfRenderTexture_drawRectangleShape(
                 self.render_texture,
                 rectangle_shape.raw(),
-                &rs.raw(),
+                rs.raw_ref(),
             )
         }
     }
-    fn draw_convex_shape(&self, convex_shape: &ConvexShape, rs: RenderStates) {
+    fn draw_convex_shape(&self, convex_shape: &ConvexShape, rs: &RenderStates) {
         unsafe {
-            ffi::sfRenderTexture_drawConvexShape(self.render_texture, convex_shape.raw(), &rs.raw())
+            ffi::sfRenderTexture_drawConvexShape(
+                self.render_texture,
+                convex_shape.raw(),
+                rs.raw_ref(),
+            )
         }
     }
-    fn draw_vertex_array(&self, vertex_array: &VertexArray, rs: RenderStates) {
+    fn draw_vertex_array(&self, vertex_array: &VertexArray, rs: &RenderStates) {
         unsafe {
-            ffi::sfRenderTexture_drawVertexArray(self.render_texture, vertex_array.raw(), &rs.raw())
+            ffi::sfRenderTexture_drawVertexArray(
+                self.render_texture,
+                vertex_array.raw(),
+                rs.raw_ref(),
+            )
         }
     }
-    fn draw_vertex_buffer(&self, vertex_buffer: &VertexBuffer, rs: RenderStates) {
+    fn draw_vertex_buffer(&self, vertex_buffer: &VertexBuffer, rs: &RenderStates) {
         unsafe {
             ffi::sfRenderTexture_drawVertexBuffer(
                 self.render_texture,
                 vertex_buffer.raw(),
-                &rs.raw(),
+                rs.raw_ref(),
             )
         }
     }
-    fn draw_primitives(&self, vertices: &[Vertex], ty: PrimitiveType, rs: RenderStates) {
+    fn draw_primitives(&self, vertices: &[Vertex], ty: PrimitiveType, rs: &RenderStates) {
         let len = vertices.len();
         unsafe {
             ffi::sfRenderTexture_drawPrimitives(
@@ -224,7 +236,7 @@ impl RenderTarget for RenderTexture {
                 vertices.as_ptr() as *const _,
                 len,
                 ty.raw(),
-                &rs.raw(),
+                rs.raw_ref(),
             );
         }
     }

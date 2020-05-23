@@ -1,5 +1,5 @@
 use crate::graphics::{csfml_graphics_sys as ffi, BlendMode, Shader, Texture, Transform};
-use std::ptr;
+use std::{marker::PhantomData, ptr};
 
 /// Define the states used for drawing to a [`RenderTarget`].
 ///
@@ -34,8 +34,8 @@ use std::ptr;
 /// # let shader: Shader = unimplemented!();
 /// # let sprite: Sprite = unimplemented!();
 /// let mut states = RenderStates::default();
-/// states.shader = Some(&shader);
-/// window.draw_with_renderstates(&sprite, states);
+/// states.set_shader(Some(&shader));
+/// window.draw_with_renderstates(&sprite, &states);
 /// ```
 ///
 /// When you're inside the `draw` function of a drawable object (implementing [`Drawable`]),
@@ -46,16 +46,12 @@ use std::ptr;
 /// [`RenderTarget`]: crate::graphics::RenderTarget
 /// [`RenderTarget::draw_with_renderstates`]: crate::graphics::RenderTarget::draw_with_renderstates
 /// [`Drawable`]: crate::graphics::Drawable
-#[derive(Default, Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy)]
+#[repr(transparent)]
 pub struct RenderStates<'texture, 'shader, 'shader_texture: 'shader> {
-    /// Blending mode.
-    pub blend_mode: BlendMode,
-    /// Transform
-    pub transform: Transform,
-    /// Texture
-    pub texture: Option<&'texture Texture>,
-    /// Shader
-    pub shader: Option<&'shader Shader<'shader_texture>>,
+    repr: ffi::sfRenderStates,
+    _texture: PhantomData<&'texture Texture>,
+    _shader: PhantomData<&'shader Shader<'shader_texture>>,
 }
 
 impl<'texture, 'shader, 'shader_texture> RenderStates<'texture, 'shader, 'shader_texture> {
@@ -76,24 +72,63 @@ impl<'texture, 'shader, 'shader_texture> RenderStates<'texture, 'shader, 'shader
         shader: Option<&'shader Shader<'shader_texture>>,
     ) -> Self {
         Self {
-            blend_mode,
-            transform,
-            texture,
-            shader,
+            repr: ffi::sfRenderStates {
+                blendMode: blend_mode.raw(),
+                transform: transform.raw(),
+                texture: match texture {
+                    Some(tex) => tex.raw(),
+                    None => ptr::null(),
+                },
+                shader: match shader {
+                    Some(shader) => shader.raw(),
+                    None => ptr::null(),
+                },
+            },
+            _texture: PhantomData,
+            _shader: PhantomData,
         }
     }
-    pub(super) fn raw(&self) -> ffi::sfRenderStates {
-        ffi::sfRenderStates {
-            blendMode: self.blend_mode.raw(),
-            transform: self.transform.0,
-            texture: match self.texture {
-                Some(texture) => texture.raw(),
-                None => ptr::null_mut(),
+    pub(super) fn raw_ref(&self) -> *const ffi::sfRenderStates {
+        let ptr: *const Self = self;
+        ptr as *const ffi::sfRenderStates
+    }
+    /// Sets the blending mode
+    pub fn set_blend_mode(&mut self, blend_mode: BlendMode) {
+        self.repr.blendMode = blend_mode.raw();
+    }
+    /// Sets the transform
+    pub fn set_transform(&mut self, transform: Transform) {
+        self.repr.transform = transform.raw();
+    }
+    /// Sets the texture
+    pub fn set_texture(&mut self, texture: Option<&'texture Texture>) {
+        self.repr.texture = match texture {
+            None => ptr::null(),
+            Some(tex) => tex.raw(),
+        };
+    }
+    /// Sets the shader
+    pub fn set_shader(&mut self, shader: Option<&'shader Shader<'shader_texture>>) {
+        self.repr.shader = match shader {
+            None => ptr::null(),
+            Some(shader) => shader.raw(),
+        };
+    }
+}
+
+impl<'texture, 'shader, 'shader_texture> Default
+    for RenderStates<'texture, 'shader, 'shader_texture>
+{
+    fn default() -> Self {
+        Self {
+            repr: ffi::sfRenderStates {
+                blendMode: BlendMode::default().raw(),
+                transform: Transform::default().raw(),
+                texture: ptr::null(),
+                shader: ptr::null(),
             },
-            shader: match self.shader {
-                Some(shader) => shader.raw(),
-                None => ptr::null_mut(),
-            },
+            _texture: PhantomData,
+            _shader: PhantomData,
         }
     }
 }

@@ -80,8 +80,8 @@ use std::{
 /// # let mut window: RenderWindow = unimplemented!();
 /// # let sprite: Sprite = unimplemented!();
 /// let mut states = RenderStates::default();;
-/// states.shader = Some(&shader);
-/// window.draw_with_renderstates(&sprite, states);
+/// states.set_shader(Some(&shader));
+/// window.draw_with_renderstates(&sprite, &states);
 /// ```
 ///
 /// Shaders can be used on any drawable, but some combinations are not interesting.

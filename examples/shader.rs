@@ -29,10 +29,11 @@ impl<'t> Drawable for Pixelate<'t> {
     fn draw<'a: 'shader, 'texture, 'shader, 'shader_texture>(
         &'a self,
         target: &mut dyn RenderTarget,
-        mut states: RenderStates<'texture, 'shader, 'shader_texture>,
+        states: &RenderStates<'texture, 'shader, 'shader_texture>,
     ) {
-        states.shader = Some(&self.shader);
-        target.draw_with_renderstates(&self.sprite, states);
+        let mut states = *states;
+        states.set_shader(Some(&self.shader));
+        target.draw_with_renderstates(&self.sprite, &states);
     }
 }
 
@@ -94,10 +95,11 @@ impl<'fo> Drawable for WaveBlur<'fo> {
     fn draw<'a: 'shader, 'texture, 'shader, 'shader_texture>(
         &'a self,
         target: &mut dyn RenderTarget,
-        mut states: RenderStates<'texture, 'shader, 'shader_texture>,
+        states: &RenderStates<'texture, 'shader, 'shader_texture>,
     ) {
-        states.shader = Some(&self.shader);
-        target.draw_with_renderstates(&self.text, states);
+        let mut states = *states;
+        states.set_shader(Some(&self.shader));
+        target.draw_with_renderstates(&self.text, &states);
     }
 }
 
@@ -153,10 +155,11 @@ impl Drawable for StormBlink {
     fn draw<'a: 'shader, 'texture, 'shader, 'shader_texture>(
         &'a self,
         target: &mut dyn RenderTarget,
-        mut states: RenderStates<'texture, 'shader, 'shader_texture>,
+        states: &RenderStates<'texture, 'shader, 'shader_texture>,
     ) {
-        states.shader = Some(&self.shader);
-        target.draw_with_renderstates(&self.points, states);
+        let mut states = *states;
+        states.set_shader(Some(&self.shader));
+        target.draw_with_renderstates(&self.points, &states);
     }
 }
 
@@ -217,10 +220,11 @@ impl<'t> Drawable for Edge<'t> {
     fn draw<'a: 'shader, 'texture, 'shader, 'shader_texture>(
         &'a self,
         target: &mut dyn RenderTarget,
-        mut states: RenderStates<'texture, 'shader, 'shader_texture>,
+        states: &RenderStates<'texture, 'shader, 'shader_texture>,
     ) {
-        states.shader = Some(&self.shader);
-        target.draw_with_renderstates(&Sprite::with_texture(self.surface.texture()), states);
+        let mut states = *states;
+        states.set_shader(Some(&self.shader));
+        target.draw_with_renderstates(&Sprite::with_texture(self.surface.texture()), &states);
     }
 }
 

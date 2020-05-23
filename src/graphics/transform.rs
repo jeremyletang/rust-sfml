@@ -7,7 +7,7 @@ use crate::{
 ///
 /// A `Transform` specifies how to translate,
 /// rotate, scale, shear, project, whatever things.
-#[repr(C)]
+#[repr(transparent)]
 #[derive(Debug, Clone, Copy)]
 pub struct Transform(pub ffi::sfTransform);
 
@@ -165,6 +165,9 @@ impl Transform {
     #[must_use]
     pub fn transform_rect(&self, rectangle: &FloatRect) -> FloatRect {
         unsafe { FloatRect::from_raw(ffi::sfTransform_transformRect(&self.0, rectangle.raw())) }
+    }
+    pub(crate) fn raw(self) -> ffi::sfTransform {
+        unsafe { std::mem::transmute(self) }
     }
 }
 
