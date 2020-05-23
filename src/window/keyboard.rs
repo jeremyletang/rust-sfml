@@ -127,7 +127,7 @@ impl Key {
     /// triggered.
     #[must_use]
     pub fn is_pressed(self) -> bool {
-        unsafe { ffi::sfKeyboard_isKeyPressed(::std::mem::transmute(self)) }.to_bool()
+        unsafe { ffi::sfKeyboard_isKeyPressed(self as _) }.to_bool()
     }
 }
 
