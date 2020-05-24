@@ -6,6 +6,7 @@ use crate::{
     },
     sf_bool_ext::SfBoolExt,
     system::{Vector2f, Vector2i, Vector2u},
+    window::ContextSettings,
 };
 use csfml_system_sys::sfBool;
 
@@ -33,6 +34,30 @@ impl RenderTexture {
             None
         } else {
             Some(RenderTexture {
+                render_texture: tex,
+            })
+        }
+    }
+
+    /// Create a `RenderTexture` with the given `ContextSettings`.
+    ///
+    /// Useful if you want to enable multi-sampling or use the render-texture for
+    /// OpenGL rendering that requires a depth or stencil buffer.
+    /// Otherwise it is unnecessary, and you should call [`RenderTexture::new`].
+    ///
+    /// # Parameters
+    /// * width - Width of the render-texture
+    /// * height - Height of the render-texture
+    /// * settings - Additional settings for the underlying OpenGL texture and context
+    ///
+    /// Returns `None` if creation fails.
+    #[must_use]
+    pub fn with_settings(width: u32, height: u32, settings: &ContextSettings) -> Option<Self> {
+        let tex = unsafe { ffi::sfRenderTexture_createWithSettings(width, height, settings.raw()) };
+        if tex.is_null() {
+            None
+        } else {
+            Some(Self {
                 render_texture: tex,
             })
         }
