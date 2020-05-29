@@ -9,14 +9,14 @@ use crate::graphics::csfml_graphics_sys as ffi;
 /// A blend mode determines how the colors of an object you draw are mixed with the colors that
 /// are already in the buffer.
 ///
-/// The type is composed of 6 components, each of which has its own public field:
+/// The type is composed of 6 components
 ///
-/// - Color Source Factor (`color_src_factor`)
-/// - Color Destination Factor (`color_dst_factor`)
-/// - Color Blend Equation (`color_equation`)
-/// - Alpha Source Factor (`alpha_src_factor`)
-/// - Alpha Destination Factor (`alpha_dst_factor`)
-/// - Alpha Blend Equation (`alpha_equation`)
+/// - Color Source Factor
+/// - Color Destination Factor
+/// - Color Blend Equation
+/// - Alpha Source Factor
+/// - Alpha Destination Factor
+/// - Alpha Blend Equation
 ///
 /// The source factor specifies how the pixel you are drawing contributes to the final color.
 /// The destination factor specifies how the pixel already drawn in the buffer contributes to
@@ -34,8 +34,8 @@ use crate::graphics::csfml_graphics_sys as ffi;
 /// being + or - operators):
 ///
 /// ```ignore
-/// dst.rgb = color_src_factor * src.rgb (color_equation) color_dst_factor * dst.rgb
-/// dst.a   = alpha_src_factor * src.a   (alpha_equation) alpha_dst_factor * dst.a
+/// dst.rgb = colorSrcFactor * src.rgb (colorEquation) colorDstFactor * dst.rgb
+/// dst.a   = alphaSrcFactor * src.a   (alphaEquation) alphaDstFactor * dst.a
 /// ```
 ///
 /// All factors and colors are represented as floating point numbers between 0 and 1.
@@ -48,22 +48,9 @@ use crate::graphics::csfml_graphics_sys as ffi;
 /// [`Drawable`]: crate::graphics::Drawable
 /// [`RenderStates`]: crate::graphics::RenderStates
 /// [`RenderTarget::draw`]: crate::graphics::RenderTarget::draw
-#[derive(Clone, PartialEq, Eq, Debug, Copy)]
-#[repr(C)]
-pub struct BlendMode {
-    /// Source blending factor for the color channels.
-    pub color_src_factor: Factor,
-    /// Destination blending factor for the color channels.
-    pub color_dst_factor: Factor,
-    /// Blending equation for the color channels.
-    pub color_equation: Equation,
-    /// Source blending factor for the alpha channel.
-    pub alpha_src_factor: Factor,
-    /// Destination blending factor for the alpha channel.
-    pub alpha_dst_factor: Factor,
-    /// Blending equation for the alpha channel.
-    pub alpha_equation: Equation,
-}
+#[derive(Clone, Debug, Copy)]
+#[repr(transparent)]
+pub struct BlendMode(ffi::sfBlendMode);
 
 impl Default for BlendMode {
     /// Default blending mode is alpha blending.
@@ -127,55 +114,55 @@ impl BlendMode {
         alpha_dst: Factor,
         alpha_equ: Equation,
     ) -> Self {
-        BlendMode {
-            color_src_factor: col_src,
-            color_dst_factor: col_dst,
-            color_equation: col_equ,
-            alpha_src_factor: alpha_src,
-            alpha_dst_factor: alpha_dst,
-            alpha_equation: alpha_equ,
-        }
+        Self(ffi::sfBlendMode {
+            colorSrcFactor: col_src as _,
+            colorDstFactor: col_dst as _,
+            colorEquation: col_equ as _,
+            alphaSrcFactor: alpha_src as _,
+            alphaDstFactor: alpha_dst as _,
+            alphaEquation: alpha_equ as _,
+        })
     }
-    pub(super) fn raw(&self) -> ffi::sfBlendMode {
-        unsafe { ::std::mem::transmute(*self) }
+    pub(super) const fn raw(&self) -> ffi::sfBlendMode {
+        self.0
     }
     /// "Alpha" blend mode
-    pub const ALPHA: BlendMode = BlendMode {
-        color_src_factor: Factor::SrcAlpha,
-        color_dst_factor: Factor::OneMinusSrcAlpha,
-        color_equation: Equation::Add,
-        alpha_src_factor: Factor::One,
-        alpha_dst_factor: Factor::OneMinusSrcAlpha,
-        alpha_equation: Equation::Add,
-    };
+    pub const ALPHA: Self = Self(ffi::sfBlendMode {
+        colorSrcFactor: Factor::SrcAlpha as _,
+        colorDstFactor: Factor::OneMinusSrcAlpha as _,
+        colorEquation: Equation::Add as _,
+        alphaSrcFactor: Factor::One as _,
+        alphaDstFactor: Factor::OneMinusSrcAlpha as _,
+        alphaEquation: Equation::Add as _,
+    });
 
     /// "Add" blend mode
-    pub const ADD: BlendMode = BlendMode {
-        color_src_factor: Factor::SrcAlpha,
-        color_dst_factor: Factor::One,
-        color_equation: Equation::Add,
-        alpha_src_factor: Factor::One,
-        alpha_dst_factor: Factor::One,
-        alpha_equation: Equation::Add,
-    };
+    pub const ADD: BlendMode = Self(ffi::sfBlendMode {
+        colorSrcFactor: Factor::SrcAlpha as _,
+        colorDstFactor: Factor::One as _,
+        colorEquation: Equation::Add as _,
+        alphaSrcFactor: Factor::One as _,
+        alphaDstFactor: Factor::One as _,
+        alphaEquation: Equation::Add as _,
+    });
 
     /// "Multiply" blend mode
-    pub const MULTIPLY: BlendMode = BlendMode {
-        color_src_factor: Factor::DstColor,
-        color_dst_factor: Factor::Zero,
-        color_equation: Equation::Add,
-        alpha_src_factor: Factor::DstColor,
-        alpha_dst_factor: Factor::Zero,
-        alpha_equation: Equation::Add,
-    };
+    pub const MULTIPLY: BlendMode = Self(ffi::sfBlendMode {
+        colorSrcFactor: Factor::DstColor as _,
+        colorDstFactor: Factor::Zero as _,
+        colorEquation: Equation::Add as _,
+        alphaSrcFactor: Factor::DstColor as _,
+        alphaDstFactor: Factor::Zero as _,
+        alphaEquation: Equation::Add as _,
+    });
 
     /// "None" blend mode
-    pub const NONE: BlendMode = BlendMode {
-        color_src_factor: Factor::One,
-        color_dst_factor: Factor::Zero,
-        color_equation: Equation::Add,
-        alpha_src_factor: Factor::One,
-        alpha_dst_factor: Factor::Zero,
-        alpha_equation: Equation::Add,
-    };
+    pub const NONE: BlendMode = Self(ffi::sfBlendMode {
+        colorSrcFactor: Factor::One as _,
+        colorDstFactor: Factor::Zero as _,
+        colorEquation: Equation::Add as _,
+        alphaSrcFactor: Factor::One as _,
+        alphaDstFactor: Factor::Zero as _,
+        alphaEquation: Equation::Add as _,
+    });
 }

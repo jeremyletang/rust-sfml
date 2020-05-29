@@ -488,7 +488,7 @@ impl RenderTarget for RenderWindow {
         unsafe { Vector2u::from_raw(ffi::sfRenderWindow_getSize(self.render_window)) }
     }
     fn draw(&mut self, object: &dyn Drawable) {
-        object.draw(self, &RenderStates::default());
+        object.draw(self, &RenderStates::DEFAULT);
     }
     fn draw_with_renderstates(&mut self, object: &dyn Drawable, render_states: &RenderStates) {
         object.draw(self, render_states);

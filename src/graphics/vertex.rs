@@ -34,7 +34,7 @@ use crate::{
 ///     Vertex::new(Vector2f::new(100.,   0.), Color::RED, Vector2f::new(10.,  0.)),
 /// ];
 /// // draw it
-/// window.draw_primitives(&vertices, PrimitiveType::Quads, &RenderStates::default());
+/// window.draw_primitives(&vertices, PrimitiveType::Quads, &RenderStates::DEFAULT);
 /// ```
 ///
 /// Note: although texture coordinates are supposed to be an integer amount of pixels,
