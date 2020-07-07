@@ -35,14 +35,12 @@ pub struct CustomShape<'s> {
     points: *mut Box<dyn CustomShapePoints + Send>,
 }
 
-#[allow(clippy::cast_ptr_alignment)]
 unsafe extern "C" fn get_point_count_callback(obj: *mut c_void) -> usize {
     let shape = obj as *mut Box<dyn CustomShapePoints + Send>;
     let ret = (*shape).point_count();
     ret as usize
 }
 
-#[allow(clippy::cast_ptr_alignment)]
 unsafe extern "C" fn get_point_callback(point: usize, obj: *mut c_void) -> sfVector2f {
     use std::convert::TryInto;
     let shape = obj as *mut Box<dyn CustomShapePoints + Send>;
