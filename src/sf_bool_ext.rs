@@ -7,10 +7,7 @@ pub trait SfBoolExt {
 
 impl SfBoolExt for sfBool {
     fn to_bool(self) -> bool {
-        match self {
-            csfml_system_sys::sfFalse => false,
-            _ => true,
-        }
+        !matches!(self, csfml_system_sys::sfFalse)
     }
     fn from_bool(src: bool) -> Self {
         if src {
