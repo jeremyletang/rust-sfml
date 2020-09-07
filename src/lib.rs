@@ -3,7 +3,7 @@
 //! Prerequisites
 //! =============
 //!
-//! - Rust 1.42
+//! - Rust 1.42 or later
 //!
 //! - SFML 2.5 and CSFML 2.5 must be installed on your computer. You can download them here:
 //!
