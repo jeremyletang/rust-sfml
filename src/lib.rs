@@ -15,6 +15,13 @@
 //!     - Windows
 //!     - Mac OS X
 //!
+//! # !! Thread safety warning !!
+//!
+//! rust-sfml strives to be memory-safe, as a Rust library should be, but currently there is no
+//! clear plan on how to solve thread-safety issues. You should be fine as long as you only use
+//! SFML on the main thread, but as soon as you try to call into SFML from another thread, you
+//! are on your own.
+//!
 //! # License
 //!
 //! This software is a binding of the SFML library created by Laurent Gomila, which
