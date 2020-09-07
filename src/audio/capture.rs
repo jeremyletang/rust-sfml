@@ -115,38 +115,6 @@ unsafe extern "C" fn on_stop_callback<R: SoundRecorder>(user_data: *mut c_void) 
     (*recorder).on_stop()
 }
 
-macro_rules! device_common {
-    () => {
-        /// Get the name of the current audio capture device.
-        #[must_use]
-        pub fn device(&self) -> String {
-            unsafe {
-                #[allow(trivial_casts)]
-                let c_str_ptr = sfSoundRecorder_getDevice(self.ffi_handle as _);
-                CStr::from_ptr(c_str_ptr).to_string_lossy().into_owned()
-            }
-        }
-
-        /// Set the audio capture device.
-        ///
-        /// This function sets the audio capture device to the device with the given name.
-        /// It can be called on the fly (i.e: while recording).
-        /// If you do so while recording and opening the device fails, it stops the recording.
-        pub fn set_device(&mut self, name: &str) -> Result<(), SetDeviceError> {
-            let name = CString::new(name).unwrap();
-            let success = unsafe {
-                #[allow(trivial_casts)]
-                sfSoundRecorder_setDevice(self.ffi_handle as _, name.as_ptr()).to_bool()
-            };
-            if success {
-                Ok(())
-            } else {
-                Err(SetDeviceError)
-            }
-        }
-    };
-}
-
 impl<'a, R: SoundRecorder> SoundRecorderDriver<'a, R> {
     /// Creates a new `SoundRecorderDriver` with the specified [`SoundRecorder`].
     pub fn new(sound_recorder: &'a mut R) -> Self {
@@ -230,7 +198,30 @@ impl<'a, R: SoundRecorder> SoundRecorderDriver<'a, R> {
     pub fn set_processing_interval(&mut self, interval: Time) {
         unsafe { sfSoundRecorder_setProcessingInterval(self.ffi_handle, interval.raw()) }
     }
-    device_common!();
+    /// Get the name of the current audio capture device.
+    #[must_use]
+    pub fn device(&self) -> String {
+        unsafe {
+            let c_str_ptr = sfSoundRecorder_getDevice(self.ffi_handle);
+            CStr::from_ptr(c_str_ptr).to_string_lossy().into_owned()
+        }
+    }
+
+    /// Set the audio capture device.
+    ///
+    /// This function sets the audio capture device to the device with the given name.
+    /// It can be called on the fly (i.e: while recording).
+    /// If you do so while recording and opening the device fails, it stops the recording.
+    pub fn set_device(&mut self, name: &str) -> Result<(), SetDeviceError> {
+        let name = CString::new(name).unwrap();
+        let success =
+            unsafe { sfSoundRecorder_setDevice(self.ffi_handle, name.as_ptr()).to_bool() };
+        if success {
+            Ok(())
+        } else {
+            Err(SetDeviceError)
+        }
+    }
 }
 
 impl<'a, S> Drop for SoundRecorderDriver<'a, S> {
@@ -315,7 +306,30 @@ impl SoundBufferRecorder {
         assert!(!buff.is_null(), "sfSoundBufferRecorder_getBuffer failed");
         unsafe { &*(buff as *const SoundBuffer) }
     }
-    device_common!();
+    /// Get the name of the current audio capture device.
+    #[must_use]
+    pub fn device(&self) -> String {
+        unsafe {
+            let c_str_ptr = sfSoundBufferRecorder_getDevice(self.ffi_handle);
+            CStr::from_ptr(c_str_ptr).to_string_lossy().into_owned()
+        }
+    }
+
+    /// Set the audio capture device.
+    ///
+    /// This function sets the audio capture device to the device with the given name.
+    /// It can be called on the fly (i.e: while recording).
+    /// If you do so while recording and opening the device fails, it stops the recording.
+    pub fn set_device(&mut self, name: &str) -> Result<(), SetDeviceError> {
+        let name = CString::new(name).unwrap();
+        let success =
+            unsafe { sfSoundBufferRecorder_setDevice(self.ffi_handle, name.as_ptr()).to_bool() };
+        if success {
+            Ok(())
+        } else {
+            Err(SetDeviceError)
+        }
+    }
 }
 
 #[cfg_attr(not(feature = "ci-headless"), test)]
