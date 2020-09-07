@@ -9,8 +9,7 @@ pub struct SfStr(U32CStr);
 
 impl SfStr {
     pub(crate) unsafe fn from_ptr_str<'a>(p: *const u32) -> &'a Self {
-        #[allow(trivial_casts)]
-        &*(U32CStr::from_ptr_str(p) as *const _ as *const _)
+        U32CStr::from_ptr_str(p) as &Self
     }
     /// Convert to a UTF-8 `String` from the Rust standard library.
     ///
