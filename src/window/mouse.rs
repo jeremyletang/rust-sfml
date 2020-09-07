@@ -29,7 +29,7 @@
 //! window.set_mouse_position(Vector2i::new(100, 200));
 //! ```
 
-use crate::{sf_bool_ext::SfBoolExt, system::Vector2i};
+use crate::{sf_bool_ext::SfBoolExt, system::Vector2i, thread_safety};
 use csfml_window_sys as ffi;
 
 /// Mouse buttons.
@@ -77,6 +77,8 @@ impl Button {
     /// triggered.
     #[must_use]
     pub fn is_pressed(self) -> bool {
+        thread_safety::assert_window_thread("Button::is_pressed()");
+
         unsafe { ffi::sfMouse_isButtonPressed(self.raw()) }.to_bool()
     }
     fn raw(self) -> ffi::sfMouseButton {

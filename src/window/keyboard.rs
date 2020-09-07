@@ -1,4 +1,4 @@
-use crate::sf_bool_ext::SfBoolExt;
+use crate::{sf_bool_ext::SfBoolExt, thread_safety};
 use csfml_window_sys as ffi;
 
 /// Key codes known to SFML.
@@ -127,6 +127,8 @@ impl Key {
     /// triggered.
     #[must_use]
     pub fn is_pressed(self) -> bool {
+        thread_safety::assert_window_thread("Key::is_pressed()");
+
         unsafe { ffi::sfKeyboard_isKeyPressed(self as _) }.to_bool()
     }
 }

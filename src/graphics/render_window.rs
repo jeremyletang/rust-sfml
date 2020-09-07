@@ -6,6 +6,7 @@ use crate::{
     },
     sf_bool_ext::SfBoolExt,
     system::{SfStrConv, Vector2f, Vector2i, Vector2u},
+    thread_safety,
     window::{ContextSettings, Cursor, Event, Handle, Style, VideoMode},
 };
 use csfml_system_sys::*;
@@ -47,6 +48,8 @@ impl RenderWindow {
         style: Style,
         settings: &ContextSettings,
     ) -> RenderWindow {
+        thread_safety::set_window_thread();
+
         title.with_as_sfstr(|sfstr| {
             let sf_render_win: *mut ffi::sfRenderWindow = unsafe {
                 ffi::sfRenderWindow_createUnicode(
@@ -80,6 +83,8 @@ impl RenderWindow {
     /// * settings - Additional settings for the underlying OpenGL context
     #[must_use]
     pub unsafe fn from_handle(handle: Handle, settings: &ContextSettings) -> RenderWindow {
+        thread_safety::set_window_thread();
+
         let sf_render_win: *mut ffi::sfRenderWindow =
             ffi::sfRenderWindow_createFromHandle(handle, &settings.raw());
         assert!(!sf_render_win.is_null(), "Failed to create Window");
