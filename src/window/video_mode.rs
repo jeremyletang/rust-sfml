@@ -1,4 +1,4 @@
-use crate::sf_bool_ext::SfBoolExt;
+use crate::{sf_bool_ext::SfBoolExt, thread_safety};
 use csfml_window_sys as ffi;
 
 /// `VideoMode` defines a video mode (width, height, bpp)
@@ -79,6 +79,8 @@ impl VideoMode {
     /// return the urrent desktop video mode
     #[must_use]
     pub fn desktop_mode() -> Self {
+        thread_safety::set_window_thread();
+
         unsafe { Self::from_raw(ffi::sfVideoMode_getDesktopMode()) }
     }
 

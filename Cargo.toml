@@ -18,6 +18,9 @@ audio = ["csfml-audio-sys"]
 # Used to skip running certain tests on CI, since it's running in a headless environment.
 ci-headless = []
 
+[dependencies.once_cell]
+version = "1.4"
+
 [dependencies.widestring]
 version = "0.4.0"
 optional = true
