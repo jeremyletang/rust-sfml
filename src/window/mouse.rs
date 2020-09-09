@@ -77,7 +77,7 @@ impl Button {
     /// triggered.
     #[must_use]
     pub fn is_pressed(self) -> bool {
-        thread_safety::assert_window_thread("Button::is_pressed()");
+        thread_safety::set_window_thread();
 
         unsafe { ffi::sfMouse_isButtonPressed(self.raw()) }.to_bool()
     }

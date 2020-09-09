@@ -127,7 +127,7 @@ impl Key {
     /// triggered.
     #[must_use]
     pub fn is_pressed(self) -> bool {
-        thread_safety::assert_window_thread("Key::is_pressed()");
+        thread_safety::set_window_thread();
 
         unsafe { ffi::sfKeyboard_isKeyPressed(self as _) }.to_bool()
     }

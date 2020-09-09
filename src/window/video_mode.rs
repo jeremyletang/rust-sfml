@@ -79,7 +79,7 @@ impl VideoMode {
     /// return the urrent desktop video mode
     #[must_use]
     pub fn desktop_mode() -> Self {
-        thread_safety::assert_window_thread("VideoMode::desktop_mode()");
+        thread_safety::set_window_thread();
 
         unsafe { Self::from_raw(ffi::sfVideoMode_getDesktopMode()) }
     }
