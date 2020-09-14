@@ -5,7 +5,7 @@ pub trait Transformable {
     /// Sets the position of the object.
     ///
     /// This function completely overwrites the previous position.
-    /// See the move function to apply an offset based on the previous position instead.
+    /// See [`move_`](Self::move_) to apply an offset based on the previous position instead.
     /// The default position of a transformable object is (0, 0).
     fn set_position<P: Into<Vector2f>>(&mut self, position: P);
     /// Set the orientation of the object.
@@ -41,17 +41,17 @@ pub trait Transformable {
     /// Moves the object by a given offset.
     ///
     /// This function adds to the current position of the object,
-    /// unlike [`Transformable::set_position`] which overwrites it.
+    /// unlike [`set_position`](Self::set_position) which overwrites it.
     fn move_<O: Into<Vector2f>>(&mut self, offset: O);
     /// Rotates the object.
     ///
     /// This function adds to the current rotation of the object, unlike
-    /// [`Transformable::set_rotation`], which overwrites it.
+    /// [`set_rotation`](Self::set_rotation), which overwrites it.
     fn rotate(&mut self, angle: f32);
     /// Scales the object.
     ///
     /// This function multiplies the current scale of the object, unlike
-    /// [`Transformable::set_scale`], which overwrites it.
+    /// [`set_scale`](Self::set_scale), which overwrites it.
     fn scale<F: Into<Vector2f>>(&mut self, factors: F);
     /// Gets the combined transform of the object.
     fn transform(&self) -> Transform;
