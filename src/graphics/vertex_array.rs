@@ -1,10 +1,7 @@
 use crate::graphics::{
     csfml_graphics_sys::*, Drawable, FloatRect, PrimitiveType, RenderStates, RenderTarget, Vertex,
 };
-use std::{
-    mem,
-    ops::{Index, IndexMut},
-};
+use std::ops::{Index, IndexMut};
 
 /// Define a set of one or more 2D primitives
 #[derive(Debug)]
@@ -186,10 +183,9 @@ impl<'a> Iterator for Vertices<'a> {
         } else {
             self.pos += 1;
             unsafe {
-                mem::transmute(sfVertexArray_getVertex(
-                    self.vertex_array.vertex_array,
-                    self.pos as usize,
-                ))
+                (sfVertexArray_getVertex(self.vertex_array.vertex_array, self.pos as usize)
+                    as *const Vertex)
+                    .as_ref()
             }
         }
     }
