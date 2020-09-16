@@ -1,11 +1,14 @@
+use csfml_audio_sys as ffi;
 /// Enumeration of statuses for sounds and musics
-#[repr(u32)]
+#[repr(transparent)]
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
-pub enum SoundStatus {
+pub struct SoundStatus(pub(super) ffi::sfSoundStatus);
+
+impl SoundStatus {
     /// Sound is not playing.
-    Stopped = 0,
+    pub const STOPPED: Self = Self(ffi::sfSoundStatus_sfStopped);
     /// Sound is paused.
-    Paused = 1,
+    pub const PAUSED: Self = Self(ffi::sfSoundStatus_sfPaused);
     /// Sound is playing.
-    Playing = 2,
+    pub const PLAYING: Self = Self(ffi::sfSoundStatus_sfPlaying);
 }

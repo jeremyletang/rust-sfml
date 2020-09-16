@@ -4,7 +4,7 @@ use crate::{
     system::{Time, Vector3f},
 };
 use csfml_system_sys::sfBool;
-use std::{marker::PhantomData, mem};
+use std::marker::PhantomData;
 
 /// Regular sound that can be played in the audio environment.
 ///
@@ -110,7 +110,7 @@ impl<'s> Sound<'s> {
     /// Return current status
     #[must_use]
     pub fn status(&self) -> SoundStatus {
-        unsafe { mem::transmute(ffi::sfSound_getStatus(self.sound)) }
+        unsafe { SoundStatus(ffi::sfSound_getStatus(self.sound)) }
     }
 
     /// Get the current playing position of a sound

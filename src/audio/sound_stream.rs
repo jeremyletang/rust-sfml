@@ -96,7 +96,7 @@ impl<'a, S: SoundStream> SoundStreamPlayer<'a, S> {
     /// Get the current status of the stream (stopped, paused, playing)
     #[must_use]
     pub fn status(&self) -> SoundStatus {
-        unsafe { ::std::mem::transmute(sfSoundStream_getStatus(self.sf_sound_stream)) }
+        unsafe { SoundStatus(sfSoundStream_getStatus(self.sf_sound_stream)) }
     }
     /// Stop playing, lending out the underlying [`SoundStream`].
     ///

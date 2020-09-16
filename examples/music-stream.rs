@@ -18,7 +18,7 @@ fn main() {
 
     music.play();
 
-    while music.status() == SoundStatus::Playing {
+    while music.status() == SoundStatus::PLAYING {
         // Leave some CPU time for other processes
         sleep(Time::milliseconds(100));
         // Display the playing position

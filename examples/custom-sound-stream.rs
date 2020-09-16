@@ -56,7 +56,7 @@ fn main() {
     let mut stream = BitMelody::new();
     let mut player = SoundStreamPlayer::new(&mut stream);
     player.play();
-    while player.status() == SoundStatus::Playing {
+    while player.status() == SoundStatus::PLAYING {
         ::std::thread::sleep(::std::time::Duration::from_millis(100));
     }
 }

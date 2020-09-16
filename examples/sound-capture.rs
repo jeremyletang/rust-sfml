@@ -68,7 +68,7 @@ fn main() {
 
         sound.play();
 
-        while sound.status() == SoundStatus::Playing {
+        while sound.status() == SoundStatus::PLAYING {
             // Display the playing position
             print!(
                 "\rPlaying... {:.2} sec",
