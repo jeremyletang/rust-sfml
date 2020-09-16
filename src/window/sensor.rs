@@ -13,13 +13,13 @@
 //! not be available. You should always check the availability of a sensor before trying to
 //! read it, with the [`is_available`] function.
 //!
-//! You may wonder why some sensor types look so similar, for example [`Accelerometer`] and
-//! [`Gravity`] / [`UserAcceleration`].
+//! You may wonder why some sensor types look so similar, for example [`ACCELEROMETER`] and
+//! [`GRAVITY`] / [`USER_ACCELERATION`].
 //! The first one is the raw measurement of the acceleration,
 //! and takes into account both the earth gravity and the user movement. The others are more
 //! precise: they provide these components separately, which is usually more useful.
 //! In fact they are not direct sensors, they are computed internally based on the raw acceleration
-//! and other sensors. This is exactly the same for [`Gyroscope`] vs [`Orientation`].
+//! and other sensors. This is exactly the same for [`GYROSCOPE`] vs [`ORIENTATION`].
 //!
 //! Because sensors consume a non-negligible amount of current, they are all disabled by default.
 //! You must call [`set_enabled`] for each sensor in which you are interested.
@@ -29,21 +29,21 @@
 //! ```
 //! use sfml::window::sensor;
 //!
-//! if sensor::is_available(sensor::Type::Gravity) {
+//! if sensor::is_available(sensor::Type::GRAVITY) {
 //!     // enable the gravity sensor
-//!     sensor::set_enabled(sensor::Type::Gravity, true);
+//!     sensor::set_enabled(sensor::Type::GRAVITY, true);
 //!     // get the current value of gravity
-//!     let _gravity = sensor::value(sensor::Type::Gravity);
+//!     let _gravity = sensor::value(sensor::Type::GRAVITY);
 //! }
 //! ```
 //!
 //! [`is_available`]: is_available
 //! [`set_enabled`]: set_enabled
-//! [`Accelerometer`]: Type::Accelerometer
-//! [`Gravity`]: Type::Gravity
-//! [`UserAcceleration`]: Type::UserAcceleration
-//! [`Gyroscope`]: Type::Gyroscope
-//! [`Orientation`]: Type::Orientation
+//! [`ACCELEROMETER`]: Type::ACCELEROMETER
+//! [`GRAVITY`]: Type::GRAVITY
+//! [`USER_ACCELERATION`]: Type::USER_ACCELERATION
+//! [`GYROSCOPE`]: Type::GYROSCOPE
+//! [`ORIENTATION`]: Type::ORIENTATION
 //!
 
 use crate::{sf_bool_ext::SfBoolExt, system::Vector3f};
@@ -52,13 +52,13 @@ use csfml_window_sys::*;
 /// Get the current sensor value.
 #[must_use]
 pub fn value(sensor: Type) -> Vector3f {
-    unsafe { Vector3f::from_raw(sfSensor_getValue(sensor.raw())) }
+    unsafe { Vector3f::from_raw(sfSensor_getValue(sensor.0)) }
 }
 
 /// Check if a sensor is available on the underlying platform.
 #[must_use]
 pub fn is_available(sensor: Type) -> bool {
-    unsafe { sfSensor_isAvailable(sensor.raw()).to_bool() }
+    unsafe { sfSensor_isAvailable(sensor.0).to_bool() }
 }
 
 /// Enable or disable a sensor.
@@ -68,36 +68,29 @@ pub fn is_available(sensor: Type) -> bool {
 ///
 /// This function does nothing if the sensor is unavailable.
 pub fn set_enabled(sensor: Type, enabled: bool) {
-    unsafe { sfSensor_setEnabled(sensor.raw(), SfBoolExt::from_bool(enabled)) }
+    unsafe { sfSensor_setEnabled(sensor.0, SfBoolExt::from_bool(enabled)) }
 }
 
 /// Sensor type.
 #[derive(Copy, Clone, Debug, Eq, PartialEq, Ord, PartialOrd)]
-#[repr(u32)]
-pub enum Type {
-    /// Measures the raw acceleration (`m/s^2`)
-    Accelerometer = 0,
-    /// Measures the raw rotation rates (degrees/s)
-    Gyroscope = 1,
-    /// Measures the ambient magnetic field (micro-teslas)
-    Magnetometer = 2,
-    /// Measures the direction and intensity of gravity,
-    /// independent of device acceleration (`m/s^2`)
-    Gravity = 3,
-    /// Measures the direction and intensity of device acceleration,
-    /// independent of the gravity (`m/s^2`)
-    UserAcceleration = 4,
-    /// Measures the absolute 3D orientation (degrees)
-    Orientation = 5,
-    /// The total number of sensor types.
-    Count = 6,
-}
+#[repr(transparent)]
+pub struct Type(pub(super) sfSensorType);
 
 impl Type {
-    pub(super) unsafe fn from_raw(raw: sfSensorType) -> Self {
-        ::std::mem::transmute(raw)
-    }
-    fn raw(self) -> sfSensorType {
-        self as sfSensorType
-    }
+    /// Measures the raw acceleration (`m/s^2`)
+    pub const ACCELEROMETER: Self = Self(sfSensorType_sfSensorAccelerometer);
+    /// Measures the raw rotation rates (degrees/s)
+    pub const GYROSCOPE: Self = Self(sfSensorType_sfSensorGyroscope);
+    /// Measures the ambient magnetic field (micro-teslas)
+    pub const MAGNETOMETER: Self = Self(sfSensorType_sfSensorMagnetometer);
+    /// Measures the direction and intensity of gravity,
+    /// independent of device acceleration (`m/s^2`)
+    pub const GRAVITY: Self = Self(sfSensorType_sfSensorGravity);
+    /// Measures the direction and intensity of device acceleration,
+    /// independent of the gravity (`m/s^2`)
+    pub const USER_ACCELERATION: Self = Self(sfSensorType_sfSensorUserAcceleration);
+    /// Measures the absolute 3D orientation (degrees)
+    pub const ORIENTATION: Self = Self(sfSensorType_sfSensorOrientation);
+    /// The total number of sensor types.
+    pub const COUNT: sfSensorType = sfSensorType_sfSensorCount;
 }

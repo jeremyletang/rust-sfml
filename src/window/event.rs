@@ -337,7 +337,7 @@ impl Event {
                 let e = event.sensor;
 
                 SensorChanged {
-                    type_: crate::window::sensor::Type::from_raw(e.sensorType),
+                    type_: crate::window::sensor::Type(e.sensorType),
                     x: e.x,
                     y: e.y,
                     z: e.z,
