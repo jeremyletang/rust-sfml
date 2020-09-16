@@ -63,33 +63,26 @@ pub const AXIS_COUNT: u32 = 8;
 
 /// Axes supported by SFML joysticks
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
-#[repr(u32)]
-pub enum Axis {
-    /// The X axis.
-    X = 0,
-    /// The Y axis.
-    Y = 1,
-    /// The Z axis.
-    Z = 2,
-    /// The R axis.
-    R = 3,
-    /// The U axis.
-    U = 4,
-    /// The V axis.
-    V = 5,
-    /// The X axis of the point-of-view hat.
-    PovX = 6,
-    /// The Y axis of the point-of-view hat.
-    PovY = 7,
-}
+#[repr(transparent)]
+pub struct Axis(pub(super) ffi::sfJoystickAxis);
 
 impl Axis {
-    fn raw(self) -> ffi::sfJoystickAxis {
-        self as ffi::sfJoystickAxis
-    }
-    pub(super) unsafe fn from_raw(raw: ffi::sfJoystickAxis) -> Self {
-        ::std::mem::transmute(raw)
-    }
+    /// The X axis.
+    pub const X: Self = Self(ffi::sfJoystickAxis_sfJoystickX);
+    /// The Y axis.
+    pub const Y: Self = Self(ffi::sfJoystickAxis_sfJoystickY);
+    /// The Z axis.
+    pub const Z: Self = Self(ffi::sfJoystickAxis_sfJoystickZ);
+    /// The R axis.
+    pub const R: Self = Self(ffi::sfJoystickAxis_sfJoystickR);
+    /// The U axis.
+    pub const U: Self = Self(ffi::sfJoystickAxis_sfJoystickU);
+    /// The V axis.
+    pub const V: Self = Self(ffi::sfJoystickAxis_sfJoystickV);
+    /// The X axis of the point-of-view hat.
+    pub const POV_X: Self = Self(ffi::sfJoystickAxis_sfJoystickPovX);
+    /// The Y axis of the point-of-view hat.
+    pub const POV_Y: Self = Self(ffi::sfJoystickAxis_sfJoystickPovY);
 }
 
 /// Structure holding a joystick's identification.
@@ -136,7 +129,7 @@ pub fn button_count(joystick: u32) -> u32 {
 /// Return true if the joystick supports the axis, false otherwise
 #[must_use]
 pub fn has_axis(joystick: u32, axis: Axis) -> bool {
-    unsafe { ffi::sfJoystick_hasAxis(joystick, axis.raw()).to_bool() }
+    unsafe { ffi::sfJoystick_hasAxis(joystick, axis.0).to_bool() }
 }
 
 /// Check if the button is pressed on a given joystick.
@@ -164,7 +157,7 @@ pub fn is_button_pressed(joystick: u32, button: u32) -> bool {
 /// Return the current position of the axis, in range [-100 .. 100]
 #[must_use]
 pub fn axis_position(joystick: u32, axis: Axis) -> f32 {
-    unsafe { ffi::sfJoystick_getAxisPosition(joystick, axis.raw()) }
+    unsafe { ffi::sfJoystick_getAxisPosition(joystick, axis.0) }
 }
 
 /// Update the states of all joysticks

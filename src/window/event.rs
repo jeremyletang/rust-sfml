@@ -296,7 +296,7 @@ impl Event {
 
                 JoystickMoved {
                     joystickid: e.joystickId,
-                    axis: Axis::from_raw(e.axis),
+                    axis: Axis(e.axis),
                     position: e.position,
                 }
             }
