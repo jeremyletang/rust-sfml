@@ -28,7 +28,7 @@ use csfml_window_sys as ffi;
 /// # fn do_something_with_the_new_size(_x: u32, _y: u32) {}
 /// while let Some(event) = window.poll_event() {
 ///     match event {
-///         Event::Closed | Event::KeyPressed { code: Key::Escape, .. } => window.close(),
+///         Event::Closed | Event::KeyPressed { code: Key::ESCAPE, .. } => window.close(),
 ///         Event::Resized { width, height } => do_something_with_the_new_size(width, height),
 ///         _ => { /* Do nothing */ }
 ///     }
@@ -224,7 +224,7 @@ impl Event {
                 let e = event.key;
 
                 KeyPressed {
-                    code: ::std::mem::transmute(e.code),
+                    code: Key(e.code),
                     alt: e.alt.to_bool(),
                     ctrl: e.control.to_bool(),
                     shift: e.shift.to_bool(),
@@ -235,7 +235,7 @@ impl Event {
                 let e = event.key;
 
                 KeyReleased {
-                    code: ::std::mem::transmute(e.code),
+                    code: Key(e.code),
                     alt: e.alt.to_bool(),
                     ctrl: e.control.to_bool(),
                     shift: e.shift.to_bool(),

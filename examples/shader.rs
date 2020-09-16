@@ -297,8 +297,8 @@ fn main() {
             match event {
                 Closed => window.close(),
                 KeyPressed { code, .. } => match code {
-                    Key::Escape => window.close(),
-                    Key::Left => {
+                    Key::ESCAPE => window.close(),
+                    Key::LEFT => {
                         if current == 0 {
                             current = effects.len() - 1;
                         } else {
@@ -306,7 +306,7 @@ fn main() {
                         }
                         desc.set_string(&format!("Current effect: {}", effects[current].name()));
                     }
-                    Key::Right => {
+                    Key::RIGHT => {
                         if current == effects.len() - 1 {
                             current = 0;
                         } else {

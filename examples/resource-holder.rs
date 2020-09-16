@@ -65,7 +65,7 @@ fn main() {
             match ev {
                 Event::Closed
                 | Event::KeyPressed {
-                    code: Key::Escape, ..
+                    code: Key::ESCAPE, ..
                 } => rw.close(),
                 _ => {}
             }

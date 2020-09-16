@@ -98,10 +98,10 @@ fn main() {
             match event {
                 Event::Closed
                 | Event::KeyPressed {
-                    code: Key::Escape, ..
+                    code: Key::ESCAPE, ..
                 } => return,
                 Event::KeyPressed {
-                    code: Key::Space, ..
+                    code: Key::SPACE, ..
                 } if !is_playing => {
                     // (re)start the game
                     is_playing = true;
@@ -130,10 +130,10 @@ fn main() {
             let delta_time = clock.restart().as_seconds();
 
             // Move the player's paddle
-            if Key::Up.is_pressed() && (left_paddle.position().y - paddle_size.y / 2. > 5.) {
+            if Key::UP.is_pressed() && (left_paddle.position().y - paddle_size.y / 2. > 5.) {
                 left_paddle.move_((0., -paddle_speed * delta_time));
             }
-            if Key::Down.is_pressed()
+            if Key::DOWN.is_pressed()
                 && (left_paddle.position().y + paddle_size.y / 2. < game_height as f32 - 5.)
             {
                 left_paddle.move_((0., paddle_speed * delta_time));
