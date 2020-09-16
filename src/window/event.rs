@@ -255,7 +255,7 @@ impl Event {
                 let e = event.mouseButton;
 
                 MouseButtonPressed {
-                    button: Button::from_raw(e.button),
+                    button: Button(e.button),
                     x: e.x,
                     y: e.y,
                 }
@@ -264,7 +264,7 @@ impl Event {
                 let e = event.mouseButton;
 
                 MouseButtonReleased {
-                    button: Button::from_raw(e.button),
+                    button: Button(e.button),
                     x: e.x,
                     y: e.y,
                 }
