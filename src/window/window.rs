@@ -95,7 +95,7 @@ impl Window {
                     mode.into().raw(),
                     sfstr.as_ptr(),
                     style.bits(),
-                    &settings.raw(),
+                    &settings.0,
                 )
             })
         };
@@ -122,7 +122,7 @@ impl Window {
     pub unsafe fn from_handle(handle: Handle, settings: &ContextSettings) -> Window {
         thread_safety::set_window_thread();
 
-        let sf_win: *mut ffi::sfWindow = ffi::sfWindow_createFromHandle(handle, &settings.raw());
+        let sf_win: *mut ffi::sfWindow = ffi::sfWindow_createFromHandle(handle, &settings.0);
         assert!(!sf_win.is_null(), "Failed to create Window");
         Window { window: sf_win }
     }
@@ -222,7 +222,7 @@ impl Window {
     /// Return a structure containing the OpenGL context settings
     #[must_use]
     pub fn settings(&self) -> ContextSettings {
-        unsafe { ContextSettings::from_raw(ffi::sfWindow_getSettings(self.window)) }
+        unsafe { ContextSettings(ffi::sfWindow_getSettings(self.window)) }
     }
 
     /// Change the title of a window

@@ -53,7 +53,7 @@ impl RenderTexture {
     /// Returns `None` if creation fails.
     #[must_use]
     pub fn with_settings(width: u32, height: u32, settings: &ContextSettings) -> Option<Self> {
-        let tex = unsafe { ffi::sfRenderTexture_createWithSettings(width, height, settings.raw()) };
+        let tex = unsafe { ffi::sfRenderTexture_createWithSettings(width, height, settings.0) };
         if tex.is_null() {
             None
         } else {

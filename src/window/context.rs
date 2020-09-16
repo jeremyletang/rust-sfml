@@ -56,7 +56,7 @@ impl Context {
     #[must_use]
     pub fn settings(&self) -> ContextSettings {
         let settings = unsafe { ffi::sfContext_getSettings(self.0) };
-        unsafe { ContextSettings::from_raw(settings) }
+        ContextSettings(settings)
     }
 }
 

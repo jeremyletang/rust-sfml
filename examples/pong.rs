@@ -33,10 +33,8 @@ fn main() {
     let ball_radius = 10.;
 
     // Create the window of the application
-    let context_settings = ContextSettings {
-        antialiasing_level: aa_level,
-        ..Default::default()
-    };
+    let mut context_settings = ContextSettings::default();
+    context_settings.set_antialiasing_level(aa_level);
     let mut window = RenderWindow::new(
         (game_width, game_height),
         "SFML Pong",

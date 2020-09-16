@@ -56,7 +56,7 @@ impl RenderWindow {
                     mode.into().raw(),
                     sfstr.as_ptr(),
                     style.bits(),
-                    &settings.raw(),
+                    &settings.0,
                 )
             };
             assert!(!sf_render_win.is_null(), "Failed to create RenderWindow");
@@ -86,7 +86,7 @@ impl RenderWindow {
         thread_safety::set_window_thread();
 
         let sf_render_win: *mut ffi::sfRenderWindow =
-            ffi::sfRenderWindow_createFromHandle(handle, &settings.raw());
+            ffi::sfRenderWindow_createFromHandle(handle, &settings.0);
         assert!(!sf_render_win.is_null(), "Failed to create Window");
         RenderWindow {
             render_window: sf_render_win,
@@ -215,7 +215,7 @@ impl RenderWindow {
     ///
     #[must_use]
     pub fn settings(&self) -> ContextSettings {
-        unsafe { ContextSettings::from_raw(ffi::sfRenderWindow_getSettings(self.render_window)) }
+        unsafe { ContextSettings(ffi::sfRenderWindow_getSettings(self.render_window)) }
     }
 
     /// Change the title of a window
