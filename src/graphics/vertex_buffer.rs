@@ -47,7 +47,7 @@ impl VertexBuffer {
         usage: VertexBufferUsage,
     ) -> VertexBuffer {
         let vertex_buffer =
-            unsafe { sfVertexBuffer_create(vertex_count, primitive_type.raw(), usage.raw()) };
+            unsafe { sfVertexBuffer_create(vertex_count, primitive_type.0, usage.raw()) };
         VertexBuffer { vertex_buffer }
     }
 
@@ -133,7 +133,7 @@ impl VertexBuffer {
     /// Return Primitive type
     #[must_use]
     pub fn primitive_type(&self) -> PrimitiveType {
-        unsafe { PrimitiveType::from_raw(sfVertexBuffer_getPrimitiveType(self.vertex_buffer)) }
+        unsafe { PrimitiveType(sfVertexBuffer_getPrimitiveType(self.vertex_buffer)) }
     }
 
     /// Set the type of primitives to draw.
@@ -146,7 +146,7 @@ impl VertexBuffer {
     /// * `primitive_type` - Type of primitive
     pub fn set_primitive_type(&mut self, primitive_type: PrimitiveType) {
         unsafe {
-            sfVertexBuffer_setPrimitiveType(self.vertex_buffer, primitive_type.raw());
+            sfVertexBuffer_setPrimitiveType(self.vertex_buffer, primitive_type.0);
         }
     }
 
@@ -183,8 +183,8 @@ impl VertexBuffer {
     #[cfg_attr(not(feature = "ci-headless"), doc = "```")]
     /// use sfml::graphics::{PrimitiveType, VertexBuffer, VertexBufferUsage};
     ///
-    /// let mut vb1 = VertexBuffer::new(PrimitiveType::Triangles, 32, VertexBufferUsage::Static);
-    /// let mut vb2 = VertexBuffer::new(PrimitiveType::Quads, 12, VertexBufferUsage::Dynamic);
+    /// let mut vb1 = VertexBuffer::new(PrimitiveType::TRIANGLES, 32, VertexBufferUsage::Static);
+    /// let mut vb2 = VertexBuffer::new(PrimitiveType::QUADS, 12, VertexBufferUsage::Dynamic);
     ///
     /// // ...
     ///

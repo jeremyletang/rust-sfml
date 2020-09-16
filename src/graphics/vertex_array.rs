@@ -95,7 +95,7 @@ impl VertexArray {
     /// * type - Type of primitive
     pub fn set_primitive_type(&mut self, primitive_type: PrimitiveType) {
         unsafe {
-            sfVertexArray_setPrimitiveType(self.vertex_array, primitive_type.raw());
+            sfVertexArray_setPrimitiveType(self.vertex_array, primitive_type.0);
         }
     }
 
@@ -104,7 +104,7 @@ impl VertexArray {
     /// Return the primitive type
     #[must_use]
     pub fn primitive_type(&self) -> PrimitiveType {
-        unsafe { PrimitiveType::from_raw(sfVertexArray_getPrimitiveType(self.vertex_array)) }
+        unsafe { PrimitiveType(sfVertexArray_getPrimitiveType(self.vertex_array)) }
     }
 
     /// Return an immutable iterator over all the vertice contained by the `VertexArray`

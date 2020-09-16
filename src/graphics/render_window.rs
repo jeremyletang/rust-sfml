@@ -569,7 +569,7 @@ impl RenderTarget for RenderWindow {
                 self.render_window,
                 vertices.as_ptr() as *const _,
                 len,
-                ty.raw(),
+                ty.0,
                 rs.raw_ref(),
             );
         }

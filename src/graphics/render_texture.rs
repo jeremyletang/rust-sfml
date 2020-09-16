@@ -260,7 +260,7 @@ impl RenderTarget for RenderTexture {
                 self.render_texture,
                 vertices.as_ptr() as *const _,
                 len,
-                ty.raw(),
+                ty.0,
                 rs.raw_ref(),
             );
         }
