@@ -46,10 +46,10 @@ impl Vec4 {
 impl From<Color> for Vec4 {
     fn from(src: Color) -> Self {
         Self {
-            x: f32::from(src.r) / 255.0,
-            y: f32::from(src.g) / 255.0,
-            z: f32::from(src.b) / 255.0,
-            w: f32::from(src.a) / 255.0,
+            x: f32::from(src.0.r) / 255.0,
+            y: f32::from(src.0.g) / 255.0,
+            z: f32::from(src.0.b) / 255.0,
+            w: f32::from(src.0.a) / 255.0,
         }
     }
 }
@@ -81,10 +81,10 @@ impl IVec4 {
 impl From<Color> for IVec4 {
     fn from(src: Color) -> Self {
         Self {
-            x: src.r.into(),
-            y: src.g.into(),
-            z: src.b.into(),
-            w: src.a.into(),
+            x: src.0.r.into(),
+            y: src.0.g.into(),
+            z: src.0.b.into(),
+            w: src.0.a.into(),
         }
     }
 }

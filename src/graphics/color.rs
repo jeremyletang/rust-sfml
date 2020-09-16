@@ -4,18 +4,9 @@ use std::ops::{Add, AddAssign, Mul, MulAssign, Sub, SubAssign};
 /// Utility type for manpulating RGBA colors
 ///
 /// `Color` is a simple color type composed of 4 components: Red, Green, Blue, Alpha
-#[repr(C)]
+#[repr(transparent)]
 #[derive(Copy, Clone, PartialEq, Eq, Debug)]
-pub struct Color {
-    /// Red component.
-    pub r: u8,
-    /// Green component.
-    pub g: u8,
-    /// Blue component.
-    pub b: u8,
-    /// Alpha (opacity) component.
-    pub a: u8,
-}
+pub struct Color(pub(super) ffi::sfColor);
 
 impl Color {
     /// Construct a color from its 3 RGB components
@@ -27,13 +18,13 @@ impl Color {
     ///
     /// Return Color object constructed from the components
     #[must_use]
-    pub const fn rgb(red: u8, green: u8, blue: u8) -> Color {
-        Color {
+    pub const fn rgb(red: u8, green: u8, blue: u8) -> Self {
+        Self(ffi::sfColor {
             r: red,
             g: green,
             b: blue,
             a: 255,
-        }
+        })
     }
 
     /// Construct a color from its 4 RGBA components
@@ -46,94 +37,89 @@ impl Color {
     ///
     /// Return Color object constructed from the components
     #[must_use]
-    pub const fn rgba(red: u8, green: u8, blue: u8, alpha: u8) -> Color {
-        Color {
+    pub const fn rgba(red: u8, green: u8, blue: u8, alpha: u8) -> Self {
+        Self(ffi::sfColor {
             r: red,
             g: green,
             b: blue,
             a: alpha,
-        }
+        })
     }
 
-    pub(super) fn raw(self) -> ffi::sfColor {
-        unsafe { ::std::mem::transmute(self) }
+    /// The red component of this color
+    #[must_use]
+    pub const fn red(&self) -> u8 {
+        self.0.r
     }
 
-    pub(super) unsafe fn from_raw(raw: ffi::sfColor) -> Self {
-        ::std::mem::transmute(raw)
+    /// Mutable reference to the red component
+    #[must_use]
+    pub fn red_mut(&mut self) -> &mut u8 {
+        &mut self.0.r
+    }
+
+    /// The green component of this color
+    #[must_use]
+    pub const fn green(&self) -> u8 {
+        self.0.g
+    }
+
+    /// Mutable reference to the green component
+    #[must_use]
+    pub fn green_mut(&mut self) -> &mut u8 {
+        &mut self.0.g
+    }
+
+    /// The blue component of this color
+    #[must_use]
+    pub const fn blue(&self) -> u8 {
+        self.0.b
+    }
+
+    /// Mutable reference to the blue component
+    #[must_use]
+    pub fn blue_mut(&mut self) -> &mut u8 {
+        &mut self.0.b
+    }
+
+    /// The alpha component of this color
+    #[must_use]
+    pub const fn alpha(&self) -> u8 {
+        self.0.a
+    }
+
+    /// Mutable reference to the alpha component
+    #[must_use]
+    pub fn alpha_mut(&mut self) -> &mut u8 {
+        &mut self.0.a
     }
 
     /// Black predefined color
-    pub const BLACK: Self = Self {
-        r: 0,
-        g: 0,
-        b: 0,
-        a: 255,
-    };
+    pub const BLACK: Self = Self::rgb(0, 0, 0);
 
     /// White predefined color
-    pub const WHITE: Self = Self {
-        r: 255,
-        g: 255,
-        b: 255,
-        a: 255,
-    };
+    pub const WHITE: Self = Self::rgb(255, 255, 255);
 
     /// Red predefined color
-    pub const RED: Self = Self {
-        r: 255,
-        g: 0,
-        b: 0,
-        a: 255,
-    };
+    pub const RED: Self = Self::rgb(255, 0, 0);
 
     /// Green predefined color
-    pub const GREEN: Self = Self {
-        r: 0,
-        g: 255,
-        b: 0,
-        a: 255,
-    };
+    pub const GREEN: Self = Self::rgb(0, 255, 0);
 
     /// Blue predefined color
-    pub const BLUE: Self = Self {
-        r: 0,
-        g: 0,
-        b: 255,
-        a: 255,
-    };
+    pub const BLUE: Self = Self::rgb(0, 0, 255);
 
     /// Yellow predefined color
-    pub const YELLOW: Self = Self {
-        r: 255,
-        g: 255,
-        b: 0,
-        a: 255,
-    };
+    pub const YELLOW: Self = Self::rgb(255, 255, 0);
 
     /// Magenta predefined color
-    pub const MAGENTA: Self = Self {
-        r: 255,
-        g: 0,
-        b: 255,
-        a: 255,
-    };
+    pub const MAGENTA: Self = Self::rgb(255, 0, 255);
 
     /// Cyan predifined color
-    pub const CYAN: Self = Self {
-        r: 0,
-        g: 255,
-        b: 255,
-        a: 255,
-    };
+    pub const CYAN: Self = Self::rgb(0, 255, 255);
 
     /// Tranparent predefined color
-    pub const TRANSPARENT: Self = Self {
-        r: 0,
-        g: 0,
-        b: 0,
-        a: 0,
-    };
+    pub const TRANSPARENT: Self = Self::rgba(0, 0, 0, 0);
 }
 
 impl From<u32> for Color {
@@ -141,14 +127,14 @@ impl From<u32> for Color {
     ///
     /// The number should contain the components in RGBA order.
     fn from(src: u32) -> Self {
-        unsafe { Color::from_raw(ffi::sfColor_fromInteger(src)) }
+        unsafe { Color(ffi::sfColor_fromInteger(src)) }
     }
 }
 
 impl Into<u32> for Color {
     /// Retrieve the color as a 32-bit unsigned integer.
     fn into(self) -> u32 {
-        unsafe { ffi::sfColor_toInteger(self.raw()) }
+        unsafe { ffi::sfColor_toInteger(self.0) }
     }
 }
 
@@ -157,7 +143,7 @@ impl Add for Color {
 
     /// Calculate the component-wise saturated addition of two colors.
     fn add(self, other: Color) -> Color {
-        unsafe { Color::from_raw(ffi::sfColor_add(self.raw(), other.raw())) }
+        unsafe { Color(ffi::sfColor_add(self.0, other.0)) }
     }
 }
 
@@ -172,7 +158,7 @@ impl Sub for Color {
 
     /// Component-wise subtraction of two colors. Components below 0 are clamped to 0.
     fn sub(self, other: Self) -> Self {
-        unsafe { Self::from_raw(ffi::sfColor_subtract(self.raw(), other.raw())) }
+        unsafe { Self(ffi::sfColor_subtract(self.0, other.0)) }
     }
 }
 
@@ -189,7 +175,7 @@ impl Mul for Color {
     ///
     /// For each `X` in `rgba`, `result.X = a.X * b.X / 255`.
     fn mul(self, other: Color) -> Color {
-        unsafe { Color::from_raw(ffi::sfColor_modulate(self.raw(), other.raw())) }
+        unsafe { Color(ffi::sfColor_modulate(self.0, other.0)) }
     }
 }
 

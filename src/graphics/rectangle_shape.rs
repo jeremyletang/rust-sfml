@@ -143,10 +143,10 @@ impl<'s> Shape<'s> for RectangleShape<'s> {
         unsafe { ffi::sfRectangleShape_setTextureRect(self.rectangle_shape, rect.raw()) }
     }
     fn set_fill_color(&mut self, color: Color) {
-        unsafe { ffi::sfRectangleShape_setFillColor(self.rectangle_shape, color.raw()) }
+        unsafe { ffi::sfRectangleShape_setFillColor(self.rectangle_shape, color.0) }
     }
     fn set_outline_color(&mut self, color: Color) {
-        unsafe { ffi::sfRectangleShape_setOutlineColor(self.rectangle_shape, color.raw()) }
+        unsafe { ffi::sfRectangleShape_setOutlineColor(self.rectangle_shape, color.0) }
     }
     fn set_outline_thickness(&mut self, thickness: f32) {
         unsafe { ffi::sfRectangleShape_setOutlineThickness(self.rectangle_shape, thickness) }
@@ -166,10 +166,10 @@ impl<'s> Shape<'s> for RectangleShape<'s> {
         unsafe { IntRect::from_raw(ffi::sfRectangleShape_getTextureRect(self.rectangle_shape)) }
     }
     fn fill_color(&self) -> Color {
-        unsafe { Color::from_raw(ffi::sfRectangleShape_getFillColor(self.rectangle_shape)) }
+        unsafe { Color(ffi::sfRectangleShape_getFillColor(self.rectangle_shape)) }
     }
     fn outline_color(&self) -> Color {
-        unsafe { Color::from_raw(ffi::sfRectangleShape_getOutlineColor(self.rectangle_shape)) }
+        unsafe { Color(ffi::sfRectangleShape_getOutlineColor(self.rectangle_shape)) }
     }
     fn outline_thickness(&self) -> f32 {
         unsafe { ffi::sfRectangleShape_getOutlineThickness(self.rectangle_shape) }

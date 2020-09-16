@@ -116,7 +116,7 @@ impl Vertex {
     pub(super) fn raw(&self) -> ffi::sfVertex {
         ffi::sfVertex {
             position: self.position.raw(),
-            color: self.color.raw(),
+            color: self.color.0,
             texCoords: self.tex_coords.raw(),
         }
     }

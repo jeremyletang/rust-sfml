@@ -113,10 +113,10 @@ impl<'s> Shape<'s> for CustomShape<'s> {
         unsafe { ffi::sfShape_setTextureRect(self.shape, rect.raw()) }
     }
     fn set_fill_color(&mut self, color: Color) {
-        unsafe { ffi::sfShape_setFillColor(self.shape, color.raw()) }
+        unsafe { ffi::sfShape_setFillColor(self.shape, color.0) }
     }
     fn set_outline_color(&mut self, color: Color) {
-        unsafe { ffi::sfShape_setOutlineColor(self.shape, color.raw()) }
+        unsafe { ffi::sfShape_setOutlineColor(self.shape, color.0) }
     }
     fn set_outline_thickness(&mut self, thickness: f32) {
         unsafe { ffi::sfShape_setOutlineThickness(self.shape, thickness) }
@@ -136,10 +136,10 @@ impl<'s> Shape<'s> for CustomShape<'s> {
         unsafe { IntRect::from_raw(ffi::sfShape_getTextureRect(self.shape)) }
     }
     fn fill_color(&self) -> Color {
-        unsafe { Color::from_raw(ffi::sfShape_getFillColor(self.shape)) }
+        unsafe { Color(ffi::sfShape_getFillColor(self.shape)) }
     }
     fn outline_color(&self) -> Color {
-        unsafe { Color::from_raw(ffi::sfShape_getOutlineColor(self.shape)) }
+        unsafe { Color(ffi::sfShape_getOutlineColor(self.shape)) }
     }
     fn outline_thickness(&self) -> f32 {
         unsafe { ffi::sfShape_getOutlineThickness(self.shape) }

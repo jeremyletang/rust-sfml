@@ -151,10 +151,10 @@ impl<'s> Shape<'s> for CircleShape<'s> {
         unsafe { ffi::sfCircleShape_setTextureRect(self.circle_shape, rect.raw()) }
     }
     fn set_fill_color(&mut self, color: Color) {
-        unsafe { ffi::sfCircleShape_setFillColor(self.circle_shape, color.raw()) }
+        unsafe { ffi::sfCircleShape_setFillColor(self.circle_shape, color.0) }
     }
     fn set_outline_color(&mut self, color: Color) {
-        unsafe { ffi::sfCircleShape_setOutlineColor(self.circle_shape, color.raw()) }
+        unsafe { ffi::sfCircleShape_setOutlineColor(self.circle_shape, color.0) }
     }
     fn set_outline_thickness(&mut self, thickness: f32) {
         unsafe { ffi::sfCircleShape_setOutlineThickness(self.circle_shape, thickness) }
@@ -174,10 +174,10 @@ impl<'s> Shape<'s> for CircleShape<'s> {
         unsafe { IntRect::from_raw(ffi::sfCircleShape_getTextureRect(self.circle_shape)) }
     }
     fn fill_color(&self) -> Color {
-        unsafe { Color::from_raw(ffi::sfCircleShape_getFillColor(self.circle_shape)) }
+        unsafe { Color(ffi::sfCircleShape_getFillColor(self.circle_shape)) }
     }
     fn outline_color(&self) -> Color {
-        unsafe { Color::from_raw(ffi::sfCircleShape_getOutlineColor(self.circle_shape)) }
+        unsafe { Color(ffi::sfCircleShape_getOutlineColor(self.circle_shape)) }
     }
     fn outline_thickness(&self) -> f32 {
         unsafe { ffi::sfCircleShape_getOutlineThickness(self.circle_shape) }

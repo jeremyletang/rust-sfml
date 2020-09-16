@@ -89,10 +89,10 @@ fn main() {
                 }
             }
         }
-        texts.retain(|txt| txt.fill_color().a > 0);
+        texts.retain(|txt| txt.fill_color().alpha() > 0);
         for txt in &mut texts {
             let mut color = txt.fill_color();
-            color.a -= 1;
+            *color.alpha_mut() -= 1;
             txt.set_fill_color(color);
             window.draw(txt);
         }
