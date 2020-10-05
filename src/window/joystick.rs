@@ -62,7 +62,7 @@ pub const BUTTON_COUNT: u32 = 32;
 pub const AXIS_COUNT: u32 = 8;
 
 /// Axes supported by SFML joysticks
-#[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
+#[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy, Hash)]
 #[repr(transparent)]
 pub struct Axis(pub(super) ffi::sfJoystickAxis);
 
