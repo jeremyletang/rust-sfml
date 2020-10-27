@@ -21,11 +21,11 @@ use csfml_system_sys::{sfBool, sfFalse, sfTrue};
 /// This is required in some places instead of `bool` for FFI reasons.
 ///
 /// # Example
-/// ```ignore
+/// ```no_run
 /// use sfml::window::ContextSettings;
 /// use sfml::system;
 /// let mut context_settings = ContextSettings::default();
-/// context_settings.srgb_capable = system::TRUE;
+/// context_settings.set_srgb_capable(true);
 /// ```
 pub type Bool = sfBool;
 

@@ -15,10 +15,13 @@
 //!
 //! # Usage example
 //!
-//! ```ignore
-//! use sfml::window::mouse;
+//! ```no_run
+//! use sfml::window::{Window, mouse};
+//! use sfml::system::Vector2i;
 //!
-//! if mouse::Button::Left.is_pressed() {
+//! # let window: Window = unimplemented!();
+//!
+//! if mouse::Button::LEFT.is_pressed() {
 //!     // left click
 //! }
 //!
