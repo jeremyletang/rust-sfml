@@ -14,25 +14,6 @@ pub use self::{
     vector2::{Vector2, Vector2f, Vector2i, Vector2u},
     vector3::{Vector3, Vector3f, Vector3i},
 };
-use csfml_system_sys::{sfBool, sfFalse, sfTrue};
-
-/// Boolean type used by CSFML.
-///
-/// This is required in some places instead of `bool` for FFI reasons.
-///
-/// # Example
-/// ```no_run
-/// use sfml::window::ContextSettings;
-/// use sfml::system;
-/// let mut context_settings = ContextSettings::default();
-/// context_settings.set_srgb_capable(true);
-/// ```
-pub type Bool = sfBool;
-
-/// Boolean `false` value used by CSFML.
-pub const FALSE: Bool = sfFalse;
-/// Boolean `true` value used by CSFML.
-pub const TRUE: Bool = sfTrue;
 
 mod clock;
 mod sf_box;
