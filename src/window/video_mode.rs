@@ -102,7 +102,7 @@ impl VideoMode {
         if size == 0 {
             return Vec::new();
         }
-        let tab_slice: &[ffi::sfVideoMode] = unsafe { ::std::slice::from_raw_parts(tab, size) };
+        let tab_slice: &[ffi::sfVideoMode] = unsafe { std::slice::from_raw_parts(tab, size) };
 
         let mut ret_tab = Vec::with_capacity(size);
 

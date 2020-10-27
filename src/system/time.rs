@@ -48,13 +48,13 @@ impl PartialEq for Time {
 impl Eq for Time {}
 
 impl PartialOrd for Time {
-    fn partial_cmp(&self, other: &Self) -> Option<::std::cmp::Ordering> {
+    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
         self.0.microseconds.partial_cmp(&other.0.microseconds)
     }
 }
 
 impl Ord for Time {
-    fn cmp(&self, other: &Self) -> ::std::cmp::Ordering {
+    fn cmp(&self, other: &Self) -> std::cmp::Ordering {
         self.0.microseconds.cmp(&other.0.microseconds)
     }
 }

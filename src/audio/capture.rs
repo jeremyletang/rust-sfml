@@ -107,7 +107,7 @@ unsafe extern "C" fn on_process_callback<R: SoundRecorder>(
     user_data: *mut c_void,
 ) -> sfBool {
     let recorder = user_data as *mut R;
-    sfBool::from_bool((*recorder).on_process_samples(::std::slice::from_raw_parts(data, len)))
+    sfBool::from_bool((*recorder).on_process_samples(std::slice::from_raw_parts(data, len)))
 }
 
 unsafe extern "C" fn on_stop_callback<R: SoundRecorder>(user_data: *mut c_void) {
@@ -395,7 +395,7 @@ pub fn available_devices() -> Vec<String> {
     unsafe {
         let mut count = 0;
         let device_names = sfSoundRecorder_getAvailableDevices(&mut count);
-        let device_names = ::std::slice::from_raw_parts(device_names, count);
+        let device_names = std::slice::from_raw_parts(device_names, count);
         let mut names = Vec::new();
         for c_str_ptr in device_names {
             let name = CStr::from_ptr(*c_str_ptr).to_string_lossy().into_owned();

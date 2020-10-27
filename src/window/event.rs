@@ -217,7 +217,7 @@ impl Event {
             ffi::sfEventType_sfEvtLostFocus => LostFocus,
             ffi::sfEventType_sfEvtGainedFocus => GainedFocus,
             ffi::sfEventType_sfEvtTextEntered => TextEntered {
-                unicode: ::std::char::from_u32(event.text.unicode)
+                unicode: std::char::from_u32(event.text.unicode)
                     .expect("Invalid unicode encountered on TextEntered event"),
             },
             ffi::sfEventType_sfEvtKeyPressed => {

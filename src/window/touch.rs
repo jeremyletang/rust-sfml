@@ -58,5 +58,5 @@ pub fn is_down(finger: u32) -> bool {
 /// This function returns the current touch position in global (desktop) coordinates.
 #[must_use]
 pub fn desktop_position(finger: u32) -> Vector2i {
-    unsafe { Vector2i::from_raw(sfTouch_getPosition(finger, ::std::ptr::null())) }
+    unsafe { Vector2i::from_raw(sfTouch_getPosition(finger, std::ptr::null())) }
 }
