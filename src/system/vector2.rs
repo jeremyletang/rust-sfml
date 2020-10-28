@@ -181,6 +181,7 @@ impl<T: Neg<Output = T>> Neg for Vector2<T> {
     }
 }
 
+#[cfg(feature = "window")]
 impl Vector2i {
     pub(crate) fn raw(self) -> csfml_system_sys::sfVector2i {
         csfml_system_sys::sfVector2i {
@@ -193,6 +194,7 @@ impl Vector2i {
     }
 }
 
+#[cfg(feature = "window")]
 impl Vector2u {
     pub(crate) fn raw(self) -> csfml_system_sys::sfVector2u {
         csfml_system_sys::sfVector2u {
@@ -205,6 +207,7 @@ impl Vector2u {
     }
 }
 
+#[cfg(feature = "graphics")]
 impl Vector2f {
     pub(crate) fn raw(self) -> csfml_system_sys::sfVector2f {
         csfml_system_sys::sfVector2f {

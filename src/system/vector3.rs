@@ -199,6 +199,7 @@ impl<T> From<(T, T, T)> for Vector3<T> {
 }
 
 impl Vector3f {
+    #[cfg(any(feature = "audio", feature = "graphics"))]
     pub(crate) fn raw(&self) -> csfml_system_sys::sfVector3f {
         csfml_system_sys::sfVector3f {
             x: self.x,
@@ -206,6 +207,7 @@ impl Vector3f {
             z: self.z,
         }
     }
+    #[cfg(any(feature = "window", feature = "audio"))]
     pub(crate) fn from_raw(raw: csfml_system_sys::sfVector3f) -> Self {
         Self {
             x: raw.x,

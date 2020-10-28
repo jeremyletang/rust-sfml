@@ -421,6 +421,7 @@ impl Window {
     pub fn request_focus(&self) {
         unsafe { ffi::sfWindow_requestFocus(self.window) }
     }
+    #[cfg(feature = "graphics")]
     pub(crate) fn raw(&self) -> *const ffi::sfWindow {
         self.window
     }
