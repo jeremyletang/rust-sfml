@@ -6,8 +6,7 @@ use crate::{
     },
     sf_bool_ext::SfBoolExt,
     system::{SfStrConv, Vector2f, Vector2i, Vector2u},
-    thread_safety,
-    window::{ContextSettings, Cursor, Event, Handle, Style, VideoMode},
+    window::{thread_safety, ContextSettings, Cursor, Event, Handle, Style, VideoMode},
 };
 use csfml_graphics_sys as ffi;
 use csfml_system_sys::*;

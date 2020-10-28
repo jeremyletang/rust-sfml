@@ -6,7 +6,7 @@ static WINDOW_THREAD: OnceCell<ThreadId> = OnceCell::new();
 
 // sets WINDOW_THREAD to the current thread.
 // panics if WINDOW_THREAD is already assigned to another thread.
-pub(super) fn set_window_thread() {
+pub(crate) fn set_window_thread() {
     let current_id = current().id();
     match WINDOW_THREAD.get() {
         None => WINDOW_THREAD.set(current_id).unwrap(),

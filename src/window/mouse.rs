@@ -32,7 +32,7 @@
 //! window.set_mouse_position(Vector2i::new(100, 200));
 //! ```
 
-use crate::{sf_bool_ext::SfBoolExt, system::Vector2i, thread_safety};
+use crate::{sf_bool_ext::SfBoolExt, system::Vector2i, window::thread_safety};
 use csfml_window_sys as ffi;
 
 /// Mouse buttons.
