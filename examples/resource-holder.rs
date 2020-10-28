@@ -3,8 +3,8 @@
 use sfml::{
     audio::{Sound, SoundBuffer},
     graphics::{Color, RenderTarget, RenderWindow, Sprite, Texture},
-    system::{SfBox, SfResource},
     window::{Event, Key, Style},
+    SfBox, SfResource,
 };
 use std::{collections::HashMap, hash::Hash};
 

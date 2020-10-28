@@ -59,6 +59,7 @@ use std::{
 /// ```no_run
 /// # use sfml::graphics::*;
 /// # use sfml::system::*;
+/// # use sfml::SfBox;
 /// let texture: SfBox<Texture> = unimplemented!();
 /// let mut shader: Shader = unimplemented!();
 /// let color: Color = unimplemented!();

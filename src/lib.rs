@@ -54,6 +54,12 @@ mod sf_bool_ext;
 pub mod audio;
 #[cfg(feature = "graphics")]
 pub mod graphics;
+#[cfg(any(feature = "window", feature = "audio"))]
+mod sf_box;
 pub mod system;
 #[cfg(feature = "window")]
 pub mod window;
+#[cfg(any(feature = "window", feature = "audio"))]
+use sf_box::{Dispose, RawDefault};
+#[cfg(any(feature = "window", feature = "audio"))]
+pub use sf_box::{SfBox, SfResource};

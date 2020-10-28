@@ -1,4 +1,4 @@
-use crate::system::{Dispose, SfBox, Vector2u};
+use crate::{system::Vector2u, Dispose, SfBox};
 use csfml_window_sys as ffi;
 
 /// Defines the appearance of a system cursor.
