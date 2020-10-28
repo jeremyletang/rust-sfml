@@ -2,7 +2,7 @@ use crate::{
     graphics::{Glyph, Texture},
     inputstream::InputStream,
     sf_bool_ext::SfBoolExt,
-    Dispose, SfBox,
+    sf_box::{Dispose, SfBox},
 };
 use csfml_graphics_sys as ffi;
 use csfml_system_sys::sfBool;

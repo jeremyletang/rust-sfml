@@ -2,9 +2,9 @@ use crate::{
     graphics::{Image, IntRect, RenderWindow},
     inputstream::InputStream,
     sf_bool_ext::SfBoolExt,
+    sf_box::{Dispose, SfBox},
     system::Vector2u,
     window::Window,
-    Dispose, SfBox,
 };
 use csfml_graphics_sys as ffi;
 use csfml_system_sys::sfBool;
