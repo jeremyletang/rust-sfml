@@ -62,7 +62,7 @@ impl Context {
 
 #[cfg_attr(not(feature = "ci-headless"), test)]
 fn test_settings() {
-    use crate::window::{Context, Window};
+    use crate::window::Window;
     use std::thread;
 
     let window = Window::new((32, 32), "test", Default::default(), &Default::default());
