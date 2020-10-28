@@ -109,7 +109,18 @@ impl<'a, S: SoundStream> SoundStreamPlayer<'a, S> {
     ///
     /// # Example
     ///
-    /// ```ignore
+    /// ```no_run
+    /// # use sfml::audio::{SoundStream, SoundStreamPlayer};
+    /// # struct MusicStream;
+    /// # impl MusicStream {
+    /// #    fn load(_arg: &str) -> Self { unimplemented!() }
+    /// # }
+    /// # impl SoundStream for MusicStream {
+    /// # fn get_data(&mut self) -> (&mut [i16], bool) { unimplemented!() }
+    /// # fn seek(&mut self, _: sfml::system::Time) { unimplemented!() }
+    /// # fn channel_count(&self) -> u32 { unimplemented!() }
+    /// # fn sample_rate(&self) -> u32 { unimplemented!() }
+    /// # }
     /// let mut music_stream = MusicStream::load("cool_song.ogg");
     /// let mut player = SoundStreamPlayer::new(&mut music_stream);
     /// player.play();
