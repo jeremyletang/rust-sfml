@@ -83,7 +83,7 @@ impl SoundBuffer {
     /// Return true if saving succeeded, false if it faileds
     #[must_use]
     pub fn save_to_file(&self, filename: &str) -> bool {
-        let c_str = CString::new(filename.as_bytes()).unwrap();
+        let c_str = CString::new(filename).unwrap();
         unsafe { ffi::sfSoundBuffer_saveToFile(self.raw(), c_str.as_ptr()) }.to_bool()
     }
 
@@ -156,7 +156,7 @@ impl SoundBuffer {
     /// Returns `None` on failure.
     #[must_use]
     pub fn from_file(filename: &str) -> Option<SfBox<Self>> {
-        let c_str = CString::new(filename.as_bytes()).unwrap();
+        let c_str = CString::new(filename).unwrap();
         let sound_buffer: *mut ffi::sfSoundBuffer =
             unsafe { ffi::sfSoundBuffer_createFromFile(c_str.as_ptr()) };
         SfBox::new(sound_buffer as *mut Self)

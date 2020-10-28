@@ -143,7 +143,7 @@ impl Font {
     /// is destroyed.
     #[must_use]
     pub fn from_file(filename: &str) -> Option<SfBox<Self>> {
-        let c_str = CString::new(filename.as_bytes()).unwrap();
+        let c_str = CString::new(filename).unwrap();
         let fnt = unsafe { ffi::sfFont_createFromFile(c_str.as_ptr()) };
         SfBox::new(fnt as *mut Self)
     }

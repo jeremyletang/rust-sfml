@@ -135,7 +135,7 @@ macro_rules! cstring_then_ptr {
     ($cstring:ident, $shader:expr) => {
         match $shader {
             Some(s) => {
-                $cstring = CString::new(s.as_bytes()).unwrap();
+                $cstring = CString::new(s).unwrap();
                 $cstring.as_ptr()
             }
             None => ptr::null(),

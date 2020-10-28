@@ -179,7 +179,7 @@ impl Texture {
     /// Returns `None` on failure.
     #[must_use]
     pub fn from_file(filename: &str) -> Option<SfBox<Texture>> {
-        let c_str = CString::new(filename.as_bytes()).unwrap();
+        let c_str = CString::new(filename).unwrap();
         let tex = unsafe { ffi::sfTexture_createFromFile(c_str.as_ptr(), ptr::null()) };
         SfBox::new(tex as *mut Self)
     }
@@ -193,7 +193,7 @@ impl Texture {
     /// Returns `None` on failure.
     #[must_use]
     pub fn from_file_with_rect(filename: &str, area: &IntRect) -> Option<SfBox<Texture>> {
-        let c_str = CString::new(filename.as_bytes()).unwrap();
+        let c_str = CString::new(filename).unwrap();
         let tex = unsafe { ffi::sfTexture_createFromFile(c_str.as_ptr(), &area.raw()) };
         SfBox::new(tex as *mut Self)
     }

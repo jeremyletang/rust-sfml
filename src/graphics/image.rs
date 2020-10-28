@@ -103,7 +103,7 @@ impl Image {
     /// Returns `None` if loading fails
     #[must_use]
     pub fn from_file(filename: &str) -> Option<Self> {
-        let c_filename = CString::new(filename.as_bytes()).unwrap();
+        let c_filename = CString::new(filename).unwrap();
         let image = unsafe { ffi::sfImage_createFromFile(c_filename.as_ptr()) };
         if image.is_null() {
             None
@@ -147,7 +147,7 @@ impl Image {
     /// Return true if saving was successful
     #[must_use]
     pub fn save_to_file(&self, filename: &str) -> bool {
-        let c_str = CString::new(filename.as_bytes()).unwrap();
+        let c_str = CString::new(filename).unwrap();
         unsafe { ffi::sfImage_saveToFile(self.image, c_str.as_ptr()) }.to_bool()
     }
 
