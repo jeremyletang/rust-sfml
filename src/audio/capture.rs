@@ -1,8 +1,5 @@
-use crate::{
-    audio::{csfml_audio_sys::*, SoundBuffer},
-    sf_bool_ext::SfBoolExt,
-    system::Time,
-};
+use crate::{audio::SoundBuffer, sf_bool_ext::SfBoolExt, system::Time};
+use csfml_audio_sys::*;
 use csfml_system_sys::{sfBool, sfInt16, sfTrue};
 use std::{
     ffi::{CStr, CString},

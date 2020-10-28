@@ -1,6 +1,6 @@
 //! Available styles applicable to windows.
 
-bitflags! {
+bitflags::bitflags! {
     /// Available styles applicable to windows.
     #[repr(C)]
     pub struct Style: u32 {

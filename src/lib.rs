@@ -46,14 +46,6 @@
     clippy::cast_sign_loss
 )]
 
-#[cfg(feature = "window")]
-#[macro_use]
-extern crate bitflags;
-extern crate csfml_system_sys;
-#[cfg(feature = "window")]
-extern crate csfml_window_sys;
-extern crate once_cell;
-
 #[cfg(any(feature = "graphics", feature = "audio"))]
 mod inputstream;
 mod sf_bool_ext;

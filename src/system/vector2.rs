@@ -182,37 +182,37 @@ impl<T: Neg<Output = T>> Neg for Vector2<T> {
 }
 
 impl Vector2i {
-    pub(crate) fn raw(self) -> ::csfml_system_sys::sfVector2i {
-        ::csfml_system_sys::sfVector2i {
+    pub(crate) fn raw(self) -> csfml_system_sys::sfVector2i {
+        csfml_system_sys::sfVector2i {
             x: self.x,
             y: self.y,
         }
     }
-    pub(crate) fn from_raw(raw: ::csfml_system_sys::sfVector2i) -> Self {
+    pub(crate) fn from_raw(raw: csfml_system_sys::sfVector2i) -> Self {
         Self { x: raw.x, y: raw.y }
     }
 }
 
 impl Vector2u {
-    pub(crate) fn raw(self) -> ::csfml_system_sys::sfVector2u {
-        ::csfml_system_sys::sfVector2u {
+    pub(crate) fn raw(self) -> csfml_system_sys::sfVector2u {
+        csfml_system_sys::sfVector2u {
             x: self.x,
             y: self.y,
         }
     }
-    pub(crate) fn from_raw(raw: ::csfml_system_sys::sfVector2u) -> Self {
+    pub(crate) fn from_raw(raw: csfml_system_sys::sfVector2u) -> Self {
         Self { x: raw.x, y: raw.y }
     }
 }
 
 impl Vector2f {
-    pub(crate) fn raw(self) -> ::csfml_system_sys::sfVector2f {
-        ::csfml_system_sys::sfVector2f {
+    pub(crate) fn raw(self) -> csfml_system_sys::sfVector2f {
+        csfml_system_sys::sfVector2f {
             x: self.x,
             y: self.y,
         }
     }
-    pub(crate) fn from_raw(raw: ::csfml_system_sys::sfVector2f) -> Self {
+    pub(crate) fn from_raw(raw: csfml_system_sys::sfVector2f) -> Self {
         Self { x: raw.x, y: raw.y }
     }
 }

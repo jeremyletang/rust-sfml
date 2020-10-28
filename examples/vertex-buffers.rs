@@ -1,5 +1,3 @@
-extern crate sfml;
-
 use sfml::{
     graphics::{
         Color, PrimitiveType, RenderTarget, RenderWindow, Vertex, VertexBuffer, VertexBufferUsage,

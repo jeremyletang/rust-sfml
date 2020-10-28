@@ -1,6 +1,6 @@
 //! Available text styles.
 
-bitflags! {
+bitflags::bitflags! {
     /// Available text styles.
     #[repr(C)]
     pub struct TextStyle: u32 {

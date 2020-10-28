@@ -1,9 +1,9 @@
 use crate::{
-    audio::csfml_audio_sys as ffi,
     inputstream::InputStream,
     sf_bool_ext::SfBoolExt,
     system::{Dispose, SfBox, Time},
 };
+use csfml_audio_sys as ffi;
 use std::{
     borrow::ToOwned,
     ffi::CString,

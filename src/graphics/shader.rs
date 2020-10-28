@@ -1,8 +1,9 @@
 use crate::{
-    graphics::{csfml_graphics_sys as ffi, glsl, Texture},
+    graphics::{glsl, Texture},
     inputstream::InputStream,
     sf_bool_ext::SfBoolExt,
 };
+use csfml_graphics_sys as ffi;
 use std::{
     ffi::CString,
     io::{Read, Seek},

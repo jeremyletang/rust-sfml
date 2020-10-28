@@ -1,5 +1,3 @@
-extern crate sfml;
-
 use sfml::{
     audio::{Music, Sound, SoundBuffer, SoundStatus},
     system::{sleep, Time},

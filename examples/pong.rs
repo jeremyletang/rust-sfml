@@ -1,6 +1,3 @@
-extern crate rand;
-extern crate sfml;
-
 use rand::{thread_rng, Rng};
 use sfml::{
     audio::{Sound, SoundBuffer},

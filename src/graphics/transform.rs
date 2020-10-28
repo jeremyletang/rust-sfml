@@ -1,7 +1,5 @@
-use crate::{
-    graphics::{csfml_graphics_sys as ffi, FloatRect},
-    system::Vector2f,
-};
+use crate::{graphics::FloatRect, system::Vector2f};
+use csfml_graphics_sys as ffi;
 
 /// Define a 3x3 transform matrix.
 ///

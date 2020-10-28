@@ -1,6 +1,3 @@
-extern crate rand;
-extern crate sfml;
-
 use sfml::{graphics::*, system::*, window::*};
 
 trait Effect: Drawable {

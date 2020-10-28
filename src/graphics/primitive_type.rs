@@ -1,4 +1,4 @@
-use crate::graphics::csfml_graphics_sys as ffi;
+use csfml_graphics_sys as ffi;
 
 /// Types of primitives that a [`VertexArray`] can render.
 ///

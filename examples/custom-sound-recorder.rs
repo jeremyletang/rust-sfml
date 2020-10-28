@@ -1,5 +1,3 @@
-extern crate sfml;
-
 use sfml::audio::{SoundRecorder, SoundRecorderDriver};
 use std::{fs::File, io::Write};
 
