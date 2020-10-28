@@ -106,4 +106,16 @@ required-features = ["graphics"]
 name = "custom-sound-recorder"
 required-features = ["audio"]
 
+[[example]]
+name = "cursor"
+required-features = ["graphics"]
+
+[[example]]
+name = "resource-holder"
+required-features = ["graphics", "audio"]
+
+[[example]]
+name = "vertex-buffers"
+required-features = ["graphics"]
+
 [workspace]
