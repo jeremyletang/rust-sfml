@@ -1,4 +1,5 @@
 use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssign};
+#[cfg(feature = "serde-vec")] use serde::{Serialize, Deserialize};
 
 /// Utility type for manipulating 3-dimensional vectors.
 ///
@@ -39,6 +40,7 @@ use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssi
 /// [`Vector2`]: crate::system::Vector2
 #[repr(C)]
 #[derive(Clone, PartialOrd, PartialEq, Debug, Copy, Default)]
+#[cfg_attr(feature = "serde-vec", derive(Serialize, Deserialize))]
 pub struct Vector3<T> {
     /// X coordinate of the vector.
     pub x: T,

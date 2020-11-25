@@ -15,8 +15,13 @@ default = ["graphics", "audio"]
 window = ["csfml-window-sys", "bitflags", "widestring"]
 graphics = ["window", "csfml-graphics-sys"]
 audio = ["csfml-audio-sys"]
+serde-vec = ["serde"]
 # Used to skip running certain tests on CI, since it's running in a headless environment.
 ci-headless = []
+
+[dependencies.serde]
+version = "1.0"
+optional = true
 
 [dependencies.once_cell]
 version = "1.4"
