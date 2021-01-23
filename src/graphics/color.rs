@@ -131,10 +131,9 @@ impl From<u32> for Color {
     }
 }
 
-impl Into<u32> for Color {
-    /// Retrieve the color as a 32-bit unsigned integer.
-    fn into(self) -> u32 {
-        unsafe { ffi::sfColor_toInteger(self.0) }
+impl From<Color> for u32 {
+    fn from(src: Color) -> Self {
+        unsafe { ffi::sfColor_toInteger(src.0) }
     }
 }
 

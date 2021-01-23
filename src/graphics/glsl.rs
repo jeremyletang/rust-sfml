@@ -90,33 +90,33 @@ impl From<Color> for IVec4 {
     }
 }
 
-impl Into<ffi::sfGlslIvec3> for IVec3 {
-    fn into(self) -> ffi::sfGlslIvec3 {
-        ffi::sfGlslIvec3 {
-            x: self.x,
-            y: self.y,
-            z: self.z,
+impl From<IVec3> for ffi::sfGlslIvec3 {
+    fn from(src: IVec3) -> Self {
+        Self {
+            x: src.x,
+            y: src.y,
+            z: src.z,
         }
     }
 }
 
-impl Into<ffi::sfGlslBvec2> for BVec2 {
-    fn into(self) -> ffi::sfGlslBvec2 {
+impl From<BVec2> for ffi::sfGlslBvec2 {
+    fn from(src: BVec2) -> Self {
         use crate::sf_bool_ext::SfBoolExt;
-        ffi::sfGlslBvec2 {
-            x: SfBoolExt::from_bool(self.x),
-            y: SfBoolExt::from_bool(self.y),
+        Self {
+            x: SfBoolExt::from_bool(src.x),
+            y: SfBoolExt::from_bool(src.y),
         }
     }
 }
 
-impl Into<ffi::sfGlslBvec3> for BVec3 {
-    fn into(self) -> ffi::sfGlslBvec3 {
+impl From<BVec3> for ffi::sfGlslBvec3 {
+    fn from(src: BVec3) -> Self {
         use crate::sf_bool_ext::SfBoolExt;
-        ffi::sfGlslBvec3 {
-            x: SfBoolExt::from_bool(self.x),
-            y: SfBoolExt::from_bool(self.y),
-            z: SfBoolExt::from_bool(self.z),
+        Self {
+            x: SfBoolExt::from_bool(src.x),
+            y: SfBoolExt::from_bool(src.y),
+            z: SfBoolExt::from_bool(src.z),
         }
     }
 }
@@ -134,14 +134,14 @@ pub struct BVec4 {
     pub w: bool,
 }
 
-impl Into<ffi::sfGlslBvec4> for BVec4 {
-    fn into(self) -> ffi::sfGlslBvec4 {
+impl From<BVec4> for ffi::sfGlslBvec4 {
+    fn from(src: BVec4) -> Self {
         use crate::sf_bool_ext::SfBoolExt;
-        ffi::sfGlslBvec4 {
-            x: SfBoolExt::from_bool(self.x),
-            y: SfBoolExt::from_bool(self.y),
-            z: SfBoolExt::from_bool(self.z),
-            w: SfBoolExt::from_bool(self.w),
+        Self {
+            x: SfBoolExt::from_bool(src.x),
+            y: SfBoolExt::from_bool(src.y),
+            z: SfBoolExt::from_bool(src.z),
+            w: SfBoolExt::from_bool(src.w),
         }
     }
 }
