@@ -72,14 +72,14 @@ impl Texture {
     /// Return true if smoothing is enabled, false if it is disabled
     #[must_use]
     pub fn is_smooth(&self) -> bool {
-        unsafe { ffi::sfTexture_isSmooth(self.raw()) }.to_bool()
+        unsafe { ffi::sfTexture_isSmooth(self.raw()) }.into_bool()
     }
     /// Tell whether a texture is repeated or not
     ///
     /// Return frue if repeat mode is enabled, false if it is disabled
     #[must_use]
     pub fn is_repeated(&self) -> bool {
-        unsafe { ffi::sfTexture_isRepeated(self.raw()) }.to_bool()
+        unsafe { ffi::sfTexture_isRepeated(self.raw()) }.into_bool()
     }
     /// Copy a texture's pixels to an image
     ///
@@ -96,7 +96,7 @@ impl Texture {
     /// Tell whether the texture source is converted from sRGB or not.
     #[must_use]
     pub fn is_srgb(&self) -> bool {
-        unsafe { ffi::sfTexture_isSrgb(self.raw()).to_bool() }
+        unsafe { ffi::sfTexture_isSrgb(self.raw()).into_bool() }
     }
     /// Get the underlying OpenGL handle of the texture.
     ///
@@ -351,7 +351,7 @@ impl Texture {
     ///
     /// Returns true if mipmap generation was successful, false if unsuccessful.
     pub fn generate_mipmap(&mut self) -> bool {
-        unsafe { ffi::sfTexture_generateMipmap(self.raw_mut()).to_bool() }
+        unsafe { ffi::sfTexture_generateMipmap(self.raw_mut()).into_bool() }
     }
 }
 

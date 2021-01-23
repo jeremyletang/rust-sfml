@@ -75,7 +75,7 @@ impl<'s> Sound<'s> {
     /// Return true if the sound is looping, false otherwise
     #[must_use]
     pub fn is_looping(&self) -> bool {
-        unsafe { ffi::sfSound_getLoop(self.sound) }.to_bool()
+        unsafe { ffi::sfSound_getLoop(self.sound) }.into_bool()
     }
 
     /// Start or resume playing a sound
@@ -204,7 +204,7 @@ impl<'s> SoundSource for Sound<'s> {
         unsafe { Vector3f::from_raw(ffi::sfSound_getPosition(self.sound)) }
     }
     fn is_relative_to_listener(&self) -> bool {
-        unsafe { ffi::sfSound_isRelativeToListener(self.sound).to_bool() }
+        unsafe { ffi::sfSound_isRelativeToListener(self.sound).into_bool() }
     }
     fn min_distance(&self) -> f32 {
         unsafe { ffi::sfSound_getMinDistance(self.sound) }

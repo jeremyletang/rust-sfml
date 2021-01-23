@@ -174,7 +174,7 @@ impl<'a, S: SoundStream> SoundStreamPlayer<'a, S> {
     /// Tell whether or not the stream is in loop mode.
     #[must_use]
     pub fn is_looping(&self) -> bool {
-        unsafe { sfSoundStream_getLoop(self.sf_sound_stream).to_bool() }
+        unsafe { sfSoundStream_getLoop(self.sf_sound_stream).into_bool() }
     }
     /// Set whether or not the stream should loop after reaching the end.
     ///
@@ -220,7 +220,7 @@ impl<'a, S: SoundStream> SoundSource for SoundStreamPlayer<'a, S> {
         unsafe { Vector3f::from_raw(sfSoundStream_getPosition(self.sf_sound_stream)) }
     }
     fn is_relative_to_listener(&self) -> bool {
-        unsafe { sfSoundStream_isRelativeToListener(self.sf_sound_stream).to_bool() }
+        unsafe { sfSoundStream_isRelativeToListener(self.sf_sound_stream).into_bool() }
     }
     fn min_distance(&self) -> f32 {
         unsafe { sfSoundStream_getMinDistance(self.sf_sound_stream) }

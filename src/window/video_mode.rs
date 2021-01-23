@@ -71,7 +71,7 @@ impl VideoMode {
     /// return true if the video mode is valid for fullscreen mode
     #[must_use]
     pub fn is_valid(&self) -> bool {
-        unsafe { ffi::sfVideoMode_isValid(self.raw()) }.to_bool()
+        unsafe { ffi::sfVideoMode_isValid(self.raw()) }.into_bool()
     }
 
     /// Static Method, get the current desktop video mode

@@ -145,7 +145,7 @@ impl<'a, R: SoundRecorder> SoundRecorderDriver<'a, R> {
     ///
     /// [`set_device`]: SoundRecorderDriver::set_device
     pub fn start(&mut self, sample_rate: u32) -> bool {
-        unsafe { sfSoundRecorder_start(self.ffi_handle, sample_rate).to_bool() }
+        unsafe { sfSoundRecorder_start(self.ffi_handle, sample_rate).into_bool() }
     }
     /// Stop the capture, lending out the underlying [`SoundRecorder`].
     pub fn stop(&mut self) -> &mut R {
@@ -212,7 +212,7 @@ impl<'a, R: SoundRecorder> SoundRecorderDriver<'a, R> {
     pub fn set_device(&mut self, name: &str) -> Result<(), SetDeviceError> {
         let name = CString::new(name).unwrap();
         let success =
-            unsafe { sfSoundRecorder_setDevice(self.ffi_handle, name.as_ptr()).to_bool() };
+            unsafe { sfSoundRecorder_setDevice(self.ffi_handle, name.as_ptr()).into_bool() };
         if success {
             Ok(())
         } else {
@@ -320,7 +320,7 @@ impl SoundBufferRecorder {
     pub fn set_device(&mut self, name: &str) -> Result<(), SetDeviceError> {
         let name = CString::new(name).unwrap();
         let success =
-            unsafe { sfSoundBufferRecorder_setDevice(self.ffi_handle, name.as_ptr()).to_bool() };
+            unsafe { sfSoundBufferRecorder_setDevice(self.ffi_handle, name.as_ptr()).into_bool() };
         if success {
             Ok(())
         } else {
@@ -369,7 +369,7 @@ impl Drop for SoundBufferRecorder {
 /// Return true if audio capture is supported, false otherwise
 #[must_use]
 pub fn is_available() -> bool {
-    unsafe { sfSoundRecorder_isAvailable() }.to_bool()
+    unsafe { sfSoundRecorder_isAvailable() }.into_bool()
 }
 /// Get the name of the default audio capture device.
 ///

@@ -145,7 +145,7 @@ impl Music {
     /// Return true if the music is looping, false otherwise
     #[must_use]
     pub fn is_looping(&self) -> bool {
-        unsafe { ffi::sfMusic_getLoop(self.music) }.to_bool()
+        unsafe { ffi::sfMusic_getLoop(self.music) }.into_bool()
     }
 
     /// Get the total duration of a music
@@ -290,7 +290,7 @@ impl SoundSource for Music {
         unsafe { Vector3f::from_raw(ffi::sfMusic_getPosition(self.music)) }
     }
     fn is_relative_to_listener(&self) -> bool {
-        unsafe { ffi::sfMusic_isRelativeToListener(self.music).to_bool() }
+        unsafe { ffi::sfMusic_isRelativeToListener(self.music).into_bool() }
     }
     fn min_distance(&self) -> f32 {
         unsafe { ffi::sfMusic_getMinDistance(self.music) }

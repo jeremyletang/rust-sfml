@@ -149,7 +149,7 @@ impl Image {
     #[must_use]
     pub fn save_to_file(&self, filename: &str) -> bool {
         let c_str = CString::new(filename).unwrap();
-        unsafe { ffi::sfImage_saveToFile(self.image, c_str.as_ptr()) }.to_bool()
+        unsafe { ffi::sfImage_saveToFile(self.image, c_str.as_ptr()) }.into_bool()
     }
 
     /// Return the size of an image

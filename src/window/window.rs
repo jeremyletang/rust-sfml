@@ -148,7 +148,7 @@ impl Window {
     pub fn poll_event(&mut self) -> Option<Event> {
         let mut event = std::mem::MaybeUninit::uninit();
         let have_event =
-            unsafe { ffi::sfWindow_pollEvent(self.window, event.as_mut_ptr()).to_bool() };
+            unsafe { ffi::sfWindow_pollEvent(self.window, event.as_mut_ptr()).into_bool() };
         if have_event {
             unsafe { Event::from_raw(&event.assume_init()) }
         } else {
@@ -169,7 +169,7 @@ impl Window {
     pub fn wait_event(&mut self) -> Option<Event> {
         let mut event = std::mem::MaybeUninit::uninit();
         let have_event =
-            unsafe { ffi::sfWindow_waitEvent(self.window, event.as_mut_ptr()).to_bool() };
+            unsafe { ffi::sfWindow_waitEvent(self.window, event.as_mut_ptr()).into_bool() };
         if have_event {
             unsafe { Event::from_raw(&event.assume_init()) }
         } else {
@@ -208,7 +208,7 @@ impl Window {
     /// true.
     #[must_use]
     pub fn is_open(&self) -> bool {
-        unsafe { ffi::sfWindow_isOpen(self.window) }.to_bool()
+        unsafe { ffi::sfWindow_isOpen(self.window) }.into_bool()
     }
 
     /// Get the settings of the OpenGL context of a window
@@ -298,7 +298,7 @@ impl Window {
     ///
     /// Return true if operation was successful, false otherwise
     pub fn set_active(&mut self, enabled: bool) -> bool {
-        unsafe { ffi::sfWindow_setActive(self.window, sfBool::from_bool(enabled)) }.to_bool()
+        unsafe { ffi::sfWindow_setActive(self.window, sfBool::from_bool(enabled)) }.into_bool()
     }
 
     /// Display on screen what has been rendered to the window so far
@@ -409,7 +409,7 @@ impl Window {
     /// such as keystrokes or most mouse events.
     #[must_use]
     pub fn has_focus(&self) -> bool {
-        unsafe { ffi::sfWindow_hasFocus(self.window).to_bool() }
+        unsafe { ffi::sfWindow_hasFocus(self.window).into_bool() }
     }
 
     /// Request the current window to be made the active foreground window.

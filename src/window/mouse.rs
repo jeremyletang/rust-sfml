@@ -84,7 +84,7 @@ impl Button {
     pub fn is_pressed(self) -> bool {
         thread_safety::set_window_thread();
 
-        unsafe { ffi::sfMouse_isButtonPressed(self.0) }.to_bool()
+        unsafe { ffi::sfMouse_isButtonPressed(self.0) }.into_bool()
     }
 }
 

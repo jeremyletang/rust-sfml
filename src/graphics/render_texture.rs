@@ -75,7 +75,7 @@ impl RenderTexture {
     /// * active - true to activate, false to deactivate
     pub fn set_active(&mut self, active: bool) -> bool {
         unsafe { ffi::sfRenderTexture_setActive(self.render_texture, sfBool::from_bool(active)) }
-            .to_bool()
+            .into_bool()
     }
 
     /// Get the target texture of a render texture
@@ -101,7 +101,7 @@ impl RenderTexture {
     /// Return true if smoothing is enabled, false if it is disabled
     #[must_use]
     pub fn is_smooth(&self) -> bool {
-        unsafe { ffi::sfRenderTexture_isSmooth(self.render_texture) }.to_bool()
+        unsafe { ffi::sfRenderTexture_isSmooth(self.render_texture) }.into_bool()
     }
     /// Enable or disable texture repeating.
     ///
@@ -114,7 +114,7 @@ impl RenderTexture {
     /// Tell whether the texture is repeated or not.
     #[must_use]
     pub fn is_repeated(&self) -> bool {
-        unsafe { ffi::sfRenderTexture_isRepeated(self.render_texture).to_bool() }
+        unsafe { ffi::sfRenderTexture_isRepeated(self.render_texture).into_bool() }
     }
     /// Generate a mipmap using the current texture data.
     ///
@@ -128,7 +128,7 @@ impl RenderTexture {
     /// completed and display has been called. Not calling display after subsequent drawing
     /// will lead to __undefined behavior__ if a mipmap had been previously generated.
     pub unsafe fn generate_mipmap(&mut self) -> bool {
-        ffi::sfRenderTexture_generateMipmap(self.render_texture).to_bool()
+        ffi::sfRenderTexture_generateMipmap(self.render_texture).into_bool()
     }
 }
 

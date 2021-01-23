@@ -127,7 +127,7 @@ impl RenderWindow {
         let mut event = std::mem::MaybeUninit::uninit();
         let have_event =
             unsafe { ffi::sfRenderWindow_pollEvent(self.render_window, event.as_mut_ptr()) }
-                .to_bool();
+                .into_bool();
         if have_event {
             unsafe { Event::from_raw(&event.assume_init()) }
         } else {
@@ -149,7 +149,7 @@ impl RenderWindow {
         let mut event = std::mem::MaybeUninit::uninit();
         let have_event =
             unsafe { ffi::sfRenderWindow_waitEvent(self.render_window, event.as_mut_ptr()) }
-                .to_bool();
+                .into_bool();
         if have_event {
             unsafe { Event::from_raw(&event.assume_init()) }
         } else {
@@ -178,7 +178,7 @@ impl RenderWindow {
     ///
     #[must_use]
     pub fn is_open(&self) -> bool {
-        unsafe { ffi::sfRenderWindow_isOpen(self.render_window) }.to_bool()
+        unsafe { ffi::sfRenderWindow_isOpen(self.render_window) }.into_bool()
     }
 
     /// Display on screen what has been rendered to the window so far
@@ -318,7 +318,7 @@ impl RenderWindow {
     ///
     pub fn set_active(&mut self, enabled: bool) -> bool {
         unsafe { ffi::sfRenderWindow_setActive(self.render_window, sfBool::from_bool(enabled)) }
-            .to_bool()
+            .into_bool()
     }
 
     /// Change the joystick threshold
@@ -407,7 +407,7 @@ impl RenderWindow {
     /// such as keystrokes or most mouse events.
     #[must_use]
     pub fn has_focus(&self) -> bool {
-        unsafe { ffi::sfRenderWindow_hasFocus(self.render_window).to_bool() }
+        unsafe { ffi::sfRenderWindow_hasFocus(self.render_window).into_bool() }
     }
 
     /// Request the current window to be made the active foreground window.

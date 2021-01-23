@@ -283,7 +283,7 @@ impl<'texture> Shader<'texture> {
     /// any attempt to use `Shader` will fail.
     #[must_use]
     pub fn is_available() -> bool {
-        unsafe { ffi::sfShader_isAvailable() }.to_bool()
+        unsafe { ffi::sfShader_isAvailable() }.into_bool()
     }
 
     /// Tell whether or not the system supports geometry shaders.
@@ -300,7 +300,7 @@ impl<'texture> Shader<'texture> {
     /// in a context switch.
     #[must_use]
     pub fn is_geometry_available() -> bool {
-        unsafe { ffi::sfShader_isGeometryAvailable() }.to_bool()
+        unsafe { ffi::sfShader_isGeometryAvailable() }.into_bool()
     }
 
     /// Specify value for `float` uniform.

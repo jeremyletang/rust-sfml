@@ -58,7 +58,7 @@ pub fn value(sensor: Type) -> Vector3f {
 /// Check if a sensor is available on the underlying platform.
 #[must_use]
 pub fn is_available(sensor: Type) -> bool {
-    unsafe { sfSensor_isAvailable(sensor.0).to_bool() }
+    unsafe { sfSensor_isAvailable(sensor.0).into_bool() }
 }
 
 /// Enable or disable a sensor.

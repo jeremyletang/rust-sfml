@@ -225,10 +225,10 @@ impl Event {
 
                 KeyPressed {
                     code: Key(e.code),
-                    alt: e.alt.to_bool(),
-                    ctrl: e.control.to_bool(),
-                    shift: e.shift.to_bool(),
-                    system: e.system.to_bool(),
+                    alt: e.alt.into_bool(),
+                    ctrl: e.control.into_bool(),
+                    shift: e.shift.into_bool(),
+                    system: e.system.into_bool(),
                 }
             }
             ffi::sfEventType_sfEvtKeyReleased => {
@@ -236,10 +236,10 @@ impl Event {
 
                 KeyReleased {
                     code: Key(e.code),
-                    alt: e.alt.to_bool(),
-                    ctrl: e.control.to_bool(),
-                    shift: e.shift.to_bool(),
-                    system: e.system.to_bool(),
+                    alt: e.alt.into_bool(),
+                    ctrl: e.control.into_bool(),
+                    shift: e.shift.into_bool(),
+                    system: e.system.into_bool(),
                 }
             }
             ffi::sfEventType_sfEvtMouseWheelScrolled => {
