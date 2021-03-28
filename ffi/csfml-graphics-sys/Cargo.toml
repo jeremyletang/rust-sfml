@@ -12,7 +12,7 @@ keywords = ["sfml", "multimedia", "game"]
 
 [dependencies.csfml-system-sys]
 path = "../csfml-system-sys"
-version = "0.5.0"
+version = "0.6.0"
 
 [dependencies.csfml-window-sys]
 path = "../csfml-window-sys"
