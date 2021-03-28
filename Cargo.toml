@@ -12,14 +12,15 @@ edition = "2018"
 
 [features]
 default = ["graphics", "audio"]
-window = ["csfml-window-sys", "bitflags", "widestring"]
+window = ["csfml-window-sys", "bitflags", "once_cell", "widestring"]
 graphics = ["window", "csfml-graphics-sys"]
 audio = ["csfml-audio-sys"]
 # Used to skip running certain tests on CI, since it's running in a headless environment.
 ci-headless = []
 
-[dependencies]
-once_cell = "1.7.2"
+[dependencies.once_cell]
+version = "1.7.2"
+optional = true
 
 [dependencies.widestring]
 version = "0.4.3"
