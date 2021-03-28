@@ -129,8 +129,8 @@ impl StormBlink {
         let mut points = VertexArray::default();
         points.set_primitive_type(PrimitiveType::POINTS);
         for _ in 0..40_000 {
-            let x = rng.gen_range(0., 800.);
-            let y = rng.gen_range(0., 600.);
+            let x = rng.gen_range(0.0..800.);
+            let y = rng.gen_range(0.0..600.);
             let (red, green, blue) = (rng.gen(), rng.gen(), rng.gen());
             points.append(&Vertex::with_pos_color(
                 Vector2f::new(x, y),

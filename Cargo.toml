@@ -18,15 +18,15 @@ audio = ["csfml-audio-sys"]
 # Used to skip running certain tests on CI, since it's running in a headless environment.
 ci-headless = []
 
-[dependencies.once_cell]
-version = "1.4"
+[dependencies]
+once_cell = "1.7.2"
 
 [dependencies.widestring]
-version = "0.4.0"
+version = "0.4.3"
 optional = true
 
 [dependencies.bitflags]
-version = "1.0"
+version = "1.2.1"
 optional = true
 
 [dependencies.csfml-system-sys]
@@ -49,7 +49,7 @@ version = "0.5.0"
 optional = true
 
 [dev-dependencies]
-rand = "0.3"
+rand = "0.8.3"
 
 [lib]
 name = "sfml"

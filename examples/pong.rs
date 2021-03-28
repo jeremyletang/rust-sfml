@@ -113,7 +113,7 @@ fn main() {
                     // Reset the ball angle
                     loop {
                         // Make sure the ball initial angle is not too much vertical
-                        ball_angle = rng.gen_range(0., 360.) * 2. * PI / 360.;
+                        ball_angle = rng.gen_range(0.0..360.) * 2. * PI / 360.;
 
                         if ball_angle.cos().abs() >= 0.7 {
                             break;
@@ -194,9 +194,9 @@ fn main() {
                 && ball_pos.y - ball_radius <= paddle_pos.y + paddle_size.y / 2.
             {
                 if ball_pos.y > paddle_pos.y {
-                    ball_angle = PI - ball_angle + rng.gen_range(0., 20.) * PI / 180.;
+                    ball_angle = PI - ball_angle + rng.gen_range(0.0..20.) * PI / 180.;
                 } else {
-                    ball_angle = PI - ball_angle - rng.gen_range(0., 20.) * PI / 180.;
+                    ball_angle = PI - ball_angle - rng.gen_range(0.0..20.) * PI / 180.;
                 }
 
                 ball_sound.play();
@@ -214,9 +214,9 @@ fn main() {
                 && ball_pos.y - ball_radius <= paddle_pos.y + paddle_size.y / 2.
             {
                 if ball_pos.y > paddle_pos.y {
-                    ball_angle = PI - ball_angle + rng.gen_range(0., 20.) * PI / 180.;
+                    ball_angle = PI - ball_angle + rng.gen_range(0.0..20.) * PI / 180.;
                 } else {
-                    ball_angle = PI - ball_angle - rng.gen_range(0., 20.) * PI / 180.;
+                    ball_angle = PI - ball_angle - rng.gen_range(0.0..20.) * PI / 180.;
                 }
 
                 ball_sound.play();
