@@ -46,7 +46,7 @@ optional = true
 
 [dependencies.csfml-audio-sys]
 path = "ffi/csfml-audio-sys"
-version = "0.5.0"
+version = "0.6.0"
 optional = true
 
 [dev-dependencies]
