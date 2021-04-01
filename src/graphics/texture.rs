@@ -1,4 +1,5 @@
 use crate::{
+    ffi::{graphics as ffi, system::sfBool},
     graphics::{Image, IntRect, RenderWindow},
     inputstream::InputStream,
     sf_bool_ext::SfBoolExt,
@@ -6,8 +7,6 @@ use crate::{
     system::Vector2u,
     window::Window,
 };
-use csfml_graphics_sys as ffi;
-use csfml_system_sys::sfBool;
 use std::{
     borrow::ToOwned,
     ffi::CString,

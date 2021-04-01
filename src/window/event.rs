@@ -1,9 +1,11 @@
-use crate::window::{
-    joystick::Axis,
-    keyboard::Key,
-    mouse::{Button, Wheel},
+use crate::{
+    ffi::window as ffi,
+    window::{
+        joystick::Axis,
+        keyboard::Key,
+        mouse::{Button, Wheel},
+    },
 };
-use csfml_window_sys as ffi;
 
 /// Defines a system event and its parameters.
 ///

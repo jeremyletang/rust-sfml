@@ -1,4 +1,4 @@
-use csfml_system_sys::sfInputStream;
+use crate::ffi::system::sfInputStream;
 use std::{
     convert::TryInto,
     io::{Read, Seek, SeekFrom},

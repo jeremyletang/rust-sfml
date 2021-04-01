@@ -1,8 +1,8 @@
 use crate::{
+    ffi::window as ffi,
     sf_box::{Dispose, SfBox},
     system::Vector2u,
 };
-use csfml_window_sys as ffi;
 
 /// Defines the appearance of a system cursor.
 ///

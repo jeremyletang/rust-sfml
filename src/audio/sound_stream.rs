@@ -1,10 +1,9 @@
 use crate::{
     audio::{SoundSource, SoundStatus},
+    ffi::{audio::*, system::*},
     sf_bool_ext::SfBoolExt,
     system::{Time, Vector3f},
 };
-use csfml_audio_sys::*;
-use csfml_system_sys::*;
 use std::{os::raw::c_void, panic, ptr::NonNull};
 
 /// Trait for streamed audio sources.

@@ -1,4 +1,4 @@
-use csfml_graphics_sys as ffi;
+use crate::ffi::graphics as ffi;
 
 /// Types of primitives of which vertex arrays can be rendered.
 ///

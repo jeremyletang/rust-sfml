@@ -1,12 +1,11 @@
 use std::ptr::NonNull;
 
 use crate::{
+    ffi::{system::sfBool, window as ffi},
     sf_bool_ext::SfBoolExt,
     system::{SfStrConv, Vector2i, Vector2u},
     window::{thread_safety, ContextSettings, Cursor, Event, Style, VideoMode},
 };
-use csfml_system_sys::sfBool;
-use csfml_window_sys as ffi;
 
 /// The system native window handle type. Can be used to create an SFML Window
 /// from an existing system window.

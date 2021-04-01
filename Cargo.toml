@@ -12,9 +12,9 @@ edition = "2018"
 
 [features]
 default = ["graphics", "audio"]
-window = ["csfml-window-sys", "bitflags", "once_cell", "widestring"]
-graphics = ["window", "csfml-graphics-sys"]
-audio = ["csfml-audio-sys"]
+window = ["bitflags", "once_cell", "widestring"]
+graphics = ["window"]
+audio = []
 # Used to skip running certain tests on CI, since it's running in a headless environment.
 ci-headless = []
 
@@ -30,24 +30,11 @@ optional = true
 version = "1.2.1"
 optional = true
 
-[dependencies.csfml-system-sys]
-path = "ffi/csfml-system-sys"
-version = "0.6.0"
+[dependencies.link-cplusplus]
+version = "1.0"
 
-[dependencies.csfml-window-sys]
-path = "ffi/csfml-window-sys"
-version = "0.6.0"
-optional = true
-
-[dependencies.csfml-graphics-sys]
-path = "ffi/csfml-graphics-sys"
-version = "0.6.0"
-optional = true
-
-[dependencies.csfml-audio-sys]
-path = "ffi/csfml-audio-sys"
-version = "0.6.0"
-optional = true
+[build-dependencies]
+cc = "1.0.67"
 
 [dev-dependencies]
 rand = "0.8.3"

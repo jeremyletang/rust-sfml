@@ -1,5 +1,4 @@
-use crate::{sf_bool_ext::SfBoolExt, window::ContextSettings};
-use csfml_window_sys as ffi;
+use crate::{ffi::window as ffi, sf_bool_ext::SfBoolExt, window::ContextSettings};
 
 /// Type holding a valid drawing context.
 ///

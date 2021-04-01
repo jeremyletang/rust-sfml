@@ -1,4 +1,5 @@
 use crate::{
+    ffi::{graphics as ffi, system::sfBool},
     graphics::{
         CircleShape, Color, ConvexShape, CustomShape, Drawable, IntRect, PrimitiveType,
         RectangleShape, RenderStates, RenderTarget, Sprite, Text, Texture, Vertex, VertexBuffer,
@@ -8,8 +9,6 @@ use crate::{
     system::{Vector2f, Vector2i, Vector2u},
     window::ContextSettings,
 };
-use csfml_graphics_sys as ffi;
-use csfml_system_sys::sfBool;
 
 /// Target for off-screen 2D rendering into a texture
 #[derive(Debug)]

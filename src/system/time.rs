@@ -1,4 +1,4 @@
-use csfml_system_sys::*;
+use crate::ffi::system::*;
 use std::ops::{
     Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Rem, RemAssign, Sub, SubAssign,
 };

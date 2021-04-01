@@ -1,4 +1,8 @@
 use crate::{
+    ffi::{
+        graphics as ffi,
+        system::{sfBool, sfTrue},
+    },
     graphics::{
         Color, Drawable, FloatRect, IntRect, RenderStates, RenderTarget, Texture, Transform,
         Transformable,
@@ -6,8 +10,6 @@ use crate::{
     sf_bool_ext::SfBoolExt,
     system::Vector2f,
 };
-use csfml_graphics_sys as ffi;
-use csfml_system_sys::{sfBool, sfTrue};
 use std::{
     marker::PhantomData,
     ptr::{self, NonNull},
