@@ -67,7 +67,7 @@ impl Vertex {
         }
     }
 
-    /// Create a new Vertex whit a position
+    /// Create a new Vertex with a position
     ///
     /// # Arguments
     /// * position - Position of the vertex
@@ -97,7 +97,7 @@ impl Vertex {
         Self::new(position, color, Vector2f::new(0., 0.))
     }
 
-    /// Create a new Vertex whit the position and the texture coordinates
+    /// Create a new Vertex with the position and the texture coordinates
     ///
     /// # Arguments
     /// * position - Position of the vertex
