@@ -1,17 +1,16 @@
 use rand::{thread_rng, Rng};
 use sfml::{
     graphics::{
-        Color, Font, PrimitiveType, RenderStates, RenderTarget, RenderWindow, Text, Texture, Vertex,
+        Color, Font, PrimitiveType, Rect, RenderStates, RenderTarget, RenderWindow, Text, Texture,
+        Vertex, View,
     },
-    system::{Vector2f, Vector2i},
-    window::{mouse::Button, ContextSettings, Event, Style},
+    system::{Vector2, Vector2f, Vector2i},
+    window::{mouse::Button, ContextSettings, Event, Key, Style, VideoMode},
 };
 
 const SUBIMAGE_SIZE: u8 = 96;
 const N_IMAGES: u8 = 6;
 const GRAVITY: f32 = 0.5;
-const GROUND_Y: f32 = 600.;
-const RIGHT_WALL_X: f32 = 800.;
 
 struct Object {
     position: Vector2f,
@@ -20,18 +19,18 @@ struct Object {
 }
 
 impl Object {
-    fn update(&mut self) {
+    fn update(&mut self, ground_y: f32, right_wall_x: f32) {
         let Vector2f { x, y } = &mut self.position;
         self.speed.y += GRAVITY;
         *x += self.speed.x;
         *y += self.speed.y;
         let size = f32::from(SUBIMAGE_SIZE);
-        if *y + size >= GROUND_Y {
-            *y = GROUND_Y - size;
+        if *y + size >= ground_y {
+            *y = ground_y - size;
             self.speed.y = -self.speed.y;
         }
-        if *x + size >= RIGHT_WALL_X {
-            *x = RIGHT_WALL_X - size;
+        if *x + size >= right_wall_x {
+            *x = right_wall_x - size;
             self.speed.x = -self.speed.x;
         }
         if *x <= 0. {
@@ -49,12 +48,14 @@ fn fconv(in_: Vector2i) -> Vector2f {
 }
 
 fn main() {
+    let native_mode = VideoMode::desktop_mode();
     let mut window = RenderWindow::new(
-        (800, 600),
+        native_mode,
         "Spritemark",
-        Style::default(),
+        Style::NONE,
         &ContextSettings::default(),
     );
+    window.set_position(Vector2::new(0, 0));
     window.set_vertical_sync_enabled(true);
     let font = Font::from_file("resources/sansation.ttf").unwrap();
     let texture = Texture::from_file("resources/devices.png").unwrap();
@@ -68,11 +69,22 @@ fn main() {
     while window.is_open() {
         while let Some(event) = window.poll_event() {
             match event {
-                Event::Closed => window.close(),
+                Event::Closed
+                | Event::KeyPressed {
+                    code: Key::ESCAPE, ..
+                } => window.close(),
                 Event::MouseButtonPressed {
                     button: Button::LEFT,
                     ..
                 } => click_counter += 1,
+                Event::Resized { width, height } => {
+                    window.set_view(&View::from_rect(&Rect::new(
+                        0.,
+                        0.,
+                        width as f32,
+                        height as f32,
+                    )));
+                }
                 _ => {}
             }
         }
@@ -111,7 +123,7 @@ fn main() {
                 position: Vector2f::new(obj.position.x + size, obj.position.y),
                 tex_coords: Vector2f::new(tex_x + size, 0.),
             });
-            obj.update();
+            obj.update(window.size().y as f32, window.size().x as f32);
         }
         window.clear(Color::BLACK);
         text.set_string(&format!("{} sprites", objects.len()));
