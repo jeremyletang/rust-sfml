@@ -79,7 +79,7 @@ fn main() {
 
         if Button::LEFT.is_pressed() {
             let mp = window.mouse_position();
-            for _ in 0..100 {
+            for _ in 0..25 {
                 objects.push(Object {
                     position: fconv(mp),
                     speed: Vector2f::new(rng.gen_range(-3.0..3.0), 0.0),
