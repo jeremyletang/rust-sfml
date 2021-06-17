@@ -1,7 +1,7 @@
 use rand::{thread_rng, Rng};
 use sfml::{
     graphics::{
-        Color, Font, Rect, RenderTarget, RenderWindow, Sprite, Text, Texture, Transformable,
+        Color, Font, PrimitiveType, RenderStates, RenderTarget, RenderWindow, Text, Texture, Vertex,
     },
     system::{Vector2f, Vector2i},
     window::{mouse::Button, ContextSettings, Event, Style},
@@ -59,10 +59,11 @@ fn main() {
     let font = Font::from_file("resources/sansation.ttf").unwrap();
     let texture = Texture::from_file("resources/devices.png").unwrap();
     let mut text = Text::new("", &font, 18);
-    let mut sprite = Sprite::with_texture(&texture);
     let mut click_counter = 0;
     let mut objects = Vec::new();
     let mut rng = thread_rng();
+    let mut rs = RenderStates::default();
+    let mut buf = Vec::new();
 
     while window.is_open() {
         while let Some(event) = window.poll_event() {
@@ -87,24 +88,38 @@ fn main() {
             }
         }
 
-        window.clear(Color::BLACK);
         for obj in &mut objects {
+            let size = f32::from(SUBIMAGE_SIZE);
+            let tex_x = f32::from(obj.image_id) * size;
+            buf.push(Vertex {
+                color: Color::WHITE,
+                position: obj.position,
+                tex_coords: Vector2f::new(tex_x, 0.),
+            });
+            buf.push(Vertex {
+                color: Color::WHITE,
+                position: Vector2f::new(obj.position.x, obj.position.y + size),
+                tex_coords: Vector2f::new(tex_x, size),
+            });
+            buf.push(Vertex {
+                color: Color::WHITE,
+                position: Vector2f::new(obj.position.x + size, obj.position.y + size),
+                tex_coords: Vector2f::new(tex_x + size, size),
+            });
+            buf.push(Vertex {
+                color: Color::WHITE,
+                position: Vector2f::new(obj.position.x + size, obj.position.y),
+                tex_coords: Vector2f::new(tex_x + size, 0.),
+            });
             obj.update();
-            sprite.set_position(obj.position);
-            sprite.set_texture_rect(&rect_from_id(obj.image_id));
-            window.draw(&sprite);
         }
+        window.clear(Color::BLACK);
         text.set_string(&format!("{} sprites", objects.len()));
-        window.draw(&text);
+        window.draw_text(&text, &rs);
+        rs.set_texture(Some(&texture));
+        window.draw_primitives(&buf, PrimitiveType::QUADS, &rs);
+        rs.set_texture(None);
         window.display();
-    }
-}
-
-fn rect_from_id(image_id: u8) -> Rect<i32> {
-    Rect {
-        top: 0,
-        left: i32::from(image_id) * i32::from(SUBIMAGE_SIZE),
-        width: SUBIMAGE_SIZE.into(),
-        height: SUBIMAGE_SIZE.into(),
+        buf.clear();
     }
 }
