@@ -17,7 +17,7 @@ fn main() {
     let mut vertex_buffer =
         VertexBuffer::new(PrimitiveType::LINE_STRIP, 6, VertexBufferUsage::STATIC);
 
-    let vertices = vec![
+    let vertices = [
         Vertex::with_pos_color((20.0, 30.0).into(), Color::GREEN),
         Vertex::with_pos_color((30.0, 30.0).into(), Color::GREEN),
         Vertex::with_pos_color((40.0, 40.0).into(), Color::GREEN),
