@@ -119,4 +119,8 @@ required-features = ["graphics", "audio"]
 name = "vertex-buffers"
 required-features = ["graphics"]
 
+[[example]]
+name = "spritemark"
+required-features = ["graphics"]
+
 [workspace]
