@@ -6,7 +6,7 @@ use rand::{thread_rng, Rng};
 use sfml::{
     graphics::{
         Color, Font, PrimitiveType, Rect, RenderStates, RenderTarget, RenderWindow, Text, Texture,
-        Vertex, View,
+        Transform, Vertex, View,
     },
     system::{Clock, Vector2, Vector2f, Vector2i},
     window::{mouse::Button, ContextSettings, Event, Key, Style, VideoMode},
@@ -20,6 +20,8 @@ struct Object {
     position: Vector2f,
     speed: Vector2f,
     image_id: u8,
+    angle: f32,
+    rot_speed: f32,
 }
 
 impl Object {
@@ -41,6 +43,7 @@ impl Object {
             *x = 0.;
             self.speed.x = -self.speed.x;
         }
+        self.angle += self.rot_speed;
     }
 }
 
@@ -103,6 +106,8 @@ fn main() {
                     position: fconv(mp),
                     speed: Vector2f::new(rng.gen_range(-3.0..3.0), 0.0),
                     image_id: click_counter % N_IMAGES,
+                    angle: 0.0,
+                    rot_speed: rng.gen_range(-2.0..2.0),
                 });
             }
         }
@@ -110,24 +115,27 @@ fn main() {
         for obj in &mut objects {
             let size = f32::from(SUBIMAGE_SIZE);
             let tex_x = f32::from(obj.image_id) * size;
+            let mut tf = Transform::default();
+            tf.translate(obj.position.x, obj.position.y);
+            tf.rotate_with_center(obj.angle, size / 2.0, size / 2.0);
             buf.push(Vertex {
                 color: Color::WHITE,
-                position: obj.position,
+                position: tf.transform_point(Vector2f::new(0., 0.)),
                 tex_coords: Vector2f::new(tex_x, 0.),
             });
             buf.push(Vertex {
                 color: Color::WHITE,
-                position: Vector2f::new(obj.position.x, obj.position.y + size),
+                position: tf.transform_point(Vector2f::new(0., size)),
                 tex_coords: Vector2f::new(tex_x, size),
             });
             buf.push(Vertex {
                 color: Color::WHITE,
-                position: Vector2f::new(obj.position.x + size, obj.position.y + size),
+                position: tf.transform_point(Vector2f::new(size, size)),
                 tex_coords: Vector2f::new(tex_x + size, size),
             });
             buf.push(Vertex {
                 color: Color::WHITE,
-                position: Vector2f::new(obj.position.x + size, obj.position.y),
+                position: tf.transform_point(Vector2f::new(size, 0.)),
                 tex_coords: Vector2f::new(tex_x + size, 0.),
             });
             obj.update(window.size().y as f32, window.size().x as f32);
