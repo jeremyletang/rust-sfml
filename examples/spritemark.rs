@@ -67,6 +67,8 @@ fn main() {
     let font = Font::from_file("resources/sansation.ttf").unwrap();
     let texture = Texture::from_file("resources/devices.png").unwrap();
     let mut text = Text::new("", &font, 18);
+    text.set_outline_color(Color::BLACK);
+    text.set_outline_thickness(1.0);
     let mut click_counter = 0;
     let mut objects = Vec::new();
     let mut rng = thread_rng();
@@ -141,11 +143,11 @@ fn main() {
             obj.update(window.size().y as f32, window.size().x as f32);
         }
         window.clear(Color::BLACK);
-        text.set_string(&format!("{} sprites\n{} fps", objects.len(), fps));
-        window.draw_text(&text, &rs);
         rs.set_texture(Some(&texture));
         window.draw_primitives(&buf, PrimitiveType::QUADS, &rs);
         rs.set_texture(None);
+        text.set_string(&format!("{} sprites\n{} fps", objects.len(), fps));
+        window.draw_text(&text, &rs);
         window.display();
         buf.clear();
         frames_rendered += 1;
