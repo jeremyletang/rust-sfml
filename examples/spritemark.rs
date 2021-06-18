@@ -1,3 +1,7 @@
+//! An example to show off how fast it is possible to render sprites.
+//!
+//! It uses an array of primitives to achieve a speed faster than using `sf::Sprite`.
+
 use rand::{thread_rng, Rng};
 use sfml::{
     graphics::{
