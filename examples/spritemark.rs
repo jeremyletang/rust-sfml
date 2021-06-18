@@ -4,7 +4,7 @@ use sfml::{
         Color, Font, PrimitiveType, Rect, RenderStates, RenderTarget, RenderWindow, Text, Texture,
         Vertex, View,
     },
-    system::{Vector2, Vector2f, Vector2i},
+    system::{Clock, Vector2, Vector2f, Vector2i},
     window::{mouse::Button, ContextSettings, Event, Key, Style, VideoMode},
 };
 
@@ -65,6 +65,9 @@ fn main() {
     let mut rng = thread_rng();
     let mut rs = RenderStates::default();
     let mut buf = Vec::new();
+    let mut frames_rendered = 0;
+    let mut sec_clock = Clock::start();
+    let mut fps = 0;
 
     while window.is_open() {
         while let Some(event) = window.poll_event() {
@@ -126,12 +129,18 @@ fn main() {
             obj.update(window.size().y as f32, window.size().x as f32);
         }
         window.clear(Color::BLACK);
-        text.set_string(&format!("{} sprites", objects.len()));
+        text.set_string(&format!("{} sprites\n{} fps", objects.len(), fps));
         window.draw_text(&text, &rs);
         rs.set_texture(Some(&texture));
         window.draw_primitives(&buf, PrimitiveType::QUADS, &rs);
         rs.set_texture(None);
         window.display();
         buf.clear();
+        frames_rendered += 1;
+        if sec_clock.elapsed_time().as_milliseconds() >= 1000 {
+            fps = frames_rendered;
+            sec_clock.restart();
+            frames_rendered = 0;
+        }
     }
 }
