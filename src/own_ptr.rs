@@ -39,7 +39,8 @@ impl OwnPtr {
         let data = unsafe {
             let istream = istream as *mut c_void;
             let (size, align) = (mem::size_of::<InputStream>(), mem::align_of::<T>());
-            istream.add(size + istream.align_offset(align))
+            istream = istream.add(size);
+            istream.add(istream.align_offset(align))
         };
         unsafe { (*istream).0.userData = data };
         let drop = |raw| unsafe {
