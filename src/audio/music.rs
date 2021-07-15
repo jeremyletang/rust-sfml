@@ -1,6 +1,5 @@
 use crate::{
     audio::{SoundSource, SoundStatus, TimeSpan},
-    inputstream::InputStream,
     own_ptr::OwnPtr,
     sf_bool_ext::SfBoolExt,
     system::{Time, Vector3f},
@@ -102,10 +101,8 @@ impl Music {
     /// [`play`]: Music::play
     pub fn from_stream<T: Read + Seek>(stream: T) -> Option<Music> {
         let metadata = OwnPtr::from_stream(stream);
-        let stream = unsafe { &mut *(metadata.raw() as *mut T) };
-        let mut input_stream = InputStream::new(stream);
         let music_tmp: *mut ffi::sfMusic =
-            unsafe { ffi::sfMusic_createFromStream(&mut input_stream.0) };
+            unsafe { ffi::sfMusic_createFromStream(metadata.raw() as *mut _) };
         if music_tmp.is_null() {
             None
         } else {
