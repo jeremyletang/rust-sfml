@@ -48,6 +48,8 @@
 
 #[cfg(any(feature = "graphics", feature = "audio"))]
 mod inputstream;
+#[cfg(feature = "audio")]
+mod own_ptr;
 mod sf_bool_ext;
 
 #[cfg(feature = "audio")]

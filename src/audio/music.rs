@@ -1,6 +1,7 @@
 use crate::{
     audio::{SoundSource, SoundStatus, TimeSpan},
     inputstream::InputStream,
+    own_ptr::OwnPtr,
     sf_bool_ext::SfBoolExt,
     system::{Time, Vector3f},
 };
@@ -54,6 +55,7 @@ use std::{
 #[derive(Debug)]
 pub struct Music {
     music: *mut ffi::sfMusic,
+    metadata: OwnPtr,
 }
 
 impl Music {
@@ -72,12 +74,16 @@ impl Music {
     /// [`play`]: Music::play
     #[must_use]
     pub fn from_file(filename: &str) -> Option<Music> {
+        let metadata = OwnPtr::new();
         let c_str = CString::new(filename).unwrap();
         let music_tmp: *mut ffi::sfMusic = unsafe { ffi::sfMusic_createFromFile(c_str.as_ptr()) };
         if music_tmp.is_null() {
             None
         } else {
-            Some(Music { music: music_tmp })
+            Some(Music {
+                music: music_tmp,
+                metadata,
+            })
         }
     }
 
@@ -94,14 +100,19 @@ impl Music {
     /// Returns `None` if loading fails.
     ///
     /// [`play`]: Music::play
-    pub fn from_stream<T: Read + Seek>(stream: &mut T) -> Option<Music> {
+    pub fn from_stream<T: Read + Seek>(stream: T) -> Option<Music> {
+        let metadata = OwnPtr::from_stream(stream);
+        let stream = unsafe { &mut *(metadata.raw() as *mut T) };
         let mut input_stream = InputStream::new(stream);
         let music_tmp: *mut ffi::sfMusic =
             unsafe { ffi::sfMusic_createFromStream(&mut input_stream.0) };
         if music_tmp.is_null() {
             None
         } else {
-            Some(Music { music: music_tmp })
+            Some(Music {
+                music: music_tmp,
+                metadata,
+            })
         }
     }
 
@@ -119,13 +130,17 @@ impl Music {
     ///
     /// [`play`]: Music::play
     #[must_use]
-    pub fn from_memory(mem: &[u8]) -> Option<Music> {
-        let music_tmp =
-            unsafe { ffi::sfMusic_createFromMemory(mem.as_ptr() as *const _, mem.len()) };
+    pub fn from_memory(mem: impl Into<Box<[u8]>>) -> Option<Music> {
+        let (metadata, len) = OwnPtr::from_memory(mem);
+        let mem = metadata.raw();
+        let music_tmp = unsafe { ffi::sfMusic_createFromMemory(mem, len) };
         if music_tmp.is_null() {
             None
         } else {
-            Some(Music { music: music_tmp })
+            Some(Music {
+                music: music_tmp,
+                metadata,
+            })
         }
     }
 
