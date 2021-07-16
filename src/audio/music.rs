@@ -1,6 +1,6 @@
 use crate::{
     audio::{SoundSource, SoundStatus, TimeSpan},
-    own_ptr::OwnPtr,
+    inputstream::InputStream,
     sf_bool_ext::SfBoolExt,
     system::{Time, Vector3f},
 };
@@ -9,6 +9,7 @@ use csfml_system_sys::sfBool;
 use std::{
     ffi::CString,
     io::{Read, Seek},
+    marker::PhantomData,
 };
 
 /// Streamed music played from an audio file.
@@ -52,12 +53,12 @@ use std::{
 
 ///
 #[derive(Debug)]
-pub struct Music {
+pub struct Music<'memsrc> {
     music: *mut ffi::sfMusic,
-    metadata: OwnPtr,
+    borrow: PhantomData<&'memsrc [u8]>,
 }
 
-impl Music {
+impl Music<'static> {
     /// Create a new music and load it from a file
     ///
     /// This function doesn't start playing the music (call [`play`] to do so).
@@ -72,8 +73,7 @@ impl Music {
     ///
     /// [`play`]: Music::play
     #[must_use]
-    pub fn from_file(filename: &str) -> Option<Music> {
-        let metadata = OwnPtr::new();
+    pub fn from_file(filename: &str) -> Option<Self> {
         let c_str = CString::new(filename).unwrap();
         let music_tmp: *mut ffi::sfMusic = unsafe { ffi::sfMusic_createFromFile(c_str.as_ptr()) };
         if music_tmp.is_null() {
@@ -81,11 +81,13 @@ impl Music {
         } else {
             Some(Music {
                 music: music_tmp,
-                metadata,
+                borrow: PhantomData,
             })
         }
     }
+}
 
+impl<'memsrc> Music<'memsrc> {
     /// Create a new music and load it from a stream (a struct implementing Read and Seek)
     ///
     /// This function doesn't start playing the music (call [`play`] to do so).
@@ -99,16 +101,16 @@ impl Music {
     /// Returns `None` if loading fails.
     ///
     /// [`play`]: Music::play
-    pub fn from_stream<T: Read + Seek>(stream: T) -> Option<Music> {
-        let metadata = OwnPtr::from_stream(stream);
+    pub fn from_stream<T: Read + Seek>(stream: &'memsrc mut T) -> Option<Self> {
+        let mut input_stream = InputStream::new(stream);
         let music_tmp: *mut ffi::sfMusic =
-            unsafe { ffi::sfMusic_createFromStream(metadata.raw() as *mut _) };
+            unsafe { ffi::sfMusic_createFromStream(&mut input_stream.0) };
         if music_tmp.is_null() {
             None
         } else {
             Some(Music {
                 music: music_tmp,
-                metadata,
+                borrow: PhantomData,
             })
         }
     }
@@ -127,16 +129,15 @@ impl Music {
     ///
     /// [`play`]: Music::play
     #[must_use]
-    pub fn from_memory(mem: impl Into<Box<[u8]>>) -> Option<Music> {
-        let (metadata, len) = OwnPtr::from_memory(mem);
-        let mem = metadata.raw();
-        let music_tmp = unsafe { ffi::sfMusic_createFromMemory(mem, len) };
+    pub fn from_memory(mem: &'memsrc [u8]) -> Option<Self> {
+        let music_tmp =
+            unsafe { ffi::sfMusic_createFromMemory(mem.as_ptr() as *const _, mem.len()) };
         if music_tmp.is_null() {
             None
         } else {
             Some(Music {
                 music: music_tmp,
-                metadata,
+                borrow: PhantomData,
             })
         }
     }
@@ -273,7 +274,7 @@ impl Music {
     }
 }
 
-impl SoundSource for Music {
+impl<'memsrc> SoundSource for Music<'memsrc> {
     fn set_pitch(&mut self, pitch: f32) {
         unsafe { ffi::sfMusic_setPitch(self.music, pitch) }
     }
@@ -312,7 +313,7 @@ impl SoundSource for Music {
     }
 }
 
-impl Drop for Music {
+impl<'memsrc> Drop for Music<'memsrc> {
     fn drop(&mut self) {
         unsafe {
             ffi::sfMusic_destroy(self.music);

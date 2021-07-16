@@ -60,10 +60,6 @@ pub struct InputStream(pub sfInputStream);
 
 impl InputStream {
     pub fn new<T: Read + Seek>(stream: &mut T) -> Self {
-        Self::from_raw(stream)
-    }
-
-    pub fn from_raw<T: Read + Seek>(stream: *mut T) -> Self {
         let user_data: *mut T = stream;
         InputStream(sfInputStream {
             userData: user_data as *mut c_void,
