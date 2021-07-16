@@ -37,7 +37,7 @@ impl OwnPtr {
             raw.add(raw.align_offset(align)) as *mut InputStream
         };
         let data = unsafe {
-            let istream = istream as *mut c_void;
+            let mut istream = istream as *mut c_void;
             let (size, align) = (mem::size_of::<InputStream>(), mem::align_of::<T>());
             istream = istream.add(size);
             istream.add(istream.align_offset(align))
