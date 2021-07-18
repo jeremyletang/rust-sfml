@@ -20,7 +20,7 @@ unsafe extern "C" fn read<T: Read + Seek>(
         let mut buf = vec![];
         let result = chunk.read_to_end(&mut buf);
         if let Ok(bytes_read) = result {
-            ptr::copy_nonoverlapping(buf.as_ptr(), data as *mut u8, size.try_into().unwrap());
+            ptr::copy_nonoverlapping(buf.as_ptr(), data as *mut u8, bytes_read);
             return bytes_read as _;
         }
     }
