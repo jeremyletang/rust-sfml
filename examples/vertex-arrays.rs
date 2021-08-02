@@ -1,5 +1,8 @@
 use sfml::{
-    graphics::{Color, PrimitiveType, RenderTarget, RenderWindow, Vertex, VertexArray},
+    graphics::{
+        Color, PrimitiveType, RectangleShape, RenderTarget, RenderWindow, Shape, Vertex,
+        VertexArray,
+    },
     window::{Event, Style},
 };
 
@@ -72,6 +75,11 @@ fn main() {
             vertex_array.get_vertex_unchecked(1).position
         );
     }
+    let bounds = vertex_array.bounds();
+    let mut bound_rect = RectangleShape::from_rect(bounds);
+    bound_rect.set_fill_color(Color::TRANSPARENT);
+    bound_rect.set_outline_thickness(1.0);
+    bound_rect.set_outline_color(Color::YELLOW);
 
     loop {
         while let Some(e) = window.poll_event() {
@@ -82,6 +90,7 @@ fn main() {
         // Clear the window
         window.clear(Color::BLACK);
         window.draw(&vertex_array);
+        window.draw(&bound_rect);
         // Display things on screen
         window.display()
     }
