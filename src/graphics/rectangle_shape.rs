@@ -45,6 +45,15 @@ impl<'s> RectangleShape<'s> {
         shape
     }
 
+    /// Returns a new `RectangleShape` created from a [`FloatRect`].
+    #[must_use]
+    pub fn from_rect(rect: FloatRect) -> Self {
+        let mut shape = Self::new();
+        shape.set_size((rect.width, rect.height));
+        shape.set_position((rect.left, rect.top));
+        shape
+    }
+
     /// Get the size of a rectangle shape
     ///
     /// Return the height Size of the rectangle
