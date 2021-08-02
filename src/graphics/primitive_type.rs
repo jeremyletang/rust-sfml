@@ -1,12 +1,11 @@
 use csfml_graphics_sys as ffi;
 
-/// Types of primitives that a [`VertexArray`] can render.
+/// Types of primitives of which vertex arrays can be rendered.
 ///
 /// Points and lines have no area, therefore their thickness will always be 1 pixel,
 /// regardless the current transform and view.
 ///
-/// [`VertexArray`]: crate::graphics::VertexArray
-///
+/// See: [`RenderWindow::draw_primitives`](crate::graphics::RenderTarget::draw_primitives)
 #[repr(transparent)]
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
 pub struct PrimitiveType(pub(super) ffi::sfPrimitiveType);

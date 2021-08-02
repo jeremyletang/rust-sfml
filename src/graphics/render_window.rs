@@ -1,8 +1,7 @@
 use crate::{
     graphics::{
         CircleShape, Color, ConvexShape, CustomShape, Drawable, IntRect, PrimitiveType,
-        RectangleShape, RenderStates, RenderTarget, Sprite, Text, Vertex, VertexArray,
-        VertexBuffer, View,
+        RectangleShape, RenderStates, RenderTarget, Sprite, Text, Vertex, VertexBuffer, View,
     },
     sf_bool_ext::SfBoolExt,
     system::{SfStrConv, Vector2f, Vector2i, Vector2u},
@@ -540,15 +539,6 @@ impl RenderTarget for RenderWindow {
             ffi::sfRenderWindow_drawConvexShape(
                 self.render_window,
                 convex_shape.raw(),
-                render_states.raw_ref(),
-            )
-        }
-    }
-    fn draw_vertex_array(&self, vertex_array: &VertexArray, render_states: &RenderStates) {
-        unsafe {
-            ffi::sfRenderWindow_drawVertexArray(
-                self.render_window,
-                vertex_array.raw(),
                 render_states.raw_ref(),
             )
         }

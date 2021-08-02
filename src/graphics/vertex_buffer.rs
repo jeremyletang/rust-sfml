@@ -221,7 +221,7 @@ impl Clone for VertexBuffer {
     fn clone(&self) -> VertexBuffer {
         let vertex_buffer = unsafe { sfVertexBuffer_copy(self.vertex_buffer) };
         if vertex_buffer.is_null() {
-            panic!("Failed to clone VertexArray")
+            panic!("Failed to clone VertexBuffer")
         } else {
             VertexBuffer { vertex_buffer }
         }

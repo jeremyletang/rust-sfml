@@ -1,4 +1,11 @@
-use sfml::{graphics::*, system::*, window::*};
+use sfml::{
+    graphics::{
+        Color, Drawable, Font, IntRect, PrimitiveType, RenderStates, RenderTarget, RenderTexture,
+        RenderWindow, Shader, Sprite, Text, Texture, Transformable, Vertex,
+    },
+    system::{Clock, Vector2f},
+    window::{Event, Key, Style},
+};
 
 trait Effect: Drawable {
     fn update(&mut self, t: f32, x: f32, y: f32);
@@ -117,7 +124,7 @@ impl<'fo> Effect for WaveBlur<'fo> {
 }
 
 struct StormBlink {
-    points: VertexArray,
+    points: Vec<Vertex>,
     shader: Shader<'static>,
 }
 
@@ -126,13 +133,12 @@ impl StormBlink {
         use rand::{thread_rng, Rng};
         let mut rng = thread_rng();
 
-        let mut points = VertexArray::default();
-        points.set_primitive_type(PrimitiveType::POINTS);
+        let mut points = Vec::new();
         for _ in 0..40_000 {
             let x = rng.gen_range(0.0..800.);
             let y = rng.gen_range(0.0..600.);
             let (red, green, blue) = (rng.gen(), rng.gen(), rng.gen());
-            points.append(&Vertex::with_pos_color(
+            points.push(Vertex::with_pos_color(
                 Vector2f::new(x, y),
                 Color::rgb(red, green, blue),
             ));
@@ -156,7 +162,7 @@ impl Drawable for StormBlink {
     ) {
         let mut states = *states;
         states.set_shader(Some(&self.shader));
-        target.draw_with_renderstates(&self.points, &states);
+        target.draw_primitives(&self.points, PrimitiveType::POINTS, &states);
     }
 }
 
