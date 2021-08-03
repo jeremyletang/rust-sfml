@@ -15,7 +15,7 @@ fn main() {
     );
     window.set_vertical_sync_enabled(true);
 
-    let mut vertex_array = vec![
+    let mut vertex_array = [
         Vertex::with_pos_color((20.0, 30.0).into(), Color::GREEN),
         Vertex::with_pos_color((30.0, 30.0).into(), Color::GREEN),
         Vertex::with_pos_color((40.0, 40.0).into(), Color::GREEN),
