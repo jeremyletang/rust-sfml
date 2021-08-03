@@ -8,7 +8,7 @@ fn main() {
         &Default::default(),
     );
     window.set_mouse_cursor_visible(false);
-    window.set_framerate_limit(60);
+    window.set_vertical_sync_enabled(true);
 
     let font = Font::from_file("resources/sansation.ttf").unwrap();
     let mut circle = CircleShape::new(4., 30);

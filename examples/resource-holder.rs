@@ -57,7 +57,7 @@ fn main() {
         Style::CLOSE,
         &Default::default(),
     );
-    rw.set_framerate_limit(60);
+    rw.set_vertical_sync_enabled(true);
     let mut sound = Sound::with_buffer(sb_holder.get("canary"));
     sound.play();
     while rw.is_open() {
