@@ -8,12 +8,15 @@ use crate::{
 };
 use csfml_graphics_sys as ffi;
 use csfml_system_sys::{sfBool, sfTrue};
-use std::{marker::PhantomData, ptr};
+use std::{
+    marker::PhantomData,
+    ptr::{self, NonNull},
+};
 
 /// Specialized shape representing a circle.
 #[derive(Debug)]
 pub struct CircleShape<'s> {
-    circle_shape: *mut ffi::sfCircleShape,
+    circle_shape: NonNull<ffi::sfCircleShape>,
     texture: PhantomData<&'s Texture>,
 }
 
@@ -49,7 +52,7 @@ impl<'s> CircleShape<'s> {
     /// # Arguments
     /// * radius - New radius of the circle
     pub fn set_radius(&mut self, radius: f32) {
-        unsafe { ffi::sfCircleShape_setRadius(self.circle_shape, radius) }
+        unsafe { ffi::sfCircleShape_setRadius(self.circle_shape.as_ptr(), radius) }
     }
 
     /// Set the radius of a circle
@@ -57,7 +60,7 @@ impl<'s> CircleShape<'s> {
     /// Return the radius of the circle
     #[must_use]
     pub fn radius(&self) -> f32 {
-        unsafe { ffi::sfCircleShape_getRadius(self.circle_shape) }
+        unsafe { ffi::sfCircleShape_getRadius(self.circle_shape.as_ptr()) }
     }
 
     /// Set the number of points of a circle
@@ -65,19 +68,18 @@ impl<'s> CircleShape<'s> {
     /// # Arguments
     /// * count - New number of points of the circle
     pub fn set_point_count(&mut self, count: u32) {
-        unsafe { ffi::sfCircleShape_setPointCount(self.circle_shape, count as usize) }
+        unsafe { ffi::sfCircleShape_setPointCount(self.circle_shape.as_ptr(), count as usize) }
     }
     pub(super) fn raw(&self) -> *const ffi::sfCircleShape {
-        self.circle_shape
+        self.circle_shape.as_ptr()
     }
 }
 
 impl<'s> Default for CircleShape<'s> {
     fn default() -> Self {
         let circle = unsafe { ffi::sfCircleShape_create() };
-        assert!(!circle.is_null(), "Failed to create CircleShape");
         CircleShape {
-            circle_shape: circle,
+            circle_shape: NonNull::new(circle).expect("Failed to create CircleShape"),
             texture: PhantomData,
         }
     }
@@ -95,43 +97,47 @@ impl<'s> Drawable for CircleShape<'s> {
 
 impl<'s> Transformable for CircleShape<'s> {
     fn set_position<P: Into<Vector2f>>(&mut self, position: P) {
-        unsafe { ffi::sfCircleShape_setPosition(self.circle_shape, position.into().raw()) }
+        unsafe { ffi::sfCircleShape_setPosition(self.circle_shape.as_ptr(), position.into().raw()) }
     }
     fn set_rotation(&mut self, angle: f32) {
-        unsafe { ffi::sfCircleShape_setRotation(self.circle_shape, angle) }
+        unsafe { ffi::sfCircleShape_setRotation(self.circle_shape.as_ptr(), angle) }
     }
     fn set_scale<S: Into<Vector2f>>(&mut self, scale: S) {
-        unsafe { ffi::sfCircleShape_setScale(self.circle_shape, scale.into().raw()) }
+        unsafe { ffi::sfCircleShape_setScale(self.circle_shape.as_ptr(), scale.into().raw()) }
     }
     fn set_origin<O: Into<Vector2f>>(&mut self, origin: O) {
-        unsafe { ffi::sfCircleShape_setOrigin(self.circle_shape, origin.into().raw()) }
+        unsafe { ffi::sfCircleShape_setOrigin(self.circle_shape.as_ptr(), origin.into().raw()) }
     }
     fn position(&self) -> Vector2f {
-        unsafe { Vector2f::from_raw(ffi::sfCircleShape_getPosition(self.circle_shape)) }
+        unsafe { Vector2f::from_raw(ffi::sfCircleShape_getPosition(self.circle_shape.as_ptr())) }
     }
     fn rotation(&self) -> f32 {
-        unsafe { ffi::sfCircleShape_getRotation(self.circle_shape) }
+        unsafe { ffi::sfCircleShape_getRotation(self.circle_shape.as_ptr()) }
     }
     fn get_scale(&self) -> Vector2f {
-        unsafe { Vector2f::from_raw(ffi::sfCircleShape_getScale(self.circle_shape)) }
+        unsafe { Vector2f::from_raw(ffi::sfCircleShape_getScale(self.circle_shape.as_ptr())) }
     }
     fn origin(&self) -> Vector2f {
-        unsafe { Vector2f::from_raw(ffi::sfCircleShape_getOrigin(self.circle_shape)) }
+        unsafe { Vector2f::from_raw(ffi::sfCircleShape_getOrigin(self.circle_shape.as_ptr())) }
     }
     fn move_<O: Into<Vector2f>>(&mut self, offset: O) {
-        unsafe { ffi::sfCircleShape_move(self.circle_shape, offset.into().raw()) }
+        unsafe { ffi::sfCircleShape_move(self.circle_shape.as_ptr(), offset.into().raw()) }
     }
     fn rotate(&mut self, angle: f32) {
-        unsafe { ffi::sfCircleShape_rotate(self.circle_shape, angle) }
+        unsafe { ffi::sfCircleShape_rotate(self.circle_shape.as_ptr(), angle) }
     }
     fn scale<F: Into<Vector2f>>(&mut self, factors: F) {
-        unsafe { ffi::sfCircleShape_scale(self.circle_shape, factors.into().raw()) }
+        unsafe { ffi::sfCircleShape_scale(self.circle_shape.as_ptr(), factors.into().raw()) }
     }
     fn transform(&self) -> Transform {
-        unsafe { Transform(ffi::sfCircleShape_getTransform(self.circle_shape)) }
+        unsafe { Transform(ffi::sfCircleShape_getTransform(self.circle_shape.as_ptr())) }
     }
     fn inverse_transform(&self) -> Transform {
-        unsafe { Transform(ffi::sfCircleShape_getInverseTransform(self.circle_shape)) }
+        unsafe {
+            Transform(ffi::sfCircleShape_getInverseTransform(
+                self.circle_shape.as_ptr(),
+            ))
+        }
     }
 }
 
@@ -139,30 +145,32 @@ impl<'s> Shape<'s> for CircleShape<'s> {
     fn set_texture(&mut self, texture: &'s Texture, reset_rect: bool) {
         unsafe {
             ffi::sfCircleShape_setTexture(
-                self.circle_shape,
+                self.circle_shape.as_ptr(),
                 texture.raw(),
                 sfBool::from_bool(reset_rect),
             )
         }
     }
     fn disable_texture(&mut self) {
-        unsafe { ffi::sfCircleShape_setTexture(self.circle_shape, ptr::null_mut(), sfTrue) }
+        unsafe {
+            ffi::sfCircleShape_setTexture(self.circle_shape.as_ptr(), ptr::null_mut(), sfTrue)
+        }
     }
     fn set_texture_rect(&mut self, rect: &IntRect) {
-        unsafe { ffi::sfCircleShape_setTextureRect(self.circle_shape, rect.raw()) }
+        unsafe { ffi::sfCircleShape_setTextureRect(self.circle_shape.as_ptr(), rect.raw()) }
     }
     fn set_fill_color(&mut self, color: Color) {
-        unsafe { ffi::sfCircleShape_setFillColor(self.circle_shape, color.0) }
+        unsafe { ffi::sfCircleShape_setFillColor(self.circle_shape.as_ptr(), color.0) }
     }
     fn set_outline_color(&mut self, color: Color) {
-        unsafe { ffi::sfCircleShape_setOutlineColor(self.circle_shape, color.0) }
+        unsafe { ffi::sfCircleShape_setOutlineColor(self.circle_shape.as_ptr(), color.0) }
     }
     fn set_outline_thickness(&mut self, thickness: f32) {
-        unsafe { ffi::sfCircleShape_setOutlineThickness(self.circle_shape, thickness) }
+        unsafe { ffi::sfCircleShape_setOutlineThickness(self.circle_shape.as_ptr(), thickness) }
     }
     fn texture(&self) -> Option<&'s Texture> {
         unsafe {
-            let raw = ffi::sfCircleShape_getTexture(self.circle_shape);
+            let raw = ffi::sfCircleShape_getTexture(self.circle_shape.as_ptr());
 
             if raw.is_null() {
                 None
@@ -172,21 +180,29 @@ impl<'s> Shape<'s> for CircleShape<'s> {
         }
     }
     fn texture_rect(&self) -> IntRect {
-        unsafe { IntRect::from_raw(ffi::sfCircleShape_getTextureRect(self.circle_shape)) }
+        unsafe {
+            IntRect::from_raw(ffi::sfCircleShape_getTextureRect(
+                self.circle_shape.as_ptr(),
+            ))
+        }
     }
     fn fill_color(&self) -> Color {
-        unsafe { Color(ffi::sfCircleShape_getFillColor(self.circle_shape)) }
+        unsafe { Color(ffi::sfCircleShape_getFillColor(self.circle_shape.as_ptr())) }
     }
     fn outline_color(&self) -> Color {
-        unsafe { Color(ffi::sfCircleShape_getOutlineColor(self.circle_shape)) }
+        unsafe {
+            Color(ffi::sfCircleShape_getOutlineColor(
+                self.circle_shape.as_ptr(),
+            ))
+        }
     }
     fn outline_thickness(&self) -> f32 {
-        unsafe { ffi::sfCircleShape_getOutlineThickness(self.circle_shape) }
+        unsafe { ffi::sfCircleShape_getOutlineThickness(self.circle_shape.as_ptr()) }
     }
     fn point_count(&self) -> u32 {
         use std::convert::TryInto;
         unsafe {
-            ffi::sfCircleShape_getPointCount(self.circle_shape)
+            ffi::sfCircleShape_getPointCount(self.circle_shape.as_ptr())
                 .try_into()
                 .unwrap()
         }
@@ -194,36 +210,40 @@ impl<'s> Shape<'s> for CircleShape<'s> {
     fn point(&self, index: u32) -> Vector2f {
         unsafe {
             Vector2f::from_raw(ffi::sfCircleShape_getPoint(
-                self.circle_shape,
+                self.circle_shape.as_ptr(),
                 index as usize,
             ))
         }
     }
     fn local_bounds(&self) -> FloatRect {
-        unsafe { FloatRect::from_raw(ffi::sfCircleShape_getLocalBounds(self.circle_shape)) }
+        unsafe {
+            FloatRect::from_raw(ffi::sfCircleShape_getLocalBounds(
+                self.circle_shape.as_ptr(),
+            ))
+        }
     }
     fn global_bounds(&self) -> FloatRect {
-        unsafe { FloatRect::from_raw(ffi::sfCircleShape_getGlobalBounds(self.circle_shape)) }
+        unsafe {
+            FloatRect::from_raw(ffi::sfCircleShape_getGlobalBounds(
+                self.circle_shape.as_ptr(),
+            ))
+        }
     }
 }
 
 impl<'s> Clone for CircleShape<'s> {
     /// Return a new `CircleShape` or panic if there is not enough memory
     fn clone(&self) -> CircleShape<'s> {
-        let circle = unsafe { ffi::sfCircleShape_copy(self.circle_shape) };
-        if circle.is_null() {
-            panic!("Not enough memory to clone CircleShape")
-        } else {
-            CircleShape {
-                circle_shape: circle,
-                texture: self.texture,
-            }
+        let circle = unsafe { ffi::sfCircleShape_copy(self.circle_shape.as_ptr()) };
+        CircleShape {
+            circle_shape: NonNull::new(circle).expect("Not enough memory to clone CircleShape"),
+            texture: self.texture,
         }
     }
 }
 
 impl<'s> Drop for CircleShape<'s> {
     fn drop(&mut self) {
-        unsafe { ffi::sfCircleShape_destroy(self.circle_shape) }
+        unsafe { ffi::sfCircleShape_destroy(self.circle_shape.as_ptr()) }
     }
 }
