@@ -4,6 +4,7 @@ use csfml_system_sys::{sfBool, sfInt16, sfTrue};
 use std::{
     ffi::{CStr, CString},
     os::raw::c_void,
+    ptr::NonNull,
 };
 
 /// Trait for processing captured sound data.
@@ -89,7 +90,7 @@ pub trait SoundRecorder {
 /// It does the actual recording, and feeds the custom sound recorder with the recorded data.
 #[derive(Debug)]
 pub struct SoundRecorderDriver<'a, R: 'a> {
-    ffi_handle: *mut sfSoundRecorder,
+    ffi_handle: NonNull<sfSoundRecorder>,
     recorder: &'a mut R,
 }
 
@@ -118,12 +119,13 @@ impl<'a, R: SoundRecorder> SoundRecorderDriver<'a, R> {
         let ptr: *mut R = sound_recorder;
         Self {
             ffi_handle: unsafe {
-                sfSoundRecorder_create(
+                NonNull::new(sfSoundRecorder_create(
                     Some(on_start_callback::<R>),
                     Some(on_process_callback::<R>),
                     Some(on_stop_callback::<R>),
                     ptr as *mut _,
-                )
+                ))
+                .expect("Failed to create SoundRecorderDriver")
             },
             recorder: sound_recorder,
         }
@@ -145,12 +147,12 @@ impl<'a, R: SoundRecorder> SoundRecorderDriver<'a, R> {
     ///
     /// [`set_device`]: SoundRecorderDriver::set_device
     pub fn start(&mut self, sample_rate: u32) -> bool {
-        unsafe { sfSoundRecorder_start(self.ffi_handle, sample_rate).into_bool() }
+        unsafe { sfSoundRecorder_start(self.ffi_handle.as_ptr(), sample_rate).into_bool() }
     }
     /// Stop the capture, lending out the underlying [`SoundRecorder`].
     pub fn stop(&mut self) -> &mut R {
         unsafe {
-            sfSoundRecorder_stop(self.ffi_handle);
+            sfSoundRecorder_stop(self.ffi_handle.as_ptr());
         }
         self.recorder
     }
@@ -160,7 +162,7 @@ impl<'a, R: SoundRecorder> SoundRecorderDriver<'a, R> {
     /// The higher, the better the quality (for example, 44100 samples/sec is CD quality).
     #[must_use]
     pub fn sample_rate(&self) -> u32 {
-        unsafe { sfSoundRecorder_getSampleRate(self.ffi_handle) }
+        unsafe { sfSoundRecorder_getSampleRate(self.ffi_handle.as_ptr()) }
     }
     /// Set the channel count of the audio capture device.
     ///
@@ -171,7 +173,7 @@ impl<'a, R: SoundRecorder> SoundRecorderDriver<'a, R> {
     /// * `channel_count`   Number of channels.
     ///                     Currently only mono (1) and stereo (2) are supported.
     pub fn set_channel_count(&mut self, channel_count: u32) {
-        unsafe { sfSoundRecorder_setChannelCount(self.ffi_handle, channel_count) }
+        unsafe { sfSoundRecorder_setChannelCount(self.ffi_handle.as_ptr(), channel_count) }
     }
     /// Get the number of channels used by this recorder.
     ///
@@ -179,7 +181,7 @@ impl<'a, R: SoundRecorder> SoundRecorderDriver<'a, R> {
     /// so the value is either 1 (for mono) or 2 (for stereo).
     #[must_use]
     pub fn channel_count(&self) -> u32 {
-        unsafe { sfSoundRecorder_getChannelCount(self.ffi_handle) }
+        unsafe { sfSoundRecorder_getChannelCount(self.ffi_handle.as_ptr()) }
     }
     /// Set the processing interval.
     ///
@@ -193,13 +195,13 @@ impl<'a, R: SoundRecorder> SoundRecorderDriver<'a, R> {
     ///
     /// The default processing interval is 100 ms.
     pub fn set_processing_interval(&mut self, interval: Time) {
-        unsafe { sfSoundRecorder_setProcessingInterval(self.ffi_handle, interval.raw()) }
+        unsafe { sfSoundRecorder_setProcessingInterval(self.ffi_handle.as_ptr(), interval.raw()) }
     }
     /// Get the name of the current audio capture device.
     #[must_use]
     pub fn device(&self) -> String {
         unsafe {
-            let c_str_ptr = sfSoundRecorder_getDevice(self.ffi_handle);
+            let c_str_ptr = sfSoundRecorder_getDevice(self.ffi_handle.as_ptr());
             CStr::from_ptr(c_str_ptr).to_string_lossy().into_owned()
         }
     }
@@ -211,8 +213,9 @@ impl<'a, R: SoundRecorder> SoundRecorderDriver<'a, R> {
     /// If you do so while recording and opening the device fails, it stops the recording.
     pub fn set_device(&mut self, name: &str) -> Result<(), SetDeviceError> {
         let name = CString::new(name).unwrap();
-        let success =
-            unsafe { sfSoundRecorder_setDevice(self.ffi_handle, name.as_ptr()).into_bool() };
+        let success = unsafe {
+            sfSoundRecorder_setDevice(self.ffi_handle.as_ptr(), name.as_ptr()).into_bool()
+        };
         if success {
             Ok(())
         } else {
@@ -226,8 +229,8 @@ impl<'a, S> Drop for SoundRecorderDriver<'a, S> {
         unsafe {
             // It seems there can be problems (e.g. "pure virtual method called") if the
             // recorder is not stopped before it's destroyed. So let's make sure it's stopped.
-            sfSoundRecorder_stop(self.ffi_handle);
-            sfSoundRecorder_destroy(self.ffi_handle);
+            sfSoundRecorder_stop(self.ffi_handle.as_ptr());
+            sfSoundRecorder_destroy(self.ffi_handle.as_ptr());
         }
     }
 }
