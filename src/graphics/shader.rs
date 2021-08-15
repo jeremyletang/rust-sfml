@@ -8,7 +8,7 @@ use std::{
     ffi::CString,
     io::{Read, Seek},
     marker::PhantomData,
-    ptr,
+    ptr::{self, NonNull},
 };
 
 /// Shader type (vertex, geometry and fragment).
@@ -129,7 +129,7 @@ use std::{
 ///
 #[derive(Debug)]
 pub struct Shader<'texture> {
-    shader: *mut ffi::sfShader,
+    shader: NonNull<ffi::sfShader>,
     texture: PhantomData<&'texture Texture>,
 }
 
@@ -175,14 +175,10 @@ impl<'texture> Shader<'texture> {
         let cstring;
         let frag = cstring_then_ptr!(cstring, fragment);
         let shader = unsafe { ffi::sfShader_createFromFile(vert, geom, frag) };
-        if shader.is_null() {
-            None
-        } else {
-            Some(Self {
-                shader,
-                texture: PhantomData,
-            })
-        }
+        Some(Self {
+            shader: NonNull::new(shader)?,
+            texture: PhantomData,
+        })
     }
 
     /// Load both the vertex and fragment shaders from streams
@@ -217,14 +213,10 @@ impl<'texture> Shader<'texture> {
             .map_or(ptr::null_mut(), |s| &mut s.0);
         let shader =
             unsafe { ffi::sfShader_createFromStream(vertex_ptr, geometry_ptr, fragment_ptr) };
-        if shader.is_null() {
-            None
-        } else {
-            Some(Self {
-                shader,
-                texture: PhantomData,
-            })
-        }
+        Some(Self {
+            shader: NonNull::new(shader)?,
+            texture: PhantomData,
+        })
     }
 
     /// Load both the vertex and fragment shaders from source codes in memory
@@ -257,14 +249,10 @@ impl<'texture> Shader<'texture> {
         let cstring;
         let frag = cstring_then_ptr!(cstring, fragment);
         let shader = unsafe { ffi::sfShader_createFromMemory(vert, geom, frag) };
-        if shader.is_null() {
-            None
-        } else {
-            Some(Self {
-                shader,
-                texture: PhantomData,
-            })
-        }
+        Some(Self {
+            shader: NonNull::new(shader)?,
+            texture: PhantomData,
+        })
     }
 
     /// Bind a shader for rendering.
@@ -273,7 +261,7 @@ impl<'texture> Shader<'texture> {
     /// it mustn't be used when drawing SFML entities.
     /// It must be used only if you mix `Shader` with OpenGL code.
     pub fn bind(shader: Option<&Self>) {
-        unsafe { ffi::sfShader_bind(shader.map_or(ptr::null_mut(), |s| s.shader)) }
+        unsafe { ffi::sfShader_bind(shader.map_or(ptr::null_mut(), |s| s.shader.as_ptr())) }
     }
 
     /// Tell whether or not the system supports shaders
@@ -308,7 +296,7 @@ impl<'texture> Shader<'texture> {
         unsafe {
             let cstring = CString::new(name).unwrap();
             let name = cstring.as_ptr();
-            ffi::sfShader_setFloatUniform(self.shader, name, value);
+            ffi::sfShader_setFloatUniform(self.shader.as_ptr(), name, value);
         }
     }
 
@@ -317,7 +305,7 @@ impl<'texture> Shader<'texture> {
         unsafe {
             let cstring = CString::new(name).unwrap();
             let name = cstring.as_ptr();
-            ffi::sfShader_setVec2Uniform(self.shader, name, value.raw());
+            ffi::sfShader_setVec2Uniform(self.shader.as_ptr(), name, value.raw());
         }
     }
 
@@ -326,7 +314,7 @@ impl<'texture> Shader<'texture> {
         unsafe {
             let cstring = CString::new(name).unwrap();
             let name = cstring.as_ptr();
-            ffi::sfShader_setVec3Uniform(self.shader, name, value.raw());
+            ffi::sfShader_setVec3Uniform(self.shader.as_ptr(), name, value.raw());
         }
     }
 
@@ -348,7 +336,7 @@ impl<'texture> Shader<'texture> {
         unsafe {
             let cstring = CString::new(name).unwrap();
             let name = cstring.as_ptr();
-            ffi::sfShader_setVec4Uniform(self.shader, name, value.into().raw());
+            ffi::sfShader_setVec4Uniform(self.shader.as_ptr(), name, value.into().raw());
         }
     }
 
@@ -357,7 +345,7 @@ impl<'texture> Shader<'texture> {
         unsafe {
             let cstring = CString::new(name).unwrap();
             let name = cstring.as_ptr();
-            ffi::sfShader_setIntUniform(self.shader, name, value);
+            ffi::sfShader_setIntUniform(self.shader.as_ptr(), name, value);
         }
     }
 
@@ -366,7 +354,7 @@ impl<'texture> Shader<'texture> {
         unsafe {
             let cstring = CString::new(name).unwrap();
             let name = cstring.as_ptr();
-            ffi::sfShader_setIvec2Uniform(self.shader, name, value.raw());
+            ffi::sfShader_setIvec2Uniform(self.shader.as_ptr(), name, value.raw());
         }
     }
 
@@ -375,7 +363,7 @@ impl<'texture> Shader<'texture> {
         unsafe {
             let cstring = CString::new(name).unwrap();
             let name = cstring.as_ptr();
-            ffi::sfShader_setIvec3Uniform(self.shader, name, value.into());
+            ffi::sfShader_setIvec3Uniform(self.shader.as_ptr(), name, value.into());
         }
     }
 
@@ -396,7 +384,7 @@ impl<'texture> Shader<'texture> {
         unsafe {
             let cstring = CString::new(name).unwrap();
             let name = cstring.as_ptr();
-            ffi::sfShader_setIvec4Uniform(self.shader, name, value.into().raw());
+            ffi::sfShader_setIvec4Uniform(self.shader.as_ptr(), name, value.into().raw());
         }
     }
 
@@ -405,7 +393,7 @@ impl<'texture> Shader<'texture> {
         unsafe {
             let cstring = CString::new(name).unwrap();
             let name = cstring.as_ptr();
-            ffi::sfShader_setBoolUniform(self.shader, name, SfBoolExt::from_bool(value));
+            ffi::sfShader_setBoolUniform(self.shader.as_ptr(), name, SfBoolExt::from_bool(value));
         }
     }
 
@@ -414,7 +402,7 @@ impl<'texture> Shader<'texture> {
         unsafe {
             let cstring = CString::new(name).unwrap();
             let name = cstring.as_ptr();
-            ffi::sfShader_setBvec2Uniform(self.shader, name, value.into());
+            ffi::sfShader_setBvec2Uniform(self.shader.as_ptr(), name, value.into());
         }
     }
 
@@ -423,7 +411,7 @@ impl<'texture> Shader<'texture> {
         unsafe {
             let cstring = CString::new(name).unwrap();
             let name = cstring.as_ptr();
-            ffi::sfShader_setBvec3Uniform(self.shader, name, value.into());
+            ffi::sfShader_setBvec3Uniform(self.shader.as_ptr(), name, value.into());
         }
     }
 
@@ -432,7 +420,7 @@ impl<'texture> Shader<'texture> {
         unsafe {
             let cstring = CString::new(name).unwrap();
             let name = cstring.as_ptr();
-            ffi::sfShader_setBvec4Uniform(self.shader, name, value.into());
+            ffi::sfShader_setBvec4Uniform(self.shader.as_ptr(), name, value.into());
         }
     }
 
@@ -446,7 +434,7 @@ impl<'texture> Shader<'texture> {
             let name = cstring.as_ptr();
             let value = value.into();
             let ptr: *const _ = &value.0;
-            ffi::sfShader_setMat3Uniform(self.shader, name, ptr as *const _);
+            ffi::sfShader_setMat3Uniform(self.shader.as_ptr(), name, ptr as *const _);
         }
     }
 
@@ -460,7 +448,7 @@ impl<'texture> Shader<'texture> {
             let name = cstring.as_ptr();
             let value = value.into();
             let ptr: *const _ = &value.0;
-            ffi::sfShader_setMat4Uniform(self.shader, name, ptr as *const _);
+            ffi::sfShader_setMat4Uniform(self.shader.as_ptr(), name, ptr as *const _);
         }
     }
 
@@ -475,7 +463,7 @@ impl<'texture> Shader<'texture> {
         unsafe {
             let cstring = CString::new(name).unwrap();
             let name = cstring.as_ptr();
-            ffi::sfShader_setTextureUniform(self.shader, name, value.raw());
+            ffi::sfShader_setTextureUniform(self.shader.as_ptr(), name, value.raw());
         }
     }
 
@@ -488,7 +476,7 @@ impl<'texture> Shader<'texture> {
         unsafe {
             let cstring = CString::new(name).unwrap();
             let name = cstring.as_ptr();
-            ffi::sfShader_setCurrentTextureUniform(self.shader, name);
+            ffi::sfShader_setCurrentTextureUniform(self.shader.as_ptr(), name);
         }
     }
 
@@ -498,7 +486,7 @@ impl<'texture> Shader<'texture> {
             let cstring = CString::new(name).unwrap();
             let name = cstring.as_ptr();
             let len = array.len();
-            ffi::sfShader_setFloatUniformArray(self.shader, name, array.as_ptr(), len);
+            ffi::sfShader_setFloatUniformArray(self.shader.as_ptr(), name, array.as_ptr(), len);
         }
     }
 
@@ -509,7 +497,7 @@ impl<'texture> Shader<'texture> {
             let name = cstring.as_ptr();
             let len = array.len();
             let ptr = array.as_ptr() as *const ffi::sfGlslVec2;
-            ffi::sfShader_setVec2UniformArray(self.shader, name, ptr, len);
+            ffi::sfShader_setVec2UniformArray(self.shader.as_ptr(), name, ptr, len);
         }
     }
 
@@ -520,7 +508,7 @@ impl<'texture> Shader<'texture> {
             let name = cstring.as_ptr();
             let len = array.len();
             let ptr = array.as_ptr() as *const ffi::sfGlslVec3;
-            ffi::sfShader_setVec3UniformArray(self.shader, name, ptr, len);
+            ffi::sfShader_setVec3UniformArray(self.shader.as_ptr(), name, ptr, len);
         }
     }
 
@@ -531,7 +519,7 @@ impl<'texture> Shader<'texture> {
             let name = cstring.as_ptr();
             let len = array.len();
             let ptr = array.as_ptr() as *const ffi::sfGlslVec4;
-            ffi::sfShader_setVec4UniformArray(self.shader, name, ptr, len);
+            ffi::sfShader_setVec4UniformArray(self.shader.as_ptr(), name, ptr, len);
         }
     }
 
@@ -542,7 +530,7 @@ impl<'texture> Shader<'texture> {
             let name = cstring.as_ptr();
             let len = array.len();
             let ptr = array.as_ptr() as *const ffi::sfGlslMat3;
-            ffi::sfShader_setMat3UniformArray(self.shader, name, ptr, len);
+            ffi::sfShader_setMat3UniformArray(self.shader.as_ptr(), name, ptr, len);
         }
     }
 
@@ -553,16 +541,16 @@ impl<'texture> Shader<'texture> {
             let name = cstring.as_ptr();
             let len = array.len();
             let ptr = array.as_ptr() as *const ffi::sfGlslMat4;
-            ffi::sfShader_setMat4UniformArray(self.shader, name, ptr, len);
+            ffi::sfShader_setMat4UniformArray(self.shader.as_ptr(), name, ptr, len);
         }
     }
     pub(super) fn raw(&self) -> *const ffi::sfShader {
-        self.shader
+        self.shader.as_ptr()
     }
 }
 
 impl<'texture> Drop for Shader<'texture> {
     fn drop(&mut self) {
-        unsafe { ffi::sfShader_destroy(self.shader) }
+        unsafe { ffi::sfShader_destroy(self.shader.as_ptr()) }
     }
 }
