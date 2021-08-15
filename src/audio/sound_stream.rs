@@ -5,7 +5,7 @@ use crate::{
 };
 use csfml_audio_sys::*;
 use csfml_system_sys::*;
-use std::{os::raw::c_void, panic};
+use std::{os::raw::c_void, panic, ptr::NonNull};
 
 /// Trait for streamed audio sources.
 pub trait SoundStream {
@@ -25,7 +25,7 @@ pub trait SoundStream {
 /// Player for custom streamed audio sources. See [`SoundStream`].
 #[derive(Debug)]
 pub struct SoundStreamPlayer<'a, S: SoundStream + 'a> {
-    sf_sound_stream: *mut sfSoundStream,
+    sf_sound_stream: NonNull<sfSoundStream>,
     stream: &'a mut S,
 }
 
@@ -68,13 +68,14 @@ impl<'a, S: SoundStream> SoundStreamPlayer<'a, S> {
         let ptr: *mut S = sound_stream;
         SoundStreamPlayer {
             sf_sound_stream: unsafe {
-                sfSoundStream_create(
+                NonNull::new(sfSoundStream_create(
                     Some(get_data_callback::<S>),
                     Some(seek_callback::<S>),
                     sound_stream.channel_count(),
                     sound_stream.sample_rate(),
                     ptr as *mut _,
-                )
+                ))
+                .expect("Failed to create SoundStreamPlayer")
             },
             stream: sound_stream,
         }
@@ -82,7 +83,7 @@ impl<'a, S: SoundStream> SoundStreamPlayer<'a, S> {
     /// Start or resume playing the audio stream.
     pub fn play(&mut self) {
         unsafe {
-            sfSoundStream_play(self.sf_sound_stream);
+            sfSoundStream_play(self.sf_sound_stream.as_ptr());
         }
     }
     /// Pause the audio stream.
@@ -91,13 +92,13 @@ impl<'a, S: SoundStream> SoundStreamPlayer<'a, S> {
     /// otherwise (stream already paused or stopped) it has no effect.
     pub fn pause(&mut self) {
         unsafe {
-            sfSoundStream_pause(self.sf_sound_stream);
+            sfSoundStream_pause(self.sf_sound_stream.as_ptr());
         }
     }
     /// Get the current status of the stream (stopped, paused, playing)
     #[must_use]
     pub fn status(&self) -> SoundStatus {
-        unsafe { SoundStatus(sfSoundStream_getStatus(self.sf_sound_stream)) }
+        unsafe { SoundStatus(sfSoundStream_getStatus(self.sf_sound_stream.as_ptr())) }
     }
     /// Stop playing, lending out the underlying [`SoundStream`].
     ///
@@ -139,14 +140,18 @@ impl<'a, S: SoundStream> SoundStreamPlayer<'a, S> {
     /// ```
     pub fn stop(&mut self) -> &mut S {
         unsafe {
-            sfSoundStream_stop(self.sf_sound_stream);
+            sfSoundStream_stop(self.sf_sound_stream.as_ptr());
         }
         self.stream
     }
     /// Get the current playing position, from the beginning of the stream
     #[must_use]
     pub fn playing_offset(&self) -> Time {
-        unsafe { Time::from_raw(sfSoundStream_getPlayingOffset(self.sf_sound_stream)) }
+        unsafe {
+            Time::from_raw(sfSoundStream_getPlayingOffset(
+                self.sf_sound_stream.as_ptr(),
+            ))
+        }
     }
     /// Change the current playing position of the stream.
     ///
@@ -154,14 +159,14 @@ impl<'a, S: SoundStream> SoundStreamPlayer<'a, S> {
     /// Changing the playing position when the stream is stopped has no effect,
     /// since playing the stream would reset its position.
     pub fn set_playing_offset(&mut self, offset: Time) {
-        unsafe { sfSoundStream_setPlayingOffset(self.sf_sound_stream, offset.raw()) }
+        unsafe { sfSoundStream_setPlayingOffset(self.sf_sound_stream.as_ptr(), offset.raw()) }
     }
     /// Return the number of channels of the stream.
     ///
     /// 1 channel means a mono sound, 2 means stereo, etc.
     #[must_use]
     pub fn channel_count(&self) -> u32 {
-        unsafe { sfSoundStream_getChannelCount(self.sf_sound_stream) }
+        unsafe { sfSoundStream_getChannelCount(self.sf_sound_stream.as_ptr()) }
     }
     /// Get the stream sample rate of the stream.
     ///
@@ -169,12 +174,12 @@ impl<'a, S: SoundStream> SoundStreamPlayer<'a, S> {
     /// The higher, the better the quality.
     #[must_use]
     pub fn sample_rate(&self) -> u32 {
-        unsafe { sfSoundStream_getSampleRate(self.sf_sound_stream) }
+        unsafe { sfSoundStream_getSampleRate(self.sf_sound_stream.as_ptr()) }
     }
     /// Tell whether or not the stream is in loop mode.
     #[must_use]
     pub fn is_looping(&self) -> bool {
-        unsafe { sfSoundStream_getLoop(self.sf_sound_stream).into_bool() }
+        unsafe { sfSoundStream_getLoop(self.sf_sound_stream.as_ptr()).into_bool() }
     }
     /// Set whether or not the stream should loop after reaching the end.
     ///
@@ -182,51 +187,53 @@ impl<'a, S: SoundStream> SoundStreamPlayer<'a, S> {
     /// until it is stopped or `set_looping(false)` is called.
     /// The default looping state for streams is false.
     pub fn set_looping(&mut self, looping: bool) {
-        unsafe { sfSoundStream_setLoop(self.sf_sound_stream, SfBoolExt::from_bool(looping)) }
+        unsafe {
+            sfSoundStream_setLoop(self.sf_sound_stream.as_ptr(), SfBoolExt::from_bool(looping))
+        }
     }
 }
 
 impl<'a, S: SoundStream> SoundSource for SoundStreamPlayer<'a, S> {
     fn set_pitch(&mut self, pitch: f32) {
-        unsafe { sfSoundStream_setPitch(self.sf_sound_stream, pitch) }
+        unsafe { sfSoundStream_setPitch(self.sf_sound_stream.as_ptr(), pitch) }
     }
     fn set_volume(&mut self, volume: f32) {
-        unsafe { sfSoundStream_setVolume(self.sf_sound_stream, volume) }
+        unsafe { sfSoundStream_setVolume(self.sf_sound_stream.as_ptr(), volume) }
     }
     fn set_position<P: Into<Vector3f>>(&mut self, position: P) {
-        unsafe { sfSoundStream_setPosition(self.sf_sound_stream, position.into().raw()) }
+        unsafe { sfSoundStream_setPosition(self.sf_sound_stream.as_ptr(), position.into().raw()) }
     }
     fn set_relative_to_listener(&mut self, relative: bool) {
         unsafe {
             sfSoundStream_setRelativeToListener(
-                self.sf_sound_stream,
+                self.sf_sound_stream.as_ptr(),
                 SfBoolExt::from_bool(relative),
             )
         }
     }
     fn set_min_distance(&mut self, distance: f32) {
-        unsafe { sfSoundStream_setMinDistance(self.sf_sound_stream, distance) }
+        unsafe { sfSoundStream_setMinDistance(self.sf_sound_stream.as_ptr(), distance) }
     }
     fn set_attenuation(&mut self, attenuation: f32) {
-        unsafe { sfSoundStream_setAttenuation(self.sf_sound_stream, attenuation) }
+        unsafe { sfSoundStream_setAttenuation(self.sf_sound_stream.as_ptr(), attenuation) }
     }
     fn pitch(&self) -> f32 {
-        unsafe { sfSoundStream_getPitch(self.sf_sound_stream) }
+        unsafe { sfSoundStream_getPitch(self.sf_sound_stream.as_ptr()) }
     }
     fn volume(&self) -> f32 {
-        unsafe { sfSoundStream_getVolume(self.sf_sound_stream) }
+        unsafe { sfSoundStream_getVolume(self.sf_sound_stream.as_ptr()) }
     }
     fn position(&self) -> Vector3f {
-        unsafe { Vector3f::from_raw(sfSoundStream_getPosition(self.sf_sound_stream)) }
+        unsafe { Vector3f::from_raw(sfSoundStream_getPosition(self.sf_sound_stream.as_ptr())) }
     }
     fn is_relative_to_listener(&self) -> bool {
-        unsafe { sfSoundStream_isRelativeToListener(self.sf_sound_stream).into_bool() }
+        unsafe { sfSoundStream_isRelativeToListener(self.sf_sound_stream.as_ptr()).into_bool() }
     }
     fn min_distance(&self) -> f32 {
-        unsafe { sfSoundStream_getMinDistance(self.sf_sound_stream) }
+        unsafe { sfSoundStream_getMinDistance(self.sf_sound_stream.as_ptr()) }
     }
     fn attenuation(&self) -> f32 {
-        unsafe { sfSoundStream_getAttenuation(self.sf_sound_stream) }
+        unsafe { sfSoundStream_getAttenuation(self.sf_sound_stream.as_ptr()) }
     }
 }
 
@@ -235,8 +242,8 @@ impl<'a, S: SoundStream> Drop for SoundStreamPlayer<'a, S> {
         unsafe {
             // It seems there can be problems (e.g. "pure virtual method called") if the
             // stream is not stopped before it's destroyed. So let's make sure it's stopped.
-            sfSoundStream_stop(self.sf_sound_stream);
-            sfSoundStream_destroy(self.sf_sound_stream);
+            sfSoundStream_stop(self.sf_sound_stream.as_ptr());
+            sfSoundStream_destroy(self.sf_sound_stream.as_ptr());
         }
     }
 }
