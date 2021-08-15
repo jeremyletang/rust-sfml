@@ -37,14 +37,14 @@ pub struct CustomShape<'s> {
 }
 
 unsafe extern "C" fn get_point_count_callback(obj: *mut c_void) -> usize {
-    let shape = obj as *mut Box<dyn CustomShapePoints + Send>;
+    let shape = obj as *const Box<dyn CustomShapePoints + Send>;
     let ret = (*shape).point_count();
     ret as usize
 }
 
 unsafe extern "C" fn get_point_callback(point: usize, obj: *mut c_void) -> sfVector2f {
     use std::convert::TryInto;
-    let shape = obj as *mut Box<dyn CustomShapePoints + Send>;
+    let shape = obj as *const Box<dyn CustomShapePoints + Send>;
     let ret = (*shape).point(point.try_into().unwrap());
     ret.raw()
 }
