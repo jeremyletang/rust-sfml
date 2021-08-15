@@ -244,7 +244,7 @@ impl<'a, S> Drop for SoundRecorderDriver<'a, S> {
 /// (see [`SoundRecorder`] for more details about this).
 #[derive(Debug)]
 pub struct SoundBufferRecorder {
-    ffi_handle: *mut sfSoundBufferRecorder,
+    ffi_handle: NonNull<sfSoundBufferRecorder>,
 }
 
 /// Error trying to set a capture device.
@@ -256,8 +256,9 @@ impl SoundBufferRecorder {
     #[must_use]
     pub fn new() -> SoundBufferRecorder {
         let buffer = unsafe { sfSoundBufferRecorder_create() };
-        assert!(!buffer.is_null(), "Failed to create SoundBufferRecorder");
-        SoundBufferRecorder { ffi_handle: buffer }
+        SoundBufferRecorder {
+            ffi_handle: NonNull::new(buffer).expect("Failed to create SoundBufferRecorder"),
+        }
     }
 
     /// Start the capture of a sound buffer recorder
@@ -272,12 +273,12 @@ impl SoundBufferRecorder {
     /// # Arguments
     /// * `sample_rate` - Desired capture rate, in number of samples per second
     pub fn start(&mut self, sample_rate: u32) -> bool {
-        unsafe { sfSoundBufferRecorder_start(self.ffi_handle, sample_rate) == sfTrue }
+        unsafe { sfSoundBufferRecorder_start(self.ffi_handle.as_ptr(), sample_rate) == sfTrue }
     }
 
     /// Stop the capture of a sound recorder
     pub fn stop(&mut self) {
-        unsafe { sfSoundBufferRecorder_stop(self.ffi_handle) }
+        unsafe { sfSoundBufferRecorder_stop(self.ffi_handle.as_ptr()) }
     }
 
     /// Get the sample rate of a sound buffer recorder
@@ -289,7 +290,7 @@ impl SoundBufferRecorder {
     /// Return the sample rate, in samples per second
     #[must_use]
     pub fn sample_rate(&self) -> u32 {
-        unsafe { sfSoundBufferRecorder_getSampleRate(self.ffi_handle) }
+        unsafe { sfSoundBufferRecorder_getSampleRate(self.ffi_handle.as_ptr()) }
     }
 
     /// Get the sound buffer containing the captured audio data
@@ -302,7 +303,7 @@ impl SoundBufferRecorder {
     /// Return Read-only access to the sound buffer
     #[must_use]
     pub fn buffer(&self) -> &SoundBuffer {
-        let buff = unsafe { sfSoundBufferRecorder_getBuffer(self.ffi_handle) };
+        let buff = unsafe { sfSoundBufferRecorder_getBuffer(self.ffi_handle.as_ptr()) };
         assert!(!buff.is_null(), "sfSoundBufferRecorder_getBuffer failed");
         unsafe { &*(buff as *const SoundBuffer) }
     }
@@ -310,7 +311,7 @@ impl SoundBufferRecorder {
     #[must_use]
     pub fn device(&self) -> String {
         unsafe {
-            let c_str_ptr = sfSoundBufferRecorder_getDevice(self.ffi_handle);
+            let c_str_ptr = sfSoundBufferRecorder_getDevice(self.ffi_handle.as_ptr());
             CStr::from_ptr(c_str_ptr).to_string_lossy().into_owned()
         }
     }
@@ -322,8 +323,9 @@ impl SoundBufferRecorder {
     /// If you do so while recording and opening the device fails, it stops the recording.
     pub fn set_device(&mut self, name: &str) -> Result<(), SetDeviceError> {
         let name = CString::new(name).unwrap();
-        let success =
-            unsafe { sfSoundBufferRecorder_setDevice(self.ffi_handle, name.as_ptr()).into_bool() };
+        let success = unsafe {
+            sfSoundBufferRecorder_setDevice(self.ffi_handle.as_ptr(), name.as_ptr()).into_bool()
+        };
         if success {
             Ok(())
         } else {
@@ -358,7 +360,7 @@ impl Default for SoundBufferRecorder {
 impl Drop for SoundBufferRecorder {
     fn drop(&mut self) {
         unsafe {
-            sfSoundBufferRecorder_destroy(self.ffi_handle);
+            sfSoundBufferRecorder_destroy(self.ffi_handle.as_ptr());
         }
     }
 }
