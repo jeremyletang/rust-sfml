@@ -13,8 +13,6 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-    env:
-      LD_LIBRARY_PATH: $HOME/sfml_install/usr/local/lib
 
     steps:
     - uses: actions/checkout@v2
@@ -38,9 +36,9 @@ jobs:
        popd
        mkdir .cargo
        sed 's|HOME_VAR|'$HOME'|' .ci.cargo.config > .cargo/config
-    - name: Setup tmate session
-      uses: mxschmitt/action-tmate@v3
     - name: Build
       run: cargo build --verbose
     - name: Run tests
-      run: cargo test --verbose
+      run: |
+       export LD_LIBRARY_PATH=$HOME/sfml_install/usr/local/lib
+       cargo test --features ci-headless --verbose
