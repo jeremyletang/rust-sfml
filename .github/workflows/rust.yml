@@ -35,7 +35,7 @@ jobs:
        make DESTDIR=$HOME/build/jeremyletang/rust-sfml/sfml_install install
        popd
        mkdir .cargo
-       mv .travis.cargo.config .cargo/config
+       sed 's|HOME_VAR|'$HOME'|' .ci.cargo.config > .cargo/config
     - name: Build
       run: cargo build --verbose
     - name: Run tests
