@@ -1,0 +1,42 @@
+name: Rust
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install deps
+      run: sudo apt-get install libpthreadstubs0dev libgl1mesadev libx11dev libx11xcbdev libxcbimage0dev libxrandrdev libxcbrandr0dev libudevdev libfreetype6dev libglewdev libjpeg8dev libgpgme11dev libsndfile1dev libopenaldev libjpeg62 cmake
+    - name: Set up SFML/CSFML
+      run: |
+       set -e
+       mkdir sfml_install
+       # TODO: Maybe investigate why the certificate checks for the SFML sources fail
+       wget http://www.sfml-dev.org/files/SFML-2.5.1-sources.zip --no-check-certificate
+       unzip -q SFML-2.5.1-sources.zip
+       pushd SFML-2.5.1 && mkdir build && cd build && cmake .. && make
+       make DESTDIR=/home/travis/build/jeremyletang/rust-sfml/sfml_install install
+       popd
+       wget http://www.sfml-dev.org/files/CSFML-2.5-sources.zip --no-check-certificate
+       unzip -q CSFML-2.5-sources.zip
+       pushd CSFML-2.5
+       mkdir build && cd build && cmake -DSFML_DIR='/home/travis/build/jeremyletang/rust-sfml/sfml_install/usr/local/lib/cmake/SFML/' .. && make
+       make DESTDIR=/home/travis/build/jeremyletang/rust-sfml/sfml_install install
+       popd
+       mkdir .cargo
+       mv .travis.cargo.config .cargo/config
+    - name: Build
+      run: cargo build --verbose
+    - name: Run tests
+      run: cargo test --verbose
