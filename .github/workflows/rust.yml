@@ -17,7 +17,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Install deps
-      run: sudo apt-get install libpthreadstubs0dev libgl1mesadev libx11dev libx11xcbdev libxcbimage0dev libxrandrdev libxcbrandr0dev libudevdev libfreetype6dev libglewdev libjpeg8dev libgpgme11dev libsndfile1dev libopenaldev libjpeg62 cmake
+      run: sudo apt-get install libpthread-stubs0-dev libgl1-mesa-dev libx11-dev libx11-xcb-dev libxcb-image0-dev libxrandr-dev libxcb-randr0-dev libudev-dev libfreetype6-dev libglew-dev libjpeg8-dev libgpgme11-dev libsndfile1-dev libopenal-dev libjpeg62 cmake
     - name: Set up SFML/CSFML
       run: |
        set -e
