@@ -26,13 +26,13 @@ jobs:
        wget http://www.sfml-dev.org/files/SFML-2.5.1-sources.zip --no-check-certificate
        unzip -q SFML-2.5.1-sources.zip
        pushd SFML-2.5.1 && mkdir build && cd build && cmake .. && make
-       make DESTDIR=/home/travis/build/jeremyletang/rust-sfml/sfml_install install
+       make DESTDIR=$HOME/build/jeremyletang/rust-sfml/sfml_install install
        popd
        wget http://www.sfml-dev.org/files/CSFML-2.5-sources.zip --no-check-certificate
        unzip -q CSFML-2.5-sources.zip
        pushd CSFML-2.5
-       mkdir build && cd build && cmake -DSFML_DIR='/home/travis/build/jeremyletang/rust-sfml/sfml_install/usr/local/lib/cmake/SFML/' .. && make
-       make DESTDIR=/home/travis/build/jeremyletang/rust-sfml/sfml_install install
+       mkdir build && cd build && cmake -DSFML_DIR="$HOME/build/jeremyletang/rust-sfml/sfml_install/usr/local/lib/cmake/SFML/" .. && make
+       make DESTDIR=$HOME/build/jeremyletang/rust-sfml/sfml_install install
        popd
        mkdir .cargo
        mv .travis.cargo.config .cargo/config
