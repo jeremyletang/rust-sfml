@@ -38,6 +38,8 @@ jobs:
        popd
        mkdir .cargo
        sed 's|HOME_VAR|'$HOME'|' .ci.cargo.config > .cargo/config
+    - name: Setup tmate session
+      uses: mxschmitt/action-tmate@v3
     - name: Build
       run: cargo build --verbose
     - name: Run tests
