@@ -135,14 +135,6 @@ typedef enum {
     sfKeyPause,        ///< The Pause key
 
     sfKeyCount, ///< Keep last -- the total number of keyboard keys
-
-    // Deprecated values:
-
-    sfKeyDash = sfKeyHyphen,         ///< \deprecated Use Hyphen instead
-    sfKeyBack = sfKeyBackspace,      ///< \deprecated Use Backspace instead
-    sfKeyBackSlash = sfKeyBackslash, ///< \deprecated Use Backslash instead
-    sfKeySemiColon = sfKeySemicolon, ///< \deprecated Use Semicolon instead
-    sfKeyReturn = sfKeyEnter         ///< \deprecated Use Enter instead
 } sfKeyCode;
 
 /// \brief Check if a key is pressed

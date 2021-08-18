@@ -358,14 +358,6 @@ void sfRenderWindow_resetGLStates(sfRenderWindow *renderWindow) {
     renderWindow->This.resetGLStates();
 }
 
-sfImage *sfRenderWindow_capture(const sfRenderWindow *renderWindow) {
-
-    sfImage *image = new sfImage;
-    image->This = renderWindow->This.capture();
-
-    return image;
-}
-
 sfVector2i sfMouse_getPositionRenderWindow(const sfRenderWindow *relativeTo) {
     sf::Vector2i sfmlPos;
     if (relativeTo)

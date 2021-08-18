@@ -37,16 +37,6 @@
 #include <SFML/Window/ContextSettingsInternal.h>
 #include <cstddef>
 
-sfRenderTexture *sfRenderTexture_create(unsigned int width, unsigned int height, sfBool depthBuffer) {
-    sfRenderTexture *renderTexture = new sfRenderTexture;
-    renderTexture->This.create(width, height, depthBuffer == sfTrue);
-    renderTexture->Target = new sfTexture(const_cast<sf::Texture *>(&renderTexture->This.getTexture()));
-    renderTexture->DefaultView.This = renderTexture->This.getDefaultView();
-    renderTexture->CurrentView.This = renderTexture->This.getView();
-
-    return renderTexture;
-}
-
 sfRenderTexture *sfRenderTexture_createWithSettings(unsigned int width, unsigned int height, const sfContextSettings *settings) {
     // Convert context settings
     sf::ContextSettings params;

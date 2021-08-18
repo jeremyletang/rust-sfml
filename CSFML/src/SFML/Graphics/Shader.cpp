@@ -236,47 +236,6 @@ void sfShader_setMat4UniformArray(sfShader *shader, const char *name, const sfGl
     shader->This.setUniformArray(name, reinterpret_cast<const sf::Glsl::Mat4 *>(matrixArray), length);
 }
 
-void sfShader_setFloatParameter(sfShader *shader, const char *name, float x) {
-    shader->This.setParameter(name, x);
-}
-
-void sfShader_setFloat2Parameter(sfShader *shader, const char *name, float x, float y) {
-    shader->This.setParameter(name, x, y);
-}
-
-void sfShader_setFloat3Parameter(sfShader *shader, const char *name, float x, float y, float z) {
-    shader->This.setParameter(name, x, y, z);
-}
-
-void sfShader_setFloat4Parameter(sfShader *shader, const char *name, float x, float y, float z, float w) {
-    shader->This.setParameter(name, x, y, z, w);
-}
-
-void sfShader_setVector2Parameter(sfShader *shader, const char *name, sfVector2f vector) {
-    shader->This.setParameter(name, sf::Vector2f(vector.x, vector.y));
-}
-
-void sfShader_setVector3Parameter(sfShader *shader, const char *name, sfVector3f vector) {
-    shader->This.setParameter(name, sf::Vector3f(vector.x, vector.y, vector.z));
-}
-
-void sfShader_setColorParameter(sfShader *shader, const char *name, sfColor color) {
-    shader->This.setParameter(name, sf::Color(color.r, color.g, color.b, color.a));
-}
-
-void sfShader_setTransformParameter(sfShader *shader, const char *name, sfTransform transform) {
-    shader->This.setParameter(name, convertTransform(transform));
-}
-
-void sfShader_setTextureParameter(sfShader *shader, const char *name, const sfTexture *texture) {
-
-    shader->This.setParameter(name, *texture->This);
-}
-
-void sfShader_setCurrentTextureParameter(sfShader *shader, const char *name) {
-    shader->This.setParameter(name, sf::Shader::CurrentTexture);
-}
-
 unsigned int sfShader_getNativeHandle(const sfShader *shader) {
     return shader->This.getNativeHandle();
 }

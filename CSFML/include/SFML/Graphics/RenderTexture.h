@@ -39,20 +39,6 @@
 
 /// \brief Construct a new render texture
 ///
-/// \param width       Width of the render texture
-/// \param height      Height of the render texture
-/// \param depthBuffer Do you want a depth-buffer attached? (useful only if you're doing 3D OpenGL on the rendertexture)
-///
-/// \return A new sfRenderTexture object, or NULL if it failed
-///
-/// \deprecated
-/// Use sfRenderTexture_createWithSettings instead.
-///
-
-extern "C" sfRenderTexture *sfRenderTexture_create(unsigned int width, unsigned int height, sfBool depthBuffer);
-
-/// \brief Construct a new render texture
-///
 /// \param width    Width of the render texture
 /// \param height   Height of the render texture
 /// \param settings Settings of the render texture

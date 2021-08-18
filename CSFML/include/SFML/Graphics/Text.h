@@ -304,21 +304,6 @@ extern "C" void sfText_setStyle(sfText *text, sfUint32 style);
 /// \param text  Text object
 /// \param color New fill color of the text
 ///
-/// \deprecated This function is deprecated and may be removed in future releases.
-/// Use sfText_setFillColor instead.
-///
-
-extern "C" void sfText_setColor(sfText *text, sfColor color);
-
-/// \brief Set the fill color of a text
-///
-/// By default, the text's fill color is opaque white.
-/// Setting the fill color to a transparent color with an outline
-/// will cause the outline to be displayed in the fill area of the text.
-///
-/// \param text  Text object
-/// \param color New fill color of the text
-///
 
 extern "C" void sfText_setFillColor(sfText *text, sfColor color);
 
@@ -416,18 +401,6 @@ extern "C" float sfText_getLineSpacing(const sfText *text);
 ///
 
 extern "C" sfUint32 sfText_getStyle(const sfText *text);
-
-/// \brief Get the fill color of a text
-///
-/// \param text Text object
-///
-/// \return Fill color of the text
-///
-/// \deprecated This function is deprecated and may be removed in future releases.
-/// Use sfText_getFillColor instead.
-///
-
-extern "C" sfColor sfText_getColor(const sfText *text);
 
 /// \brief Get the fill color of a text
 ///
