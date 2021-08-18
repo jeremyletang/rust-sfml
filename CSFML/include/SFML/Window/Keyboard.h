@@ -25,8 +25,7 @@
 #define SFML_KEYBOARD_H
 
 // Headers
-
-#include <SFML/Window/Export.h>
+#include <SFML/Config.h>
 
 /// \brief Key codes
 ///
@@ -153,7 +152,7 @@ typedef enum {
 /// \return sfTrue if the key is pressed, sfFalse otherwise
 ///
 
-CSFML_WINDOW_API sfBool sfKeyboard_isKeyPressed(sfKeyCode key);
+extern "C" sfBool sfKeyboard_isKeyPressed(sfKeyCode key);
 
 /// \brief Show or hide the virtual keyboard.
 ///
@@ -166,6 +165,6 @@ CSFML_WINDOW_API sfBool sfKeyboard_isKeyPressed(sfKeyCode key);
 /// \param visible True to show, false to hide
 ///
 
-CSFML_WINDOW_API void sfKeyboard_setVirtualKeyboardVisible(sfBool visible);
+extern "C" void sfKeyboard_setVirtualKeyboardVisible(sfBool visible);
 
 #endif // SFML_KEYBOARD_H

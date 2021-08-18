@@ -26,7 +26,6 @@
 
 // Headers
 
-#include <SFML/Graphics/Export.h>
 #include <SFML/Graphics/PrimitiveType.h>
 #include <SFML/Graphics/Types.h>
 #include <SFML/Graphics/Vertex.h>
@@ -62,7 +61,7 @@ typedef enum {
 /// \return A new sfVertexBuffer object
 ///
 
-CSFML_GRAPHICS_API sfVertexBuffer *sfVertexBuffer_create(unsigned int vertexCount, sfPrimitiveType type, sfVertexBufferUsage usage);
+extern "C" sfVertexBuffer *sfVertexBuffer_create(unsigned int vertexCount, sfPrimitiveType type, sfVertexBufferUsage usage);
 
 /// \brief Copy an existing vertex buffer
 ///
@@ -71,14 +70,14 @@ CSFML_GRAPHICS_API sfVertexBuffer *sfVertexBuffer_create(unsigned int vertexCoun
 /// \return Copied object
 ///
 
-CSFML_GRAPHICS_API sfVertexBuffer *sfVertexBuffer_copy(const sfVertexBuffer *vertexBuffer);
+extern "C" sfVertexBuffer *sfVertexBuffer_copy(const sfVertexBuffer *vertexBuffer);
 
 /// \brief Destroy an existing vertex buffer
 ///
 /// \param vertexBuffer Vertex buffer to delete
 ///
 
-CSFML_GRAPHICS_API void sfVertexBuffer_destroy(sfVertexBuffer *vertexBuffer);
+extern "C" void sfVertexBuffer_destroy(sfVertexBuffer *vertexBuffer);
 
 /// \brief Return the vertex count
 ///
@@ -87,7 +86,7 @@ CSFML_GRAPHICS_API void sfVertexBuffer_destroy(sfVertexBuffer *vertexBuffer);
 /// \return Number of vertices in the vertex buffer
 ///
 
-CSFML_GRAPHICS_API unsigned int sfVertexBuffer_getVertexCount(const sfVertexBuffer *vertexBuffer);
+extern "C" unsigned int sfVertexBuffer_getVertexCount(const sfVertexBuffer *vertexBuffer);
 
 /// \brief Update a part of the buffer from an array of vertices
 ///
@@ -119,7 +118,7 @@ CSFML_GRAPHICS_API unsigned int sfVertexBuffer_getVertexCount(const sfVertexBuff
 /// \return sfTrue if the update was successful
 ///
 
-CSFML_GRAPHICS_API sfBool sfVertexBuffer_update(sfVertexBuffer *vertexBuffer, const sfVertex *vertices, unsigned int vertexCount, unsigned int offset);
+extern "C" sfBool sfVertexBuffer_update(sfVertexBuffer *vertexBuffer, const sfVertex *vertices, unsigned int vertexCount, unsigned int offset);
 
 /// \brief Copy the contents of another buffer into this buffer
 ///
@@ -129,7 +128,7 @@ CSFML_GRAPHICS_API sfBool sfVertexBuffer_update(sfVertexBuffer *vertexBuffer, co
 /// \return sfTrue if the copy was successful
 ///
 
-CSFML_GRAPHICS_API sfBool sfVertexBuffer_updateFromVertexBuffer(sfVertexBuffer *vertexBuffer, const sfVertexBuffer *other);
+extern "C" sfBool sfVertexBuffer_updateFromVertexBuffer(sfVertexBuffer *vertexBuffer, const sfVertexBuffer *other);
 
 /// \brief Swap the contents of this vertex buffer with those of another
 ///
@@ -137,7 +136,7 @@ CSFML_GRAPHICS_API sfBool sfVertexBuffer_updateFromVertexBuffer(sfVertexBuffer *
 /// \param right Instance to swap with
 ///
 
-CSFML_GRAPHICS_API void sfVertexBuffer_swap(sfVertexBuffer *left, sfVertexBuffer *right);
+extern "C" void sfVertexBuffer_swap(sfVertexBuffer *left, sfVertexBuffer *right);
 
 /// \brief Get the underlying OpenGL handle of the vertex buffer.
 ///
@@ -148,7 +147,7 @@ CSFML_GRAPHICS_API void sfVertexBuffer_swap(sfVertexBuffer *left, sfVertexBuffer
 /// \return OpenGL handle of the vertex buffer or 0 if not yet created
 ///
 
-CSFML_GRAPHICS_API unsigned int sfVertexBuffer_getNativeHandle(sfVertexBuffer *vertexBuffer);
+extern "C" unsigned int sfVertexBuffer_getNativeHandle(sfVertexBuffer *vertexBuffer);
 
 /// \brief Set the type of primitives to draw
 ///
@@ -161,7 +160,7 @@ CSFML_GRAPHICS_API unsigned int sfVertexBuffer_getNativeHandle(sfVertexBuffer *v
 /// \param type Type of primitive
 ///
 
-CSFML_GRAPHICS_API void sfVertexBuffer_setPrimitiveType(sfVertexBuffer *vertexBuffer, sfPrimitiveType type);
+extern "C" void sfVertexBuffer_setPrimitiveType(sfVertexBuffer *vertexBuffer, sfPrimitiveType type);
 
 /// \brief Get the type of primitives drawn by the vertex buffer
 ///
@@ -170,7 +169,7 @@ CSFML_GRAPHICS_API void sfVertexBuffer_setPrimitiveType(sfVertexBuffer *vertexBu
 /// \return Primitive type
 ///
 
-CSFML_GRAPHICS_API sfPrimitiveType sfVertexBuffer_getPrimitiveType(const sfVertexBuffer *vertexBuffer);
+extern "C" sfPrimitiveType sfVertexBuffer_getPrimitiveType(const sfVertexBuffer *vertexBuffer);
 
 /// \brief Set the usage specifier of this vertex buffer
 ///
@@ -187,7 +186,7 @@ CSFML_GRAPHICS_API sfPrimitiveType sfVertexBuffer_getPrimitiveType(const sfVerte
 /// \param usage Usage specifier
 ///
 
-CSFML_GRAPHICS_API void sfVertexBuffer_setUsage(sfVertexBuffer *vertexBuffer, sfVertexBufferUsage usage);
+extern "C" void sfVertexBuffer_setUsage(sfVertexBuffer *vertexBuffer, sfVertexBufferUsage usage);
 
 /// \brief Get the usage specifier of this vertex buffer
 ///
@@ -196,7 +195,7 @@ CSFML_GRAPHICS_API void sfVertexBuffer_setUsage(sfVertexBuffer *vertexBuffer, sf
 /// \return Usage specifier
 ///
 
-CSFML_GRAPHICS_API sfVertexBufferUsage sfVertexBuffer_getUsage(const sfVertexBuffer *vertexBuffer);
+extern "C" sfVertexBufferUsage sfVertexBuffer_getUsage(const sfVertexBuffer *vertexBuffer);
 
 /// \brief Bind a vertex buffer for rendering
 ///
@@ -218,7 +217,7 @@ CSFML_GRAPHICS_API sfVertexBufferUsage sfVertexBuffer_getUsage(const sfVertexBuf
 /// \param vertexBuffer Pointer to the vertex buffer to bind, can be null to use no vertex buffer
 ///
 
-CSFML_GRAPHICS_API void sfVertexBuffer_bind(const sfVertexBuffer *vertexBuffer);
+extern "C" void sfVertexBuffer_bind(const sfVertexBuffer *vertexBuffer);
 
 /// \brief Tell whether or not the system supports vertex buffers
 ///
@@ -229,6 +228,6 @@ CSFML_GRAPHICS_API void sfVertexBuffer_bind(const sfVertexBuffer *vertexBuffer);
 /// \return True if vertex buffers are supported, false otherwise
 ///
 
-CSFML_GRAPHICS_API sfBool sfVertexBuffer_isAvailable();
+extern "C" sfBool sfVertexBuffer_isAvailable();
 
 #endif // SFML_VERTEXBUFFER_H

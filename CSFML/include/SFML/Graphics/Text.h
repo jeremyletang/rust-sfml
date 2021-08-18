@@ -27,7 +27,7 @@
 // Headers
 
 #include <SFML/Graphics/Color.h>
-#include <SFML/Graphics/Export.h>
+
 #include <SFML/Graphics/Rect.h>
 #include <SFML/Graphics/Transform.h>
 #include <SFML/Graphics/Types.h>
@@ -49,7 +49,7 @@ typedef enum {
 /// \return A new sfText object, or NULL if it failed
 ///
 
-CSFML_GRAPHICS_API sfText *sfText_create(void);
+extern "C" sfText *sfText_create(void);
 
 /// \brief Copy an existing text
 ///
@@ -58,14 +58,14 @@ CSFML_GRAPHICS_API sfText *sfText_create(void);
 /// \return Copied object
 ///
 
-CSFML_GRAPHICS_API sfText *sfText_copy(const sfText *text);
+extern "C" sfText *sfText_copy(const sfText *text);
 
 /// \brief Destroy an existing text
 ///
 /// \param text Text to delete
 ///
 
-CSFML_GRAPHICS_API void sfText_destroy(sfText *text);
+extern "C" void sfText_destroy(sfText *text);
 
 /// \brief Set the position of a text
 ///
@@ -77,7 +77,7 @@ CSFML_GRAPHICS_API void sfText_destroy(sfText *text);
 /// \param position New position
 ///
 
-CSFML_GRAPHICS_API void sfText_setPosition(sfText *text, sfVector2f position);
+extern "C" void sfText_setPosition(sfText *text, sfVector2f position);
 
 /// \brief Set the orientation of a text
 ///
@@ -89,7 +89,7 @@ CSFML_GRAPHICS_API void sfText_setPosition(sfText *text, sfVector2f position);
 /// \param angle New rotation, in degrees
 ///
 
-CSFML_GRAPHICS_API void sfText_setRotation(sfText *text, float angle);
+extern "C" void sfText_setRotation(sfText *text, float angle);
 
 /// \brief Set the scale factors of a text
 ///
@@ -101,7 +101,7 @@ CSFML_GRAPHICS_API void sfText_setRotation(sfText *text, float angle);
 /// \param scale New scale factors
 ///
 
-CSFML_GRAPHICS_API void sfText_setScale(sfText *text, sfVector2f scale);
+extern "C" void sfText_setScale(sfText *text, sfVector2f scale);
 
 /// \brief Set the local origin of a text
 ///
@@ -116,7 +116,7 @@ CSFML_GRAPHICS_API void sfText_setScale(sfText *text, sfVector2f scale);
 /// \param origin New origin
 ///
 
-CSFML_GRAPHICS_API void sfText_setOrigin(sfText *text, sfVector2f origin);
+extern "C" void sfText_setOrigin(sfText *text, sfVector2f origin);
 
 /// \brief Get the position of a text
 ///
@@ -125,7 +125,7 @@ CSFML_GRAPHICS_API void sfText_setOrigin(sfText *text, sfVector2f origin);
 /// \return Current position
 ///
 
-CSFML_GRAPHICS_API sfVector2f sfText_getPosition(const sfText *text);
+extern "C" sfVector2f sfText_getPosition(const sfText *text);
 
 /// \brief Get the orientation of a text
 ///
@@ -136,7 +136,7 @@ CSFML_GRAPHICS_API sfVector2f sfText_getPosition(const sfText *text);
 /// \return Current rotation, in degrees
 ///
 
-CSFML_GRAPHICS_API float sfText_getRotation(const sfText *text);
+extern "C" float sfText_getRotation(const sfText *text);
 
 /// \brief Get the current scale of a text
 ///
@@ -145,7 +145,7 @@ CSFML_GRAPHICS_API float sfText_getRotation(const sfText *text);
 /// \return Current scale factors
 ///
 
-CSFML_GRAPHICS_API sfVector2f sfText_getScale(const sfText *text);
+extern "C" sfVector2f sfText_getScale(const sfText *text);
 
 /// \brief Get the local origin of a text
 ///
@@ -154,7 +154,7 @@ CSFML_GRAPHICS_API sfVector2f sfText_getScale(const sfText *text);
 /// \return Current origin
 ///
 
-CSFML_GRAPHICS_API sfVector2f sfText_getOrigin(const sfText *text);
+extern "C" sfVector2f sfText_getOrigin(const sfText *text);
 
 /// \brief Move a text by a given offset
 ///
@@ -165,7 +165,7 @@ CSFML_GRAPHICS_API sfVector2f sfText_getOrigin(const sfText *text);
 /// \param offset Offset
 ///
 
-CSFML_GRAPHICS_API void sfText_move(sfText *text, sfVector2f offset);
+extern "C" void sfText_move(sfText *text, sfVector2f offset);
 
 /// \brief Rotate a text
 ///
@@ -176,7 +176,7 @@ CSFML_GRAPHICS_API void sfText_move(sfText *text, sfVector2f offset);
 /// \param angle Angle of rotation, in degrees
 ///
 
-CSFML_GRAPHICS_API void sfText_rotate(sfText *text, float angle);
+extern "C" void sfText_rotate(sfText *text, float angle);
 
 /// \brief Scale a text
 ///
@@ -187,7 +187,7 @@ CSFML_GRAPHICS_API void sfText_rotate(sfText *text, float angle);
 /// \param factors Scale factors
 ///
 
-CSFML_GRAPHICS_API void sfText_scale(sfText *text, sfVector2f factors);
+extern "C" void sfText_scale(sfText *text, sfVector2f factors);
 
 /// \brief Get the combined transform of a text
 ///
@@ -196,7 +196,7 @@ CSFML_GRAPHICS_API void sfText_scale(sfText *text, sfVector2f factors);
 /// \return Transform combining the position/rotation/scale/origin of the object
 ///
 
-CSFML_GRAPHICS_API sfTransform sfText_getTransform(const sfText *text);
+extern "C" sfTransform sfText_getTransform(const sfText *text);
 
 /// \brief Get the inverse of the combined transform of a text
 ///
@@ -205,7 +205,7 @@ CSFML_GRAPHICS_API sfTransform sfText_getTransform(const sfText *text);
 /// \return Inverse of the combined transformations applied to the object
 ///
 
-CSFML_GRAPHICS_API sfTransform sfText_getInverseTransform(const sfText *text);
+extern "C" sfTransform sfText_getInverseTransform(const sfText *text);
 
 /// \brief Set the string of a text (from an ANSI string)
 ///
@@ -215,7 +215,7 @@ CSFML_GRAPHICS_API sfTransform sfText_getInverseTransform(const sfText *text);
 /// \param string New string
 ///
 
-CSFML_GRAPHICS_API void sfText_setString(sfText *text, const char *string);
+extern "C" void sfText_setString(sfText *text, const char *string);
 
 /// \brief Set the string of a text (from a unicode string)
 ///
@@ -223,7 +223,7 @@ CSFML_GRAPHICS_API void sfText_setString(sfText *text, const char *string);
 /// \param string New string
 ///
 
-CSFML_GRAPHICS_API void sfText_setUnicodeString(sfText *text, const sfUint32 *string);
+extern "C" void sfText_setUnicodeString(sfText *text, const sfUint32 *string);
 
 /// \brief Set the font of a text
 ///
@@ -238,7 +238,7 @@ CSFML_GRAPHICS_API void sfText_setUnicodeString(sfText *text, const sfUint32 *st
 /// \param font New font
 ///
 
-CSFML_GRAPHICS_API void sfText_setFont(sfText *text, const sfFont *font);
+extern "C" void sfText_setFont(sfText *text, const sfFont *font);
 
 /// \brief Set the character size of a text
 ///
@@ -248,7 +248,7 @@ CSFML_GRAPHICS_API void sfText_setFont(sfText *text, const sfFont *font);
 /// \param size New character size, in pixels
 ///
 
-CSFML_GRAPHICS_API void sfText_setCharacterSize(sfText *text, unsigned int size);
+extern "C" void sfText_setCharacterSize(sfText *text, unsigned int size);
 
 /// \brief Set the line spacing factor
 ///
@@ -262,7 +262,7 @@ CSFML_GRAPHICS_API void sfText_setCharacterSize(sfText *text, unsigned int size)
 /// \see sfText_getLineSpacing
 ///
 
-CSFML_GRAPHICS_API void sfText_setLineSpacing(sfText *text, float spacingFactor);
+extern "C" void sfText_setLineSpacing(sfText *text, float spacingFactor);
 
 /// \brief Set the letter spacing factor
 ///
@@ -281,7 +281,7 @@ CSFML_GRAPHICS_API void sfText_setLineSpacing(sfText *text, float spacingFactor)
 /// \see sfText_getLetterSpacing
 ///
 
-CSFML_GRAPHICS_API void sfText_setLetterSpacing(sfText *text, float spacingFactor);
+extern "C" void sfText_setLetterSpacing(sfText *text, float spacingFactor);
 
 /// \brief Set the style of a text
 ///
@@ -293,7 +293,7 @@ CSFML_GRAPHICS_API void sfText_setLetterSpacing(sfText *text, float spacingFacto
 /// \param style New style
 ///
 
-CSFML_GRAPHICS_API void sfText_setStyle(sfText *text, sfUint32 style);
+extern "C" void sfText_setStyle(sfText *text, sfUint32 style);
 
 /// \brief Set the fill color of a text
 ///
@@ -308,7 +308,7 @@ CSFML_GRAPHICS_API void sfText_setStyle(sfText *text, sfUint32 style);
 /// Use sfText_setFillColor instead.
 ///
 
-CSFML_GRAPHICS_API void sfText_setColor(sfText *text, sfColor color);
+extern "C" void sfText_setColor(sfText *text, sfColor color);
 
 /// \brief Set the fill color of a text
 ///
@@ -320,7 +320,7 @@ CSFML_GRAPHICS_API void sfText_setColor(sfText *text, sfColor color);
 /// \param color New fill color of the text
 ///
 
-CSFML_GRAPHICS_API void sfText_setFillColor(sfText *text, sfColor color);
+extern "C" void sfText_setFillColor(sfText *text, sfColor color);
 
 /// \brief Set the outline color of the text
 ///
@@ -330,7 +330,7 @@ CSFML_GRAPHICS_API void sfText_setFillColor(sfText *text, sfColor color);
 /// \param color New outline color of the text
 ///
 
-CSFML_GRAPHICS_API void sfText_setOutlineColor(sfText *text, sfColor color);
+extern "C" void sfText_setOutlineColor(sfText *text, sfColor color);
 
 /// \brief Set the thickness of the text's outline
 ///
@@ -344,7 +344,7 @@ CSFML_GRAPHICS_API void sfText_setOutlineColor(sfText *text, sfColor color);
 /// \see getOutlineThickness
 ///
 
-CSFML_GRAPHICS_API void sfText_setOutlineThickness(sfText *text, float thickness);
+extern "C" void sfText_setOutlineThickness(sfText *text, float thickness);
 
 /// \brief Get the string of a text (returns an ANSI string)
 ///
@@ -353,7 +353,7 @@ CSFML_GRAPHICS_API void sfText_setOutlineThickness(sfText *text, float thickness
 /// \return String as a locale-dependant ANSI string
 ///
 
-CSFML_GRAPHICS_API const char *sfText_getString(const sfText *text);
+extern "C" const char *sfText_getString(const sfText *text);
 
 /// \brief Get the string of a text (returns a unicode string)
 ///
@@ -362,7 +362,7 @@ CSFML_GRAPHICS_API const char *sfText_getString(const sfText *text);
 /// \return String as UTF-32
 ///
 
-CSFML_GRAPHICS_API const sfUint32 *sfText_getUnicodeString(const sfText *text);
+extern "C" const sfUint32 *sfText_getUnicodeString(const sfText *text);
 
 /// \brief Get the font used by a text
 ///
@@ -375,7 +375,7 @@ CSFML_GRAPHICS_API const sfUint32 *sfText_getUnicodeString(const sfText *text);
 /// \return Pointer to the font
 ///
 
-CSFML_GRAPHICS_API const sfFont *sfText_getFont(const sfText *text);
+extern "C" const sfFont *sfText_getFont(const sfText *text);
 
 /// \brief Get the size of the characters of a text
 ///
@@ -384,7 +384,7 @@ CSFML_GRAPHICS_API const sfFont *sfText_getFont(const sfText *text);
 /// \return Size of the characters
 ///
 
-CSFML_GRAPHICS_API unsigned int sfText_getCharacterSize(const sfText *text);
+extern "C" unsigned int sfText_getCharacterSize(const sfText *text);
 
 /// \brief Get the size of the letter spacing factor
 ///
@@ -395,7 +395,7 @@ CSFML_GRAPHICS_API unsigned int sfText_getCharacterSize(const sfText *text);
 /// \see sfText_setLetterSpacing
 ///
 
-CSFML_GRAPHICS_API float sfText_getLetterSpacing(const sfText *text);
+extern "C" float sfText_getLetterSpacing(const sfText *text);
 
 /// \brief Get the size of the line spacing factor
 ///
@@ -406,7 +406,7 @@ CSFML_GRAPHICS_API float sfText_getLetterSpacing(const sfText *text);
 /// \see sfText_setLineSpacing
 ///
 
-CSFML_GRAPHICS_API float sfText_getLineSpacing(const sfText *text);
+extern "C" float sfText_getLineSpacing(const sfText *text);
 
 /// \brief Get the style of a text
 ///
@@ -415,7 +415,7 @@ CSFML_GRAPHICS_API float sfText_getLineSpacing(const sfText *text);
 /// \return Current string style (see sfTextStyle enum)
 ///
 
-CSFML_GRAPHICS_API sfUint32 sfText_getStyle(const sfText *text);
+extern "C" sfUint32 sfText_getStyle(const sfText *text);
 
 /// \brief Get the fill color of a text
 ///
@@ -427,7 +427,7 @@ CSFML_GRAPHICS_API sfUint32 sfText_getStyle(const sfText *text);
 /// Use sfText_getFillColor instead.
 ///
 
-CSFML_GRAPHICS_API sfColor sfText_getColor(const sfText *text);
+extern "C" sfColor sfText_getColor(const sfText *text);
 
 /// \brief Get the fill color of a text
 ///
@@ -436,7 +436,7 @@ CSFML_GRAPHICS_API sfColor sfText_getColor(const sfText *text);
 /// \return Fill color of the text
 ///
 
-CSFML_GRAPHICS_API sfColor sfText_getFillColor(const sfText *text);
+extern "C" sfColor sfText_getFillColor(const sfText *text);
 
 /// \brief Get the outline color of a text
 ///
@@ -445,7 +445,7 @@ CSFML_GRAPHICS_API sfColor sfText_getFillColor(const sfText *text);
 /// \return Outline color of the text
 ///
 
-CSFML_GRAPHICS_API sfColor sfText_getOutlineColor(const sfText *text);
+extern "C" sfColor sfText_getOutlineColor(const sfText *text);
 
 /// \brief Get the outline thickness of a text
 ///
@@ -454,7 +454,7 @@ CSFML_GRAPHICS_API sfColor sfText_getOutlineColor(const sfText *text);
 /// \return Outline thickness of a text, in pixels
 ///
 
-CSFML_GRAPHICS_API float sfText_getOutlineThickness(const sfText *text);
+extern "C" float sfText_getOutlineThickness(const sfText *text);
 
 /// \brief Return the position of the \a index-th character in a text
 ///
@@ -471,7 +471,7 @@ CSFML_GRAPHICS_API float sfText_getOutlineThickness(const sfText *text);
 /// \return Position of the character
 ///
 
-CSFML_GRAPHICS_API sfVector2f sfText_findCharacterPos(const sfText *text, size_t index);
+extern "C" sfVector2f sfText_findCharacterPos(const sfText *text, size_t index);
 
 /// \brief Get the local bounding rectangle of a text
 ///
@@ -486,7 +486,7 @@ CSFML_GRAPHICS_API sfVector2f sfText_findCharacterPos(const sfText *text, size_t
 /// \return Local bounding rectangle of the entity
 ///
 
-CSFML_GRAPHICS_API sfFloatRect sfText_getLocalBounds(const sfText *text);
+extern "C" sfFloatRect sfText_getLocalBounds(const sfText *text);
 
 /// \brief Get the global bounding rectangle of a text
 ///
@@ -501,6 +501,6 @@ CSFML_GRAPHICS_API sfFloatRect sfText_getLocalBounds(const sfText *text);
 /// \return Global bounding rectangle of the entity
 ///
 
-CSFML_GRAPHICS_API sfFloatRect sfText_getGlobalBounds(const sfText *text);
+extern "C" sfFloatRect sfText_getGlobalBounds(const sfText *text);
 
 #endif // SFML_TEXT_H

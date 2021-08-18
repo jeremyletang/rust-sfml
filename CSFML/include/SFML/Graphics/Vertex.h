@@ -27,7 +27,7 @@
 // Headers
 
 #include <SFML/Graphics/Color.h>
-#include <SFML/Graphics/Export.h>
+
 #include <SFML/System/Vector2.h>
 
 /// Define a point with color and texture coordinates

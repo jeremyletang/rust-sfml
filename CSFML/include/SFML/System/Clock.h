@@ -26,7 +26,6 @@
 
 // Headers
 
-#include <SFML/System/Export.h>
 #include <SFML/System/Time.h>
 #include <SFML/System/Types.h>
 
@@ -35,7 +34,7 @@
 /// \return A new sfClock object
 ///
 
-CSFML_SYSTEM_API sfClock *sfClock_create(void);
+extern "C" sfClock *sfClock_create(void);
 
 /// \brief Create a new clock by copying an existing one
 ///
@@ -44,14 +43,14 @@ CSFML_SYSTEM_API sfClock *sfClock_create(void);
 /// \return A new sfClock object which is a copy of \a clock
 ///
 
-CSFML_SYSTEM_API sfClock *sfClock_copy(const sfClock *clock);
+extern "C" sfClock *sfClock_copy(const sfClock *clock);
 
 /// \brief Destroy a clock
 ///
 /// \param clock Clock to destroy
 ///
 
-CSFML_SYSTEM_API void sfClock_destroy(sfClock *clock);
+extern "C" void sfClock_destroy(sfClock *clock);
 
 /// \brief Get the time elapsed in a clock
 ///
@@ -64,7 +63,7 @@ CSFML_SYSTEM_API void sfClock_destroy(sfClock *clock);
 /// \return Time elapsed
 ///
 
-CSFML_SYSTEM_API sfTime sfClock_getElapsedTime(const sfClock *clock);
+extern "C" sfTime sfClock_getElapsedTime(const sfClock *clock);
 
 /// \brief Restart a clock
 ///
@@ -76,6 +75,6 @@ CSFML_SYSTEM_API sfTime sfClock_getElapsedTime(const sfClock *clock);
 /// \return Time elapsed
 ///
 
-CSFML_SYSTEM_API sfTime sfClock_restart(sfClock *clock);
+extern "C" sfTime sfClock_restart(sfClock *clock);
 
 #endif // SFML_CLOCK_H

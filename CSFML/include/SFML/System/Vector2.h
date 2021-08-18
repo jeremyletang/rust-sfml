@@ -26,8 +26,6 @@
 
 // Headers
 
-#include <SFML/System/Export.h>
-
 /// \brief 2-component vector of integers
 ///
 

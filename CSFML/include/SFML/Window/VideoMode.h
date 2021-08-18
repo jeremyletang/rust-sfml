@@ -1,4 +1,5 @@
 
+
 //
 // SFML - Simple and Fast Multimedia Library
 // Copyright (C) 2007-2018 Laurent Gomila (laurent@sfml-dev.org)
@@ -26,7 +27,7 @@
 
 // Headers
 
-#include <SFML/Window/Export.h>
+#include <SFML/Config.h>
 #include <stddef.h>
 
 /// \brief sfVideoMode defines a video mode (width, height, bpp, frequency)
@@ -46,7 +47,7 @@ typedef struct
 /// \return Current desktop video mode
 ///
 
-CSFML_WINDOW_API sfVideoMode sfVideoMode_getDesktopMode(void);
+extern "C" sfVideoMode sfVideoMode_getDesktopMode(void);
 
 /// \brief Retrieve all the video modes supported in fullscreen mode
 ///
@@ -63,7 +64,7 @@ CSFML_WINDOW_API sfVideoMode sfVideoMode_getDesktopMode(void);
 /// \return Pointer to an array containing all the supported fullscreen modes
 ///
 
-CSFML_WINDOW_API const sfVideoMode *sfVideoMode_getFullscreenModes(size_t *count);
+extern "C" const sfVideoMode *sfVideoMode_getFullscreenModes(size_t *count);
 
 /// \brief Tell whether or not a video mode is valid
 ///
@@ -76,6 +77,6 @@ CSFML_WINDOW_API const sfVideoMode *sfVideoMode_getFullscreenModes(size_t *count
 /// \return sfTrue if the video mode is valid for fullscreen mode
 ///
 
-CSFML_WINDOW_API sfBool sfVideoMode_isValid(sfVideoMode mode);
+extern "C" sfBool sfVideoMode_isValid(sfVideoMode mode);
 
 #endif // SFML_VIDEOMODE_H

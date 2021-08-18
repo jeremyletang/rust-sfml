@@ -25,8 +25,7 @@
 #define SFML_INPUTSTREAM_H
 
 // Headers
-
-#include <SFML/System/Export.h>
+#include <SFML/Config.h>
 
 typedef sfInt64 (*sfInputStreamReadFunc)(void *data, sfInt64 size, void *userData);
 typedef sfInt64 (*sfInputStreamSeekFunc)(sfInt64 position, void *userData);

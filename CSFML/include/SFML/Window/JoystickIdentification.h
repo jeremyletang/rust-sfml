@@ -26,8 +26,6 @@
 
 // Headers
 
-#include <SFML/Window/Export.h>
-
 /// sfJoystickIdentification holds a joystick's identification
 
 typedef struct

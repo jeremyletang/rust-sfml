@@ -26,8 +26,6 @@
 
 // Headers
 
-#include <SFML/System/Export.h>
-
 /// \brief 3-component vector of floats
 ///
 

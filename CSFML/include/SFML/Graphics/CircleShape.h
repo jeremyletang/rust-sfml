@@ -27,7 +27,7 @@
 // Headers
 
 #include <SFML/Graphics/Color.h>
-#include <SFML/Graphics/Export.h>
+
 #include <SFML/Graphics/Rect.h>
 #include <SFML/Graphics/Transform.h>
 #include <SFML/Graphics/Types.h>
@@ -39,7 +39,7 @@
 /// \return A new sfCircleShape object, or NULL if it failed
 ///
 
-CSFML_GRAPHICS_API sfCircleShape *sfCircleShape_create(void);
+extern "C" sfCircleShape *sfCircleShape_create(void);
 
 /// \brief Copy an existing circle shape
 ///
@@ -48,14 +48,14 @@ CSFML_GRAPHICS_API sfCircleShape *sfCircleShape_create(void);
 /// \return Copied object
 ///
 
-CSFML_GRAPHICS_API sfCircleShape *sfCircleShape_copy(const sfCircleShape *shape);
+extern "C" sfCircleShape *sfCircleShape_copy(const sfCircleShape *shape);
 
 /// \brief Destroy an existing circle Shape
 ///
 /// \param shape Shape to delete
 ///
 
-CSFML_GRAPHICS_API void sfCircleShape_destroy(sfCircleShape *shape);
+extern "C" void sfCircleShape_destroy(sfCircleShape *shape);
 
 /// \brief Set the position of a circle shape
 ///
@@ -67,7 +67,7 @@ CSFML_GRAPHICS_API void sfCircleShape_destroy(sfCircleShape *shape);
 /// \param position New position
 ///
 
-CSFML_GRAPHICS_API void sfCircleShape_setPosition(sfCircleShape *shape, sfVector2f position);
+extern "C" void sfCircleShape_setPosition(sfCircleShape *shape, sfVector2f position);
 
 /// \brief Set the orientation of a circle shape
 ///
@@ -79,7 +79,7 @@ CSFML_GRAPHICS_API void sfCircleShape_setPosition(sfCircleShape *shape, sfVector
 /// \param angle New rotation, in degrees
 ///
 
-CSFML_GRAPHICS_API void sfCircleShape_setRotation(sfCircleShape *shape, float angle);
+extern "C" void sfCircleShape_setRotation(sfCircleShape *shape, float angle);
 
 /// \brief Set the scale factors of a circle shape
 ///
@@ -91,7 +91,7 @@ CSFML_GRAPHICS_API void sfCircleShape_setRotation(sfCircleShape *shape, float an
 /// \param scale New scale factors
 ///
 
-CSFML_GRAPHICS_API void sfCircleShape_setScale(sfCircleShape *shape, sfVector2f scale);
+extern "C" void sfCircleShape_setScale(sfCircleShape *shape, sfVector2f scale);
 
 /// \brief Set the local origin of a circle shape
 ///
@@ -106,7 +106,7 @@ CSFML_GRAPHICS_API void sfCircleShape_setScale(sfCircleShape *shape, sfVector2f 
 /// \param origin New origin
 ///
 
-CSFML_GRAPHICS_API void sfCircleShape_setOrigin(sfCircleShape *shape, sfVector2f origin);
+extern "C" void sfCircleShape_setOrigin(sfCircleShape *shape, sfVector2f origin);
 
 /// \brief Get the position of a circle shape
 ///
@@ -115,7 +115,7 @@ CSFML_GRAPHICS_API void sfCircleShape_setOrigin(sfCircleShape *shape, sfVector2f
 /// \return Current position
 ///
 
-CSFML_GRAPHICS_API sfVector2f sfCircleShape_getPosition(const sfCircleShape *shape);
+extern "C" sfVector2f sfCircleShape_getPosition(const sfCircleShape *shape);
 
 /// \brief Get the orientation of a circle shape
 ///
@@ -126,7 +126,7 @@ CSFML_GRAPHICS_API sfVector2f sfCircleShape_getPosition(const sfCircleShape *sha
 /// \return Current rotation, in degrees
 ///
 
-CSFML_GRAPHICS_API float sfCircleShape_getRotation(const sfCircleShape *shape);
+extern "C" float sfCircleShape_getRotation(const sfCircleShape *shape);
 
 /// \brief Get the current scale of a circle shape
 ///
@@ -135,7 +135,7 @@ CSFML_GRAPHICS_API float sfCircleShape_getRotation(const sfCircleShape *shape);
 /// \return Current scale factors
 ///
 
-CSFML_GRAPHICS_API sfVector2f sfCircleShape_getScale(const sfCircleShape *shape);
+extern "C" sfVector2f sfCircleShape_getScale(const sfCircleShape *shape);
 
 /// \brief Get the local origin of a circle shape
 ///
@@ -144,7 +144,7 @@ CSFML_GRAPHICS_API sfVector2f sfCircleShape_getScale(const sfCircleShape *shape)
 /// \return Current origin
 ///
 
-CSFML_GRAPHICS_API sfVector2f sfCircleShape_getOrigin(const sfCircleShape *shape);
+extern "C" sfVector2f sfCircleShape_getOrigin(const sfCircleShape *shape);
 
 /// \brief Move a circle shape by a given offset
 ///
@@ -155,7 +155,7 @@ CSFML_GRAPHICS_API sfVector2f sfCircleShape_getOrigin(const sfCircleShape *shape
 /// \param offset Offset
 ///
 
-CSFML_GRAPHICS_API void sfCircleShape_move(sfCircleShape *shape, sfVector2f offset);
+extern "C" void sfCircleShape_move(sfCircleShape *shape, sfVector2f offset);
 
 /// \brief Rotate a circle shape
 ///
@@ -166,7 +166,7 @@ CSFML_GRAPHICS_API void sfCircleShape_move(sfCircleShape *shape, sfVector2f offs
 /// \param angle Angle of rotation, in degrees
 ///
 
-CSFML_GRAPHICS_API void sfCircleShape_rotate(sfCircleShape *shape, float angle);
+extern "C" void sfCircleShape_rotate(sfCircleShape *shape, float angle);
 
 /// \brief Scale a circle shape
 ///
@@ -177,7 +177,7 @@ CSFML_GRAPHICS_API void sfCircleShape_rotate(sfCircleShape *shape, float angle);
 /// \param factors Scale factors
 ///
 
-CSFML_GRAPHICS_API void sfCircleShape_scale(sfCircleShape *shape, sfVector2f factors);
+extern "C" void sfCircleShape_scale(sfCircleShape *shape, sfVector2f factors);
 
 /// \brief Get the combined transform of a circle shape
 ///
@@ -186,7 +186,7 @@ CSFML_GRAPHICS_API void sfCircleShape_scale(sfCircleShape *shape, sfVector2f fac
 /// \return Transform combining the position/rotation/scale/origin of the object
 ///
 
-CSFML_GRAPHICS_API sfTransform sfCircleShape_getTransform(const sfCircleShape *shape);
+extern "C" sfTransform sfCircleShape_getTransform(const sfCircleShape *shape);
 
 /// \brief Get the inverse of the combined transform of a circle shape
 ///
@@ -195,7 +195,7 @@ CSFML_GRAPHICS_API sfTransform sfCircleShape_getTransform(const sfCircleShape *s
 /// \return Inverse of the combined transformations applied to the object
 ///
 
-CSFML_GRAPHICS_API sfTransform sfCircleShape_getInverseTransform(const sfCircleShape *shape);
+extern "C" sfTransform sfCircleShape_getInverseTransform(const sfCircleShape *shape);
 
 /// \brief Change the source texture of a circle shape
 ///
@@ -215,7 +215,7 @@ CSFML_GRAPHICS_API sfTransform sfCircleShape_getInverseTransform(const sfCircleS
 /// \param resetRect Should the texture rect be reset to the size of the new texture?
 ///
 
-CSFML_GRAPHICS_API void sfCircleShape_setTexture(sfCircleShape *shape, const sfTexture *texture, sfBool resetRect);
+extern "C" void sfCircleShape_setTexture(sfCircleShape *shape, const sfTexture *texture, sfBool resetRect);
 
 /// \brief Set the sub-rectangle of the texture that a circle shape will display
 ///
@@ -227,7 +227,7 @@ CSFML_GRAPHICS_API void sfCircleShape_setTexture(sfCircleShape *shape, const sfT
 /// \param rect  Rectangle defining the region of the texture to display
 ///
 
-CSFML_GRAPHICS_API void sfCircleShape_setTextureRect(sfCircleShape *shape, sfIntRect rect);
+extern "C" void sfCircleShape_setTextureRect(sfCircleShape *shape, sfIntRect rect);
 
 /// \brief Set the fill color of a circle shape
 ///
@@ -242,7 +242,7 @@ CSFML_GRAPHICS_API void sfCircleShape_setTextureRect(sfCircleShape *shape, sfInt
 /// \param color New color of the shape
 ///
 
-CSFML_GRAPHICS_API void sfCircleShape_setFillColor(sfCircleShape *shape, sfColor color);
+extern "C" void sfCircleShape_setFillColor(sfCircleShape *shape, sfColor color);
 
 /// \brief Set the outline color of a circle shape
 ///
@@ -253,7 +253,7 @@ CSFML_GRAPHICS_API void sfCircleShape_setFillColor(sfCircleShape *shape, sfColor
 /// \param color New outline color of the shape
 ///
 
-CSFML_GRAPHICS_API void sfCircleShape_setOutlineColor(sfCircleShape *shape, sfColor color);
+extern "C" void sfCircleShape_setOutlineColor(sfCircleShape *shape, sfColor color);
 
 /// \brief Set the thickness of a circle shape's outline
 ///
@@ -265,7 +265,7 @@ CSFML_GRAPHICS_API void sfCircleShape_setOutlineColor(sfCircleShape *shape, sfCo
 /// \param thickness New outline thickness
 ///
 
-CSFML_GRAPHICS_API void sfCircleShape_setOutlineThickness(sfCircleShape *shape, float thickness);
+extern "C" void sfCircleShape_setOutlineThickness(sfCircleShape *shape, float thickness);
 
 /// \brief Get the source texture of a circle shape
 ///
@@ -278,7 +278,7 @@ CSFML_GRAPHICS_API void sfCircleShape_setOutlineThickness(sfCircleShape *shape, 
 /// \return Pointer to the shape's texture
 ///
 
-CSFML_GRAPHICS_API const sfTexture *sfCircleShape_getTexture(const sfCircleShape *shape);
+extern "C" const sfTexture *sfCircleShape_getTexture(const sfCircleShape *shape);
 
 /// \brief Get the sub-rectangle of the texture displayed by a circle shape
 ///
@@ -287,7 +287,7 @@ CSFML_GRAPHICS_API const sfTexture *sfCircleShape_getTexture(const sfCircleShape
 /// \return Texture rectangle of the shape
 ///
 
-CSFML_GRAPHICS_API sfIntRect sfCircleShape_getTextureRect(const sfCircleShape *shape);
+extern "C" sfIntRect sfCircleShape_getTextureRect(const sfCircleShape *shape);
 
 /// \brief Get the fill color of a circle shape
 ///
@@ -296,7 +296,7 @@ CSFML_GRAPHICS_API sfIntRect sfCircleShape_getTextureRect(const sfCircleShape *s
 /// \return Fill color of the shape
 ///
 
-CSFML_GRAPHICS_API sfColor sfCircleShape_getFillColor(const sfCircleShape *shape);
+extern "C" sfColor sfCircleShape_getFillColor(const sfCircleShape *shape);
 
 /// \brief Get the outline color of a circle shape
 ///
@@ -305,7 +305,7 @@ CSFML_GRAPHICS_API sfColor sfCircleShape_getFillColor(const sfCircleShape *shape
 /// \return Outline color of the shape
 ///
 
-CSFML_GRAPHICS_API sfColor sfCircleShape_getOutlineColor(const sfCircleShape *shape);
+extern "C" sfColor sfCircleShape_getOutlineColor(const sfCircleShape *shape);
 
 /// \brief Get the outline thickness of a circle shape
 ///
@@ -314,7 +314,7 @@ CSFML_GRAPHICS_API sfColor sfCircleShape_getOutlineColor(const sfCircleShape *sh
 /// \return Outline thickness of the shape
 ///
 
-CSFML_GRAPHICS_API float sfCircleShape_getOutlineThickness(const sfCircleShape *shape);
+extern "C" float sfCircleShape_getOutlineThickness(const sfCircleShape *shape);
 
 /// \brief Get the total number of points of a circle shape
 ///
@@ -323,7 +323,7 @@ CSFML_GRAPHICS_API float sfCircleShape_getOutlineThickness(const sfCircleShape *
 /// \return Number of points of the shape
 ///
 
-CSFML_GRAPHICS_API size_t sfCircleShape_getPointCount(const sfCircleShape *shape);
+extern "C" size_t sfCircleShape_getPointCount(const sfCircleShape *shape);
 
 /// \brief Get a point of a circle shape
 ///
@@ -335,7 +335,7 @@ CSFML_GRAPHICS_API size_t sfCircleShape_getPointCount(const sfCircleShape *shape
 /// \return Index-th point of the shape
 ///
 
-CSFML_GRAPHICS_API sfVector2f sfCircleShape_getPoint(const sfCircleShape *shape, size_t index);
+extern "C" sfVector2f sfCircleShape_getPoint(const sfCircleShape *shape, size_t index);
 
 /// \brief Set the radius of a circle
 ///
@@ -343,7 +343,7 @@ CSFML_GRAPHICS_API sfVector2f sfCircleShape_getPoint(const sfCircleShape *shape,
 /// \param radius New radius of the circle
 ///
 
-CSFML_GRAPHICS_API void sfCircleShape_setRadius(sfCircleShape *shape, float radius);
+extern "C" void sfCircleShape_setRadius(sfCircleShape *shape, float radius);
 
 /// \brief Get the radius of a circle
 ///
@@ -352,7 +352,7 @@ CSFML_GRAPHICS_API void sfCircleShape_setRadius(sfCircleShape *shape, float radi
 /// \return Radius of the circle
 ///
 
-CSFML_GRAPHICS_API float sfCircleShape_getRadius(const sfCircleShape *shape);
+extern "C" float sfCircleShape_getRadius(const sfCircleShape *shape);
 
 /// \brief Set the number of points of a circle
 ///
@@ -360,7 +360,7 @@ CSFML_GRAPHICS_API float sfCircleShape_getRadius(const sfCircleShape *shape);
 /// \param count New number of points of the circle
 ///
 
-CSFML_GRAPHICS_API void sfCircleShape_setPointCount(sfCircleShape *shape, size_t count);
+extern "C" void sfCircleShape_setPointCount(sfCircleShape *shape, size_t count);
 
 /// \brief Get the local bounding rectangle of a circle shape
 ///
@@ -375,7 +375,7 @@ CSFML_GRAPHICS_API void sfCircleShape_setPointCount(sfCircleShape *shape, size_t
 /// \return Local bounding rectangle of the entity
 ///
 
-CSFML_GRAPHICS_API sfFloatRect sfCircleShape_getLocalBounds(const sfCircleShape *shape);
+extern "C" sfFloatRect sfCircleShape_getLocalBounds(const sfCircleShape *shape);
 
 /// \brief Get the global bounding rectangle of a circle shape
 ///
@@ -390,6 +390,6 @@ CSFML_GRAPHICS_API sfFloatRect sfCircleShape_getLocalBounds(const sfCircleShape 
 /// \return Global bounding rectangle of the entity
 ///
 
-CSFML_GRAPHICS_API sfFloatRect sfCircleShape_getGlobalBounds(const sfCircleShape *shape);
+extern "C" sfFloatRect sfCircleShape_getGlobalBounds(const sfCircleShape *shape);
 
 #endif // SFML_CIRCLESHAPE_H

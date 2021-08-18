@@ -26,8 +26,6 @@
 
 // Headers
 
-#include <SFML/Audio/Export.h>
-
 /// \brief Enumeration of statuses for sounds and musics
 ///
 

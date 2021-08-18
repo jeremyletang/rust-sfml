@@ -26,7 +26,7 @@
 
 // Headers
 
-#include <SFML/System/Export.h>
+#include <SFML/Config.h>
 
 /// \brief Represents a time value
 ///
@@ -39,7 +39,7 @@ typedef struct
 /// \brief Predefined "zero" time value
 ///
 
-CSFML_SYSTEM_API sfTime sfTime_Zero;
+extern "C" sfTime sfTime_Zero;
 
 /// \brief Return a time value as a number of seconds
 ///
@@ -48,7 +48,7 @@ CSFML_SYSTEM_API sfTime sfTime_Zero;
 /// \return Time in seconds
 ///
 
-CSFML_SYSTEM_API float sfTime_asSeconds(sfTime time);
+extern "C" float sfTime_asSeconds(sfTime time);
 
 /// \brief Return a time value as a number of milliseconds
 ///
@@ -57,7 +57,7 @@ CSFML_SYSTEM_API float sfTime_asSeconds(sfTime time);
 /// \return Time in milliseconds
 ///
 
-CSFML_SYSTEM_API sfInt32 sfTime_asMilliseconds(sfTime time);
+extern "C" sfInt32 sfTime_asMilliseconds(sfTime time);
 
 /// \brief Return a time value as a number of microseconds
 ///
@@ -66,7 +66,7 @@ CSFML_SYSTEM_API sfInt32 sfTime_asMilliseconds(sfTime time);
 /// \return Time in microseconds
 ///
 
-CSFML_SYSTEM_API sfInt64 sfTime_asMicroseconds(sfTime time);
+extern "C" sfInt64 sfTime_asMicroseconds(sfTime time);
 
 /// \brief Construct a time value from a number of seconds
 ///
@@ -75,7 +75,7 @@ CSFML_SYSTEM_API sfInt64 sfTime_asMicroseconds(sfTime time);
 /// \return Time value constructed from the amount of seconds
 ///
 
-CSFML_SYSTEM_API sfTime sfSeconds(float amount);
+extern "C" sfTime sfSeconds(float amount);
 
 /// \brief Construct a time value from a number of milliseconds
 ///
@@ -84,7 +84,7 @@ CSFML_SYSTEM_API sfTime sfSeconds(float amount);
 /// \return Time value constructed from the amount of milliseconds
 ///
 
-CSFML_SYSTEM_API sfTime sfMilliseconds(sfInt32 amount);
+extern "C" sfTime sfMilliseconds(sfInt32 amount);
 
 /// \brief Construct a time value from a number of microseconds
 ///
@@ -93,6 +93,6 @@ CSFML_SYSTEM_API sfTime sfMilliseconds(sfInt32 amount);
 /// \return Time value constructed from the amount of microseconds
 ///
 
-CSFML_SYSTEM_API sfTime sfMicroseconds(sfInt64 amount);
+extern "C" sfTime sfMicroseconds(sfInt64 amount);
 
 #endif // SFML_TIME_H

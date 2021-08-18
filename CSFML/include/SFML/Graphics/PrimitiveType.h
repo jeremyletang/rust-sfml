@@ -26,8 +26,6 @@
 
 // Headers
 
-#include <SFML/Graphics/Export.h>
-
 /// \brief Types of primitives that a sf::VertexArray can render
 ///
 /// Points and lines have no area, therefore their thickness

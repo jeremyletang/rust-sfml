@@ -26,7 +26,6 @@
 
 // Headers
 
-#include <SFML/Graphics/Export.h>
 #include <SFML/Graphics/FontInfo.h>
 #include <SFML/Graphics/Glyph.h>
 #include <SFML/Graphics/Types.h>
@@ -40,7 +39,7 @@
 /// \return A new sfFont object, or NULL if it failed
 ///
 
-CSFML_GRAPHICS_API sfFont *sfFont_createFromFile(const char *filename);
+extern "C" sfFont *sfFont_createFromFile(const char *filename);
 
 /// \brief Create a new image font a file in memory
 ///
@@ -50,7 +49,7 @@ CSFML_GRAPHICS_API sfFont *sfFont_createFromFile(const char *filename);
 /// \return A new sfFont object, or NULL if it failed
 ///
 
-CSFML_GRAPHICS_API sfFont *sfFont_createFromMemory(const void *data, size_t sizeInBytes);
+extern "C" sfFont *sfFont_createFromMemory(const void *data, size_t sizeInBytes);
 
 /// \brief Create a new image font a custom stream
 ///
@@ -59,7 +58,7 @@ CSFML_GRAPHICS_API sfFont *sfFont_createFromMemory(const void *data, size_t size
 /// \return A new sfFont object, or NULL if it failed
 ///
 
-CSFML_GRAPHICS_API sfFont *sfFont_createFromStream(sfInputStream *stream);
+extern "C" sfFont *sfFont_createFromStream(sfInputStream *stream);
 
 /// \brief Copy an existing font
 ///
@@ -68,14 +67,14 @@ CSFML_GRAPHICS_API sfFont *sfFont_createFromStream(sfInputStream *stream);
 /// \return Copied object
 ///
 
-CSFML_GRAPHICS_API sfFont *sfFont_copy(const sfFont *font);
+extern "C" sfFont *sfFont_copy(const sfFont *font);
 
 /// \brief Destroy an existing font
 ///
 /// \param font Font to delete
 ///
 
-CSFML_GRAPHICS_API void sfFont_destroy(sfFont *font);
+extern "C" void sfFont_destroy(sfFont *font);
 
 /// \brief Get a glyph in a font
 ///
@@ -88,7 +87,7 @@ CSFML_GRAPHICS_API void sfFont_destroy(sfFont *font);
 /// \return The corresponding glyph
 ///
 
-CSFML_GRAPHICS_API sfGlyph sfFont_getGlyph(const sfFont *font, sfUint32 codePoint, unsigned int characterSize, sfBool bold, float outlineThickness);
+extern "C" sfGlyph sfFont_getGlyph(const sfFont *font, sfUint32 codePoint, unsigned int characterSize, sfBool bold, float outlineThickness);
 
 /// \brief Get the kerning value corresponding to a given pair of characters in a font
 ///
@@ -100,7 +99,7 @@ CSFML_GRAPHICS_API sfGlyph sfFont_getGlyph(const sfFont *font, sfUint32 codePoin
 /// \return Kerning offset, in pixels
 ///
 
-CSFML_GRAPHICS_API float sfFont_getKerning(const sfFont *font, sfUint32 first, sfUint32 second, unsigned int characterSize);
+extern "C" float sfFont_getKerning(const sfFont *font, sfUint32 first, sfUint32 second, unsigned int characterSize);
 
 /// \brief Get the line spacing value
 ///
@@ -110,7 +109,7 @@ CSFML_GRAPHICS_API float sfFont_getKerning(const sfFont *font, sfUint32 first, s
 /// \return Line spacing, in pixels
 ///
 
-CSFML_GRAPHICS_API float sfFont_getLineSpacing(const sfFont *font, unsigned int characterSize);
+extern "C" float sfFont_getLineSpacing(const sfFont *font, unsigned int characterSize);
 
 /// \brief Get the position of the underline
 ///
@@ -123,7 +122,7 @@ CSFML_GRAPHICS_API float sfFont_getLineSpacing(const sfFont *font, unsigned int 
 /// \return Underline position, in pixels
 ///
 
-CSFML_GRAPHICS_API float sfFont_getUnderlinePosition(const sfFont *font, unsigned int characterSize);
+extern "C" float sfFont_getUnderlinePosition(const sfFont *font, unsigned int characterSize);
 
 /// \brief Get the thickness of the underline
 ///
@@ -135,7 +134,7 @@ CSFML_GRAPHICS_API float sfFont_getUnderlinePosition(const sfFont *font, unsigne
 /// \return Underline thickness, in pixels
 ///
 
-CSFML_GRAPHICS_API float sfFont_getUnderlineThickness(const sfFont *font, unsigned int characterSize);
+extern "C" float sfFont_getUnderlineThickness(const sfFont *font, unsigned int characterSize);
 
 /// \brief Get the texture containing the glyphs of a given size in a font
 ///
@@ -145,7 +144,7 @@ CSFML_GRAPHICS_API float sfFont_getUnderlineThickness(const sfFont *font, unsign
 /// \return Read-only pointer to the texture
 ///
 
-CSFML_GRAPHICS_API const sfTexture *sfFont_getTexture(sfFont *font, unsigned int characterSize);
+extern "C" const sfTexture *sfFont_getTexture(sfFont *font, unsigned int characterSize);
 
 /// \brief Get the font information
 ///
@@ -158,6 +157,6 @@ CSFML_GRAPHICS_API const sfTexture *sfFont_getTexture(sfFont *font, unsigned int
 /// \return A structure that holds the font information
 ///
 
-CSFML_GRAPHICS_API sfFontInfo sfFont_getInfo(const sfFont *font);
+extern "C" sfFontInfo sfFont_getInfo(const sfFont *font);
 
 #endif // SFML_FONT_H

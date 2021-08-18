@@ -26,7 +26,6 @@
 
 // Headers
 
-#include <SFML/System/Export.h>
 #include <SFML/System/Types.h>
 
 /// \brief Create a new mutex
@@ -34,27 +33,27 @@
 /// \return A new sfMutex object
 ///
 
-CSFML_SYSTEM_API sfMutex *sfMutex_create(void);
+extern "C" sfMutex *sfMutex_create(void);
 
 /// \brief Destroy a mutex
 ///
 /// \param mutex Mutex to destroy
 ///
 
-CSFML_SYSTEM_API void sfMutex_destroy(sfMutex *mutex);
+extern "C" void sfMutex_destroy(sfMutex *mutex);
 
 /// \brief Lock a mutex
 ///
 /// \param mutex Mutex object
 ///
 
-CSFML_SYSTEM_API void sfMutex_lock(sfMutex *mutex);
+extern "C" void sfMutex_lock(sfMutex *mutex);
 
 /// \brief Unlock a mutex
 ///
 /// \param mutex Mutex object
 ///
 
-CSFML_SYSTEM_API void sfMutex_unlock(sfMutex *mutex);
+extern "C" void sfMutex_unlock(sfMutex *mutex);
 
 #endif // SFML_MUTEX_H

@@ -26,7 +26,6 @@
 
 // Headers
 
-#include <SFML/Audio/Export.h>
 #include <SFML/System/Vector3.h>
 
 /// \brief Change the global volume of all the sounds and musics
@@ -38,14 +37,14 @@
 /// \param volume New global volume, in the range [0, 100]
 ///
 
-CSFML_AUDIO_API void sfListener_setGlobalVolume(float volume);
+extern "C" void sfListener_setGlobalVolume(float volume);
 
 /// \brief Get the current value of the global volume
 ///
 /// \return Current global volume, in the range [0, 100]
 ///
 
-CSFML_AUDIO_API float sfListener_getGlobalVolume(void);
+extern "C" float sfListener_getGlobalVolume(void);
 
 /// \brief Set the position of the listener in the scene
 ///
@@ -54,14 +53,14 @@ CSFML_AUDIO_API float sfListener_getGlobalVolume(void);
 /// \param position New position of the listener
 ///
 
-CSFML_AUDIO_API void sfListener_setPosition(sfVector3f position);
+extern "C" void sfListener_setPosition(sfVector3f position);
 
 /// \brief Get the current position of the listener in the scene
 ///
 /// \return The listener's position
 ///
 
-CSFML_AUDIO_API sfVector3f sfListener_getPosition();
+extern "C" sfVector3f sfListener_getPosition();
 
 /// \brief Set the orientation of the forward vector in the scene
 ///
@@ -75,14 +74,14 @@ CSFML_AUDIO_API sfVector3f sfListener_getPosition();
 /// \param direction New listener's direction
 ///
 
-CSFML_AUDIO_API void sfListener_setDirection(sfVector3f direction);
+extern "C" void sfListener_setDirection(sfVector3f direction);
 
 /// \brief Get the current forward vector of the listener in the scene
 ///
 /// \return Listener's forward vector (not normalized)
 ///
 
-CSFML_AUDIO_API sfVector3f sfListener_getDirection();
+extern "C" sfVector3f sfListener_getDirection();
 
 /// \brief Set the upward vector of the listener in the scene
 ///
@@ -96,13 +95,13 @@ CSFML_AUDIO_API sfVector3f sfListener_getDirection();
 /// \param upVector New listener's up vector
 ///
 
-CSFML_AUDIO_API void sfListener_setUpVector(sfVector3f upVector);
+extern "C" void sfListener_setUpVector(sfVector3f upVector);
 
 /// \brief Get the current upward vector of the listener in the scene
 ///
 /// \return Listener's upward vector (not normalized)
 ///
 
-CSFML_AUDIO_API sfVector3f sfListener_getUpVector();
+extern "C" sfVector3f sfListener_getUpVector();
 
 #endif // SFML_LISTENER_H

@@ -26,8 +26,8 @@
 
 // Headers
 
+#include <SFML/Config.h>
 #include <SFML/System/Vector3.h>
-#include <SFML/Window/Export.h>
 #include <SFML/Window/Types.h>
 
 /// \brief Sensor Types
@@ -51,7 +51,7 @@ typedef enum {
 /// \return sfTrue if the sensor is available, sfFalse otherwise
 ///
 
-CSFML_WINDOW_API sfBool sfSensor_isAvailable(sfSensorType sensor);
+extern "C" sfBool sfSensor_isAvailable(sfSensorType sensor);
 
 /// \brief Enable or disable a sensor
 ///
@@ -65,7 +65,7 @@ CSFML_WINDOW_API sfBool sfSensor_isAvailable(sfSensorType sensor);
 /// \param enabled sfTrue to enable, sfFalse to disable
 ///
 
-CSFML_WINDOW_API void sfSensor_setEnabled(sfSensorType sensor, sfBool enabled);
+extern "C" void sfSensor_setEnabled(sfSensorType sensor, sfBool enabled);
 
 /// \brief Get the current sensor value
 ///
@@ -74,6 +74,6 @@ CSFML_WINDOW_API void sfSensor_setEnabled(sfSensorType sensor, sfBool enabled);
 /// \return The current sensor value
 ///
 
-CSFML_WINDOW_API sfVector3f sfSensor_getValue(sfSensorType sensor);
+extern "C" sfVector3f sfSensor_getValue(sfSensorType sensor);
 
 #endif // SFML_SENSOR_H

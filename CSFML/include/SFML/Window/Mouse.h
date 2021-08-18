@@ -26,8 +26,8 @@
 
 // Headers
 
+#include <SFML/Config.h>
 #include <SFML/System/Vector2.h>
-#include <SFML/Window/Export.h>
 #include <SFML/Window/Types.h>
 
 /// \brief Mouse buttons
@@ -58,7 +58,7 @@ typedef enum {
 /// \return sfTrue if the button is pressed, sfFalse otherwise
 ///
 
-CSFML_WINDOW_API sfBool sfMouse_isButtonPressed(sfMouseButton button);
+extern "C" sfBool sfMouse_isButtonPressed(sfMouseButton button);
 
 /// \brief Get the current position of the mouse
 ///
@@ -70,7 +70,7 @@ CSFML_WINDOW_API sfBool sfMouse_isButtonPressed(sfMouseButton button);
 /// \return Position of the mouse cursor, relative to the given window
 ///
 
-CSFML_WINDOW_API sfVector2i sfMouse_getPosition(const sfWindow *relativeTo);
+extern "C" sfVector2i sfMouse_getPosition(const sfWindow *relativeTo);
 
 /// \brief Set the current position of the mouse
 ///
@@ -81,6 +81,6 @@ CSFML_WINDOW_API sfVector2i sfMouse_getPosition(const sfWindow *relativeTo);
 /// \param relativeTo Reference window
 ///
 
-CSFML_WINDOW_API void sfMouse_setPosition(sfVector2i position, const sfWindow *relativeTo);
+extern "C" void sfMouse_setPosition(sfVector2i position, const sfWindow *relativeTo);
 
 #endif // SFML_MOUSE_H

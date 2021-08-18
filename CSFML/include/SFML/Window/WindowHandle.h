@@ -26,8 +26,6 @@
 
 // Headers
 
-#include <SFML/Window/Export.h>
-
 // Define a low-level window handle type, specific to
 // each platform
 

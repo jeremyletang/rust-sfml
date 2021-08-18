@@ -26,8 +26,8 @@
 
 // Headers
 
+#include <SFML/Config.h>
 #include <SFML/System/Vector2.h>
-#include <SFML/Window/Export.h>
 #include <SFML/Window/Types.h>
 
 /// \brief Enumeration of the native system cursor types
@@ -95,7 +95,7 @@ typedef enum {
 /// \return A new sfCursor object
 ///
 
-CSFML_WINDOW_API sfCursor *sfCursor_createFromPixels(const sfUint8 *pixels, sfVector2u size, sfVector2u hotspot);
+extern "C" sfCursor *sfCursor_createFromPixels(const sfUint8 *pixels, sfVector2u size, sfVector2u hotspot);
 
 /// \brief Create a native system cursor
 ///
@@ -108,13 +108,13 @@ CSFML_WINDOW_API sfCursor *sfCursor_createFromPixels(const sfUint8 *pixels, sfVe
 /// \return A new sfCursor object
 ///
 
-CSFML_WINDOW_API sfCursor *sfCursor_createFromSystem(sfCursorType type);
+extern "C" sfCursor *sfCursor_createFromSystem(sfCursorType type);
 
 /// \brief Destroy a cursor
 ///
 /// \param cursor Cursor to destroy
 ///
 
-CSFML_WINDOW_API void sfCursor_destroy(sfCursor *cursor);
+extern "C" void sfCursor_destroy(sfCursor *cursor);
 
 #endif // SFML_CURSOR_H

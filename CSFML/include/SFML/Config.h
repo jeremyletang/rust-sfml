@@ -30,14 +30,6 @@
 #define CSFML_VERSION_MINOR 5
 #define CSFML_VERSION_PATCH 0
 
-// Check if we need to mark functions as extern "C"
-
-#ifdef __cplusplus
-#define CSFML_EXTERN_C extern "C"
-#else
-#define CSFML_EXTERN_C extern
-#endif
-
 // Identify the operating system
 
 #if defined(_WIN32) || defined(__WIN32__)
@@ -64,40 +56,6 @@
 
 // Unsupported system
 #error This operating system is not supported by SFML library
-
-#endif
-
-// Define helpers to create portable import / export macros for each module
-
-#if defined(CSFML_SYSTEM_WINDOWS)
-
-// Windows compilers need specific (and different) keywords for export and import
-#define CSFML_API_EXPORT extern "C" __declspec(dllexport)
-#define CSFML_API_IMPORT CSFML_EXTERN_C __declspec(dllimport)
-
-// For Visual C++ compilers, we also need to turn off this annoying C4251 warning
-#ifdef _MSC_VER
-
-#pragma warning(disable : 4251)
-
-#endif
-
-#else // Linux, FreeBSD, Mac OS X
-
-#if __GNUC__ >= 4
-
-// GCC 4 has special keywords for showing/hidding symbols,
-// the same keyword is used for both importing and exporting
-#define CSFML_API_EXPORT extern "C" __attribute__((__visibility__("default")))
-#define CSFML_API_IMPORT CSFML_EXTERN_C __attribute__((__visibility__("default")))
-
-#else
-
-// GCC < 4 has no mechanism to explicitely hide symbols, everything's exported
-#define CSFML_API_EXPORT extern "C"
-#define CSFML_API_IMPORT CSFML_EXTERN_C
-
-#endif
 
 #endif
 

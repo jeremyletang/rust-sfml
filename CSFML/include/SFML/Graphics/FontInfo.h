@@ -26,8 +26,6 @@
 
 // Headers
 
-#include <SFML/Graphics/Export.h>
-
 /// sfFontInfo holds various information about a font
 
 typedef struct

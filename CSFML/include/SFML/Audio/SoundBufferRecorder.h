@@ -26,22 +26,22 @@
 
 // Headers
 
-#include <SFML/Audio/Export.h>
 #include <SFML/Audio/Types.h>
+#include <SFML/Config.h>
 
 /// \brief Create a new sound buffer recorder
 ///
 /// \return A new sfSoundBufferRecorder object (NULL if failed)
 ///
 
-CSFML_AUDIO_API sfSoundBufferRecorder *sfSoundBufferRecorder_create(void);
+extern "C" sfSoundBufferRecorder *sfSoundBufferRecorder_create(void);
 
 /// \brief Destroy a sound buffer recorder
 ///
 /// \param soundBufferRecorder Sound buffer recorder to destroy
 ///
 
-CSFML_AUDIO_API void sfSoundBufferRecorder_destroy(sfSoundBufferRecorder *soundBufferRecorder);
+extern "C" void sfSoundBufferRecorder_destroy(sfSoundBufferRecorder *soundBufferRecorder);
 
 /// \brief Start the capture of a sound recorder recorder
 ///
@@ -58,14 +58,14 @@ CSFML_AUDIO_API void sfSoundBufferRecorder_destroy(sfSoundBufferRecorder *soundB
 /// \return sfTrue, if it was able to start recording
 ///
 
-CSFML_AUDIO_API sfBool sfSoundBufferRecorder_start(sfSoundBufferRecorder *soundBufferRecorder, unsigned int sampleRate);
+extern "C" sfBool sfSoundBufferRecorder_start(sfSoundBufferRecorder *soundBufferRecorder, unsigned int sampleRate);
 
 /// \brief Stop the capture of a sound recorder
 ///
 /// \param soundBufferRecorder Sound buffer recorder object
 ///
 
-CSFML_AUDIO_API void sfSoundBufferRecorder_stop(sfSoundBufferRecorder *soundBufferRecorder);
+extern "C" void sfSoundBufferRecorder_stop(sfSoundBufferRecorder *soundBufferRecorder);
 
 /// \brief Get the sample rate of a sound buffer recorder
 ///
@@ -78,7 +78,7 @@ CSFML_AUDIO_API void sfSoundBufferRecorder_stop(sfSoundBufferRecorder *soundBuff
 /// \return Sample rate, in samples per second
 ///
 
-CSFML_AUDIO_API unsigned int sfSoundBufferRecorder_getSampleRate(const sfSoundBufferRecorder *soundBufferRecorder);
+extern "C" unsigned int sfSoundBufferRecorder_getSampleRate(const sfSoundBufferRecorder *soundBufferRecorder);
 
 /// \brief Get the sound buffer containing the captured audio data
 ///
@@ -92,7 +92,7 @@ CSFML_AUDIO_API unsigned int sfSoundBufferRecorder_getSampleRate(const sfSoundBu
 /// \return Read-only access to the sound buffer
 ///
 
-CSFML_AUDIO_API const sfSoundBuffer *sfSoundBufferRecorder_getBuffer(const sfSoundBufferRecorder *soundBufferRecorder);
+extern "C" const sfSoundBuffer *sfSoundBufferRecorder_getBuffer(const sfSoundBufferRecorder *soundBufferRecorder);
 
 /// \brief Set the audio capture device
 ///
@@ -107,7 +107,7 @@ CSFML_AUDIO_API const sfSoundBuffer *sfSoundBufferRecorder_getBuffer(const sfSou
 /// \return sfTrue, if it was able to set the requested device
 ///
 
-CSFML_AUDIO_API sfBool sfSoundBufferRecorder_setDevice(sfSoundBufferRecorder *soundBufferRecorder, const char *name);
+extern "C" sfBool sfSoundBufferRecorder_setDevice(sfSoundBufferRecorder *soundBufferRecorder, const char *name);
 
 /// \brief Get the name of the current audio capture device
 ///
@@ -116,6 +116,6 @@ CSFML_AUDIO_API sfBool sfSoundBufferRecorder_setDevice(sfSoundBufferRecorder *so
 /// \return The name of the current audio capture device
 ///
 
-CSFML_AUDIO_API const char *sfSoundBufferRecorder_getDevice(sfSoundBufferRecorder *soundBufferRecorder);
+extern "C" const char *sfSoundBufferRecorder_getDevice(sfSoundBufferRecorder *soundBufferRecorder);
 
 #endif // SFML_SOUNDBUFFERRECORDER_H

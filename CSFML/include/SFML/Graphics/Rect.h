@@ -25,8 +25,7 @@
 #define SFML_RECT_H
 
 // Headers
-
-#include <SFML/Graphics/Export.h>
+#include <SFML/Config.h>
 
 /// sfFloatRect and sfIntRect are utility classes for
 /// manipulating rectangles.
@@ -56,8 +55,8 @@ typedef struct
 /// \return sfTrue if the point is inside
 ///
 
-CSFML_GRAPHICS_API sfBool sfFloatRect_contains(const sfFloatRect *rect, float x, float y);
-CSFML_GRAPHICS_API sfBool sfIntRect_contains(const sfIntRect *rect, int x, int y);
+extern "C" sfBool sfFloatRect_contains(const sfFloatRect *rect, float x, float y);
+extern "C" sfBool sfIntRect_contains(const sfIntRect *rect, int x, int y);
 
 /// \brief Check intersection between two rectangles
 ///
@@ -68,7 +67,7 @@ CSFML_GRAPHICS_API sfBool sfIntRect_contains(const sfIntRect *rect, int x, int y
 /// \return sfTrue if rectangles overlap
 ///
 
-CSFML_GRAPHICS_API sfBool sfFloatRect_intersects(const sfFloatRect *rect1, const sfFloatRect *rect2, sfFloatRect *intersection);
-CSFML_GRAPHICS_API sfBool sfIntRect_intersects(const sfIntRect *rect1, const sfIntRect *rect2, sfIntRect *intersection);
+extern "C" sfBool sfFloatRect_intersects(const sfFloatRect *rect1, const sfFloatRect *rect2, sfFloatRect *intersection);
+extern "C" sfBool sfIntRect_intersects(const sfIntRect *rect1, const sfIntRect *rect2, sfIntRect *intersection);
 
 #endif // SFML_RECT_H

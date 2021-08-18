@@ -26,7 +26,6 @@
 
 // Headers
 
-#include <SFML/Window/Export.h>
 #include <SFML/Window/Types.h>
 #include <SFML/Window/Window.h>
 
@@ -37,14 +36,14 @@
 /// \return New sfContext object
 ///
 
-CSFML_WINDOW_API sfContext *sfContext_create(void);
+extern "C" sfContext *sfContext_create(void);
 
 /// \brief Destroy a context
 ///
 /// \param context Context to destroy
 ///
 
-CSFML_WINDOW_API void sfContext_destroy(sfContext *context);
+extern "C" void sfContext_destroy(sfContext *context);
 
 /// \brief Activate or deactivate explicitely a context
 ///
@@ -54,7 +53,7 @@ CSFML_WINDOW_API void sfContext_destroy(sfContext *context);
 /// \return sfTrue on success, sfFalse on failure
 ///
 
-CSFML_WINDOW_API sfBool sfContext_setActive(sfContext *context, sfBool active);
+extern "C" sfBool sfContext_setActive(sfContext *context, sfBool active);
 
 /// \brief Get the settings of the context.
 ///
@@ -65,7 +64,7 @@ CSFML_WINDOW_API sfBool sfContext_setActive(sfContext *context, sfBool active);
 /// \return Structure containing the settings
 ///
 
-CSFML_WINDOW_API sfContextSettings sfContext_getSettings(const sfContext *context);
+extern "C" sfContextSettings sfContext_getSettings(const sfContext *context);
 
 /// \brief Get the currently active context's ID
 ///
@@ -75,6 +74,6 @@ CSFML_WINDOW_API sfContextSettings sfContext_getSettings(const sfContext *contex
 /// \return The active context's ID or 0 if no context is currently active
 ///
 
-CSFML_WINDOW_API sfUint64 sfContext_getActiveContextId();
+extern "C" sfUint64 sfContext_getActiveContextId();
 
 #endif // SFML_CONTEXT_H
