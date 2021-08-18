@@ -1,5 +1,4 @@
-use crate::system::Time;
-use csfml_system_sys as ffi;
+use crate::{ffi::system as ffi, system::Time};
 
 /// Utility type that measures the elapsed time.
 ///

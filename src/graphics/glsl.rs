@@ -1,10 +1,10 @@
 //! GLSL types.
 
 use crate::{
+    ffi::graphics as ffi,
     graphics::Color,
     system::{Vector2, Vector3},
 };
-use csfml_graphics_sys as ffi;
 
 /// 2D float vector (`vec2` in GLSL).
 pub type Vec2 = Vector2<f32>;

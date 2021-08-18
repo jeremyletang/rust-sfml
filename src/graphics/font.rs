@@ -1,11 +1,10 @@
 use crate::{
+    ffi::{graphics as ffi, system::sfBool},
     graphics::{Glyph, Texture},
     inputstream::InputStream,
     sf_bool_ext::SfBoolExt,
     sf_box::{Dispose, SfBox},
 };
-use csfml_graphics_sys as ffi;
-use csfml_system_sys::sfBool;
 use std::{
     borrow::ToOwned,
     ffi::{CStr, CString},

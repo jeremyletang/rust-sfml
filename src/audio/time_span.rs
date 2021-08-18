@@ -1,5 +1,4 @@
-use crate::system::Time;
-use csfml_audio_sys as ffi;
+use crate::{ffi::audio as ffi, system::Time};
 
 #[derive(Default, Debug, Clone, Copy)]
 /// Structure defining a time range

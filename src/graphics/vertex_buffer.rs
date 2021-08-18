@@ -1,7 +1,9 @@
 use std::ptr::NonNull;
 
-use crate::graphics::{Drawable, PrimitiveType, RenderStates, RenderTarget, Vertex};
-use csfml_graphics_sys::*;
+use crate::{
+    ffi::graphics::*,
+    graphics::{Drawable, PrimitiveType, RenderStates, RenderTarget, Vertex},
+};
 
 /// Usage specifiers for a [`VertexBuffer`]
 ///

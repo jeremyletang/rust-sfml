@@ -1,7 +1,0 @@
-[package]
-name = "sfml-build"
-version = "0.4.0"
-authors = ["rust-sfml developers"]
-description = "Common routines for finding and linking native (C)SFML libraries"
-license = "zlib-acknowledgement"
-keywords = ["sfml", "multimedia", "game"]

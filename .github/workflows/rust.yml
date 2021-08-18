@@ -17,8 +17,10 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Install deps
-      run: sudo apt-get install libpthread-stubs0-dev libgl1-mesa-dev libx11-dev libx11-xcb-dev libxcb-image0-dev libxrandr-dev libxcb-randr0-dev libudev-dev libfreetype6-dev libglew-dev libjpeg8-dev libgpgme11-dev libsndfile1-dev libopenal-dev libjpeg62 cmake
-    - name: Set up SFML/CSFML
+      run: |
+       sudo apt-get update
+       sudo apt-get install libpthread-stubs0-dev libgl1-mesa-dev libx11-dev libx11-xcb-dev libxcb-image0-dev libxrandr-dev libxcb-randr0-dev libudev-dev libfreetype6-dev libglew-dev libjpeg8-dev libgpgme11-dev libsndfile1-dev libopenal-dev libjpeg62 cmake
+    - name: Set up SFML
       run: |
        set -e
        mkdir sfml_install
@@ -26,19 +28,16 @@ jobs:
        wget http://www.sfml-dev.org/files/SFML-2.5.1-sources.zip --no-check-certificate
        unzip -q SFML-2.5.1-sources.zip
        pushd SFML-2.5.1 && mkdir build && cd build && cmake .. && make
-       make DESTDIR=$HOME/sfml_install install
+       make DESTDIR=$GITHUB_WORKSPACE/sfml_install install
        popd
-       wget http://www.sfml-dev.org/files/CSFML-2.5-sources.zip --no-check-certificate
-       unzip -q CSFML-2.5-sources.zip
-       pushd CSFML-2.5
-       mkdir build && cd build && cmake -DSFML_DIR="$HOME/sfml_install/usr/local/lib/cmake/SFML/" .. && make
-       make DESTDIR=$HOME/sfml_install install
-       popd
-       mkdir .cargo
-       sed 's|HOME_VAR|'$HOME'|' .ci.cargo.config > .cargo/config
     - name: Build
-      run: cargo build --verbose
+      run: |
+       export SFML_INCLUDE_DIR=$GITHUB_WORKSPACE/sfml_install/usr/local/include
+       export SFML_LIBS_DIR=$GITHUB_WORKSPACE/sfml_install/usr/local/lib
+       cargo build --verbose
     - name: Run tests
       run: |
-       export LD_LIBRARY_PATH=$HOME/sfml_install/usr/local/lib
+       export LD_LIBRARY_PATH=$GITHUB_WORKSPACE/sfml_install/usr/local/lib
+       export SFML_INCLUDE_DIR=$GITHUB_WORKSPACE/sfml_install/usr/local/include
+       export SFML_LIBS_DIR=$GITHUB_WORKSPACE/sfml_install/usr/local/lib
        cargo test --features ci-headless --verbose

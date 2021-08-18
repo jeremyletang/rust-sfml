@@ -1,4 +1,4 @@
-use csfml_system_sys::{sfBool, sfFalse, sfTrue};
+use crate::ffi::system::{sfBool, sfFalse, sfTrue};
 
 pub trait SfBoolExt {
     fn into_bool(self) -> bool;
