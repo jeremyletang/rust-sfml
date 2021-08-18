@@ -28,16 +28,14 @@ jobs:
        wget http://www.sfml-dev.org/files/SFML-2.5.1-sources.zip --no-check-certificate
        unzip -q SFML-2.5.1-sources.zip
        pushd SFML-2.5.1 && mkdir build && cd build && cmake .. && make
-       make DESTDIR=$HOME/sfml_install install
+       make DESTDIR=$GITHUB_WORKSPACE/sfml_install install
        popd
-    - name: Setup tmate session
-      uses: mxschmitt/action-tmate@v3
     - name: Build
       run: |
-       export SFML_INCLUDE_PATH=$HOME/sfml_install/usr/local/include
-       export SFML_LIBS_PATH=$HOME/sfml_install/usr/local/lib
+       export SFML_INCLUDE_PATH=$GITHUB_WORKSPACE/sfml_install/usr/local/include
+       export SFML_LIBS_PATH=$GITHUB_WORKSPACE/sfml_install/usr/local/lib
        cargo build --verbose
     - name: Run tests
       run: |
-       export LD_LIBRARY_PATH=$HOME/sfml_install/usr/local/lib
+       export LD_LIBRARY_PATH=$GITHUB_WORKSPACE/sfml_install/usr/local/lib
        cargo test --features ci-headless --verbose
