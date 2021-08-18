@@ -32,8 +32,8 @@
 // Internal structure of sfMusic
 
 struct sfMusic {
-    sf::Music This;
     CallbackStream Stream;
+    sf::Music This;
 };
 
 #endif // SFML_MUSICSTRUCT_H
