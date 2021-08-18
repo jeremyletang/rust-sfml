@@ -30,6 +30,8 @@ jobs:
        pushd SFML-2.5.1 && mkdir build && cd build && cmake .. && make
        make DESTDIR=$HOME/sfml_install install
        popd
+    - name: Setup tmate session
+      uses: mxschmitt/action-tmate@v3
     - name: Build
       run: |
        export SFML_INCLUDE_PATH=$HOME/sfml_install/usr/local/include
