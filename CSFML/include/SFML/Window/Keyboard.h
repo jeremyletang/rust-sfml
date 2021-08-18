@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////
+
 //
 // SFML - Simple and Fast Multimedia Library
 // Copyright (C) 2007-2018 Laurent Gomila (laurent@sfml-dev.org)
@@ -20,21 +20,21 @@
 //
 // 3. This notice may not be removed or altered from any source distribution.
 //
-////////////////////////////////////////////////////////////
+
 
 #ifndef SFML_KEYBOARD_H
 #define SFML_KEYBOARD_H
 
-////////////////////////////////////////////////////////////
+
 // Headers
-////////////////////////////////////////////////////////////
+
 #include <SFML/Window/Export.h>
 
 
-////////////////////////////////////////////////////////////
+
 /// \brief Key codes
 ///
-////////////////////////////////////////////////////////////
+
 typedef enum
 {
     sfKeyUnknown = -1, ///< Unhandled key
@@ -152,17 +152,17 @@ typedef enum
 } sfKeyCode;
 
 
-////////////////////////////////////////////////////////////
+
 /// \brief Check if a key is pressed
 ///
 /// \param key Key to check
 ///
 /// \return sfTrue if the key is pressed, sfFalse otherwise
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_WINDOW_API sfBool sfKeyboard_isKeyPressed(sfKeyCode key);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Show or hide the virtual keyboard.
 ///
 /// Warning: the virtual keyboard is not supported on all systems.
@@ -173,7 +173,7 @@ CSFML_WINDOW_API sfBool sfKeyboard_isKeyPressed(sfKeyCode key);
 ///
 /// \param visible True to show, false to hide
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_WINDOW_API void sfKeyboard_setVirtualKeyboardVisible(sfBool visible);
 
 #endif // SFML_KEYBOARD_H

@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////
+
 //
 // SFML - Simple and Fast Multimedia Library
 // Copyright (C) 2007-2018 Laurent Gomila (laurent@sfml-dev.org)
@@ -20,24 +20,24 @@
 //
 // 3. This notice may not be removed or altered from any source distribution.
 //
-////////////////////////////////////////////////////////////
+
 
 #ifndef SFML_RENDERSTATES_H
 #define SFML_RENDERSTATES_H
 
-////////////////////////////////////////////////////////////
+
 // Headers
-////////////////////////////////////////////////////////////
+
 #include <SFML/Graphics/Export.h>
 #include <SFML/Graphics/BlendMode.h>
 #include <SFML/Graphics/Transform.h>
 #include <SFML/Graphics/Types.h>
 
 
-////////////////////////////////////////////////////////////
+
 /// \brief Define the states used for drawing to a RenderTarget
 ///
-////////////////////////////////////////////////////////////
+
 typedef struct
 {
     sfBlendMode      blendMode; ///< Blending mode

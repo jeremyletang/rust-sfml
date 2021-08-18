@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////
+
 //
 // SFML - Simple and Fast Multimedia Library
 // Copyright (C) 2007-2018 Laurent Gomila (laurent@sfml-dev.org)
@@ -20,11 +20,11 @@
 //
 // 3. This notice may not be removed or altered from any source distribution.
 //
-////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////
+
+
 // Headers
-////////////////////////////////////////////////////////////
+
 #include <SFML/Graphics/RenderTexture.h>
 #include <SFML/Graphics/RenderTextureStruct.h>
 #include <SFML/Graphics/SpriteStruct.h>
@@ -40,7 +40,7 @@
 #include <SFML/Window/ContextSettingsInternal.h>
 
 
-////////////////////////////////////////////////////////////
+
 sfRenderTexture* sfRenderTexture_create(unsigned int width, unsigned int height, sfBool depthBuffer)
 {
     sfRenderTexture* renderTexture = new sfRenderTexture;
@@ -53,7 +53,7 @@ sfRenderTexture* sfRenderTexture_create(unsigned int width, unsigned int height,
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfRenderTexture* sfRenderTexture_createWithSettings(unsigned int width, unsigned int height, const sfContextSettings* settings)
 {
     // Convert context settings
@@ -74,7 +74,7 @@ sfRenderTexture* sfRenderTexture_createWithSettings(unsigned int width, unsigned
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfRenderTexture_destroy(sfRenderTexture* renderTexture)
 {
     delete renderTexture->Target;
@@ -82,7 +82,7 @@ void sfRenderTexture_destroy(sfRenderTexture* renderTexture)
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfVector2u sfRenderTexture_getSize(const sfRenderTexture* renderTexture)
 {
     sfVector2u size = {0, 0};
@@ -96,21 +96,21 @@ sfVector2u sfRenderTexture_getSize(const sfRenderTexture* renderTexture)
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfBool sfRenderTexture_setActive(sfRenderTexture* renderTexture, sfBool active)
 {
     return renderTexture->This.setActive(active == sfTrue);
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfRenderTexture_display(sfRenderTexture* renderTexture)
 {
     renderTexture->This.display();
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfRenderTexture_clear(sfRenderTexture* renderTexture, sfColor color)
 {
     sf::Color SFMLColor(color.r, color.g, color.b, color.a);
@@ -119,7 +119,7 @@ void sfRenderTexture_clear(sfRenderTexture* renderTexture, sfColor color)
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfRenderTexture_setView(sfRenderTexture* renderTexture, const sfView* view)
 {
 
@@ -128,7 +128,7 @@ void sfRenderTexture_setView(sfRenderTexture* renderTexture, const sfView* view)
 }
 
 
-////////////////////////////////////////////////////////////
+
 const sfView* sfRenderTexture_getView(const sfRenderTexture* renderTexture)
 {
 
@@ -137,7 +137,7 @@ const sfView* sfRenderTexture_getView(const sfRenderTexture* renderTexture)
 }
 
 
-////////////////////////////////////////////////////////////
+
 const sfView* sfRenderTexture_getDefaultView(const sfRenderTexture* renderTexture)
 {
 
@@ -146,7 +146,7 @@ const sfView* sfRenderTexture_getDefaultView(const sfRenderTexture* renderTextur
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfIntRect sfRenderTexture_getViewport(const sfRenderTexture* renderTexture, const sfView* view)
 {
     sfIntRect rect = {0, 0, 0, 0};
@@ -163,7 +163,7 @@ sfIntRect sfRenderTexture_getViewport(const sfRenderTexture* renderTexture, cons
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfVector2f sfRenderTexture_mapPixelToCoords(const sfRenderTexture* renderTexture, sfVector2i point, const sfView* targetView)
 {
     sfVector2f result = {0, 0};
@@ -182,7 +182,7 @@ sfVector2f sfRenderTexture_mapPixelToCoords(const sfRenderTexture* renderTexture
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfVector2i sfRenderTexture_mapCoordsToPixel(const sfRenderTexture* renderTexture, sfVector2f point, const sfView* targetView)
 {
     sfVector2i result = {0, 0};
@@ -201,7 +201,7 @@ sfVector2i sfRenderTexture_mapCoordsToPixel(const sfRenderTexture* renderTexture
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfRenderTexture_drawSprite(sfRenderTexture* renderTexture, const sfSprite* object, const sfRenderStates* states)
 {
 
@@ -244,7 +244,7 @@ void sfRenderTexture_drawVertexBuffer(sfRenderTexture* renderTexture, const sfVe
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfRenderTexture_drawPrimitives(sfRenderTexture* renderTexture,
                                     const sfVertex* vertices, size_t vertexCount,
                                     sfPrimitiveType type, const sfRenderStates* states)
@@ -254,28 +254,28 @@ void sfRenderTexture_drawPrimitives(sfRenderTexture* renderTexture,
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfRenderTexture_pushGLStates(sfRenderTexture* renderTexture)
 {
     renderTexture->This.pushGLStates();
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfRenderTexture_popGLStates(sfRenderTexture* renderTexture)
 {
     renderTexture->This.popGLStates();
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfRenderTexture_resetGLStates(sfRenderTexture* renderTexture)
 {
     renderTexture->This.resetGLStates();
 }
 
 
-////////////////////////////////////////////////////////////
+
 const sfTexture* sfRenderTexture_getTexture(const sfRenderTexture* renderTexture)
 {
 
@@ -284,41 +284,41 @@ const sfTexture* sfRenderTexture_getTexture(const sfRenderTexture* renderTexture
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfRenderTexture_setSmooth(sfRenderTexture* renderTexture, sfBool smooth)
 {
     renderTexture->This.setSmooth(smooth == sfTrue);
 }
 
 
-////////////////////////////////////////////////////////////
+
 unsigned int sfRenderTexture_getMaximumAntialiasingLevel()
 {
     return sf::RenderTexture::getMaximumAntialiasingLevel();
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfBool sfRenderTexture_isSmooth(const sfRenderTexture* renderTexture)
 {
     return renderTexture->This.isSmooth();
 }
 
-////////////////////////////////////////////////////////////
+
 void sfRenderTexture_setRepeated(sfRenderTexture* renderTexture, sfBool repeated)
 {
     renderTexture->This.setRepeated(repeated == sfTrue);
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfBool sfRenderTexture_isRepeated(const sfRenderTexture* renderTexture)
 {
     return renderTexture->This.isRepeated();
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfBool sfRenderTexture_generateMipmap(sfRenderTexture* renderTexture)
 {
     return renderTexture->This.generateMipmap();

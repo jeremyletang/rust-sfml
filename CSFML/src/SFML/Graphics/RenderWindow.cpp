@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////
+
 //
 // SFML - Simple and Fast Multimedia Library
 // Copyright (C) 2007-2018 Laurent Gomila (laurent@sfml-dev.org)
@@ -20,11 +20,11 @@
 //
 // 3. This notice may not be removed or altered from any source distribution.
 //
-////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////
+
+
 // Headers
-////////////////////////////////////////////////////////////
+
 #include <SFML/Graphics/RenderWindow.h>
 #include <SFML/Graphics/RenderWindowStruct.h>
 #include <SFML/Graphics/ImageStruct.h>
@@ -44,7 +44,7 @@
 #include <SFML/ConvertEvent.h>
 
 
-////////////////////////////////////////////////////////////
+
 sfRenderWindow* sfRenderWindow_create(sfVideoMode mode, const char* title, sfUint32 style, const sfContextSettings* settings)
 {
     // Convert video mode
@@ -66,7 +66,7 @@ sfRenderWindow* sfRenderWindow_create(sfVideoMode mode, const char* title, sfUin
     return renderWindow;
 }
 
-////////////////////////////////////////////////////////////
+
 sfRenderWindow* sfRenderWindow_createUnicode(sfVideoMode mode, const sfUint32* title, sfUint32 style, const sfContextSettings* settings)
 {
     // Convert video mode
@@ -89,7 +89,7 @@ sfRenderWindow* sfRenderWindow_createUnicode(sfVideoMode mode, const sfUint32* t
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfRenderWindow* sfRenderWindow_createFromHandle(sfWindowHandle handle, const sfContextSettings* settings)
 {
     // Convert context settings
@@ -109,28 +109,28 @@ sfRenderWindow* sfRenderWindow_createFromHandle(sfWindowHandle handle, const sfC
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfRenderWindow_destroy(sfRenderWindow* renderWindow)
 {
     delete renderWindow;
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfRenderWindow_close(sfRenderWindow* renderWindow)
 {
     renderWindow->This.close();
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfBool sfRenderWindow_isOpen(const sfRenderWindow* renderWindow)
 {
     return renderWindow->This.isOpen();
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfContextSettings sfRenderWindow_getSettings(const sfRenderWindow* renderWindow)
 {
     sfContextSettings settings = priv::sfContextSettings_null();
@@ -143,7 +143,7 @@ sfContextSettings sfRenderWindow_getSettings(const sfRenderWindow* renderWindow)
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfBool sfRenderWindow_pollEvent(sfRenderWindow* renderWindow, sfEvent* event)
 {
 
@@ -164,7 +164,7 @@ sfBool sfRenderWindow_pollEvent(sfRenderWindow* renderWindow, sfEvent* event)
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfBool sfRenderWindow_waitEvent(sfRenderWindow* renderWindow, sfEvent* event)
 {
 
@@ -185,7 +185,7 @@ sfBool sfRenderWindow_waitEvent(sfRenderWindow* renderWindow, sfEvent* event)
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfVector2i sfRenderWindow_getPosition(const sfRenderWindow* renderWindow)
 {
     sfVector2i position = {0, 0};
@@ -199,14 +199,14 @@ sfVector2i sfRenderWindow_getPosition(const sfRenderWindow* renderWindow)
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfRenderWindow_setPosition(sfRenderWindow* renderWindow, sfVector2i position)
 {
     renderWindow->This.setPosition(sf::Vector2i(position.x, position.y));
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfVector2u sfRenderWindow_getSize(const sfRenderWindow* renderWindow)
 {
     sfVector2u size = {0, 0};
@@ -220,63 +220,63 @@ sfVector2u sfRenderWindow_getSize(const sfRenderWindow* renderWindow)
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfRenderWindow_setSize(sfRenderWindow* renderWindow, sfVector2u size)
 {
     renderWindow->This.setSize(sf::Vector2u(size.x, size.y));
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfRenderWindow_setTitle(sfRenderWindow* renderWindow, const char* title)
 {
     renderWindow->This.setTitle(title);
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfRenderWindow_setUnicodeTitle(sfRenderWindow* renderWindow, const sfUint32* title)
 {
     renderWindow->This.setTitle(title);
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfRenderWindow_setIcon(sfRenderWindow* renderWindow, unsigned int width, unsigned int height, const sfUint8* pixels)
 {
     renderWindow->This.setIcon(width, height, pixels);
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfRenderWindow_setVisible(sfRenderWindow* renderWindow, sfBool visible)
 {
     renderWindow->This.setVisible(visible == sfTrue);
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfRenderWindow_setVerticalSyncEnabled(sfRenderWindow* renderWindow, sfBool enabled)
 {
     renderWindow->This.setVerticalSyncEnabled(enabled == sfTrue);
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfRenderWindow_setMouseCursorVisible(sfRenderWindow* renderWindow, sfBool visible)
 {
     renderWindow->This.setMouseCursorVisible(visible == sfTrue);
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfRenderWindow_setMouseCursorGrabbed(sfRenderWindow* renderWindow, sfBool grabbed)
 {
     renderWindow->This.setMouseCursorGrabbed(grabbed == sfTrue);
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfRenderWindow_setMouseCursor(sfRenderWindow* window, const sfCursor* cursor)
 {
 
@@ -285,56 +285,56 @@ void sfRenderWindow_setMouseCursor(sfRenderWindow* window, const sfCursor* curso
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfRenderWindow_setKeyRepeatEnabled(sfRenderWindow* renderWindow, sfBool enabled)
 {
     renderWindow->This.setKeyRepeatEnabled(enabled == sfTrue);
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfBool sfRenderWindow_setActive(sfRenderWindow* renderWindow, sfBool active)
 {
     return renderWindow->This.setActive(active == sfTrue);
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfRenderWindow_requestFocus(sfRenderWindow* renderWindow)
 {
     renderWindow->This.requestFocus();
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfBool sfRenderWindow_hasFocus(const sfRenderWindow* renderWindow)
 {
     return renderWindow->This.hasFocus();
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfRenderWindow_display(sfRenderWindow* renderWindow)
 {
     renderWindow->This.display();
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfRenderWindow_setFramerateLimit(sfRenderWindow* renderWindow, unsigned int limit)
 {
     renderWindow->This.setFramerateLimit(limit);
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfRenderWindow_setJoystickThreshold(sfRenderWindow* renderWindow, float threshold)
 {
     renderWindow->This.setJoystickThreshold(threshold);
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfWindowHandle sfRenderWindow_getSystemHandle(const sfRenderWindow* renderWindow)
 {
 
@@ -343,7 +343,7 @@ sfWindowHandle sfRenderWindow_getSystemHandle(const sfRenderWindow* renderWindow
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfRenderWindow_clear(sfRenderWindow* renderWindow, sfColor color)
 {
     sf::Color SFMLColor(color.r, color.g, color.b, color.a);
@@ -352,7 +352,7 @@ void sfRenderWindow_clear(sfRenderWindow* renderWindow, sfColor color)
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfRenderWindow_setView(sfRenderWindow* renderWindow, const sfView* view)
 {
 
@@ -361,7 +361,7 @@ void sfRenderWindow_setView(sfRenderWindow* renderWindow, const sfView* view)
 }
 
 
-////////////////////////////////////////////////////////////
+
 const sfView* sfRenderWindow_getView(const sfRenderWindow* renderWindow)
 {
 
@@ -370,7 +370,7 @@ const sfView* sfRenderWindow_getView(const sfRenderWindow* renderWindow)
 }
 
 
-////////////////////////////////////////////////////////////
+
 const sfView* sfRenderWindow_getDefaultView(const sfRenderWindow* renderWindow)
 {
 
@@ -379,7 +379,7 @@ const sfView* sfRenderWindow_getDefaultView(const sfRenderWindow* renderWindow)
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfIntRect sfRenderWindow_getViewport(const sfRenderWindow* renderWindow, const sfView* view)
 {
     sfIntRect rect = {0, 0, 0, 0};
@@ -396,7 +396,7 @@ sfIntRect sfRenderWindow_getViewport(const sfRenderWindow* renderWindow, const s
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfVector2f sfRenderWindow_mapPixelToCoords(const sfRenderWindow* renderWindow, sfVector2i point, const sfView* targetView)
 {
     sfVector2f result = {0, 0};
@@ -415,7 +415,7 @@ sfVector2f sfRenderWindow_mapPixelToCoords(const sfRenderWindow* renderWindow, s
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfVector2i sfRenderWindow_mapCoordsToPixel(const sfRenderWindow* renderWindow, sfVector2f point, const sfView* targetView)
 {
     sfVector2i result = {0, 0};
@@ -434,7 +434,7 @@ sfVector2i sfRenderWindow_mapCoordsToPixel(const sfRenderWindow* renderWindow, s
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfRenderWindow_drawSprite(sfRenderWindow* renderWindow, const sfSprite* object, const sfRenderStates* states)
 {
 
@@ -477,7 +477,7 @@ void sfRenderWindow_drawVertexBuffer(sfRenderWindow* renderWindow, const sfVerte
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfRenderWindow_drawPrimitives(sfRenderWindow* renderWindow,
                                    const sfVertex* vertices, size_t vertexCount,
                                    sfPrimitiveType type, const sfRenderStates* states)
@@ -487,28 +487,28 @@ void sfRenderWindow_drawPrimitives(sfRenderWindow* renderWindow,
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfRenderWindow_pushGLStates(sfRenderWindow* renderWindow)
 {
     renderWindow->This.pushGLStates();
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfRenderWindow_popGLStates(sfRenderWindow* renderWindow)
 {
     renderWindow->This.popGLStates();
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfRenderWindow_resetGLStates(sfRenderWindow* renderWindow)
 {
     renderWindow->This.resetGLStates();
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfImage* sfRenderWindow_capture(const sfRenderWindow* renderWindow)
 {
 
@@ -520,7 +520,7 @@ sfImage* sfRenderWindow_capture(const sfRenderWindow* renderWindow)
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfVector2i sfMouse_getPositionRenderWindow(const sfRenderWindow* relativeTo)
 {
     sf::Vector2i sfmlPos;
@@ -534,7 +534,7 @@ sfVector2i sfMouse_getPositionRenderWindow(const sfRenderWindow* relativeTo)
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfMouse_setPositionRenderWindow(sfVector2i position, const sfRenderWindow* relativeTo)
 {
     if (relativeTo)
@@ -543,7 +543,7 @@ void sfMouse_setPositionRenderWindow(sfVector2i position, const sfRenderWindow* 
         sf::Mouse::setPosition(sf::Vector2i(position.x, position.y));
 }
 
-////////////////////////////////////////////////////////////
+
 sfVector2i sfTouch_getPositionRenderWindow(unsigned int finger, const sfRenderWindow* relativeTo)
 {
     sf::Vector2i sfmlPosition;

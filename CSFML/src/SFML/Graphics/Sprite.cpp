@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////
+
 //
 // SFML - Simple and Fast Multimedia Library
 // Copyright (C) 2007-2018 Laurent Gomila (laurent@sfml-dev.org)
@@ -20,11 +20,11 @@
 //
 // 3. This notice may not be removed or altered from any source distribution.
 //
-////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////
+
+
 // Headers
-////////////////////////////////////////////////////////////
+
 #include <SFML/Graphics/Sprite.h>
 #include <SFML/Graphics/SpriteStruct.h>
 #include <SFML/Graphics/Color.hpp>
@@ -33,7 +33,7 @@
 #include <cstddef>
 
 
-////////////////////////////////////////////////////////////
+
 sfSprite* sfSprite_create(void)
 {
     sfSprite* sprite = new sfSprite;
@@ -43,7 +43,7 @@ sfSprite* sfSprite_create(void)
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfSprite* sfSprite_copy(const sfSprite* sprite)
 {
 
@@ -52,42 +52,42 @@ sfSprite* sfSprite_copy(const sfSprite* sprite)
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfSprite_destroy(sfSprite* sprite)
 {
     delete sprite;
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfSprite_setPosition(sfSprite* sprite, sfVector2f position)
 {
     sprite->This.setPosition(position.x, position.y);
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfSprite_setRotation(sfSprite* sprite, float angle)
 {
     sprite->This.setRotation(angle);
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfSprite_setScale(sfSprite* sprite, sfVector2f scale)
 {
     sprite->This.setScale(scale.x, scale.y);
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfSprite_setOrigin(sfSprite* sprite, sfVector2f origin)
 {
     sprite->This.setOrigin(origin.x, origin.y);
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfVector2f sfSprite_getPosition(const sfSprite* sprite)
 {
     sfVector2f position = {0, 0};
@@ -101,14 +101,14 @@ sfVector2f sfSprite_getPosition(const sfSprite* sprite)
 }
 
 
-////////////////////////////////////////////////////////////
+
 float sfSprite_getRotation(const sfSprite* sprite)
 {
     return sprite->This.getRotation();
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfVector2f sfSprite_getScale(const sfSprite* sprite)
 {
     sfVector2f scale = {0, 0};
@@ -122,7 +122,7 @@ sfVector2f sfSprite_getScale(const sfSprite* sprite)
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfVector2f sfSprite_getOrigin(const sfSprite* sprite)
 {
     sfVector2f origin = {0, 0};
@@ -136,28 +136,28 @@ sfVector2f sfSprite_getOrigin(const sfSprite* sprite)
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfSprite_move(sfSprite* sprite, sfVector2f offset)
 {
     sprite->This.move(offset.x, offset.y);
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfSprite_rotate(sfSprite* sprite, float angle)
 {
     sprite->This.rotate(angle);
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfSprite_scale(sfSprite* sprite, sfVector2f factors)
 {
     sprite->This.scale(factors.x, factors.y);
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfTransform sfSprite_getTransform(const sfSprite* sprite)
 {
 
@@ -167,7 +167,7 @@ sfTransform sfSprite_getTransform(const sfSprite* sprite)
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfTransform sfSprite_getInverseTransform(const sfSprite* sprite)
 {
 
@@ -177,7 +177,7 @@ sfTransform sfSprite_getInverseTransform(const sfSprite* sprite)
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfSprite_setTexture(sfSprite* sprite, const sfTexture* texture, sfBool resetRect)
 {
     if (texture && texture->This)
@@ -188,21 +188,21 @@ void sfSprite_setTexture(sfSprite* sprite, const sfTexture* texture, sfBool rese
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfSprite_setTextureRect(sfSprite* sprite, sfIntRect rectangle)
 {
     sprite->This.setTextureRect(sf::IntRect(rectangle.left, rectangle.top, rectangle.width, rectangle.height));
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfSprite_setColor(sfSprite* sprite, sfColor color)
 {
     sprite->This.setColor(sf::Color(color.r, color.g, color.b, color.a));
 }
 
 
-////////////////////////////////////////////////////////////
+
 const sfTexture* sfSprite_getTexture(const sfSprite* sprite)
 {
 
@@ -211,7 +211,7 @@ const sfTexture* sfSprite_getTexture(const sfSprite* sprite)
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfIntRect sfSprite_getTextureRect(const sfSprite* sprite)
 {
     sfIntRect rect = {0, 0, 0, 0};
@@ -227,7 +227,7 @@ sfIntRect sfSprite_getTextureRect(const sfSprite* sprite)
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfColor sfSprite_getColor(const sfSprite* sprite)
 {
     sfColor color = {0, 0, 0, 0};
@@ -243,7 +243,7 @@ sfColor sfSprite_getColor(const sfSprite* sprite)
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfFloatRect sfSprite_getLocalBounds(const sfSprite* sprite)
 {
     sfFloatRect rect = {0, 0, 0, 0};
@@ -259,7 +259,7 @@ sfFloatRect sfSprite_getLocalBounds(const sfSprite* sprite)
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfFloatRect sfSprite_getGlobalBounds(const sfSprite* sprite)
 {
     sfFloatRect rect = {0, 0, 0, 0};

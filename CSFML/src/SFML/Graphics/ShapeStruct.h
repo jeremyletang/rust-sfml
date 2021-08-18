@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////
+
 //
 // SFML - Simple and Fast Multimedia Library
 // Copyright (C) 2007-2018 Laurent Gomila (laurent@sfml-dev.org)
@@ -20,24 +20,24 @@
 //
 // 3. This notice may not be removed or altered from any source distribution.
 //
-////////////////////////////////////////////////////////////
+
 
 #ifndef SFML_SHAPESTRUCT_H
 #define SFML_SHAPESTRUCT_H
 
-////////////////////////////////////////////////////////////
+
 // Headers
-////////////////////////////////////////////////////////////
+
 #include <SFML/Graphics/Shape.h>
 #include <SFML/Graphics/Shape.hpp>
 #include <SFML/Graphics/TextureStruct.h>
 #include <SFML/Graphics/Transform.h>
 
 
-////////////////////////////////////////////////////////////
+
 // Helper class implementing the callback forwarding from
 // C++ to C in sfShape
-////////////////////////////////////////////////////////////
+
 class sfShapeImpl : public sf::Shape
 {
 public :
@@ -72,9 +72,9 @@ private:
 };
 
 
-////////////////////////////////////////////////////////////
+
 // Internal structure of sfShape
-////////////////////////////////////////////////////////////
+
 struct sfShape
 {
     sfShape(sfShapeGetPointCountCallback getPointCount,

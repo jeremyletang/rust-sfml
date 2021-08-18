@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////
+
 //
 // SFML - Simple and Fast Multimedia Library
 // Copyright (C) 2007-2018 Laurent Gomila (laurent@sfml-dev.org)
@@ -20,17 +20,17 @@
 //
 // 3. This notice may not be removed or altered from any source distribution.
 //
-////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////
+
+
 // Headers
-////////////////////////////////////////////////////////////
+
 #include <SFML/Graphics/VertexBuffer.h>
 #include <SFML/Graphics/VertexBufferStruct.h>
 #include <cstddef>
 
 
-////////////////////////////////////////////////////////////
+
 sfVertexBuffer* sfVertexBuffer_create(unsigned int vertexCount, sfPrimitiveType type, sfVertexBufferUsage usage)
 {
     sfVertexBuffer* buffer = new sfVertexBuffer;
@@ -50,7 +50,7 @@ sfVertexBuffer* sfVertexBuffer_create(unsigned int vertexCount, sfPrimitiveType 
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfVertexBuffer* sfVertexBuffer_copy(const sfVertexBuffer* vertexBuffer)
 {
     sfVertexBuffer* buffer = new sfVertexBuffer;
@@ -59,21 +59,21 @@ sfVertexBuffer* sfVertexBuffer_copy(const sfVertexBuffer* vertexBuffer)
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfVertexBuffer_destroy(sfVertexBuffer* vertexBuffer)
 {
     delete vertexBuffer;
 }
 
 
-////////////////////////////////////////////////////////////
+
 unsigned int sfVertexBuffer_getVertexCount(const sfVertexBuffer* vertexBuffer)
 {
     return vertexBuffer->This.getVertexCount();
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfBool sfVertexBuffer_update(sfVertexBuffer* vertexBuffer, const sfVertex* vertices, unsigned int vertexCount, unsigned int offset)
 {
     // the cast is safe, sfVertex has to be binary compatible with sf::Vertex
@@ -81,7 +81,7 @@ sfBool sfVertexBuffer_update(sfVertexBuffer* vertexBuffer, const sfVertex* verti
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfBool sfVertexBuffer_updateFromVertexBuffer(sfVertexBuffer* vertexBuffer, const sfVertexBuffer* other)
 {
     return vertexBuffer->This.update(other->This);
@@ -97,21 +97,21 @@ void sfVertexBuffer_swap(sfVertexBuffer* left, sfVertexBuffer* right)
 }
 
 
-////////////////////////////////////////////////////////////
+
 unsigned int sfVertexBuffer_getNativeHandle(sfVertexBuffer* vertexBuffer)
 {
     return vertexBuffer->This.getNativeHandle();
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfVertexBuffer_setPrimitiveType(sfVertexBuffer* vertexBuffer, sfPrimitiveType type)
 {
     vertexBuffer->This.setPrimitiveType(static_cast<sf::PrimitiveType>(type));
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfPrimitiveType sfVertexBuffer_getPrimitiveType(const sfVertexBuffer* vertexBuffer)
 {
 
@@ -119,14 +119,14 @@ sfPrimitiveType sfVertexBuffer_getPrimitiveType(const sfVertexBuffer* vertexBuff
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfVertexBuffer_setUsage(sfVertexBuffer* vertexBuffer, sfVertexBufferUsage usage)
 {
     vertexBuffer->This.setUsage(static_cast<sf::VertexBuffer::Usage>(usage));
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfVertexBufferUsage sfVertexBuffer_getUsage(const sfVertexBuffer* vertexBuffer)
 {
 
@@ -134,14 +134,14 @@ sfVertexBufferUsage sfVertexBuffer_getUsage(const sfVertexBuffer* vertexBuffer)
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfVertexBuffer_bind(const sfVertexBuffer* vertexBuffer)
 {
     sf::VertexBuffer::bind(&vertexBuffer->This);
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfBool sfVertexBuffer_isAvailable()
 {
     return sf::VertexBuffer::isAvailable() ? sfTrue : sfFalse;

@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////
+
 //
 // SFML - Simple and Fast Multimedia Library
 // Copyright (C) 2007-2018 Laurent Gomila (laurent@sfml-dev.org)
@@ -20,14 +20,14 @@
 //
 // 3. This notice may not be removed or altered from any source distribution.
 //
-////////////////////////////////////////////////////////////
+
 
 #ifndef SFML_INPUTSTREAM_H
 #define SFML_INPUTSTREAM_H
 
-////////////////////////////////////////////////////////////
+
 // Headers
-////////////////////////////////////////////////////////////
+
 #include <SFML/System/Export.h>
 
 
@@ -37,10 +37,10 @@ typedef sfInt64 (*sfInputStreamTellFunc)(void* userData);
 typedef sfInt64 (*sfInputStreamGetSizeFunc)(void* userData);
 
 
-////////////////////////////////////////////////////////////
+
 /// \brief Set of callbacks that allow users to define custom file streams
 ///
-////////////////////////////////////////////////////////////
+
 typedef struct sfInputStream
 {
     sfInputStreamReadFunc    read;     ///< Function to read data from the stream

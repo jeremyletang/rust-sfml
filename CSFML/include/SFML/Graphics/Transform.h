@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////
+
 //
 // SFML - Simple and Fast Multimedia Library
 // Copyright (C) 2007-2018 Laurent Gomila (laurent@sfml-dev.org)
@@ -20,14 +20,14 @@
 //
 // 3. This notice may not be removed or altered from any source distribution.
 //
-////////////////////////////////////////////////////////////
+
 
 #ifndef SFML_TRANSFORM_H
 #define SFML_TRANSFORM_H
 
-////////////////////////////////////////////////////////////
+
 // Headers
-////////////////////////////////////////////////////////////
+
 #include <SFML/Graphics/Export.h>
 #include <SFML/Graphics/Rect.h>
 #include <SFML/Graphics/Types.h>
@@ -35,23 +35,23 @@
 
 
 
-////////////////////////////////////////////////////////////
+
 /// \brief Encapsulate a 3x3 transform matrix
 ///
-////////////////////////////////////////////////////////////
+
 typedef struct
 {
     float matrix[9];
 } sfTransform;
 
 
-////////////////////////////////////////////////////////////
+
 /// \brief Identity transform (does nothing)
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_GRAPHICS_API const sfTransform sfTransform_Identity;
 
-////////////////////////////////////////////////////////////
+
 /// \brief Create a new transform from a matrix
 ///
 /// \param a00 Element (0, 0) of the matrix
@@ -66,12 +66,12 @@ CSFML_GRAPHICS_API const sfTransform sfTransform_Identity;
 ///
 /// \return A new sfTransform object
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_GRAPHICS_API sfTransform sfTransform_fromMatrix(float a00, float a01, float a02,
                                                       float a10, float a11, float a12,
                                                       float a20, float a21, float a22);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Return the 4x4 matrix of a transform
 ///
 /// This function fills an array of 16 floats with the transform
@@ -88,10 +88,10 @@ CSFML_GRAPHICS_API sfTransform sfTransform_fromMatrix(float a00, float a01, floa
 /// \param transform Transform object
 /// \param matrix Pointer to the 16-element array to fill with the matrix
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_GRAPHICS_API void sfTransform_getMatrix(const sfTransform* transform, float* matrix);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Return the inverse of a transform
 ///
 /// If the inverse cannot be computed, a new identity transform
@@ -100,10 +100,10 @@ CSFML_GRAPHICS_API void sfTransform_getMatrix(const sfTransform* transform, floa
 /// \param transform Transform object
 /// \return The inverse matrix
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_GRAPHICS_API sfTransform sfTransform_getInverse(const sfTransform* transform);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Apply a transform to a 2D point
 ///
 /// \param transform Transform object
@@ -111,10 +111,10 @@ CSFML_GRAPHICS_API sfTransform sfTransform_getInverse(const sfTransform* transfo
 ///
 /// \return Transformed point
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_GRAPHICS_API sfVector2f sfTransform_transformPoint(const sfTransform* transform, sfVector2f point);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Apply a transform to a rectangle
 ///
 /// Since SFML doesn't provide support for oriented rectangles,
@@ -128,10 +128,10 @@ CSFML_GRAPHICS_API sfVector2f sfTransform_transformPoint(const sfTransform* tran
 ///
 /// \return Transformed rectangle
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_GRAPHICS_API sfFloatRect sfTransform_transformRect(const sfTransform* transform, sfFloatRect rectangle);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Combine two transforms
 ///
 /// The result is a transform that is equivalent to applying
@@ -141,29 +141,29 @@ CSFML_GRAPHICS_API sfFloatRect sfTransform_transformRect(const sfTransform* tran
 /// \param transform Transform object
 /// \param other     Transform to combine to \a transform
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_GRAPHICS_API void sfTransform_combine(sfTransform* transform, const sfTransform* other);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Combine a transform with a translation
 ///
 /// \param transform Transform object
 /// \param x         Offset to apply on X axis
 /// \param y         Offset to apply on Y axis
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_GRAPHICS_API void sfTransform_translate(sfTransform* transform, float x, float y);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Combine the current transform with a rotation
 ///
 /// \param transform Transform object
 /// \param angle     Rotation angle, in degrees
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_GRAPHICS_API void sfTransform_rotate(sfTransform* transform, float angle);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Combine the current transform with a rotation
 ///
 /// The center of rotation is provided for convenience as a second
@@ -176,20 +176,20 @@ CSFML_GRAPHICS_API void sfTransform_rotate(sfTransform* transform, float angle);
 /// \param centerX   X coordinate of the center of rotation
 /// \param centerY   Y coordinate of the center of rotation
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_GRAPHICS_API void sfTransform_rotateWithCenter(sfTransform* transform, float angle, float centerX, float centerY);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Combine the current transform with a scaling
 ///
 /// \param transform Transform object
 /// \param scaleX    Scaling factor on the X axis
 /// \param scaleY    Scaling factor on the Y axis
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_GRAPHICS_API void sfTransform_scale(sfTransform* transform, float scaleX, float scaleY);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Combine the current transform with a scaling
 ///
 /// The center of scaling is provided for convenience as a second
@@ -203,10 +203,10 @@ CSFML_GRAPHICS_API void sfTransform_scale(sfTransform* transform, float scaleX, 
 /// \param centerX   X coordinate of the center of scaling
 /// \param centerY   Y coordinate of the center of scaling
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_GRAPHICS_API void sfTransform_scaleWithCenter(sfTransform* transform, float scaleX, float scaleY, float centerX, float centerY);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Compare two transforms for equality
 ///
 /// Performs an element-wise comparison of the elements of the
@@ -217,7 +217,7 @@ CSFML_GRAPHICS_API void sfTransform_scaleWithCenter(sfTransform* transform, floa
 ///
 /// \return true if the transforms are equal, false otherwise
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_GRAPHICS_API sfBool sfTransform_equal(sfTransform* left, sfTransform* right);
 
 #endif // SFML_TRANSFORM_H

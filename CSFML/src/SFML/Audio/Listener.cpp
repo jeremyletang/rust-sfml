@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////
+
 //
 // SFML - Simple and Fast Multimedia Library
 // Copyright (C) 2007-2018 Laurent Gomila (laurent@sfml-dev.org)
@@ -20,38 +20,38 @@
 //
 // 3. This notice may not be removed or altered from any source distribution.
 //
-////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////
+
+
 // Headers
-////////////////////////////////////////////////////////////
+
 #include <SFML/Audio/Listener.h>
 #include <SFML/Audio/Listener.hpp>
 
 
 
-////////////////////////////////////////////////////////////
+
 void sfListener_setGlobalVolume(float volume)
 {
     sf::Listener::setGlobalVolume(volume);
 }
 
 
-////////////////////////////////////////////////////////////
+
 float sfListener_getGlobalVolume(void)
 {
     return sf::Listener::getGlobalVolume();
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfListener_setPosition(sfVector3f position)
 {
     sf::Listener::setPosition(position.x, position.y, position.z);
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfVector3f sfListener_getPosition()
 {
     sf::Vector3f sfmlPos = sf::Listener::getPosition();
@@ -60,14 +60,14 @@ sfVector3f sfListener_getPosition()
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfListener_setDirection(sfVector3f direction)
 {
     sf::Listener::setDirection(direction.x, direction.y, direction.z);
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfVector3f sfListener_getDirection()
 {
     sf::Vector3f sfmlDirection = sf::Listener::getDirection();
@@ -76,14 +76,14 @@ sfVector3f sfListener_getDirection()
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfListener_setUpVector(sfVector3f upVector)
 {
     sf::Listener::setUpVector(upVector.x, upVector.y, upVector.z);
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfVector3f sfListener_getUpVector()
 {
     sf::Vector3f sfmlUpVector = sf::Listener::getUpVector();

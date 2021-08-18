@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////
+
 //
 // SFML - Simple and Fast Multimedia Library
 // Copyright (C) 2007-2016 Laurent Gomila (laurent@sfml-dev.org)
@@ -20,22 +20,22 @@
 //
 // 3. This notice may not be removed or altered from any source distribution.
 //
-////////////////////////////////////////////////////////////
+
 
 #ifndef SFML_CONTEXTSETTINGSINTERNAL_H
 #define SFML_CONTEXTSETTINGSINTERNAL_H
 
-////////////////////////////////////////////////////////////
+
 // Headers
-////////////////////////////////////////////////////////////
+
 #include <SFML/Window.h>
 #include <SFML/Window.hpp>
 
 namespace priv
 {
-    ////////////////////////////////////////////////////////////
+    
     // Create a "null" sfContextSettings that's returned in case of an error.
-    ////////////////////////////////////////////////////////////
+    
     inline sfContextSettings sfContextSettings_null()
     {
         sfContextSettings settings = {0, 0, 0, 0, 0, 0, sfFalse};
@@ -43,9 +43,9 @@ namespace priv
         return settings;
     }
 
-    ////////////////////////////////////////////////////////////
+    
     // Read the data of an sf::ContextSettings into an sfContextSettings
-    ////////////////////////////////////////////////////////////
+    
     inline void sfContextSettings_readFromCpp(const sf::ContextSettings& from, sfContextSettings& to)
     {
         to.depthBits         = from.depthBits;
@@ -57,9 +57,9 @@ namespace priv
         to.sRgbCapable       = from.sRgbCapable ? sfTrue : sfFalse;
     }
 
-    ////////////////////////////////////////////////////////////
+    
     // Write the data of an sfContextSettings into an sf::ContextSettings
-    ////////////////////////////////////////////////////////////
+    
     inline void sfContextSettings_writeToCpp(const sfContextSettings& from, sf::ContextSettings& to)
     {
         to.depthBits         = from.depthBits;

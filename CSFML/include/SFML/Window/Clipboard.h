@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////
+
 //
 // SFML - Simple and Fast Multimedia Library
 // Copyright (C) 2007-2018 Laurent Gomila (laurent@sfml-dev.org)
@@ -20,19 +20,19 @@
 //
 // 3. This notice may not be removed or altered from any source distribution.
 //
-////////////////////////////////////////////////////////////
+
 
 #ifndef SFML_CLIPBOARD_H
 #define SFML_CLIPBOARD_H
 
-////////////////////////////////////////////////////////////
+
 // Headers
-////////////////////////////////////////////////////////////
+
 #include <SFML/Window/Export.h>
 #include <SFML/Window/Types.h>
 
 
-////////////////////////////////////////////////////////////
+
 /// \brief Get the content of the clipboard as string data (returns an ANSI string)
 ///
 /// This function returns the content of the clipboard
@@ -41,11 +41,11 @@
 ///
 /// \return Clipboard contents as a locale-dependent ANSI string
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_WINDOW_API const char* sfClipboard_getString();
 
 
-////////////////////////////////////////////////////////////
+
 /// \brief Get the content of the clipboard as string data (returns a Unicode string)
 ///
 /// This function returns the content of the clipboard
@@ -54,10 +54,10 @@ CSFML_WINDOW_API const char* sfClipboard_getString();
 ///
 /// \return Clipboard contents as UTF-32
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_WINDOW_API const sfUint32* sfClipboard_getUnicodeString();
 
-////////////////////////////////////////////////////////////
+
 /// \brief Set the content of the clipboard as ANSI string data
 ///
 /// This function sets the content of the clipboard as an
@@ -66,10 +66,10 @@ CSFML_WINDOW_API const sfUint32* sfClipboard_getUnicodeString();
 /// \param text ANSI string containing the data to be sent
 /// to the clipboard
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_WINDOW_API void sfClipboard_setString(const char* text);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Set the content of the clipboard as Unicode string data
 ///
 /// This function sets the content of the clipboard as a
@@ -78,7 +78,7 @@ CSFML_WINDOW_API void sfClipboard_setString(const char* text);
 /// \param text Unicode string containing the data to be sent
 /// to the clipboard
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_WINDOW_API void sfClipboard_setUnicodeString(const sfUint32* text);
 
 

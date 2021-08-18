@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////
+
 //
 // SFML - Simple and Fast Multimedia Library
 // Copyright (C) 2007-2018 Laurent Gomila (laurent@sfml-dev.org)
@@ -20,25 +20,25 @@
 //
 // 3. This notice may not be removed or altered from any source distribution.
 //
-////////////////////////////////////////////////////////////
+
 
 #ifndef SFML_PRIMITIVETYPE_H
 #define SFML_PRIMITIVETYPE_H
 
-////////////////////////////////////////////////////////////
+
 // Headers
-////////////////////////////////////////////////////////////
+
 #include <SFML/Graphics/Export.h>
 
 
-////////////////////////////////////////////////////////////
+
 /// \brief Types of primitives that a sf::VertexArray can render
 ///
 /// Points and lines have no area, therefore their thickness
 /// will always be 1 pixel, regardless the current transform
 /// and view.
 ///
-////////////////////////////////////////////////////////////
+
 typedef enum
 {
     sfPoints,        ///< List of individual points

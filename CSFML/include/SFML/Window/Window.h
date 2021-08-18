@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////
+
 //
 // SFML - Simple and Fast Multimedia Library
 // Copyright (C) 2007-2018 Laurent Gomila (laurent@sfml-dev.org)
@@ -20,14 +20,14 @@
 //
 // 3. This notice may not be removed or altered from any source distribution.
 //
-////////////////////////////////////////////////////////////
+
 
 #ifndef SFML_WINDOW_H
 #define SFML_WINDOW_H
 
-////////////////////////////////////////////////////////////
+
 // Headers
-////////////////////////////////////////////////////////////
+
 #include <SFML/Window/Export.h>
 #include <SFML/Window/Event.h>
 #include <SFML/Window/VideoMode.h>
@@ -36,10 +36,10 @@
 #include <SFML/System/Vector2.h>
 
 
-////////////////////////////////////////////////////////////
+
 /// \brief Enumeration of window creation styles
 ///
-////////////////////////////////////////////////////////////
+
 typedef enum
 {
     sfNone         = 0,      ///< No border / title bar (this flag and all others are mutually exclusive)
@@ -51,10 +51,10 @@ typedef enum
 } sfWindowStyle;
 
 
-////////////////////////////////////////////////////////////
+
 /// \brief Enumeration of the context attribute flags
 ///
-////////////////////////////////////////////////////////////
+
 typedef enum
 {
     sfContextDefault = 0,      ///< Non-debug, compatibility context (this and the core attribute are mutually exclusive)
@@ -63,10 +63,10 @@ typedef enum
 } sfContextAttribute;
 
 
-////////////////////////////////////////////////////////////
+
 /// \brief Structure defining the window's creation settings
 ///
-////////////////////////////////////////////////////////////
+
 typedef struct
 {
     unsigned int depthBits;         ///< Bits of the depth buffer
@@ -79,7 +79,7 @@ typedef struct
 } sfContextSettings;
 
 
-////////////////////////////////////////////////////////////
+
 /// \brief Construct a new window
 ///
 /// This function creates the window with the size and pixel
@@ -99,10 +99,10 @@ typedef struct
 ///
 /// \return A new sfWindow object
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_WINDOW_API sfWindow* sfWindow_create(sfVideoMode mode, const char* title, sfUint32 style, const sfContextSettings* settings);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Construct a new window (with a UTF-32 title)
 ///
 /// This function creates the window with the size and pixel
@@ -122,10 +122,10 @@ CSFML_WINDOW_API sfWindow* sfWindow_create(sfVideoMode mode, const char* title, 
 ///
 /// \return A new sfWindow object
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_WINDOW_API sfWindow* sfWindow_createUnicode(sfVideoMode mode, const sfUint32* title, sfUint32 style, const sfContextSettings* settings);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Construct a window from an existing control
 ///
 /// Use this constructor if you want to create an OpenGL
@@ -140,18 +140,18 @@ CSFML_WINDOW_API sfWindow* sfWindow_createUnicode(sfVideoMode mode, const sfUint
 ///
 /// \return A new sfWindow object
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_WINDOW_API sfWindow* sfWindow_createFromHandle(sfWindowHandle handle, const sfContextSettings* settings);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Destroy a window
 ///
 /// \param window Window to destroy
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_WINDOW_API void sfWindow_destroy(sfWindow* window);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Close a window and destroy all the attached resources
 ///
 /// After calling this function, the sfWindow object remains
@@ -162,10 +162,10 @@ CSFML_WINDOW_API void sfWindow_destroy(sfWindow* window);
 ///
 /// \param window Window object
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_WINDOW_API void sfWindow_close(sfWindow* window);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Tell whether or not a window is opened
 ///
 /// This function returns whether or not the window exists.
@@ -176,10 +176,10 @@ CSFML_WINDOW_API void sfWindow_close(sfWindow* window);
 ///
 /// \return sfTrue if the window is opened, sfFalse if it has been closed
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_WINDOW_API sfBool sfWindow_isOpen(const sfWindow* window);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Get the settings of the OpenGL context of a window
 ///
 /// Note that these settings may be different from what was
@@ -191,10 +191,10 @@ CSFML_WINDOW_API sfBool sfWindow_isOpen(const sfWindow* window);
 ///
 /// \return Structure containing the OpenGL context settings
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_WINDOW_API sfContextSettings sfWindow_getSettings(const sfWindow* window);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Pop the event on top of event queue, if any, and return it
 ///
 /// This function is not blocking: if there's no pending event then
@@ -208,10 +208,10 @@ CSFML_WINDOW_API sfContextSettings sfWindow_getSettings(const sfWindow* window);
 ///
 /// \return sfTrue if an event was returned, or sfFalse if the event queue was empty
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_WINDOW_API sfBool sfWindow_pollEvent(sfWindow* window, sfEvent* event);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Wait for an event and return it
 ///
 /// This function is blocking: if there's no pending event then
@@ -227,20 +227,20 @@ CSFML_WINDOW_API sfBool sfWindow_pollEvent(sfWindow* window, sfEvent* event);
 ///
 /// \return sfFalse if any error occured
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_WINDOW_API sfBool sfWindow_waitEvent(sfWindow* window, sfEvent* event);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Get the position of a window
 ///
 /// \param window Window object
 ///
 /// \return Position in pixels
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_WINDOW_API sfVector2i sfWindow_getPosition(const sfWindow* window);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Change the position of a window on screen
 ///
 /// This function only works for top-level windows
@@ -250,10 +250,10 @@ CSFML_WINDOW_API sfVector2i sfWindow_getPosition(const sfWindow* window);
 /// \param window   Window object
 /// \param position New position of the window, in pixels
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_WINDOW_API void sfWindow_setPosition(sfWindow* window, sfVector2i position);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Get the size of the rendering region of a window
 ///
 /// The size doesn't include the titlebar and borders
@@ -263,37 +263,37 @@ CSFML_WINDOW_API void sfWindow_setPosition(sfWindow* window, sfVector2i position
 ///
 /// \return Size in pixels
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_WINDOW_API sfVector2u sfWindow_getSize(const sfWindow* window);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Change the size of the rendering region of a window
 ///
 /// \param window Window object
 /// \param size   New size, in pixels
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_WINDOW_API void sfWindow_setSize(sfWindow* window, sfVector2u size);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Change the title of a window
 ///
 /// \param window Window object
 /// \param title  New title
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_WINDOW_API void sfWindow_setTitle(sfWindow* window, const char* title);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Change the title of a window (with a UTF-32 string)
 ///
 /// \param window Window object
 /// \param title  New title
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_WINDOW_API void sfWindow_setUnicodeTitle(sfWindow* window, const sfUint32* title);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Change a window's icon
 ///
 /// \a pixels must be an array of \a width x \a height pixels
@@ -304,19 +304,19 @@ CSFML_WINDOW_API void sfWindow_setUnicodeTitle(sfWindow* window, const sfUint32*
 /// \param height Icon's height, in pixels
 /// \param pixels Pointer to the array of pixels in memory
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_WINDOW_API void sfWindow_setIcon(sfWindow* window, unsigned int width, unsigned int height, const sfUint8* pixels);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Show or hide a window
 ///
 /// \param window  Window object
 /// \param visible sfTrue to show the window, sfFalse to hide it
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_WINDOW_API void sfWindow_setVisible(sfWindow* window, sfBool visible);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Enable or disable vertical synchronization
 ///
 /// Activating vertical synchronization will limit the number
@@ -327,19 +327,19 @@ CSFML_WINDOW_API void sfWindow_setVisible(sfWindow* window, sfBool visible);
 /// \param window  Window object
 /// \param enabled sfTrue to enable v-sync, sfFalse to deactivate
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_WINDOW_API void sfWindow_setVerticalSyncEnabled(sfWindow* window, sfBool enabled);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Show or hide the mouse cursor
 ///
 /// \param window  Window object
 /// \param visible sfTrue to show, sfFalse to hide
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_WINDOW_API void sfWindow_setMouseCursorVisible(sfWindow* window, sfBool visible);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Grab or release the mouse cursor
 ///
 /// If set, grabs the mouse cursor inside this window's client
@@ -351,10 +351,10 @@ CSFML_WINDOW_API void sfWindow_setMouseCursorVisible(sfWindow* window, sfBool vi
 ///
 /// \param grabbed sfTrue to enable, sfFalse to disable
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_WINDOW_API void sfWindow_setMouseCursorGrabbed(sfWindow* window, sfBool grabbed);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Set the displayed cursor to a native system cursor
 ///
 /// Upon window creation, the arrow cursor is used by default.
@@ -371,10 +371,10 @@ CSFML_WINDOW_API void sfWindow_setMouseCursorGrabbed(sfWindow* window, sfBool gr
 /// \see sfCursor_createFromSystem
 /// \see sfCursor_createFromPixels
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_WINDOW_API void sfWindow_setMouseCursor(sfWindow* window, const sfCursor* cursor);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Enable or disable automatic key-repeat
 ///
 /// If key repeat is enabled, you will receive repeated
@@ -386,10 +386,10 @@ CSFML_WINDOW_API void sfWindow_setMouseCursor(sfWindow* window, const sfCursor* 
 /// \param window  Window object
 /// \param enabled sfTrue to enable, sfFalse to disable
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_WINDOW_API void sfWindow_setKeyRepeatEnabled(sfWindow* window, sfBool enabled);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Limit the framerate to a maximum fixed frequency
 ///
 /// If a limit is set, the window will use a small delay after
@@ -399,10 +399,10 @@ CSFML_WINDOW_API void sfWindow_setKeyRepeatEnabled(sfWindow* window, sfBool enab
 /// \param window Window object
 /// \param limit  Framerate limit, in frames per seconds (use 0 to disable limit)
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_WINDOW_API void sfWindow_setFramerateLimit(sfWindow* window, unsigned int limit);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Change the joystick threshold
 ///
 /// The joystick threshold is the value below which
@@ -411,10 +411,10 @@ CSFML_WINDOW_API void sfWindow_setFramerateLimit(sfWindow* window, unsigned int 
 /// \param window    Window object
 /// \param threshold New threshold, in the range [0, 100]
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_WINDOW_API void sfWindow_setJoystickThreshold(sfWindow* window, float threshold);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Activate or deactivate a window as the current target
 ///        for OpenGL rendering
 ///
@@ -430,10 +430,10 @@ CSFML_WINDOW_API void sfWindow_setJoystickThreshold(sfWindow* window, float thre
 ///
 /// \return sfTrue if operation was successful, sfFalse otherwise
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_WINDOW_API sfBool sfWindow_setActive(sfWindow* window, sfBool active);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Request the current window to be made the active
 /// foreground window
 ///
@@ -444,10 +444,10 @@ CSFML_WINDOW_API sfBool sfWindow_setActive(sfWindow* window, sfBool active);
 /// is free to deny the request.
 /// This is not to be confused with sfWindow_setActive().
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_WINDOW_API void sfWindow_requestFocus(sfWindow* window);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Check whether the window has the input focus
 ///
 /// At any given time, only one window may have the input focus
@@ -456,10 +456,10 @@ CSFML_WINDOW_API void sfWindow_requestFocus(sfWindow* window);
 ///
 /// \return True if window has focus, false otherwise
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_WINDOW_API sfBool sfWindow_hasFocus(const sfWindow* window);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Display on screen what has been rendered to the
 ///        window so far
 ///
@@ -469,10 +469,10 @@ CSFML_WINDOW_API sfBool sfWindow_hasFocus(const sfWindow* window);
 ///
 /// \param window Window object
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_WINDOW_API void sfWindow_display(sfWindow* window);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Get the OS-specific handle of the window
 ///
 /// The type of the returned handle is sfWindowHandle,
@@ -485,7 +485,7 @@ CSFML_WINDOW_API void sfWindow_display(sfWindow* window);
 ///
 /// \return System handle of the window
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_WINDOW_API sfWindowHandle sfWindow_getSystemHandle(const sfWindow* window);
 
 

@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////
+
 //
 // SFML - Simple and Fast Multimedia Library
 // Copyright (C) 2007-2018 Laurent Gomila (laurent@sfml-dev.org)
@@ -20,17 +20,17 @@
 //
 // 3. This notice may not be removed or altered from any source distribution.
 //
-////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////
+
+
 // Headers
-////////////////////////////////////////////////////////////
+
 #include <SFML/Window/Cursor.h>
 #include <SFML/Window/CursorStruct.h>
 #include <cstddef>
 
 
-////////////////////////////////////////////////////////////
+
 sfCursor* sfCursor_createFromPixels(const sfUint8* pixels, sfVector2u size, sfVector2u hotspot)
 {
     sfCursor* cursor = new sfCursor;
@@ -45,7 +45,7 @@ sfCursor* sfCursor_createFromPixels(const sfUint8* pixels, sfVector2u size, sfVe
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfCursor* sfCursor_createFromSystem(sfCursorType type)
 {
     sfCursor* cursor = new sfCursor;
@@ -60,7 +60,7 @@ sfCursor* sfCursor_createFromSystem(sfCursorType type)
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfCursor_destroy(sfCursor* cursor)
 {
     delete cursor;

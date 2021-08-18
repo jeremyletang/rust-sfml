@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////
+
 //
 // SFML - Simple and Fast Multimedia Library
 // Copyright (C) 2007-2018 Laurent Gomila (laurent@sfml-dev.org)
@@ -20,21 +20,21 @@
 //
 // 3. This notice may not be removed or altered from any source distribution.
 //
-////////////////////////////////////////////////////////////
+
 
 #ifndef SFML_COLOR_H
 #define SFML_COLOR_H
 
-////////////////////////////////////////////////////////////
+
 // Headers
-////////////////////////////////////////////////////////////
+
 #include <SFML/Graphics/Export.h>
 
 
-////////////////////////////////////////////////////////////
+
 /// \brief Utility class for manpulating RGBA colors
 ///
-////////////////////////////////////////////////////////////
+
 typedef struct
 {
     sfUint8 r;
@@ -55,7 +55,7 @@ CSFML_GRAPHICS_API sfColor sfCyan;        ///< Cyan predefined color
 CSFML_GRAPHICS_API sfColor sfTransparent; ///< Transparent (black) predefined color
 
 
-////////////////////////////////////////////////////////////
+
 /// \brief Construct a color from its 3 RGB components
 ///
 /// \param red   Red component   (0 .. 255)
@@ -64,10 +64,10 @@ CSFML_GRAPHICS_API sfColor sfTransparent; ///< Transparent (black) predefined co
 ///
 /// \return sfColor constructed from the components
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_GRAPHICS_API sfColor sfColor_fromRGB(sfUint8 red, sfUint8 green, sfUint8 blue);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Construct a color from its 4 RGBA components
 ///
 /// \param red   Red component   (0 .. 255)
@@ -77,28 +77,28 @@ CSFML_GRAPHICS_API sfColor sfColor_fromRGB(sfUint8 red, sfUint8 green, sfUint8 b
 ///
 /// \return sfColor constructed from the components
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_GRAPHICS_API sfColor sfColor_fromRGBA(sfUint8 red, sfUint8 green, sfUint8 blue, sfUint8 alpha);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Construct the color from 32-bit unsigned integer
 ///
 /// \param color Number containing the RGBA components (in that order)
 ///
 /// \return sfColor constructed from the 32-bit unsigned integer
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_GRAPHICS_API sfColor sfColor_fromInteger(sfUint32 color);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Convert a color to a 32-bit unsigned integer
 ///
 /// \return Color represented as a 32-bit unsigned integer
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_GRAPHICS_API sfUint32 sfColor_toInteger(sfColor color);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Add two colors
 ///
 /// \param color1 First color
@@ -106,10 +106,10 @@ CSFML_GRAPHICS_API sfUint32 sfColor_toInteger(sfColor color);
 ///
 /// \return Component-wise saturated addition of the two colors
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_GRAPHICS_API sfColor sfColor_add(sfColor color1, sfColor color2);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Subtract two colors
 ///
 /// \param color1 First color
@@ -117,10 +117,10 @@ CSFML_GRAPHICS_API sfColor sfColor_add(sfColor color1, sfColor color2);
 ///
 /// \return Component-wise saturated subtraction of the two colors
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_GRAPHICS_API sfColor sfColor_subtract(sfColor color1, sfColor color2);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Modulate two colors
 ///
 /// \param color1 First color
@@ -128,7 +128,7 @@ CSFML_GRAPHICS_API sfColor sfColor_subtract(sfColor color1, sfColor color2);
 ///
 /// \return Component-wise multiplication of the two colors
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_GRAPHICS_API sfColor sfColor_modulate(sfColor color1, sfColor color2);
 
 

@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////
+
 //
 // SFML - Simple and Fast Multimedia Library
 // Copyright (C) 2007-2018 Laurent Gomila (laurent@sfml-dev.org)
@@ -20,23 +20,23 @@
 //
 // 3. This notice may not be removed or altered from any source distribution.
 //
-////////////////////////////////////////////////////////////
+
 
 #ifndef SFML_MOUSE_H
 #define SFML_MOUSE_H
 
-////////////////////////////////////////////////////////////
+
 // Headers
-////////////////////////////////////////////////////////////
+
 #include <SFML/Window/Export.h>
 #include <SFML/Window/Types.h>
 #include <SFML/System/Vector2.h>
 
 
-////////////////////////////////////////////////////////////
+
 /// \brief Mouse buttons
 ///
-////////////////////////////////////////////////////////////
+
 typedef enum
 {
     sfMouseLeft,       ///< The left mouse button
@@ -48,10 +48,10 @@ typedef enum
     sfMouseButtonCount ///< Keep last -- the total number of mouse buttons
 } sfMouseButton;
 
-////////////////////////////////////////////////////////////
+
 /// \brief Mouse wheels
 ///
-////////////////////////////////////////////////////////////
+
 typedef enum
 {
     sfMouseVerticalWheel,  ///< The vertical mouse wheel
@@ -59,17 +59,17 @@ typedef enum
 } sfMouseWheel;
 
 
-////////////////////////////////////////////////////////////
+
 /// \brief Check if a mouse button is pressed
 ///
 /// \param button Button to check
 ///
 /// \return sfTrue if the button is pressed, sfFalse otherwise
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_WINDOW_API sfBool sfMouse_isButtonPressed(sfMouseButton button);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Get the current position of the mouse
 ///
 /// This function returns the current position of the mouse
@@ -79,10 +79,10 @@ CSFML_WINDOW_API sfBool sfMouse_isButtonPressed(sfMouseButton button);
 ///
 /// \return Position of the mouse cursor, relative to the given window
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_WINDOW_API sfVector2i sfMouse_getPosition(const sfWindow* relativeTo);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Set the current position of the mouse
 ///
 /// This function sets the current position of the mouse
@@ -91,7 +91,7 @@ CSFML_WINDOW_API sfVector2i sfMouse_getPosition(const sfWindow* relativeTo);
 /// \param position   New position of the mouse
 /// \param relativeTo Reference window
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_WINDOW_API void sfMouse_setPosition(sfVector2i position, const sfWindow* relativeTo);
 
 

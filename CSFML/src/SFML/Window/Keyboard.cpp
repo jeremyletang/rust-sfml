@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////
+
 //
 // SFML - Simple and Fast Multimedia Library
 // Copyright (C) 2007-2018 Laurent Gomila (laurent@sfml-dev.org)
@@ -20,23 +20,23 @@
 //
 // 3. This notice may not be removed or altered from any source distribution.
 //
-////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////
+
+
 // Headers
-////////////////////////////////////////////////////////////
+
 #include <SFML/Window/Keyboard.h>
 #include <SFML/Window/Keyboard.hpp>
 #include <cstddef>
 
 
-////////////////////////////////////////////////////////////
+
 sfBool sfKeyboard_isKeyPressed(sfKeyCode key)
 {
     return sf::Keyboard::isKeyPressed(static_cast<sf::Keyboard::Key>(key));
 }
 
-////////////////////////////////////////////////////////////
+
 void sfKeyboard_setVirtualKeyboardVisible(sfBool visible)
 {
     sf::Keyboard::setVirtualKeyboardVisible(visible == sfTrue);

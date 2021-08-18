@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////
+
 //
 // SFML - Simple and Fast Multimedia Library
 // Copyright (C) 2007-2018 Laurent Gomila (laurent@sfml-dev.org)
@@ -20,37 +20,37 @@
 //
 // 3. This notice may not be removed or altered from any source distribution.
 //
-////////////////////////////////////////////////////////////
+
 
 #ifndef SFML_CONTEXT_H
 #define SFML_CONTEXT_H
 
-////////////////////////////////////////////////////////////
+
 // Headers
-////////////////////////////////////////////////////////////
+
 #include <SFML/Window/Export.h>
 #include <SFML/Window/Types.h>
 #include <SFML/Window/Window.h>
 
-////////////////////////////////////////////////////////////
+
 /// \brief Create a new context
 ///
 /// This function activates the new context.
 ///
 /// \return New sfContext object
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_WINDOW_API sfContext* sfContext_create(void);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Destroy a context
 ///
 /// \param context Context to destroy
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_WINDOW_API void sfContext_destroy(sfContext* context);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Activate or deactivate explicitely a context
 ///
 /// \param context Context object
@@ -58,10 +58,10 @@ CSFML_WINDOW_API void sfContext_destroy(sfContext* context);
 ///
 /// \return sfTrue on success, sfFalse on failure
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_WINDOW_API sfBool sfContext_setActive(sfContext* context, sfBool active);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Get the settings of the context.
 ///
 /// Note that these settings may be different than the ones passed to the
@@ -70,10 +70,10 @@ CSFML_WINDOW_API sfBool sfContext_setActive(sfContext* context, sfBool active);
 ///
 /// \return Structure containing the settings
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_WINDOW_API sfContextSettings sfContext_getSettings(const sfContext* context);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Get the currently active context's ID
 ///
 /// The context ID is used to identify contexts when
@@ -81,7 +81,7 @@ CSFML_WINDOW_API sfContextSettings sfContext_getSettings(const sfContext* contex
 ///
 /// \return The active context's ID or 0 if no context is currently active
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_WINDOW_API sfUint64 sfContext_getActiveContextId();
 
 #endif // SFML_CONTEXT_H

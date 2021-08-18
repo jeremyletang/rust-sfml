@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////
+
 //
 // SFML - Simple and Fast Multimedia Library
 // Copyright (C) 2007-2018 Laurent Gomila (laurent@sfml-dev.org)
@@ -20,22 +20,22 @@
 //
 // 3. This notice may not be removed or altered from any source distribution.
 //
-////////////////////////////////////////////////////////////
+
 
 #ifndef SFML_RECTANGLESHAPESTRUCT_H
 #define SFML_RECTANGLESHAPESTRUCT_H
 
-////////////////////////////////////////////////////////////
+
 // Headers
-////////////////////////////////////////////////////////////
+
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/TextureStruct.h>
 #include <SFML/Graphics/Transform.h>
 
 
-////////////////////////////////////////////////////////////
+
 // Internal structure of sfRectangleShape
-////////////////////////////////////////////////////////////
+
 struct sfRectangleShape
 {
     sf::RectangleShape  This;

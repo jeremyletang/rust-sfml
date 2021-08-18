@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////
+
 //
 // SFML - Simple and Fast Multimedia Library
 // Copyright (C) 2007-2018 Laurent Gomila (laurent@sfml-dev.org)
@@ -20,11 +20,11 @@
 //
 // 3. This notice may not be removed or altered from any source distribution.
 //
-////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////
+
+
 // Headers
-////////////////////////////////////////////////////////////
+
 #include <SFML/Window/Clipboard.h>
 #include <SFML/Window/Clipboard.hpp>
 #include <cstddef>
@@ -37,7 +37,7 @@ namespace
 }
 
 
-////////////////////////////////////////////////////////////
+
 const char* sfClipboard_getString()
 {
     ClipboardStringAnsi = sf::Clipboard::getString().toAnsiString();
@@ -45,7 +45,7 @@ const char* sfClipboard_getString()
 }
 
 
-////////////////////////////////////////////////////////////
+
 const sfUint32* sfClipboard_getUnicodeString()
 {
     ClipboardString = sf::Clipboard::getString();
@@ -53,14 +53,14 @@ const sfUint32* sfClipboard_getUnicodeString()
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfClipboard_setString(const char* text)
 {
     sf::Clipboard::setString(text);
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfClipboard_setUnicodeString(const sfUint32* text)
 {
     sf::Clipboard::setString(text);

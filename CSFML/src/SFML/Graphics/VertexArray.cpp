@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////
+
 //
 // SFML - Simple and Fast Multimedia Library
 // Copyright (C) 2007-2018 Laurent Gomila (laurent@sfml-dev.org)
@@ -20,24 +20,24 @@
 //
 // 3. This notice may not be removed or altered from any source distribution.
 //
-////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////
+
+
 // Headers
-////////////////////////////////////////////////////////////
+
 #include <SFML/Graphics/VertexArray.h>
 #include <SFML/Graphics/VertexArrayStruct.h>
 #include <cstddef>
 
 
-////////////////////////////////////////////////////////////
+
 sfVertexArray* sfVertexArray_create(void)
 {
     return new sfVertexArray;
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfVertexArray* sfVertexArray_copy(const sfVertexArray* vertexArray)
 {
 
@@ -46,21 +46,21 @@ sfVertexArray* sfVertexArray_copy(const sfVertexArray* vertexArray)
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfVertexArray_destroy(sfVertexArray* vertexArray)
 {
     delete vertexArray;
 }
 
 
-////////////////////////////////////////////////////////////
+
 size_t sfVertexArray_getVertexCount(const sfVertexArray* vertexArray)
 {
     return vertexArray->This.getVertexCount();
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfVertex* sfVertexArray_getVertex(sfVertexArray* vertexArray, size_t index)
 {
 
@@ -70,21 +70,21 @@ sfVertex* sfVertexArray_getVertex(sfVertexArray* vertexArray, size_t index)
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfVertexArray_clear(sfVertexArray* vertexArray)
 {
     vertexArray->This.clear();
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfVertexArray_resize(sfVertexArray* vertexArray, size_t vertexCount)
 {
     vertexArray->This.resize(vertexCount);
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfVertexArray_append(sfVertexArray* vertexArray, sfVertex vertex)
 {
     // the cast is safe, sfVertex has to be binary compatible with sf::Vertex
@@ -92,14 +92,14 @@ void sfVertexArray_append(sfVertexArray* vertexArray, sfVertex vertex)
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfVertexArray_setPrimitiveType(sfVertexArray* vertexArray, sfPrimitiveType type)
 {
     vertexArray->This.setPrimitiveType(static_cast<sf::PrimitiveType>(type));
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfPrimitiveType sfVertexArray_getPrimitiveType(sfVertexArray* vertexArray)
 {
 
@@ -107,7 +107,7 @@ sfPrimitiveType sfVertexArray_getPrimitiveType(sfVertexArray* vertexArray)
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfFloatRect sfVertexArray_getBounds(sfVertexArray* vertexArray)
 {
     sfFloatRect rect = {0, 0, 0, 0};

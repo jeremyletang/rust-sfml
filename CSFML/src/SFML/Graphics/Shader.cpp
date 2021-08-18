@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////
+
 //
 // SFML - Simple and Fast Multimedia Library
 // Copyright (C) 2007-2018 Laurent Gomila (laurent@sfml-dev.org)
@@ -20,11 +20,11 @@
 //
 // 3. This notice may not be removed or altered from any source distribution.
 //
-////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////
+
+
 // Headers
-////////////////////////////////////////////////////////////
+
 #include <SFML/Graphics/Shader.h>
 #include <SFML/Graphics/ShaderStruct.h>
 #include <SFML/Graphics/TextureStruct.h>
@@ -33,7 +33,7 @@
 #include <SFML/CallbackStream.h>
 
 
-////////////////////////////////////////////////////////////
+
 sfShader* sfShader_createFromFile(const char* vertexShaderFilename, const char* geometryShaderFilename, const char* fragmentShaderFilename)
 {
     bool success = false;
@@ -75,7 +75,7 @@ sfShader* sfShader_createFromFile(const char* vertexShaderFilename, const char* 
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfShader* sfShader_createFromMemory(const char* vertexShader, const char* geometryShader, const char* fragmentShader)
 {
     bool success = false;
@@ -117,7 +117,7 @@ sfShader* sfShader_createFromMemory(const char* vertexShader, const char* geomet
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfShader* sfShader_createFromStream(sfInputStream* vertexShaderStream, sfInputStream* geometryShaderStream, sfInputStream* fragmentShaderStream)
 {
     bool success = false;
@@ -166,42 +166,42 @@ sfShader* sfShader_createFromStream(sfInputStream* vertexShaderStream, sfInputSt
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfShader_destroy(sfShader* shader)
 {
 	delete shader;
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfShader_setFloatUniform(sfShader* shader, const char* name, float x)
 {
 	shader->This.setUniform(name, x);
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfShader_setVec2Uniform(sfShader* shader, const char* name, sfGlslVec2 vector)
 {
 	shader->This.setUniform(name, sf::Glsl::Vec2(vector.x, vector.y));
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfShader_setVec3Uniform(sfShader* shader, const char* name, sfGlslVec3 vector)
 {
 	shader->This.setUniform(name, sf::Glsl::Vec3(vector.x, vector.y, vector.z));
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfShader_setVec4Uniform(sfShader* shader, const char* name, sfGlslVec4 vector)
 {
 	shader->This.setUniform(name, sf::Glsl::Vec4(vector.x, vector.y, vector.z, vector.w));
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfShader_setColorUniform(sfShader* shader, const char* name, sfColor color)
 {
 	sfGlslVec4 vec4;
@@ -213,35 +213,35 @@ void sfShader_setColorUniform(sfShader* shader, const char* name, sfColor color)
 	sfShader_setVec4Uniform(shader, name, vec4);
 }
 
-////////////////////////////////////////////////////////////
+
 void sfShader_setIntUniform(sfShader* shader, const char* name, int x)
 {
 	shader->This.setUniform(name, x);
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfShader_setIvec2Uniform(sfShader* shader, const char* name, sfGlslIvec2 vector)
 {
 	shader->This.setUniform(name, sf::Glsl::Ivec2(vector.x, vector.y));
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfShader_setIvec3Uniform(sfShader* shader, const char* name, sfGlslIvec3 vector)
 {
 	shader->This.setUniform(name, sf::Glsl::Ivec3(vector.x, vector.y, vector.z));
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfShader_setIvec4Uniform(sfShader* shader, const char* name, sfGlslIvec4 vector)
 {
 	shader->This.setUniform(name, sf::Glsl::Ivec4(vector.x, vector.y, vector.z, vector.w));
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfShader_setIntColorUniform(sfShader* shader, const char* name, sfColor color)
 {
 	sfGlslIvec4 ivec4;
@@ -253,161 +253,161 @@ void sfShader_setIntColorUniform(sfShader* shader, const char* name, sfColor col
 	sfShader_setIvec4Uniform(shader, name, ivec4);
 }
 
-////////////////////////////////////////////////////////////
+
 void sfShader_setBoolUniform(sfShader* shader, const char* name, sfBool x)
 {
 	shader->This.setUniform(name, x != sfFalse);
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfShader_setBvec2Uniform(sfShader* shader, const char* name, sfGlslBvec2 vector)
 {
 	shader->This.setUniform(name, sf::Glsl::Bvec2(vector.x != sfFalse, vector.y != sfFalse));
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfShader_setBvec3Uniform(sfShader* shader, const char* name, sfGlslBvec3 vector)
 {
 	shader->This.setUniform(name, sf::Glsl::Bvec3(vector.x != sfFalse, vector.y != sfFalse, vector.z != sfFalse));
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfShader_setBvec4Uniform(sfShader* shader, const char* name, sfGlslBvec4 vector)
 {
 	shader->This.setUniform(name, sf::Glsl::Bvec4(vector.x != sfFalse, vector.y != sfFalse, vector.z != sfFalse, vector.w != sfFalse));
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfShader_setMat3Uniform(sfShader* shader, const char* name, const sfGlslMat3* matrix)
 {
 	shader->This.setUniform(name, sf::Glsl::Mat3(matrix->array));
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfShader_setMat4Uniform(sfShader* shader, const char* name, const sfGlslMat4* matrix)
 {
 	shader->This.setUniform(name, sf::Glsl::Mat4(matrix->array));
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfShader_setTextureUniform(sfShader* shader, const char* name, const sfTexture* texture)
 {
 	shader->This.setUniform(name, *texture->This);
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfShader_setCurrentTextureUniform(sfShader* shader, const char* name)
 {
 	shader->This.setUniform(name, sf::Shader::CurrentTexture);
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfShader_setFloatUniformArray(sfShader* shader, const char* name, const float* scalarArray, size_t length)
 {
 	shader->This.setUniformArray(name, scalarArray, length);
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfShader_setVec2UniformArray(sfShader* shader, const char* name, const sfGlslVec2* vectorArray, size_t length)
 {
 	shader->This.setUniformArray(name, reinterpret_cast<const sf::Glsl::Vec2*>(vectorArray), length);
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfShader_setVec3UniformArray(sfShader* shader, const char* name, const sfGlslVec3* vectorArray, size_t length)
 {
 	shader->This.setUniformArray(name, reinterpret_cast<const sf::Glsl::Vec3*>(vectorArray), length);
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfShader_setVec4UniformArray(sfShader* shader, const char* name, const sfGlslVec4* vectorArray, size_t length)
 {
 	shader->This.setUniformArray(name, reinterpret_cast<const sf::Glsl::Vec4*>(vectorArray), length);
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfShader_setMat3UniformArray(sfShader* shader, const char* name, const sfGlslMat3* matrixArray, size_t length)
 {
 	shader->This.setUniformArray(name, reinterpret_cast<const sf::Glsl::Mat3*>(matrixArray), length);
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfShader_setMat4UniformArray(sfShader* shader, const char* name, const sfGlslMat4* matrixArray, size_t length)
 {
 	shader->This.setUniformArray(name, reinterpret_cast<const sf::Glsl::Mat4*>(matrixArray), length);
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfShader_setFloatParameter(sfShader* shader, const char* name, float x)
 {
 	shader->This.setParameter(name, x);
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfShader_setFloat2Parameter(sfShader* shader, const char* name, float x, float y)
 {
 	shader->This.setParameter(name, x, y);
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfShader_setFloat3Parameter(sfShader* shader, const char* name, float x, float y, float z)
 {
 	shader->This.setParameter(name, x, y, z);
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfShader_setFloat4Parameter(sfShader* shader, const char* name, float x, float y, float z, float w)
 {
 	shader->This.setParameter(name, x, y, z, w);
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfShader_setVector2Parameter(sfShader* shader, const char* name, sfVector2f vector)
 {
 	shader->This.setParameter(name, sf::Vector2f(vector.x, vector.y));
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfShader_setVector3Parameter(sfShader* shader, const char* name, sfVector3f vector)
 {
 	shader->This.setParameter(name, sf::Vector3f(vector.x, vector.y, vector.z));
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfShader_setColorParameter(sfShader* shader, const char* name, sfColor color)
 {
 	shader->This.setParameter(name, sf::Color(color.r, color.g, color.b, color.a));
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfShader_setTransformParameter(sfShader* shader, const char* name, sfTransform transform)
 {
 	shader->This.setParameter(name, convertTransform(transform));
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfShader_setTextureParameter(sfShader* shader, const char* name, const sfTexture* texture)
 {
 
@@ -415,35 +415,35 @@ void sfShader_setTextureParameter(sfShader* shader, const char* name, const sfTe
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfShader_setCurrentTextureParameter(sfShader* shader, const char* name)
 {
 	shader->This.setParameter(name, sf::Shader::CurrentTexture);
 }
 
 
-////////////////////////////////////////////////////////////
+
 unsigned int sfShader_getNativeHandle(const sfShader* shader)
 {
 	return shader->This.getNativeHandle();
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfShader_bind(const sfShader* shader)
 {
 	sf::Shader::bind(shader ? &shader->This : NULL);
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfBool sfShader_isAvailable(void)
 {
 	return sf::Shader::isAvailable() ? sfTrue : sfFalse;
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfBool sfShader_isGeometryAvailable(void)
 {
     return sf::Shader::isGeometryAvailable() ? sfTrue : sfFalse;

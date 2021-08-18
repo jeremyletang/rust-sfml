@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////
+
 //
 // SFML - Simple and Fast Multimedia Library
 // Copyright (C) 2007-2018 Laurent Gomila (laurent@sfml-dev.org)
@@ -20,26 +20,26 @@
 //
 // 3. This notice may not be removed or altered from any source distribution.
 //
-////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////
+
+
 // Headers
-////////////////////////////////////////////////////////////
+
 #include <SFML/Graphics/BlendMode.h>
 
 
-////////////////////////////////////////////////////////////
+
 const sfBlendMode sfBlendAlpha = { sfBlendFactorSrcAlpha, sfBlendFactorOneMinusSrcAlpha, sfBlendEquationAdd,
                                  sfBlendFactorOne, sfBlendFactorOneMinusSrcAlpha, sfBlendEquationAdd };
 
-////////////////////////////////////////////////////////////
+
 const sfBlendMode sfBlendAdd = { sfBlendFactorSrcAlpha, sfBlendFactorOne, sfBlendEquationAdd,
                                  sfBlendFactorOne, sfBlendFactorOne, sfBlendEquationAdd };
 
-////////////////////////////////////////////////////////////
+
 const sfBlendMode sfBlendMultiply = { sfBlendFactorDstColor, sfBlendFactorZero, sfBlendEquationAdd,
                                       sfBlendFactorDstColor, sfBlendFactorZero, sfBlendEquationAdd };
 
-////////////////////////////////////////////////////////////
+
 const sfBlendMode sfBlendNone = { sfBlendFactorOne, sfBlendFactorZero, sfBlendEquationAdd,
                                       sfBlendFactorOne, sfBlendFactorZero, sfBlendEquationAdd };

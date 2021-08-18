@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////
+
 //
 // SFML - Simple and Fast Multimedia Library
 // Copyright (C) 2007-2018 Laurent Gomila (laurent@sfml-dev.org)
@@ -20,25 +20,25 @@
 //
 // 3. This notice may not be removed or altered from any source distribution.
 //
-////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////
+
+
 // Headers
-////////////////////////////////////////////////////////////
+
 #include <SFML/Window/Mouse.h>
 #include <SFML/Window/WindowStruct.h>
 #include <SFML/Window/Mouse.hpp>
 #include <cstddef>
 
 
-////////////////////////////////////////////////////////////
+
 sfBool sfMouse_isButtonPressed(sfMouseButton button)
 {
     return sf::Mouse::isButtonPressed(static_cast<sf::Mouse::Button>(button)) ? sfTrue : sfFalse;
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfVector2i sfMouse_getPosition(const sfWindow* relativeTo)
 {
     sf::Vector2i sfmlPos;
@@ -52,7 +52,7 @@ sfVector2i sfMouse_getPosition(const sfWindow* relativeTo)
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfMouse_setPosition(sfVector2i position, const sfWindow* relativeTo)
 {
     if (relativeTo)

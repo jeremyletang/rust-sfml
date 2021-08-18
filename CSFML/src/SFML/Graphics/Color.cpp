@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////
+
 //
 // SFML - Simple and Fast Multimedia Library
 // Copyright (C) 2007-2018 Laurent Gomila (laurent@sfml-dev.org)
@@ -20,17 +20,17 @@
 //
 // 3. This notice may not be removed or altered from any source distribution.
 //
-////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////
+
+
 // Headers
-////////////////////////////////////////////////////////////
+
 #include <SFML/Graphics/Color.h>
 #include <cstddef>
 #include <algorithm>
 
 
-////////////////////////////////////////////////////////////
+
 sfColor sfBlack       = sfColor_fromRGB(  0,   0,   0);
 sfColor sfWhite       = sfColor_fromRGB(255, 255, 255);
 sfColor sfRed         = sfColor_fromRGB(255,   0,   0);
@@ -42,14 +42,14 @@ sfColor sfCyan        = sfColor_fromRGB(  0, 255, 255);
 sfColor sfTransparent = sfColor_fromRGBA( 0,   0,   0, 0);
 
 
-////////////////////////////////////////////////////////////
+
 sfColor sfColor_fromRGB(sfUint8 red, sfUint8 green, sfUint8 blue)
 {
     return sfColor_fromRGBA(red, green, blue, 255);
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfColor sfColor_fromRGBA(sfUint8 red, sfUint8 green, sfUint8 blue, sfUint8 alpha)
 {
     sfColor color;
@@ -63,7 +63,7 @@ sfColor sfColor_fromRGBA(sfUint8 red, sfUint8 green, sfUint8 blue, sfUint8 alpha
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfColor sfColor_fromInteger(sfUint32 color)
 {
     sfUint8 red =   (color & 0xff000000) >> 24;
@@ -75,14 +75,14 @@ sfColor sfColor_fromInteger(sfUint32 color)
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfUint32 sfColor_toInteger(sfColor color)
 {
     return (color.r << 24) | (color.g << 16) | (color.b << 8) | color.a;
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfColor sfColor_add(sfColor color1, sfColor color2)
 {
     int red   = std::min(color1.r + color2.r, 255);
@@ -97,7 +97,7 @@ sfColor sfColor_add(sfColor color1, sfColor color2)
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfColor sfColor_subtract(sfColor color1, sfColor color2)
 {
     int red   = std::max(color1.r - color2.r, 0);
@@ -112,7 +112,7 @@ sfColor sfColor_subtract(sfColor color1, sfColor color2)
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfColor sfColor_modulate(sfColor color1, sfColor color2)
 {
     int red   = color1.r * color2.r / 255;

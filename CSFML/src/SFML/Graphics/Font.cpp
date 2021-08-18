@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////
+
 //
 // SFML - Simple and Fast Multimedia Library
 // Copyright (C) 2007-2018 Laurent Gomila (laurent@sfml-dev.org)
@@ -20,18 +20,18 @@
 //
 // 3. This notice may not be removed or altered from any source distribution.
 //
-////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////
+
+
 // Headers
-////////////////////////////////////////////////////////////
+
 #include <SFML/Graphics/Font.h>
 #include <SFML/Graphics/FontStruct.h>
 #include <cstddef>
 #include <SFML/CallbackStream.h>
 
 
-////////////////////////////////////////////////////////////
+
 sfFont* sfFont_createFromFile(const char* filename)
 {
     sfFont* font = new sfFont;
@@ -45,7 +45,7 @@ sfFont* sfFont_createFromFile(const char* filename)
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfFont* sfFont_createFromMemory(const void* data, size_t sizeInBytes)
 {
     sfFont* font = new sfFont;
@@ -59,7 +59,7 @@ sfFont* sfFont_createFromMemory(const void* data, size_t sizeInBytes)
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfFont* sfFont_createFromStream(sfInputStream* stream)
 {
 
@@ -76,7 +76,7 @@ sfFont* sfFont_createFromStream(sfInputStream* stream)
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfFont* sfFont_copy(const sfFont* font)
 {
 
@@ -85,14 +85,14 @@ sfFont* sfFont_copy(const sfFont* font)
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfFont_destroy(sfFont* font)
 {
     delete font;
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfGlyph sfFont_getGlyph(const sfFont* font, sfUint32 codePoint, unsigned int characterSize, sfBool bold, float outlineThickness)
 {
     sfGlyph glyph = {0, {0, 0, 0, 0}, {0, 0, 0, 0}};
@@ -114,35 +114,35 @@ sfGlyph sfFont_getGlyph(const sfFont* font, sfUint32 codePoint, unsigned int cha
 }
 
 
-////////////////////////////////////////////////////////////
+
 float sfFont_getKerning(const sfFont* font, sfUint32 first, sfUint32 second, unsigned int characterSize)
 {
     return font->This.getKerning(first, second, characterSize);
 }
 
 
-////////////////////////////////////////////////////////////
+
 float sfFont_getLineSpacing(const sfFont* font, unsigned int characterSize)
 {
     return font->This.getLineSpacing(characterSize);
 }
 
 
-////////////////////////////////////////////////////////////
+
 float sfFont_getUnderlinePosition(const sfFont* font, unsigned int characterSize)
 {
     return font->This.getUnderlinePosition(characterSize);
 }
 
 
-////////////////////////////////////////////////////////////
+
 float sfFont_getUnderlineThickness(const sfFont* font, unsigned int characterSize)
 {
     return font->This.getUnderlineThickness(characterSize);
 }
 
 
-////////////////////////////////////////////////////////////
+
 const sfTexture* sfFont_getTexture(sfFont* font, unsigned int characterSize)
 {
 
@@ -152,7 +152,7 @@ const sfTexture* sfFont_getTexture(sfFont* font, unsigned int characterSize)
     return &font->Textures[characterSize];
 }
 
-////////////////////////////////////////////////////////////
+
 sfFontInfo sfFont_getInfo(const sfFont* font)
 {
     sfFontInfo info = {NULL};

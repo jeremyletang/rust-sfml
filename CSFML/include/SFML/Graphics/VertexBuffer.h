@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////
+
 //
 // SFML - Simple and Fast Multimedia Library
 // Copyright (C) 2007-2018 Laurent Gomila (laurent@sfml-dev.org)
@@ -20,14 +20,14 @@
 //
 // 3. This notice may not be removed or altered from any source distribution.
 //
-////////////////////////////////////////////////////////////
+
 
 #ifndef SFML_VERTEXBUFFER_H
 #define SFML_VERTEXBUFFER_H
 
-////////////////////////////////////////////////////////////
+
 // Headers
-////////////////////////////////////////////////////////////
+
 #include <SFML/Graphics/Export.h>
 #include <SFML/Graphics/PrimitiveType.h>
 #include <SFML/Graphics/Types.h>
@@ -35,7 +35,7 @@
 #include <stddef.h>
 
 
-////////////////////////////////////////////////////////////
+
 /// \brief Usage specifiers
 ///
 /// If data is going to be updated once or more every frame,
@@ -45,7 +45,7 @@
 /// For everything else sfVertexBufferUsageDynamic should
 /// be a good compromise.
 ///
-////////////////////////////////////////////////////////////
+
 typedef enum
 {
     sfVertexBufferStream,  ///< Constantly changing data
@@ -53,7 +53,7 @@ typedef enum
     sfVertexBufferStatic   ///< Rarely changing data
 } sfVertexBufferUsage;
 
-////////////////////////////////////////////////////////////
+
 /// \brief Create a new vertex buffer with a specific
 /// sfPrimitiveType and usage specifier.
 ///
@@ -67,38 +67,38 @@ typedef enum
 ///
 /// \return A new sfVertexBuffer object
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_GRAPHICS_API sfVertexBuffer* sfVertexBuffer_create(unsigned int vertexCount, sfPrimitiveType type, sfVertexBufferUsage usage);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Copy an existing vertex buffer
 ///
 /// \param vertexBuffer Vertex buffer to copy
 ///
 /// \return Copied object
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_GRAPHICS_API sfVertexBuffer* sfVertexBuffer_copy(const sfVertexBuffer* vertexBuffer);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Destroy an existing vertex buffer
 ///
 /// \param vertexBuffer Vertex buffer to delete
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_GRAPHICS_API void sfVertexBuffer_destroy(sfVertexBuffer* vertexBuffer);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Return the vertex count
 ///
 /// \param vertexBuffer Vertex buffer object
 ///
 /// \return Number of vertices in the vertex buffer
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_GRAPHICS_API unsigned int sfVertexBuffer_getVertexCount(const sfVertexBuffer* vertexBuffer);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Update a part of the buffer from an array of vertices
 ///
 /// \p offset is specified as the number of vertices to skip
@@ -128,10 +128,10 @@ CSFML_GRAPHICS_API unsigned int sfVertexBuffer_getVertexCount(const sfVertexBuff
 ///
 /// \return sfTrue if the update was successful
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_GRAPHICS_API sfBool sfVertexBuffer_update(sfVertexBuffer* vertexBuffer, const sfVertex* vertices, unsigned int vertexCount, unsigned int offset);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Copy the contents of another buffer into this buffer
 ///
 /// \param vertexBuffer Vertex buffer object
@@ -139,19 +139,19 @@ CSFML_GRAPHICS_API sfBool sfVertexBuffer_update(sfVertexBuffer* vertexBuffer, co
 ///
 /// \return sfTrue if the copy was successful
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_GRAPHICS_API sfBool sfVertexBuffer_updateFromVertexBuffer(sfVertexBuffer* vertexBuffer, const sfVertexBuffer* other);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Swap the contents of this vertex buffer with those of another
 ///
 /// \param left Instance to swap
 /// \param right Instance to swap with
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_GRAPHICS_API void sfVertexBuffer_swap(sfVertexBuffer* left, sfVertexBuffer* right);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Get the underlying OpenGL handle of the vertex buffer.
 ///
 /// You shouldn't need to use this function, unless you have
@@ -160,10 +160,10 @@ CSFML_GRAPHICS_API void sfVertexBuffer_swap(sfVertexBuffer* left, sfVertexBuffer
 ///
 /// \return OpenGL handle of the vertex buffer or 0 if not yet created
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_GRAPHICS_API unsigned int sfVertexBuffer_getNativeHandle(sfVertexBuffer* vertexBuffer);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Set the type of primitives to draw
 ///
 /// This function defines how the vertices must be interpreted
@@ -174,20 +174,20 @@ CSFML_GRAPHICS_API unsigned int sfVertexBuffer_getNativeHandle(sfVertexBuffer* v
 /// \param vertexBuffer Vertex buffer object
 /// \param type Type of primitive
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_GRAPHICS_API void sfVertexBuffer_setPrimitiveType(sfVertexBuffer* vertexBuffer, sfPrimitiveType type);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Get the type of primitives drawn by the vertex buffer
 ///
 /// \param vertexBuffer Vertex buffer object
 ///
 /// \return Primitive type
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_GRAPHICS_API sfPrimitiveType sfVertexBuffer_getPrimitiveType(const sfVertexBuffer* vertexBuffer);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Set the usage specifier of this vertex buffer
 ///
 /// This function provides a hint about how this vertex buffer is
@@ -202,20 +202,20 @@ CSFML_GRAPHICS_API sfPrimitiveType sfVertexBuffer_getPrimitiveType(const sfVerte
 /// \param vertexBuffer Vertex buffer object
 /// \param usage Usage specifier
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_GRAPHICS_API void sfVertexBuffer_setUsage(sfVertexBuffer* vertexBuffer, sfVertexBufferUsage usage);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Get the usage specifier of this vertex buffer
 ///
 /// \param vertexBuffer Vertex buffer object
 ///
 /// \return Usage specifier
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_GRAPHICS_API sfVertexBufferUsage sfVertexBuffer_getUsage(const sfVertexBuffer* vertexBuffer);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Bind a vertex buffer for rendering
 ///
 /// This function is not part of the graphics API, it mustn't be
@@ -235,10 +235,10 @@ CSFML_GRAPHICS_API sfVertexBufferUsage sfVertexBuffer_getUsage(const sfVertexBuf
 ///
 /// \param vertexBuffer Pointer to the vertex buffer to bind, can be null to use no vertex buffer
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_GRAPHICS_API void sfVertexBuffer_bind(const sfVertexBuffer* vertexBuffer);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Tell whether or not the system supports vertex buffers
 ///
 /// This function should always be called before using
@@ -247,7 +247,7 @@ CSFML_GRAPHICS_API void sfVertexBuffer_bind(const sfVertexBuffer* vertexBuffer);
 ///
 /// \return True if vertex buffers are supported, false otherwise
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_GRAPHICS_API sfBool sfVertexBuffer_isAvailable();
 
 

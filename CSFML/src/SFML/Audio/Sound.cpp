@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////
+
 //
 // SFML - Simple and Fast Multimedia Library
 // Copyright (C) 2007-2018 Laurent Gomila (laurent@sfml-dev.org)
@@ -20,24 +20,24 @@
 //
 // 3. This notice may not be removed or altered from any source distribution.
 //
-////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////
+
+
 // Headers
-////////////////////////////////////////////////////////////
+
 #include <SFML/Audio/Sound.h>
 #include <SFML/Audio/SoundStruct.h>
 #include <cstddef>
 
 
-////////////////////////////////////////////////////////////
+
 sfSound* sfSound_create(void)
 {
     return new sfSound;
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfSound* sfSound_copy(const sfSound* sound)
 {
 
@@ -46,35 +46,35 @@ sfSound* sfSound_copy(const sfSound* sound)
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfSound_destroy(sfSound* sound)
 {
     delete sound;
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfSound_play(sfSound* sound)
 {
     sound->This.play();
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfSound_pause(sfSound* sound)
 {
     sound->This.pause();
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfSound_stop(sfSound* sound)
 {
     sound->This.stop();
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfSound_setBuffer(sfSound* sound, const sfSoundBuffer* buffer)
 {
     if (buffer)
@@ -85,7 +85,7 @@ void sfSound_setBuffer(sfSound* sound, const sfSoundBuffer* buffer)
 }
 
 
-////////////////////////////////////////////////////////////
+
 const sfSoundBuffer* sfSound_getBuffer(const sfSound* sound)
 {
 
@@ -94,21 +94,21 @@ const sfSoundBuffer* sfSound_getBuffer(const sfSound* sound)
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfSound_setLoop(sfSound* sound, sfBool loop)
 {
     sound->This.setLoop(loop == sfTrue);
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfBool sfSound_getLoop(const sfSound* sound)
 {
     return sound->This.getLoop();
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfSoundStatus sfSound_getStatus(const sfSound* sound)
 {
 
@@ -117,70 +117,70 @@ sfSoundStatus sfSound_getStatus(const sfSound* sound)
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfSound_setPitch(sfSound* sound, float pitch)
 {
     sound->This.setPitch(pitch);
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfSound_setVolume(sfSound* sound, float volume)
 {
     sound->This.setVolume(volume);
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfSound_setPosition(sfSound* sound, sfVector3f position)
 {
     sound->This.setPosition(sf::Vector3f(position.x, position.y, position.z));
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfSound_setRelativeToListener(sfSound* sound, sfBool relative)
 {
     sound->This.setRelativeToListener(relative == sfTrue);
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfSound_setMinDistance(sfSound* sound, float distance)
 {
     sound->This.setMinDistance(distance);
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfSound_setAttenuation(sfSound* sound, float attenuation)
 {
     sound->This.setAttenuation(attenuation);
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfSound_setPlayingOffset(sfSound* sound, sfTime timeOffset)
 {
     sound->This.setPlayingOffset(sf::microseconds(timeOffset.microseconds));
 }
 
 
-////////////////////////////////////////////////////////////
+
 float sfSound_getPitch(const sfSound* sound)
 {
     return sound->This.getPitch();
 }
 
 
-////////////////////////////////////////////////////////////
+
 float sfSound_getVolume(const sfSound* sound)
 {
     return sound->This.getVolume();
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfVector3f sfSound_getPosition(const sfSound* sound)
 {
     sfVector3f position = {0, 0, 0};
@@ -195,28 +195,28 @@ sfVector3f sfSound_getPosition(const sfSound* sound)
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfBool sfSound_isRelativeToListener(const sfSound* sound)
 {
     return sound->This.isRelativeToListener();
 }
 
 
-////////////////////////////////////////////////////////////
+
 float sfSound_getMinDistance(const sfSound* sound)
 {
     return sound->This.getMinDistance();
 }
 
 
-////////////////////////////////////////////////////////////
+
 float sfSound_getAttenuation(const sfSound* sound)
 {
     return sound->This.getAttenuation();
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfTime sfSound_getPlayingOffset(const sfSound* sound)
 {
     sfTime time = {0};

@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////
+
 //
 // SFML - Simple and Fast Multimedia Library
 // Copyright (C) 2007-2018 Laurent Gomila (laurent@sfml-dev.org)
@@ -20,18 +20,18 @@
 //
 // 3. This notice may not be removed or altered from any source distribution.
 //
-////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////
+
+
 // Headers
-////////////////////////////////////////////////////////////
+
 #include <SFML/Audio/SoundBuffer.h>
 #include <SFML/Audio/SoundBufferStruct.h>
 #include <SFML/CallbackStream.h>
 #include <cstddef>
 
 
-////////////////////////////////////////////////////////////
+
 sfSoundBuffer* sfSoundBuffer_createFromFile(const char* filename)
 {
     sfSoundBuffer* buffer = new sfSoundBuffer;
@@ -46,7 +46,7 @@ sfSoundBuffer* sfSoundBuffer_createFromFile(const char* filename)
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfSoundBuffer* sfSoundBuffer_createFromMemory(const void* data, size_t sizeInBytes)
 {
     sfSoundBuffer* buffer = new sfSoundBuffer;
@@ -62,7 +62,7 @@ sfSoundBuffer* sfSoundBuffer_createFromMemory(const void* data, size_t sizeInByt
 
 
 
-////////////////////////////////////////////////////////////
+
 sfSoundBuffer* sfSoundBuffer_createFromStream(sfInputStream* stream)
 {
 
@@ -79,7 +79,7 @@ sfSoundBuffer* sfSoundBuffer_createFromStream(sfInputStream* stream)
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfSoundBuffer* sfSoundBuffer_createFromSamples(const sfInt16* samples, sfUint64 sampleCount, unsigned int channelCount, unsigned int sampleRate)
 {
     sfSoundBuffer* buffer = new sfSoundBuffer;
@@ -94,7 +94,7 @@ sfSoundBuffer* sfSoundBuffer_createFromSamples(const sfInt16* samples, sfUint64 
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfSoundBuffer* sfSoundBuffer_copy(const sfSoundBuffer* soundBuffer)
 {
 
@@ -103,49 +103,49 @@ sfSoundBuffer* sfSoundBuffer_copy(const sfSoundBuffer* soundBuffer)
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfSoundBuffer_destroy(sfSoundBuffer* soundBuffer)
 {
     delete soundBuffer;
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfBool sfSoundBuffer_saveToFile(const sfSoundBuffer* soundBuffer, const char* filename)
 {
     return soundBuffer->This.saveToFile(filename);
 }
 
 
-////////////////////////////////////////////////////////////
+
 const sfInt16* sfSoundBuffer_getSamples(const sfSoundBuffer* soundBuffer)
 {
     return soundBuffer->This.getSamples();
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfUint64 sfSoundBuffer_getSampleCount(const sfSoundBuffer* soundBuffer)
 {
     return soundBuffer->This.getSampleCount();
 }
 
 
-////////////////////////////////////////////////////////////
+
 unsigned int sfSoundBuffer_getSampleRate(const sfSoundBuffer* soundBuffer)
 {
     return soundBuffer->This.getSampleRate();
 }
 
 
-////////////////////////////////////////////////////////////
+
 unsigned int sfSoundBuffer_getChannelCount(const sfSoundBuffer* soundBuffer)
 {
     return soundBuffer->This.getChannelCount();
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfTime sfSoundBuffer_getDuration(const sfSoundBuffer* soundBuffer)
 {
     sfTime time = {0};

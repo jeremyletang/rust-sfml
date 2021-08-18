@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////
+
 //
 // SFML - Simple and Fast Multimedia Library
 // Copyright (C) 2007-2018 Laurent Gomila (laurent@sfml-dev.org)
@@ -20,46 +20,46 @@
 //
 // 3. This notice may not be removed or altered from any source distribution.
 //
-////////////////////////////////////////////////////////////
+
 
 #ifndef SFML_CLOCK_H
 #define SFML_CLOCK_H
 
-////////////////////////////////////////////////////////////
+
 // Headers
-////////////////////////////////////////////////////////////
+
 #include <SFML/System/Export.h>
 #include <SFML/System/Time.h>
 #include <SFML/System/Types.h>
 
 
-////////////////////////////////////////////////////////////
+
 /// \brief Create a new clock and start it
 ///
 /// \return A new sfClock object
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_SYSTEM_API sfClock* sfClock_create(void);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Create a new clock by copying an existing one
 ///
 /// \param clock Clock to copy
 ///
 /// \return A new sfClock object which is a copy of \a clock
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_SYSTEM_API sfClock* sfClock_copy(const sfClock* clock);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Destroy a clock
 ///
 /// \param clock Clock to destroy
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_SYSTEM_API void sfClock_destroy(sfClock* clock);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Get the time elapsed in a clock
 ///
 /// This function returns the time elapsed since the last call
@@ -70,10 +70,10 @@ CSFML_SYSTEM_API void sfClock_destroy(sfClock* clock);
 ///
 /// \return Time elapsed
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_SYSTEM_API sfTime sfClock_getElapsedTime(const sfClock* clock);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Restart a clock
 ///
 /// This function puts the time counter back to zero.
@@ -83,7 +83,7 @@ CSFML_SYSTEM_API sfTime sfClock_getElapsedTime(const sfClock* clock);
 ///
 /// \return Time elapsed
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_SYSTEM_API sfTime sfClock_restart(sfClock* clock);
 
 

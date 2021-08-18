@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////
+
 //
 // SFML - Simple and Fast Multimedia Library
 // Copyright (C) 2007-2018 Laurent Gomila (laurent@sfml-dev.org)
@@ -20,19 +20,19 @@
 //
 // 3. This notice may not be removed or altered from any source distribution.
 //
-////////////////////////////////////////////////////////////
+
 
 #ifndef SFML_SLEEP_H
 #define SFML_SLEEP_H
 
-////////////////////////////////////////////////////////////
+
 // Headers
-////////////////////////////////////////////////////////////
+
 #include <SFML/System/Export.h>
 #include <SFML/System/Time.h>
 
 
-////////////////////////////////////////////////////////////
+
 /// \brief Make the current thread sleep for a given duration
 ///
 /// sfSleep is the best way to block a program or one of its
@@ -40,7 +40,7 @@
 ///
 /// \param duration Time to sleep
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_SYSTEM_API void sfSleep(sfTime duration);
 
 

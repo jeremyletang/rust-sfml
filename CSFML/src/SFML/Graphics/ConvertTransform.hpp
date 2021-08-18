@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////
+
 //
 // SFML - Simple and Fast Multimedia Library
 // Copyright (C) 2007-2018 Laurent Gomila (laurent@sfml-dev.org)
@@ -20,21 +20,21 @@
 //
 // 3. This notice may not be removed or altered from any source distribution.
 //
-////////////////////////////////////////////////////////////
+
 
 #ifndef SFML_CONVERTTRANSFORM_H
 #define SFML_CONVERTTRANSFORM_H
 
-////////////////////////////////////////////////////////////
+
 // Headers
-////////////////////////////////////////////////////////////
+
 #include <SFML/Graphics/Transform.h>
 #include <SFML/Graphics/Transform.hpp>
 
 
-////////////////////////////////////////////////////////////
+
 // Convert sf::Transform to sfTransform
-////////////////////////////////////////////////////////////
+
 inline sfTransform convertTransform(const sf::Transform& transform)
 {
     const float* m = transform.getMatrix();
@@ -43,9 +43,9 @@ inline sfTransform convertTransform(const sf::Transform& transform)
 }
 
 
-////////////////////////////////////////////////////////////
+
 // Convert sfTransform to sf::Transform
-////////////////////////////////////////////////////////////
+
 inline sf::Transform convertTransform(const sfTransform& transform)
 {
     const float* m = transform.matrix;

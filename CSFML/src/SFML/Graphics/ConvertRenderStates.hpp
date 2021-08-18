@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////
+
 //
 // SFML - Simple and Fast Multimedia Library
 // Copyright (C) 2007-2018 Laurent Gomila (laurent@sfml-dev.org)
@@ -20,14 +20,14 @@
 //
 // 3. This notice may not be removed or altered from any source distribution.
 //
-////////////////////////////////////////////////////////////
+
 
 #ifndef SFML_CONVERTRENDERSTATES_H
 #define SFML_CONVERTRENDERSTATES_H
 
-////////////////////////////////////////////////////////////
+
 // Headers
-////////////////////////////////////////////////////////////
+
 #include <SFML/Graphics/RenderStates.h>
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/ConvertTransform.hpp>
@@ -35,9 +35,9 @@
 #include <SFML/Graphics/ShaderStruct.h>
 
 
-////////////////////////////////////////////////////////////
+
 // Convert sfRenderStates* to sf::RenderStates
-////////////////////////////////////////////////////////////
+
 inline sf::RenderStates convertRenderStates(const sfRenderStates* states)
 {
     sf::RenderStates sfmlStates;

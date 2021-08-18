@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////
+
 //
 // SFML - Simple and Fast Multimedia Library
 // Copyright (C) 2007-2018 Laurent Gomila (laurent@sfml-dev.org)
@@ -20,17 +20,17 @@
 //
 // 3. This notice may not be removed or altered from any source distribution.
 //
-////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////
+
+
 // Headers
-////////////////////////////////////////////////////////////
+
 #include <SFML/Window/VideoMode.h>
 #include <SFML/Window/VideoMode.hpp>
 #include <cstddef>
 
 
-////////////////////////////////////////////////////////////
+
 sfVideoMode sfVideoMode_getDesktopMode(void)
 {
     sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
@@ -43,7 +43,7 @@ sfVideoMode sfVideoMode_getDesktopMode(void)
 }
 
 
-////////////////////////////////////////////////////////////
+
 const sfVideoMode* sfVideoMode_getFullscreenModes(size_t* count)
 {
     static std::vector<sfVideoMode> modes;
@@ -69,7 +69,7 @@ const sfVideoMode* sfVideoMode_getFullscreenModes(size_t* count)
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfBool sfVideoMode_isValid(sfVideoMode mode)
 {
     sf::VideoMode videoMode(mode.width, mode.height, mode.bitsPerPixel);

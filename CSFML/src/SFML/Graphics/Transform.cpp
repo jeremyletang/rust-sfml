@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////
+
 //
 // SFML - Simple and Fast Multimedia Library
 // Copyright (C) 2007-2018 Laurent Gomila (laurent@sfml-dev.org)
@@ -20,11 +20,11 @@
 //
 // 3. This notice may not be removed or altered from any source distribution.
 //
-////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////
+
+
 // Headers
-////////////////////////////////////////////////////////////
+
 #include <SFML/Graphics/Transform.h>
 #include <SFML/Graphics/Transform.hpp>
 #include <SFML/Graphics/ConvertTransform.hpp>
@@ -32,7 +32,7 @@
 #include <cstring>
 
 
-////////////////////////////////////////////////////////////
+
 const sfTransform sfTransform_Identity =
 {
     1, 0, 0,
@@ -41,7 +41,7 @@ const sfTransform sfTransform_Identity =
 };
 
 
-////////////////////////////////////////////////////////////
+
 sfTransform sfTransform_fromMatrix(float a00, float a01, float a02,
                                    float a10, float a11, float a12,
                                    float a20, float a21, float a22)
@@ -51,7 +51,7 @@ sfTransform sfTransform_fromMatrix(float a00, float a01, float a02,
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfTransform_getMatrix(const sfTransform* transform, float* matrix)
 {
 
@@ -62,7 +62,7 @@ void sfTransform_getMatrix(const sfTransform* transform, float* matrix)
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfTransform sfTransform_getInverse(const sfTransform* transform)
 {
 
@@ -71,7 +71,7 @@ sfTransform sfTransform_getInverse(const sfTransform* transform)
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfVector2f sfTransform_transformPoint(const sfTransform* transform, sfVector2f point)
 {
     sfVector2f p = {0, 0};
@@ -86,7 +86,7 @@ sfVector2f sfTransform_transformPoint(const sfTransform* transform, sfVector2f p
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfFloatRect sfTransform_transformRect(const sfTransform* transform, sfFloatRect rectangle)
 {
     sfFloatRect rect = {0, 0, 0, 0};
@@ -103,7 +103,7 @@ sfFloatRect sfTransform_transformRect(const sfTransform* transform, sfFloatRect 
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfTransform_combine(sfTransform* transform, const sfTransform* other)
 {
 
@@ -113,7 +113,7 @@ void sfTransform_combine(sfTransform* transform, const sfTransform* other)
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfTransform_translate(sfTransform* transform, float x, float y)
 {
 
@@ -122,7 +122,7 @@ void sfTransform_translate(sfTransform* transform, float x, float y)
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfTransform_rotate(sfTransform* transform, float angle)
 {
 
@@ -131,7 +131,7 @@ void sfTransform_rotate(sfTransform* transform, float angle)
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfTransform_rotateWithCenter(sfTransform* transform, float angle, float centerX, float centerY)
 {
 
@@ -140,7 +140,7 @@ void sfTransform_rotateWithCenter(sfTransform* transform, float angle, float cen
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfTransform_scale(sfTransform* transform, float scaleX, float scaleY)
 {
 
@@ -149,7 +149,7 @@ void sfTransform_scale(sfTransform* transform, float scaleX, float scaleY)
 }
 
 
-////////////////////////////////////////////////////////////
+
 void sfTransform_scaleWithCenter(sfTransform* transform, float scaleX, float scaleY, float centerX, float centerY)
 {
 
@@ -158,7 +158,7 @@ void sfTransform_scaleWithCenter(sfTransform* transform, float scaleX, float sca
 }
 
 
-////////////////////////////////////////////////////////////
+
 sfBool sfTransform_equal(sfTransform* left, sfTransform* right)
 {
 

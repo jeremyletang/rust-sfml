@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////
+
 //
 // SFML - Simple and Fast Multimedia Library
 // Copyright (C) 2007-2018 Laurent Gomila (laurent@sfml-dev.org)
@@ -20,23 +20,23 @@
 //
 // 3. This notice may not be removed or altered from any source distribution.
 //
-////////////////////////////////////////////////////////////
+
 
 #ifndef SFML_CONFIG_H
 #define SFML_CONFIG_H
 
 
-////////////////////////////////////////////////////////////
+
 // Define the CSFML version
-////////////////////////////////////////////////////////////
+
 #define CSFML_VERSION_MAJOR 2
 #define CSFML_VERSION_MINOR 5
 #define CSFML_VERSION_PATCH 0
 
 
-////////////////////////////////////////////////////////////
+
 // Check if we need to mark functions as extern "C"
-////////////////////////////////////////////////////////////
+
 #ifdef __cplusplus
     #define CSFML_EXTERN_C extern "C"
 #else
@@ -44,9 +44,9 @@
 #endif
 
 
-////////////////////////////////////////////////////////////
+
 // Identify the operating system
-////////////////////////////////////////////////////////////
+
 #if defined(_WIN32) || defined(__WIN32__)
 
     // Windows
@@ -75,9 +75,9 @@
 #endif
 
 
-////////////////////////////////////////////////////////////
+
 // Define helpers to create portable import / export macros for each module
-////////////////////////////////////////////////////////////
+
 #if defined(CSFML_SYSTEM_WINDOWS)
 
     // Windows compilers need specific (and different) keywords for export and import
@@ -110,7 +110,7 @@
 
 #endif
 
-////////////////////////////////////////////////////////////
+
 // Cross-platform warning for deprecated functions and classes
 //
 // Usage:
@@ -120,7 +120,7 @@
 // };
 //
 // CSFML_DEPRECATED void globalFunc();
-////////////////////////////////////////////////////////////
+
 #if defined(CSFML_NO_DEPRECATED_WARNINGS)
 
     // User explicitly requests to disable deprecation warnings
@@ -147,17 +147,17 @@
 
 #endif
 
-////////////////////////////////////////////////////////////
+
 // Define a portable boolean type
-////////////////////////////////////////////////////////////
+
 typedef int sfBool;
 #define sfFalse 0
 #define sfTrue  1
 
 
-////////////////////////////////////////////////////////////
+
 // Define portable fixed-size types
-////////////////////////////////////////////////////////////
+
 
 // All "common" platforms use the same size for char, short and int
 // (basically there are 3 types for 3 sizes, so no other match is possible),

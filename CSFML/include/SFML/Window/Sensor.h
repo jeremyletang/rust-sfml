@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////
+
 //
 // SFML - Simple and Fast Multimedia Library
 // Copyright (C) 2007-2018 Laurent Gomila (laurent@sfml-dev.org)
@@ -20,23 +20,23 @@
 //
 // 3. This notice may not be removed or altered from any source distribution.
 //
-////////////////////////////////////////////////////////////
+
 
 #ifndef SFML_SENSOR_H
 #define SFML_SENSOR_H
 
-////////////////////////////////////////////////////////////
+
 // Headers
-////////////////////////////////////////////////////////////
+
 #include <SFML/Window/Export.h>
 #include <SFML/Window/Types.h>
 #include <SFML/System/Vector3.h>
 
 
-////////////////////////////////////////////////////////////
+
 /// \brief Sensor Types
 ///
-////////////////////////////////////////////////////////////
+
 typedef enum
 {
     sfSensorAccelerometer,    ///< Measures the raw acceleration (m/s^2)
@@ -50,17 +50,17 @@ typedef enum
 } sfSensorType;
 
 
-////////////////////////////////////////////////////////////
+
 /// \brief Check if a sensor is available on the underlying platform
 ///
 /// \param sensor Sensor to check
 ///
 /// \return sfTrue if the sensor is available, sfFalse otherwise
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_WINDOW_API sfBool sfSensor_isAvailable(sfSensorType sensor);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Enable or disable a sensor
 ///
 /// All sensors are disabled by default, to avoid consuming too
@@ -72,17 +72,17 @@ CSFML_WINDOW_API sfBool sfSensor_isAvailable(sfSensorType sensor);
 /// \param sensor Sensor to enable
 /// \param enabled sfTrue to enable, sfFalse to disable
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_WINDOW_API void sfSensor_setEnabled(sfSensorType sensor, sfBool enabled);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Get the current sensor value
 ///
 /// \param sensor Sensor to read
 ///
 /// \return The current sensor value
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_WINDOW_API sfVector3f sfSensor_getValue(sfSensorType sensor);
 
 

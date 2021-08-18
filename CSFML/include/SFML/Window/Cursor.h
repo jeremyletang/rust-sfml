@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////
+
 //
 // SFML - Simple and Fast Multimedia Library
 // Copyright (C) 2007-2018 Laurent Gomila (laurent@sfml-dev.org)
@@ -20,20 +20,20 @@
 //
 // 3. This notice may not be removed or altered from any source distribution.
 //
-////////////////////////////////////////////////////////////
+
 
 #ifndef SFML_CURSOR_H
 #define SFML_CURSOR_H
 
-////////////////////////////////////////////////////////////
+
 // Headers
-////////////////////////////////////////////////////////////
+
 #include <SFML/System/Vector2.h>
 #include <SFML/Window/Export.h>
 #include <SFML/Window/Types.h>
 
 
-////////////////////////////////////////////////////////////
+
 /// \brief Enumeration of the native system cursor types
 ///
 /// Refer to the following table to determine which cursor
@@ -55,7 +55,7 @@
 ///  sfCursorHelp                   |  yes  |    no    |   yes
 ///  sfCursorNotAllowed             |  yes  |    yes   |   yes
 ///
-////////////////////////////////////////////////////////////
+
 typedef enum
 {
     sfCursorArrow,                  ///< Arrow cursor (default)
@@ -74,7 +74,7 @@ typedef enum
 } sfCursorType;
 
 
-////////////////////////////////////////////////////////////
+
 /// \brief Create a cursor with the provided image
 ///
 /// \a pixels must be an array of \a width by \a height pixels
@@ -101,11 +101,11 @@ typedef enum
 /// \param hotspot  (x,y) location of the hotspot
 /// \return A new sfCursor object
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_WINDOW_API sfCursor* sfCursor_createFromPixels(const sfUint8* pixels, sfVector2u size, sfVector2u hotspot);
 
 
-////////////////////////////////////////////////////////////
+
 /// \brief Create a native system cursor
 ///
 /// Refer to the list of cursor available on each system
@@ -116,16 +116,16 @@ CSFML_WINDOW_API sfCursor* sfCursor_createFromPixels(const sfUint8* pixels, sfVe
 /// \param type Native system cursor type
 /// \return A new sfCursor object
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_WINDOW_API sfCursor* sfCursor_createFromSystem(sfCursorType type);
 
 
-////////////////////////////////////////////////////////////
+
 /// \brief Destroy a cursor
 ///
 /// \param cursor Cursor to destroy
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_WINDOW_API void sfCursor_destroy(sfCursor* cursor);
 
 

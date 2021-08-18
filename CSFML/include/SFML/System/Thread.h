@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////
+
 //
 // SFML - Simple and Fast Multimedia Library
 // Copyright (C) 2007-2018 Laurent Gomila (laurent@sfml-dev.org)
@@ -20,19 +20,19 @@
 //
 // 3. This notice may not be removed or altered from any source distribution.
 //
-////////////////////////////////////////////////////////////
+
 
 #ifndef SFML_THREAD_H
 #define SFML_THREAD_H
 
-////////////////////////////////////////////////////////////
+
 // Headers
-////////////////////////////////////////////////////////////
+
 #include <SFML/System/Export.h>
 #include <SFML/System/Types.h>
 
 
-////////////////////////////////////////////////////////////
+
 /// \brief Create a new thread from a function pointer
 ///
 /// Note: this does *not* run the thread, use sfThread_launch.
@@ -42,10 +42,10 @@
 ///
 /// \return A new sfThread object
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_SYSTEM_API sfThread* sfThread_create(void (*function)(void*), void* userData);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Destroy a thread
 ///
 /// This function calls sfThread_wait, so that the internal thread
@@ -53,10 +53,10 @@ CSFML_SYSTEM_API sfThread* sfThread_create(void (*function)(void*), void* userDa
 ///
 /// \param thread Thread to destroy
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_SYSTEM_API void sfThread_destroy(sfThread* thread);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Run a thread
 ///
 /// This function starts the entry point passed to the
@@ -66,10 +66,10 @@ CSFML_SYSTEM_API void sfThread_destroy(sfThread* thread);
 ///
 /// \param thread Thread object
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_SYSTEM_API void sfThread_launch(sfThread* thread);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Wait until a thread finishes
 ///
 /// This function will block the execution until the
@@ -81,10 +81,10 @@ CSFML_SYSTEM_API void sfThread_launch(sfThread* thread);
 ///
 /// \param thread Thread object
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_SYSTEM_API void sfThread_wait(sfThread* thread);
 
-////////////////////////////////////////////////////////////
+
 /// \brief Terminate a thread
 ///
 /// This function immediately stops the thread, without waiting
@@ -96,7 +96,7 @@ CSFML_SYSTEM_API void sfThread_wait(sfThread* thread);
 ///
 /// \param thread Thread object
 ///
-////////////////////////////////////////////////////////////
+
 CSFML_SYSTEM_API void sfThread_terminate(sfThread* thread);
 
 
