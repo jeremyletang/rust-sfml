@@ -21,10 +21,8 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #ifndef SFML_CONVEXSHAPESTRUCT_H
 #define SFML_CONVEXSHAPESTRUCT_H
-
 
 // Headers
 
@@ -32,17 +30,13 @@
 #include <SFML/Graphics/TextureStruct.h>
 #include <SFML/Graphics/Transform.h>
 
-
-
 // Internal structure of sfConvexShape
 
-struct sfConvexShape
-{
-    sf::ConvexShape     This;
-    const sfTexture*    Texture;
+struct sfConvexShape {
+    sf::ConvexShape This;
+    const sfTexture *Texture;
     mutable sfTransform Transform;
     mutable sfTransform InverseTransform;
 };
-
 
 #endif // SFML_CONVEXSHAPESTRUCT_H

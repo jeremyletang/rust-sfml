@@ -21,10 +21,8 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #ifndef SFML_SHAPESTRUCT_H
 #define SFML_SHAPESTRUCT_H
-
 
 // Headers
 
@@ -33,62 +31,47 @@
 #include <SFML/Graphics/TextureStruct.h>
 #include <SFML/Graphics/Transform.h>
 
-
-
 // Helper class implementing the callback forwarding from
 // C++ to C in sfShape
 
-class sfShapeImpl : public sf::Shape
-{
-public :
-
+class sfShapeImpl : public sf::Shape {
+  public:
     sfShapeImpl(sfShapeGetPointCountCallback getPointCount,
-                sfShapeGetPointCallback      getPoint,
-                void*                        userData) :
-    myGetPointCountCallback(getPointCount),
-    myGetPointCallback     (getPoint),
-    myUserData             (userData)
-    {
+                sfShapeGetPointCallback getPoint,
+                void *userData) : myGetPointCountCallback(getPointCount),
+                                  myGetPointCallback(getPoint),
+                                  myUserData(userData) {
     }
 
-    virtual std::size_t getPointCount() const
-    {
+    virtual std::size_t getPointCount() const {
         return myGetPointCountCallback(myUserData);
     }
 
-    virtual sf::Vector2f getPoint(std::size_t index) const
-    {
+    virtual sf::Vector2f getPoint(std::size_t index) const {
         sfVector2f point = myGetPointCallback(index, myUserData);
         return sf::Vector2f(point.x, point.y);
     }
 
     using sf::Shape::update;
 
-private:
-
+  private:
     sfShapeGetPointCountCallback myGetPointCountCallback;
-    sfShapeGetPointCallback      myGetPointCallback;
-    void*                        myUserData;
+    sfShapeGetPointCallback myGetPointCallback;
+    void *myUserData;
 };
-
-
 
 // Internal structure of sfShape
 
-struct sfShape
-{
+struct sfShape {
     sfShape(sfShapeGetPointCountCallback getPointCount,
-            sfShapeGetPointCallback      getPoint,
-            void*                        userData) :
-    This(getPointCount, getPoint, userData)
-    {
+            sfShapeGetPointCallback getPoint,
+            void *userData) : This(getPointCount, getPoint, userData) {
     }
 
-    sfShapeImpl         This;
-    const sfTexture*    Texture;
+    sfShapeImpl This;
+    const sfTexture *Texture;
     mutable sfTransform Transform;
     mutable sfTransform InverseTransform;
 };
-
 
 #endif // SFML_SHAPESTRUCT_H

@@ -21,28 +21,23 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #ifndef SFML_AUDIO_EXPORT_H
 #define SFML_AUDIO_EXPORT_H
-
 
 // Headers
 
 #include <SFML/Config.h>
 
-
-
 // Define portable import / export macros
 
 #if defined(CSFML_AUDIO_EXPORTS)
 
-    #define CSFML_AUDIO_API CSFML_API_EXPORT
+#define CSFML_AUDIO_API CSFML_API_EXPORT
 
 #else
 
-    #define CSFML_AUDIO_API CSFML_API_IMPORT
+#define CSFML_AUDIO_API CSFML_API_IMPORT
 
 #endif
-
 
 #endif // SFML_AUDIO_EXPORT_H

@@ -21,16 +21,12 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #ifndef SFML_TIME_H
 #define SFML_TIME_H
-
 
 // Headers
 
 #include <SFML/System/Export.h>
-
-
 
 /// \brief Represents a time value
 ///
@@ -40,12 +36,10 @@ typedef struct
     sfInt64 microseconds;
 } sfTime;
 
-
 /// \brief Predefined "zero" time value
 ///
 
 CSFML_SYSTEM_API sfTime sfTime_Zero;
-
 
 /// \brief Return a time value as a number of seconds
 ///
@@ -56,7 +50,6 @@ CSFML_SYSTEM_API sfTime sfTime_Zero;
 
 CSFML_SYSTEM_API float sfTime_asSeconds(sfTime time);
 
-
 /// \brief Return a time value as a number of milliseconds
 ///
 /// \param time Time value
@@ -65,7 +58,6 @@ CSFML_SYSTEM_API float sfTime_asSeconds(sfTime time);
 ///
 
 CSFML_SYSTEM_API sfInt32 sfTime_asMilliseconds(sfTime time);
-
 
 /// \brief Return a time value as a number of microseconds
 ///
@@ -76,7 +68,6 @@ CSFML_SYSTEM_API sfInt32 sfTime_asMilliseconds(sfTime time);
 
 CSFML_SYSTEM_API sfInt64 sfTime_asMicroseconds(sfTime time);
 
-
 /// \brief Construct a time value from a number of seconds
 ///
 /// \param amount Number of seconds
@@ -85,7 +76,6 @@ CSFML_SYSTEM_API sfInt64 sfTime_asMicroseconds(sfTime time);
 ///
 
 CSFML_SYSTEM_API sfTime sfSeconds(float amount);
-
 
 /// \brief Construct a time value from a number of milliseconds
 ///
@@ -96,7 +86,6 @@ CSFML_SYSTEM_API sfTime sfSeconds(float amount);
 
 CSFML_SYSTEM_API sfTime sfMilliseconds(sfInt32 amount);
 
-
 /// \brief Construct a time value from a number of microseconds
 ///
 /// \param amount Number of microseconds
@@ -105,6 +94,5 @@ CSFML_SYSTEM_API sfTime sfMilliseconds(sfInt32 amount);
 ///
 
 CSFML_SYSTEM_API sfTime sfMicroseconds(sfInt64 amount);
-
 
 #endif // SFML_TIME_H

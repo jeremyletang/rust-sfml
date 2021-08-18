@@ -21,16 +21,12 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #ifndef SFML_PRIMITIVETYPE_H
 #define SFML_PRIMITIVETYPE_H
-
 
 // Headers
 
 #include <SFML/Graphics/Export.h>
-
-
 
 /// \brief Types of primitives that a sf::VertexArray can render
 ///
@@ -39,8 +35,7 @@
 /// and view.
 ///
 
-typedef enum
-{
+typedef enum {
     sfPoints,        ///< List of individual points
     sfLines,         ///< List of individual lines
     sfLineStrip,     ///< List of connected lines, a point uses the previous point to form a line
@@ -49,10 +44,9 @@ typedef enum
     sfTriangleFan,   ///< List of connected triangles, a point uses the common center and the previous point to form a triangle
     sfQuads,         ///< List of individual quads
 
-    sfLinesStrip     = sfLineStrip,     ///< \deprecated Use sfLineStrip instead
+    sfLinesStrip = sfLineStrip,         ///< \deprecated Use sfLineStrip instead
     sfTrianglesStrip = sfTriangleStrip, ///< \deprecated Use sfTriangleStrip instead
-    sfTrianglesFan   = sfTriangleFan    ///< \deprecated Use sfTriangleFan instead
+    sfTrianglesFan = sfTriangleFan      ///< \deprecated Use sfTriangleFan instead
 } sfPrimitiveType;
-
 
 #endif // SFML_BLENDMODE_H

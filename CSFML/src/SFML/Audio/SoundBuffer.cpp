@@ -21,8 +21,6 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
-
 // Headers
 
 #include <SFML/Audio/SoundBuffer.h>
@@ -30,14 +28,10 @@
 #include <SFML/CallbackStream.h>
 #include <cstddef>
 
+sfSoundBuffer *sfSoundBuffer_createFromFile(const char *filename) {
+    sfSoundBuffer *buffer = new sfSoundBuffer;
 
-
-sfSoundBuffer* sfSoundBuffer_createFromFile(const char* filename)
-{
-    sfSoundBuffer* buffer = new sfSoundBuffer;
-
-    if (!buffer->This.loadFromFile(filename))
-    {
+    if (!buffer->This.loadFromFile(filename)) {
         delete buffer;
         buffer = NULL;
     }
@@ -45,14 +39,10 @@ sfSoundBuffer* sfSoundBuffer_createFromFile(const char* filename)
     return buffer;
 }
 
+sfSoundBuffer *sfSoundBuffer_createFromMemory(const void *data, size_t sizeInBytes) {
+    sfSoundBuffer *buffer = new sfSoundBuffer;
 
-
-sfSoundBuffer* sfSoundBuffer_createFromMemory(const void* data, size_t sizeInBytes)
-{
-    sfSoundBuffer* buffer = new sfSoundBuffer;
-
-    if (!buffer->This.loadFromMemory(data, sizeInBytes))
-    {
+    if (!buffer->This.loadFromMemory(data, sizeInBytes)) {
         delete buffer;
         buffer = NULL;
     }
@@ -60,17 +50,11 @@ sfSoundBuffer* sfSoundBuffer_createFromMemory(const void* data, size_t sizeInByt
     return buffer;
 }
 
+sfSoundBuffer *sfSoundBuffer_createFromStream(sfInputStream *stream) {
 
-
-
-sfSoundBuffer* sfSoundBuffer_createFromStream(sfInputStream* stream)
-{
-
-
-    sfSoundBuffer* buffer = new sfSoundBuffer;
+    sfSoundBuffer *buffer = new sfSoundBuffer;
     CallbackStream sfmlStream(stream);
-    if (!buffer->This.loadFromStream(sfmlStream))
-    {
+    if (!buffer->This.loadFromStream(sfmlStream)) {
         delete buffer;
         buffer = NULL;
     }
@@ -78,14 +62,10 @@ sfSoundBuffer* sfSoundBuffer_createFromStream(sfInputStream* stream)
     return buffer;
 }
 
+sfSoundBuffer *sfSoundBuffer_createFromSamples(const sfInt16 *samples, sfUint64 sampleCount, unsigned int channelCount, unsigned int sampleRate) {
+    sfSoundBuffer *buffer = new sfSoundBuffer;
 
-
-sfSoundBuffer* sfSoundBuffer_createFromSamples(const sfInt16* samples, sfUint64 sampleCount, unsigned int channelCount, unsigned int sampleRate)
-{
-    sfSoundBuffer* buffer = new sfSoundBuffer;
-
-    if (!buffer->This.loadFromSamples(samples, sampleCount, channelCount, sampleRate))
-    {
+    if (!buffer->This.loadFromSamples(samples, sampleCount, channelCount, sampleRate)) {
         delete buffer;
         buffer = NULL;
     }
@@ -93,63 +73,37 @@ sfSoundBuffer* sfSoundBuffer_createFromSamples(const sfInt16* samples, sfUint64 
     return buffer;
 }
 
-
-
-sfSoundBuffer* sfSoundBuffer_copy(const sfSoundBuffer* soundBuffer)
-{
-
+sfSoundBuffer *sfSoundBuffer_copy(const sfSoundBuffer *soundBuffer) {
 
     return new sfSoundBuffer(*soundBuffer);
 }
 
-
-
-void sfSoundBuffer_destroy(sfSoundBuffer* soundBuffer)
-{
+void sfSoundBuffer_destroy(sfSoundBuffer *soundBuffer) {
     delete soundBuffer;
 }
 
-
-
-sfBool sfSoundBuffer_saveToFile(const sfSoundBuffer* soundBuffer, const char* filename)
-{
+sfBool sfSoundBuffer_saveToFile(const sfSoundBuffer *soundBuffer, const char *filename) {
     return soundBuffer->This.saveToFile(filename);
 }
 
-
-
-const sfInt16* sfSoundBuffer_getSamples(const sfSoundBuffer* soundBuffer)
-{
+const sfInt16 *sfSoundBuffer_getSamples(const sfSoundBuffer *soundBuffer) {
     return soundBuffer->This.getSamples();
 }
 
-
-
-sfUint64 sfSoundBuffer_getSampleCount(const sfSoundBuffer* soundBuffer)
-{
+sfUint64 sfSoundBuffer_getSampleCount(const sfSoundBuffer *soundBuffer) {
     return soundBuffer->This.getSampleCount();
 }
 
-
-
-unsigned int sfSoundBuffer_getSampleRate(const sfSoundBuffer* soundBuffer)
-{
+unsigned int sfSoundBuffer_getSampleRate(const sfSoundBuffer *soundBuffer) {
     return soundBuffer->This.getSampleRate();
 }
 
-
-
-unsigned int sfSoundBuffer_getChannelCount(const sfSoundBuffer* soundBuffer)
-{
+unsigned int sfSoundBuffer_getChannelCount(const sfSoundBuffer *soundBuffer) {
     return soundBuffer->This.getChannelCount();
 }
 
-
-
-sfTime sfSoundBuffer_getDuration(const sfSoundBuffer* soundBuffer)
-{
+sfTime sfSoundBuffer_getDuration(const sfSoundBuffer *soundBuffer) {
     sfTime time = {0};
-
 
     time.microseconds = soundBuffer->This.getDuration().asMicroseconds();
     return time;

@@ -21,23 +21,17 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #ifndef SFML_VERTEXARRAYSTRUCT_H
 #define SFML_VERTEXARRAYSTRUCT_H
-
 
 // Headers
 
 #include <SFML/Graphics/VertexArray.hpp>
 
-
-
 // Internal structure of sfVertexArray
 
-struct sfVertexArray
-{
+struct sfVertexArray {
     sf::VertexArray This;
 };
-
 
 #endif // SFML_VERTEXARRAYSTRUCT_H

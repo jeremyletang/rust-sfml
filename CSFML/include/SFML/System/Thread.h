@@ -21,17 +21,13 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #ifndef SFML_THREAD_H
 #define SFML_THREAD_H
-
 
 // Headers
 
 #include <SFML/System/Export.h>
 #include <SFML/System/Types.h>
-
-
 
 /// \brief Create a new thread from a function pointer
 ///
@@ -43,8 +39,7 @@
 /// \return A new sfThread object
 ///
 
-CSFML_SYSTEM_API sfThread* sfThread_create(void (*function)(void*), void* userData);
-
+CSFML_SYSTEM_API sfThread *sfThread_create(void (*function)(void *), void *userData);
 
 /// \brief Destroy a thread
 ///
@@ -54,8 +49,7 @@ CSFML_SYSTEM_API sfThread* sfThread_create(void (*function)(void*), void* userDa
 /// \param thread Thread to destroy
 ///
 
-CSFML_SYSTEM_API void sfThread_destroy(sfThread* thread);
-
+CSFML_SYSTEM_API void sfThread_destroy(sfThread *thread);
 
 /// \brief Run a thread
 ///
@@ -67,8 +61,7 @@ CSFML_SYSTEM_API void sfThread_destroy(sfThread* thread);
 /// \param thread Thread object
 ///
 
-CSFML_SYSTEM_API void sfThread_launch(sfThread* thread);
-
+CSFML_SYSTEM_API void sfThread_launch(sfThread *thread);
 
 /// \brief Wait until a thread finishes
 ///
@@ -82,8 +75,7 @@ CSFML_SYSTEM_API void sfThread_launch(sfThread* thread);
 /// \param thread Thread object
 ///
 
-CSFML_SYSTEM_API void sfThread_wait(sfThread* thread);
-
+CSFML_SYSTEM_API void sfThread_wait(sfThread *thread);
 
 /// \brief Terminate a thread
 ///
@@ -97,7 +89,6 @@ CSFML_SYSTEM_API void sfThread_wait(sfThread* thread);
 /// \param thread Thread object
 ///
 
-CSFML_SYSTEM_API void sfThread_terminate(sfThread* thread);
-
+CSFML_SYSTEM_API void sfThread_terminate(sfThread *thread);
 
 #endif // SFML_THREAD_H

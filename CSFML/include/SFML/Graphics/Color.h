@@ -21,16 +21,12 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #ifndef SFML_COLOR_H
 #define SFML_COLOR_H
-
 
 // Headers
 
 #include <SFML/Graphics/Export.h>
-
-
 
 /// \brief Utility class for manpulating RGBA colors
 ///
@@ -43,7 +39,6 @@ typedef struct
     sfUint8 a;
 } sfColor;
 
-
 CSFML_GRAPHICS_API sfColor sfBlack;       ///< Black predefined color
 CSFML_GRAPHICS_API sfColor sfWhite;       ///< White predefined color
 CSFML_GRAPHICS_API sfColor sfRed;         ///< Red predefined color
@@ -53,8 +48,6 @@ CSFML_GRAPHICS_API sfColor sfYellow;      ///< Yellow predefined color
 CSFML_GRAPHICS_API sfColor sfMagenta;     ///< Magenta predefined color
 CSFML_GRAPHICS_API sfColor sfCyan;        ///< Cyan predefined color
 CSFML_GRAPHICS_API sfColor sfTransparent; ///< Transparent (black) predefined color
-
-
 
 /// \brief Construct a color from its 3 RGB components
 ///
@@ -66,7 +59,6 @@ CSFML_GRAPHICS_API sfColor sfTransparent; ///< Transparent (black) predefined co
 ///
 
 CSFML_GRAPHICS_API sfColor sfColor_fromRGB(sfUint8 red, sfUint8 green, sfUint8 blue);
-
 
 /// \brief Construct a color from its 4 RGBA components
 ///
@@ -80,7 +72,6 @@ CSFML_GRAPHICS_API sfColor sfColor_fromRGB(sfUint8 red, sfUint8 green, sfUint8 b
 
 CSFML_GRAPHICS_API sfColor sfColor_fromRGBA(sfUint8 red, sfUint8 green, sfUint8 blue, sfUint8 alpha);
 
-
 /// \brief Construct the color from 32-bit unsigned integer
 ///
 /// \param color Number containing the RGBA components (in that order)
@@ -90,14 +81,12 @@ CSFML_GRAPHICS_API sfColor sfColor_fromRGBA(sfUint8 red, sfUint8 green, sfUint8 
 
 CSFML_GRAPHICS_API sfColor sfColor_fromInteger(sfUint32 color);
 
-
 /// \brief Convert a color to a 32-bit unsigned integer
 ///
 /// \return Color represented as a 32-bit unsigned integer
 ///
 
 CSFML_GRAPHICS_API sfUint32 sfColor_toInteger(sfColor color);
-
 
 /// \brief Add two colors
 ///
@@ -109,7 +98,6 @@ CSFML_GRAPHICS_API sfUint32 sfColor_toInteger(sfColor color);
 
 CSFML_GRAPHICS_API sfColor sfColor_add(sfColor color1, sfColor color2);
 
-
 /// \brief Subtract two colors
 ///
 /// \param color1 First color
@@ -120,7 +108,6 @@ CSFML_GRAPHICS_API sfColor sfColor_add(sfColor color1, sfColor color2);
 
 CSFML_GRAPHICS_API sfColor sfColor_subtract(sfColor color1, sfColor color2);
 
-
 /// \brief Modulate two colors
 ///
 /// \param color1 First color
@@ -130,6 +117,5 @@ CSFML_GRAPHICS_API sfColor sfColor_subtract(sfColor color1, sfColor color2);
 ///
 
 CSFML_GRAPHICS_API sfColor sfColor_modulate(sfColor color1, sfColor color2);
-
 
 #endif // SFML_COLOR_H

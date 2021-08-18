@@ -21,28 +21,20 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #ifndef SFML_THREADSTRUCT_H
 #define SFML_THREADSTRUCT_H
-
 
 // Headers
 
 #include <SFML/System/Thread.hpp>
 
-
-
 // Internal structure of sfThread
 
-struct sfThread
-{
-    sfThread(void (*function)(void*), void* userData) :
-    This(function, userData)
-    {
+struct sfThread {
+    sfThread(void (*function)(void *), void *userData) : This(function, userData) {
     }
 
     sf::Thread This;
 };
-
 
 #endif // SFML_THREADSTRUCT_H

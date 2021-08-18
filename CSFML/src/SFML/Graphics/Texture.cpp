@@ -21,26 +21,20 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
-
 // Headers
 
-#include <SFML/Graphics/Texture.h>
-#include <SFML/Graphics/TextureStruct.h>
+#include <SFML/CallbackStream.h>
 #include <SFML/Graphics/ImageStruct.h>
 #include <SFML/Graphics/RenderWindowStruct.h>
+#include <SFML/Graphics/Texture.h>
+#include <SFML/Graphics/TextureStruct.h>
 #include <SFML/Window/WindowStruct.h>
 #include <cstddef>
-#include <SFML/CallbackStream.h>
 
+sfTexture *sfTexture_create(unsigned int width, unsigned int height) {
+    sfTexture *texture = new sfTexture;
 
-
-sfTexture* sfTexture_create(unsigned int width, unsigned int height)
-{
-    sfTexture* texture = new sfTexture;
-
-    if (!texture->This->create(width, height))
-    {
+    if (!texture->This->create(width, height)) {
         delete texture;
         texture = NULL;
     }
@@ -48,18 +42,14 @@ sfTexture* sfTexture_create(unsigned int width, unsigned int height)
     return texture;
 }
 
-
-
-sfTexture* sfTexture_createFromFile(const char* filename, const sfIntRect* area)
-{
-    sfTexture* texture = new sfTexture;
+sfTexture *sfTexture_createFromFile(const char *filename, const sfIntRect *area) {
+    sfTexture *texture = new sfTexture;
 
     sf::IntRect rect;
     if (area)
         rect = sf::IntRect(area->left, area->top, area->width, area->height);
 
-    if (!texture->This->loadFromFile(filename, rect))
-    {
+    if (!texture->This->loadFromFile(filename, rect)) {
         delete texture;
         texture = NULL;
     }
@@ -67,18 +57,14 @@ sfTexture* sfTexture_createFromFile(const char* filename, const sfIntRect* area)
     return texture;
 }
 
-
-
-sfTexture* sfTexture_createFromMemory(const void* data, size_t sizeInBytes, const sfIntRect* area)
-{
-    sfTexture* texture = new sfTexture;
+sfTexture *sfTexture_createFromMemory(const void *data, size_t sizeInBytes, const sfIntRect *area) {
+    sfTexture *texture = new sfTexture;
 
     sf::IntRect rect;
     if (area)
         rect = sf::IntRect(area->left, area->top, area->width, area->height);
 
-    if (!texture->This->loadFromMemory(data, sizeInBytes, rect))
-    {
+    if (!texture->This->loadFromMemory(data, sizeInBytes, rect)) {
         delete texture;
         texture = NULL;
     }
@@ -86,21 +72,16 @@ sfTexture* sfTexture_createFromMemory(const void* data, size_t sizeInBytes, cons
     return texture;
 }
 
+sfTexture *sfTexture_createFromStream(sfInputStream *stream, const sfIntRect *area) {
 
-
-sfTexture* sfTexture_createFromStream(sfInputStream* stream, const sfIntRect* area)
-{
-
-
-    sfTexture* texture = new sfTexture;
+    sfTexture *texture = new sfTexture;
 
     sf::IntRect rect;
     if (area)
         rect = sf::IntRect(area->left, area->top, area->width, area->height);
 
     CallbackStream sfmlStream(stream);
-    if (!texture->This->loadFromStream(sfmlStream, rect))
-    {
+    if (!texture->This->loadFromStream(sfmlStream, rect)) {
         delete texture;
         texture = NULL;
     }
@@ -108,20 +89,15 @@ sfTexture* sfTexture_createFromStream(sfInputStream* stream, const sfIntRect* ar
     return texture;
 }
 
+sfTexture *sfTexture_createFromImage(const sfImage *image, const sfIntRect *area) {
 
-
-sfTexture* sfTexture_createFromImage(const sfImage* image, const sfIntRect* area)
-{
-
-
-    sfTexture* texture = new sfTexture;
+    sfTexture *texture = new sfTexture;
 
     sf::IntRect rect;
     if (area)
         rect = sf::IntRect(area->left, area->top, area->width, area->height);
 
-    if (!texture->This->loadFromImage(image->This, rect))
-    {
+    if (!texture->This->loadFromImage(image->This, rect)) {
         delete texture;
         texture = NULL;
     }
@@ -129,28 +105,17 @@ sfTexture* sfTexture_createFromImage(const sfImage* image, const sfIntRect* area
     return texture;
 }
 
-
-
-sfTexture* sfTexture_copy(const sfTexture* texture)
-{
-
+sfTexture *sfTexture_copy(const sfTexture *texture) {
 
     return new sfTexture(*texture);
 }
 
-
-
-void sfTexture_destroy(sfTexture* texture)
-{
+void sfTexture_destroy(sfTexture *texture) {
     delete texture;
 }
 
-
-
-sfVector2u sfTexture_getSize(const sfTexture* texture)
-{
+sfVector2u sfTexture_getSize(const sfTexture *texture) {
     sfVector2u size = {0, 0};
-
 
     sf::Vector2u sfmlSize = texture->This->getSize();
 
@@ -160,144 +125,81 @@ sfVector2u sfTexture_getSize(const sfTexture* texture)
     return size;
 }
 
+sfImage *sfTexture_copyToImage(const sfTexture *texture) {
 
-
-sfImage* sfTexture_copyToImage(const sfTexture* texture)
-{
-
-
-
-    sfImage* image = new sfImage;
+    sfImage *image = new sfImage;
     image->This = texture->This->copyToImage();
 
     return image;
 }
 
-
-
-void sfTexture_updateFromPixels(sfTexture* texture, const sfUint8* pixels, unsigned int width, unsigned int height, unsigned int x, unsigned int y)
-{
+void sfTexture_updateFromPixels(sfTexture *texture, const sfUint8 *pixels, unsigned int width, unsigned int height, unsigned int x, unsigned int y) {
     texture->This->update(pixels, width, height, x, y);
 }
 
-
-
-void sfTexture_updateFromTexture(sfTexture* destination, const sfTexture* texture, unsigned int x, unsigned int y)
-{
-
-
+void sfTexture_updateFromTexture(sfTexture *destination, const sfTexture *texture, unsigned int x, unsigned int y) {
 
     destination->This->update(*texture->This, x, y);
 }
 
-
-
-void sfTexture_updateFromImage(sfTexture* texture, const sfImage* image, unsigned int x, unsigned int y)
-{
-
+void sfTexture_updateFromImage(sfTexture *texture, const sfImage *image, unsigned int x, unsigned int y) {
 
     texture->This->update(image->This, x, y);
 }
 
-
-
-void sfTexture_updateFromWindow(sfTexture* texture, const sfWindow* window, unsigned int x, unsigned int y)
-{
-
+void sfTexture_updateFromWindow(sfTexture *texture, const sfWindow *window, unsigned int x, unsigned int y) {
 
     texture->This->update(window->This, x, y);
 }
 
-
-
-void sfTexture_updateFromRenderWindow(sfTexture* texture, const sfRenderWindow* renderWindow, unsigned int x, unsigned int y)
-{
-
+void sfTexture_updateFromRenderWindow(sfTexture *texture, const sfRenderWindow *renderWindow, unsigned int x, unsigned int y) {
 
     texture->This->update(renderWindow->This, x, y);
 }
 
-
-
-void sfTexture_setSmooth(sfTexture* texture, sfBool smooth)
-{
+void sfTexture_setSmooth(sfTexture *texture, sfBool smooth) {
     texture->This->setSmooth(smooth == sfTrue);
 }
 
-
-
-sfBool sfTexture_isSmooth(const sfTexture* texture)
-{
-
-
+sfBool sfTexture_isSmooth(const sfTexture *texture) {
 
     return texture->This->isSmooth();
 }
 
-
-
-void sfTexture_setSrgb(sfTexture* texture, sfBool sRgb)
-{
+void sfTexture_setSrgb(sfTexture *texture, sfBool sRgb) {
     texture->This->setSrgb(sRgb == sfTrue);
 }
 
-
-
-sfBool sfTexture_isSrgb(const sfTexture* texture)
-{
+sfBool sfTexture_isSrgb(const sfTexture *texture) {
     return texture->This->isSrgb();
 }
 
-
-
-void sfTexture_setRepeated(sfTexture* texture, sfBool repeated)
-{
+void sfTexture_setRepeated(sfTexture *texture, sfBool repeated) {
     texture->This->setRepeated(repeated == sfTrue);
 }
 
-
-
-sfBool sfTexture_isRepeated(const sfTexture* texture)
-{
-
-
+sfBool sfTexture_isRepeated(const sfTexture *texture) {
 
     return texture->This->isRepeated();
 }
 
-
-
-sfBool sfTexture_generateMipmap(sfTexture* texture)
-{
+sfBool sfTexture_generateMipmap(sfTexture *texture) {
     return texture->This->generateMipmap();
 }
 
-
-
-void sfTexture_swap(sfTexture* left, sfTexture* right)
-{
-
+void sfTexture_swap(sfTexture *left, sfTexture *right) {
 
     left->This->swap(*right->This);
 }
 
-
-
-unsigned int sfTexture_getNativeHandle(const sfTexture* texture)
-{
+unsigned int sfTexture_getNativeHandle(const sfTexture *texture) {
     return texture->This->getNativeHandle();
 }
 
-
-
-void sfTexture_bind(const sfTexture* texture)
-{
+void sfTexture_bind(const sfTexture *texture) {
     sf::Texture::bind(texture ? texture->This : NULL);
 }
 
-
-
-unsigned int sfTexture_getMaximumSize()
-{
+unsigned int sfTexture_getMaximumSize() {
     return sf::Texture::getMaximumSize();
 }

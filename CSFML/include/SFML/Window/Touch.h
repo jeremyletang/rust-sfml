@@ -21,18 +21,14 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #ifndef SFML_TOUCH_H
 #define SFML_TOUCH_H
 
-
 // Headers
 
+#include <SFML/System/Vector2.h>
 #include <SFML/Window/Export.h>
 #include <SFML/Window/Types.h>
-#include <SFML/System/Vector2.h>
-
-
 
 /// \brief Check if a touch event is currently down
 ///
@@ -42,7 +38,6 @@
 ///
 
 CSFML_WINDOW_API sfBool sfTouch_isDown(unsigned int finger);
-
 
 /// \brief Get the current position of a touch in window coordinates
 ///
@@ -55,7 +50,6 @@ CSFML_WINDOW_API sfBool sfTouch_isDown(unsigned int finger);
 /// \return Current position of \a finger, or undefined if it's not down
 ///
 
-CSFML_WINDOW_API sfVector2i sfTouch_getPosition(unsigned int finger, const sfWindow* relativeTo);
-
+CSFML_WINDOW_API sfVector2i sfTouch_getPosition(unsigned int finger, const sfWindow *relativeTo);
 
 #endif // SFML_TOUCH_H

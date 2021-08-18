@@ -21,10 +21,8 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #ifndef SFML_RENDERTEXTURESTRUCT_H
 #define SFML_RENDERTEXTURESTRUCT_H
-
 
 // Headers
 
@@ -32,17 +30,13 @@
 #include <SFML/Graphics/TextureStruct.h>
 #include <SFML/Graphics/ViewStruct.h>
 
-
-
 // Internal structure of sfRenderTexture
 
-struct sfRenderTexture
-{
+struct sfRenderTexture {
     sf::RenderTexture This;
-    const sfTexture*  Target;
-    sfView            DefaultView;
-    sfView            CurrentView;
+    const sfTexture *Target;
+    sfView DefaultView;
+    sfView CurrentView;
 };
-
 
 #endif // SFML_RENDERTEXTURESTRUCT_H

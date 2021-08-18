@@ -21,23 +21,17 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #ifndef SFML_SOUNDBUFFERSTRUCT_H
 #define SFML_SOUNDBUFFERSTRUCT_H
-
 
 // Headers
 
 #include <SFML/Audio/SoundBuffer.hpp>
 
-
-
 // Internal structure of sfSoundBuffer
 
-struct sfSoundBuffer
-{
+struct sfSoundBuffer {
     sf::SoundBuffer This;
 };
-
 
 #endif // SFML_SOUNDBUFFERSTRUCT_H

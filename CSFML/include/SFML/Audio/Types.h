@@ -21,10 +21,8 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #ifndef SFML_AUDIO_TYPES_H
 #define SFML_AUDIO_TYPES_H
-
 
 typedef struct sfMusic sfMusic;
 typedef struct sfSound sfSound;
@@ -32,6 +30,5 @@ typedef struct sfSoundBuffer sfSoundBuffer;
 typedef struct sfSoundBufferRecorder sfSoundBufferRecorder;
 typedef struct sfSoundRecorder sfSoundRecorder;
 typedef struct sfSoundStream sfSoundStream;
-
 
 #endif // SFML_AUDIO_TYPES_H

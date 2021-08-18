@@ -21,77 +21,49 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
-
 // Headers
 
 #include <SFML/Audio/SoundRecorder.h>
 #include <SFML/Audio/SoundRecorderStruct.h>
 #include <cstddef>
 
-
-
-sfSoundRecorder* sfSoundRecorder_create(sfSoundRecorderStartCallback   onStart,
+sfSoundRecorder *sfSoundRecorder_create(sfSoundRecorderStartCallback onStart,
                                         sfSoundRecorderProcessCallback onProcess,
-                                        sfSoundRecorderStopCallback    onStop,
-                                        void*                          userData)
-{
+                                        sfSoundRecorderStopCallback onStop,
+                                        void *userData) {
     return new sfSoundRecorder(onStart, onProcess, onStop, userData);
 }
 
-
-
-void sfSoundRecorder_destroy(sfSoundRecorder* soundRecorder)
-{
+void sfSoundRecorder_destroy(sfSoundRecorder *soundRecorder) {
     delete soundRecorder;
 }
 
-
-
-sfBool sfSoundRecorder_start(sfSoundRecorder* soundRecorder, unsigned int sampleRate)
-{
+sfBool sfSoundRecorder_start(sfSoundRecorder *soundRecorder, unsigned int sampleRate) {
     return soundRecorder->This.start(sampleRate);
 }
 
-
-
-void sfSoundRecorder_stop(sfSoundRecorder* soundRecorder)
-{
+void sfSoundRecorder_stop(sfSoundRecorder *soundRecorder) {
     soundRecorder->This.stop();
 }
 
-
-
-unsigned int sfSoundRecorder_getSampleRate(const sfSoundRecorder* soundRecorder)
-{
+unsigned int sfSoundRecorder_getSampleRate(const sfSoundRecorder *soundRecorder) {
     return soundRecorder->This.getSampleRate();
 }
 
-
-
-sfBool sfSoundRecorder_isAvailable(void)
-{
+sfBool sfSoundRecorder_isAvailable(void) {
     return sf::SoundRecorder::isAvailable();
 }
 
-
-
-void sfSoundRecorder_setProcessingInterval(sfSoundRecorder* soundRecorder, sfTime interval)
-{
+void sfSoundRecorder_setProcessingInterval(sfSoundRecorder *soundRecorder, sfTime interval) {
     soundRecorder->This.setProcessingInterval(interval);
 }
 
-
-
-const char** sfSoundRecorder_getAvailableDevices(size_t* count)
-{
+const char **sfSoundRecorder_getAvailableDevices(size_t *count) {
     static std::vector<std::string> stringDevices = sf::SoundRecorder::getAvailableDevices();
-    static std::vector<const char*> cstringDevices;
+    static std::vector<const char *> cstringDevices;
 
-    if (cstringDevices.empty() && !stringDevices.empty())
-    {
-        for (std::vector<std::string>::const_iterator it = stringDevices.begin(); it != stringDevices.end(); ++it)
-        {
+    if (cstringDevices.empty() && !stringDevices.empty()) {
+        for (std::vector<std::string>::const_iterator it = stringDevices.begin(); it != stringDevices.end(); ++it) {
             cstringDevices.push_back(it->c_str());
         }
     }
@@ -102,43 +74,27 @@ const char** sfSoundRecorder_getAvailableDevices(size_t* count)
     return !cstringDevices.empty() ? &cstringDevices[0] : NULL;
 }
 
-
-
-const char* sfSoundRecorder_getDefaultDevice()
-{
+const char *sfSoundRecorder_getDefaultDevice() {
     static std::string defaultDevice = sf::SoundRecorder::getDefaultDevice();
 
     return !defaultDevice.empty() ? defaultDevice.c_str() : NULL;
 }
 
-
-
-sfBool sfSoundRecorder_setDevice(sfSoundRecorder* soundRecorder, const char* name)
-{
+sfBool sfSoundRecorder_setDevice(sfSoundRecorder *soundRecorder, const char *name) {
     return soundRecorder->This.setDevice(name);
 }
 
-
-
-const char* sfSoundRecorder_getDevice(sfSoundRecorder* soundRecorder)
-{
-
+const char *sfSoundRecorder_getDevice(sfSoundRecorder *soundRecorder) {
 
     soundRecorder->DeviceName = soundRecorder->This.getDevice();
 
     return soundRecorder->DeviceName.c_str();
 }
 
-
-
-void sfSoundRecorder_setChannelCount(sfSoundRecorder* soundRecorder, unsigned int channelCount)
-{
+void sfSoundRecorder_setChannelCount(sfSoundRecorder *soundRecorder, unsigned int channelCount) {
     soundRecorder->This.setChannelCount(channelCount);
 }
 
-
-
-unsigned int sfSoundRecorder_getChannelCount(const sfSoundRecorder* soundRecorder)
-{
+unsigned int sfSoundRecorder_getChannelCount(const sfSoundRecorder *soundRecorder) {
     return soundRecorder->This.getChannelCount();
 }

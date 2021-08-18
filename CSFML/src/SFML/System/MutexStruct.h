@@ -21,23 +21,17 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #ifndef SFML_MUTEXSTRUCT_H
 #define SFML_MUTEXSTRUCT_H
-
 
 // Headers
 
 #include <SFML/System/Mutex.hpp>
 
-
-
 // Internal structure of sfMutex
 
-struct sfMutex
-{
+struct sfMutex {
     sf::Mutex This;
 };
-
 
 #endif // SFML_MUTEXSTRUCT_H

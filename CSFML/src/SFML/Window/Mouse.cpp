@@ -21,26 +21,18 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
-
 // Headers
 
 #include <SFML/Window/Mouse.h>
-#include <SFML/Window/WindowStruct.h>
 #include <SFML/Window/Mouse.hpp>
+#include <SFML/Window/WindowStruct.h>
 #include <cstddef>
 
-
-
-sfBool sfMouse_isButtonPressed(sfMouseButton button)
-{
+sfBool sfMouse_isButtonPressed(sfMouseButton button) {
     return sf::Mouse::isButtonPressed(static_cast<sf::Mouse::Button>(button)) ? sfTrue : sfFalse;
 }
 
-
-
-sfVector2i sfMouse_getPosition(const sfWindow* relativeTo)
-{
+sfVector2i sfMouse_getPosition(const sfWindow *relativeTo) {
     sf::Vector2i sfmlPos;
     if (relativeTo)
         sfmlPos = sf::Mouse::getPosition(relativeTo->This);
@@ -51,10 +43,7 @@ sfVector2i sfMouse_getPosition(const sfWindow* relativeTo)
     return position;
 }
 
-
-
-void sfMouse_setPosition(sfVector2i position, const sfWindow* relativeTo)
-{
+void sfMouse_setPosition(sfVector2i position, const sfWindow *relativeTo) {
     if (relativeTo)
         sf::Mouse::setPosition(sf::Vector2i(position.x, position.y), relativeTo->This);
     else

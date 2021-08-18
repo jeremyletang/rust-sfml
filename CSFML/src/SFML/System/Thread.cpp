@@ -21,45 +21,28 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
-
 // Headers
 
 #include <SFML/System/Thread.h>
 #include <SFML/System/ThreadStruct.h>
 #include <cstddef>
 
-
-
-sfThread* sfThread_create(void (*function)(void*), void* userData)
-{
+sfThread *sfThread_create(void (*function)(void *), void *userData) {
     return new sfThread(function, userData);
 }
 
-
-
-void sfThread_destroy(sfThread* thread)
-{
+void sfThread_destroy(sfThread *thread) {
     delete thread;
 }
 
-
-
-void sfThread_launch(sfThread* thread)
-{
+void sfThread_launch(sfThread *thread) {
     thread->This.launch();
 }
 
-
-
-void sfThread_wait(sfThread* thread)
-{
+void sfThread_wait(sfThread *thread) {
     thread->This.wait();
 }
 
-
-
-void sfThread_terminate(sfThread* thread)
-{
+void sfThread_terminate(sfThread *thread) {
     thread->This.terminate();
 }

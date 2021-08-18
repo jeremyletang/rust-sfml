@@ -21,22 +21,18 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #ifndef SFML_IMAGE_H
 #define SFML_IMAGE_H
 
-
 // Headers
 
-#include <SFML/Graphics/Export.h>
 #include <SFML/Graphics/Color.h>
+#include <SFML/Graphics/Export.h>
 #include <SFML/Graphics/Rect.h>
 #include <SFML/Graphics/Types.h>
 #include <SFML/System/InputStream.h>
 #include <SFML/System/Vector2.h>
 #include <stddef.h>
-
-
 
 /// \brief Create an image
 ///
@@ -48,8 +44,7 @@
 /// \return A new sfImage object
 ///
 
-CSFML_GRAPHICS_API sfImage* sfImage_create(unsigned int width, unsigned int height);
-
+CSFML_GRAPHICS_API sfImage *sfImage_create(unsigned int width, unsigned int height);
 
 /// \brief Create an image and fill it with a unique color
 ///
@@ -60,8 +55,7 @@ CSFML_GRAPHICS_API sfImage* sfImage_create(unsigned int width, unsigned int heig
 /// \return A new sfImage object
 ///
 
-CSFML_GRAPHICS_API sfImage* sfImage_createFromColor(unsigned int width, unsigned int height, sfColor color);
-
+CSFML_GRAPHICS_API sfImage *sfImage_createFromColor(unsigned int width, unsigned int height, sfColor color);
 
 /// \brief Create an image from an array of pixels
 ///
@@ -77,8 +71,7 @@ CSFML_GRAPHICS_API sfImage* sfImage_createFromColor(unsigned int width, unsigned
 /// \return A new sfImage object
 ///
 
-CSFML_GRAPHICS_API sfImage* sfImage_createFromPixels(unsigned int width, unsigned int height, const sfUint8* pixels);
-
+CSFML_GRAPHICS_API sfImage *sfImage_createFromPixels(unsigned int width, unsigned int height, const sfUint8 *pixels);
 
 /// \brief Create an image from a file on disk
 ///
@@ -92,8 +85,7 @@ CSFML_GRAPHICS_API sfImage* sfImage_createFromPixels(unsigned int width, unsigne
 /// \return A new sfImage object, or NULL if it failed
 ///
 
-CSFML_GRAPHICS_API sfImage* sfImage_createFromFile(const char* filename);
-
+CSFML_GRAPHICS_API sfImage *sfImage_createFromFile(const char *filename);
 
 /// \brief Create an image from a file in memory
 ///
@@ -108,8 +100,7 @@ CSFML_GRAPHICS_API sfImage* sfImage_createFromFile(const char* filename);
 /// \return A new sfImage object, or NULL if it failed
 ///
 
-CSFML_GRAPHICS_API sfImage* sfImage_createFromMemory(const void* data, size_t size);
-
+CSFML_GRAPHICS_API sfImage *sfImage_createFromMemory(const void *data, size_t size);
 
 /// \brief Create an image from a custom stream
 ///
@@ -123,8 +114,7 @@ CSFML_GRAPHICS_API sfImage* sfImage_createFromMemory(const void* data, size_t si
 /// \return A new sfImage object, or NULL if it failed
 ///
 
-CSFML_GRAPHICS_API sfImage* sfImage_createFromStream(sfInputStream* stream);
-
+CSFML_GRAPHICS_API sfImage *sfImage_createFromStream(sfInputStream *stream);
 
 /// \brief Copy an existing image
 ///
@@ -133,16 +123,14 @@ CSFML_GRAPHICS_API sfImage* sfImage_createFromStream(sfInputStream* stream);
 /// \return Copied object
 ///
 
-CSFML_GRAPHICS_API sfImage* sfImage_copy(const sfImage* image);
-
+CSFML_GRAPHICS_API sfImage *sfImage_copy(const sfImage *image);
 
 /// \brief Destroy an existing image
 ///
 /// \param image Image to delete
 ///
 
-CSFML_GRAPHICS_API void sfImage_destroy(sfImage* image);
-
+CSFML_GRAPHICS_API void sfImage_destroy(sfImage *image);
 
 /// \brief Save an image to a file on disk
 ///
@@ -157,8 +145,7 @@ CSFML_GRAPHICS_API void sfImage_destroy(sfImage* image);
 /// \return sfTrue if saving was successful
 ///
 
-CSFML_GRAPHICS_API sfBool sfImage_saveToFile(const sfImage* image, const char* filename);
-
+CSFML_GRAPHICS_API sfBool sfImage_saveToFile(const sfImage *image, const char *filename);
 
 /// \brief Return the size of an image
 ///
@@ -167,8 +154,7 @@ CSFML_GRAPHICS_API sfBool sfImage_saveToFile(const sfImage* image, const char* f
 /// \return Size in pixels
 ///
 
-CSFML_GRAPHICS_API sfVector2u sfImage_getSize(const sfImage* image);
-
+CSFML_GRAPHICS_API sfVector2u sfImage_getSize(const sfImage *image);
 
 /// \brief Create a transparency mask from a specified color-key
 ///
@@ -181,8 +167,7 @@ CSFML_GRAPHICS_API sfVector2u sfImage_getSize(const sfImage* image);
 /// \param alpha Alpha value to assign to transparent pixels
 ///
 
-CSFML_GRAPHICS_API void sfImage_createMaskFromColor(sfImage* image, sfColor color, sfUint8 alpha);
-
+CSFML_GRAPHICS_API void sfImage_createMaskFromColor(sfImage *image, sfColor color, sfUint8 alpha);
 
 /// \brief Copy pixels from an image onto another
 ///
@@ -204,8 +189,7 @@ CSFML_GRAPHICS_API void sfImage_createMaskFromColor(sfImage* image, sfColor colo
 /// \param applyAlpha Should the copy take in account the source transparency?
 ///
 
-CSFML_GRAPHICS_API void sfImage_copyImage(sfImage* image, const sfImage* source, unsigned int destX, unsigned int destY, sfIntRect sourceRect, sfBool applyAlpha);
-
+CSFML_GRAPHICS_API void sfImage_copyImage(sfImage *image, const sfImage *source, unsigned int destX, unsigned int destY, sfIntRect sourceRect, sfBool applyAlpha);
 
 /// \brief Change the color of a pixel in an image
 ///
@@ -219,8 +203,7 @@ CSFML_GRAPHICS_API void sfImage_copyImage(sfImage* image, const sfImage* source,
 /// \param color New color of the pixel
 ///
 
-CSFML_GRAPHICS_API void sfImage_setPixel(sfImage* image, unsigned int x, unsigned int y, sfColor color);
-
+CSFML_GRAPHICS_API void sfImage_setPixel(sfImage *image, unsigned int x, unsigned int y, sfColor color);
 
 /// \brief Get the color of a pixel in an image
 ///
@@ -235,8 +218,7 @@ CSFML_GRAPHICS_API void sfImage_setPixel(sfImage* image, unsigned int x, unsigne
 /// \return Color of the pixel at coordinates (x, y)
 ///
 
-CSFML_GRAPHICS_API sfColor sfImage_getPixel(const sfImage* image, unsigned int x, unsigned int y);
-
+CSFML_GRAPHICS_API sfColor sfImage_getPixel(const sfImage *image, unsigned int x, unsigned int y);
 
 /// \brief Get a read-only pointer to the array of pixels of an image
 ///
@@ -252,23 +234,20 @@ CSFML_GRAPHICS_API sfColor sfImage_getPixel(const sfImage* image, unsigned int x
 /// \return Read-only pointer to the array of pixels
 ///
 
-CSFML_GRAPHICS_API const sfUint8* sfImage_getPixelsPtr(const sfImage* image);
-
+CSFML_GRAPHICS_API const sfUint8 *sfImage_getPixelsPtr(const sfImage *image);
 
 /// \brief Flip an image horizontally (left <-> right)
 ///
 /// \param image Image object
 ///
 
-CSFML_GRAPHICS_API void sfImage_flipHorizontally(sfImage* image);
-
+CSFML_GRAPHICS_API void sfImage_flipHorizontally(sfImage *image);
 
 /// \brief Flip an image vertically (top <-> bottom)
 ///
 /// \param image Image object
 ///
 
-CSFML_GRAPHICS_API void sfImage_flipVertically(sfImage* image);
-
+CSFML_GRAPHICS_API void sfImage_flipVertically(sfImage *image);
 
 #endif // SFML_IMAGE_H

@@ -21,31 +21,25 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #ifndef SFML_TEXTSTRUCT_H
 #define SFML_TEXTSTRUCT_H
 
-
 // Headers
 
-#include <SFML/Graphics/Text.hpp>
 #include <SFML/Graphics/FontStruct.h>
 #include <SFML/Graphics/Rect.h>
+#include <SFML/Graphics/Text.hpp>
 #include <SFML/Graphics/Transform.h>
 #include <string>
 
-
-
 // Internal structure of sfText
 
-struct sfText
-{
-    sf::Text            This;
-    const sfFont*       Font;
+struct sfText {
+    sf::Text This;
+    const sfFont *Font;
     mutable std::string String;
     mutable sfTransform Transform;
     mutable sfTransform InverseTransform;
 };
-
 
 #endif // SFML_TEXTSTRUCT_H

@@ -21,23 +21,17 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #ifndef SFML_CURSORSTRUCT_H
 #define SFML_CURSORSTRUCT_H
-
 
 // Headers
 
 #include <SFML/Window/Cursor.hpp>
 
-
-
 // Internal structure of sfCursor
 
-struct sfCursor
-{
+struct sfCursor {
     sf::Cursor This;
 };
-
 
 #endif // SFML_CURSORSTRUCT_H

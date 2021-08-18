@@ -21,14 +21,11 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #ifndef SFML_WINDOW_TYPES_H
 #define SFML_WINDOW_TYPES_H
-
 
 typedef struct sfContext sfContext;
 typedef struct sfCursor sfCursor;
 typedef struct sfWindow sfWindow;
-
 
 #endif // SFML_WINDOW_TYPES_H

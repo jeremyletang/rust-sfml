@@ -21,30 +21,21 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
-
 // Headers
 
 #include <SFML/Window/Sensor.h>
 #include <SFML/Window/Sensor.hpp>
 #include <cstddef>
 
-
-
-sfBool sfSensor_isAvailable(sfSensorType sensor)
-{
+sfBool sfSensor_isAvailable(sfSensorType sensor) {
     return sf::Sensor::isAvailable(static_cast<sf::Sensor::Type>(sensor));
 }
 
-
-void sfSensor_setEnabled(sfSensorType sensor, sfBool enabled)
-{
+void sfSensor_setEnabled(sfSensorType sensor, sfBool enabled) {
     sf::Sensor::setEnabled(static_cast<sf::Sensor::Type>(sensor), enabled == sfTrue);
 }
 
-
-sfVector3f sfSensor_getValue(sfSensorType sensor)
-{
+sfVector3f sfSensor_getValue(sfSensorType sensor) {
     sf::Vector3f sfmlValue = sf::Sensor::getValue(static_cast<sf::Sensor::Type>(sensor));
 
     sfVector3f value = {sfmlValue.x, sfmlValue.y, sfmlValue.z};

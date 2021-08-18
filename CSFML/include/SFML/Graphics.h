@@ -21,15 +21,11 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #ifndef SFML_GRAPHICS_H
 #define SFML_GRAPHICS_H
 
-
 // Headers
 
-
-#include <SFML/Window.h>
 #include <SFML/Graphics/BlendMode.h>
 #include <SFML/Graphics/CircleShape.h>
 #include <SFML/Graphics/Color.h>
@@ -55,6 +51,6 @@
 #include <SFML/Graphics/VertexArray.h>
 #include <SFML/Graphics/VertexBuffer.h>
 #include <SFML/Graphics/View.h>
-
+#include <SFML/Window.h>
 
 #endif // SFML_GRAPHICS_H

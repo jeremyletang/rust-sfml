@@ -21,48 +21,40 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #ifndef SFML_MUTEX_H
 #define SFML_MUTEX_H
-
 
 // Headers
 
 #include <SFML/System/Export.h>
 #include <SFML/System/Types.h>
 
-
-
 /// \brief Create a new mutex
 ///
 /// \return A new sfMutex object
 ///
 
-CSFML_SYSTEM_API sfMutex* sfMutex_create(void);
-
+CSFML_SYSTEM_API sfMutex *sfMutex_create(void);
 
 /// \brief Destroy a mutex
 ///
 /// \param mutex Mutex to destroy
 ///
 
-CSFML_SYSTEM_API void sfMutex_destroy(sfMutex* mutex);
-
+CSFML_SYSTEM_API void sfMutex_destroy(sfMutex *mutex);
 
 /// \brief Lock a mutex
 ///
 /// \param mutex Mutex object
 ///
 
-CSFML_SYSTEM_API void sfMutex_lock(sfMutex* mutex);
-
+CSFML_SYSTEM_API void sfMutex_lock(sfMutex *mutex);
 
 /// \brief Unlock a mutex
 ///
 /// \param mutex Mutex object
 ///
 
-CSFML_SYSTEM_API void sfMutex_unlock(sfMutex* mutex);
-
+CSFML_SYSTEM_API void sfMutex_unlock(sfMutex *mutex);
 
 #endif // SFML_MUTEX_H

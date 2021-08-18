@@ -21,80 +21,62 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #ifndef SFML_SOUNDSTREAMSTRUCT_H
 #define SFML_SOUNDSTREAMSTRUCT_H
-
 
 // Headers
 
 #include <SFML/Audio/SoundStream.hpp>
 
-
-
 // Helper class implementing the callback forwarding from
 // C++ to C in sfSoundStream
 
-class sfSoundStreamImpl : public sf::SoundStream
-{
-public :
-
+class sfSoundStreamImpl : public sf::SoundStream {
+  public:
     sfSoundStreamImpl(sfSoundStreamGetDataCallback onGetData,
-                      sfSoundStreamSeekCallback    onSeek,
-                      unsigned int                 channelCount,
-                      unsigned int                 sampleRate,
-                      void*                        userData) :
-    myGetDataCallback(onGetData),
-    mySeekCallback   (onSeek),
-    myUserData       (userData)
-    {
+                      sfSoundStreamSeekCallback onSeek,
+                      unsigned int channelCount,
+                      unsigned int sampleRate,
+                      void *userData) : myGetDataCallback(onGetData),
+                                        mySeekCallback(onSeek),
+                                        myUserData(userData) {
         initialize(channelCount, sampleRate);
     }
 
-private :
-
-    virtual bool onGetData(Chunk& data)
-    {
+  private:
+    virtual bool onGetData(Chunk &data) {
         sfSoundStreamChunk chunk = {NULL, 0};
         bool ok = (myGetDataCallback(&chunk, myUserData) == sfTrue);
 
-        data.samples     = chunk.samples;
+        data.samples = chunk.samples;
         data.sampleCount = chunk.sampleCount;
 
         return ok;
     }
 
-    virtual void onSeek(sf::Time timeOffset)
-    {
-        if (mySeekCallback)
-        {
+    virtual void onSeek(sf::Time timeOffset) {
+        if (mySeekCallback) {
             sfTime time = {timeOffset.asMicroseconds()};
             mySeekCallback(time, myUserData);
         }
     }
 
     sfSoundStreamGetDataCallback myGetDataCallback;
-    sfSoundStreamSeekCallback    mySeekCallback;
-    void*                        myUserData;
+    sfSoundStreamSeekCallback mySeekCallback;
+    void *myUserData;
 };
-
-
 
 // Internal structure of sfSoundStream
 
-struct sfSoundStream
-{
+struct sfSoundStream {
     sfSoundStream(sfSoundStreamGetDataCallback onGetData,
-                  sfSoundStreamSeekCallback    onSeek,
-                  unsigned int                 channelCount,
-                  unsigned int                 sampleRate,
-                  void*                        userData) :
-    This(onGetData, onSeek, channelCount, sampleRate, userData)
-    {
+                  sfSoundStreamSeekCallback onSeek,
+                  unsigned int channelCount,
+                  unsigned int sampleRate,
+                  void *userData) : This(onGetData, onSeek, channelCount, sampleRate, userData) {
     }
 
     sfSoundStreamImpl This;
 };
-
 
 #endif // SFML_SOUNDSTREAMSTRUCT_H

@@ -21,52 +21,34 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
-
 // Headers
 
 #include <SFML/Window/Context.h>
+#include <SFML/Window/ContextSettingsInternal.h>
 #include <SFML/Window/ContextStruct.h>
 #include <cstddef>
-#include <SFML/Window/ContextSettingsInternal.h>
 
-
-
-sfContext* sfContext_create(void)
-{
+sfContext *sfContext_create(void) {
     return new sfContext;
 }
 
-
-
-void sfContext_destroy(sfContext* context)
-{
+void sfContext_destroy(sfContext *context) {
     delete context;
 }
 
-
-
-sfBool sfContext_setActive(sfContext* context, sfBool active)
-{
+sfBool sfContext_setActive(sfContext *context, sfBool active) {
     return context->This.setActive(active == sfTrue);
 }
 
-
-
-sfContextSettings sfContext_getSettings(const sfContext* context)
-{
+sfContextSettings sfContext_getSettings(const sfContext *context) {
     sfContextSettings settings = priv::sfContextSettings_null();
 
-
-    const sf::ContextSettings& params = context->This.getSettings();
+    const sf::ContextSettings &params = context->This.getSettings();
     priv::sfContextSettings_readFromCpp(params, settings);
 
     return settings;
 }
 
-
-
-sfUint64 sfContext_getActiveContextId()
-{
+sfUint64 sfContext_getActiveContextId() {
     return sf::Context::getActiveContextId();
 }

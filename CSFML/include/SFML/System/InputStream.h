@@ -21,34 +21,27 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #ifndef SFML_INPUTSTREAM_H
 #define SFML_INPUTSTREAM_H
-
 
 // Headers
 
 #include <SFML/System/Export.h>
 
-
-typedef sfInt64 (*sfInputStreamReadFunc)(void* data, sfInt64 size, void* userData);
-typedef sfInt64 (*sfInputStreamSeekFunc)(sfInt64 position, void* userData);
-typedef sfInt64 (*sfInputStreamTellFunc)(void* userData);
-typedef sfInt64 (*sfInputStreamGetSizeFunc)(void* userData);
-
-
+typedef sfInt64 (*sfInputStreamReadFunc)(void *data, sfInt64 size, void *userData);
+typedef sfInt64 (*sfInputStreamSeekFunc)(sfInt64 position, void *userData);
+typedef sfInt64 (*sfInputStreamTellFunc)(void *userData);
+typedef sfInt64 (*sfInputStreamGetSizeFunc)(void *userData);
 
 /// \brief Set of callbacks that allow users to define custom file streams
 ///
 
-typedef struct sfInputStream
-{
-    sfInputStreamReadFunc    read;     ///< Function to read data from the stream
-    sfInputStreamSeekFunc    seek;     ///< Function to set the current read position
-    sfInputStreamTellFunc    tell;     ///< Function to get the current read position
-    sfInputStreamGetSizeFunc getSize;  ///< Function to get the total number of bytes in the stream
-    void*                    userData; ///< User data that will be passed to the callbacks
+typedef struct sfInputStream {
+    sfInputStreamReadFunc read;       ///< Function to read data from the stream
+    sfInputStreamSeekFunc seek;       ///< Function to set the current read position
+    sfInputStreamTellFunc tell;       ///< Function to get the current read position
+    sfInputStreamGetSizeFunc getSize; ///< Function to get the total number of bytes in the stream
+    void *userData;                   ///< User data that will be passed to the callbacks
 } sfInputStream;
-
 
 #endif // SFML_INPUTSTREAM_H

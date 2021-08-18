@@ -21,52 +21,33 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
-
 // Headers
 
 #include <SFML/Window/Joystick.h>
 #include <SFML/Window/Joystick.hpp>
 #include <cstddef>
 
-
-
-sfBool sfJoystick_isConnected(unsigned int joystick)
-{
+sfBool sfJoystick_isConnected(unsigned int joystick) {
     return sf::Joystick::isConnected(joystick) ? sfTrue : sfFalse;
 }
 
-
-
-unsigned int sfJoystick_getButtonCount(unsigned int joystick)
-{
+unsigned int sfJoystick_getButtonCount(unsigned int joystick) {
     return sf::Joystick::getButtonCount(joystick);
 }
 
-
-
-sfBool sfJoystick_hasAxis(unsigned int joystick, sfJoystickAxis axis)
-{
+sfBool sfJoystick_hasAxis(unsigned int joystick, sfJoystickAxis axis) {
     return sf::Joystick::hasAxis(joystick, static_cast<sf::Joystick::Axis>(axis)) ? sfTrue : sfFalse;
 }
 
-
-
-sfBool sfJoystick_isButtonPressed(unsigned int joystick, unsigned int button)
-{
+sfBool sfJoystick_isButtonPressed(unsigned int joystick, unsigned int button) {
     return sf::Joystick::isButtonPressed(joystick, button) ? sfTrue : sfFalse;
 }
 
-
-
-float sfJoystick_getAxisPosition(unsigned int joystick, sfJoystickAxis axis)
-{
+float sfJoystick_getAxisPosition(unsigned int joystick, sfJoystickAxis axis) {
     return sf::Joystick::getAxisPosition(joystick, static_cast<sf::Joystick::Axis>(axis));
 }
 
-
-sfJoystickIdentification sfJoystick_getIdentification(unsigned int joystick)
-{
+sfJoystickIdentification sfJoystick_getIdentification(unsigned int joystick) {
     static std::string name;
 
     sf::Joystick::Identification identification = sf::Joystick::getIdentification(joystick);
@@ -81,8 +62,6 @@ sfJoystickIdentification sfJoystick_getIdentification(unsigned int joystick)
     return result;
 }
 
-
-void sfJoystick_update(void)
-{
+void sfJoystick_update(void) {
     sf::Joystick::update();
 }

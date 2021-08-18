@@ -21,22 +21,17 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #ifndef SFML_BLENDMODE_H
 #define SFML_BLENDMODE_H
-
 
 // Headers
 
 #include <SFML/Graphics/Export.h>
 
-
-
 /// \brief Enumeration of the blending factors
 ///
 
-typedef enum
-{
+typedef enum {
     sfBlendFactorZero,             ///< (0, 0, 0, 0)
     sfBlendFactorOne,              ///< (1, 1, 1, 1)
     sfBlendFactorSrcColor,         ///< (src.r, src.g, src.b, src.a)
@@ -49,19 +44,14 @@ typedef enum
     sfBlendFactorOneMinusDstAlpha  ///< (1, 1, 1, 1) - (dst.a, dst.a, dst.a, dst.a)
 } sfBlendFactor;
 
-
-
 /// \brief Enumeration of the blending equations
 ///
 
-typedef enum
-{
+typedef enum {
     sfBlendEquationAdd,            ///< Pixel = Src * SrcFactor + Dst * DstFactor
     sfBlendEquationSubtract,       ///< Pixel = Src * SrcFactor - Dst * DstFactor
     sfBlendEquationReverseSubtract ///< Pixel = Dst * DstFactor - Src * SrcFactor
 } sfBlendEquation;
-
-
 
 /// \brief Blending mode for drawing
 ///
@@ -76,11 +66,9 @@ typedef struct
     sfBlendEquation alphaEquation; ///< Blending equation for the alpha channel
 } sfBlendMode;
 
-
 CSFML_GRAPHICS_API const sfBlendMode sfBlendAlpha;    ///< Blend source and dest according to dest alpha
 CSFML_GRAPHICS_API const sfBlendMode sfBlendAdd;      ///< Add source to dest
 CSFML_GRAPHICS_API const sfBlendMode sfBlendMultiply; ///< Multiply source and dest
 CSFML_GRAPHICS_API const sfBlendMode sfBlendNone;     ///< Overwrite dest with source
-
 
 #endif // SFML_BLENDMODE_H

@@ -21,23 +21,17 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #ifndef SFML_WINDOWSTRUCT_H
 #define SFML_WINDOWSTRUCT_H
-
 
 // Headers
 
 #include <SFML/Window/Window.hpp>
 
-
-
 // Internal structure of sfWindow
 
-struct sfWindow
-{
+struct sfWindow {
     sf::Window This;
 };
-
 
 #endif // SFML_WINDOWSTRUCT_H

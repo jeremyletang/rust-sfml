@@ -21,97 +21,59 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
-
 // Headers
 
 #include <SFML/Graphics/VertexArray.h>
 #include <SFML/Graphics/VertexArrayStruct.h>
 #include <cstddef>
 
-
-
-sfVertexArray* sfVertexArray_create(void)
-{
+sfVertexArray *sfVertexArray_create(void) {
     return new sfVertexArray;
 }
 
-
-
-sfVertexArray* sfVertexArray_copy(const sfVertexArray* vertexArray)
-{
-
+sfVertexArray *sfVertexArray_copy(const sfVertexArray *vertexArray) {
 
     return new sfVertexArray(*vertexArray);
 }
 
-
-
-void sfVertexArray_destroy(sfVertexArray* vertexArray)
-{
+void sfVertexArray_destroy(sfVertexArray *vertexArray) {
     delete vertexArray;
 }
 
-
-
-size_t sfVertexArray_getVertexCount(const sfVertexArray* vertexArray)
-{
+size_t sfVertexArray_getVertexCount(const sfVertexArray *vertexArray) {
     return vertexArray->This.getVertexCount();
 }
 
-
-
-sfVertex* sfVertexArray_getVertex(sfVertexArray* vertexArray, size_t index)
-{
-
+sfVertex *sfVertexArray_getVertex(sfVertexArray *vertexArray, size_t index) {
 
     // the cast is safe, sfVertex has to be binary compatible with sf::Vertex
-    return reinterpret_cast<sfVertex*>(&vertexArray->This[index]);
+    return reinterpret_cast<sfVertex *>(&vertexArray->This[index]);
 }
 
-
-
-void sfVertexArray_clear(sfVertexArray* vertexArray)
-{
+void sfVertexArray_clear(sfVertexArray *vertexArray) {
     vertexArray->This.clear();
 }
 
-
-
-void sfVertexArray_resize(sfVertexArray* vertexArray, size_t vertexCount)
-{
+void sfVertexArray_resize(sfVertexArray *vertexArray, size_t vertexCount) {
     vertexArray->This.resize(vertexCount);
 }
 
-
-
-void sfVertexArray_append(sfVertexArray* vertexArray, sfVertex vertex)
-{
+void sfVertexArray_append(sfVertexArray *vertexArray, sfVertex vertex) {
     // the cast is safe, sfVertex has to be binary compatible with sf::Vertex
-    vertexArray->This.append(reinterpret_cast<sf::Vertex&>(vertex));
+    vertexArray->This.append(reinterpret_cast<sf::Vertex &>(vertex));
 }
 
-
-
-void sfVertexArray_setPrimitiveType(sfVertexArray* vertexArray, sfPrimitiveType type)
-{
+void sfVertexArray_setPrimitiveType(sfVertexArray *vertexArray, sfPrimitiveType type) {
     vertexArray->This.setPrimitiveType(static_cast<sf::PrimitiveType>(type));
 }
 
-
-
-sfPrimitiveType sfVertexArray_getPrimitiveType(sfVertexArray* vertexArray)
-{
+sfPrimitiveType sfVertexArray_getPrimitiveType(sfVertexArray *vertexArray) {
 
     return static_cast<sfPrimitiveType>(vertexArray->This.getPrimitiveType());
 }
 
-
-
-sfFloatRect sfVertexArray_getBounds(sfVertexArray* vertexArray)
-{
+sfFloatRect sfVertexArray_getBounds(sfVertexArray *vertexArray) {
     sfFloatRect rect = {0, 0, 0, 0};
-
 
     sf::FloatRect sfmlRect = vertexArray->This.getBounds();
     rect.left = sfmlRect.left;

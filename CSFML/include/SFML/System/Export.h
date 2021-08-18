@@ -21,28 +21,23 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #ifndef SFML_SYSTEM_EXPORT_H
 #define SFML_SYSTEM_EXPORT_H
-
 
 // Headers
 
 #include <SFML/Config.h>
 
-
-
 // Define portable import / export macros
 
 #if defined(CSFML_SYSTEM_EXPORTS)
 
-    #define CSFML_SYSTEM_API CSFML_API_EXPORT
+#define CSFML_SYSTEM_API CSFML_API_EXPORT
 
 #else
 
-    #define CSFML_SYSTEM_API CSFML_API_IMPORT
+#define CSFML_SYSTEM_API CSFML_API_IMPORT
 
 #endif
-
 
 #endif // SFML_SYSTEM_EXPORT_H

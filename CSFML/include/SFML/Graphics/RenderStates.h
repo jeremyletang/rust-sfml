@@ -21,30 +21,25 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #ifndef SFML_RENDERSTATES_H
 #define SFML_RENDERSTATES_H
 
-
 // Headers
 
-#include <SFML/Graphics/Export.h>
 #include <SFML/Graphics/BlendMode.h>
+#include <SFML/Graphics/Export.h>
 #include <SFML/Graphics/Transform.h>
 #include <SFML/Graphics/Types.h>
-
-
 
 /// \brief Define the states used for drawing to a RenderTarget
 ///
 
 typedef struct
 {
-    sfBlendMode      blendMode; ///< Blending mode
-    sfTransform      transform; ///< Transform
-    const sfTexture* texture;   ///< Texture
-    const sfShader*  shader;    ///< Shader
+    sfBlendMode blendMode;    ///< Blending mode
+    sfTransform transform;    ///< Transform
+    const sfTexture *texture; ///< Texture
+    const sfShader *shader;   ///< Shader
 } sfRenderStates;
-
 
 #endif // SFML_RENDERSTATES_H

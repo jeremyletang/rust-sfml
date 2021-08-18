@@ -21,52 +21,32 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
-
 // Headers
 
 #include <SFML/System/Clock.h>
 #include <SFML/System/ClockStruct.h>
 #include <cstddef>
 
-
-
-sfClock* sfClock_create(void)
-{
+sfClock *sfClock_create(void) {
     return new sfClock;
 }
 
-
-
-sfClock* sfClock_copy(const sfClock* clock)
-{
-
+sfClock *sfClock_copy(const sfClock *clock) {
 
     return new sfClock(*clock);
 }
 
-
-
-void sfClock_destroy(sfClock* clock)
-{
+void sfClock_destroy(sfClock *clock) {
     delete clock;
 }
 
-
-
-sfTime sfClock_getElapsedTime(const sfClock* clock)
-{
-
+sfTime sfClock_getElapsedTime(const sfClock *clock) {
 
     sf::Time time = clock->This.getElapsedTime();
     return sfMicroseconds(time.asMicroseconds());
 }
 
-
-
-sfTime sfClock_restart(sfClock* clock)
-{
-
+sfTime sfClock_restart(sfClock *clock) {
 
     sf::Time time = clock->This.restart();
     return sfMicroseconds(time.asMicroseconds());

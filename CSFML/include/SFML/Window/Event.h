@@ -21,10 +21,8 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #ifndef SFML_EVENT_H
 #define SFML_EVENT_H
-
 
 // Headers
 
@@ -34,13 +32,10 @@
 #include <SFML/Window/Mouse.h>
 #include <SFML/Window/Sensor.h>
 
-
-
 /// \brief Definition of all the event types
 ///
 
-typedef enum
-{
+typedef enum {
     sfEvtClosed,                 ///< The window requested to be closed (no data)
     sfEvtResized,                ///< The window was resized (data in event.size)
     sfEvtLostFocus,              ///< The window lost the focus (no data)
@@ -65,10 +60,8 @@ typedef enum
     sfEvtTouchEnded,             ///< A touch event ended (data in event.touch)
     sfEvtSensorChanged,          ///< A sensor value changed (data in event.sensor)
 
-    sfEvtCount,                  ///< Keep last -- the total number of event types
+    sfEvtCount, ///< Keep last -- the total number of event types
 } sfEventType;
-
-
 
 /// \brief Keyboard event parameters
 ///
@@ -76,13 +69,12 @@ typedef enum
 typedef struct
 {
     sfEventType type;
-    sfKeyCode   code;
-    sfBool      alt;
-    sfBool      control;
-    sfBool      shift;
-    sfBool      system;
+    sfKeyCode code;
+    sfBool alt;
+    sfBool control;
+    sfBool shift;
+    sfBool system;
 } sfKeyEvent;
-
 
 /// \brief Text event parameters
 ///
@@ -90,9 +82,8 @@ typedef struct
 typedef struct
 {
     sfEventType type;
-    sfUint32    unicode;
+    sfUint32 unicode;
 } sfTextEvent;
-
 
 /// \brief Mouse move event parameters
 ///
@@ -100,22 +91,20 @@ typedef struct
 typedef struct
 {
     sfEventType type;
-    int         x;
-    int         y;
+    int x;
+    int y;
 } sfMouseMoveEvent;
-
 
 /// \brief Mouse buttons events parameters
 ///
 
 typedef struct
 {
-    sfEventType   type;
+    sfEventType type;
     sfMouseButton button;
-    int           x;
-    int           y;
+    int x;
+    int y;
 } sfMouseButtonEvent;
-
 
 /// \brief Mouse wheel events parameters
 ///
@@ -123,116 +112,105 @@ typedef struct
 /// Use sfMouseWheelScrollEvent instead.
 ///
 
-typedef struct CSFML_DEPRECATED
-{
+typedef struct CSFML_DEPRECATED {
     sfEventType type;
-    int         delta;
-    int         x;
-    int         y;
+    int delta;
+    int x;
+    int y;
 } sfMouseWheelEvent;
-
 
 /// \brief Mouse wheel events parameters
 ///
 
 typedef struct
 {
-    sfEventType  type;
+    sfEventType type;
     sfMouseWheel wheel;
-    float        delta;
-    int          x;
-    int          y;
+    float delta;
+    int x;
+    int y;
 } sfMouseWheelScrollEvent;
-
 
 /// \brief Joystick axis move event parameters
 ///
 
 typedef struct
 {
-    sfEventType    type;
-    unsigned int   joystickId;
+    sfEventType type;
+    unsigned int joystickId;
     sfJoystickAxis axis;
-    float          position;
+    float position;
 } sfJoystickMoveEvent;
-
 
 /// \brief Joystick buttons events parameters
 ///
 
 typedef struct
 {
-    sfEventType  type;
+    sfEventType type;
     unsigned int joystickId;
     unsigned int button;
 } sfJoystickButtonEvent;
-
 
 /// \brief Joystick connection/disconnection event parameters
 ///
 
 typedef struct
 {
-    sfEventType  type;
+    sfEventType type;
     unsigned int joystickId;
 } sfJoystickConnectEvent;
-
 
 /// \brief Size events parameters
 ///
 
 typedef struct
 {
-    sfEventType  type;
+    sfEventType type;
     unsigned int width;
     unsigned int height;
 } sfSizeEvent;
-
 
 /// \brief Touch events parameters
 ///
 
 typedef struct
 {
-    sfEventType  type;
+    sfEventType type;
     unsigned int finger;
-    int          x;
-    int          y;
+    int x;
+    int y;
 } sfTouchEvent;
-
 
 /// \brief Sensor event parameters
 ///
 
 typedef struct
 {
-    sfEventType  type;
+    sfEventType type;
     sfSensorType sensorType;
-    float        x;
-    float        y;
-    float        z;
+    float x;
+    float y;
+    float z;
 } sfSensorEvent;
-
 
 /// \brief sfEvent defines a system event and its parameters
 ///
 
-typedef union
-{
-    sfEventType             type;             ///< Type of the event
-    sfSizeEvent             size;             ///< Size event parameters
-    sfKeyEvent              key;              ///< Key event parameters
-    sfTextEvent             text;             ///< Text event parameters
-    sfMouseMoveEvent        mouseMove;        ///< Mouse move event parameters
-    sfMouseButtonEvent      mouseButton;      ///< Mouse button event parameters
-    sfMouseWheelEvent       mouseWheel;       ///< Mouse wheel event parameters (deprecated)
+typedef union {
+    sfEventType type;                         ///< Type of the event
+    sfSizeEvent size;                         ///< Size event parameters
+    sfKeyEvent key;                           ///< Key event parameters
+    sfTextEvent text;                         ///< Text event parameters
+    sfMouseMoveEvent mouseMove;               ///< Mouse move event parameters
+    sfMouseButtonEvent mouseButton;           ///< Mouse button event parameters
+    sfMouseWheelEvent mouseWheel;             ///< Mouse wheel event parameters (deprecated)
     sfMouseWheelScrollEvent mouseWheelScroll; ///< Mouse wheel event parameters
-    sfJoystickMoveEvent     joystickMove;     ///< Joystick move event parameters
-    sfJoystickButtonEvent   joystickButton;   ///< Joystick button event parameters
-    sfJoystickConnectEvent  joystickConnect;  ///< Joystick (dis)connect event parameters
-    sfTouchEvent            touch;            ///< Touch events parameters
-    sfSensorEvent           sensor;           ///< Sensor event parameters
+    sfJoystickMoveEvent joystickMove;         ///< Joystick move event parameters
+    sfJoystickButtonEvent joystickButton;     ///< Joystick button event parameters
+    sfJoystickConnectEvent joystickConnect;   ///< Joystick (dis)connect event parameters
+    sfTouchEvent touch;                       ///< Touch events parameters
+    sfSensorEvent sensor;                     ///< Sensor event parameters
 } sfEvent;
-
 
 #endif // SFML_EVENT_H

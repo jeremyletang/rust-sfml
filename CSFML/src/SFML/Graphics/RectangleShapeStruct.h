@@ -21,10 +21,8 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #ifndef SFML_RECTANGLESHAPESTRUCT_H
 #define SFML_RECTANGLESHAPESTRUCT_H
-
 
 // Headers
 
@@ -32,17 +30,13 @@
 #include <SFML/Graphics/TextureStruct.h>
 #include <SFML/Graphics/Transform.h>
 
-
-
 // Internal structure of sfRectangleShape
 
-struct sfRectangleShape
-{
-    sf::RectangleShape  This;
-    const sfTexture*    Texture;
+struct sfRectangleShape {
+    sf::RectangleShape This;
+    const sfTexture *Texture;
     mutable sfTransform Transform;
     mutable sfTransform InverseTransform;
 };
-
 
 #endif // SFML_RECTANGLESHAPESTRUCT_H

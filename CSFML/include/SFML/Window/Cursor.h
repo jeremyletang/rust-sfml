@@ -21,18 +21,14 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #ifndef SFML_CURSOR_H
 #define SFML_CURSOR_H
-
 
 // Headers
 
 #include <SFML/System/Vector2.h>
 #include <SFML/Window/Export.h>
 #include <SFML/Window/Types.h>
-
-
 
 /// \brief Enumeration of the native system cursor types
 ///
@@ -56,8 +52,7 @@
 ///  sfCursorNotAllowed             |  yes  |    yes   |   yes
 ///
 
-typedef enum
-{
+typedef enum {
     sfCursorArrow,                  ///< Arrow cursor (default)
     sfCursorArrowWait,              ///< Busy arrow cursor
     sfCursorWait,                   ///< Busy cursor
@@ -72,8 +67,6 @@ typedef enum
     sfCursorHelp,                   ///< Help cursor
     sfCursorNotAllowed              ///< Action not allowed cursor
 } sfCursorType;
-
-
 
 /// \brief Create a cursor with the provided image
 ///
@@ -102,9 +95,7 @@ typedef enum
 /// \return A new sfCursor object
 ///
 
-CSFML_WINDOW_API sfCursor* sfCursor_createFromPixels(const sfUint8* pixels, sfVector2u size, sfVector2u hotspot);
-
-
+CSFML_WINDOW_API sfCursor *sfCursor_createFromPixels(const sfUint8 *pixels, sfVector2u size, sfVector2u hotspot);
 
 /// \brief Create a native system cursor
 ///
@@ -117,16 +108,13 @@ CSFML_WINDOW_API sfCursor* sfCursor_createFromPixels(const sfUint8* pixels, sfVe
 /// \return A new sfCursor object
 ///
 
-CSFML_WINDOW_API sfCursor* sfCursor_createFromSystem(sfCursorType type);
-
-
+CSFML_WINDOW_API sfCursor *sfCursor_createFromSystem(sfCursorType type);
 
 /// \brief Destroy a cursor
 ///
 /// \param cursor Cursor to destroy
 ///
 
-CSFML_WINDOW_API void sfCursor_destroy(sfCursor* cursor);
-
+CSFML_WINDOW_API void sfCursor_destroy(sfCursor *cursor);
 
 #endif // SFML_CURSOR_H

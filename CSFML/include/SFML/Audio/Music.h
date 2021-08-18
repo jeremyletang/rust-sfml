@@ -21,10 +21,8 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #ifndef SFML_MUSIC_H
 #define SFML_MUSIC_H
-
 
 // Headers
 
@@ -36,8 +34,6 @@
 #include <SFML/System/Vector3.h>
 #include <stddef.h>
 
-
-
 /// \brief Structure defining a time range
 ///
 
@@ -46,8 +42,6 @@ typedef struct
     sfTime offset; ///< The beginning offset of the time range
     sfTime length; ///< The length of the time range
 } sfTimeSpan;
-
-
 
 /// \brief Create a new music and load it from a file
 ///
@@ -62,8 +56,7 @@ typedef struct
 /// \return A new sfMusic object (NULL if failed)
 ///
 
-CSFML_AUDIO_API sfMusic* sfMusic_createFromFile(const char* filename);
-
+CSFML_AUDIO_API sfMusic *sfMusic_createFromFile(const char *filename);
 
 /// \brief Create a new music and load it from a file in memory
 ///
@@ -79,8 +72,7 @@ CSFML_AUDIO_API sfMusic* sfMusic_createFromFile(const char* filename);
 /// \return A new sfMusic object (NULL if failed)
 ///
 
-CSFML_AUDIO_API sfMusic* sfMusic_createFromMemory(const void* data, size_t sizeInBytes);
-
+CSFML_AUDIO_API sfMusic *sfMusic_createFromMemory(const void *data, size_t sizeInBytes);
 
 /// \brief Create a new music and load it from a custom stream
 ///
@@ -95,16 +87,14 @@ CSFML_AUDIO_API sfMusic* sfMusic_createFromMemory(const void* data, size_t sizeI
 /// \return A new sfMusic object (NULL if failed)
 ///
 
-CSFML_AUDIO_API sfMusic* sfMusic_createFromStream(sfInputStream* stream);
-
+CSFML_AUDIO_API sfMusic *sfMusic_createFromStream(sfInputStream *stream);
 
 /// \brief Destroy a music
 ///
 /// \param music Music to destroy
 ///
 
-CSFML_AUDIO_API void sfMusic_destroy(sfMusic* music);
-
+CSFML_AUDIO_API void sfMusic_destroy(sfMusic *music);
 
 /// \brief Set whether or not a music should loop after reaching the end
 ///
@@ -117,8 +107,7 @@ CSFML_AUDIO_API void sfMusic_destroy(sfMusic* music);
 /// \param loop  sfTrue to play in loop, sfFalse to play once
 ///
 
-CSFML_AUDIO_API void sfMusic_setLoop(sfMusic* music, sfBool loop);
-
+CSFML_AUDIO_API void sfMusic_setLoop(sfMusic *music, sfBool loop);
 
 /// \brief Tell whether or not a music is in loop mode
 ///
@@ -127,8 +116,7 @@ CSFML_AUDIO_API void sfMusic_setLoop(sfMusic* music, sfBool loop);
 /// \return sfTrue if the music is looping, sfFalse otherwise
 ///
 
-CSFML_AUDIO_API sfBool sfMusic_getLoop(const sfMusic* music);
-
+CSFML_AUDIO_API sfBool sfMusic_getLoop(const sfMusic *music);
 
 /// \brief Get the total duration of a music
 ///
@@ -137,8 +125,7 @@ CSFML_AUDIO_API sfBool sfMusic_getLoop(const sfMusic* music);
 /// \return Music duration
 ///
 
-CSFML_AUDIO_API sfTime sfMusic_getDuration(const sfMusic* music);
-
+CSFML_AUDIO_API sfTime sfMusic_getDuration(const sfMusic *music);
 
 /// \brief Get the positions of the of the sound's looping sequence
 ///
@@ -154,8 +141,7 @@ CSFML_AUDIO_API sfTime sfMusic_getDuration(const sfMusic* music);
 /// \see setLoopPoints
 ///
 
-CSFML_AUDIO_API sfTimeSpan sfMusic_getLoopPoints(const sfMusic* music);
-
+CSFML_AUDIO_API sfTimeSpan sfMusic_getLoopPoints(const sfMusic *music);
 
 /// \brief Sets the beginning and end of the sound's looping sequence using sf::Time
 ///
@@ -176,8 +162,7 @@ CSFML_AUDIO_API sfTimeSpan sfMusic_getLoopPoints(const sfMusic* music);
 /// \see getLoopPoints
 ///
 
-CSFML_AUDIO_API void sfMusic_setLoopPoints(sfMusic* music, sfTimeSpan timePoints);
-
+CSFML_AUDIO_API void sfMusic_setLoopPoints(sfMusic *music, sfTimeSpan timePoints);
 
 /// \brief Start or resume playing a music
 ///
@@ -190,8 +175,7 @@ CSFML_AUDIO_API void sfMusic_setLoopPoints(sfMusic* music, sfTimeSpan timePoints
 /// \param music Music object
 ///
 
-CSFML_AUDIO_API void sfMusic_play(sfMusic* music);
-
+CSFML_AUDIO_API void sfMusic_play(sfMusic *music);
 
 /// \brief Pause a music
 ///
@@ -201,8 +185,7 @@ CSFML_AUDIO_API void sfMusic_play(sfMusic* music);
 /// \param music Music object
 ///
 
-CSFML_AUDIO_API void sfMusic_pause(sfMusic* music);
-
+CSFML_AUDIO_API void sfMusic_pause(sfMusic *music);
 
 /// \brief Stop playing a music
 ///
@@ -213,8 +196,7 @@ CSFML_AUDIO_API void sfMusic_pause(sfMusic* music);
 /// \param music Music object
 ///
 
-CSFML_AUDIO_API void sfMusic_stop(sfMusic* music);
-
+CSFML_AUDIO_API void sfMusic_stop(sfMusic *music);
 
 /// \brief Return the number of channels of a music
 ///
@@ -225,8 +207,7 @@ CSFML_AUDIO_API void sfMusic_stop(sfMusic* music);
 /// \return Number of channels
 ///
 
-CSFML_AUDIO_API unsigned int sfMusic_getChannelCount(const sfMusic* music);
-
+CSFML_AUDIO_API unsigned int sfMusic_getChannelCount(const sfMusic *music);
 
 /// \brief Get the sample rate of a music
 ///
@@ -238,8 +219,7 @@ CSFML_AUDIO_API unsigned int sfMusic_getChannelCount(const sfMusic* music);
 /// \return Sample rate, in number of samples per second
 ///
 
-CSFML_AUDIO_API unsigned int sfMusic_getSampleRate(const sfMusic* music);
-
+CSFML_AUDIO_API unsigned int sfMusic_getSampleRate(const sfMusic *music);
 
 /// \brief Get the current status of a music (stopped, paused, playing)
 ///
@@ -248,8 +228,7 @@ CSFML_AUDIO_API unsigned int sfMusic_getSampleRate(const sfMusic* music);
 /// \return Current status
 ///
 
-CSFML_AUDIO_API sfSoundStatus sfMusic_getStatus(const sfMusic* music);
-
+CSFML_AUDIO_API sfSoundStatus sfMusic_getStatus(const sfMusic *music);
 
 /// \brief Get the current playing position of a music
 ///
@@ -258,8 +237,7 @@ CSFML_AUDIO_API sfSoundStatus sfMusic_getStatus(const sfMusic* music);
 /// \return Current playing position
 ///
 
-CSFML_AUDIO_API sfTime sfMusic_getPlayingOffset(const sfMusic* music);
-
+CSFML_AUDIO_API sfTime sfMusic_getPlayingOffset(const sfMusic *music);
 
 /// \brief Set the pitch of a music
 ///
@@ -273,8 +251,7 @@ CSFML_AUDIO_API sfTime sfMusic_getPlayingOffset(const sfMusic* music);
 /// \param pitch New pitch to apply to the music
 ///
 
-CSFML_AUDIO_API void sfMusic_setPitch(sfMusic* music, float pitch);
-
+CSFML_AUDIO_API void sfMusic_setPitch(sfMusic *music, float pitch);
 
 /// \brief Set the volume of a music
 ///
@@ -285,8 +262,7 @@ CSFML_AUDIO_API void sfMusic_setPitch(sfMusic* music, float pitch);
 /// \param volume Volume of the music
 ///
 
-CSFML_AUDIO_API void sfMusic_setVolume(sfMusic* music, float volume);
-
+CSFML_AUDIO_API void sfMusic_setVolume(sfMusic *music, float volume);
 
 /// \brief Set the 3D position of a music in the audio scene
 ///
@@ -298,8 +274,7 @@ CSFML_AUDIO_API void sfMusic_setVolume(sfMusic* music, float volume);
 /// \param position Position of the music in the scene
 ///
 
-CSFML_AUDIO_API void sfMusic_setPosition(sfMusic* music, sfVector3f position);
-
+CSFML_AUDIO_API void sfMusic_setPosition(sfMusic *music, sfVector3f position);
 
 /// \brief Make a musics's position relative to the listener or absolute
 ///
@@ -313,8 +288,7 @@ CSFML_AUDIO_API void sfMusic_setPosition(sfMusic* music, sfVector3f position);
 /// \param relative sfTrue to set the position relative, sfFalse to set it absolute
 ///
 
-CSFML_AUDIO_API void sfMusic_setRelativeToListener(sfMusic* music, sfBool relative);
-
+CSFML_AUDIO_API void sfMusic_setRelativeToListener(sfMusic *music, sfBool relative);
 
 /// \brief Set the minimum distance of a music
 ///
@@ -329,8 +303,7 @@ CSFML_AUDIO_API void sfMusic_setRelativeToListener(sfMusic* music, sfBool relati
 /// \param distance New minimum distance of the music
 ///
 
-CSFML_AUDIO_API void sfMusic_setMinDistance(sfMusic* music, float distance);
-
+CSFML_AUDIO_API void sfMusic_setMinDistance(sfMusic *music, float distance);
 
 /// \brief Set the attenuation factor of a music
 ///
@@ -347,8 +320,7 @@ CSFML_AUDIO_API void sfMusic_setMinDistance(sfMusic* music, float distance);
 /// \param attenuation New attenuation factor of the music
 ///
 
-CSFML_AUDIO_API void sfMusic_setAttenuation(sfMusic* music, float attenuation);
-
+CSFML_AUDIO_API void sfMusic_setAttenuation(sfMusic *music, float attenuation);
 
 /// \brief Change the current playing position of a music
 ///
@@ -359,8 +331,7 @@ CSFML_AUDIO_API void sfMusic_setAttenuation(sfMusic* music, float attenuation);
 /// \param timeOffset New playing position
 ///
 
-CSFML_AUDIO_API void sfMusic_setPlayingOffset(sfMusic* music, sfTime timeOffset);
-
+CSFML_AUDIO_API void sfMusic_setPlayingOffset(sfMusic *music, sfTime timeOffset);
 
 /// \brief Get the pitch of a music
 ///
@@ -369,8 +340,7 @@ CSFML_AUDIO_API void sfMusic_setPlayingOffset(sfMusic* music, sfTime timeOffset)
 /// \return Pitch of the music
 ///
 
-CSFML_AUDIO_API float sfMusic_getPitch(const sfMusic* music);
-
+CSFML_AUDIO_API float sfMusic_getPitch(const sfMusic *music);
 
 /// \brief Get the volume of a music
 ///
@@ -379,8 +349,7 @@ CSFML_AUDIO_API float sfMusic_getPitch(const sfMusic* music);
 /// \return Volume of the music, in the range [0, 100]
 ///
 
-CSFML_AUDIO_API float sfMusic_getVolume(const sfMusic* music);
-
+CSFML_AUDIO_API float sfMusic_getVolume(const sfMusic *music);
 
 /// \brief Get the 3D position of a music in the audio scene
 ///
@@ -389,8 +358,7 @@ CSFML_AUDIO_API float sfMusic_getVolume(const sfMusic* music);
 /// \return Position of the music in the world
 ///
 
-CSFML_AUDIO_API sfVector3f sfMusic_getPosition(const sfMusic* music);
-
+CSFML_AUDIO_API sfVector3f sfMusic_getPosition(const sfMusic *music);
 
 /// \brief Tell whether a music's position is relative to the
 ///        listener or is absolute
@@ -400,8 +368,7 @@ CSFML_AUDIO_API sfVector3f sfMusic_getPosition(const sfMusic* music);
 /// \return sfTrue if the position is relative, sfFalse if it's absolute
 ///
 
-CSFML_AUDIO_API sfBool sfMusic_isRelativeToListener(const sfMusic* music);
-
+CSFML_AUDIO_API sfBool sfMusic_isRelativeToListener(const sfMusic *music);
 
 /// \brief Get the minimum distance of a music
 ///
@@ -410,8 +377,7 @@ CSFML_AUDIO_API sfBool sfMusic_isRelativeToListener(const sfMusic* music);
 /// \return Minimum distance of the music
 ///
 
-CSFML_AUDIO_API float sfMusic_getMinDistance(const sfMusic* music);
-
+CSFML_AUDIO_API float sfMusic_getMinDistance(const sfMusic *music);
 
 /// \brief Get the attenuation factor of a music
 ///
@@ -420,7 +386,6 @@ CSFML_AUDIO_API float sfMusic_getMinDistance(const sfMusic* music);
 /// \return Attenuation factor of the music
 ///
 
-CSFML_AUDIO_API float sfMusic_getAttenuation(const sfMusic* music);
-
+CSFML_AUDIO_API float sfMusic_getAttenuation(const sfMusic *music);
 
 #endif // SFML_MUSIC_H

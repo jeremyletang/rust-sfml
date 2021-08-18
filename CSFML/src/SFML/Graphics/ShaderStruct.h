@@ -21,23 +21,17 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #ifndef SFML_SHADERSTRUCT_H
 #define SFML_SHADERSTRUCT_H
-
 
 // Headers
 
 #include <SFML/Graphics/Shader.hpp>
 
-
-
 // Internal structure of sfShader
 
-struct sfShader
-{
+struct sfShader {
     sf::Shader This;
 };
-
 
 #endif // SFML_SHADERSTRUCT_H

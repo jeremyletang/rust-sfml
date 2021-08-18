@@ -21,26 +21,20 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #ifndef SFML_RENDERWINDOWSTRUCT_H
 #define SFML_RENDERWINDOWSTRUCT_H
-
 
 // Headers
 
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/ViewStruct.h>
 
-
-
 // Internal structure of sfRenderWindow
 
-struct sfRenderWindow
-{
+struct sfRenderWindow {
     sf::RenderWindow This;
-    sfView           DefaultView;
-    sfView           CurrentView;
+    sfView DefaultView;
+    sfView CurrentView;
 };
-
 
 #endif // SFML_RENDERWINDOWSTRUCT_H

@@ -21,61 +21,48 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
-
 // Headers
 
+#include <SFML/Graphics/ConvertTransform.hpp>
 #include <SFML/Graphics/Transform.h>
 #include <SFML/Graphics/Transform.hpp>
-#include <SFML/Graphics/ConvertTransform.hpp>
 #include <cstddef>
 #include <cstring>
 
-
-
 const sfTransform sfTransform_Identity =
-{
-    1, 0, 0,
-    0, 1, 0,
-    0, 0, 1,
+    {
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1,
 };
-
-
 
 sfTransform sfTransform_fromMatrix(float a00, float a01, float a02,
                                    float a10, float a11, float a12,
-                                   float a20, float a21, float a22)
-{
+                                   float a20, float a21, float a22) {
     sfTransform transform = {a00, a01, a02, a10, a11, a12, a20, a21, a22};
     return transform;
 }
 
-
-
-void sfTransform_getMatrix(const sfTransform* transform, float* matrix)
-{
-
+void sfTransform_getMatrix(const sfTransform *transform, float *matrix) {
 
     sf::Transform converted = convertTransform(*transform);
     if (matrix)
         std::memcpy(matrix, converted.getMatrix(), 16 * sizeof(float));
 }
 
-
-
-sfTransform sfTransform_getInverse(const sfTransform* transform)
-{
-
+sfTransform sfTransform_getInverse(const sfTransform *transform) {
 
     return convertTransform(convertTransform(*transform).getInverse());
 }
 
-
-
-sfVector2f sfTransform_transformPoint(const sfTransform* transform, sfVector2f point)
-{
+sfVector2f sfTransform_transformPoint(const sfTransform *transform, sfVector2f point) {
     sfVector2f p = {0, 0};
-
 
     sf::Vector2f sfmlPoint = convertTransform(*transform).transformPoint(point.x, point.y);
 
@@ -85,12 +72,8 @@ sfVector2f sfTransform_transformPoint(const sfTransform* transform, sfVector2f p
     return p;
 }
 
-
-
-sfFloatRect sfTransform_transformRect(const sfTransform* transform, sfFloatRect rectangle)
-{
+sfFloatRect sfTransform_transformRect(const sfTransform *transform, sfFloatRect rectangle) {
     sfFloatRect rect = {0, 0, 0, 0};
-
 
     sf::FloatRect sfmlRect = convertTransform(*transform).transformRect(sf::FloatRect(rectangle.left, rectangle.top, rectangle.width, rectangle.height));
 
@@ -102,68 +85,37 @@ sfFloatRect sfTransform_transformRect(const sfTransform* transform, sfFloatRect 
     return rect;
 }
 
-
-
-void sfTransform_combine(sfTransform* transform, const sfTransform* other)
-{
-
-
+void sfTransform_combine(sfTransform *transform, const sfTransform *other) {
 
     *transform = convertTransform(convertTransform(*transform).combine(convertTransform(*other)));
 }
 
-
-
-void sfTransform_translate(sfTransform* transform, float x, float y)
-{
-
+void sfTransform_translate(sfTransform *transform, float x, float y) {
 
     *transform = convertTransform(convertTransform(*transform).translate(x, y));
 }
 
-
-
-void sfTransform_rotate(sfTransform* transform, float angle)
-{
-
+void sfTransform_rotate(sfTransform *transform, float angle) {
 
     *transform = convertTransform(convertTransform(*transform).rotate(angle));
 }
 
-
-
-void sfTransform_rotateWithCenter(sfTransform* transform, float angle, float centerX, float centerY)
-{
-
+void sfTransform_rotateWithCenter(sfTransform *transform, float angle, float centerX, float centerY) {
 
     *transform = convertTransform(convertTransform(*transform).rotate(angle, centerX, centerY));
 }
 
-
-
-void sfTransform_scale(sfTransform* transform, float scaleX, float scaleY)
-{
-
+void sfTransform_scale(sfTransform *transform, float scaleX, float scaleY) {
 
     *transform = convertTransform(convertTransform(*transform).scale(scaleX, scaleY));
 }
 
-
-
-void sfTransform_scaleWithCenter(sfTransform* transform, float scaleX, float scaleY, float centerX, float centerY)
-{
-
+void sfTransform_scaleWithCenter(sfTransform *transform, float scaleX, float scaleY, float centerX, float centerY) {
 
     *transform = convertTransform(convertTransform(*transform).scale(scaleX, scaleY, centerX, centerY));
 }
 
-
-
-sfBool sfTransform_equal(sfTransform* left, sfTransform* right)
-{
-
-
+sfBool sfTransform_equal(sfTransform *left, sfTransform *right) {
 
     return (left->matrix == right->matrix) ? sfTrue : sfFalse;
 }
-

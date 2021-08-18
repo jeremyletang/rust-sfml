@@ -21,25 +21,19 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #ifndef SFML_MUSICSTRUCT_H
 #define SFML_MUSICSTRUCT_H
-
 
 // Headers
 
 #include <SFML/Audio/Music.hpp>
 #include <SFML/CallbackStream.h>
 
-
-
 // Internal structure of sfMusic
 
-struct sfMusic
-{
+struct sfMusic {
     sf::Music This;
     CallbackStream Stream;
 };
-
 
 #endif // SFML_MUSICSTRUCT_H

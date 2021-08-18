@@ -21,23 +21,17 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #ifndef SFML_CLOCKSTRUCT_H
 #define SFML_CLOCKSTRUCT_H
-
 
 // Headers
 
 #include <SFML/System/Clock.hpp>
 
-
-
 // Internal structure of sfClock
 
-struct sfClock
-{
+struct sfClock {
     sf::Clock This;
 };
-
 
 #endif // SFML_CLOCKSTRUCT_H

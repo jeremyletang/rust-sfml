@@ -21,30 +21,25 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #ifndef SFML_SPRITE_H
 #define SFML_SPRITE_H
 
-
 // Headers
 
-#include <SFML/Graphics/Export.h>
 #include <SFML/Graphics/BlendMode.h>
 #include <SFML/Graphics/Color.h>
+#include <SFML/Graphics/Export.h>
 #include <SFML/Graphics/Rect.h>
 #include <SFML/Graphics/Transform.h>
 #include <SFML/Graphics/Types.h>
 #include <SFML/System/Vector2.h>
-
-
 
 /// \brief Create a new sprite
 ///
 /// \return A new sfSprite object, or NULL if it failed
 ///
 
-CSFML_GRAPHICS_API sfSprite* sfSprite_create(void);
-
+CSFML_GRAPHICS_API sfSprite *sfSprite_create(void);
 
 /// \brief Copy an existing sprite
 ///
@@ -53,16 +48,14 @@ CSFML_GRAPHICS_API sfSprite* sfSprite_create(void);
 /// \return Copied object
 ///
 
-CSFML_GRAPHICS_API sfSprite* sfSprite_copy(const sfSprite* sprite);
-
+CSFML_GRAPHICS_API sfSprite *sfSprite_copy(const sfSprite *sprite);
 
 /// \brief Destroy an existing sprite
 ///
 /// \param sprite Sprite to delete
 ///
 
-CSFML_GRAPHICS_API void sfSprite_destroy(sfSprite* sprite);
-
+CSFML_GRAPHICS_API void sfSprite_destroy(sfSprite *sprite);
 
 /// \brief Set the position of a sprite
 ///
@@ -74,8 +67,7 @@ CSFML_GRAPHICS_API void sfSprite_destroy(sfSprite* sprite);
 /// \param position New position
 ///
 
-CSFML_GRAPHICS_API void sfSprite_setPosition(sfSprite* sprite, sfVector2f position);
-
+CSFML_GRAPHICS_API void sfSprite_setPosition(sfSprite *sprite, sfVector2f position);
 
 /// \brief Set the orientation of a sprite
 ///
@@ -87,8 +79,7 @@ CSFML_GRAPHICS_API void sfSprite_setPosition(sfSprite* sprite, sfVector2f positi
 /// \param angle  New rotation, in degrees
 ///
 
-CSFML_GRAPHICS_API void sfSprite_setRotation(sfSprite* sprite, float angle);
-
+CSFML_GRAPHICS_API void sfSprite_setRotation(sfSprite *sprite, float angle);
 
 /// \brief Set the scale factors of a sprite
 ///
@@ -100,8 +91,7 @@ CSFML_GRAPHICS_API void sfSprite_setRotation(sfSprite* sprite, float angle);
 /// \param scale  New scale factors
 ///
 
-CSFML_GRAPHICS_API void sfSprite_setScale(sfSprite* sprite, sfVector2f scale);
-
+CSFML_GRAPHICS_API void sfSprite_setScale(sfSprite *sprite, sfVector2f scale);
 
 /// \brief Set the local origin of a sprite
 ///
@@ -116,8 +106,7 @@ CSFML_GRAPHICS_API void sfSprite_setScale(sfSprite* sprite, sfVector2f scale);
 /// \param origin New origin
 ///
 
-CSFML_GRAPHICS_API void sfSprite_setOrigin(sfSprite* sprite, sfVector2f origin);
-
+CSFML_GRAPHICS_API void sfSprite_setOrigin(sfSprite *sprite, sfVector2f origin);
 
 /// \brief Get the position of a sprite
 ///
@@ -126,8 +115,7 @@ CSFML_GRAPHICS_API void sfSprite_setOrigin(sfSprite* sprite, sfVector2f origin);
 /// \return Current position
 ///
 
-CSFML_GRAPHICS_API sfVector2f sfSprite_getPosition(const sfSprite* sprite);
-
+CSFML_GRAPHICS_API sfVector2f sfSprite_getPosition(const sfSprite *sprite);
 
 /// \brief Get the orientation of a sprite
 ///
@@ -138,8 +126,7 @@ CSFML_GRAPHICS_API sfVector2f sfSprite_getPosition(const sfSprite* sprite);
 /// \return Current rotation, in degrees
 ///
 
-CSFML_GRAPHICS_API float sfSprite_getRotation(const sfSprite* sprite);
-
+CSFML_GRAPHICS_API float sfSprite_getRotation(const sfSprite *sprite);
 
 /// \brief Get the current scale of a sprite
 ///
@@ -148,8 +135,7 @@ CSFML_GRAPHICS_API float sfSprite_getRotation(const sfSprite* sprite);
 /// \return Current scale factors
 ///
 
-CSFML_GRAPHICS_API sfVector2f sfSprite_getScale(const sfSprite* sprite);
-
+CSFML_GRAPHICS_API sfVector2f sfSprite_getScale(const sfSprite *sprite);
 
 /// \brief Get the local origin of a sprite
 ///
@@ -158,8 +144,7 @@ CSFML_GRAPHICS_API sfVector2f sfSprite_getScale(const sfSprite* sprite);
 /// \return Current origin
 ///
 
-CSFML_GRAPHICS_API sfVector2f sfSprite_getOrigin(const sfSprite* sprite);
-
+CSFML_GRAPHICS_API sfVector2f sfSprite_getOrigin(const sfSprite *sprite);
 
 /// \brief Move a sprite by a given offset
 ///
@@ -170,8 +155,7 @@ CSFML_GRAPHICS_API sfVector2f sfSprite_getOrigin(const sfSprite* sprite);
 /// \param offset Offset
 ///
 
-CSFML_GRAPHICS_API void sfSprite_move(sfSprite* sprite, sfVector2f offset);
-
+CSFML_GRAPHICS_API void sfSprite_move(sfSprite *sprite, sfVector2f offset);
 
 /// \brief Rotate a sprite
 ///
@@ -182,8 +166,7 @@ CSFML_GRAPHICS_API void sfSprite_move(sfSprite* sprite, sfVector2f offset);
 /// \param angle  Angle of rotation, in degrees
 ///
 
-CSFML_GRAPHICS_API void sfSprite_rotate(sfSprite* sprite, float angle);
-
+CSFML_GRAPHICS_API void sfSprite_rotate(sfSprite *sprite, float angle);
 
 /// \brief Scale a sprite
 ///
@@ -194,8 +177,7 @@ CSFML_GRAPHICS_API void sfSprite_rotate(sfSprite* sprite, float angle);
 /// \param factors Scale factors
 ///
 
-CSFML_GRAPHICS_API void sfSprite_scale(sfSprite* sprite, sfVector2f factors);
-
+CSFML_GRAPHICS_API void sfSprite_scale(sfSprite *sprite, sfVector2f factors);
 
 /// \brief Get the combined transform of a sprite
 ///
@@ -204,8 +186,7 @@ CSFML_GRAPHICS_API void sfSprite_scale(sfSprite* sprite, sfVector2f factors);
 /// \return Transform combining the position/rotation/scale/origin of the object
 ///
 
-CSFML_GRAPHICS_API sfTransform sfSprite_getTransform(const sfSprite* sprite);
-
+CSFML_GRAPHICS_API sfTransform sfSprite_getTransform(const sfSprite *sprite);
 
 /// \brief Get the inverse of the combined transform of a sprite
 ///
@@ -214,8 +195,7 @@ CSFML_GRAPHICS_API sfTransform sfSprite_getTransform(const sfSprite* sprite);
 /// \return Inverse of the combined transformations applied to the object
 ///
 
-CSFML_GRAPHICS_API sfTransform sfSprite_getInverseTransform(const sfSprite* sprite);
-
+CSFML_GRAPHICS_API sfTransform sfSprite_getInverseTransform(const sfSprite *sprite);
 
 /// \brief Change the source texture of a sprite
 ///
@@ -234,8 +214,7 @@ CSFML_GRAPHICS_API sfTransform sfSprite_getInverseTransform(const sfSprite* spri
 /// \param resetRect Should the texture rect be reset to the size of the new texture?
 ///
 
-CSFML_GRAPHICS_API void sfSprite_setTexture(sfSprite* sprite, const sfTexture* texture, sfBool resetRect);
-
+CSFML_GRAPHICS_API void sfSprite_setTexture(sfSprite *sprite, const sfTexture *texture, sfBool resetRect);
 
 /// \brief Set the sub-rectangle of the texture that a sprite will display
 ///
@@ -247,8 +226,7 @@ CSFML_GRAPHICS_API void sfSprite_setTexture(sfSprite* sprite, const sfTexture* t
 /// \param rectangle Rectangle defining the region of the texture to display
 ///
 
-CSFML_GRAPHICS_API void sfSprite_setTextureRect(sfSprite* sprite, sfIntRect rectangle);
-
+CSFML_GRAPHICS_API void sfSprite_setTextureRect(sfSprite *sprite, sfIntRect rectangle);
 
 /// \brief Set the global color of a sprite
 ///
@@ -261,8 +239,7 @@ CSFML_GRAPHICS_API void sfSprite_setTextureRect(sfSprite* sprite, sfIntRect rect
 /// \param color  New color of the sprite
 ///
 
-CSFML_GRAPHICS_API void sfSprite_setColor(sfSprite* sprite, sfColor color);
-
+CSFML_GRAPHICS_API void sfSprite_setColor(sfSprite *sprite, sfColor color);
 
 /// \brief Get the source texture of a sprite
 ///
@@ -275,8 +252,7 @@ CSFML_GRAPHICS_API void sfSprite_setColor(sfSprite* sprite, sfColor color);
 /// \return Pointer to the sprite's texture
 ///
 
-CSFML_GRAPHICS_API const sfTexture* sfSprite_getTexture(const sfSprite* sprite);
-
+CSFML_GRAPHICS_API const sfTexture *sfSprite_getTexture(const sfSprite *sprite);
 
 /// \brief Get the sub-rectangle of the texture displayed by a sprite
 ///
@@ -285,8 +261,7 @@ CSFML_GRAPHICS_API const sfTexture* sfSprite_getTexture(const sfSprite* sprite);
 /// \return Texture rectangle of the sprite
 ///
 
-CSFML_GRAPHICS_API sfIntRect sfSprite_getTextureRect(const sfSprite* sprite);
-
+CSFML_GRAPHICS_API sfIntRect sfSprite_getTextureRect(const sfSprite *sprite);
 
 /// \brief Get the global color of a sprite
 ///
@@ -295,8 +270,7 @@ CSFML_GRAPHICS_API sfIntRect sfSprite_getTextureRect(const sfSprite* sprite);
 /// \return Global color of the sprite
 ///
 
-CSFML_GRAPHICS_API sfColor sfSprite_getColor(const sfSprite* sprite);
-
+CSFML_GRAPHICS_API sfColor sfSprite_getColor(const sfSprite *sprite);
 
 /// \brief Get the local bounding rectangle of a sprite
 ///
@@ -311,8 +285,7 @@ CSFML_GRAPHICS_API sfColor sfSprite_getColor(const sfSprite* sprite);
 /// \return Local bounding rectangle of the entity
 ///
 
-CSFML_GRAPHICS_API sfFloatRect sfSprite_getLocalBounds(const sfSprite* sprite);
-
+CSFML_GRAPHICS_API sfFloatRect sfSprite_getLocalBounds(const sfSprite *sprite);
 
 /// \brief Get the global bounding rectangle of a sprite
 ///
@@ -327,7 +300,6 @@ CSFML_GRAPHICS_API sfFloatRect sfSprite_getLocalBounds(const sfSprite* sprite);
 /// \return Global bounding rectangle of the entity
 ///
 
-CSFML_GRAPHICS_API sfFloatRect sfSprite_getGlobalBounds(const sfSprite* sprite);
-
+CSFML_GRAPHICS_API sfFloatRect sfSprite_getGlobalBounds(const sfSprite *sprite);
 
 #endif // SFML_SPRITE_H

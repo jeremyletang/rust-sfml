@@ -21,23 +21,17 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #ifndef SFML_IMAGESTRUCT_H
 #define SFML_IMAGESTRUCT_H
-
 
 // Headers
 
 #include <SFML/Graphics/Image.hpp>
 
-
-
 // Internal structure of sfImage
 
-struct sfImage
-{
+struct sfImage {
     sf::Image This;
 };
-
 
 #endif // SFML_IMAGESTRUCT_H

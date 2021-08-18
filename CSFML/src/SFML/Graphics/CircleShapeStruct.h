@@ -21,10 +21,8 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #ifndef SFML_CIRCLESHAPESTRUCT_H
 #define SFML_CIRCLESHAPESTRUCT_H
-
 
 // Headers
 
@@ -32,17 +30,13 @@
 #include <SFML/Graphics/TextureStruct.h>
 #include <SFML/Graphics/Transform.h>
 
-
-
 // Internal structure of sfCircleShape
 
-struct sfCircleShape
-{
-    sf::CircleShape     This;
-    const sfTexture*    Texture;
+struct sfCircleShape {
+    sf::CircleShape This;
+    const sfTexture *Texture;
     mutable sfTransform Transform;
     mutable sfTransform InverseTransform;
 };
-
 
 #endif // SFML_CIRCLESHAPESTRUCT_H

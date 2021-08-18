@@ -21,48 +21,38 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #ifndef SFML_TEXTURESTRUCT_H
 #define SFML_TEXTURESTRUCT_H
-
 
 // Headers
 
 #include <SFML/Graphics/Texture.hpp>
 
-
-
 // Internal structure of sfTexture
 
-struct sfTexture
-{
-    sfTexture()
-    {
+struct sfTexture {
+    sfTexture() {
         This = new sf::Texture;
         OwnInstance = true;
     }
 
-    sfTexture(sf::Texture* texture)
-    {
+    sfTexture(sf::Texture *texture) {
         This = texture;
         OwnInstance = false;
     }
 
-    sfTexture(const sfTexture& texture)
-    {
+    sfTexture(const sfTexture &texture) {
         This = texture.This ? new sf::Texture(*texture.This) : NULL;
         OwnInstance = true;
     }
 
-    ~sfTexture()
-    {
+    ~sfTexture() {
         if (OwnInstance)
             delete This;
     }
 
-    sf::Texture* This;
+    sf::Texture *This;
     bool OwnInstance;
 };
-
 
 #endif // SFML_TEXTURESTRUCT_H

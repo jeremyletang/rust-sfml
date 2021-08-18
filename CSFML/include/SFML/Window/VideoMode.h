@@ -21,17 +21,13 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #ifndef SFML_VIDEOMODE_H
 #define SFML_VIDEOMODE_H
-
 
 // Headers
 
 #include <SFML/Window/Export.h>
 #include <stddef.h>
-
-
 
 /// \brief sfVideoMode defines a video mode (width, height, bpp, frequency)
 ///        and provides functions for getting modes supported
@@ -45,15 +41,12 @@ typedef struct
     unsigned int bitsPerPixel; ///< Video mode pixel depth, in bits per pixels
 } sfVideoMode;
 
-
-
 /// \brief Get the current desktop video mode
 ///
 /// \return Current desktop video mode
 ///
 
 CSFML_WINDOW_API sfVideoMode sfVideoMode_getDesktopMode(void);
-
 
 /// \brief Retrieve all the video modes supported in fullscreen mode
 ///
@@ -70,8 +63,7 @@ CSFML_WINDOW_API sfVideoMode sfVideoMode_getDesktopMode(void);
 /// \return Pointer to an array containing all the supported fullscreen modes
 ///
 
-CSFML_WINDOW_API const sfVideoMode* sfVideoMode_getFullscreenModes(size_t* count);
-
+CSFML_WINDOW_API const sfVideoMode *sfVideoMode_getFullscreenModes(size_t *count);
 
 /// \brief Tell whether or not a video mode is valid
 ///
@@ -85,6 +77,5 @@ CSFML_WINDOW_API const sfVideoMode* sfVideoMode_getFullscreenModes(size_t* count
 ///
 
 CSFML_WINDOW_API sfBool sfVideoMode_isValid(sfVideoMode mode);
-
 
 #endif // SFML_VIDEOMODE_H

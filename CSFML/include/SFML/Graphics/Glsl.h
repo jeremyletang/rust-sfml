@@ -21,15 +21,13 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #ifndef SFML_GLSL_H
 #define SFML_GLSL_H
 
-
 // Headers
 
-#include <SFML/Graphics/Transform.h>
 #include <SFML/Graphics/Color.h>
+#include <SFML/Graphics/Transform.h>
 #include <SFML/System/Vector2.h>
 #include <SFML/System/Vector3.h>
 
@@ -95,6 +93,5 @@ typedef struct
 {
     float array[4 * 4];
 } sfGlslMat4;
-
 
 #endif // SFML_GLSL_H

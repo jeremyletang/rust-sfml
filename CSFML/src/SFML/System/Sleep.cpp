@@ -21,17 +21,12 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
-
 // Headers
 
 #include <SFML/System/Sleep.h>
 #include <SFML/System/Sleep.hpp>
 #include <cstddef>
 
-
-
-void sfSleep(sfTime duration)
-{
+void sfSleep(sfTime duration) {
     sf::sleep(sf::microseconds(duration.microseconds));
 }

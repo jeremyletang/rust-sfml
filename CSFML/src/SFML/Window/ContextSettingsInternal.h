@@ -21,55 +21,47 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #ifndef SFML_CONTEXTSETTINGSINTERNAL_H
 #define SFML_CONTEXTSETTINGSINTERNAL_H
-
 
 // Headers
 
 #include <SFML/Window.h>
 #include <SFML/Window.hpp>
 
-namespace priv
-{
-    
-    // Create a "null" sfContextSettings that's returned in case of an error.
-    
-    inline sfContextSettings sfContextSettings_null()
-    {
-        sfContextSettings settings = {0, 0, 0, 0, 0, 0, sfFalse};
+namespace priv {
 
-        return settings;
-    }
+// Create a "null" sfContextSettings that's returned in case of an error.
 
-    
-    // Read the data of an sf::ContextSettings into an sfContextSettings
-    
-    inline void sfContextSettings_readFromCpp(const sf::ContextSettings& from, sfContextSettings& to)
-    {
-        to.depthBits         = from.depthBits;
-        to.stencilBits       = from.stencilBits;
-        to.antialiasingLevel = from.antialiasingLevel;
-        to.majorVersion      = from.majorVersion;
-        to.minorVersion      = from.minorVersion;
-        to.attributeFlags    = from.attributeFlags;
-        to.sRgbCapable       = from.sRgbCapable ? sfTrue : sfFalse;
-    }
+inline sfContextSettings sfContextSettings_null() {
+    sfContextSettings settings = {0, 0, 0, 0, 0, 0, sfFalse};
 
-    
-    // Write the data of an sfContextSettings into an sf::ContextSettings
-    
-    inline void sfContextSettings_writeToCpp(const sfContextSettings& from, sf::ContextSettings& to)
-    {
-        to.depthBits         = from.depthBits;
-        to.stencilBits       = from.stencilBits;
-        to.antialiasingLevel = from.antialiasingLevel;
-        to.majorVersion      = from.majorVersion;
-        to.minorVersion      = from.minorVersion;
-        to.attributeFlags    = from.attributeFlags;
-        to.sRgbCapable       = from.sRgbCapable == sfTrue;
-    }
+    return settings;
 }
+
+// Read the data of an sf::ContextSettings into an sfContextSettings
+
+inline void sfContextSettings_readFromCpp(const sf::ContextSettings &from, sfContextSettings &to) {
+    to.depthBits = from.depthBits;
+    to.stencilBits = from.stencilBits;
+    to.antialiasingLevel = from.antialiasingLevel;
+    to.majorVersion = from.majorVersion;
+    to.minorVersion = from.minorVersion;
+    to.attributeFlags = from.attributeFlags;
+    to.sRgbCapable = from.sRgbCapable ? sfTrue : sfFalse;
+}
+
+// Write the data of an sfContextSettings into an sf::ContextSettings
+
+inline void sfContextSettings_writeToCpp(const sfContextSettings &from, sf::ContextSettings &to) {
+    to.depthBits = from.depthBits;
+    to.stencilBits = from.stencilBits;
+    to.antialiasingLevel = from.antialiasingLevel;
+    to.majorVersion = from.majorVersion;
+    to.minorVersion = from.minorVersion;
+    to.attributeFlags = from.attributeFlags;
+    to.sRgbCapable = from.sRgbCapable == sfTrue;
+}
+} // namespace priv
 
 #endif // SFML_CONTEXTSETTINGSINTERNAL_H

@@ -21,22 +21,17 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #ifndef SFML_KEYBOARD_H
 #define SFML_KEYBOARD_H
-
 
 // Headers
 
 #include <SFML/Window/Export.h>
 
-
-
 /// \brief Key codes
 ///
 
-typedef enum
-{
+typedef enum {
     sfKeyUnknown = -1, ///< Unhandled key
     sfKeyA,            ///< The A key
     sfKeyB,            ///< The B key
@@ -140,18 +135,16 @@ typedef enum
     sfKeyF15,          ///< The F15 key
     sfKeyPause,        ///< The Pause key
 
-    sfKeyCount,      ///< Keep last -- the total number of keyboard keys
+    sfKeyCount, ///< Keep last -- the total number of keyboard keys
 
     // Deprecated values:
 
-    sfKeyDash      = sfKeyHyphen,       ///< \deprecated Use Hyphen instead
-    sfKeyBack      = sfKeyBackspace,    ///< \deprecated Use Backspace instead
-    sfKeyBackSlash = sfKeyBackslash,    ///< \deprecated Use Backslash instead
-    sfKeySemiColon = sfKeySemicolon,    ///< \deprecated Use Semicolon instead
-    sfKeyReturn    = sfKeyEnter         ///< \deprecated Use Enter instead
+    sfKeyDash = sfKeyHyphen,         ///< \deprecated Use Hyphen instead
+    sfKeyBack = sfKeyBackspace,      ///< \deprecated Use Backspace instead
+    sfKeyBackSlash = sfKeyBackslash, ///< \deprecated Use Backslash instead
+    sfKeySemiColon = sfKeySemicolon, ///< \deprecated Use Semicolon instead
+    sfKeyReturn = sfKeyEnter         ///< \deprecated Use Enter instead
 } sfKeyCode;
-
-
 
 /// \brief Check if a key is pressed
 ///
@@ -161,7 +154,6 @@ typedef enum
 ///
 
 CSFML_WINDOW_API sfBool sfKeyboard_isKeyPressed(sfKeyCode key);
-
 
 /// \brief Show or hide the virtual keyboard.
 ///

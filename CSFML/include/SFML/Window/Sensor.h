@@ -21,24 +21,19 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #ifndef SFML_SENSOR_H
 #define SFML_SENSOR_H
 
-
 // Headers
 
+#include <SFML/System/Vector3.h>
 #include <SFML/Window/Export.h>
 #include <SFML/Window/Types.h>
-#include <SFML/System/Vector3.h>
-
-
 
 /// \brief Sensor Types
 ///
 
-typedef enum
-{
+typedef enum {
     sfSensorAccelerometer,    ///< Measures the raw acceleration (m/s^2)
     sfSensorGyroscope,        ///< Measures the raw rotation rates (degrees/s)
     sfSensorMagnetometer,     ///< Measures the ambient magnetic field (micro-teslas)
@@ -46,10 +41,8 @@ typedef enum
     sfSensorUserAcceleration, ///< Measures the direction and intensity of device acceleration, independent of the gravity (m/s^2)
     sfSensorOrientation,      ///< Measures the absolute 3D orientation (degrees)
 
-    sfSensorCount             ///< Keep last -- the total number of sensor types
+    sfSensorCount ///< Keep last -- the total number of sensor types
 } sfSensorType;
-
-
 
 /// \brief Check if a sensor is available on the underlying platform
 ///
@@ -59,7 +52,6 @@ typedef enum
 ///
 
 CSFML_WINDOW_API sfBool sfSensor_isAvailable(sfSensorType sensor);
-
 
 /// \brief Enable or disable a sensor
 ///
@@ -75,7 +67,6 @@ CSFML_WINDOW_API sfBool sfSensor_isAvailable(sfSensorType sensor);
 
 CSFML_WINDOW_API void sfSensor_setEnabled(sfSensorType sensor, sfBool enabled);
 
-
 /// \brief Get the current sensor value
 ///
 /// \param sensor Sensor to read
@@ -84,6 +75,5 @@ CSFML_WINDOW_API void sfSensor_setEnabled(sfSensorType sensor, sfBool enabled);
 ///
 
 CSFML_WINDOW_API sfVector3f sfSensor_getValue(sfSensorType sensor);
-
 
 #endif // SFML_SENSOR_H

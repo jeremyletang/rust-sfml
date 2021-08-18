@@ -21,17 +21,14 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #ifndef SFML_CONTEXT_H
 #define SFML_CONTEXT_H
-
 
 // Headers
 
 #include <SFML/Window/Export.h>
 #include <SFML/Window/Types.h>
 #include <SFML/Window/Window.h>
-
 
 /// \brief Create a new context
 ///
@@ -40,16 +37,14 @@
 /// \return New sfContext object
 ///
 
-CSFML_WINDOW_API sfContext* sfContext_create(void);
-
+CSFML_WINDOW_API sfContext *sfContext_create(void);
 
 /// \brief Destroy a context
 ///
 /// \param context Context to destroy
 ///
 
-CSFML_WINDOW_API void sfContext_destroy(sfContext* context);
-
+CSFML_WINDOW_API void sfContext_destroy(sfContext *context);
 
 /// \brief Activate or deactivate explicitely a context
 ///
@@ -59,8 +54,7 @@ CSFML_WINDOW_API void sfContext_destroy(sfContext* context);
 /// \return sfTrue on success, sfFalse on failure
 ///
 
-CSFML_WINDOW_API sfBool sfContext_setActive(sfContext* context, sfBool active);
-
+CSFML_WINDOW_API sfBool sfContext_setActive(sfContext *context, sfBool active);
 
 /// \brief Get the settings of the context.
 ///
@@ -71,8 +65,7 @@ CSFML_WINDOW_API sfBool sfContext_setActive(sfContext* context, sfBool active);
 /// \return Structure containing the settings
 ///
 
-CSFML_WINDOW_API sfContextSettings sfContext_getSettings(const sfContext* context);
-
+CSFML_WINDOW_API sfContextSettings sfContext_getSettings(const sfContext *context);
 
 /// \brief Get the currently active context's ID
 ///

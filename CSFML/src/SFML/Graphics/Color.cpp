@@ -21,37 +21,27 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
-
 // Headers
 
 #include <SFML/Graphics/Color.h>
-#include <cstddef>
 #include <algorithm>
+#include <cstddef>
 
+sfColor sfBlack = sfColor_fromRGB(0, 0, 0);
+sfColor sfWhite = sfColor_fromRGB(255, 255, 255);
+sfColor sfRed = sfColor_fromRGB(255, 0, 0);
+sfColor sfGreen = sfColor_fromRGB(0, 255, 0);
+sfColor sfBlue = sfColor_fromRGB(0, 0, 255);
+sfColor sfYellow = sfColor_fromRGB(255, 255, 0);
+sfColor sfMagenta = sfColor_fromRGB(255, 0, 255);
+sfColor sfCyan = sfColor_fromRGB(0, 255, 255);
+sfColor sfTransparent = sfColor_fromRGBA(0, 0, 0, 0);
 
-
-sfColor sfBlack       = sfColor_fromRGB(  0,   0,   0);
-sfColor sfWhite       = sfColor_fromRGB(255, 255, 255);
-sfColor sfRed         = sfColor_fromRGB(255,   0,   0);
-sfColor sfGreen       = sfColor_fromRGB(  0, 255,   0);
-sfColor sfBlue        = sfColor_fromRGB(  0,   0, 255);
-sfColor sfYellow      = sfColor_fromRGB(255, 255,   0);
-sfColor sfMagenta     = sfColor_fromRGB(255,   0, 255);
-sfColor sfCyan        = sfColor_fromRGB(  0, 255, 255);
-sfColor sfTransparent = sfColor_fromRGBA( 0,   0,   0, 0);
-
-
-
-sfColor sfColor_fromRGB(sfUint8 red, sfUint8 green, sfUint8 blue)
-{
+sfColor sfColor_fromRGB(sfUint8 red, sfUint8 green, sfUint8 blue) {
     return sfColor_fromRGBA(red, green, blue, 255);
 }
 
-
-
-sfColor sfColor_fromRGBA(sfUint8 red, sfUint8 green, sfUint8 blue, sfUint8 alpha)
-{
+sfColor sfColor_fromRGBA(sfUint8 red, sfUint8 green, sfUint8 blue, sfUint8 alpha) {
     sfColor color;
 
     color.r = red;
@@ -62,32 +52,23 @@ sfColor sfColor_fromRGBA(sfUint8 red, sfUint8 green, sfUint8 blue, sfUint8 alpha
     return color;
 }
 
-
-
-sfColor sfColor_fromInteger(sfUint32 color)
-{
-    sfUint8 red =   (color & 0xff000000) >> 24;
+sfColor sfColor_fromInteger(sfUint32 color) {
+    sfUint8 red = (color & 0xff000000) >> 24;
     sfUint8 green = (color & 0x00ff0000) >> 16;
-    sfUint8 blue =  (color & 0x0000ff00) >> 8;
+    sfUint8 blue = (color & 0x0000ff00) >> 8;
     sfUint8 alpha = (color & 0x000000ff) >> 0;
 
     return sfColor_fromRGBA(red, green, blue, alpha);
 }
 
-
-
-sfUint32 sfColor_toInteger(sfColor color)
-{
+sfUint32 sfColor_toInteger(sfColor color) {
     return (color.r << 24) | (color.g << 16) | (color.b << 8) | color.a;
 }
 
-
-
-sfColor sfColor_add(sfColor color1, sfColor color2)
-{
-    int red   = std::min(color1.r + color2.r, 255);
+sfColor sfColor_add(sfColor color1, sfColor color2) {
+    int red = std::min(color1.r + color2.r, 255);
     int green = std::min(color1.g + color2.g, 255);
-    int blue  = std::min(color1.b + color2.b, 255);
+    int blue = std::min(color1.b + color2.b, 255);
     int alpha = std::min(color1.a + color2.a, 255);
 
     return sfColor_fromRGBA(static_cast<sfUint8>(red),
@@ -96,13 +77,10 @@ sfColor sfColor_add(sfColor color1, sfColor color2)
                             static_cast<sfUint8>(alpha));
 }
 
-
-
-sfColor sfColor_subtract(sfColor color1, sfColor color2)
-{
-    int red   = std::max(color1.r - color2.r, 0);
+sfColor sfColor_subtract(sfColor color1, sfColor color2) {
+    int red = std::max(color1.r - color2.r, 0);
     int green = std::max(color1.g - color2.g, 0);
-    int blue  = std::max(color1.b - color2.b, 0);
+    int blue = std::max(color1.b - color2.b, 0);
     int alpha = std::max(color1.a - color2.a, 0);
 
     return sfColor_fromRGBA(static_cast<sfUint8>(red),
@@ -111,13 +89,10 @@ sfColor sfColor_subtract(sfColor color1, sfColor color2)
                             static_cast<sfUint8>(alpha));
 }
 
-
-
-sfColor sfColor_modulate(sfColor color1, sfColor color2)
-{
-    int red   = color1.r * color2.r / 255;
+sfColor sfColor_modulate(sfColor color1, sfColor color2) {
+    int red = color1.r * color2.r / 255;
     int green = color1.g * color2.g / 255;
-    int blue  = color1.b * color2.b / 255;
+    int blue = color1.b * color2.b / 255;
     int alpha = color1.a * color2.a / 255;
 
     return sfColor_fromRGBA(static_cast<sfUint8>(red),

@@ -21,70 +21,44 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
-
 // Headers
 
 #include <SFML/Audio/SoundBufferRecorder.h>
 #include <SFML/Audio/SoundBufferRecorderStruct.h>
 #include <cstddef>
 
-
-
-sfSoundBufferRecorder* sfSoundBufferRecorder_create(void)
-{
+sfSoundBufferRecorder *sfSoundBufferRecorder_create(void) {
     return new sfSoundBufferRecorder;
 }
 
-
-
-void sfSoundBufferRecorder_destroy(sfSoundBufferRecorder* soundBufferRecorder)
-{
+void sfSoundBufferRecorder_destroy(sfSoundBufferRecorder *soundBufferRecorder) {
     delete soundBufferRecorder;
 }
 
-
-
-sfBool sfSoundBufferRecorder_start(sfSoundBufferRecorder* soundBufferRecorder, unsigned int sampleRate)
-{
+sfBool sfSoundBufferRecorder_start(sfSoundBufferRecorder *soundBufferRecorder, unsigned int sampleRate) {
     return soundBufferRecorder->This.start(sampleRate);
 }
 
-
-
-void sfSoundBufferRecorder_stop(sfSoundBufferRecorder* soundBufferRecorder)
-{
+void sfSoundBufferRecorder_stop(sfSoundBufferRecorder *soundBufferRecorder) {
     soundBufferRecorder->This.stop();
 }
 
-
-
-unsigned int sfSoundBufferRecorder_getSampleRate(const sfSoundBufferRecorder* soundBufferRecorder)
-{
+unsigned int sfSoundBufferRecorder_getSampleRate(const sfSoundBufferRecorder *soundBufferRecorder) {
     return soundBufferRecorder->This.getSampleRate();
 }
 
-
-
-const sfSoundBuffer* sfSoundBufferRecorder_getBuffer(const sfSoundBufferRecorder* soundBufferRecorder)
-{
-
+const sfSoundBuffer *sfSoundBufferRecorder_getBuffer(const sfSoundBufferRecorder *soundBufferRecorder) {
 
     soundBufferRecorder->SoundBuffer.This = soundBufferRecorder->This.getBuffer();
 
     return &soundBufferRecorder->SoundBuffer;
 }
 
-
-sfBool sfSoundBufferRecorder_setDevice(sfSoundBufferRecorder* soundBufferRecorder, const char* name)
-{
+sfBool sfSoundBufferRecorder_setDevice(sfSoundBufferRecorder *soundBufferRecorder, const char *name) {
     return soundBufferRecorder->This.setDevice(name);
 }
 
-
-const char* sfSoundBufferRecorder_getDevice(sfSoundBufferRecorder* soundBufferRecorder)
-{
-
+const char *sfSoundBufferRecorder_getDevice(sfSoundBufferRecorder *soundBufferRecorder) {
 
     soundBufferRecorder->DeviceName = soundBufferRecorder->This.getDevice();
 

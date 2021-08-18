@@ -21,17 +21,13 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #ifndef SFML_CLIPBOARD_H
 #define SFML_CLIPBOARD_H
-
 
 // Headers
 
 #include <SFML/Window/Export.h>
 #include <SFML/Window/Types.h>
-
-
 
 /// \brief Get the content of the clipboard as string data (returns an ANSI string)
 ///
@@ -42,9 +38,7 @@
 /// \return Clipboard contents as a locale-dependent ANSI string
 ///
 
-CSFML_WINDOW_API const char* sfClipboard_getString();
-
-
+CSFML_WINDOW_API const char *sfClipboard_getString();
 
 /// \brief Get the content of the clipboard as string data (returns a Unicode string)
 ///
@@ -55,8 +49,7 @@ CSFML_WINDOW_API const char* sfClipboard_getString();
 /// \return Clipboard contents as UTF-32
 ///
 
-CSFML_WINDOW_API const sfUint32* sfClipboard_getUnicodeString();
-
+CSFML_WINDOW_API const sfUint32 *sfClipboard_getUnicodeString();
 
 /// \brief Set the content of the clipboard as ANSI string data
 ///
@@ -67,8 +60,7 @@ CSFML_WINDOW_API const sfUint32* sfClipboard_getUnicodeString();
 /// to the clipboard
 ///
 
-CSFML_WINDOW_API void sfClipboard_setString(const char* text);
-
+CSFML_WINDOW_API void sfClipboard_setString(const char *text);
 
 /// \brief Set the content of the clipboard as Unicode string data
 ///
@@ -79,7 +71,6 @@ CSFML_WINDOW_API void sfClipboard_setString(const char* text);
 /// to the clipboard
 ///
 
-CSFML_WINDOW_API void sfClipboard_setUnicodeString(const sfUint32* text);
-
+CSFML_WINDOW_API void sfClipboard_setUnicodeString(const sfUint32 *text);
 
 #endif // SFML_CURSOR_H

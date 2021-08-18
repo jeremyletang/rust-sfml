@@ -21,27 +21,19 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
-
 // Headers
 
 #include <SFML/Graphics/VertexBuffer.h>
 #include <SFML/Graphics/VertexBufferStruct.h>
 #include <cstddef>
 
+sfVertexBuffer *sfVertexBuffer_create(unsigned int vertexCount, sfPrimitiveType type, sfVertexBufferUsage usage) {
+    sfVertexBuffer *buffer = new sfVertexBuffer;
 
-
-sfVertexBuffer* sfVertexBuffer_create(unsigned int vertexCount, sfPrimitiveType type, sfVertexBufferUsage usage)
-{
-    sfVertexBuffer* buffer = new sfVertexBuffer;
-
-    if (!buffer->This.create(vertexCount))
-    {
+    if (!buffer->This.create(vertexCount)) {
         delete buffer;
         buffer = NULL;
-    }
-    else
-    {
+    } else {
         buffer->This.setPrimitiveType(static_cast<sf::PrimitiveType>(type));
         buffer->This.setUsage(static_cast<sf::VertexBuffer::Usage>(usage));
     }
@@ -49,100 +41,61 @@ sfVertexBuffer* sfVertexBuffer_create(unsigned int vertexCount, sfPrimitiveType 
     return buffer;
 }
 
-
-
-sfVertexBuffer* sfVertexBuffer_copy(const sfVertexBuffer* vertexBuffer)
-{
-    sfVertexBuffer* buffer = new sfVertexBuffer;
-    buffer->This = sf::VertexBuffer( vertexBuffer->This );
+sfVertexBuffer *sfVertexBuffer_copy(const sfVertexBuffer *vertexBuffer) {
+    sfVertexBuffer *buffer = new sfVertexBuffer;
+    buffer->This = sf::VertexBuffer(vertexBuffer->This);
     return buffer;
 }
 
-
-
-void sfVertexBuffer_destroy(sfVertexBuffer* vertexBuffer)
-{
+void sfVertexBuffer_destroy(sfVertexBuffer *vertexBuffer) {
     delete vertexBuffer;
 }
 
-
-
-unsigned int sfVertexBuffer_getVertexCount(const sfVertexBuffer* vertexBuffer)
-{
+unsigned int sfVertexBuffer_getVertexCount(const sfVertexBuffer *vertexBuffer) {
     return vertexBuffer->This.getVertexCount();
 }
 
-
-
-sfBool sfVertexBuffer_update(sfVertexBuffer* vertexBuffer, const sfVertex* vertices, unsigned int vertexCount, unsigned int offset)
-{
+sfBool sfVertexBuffer_update(sfVertexBuffer *vertexBuffer, const sfVertex *vertices, unsigned int vertexCount, unsigned int offset) {
     // the cast is safe, sfVertex has to be binary compatible with sf::Vertex
-    return vertexBuffer->This.update(reinterpret_cast<const sf::Vertex*>(vertices), vertexCount, offset);
+    return vertexBuffer->This.update(reinterpret_cast<const sf::Vertex *>(vertices), vertexCount, offset);
 }
 
-
-
-sfBool sfVertexBuffer_updateFromVertexBuffer(sfVertexBuffer* vertexBuffer, const sfVertexBuffer* other)
-{
+sfBool sfVertexBuffer_updateFromVertexBuffer(sfVertexBuffer *vertexBuffer, const sfVertexBuffer *other) {
     return vertexBuffer->This.update(other->This);
 }
 
-
 ///////////////////////////////////////////////////////////
-void sfVertexBuffer_swap(sfVertexBuffer* left, sfVertexBuffer* right)
-{
-
+void sfVertexBuffer_swap(sfVertexBuffer *left, sfVertexBuffer *right) {
 
     left->This.swap(right->This);
 }
 
-
-
-unsigned int sfVertexBuffer_getNativeHandle(sfVertexBuffer* vertexBuffer)
-{
+unsigned int sfVertexBuffer_getNativeHandle(sfVertexBuffer *vertexBuffer) {
     return vertexBuffer->This.getNativeHandle();
 }
 
-
-
-void sfVertexBuffer_setPrimitiveType(sfVertexBuffer* vertexBuffer, sfPrimitiveType type)
-{
+void sfVertexBuffer_setPrimitiveType(sfVertexBuffer *vertexBuffer, sfPrimitiveType type) {
     vertexBuffer->This.setPrimitiveType(static_cast<sf::PrimitiveType>(type));
 }
 
-
-
-sfPrimitiveType sfVertexBuffer_getPrimitiveType(const sfVertexBuffer* vertexBuffer)
-{
+sfPrimitiveType sfVertexBuffer_getPrimitiveType(const sfVertexBuffer *vertexBuffer) {
 
     return static_cast<sfPrimitiveType>(vertexBuffer->This.getPrimitiveType());
 }
 
-
-
-void sfVertexBuffer_setUsage(sfVertexBuffer* vertexBuffer, sfVertexBufferUsage usage)
-{
+void sfVertexBuffer_setUsage(sfVertexBuffer *vertexBuffer, sfVertexBufferUsage usage) {
     vertexBuffer->This.setUsage(static_cast<sf::VertexBuffer::Usage>(usage));
 }
 
-
-
-sfVertexBufferUsage sfVertexBuffer_getUsage(const sfVertexBuffer* vertexBuffer)
-{
+sfVertexBufferUsage sfVertexBuffer_getUsage(const sfVertexBuffer *vertexBuffer) {
 
     return static_cast<sfVertexBufferUsage>(vertexBuffer->This.getUsage());
 }
 
-
-
-void sfVertexBuffer_bind(const sfVertexBuffer* vertexBuffer)
-{
+void sfVertexBuffer_bind(const sfVertexBuffer *vertexBuffer) {
     sf::VertexBuffer::bind(&vertexBuffer->This);
 }
 
-
-
-sfBool sfVertexBuffer_isAvailable()
-{
+sfBool sfVertexBuffer_isAvailable() {
     return sf::VertexBuffer::isAvailable() ? sfTrue : sfFalse;
 }

@@ -21,26 +21,20 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #ifndef SFML_SOUNDBUFFERRECORDERSTRUCT_H
 #define SFML_SOUNDBUFFERRECORDERSTRUCT_H
-
 
 // Headers
 
 #include <SFML/Audio/SoundBufferRecorder.hpp>
 #include <SFML/Audio/SoundBufferStruct.h>
 
-
-
 // Internal structure of sfSoundBufferRecorder
 
-struct sfSoundBufferRecorder
-{
+struct sfSoundBufferRecorder {
     sf::SoundBufferRecorder This;
-    mutable sfSoundBuffer   SoundBuffer;
-    std::string             DeviceName;
+    mutable sfSoundBuffer SoundBuffer;
+    std::string DeviceName;
 };
-
 
 #endif // SFML_SOUNDBUFFERRECORDERSTRUCT_H

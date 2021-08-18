@@ -21,26 +21,20 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #ifndef SFML_SOUNDSTATUS_H
 #define SFML_SOUNDSTATUS_H
-
 
 // Headers
 
 #include <SFML/Audio/Export.h>
 
-
-
 /// \brief Enumeration of statuses for sounds and musics
 ///
 
-typedef enum
-{
+typedef enum {
     sfStopped, ///< Sound / music is not playing
     sfPaused,  ///< Sound / music is paused
     sfPlaying  ///< Sound / music is playing
 } sfSoundStatus;
-
 
 #endif // SFML_SOUNDSTATUS_H

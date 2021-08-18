@@ -21,10 +21,8 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #ifndef SFML_SPRITESTRUCT_H
 #define SFML_SPRITESTRUCT_H
-
 
 // Headers
 
@@ -32,17 +30,13 @@
 #include <SFML/Graphics/TextureStruct.h>
 #include <SFML/Graphics/Transform.h>
 
-
-
 // Internal structure of sfSprite
 
-struct sfSprite
-{
-    sf::Sprite          This;
-    const sfTexture*    Texture;
+struct sfSprite {
+    sf::Sprite This;
+    const sfTexture *Texture;
     mutable sfTransform Transform;
     mutable sfTransform InverseTransform;
 };
-
 
 #endif // SFML_SPRITESTRUCT_H

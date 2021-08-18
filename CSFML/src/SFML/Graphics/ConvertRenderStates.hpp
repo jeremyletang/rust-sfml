@@ -21,29 +21,23 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #ifndef SFML_CONVERTRENDERSTATES_H
 #define SFML_CONVERTRENDERSTATES_H
 
-
 // Headers
 
+#include <SFML/Graphics/ConvertTransform.hpp>
 #include <SFML/Graphics/RenderStates.h>
 #include <SFML/Graphics/RenderStates.hpp>
-#include <SFML/Graphics/ConvertTransform.hpp>
-#include <SFML/Graphics/TextureStruct.h>
 #include <SFML/Graphics/ShaderStruct.h>
-
-
+#include <SFML/Graphics/TextureStruct.h>
 
 // Convert sfRenderStates* to sf::RenderStates
 
-inline sf::RenderStates convertRenderStates(const sfRenderStates* states)
-{
+inline sf::RenderStates convertRenderStates(const sfRenderStates *states) {
     sf::RenderStates sfmlStates;
 
-    if (states)
-    {
+    if (states) {
         sfmlStates.blendMode.colorSrcFactor = static_cast<sf::BlendMode::Factor>(states->blendMode.colorSrcFactor);
         sfmlStates.blendMode.colorDstFactor = static_cast<sf::BlendMode::Factor>(states->blendMode.colorDstFactor);
         sfmlStates.blendMode.colorEquation = static_cast<sf::BlendMode::Equation>(states->blendMode.colorEquation);
@@ -57,6 +51,5 @@ inline sf::RenderStates convertRenderStates(const sfRenderStates* states)
 
     return sfmlStates;
 }
-
 
 #endif // SFML_CONVERTRENDERSTATES_H

@@ -21,38 +21,24 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
-
 // Headers
 
 #include <SFML/System/Mutex.h>
 #include <SFML/System/MutexStruct.h>
 #include <cstddef>
 
-
-
-sfMutex* sfMutex_create(void)
-{
+sfMutex *sfMutex_create(void) {
     return new sfMutex;
 }
 
-
-
-void sfMutex_destroy(sfMutex* mutex)
-{
+void sfMutex_destroy(sfMutex *mutex) {
     delete mutex;
 }
 
-
-
-void sfMutex_lock(sfMutex* mutex)
-{
+void sfMutex_lock(sfMutex *mutex) {
     mutex->This.lock();
 }
 
-
-
-void sfMutex_unlock(sfMutex* mutex)
-{
+void sfMutex_unlock(sfMutex *mutex) {
     mutex->This.unlock();
 }

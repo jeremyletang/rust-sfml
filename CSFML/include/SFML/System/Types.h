@@ -21,14 +21,11 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #ifndef SFML_SYSTEM_TYPES_H
 #define SFML_SYSTEM_TYPES_H
-
 
 typedef struct sfClock sfClock;
 typedef struct sfMutex sfMutex;
 typedef struct sfThread sfThread;
-
 
 #endif // SFML_SYSTEM_TYPES_H

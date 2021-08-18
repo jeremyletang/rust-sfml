@@ -21,13 +21,10 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #ifndef SFML_SFML_WINDOW_H
 #define SFML_SFML_WINDOW_H
 
-
 // Headers
-
 
 #include <SFML/System.h>
 #include <SFML/Window/Clipboard.h>
@@ -42,6 +39,5 @@
 #include <SFML/Window/Touch.h>
 #include <SFML/Window/VideoMode.h>
 #include <SFML/Window/Window.h>
-
 
 #endif // SFML_SFML_WINDOW_H

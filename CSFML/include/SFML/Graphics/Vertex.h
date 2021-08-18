@@ -21,27 +21,22 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #ifndef SFML_VERTEX_H
 #define SFML_VERTEX_H
 
-
 // Headers
 
-#include <SFML/Graphics/Export.h>
 #include <SFML/Graphics/Color.h>
+#include <SFML/Graphics/Export.h>
 #include <SFML/System/Vector2.h>
-
-
 
 /// Define a point with color and texture coordinates
 
 typedef struct
 {
     sfVector2f position;  ///< Position of the vertex
-    sfColor    color;     ///< Color of the vertex
+    sfColor color;        ///< Color of the vertex
     sfVector2f texCoords; ///< Coordinates of the texture's pixel to map to the vertex
 } sfVertex;
-
 
 #endif // SFML_VERTEX_H

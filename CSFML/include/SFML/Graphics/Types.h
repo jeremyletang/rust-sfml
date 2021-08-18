@@ -21,10 +21,8 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #ifndef SFML_GRAPHICS_TYPES_H
 #define SFML_GRAPHICS_TYPES_H
-
 
 typedef struct sfCircleShape sfCircleShape;
 typedef struct sfConvexShape sfConvexShape;
@@ -42,6 +40,5 @@ typedef struct sfTransformable sfTransformable;
 typedef struct sfVertexArray sfVertexArray;
 typedef struct sfVertexBuffer sfVertexBuffer;
 typedef struct sfView sfView;
-
 
 #endif // SFML_GRAPHICS_TYPES_H

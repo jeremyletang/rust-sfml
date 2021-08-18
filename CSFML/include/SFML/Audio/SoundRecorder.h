@@ -21,10 +21,8 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #ifndef SFML_SOUNDRECORDER_H
 #define SFML_SOUNDRECORDER_H
-
 
 // Headers
 
@@ -33,12 +31,9 @@
 #include <SFML/System/Time.h>
 #include <stddef.h>
 
-
-typedef sfBool (*sfSoundRecorderStartCallback)(void*);                           ///< Type of the callback used when starting a capture
-typedef sfBool (*sfSoundRecorderProcessCallback)(const sfInt16*, size_t, void*); ///< Type of the callback used to process audio data
-typedef void   (*sfSoundRecorderStopCallback)(void*);                            ///< Type of the callback used when stopping a capture
-
-
+typedef sfBool (*sfSoundRecorderStartCallback)(void *);                            ///< Type of the callback used when starting a capture
+typedef sfBool (*sfSoundRecorderProcessCallback)(const sfInt16 *, size_t, void *); ///< Type of the callback used to process audio data
+typedef void (*sfSoundRecorderStopCallback)(void *);                               ///< Type of the callback used when stopping a capture
 
 /// \brief Construct a new sound recorder from callback functions
 ///
@@ -50,19 +45,17 @@ typedef void   (*sfSoundRecorderStopCallback)(void*);                           
 /// \return A new sfSoundRecorder object (NULL if failed)
 ///
 
-CSFML_AUDIO_API sfSoundRecorder* sfSoundRecorder_create(sfSoundRecorderStartCallback   onStart,
+CSFML_AUDIO_API sfSoundRecorder *sfSoundRecorder_create(sfSoundRecorderStartCallback onStart,
                                                         sfSoundRecorderProcessCallback onProcess,
-                                                        sfSoundRecorderStopCallback    onStop,
-                                                        void*                          userData);
-
+                                                        sfSoundRecorderStopCallback onStop,
+                                                        void *userData);
 
 /// \brief Destroy a sound recorder
 ///
 /// \param soundRecorder Sound recorder to destroy
 ///
 
-CSFML_AUDIO_API void sfSoundRecorder_destroy(sfSoundRecorder* soundRecorder);
-
+CSFML_AUDIO_API void sfSoundRecorder_destroy(sfSoundRecorder *soundRecorder);
 
 /// \brief Start the capture of a sound recorder
 ///
@@ -79,16 +72,14 @@ CSFML_AUDIO_API void sfSoundRecorder_destroy(sfSoundRecorder* soundRecorder);
 /// \return True, if start of capture was successful
 ///
 
-CSFML_AUDIO_API sfBool sfSoundRecorder_start(sfSoundRecorder* soundRecorder, unsigned int sampleRate);
-
+CSFML_AUDIO_API sfBool sfSoundRecorder_start(sfSoundRecorder *soundRecorder, unsigned int sampleRate);
 
 /// \brief Stop the capture of a sound recorder
 ///
 /// \param soundRecorder Sound recorder object
 ///
 
-CSFML_AUDIO_API void sfSoundRecorder_stop(sfSoundRecorder* soundRecorder);
-
+CSFML_AUDIO_API void sfSoundRecorder_stop(sfSoundRecorder *soundRecorder);
 
 /// \brief Get the sample rate of a sound recorder
 ///
@@ -101,8 +92,7 @@ CSFML_AUDIO_API void sfSoundRecorder_stop(sfSoundRecorder* soundRecorder);
 /// \return Sample rate, in samples per second
 ///
 
-CSFML_AUDIO_API unsigned int sfSoundRecorder_getSampleRate(const sfSoundRecorder* soundRecorder);
-
+CSFML_AUDIO_API unsigned int sfSoundRecorder_getSampleRate(const sfSoundRecorder *soundRecorder);
 
 /// \brief Check if the system supports audio capture
 ///
@@ -114,7 +104,6 @@ CSFML_AUDIO_API unsigned int sfSoundRecorder_getSampleRate(const sfSoundRecorder
 ///
 
 CSFML_AUDIO_API sfBool sfSoundRecorder_isAvailable(void);
-
 
 /// \brief Set the processing interval
 ///
@@ -132,8 +121,7 @@ CSFML_AUDIO_API sfBool sfSoundRecorder_isAvailable(void);
 /// \param interval      Processing interval
 ///
 
-CSFML_AUDIO_API void sfSoundRecorder_setProcessingInterval(sfSoundRecorder* soundRecorder, sfTime interval);
-
+CSFML_AUDIO_API void sfSoundRecorder_setProcessingInterval(sfSoundRecorder *soundRecorder, sfTime interval);
 
 /// \brief Get a list of the names of all availabe audio capture devices
 ///
@@ -146,8 +134,7 @@ CSFML_AUDIO_API void sfSoundRecorder_setProcessingInterval(sfSoundRecorder* soun
 /// \return An array of strings containing the names
 ///
 
-CSFML_AUDIO_API const char** sfSoundRecorder_getAvailableDevices(size_t* count);
-
+CSFML_AUDIO_API const char **sfSoundRecorder_getAvailableDevices(size_t *count);
 
 /// \brief Get the name of the default audio capture device
 ///
@@ -157,8 +144,7 @@ CSFML_AUDIO_API const char** sfSoundRecorder_getAvailableDevices(size_t* count);
 /// \return The name of the default audio capture device (null terminated)
 ///
 
-CSFML_AUDIO_API const char* sfSoundRecorder_getDefaultDevice();
-
+CSFML_AUDIO_API const char *sfSoundRecorder_getDefaultDevice();
 
 /// \brief Set the audio capture device
 ///
@@ -173,8 +159,7 @@ CSFML_AUDIO_API const char* sfSoundRecorder_getDefaultDevice();
 /// \return sfTrue, if it was able to set the requested device
 ///
 
-CSFML_AUDIO_API sfBool sfSoundRecorder_setDevice(sfSoundRecorder* soundRecorder, const char* name);
-
+CSFML_AUDIO_API sfBool sfSoundRecorder_setDevice(sfSoundRecorder *soundRecorder, const char *name);
 
 /// \brief Get the name of the current audio capture device
 ///
@@ -183,8 +168,7 @@ CSFML_AUDIO_API sfBool sfSoundRecorder_setDevice(sfSoundRecorder* soundRecorder,
 /// \return The name of the current audio capture device
 ///
 
-CSFML_AUDIO_API const char* sfSoundRecorder_getDevice(sfSoundRecorder* soundRecorder);
-
+CSFML_AUDIO_API const char *sfSoundRecorder_getDevice(sfSoundRecorder *soundRecorder);
 
 /// \brief Set the channel count of the audio capture device
 ///
@@ -198,8 +182,7 @@ CSFML_AUDIO_API const char* sfSoundRecorder_getDevice(sfSoundRecorder* soundReco
 /// \see sfSoundRecorder_getChannelCount
 ///
 
-CSFML_AUDIO_API void sfSoundRecorder_setChannelCount(sfSoundRecorder* soundRecorder, unsigned int channelCount);
-
+CSFML_AUDIO_API void sfSoundRecorder_setChannelCount(sfSoundRecorder *soundRecorder, unsigned int channelCount);
 
 /// \brief Get the number of channels used by this recorder
 ///
@@ -211,7 +194,6 @@ CSFML_AUDIO_API void sfSoundRecorder_setChannelCount(sfSoundRecorder* soundRecor
 /// \see sfSoundRecorder_setChannelCount
 ///
 
-CSFML_AUDIO_API unsigned int sfSoundRecorder_getChannelCount(const sfSoundRecorder* soundRecorder);
-
+CSFML_AUDIO_API unsigned int sfSoundRecorder_getChannelCount(const sfSoundRecorder *soundRecorder);
 
 #endif // SFML_SOUNDRECORDER_H

@@ -21,26 +21,20 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #ifndef SFML_TRANSFORMABLESTRUCT_H
 #define SFML_TRANSFORMABLESTRUCT_H
 
-
 // Headers
 
-#include <SFML/Graphics/Transformable.hpp>
 #include <SFML/Graphics/Transform.h>
-
-
+#include <SFML/Graphics/Transformable.hpp>
 
 // Internal structure of sfTransformable
 
-struct sfTransformable
-{
-    sf::Transformable   This;
+struct sfTransformable {
+    sf::Transformable This;
     mutable sfTransform Transform;
     mutable sfTransform InverseTransform;
 };
-
 
 #endif // SFML_TRANSFORMABLESTRUCT_H

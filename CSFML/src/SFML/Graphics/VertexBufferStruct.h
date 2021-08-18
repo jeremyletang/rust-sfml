@@ -21,23 +21,17 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #ifndef SFML_VERTEXBUFFERSTRUCT_H
 #define SFML_VERTEXBUFFERSTRUCT_H
-
 
 // Headers
 
 #include <SFML/Graphics/VertexBuffer.hpp>
 
-
-
 // Internal structure of sfVertexBuffer
 
-struct sfVertexBuffer
-{
+struct sfVertexBuffer {
     sf::VertexBuffer This;
 };
-
 
 #endif // SFML_VERTEXBUFFERSTRUCT_H

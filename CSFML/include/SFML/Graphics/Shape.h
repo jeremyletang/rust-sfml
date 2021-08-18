@@ -21,25 +21,21 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #ifndef SFML_SHAPE_H
 #define SFML_SHAPE_H
 
-
 // Headers
 
-#include <SFML/Graphics/Export.h>
 #include <SFML/Graphics/Color.h>
+#include <SFML/Graphics/Export.h>
 #include <SFML/Graphics/Rect.h>
 #include <SFML/Graphics/Transform.h>
 #include <SFML/Graphics/Types.h>
 #include <SFML/System/Vector2.h>
 #include <stddef.h>
 
-
-typedef size_t (*sfShapeGetPointCountCallback)(void*);        ///< Type of the callback used to get the number of points in a shape
-typedef sfVector2f (*sfShapeGetPointCallback)(size_t, void*); ///< Type of the callback used to get a point of a shape
-
+typedef size_t (*sfShapeGetPointCountCallback)(void *);        ///< Type of the callback used to get the number of points in a shape
+typedef sfVector2f (*sfShapeGetPointCallback)(size_t, void *); ///< Type of the callback used to get a point of a shape
 
 /// \brief Create a new shape
 ///
@@ -50,18 +46,16 @@ typedef sfVector2f (*sfShapeGetPointCallback)(size_t, void*); ///< Type of the c
 /// \return A new sfShape object
 ///
 
-CSFML_GRAPHICS_API sfShape* sfShape_create(sfShapeGetPointCountCallback getPointCount,
+CSFML_GRAPHICS_API sfShape *sfShape_create(sfShapeGetPointCountCallback getPointCount,
                                            sfShapeGetPointCallback getPoint,
-                                           void* userData);
-
+                                           void *userData);
 
 /// \brief Destroy an existing shape
 ///
 /// \param shape Shape to delete
 ///
 
-CSFML_GRAPHICS_API void sfShape_destroy(sfShape* shape);
-
+CSFML_GRAPHICS_API void sfShape_destroy(sfShape *shape);
 
 /// \brief Set the position of a shape
 ///
@@ -73,8 +67,7 @@ CSFML_GRAPHICS_API void sfShape_destroy(sfShape* shape);
 /// \param position New position
 ///
 
-CSFML_GRAPHICS_API void sfShape_setPosition(sfShape* shape, sfVector2f position);
-
+CSFML_GRAPHICS_API void sfShape_setPosition(sfShape *shape, sfVector2f position);
 
 /// \brief Set the orientation of a shape
 ///
@@ -86,8 +79,7 @@ CSFML_GRAPHICS_API void sfShape_setPosition(sfShape* shape, sfVector2f position)
 /// \param angle New rotation, in degrees
 ///
 
-CSFML_GRAPHICS_API void sfShape_setRotation(sfShape* shape, float angle);
-
+CSFML_GRAPHICS_API void sfShape_setRotation(sfShape *shape, float angle);
 
 /// \brief Set the scale factors of a shape
 ///
@@ -99,8 +91,7 @@ CSFML_GRAPHICS_API void sfShape_setRotation(sfShape* shape, float angle);
 /// \param scale New scale factors
 ///
 
-CSFML_GRAPHICS_API void sfShape_setScale(sfShape* shape, sfVector2f scale);
-
+CSFML_GRAPHICS_API void sfShape_setScale(sfShape *shape, sfVector2f scale);
 
 /// \brief Set the local origin of a shape
 ///
@@ -115,8 +106,7 @@ CSFML_GRAPHICS_API void sfShape_setScale(sfShape* shape, sfVector2f scale);
 /// \param origin New origin
 ///
 
-CSFML_GRAPHICS_API void sfShape_setOrigin(sfShape* shape, sfVector2f origin);
-
+CSFML_GRAPHICS_API void sfShape_setOrigin(sfShape *shape, sfVector2f origin);
 
 /// \brief Get the position of a shape
 ///
@@ -125,8 +115,7 @@ CSFML_GRAPHICS_API void sfShape_setOrigin(sfShape* shape, sfVector2f origin);
 /// \return Current position
 ///
 
-CSFML_GRAPHICS_API sfVector2f sfShape_getPosition(const sfShape* shape);
-
+CSFML_GRAPHICS_API sfVector2f sfShape_getPosition(const sfShape *shape);
 
 /// \brief Get the orientation of a shape
 ///
@@ -137,8 +126,7 @@ CSFML_GRAPHICS_API sfVector2f sfShape_getPosition(const sfShape* shape);
 /// \return Current rotation, in degrees
 ///
 
-CSFML_GRAPHICS_API float sfShape_getRotation(const sfShape* shape);
-
+CSFML_GRAPHICS_API float sfShape_getRotation(const sfShape *shape);
 
 /// \brief Get the current scale of a shape
 ///
@@ -147,8 +135,7 @@ CSFML_GRAPHICS_API float sfShape_getRotation(const sfShape* shape);
 /// \return Current scale factors
 ///
 
-CSFML_GRAPHICS_API sfVector2f sfShape_getScale(const sfShape* shape);
-
+CSFML_GRAPHICS_API sfVector2f sfShape_getScale(const sfShape *shape);
 
 /// \brief Get the local origin of a shape
 ///
@@ -157,8 +144,7 @@ CSFML_GRAPHICS_API sfVector2f sfShape_getScale(const sfShape* shape);
 /// \return Current origin
 ///
 
-CSFML_GRAPHICS_API sfVector2f sfShape_getOrigin(const sfShape* shape);
-
+CSFML_GRAPHICS_API sfVector2f sfShape_getOrigin(const sfShape *shape);
 
 /// \brief Move a shape by a given offset
 ///
@@ -169,8 +155,7 @@ CSFML_GRAPHICS_API sfVector2f sfShape_getOrigin(const sfShape* shape);
 /// \param offset Offset
 ///
 
-CSFML_GRAPHICS_API void sfShape_move(sfShape* shape, sfVector2f offset);
-
+CSFML_GRAPHICS_API void sfShape_move(sfShape *shape, sfVector2f offset);
 
 /// \brief Rotate a shape
 ///
@@ -181,8 +166,7 @@ CSFML_GRAPHICS_API void sfShape_move(sfShape* shape, sfVector2f offset);
 /// \param angle Angle of rotation, in degrees
 ///
 
-CSFML_GRAPHICS_API void sfShape_rotate(sfShape* shape, float angle);
-
+CSFML_GRAPHICS_API void sfShape_rotate(sfShape *shape, float angle);
 
 /// \brief Scale a shape
 ///
@@ -193,8 +177,7 @@ CSFML_GRAPHICS_API void sfShape_rotate(sfShape* shape, float angle);
 /// \param factors Scale factors
 ///
 
-CSFML_GRAPHICS_API void sfShape_scale(sfShape* shape, sfVector2f factors);
-
+CSFML_GRAPHICS_API void sfShape_scale(sfShape *shape, sfVector2f factors);
 
 /// \brief Get the combined transform of a shape
 ///
@@ -203,8 +186,7 @@ CSFML_GRAPHICS_API void sfShape_scale(sfShape* shape, sfVector2f factors);
 /// \return Transform combining the position/rotation/scale/origin of the object
 ///
 
-CSFML_GRAPHICS_API sfTransform sfShape_getTransform(const sfShape* shape);
-
+CSFML_GRAPHICS_API sfTransform sfShape_getTransform(const sfShape *shape);
 
 /// \brief Get the inverse of the combined transform of a shape
 ///
@@ -213,8 +195,7 @@ CSFML_GRAPHICS_API sfTransform sfShape_getTransform(const sfShape* shape);
 /// \return Inverse of the combined transformations applied to the object
 ///
 
-CSFML_GRAPHICS_API sfTransform sfShape_getInverseTransform(const sfShape* shape);
-
+CSFML_GRAPHICS_API sfTransform sfShape_getInverseTransform(const sfShape *shape);
 
 /// \brief Change the source texture of a shape
 ///
@@ -234,8 +215,7 @@ CSFML_GRAPHICS_API sfTransform sfShape_getInverseTransform(const sfShape* shape)
 /// \param resetRect Should the texture rect be reset to the size of the new texture?
 ///
 
-CSFML_GRAPHICS_API void sfShape_setTexture(sfShape* shape, const sfTexture* texture, sfBool resetRect);
-
+CSFML_GRAPHICS_API void sfShape_setTexture(sfShape *shape, const sfTexture *texture, sfBool resetRect);
 
 /// \brief Set the sub-rectangle of the texture that a shape will display
 ///
@@ -247,8 +227,7 @@ CSFML_GRAPHICS_API void sfShape_setTexture(sfShape* shape, const sfTexture* text
 /// \param rect  Rectangle defining the region of the texture to display
 ///
 
-CSFML_GRAPHICS_API void sfShape_setTextureRect(sfShape* shape, sfIntRect rect);
-
+CSFML_GRAPHICS_API void sfShape_setTextureRect(sfShape *shape, sfIntRect rect);
 
 /// \brief Set the fill color of a shape
 ///
@@ -263,8 +242,7 @@ CSFML_GRAPHICS_API void sfShape_setTextureRect(sfShape* shape, sfIntRect rect);
 /// \param color New color of the shape
 ///
 
-CSFML_GRAPHICS_API void sfShape_setFillColor(sfShape* shape, sfColor color);
-
+CSFML_GRAPHICS_API void sfShape_setFillColor(sfShape *shape, sfColor color);
 
 /// \brief Set the outline color of a shape
 ///
@@ -275,8 +253,7 @@ CSFML_GRAPHICS_API void sfShape_setFillColor(sfShape* shape, sfColor color);
 /// \param color New outline color of the shape
 ///
 
-CSFML_GRAPHICS_API void sfShape_setOutlineColor(sfShape* shape, sfColor color);
-
+CSFML_GRAPHICS_API void sfShape_setOutlineColor(sfShape *shape, sfColor color);
 
 /// \brief Set the thickness of a shape's outline
 ///
@@ -288,8 +265,7 @@ CSFML_GRAPHICS_API void sfShape_setOutlineColor(sfShape* shape, sfColor color);
 /// \param thickness New outline thickness
 ///
 
-CSFML_GRAPHICS_API void sfShape_setOutlineThickness(sfShape* shape, float thickness);
-
+CSFML_GRAPHICS_API void sfShape_setOutlineThickness(sfShape *shape, float thickness);
 
 /// \brief Get the source texture of a shape
 ///
@@ -302,8 +278,7 @@ CSFML_GRAPHICS_API void sfShape_setOutlineThickness(sfShape* shape, float thickn
 /// \return Pointer to the shape's texture
 ///
 
-CSFML_GRAPHICS_API const sfTexture* sfShape_getTexture(const sfShape* shape);
-
+CSFML_GRAPHICS_API const sfTexture *sfShape_getTexture(const sfShape *shape);
 
 /// \brief Get the sub-rectangle of the texture displayed by a shape
 ///
@@ -312,8 +287,7 @@ CSFML_GRAPHICS_API const sfTexture* sfShape_getTexture(const sfShape* shape);
 /// \return Texture rectangle of the shape
 ///
 
-CSFML_GRAPHICS_API sfIntRect sfShape_getTextureRect(const sfShape* shape);
-
+CSFML_GRAPHICS_API sfIntRect sfShape_getTextureRect(const sfShape *shape);
 
 /// \brief Get the fill color of a shape
 ///
@@ -322,8 +296,7 @@ CSFML_GRAPHICS_API sfIntRect sfShape_getTextureRect(const sfShape* shape);
 /// \return Fill color of the shape
 ///
 
-CSFML_GRAPHICS_API sfColor sfShape_getFillColor(const sfShape* shape);
-
+CSFML_GRAPHICS_API sfColor sfShape_getFillColor(const sfShape *shape);
 
 /// \brief Get the outline color of a shape
 ///
@@ -332,8 +305,7 @@ CSFML_GRAPHICS_API sfColor sfShape_getFillColor(const sfShape* shape);
 /// \return Outline color of the shape
 ///
 
-CSFML_GRAPHICS_API sfColor sfShape_getOutlineColor(const sfShape* shape);
-
+CSFML_GRAPHICS_API sfColor sfShape_getOutlineColor(const sfShape *shape);
 
 /// \brief Get the outline thickness of a shape
 ///
@@ -342,8 +314,7 @@ CSFML_GRAPHICS_API sfColor sfShape_getOutlineColor(const sfShape* shape);
 /// \return Outline thickness of the shape
 ///
 
-CSFML_GRAPHICS_API float sfShape_getOutlineThickness(const sfShape* shape);
-
+CSFML_GRAPHICS_API float sfShape_getOutlineThickness(const sfShape *shape);
 
 /// \brief Get the total number of points of a shape
 ///
@@ -352,8 +323,7 @@ CSFML_GRAPHICS_API float sfShape_getOutlineThickness(const sfShape* shape);
 /// \return Number of points of the shape
 ///
 
-CSFML_GRAPHICS_API size_t sfShape_getPointCount(const sfShape* shape);
-
+CSFML_GRAPHICS_API size_t sfShape_getPointCount(const sfShape *shape);
 
 /// \brief Get a point of a shape
 ///
@@ -365,8 +335,7 @@ CSFML_GRAPHICS_API size_t sfShape_getPointCount(const sfShape* shape);
 /// \return Index-th point of the shape
 ///
 
-CSFML_GRAPHICS_API sfVector2f sfShape_getPoint(const sfShape* shape, size_t index);
-
+CSFML_GRAPHICS_API sfVector2f sfShape_getPoint(const sfShape *shape, size_t index);
 
 /// \brief Get the local bounding rectangle of a shape
 ///
@@ -381,8 +350,7 @@ CSFML_GRAPHICS_API sfVector2f sfShape_getPoint(const sfShape* shape, size_t inde
 /// \return Local bounding rectangle of the entity
 ///
 
-CSFML_GRAPHICS_API sfFloatRect sfShape_getLocalBounds(const sfShape* shape);
-
+CSFML_GRAPHICS_API sfFloatRect sfShape_getLocalBounds(const sfShape *shape);
 
 /// \brief Get the global bounding rectangle of a shape
 ///
@@ -397,8 +365,7 @@ CSFML_GRAPHICS_API sfFloatRect sfShape_getLocalBounds(const sfShape* shape);
 /// \return Global bounding rectangle of the entity
 ///
 
-CSFML_GRAPHICS_API sfFloatRect sfShape_getGlobalBounds(const sfShape* shape);
-
+CSFML_GRAPHICS_API sfFloatRect sfShape_getGlobalBounds(const sfShape *shape);
 
 /// \brief Recompute the internal geometry of a shape
 ///
@@ -407,7 +374,6 @@ CSFML_GRAPHICS_API sfFloatRect sfShape_getGlobalBounds(const sfShape* shape);
 /// the getPointCount or getPoint callbacks is different).
 ///
 
-CSFML_GRAPHICS_API void sfShape_update(sfShape* shape);
-
+CSFML_GRAPHICS_API void sfShape_update(sfShape *shape);
 
 #endif // SFML_SHAPE_H

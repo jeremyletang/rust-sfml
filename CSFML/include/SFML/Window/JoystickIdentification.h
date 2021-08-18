@@ -21,25 +21,20 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #ifndef SFML_JOYSTICKIDENDIFICATION_H
 #define SFML_JOYSTICKIDENDIFICATION_H
-
 
 // Headers
 
 #include <SFML/Window/Export.h>
 
-
-
 /// sfJoystickIdentification holds a joystick's identification
 
 typedef struct
 {
-    const char*  name;
+    const char *name;
     unsigned int vendorId;
     unsigned int productId;
 } sfJoystickIdentification;
-
 
 #endif // SFML_JOYSTICKIDENDIFICATION_H

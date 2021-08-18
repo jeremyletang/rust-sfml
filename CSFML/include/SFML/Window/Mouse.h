@@ -21,44 +21,35 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #ifndef SFML_MOUSE_H
 #define SFML_MOUSE_H
 
-
 // Headers
 
+#include <SFML/System/Vector2.h>
 #include <SFML/Window/Export.h>
 #include <SFML/Window/Types.h>
-#include <SFML/System/Vector2.h>
-
-
 
 /// \brief Mouse buttons
 ///
 
-typedef enum
-{
-    sfMouseLeft,       ///< The left mouse button
-    sfMouseRight,      ///< The right mouse button
-    sfMouseMiddle,     ///< The middle (wheel) mouse button
-    sfMouseXButton1,   ///< The first extra mouse button
-    sfMouseXButton2,   ///< The second extra mouse button
+typedef enum {
+    sfMouseLeft,     ///< The left mouse button
+    sfMouseRight,    ///< The right mouse button
+    sfMouseMiddle,   ///< The middle (wheel) mouse button
+    sfMouseXButton1, ///< The first extra mouse button
+    sfMouseXButton2, ///< The second extra mouse button
 
     sfMouseButtonCount ///< Keep last -- the total number of mouse buttons
 } sfMouseButton;
 
-
 /// \brief Mouse wheels
 ///
 
-typedef enum
-{
+typedef enum {
     sfMouseVerticalWheel,  ///< The vertical mouse wheel
     sfMouseHorizontalWheel ///< The horizontal mouse wheel
 } sfMouseWheel;
-
-
 
 /// \brief Check if a mouse button is pressed
 ///
@@ -68,7 +59,6 @@ typedef enum
 ///
 
 CSFML_WINDOW_API sfBool sfMouse_isButtonPressed(sfMouseButton button);
-
 
 /// \brief Get the current position of the mouse
 ///
@@ -80,8 +70,7 @@ CSFML_WINDOW_API sfBool sfMouse_isButtonPressed(sfMouseButton button);
 /// \return Position of the mouse cursor, relative to the given window
 ///
 
-CSFML_WINDOW_API sfVector2i sfMouse_getPosition(const sfWindow* relativeTo);
-
+CSFML_WINDOW_API sfVector2i sfMouse_getPosition(const sfWindow *relativeTo);
 
 /// \brief Set the current position of the mouse
 ///
@@ -92,7 +81,6 @@ CSFML_WINDOW_API sfVector2i sfMouse_getPosition(const sfWindow* relativeTo);
 /// \param relativeTo Reference window
 ///
 
-CSFML_WINDOW_API void sfMouse_setPosition(sfVector2i position, const sfWindow* relativeTo);
-
+CSFML_WINDOW_API void sfMouse_setPosition(sfVector2i position, const sfWindow *relativeTo);
 
 #endif // SFML_MOUSE_H

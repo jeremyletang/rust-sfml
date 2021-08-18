@@ -21,23 +21,17 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #ifndef SFML_CONTEXTSTRUCT_H
 #define SFML_CONTEXTSTRUCT_H
-
 
 // Headers
 
 #include <SFML/Window/Context.hpp>
 
-
-
 // Internal structure of sfContext
 
-struct sfContext
-{
+struct sfContext {
     sf::Context This;
 };
-
 
 #endif // SFML_CONTEXTSTRUCT_H

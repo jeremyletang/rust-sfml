@@ -21,22 +21,18 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #ifndef SFML_FONTINFO_H
 #define SFML_FONTINFO_H
-
 
 // Headers
 
 #include <SFML/Graphics/Export.h>
 
-
 /// sfFontInfo holds various information about a font
 
 typedef struct
 {
-    const char* family;
+    const char *family;
 } sfFontInfo;
-
 
 #endif // SFML_FONTINFO_H

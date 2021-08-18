@@ -21,15 +21,11 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #ifndef SFML_AUDIO_H
 #define SFML_AUDIO_H
 
-
 // Headers
 
-
-#include <SFML/System.h>
 #include <SFML/Audio/Listener.h>
 #include <SFML/Audio/Music.h>
 #include <SFML/Audio/Sound.h>
@@ -38,6 +34,6 @@
 #include <SFML/Audio/SoundRecorder.h>
 #include <SFML/Audio/SoundStatus.h>
 #include <SFML/Audio/SoundStream.h>
-
+#include <SFML/System.h>
 
 #endif // SFML_AUDIO_H

@@ -21,23 +21,17 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #ifndef SFML_VIEWSTRUCT_H
 #define SFML_VIEWSTRUCT_H
-
 
 // Headers
 
 #include <SFML/Graphics/View.hpp>
 
-
-
 // Internal structure of sfMusic
 
-struct sfView
-{
+struct sfView {
     sf::View This;
 };
-
 
 #endif // SFML_VIEWSTRUCT_H

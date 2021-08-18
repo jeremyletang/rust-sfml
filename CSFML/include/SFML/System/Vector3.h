@@ -21,16 +21,12 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #ifndef SFML_VECTOR3_H
 #define SFML_VECTOR3_H
-
 
 // Headers
 
 #include <SFML/System/Export.h>
-
-
 
 /// \brief 3-component vector of floats
 ///
@@ -41,6 +37,5 @@ typedef struct
     float y;
     float z;
 } sfVector3f;
-
 
 #endif // SFML_VECTOR3_H

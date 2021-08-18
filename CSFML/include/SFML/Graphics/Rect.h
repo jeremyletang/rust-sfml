@@ -21,16 +21,12 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #ifndef SFML_RECT_H
 #define SFML_RECT_H
-
 
 // Headers
 
 #include <SFML/Graphics/Export.h>
-
-
 
 /// sfFloatRect and sfIntRect are utility classes for
 /// manipulating rectangles.
@@ -51,7 +47,6 @@ typedef struct
     int height;
 } sfIntRect;
 
-
 /// \brief Check if a point is inside a rectangle's area
 ///
 /// \param rect Rectangle to test
@@ -61,9 +56,8 @@ typedef struct
 /// \return sfTrue if the point is inside
 ///
 
-CSFML_GRAPHICS_API sfBool sfFloatRect_contains(const sfFloatRect* rect, float x, float y);
-CSFML_GRAPHICS_API sfBool sfIntRect_contains(const sfIntRect* rect, int x, int y);
-
+CSFML_GRAPHICS_API sfBool sfFloatRect_contains(const sfFloatRect *rect, float x, float y);
+CSFML_GRAPHICS_API sfBool sfIntRect_contains(const sfIntRect *rect, int x, int y);
 
 /// \brief Check intersection between two rectangles
 ///
@@ -74,8 +68,7 @@ CSFML_GRAPHICS_API sfBool sfIntRect_contains(const sfIntRect* rect, int x, int y
 /// \return sfTrue if rectangles overlap
 ///
 
-CSFML_GRAPHICS_API sfBool sfFloatRect_intersects(const sfFloatRect* rect1, const sfFloatRect* rect2, sfFloatRect* intersection);
-CSFML_GRAPHICS_API sfBool sfIntRect_intersects(const sfIntRect* rect1, const sfIntRect* rect2, sfIntRect* intersection);
-
+CSFML_GRAPHICS_API sfBool sfFloatRect_intersects(const sfFloatRect *rect1, const sfFloatRect *rect2, sfFloatRect *intersection);
+CSFML_GRAPHICS_API sfBool sfIntRect_intersects(const sfIntRect *rect1, const sfIntRect *rect2, sfIntRect *intersection);
 
 #endif // SFML_RECT_H

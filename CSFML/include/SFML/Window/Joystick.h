@@ -21,35 +21,27 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #ifndef SFML_JOYSTICK_H
 #define SFML_JOYSTICK_H
-
 
 // Headers
 
 #include <SFML/Window/Export.h>
 #include <SFML/Window/JoystickIdentification.h>
 
-
-
 /// \brief Global joysticks capabilities
 ///
 
-enum
-{
-    sfJoystickCount       = 8,  ///< Maximum number of supported joysticks
+enum {
+    sfJoystickCount = 8,        ///< Maximum number of supported joysticks
     sfJoystickButtonCount = 32, ///< Maximum number of supported buttons
-    sfJoystickAxisCount   = 8   ///< Maximum number of supported axes
+    sfJoystickAxisCount = 8     ///< Maximum number of supported axes
 };
-
-
 
 /// \brief Axes supported by SFML joysticks
 ///
 
-typedef enum
-{
+typedef enum {
     sfJoystickX,    ///< The X axis
     sfJoystickY,    ///< The Y axis
     sfJoystickZ,    ///< The Z axis
@@ -60,8 +52,6 @@ typedef enum
     sfJoystickPovY  ///< The Y axis of the point-of-view hat
 } sfJoystickAxis;
 
-
-
 /// \brief Check if a joystick is connected
 ///
 /// \param joystick Index of the joystick to check
@@ -70,7 +60,6 @@ typedef enum
 ///
 
 CSFML_WINDOW_API sfBool sfJoystick_isConnected(unsigned int joystick);
-
 
 /// \brief Return the number of buttons supported by a joystick
 ///
@@ -82,7 +71,6 @@ CSFML_WINDOW_API sfBool sfJoystick_isConnected(unsigned int joystick);
 ///
 
 CSFML_WINDOW_API unsigned int sfJoystick_getButtonCount(unsigned int joystick);
-
 
 /// \brief Check if a joystick supports a given axis
 ///
@@ -96,7 +84,6 @@ CSFML_WINDOW_API unsigned int sfJoystick_getButtonCount(unsigned int joystick);
 
 CSFML_WINDOW_API sfBool sfJoystick_hasAxis(unsigned int joystick, sfJoystickAxis axis);
 
-
 /// \brief Check if a joystick button is pressed
 ///
 /// If the joystick is not connected, this function returns false.
@@ -108,7 +95,6 @@ CSFML_WINDOW_API sfBool sfJoystick_hasAxis(unsigned int joystick, sfJoystickAxis
 ///
 
 CSFML_WINDOW_API sfBool sfJoystick_isButtonPressed(unsigned int joystick, unsigned int button);
-
 
 /// \brief Get the current position of a joystick axis
 ///
@@ -122,7 +108,6 @@ CSFML_WINDOW_API sfBool sfJoystick_isButtonPressed(unsigned int joystick, unsign
 
 CSFML_WINDOW_API float sfJoystick_getAxisPosition(unsigned int joystick, sfJoystickAxis axis);
 
-
 /// \brief Get the joystick information
 ///
 /// The result of this function will only remain valid until
@@ -135,7 +120,6 @@ CSFML_WINDOW_API float sfJoystick_getAxisPosition(unsigned int joystick, sfJoyst
 
 CSFML_WINDOW_API sfJoystickIdentification sfJoystick_getIdentification(unsigned int joystick);
 
-
 /// \brief Update the states of all joysticks
 ///
 /// This function is used internally by SFML, so you normally
@@ -145,6 +129,5 @@ CSFML_WINDOW_API sfJoystickIdentification sfJoystick_getIdentification(unsigned 
 ///
 
 CSFML_WINDOW_API void sfJoystick_update(void);
-
 
 #endif // SFML_JOYSTICK_H

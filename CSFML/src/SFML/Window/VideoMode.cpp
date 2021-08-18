@@ -21,42 +21,32 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
-
 // Headers
 
 #include <SFML/Window/VideoMode.h>
 #include <SFML/Window/VideoMode.hpp>
 #include <cstddef>
 
-
-
-sfVideoMode sfVideoMode_getDesktopMode(void)
-{
+sfVideoMode sfVideoMode_getDesktopMode(void) {
     sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
     sfVideoMode ret;
-    ret.width        = desktop.width;
-    ret.height       = desktop.height;
+    ret.width = desktop.width;
+    ret.height = desktop.height;
     ret.bitsPerPixel = desktop.bitsPerPixel;
 
     return ret;
 }
 
-
-
-const sfVideoMode* sfVideoMode_getFullscreenModes(size_t* count)
-{
+const sfVideoMode *sfVideoMode_getFullscreenModes(size_t *count) {
     static std::vector<sfVideoMode> modes;
 
     // Populate the array on first call
-    if (modes.empty())
-    {
-        const std::vector<sf::VideoMode>& SFMLModes = sf::VideoMode::getFullscreenModes();
-        for (std::vector<sf::VideoMode>::const_iterator it = SFMLModes.begin(); it != SFMLModes.end(); ++it)
-        {
+    if (modes.empty()) {
+        const std::vector<sf::VideoMode> &SFMLModes = sf::VideoMode::getFullscreenModes();
+        for (std::vector<sf::VideoMode>::const_iterator it = SFMLModes.begin(); it != SFMLModes.end(); ++it) {
             sfVideoMode mode;
-            mode.width        = it->width;
-            mode.height       = it->height;
+            mode.width = it->width;
+            mode.height = it->height;
             mode.bitsPerPixel = it->bitsPerPixel;
             modes.push_back(mode);
         }
@@ -68,10 +58,7 @@ const sfVideoMode* sfVideoMode_getFullscreenModes(size_t* count)
     return !modes.empty() ? &modes[0] : NULL;
 }
 
-
-
-sfBool sfVideoMode_isValid(sfVideoMode mode)
-{
+sfBool sfVideoMode_isValid(sfVideoMode mode) {
     sf::VideoMode videoMode(mode.width, mode.height, mode.bitsPerPixel);
     return videoMode.isValid() ? sfTrue : sfFalse;
 }

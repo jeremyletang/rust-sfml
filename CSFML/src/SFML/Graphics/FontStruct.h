@@ -21,28 +21,22 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #ifndef SFML_FONTSTRUCT_H
 #define SFML_FONTSTRUCT_H
 
-
 // Headers
 
+#include <SFML/CallbackStream.h>
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/Graphics/TextureStruct.h>
-#include <SFML/CallbackStream.h>
 #include <map>
-
-
 
 // Internal structure of sfFont
 
-struct sfFont
-{
+struct sfFont {
     sf::Font This;
     std::map<unsigned int, sfTexture> Textures;
     CallbackStream Stream;
 };
-
 
 #endif // SFML_FONTSTRUCT_H

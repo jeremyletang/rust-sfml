@@ -21,88 +21,69 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #ifndef SFML_SOUNDRECORDERSTRUCT_H
 #define SFML_SOUNDRECORDERSTRUCT_H
 
-
 // Headers
 
-#include <SFML/Audio/SoundRecorder.hpp>
 #include <SFML/Audio/SoundRecorder.h>
-
-
+#include <SFML/Audio/SoundRecorder.hpp>
 
 // Helper class implementing the callback forwarding from
 // C++ to C in sfSoundRecorder
 
-class sfSoundRecorderImpl : public sf::SoundRecorder
-{
-public :
-
-    sfSoundRecorderImpl(sfSoundRecorderStartCallback   onStart,
+class sfSoundRecorderImpl : public sf::SoundRecorder {
+  public:
+    sfSoundRecorderImpl(sfSoundRecorderStartCallback onStart,
                         sfSoundRecorderProcessCallback onProcess,
-                        sfSoundRecorderStopCallback    onStop,
-                        void*                          userData) :
-    myStartCallback  (onStart),
-    myProcessCallback(onProcess),
-    myStopCallback   (onStop),
-    myUserData       (userData)
-    {
+                        sfSoundRecorderStopCallback onStop,
+                        void *userData) : myStartCallback(onStart),
+                                          myProcessCallback(onProcess),
+                                          myStopCallback(onStop),
+                                          myUserData(userData) {
     }
 
-    void setProcessingInterval(sfTime interval)
-    {
+    void setProcessingInterval(sfTime interval) {
         sf::SoundRecorder::setProcessingInterval(sf::microseconds(interval.microseconds));
     }
 
-private :
-
-    virtual bool onStart()
-    {
+  private:
+    virtual bool onStart() {
         if (myStartCallback)
             return myStartCallback(myUserData) == sfTrue;
         else
             return true;
     }
 
-    virtual bool onProcessSamples(const sf::Int16* samples, std::size_t sampleCount)
-    {
+    virtual bool onProcessSamples(const sf::Int16 *samples, std::size_t sampleCount) {
         if (myProcessCallback)
             return myProcessCallback(samples, sampleCount, myUserData) == sfTrue;
         else
             return true;
     }
 
-    virtual void onStop()
-    {
+    virtual void onStop() {
         if (myStopCallback)
             myStopCallback(myUserData);
     }
 
-    sfSoundRecorderStartCallback   myStartCallback;
+    sfSoundRecorderStartCallback myStartCallback;
     sfSoundRecorderProcessCallback myProcessCallback;
-    sfSoundRecorderStopCallback    myStopCallback;
-    void*                          myUserData;
+    sfSoundRecorderStopCallback myStopCallback;
+    void *myUserData;
 };
-
-
 
 // Internal structure of sfSoundRecorder
 
-struct sfSoundRecorder
-{
-    sfSoundRecorder(sfSoundRecorderStartCallback   onStart,
+struct sfSoundRecorder {
+    sfSoundRecorder(sfSoundRecorderStartCallback onStart,
                     sfSoundRecorderProcessCallback onProcess,
-                    sfSoundRecorderStopCallback    onStop,
-                    void*                          userData) :
-    This(onStart, onProcess, onStop, userData)
-    {
+                    sfSoundRecorderStopCallback onStop,
+                    void *userData) : This(onStart, onProcess, onStop, userData) {
     }
 
     sfSoundRecorderImpl This;
     std::string DeviceName;
 };
-
 
 #endif // SFML_SOUNDRECORDERSTRUCT_H

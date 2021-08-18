@@ -21,47 +21,31 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
-
 // Headers
 
 #include <SFML/Window/Clipboard.h>
 #include <SFML/Window/Clipboard.hpp>
 #include <cstddef>
 
+namespace {
+sf::String ClipboardString;
+std::string ClipboardStringAnsi;
+} // namespace
 
-namespace
-{
-    sf::String ClipboardString;
-    std::string ClipboardStringAnsi;
-}
-
-
-
-const char* sfClipboard_getString()
-{
+const char *sfClipboard_getString() {
     ClipboardStringAnsi = sf::Clipboard::getString().toAnsiString();
     return ClipboardStringAnsi.c_str();
 }
 
-
-
-const sfUint32* sfClipboard_getUnicodeString()
-{
+const sfUint32 *sfClipboard_getUnicodeString() {
     ClipboardString = sf::Clipboard::getString();
     return ClipboardString.getData();
 }
 
-
-
-void sfClipboard_setString(const char* text)
-{
+void sfClipboard_setString(const char *text) {
     sf::Clipboard::setString(text);
 }
 
-
-
-void sfClipboard_setUnicodeString(const sfUint32* text)
-{
+void sfClipboard_setUnicodeString(const sfUint32 *text) {
     sf::Clipboard::setString(text);
 }

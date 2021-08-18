@@ -21,17 +21,13 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-
 #ifndef SFML_SLEEP_H
 #define SFML_SLEEP_H
-
 
 // Headers
 
 #include <SFML/System/Export.h>
 #include <SFML/System/Time.h>
-
-
 
 /// \brief Make the current thread sleep for a given duration
 ///
@@ -42,6 +38,5 @@
 ///
 
 CSFML_SYSTEM_API void sfSleep(sfTime duration);
-
 
 #endif // SFML_SLEEP_H
