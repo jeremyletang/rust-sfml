@@ -485,32 +485,6 @@ extern "C" void sfRenderWindow_popGLStates(sfRenderWindow *renderWindow);
 
 extern "C" void sfRenderWindow_resetGLStates(sfRenderWindow *renderWindow);
 
-/// \brief Copy the current contents of the window to an image
-///
-/// \deprecated
-/// Use a sfTexture and its
-/// sfTexture_updateFromRenderWindow(sfTexture*, const sfRenderWindow*, unsigned int, unsigned int)
-/// function and copy its contents into an sfImage instead.
-/// \code
-/// sfVector2u windowSize = sfRenderWindow_getSize(window);
-/// sfTexture* texture = sfTexture_create(windowSize.x, windowSize.y);
-/// sfTexture_updateFromRenderWindow(texture, window, windowSize.x, windowSize.y);
-/// sfImage* screenshot = sfTexture_copyToImage(texture);
-/// \endcode
-///
-/// This is a slow operation, whose main purpose is to make
-/// screenshots of the application. If you want to update an
-/// image with the contents of the window and then use it for
-/// drawing, you should rather use a sfTexture and the
-/// sfTexture_updateFromWindow(sfTexture*, const sfWindow*, unsigned int, unsigned int) function.
-/// You can also draw things directly to a texture with the
-/// sfRenderTexture class.
-///
-/// \return sfImage containing the captured contents.
-///
-
-extern "C" CSFML_DEPRECATED sfImage *sfRenderWindow_capture(const sfRenderWindow *renderWindow);
-
 /// \brief Get the current position of the mouse relative to a render-window
 ///
 /// This function returns the current position of the mouse

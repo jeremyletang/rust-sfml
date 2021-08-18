@@ -59,42 +59,6 @@
 
 #endif
 
-// Cross-platform warning for deprecated functions and classes
-//
-// Usage:
-// struct CSFML_DEPRECATED MyStruct
-// {
-//     ...
-// };
-//
-// CSFML_DEPRECATED void globalFunc();
-
-#if defined(CSFML_NO_DEPRECATED_WARNINGS)
-
-// User explicitly requests to disable deprecation warnings
-#define CSFML_DEPRECATED
-
-#elif defined(_MSC_VER)
-
-// Microsoft C++ compiler
-// Note: On newer MSVC versions, using deprecated functions causes a compiler error. In order to
-// trigger a warning instead of an error, the compiler flag /sdl- (instead of /sdl) must be specified.
-#define CSFML_DEPRECATED __declspec(deprecated)
-
-#elif defined(__GNUC__)
-
-// g++ and Clang
-#define CSFML_DEPRECATED __attribute__((deprecated))
-
-#else
-
-// Other compilers are not supported, leave class or function as-is.
-// With a bit of luck, the #pragma directive works, otherwise users get a warning (no error!) for unrecognized #pragma.
-#pragma message("CSFML_DEPRECATED is not supported for your compiler, please contact the CSFML team")
-#define CSFML_DEPRECATED
-
-#endif
-
 // Define a portable boolean type
 
 typedef int sfBool;

@@ -42,7 +42,6 @@ typedef enum {
     sfEvtTextEntered,            ///< A character was entered (data in event.text)
     sfEvtKeyPressed,             ///< A key was pressed (data in event.key)
     sfEvtKeyReleased,            ///< A key was released (data in event.key)
-    sfEvtMouseWheelMoved,        ///< The mouse wheel was scrolled (data in event.mouseWheel) (deprecated)
     sfEvtMouseWheelScrolled,     ///< The mouse wheel was scrolled (data in event.mouseWheelScroll)
     sfEvtMouseButtonPressed,     ///< A mouse button was pressed (data in event.mouseButton)
     sfEvtMouseButtonReleased,    ///< A mouse button was released (data in event.mouseButton)
@@ -104,19 +103,6 @@ typedef struct
     int x;
     int y;
 } sfMouseButtonEvent;
-
-/// \brief Mouse wheel events parameters
-///
-/// \deprecated
-/// Use sfMouseWheelScrollEvent instead.
-///
-
-typedef struct CSFML_DEPRECATED {
-    sfEventType type;
-    int delta;
-    int x;
-    int y;
-} sfMouseWheelEvent;
 
 /// \brief Mouse wheel events parameters
 ///
@@ -203,7 +189,6 @@ typedef union {
     sfTextEvent text;                         ///< Text event parameters
     sfMouseMoveEvent mouseMove;               ///< Mouse move event parameters
     sfMouseButtonEvent mouseButton;           ///< Mouse button event parameters
-    sfMouseWheelEvent mouseWheel;             ///< Mouse wheel event parameters (deprecated)
     sfMouseWheelScrollEvent mouseWheelScroll; ///< Mouse wheel event parameters
     sfJoystickMoveEvent joystickMove;         ///< Joystick move event parameters
     sfJoystickButtonEvent joystickButton;     ///< Joystick button event parameters
