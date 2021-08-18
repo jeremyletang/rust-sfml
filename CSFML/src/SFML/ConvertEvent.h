@@ -33,7 +33,7 @@
 
 inline void convertEvent(const sf::Event &SFMLEvent, sfEvent *event) {
     // Convert its type
-    event->type = static_cast<sfEventType>(SFMLEvent.type);
+    event->type = static_cast<int>(SFMLEvent.type);
 
     // Fill its fields
     switch (event->type) {

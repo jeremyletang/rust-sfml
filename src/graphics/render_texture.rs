@@ -27,16 +27,8 @@ impl RenderTexture {
     ///
     /// Returns `None` if creation fails.
     #[must_use]
-    pub fn new(width: u32, height: u32, depth_buffer: bool) -> Option<RenderTexture> {
-        let tex =
-            unsafe { ffi::sfRenderTexture_create(width, height, sfBool::from_bool(depth_buffer)) };
-        if tex.is_null() {
-            None
-        } else {
-            Some(RenderTexture {
-                render_texture: tex,
-            })
-        }
+    pub fn new(width: u32, height: u32) -> Option<RenderTexture> {
+        Self::with_settings(width, height, &ContextSettings::default())
     }
 
     /// Create a `RenderTexture` with the given `ContextSettings`.
@@ -53,7 +45,7 @@ impl RenderTexture {
     /// Returns `None` if creation fails.
     #[must_use]
     pub fn with_settings(width: u32, height: u32, settings: &ContextSettings) -> Option<Self> {
-        let tex = unsafe { ffi::sfRenderTexture_createWithSettings(width, height, settings.0) };
+        let tex = unsafe { ffi::sfRenderTexture_createWithSettings(width, height, &settings.0) };
         if tex.is_null() {
             None
         } else {

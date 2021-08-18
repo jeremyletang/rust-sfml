@@ -194,7 +194,7 @@ struct Edge<'t> {
 
 impl<'t> Edge<'t> {
     fn new(bg_texture: &'t Texture, entity_texture: &'t Texture) -> Self {
-        let mut surface = RenderTexture::new(800, 600, false).unwrap();
+        let mut surface = RenderTexture::new(800, 600).unwrap();
         surface.set_smooth(true);
         let mut bg_sprite = Sprite::with_texture(bg_texture);
         bg_sprite.set_position((135., 100.));

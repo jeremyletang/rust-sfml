@@ -207,8 +207,8 @@ impl Event {
         let type_ = event.type_;
 
         let evt = match type_ {
-            ffi::sfEventType_sfEvtClosed => Closed,
-            ffi::sfEventType_sfEvtResized => {
+            ffi::sfEvtClosed => Closed,
+            ffi::sfEvtResized => {
                 let e = event.size;
 
                 Resized {
@@ -216,13 +216,13 @@ impl Event {
                     height: e.height,
                 }
             }
-            ffi::sfEventType_sfEvtLostFocus => LostFocus,
-            ffi::sfEventType_sfEvtGainedFocus => GainedFocus,
-            ffi::sfEventType_sfEvtTextEntered => TextEntered {
+            ffi::sfEvtLostFocus => LostFocus,
+            ffi::sfEvtGainedFocus => GainedFocus,
+            ffi::sfEvtTextEntered => TextEntered {
                 unicode: std::char::from_u32(event.text.unicode)
                     .expect("Invalid unicode encountered on TextEntered event"),
             },
-            ffi::sfEventType_sfEvtKeyPressed => {
+            ffi::sfEvtKeyPressed => {
                 let e = event.key;
 
                 KeyPressed {
@@ -233,7 +233,7 @@ impl Event {
                     system: e.system.into_bool(),
                 }
             }
-            ffi::sfEventType_sfEvtKeyReleased => {
+            ffi::sfEvtKeyReleased => {
                 let e = event.key;
 
                 KeyReleased {
@@ -244,7 +244,7 @@ impl Event {
                     system: e.system.into_bool(),
                 }
             }
-            ffi::sfEventType_sfEvtMouseWheelScrolled => {
+            ffi::sfEvtMouseWheelScrolled => {
                 let e = event.mouseWheelScroll;
                 MouseWheelScrolled {
                     wheel: Wheel::from_raw(e.wheel),
@@ -253,7 +253,7 @@ impl Event {
                     y: e.y,
                 }
             }
-            ffi::sfEventType_sfEvtMouseButtonPressed => {
+            ffi::sfEvtMouseButtonPressed => {
                 let e = event.mouseButton;
 
                 MouseButtonPressed {
@@ -262,7 +262,7 @@ impl Event {
                     y: e.y,
                 }
             }
-            ffi::sfEventType_sfEvtMouseButtonReleased => {
+            ffi::sfEvtMouseButtonReleased => {
                 let e = event.mouseButton;
 
                 MouseButtonReleased {
@@ -271,13 +271,13 @@ impl Event {
                     y: e.y,
                 }
             }
-            ffi::sfEventType_sfEvtMouseMoved => {
+            ffi::sfEvtMouseMoved => {
                 let e = event.mouseMove;
                 MouseMoved { x: e.x, y: e.y }
             }
-            ffi::sfEventType_sfEvtMouseEntered => MouseEntered,
-            ffi::sfEventType_sfEvtMouseLeft => MouseLeft,
-            ffi::sfEventType_sfEvtJoystickButtonPressed => {
+            ffi::sfEvtMouseEntered => MouseEntered,
+            ffi::sfEvtMouseLeft => MouseLeft,
+            ffi::sfEvtJoystickButtonPressed => {
                 let e = event.joystickButton;
 
                 JoystickButtonPressed {
@@ -285,7 +285,7 @@ impl Event {
                     button: e.button,
                 }
             }
-            ffi::sfEventType_sfEvtJoystickButtonReleased => {
+            ffi::sfEvtJoystickButtonReleased => {
                 let e = event.joystickButton;
 
                 JoystickButtonReleased {
@@ -293,7 +293,7 @@ impl Event {
                     button: e.button,
                 }
             }
-            ffi::sfEventType_sfEvtJoystickMoved => {
+            ffi::sfEvtJoystickMoved => {
                 let e = event.joystickMove;
 
                 JoystickMoved {
@@ -302,13 +302,13 @@ impl Event {
                     position: e.position,
                 }
             }
-            ffi::sfEventType_sfEvtJoystickConnected => JoystickConnected {
+            ffi::sfEvtJoystickConnected => JoystickConnected {
                 joystickid: event.joystickConnect.joystickId,
             },
-            ffi::sfEventType_sfEvtJoystickDisconnected => JoystickDisconnected {
+            ffi::sfEvtJoystickDisconnected => JoystickDisconnected {
                 joystickid: event.joystickConnect.joystickId,
             },
-            ffi::sfEventType_sfEvtTouchBegan => {
+            ffi::sfEvtTouchBegan => {
                 let e = event.touch;
 
                 TouchBegan {
@@ -317,7 +317,7 @@ impl Event {
                     y: e.y,
                 }
             }
-            ffi::sfEventType_sfEvtTouchMoved => {
+            ffi::sfEvtTouchMoved => {
                 let e = event.touch;
 
                 TouchMoved {
@@ -326,7 +326,7 @@ impl Event {
                     y: e.y,
                 }
             }
-            ffi::sfEventType_sfEvtTouchEnded => {
+            ffi::sfEvtTouchEnded => {
                 let e = event.touch;
 
                 TouchEnded {
@@ -335,7 +335,7 @@ impl Event {
                     y: e.y,
                 }
             }
-            ffi::sfEventType_sfEvtSensorChanged => {
+            ffi::sfEvtSensorChanged => {
                 let e = event.sensor;
 
                 SensorChanged {
@@ -347,7 +347,6 @@ impl Event {
             }
 
             // Ignore deprecated events
-            ffi::sfEventType_sfEvtMouseWheelMoved => return None,
             _ => panic!("Unhandled event type ({})", type_),
         };
         Some(evt)

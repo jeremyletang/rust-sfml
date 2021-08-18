@@ -31,42 +31,36 @@
 #include <SFML/Window/Mouse.h>
 #include <SFML/Window/Sensor.h>
 
-/// \brief Definition of all the event types
-///
-
-typedef enum {
-    sfEvtClosed,                 ///< The window requested to be closed (no data)
-    sfEvtResized,                ///< The window was resized (data in event.size)
-    sfEvtLostFocus,              ///< The window lost the focus (no data)
-    sfEvtGainedFocus,            ///< The window gained the focus (no data)
-    sfEvtTextEntered,            ///< A character was entered (data in event.text)
-    sfEvtKeyPressed,             ///< A key was pressed (data in event.key)
-    sfEvtKeyReleased,            ///< A key was released (data in event.key)
-    sfEvtMouseWheelScrolled,     ///< The mouse wheel was scrolled (data in event.mouseWheelScroll)
-    sfEvtMouseButtonPressed,     ///< A mouse button was pressed (data in event.mouseButton)
-    sfEvtMouseButtonReleased,    ///< A mouse button was released (data in event.mouseButton)
-    sfEvtMouseMoved,             ///< The mouse cursor moved (data in event.mouseMove)
-    sfEvtMouseEntered,           ///< The mouse cursor entered the area of the window (no data)
-    sfEvtMouseLeft,              ///< The mouse cursor left the area of the window (no data)
-    sfEvtJoystickButtonPressed,  ///< A joystick button was pressed (data in event.joystickButton)
-    sfEvtJoystickButtonReleased, ///< A joystick button was released (data in event.joystickButton)
-    sfEvtJoystickMoved,          ///< The joystick moved along an axis (data in event.joystickMove)
-    sfEvtJoystickConnected,      ///< A joystick was connected (data in event.joystickConnect)
-    sfEvtJoystickDisconnected,   ///< A joystick was disconnected (data in event.joystickConnect)
-    sfEvtTouchBegan,             ///< A touch event began (data in event.touch)
-    sfEvtTouchMoved,             ///< A touch moved (data in event.touch)
-    sfEvtTouchEnded,             ///< A touch event ended (data in event.touch)
-    sfEvtSensorChanged,          ///< A sensor value changed (data in event.sensor)
-
-    sfEvtCount, ///< Keep last -- the total number of event types
-} sfEventType;
+const int sfEvtClosed = 0;
+const int sfEvtResized = 1;
+const int sfEvtLostFocus = 2;
+const int sfEvtGainedFocus = 3;
+const int sfEvtTextEntered = 4;
+const int sfEvtKeyPressed = 5;
+const int sfEvtKeyReleased = 6;
+const int sfEvtMouseWheelScrolled = 8;
+const int sfEvtMouseButtonPressed = 9;
+const int sfEvtMouseButtonReleased = 10;
+const int sfEvtMouseMoved = 11;
+const int sfEvtMouseEntered = 12;
+const int sfEvtMouseLeft = 13;
+const int sfEvtJoystickButtonPressed = 14;
+const int sfEvtJoystickButtonReleased = 15;
+const int sfEvtJoystickMoved = 16;
+const int sfEvtJoystickConnected = 17;
+const int sfEvtJoystickDisconnected = 18;
+const int sfEvtTouchBegan = 19;
+const int sfEvtTouchMoved = 20;
+const int sfEvtTouchEnded = 21;
+const int sfEvtSensorChanged = 22;
+const int sfEvtCount = 23;
 
 /// \brief Keyboard event parameters
 ///
 
 typedef struct
 {
-    sfEventType type;
+    int type;
     sfKeyCode code;
     sfBool alt;
     sfBool control;
@@ -79,7 +73,7 @@ typedef struct
 
 typedef struct
 {
-    sfEventType type;
+    int type;
     sfUint32 unicode;
 } sfTextEvent;
 
@@ -88,7 +82,7 @@ typedef struct
 
 typedef struct
 {
-    sfEventType type;
+    int type;
     int x;
     int y;
 } sfMouseMoveEvent;
@@ -98,7 +92,7 @@ typedef struct
 
 typedef struct
 {
-    sfEventType type;
+    int type;
     sfMouseButton button;
     int x;
     int y;
@@ -109,7 +103,7 @@ typedef struct
 
 typedef struct
 {
-    sfEventType type;
+    int type;
     sfMouseWheel wheel;
     float delta;
     int x;
@@ -121,7 +115,7 @@ typedef struct
 
 typedef struct
 {
-    sfEventType type;
+    int type;
     unsigned int joystickId;
     sfJoystickAxis axis;
     float position;
@@ -132,7 +126,7 @@ typedef struct
 
 typedef struct
 {
-    sfEventType type;
+    int type;
     unsigned int joystickId;
     unsigned int button;
 } sfJoystickButtonEvent;
@@ -142,7 +136,7 @@ typedef struct
 
 typedef struct
 {
-    sfEventType type;
+    int type;
     unsigned int joystickId;
 } sfJoystickConnectEvent;
 
@@ -151,7 +145,7 @@ typedef struct
 
 typedef struct
 {
-    sfEventType type;
+    int type;
     unsigned int width;
     unsigned int height;
 } sfSizeEvent;
@@ -161,7 +155,7 @@ typedef struct
 
 typedef struct
 {
-    sfEventType type;
+    int type;
     unsigned int finger;
     int x;
     int y;
@@ -172,7 +166,7 @@ typedef struct
 
 typedef struct
 {
-    sfEventType type;
+    int type;
     sfSensorType sensorType;
     float x;
     float y;
@@ -183,7 +177,7 @@ typedef struct
 ///
 
 typedef union {
-    sfEventType type;                         ///< Type of the event
+    int type;                         ///< Type of the event
     sfSizeEvent size;                         ///< Size event parameters
     sfKeyEvent key;                           ///< Key event parameters
     sfTextEvent text;                         ///< Text event parameters
