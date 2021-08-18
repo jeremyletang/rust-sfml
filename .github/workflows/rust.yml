@@ -32,9 +32,9 @@ jobs:
        popd
     - name: Build
       run: |
-      export SFML_INCLUDE_PATH=$HOME/sfml_install/usr/local/include
-      export SFML_LIBS_PATH=$HOME/sfml_install/usr/local/lib
-      cargo build --verbose
+       export SFML_INCLUDE_PATH=$HOME/sfml_install/usr/local/include
+       export SFML_LIBS_PATH=$HOME/sfml_install/usr/local/lib
+       cargo build --verbose
     - name: Run tests
       run: |
        export LD_LIBRARY_PATH=$HOME/sfml_install/usr/local/lib
