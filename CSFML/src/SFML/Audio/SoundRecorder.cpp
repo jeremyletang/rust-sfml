@@ -27,7 +27,7 @@
 ////////////////////////////////////////////////////////////
 #include <SFML/Audio/SoundRecorder.h>
 #include <SFML/Audio/SoundRecorderStruct.h>
-#include <SFML/Internal.h>
+#include <cstddef>
 
 
 ////////////////////////////////////////////////////////////
@@ -50,21 +50,21 @@ void sfSoundRecorder_destroy(sfSoundRecorder* soundRecorder)
 ////////////////////////////////////////////////////////////
 sfBool sfSoundRecorder_start(sfSoundRecorder* soundRecorder, unsigned int sampleRate)
 {
-    CSFML_CALL_RETURN(soundRecorder, start(sampleRate), sfFalse);
+    return soundRecorder->This.start(sampleRate);
 }
 
 
 ////////////////////////////////////////////////////////////
 void sfSoundRecorder_stop(sfSoundRecorder* soundRecorder)
 {
-    CSFML_CALL(soundRecorder, stop());
+    soundRecorder->This.stop();
 }
 
 
 ////////////////////////////////////////////////////////////
 unsigned int sfSoundRecorder_getSampleRate(const sfSoundRecorder* soundRecorder)
 {
-    CSFML_CALL_RETURN(soundRecorder, getSampleRate(), 0);
+    return soundRecorder->This.getSampleRate();
 }
 
 
@@ -78,7 +78,7 @@ sfBool sfSoundRecorder_isAvailable(void)
 ////////////////////////////////////////////////////////////
 void sfSoundRecorder_setProcessingInterval(sfSoundRecorder* soundRecorder, sfTime interval)
 {
-    CSFML_CALL(soundRecorder, setProcessingInterval(interval));
+    soundRecorder->This.setProcessingInterval(interval);
 }
 
 
@@ -115,14 +115,14 @@ const char* sfSoundRecorder_getDefaultDevice()
 ////////////////////////////////////////////////////////////
 sfBool sfSoundRecorder_setDevice(sfSoundRecorder* soundRecorder, const char* name)
 {
-    CSFML_CALL_RETURN(soundRecorder, setDevice(name), sfFalse);
+    return soundRecorder->This.setDevice(name);
 }
 
 
 ////////////////////////////////////////////////////////////
 const char* sfSoundRecorder_getDevice(sfSoundRecorder* soundRecorder)
 {
-    CSFML_CHECK_RETURN(soundRecorder, NULL);
+
 
     soundRecorder->DeviceName = soundRecorder->This.getDevice();
 
@@ -133,12 +133,12 @@ const char* sfSoundRecorder_getDevice(sfSoundRecorder* soundRecorder)
 ////////////////////////////////////////////////////////////
 void sfSoundRecorder_setChannelCount(sfSoundRecorder* soundRecorder, unsigned int channelCount)
 {
-    CSFML_CALL(soundRecorder, setChannelCount(channelCount));
+    soundRecorder->This.setChannelCount(channelCount);
 }
 
 
 ////////////////////////////////////////////////////////////
 unsigned int sfSoundRecorder_getChannelCount(const sfSoundRecorder* soundRecorder)
 {
-    CSFML_CALL_RETURN(soundRecorder, getChannelCount(), 0);
+    return soundRecorder->This.getChannelCount();
 }

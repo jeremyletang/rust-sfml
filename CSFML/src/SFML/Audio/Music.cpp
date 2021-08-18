@@ -27,7 +27,7 @@
 ////////////////////////////////////////////////////////////
 #include <SFML/Audio/Music.h>
 #include <SFML/Audio/MusicStruct.h>
-#include <SFML/Internal.h>
+#include <cstddef>
 
 
 ////////////////////////////////////////////////////////////
@@ -61,7 +61,7 @@ sfMusic* sfMusic_createFromMemory(const void* data, size_t sizeInBytes)
 ////////////////////////////////////////////////////////////
 sfMusic* sfMusic_createFromStream(sfInputStream* stream)
 {
-    CSFML_CHECK_RETURN(stream, NULL);
+
 
     sfMusic* music = new sfMusic;
     music->Stream = CallbackStream(stream);
@@ -85,14 +85,14 @@ void sfMusic_destroy(sfMusic* music)
 ////////////////////////////////////////////////////////////
 void sfMusic_setLoop(sfMusic* music, sfBool loop)
 {
-    CSFML_CALL(music, setLoop(loop != 0));
+    music->This.setLoop(loop != 0);
 }
 
 
 ////////////////////////////////////////////////////////////
 sfBool sfMusic_getLoop(const sfMusic* music)
 {
-    CSFML_CALL_RETURN(music, getLoop(), sfFalse);
+    return music->This.getLoop();
 }
 
 
@@ -100,7 +100,7 @@ sfBool sfMusic_getLoop(const sfMusic* music)
 sfTime sfMusic_getDuration(const sfMusic* music)
 {
     sfTime time = {0};
-    CSFML_CHECK_RETURN(music, time);
+
 
     time.microseconds = music->This.getDuration().asMicroseconds();
     return time;
@@ -111,7 +111,7 @@ sfTime sfMusic_getDuration(const sfMusic* music)
 sfTimeSpan sfMusic_getLoopPoints(const sfMusic* music)
 {
     sfTimeSpan timeSpan = {{0}, {0}};
-    CSFML_CHECK_RETURN(music, timeSpan);
+
 
     sf::Music::TimeSpan span = music->This.getLoopPoints();
 
@@ -125,50 +125,50 @@ sfTimeSpan sfMusic_getLoopPoints(const sfMusic* music)
 ////////////////////////////////////////////////////////////
 void sfMusic_setLoopPoints(sfMusic* music, sfTimeSpan timePoints)
 {
-    CSFML_CALL(music, setLoopPoints(sf::Music::TimeSpan(sf::microseconds(timePoints.offset.microseconds),
-                                                        sf::microseconds(timePoints.length.microseconds))));
+    music->This.setLoopPoints(sf::Music::TimeSpan(sf::microseconds(timePoints.offset.microseconds),
+                                                        sf::microseconds(timePoints.length.microseconds)));
 }
 
 
 ////////////////////////////////////////////////////////////
 void sfMusic_play(sfMusic* music)
 {
-    CSFML_CALL(music, play());
+    music->This.play();
 }
 
 
 ////////////////////////////////////////////////////////////
 void sfMusic_pause(sfMusic* music)
 {
-    CSFML_CALL(music, pause());
+    music->This.pause();
 }
 
 
 ////////////////////////////////////////////////////////////
 void sfMusic_stop(sfMusic* music)
 {
-    CSFML_CALL(music, stop());
+    music->This.stop();
 }
 
 
 ////////////////////////////////////////////////////////////
 unsigned int sfMusic_getChannelCount(const sfMusic* music)
 {
-    CSFML_CALL_RETURN(music, getChannelCount(), 0);
+    return music->This.getChannelCount();
 }
 
 
 ////////////////////////////////////////////////////////////
 unsigned int sfMusic_getSampleRate(const sfMusic* music)
 {
-    CSFML_CALL_RETURN(music, getSampleRate(), 0);
+    return music->This.getSampleRate();
 }
 
 
 ////////////////////////////////////////////////////////////
 sfSoundStatus sfMusic_getStatus(const sfMusic* music)
 {
-    CSFML_CHECK_RETURN(music, sfStopped);
+
 
     return static_cast<sfSoundStatus>(music->This.getStatus());
 }
@@ -178,7 +178,7 @@ sfSoundStatus sfMusic_getStatus(const sfMusic* music)
 sfTime sfMusic_getPlayingOffset(const sfMusic* music)
 {
     sfTime time = {0};
-    CSFML_CHECK_RETURN(music, time);
+
 
     time.microseconds = music->This.getPlayingOffset().asMicroseconds();
     return time;
@@ -188,63 +188,63 @@ sfTime sfMusic_getPlayingOffset(const sfMusic* music)
 ////////////////////////////////////////////////////////////
 void sfMusic_setPitch(sfMusic* music, float pitch)
 {
-    CSFML_CALL(music, setPitch(pitch));
+    music->This.setPitch(pitch);
 }
 
 
 ////////////////////////////////////////////////////////////
 void sfMusic_setVolume(sfMusic* music, float volume)
 {
-    CSFML_CALL(music, setVolume(volume));
+    music->This.setVolume(volume);
 }
 
 
 ////////////////////////////////////////////////////////////
 void sfMusic_setPosition(sfMusic* music, sfVector3f position)
 {
-    CSFML_CALL(music, setPosition(sf::Vector3f(position.x, position.y, position.z)));
+    music->This.setPosition(sf::Vector3f(position.x, position.y, position.z));
 }
 
 
 ////////////////////////////////////////////////////////////
 void sfMusic_setRelativeToListener(sfMusic* music, sfBool relative)
 {
-    CSFML_CALL(music, setRelativeToListener(relative == sfTrue));
+    music->This.setRelativeToListener(relative == sfTrue);
 }
 
 
 ////////////////////////////////////////////////////////////
 void sfMusic_setMinDistance(sfMusic* music, float distance)
 {
-    CSFML_CALL(music, setMinDistance(distance));
+    music->This.setMinDistance(distance);
 }
 
 
 ////////////////////////////////////////////////////////////
 void sfMusic_setAttenuation(sfMusic* music, float attenuation)
 {
-    CSFML_CALL(music, setAttenuation(attenuation));
+    music->This.setAttenuation(attenuation);
 }
 
 
 ////////////////////////////////////////////////////////////
 void sfMusic_setPlayingOffset(sfMusic* music, sfTime timeOffset)
 {
-    CSFML_CALL(music, setPlayingOffset(sf::microseconds(timeOffset.microseconds)));
+    music->This.setPlayingOffset(sf::microseconds(timeOffset.microseconds));
 }
 
 
 ////////////////////////////////////////////////////////////
 float sfMusic_getPitch(const sfMusic* music)
 {
-    CSFML_CALL_RETURN(music, getPitch(), 0.f);
+    return music->This.getPitch();
 }
 
 
 ////////////////////////////////////////////////////////////
 float sfMusic_getVolume(const sfMusic* music)
 {
-    CSFML_CALL_RETURN(music, getVolume(), 0.f);
+    return music->This.getVolume();
 }
 
 
@@ -252,7 +252,7 @@ float sfMusic_getVolume(const sfMusic* music)
 sfVector3f sfMusic_getPosition(const sfMusic* music)
 {
     sfVector3f position = {0, 0, 0};
-    CSFML_CHECK_RETURN(music, position);
+
 
     sf::Vector3f sfmlPos = music->This.getPosition();
     position.x = sfmlPos.x;
@@ -266,19 +266,19 @@ sfVector3f sfMusic_getPosition(const sfMusic* music)
 ////////////////////////////////////////////////////////////
 sfBool sfMusic_isRelativeToListener(const sfMusic* music)
 {
-    CSFML_CALL_RETURN(music, isRelativeToListener(), sfFalse);
+    return music->This.isRelativeToListener();
 }
 
 
 ////////////////////////////////////////////////////////////
 float sfMusic_getMinDistance(const sfMusic* music)
 {
-    CSFML_CALL_RETURN(music, getMinDistance(), 0.f);
+    return music->This.getMinDistance();
 }
 
 
 ////////////////////////////////////////////////////////////
 float sfMusic_getAttenuation(const sfMusic* music)
 {
-    CSFML_CALL_RETURN(music, getAttenuation(), 0.f);
+    return music->This.getAttenuation();
 }

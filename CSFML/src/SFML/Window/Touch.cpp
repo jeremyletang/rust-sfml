@@ -28,7 +28,7 @@
 #include <SFML/Window/Touch.h>
 #include <SFML/Window/Touch.hpp>
 #include <SFML/Window/WindowStruct.h>
-#include <SFML/Internal.h>
+#include <cstddef>
 
 
 ////////////////////////////////////////////////////////////

@@ -26,7 +26,7 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include <SFML/Graphics/Color.h>
-#include <SFML/Internal.h>
+#include <cstddef>
 #include <algorithm>
 
 

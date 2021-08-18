@@ -27,7 +27,7 @@
 ////////////////////////////////////////////////////////////
 #include <SFML/Window/Clipboard.h>
 #include <SFML/Window/Clipboard.hpp>
-#include <SFML/Internal.h>
+#include <cstddef>
 
 
 namespace

@@ -27,7 +27,7 @@
 ////////////////////////////////////////////////////////////
 #include <SFML/Graphics/VertexBuffer.h>
 #include <SFML/Graphics/VertexBufferStruct.h>
-#include <SFML/Internal.h>
+#include <cstddef>
 
 
 ////////////////////////////////////////////////////////////
@@ -69,7 +69,7 @@ void sfVertexBuffer_destroy(sfVertexBuffer* vertexBuffer)
 ////////////////////////////////////////////////////////////
 unsigned int sfVertexBuffer_getVertexCount(const sfVertexBuffer* vertexBuffer)
 {
-    CSFML_CALL_RETURN(vertexBuffer, getVertexCount(), 0);
+    return vertexBuffer->This.getVertexCount();
 }
 
 
@@ -77,44 +77,44 @@ unsigned int sfVertexBuffer_getVertexCount(const sfVertexBuffer* vertexBuffer)
 sfBool sfVertexBuffer_update(sfVertexBuffer* vertexBuffer, const sfVertex* vertices, unsigned int vertexCount, unsigned int offset)
 {
     // the cast is safe, sfVertex has to be binary compatible with sf::Vertex
-    CSFML_CALL_RETURN(vertexBuffer, update(reinterpret_cast<const sf::Vertex*>(vertices), vertexCount, offset), sfFalse);
+    return vertexBuffer->This.update(reinterpret_cast<const sf::Vertex*>(vertices), vertexCount, offset);
 }
 
 
 ////////////////////////////////////////////////////////////
 sfBool sfVertexBuffer_updateFromVertexBuffer(sfVertexBuffer* vertexBuffer, const sfVertexBuffer* other)
 {
-    CSFML_CALL_RETURN(vertexBuffer, update(other->This), sfFalse);
+    return vertexBuffer->This.update(other->This);
 }
 
 
 ///////////////////////////////////////////////////////////
 void sfVertexBuffer_swap(sfVertexBuffer* left, sfVertexBuffer* right)
 {
-    CSFML_CHECK(right);
 
-    CSFML_CALL(left, swap(right->This));
+
+    left->This.swap(right->This);
 }
 
 
 ////////////////////////////////////////////////////////////
 unsigned int sfVertexBuffer_getNativeHandle(sfVertexBuffer* vertexBuffer)
 {
-    CSFML_CALL_RETURN(vertexBuffer, getNativeHandle(), 0);
+    return vertexBuffer->This.getNativeHandle();
 }
 
 
 ////////////////////////////////////////////////////////////
 void sfVertexBuffer_setPrimitiveType(sfVertexBuffer* vertexBuffer, sfPrimitiveType type)
 {
-    CSFML_CALL(vertexBuffer, setPrimitiveType(static_cast<sf::PrimitiveType>(type)));
+    vertexBuffer->This.setPrimitiveType(static_cast<sf::PrimitiveType>(type));
 }
 
 
 ////////////////////////////////////////////////////////////
 sfPrimitiveType sfVertexBuffer_getPrimitiveType(const sfVertexBuffer* vertexBuffer)
 {
-    CSFML_CHECK_RETURN(vertexBuffer, sfPoints);
+
     return static_cast<sfPrimitiveType>(vertexBuffer->This.getPrimitiveType());
 }
 
@@ -122,14 +122,14 @@ sfPrimitiveType sfVertexBuffer_getPrimitiveType(const sfVertexBuffer* vertexBuff
 ////////////////////////////////////////////////////////////
 void sfVertexBuffer_setUsage(sfVertexBuffer* vertexBuffer, sfVertexBufferUsage usage)
 {
-    CSFML_CALL(vertexBuffer, setUsage(static_cast<sf::VertexBuffer::Usage>(usage)));
+    vertexBuffer->This.setUsage(static_cast<sf::VertexBuffer::Usage>(usage));
 }
 
 
 ////////////////////////////////////////////////////////////
 sfVertexBufferUsage sfVertexBuffer_getUsage(const sfVertexBuffer* vertexBuffer)
 {
-    CSFML_CHECK_RETURN(vertexBuffer, sfVertexBufferStream);
+
     return static_cast<sfVertexBufferUsage>(vertexBuffer->This.getUsage());
 }
 

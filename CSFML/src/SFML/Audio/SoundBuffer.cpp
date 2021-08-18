@@ -28,7 +28,7 @@
 #include <SFML/Audio/SoundBuffer.h>
 #include <SFML/Audio/SoundBufferStruct.h>
 #include <SFML/CallbackStream.h>
-#include <SFML/Internal.h>
+#include <cstddef>
 
 
 ////////////////////////////////////////////////////////////
@@ -65,7 +65,7 @@ sfSoundBuffer* sfSoundBuffer_createFromMemory(const void* data, size_t sizeInByt
 ////////////////////////////////////////////////////////////
 sfSoundBuffer* sfSoundBuffer_createFromStream(sfInputStream* stream)
 {
-    CSFML_CHECK_RETURN(stream, NULL);
+
 
     sfSoundBuffer* buffer = new sfSoundBuffer;
     CallbackStream sfmlStream(stream);
@@ -97,7 +97,7 @@ sfSoundBuffer* sfSoundBuffer_createFromSamples(const sfInt16* samples, sfUint64 
 ////////////////////////////////////////////////////////////
 sfSoundBuffer* sfSoundBuffer_copy(const sfSoundBuffer* soundBuffer)
 {
-    CSFML_CHECK_RETURN(soundBuffer, NULL);
+
 
     return new sfSoundBuffer(*soundBuffer);
 }
@@ -113,35 +113,35 @@ void sfSoundBuffer_destroy(sfSoundBuffer* soundBuffer)
 ////////////////////////////////////////////////////////////
 sfBool sfSoundBuffer_saveToFile(const sfSoundBuffer* soundBuffer, const char* filename)
 {
-    CSFML_CALL_RETURN(soundBuffer, saveToFile(filename), sfFalse);
+    return soundBuffer->This.saveToFile(filename);
 }
 
 
 ////////////////////////////////////////////////////////////
 const sfInt16* sfSoundBuffer_getSamples(const sfSoundBuffer* soundBuffer)
 {
-    CSFML_CALL_RETURN(soundBuffer, getSamples(), NULL);
+    return soundBuffer->This.getSamples();
 }
 
 
 ////////////////////////////////////////////////////////////
 sfUint64 sfSoundBuffer_getSampleCount(const sfSoundBuffer* soundBuffer)
 {
-    CSFML_CALL_RETURN(soundBuffer, getSampleCount(), 0);
+    return soundBuffer->This.getSampleCount();
 }
 
 
 ////////////////////////////////////////////////////////////
 unsigned int sfSoundBuffer_getSampleRate(const sfSoundBuffer* soundBuffer)
 {
-    CSFML_CALL_RETURN(soundBuffer, getSampleRate(), 0);
+    return soundBuffer->This.getSampleRate();
 }
 
 
 ////////////////////////////////////////////////////////////
 unsigned int sfSoundBuffer_getChannelCount(const sfSoundBuffer* soundBuffer)
 {
-    CSFML_CALL_RETURN(soundBuffer, getChannelCount(), 0);
+    return soundBuffer->This.getChannelCount();
 }
 
 
@@ -149,7 +149,7 @@ unsigned int sfSoundBuffer_getChannelCount(const sfSoundBuffer* soundBuffer)
 sfTime sfSoundBuffer_getDuration(const sfSoundBuffer* soundBuffer)
 {
     sfTime time = {0};
-    CSFML_CHECK_RETURN(soundBuffer, time);
+
 
     time.microseconds = soundBuffer->This.getDuration().asMicroseconds();
     return time;

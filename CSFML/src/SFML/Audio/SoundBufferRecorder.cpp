@@ -27,7 +27,7 @@
 ////////////////////////////////////////////////////////////
 #include <SFML/Audio/SoundBufferRecorder.h>
 #include <SFML/Audio/SoundBufferRecorderStruct.h>
-#include <SFML/Internal.h>
+#include <cstddef>
 
 
 ////////////////////////////////////////////////////////////
@@ -47,28 +47,28 @@ void sfSoundBufferRecorder_destroy(sfSoundBufferRecorder* soundBufferRecorder)
 ////////////////////////////////////////////////////////////
 sfBool sfSoundBufferRecorder_start(sfSoundBufferRecorder* soundBufferRecorder, unsigned int sampleRate)
 {
-    CSFML_CALL_RETURN(soundBufferRecorder, start(sampleRate), sfFalse);
+    return soundBufferRecorder->This.start(sampleRate);
 }
 
 
 ////////////////////////////////////////////////////////////
 void sfSoundBufferRecorder_stop(sfSoundBufferRecorder* soundBufferRecorder)
 {
-    CSFML_CALL(soundBufferRecorder, stop());
+    soundBufferRecorder->This.stop();
 }
 
 
 ////////////////////////////////////////////////////////////
 unsigned int sfSoundBufferRecorder_getSampleRate(const sfSoundBufferRecorder* soundBufferRecorder)
 {
-    CSFML_CALL_RETURN(soundBufferRecorder, getSampleRate(), 0);
+    return soundBufferRecorder->This.getSampleRate();
 }
 
 
 ////////////////////////////////////////////////////////////
 const sfSoundBuffer* sfSoundBufferRecorder_getBuffer(const sfSoundBufferRecorder* soundBufferRecorder)
 {
-    CSFML_CHECK_RETURN(soundBufferRecorder, NULL);
+
 
     soundBufferRecorder->SoundBuffer.This = soundBufferRecorder->This.getBuffer();
 
@@ -78,13 +78,13 @@ const sfSoundBuffer* sfSoundBufferRecorder_getBuffer(const sfSoundBufferRecorder
 ////////////////////////////////////////////////////////////
 sfBool sfSoundBufferRecorder_setDevice(sfSoundBufferRecorder* soundBufferRecorder, const char* name)
 {
-    CSFML_CALL_RETURN(soundBufferRecorder, setDevice(name), sfFalse);
+    return soundBufferRecorder->This.setDevice(name);
 }
 
 ////////////////////////////////////////////////////////////
 const char* sfSoundBufferRecorder_getDevice(sfSoundBufferRecorder* soundBufferRecorder)
 {
-    CSFML_CHECK_RETURN(soundBufferRecorder, NULL);
+
 
     soundBufferRecorder->DeviceName = soundBufferRecorder->This.getDevice();
 

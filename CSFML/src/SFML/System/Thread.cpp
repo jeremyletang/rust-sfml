@@ -27,7 +27,7 @@
 ////////////////////////////////////////////////////////////
 #include <SFML/System/Thread.h>
 #include <SFML/System/ThreadStruct.h>
-#include <SFML/Internal.h>
+#include <cstddef>
 
 
 ////////////////////////////////////////////////////////////
@@ -47,19 +47,19 @@ void sfThread_destroy(sfThread* thread)
 ////////////////////////////////////////////////////////////
 void sfThread_launch(sfThread* thread)
 {
-    CSFML_CALL(thread, launch());
+    thread->This.launch();
 }
 
 
 ////////////////////////////////////////////////////////////
 void sfThread_wait(sfThread* thread)
 {
-    CSFML_CALL(thread, wait());
+    thread->This.wait();
 }
 
 
 ////////////////////////////////////////////////////////////
 void sfThread_terminate(sfThread* thread)
 {
-    CSFML_CALL(thread, terminate());
+    thread->This.terminate();
 }

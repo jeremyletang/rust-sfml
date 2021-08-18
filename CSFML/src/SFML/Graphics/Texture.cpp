@@ -30,7 +30,7 @@
 #include <SFML/Graphics/ImageStruct.h>
 #include <SFML/Graphics/RenderWindowStruct.h>
 #include <SFML/Window/WindowStruct.h>
-#include <SFML/Internal.h>
+#include <cstddef>
 #include <SFML/CallbackStream.h>
 
 
@@ -90,7 +90,7 @@ sfTexture* sfTexture_createFromMemory(const void* data, size_t sizeInBytes, cons
 ////////////////////////////////////////////////////////////
 sfTexture* sfTexture_createFromStream(sfInputStream* stream, const sfIntRect* area)
 {
-    CSFML_CHECK_RETURN(stream, NULL);
+
 
     sfTexture* texture = new sfTexture;
 
@@ -112,7 +112,7 @@ sfTexture* sfTexture_createFromStream(sfInputStream* stream, const sfIntRect* ar
 ////////////////////////////////////////////////////////////
 sfTexture* sfTexture_createFromImage(const sfImage* image, const sfIntRect* area)
 {
-    CSFML_CHECK_RETURN(image, NULL);
+
 
     sfTexture* texture = new sfTexture;
 
@@ -133,7 +133,7 @@ sfTexture* sfTexture_createFromImage(const sfImage* image, const sfIntRect* area
 ////////////////////////////////////////////////////////////
 sfTexture* sfTexture_copy(const sfTexture* texture)
 {
-    CSFML_CHECK_RETURN(texture, NULL);
+
 
     return new sfTexture(*texture);
 }
@@ -150,7 +150,7 @@ void sfTexture_destroy(sfTexture* texture)
 sfVector2u sfTexture_getSize(const sfTexture* texture)
 {
     sfVector2u size = {0, 0};
-    CSFML_CHECK_RETURN(texture, size);
+
 
     sf::Vector2u sfmlSize = texture->This->getSize();
 
@@ -164,8 +164,8 @@ sfVector2u sfTexture_getSize(const sfTexture* texture)
 ////////////////////////////////////////////////////////////
 sfImage* sfTexture_copyToImage(const sfTexture* texture)
 {
-    CSFML_CHECK_RETURN(texture, NULL);
-    CSFML_CHECK_RETURN(texture->This, NULL);
+
+
 
     sfImage* image = new sfImage;
     image->This = texture->This->copyToImage();
@@ -177,59 +177,59 @@ sfImage* sfTexture_copyToImage(const sfTexture* texture)
 ////////////////////////////////////////////////////////////
 void sfTexture_updateFromPixels(sfTexture* texture, const sfUint8* pixels, unsigned int width, unsigned int height, unsigned int x, unsigned int y)
 {
-    CSFML_CALL_PTR(texture, update(pixels, width, height, x, y));
+    texture->This->update(pixels, width, height, x, y);
 }
 
 
 ////////////////////////////////////////////////////////////
 void sfTexture_updateFromTexture(sfTexture* destination, const sfTexture* texture, unsigned int x, unsigned int y)
 {
-    CSFML_CHECK(texture);
-    CSFML_CHECK(texture->This);
 
-    CSFML_CALL_PTR(destination, update(*texture->This, x, y));
+
+
+    destination->This->update(*texture->This, x, y);
 }
 
 
 ////////////////////////////////////////////////////////////
 void sfTexture_updateFromImage(sfTexture* texture, const sfImage* image, unsigned int x, unsigned int y)
 {
-    CSFML_CHECK(image);
 
-    CSFML_CALL_PTR(texture, update(image->This, x, y));
+
+    texture->This->update(image->This, x, y);
 }
 
 
 ////////////////////////////////////////////////////////////
 void sfTexture_updateFromWindow(sfTexture* texture, const sfWindow* window, unsigned int x, unsigned int y)
 {
-    CSFML_CHECK(window);
 
-    CSFML_CALL_PTR(texture, update(window->This, x, y));
+
+    texture->This->update(window->This, x, y);
 }
 
 
 ////////////////////////////////////////////////////////////
 void sfTexture_updateFromRenderWindow(sfTexture* texture, const sfRenderWindow* renderWindow, unsigned int x, unsigned int y)
 {
-    CSFML_CHECK(renderWindow);
 
-    CSFML_CALL_PTR(texture, update(renderWindow->This, x, y));
+
+    texture->This->update(renderWindow->This, x, y);
 }
 
 
 ////////////////////////////////////////////////////////////
 void sfTexture_setSmooth(sfTexture* texture, sfBool smooth)
 {
-    CSFML_CALL_PTR(texture, setSmooth(smooth == sfTrue));
+    texture->This->setSmooth(smooth == sfTrue);
 }
 
 
 ////////////////////////////////////////////////////////////
 sfBool sfTexture_isSmooth(const sfTexture* texture)
 {
-    CSFML_CHECK_RETURN(texture, sfFalse);
-    CSFML_CHECK_RETURN(texture->This, sfFalse);
+
+
 
     return texture->This->isSmooth();
 }
@@ -238,29 +238,29 @@ sfBool sfTexture_isSmooth(const sfTexture* texture)
 ////////////////////////////////////////////////////////////
 void sfTexture_setSrgb(sfTexture* texture, sfBool sRgb)
 {
-    CSFML_CALL_PTR(texture, setSrgb(sRgb == sfTrue));
+    texture->This->setSrgb(sRgb == sfTrue);
 }
 
 
 ////////////////////////////////////////////////////////////
 sfBool sfTexture_isSrgb(const sfTexture* texture)
 {
-    CSFML_CALL_PTR_RETURN(texture, isSrgb(), sfFalse);
+    return texture->This->isSrgb();
 }
 
 
 ////////////////////////////////////////////////////////////
 void sfTexture_setRepeated(sfTexture* texture, sfBool repeated)
 {
-    CSFML_CALL_PTR(texture, setRepeated(repeated == sfTrue));
+    texture->This->setRepeated(repeated == sfTrue);
 }
 
 
 ////////////////////////////////////////////////////////////
 sfBool sfTexture_isRepeated(const sfTexture* texture)
 {
-    CSFML_CHECK_RETURN(texture, sfFalse);
-    CSFML_CHECK_RETURN(texture->This, sfFalse);
+
+
 
     return texture->This->isRepeated();
 }
@@ -269,23 +269,23 @@ sfBool sfTexture_isRepeated(const sfTexture* texture)
 ////////////////////////////////////////////////////////////
 sfBool sfTexture_generateMipmap(sfTexture* texture)
 {
-    CSFML_CALL_PTR_RETURN(texture, generateMipmap(), sfFalse);
+    return texture->This->generateMipmap();
 }
 
 
 ////////////////////////////////////////////////////////////
 void sfTexture_swap(sfTexture* left, sfTexture* right)
 {
-    CSFML_CHECK(right);
 
-    CSFML_CALL_PTR(left, swap(*right->This));
+
+    left->This->swap(*right->This);
 }
 
 
 ////////////////////////////////////////////////////////////
 unsigned int sfTexture_getNativeHandle(const sfTexture* texture)
 {
-    CSFML_CALL_PTR_RETURN(texture, getNativeHandle(), 0);
+    return texture->This->getNativeHandle();
 }
 
 

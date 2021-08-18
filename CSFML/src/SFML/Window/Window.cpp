@@ -27,7 +27,7 @@
 ////////////////////////////////////////////////////////////
 #include <SFML/Window/Window.h>
 #include <SFML/Window/WindowStruct.h>
-#include <SFML/Internal.h>
+#include <cstddef>
 #include <SFML/Window/ContextSettingsInternal.h>
 #include <SFML/Window/CursorStruct.h>
 #include <SFML/ConvertEvent.h>
@@ -101,14 +101,14 @@ void sfWindow_destroy(sfWindow* window)
 ////////////////////////////////////////////////////////////
 void sfWindow_close(sfWindow* window)
 {
-    CSFML_CALL(window, close());
+    window->This.close();
 }
 
 
 ////////////////////////////////////////////////////////////
 sfBool sfWindow_isOpen(const sfWindow* window)
 {
-    CSFML_CALL_RETURN(window, isOpen(), sfFalse);
+    return window->This.isOpen();
 }
 
 
@@ -116,7 +116,7 @@ sfBool sfWindow_isOpen(const sfWindow* window)
 sfContextSettings sfWindow_getSettings(const sfWindow* window)
 {
     sfContextSettings settings = priv::sfContextSettings_null();
-    CSFML_CHECK_RETURN(window, settings);
+
 
     const sf::ContextSettings& params = window->This.getSettings();
     priv::sfContextSettings_readFromCpp(params, settings);
@@ -128,8 +128,8 @@ sfContextSettings sfWindow_getSettings(const sfWindow* window)
 ////////////////////////////////////////////////////////////
 sfBool sfWindow_pollEvent(sfWindow* window, sfEvent* event)
 {
-    CSFML_CHECK_RETURN(window, sfFalse);
-    CSFML_CHECK_RETURN(event, sfFalse);
+
+
 
     // Get the event
     sf::Event SFMLEvent;
@@ -149,8 +149,8 @@ sfBool sfWindow_pollEvent(sfWindow* window, sfEvent* event)
 ////////////////////////////////////////////////////////////
 sfBool sfWindow_waitEvent(sfWindow* window, sfEvent* event)
 {
-    CSFML_CHECK_RETURN(window, sfFalse);
-    CSFML_CHECK_RETURN(event, sfFalse);
+
+
 
     // Get the event
     sf::Event SFMLEvent;
@@ -171,7 +171,7 @@ sfBool sfWindow_waitEvent(sfWindow* window, sfEvent* event)
 sfVector2i sfWindow_getPosition(const sfWindow* window)
 {
     sfVector2i position = {0, 0};
-    CSFML_CHECK_RETURN(window, position);
+
 
     sf::Vector2i sfmlPos = window->This.getPosition();
     position.x = sfmlPos.x;
@@ -184,7 +184,7 @@ sfVector2i sfWindow_getPosition(const sfWindow* window)
 ////////////////////////////////////////////////////////////
 void sfWindow_setPosition(sfWindow* window, sfVector2i position)
 {
-    CSFML_CALL(window, setPosition(sf::Vector2i(position.x, position.y)));
+    window->This.setPosition(sf::Vector2i(position.x, position.y));
 }
 
 
@@ -192,7 +192,7 @@ void sfWindow_setPosition(sfWindow* window, sfVector2i position)
 sfVector2u sfWindow_getSize(const sfWindow* window)
 {
     sfVector2u size = {0, 0};
-    CSFML_CHECK_RETURN(window, size);
+
 
     sf::Vector2u sfmlSize = window->This.getSize();
     size.x = sfmlSize.x;
@@ -205,120 +205,120 @@ sfVector2u sfWindow_getSize(const sfWindow* window)
 ////////////////////////////////////////////////////////////
 void sfWindow_setSize(sfWindow* window, sfVector2u size)
 {
-    CSFML_CALL(window, setSize(sf::Vector2u(size.x, size.y)));
+    window->This.setSize(sf::Vector2u(size.x, size.y));
 }
 
 
 ////////////////////////////////////////////////////////////
 void sfWindow_setTitle(sfWindow* window, const char* title)
 {
-    CSFML_CALL(window, setTitle(title));
+    window->This.setTitle(title);
 }
 
 
 ////////////////////////////////////////////////////////////
 void sfWindow_setUnicodeTitle(sfWindow* window, const sfUint32* title)
 {
-    CSFML_CALL(window, setTitle(title));
+    window->This.setTitle(title);
 }
 
 
 ////////////////////////////////////////////////////////////
 void sfWindow_setIcon(sfWindow* window, unsigned int width, unsigned int height, const sfUint8* pixels)
 {
-    CSFML_CALL(window, setIcon(width, height, pixels));
+    window->This.setIcon(width, height, pixels);
 }
 
 
 ////////////////////////////////////////////////////////////
 void sfWindow_setVisible(sfWindow* window, sfBool visible)
 {
-    CSFML_CALL(window, setVisible(visible == sfTrue));
+    window->This.setVisible(visible == sfTrue);
 }
 
 
 ////////////////////////////////////////////////////////////
 void sfWindow_setMouseCursorVisible(sfWindow* window, sfBool visible)
 {
-    CSFML_CALL(window, setMouseCursorVisible(visible == sfTrue));
+    window->This.setMouseCursorVisible(visible == sfTrue);
 }
 
 
 ////////////////////////////////////////////////////////////
 void sfWindow_setMouseCursorGrabbed(sfWindow* window, sfBool grabbed)
 {
-    CSFML_CALL(window, setMouseCursorGrabbed(grabbed == sfTrue));
+    window->This.setMouseCursorGrabbed(grabbed == sfTrue);
 }
 
 
 ////////////////////////////////////////////////////////////
 void sfWindow_setMouseCursor(sfWindow* window, const sfCursor* cursor)
 {
-    CSFML_CHECK(cursor);
 
-    CSFML_CALL(window, setMouseCursor(cursor->This));
+
+    window->This.setMouseCursor(cursor->This);
 }
 
 ////////////////////////////////////////////////////////////
 void sfWindow_setVerticalSyncEnabled(sfWindow* window, sfBool enabled)
 {
-    CSFML_CALL(window, setVerticalSyncEnabled(enabled == sfTrue));
+    window->This.setVerticalSyncEnabled(enabled == sfTrue);
 }
 
 
 ////////////////////////////////////////////////////////////
 void sfWindow_setKeyRepeatEnabled(sfWindow* window, sfBool enabled)
 {
-    CSFML_CALL(window, setKeyRepeatEnabled(enabled == sfTrue));
+    window->This.setKeyRepeatEnabled(enabled == sfTrue);
 }
 
 
 ////////////////////////////////////////////////////////////
 sfBool sfWindow_setActive(sfWindow* window, sfBool active)
 {
-    CSFML_CALL_RETURN(window, setActive(active == sfTrue), sfFalse);
+    return window->This.setActive(active == sfTrue);
 }
 
 
 ////////////////////////////////////////////////////////////
 void sfWindow_requestFocus(sfWindow* window)
 {
-    CSFML_CALL(window, requestFocus());
+    window->This.requestFocus();
 }
 
 
 ////////////////////////////////////////////////////////////
 sfBool sfWindow_hasFocus(const sfWindow* window)
 {
-    CSFML_CALL_RETURN(window, hasFocus(), sfFalse);
+    return window->This.hasFocus();
 }
 
 
 ////////////////////////////////////////////////////////////
 void sfWindow_display(sfWindow* window)
 {
-    CSFML_CALL(window, display());
+    window->This.display();
 }
 
 
 ////////////////////////////////////////////////////////////
 void sfWindow_setFramerateLimit(sfWindow* window, unsigned int limit)
 {
-    CSFML_CALL(window, setFramerateLimit(limit));
+    window->This.setFramerateLimit(limit);
 }
 
 
 ////////////////////////////////////////////////////////////
 void sfWindow_setJoystickThreshold(sfWindow* window, float threshold)
 {
-    CSFML_CALL(window, setJoystickThreshold(threshold));
+    window->This.setJoystickThreshold(threshold);
 }
 
 
 ////////////////////////////////////////////////////////////
 sfWindowHandle sfWindow_getSystemHandle(const sfWindow* window)
 {
-    CSFML_CHECK_RETURN(window, 0);
+
 
     return (sfWindowHandle)window->This.getSystemHandle();
 }

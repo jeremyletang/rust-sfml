@@ -27,7 +27,7 @@
 ////////////////////////////////////////////////////////////
 #include <SFML/System/Mutex.h>
 #include <SFML/System/MutexStruct.h>
-#include <SFML/Internal.h>
+#include <cstddef>
 
 
 ////////////////////////////////////////////////////////////
@@ -47,12 +47,12 @@ void sfMutex_destroy(sfMutex* mutex)
 ////////////////////////////////////////////////////////////
 void sfMutex_lock(sfMutex* mutex)
 {
-    CSFML_CALL(mutex, lock());
+    mutex->This.lock();
 }
 
 
 ////////////////////////////////////////////////////////////
 void sfMutex_unlock(sfMutex* mutex)
 {
-    CSFML_CALL(mutex, unlock());
+    mutex->This.unlock();
 }

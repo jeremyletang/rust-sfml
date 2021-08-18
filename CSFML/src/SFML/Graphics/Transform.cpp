@@ -28,7 +28,7 @@
 #include <SFML/Graphics/Transform.h>
 #include <SFML/Graphics/Transform.hpp>
 #include <SFML/Graphics/ConvertTransform.hpp>
-#include <SFML/Internal.h>
+#include <cstddef>
 #include <cstring>
 
 
@@ -54,7 +54,7 @@ sfTransform sfTransform_fromMatrix(float a00, float a01, float a02,
 ////////////////////////////////////////////////////////////
 void sfTransform_getMatrix(const sfTransform* transform, float* matrix)
 {
-    CSFML_CHECK(transform);
+
 
     sf::Transform converted = convertTransform(*transform);
     if (matrix)
@@ -65,7 +65,7 @@ void sfTransform_getMatrix(const sfTransform* transform, float* matrix)
 ////////////////////////////////////////////////////////////
 sfTransform sfTransform_getInverse(const sfTransform* transform)
 {
-    CSFML_CHECK_RETURN(transform, sfTransform_Identity);
+
 
     return convertTransform(convertTransform(*transform).getInverse());
 }
@@ -75,7 +75,7 @@ sfTransform sfTransform_getInverse(const sfTransform* transform)
 sfVector2f sfTransform_transformPoint(const sfTransform* transform, sfVector2f point)
 {
     sfVector2f p = {0, 0};
-    CSFML_CHECK_RETURN(transform, p);
+
 
     sf::Vector2f sfmlPoint = convertTransform(*transform).transformPoint(point.x, point.y);
 
@@ -90,7 +90,7 @@ sfVector2f sfTransform_transformPoint(const sfTransform* transform, sfVector2f p
 sfFloatRect sfTransform_transformRect(const sfTransform* transform, sfFloatRect rectangle)
 {
     sfFloatRect rect = {0, 0, 0, 0};
-    CSFML_CHECK_RETURN(transform, rect);
+
 
     sf::FloatRect sfmlRect = convertTransform(*transform).transformRect(sf::FloatRect(rectangle.left, rectangle.top, rectangle.width, rectangle.height));
 
@@ -106,8 +106,8 @@ sfFloatRect sfTransform_transformRect(const sfTransform* transform, sfFloatRect 
 ////////////////////////////////////////////////////////////
 void sfTransform_combine(sfTransform* transform, const sfTransform* other)
 {
-    CSFML_CHECK(transform);
-    CSFML_CHECK(other);
+
+
 
     *transform = convertTransform(convertTransform(*transform).combine(convertTransform(*other)));
 }
@@ -116,7 +116,7 @@ void sfTransform_combine(sfTransform* transform, const sfTransform* other)
 ////////////////////////////////////////////////////////////
 void sfTransform_translate(sfTransform* transform, float x, float y)
 {
-    CSFML_CHECK(transform);
+
 
     *transform = convertTransform(convertTransform(*transform).translate(x, y));
 }
@@ -125,7 +125,7 @@ void sfTransform_translate(sfTransform* transform, float x, float y)
 ////////////////////////////////////////////////////////////
 void sfTransform_rotate(sfTransform* transform, float angle)
 {
-    CSFML_CHECK(transform);
+
 
     *transform = convertTransform(convertTransform(*transform).rotate(angle));
 }
@@ -134,7 +134,7 @@ void sfTransform_rotate(sfTransform* transform, float angle)
 ////////////////////////////////////////////////////////////
 void sfTransform_rotateWithCenter(sfTransform* transform, float angle, float centerX, float centerY)
 {
-    CSFML_CHECK(transform);
+
 
     *transform = convertTransform(convertTransform(*transform).rotate(angle, centerX, centerY));
 }
@@ -143,7 +143,7 @@ void sfTransform_rotateWithCenter(sfTransform* transform, float angle, float cen
 ////////////////////////////////////////////////////////////
 void sfTransform_scale(sfTransform* transform, float scaleX, float scaleY)
 {
-    CSFML_CHECK(transform);
+
 
     *transform = convertTransform(convertTransform(*transform).scale(scaleX, scaleY));
 }
@@ -152,7 +152,7 @@ void sfTransform_scale(sfTransform* transform, float scaleX, float scaleY)
 ////////////////////////////////////////////////////////////
 void sfTransform_scaleWithCenter(sfTransform* transform, float scaleX, float scaleY, float centerX, float centerY)
 {
-    CSFML_CHECK(transform);
+
 
     *transform = convertTransform(convertTransform(*transform).scale(scaleX, scaleY, centerX, centerY));
 }
@@ -161,8 +161,8 @@ void sfTransform_scaleWithCenter(sfTransform* transform, float scaleX, float sca
 ////////////////////////////////////////////////////////////
 sfBool sfTransform_equal(sfTransform* left, sfTransform* right)
 {
-    CSFML_CHECK_RETURN(left, false);
-    CSFML_CHECK_RETURN(right, false);
+
+
 
     return (left->matrix == right->matrix) ? sfTrue : sfFalse;
 }

@@ -27,7 +27,7 @@
 ////////////////////////////////////////////////////////////
 #include <SFML/Graphics/Font.h>
 #include <SFML/Graphics/FontStruct.h>
-#include <SFML/Internal.h>
+#include <cstddef>
 #include <SFML/CallbackStream.h>
 
 
@@ -62,7 +62,7 @@ sfFont* sfFont_createFromMemory(const void* data, size_t sizeInBytes)
 ////////////////////////////////////////////////////////////
 sfFont* sfFont_createFromStream(sfInputStream* stream)
 {
-    CSFML_CHECK_RETURN(stream, NULL);
+
 
     sfFont* font = new sfFont;
     font->Stream = CallbackStream(stream);
@@ -79,7 +79,7 @@ sfFont* sfFont_createFromStream(sfInputStream* stream)
 ////////////////////////////////////////////////////////////
 sfFont* sfFont_copy(const sfFont* font)
 {
-    CSFML_CHECK_RETURN(font, NULL);
+
 
     return new sfFont(*font);
 }
@@ -96,7 +96,7 @@ void sfFont_destroy(sfFont* font)
 sfGlyph sfFont_getGlyph(const sfFont* font, sfUint32 codePoint, unsigned int characterSize, sfBool bold, float outlineThickness)
 {
     sfGlyph glyph = {0, {0, 0, 0, 0}, {0, 0, 0, 0}};
-    CSFML_CHECK_RETURN(font, glyph);
+
 
     sf::Glyph SFMLGlyph = font->This.getGlyph(codePoint, characterSize, bold == sfTrue, outlineThickness);
 
@@ -117,35 +117,35 @@ sfGlyph sfFont_getGlyph(const sfFont* font, sfUint32 codePoint, unsigned int cha
 ////////////////////////////////////////////////////////////
 float sfFont_getKerning(const sfFont* font, sfUint32 first, sfUint32 second, unsigned int characterSize)
 {
-    CSFML_CALL_RETURN(font, getKerning(first, second, characterSize), 0);
+    return font->This.getKerning(first, second, characterSize);
 }
 
 
 ////////////////////////////////////////////////////////////
 float sfFont_getLineSpacing(const sfFont* font, unsigned int characterSize)
 {
-    CSFML_CALL_RETURN(font, getLineSpacing(characterSize), 0);
+    return font->This.getLineSpacing(characterSize);
 }
 
 
 ////////////////////////////////////////////////////////////
 float sfFont_getUnderlinePosition(const sfFont* font, unsigned int characterSize)
 {
-    CSFML_CALL_RETURN(font, getUnderlinePosition(characterSize), 0)
+    return font->This.getUnderlinePosition(characterSize);
 }
 
 
 ////////////////////////////////////////////////////////////
 float sfFont_getUnderlineThickness(const sfFont* font, unsigned int characterSize)
 {
-    CSFML_CALL_RETURN(font, getUnderlineThickness(characterSize), 0)
+    return font->This.getUnderlineThickness(characterSize);
 }
 
 
 ////////////////////////////////////////////////////////////
 const sfTexture* sfFont_getTexture(sfFont* font, unsigned int characterSize)
 {
-    CSFML_CHECK_RETURN(font, NULL);
+
 
     *font->Textures[characterSize].This = font->This.getTexture(characterSize);
 
@@ -156,7 +156,7 @@ const sfTexture* sfFont_getTexture(sfFont* font, unsigned int characterSize)
 sfFontInfo sfFont_getInfo(const sfFont* font)
 {
     sfFontInfo info = {NULL};
-    CSFML_CHECK_RETURN(font, info);
+
 
     info.family = font->This.getInfo().family.c_str();
 

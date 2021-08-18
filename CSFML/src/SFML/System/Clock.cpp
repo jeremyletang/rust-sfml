@@ -27,7 +27,7 @@
 ////////////////////////////////////////////////////////////
 #include <SFML/System/Clock.h>
 #include <SFML/System/ClockStruct.h>
-#include <SFML/Internal.h>
+#include <cstddef>
 
 
 ////////////////////////////////////////////////////////////
@@ -40,7 +40,7 @@ sfClock* sfClock_create(void)
 ////////////////////////////////////////////////////////////
 sfClock* sfClock_copy(const sfClock* clock)
 {
-    CSFML_CHECK_RETURN(clock, NULL);
+
 
     return new sfClock(*clock);
 }
@@ -56,7 +56,7 @@ void sfClock_destroy(sfClock* clock)
 ////////////////////////////////////////////////////////////
 sfTime sfClock_getElapsedTime(const sfClock* clock)
 {
-    CSFML_CHECK_RETURN(clock, sfTime_Zero);
+
 
     sf::Time time = clock->This.getElapsedTime();
     return sfMicroseconds(time.asMicroseconds());
@@ -66,7 +66,7 @@ sfTime sfClock_getElapsedTime(const sfClock* clock)
 ////////////////////////////////////////////////////////////
 sfTime sfClock_restart(sfClock* clock)
 {
-    CSFML_CHECK_RETURN(clock, sfTime_Zero);
+
 
     sf::Time time = clock->This.restart();
     return sfMicroseconds(time.asMicroseconds());
