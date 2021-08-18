@@ -38,4 +38,6 @@ jobs:
     - name: Run tests
       run: |
        export LD_LIBRARY_PATH=$GITHUB_WORKSPACE/sfml_install/usr/local/lib
+       export SFML_INCLUDE_DIR=$GITHUB_WORKSPACE/sfml_install/usr/local/include
+       export SFML_LIBS_DIR=$GITHUB_WORKSPACE/sfml_install/usr/local/lib
        cargo test --features ci-headless --verbose
