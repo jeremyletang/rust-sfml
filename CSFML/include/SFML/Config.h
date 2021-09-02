@@ -62,8 +62,8 @@
 // Define a portable boolean type
 
 typedef int sfBool;
-#define sfFalse 0
-#define sfTrue 1
+const sfBool sfFalse = 0;
+const sfBool sfTrue = 1;
 
 // Define portable fixed-size types
 

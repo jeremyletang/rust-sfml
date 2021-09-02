@@ -12,9 +12,9 @@
 pub const CSFML_VERSION_MAJOR: u32 = 2;
 pub const CSFML_VERSION_MINOR: u32 = 5;
 pub const CSFML_VERSION_PATCH: u32 = 0;
-pub const sfFalse: sfBool = 0; // edited manually
-pub const sfTrue: sfBool = 1; // edited manually
 pub type sfBool = ::std::os::raw::c_int;
+pub const sfFalse: sfBool = 0;
+pub const sfTrue: sfBool = 1;
 pub type sfInt8 = ::std::os::raw::c_schar;
 pub type sfUint8 = ::std::os::raw::c_uchar;
 pub type sfInt16 = ::std::os::raw::c_short;
