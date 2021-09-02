@@ -77,16 +77,6 @@ extern "C" {
 pub struct sfClock {
     _unused: [u8; 0],
 }
-#[repr(C)]
-#[derive(Debug, Copy, Clone)]
-pub struct sfMutex {
-    _unused: [u8; 0],
-}
-#[repr(C)]
-#[derive(Debug, Copy, Clone)]
-pub struct sfThread {
-    _unused: [u8; 0],
-}
 extern "C" {
     pub fn sfClock_create() -> *mut sfClock;
 }
@@ -189,37 +179,7 @@ fn bindgen_test_layout_sfInputStream() {
     );
 }
 extern "C" {
-    pub fn sfMutex_create() -> *mut sfMutex;
-}
-extern "C" {
-    pub fn sfMutex_destroy(mutex: *mut sfMutex);
-}
-extern "C" {
-    pub fn sfMutex_lock(mutex: *mut sfMutex);
-}
-extern "C" {
-    pub fn sfMutex_unlock(mutex: *mut sfMutex);
-}
-extern "C" {
     pub fn sfSleep(duration: sfTime);
-}
-extern "C" {
-    pub fn sfThread_create(
-        function: ::std::option::Option<unsafe extern "C" fn(arg1: *mut ::std::os::raw::c_void)>,
-        userData: *mut ::std::os::raw::c_void,
-    ) -> *mut sfThread;
-}
-extern "C" {
-    pub fn sfThread_destroy(thread: *mut sfThread);
-}
-extern "C" {
-    pub fn sfThread_launch(thread: *mut sfThread);
-}
-extern "C" {
-    pub fn sfThread_wait(thread: *mut sfThread);
-}
-extern "C" {
-    pub fn sfThread_terminate(thread: *mut sfThread);
 }
 #[repr(C)]
 #[derive(Debug, Copy, Clone, Hash, PartialOrd, Ord, PartialEq, Eq)]
