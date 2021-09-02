@@ -141,7 +141,7 @@ typedef struct
 } sfSensorEvent;
 
 typedef union {
-    int type;                         ///< Type of the event
+    int type;                                 ///< Type of the event
     sfSizeEvent size;                         ///< Size event parameters
     sfKeyEvent key;                           ///< Key event parameters
     sfTextEvent text;                         ///< Text event parameters
