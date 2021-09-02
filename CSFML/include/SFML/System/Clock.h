@@ -29,51 +29,13 @@
 #include <SFML/System/Time.h>
 #include <SFML/System/Types.h>
 
-/// \brief Create a new clock and start it
-///
-/// \return A new sfClock object
-///
-
 extern "C" sfClock *sfClock_create(void);
-
-/// \brief Create a new clock by copying an existing one
-///
-/// \param clock Clock to copy
-///
-/// \return A new sfClock object which is a copy of \a clock
-///
 
 extern "C" sfClock *sfClock_copy(const sfClock *clock);
 
-/// \brief Destroy a clock
-///
-/// \param clock Clock to destroy
-///
-
 extern "C" void sfClock_destroy(sfClock *clock);
 
-/// \brief Get the time elapsed in a clock
-///
-/// This function returns the time elapsed since the last call
-/// to sfClock_restart (or the construction of the object if
-/// sfClock_restart has not been called).
-///
-/// \param clock Clock object
-///
-/// \return Time elapsed
-///
-
 extern "C" sfTime sfClock_getElapsedTime(const sfClock *clock);
-
-/// \brief Restart a clock
-///
-/// This function puts the time counter back to zero.
-/// It also returns the time elapsed since the clock was started.
-///
-/// \param clock Clock object
-///
-/// \return Time elapsed
-///
 
 extern "C" sfTime sfClock_restart(sfClock *clock);
 

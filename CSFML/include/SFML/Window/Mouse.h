@@ -30,9 +30,6 @@
 #include <SFML/System/Vector2.h>
 #include <SFML/Window/Types.h>
 
-/// \brief Mouse buttons
-///
-
 typedef enum {
     sfMouseLeft,     ///< The left mouse button
     sfMouseRight,    ///< The right mouse button
@@ -43,43 +40,14 @@ typedef enum {
     sfMouseButtonCount ///< Keep last -- the total number of mouse buttons
 } sfMouseButton;
 
-/// \brief Mouse wheels
-///
-
 typedef enum {
     sfMouseVerticalWheel,  ///< The vertical mouse wheel
     sfMouseHorizontalWheel ///< The horizontal mouse wheel
 } sfMouseWheel;
 
-/// \brief Check if a mouse button is pressed
-///
-/// \param button Button to check
-///
-/// \return sfTrue if the button is pressed, sfFalse otherwise
-///
-
 extern "C" sfBool sfMouse_isButtonPressed(sfMouseButton button);
 
-/// \brief Get the current position of the mouse
-///
-/// This function returns the current position of the mouse
-/// cursor relative to the given window, or desktop if NULL is passed.
-///
-/// \param relativeTo Reference window
-///
-/// \return Position of the mouse cursor, relative to the given window
-///
-
 extern "C" sfVector2i sfMouse_getPosition(const sfWindow *relativeTo);
-
-/// \brief Set the current position of the mouse
-///
-/// This function sets the current position of the mouse
-/// cursor relative to the given window, or desktop if NULL is passed.
-///
-/// \param position   New position of the mouse
-/// \param relativeTo Reference window
-///
 
 extern "C" void sfMouse_setPosition(sfVector2i position, const sfWindow *relativeTo);
 

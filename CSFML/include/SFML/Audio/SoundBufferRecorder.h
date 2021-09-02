@@ -29,92 +29,19 @@
 #include <SFML/Audio/Types.h>
 #include <SFML/Config.h>
 
-/// \brief Create a new sound buffer recorder
-///
-/// \return A new sfSoundBufferRecorder object (NULL if failed)
-///
-
 extern "C" sfSoundBufferRecorder *sfSoundBufferRecorder_create(void);
-
-/// \brief Destroy a sound buffer recorder
-///
-/// \param soundBufferRecorder Sound buffer recorder to destroy
-///
 
 extern "C" void sfSoundBufferRecorder_destroy(sfSoundBufferRecorder *soundBufferRecorder);
 
-/// \brief Start the capture of a sound recorder recorder
-///
-/// The \a sampleRate parameter defines the number of audio samples
-/// captured per second. The higher, the better the quality
-/// (for example, 44100 samples/sec is CD quality).
-/// This function uses its own thread so that it doesn't block
-/// the rest of the program while the capture runs.
-/// Please note that only one capture can happen at the same time.
-///
-/// \param soundBufferRecorder Sound buffer recorder object
-/// \param sampleRate          Desired capture rate, in number of samples per second
-///
-/// \return sfTrue, if it was able to start recording
-///
-
 extern "C" sfBool sfSoundBufferRecorder_start(sfSoundBufferRecorder *soundBufferRecorder, unsigned int sampleRate);
-
-/// \brief Stop the capture of a sound recorder
-///
-/// \param soundBufferRecorder Sound buffer recorder object
-///
 
 extern "C" void sfSoundBufferRecorder_stop(sfSoundBufferRecorder *soundBufferRecorder);
 
-/// \brief Get the sample rate of a sound buffer recorder
-///
-/// The sample rate defines the number of audio samples
-/// captured per second. The higher, the better the quality
-/// (for example, 44100 samples/sec is CD quality).
-///
-/// \param soundBufferRecorder Sound buffer recorder object
-///
-/// \return Sample rate, in samples per second
-///
-
 extern "C" unsigned int sfSoundBufferRecorder_getSampleRate(const sfSoundBufferRecorder *soundBufferRecorder);
-
-/// \brief Get the sound buffer containing the captured audio data
-///
-/// The sound buffer is valid only after the capture has ended.
-/// This function provides a read-only access to the internal
-/// sound buffer, but it can be copied if you need to
-/// make any modification to it.
-///
-/// \param soundBufferRecorder Sound buffer recorder object
-///
-/// \return Read-only access to the sound buffer
-///
 
 extern "C" const sfSoundBuffer *sfSoundBufferRecorder_getBuffer(const sfSoundBufferRecorder *soundBufferRecorder);
 
-/// \brief Set the audio capture device
-///
-/// This function sets the audio capture device to the device
-/// with the given name. It can be called on the fly (i.e:
-/// while recording). If you do so while recording and
-/// opening the device fails, it stops the recording.
-///
-/// \param soundBufferRecorder Sound buffer recorder object
-/// \param name                The name of the audio capture device
-///
-/// \return sfTrue, if it was able to set the requested device
-///
-
 extern "C" sfBool sfSoundBufferRecorder_setDevice(sfSoundBufferRecorder *soundBufferRecorder, const char *name);
-
-/// \brief Get the name of the current audio capture device
-///
-/// \param soundBufferRecorder Sound buffer recorder object
-///
-/// \return The name of the current audio capture device
-///
 
 extern "C" const char *sfSoundBufferRecorder_getDevice(sfSoundBufferRecorder *soundBufferRecorder);
 

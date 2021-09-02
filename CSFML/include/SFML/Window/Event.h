@@ -55,9 +55,6 @@ const int sfEvtTouchEnded = 21;
 const int sfEvtSensorChanged = 22;
 const int sfEvtCount = 23;
 
-/// \brief Keyboard event parameters
-///
-
 typedef struct
 {
     int type;
@@ -68,17 +65,11 @@ typedef struct
     sfBool system;
 } sfKeyEvent;
 
-/// \brief Text event parameters
-///
-
 typedef struct
 {
     int type;
     sfUint32 unicode;
 } sfTextEvent;
-
-/// \brief Mouse move event parameters
-///
 
 typedef struct
 {
@@ -87,9 +78,6 @@ typedef struct
     int y;
 } sfMouseMoveEvent;
 
-/// \brief Mouse buttons events parameters
-///
-
 typedef struct
 {
     int type;
@@ -97,9 +85,6 @@ typedef struct
     int x;
     int y;
 } sfMouseButtonEvent;
-
-/// \brief Mouse wheel events parameters
-///
 
 typedef struct
 {
@@ -110,9 +95,6 @@ typedef struct
     int y;
 } sfMouseWheelScrollEvent;
 
-/// \brief Joystick axis move event parameters
-///
-
 typedef struct
 {
     int type;
@@ -121,9 +103,6 @@ typedef struct
     float position;
 } sfJoystickMoveEvent;
 
-/// \brief Joystick buttons events parameters
-///
-
 typedef struct
 {
     int type;
@@ -131,17 +110,11 @@ typedef struct
     unsigned int button;
 } sfJoystickButtonEvent;
 
-/// \brief Joystick connection/disconnection event parameters
-///
-
 typedef struct
 {
     int type;
     unsigned int joystickId;
 } sfJoystickConnectEvent;
-
-/// \brief Size events parameters
-///
 
 typedef struct
 {
@@ -149,9 +122,6 @@ typedef struct
     unsigned int width;
     unsigned int height;
 } sfSizeEvent;
-
-/// \brief Touch events parameters
-///
 
 typedef struct
 {
@@ -161,9 +131,6 @@ typedef struct
     int y;
 } sfTouchEvent;
 
-/// \brief Sensor event parameters
-///
-
 typedef struct
 {
     int type;
@@ -172,9 +139,6 @@ typedef struct
     float y;
     float z;
 } sfSensorEvent;
-
-/// \brief sfEvent defines a system event and its parameters
-///
 
 typedef union {
     int type;                         ///< Type of the event

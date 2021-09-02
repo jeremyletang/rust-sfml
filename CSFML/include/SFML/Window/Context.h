@@ -29,50 +29,13 @@
 #include <SFML/Window/Types.h>
 #include <SFML/Window/Window.h>
 
-/// \brief Create a new context
-///
-/// This function activates the new context.
-///
-/// \return New sfContext object
-///
-
 extern "C" sfContext *sfContext_create(void);
-
-/// \brief Destroy a context
-///
-/// \param context Context to destroy
-///
 
 extern "C" void sfContext_destroy(sfContext *context);
 
-/// \brief Activate or deactivate explicitely a context
-///
-/// \param context Context object
-/// \param active  sfTrue to activate, sfFalse to deactivate
-///
-/// \return sfTrue on success, sfFalse on failure
-///
-
 extern "C" sfBool sfContext_setActive(sfContext *context, sfBool active);
 
-/// \brief Get the settings of the context.
-///
-/// Note that these settings may be different than the ones passed to the
-/// constructor; they are indeed adjusted if the original settings are not
-/// directly supported by the system.
-///
-/// \return Structure containing the settings
-///
-
 extern "C" sfContextSettings sfContext_getSettings(const sfContext *context);
-
-/// \brief Get the currently active context's ID
-///
-/// The context ID is used to identify contexts when
-/// managing unshareable OpenGL resources.
-///
-/// \return The active context's ID or 0 if no context is currently active
-///
 
 extern "C" sfUint64 sfContext_getActiveContextId();
 

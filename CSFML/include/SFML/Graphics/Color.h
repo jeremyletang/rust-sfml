@@ -27,9 +27,6 @@
 // Headers
 #include <SFML/Config.h>
 
-/// \brief Utility class for manpulating RGBA colors
-///
-
 typedef struct
 {
     sfUint8 r;
@@ -48,72 +45,17 @@ extern "C" sfColor sfMagenta;     ///< Magenta predefined color
 extern "C" sfColor sfCyan;        ///< Cyan predefined color
 extern "C" sfColor sfTransparent; ///< Transparent (black) predefined color
 
-/// \brief Construct a color from its 3 RGB components
-///
-/// \param red   Red component   (0 .. 255)
-/// \param green Green component (0 .. 255)
-/// \param blue  Blue component  (0 .. 255)
-///
-/// \return sfColor constructed from the components
-///
-
 extern "C" sfColor sfColor_fromRGB(sfUint8 red, sfUint8 green, sfUint8 blue);
-
-/// \brief Construct a color from its 4 RGBA components
-///
-/// \param red   Red component   (0 .. 255)
-/// \param green Green component (0 .. 255)
-/// \param blue  Blue component  (0 .. 255)
-/// \param alpha Alpha component (0 .. 255)
-///
-/// \return sfColor constructed from the components
-///
 
 extern "C" sfColor sfColor_fromRGBA(sfUint8 red, sfUint8 green, sfUint8 blue, sfUint8 alpha);
 
-/// \brief Construct the color from 32-bit unsigned integer
-///
-/// \param color Number containing the RGBA components (in that order)
-///
-/// \return sfColor constructed from the 32-bit unsigned integer
-///
-
 extern "C" sfColor sfColor_fromInteger(sfUint32 color);
-
-/// \brief Convert a color to a 32-bit unsigned integer
-///
-/// \return Color represented as a 32-bit unsigned integer
-///
 
 extern "C" sfUint32 sfColor_toInteger(sfColor color);
 
-/// \brief Add two colors
-///
-/// \param color1 First color
-/// \param color2 Second color
-///
-/// \return Component-wise saturated addition of the two colors
-///
-
 extern "C" sfColor sfColor_add(sfColor color1, sfColor color2);
 
-/// \brief Subtract two colors
-///
-/// \param color1 First color
-/// \param color2 Second color
-///
-/// \return Component-wise saturated subtraction of the two colors
-///
-
 extern "C" sfColor sfColor_subtract(sfColor color1, sfColor color2);
-
-/// \brief Modulate two colors
-///
-/// \param color1 First color
-/// \param color2 Second color
-///
-/// \return Component-wise multiplication of the two colors
-///
 
 extern "C" sfColor sfColor_modulate(sfColor color1, sfColor color2);
 

@@ -32,9 +32,6 @@ typedef sfInt64 (*sfInputStreamSeekFunc)(sfInt64 position, void *userData);
 typedef sfInt64 (*sfInputStreamTellFunc)(void *userData);
 typedef sfInt64 (*sfInputStreamGetSizeFunc)(void *userData);
 
-/// \brief Set of callbacks that allow users to define custom file streams
-///
-
 typedef struct sfInputStream {
     sfInputStreamReadFunc read;       ///< Function to read data from the stream
     sfInputStreamSeekFunc seek;       ///< Function to set the current read position

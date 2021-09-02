@@ -28,9 +28,6 @@
 
 #include <SFML/Graphics/Rect.h>
 
-/// \brief sfGlyph describes a glyph (a visual character)
-///
-
 typedef struct
 {
     float advance;         ///< Offset to move horizontically to the next character

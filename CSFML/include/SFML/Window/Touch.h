@@ -30,25 +30,7 @@
 #include <SFML/System/Vector2.h>
 #include <SFML/Window/Types.h>
 
-/// \brief Check if a touch event is currently down
-///
-/// \param finger Finger index
-///
-/// \return sfTrue if \a finger is currently touching the screen, sfFalse otherwise
-///
-
 extern "C" sfBool sfTouch_isDown(unsigned int finger);
-
-/// \brief Get the current position of a touch in window coordinates
-///
-/// This function returns the current touch position
-/// relative to the given window, or desktop if NULL is passed.
-///
-/// \param finger Finger index
-/// \param relativeTo Reference window
-///
-/// \return Current position of \a finger, or undefined if it's not down
-///
 
 extern "C" sfVector2i sfTouch_getPosition(unsigned int finger, const sfWindow *relativeTo);
 

@@ -28,79 +28,19 @@
 
 #include <SFML/System/Vector3.h>
 
-/// \brief Change the global volume of all the sounds and musics
-///
-/// The volume is a number between 0 and 100; it is combined with
-/// the individual volume of each sound / music.
-/// The default value for the volume is 100 (maximum).
-///
-/// \param volume New global volume, in the range [0, 100]
-///
-
 extern "C" void sfListener_setGlobalVolume(float volume);
-
-/// \brief Get the current value of the global volume
-///
-/// \return Current global volume, in the range [0, 100]
-///
 
 extern "C" float sfListener_getGlobalVolume(void);
 
-/// \brief Set the position of the listener in the scene
-///
-/// The default listener's position is (0, 0, 0).
-///
-/// \param position New position of the listener
-///
-
 extern "C" void sfListener_setPosition(sfVector3f position);
-
-/// \brief Get the current position of the listener in the scene
-///
-/// \return The listener's position
-///
 
 extern "C" sfVector3f sfListener_getPosition();
 
-/// \brief Set the orientation of the forward vector in the scene
-///
-/// The direction (also called "at vector") is the vector
-/// pointing forward from the listener's perspective. Together
-/// with the up vector, it defines the 3D orientation of the
-/// listener in the scene. The direction vector doesn't
-/// have to be normalized.
-/// The default listener's direction is (0, 0, -1).
-///
-/// \param direction New listener's direction
-///
-
 extern "C" void sfListener_setDirection(sfVector3f direction);
-
-/// \brief Get the current forward vector of the listener in the scene
-///
-/// \return Listener's forward vector (not normalized)
-///
 
 extern "C" sfVector3f sfListener_getDirection();
 
-/// \brief Set the upward vector of the listener in the scene
-///
-/// The up vector is the vector that points upward from the
-/// listener's perspective. Together with the direction, it
-/// defines the 3D orientation of the listener in the scene.
-/// The up vector doesn't have to be normalized.
-/// The default listener's up vector is (0, 1, 0). It is usually
-/// not necessary to change it, especially in 2D scenarios.
-///
-/// \param upVector New listener's up vector
-///
-
 extern "C" void sfListener_setUpVector(sfVector3f upVector);
-
-/// \brief Get the current upward vector of the listener in the scene
-///
-/// \return Listener's upward vector (not normalized)
-///
 
 extern "C" sfVector3f sfListener_getUpVector();
 

@@ -27,9 +27,6 @@
 // Headers
 #include <SFML/Config.h>
 
-/// sfFloatRect and sfIntRect are utility classes for
-/// manipulating rectangles.
-
 typedef struct
 {
     float left;
@@ -46,26 +43,8 @@ typedef struct
     int height;
 } sfIntRect;
 
-/// \brief Check if a point is inside a rectangle's area
-///
-/// \param rect Rectangle to test
-/// \param x    X coordinate of the point to test
-/// \param y    Y coordinate of the point to test
-///
-/// \return sfTrue if the point is inside
-///
-
 extern "C" sfBool sfFloatRect_contains(const sfFloatRect *rect, float x, float y);
 extern "C" sfBool sfIntRect_contains(const sfIntRect *rect, int x, int y);
-
-/// \brief Check intersection between two rectangles
-///
-/// \param rect1        First rectangle to test
-/// \param rect2        Second rectangle to test
-/// \param intersection Rectangle to be filled with overlapping rect (can be NULL)
-///
-/// \return sfTrue if rectangles overlap
-///
 
 extern "C" sfBool sfFloatRect_intersects(const sfFloatRect *rect1, const sfFloatRect *rect2, sfFloatRect *intersection);
 extern "C" sfBool sfIntRect_intersects(const sfIntRect *rect1, const sfIntRect *rect2, sfIntRect *intersection);

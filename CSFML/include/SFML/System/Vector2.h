@@ -26,26 +26,17 @@
 
 // Headers
 
-/// \brief 2-component vector of integers
-///
-
 typedef struct
 {
     int x;
     int y;
 } sfVector2i;
 
-/// \brief 2-component vector of unsigned integers
-///
-
 typedef struct
 {
     unsigned int x;
     unsigned int y;
 } sfVector2u;
-
-/// \brief 2-component vector of floats
-///
 
 typedef struct
 {

@@ -28,14 +28,6 @@
 
 #include <SFML/System/Time.h>
 
-/// \brief Make the current thread sleep for a given duration
-///
-/// sfSleep is the best way to block a program or one of its
-/// threads, as it doesn't consume any CPU power.
-///
-/// \param duration Time to sleep
-///
-
 extern "C" void sfSleep(sfTime duration);
 
 #endif // SFML_SLEEP_H

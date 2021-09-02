@@ -29,47 +29,11 @@
 #include <SFML/Config.h>
 #include <SFML/Window/Types.h>
 
-/// \brief Get the content of the clipboard as string data (returns an ANSI string)
-///
-/// This function returns the content of the clipboard
-/// as a string. If the clipboard does not contain string
-/// it returns an empty string.
-///
-/// \return Clipboard contents as a locale-dependent ANSI string
-///
-
 extern "C" const char *sfClipboard_getString();
-
-/// \brief Get the content of the clipboard as string data (returns a Unicode string)
-///
-/// This function returns the content of the clipboard
-/// as a string. If the clipboard does not contain string
-/// it returns an empty string.
-///
-/// \return Clipboard contents as UTF-32
-///
 
 extern "C" const sfUint32 *sfClipboard_getUnicodeString();
 
-/// \brief Set the content of the clipboard as ANSI string data
-///
-/// This function sets the content of the clipboard as an
-/// ANSI string.
-///
-/// \param text ANSI string containing the data to be sent
-/// to the clipboard
-///
-
 extern "C" void sfClipboard_setString(const char *text);
-
-/// \brief Set the content of the clipboard as Unicode string data
-///
-/// This function sets the content of the clipboard as a
-/// Unicode string.
-///
-/// \param text Unicode string containing the data to be sent
-/// to the clipboard
-///
 
 extern "C" void sfClipboard_setUnicodeString(const sfUint32 *text);
 

@@ -26,9 +26,6 @@
 
 // Headers
 
-/// \brief Enumeration of the blending factors
-///
-
 typedef enum {
     sfBlendFactorZero,             ///< (0, 0, 0, 0)
     sfBlendFactorOne,              ///< (1, 1, 1, 1)
@@ -42,17 +39,11 @@ typedef enum {
     sfBlendFactorOneMinusDstAlpha  ///< (1, 1, 1, 1) - (dst.a, dst.a, dst.a, dst.a)
 } sfBlendFactor;
 
-/// \brief Enumeration of the blending equations
-///
-
 typedef enum {
     sfBlendEquationAdd,            ///< Pixel = Src * SrcFactor + Dst * DstFactor
     sfBlendEquationSubtract,       ///< Pixel = Src * SrcFactor - Dst * DstFactor
     sfBlendEquationReverseSubtract ///< Pixel = Dst * DstFactor - Src * SrcFactor
 } sfBlendEquation;
-
-/// \brief Blending mode for drawing
-///
 
 typedef struct
 {

@@ -26,8 +26,6 @@
 
 // Headers
 
-/// sfJoystickIdentification holds a joystick's identification
-
 typedef struct
 {
     const char *name;

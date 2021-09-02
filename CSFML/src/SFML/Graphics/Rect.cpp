@@ -27,8 +27,6 @@
 #include <SFML/Graphics/Rect.hpp>
 #include <cstddef>
 
-/// Check if a point is inside a rectangle's area
-
 sfBool sfFloatRect_contains(const sfFloatRect *rect, float x, float y) {
 
     return sf::FloatRect(rect->left, rect->top, rect->width, rect->height).contains(x, y);
@@ -37,8 +35,6 @@ sfBool sfIntRect_contains(const sfIntRect *rect, int x, int y) {
 
     return sf::IntRect(rect->left, rect->top, rect->width, rect->height).contains(x, y);
 }
-
-/// Check intersection between two rectangles
 
 sfBool sfFloatRect_intersects(const sfFloatRect *rect1, const sfFloatRect *rect2, sfFloatRect *intersection) {
 

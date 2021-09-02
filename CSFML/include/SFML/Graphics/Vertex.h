@@ -30,8 +30,6 @@
 
 #include <SFML/System/Vector2.h>
 
-/// Define a point with color and texture coordinates
-
 typedef struct
 {
     sfVector2f position;  ///< Position of the vertex

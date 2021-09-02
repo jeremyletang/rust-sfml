@@ -30,11 +30,6 @@
 #include <SFML/Config.h>
 #include <stddef.h>
 
-/// \brief sfVideoMode defines a video mode (width, height, bpp, frequency)
-///        and provides functions for getting modes supported
-///        by the display device
-///
-
 typedef struct
 {
     unsigned int width;        ///< Video mode width, in pixels
@@ -42,40 +37,9 @@ typedef struct
     unsigned int bitsPerPixel; ///< Video mode pixel depth, in bits per pixels
 } sfVideoMode;
 
-/// \brief Get the current desktop video mode
-///
-/// \return Current desktop video mode
-///
-
 extern "C" sfVideoMode sfVideoMode_getDesktopMode(void);
 
-/// \brief Retrieve all the video modes supported in fullscreen mode
-///
-/// When creating a fullscreen window, the video mode is restricted
-/// to be compatible with what the graphics driver and monitor
-/// support. This function returns the complete list of all video
-/// modes that can be used in fullscreen mode.
-/// The returned array is sorted from best to worst, so that
-/// the first element will always give the best mode (higher
-/// width, height and bits-per-pixel).
-///
-/// \param count Pointer to a variable that will be filled with the number of modes in the array
-///
-/// \return Pointer to an array containing all the supported fullscreen modes
-///
-
 extern "C" const sfVideoMode *sfVideoMode_getFullscreenModes(size_t *count);
-
-/// \brief Tell whether or not a video mode is valid
-///
-/// The validity of video modes is only relevant when using
-/// fullscreen windows; otherwise any video mode can be used
-/// with no restriction.
-///
-/// \param mode Video mode
-///
-/// \return sfTrue if the video mode is valid for fullscreen mode
-///
 
 extern "C" sfBool sfVideoMode_isValid(sfVideoMode mode);
 

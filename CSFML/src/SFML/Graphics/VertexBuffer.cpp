@@ -64,7 +64,6 @@ sfBool sfVertexBuffer_updateFromVertexBuffer(sfVertexBuffer *vertexBuffer, const
     return vertexBuffer->This.update(other->This);
 }
 
-///////////////////////////////////////////////////////////
 void sfVertexBuffer_swap(sfVertexBuffer *left, sfVertexBuffer *right) {
 
     left->This.swap(right->This);

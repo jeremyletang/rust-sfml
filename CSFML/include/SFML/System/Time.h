@@ -28,70 +28,22 @@
 
 #include <SFML/Config.h>
 
-/// \brief Represents a time value
-///
-
 typedef struct
 {
     sfInt64 microseconds;
 } sfTime;
 
-/// \brief Predefined "zero" time value
-///
-
 extern "C" sfTime sfTime_Zero;
-
-/// \brief Return a time value as a number of seconds
-///
-/// \param time Time value
-///
-/// \return Time in seconds
-///
 
 extern "C" float sfTime_asSeconds(sfTime time);
 
-/// \brief Return a time value as a number of milliseconds
-///
-/// \param time Time value
-///
-/// \return Time in milliseconds
-///
-
 extern "C" sfInt32 sfTime_asMilliseconds(sfTime time);
-
-/// \brief Return a time value as a number of microseconds
-///
-/// \param time Time value
-///
-/// \return Time in microseconds
-///
 
 extern "C" sfInt64 sfTime_asMicroseconds(sfTime time);
 
-/// \brief Construct a time value from a number of seconds
-///
-/// \param amount Number of seconds
-///
-/// \return Time value constructed from the amount of seconds
-///
-
 extern "C" sfTime sfSeconds(float amount);
 
-/// \brief Construct a time value from a number of milliseconds
-///
-/// \param amount Number of milliseconds
-///
-/// \return Time value constructed from the amount of milliseconds
-///
-
 extern "C" sfTime sfMilliseconds(sfInt32 amount);
-
-/// \brief Construct a time value from a number of microseconds
-///
-/// \param amount Number of microseconds
-///
-/// \return Time value constructed from the amount of microseconds
-///
 
 extern "C" sfTime sfMicroseconds(sfInt64 amount);
 

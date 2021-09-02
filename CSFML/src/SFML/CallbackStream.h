@@ -29,9 +29,6 @@
 #include <SFML/System/InputStream.h>
 #include <SFML/System/InputStream.hpp>
 
-/// \brief Adapts a CSFML input stream to a SFML input stream
-///
-
 class CallbackStream : public sf::InputStream {
   public:
     /// \brief Default constructor

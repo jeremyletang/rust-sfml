@@ -26,9 +26,6 @@
 
 // Headers
 
-/// \brief 3-component vector of floats
-///
-
 typedef struct
 {
     float x;

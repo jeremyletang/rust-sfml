@@ -30,9 +30,6 @@
 #include <SFML/System/Vector3.h>
 #include <SFML/Window/Types.h>
 
-/// \brief Sensor Types
-///
-
 typedef enum {
     sfSensorAccelerometer,    ///< Measures the raw acceleration (m/s^2)
     sfSensorGyroscope,        ///< Measures the raw rotation rates (degrees/s)
@@ -44,35 +41,9 @@ typedef enum {
     sfSensorCount ///< Keep last -- the total number of sensor types
 } sfSensorType;
 
-/// \brief Check if a sensor is available on the underlying platform
-///
-/// \param sensor Sensor to check
-///
-/// \return sfTrue if the sensor is available, sfFalse otherwise
-///
-
 extern "C" sfBool sfSensor_isAvailable(sfSensorType sensor);
 
-/// \brief Enable or disable a sensor
-///
-/// All sensors are disabled by default, to avoid consuming too
-/// much battery power. Once a sensor is enabled, it starts
-/// sending events of the corresponding type.
-///
-/// This function does nothing if the sensor is unavailable.
-///
-/// \param sensor Sensor to enable
-/// \param enabled sfTrue to enable, sfFalse to disable
-///
-
 extern "C" void sfSensor_setEnabled(sfSensorType sensor, sfBool enabled);
-
-/// \brief Get the current sensor value
-///
-/// \param sensor Sensor to read
-///
-/// \return The current sensor value
-///
 
 extern "C" sfVector3f sfSensor_getValue(sfSensorType sensor);
 

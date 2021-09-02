@@ -26,9 +26,6 @@
 
 // Headers
 
-/// \brief Enumeration of statuses for sounds and musics
-///
-
 typedef enum {
     sfStopped, ///< Sound / music is not playing
     sfPaused,  ///< Sound / music is paused

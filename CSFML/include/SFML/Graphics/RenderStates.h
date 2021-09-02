@@ -31,9 +31,6 @@
 #include <SFML/Graphics/Transform.h>
 #include <SFML/Graphics/Types.h>
 
-/// \brief Define the states used for drawing to a RenderTarget
-///
-
 typedef struct
 {
     sfBlendMode blendMode;    ///< Blending mode

@@ -26,8 +26,6 @@
 
 // Headers
 
-/// sfFontInfo holds various information about a font
-
 typedef struct
 {
     const char *family;

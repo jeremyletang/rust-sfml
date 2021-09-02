@@ -28,65 +28,13 @@
 
 #include <SFML/System/Types.h>
 
-/// \brief Create a new thread from a function pointer
-///
-/// Note: this does *not* run the thread, use sfThread_launch.
-///
-/// \param function Entry point of the thread
-/// \param userData Custom data to pass to the thread function
-///
-/// \return A new sfThread object
-///
-
 extern "C" sfThread *sfThread_create(void (*function)(void *), void *userData);
-
-/// \brief Destroy a thread
-///
-/// This function calls sfThread_wait, so that the internal thread
-/// cannot survive after the sfThread object is destroyed.
-///
-/// \param thread Thread to destroy
-///
 
 extern "C" void sfThread_destroy(sfThread *thread);
 
-/// \brief Run a thread
-///
-/// This function starts the entry point passed to the
-/// thread's constructor, and returns immediately.
-/// After this function returns, the thread's function is
-/// running in parallel to the calling code.
-///
-/// \param thread Thread object
-///
-
 extern "C" void sfThread_launch(sfThread *thread);
 
-/// \brief Wait until a thread finishes
-///
-/// This function will block the execution until the
-/// thread's function ends.
-/// Warning: if the thread function never ends, the calling
-/// thread will block forever.
-/// If this function is called from its owner thread, it
-/// returns without doing anything.
-///
-/// \param thread Thread object
-///
-
 extern "C" void sfThread_wait(sfThread *thread);
-
-/// \brief Terminate a thread
-///
-/// This function immediately stops the thread, without waiting
-/// for its function to finish.
-/// Terminating a thread with this function is not safe,
-/// and can lead to local variables not being destroyed
-/// on some operating systems. You should rather try to make
-/// the thread function terminate by itself.
-///
-/// \param thread Thread object
-///
 
 extern "C" void sfThread_terminate(sfThread *thread);
 
