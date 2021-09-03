@@ -3,7 +3,7 @@ use sfml::{
         Color, Font, Rect, RectangleShape, RenderTarget, RenderWindow, Shape, Text, Transformable,
     },
     system::Vector2,
-    window::{mouse, ContextSettings, Cursor, CursorType::*, Event, Style},
+    window::{mouse, ContextSettings, Cursor, Event, Style},
 };
 
 const DRAW_AREA_TOPLEFT: (u16, u16) = (300, 64);
@@ -89,22 +89,22 @@ fn main() {
 
     let mut buttons = Vec::new();
     let cursor_types = [
-        Arrow,
-        ArrowWait,
-        Wait,
-        Text,
-        Hand,
-        SizeHorizontal,
-        SizeVertical,
-        SizeTopLeftBottomRight,
-        SizeBottomLeftTopRight,
-        SizeAll,
-        Cross,
-        Help,
-        NotAllowed,
+        Cursor::ARROW,
+        Cursor::ARROW_WAIT,
+        Cursor::WAIT,
+        Cursor::TEXT,
+        Cursor::HAND,
+        Cursor::SIZE_HORIZONTAL,
+        Cursor::SIZE_VERTICAL,
+        Cursor::SIZE_TOP_LEFT_BOTTOM_RIGHT,
+        Cursor::SIZE_BOTTOM_LEFT_TOP_RIGHT,
+        Cursor::SIZE_ALL,
+        Cursor::CROSS,
+        Cursor::HELP,
+        Cursor::NOT_ALLOWED,
     ];
     for i in 0..cursor_types.len() {
-        buttons.push(Rect::new(16, 16 + i as i32 * 36, 200, 32));
+        buttons.push(Rect::new(16, 16 + i as i32 * 36, 250, 32));
     }
 
     while rw.is_open() {
@@ -214,15 +214,30 @@ fn main() {
         rw.clear(Color::BLACK);
         // Draw system cursor set buttons
         let mut shape = RectangleShape::default();
-        let mut text = Text::new("", &font, 16);
+        let mut text = Text::new("", &font, 14);
         shape.set_outline_thickness(-1.0);
         shape.set_outline_color(Color::WHITE);
         for (i, b) in buttons.iter().enumerate() {
+            let types = [
+                "ARROW",
+                "ARROW_WAIT",
+                "WAIT",
+                "TEXT",
+                "HAND",
+                "SIZE_HORIZONTAL",
+                "SIZE_VERTICAL",
+                "SIZE_TOP_LEFT_BOTTOM_RIGHT",
+                "SIZE_BOTTOM_LEFT_TOP_RIGHT",
+                "SIZE_ALL",
+                "CROSS",
+                "HELP",
+                "NOT_ALLOWED",
+            ];
             draw_button(
                 b,
                 &mut shape,
                 &mut text,
-                &format!("{:?}", cursor_types[i]),
+                types[i],
                 &mut rw,
                 bstyle(highlight_index == i, selected_index == i, failed_index == i),
             );
