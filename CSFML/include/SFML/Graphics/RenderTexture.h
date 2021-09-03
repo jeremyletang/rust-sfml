@@ -67,7 +67,6 @@ extern "C" void sfRenderTexture_drawShape(sfRenderTexture *renderTexture, const 
 extern "C" void sfRenderTexture_drawCircleShape(sfRenderTexture *renderTexture, const sfCircleShape *object, const sfRenderStates *states);
 extern "C" void sfRenderTexture_drawConvexShape(sfRenderTexture *renderTexture, const sfConvexShape *object, const sfRenderStates *states);
 extern "C" void sfRenderTexture_drawRectangleShape(sfRenderTexture *renderTexture, const sfRectangleShape *object, const sfRenderStates *states);
-extern "C" void sfRenderTexture_drawVertexArray(sfRenderTexture *renderTexture, const sfVertexArray *object, const sfRenderStates *states);
 extern "C" void sfRenderTexture_drawVertexBuffer(sfRenderTexture *renderTexture, const sfVertexBuffer *object, const sfRenderStates *states);
 
 extern "C" void sfRenderTexture_drawPrimitives(sfRenderTexture *renderTexture,

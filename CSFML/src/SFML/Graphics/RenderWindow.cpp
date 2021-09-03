@@ -34,7 +34,6 @@
 #include <SFML/Graphics/ShapeStruct.h>
 #include <SFML/Graphics/SpriteStruct.h>
 #include <SFML/Graphics/TextStruct.h>
-#include <SFML/Graphics/VertexArrayStruct.h>
 #include <SFML/Graphics/VertexBufferStruct.h>
 #include <SFML/Window/ContextSettingsInternal.h>
 #include <SFML/Window/CursorStruct.h>
@@ -327,10 +326,6 @@ void sfRenderWindow_drawConvexShape(sfRenderWindow *renderWindow, const sfConvex
     renderWindow->This.draw(object->This, convertRenderStates(states));
 }
 void sfRenderWindow_drawRectangleShape(sfRenderWindow *renderWindow, const sfRectangleShape *object, const sfRenderStates *states) {
-
-    renderWindow->This.draw(object->This, convertRenderStates(states));
-}
-void sfRenderWindow_drawVertexArray(sfRenderWindow *renderWindow, const sfVertexArray *object, const sfRenderStates *states) {
 
     renderWindow->This.draw(object->This, convertRenderStates(states));
 }

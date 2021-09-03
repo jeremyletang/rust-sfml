@@ -32,7 +32,6 @@
 #include <SFML/Graphics/ShapeStruct.h>
 #include <SFML/Graphics/SpriteStruct.h>
 #include <SFML/Graphics/TextStruct.h>
-#include <SFML/Graphics/VertexArrayStruct.h>
 #include <SFML/Graphics/VertexBufferStruct.h>
 #include <SFML/Window/ContextSettingsInternal.h>
 #include <cstddef>
@@ -162,10 +161,6 @@ void sfRenderTexture_drawConvexShape(sfRenderTexture *renderTexture, const sfCon
     renderTexture->This.draw(object->This, convertRenderStates(states));
 }
 void sfRenderTexture_drawRectangleShape(sfRenderTexture *renderTexture, const sfRectangleShape *object, const sfRenderStates *states) {
-
-    renderTexture->This.draw(object->This, convertRenderStates(states));
-}
-void sfRenderTexture_drawVertexArray(sfRenderTexture *renderTexture, const sfVertexArray *object, const sfRenderStates *states) {
 
     renderTexture->This.draw(object->This, convertRenderStates(states));
 }

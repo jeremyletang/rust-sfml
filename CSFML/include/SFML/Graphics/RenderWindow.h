@@ -118,7 +118,6 @@ extern "C" void sfRenderWindow_drawShape(sfRenderWindow *renderWindow, const sfS
 extern "C" void sfRenderWindow_drawCircleShape(sfRenderWindow *renderWindow, const sfCircleShape *object, const sfRenderStates *states);
 extern "C" void sfRenderWindow_drawConvexShape(sfRenderWindow *renderWindow, const sfConvexShape *object, const sfRenderStates *states);
 extern "C" void sfRenderWindow_drawRectangleShape(sfRenderWindow *renderWindow, const sfRectangleShape *object, const sfRenderStates *states);
-extern "C" void sfRenderWindow_drawVertexArray(sfRenderWindow *renderWindow, const sfVertexArray *object, const sfRenderStates *states);
 extern "C" void sfRenderWindow_drawVertexBuffer(sfRenderWindow *renderWindow, const sfVertexBuffer *object, const sfRenderStates *states);
 
 extern "C" void sfRenderWindow_drawPrimitives(sfRenderWindow *renderWindow,
