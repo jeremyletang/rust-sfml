@@ -55,9 +55,4 @@ typedef struct
     sfBlendEquation alphaEquation; ///< Blending equation for the alpha channel
 } sfBlendMode;
 
-extern "C" const sfBlendMode sfBlendAlpha;    ///< Blend source and dest according to dest alpha
-extern "C" const sfBlendMode sfBlendAdd;      ///< Add source to dest
-extern "C" const sfBlendMode sfBlendMultiply; ///< Multiply source and dest
-extern "C" const sfBlendMode sfBlendNone;     ///< Overwrite dest with source
-
 #endif // SFML_BLENDMODE_H
