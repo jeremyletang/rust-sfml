@@ -66,12 +66,10 @@ const sfBool sfTrue = 1;
 // we can use them without doing any kind of check
 
 // 8 bits integer types
-typedef signed char sfInt8;
 typedef unsigned char sfUint8;
 
 // 16 bits integer types
 typedef signed short sfInt16;
-typedef unsigned short sfUint16;
 
 // 32 bits integer types
 typedef signed int sfInt32;
