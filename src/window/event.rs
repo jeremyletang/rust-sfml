@@ -1,5 +1,5 @@
 use crate::{
-    ffi::window as ffi,
+    ffi,
     window::{
         joystick::Axis,
         keyboard::Key,

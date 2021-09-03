@@ -183,39 +183,39 @@ impl<T: Neg<Output = T>> Neg for Vector2<T> {
 
 #[cfg(feature = "window")]
 impl Vector2i {
-    pub(crate) fn raw(self) -> crate::ffi::system::sfVector2i {
-        crate::ffi::system::sfVector2i {
+    pub(crate) fn raw(self) -> crate::ffi::sfVector2i {
+        crate::ffi::sfVector2i {
             x: self.x,
             y: self.y,
         }
     }
-    pub(crate) fn from_raw(raw: crate::ffi::system::sfVector2i) -> Self {
+    pub(crate) fn from_raw(raw: crate::ffi::sfVector2i) -> Self {
         Self { x: raw.x, y: raw.y }
     }
 }
 
 #[cfg(feature = "window")]
 impl Vector2u {
-    pub(crate) fn raw(self) -> crate::ffi::system::sfVector2u {
-        crate::ffi::system::sfVector2u {
+    pub(crate) fn raw(self) -> crate::ffi::sfVector2u {
+        crate::ffi::sfVector2u {
             x: self.x,
             y: self.y,
         }
     }
-    pub(crate) fn from_raw(raw: crate::ffi::system::sfVector2u) -> Self {
+    pub(crate) fn from_raw(raw: crate::ffi::sfVector2u) -> Self {
         Self { x: raw.x, y: raw.y }
     }
 }
 
 #[cfg(feature = "graphics")]
 impl Vector2f {
-    pub(crate) fn raw(self) -> crate::ffi::system::sfVector2f {
-        crate::ffi::system::sfVector2f {
+    pub(crate) fn raw(self) -> crate::ffi::sfVector2f {
+        crate::ffi::sfVector2f {
             x: self.x,
             y: self.y,
         }
     }
-    pub(crate) fn from_raw(raw: crate::ffi::system::sfVector2f) -> Self {
+    pub(crate) fn from_raw(raw: crate::ffi::sfVector2f) -> Self {
         Self { x: raw.x, y: raw.y }
     }
 }

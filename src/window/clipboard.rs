@@ -35,7 +35,7 @@
 //! ```
 
 use crate::{
-    ffi::window as ffi,
+    ffi,
     system::{SfStr, SfStrConv},
 };
 

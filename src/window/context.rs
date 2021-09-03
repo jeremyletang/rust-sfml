@@ -1,4 +1,4 @@
-use crate::{ffi::window as ffi, sf_bool_ext::SfBoolExt, window::ContextSettings};
+use crate::{ffi, sf_bool_ext::SfBoolExt, window::ContextSettings};
 
 /// Type holding a valid drawing context.
 ///

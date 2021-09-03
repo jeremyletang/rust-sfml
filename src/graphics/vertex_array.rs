@@ -1,5 +1,5 @@
 use crate::{
-    ffi::graphics::*,
+    ffi::*,
     graphics::{Drawable, FloatRect, PrimitiveType, RenderStates, RenderTarget, Vertex},
 };
 use std::ops::{Index, IndexMut};

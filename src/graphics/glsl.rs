@@ -1,7 +1,7 @@
 //! GLSL types.
 
 use crate::{
-    ffi::graphics as ffi,
+    ffi,
     graphics::Color,
     system::{Vector2, Vector3},
 };

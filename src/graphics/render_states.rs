@@ -1,5 +1,5 @@
 use crate::{
-    ffi::graphics as ffi,
+    ffi,
     graphics::{BlendMode, Shader, Texture, Transform},
 };
 use std::{marker::PhantomData, ptr};

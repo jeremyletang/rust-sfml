@@ -200,15 +200,15 @@ impl<T> From<(T, T, T)> for Vector3<T> {
 
 impl Vector3f {
     #[cfg(any(feature = "audio", feature = "graphics"))]
-    pub(crate) fn raw(&self) -> crate::ffi::system::sfVector3f {
-        crate::ffi::system::sfVector3f {
+    pub(crate) fn raw(&self) -> crate::ffi::sfVector3f {
+        crate::ffi::sfVector3f {
             x: self.x,
             y: self.y,
             z: self.z,
         }
     }
     #[cfg(any(feature = "window", feature = "audio"))]
-    pub(crate) fn from_raw(raw: crate::ffi::system::sfVector3f) -> Self {
+    pub(crate) fn from_raw(raw: crate::ffi::sfVector3f) -> Self {
         Self {
             x: raw.x,
             y: raw.y,

@@ -1,7 +1,7 @@
 use std::ptr::NonNull;
 
 use crate::{
-    ffi::graphics::*,
+    ffi::*,
     graphics::{Drawable, PrimitiveType, RenderStates, RenderTarget, Vertex},
 };
 

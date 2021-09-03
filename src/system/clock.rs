@@ -1,4 +1,4 @@
-use crate::{ffi::system as ffi, system::Time};
+use crate::{ffi, system::Time};
 
 /// Utility type that measures the elapsed time.
 ///

@@ -1,6 +1,6 @@
 //! Available blending modes for drawing
 
-use crate::ffi::graphics as ffi;
+use crate::ffi;
 
 /// Blending modes for drawing.
 ///

@@ -32,7 +32,7 @@
 //! window.set_mouse_position(Vector2i::new(100, 200));
 //! ```
 
-use crate::{ffi::window as ffi, sf_bool_ext::SfBoolExt, system::Vector2i, window::thread_safety};
+use crate::{ffi, sf_bool_ext::SfBoolExt, system::Vector2i, window::thread_safety};
 
 /// Mouse buttons.
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]

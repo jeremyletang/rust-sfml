@@ -1,4 +1,4 @@
-use crate::{ffi::window as ffi, sf_bool_ext::SfBoolExt, window::thread_safety};
+use crate::{ffi, sf_bool_ext::SfBoolExt, window::thread_safety};
 
 /// Key codes known to SFML.
 #[repr(transparent)]

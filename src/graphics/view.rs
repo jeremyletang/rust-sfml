@@ -1,5 +1,5 @@
 use crate::{
-    ffi::graphics as ffi,
+    ffi,
     graphics::FloatRect,
     sf_box::{Dispose, RawDefault},
     system::Vector2f,

@@ -1,7 +1,7 @@
 use crate::system::Vector2;
 use std::ops::{Add, Sub};
 
-use crate::ffi::graphics as ffi;
+use crate::ffi;
 
 /// Utility type for manipulating 2D axis-aligned rectangles.
 #[repr(C)]

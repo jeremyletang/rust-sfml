@@ -1,8 +1,5 @@
 use crate::{
-    ffi::{
-        graphics as ffi,
-        system::{sfBool, sfTrue, sfVector2f},
-    },
+    ffi::{self as ffi, sfBool, sfTrue, sfVector2f},
     graphics::{
         Color, Drawable, FloatRect, IntRect, RenderStates, RenderTarget, Shape, Texture, Transform,
         Transformable,

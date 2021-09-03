@@ -1,6 +1,6 @@
 use crate::{
     audio::{SoundBuffer, SoundSource, SoundStatus},
-    ffi::{audio as ffi, system::sfBool},
+    ffi::{self as ffi, sfBool},
     sf_bool_ext::SfBoolExt,
     system::{Time, Vector3f},
 };

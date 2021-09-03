@@ -1,12 +1,4 @@
-use crate::{
-    audio::SoundBuffer,
-    ffi::{
-        audio::*,
-        system::{sfBool, sfInt16, sfTrue},
-    },
-    sf_bool_ext::SfBoolExt,
-    system::Time,
-};
+use crate::{audio::SoundBuffer, ffi::*, sf_bool_ext::SfBoolExt, system::Time};
 use std::{
     ffi::{CStr, CString},
     os::raw::c_void,

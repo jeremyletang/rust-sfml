@@ -1,6 +1,5 @@
 use crate::{
-    ffi::audio as ffi, inputstream::InputStream, sf_bool_ext::SfBoolExt, sf_box::Dispose,
-    system::Time, SfBox,
+    ffi, inputstream::InputStream, sf_bool_ext::SfBoolExt, sf_box::Dispose, system::Time, SfBox,
 };
 use std::{
     borrow::ToOwned,

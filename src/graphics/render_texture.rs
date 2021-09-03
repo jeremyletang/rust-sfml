@@ -1,5 +1,5 @@
 use crate::{
-    ffi::{graphics as ffi, system::sfBool},
+    ffi::{self as ffi, sfBool},
     graphics::{
         CircleShape, Color, ConvexShape, CustomShape, Drawable, IntRect, PrimitiveType,
         RectangleShape, RenderStates, RenderTarget, Sprite, Text, Texture, Vertex, VertexBuffer,

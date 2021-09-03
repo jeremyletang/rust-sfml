@@ -1,5 +1,5 @@
 use crate::{
-    ffi::graphics as ffi,
+    ffi,
     graphics::{glsl, Texture},
     inputstream::InputStream,
     sf_bool_ext::SfBoolExt,

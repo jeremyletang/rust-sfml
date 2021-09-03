@@ -1,4 +1,4 @@
-use crate::ffi::graphics as ffi;
+use crate::ffi;
 
 /// Types of primitives of which vertex arrays can be rendered.
 ///

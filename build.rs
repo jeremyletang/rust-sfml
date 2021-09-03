@@ -1,4 +1,4 @@
-use std::env;
+use std::{env, path::PathBuf};
 
 fn main() {
     println!("cargo:rerun-if-changed=CSFML");
@@ -87,6 +87,21 @@ fn main() {
         );
     }
     build.compile("rcsfml");
+
+    let bindings = bindgen::Builder::default()
+        .header("CSFML/bindgen-wrapper.h")
+        .parse_callbacks(Box::new(bindgen::CargoCallbacks))
+        .clang_args(["-I", "CSFML/include/", "-xc++"])
+        .size_t_is_usize(true)
+        .derive_hash(true)
+        .derive_ord(true)
+        .derive_eq(true)
+        .generate()
+        .expect("Failed to generate bindings");
+    let out_path = PathBuf::from(env::var("OUT_DIR").unwrap());
+    bindings
+        .write_to_file(out_path.join("bindings.rs"))
+        .expect("Couldn't write bindings!");
 
     if let Ok(libs_dir) = env::var("SFML_LIBS_DIR") {
         println!(

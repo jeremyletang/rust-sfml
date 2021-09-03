@@ -1,4 +1,4 @@
-use crate::ffi::system::sfInputStream;
+use crate::ffi::sfInputStream;
 use std::{
     convert::TryInto,
     io::{Read, Seek, SeekFrom},

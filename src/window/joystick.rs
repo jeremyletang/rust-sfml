@@ -51,7 +51,7 @@
 //! [`update`]: update
 //!
 
-use crate::{ffi::window as ffi, sf_bool_ext::SfBoolExt};
+use crate::{ffi, sf_bool_ext::SfBoolExt};
 
 /// Maximum number of supported joysticks.
 pub const COUNT: u32 = 8;

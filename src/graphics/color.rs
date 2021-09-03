@@ -1,4 +1,4 @@
-use crate::ffi::graphics as ffi;
+use crate::ffi;
 use std::ops::{Add, AddAssign, Mul, MulAssign, Sub, SubAssign};
 
 /// Utility type for manpulating RGBA colors

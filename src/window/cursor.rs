@@ -1,5 +1,5 @@
 use crate::{
-    ffi::window as ffi,
+    ffi,
     sf_box::{Dispose, SfBox},
     system::Vector2u,
 };

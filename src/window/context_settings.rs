@@ -1,4 +1,4 @@
-use crate::ffi::window as ffi;
+use crate::ffi;
 use std::os::raw::c_uint;
 
 /// Structure defining the settings of the OpenGL context attached to a window.
@@ -137,7 +137,7 @@ impl Default for ContextSettings {
             majorVersion: 1,
             minorVersion: 1,
             attributeFlags: Self::ATTRIB_DEFAULT,
-            sRgbCapable: crate::ffi::system::sfFalse,
+            sRgbCapable: crate::ffi::sfFalse,
         })
     }
 }

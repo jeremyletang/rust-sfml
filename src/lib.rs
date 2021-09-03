@@ -64,13 +64,4 @@ pub mod window;
 #[cfg(any(feature = "window", feature = "audio"))]
 pub use sf_box::{SfBox, SfResource};
 
-/// Raw low level C bindings
-pub mod ffi {
-    #[cfg(feature = "audio")]
-    pub mod audio;
-    #[cfg(feature = "graphics")]
-    pub mod graphics;
-    pub mod system;
-    #[cfg(feature = "window")]
-    pub mod window;
-}
+mod ffi;
