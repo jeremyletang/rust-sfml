@@ -33,8 +33,6 @@ typedef struct
     sfInt64 microseconds;
 } sfTime;
 
-extern "C" sfTime sfTime_Zero;
-
 extern "C" float sfTime_asSeconds(sfTime time);
 
 extern "C" sfInt32 sfTime_asMilliseconds(sfTime time);

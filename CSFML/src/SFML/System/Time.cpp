@@ -25,8 +25,6 @@
 
 #include <SFML/System/Time.h>
 
-sfTime sfTime_Zero = {0};
-
 float sfTime_asSeconds(sfTime time) {
     return time.microseconds / 1000000.f;
 }
