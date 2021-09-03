@@ -77,7 +77,6 @@ fn main() {
                 "CSFML/src/SFML/Graphics/Text.cpp",
                 "CSFML/src/SFML/Graphics/Texture.cpp",
                 "CSFML/src/SFML/Graphics/Transform.cpp",
-                "CSFML/src/SFML/Graphics/Transformable.cpp",
                 "CSFML/src/SFML/Graphics/VertexBuffer.cpp",
                 "CSFML/src/SFML/Graphics/View.cpp",
             ]

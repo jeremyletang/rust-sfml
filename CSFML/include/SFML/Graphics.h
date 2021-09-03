@@ -46,7 +46,6 @@
 #include <SFML/Graphics/Text.h>
 #include <SFML/Graphics/Texture.h>
 #include <SFML/Graphics/Transform.h>
-#include <SFML/Graphics/Transformable.h>
 #include <SFML/Graphics/Vertex.h>
 #include <SFML/Graphics/VertexBuffer.h>
 #include <SFML/Graphics/View.h>
