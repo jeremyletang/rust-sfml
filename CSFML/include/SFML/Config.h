@@ -24,12 +24,6 @@
 #ifndef SFML_CONFIG_H
 #define SFML_CONFIG_H
 
-// Define the CSFML version
-
-#define CSFML_VERSION_MAJOR 2
-#define CSFML_VERSION_MINOR 5
-#define CSFML_VERSION_PATCH 0
-
 // Identify the operating system
 
 #if defined(_WIN32) || defined(__WIN32__)
