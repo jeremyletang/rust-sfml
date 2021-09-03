@@ -27,16 +27,6 @@
 #include <algorithm>
 #include <cstddef>
 
-sfColor sfBlack = sfColor_fromRGB(0, 0, 0);
-sfColor sfWhite = sfColor_fromRGB(255, 255, 255);
-sfColor sfRed = sfColor_fromRGB(255, 0, 0);
-sfColor sfGreen = sfColor_fromRGB(0, 255, 0);
-sfColor sfBlue = sfColor_fromRGB(0, 0, 255);
-sfColor sfYellow = sfColor_fromRGB(255, 255, 0);
-sfColor sfMagenta = sfColor_fromRGB(255, 0, 255);
-sfColor sfCyan = sfColor_fromRGB(0, 255, 255);
-sfColor sfTransparent = sfColor_fromRGBA(0, 0, 0, 0);
-
 sfColor sfColor_fromRGB(sfUint8 red, sfUint8 green, sfUint8 blue) {
     return sfColor_fromRGBA(red, green, blue, 255);
 }

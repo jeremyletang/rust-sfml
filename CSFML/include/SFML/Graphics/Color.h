@@ -35,16 +35,6 @@ typedef struct
     sfUint8 a;
 } sfColor;
 
-extern "C" sfColor sfBlack;       ///< Black predefined color
-extern "C" sfColor sfWhite;       ///< White predefined color
-extern "C" sfColor sfRed;         ///< Red predefined color
-extern "C" sfColor sfGreen;       ///< Green predefined color
-extern "C" sfColor sfBlue;        ///< Blue predefined color
-extern "C" sfColor sfYellow;      ///< Yellow predefined color
-extern "C" sfColor sfMagenta;     ///< Magenta predefined color
-extern "C" sfColor sfCyan;        ///< Cyan predefined color
-extern "C" sfColor sfTransparent; ///< Transparent (black) predefined color
-
 extern "C" sfColor sfColor_fromRGB(sfUint8 red, sfUint8 green, sfUint8 blue);
 
 extern "C" sfColor sfColor_fromRGBA(sfUint8 red, sfUint8 green, sfUint8 blue, sfUint8 alpha);
