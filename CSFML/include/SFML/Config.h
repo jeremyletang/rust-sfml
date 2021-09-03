@@ -72,7 +72,6 @@ typedef unsigned char sfUint8;
 typedef signed short sfInt16;
 
 // 32 bits integer types
-typedef signed int sfInt32;
 typedef unsigned int sfUint32;
 
 // 64 bits integer types
