@@ -24,7 +24,6 @@ fn main() {
         [
             "CSFML/src/SFML/System/Clock.cpp",
             "CSFML/src/SFML/System/Sleep.cpp",
-            "CSFML/src/SFML/System/Time.cpp",
         ]
         .iter(),
     );

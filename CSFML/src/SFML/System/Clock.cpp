@@ -43,11 +43,11 @@ void sfClock_destroy(sfClock *clock) {
 sfTime sfClock_getElapsedTime(const sfClock *clock) {
 
     sf::Time time = clock->This.getElapsedTime();
-    return sfMicroseconds(time.asMicroseconds());
+    return sfTime{time.asMicroseconds()};
 }
 
 sfTime sfClock_restart(sfClock *clock) {
 
     sf::Time time = clock->This.restart();
-    return sfMicroseconds(time.asMicroseconds());
+    return sfTime{time.asMicroseconds()};
 }

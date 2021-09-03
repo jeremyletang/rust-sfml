@@ -1,4 +1,4 @@
-use crate::ffi::*;
+use crate::ffi::sfTime;
 use std::ops::{
     Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Rem, RemAssign, Sub, SubAssign,
 };
@@ -62,8 +62,11 @@ impl Ord for Time {
 impl Time {
     /// Constructs a time value from a number of seconds.
     #[must_use]
+    #[allow(clippy::cast_possible_truncation)]
     pub fn seconds(seconds: f32) -> Self {
-        Time(unsafe { sfSeconds(seconds) })
+        Time(sfTime {
+            microseconds: (seconds * 1000000.) as i64,
+        })
     }
 
     /// Constructs a time value from a number of milliseconds.
@@ -83,19 +86,20 @@ impl Time {
     /// Returns the time value as a number of seconds.
     #[must_use]
     pub fn as_seconds(self) -> f32 {
-        unsafe { sfTime_asSeconds(self.0) }
+        self.0.microseconds as f32 / 1000000.
     }
 
     /// Returns the time value as a number of milliseconds.
     #[must_use]
+    #[allow(clippy::cast_possible_truncation)]
     pub fn as_milliseconds(self) -> i32 {
-        unsafe { sfTime_asMilliseconds(self.0) }
+        (self.0.microseconds / 1000) as i32
     }
 
     /// Returns the time value as a number of microseconds.
     #[must_use]
     pub fn as_microseconds(self) -> i64 {
-        unsafe { sfTime_asMicroseconds(self.0) }
+        self.0.microseconds
     }
     pub(crate) fn raw(self) -> sfTime {
         self.0
