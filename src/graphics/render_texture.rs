@@ -121,6 +121,12 @@ impl RenderTexture {
     pub unsafe fn generate_mipmap(&mut self) -> bool {
         ffi::sfRenderTexture_generateMipmap(self.render_texture).into_bool()
     }
+
+    /// Get the maximum anti-aliasing level supported by the system.
+    #[must_use]
+    pub fn maximum_antialiasing_level() -> u32 {
+        unsafe { ffi::sfRenderTexture_getMaximumAntialiasingLevel() }
+    }
 }
 
 impl RenderTarget for RenderTexture {
