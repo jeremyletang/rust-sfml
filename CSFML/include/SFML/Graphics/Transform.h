@@ -60,6 +60,4 @@ extern "C" void sfTransform_scale(sfTransform *transform, float scaleX, float sc
 
 extern "C" void sfTransform_scaleWithCenter(sfTransform *transform, float scaleX, float scaleY, float centerX, float centerY);
 
-extern "C" sfBool sfTransform_equal(sfTransform *left, sfTransform *right);
-
 #endif // SFML_TRANSFORM_H

@@ -5,7 +5,7 @@ use crate::{ffi, graphics::FloatRect, system::Vector2f};
 /// A `Transform` specifies how to translate,
 /// rotate, scale, shear, project, whatever things.
 #[repr(transparent)]
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub struct Transform(pub ffi::sfTransform);
 
 impl Transform {
