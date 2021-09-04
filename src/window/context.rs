@@ -57,6 +57,14 @@ impl Context {
         let settings = unsafe { ffi::sfContext_getSettings(self.0) };
         ContextSettings(settings)
     }
+
+    /// Get the currently active context's ID.
+    ///
+    /// The context ID is used to identify contexts when managing unshareable OpenGL resources.
+    #[must_use]
+    pub fn active_context_id() -> u64 {
+        unsafe { ffi::sfContext_getActiveContextId() }
+    }
 }
 
 #[cfg_attr(not(feature = "ci-headless"), test)]
