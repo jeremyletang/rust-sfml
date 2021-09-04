@@ -26,7 +26,7 @@
 
 // Headers
 
-#include <SFML/Window.h>
+#include <SFML/Window/Window.h>
 #include <SFML/Window.hpp>
 
 namespace priv {
