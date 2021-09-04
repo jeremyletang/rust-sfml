@@ -29,12 +29,6 @@
 #include <SFML/Config.h>
 #include <SFML/Window/JoystickIdentification.h>
 
-enum {
-    sfJoystickCount = 8,        ///< Maximum number of supported joysticks
-    sfJoystickButtonCount = 32, ///< Maximum number of supported buttons
-    sfJoystickAxisCount = 8     ///< Maximum number of supported axes
-};
-
 typedef enum {
     sfJoystickX,    ///< The X axis
     sfJoystickY,    ///< The Y axis
