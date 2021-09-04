@@ -372,6 +372,10 @@ impl Texture {
     pub fn generate_mipmap(&mut self) -> bool {
         unsafe { ffi::sfTexture_generateMipmap(self.raw_mut()).into_bool() }
     }
+    /// Swap the contents of this texture with those of another.
+    pub fn swap(&mut self, other: &mut Texture) {
+        unsafe { ffi::sfTexture_swap(self.raw_mut(), other.raw_mut()) }
+    }
 }
 
 impl ToOwned for Texture {
