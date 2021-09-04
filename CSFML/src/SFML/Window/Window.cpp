@@ -30,23 +30,6 @@
 #include <SFML/Window/WindowStruct.h>
 #include <cstddef>
 
-sfWindow *sfWindow_create(sfVideoMode mode, const char *title, sfUint32 style, const sfContextSettings *settings) {
-    // Convert video mode
-    sf::VideoMode videoMode(mode.width, mode.height, mode.bitsPerPixel);
-
-    // Convert context settings
-    sf::ContextSettings params;
-    if (settings) {
-        priv::sfContextSettings_writeToCpp(*settings, params);
-    }
-
-    // Create the window
-    sfWindow *window = new sfWindow;
-    window->This.create(videoMode, title, style, params);
-
-    return window;
-}
-
 sfWindow *sfWindow_createUnicode(sfVideoMode mode, const sfUint32 *title, sfUint32 style, const sfContextSettings *settings) {
     // Convert video mode
     sf::VideoMode videoMode(mode.width, mode.height, mode.bitsPerPixel);

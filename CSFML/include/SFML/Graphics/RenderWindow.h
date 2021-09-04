@@ -40,8 +40,6 @@
 #include <SFML/Window/WindowHandle.h>
 #include <stddef.h>
 
-extern "C" sfRenderWindow *sfRenderWindow_create(sfVideoMode mode, const char *title, sfUint32 style, const sfContextSettings *settings);
-
 extern "C" sfRenderWindow *sfRenderWindow_createUnicode(sfVideoMode mode, const sfUint32 *title, sfUint32 style, const sfContextSettings *settings);
 
 extern "C" sfRenderWindow *sfRenderWindow_createFromHandle(sfWindowHandle handle, const sfContextSettings *settings);

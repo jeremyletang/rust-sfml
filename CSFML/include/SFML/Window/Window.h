@@ -45,8 +45,6 @@ typedef struct
     sfBool sRgbCapable;             ///< Whether the context framebuffer is sRGB capable
 } sfContextSettings;
 
-extern "C" sfWindow *sfWindow_create(sfVideoMode mode, const char *title, sfUint32 style, const sfContextSettings *settings);
-
 extern "C" sfWindow *sfWindow_createUnicode(sfVideoMode mode, const sfUint32 *title, sfUint32 style, const sfContextSettings *settings);
 
 extern "C" sfWindow *sfWindow_createFromHandle(sfWindowHandle handle, const sfContextSettings *settings);
