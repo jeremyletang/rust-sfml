@@ -52,8 +52,6 @@ extern "C" void sfShader_setVec3Uniform(sfShader *shader, const char *name, sfGl
 
 extern "C" void sfShader_setVec4Uniform(sfShader *shader, const char *name, sfGlslVec4 vector);
 
-extern "C" void sfShader_setColorUniform(sfShader *shader, const char *name, sfColor color);
-
 extern "C" void sfShader_setIntUniform(sfShader *shader, const char *name, int x);
 
 extern "C" void sfShader_setIvec2Uniform(sfShader *shader, const char *name, sfGlslIvec2 vector);
@@ -61,8 +59,6 @@ extern "C" void sfShader_setIvec2Uniform(sfShader *shader, const char *name, sfG
 extern "C" void sfShader_setIvec3Uniform(sfShader *shader, const char *name, sfGlslIvec3 vector);
 
 extern "C" void sfShader_setIvec4Uniform(sfShader *shader, const char *name, sfGlslIvec4 vector);
-
-extern "C" void sfShader_setIntColorUniform(sfShader *shader, const char *name, sfColor color);
 
 extern "C" void sfShader_setBoolUniform(sfShader *shader, const char *name, sfBool x);
 

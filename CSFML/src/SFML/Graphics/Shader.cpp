@@ -144,16 +144,6 @@ void sfShader_setVec4Uniform(sfShader *shader, const char *name, sfGlslVec4 vect
     shader->This.setUniform(name, sf::Glsl::Vec4(vector.x, vector.y, vector.z, vector.w));
 }
 
-void sfShader_setColorUniform(sfShader *shader, const char *name, sfColor color) {
-    sfGlslVec4 vec4;
-    vec4.x = color.r / 255.f;
-    vec4.y = color.g / 255.f;
-    vec4.z = color.b / 255.f;
-    vec4.w = color.a / 255.f;
-
-    sfShader_setVec4Uniform(shader, name, vec4);
-}
-
 void sfShader_setIntUniform(sfShader *shader, const char *name, int x) {
     shader->This.setUniform(name, x);
 }
@@ -168,16 +158,6 @@ void sfShader_setIvec3Uniform(sfShader *shader, const char *name, sfGlslIvec3 ve
 
 void sfShader_setIvec4Uniform(sfShader *shader, const char *name, sfGlslIvec4 vector) {
     shader->This.setUniform(name, sf::Glsl::Ivec4(vector.x, vector.y, vector.z, vector.w));
-}
-
-void sfShader_setIntColorUniform(sfShader *shader, const char *name, sfColor color) {
-    sfGlslIvec4 ivec4;
-    ivec4.x = (int)color.r;
-    ivec4.y = (int)color.g;
-    ivec4.z = (int)color.b;
-    ivec4.w = (int)color.a;
-
-    sfShader_setIvec4Uniform(shader, name, ivec4);
 }
 
 void sfShader_setBoolUniform(sfShader *shader, const char *name, sfBool x) {
