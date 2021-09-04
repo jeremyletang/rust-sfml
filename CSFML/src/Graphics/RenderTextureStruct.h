@@ -27,14 +27,11 @@
 // Headers
 
 #include <SFML/Graphics/RenderTexture.hpp>
-#include "Graphics/ViewStruct.h"
 
 // Internal structure of sfRenderTexture
 
 struct sfRenderTexture {
     sf::RenderTexture This;
-    sfView DefaultView;
-    sfView CurrentView;
 };
 
 #endif // SFML_RENDERTEXTURESTRUCT_H

@@ -27,14 +27,11 @@
 // Headers
 
 #include <SFML/Graphics/RenderWindow.hpp>
-#include "Graphics/ViewStruct.h"
 
 // Internal structure of sfRenderWindow
 
 struct sfRenderWindow {
     sf::RenderWindow This;
-    sfView DefaultView;
-    sfView CurrentView;
 };
 
 #endif // SFML_RENDERWINDOWSTRUCT_H

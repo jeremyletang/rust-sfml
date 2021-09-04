@@ -53,8 +53,6 @@ sfRenderWindow *sfRenderWindow_createUnicode(sfVideoMode mode, const sfUint32 *t
     // Create the window
     sfRenderWindow *renderWindow = new sfRenderWindow;
     renderWindow->This.create(videoMode, title, style, params);
-    renderWindow->DefaultView.This = renderWindow->This.getDefaultView();
-    renderWindow->CurrentView.This = renderWindow->This.getView();
 
     return renderWindow;
 }
@@ -69,8 +67,6 @@ sfRenderWindow *sfRenderWindow_createFromHandle(sfWindowHandle handle, const sfC
     // Create the window
     sfRenderWindow *renderWindow = new sfRenderWindow;
     renderWindow->This.create(handle, params);
-    renderWindow->DefaultView.This = renderWindow->This.getDefaultView();
-    renderWindow->CurrentView.This = renderWindow->This.getView();
 
     return renderWindow;
 }
@@ -225,25 +221,21 @@ void sfRenderWindow_clear(sfRenderWindow *renderWindow, sfColor color) {
 }
 
 void sfRenderWindow_setView(sfRenderWindow *renderWindow, const sfView *view) {
-
-    renderWindow->This.setView(view->This);
-    renderWindow->CurrentView.This = view->This;
+    renderWindow->This.setView(*reinterpret_cast<const sf::View*>(view));
 }
 
 const sfView *sfRenderWindow_getView(const sfRenderWindow *renderWindow) {
-
-    return &renderWindow->CurrentView;
+    return reinterpret_cast<const sfView *>(&renderWindow->This.getView());
 }
 
 const sfView *sfRenderWindow_getDefaultView(const sfRenderWindow *renderWindow) {
-
-    return &renderWindow->DefaultView;
+    return reinterpret_cast<const sfView *>(&renderWindow->This.getDefaultView());
 }
 
 sfIntRect sfRenderWindow_getViewport(const sfRenderWindow *renderWindow, const sfView *view) {
     sfIntRect rect = {0, 0, 0, 0};
 
-    sf::IntRect SFMLrect = renderWindow->This.getViewport(view->This);
+    sf::IntRect SFMLrect = renderWindow->This.getViewport(*reinterpret_cast<const sf::View*>(view));
     rect.left = SFMLrect.left;
     rect.top = SFMLrect.top;
     rect.width = SFMLrect.width;
@@ -257,7 +249,7 @@ sfVector2f sfRenderWindow_mapPixelToCoords(const sfRenderWindow *renderWindow, s
 
     sf::Vector2f sfmlPoint;
     if (targetView)
-        sfmlPoint = renderWindow->This.mapPixelToCoords(sf::Vector2i(point.x, point.y), targetView->This);
+        sfmlPoint = renderWindow->This.mapPixelToCoords(sf::Vector2i(point.x, point.y), *reinterpret_cast<const sf::View*>(targetView));
     else
         sfmlPoint = renderWindow->This.mapPixelToCoords(sf::Vector2i(point.x, point.y));
 
@@ -272,7 +264,7 @@ sfVector2i sfRenderWindow_mapCoordsToPixel(const sfRenderWindow *renderWindow, s
 
     sf::Vector2i sfmlPoint;
     if (targetView)
-        sfmlPoint = renderWindow->This.mapCoordsToPixel(sf::Vector2f(point.x, point.y), targetView->This);
+        sfmlPoint = renderWindow->This.mapCoordsToPixel(sf::Vector2f(point.x, point.y), *reinterpret_cast<const sf::View*>(targetView));
     else
         sfmlPoint = renderWindow->This.mapCoordsToPixel(sf::Vector2f(point.x, point.y));
 

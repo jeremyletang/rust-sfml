@@ -24,53 +24,54 @@
 // Headers
 
 #include "Graphics/View.h"
-#include "Graphics/ViewStruct.h"
 #include <cstddef>
+#include <SFML/Graphics/View.hpp>
 
 sfView *sfView_create(void) {
-    return new sfView;
+    return reinterpret_cast<sfView*>(new sf::View);
 }
 
 sfView *sfView_createFromRect(sfFloatRect rectangle) {
-    sfView *view = new sfView;
-    sfView_reset(view, rectangle);
+    sf::View *view = new sf::View;
+    view->reset(sf::FloatRect(rectangle.left, rectangle.top, rectangle.width, rectangle.height));
 
-    return view;
+    return reinterpret_cast<sfView*>(view);
 }
 
 sfView *sfView_copy(const sfView *view) {
-
-    return new sfView(*view);
+    const sf::View* src = reinterpret_cast<const sf::View*>(view);
+    sf::View* newView = new sf::View(*src);
+    return reinterpret_cast<sfView*>(newView);
 }
 
 void sfView_destroy(sfView *view) {
-    delete view;
+    delete reinterpret_cast<sf::View*>(view);
 }
 
 void sfView_setCenter(sfView *view, sfVector2f center) {
-    view->This.setCenter(center.x, center.y);
+    reinterpret_cast<sf::View*>(view)->setCenter(center.x, center.y);
 }
 
 void sfView_setSize(sfView *view, sfVector2f size) {
-    view->This.setSize(size.x, size.y);
+    reinterpret_cast<sf::View*>(view)->setSize(size.x, size.y);
 }
 
 void sfView_setRotation(sfView *view, float angle) {
-    view->This.setRotation(angle);
+    reinterpret_cast<sf::View*>(view)->setRotation(angle);
 }
 
 void sfView_setViewport(sfView *view, sfFloatRect viewport) {
-    view->This.setViewport(sf::FloatRect(viewport.left, viewport.top, viewport.width, viewport.height));
+    reinterpret_cast<sf::View*>(view)->setViewport(sf::FloatRect(viewport.left, viewport.top, viewport.width, viewport.height));
 }
 
 void sfView_reset(sfView *view, sfFloatRect rectangle) {
-    view->This.reset(sf::FloatRect(rectangle.left, rectangle.top, rectangle.width, rectangle.height));
+    reinterpret_cast<sf::View*>(view)->reset(sf::FloatRect(rectangle.left, rectangle.top, rectangle.width, rectangle.height));
 }
 
 sfVector2f sfView_getCenter(const sfView *view) {
     sfVector2f center = {0, 0};
 
-    sf::Vector2f sfmlCenter = view->This.getCenter();
+    sf::Vector2f sfmlCenter = reinterpret_cast<const sf::View*>(view)->getCenter();
     center.x = sfmlCenter.x;
     center.y = sfmlCenter.y;
 
@@ -80,7 +81,7 @@ sfVector2f sfView_getCenter(const sfView *view) {
 sfVector2f sfView_getSize(const sfView *view) {
     sfVector2f size = {0, 0};
 
-    sf::Vector2f sfmlSize = view->This.getSize();
+    sf::Vector2f sfmlSize = reinterpret_cast<const sf::View*>(view)->getSize();
     size.x = sfmlSize.x;
     size.y = sfmlSize.y;
 
@@ -88,13 +89,13 @@ sfVector2f sfView_getSize(const sfView *view) {
 }
 
 float sfView_getRotation(const sfView *view) {
-    return view->This.getRotation();
+    return reinterpret_cast<const sf::View*>(view)->getRotation();
 }
 
 sfFloatRect sfView_getViewport(const sfView *view) {
     sfFloatRect rect = {0, 0, 0, 0};
 
-    sf::FloatRect SFMLRect = view->This.getViewport();
+    sf::FloatRect SFMLRect = reinterpret_cast<const sf::View*>(view)->getViewport();
     rect.left = SFMLRect.left;
     rect.top = SFMLRect.top;
     rect.width = SFMLRect.width;
@@ -104,13 +105,13 @@ sfFloatRect sfView_getViewport(const sfView *view) {
 }
 
 void sfView_move(sfView *view, sfVector2f offset) {
-    view->This.move(offset.x, offset.y);
+    reinterpret_cast<sf::View*>(view)->move(offset.x, offset.y);
 }
 
 void sfView_rotate(sfView *view, float angle) {
-    view->This.rotate(angle);
+    reinterpret_cast<sf::View*>(view)->rotate(angle);
 }
 
 void sfView_zoom(sfView *view, float factor) {
-    view->This.zoom(factor);
+    reinterpret_cast<sf::View*>(view)->zoom(factor);
 }

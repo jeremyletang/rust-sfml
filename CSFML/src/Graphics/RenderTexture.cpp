@@ -46,8 +46,6 @@ sfRenderTexture *sfRenderTexture_createWithSettings(unsigned int width, unsigned
     // Create the render texture
     sfRenderTexture *renderTexture = new sfRenderTexture;
     renderTexture->This.create(width, height, params);
-    renderTexture->DefaultView.This = renderTexture->This.getDefaultView();
-    renderTexture->CurrentView.This = renderTexture->This.getView();
 
     return renderTexture;
 }
@@ -81,25 +79,22 @@ void sfRenderTexture_clear(sfRenderTexture *renderTexture, sfColor color) {
 }
 
 void sfRenderTexture_setView(sfRenderTexture *renderTexture, const sfView *view) {
-
-    renderTexture->This.setView(view->This);
-    renderTexture->CurrentView.This = view->This;
+    const sf::View * view_ = reinterpret_cast<const sf::View*>(view);
+    renderTexture->This.setView(*view_);
 }
 
 const sfView *sfRenderTexture_getView(const sfRenderTexture *renderTexture) {
-
-    return &renderTexture->CurrentView;
+    return reinterpret_cast<const sfView*>(&renderTexture->This.getView());
 }
 
 const sfView *sfRenderTexture_getDefaultView(const sfRenderTexture *renderTexture) {
-
-    return &renderTexture->DefaultView;
+    return reinterpret_cast<const sfView*>(&renderTexture->This.getDefaultView());
 }
 
 sfIntRect sfRenderTexture_getViewport(const sfRenderTexture *renderTexture, const sfView *view) {
     sfIntRect rect = {0, 0, 0, 0};
 
-    sf::IntRect SFMLrect = renderTexture->This.getViewport(view->This);
+    sf::IntRect SFMLrect = renderTexture->This.getViewport(*reinterpret_cast<const sf::View*>(view));
     rect.left = SFMLrect.left;
     rect.top = SFMLrect.top;
     rect.width = SFMLrect.width;
@@ -113,7 +108,7 @@ sfVector2f sfRenderTexture_mapPixelToCoords(const sfRenderTexture *renderTexture
 
     sf::Vector2f sfmlPoint;
     if (targetView)
-        sfmlPoint = renderTexture->This.mapPixelToCoords(sf::Vector2i(point.x, point.y), targetView->This);
+        sfmlPoint = renderTexture->This.mapPixelToCoords(sf::Vector2i(point.x, point.y), *reinterpret_cast<const sf::View*>(targetView));
     else
         sfmlPoint = renderTexture->This.mapPixelToCoords(sf::Vector2i(point.x, point.y));
 
@@ -128,7 +123,7 @@ sfVector2i sfRenderTexture_mapCoordsToPixel(const sfRenderTexture *renderTexture
 
     sf::Vector2i sfmlPoint;
     if (targetView)
-        sfmlPoint = renderTexture->This.mapCoordsToPixel(sf::Vector2f(point.x, point.y), targetView->This);
+        sfmlPoint = renderTexture->This.mapCoordsToPixel(sf::Vector2f(point.x, point.y), *reinterpret_cast<const sf::View*>(targetView));
     else
         sfmlPoint = renderTexture->This.mapCoordsToPixel(sf::Vector2f(point.x, point.y));
 
