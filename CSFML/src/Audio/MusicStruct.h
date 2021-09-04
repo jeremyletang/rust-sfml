@@ -27,12 +27,10 @@
 // Headers
 
 #include <SFML/Audio/Music.hpp>
-#include "CallbackStream.h"
 
 // Internal structure of sfMusic
 
 struct sfMusic {
-    CallbackStream Stream;
     sf::Music This;
 };
 

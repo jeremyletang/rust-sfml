@@ -26,7 +26,6 @@
 
 // Headers
 
-#include "CallbackStream.h"
 #include <SFML/Graphics/Font.hpp>
 #include <map>
 
@@ -34,7 +33,6 @@
 
 struct sfFont {
     sf::Font This;
-    CallbackStream Stream;
 };
 
 #endif // SFML_FONTSTRUCT_H

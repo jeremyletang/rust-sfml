@@ -1,8 +1,8 @@
 use crate::{
     ffi,
     graphics::{glsl, Texture},
-    inputstream::InputStream,
     sf_bool_ext::SfBoolExt,
+    system::InputStream,
 };
 use std::{
     ffi::CString,
@@ -204,13 +204,15 @@ impl<'texture> Shader<'texture> {
         let mut vertex_stream = vertex_shader_stream.map(InputStream::new);
         let mut geometry_stream = geometry_shader_stream.map(InputStream::new);
         let mut fragment_stream = fragment_shader_stream.map(InputStream::new);
-        let vertex_ptr = vertex_stream.as_mut().map_or(ptr::null_mut(), |s| &mut s.0);
+        let vertex_ptr = vertex_stream
+            .as_mut()
+            .map_or(ptr::null_mut(), |s| &mut *s.stream);
         let geometry_ptr = geometry_stream
             .as_mut()
-            .map_or(ptr::null_mut(), |s| &mut s.0);
+            .map_or(ptr::null_mut(), |s| &mut *s.stream);
         let fragment_ptr = fragment_stream
             .as_mut()
-            .map_or(ptr::null_mut(), |s| &mut s.0);
+            .map_or(ptr::null_mut(), |s| &mut *s.stream);
         let shader =
             unsafe { ffi::sfShader_createFromStream(vertex_ptr, geometry_ptr, fragment_ptr) };
         Some(Self {

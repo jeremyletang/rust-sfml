@@ -1,9 +1,9 @@
 use crate::{
     ffi::{self as ffi, sfBool},
     graphics::{Glyph, Texture},
-    inputstream::InputStream,
     sf_bool_ext::SfBoolExt,
     sf_box::{Dispose, SfBox},
+    system::InputStream,
 };
 use std::{
     borrow::ToOwned,
@@ -156,7 +156,7 @@ impl Font {
     /// Returns `None` on failure.
     pub fn from_stream<T: Read + Seek>(stream: &mut T) -> Option<SfBox<Self>> {
         let mut input_stream = InputStream::new(stream);
-        let fnt = unsafe { ffi::sfFont_createFromStream(&mut input_stream.0) };
+        let fnt = unsafe { ffi::sfFont_createFromStream(&mut *input_stream.stream) };
         SfBox::new(fnt as *mut Self)
     }
 

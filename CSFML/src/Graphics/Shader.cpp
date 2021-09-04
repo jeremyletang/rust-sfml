@@ -23,10 +23,10 @@
 
 // Headers
 
-#include "CallbackStream.h"
 #include "Graphics/ConvertTransform.hpp"
 #include "Graphics/Shader.h"
 #include "Graphics/ShaderStruct.h"
+#include "System/InputStreamStruct.h"
 #include <cstddef>
 
 sfShader *sfShader_createFromFile(const char *vertexShaderFilename, const char *geometryShaderFilename, const char *fragmentShaderFilename) {
@@ -94,24 +94,16 @@ sfShader *sfShader_createFromStream(sfInputStream *vertexShaderStream, sfInputSt
         if (!geometryShaderStream) {
             if (!vertexShaderStream) {
                 // fragment shader only
-                CallbackStream stream(fragmentShaderStream);
-                success = shader->This.loadFromStream(stream, sf::Shader::Fragment);
+                success = shader->This.loadFromStream(*fragmentShaderStream, sf::Shader::Fragment);
             } else if (!fragmentShaderStream) {
                 // vertex shader only
-                CallbackStream stream(vertexShaderStream);
-                success = shader->This.loadFromStream(stream, sf::Shader::Vertex);
+                success = shader->This.loadFromStream(*vertexShaderStream, sf::Shader::Vertex);
             } else {
                 // vertex + fragment shaders
-                CallbackStream vertexStream(vertexShaderStream);
-                CallbackStream fragmentStream(fragmentShaderStream);
-                success = shader->This.loadFromStream(vertexStream, fragmentStream);
+                success = shader->This.loadFromStream(*vertexShaderStream, *fragmentShaderStream);
             }
         } else {
-            // vertex + geometry + fragment shaders
-            CallbackStream vertexStream(vertexShaderStream);
-            CallbackStream geometryStream(geometryShaderStream);
-            CallbackStream fragmentStream(fragmentShaderStream);
-            success = shader->This.loadFromStream(vertexStream, geometryStream, fragmentStream);
+            success = shader->This.loadFromStream(*vertexShaderStream, *geometryShaderStream, *fragmentShaderStream);
         }
     }
 

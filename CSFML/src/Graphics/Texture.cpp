@@ -23,13 +23,13 @@
 
 // Headers
 
-#include "CallbackStream.h"
 #include "Graphics/ImageStruct.h"
 #include "Graphics/Texture.h"
 #include "Window/WindowStruct.h"
 #include <cstddef>
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
+#include "System/InputStreamStruct.h"
 
 sfTexture *sfTexture_create(unsigned int width, unsigned int height) {
     sf::Texture *texture = new sf::Texture;
@@ -80,8 +80,7 @@ sfTexture *sfTexture_createFromStream(sfInputStream *stream, const sfIntRect *ar
     if (area)
         rect = sf::IntRect(area->left, area->top, area->width, area->height);
 
-    CallbackStream sfmlStream(stream);
-    if (!texture->loadFromStream(sfmlStream, rect)) {
+    if (!texture->loadFromStream(*stream, rect)) {
         delete texture;
         texture = NULL;
     }

@@ -1,10 +1,9 @@
 use crate::{
     ffi::{self as ffi, sfBool},
     graphics::{Image, IntRect, RenderWindow},
-    inputstream::InputStream,
     sf_bool_ext::SfBoolExt,
     sf_box::{Dispose, SfBox},
-    system::Vector2u,
+    system::{InputStream, Vector2u},
     window::Window,
 };
 use std::{
@@ -168,7 +167,8 @@ impl Texture {
         area: &mut IntRect,
     ) -> Option<SfBox<Texture>> {
         let mut input_stream = InputStream::new(stream);
-        let tex = unsafe { ffi::sfTexture_createFromStream(&mut input_stream.0, &area.raw()) };
+        let tex =
+            unsafe { ffi::sfTexture_createFromStream(&mut *input_stream.stream, &area.raw()) };
         SfBox::new(tex as *mut Self)
     }
 

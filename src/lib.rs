@@ -48,8 +48,6 @@
 
 extern crate link_cplusplus;
 
-#[cfg(any(feature = "graphics", feature = "audio"))]
-mod inputstream;
 mod sf_bool_ext;
 
 #[cfg(feature = "audio")]

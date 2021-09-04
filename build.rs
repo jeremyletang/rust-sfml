@@ -20,7 +20,14 @@ fn main() {
     let feat_audio = env::var("CARGO_FEATURE_AUDIO").is_ok();
     let feat_window = env::var("CARGO_FEATURE_WINDOW").is_ok();
     let feat_graphics = env::var("CARGO_FEATURE_GRAPHICS").is_ok();
-    build.files(["CSFML/src/System/Clock.cpp", "CSFML/src/System/Sleep.cpp"].iter());
+    build.files(
+        [
+            "CSFML/src/System/Clock.cpp",
+            "CSFML/src/System/Sleep.cpp",
+            "CSFML/src/System/InputStream.cpp",
+        ]
+        .iter(),
+    );
     if feat_audio {
         build.files(
             [

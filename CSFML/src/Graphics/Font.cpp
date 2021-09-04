@@ -23,9 +23,9 @@
 
 // Headers
 
-#include "CallbackStream.h"
 #include "Graphics/Font.h"
 #include "Graphics/FontStruct.h"
+#include "System/InputStreamStruct.h"
 #include <cstddef>
 
 sfFont *sfFont_createFromFile(const char *filename) {
@@ -51,8 +51,7 @@ sfFont *sfFont_createFromMemory(const void *data, size_t sizeInBytes) {
 sfFont *sfFont_createFromStream(sfInputStream *stream) {
 
     sfFont *font = new sfFont;
-    font->Stream = CallbackStream(stream);
-    if (!font->This.loadFromStream(font->Stream)) {
+    if (!font->This.loadFromStream(*stream)) {
         delete font;
         font = NULL;
     }

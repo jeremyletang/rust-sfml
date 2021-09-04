@@ -1,12 +1,13 @@
 use sfml::{
     audio::{Music, SoundStatus},
-    system::{sleep, Time},
+    system::{sleep, InputStream, Time},
 };
 use std::{fs::File, io::Write};
 
 fn main() {
     let mut file = File::open("resources/orchestral.ogg").unwrap();
-    let mut music = Music::from_stream(&mut file).unwrap();
+    let mut stream = InputStream::new(&mut file);
+    let mut music = Music::from_stream(&mut stream).unwrap();
 
     // Display Music informations
     println!("orchestral.ogg :");

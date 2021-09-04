@@ -32,12 +32,14 @@ typedef sfInt64 (*sfInputStreamSeekFunc)(sfInt64 position, void *userData);
 typedef sfInt64 (*sfInputStreamTellFunc)(void *userData);
 typedef sfInt64 (*sfInputStreamGetSizeFunc)(void *userData);
 
-typedef struct sfInputStream {
-    sfInputStreamReadFunc read;       ///< Function to read data from the stream
-    sfInputStreamSeekFunc seek;       ///< Function to set the current read position
-    sfInputStreamTellFunc tell;       ///< Function to get the current read position
-    sfInputStreamGetSizeFunc getSize; ///< Function to get the total number of bytes in the stream
-    void *userData;                   ///< User data that will be passed to the callbacks
-} sfInputStream;
+struct sfInputStream;
+
+extern "C" sfInputStream * sfInputStream_new(
+    sfInputStreamReadFunc read,
+    sfInputStreamSeekFunc seek,
+    sfInputStreamTellFunc tell,
+    sfInputStreamGetSizeFunc getSize,
+    void *userData
+);
 
 #endif // SFML_INPUTSTREAM_H

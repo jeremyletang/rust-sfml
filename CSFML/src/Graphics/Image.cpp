@@ -23,9 +23,9 @@
 
 // Headers
 
-#include "CallbackStream.h"
 #include "Graphics/Image.h"
 #include "Graphics/ImageStruct.h"
+#include "System/InputStreamStruct.h"
 #include <cstddef>
 
 sfImage *sfImage_create(unsigned int width, unsigned int height) {
@@ -75,8 +75,7 @@ sfImage *sfImage_createFromStream(sfInputStream *stream) {
 
     sfImage *image = new sfImage;
 
-    CallbackStream sfmlStream(stream);
-    if (!image->This.loadFromStream(sfmlStream)) {
+    if (!image->This.loadFromStream(*stream)) {
         delete image;
         image = NULL;
     }

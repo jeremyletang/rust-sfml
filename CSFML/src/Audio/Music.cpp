@@ -25,6 +25,7 @@
 
 #include "Audio/Music.h"
 #include "Audio/MusicStruct.h"
+#include "System/InputStreamStruct.h"
 #include <cstddef>
 
 sfMusic *sfMusic_createFromFile(const char *filename) {
@@ -50,8 +51,7 @@ sfMusic *sfMusic_createFromMemory(const void *data, size_t sizeInBytes) {
 sfMusic *sfMusic_createFromStream(sfInputStream *stream) {
 
     sfMusic *music = new sfMusic;
-    music->Stream = CallbackStream(stream);
-    if (!music->This.openFromStream(music->Stream)) {
+    if (!music->This.openFromStream(*stream)) {
         delete music;
         music = NULL;
     }

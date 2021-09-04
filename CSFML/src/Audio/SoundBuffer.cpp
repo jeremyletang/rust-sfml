@@ -25,7 +25,7 @@
 
 #include "Audio/SoundBuffer.h"
 #include "Audio/SoundBufferStruct.h"
-#include "CallbackStream.h"
+#include "System/InputStreamStruct.h"
 #include <cstddef>
 
 sfSoundBuffer *sfSoundBuffer_createFromFile(const char *filename) {
@@ -53,8 +53,7 @@ sfSoundBuffer *sfSoundBuffer_createFromMemory(const void *data, size_t sizeInByt
 sfSoundBuffer *sfSoundBuffer_createFromStream(sfInputStream *stream) {
 
     sfSoundBuffer *buffer = new sfSoundBuffer;
-    CallbackStream sfmlStream(stream);
-    if (!buffer->This.loadFromStream(sfmlStream)) {
+    if (!buffer->This.loadFromStream(*stream)) {
         delete buffer;
         buffer = NULL;
     }

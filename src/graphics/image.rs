@@ -1,9 +1,8 @@
 use crate::{
     ffi::{self as ffi, sfBool},
     graphics::{Color, IntRect},
-    inputstream::InputStream,
     sf_bool_ext::SfBoolExt,
-    system::Vector2u,
+    system::{InputStream, Vector2u},
 };
 use std::{
     ffi::CString,
@@ -44,7 +43,7 @@ impl Image {
     /// Returns `None` if loading fails
     pub fn from_stream<T: Read + Seek>(stream: &mut T) -> Option<Self> {
         let mut input_stream = InputStream::new(stream);
-        let image = unsafe { ffi::sfImage_createFromStream(&mut input_stream.0) };
+        let image = unsafe { ffi::sfImage_createFromStream(&mut *input_stream.stream) };
         if image.is_null() {
             None
         } else {
