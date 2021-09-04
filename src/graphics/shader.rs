@@ -544,6 +544,14 @@ impl<'texture> Shader<'texture> {
             ffi::sfShader_setMat4UniformArray(self.shader.as_ptr(), name, ptr, len);
         }
     }
+    /// Get the underlying OpenGL handle of the shader.
+    ///
+    /// You shouldn't need to use this function, unless you have very specific stuff to implement
+    /// that SFML doesn't support, or implement a temporary workaround until a bug is fixed.
+    #[must_use]
+    pub fn native_handle(&self) -> u32 {
+        unsafe { ffi::sfShader_getNativeHandle(self.shader.as_ptr()) }
+    }
     pub(super) fn raw(&self) -> *const ffi::sfShader {
         self.shader.as_ptr()
     }
