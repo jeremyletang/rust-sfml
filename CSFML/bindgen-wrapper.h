@@ -13,7 +13,6 @@
 #include "Audio/SoundRecorder.h"
 #include "Audio/SoundStatus.h"
 #include "Audio/SoundStream.h"
-#include "Window/Clipboard.h"
 #include "Window/Context.h"
 #include "Window/Cursor.h"
 #include "Window/Event.h"
