@@ -224,34 +224,54 @@ impl Texture {
         SfBox::new(tex as *mut Self)
     }
 
-    /// Update a texture from the contents of a window
+    /// Update a part of the texture from the contents of a window.
     ///
-    /// # Arguments
-    /// * window - Window to copy to the texture
-    /// * x - X offset in the texture where to copy the source pixels
-    /// * y - Y offset in the texture where to copy the source pixels
-    pub fn update_from_window(&mut self, window: &Window, x: u32, y: u32) {
-        unsafe { ffi::sfTexture_updateFromWindow(self.raw_mut(), window.raw(), x, y) }
+    /// This function does nothing if either the texture or the window was not previously created.
+    ///
+    /// # Safety
+    /// No additional check is performed on the size of the window, passing an invalid combination
+    /// of window size and offset will lead to an _undefined behavior_.
+    pub unsafe fn update_from_window(&mut self, window: &Window, x: u32, y: u32) {
+        ffi::sfTexture_updateFromWindow(self.raw_mut(), window.raw(), x, y)
     }
 
-    /// Update a texture from the contents of a render window
+    /// Update a part of the texture from the contents of a render window.
     ///
-    /// # Arguments
-    /// * renderWindow - Render-window to copy to the texture
-    /// * x - X offset in the texture where to copy the source pixels
-    /// * y - Y offset in the texture where to copy the source pixels
-    pub fn update_from_render_window(&mut self, render_window: &RenderWindow, x: u32, y: u32) {
-        unsafe { ffi::sfTexture_updateFromRenderWindow(self.raw_mut(), render_window.raw(), x, y) }
+    /// This function does nothing if either the texture or the window was not previously created.
+    ///
+    /// # Safety
+    /// No additional check is performed on the size of the window, passing an invalid combination
+    /// of window size and offset will lead to an _undefined behavior_.
+    pub unsafe fn update_from_render_window(
+        &mut self,
+        render_window: &RenderWindow,
+        x: u32,
+        y: u32,
+    ) {
+        ffi::sfTexture_updateFromRenderWindow(self.raw_mut(), render_window.raw(), x, y)
     }
 
-    /// Update a texture from the contents of an image
+    /// Update a part of the texture from an image.
     ///
-    /// # Arguments
-    /// * image - Image to copy to the texture
-    /// * x - X offset in the texture where to copy the source pixels
-    /// * y - Y offset in the texture where to copy the source pixels
-    pub fn update_from_image(&mut self, image: &Image, x: u32, y: u32) {
-        unsafe { ffi::sfTexture_updateFromImage(self.raw_mut(), image.raw(), x, y) }
+    /// This function does nothing if the texture was not previously created.
+    ///
+    /// # Safety
+    /// No additional check is performed on the size of the image, passing an invalid combination
+    /// of image size and offset will lead to an _undefined behavior_.
+    pub unsafe fn update_from_image(&mut self, image: &Image, x: u32, y: u32) {
+        ffi::sfTexture_updateFromImage(self.raw_mut(), image.raw(), x, y)
+    }
+
+    /// Update a part of this texture from another texture.
+    ///
+    /// This function does nothing if either texture was not previously created.
+    ///
+    /// # Safety
+    /// No additional check is performed on the size of the texture,
+    /// passing an invalid combination of texture size and offset will
+    /// lead to an _undefined behavior_.
+    pub unsafe fn update_from_texture(&mut self, texture: &Texture, x: u32, y: u32) {
+        ffi::sfTexture_updateFromTexture(self.raw_mut(), texture.raw(), x, y)
     }
 
     /// Update a part of the texture from an array of pixels.
