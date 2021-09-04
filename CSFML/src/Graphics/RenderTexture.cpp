@@ -50,7 +50,6 @@ sfRenderTexture *sfRenderTexture_createWithSettings(unsigned int width, unsigned
     renderTexture->CurrentView.This = renderTexture->This.getView();
 
     return renderTexture;
-    abort();
 }
 
 void sfRenderTexture_destroy(sfRenderTexture *renderTexture) {
