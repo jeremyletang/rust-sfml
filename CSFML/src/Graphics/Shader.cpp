@@ -27,7 +27,6 @@
 #include "Graphics/ConvertTransform.hpp"
 #include "Graphics/Shader.h"
 #include "Graphics/ShaderStruct.h"
-#include "Graphics/TextureStruct.h"
 #include <cstddef>
 
 sfShader *sfShader_createFromFile(const char *vertexShaderFilename, const char *geometryShaderFilename, const char *fragmentShaderFilename) {
@@ -185,7 +184,7 @@ void sfShader_setMat4Uniform(sfShader *shader, const char *name, const sfGlslMat
 }
 
 void sfShader_setTextureUniform(sfShader *shader, const char *name, const sfTexture *texture) {
-    shader->This.setUniform(name, *texture->This);
+    shader->This.setUniform(name, *reinterpret_cast<const sf::Texture*>(texture));
 }
 
 void sfShader_setCurrentTextureUniform(sfShader *shader, const char *name) {

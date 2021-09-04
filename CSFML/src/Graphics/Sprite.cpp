@@ -121,10 +121,8 @@ sfTransform sfSprite_getInverseTransform(const sfSprite *sprite) {
 }
 
 void sfSprite_setTexture(sfSprite *sprite, const sfTexture *texture, sfBool resetRect) {
-    if (texture && texture->This) {
-        sprite->This.setTexture(*texture->This, resetRect == sfTrue);
-        sprite->Texture = texture;
-    }
+    sprite->This.setTexture(*reinterpret_cast<const sf::Texture*>(texture), resetRect == sfTrue);
+    sprite->Texture = texture;
 }
 
 void sfSprite_setTextureRect(sfSprite *sprite, sfIntRect rectangle) {

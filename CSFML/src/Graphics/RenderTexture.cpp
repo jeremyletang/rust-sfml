@@ -46,15 +46,14 @@ sfRenderTexture *sfRenderTexture_createWithSettings(unsigned int width, unsigned
     // Create the render texture
     sfRenderTexture *renderTexture = new sfRenderTexture;
     renderTexture->This.create(width, height, params);
-    renderTexture->Target = new sfTexture(const_cast<sf::Texture *>(&renderTexture->This.getTexture()));
     renderTexture->DefaultView.This = renderTexture->This.getDefaultView();
     renderTexture->CurrentView.This = renderTexture->This.getView();
 
     return renderTexture;
+    abort();
 }
 
 void sfRenderTexture_destroy(sfRenderTexture *renderTexture) {
-    delete renderTexture->Target;
     delete renderTexture;
 }
 
@@ -189,8 +188,7 @@ void sfRenderTexture_resetGLStates(sfRenderTexture *renderTexture) {
 }
 
 const sfTexture *sfRenderTexture_getTexture(const sfRenderTexture *renderTexture) {
-
-    return renderTexture->Target;
+    return reinterpret_cast<const sfTexture*>(&renderTexture->This.getTexture());
 }
 
 void sfRenderTexture_setSmooth(sfRenderTexture *renderTexture, sfBool smooth) {

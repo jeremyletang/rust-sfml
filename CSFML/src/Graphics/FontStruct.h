@@ -28,14 +28,12 @@
 
 #include "CallbackStream.h"
 #include <SFML/Graphics/Font.hpp>
-#include "Graphics/TextureStruct.h"
 #include <map>
 
 // Internal structure of sfFont
 
 struct sfFont {
     sf::Font This;
-    std::map<unsigned int, sfTexture> Textures;
     CallbackStream Stream;
 };
 

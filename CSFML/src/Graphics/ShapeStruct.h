@@ -28,7 +28,6 @@
 
 #include "Graphics/Shape.h"
 #include <SFML/Graphics/Shape.hpp>
-#include "Graphics/TextureStruct.h"
 #include "Graphics/Transform.h"
 
 // Helper class implementing the callback forwarding from

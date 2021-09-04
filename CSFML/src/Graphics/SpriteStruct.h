@@ -27,7 +27,6 @@
 // Headers
 
 #include <SFML/Graphics/Sprite.hpp>
-#include "Graphics/TextureStruct.h"
 #include "Graphics/Transform.h"
 
 // Internal structure of sfSprite

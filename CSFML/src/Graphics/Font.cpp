@@ -104,10 +104,7 @@ float sfFont_getUnderlineThickness(const sfFont *font, unsigned int characterSiz
 }
 
 const sfTexture *sfFont_getTexture(sfFont *font, unsigned int characterSize) {
-
-    *font->Textures[characterSize].This = font->This.getTexture(characterSize);
-
-    return &font->Textures[characterSize];
+    return reinterpret_cast<const sfTexture *>(&font->This.getTexture(characterSize));
 }
 
 sfFontInfo sfFont_getInfo(const sfFont *font) {
