@@ -120,10 +120,6 @@ sfTransform sfText_getInverseTransform(const sfText *text) {
     return text->InverseTransform;
 }
 
-void sfText_setString(sfText *text, const char *string) {
-    text->This.setString(string);
-}
-
 void sfText_setUnicodeString(sfText *text, const sfUint32 *string) {
     sf::String UTF32Text = string;
     text->This.setString(UTF32Text);

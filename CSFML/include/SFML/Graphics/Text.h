@@ -66,8 +66,6 @@ extern "C" sfTransform sfText_getTransform(const sfText *text);
 
 extern "C" sfTransform sfText_getInverseTransform(const sfText *text);
 
-extern "C" void sfText_setString(sfText *text, const char *string);
-
 extern "C" void sfText_setUnicodeString(sfText *text, const sfUint32 *string);
 
 extern "C" void sfText_setFont(sfText *text, const sfFont *font);
