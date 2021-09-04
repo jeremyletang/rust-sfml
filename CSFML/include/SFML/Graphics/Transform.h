@@ -36,8 +36,6 @@ typedef struct
     float matrix[9];
 } sfTransform;
 
-extern "C" const sfTransform sfTransform_Identity;
-
 extern "C" sfTransform sfTransform_fromMatrix(float a00, float a01, float a02,
                                               float a10, float a11, float a12,
                                               float a20, float a21, float a22);

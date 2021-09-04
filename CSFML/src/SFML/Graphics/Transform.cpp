@@ -29,19 +29,6 @@
 #include <cstddef>
 #include <cstring>
 
-const sfTransform sfTransform_Identity =
-    {
-        1,
-        0,
-        0,
-        0,
-        1,
-        0,
-        0,
-        0,
-        1,
-};
-
 sfTransform sfTransform_fromMatrix(float a00, float a01, float a02,
                                    float a10, float a11, float a12,
                                    float a20, float a21, float a22) {
