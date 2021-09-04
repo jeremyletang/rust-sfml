@@ -64,7 +64,6 @@ impl Default for BlendMode {
 /// The factors are mapped directly to their OpenGL equivalents, specified by
 /// `glBlendFunc()` or `glBlendFuncSeparate()`.
 #[derive(Clone, PartialEq, Eq, Debug, Copy)]
-#[repr(u32)]
 pub enum Factor {
     /// (0, 0, 0, 0)
     Zero = 0,
@@ -93,7 +92,6 @@ pub enum Factor {
 /// The equations are mapped directly to their OpenGL equivalents, specified by
 /// `glBlendEquation()` or `glBlendEquationSeparate()`.
 #[derive(Clone, PartialEq, Eq, Debug, Copy)]
-#[repr(u32)]
 pub enum Equation {
     /// Pixel = Src * SrcFactor + Dst * DstFactor.
     Add = 0,
