@@ -30,10 +30,10 @@
 #include "Graphics/RenderTexture.h"
 #include "Graphics/RenderTextureStruct.h"
 #include "Graphics/ShapeStruct.h"
-#include "Graphics/TextStruct.h"
 #include "Graphics/VertexBufferStruct.h"
 #include "Window/ContextSettingsInternal.h"
 #include <SFML/Graphics/Sprite.hpp>
+#include <SFML/Graphics/Text.hpp>
 #include <cstddef>
 
 sfRenderTexture *sfRenderTexture_createWithSettings(unsigned int width, unsigned int height, const sfContextSettings *settings) {
@@ -139,7 +139,7 @@ void sfRenderTexture_drawSprite(sfRenderTexture *renderTexture, const sfSprite *
 }
 void sfRenderTexture_drawText(sfRenderTexture *renderTexture, const sfText *object, const sfRenderStates *states) {
 
-    renderTexture->This.draw(object->This, convertRenderStates(states));
+    renderTexture->This.draw(*reinterpret_cast<const sf::Text*>(object), convertRenderStates(states));
 }
 void sfRenderTexture_drawShape(sfRenderTexture *renderTexture, const sfShape *object, const sfRenderStates *states) {
 

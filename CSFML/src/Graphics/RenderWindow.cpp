@@ -31,13 +31,13 @@
 #include "Graphics/RectangleShapeStruct.h"
 #include "Graphics/RenderWindow.h"
 #include "Graphics/ShapeStruct.h"
-#include "Graphics/TextStruct.h"
 #include "Graphics/VertexBufferStruct.h"
 #include "Window/ContextSettingsInternal.h"
 #include "Window/CursorStruct.h"
 #include <SFML/Window/Touch.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Graphics/Text.hpp>
 #include <cstddef>
 
 sfRenderWindow *sfRenderWindow_createUnicode(sfVideoMode mode, const sfUint32 *title, sfUint32 style, const sfContextSettings *settings) {
@@ -279,7 +279,7 @@ void sfRenderWindow_drawSprite(sfRenderWindow *renderWindow, const sfSprite *obj
 }
 void sfRenderWindow_drawText(sfRenderWindow *renderWindow, const sfText *object, const sfRenderStates *states) {
 
-    reinterpret_cast<sf::RenderWindow *>(renderWindow)->draw(object->This, convertRenderStates(states));
+    reinterpret_cast<sf::RenderWindow *>(renderWindow)->draw(*reinterpret_cast<const sf::Text*>(object), convertRenderStates(states));
 }
 void sfRenderWindow_drawShape(sfRenderWindow *renderWindow, const sfShape *object, const sfRenderStates *states) {
 
