@@ -156,10 +156,6 @@ void sfRenderWindow_setSize(sfRenderWindow *renderWindow, sfVector2u size) {
     renderWindow->This.setSize(sf::Vector2u(size.x, size.y));
 }
 
-void sfRenderWindow_setTitle(sfRenderWindow *renderWindow, const char *title) {
-    renderWindow->This.setTitle(title);
-}
-
 void sfRenderWindow_setUnicodeTitle(sfRenderWindow *renderWindow, const sfUint32 *title) {
     renderWindow->This.setTitle(title);
 }

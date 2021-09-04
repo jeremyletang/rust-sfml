@@ -64,8 +64,6 @@ extern "C" sfVector2u sfRenderWindow_getSize(const sfRenderWindow *renderWindow)
 
 extern "C" void sfRenderWindow_setSize(sfRenderWindow *renderWindow, sfVector2u size);
 
-extern "C" void sfRenderWindow_setTitle(sfRenderWindow *renderWindow, const char *title);
-
 extern "C" void sfRenderWindow_setUnicodeTitle(sfRenderWindow *renderWindow, const sfUint32 *title);
 
 extern "C" void sfRenderWindow_setIcon(sfRenderWindow *renderWindow, unsigned int width, unsigned int height, const sfUint8 *pixels);

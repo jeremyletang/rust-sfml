@@ -142,10 +142,6 @@ void sfWindow_setSize(sfWindow *window, sfVector2u size) {
     window->This.setSize(sf::Vector2u(size.x, size.y));
 }
 
-void sfWindow_setTitle(sfWindow *window, const char *title) {
-    window->This.setTitle(title);
-}
-
 void sfWindow_setUnicodeTitle(sfWindow *window, const sfUint32 *title) {
     window->This.setTitle(title);
 }

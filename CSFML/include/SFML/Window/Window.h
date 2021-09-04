@@ -69,8 +69,6 @@ extern "C" sfVector2u sfWindow_getSize(const sfWindow *window);
 
 extern "C" void sfWindow_setSize(sfWindow *window, sfVector2u size);
 
-extern "C" void sfWindow_setTitle(sfWindow *window, const char *title);
-
 extern "C" void sfWindow_setUnicodeTitle(sfWindow *window, const sfUint32 *title);
 
 extern "C" void sfWindow_setIcon(sfWindow *window, unsigned int width, unsigned int height, const sfUint8 *pixels);
