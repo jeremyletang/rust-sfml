@@ -32,12 +32,12 @@
 #include "Graphics/RenderWindow.h"
 #include "Graphics/RenderWindowStruct.h"
 #include "Graphics/ShapeStruct.h"
-#include "Graphics/SpriteStruct.h"
 #include "Graphics/TextStruct.h"
 #include "Graphics/VertexBufferStruct.h"
 #include "Window/ContextSettingsInternal.h"
 #include "Window/CursorStruct.h"
 #include <SFML/Window/Touch.hpp>
+#include <SFML/Graphics/Sprite.hpp>
 #include <cstddef>
 
 sfRenderWindow *sfRenderWindow_createUnicode(sfVideoMode mode, const sfUint32 *title, sfUint32 style, const sfContextSettings *settings) {
@@ -276,7 +276,7 @@ sfVector2i sfRenderWindow_mapCoordsToPixel(const sfRenderWindow *renderWindow, s
 
 void sfRenderWindow_drawSprite(sfRenderWindow *renderWindow, const sfSprite *object, const sfRenderStates *states) {
 
-    renderWindow->This.draw(object->This, convertRenderStates(states));
+    renderWindow->This.draw(*reinterpret_cast<const sf::Sprite*>(object), convertRenderStates(states));
 }
 void sfRenderWindow_drawText(sfRenderWindow *renderWindow, const sfText *object, const sfRenderStates *states) {
 

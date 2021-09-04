@@ -26,46 +26,45 @@
 #include <SFML/Graphics/Color.hpp>
 #include "Graphics/ConvertTransform.hpp"
 #include <SFML/Graphics/Image.hpp>
+#include <SFML/Graphics/Sprite.hpp>
 #include "Graphics/Sprite.h"
-#include "Graphics/SpriteStruct.h"
 #include <cstddef>
 
 sfSprite *sfSprite_create(void) {
-    sfSprite *sprite = new sfSprite;
-    sprite->Texture = NULL;
-
-    return sprite;
+    sf::Sprite *sprite = new sf::Sprite;
+    return reinterpret_cast<sfSprite*>(sprite);
 }
 
 sfSprite *sfSprite_copy(const sfSprite *sprite) {
-
-    return new sfSprite(*sprite);
+    const sf::Sprite * src = reinterpret_cast<const sf::Sprite*>(sprite);
+    sf::Sprite * newSprite = new sf::Sprite(*src);
+    return reinterpret_cast<sfSprite*>(newSprite);
 }
 
 void sfSprite_destroy(sfSprite *sprite) {
-    delete sprite;
+    delete reinterpret_cast<sf::Sprite*>(sprite);
 }
 
 void sfSprite_setPosition(sfSprite *sprite, sfVector2f position) {
-    sprite->This.setPosition(position.x, position.y);
+    reinterpret_cast<sf::Sprite*>(sprite)->setPosition(position.x, position.y);
 }
 
 void sfSprite_setRotation(sfSprite *sprite, float angle) {
-    sprite->This.setRotation(angle);
+    reinterpret_cast<sf::Sprite*>(sprite)->setRotation(angle);
 }
 
 void sfSprite_setScale(sfSprite *sprite, sfVector2f scale) {
-    sprite->This.setScale(scale.x, scale.y);
+    reinterpret_cast<sf::Sprite*>(sprite)->setScale(scale.x, scale.y);
 }
 
 void sfSprite_setOrigin(sfSprite *sprite, sfVector2f origin) {
-    sprite->This.setOrigin(origin.x, origin.y);
+    reinterpret_cast<sf::Sprite*>(sprite)->setOrigin(origin.x, origin.y);
 }
 
 sfVector2f sfSprite_getPosition(const sfSprite *sprite) {
     sfVector2f position = {0, 0};
 
-    sf::Vector2f sfmlPos = sprite->This.getPosition();
+    sf::Vector2f sfmlPos = reinterpret_cast<const sf::Sprite*>(sprite)->getPosition();
     position.x = sfmlPos.x;
     position.y = sfmlPos.y;
 
@@ -73,13 +72,13 @@ sfVector2f sfSprite_getPosition(const sfSprite *sprite) {
 }
 
 float sfSprite_getRotation(const sfSprite *sprite) {
-    return sprite->This.getRotation();
+    return reinterpret_cast<const sf::Sprite*>(sprite)->getRotation();
 }
 
 sfVector2f sfSprite_getScale(const sfSprite *sprite) {
     sfVector2f scale = {0, 0};
 
-    sf::Vector2f sfmlScale = sprite->This.getScale();
+    sf::Vector2f sfmlScale = reinterpret_cast<const sf::Sprite*>(sprite)->getScale();
     scale.x = sfmlScale.x;
     scale.y = sfmlScale.y;
 
@@ -89,7 +88,7 @@ sfVector2f sfSprite_getScale(const sfSprite *sprite) {
 sfVector2f sfSprite_getOrigin(const sfSprite *sprite) {
     sfVector2f origin = {0, 0};
 
-    sf::Vector2f sfmlOrigin = sprite->This.getOrigin();
+    sf::Vector2f sfmlOrigin = reinterpret_cast<const sf::Sprite*>(sprite)->getOrigin();
     origin.x = sfmlOrigin.x;
     origin.y = sfmlOrigin.y;
 
@@ -97,51 +96,50 @@ sfVector2f sfSprite_getOrigin(const sfSprite *sprite) {
 }
 
 void sfSprite_move(sfSprite *sprite, sfVector2f offset) {
-    sprite->This.move(offset.x, offset.y);
+    reinterpret_cast<sf::Sprite*>(sprite)->move(offset.x, offset.y);
 }
 
 void sfSprite_rotate(sfSprite *sprite, float angle) {
-    sprite->This.rotate(angle);
+    reinterpret_cast<sf::Sprite*>(sprite)->rotate(angle);
 }
 
 void sfSprite_scale(sfSprite *sprite, sfVector2f factors) {
-    sprite->This.scale(factors.x, factors.y);
+    reinterpret_cast<sf::Sprite*>(sprite)->scale(factors.x, factors.y);
 }
 
 sfTransform sfSprite_getTransform(const sfSprite *sprite) {
 
-    sprite->Transform = convertTransform(sprite->This.getTransform());
-    return sprite->Transform;
+    sfTransform transform = convertTransform(reinterpret_cast<const sf::Sprite*>(sprite)->getTransform());
+    return transform;
 }
 
 sfTransform sfSprite_getInverseTransform(const sfSprite *sprite) {
 
-    sprite->InverseTransform = convertTransform(sprite->This.getInverseTransform());
-    return sprite->InverseTransform;
+    sfTransform transform = convertTransform(reinterpret_cast<const sf::Sprite*>(sprite)->getInverseTransform());
+    return transform;
 }
 
 void sfSprite_setTexture(sfSprite *sprite, const sfTexture *texture, sfBool resetRect) {
-    sprite->This.setTexture(*reinterpret_cast<const sf::Texture*>(texture), resetRect == sfTrue);
-    sprite->Texture = texture;
+    reinterpret_cast<sf::Sprite*>(sprite)->setTexture(*reinterpret_cast<const sf::Texture*>(texture), resetRect == sfTrue);
 }
 
 void sfSprite_setTextureRect(sfSprite *sprite, sfIntRect rectangle) {
-    sprite->This.setTextureRect(sf::IntRect(rectangle.left, rectangle.top, rectangle.width, rectangle.height));
+    reinterpret_cast<sf::Sprite*>(sprite)->setTextureRect(sf::IntRect(rectangle.left, rectangle.top, rectangle.width, rectangle.height));
 }
 
 void sfSprite_setColor(sfSprite *sprite, sfColor color) {
-    sprite->This.setColor(sf::Color(color.r, color.g, color.b, color.a));
+    reinterpret_cast<sf::Sprite*>(sprite)->setColor(sf::Color(color.r, color.g, color.b, color.a));
 }
 
 const sfTexture *sfSprite_getTexture(const sfSprite *sprite) {
-
-    return sprite->Texture;
+    const sf::Sprite * sprite_ = reinterpret_cast<const sf::Sprite *>(sprite);
+    return reinterpret_cast<const sfTexture*>(sprite_->getTexture());
 }
 
 sfIntRect sfSprite_getTextureRect(const sfSprite *sprite) {
     sfIntRect rect = {0, 0, 0, 0};
 
-    sf::IntRect sfmlRect = sprite->This.getTextureRect();
+    sf::IntRect sfmlRect = reinterpret_cast<const sf::Sprite*>(sprite)->getTextureRect();
     rect.left = sfmlRect.left;
     rect.top = sfmlRect.top;
     rect.width = sfmlRect.width;
@@ -153,7 +151,7 @@ sfIntRect sfSprite_getTextureRect(const sfSprite *sprite) {
 sfColor sfSprite_getColor(const sfSprite *sprite) {
     sfColor color = {0, 0, 0, 0};
 
-    sf::Color sfmlColor = sprite->This.getColor();
+    sf::Color sfmlColor = reinterpret_cast<const sf::Sprite*>(sprite)->getColor();
     color.r = sfmlColor.r;
     color.g = sfmlColor.g;
     color.b = sfmlColor.b;
@@ -165,7 +163,7 @@ sfColor sfSprite_getColor(const sfSprite *sprite) {
 sfFloatRect sfSprite_getLocalBounds(const sfSprite *sprite) {
     sfFloatRect rect = {0, 0, 0, 0};
 
-    sf::FloatRect sfmlRect = sprite->This.getLocalBounds();
+    sf::FloatRect sfmlRect = reinterpret_cast<const sf::Sprite*>(sprite)->getLocalBounds();
     rect.left = sfmlRect.left;
     rect.top = sfmlRect.top;
     rect.width = sfmlRect.width;
@@ -177,7 +175,7 @@ sfFloatRect sfSprite_getLocalBounds(const sfSprite *sprite) {
 sfFloatRect sfSprite_getGlobalBounds(const sfSprite *sprite) {
     sfFloatRect rect = {0, 0, 0, 0};
 
-    sf::FloatRect sfmlRect = sprite->This.getGlobalBounds();
+    sf::FloatRect sfmlRect = reinterpret_cast<const sf::Sprite*>(sprite)->getGlobalBounds();
     rect.left = sfmlRect.left;
     rect.top = sfmlRect.top;
     rect.width = sfmlRect.width;
