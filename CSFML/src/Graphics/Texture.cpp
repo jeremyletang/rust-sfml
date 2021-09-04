@@ -25,11 +25,11 @@
 
 #include "CallbackStream.h"
 #include "Graphics/ImageStruct.h"
-#include "Graphics/RenderWindowStruct.h"
 #include "Graphics/Texture.h"
 #include "Window/WindowStruct.h"
 #include <cstddef>
 #include <SFML/Graphics/Texture.hpp>
+#include <SFML/Graphics/RenderWindow.hpp>
 
 sfTexture *sfTexture_create(unsigned int width, unsigned int height) {
     sf::Texture *texture = new sf::Texture;
@@ -155,8 +155,8 @@ void sfTexture_updateFromWindow(sfTexture *texture, const sfWindow *window, unsi
 }
 
 void sfTexture_updateFromRenderWindow(sfTexture *texture, const sfRenderWindow *renderWindow, unsigned int x, unsigned int y) {
-
-    reinterpret_cast<sf::Texture*>(texture)->update(renderWindow->This, x, y);
+    const sf::RenderWindow * win = reinterpret_cast<const sf::RenderWindow *>(renderWindow);
+    reinterpret_cast<sf::Texture*>(texture)->update(*win, x, y);
 }
 
 void sfTexture_setSmooth(sfTexture *texture, sfBool smooth) {
