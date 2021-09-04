@@ -35,18 +35,4 @@ typedef struct
     sfUint8 a;
 } sfColor;
 
-extern "C" sfColor sfColor_fromRGB(sfUint8 red, sfUint8 green, sfUint8 blue);
-
-extern "C" sfColor sfColor_fromRGBA(sfUint8 red, sfUint8 green, sfUint8 blue, sfUint8 alpha);
-
-extern "C" sfColor sfColor_fromInteger(sfUint32 color);
-
-extern "C" sfUint32 sfColor_toInteger(sfColor color);
-
-extern "C" sfColor sfColor_add(sfColor color1, sfColor color2);
-
-extern "C" sfColor sfColor_subtract(sfColor color1, sfColor color2);
-
-extern "C" sfColor sfColor_modulate(sfColor color1, sfColor color2);
-
 #endif // SFML_COLOR_H

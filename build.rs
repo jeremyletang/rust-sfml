@@ -62,7 +62,6 @@ fn main() {
         build.files(
             [
                 "CSFML/src/SFML/Graphics/CircleShape.cpp",
-                "CSFML/src/SFML/Graphics/Color.cpp",
                 "CSFML/src/SFML/Graphics/ConvexShape.cpp",
                 "CSFML/src/SFML/Graphics/Font.cpp",
                 "CSFML/src/SFML/Graphics/Image.cpp",

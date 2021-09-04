@@ -114,7 +114,7 @@ void sfImage_setPixel(sfImage *image, unsigned int x, unsigned int y, sfColor co
 sfColor sfImage_getPixel(const sfImage *image, unsigned int x, unsigned int y) {
     sf::Color sfmlColor = image->This.getPixel(x, y);
 
-    return sfColor_fromRGBA(sfmlColor.r, sfmlColor.g, sfmlColor.b, sfmlColor.a);
+    return sfColor{sfmlColor.r, sfmlColor.g, sfmlColor.b, sfmlColor.a};
 }
 
 const sfUint8 *sfImage_getPixelsPtr(const sfImage *image) {

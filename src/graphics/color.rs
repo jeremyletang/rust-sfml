@@ -126,14 +126,23 @@ impl From<u32> for Color {
     /// Construct the color from 32-bit unsigned integer.
     ///
     /// The number should contain the components in RGBA order.
+    #[allow(clippy::cast_possible_truncation)]
     fn from(src: u32) -> Self {
-        unsafe { Color(ffi::sfColor_fromInteger(src)) }
+        Self(ffi::sfColor {
+            r: ((src & 0xff000000) >> 24) as u8,
+            g: ((src & 0x00ff0000) >> 16) as u8,
+            b: ((src & 0x0000ff00) >> 8) as u8,
+            a: (src & 0x000000ff) as u8,
+        })
     }
 }
 
 impl From<Color> for u32 {
     fn from(src: Color) -> Self {
-        unsafe { ffi::sfColor_toInteger(src.0) }
+        ((src.0.r as u32) << 24)
+            | ((src.0.g as u32) << 16)
+            | ((src.0.b as u32) << 8)
+            | (src.0.a as u32)
     }
 }
 
@@ -142,7 +151,12 @@ impl Add for Color {
 
     /// Calculate the component-wise saturated addition of two colors.
     fn add(self, other: Color) -> Color {
-        unsafe { Color(ffi::sfColor_add(self.0, other.0)) }
+        Color(ffi::sfColor {
+            r: self.0.r.saturating_add(other.0.r),
+            g: self.0.g.saturating_add(other.0.g),
+            b: self.0.b.saturating_add(other.0.b),
+            a: self.0.a.saturating_add(other.0.a),
+        })
     }
 }
 
@@ -157,7 +171,12 @@ impl Sub for Color {
 
     /// Component-wise subtraction of two colors. Components below 0 are clamped to 0.
     fn sub(self, other: Self) -> Self {
-        unsafe { Self(ffi::sfColor_subtract(self.0, other.0)) }
+        Color(ffi::sfColor {
+            r: self.0.r.saturating_sub(other.0.r),
+            g: self.0.g.saturating_sub(other.0.g),
+            b: self.0.b.saturating_sub(other.0.b),
+            a: self.0.a.saturating_sub(other.0.a),
+        })
     }
 }
 
@@ -173,8 +192,18 @@ impl Mul for Color {
     /// Calculate the component-wise modulated multiplication of two colors.
     ///
     /// For each `X` in `rgba`, `result.X = a.X * b.X / 255`.
+    #[allow(clippy::cast_possible_truncation)]
     fn mul(self, other: Color) -> Color {
-        unsafe { Color(ffi::sfColor_modulate(self.0, other.0)) }
+        let (r1, r2) = (self.0.r as u16, other.0.r as u16);
+        let (g1, g2) = (self.0.g as u16, other.0.g as u16);
+        let (b1, b2) = (self.0.b as u16, other.0.b as u16);
+        let (a1, a2) = (self.0.a as u16, other.0.a as u16);
+        Self(ffi::sfColor {
+            r: (r1 * r2 / 255) as u8,
+            g: (g1 * g2 / 255) as u8,
+            b: (b1 * b2 / 255) as u8,
+            a: (a1 * a2 / 255) as u8,
+        })
     }
 }
 
