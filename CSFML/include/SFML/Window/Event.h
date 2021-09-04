@@ -53,7 +53,6 @@ const int sfEvtTouchBegan = 19;
 const int sfEvtTouchMoved = 20;
 const int sfEvtTouchEnded = 21;
 const int sfEvtSensorChanged = 22;
-const int sfEvtCount = 23;
 
 typedef struct
 {
