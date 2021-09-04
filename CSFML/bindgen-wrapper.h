@@ -1,6 +1,5 @@
 #include "Config.h"
 #include "System/InputStream.h"
-#include "System/Sleep.h"
 #include "System/Time.h"
 #include "System/Vector2.h"
 #include "System/Vector3.h"

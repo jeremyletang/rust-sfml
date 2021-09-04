@@ -25,4 +25,6 @@ extern "C" {
     pub fn sfClock_destroy(clock: *mut sfClock);
     pub fn sfClock_getElapsedTime(clock: *const sfClock) -> sfTime;
     pub fn sfClock_restart(clock: *mut sfClock) -> sfTime;
+
+    pub fn sfSleep(duration: sfTime);
 }
