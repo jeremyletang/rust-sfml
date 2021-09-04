@@ -163,13 +163,6 @@ void sfText_setOutlineThickness(sfText *text, float thickness) {
     text->This.setOutlineThickness(thickness);
 }
 
-const char *sfText_getString(const sfText *text) {
-
-    text->String = text->This.getString().toAnsiString();
-
-    return text->String.c_str();
-}
-
 const sfUint32 *sfText_getUnicodeString(const sfText *text) {
 
     return text->This.getString().getData();

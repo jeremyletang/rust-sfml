@@ -84,8 +84,6 @@ extern "C" void sfText_setOutlineColor(sfText *text, sfColor color);
 
 extern "C" void sfText_setOutlineThickness(sfText *text, float thickness);
 
-extern "C" const char *sfText_getString(const sfText *text);
-
 extern "C" const sfUint32 *sfText_getUnicodeString(const sfText *text);
 
 extern "C" const sfFont *sfText_getFont(const sfText *text);
