@@ -16,3 +16,7 @@ sfInputStream * sfInputStream_new(
     stream->userData = userData;
     return stream;
 }
+
+void sfInputStream_destroy(sfInputStream * stream) {
+    delete stream;
+}

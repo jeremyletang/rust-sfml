@@ -64,7 +64,9 @@ pub struct InputStream<'src, T> {
 }
 
 impl Dispose for sfInputStream {
-    unsafe fn dispose(&mut self) {}
+    unsafe fn dispose(&mut self) {
+        crate::ffi::sfInputStream_destroy(self)
+    }
 }
 
 impl<'src, T: Read + Seek> InputStream<'src, T> {

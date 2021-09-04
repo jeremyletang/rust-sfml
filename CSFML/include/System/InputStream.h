@@ -42,4 +42,6 @@ extern "C" sfInputStream * sfInputStream_new(
     void *userData
 );
 
+extern "C" void sfInputStream_destroy(sfInputStream * stream);
+
 #endif // SFML_INPUTSTREAM_H
