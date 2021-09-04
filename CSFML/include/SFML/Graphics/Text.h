@@ -34,14 +34,6 @@
 #include <SFML/System/Vector2.h>
 #include <stddef.h>
 
-typedef enum {
-    sfTextRegular = 0,           ///< Regular characters, no style
-    sfTextBold = 1 << 0,         ///< Bold characters
-    sfTextItalic = 1 << 1,       ///< Italic characters
-    sfTextUnderlined = 1 << 2,   ///< Underlined characters
-    sfTextStrikeThrough = 1 << 3 ///< Strike through characters
-} sfTextStyle;
-
 extern "C" sfText *sfText_create(void);
 
 extern "C" sfText *sfText_copy(const sfText *text);
