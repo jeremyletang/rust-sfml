@@ -11,7 +11,18 @@
 include!(concat!(env!("OUT_DIR"), "/bindings.rs"));
 
 // Manual bindings
+#[repr(C)]
+pub struct sfClock {
+    _opaque: [u8; 0],
+}
+
 extern "C" {
     pub fn sfClipboard_getUnicodeString() -> *const sfUint32;
     pub fn sfClipboard_setUnicodeString(text: *const sfUint32);
+
+    pub fn sfClock_create() -> *mut sfClock;
+    pub fn sfClock_copy(clock: *const sfClock) -> *mut sfClock;
+    pub fn sfClock_destroy(clock: *mut sfClock);
+    pub fn sfClock_getElapsedTime(clock: *const sfClock) -> sfTime;
+    pub fn sfClock_restart(clock: *mut sfClock) -> sfTime;
 }

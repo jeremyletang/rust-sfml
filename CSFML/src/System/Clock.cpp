@@ -23,30 +23,35 @@
 
 // Headers
 
-#include "System/Clock.h"
-#include "System/ClockStruct.h"
+#include "System/Types.h"
+#include "System/Time.h"
+#include <SFML/System/Clock.hpp>
 #include <cstddef>
 
-sfClock *sfClock_create(void) {
+struct sfClock {
+    sf::Clock This;
+};
+
+extern "C" sfClock *sfClock_create(void) {
     return new sfClock;
 }
 
-sfClock *sfClock_copy(const sfClock *clock) {
+extern "C" sfClock *sfClock_copy(const sfClock *clock) {
 
     return new sfClock(*clock);
 }
 
-void sfClock_destroy(sfClock *clock) {
+extern "C" void sfClock_destroy(sfClock *clock) {
     delete clock;
 }
 
-sfTime sfClock_getElapsedTime(const sfClock *clock) {
+extern "C" sfTime sfClock_getElapsedTime(const sfClock *clock) {
 
     sf::Time time = clock->This.getElapsedTime();
     return sfTime{time.asMicroseconds()};
 }
 
-sfTime sfClock_restart(sfClock *clock) {
+extern "C" sfTime sfClock_restart(sfClock *clock) {
 
     sf::Time time = clock->This.restart();
     return sfTime{time.asMicroseconds()};

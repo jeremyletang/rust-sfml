@@ -1,5 +1,4 @@
 #include "Config.h"
-#include "System/Clock.h"
 #include "System/InputStream.h"
 #include "System/Sleep.h"
 #include "System/Time.h"
