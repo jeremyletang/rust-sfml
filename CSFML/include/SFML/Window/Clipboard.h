@@ -29,11 +29,7 @@
 #include <SFML/Config.h>
 #include <SFML/Window/Types.h>
 
-extern "C" const char *sfClipboard_getString();
-
 extern "C" const sfUint32 *sfClipboard_getUnicodeString();
-
-extern "C" void sfClipboard_setString(const char *text);
 
 extern "C" void sfClipboard_setUnicodeString(const sfUint32 *text);
 

@@ -32,18 +32,9 @@ sf::String ClipboardString;
 std::string ClipboardStringAnsi;
 } // namespace
 
-const char *sfClipboard_getString() {
-    ClipboardStringAnsi = sf::Clipboard::getString().toAnsiString();
-    return ClipboardStringAnsi.c_str();
-}
-
 const sfUint32 *sfClipboard_getUnicodeString() {
     ClipboardString = sf::Clipboard::getString();
     return ClipboardString.getData();
-}
-
-void sfClipboard_setString(const char *text) {
-    sf::Clipboard::setString(text);
 }
 
 void sfClipboard_setUnicodeString(const sfUint32 *text) {
