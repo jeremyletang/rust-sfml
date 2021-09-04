@@ -43,10 +43,4 @@ typedef struct
     int height;
 } sfIntRect;
 
-extern "C" sfBool sfFloatRect_contains(const sfFloatRect *rect, float x, float y);
-extern "C" sfBool sfIntRect_contains(const sfIntRect *rect, int x, int y);
-
-extern "C" sfBool sfFloatRect_intersects(const sfFloatRect *rect1, const sfFloatRect *rect2, sfFloatRect *intersection);
-extern "C" sfBool sfIntRect_intersects(const sfIntRect *rect1, const sfIntRect *rect2, sfIntRect *intersection);
-
 #endif // SFML_RECT_H

@@ -66,7 +66,6 @@ fn main() {
                 "CSFML/src/SFML/Graphics/ConvexShape.cpp",
                 "CSFML/src/SFML/Graphics/Font.cpp",
                 "CSFML/src/SFML/Graphics/Image.cpp",
-                "CSFML/src/SFML/Graphics/Rect.cpp",
                 "CSFML/src/SFML/Graphics/RectangleShape.cpp",
                 "CSFML/src/SFML/Graphics/RenderTexture.cpp",
                 "CSFML/src/SFML/Graphics/RenderWindow.cpp",
