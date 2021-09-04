@@ -39,6 +39,7 @@ bindgen = "0.59.1"
 
 [dev-dependencies]
 rand = "0.8.3"
+glu-sys = "0.1.4"
 
 [lib]
 name = "sfml"
@@ -109,6 +110,10 @@ required-features = ["graphics"]
 
 [[example]]
 name = "spritemark"
+required-features = ["graphics"]
+
+[[example]]
+name = "opengl"
 required-features = ["graphics"]
 
 [workspace]
