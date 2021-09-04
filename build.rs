@@ -20,23 +20,17 @@ fn main() {
     let feat_audio = env::var("CARGO_FEATURE_AUDIO").is_ok();
     let feat_window = env::var("CARGO_FEATURE_WINDOW").is_ok();
     let feat_graphics = env::var("CARGO_FEATURE_GRAPHICS").is_ok();
-    build.files(
-        [
-            "CSFML/src/SFML/System/Clock.cpp",
-            "CSFML/src/SFML/System/Sleep.cpp",
-        ]
-        .iter(),
-    );
+    build.files(["CSFML/src/System/Clock.cpp", "CSFML/src/System/Sleep.cpp"].iter());
     if feat_audio {
         build.files(
             [
-                "CSFML/src/SFML/Audio/Listener.cpp",
-                "CSFML/src/SFML/Audio/Music.cpp",
-                "CSFML/src/SFML/Audio/Sound.cpp",
-                "CSFML/src/SFML/Audio/SoundBuffer.cpp",
-                "CSFML/src/SFML/Audio/SoundBufferRecorder.cpp",
-                "CSFML/src/SFML/Audio/SoundRecorder.cpp",
-                "CSFML/src/SFML/Audio/SoundStream.cpp",
+                "CSFML/src/Audio/Listener.cpp",
+                "CSFML/src/Audio/Music.cpp",
+                "CSFML/src/Audio/Sound.cpp",
+                "CSFML/src/Audio/SoundBuffer.cpp",
+                "CSFML/src/Audio/SoundBufferRecorder.cpp",
+                "CSFML/src/Audio/SoundRecorder.cpp",
+                "CSFML/src/Audio/SoundStream.cpp",
             ]
             .iter(),
         );
@@ -44,16 +38,16 @@ fn main() {
     if feat_window {
         build.files(
             [
-                "CSFML/src/SFML/Window/Clipboard.cpp",
-                "CSFML/src/SFML/Window/Context.cpp",
-                "CSFML/src/SFML/Window/Cursor.cpp",
-                "CSFML/src/SFML/Window/Joystick.cpp",
-                "CSFML/src/SFML/Window/Keyboard.cpp",
-                "CSFML/src/SFML/Window/Mouse.cpp",
-                "CSFML/src/SFML/Window/Sensor.cpp",
-                "CSFML/src/SFML/Window/Touch.cpp",
-                "CSFML/src/SFML/Window/VideoMode.cpp",
-                "CSFML/src/SFML/Window/Window.cpp",
+                "CSFML/src/Window/Clipboard.cpp",
+                "CSFML/src/Window/Context.cpp",
+                "CSFML/src/Window/Cursor.cpp",
+                "CSFML/src/Window/Joystick.cpp",
+                "CSFML/src/Window/Keyboard.cpp",
+                "CSFML/src/Window/Mouse.cpp",
+                "CSFML/src/Window/Sensor.cpp",
+                "CSFML/src/Window/Touch.cpp",
+                "CSFML/src/Window/VideoMode.cpp",
+                "CSFML/src/Window/Window.cpp",
             ]
             .iter(),
         );
@@ -61,21 +55,21 @@ fn main() {
     if feat_graphics {
         build.files(
             [
-                "CSFML/src/SFML/Graphics/CircleShape.cpp",
-                "CSFML/src/SFML/Graphics/ConvexShape.cpp",
-                "CSFML/src/SFML/Graphics/Font.cpp",
-                "CSFML/src/SFML/Graphics/Image.cpp",
-                "CSFML/src/SFML/Graphics/RectangleShape.cpp",
-                "CSFML/src/SFML/Graphics/RenderTexture.cpp",
-                "CSFML/src/SFML/Graphics/RenderWindow.cpp",
-                "CSFML/src/SFML/Graphics/Shader.cpp",
-                "CSFML/src/SFML/Graphics/Shape.cpp",
-                "CSFML/src/SFML/Graphics/Sprite.cpp",
-                "CSFML/src/SFML/Graphics/Text.cpp",
-                "CSFML/src/SFML/Graphics/Texture.cpp",
-                "CSFML/src/SFML/Graphics/Transform.cpp",
-                "CSFML/src/SFML/Graphics/VertexBuffer.cpp",
-                "CSFML/src/SFML/Graphics/View.cpp",
+                "CSFML/src/Graphics/CircleShape.cpp",
+                "CSFML/src/Graphics/ConvexShape.cpp",
+                "CSFML/src/Graphics/Font.cpp",
+                "CSFML/src/Graphics/Image.cpp",
+                "CSFML/src/Graphics/RectangleShape.cpp",
+                "CSFML/src/Graphics/RenderTexture.cpp",
+                "CSFML/src/Graphics/RenderWindow.cpp",
+                "CSFML/src/Graphics/Shader.cpp",
+                "CSFML/src/Graphics/Shape.cpp",
+                "CSFML/src/Graphics/Sprite.cpp",
+                "CSFML/src/Graphics/Text.cpp",
+                "CSFML/src/Graphics/Texture.cpp",
+                "CSFML/src/Graphics/Transform.cpp",
+                "CSFML/src/Graphics/VertexBuffer.cpp",
+                "CSFML/src/Graphics/View.cpp",
             ]
             .iter(),
         );
