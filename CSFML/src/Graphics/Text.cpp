@@ -27,7 +27,6 @@
 #include <SFML/Graphics/Text.hpp>
 #include "Graphics/ConvertTransform.hpp"
 #include "Graphics/Font.h"
-#include "Graphics/FontStruct.h"
 #include "Graphics/Text.h"
 #include <cstddef>
 
@@ -128,7 +127,7 @@ void sfText_setUnicodeString(sfText *text, const sfUint32 *string) {
 
 void sfText_setFont(sfText *text, const sfFont *font) {
 
-    reinterpret_cast<sf::Text*>(text)->setFont(font->This);
+    reinterpret_cast<sf::Text*>(text)->setFont(*reinterpret_cast<const sf::Font*>(font));
 }
 
 void sfText_setCharacterSize(sfText *text, unsigned int size) {
@@ -169,9 +168,8 @@ const sfUint32 *sfText_getUnicodeString(const sfText *text) {
 }
 
 const sfFont *sfText_getFont(const sfText *text) {
-    //const sf::Font * font = reinterpret_cast<const sf::Text*>(text)->getFont();
-    // TODO: Get rid of FontStruct
-    abort();
+    const sf::Font * font = reinterpret_cast<const sf::Text*>(text)->getFont();
+    return reinterpret_cast<const sfFont *>(font);
 }
 
 unsigned int sfText_getCharacterSize(const sfText *text) {

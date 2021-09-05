@@ -24,54 +24,55 @@
 // Headers
 
 #include "Graphics/Font.h"
-#include "Graphics/FontStruct.h"
 #include "System/InputStreamStruct.h"
 #include <cstddef>
+#include <SFML/Graphics/Font.hpp>
 
 sfFont *sfFont_createFromFile(const char *filename) {
-    sfFont *font = new sfFont;
-    if (!font->This.loadFromFile(filename)) {
+    sf::Font *font = new sf::Font;
+    if (!font->loadFromFile(filename)) {
         delete font;
         font = NULL;
     }
 
-    return font;
+    return reinterpret_cast<sfFont*>(font);
 }
 
 sfFont *sfFont_createFromMemory(const void *data, size_t sizeInBytes) {
-    sfFont *font = new sfFont;
-    if (!font->This.loadFromMemory(data, sizeInBytes)) {
+    sf::Font *font = new sf::Font;
+    if (!font->loadFromMemory(data, sizeInBytes)) {
         delete font;
         font = NULL;
     }
 
-    return font;
+    return reinterpret_cast<sfFont*>(font);
 }
 
 sfFont *sfFont_createFromStream(sfInputStream *stream) {
 
-    sfFont *font = new sfFont;
-    if (!font->This.loadFromStream(*stream)) {
+    sf::Font *font = new sf::Font;
+    if (!font->loadFromStream(*stream)) {
         delete font;
         font = NULL;
     }
 
-    return font;
+    return reinterpret_cast<sfFont*>(font);
 }
 
 sfFont *sfFont_copy(const sfFont *font) {
-
-    return new sfFont(*font);
+    const sf::Font * src = reinterpret_cast<const sf::Font*>(font);
+    sf::Font * newFont = new sf::Font(*src);
+    return reinterpret_cast<sfFont*>(newFont);
 }
 
 void sfFont_destroy(sfFont *font) {
-    delete font;
+    delete reinterpret_cast<sf::Font*>(font);
 }
 
 sfGlyph sfFont_getGlyph(const sfFont *font, sfUint32 codePoint, unsigned int characterSize, sfBool bold, float outlineThickness) {
     sfGlyph glyph = {0, {0, 0, 0, 0}, {0, 0, 0, 0}};
 
-    sf::Glyph SFMLGlyph = font->This.getGlyph(codePoint, characterSize, bold == sfTrue, outlineThickness);
+    sf::Glyph SFMLGlyph = reinterpret_cast<const sf::Font*>(font)->getGlyph(codePoint, characterSize, bold == sfTrue, outlineThickness);
 
     glyph.advance = SFMLGlyph.advance;
     glyph.bounds.left = SFMLGlyph.bounds.left;
@@ -87,29 +88,29 @@ sfGlyph sfFont_getGlyph(const sfFont *font, sfUint32 codePoint, unsigned int cha
 }
 
 float sfFont_getKerning(const sfFont *font, sfUint32 first, sfUint32 second, unsigned int characterSize) {
-    return font->This.getKerning(first, second, characterSize);
+    return reinterpret_cast<const sf::Font*>(font)->getKerning(first, second, characterSize);
 }
 
 float sfFont_getLineSpacing(const sfFont *font, unsigned int characterSize) {
-    return font->This.getLineSpacing(characterSize);
+    return reinterpret_cast<const sf::Font*>(font)->getLineSpacing(characterSize);
 }
 
 float sfFont_getUnderlinePosition(const sfFont *font, unsigned int characterSize) {
-    return font->This.getUnderlinePosition(characterSize);
+    return reinterpret_cast<const sf::Font*>(font)->getUnderlinePosition(characterSize);
 }
 
 float sfFont_getUnderlineThickness(const sfFont *font, unsigned int characterSize) {
-    return font->This.getUnderlineThickness(characterSize);
+    return reinterpret_cast<const sf::Font*>(font)->getUnderlineThickness(characterSize);
 }
 
 const sfTexture *sfFont_getTexture(sfFont *font, unsigned int characterSize) {
-    return reinterpret_cast<const sfTexture *>(&font->This.getTexture(characterSize));
+    return reinterpret_cast<const sfTexture *>(&reinterpret_cast<sf::Font*>(font)->getTexture(characterSize));
 }
 
 sfFontInfo sfFont_getInfo(const sfFont *font) {
     sfFontInfo info = {NULL};
 
-    info.family = font->This.getInfo().family.c_str();
+    info.family = reinterpret_cast<const sf::Font*>(font)->getInfo().family.c_str();
 
     return info;
 }
