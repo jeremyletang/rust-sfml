@@ -31,77 +31,56 @@
 #include <SFML/Graphics/Texture.hpp>
 #include <cstddef>
 
-sfTexture *sfTexture_create(unsigned int width, unsigned int height) {
+extern "C" sfTexture *sfTexture_new() {
     sf::Texture *texture = new sf::Texture;
-
-    if (!texture->create(width, height)) {
-        delete texture;
-        texture = NULL;
-    }
-
     return reinterpret_cast<sfTexture *>(texture);
 }
 
-sfTexture *sfTexture_createFromFile(const char *filename, const sfIntRect *area) {
-    sf::Texture *texture = new sf::Texture;
+extern "C" sfBool sfTexture_create(sfTexture *tex, unsigned int width, unsigned int height) {
+    sf::Texture *texture = reinterpret_cast<sf::Texture *>(tex);
+    return texture->create(width, height);
+}
+
+extern "C" sfBool sfTexture_loadFromFile(sfTexture *tex, const char *filename, const sfIntRect *area) {
+    sf::Texture *texture = reinterpret_cast<sf::Texture *>(tex);
 
     sf::IntRect rect;
     if (area)
         rect = sf::IntRect(area->left, area->top, area->width, area->height);
 
-    if (!texture->loadFromFile(filename, rect)) {
-        delete texture;
-        texture = NULL;
-    }
-
-    return reinterpret_cast<sfTexture *>(texture);
+    return texture->loadFromFile(filename, rect);
 }
 
-sfTexture *sfTexture_createFromMemory(const void *data, size_t sizeInBytes, const sfIntRect *area) {
-    sf::Texture *texture = new sf::Texture;
+extern "C" sfBool sfTexture_loadFromMemory(sfTexture *tex, const void *data, size_t sizeInBytes, const sfIntRect *area) {
+    sf::Texture *texture = reinterpret_cast<sf::Texture *>(tex);
 
     sf::IntRect rect;
     if (area)
         rect = sf::IntRect(area->left, area->top, area->width, area->height);
 
-    if (!texture->loadFromMemory(data, sizeInBytes, rect)) {
-        delete texture;
-        texture = NULL;
-    }
-
-    return reinterpret_cast<sfTexture *>(texture);
+    return texture->loadFromMemory(data, sizeInBytes, rect);
 }
 
-sfTexture *sfTexture_createFromStream(sfInputStream *stream, const sfIntRect *area) {
+extern "C" sfBool sfTexture_loadFromStream(sfTexture *tex, sfInputStream *stream, const sfIntRect *area) {
 
-    sf::Texture *texture = new sf::Texture;
+    sf::Texture *texture = reinterpret_cast<sf::Texture *>(tex);
 
     sf::IntRect rect;
     if (area)
         rect = sf::IntRect(area->left, area->top, area->width, area->height);
 
-    if (!texture->loadFromStream(*stream, rect)) {
-        delete texture;
-        texture = NULL;
-    }
-
-    return reinterpret_cast<sfTexture *>(texture);
+    return texture->loadFromStream(*stream, rect);
 }
 
-sfTexture *sfTexture_createFromImage(const sfImage *image, const sfIntRect *area) {
+extern "C" sfBool sfTexture_loadFromImage(sfTexture *tex, const sfImage *image, const sfIntRect *area) {
 
-    sf::Texture *texture = new sf::Texture;
+    sf::Texture *texture = reinterpret_cast<sf::Texture *>(tex);
 
     sf::IntRect rect;
     if (area)
         rect = sf::IntRect(area->left, area->top, area->width, area->height);
 
-    if (!texture->loadFromImage(image->This, rect)) {
-        delete texture;
-        texture = NULL;
-    }
-
-    return reinterpret_cast<sfTexture *>(texture);
+    return texture->loadFromImage(image->This, rect);
 }
 
 sfTexture *sfTexture_copy(const sfTexture *texture) {

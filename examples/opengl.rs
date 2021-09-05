@@ -23,8 +23,11 @@ fn main() {
         );
         window.set_vertical_sync_enabled(true);
 
-        let mut bg_tex = Texture::from_file("resources/opengl-background.jpg").unwrap();
-        bg_tex.set_srgb(srgb); // TODO: Fix loading with srgb (should be set before loading)
+        let mut bg_tex = Texture::new().unwrap();
+        bg_tex.set_srgb(srgb);
+        bg_tex
+            .load_from_file("resources/opengl-background.jpg", None)
+            .unwrap();
         let bg_sprite = Sprite::with_texture(&bg_tex);
 
         let font = Font::from_file("resources/sansation.ttf").unwrap();

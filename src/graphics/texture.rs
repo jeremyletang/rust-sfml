@@ -1,10 +1,11 @@
 use crate::{
-    ffi::{self as ffi, sfBool},
+    ffi::{self as ffi, sfBool, sfTexture_create},
     graphics::{Image, IntRect, RenderWindow},
     sf_bool_ext::SfBoolExt,
     sf_box::{Dispose, SfBox},
     system::{InputStream, Vector2u},
     window::Window,
+    LoadResult,
 };
 use std::{
     borrow::ToOwned,
@@ -125,12 +126,22 @@ impl Texture {
     ///
     /// Returns `None` on failure.
     #[must_use]
-    pub fn new(width: u32, height: u32) -> Option<SfBox<Texture>> {
-        let tex = unsafe { ffi::sfTexture_create(width, height) };
+    pub fn new() -> Option<SfBox<Texture>> {
+        let tex = unsafe { ffi::sfTexture_new() };
         SfBox::new(tex as *mut Self)
     }
 
-    /// Create a new texture from memory
+    /// Create the texture.
+    ///
+    /// If this function fails, the texture is left unchanged.
+    ///
+    /// Returns whether creation was successful.
+    #[must_use = "Check if texture was created successfully"]
+    pub fn create(&mut self, width: u32, height: u32) -> bool {
+        unsafe { sfTexture_create(self.raw_mut(), width, height).into_bool() }
+    }
+
+    /// Load texture from memory
     ///
     /// The `area` argument can be used to load only a sub-rectangle of the whole image.
     /// If you want the entire image then use a default [`IntRect`].
@@ -140,17 +151,16 @@ impl Texture {
     /// # Arguments
     /// * mem - Pointer to the file data in memory
     /// * area - Area of the image to load
-    ///
-    /// Returns `None` on failure.
-    #[must_use]
-    pub fn from_memory(mem: &[u8], area: &IntRect) -> Option<SfBox<Texture>> {
-        let tex = unsafe {
-            ffi::sfTexture_createFromMemory(mem.as_ptr() as *const _, mem.len(), &area.raw())
-        };
-        SfBox::new(tex as *mut Self)
+    pub fn load_from_memory(&mut self, mem: &[u8], area: Option<IntRect>) -> LoadResult<()> {
+        let area = area.map(|a| a.raw());
+        let area = area.map_or(ptr::null(), |a| &a);
+        unsafe {
+            ffi::sfTexture_loadFromMemory(self.raw_mut(), mem.as_ptr() as *const _, mem.len(), area)
+                .into_load_result()
+        }
     }
 
-    /// Create a new texture from a stream (a struct implementing Read + Seek)
+    /// Load texture from a stream (a struct implementing Read + Seek)
     ///
     /// The `area` argument can be used to load only a sub-rectangle of the whole image.
     /// If you want the entire image then use a default [`IntRect`].
@@ -160,56 +170,38 @@ impl Texture {
     /// # Arguments
     /// * stream - Your struct, implementing Read and Seek
     /// * area - Area of the image to load
-    ///
-    /// Returns `None` on failure.
-    pub fn from_stream<T: Read + Seek>(
+    pub fn load_from_stream<T: Read + Seek>(
+        &mut self,
         stream: &mut T,
-        area: &mut IntRect,
-    ) -> Option<SfBox<Texture>> {
+        area: Option<IntRect>,
+    ) -> LoadResult<()> {
+        let area = area.map(|a| a.raw());
+        let area = area.map_or(ptr::null(), |a| &a);
         let mut input_stream = InputStream::new(stream);
-        let tex =
-            unsafe { ffi::sfTexture_createFromStream(&mut *input_stream.stream, &area.raw()) };
-        SfBox::new(tex as *mut Self)
+        unsafe {
+            ffi::sfTexture_loadFromStream(self.raw_mut(), &mut *input_stream.stream, area)
+                .into_load_result()
+        }
     }
 
-    /// Create a new texture from a file
+    /// Load texture from a file
     ///
     /// # Arguments
     /// * filename - Path of the image file to load
-    ///
-    /// Returns `None` on failure.
-    #[must_use]
-    pub fn from_file(filename: &str) -> Option<SfBox<Texture>> {
+    pub fn load_from_file(&mut self, filename: &str, area: Option<IntRect>) -> LoadResult<()> {
+        let area = area.map(|a| a.raw());
+        let area = area.map_or(ptr::null(), |a| &a);
         let c_str = CString::new(filename).unwrap();
-        let tex = unsafe { ffi::sfTexture_createFromFile(c_str.as_ptr(), ptr::null()) };
-        SfBox::new(tex as *mut Self)
+        unsafe {
+            ffi::sfTexture_loadFromFile(self.raw_mut(), c_str.as_ptr(), area).into_load_result()
+        }
     }
 
-    /// Create a new texture from a file with a given area
-    ///
-    /// # Arguments
-    /// * filename - Path of the image file to load
-    /// * area - Area of the source image to load
-    ///
-    /// Returns `None` on failure.
-    #[must_use]
-    pub fn from_file_with_rect(filename: &str, area: &IntRect) -> Option<SfBox<Texture>> {
-        let c_str = CString::new(filename).unwrap();
-        let tex = unsafe { ffi::sfTexture_createFromFile(c_str.as_ptr(), &area.raw()) };
-        SfBox::new(tex as *mut Self)
-    }
-
-    /// Create a new texture from an image
-    ///
-    /// # Arguments
-    /// * image - Image to upload to the texture
-    /// * area - Area of the source image to load
-    ///
-    /// Returns `None` on failure.
-    #[must_use]
-    pub fn from_image_with_rect(image: &Image, area: &IntRect) -> Option<SfBox<Texture>> {
-        let tex = unsafe { ffi::sfTexture_createFromImage(image.raw(), &area.raw()) };
-        SfBox::new(tex as *mut Self)
+    /// Convenience method to easily create and load a `Texture` from a file.
+    pub fn from_file(filename: &str) -> LoadResult<SfBox<Self>> {
+        let mut new = Self::new().expect("Failed to create texture");
+        new.load_from_file(filename, None)?;
+        Ok(new)
     }
 
     /// Create a new texture from an image
@@ -218,10 +210,12 @@ impl Texture {
     /// * image - Image to upload to the texture
     ///
     /// Returns `None` on failure.
-    #[must_use]
-    pub fn from_image(image: &Image) -> Option<SfBox<Texture>> {
-        let tex = unsafe { ffi::sfTexture_createFromImage(image.raw(), ptr::null()) };
-        SfBox::new(tex as *mut Self)
+    pub fn load_from_image(&mut self, image: &Image, area: Option<IntRect>) -> LoadResult<()> {
+        let area = area.map(|a| a.raw());
+        let area = area.map_or(ptr::null(), |a| &a);
+        unsafe {
+            ffi::sfTexture_loadFromImage(self.raw_mut(), image.raw(), area).into_load_result()
+        }
     }
 
     /// Update a part of the texture from the contents of a window.

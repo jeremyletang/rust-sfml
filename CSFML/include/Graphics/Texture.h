@@ -33,16 +33,6 @@
 #include "Window/Types.h"
 #include <stddef.h>
 
-extern "C" sfTexture *sfTexture_create(unsigned int width, unsigned int height);
-
-extern "C" sfTexture *sfTexture_createFromFile(const char *filename, const sfIntRect *area);
-
-extern "C" sfTexture *sfTexture_createFromMemory(const void *data, size_t sizeInBytes, const sfIntRect *area);
-
-extern "C" sfTexture *sfTexture_createFromStream(sfInputStream *stream, const sfIntRect *area);
-
-extern "C" sfTexture *sfTexture_createFromImage(const sfImage *image, const sfIntRect *area);
-
 extern "C" sfTexture *sfTexture_copy(const sfTexture *texture);
 
 extern "C" void sfTexture_destroy(sfTexture *texture);
