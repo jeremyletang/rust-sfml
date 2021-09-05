@@ -11,7 +11,6 @@ use std::{
     borrow::ToOwned,
     ffi::CString,
     io::{Read, Seek},
-    ptr,
 };
 
 /// [`Image`] living on the graphics card that can be used for drawing.
@@ -151,12 +150,15 @@ impl Texture {
     /// # Arguments
     /// * mem - Pointer to the file data in memory
     /// * area - Area of the image to load
-    pub fn load_from_memory(&mut self, mem: &[u8], area: Option<IntRect>) -> LoadResult<()> {
-        let area = area.map(|a| a.raw());
-        let area = area.map_or(ptr::null(), |a| &a);
+    pub fn load_from_memory(&mut self, mem: &[u8], area: IntRect) -> LoadResult<()> {
         unsafe {
-            ffi::sfTexture_loadFromMemory(self.raw_mut(), mem.as_ptr() as *const _, mem.len(), area)
-                .into_load_result()
+            ffi::sfTexture_loadFromMemory(
+                self.raw_mut(),
+                mem.as_ptr() as *const _,
+                mem.len(),
+                area.raw(),
+            )
+            .into_load_result()
         }
     }
 
@@ -173,13 +175,11 @@ impl Texture {
     pub fn load_from_stream<T: Read + Seek>(
         &mut self,
         stream: &mut T,
-        area: Option<IntRect>,
+        area: IntRect,
     ) -> LoadResult<()> {
-        let area = area.map(|a| a.raw());
-        let area = area.map_or(ptr::null(), |a| &a);
         let mut input_stream = InputStream::new(stream);
         unsafe {
-            ffi::sfTexture_loadFromStream(self.raw_mut(), &mut *input_stream.stream, area)
+            ffi::sfTexture_loadFromStream(self.raw_mut(), &mut *input_stream.stream, area.raw())
                 .into_load_result()
         }
     }
@@ -188,19 +188,18 @@ impl Texture {
     ///
     /// # Arguments
     /// * filename - Path of the image file to load
-    pub fn load_from_file(&mut self, filename: &str, area: Option<IntRect>) -> LoadResult<()> {
-        let area = area.map(|a| a.raw());
-        let area = area.map_or(ptr::null(), |a| &a);
+    pub fn load_from_file(&mut self, filename: &str, area: IntRect) -> LoadResult<()> {
         let c_str = CString::new(filename).unwrap();
         unsafe {
-            ffi::sfTexture_loadFromFile(self.raw_mut(), c_str.as_ptr(), area).into_load_result()
+            ffi::sfTexture_loadFromFile(self.raw_mut(), c_str.as_ptr(), area.raw())
+                .into_load_result()
         }
     }
 
     /// Convenience method to easily create and load a `Texture` from a file.
     pub fn from_file(filename: &str) -> LoadResult<SfBox<Self>> {
         let mut new = Self::new().expect("Failed to create texture");
-        new.load_from_file(filename, None)?;
+        new.load_from_file(filename, IntRect::default())?;
         Ok(new)
     }
 
@@ -210,11 +209,9 @@ impl Texture {
     /// * image - Image to upload to the texture
     ///
     /// Returns `None` on failure.
-    pub fn load_from_image(&mut self, image: &Image, area: Option<IntRect>) -> LoadResult<()> {
-        let area = area.map(|a| a.raw());
-        let area = area.map_or(ptr::null(), |a| &a);
+    pub fn load_from_image(&mut self, image: &Image, area: IntRect) -> LoadResult<()> {
         unsafe {
-            ffi::sfTexture_loadFromImage(self.raw_mut(), image.raw(), area).into_load_result()
+            ffi::sfTexture_loadFromImage(self.raw_mut(), image.raw(), area.raw()).into_load_result()
         }
     }
 

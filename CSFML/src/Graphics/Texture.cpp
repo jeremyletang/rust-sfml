@@ -41,44 +41,36 @@ extern "C" sfBool sfTexture_create(sfTexture *tex, unsigned int width, unsigned 
     return texture->create(width, height);
 }
 
-extern "C" sfBool sfTexture_loadFromFile(sfTexture *tex, const char *filename, const sfIntRect *area) {
+extern "C" sfBool sfTexture_loadFromFile(sfTexture *tex, const char *filename, const sfIntRect area) {
     sf::Texture *texture = reinterpret_cast<sf::Texture *>(tex);
 
-    sf::IntRect rect;
-    if (area)
-        rect = sf::IntRect(area->left, area->top, area->width, area->height);
+    sf::IntRect rect = sf::IntRect(area.left, area.top, area.width, area.height);
 
     return texture->loadFromFile(filename, rect);
 }
 
-extern "C" sfBool sfTexture_loadFromMemory(sfTexture *tex, const void *data, size_t sizeInBytes, const sfIntRect *area) {
+extern "C" sfBool sfTexture_loadFromMemory(sfTexture *tex, const void *data, size_t sizeInBytes, const sfIntRect area) {
     sf::Texture *texture = reinterpret_cast<sf::Texture *>(tex);
 
-    sf::IntRect rect;
-    if (area)
-        rect = sf::IntRect(area->left, area->top, area->width, area->height);
+    sf::IntRect rect = sf::IntRect(area.left, area.top, area.width, area.height);
 
     return texture->loadFromMemory(data, sizeInBytes, rect);
 }
 
-extern "C" sfBool sfTexture_loadFromStream(sfTexture *tex, sfInputStream *stream, const sfIntRect *area) {
+extern "C" sfBool sfTexture_loadFromStream(sfTexture *tex, sfInputStream *stream, const sfIntRect area) {
 
     sf::Texture *texture = reinterpret_cast<sf::Texture *>(tex);
 
-    sf::IntRect rect;
-    if (area)
-        rect = sf::IntRect(area->left, area->top, area->width, area->height);
+    sf::IntRect rect = sf::IntRect(area.left, area.top, area.width, area.height);
 
     return texture->loadFromStream(*stream, rect);
 }
 
-extern "C" sfBool sfTexture_loadFromImage(sfTexture *tex, const sfImage *image, const sfIntRect *area) {
+extern "C" sfBool sfTexture_loadFromImage(sfTexture *tex, const sfImage *image, const sfIntRect area) {
 
     sf::Texture *texture = reinterpret_cast<sf::Texture *>(tex);
 
-    sf::IntRect rect;
-    if (area)
-        rect = sf::IntRect(area->left, area->top, area->width, area->height);
+    sf::IntRect rect = sf::IntRect(area.left, area.top, area.width, area.height);
 
     return texture->loadFromImage(image->This, rect);
 }

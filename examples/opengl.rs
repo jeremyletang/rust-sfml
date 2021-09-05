@@ -1,6 +1,8 @@
 use glu_sys as gl;
 use sfml::{
-    graphics::{Color, Font, RenderTarget, RenderWindow, Sprite, Text, Texture, Transformable},
+    graphics::{
+        Color, Font, IntRect, RenderTarget, RenderWindow, Sprite, Text, Texture, Transformable,
+    },
     system::Clock,
     window::{ContextSettings, Event, Key, Style},
 };
@@ -26,7 +28,7 @@ fn main() {
         let mut bg_tex = Texture::new().unwrap();
         bg_tex.set_srgb(srgb);
         bg_tex
-            .load_from_file("resources/opengl-background.jpg", None)
+            .load_from_file("resources/opengl-background.jpg", IntRect::default())
             .unwrap();
         let bg_sprite = Sprite::with_texture(&bg_tex);
 

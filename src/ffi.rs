@@ -38,22 +38,22 @@ extern "C" {
     pub fn sfTexture_loadFromFile(
         tex: *mut sfTexture,
         filename: *const c_char,
-        area: *const sfIntRect,
+        area: sfIntRect,
     ) -> sfBool;
     pub fn sfTexture_loadFromMemory(
         tex: *mut sfTexture,
         data: *const c_void,
         size: usize,
-        area: *const sfIntRect,
+        area: sfIntRect,
     ) -> sfBool;
     pub fn sfTexture_loadFromStream(
         tex: *mut sfTexture,
         stream: *mut sfInputStream,
-        area: *const sfIntRect,
+        area: sfIntRect,
     ) -> sfBool;
     pub fn sfTexture_loadFromImage(
         tex: *mut sfTexture,
         image: *const sfImage,
-        area: *const sfIntRect,
+        area: sfIntRect,
     ) -> sfBool;
 }
