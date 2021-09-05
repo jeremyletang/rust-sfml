@@ -24,8 +24,8 @@
 // Headers
 
 #include "Window/Mouse.h"
-#include <SFML/Window/Mouse.hpp>
 #include "Window/WindowStruct.h"
+#include <SFML/Window/Mouse.hpp>
 #include <cstddef>
 
 sfBool sfMouse_isButtonPressed(sfMouseButton button) {

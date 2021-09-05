@@ -26,8 +26,8 @@
 
 // Headers
 
-#include <SFML/Graphics/RectangleShape.hpp>
 #include "Graphics/Transform.h"
+#include <SFML/Graphics/RectangleShape.hpp>
 
 // Internal structure of sfRectangleShape
 

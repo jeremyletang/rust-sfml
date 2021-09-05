@@ -26,8 +26,8 @@
 
 // Headers
 
-#include <SFML/Graphics/CircleShape.hpp>
 #include "Graphics/Transform.h"
+#include <SFML/Graphics/CircleShape.hpp>
 
 // Internal structure of sfCircleShape
 

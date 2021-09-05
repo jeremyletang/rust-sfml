@@ -23,10 +23,10 @@
 
 // Headers
 
-#include <SFML/Graphics/Color.hpp>
-#include "Graphics/ConvertTransform.hpp"
 #include "Graphics/RectangleShape.h"
+#include "Graphics/ConvertTransform.hpp"
 #include "Graphics/RectangleShapeStruct.h"
+#include <SFML/Graphics/Color.hpp>
 #include <cstddef>
 
 sfRectangleShape *sfRectangleShape_create(void) {
@@ -117,7 +117,7 @@ sfTransform sfRectangleShape_getInverseTransform(const sfRectangleShape *shape) 
 }
 
 void sfRectangleShape_setTexture(sfRectangleShape *shape, const sfTexture *texture, sfBool resetRect) {
-    shape->This.setTexture(reinterpret_cast<const sf::Texture*>(texture), resetRect == sfTrue);
+    shape->This.setTexture(reinterpret_cast<const sf::Texture *>(texture), resetRect == sfTrue);
     shape->Texture = texture;
 }
 

@@ -26,8 +26,8 @@
 
 // Headers
 
-#include <SFML/Graphics/ConvexShape.hpp>
 #include "Graphics/Transform.h"
+#include <SFML/Graphics/ConvexShape.hpp>
 
 // Internal structure of sfConvexShape
 

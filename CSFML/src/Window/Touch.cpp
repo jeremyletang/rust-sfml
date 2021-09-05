@@ -24,8 +24,8 @@
 // Headers
 
 #include "Window/Touch.h"
-#include <SFML/Window/Touch.hpp>
 #include "Window/WindowStruct.h"
+#include <SFML/Window/Touch.hpp>
 #include <cstddef>
 
 sfBool sfTouch_isDown(unsigned int finger) {

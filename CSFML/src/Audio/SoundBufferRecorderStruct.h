@@ -26,8 +26,8 @@
 
 // Headers
 
-#include <SFML/Audio/SoundBufferRecorder.hpp>
 #include "Audio/SoundBufferStruct.h"
+#include <SFML/Audio/SoundBufferRecorder.hpp>
 
 // Internal structure of sfSoundBufferRecorder
 

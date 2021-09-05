@@ -27,8 +27,8 @@
 // Headers
 
 #include "Graphics/Shape.h"
-#include <SFML/Graphics/Shape.hpp>
 #include "Graphics/Transform.h"
+#include <SFML/Graphics/Shape.hpp>
 
 // Helper class implementing the callback forwarding from
 // C++ to C in sfShape

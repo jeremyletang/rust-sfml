@@ -26,8 +26,8 @@
 
 // Headers
 
-#include <SFML/Audio/Sound.hpp>
 #include "Audio/SoundBufferStruct.h"
+#include <SFML/Audio/Sound.hpp>
 
 // Internal structure of sfSound
 

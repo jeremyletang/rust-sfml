@@ -26,12 +26,12 @@
 
 typedef struct
 {
-    sfUint8 colorSrcFactor;  ///< Source blending factor for the color channels
-    sfUint8 colorDstFactor;  ///< Destination blending factor for the color channels
-    sfUint8 colorEquation; ///< Blending equation for the color channels
-    sfUint8 alphaSrcFactor;  ///< Source blending factor for the alpha channel
-    sfUint8 alphaDstFactor;  ///< Destination blending factor for the alpha channel
-    sfUint8 alphaEquation; ///< Blending equation for the alpha channel
+    sfUint8 colorSrcFactor; ///< Source blending factor for the color channels
+    sfUint8 colorDstFactor; ///< Destination blending factor for the color channels
+    sfUint8 colorEquation;  ///< Blending equation for the color channels
+    sfUint8 alphaSrcFactor; ///< Source blending factor for the alpha channel
+    sfUint8 alphaDstFactor; ///< Destination blending factor for the alpha channel
+    sfUint8 alphaEquation;  ///< Blending equation for the alpha channel
 } sfBlendMode;
 
 #endif // SFML_BLENDMODE_H

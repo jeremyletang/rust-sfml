@@ -28,8 +28,8 @@
 
 #include "Graphics/ConvertTransform.hpp"
 #include "Graphics/RenderStates.h"
-#include <SFML/Graphics/RenderStates.hpp>
 #include "Graphics/ShaderStruct.h"
+#include <SFML/Graphics/RenderStates.hpp>
 
 // Convert sfRenderStates* to sf::RenderStates
 

@@ -23,8 +23,8 @@
 
 // Headers
 
-#include <SFML/System/Sleep.hpp>
 #include "System/Time.h"
+#include <SFML/System/Sleep.hpp>
 
 extern "C" void sfSleep(sfTime duration) {
     sf::sleep(sf::microseconds(duration.microseconds));

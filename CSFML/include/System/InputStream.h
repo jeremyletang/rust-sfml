@@ -34,14 +34,13 @@ typedef sfInt64 (*sfInputStreamGetSizeFunc)(void *userData);
 
 struct sfInputStream;
 
-extern "C" sfInputStream * sfInputStream_new(
+extern "C" sfInputStream *sfInputStream_new(
     sfInputStreamReadFunc read,
     sfInputStreamSeekFunc seek,
     sfInputStreamTellFunc tell,
     sfInputStreamGetSizeFunc getSize,
-    void *userData
-);
+    void *userData);
 
-extern "C" void sfInputStream_destroy(sfInputStream * stream);
+extern "C" void sfInputStream_destroy(sfInputStream *stream);
 
 #endif // SFML_INPUTSTREAM_H

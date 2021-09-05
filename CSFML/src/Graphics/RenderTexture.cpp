@@ -23,11 +23,11 @@
 
 // Headers
 
+#include "Graphics/RenderTexture.h"
 #include "Graphics/CircleShapeStruct.h"
 #include "Graphics/ConvertRenderStates.hpp"
 #include "Graphics/ConvexShapeStruct.h"
 #include "Graphics/RectangleShapeStruct.h"
-#include "Graphics/RenderTexture.h"
 #include "Graphics/RenderTextureStruct.h"
 #include "Graphics/ShapeStruct.h"
 #include "Graphics/VertexBufferStruct.h"
@@ -79,22 +79,22 @@ void sfRenderTexture_clear(sfRenderTexture *renderTexture, sfColor color) {
 }
 
 void sfRenderTexture_setView(sfRenderTexture *renderTexture, const sfView *view) {
-    const sf::View * view_ = reinterpret_cast<const sf::View*>(view);
+    const sf::View *view_ = reinterpret_cast<const sf::View *>(view);
     renderTexture->This.setView(*view_);
 }
 
 const sfView *sfRenderTexture_getView(const sfRenderTexture *renderTexture) {
-    return reinterpret_cast<const sfView*>(&renderTexture->This.getView());
+    return reinterpret_cast<const sfView *>(&renderTexture->This.getView());
 }
 
 const sfView *sfRenderTexture_getDefaultView(const sfRenderTexture *renderTexture) {
-    return reinterpret_cast<const sfView*>(&renderTexture->This.getDefaultView());
+    return reinterpret_cast<const sfView *>(&renderTexture->This.getDefaultView());
 }
 
 sfIntRect sfRenderTexture_getViewport(const sfRenderTexture *renderTexture, const sfView *view) {
     sfIntRect rect = {0, 0, 0, 0};
 
-    sf::IntRect SFMLrect = renderTexture->This.getViewport(*reinterpret_cast<const sf::View*>(view));
+    sf::IntRect SFMLrect = renderTexture->This.getViewport(*reinterpret_cast<const sf::View *>(view));
     rect.left = SFMLrect.left;
     rect.top = SFMLrect.top;
     rect.width = SFMLrect.width;
@@ -108,7 +108,7 @@ sfVector2f sfRenderTexture_mapPixelToCoords(const sfRenderTexture *renderTexture
 
     sf::Vector2f sfmlPoint;
     if (targetView)
-        sfmlPoint = renderTexture->This.mapPixelToCoords(sf::Vector2i(point.x, point.y), *reinterpret_cast<const sf::View*>(targetView));
+        sfmlPoint = renderTexture->This.mapPixelToCoords(sf::Vector2i(point.x, point.y), *reinterpret_cast<const sf::View *>(targetView));
     else
         sfmlPoint = renderTexture->This.mapPixelToCoords(sf::Vector2i(point.x, point.y));
 
@@ -123,7 +123,7 @@ sfVector2i sfRenderTexture_mapCoordsToPixel(const sfRenderTexture *renderTexture
 
     sf::Vector2i sfmlPoint;
     if (targetView)
-        sfmlPoint = renderTexture->This.mapCoordsToPixel(sf::Vector2f(point.x, point.y), *reinterpret_cast<const sf::View*>(targetView));
+        sfmlPoint = renderTexture->This.mapCoordsToPixel(sf::Vector2f(point.x, point.y), *reinterpret_cast<const sf::View *>(targetView));
     else
         sfmlPoint = renderTexture->This.mapCoordsToPixel(sf::Vector2f(point.x, point.y));
 
@@ -135,11 +135,11 @@ sfVector2i sfRenderTexture_mapCoordsToPixel(const sfRenderTexture *renderTexture
 
 void sfRenderTexture_drawSprite(sfRenderTexture *renderTexture, const sfSprite *object, const sfRenderStates *states) {
 
-    renderTexture->This.draw(*reinterpret_cast<const sf::Sprite*>(object), convertRenderStates(states));
+    renderTexture->This.draw(*reinterpret_cast<const sf::Sprite *>(object), convertRenderStates(states));
 }
 void sfRenderTexture_drawText(sfRenderTexture *renderTexture, const sfText *object, const sfRenderStates *states) {
 
-    renderTexture->This.draw(*reinterpret_cast<const sf::Text*>(object), convertRenderStates(states));
+    renderTexture->This.draw(*reinterpret_cast<const sf::Text *>(object), convertRenderStates(states));
 }
 void sfRenderTexture_drawShape(sfRenderTexture *renderTexture, const sfShape *object, const sfRenderStates *states) {
 
@@ -182,7 +182,7 @@ void sfRenderTexture_resetGLStates(sfRenderTexture *renderTexture) {
 }
 
 const sfTexture *sfRenderTexture_getTexture(const sfRenderTexture *renderTexture) {
-    return reinterpret_cast<const sfTexture*>(&renderTexture->This.getTexture());
+    return reinterpret_cast<const sfTexture *>(&renderTexture->This.getTexture());
 }
 
 void sfRenderTexture_setSmooth(sfRenderTexture *renderTexture, sfBool smooth) {

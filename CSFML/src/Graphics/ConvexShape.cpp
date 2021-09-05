@@ -23,10 +23,10 @@
 
 // Headers
 
-#include <SFML/Graphics/Color.hpp>
-#include "Graphics/ConvertTransform.hpp"
 #include "Graphics/ConvexShape.h"
+#include "Graphics/ConvertTransform.hpp"
 #include "Graphics/ConvexShapeStruct.h"
+#include <SFML/Graphics/Color.hpp>
 #include <cstddef>
 
 sfConvexShape *sfConvexShape_create(void) {
@@ -117,7 +117,7 @@ sfTransform sfConvexShape_getInverseTransform(const sfConvexShape *shape) {
 }
 
 void sfConvexShape_setTexture(sfConvexShape *shape, const sfTexture *texture, sfBool resetRect) {
-    shape->This.setTexture(reinterpret_cast<const sf::Texture*>(texture), resetRect == sfTrue);
+    shape->This.setTexture(reinterpret_cast<const sf::Texture *>(texture), resetRect == sfTrue);
     shape->Texture = texture;
 }
 

@@ -23,10 +23,10 @@
 
 // Headers
 
+#include "Window/Window.h"
 #include "ConvertEvent.h"
 #include "Window/ContextSettingsInternal.h"
 #include "Window/CursorStruct.h"
-#include "Window/Window.h"
 #include "Window/WindowStruct.h"
 #include <cstddef>
 

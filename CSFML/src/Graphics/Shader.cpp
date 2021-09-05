@@ -23,8 +23,8 @@
 
 // Headers
 
-#include "Graphics/ConvertTransform.hpp"
 #include "Graphics/Shader.h"
+#include "Graphics/ConvertTransform.hpp"
 #include "Graphics/ShaderStruct.h"
 #include "System/InputStreamStruct.h"
 #include <cstddef>
@@ -176,7 +176,7 @@ void sfShader_setMat4Uniform(sfShader *shader, const char *name, const sfGlslMat
 }
 
 void sfShader_setTextureUniform(sfShader *shader, const char *name, const sfTexture *texture) {
-    shader->This.setUniform(name, *reinterpret_cast<const sf::Texture*>(texture));
+    shader->This.setUniform(name, *reinterpret_cast<const sf::Texture *>(texture));
 }
 
 void sfShader_setCurrentTextureUniform(sfShader *shader, const char *name) {

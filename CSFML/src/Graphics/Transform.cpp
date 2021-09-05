@@ -23,8 +23,8 @@
 
 // Headers
 
-#include "Graphics/ConvertTransform.hpp"
 #include "Graphics/Transform.h"
+#include "Graphics/ConvertTransform.hpp"
 #include <SFML/Graphics/Transform.hpp>
 #include <cstddef>
 #include <cstring>

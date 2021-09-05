@@ -23,10 +23,10 @@
 
 // Headers
 
-#include <SFML/Graphics/Color.hpp>
-#include "Graphics/ConvertTransform.hpp"
 #include "Graphics/Shape.h"
+#include "Graphics/ConvertTransform.hpp"
 #include "Graphics/ShapeStruct.h"
+#include <SFML/Graphics/Color.hpp>
 #include <cstddef>
 
 sfShape *sfShape_create(sfShapeGetPointCountCallback getPointCount,
@@ -114,7 +114,7 @@ sfTransform sfShape_getInverseTransform(const sfShape *shape) {
 }
 
 void sfShape_setTexture(sfShape *shape, const sfTexture *texture, sfBool resetRect) {
-    shape->This.setTexture(reinterpret_cast<const sf::Texture*>(texture), resetRect == sfTrue);
+    shape->This.setTexture(reinterpret_cast<const sf::Texture *>(texture), resetRect == sfTrue);
     shape->Texture = texture;
 }
 

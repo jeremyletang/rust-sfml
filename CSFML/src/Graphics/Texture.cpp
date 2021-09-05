@@ -23,13 +23,13 @@
 
 // Headers
 
-#include "Graphics/ImageStruct.h"
 #include "Graphics/Texture.h"
-#include "Window/WindowStruct.h"
-#include <cstddef>
-#include <SFML/Graphics/Texture.hpp>
-#include <SFML/Graphics/RenderWindow.hpp>
+#include "Graphics/ImageStruct.h"
 #include "System/InputStreamStruct.h"
+#include "Window/WindowStruct.h"
+#include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Graphics/Texture.hpp>
+#include <cstddef>
 
 sfTexture *sfTexture_create(unsigned int width, unsigned int height) {
     sf::Texture *texture = new sf::Texture;
@@ -105,19 +105,19 @@ sfTexture *sfTexture_createFromImage(const sfImage *image, const sfIntRect *area
 }
 
 sfTexture *sfTexture_copy(const sfTexture *texture) {
-    const sf::Texture * texture_ = reinterpret_cast<const sf::Texture *>(texture);
-    sf::Texture * newTexture = new sf::Texture(*texture_);
-    return reinterpret_cast<sfTexture*>(newTexture);
+    const sf::Texture *texture_ = reinterpret_cast<const sf::Texture *>(texture);
+    sf::Texture *newTexture = new sf::Texture(*texture_);
+    return reinterpret_cast<sfTexture *>(newTexture);
 }
 
 void sfTexture_destroy(sfTexture *texture) {
-    delete reinterpret_cast<sf::Texture*>(texture);
+    delete reinterpret_cast<sf::Texture *>(texture);
 }
 
 sfVector2u sfTexture_getSize(const sfTexture *texture) {
     sfVector2u size = {0, 0};
 
-    sf::Vector2u sfmlSize = reinterpret_cast<const sf::Texture*>(texture)->getSize();
+    sf::Vector2u sfmlSize = reinterpret_cast<const sf::Texture *>(texture)->getSize();
 
     size.x = sfmlSize.x;
     size.y = sfmlSize.y;
@@ -128,78 +128,78 @@ sfVector2u sfTexture_getSize(const sfTexture *texture) {
 sfImage *sfTexture_copyToImage(const sfTexture *texture) {
 
     sfImage *image = new sfImage;
-    image->This = reinterpret_cast<const sf::Texture*>(texture)->copyToImage();
+    image->This = reinterpret_cast<const sf::Texture *>(texture)->copyToImage();
 
     return image;
 }
 
 void sfTexture_updateFromPixels(sfTexture *texture, const sfUint8 *pixels, unsigned int width, unsigned int height, unsigned int x, unsigned int y) {
-    reinterpret_cast<sf::Texture*>(texture)->update(pixels, width, height, x, y);
+    reinterpret_cast<sf::Texture *>(texture)->update(pixels, width, height, x, y);
 }
 
 void sfTexture_updateFromTexture(sfTexture *destination, const sfTexture *texture, unsigned int x, unsigned int y) {
-    sf::Texture * destination_ = reinterpret_cast<sf::Texture*>(destination);
-    const sf::Texture * texture_ = reinterpret_cast<const sf::Texture*>(texture);
+    sf::Texture *destination_ = reinterpret_cast<sf::Texture *>(destination);
+    const sf::Texture *texture_ = reinterpret_cast<const sf::Texture *>(texture);
     destination_->update(*texture_, x, y);
 }
 
 void sfTexture_updateFromImage(sfTexture *texture, const sfImage *image, unsigned int x, unsigned int y) {
 
-    reinterpret_cast<sf::Texture*>(texture)->update(image->This, x, y);
+    reinterpret_cast<sf::Texture *>(texture)->update(image->This, x, y);
 }
 
 void sfTexture_updateFromWindow(sfTexture *texture, const sfWindow *window, unsigned int x, unsigned int y) {
 
-    reinterpret_cast<sf::Texture*>(texture)->update(window->This, x, y);
+    reinterpret_cast<sf::Texture *>(texture)->update(window->This, x, y);
 }
 
 void sfTexture_updateFromRenderWindow(sfTexture *texture, const sfRenderWindow *renderWindow, unsigned int x, unsigned int y) {
-    const sf::RenderWindow * win = reinterpret_cast<const sf::RenderWindow *>(renderWindow);
-    reinterpret_cast<sf::Texture*>(texture)->update(*win, x, y);
+    const sf::RenderWindow *win = reinterpret_cast<const sf::RenderWindow *>(renderWindow);
+    reinterpret_cast<sf::Texture *>(texture)->update(*win, x, y);
 }
 
 void sfTexture_setSmooth(sfTexture *texture, sfBool smooth) {
-    reinterpret_cast<sf::Texture*>(texture)->setSmooth(smooth == sfTrue);
+    reinterpret_cast<sf::Texture *>(texture)->setSmooth(smooth == sfTrue);
 }
 
 sfBool sfTexture_isSmooth(const sfTexture *texture) {
 
-    return reinterpret_cast<const sf::Texture*>(texture)->isSmooth();
+    return reinterpret_cast<const sf::Texture *>(texture)->isSmooth();
 }
 
 void sfTexture_setSrgb(sfTexture *texture, sfBool sRgb) {
-    reinterpret_cast<sf::Texture*>(texture)->setSrgb(sRgb == sfTrue);
+    reinterpret_cast<sf::Texture *>(texture)->setSrgb(sRgb == sfTrue);
 }
 
 sfBool sfTexture_isSrgb(const sfTexture *texture) {
-    return reinterpret_cast<const sf::Texture*>(texture)->isSrgb();
+    return reinterpret_cast<const sf::Texture *>(texture)->isSrgb();
 }
 
 void sfTexture_setRepeated(sfTexture *texture, sfBool repeated) {
-    reinterpret_cast<sf::Texture*>(texture)->setRepeated(repeated == sfTrue);
+    reinterpret_cast<sf::Texture *>(texture)->setRepeated(repeated == sfTrue);
 }
 
 sfBool sfTexture_isRepeated(const sfTexture *texture) {
 
-    return reinterpret_cast<const sf::Texture*>(texture)->isRepeated();
+    return reinterpret_cast<const sf::Texture *>(texture)->isRepeated();
 }
 
 sfBool sfTexture_generateMipmap(sfTexture *texture) {
-    return reinterpret_cast<sf::Texture*>(texture)->generateMipmap();
+    return reinterpret_cast<sf::Texture *>(texture)->generateMipmap();
 }
 
 void sfTexture_swap(sfTexture *left, sfTexture *right) {
-    sf::Texture * left_ = reinterpret_cast<sf::Texture*>(left);
-    sf::Texture * right_ = reinterpret_cast<sf::Texture*>(right);
+    sf::Texture *left_ = reinterpret_cast<sf::Texture *>(left);
+    sf::Texture *right_ = reinterpret_cast<sf::Texture *>(right);
     left_->swap(*right_);
 }
 
 unsigned int sfTexture_getNativeHandle(const sfTexture *texture) {
-    return reinterpret_cast<const sf::Texture*>(texture)->getNativeHandle();
+    return reinterpret_cast<const sf::Texture *>(texture)->getNativeHandle();
 }
 
 void sfTexture_bind(const sfTexture *texture) {
-    sf::Texture::bind(reinterpret_cast<const sf::Texture*>(texture));
+    sf::Texture::bind(reinterpret_cast<const sf::Texture *>(texture));
 }
 
 unsigned int sfTexture_getMaximumSize() {

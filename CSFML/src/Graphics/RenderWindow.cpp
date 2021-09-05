@@ -23,21 +23,21 @@
 
 // Headers
 
+#include "Graphics/RenderWindow.h"
 #include "ConvertEvent.h"
 #include "Graphics/CircleShapeStruct.h"
 #include "Graphics/ConvertRenderStates.hpp"
 #include "Graphics/ConvexShapeStruct.h"
 #include "Graphics/ImageStruct.h"
 #include "Graphics/RectangleShapeStruct.h"
-#include "Graphics/RenderWindow.h"
 #include "Graphics/ShapeStruct.h"
 #include "Graphics/VertexBufferStruct.h"
 #include "Window/ContextSettingsInternal.h"
 #include "Window/CursorStruct.h"
-#include <SFML/Window/Touch.hpp>
-#include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>
+#include <SFML/Window/Touch.hpp>
 #include <cstddef>
 
 sfRenderWindow *sfRenderWindow_createUnicode(sfVideoMode mode, const sfUint32 *title, sfUint32 style, const sfContextSettings *settings) {
@@ -54,7 +54,7 @@ sfRenderWindow *sfRenderWindow_createUnicode(sfVideoMode mode, const sfUint32 *t
     sf::RenderWindow *renderWindow = new sf::RenderWindow;
     renderWindow->create(videoMode, title, style, params);
 
-    return reinterpret_cast<sfRenderWindow*>(renderWindow);
+    return reinterpret_cast<sfRenderWindow *>(renderWindow);
 }
 
 sfRenderWindow *sfRenderWindow_createFromHandle(sfWindowHandle handle, const sfContextSettings *settings) {
@@ -72,7 +72,7 @@ sfRenderWindow *sfRenderWindow_createFromHandle(sfWindowHandle handle, const sfC
 }
 
 void sfRenderWindow_destroy(sfRenderWindow *renderWindow) {
-    delete reinterpret_cast<sf::RenderWindow*>(renderWindow);
+    delete reinterpret_cast<sf::RenderWindow *>(renderWindow);
 }
 
 void sfRenderWindow_close(sfRenderWindow *renderWindow) {
@@ -210,7 +210,7 @@ void sfRenderWindow_setJoystickThreshold(sfRenderWindow *renderWindow, float thr
 
 sfWindowHandle sfRenderWindow_getSystemHandle(const sfRenderWindow *renderWindow) {
 
-    return (sfWindowHandle)reinterpret_cast<const sf::RenderWindow *>(renderWindow)->getSystemHandle();
+    return (sfWindowHandle) reinterpret_cast<const sf::RenderWindow *>(renderWindow)->getSystemHandle();
 }
 
 void sfRenderWindow_clear(sfRenderWindow *renderWindow, sfColor color) {
@@ -220,7 +220,7 @@ void sfRenderWindow_clear(sfRenderWindow *renderWindow, sfColor color) {
 }
 
 void sfRenderWindow_setView(sfRenderWindow *renderWindow, const sfView *view) {
-    reinterpret_cast<sf::RenderWindow *>(renderWindow)->setView(*reinterpret_cast<const sf::View*>(view));
+    reinterpret_cast<sf::RenderWindow *>(renderWindow)->setView(*reinterpret_cast<const sf::View *>(view));
 }
 
 const sfView *sfRenderWindow_getView(const sfRenderWindow *renderWindow) {
@@ -234,7 +234,7 @@ const sfView *sfRenderWindow_getDefaultView(const sfRenderWindow *renderWindow) 
 sfIntRect sfRenderWindow_getViewport(const sfRenderWindow *renderWindow, const sfView *view) {
     sfIntRect rect = {0, 0, 0, 0};
 
-    sf::IntRect SFMLrect = reinterpret_cast<const sf::RenderWindow *>(renderWindow)->getViewport(*reinterpret_cast<const sf::View*>(view));
+    sf::IntRect SFMLrect = reinterpret_cast<const sf::RenderWindow *>(renderWindow)->getViewport(*reinterpret_cast<const sf::View *>(view));
     rect.left = SFMLrect.left;
     rect.top = SFMLrect.top;
     rect.width = SFMLrect.width;
@@ -248,7 +248,7 @@ sfVector2f sfRenderWindow_mapPixelToCoords(const sfRenderWindow *renderWindow, s
 
     sf::Vector2f sfmlPoint;
     if (targetView)
-        sfmlPoint = reinterpret_cast<const sf::RenderWindow *>(renderWindow)->mapPixelToCoords(sf::Vector2i(point.x, point.y), *reinterpret_cast<const sf::View*>(targetView));
+        sfmlPoint = reinterpret_cast<const sf::RenderWindow *>(renderWindow)->mapPixelToCoords(sf::Vector2i(point.x, point.y), *reinterpret_cast<const sf::View *>(targetView));
     else
         sfmlPoint = reinterpret_cast<const sf::RenderWindow *>(renderWindow)->mapPixelToCoords(sf::Vector2i(point.x, point.y));
 
@@ -263,7 +263,7 @@ sfVector2i sfRenderWindow_mapCoordsToPixel(const sfRenderWindow *renderWindow, s
 
     sf::Vector2i sfmlPoint;
     if (targetView)
-        sfmlPoint = reinterpret_cast<const sf::RenderWindow *>(renderWindow)->mapCoordsToPixel(sf::Vector2f(point.x, point.y), *reinterpret_cast<const sf::View*>(targetView));
+        sfmlPoint = reinterpret_cast<const sf::RenderWindow *>(renderWindow)->mapCoordsToPixel(sf::Vector2f(point.x, point.y), *reinterpret_cast<const sf::View *>(targetView));
     else
         sfmlPoint = reinterpret_cast<const sf::RenderWindow *>(renderWindow)->mapCoordsToPixel(sf::Vector2f(point.x, point.y));
 
@@ -275,11 +275,11 @@ sfVector2i sfRenderWindow_mapCoordsToPixel(const sfRenderWindow *renderWindow, s
 
 void sfRenderWindow_drawSprite(sfRenderWindow *renderWindow, const sfSprite *object, const sfRenderStates *states) {
 
-    reinterpret_cast<sf::RenderWindow *>(renderWindow)->draw(*reinterpret_cast<const sf::Sprite*>(object), convertRenderStates(states));
+    reinterpret_cast<sf::RenderWindow *>(renderWindow)->draw(*reinterpret_cast<const sf::Sprite *>(object), convertRenderStates(states));
 }
 void sfRenderWindow_drawText(sfRenderWindow *renderWindow, const sfText *object, const sfRenderStates *states) {
 
-    reinterpret_cast<sf::RenderWindow *>(renderWindow)->draw(*reinterpret_cast<const sf::Text*>(object), convertRenderStates(states));
+    reinterpret_cast<sf::RenderWindow *>(renderWindow)->draw(*reinterpret_cast<const sf::Text *>(object), convertRenderStates(states));
 }
 void sfRenderWindow_drawShape(sfRenderWindow *renderWindow, const sfShape *object, const sfRenderStates *states) {
 
@@ -305,8 +305,7 @@ void sfRenderWindow_drawVertexBuffer(sfRenderWindow *renderWindow, const sfVerte
 void sfRenderWindow_drawPrimitives(sfRenderWindow *renderWindow,
                                    const sfVertex *vertices, size_t vertexCount,
                                    sfPrimitiveType type, const sfRenderStates *states) {
-    reinterpret_cast<sf::RenderWindow *>(renderWindow)->draw(reinterpret_cast<const sf::Vertex *>(vertices), vertexCount,
-                            static_cast<sf::PrimitiveType>(type), convertRenderStates(states));
+    reinterpret_cast<sf::RenderWindow *>(renderWindow)->draw(reinterpret_cast<const sf::Vertex *>(vertices), vertexCount, static_cast<sf::PrimitiveType>(type), convertRenderStates(states));
 }
 
 void sfRenderWindow_pushGLStates(sfRenderWindow *renderWindow) {

@@ -23,8 +23,8 @@
 
 // Headers
 
-#include <SFML/Window/Clipboard.hpp>
 #include "Config.h"
+#include <SFML/Window/Clipboard.hpp>
 #include <cstddef>
 
 namespace {
