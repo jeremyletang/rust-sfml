@@ -27,11 +27,11 @@
 #include "Graphics/CircleShapeStruct.h"
 #include "Graphics/ConvertRenderStates.hpp"
 #include "Graphics/ConvexShapeStruct.h"
-#include "Graphics/RectangleShapeStruct.h"
 #include "Graphics/RenderTextureStruct.h"
 #include "Graphics/ShapeStruct.h"
 #include "Graphics/VertexBufferStruct.h"
 #include "Window/ContextSettingsInternal.h"
+#include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>
 #include <cstddef>
@@ -155,7 +155,7 @@ void sfRenderTexture_drawConvexShape(sfRenderTexture *renderTexture, const sfCon
 }
 void sfRenderTexture_drawRectangleShape(sfRenderTexture *renderTexture, const sfRectangleShape *object, const sfRenderStates *states) {
 
-    renderTexture->This.draw(object->This, convertRenderStates(states));
+    renderTexture->This.draw(*reinterpret_cast<const sf::RectangleShape *>(object), convertRenderStates(states));
 }
 void sfRenderTexture_drawVertexBuffer(sfRenderTexture *renderTexture, const sfVertexBuffer *object, const sfRenderStates *states) {
 

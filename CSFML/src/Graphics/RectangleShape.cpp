@@ -25,43 +25,44 @@
 
 #include "Graphics/RectangleShape.h"
 #include "Graphics/ConvertTransform.hpp"
-#include "Graphics/RectangleShapeStruct.h"
 #include <SFML/Graphics/Color.hpp>
+#include <SFML/Graphics/RectangleShape.hpp>
 #include <cstddef>
 
 sfRectangleShape *sfRectangleShape_create(void) {
-    return new sfRectangleShape;
+    return reinterpret_cast<sfRectangleShape *>(new sf::RectangleShape);
 }
 
 sfRectangleShape *sfRectangleShape_copy(const sfRectangleShape *shape) {
-
-    return new sfRectangleShape(*shape);
+    const sf::RectangleShape *src = reinterpret_cast<const sf::RectangleShape *>(shape);
+    sf::RectangleShape *newShape = new sf::RectangleShape(*src);
+    return reinterpret_cast<sfRectangleShape *>(newShape);
 }
 
 void sfRectangleShape_destroy(sfRectangleShape *shape) {
-    delete shape;
+    delete reinterpret_cast<sf::RectangleShape *>(shape);
 }
 
 void sfRectangleShape_setPosition(sfRectangleShape *shape, sfVector2f position) {
-    shape->This.setPosition(position.x, position.y);
+    reinterpret_cast<sf::RectangleShape *>(shape)->setPosition(position.x, position.y);
 }
 
 void sfRectangleShape_setRotation(sfRectangleShape *shape, float angle) {
-    shape->This.setRotation(angle);
+    reinterpret_cast<sf::RectangleShape *>(shape)->setRotation(angle);
 }
 
 void sfRectangleShape_setScale(sfRectangleShape *shape, sfVector2f scale) {
-    shape->This.setScale(scale.x, scale.y);
+    reinterpret_cast<sf::RectangleShape *>(shape)->setScale(scale.x, scale.y);
 }
 
 void sfRectangleShape_setOrigin(sfRectangleShape *shape, sfVector2f origin) {
-    shape->This.setOrigin(origin.x, origin.y);
+    reinterpret_cast<sf::RectangleShape *>(shape)->setOrigin(origin.x, origin.y);
 }
 
 sfVector2f sfRectangleShape_getPosition(const sfRectangleShape *shape) {
     sfVector2f position = {0, 0};
 
-    sf::Vector2f sfmlPos = shape->This.getPosition();
+    sf::Vector2f sfmlPos = reinterpret_cast<const sf::RectangleShape *>(shape)->getPosition();
     position.x = sfmlPos.x;
     position.y = sfmlPos.y;
 
@@ -69,13 +70,13 @@ sfVector2f sfRectangleShape_getPosition(const sfRectangleShape *shape) {
 }
 
 float sfRectangleShape_getRotation(const sfRectangleShape *shape) {
-    return shape->This.getRotation();
+    return reinterpret_cast<const sf::RectangleShape *>(shape)->getRotation();
 }
 
 sfVector2f sfRectangleShape_getScale(const sfRectangleShape *shape) {
     sfVector2f scale = {0, 0};
 
-    sf::Vector2f sfmlScale = shape->This.getScale();
+    sf::Vector2f sfmlScale = reinterpret_cast<const sf::RectangleShape *>(shape)->getScale();
     scale.x = sfmlScale.x;
     scale.y = sfmlScale.y;
 
@@ -85,7 +86,7 @@ sfVector2f sfRectangleShape_getScale(const sfRectangleShape *shape) {
 sfVector2f sfRectangleShape_getOrigin(const sfRectangleShape *shape) {
     sfVector2f origin = {0, 0};
 
-    sf::Vector2f sfmlOrigin = shape->This.getOrigin();
+    sf::Vector2f sfmlOrigin = reinterpret_cast<const sf::RectangleShape *>(shape)->getOrigin();
     origin.x = sfmlOrigin.x;
     origin.y = sfmlOrigin.y;
 
@@ -93,59 +94,58 @@ sfVector2f sfRectangleShape_getOrigin(const sfRectangleShape *shape) {
 }
 
 void sfRectangleShape_move(sfRectangleShape *shape, sfVector2f offset) {
-    shape->This.move(offset.x, offset.y);
+    reinterpret_cast<sf::RectangleShape *>(shape)->move(offset.x, offset.y);
 }
 
 void sfRectangleShape_rotate(sfRectangleShape *shape, float angle) {
-    shape->This.rotate(angle);
+    reinterpret_cast<sf::RectangleShape *>(shape)->rotate(angle);
 }
 
 void sfRectangleShape_scale(sfRectangleShape *shape, sfVector2f factors) {
-    shape->This.scale(factors.x, factors.y);
+    reinterpret_cast<sf::RectangleShape *>(shape)->scale(factors.x, factors.y);
 }
 
 sfTransform sfRectangleShape_getTransform(const sfRectangleShape *shape) {
 
-    shape->Transform = convertTransform(shape->This.getTransform());
-    return shape->Transform;
+    sfTransform transform = convertTransform(reinterpret_cast<const sf::RectangleShape *>(shape)->getTransform());
+    return transform;
 }
 
 sfTransform sfRectangleShape_getInverseTransform(const sfRectangleShape *shape) {
 
-    shape->InverseTransform = convertTransform(shape->This.getInverseTransform());
-    return shape->InverseTransform;
+    sfTransform transform = convertTransform(reinterpret_cast<const sf::RectangleShape *>(shape)->getInverseTransform());
+    return transform;
 }
 
 void sfRectangleShape_setTexture(sfRectangleShape *shape, const sfTexture *texture, sfBool resetRect) {
-    shape->This.setTexture(reinterpret_cast<const sf::Texture *>(texture), resetRect == sfTrue);
-    shape->Texture = texture;
+    reinterpret_cast<sf::RectangleShape *>(shape)->setTexture(reinterpret_cast<const sf::Texture *>(texture), resetRect == sfTrue);
 }
 
 void sfRectangleShape_setTextureRect(sfRectangleShape *shape, sfIntRect rect) {
-    shape->This.setTextureRect(sf::IntRect(rect.left, rect.top, rect.width, rect.height));
+    reinterpret_cast<sf::RectangleShape *>(shape)->setTextureRect(sf::IntRect(rect.left, rect.top, rect.width, rect.height));
 }
 
 void sfRectangleShape_setFillColor(sfRectangleShape *shape, sfColor color) {
-    shape->This.setFillColor(sf::Color(color.r, color.g, color.b, color.a));
+    reinterpret_cast<sf::RectangleShape *>(shape)->setFillColor(sf::Color(color.r, color.g, color.b, color.a));
 }
 
 void sfRectangleShape_setOutlineColor(sfRectangleShape *shape, sfColor color) {
-    shape->This.setOutlineColor(sf::Color(color.r, color.g, color.b, color.a));
+    reinterpret_cast<sf::RectangleShape *>(shape)->setOutlineColor(sf::Color(color.r, color.g, color.b, color.a));
 }
 
 void sfRectangleShape_setOutlineThickness(sfRectangleShape *shape, float thickness) {
-    shape->This.setOutlineThickness(thickness);
+    reinterpret_cast<sf::RectangleShape *>(shape)->setOutlineThickness(thickness);
 }
 
 const sfTexture *sfRectangleShape_getTexture(const sfRectangleShape *shape) {
-
-    return shape->Texture;
+    const sf::Texture *texture = reinterpret_cast<const sf::RectangleShape *>(shape)->getTexture();
+    return reinterpret_cast<const sfTexture *>(texture);
 }
 
 sfIntRect sfRectangleShape_getTextureRect(const sfRectangleShape *shape) {
     sfIntRect rect = {0, 0, 0, 0};
 
-    sf::IntRect sfmlRect = shape->This.getTextureRect();
+    sf::IntRect sfmlRect = reinterpret_cast<const sf::RectangleShape *>(shape)->getTextureRect();
     rect.left = sfmlRect.left;
     rect.top = sfmlRect.top;
     rect.width = sfmlRect.width;
@@ -157,7 +157,7 @@ sfIntRect sfRectangleShape_getTextureRect(const sfRectangleShape *shape) {
 sfColor sfRectangleShape_getFillColor(const sfRectangleShape *shape) {
     sfColor color = {0, 0, 0, 0};
 
-    sf::Color sfmlColor = shape->This.getFillColor();
+    sf::Color sfmlColor = reinterpret_cast<const sf::RectangleShape *>(shape)->getFillColor();
     color.r = sfmlColor.r;
     color.g = sfmlColor.g;
     color.b = sfmlColor.b;
@@ -169,7 +169,7 @@ sfColor sfRectangleShape_getFillColor(const sfRectangleShape *shape) {
 sfColor sfRectangleShape_getOutlineColor(const sfRectangleShape *shape) {
     sfColor color = {0, 0, 0, 0};
 
-    sf::Color sfmlColor = shape->This.getOutlineColor();
+    sf::Color sfmlColor = reinterpret_cast<const sf::RectangleShape *>(shape)->getOutlineColor();
     color.r = sfmlColor.r;
     color.g = sfmlColor.g;
     color.b = sfmlColor.b;
@@ -179,17 +179,17 @@ sfColor sfRectangleShape_getOutlineColor(const sfRectangleShape *shape) {
 }
 
 float sfRectangleShape_getOutlineThickness(const sfRectangleShape *shape) {
-    return shape->This.getOutlineThickness();
+    return reinterpret_cast<const sf::RectangleShape *>(shape)->getOutlineThickness();
 }
 
 size_t sfRectangleShape_getPointCount(const sfRectangleShape *shape) {
-    return shape->This.getPointCount();
+    return reinterpret_cast<const sf::RectangleShape *>(shape)->getPointCount();
 }
 
 sfVector2f sfRectangleShape_getPoint(const sfRectangleShape *shape, size_t index) {
     sfVector2f point = {0, 0};
 
-    sf::Vector2f sfmlPoint = shape->This.getPoint(index);
+    sf::Vector2f sfmlPoint = reinterpret_cast<const sf::RectangleShape *>(shape)->getPoint(index);
     point.x = sfmlPoint.x;
     point.y = sfmlPoint.y;
 
@@ -197,13 +197,13 @@ sfVector2f sfRectangleShape_getPoint(const sfRectangleShape *shape, size_t index
 }
 
 void sfRectangleShape_setSize(sfRectangleShape *shape, sfVector2f size) {
-    shape->This.setSize(sf::Vector2f(size.x, size.y));
+    reinterpret_cast<sf::RectangleShape *>(shape)->setSize(sf::Vector2f(size.x, size.y));
 }
 
 sfVector2f sfRectangleShape_getSize(const sfRectangleShape *shape) {
     sfVector2f size = {0, 0};
 
-    sf::Vector2f sfmlSize = shape->This.getSize();
+    sf::Vector2f sfmlSize = reinterpret_cast<const sf::RectangleShape *>(shape)->getSize();
     size.x = sfmlSize.x;
     size.y = sfmlSize.y;
 
@@ -213,7 +213,7 @@ sfVector2f sfRectangleShape_getSize(const sfRectangleShape *shape) {
 sfFloatRect sfRectangleShape_getLocalBounds(const sfRectangleShape *shape) {
     sfFloatRect rect = {0, 0, 0, 0};
 
-    sf::FloatRect sfmlRect = shape->This.getLocalBounds();
+    sf::FloatRect sfmlRect = reinterpret_cast<const sf::RectangleShape *>(shape)->getLocalBounds();
     rect.left = sfmlRect.left;
     rect.top = sfmlRect.top;
     rect.width = sfmlRect.width;
@@ -225,7 +225,7 @@ sfFloatRect sfRectangleShape_getLocalBounds(const sfRectangleShape *shape) {
 sfFloatRect sfRectangleShape_getGlobalBounds(const sfRectangleShape *shape) {
     sfFloatRect rect = {0, 0, 0, 0};
 
-    sf::FloatRect sfmlRect = shape->This.getGlobalBounds();
+    sf::FloatRect sfmlRect = reinterpret_cast<const sf::RectangleShape *>(shape)->getGlobalBounds();
     rect.left = sfmlRect.left;
     rect.top = sfmlRect.top;
     rect.width = sfmlRect.width;

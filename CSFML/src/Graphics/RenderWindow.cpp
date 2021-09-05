@@ -29,11 +29,11 @@
 #include "Graphics/ConvertRenderStates.hpp"
 #include "Graphics/ConvexShapeStruct.h"
 #include "Graphics/ImageStruct.h"
-#include "Graphics/RectangleShapeStruct.h"
 #include "Graphics/ShapeStruct.h"
 #include "Graphics/VertexBufferStruct.h"
 #include "Window/ContextSettingsInternal.h"
 #include "Window/CursorStruct.h"
+#include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>
@@ -295,7 +295,7 @@ void sfRenderWindow_drawConvexShape(sfRenderWindow *renderWindow, const sfConvex
 }
 void sfRenderWindow_drawRectangleShape(sfRenderWindow *renderWindow, const sfRectangleShape *object, const sfRenderStates *states) {
 
-    reinterpret_cast<sf::RenderWindow *>(renderWindow)->draw(object->This, convertRenderStates(states));
+    reinterpret_cast<sf::RenderWindow *>(renderWindow)->draw(*reinterpret_cast<const sf::RectangleShape *>(object), convertRenderStates(states));
 }
 void sfRenderWindow_drawVertexBuffer(sfRenderWindow *renderWindow, const sfVertexBuffer *object, const sfRenderStates *states) {
 

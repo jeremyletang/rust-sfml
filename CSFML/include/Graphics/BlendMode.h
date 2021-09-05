@@ -24,6 +24,8 @@
 #ifndef SFML_BLENDMODE_H
 #define SFML_BLENDMODE_H
 
+#include <Config.h>
+
 typedef struct
 {
     sfUint8 colorSrcFactor; ///< Source blending factor for the color channels
