@@ -108,21 +108,21 @@ impl Cursor {
 ///
 /// Refer to the following table to determine which cursor is available on which platform.
 ///
-/// |Type                           | Linux | Mac OS X | Windows |
-/// |-------------------------------|-------|----------|---------|
-/// |[`ARROW`]                      | yes   | yes      | yes     |
-/// |[`ARROW_WAIT`]                 | no    | no       | yes     |
-/// |[`WAIT`]                       | yes   | no       | yes     |
-/// |[`TEXT`]                       | yes   | yes      | yes     |
-/// |[`HAND`]                       | yes   | yes      | yes     |
-/// |[`SIZE_HORIZONTAL`]            | yes   | yes      | yes     |
-/// |[`SIZE_VERTICAL`]              | yes   | yes      | yes     |
-/// |[`SIZE_TOP_LEFT_BOTTOM_RIGHT`] | no    | yes*     | yes     |
-/// |[`SIZE_BOTTOM_LEFT_TOP_RIGHT`] | no    | yes*     | yes     |
-/// |[`SIZE_ALL`]                   | yes   | no       | yes     |
-/// |[`CROSS`]                      | yes   | yes      | yes     |
-/// |[`HELP`]                       | yes   | yes*     | yes     |
-/// |[`NOT_ALLOWED`]                | yes   | yes      | yes     |
+/// | Type                                                               | Linux | Mac OS X | Windows |
+/// |--------------------------------------------------------------------|-------|----------|---------|
+/// | [`ARROW`](Cursor::ARROW)                                           | yes   | yes      | yes     |
+/// | [`ARROW_WAIT`](Cursor::ARROW_WAIT)                                 | no    | no       | yes     |
+/// | [`WAIT`](Cursor::WAIT)                                             | yes   | no       | yes     |
+/// | [`TEXT`](Cursor::TEXT)                                             | yes   | yes      | yes     |
+/// | [`HAND`](Cursor::HAND)                                             | yes   | yes      | yes     |
+/// | [`SIZE_HORIZONTAL`](Cursor::SIZE_HORIZONTAL)                       | yes   | yes      | yes     |
+/// | [`SIZE_VERTICAL`](Cursor::SIZE_VERTICAL)                           | yes   | yes      | yes     |
+/// | [`SIZE_TOP_LEFT_BOTTOM_RIGHT`](Cursor::SIZE_TOP_LEFT_BOTTOM_RIGHT) | no    | yes*     | yes     |
+/// | [`SIZE_BOTTOM_LEFT_TOP_RIGHT`](Cursor::SIZE_BOTTOM_LEFT_TOP_RIGHT) | no    | yes*     | yes     |
+/// | [`SIZE_ALL`](Cursor::SIZE_ALL)                                     | yes   | no       | yes     |
+/// | [`CROSS`](Cursor::CROSS)                                           | yes   | yes      | yes     |
+/// | [`HELP`](Cursor::HELP)                                             | yes   | yes*     | yes     |
+/// | [`NOT_ALLOWED`](Cursor::NOT_ALLOWED)                               | yes   | yes      | yes     |
 ///
 /// * These cursor types are undocumented so may not be available on all versions,
 /// but have been tested on 10.13
