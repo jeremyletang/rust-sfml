@@ -25,28 +25,28 @@
 
 #include "Graphics/Shader.h"
 #include "Graphics/ConvertTransform.hpp"
-#include "Graphics/ShaderStruct.h"
 #include "System/InputStreamStruct.h"
+#include <SFML/Graphics/Shader.hpp>
 #include <cstddef>
 
 sfShader *sfShader_createFromFile(const char *vertexShaderFilename, const char *geometryShaderFilename, const char *fragmentShaderFilename) {
     bool success = false;
-    sfShader *shader = new sfShader;
+    sf::Shader *shader = new sf::Shader;
     if (vertexShaderFilename || geometryShaderFilename || fragmentShaderFilename) {
         if (!geometryShaderFilename) {
             if (!vertexShaderFilename) {
                 // fragment shader only
-                success = shader->This.loadFromFile(fragmentShaderFilename, sf::Shader::Fragment);
+                success = shader->loadFromFile(fragmentShaderFilename, sf::Shader::Fragment);
             } else if (!fragmentShaderFilename) {
                 // vertex shader only
-                success = shader->This.loadFromFile(vertexShaderFilename, sf::Shader::Vertex);
+                success = shader->loadFromFile(vertexShaderFilename, sf::Shader::Vertex);
             } else {
                 // vertex + fragment shaders
-                success = shader->This.loadFromFile(vertexShaderFilename, fragmentShaderFilename);
+                success = shader->loadFromFile(vertexShaderFilename, fragmentShaderFilename);
             }
         } else {
             // vertex + geometry + fragment shaders
-            success = shader->This.loadFromFile(vertexShaderFilename, geometryShaderFilename, fragmentShaderFilename);
+            success = shader->loadFromFile(vertexShaderFilename, geometryShaderFilename, fragmentShaderFilename);
         }
     }
 
@@ -55,27 +55,27 @@ sfShader *sfShader_createFromFile(const char *vertexShaderFilename, const char *
         shader = NULL;
     }
 
-    return shader;
+    return reinterpret_cast<sfShader *>(shader);
 }
 
 sfShader *sfShader_createFromMemory(const char *vertexShader, const char *geometryShader, const char *fragmentShader) {
     bool success = false;
-    sfShader *shader = new sfShader;
+    sf::Shader *shader = new sf::Shader;
     if (vertexShader || geometryShader || fragmentShader) {
         if (!geometryShader) {
             if (!vertexShader) {
                 // fragment shader only
-                success = shader->This.loadFromMemory(fragmentShader, sf::Shader::Fragment);
+                success = shader->loadFromMemory(fragmentShader, sf::Shader::Fragment);
             } else if (!fragmentShader) {
                 // vertex shader only
-                success = shader->This.loadFromMemory(vertexShader, sf::Shader::Vertex);
+                success = shader->loadFromMemory(vertexShader, sf::Shader::Vertex);
             } else {
                 // vertex + fragment shaders
-                success = shader->This.loadFromMemory(vertexShader, fragmentShader);
+                success = shader->loadFromMemory(vertexShader, fragmentShader);
             }
         } else {
             // vertex + geometry + fragment shaders
-            success = shader->This.loadFromMemory(vertexShader, geometryShader, fragmentShader);
+            success = shader->loadFromMemory(vertexShader, geometryShader, fragmentShader);
         }
     }
 
@@ -84,26 +84,26 @@ sfShader *sfShader_createFromMemory(const char *vertexShader, const char *geomet
         shader = NULL;
     }
 
-    return shader;
+    return reinterpret_cast<sfShader *>(shader);
 }
 
 sfShader *sfShader_createFromStream(sfInputStream *vertexShaderStream, sfInputStream *geometryShaderStream, sfInputStream *fragmentShaderStream) {
     bool success = false;
-    sfShader *shader = new sfShader;
+    sf::Shader *shader = new sf::Shader;
     if (vertexShaderStream || geometryShaderStream || fragmentShaderStream) {
         if (!geometryShaderStream) {
             if (!vertexShaderStream) {
                 // fragment shader only
-                success = shader->This.loadFromStream(*fragmentShaderStream, sf::Shader::Fragment);
+                success = shader->loadFromStream(*fragmentShaderStream, sf::Shader::Fragment);
             } else if (!fragmentShaderStream) {
                 // vertex shader only
-                success = shader->This.loadFromStream(*vertexShaderStream, sf::Shader::Vertex);
+                success = shader->loadFromStream(*vertexShaderStream, sf::Shader::Vertex);
             } else {
                 // vertex + fragment shaders
-                success = shader->This.loadFromStream(*vertexShaderStream, *fragmentShaderStream);
+                success = shader->loadFromStream(*vertexShaderStream, *fragmentShaderStream);
             }
         } else {
-            success = shader->This.loadFromStream(*vertexShaderStream, *geometryShaderStream, *fragmentShaderStream);
+            success = shader->loadFromStream(*vertexShaderStream, *geometryShaderStream, *fragmentShaderStream);
         }
     }
 
@@ -112,107 +112,107 @@ sfShader *sfShader_createFromStream(sfInputStream *vertexShaderStream, sfInputSt
         shader = NULL;
     }
 
-    return shader;
+    return reinterpret_cast<sfShader *>(shader);
 }
 
 void sfShader_destroy(sfShader *shader) {
-    delete shader;
+    delete reinterpret_cast<sf::Shader *>(shader);
 }
 
 void sfShader_setFloatUniform(sfShader *shader, const char *name, float x) {
-    shader->This.setUniform(name, x);
+    reinterpret_cast<sf::Shader *>(shader)->setUniform(name, x);
 }
 
 void sfShader_setVec2Uniform(sfShader *shader, const char *name, sfGlslVec2 vector) {
-    shader->This.setUniform(name, sf::Glsl::Vec2(vector.x, vector.y));
+    reinterpret_cast<sf::Shader *>(shader)->setUniform(name, sf::Glsl::Vec2(vector.x, vector.y));
 }
 
 void sfShader_setVec3Uniform(sfShader *shader, const char *name, sfGlslVec3 vector) {
-    shader->This.setUniform(name, sf::Glsl::Vec3(vector.x, vector.y, vector.z));
+    reinterpret_cast<sf::Shader *>(shader)->setUniform(name, sf::Glsl::Vec3(vector.x, vector.y, vector.z));
 }
 
 void sfShader_setVec4Uniform(sfShader *shader, const char *name, sfGlslVec4 vector) {
-    shader->This.setUniform(name, sf::Glsl::Vec4(vector.x, vector.y, vector.z, vector.w));
+    reinterpret_cast<sf::Shader *>(shader)->setUniform(name, sf::Glsl::Vec4(vector.x, vector.y, vector.z, vector.w));
 }
 
 void sfShader_setIntUniform(sfShader *shader, const char *name, int x) {
-    shader->This.setUniform(name, x);
+    reinterpret_cast<sf::Shader *>(shader)->setUniform(name, x);
 }
 
 void sfShader_setIvec2Uniform(sfShader *shader, const char *name, sfGlslIvec2 vector) {
-    shader->This.setUniform(name, sf::Glsl::Ivec2(vector.x, vector.y));
+    reinterpret_cast<sf::Shader *>(shader)->setUniform(name, sf::Glsl::Ivec2(vector.x, vector.y));
 }
 
 void sfShader_setIvec3Uniform(sfShader *shader, const char *name, sfGlslIvec3 vector) {
-    shader->This.setUniform(name, sf::Glsl::Ivec3(vector.x, vector.y, vector.z));
+    reinterpret_cast<sf::Shader *>(shader)->setUniform(name, sf::Glsl::Ivec3(vector.x, vector.y, vector.z));
 }
 
 void sfShader_setIvec4Uniform(sfShader *shader, const char *name, sfGlslIvec4 vector) {
-    shader->This.setUniform(name, sf::Glsl::Ivec4(vector.x, vector.y, vector.z, vector.w));
+    reinterpret_cast<sf::Shader *>(shader)->setUniform(name, sf::Glsl::Ivec4(vector.x, vector.y, vector.z, vector.w));
 }
 
 void sfShader_setBoolUniform(sfShader *shader, const char *name, sfBool x) {
-    shader->This.setUniform(name, x != sfFalse);
+    reinterpret_cast<sf::Shader *>(shader)->setUniform(name, x != sfFalse);
 }
 
 void sfShader_setBvec2Uniform(sfShader *shader, const char *name, sfGlslBvec2 vector) {
-    shader->This.setUniform(name, sf::Glsl::Bvec2(vector.x != sfFalse, vector.y != sfFalse));
+    reinterpret_cast<sf::Shader *>(shader)->setUniform(name, sf::Glsl::Bvec2(vector.x != sfFalse, vector.y != sfFalse));
 }
 
 void sfShader_setBvec3Uniform(sfShader *shader, const char *name, sfGlslBvec3 vector) {
-    shader->This.setUniform(name, sf::Glsl::Bvec3(vector.x != sfFalse, vector.y != sfFalse, vector.z != sfFalse));
+    reinterpret_cast<sf::Shader *>(shader)->setUniform(name, sf::Glsl::Bvec3(vector.x != sfFalse, vector.y != sfFalse, vector.z != sfFalse));
 }
 
 void sfShader_setBvec4Uniform(sfShader *shader, const char *name, sfGlslBvec4 vector) {
-    shader->This.setUniform(name, sf::Glsl::Bvec4(vector.x != sfFalse, vector.y != sfFalse, vector.z != sfFalse, vector.w != sfFalse));
+    reinterpret_cast<sf::Shader *>(shader)->setUniform(name, sf::Glsl::Bvec4(vector.x != sfFalse, vector.y != sfFalse, vector.z != sfFalse, vector.w != sfFalse));
 }
 
 void sfShader_setMat3Uniform(sfShader *shader, const char *name, const sfGlslMat3 *matrix) {
-    shader->This.setUniform(name, sf::Glsl::Mat3(matrix->array));
+    reinterpret_cast<sf::Shader *>(shader)->setUniform(name, sf::Glsl::Mat3(matrix->array));
 }
 
 void sfShader_setMat4Uniform(sfShader *shader, const char *name, const sfGlslMat4 *matrix) {
-    shader->This.setUniform(name, sf::Glsl::Mat4(matrix->array));
+    reinterpret_cast<sf::Shader *>(shader)->setUniform(name, sf::Glsl::Mat4(matrix->array));
 }
 
 void sfShader_setTextureUniform(sfShader *shader, const char *name, const sfTexture *texture) {
-    shader->This.setUniform(name, *reinterpret_cast<const sf::Texture *>(texture));
+    reinterpret_cast<sf::Shader *>(shader)->setUniform(name, *reinterpret_cast<const sf::Texture *>(texture));
 }
 
 void sfShader_setCurrentTextureUniform(sfShader *shader, const char *name) {
-    shader->This.setUniform(name, sf::Shader::CurrentTexture);
+    reinterpret_cast<sf::Shader *>(shader)->setUniform(name, sf::Shader::CurrentTexture);
 }
 
 void sfShader_setFloatUniformArray(sfShader *shader, const char *name, const float *scalarArray, size_t length) {
-    shader->This.setUniformArray(name, scalarArray, length);
+    reinterpret_cast<sf::Shader *>(shader)->setUniformArray(name, scalarArray, length);
 }
 
 void sfShader_setVec2UniformArray(sfShader *shader, const char *name, const sfGlslVec2 *vectorArray, size_t length) {
-    shader->This.setUniformArray(name, reinterpret_cast<const sf::Glsl::Vec2 *>(vectorArray), length);
+    reinterpret_cast<sf::Shader *>(shader)->setUniformArray(name, reinterpret_cast<const sf::Glsl::Vec2 *>(vectorArray), length);
 }
 
 void sfShader_setVec3UniformArray(sfShader *shader, const char *name, const sfGlslVec3 *vectorArray, size_t length) {
-    shader->This.setUniformArray(name, reinterpret_cast<const sf::Glsl::Vec3 *>(vectorArray), length);
+    reinterpret_cast<sf::Shader *>(shader)->setUniformArray(name, reinterpret_cast<const sf::Glsl::Vec3 *>(vectorArray), length);
 }
 
 void sfShader_setVec4UniformArray(sfShader *shader, const char *name, const sfGlslVec4 *vectorArray, size_t length) {
-    shader->This.setUniformArray(name, reinterpret_cast<const sf::Glsl::Vec4 *>(vectorArray), length);
+    reinterpret_cast<sf::Shader *>(shader)->setUniformArray(name, reinterpret_cast<const sf::Glsl::Vec4 *>(vectorArray), length);
 }
 
 void sfShader_setMat3UniformArray(sfShader *shader, const char *name, const sfGlslMat3 *matrixArray, size_t length) {
-    shader->This.setUniformArray(name, reinterpret_cast<const sf::Glsl::Mat3 *>(matrixArray), length);
+    reinterpret_cast<sf::Shader *>(shader)->setUniformArray(name, reinterpret_cast<const sf::Glsl::Mat3 *>(matrixArray), length);
 }
 
 void sfShader_setMat4UniformArray(sfShader *shader, const char *name, const sfGlslMat4 *matrixArray, size_t length) {
-    shader->This.setUniformArray(name, reinterpret_cast<const sf::Glsl::Mat4 *>(matrixArray), length);
+    reinterpret_cast<sf::Shader *>(shader)->setUniformArray(name, reinterpret_cast<const sf::Glsl::Mat4 *>(matrixArray), length);
 }
 
 unsigned int sfShader_getNativeHandle(const sfShader *shader) {
-    return shader->This.getNativeHandle();
+    return reinterpret_cast<const sf::Shader *>(shader)->getNativeHandle();
 }
 
 void sfShader_bind(const sfShader *shader) {
-    sf::Shader::bind(shader ? &shader->This : NULL);
+    sf::Shader::bind(reinterpret_cast<const sf::Shader *>(shader));
 }
 
 sfBool sfShader_isAvailable(void) {

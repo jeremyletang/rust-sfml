@@ -28,7 +28,6 @@
 
 #include "Graphics/ConvertTransform.hpp"
 #include "Graphics/RenderStates.h"
-#include "Graphics/ShaderStruct.h"
 #include <SFML/Graphics/RenderStates.hpp>
 
 // Convert sfRenderStates* to sf::RenderStates
@@ -45,7 +44,7 @@ inline sf::RenderStates convertRenderStates(const sfRenderStates *states) {
         sfmlStates.blendMode.alphaEquation = static_cast<sf::BlendMode::Equation>(states->blendMode.alphaEquation);
         sfmlStates.transform = convertTransform(states->transform);
         sfmlStates.texture = reinterpret_cast<const sf::Texture *>(states->texture);
-        sfmlStates.shader = states->shader ? &states->shader->This : NULL;
+        sfmlStates.shader = reinterpret_cast<const sf::Shader *>(states->shader);
     }
 
     return sfmlStates;
