@@ -25,5 +25,6 @@
 #define SFML_SYSTEM_TYPES_H
 
 typedef struct sfClock sfClock;
+typedef struct sfStdString sfStdString;
 
 #endif // SFML_SYSTEM_TYPES_H

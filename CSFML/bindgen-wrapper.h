@@ -7,7 +7,6 @@
 #include "Audio/Music.h"
 #include "Audio/Sound.h"
 #include "Audio/SoundBuffer.h"
-#include "Audio/SoundBufferRecorder.h"
 #include "Audio/SoundRecorder.h"
 #include "Audio/SoundStatus.h"
 #include "Audio/SoundStream.h"

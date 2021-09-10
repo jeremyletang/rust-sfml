@@ -1,4 +1,9 @@
-use crate::{audio::SoundBuffer, ffi::*, sf_bool_ext::SfBoolExt, system::Time};
+use crate::{
+    audio::SoundBuffer,
+    ffi::*,
+    sf_bool_ext::SfBoolExt,
+    system::{StdStr, Time},
+};
 use std::{
     ffi::{CStr, CString},
     os::raw::c_void,
@@ -307,10 +312,12 @@ impl SoundBufferRecorder {
     }
     /// Get the name of the current audio capture device.
     #[must_use]
-    pub fn device(&self) -> String {
+    pub fn device(&self) -> StdStr {
         unsafe {
-            let c_str_ptr = sfSoundBufferRecorder_getDevice(self.ffi_handle.as_ptr());
-            CStr::from_ptr(c_str_ptr).to_string_lossy().into_owned()
+            let std_string = sfSoundBufferRecorder_getDevice(self.ffi_handle.as_ptr());
+            let len = sfStdString_getLength(std_string);
+            let data = sfStdString_getData(std_string) as *const u8;
+            StdStr(std::slice::from_raw_parts(data, len))
         }
     }
 
@@ -342,10 +349,10 @@ fn test_devices() {
         println!("{}", device);
     }
     let mut recorder = SoundBufferRecorder::new();
-    assert_eq!(recorder.device(), default);
+    assert_eq!(recorder.device().to_str().unwrap(), default);
     if let Some(device) = devices.last() {
         recorder.set_device(device).unwrap();
-        assert_eq!(&recorder.device(), device);
+        assert_eq!(recorder.device().to_str().unwrap(), device);
     }
 }
 

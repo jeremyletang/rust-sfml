@@ -16,9 +16,21 @@ use std::{
 include!(concat!(env!("OUT_DIR"), "/bindings.rs"));
 
 // Manual bindings
-#[repr(C)]
-pub struct sfClock {
-    _opaque: [u8; 0],
+
+macro_rules! decl_opaque {
+    ($($name:ident)+) => {
+        $(
+            #[repr(C)]
+            pub struct $name {
+                _opaque: [u8; 0],
+            }
+        )+
+    };
+}
+
+decl_opaque! {
+    sfClock
+    sfStdString
 }
 
 extern "C" {
@@ -56,4 +68,24 @@ extern "C" {
         image: *const sfImage,
         area: sfIntRect,
     ) -> sfBool;
+    pub fn sfSoundBufferRecorder_create() -> *mut sfSoundBufferRecorder;
+    pub fn sfSoundBufferRecorder_destroy(bufRec: *mut sfSoundBufferRecorder);
+    pub fn sfSoundBufferRecorder_start(
+        bufRec: *mut sfSoundBufferRecorder,
+        sampRate: c_uint,
+    ) -> sfBool;
+    pub fn sfSoundBufferRecorder_stop(bufRec: *mut sfSoundBufferRecorder);
+    pub fn sfSoundBufferRecorder_getSampleRate(bufRec: *const sfSoundBufferRecorder) -> c_uint;
+    pub fn sfSoundBufferRecorder_getBuffer(
+        bufRec: *const sfSoundBufferRecorder,
+    ) -> *const sfSoundBuffer;
+    pub fn sfSoundBufferRecorder_setDevice(
+        bufRec: *mut sfSoundBufferRecorder,
+        name: *const c_char,
+    ) -> sfBool;
+    pub fn sfSoundBufferRecorder_getDevice(
+        bufRec: *const sfSoundBufferRecorder,
+    ) -> *const sfStdString;
+    pub fn sfStdString_getLength(s: *const sfStdString) -> usize;
+    pub fn sfStdString_getData(s: *const sfStdString) -> *const c_char;
 }
