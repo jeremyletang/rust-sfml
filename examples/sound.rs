@@ -33,7 +33,7 @@ fn play_music() {
 
     // Display Music informations
     println!("orchestral.ogg :");
-    println!(" {} format seconds", music.duration().as_seconds());
+    println!(" {} seconds", music.duration().as_seconds());
     println!(" {} samples / sec", music.sample_rate());
     println!(" {} channels", music.channel_count());
 
