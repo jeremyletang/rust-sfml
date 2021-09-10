@@ -34,19 +34,15 @@
 
 inline sf::RenderStates convertRenderStates(const sfRenderStates *states) {
     sf::RenderStates sfmlStates;
-
-    if (states) {
-        sfmlStates.blendMode.colorSrcFactor = static_cast<sf::BlendMode::Factor>(states->blendMode.colorSrcFactor);
-        sfmlStates.blendMode.colorDstFactor = static_cast<sf::BlendMode::Factor>(states->blendMode.colorDstFactor);
-        sfmlStates.blendMode.colorEquation = static_cast<sf::BlendMode::Equation>(states->blendMode.colorEquation);
-        sfmlStates.blendMode.alphaSrcFactor = static_cast<sf::BlendMode::Factor>(states->blendMode.alphaSrcFactor);
-        sfmlStates.blendMode.alphaDstFactor = static_cast<sf::BlendMode::Factor>(states->blendMode.alphaDstFactor);
-        sfmlStates.blendMode.alphaEquation = static_cast<sf::BlendMode::Equation>(states->blendMode.alphaEquation);
-        sfmlStates.transform = convertTransform(states->transform);
-        sfmlStates.texture = reinterpret_cast<const sf::Texture *>(states->texture);
-        sfmlStates.shader = reinterpret_cast<const sf::Shader *>(states->shader);
-    }
-
+    sfmlStates.blendMode.colorSrcFactor = static_cast<sf::BlendMode::Factor>(states->blendMode.colorSrcFactor);
+    sfmlStates.blendMode.colorDstFactor = static_cast<sf::BlendMode::Factor>(states->blendMode.colorDstFactor);
+    sfmlStates.blendMode.colorEquation = static_cast<sf::BlendMode::Equation>(states->blendMode.colorEquation);
+    sfmlStates.blendMode.alphaSrcFactor = static_cast<sf::BlendMode::Factor>(states->blendMode.alphaSrcFactor);
+    sfmlStates.blendMode.alphaDstFactor = static_cast<sf::BlendMode::Factor>(states->blendMode.alphaDstFactor);
+    sfmlStates.blendMode.alphaEquation = static_cast<sf::BlendMode::Equation>(states->blendMode.alphaEquation);
+    sfmlStates.transform = convertTransform(states->transform);
+    sfmlStates.texture = reinterpret_cast<const sf::Texture *>(states->texture);
+    sfmlStates.shader = reinterpret_cast<const sf::Shader *>(states->shader);
     return sfmlStates;
 }
 
