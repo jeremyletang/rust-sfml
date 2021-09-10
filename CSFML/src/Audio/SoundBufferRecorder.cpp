@@ -48,8 +48,8 @@ unsigned int sfSoundBufferRecorder_getSampleRate(const sfSoundBufferRecorder *so
 }
 
 const sfSoundBuffer *sfSoundBufferRecorder_getBuffer(const sfSoundBufferRecorder *soundBufferRecorder) {
-    //reinterpret_cast<const sf::SoundBufferRecorder*>(soundBufferRecorder)->getBuffer();
-    abort(); // TODO: Remove SoundBufferStruct
+    const sf::SoundBuffer *buf = &reinterpret_cast<const sf::SoundBufferRecorder *>(soundBufferRecorder)->getBuffer();
+    return reinterpret_cast<const sfSoundBuffer *>(buf);
 }
 
 sfBool sfSoundBufferRecorder_setDevice(sfSoundBufferRecorder *soundBufferRecorder, const char *name) {

@@ -24,99 +24,96 @@
 // Headers
 
 #include "Audio/Sound.h"
-#include "Audio/SoundStruct.h"
+#include <SFML/Audio/Sound.hpp>
 #include <cstddef>
 
 sfSound *sfSound_create(void) {
-    return new sfSound;
+    return reinterpret_cast<sfSound *>(new sf::Sound);
 }
 
 sfSound *sfSound_copy(const sfSound *sound) {
-
-    return new sfSound(*sound);
+    const sf::Sound *src = reinterpret_cast<const sf::Sound *>(sound);
+    return reinterpret_cast<sfSound *>(new sf::Sound(*src));
 }
 
 void sfSound_destroy(sfSound *sound) {
-    delete sound;
+    delete reinterpret_cast<sf::Sound *>(sound);
 }
 
 void sfSound_play(sfSound *sound) {
-    sound->This.play();
+    reinterpret_cast<sf::Sound *>(sound)->play();
 }
 
 void sfSound_pause(sfSound *sound) {
-    sound->This.pause();
+    reinterpret_cast<sf::Sound *>(sound)->pause();
 }
 
 void sfSound_stop(sfSound *sound) {
-    sound->This.stop();
+    reinterpret_cast<sf::Sound *>(sound)->stop();
 }
 
 void sfSound_setBuffer(sfSound *sound, const sfSoundBuffer *buffer) {
-    if (buffer) {
-        sound->This.setBuffer(buffer->This);
-        sound->Buffer = buffer;
-    }
+    reinterpret_cast<sf::Sound *>(sound)->setBuffer(*reinterpret_cast<const sf::SoundBuffer *>(buffer));
 }
 
 const sfSoundBuffer *sfSound_getBuffer(const sfSound *sound) {
-
-    return sound->Buffer;
+    const sf::Sound *s = reinterpret_cast<const sf::Sound *>(sound);
+    return reinterpret_cast<const sfSoundBuffer *>(s->getBuffer());
 }
 
 void sfSound_setLoop(sfSound *sound, sfBool loop) {
-    sound->This.setLoop(loop == sfTrue);
+    reinterpret_cast<sf::Sound *>(sound)->setLoop(loop == sfTrue);
 }
 
 sfBool sfSound_getLoop(const sfSound *sound) {
-    return sound->This.getLoop();
+    return reinterpret_cast<const sf::Sound *>(sound)->getLoop();
 }
 
 sfSoundStatus sfSound_getStatus(const sfSound *sound) {
 
-    return static_cast<sfSoundStatus>(sound->This.getStatus());
+    return static_cast<sfSoundStatus>(reinterpret_cast<const sf::Sound *>(sound)->getStatus());
 }
 
 void sfSound_setPitch(sfSound *sound, float pitch) {
-    sound->This.setPitch(pitch);
+    reinterpret_cast<sf::Sound *>(sound)->setPitch(pitch);
 }
 
 void sfSound_setVolume(sfSound *sound, float volume) {
-    sound->This.setVolume(volume);
+    reinterpret_cast<sf::Sound *>(sound)->setVolume(volume);
 }
 
 void sfSound_setPosition(sfSound *sound, sfVector3f position) {
-    sound->This.setPosition(sf::Vector3f(position.x, position.y, position.z));
+    reinterpret_cast<sf::Sound *>(sound)->setPosition(sf::Vector3f(position.x, position.y, position.z));
 }
 
 void sfSound_setRelativeToListener(sfSound *sound, sfBool relative) {
-    sound->This.setRelativeToListener(relative == sfTrue);
+    reinterpret_cast<sf::Sound *>(sound)->setRelativeToListener(relative == sfTrue);
 }
 
 void sfSound_setMinDistance(sfSound *sound, float distance) {
-    sound->This.setMinDistance(distance);
+    reinterpret_cast<sf::Sound *>(sound)->setMinDistance(distance);
 }
 
 void sfSound_setAttenuation(sfSound *sound, float attenuation) {
-    sound->This.setAttenuation(attenuation);
+    reinterpret_cast<sf::Sound *>(sound)->setAttenuation(attenuation);
 }
 
 void sfSound_setPlayingOffset(sfSound *sound, sfTime timeOffset) {
-    sound->This.setPlayingOffset(sf::microseconds(timeOffset.microseconds));
+    reinterpret_cast<sf::Sound *>(sound)->setPlayingOffset(sf::microseconds(timeOffset.microseconds));
 }
 
 float sfSound_getPitch(const sfSound *sound) {
-    return sound->This.getPitch();
+    return reinterpret_cast<const sf::Sound *>(sound)->getPitch();
 }
 
 float sfSound_getVolume(const sfSound *sound) {
-    return sound->This.getVolume();
+    return reinterpret_cast<const sf::Sound *>(sound)->getVolume();
 }
 
 sfVector3f sfSound_getPosition(const sfSound *sound) {
     sfVector3f position = {0, 0, 0};
 
-    sf::Vector3f sfmlPos = sound->This.getPosition();
+    sf::Vector3f sfmlPos = reinterpret_cast<const sf::Sound *>(sound)->getPosition();
     position.x = sfmlPos.x;
     position.y = sfmlPos.y;
     position.z = sfmlPos.z;
@@ -125,20 +122,20 @@ sfVector3f sfSound_getPosition(const sfSound *sound) {
 }
 
 sfBool sfSound_isRelativeToListener(const sfSound *sound) {
-    return sound->This.isRelativeToListener();
+    return reinterpret_cast<const sf::Sound *>(sound)->isRelativeToListener();
 }
 
 float sfSound_getMinDistance(const sfSound *sound) {
-    return sound->This.getMinDistance();
+    return reinterpret_cast<const sf::Sound *>(sound)->getMinDistance();
 }
 
 float sfSound_getAttenuation(const sfSound *sound) {
-    return sound->This.getAttenuation();
+    return reinterpret_cast<const sf::Sound *>(sound)->getAttenuation();
 }
 
 sfTime sfSound_getPlayingOffset(const sfSound *sound) {
     sfTime time = {0};
 
-    time.microseconds = sound->This.getPlayingOffset().asMicroseconds();
+    time.microseconds = reinterpret_cast<const sf::Sound *>(sound)->getPlayingOffset().asMicroseconds();
     return time;
 }
