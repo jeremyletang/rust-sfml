@@ -24,43 +24,39 @@
 // Headers
 
 #include "Audio/SoundBufferRecorder.h"
-#include "Audio/SoundBufferRecorderStruct.h"
+#include <SFML/Audio/SoundBufferRecorder.hpp>
 #include <cstddef>
 
 sfSoundBufferRecorder *sfSoundBufferRecorder_create(void) {
-    return new sfSoundBufferRecorder;
+    return reinterpret_cast<sfSoundBufferRecorder *>(new sf::SoundBufferRecorder);
 }
 
 void sfSoundBufferRecorder_destroy(sfSoundBufferRecorder *soundBufferRecorder) {
-    delete soundBufferRecorder;
+    delete reinterpret_cast<sf::SoundBufferRecorder *>(soundBufferRecorder);
 }
 
 sfBool sfSoundBufferRecorder_start(sfSoundBufferRecorder *soundBufferRecorder, unsigned int sampleRate) {
-    return soundBufferRecorder->This.start(sampleRate);
+    return reinterpret_cast<sf::SoundBufferRecorder *>(soundBufferRecorder)->start(sampleRate);
 }
 
 void sfSoundBufferRecorder_stop(sfSoundBufferRecorder *soundBufferRecorder) {
-    soundBufferRecorder->This.stop();
+    reinterpret_cast<sf::SoundBufferRecorder *>(soundBufferRecorder)->stop();
 }
 
 unsigned int sfSoundBufferRecorder_getSampleRate(const sfSoundBufferRecorder *soundBufferRecorder) {
-    return soundBufferRecorder->This.getSampleRate();
+    return reinterpret_cast<const sf::SoundBufferRecorder *>(soundBufferRecorder)->getSampleRate();
 }
 
 const sfSoundBuffer *sfSoundBufferRecorder_getBuffer(const sfSoundBufferRecorder *soundBufferRecorder) {
-
-    soundBufferRecorder->SoundBuffer.This = soundBufferRecorder->This.getBuffer();
-
-    return &soundBufferRecorder->SoundBuffer;
+    //reinterpret_cast<const sf::SoundBufferRecorder*>(soundBufferRecorder)->getBuffer();
+    abort(); // TODO: Remove SoundBufferStruct
 }
 
 sfBool sfSoundBufferRecorder_setDevice(sfSoundBufferRecorder *soundBufferRecorder, const char *name) {
-    return soundBufferRecorder->This.setDevice(name);
+    return reinterpret_cast<sf::SoundBufferRecorder *>(soundBufferRecorder)->setDevice(name);
 }
 
 const char *sfSoundBufferRecorder_getDevice(sfSoundBufferRecorder *soundBufferRecorder) {
-
-    soundBufferRecorder->DeviceName = soundBufferRecorder->This.getDevice();
-
-    return soundBufferRecorder->DeviceName.c_str();
+    //reinterpret_cast<sf::SoundBufferRecorder*>(soundBufferRecorder)->getDevice();
+    abort(); // TODO: Add SfStdString type
 }
