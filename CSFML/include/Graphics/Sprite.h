@@ -62,10 +62,6 @@ extern "C" void sfSprite_rotate(sfSprite *sprite, float angle);
 
 extern "C" void sfSprite_scale(sfSprite *sprite, sfVector2f factors);
 
-extern "C" sfTransform sfSprite_getTransform(const sfSprite *sprite);
-
-extern "C" sfTransform sfSprite_getInverseTransform(const sfSprite *sprite);
-
 extern "C" void sfSprite_setTexture(sfSprite *sprite, const sfTexture *texture, sfBool resetRect);
 
 extern "C" void sfSprite_setTextureRect(sfSprite *sprite, sfIntRect rectangle);

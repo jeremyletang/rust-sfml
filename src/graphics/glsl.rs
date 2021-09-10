@@ -153,7 +153,18 @@ pub struct Mat3(pub [f32; 9]);
 
 impl From<crate::graphics::Transform> for Mat3 {
     fn from(src: crate::graphics::Transform) -> Self {
-        Mat3(src.0.matrix)
+        let src = src.0.matrix;
+        let mut dest = [0.0; 9];
+        dest[0] = src[0];
+        dest[1] = src[1];
+        dest[2] = src[3];
+        dest[3] = src[4];
+        dest[4] = src[5];
+        dest[5] = src[7];
+        dest[6] = src[12];
+        dest[7] = src[13];
+        dest[8] = src[15];
+        Mat3(dest)
     }
 }
 
@@ -164,8 +175,6 @@ pub struct Mat4(pub [f32; 16]);
 
 impl From<crate::graphics::Transform> for Mat4 {
     fn from(src: crate::graphics::Transform) -> Self {
-        let mut mat = [0.0; 16];
-        src.get_matrix(&mut mat);
-        Mat4(mat)
+        Mat4(*src.get_matrix())
     }
 }

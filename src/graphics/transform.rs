@@ -43,15 +43,20 @@ impl Transform {
     }
 
     /// Return the matrix
-    pub fn get_matrix(&self, matrix: &mut [f32; 16]) {
+    #[must_use]
+    pub fn get_matrix(&self) -> &[f32; 16] {
         unsafe {
-            ffi::sfTransform_getMatrix(&self.0, matrix.as_mut_ptr());
+            let ptr = ffi::sfTransform_getMatrix(&self.0);
+            let arr_ptr: *const [f32; 16] = ptr as _;
+            &*arr_ptr
         }
     }
 
     /// The identity transform (does nothing)
     pub const IDENTITY: Self = Transform(ffi::sfTransform {
-        matrix: [1., 0., 0., 0., 1., 0., 0., 0., 1.],
+        matrix: [
+            1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0,
+        ],
     });
 
     /// Return the inverse of a transform

@@ -62,10 +62,6 @@ extern "C" void sfCircleShape_rotate(sfCircleShape *shape, float angle);
 
 extern "C" void sfCircleShape_scale(sfCircleShape *shape, sfVector2f factors);
 
-extern "C" sfTransform sfCircleShape_getTransform(const sfCircleShape *shape);
-
-extern "C" sfTransform sfCircleShape_getInverseTransform(const sfCircleShape *shape);
-
 extern "C" void sfCircleShape_setTexture(sfCircleShape *shape, const sfTexture *texture, sfBool resetRect);
 
 extern "C" void sfCircleShape_setTextureRect(sfCircleShape *shape, sfIntRect rect);

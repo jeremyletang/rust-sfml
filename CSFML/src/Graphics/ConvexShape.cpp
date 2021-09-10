@@ -24,7 +24,6 @@
 // Headers
 
 #include "Graphics/ConvexShape.h"
-#include "Graphics/ConvertTransform.hpp"
 #include "Graphics/ConvexShapeStruct.h"
 #include <SFML/Graphics/Color.hpp>
 #include <cstddef>
@@ -104,16 +103,12 @@ void sfConvexShape_scale(sfConvexShape *shape, sfVector2f factors) {
     shape->This.scale(factors.x, factors.y);
 }
 
-sfTransform sfConvexShape_getTransform(const sfConvexShape *shape) {
-
-    shape->Transform = convertTransform(shape->This.getTransform());
-    return shape->Transform;
+sf::Transform sfConvexShape_getTransform(const sfConvexShape *shape) {
+    return shape->This.getTransform();
 }
 
-sfTransform sfConvexShape_getInverseTransform(const sfConvexShape *shape) {
-
-    shape->InverseTransform = convertTransform(shape->This.getInverseTransform());
-    return shape->InverseTransform;
+sf::Transform sfConvexShape_getInverseTransform(const sfConvexShape *shape) {
+    return shape->This.getInverseTransform();
 }
 
 void sfConvexShape_setTexture(sfConvexShape *shape, const sfTexture *texture, sfBool resetRect) {

@@ -88,4 +88,37 @@ extern "C" {
     ) -> *const sfStdString;
     pub fn sfStdString_getLength(s: *const sfStdString) -> usize;
     pub fn sfStdString_getData(s: *const sfStdString) -> *const c_char;
+    pub fn sfCircleShape_getTransform(shape: *const sfCircleShape) -> sfTransform;
+    pub fn sfCircleShape_getInverseTransform(shape: *const sfCircleShape) -> sfTransform;
+    pub fn sfShape_getTransform(shape: *const sfShape) -> sfTransform;
+    pub fn sfShape_getInverseTransform(shape: *const sfShape) -> sfTransform;
+    pub fn sfRectangleShape_getTransform(shape: *const sfRectangleShape) -> sfTransform;
+    pub fn sfRectangleShape_getInverseTransform(shape: *const sfRectangleShape) -> sfTransform;
+    pub fn sfConvexShape_getTransform(shape: *const sfConvexShape) -> sfTransform;
+    pub fn sfConvexShape_getInverseTransform(shape: *const sfConvexShape) -> sfTransform;
+    pub fn sfSprite_getTransform(shape: *const sfSprite) -> sfTransform;
+    pub fn sfSprite_getInverseTransform(shape: *const sfSprite) -> sfTransform;
+    pub fn sfText_getTransform(shape: *const sfText) -> sfTransform;
+    pub fn sfText_getInverseTransform(shape: *const sfText) -> sfTransform;
+    pub fn sfTransform_fromMatrix(
+        a00: f32,
+        a01: f32,
+        a02: f32,
+        a10: f32,
+        a11: f32,
+        a12: f32,
+        a20: f32,
+        a21: f32,
+        a22: f32,
+    ) -> sfTransform;
+    pub fn sfTransform_getMatrix(tf: *const sfTransform) -> *const f32;
+    pub fn sfTransform_getInverse(tf: *const sfTransform) -> sfTransform;
+    pub fn sfTransform_transformPoint(tf: *const sfTransform, point: sfVector2f) -> sfVector2f;
+    pub fn sfTransform_transformRect(tf: *const sfTransform, rect: sfFloatRect) -> sfFloatRect;
+    pub fn sfTransform_combine(tf: *mut sfTransform, other: *const sfTransform);
+    pub fn sfTransform_translate(tf: *mut sfTransform, x: f32, y: f32);
+    pub fn sfTransform_rotate(tf: *mut sfTransform, angle: f32);
+    pub fn sfTransform_rotateWithCenter(tf: *mut sfTransform, angle: f32, cx: f32, cy: f32);
+    pub fn sfTransform_scale(tf: *mut sfTransform, x: f32, y: f32);
+    pub fn sfTransform_scaleWithCenter(tf: *mut sfTransform, x: f32, y: f32, cx: f32, cy: f32);
 }

@@ -62,10 +62,6 @@ extern "C" void sfConvexShape_rotate(sfConvexShape *shape, float angle);
 
 extern "C" void sfConvexShape_scale(sfConvexShape *shape, sfVector2f factors);
 
-extern "C" sfTransform sfConvexShape_getTransform(const sfConvexShape *shape);
-
-extern "C" sfTransform sfConvexShape_getInverseTransform(const sfConvexShape *shape);
-
 extern "C" void sfConvexShape_setTexture(sfConvexShape *shape, const sfTexture *texture, sfBool resetRect);
 
 extern "C" void sfConvexShape_setTextureRect(sfConvexShape *shape, sfIntRect rect);

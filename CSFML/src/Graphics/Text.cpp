@@ -24,7 +24,6 @@
 // Headers
 
 #include "Graphics/Text.h"
-#include "Graphics/ConvertTransform.hpp"
 #include "Graphics/Font.h"
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/Text.hpp>
@@ -108,16 +107,12 @@ void sfText_scale(sfText *text, sfVector2f factors) {
     reinterpret_cast<sf::Text *>(text)->scale(factors.x, factors.y);
 }
 
-sfTransform sfText_getTransform(const sfText *text) {
-
-    sfTransform transform = convertTransform(reinterpret_cast<const sf::Text *>(text)->getTransform());
-    return transform;
+sf::Transform sfText_getTransform(const sfText *text) {
+    return reinterpret_cast<const sf::Text *>(text)->getTransform();
 }
 
-sfTransform sfText_getInverseTransform(const sfText *text) {
-
-    sfTransform transform = convertTransform(reinterpret_cast<const sf::Text *>(text)->getInverseTransform());
-    return transform;
+sf::Transform sfText_getInverseTransform(const sfText *text) {
+    return reinterpret_cast<const sf::Text *>(text)->getInverseTransform();
 }
 
 void sfText_setUnicodeString(sfText *text, const sfUint32 *string) {

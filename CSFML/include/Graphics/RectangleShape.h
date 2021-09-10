@@ -62,10 +62,6 @@ extern "C" void sfRectangleShape_rotate(sfRectangleShape *shape, float angle);
 
 extern "C" void sfRectangleShape_scale(sfRectangleShape *shape, sfVector2f factors);
 
-extern "C" sfTransform sfRectangleShape_getTransform(const sfRectangleShape *shape);
-
-extern "C" sfTransform sfRectangleShape_getInverseTransform(const sfRectangleShape *shape);
-
 extern "C" void sfRectangleShape_setTexture(sfRectangleShape *shape, const sfTexture *texture, sfBool resetRect);
 
 extern "C" void sfRectangleShape_setTextureRect(sfRectangleShape *shape, sfIntRect rect);

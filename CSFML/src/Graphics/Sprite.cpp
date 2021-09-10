@@ -24,7 +24,6 @@
 // Headers
 
 #include "Graphics/Sprite.h"
-#include "Graphics/ConvertTransform.hpp"
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/Image.hpp>
 #include <SFML/Graphics/Sprite.hpp>
@@ -107,16 +106,12 @@ void sfSprite_scale(sfSprite *sprite, sfVector2f factors) {
     reinterpret_cast<sf::Sprite *>(sprite)->scale(factors.x, factors.y);
 }
 
-sfTransform sfSprite_getTransform(const sfSprite *sprite) {
-
-    sfTransform transform = convertTransform(reinterpret_cast<const sf::Sprite *>(sprite)->getTransform());
-    return transform;
+sf::Transform sfSprite_getTransform(const sfSprite *sprite) {
+    return reinterpret_cast<const sf::Sprite *>(sprite)->getTransform();
 }
 
-sfTransform sfSprite_getInverseTransform(const sfSprite *sprite) {
-
-    sfTransform transform = convertTransform(reinterpret_cast<const sf::Sprite *>(sprite)->getInverseTransform());
-    return transform;
+sf::Transform sfSprite_getInverseTransform(const sfSprite *sprite) {
+    return reinterpret_cast<const sf::Sprite *>(sprite)->getInverseTransform();
 }
 
 void sfSprite_setTexture(sfSprite *sprite, const sfTexture *texture, sfBool resetRect) {

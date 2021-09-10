@@ -24,34 +24,30 @@
 // Headers
 
 #include "Graphics/Transform.h"
-#include "Graphics/ConvertTransform.hpp"
+#include "Graphics/Rect.h"
+#include "System/Vector2.h"
 #include <SFML/Graphics/Transform.hpp>
 #include <cstddef>
 #include <cstring>
 
-sfTransform sfTransform_fromMatrix(float a00, float a01, float a02,
-                                   float a10, float a11, float a12,
-                                   float a20, float a21, float a22) {
-    sfTransform transform = {a00, a01, a02, a10, a11, a12, a20, a21, a22};
-    return transform;
+extern "C" sf::Transform sfTransform_fromMatrix(float a00, float a01, float a02,
+                                                float a10, float a11, float a12,
+                                                float a20, float a21, float a22) {
+    return sf::Transform(a00, a01, a02, a10, a11, a12, a20, a21, a22);
 }
 
-void sfTransform_getMatrix(const sfTransform *transform, float *matrix) {
-
-    sf::Transform converted = convertTransform(*transform);
-    if (matrix)
-        std::memcpy(matrix, converted.getMatrix(), 16 * sizeof(float));
+const float *sfTransform_getMatrix(const sf::Transform *transform) {
+    return transform->getMatrix();
 }
 
-sfTransform sfTransform_getInverse(const sfTransform *transform) {
-
-    return convertTransform(convertTransform(*transform).getInverse());
+extern "C" sf::Transform sfTransform_getInverse(const sf::Transform *transform) {
+    return transform->getInverse();
 }
 
-sfVector2f sfTransform_transformPoint(const sfTransform *transform, sfVector2f point) {
+extern "C" sfVector2f sfTransform_transformPoint(const sf::Transform *transform, sfVector2f point) {
     sfVector2f p = {0, 0};
 
-    sf::Vector2f sfmlPoint = convertTransform(*transform).transformPoint(point.x, point.y);
+    sf::Vector2f sfmlPoint = transform->transformPoint(point.x, point.y);
 
     p.x = sfmlPoint.x;
     p.y = sfmlPoint.y;
@@ -59,10 +55,10 @@ sfVector2f sfTransform_transformPoint(const sfTransform *transform, sfVector2f p
     return p;
 }
 
-sfFloatRect sfTransform_transformRect(const sfTransform *transform, sfFloatRect rectangle) {
+extern "C" sfFloatRect sfTransform_transformRect(const sf::Transform *transform, sfFloatRect rectangle) {
     sfFloatRect rect = {0, 0, 0, 0};
 
-    sf::FloatRect sfmlRect = convertTransform(*transform).transformRect(sf::FloatRect(rectangle.left, rectangle.top, rectangle.width, rectangle.height));
+    sf::FloatRect sfmlRect = transform->transformRect(sf::FloatRect(rectangle.left, rectangle.top, rectangle.width, rectangle.height));
 
     rect.left = sfmlRect.left;
     rect.top = sfmlRect.top;
@@ -72,32 +68,26 @@ sfFloatRect sfTransform_transformRect(const sfTransform *transform, sfFloatRect 
     return rect;
 }
 
-void sfTransform_combine(sfTransform *transform, const sfTransform *other) {
-
-    *transform = convertTransform(convertTransform(*transform).combine(convertTransform(*other)));
+extern "C" void sfTransform_combine(sf::Transform *transform, const sf::Transform *other) {
+    transform->combine(*other);
 }
 
-void sfTransform_translate(sfTransform *transform, float x, float y) {
-
-    *transform = convertTransform(convertTransform(*transform).translate(x, y));
+extern "C" void sfTransform_translate(sf::Transform *transform, float x, float y) {
+    transform->translate(x, y);
 }
 
-void sfTransform_rotate(sfTransform *transform, float angle) {
-
-    *transform = convertTransform(convertTransform(*transform).rotate(angle));
+extern "C" void sfTransform_rotate(sf::Transform *transform, float angle) {
+    transform->rotate(angle);
 }
 
-void sfTransform_rotateWithCenter(sfTransform *transform, float angle, float centerX, float centerY) {
-
-    *transform = convertTransform(convertTransform(*transform).rotate(angle, centerX, centerY));
+extern "C" void sfTransform_rotateWithCenter(sf::Transform *transform, float angle, float centerX, float centerY) {
+    transform->rotate(angle, centerX, centerY);
 }
 
-void sfTransform_scale(sfTransform *transform, float scaleX, float scaleY) {
-
-    *transform = convertTransform(convertTransform(*transform).scale(scaleX, scaleY));
+extern "C" void sfTransform_scale(sf::Transform *transform, float scaleX, float scaleY) {
+    transform->scale(scaleX, scaleY);
 }
 
-void sfTransform_scaleWithCenter(sfTransform *transform, float scaleX, float scaleY, float centerX, float centerY) {
-
-    *transform = convertTransform(convertTransform(*transform).scale(scaleX, scaleY, centerX, centerY));
+extern "C" void sfTransform_scaleWithCenter(sf::Transform *transform, float scaleX, float scaleY, float centerX, float centerY) {
+    transform->scale(scaleX, scaleY, centerX, centerY);
 }

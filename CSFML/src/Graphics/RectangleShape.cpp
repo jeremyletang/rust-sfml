@@ -24,7 +24,6 @@
 // Headers
 
 #include "Graphics/RectangleShape.h"
-#include "Graphics/ConvertTransform.hpp"
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <cstddef>
@@ -105,16 +104,12 @@ void sfRectangleShape_scale(sfRectangleShape *shape, sfVector2f factors) {
     reinterpret_cast<sf::RectangleShape *>(shape)->scale(factors.x, factors.y);
 }
 
-sfTransform sfRectangleShape_getTransform(const sfRectangleShape *shape) {
-
-    sfTransform transform = convertTransform(reinterpret_cast<const sf::RectangleShape *>(shape)->getTransform());
-    return transform;
+sf::Transform sfRectangleShape_getTransform(const sfRectangleShape *shape) {
+    return reinterpret_cast<const sf::RectangleShape *>(shape)->getTransform();
 }
 
-sfTransform sfRectangleShape_getInverseTransform(const sfRectangleShape *shape) {
-
-    sfTransform transform = convertTransform(reinterpret_cast<const sf::RectangleShape *>(shape)->getInverseTransform());
-    return transform;
+sf::Transform sfRectangleShape_getInverseTransform(const sfRectangleShape *shape) {
+    return reinterpret_cast<const sf::RectangleShape *>(shape)->getInverseTransform();
 }
 
 void sfRectangleShape_setTexture(sfRectangleShape *shape, const sfTexture *texture, sfBool resetRect) {

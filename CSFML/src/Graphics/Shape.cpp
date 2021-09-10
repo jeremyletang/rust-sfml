@@ -24,7 +24,6 @@
 // Headers
 
 #include "Graphics/Shape.h"
-#include "Graphics/ConvertTransform.hpp"
 #include "Graphics/ShapeStruct.h"
 #include <SFML/Graphics/Color.hpp>
 #include <cstddef>
@@ -101,16 +100,12 @@ void sfShape_scale(sfShape *shape, sfVector2f factors) {
     shape->This.scale(factors.x, factors.y);
 }
 
-sfTransform sfShape_getTransform(const sfShape *shape) {
-
-    shape->Transform = convertTransform(shape->This.getTransform());
-    return shape->Transform;
+sf::Transform sfShape_getTransform(const sfShape *shape) {
+    return shape->This.getTransform();
 }
 
-sfTransform sfShape_getInverseTransform(const sfShape *shape) {
-
-    shape->InverseTransform = convertTransform(shape->This.getInverseTransform());
-    return shape->InverseTransform;
+sf::Transform sfShape_getInverseTransform(const sfShape *shape) {
+    return shape->This.getInverseTransform();
 }
 
 void sfShape_setTexture(sfShape *shape, const sfTexture *texture, sfBool resetRect) {

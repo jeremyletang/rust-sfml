@@ -25,7 +25,6 @@
 
 #include "Graphics/CircleShape.h"
 #include "Graphics/CircleShapeStruct.h"
-#include "Graphics/ConvertTransform.hpp"
 #include <SFML/Graphics/Color.hpp>
 #include <cstddef>
 
@@ -107,16 +106,12 @@ void sfCircleShape_scale(sfCircleShape *shape, sfVector2f factors) {
     shape->This.scale(factors.x, factors.y);
 }
 
-sfTransform sfCircleShape_getTransform(const sfCircleShape *shape) {
-
-    shape->Transform = convertTransform(shape->This.getTransform());
-    return shape->Transform;
+extern "C" sf::Transform sfCircleShape_getTransform(const sfCircleShape *shape) {
+    return shape->This.getTransform();
 }
 
-sfTransform sfCircleShape_getInverseTransform(const sfCircleShape *shape) {
-
-    shape->InverseTransform = convertTransform(shape->This.getInverseTransform());
-    return shape->InverseTransform;
+extern "C" sf::Transform sfCircleShape_getInverseTransform(const sfCircleShape *shape) {
+    return shape->This.getInverseTransform();
 }
 
 void sfCircleShape_setTexture(sfCircleShape *shape, const sfTexture *texture, sfBool resetRect) {

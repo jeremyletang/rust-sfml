@@ -24,7 +24,6 @@
 // Headers
 
 #include "Graphics/Shader.h"
-#include "Graphics/ConvertTransform.hpp"
 #include "System/InputStreamStruct.h"
 #include <SFML/Graphics/Shader.hpp>
 #include <cstddef>
