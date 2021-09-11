@@ -33,6 +33,122 @@ decl_opaque! {
     sfStdString
 }
 
+/// Enumeration of the blending factors.
+///
+/// The factors are mapped directly to their OpenGL equivalents, specified by
+/// `glBlendFunc()` or `glBlendFuncSeparate()`.
+#[repr(C)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum BlendFactor {
+    /// (0, 0, 0, 0)
+    Zero,
+    /// (1, 1, 1, 1)
+    One,
+    /// (src.r, src.g, src.b, src.a)
+    SrcColor,
+    /// (1, 1, 1, 1) - (src.r, src.g, src.b, src.a)
+    OneMinusSrcColor,
+    /// (dst.r, dst.g, dst.b, dst.a)
+    DstColor,
+    /// (1, 1, 1, 1) - (dst.r, dst.g, dst.b, dst.a)
+    OneMinusDstColor,
+    /// (src.a, src.a, src.a, src.a)
+    SrcAlpha,
+    /// (1, 1, 1, 1) - (src.a, src.a, src.a, src.a)
+    OneMinusSrcAlpha,
+    /// (dst.a, dst.a, dst.a, dst.a)
+    DstAlpha,
+    /// (1, 1, 1, 1) - (dst.a, dst.a, dst.a, dst.a)
+    OneMinusDstAlpha,
+}
+
+/// Enumeration of the blending equations.
+///
+/// The equations are mapped directly to their OpenGL equivalents, specified by
+/// `glBlendEquation()` or `glBlendEquationSeparate()`.
+#[repr(C)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum BlendEquation {
+    /// Pixel = Src * SrcFactor + Dst * DstFactor.
+    Add,
+    /// Pixel = Src * SrcFactor - Dst * DstFactor.
+    Subtract,
+    /// Pixel = Dst * DstFactor - Src * SrcFactor.
+    ReverseSubtract,
+}
+
+/// Blending modes for drawing.
+///
+/// `BlendMode` is a type that represents a blend mode.
+///
+/// A blend mode determines how the colors of an object you draw are mixed with the colors that
+/// are already in the buffer.
+///
+/// The type is composed of 6 components
+///
+/// - Color Source Factor
+/// - Color Destination Factor
+/// - Color Blend Equation
+/// - Alpha Source Factor
+/// - Alpha Destination Factor
+/// - Alpha Blend Equation
+///
+/// The source factor specifies how the pixel you are drawing contributes to the final color.
+/// The destination factor specifies how the pixel already drawn in the buffer contributes to
+/// the final color.
+///
+/// The color channels RGB (red, green, blue; simply referred to as color) and A
+/// (alpha; the transparency) can be treated separately. This separation can be useful for
+/// specific blend modes, but most often you won't need it and will simply treat the color as
+/// a single unit.
+///
+/// The blend factors and equations correspond to their OpenGL equivalents.
+/// In general, the color of the resulting pixel is calculated according to the following
+/// formula (src is the color of the source pixel, dst the color of the destination pixel,
+/// the other variables correspond to the public members, with the equations
+/// being + or - operators):
+///
+/// ```ignore
+/// dst.rgb = colorSrcFactor * src.rgb (colorEquation) colorDstFactor * dst.rgb
+/// dst.a   = alphaSrcFactor * src.a   (alphaEquation) alphaDstFactor * dst.a
+/// ```
+///
+/// All factors and colors are represented as floating point numbers between 0 and 1.
+/// Where necessary, the result is clamped to fit in that range.
+///
+/// In SFML, a blend mode can be specified every time you draw a [`Drawable`] object to
+/// a render target. It is part of the [`RenderStates`] compound that is passed to
+/// [`RenderTarget::draw`].
+///
+/// [`Drawable`]: crate::graphics::Drawable
+/// [`RenderStates`]: crate::graphics::RenderStates
+/// [`RenderTarget::draw`]: crate::graphics::RenderTarget::draw
+#[repr(C)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct BlendMode {
+    /// Source blending factor for the color channels
+    pub color_src_factor: BlendFactor,
+    /// Destination blending factor for the color channels
+    pub color_dst_factor: BlendFactor,
+    /// Blending equation for the color channels
+    pub color_equation: BlendEquation,
+    /// Source blending factor for the alpha channel
+    pub alpha_src_factor: BlendFactor,
+    /// Destination blending factor for the alpha channel
+    pub alpha_dst_factor: BlendFactor,
+    /// Blending equation for the alpha channel
+    pub alpha_equation: BlendEquation,
+}
+
+#[repr(C)]
+#[derive(Clone, Copy, Debug)]
+pub struct sfRenderStates {
+    pub blendMode: BlendMode,
+    pub transform: sfTransform,
+    pub texture: *const sfTexture,
+    pub shader: *const sfShader,
+}
+
 extern "C" {
     pub fn sfClipboard_getUnicodeString() -> *const sfUint32;
     pub fn sfClipboard_setUnicodeString(text: *const sfUint32);
@@ -121,4 +237,88 @@ extern "C" {
     pub fn sfTransform_rotateWithCenter(tf: *mut sfTransform, angle: f32, cx: f32, cy: f32);
     pub fn sfTransform_scale(tf: *mut sfTransform, x: f32, y: f32);
     pub fn sfTransform_scaleWithCenter(tf: *mut sfTransform, x: f32, y: f32, cx: f32, cy: f32);
+    pub fn sfRenderWindow_drawSprite(
+        rw: *mut sfRenderWindow,
+        object: *const sfSprite,
+        states: *const sfRenderStates,
+    );
+    pub fn sfRenderWindow_drawText(
+        rw: *mut sfRenderWindow,
+        object: *const sfText,
+        states: *const sfRenderStates,
+    );
+    pub fn sfRenderWindow_drawShape(
+        rw: *mut sfRenderWindow,
+        object: *const sfShape,
+        states: *const sfRenderStates,
+    );
+    pub fn sfRenderWindow_drawCircleShape(
+        rw: *mut sfRenderWindow,
+        object: *const sfCircleShape,
+        states: *const sfRenderStates,
+    );
+    pub fn sfRenderWindow_drawConvexShape(
+        rw: *mut sfRenderWindow,
+        object: *const sfConvexShape,
+        states: *const sfRenderStates,
+    );
+    pub fn sfRenderWindow_drawRectangleShape(
+        rw: *mut sfRenderWindow,
+        object: *const sfRectangleShape,
+        states: *const sfRenderStates,
+    );
+    pub fn sfRenderWindow_drawVertexBuffer(
+        rw: *mut sfRenderWindow,
+        object: *const sfVertexBuffer,
+        states: *const sfRenderStates,
+    );
+    pub fn sfRenderWindow_drawPrimitives(
+        rw: *mut sfRenderWindow,
+        vertices: *const sfVertex,
+        vertexCount: usize,
+        type_: sfPrimitiveType,
+        states: *const sfRenderStates,
+    );
+    pub fn sfRenderTexture_drawSprite(
+        rt: *mut sfRenderTexture,
+        object: *const sfSprite,
+        states: *const sfRenderStates,
+    );
+    pub fn sfRenderTexture_drawText(
+        rt: *mut sfRenderTexture,
+        object: *const sfText,
+        states: *const sfRenderStates,
+    );
+    pub fn sfRenderTexture_drawShape(
+        rt: *mut sfRenderTexture,
+        object: *const sfShape,
+        states: *const sfRenderStates,
+    );
+    pub fn sfRenderTexture_drawCircleShape(
+        rt: *mut sfRenderTexture,
+        object: *const sfCircleShape,
+        states: *const sfRenderStates,
+    );
+    pub fn sfRenderTexture_drawConvexShape(
+        rt: *mut sfRenderTexture,
+        object: *const sfConvexShape,
+        states: *const sfRenderStates,
+    );
+    pub fn sfRenderTexture_drawRectangleShape(
+        rt: *mut sfRenderTexture,
+        object: *const sfRectangleShape,
+        states: *const sfRenderStates,
+    );
+    pub fn sfRenderTexture_drawVertexBuffer(
+        rt: *mut sfRenderTexture,
+        object: *const sfVertexBuffer,
+        states: *const sfRenderStates,
+    );
+    pub fn sfRenderTexture_drawPrimitives(
+        rt: *mut sfRenderTexture,
+        vertices: *const sfVertex,
+        vertex_count: usize,
+        type_: sfPrimitiveType,
+        states: *const sfRenderStates,
+    );
 }

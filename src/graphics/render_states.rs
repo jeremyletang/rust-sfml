@@ -79,7 +79,7 @@ impl<'texture, 'shader, 'shader_texture> RenderStates<'texture, 'shader, 'shader
     ) -> Self {
         Self {
             repr: ffi::sfRenderStates {
-                blendMode: blend_mode.raw(),
+                blendMode: blend_mode,
                 transform: transform.raw(),
                 texture: match texture {
                     Some(tex) => tex.raw(),
@@ -100,7 +100,7 @@ impl<'texture, 'shader, 'shader_texture> RenderStates<'texture, 'shader, 'shader
     }
     /// Sets the blending mode
     pub fn set_blend_mode(&mut self, blend_mode: BlendMode) {
-        self.repr.blendMode = blend_mode.raw();
+        self.repr.blendMode = blend_mode;
     }
     /// Sets the transform
     pub fn set_transform(&mut self, transform: Transform) {
@@ -128,7 +128,7 @@ impl RenderStates<'static, 'static, 'static> {
     /// This can be used in a const context, unlike the [`Default`] implementation.
     pub const DEFAULT: Self = Self {
         repr: ffi::sfRenderStates {
-            blendMode: BlendMode::ALPHA.raw(),
+            blendMode: BlendMode::ALPHA,
             transform: Transform::IDENTITY.raw(),
             texture: ptr::null(),
             shader: ptr::null(),

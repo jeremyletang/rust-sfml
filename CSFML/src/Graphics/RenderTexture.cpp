@@ -25,7 +25,6 @@
 
 #include "Graphics/RenderTexture.h"
 #include "Graphics/CircleShapeStruct.h"
-#include "Graphics/ConvertRenderStates.hpp"
 #include "Graphics/ConvexShapeStruct.h"
 #include "Graphics/RenderTextureStruct.h"
 #include "Graphics/ShapeStruct.h"
@@ -133,40 +132,40 @@ sfVector2i sfRenderTexture_mapCoordsToPixel(const sfRenderTexture *renderTexture
     return result;
 }
 
-void sfRenderTexture_drawSprite(sfRenderTexture *renderTexture, const sfSprite *object, const sfRenderStates *states) {
+extern "C" void sfRenderTexture_drawSprite(sfRenderTexture *renderTexture, const sfSprite *object, const sf::RenderStates *states) {
 
-    renderTexture->This.draw(*reinterpret_cast<const sf::Sprite *>(object), convertRenderStates(states));
+    renderTexture->This.draw(*reinterpret_cast<const sf::Sprite *>(object), *states);
 }
-void sfRenderTexture_drawText(sfRenderTexture *renderTexture, const sfText *object, const sfRenderStates *states) {
+extern "C" void sfRenderTexture_drawText(sfRenderTexture *renderTexture, const sfText *object, const sf::RenderStates *states) {
 
-    renderTexture->This.draw(*reinterpret_cast<const sf::Text *>(object), convertRenderStates(states));
+    renderTexture->This.draw(*reinterpret_cast<const sf::Text *>(object), *states);
 }
-void sfRenderTexture_drawShape(sfRenderTexture *renderTexture, const sfShape *object, const sfRenderStates *states) {
+extern "C" void sfRenderTexture_drawShape(sfRenderTexture *renderTexture, const sfShape *object, const sf::RenderStates *states) {
 
-    renderTexture->This.draw(object->This, convertRenderStates(states));
+    renderTexture->This.draw(object->This, *states);
 }
-void sfRenderTexture_drawCircleShape(sfRenderTexture *renderTexture, const sfCircleShape *object, const sfRenderStates *states) {
+extern "C" void sfRenderTexture_drawCircleShape(sfRenderTexture *renderTexture, const sfCircleShape *object, const sf::RenderStates *states) {
 
-    renderTexture->This.draw(object->This, convertRenderStates(states));
+    renderTexture->This.draw(object->This, *states);
 }
-void sfRenderTexture_drawConvexShape(sfRenderTexture *renderTexture, const sfConvexShape *object, const sfRenderStates *states) {
+extern "C" void sfRenderTexture_drawConvexShape(sfRenderTexture *renderTexture, const sfConvexShape *object, const sf::RenderStates *states) {
 
-    renderTexture->This.draw(object->This, convertRenderStates(states));
+    renderTexture->This.draw(object->This, *states);
 }
-void sfRenderTexture_drawRectangleShape(sfRenderTexture *renderTexture, const sfRectangleShape *object, const sfRenderStates *states) {
+extern "C" void sfRenderTexture_drawRectangleShape(sfRenderTexture *renderTexture, const sfRectangleShape *object, const sf::RenderStates *states) {
 
-    renderTexture->This.draw(*reinterpret_cast<const sf::RectangleShape *>(object), convertRenderStates(states));
+    renderTexture->This.draw(*reinterpret_cast<const sf::RectangleShape *>(object), *states);
 }
-void sfRenderTexture_drawVertexBuffer(sfRenderTexture *renderTexture, const sfVertexBuffer *object, const sfRenderStates *states) {
+extern "C" void sfRenderTexture_drawVertexBuffer(sfRenderTexture *renderTexture, const sfVertexBuffer *object, const sf::RenderStates *states) {
 
-    renderTexture->This.draw(object->This, convertRenderStates(states));
+    renderTexture->This.draw(object->This, *states);
 }
 
-void sfRenderTexture_drawPrimitives(sfRenderTexture *renderTexture,
+extern "C" void sfRenderTexture_drawPrimitives(sfRenderTexture *renderTexture,
                                     const sfVertex *vertices, size_t vertexCount,
-                                    sfPrimitiveType type, const sfRenderStates *states) {
+                                    sfPrimitiveType type, const sf::RenderStates *states) {
     renderTexture->This.draw(reinterpret_cast<const sf::Vertex *>(vertices), vertexCount,
-                             static_cast<sf::PrimitiveType>(type), convertRenderStates(states));
+                             static_cast<sf::PrimitiveType>(type), *states);
 }
 
 void sfRenderTexture_pushGLStates(sfRenderTexture *renderTexture) {

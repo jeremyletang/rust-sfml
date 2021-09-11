@@ -26,7 +26,6 @@
 
 // Headers
 
-#include "Graphics/BlendMode.h"
 #include "Graphics/Color.h"
 
 #include "Graphics/Rect.h"

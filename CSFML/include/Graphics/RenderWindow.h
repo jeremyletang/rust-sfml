@@ -30,7 +30,6 @@
 
 #include "Graphics/PrimitiveType.h"
 #include "Graphics/Rect.h"
-#include "Graphics/RenderStates.h"
 #include "Graphics/Types.h"
 #include "Graphics/Vertex.h"
 #include "System/Vector2.h"
@@ -107,18 +106,6 @@ extern "C" sfIntRect sfRenderWindow_getViewport(const sfRenderWindow *renderWind
 extern "C" sfVector2f sfRenderWindow_mapPixelToCoords(const sfRenderWindow *renderWindow, sfVector2i point, const sfView *view);
 
 extern "C" sfVector2i sfRenderWindow_mapCoordsToPixel(const sfRenderWindow *renderWindow, sfVector2f point, const sfView *view);
-
-extern "C" void sfRenderWindow_drawSprite(sfRenderWindow *renderWindow, const sfSprite *object, const sfRenderStates *states);
-extern "C" void sfRenderWindow_drawText(sfRenderWindow *renderWindow, const sfText *object, const sfRenderStates *states);
-extern "C" void sfRenderWindow_drawShape(sfRenderWindow *renderWindow, const sfShape *object, const sfRenderStates *states);
-extern "C" void sfRenderWindow_drawCircleShape(sfRenderWindow *renderWindow, const sfCircleShape *object, const sfRenderStates *states);
-extern "C" void sfRenderWindow_drawConvexShape(sfRenderWindow *renderWindow, const sfConvexShape *object, const sfRenderStates *states);
-extern "C" void sfRenderWindow_drawRectangleShape(sfRenderWindow *renderWindow, const sfRectangleShape *object, const sfRenderStates *states);
-extern "C" void sfRenderWindow_drawVertexBuffer(sfRenderWindow *renderWindow, const sfVertexBuffer *object, const sfRenderStates *states);
-
-extern "C" void sfRenderWindow_drawPrimitives(sfRenderWindow *renderWindow,
-                                              const sfVertex *vertices, size_t vertexCount,
-                                              sfPrimitiveType type, const sfRenderStates *states);
 
 extern "C" void sfRenderWindow_pushGLStates(sfRenderWindow *renderWindow);
 

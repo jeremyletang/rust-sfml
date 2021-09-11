@@ -26,7 +26,6 @@
 #include "Graphics/RenderWindow.h"
 #include "ConvertEvent.h"
 #include "Graphics/CircleShapeStruct.h"
-#include "Graphics/ConvertRenderStates.hpp"
 #include "Graphics/ConvexShapeStruct.h"
 #include "Graphics/ImageStruct.h"
 #include "Graphics/ShapeStruct.h"
@@ -273,39 +272,39 @@ sfVector2i sfRenderWindow_mapCoordsToPixel(const sfRenderWindow *renderWindow, s
     return result;
 }
 
-void sfRenderWindow_drawSprite(sfRenderWindow *renderWindow, const sfSprite *object, const sfRenderStates *states) {
+extern "C" void sfRenderWindow_drawSprite(sfRenderWindow *renderWindow, const sfSprite *object, const sf::RenderStates *states) {
 
-    reinterpret_cast<sf::RenderWindow *>(renderWindow)->draw(*reinterpret_cast<const sf::Sprite *>(object), convertRenderStates(states));
+    reinterpret_cast<sf::RenderWindow *>(renderWindow)->draw(*reinterpret_cast<const sf::Sprite *>(object), *states);
 }
-void sfRenderWindow_drawText(sfRenderWindow *renderWindow, const sfText *object, const sfRenderStates *states) {
+extern "C" void sfRenderWindow_drawText(sfRenderWindow *renderWindow, const sfText *object, const sf::RenderStates *states) {
 
-    reinterpret_cast<sf::RenderWindow *>(renderWindow)->draw(*reinterpret_cast<const sf::Text *>(object), convertRenderStates(states));
+    reinterpret_cast<sf::RenderWindow *>(renderWindow)->draw(*reinterpret_cast<const sf::Text *>(object), *states);
 }
-void sfRenderWindow_drawShape(sfRenderWindow *renderWindow, const sfShape *object, const sfRenderStates *states) {
+extern "C" void sfRenderWindow_drawShape(sfRenderWindow *renderWindow, const sfShape *object, const sf::RenderStates *states) {
 
-    reinterpret_cast<sf::RenderWindow *>(renderWindow)->draw(object->This, convertRenderStates(states));
+    reinterpret_cast<sf::RenderWindow *>(renderWindow)->draw(object->This, *states);
 }
-void sfRenderWindow_drawCircleShape(sfRenderWindow *renderWindow, const sfCircleShape *object, const sfRenderStates *states) {
+extern "C" void sfRenderWindow_drawCircleShape(sfRenderWindow *renderWindow, const sfCircleShape *object, const sf::RenderStates *states) {
 
-    reinterpret_cast<sf::RenderWindow *>(renderWindow)->draw(object->This, convertRenderStates(states));
+    reinterpret_cast<sf::RenderWindow *>(renderWindow)->draw(object->This, *states);
 }
-void sfRenderWindow_drawConvexShape(sfRenderWindow *renderWindow, const sfConvexShape *object, const sfRenderStates *states) {
+extern "C" void sfRenderWindow_drawConvexShape(sfRenderWindow *renderWindow, const sfConvexShape *object, const sf::RenderStates *states) {
 
-    reinterpret_cast<sf::RenderWindow *>(renderWindow)->draw(object->This, convertRenderStates(states));
+    reinterpret_cast<sf::RenderWindow *>(renderWindow)->draw(object->This, *states);
 }
-void sfRenderWindow_drawRectangleShape(sfRenderWindow *renderWindow, const sfRectangleShape *object, const sfRenderStates *states) {
+extern "C" void sfRenderWindow_drawRectangleShape(sfRenderWindow *renderWindow, const sfRectangleShape *object, const sf::RenderStates *states) {
 
-    reinterpret_cast<sf::RenderWindow *>(renderWindow)->draw(*reinterpret_cast<const sf::RectangleShape *>(object), convertRenderStates(states));
+    reinterpret_cast<sf::RenderWindow *>(renderWindow)->draw(*reinterpret_cast<const sf::RectangleShape *>(object), *states);
 }
-void sfRenderWindow_drawVertexBuffer(sfRenderWindow *renderWindow, const sfVertexBuffer *object, const sfRenderStates *states) {
+extern "C" void sfRenderWindow_drawVertexBuffer(sfRenderWindow *renderWindow, const sfVertexBuffer *object, const sf::RenderStates *states) {
 
-    reinterpret_cast<sf::RenderWindow *>(renderWindow)->draw(object->This, convertRenderStates(states));
+    reinterpret_cast<sf::RenderWindow *>(renderWindow)->draw(object->This, *states);
 }
 
-void sfRenderWindow_drawPrimitives(sfRenderWindow *renderWindow,
+extern "C" void sfRenderWindow_drawPrimitives(sfRenderWindow *renderWindow,
                                    const sfVertex *vertices, size_t vertexCount,
-                                   sfPrimitiveType type, const sfRenderStates *states) {
-    reinterpret_cast<sf::RenderWindow *>(renderWindow)->draw(reinterpret_cast<const sf::Vertex *>(vertices), vertexCount, static_cast<sf::PrimitiveType>(type), convertRenderStates(states));
+                                   sfPrimitiveType type, const sf::RenderStates *states) {
+    reinterpret_cast<sf::RenderWindow *>(renderWindow)->draw(reinterpret_cast<const sf::Vertex *>(vertices), vertexCount, static_cast<sf::PrimitiveType>(type), *states);
 }
 
 void sfRenderWindow_pushGLStates(sfRenderWindow *renderWindow) {
