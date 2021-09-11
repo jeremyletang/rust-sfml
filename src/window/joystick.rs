@@ -51,7 +51,7 @@
 //! [`update`]: update
 //!
 
-use crate::{ffi, sf_bool_ext::SfBoolExt};
+use crate::{ffi, sf_bool_ext::SfBoolExt, SfBox};
 
 /// Maximum number of supported joysticks.
 pub const COUNT: u32 = 8;
@@ -82,17 +82,6 @@ impl Axis {
     pub const POV_X: Self = Self(ffi::sfJoystickAxis_sfJoystickPovX);
     /// The Y axis of the point-of-view hat.
     pub const POV_Y: Self = Self(ffi::sfJoystickAxis_sfJoystickPovY);
-}
-
-/// Structure holding a joystick's identification.
-#[derive(Debug)]
-pub struct Identification {
-    /// Name of the joystick.
-    pub name: String,
-    /// Manufacturer identifier.
-    pub vendor_id: u32,
-    /// Product identifier.
-    pub product_id: u32,
 }
 
 /// Check if the joystick is connected
@@ -173,14 +162,21 @@ pub fn update() {
 
 /// Get the joystick information.
 #[must_use]
-pub fn identification(joystick: u32) -> Identification {
-    use std::ffi::CStr;
+pub fn identification(joystick: u32) -> SfBox<ffi::JoystickIdentification> {
+    unsafe {
+        SfBox::new(ffi::sfJoystick_getIdentification(joystick))
+            .expect("Failed to create JoystickIdentification")
+    }
+}
 
-    let raw = unsafe { ffi::sfJoystick_getIdentification(joystick) };
-
-    Identification {
-        name: unsafe { CStr::from_ptr(raw.name).to_string_lossy().into_owned() },
-        vendor_id: raw.vendorId,
-        product_id: raw.productId,
+impl ffi::JoystickIdentification {
+    pub fn name(&self) -> &ffi::sfString {
+        unsafe { &*ffi::sfJoystickIdentification_getName(self) }
+    }
+    pub fn vendor_id(&self) -> u32 {
+        unsafe { ffi::sfJoystickIdentification_getVendorId(self) }
+    }
+    pub fn product_id(&self) -> u32 {
+        unsafe { ffi::sfJoystickIdentification_getProductId(self) }
     }
 }

@@ -27,7 +27,6 @@
 // Headers
 
 #include "Config.h"
-#include "Window/JoystickIdentification.h"
 
 typedef enum {
     sfJoystickX,    ///< The X axis
@@ -49,8 +48,6 @@ extern "C" sfBool sfJoystick_hasAxis(unsigned int joystick, sfJoystickAxis axis)
 extern "C" sfBool sfJoystick_isButtonPressed(unsigned int joystick, unsigned int button);
 
 extern "C" float sfJoystick_getAxisPosition(unsigned int joystick, sfJoystickAxis axis);
-
-extern "C" sfJoystickIdentification sfJoystick_getIdentification(unsigned int joystick);
 
 extern "C" void sfJoystick_update(void);
 

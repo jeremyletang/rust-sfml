@@ -25,6 +25,7 @@ fn main() {
             "CSFML/src/System/Clock.cpp",
             "CSFML/src/System/Sleep.cpp",
             "CSFML/src/System/InputStream.cpp",
+            "CSFML/src/System/SfString.cpp",
             "CSFML/src/System/SfStdString.cpp",
         ]
         .iter(),

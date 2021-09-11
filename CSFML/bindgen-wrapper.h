@@ -14,7 +14,6 @@
 #include "Window/Cursor.h"
 #include "Window/Event.h"
 #include "Window/Joystick.h"
-#include "Window/JoystickIdentification.h"
 #include "Window/Keyboard.h"
 #include "Window/Mouse.h"
 #include "Window/Sensor.h"

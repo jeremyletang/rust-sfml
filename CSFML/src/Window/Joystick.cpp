@@ -47,19 +47,29 @@ float sfJoystick_getAxisPosition(unsigned int joystick, sfJoystickAxis axis) {
     return sf::Joystick::getAxisPosition(joystick, static_cast<sf::Joystick::Axis>(axis));
 }
 
-sfJoystickIdentification sfJoystick_getIdentification(unsigned int joystick) {
-    static std::string name;
+extern "C" sf::Joystick::Identification *sfJoystick_getIdentification(unsigned int joystick) {
+    sf::Joystick::Identification ident = sf::Joystick::getIdentification(joystick);
+    sf::Joystick::Identification *copy = new sf::Joystick::Identification;
+    copy->name = ident.name;
+    copy->vendorId = ident.vendorId;
+    copy->productId = ident.productId;
+    return copy;
+}
 
-    sf::Joystick::Identification identification = sf::Joystick::getIdentification(joystick);
-    name = identification.name;
+extern "C" void sfJoystickIdentification_destroy(sf::Joystick::Identification *ident) {
+    delete ident;
+}
 
-    sfJoystickIdentification result;
+extern "C" unsigned int sfJoystickIdentification_getVendorId(const sf::Joystick::Identification *ident) {
+    return ident->vendorId;
+}
 
-    result.name = name.c_str();
-    result.productId = identification.productId;
-    result.vendorId = identification.vendorId;
+extern "C" unsigned int sfJoystickIdentification_getProductId(const sf::Joystick::Identification *ident) {
+    return ident->productId;
+}
 
-    return result;
+extern "C" const sf::String *sfJoystickIdentification_getName(const sf::Joystick::Identification *ident) {
+    return &ident->name;
 }
 
 void sfJoystick_update(void) {
