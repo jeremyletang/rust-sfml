@@ -113,7 +113,6 @@ extern "C" sf::Transform sfConvexShape_getInverseTransform(const sfConvexShape *
 
 void sfConvexShape_setTexture(sfConvexShape *shape, const sfTexture *texture, sfBool resetRect) {
     shape->This.setTexture(reinterpret_cast<const sf::Texture *>(texture), resetRect == sfTrue);
-    shape->Texture = texture;
 }
 
 void sfConvexShape_setTextureRect(sfConvexShape *shape, sfIntRect rect) {
@@ -133,8 +132,8 @@ void sfConvexShape_setOutlineThickness(sfConvexShape *shape, float thickness) {
 }
 
 const sfTexture *sfConvexShape_getTexture(const sfConvexShape *shape) {
-
-    return shape->Texture;
+    const sf::ConvexShape *shape_ = reinterpret_cast<const sf::ConvexShape *>(shape);
+    return reinterpret_cast<const sfTexture *>(shape_->getTexture());
 }
 
 sfIntRect sfConvexShape_getTextureRect(const sfConvexShape *shape) {

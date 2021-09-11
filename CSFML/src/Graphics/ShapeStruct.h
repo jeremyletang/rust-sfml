@@ -68,9 +68,6 @@ struct sfShape {
     }
 
     sfShapeImpl This;
-    const sfTexture *Texture;
-    mutable sfTransform Transform;
-    mutable sfTransform InverseTransform;
 };
 
 #endif // SFML_SHAPESTRUCT_H

@@ -33,9 +33,6 @@
 
 struct sfConvexShape {
     sf::ConvexShape This;
-    const sfTexture *Texture;
-    mutable sfTransform Transform;
-    mutable sfTransform InverseTransform;
 };
 
 #endif // SFML_CONVEXSHAPESTRUCT_H

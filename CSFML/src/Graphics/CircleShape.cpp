@@ -30,7 +30,6 @@
 
 sfCircleShape *sfCircleShape_create(void) {
     sfCircleShape *shape = new sfCircleShape;
-    shape->Texture = NULL;
 
     return shape;
 }
@@ -116,7 +115,6 @@ extern "C" sf::Transform sfCircleShape_getInverseTransform(const sfCircleShape *
 
 void sfCircleShape_setTexture(sfCircleShape *shape, const sfTexture *texture, sfBool resetRect) {
     shape->This.setTexture(reinterpret_cast<const sf::Texture *>(texture), resetRect == sfTrue);
-    shape->Texture = texture;
 }
 
 void sfCircleShape_setTextureRect(sfCircleShape *shape, sfIntRect rect) {
@@ -136,8 +134,8 @@ void sfCircleShape_setOutlineThickness(sfCircleShape *shape, float thickness) {
 }
 
 const sfTexture *sfCircleShape_getTexture(const sfCircleShape *shape) {
-
-    return shape->Texture;
+    const sf::CircleShape *shape_ = reinterpret_cast<const sf::CircleShape *>(shape);
+    return reinterpret_cast<const sfTexture *>(shape_->getTexture());
 }
 
 sfIntRect sfCircleShape_getTextureRect(const sfCircleShape *shape) {
