@@ -27,6 +27,7 @@ fn main() {
             "CSFML/src/System/InputStream.cpp",
             "CSFML/src/System/SfString.cpp",
             "CSFML/src/System/SfStdString.cpp",
+            "CSFML/src/System/SfStdStringVector.cpp",
         ]
         .iter(),
     );

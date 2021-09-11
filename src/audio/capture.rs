@@ -1,14 +1,5 @@
-use crate::{
-    audio::SoundBuffer,
-    ffi::*,
-    sf_bool_ext::SfBoolExt,
-    system::{StdStr, Time},
-};
-use std::{
-    ffi::{CStr, CString},
-    os::raw::c_void,
-    ptr::NonNull,
-};
+use crate::{audio::SoundBuffer, ffi::*, sf_bool_ext::SfBoolExt, system::Time, SfBox};
+use std::{ffi::CString, os::raw::c_void, ptr::NonNull};
 
 /// Trait for processing captured sound data.
 ///
@@ -202,11 +193,8 @@ impl<'a, R: SoundRecorder> SoundRecorderDriver<'a, R> {
     }
     /// Get the name of the current audio capture device.
     #[must_use]
-    pub fn device(&self) -> String {
-        unsafe {
-            let c_str_ptr = sfSoundRecorder_getDevice(self.ffi_handle.as_ptr());
-            CStr::from_ptr(c_str_ptr).to_string_lossy().into_owned()
-        }
+    pub fn device(&self) -> &sfStdString {
+        unsafe { &*sfSoundRecorder_getDevice(self.ffi_handle.as_ptr()) }
     }
 
     /// Set the audio capture device.
@@ -312,13 +300,8 @@ impl SoundBufferRecorder {
     }
     /// Get the name of the current audio capture device.
     #[must_use]
-    pub fn device(&self) -> StdStr {
-        unsafe {
-            let std_string = sfSoundBufferRecorder_getDevice(self.ffi_handle.as_ptr());
-            let len = sfStdString_getLength(std_string);
-            let data = sfStdString_getData(std_string) as *const u8;
-            StdStr(std::slice::from_raw_parts(data, len))
-        }
+    pub fn device(&self) -> &sfStdString {
+        unsafe { &*sfSoundBufferRecorder_getDevice(self.ffi_handle.as_ptr()) }
     }
 
     /// Set the audio capture device.
@@ -342,16 +325,16 @@ impl SoundBufferRecorder {
 #[cfg_attr(not(feature = "ci-headless"), test)]
 fn test_devices() {
     let default = default_device();
-    println!("Default device: {}", default);
+    println!("Default device: {}", *default);
     println!("Available devices:");
     let devices = available_devices();
-    for device in &devices {
+    for device in devices.into_iter() {
         println!("{}", device);
     }
     let mut recorder = SoundBufferRecorder::new();
-    assert_eq!(recorder.device().to_str().unwrap(), default);
-    if let Some(device) = devices.last() {
-        recorder.set_device(device).unwrap();
+    assert_eq!(*recorder.device(), *default);
+    if let Some(device) = devices.into_iter().last() {
+        recorder.set_device(device.to_str().unwrap()).unwrap();
         assert_eq!(recorder.device().to_str().unwrap(), device);
     }
 }
@@ -386,11 +369,8 @@ pub fn is_available() -> bool {
 /// This function returns the name of the default audio capture device.
 /// If none is available, an empty string is returned.
 #[must_use]
-pub fn default_device() -> String {
-    unsafe {
-        let c_str_ptr = sfSoundRecorder_getDefaultDevice();
-        CStr::from_ptr(c_str_ptr).to_string_lossy().into_owned()
-    }
+pub fn default_device() -> SfBox<sfStdString> {
+    unsafe { SfBox::new(sfSoundRecorder_getDefaultDevice()).expect("Failed to create sfStdString") }
 }
 
 /// Get a list of the names of all available audio capture devices.
@@ -398,16 +378,9 @@ pub fn default_device() -> String {
 /// This function returns a vector of strings, containing the names of all available
 /// audio capture devices.
 #[must_use]
-pub fn available_devices() -> Vec<String> {
+pub fn available_devices() -> SfBox<sfStdStringVector> {
     unsafe {
-        let mut count = 0;
-        let device_names = sfSoundRecorder_getAvailableDevices(&mut count);
-        let device_names = std::slice::from_raw_parts(device_names, count);
-        let mut names = Vec::new();
-        for c_str_ptr in device_names {
-            let name = CStr::from_ptr(*c_str_ptr).to_string_lossy().into_owned();
-            names.push(name);
-        }
-        names
+        SfBox::new(sfSoundRecorder_getAvailableDevices())
+            .expect("Failed to create sfStdStringVector")
     }
 }

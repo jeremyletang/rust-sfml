@@ -83,7 +83,6 @@ struct sfSoundRecorder {
     }
 
     sfSoundRecorderImpl This;
-    std::string DeviceName;
 };
 
 #endif // SFML_SOUNDRECORDERSTRUCT_H

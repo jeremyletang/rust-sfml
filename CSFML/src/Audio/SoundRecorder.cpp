@@ -58,37 +58,24 @@ void sfSoundRecorder_setProcessingInterval(sfSoundRecorder *soundRecorder, sfTim
     soundRecorder->This.setProcessingInterval(interval);
 }
 
-const char **sfSoundRecorder_getAvailableDevices(size_t *count) {
-    static std::vector<std::string> stringDevices = sf::SoundRecorder::getAvailableDevices();
-    static std::vector<const char *> cstringDevices;
-
-    if (cstringDevices.empty() && !stringDevices.empty()) {
-        for (std::vector<std::string>::const_iterator it = stringDevices.begin(); it != stringDevices.end(); ++it) {
-            cstringDevices.push_back(it->c_str());
-        }
-    }
-
-    if (count)
-        *count = cstringDevices.size();
-
-    return !cstringDevices.empty() ? &cstringDevices[0] : NULL;
+extern "C" std::vector<std::string> *sfSoundRecorder_getAvailableDevices() {
+    std::vector<std::string> devices = sf::SoundRecorder::getAvailableDevices();
+    std::vector<std::string> *copy = new std::vector(devices);
+    return copy;
 }
 
-const char *sfSoundRecorder_getDefaultDevice() {
-    static std::string defaultDevice = sf::SoundRecorder::getDefaultDevice();
-
-    return !defaultDevice.empty() ? defaultDevice.c_str() : NULL;
+extern "C" std::string *sfSoundRecorder_getDefaultDevice() {
+    std::string defaultDevice = sf::SoundRecorder::getDefaultDevice();
+    std::string *copy = new std::string(defaultDevice);
+    return copy;
 }
 
 sfBool sfSoundRecorder_setDevice(sfSoundRecorder *soundRecorder, const char *name) {
     return soundRecorder->This.setDevice(name);
 }
 
-const char *sfSoundRecorder_getDevice(sfSoundRecorder *soundRecorder) {
-
-    soundRecorder->DeviceName = soundRecorder->This.getDevice();
-
-    return soundRecorder->DeviceName.c_str();
+extern "C" const std::string *sfSoundRecorder_getDevice(sfSoundRecorder *soundRecorder) {
+    return &soundRecorder->This.getDevice();
 }
 
 void sfSoundRecorder_setChannelCount(sfSoundRecorder *soundRecorder, unsigned int channelCount) {

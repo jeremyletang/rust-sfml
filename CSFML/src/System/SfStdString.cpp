@@ -9,3 +9,7 @@ extern "C" size_t sfStdString_getLength(const sfStdString *s) {
 extern "C" const char *sfStdString_getData(const sfStdString *s) {
     return reinterpret_cast<const std::string *>(s)->data();
 }
+
+extern "C" void sfStdString_destroy(std::string *s) {
+    delete s;
+}

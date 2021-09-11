@@ -11,6 +11,7 @@ use std::{
     ffi::c_void,
     fmt::Display,
     os::raw::{c_char, c_uint},
+    str::Utf8Error,
 };
 
 use widestring::U32Str;
@@ -26,6 +27,8 @@ macro_rules! decl_opaque {
     ($($name:ident)+) => {
         $(
             #[repr(C)]
+            #[derive(Debug)]
+            #[allow(missing_copy_implementations)]
             pub struct $name {
                 _opaque: [u8; 0],
             }
@@ -36,6 +39,12 @@ macro_rules! decl_opaque {
 decl_opaque! {
     sfClock
     sfStdString
+}
+
+impl Dispose for sfStdString {
+    unsafe fn dispose(&mut self) {
+        sfStdString_destroy(self)
+    }
 }
 
 /// Enumeration of the blending factors.
@@ -161,6 +170,70 @@ pub struct JoystickIdentification {
     _opaque: [u8; 0],
 }
 
+#[repr(C)]
+#[derive(Debug)]
+#[allow(missing_copy_implementations)]
+pub struct sfStdStringVector {
+    _opaque: [u8; 0],
+}
+
+impl<'a> IntoIterator for &'a sfStdStringVector {
+    type IntoIter = sfStdStringVectorIter<'a>;
+    type Item = &'a sfStdString;
+    fn into_iter(self) -> Self::IntoIter {
+        sfStdStringVectorIter {
+            vec: self,
+            len: unsafe { sfStdStringVector_getLength(self) },
+            cursor: 0,
+        }
+    }
+}
+
+#[derive(Debug)]
+pub struct sfStdStringVectorIter<'a> {
+    vec: &'a sfStdStringVector,
+    len: usize,
+    cursor: usize,
+}
+
+impl<'a> Iterator for sfStdStringVectorIter<'a> {
+    type Item = &'a sfStdString;
+    fn next(&mut self) -> Option<&'a sfStdString> {
+        if self.cursor >= self.len {
+            return None;
+        }
+        unsafe {
+            let item = sfStdStringVector_index(self.vec, self.cursor);
+            self.cursor += 1;
+            Some(&*item)
+        }
+    }
+}
+
+impl sfStdString {
+    pub fn to_str(&self) -> Result<&str, Utf8Error> {
+        std::str::from_utf8(self.data())
+    }
+}
+
+impl PartialEq for sfStdString {
+    fn eq(&self, other: &Self) -> bool {
+        self.data() == other.data()
+    }
+}
+
+impl PartialEq<sfStdString> for str {
+    fn eq(&self, other: &sfStdString) -> bool {
+        self.as_bytes() == other.data()
+    }
+}
+
+impl Dispose for sfStdStringVector {
+    unsafe fn dispose(&mut self) {
+        sfStdStringVector_destroy(self);
+    }
+}
+
 impl Dispose for JoystickIdentification {
     unsafe fn dispose(&mut self) {
         sfJoystickIdentification_destroy(self);
@@ -189,6 +262,24 @@ impl Display for sfString {
         let data = self.data();
         let ustr = U32Str::from_slice(data);
         write!(f, "{}", ustr.to_string_lossy())
+    }
+}
+
+impl sfStdString {
+    fn data(&self) -> &[u8] {
+        unsafe {
+            let len = sfStdString_getLength(self);
+            let data = sfStdString_getData(self);
+            std::slice::from_raw_parts(data as *const u8, len)
+        }
+    }
+}
+
+impl Display for sfStdString {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let data = self.data();
+        let string = String::from_utf8_lossy(data);
+        write!(f, "{}", string)
     }
 }
 
@@ -411,4 +502,14 @@ extern "C" {
     ) -> *const sfString;
     pub fn sfString_getData(string: *const sfString) -> *const u32;
     pub fn sfString_getLength(string: *const sfString) -> usize;
+    pub fn sfStdString_destroy(std_string: *mut sfStdString);
+    pub fn sfStdStringVector_getLength(vec: *const sfStdStringVector) -> usize;
+    pub fn sfStdStringVector_index(
+        vec: *const sfStdStringVector,
+        index: usize,
+    ) -> *const sfStdString;
+    pub fn sfStdStringVector_destroy(vec: *mut sfStdStringVector);
+    pub fn sfSoundRecorder_getDevice(rec: *const sfSoundRecorder) -> *const sfStdString;
+    pub fn sfSoundRecorder_getDefaultDevice() -> *mut sfStdString;
+    pub fn sfSoundRecorder_getAvailableDevices() -> *mut sfStdStringVector;
 }

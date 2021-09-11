@@ -51,13 +51,7 @@ extern "C" sfBool sfSoundRecorder_isAvailable(void);
 
 extern "C" void sfSoundRecorder_setProcessingInterval(sfSoundRecorder *soundRecorder, sfTime interval);
 
-extern "C" const char **sfSoundRecorder_getAvailableDevices(size_t *count);
-
-extern "C" const char *sfSoundRecorder_getDefaultDevice();
-
 extern "C" sfBool sfSoundRecorder_setDevice(sfSoundRecorder *soundRecorder, const char *name);
-
-extern "C" const char *sfSoundRecorder_getDevice(sfSoundRecorder *soundRecorder);
 
 extern "C" void sfSoundRecorder_setChannelCount(sfSoundRecorder *soundRecorder, unsigned int channelCount);
 
