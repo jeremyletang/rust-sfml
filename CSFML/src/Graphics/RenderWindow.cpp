@@ -302,8 +302,8 @@ extern "C" void sfRenderWindow_drawVertexBuffer(sfRenderWindow *renderWindow, co
 }
 
 extern "C" void sfRenderWindow_drawPrimitives(sfRenderWindow *renderWindow,
-                                   const sfVertex *vertices, size_t vertexCount,
-                                   sfPrimitiveType type, const sf::RenderStates *states) {
+                                              const sfVertex *vertices, size_t vertexCount,
+                                              sfPrimitiveType type, const sf::RenderStates *states) {
     reinterpret_cast<sf::RenderWindow *>(renderWindow)->draw(reinterpret_cast<const sf::Vertex *>(vertices), vertexCount, static_cast<sf::PrimitiveType>(type), *states);
 }
 

@@ -25,15 +25,15 @@
 
 #include "Graphics/CircleShapeStruct.h"
 #include "Graphics/ConvexShapeStruct.h"
-#include "Graphics/ShapeStruct.h"
-#include "Graphics/VertexBufferStruct.h"
-#include "Graphics/Vertex.h"
 #include "Graphics/PrimitiveType.h"
+#include "Graphics/ShapeStruct.h"
+#include "Graphics/Vertex.h"
+#include "Graphics/VertexBufferStruct.h"
 #include "Window/ContextSettingsInternal.h"
 #include <SFML/Graphics/RectangleShape.hpp>
+#include <SFML/Graphics/RenderTexture.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>
-#include <SFML/Graphics/RenderTexture.hpp>
 #include <cstddef>
 
 extern "C" sf::RenderTexture *sfRenderTexture_createWithSettings(unsigned int width, unsigned int height, const sfContextSettings *settings) {
@@ -163,10 +163,10 @@ extern "C" void sfRenderTexture_drawVertexBuffer(sf::RenderTexture *renderTextur
 }
 
 extern "C" void sfRenderTexture_drawPrimitives(sf::RenderTexture *renderTexture,
-                                    const sfVertex *vertices, size_t vertexCount,
-                                    sfPrimitiveType type, const sf::RenderStates *states) {
+                                               const sfVertex *vertices, size_t vertexCount,
+                                               sfPrimitiveType type, const sf::RenderStates *states) {
     renderTexture->draw(reinterpret_cast<const sf::Vertex *>(vertices), vertexCount,
-                             static_cast<sf::PrimitiveType>(type), *states);
+                        static_cast<sf::PrimitiveType>(type), *states);
 }
 
 extern "C" void sfRenderTexture_pushGLStates(sf::RenderTexture *renderTexture) {
