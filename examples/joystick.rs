@@ -1,6 +1,7 @@
 use sfml::window::joystick;
 
 fn main() {
+    joystick::update();
     for i in 0..joystick::COUNT {
         let ident = joystick::identification(i);
         println!(
