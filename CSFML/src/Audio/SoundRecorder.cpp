@@ -61,7 +61,7 @@ void sfSoundRecorder_setProcessingInterval(sfSoundRecorder *soundRecorder, sfTim
 
 extern "C" std::vector<std::string> *sfSoundRecorder_getAvailableDevices() {
     std::vector<std::string> devices = sf::SoundRecorder::getAvailableDevices();
-    std::vector<std::string> *copy = new std::vector(devices);
+    std::vector<std::string> *copy = new std::vector<std::string>(devices);
     return copy;
 }
 
