@@ -108,10 +108,14 @@ impl RenderWindow {
     /// * width - Icon's width, in pixels
     /// * height - Icon's height, in pixels
     /// * pixels - Vector of pixels
-    pub fn set_icon(&mut self, width: u32, height: u32, pixels: &[u8]) {
-        unsafe {
-            ffi::sfRenderWindow_setIcon(self.render_window.as_ptr(), width, height, pixels.as_ptr())
-        }
+    ///
+    /// # Safety
+    ///
+    /// `pixels` not being at least `width * height * 4` will likely cause undefined behavior.
+    ///
+    /// Platform-specific behavior is also unclear (limits on max size, etc).
+    pub unsafe fn set_icon(&mut self, width: u32, height: u32, pixels: &[u8]) {
+        ffi::sfRenderWindow_setIcon(self.render_window.as_ptr(), width, height, pixels.as_ptr())
     }
 
     /// Pop the event on top of event queue, if any, and return it

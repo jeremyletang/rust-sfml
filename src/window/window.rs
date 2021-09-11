@@ -189,8 +189,14 @@ impl Window {
     /// * width - Icon's width, in pixels
     /// * height - Icon's height, in pixels
     /// * pixels - Vector of pixels
-    pub fn set_icon(&mut self, width: u32, height: u32, pixels: &[u8]) {
-        unsafe { ffi::sfWindow_setIcon(self.window.as_ptr(), width, height, pixels.as_ptr()) }
+    ///
+    /// # Safety
+    ///
+    /// `pixels` not being at least `width * height * 4` will likely cause undefined behavior.
+    ///
+    /// Platform-specific behavior is also unclear (limits on max size, etc).
+    pub unsafe fn set_icon(&mut self, width: u32, height: u32, pixels: &[u8]) {
+        ffi::sfWindow_setIcon(self.window.as_ptr(), width, height, pixels.as_ptr())
     }
 
     /// Close a window and destroy all the attached resources
