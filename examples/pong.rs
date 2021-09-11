@@ -89,6 +89,8 @@ fn main() {
 
     let mut clock = Clock::start();
     let mut is_playing = false;
+    let mut up = false;
+    let mut down = false;
 
     loop {
         while let Some(event) = window.poll_event() {
@@ -120,6 +122,14 @@ fn main() {
                         }
                     }
                 }
+                Event::KeyPressed { code: Key::UP, .. } => up = true,
+                Event::KeyReleased { code: Key::UP, .. } => up = false,
+                Event::KeyPressed {
+                    code: Key::DOWN, ..
+                } => down = true,
+                Event::KeyReleased {
+                    code: Key::DOWN, ..
+                } => down = false,
                 _ => {}
             }
         }
@@ -127,12 +137,10 @@ fn main() {
             let delta_time = clock.restart().as_seconds();
 
             // Move the player's paddle
-            if Key::UP.is_pressed() && (left_paddle.position().y - paddle_size.y / 2. > 5.) {
+            if up && (left_paddle.position().y - paddle_size.y / 2. > 5.) {
                 left_paddle.move_((0., -paddle_speed * delta_time));
             }
-            if Key::DOWN.is_pressed()
-                && (left_paddle.position().y + paddle_size.y / 2. < game_height as f32 - 5.)
-            {
+            if down && (left_paddle.position().y + paddle_size.y / 2. < game_height as f32 - 5.) {
                 left_paddle.move_((0., paddle_speed * delta_time));
             }
 
