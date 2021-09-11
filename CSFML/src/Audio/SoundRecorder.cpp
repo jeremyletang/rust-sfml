@@ -26,6 +26,7 @@
 #include "Audio/SoundRecorder.h"
 #include "Audio/SoundRecorderStruct.h"
 #include <cstddef>
+#include <vector>
 
 sfSoundRecorder *sfSoundRecorder_create(sfSoundRecorderStartCallback onStart,
                                         sfSoundRecorderProcessCallback onProcess,
