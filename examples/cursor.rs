@@ -89,19 +89,19 @@ fn main() {
 
     let mut buttons = Vec::new();
     let cursor_types = [
-        Cursor::ARROW,
-        Cursor::ARROW_WAIT,
-        Cursor::WAIT,
-        Cursor::TEXT,
-        Cursor::HAND,
-        Cursor::SIZE_HORIZONTAL,
-        Cursor::SIZE_VERTICAL,
-        Cursor::SIZE_TOP_LEFT_BOTTOM_RIGHT,
-        Cursor::SIZE_BOTTOM_LEFT_TOP_RIGHT,
-        Cursor::SIZE_ALL,
-        Cursor::CROSS,
-        Cursor::HELP,
-        Cursor::NOT_ALLOWED,
+        sfml::window::CursorType::Arrow,
+        sfml::window::CursorType::ArrowWait,
+        sfml::window::CursorType::Wait,
+        sfml::window::CursorType::Text,
+        sfml::window::CursorType::Hand,
+        sfml::window::CursorType::SizeHorizontal,
+        sfml::window::CursorType::SizeVertical,
+        sfml::window::CursorType::SizeTopLeftBottomRight,
+        sfml::window::CursorType::SizeTopLeftBottomRight,
+        sfml::window::CursorType::SizeAll,
+        sfml::window::CursorType::Cross,
+        sfml::window::CursorType::Help,
+        sfml::window::CursorType::NotAllowed
     ];
     for i in 0..cursor_types.len() {
         buttons.push(Rect::new(16, 16 + i as i32 * 36, 250, 32));
