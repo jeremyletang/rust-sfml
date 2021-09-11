@@ -104,11 +104,11 @@ void sfRectangleShape_scale(sfRectangleShape *shape, sfVector2f factors) {
     reinterpret_cast<sf::RectangleShape *>(shape)->scale(factors.x, factors.y);
 }
 
-sf::Transform sfRectangleShape_getTransform(const sfRectangleShape *shape) {
+extern "C" sf::Transform sfRectangleShape_getTransform(const sfRectangleShape *shape) {
     return reinterpret_cast<const sf::RectangleShape *>(shape)->getTransform();
 }
 
-sf::Transform sfRectangleShape_getInverseTransform(const sfRectangleShape *shape) {
+extern "C" sf::Transform sfRectangleShape_getInverseTransform(const sfRectangleShape *shape) {
     return reinterpret_cast<const sf::RectangleShape *>(shape)->getInverseTransform();
 }
 

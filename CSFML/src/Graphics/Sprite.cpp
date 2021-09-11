@@ -106,11 +106,11 @@ void sfSprite_scale(sfSprite *sprite, sfVector2f factors) {
     reinterpret_cast<sf::Sprite *>(sprite)->scale(factors.x, factors.y);
 }
 
-sf::Transform sfSprite_getTransform(const sfSprite *sprite) {
+extern "C" sf::Transform sfSprite_getTransform(const sfSprite *sprite) {
     return reinterpret_cast<const sf::Sprite *>(sprite)->getTransform();
 }
 
-sf::Transform sfSprite_getInverseTransform(const sfSprite *sprite) {
+extern "C" sf::Transform sfSprite_getInverseTransform(const sfSprite *sprite) {
     return reinterpret_cast<const sf::Sprite *>(sprite)->getInverseTransform();
 }
 

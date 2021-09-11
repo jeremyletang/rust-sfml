@@ -100,11 +100,11 @@ void sfShape_scale(sfShape *shape, sfVector2f factors) {
     shape->This.scale(factors.x, factors.y);
 }
 
-sf::Transform sfShape_getTransform(const sfShape *shape) {
+extern "C" sf::Transform sfShape_getTransform(const sfShape *shape) {
     return shape->This.getTransform();
 }
 
-sf::Transform sfShape_getInverseTransform(const sfShape *shape) {
+extern "C" sf::Transform sfShape_getInverseTransform(const sfShape *shape) {
     return shape->This.getInverseTransform();
 }
 
