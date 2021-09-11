@@ -36,7 +36,7 @@ extern "C" sf::Transform sfTransform_fromMatrix(float a00, float a01, float a02,
     return sf::Transform(a00, a01, a02, a10, a11, a12, a20, a21, a22);
 }
 
-const float *sfTransform_getMatrix(const sf::Transform *transform) {
+extern "C" const float *sfTransform_getMatrix(const sf::Transform *transform) {
     return transform->getMatrix();
 }
 

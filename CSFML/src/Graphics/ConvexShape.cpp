@@ -103,11 +103,11 @@ void sfConvexShape_scale(sfConvexShape *shape, sfVector2f factors) {
     shape->This.scale(factors.x, factors.y);
 }
 
-sf::Transform sfConvexShape_getTransform(const sfConvexShape *shape) {
+extern "C" sf::Transform sfConvexShape_getTransform(const sfConvexShape *shape) {
     return shape->This.getTransform();
 }
 
-sf::Transform sfConvexShape_getInverseTransform(const sfConvexShape *shape) {
+extern "C" sf::Transform sfConvexShape_getInverseTransform(const sfConvexShape *shape) {
     return shape->This.getInverseTransform();
 }
 
