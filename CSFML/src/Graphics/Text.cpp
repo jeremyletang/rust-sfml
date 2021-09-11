@@ -107,11 +107,11 @@ void sfText_scale(sfText *text, sfVector2f factors) {
     reinterpret_cast<sf::Text *>(text)->scale(factors.x, factors.y);
 }
 
-sf::Transform sfText_getTransform(const sfText *text) {
+extern "C" sf::Transform sfText_getTransform(const sfText *text) {
     return reinterpret_cast<const sf::Text *>(text)->getTransform();
 }
 
-sf::Transform sfText_getInverseTransform(const sfText *text) {
+extern "C" sf::Transform sfText_getInverseTransform(const sfText *text) {
     return reinterpret_cast<const sf::Text *>(text)->getInverseTransform();
 }
 
