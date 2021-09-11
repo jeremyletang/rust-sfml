@@ -95,21 +95,8 @@ impl VideoMode {
     ///
     /// Return a vector containing all the supported `VideoMode`s
     #[must_use]
-    pub fn fullscreen_modes() -> Vec<Self> {
-        let mut size = 0;
-        let tab = unsafe { ffi::sfVideoMode_getFullscreenModes(&mut size) };
-        if size == 0 {
-            return Vec::new();
-        }
-        let tab_slice: &[ffi::sfVideoMode] = unsafe { std::slice::from_raw_parts(tab, size) };
-
-        let mut ret_tab = Vec::with_capacity(size);
-
-        for sf_video_mode in tab_slice.iter() {
-            ret_tab.push(Self::from_raw(*sf_video_mode));
-        }
-
-        ret_tab
+    pub fn fullscreen_modes() -> &'static ffi::sfVideoModeVector {
+        unsafe { &*ffi::sfVideoMode_getFullscreenModes() }
     }
     pub(crate) fn raw(&self) -> ffi::sfVideoMode {
         ffi::sfVideoMode {

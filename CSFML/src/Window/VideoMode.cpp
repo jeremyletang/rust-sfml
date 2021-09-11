@@ -37,25 +37,8 @@ sfVideoMode sfVideoMode_getDesktopMode(void) {
     return ret;
 }
 
-const sfVideoMode *sfVideoMode_getFullscreenModes(size_t *count) {
-    static std::vector<sfVideoMode> modes;
-
-    // Populate the array on first call
-    if (modes.empty()) {
-        const std::vector<sf::VideoMode> &SFMLModes = sf::VideoMode::getFullscreenModes();
-        for (std::vector<sf::VideoMode>::const_iterator it = SFMLModes.begin(); it != SFMLModes.end(); ++it) {
-            sfVideoMode mode;
-            mode.width = it->width;
-            mode.height = it->height;
-            mode.bitsPerPixel = it->bitsPerPixel;
-            modes.push_back(mode);
-        }
-    }
-
-    if (count)
-        *count = modes.size();
-
-    return !modes.empty() ? &modes[0] : NULL;
+extern "C" const std::vector<sf::VideoMode> *sfVideoMode_getFullscreenModes() {
+    return &sf::VideoMode::getFullscreenModes();
 }
 
 sfBool sfVideoMode_isValid(sfVideoMode mode) {

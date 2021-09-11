@@ -177,6 +177,13 @@ pub struct sfStdStringVector {
     _opaque: [u8; 0],
 }
 
+#[repr(C)]
+#[derive(Debug)]
+#[allow(missing_copy_implementations)]
+pub struct sfVideoModeVector {
+    _opaque: [u8; 0],
+}
+
 impl<'a> IntoIterator for &'a sfStdStringVector {
     type IntoIter = sfStdStringVectorIter<'a>;
     type Item = &'a sfStdString;
@@ -204,6 +211,39 @@ impl<'a> Iterator for sfStdStringVectorIter<'a> {
         }
         unsafe {
             let item = sfStdStringVector_index(self.vec, self.cursor);
+            self.cursor += 1;
+            Some(&*item)
+        }
+    }
+}
+
+impl<'a> IntoIterator for &'a sfVideoModeVector {
+    type IntoIter = sfVideoModeVectorIter<'a>;
+    type Item = &'a sfVideoMode;
+    fn into_iter(self) -> Self::IntoIter {
+        sfVideoModeVectorIter {
+            vec: self,
+            len: unsafe { sfVideoModeVector_getLength(self) },
+            cursor: 0,
+        }
+    }
+}
+
+#[derive(Debug)]
+pub struct sfVideoModeVectorIter<'a> {
+    vec: &'a sfVideoModeVector,
+    len: usize,
+    cursor: usize,
+}
+
+impl<'a> Iterator for sfVideoModeVectorIter<'a> {
+    type Item = &'a sfVideoMode;
+    fn next(&mut self) -> Option<&'a sfVideoMode> {
+        if self.cursor >= self.len {
+            return None;
+        }
+        unsafe {
+            let item = sfVideoModeVector_index(self.vec, self.cursor);
             self.cursor += 1;
             Some(&*item)
         }
@@ -508,8 +548,14 @@ extern "C" {
         vec: *const sfStdStringVector,
         index: usize,
     ) -> *const sfStdString;
+    pub fn sfVideoModeVector_getLength(vec: *const sfVideoModeVector) -> usize;
+    pub fn sfVideoModeVector_index(
+        vec: *const sfVideoModeVector,
+        index: usize,
+    ) -> *const sfVideoMode;
     pub fn sfStdStringVector_destroy(vec: *mut sfStdStringVector);
     pub fn sfSoundRecorder_getDevice(rec: *const sfSoundRecorder) -> *const sfStdString;
     pub fn sfSoundRecorder_getDefaultDevice() -> *mut sfStdString;
     pub fn sfSoundRecorder_getAvailableDevices() -> *mut sfStdStringVector;
+    pub fn sfVideoMode_getFullscreenModes() -> *const sfVideoModeVector;
 }
