@@ -31,7 +31,6 @@
 #include "Graphics/PrimitiveType.h"
 #include "Graphics/Rect.h"
 #include "Graphics/RectangleShape.h"
-#include "Graphics/RenderTexture.h"
 #include "Graphics/RenderWindow.h"
 #include "Graphics/Shader.h"
 #include "Graphics/Shape.h"

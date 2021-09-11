@@ -321,4 +321,42 @@ extern "C" {
         type_: sfPrimitiveType,
         states: *const sfRenderStates,
     );
+    pub fn sfRenderTexture_createWithSettings(
+        width: c_uint,
+        height: c_uint,
+        settings: *const sfContextSettings,
+    ) -> *mut sfRenderTexture;
+    pub fn sfRenderTexture_destroy(renderTexture: *mut sfRenderTexture);
+    pub fn sfRenderTexture_getSize(renderTexture: *const sfRenderTexture) -> sfVector2u;
+    pub fn sfRenderTexture_setActive(renderTexture: *mut sfRenderTexture, active: sfBool)
+        -> sfBool;
+    pub fn sfRenderTexture_display(renderTexture: *mut sfRenderTexture);
+    pub fn sfRenderTexture_clear(renderTexture: *mut sfRenderTexture, color: sfColor);
+    pub fn sfRenderTexture_setView(renderTexture: *mut sfRenderTexture, view: *const sfView);
+    pub fn sfRenderTexture_getView(renderTexture: *const sfRenderTexture) -> *const sfView;
+    pub fn sfRenderTexture_getDefaultView(renderTexture: *const sfRenderTexture) -> *const sfView;
+    pub fn sfRenderTexture_getViewport(
+        renderTexture: *const sfRenderTexture,
+        view: *const sfView,
+    ) -> sfIntRect;
+    pub fn sfRenderTexture_mapPixelToCoords(
+        renderTexture: *const sfRenderTexture,
+        point: sfVector2i,
+        view: *const sfView,
+    ) -> sfVector2f;
+    pub fn sfRenderTexture_mapCoordsToPixel(
+        renderTexture: *const sfRenderTexture,
+        point: sfVector2f,
+        view: *const sfView,
+    ) -> sfVector2i;
+    pub fn sfRenderTexture_pushGLStates(renderTexture: *mut sfRenderTexture);
+    pub fn sfRenderTexture_popGLStates(renderTexture: *mut sfRenderTexture);
+    pub fn sfRenderTexture_resetGLStates(renderTexture: *mut sfRenderTexture);
+    pub fn sfRenderTexture_getTexture(renderTexture: *const sfRenderTexture) -> *const sfTexture;
+    pub fn sfRenderTexture_getMaximumAntialiasingLevel() -> c_uint;
+    pub fn sfRenderTexture_setSmooth(renderTexture: *mut sfRenderTexture, smooth: sfBool);
+    pub fn sfRenderTexture_isSmooth(renderTexture: *const sfRenderTexture) -> sfBool;
+    pub fn sfRenderTexture_setRepeated(renderTexture: *mut sfRenderTexture, repeated: sfBool);
+    pub fn sfRenderTexture_isRepeated(renderTexture: *const sfRenderTexture) -> sfBool;
+    pub fn sfRenderTexture_generateMipmap(renderTexture: *mut sfRenderTexture) -> sfBool;
 }

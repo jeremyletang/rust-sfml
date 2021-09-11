@@ -28,6 +28,7 @@
 
 #include "Graphics/Transform.h"
 #include <SFML/Graphics/CircleShape.hpp>
+#include "Graphics/Texture.h"
 
 // Internal structure of sfCircleShape
 

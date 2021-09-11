@@ -23,19 +23,20 @@
 
 // Headers
 
-#include "Graphics/RenderTexture.h"
 #include "Graphics/CircleShapeStruct.h"
 #include "Graphics/ConvexShapeStruct.h"
-#include "Graphics/RenderTextureStruct.h"
 #include "Graphics/ShapeStruct.h"
 #include "Graphics/VertexBufferStruct.h"
+#include "Graphics/Vertex.h"
+#include "Graphics/PrimitiveType.h"
 #include "Window/ContextSettingsInternal.h"
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>
+#include <SFML/Graphics/RenderTexture.hpp>
 #include <cstddef>
 
-sfRenderTexture *sfRenderTexture_createWithSettings(unsigned int width, unsigned int height, const sfContextSettings *settings) {
+extern "C" sf::RenderTexture *sfRenderTexture_createWithSettings(unsigned int width, unsigned int height, const sfContextSettings *settings) {
     // Convert context settings
     sf::ContextSettings params;
     if (settings) {
@@ -43,57 +44,57 @@ sfRenderTexture *sfRenderTexture_createWithSettings(unsigned int width, unsigned
     }
 
     // Create the render texture
-    sfRenderTexture *renderTexture = new sfRenderTexture;
-    renderTexture->This.create(width, height, params);
+    sf::RenderTexture *renderTexture = new sf::RenderTexture;
+    renderTexture->create(width, height, params);
 
     return renderTexture;
 }
 
-void sfRenderTexture_destroy(sfRenderTexture *renderTexture) {
+extern "C" void sfRenderTexture_destroy(sf::RenderTexture *renderTexture) {
     delete renderTexture;
 }
 
-sfVector2u sfRenderTexture_getSize(const sfRenderTexture *renderTexture) {
+extern "C" sfVector2u sfRenderTexture_getSize(const sf::RenderTexture *renderTexture) {
     sfVector2u size = {0, 0};
 
-    sf::Vector2u sfmlSize = renderTexture->This.getSize();
+    sf::Vector2u sfmlSize = renderTexture->getSize();
     size.x = sfmlSize.x;
     size.y = sfmlSize.y;
 
     return size;
 }
 
-sfBool sfRenderTexture_setActive(sfRenderTexture *renderTexture, sfBool active) {
-    return renderTexture->This.setActive(active == sfTrue);
+extern "C" sfBool sfRenderTexture_setActive(sf::RenderTexture *renderTexture, sfBool active) {
+    return renderTexture->setActive(active == sfTrue);
 }
 
-void sfRenderTexture_display(sfRenderTexture *renderTexture) {
-    renderTexture->This.display();
+extern "C" void sfRenderTexture_display(sf::RenderTexture *renderTexture) {
+    renderTexture->display();
 }
 
-void sfRenderTexture_clear(sfRenderTexture *renderTexture, sfColor color) {
+extern "C" void sfRenderTexture_clear(sf::RenderTexture *renderTexture, sfColor color) {
     sf::Color SFMLColor(color.r, color.g, color.b, color.a);
 
-    renderTexture->This.clear(SFMLColor);
+    renderTexture->clear(SFMLColor);
 }
 
-void sfRenderTexture_setView(sfRenderTexture *renderTexture, const sfView *view) {
+extern "C" void sfRenderTexture_setView(sf::RenderTexture *renderTexture, const sfView *view) {
     const sf::View *view_ = reinterpret_cast<const sf::View *>(view);
-    renderTexture->This.setView(*view_);
+    renderTexture->setView(*view_);
 }
 
-const sfView *sfRenderTexture_getView(const sfRenderTexture *renderTexture) {
-    return reinterpret_cast<const sfView *>(&renderTexture->This.getView());
+extern "C" const sfView *sfRenderTexture_getView(const sf::RenderTexture *renderTexture) {
+    return reinterpret_cast<const sfView *>(&renderTexture->getView());
 }
 
-const sfView *sfRenderTexture_getDefaultView(const sfRenderTexture *renderTexture) {
-    return reinterpret_cast<const sfView *>(&renderTexture->This.getDefaultView());
+extern "C" const sfView *sfRenderTexture_getDefaultView(const sf::RenderTexture *renderTexture) {
+    return reinterpret_cast<const sfView *>(&renderTexture->getDefaultView());
 }
 
-sfIntRect sfRenderTexture_getViewport(const sfRenderTexture *renderTexture, const sfView *view) {
+extern "C" sfIntRect sfRenderTexture_getViewport(const sf::RenderTexture *renderTexture, const sfView *view) {
     sfIntRect rect = {0, 0, 0, 0};
 
-    sf::IntRect SFMLrect = renderTexture->This.getViewport(*reinterpret_cast<const sf::View *>(view));
+    sf::IntRect SFMLrect = renderTexture->getViewport(*reinterpret_cast<const sf::View *>(view));
     rect.left = SFMLrect.left;
     rect.top = SFMLrect.top;
     rect.width = SFMLrect.width;
@@ -102,14 +103,14 @@ sfIntRect sfRenderTexture_getViewport(const sfRenderTexture *renderTexture, cons
     return rect;
 }
 
-sfVector2f sfRenderTexture_mapPixelToCoords(const sfRenderTexture *renderTexture, sfVector2i point, const sfView *targetView) {
+extern "C" sfVector2f sfRenderTexture_mapPixelToCoords(const sf::RenderTexture *renderTexture, sfVector2i point, const sfView *targetView) {
     sfVector2f result = {0, 0};
 
     sf::Vector2f sfmlPoint;
     if (targetView)
-        sfmlPoint = renderTexture->This.mapPixelToCoords(sf::Vector2i(point.x, point.y), *reinterpret_cast<const sf::View *>(targetView));
+        sfmlPoint = renderTexture->mapPixelToCoords(sf::Vector2i(point.x, point.y), *reinterpret_cast<const sf::View *>(targetView));
     else
-        sfmlPoint = renderTexture->This.mapPixelToCoords(sf::Vector2i(point.x, point.y));
+        sfmlPoint = renderTexture->mapPixelToCoords(sf::Vector2i(point.x, point.y));
 
     result.x = sfmlPoint.x;
     result.y = sfmlPoint.y;
@@ -117,14 +118,14 @@ sfVector2f sfRenderTexture_mapPixelToCoords(const sfRenderTexture *renderTexture
     return result;
 }
 
-sfVector2i sfRenderTexture_mapCoordsToPixel(const sfRenderTexture *renderTexture, sfVector2f point, const sfView *targetView) {
+extern "C" sfVector2i sfRenderTexture_mapCoordsToPixel(const sf::RenderTexture *renderTexture, sfVector2f point, const sfView *targetView) {
     sfVector2i result = {0, 0};
 
     sf::Vector2i sfmlPoint;
     if (targetView)
-        sfmlPoint = renderTexture->This.mapCoordsToPixel(sf::Vector2f(point.x, point.y), *reinterpret_cast<const sf::View *>(targetView));
+        sfmlPoint = renderTexture->mapCoordsToPixel(sf::Vector2f(point.x, point.y), *reinterpret_cast<const sf::View *>(targetView));
     else
-        sfmlPoint = renderTexture->This.mapCoordsToPixel(sf::Vector2f(point.x, point.y));
+        sfmlPoint = renderTexture->mapCoordsToPixel(sf::Vector2f(point.x, point.y));
 
     result.x = sfmlPoint.x;
     result.y = sfmlPoint.y;
@@ -132,78 +133,78 @@ sfVector2i sfRenderTexture_mapCoordsToPixel(const sfRenderTexture *renderTexture
     return result;
 }
 
-extern "C" void sfRenderTexture_drawSprite(sfRenderTexture *renderTexture, const sfSprite *object, const sf::RenderStates *states) {
+extern "C" void sfRenderTexture_drawSprite(sf::RenderTexture *renderTexture, const sfSprite *object, const sf::RenderStates *states) {
 
-    renderTexture->This.draw(*reinterpret_cast<const sf::Sprite *>(object), *states);
+    renderTexture->draw(*reinterpret_cast<const sf::Sprite *>(object), *states);
 }
-extern "C" void sfRenderTexture_drawText(sfRenderTexture *renderTexture, const sfText *object, const sf::RenderStates *states) {
+extern "C" void sfRenderTexture_drawText(sf::RenderTexture *renderTexture, const sfText *object, const sf::RenderStates *states) {
 
-    renderTexture->This.draw(*reinterpret_cast<const sf::Text *>(object), *states);
+    renderTexture->draw(*reinterpret_cast<const sf::Text *>(object), *states);
 }
-extern "C" void sfRenderTexture_drawShape(sfRenderTexture *renderTexture, const sfShape *object, const sf::RenderStates *states) {
+extern "C" void sfRenderTexture_drawShape(sf::RenderTexture *renderTexture, const sfShape *object, const sf::RenderStates *states) {
 
-    renderTexture->This.draw(object->This, *states);
+    renderTexture->draw(object->This, *states);
 }
-extern "C" void sfRenderTexture_drawCircleShape(sfRenderTexture *renderTexture, const sfCircleShape *object, const sf::RenderStates *states) {
+extern "C" void sfRenderTexture_drawCircleShape(sf::RenderTexture *renderTexture, const sfCircleShape *object, const sf::RenderStates *states) {
 
-    renderTexture->This.draw(object->This, *states);
+    renderTexture->draw(object->This, *states);
 }
-extern "C" void sfRenderTexture_drawConvexShape(sfRenderTexture *renderTexture, const sfConvexShape *object, const sf::RenderStates *states) {
+extern "C" void sfRenderTexture_drawConvexShape(sf::RenderTexture *renderTexture, const sfConvexShape *object, const sf::RenderStates *states) {
 
-    renderTexture->This.draw(object->This, *states);
+    renderTexture->draw(object->This, *states);
 }
-extern "C" void sfRenderTexture_drawRectangleShape(sfRenderTexture *renderTexture, const sfRectangleShape *object, const sf::RenderStates *states) {
+extern "C" void sfRenderTexture_drawRectangleShape(sf::RenderTexture *renderTexture, const sfRectangleShape *object, const sf::RenderStates *states) {
 
-    renderTexture->This.draw(*reinterpret_cast<const sf::RectangleShape *>(object), *states);
+    renderTexture->draw(*reinterpret_cast<const sf::RectangleShape *>(object), *states);
 }
-extern "C" void sfRenderTexture_drawVertexBuffer(sfRenderTexture *renderTexture, const sfVertexBuffer *object, const sf::RenderStates *states) {
+extern "C" void sfRenderTexture_drawVertexBuffer(sf::RenderTexture *renderTexture, const sfVertexBuffer *object, const sf::RenderStates *states) {
 
-    renderTexture->This.draw(object->This, *states);
+    renderTexture->draw(object->This, *states);
 }
 
-extern "C" void sfRenderTexture_drawPrimitives(sfRenderTexture *renderTexture,
+extern "C" void sfRenderTexture_drawPrimitives(sf::RenderTexture *renderTexture,
                                     const sfVertex *vertices, size_t vertexCount,
                                     sfPrimitiveType type, const sf::RenderStates *states) {
-    renderTexture->This.draw(reinterpret_cast<const sf::Vertex *>(vertices), vertexCount,
+    renderTexture->draw(reinterpret_cast<const sf::Vertex *>(vertices), vertexCount,
                              static_cast<sf::PrimitiveType>(type), *states);
 }
 
-void sfRenderTexture_pushGLStates(sfRenderTexture *renderTexture) {
-    renderTexture->This.pushGLStates();
+extern "C" void sfRenderTexture_pushGLStates(sf::RenderTexture *renderTexture) {
+    renderTexture->pushGLStates();
 }
 
-void sfRenderTexture_popGLStates(sfRenderTexture *renderTexture) {
-    renderTexture->This.popGLStates();
+extern "C" void sfRenderTexture_popGLStates(sf::RenderTexture *renderTexture) {
+    renderTexture->popGLStates();
 }
 
-void sfRenderTexture_resetGLStates(sfRenderTexture *renderTexture) {
-    renderTexture->This.resetGLStates();
+extern "C" void sfRenderTexture_resetGLStates(sf::RenderTexture *renderTexture) {
+    renderTexture->resetGLStates();
 }
 
-const sfTexture *sfRenderTexture_getTexture(const sfRenderTexture *renderTexture) {
-    return reinterpret_cast<const sfTexture *>(&renderTexture->This.getTexture());
+extern "C" const sfTexture *sfRenderTexture_getTexture(const sf::RenderTexture *renderTexture) {
+    return reinterpret_cast<const sfTexture *>(&renderTexture->getTexture());
 }
 
-void sfRenderTexture_setSmooth(sfRenderTexture *renderTexture, sfBool smooth) {
-    renderTexture->This.setSmooth(smooth == sfTrue);
+extern "C" void sfRenderTexture_setSmooth(sf::RenderTexture *renderTexture, sfBool smooth) {
+    renderTexture->setSmooth(smooth == sfTrue);
 }
 
-unsigned int sfRenderTexture_getMaximumAntialiasingLevel() {
+extern "C" unsigned int sfRenderTexture_getMaximumAntialiasingLevel() {
     return sf::RenderTexture::getMaximumAntialiasingLevel();
 }
 
-sfBool sfRenderTexture_isSmooth(const sfRenderTexture *renderTexture) {
-    return renderTexture->This.isSmooth();
+extern "C" sfBool sfRenderTexture_isSmooth(const sf::RenderTexture *renderTexture) {
+    return renderTexture->isSmooth();
 }
 
-void sfRenderTexture_setRepeated(sfRenderTexture *renderTexture, sfBool repeated) {
-    renderTexture->This.setRepeated(repeated == sfTrue);
+extern "C" void sfRenderTexture_setRepeated(sf::RenderTexture *renderTexture, sfBool repeated) {
+    renderTexture->setRepeated(repeated == sfTrue);
 }
 
-sfBool sfRenderTexture_isRepeated(const sfRenderTexture *renderTexture) {
-    return renderTexture->This.isRepeated();
+extern "C" sfBool sfRenderTexture_isRepeated(const sf::RenderTexture *renderTexture) {
+    return renderTexture->isRepeated();
 }
 
-sfBool sfRenderTexture_generateMipmap(sfRenderTexture *renderTexture) {
-    return renderTexture->This.generateMipmap();
+extern "C" sfBool sfRenderTexture_generateMipmap(sf::RenderTexture *renderTexture) {
+    return renderTexture->generateMipmap();
 }
