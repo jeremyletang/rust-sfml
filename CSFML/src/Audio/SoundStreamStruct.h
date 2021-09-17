@@ -27,6 +27,7 @@
 // Headers
 
 #include <SFML/Audio/SoundStream.hpp>
+#include "Audio/SoundStream.h"
 
 // Helper class implementing the callback forwarding from
 // C++ to C in sfSoundStream
