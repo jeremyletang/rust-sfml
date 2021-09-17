@@ -25,13 +25,13 @@
 
 #include "Graphics/RenderWindow.h"
 #include "ConvertEvent.h"
-#include "Graphics/CircleShapeStruct.h"
 #include "Graphics/ConvexShapeStruct.h"
 #include "Graphics/ImageStruct.h"
 #include "Graphics/ShapeStruct.h"
 #include "Graphics/VertexBufferStruct.h"
 #include "Window/ContextSettingsInternal.h"
 #include "Window/CursorStruct.h"
+#include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Sprite.hpp>
@@ -284,9 +284,9 @@ extern "C" void sfRenderWindow_drawShape(sfRenderWindow *renderWindow, const sfS
 
     reinterpret_cast<sf::RenderWindow *>(renderWindow)->draw(object->This, *states);
 }
-extern "C" void sfRenderWindow_drawCircleShape(sfRenderWindow *renderWindow, const sfCircleShape *object, const sf::RenderStates *states) {
+extern "C" void sfRenderWindow_drawCircleShape(sfRenderWindow *renderWindow, const sf::CircleShape *object, const sf::RenderStates *states) {
 
-    reinterpret_cast<sf::RenderWindow *>(renderWindow)->draw(object->This, *states);
+    reinterpret_cast<sf::RenderWindow *>(renderWindow)->draw(*object, *states);
 }
 extern "C" void sfRenderWindow_drawConvexShape(sfRenderWindow *renderWindow, const sfConvexShape *object, const sf::RenderStates *states) {
 

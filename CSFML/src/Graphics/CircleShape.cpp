@@ -23,125 +23,127 @@
 
 // Headers
 
-#include "Graphics/CircleShape.h"
-#include "Graphics/CircleShapeStruct.h"
+#include "Graphics/Color.h"
+#include "Graphics/Texture.h"
+#include "System/Vector2.h"
+#include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/Color.hpp>
 #include <cstddef>
 
-sfCircleShape *sfCircleShape_create(void) {
-    sfCircleShape *shape = new sfCircleShape;
+extern "C" sf::CircleShape *sfCircleShape_create(void) {
+    sf::CircleShape *shape = new sf::CircleShape;
 
     return shape;
 }
 
-sfCircleShape *sfCircleShape_copy(const sfCircleShape *shape) {
+extern "C" sf::CircleShape *sfCircleShape_copy(const sf::CircleShape *shape) {
 
-    return new sfCircleShape(*shape);
+    return new sf::CircleShape(*shape);
 }
 
-void sfCircleShape_destroy(sfCircleShape *shape) {
+extern "C" void sfCircleShape_destroy(sf::CircleShape *shape) {
     delete shape;
 }
 
-void sfCircleShape_setPosition(sfCircleShape *shape, sfVector2f position) {
-    shape->This.setPosition(position.x, position.y);
+extern "C" void sfCircleShape_setPosition(sf::CircleShape *shape, sfVector2f position) {
+    shape->setPosition(position.x, position.y);
 }
 
-void sfCircleShape_setRotation(sfCircleShape *shape, float angle) {
-    shape->This.setRotation(angle);
+extern "C" void sfCircleShape_setRotation(sf::CircleShape *shape, float angle) {
+    shape->setRotation(angle);
 }
 
-void sfCircleShape_setScale(sfCircleShape *shape, sfVector2f scale) {
-    shape->This.setScale(scale.x, scale.y);
+extern "C" void sfCircleShape_setScale(sf::CircleShape *shape, sfVector2f scale) {
+    shape->setScale(scale.x, scale.y);
 }
 
-void sfCircleShape_setOrigin(sfCircleShape *shape, sfVector2f origin) {
-    shape->This.setOrigin(origin.x, origin.y);
+extern "C" void sfCircleShape_setOrigin(sf::CircleShape *shape, sfVector2f origin) {
+    shape->setOrigin(origin.x, origin.y);
 }
 
-sfVector2f sfCircleShape_getPosition(const sfCircleShape *shape) {
+extern "C" sfVector2f sfCircleShape_getPosition(const sf::CircleShape *shape) {
     sfVector2f position = {0, 0};
 
-    sf::Vector2f sfmlPos = shape->This.getPosition();
+    sf::Vector2f sfmlPos = shape->getPosition();
     position.x = sfmlPos.x;
     position.y = sfmlPos.y;
 
     return position;
 }
 
-float sfCircleShape_getRotation(const sfCircleShape *shape) {
-    return shape->This.getRotation();
+extern "C" float sfCircleShape_getRotation(const sf::CircleShape *shape) {
+    return shape->getRotation();
 }
 
-sfVector2f sfCircleShape_getScale(const sfCircleShape *shape) {
+extern "C" sfVector2f sfCircleShape_getScale(const sf::CircleShape *shape) {
     sfVector2f scale = {0, 0};
 
-    sf::Vector2f sfmlScale = shape->This.getScale();
+    sf::Vector2f sfmlScale = shape->getScale();
     scale.x = sfmlScale.x;
     scale.y = sfmlScale.y;
 
     return scale;
 }
 
-sfVector2f sfCircleShape_getOrigin(const sfCircleShape *shape) {
+extern "C" sfVector2f sfCircleShape_getOrigin(const sf::CircleShape *shape) {
     sfVector2f origin = {0, 0};
 
-    sf::Vector2f sfmlOrigin = shape->This.getOrigin();
+    sf::Vector2f sfmlOrigin = shape->getOrigin();
     origin.x = sfmlOrigin.x;
     origin.y = sfmlOrigin.y;
 
     return origin;
 }
 
-void sfCircleShape_move(sfCircleShape *shape, sfVector2f offset) {
-    shape->This.move(offset.x, offset.y);
+extern "C" void sfCircleShape_move(sf::CircleShape *shape, sfVector2f offset) {
+    shape->move(offset.x, offset.y);
 }
 
-void sfCircleShape_rotate(sfCircleShape *shape, float angle) {
-    shape->This.rotate(angle);
+extern "C" void sfCircleShape_rotate(sf::CircleShape *shape, float angle) {
+    shape->rotate(angle);
 }
 
-void sfCircleShape_scale(sfCircleShape *shape, sfVector2f factors) {
-    shape->This.scale(factors.x, factors.y);
+extern "C" void sfCircleShape_scale(sf::CircleShape *shape, sfVector2f factors) {
+    shape->scale(factors.x, factors.y);
 }
 
-extern "C" sf::Transform sfCircleShape_getTransform(const sfCircleShape *shape) {
-    return shape->This.getTransform();
+extern "C" sf::Transform sfCircleShape_getTransform(const sf::CircleShape *shape) {
+    return shape->getTransform();
 }
 
-extern "C" sf::Transform sfCircleShape_getInverseTransform(const sfCircleShape *shape) {
-    return shape->This.getInverseTransform();
+extern "C" sf::Transform sfCircleShape_getInverseTransform(const sf::CircleShape *shape) {
+    return shape->getInverseTransform();
 }
 
-void sfCircleShape_setTexture(sfCircleShape *shape, const sfTexture *texture, sfBool resetRect) {
-    shape->This.setTexture(reinterpret_cast<const sf::Texture *>(texture), resetRect == sfTrue);
+extern "C" void sfCircleShape_setTexture(sf::CircleShape *shape, const sfTexture *texture, sfBool resetRect) {
+    shape->setTexture(reinterpret_cast<const sf::Texture *>(texture), resetRect == sfTrue);
 }
 
-void sfCircleShape_setTextureRect(sfCircleShape *shape, sfIntRect rect) {
-    shape->This.setTextureRect(sf::IntRect(rect.left, rect.top, rect.width, rect.height));
+extern "C" void sfCircleShape_setTextureRect(sf::CircleShape *shape, sfIntRect rect) {
+    shape->setTextureRect(sf::IntRect(rect.left, rect.top, rect.width, rect.height));
 }
 
-void sfCircleShape_setFillColor(sfCircleShape *shape, sfColor color) {
-    shape->This.setFillColor(sf::Color(color.r, color.g, color.b, color.a));
+extern "C" void sfCircleShape_setFillColor(sf::CircleShape *shape, sfColor color) {
+    shape->setFillColor(sf::Color(color.r, color.g, color.b, color.a));
 }
 
-void sfCircleShape_setOutlineColor(sfCircleShape *shape, sfColor color) {
-    shape->This.setOutlineColor(sf::Color(color.r, color.g, color.b, color.a));
+extern "C" void sfCircleShape_setOutlineColor(sf::CircleShape *shape, sfColor color) {
+    shape->setOutlineColor(sf::Color(color.r, color.g, color.b, color.a));
 }
 
-void sfCircleShape_setOutlineThickness(sfCircleShape *shape, float thickness) {
-    shape->This.setOutlineThickness(thickness);
+extern "C" void sfCircleShape_setOutlineThickness(sf::CircleShape *shape, float thickness) {
+    shape->setOutlineThickness(thickness);
 }
 
-const sfTexture *sfCircleShape_getTexture(const sfCircleShape *shape) {
+extern "C" const sfTexture *sfCircleShape_getTexture(const sf::CircleShape *shape) {
     const sf::CircleShape *shape_ = reinterpret_cast<const sf::CircleShape *>(shape);
     return reinterpret_cast<const sfTexture *>(shape_->getTexture());
 }
 
-sfIntRect sfCircleShape_getTextureRect(const sfCircleShape *shape) {
+extern "C" sfIntRect sfCircleShape_getTextureRect(const sf::CircleShape *shape) {
     sfIntRect rect = {0, 0, 0, 0};
 
-    sf::IntRect sfmlRect = shape->This.getTextureRect();
+    sf::IntRect sfmlRect = shape->getTextureRect();
     rect.left = sfmlRect.left;
     rect.top = sfmlRect.top;
     rect.width = sfmlRect.width;
@@ -150,10 +152,10 @@ sfIntRect sfCircleShape_getTextureRect(const sfCircleShape *shape) {
     return rect;
 }
 
-sfColor sfCircleShape_getFillColor(const sfCircleShape *shape) {
+extern "C" sfColor sfCircleShape_getFillColor(const sf::CircleShape *shape) {
     sfColor color = {0, 0, 0, 0};
 
-    sf::Color sfmlColor = shape->This.getFillColor();
+    sf::Color sfmlColor = shape->getFillColor();
     color.r = sfmlColor.r;
     color.g = sfmlColor.g;
     color.b = sfmlColor.b;
@@ -162,10 +164,10 @@ sfColor sfCircleShape_getFillColor(const sfCircleShape *shape) {
     return color;
 }
 
-sfColor sfCircleShape_getOutlineColor(const sfCircleShape *shape) {
+extern "C" sfColor sfCircleShape_getOutlineColor(const sf::CircleShape *shape) {
     sfColor color = {0, 0, 0, 0};
 
-    sf::Color sfmlColor = shape->This.getOutlineColor();
+    sf::Color sfmlColor = shape->getOutlineColor();
     color.r = sfmlColor.r;
     color.g = sfmlColor.g;
     color.b = sfmlColor.b;
@@ -174,40 +176,40 @@ sfColor sfCircleShape_getOutlineColor(const sfCircleShape *shape) {
     return color;
 }
 
-float sfCircleShape_getOutlineThickness(const sfCircleShape *shape) {
-    return shape->This.getOutlineThickness();
+extern "C" float sfCircleShape_getOutlineThickness(const sf::CircleShape *shape) {
+    return shape->getOutlineThickness();
 }
 
-size_t sfCircleShape_getPointCount(const sfCircleShape *shape) {
-    return shape->This.getPointCount();
+extern "C" size_t sfCircleShape_getPointCount(const sf::CircleShape *shape) {
+    return shape->getPointCount();
 }
 
-sfVector2f sfCircleShape_getPoint(const sfCircleShape *shape, size_t index) {
+extern "C" sfVector2f sfCircleShape_getPoint(const sf::CircleShape *shape, size_t index) {
     sfVector2f point = {0, 0};
 
-    sf::Vector2f sfmlPoint = shape->This.getPoint(index);
+    sf::Vector2f sfmlPoint = shape->getPoint(index);
     point.x = sfmlPoint.x;
     point.y = sfmlPoint.y;
 
     return point;
 }
 
-void sfCircleShape_setRadius(sfCircleShape *shape, float radius) {
-    shape->This.setRadius(radius);
+extern "C" void sfCircleShape_setRadius(sf::CircleShape *shape, float radius) {
+    shape->setRadius(radius);
 }
 
-float sfCircleShape_getRadius(const sfCircleShape *shape) {
-    return shape->This.getRadius();
+extern "C" float sfCircleShape_getRadius(const sf::CircleShape *shape) {
+    return shape->getRadius();
 }
 
-void sfCircleShape_setPointCount(sfCircleShape *shape, size_t count) {
-    shape->This.setPointCount(count);
+extern "C" void sfCircleShape_setPointCount(sf::CircleShape *shape, size_t count) {
+    shape->setPointCount(count);
 }
 
-sfFloatRect sfCircleShape_getLocalBounds(const sfCircleShape *shape) {
+extern "C" sfFloatRect sfCircleShape_getLocalBounds(const sf::CircleShape *shape) {
     sfFloatRect rect = {0, 0, 0, 0};
 
-    sf::FloatRect sfmlRect = shape->This.getLocalBounds();
+    sf::FloatRect sfmlRect = shape->getLocalBounds();
     rect.left = sfmlRect.left;
     rect.top = sfmlRect.top;
     rect.width = sfmlRect.width;
@@ -216,10 +218,10 @@ sfFloatRect sfCircleShape_getLocalBounds(const sfCircleShape *shape) {
     return rect;
 }
 
-sfFloatRect sfCircleShape_getGlobalBounds(const sfCircleShape *shape) {
+extern "C" sfFloatRect sfCircleShape_getGlobalBounds(const sf::CircleShape *shape) {
     sfFloatRect rect = {0, 0, 0, 0};
 
-    sf::FloatRect sfmlRect = shape->This.getGlobalBounds();
+    sf::FloatRect sfmlRect = shape->getGlobalBounds();
     rect.left = sfmlRect.left;
     rect.top = sfmlRect.top;
     rect.width = sfmlRect.width;

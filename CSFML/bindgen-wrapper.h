@@ -20,7 +20,6 @@
 #include "Window/Touch.h"
 #include "Window/VideoMode.h"
 #include "Window/Window.h"
-#include "Graphics/CircleShape.h"
 #include "Graphics/Color.h"
 #include "Graphics/ConvexShape.h"
 #include "Graphics/Font.h"

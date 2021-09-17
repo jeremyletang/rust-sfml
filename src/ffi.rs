@@ -558,4 +558,39 @@ extern "C" {
     pub fn sfSoundRecorder_getDefaultDevice() -> *mut sfStdString;
     pub fn sfSoundRecorder_getAvailableDevices() -> *mut sfStdStringVector;
     pub fn sfVideoMode_getFullscreenModes() -> *const sfVideoModeVector;
+    pub fn sfCircleShape_create() -> *mut sfCircleShape;
+    pub fn sfCircleShape_copy(shape: *const sfCircleShape) -> *mut sfCircleShape;
+    pub fn sfCircleShape_destroy(shape: *mut sfCircleShape);
+    pub fn sfCircleShape_setPosition(shape: *mut sfCircleShape, position: sfVector2f);
+    pub fn sfCircleShape_setRotation(shape: *mut sfCircleShape, angle: f32);
+    pub fn sfCircleShape_setScale(shape: *mut sfCircleShape, scale: sfVector2f);
+    pub fn sfCircleShape_setOrigin(shape: *mut sfCircleShape, origin: sfVector2f);
+    pub fn sfCircleShape_getPosition(shape: *const sfCircleShape) -> sfVector2f;
+    pub fn sfCircleShape_getRotation(shape: *const sfCircleShape) -> f32;
+    pub fn sfCircleShape_getScale(shape: *const sfCircleShape) -> sfVector2f;
+    pub fn sfCircleShape_getOrigin(shape: *const sfCircleShape) -> sfVector2f;
+    pub fn sfCircleShape_move(shape: *mut sfCircleShape, offset: sfVector2f);
+    pub fn sfCircleShape_rotate(shape: *mut sfCircleShape, angle: f32);
+    pub fn sfCircleShape_scale(shape: *mut sfCircleShape, factors: sfVector2f);
+    pub fn sfCircleShape_setTexture(
+        shape: *mut sfCircleShape,
+        texture: *const sfTexture,
+        resetRect: sfBool,
+    );
+    pub fn sfCircleShape_setTextureRect(shape: *mut sfCircleShape, rect: sfIntRect);
+    pub fn sfCircleShape_setFillColor(shape: *mut sfCircleShape, color: sfColor);
+    pub fn sfCircleShape_setOutlineColor(shape: *mut sfCircleShape, color: sfColor);
+    pub fn sfCircleShape_setOutlineThickness(shape: *mut sfCircleShape, thickness: f32);
+    pub fn sfCircleShape_getTexture(shape: *const sfCircleShape) -> *const sfTexture;
+    pub fn sfCircleShape_getTextureRect(shape: *const sfCircleShape) -> sfIntRect;
+    pub fn sfCircleShape_getFillColor(shape: *const sfCircleShape) -> sfColor;
+    pub fn sfCircleShape_getOutlineColor(shape: *const sfCircleShape) -> sfColor;
+    pub fn sfCircleShape_getOutlineThickness(shape: *const sfCircleShape) -> f32;
+    pub fn sfCircleShape_getPointCount(shape: *const sfCircleShape) -> usize;
+    pub fn sfCircleShape_getPoint(shape: *const sfCircleShape, index: usize) -> sfVector2f;
+    pub fn sfCircleShape_setRadius(shape: *mut sfCircleShape, radius: f32);
+    pub fn sfCircleShape_getRadius(shape: *const sfCircleShape) -> f32;
+    pub fn sfCircleShape_setPointCount(shape: *mut sfCircleShape, count: usize);
+    pub fn sfCircleShape_getLocalBounds(shape: *const sfCircleShape) -> sfFloatRect;
+    pub fn sfCircleShape_getGlobalBounds(shape: *const sfCircleShape) -> sfFloatRect;
 }

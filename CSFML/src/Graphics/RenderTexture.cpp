@@ -23,13 +23,13 @@
 
 // Headers
 
-#include "Graphics/CircleShapeStruct.h"
 #include "Graphics/ConvexShapeStruct.h"
 #include "Graphics/PrimitiveType.h"
 #include "Graphics/ShapeStruct.h"
 #include "Graphics/Vertex.h"
 #include "Graphics/VertexBufferStruct.h"
 #include "Window/ContextSettingsInternal.h"
+#include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderTexture.hpp>
 #include <SFML/Graphics/Sprite.hpp>
@@ -145,9 +145,9 @@ extern "C" void sfRenderTexture_drawShape(sf::RenderTexture *renderTexture, cons
 
     renderTexture->draw(object->This, *states);
 }
-extern "C" void sfRenderTexture_drawCircleShape(sf::RenderTexture *renderTexture, const sfCircleShape *object, const sf::RenderStates *states) {
+extern "C" void sfRenderTexture_drawCircleShape(sf::RenderTexture *renderTexture, const sf::CircleShape *object, const sf::RenderStates *states) {
 
-    renderTexture->draw(object->This, *states);
+    renderTexture->draw(*object, *states);
 }
 extern "C" void sfRenderTexture_drawConvexShape(sf::RenderTexture *renderTexture, const sfConvexShape *object, const sf::RenderStates *states) {
 
