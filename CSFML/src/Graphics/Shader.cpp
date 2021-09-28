@@ -24,94 +24,49 @@
 // Headers
 
 #include "Graphics/Shader.h"
+#include "Config.h"
 #include "System/InputStreamStruct.h"
 #include <SFML/Graphics/Shader.hpp>
 #include <cstddef>
 
-sfShader *sfShader_createFromFile(const char *vertexShaderFilename, const char *geometryShaderFilename, const char *fragmentShaderFilename) {
-    bool success = false;
-    sf::Shader *shader = new sf::Shader;
-    if (vertexShaderFilename || geometryShaderFilename || fragmentShaderFilename) {
-        if (!geometryShaderFilename) {
-            if (!vertexShaderFilename) {
-                // fragment shader only
-                success = shader->loadFromFile(fragmentShaderFilename, sf::Shader::Fragment);
-            } else if (!fragmentShaderFilename) {
-                // vertex shader only
-                success = shader->loadFromFile(vertexShaderFilename, sf::Shader::Vertex);
-            } else {
-                // vertex + fragment shaders
-                success = shader->loadFromFile(vertexShaderFilename, fragmentShaderFilename);
-            }
-        } else {
-            // vertex + geometry + fragment shaders
-            success = shader->loadFromFile(vertexShaderFilename, geometryShaderFilename, fragmentShaderFilename);
-        }
-    }
-
-    if (!success) {
-        delete shader;
-        shader = NULL;
-    }
-
-    return reinterpret_cast<sfShader *>(shader);
+extern "C" sf::Shader *sfShader_defaultConstruct() {
+    return new sf::Shader;
 }
 
-sfShader *sfShader_createFromMemory(const char *vertexShader, const char *geometryShader, const char *fragmentShader) {
-    bool success = false;
-    sf::Shader *shader = new sf::Shader;
-    if (vertexShader || geometryShader || fragmentShader) {
-        if (!geometryShader) {
-            if (!vertexShader) {
-                // fragment shader only
-                success = shader->loadFromMemory(fragmentShader, sf::Shader::Fragment);
-            } else if (!fragmentShader) {
-                // vertex shader only
-                success = shader->loadFromMemory(vertexShader, sf::Shader::Vertex);
-            } else {
-                // vertex + fragment shaders
-                success = shader->loadFromMemory(vertexShader, fragmentShader);
-            }
-        } else {
-            // vertex + geometry + fragment shaders
-            success = shader->loadFromMemory(vertexShader, geometryShader, fragmentShader);
-        }
-    }
-
-    if (!success) {
-        delete shader;
-        shader = NULL;
-    }
-
-    return reinterpret_cast<sfShader *>(shader);
+extern "C" sfBool sfShader_loadFromMemory_1(sf::Shader *shader, const char *content, sf::Shader::Type type) {
+    return shader->loadFromMemory(content, type);
 }
 
-sfShader *sfShader_createFromStream(sfInputStream *vertexShaderStream, sfInputStream *geometryShaderStream, sfInputStream *fragmentShaderStream) {
-    bool success = false;
-    sf::Shader *shader = new sf::Shader;
-    if (vertexShaderStream || geometryShaderStream || fragmentShaderStream) {
-        if (!geometryShaderStream) {
-            if (!vertexShaderStream) {
-                // fragment shader only
-                success = shader->loadFromStream(*fragmentShaderStream, sf::Shader::Fragment);
-            } else if (!fragmentShaderStream) {
-                // vertex shader only
-                success = shader->loadFromStream(*vertexShaderStream, sf::Shader::Vertex);
-            } else {
-                // vertex + fragment shaders
-                success = shader->loadFromStream(*vertexShaderStream, *fragmentShaderStream);
-            }
-        } else {
-            success = shader->loadFromStream(*vertexShaderStream, *geometryShaderStream, *fragmentShaderStream);
-        }
-    }
+extern "C" sfBool sfShader_loadFromFile_1(sf::Shader *shader, const char *filename, sf::Shader::Type type) {
+    return shader->loadFromFile(filename, type);
+}
 
-    if (!success) {
-        delete shader;
-        shader = NULL;
-    }
+extern "C" sfBool sfShader_loadFromStream_1(sf::Shader *shader, sfInputStream *stream, sf::Shader::Type type) {
+    return shader->loadFromStream(*stream, type);
+}
 
-    return reinterpret_cast<sfShader *>(shader);
+extern "C" sfBool sfShader_loadFromMemory_vert_frag(sf::Shader *shader, const char *vert, const char *frag) {
+    return shader->loadFromMemory(vert, frag);
+}
+
+extern "C" sfBool sfShader_loadFromFile_vert_frag(sf::Shader *shader, const char *vert, const char *frag) {
+    return shader->loadFromFile(vert, frag);
+}
+
+extern "C" sfBool sfShader_loadFromStream_vert_frag(sf::Shader *shader, sfInputStream *vert, sfInputStream *frag) {
+    return shader->loadFromStream(*vert, *frag);
+}
+
+extern "C" sfBool sfShader_loadFromMemory_all(sf::Shader *shader, const char *vert, const char *geom, const char *frag) {
+    return shader->loadFromMemory(vert, geom, frag);
+}
+
+extern "C" sfBool sfShader_loadFromFile_all(sf::Shader *shader, const char *vert, const char *geom, const char *frag) {
+    return shader->loadFromFile(vert, geom, frag);
+}
+
+extern "C" sfBool sfShader_loadFromStream_all(sf::Shader *shader, sfInputStream *vert, sfInputStream *geom, sfInputStream *frag) {
+    return shader->loadFromStream(*vert, *geom, *frag);
 }
 
 void sfShader_destroy(sfShader *shader) {

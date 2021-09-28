@@ -1,7 +1,7 @@
 use sfml::{
     graphics::{
         Color, Drawable, Font, IntRect, PrimitiveType, RenderStates, RenderTarget, RenderTexture,
-        RenderWindow, Shader, Sprite, Text, Texture, Transformable, Vertex,
+        RenderWindow, Shader, ShaderType, Sprite, Text, Texture, Transformable, Vertex,
     },
     system::{Clock, Vector2f},
     window::{Event, Key, Style},
@@ -24,7 +24,7 @@ impl<'t> Pixelate<'t> {
         sprite.set_texture(texture, false);
         Self {
             sprite,
-            shader: Shader::from_file(None, None, Some("resources/pixelate.frag")).unwrap(),
+            shader: Shader::from_file("resources/pixelate.frag", ShaderType::Fragment).unwrap(),
         }
     }
 }
@@ -85,12 +85,8 @@ impl<'fo> WaveBlur<'fo> {
         text.set_position((30., 20.));
         Self {
             text,
-            shader: Shader::from_file(
-                Some("resources/wave.vert"),
-                None,
-                Some("resources/blur.frag"),
-            )
-            .unwrap(),
+            shader: Shader::from_file_vert_frag("resources/wave.vert", "resources/blur.frag")
+                .unwrap(),
         }
     }
 }
@@ -144,12 +140,8 @@ impl StormBlink {
             ));
         }
 
-        let shader = Shader::from_file(
-            Some("resources/storm.vert"),
-            None,
-            Some("resources/blink.frag"),
-        )
-        .unwrap();
+        let shader =
+            Shader::from_file_vert_frag("resources/storm.vert", "resources/blink.frag").unwrap();
         Self { points, shader }
     }
 }
@@ -207,7 +199,7 @@ impl<'t> Edge<'t> {
             ));
         }
 
-        let mut shader = Shader::from_file(None, None, Some("resources/edge.frag")).unwrap();
+        let mut shader = Shader::from_file("resources/edge.frag", ShaderType::Fragment).unwrap();
         shader.set_uniform_current_texture("texture");
 
         Self {

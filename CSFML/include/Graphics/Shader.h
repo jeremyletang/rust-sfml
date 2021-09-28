@@ -36,12 +36,6 @@
 #include "System/Vector3.h"
 #include <stddef.h>
 
-extern "C" sfShader *sfShader_createFromFile(const char *vertexShaderFilename, const char *geometryShaderFilename, const char *fragmentShaderFilename);
-
-extern "C" sfShader *sfShader_createFromMemory(const char *vertexShader, const char *geometryShader, const char *fragmentShader);
-
-extern "C" sfShader *sfShader_createFromStream(sfInputStream *vertexShaderStream, sfInputStream *geometryShaderStream, sfInputStream *fragmentShaderStream);
-
 extern "C" void sfShader_destroy(sfShader *shader);
 
 extern "C" void sfShader_setFloatUniform(sfShader *shader, const char *name, float x);

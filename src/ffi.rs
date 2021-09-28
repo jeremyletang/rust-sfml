@@ -593,4 +593,65 @@ extern "C" {
     pub fn sfCircleShape_setPointCount(shape: *mut sfCircleShape, count: usize);
     pub fn sfCircleShape_getLocalBounds(shape: *const sfCircleShape) -> sfFloatRect;
     pub fn sfCircleShape_getGlobalBounds(shape: *const sfCircleShape) -> sfFloatRect;
+    pub fn sfShader_defaultConstruct() -> *mut sfShader;
+    pub fn sfShader_loadFromFile_1(
+        shader: *mut sfShader,
+        path: *const c_char,
+        type_: ShaderType,
+    ) -> sfBool;
+    pub fn sfShader_loadFromMemory_1(
+        shader: *mut sfShader,
+        path: *const c_char,
+        type_: ShaderType,
+    ) -> sfBool;
+    pub fn sfShader_loadFromStream_1(
+        shader: *mut sfShader,
+        stream: *mut sfInputStream,
+        type_: ShaderType,
+    ) -> sfBool;
+    pub fn sfShader_loadFromFile_vert_frag(
+        shader: *mut sfShader,
+        vert: *const c_char,
+        frag: *const c_char,
+    ) -> sfBool;
+    pub fn sfShader_loadFromMemory_vert_frag(
+        shader: *mut sfShader,
+        vert: *const c_char,
+        frag: *const c_char,
+    ) -> sfBool;
+    pub fn sfShader_loadFromStream_vert_frag(
+        shader: *mut sfShader,
+        vert: *mut sfInputStream,
+        frag: *mut sfInputStream,
+    ) -> sfBool;
+    pub fn sfShader_loadFromFile_all(
+        shader: *mut sfShader,
+        vert: *const c_char,
+        geom: *const c_char,
+        frag: *const c_char,
+    ) -> sfBool;
+    pub fn sfShader_loadFromMemory_all(
+        shader: *mut sfShader,
+        vert: *const c_char,
+        geom: *const c_char,
+        frag: *const c_char,
+    ) -> sfBool;
+    pub fn sfShader_loadFromStream_all(
+        shader: *mut sfShader,
+        vert: *mut sfInputStream,
+        geom: *mut sfInputStream,
+        frag: *mut sfInputStream,
+    ) -> sfBool;
+}
+
+/// Types of shaders
+#[repr(C)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum ShaderType {
+    /// Vertex shader
+    Vertex,
+    /// Geometry shader
+    Geometry,
+    /// Fragment (pixel) shader
+    Fragment,
 }
