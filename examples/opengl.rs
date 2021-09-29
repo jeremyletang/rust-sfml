@@ -104,13 +104,13 @@ fn main() {
                 match event {
                     Event::Closed
                     | Event::KeyPressed {
-                        code: Key::ESCAPE, ..
+                        code: Key::Escape, ..
                     } => {
                         exit = true;
                         window.close();
                     }
                     Event::KeyPressed {
-                        code: Key::ENTER, ..
+                        code: Key::Enter, ..
                     } => {
                         if mipmap_enabled {
                             texture = Texture::from_file("resources/texture.jpg").unwrap();
@@ -124,7 +124,7 @@ fn main() {
                         }
                     }
                     Event::KeyPressed {
-                        code: Key::SPACE, ..
+                        code: Key::Space, ..
                     } => {
                         srgb = !srgb;
                         window.close();

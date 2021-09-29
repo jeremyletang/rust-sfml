@@ -30,23 +30,6 @@
 #include "System/Vector2.h"
 #include "Window/Types.h"
 
-typedef enum {
-    sfMouseLeft,     ///< The left mouse button
-    sfMouseRight,    ///< The right mouse button
-    sfMouseMiddle,   ///< The middle (wheel) mouse button
-    sfMouseXButton1, ///< The first extra mouse button
-    sfMouseXButton2, ///< The second extra mouse button
-
-    sfMouseButtonCount ///< Keep last -- the total number of mouse buttons
-} sfMouseButton;
-
-typedef enum {
-    sfMouseVerticalWheel,  ///< The vertical mouse wheel
-    sfMouseHorizontalWheel ///< The horizontal mouse wheel
-} sfMouseWheel;
-
-extern "C" sfBool sfMouse_isButtonPressed(sfMouseButton button);
-
 extern "C" sfVector2i sfMouse_getPosition(const sfWindow *relativeTo);
 
 extern "C" void sfMouse_setPosition(sfVector2i position, const sfWindow *relativeTo);

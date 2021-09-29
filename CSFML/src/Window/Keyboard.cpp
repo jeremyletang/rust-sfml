@@ -23,14 +23,14 @@
 
 // Headers
 
-#include "Window/Keyboard.h"
 #include <SFML/Window/Keyboard.hpp>
 #include <cstddef>
+#include "Config.h"
 
-sfBool sfKeyboard_isKeyPressed(sfKeyCode key) {
-    return sf::Keyboard::isKeyPressed(static_cast<sf::Keyboard::Key>(key));
+extern "C" sfBool sfKeyboard_isKeyPressed(sf::Keyboard::Key key) {
+    return sf::Keyboard::isKeyPressed(key);
 }
 
-void sfKeyboard_setVirtualKeyboardVisible(sfBool visible) {
+extern "C" void sfKeyboard_setVirtualKeyboardVisible(sfBool visible) {
     sf::Keyboard::setVirtualKeyboardVisible(visible == sfTrue);
 }

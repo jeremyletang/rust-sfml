@@ -21,7 +21,7 @@
 //!
 //! # let window: Window = unimplemented!();
 //!
-//! if mouse::Button::LEFT.is_pressed() {
+//! if mouse::Button::Left.is_pressed() {
 //!     // left click
 //! }
 //!
@@ -33,45 +33,7 @@
 //! ```
 
 use crate::{ffi, sf_bool_ext::SfBoolExt, system::Vector2i, window::thread_safety};
-
-/// Mouse buttons.
-#[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
-#[repr(transparent)]
-pub struct Button(pub(super) ffi::sfMouseButton);
-
-impl Button {
-    /// The left mouse button.
-    pub const LEFT: Self = Self(ffi::sfMouseButton_sfMouseLeft);
-    /// The right mouse button.
-    pub const RIGHT: Self = Self(ffi::sfMouseButton_sfMouseRight);
-    /// The middle (wheel) mouse button.
-    pub const MIDDLE: Self = Self(ffi::sfMouseButton_sfMouseMiddle);
-    /// The first extra mouse button.
-    pub const X_BUTTON_1: Self = Self(ffi::sfMouseButton_sfMouseXButton1);
-    /// The second extra mouse button.
-    pub const X_BUTTON_2: Self = Self(ffi::sfMouseButton_sfMouseXButton2);
-    /// The total number of mouse buttons.
-    pub const COUNT: ffi::sfMouseButton = ffi::sfMouseButton_sfMouseButtonCount;
-}
-
-#[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
-/// Mouse wheels.
-pub enum Wheel {
-    /// The vertical mouse wheel.
-    Vertical,
-    /// The horizontal mouse wheel.
-    Horizontal,
-}
-
-impl Wheel {
-    pub(super) fn from_raw(raw: ffi::sfMouseWheel) -> Self {
-        match raw {
-            ffi::sfMouseWheel_sfMouseVerticalWheel => Wheel::Vertical,
-            ffi::sfMouseWheel_sfMouseHorizontalWheel => Wheel::Horizontal,
-            _ => unreachable!(),
-        }
-    }
-}
+pub use ffi::{MouseButton as Button, MouseWheel as Wheel};
 
 impl Button {
     /// Return whether this mouse button is currently pressed.
@@ -83,7 +45,7 @@ impl Button {
     pub fn is_pressed(self) -> bool {
         thread_safety::set_window_thread();
 
-        unsafe { ffi::sfMouse_isButtonPressed(self.0) }.into_bool()
+        unsafe { ffi::sfMouse_isButtonPressed(self) }.into_bool()
     }
 }
 

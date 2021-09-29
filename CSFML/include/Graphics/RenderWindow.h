@@ -33,7 +33,6 @@
 #include "Graphics/Types.h"
 #include "Graphics/Vertex.h"
 #include "System/Vector2.h"
-#include "Window/Event.h"
 #include "Window/VideoMode.h"
 #include "Window/Window.h"
 #include "Window/WindowHandle.h"
@@ -50,10 +49,6 @@ extern "C" void sfRenderWindow_close(sfRenderWindow *renderWindow);
 extern "C" sfBool sfRenderWindow_isOpen(const sfRenderWindow *renderWindow);
 
 extern "C" sfContextSettings sfRenderWindow_getSettings(const sfRenderWindow *renderWindow);
-
-extern "C" sfBool sfRenderWindow_pollEvent(sfRenderWindow *renderWindow, sfEvent *event);
-
-extern "C" sfBool sfRenderWindow_waitEvent(sfRenderWindow *renderWindow, sfEvent *event);
 
 extern "C" sfVector2i sfRenderWindow_getPosition(const sfRenderWindow *renderWindow);
 

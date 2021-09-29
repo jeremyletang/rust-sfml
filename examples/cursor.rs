@@ -112,7 +112,7 @@ fn main() {
             match ev {
                 Event::Closed => rw.close(),
                 Event::MouseButtonPressed {
-                    button: mouse::Button::LEFT,
+                    button: mouse::Button::Left,
                     x,
                     y,
                 } => {
@@ -161,7 +161,7 @@ fn main() {
                     }
                 }
                 Event::MouseButtonReleased {
-                    button: mouse::Button::LEFT,
+                    button: mouse::Button::Left,
                     ..
                 } => {
                     if hotspot_selected {
@@ -202,10 +202,10 @@ fn main() {
                     hotspot_selected = true;
                     hotspot = Vector2::new(gx as u32, gy as u32);
                     modif = true;
-                } else if mouse::Button::LEFT.is_pressed() {
+                } else if mouse::Button::Left.is_pressed() {
                     *cell = true;
                     modif = true;
-                } else if mouse::Button::RIGHT.is_pressed() {
+                } else if mouse::Button::Right.is_pressed() {
                     *cell = false;
                     modif = true;
                 }

@@ -28,7 +28,6 @@
 
 #include "Config.h"
 #include "System/Vector2.h"
-#include "Window/Event.h"
 
 #include "Window/Types.h"
 #include "Window/VideoMode.h"
@@ -56,10 +55,6 @@ extern "C" void sfWindow_close(sfWindow *window);
 extern "C" sfBool sfWindow_isOpen(const sfWindow *window);
 
 extern "C" sfContextSettings sfWindow_getSettings(const sfWindow *window);
-
-extern "C" sfBool sfWindow_pollEvent(sfWindow *window, sfEvent *event);
-
-extern "C" sfBool sfWindow_waitEvent(sfWindow *window, sfEvent *event);
 
 extern "C" sfVector2i sfWindow_getPosition(const sfWindow *window);
 

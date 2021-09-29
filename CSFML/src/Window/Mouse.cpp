@@ -28,8 +28,8 @@
 #include <SFML/Window/Mouse.hpp>
 #include <cstddef>
 
-sfBool sfMouse_isButtonPressed(sfMouseButton button) {
-    return sf::Mouse::isButtonPressed(static_cast<sf::Mouse::Button>(button)) ? sfTrue : sfFalse;
+extern "C" sfBool sfMouse_isButtonPressed(sf::Mouse::Button button) {
+    return sf::Mouse::isButtonPressed(button) ? sfTrue : sfFalse;
 }
 
 sfVector2i sfMouse_getPosition(const sfWindow *relativeTo) {

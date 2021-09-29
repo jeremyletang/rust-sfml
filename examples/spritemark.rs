@@ -83,10 +83,10 @@ fn main() {
             match event {
                 Event::Closed
                 | Event::KeyPressed {
-                    code: Key::ESCAPE, ..
+                    code: Key::Escape, ..
                 } => window.close(),
                 Event::MouseButtonPressed {
-                    button: Button::LEFT,
+                    button: Button::Left,
                     ..
                 } => click_counter += 1,
                 Event::Resized { width, height } => {
@@ -101,7 +101,7 @@ fn main() {
             }
         }
 
-        if Button::LEFT.is_pressed() {
+        if Button::Left.is_pressed() {
             let mp = window.mouse_position();
             for _ in 0..25 {
                 objects.push(Object {

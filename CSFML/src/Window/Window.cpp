@@ -24,7 +24,6 @@
 // Headers
 
 #include "Window/Window.h"
-#include "ConvertEvent.h"
 #include "Window/ContextSettingsInternal.h"
 #include "Window/CursorStruct.h"
 #include "Window/WindowStruct.h"
@@ -82,36 +81,12 @@ sfContextSettings sfWindow_getSettings(const sfWindow *window) {
     return settings;
 }
 
-sfBool sfWindow_pollEvent(sfWindow *window, sfEvent *event) {
-
-    // Get the event
-    sf::Event SFMLEvent;
-    sfBool ret = window->This.pollEvent(SFMLEvent);
-
-    // No event, return
-    if (!ret)
-        return sfFalse;
-
-    // Convert the sf::Event event to a sfEvent
-    convertEvent(SFMLEvent, event);
-
-    return sfTrue;
+extern "C" sfBool sfWindow_pollEvent(sfWindow *window, sf::Event *event) {
+    return window->This.pollEvent(*event);
 }
 
-sfBool sfWindow_waitEvent(sfWindow *window, sfEvent *event) {
-
-    // Get the event
-    sf::Event SFMLEvent;
-    sfBool ret = window->This.waitEvent(SFMLEvent);
-
-    // Error, return
-    if (!ret)
-        return sfFalse;
-
-    // Convert the sf::Event event to a sfEvent
-    convertEvent(SFMLEvent, event);
-
-    return sfTrue;
+extern "C" sfBool sfWindow_waitEvent(sfWindow *window, sf::Event *event) {
+    return window->This.waitEvent(*event);
 }
 
 sfVector2i sfWindow_getPosition(const sfWindow *window) {

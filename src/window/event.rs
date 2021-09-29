@@ -1,11 +1,4 @@
-use crate::{
-    ffi,
-    window::{
-        joystick::Axis,
-        keyboard::Key,
-        mouse::{Button, Wheel},
-    },
-};
+use crate::ffi::{self, EventType};
 
 /// Defines a system event and its parameters.
 ///
@@ -30,7 +23,7 @@ use crate::{
 /// # fn do_something_with_the_new_size(_x: u32, _y: u32) {}
 /// while let Some(event) = window.poll_event() {
 ///     match event {
-///         Event::Closed | Event::KeyPressed { code: Key::ESCAPE, .. } => window.close(),
+///         Event::Closed | Event::KeyPressed { code: Key::Escape, .. } => window.close(),
 ///         Event::Resized { width, height } => do_something_with_the_new_size(width, height),
 ///         _ => { /* Do nothing */ }
 ///     }
@@ -63,7 +56,7 @@ pub enum Event {
     /// A key was pressed
     KeyPressed {
         /// The pressed key
-        code: Key,
+        code: ffi::Key,
         /// Is alt pressed too?
         alt: bool,
         /// Is ctrl pressed too?
@@ -76,7 +69,7 @@ pub enum Event {
     /// A key was released
     KeyReleased {
         /// The released key
-        code: Key,
+        code: ffi::Key,
         /// Is alt released too?
         alt: bool,
         /// Is ctrl released too?
@@ -86,10 +79,13 @@ pub enum Event {
         /// Is system released too?
         system: bool,
     },
+    #[doc(hidden)]
+    /// Do not use. Needed for compatibility with SFML.
+    MouseWheelMoved,
     /// The mouse wheel was scrolled
     MouseWheelScrolled {
         /// Which wheel (for mice with multiple ones).
-        wheel: Wheel,
+        wheel: ffi::MouseWheel,
         /// Wheel offset (positive is up/left, negative is down/right).
         /// High-precision mice may use non-integral offsets.
         delta: f32,
@@ -101,7 +97,7 @@ pub enum Event {
     /// A mouse button was pressed
     MouseButtonPressed {
         /// Code of the button that has been pressed.
-        button: Button,
+        button: ffi::MouseButton,
         /// X position of the mouse pointer, relative to the left of the owner window.
         x: i32,
         /// Y position of the mouse pointer, relative to the top of the owner window.
@@ -110,7 +106,7 @@ pub enum Event {
     /// A mouse button was released
     MouseButtonReleased {
         /// Code of the button that has been pressed.
-        button: Button,
+        button: ffi::MouseButton,
         /// X position of the mouse pointer, relative to the left of the owner window.
         x: i32,
         /// Y position of the mouse pointer, relative to the top of the owner window.
@@ -146,7 +142,7 @@ pub enum Event {
         /// Index of the joystick (in range [0 .. joystick::Count - 1])
         joystickid: u32,
         /// Axis on which the joystick moved.
-        axis: Axis,
+        axis: ffi::JoystickAxis,
         /// New position on the axis (in range [-100 .. 100])
         position: f32,
     },
@@ -190,7 +186,7 @@ pub enum Event {
     /// A sensor value changed
     SensorChanged {
         /// Type of the sensor.
-        type_: crate::window::sensor::Type,
+        type_: ffi::SensorType,
         /// Current value of the sensor on X axis.
         x: f32,
         /// Current value of the sensor on Y axis.
@@ -201,153 +197,102 @@ pub enum Event {
 }
 
 impl Event {
-    pub(crate) unsafe fn from_raw(event: &ffi::sfEvent) -> Option<Self> {
-        use crate::{sf_bool_ext::SfBoolExt, window::Event::*};
+    pub(crate) unsafe fn from_raw(event: &ffi::Event) -> Option<Self> {
+        use crate::window::Event::*;
 
-        let type_ = event.type_;
-
-        let evt = match type_ {
-            ffi::sfEvtClosed => Closed,
-            ffi::sfEvtResized => {
-                let e = event.size;
+        let evt = match event.type_ {
+            EventType::Closed => Closed,
+            EventType::Resized => {
+                let e = event.union.size;
 
                 Resized {
                     width: e.width,
                     height: e.height,
                 }
             }
-            ffi::sfEvtLostFocus => LostFocus,
-            ffi::sfEvtGainedFocus => GainedFocus,
-            ffi::sfEvtTextEntered => TextEntered {
-                unicode: std::char::from_u32(event.text.unicode)
+            EventType::LostFocus => LostFocus,
+            EventType::GainedFocus => GainedFocus,
+            EventType::TextEntered => TextEntered {
+                unicode: std::char::from_u32(event.union.text.unicode)
                     .expect("Invalid unicode encountered on TextEntered event"),
             },
-            ffi::sfEvtKeyPressed => {
-                let e = event.key;
-
-                KeyPressed {
-                    code: Key(e.code),
-                    alt: e.alt.into_bool(),
-                    ctrl: e.control.into_bool(),
-                    shift: e.shift.into_bool(),
-                    system: e.system.into_bool(),
-                }
-            }
-            ffi::sfEvtKeyReleased => {
-                let e = event.key;
-
-                KeyReleased {
-                    code: Key(e.code),
-                    alt: e.alt.into_bool(),
-                    ctrl: e.control.into_bool(),
-                    shift: e.shift.into_bool(),
-                    system: e.system.into_bool(),
-                }
-            }
-            ffi::sfEvtMouseWheelScrolled => {
-                let e = event.mouseWheelScroll;
-                MouseWheelScrolled {
-                    wheel: Wheel::from_raw(e.wheel),
-                    delta: e.delta,
-                    x: e.x,
-                    y: e.y,
-                }
-            }
-            ffi::sfEvtMouseButtonPressed => {
-                let e = event.mouseButton;
-
-                MouseButtonPressed {
-                    button: Button(e.button),
-                    x: e.x,
-                    y: e.y,
-                }
-            }
-            ffi::sfEvtMouseButtonReleased => {
-                let e = event.mouseButton;
-
-                MouseButtonReleased {
-                    button: Button(e.button),
-                    x: e.x,
-                    y: e.y,
-                }
-            }
-            ffi::sfEvtMouseMoved => {
-                let e = event.mouseMove;
-                MouseMoved { x: e.x, y: e.y }
-            }
-            ffi::sfEvtMouseEntered => MouseEntered,
-            ffi::sfEvtMouseLeft => MouseLeft,
-            ffi::sfEvtJoystickButtonPressed => {
-                let e = event.joystickButton;
-
-                JoystickButtonPressed {
-                    joystickid: e.joystickId,
-                    button: e.button,
-                }
-            }
-            ffi::sfEvtJoystickButtonReleased => {
-                let e = event.joystickButton;
-
-                JoystickButtonReleased {
-                    joystickid: e.joystickId,
-                    button: e.button,
-                }
-            }
-            ffi::sfEvtJoystickMoved => {
-                let e = event.joystickMove;
-
-                JoystickMoved {
-                    joystickid: e.joystickId,
-                    axis: Axis(e.axis),
-                    position: e.position,
-                }
-            }
-            ffi::sfEvtJoystickConnected => JoystickConnected {
-                joystickid: event.joystickConnect.joystickId,
+            EventType::KeyPressed => KeyPressed {
+                code: event.union.key.code,
+                alt: event.union.key.alt,
+                ctrl: event.union.key.control,
+                shift: event.union.key.shift,
+                system: event.union.key.system,
             },
-            ffi::sfEvtJoystickDisconnected => JoystickDisconnected {
-                joystickid: event.joystickConnect.joystickId,
+            EventType::KeyReleased => KeyReleased {
+                code: event.union.key.code,
+                alt: event.union.key.alt,
+                ctrl: event.union.key.control,
+                shift: event.union.key.shift,
+                system: event.union.key.system,
             },
-            ffi::sfEvtTouchBegan => {
-                let e = event.touch;
-
-                TouchBegan {
-                    finger: e.finger,
-                    x: e.x,
-                    y: e.y,
-                }
-            }
-            ffi::sfEvtTouchMoved => {
-                let e = event.touch;
-
-                TouchMoved {
-                    finger: e.finger,
-                    x: e.x,
-                    y: e.y,
-                }
-            }
-            ffi::sfEvtTouchEnded => {
-                let e = event.touch;
-
-                TouchEnded {
-                    finger: e.finger,
-                    x: e.x,
-                    y: e.y,
-                }
-            }
-            ffi::sfEvtSensorChanged => {
-                let e = event.sensor;
-
-                SensorChanged {
-                    type_: crate::window::sensor::Type(e.sensorType),
-                    x: e.x,
-                    y: e.y,
-                    z: e.z,
-                }
-            }
-
-            // Ignore deprecated events
-            _ => panic!("Unhandled event type ({})", type_),
+            EventType::MouseWheelScrolled => MouseWheelScrolled {
+                wheel: event.union.mouse_wheel_scroll.wheel,
+                delta: event.union.mouse_wheel_scroll.delta,
+                x: event.union.mouse_wheel_scroll.x,
+                y: event.union.mouse_wheel_scroll.y,
+            },
+            EventType::MouseButtonPressed => MouseButtonPressed {
+                button: event.union.mouse_button.button,
+                x: event.union.mouse_button.x,
+                y: event.union.mouse_button.y,
+            },
+            EventType::MouseButtonReleased => MouseButtonReleased {
+                button: event.union.mouse_button.button,
+                x: event.union.mouse_button.x,
+                y: event.union.mouse_button.y,
+            },
+            EventType::MouseMoved => MouseMoved {
+                x: event.union.mouse_move.x,
+                y: event.union.mouse_move.y,
+            },
+            EventType::MouseEntered => MouseEntered,
+            EventType::MouseLeft => MouseLeft,
+            EventType::JoystickButtonPressed => JoystickButtonPressed {
+                joystickid: event.union.joystick_button.joystick_id,
+                button: event.union.joystick_button.button,
+            },
+            EventType::JoystickButtonReleased => JoystickButtonReleased {
+                joystickid: event.union.joystick_button.joystick_id,
+                button: event.union.joystick_button.button,
+            },
+            EventType::JoystickMoved => JoystickMoved {
+                joystickid: event.union.joystick_move.joystick_id,
+                axis: event.union.joystick_move.axis,
+                position: event.union.joystick_move.position,
+            },
+            EventType::JoystickConnected => JoystickConnected {
+                joystickid: event.union.joystick_connect.joystick_id,
+            },
+            EventType::JoystickDisconnected => JoystickDisconnected {
+                joystickid: event.union.joystick_connect.joystick_id,
+            },
+            EventType::TouchBegan => TouchBegan {
+                finger: event.union.touch.finger,
+                x: event.union.touch.x,
+                y: event.union.touch.y,
+            },
+            EventType::TouchMoved => TouchMoved {
+                finger: event.union.touch.finger,
+                x: event.union.touch.x,
+                y: event.union.touch.y,
+            },
+            EventType::TouchEnded => TouchEnded {
+                finger: event.union.touch.finger,
+                x: event.union.touch.x,
+                y: event.union.touch.y,
+            },
+            EventType::SensorChanged => SensorChanged {
+                type_: event.union.sensor.type_,
+                x: event.union.sensor.x,
+                y: event.union.sensor.y,
+                z: event.union.sensor.z,
+            },
+            EventType::MouseWheelMoved => Event::MouseWheelMoved,
         };
         Some(evt)
     }

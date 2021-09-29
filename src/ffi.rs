@@ -10,7 +10,7 @@
 use std::{
     ffi::c_void,
     fmt::Display,
-    os::raw::{c_char, c_uint},
+    os::raw::{c_char, c_int, c_uint},
     str::Utf8Error,
 };
 
@@ -321,6 +321,304 @@ impl Display for sfStdString {
         let string = String::from_utf8_lossy(data);
         write!(f, "{}", string)
     }
+}
+
+#[repr(C)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub(crate) struct SizeEvent {
+    pub(crate) width: c_uint,
+    pub(crate) height: c_uint,
+}
+
+#[repr(C)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub(crate) struct KeyEvent {
+    pub(crate) code: Key,
+    pub(crate) alt: bool,
+    pub(crate) control: bool,
+    pub(crate) shift: bool,
+    pub(crate) system: bool,
+}
+
+#[repr(C)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub(crate) struct TextEvent {
+    pub(crate) unicode: u32,
+}
+
+#[repr(C)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub(crate) struct MouseMoveEvent {
+    pub(crate) x: c_int,
+    pub(crate) y: c_int,
+}
+
+#[repr(C)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub(crate) struct MouseButtonEvent {
+    pub(crate) button: MouseButton,
+    pub(crate) x: c_int,
+    pub(crate) y: c_int,
+}
+
+#[repr(C)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub(crate) struct MouseWheelEvent {
+    pub(crate) delta: c_int,
+    pub(crate) x: c_int,
+    pub(crate) y: c_int,
+}
+
+#[repr(C)]
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub(crate) struct MouseWheelScrollEvent {
+    pub(crate) wheel: MouseWheel,
+    pub(crate) delta: f32,
+    pub(crate) x: c_int,
+    pub(crate) y: c_int,
+}
+
+#[repr(C)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub(crate) struct JoystickConnectEvent {
+    pub(crate) joystick_id: c_uint,
+}
+
+#[repr(C)]
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub(crate) struct JoystickMoveEvent {
+    pub(crate) joystick_id: c_uint,
+    pub(crate) axis: JoystickAxis,
+    pub(crate) position: f32,
+}
+
+#[repr(C)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub(crate) struct JoystickButtonEvent {
+    pub(crate) joystick_id: c_uint,
+    pub(crate) button: c_uint,
+}
+
+#[repr(C)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub(crate) struct TouchEvent {
+    pub(crate) finger: c_uint,
+    pub(crate) x: c_int,
+    pub(crate) y: c_int,
+}
+
+#[repr(C)]
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub(crate) struct SensorEvent {
+    pub(crate) type_: SensorType,
+    pub(crate) x: f32,
+    pub(crate) y: f32,
+    pub(crate) z: f32,
+}
+
+#[repr(C)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum SensorType {
+    Accelerometer,
+    Gyroscope,
+    Magnetometer,
+    Gravity,
+    UserAcceleration,
+    Orientation,
+}
+
+#[repr(C)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[allow(dead_code)] // constructed on C++ side by SFML
+pub(crate) enum EventType {
+    Closed,
+    Resized,
+    LostFocus,
+    GainedFocus,
+    TextEntered,
+    KeyPressed,
+    KeyReleased,
+    MouseWheelMoved,
+    MouseWheelScrolled,
+    MouseButtonPressed,
+    MouseButtonReleased,
+    MouseMoved,
+    MouseEntered,
+    MouseLeft,
+    JoystickButtonPressed,
+    JoystickButtonReleased,
+    JoystickMoved,
+    JoystickConnected,
+    JoystickDisconnected,
+    TouchBegan,
+    TouchMoved,
+    TouchEnded,
+    SensorChanged,
+}
+
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub(crate) struct Event {
+    pub(crate) type_: EventType,
+    pub(crate) union: EventUnion,
+}
+
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub(crate) union EventUnion {
+    pub(crate) size: SizeEvent,
+    pub(crate) key: KeyEvent,
+    pub(crate) text: TextEvent,
+    pub(crate) mouse_move: MouseMoveEvent,
+    pub(crate) mouse_button: MouseButtonEvent,
+    pub(crate) mouse_wheel: MouseWheelEvent,
+    pub(crate) mouse_wheel_scroll: MouseWheelScrollEvent,
+    pub(crate) joystick_move: JoystickMoveEvent,
+    pub(crate) joystick_button: JoystickButtonEvent,
+    pub(crate) joystick_connect: JoystickConnectEvent,
+    pub(crate) touch: TouchEvent,
+    pub(crate) sensor: SensorEvent,
+}
+
+#[repr(C)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum JoystickAxis {
+    X,
+    Y,
+    Z,
+    R,
+    U,
+    V,
+    PovX,
+    PovY,
+}
+
+#[repr(C)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[allow(missing_docs)]
+pub enum MouseWheel {
+    VerticalWheel,
+    HorizontalWheel,
+}
+
+#[repr(C)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[allow(missing_docs)]
+pub enum MouseButton {
+    Left,
+    Right,
+    Middle,
+    XButton1,
+    XButton2,
+}
+
+/// Key codes known to SFML.
+#[repr(C)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[allow(missing_docs)]
+pub enum Key {
+    Unknown = -1,
+    A = 0,
+    B,
+    C,
+    D,
+    E,
+    F,
+    G,
+    H,
+    I,
+    J,
+    K,
+    L,
+    M,
+    N,
+    O,
+    P,
+    Q,
+    R,
+    S,
+    T,
+    U,
+    V,
+    W,
+    X,
+    Y,
+    Z,
+    Num0,
+    Num1,
+    Num2,
+    Num3,
+    Num4,
+    Num5,
+    Num6,
+    Num7,
+    Num8,
+    Num9,
+    Escape,
+    LControl,
+    LShift,
+    LAlt,
+    LSystem,
+    RControl,
+    RShift,
+    RAlt,
+    RSystem,
+    Menu,
+    LBracket,
+    RBracket,
+    Semicolon,
+    Comma,
+    Period,
+    Quote,
+    Slash,
+    Backslash,
+    Tilde,
+    Equal,
+    Hyphen,
+    Space,
+    Enter,
+    Backspace,
+    Tab,
+    PageUp,
+    PageDown,
+    End,
+    Home,
+    Insert,
+    Delete,
+    Add,
+    Subtract,
+    Multiply,
+    Divide,
+    Left,
+    Right,
+    Up,
+    Down,
+    Numpad0,
+    Numpad1,
+    Numpad2,
+    Numpad3,
+    Numpad4,
+    Numpad5,
+    Numpad6,
+    Numpad7,
+    Numpad8,
+    Numpad9,
+    F1,
+    F2,
+    F3,
+    F4,
+    F5,
+    F6,
+    F7,
+    F8,
+    F9,
+    F10,
+    F11,
+    F12,
+    F13,
+    F14,
+    F15,
+    Pause,
 }
 
 extern "C" {
@@ -642,6 +940,19 @@ extern "C" {
         geom: *mut sfInputStream,
         frag: *mut sfInputStream,
     ) -> sfBool;
+    pub(crate) fn sfWindow_pollEvent(window: *mut sfWindow, event: *mut Event) -> sfBool;
+    pub(crate) fn sfWindow_waitEvent(window: *mut sfWindow, event: *mut Event) -> sfBool;
+    pub(crate) fn sfRenderWindow_pollEvent(
+        window: *mut sfRenderWindow,
+        event: *mut Event,
+    ) -> sfBool;
+    pub(crate) fn sfRenderWindow_waitEvent(
+        window: *mut sfRenderWindow,
+        event: *mut Event,
+    ) -> sfBool;
+    pub(crate) fn sfKeyboard_isKeyPressed(key: Key) -> sfBool;
+    pub(crate) fn sfKeyboard_setVirtualKeyboardVisible(visible: sfBool);
+    pub(crate) fn sfMouse_isButtonPressed(button: MouseButton) -> sfBool;
 }
 
 /// Types of shaders

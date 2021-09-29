@@ -97,10 +97,10 @@ fn main() {
             match event {
                 Event::Closed
                 | Event::KeyPressed {
-                    code: Key::ESCAPE, ..
+                    code: Key::Escape, ..
                 } => return,
                 Event::KeyPressed {
-                    code: Key::SPACE, ..
+                    code: Key::Space, ..
                 } if !is_playing => {
                     // (re)start the game
                     is_playing = true;
@@ -122,13 +122,13 @@ fn main() {
                         }
                     }
                 }
-                Event::KeyPressed { code: Key::UP, .. } => up = true,
-                Event::KeyReleased { code: Key::UP, .. } => up = false,
+                Event::KeyPressed { code: Key::Up, .. } => up = true,
+                Event::KeyReleased { code: Key::Up, .. } => up = false,
                 Event::KeyPressed {
-                    code: Key::DOWN, ..
+                    code: Key::Down, ..
                 } => down = true,
                 Event::KeyReleased {
-                    code: Key::DOWN, ..
+                    code: Key::Down, ..
                 } => down = false,
                 _ => {}
             }

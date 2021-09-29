@@ -24,7 +24,6 @@
 // Headers
 
 #include "Graphics/RenderWindow.h"
-#include "ConvertEvent.h"
 #include "Graphics/ConvexShapeStruct.h"
 #include "Graphics/ImageStruct.h"
 #include "Graphics/ShapeStruct.h"
@@ -91,36 +90,12 @@ sfContextSettings sfRenderWindow_getSettings(const sfRenderWindow *renderWindow)
     return settings;
 }
 
-sfBool sfRenderWindow_pollEvent(sfRenderWindow *renderWindow, sfEvent *event) {
-
-    // Get the event
-    sf::Event SFMLEvent;
-    sfBool ret = reinterpret_cast<sf::RenderWindow *>(renderWindow)->pollEvent(SFMLEvent);
-
-    // No event, return
-    if (!ret)
-        return sfFalse;
-
-    // Convert the sf::Event event to a sfEvent
-    convertEvent(SFMLEvent, event);
-
-    return sfTrue;
+extern "C" sfBool sfRenderWindow_pollEvent(sfRenderWindow *renderWindow, sf::Event *event) {
+    return reinterpret_cast<sf::RenderWindow *>(renderWindow)->pollEvent(*event);
 }
 
-sfBool sfRenderWindow_waitEvent(sfRenderWindow *renderWindow, sfEvent *event) {
-
-    // Get the event
-    sf::Event SFMLEvent;
-    sfBool ret = reinterpret_cast<sf::RenderWindow *>(renderWindow)->waitEvent(SFMLEvent);
-
-    // Error, return
-    if (!ret)
-        return sfFalse;
-
-    // Convert the sf::Event event to a sfEvent
-    convertEvent(SFMLEvent, event);
-
-    return sfTrue;
+extern "C" sfBool sfRenderWindow_waitEvent(sfRenderWindow *renderWindow, sf::Event *event) {
+    return reinterpret_cast<sf::RenderWindow *>(renderWindow)->waitEvent(*event);
 }
 
 sfVector2i sfRenderWindow_getPosition(const sfRenderWindow *renderWindow) {
