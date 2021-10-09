@@ -70,13 +70,12 @@ impl<'s> ConvexShape<'s> {
     /// * index - Index of the point to change, in range `[0 .. get_point_count() - 1]`
     /// * point - New position of the point
     pub fn set_point<P: Into<Vector2f>>(&mut self, index: u32, point: P) {
-        if index >= self.point_count() {
-            panic!(
-                "Index out of bounds. Index: {}, len: {}",
-                index,
-                self.point_count()
-            );
-        }
+        assert!(
+            index < self.point_count(),
+            "Index out of bounds. Index: {}, len: {}",
+            index,
+            self.point_count()
+        );
         unsafe {
             ffi::sfConvexShape_setPoint(self.convex_shape, index as usize, point.into().raw())
         }
@@ -215,13 +214,12 @@ impl<'s> Shape<'s> for ConvexShape<'s> {
         unsafe {
             // ConvexShape stores items in a vector, and does unchecked indexing.
             // To retain safety, we check for OOB here.
-            if index >= self.point_count() {
-                panic!(
-                    "Index out of bounds. Index: {}, len: {}",
-                    index,
-                    self.point_count()
-                );
-            }
+            assert!(
+                index < self.point_count(),
+                "Index out of bounds. Index: {}, len: {}",
+                index,
+                self.point_count()
+            );
             Vector2f::from_raw(ffi::sfConvexShape_getPoint(
                 self.convex_shape,
                 index as usize,

@@ -11,9 +11,10 @@ pub(crate) fn set_window_thread() {
     match WINDOW_THREAD.get() {
         None => WINDOW_THREAD.set(current_id).unwrap(),
         Some(id) => {
-            if *id != current_id {
-                panic!("Graphics/windowing functionality is only supported on the same thread.");
-            }
+            assert!(
+                *id == current_id,
+                "Graphics/windowing functionality is only supported on the same thread."
+            );
         }
     }
 }

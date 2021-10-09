@@ -6,9 +6,10 @@ use std::io::{BufRead, Write};
 
 fn main() {
     // Check that the device can capture audio
-    if !capture::is_available() {
-        panic!("Sorry, audio capture is not supported by your system");
-    }
+    assert!(
+        capture::is_available(),
+        "Sorry, audio capture is not supported by your system"
+    );
 
     // Choose the sample rate
     println!("Please choose the sample rate for sound capture (44100 is CD quality): ");
