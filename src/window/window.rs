@@ -1,7 +1,7 @@
 use std::ptr::NonNull;
 
 use crate::{
-    ffi::{self as ffi, sfBool},
+    ffi::{sfBool, window as ffi},
     sf_bool_ext::SfBoolExt,
     system::{SfStrConv, Vector2i, Vector2u},
     window::{thread_safety, ContextSettings, Cursor, Event, Style, VideoMode},

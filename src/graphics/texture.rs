@@ -1,5 +1,8 @@
 use crate::{
-    ffi::{self as ffi, sfBool, sfTexture_create},
+    ffi::{
+        graphics::{self as ffi, sfTexture_create},
+        sfBool,
+    },
     graphics::{Image, IntRect, RenderWindow},
     sf_bool_ext::SfBoolExt,
     sf_box::{Dispose, SfBox},

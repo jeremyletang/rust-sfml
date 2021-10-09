@@ -1,5 +1,5 @@
-pub use crate::ffi::Key;
-use crate::{ffi, sf_bool_ext::SfBoolExt, window::thread_safety};
+pub use crate::ffi::window::Key;
+use crate::{ffi::window as ffi, sf_bool_ext::SfBoolExt, window::thread_safety};
 
 impl Key {
     /// Return whether this key is currently pressed.

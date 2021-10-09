@@ -1,4 +1,4 @@
-use crate::ffi::{self, EventType};
+use crate::ffi::{window as ffi, window::EventType};
 
 /// Defines a system event and its parameters.
 ///

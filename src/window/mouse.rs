@@ -32,8 +32,8 @@
 //! window.set_mouse_position(Vector2i::new(100, 200));
 //! ```
 
-use crate::{ffi, sf_bool_ext::SfBoolExt, system::Vector2i, window::thread_safety};
-pub use ffi::{MouseButton as Button, MouseWheel as Wheel};
+use crate::{ffi::window as ffi, sf_bool_ext::SfBoolExt, system::Vector2i, window::thread_safety};
+pub use ffi::window::{MouseButton as Button, MouseWheel as Wheel};
 
 impl Button {
     /// Return whether this mouse button is currently pressed.

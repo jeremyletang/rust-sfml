@@ -1,5 +1,5 @@
 use crate::{
-    ffi,
+    ffi::graphics as ffi,
     graphics::{BlendMode, Shader, Texture, Transform},
 };
 use std::{marker::PhantomData, ptr};
@@ -55,7 +55,7 @@ use std::{marker::PhantomData, ptr};
 #[derive(Debug, Clone, Copy)]
 #[repr(transparent)]
 pub struct RenderStates<'texture, 'shader, 'shader_texture: 'shader> {
-    repr: ffi::sfRenderStates,
+    repr: ffi::graphics::sfRenderStates,
     _texture: PhantomData<&'texture Texture>,
     _shader: PhantomData<&'shader Shader<'shader_texture>>,
 }

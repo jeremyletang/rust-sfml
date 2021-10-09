@@ -30,7 +30,7 @@ pub use self::{
     vertex_buffer::{VertexBuffer, VertexBufferUsage},
     view::View,
 };
-pub use crate::ffi::ShaderType;
+pub use crate::ffi::graphics::ShaderType;
 
 pub mod blend_mode;
 mod circle_shape;

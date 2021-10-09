@@ -1,4 +1,4 @@
-use crate::{ffi, sf_bool_ext::SfBoolExt, window::thread_safety};
+use crate::{ffi::window as ffi, sf_bool_ext::SfBoolExt, window::thread_safety};
 
 /// `VideoMode` defines a video mode (width, height, bpp)
 ///

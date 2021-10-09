@@ -1,7 +1,7 @@
 //! Available blending modes for drawing
 
 use crate::ffi;
-pub use ffi::{BlendEquation as Equation, BlendFactor as Factor, BlendMode};
+pub use ffi::graphics::{BlendEquation as Equation, BlendFactor as Factor, BlendMode};
 
 impl Default for BlendMode {
     /// Default blending mode is alpha blending.
