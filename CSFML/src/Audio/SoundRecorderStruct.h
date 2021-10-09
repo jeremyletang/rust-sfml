@@ -27,6 +27,7 @@
 // Headers
 
 #include "Audio/SoundRecorder.h"
+#include "Config.h"
 #include <SFML/Audio/SoundRecorder.hpp>
 
 // Helper class implementing the callback forwarding from
@@ -43,8 +44,8 @@ class sfSoundRecorderImpl : public sf::SoundRecorder {
                                           myUserData(userData) {
     }
 
-    void setProcessingInterval(sfTime interval) {
-        sf::SoundRecorder::setProcessingInterval(sf::microseconds(interval.microseconds));
+    void setProcessingInterval(sfInt64 interval) {
+        sf::SoundRecorder::setProcessingInterval(sf::microseconds(interval));
     }
 
   private:

@@ -23,7 +23,6 @@
 
 // Headers
 
-#include "System/Time.h"
 #include <SFML/System/Clock.hpp>
 #include <cstddef>
 
@@ -44,14 +43,12 @@ extern "C" void sfClock_destroy(sfClock *clock) {
     delete clock;
 }
 
-extern "C" sfTime sfClock_getElapsedTime(const sfClock *clock) {
-
+extern "C" sf::Int64 sfClock_getElapsedTime(const sfClock *clock) {
     sf::Time time = clock->This.getElapsedTime();
-    return sfTime{time.asMicroseconds()};
+    return time.asMicroseconds();
 }
 
-extern "C" sfTime sfClock_restart(sfClock *clock) {
-
+extern "C" sf::Int64 sfClock_restart(sfClock *clock) {
     sf::Time time = clock->This.restart();
-    return sfTime{time.asMicroseconds()};
+    return time.asMicroseconds();
 }

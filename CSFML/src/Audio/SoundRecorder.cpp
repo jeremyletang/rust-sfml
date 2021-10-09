@@ -25,6 +25,7 @@
 
 #include "Audio/SoundRecorder.h"
 #include "Audio/SoundRecorderStruct.h"
+#include "Config.h"
 #include <cstddef>
 #include <vector>
 
@@ -55,7 +56,7 @@ sfBool sfSoundRecorder_isAvailable(void) {
     return sf::SoundRecorder::isAvailable();
 }
 
-void sfSoundRecorder_setProcessingInterval(sfSoundRecorder *soundRecorder, sfTime interval) {
+void sfSoundRecorder_setProcessingInterval(sfSoundRecorder *soundRecorder, sfInt64 interval) {
     soundRecorder->This.setProcessingInterval(interval);
 }
 

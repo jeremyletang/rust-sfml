@@ -6,6 +6,8 @@ decl_opaque! {
     sfClock;
 }
 
+pub type sfTime = i64;
+
 impl Dispose for sfStdString {
     unsafe fn dispose(&mut self) {
         sfStdString_destroy(self)

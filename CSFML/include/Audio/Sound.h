@@ -28,8 +28,8 @@
 
 #include "Audio/SoundStatus.h"
 #include "Audio/Types.h"
-#include "System/Time.h"
 #include "System/Vector3.h"
+#include "Config.h"
 
 extern "C" sfSound *sfSound_create(void);
 
@@ -65,7 +65,7 @@ extern "C" void sfSound_setMinDistance(sfSound *sound, float distance);
 
 extern "C" void sfSound_setAttenuation(sfSound *sound, float attenuation);
 
-extern "C" void sfSound_setPlayingOffset(sfSound *sound, sfTime timeOffset);
+extern "C" void sfSound_setPlayingOffset(sfSound *sound, sfInt64 timeOffset);
 
 extern "C" float sfSound_getPitch(const sfSound *sound);
 
@@ -79,6 +79,6 @@ extern "C" float sfSound_getMinDistance(const sfSound *sound);
 
 extern "C" float sfSound_getAttenuation(const sfSound *sound);
 
-extern "C" sfTime sfSound_getPlayingOffset(const sfSound *sound);
+extern "C" sfInt64 sfSound_getPlayingOffset(const sfSound *sound);
 
 #endif // SFML_SOUND_H

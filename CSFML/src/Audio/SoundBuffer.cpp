@@ -101,9 +101,7 @@ unsigned int sfSoundBuffer_getChannelCount(const sfSoundBuffer *soundBuffer) {
     return reinterpret_cast<const sf::SoundBuffer *>(soundBuffer)->getChannelCount();
 }
 
-sfTime sfSoundBuffer_getDuration(const sfSoundBuffer *soundBuffer) {
-    sfTime time = {0};
-
-    time.microseconds = reinterpret_cast<const sf::SoundBuffer *>(soundBuffer)->getDuration().asMicroseconds();
+sfInt64 sfSoundBuffer_getDuration(const sfSoundBuffer *soundBuffer) {
+    sfInt64 time = reinterpret_cast<const sf::SoundBuffer *>(soundBuffer)->getDuration().asMicroseconds();
     return time;
 }

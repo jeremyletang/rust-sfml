@@ -50,7 +50,10 @@ unsafe extern "C" fn get_data_callback<S: SoundStream>(
     sfBool::from_bool(keep_playing)
 }
 
-unsafe extern "C" fn seek_callback<S: SoundStream>(offset: sfTime, user_data: *mut c_void) {
+unsafe extern "C" fn seek_callback<S: SoundStream>(
+    offset: crate::ffi::system::sfTime,
+    user_data: *mut c_void,
+) {
     let stream = user_data as *mut S;
 
     let result = panic::catch_unwind(panic::AssertUnwindSafe(|| {

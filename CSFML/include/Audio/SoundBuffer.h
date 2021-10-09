@@ -28,7 +28,6 @@
 
 #include "Audio/Types.h"
 #include "System/InputStream.h"
-#include "System/Time.h"
 #include <stddef.h>
 
 extern "C" sfSoundBuffer *sfSoundBuffer_createFromFile(const char *filename);
@@ -53,6 +52,6 @@ extern "C" unsigned int sfSoundBuffer_getSampleRate(const sfSoundBuffer *soundBu
 
 extern "C" unsigned int sfSoundBuffer_getChannelCount(const sfSoundBuffer *soundBuffer);
 
-extern "C" sfTime sfSoundBuffer_getDuration(const sfSoundBuffer *soundBuffer);
+extern "C" sfInt64 sfSoundBuffer_getDuration(const sfSoundBuffer *soundBuffer);
 
 #endif // SFML_SOUNDBUFFER_H
