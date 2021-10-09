@@ -24,7 +24,6 @@
 // Headers
 
 #include "System/Time.h"
-#include "System/Types.h"
 #include <SFML/System/Clock.hpp>
 #include <cstddef>
 

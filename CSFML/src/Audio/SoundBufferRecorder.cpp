@@ -25,7 +25,6 @@
 
 #include "Audio/Types.h"
 #include "Config.h"
-#include "System/Types.h"
 #include <SFML/Audio/SoundBufferRecorder.hpp>
 #include <cstddef>
 
@@ -58,7 +57,7 @@ extern "C" sfBool sfSoundBufferRecorder_setDevice(sfSoundBufferRecorder *soundBu
     return reinterpret_cast<sf::SoundBufferRecorder *>(soundBufferRecorder)->setDevice(name);
 }
 
-extern "C" const sfStdString *sfSoundBufferRecorder_getDevice(sfSoundBufferRecorder *soundBufferRecorder) {
+extern "C" const std::string *sfSoundBufferRecorder_getDevice(sfSoundBufferRecorder *soundBufferRecorder) {
     const std::string *device = &reinterpret_cast<sf::SoundBufferRecorder *>(soundBufferRecorder)->getDevice();
-    return reinterpret_cast<const sfStdString *>(device);
+    return device;
 }

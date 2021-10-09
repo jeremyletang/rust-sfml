@@ -1,13 +1,12 @@
-#include "System/Types.h"
 #include <cstddef>
 #include <string>
 
-extern "C" size_t sfStdString_getLength(const sfStdString *s) {
-    return reinterpret_cast<const std::string *>(s)->size();
+extern "C" size_t sfStdString_getLength(const std::string *s) {
+    return s->size();
 }
 
-extern "C" const char *sfStdString_getData(const sfStdString *s) {
-    return reinterpret_cast<const std::string *>(s)->data();
+extern "C" const char *sfStdString_getData(const std::string *s) {
+    return s->data();
 }
 
 extern "C" void sfStdString_destroy(std::string *s) {

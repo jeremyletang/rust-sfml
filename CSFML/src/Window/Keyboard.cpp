@@ -23,9 +23,9 @@
 
 // Headers
 
+#include "Config.h"
 #include <SFML/Window/Keyboard.hpp>
 #include <cstddef>
-#include "Config.h"
 
 extern "C" sfBool sfKeyboard_isKeyPressed(sf::Keyboard::Key key) {
     return sf::Keyboard::isKeyPressed(key);
