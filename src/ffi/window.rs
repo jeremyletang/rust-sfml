@@ -1,3 +1,4 @@
+use crate::ffi::system::sfString;
 pub use crate::ffi::*;
 
 #[repr(C)]

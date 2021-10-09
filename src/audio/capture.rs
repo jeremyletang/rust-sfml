@@ -1,4 +1,13 @@
-use crate::{audio::SoundBuffer, ffi::*, sf_bool_ext::SfBoolExt, system::Time, SfBox};
+use crate::{
+    audio::SoundBuffer,
+    ffi::{
+        audio::*,
+        system::{sfStdString, sfStdStringVector},
+    },
+    sf_bool_ext::SfBoolExt,
+    system::Time,
+    SfBox,
+};
 use std::{ffi::CString, os::raw::c_void, ptr::NonNull};
 
 /// Trait for processing captured sound data.

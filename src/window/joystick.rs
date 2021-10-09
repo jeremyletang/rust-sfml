@@ -170,7 +170,7 @@ pub fn identification(joystick: u32) -> SfBox<ffi::JoystickIdentification> {
 }
 
 impl ffi::JoystickIdentification {
-    pub fn name(&self) -> &ffi::sfString {
+    pub fn name(&self) -> &crate::ffi::system::sfString {
         unsafe { &*ffi::sfJoystickIdentification_getName(self) }
     }
     pub fn vendor_id(&self) -> u32 {
