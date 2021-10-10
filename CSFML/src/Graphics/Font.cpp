@@ -28,7 +28,6 @@
 #include <cstddef>
 #include "Graphics/Glyph.h"
 #include "Graphics/FontInfo.h"
-#include "Graphics/Types.h"
 
 extern "C" sf::Font *sfFont_createFromFile(const char *filename) {
     sf::Font *font = new sf::Font;
@@ -105,8 +104,8 @@ extern "C" float sfFont_getUnderlineThickness(const sf::Font *font, unsigned int
     return reinterpret_cast<const sf::Font *>(font)->getUnderlineThickness(characterSize);
 }
 
-extern "C" const sfTexture *sfFont_getTexture(sf::Font *font, unsigned int characterSize) {
-    return reinterpret_cast<const sfTexture *>(&reinterpret_cast<sf::Font *>(font)->getTexture(characterSize));
+extern "C" const sf::Texture *sfFont_getTexture(sf::Font *font, unsigned int characterSize) {
+    return &font->getTexture(characterSize);
 }
 
 extern "C" sfFontInfo sfFont_getInfo(const sf::Font *font) {

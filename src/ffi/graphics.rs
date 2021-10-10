@@ -1,6 +1,24 @@
 use crate::ffi::window::{sfContextSettings, sfCursor, sfWindow, sfWindowHandle, Event};
 pub use crate::ffi::*;
 
+decl_opaque! {
+    sfCircleShape;
+    sfConvexShape;
+    sfFont;
+    sfImage;
+    sfShader;
+    sfRectangleShape;
+    sfRenderTexture;
+    sfRenderWindow;
+    sfShape;
+    sfSprite;
+    sfText;
+    sfTexture;
+    sfTransformable;
+    sfVertexBuffer;
+    sfView;
+}
+
 /// Enumeration of the blending factors.
 ///
 /// The factors are mapped directly to their OpenGL equivalents, specified by
@@ -132,8 +150,6 @@ pub struct sfRenderStates {
 extern "C" {
     pub fn sfCircleShape_getTransform(shape: *const sfCircleShape) -> sfTransform;
     pub fn sfCircleShape_getInverseTransform(shape: *const sfCircleShape) -> sfTransform;
-    pub fn sfShape_getTransform(shape: *const sfShape) -> sfTransform;
-    pub fn sfShape_getInverseTransform(shape: *const sfShape) -> sfTransform;
     pub fn sfTransform_fromMatrix(
         a00: f32,
         a01: f32,
@@ -815,5 +831,69 @@ extern "C" {
     pub fn sfFont_getUnderlineThickness(font: *const sfFont, characterSize: c_uint) -> f32;
     pub fn sfFont_getTexture(font: *mut sfFont, characterSize: c_uint) -> *const sfTexture;
     pub fn sfFont_getInfo(font: *const sfFont) -> sfFontInfo;
-
+    // Shape
+    pub fn sfShape_create(
+        getPointCount: sfShapeGetPointCountCallback,
+        getPoint: sfShapeGetPointCallback,
+        userData: *mut c_void,
+    ) -> *mut sfShape;
+    pub fn sfShape_destroy(shape: *mut sfShape);
+    pub fn sfShape_setPosition(shape: *mut sfShape, position: sfVector2f);
+    pub fn sfShape_setRotation(shape: *mut sfShape, angle: f32);
+    pub fn sfShape_setScale(shape: *mut sfShape, scale: sfVector2f);
+    pub fn sfShape_setOrigin(shape: *mut sfShape, origin: sfVector2f);
+    pub fn sfShape_getPosition(shape: *const sfShape) -> sfVector2f;
+    pub fn sfShape_getRotation(shape: *const sfShape) -> f32;
+    pub fn sfShape_getScale(shape: *const sfShape) -> sfVector2f;
+    pub fn sfShape_getOrigin(shape: *const sfShape) -> sfVector2f;
+    pub fn sfShape_move(shape: *mut sfShape, offset: sfVector2f);
+    pub fn sfShape_rotate(shape: *mut sfShape, angle: f32);
+    pub fn sfShape_scale(shape: *mut sfShape, factors: sfVector2f);
+    pub fn sfShape_getTransform(shape: *const sfShape) -> sfTransform;
+    pub fn sfShape_getInverseTransform(shape: *const sfShape) -> sfTransform;
+    pub fn sfShape_setTexture(shape: *mut sfShape, texture: *const sfTexture, resetRect: sfBool);
+    pub fn sfShape_setTextureRect(shape: *mut sfShape, rect: sfIntRect);
+    pub fn sfShape_setFillColor(shape: *mut sfShape, color: sfColor);
+    pub fn sfShape_setOutlineColor(shape: *mut sfShape, color: sfColor);
+    pub fn sfShape_setOutlineThickness(shape: *mut sfShape, thickness: f32);
+    pub fn sfShape_getTexture(shape: *const sfShape) -> *const sfTexture;
+    pub fn sfShape_getTextureRect(shape: *const sfShape) -> sfIntRect;
+    pub fn sfShape_getFillColor(shape: *const sfShape) -> sfColor;
+    pub fn sfShape_getOutlineColor(shape: *const sfShape) -> sfColor;
+    pub fn sfShape_getOutlineThickness(shape: *const sfShape) -> f32;
+    pub fn sfShape_getPointCount(shape: *const sfShape) -> usize;
+    pub fn sfShape_getPoint(shape: *const sfShape, index: usize) -> sfVector2f;
+    pub fn sfShape_getLocalBounds(shape: *const sfShape) -> sfFloatRect;
+    pub fn sfShape_getGlobalBounds(shape: *const sfShape) -> sfFloatRect;
+    pub fn sfShape_update(shape: *mut sfShape);
+    // VertexBuffer
+    pub fn sfVertexBuffer_create(
+        vertexCount: c_uint,
+        type_: sfPrimitiveType,
+        usage: sfVertexBufferUsage,
+    ) -> *mut sfVertexBuffer;
+    pub fn sfVertexBuffer_copy(vertexBuffer: *const sfVertexBuffer) -> *mut sfVertexBuffer;
+    pub fn sfVertexBuffer_destroy(vertexBuffer: *mut sfVertexBuffer);
+    pub fn sfVertexBuffer_getVertexCount(vertexBuffer: *const sfVertexBuffer) -> c_uint;
+    pub fn sfVertexBuffer_update(
+        vertexBuffer: *mut sfVertexBuffer,
+        vertices: *const sfVertex,
+        vertexCount: c_uint,
+        offset: c_uint,
+    ) -> sfBool;
+    pub fn sfVertexBuffer_updateFromVertexBuffer(
+        vertexBuffer: *mut sfVertexBuffer,
+        other: *const sfVertexBuffer,
+    ) -> sfBool;
+    pub fn sfVertexBuffer_swap(left: *mut sfVertexBuffer, right: *mut sfVertexBuffer);
+    pub fn sfVertexBuffer_getNativeHandle(vertexBuffer: *mut sfVertexBuffer) -> c_uint;
+    pub fn sfVertexBuffer_setPrimitiveType(
+        vertexBuffer: *mut sfVertexBuffer,
+        type_: sfPrimitiveType,
+    );
+    pub fn sfVertexBuffer_getPrimitiveType(vertexBuffer: *const sfVertexBuffer) -> sfPrimitiveType;
+    pub fn sfVertexBuffer_setUsage(vertexBuffer: *mut sfVertexBuffer, usage: sfVertexBufferUsage);
+    pub fn sfVertexBuffer_getUsage(vertexBuffer: *const sfVertexBuffer) -> sfVertexBufferUsage;
+    pub fn sfVertexBuffer_bind(vertexBuffer: *const sfVertexBuffer);
+    pub fn sfVertexBuffer_isAvailable() -> sfBool;
 }

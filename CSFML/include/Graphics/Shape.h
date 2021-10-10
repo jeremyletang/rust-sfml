@@ -25,74 +25,10 @@
 #define SFML_SHAPE_H
 
 // Headers
-
-#include "Graphics/Color.h"
-
-#include "Graphics/Rect.h"
-#include "Graphics/Transform.h"
-#include "Graphics/Types.h"
 #include "System/Vector2.h"
 #include <stddef.h>
 
 typedef size_t (*sfShapeGetPointCountCallback)(void *);        ///< Type of the callback used to get the number of points in a shape
 typedef sfVector2f (*sfShapeGetPointCallback)(size_t, void *); ///< Type of the callback used to get a point of a shape
-
-extern "C" sfShape *sfShape_create(sfShapeGetPointCountCallback getPointCount,
-                                   sfShapeGetPointCallback getPoint,
-                                   void *userData);
-
-extern "C" void sfShape_destroy(sfShape *shape);
-
-extern "C" void sfShape_setPosition(sfShape *shape, sfVector2f position);
-
-extern "C" void sfShape_setRotation(sfShape *shape, float angle);
-
-extern "C" void sfShape_setScale(sfShape *shape, sfVector2f scale);
-
-extern "C" void sfShape_setOrigin(sfShape *shape, sfVector2f origin);
-
-extern "C" sfVector2f sfShape_getPosition(const sfShape *shape);
-
-extern "C" float sfShape_getRotation(const sfShape *shape);
-
-extern "C" sfVector2f sfShape_getScale(const sfShape *shape);
-
-extern "C" sfVector2f sfShape_getOrigin(const sfShape *shape);
-
-extern "C" void sfShape_move(sfShape *shape, sfVector2f offset);
-
-extern "C" void sfShape_rotate(sfShape *shape, float angle);
-
-extern "C" void sfShape_scale(sfShape *shape, sfVector2f factors);
-
-extern "C" void sfShape_setTexture(sfShape *shape, const sfTexture *texture, sfBool resetRect);
-
-extern "C" void sfShape_setTextureRect(sfShape *shape, sfIntRect rect);
-
-extern "C" void sfShape_setFillColor(sfShape *shape, sfColor color);
-
-extern "C" void sfShape_setOutlineColor(sfShape *shape, sfColor color);
-
-extern "C" void sfShape_setOutlineThickness(sfShape *shape, float thickness);
-
-extern "C" const sfTexture *sfShape_getTexture(const sfShape *shape);
-
-extern "C" sfIntRect sfShape_getTextureRect(const sfShape *shape);
-
-extern "C" sfColor sfShape_getFillColor(const sfShape *shape);
-
-extern "C" sfColor sfShape_getOutlineColor(const sfShape *shape);
-
-extern "C" float sfShape_getOutlineThickness(const sfShape *shape);
-
-extern "C" size_t sfShape_getPointCount(const sfShape *shape);
-
-extern "C" sfVector2f sfShape_getPoint(const sfShape *shape, size_t index);
-
-extern "C" sfFloatRect sfShape_getLocalBounds(const sfShape *shape);
-
-extern "C" sfFloatRect sfShape_getGlobalBounds(const sfShape *shape);
-
-extern "C" void sfShape_update(sfShape *shape);
 
 #endif // SFML_SHAPE_H

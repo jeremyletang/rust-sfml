@@ -25,7 +25,6 @@
 
 #include "Graphics/Color.h"
 #include "Graphics/Rect.h"
-#include "Graphics/Types.h"
 #include "System/Vector2.h"
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/Color.hpp>
@@ -116,8 +115,8 @@ extern "C" sf::Transform sfCircleShape_getInverseTransform(const sf::CircleShape
     return shape->getInverseTransform();
 }
 
-extern "C" void sfCircleShape_setTexture(sf::CircleShape *shape, const sfTexture *texture, sfBool resetRect) {
-    shape->setTexture(reinterpret_cast<const sf::Texture *>(texture), resetRect == sfTrue);
+extern "C" void sfCircleShape_setTexture(sf::CircleShape *shape, const sf::Texture *texture, sfBool resetRect) {
+    shape->setTexture(texture, resetRect == sfTrue);
 }
 
 extern "C" void sfCircleShape_setTextureRect(sf::CircleShape *shape, sfIntRect rect) {
@@ -136,9 +135,8 @@ extern "C" void sfCircleShape_setOutlineThickness(sf::CircleShape *shape, float 
     shape->setOutlineThickness(thickness);
 }
 
-extern "C" const sfTexture *sfCircleShape_getTexture(const sf::CircleShape *shape) {
-    const sf::CircleShape *shape_ = reinterpret_cast<const sf::CircleShape *>(shape);
-    return reinterpret_cast<const sfTexture *>(shape_->getTexture());
+extern "C" const sf::Texture *sfCircleShape_getTexture(const sf::CircleShape *shape) {
+    return shape->getTexture();
 }
 
 extern "C" sfIntRect sfCircleShape_getTextureRect(const sf::CircleShape *shape) {

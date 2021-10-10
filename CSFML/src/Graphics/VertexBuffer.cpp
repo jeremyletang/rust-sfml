@@ -25,9 +25,11 @@
 
 #include "Graphics/VertexBuffer.h"
 #include "Graphics/VertexBufferStruct.h"
+#include "Graphics/PrimitiveType.h"
+#include "Graphics/Vertex.h"
 #include <cstddef>
 
-sfVertexBuffer *sfVertexBuffer_create(unsigned int vertexCount, sfPrimitiveType type, sfVertexBufferUsage usage) {
+extern "C" sfVertexBuffer *sfVertexBuffer_create(unsigned int vertexCount, sfPrimitiveType type, sfVertexBufferUsage usage) {
     sfVertexBuffer *buffer = new sfVertexBuffer;
 
     if (!buffer->This.create(vertexCount)) {
@@ -41,60 +43,60 @@ sfVertexBuffer *sfVertexBuffer_create(unsigned int vertexCount, sfPrimitiveType 
     return buffer;
 }
 
-sfVertexBuffer *sfVertexBuffer_copy(const sfVertexBuffer *vertexBuffer) {
+extern "C" sfVertexBuffer *sfVertexBuffer_copy(const sfVertexBuffer *vertexBuffer) {
     sfVertexBuffer *buffer = new sfVertexBuffer;
     buffer->This = sf::VertexBuffer(vertexBuffer->This);
     return buffer;
 }
 
-void sfVertexBuffer_destroy(sfVertexBuffer *vertexBuffer) {
+extern "C" void sfVertexBuffer_destroy(sfVertexBuffer *vertexBuffer) {
     delete vertexBuffer;
 }
 
-unsigned int sfVertexBuffer_getVertexCount(const sfVertexBuffer *vertexBuffer) {
+extern "C" unsigned int sfVertexBuffer_getVertexCount(const sfVertexBuffer *vertexBuffer) {
     return vertexBuffer->This.getVertexCount();
 }
 
-sfBool sfVertexBuffer_update(sfVertexBuffer *vertexBuffer, const sfVertex *vertices, unsigned int vertexCount, unsigned int offset) {
+extern "C" sfBool sfVertexBuffer_update(sfVertexBuffer *vertexBuffer, const sfVertex *vertices, unsigned int vertexCount, unsigned int offset) {
     // the cast is safe, sfVertex has to be binary compatible with sf::Vertex
     return vertexBuffer->This.update(reinterpret_cast<const sf::Vertex *>(vertices), vertexCount, offset);
 }
 
-sfBool sfVertexBuffer_updateFromVertexBuffer(sfVertexBuffer *vertexBuffer, const sfVertexBuffer *other) {
+extern "C" sfBool sfVertexBuffer_updateFromVertexBuffer(sfVertexBuffer *vertexBuffer, const sfVertexBuffer *other) {
     return vertexBuffer->This.update(other->This);
 }
 
-void sfVertexBuffer_swap(sfVertexBuffer *left, sfVertexBuffer *right) {
+extern "C" void sfVertexBuffer_swap(sfVertexBuffer *left, sfVertexBuffer *right) {
 
     left->This.swap(right->This);
 }
 
-unsigned int sfVertexBuffer_getNativeHandle(sfVertexBuffer *vertexBuffer) {
+extern "C" unsigned int sfVertexBuffer_getNativeHandle(sfVertexBuffer *vertexBuffer) {
     return vertexBuffer->This.getNativeHandle();
 }
 
-void sfVertexBuffer_setPrimitiveType(sfVertexBuffer *vertexBuffer, sfPrimitiveType type) {
+extern "C" void sfVertexBuffer_setPrimitiveType(sfVertexBuffer *vertexBuffer, sfPrimitiveType type) {
     vertexBuffer->This.setPrimitiveType(static_cast<sf::PrimitiveType>(type));
 }
 
-sfPrimitiveType sfVertexBuffer_getPrimitiveType(const sfVertexBuffer *vertexBuffer) {
+extern "C" sfPrimitiveType sfVertexBuffer_getPrimitiveType(const sfVertexBuffer *vertexBuffer) {
 
     return static_cast<sfPrimitiveType>(vertexBuffer->This.getPrimitiveType());
 }
 
-void sfVertexBuffer_setUsage(sfVertexBuffer *vertexBuffer, sfVertexBufferUsage usage) {
+extern "C" void sfVertexBuffer_setUsage(sfVertexBuffer *vertexBuffer, sfVertexBufferUsage usage) {
     vertexBuffer->This.setUsage(static_cast<sf::VertexBuffer::Usage>(usage));
 }
 
-sfVertexBufferUsage sfVertexBuffer_getUsage(const sfVertexBuffer *vertexBuffer) {
+extern "C" sfVertexBufferUsage sfVertexBuffer_getUsage(const sfVertexBuffer *vertexBuffer) {
 
     return static_cast<sfVertexBufferUsage>(vertexBuffer->This.getUsage());
 }
 
-void sfVertexBuffer_bind(const sfVertexBuffer *vertexBuffer) {
+extern "C" void sfVertexBuffer_bind(const sfVertexBuffer *vertexBuffer) {
     sf::VertexBuffer::bind(&vertexBuffer->This);
 }
 
-sfBool sfVertexBuffer_isAvailable() {
+extern "C" sfBool sfVertexBuffer_isAvailable() {
     return sf::VertexBuffer::isAvailable() ? sfTrue : sfFalse;
 }

@@ -24,53 +24,52 @@
 // Headers
 
 #include "Graphics/Rect.h"
-#include "Graphics/Types.h"
 #include "System/Vector2.h"
 #include <SFML/Graphics/View.hpp>
 #include <cstddef>
 
-extern "C" sfView *sfView_create(void) {
-    return reinterpret_cast<sfView *>(new sf::View);
+extern "C" sf::View *sfView_create(void) {
+    return reinterpret_cast<sf::View *>(new sf::View);
 }
 
-extern "C" sfView *sfView_createFromRect(sfFloatRect rectangle) {
+extern "C" sf::View *sfView_createFromRect(sfFloatRect rectangle) {
     sf::View *view = new sf::View;
     view->reset(sf::FloatRect(rectangle.left, rectangle.top, rectangle.width, rectangle.height));
 
-    return reinterpret_cast<sfView *>(view);
+    return reinterpret_cast<sf::View *>(view);
 }
 
-extern "C" sfView *sfView_copy(const sfView *view) {
+extern "C" sf::View *sfView_copy(const sf::View *view) {
     const sf::View *src = reinterpret_cast<const sf::View *>(view);
     sf::View *newView = new sf::View(*src);
-    return reinterpret_cast<sfView *>(newView);
+    return reinterpret_cast<sf::View *>(newView);
 }
 
-extern "C" void sfView_destroy(sfView *view) {
+extern "C" void sfView_destroy(sf::View *view) {
     delete reinterpret_cast<sf::View *>(view);
 }
 
-extern "C" void sfView_setCenter(sfView *view, sfVector2f center) {
+extern "C" void sfView_setCenter(sf::View *view, sfVector2f center) {
     reinterpret_cast<sf::View *>(view)->setCenter(center.x, center.y);
 }
 
-extern "C" void sfView_setSize(sfView *view, sfVector2f size) {
+extern "C" void sfView_setSize(sf::View *view, sfVector2f size) {
     reinterpret_cast<sf::View *>(view)->setSize(size.x, size.y);
 }
 
-extern "C" void sfView_setRotation(sfView *view, float angle) {
+extern "C" void sfView_setRotation(sf::View *view, float angle) {
     reinterpret_cast<sf::View *>(view)->setRotation(angle);
 }
 
-extern "C" void sfView_setViewport(sfView *view, sfFloatRect viewport) {
+extern "C" void sfView_setViewport(sf::View *view, sfFloatRect viewport) {
     reinterpret_cast<sf::View *>(view)->setViewport(sf::FloatRect(viewport.left, viewport.top, viewport.width, viewport.height));
 }
 
-extern "C" void sfView_reset(sfView *view, sfFloatRect rectangle) {
+extern "C" void sfView_reset(sf::View *view, sfFloatRect rectangle) {
     reinterpret_cast<sf::View *>(view)->reset(sf::FloatRect(rectangle.left, rectangle.top, rectangle.width, rectangle.height));
 }
 
-extern "C" sfVector2f sfView_getCenter(const sfView *view) {
+extern "C" sfVector2f sfView_getCenter(const sf::View *view) {
     sfVector2f center = {0, 0};
 
     sf::Vector2f sfmlCenter = reinterpret_cast<const sf::View *>(view)->getCenter();
@@ -80,7 +79,7 @@ extern "C" sfVector2f sfView_getCenter(const sfView *view) {
     return center;
 }
 
-extern "C" sfVector2f sfView_getSize(const sfView *view) {
+extern "C" sfVector2f sfView_getSize(const sf::View *view) {
     sfVector2f size = {0, 0};
 
     sf::Vector2f sfmlSize = reinterpret_cast<const sf::View *>(view)->getSize();
@@ -90,11 +89,11 @@ extern "C" sfVector2f sfView_getSize(const sfView *view) {
     return size;
 }
 
-extern "C" float sfView_getRotation(const sfView *view) {
+extern "C" float sfView_getRotation(const sf::View *view) {
     return reinterpret_cast<const sf::View *>(view)->getRotation();
 }
 
-extern "C" sfFloatRect sfView_getViewport(const sfView *view) {
+extern "C" sfFloatRect sfView_getViewport(const sf::View *view) {
     sfFloatRect rect = {0, 0, 0, 0};
 
     sf::FloatRect SFMLRect = reinterpret_cast<const sf::View *>(view)->getViewport();
@@ -106,14 +105,14 @@ extern "C" sfFloatRect sfView_getViewport(const sfView *view) {
     return rect;
 }
 
-extern "C" void sfView_move(sfView *view, sfVector2f offset) {
+extern "C" void sfView_move(sf::View *view, sfVector2f offset) {
     reinterpret_cast<sf::View *>(view)->move(offset.x, offset.y);
 }
 
-extern "C" void sfView_rotate(sfView *view, float angle) {
+extern "C" void sfView_rotate(sf::View *view, float angle) {
     reinterpret_cast<sf::View *>(view)->rotate(angle);
 }
 
-extern "C" void sfView_zoom(sfView *view, float factor) {
+extern "C" void sfView_zoom(sf::View *view, float factor) {
     reinterpret_cast<sf::View *>(view)->zoom(factor);
 }

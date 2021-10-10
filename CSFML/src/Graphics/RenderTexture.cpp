@@ -23,16 +23,17 @@
 
 // Headers
 
-#include "Graphics/ConvexShapeStruct.h"
 #include "Graphics/PrimitiveType.h"
 #include "Graphics/ShapeStruct.h"
 #include "Graphics/Vertex.h"
 #include "Graphics/VertexBufferStruct.h"
+#include "Graphics/Rect.h"
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderTexture.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>
+#include <SFML/Graphics/ConvexShape.hpp>
 #include <cstddef>
 
 extern "C" sf::RenderTexture *sfRenderTexture_createWithSettings(unsigned int width, unsigned int height, const sf::ContextSettings *settings) {
@@ -71,20 +72,20 @@ extern "C" void sfRenderTexture_clear(sf::RenderTexture *renderTexture, sfColor 
     renderTexture->clear(SFMLColor);
 }
 
-extern "C" void sfRenderTexture_setView(sf::RenderTexture *renderTexture, const sfView *view) {
+extern "C" void sfRenderTexture_setView(sf::RenderTexture *renderTexture, const sf::View *view) {
     const sf::View *view_ = reinterpret_cast<const sf::View *>(view);
     renderTexture->setView(*view_);
 }
 
-extern "C" const sfView *sfRenderTexture_getView(const sf::RenderTexture *renderTexture) {
-    return reinterpret_cast<const sfView *>(&renderTexture->getView());
+extern "C" const sf::View *sfRenderTexture_getView(const sf::RenderTexture *renderTexture) {
+    return reinterpret_cast<const sf::View *>(&renderTexture->getView());
 }
 
-extern "C" const sfView *sfRenderTexture_getDefaultView(const sf::RenderTexture *renderTexture) {
-    return reinterpret_cast<const sfView *>(&renderTexture->getDefaultView());
+extern "C" const sf::View *sfRenderTexture_getDefaultView(const sf::RenderTexture *renderTexture) {
+    return reinterpret_cast<const sf::View *>(&renderTexture->getDefaultView());
 }
 
-extern "C" sfIntRect sfRenderTexture_getViewport(const sf::RenderTexture *renderTexture, const sfView *view) {
+extern "C" sfIntRect sfRenderTexture_getViewport(const sf::RenderTexture *renderTexture, const sf::View *view) {
     sfIntRect rect = {0, 0, 0, 0};
 
     sf::IntRect SFMLrect = renderTexture->getViewport(*reinterpret_cast<const sf::View *>(view));
@@ -96,7 +97,7 @@ extern "C" sfIntRect sfRenderTexture_getViewport(const sf::RenderTexture *render
     return rect;
 }
 
-extern "C" sfVector2f sfRenderTexture_mapPixelToCoords(const sf::RenderTexture *renderTexture, sfVector2i point, const sfView *targetView) {
+extern "C" sfVector2f sfRenderTexture_mapPixelToCoords(const sf::RenderTexture *renderTexture, sfVector2i point, const sf::View *targetView) {
     sfVector2f result = {0, 0};
 
     sf::Vector2f sfmlPoint;
@@ -111,7 +112,7 @@ extern "C" sfVector2f sfRenderTexture_mapPixelToCoords(const sf::RenderTexture *
     return result;
 }
 
-extern "C" sfVector2i sfRenderTexture_mapCoordsToPixel(const sf::RenderTexture *renderTexture, sfVector2f point, const sfView *targetView) {
+extern "C" sfVector2i sfRenderTexture_mapCoordsToPixel(const sf::RenderTexture *renderTexture, sfVector2f point, const sf::View *targetView) {
     sfVector2i result = {0, 0};
 
     sf::Vector2i sfmlPoint;
@@ -126,13 +127,13 @@ extern "C" sfVector2i sfRenderTexture_mapCoordsToPixel(const sf::RenderTexture *
     return result;
 }
 
-extern "C" void sfRenderTexture_drawSprite(sf::RenderTexture *renderTexture, const sfSprite *object, const sf::RenderStates *states) {
+extern "C" void sfRenderTexture_drawSprite(sf::RenderTexture *renderTexture, const sf::Sprite *object, const sf::RenderStates *states) {
 
     renderTexture->draw(*reinterpret_cast<const sf::Sprite *>(object), *states);
 }
-extern "C" void sfRenderTexture_drawText(sf::RenderTexture *renderTexture, const sfText *object, const sf::RenderStates *states) {
+extern "C" void sfRenderTexture_drawText(sf::RenderTexture *renderTexture, const sf::Text *object, const sf::RenderStates *states) {
 
-    renderTexture->draw(*reinterpret_cast<const sf::Text *>(object), *states);
+    renderTexture->draw(*object, *states);
 }
 extern "C" void sfRenderTexture_drawShape(sf::RenderTexture *renderTexture, const sfShape *object, const sf::RenderStates *states) {
 
@@ -142,17 +143,17 @@ extern "C" void sfRenderTexture_drawCircleShape(sf::RenderTexture *renderTexture
 
     renderTexture->draw(*object, *states);
 }
-extern "C" void sfRenderTexture_drawConvexShape(sf::RenderTexture *renderTexture, const sfConvexShape *object, const sf::RenderStates *states) {
+extern "C" void sfRenderTexture_drawConvexShape(sf::RenderTexture *renderTexture, const sf::ConvexShape *object, const sf::RenderStates *states) {
 
-    renderTexture->draw(object->This, *states);
+    renderTexture->draw(*object, *states);
 }
-extern "C" void sfRenderTexture_drawRectangleShape(sf::RenderTexture *renderTexture, const sfRectangleShape *object, const sf::RenderStates *states) {
+extern "C" void sfRenderTexture_drawRectangleShape(sf::RenderTexture *renderTexture, const sf::RectangleShape *object, const sf::RenderStates *states) {
 
-    renderTexture->draw(*reinterpret_cast<const sf::RectangleShape *>(object), *states);
+    renderTexture->draw(*object, *states);
 }
-extern "C" void sfRenderTexture_drawVertexBuffer(sf::RenderTexture *renderTexture, const sfVertexBuffer *object, const sf::RenderStates *states) {
+extern "C" void sfRenderTexture_drawVertexBuffer(sf::RenderTexture *renderTexture, const sf::VertexBuffer *object, const sf::RenderStates *states) {
 
-    renderTexture->draw(object->This, *states);
+    renderTexture->draw(*object, *states);
 }
 
 extern "C" void sfRenderTexture_drawPrimitives(sf::RenderTexture *renderTexture,
@@ -174,8 +175,8 @@ extern "C" void sfRenderTexture_resetGLStates(sf::RenderTexture *renderTexture) 
     renderTexture->resetGLStates();
 }
 
-extern "C" const sfTexture *sfRenderTexture_getTexture(const sf::RenderTexture *renderTexture) {
-    return reinterpret_cast<const sfTexture *>(&renderTexture->getTexture());
+extern "C" const sf::Texture *sfRenderTexture_getTexture(const sf::RenderTexture *renderTexture) {
+    return &renderTexture->getTexture();
 }
 
 extern "C" void sfRenderTexture_setSmooth(sf::RenderTexture *renderTexture, sfBool smooth) {

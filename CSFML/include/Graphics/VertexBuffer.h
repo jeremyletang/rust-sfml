@@ -24,45 +24,10 @@
 #ifndef SFML_VERTEXBUFFER_H
 #define SFML_VERTEXBUFFER_H
 
-// Headers
-
-#include "Graphics/PrimitiveType.h"
-#include "Graphics/Types.h"
-#include "Graphics/Vertex.h"
-#include <stddef.h>
-
 typedef enum {
     sfVertexBufferStream,  ///< Constantly changing data
     sfVertexBufferDynamic, ///< Occasionally changing data
     sfVertexBufferStatic   ///< Rarely changing data
 } sfVertexBufferUsage;
-
-extern "C" sfVertexBuffer *sfVertexBuffer_create(unsigned int vertexCount, sfPrimitiveType type, sfVertexBufferUsage usage);
-
-extern "C" sfVertexBuffer *sfVertexBuffer_copy(const sfVertexBuffer *vertexBuffer);
-
-extern "C" void sfVertexBuffer_destroy(sfVertexBuffer *vertexBuffer);
-
-extern "C" unsigned int sfVertexBuffer_getVertexCount(const sfVertexBuffer *vertexBuffer);
-
-extern "C" sfBool sfVertexBuffer_update(sfVertexBuffer *vertexBuffer, const sfVertex *vertices, unsigned int vertexCount, unsigned int offset);
-
-extern "C" sfBool sfVertexBuffer_updateFromVertexBuffer(sfVertexBuffer *vertexBuffer, const sfVertexBuffer *other);
-
-extern "C" void sfVertexBuffer_swap(sfVertexBuffer *left, sfVertexBuffer *right);
-
-extern "C" unsigned int sfVertexBuffer_getNativeHandle(sfVertexBuffer *vertexBuffer);
-
-extern "C" void sfVertexBuffer_setPrimitiveType(sfVertexBuffer *vertexBuffer, sfPrimitiveType type);
-
-extern "C" sfPrimitiveType sfVertexBuffer_getPrimitiveType(const sfVertexBuffer *vertexBuffer);
-
-extern "C" void sfVertexBuffer_setUsage(sfVertexBuffer *vertexBuffer, sfVertexBufferUsage usage);
-
-extern "C" sfVertexBufferUsage sfVertexBuffer_getUsage(const sfVertexBuffer *vertexBuffer);
-
-extern "C" void sfVertexBuffer_bind(const sfVertexBuffer *vertexBuffer);
-
-extern "C" sfBool sfVertexBuffer_isAvailable();
 
 #endif // SFML_VERTEXBUFFER_H

@@ -26,35 +26,38 @@
 #include "Graphics/Shape.h"
 #include "Graphics/ShapeStruct.h"
 #include <SFML/Graphics/Color.hpp>
+#include "Config.h"
+#include "Graphics/Rect.h"
+#include "Graphics/Color.h"
 #include <cstddef>
 
-sfShape *sfShape_create(sfShapeGetPointCountCallback getPointCount,
+extern "C" sfShape *sfShape_create(sfShapeGetPointCountCallback getPointCount,
                         sfShapeGetPointCallback getPoint,
                         void *userData) {
     return new sfShape(getPointCount, getPoint, userData);
 }
 
-void sfShape_destroy(sfShape *shape) {
+extern "C" void sfShape_destroy(sfShape *shape) {
     delete shape;
 }
 
-void sfShape_setPosition(sfShape *shape, sfVector2f position) {
+extern "C" void sfShape_setPosition(sfShape *shape, sfVector2f position) {
     shape->This.setPosition(position.x, position.y);
 }
 
-void sfShape_setRotation(sfShape *shape, float angle) {
+extern "C" void sfShape_setRotation(sfShape *shape, float angle) {
     shape->This.setRotation(angle);
 }
 
-void sfShape_setScale(sfShape *shape, sfVector2f scale) {
+extern "C" void sfShape_setScale(sfShape *shape, sfVector2f scale) {
     shape->This.setScale(scale.x, scale.y);
 }
 
-void sfShape_setOrigin(sfShape *shape, sfVector2f origin) {
+extern "C" void sfShape_setOrigin(sfShape *shape, sfVector2f origin) {
     shape->This.setOrigin(origin.x, origin.y);
 }
 
-sfVector2f sfShape_getPosition(const sfShape *shape) {
+extern "C" sfVector2f sfShape_getPosition(const sfShape *shape) {
     sfVector2f position = {0, 0};
 
     sf::Vector2f sfmlPos = shape->This.getPosition();
@@ -64,11 +67,11 @@ sfVector2f sfShape_getPosition(const sfShape *shape) {
     return position;
 }
 
-float sfShape_getRotation(const sfShape *shape) {
+extern "C" float sfShape_getRotation(const sfShape *shape) {
     return shape->This.getRotation();
 }
 
-sfVector2f sfShape_getScale(const sfShape *shape) {
+extern "C" sfVector2f sfShape_getScale(const sfShape *shape) {
     sfVector2f scale = {0, 0};
 
     sf::Vector2f sfmlScale = shape->This.getScale();
@@ -78,7 +81,7 @@ sfVector2f sfShape_getScale(const sfShape *shape) {
     return scale;
 }
 
-sfVector2f sfShape_getOrigin(const sfShape *shape) {
+extern "C" sfVector2f sfShape_getOrigin(const sfShape *shape) {
     sfVector2f origin = {0, 0};
 
     sf::Vector2f sfmlOrigin = shape->This.getOrigin();
@@ -88,15 +91,15 @@ sfVector2f sfShape_getOrigin(const sfShape *shape) {
     return origin;
 }
 
-void sfShape_move(sfShape *shape, sfVector2f offset) {
+extern "C" void sfShape_move(sfShape *shape, sfVector2f offset) {
     shape->This.move(offset.x, offset.y);
 }
 
-void sfShape_rotate(sfShape *shape, float angle) {
+extern "C" void sfShape_rotate(sfShape *shape, float angle) {
     shape->This.rotate(angle);
 }
 
-void sfShape_scale(sfShape *shape, sfVector2f factors) {
+extern "C" void sfShape_scale(sfShape *shape, sfVector2f factors) {
     shape->This.scale(factors.x, factors.y);
 }
 
@@ -108,32 +111,32 @@ extern "C" sf::Transform sfShape_getInverseTransform(const sfShape *shape) {
     return shape->This.getInverseTransform();
 }
 
-void sfShape_setTexture(sfShape *shape, const sfTexture *texture, sfBool resetRect) {
+extern "C" void sfShape_setTexture(sfShape *shape, const sf::Texture *texture, sfBool resetRect) {
     shape->This.setTexture(reinterpret_cast<const sf::Texture *>(texture), resetRect == sfTrue);
 }
 
-void sfShape_setTextureRect(sfShape *shape, sfIntRect rect) {
+extern "C" void sfShape_setTextureRect(sfShape *shape, sfIntRect rect) {
     shape->This.setTextureRect(sf::IntRect(rect.left, rect.top, rect.width, rect.height));
 }
 
-void sfShape_setFillColor(sfShape *shape, sfColor color) {
+extern "C" void sfShape_setFillColor(sfShape *shape, sfColor color) {
     shape->This.setFillColor(sf::Color(color.r, color.g, color.b, color.a));
 }
 
-void sfShape_setOutlineColor(sfShape *shape, sfColor color) {
+extern "C" void sfShape_setOutlineColor(sfShape *shape, sfColor color) {
     shape->This.setOutlineColor(sf::Color(color.r, color.g, color.b, color.a));
 }
 
-void sfShape_setOutlineThickness(sfShape *shape, float thickness) {
+extern "C" void sfShape_setOutlineThickness(sfShape *shape, float thickness) {
     shape->This.setOutlineThickness(thickness);
 }
 
-const sfTexture *sfShape_getTexture(const sfShape *shape) {
+extern "C" const sf::Texture *sfShape_getTexture(const sfShape *shape) {
     const sf::Shape *shape_ = reinterpret_cast<const sf::Shape *>(shape);
-    return reinterpret_cast<const sfTexture *>(shape_->getTexture());
+    return reinterpret_cast<const sf::Texture *>(shape_->getTexture());
 }
 
-sfIntRect sfShape_getTextureRect(const sfShape *shape) {
+extern "C" sfIntRect sfShape_getTextureRect(const sfShape *shape) {
     sfIntRect rect = {0, 0, 0, 0};
 
     sf::IntRect sfmlRect = shape->This.getTextureRect();
@@ -145,7 +148,7 @@ sfIntRect sfShape_getTextureRect(const sfShape *shape) {
     return rect;
 }
 
-sfColor sfShape_getFillColor(const sfShape *shape) {
+extern "C" sfColor sfShape_getFillColor(const sfShape *shape) {
     sfColor color = {0, 0, 0, 0};
 
     sf::Color sfmlColor = shape->This.getFillColor();
@@ -157,7 +160,7 @@ sfColor sfShape_getFillColor(const sfShape *shape) {
     return color;
 }
 
-sfColor sfShape_getOutlineColor(const sfShape *shape) {
+extern "C" sfColor sfShape_getOutlineColor(const sfShape *shape) {
     sfColor color = {0, 0, 0, 0};
 
     sf::Color sfmlColor = shape->This.getOutlineColor();
@@ -169,15 +172,15 @@ sfColor sfShape_getOutlineColor(const sfShape *shape) {
     return color;
 }
 
-float sfShape_getOutlineThickness(const sfShape *shape) {
+extern "C" float sfShape_getOutlineThickness(const sfShape *shape) {
     return shape->This.getOutlineThickness();
 }
 
-size_t sfShape_getPointCount(const sfShape *shape) {
+extern "C" size_t sfShape_getPointCount(const sfShape *shape) {
     return shape->This.getPointCount();
 }
 
-sfVector2f sfShape_getPoint(const sfShape *shape, size_t index) {
+extern "C" sfVector2f sfShape_getPoint(const sfShape *shape, size_t index) {
     sfVector2f point = {0, 0};
 
     sf::Vector2f sfmlPoint = shape->This.getPoint(index);
@@ -187,7 +190,7 @@ sfVector2f sfShape_getPoint(const sfShape *shape, size_t index) {
     return point;
 }
 
-sfFloatRect sfShape_getLocalBounds(const sfShape *shape) {
+extern "C" sfFloatRect sfShape_getLocalBounds(const sfShape *shape) {
     sfFloatRect rect = {0, 0, 0, 0};
 
     sf::FloatRect sfmlRect = shape->This.getLocalBounds();
@@ -199,7 +202,7 @@ sfFloatRect sfShape_getLocalBounds(const sfShape *shape) {
     return rect;
 }
 
-sfFloatRect sfShape_getGlobalBounds(const sfShape *shape) {
+extern "C" sfFloatRect sfShape_getGlobalBounds(const sfShape *shape) {
     sfFloatRect rect = {0, 0, 0, 0};
 
     sf::FloatRect sfmlRect = shape->This.getGlobalBounds();
@@ -211,6 +214,6 @@ sfFloatRect sfShape_getGlobalBounds(const sfShape *shape) {
     return rect;
 }
 
-void sfShape_update(sfShape *shape) {
+extern "C" void sfShape_update(sfShape *shape) {
     shape->This.update();
 }
