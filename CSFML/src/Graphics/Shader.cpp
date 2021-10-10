@@ -23,8 +23,9 @@
 
 // Headers
 
-#include "Graphics/Shader.h"
 #include "Config.h"
+#include "Graphics/Glsl.h"
+#include "Graphics/Types.h"
 #include "System/InputStreamStruct.h"
 #include <SFML/Graphics/Shader.hpp>
 #include <cstddef>
@@ -69,110 +70,110 @@ extern "C" sfBool sfShader_loadFromStream_all(sf::Shader *shader, sfInputStream 
     return shader->loadFromStream(*vert, *geom, *frag);
 }
 
-void sfShader_destroy(sfShader *shader) {
+extern "C" void sfShader_destroy(sfShader *shader) {
     delete reinterpret_cast<sf::Shader *>(shader);
 }
 
-void sfShader_setFloatUniform(sfShader *shader, const char *name, float x) {
+extern "C" void sfShader_setFloatUniform(sfShader *shader, const char *name, float x) {
     reinterpret_cast<sf::Shader *>(shader)->setUniform(name, x);
 }
 
-void sfShader_setVec2Uniform(sfShader *shader, const char *name, sfGlslVec2 vector) {
+extern "C" void sfShader_setVec2Uniform(sfShader *shader, const char *name, sfGlslVec2 vector) {
     reinterpret_cast<sf::Shader *>(shader)->setUniform(name, sf::Glsl::Vec2(vector.x, vector.y));
 }
 
-void sfShader_setVec3Uniform(sfShader *shader, const char *name, sfGlslVec3 vector) {
+extern "C" void sfShader_setVec3Uniform(sfShader *shader, const char *name, sfGlslVec3 vector) {
     reinterpret_cast<sf::Shader *>(shader)->setUniform(name, sf::Glsl::Vec3(vector.x, vector.y, vector.z));
 }
 
-void sfShader_setVec4Uniform(sfShader *shader, const char *name, sfGlslVec4 vector) {
+extern "C" void sfShader_setVec4Uniform(sfShader *shader, const char *name, sfGlslVec4 vector) {
     reinterpret_cast<sf::Shader *>(shader)->setUniform(name, sf::Glsl::Vec4(vector.x, vector.y, vector.z, vector.w));
 }
 
-void sfShader_setIntUniform(sfShader *shader, const char *name, int x) {
+extern "C" void sfShader_setIntUniform(sfShader *shader, const char *name, int x) {
     reinterpret_cast<sf::Shader *>(shader)->setUniform(name, x);
 }
 
-void sfShader_setIvec2Uniform(sfShader *shader, const char *name, sfGlslIvec2 vector) {
+extern "C" void sfShader_setIvec2Uniform(sfShader *shader, const char *name, sfGlslIvec2 vector) {
     reinterpret_cast<sf::Shader *>(shader)->setUniform(name, sf::Glsl::Ivec2(vector.x, vector.y));
 }
 
-void sfShader_setIvec3Uniform(sfShader *shader, const char *name, sfGlslIvec3 vector) {
+extern "C" void sfShader_setIvec3Uniform(sfShader *shader, const char *name, sfGlslIvec3 vector) {
     reinterpret_cast<sf::Shader *>(shader)->setUniform(name, sf::Glsl::Ivec3(vector.x, vector.y, vector.z));
 }
 
-void sfShader_setIvec4Uniform(sfShader *shader, const char *name, sfGlslIvec4 vector) {
+extern "C" void sfShader_setIvec4Uniform(sfShader *shader, const char *name, sfGlslIvec4 vector) {
     reinterpret_cast<sf::Shader *>(shader)->setUniform(name, sf::Glsl::Ivec4(vector.x, vector.y, vector.z, vector.w));
 }
 
-void sfShader_setBoolUniform(sfShader *shader, const char *name, sfBool x) {
+extern "C" void sfShader_setBoolUniform(sfShader *shader, const char *name, sfBool x) {
     reinterpret_cast<sf::Shader *>(shader)->setUniform(name, x != sfFalse);
 }
 
-void sfShader_setBvec2Uniform(sfShader *shader, const char *name, sfGlslBvec2 vector) {
+extern "C" void sfShader_setBvec2Uniform(sfShader *shader, const char *name, sfGlslBvec2 vector) {
     reinterpret_cast<sf::Shader *>(shader)->setUniform(name, sf::Glsl::Bvec2(vector.x != sfFalse, vector.y != sfFalse));
 }
 
-void sfShader_setBvec3Uniform(sfShader *shader, const char *name, sfGlslBvec3 vector) {
+extern "C" void sfShader_setBvec3Uniform(sfShader *shader, const char *name, sfGlslBvec3 vector) {
     reinterpret_cast<sf::Shader *>(shader)->setUniform(name, sf::Glsl::Bvec3(vector.x != sfFalse, vector.y != sfFalse, vector.z != sfFalse));
 }
 
-void sfShader_setBvec4Uniform(sfShader *shader, const char *name, sfGlslBvec4 vector) {
+extern "C" void sfShader_setBvec4Uniform(sfShader *shader, const char *name, sfGlslBvec4 vector) {
     reinterpret_cast<sf::Shader *>(shader)->setUniform(name, sf::Glsl::Bvec4(vector.x != sfFalse, vector.y != sfFalse, vector.z != sfFalse, vector.w != sfFalse));
 }
 
-void sfShader_setMat3Uniform(sfShader *shader, const char *name, const sfGlslMat3 *matrix) {
+extern "C" void sfShader_setMat3Uniform(sfShader *shader, const char *name, const sfGlslMat3 *matrix) {
     reinterpret_cast<sf::Shader *>(shader)->setUniform(name, sf::Glsl::Mat3(matrix->array));
 }
 
-void sfShader_setMat4Uniform(sfShader *shader, const char *name, const sfGlslMat4 *matrix) {
+extern "C" void sfShader_setMat4Uniform(sfShader *shader, const char *name, const sfGlslMat4 *matrix) {
     reinterpret_cast<sf::Shader *>(shader)->setUniform(name, sf::Glsl::Mat4(matrix->array));
 }
 
-void sfShader_setTextureUniform(sfShader *shader, const char *name, const sfTexture *texture) {
+extern "C" void sfShader_setTextureUniform(sfShader *shader, const char *name, const sfTexture *texture) {
     reinterpret_cast<sf::Shader *>(shader)->setUniform(name, *reinterpret_cast<const sf::Texture *>(texture));
 }
 
-void sfShader_setCurrentTextureUniform(sfShader *shader, const char *name) {
+extern "C" void sfShader_setCurrentTextureUniform(sfShader *shader, const char *name) {
     reinterpret_cast<sf::Shader *>(shader)->setUniform(name, sf::Shader::CurrentTexture);
 }
 
-void sfShader_setFloatUniformArray(sfShader *shader, const char *name, const float *scalarArray, size_t length) {
+extern "C" void sfShader_setFloatUniformArray(sfShader *shader, const char *name, const float *scalarArray, size_t length) {
     reinterpret_cast<sf::Shader *>(shader)->setUniformArray(name, scalarArray, length);
 }
 
-void sfShader_setVec2UniformArray(sfShader *shader, const char *name, const sfGlslVec2 *vectorArray, size_t length) {
+extern "C" void sfShader_setVec2UniformArray(sfShader *shader, const char *name, const sfGlslVec2 *vectorArray, size_t length) {
     reinterpret_cast<sf::Shader *>(shader)->setUniformArray(name, reinterpret_cast<const sf::Glsl::Vec2 *>(vectorArray), length);
 }
 
-void sfShader_setVec3UniformArray(sfShader *shader, const char *name, const sfGlslVec3 *vectorArray, size_t length) {
+extern "C" void sfShader_setVec3UniformArray(sfShader *shader, const char *name, const sfGlslVec3 *vectorArray, size_t length) {
     reinterpret_cast<sf::Shader *>(shader)->setUniformArray(name, reinterpret_cast<const sf::Glsl::Vec3 *>(vectorArray), length);
 }
 
-void sfShader_setVec4UniformArray(sfShader *shader, const char *name, const sfGlslVec4 *vectorArray, size_t length) {
+extern "C" void sfShader_setVec4UniformArray(sfShader *shader, const char *name, const sfGlslVec4 *vectorArray, size_t length) {
     reinterpret_cast<sf::Shader *>(shader)->setUniformArray(name, reinterpret_cast<const sf::Glsl::Vec4 *>(vectorArray), length);
 }
 
-void sfShader_setMat3UniformArray(sfShader *shader, const char *name, const sfGlslMat3 *matrixArray, size_t length) {
+extern "C" void sfShader_setMat3UniformArray(sfShader *shader, const char *name, const sfGlslMat3 *matrixArray, size_t length) {
     reinterpret_cast<sf::Shader *>(shader)->setUniformArray(name, reinterpret_cast<const sf::Glsl::Mat3 *>(matrixArray), length);
 }
 
-void sfShader_setMat4UniformArray(sfShader *shader, const char *name, const sfGlslMat4 *matrixArray, size_t length) {
+extern "C" void sfShader_setMat4UniformArray(sfShader *shader, const char *name, const sfGlslMat4 *matrixArray, size_t length) {
     reinterpret_cast<sf::Shader *>(shader)->setUniformArray(name, reinterpret_cast<const sf::Glsl::Mat4 *>(matrixArray), length);
 }
 
-unsigned int sfShader_getNativeHandle(const sfShader *shader) {
+extern "C" unsigned int sfShader_getNativeHandle(const sfShader *shader) {
     return reinterpret_cast<const sf::Shader *>(shader)->getNativeHandle();
 }
 
-void sfShader_bind(const sfShader *shader) {
+extern "C" void sfShader_bind(const sfShader *shader) {
     sf::Shader::bind(reinterpret_cast<const sf::Shader *>(shader));
 }
 
-sfBool sfShader_isAvailable(void) {
+extern "C" sfBool sfShader_isAvailable(void) {
     return sf::Shader::isAvailable() ? sfTrue : sfFalse;
 }
 
-sfBool sfShader_isGeometryAvailable(void) {
+extern "C" sfBool sfShader_isGeometryAvailable(void) {
     return sf::Shader::isGeometryAvailable() ? sfTrue : sfFalse;
 }

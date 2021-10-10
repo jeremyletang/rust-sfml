@@ -1,5 +1,5 @@
 use crate::{
-    ffi::{self as ffi, sfBool},
+    ffi::{graphics as ffi, sfBool},
     graphics::{Color, IntRect},
     sf_bool_ext::SfBoolExt,
     system::{InputStream, Vector2u},

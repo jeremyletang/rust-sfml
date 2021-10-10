@@ -23,33 +23,35 @@
 
 // Headers
 
-#include "Graphics/Image.h"
+#include "Graphics/Color.h"
 #include "Graphics/ImageStruct.h"
+#include "Graphics/Rect.h"
 #include "System/InputStreamStruct.h"
+#include "System/Vector2.h"
 #include <cstddef>
 
-sfImage *sfImage_create(unsigned int width, unsigned int height) {
+extern "C" sfImage *sfImage_create(unsigned int width, unsigned int height) {
     sfImage *image = new sfImage;
     image->This.create(width, height);
 
     return image;
 }
 
-sfImage *sfImage_createFromColor(unsigned int width, unsigned int height, sfColor color) {
+extern "C" sfImage *sfImage_createFromColor(unsigned int width, unsigned int height, sfColor color) {
     sfImage *image = new sfImage;
     image->This.create(width, height, sf::Color(color.r, color.g, color.b, color.a));
 
     return image;
 }
 
-sfImage *sfImage_createFromPixels(unsigned int width, unsigned int height, const sfUint8 *data) {
+extern "C" sfImage *sfImage_createFromPixels(unsigned int width, unsigned int height, const sfUint8 *data) {
     sfImage *image = new sfImage;
     image->This.create(width, height, data);
 
     return image;
 }
 
-sfImage *sfImage_createFromFile(const char *filename) {
+extern "C" sfImage *sfImage_createFromFile(const char *filename) {
     sfImage *image = new sfImage;
 
     if (!image->This.loadFromFile(filename)) {
@@ -60,7 +62,7 @@ sfImage *sfImage_createFromFile(const char *filename) {
     return image;
 }
 
-sfImage *sfImage_createFromMemory(const void *data, size_t sizeInBytes) {
+extern "C" sfImage *sfImage_createFromMemory(const void *data, size_t sizeInBytes) {
     sfImage *image = new sfImage;
 
     if (!image->This.loadFromMemory(data, sizeInBytes)) {
@@ -71,7 +73,7 @@ sfImage *sfImage_createFromMemory(const void *data, size_t sizeInBytes) {
     return image;
 }
 
-sfImage *sfImage_createFromStream(sfInputStream *stream) {
+extern "C" sfImage *sfImage_createFromStream(sfInputStream *stream) {
 
     sfImage *image = new sfImage;
 
@@ -83,44 +85,44 @@ sfImage *sfImage_createFromStream(sfInputStream *stream) {
     return image;
 }
 
-sfImage *sfImage_copy(const sfImage *image) {
+extern "C" sfImage *sfImage_copy(const sfImage *image) {
 
     return new sfImage(*image);
 }
 
-void sfImage_destroy(sfImage *image) {
+extern "C" void sfImage_destroy(sfImage *image) {
     delete image;
 }
 
-sfBool sfImage_saveToFile(const sfImage *image, const char *filename) {
+extern "C" sfBool sfImage_saveToFile(const sfImage *image, const char *filename) {
     return image->This.saveToFile(filename);
 }
 
-void sfImage_createMaskFromColor(sfImage *image, sfColor colorKey, sfUint8 alpha) {
+extern "C" void sfImage_createMaskFromColor(sfImage *image, sfColor colorKey, sfUint8 alpha) {
     image->This.createMaskFromColor(sf::Color(colorKey.r, colorKey.g, colorKey.b, colorKey.a), alpha);
 }
 
-void sfImage_copyImage(sfImage *image, const sfImage *source, unsigned int destX, unsigned int destY, sfIntRect sourceRect, sfBool applyAlpha) {
+extern "C" void sfImage_copyImage(sfImage *image, const sfImage *source, unsigned int destX, unsigned int destY, sfIntRect sourceRect, sfBool applyAlpha) {
 
     sf::IntRect sfmlRect(sourceRect.left, sourceRect.top, sourceRect.width, sourceRect.height);
     image->This.copy(source->This, destX, destY, sfmlRect, applyAlpha == sfTrue);
 }
 
-void sfImage_setPixel(sfImage *image, unsigned int x, unsigned int y, sfColor color) {
+extern "C" void sfImage_setPixel(sfImage *image, unsigned int x, unsigned int y, sfColor color) {
     image->This.setPixel(x, y, sf::Color(color.r, color.g, color.b, color.a));
 }
 
-sfColor sfImage_getPixel(const sfImage *image, unsigned int x, unsigned int y) {
+extern "C" sfColor sfImage_getPixel(const sfImage *image, unsigned int x, unsigned int y) {
     sf::Color sfmlColor = image->This.getPixel(x, y);
 
     return sfColor{sfmlColor.r, sfmlColor.g, sfmlColor.b, sfmlColor.a};
 }
 
-const sfUint8 *sfImage_getPixelsPtr(const sfImage *image) {
+extern "C" const sfUint8 *sfImage_getPixelsPtr(const sfImage *image) {
     return image->This.getPixelsPtr();
 }
 
-sfVector2u sfImage_getSize(const sfImage *image) {
+extern "C" sfVector2u sfImage_getSize(const sfImage *image) {
     sfVector2u size = {0, 0};
 
     sf::Vector2u sfmlSize = image->This.getSize();
@@ -131,10 +133,10 @@ sfVector2u sfImage_getSize(const sfImage *image) {
     return size;
 }
 
-void sfImage_flipHorizontally(sfImage *image) {
+extern "C" void sfImage_flipHorizontally(sfImage *image) {
     image->This.flipHorizontally();
 }
 
-void sfImage_flipVertically(sfImage *image) {
+extern "C" void sfImage_flipVertically(sfImage *image) {
     image->This.flipVertically();
 }

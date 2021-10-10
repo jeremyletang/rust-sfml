@@ -23,45 +23,46 @@
 
 // Headers
 
-#include "Graphics/Text.h"
+#include "Graphics/Color.h"
 #include "Graphics/Font.h"
+#include "System/Vector2.h"
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/Text.hpp>
 #include <cstddef>
 
-sfText *sfText_create(void) {
+extern "C" sfText *sfText_create(void) {
     sf::Text *text = new sf::Text;
 
     return reinterpret_cast<sfText *>(text);
 }
 
-sfText *sfText_copy(const sfText *text) {
+extern "C" sfText *sfText_copy(const sfText *text) {
     const sf::Text *src = reinterpret_cast<const sf::Text *>(text);
     sf::Text *newText = new sf::Text(*src);
     return reinterpret_cast<sfText *>(newText);
 }
 
-void sfText_destroy(sfText *text) {
+extern "C" void sfText_destroy(sfText *text) {
     delete reinterpret_cast<sf::Text *>(text);
 }
 
-void sfText_setPosition(sfText *text, sfVector2f position) {
+extern "C" void sfText_setPosition(sfText *text, sfVector2f position) {
     reinterpret_cast<sf::Text *>(text)->setPosition(position.x, position.y);
 }
 
-void sfText_setRotation(sfText *text, float angle) {
+extern "C" void sfText_setRotation(sfText *text, float angle) {
     reinterpret_cast<sf::Text *>(text)->setRotation(angle);
 }
 
-void sfText_setScale(sfText *text, sfVector2f scale) {
+extern "C" void sfText_setScale(sfText *text, sfVector2f scale) {
     reinterpret_cast<sf::Text *>(text)->setScale(scale.x, scale.y);
 }
 
-void sfText_setOrigin(sfText *text, sfVector2f origin) {
+extern "C" void sfText_setOrigin(sfText *text, sfVector2f origin) {
     reinterpret_cast<sf::Text *>(text)->setOrigin(origin.x, origin.y);
 }
 
-sfVector2f sfText_getPosition(const sfText *text) {
+extern "C" sfVector2f sfText_getPosition(const sfText *text) {
     sfVector2f position = {0, 0};
 
     sf::Vector2f sfmlPos = reinterpret_cast<const sf::Text *>(text)->getPosition();
@@ -71,11 +72,11 @@ sfVector2f sfText_getPosition(const sfText *text) {
     return position;
 }
 
-float sfText_getRotation(const sfText *text) {
+extern "C" float sfText_getRotation(const sfText *text) {
     return reinterpret_cast<const sf::Text *>(text)->getRotation();
 }
 
-sfVector2f sfText_getScale(const sfText *text) {
+extern "C" sfVector2f sfText_getScale(const sfText *text) {
     sfVector2f scale = {0, 0};
 
     sf::Vector2f sfmlScale = reinterpret_cast<const sf::Text *>(text)->getScale();
@@ -85,7 +86,7 @@ sfVector2f sfText_getScale(const sfText *text) {
     return scale;
 }
 
-sfVector2f sfText_getOrigin(const sfText *text) {
+extern "C" sfVector2f sfText_getOrigin(const sfText *text) {
     sfVector2f origin = {0, 0};
 
     sf::Vector2f sfmlOrigin = reinterpret_cast<const sf::Text *>(text)->getOrigin();
@@ -95,15 +96,15 @@ sfVector2f sfText_getOrigin(const sfText *text) {
     return origin;
 }
 
-void sfText_move(sfText *text, sfVector2f offset) {
+extern "C" void sfText_move(sfText *text, sfVector2f offset) {
     reinterpret_cast<sf::Text *>(text)->move(offset.x, offset.y);
 }
 
-void sfText_rotate(sfText *text, float angle) {
+extern "C" void sfText_rotate(sfText *text, float angle) {
     reinterpret_cast<sf::Text *>(text)->rotate(angle);
 }
 
-void sfText_scale(sfText *text, sfVector2f factors) {
+extern "C" void sfText_scale(sfText *text, sfVector2f factors) {
     reinterpret_cast<sf::Text *>(text)->scale(factors.x, factors.y);
 }
 
@@ -115,79 +116,71 @@ extern "C" sf::Transform sfText_getInverseTransform(const sfText *text) {
     return reinterpret_cast<const sf::Text *>(text)->getInverseTransform();
 }
 
-void sfText_setUnicodeString(sfText *text, const sfUint32 *string) {
+extern "C" void sfText_setUnicodeString(sfText *text, const sfUint32 *string) {
     sf::String UTF32Text = string;
     reinterpret_cast<sf::Text *>(text)->setString(UTF32Text);
 }
 
-void sfText_setFont(sfText *text, const sfFont *font) {
+extern "C" void sfText_setFont(sfText *text, const sfFont *font) {
 
     reinterpret_cast<sf::Text *>(text)->setFont(*reinterpret_cast<const sf::Font *>(font));
 }
 
-void sfText_setCharacterSize(sfText *text, unsigned int size) {
+extern "C" void sfText_setCharacterSize(sfText *text, unsigned int size) {
     reinterpret_cast<sf::Text *>(text)->setCharacterSize(size);
 }
 
-void sfText_setLineSpacing(sfText *text, float spacingFactor) {
+extern "C" void sfText_setLineSpacing(sfText *text, float spacingFactor) {
     reinterpret_cast<sf::Text *>(text)->setLineSpacing(spacingFactor);
 }
 
-void sfText_setLetterSpacing(sfText *text, float spacingFactor) {
+extern "C" void sfText_setLetterSpacing(sfText *text, float spacingFactor) {
     reinterpret_cast<sf::Text *>(text)->setLetterSpacing(spacingFactor);
 }
 
-void sfText_setStyle(sfText *text, sfUint32 style) {
+extern "C" void sfText_setStyle(sfText *text, sfUint32 style) {
     reinterpret_cast<sf::Text *>(text)->setStyle(style);
 }
 
-void sfText_setColor(sfText *text, sfColor color) {
-    sfText_setFillColor(text, color);
-}
-
-void sfText_setFillColor(sfText *text, sfColor color) {
+extern "C" void sfText_setFillColor(sfText *text, sfColor color) {
     reinterpret_cast<sf::Text *>(text)->setFillColor(sf::Color(color.r, color.g, color.b, color.a));
 }
 
-void sfText_setOutlineColor(sfText *text, sfColor color) {
+extern "C" void sfText_setOutlineColor(sfText *text, sfColor color) {
     reinterpret_cast<sf::Text *>(text)->setOutlineColor(sf::Color(color.r, color.g, color.b, color.a));
 }
 
-void sfText_setOutlineThickness(sfText *text, float thickness) {
+extern "C" void sfText_setOutlineThickness(sfText *text, float thickness) {
     reinterpret_cast<sf::Text *>(text)->setOutlineThickness(thickness);
 }
 
-const sfUint32 *sfText_getUnicodeString(const sfText *text) {
+extern "C" const sfUint32 *sfText_getUnicodeString(const sfText *text) {
 
     return reinterpret_cast<const sf::Text *>(text)->getString().getData();
 }
 
-const sfFont *sfText_getFont(const sfText *text) {
+extern "C" const sfFont *sfText_getFont(const sfText *text) {
     const sf::Font *font = reinterpret_cast<const sf::Text *>(text)->getFont();
     return reinterpret_cast<const sfFont *>(font);
 }
 
-unsigned int sfText_getCharacterSize(const sfText *text) {
+extern "C" unsigned int sfText_getCharacterSize(const sfText *text) {
     return reinterpret_cast<const sf::Text *>(text)->getCharacterSize();
 }
 
-float sfText_getLetterSpacing(const sfText *text) {
+extern "C" float sfText_getLetterSpacing(const sfText *text) {
     return reinterpret_cast<const sf::Text *>(text)->getLetterSpacing();
 }
 
-float sfText_getLineSpacing(const sfText *text) {
+extern "C" float sfText_getLineSpacing(const sfText *text) {
     return reinterpret_cast<const sf::Text *>(text)->getLineSpacing();
 }
 
-sfUint32 sfText_getStyle(const sfText *text) {
+extern "C" sfUint32 sfText_getStyle(const sfText *text) {
     return reinterpret_cast<const sf::Text *>(text)->getStyle();
 }
 
-sfColor sfText_getColor(const sfText *text) {
-    return sfText_getFillColor(text);
-}
-
-sfColor sfText_getFillColor(const sfText *text) {
+extern "C" sfColor sfText_getFillColor(const sfText *text) {
     sfColor color = {0, 0, 0, 0};
 
     sf::Color sfmlColor = reinterpret_cast<const sf::Text *>(text)->getFillColor();
@@ -199,7 +192,7 @@ sfColor sfText_getFillColor(const sfText *text) {
     return color;
 }
 
-sfColor sfText_getOutlineColor(const sfText *text) {
+extern "C" sfColor sfText_getOutlineColor(const sfText *text) {
     sfColor color = {0, 0, 0, 0};
 
     sf::Color sfmlColor = reinterpret_cast<const sf::Text *>(text)->getOutlineColor();
@@ -211,11 +204,11 @@ sfColor sfText_getOutlineColor(const sfText *text) {
     return color;
 }
 
-float sfText_getOutlineThickness(const sfText *text) {
+extern "C" float sfText_getOutlineThickness(const sfText *text) {
     return reinterpret_cast<const sf::Text *>(text)->getOutlineThickness();
 }
 
-sfVector2f sfText_findCharacterPos(const sfText *text, size_t index) {
+extern "C" sfVector2f sfText_findCharacterPos(const sfText *text, size_t index) {
     sfVector2f position = {0, 0};
 
     sf::Vector2f sfmlPos = reinterpret_cast<const sf::Text *>(text)->findCharacterPos(index);
@@ -225,7 +218,7 @@ sfVector2f sfText_findCharacterPos(const sfText *text, size_t index) {
     return position;
 }
 
-sfFloatRect sfText_getLocalBounds(const sfText *text) {
+extern "C" sfFloatRect sfText_getLocalBounds(const sfText *text) {
     sfFloatRect rect = {0, 0, 0, 0};
 
     sf::FloatRect sfmlRect = reinterpret_cast<const sf::Text *>(text)->getLocalBounds();
@@ -237,7 +230,7 @@ sfFloatRect sfText_getLocalBounds(const sfText *text) {
     return rect;
 }
 
-sfFloatRect sfText_getGlobalBounds(const sfText *text) {
+extern "C" sfFloatRect sfText_getGlobalBounds(const sfText *text) {
     sfFloatRect rect = {0, 0, 0, 0};
 
     sf::FloatRect sfmlRect = reinterpret_cast<const sf::Text *>(text)->getGlobalBounds();
