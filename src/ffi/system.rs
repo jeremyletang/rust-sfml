@@ -1,4 +1,3 @@
-use crate::decl_opaque;
 pub use crate::ffi::*;
 
 decl_opaque! {
