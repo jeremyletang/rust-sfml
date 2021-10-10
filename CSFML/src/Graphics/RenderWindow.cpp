@@ -28,7 +28,6 @@
 #include "Graphics/ShapeStruct.h"
 #include "Graphics/Vertex.h"
 #include "Graphics/VertexBufferStruct.h"
-#include "Window/CursorStruct.h"
 #include "Window/VideoMode.h"
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
@@ -134,8 +133,8 @@ extern "C" void sfRenderWindow_setMouseCursorGrabbed(sfRenderWindow *renderWindo
     reinterpret_cast<sf::RenderWindow *>(renderWindow)->setMouseCursorGrabbed(grabbed == sfTrue);
 }
 
-extern "C" void sfRenderWindow_setMouseCursor(sfRenderWindow *window, const sfCursor *cursor) {
-    reinterpret_cast<sf::RenderWindow *>(window)->setMouseCursor(cursor->This);
+extern "C" void sfRenderWindow_setMouseCursor(sfRenderWindow *window, const sf::Cursor *cursor) {
+    reinterpret_cast<sf::RenderWindow *>(window)->setMouseCursor(*cursor);
 }
 
 extern "C" void sfRenderWindow_setKeyRepeatEnabled(sfRenderWindow *renderWindow, sfBool enabled) {

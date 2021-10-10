@@ -9,7 +9,6 @@
 #include "Audio/SoundRecorder.h"
 #include "Audio/SoundStatus.h"
 #include "Audio/SoundStream.h"
-#include "Window/Cursor.h"
 #include "Window/Joystick.h"
 #include "Window/Sensor.h"
 #include "Window/Touch.h"

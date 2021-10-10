@@ -1,48 +1,6 @@
 use crate::ffi::window as ffi;
 
-/// Structure defining the settings of the OpenGL context attached to a window.
-///
-/// `ContextSettings` allows to define several advanced settings of the OpenGL context attached
-/// to a window.
-///
-/// All these settings with the exception of the compatibility flag and anti-aliasing level
-/// have no impact on the regular SFML rendering (graphics module), so you may need to use
-/// this structure only if you're using SFML as a windowing system for custom OpenGL rendering.
-///
-/// The `depth_bits` and `stencil_bits` members define the number of bits per pixel requested for
-/// the (respectively) depth and stencil buffers.
-///
-/// `antialiasing_level` represents the requested number of multisampling levels for anti-aliasing.
-///
-/// `major_version` and `minor_version` define the version of the OpenGL context that you want.
-/// Only versions greater or equal to 3.0 are relevant; versions lesser than 3.0 are all handled
-/// the same way (i.e. you can use any version < 3.0 if you don't want an OpenGL 3 context).
-///
-/// When requesting a context with a version greater or equal to 3.2, you have the option of
-/// specifying whether the context should follow the core or compatibility profile of
-/// all newer (>= 3.2) OpenGL specifications. For versions 3.0 and 3.1 there is only the
-/// core profile. By default a compatibility context is created. You only need to specify the
-/// core flag if you want a core profile context to use with your own OpenGL rendering.
-/// Warning: The graphics module will not function if you request a core profile context.
-/// Make sure the attributes are set to Default if you want to use the graphics module.
-///
-/// Setting the debug attribute flag will request a context with additional debugging features
-/// enabled. Depending on the system, this might be required for advanced OpenGL debugging.
-/// OpenGL debugging is disabled by default.
-///
-/// Special Note for OS X: Apple only supports choosing between either a
-/// legacy context (OpenGL 2.1) or a core context (OpenGL version depends on the
-/// operating system version but is at least 3.2). Compatibility contexts are not supported.
-/// Further information is available on the OpenGL Capabilities Tables page.
-/// OS X also currently does not support debug contexts.
-///
-/// Please note that these values are only a hint. No failure will be reported if one or more
-/// of these values are not supported by the system; instead, SFML will try to find the closest
-/// valid match. You can then retrieve the settings that the window actually used to create
-/// its context, with [`Window::settings`].
-///
-/// [`Window::settings`]: crate::window::Window::settings
-pub type ContextSettings = ffi::sfContextSettings;
+pub use ffi::sfContextSettings as ContextSettings;
 
 impl ContextSettings {
     /// Non-debug, compatibility context (this and the core attribute are mutually exclusive).
@@ -61,7 +19,7 @@ impl Default for ContextSettings {
     /// - Antialiasing level: 0
     /// - Major version: 1
     /// - Minor version: 1
-    /// - Attribute flags: [`ATTRIB_DEFAULT`](Self::ATTRIB_DEFAULT)
+    /// - Attribute flags: [`ATTRIB_DEFAULT`](ContextSettings::ATTRIB_DEFAULT)
     /// - SRGB capable: false
     fn default() -> Self {
         Self {

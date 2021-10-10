@@ -3,7 +3,7 @@ use sfml::{
         Color, Font, Rect, RectangleShape, RenderTarget, RenderWindow, Shape, Text, Transformable,
     },
     system::Vector2,
-    window::{mouse, ContextSettings, Cursor, Event, Style},
+    window::{mouse, ContextSettings, Cursor, CursorType, Event, Style},
 };
 
 const DRAW_AREA_TOPLEFT: (u16, u16) = (300, 64);
@@ -89,19 +89,19 @@ fn main() {
 
     let mut buttons = Vec::new();
     let cursor_types = [
-        Cursor::ARROW,
-        Cursor::ARROW_WAIT,
-        Cursor::WAIT,
-        Cursor::TEXT,
-        Cursor::HAND,
-        Cursor::SIZE_HORIZONTAL,
-        Cursor::SIZE_VERTICAL,
-        Cursor::SIZE_TOP_LEFT_BOTTOM_RIGHT,
-        Cursor::SIZE_BOTTOM_LEFT_TOP_RIGHT,
-        Cursor::SIZE_ALL,
-        Cursor::CROSS,
-        Cursor::HELP,
-        Cursor::NOT_ALLOWED,
+        CursorType::Arrow,
+        CursorType::ArrowWait,
+        CursorType::Wait,
+        CursorType::Text,
+        CursorType::Hand,
+        CursorType::SizeHorizontal,
+        CursorType::SizeVertical,
+        CursorType::SizeTopLeftBottomRight,
+        CursorType::SizeBottomLeftTopRight,
+        CursorType::SizeAll,
+        CursorType::Cross,
+        CursorType::Help,
+        CursorType::NotAllowed,
     ];
     for i in 0..cursor_types.len() {
         buttons.push(Rect::new(16, 16 + i as i32 * 36, 250, 32));

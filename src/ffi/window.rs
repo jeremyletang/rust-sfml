@@ -3,15 +3,105 @@ use std::os::raw::c_ulong;
 use crate::ffi::system::sfString;
 pub use crate::ffi::*;
 
+/// Enumeration of the native system cursor types.
+///
+/// Refer to the following table to determine which cursor is available on which platform.
+///
+/// | Type                     | Linux | Mac OS X | Windows |
+/// |--------------------------|-------|----------|---------|
+/// | `Arrow`                  | yes   | yes      | yes     |
+/// | `ArrowWait`              | no    | no       | yes     |
+/// | `Wait`                   | yes   | no       | yes     |
+/// | `Text`                   | yes   | yes      | yes     |
+/// | `Hand`                   | yes   | yes      | yes     |
+/// | `SizeHorizontal`         | yes   | yes      | yes     |
+/// | `SizeVertical`           | yes   | yes      | yes     |
+/// | `SizeTopLeftBottomRight` | no    | yes*     | yes     |
+/// | `SizeBottomLeftTopRight` | no    | yes*     | yes     |
+/// | `SizeAll`                | yes   | no       | yes     |
+/// | `Cross`                  | yes   | yes      | yes     |
+/// | `Help`                   | yes   | yes*     | yes     |
+/// | `NotAllowed`             | yes   | yes      | yes     |
+///
+/// * These cursor types are undocumented so may not be available on all versions,
+/// but have been tested on 10.13
+#[repr(C)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
+#[allow(missing_docs)]
+pub enum sfCursorType {
+    Arrow,
+    ArrowWait,
+    Wait,
+    Text,
+    Hand,
+    SizeHorizontal,
+    SizeVertical,
+    SizeTopLeftBottomRight,
+    SizeBottomLeftTopRight,
+    SizeAll,
+    Cross,
+    Help,
+    NotAllowed,
+}
+
+/// Structure defining the settings of the OpenGL context attached to a window.
+///
+/// `ContextSettings` allows to define several advanced settings of the OpenGL context attached
+/// to a window.
+///
+/// All these settings with the exception of the compatibility flag and anti-aliasing level
+/// have no impact on the regular SFML rendering (graphics module), so you may need to use
+/// this structure only if you're using SFML as a windowing system for custom OpenGL rendering.
+///
+/// The `depth_bits` and `stencil_bits` members define the number of bits per pixel requested for
+/// the (respectively) depth and stencil buffers.
+///
+/// `antialiasing_level` represents the requested number of multisampling levels for anti-aliasing.
+///
+/// `major_version` and `minor_version` define the version of the OpenGL context that you want.
+/// Only versions greater or equal to 3.0 are relevant; versions lesser than 3.0 are all handled
+/// the same way (i.e. you can use any version < 3.0 if you don't want an OpenGL 3 context).
+///
+/// When requesting a context with a version greater or equal to 3.2, you have the option of
+/// specifying whether the context should follow the core or compatibility profile of
+/// all newer (>= 3.2) OpenGL specifications. For versions 3.0 and 3.1 there is only the
+/// core profile. By default a compatibility context is created. You only need to specify the
+/// core flag if you want a core profile context to use with your own OpenGL rendering.
+/// Warning: The graphics module will not function if you request a core profile context.
+/// Make sure the attributes are set to Default if you want to use the graphics module.
+///
+/// Setting the debug attribute flag will request a context with additional debugging features
+/// enabled. Depending on the system, this might be required for advanced OpenGL debugging.
+/// OpenGL debugging is disabled by default.
+///
+/// Special Note for OS X: Apple only supports choosing between either a
+/// legacy context (OpenGL 2.1) or a core context (OpenGL version depends on the
+/// operating system version but is at least 3.2). Compatibility contexts are not supported.
+/// Further information is available on the OpenGL Capabilities Tables page.
+/// OS X also currently does not support debug contexts.
+///
+/// Please note that these values are only a hint. No failure will be reported if one or more
+/// of these values are not supported by the system; instead, SFML will try to find the closest
+/// valid match. You can then retrieve the settings that the window actually used to create
+/// its context, with [`Window::settings`].
+///
+/// [`Window::settings`]: crate::window::Window::settings
 #[repr(C)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
 pub struct sfContextSettings {
+    /// Bits of the depth buffer.
     pub depth_bits: c_uint,
+    /// Bits of the stencil buffer.
     pub stencil_bits: c_uint,
+    /// Level of antialiasing.
     pub antialiasing_level: c_uint,
+    /// Major number of the context version to create.
     pub major_version: c_uint,
+    /// Minor number of the context version to create.
     pub minor_version: c_uint,
+    /// The attribute flags to create the context with.
     pub attribute_flags: u32,
+    /// Whether the context framebuffer is sRGB capable.
     pub srgb_capable: bool,
 }
 
@@ -441,4 +531,13 @@ extern "C" {
     pub fn sfMouse_isButtonPressed(button: MouseButton) -> sfBool;
     pub fn sfMouse_getPosition(relativeTo: *const sfWindow) -> sfVector2i;
     pub fn sfMouse_setPosition(position: sfVector2i, relativeTo: *const sfWindow);
+    // Cursor
+    pub fn sfCursor_createFromPixels(
+        pixels: *const sfUint8,
+        size: sfVector2u,
+        hotspot: sfVector2u,
+    ) -> *mut sfCursor;
+    pub fn sfCursor_createFromSystem(type_: sfCursorType) -> *mut sfCursor;
+    pub fn sfCursor_destroy(cursor: *mut sfCursor);
+
 }

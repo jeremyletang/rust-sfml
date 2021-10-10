@@ -26,7 +26,6 @@
 #include "SFML/Window.hpp"
 #include "Config.h"
 #include "System/Vector2.h"
-#include "Window/CursorStruct.h"
 #include "Window/VideoMode.h"
 #include <SFML/Window/Context.hpp>
 #include <SFML/Window/Touch.hpp>
@@ -123,9 +122,9 @@ extern "C" void sfWindow_setMouseCursorGrabbed(sf::Window *window, sfBool grabbe
     window->setMouseCursorGrabbed(grabbed == sfTrue);
 }
 
-extern "C" void sfWindow_setMouseCursor(sf::Window *window, const sfCursor *cursor) {
+extern "C" void sfWindow_setMouseCursor(sf::Window *window, const sf::Cursor *cursor) {
 
-    window->setMouseCursor(cursor->This);
+    window->setMouseCursor(*cursor);
 }
 
 extern "C" void sfWindow_setVerticalSyncEnabled(sf::Window *window, sfBool enabled) {

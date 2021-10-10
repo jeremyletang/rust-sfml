@@ -1,5 +1,5 @@
 use crate::{
-    ffi::{self, sfCursorType},
+    ffi::window::{self as ffi},
     sf_box::{Dispose, SfBox},
     system::Vector2u,
 };
@@ -103,57 +103,4 @@ impl Cursor {
         ptr as *const ffi::sfCursor
     }
 }
-
-/// Enumeration of the native system cursor types.
-///
-/// Refer to the following table to determine which cursor is available on which platform.
-///
-/// | Type                                                               | Linux | Mac OS X | Windows |
-/// |--------------------------------------------------------------------|-------|----------|---------|
-/// | [`ARROW`](Cursor::ARROW)                                           | yes   | yes      | yes     |
-/// | [`ARROW_WAIT`](Cursor::ARROW_WAIT)                                 | no    | no       | yes     |
-/// | [`WAIT`](Cursor::WAIT)                                             | yes   | no       | yes     |
-/// | [`TEXT`](Cursor::TEXT)                                             | yes   | yes      | yes     |
-/// | [`HAND`](Cursor::HAND)                                             | yes   | yes      | yes     |
-/// | [`SIZE_HORIZONTAL`](Cursor::SIZE_HORIZONTAL)                       | yes   | yes      | yes     |
-/// | [`SIZE_VERTICAL`](Cursor::SIZE_VERTICAL)                           | yes   | yes      | yes     |
-/// | [`SIZE_TOP_LEFT_BOTTOM_RIGHT`](Cursor::SIZE_TOP_LEFT_BOTTOM_RIGHT) | no    | yes*     | yes     |
-/// | [`SIZE_BOTTOM_LEFT_TOP_RIGHT`](Cursor::SIZE_BOTTOM_LEFT_TOP_RIGHT) | no    | yes*     | yes     |
-/// | [`SIZE_ALL`](Cursor::SIZE_ALL)                                     | yes   | no       | yes     |
-/// | [`CROSS`](Cursor::CROSS)                                           | yes   | yes      | yes     |
-/// | [`HELP`](Cursor::HELP)                                             | yes   | yes*     | yes     |
-/// | [`NOT_ALLOWED`](Cursor::NOT_ALLOWED)                               | yes   | yes      | yes     |
-///
-/// * These cursor types are undocumented so may not be available on all versions,
-/// but have been tested on 10.13
-
-pub type Type = sfCursorType;
-
-impl Cursor {
-    /// Arrow cursor (default)
-    pub const ARROW: Type = ffi::sfCursorType_sfCursorArrow;
-    /// Busy arrow cursor.
-    pub const ARROW_WAIT: Type = ffi::sfCursorType_sfCursorArrowWait;
-    /// Busy cursor.
-    pub const WAIT: Type = ffi::sfCursorType_sfCursorWait;
-    /// I-beam, cursor when hovering over a field allowing text entry.
-    pub const TEXT: Type = ffi::sfCursorType_sfCursorText;
-    /// Pointing hand cursor.
-    pub const HAND: Type = ffi::sfCursorType_sfCursorHand;
-    /// Horizontal double arrow cursor.
-    pub const SIZE_HORIZONTAL: Type = ffi::sfCursorType_sfCursorSizeHorizontal;
-    /// Vertical double arrow cursor.
-    pub const SIZE_VERTICAL: Type = ffi::sfCursorType_sfCursorSizeVertical;
-    /// Double arrow cursor going from top-left to bottom-right.
-    pub const SIZE_TOP_LEFT_BOTTOM_RIGHT: Type = ffi::sfCursorType_sfCursorSizeTopLeftBottomRight;
-    /// Double arrow cursor going from bottom-left to top-right.
-    pub const SIZE_BOTTOM_LEFT_TOP_RIGHT: Type = ffi::sfCursorType_sfCursorSizeBottomLeftTopRight;
-    /// Combination of `SIZE_HORIZONTAL` and `SIZE_VERTICAL`.
-    pub const SIZE_ALL: Type = ffi::sfCursorType_sfCursorSizeAll;
-    /// Crosshair cursor.
-    pub const CROSS: Type = ffi::sfCursorType_sfCursorCross;
-    /// Help cursor.
-    pub const HELP: Type = ffi::sfCursorType_sfCursorHelp;
-    /// Action not allowed cursor.
-    pub const NOT_ALLOWED: Type = ffi::sfCursorType_sfCursorNotAllowed;
-}
+pub use ffi::sfCursorType as Type;
