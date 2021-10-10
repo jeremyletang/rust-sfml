@@ -3,6 +3,12 @@ use std::os::raw::c_ulong;
 use crate::ffi::system::sfString;
 pub use crate::ffi::*;
 
+decl_opaque! {
+    sfCursor;
+    sfContext;
+    sfWindow;
+}
+
 /// Enumeration of the native system cursor types.
 ///
 /// Refer to the following table to determine which cursor is available on which platform.
@@ -539,5 +545,7 @@ extern "C" {
     ) -> *mut sfCursor;
     pub fn sfCursor_createFromSystem(type_: sfCursorType) -> *mut sfCursor;
     pub fn sfCursor_destroy(cursor: *mut sfCursor);
-
+    // Touch
+    pub fn sfTouch_isDown(finger: c_uint) -> sfBool;
+    pub fn sfTouch_getPosition(finger: c_uint, relativeTo: *const sfWindow) -> sfVector2i;
 }

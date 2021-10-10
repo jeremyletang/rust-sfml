@@ -11,7 +11,6 @@
 #include "Audio/SoundStream.h"
 #include "Window/Joystick.h"
 #include "Window/Sensor.h"
-#include "Window/Touch.h"
 #include "Window/VideoMode.h"
 #include "Graphics/Color.h"
 #include "Graphics/FontInfo.h"

@@ -28,7 +28,6 @@
 
 #include "Config.h"
 #include "System/Vector3.h"
-#include "Window/Types.h"
 
 typedef enum {
     sfSensorAccelerometer,    ///< Measures the raw acceleration (m/s^2)

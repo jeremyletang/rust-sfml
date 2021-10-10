@@ -1,4 +1,4 @@
-use crate::ffi::window::{sfContextSettings, sfWindowHandle, Event};
+use crate::ffi::window::{sfContextSettings, sfCursor, sfWindow, sfWindowHandle, Event};
 pub use crate::ffi::*;
 
 /// Enumeration of the blending factors.
