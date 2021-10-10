@@ -13,9 +13,11 @@ fn main() {
     let mut srgb = false;
 
     while !exit {
-        let mut ctx_sett = ContextSettings::default();
-        ctx_sett.set_depth_bits(24);
-        ctx_sett.set_srgb_capable(srgb);
+        let ctx_sett = ContextSettings {
+            depth_bits: 24,
+            srgb_capable: srgb,
+            ..Default::default()
+        };
 
         let mut window = RenderWindow::new(
             (800, 600),

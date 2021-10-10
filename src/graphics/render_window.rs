@@ -56,7 +56,7 @@ impl RenderWindow {
                     mode.into().raw(),
                     sfstr.as_ptr(),
                     style.bits(),
-                    &settings.0,
+                    settings,
                 )
             };
             RenderWindow {
@@ -85,7 +85,7 @@ impl RenderWindow {
         thread_safety::set_window_thread();
 
         let sf_render_win: *mut ffi::sfRenderWindow =
-            ffi::sfRenderWindow_createFromHandle(handle, &settings.0);
+            ffi::sfRenderWindow_createFromHandle(handle, settings);
         RenderWindow {
             render_window: NonNull::new(sf_render_win).expect("Failed to create Window"),
         }
@@ -220,8 +220,8 @@ impl RenderWindow {
     /// Return a structure containing the OpenGL context settings
     ///
     #[must_use]
-    pub fn settings(&self) -> ContextSettings {
-        unsafe { ContextSettings(ffi::sfRenderWindow_getSettings(self.render_window.as_ptr())) }
+    pub fn settings(&self) -> &ContextSettings {
+        unsafe { &*ffi::sfRenderWindow_getSettings(self.render_window.as_ptr()) }
     }
 
     /// Change the title of a window

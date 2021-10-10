@@ -28,8 +28,8 @@
 
 #include "Audio/SoundStatus.h"
 #include "Audio/Types.h"
-#include "System/Vector3.h"
 #include "Config.h"
+#include "System/Vector3.h"
 
 typedef struct
 {
@@ -38,7 +38,7 @@ typedef struct
 } sfSoundStreamChunk;
 
 typedef sfBool (*sfSoundStreamGetDataCallback)(sfSoundStreamChunk *, void *); ///< Type of the callback used to get a sound stream data
-typedef void (*sfSoundStreamSeekCallback)(sfInt64, void *);                    ///< Type of the callback used to seek in a sound stream
+typedef void (*sfSoundStreamSeekCallback)(sfInt64, void *);                   ///< Type of the callback used to seek in a sound stream
 
 extern "C" sfSoundStream *sfSoundStream_create(sfSoundStreamGetDataCallback onGetData,
                                                sfSoundStreamSeekCallback onSeek,

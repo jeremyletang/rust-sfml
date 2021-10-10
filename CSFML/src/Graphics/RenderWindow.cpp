@@ -23,71 +23,56 @@
 
 // Headers
 
-#include "Graphics/RenderWindow.h"
 #include "Graphics/ConvexShapeStruct.h"
 #include "Graphics/ImageStruct.h"
+#include "Graphics/PrimitiveType.h"
 #include "Graphics/ShapeStruct.h"
+#include "Graphics/Vertex.h"
 #include "Graphics/VertexBufferStruct.h"
-#include "Window/ContextSettingsInternal.h"
 #include "Window/CursorStruct.h"
+#include "Window/VideoMode.h"
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>
+#include <SFML/Window/Mouse.hpp>
 #include <SFML/Window/Touch.hpp>
 #include <cstddef>
 
-sfRenderWindow *sfRenderWindow_createUnicode(sfVideoMode mode, const sfUint32 *title, sfUint32 style, const sfContextSettings *settings) {
+extern "C" sfRenderWindow *sfRenderWindow_createUnicode(sfVideoMode mode, const sfUint32 *title, sfUint32 style, const sf::ContextSettings *settings) {
     // Convert video mode
     sf::VideoMode videoMode(mode.width, mode.height, mode.bitsPerPixel);
 
-    // Convert context settings
-    sf::ContextSettings params;
-    if (settings) {
-        priv::sfContextSettings_writeToCpp(*settings, params);
-    }
-
     // Create the window
     sf::RenderWindow *renderWindow = new sf::RenderWindow;
-    renderWindow->create(videoMode, title, style, params);
+    renderWindow->create(videoMode, title, style, *settings);
 
     return reinterpret_cast<sfRenderWindow *>(renderWindow);
 }
 
-sfRenderWindow *sfRenderWindow_createFromHandle(sfWindowHandle handle, const sfContextSettings *settings) {
-    // Convert context settings
-    sf::ContextSettings params;
-    if (settings) {
-        priv::sfContextSettings_writeToCpp(*settings, params);
-    }
-
+extern "C" sfRenderWindow *sfRenderWindow_createFromHandle(sf::WindowHandle handle, const sf::ContextSettings *settings) {
     // Create the window
     sf::RenderWindow *renderWindow = new sf::RenderWindow;
-    renderWindow->create(handle, params);
+    renderWindow->create(handle, *settings);
 
     return reinterpret_cast<sfRenderWindow *>(renderWindow);
 }
 
-void sfRenderWindow_destroy(sfRenderWindow *renderWindow) {
+extern "C" void sfRenderWindow_destroy(sfRenderWindow *renderWindow) {
     delete reinterpret_cast<sf::RenderWindow *>(renderWindow);
 }
 
-void sfRenderWindow_close(sfRenderWindow *renderWindow) {
+extern "C" void sfRenderWindow_close(sfRenderWindow *renderWindow) {
     reinterpret_cast<sf::RenderWindow *>(renderWindow)->close();
 }
 
-sfBool sfRenderWindow_isOpen(const sfRenderWindow *renderWindow) {
+extern "C" sfBool sfRenderWindow_isOpen(const sfRenderWindow *renderWindow) {
     return reinterpret_cast<const sf::RenderWindow *>(renderWindow)->isOpen();
 }
 
-sfContextSettings sfRenderWindow_getSettings(const sfRenderWindow *renderWindow) {
-    sfContextSettings settings = priv::sfContextSettings_null();
-
-    const sf::ContextSettings &params = reinterpret_cast<const sf::RenderWindow *>(renderWindow)->getSettings();
-    priv::sfContextSettings_readFromCpp(params, settings);
-
-    return settings;
+extern "C" const sf::ContextSettings *sfRenderWindow_getSettings(const sfRenderWindow *renderWindow) {
+    return &reinterpret_cast<const sf::RenderWindow *>(renderWindow)->getSettings();
 }
 
 extern "C" sfBool sfRenderWindow_pollEvent(sfRenderWindow *renderWindow, sf::Event *event) {
@@ -98,7 +83,7 @@ extern "C" sfBool sfRenderWindow_waitEvent(sfRenderWindow *renderWindow, sf::Eve
     return reinterpret_cast<sf::RenderWindow *>(renderWindow)->waitEvent(*event);
 }
 
-sfVector2i sfRenderWindow_getPosition(const sfRenderWindow *renderWindow) {
+extern "C" sfVector2i sfRenderWindow_getPosition(const sfRenderWindow *renderWindow) {
     sfVector2i position = {0, 0};
 
     sf::Vector2i sfmlPos = reinterpret_cast<const sf::RenderWindow *>(renderWindow)->getPosition();
@@ -108,11 +93,11 @@ sfVector2i sfRenderWindow_getPosition(const sfRenderWindow *renderWindow) {
     return position;
 }
 
-void sfRenderWindow_setPosition(sfRenderWindow *renderWindow, sfVector2i position) {
+extern "C" void sfRenderWindow_setPosition(sfRenderWindow *renderWindow, sfVector2i position) {
     reinterpret_cast<sf::RenderWindow *>(renderWindow)->setPosition(sf::Vector2i(position.x, position.y));
 }
 
-sfVector2u sfRenderWindow_getSize(const sfRenderWindow *renderWindow) {
+extern "C" sfVector2u sfRenderWindow_getSize(const sfRenderWindow *renderWindow) {
     sfVector2u size = {0, 0};
 
     sf::Vector2u sfmlSize = reinterpret_cast<const sf::RenderWindow *>(renderWindow)->getSize();
@@ -122,90 +107,90 @@ sfVector2u sfRenderWindow_getSize(const sfRenderWindow *renderWindow) {
     return size;
 }
 
-void sfRenderWindow_setSize(sfRenderWindow *renderWindow, sfVector2u size) {
+extern "C" void sfRenderWindow_setSize(sfRenderWindow *renderWindow, sfVector2u size) {
     reinterpret_cast<sf::RenderWindow *>(renderWindow)->setSize(sf::Vector2u(size.x, size.y));
 }
 
-void sfRenderWindow_setUnicodeTitle(sfRenderWindow *renderWindow, const sfUint32 *title) {
+extern "C" void sfRenderWindow_setUnicodeTitle(sfRenderWindow *renderWindow, const sfUint32 *title) {
     reinterpret_cast<sf::RenderWindow *>(renderWindow)->setTitle(title);
 }
 
-void sfRenderWindow_setIcon(sfRenderWindow *renderWindow, unsigned int width, unsigned int height, const sfUint8 *pixels) {
+extern "C" void sfRenderWindow_setIcon(sfRenderWindow *renderWindow, unsigned int width, unsigned int height, const sfUint8 *pixels) {
     reinterpret_cast<sf::RenderWindow *>(renderWindow)->setIcon(width, height, pixels);
 }
 
-void sfRenderWindow_setVisible(sfRenderWindow *renderWindow, sfBool visible) {
+extern "C" void sfRenderWindow_setVisible(sfRenderWindow *renderWindow, sfBool visible) {
     reinterpret_cast<sf::RenderWindow *>(renderWindow)->setVisible(visible == sfTrue);
 }
 
-void sfRenderWindow_setVerticalSyncEnabled(sfRenderWindow *renderWindow, sfBool enabled) {
+extern "C" void sfRenderWindow_setVerticalSyncEnabled(sfRenderWindow *renderWindow, sfBool enabled) {
     reinterpret_cast<sf::RenderWindow *>(renderWindow)->setVerticalSyncEnabled(enabled == sfTrue);
 }
 
-void sfRenderWindow_setMouseCursorVisible(sfRenderWindow *renderWindow, sfBool visible) {
+extern "C" void sfRenderWindow_setMouseCursorVisible(sfRenderWindow *renderWindow, sfBool visible) {
     reinterpret_cast<sf::RenderWindow *>(renderWindow)->setMouseCursorVisible(visible == sfTrue);
 }
 
-void sfRenderWindow_setMouseCursorGrabbed(sfRenderWindow *renderWindow, sfBool grabbed) {
+extern "C" void sfRenderWindow_setMouseCursorGrabbed(sfRenderWindow *renderWindow, sfBool grabbed) {
     reinterpret_cast<sf::RenderWindow *>(renderWindow)->setMouseCursorGrabbed(grabbed == sfTrue);
 }
 
-void sfRenderWindow_setMouseCursor(sfRenderWindow *window, const sfCursor *cursor) {
+extern "C" void sfRenderWindow_setMouseCursor(sfRenderWindow *window, const sfCursor *cursor) {
     reinterpret_cast<sf::RenderWindow *>(window)->setMouseCursor(cursor->This);
 }
 
-void sfRenderWindow_setKeyRepeatEnabled(sfRenderWindow *renderWindow, sfBool enabled) {
+extern "C" void sfRenderWindow_setKeyRepeatEnabled(sfRenderWindow *renderWindow, sfBool enabled) {
     reinterpret_cast<sf::RenderWindow *>(renderWindow)->setKeyRepeatEnabled(enabled == sfTrue);
 }
 
-sfBool sfRenderWindow_setActive(sfRenderWindow *renderWindow, sfBool active) {
+extern "C" sfBool sfRenderWindow_setActive(sfRenderWindow *renderWindow, sfBool active) {
     return reinterpret_cast<sf::RenderWindow *>(renderWindow)->setActive(active == sfTrue);
 }
 
-void sfRenderWindow_requestFocus(sfRenderWindow *renderWindow) {
+extern "C" void sfRenderWindow_requestFocus(sfRenderWindow *renderWindow) {
     reinterpret_cast<sf::RenderWindow *>(renderWindow)->requestFocus();
 }
 
-sfBool sfRenderWindow_hasFocus(const sfRenderWindow *renderWindow) {
+extern "C" sfBool sfRenderWindow_hasFocus(const sfRenderWindow *renderWindow) {
     return reinterpret_cast<const sf::RenderWindow *>(renderWindow)->hasFocus();
 }
 
-void sfRenderWindow_display(sfRenderWindow *renderWindow) {
+extern "C" void sfRenderWindow_display(sfRenderWindow *renderWindow) {
     reinterpret_cast<sf::RenderWindow *>(renderWindow)->display();
 }
 
-void sfRenderWindow_setFramerateLimit(sfRenderWindow *renderWindow, unsigned int limit) {
+extern "C" void sfRenderWindow_setFramerateLimit(sfRenderWindow *renderWindow, unsigned int limit) {
     reinterpret_cast<sf::RenderWindow *>(renderWindow)->setFramerateLimit(limit);
 }
 
-void sfRenderWindow_setJoystickThreshold(sfRenderWindow *renderWindow, float threshold) {
+extern "C" void sfRenderWindow_setJoystickThreshold(sfRenderWindow *renderWindow, float threshold) {
     reinterpret_cast<sf::RenderWindow *>(renderWindow)->setJoystickThreshold(threshold);
 }
 
-sfWindowHandle sfRenderWindow_getSystemHandle(const sfRenderWindow *renderWindow) {
+extern "C" sf::WindowHandle sfRenderWindow_getSystemHandle(const sfRenderWindow *renderWindow) {
 
-    return (sfWindowHandle) reinterpret_cast<const sf::RenderWindow *>(renderWindow)->getSystemHandle();
+    return reinterpret_cast<const sf::RenderWindow *>(renderWindow)->getSystemHandle();
 }
 
-void sfRenderWindow_clear(sfRenderWindow *renderWindow, sfColor color) {
+extern "C" void sfRenderWindow_clear(sfRenderWindow *renderWindow, sfColor color) {
     sf::Color SFMLColor(color.r, color.g, color.b, color.a);
 
     reinterpret_cast<sf::RenderWindow *>(renderWindow)->clear(SFMLColor);
 }
 
-void sfRenderWindow_setView(sfRenderWindow *renderWindow, const sfView *view) {
+extern "C" void sfRenderWindow_setView(sfRenderWindow *renderWindow, const sfView *view) {
     reinterpret_cast<sf::RenderWindow *>(renderWindow)->setView(*reinterpret_cast<const sf::View *>(view));
 }
 
-const sfView *sfRenderWindow_getView(const sfRenderWindow *renderWindow) {
+extern "C" const sfView *sfRenderWindow_getView(const sfRenderWindow *renderWindow) {
     return reinterpret_cast<const sfView *>(&reinterpret_cast<const sf::RenderWindow *>(renderWindow)->getView());
 }
 
-const sfView *sfRenderWindow_getDefaultView(const sfRenderWindow *renderWindow) {
+extern "C" const sfView *sfRenderWindow_getDefaultView(const sfRenderWindow *renderWindow) {
     return reinterpret_cast<const sfView *>(&reinterpret_cast<const sf::RenderWindow *>(renderWindow)->getDefaultView());
 }
 
-sfIntRect sfRenderWindow_getViewport(const sfRenderWindow *renderWindow, const sfView *view) {
+extern "C" sfIntRect sfRenderWindow_getViewport(const sfRenderWindow *renderWindow, const sfView *view) {
     sfIntRect rect = {0, 0, 0, 0};
 
     sf::IntRect SFMLrect = reinterpret_cast<const sf::RenderWindow *>(renderWindow)->getViewport(*reinterpret_cast<const sf::View *>(view));
@@ -217,7 +202,7 @@ sfIntRect sfRenderWindow_getViewport(const sfRenderWindow *renderWindow, const s
     return rect;
 }
 
-sfVector2f sfRenderWindow_mapPixelToCoords(const sfRenderWindow *renderWindow, sfVector2i point, const sfView *targetView) {
+extern "C" sfVector2f sfRenderWindow_mapPixelToCoords(const sfRenderWindow *renderWindow, sfVector2i point, const sfView *targetView) {
     sfVector2f result = {0, 0};
 
     sf::Vector2f sfmlPoint;
@@ -232,7 +217,7 @@ sfVector2f sfRenderWindow_mapPixelToCoords(const sfRenderWindow *renderWindow, s
     return result;
 }
 
-sfVector2i sfRenderWindow_mapCoordsToPixel(const sfRenderWindow *renderWindow, sfVector2f point, const sfView *targetView) {
+extern "C" sfVector2i sfRenderWindow_mapCoordsToPixel(const sfRenderWindow *renderWindow, sfVector2f point, const sfView *targetView) {
     sfVector2i result = {0, 0};
 
     sf::Vector2i sfmlPoint;
@@ -282,19 +267,19 @@ extern "C" void sfRenderWindow_drawPrimitives(sfRenderWindow *renderWindow,
     reinterpret_cast<sf::RenderWindow *>(renderWindow)->draw(reinterpret_cast<const sf::Vertex *>(vertices), vertexCount, static_cast<sf::PrimitiveType>(type), *states);
 }
 
-void sfRenderWindow_pushGLStates(sfRenderWindow *renderWindow) {
+extern "C" void sfRenderWindow_pushGLStates(sfRenderWindow *renderWindow) {
     reinterpret_cast<sf::RenderWindow *>(renderWindow)->pushGLStates();
 }
 
-void sfRenderWindow_popGLStates(sfRenderWindow *renderWindow) {
+extern "C" void sfRenderWindow_popGLStates(sfRenderWindow *renderWindow) {
     reinterpret_cast<sf::RenderWindow *>(renderWindow)->popGLStates();
 }
 
-void sfRenderWindow_resetGLStates(sfRenderWindow *renderWindow) {
+extern "C" void sfRenderWindow_resetGLStates(sfRenderWindow *renderWindow) {
     reinterpret_cast<sf::RenderWindow *>(renderWindow)->resetGLStates();
 }
 
-sfVector2i sfMouse_getPositionRenderWindow(const sfRenderWindow *relativeTo) {
+extern "C" sfVector2i sfMouse_getPositionRenderWindow(const sfRenderWindow *relativeTo) {
     sf::Vector2i sfmlPos;
     if (relativeTo)
         sfmlPos = sf::Mouse::getPosition(*reinterpret_cast<const sf::RenderWindow *>(relativeTo));
@@ -305,14 +290,14 @@ sfVector2i sfMouse_getPositionRenderWindow(const sfRenderWindow *relativeTo) {
     return position;
 }
 
-void sfMouse_setPositionRenderWindow(sfVector2i position, const sfRenderWindow *relativeTo) {
+extern "C" void sfMouse_setPositionRenderWindow(sfVector2i position, const sfRenderWindow *relativeTo) {
     if (relativeTo)
         sf::Mouse::setPosition(sf::Vector2i(position.x, position.y), *reinterpret_cast<const sf::RenderWindow *>(relativeTo));
     else
         sf::Mouse::setPosition(sf::Vector2i(position.x, position.y));
 }
 
-sfVector2i sfTouch_getPositionRenderWindow(unsigned int finger, const sfRenderWindow *relativeTo) {
+extern "C" sfVector2i sfTouch_getPositionRenderWindow(unsigned int finger, const sfRenderWindow *relativeTo) {
     sf::Vector2i sfmlPosition;
 
     if (relativeTo)

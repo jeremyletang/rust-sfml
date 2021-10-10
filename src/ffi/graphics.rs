@@ -1,4 +1,4 @@
-use crate::ffi::window::Event;
+use crate::ffi::window::{sfContextSettings, sfWindowHandle, Event};
 pub use crate::ffi::*;
 
 /// Enumeration of the blending factors.
@@ -186,48 +186,6 @@ extern "C" {
     pub fn sfTransform_rotateWithCenter(tf: *mut sfTransform, angle: f32, cx: f32, cy: f32);
     pub fn sfTransform_scale(tf: *mut sfTransform, x: f32, y: f32);
     pub fn sfTransform_scaleWithCenter(tf: *mut sfTransform, x: f32, y: f32, cx: f32, cy: f32);
-    pub fn sfRenderWindow_drawSprite(
-        rw: *mut sfRenderWindow,
-        object: *const sfSprite,
-        states: *const sfRenderStates,
-    );
-    pub fn sfRenderWindow_drawText(
-        rw: *mut sfRenderWindow,
-        object: *const sfText,
-        states: *const sfRenderStates,
-    );
-    pub fn sfRenderWindow_drawShape(
-        rw: *mut sfRenderWindow,
-        object: *const sfShape,
-        states: *const sfRenderStates,
-    );
-    pub fn sfRenderWindow_drawCircleShape(
-        rw: *mut sfRenderWindow,
-        object: *const sfCircleShape,
-        states: *const sfRenderStates,
-    );
-    pub fn sfRenderWindow_drawConvexShape(
-        rw: *mut sfRenderWindow,
-        object: *const sfConvexShape,
-        states: *const sfRenderStates,
-    );
-    pub fn sfRenderWindow_drawRectangleShape(
-        rw: *mut sfRenderWindow,
-        object: *const sfRectangleShape,
-        states: *const sfRenderStates,
-    );
-    pub fn sfRenderWindow_drawVertexBuffer(
-        rw: *mut sfRenderWindow,
-        object: *const sfVertexBuffer,
-        states: *const sfRenderStates,
-    );
-    pub fn sfRenderWindow_drawPrimitives(
-        rw: *mut sfRenderWindow,
-        vertices: *const sfVertex,
-        vertexCount: usize,
-        type_: sfPrimitiveType,
-        states: *const sfRenderStates,
-    );
     pub fn sfRenderTexture_drawSprite(
         rt: *mut sfRenderTexture,
         object: *const sfSprite,
@@ -393,12 +351,129 @@ extern "C" {
         geom: *mut sfInputStream,
         frag: *mut sfInputStream,
     ) -> sfBool;
+    // RenderWindow
+    pub fn sfRenderWindow_createUnicode(
+        mode: sfVideoMode,
+        title: *const sfUint32,
+        style: sfUint32,
+        settings: *const sfContextSettings,
+    ) -> *mut sfRenderWindow;
+    pub fn sfRenderWindow_createFromHandle(
+        handle: sfWindowHandle,
+        settings: *const sfContextSettings,
+    ) -> *mut sfRenderWindow;
+    pub fn sfRenderWindow_destroy(renderWindow: *mut sfRenderWindow);
+    pub fn sfRenderWindow_close(renderWindow: *mut sfRenderWindow);
+    pub fn sfRenderWindow_isOpen(renderWindow: *const sfRenderWindow) -> sfBool;
+    pub fn sfRenderWindow_getSettings(
+        renderWindow: *const sfRenderWindow,
+    ) -> *const sfContextSettings;
     pub(crate) fn sfRenderWindow_pollEvent(
-        window: *mut sfRenderWindow,
+        renderWindow: *mut sfRenderWindow,
         event: *mut Event,
     ) -> sfBool;
     pub(crate) fn sfRenderWindow_waitEvent(
-        window: *mut sfRenderWindow,
+        renderWindow: *mut sfRenderWindow,
         event: *mut Event,
     ) -> sfBool;
+    pub fn sfRenderWindow_getPosition(renderWindow: *const sfRenderWindow) -> sfVector2i;
+    pub fn sfRenderWindow_setPosition(renderWindow: *mut sfRenderWindow, position: sfVector2i);
+    pub fn sfRenderWindow_getSize(renderWindow: *const sfRenderWindow) -> sfVector2u;
+    pub fn sfRenderWindow_setSize(renderWindow: *mut sfRenderWindow, size: sfVector2u);
+    pub fn sfRenderWindow_setUnicodeTitle(
+        renderWindow: *mut sfRenderWindow,
+        title: *const sfUint32,
+    );
+    pub fn sfRenderWindow_setIcon(
+        renderWindow: *mut sfRenderWindow,
+        width: c_uint,
+        height: c_uint,
+        pixels: *const sfUint8,
+    );
+    pub fn sfRenderWindow_setVisible(renderWindow: *mut sfRenderWindow, visible: sfBool);
+    pub fn sfRenderWindow_setVerticalSyncEnabled(
+        renderWindow: *mut sfRenderWindow,
+        enabled: sfBool,
+    );
+    pub fn sfRenderWindow_setMouseCursorVisible(renderWindow: *mut sfRenderWindow, visible: sfBool);
+    pub fn sfRenderWindow_setMouseCursorGrabbed(renderWindow: *mut sfRenderWindow, grabbed: sfBool);
+    pub fn sfRenderWindow_setMouseCursor(window: *mut sfRenderWindow, cursor: *const sfCursor);
+    pub fn sfRenderWindow_setKeyRepeatEnabled(renderWindow: *mut sfRenderWindow, enabled: sfBool);
+    pub fn sfRenderWindow_setActive(renderWindow: *mut sfRenderWindow, active: sfBool) -> sfBool;
+    pub fn sfRenderWindow_requestFocus(renderWindow: *mut sfRenderWindow);
+    pub fn sfRenderWindow_hasFocus(renderWindow: *const sfRenderWindow) -> sfBool;
+    pub fn sfRenderWindow_display(renderWindow: *mut sfRenderWindow);
+    pub fn sfRenderWindow_setFramerateLimit(renderWindow: *mut sfRenderWindow, limit: c_uint);
+    pub fn sfRenderWindow_setJoystickThreshold(renderWindow: *mut sfRenderWindow, threshold: f32);
+    pub fn sfRenderWindow_getSystemHandle(renderWindow: *const sfRenderWindow) -> sfWindowHandle;
+    pub fn sfRenderWindow_clear(renderWindow: *mut sfRenderWindow, color: sfColor);
+    pub fn sfRenderWindow_setView(renderWindow: *mut sfRenderWindow, view: *const sfView);
+    pub fn sfRenderWindow_getView(renderWindow: *const sfRenderWindow) -> *const sfView;
+    pub fn sfRenderWindow_getDefaultView(renderWindow: *const sfRenderWindow) -> *const sfView;
+    pub fn sfRenderWindow_getViewport(
+        renderWindow: *const sfRenderWindow,
+        view: *const sfView,
+    ) -> sfIntRect;
+    pub fn sfRenderWindow_mapPixelToCoords(
+        renderWindow: *const sfRenderWindow,
+        point: sfVector2i,
+        targetView: *const sfView,
+    ) -> sfVector2f;
+    pub fn sfRenderWindow_mapCoordsToPixel(
+        renderWindow: *const sfRenderWindow,
+        point: sfVector2f,
+        targetView: *const sfView,
+    ) -> sfVector2i;
+    pub fn sfRenderWindow_drawSprite(
+        renderWindow: *mut sfRenderWindow,
+        object: *const sfSprite,
+        states: *const sfRenderStates,
+    );
+    pub fn sfRenderWindow_drawText(
+        renderWindow: *mut sfRenderWindow,
+        object: *const sfText,
+        states: *const sfRenderStates,
+    );
+    pub fn sfRenderWindow_drawShape(
+        renderWindow: *mut sfRenderWindow,
+        object: *const sfShape,
+        states: *const sfRenderStates,
+    );
+    pub fn sfRenderWindow_drawCircleShape(
+        renderWindow: *mut sfRenderWindow,
+        object: *const sfCircleShape,
+        states: *const sfRenderStates,
+    );
+    pub fn sfRenderWindow_drawConvexShape(
+        renderWindow: *mut sfRenderWindow,
+        object: *const sfConvexShape,
+        states: *const sfRenderStates,
+    );
+    pub fn sfRenderWindow_drawRectangleShape(
+        renderWindow: *mut sfRenderWindow,
+        object: *const sfRectangleShape,
+        states: *const sfRenderStates,
+    );
+    pub fn sfRenderWindow_drawVertexBuffer(
+        renderWindow: *mut sfRenderWindow,
+        object: *const sfVertexBuffer,
+        states: *const sfRenderStates,
+    );
+    pub fn sfRenderWindow_drawPrimitives(
+        renderWindow: *mut sfRenderWindow,
+        vertices: *const sfVertex,
+        vertexCount: usize,
+        type_: sfPrimitiveType,
+        states: *const sfRenderStates,
+    );
+    pub fn sfRenderWindow_pushGLStates(renderWindow: *mut sfRenderWindow);
+    pub fn sfRenderWindow_popGLStates(renderWindow: *mut sfRenderWindow);
+    pub fn sfRenderWindow_resetGLStates(renderWindow: *mut sfRenderWindow);
+    pub fn sfMouse_getPositionRenderWindow(relativeTo: *const sfRenderWindow) -> sfVector2i;
+    pub fn sfMouse_setPositionRenderWindow(position: sfVector2i, relativeTo: *const sfRenderWindow);
+    pub fn sfTouch_getPositionRenderWindow(
+        finger: c_uint,
+        relativeTo: *const sfRenderWindow,
+    ) -> sfVector2i;
+
 }

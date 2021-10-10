@@ -28,7 +28,6 @@
 #include "Graphics/ShapeStruct.h"
 #include "Graphics/Vertex.h"
 #include "Graphics/VertexBufferStruct.h"
-#include "Window/ContextSettingsInternal.h"
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderTexture.hpp>
@@ -36,16 +35,10 @@
 #include <SFML/Graphics/Text.hpp>
 #include <cstddef>
 
-extern "C" sf::RenderTexture *sfRenderTexture_createWithSettings(unsigned int width, unsigned int height, const sfContextSettings *settings) {
-    // Convert context settings
-    sf::ContextSettings params;
-    if (settings) {
-        priv::sfContextSettings_writeToCpp(*settings, params);
-    }
-
+extern "C" sf::RenderTexture *sfRenderTexture_createWithSettings(unsigned int width, unsigned int height, const sf::ContextSettings *settings) {
     // Create the render texture
     sf::RenderTexture *renderTexture = new sf::RenderTexture;
-    renderTexture->create(width, height, params);
+    renderTexture->create(width, height, *settings);
 
     return renderTexture;
 }

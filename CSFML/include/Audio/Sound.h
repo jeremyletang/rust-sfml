@@ -28,8 +28,8 @@
 
 #include "Audio/SoundStatus.h"
 #include "Audio/Types.h"
-#include "System/Vector3.h"
 #include "Config.h"
+#include "System/Vector3.h"
 
 extern "C" sfSound *sfSound_create(void);
 

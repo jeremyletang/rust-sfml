@@ -27,8 +27,8 @@
 // Headers
 
 #include "Audio/Types.h"
-#include <stddef.h>
 #include "Config.h"
+#include <stddef.h>
 
 typedef sfBool (*sfSoundRecorderStartCallback)(void *);                            ///< Type of the callback used when starting a capture
 typedef sfBool (*sfSoundRecorderProcessCallback)(const sfInt16 *, size_t, void *); ///< Type of the callback used to process audio data

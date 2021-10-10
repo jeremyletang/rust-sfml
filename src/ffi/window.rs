@@ -1,5 +1,19 @@
+use std::os::raw::c_ulong;
+
 use crate::ffi::system::sfString;
 pub use crate::ffi::*;
+
+#[repr(C)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
+pub struct sfContextSettings {
+    pub depth_bits: c_uint,
+    pub stencil_bits: c_uint,
+    pub antialiasing_level: c_uint,
+    pub major_version: c_uint,
+    pub minor_version: c_uint,
+    pub attribute_flags: u32,
+    pub srgb_capable: bool,
+}
 
 #[repr(C)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -352,6 +366,16 @@ pub struct sfVideoModeVector {
     _opaque: [u8; 0],
 }
 
+// Window handle is HWND (HWND__*) on Windows
+#[cfg(target_os = "windows")]
+pub type sfWindowHandle = *mut c_void;
+// Window handle is Window (unsigned long) on Unix - X11
+#[cfg(any(target_os = "linux", target_os = "freebsd"))]
+pub type sfWindowHandle = c_ulong;
+// Window handle is NSWindow (void*) on Mac OS X - Cocoa
+#[cfg(target_os = "macos")]
+pub type sfWindowHandle = *mut c_void;
+
 extern "C" {
     pub fn sfJoystick_getIdentification(joystick: c_uint) -> *mut JoystickIdentification;
     pub fn sfJoystickIdentification_destroy(ident: *mut JoystickIdentification);
@@ -361,10 +385,6 @@ extern "C" {
         ident: *const JoystickIdentification,
     ) -> *const sfString;
     pub fn sfVideoMode_getFullscreenModes() -> *const sfVideoModeVector;
-
-    pub(crate) fn sfWindow_pollEvent(window: *mut sfWindow, event: *mut Event) -> sfBool;
-    pub(crate) fn sfWindow_waitEvent(window: *mut sfWindow, event: *mut Event) -> sfBool;
-
     pub(crate) fn sfKeyboard_isKeyPressed(key: Key) -> sfBool;
     pub(crate) fn sfKeyboard_setVirtualKeyboardVisible(visible: sfBool);
     pub(crate) fn sfMouse_isButtonPressed(button: MouseButton) -> sfBool;
@@ -373,4 +393,49 @@ extern "C" {
         vec: *const sfVideoModeVector,
         index: usize,
     ) -> *const sfVideoMode;
+    pub fn sfWindow_createUnicode(
+        mode: sfVideoMode,
+        title: *const sfUint32,
+        style: sfUint32,
+        settings: *const sfContextSettings,
+    ) -> *mut sfWindow;
+    pub fn sfWindow_createFromHandle(
+        handle: sfWindowHandle,
+        settings: *const sfContextSettings,
+    ) -> *mut sfWindow;
+    pub fn sfWindow_destroy(window: *mut sfWindow);
+    pub fn sfWindow_close(window: *mut sfWindow);
+    pub fn sfWindow_isOpen(window: *const sfWindow) -> sfBool;
+    pub fn sfWindow_getSettings(window: *const sfWindow) -> *const sfContextSettings;
+    pub(crate) fn sfWindow_pollEvent(window: *mut sfWindow, event: *mut Event) -> sfBool;
+    pub(crate) fn sfWindow_waitEvent(window: *mut sfWindow, event: *mut Event) -> sfBool;
+    pub fn sfWindow_getPosition(window: *const sfWindow) -> sfVector2i;
+    pub fn sfWindow_setPosition(window: *mut sfWindow, position: sfVector2i);
+    pub fn sfWindow_getSize(window: *const sfWindow) -> sfVector2u;
+    pub fn sfWindow_setSize(window: *mut sfWindow, size: sfVector2u);
+    pub fn sfWindow_setUnicodeTitle(window: *mut sfWindow, title: *const sfUint32);
+    pub fn sfWindow_setIcon(
+        window: *mut sfWindow,
+        width: c_uint,
+        height: c_uint,
+        pixels: *const sfUint8,
+    );
+    pub fn sfWindow_setVisible(window: *mut sfWindow, visible: sfBool);
+    pub fn sfWindow_setMouseCursorVisible(window: *mut sfWindow, visible: sfBool);
+    pub fn sfWindow_setMouseCursorGrabbed(window: *mut sfWindow, grabbed: sfBool);
+    pub fn sfWindow_setMouseCursor(window: *mut sfWindow, cursor: *const sfCursor);
+    pub fn sfWindow_setVerticalSyncEnabled(window: *mut sfWindow, enabled: sfBool);
+    pub fn sfWindow_setKeyRepeatEnabled(window: *mut sfWindow, enabled: sfBool);
+    pub fn sfWindow_setActive(window: *mut sfWindow, active: sfBool) -> sfBool;
+    pub fn sfWindow_requestFocus(window: *mut sfWindow);
+    pub fn sfWindow_hasFocus(window: *const sfWindow) -> sfBool;
+    pub fn sfWindow_display(window: *mut sfWindow);
+    pub fn sfWindow_setFramerateLimit(window: *mut sfWindow, limit: c_uint);
+    pub fn sfWindow_setJoystickThreshold(window: *mut sfWindow, threshold: f32);
+    pub fn sfWindow_getSystemHandle(window: *const sfWindow) -> sfWindowHandle;
+    pub fn sfContext_create() -> *mut sfContext;
+    pub fn sfContext_destroy(context: *mut sfContext);
+    pub fn sfContext_setActive(context: *mut sfContext, active: sfBool) -> sfBool;
+    pub fn sfContext_getSettings(context: *const sfContext) -> *const sfContextSettings;
+    pub fn sfContext_getActiveContextId() -> sfUint64;
 }
