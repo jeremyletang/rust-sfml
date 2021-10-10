@@ -26,17 +26,8 @@
 #include <SFML/System/Clock.hpp>
 #include <cstddef>
 
-extern "C" sf::Clock *sfClock_create(void) {
-    return new sf::Clock;
-}
-
-extern "C" sf::Clock *sfClock_copy(const sf::Clock *clock) {
-
-    return new sf::Clock(*clock);
-}
-
-extern "C" void sfClock_destroy(sf::Clock *clock) {
-    delete clock;
+extern "C" sf::Clock sfClock_create(void) {
+    return sf::Clock();
 }
 
 extern "C" sf::Int64 sfClock_getElapsedTime(const sf::Clock *clock) {
