@@ -23,144 +23,145 @@
 
 // Headers
 
+#include "SFML/Window.hpp"
 #include "Config.h"
 #include "System/Vector2.h"
 #include "Window/CursorStruct.h"
 #include "Window/VideoMode.h"
-#include "Window/WindowStruct.h"
 #include <SFML/Window/Context.hpp>
+#include <SFML/Window/Touch.hpp>
 #include <cstddef>
 
-extern "C" sfWindow *sfWindow_createUnicode(sfVideoMode mode, const sfUint32 *title, sfUint32 style, const sf::ContextSettings *settings) {
+extern "C" sf::Window *sfWindow_createUnicode(sfVideoMode mode, const sfUint32 *title, sfUint32 style, const sf::ContextSettings *settings) {
     // Convert video mode
     sf::VideoMode videoMode(mode.width, mode.height, mode.bitsPerPixel);
 
     // Create the window
-    sfWindow *window = new sfWindow;
-    window->This.create(videoMode, title, style, *settings);
+    sf::Window *window = new sf::Window;
+    window->create(videoMode, title, style, *settings);
 
     return window;
 }
 
-extern "C" sfWindow *sfWindow_createFromHandle(sf::WindowHandle handle, const sf::ContextSettings *settings) {
+extern "C" sf::Window *sfWindow_createFromHandle(sf::WindowHandle handle, const sf::ContextSettings *settings) {
     // Create the window
-    sfWindow *window = new sfWindow;
-    window->This.create(handle, *settings);
+    sf::Window *window = new sf::Window;
+    window->create(handle, *settings);
 
     return window;
 }
 
-extern "C" void sfWindow_destroy(sfWindow *window) {
+extern "C" void sfWindow_destroy(sf::Window *window) {
     delete window;
 }
 
-extern "C" void sfWindow_close(sfWindow *window) {
-    window->This.close();
+extern "C" void sfWindow_close(sf::Window *window) {
+    window->close();
 }
 
-extern "C" sfBool sfWindow_isOpen(const sfWindow *window) {
-    return window->This.isOpen();
+extern "C" sfBool sfWindow_isOpen(const sf::Window *window) {
+    return window->isOpen();
 }
 
-extern "C" const sf::ContextSettings *sfWindow_getSettings(const sfWindow *window) {
-    return &window->This.getSettings();
+extern "C" const sf::ContextSettings *sfWindow_getSettings(const sf::Window *window) {
+    return &window->getSettings();
 }
 
-extern "C" sfBool sfWindow_pollEvent(sfWindow *window, sf::Event *event) {
-    return window->This.pollEvent(*event);
+extern "C" sfBool sfWindow_pollEvent(sf::Window *window, sf::Event *event) {
+    return window->pollEvent(*event);
 }
 
-extern "C" sfBool sfWindow_waitEvent(sfWindow *window, sf::Event *event) {
-    return window->This.waitEvent(*event);
+extern "C" sfBool sfWindow_waitEvent(sf::Window *window, sf::Event *event) {
+    return window->waitEvent(*event);
 }
 
-extern "C" sfVector2i sfWindow_getPosition(const sfWindow *window) {
+extern "C" sfVector2i sfWindow_getPosition(const sf::Window *window) {
     sfVector2i position = {0, 0};
 
-    sf::Vector2i sfmlPos = window->This.getPosition();
+    sf::Vector2i sfmlPos = window->getPosition();
     position.x = sfmlPos.x;
     position.y = sfmlPos.y;
 
     return position;
 }
 
-extern "C" void sfWindow_setPosition(sfWindow *window, sfVector2i position) {
-    window->This.setPosition(sf::Vector2i(position.x, position.y));
+extern "C" void sfWindow_setPosition(sf::Window *window, sfVector2i position) {
+    window->setPosition(sf::Vector2i(position.x, position.y));
 }
 
-extern "C" sfVector2u sfWindow_getSize(const sfWindow *window) {
+extern "C" sfVector2u sfWindow_getSize(const sf::Window *window) {
     sfVector2u size = {0, 0};
 
-    sf::Vector2u sfmlSize = window->This.getSize();
+    sf::Vector2u sfmlSize = window->getSize();
     size.x = sfmlSize.x;
     size.y = sfmlSize.y;
 
     return size;
 }
 
-extern "C" void sfWindow_setSize(sfWindow *window, sfVector2u size) {
-    window->This.setSize(sf::Vector2u(size.x, size.y));
+extern "C" void sfWindow_setSize(sf::Window *window, sfVector2u size) {
+    window->setSize(sf::Vector2u(size.x, size.y));
 }
 
-extern "C" void sfWindow_setUnicodeTitle(sfWindow *window, const sfUint32 *title) {
-    window->This.setTitle(title);
+extern "C" void sfWindow_setUnicodeTitle(sf::Window *window, const sfUint32 *title) {
+    window->setTitle(title);
 }
 
-extern "C" void sfWindow_setIcon(sfWindow *window, unsigned int width, unsigned int height, const sfUint8 *pixels) {
-    window->This.setIcon(width, height, pixels);
+extern "C" void sfWindow_setIcon(sf::Window *window, unsigned int width, unsigned int height, const sfUint8 *pixels) {
+    window->setIcon(width, height, pixels);
 }
 
-extern "C" void sfWindow_setVisible(sfWindow *window, sfBool visible) {
-    window->This.setVisible(visible == sfTrue);
+extern "C" void sfWindow_setVisible(sf::Window *window, sfBool visible) {
+    window->setVisible(visible == sfTrue);
 }
 
-extern "C" void sfWindow_setMouseCursorVisible(sfWindow *window, sfBool visible) {
-    window->This.setMouseCursorVisible(visible == sfTrue);
+extern "C" void sfWindow_setMouseCursorVisible(sf::Window *window, sfBool visible) {
+    window->setMouseCursorVisible(visible == sfTrue);
 }
 
-extern "C" void sfWindow_setMouseCursorGrabbed(sfWindow *window, sfBool grabbed) {
-    window->This.setMouseCursorGrabbed(grabbed == sfTrue);
+extern "C" void sfWindow_setMouseCursorGrabbed(sf::Window *window, sfBool grabbed) {
+    window->setMouseCursorGrabbed(grabbed == sfTrue);
 }
 
-extern "C" void sfWindow_setMouseCursor(sfWindow *window, const sfCursor *cursor) {
+extern "C" void sfWindow_setMouseCursor(sf::Window *window, const sfCursor *cursor) {
 
-    window->This.setMouseCursor(cursor->This);
+    window->setMouseCursor(cursor->This);
 }
 
-extern "C" void sfWindow_setVerticalSyncEnabled(sfWindow *window, sfBool enabled) {
-    window->This.setVerticalSyncEnabled(enabled == sfTrue);
+extern "C" void sfWindow_setVerticalSyncEnabled(sf::Window *window, sfBool enabled) {
+    window->setVerticalSyncEnabled(enabled == sfTrue);
 }
 
-extern "C" void sfWindow_setKeyRepeatEnabled(sfWindow *window, sfBool enabled) {
-    window->This.setKeyRepeatEnabled(enabled == sfTrue);
+extern "C" void sfWindow_setKeyRepeatEnabled(sf::Window *window, sfBool enabled) {
+    window->setKeyRepeatEnabled(enabled == sfTrue);
 }
 
-extern "C" sfBool sfWindow_setActive(sfWindow *window, sfBool active) {
-    return window->This.setActive(active == sfTrue);
+extern "C" sfBool sfWindow_setActive(sf::Window *window, sfBool active) {
+    return window->setActive(active == sfTrue);
 }
 
-extern "C" void sfWindow_requestFocus(sfWindow *window) {
-    window->This.requestFocus();
+extern "C" void sfWindow_requestFocus(sf::Window *window) {
+    window->requestFocus();
 }
 
-extern "C" sfBool sfWindow_hasFocus(const sfWindow *window) {
-    return window->This.hasFocus();
+extern "C" sfBool sfWindow_hasFocus(const sf::Window *window) {
+    return window->hasFocus();
 }
 
-extern "C" void sfWindow_display(sfWindow *window) {
-    window->This.display();
+extern "C" void sfWindow_display(sf::Window *window) {
+    window->display();
 }
 
-extern "C" void sfWindow_setFramerateLimit(sfWindow *window, unsigned int limit) {
-    window->This.setFramerateLimit(limit);
+extern "C" void sfWindow_setFramerateLimit(sf::Window *window, unsigned int limit) {
+    window->setFramerateLimit(limit);
 }
 
-extern "C" void sfWindow_setJoystickThreshold(sfWindow *window, float threshold) {
-    window->This.setJoystickThreshold(threshold);
+extern "C" void sfWindow_setJoystickThreshold(sf::Window *window, float threshold) {
+    window->setJoystickThreshold(threshold);
 }
 
-extern "C" sf::WindowHandle sfWindow_getSystemHandle(const sfWindow *window) {
-    return window->This.getSystemHandle();
+extern "C" sf::WindowHandle sfWindow_getSystemHandle(const sf::Window *window) {
+    return window->getSystemHandle();
 }
 
 extern "C" sf::Context *sfContext_create(void) {

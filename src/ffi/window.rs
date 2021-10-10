@@ -387,7 +387,6 @@ extern "C" {
     pub fn sfVideoMode_getFullscreenModes() -> *const sfVideoModeVector;
     pub(crate) fn sfKeyboard_isKeyPressed(key: Key) -> sfBool;
     pub(crate) fn sfKeyboard_setVirtualKeyboardVisible(visible: sfBool);
-    pub(crate) fn sfMouse_isButtonPressed(button: MouseButton) -> sfBool;
     pub fn sfVideoModeVector_getLength(vec: *const sfVideoModeVector) -> usize;
     pub fn sfVideoModeVector_index(
         vec: *const sfVideoModeVector,
@@ -438,4 +437,8 @@ extern "C" {
     pub fn sfContext_setActive(context: *mut sfContext, active: sfBool) -> sfBool;
     pub fn sfContext_getSettings(context: *const sfContext) -> *const sfContextSettings;
     pub fn sfContext_getActiveContextId() -> sfUint64;
+    // Mouse
+    pub fn sfMouse_isButtonPressed(button: MouseButton) -> sfBool;
+    pub fn sfMouse_getPosition(relativeTo: *const sfWindow) -> sfVector2i;
+    pub fn sfMouse_setPosition(position: sfVector2i, relativeTo: *const sfWindow);
 }

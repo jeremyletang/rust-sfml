@@ -27,7 +27,6 @@
 #include "Graphics/Types.h"
 #include "System/InputStreamStruct.h"
 #include "System/Vector2.h"
-#include "Window/WindowStruct.h"
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Texture.hpp>
 #include <cstddef>
@@ -120,9 +119,9 @@ extern "C" void sfTexture_updateFromImage(sfTexture *texture, const sf::Image *i
     reinterpret_cast<sf::Texture *>(texture)->update(*image, x, y);
 }
 
-extern "C" void sfTexture_updateFromWindow(sfTexture *texture, const sfWindow *window, unsigned int x, unsigned int y) {
+extern "C" void sfTexture_updateFromWindow(sfTexture *texture, const sf::Window *window, unsigned int x, unsigned int y) {
 
-    reinterpret_cast<sf::Texture *>(texture)->update(window->This, x, y);
+    reinterpret_cast<sf::Texture *>(texture)->update(*window, x, y);
 }
 
 extern "C" void sfTexture_updateFromRenderWindow(sfTexture *texture, const sfRenderWindow *renderWindow, unsigned int x, unsigned int y) {

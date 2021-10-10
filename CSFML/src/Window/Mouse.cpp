@@ -23,19 +23,20 @@
 
 // Headers
 
-#include "Window/Mouse.h"
-#include "Window/WindowStruct.h"
+#include "Config.h"
+#include "System/Vector2.h"
 #include <SFML/Window/Mouse.hpp>
+#include <SFML/Window/Window.hpp>
 #include <cstddef>
 
 extern "C" sfBool sfMouse_isButtonPressed(sf::Mouse::Button button) {
     return sf::Mouse::isButtonPressed(button) ? sfTrue : sfFalse;
 }
 
-sfVector2i sfMouse_getPosition(const sfWindow *relativeTo) {
+extern "C" sfVector2i sfMouse_getPosition(const sf::Window *relativeTo) {
     sf::Vector2i sfmlPos;
     if (relativeTo)
-        sfmlPos = sf::Mouse::getPosition(relativeTo->This);
+        sfmlPos = sf::Mouse::getPosition(*relativeTo);
     else
         sfmlPos = sf::Mouse::getPosition();
 
@@ -43,9 +44,9 @@ sfVector2i sfMouse_getPosition(const sfWindow *relativeTo) {
     return position;
 }
 
-void sfMouse_setPosition(sfVector2i position, const sfWindow *relativeTo) {
+extern "C" void sfMouse_setPosition(sfVector2i position, const sf::Window *relativeTo) {
     if (relativeTo)
-        sf::Mouse::setPosition(sf::Vector2i(position.x, position.y), relativeTo->This);
+        sf::Mouse::setPosition(sf::Vector2i(position.x, position.y), *relativeTo);
     else
         sf::Mouse::setPosition(sf::Vector2i(position.x, position.y));
 }

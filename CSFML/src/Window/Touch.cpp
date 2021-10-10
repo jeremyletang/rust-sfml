@@ -24,7 +24,6 @@
 // Headers
 
 #include "Window/Touch.h"
-#include "Window/WindowStruct.h"
 #include <SFML/Window/Touch.hpp>
 #include <cstddef>
 
@@ -32,11 +31,11 @@ sfBool sfTouch_isDown(unsigned int finger) {
     return sf::Touch::isDown(finger);
 }
 
-sfVector2i sfTouch_getPosition(unsigned int finger, const sfWindow *relativeTo) {
+sfVector2i sfTouch_getPosition(unsigned int finger, const sf::Window *relativeTo) {
     sf::Vector2i sfmlPosition;
 
     if (relativeTo)
-        sfmlPosition = sf::Touch::getPosition(finger, relativeTo->This);
+        sfmlPosition = sf::Touch::getPosition(finger, *relativeTo);
     else
         sfmlPosition = sf::Touch::getPosition(finger);
 
