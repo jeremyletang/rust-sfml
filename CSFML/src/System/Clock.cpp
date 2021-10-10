@@ -26,29 +26,25 @@
 #include <SFML/System/Clock.hpp>
 #include <cstddef>
 
-struct sfClock {
-    sf::Clock This;
-};
-
-extern "C" sfClock *sfClock_create(void) {
-    return new sfClock;
+extern "C" sf::Clock *sfClock_create(void) {
+    return new sf::Clock;
 }
 
-extern "C" sfClock *sfClock_copy(const sfClock *clock) {
+extern "C" sf::Clock *sfClock_copy(const sf::Clock *clock) {
 
-    return new sfClock(*clock);
+    return new sf::Clock(*clock);
 }
 
-extern "C" void sfClock_destroy(sfClock *clock) {
+extern "C" void sfClock_destroy(sf::Clock *clock) {
     delete clock;
 }
 
-extern "C" sf::Int64 sfClock_getElapsedTime(const sfClock *clock) {
-    sf::Time time = clock->This.getElapsedTime();
+extern "C" sf::Int64 sfClock_getElapsedTime(const sf::Clock *clock) {
+    sf::Time time = clock->getElapsedTime();
     return time.asMicroseconds();
 }
 
-extern "C" sf::Int64 sfClock_restart(sfClock *clock) {
-    sf::Time time = clock->This.restart();
+extern "C" sf::Int64 sfClock_restart(sf::Clock *clock) {
+    sf::Time time = clock->restart();
     return time.asMicroseconds();
 }
