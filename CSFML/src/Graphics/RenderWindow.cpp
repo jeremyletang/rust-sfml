@@ -24,7 +24,6 @@
 // Headers
 
 #include "Graphics/ConvexShapeStruct.h"
-#include "Graphics/ImageStruct.h"
 #include "Graphics/PrimitiveType.h"
 #include "Graphics/ShapeStruct.h"
 #include "Graphics/Vertex.h"

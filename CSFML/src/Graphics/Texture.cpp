@@ -23,7 +23,6 @@
 
 // Headers
 
-#include "Graphics/ImageStruct.h"
 #include "Graphics/Rect.h"
 #include "Graphics/Types.h"
 #include "System/InputStreamStruct.h"
@@ -68,13 +67,13 @@ extern "C" sfBool sfTexture_loadFromStream(sfTexture *tex, sfInputStream *stream
     return texture->loadFromStream(*stream, rect);
 }
 
-extern "C" sfBool sfTexture_loadFromImage(sfTexture *tex, const sfImage *image, const sfIntRect area) {
+extern "C" sfBool sfTexture_loadFromImage(sfTexture *tex, const sf::Image *image, const sfIntRect area) {
 
     sf::Texture *texture = reinterpret_cast<sf::Texture *>(tex);
 
     sf::IntRect rect = sf::IntRect(area.left, area.top, area.width, area.height);
 
-    return texture->loadFromImage(image->This, rect);
+    return texture->loadFromImage(*image, rect);
 }
 
 extern "C" sfTexture *sfTexture_copy(const sfTexture *texture) {
@@ -98,10 +97,10 @@ extern "C" sfVector2u sfTexture_getSize(const sfTexture *texture) {
     return size;
 }
 
-extern "C" sfImage *sfTexture_copyToImage(const sfTexture *texture) {
+extern "C" sf::Image *sfTexture_copyToImage(const sfTexture *texture) {
 
-    sfImage *image = new sfImage;
-    image->This = reinterpret_cast<const sf::Texture *>(texture)->copyToImage();
+    sf::Image *image = new sf::Image;
+    *image = reinterpret_cast<const sf::Texture *>(texture)->copyToImage();
 
     return image;
 }
@@ -116,9 +115,9 @@ extern "C" void sfTexture_updateFromTexture(sfTexture *destination, const sfText
     destination_->update(*texture_, x, y);
 }
 
-extern "C" void sfTexture_updateFromImage(sfTexture *texture, const sfImage *image, unsigned int x, unsigned int y) {
+extern "C" void sfTexture_updateFromImage(sfTexture *texture, const sf::Image *image, unsigned int x, unsigned int y) {
 
-    reinterpret_cast<sf::Texture *>(texture)->update(image->This, x, y);
+    reinterpret_cast<sf::Texture *>(texture)->update(*image, x, y);
 }
 
 extern "C" void sfTexture_updateFromWindow(sfTexture *texture, const sfWindow *window, unsigned int x, unsigned int y) {

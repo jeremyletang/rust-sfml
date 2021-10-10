@@ -24,37 +24,37 @@
 // Headers
 
 #include "Graphics/Color.h"
-#include "Graphics/ImageStruct.h"
 #include "Graphics/Rect.h"
 #include "System/InputStreamStruct.h"
 #include "System/Vector2.h"
+#include <SFML/Graphics/Image.hpp>
 #include <cstddef>
 
-extern "C" sfImage *sfImage_create(unsigned int width, unsigned int height) {
-    sfImage *image = new sfImage;
-    image->This.create(width, height);
+extern "C" sf::Image *sfImage_create(unsigned int width, unsigned int height) {
+    sf::Image *image = new sf::Image;
+    image->create(width, height);
 
     return image;
 }
 
-extern "C" sfImage *sfImage_createFromColor(unsigned int width, unsigned int height, sfColor color) {
-    sfImage *image = new sfImage;
-    image->This.create(width, height, sf::Color(color.r, color.g, color.b, color.a));
+extern "C" sf::Image *sfImage_createFromColor(unsigned int width, unsigned int height, sfColor color) {
+    sf::Image *image = new sf::Image;
+    image->create(width, height, sf::Color(color.r, color.g, color.b, color.a));
 
     return image;
 }
 
-extern "C" sfImage *sfImage_createFromPixels(unsigned int width, unsigned int height, const sfUint8 *data) {
-    sfImage *image = new sfImage;
-    image->This.create(width, height, data);
+extern "C" sf::Image *sfImage_createFromPixels(unsigned int width, unsigned int height, const sfUint8 *data) {
+    sf::Image *image = new sf::Image;
+    image->create(width, height, data);
 
     return image;
 }
 
-extern "C" sfImage *sfImage_createFromFile(const char *filename) {
-    sfImage *image = new sfImage;
+extern "C" sf::Image *sfImage_createFromFile(const char *filename) {
+    sf::Image *image = new sf::Image;
 
-    if (!image->This.loadFromFile(filename)) {
+    if (!image->loadFromFile(filename)) {
         delete image;
         image = NULL;
     }
@@ -62,10 +62,10 @@ extern "C" sfImage *sfImage_createFromFile(const char *filename) {
     return image;
 }
 
-extern "C" sfImage *sfImage_createFromMemory(const void *data, size_t sizeInBytes) {
-    sfImage *image = new sfImage;
+extern "C" sf::Image *sfImage_createFromMemory(const void *data, size_t sizeInBytes) {
+    sf::Image *image = new sf::Image;
 
-    if (!image->This.loadFromMemory(data, sizeInBytes)) {
+    if (!image->loadFromMemory(data, sizeInBytes)) {
         delete image;
         image = NULL;
     }
@@ -73,11 +73,11 @@ extern "C" sfImage *sfImage_createFromMemory(const void *data, size_t sizeInByte
     return image;
 }
 
-extern "C" sfImage *sfImage_createFromStream(sfInputStream *stream) {
+extern "C" sf::Image *sfImage_createFromStream(sfInputStream *stream) {
 
-    sfImage *image = new sfImage;
+    sf::Image *image = new sf::Image;
 
-    if (!image->This.loadFromStream(*stream)) {
+    if (!image->loadFromStream(*stream)) {
         delete image;
         image = NULL;
     }
@@ -85,47 +85,47 @@ extern "C" sfImage *sfImage_createFromStream(sfInputStream *stream) {
     return image;
 }
 
-extern "C" sfImage *sfImage_copy(const sfImage *image) {
+extern "C" sf::Image *sfImage_copy(const sf::Image *image) {
 
-    return new sfImage(*image);
+    return new sf::Image(*image);
 }
 
-extern "C" void sfImage_destroy(sfImage *image) {
+extern "C" void sfImage_destroy(sf::Image *image) {
     delete image;
 }
 
-extern "C" sfBool sfImage_saveToFile(const sfImage *image, const char *filename) {
-    return image->This.saveToFile(filename);
+extern "C" sfBool sfImage_saveToFile(const sf::Image *image, const char *filename) {
+    return image->saveToFile(filename);
 }
 
-extern "C" void sfImage_createMaskFromColor(sfImage *image, sfColor colorKey, sfUint8 alpha) {
-    image->This.createMaskFromColor(sf::Color(colorKey.r, colorKey.g, colorKey.b, colorKey.a), alpha);
+extern "C" void sfImage_createMaskFromColor(sf::Image *image, sfColor colorKey, sfUint8 alpha) {
+    image->createMaskFromColor(sf::Color(colorKey.r, colorKey.g, colorKey.b, colorKey.a), alpha);
 }
 
-extern "C" void sfImage_copyImage(sfImage *image, const sfImage *source, unsigned int destX, unsigned int destY, sfIntRect sourceRect, sfBool applyAlpha) {
+extern "C" void sfImage_copyImage(sf::Image *image, const sf::Image *source, unsigned int destX, unsigned int destY, sfIntRect sourceRect, sfBool applyAlpha) {
 
     sf::IntRect sfmlRect(sourceRect.left, sourceRect.top, sourceRect.width, sourceRect.height);
-    image->This.copy(source->This, destX, destY, sfmlRect, applyAlpha == sfTrue);
+    image->copy(*source, destX, destY, sfmlRect, applyAlpha == sfTrue);
 }
 
-extern "C" void sfImage_setPixel(sfImage *image, unsigned int x, unsigned int y, sfColor color) {
-    image->This.setPixel(x, y, sf::Color(color.r, color.g, color.b, color.a));
+extern "C" void sfImage_setPixel(sf::Image *image, unsigned int x, unsigned int y, sfColor color) {
+    image->setPixel(x, y, sf::Color(color.r, color.g, color.b, color.a));
 }
 
-extern "C" sfColor sfImage_getPixel(const sfImage *image, unsigned int x, unsigned int y) {
-    sf::Color sfmlColor = image->This.getPixel(x, y);
+extern "C" sfColor sfImage_getPixel(const sf::Image *image, unsigned int x, unsigned int y) {
+    sf::Color sfmlColor = image->getPixel(x, y);
 
     return sfColor{sfmlColor.r, sfmlColor.g, sfmlColor.b, sfmlColor.a};
 }
 
-extern "C" const sfUint8 *sfImage_getPixelsPtr(const sfImage *image) {
-    return image->This.getPixelsPtr();
+extern "C" const sfUint8 *sfImage_getPixelsPtr(const sf::Image *image) {
+    return image->getPixelsPtr();
 }
 
-extern "C" sfVector2u sfImage_getSize(const sfImage *image) {
+extern "C" sfVector2u sfImage_getSize(const sf::Image *image) {
     sfVector2u size = {0, 0};
 
-    sf::Vector2u sfmlSize = image->This.getSize();
+    sf::Vector2u sfmlSize = image->getSize();
 
     size.x = sfmlSize.x;
     size.y = sfmlSize.y;
@@ -133,10 +133,10 @@ extern "C" sfVector2u sfImage_getSize(const sfImage *image) {
     return size;
 }
 
-extern "C" void sfImage_flipHorizontally(sfImage *image) {
-    image->This.flipHorizontally();
+extern "C" void sfImage_flipHorizontally(sf::Image *image) {
+    image->flipHorizontally();
 }
 
-extern "C" void sfImage_flipVertically(sfImage *image) {
-    image->This.flipVertically();
+extern "C" void sfImage_flipVertically(sf::Image *image) {
+    image->flipVertically();
 }
