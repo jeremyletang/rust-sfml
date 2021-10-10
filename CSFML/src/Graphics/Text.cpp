@@ -24,8 +24,9 @@
 // Headers
 
 #include "Graphics/Color.h"
-#include "Graphics/Font.h"
 #include "System/Vector2.h"
+#include "Graphics/Types.h"
+#include "Graphics/Rect.h"
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/Text.hpp>
 #include <cstddef>

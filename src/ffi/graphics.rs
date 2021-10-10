@@ -791,5 +791,29 @@ extern "C" {
     pub fn sfView_move(view: *mut sfView, offset: sfVector2f);
     pub fn sfView_rotate(view: *mut sfView, angle: f32);
     pub fn sfView_zoom(view: *mut sfView, factor: f32);
+    // SfFont
+    pub fn sfFont_createFromFile(filename: *const c_char) -> *mut sfFont;
+    pub fn sfFont_createFromMemory(data: *const c_void, sizeInBytes: usize) -> *mut sfFont;
+    pub fn sfFont_createFromStream(stream: *mut sfInputStream) -> *mut sfFont;
+    pub fn sfFont_copy(font: *const sfFont) -> *mut sfFont;
+    pub fn sfFont_destroy(font: *mut sfFont);
+    pub fn sfFont_getGlyph(
+        font: *const sfFont,
+        codePoint: sfUint32,
+        characterSize: c_uint,
+        bold: sfBool,
+        outlineThickness: f32,
+    ) -> sfGlyph;
+    pub fn sfFont_getKerning(
+        font: *const sfFont,
+        first: sfUint32,
+        second: sfUint32,
+        characterSize: c_uint,
+    ) -> f32;
+    pub fn sfFont_getLineSpacing(font: *const sfFont, characterSize: c_uint) -> f32;
+    pub fn sfFont_getUnderlinePosition(font: *const sfFont, characterSize: c_uint) -> f32;
+    pub fn sfFont_getUnderlineThickness(font: *const sfFont, characterSize: c_uint) -> f32;
+    pub fn sfFont_getTexture(font: *mut sfFont, characterSize: c_uint) -> *const sfTexture;
+    pub fn sfFont_getInfo(font: *const sfFont) -> sfFontInfo;
 
 }

@@ -1,5 +1,5 @@
 use crate::{
-    ffi::{self as ffi, sfBool},
+    ffi::{graphics as ffi, sfBool},
     graphics::{Glyph, Texture},
     sf_bool_ext::SfBoolExt,
     sf_box::{Dispose, SfBox},

@@ -23,32 +23,34 @@
 
 // Headers
 
-#include "Graphics/Font.h"
 #include "System/InputStreamStruct.h"
 #include <SFML/Graphics/Font.hpp>
 #include <cstddef>
+#include "Graphics/Glyph.h"
+#include "Graphics/FontInfo.h"
+#include "Graphics/Types.h"
 
-sfFont *sfFont_createFromFile(const char *filename) {
+extern "C" sf::Font *sfFont_createFromFile(const char *filename) {
     sf::Font *font = new sf::Font;
     if (!font->loadFromFile(filename)) {
         delete font;
         font = NULL;
     }
 
-    return reinterpret_cast<sfFont *>(font);
+    return reinterpret_cast<sf::Font *>(font);
 }
 
-sfFont *sfFont_createFromMemory(const void *data, size_t sizeInBytes) {
+extern "C" sf::Font *sfFont_createFromMemory(const void *data, size_t sizeInBytes) {
     sf::Font *font = new sf::Font;
     if (!font->loadFromMemory(data, sizeInBytes)) {
         delete font;
         font = NULL;
     }
 
-    return reinterpret_cast<sfFont *>(font);
+    return reinterpret_cast<sf::Font *>(font);
 }
 
-sfFont *sfFont_createFromStream(sfInputStream *stream) {
+extern "C" sf::Font *sfFont_createFromStream(sfInputStream *stream) {
 
     sf::Font *font = new sf::Font;
     if (!font->loadFromStream(*stream)) {
@@ -56,20 +58,20 @@ sfFont *sfFont_createFromStream(sfInputStream *stream) {
         font = NULL;
     }
 
-    return reinterpret_cast<sfFont *>(font);
+    return reinterpret_cast<sf::Font *>(font);
 }
 
-sfFont *sfFont_copy(const sfFont *font) {
+extern "C" sf::Font *sfFont_copy(const sf::Font *font) {
     const sf::Font *src = reinterpret_cast<const sf::Font *>(font);
     sf::Font *newFont = new sf::Font(*src);
-    return reinterpret_cast<sfFont *>(newFont);
+    return reinterpret_cast<sf::Font *>(newFont);
 }
 
-void sfFont_destroy(sfFont *font) {
+extern "C" void sfFont_destroy(sf::Font *font) {
     delete reinterpret_cast<sf::Font *>(font);
 }
 
-sfGlyph sfFont_getGlyph(const sfFont *font, sfUint32 codePoint, unsigned int characterSize, sfBool bold, float outlineThickness) {
+extern "C" sfGlyph sfFont_getGlyph(const sf::Font *font, sfUint32 codePoint, unsigned int characterSize, sfBool bold, float outlineThickness) {
     sfGlyph glyph = {0, {0, 0, 0, 0}, {0, 0, 0, 0}};
 
     sf::Glyph SFMLGlyph = reinterpret_cast<const sf::Font *>(font)->getGlyph(codePoint, characterSize, bold == sfTrue, outlineThickness);
@@ -87,27 +89,27 @@ sfGlyph sfFont_getGlyph(const sfFont *font, sfUint32 codePoint, unsigned int cha
     return glyph;
 }
 
-float sfFont_getKerning(const sfFont *font, sfUint32 first, sfUint32 second, unsigned int characterSize) {
+extern "C" float sfFont_getKerning(const sf::Font *font, sfUint32 first, sfUint32 second, unsigned int characterSize) {
     return reinterpret_cast<const sf::Font *>(font)->getKerning(first, second, characterSize);
 }
 
-float sfFont_getLineSpacing(const sfFont *font, unsigned int characterSize) {
+extern "C" float sfFont_getLineSpacing(const sf::Font *font, unsigned int characterSize) {
     return reinterpret_cast<const sf::Font *>(font)->getLineSpacing(characterSize);
 }
 
-float sfFont_getUnderlinePosition(const sfFont *font, unsigned int characterSize) {
+extern "C" float sfFont_getUnderlinePosition(const sf::Font *font, unsigned int characterSize) {
     return reinterpret_cast<const sf::Font *>(font)->getUnderlinePosition(characterSize);
 }
 
-float sfFont_getUnderlineThickness(const sfFont *font, unsigned int characterSize) {
+extern "C" float sfFont_getUnderlineThickness(const sf::Font *font, unsigned int characterSize) {
     return reinterpret_cast<const sf::Font *>(font)->getUnderlineThickness(characterSize);
 }
 
-const sfTexture *sfFont_getTexture(sfFont *font, unsigned int characterSize) {
+extern "C" const sfTexture *sfFont_getTexture(sf::Font *font, unsigned int characterSize) {
     return reinterpret_cast<const sfTexture *>(&reinterpret_cast<sf::Font *>(font)->getTexture(characterSize));
 }
 
-sfFontInfo sfFont_getInfo(const sfFont *font) {
+extern "C" sfFontInfo sfFont_getInfo(const sf::Font *font) {
     sfFontInfo info = {NULL};
 
     info.family = reinterpret_cast<const sf::Font *>(font)->getInfo().family.c_str();

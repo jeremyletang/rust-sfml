@@ -14,7 +14,6 @@
 #include "Window/Touch.h"
 #include "Window/VideoMode.h"
 #include "Graphics/Color.h"
-#include "Graphics/Font.h"
 #include "Graphics/FontInfo.h"
 #include "Graphics/Glyph.h"
 #include "Graphics/PrimitiveType.h"
