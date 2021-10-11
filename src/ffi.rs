@@ -8,8 +8,9 @@
 )]
 
 macro_rules! decl_opaque {
-    ($($name:ident;)+) => {
+    ($($(#[$attr:meta])* $name:ident;)+) => {
         $(
+            $(#[$attr])*
             #[repr(C)]
             #[derive(Debug)]
             #[allow(missing_copy_implementations)]

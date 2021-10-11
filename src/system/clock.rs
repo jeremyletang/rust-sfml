@@ -1,12 +1,18 @@
-use crate::{ffi::system as ffi, system::Time};
+use crate::{ffi::system as ffi, sf_box::Dispose, system::Time, SfBox};
 
 pub use ffi::sfClock as Clock;
+
+impl Dispose for Clock {
+    unsafe fn dispose(&mut self) {
+        ffi::sfClock_delete(self);
+    }
+}
 
 impl Clock {
     /// Creates a new Clock and starts it automatically.
     #[must_use]
-    pub fn start() -> Clock {
-        unsafe { ffi::sfClock_create() }
+    pub fn start() -> SfBox<Self> {
+        unsafe { SfBox::new(ffi::sfClock_new()).unwrap() }
     }
 
     /// Gets the elapsed time.
@@ -29,7 +35,7 @@ impl Clock {
     }
 }
 
-impl Default for Clock {
+impl Default for SfBox<Clock> {
     /// Equivalent to `Clock::start()`.
     fn default() -> Self {
         Clock::start()

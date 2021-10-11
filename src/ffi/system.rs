@@ -2,34 +2,29 @@ pub use crate::ffi::*;
 
 decl_opaque! {
     sfStdString;
+    /// Utility type that measures the elapsed time.
+    ///
+    /// Its provides the most precise time that the underlying OS can
+    /// achieve (generally microseconds or nanoseconds).
+    /// It also ensures monotonicity, which means that the returned time can never go backward,
+    /// even if the system time is changed.
+    ///
+    /// # Usage example
+    /// ```
+    /// # use sfml::system::Clock;
+    /// let mut clock = Clock::start();
+    /// // ...
+    /// let time1 = clock.elapsed_time();
+    /// // ...
+    /// let time2 = clock.restart();
+    /// ```
+    ///
+    /// The [`Time`](crate::system::Time) value returned by the clock can then be converted to
+    /// a number of seconds, milliseconds or even microseconds.
+    sfClock;
 }
 
 pub type sfTime = i64;
-
-/// Utility type that measures the elapsed time.
-///
-/// Its provides the most precise time that the underlying OS can
-/// achieve (generally microseconds or nanoseconds).
-/// It also ensures monotonicity, which means that the returned time can never go backward,
-/// even if the system time is changed.
-///
-/// # Usage example
-/// ```
-/// # use sfml::system::Clock;
-/// let mut clock = Clock::start();
-/// // ...
-/// let time1 = clock.elapsed_time();
-/// // ...
-/// let time2 = clock.restart();
-/// ```
-///
-/// The [`Time`] value returned by the clock can then be converted to
-/// a number of seconds, milliseconds or even microseconds.
-#[derive(Debug, Clone, Copy)]
-#[repr(C)]
-pub struct sfClock {
-    start_time: sfTime,
-}
 
 impl Dispose for sfStdString {
     unsafe fn dispose(&mut self) {
@@ -148,7 +143,8 @@ extern "C" {
     pub fn sfClipboard_getUnicodeString() -> *const sfUint32;
     pub fn sfClipboard_setUnicodeString(text: *const sfUint32);
 
-    pub fn sfClock_create() -> sfClock;
+    pub fn sfClock_new() -> *mut sfClock;
+    pub fn sfClock_delete(clock: *mut sfClock);
     pub fn sfClock_getElapsedTime(clock: *const sfClock) -> sfInt64;
     pub fn sfClock_restart(clock: *mut sfClock) -> sfInt64;
 
