@@ -82,7 +82,6 @@ impl VertexBuffer {
     ///
     /// Return True if the update was successful
     pub fn update(&mut self, vertices: &[Vertex], offset: u32) -> bool {
-        use std::convert::TryInto;
         unsafe {
             sfVertexBuffer_update(
                 self.vertex_buffer.as_ptr(),

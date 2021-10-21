@@ -203,7 +203,6 @@ impl<'s> Shape<'s> for ConvexShape<'s> {
         unsafe { ffi::sfConvexShape_getOutlineThickness(self.convex_shape) }
     }
     fn point_count(&self) -> u32 {
-        use std::convert::TryInto;
         unsafe {
             ffi::sfConvexShape_getPointCount(self.convex_shape)
                 .try_into()
@@ -253,7 +252,6 @@ impl Iterator for ConvexShapePoints {
     type Item = Vector2f;
 
     fn next(&mut self) -> Option<Vector2f> {
-        use std::convert::TryInto;
         let point_count = unsafe {
             ffi::sfConvexShape_getPointCount(self.convex_shape)
                 .try_into()

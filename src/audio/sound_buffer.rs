@@ -103,7 +103,6 @@ impl SoundBuffer {
     /// Panic if the sample count exceeds usize range
     #[must_use]
     pub fn samples(&self) -> &[i16] {
-        use std::convert::TryInto;
         let len: usize = self
             .sample_count()
             .try_into()
