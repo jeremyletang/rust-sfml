@@ -1,4 +1,4 @@
-rust-sfml ![Build Status](https://github.com/jeremyletang/rust-sfml/actions/workflows/rust.yml/badge.svg) [![crates.io](https://img.shields.io/crates/v/sfml.svg)](https://crates.io/crates/sfml) [![Discord](https://img.shields.io/discord/591914197219016707.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/nr4X7Fh)
+rust-sfml ![Build Status](https://github.com/jeremyletang/rust-sfml/actions/workflows/rust.yml/badge.svg) [![crates.io](https://img.shields.io/crates/v/sfml.svg)](https://crates.io/crates/sfml) [![Discord](https://img.shields.io/discord/591914197219016707.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/dh55vsETzH)
 =========
 
 Rust bindings for [SFML](http://www.sfml-dev.org), the Simple and Fast Multimedia Library.
@@ -31,4 +31,4 @@ This software is provided under the same license as SFML, the Zlib/png license.
 
 Discord
 =======
-rust-sfml users are welcome on the [Official SFML Discord server](https://discord.gg/nr4X7Fh)
+rust-sfml users are welcome on the [Official SFML Discord server](https://discord.gg/dh55vsETzH)
