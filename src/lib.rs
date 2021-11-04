@@ -55,7 +55,7 @@ pub mod audio;
 #[cfg(feature = "graphics")]
 pub mod graphics;
 #[cfg(any(feature = "window", feature = "audio"))]
-mod sf_box;
+pub mod sf_box;
 pub mod system;
 #[cfg(feature = "window")]
 pub mod window;
