@@ -1,6 +1,6 @@
 use rand::{thread_rng, Rng};
 use sfml::{
-    audio::{Sound, SoundBuffer},
+    audio::{Sound, SoundBuffer, SoundSource},
     graphics::{
         CircleShape, Color, Font, RectangleShape, RenderTarget, RenderWindow, Shape, Text,
         Transformable,
@@ -83,10 +83,10 @@ fn main() {
 
     // Define the paddles properties
     let mut ai_timer = Clock::start();
-    let ai_time = Time::seconds(0.1);
+    let ai_time = Time::seconds(0.0333);
     let paddle_speed = 400.;
     let mut right_paddle_speed = 0.;
-    let ball_speed = 400.;
+    let mut ball_speed = 400.;
     let mut ball_angle = 0.;
 
     let mut clock = Clock::start();
@@ -106,6 +106,8 @@ fn main() {
                 } if !is_playing => {
                     // (re)start the game
                     is_playing = true;
+                    ball_speed = 400.0;
+                    ball_sound.set_pitch(1.0);
                     clock.restart();
                     // Reset the position of the paddles and ball
                     left_paddle.set_position((10. + paddle_size.x / 2., game_height as f32 / 2.));
@@ -155,7 +157,7 @@ fn main() {
             }
 
             // Update the computer's paddle direction according to the ball position
-            if ai_timer.elapsed_time().as_microseconds() > ai_time.as_microseconds() {
+            if ai_timer.elapsed_time() > ai_time {
                 ai_timer.restart();
                 if ball.position().y + ball_radius > right_paddle.position().y + paddle_size.y / 2.
                 {
@@ -183,13 +185,13 @@ fn main() {
                 pause_message.set_string("You won !\nPress space to restart or\nescape to exit");
             }
             if ball.position().y - ball_radius < 0. {
-                ball_sound.play();
+                on_bounce(&mut ball_sound, &mut ball_speed);
                 ball_angle = -ball_angle;
                 let p = ball.position().x;
                 ball.set_position((p, ball_radius + 0.1));
             }
             if ball.position().y + ball_radius > game_height as f32 {
-                ball_sound.play();
+                on_bounce(&mut ball_sound, &mut ball_speed);
                 ball_angle = -ball_angle;
                 let p = ball.position().x;
                 ball.set_position((p, game_height as f32 - ball_radius - 0.1));
@@ -199,7 +201,6 @@ fn main() {
             // Left Paddle
             let (ball_pos, paddle_pos) = (ball.position(), left_paddle.position());
             if ball_pos.x - ball_radius < paddle_pos.x + paddle_size.x / 2.
-                && ball_pos.x - ball_radius > paddle_pos.x
                 && ball_pos.y + ball_radius >= paddle_pos.y - paddle_size.y / 2.
                 && ball_pos.y - ball_radius <= paddle_pos.y + paddle_size.y / 2.
             {
@@ -209,7 +210,7 @@ fn main() {
                     ball_angle = PI - ball_angle - rng.gen_range(0.0..20.) * PI / 180.;
                 }
 
-                ball_sound.play();
+                on_bounce(&mut ball_sound, &mut ball_speed);
                 ball.set_position((
                     paddle_pos.x + ball_radius + paddle_size.x / 2. + 0.1,
                     ball_pos.y,
@@ -219,7 +220,6 @@ fn main() {
             // Right Paddle
             let (ball_pos, paddle_pos) = (ball.position(), right_paddle.position());
             if ball_pos.x + ball_radius > paddle_pos.x - paddle_size.x / 2.
-                && ball_pos.x + ball_radius < paddle_pos.x
                 && ball_pos.y + ball_radius >= paddle_pos.y - paddle_size.y / 2.
                 && ball_pos.y - ball_radius <= paddle_pos.y + paddle_size.y / 2.
             {
@@ -229,7 +229,7 @@ fn main() {
                     ball_angle = PI - ball_angle - rng.gen_range(0.0..20.) * PI / 180.;
                 }
 
-                ball_sound.play();
+                on_bounce(&mut ball_sound, &mut ball_speed);
                 ball.set_position((
                     paddle_pos.x - ball_radius - paddle_size.x / 2. - 0.1,
                     ball_pos.y,
@@ -252,4 +252,10 @@ fn main() {
         // Display things on screen
         window.display()
     }
+}
+
+fn on_bounce(ball_sound: &mut Sound, ball_speed: &mut f32) {
+    ball_sound.play();
+    ball_sound.set_pitch(ball_sound.pitch() + 0.004);
+    *ball_speed += 16.0;
 }
