@@ -10,6 +10,8 @@ use sfml::{
 };
 use std::{env, f32::consts::PI};
 
+include!("example_res.inc");
+
 fn main() {
     let mut rng = thread_rng();
 
@@ -45,9 +47,10 @@ fn main() {
         println!("Using {}xAA", context_settings.antialiasing_level);
     }
     window.set_vertical_sync_enabled(true);
+    dbg!();
 
     // Load the sounds used in the game
-    let ball_soundbuffer = SoundBuffer::from_file("resources/ball.wav").unwrap();
+    let ball_soundbuffer = SoundBuffer::from_file(example_res!("ball.wav")).unwrap();
     let mut ball_sound = Sound::with_buffer(&ball_soundbuffer);
 
     // Create the left paddle
@@ -75,7 +78,7 @@ fn main() {
     ball.set_origin((ball_radius / 2., ball_radius / 2.));
 
     // Load the text font
-    let font = Font::from_file("resources/sansation.ttf").unwrap();
+    let font = Font::from_file(example_res!("sansation.ttf")).unwrap();
 
     // Initialize the pause message
     let mut pause_message = Text::default();

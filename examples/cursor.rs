@@ -6,6 +6,8 @@ use sfml::{
     window::{mouse, ContextSettings, Cursor, CursorType, Event, Style},
 };
 
+include!("example_res.inc");
+
 const DRAW_AREA_TOPLEFT: (u16, u16) = (300, 64);
 const DRAW_GRID_WH: u8 = 16;
 const DRAW_CELL_WH: u8 = 26;
@@ -75,7 +77,7 @@ fn main() {
     );
     rw.set_vertical_sync_enabled(true);
     let mut cursor;
-    let font = Font::from_file("resources/sansation.ttf").unwrap();
+    let font = Font::from_file(example_res!("sansation.ttf")).unwrap();
     let mut failed_index = usize::max_value();
     let mut selected_index = usize::max_value();
     let set_button = Rect::new(348, 500, 100, 32);

@@ -1,5 +1,7 @@
 use sfml::{graphics::*, window::*};
 
+include!("example_res.inc");
+
 fn main() {
     let mut window = RenderWindow::new(
         (800, 600),
@@ -9,7 +11,7 @@ fn main() {
     );
     window.set_vertical_sync_enabled(true);
 
-    let font = Font::from_file("resources/sansation.ttf").unwrap();
+    let font = Font::from_file(example_res!("sansation.ttf")).unwrap();
     let mut string = String::from("This text can be edited.\nTry it!");
 
     let mut text = Text::new(&string, &font, 24);

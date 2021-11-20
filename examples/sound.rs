@@ -4,9 +4,11 @@ use sfml::{
 };
 use std::io::Write;
 
+include!("example_res.inc");
+
 // Play a Sound
 fn play_sound() {
-    let buffer = SoundBuffer::from_file("resources/canary.wav").unwrap();
+    let buffer = SoundBuffer::from_file(example_res!("canary.wav")).unwrap();
 
     // Display sound informations
     println!("canary.wav :");
@@ -29,7 +31,7 @@ fn play_sound() {
 
 // Play a Music
 fn play_music() {
-    let mut music = Music::from_file("resources/orchestral.ogg").unwrap();
+    let mut music = Music::from_file(example_res!("orchestral.ogg")).unwrap();
 
     // Display Music informations
     println!("orchestral.ogg :");

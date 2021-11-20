@@ -7,6 +7,8 @@ use sfml::{
     window::{Event, Key, Style},
 };
 
+include!("example_res.inc");
+
 trait Effect: Drawable {
     fn update(&mut self, t: f32, x: f32, y: f32);
     fn name(&self) -> &str;
@@ -24,7 +26,7 @@ impl<'t> Pixelate<'t> {
         sprite.set_texture(texture, false);
         Self {
             sprite,
-            shader: Shader::from_file("resources/pixelate.frag", ShaderType::Fragment).unwrap(),
+            shader: Shader::from_file(example_res!("pixelate.frag"), ShaderType::Fragment).unwrap(),
         }
     }
 }
@@ -85,8 +87,11 @@ impl<'fo> WaveBlur<'fo> {
         text.set_position((30., 20.));
         Self {
             text,
-            shader: Shader::from_file_vert_frag("resources/wave.vert", "resources/blur.frag")
-                .unwrap(),
+            shader: Shader::from_file_vert_frag(
+                example_res!("wave.vert"),
+                example_res!("blur.frag"),
+            )
+            .unwrap(),
         }
     }
 }
@@ -141,7 +146,8 @@ impl StormBlink {
         }
 
         let shader =
-            Shader::from_file_vert_frag("resources/storm.vert", "resources/blink.frag").unwrap();
+            Shader::from_file_vert_frag(example_res!("storm.vert"), example_res!("blink.frag"))
+                .unwrap();
         Self { points, shader }
     }
 }
@@ -199,7 +205,8 @@ impl<'t> Edge<'t> {
             ));
         }
 
-        let mut shader = Shader::from_file("resources/edge.frag", ShaderType::Fragment).unwrap();
+        let mut shader =
+            Shader::from_file(example_res!("edge.frag"), ShaderType::Fragment).unwrap();
         shader.set_uniform_current_texture("texture");
 
         Self {
@@ -259,11 +266,11 @@ fn main() {
         &Default::default(),
     );
     window.set_vertical_sync_enabled(true);
-    let font = Font::from_file("resources/sansation.ttf").unwrap();
-    let bg = Texture::from_file("resources/background.jpg").unwrap();
-    let mut bg_texture = Texture::from_file("resources/sfml.png").unwrap();
+    let font = Font::from_file(example_res!("sansation.ttf")).unwrap();
+    let bg = Texture::from_file(example_res!("background.jpg")).unwrap();
+    let mut bg_texture = Texture::from_file(example_res!("sfml.png")).unwrap();
     bg_texture.set_smooth(true);
-    let mut entity_texture = Texture::from_file("resources/devices.png").unwrap();
+    let mut entity_texture = Texture::from_file(example_res!("devices.png")).unwrap();
     entity_texture.set_smooth(true);
     let mut effects: [Box<dyn Effect>; 4] = [
         Box::new(Pixelate::new(&bg)),
@@ -272,7 +279,7 @@ fn main() {
         Box::new(Edge::new(&bg_texture, &entity_texture)),
     ];
     let mut current = 0;
-    let text_bg_texture = Texture::from_file("resources/text-background.png").unwrap();
+    let text_bg_texture = Texture::from_file(example_res!("text-background.png")).unwrap();
     let mut text_bg = Sprite::with_texture(&text_bg_texture);
     text_bg.set_position((0., 520.));
     text_bg.set_color(Color::rgba(255, 255, 255, 200));

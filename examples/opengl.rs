@@ -8,6 +8,8 @@ use sfml::{
 };
 use std::{ffi::c_void, mem::size_of};
 
+include!("example_res.inc");
+
 fn main() {
     let mut exit = false;
     let mut srgb = false;
@@ -30,11 +32,11 @@ fn main() {
         let mut bg_tex = Texture::new().unwrap();
         bg_tex.set_srgb(srgb);
         bg_tex
-            .load_from_file("resources/opengl-background.jpg", IntRect::default())
+            .load_from_file(example_res!("opengl-background.jpg"), IntRect::default())
             .unwrap();
         let bg_sprite = Sprite::with_texture(&bg_tex);
 
-        let font = Font::from_file("resources/sansation.ttf").unwrap();
+        let font = Font::from_file(example_res!("sansation.ttf")).unwrap();
         let mut text = Text::new("SFML / OpenGL demo", &font, 32);
         let mut srgb_instr = Text::new("Press space to toggle sRGB conversion", &font, 32);
         let mut mipmap_instr = Text::new("Press return to toggle mipmapping", &font, 32);
@@ -45,7 +47,7 @@ fn main() {
         srgb_instr.set_position((150., 500.));
         mipmap_instr.set_position((180., 550.));
 
-        let mut texture = Texture::from_file("resources/texture.jpg").unwrap();
+        let mut texture = Texture::from_file(example_res!("texture.jpg")).unwrap();
         texture.generate_mipmap();
         window.set_active(true);
         unsafe {
@@ -115,7 +117,7 @@ fn main() {
                         code: Key::Enter, ..
                     } => {
                         if mipmap_enabled {
-                            texture = Texture::from_file("resources/texture.jpg").unwrap();
+                            texture = Texture::from_file(example_res!("texture.jpg")).unwrap();
                             mipmap_enabled = false;
                             window.set_active(true);
                             Texture::bind(&texture);

@@ -4,8 +4,10 @@ use sfml::{
 };
 use std::{fs::File, io::Write};
 
+include!("example_res.inc");
+
 fn main() {
-    let mut file = File::open("resources/orchestral.ogg").unwrap();
+    let mut file = File::open(example_res!("orchestral.ogg")).unwrap();
     let mut stream = InputStream::new(&mut file);
     let mut music = Music::from_stream(&mut stream).unwrap();
 

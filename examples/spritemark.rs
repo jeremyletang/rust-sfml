@@ -12,6 +12,8 @@ use sfml::{
     window::{mouse::Button, ContextSettings, Event, Key, Style, VideoMode},
 };
 
+include!("example_res.inc");
+
 const SUBIMAGE_SIZE: u8 = 96;
 const N_IMAGES: u8 = 6;
 const GRAVITY: f32 = 0.5;
@@ -64,8 +66,8 @@ fn main() {
     );
     window.set_position(Vector2::new(0, 0));
     window.set_vertical_sync_enabled(true);
-    let font = Font::from_file("resources/sansation.ttf").unwrap();
-    let texture = Texture::from_file("resources/devices.png").unwrap();
+    let font = Font::from_file(example_res!("sansation.ttf")).unwrap();
+    let texture = Texture::from_file(example_res!("devices.png")).unwrap();
     let mut text = Text::new("", &font, 18);
     text.set_outline_color(Color::BLACK);
     text.set_outline_thickness(1.0);
