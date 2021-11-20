@@ -302,7 +302,7 @@ pub enum MouseButton {
 
 /// Key codes known to SFML.
 #[repr(C)]
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 #[allow(missing_docs)]
 pub enum Key {
     Unknown = -1,
