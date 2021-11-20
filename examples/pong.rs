@@ -47,7 +47,6 @@ fn main() {
         println!("Using {}xAA", context_settings.antialiasing_level);
     }
     window.set_vertical_sync_enabled(true);
-    dbg!();
 
     // Load the sounds used in the game
     let ball_soundbuffer = SoundBuffer::from_file(example_res!("ball.wav")).unwrap();
