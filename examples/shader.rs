@@ -7,7 +7,7 @@ use sfml::{
     window::{Event, Key, Style},
 };
 
-include!("example_res.inc");
+include!("../example_common.rs");
 
 trait Effect: Drawable {
     fn update(&mut self, t: f32, x: f32, y: f32);

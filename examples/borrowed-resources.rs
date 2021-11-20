@@ -6,7 +6,7 @@ use sfml::{
     window::{Event, Key, Style},
 };
 
-include!("example_res.inc");
+include!("../example_common.rs");
 
 fn main() {
     let mut window = RenderWindow::new(

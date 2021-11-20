@@ -10,7 +10,7 @@ use sfml::{
 };
 use std::{env, f32::consts::PI};
 
-include!("example_res.inc");
+include!("../example_common.rs");
 
 fn main() {
     let mut rng = thread_rng();

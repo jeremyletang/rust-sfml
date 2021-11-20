@@ -4,7 +4,7 @@ use sfml::{
 };
 use std::{fs::File, io::Write};
 
-include!("example_res.inc");
+include!("../example_common.rs");
 
 fn main() {
     let mut file = File::open(example_res!("orchestral.ogg")).unwrap();

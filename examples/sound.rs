@@ -4,7 +4,7 @@ use sfml::{
 };
 use std::io::Write;
 
-include!("example_res.inc");
+include!("../example_common.rs");
 
 // Play a Sound
 fn play_sound() {

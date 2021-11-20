@@ -8,7 +8,7 @@ use sfml::{
 };
 use std::{ffi::c_void, mem::size_of};
 
-include!("example_res.inc");
+include!("../example_common.rs");
 
 fn main() {
     let mut exit = false;

@@ -6,7 +6,7 @@ use sfml::{
     window::{mouse, ContextSettings, Cursor, CursorType, Event, Style},
 };
 
-include!("example_res.inc");
+include!("../example_common.rs");
 
 const DRAW_AREA_TOPLEFT: (u16, u16) = (300, 64);
 const DRAW_GRID_WH: u8 = 16;

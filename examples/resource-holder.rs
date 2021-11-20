@@ -8,7 +8,7 @@ use sfml::{
 };
 use std::{collections::HashMap, hash::Hash};
 
-include!("example_res.inc");
+include!("../example_common.rs");
 
 struct ResourceHolder<Resource: SfResource, Identifier: Hash + Eq> {
     resource_map: HashMap<Identifier, SfBox<Resource>>,

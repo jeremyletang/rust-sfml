@@ -12,7 +12,7 @@ use sfml::{
     window::{mouse::Button, ContextSettings, Event, Key, Style, VideoMode},
 };
 
-include!("example_res.inc");
+include!("../example_common.rs");
 
 const SUBIMAGE_SIZE: u8 = 96;
 const N_IMAGES: u8 = 6;
