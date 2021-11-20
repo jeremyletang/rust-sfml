@@ -17,9 +17,9 @@ fn main() {
     let mut aa_level = 0;
 
     if let Some(arg) = env::args().nth(1) {
-        if let Ok(arg_as_num) = arg.parse::<u32>() {
-            println!("Using {}xAA", arg_as_num);
-            aa_level = arg_as_num;
+        match arg.parse::<u32>() {
+            Ok(arg_as_num) => aa_level = arg_as_num,
+            Err(e) => println!("Didn't set AA level: {}", e),
         }
     }
 
@@ -40,6 +40,10 @@ fn main() {
         Style::CLOSE,
         &context_settings,
     );
+    let context_settings = window.settings();
+    if context_settings.antialiasing_level > 0 {
+        println!("Using {}xAA", context_settings.antialiasing_level);
+    }
     window.set_vertical_sync_enabled(true);
 
     // Load the sounds used in the game
