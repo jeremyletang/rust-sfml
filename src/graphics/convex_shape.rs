@@ -260,13 +260,14 @@ impl Iterator for ConvexShapePoints {
         if self.pos == point_count {
             None
         } else {
-            self.pos += 1;
-            unsafe {
-                Some(Vector2f::from_raw(ffi::sfConvexShape_getPoint(
+            let point = unsafe {
+                Vector2f::from_raw(ffi::sfConvexShape_getPoint(
                     self.convex_shape,
                     self.pos as usize,
-                )))
-            }
+                ))
+            };
+            self.pos += 1;
+            Some(point)
         }
     }
 }
