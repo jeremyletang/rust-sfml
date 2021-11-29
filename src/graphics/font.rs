@@ -176,24 +176,15 @@ impl Font {
     /// Get the texture containing the glyphs of a given size in a font
     ///
     /// # Arguments
-    /// * characterSize - Character size, in pixels
-    ///
-    /// Return the texture
-    ///
-    /// Note: Unfortunately, this method requires mutable access, because CSFML
-    /// uses a texture cache or something that it must update every time this function
-    /// is called.
-    pub fn texture(&mut self, character_size: u32) -> &Texture {
-        let tex = unsafe { ffi::sfFont_getTexture(self.raw_mut(), character_size) };
+    /// * `character_size` - Character size, in pixels
+    #[must_use]
+    pub fn texture(&self, character_size: u32) -> &Texture {
+        let tex = unsafe { ffi::sfFont_getTexture(self.raw(), character_size) };
         assert!(!tex.is_null(), "sfFont_getTexture failed");
         unsafe { &*(tex as *const Texture) }
     }
     pub(super) fn raw(&self) -> *const ffi::sfFont {
         let ptr: *const Self = self;
-        ptr as _
-    }
-    fn raw_mut(&mut self) -> *mut ffi::sfFont {
-        let ptr: *mut Self = self;
         ptr as _
     }
 }

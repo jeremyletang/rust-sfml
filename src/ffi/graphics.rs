@@ -829,7 +829,7 @@ extern "C" {
     pub fn sfFont_getLineSpacing(font: *const sfFont, characterSize: c_uint) -> f32;
     pub fn sfFont_getUnderlinePosition(font: *const sfFont, characterSize: c_uint) -> f32;
     pub fn sfFont_getUnderlineThickness(font: *const sfFont, characterSize: c_uint) -> f32;
-    pub fn sfFont_getTexture(font: *mut sfFont, characterSize: c_uint) -> *const sfTexture;
+    pub fn sfFont_getTexture(font: *const sfFont, characterSize: c_uint) -> *const sfTexture;
     pub fn sfFont_getInfo(font: *const sfFont) -> sfFontInfo;
     // Shape
     pub fn sfShape_create(

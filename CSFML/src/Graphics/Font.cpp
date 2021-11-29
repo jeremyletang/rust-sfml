@@ -104,7 +104,7 @@ extern "C" float sfFont_getUnderlineThickness(const sf::Font *font, unsigned int
     return reinterpret_cast<const sf::Font *>(font)->getUnderlineThickness(characterSize);
 }
 
-extern "C" const sf::Texture *sfFont_getTexture(sf::Font *font, unsigned int characterSize) {
+extern "C" const sf::Texture *sfFont_getTexture(const sf::Font *font, unsigned int characterSize) {
     return &font->getTexture(characterSize);
 }
 
