@@ -17,6 +17,11 @@ fn main() {
         println!("cargo:warning=Custom SFML include dir: {}", sfml_inc_dir);
         build.include(sfml_inc_dir);
     }
+    if env::var("SFML_STATIC").is_ok() {
+        println!("cargo:warning=Linking SFML statically");
+        build.define("SFML_STATIC", None)
+            .static_crt(true);
+    }
     let feat_audio = env::var("CARGO_FEATURE_AUDIO").is_ok();
     let feat_window = env::var("CARGO_FEATURE_WINDOW").is_ok();
     let feat_graphics = env::var("CARGO_FEATURE_GRAPHICS").is_ok();
@@ -93,16 +98,40 @@ fn main() {
         println!("cargo:rustc-link-search=native={}", libs_dir);
     }
     println!("cargo:rustc-link-lib=static=rcsfml");
-    println!("cargo:rustc-link-lib=dylib=sfml-system");
+    println!("cargo:rustc-link-lib=static=sfml-system-s");
     if feat_audio {
-        println!("cargo:rustc-link-lib=dylib=sfml-audio");
+        println!("cargo:rustc-link-lib=static=sfml-audio-s");
     }
     if feat_window {
         println!("LINKING WINDOW",);
-        println!("cargo:rustc-link-lib=dylib=sfml-window");
+        println!("cargo:rustc-link-lib=static=sfml-window-s");
     }
     if feat_graphics {
         println!("LINKING GRAPHICS",);
-        println!("cargo:rustc-link-lib=dylib=sfml-graphics");
+        println!("cargo:rustc-link-lib=static=sfml-graphics-s");
+    }
+    #[cfg(windows)]  // i'll figure out linux later
+    if env::var("SFML_STATIC").is_ok() {
+        // if let Ok(win10_sdk_libs_dir) = env::var("SFML_WIN10_SDK_LIBS_DIR") {
+        //     println!("cargo:warning=Windows 10 SDK libs dir: {}", win10_sdk_libs_dir);
+        //     println!("cargo:rustc-link-search=native={}", win10_sdk_libs_dir);
+        // }
+        println!("cargo:rustc-link-lib=dylib=winmm");
+        println!("cargo:rustc-link-lib=dylib=user32");
+        if feat_window {
+            println!("cargo:rustc-link-lib=dylib=opengl32");
+            println!("cargo:rustc-link-lib=dylib=gdi32");
+        }
+        if feat_graphics {
+            println!("cargo:rustc-link-lib=static=freetype");
+        }
+        if feat_audio {
+            println!("cargo:rustc-link-lib=static=openal32");
+            println!("cargo:rustc-link-lib=static=flac");
+            println!("cargo:rustc-link-lib=static=vorbisenc");
+            println!("cargo:rustc-link-lib=static=vorbisfile");
+            println!("cargo:rustc-link-lib=static=vorbis");
+            println!("cargo:rustc-link-lib=static=ogg");
+        }
     }
 }
