@@ -23,10 +23,10 @@
 
 // Headers
 
-#include <SFML/Window/Touch.hpp>
-#include <cstddef>
 #include "Config.h"
 #include "System/Vector2.h"
+#include <SFML/Window/Touch.hpp>
+#include <cstddef>
 
 extern "C" sfBool sfTouch_isDown(unsigned int finger) {
     return sf::Touch::isDown(finger);

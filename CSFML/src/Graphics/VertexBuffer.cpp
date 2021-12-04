@@ -24,9 +24,9 @@
 // Headers
 
 #include "Graphics/VertexBuffer.h"
-#include "Graphics/VertexBufferStruct.h"
 #include "Graphics/PrimitiveType.h"
 #include "Graphics/Vertex.h"
+#include "Graphics/VertexBufferStruct.h"
 #include <cstddef>
 
 extern "C" sfVertexBuffer *sfVertexBuffer_create(unsigned int vertexCount, sfPrimitiveType type, sfVertexBufferUsage usage) {

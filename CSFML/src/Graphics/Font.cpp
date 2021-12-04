@@ -23,11 +23,11 @@
 
 // Headers
 
+#include "Graphics/FontInfo.h"
+#include "Graphics/Glyph.h"
 #include "System/InputStreamStruct.h"
 #include <SFML/Graphics/Font.hpp>
 #include <cstddef>
-#include "Graphics/Glyph.h"
-#include "Graphics/FontInfo.h"
 
 extern "C" sf::Font *sfFont_createFromFile(const char *filename) {
     sf::Font *font = new sf::Font;

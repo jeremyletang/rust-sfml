@@ -24,16 +24,16 @@
 // Headers
 
 #include "Graphics/PrimitiveType.h"
+#include "Graphics/Rect.h"
 #include "Graphics/ShapeStruct.h"
 #include "Graphics/Vertex.h"
 #include "Graphics/VertexBufferStruct.h"
-#include "Graphics/Rect.h"
 #include <SFML/Graphics/CircleShape.hpp>
+#include <SFML/Graphics/ConvexShape.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderTexture.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>
-#include <SFML/Graphics/ConvexShape.hpp>
 #include <cstddef>
 
 extern "C" sf::RenderTexture *sfRenderTexture_createWithSettings(unsigned int width, unsigned int height, const sf::ContextSettings *settings) {
