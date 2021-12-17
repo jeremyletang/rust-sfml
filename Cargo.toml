@@ -36,7 +36,10 @@ version = "1.0"
 
 [build-dependencies]
 cc = "1.0.67"
-bindgen = "0.59.1"
+
+[build-dependencies.bindgen]
+version = "0.59.1"
+default-features = false
 
 [dev-dependencies]
 rand = "0.8.3"
