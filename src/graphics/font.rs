@@ -212,7 +212,6 @@ pub struct Info {
 }
 
 #[cfg_attr(not(feature = "ci-headless"), test)]
-#[test]
 fn test_info() {
     let font = Font::from_file("examples/resources/sansation.ttf").unwrap();
     assert_eq!(font.info().family, "Sansation");
