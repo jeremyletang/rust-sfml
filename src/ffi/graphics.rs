@@ -1,7 +1,7 @@
 pub use crate::ffi::*;
 use crate::{
     ffi::window::{sfContextSettings, sfCursor, sfWindow, sfWindowHandle, Event},
-    graphics::Transform,
+    graphics::{RenderStates, Transform},
 };
 
 decl_opaque! {
@@ -141,15 +141,6 @@ pub enum ShaderType {
     Fragment,
 }
 
-#[repr(C)]
-#[derive(Clone, Copy, Debug)]
-pub struct sfRenderStates {
-    pub blendMode: BlendMode,
-    pub transform: Transform,
-    pub texture: *const sfTexture,
-    pub shader: *const sfShader,
-}
-
 extern "C" {
     pub fn sfCircleShape_getTransform(shape: *const sfCircleShape) -> Transform;
     pub fn sfCircleShape_getInverseTransform(shape: *const sfCircleShape) -> Transform;
@@ -177,44 +168,44 @@ extern "C" {
     pub fn sfRenderTexture_drawSprite(
         rt: *mut sfRenderTexture,
         object: *const sfSprite,
-        states: *const sfRenderStates,
+        states: *const RenderStates,
     );
     pub fn sfRenderTexture_drawText(
         rt: *mut sfRenderTexture,
         object: *const sfText,
-        states: *const sfRenderStates,
+        states: *const RenderStates,
     );
     pub fn sfRenderTexture_drawShape(
         rt: *mut sfRenderTexture,
         object: *const sfShape,
-        states: *const sfRenderStates,
+        states: *const RenderStates,
     );
     pub fn sfRenderTexture_drawCircleShape(
         rt: *mut sfRenderTexture,
         object: *const sfCircleShape,
-        states: *const sfRenderStates,
+        states: *const RenderStates,
     );
     pub fn sfRenderTexture_drawConvexShape(
         rt: *mut sfRenderTexture,
         object: *const sfConvexShape,
-        states: *const sfRenderStates,
+        states: *const RenderStates,
     );
     pub fn sfRenderTexture_drawRectangleShape(
         rt: *mut sfRenderTexture,
         object: *const sfRectangleShape,
-        states: *const sfRenderStates,
+        states: *const RenderStates,
     );
     pub fn sfRenderTexture_drawVertexBuffer(
         rt: *mut sfRenderTexture,
         object: *const sfVertexBuffer,
-        states: *const sfRenderStates,
+        states: *const RenderStates,
     );
     pub fn sfRenderTexture_drawPrimitives(
         rt: *mut sfRenderTexture,
         vertices: *const sfVertex,
         vertex_count: usize,
         type_: sfPrimitiveType,
-        states: *const sfRenderStates,
+        states: *const RenderStates,
     );
     pub fn sfRenderTexture_createWithSettings(
         width: c_uint,
@@ -365,44 +356,44 @@ extern "C" {
     pub fn sfRenderWindow_drawSprite(
         renderWindow: *mut sfRenderWindow,
         object: *const sfSprite,
-        states: *const sfRenderStates,
+        states: *const RenderStates,
     );
     pub fn sfRenderWindow_drawText(
         renderWindow: *mut sfRenderWindow,
         object: *const sfText,
-        states: *const sfRenderStates,
+        states: *const RenderStates,
     );
     pub fn sfRenderWindow_drawShape(
         renderWindow: *mut sfRenderWindow,
         object: *const sfShape,
-        states: *const sfRenderStates,
+        states: *const RenderStates,
     );
     pub fn sfRenderWindow_drawCircleShape(
         renderWindow: *mut sfRenderWindow,
         object: *const sfCircleShape,
-        states: *const sfRenderStates,
+        states: *const RenderStates,
     );
     pub fn sfRenderWindow_drawConvexShape(
         renderWindow: *mut sfRenderWindow,
         object: *const sfConvexShape,
-        states: *const sfRenderStates,
+        states: *const RenderStates,
     );
     pub fn sfRenderWindow_drawRectangleShape(
         renderWindow: *mut sfRenderWindow,
         object: *const sfRectangleShape,
-        states: *const sfRenderStates,
+        states: *const RenderStates,
     );
     pub fn sfRenderWindow_drawVertexBuffer(
         renderWindow: *mut sfRenderWindow,
         object: *const sfVertexBuffer,
-        states: *const sfRenderStates,
+        states: *const RenderStates,
     );
     pub fn sfRenderWindow_drawPrimitives(
         renderWindow: *mut sfRenderWindow,
         vertices: *const sfVertex,
         vertexCount: usize,
         type_: sfPrimitiveType,
-        states: *const sfRenderStates,
+        states: *const RenderStates,
     );
     pub fn sfRenderWindow_pushGLStates(renderWindow: *mut sfRenderWindow);
     pub fn sfRenderWindow_popGLStates(renderWindow: *mut sfRenderWindow);

@@ -517,29 +517,17 @@ impl RenderTarget for RenderWindow {
     }
     fn draw_text(&self, text: &Text, render_states: &RenderStates) {
         unsafe {
-            ffi::sfRenderWindow_drawText(
-                self.render_window.as_ptr(),
-                text.raw(),
-                render_states.raw_ref(),
-            )
+            ffi::sfRenderWindow_drawText(self.render_window.as_ptr(), text.raw(), render_states)
         }
     }
     fn draw_shape(&self, shape: &CustomShape, render_states: &RenderStates) {
         unsafe {
-            ffi::sfRenderWindow_drawShape(
-                self.render_window.as_ptr(),
-                shape.raw(),
-                render_states.raw_ref(),
-            )
+            ffi::sfRenderWindow_drawShape(self.render_window.as_ptr(), shape.raw(), render_states)
         }
     }
     fn draw_sprite(&self, sprite: &Sprite, render_states: &RenderStates) {
         unsafe {
-            ffi::sfRenderWindow_drawSprite(
-                self.render_window.as_ptr(),
-                sprite.raw(),
-                render_states.raw_ref(),
-            )
+            ffi::sfRenderWindow_drawSprite(self.render_window.as_ptr(), sprite.raw(), render_states)
         }
     }
     fn draw_circle_shape(&self, circle_shape: &CircleShape, render_states: &RenderStates) {
@@ -547,7 +535,7 @@ impl RenderTarget for RenderWindow {
             ffi::sfRenderWindow_drawCircleShape(
                 self.render_window.as_ptr(),
                 circle_shape.raw(),
-                render_states.raw_ref(),
+                render_states,
             )
         }
     }
@@ -556,7 +544,7 @@ impl RenderTarget for RenderWindow {
             ffi::sfRenderWindow_drawRectangleShape(
                 self.render_window.as_ptr(),
                 rectangle_shape.raw(),
-                render_states.raw_ref(),
+                render_states,
             )
         }
     }
@@ -565,7 +553,7 @@ impl RenderTarget for RenderWindow {
             ffi::sfRenderWindow_drawConvexShape(
                 self.render_window.as_ptr(),
                 convex_shape.raw(),
-                render_states.raw_ref(),
+                render_states,
             )
         }
     }
@@ -574,7 +562,7 @@ impl RenderTarget for RenderWindow {
             ffi::sfRenderWindow_drawVertexBuffer(
                 self.render_window.as_ptr(),
                 vertex_buffer.raw(),
-                render_states.raw_ref(),
+                render_states,
             )
         }
     }
@@ -586,7 +574,7 @@ impl RenderTarget for RenderWindow {
                 vertices.as_ptr() as *const _,
                 len,
                 ty.0,
-                rs.raw_ref(),
+                rs,
             );
         }
     }

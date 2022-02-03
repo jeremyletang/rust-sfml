@@ -198,48 +198,28 @@ impl RenderTarget for RenderTexture {
         object.draw(self, render_states);
     }
     fn draw_text(&self, text: &Text, rs: &RenderStates) {
-        unsafe { ffi::sfRenderTexture_drawText(self.render_texture, text.raw(), rs.raw_ref()) }
+        unsafe { ffi::sfRenderTexture_drawText(self.render_texture, text.raw(), rs) }
     }
     fn draw_shape(&self, shape: &CustomShape, rs: &RenderStates) {
-        unsafe { ffi::sfRenderTexture_drawShape(self.render_texture, shape.raw(), rs.raw_ref()) }
+        unsafe { ffi::sfRenderTexture_drawShape(self.render_texture, shape.raw(), rs) }
     }
     fn draw_sprite(&self, sprite: &Sprite, rs: &RenderStates) {
-        unsafe { ffi::sfRenderTexture_drawSprite(self.render_texture, sprite.raw(), rs.raw_ref()) }
+        unsafe { ffi::sfRenderTexture_drawSprite(self.render_texture, sprite.raw(), rs) }
     }
     fn draw_circle_shape(&self, circle_shape: &CircleShape, rs: &RenderStates) {
-        unsafe {
-            ffi::sfRenderTexture_drawCircleShape(
-                self.render_texture,
-                circle_shape.raw(),
-                rs.raw_ref(),
-            )
-        }
+        unsafe { ffi::sfRenderTexture_drawCircleShape(self.render_texture, circle_shape.raw(), rs) }
     }
     fn draw_rectangle_shape(&self, rectangle_shape: &RectangleShape, rs: &RenderStates) {
         unsafe {
-            ffi::sfRenderTexture_drawRectangleShape(
-                self.render_texture,
-                rectangle_shape.raw(),
-                rs.raw_ref(),
-            )
+            ffi::sfRenderTexture_drawRectangleShape(self.render_texture, rectangle_shape.raw(), rs)
         }
     }
     fn draw_convex_shape(&self, convex_shape: &ConvexShape, rs: &RenderStates) {
-        unsafe {
-            ffi::sfRenderTexture_drawConvexShape(
-                self.render_texture,
-                convex_shape.raw(),
-                rs.raw_ref(),
-            )
-        }
+        unsafe { ffi::sfRenderTexture_drawConvexShape(self.render_texture, convex_shape.raw(), rs) }
     }
     fn draw_vertex_buffer(&self, vertex_buffer: &VertexBuffer, rs: &RenderStates) {
         unsafe {
-            ffi::sfRenderTexture_drawVertexBuffer(
-                self.render_texture,
-                vertex_buffer.raw(),
-                rs.raw_ref(),
-            )
+            ffi::sfRenderTexture_drawVertexBuffer(self.render_texture, vertex_buffer.raw(), rs)
         }
     }
     fn draw_primitives(&self, vertices: &[Vertex], ty: PrimitiveType, rs: &RenderStates) {
@@ -250,7 +230,7 @@ impl RenderTarget for RenderTexture {
                 vertices.as_ptr() as *const _,
                 len,
                 ty.0,
-                rs.raw_ref(),
+                rs,
             );
         }
     }
