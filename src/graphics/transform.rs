@@ -4,9 +4,11 @@ use crate::{ffi::graphics as ffi, graphics::FloatRect, system::Vector2f};
 ///
 /// A `Transform` specifies how to translate,
 /// rotate, scale, shear, project, whatever things.
-#[repr(transparent)]
+#[repr(C)]
 #[derive(Debug, Clone, Copy, PartialEq)]
-pub struct Transform(pub ffi::sfTransform);
+pub struct Transform {
+    pub(crate) matrix: [f32; 16],
+}
 
 impl Transform {
     /// Creates a new transform from a 3x3 matrix.
@@ -35,29 +37,25 @@ impl Transform {
         a21: f32,
         a22: f32,
     ) -> Transform {
-        unsafe {
-            Transform(ffi::sfTransform_fromMatrix(
-                a00, a01, a02, a10, a11, a12, a20, a21, a22,
-            ))
-        }
+        unsafe { ffi::sfTransform_fromMatrix(a00, a01, a02, a10, a11, a12, a20, a21, a22) }
     }
 
     /// Return the matrix
     #[must_use]
     pub fn get_matrix(&self) -> &[f32; 16] {
         unsafe {
-            let ptr = ffi::sfTransform_getMatrix(&self.0);
+            let ptr = ffi::sfTransform_getMatrix(self);
             let arr_ptr: *const [f32; 16] = ptr as _;
             &*arr_ptr
         }
     }
 
     /// The identity transform (does nothing)
-    pub const IDENTITY: Self = Transform(ffi::sfTransform {
+    pub const IDENTITY: Self = Self {
         matrix: [
             1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0,
         ],
-    });
+    };
 
     /// Return the inverse of a transform
     ///
@@ -67,7 +65,7 @@ impl Transform {
     /// Return the inverse matrix
     #[must_use]
     pub fn inverse(&self) -> Transform {
-        unsafe { Transform(ffi::sfTransform_getInverse(&self.0)) }
+        unsafe { ffi::sfTransform_getInverse(self) }
     }
 
     /// Combine two transforms
@@ -79,7 +77,7 @@ impl Transform {
     /// # Arguments
     /// * other - Transform to combine to transform
     pub fn combine(&mut self, other: &Transform) {
-        unsafe { ffi::sfTransform_combine(&mut self.0, &other.0) }
+        unsafe { ffi::sfTransform_combine(self, other) }
     }
 
     /// Combine a transform with a translation
@@ -88,7 +86,7 @@ impl Transform {
     /// * x - Offset to apply on X axis
     /// * y - Offset to apply on Y axis
     pub fn translate(&mut self, x: f32, y: f32) {
-        unsafe { ffi::sfTransform_translate(&mut self.0, x, y) }
+        unsafe { ffi::sfTransform_translate(self, x, y) }
     }
 
     /// Combine the current transform with a rotation
@@ -96,7 +94,7 @@ impl Transform {
     /// # Arguments
     /// * angle - Rotation angle, in degrees
     pub fn rotate(&mut self, angle: f32) {
-        unsafe { ffi::sfTransform_rotate(&mut self.0, angle) }
+        unsafe { ffi::sfTransform_rotate(self, angle) }
     }
 
     /// Combine the current transform with a rotation
@@ -111,7 +109,7 @@ impl Transform {
     /// * `center_x` - X coordinate of the center of rotation
     /// * `center_y` - Y coordinate of the center of rotation
     pub fn rotate_with_center(&mut self, angle: f32, center_x: f32, center_y: f32) {
-        unsafe { ffi::sfTransform_rotateWithCenter(&mut self.0, angle, center_x, center_y) }
+        unsafe { ffi::sfTransform_rotateWithCenter(self, angle, center_x, center_y) }
     }
 
     /// Combine the current transform with a scaling
@@ -120,7 +118,7 @@ impl Transform {
     /// * `scale_x` - Scaling factor on the X axis
     /// * `scale_y` - Scaling factor on the Y axis
     pub fn scale(&mut self, scale_x: f32, scale_y: f32) {
-        unsafe { ffi::sfTransform_scale(&mut self.0, scale_x, scale_y) }
+        unsafe { ffi::sfTransform_scale(self, scale_x, scale_y) }
     }
 
     /// Combine the current transform with a scaling
@@ -136,9 +134,7 @@ impl Transform {
     /// * `center_x` - X coordinate of the center of scaling
     /// * `center_y` - Y coordinate of the center of scaling
     pub fn scale_with_center(&mut self, scale_x: f32, scale_y: f32, center_x: f32, center_y: f32) {
-        unsafe {
-            ffi::sfTransform_scaleWithCenter(&mut self.0, scale_x, scale_y, center_x, center_y)
-        }
+        unsafe { ffi::sfTransform_scaleWithCenter(self, scale_x, scale_y, center_x, center_y) }
     }
 
     /// Apply a transform to a 2D point
@@ -149,7 +145,7 @@ impl Transform {
     /// Return a transformed point
     #[must_use]
     pub fn transform_point(&self, point: Vector2f) -> Vector2f {
-        unsafe { Vector2f::from_raw(ffi::sfTransform_transformPoint(&self.0, point.raw())) }
+        unsafe { Vector2f::from_raw(ffi::sfTransform_transformPoint(self, point.raw())) }
     }
 
     /// Apply a transform to a rectangle
@@ -166,10 +162,7 @@ impl Transform {
     /// Return the transformed rectangle
     #[must_use]
     pub fn transform_rect(&self, rectangle: &FloatRect) -> FloatRect {
-        unsafe { FloatRect::from_raw(ffi::sfTransform_transformRect(&self.0, rectangle.raw())) }
-    }
-    pub(crate) const fn raw(self) -> ffi::sfTransform {
-        self.0
+        unsafe { FloatRect::from_raw(ffi::sfTransform_transformRect(self, rectangle.raw())) }
     }
 }
 

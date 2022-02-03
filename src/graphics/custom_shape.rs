@@ -202,10 +202,10 @@ impl<'s> Transformable for CustomShape<'s> {
         unsafe { ffi::sfShape_scale(self.shape, factors.into().raw()) }
     }
     fn transform(&self) -> Transform {
-        unsafe { Transform(ffi::sfShape_getTransform(self.shape)) }
+        unsafe { ffi::sfShape_getTransform(self.shape) }
     }
     fn inverse_transform(&self) -> Transform {
-        unsafe { Transform(ffi::sfShape_getInverseTransform(self.shape)) }
+        unsafe { ffi::sfShape_getInverseTransform(self.shape) }
     }
 }
 

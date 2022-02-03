@@ -312,10 +312,10 @@ impl<'s> Transformable for Text<'s> {
         unsafe { ffi::sfText_scale(self.text.as_ptr(), factors.into().raw()) }
     }
     fn transform(&self) -> Transform {
-        unsafe { Transform(ffi::sfText_getTransform(self.text.as_ptr())) }
+        unsafe { ffi::sfText_getTransform(self.text.as_ptr()) }
     }
     fn inverse_transform(&self) -> Transform {
-        unsafe { Transform(ffi::sfText_getInverseTransform(self.text.as_ptr())) }
+        unsafe { ffi::sfText_getInverseTransform(self.text.as_ptr()) }
     }
 }
 

@@ -147,10 +147,10 @@ impl<'s> Transformable for ConvexShape<'s> {
         unsafe { ffi::sfConvexShape_scale(self.convex_shape, factors.into().raw()) }
     }
     fn transform(&self) -> Transform {
-        unsafe { Transform(ffi::sfConvexShape_getTransform(self.convex_shape)) }
+        unsafe { ffi::sfConvexShape_getTransform(self.convex_shape) }
     }
     fn inverse_transform(&self) -> Transform {
-        unsafe { Transform(ffi::sfConvexShape_getInverseTransform(self.convex_shape)) }
+        unsafe { ffi::sfConvexShape_getInverseTransform(self.convex_shape) }
     }
 }
 

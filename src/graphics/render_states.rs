@@ -80,7 +80,7 @@ impl<'texture, 'shader, 'shader_texture> RenderStates<'texture, 'shader, 'shader
         Self {
             repr: ffi::sfRenderStates {
                 blendMode: blend_mode,
-                transform: transform.raw(),
+                transform,
                 texture: match texture {
                     Some(tex) => tex.raw(),
                     None => ptr::null(),
@@ -104,7 +104,7 @@ impl<'texture, 'shader, 'shader_texture> RenderStates<'texture, 'shader, 'shader
     }
     /// Sets the transform
     pub fn set_transform(&mut self, transform: Transform) {
-        self.repr.transform = transform.raw();
+        self.repr.transform = transform;
     }
     /// Sets the texture
     pub fn set_texture(&mut self, texture: Option<&'texture Texture>) {
@@ -129,7 +129,7 @@ impl RenderStates<'static, 'static, 'static> {
     pub const DEFAULT: Self = Self {
         repr: ffi::sfRenderStates {
             blendMode: BlendMode::ALPHA,
-            transform: Transform::IDENTITY.raw(),
+            transform: Transform::IDENTITY,
             texture: ptr::null(),
             shader: ptr::null(),
         },

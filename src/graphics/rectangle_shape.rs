@@ -124,14 +124,10 @@ impl<'s> Transformable for RectangleShape<'s> {
         unsafe { ffi::sfRectangleShape_scale(self.rectangle_shape, factors.into().raw()) }
     }
     fn transform(&self) -> Transform {
-        unsafe { Transform(ffi::sfRectangleShape_getTransform(self.rectangle_shape)) }
+        unsafe { ffi::sfRectangleShape_getTransform(self.rectangle_shape) }
     }
     fn inverse_transform(&self) -> Transform {
-        unsafe {
-            Transform(ffi::sfRectangleShape_getInverseTransform(
-                self.rectangle_shape,
-            ))
-        }
+        unsafe { ffi::sfRectangleShape_getInverseTransform(self.rectangle_shape) }
     }
 }
 

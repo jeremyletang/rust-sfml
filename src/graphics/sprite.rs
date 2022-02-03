@@ -238,10 +238,10 @@ impl<'s> Transformable for Sprite<'s> {
         unsafe { ffi::sfSprite_scale(self.sprite.as_ptr(), factors.into().raw()) }
     }
     fn transform(&self) -> Transform {
-        unsafe { Transform(ffi::sfSprite_getTransform(self.sprite.as_ptr())) }
+        unsafe { ffi::sfSprite_getTransform(self.sprite.as_ptr()) }
     }
     fn inverse_transform(&self) -> Transform {
-        unsafe { Transform(ffi::sfSprite_getInverseTransform(self.sprite.as_ptr())) }
+        unsafe { ffi::sfSprite_getInverseTransform(self.sprite.as_ptr()) }
     }
 }
 
