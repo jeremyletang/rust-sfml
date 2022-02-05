@@ -33,7 +33,7 @@ use crate::ffi::{window as ffi, window::EventType};
 /// [`Window::poll_event`]: crate::window::Window::poll_event
 /// [`Window::wait_event`]: crate::window::Window::wait_event
 ///
-#[derive(Clone, PartialEq, Eq, Hash, Debug, Copy)]
+#[derive(Clone, PartialEq, PartialOrd, Eq, Hash, Debug, Copy)]
 pub enum Event {
     /// The window requested to be closed
     Closed,
