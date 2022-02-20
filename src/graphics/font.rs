@@ -148,28 +148,43 @@ impl Font {
         SfBox::new(fnt as *mut Self)
     }
 
-    /// Create a new font from a stream (a struct implementing Read and Seek)
+    /// Load the font from a custom stream.
     ///
-    /// # Arguments
-    /// * stream - Your struct, implementing Read and Seek
+    /// The supported font formats are: TrueType, Type 1, CFF, OpenType, SFNT, X11 PCF,
+    /// Windows FNT, BDF, PFR and Type 42.
     ///
-    /// Returns `None` on failure.
-    pub fn from_stream<T: Read + Seek>(stream: &mut T) -> Option<SfBox<Self>> {
+    /// # Safety
+    /// SFML cannot preload all the font data in this function, so the stream has to remain
+    /// accessible until the `Font` object loads a new font or is destroyed.
+    ///
+    /// # Returns
+    /// True if loading succeeded, false if it failed
+    ///
+    /// # See also
+    /// [`Font::from_file`], [`Font::from_memory`]
+    pub unsafe fn from_stream<T: Read + Seek>(stream: &mut T) -> Option<SfBox<Self>> {
         let mut input_stream = InputStream::new(stream);
-        let fnt = unsafe { ffi::sfFont_createFromStream(&mut *input_stream.stream) };
+        let fnt = ffi::sfFont_createFromStream(&mut *input_stream.stream);
         SfBox::new(fnt as *mut Self)
     }
 
-    /// Create a new font from memory
+    /// Load the font from a file in memory.
     ///
-    /// # Arguments
-    /// * memory -  The in-memory font file
+    /// The supported font formats are: TrueType, Type 1, CFF, OpenType, SFNT, X11 PCF,
+    /// Windows FNT, BDF, PFR and Type 42.
     ///
-    /// Returns `None` on failure.
+    /// # Safety
+    /// SFML cannot preload all the font data in this function, so the buffer pointed by `memory`
+    /// has to remain valid until the `Font` object loads a new font or is destroyed.
+    ///
+    /// # Returns
+    /// True if loading succeeded, false if it failed
+    ///
+    /// See also
+    /// [`Font::from_file`], [`Font::from_stream`]
     #[must_use]
-    pub fn from_memory(memory: &[u8]) -> Option<SfBox<Self>> {
-        let fnt =
-            unsafe { ffi::sfFont_createFromMemory(memory.as_ptr() as *const _, memory.len()) };
+    pub unsafe fn from_memory(memory: &[u8]) -> Option<SfBox<Self>> {
+        let fnt = ffi::sfFont_createFromMemory(memory.as_ptr() as *const _, memory.len());
         SfBox::new(fnt as *mut Self)
     }
 
