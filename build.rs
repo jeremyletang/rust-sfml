@@ -4,6 +4,7 @@ fn main() {
     println!("cargo:rerun-if-changed=CSFML");
     println!("cargo:rerun-if-env-changed=SFML_INCLUDE_DIR");
     println!("cargo:rerun-if-env-changed=SFML_LIBS_DIR");
+    println!("cargo:rerun-if-env-changed=SFML_STATIC");
     let mut build = cc::Build::new();
     build
         .cpp(true)
@@ -17,7 +18,8 @@ fn main() {
         println!("cargo:warning=Custom SFML include dir: {}", sfml_inc_dir);
         build.include(sfml_inc_dir);
     }
-    if env::var("SFML_STATIC").is_ok() {
+    let static_linking = env::var("SFML_STATIC").is_ok();
+    if static_linking {
         println!("cargo:warning=Linking SFML statically");
         build.define("SFML_STATIC", None)
             .static_crt(true);
@@ -98,17 +100,32 @@ fn main() {
         println!("cargo:rustc-link-search=native={}", libs_dir);
     }
     println!("cargo:rustc-link-lib=static=rcsfml");
-    println!("cargo:rustc-link-lib=static=sfml-system-s");
-    if feat_audio {
-        println!("cargo:rustc-link-lib=static=sfml-audio-s");
-    }
-    if feat_window {
-        println!("LINKING WINDOW",);
-        println!("cargo:rustc-link-lib=static=sfml-window-s");
-    }
-    if feat_graphics {
-        println!("LINKING GRAPHICS",);
-        println!("cargo:rustc-link-lib=static=sfml-graphics-s");
+    if static_linking {
+        println!("cargo:rustc-link-lib=static=sfml-system-s");
+        if feat_audio {
+            println!("cargo:rustc-link-lib=static=sfml-audio-s");
+        }
+        if feat_window {
+            println!("LINKING WINDOW",);
+            println!("cargo:rustc-link-lib=static=sfml-window-s");
+        }
+        if feat_graphics {
+            println!("LINKING GRAPHICS",);
+            println!("cargo:rustc-link-lib=static=sfml-graphics-s");
+        }
+    } else {
+        println!("cargo:rustc-link-lib=dylib=sfml-system");
+        if feat_audio {
+            println!("cargo:rustc-link-lib=dylib=sfml-audio");
+        }
+        if feat_window {
+            println!("LINKING WINDOW",);
+            println!("cargo:rustc-link-lib=dylib=sfml-window");
+        }
+        if feat_graphics {
+            println!("LINKING GRAPHICS",);
+            println!("cargo:rustc-link-lib=dylib=sfml-graphics");
+        }
     }
     #[cfg(windows)]  // i'll figure out linux later
     if env::var("SFML_STATIC").is_ok() {
