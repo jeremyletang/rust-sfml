@@ -15,7 +15,7 @@ use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssi
 /// - `Vector2<f32>` is [`Vector2f`]
 /// - `Vector2<i32>` is [`Vector2i`]
 /// - `Vector2<u32>` is [`Vector2u`]
-///
+/// 
 /// The `Vector2` type has a small and simple interface, its x and y members can be
 /// accessed directly (there are no accessors like `set_x()`, `get_x()`) and it contains no
 /// mathematical function like dot product, cross product, length, etc.
@@ -192,6 +192,23 @@ impl Vector2i {
     pub(crate) fn from_raw(raw: crate::ffi::sfVector2i) -> Self {
         Self { x: raw.x, y: raw.y }
     }
+
+    /// Creates a Vector2i from a Vector2f. Conversion issues may arise from integer overflow and
+    /// floating point truncation.
+    pub fn from_vector2f(vec: Vector2f) -> Self {
+        Self {
+            x: vec.x as i32,
+            y: vec.y as i32,
+        }
+    }
+
+    /// Creates a Vector2i from a Vector2f. Conversion issues may arise from integer overflow.
+    pub fn from_vector2u(vec: Vector2u) -> Self {
+        Self {
+            x: vec.x as i32,
+            y: vec.y as i32,
+        }
+    }
 }
 
 #[cfg(feature = "window")]
@@ -205,6 +222,23 @@ impl Vector2u {
     pub(crate) fn from_raw(raw: crate::ffi::sfVector2u) -> Self {
         Self { x: raw.x, y: raw.y }
     }
+
+    /// Creates a Vector2u from a Vector2f. Conversion issues may arise from negative numbers and
+    /// floating point truncation.
+    pub fn from_vector2f(vec: Vector2f) -> Self {
+        Self {
+            x: vec.x as u32,
+            y: vec.y as u32,
+        }
+    }
+
+    /// Creates a Vector2u from a Vector2i. Conversion issues may arise from negative integers.
+    pub fn from_vector2i(vec: Vector2i) -> Self {
+        Self {
+            x: vec.x as u32,
+            y: vec.y as u32,
+        }
+    }
 }
 
 #[cfg(feature = "graphics")]
@@ -217,5 +251,64 @@ impl Vector2f {
     }
     pub(crate) fn from_raw(raw: crate::ffi::sfVector2f) -> Self {
         Self { x: raw.x, y: raw.y }
+    }
+
+    /// Converts Vector2i to Vector2f.
+    pub fn from_vector2i(vec: Vector2i) -> Self {
+        Self {
+            x: vec.x as f32,
+            y: vec.y as f32,
+        }
+    }
+
+    /// Converts Vector2u to Vector2f.
+    pub fn from_vector2u(vec: Vector2u) -> Self {
+        Self {
+            x: vec.x as f32,
+            y: vec.y as f32,
+        }
+    }
+}
+
+// We just want to ensure non-crashing behavior
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn from_vector2u() {
+        let vu = Vector2u::new(10, 10);
+        let _vi = Vector2i::from_vector2u(vu);
+        let _vf = Vector2f::from_vector2u(vu);
+
+        let ovu = Vector2u::new(u32::MAX, u32::MIN);
+        let _ovi = Vector2i::from_vector2u(ovu);
+        let _ovf = Vector2f::from_vector2u(ovu);
+    }
+
+    #[test]
+    fn from_vector2i() {
+        let vi = Vector2i::new(10, 10);
+        let _vu = Vector2u::from_vector2i(vi);
+        let _vf = Vector2f::from_vector2i(vi);
+
+        let ovi = Vector2i::new(i32::MAX, i32::MIN);
+        let _vu = Vector2u::from_vector2i(ovi);
+        let _vf = Vector2f::from_vector2i(ovi);
+    }
+
+    #[test]
+    fn from_vector2f() {
+        let vf = Vector2f::new(10., 10.);
+        let _vu = Vector2u::from_vector2f(vf);
+        let _vi = Vector2i::from_vector2f(vf);
+
+        let ovf = Vector2f::new(f32::MAX, f32::MIN);
+        let _vu = Vector2u::from_vector2f(ovf);
+        let _vi = Vector2i::from_vector2f(ovf);
+
+        let fovf = Vector2f::new(-1.00303030303030, 1.08080808080808);
+        let _fovu = Vector2u::from_vector2f(fovf);
+        let _fovi = Vector2i::from_vector2f(fovf);
     }
 }

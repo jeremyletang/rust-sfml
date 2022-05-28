@@ -215,4 +215,48 @@ impl Vector3f {
             z: raw.z,
         }
     }
+
+    /// Converts Vector3i to Vector3f.
+    pub fn from_vector3i(vec: Vector3i) -> Self {
+        Self {
+            x: vec.x as f32,
+            y: vec.y as f32,
+            z: vec.z as f32,
+        }
+    }
+}
+
+impl Vector3i {
+    /// Creates a Vector3i from a Vector3f. Conversion issues may arise from integer overflow and
+    /// floating point truncation.
+    pub fn from_vector3f(vec: Vector3f) -> Self {
+        Self {
+            x: vec.x as i32,
+            y: vec.y as i32,
+            z: vec.z as i32,
+        }
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn from_vector3i() {
+        let vi = Vector3i::new(10, 10, 10);
+        let _vf = Vector3f::from_vector3i(vi);
+
+        let ovi = Vector3i::new(i32::MAX, i32::MIN, 0);
+        let _ovf = Vector3f::from_vector3i(ovi);
+    }
+
+    #[test]
+    fn from_vector3f() {
+        let vf = Vector3f::new(10., 10., 10.);
+        let _vi = Vector3i::from_vector3f(vf);
+
+        let ovf = Vector3f::new(f32::MAX, f32::MIN, 0.);
+        let _ovi = Vector3i::from_vector3f(ovf);
+    }
 }

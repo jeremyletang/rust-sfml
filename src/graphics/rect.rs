@@ -125,6 +125,17 @@ impl IntRect {
             height: raw.height,
         }
     }
+
+    /// Creates a IntRect from a FloatRect. Conversion issues may arise from integer overflow and
+    /// floating point truncation.
+    pub fn from_floatrect(rect: FloatRect) -> Self {
+        Self {
+            top: rect.top as i32,
+            left: rect.left as i32,
+            width: rect.width as i32,
+            height: rect.height as i32,
+        }
+    }
 }
 
 impl FloatRect {
@@ -143,5 +154,39 @@ impl FloatRect {
             width: raw.width,
             height: raw.height,
         }
+    }
+
+    /// Creates a FloatRect from a IntRect
+    pub fn from_intrect(rect: IntRect) -> Self {
+        Self {
+            top: rect.top as f32,
+            left: rect.left as f32,
+            width: rect.width as f32,
+            height: rect.height as f32,
+        }
+    }
+}
+
+// We just want to ensure non-crashing behavior
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn from_intrect() {
+        let ir = IntRect::new(10, 10, 10, 10);
+        let _fr = FloatRect::from_intrect(ir);
+
+        let oir = IntRect::new(i32::MAX, i32::MIN, i32::MAX, i32::MIN);
+        let _ofr = FloatRect::from_intrect(oir);
+    }
+
+    #[test]
+    fn from_floatrect() {
+        let fr = FloatRect::new(10., 10., 10., 10.);
+        let _ir = IntRect::from_floatrect(fr);
+
+        let ofr = FloatRect::new(f32::MAX, f32::MIN, f32::MAX, f32::MIN);
+        let _oir = IntRect::from_floatrect(ofr);
     }
 }
