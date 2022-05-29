@@ -58,9 +58,9 @@ macro_rules! lossy_from_impls {
         }
     )*}
 }
-
+// float -> float (differently size)
 lossy_from_impls!(f32, f64; f64, f32);
-
+// f32 -> integer
 lossy_from_impls!(
 f32, i8;
 f32, i16;
@@ -73,7 +73,10 @@ f32, u16;
 f32, u32;
 f32, u64;
 f32, u128;
-f32, usize;
+f32, usize
+);
+// integer -> f32
+lossy_from_impls!(
 i8, f32;
 i16, f32;
 i32, f32;
@@ -87,7 +90,7 @@ u64, f32;
 u128, f32;
 usize, f32
 );
-
+// f64 -> integer
 lossy_from_impls!(
 f64, i8;
 f64, i16;
@@ -100,7 +103,10 @@ f64, u16;
 f64, u32;
 f64, u64;
 f64, u128;
-f64, usize;
+f64, usize
+);
+// integer -> f64
+lossy_from_impls!(
 i8, f64;
 i16, f64;
 i32, f64;
@@ -125,7 +131,7 @@ macro_rules! from_impls {
         }
     )*}
 }
-
+// unsigned -> signed
 from_impls!(
 u8, i16;
 u8, i32;
@@ -137,6 +143,32 @@ u16, i128;
 u32, i64;
 u32, i128;
 u64, i128
+);
+// unsigned -> unsigned (different unsize)
+from_impls!(
+u8, u16;
+u8, u32;
+u8, u64;
+u8, u128;
+u16, u32;
+u16, u64;
+u16, u128;
+u32, u64;
+u32, u128;
+u64, u128
+);
+// signed -> signed (different size)
+from_impls!(
+i8, i16;
+i8, i32;
+i8, i64;
+i8, i128;
+i16, i32;
+i16, i64;
+i16, i128;
+i32, i64;
+i32, i128;
+i64, i128
 );
 
 macro_rules! try_from_impls {
@@ -151,8 +183,9 @@ macro_rules! try_from_impls {
         }
     )*}
 }
-
-try_from_impls!(i8, u8, TryFromIntError;
+// signed -> unsigned
+try_from_impls!(
+i8, u8, TryFromIntError;
 i8, u16, TryFromIntError;
 i8, u32, TryFromIntError;
 i8, u64, TryFromIntError;
@@ -189,7 +222,7 @@ isize, u64, TryFromIntError;
 isize, u128, TryFromIntError;
 isize, usize, TryFromIntError
 );
-
+// unsigned -> signed
 try_from_impls!(
 u8, i8, TryFromIntError;
 u8, isize, TryFromIntError;
@@ -218,7 +251,42 @@ usize, i64, TryFromIntError;
 usize, i128, TryFromIntError;
 usize, isize, TryFromIntError
 );
-
+// unsigned -> unsigned (different size)
+try_from_impls!(
+u16, u8, TryFromIntError;
+u32, u16, TryFromIntError;
+u32, u8, TryFromIntError;
+u64, u32, TryFromIntError;
+u64, u16, TryFromIntError;
+u64, u8, TryFromIntError;
+u128, u64, TryFromIntError;
+u128, u32, TryFromIntError;
+u128, u16, TryFromIntError;
+u128, u8, TryFromIntError;
+usize, u8, TryFromIntError;
+usize, u16, TryFromIntError;
+usize, u32, TryFromIntError;
+usize, u64, TryFromIntError;
+usize, u128, TryFromIntError
+);
+// signed -> signed (different size)
+try_from_impls!(
+i16, i8, TryFromIntError;
+i32, i16, TryFromIntError;
+i32, i8, TryFromIntError;
+i64, i32, TryFromIntError;
+i64, i16, TryFromIntError;
+i64, i8, TryFromIntError;
+i128, i64, TryFromIntError;
+i128, i32, TryFromIntError;
+i128, i16, TryFromIntError;
+i128, i8, TryFromIntError;
+isize, i8, TryFromIntError;
+isize, i16, TryFromIntError;
+isize, i32, TryFromIntError;
+isize, i64, TryFromIntError;
+isize, i128, TryFromIntError
+);
 impl<T> Rect<T> {
     /// Construct a rectangle from its coordinates.
     pub const fn new(left: T, top: T, width: T, height: T) -> Self {
@@ -406,6 +474,32 @@ mod test {
         u128, i64;
         u128, i128
         );
+
+        test_try_froms!(
+        i16, i8;
+        i32, i16;
+        i32, i8;
+        i64, i32;
+        i64, i16;
+        i64, i8;
+        i128, i64;
+        i128, i32;
+        i128, i16;
+        i128, i8
+        );
+
+        test_try_froms!(
+        u16, u8;
+        u32, u16;
+        u32, u8;
+        u64, u32;
+        u64, u16;
+        u64, u8;
+        u128, u64;
+        u128, u32;
+        u128, u16;
+        u128, u8
+        );
     }
 
     #[test]
@@ -431,6 +525,32 @@ mod test {
         u32, i128;
         u64, i128
                 );
+
+        test_froms!(
+        u8, u16;
+        u8, u32;
+        u8, u64;
+        u8, u128;
+        u16, u32;
+        u16, u64;
+        u16, u128;
+        u32, u64;
+        u32, u128;
+        u64, u128
+        );
+
+        test_froms!(
+        i8, i16;
+        i8, i32;
+        i8, i64;
+        i8, i128;
+        i16, i32;
+        i16, i64;
+        i16, i128;
+        i32, i64;
+        i32, i128;
+        i64, i128
+        );
     }
 
     #[test]
