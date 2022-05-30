@@ -61,16 +61,6 @@ impl<T> Vector2<T> {
     pub const fn new(x: T, y: T) -> Self {
         Self { x, y }
     }
-}
-
-impl<T> From<(T, T)> for Vector2<T> {
-    /// Constructs a `Vector2` from `(x, y)`.
-    fn from(src: (T, T)) -> Self {
-        Self { x: src.0, y: src.1 }
-    }
-}
-
-impl<T> Vector2<T> {
     /// Lossless conversion into `Vector2<U>`.
     pub fn into_other<U>(self) -> Vector2<U>
     where
@@ -100,6 +90,13 @@ impl<T> Vector2<T> {
             x: self.x.as_(),
             y: self.y.as_(),
         }
+    }
+}
+
+impl<T> From<(T, T)> for Vector2<T> {
+    /// Constructs a `Vector2` from `(x, y)`.
+    fn from(src: (T, T)) -> Self {
+        Self { x: src.0, y: src.1 }
     }
 }
 
