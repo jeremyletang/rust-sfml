@@ -19,6 +19,9 @@ audio = []
 # Used to skip running certain tests on CI, since it's running in a headless environment.
 ci-headless = []
 
+[dependencies]
+num-traits = "0.2.15"
+
 [dependencies.once_cell]
 version = "1.7.2"
 optional = true

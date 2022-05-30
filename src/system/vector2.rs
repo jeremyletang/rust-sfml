@@ -1,4 +1,8 @@
-use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssign};
+use num_traits::AsPrimitive;
+use std::{
+    convert::TryInto,
+    ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssign},
+};
 
 /// Utility type for manipulating 2-dimensional vectors.
 ///
@@ -56,6 +60,36 @@ impl<T> Vector2<T> {
     /// Creates a new vector from its coordinates.
     pub const fn new(x: T, y: T) -> Self {
         Self { x, y }
+    }
+    /// Lossless conversion into `Vector2<U>`.
+    pub fn into_other<U>(self) -> Vector2<U>
+    where
+        T: Into<U>,
+    {
+        Vector2 {
+            x: self.x.into(),
+            y: self.y.into(),
+        }
+    }
+    /// Fallible conversion into `Vector2<U>`
+    pub fn try_into_other<U>(self) -> Result<Vector2<U>, T::Error>
+    where
+        T: TryInto<U>,
+    {
+        Ok(Vector2 {
+            x: self.x.try_into()?,
+            y: self.y.try_into()?,
+        })
+    }
+    /// Lossy conversion into `Vector2<U>`
+    pub fn as_other<U: 'static + Copy>(self) -> Vector2<U>
+    where
+        T: AsPrimitive<U>,
+    {
+        Vector2 {
+            x: self.x.as_(),
+            y: self.y.as_(),
+        }
     }
 }
 

@@ -1,5 +1,10 @@
+use num_traits::AsPrimitive;
+
 use crate::system::Vector2;
-use std::ops::{Add, Sub};
+use std::{
+    convert::TryInto,
+    ops::{Add, Sub},
+};
 
 use crate::ffi;
 
@@ -40,6 +45,43 @@ impl<T> Rect<T> {
             top: pos.y,
             width: size.x,
             height: size.y,
+        }
+    }
+
+    /// Lossless conversion into `Rect<U>`.
+    pub fn into_other<U>(self) -> Rect<U>
+    where
+        T: Into<U>,
+    {
+        Rect {
+            top: self.top.into(),
+            left: self.left.into(),
+            width: self.width.into(),
+            height: self.height.into(),
+        }
+    }
+    /// Fallible conversion into `Rect<U>`
+    pub fn try_into_other<U>(self) -> Result<Rect<U>, T::Error>
+    where
+        T: TryInto<U>,
+    {
+        Ok(Rect {
+            left: self.left.try_into()?,
+            top: self.top.try_into()?,
+            width: self.width.try_into()?,
+            height: self.height.try_into()?,
+        })
+    }
+    /// Lossy conversion into `Rect<U>`
+    pub fn as_other<U: 'static + Copy>(self) -> Rect<U>
+    where
+        T: AsPrimitive<U>,
+    {
+        Rect {
+            left: self.left.as_(),
+            top: self.top.as_(),
+            width: self.width.as_(),
+            height: self.height.as_(),
         }
     }
 }
