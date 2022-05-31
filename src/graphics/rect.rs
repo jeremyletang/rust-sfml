@@ -10,7 +10,7 @@ use crate::ffi;
 
 /// Utility type for manipulating 2D axis-aligned rectangles.
 #[repr(C)]
-#[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy, Default)]
+#[derive(Clone, PartialEq, Eq, Debug, Copy, Default)]
 pub struct Rect<T> {
     /// Left coordinate of the rectangle.
     pub left: T,
