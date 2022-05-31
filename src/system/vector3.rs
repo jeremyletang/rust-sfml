@@ -42,7 +42,7 @@ use std::{
 ///
 /// [`Vector2`]: crate::system::Vector2
 #[repr(C)]
-#[derive(Clone, PartialOrd, PartialEq, Debug, Copy, Default)]
+#[derive(Clone, PartialEq, Debug, Copy, Default)]
 pub struct Vector3<T> {
     /// X coordinate of the vector.
     pub x: T,
