@@ -84,6 +84,16 @@ impl<T> Rect<T> {
             height: self.height.as_(),
         }
     }
+
+    /// Get the position of the rectangle's top-left corner
+    pub fn position(self) -> Vector2<T> {
+        Vector2::new(self.left, self.top)
+    }
+
+    /// Get the size of the rectangle
+    pub fn size(self) -> Vector2<T> {
+        Vector2::new(self.width, self.height)
+    }
 }
 
 impl<T: PartialOrd + Add<Output = T> + Sub<Output = T> + Copy> Rect<T> {
