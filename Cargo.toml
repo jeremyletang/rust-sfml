@@ -37,6 +37,9 @@ optional = true
 [dependencies.link-cplusplus]
 version = "1.0"
 
+[dependencies.anyhow]
+version = "1.0.57"
+
 [build-dependencies]
 cc = "1.0.67"
 

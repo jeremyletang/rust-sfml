@@ -15,7 +15,13 @@ fn main() {
     window.set_vertical_sync_enabled(true);
 
     let mut vertex_buffer =
-        VertexBuffer::new(PrimitiveType::LINE_STRIP, 6, VertexBufferUsage::STATIC);
+        match VertexBuffer::new(PrimitiveType::LINE_STRIP, 6, VertexBufferUsage::STATIC) {
+            Ok(v) => v,
+            Err(e) => {
+                eprintln!("{}", e);
+                std::process::exit(10);
+            }
+        };
 
     let vertices = [
         Vertex::with_pos_color((20.0, 30.0).into(), Color::GREEN),

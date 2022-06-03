@@ -1,3 +1,4 @@
+use anyhow::{Context, Result};
 use std::ptr::NonNull;
 
 use crate::{
@@ -41,12 +42,20 @@ impl VertexBuffer {
         primitive_type: PrimitiveType,
         vertex_count: u32,
         usage: VertexBufferUsage,
-    ) -> VertexBuffer {
+    ) -> Result<VertexBuffer> {
         let vertex_buffer =
             unsafe { sfVertexBuffer_create(vertex_count, primitive_type.0, usage.0) };
-        VertexBuffer {
-            vertex_buffer: NonNull::new(vertex_buffer).expect("Failed to create VertexBuffer"),
-        }
+        Ok(VertexBuffer {
+            vertex_buffer: NonNull::new(vertex_buffer).context("Failed to create VertexBuffer")?,
+        })
+    }
+
+    /// Fallible clone for vertex buffer
+    pub fn try_clone(&self) -> Result<VertexBuffer> {
+        let vertex_buffer = unsafe { sfVertexBuffer_copy(self.vertex_buffer.as_ptr()) };
+        Ok(VertexBuffer {
+            vertex_buffer: NonNull::new(vertex_buffer).context("Failed to clone VertexBuffer")?,
+        })
     }
 
     /// Return the vertex count of a vertex buffer
@@ -188,9 +197,9 @@ impl VertexBuffer {
     ///
     /// // ...
     ///
-    /// VertexBuffer::bind(Some(&vb1));
+    /// VertexBuffer::bind(Some(&vb1.unwrap()));
     /// // draw OpenGL stuff that use vb1...
-    /// VertexBuffer::bind(Some(&vb2));
+    /// VertexBuffer::bind(Some(&vb2.unwrap()));
     /// // draw OpenGL stuff that use vb2...
     /// VertexBuffer::bind(None);
     /// // draw OpenGL stuff that use no vertex buffer...
@@ -221,16 +230,6 @@ impl VertexBuffer {
 
     pub(super) fn raw(&self) -> *const sfVertexBuffer {
         self.vertex_buffer.as_ptr()
-    }
-}
-
-impl Clone for VertexBuffer {
-    /// Return a new `VertexBuffer` or panic! if the copy fails
-    fn clone(&self) -> VertexBuffer {
-        let vertex_buffer = unsafe { sfVertexBuffer_copy(self.vertex_buffer.as_ptr()) };
-        VertexBuffer {
-            vertex_buffer: NonNull::new(vertex_buffer).expect("Failed to clone VertexBuffer"),
-        }
     }
 }
 
