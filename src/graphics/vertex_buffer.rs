@@ -1,5 +1,5 @@
-use anyhow::{Context, Result};
 use std::ptr::NonNull;
+use thiserror::Error;
 
 use crate::{
     ffi::graphics::*,
@@ -31,6 +31,12 @@ pub struct VertexBuffer {
     vertex_buffer: NonNull<sfVertexBuffer>,
 }
 
+#[derive(Debug, Error)]
+pub enum VertexBufferError {
+    #[error("`{0}`")]
+    Message(String),
+}
+
 impl VertexBuffer {
     /// Create a new initialized vertex buffer
     ///
@@ -42,19 +48,34 @@ impl VertexBuffer {
         primitive_type: PrimitiveType,
         vertex_count: u32,
         usage: VertexBufferUsage,
-    ) -> Result<VertexBuffer> {
+    ) -> Result<VertexBuffer, VertexBufferError> {
         let vertex_buffer =
             unsafe { sfVertexBuffer_create(vertex_count, primitive_type.0, usage.0) };
+
         Ok(VertexBuffer {
-            vertex_buffer: NonNull::new(vertex_buffer).context("Failed to create VertexBuffer")?,
+            vertex_buffer: match NonNull::new(vertex_buffer) {
+                Some(v) => v,
+                None => {
+                    return Err(VertexBufferError::Message(
+                        "Failed to create VertexBuffer".to_owned(),
+                    ));
+                }
+            },
         })
     }
 
     /// Fallible clone for vertex buffer
-    pub fn try_clone(&self) -> Result<VertexBuffer> {
+    pub fn try_clone(&self) -> Result<VertexBuffer, VertexBufferError> {
         let vertex_buffer = unsafe { sfVertexBuffer_copy(self.vertex_buffer.as_ptr()) };
         Ok(VertexBuffer {
-            vertex_buffer: NonNull::new(vertex_buffer).context("Failed to clone VertexBuffer")?,
+            vertex_buffer: match NonNull::new(vertex_buffer) {
+                Some(v) => v,
+                None => {
+                    return Err(VertexBufferError::Message(
+                        "Failed to clone VertexBuffer".to_owned(),
+                    ));
+                }
+            },
         })
     }
 
