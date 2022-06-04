@@ -12,6 +12,11 @@ use std::{
     ptr::{self, NonNull},
 };
 
+/// !! WARNING !!
+/// Currently there is no way to store sprites in a struct. All sprites must be made right before
+/// render or passed as a variable. This is due to lifetime conflicts between `Texture` and `Sprite`.
+/// Fortunately, `Sprite` is very lightweight to construct.
+
 /// Drawable representation of a texture
 ///
 /// Sprite is a drawable type that allows to easily

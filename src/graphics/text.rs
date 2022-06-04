@@ -8,6 +8,11 @@ use crate::{
 };
 use std::{marker::PhantomData, ptr::NonNull};
 
+/// !! WARNING !!
+/// Currently there is no way to store text in a struct. All texts must be made right before
+/// render or passed as a variable. This is due to lifetime conflicts between `Font` and `Text`. 
+/// Fortunately, `Text` is very lightweight to construct. 
+
 /// Graphical text
 ///
 /// Text is a drawable type that allows to easily
