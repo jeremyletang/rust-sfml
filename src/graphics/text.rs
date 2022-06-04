@@ -8,15 +8,17 @@ use crate::{
 };
 use std::{marker::PhantomData, ptr::NonNull};
 
-/// !! WARNING !!
-/// Currently there is no way to store text in a struct. All texts must be made right before
-/// render or passed as a variable. This is due to lifetime conflicts between `Font` and `Text`. 
-/// Fortunately, `Text` is very lightweight to construct. 
-
 /// Graphical text
 ///
 /// Text is a drawable type that allows to easily
 /// display some text with custom style and color on a render target.
+///
+/// <strong>Note:</strong>
+/// Currently, it is not feasible to store text long term.
+/// A common pattern with rust-sfml is to create a `Text` right before you start drawing,
+/// and draw all the text you want with it. You can change its properties using
+/// `set_font`, `set_position`, `set_string`, etc., before drawing it, as many times as you need
+/// to.
 #[derive(Debug)]
 pub struct Text<'s> {
     text: NonNull<ffi::sfText>,

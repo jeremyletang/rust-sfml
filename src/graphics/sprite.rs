@@ -12,15 +12,16 @@ use std::{
     ptr::{self, NonNull},
 };
 
-/// !! WARNING !!
-/// Currently there is no way to store sprites in a struct. All sprites must be made right before
-/// render or passed as a variable. This is due to lifetime conflicts between `Texture` and `Sprite`.
-/// Fortunately, `Sprite` is very lightweight to construct.
-
 /// Drawable representation of a texture
 ///
 /// Sprite is a drawable type that allows to easily
 /// display a [`Texture`] (or a part of it) on a render target.
+///
+/// <strong>Note:</strong>
+/// Currently, it is not feasible to store sprites long term.
+/// A common pattern with rust-sfml is to create a `Sprite` right before you start drawing,
+/// and draw all the sprites you want with it. You can change its properties using
+/// `set_texture`, `set_position`, etc., before drawing it, as many times as you need to.
 #[derive(Debug)]
 pub struct Sprite<'s> {
     sprite: NonNull<ffi::sfSprite>,
