@@ -32,7 +32,7 @@ impl<T: SfResource> DerefMut for SfBox<T> {
 
 impl<T: SfResource> Borrow<T> for SfBox<T> {
     fn borrow(&self) -> &T {
-        &*self
+        self
     }
 }
 
