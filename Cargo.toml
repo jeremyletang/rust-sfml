@@ -41,7 +41,7 @@ version = "1.0"
 cc = "1.0.67"
 
 [build-dependencies.bindgen]
-version = "0.59.1"
+version = "0.60.1"
 default-features = false
 
 [dev-dependencies]
