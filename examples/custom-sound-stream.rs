@@ -55,6 +55,6 @@ fn main() {
     let mut player = SoundStreamPlayer::new(&mut stream);
     player.play();
     while player.status() == SoundStatus::PLAYING {
-        ::std::thread::sleep(::std::time::Duration::from_millis(100));
+        std::thread::sleep(std::time::Duration::from_millis(100));
     }
 }

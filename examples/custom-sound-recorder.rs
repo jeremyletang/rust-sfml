@@ -9,7 +9,7 @@ impl SoundRecorder for FileRecorder {
     fn on_process_samples(&mut self, data: &[i16]) -> bool {
         self.file
             .write_all(unsafe {
-                ::std::slice::from_raw_parts(data.as_ptr() as *const u8, data.len() * 2)
+                std::slice::from_raw_parts(data.as_ptr() as *const u8, data.len() * 2)
             })
             .unwrap();
         true
@@ -29,7 +29,7 @@ fn main() {
     recorder.start(44_100);
     let mut left = 5000;
     while left > 0 {
-        ::std::thread::sleep(::std::time::Duration::from_millis(100));
+        std::thread::sleep(std::time::Duration::from_millis(100));
         left -= 100;
         print!("You have {} left to record\r", left);
         let _ = std::io::stdout().flush();
