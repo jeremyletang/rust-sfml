@@ -39,7 +39,7 @@ use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssi
 /// [`Vector3`]: crate::system::Vector3
 #[repr(C)]
 #[derive(Clone, PartialOrd, Ord, PartialEq, Eq, Debug, Copy, Default)]
-#[cfg_attr(feature = "serde-vec", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 pub struct Vector2<T> {
     /// X coordinate of the vector.
     pub x: T,
