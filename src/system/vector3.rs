@@ -136,26 +136,6 @@ impl_ops!(Sub, sub, i32, u32, f32);
 impl_ops!(Mul, mul, i32, u32, f32);
 impl_ops!(Div, div, i32, u32, f32);
 
-macro_rules! impl_conv {
-    ( $($_type:ty => $($_conv_type:ty),+);+ $(;)?) => {
-        $(
-            $(
-                impl From<Vector3<$_conv_type>> for Vector3<$_type> {
-                    fn from(vec: Vector3<$_conv_type>) -> Self {
-                        Self{x: vec.x as $_type, y: vec.y as $_type, z: vec.z as $_type}
-                    }
-                }
-            )+
-        )+
-    }
-}
-
-impl_conv!(
-    i32 => u32, f32;
-    u32 => i32, f32;
-    f32 => i32, u32;
-);
-
 impl<T: Add> Add for Vector3<T> {
     type Output = Vector3<T::Output>;
 
