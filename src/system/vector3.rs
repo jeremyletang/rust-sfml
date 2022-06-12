@@ -1,4 +1,4 @@
-#[cfg(feature = "serde-vec")]
+#[cfg(feature = "serde")]
 use serde::{Deserialize, Serialize};
 use std::{
     convert::TryInto,
