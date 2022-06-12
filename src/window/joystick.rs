@@ -51,8 +51,7 @@
 //! [`update`]: update
 //!
 
-use crate::sf_bool_ext::SfBoolExt;
-use csfml_window_sys as ffi;
+use crate::{ffi::window as ffi, sf_bool_ext::SfBoolExt, SfBox};
 
 /// Maximum number of supported joysticks.
 pub const COUNT: u32 = 8;
@@ -85,17 +84,6 @@ impl Axis {
     pub const POV_Y: Self = Self(ffi::sfJoystickAxis_sfJoystickPovY);
 }
 
-/// Structure holding a joystick's identification.
-#[derive(Debug)]
-pub struct Identification {
-    /// Name of the joystick.
-    pub name: String,
-    /// Manufacturer identifier.
-    pub vendor_id: u32,
-    /// Product identifier.
-    pub product_id: u32,
-}
-
 /// Check if the joystick is connected
 ///
 /// # Arguments
@@ -104,7 +92,7 @@ pub struct Identification {
 /// Return true if the joystick is connected, false otherwise
 #[must_use]
 pub fn is_connected(joystick: u32) -> bool {
-    unsafe { ffi::sfJoystick_isConnected(joystick).to_bool() }
+    unsafe { ffi::sfJoystick_isConnected(joystick).into_bool() }
 }
 
 /// Return the number of buttons supported by a joystick
@@ -129,7 +117,7 @@ pub fn button_count(joystick: u32) -> u32 {
 /// Return true if the joystick supports the axis, false otherwise
 #[must_use]
 pub fn has_axis(joystick: u32, axis: Axis) -> bool {
-    unsafe { ffi::sfJoystick_hasAxis(joystick, axis.0).to_bool() }
+    unsafe { ffi::sfJoystick_hasAxis(joystick, axis.0).into_bool() }
 }
 
 /// Check if the button is pressed on a given joystick.
@@ -143,7 +131,7 @@ pub fn has_axis(joystick: u32, axis: Axis) -> bool {
 /// Return true if the button is pressed, false otherwise
 #[must_use]
 pub fn is_button_pressed(joystick: u32, button: u32) -> bool {
-    unsafe { ffi::sfJoystick_isButtonPressed(joystick, button).to_bool() }
+    unsafe { ffi::sfJoystick_isButtonPressed(joystick, button).into_bool() }
 }
 
 /// Get the current position on a given axis, on a given joystick.
@@ -174,14 +162,21 @@ pub fn update() {
 
 /// Get the joystick information.
 #[must_use]
-pub fn identification(joystick: u32) -> Identification {
-    use std::ffi::CStr;
+pub fn identification(joystick: u32) -> SfBox<ffi::JoystickIdentification> {
+    unsafe {
+        SfBox::new(ffi::sfJoystick_getIdentification(joystick))
+            .expect("Failed to create JoystickIdentification")
+    }
+}
 
-    let raw = unsafe { ffi::sfJoystick_getIdentification(joystick) };
-
-    Identification {
-        name: unsafe { CStr::from_ptr(raw.name).to_string_lossy().into_owned() },
-        vendor_id: raw.vendorId,
-        product_id: raw.productId,
+impl ffi::JoystickIdentification {
+    pub fn name(&self) -> &crate::ffi::system::sfString {
+        unsafe { &*ffi::sfJoystickIdentification_getName(self) }
+    }
+    pub fn vendor_id(&self) -> u32 {
+        unsafe { ffi::sfJoystickIdentification_getVendorId(self) }
+    }
+    pub fn product_id(&self) -> u32 {
+        unsafe { ffi::sfJoystickIdentification_getProductId(self) }
     }
 }

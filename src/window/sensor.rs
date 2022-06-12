@@ -46,8 +46,7 @@
 //! [`ORIENTATION`]: Type::ORIENTATION
 //!
 
-use crate::{sf_bool_ext::SfBoolExt, system::Vector3f};
-use csfml_window_sys::*;
+use crate::{ffi::*, sf_bool_ext::SfBoolExt, system::Vector3f};
 
 /// Get the current sensor value.
 #[must_use]
@@ -58,7 +57,7 @@ pub fn value(sensor: Type) -> Vector3f {
 /// Check if a sensor is available on the underlying platform.
 #[must_use]
 pub fn is_available(sensor: Type) -> bool {
-    unsafe { sfSensor_isAvailable(sensor.0).to_bool() }
+    unsafe { sfSensor_isAvailable(sensor.0).into_bool() }
 }
 
 /// Enable or disable a sensor.

@@ -1,4 +1,4 @@
-use csfml_audio_sys as ffi;
+use crate::ffi;
 /// Enumeration of statuses for sounds and musics
 #[repr(transparent)]
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]

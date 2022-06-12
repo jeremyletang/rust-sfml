@@ -1,18 +1,19 @@
 use crate::{
+    ffi::{
+        graphics::{self as ffi, sfTexture_create},
+        sfBool,
+    },
     graphics::{Image, IntRect, RenderWindow},
-    inputstream::InputStream,
     sf_bool_ext::SfBoolExt,
     sf_box::{Dispose, SfBox},
-    system::Vector2u,
+    system::{InputStream, Vector2u},
     window::Window,
+    LoadResult,
 };
-use csfml_graphics_sys as ffi;
-use csfml_system_sys::sfBool;
 use std::{
     borrow::ToOwned,
     ffi::CString,
     io::{Read, Seek},
-    ptr,
 };
 
 /// [`Image`] living on the graphics card that can be used for drawing.
@@ -37,7 +38,7 @@ use std::{
 /// most common cases.
 /// However, if you want to perform some modifications on the pixels before creating the
 /// final texture, you can load your file to a [`Image`], do whatever you need with the pixels,
-/// and then call [`Texture::from_image`].
+/// and then call [`Texture::load_from_image`].
 ///
 /// Since they live in the graphics card memory,
 /// the pixels of a texture cannot be accessed without a slow copy first.
@@ -72,14 +73,14 @@ impl Texture {
     /// Return true if smoothing is enabled, false if it is disabled
     #[must_use]
     pub fn is_smooth(&self) -> bool {
-        unsafe { ffi::sfTexture_isSmooth(self.raw()) }.to_bool()
+        unsafe { ffi::sfTexture_isSmooth(self.raw()) }.into_bool()
     }
     /// Tell whether a texture is repeated or not
     ///
     /// Return frue if repeat mode is enabled, false if it is disabled
     #[must_use]
     pub fn is_repeated(&self) -> bool {
-        unsafe { ffi::sfTexture_isRepeated(self.raw()) }.to_bool()
+        unsafe { ffi::sfTexture_isRepeated(self.raw()) }.into_bool()
     }
     /// Copy a texture's pixels to an image
     ///
@@ -96,7 +97,7 @@ impl Texture {
     /// Tell whether the texture source is converted from sRGB or not.
     #[must_use]
     pub fn is_srgb(&self) -> bool {
-        unsafe { ffi::sfTexture_isSrgb(self.raw()).to_bool() }
+        unsafe { ffi::sfTexture_isSrgb(self.raw()).into_bool() }
     }
     /// Get the underlying OpenGL handle of the texture.
     ///
@@ -127,12 +128,22 @@ impl Texture {
     ///
     /// Returns `None` on failure.
     #[must_use]
-    pub fn new(width: u32, height: u32) -> Option<SfBox<Texture>> {
-        let tex = unsafe { ffi::sfTexture_create(width, height) };
+    pub fn new() -> Option<SfBox<Texture>> {
+        let tex = unsafe { ffi::sfTexture_new() };
         SfBox::new(tex as *mut Self)
     }
 
-    /// Create a new texture from memory
+    /// Create the texture.
+    ///
+    /// If this function fails, the texture is left unchanged.
+    ///
+    /// Returns whether creation was successful.
+    #[must_use = "Check if texture was created successfully"]
+    pub fn create(&mut self, width: u32, height: u32) -> bool {
+        unsafe { sfTexture_create(self.raw_mut(), width, height).into_bool() }
+    }
+
+    /// Load texture from memory
     ///
     /// The `area` argument can be used to load only a sub-rectangle of the whole image.
     /// If you want the entire image then use a default [`IntRect`].
@@ -142,17 +153,19 @@ impl Texture {
     /// # Arguments
     /// * mem - Pointer to the file data in memory
     /// * area - Area of the image to load
-    ///
-    /// Returns `None` on failure.
-    #[must_use]
-    pub fn from_memory(mem: &[u8], area: &IntRect) -> Option<SfBox<Texture>> {
-        let tex = unsafe {
-            ffi::sfTexture_createFromMemory(mem.as_ptr() as *const _, mem.len(), &area.raw())
-        };
-        SfBox::new(tex as *mut Self)
+    pub fn load_from_memory(&mut self, mem: &[u8], area: IntRect) -> LoadResult<()> {
+        unsafe {
+            ffi::sfTexture_loadFromMemory(
+                self.raw_mut(),
+                mem.as_ptr() as *const _,
+                mem.len(),
+                area.raw(),
+            )
+            .into_load_result()
+        }
     }
 
-    /// Create a new texture from a stream (a struct implementing Read + Seek)
+    /// Load texture from a stream (a struct implementing Read + Seek)
     ///
     /// The `area` argument can be used to load only a sub-rectangle of the whole image.
     /// If you want the entire image then use a default [`IntRect`].
@@ -162,97 +175,95 @@ impl Texture {
     /// # Arguments
     /// * stream - Your struct, implementing Read and Seek
     /// * area - Area of the image to load
-    ///
-    /// Returns `None` on failure.
-    pub fn from_stream<T: Read + Seek>(
+    pub fn load_from_stream<T: Read + Seek>(
+        &mut self,
         stream: &mut T,
-        area: &mut IntRect,
-    ) -> Option<SfBox<Texture>> {
+        area: IntRect,
+    ) -> LoadResult<()> {
         let mut input_stream = InputStream::new(stream);
-        let tex = unsafe { ffi::sfTexture_createFromStream(&mut input_stream.0, &area.raw()) };
-        SfBox::new(tex as *mut Self)
+        unsafe {
+            ffi::sfTexture_loadFromStream(self.raw_mut(), &mut *input_stream.stream, area.raw())
+                .into_load_result()
+        }
     }
 
-    /// Create a new texture from a file
+    /// Load texture from a file
     ///
     /// # Arguments
     /// * filename - Path of the image file to load
-    ///
-    /// Returns `None` on failure.
-    #[must_use]
-    pub fn from_file(filename: &str) -> Option<SfBox<Texture>> {
+    pub fn load_from_file(&mut self, filename: &str, area: IntRect) -> LoadResult<()> {
         let c_str = CString::new(filename).unwrap();
-        let tex = unsafe { ffi::sfTexture_createFromFile(c_str.as_ptr(), ptr::null()) };
-        SfBox::new(tex as *mut Self)
+        unsafe {
+            ffi::sfTexture_loadFromFile(self.raw_mut(), c_str.as_ptr(), area.raw())
+                .into_load_result()
+        }
     }
 
-    /// Create a new texture from a file with a given area
-    ///
-    /// # Arguments
-    /// * filename - Path of the image file to load
-    /// * area - Area of the source image to load
-    ///
-    /// Returns `None` on failure.
-    #[must_use]
-    pub fn from_file_with_rect(filename: &str, area: &IntRect) -> Option<SfBox<Texture>> {
-        let c_str = CString::new(filename).unwrap();
-        let tex = unsafe { ffi::sfTexture_createFromFile(c_str.as_ptr(), &area.raw()) };
-        SfBox::new(tex as *mut Self)
+    /// Convenience method to easily create and load a `Texture` from a file.
+    pub fn from_file(filename: &str) -> LoadResult<SfBox<Self>> {
+        let mut new = Self::new().expect("Failed to create texture");
+        new.load_from_file(filename, IntRect::default())?;
+        Ok(new)
     }
 
-    /// Create a new texture from an image
+    /// Load texture from an image
     ///
     /// # Arguments
     /// * image - Image to upload to the texture
-    /// * area - Area of the source image to load
-    ///
-    /// Returns `None` on failure.
-    #[must_use]
-    pub fn from_image_with_rect(image: &Image, area: &IntRect) -> Option<SfBox<Texture>> {
-        let tex = unsafe { ffi::sfTexture_createFromImage(image.raw(), &area.raw()) };
-        SfBox::new(tex as *mut Self)
+    pub fn load_from_image(&mut self, image: &Image, area: IntRect) -> LoadResult<()> {
+        unsafe {
+            ffi::sfTexture_loadFromImage(self.raw_mut(), image.raw(), area.raw()).into_load_result()
+        }
     }
 
-    /// Create a new texture from an image
+    /// Update a part of the texture from the contents of a window.
     ///
-    /// # Arguments
-    /// * image - Image to upload to the texture
+    /// This function does nothing if either the texture or the window was not previously created.
     ///
-    /// Returns `None` on failure.
-    #[must_use]
-    pub fn from_image(image: &Image) -> Option<SfBox<Texture>> {
-        let tex = unsafe { ffi::sfTexture_createFromImage(image.raw(), ptr::null()) };
-        SfBox::new(tex as *mut Self)
+    /// # Safety
+    /// No additional check is performed on the size of the window, passing an invalid combination
+    /// of window size and offset will lead to an _undefined behavior_.
+    pub unsafe fn update_from_window(&mut self, window: &Window, x: u32, y: u32) {
+        ffi::sfTexture_updateFromWindow(self.raw_mut(), window.raw(), x, y)
     }
 
-    /// Update a texture from the contents of a window
+    /// Update a part of the texture from the contents of a render window.
     ///
-    /// # Arguments
-    /// * window - Window to copy to the texture
-    /// * x - X offset in the texture where to copy the source pixels
-    /// * y - Y offset in the texture where to copy the source pixels
-    pub fn update_from_window(&mut self, window: &Window, x: u32, y: u32) {
-        unsafe { ffi::sfTexture_updateFromWindow(self.raw_mut(), window.raw(), x, y) }
+    /// This function does nothing if either the texture or the window was not previously created.
+    ///
+    /// # Safety
+    /// No additional check is performed on the size of the window, passing an invalid combination
+    /// of window size and offset will lead to an _undefined behavior_.
+    pub unsafe fn update_from_render_window(
+        &mut self,
+        render_window: &RenderWindow,
+        x: u32,
+        y: u32,
+    ) {
+        ffi::sfTexture_updateFromRenderWindow(self.raw_mut(), render_window.raw(), x, y)
     }
 
-    /// Update a texture from the contents of a render window
+    /// Update a part of the texture from an image.
     ///
-    /// # Arguments
-    /// * renderWindow - Render-window to copy to the texture
-    /// * x - X offset in the texture where to copy the source pixels
-    /// * y - Y offset in the texture where to copy the source pixels
-    pub fn update_from_render_window(&mut self, render_window: &RenderWindow, x: u32, y: u32) {
-        unsafe { ffi::sfTexture_updateFromRenderWindow(self.raw_mut(), render_window.raw(), x, y) }
+    /// This function does nothing if the texture was not previously created.
+    ///
+    /// # Safety
+    /// No additional check is performed on the size of the image, passing an invalid combination
+    /// of image size and offset will lead to an _undefined behavior_.
+    pub unsafe fn update_from_image(&mut self, image: &Image, x: u32, y: u32) {
+        ffi::sfTexture_updateFromImage(self.raw_mut(), image.raw(), x, y)
     }
 
-    /// Update a texture from the contents of an image
+    /// Update a part of this texture from another texture.
     ///
-    /// # Arguments
-    /// * image - Image to copy to the texture
-    /// * x - X offset in the texture where to copy the source pixels
-    /// * y - Y offset in the texture where to copy the source pixels
-    pub fn update_from_image(&mut self, image: &Image, x: u32, y: u32) {
-        unsafe { ffi::sfTexture_updateFromImage(self.raw_mut(), image.raw(), x, y) }
+    /// This function does nothing if either texture was not previously created.
+    ///
+    /// # Safety
+    /// No additional check is performed on the size of the texture,
+    /// passing an invalid combination of texture size and offset will
+    /// lead to an _undefined behavior_.
+    pub unsafe fn update_from_texture(&mut self, texture: &Texture, x: u32, y: u32) {
+        ffi::sfTexture_updateFromTexture(self.raw_mut(), texture.raw(), x, y)
     }
 
     /// Update a part of the texture from an array of pixels.
@@ -351,7 +362,11 @@ impl Texture {
     ///
     /// Returns true if mipmap generation was successful, false if unsuccessful.
     pub fn generate_mipmap(&mut self) -> bool {
-        unsafe { ffi::sfTexture_generateMipmap(self.raw_mut()).to_bool() }
+        unsafe { ffi::sfTexture_generateMipmap(self.raw_mut()).into_bool() }
+    }
+    /// Swap the contents of this texture with those of another.
+    pub fn swap(&mut self, other: &mut Texture) {
+        unsafe { ffi::sfTexture_swap(self.raw_mut(), other.raw_mut()) }
     }
 }
 

@@ -1,7 +1,7 @@
 use crate::{
     graphics::{
         CircleShape, Color, ConvexShape, CustomShape, Drawable, IntRect, PrimitiveType,
-        RectangleShape, RenderStates, Sprite, Text, Vertex, VertexArray, VertexBuffer, View,
+        RectangleShape, RenderStates, Sprite, Text, Vertex, VertexBuffer, View,
     },
     system::{Vector2f, Vector2i, Vector2u},
 };
@@ -218,9 +218,6 @@ pub trait RenderTarget {
 
     /// Draw `ConvexShape`
     fn draw_convex_shape(&self, convex_shape: &ConvexShape, rs: &RenderStates);
-
-    /// Draw `VertexArray`
-    fn draw_vertex_array(&self, vertex_array: &VertexArray, rs: &RenderStates);
 
     /// Draw `VertexBuffer`
     fn draw_vertex_buffer(&self, vertex_buffer: &VertexBuffer, rs: &RenderStates);

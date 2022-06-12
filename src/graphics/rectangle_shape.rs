@@ -1,4 +1,5 @@
 use crate::{
+    ffi::{graphics as ffi, sfBool, sfTrue},
     graphics::{
         Color, Drawable, FloatRect, IntRect, RenderStates, RenderTarget, Shape, Texture, Transform,
         Transformable,
@@ -6,8 +7,6 @@ use crate::{
     sf_bool_ext::SfBoolExt,
     system::Vector2f,
 };
-use csfml_graphics_sys as ffi;
-use csfml_system_sys::{sfBool, sfTrue};
 use std::{marker::PhantomData, ptr};
 
 /// Specialized shape representing a rectangle
@@ -42,6 +41,15 @@ impl<'s> RectangleShape<'s> {
     pub fn with_size(size: Vector2f) -> RectangleShape<'s> {
         let mut shape = Self::new();
         shape.set_size(size);
+        shape
+    }
+
+    /// Returns a new `RectangleShape` created from a [`FloatRect`].
+    #[must_use]
+    pub fn from_rect(rect: FloatRect) -> Self {
+        let mut shape = Self::new();
+        shape.set_size((rect.width, rect.height));
+        shape.set_position((rect.left, rect.top));
         shape
     }
 
@@ -116,14 +124,10 @@ impl<'s> Transformable for RectangleShape<'s> {
         unsafe { ffi::sfRectangleShape_scale(self.rectangle_shape, factors.into().raw()) }
     }
     fn transform(&self) -> Transform {
-        unsafe { Transform(ffi::sfRectangleShape_getTransform(self.rectangle_shape)) }
+        unsafe { ffi::sfRectangleShape_getTransform(self.rectangle_shape) }
     }
     fn inverse_transform(&self) -> Transform {
-        unsafe {
-            Transform(ffi::sfRectangleShape_getInverseTransform(
-                self.rectangle_shape,
-            ))
-        }
+        unsafe { ffi::sfRectangleShape_getInverseTransform(self.rectangle_shape) }
     }
 }
 
@@ -176,7 +180,6 @@ impl<'s> Shape<'s> for RectangleShape<'s> {
         unsafe { ffi::sfRectangleShape_getOutlineThickness(self.rectangle_shape) }
     }
     fn point_count(&self) -> u32 {
-        use std::convert::TryInto;
         unsafe {
             ffi::sfRectangleShape_getPointCount(self.rectangle_shape)
                 .try_into()

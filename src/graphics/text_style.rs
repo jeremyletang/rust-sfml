@@ -12,6 +12,8 @@ bitflags::bitflags! {
         const ITALIC = 2;
         /// Underlined characters.
         const UNDERLINED = 4;
+        /// Strikethrough
+        const STRIKETHROUGH = 8;
     }
 }
 

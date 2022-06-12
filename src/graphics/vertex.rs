@@ -1,5 +1,4 @@
 use crate::{graphics::Color, system::Vector2f};
-use csfml_graphics_sys as ffi;
 
 /// Define a point with color and texture coordinates.
 ///
@@ -67,7 +66,7 @@ impl Vertex {
         }
     }
 
-    /// Create a new Vertex whit a position
+    /// Create a new Vertex with a position
     ///
     /// # Arguments
     /// * position - Position of the vertex
@@ -97,7 +96,7 @@ impl Vertex {
         Self::new(position, color, Vector2f::new(0., 0.))
     }
 
-    /// Create a new Vertex whit the position and the texture coordinates
+    /// Create a new Vertex with the position and the texture coordinates
     ///
     /// # Arguments
     /// * position - Position of the vertex
@@ -110,13 +109,6 @@ impl Vertex {
     #[must_use]
     pub const fn with_pos_coords(position: Vector2f, tex_coords: Vector2f) -> Vertex {
         Self::new(position, Color::WHITE, tex_coords)
-    }
-    pub(super) fn raw(&self) -> ffi::sfVertex {
-        ffi::sfVertex {
-            position: self.position.raw(),
-            color: self.color.0,
-            texCoords: self.tex_coords.raw(),
-        }
     }
 }
 

@@ -1,11 +1,16 @@
-use crate::system::Vector2;
-use std::ops::{Add, Sub};
+use num_traits::AsPrimitive;
 
-use csfml_graphics_sys as ffi;
+use crate::system::Vector2;
+use std::{
+    convert::TryInto,
+    ops::{Add, Sub},
+};
+
+use crate::ffi;
 
 /// Utility type for manipulating 2D axis-aligned rectangles.
 #[repr(C)]
-#[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy, Default)]
+#[derive(Clone, PartialEq, Eq, Debug, Copy, Default)]
 pub struct Rect<T> {
     /// Left coordinate of the rectangle.
     pub left: T,
@@ -41,6 +46,53 @@ impl<T> Rect<T> {
             width: size.x,
             height: size.y,
         }
+    }
+
+    /// Lossless conversion into `Rect<U>`.
+    pub fn into_other<U>(self) -> Rect<U>
+    where
+        T: Into<U>,
+    {
+        Rect {
+            top: self.top.into(),
+            left: self.left.into(),
+            width: self.width.into(),
+            height: self.height.into(),
+        }
+    }
+    /// Fallible conversion into `Rect<U>`
+    pub fn try_into_other<U>(self) -> Result<Rect<U>, T::Error>
+    where
+        T: TryInto<U>,
+    {
+        Ok(Rect {
+            left: self.left.try_into()?,
+            top: self.top.try_into()?,
+            width: self.width.try_into()?,
+            height: self.height.try_into()?,
+        })
+    }
+    /// Lossy conversion into `Rect<U>`
+    pub fn as_other<U: 'static + Copy>(self) -> Rect<U>
+    where
+        T: AsPrimitive<U>,
+    {
+        Rect {
+            left: self.left.as_(),
+            top: self.top.as_(),
+            width: self.width.as_(),
+            height: self.height.as_(),
+        }
+    }
+
+    /// Get the position of the rectangle's top-left corner
+    pub fn position(self) -> Vector2<T> {
+        Vector2::new(self.left, self.top)
+    }
+
+    /// Get the size of the rectangle
+    pub fn size(self) -> Vector2<T> {
+        Vector2::new(self.width, self.height)
     }
 }
 

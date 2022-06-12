@@ -1,6 +1,11 @@
 #[cfg(feature = "serde-vec")]
 use serde::{Deserialize, Serialize};
-use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssign};
+use std::{
+    convert::TryInto,
+    ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssign},
+};
+
+use num_traits::AsPrimitive;
 
 /// Utility type for manipulating 3-dimensional vectors.
 ///
@@ -40,7 +45,7 @@ use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssi
 ///
 /// [`Vector2`]: crate::system::Vector2
 #[repr(C)]
-#[derive(Clone, PartialOrd, PartialEq, Debug, Copy, Default)]
+#[derive(Clone, PartialEq, Debug, Copy, Default)]
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 pub struct Vector3<T> {
     /// X coordinate of the vector.
@@ -55,6 +60,39 @@ impl<T> Vector3<T> {
     /// Create a new `Vector3` with the given values.
     pub const fn new(x: T, y: T, z: T) -> Self {
         Self { x, y, z }
+    }
+    /// Lossless conversion into `Vector3<U>`.
+    pub fn into_other<U>(self) -> Vector3<U>
+    where
+        T: Into<U>,
+    {
+        Vector3 {
+            x: self.x.into(),
+            y: self.y.into(),
+            z: self.z.into(),
+        }
+    }
+    /// Fallible conversion into `Vector3<U>`
+    pub fn try_into_other<U>(self) -> Result<Vector3<U>, T::Error>
+    where
+        T: TryInto<U>,
+    {
+        Ok(Vector3 {
+            x: self.x.try_into()?,
+            y: self.y.try_into()?,
+            z: self.z.try_into()?,
+        })
+    }
+    /// Lossy conversion into `Vector3<U>`
+    pub fn as_other<U: 'static + Copy>(self) -> Vector3<U>
+    where
+        T: AsPrimitive<U>,
+    {
+        Vector3 {
+            x: self.x.as_(),
+            y: self.y.as_(),
+            z: self.z.as_(),
+        }
     }
 }
 
@@ -223,15 +261,15 @@ impl<T> From<(T, T, T)> for Vector3<T> {
 
 impl Vector3f {
     #[cfg(any(feature = "audio", feature = "graphics"))]
-    pub(crate) fn raw(&self) -> csfml_system_sys::sfVector3f {
-        csfml_system_sys::sfVector3f {
+    pub(crate) fn raw(&self) -> crate::ffi::sfVector3f {
+        crate::ffi::sfVector3f {
             x: self.x,
             y: self.y,
             z: self.z,
         }
     }
     #[cfg(any(feature = "window", feature = "audio"))]
-    pub(crate) fn from_raw(raw: csfml_system_sys::sfVector3f) -> Self {
+    pub(crate) fn from_raw(raw: crate::ffi::sfVector3f) -> Self {
         Self {
             x: raw.x,
             y: raw.y,

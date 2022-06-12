@@ -34,8 +34,10 @@
 //! }
 //! ```
 
-use crate::system::{SfStr, SfStrConv};
-use csfml_window_sys as ffi;
+use crate::{
+    ffi::system as ffi,
+    system::{SfStr, SfStrConv},
+};
 
 /// Get the content of the clipboard as string data.
 ///

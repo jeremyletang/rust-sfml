@@ -8,6 +8,8 @@ use sfml::{
 };
 use std::{collections::HashMap, hash::Hash};
 
+include!("../example_common.rs");
+
 struct ResourceHolder<Resource: SfResource, Identifier: Hash + Eq> {
     resource_map: HashMap<Identifier, SfBox<Resource>>,
 }
@@ -48,16 +50,16 @@ impl<Resource: SfResource, Identifier: Hash + Eq> Default for ResourceHolder<Res
 
 fn main() {
     let mut tex_holder = ResourceHolder::<Texture, _>::default();
-    tex_holder.load("frank", "resources/frank.jpeg");
+    tex_holder.load("frank", example_res!("frank.jpeg"));
     let mut sb_holder = ResourceHolder::<SoundBuffer, _>::default();
-    sb_holder.load("canary", "resources/canary.wav");
+    sb_holder.load("canary", example_res!("canary.wav"));
     let mut rw = RenderWindow::new(
         (800, 600),
         "Resource holder test",
         Style::CLOSE,
         &Default::default(),
     );
-    rw.set_framerate_limit(60);
+    rw.set_vertical_sync_enabled(true);
     let mut sound = Sound::with_buffer(sb_holder.get("canary"));
     sound.play();
     while rw.is_open() {
@@ -65,7 +67,7 @@ fn main() {
             match ev {
                 Event::Closed
                 | Event::KeyPressed {
-                    code: Key::ESCAPE, ..
+                    code: Key::Escape, ..
                 } => rw.close(),
                 _ => {}
             }

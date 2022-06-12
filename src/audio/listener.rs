@@ -27,8 +27,7 @@
 //! [`View`]: crate::graphics::View
 //!
 
-use crate::system::Vector3f;
-use csfml_audio_sys as ffi;
+use crate::{ffi, system::Vector3f};
 
 /// Change the global volume of all the sounds and musics
 ///

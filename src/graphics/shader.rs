@@ -1,15 +1,18 @@
 use crate::{
+    ffi::graphics as ffi,
     graphics::{glsl, Texture},
-    inputstream::InputStream,
     sf_bool_ext::SfBoolExt,
+    system::InputStream,
+    LoadResult, ResourceLoadError,
 };
-use csfml_graphics_sys as ffi;
 use std::{
     ffi::CString,
     io::{Read, Seek},
     marker::PhantomData,
-    ptr,
+    ptr::{self, NonNull},
 };
+
+use super::ShaderType;
 
 /// Shader type (vertex, geometry and fragment).
 ///
@@ -129,142 +132,186 @@ use std::{
 ///
 #[derive(Debug)]
 pub struct Shader<'texture> {
-    shader: *mut ffi::sfShader,
+    shader: NonNull<ffi::sfShader>,
     texture: PhantomData<&'texture Texture>,
 }
 
-macro_rules! cstring_then_ptr {
-    ($cstring:ident, $shader:expr) => {
-        match $shader {
-            Some(s) => {
-                $cstring = CString::new(s).unwrap();
-                $cstring.as_ptr()
+macro_rules! shader_create {
+    ($shader:ident, $load_block:block) => {{
+        let $shader =
+            NonNull::new(unsafe { ffi::sfShader_defaultConstruct() }).ok_or(ResourceLoadError)?;
+        unsafe {
+            if !$load_block.into_bool() {
+                ffi::sfShader_destroy($shader.as_ptr());
+                return Err(ResourceLoadError);
             }
-            None => ptr::null(),
         }
-    };
+        Ok(Self {
+            shader: $shader,
+            texture: PhantomData,
+        })
+    }};
+}
+
+fn c_string(source: &str) -> LoadResult<CString> {
+    CString::new(source).map_err(|_| ResourceLoadError)
 }
 
 impl<'texture> Shader<'texture> {
-    /// Load both the vertex and fragment shaders from files
+    /// Load the vertex, geometry or fragment shader from a file.
     ///
-    /// This function can load both the vertex and the fragment
-    /// shaders, or only one of them: pass None if you don't want to load
-    /// either the vertex shader or the fragment shader.
-    /// The sources must be text files containing valid shaders
-    /// in GLSL language. GLSL is a C-like language dedicated to
-    /// OpenGL shaders; you'll probably need to read a good documentation
-    /// for it before writing your own shaders.
-    ///
-    /// # Arguments
-    /// * `vertex` - Optional path to vertex shader
-    /// * `geometry` - Optional path to geometry shader
-    /// * `fragment` - Optional path to fragment shader
-    ///
-    /// Returns `None` if loading failed.
-    #[must_use]
-    pub fn from_file(
-        vertex: Option<&str>,
-        geometry: Option<&str>,
-        fragment: Option<&str>,
-    ) -> Option<Self> {
-        let cstring;
-        let vert = cstring_then_ptr!(cstring, vertex);
-        let cstring;
-        let geom = cstring_then_ptr!(cstring, geometry);
-        let cstring;
-        let frag = cstring_then_ptr!(cstring, fragment);
-        let shader = unsafe { ffi::sfShader_createFromFile(vert, geom, frag) };
-        if shader.is_null() {
-            None
-        } else {
-            Some(Self {
-                shader,
-                texture: PhantomData,
-            })
-        }
+    /// This function loads a single shader, vertex, geometry or fragment,
+    /// identified by the second argument.
+    /// The source must be a text file containing a valid shader in GLSL language.
+    /// GLSL is a C-like language dedicated to OpenGL shaders; you'll probably need to read a good
+    /// documentation for it before writing your own shaders.
+    pub fn from_file(path: &str, type_: ShaderType) -> LoadResult<Self> {
+        shader_create!(shader, {
+            let path = c_string(path)?;
+            ffi::sfShader_loadFromFile_1(shader.as_ptr(), path.as_ptr(), type_)
+        })
     }
 
-    /// Load both the vertex and fragment shaders from streams
+    /// Load both the vertex and fragment shaders from files.
     ///
-    /// This function can load both the vertex and the fragment
-    /// shaders, or only one of them: pass None if you don't want to load
-    /// either the vertex shader or the fragment shader.
-    /// The sources must be text files containing valid shaders
-    /// in GLSL language. GLSL is a C-like language dedicated to
-    /// OpenGL shaders; you'll probably need to read a good documentation
-    /// for it before writing your own shaders.
-    ///
-    /// # Arguments
-    /// * `vertex_shader_stream` - Optional vertex shader stream
-    /// * `fragment_shader_stream` - Optional fragment shader stream
-    ///
-    /// Returns `None` if loading failed.
-    pub fn from_stream<T: Read + Seek>(
-        vertex_shader_stream: Option<&mut T>,
-        geometry_shader_stream: Option<&mut T>,
-        fragment_shader_stream: Option<&mut T>,
-    ) -> Option<Self> {
-        let mut vertex_stream = vertex_shader_stream.map(InputStream::new);
-        let mut geometry_stream = geometry_shader_stream.map(InputStream::new);
-        let mut fragment_stream = fragment_shader_stream.map(InputStream::new);
-        let vertex_ptr = vertex_stream.as_mut().map_or(ptr::null_mut(), |s| &mut s.0);
-        let geometry_ptr = geometry_stream
-            .as_mut()
-            .map_or(ptr::null_mut(), |s| &mut s.0);
-        let fragment_ptr = fragment_stream
-            .as_mut()
-            .map_or(ptr::null_mut(), |s| &mut s.0);
-        let shader =
-            unsafe { ffi::sfShader_createFromStream(vertex_ptr, geometry_ptr, fragment_ptr) };
-        if shader.is_null() {
-            None
-        } else {
-            Some(Self {
-                shader,
-                texture: PhantomData,
-            })
-        }
+    /// This function loads both the vertex and the fragment shaders.
+    /// The sources must be text files containing valid shaders in GLSL language.
+    /// GLSL is a C-like language dedicated to OpenGL shaders;
+    /// you'll probably need to read a good documentation for it before writing your own shaders.
+    pub fn from_file_vert_frag(vert: &str, frag: &str) -> LoadResult<Self> {
+        shader_create!(shader, {
+            let vert = c_string(vert)?;
+            let frag = c_string(frag)?;
+            ffi::sfShader_loadFromFile_vert_frag(shader.as_ptr(), vert.as_ptr(), frag.as_ptr())
+        })
     }
 
-    /// Load both the vertex and fragment shaders from source codes in memory
+    /// Load the vertex, geometry and fragment shaders from files.
     ///
-    /// This function can load both the vertex and the fragment
-    /// shaders, or only one of them: pass None if you don't want to load
-    /// either the vertex shader or the fragment shader.
-    /// The sources must be valid shaders in GLSL language. GLSL is
-    /// a C-like language dedicated to OpenGL shaders; you'll
-    /// probably need to read a good documentation for it before
-    /// writing your own shaders.
+    /// This function loads the vertex, geometry and fragment shaders.
+    /// The sources must be text files containing valid shaders in GLSL language.
+    /// GLSL is a C-like language dedicated to OpenGL shaders; you'll probably need to
+    /// read a good documentation for it before writing your own shaders.
+    pub fn from_file_all(vert: &str, geom: &str, frag: &str) -> LoadResult<Self> {
+        shader_create!(shader, {
+            let vert = c_string(vert)?;
+            let geom = c_string(geom)?;
+            let frag = c_string(frag)?;
+            ffi::sfShader_loadFromFile_all(
+                shader.as_ptr(),
+                vert.as_ptr(),
+                geom.as_ptr(),
+                frag.as_ptr(),
+            )
+        })
+    }
+
+    /// Load the vertex, geometry or fragment shader from a source code in memory.
     ///
-    /// # Arguments
-    /// * vertexShader - Some(String) containing the source code of the vertex shader,
-    ///                  or None to skip this shader
-    /// * fragmentShader - Some(String) containing the source code of the fragment shader,
-    ///                    or None to skip this shader
+    /// This function loads a single shader, vertex, geometry or fragment, identified by the second
+    /// argument.
+    /// The source code must be a valid shader in GLSL language.
+    /// GLSL is a C-like language dedicated to OpenGL shaders; you'll probably need to read a
+    /// good documentation for it before writing your own shaders.
+    pub fn from_memory(contents: &str, type_: ShaderType) -> LoadResult<Self> {
+        shader_create!(shader, {
+            let contents = c_string(contents)?;
+            ffi::sfShader_loadFromMemory_1(shader.as_ptr(), contents.as_ptr(), type_)
+        })
+    }
+
+    /// Load both the vertex and fragment shaders from source codes in memory.
     ///
-    /// Returns `None` if loading failed.
-    #[must_use]
-    pub fn from_memory(
-        vertex: Option<&str>,
-        geometry: Option<&str>,
-        fragment: Option<&str>,
-    ) -> Option<Self> {
-        let cstring;
-        let vert = cstring_then_ptr!(cstring, vertex);
-        let cstring;
-        let geom = cstring_then_ptr!(cstring, geometry);
-        let cstring;
-        let frag = cstring_then_ptr!(cstring, fragment);
-        let shader = unsafe { ffi::sfShader_createFromMemory(vert, geom, frag) };
-        if shader.is_null() {
-            None
-        } else {
-            Some(Self {
-                shader,
-                texture: PhantomData,
-            })
-        }
+    /// This function loads both the vertex and the fragment shaders.
+    /// The sources must be valid shaders in GLSL language. GLSL is a C-like language dedicated
+    /// to OpenGL shaders; you'll probably need to read a good documentation
+    /// for it before writing your own shaders.
+    pub fn from_memory_vert_frag(vert: &str, frag: &str) -> LoadResult<Self> {
+        shader_create!(shader, {
+            let vert = c_string(vert)?;
+            let frag = c_string(frag)?;
+            ffi::sfShader_loadFromMemory_vert_frag(shader.as_ptr(), vert.as_ptr(), frag.as_ptr())
+        })
+    }
+
+    /// Load the vertex, geometry and fragment shaders from source codes in memory.
+    ///
+    /// This function loads the vertex, geometry and fragment shaders.
+    /// The sources must be valid shaders in GLSL language. GLSL is a C-like language dedicated to
+    /// OpenGL shaders; you'll probably need to read a good documentation for it
+    /// before writing your own shaders.
+    pub fn from_memory_all(vert: &str, geom: &str, frag: &str) -> LoadResult<Self> {
+        shader_create!(shader, {
+            let vert = c_string(vert)?;
+            let geom = c_string(geom)?;
+            let frag = c_string(frag)?;
+            ffi::sfShader_loadFromMemory_all(
+                shader.as_ptr(),
+                vert.as_ptr(),
+                geom.as_ptr(),
+                frag.as_ptr(),
+            )
+        })
+    }
+
+    /// Load the vertex, geometry or fragment shader from a custom stream.
+    ///
+    /// This function loads a single shader, vertex, geometry or fragment, identified by the second
+    /// argument. The source code must be a valid shader in GLSL language.
+    /// GLSL is a C-like language dedicated to OpenGL shaders; you'll probably need to read a good
+    /// documentation for it before writing your own shaders.
+    pub fn from_stream<T: Read + Seek>(mut source: T, type_: ShaderType) -> LoadResult<Self> {
+        shader_create!(shader, {
+            let source = InputStream::new(&mut source);
+            ffi::sfShader_loadFromStream_1(shader.as_ptr(), source.stream.0.as_ptr(), type_)
+        })
+    }
+
+    /// Load both the vertex and fragment shaders from custom streams.
+    ///
+    /// This function loads both the vertex and the fragment shaders.
+    /// The source codes must be valid shaders in GLSL language. GLSL is a C-like
+    /// language dedicated to OpenGL shaders; you'll probably need to read a good documentation
+    /// for it before writing your own shaders.
+    pub fn from_stream_vert_frag<T, U>(mut vert: T, mut frag: U) -> LoadResult<Self>
+    where
+        T: Read + Seek,
+        U: Read + Seek,
+    {
+        shader_create!(shader, {
+            let vert = InputStream::new(&mut vert);
+            let frag = InputStream::new(&mut frag);
+            ffi::sfShader_loadFromStream_vert_frag(
+                shader.as_ptr(),
+                vert.stream.0.as_ptr(),
+                frag.stream.0.as_ptr(),
+            )
+        })
+    }
+
+    /// Load the vertex, geometry and fragment shaders from custom streams.
+    ///
+    /// This function loads the vertex, geometry and fragment shaders.
+    /// The source codes must be valid shaders in GLSL language. GLSL is a C-like language
+    /// dedicated to OpenGL shaders; you'll probably need to read a good documentation for it
+    /// before writing your own shaders.
+    pub fn from_stream_all<T, U, V>(mut vert: T, mut geom: U, mut frag: V) -> LoadResult<Self>
+    where
+        T: Read + Seek,
+        U: Read + Seek,
+        V: Read + Seek,
+    {
+        shader_create!(shader, {
+            let vert = InputStream::new(&mut vert);
+            let geom = InputStream::new(&mut geom);
+            let frag = InputStream::new(&mut frag);
+            ffi::sfShader_loadFromStream_all(
+                shader.as_ptr(),
+                vert.stream.0.as_ptr(),
+                geom.stream.0.as_ptr(),
+                frag.stream.0.as_ptr(),
+            )
+        })
     }
 
     /// Bind a shader for rendering.
@@ -273,7 +320,7 @@ impl<'texture> Shader<'texture> {
     /// it mustn't be used when drawing SFML entities.
     /// It must be used only if you mix `Shader` with OpenGL code.
     pub fn bind(shader: Option<&Self>) {
-        unsafe { ffi::sfShader_bind(shader.map_or(ptr::null_mut(), |s| s.shader)) }
+        unsafe { ffi::sfShader_bind(shader.map_or(ptr::null_mut(), |s| s.shader.as_ptr())) }
     }
 
     /// Tell whether or not the system supports shaders
@@ -283,7 +330,7 @@ impl<'texture> Shader<'texture> {
     /// any attempt to use `Shader` will fail.
     #[must_use]
     pub fn is_available() -> bool {
-        unsafe { ffi::sfShader_isAvailable() }.to_bool()
+        unsafe { ffi::sfShader_isAvailable() }.into_bool()
     }
 
     /// Tell whether or not the system supports geometry shaders.
@@ -300,7 +347,7 @@ impl<'texture> Shader<'texture> {
     /// in a context switch.
     #[must_use]
     pub fn is_geometry_available() -> bool {
-        unsafe { ffi::sfShader_isGeometryAvailable() }.to_bool()
+        unsafe { ffi::sfShader_isGeometryAvailable() }.into_bool()
     }
 
     /// Specify value for `float` uniform.
@@ -308,7 +355,7 @@ impl<'texture> Shader<'texture> {
         unsafe {
             let cstring = CString::new(name).unwrap();
             let name = cstring.as_ptr();
-            ffi::sfShader_setFloatUniform(self.shader, name, value);
+            ffi::sfShader_setFloatUniform(self.shader.as_ptr(), name, value);
         }
     }
 
@@ -317,7 +364,7 @@ impl<'texture> Shader<'texture> {
         unsafe {
             let cstring = CString::new(name).unwrap();
             let name = cstring.as_ptr();
-            ffi::sfShader_setVec2Uniform(self.shader, name, value.raw());
+            ffi::sfShader_setVec2Uniform(self.shader.as_ptr(), name, value.raw());
         }
     }
 
@@ -326,7 +373,7 @@ impl<'texture> Shader<'texture> {
         unsafe {
             let cstring = CString::new(name).unwrap();
             let name = cstring.as_ptr();
-            ffi::sfShader_setVec3Uniform(self.shader, name, value.raw());
+            ffi::sfShader_setVec3Uniform(self.shader.as_ptr(), name, value.raw());
         }
     }
 
@@ -348,7 +395,7 @@ impl<'texture> Shader<'texture> {
         unsafe {
             let cstring = CString::new(name).unwrap();
             let name = cstring.as_ptr();
-            ffi::sfShader_setVec4Uniform(self.shader, name, value.into().raw());
+            ffi::sfShader_setVec4Uniform(self.shader.as_ptr(), name, value.into().raw());
         }
     }
 
@@ -357,7 +404,7 @@ impl<'texture> Shader<'texture> {
         unsafe {
             let cstring = CString::new(name).unwrap();
             let name = cstring.as_ptr();
-            ffi::sfShader_setIntUniform(self.shader, name, value);
+            ffi::sfShader_setIntUniform(self.shader.as_ptr(), name, value);
         }
     }
 
@@ -366,7 +413,7 @@ impl<'texture> Shader<'texture> {
         unsafe {
             let cstring = CString::new(name).unwrap();
             let name = cstring.as_ptr();
-            ffi::sfShader_setIvec2Uniform(self.shader, name, value.raw());
+            ffi::sfShader_setIvec2Uniform(self.shader.as_ptr(), name, value.raw());
         }
     }
 
@@ -375,7 +422,7 @@ impl<'texture> Shader<'texture> {
         unsafe {
             let cstring = CString::new(name).unwrap();
             let name = cstring.as_ptr();
-            ffi::sfShader_setIvec3Uniform(self.shader, name, value.into());
+            ffi::sfShader_setIvec3Uniform(self.shader.as_ptr(), name, value.into());
         }
     }
 
@@ -396,7 +443,7 @@ impl<'texture> Shader<'texture> {
         unsafe {
             let cstring = CString::new(name).unwrap();
             let name = cstring.as_ptr();
-            ffi::sfShader_setIvec4Uniform(self.shader, name, value.into().raw());
+            ffi::sfShader_setIvec4Uniform(self.shader.as_ptr(), name, value.into().raw());
         }
     }
 
@@ -405,7 +452,7 @@ impl<'texture> Shader<'texture> {
         unsafe {
             let cstring = CString::new(name).unwrap();
             let name = cstring.as_ptr();
-            ffi::sfShader_setBoolUniform(self.shader, name, SfBoolExt::from_bool(value));
+            ffi::sfShader_setBoolUniform(self.shader.as_ptr(), name, SfBoolExt::from_bool(value));
         }
     }
 
@@ -414,7 +461,7 @@ impl<'texture> Shader<'texture> {
         unsafe {
             let cstring = CString::new(name).unwrap();
             let name = cstring.as_ptr();
-            ffi::sfShader_setBvec2Uniform(self.shader, name, value.into());
+            ffi::sfShader_setBvec2Uniform(self.shader.as_ptr(), name, value.into());
         }
     }
 
@@ -423,7 +470,7 @@ impl<'texture> Shader<'texture> {
         unsafe {
             let cstring = CString::new(name).unwrap();
             let name = cstring.as_ptr();
-            ffi::sfShader_setBvec3Uniform(self.shader, name, value.into());
+            ffi::sfShader_setBvec3Uniform(self.shader.as_ptr(), name, value.into());
         }
     }
 
@@ -432,7 +479,7 @@ impl<'texture> Shader<'texture> {
         unsafe {
             let cstring = CString::new(name).unwrap();
             let name = cstring.as_ptr();
-            ffi::sfShader_setBvec4Uniform(self.shader, name, value.into());
+            ffi::sfShader_setBvec4Uniform(self.shader.as_ptr(), name, value.into());
         }
     }
 
@@ -446,7 +493,7 @@ impl<'texture> Shader<'texture> {
             let name = cstring.as_ptr();
             let value = value.into();
             let ptr: *const _ = &value.0;
-            ffi::sfShader_setMat3Uniform(self.shader, name, ptr as *const _);
+            ffi::sfShader_setMat3Uniform(self.shader.as_ptr(), name, ptr as *const _);
         }
     }
 
@@ -460,7 +507,7 @@ impl<'texture> Shader<'texture> {
             let name = cstring.as_ptr();
             let value = value.into();
             let ptr: *const _ = &value.0;
-            ffi::sfShader_setMat4Uniform(self.shader, name, ptr as *const _);
+            ffi::sfShader_setMat4Uniform(self.shader.as_ptr(), name, ptr as *const _);
         }
     }
 
@@ -475,7 +522,7 @@ impl<'texture> Shader<'texture> {
         unsafe {
             let cstring = CString::new(name).unwrap();
             let name = cstring.as_ptr();
-            ffi::sfShader_setTextureUniform(self.shader, name, value.raw());
+            ffi::sfShader_setTextureUniform(self.shader.as_ptr(), name, value.raw());
         }
     }
 
@@ -488,7 +535,7 @@ impl<'texture> Shader<'texture> {
         unsafe {
             let cstring = CString::new(name).unwrap();
             let name = cstring.as_ptr();
-            ffi::sfShader_setCurrentTextureUniform(self.shader, name);
+            ffi::sfShader_setCurrentTextureUniform(self.shader.as_ptr(), name);
         }
     }
 
@@ -498,7 +545,7 @@ impl<'texture> Shader<'texture> {
             let cstring = CString::new(name).unwrap();
             let name = cstring.as_ptr();
             let len = array.len();
-            ffi::sfShader_setFloatUniformArray(self.shader, name, array.as_ptr(), len);
+            ffi::sfShader_setFloatUniformArray(self.shader.as_ptr(), name, array.as_ptr(), len);
         }
     }
 
@@ -509,7 +556,7 @@ impl<'texture> Shader<'texture> {
             let name = cstring.as_ptr();
             let len = array.len();
             let ptr = array.as_ptr() as *const ffi::sfGlslVec2;
-            ffi::sfShader_setVec2UniformArray(self.shader, name, ptr, len);
+            ffi::sfShader_setVec2UniformArray(self.shader.as_ptr(), name, ptr, len);
         }
     }
 
@@ -520,7 +567,7 @@ impl<'texture> Shader<'texture> {
             let name = cstring.as_ptr();
             let len = array.len();
             let ptr = array.as_ptr() as *const ffi::sfGlslVec3;
-            ffi::sfShader_setVec3UniformArray(self.shader, name, ptr, len);
+            ffi::sfShader_setVec3UniformArray(self.shader.as_ptr(), name, ptr, len);
         }
     }
 
@@ -531,7 +578,7 @@ impl<'texture> Shader<'texture> {
             let name = cstring.as_ptr();
             let len = array.len();
             let ptr = array.as_ptr() as *const ffi::sfGlslVec4;
-            ffi::sfShader_setVec4UniformArray(self.shader, name, ptr, len);
+            ffi::sfShader_setVec4UniformArray(self.shader.as_ptr(), name, ptr, len);
         }
     }
 
@@ -542,7 +589,7 @@ impl<'texture> Shader<'texture> {
             let name = cstring.as_ptr();
             let len = array.len();
             let ptr = array.as_ptr() as *const ffi::sfGlslMat3;
-            ffi::sfShader_setMat3UniformArray(self.shader, name, ptr, len);
+            ffi::sfShader_setMat3UniformArray(self.shader.as_ptr(), name, ptr, len);
         }
     }
 
@@ -553,16 +600,24 @@ impl<'texture> Shader<'texture> {
             let name = cstring.as_ptr();
             let len = array.len();
             let ptr = array.as_ptr() as *const ffi::sfGlslMat4;
-            ffi::sfShader_setMat4UniformArray(self.shader, name, ptr, len);
+            ffi::sfShader_setMat4UniformArray(self.shader.as_ptr(), name, ptr, len);
         }
     }
+    /// Get the underlying OpenGL handle of the shader.
+    ///
+    /// You shouldn't need to use this function, unless you have very specific stuff to implement
+    /// that SFML doesn't support, or implement a temporary workaround until a bug is fixed.
+    #[must_use]
+    pub fn native_handle(&self) -> u32 {
+        unsafe { ffi::sfShader_getNativeHandle(self.shader.as_ptr()) }
+    }
     pub(super) fn raw(&self) -> *const ffi::sfShader {
-        self.shader
+        self.shader.as_ptr()
     }
 }
 
 impl<'texture> Drop for Shader<'texture> {
     fn drop(&mut self) {
-        unsafe { ffi::sfShader_destroy(self.shader) }
+        unsafe { ffi::sfShader_destroy(self.shader.as_ptr()) }
     }
 }

@@ -3,8 +3,10 @@ use sfml::{
         Color, Font, Rect, RectangleShape, RenderTarget, RenderWindow, Shape, Text, Transformable,
     },
     system::Vector2,
-    window::{mouse, ContextSettings, Cursor, CursorType::*, Event, Style},
+    window::{mouse, ContextSettings, Cursor, CursorType, Event, Style},
 };
+
+include!("../example_common.rs");
 
 const DRAW_AREA_TOPLEFT: (u16, u16) = (300, 64);
 const DRAW_GRID_WH: u8 = 16;
@@ -75,7 +77,7 @@ fn main() {
     );
     rw.set_vertical_sync_enabled(true);
     let mut cursor;
-    let font = Font::from_file("resources/sansation.ttf").unwrap();
+    let font = Font::from_file(example_res!("sansation.ttf")).unwrap();
     let mut failed_index = usize::max_value();
     let mut selected_index = usize::max_value();
     let set_button = Rect::new(348, 500, 100, 32);
@@ -89,22 +91,22 @@ fn main() {
 
     let mut buttons = Vec::new();
     let cursor_types = [
-        Arrow,
-        ArrowWait,
-        Wait,
-        Text,
-        Hand,
-        SizeHorizontal,
-        SizeVertical,
-        SizeTopLeftBottomRight,
-        SizeBottomLeftTopRight,
-        SizeAll,
-        Cross,
-        Help,
-        NotAllowed,
+        CursorType::Arrow,
+        CursorType::ArrowWait,
+        CursorType::Wait,
+        CursorType::Text,
+        CursorType::Hand,
+        CursorType::SizeHorizontal,
+        CursorType::SizeVertical,
+        CursorType::SizeTopLeftBottomRight,
+        CursorType::SizeBottomLeftTopRight,
+        CursorType::SizeAll,
+        CursorType::Cross,
+        CursorType::Help,
+        CursorType::NotAllowed,
     ];
     for i in 0..cursor_types.len() {
-        buttons.push(Rect::new(16, 16 + i as i32 * 36, 200, 32));
+        buttons.push(Rect::new(16, 16 + i as i32 * 36, 250, 32));
     }
 
     while rw.is_open() {
@@ -112,7 +114,7 @@ fn main() {
             match ev {
                 Event::Closed => rw.close(),
                 Event::MouseButtonPressed {
-                    button: mouse::Button::LEFT,
+                    button: mouse::Button::Left,
                     x,
                     y,
                 } => {
@@ -161,7 +163,7 @@ fn main() {
                     }
                 }
                 Event::MouseButtonReleased {
-                    button: mouse::Button::LEFT,
+                    button: mouse::Button::Left,
                     ..
                 } => {
                     if hotspot_selected {
@@ -202,10 +204,10 @@ fn main() {
                     hotspot_selected = true;
                     hotspot = Vector2::new(gx as u32, gy as u32);
                     modif = true;
-                } else if mouse::Button::LEFT.is_pressed() {
+                } else if mouse::Button::Left.is_pressed() {
                     *cell = true;
                     modif = true;
-                } else if mouse::Button::RIGHT.is_pressed() {
+                } else if mouse::Button::Right.is_pressed() {
                     *cell = false;
                     modif = true;
                 }
@@ -214,15 +216,30 @@ fn main() {
         rw.clear(Color::BLACK);
         // Draw system cursor set buttons
         let mut shape = RectangleShape::default();
-        let mut text = Text::new("", &font, 16);
+        let mut text = Text::new("", &font, 14);
         shape.set_outline_thickness(-1.0);
         shape.set_outline_color(Color::WHITE);
         for (i, b) in buttons.iter().enumerate() {
+            let types = [
+                "ARROW",
+                "ARROW_WAIT",
+                "WAIT",
+                "TEXT",
+                "HAND",
+                "SIZE_HORIZONTAL",
+                "SIZE_VERTICAL",
+                "SIZE_TOP_LEFT_BOTTOM_RIGHT",
+                "SIZE_BOTTOM_LEFT_TOP_RIGHT",
+                "SIZE_ALL",
+                "CROSS",
+                "HELP",
+                "NOT_ALLOWED",
+            ];
             draw_button(
                 b,
                 &mut shape,
                 &mut text,
-                &format!("{:?}", cursor_types[i]),
+                types[i],
                 &mut rw,
                 bstyle(highlight_index == i, selected_index == i, failed_index == i),
             );

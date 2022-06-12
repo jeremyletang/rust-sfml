@@ -1,5 +1,7 @@
 use sfml::{graphics::*, window::*};
 
+include!("../example_common.rs");
+
 fn main() {
     let mut window = RenderWindow::new(
         (800, 600),
@@ -9,22 +11,19 @@ fn main() {
     );
     window.set_vertical_sync_enabled(true);
 
-    let font = Font::from_file("resources/sansation.ttf").unwrap();
+    let font = Font::from_file(example_res!("sansation.ttf")).unwrap();
     let mut string = String::from("This text can be edited.\nTry it!");
 
     let mut text = Text::new(&string, &font, 24);
     text.set_fill_color(Color::RED);
     text.set_outline_color(Color::YELLOW);
     text.set_outline_thickness(2.0);
-    println!(
-        "== Text information ==\n\
-         fill color: {:?}\n\
-         outline color: {:?}\n\
-         outline thickness: {:?}",
-        text.fill_color(),
-        text.outline_color(),
-        text.outline_thickness()
-    );
+    let mut status_text = Text::new("", &font, 16);
+    status_text.set_position((0., window.size().y as f32 - 32.0));
+    let mut bold = false;
+    let mut italic = false;
+    let mut underlined = false;
+    let mut strikethrough = false;
 
     'mainloop: loop {
         while let Some(ev) = window.poll_event() {
@@ -58,12 +57,49 @@ fn main() {
                 } => {
                     clipboard::set_string(text.string());
                 }
+                Event::KeyPressed { code, .. } => {
+                    match code {
+                        Key::F1 => bold = !bold,
+                        Key::F2 => italic = !italic,
+                        Key::F3 => underlined = !underlined,
+                        Key::F4 => strikethrough = !strikethrough,
+                        _ => {}
+                    }
+                    let mut style = TextStyle::default();
+                    if bold {
+                        style |= TextStyle::BOLD;
+                    }
+                    if italic {
+                        style |= TextStyle::ITALIC;
+                    }
+                    if underlined {
+                        style |= TextStyle::UNDERLINED;
+                    }
+                    if strikethrough {
+                        style |= TextStyle::STRIKETHROUGH;
+                    }
+                    text.set_style(style);
+                }
                 _ => {}
             }
         }
 
+        let status_string = {
+            let fc = text.fill_color();
+            let oc = text.outline_color();
+            format!(
+            "fill: {:02x}{:02x}{:02x}{:02x} outline: {:02x}{:02x}{:02x}{:02x} outline thickness: {} style: {:?} (F1-F4)",
+            fc.red(), fc.green(), fc.blue(), fc.alpha(),
+            oc.red(), oc.green(), oc.blue(), oc.alpha(),
+            text.outline_thickness(),
+            text.style()
+        )
+        };
+        status_text.set_string(&status_string);
+
         window.clear(Color::BLACK);
         window.draw(&text);
+        window.draw(&status_text);
         window.display();
     }
     println!("The final text is {:?}", text.string().to_rust_string());

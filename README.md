@@ -1,4 +1,4 @@
-rust-sfml [![Build Status](https://api.travis-ci.org/jeremyletang/rust-sfml.png?branch=master)](https://travis-ci.org/jeremyletang/rust-sfml) [![crates.io](http://meritbadge.herokuapp.com/sfml)](https://crates.io/crates/sfml)
+rust-sfml ![Build Status](https://github.com/jeremyletang/rust-sfml/actions/workflows/rust.yml/badge.svg) [![crates.io](https://img.shields.io/crates/v/sfml.svg)](https://crates.io/crates/sfml) [![Discord](https://img.shields.io/discord/175298431294636032?style=plastic)](https://discord.gg/XCaM5rhMa6)
 =========
 
 Rust bindings for [SFML](http://www.sfml-dev.org), the Simple and Fast Multimedia Library.
@@ -7,9 +7,10 @@ Requirements
 =============
 
 - Linux, Windows, or OS X
-- Rust 1.42 or later
+- Rust 1.56 or later
 - [SFML 2.5](http://www.sfml-dev.org/download.php)
-- [CSFML 2.5](http://www.sfml-dev.org/download/csfml/)
+- A C++ compiler for building CSFML
+- libclang for generating the low level bindings (See bindgen [instructions](https://rust-lang.github.io/rust-bindgen/requirements.html))
 
 Documentation
 =====
@@ -27,3 +28,7 @@ License
 This software is a binding of the SFML library created by Laurent Gomila, which is provided under the Zlib/png license.
 
 This software is provided under the same license as SFML, the Zlib/png license.
+
+Discord
+=======
+rust-sfml users are welcome on the [Official SFML Discord server](https://discord.gg/XCaM5rhMa6)

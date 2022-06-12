@@ -1,8 +1,8 @@
 use crate::graphics::{RenderStates, RenderTarget};
 
-/// The trait drawable is inherited by each object who can be drawn in a [`RenderTarget`]
+/// Something that is drawable by a [`RenderTarget`].
 pub trait Drawable {
-    /// Draw a drawable object into a [`RenderTarget`]
+    /// Draws into `target` with [`RenderStates`] `states`.
     fn draw<'a: 'shader, 'texture, 'shader, 'shader_texture>(
         &'a self,
         target: &mut dyn RenderTarget,

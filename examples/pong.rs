@@ -1,6 +1,6 @@
 use rand::{thread_rng, Rng};
 use sfml::{
-    audio::{Sound, SoundBuffer},
+    audio::{Sound, SoundBuffer, SoundSource},
     graphics::{
         CircleShape, Color, Font, RectangleShape, RenderTarget, RenderWindow, Shape, Text,
         Transformable,
@@ -10,6 +10,8 @@ use sfml::{
 };
 use std::{env, f32::consts::PI};
 
+include!("../example_common.rs");
+
 fn main() {
     let mut rng = thread_rng();
 
@@ -17,9 +19,9 @@ fn main() {
     let mut aa_level = 0;
 
     if let Some(arg) = env::args().nth(1) {
-        if let Ok(arg_as_num) = arg.parse::<u32>() {
-            println!("Using {}xAA", arg_as_num);
-            aa_level = arg_as_num;
+        match arg.parse::<u32>() {
+            Ok(arg_as_num) => aa_level = arg_as_num,
+            Err(e) => println!("Didn't set AA level: {}", e),
         }
     }
 
@@ -30,18 +32,24 @@ fn main() {
     let ball_radius = 10.;
 
     // Create the window of the application
-    let mut context_settings = ContextSettings::default();
-    context_settings.set_antialiasing_level(aa_level);
+    let context_settings = ContextSettings {
+        antialiasing_level: aa_level,
+        ..Default::default()
+    };
     let mut window = RenderWindow::new(
         (game_width, game_height),
         "SFML Pong",
         Style::CLOSE,
         &context_settings,
     );
+    let context_settings = window.settings();
+    if context_settings.antialiasing_level > 0 {
+        println!("Using {}xAA", context_settings.antialiasing_level);
+    }
     window.set_vertical_sync_enabled(true);
 
     // Load the sounds used in the game
-    let ball_soundbuffer = SoundBuffer::from_file("resources/ball.wav").unwrap();
+    let ball_soundbuffer = SoundBuffer::from_file(example_res!("ball.wav")).unwrap();
     let mut ball_sound = Sound::with_buffer(&ball_soundbuffer);
 
     // Create the left paddle
@@ -69,7 +77,7 @@ fn main() {
     ball.set_origin((ball_radius / 2., ball_radius / 2.));
 
     // Load the text font
-    let font = Font::from_file("resources/sansation.ttf").unwrap();
+    let font = Font::from_file(example_res!("sansation.ttf")).unwrap();
 
     // Initialize the pause message
     let mut pause_message = Text::default();
@@ -81,27 +89,31 @@ fn main() {
 
     // Define the paddles properties
     let mut ai_timer = Clock::start();
-    let ai_time = Time::seconds(0.1);
+    let ai_time = Time::seconds(0.0333);
     let paddle_speed = 400.;
     let mut right_paddle_speed = 0.;
-    let ball_speed = 400.;
+    let mut ball_speed = 400.;
     let mut ball_angle = 0.;
 
     let mut clock = Clock::start();
     let mut is_playing = false;
+    let mut up = false;
+    let mut down = false;
 
     loop {
         while let Some(event) = window.poll_event() {
             match event {
                 Event::Closed
                 | Event::KeyPressed {
-                    code: Key::ESCAPE, ..
+                    code: Key::Escape, ..
                 } => return,
                 Event::KeyPressed {
-                    code: Key::SPACE, ..
+                    code: Key::Space, ..
                 } if !is_playing => {
                     // (re)start the game
                     is_playing = true;
+                    ball_speed = 400.0;
+                    ball_sound.set_pitch(1.0);
                     clock.restart();
                     // Reset the position of the paddles and ball
                     left_paddle.set_position((10. + paddle_size.x / 2., game_height as f32 / 2.));
@@ -113,13 +125,21 @@ fn main() {
                     // Reset the ball angle
                     loop {
                         // Make sure the ball initial angle is not too much vertical
-                        ball_angle = rng.gen_range(0., 360.) * 2. * PI / 360.;
+                        ball_angle = rng.gen_range(0.0..360.) * 2. * PI / 360.;
 
                         if ball_angle.cos().abs() >= 0.7 {
                             break;
                         }
                     }
                 }
+                Event::KeyPressed { code: Key::Up, .. } => up = true,
+                Event::KeyReleased { code: Key::Up, .. } => up = false,
+                Event::KeyPressed {
+                    code: Key::Down, ..
+                } => down = true,
+                Event::KeyReleased {
+                    code: Key::Down, ..
+                } => down = false,
                 _ => {}
             }
         }
@@ -127,12 +147,10 @@ fn main() {
             let delta_time = clock.restart().as_seconds();
 
             // Move the player's paddle
-            if Key::UP.is_pressed() && (left_paddle.position().y - paddle_size.y / 2. > 5.) {
+            if up && (left_paddle.position().y - paddle_size.y / 2. > 5.) {
                 left_paddle.move_((0., -paddle_speed * delta_time));
             }
-            if Key::DOWN.is_pressed()
-                && (left_paddle.position().y + paddle_size.y / 2. < game_height as f32 - 5.)
-            {
+            if down && (left_paddle.position().y + paddle_size.y / 2. < game_height as f32 - 5.) {
                 left_paddle.move_((0., paddle_speed * delta_time));
             }
 
@@ -145,7 +163,7 @@ fn main() {
             }
 
             // Update the computer's paddle direction according to the ball position
-            if ai_timer.elapsed_time().as_microseconds() > ai_time.as_microseconds() {
+            if ai_timer.elapsed_time() > ai_time {
                 ai_timer.restart();
                 if ball.position().y + ball_radius > right_paddle.position().y + paddle_size.y / 2.
                 {
@@ -173,13 +191,13 @@ fn main() {
                 pause_message.set_string("You won !\nPress space to restart or\nescape to exit");
             }
             if ball.position().y - ball_radius < 0. {
-                ball_sound.play();
+                on_bounce(&mut ball_sound, &mut ball_speed);
                 ball_angle = -ball_angle;
                 let p = ball.position().x;
                 ball.set_position((p, ball_radius + 0.1));
             }
             if ball.position().y + ball_radius > game_height as f32 {
-                ball_sound.play();
+                on_bounce(&mut ball_sound, &mut ball_speed);
                 ball_angle = -ball_angle;
                 let p = ball.position().x;
                 ball.set_position((p, game_height as f32 - ball_radius - 0.1));
@@ -189,17 +207,16 @@ fn main() {
             // Left Paddle
             let (ball_pos, paddle_pos) = (ball.position(), left_paddle.position());
             if ball_pos.x - ball_radius < paddle_pos.x + paddle_size.x / 2.
-                && ball_pos.x - ball_radius > paddle_pos.x
                 && ball_pos.y + ball_radius >= paddle_pos.y - paddle_size.y / 2.
                 && ball_pos.y - ball_radius <= paddle_pos.y + paddle_size.y / 2.
             {
                 if ball_pos.y > paddle_pos.y {
-                    ball_angle = PI - ball_angle + rng.gen_range(0., 20.) * PI / 180.;
+                    ball_angle = PI - ball_angle + rng.gen_range(0.0..20.) * PI / 180.;
                 } else {
-                    ball_angle = PI - ball_angle - rng.gen_range(0., 20.) * PI / 180.;
+                    ball_angle = PI - ball_angle - rng.gen_range(0.0..20.) * PI / 180.;
                 }
 
-                ball_sound.play();
+                on_bounce(&mut ball_sound, &mut ball_speed);
                 ball.set_position((
                     paddle_pos.x + ball_radius + paddle_size.x / 2. + 0.1,
                     ball_pos.y,
@@ -209,17 +226,16 @@ fn main() {
             // Right Paddle
             let (ball_pos, paddle_pos) = (ball.position(), right_paddle.position());
             if ball_pos.x + ball_radius > paddle_pos.x - paddle_size.x / 2.
-                && ball_pos.x + ball_radius < paddle_pos.x
                 && ball_pos.y + ball_radius >= paddle_pos.y - paddle_size.y / 2.
                 && ball_pos.y - ball_radius <= paddle_pos.y + paddle_size.y / 2.
             {
                 if ball_pos.y > paddle_pos.y {
-                    ball_angle = PI - ball_angle + rng.gen_range(0., 20.) * PI / 180.;
+                    ball_angle = PI - ball_angle + rng.gen_range(0.0..20.) * PI / 180.;
                 } else {
-                    ball_angle = PI - ball_angle - rng.gen_range(0., 20.) * PI / 180.;
+                    ball_angle = PI - ball_angle - rng.gen_range(0.0..20.) * PI / 180.;
                 }
 
-                ball_sound.play();
+                on_bounce(&mut ball_sound, &mut ball_speed);
                 ball.set_position((
                     paddle_pos.x - ball_radius - paddle_size.x / 2. - 0.1,
                     ball_pos.y,
@@ -242,4 +258,10 @@ fn main() {
         // Display things on screen
         window.display()
     }
+}
+
+fn on_bounce(ball_sound: &mut Sound, ball_speed: &mut f32) {
+    ball_sound.play();
+    ball_sound.set_pitch(ball_sound.pitch() + 0.004);
+    *ball_speed += 16.0;
 }

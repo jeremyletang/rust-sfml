@@ -1,4 +1,5 @@
 use crate::{
+    ffi::{graphics as ffi, sfBool, sfTrue, sfVector2f},
     graphics::{
         Color, Drawable, FloatRect, IntRect, RenderStates, RenderTarget, Shape, Texture, Transform,
         Transformable,
@@ -6,8 +7,6 @@ use crate::{
     sf_bool_ext::SfBoolExt,
     system::Vector2f,
 };
-use csfml_graphics_sys as ffi;
-use csfml_system_sys::{sfBool, sfTrue, sfVector2f};
 use std::{marker::PhantomData, os::raw::c_void, ptr};
 
 /// The points of a custom shape.
@@ -37,14 +36,13 @@ pub struct CustomShape<'s> {
 }
 
 unsafe extern "C" fn get_point_count_callback(obj: *mut c_void) -> usize {
-    let shape = obj as *mut Box<dyn CustomShapePoints + Send>;
+    let shape = obj as *const Box<dyn CustomShapePoints + Send>;
     let ret = (*shape).point_count();
     ret as usize
 }
 
 unsafe extern "C" fn get_point_callback(point: usize, obj: *mut c_void) -> sfVector2f {
-    use std::convert::TryInto;
-    let shape = obj as *mut Box<dyn CustomShapePoints + Send>;
+    let shape = obj as *const Box<dyn CustomShapePoints + Send>;
     let ret = (*shape).point(point.try_into().unwrap());
     ret.raw()
 }
@@ -146,7 +144,6 @@ impl<'s> Shape<'s> for CustomShape<'s> {
         unsafe { ffi::sfShape_getOutlineThickness(self.shape) }
     }
     fn point_count(&self) -> u32 {
-        use std::convert::TryInto;
         unsafe { ffi::sfShape_getPointCount(self.shape).try_into().unwrap() }
     }
     fn point(&self, index: u32) -> Vector2f {
@@ -205,10 +202,10 @@ impl<'s> Transformable for CustomShape<'s> {
         unsafe { ffi::sfShape_scale(self.shape, factors.into().raw()) }
     }
     fn transform(&self) -> Transform {
-        unsafe { Transform(ffi::sfShape_getTransform(self.shape)) }
+        unsafe { ffi::sfShape_getTransform(self.shape) }
     }
     fn inverse_transform(&self) -> Transform {
-        unsafe { Transform(ffi::sfShape_getInverseTransform(self.shape)) }
+        unsafe { ffi::sfShape_getInverseTransform(self.shape) }
     }
 }
 

@@ -1,4 +1,4 @@
-use csfml_system_sys::*;
+use crate::ffi::system::sfTime;
 use std::ops::{
     Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Rem, RemAssign, Sub, SubAssign,
 };
@@ -41,7 +41,7 @@ pub struct Time(sfTime);
 
 impl PartialEq for Time {
     fn eq(&self, other: &Self) -> bool {
-        self.0.microseconds == other.0.microseconds
+        self.0 == other.0
     }
 }
 
@@ -49,51 +49,53 @@ impl Eq for Time {}
 
 impl PartialOrd for Time {
     fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
-        self.0.microseconds.partial_cmp(&other.0.microseconds)
+        self.0.partial_cmp(&other.0)
     }
 }
 
 impl Ord for Time {
     fn cmp(&self, other: &Self) -> std::cmp::Ordering {
-        self.0.microseconds.cmp(&other.0.microseconds)
+        self.0.cmp(&other.0)
     }
 }
 
 impl Time {
     /// Constructs a time value from a number of seconds.
     #[must_use]
+    #[allow(clippy::cast_possible_truncation)]
     pub fn seconds(seconds: f32) -> Self {
-        Time(unsafe { sfSeconds(seconds) })
+        Time((seconds * 1000000.) as i64)
     }
 
     /// Constructs a time value from a number of milliseconds.
     #[must_use]
-    pub fn milliseconds(milliseconds: i32) -> Self {
-        Time(unsafe { sfMilliseconds(milliseconds) })
+    pub const fn milliseconds(milliseconds: i32) -> Self {
+        Time(milliseconds as i64 * 1000)
     }
 
     /// Constructs a time value from a number of microseconds.
     #[must_use]
     pub const fn microseconds(microseconds: i64) -> Self {
-        Time(sfTime { microseconds })
+        Time(microseconds)
     }
 
     /// Returns the time value as a number of seconds.
     #[must_use]
     pub fn as_seconds(self) -> f32 {
-        unsafe { sfTime_asSeconds(self.0) }
+        self.0 as f32 / 1000000.
     }
 
     /// Returns the time value as a number of milliseconds.
     #[must_use]
+    #[allow(clippy::cast_possible_truncation)]
     pub fn as_milliseconds(self) -> i32 {
-        unsafe { sfTime_asMilliseconds(self.0) }
+        (self.0 / 1000) as i32
     }
 
     /// Returns the time value as a number of microseconds.
     #[must_use]
     pub fn as_microseconds(self) -> i64 {
-        unsafe { sfTime_asMicroseconds(self.0) }
+        self.0
     }
     pub(crate) fn raw(self) -> sfTime {
         self.0
@@ -103,15 +105,13 @@ impl Time {
     }
 
     /// Predefined "zero" time value.
-    pub const ZERO: Time = Time(sfTime { microseconds: 0 });
+    pub const ZERO: Time = Time(0);
 }
 
 impl Neg for Time {
     type Output = Self;
     fn neg(self) -> Self {
-        Time(sfTime {
-            microseconds: -self.0.microseconds,
-        })
+        Time(-self.0)
     }
 }
 
@@ -119,13 +119,13 @@ impl Add for Time {
     type Output = Self;
 
     fn add(self, rhs: Self) -> Self {
-        Time::microseconds(self.0.microseconds + rhs.0.microseconds)
+        Time::microseconds(self.0 + rhs.0)
     }
 }
 
 impl AddAssign for Time {
     fn add_assign(&mut self, rhs: Self) {
-        self.0.microseconds += rhs.0.microseconds;
+        self.0 += rhs.0;
     }
 }
 
@@ -133,13 +133,13 @@ impl Sub for Time {
     type Output = Self;
 
     fn sub(self, rhs: Self) -> Self {
-        Time::microseconds(self.0.microseconds - rhs.0.microseconds)
+        Time::microseconds(self.0 - rhs.0)
     }
 }
 
 impl SubAssign for Time {
     fn sub_assign(&mut self, rhs: Self) {
-        self.0.microseconds -= rhs.0.microseconds;
+        self.0 -= rhs.0;
     }
 }
 
@@ -238,13 +238,13 @@ impl Rem for Time {
     type Output = Self;
 
     fn rem(self, rhs: Self) -> Self {
-        Time::microseconds(self.0.microseconds % rhs.0.microseconds)
+        Time::microseconds(self.0 % rhs.0)
     }
 }
 
 impl RemAssign for Time {
     fn rem_assign(&mut self, rhs: Self) {
-        self.0.microseconds %= rhs.0.microseconds
+        self.0 %= rhs.0
     }
 }
 

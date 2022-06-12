@@ -7,6 +7,7 @@
 pub use self::string::{SfStr, SfStrConv};
 pub use self::{
     clock::Clock,
+    input_stream::InputStream,
     sleep::sleep,
     time::Time,
     vector2::{Vector2, Vector2f, Vector2i, Vector2u},
@@ -14,6 +15,7 @@ pub use self::{
 };
 
 mod clock;
+mod input_stream;
 mod sleep;
 #[cfg(feature = "window")]
 mod string;

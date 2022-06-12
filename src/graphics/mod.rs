@@ -27,10 +27,10 @@ pub use self::{
     transform::Transform,
     transformable::Transformable,
     vertex::Vertex,
-    vertex_array::{VertexArray, Vertices},
     vertex_buffer::{VertexBuffer, VertexBufferUsage},
     view::View,
 };
+pub use crate::ffi::graphics::ShaderType;
 
 pub mod blend_mode;
 mod circle_shape;
@@ -58,6 +58,40 @@ mod texture;
 mod transform;
 mod transformable;
 mod vertex;
-mod vertex_array;
 mod vertex_buffer;
 mod view;
+
+/// Compute the bounding rectangle of the vertex array.
+///
+/// This function returns the minimal axis-aligned rectangle that contains all the vertices of the array.
+#[must_use]
+pub fn vertex_array_bounds(vertices: &[Vertex]) -> FloatRect {
+    let mut vertices = vertices.iter();
+    if let Some(fst) = vertices.next() {
+        let mut left = fst.position.x;
+        let mut top = fst.position.y;
+        let mut right = fst.position.x;
+        let mut bottom = fst.position.y;
+
+        for vert in vertices {
+            let pos = vert.position;
+
+            // Update left and right
+            if pos.x < left {
+                left = pos.x;
+            } else if pos.x > right {
+                right = pos.x;
+            }
+
+            // Update top and botttom
+            if pos.y < top {
+                top = pos.y;
+            } else if pos.y > bottom {
+                bottom = pos.y
+            }
+        }
+        FloatRect::new(left, top, right - left, bottom - top)
+    } else {
+        FloatRect::default()
+    }
+}

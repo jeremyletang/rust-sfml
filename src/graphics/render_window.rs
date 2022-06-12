@@ -1,15 +1,15 @@
+use std::ptr::NonNull;
+
 use crate::{
+    ffi::{graphics as ffi, sfBool},
     graphics::{
         CircleShape, Color, ConvexShape, CustomShape, Drawable, IntRect, PrimitiveType,
-        RectangleShape, RenderStates, RenderTarget, Sprite, Text, Vertex, VertexArray,
-        VertexBuffer, View,
+        RectangleShape, RenderStates, RenderTarget, Sprite, Text, Vertex, VertexBuffer, View,
     },
     sf_bool_ext::SfBoolExt,
     system::{SfStrConv, Vector2f, Vector2i, Vector2u},
     window::{thread_safety, ContextSettings, Cursor, Event, Handle, Style, VideoMode},
 };
-use csfml_graphics_sys as ffi;
-use csfml_system_sys::*;
 
 /// [`Window`] that can serve as a target for 2D drawing.
 ///
@@ -20,7 +20,7 @@ use csfml_system_sys::*;
 /// [`Window`]: crate::window::Window
 #[derive(Debug)]
 pub struct RenderWindow {
-    render_window: *mut ffi::sfRenderWindow,
+    render_window: NonNull<ffi::sfRenderWindow>,
 }
 
 impl RenderWindow {
@@ -56,12 +56,11 @@ impl RenderWindow {
                     mode.into().raw(),
                     sfstr.as_ptr(),
                     style.bits(),
-                    &settings.0,
+                    settings,
                 )
             };
-            assert!(!sf_render_win.is_null(), "Failed to create RenderWindow");
             RenderWindow {
-                render_window: sf_render_win,
+                render_window: NonNull::new(sf_render_win).expect("Failed to create RenderWindow"),
             }
         })
     }
@@ -86,10 +85,9 @@ impl RenderWindow {
         thread_safety::set_window_thread();
 
         let sf_render_win: *mut ffi::sfRenderWindow =
-            ffi::sfRenderWindow_createFromHandle(handle, &settings.0);
-        assert!(!sf_render_win.is_null(), "Failed to create Window");
+            ffi::sfRenderWindow_createFromHandle(handle, settings);
         RenderWindow {
-            render_window: sf_render_win,
+            render_window: NonNull::new(sf_render_win).expect("Failed to create Window"),
         }
     }
 
@@ -100,7 +98,7 @@ impl RenderWindow {
     /// doesn't support, or implement a temporary workaround until a bug is fixed.
     #[must_use]
     pub fn system_handle(&self) -> Handle {
-        unsafe { ffi::sfRenderWindow_getSystemHandle(self.render_window) }
+        unsafe { ffi::sfRenderWindow_getSystemHandle(self.render_window.as_ptr()) }
     }
 
     /// Change a render window's icon
@@ -110,8 +108,14 @@ impl RenderWindow {
     /// * width - Icon's width, in pixels
     /// * height - Icon's height, in pixels
     /// * pixels - Vector of pixels
-    pub fn set_icon(&mut self, width: u32, height: u32, pixels: &[u8]) {
-        unsafe { ffi::sfRenderWindow_setIcon(self.render_window, width, height, pixels.as_ptr()) }
+    ///
+    /// # Safety
+    ///
+    /// `pixels` not being at least `width * height * 4` will likely cause undefined behavior.
+    ///
+    /// Platform-specific behavior is also unclear (limits on max size, etc).
+    pub unsafe fn set_icon(&mut self, width: u32, height: u32, pixels: &[u8]) {
+        ffi::sfRenderWindow_setIcon(self.render_window.as_ptr(), width, height, pixels.as_ptr())
     }
 
     /// Pop the event on top of event queue, if any, and return it
@@ -125,9 +129,10 @@ impl RenderWindow {
     /// Returns `Some(event)` if an event was returned, or `None` if the event queue was empty
     pub fn poll_event(&mut self) -> Option<Event> {
         let mut event = std::mem::MaybeUninit::uninit();
-        let have_event =
-            unsafe { ffi::sfRenderWindow_pollEvent(self.render_window, event.as_mut_ptr()) }
-                .to_bool();
+        let have_event = unsafe {
+            ffi::sfRenderWindow_pollEvent(self.render_window.as_ptr(), event.as_mut_ptr())
+        }
+        .into_bool();
         if have_event {
             unsafe { Event::from_raw(&event.assume_init()) }
         } else {
@@ -147,9 +152,10 @@ impl RenderWindow {
     /// Returns `Some(event)` or `None` if an error has occured
     pub fn wait_event(&mut self) -> Option<Event> {
         let mut event = std::mem::MaybeUninit::uninit();
-        let have_event =
-            unsafe { ffi::sfRenderWindow_waitEvent(self.render_window, event.as_mut_ptr()) }
-                .to_bool();
+        let have_event = unsafe {
+            ffi::sfRenderWindow_waitEvent(self.render_window.as_ptr(), event.as_mut_ptr())
+        }
+        .into_bool();
         if have_event {
             unsafe { Event::from_raw(&event.assume_init()) }
         } else {
@@ -166,7 +172,7 @@ impl RenderWindow {
     /// every time), and will have no effect on closed windows.
     pub fn close(&mut self) {
         unsafe {
-            ffi::sfRenderWindow_close(self.render_window);
+            ffi::sfRenderWindow_close(self.render_window.as_ptr());
         }
     }
 
@@ -178,7 +184,7 @@ impl RenderWindow {
     ///
     #[must_use]
     pub fn is_open(&self) -> bool {
-        unsafe { ffi::sfRenderWindow_isOpen(self.render_window) }.to_bool()
+        unsafe { ffi::sfRenderWindow_isOpen(self.render_window.as_ptr()) }.into_bool()
     }
 
     /// Display on screen what has been rendered to the window so far
@@ -188,7 +194,7 @@ impl RenderWindow {
     /// it on screen.
     ///
     pub fn display(&mut self) {
-        unsafe { ffi::sfRenderWindow_display(self.render_window) }
+        unsafe { ffi::sfRenderWindow_display(self.render_window.as_ptr()) }
     }
 
     /// Limit the framerate to a maximum fixed frequency
@@ -201,7 +207,7 @@ impl RenderWindow {
     /// * limit - Framerate limit, in frames per seconds (use 0 to disable limit)
     ///
     pub fn set_framerate_limit(&mut self, limit: u32) {
-        unsafe { ffi::sfRenderWindow_setFramerateLimit(self.render_window, limit) }
+        unsafe { ffi::sfRenderWindow_setFramerateLimit(self.render_window.as_ptr(), limit) }
     }
 
     /// Get the settings of the OpenGL context of a window
@@ -214,8 +220,8 @@ impl RenderWindow {
     /// Return a structure containing the OpenGL context settings
     ///
     #[must_use]
-    pub fn settings(&self) -> ContextSettings {
-        unsafe { ContextSettings(ffi::sfRenderWindow_getSettings(self.render_window)) }
+    pub fn settings(&self) -> &ContextSettings {
+        unsafe { &*ffi::sfRenderWindow_getSettings(self.render_window.as_ptr()) }
     }
 
     /// Change the title of a window
@@ -225,7 +231,7 @@ impl RenderWindow {
     ///
     pub fn set_title<S: SfStrConv>(&mut self, title: S) {
         title.with_as_sfstr(|sfstr| unsafe {
-            ffi::sfRenderWindow_setUnicodeTitle(self.render_window, sfstr.as_ptr());
+            ffi::sfRenderWindow_setUnicodeTitle(self.render_window.as_ptr(), sfstr.as_ptr());
         })
     }
 
@@ -236,7 +242,7 @@ impl RenderWindow {
     ///
     pub fn set_visible(&mut self, visible: bool) {
         unsafe {
-            ffi::sfRenderWindow_setVisible(self.render_window, sfBool::from_bool(visible));
+            ffi::sfRenderWindow_setVisible(self.render_window.as_ptr(), sfBool::from_bool(visible));
         }
     }
 
@@ -248,7 +254,7 @@ impl RenderWindow {
     pub fn set_mouse_cursor_visible(&mut self, visible: bool) {
         unsafe {
             ffi::sfRenderWindow_setMouseCursorVisible(
-                self.render_window,
+                self.render_window.as_ptr(),
                 sfBool::from_bool(visible),
             );
         }
@@ -261,7 +267,7 @@ impl RenderWindow {
     pub fn set_mouse_cursor_grabbed(&mut self, grabbed: bool) {
         unsafe {
             ffi::sfRenderWindow_setMouseCursorGrabbed(
-                self.render_window,
+                self.render_window.as_ptr(),
                 sfBool::from_bool(grabbed),
             )
         }
@@ -280,7 +286,7 @@ impl RenderWindow {
     pub fn set_vertical_sync_enabled(&mut self, enabled: bool) {
         unsafe {
             ffi::sfRenderWindow_setVerticalSyncEnabled(
-                self.render_window,
+                self.render_window.as_ptr(),
                 sfBool::from_bool(enabled),
             );
         }
@@ -299,7 +305,10 @@ impl RenderWindow {
     ///
     pub fn set_key_repeat_enabled(&mut self, enabled: bool) {
         unsafe {
-            ffi::sfRenderWindow_setKeyRepeatEnabled(self.render_window, sfBool::from_bool(enabled));
+            ffi::sfRenderWindow_setKeyRepeatEnabled(
+                self.render_window.as_ptr(),
+                sfBool::from_bool(enabled),
+            );
         }
     }
 
@@ -317,8 +326,10 @@ impl RenderWindow {
     /// Return true if operation was successful, false otherwise
     ///
     pub fn set_active(&mut self, enabled: bool) -> bool {
-        unsafe { ffi::sfRenderWindow_setActive(self.render_window, sfBool::from_bool(enabled)) }
-            .to_bool()
+        unsafe {
+            ffi::sfRenderWindow_setActive(self.render_window.as_ptr(), sfBool::from_bool(enabled))
+        }
+        .into_bool()
     }
 
     /// Change the joystick threshold
@@ -330,7 +341,7 @@ impl RenderWindow {
     /// * threshold - New threshold, in the range [0, 100]
     ///
     pub fn set_joystick_threshold(&mut self, threshold: f32) {
-        unsafe { ffi::sfRenderWindow_setJoystickThreshold(self.render_window, threshold) }
+        unsafe { ffi::sfRenderWindow_setJoystickThreshold(self.render_window.as_ptr(), threshold) }
     }
 
     /// Get the position of a window
@@ -339,7 +350,7 @@ impl RenderWindow {
     ///
     #[must_use]
     pub fn position(&self) -> Vector2i {
-        unsafe { Vector2i::from_raw(ffi::sfRenderWindow_getPosition(self.render_window)) }
+        unsafe { Vector2i::from_raw(ffi::sfRenderWindow_getPosition(self.render_window.as_ptr())) }
     }
 
     /// Change the position of a window on screen
@@ -352,7 +363,7 @@ impl RenderWindow {
     /// * position - New position of the window, in pixels
     ///
     pub fn set_position(&mut self, position: Vector2i) {
-        unsafe { ffi::sfRenderWindow_setPosition(self.render_window, position.raw()) }
+        unsafe { ffi::sfRenderWindow_setPosition(self.render_window.as_ptr(), position.raw()) }
     }
 
     /// Change the size of the rendering region of a window
@@ -361,13 +372,17 @@ impl RenderWindow {
     /// * size - New size, in pixels
     ///
     pub fn set_size<S: Into<Vector2u>>(&mut self, size: S) {
-        unsafe { ffi::sfRenderWindow_setSize(self.render_window, size.into().raw()) }
+        unsafe { ffi::sfRenderWindow_setSize(self.render_window.as_ptr(), size.into().raw()) }
     }
 
     /// Returns the current position of the mouse relative to the window.
     #[must_use]
     pub fn mouse_position(&self) -> Vector2i {
-        unsafe { Vector2i::from_raw(ffi::sfMouse_getPositionRenderWindow(self.render_window)) }
+        unsafe {
+            Vector2i::from_raw(ffi::sfMouse_getPositionRenderWindow(
+                self.render_window.as_ptr(),
+            ))
+        }
     }
 
     /// Set the current position of the mouse relatively to a render window
@@ -379,7 +394,7 @@ impl RenderWindow {
     /// * `position` - the positon to set
     ///
     pub fn set_mouse_position(&mut self, position: Vector2i) {
-        unsafe { ffi::sfMouse_setPositionRenderWindow(position.raw(), self.render_window) }
+        unsafe { ffi::sfMouse_setPositionRenderWindow(position.raw(), self.render_window.as_ptr()) }
     }
 
     /// Set the displayed cursor to a native system cursor.
@@ -387,7 +402,7 @@ impl RenderWindow {
     /// Upon window creation, the arrow cursor is used by default.
     /// The cursor can not be destroyed while in use by the window.
     pub fn set_mouse_cursor(&mut self, cursor: &Cursor) {
-        unsafe { ffi::sfRenderWindow_setMouseCursor(self.render_window, cursor.raw()) }
+        unsafe { ffi::sfRenderWindow_setMouseCursor(self.render_window.as_ptr(), cursor.raw()) }
     }
 
     /// Returns the current position of a touch in window coordinates.
@@ -396,7 +411,7 @@ impl RenderWindow {
         unsafe {
             Vector2i::from_raw(ffi::sfTouch_getPositionRenderWindow(
                 finger,
-                self.render_window,
+                self.render_window.as_ptr(),
             ))
         }
     }
@@ -407,7 +422,7 @@ impl RenderWindow {
     /// such as keystrokes or most mouse events.
     #[must_use]
     pub fn has_focus(&self) -> bool {
-        unsafe { ffi::sfRenderWindow_hasFocus(self.render_window).to_bool() }
+        unsafe { ffi::sfRenderWindow_hasFocus(self.render_window.as_ptr()).into_bool() }
     }
 
     /// Request the current window to be made the active foreground window.
@@ -417,46 +432,48 @@ impl RenderWindow {
     /// operating system, that it would like to be focused. The operating system is free to
     /// deny the request. This is not to be confused with [`RenderWindow::set_active`].
     pub fn request_focus(&self) {
-        unsafe { ffi::sfRenderWindow_requestFocus(self.render_window) }
+        unsafe { ffi::sfRenderWindow_requestFocus(self.render_window.as_ptr()) }
     }
     pub(super) fn raw(&self) -> *const ffi::sfRenderWindow {
-        self.render_window
+        self.render_window.as_ptr()
     }
 }
 
 impl RenderTarget for RenderWindow {
     fn push_gl_states(&mut self) {
-        unsafe { ffi::sfRenderWindow_pushGLStates(self.render_window) }
+        unsafe { ffi::sfRenderWindow_pushGLStates(self.render_window.as_ptr()) }
     }
     fn pop_gl_states(&mut self) {
-        unsafe { ffi::sfRenderWindow_popGLStates(self.render_window) }
+        unsafe { ffi::sfRenderWindow_popGLStates(self.render_window.as_ptr()) }
     }
     fn reset_gl_states(&mut self) {
-        unsafe { ffi::sfRenderWindow_resetGLStates(self.render_window) }
+        unsafe { ffi::sfRenderWindow_resetGLStates(self.render_window.as_ptr()) }
     }
     fn set_view(&mut self, view: &View) {
-        unsafe { ffi::sfRenderWindow_setView(self.render_window, view.raw()) }
+        unsafe { ffi::sfRenderWindow_setView(self.render_window.as_ptr(), view.raw()) }
     }
     fn view(&self) -> &View {
-        unsafe { &*(ffi::sfRenderWindow_getView(self.render_window) as *const View) }
+        unsafe { &*(ffi::sfRenderWindow_getView(self.render_window.as_ptr()) as *const View) }
     }
     fn default_view(&self) -> &View {
-        unsafe { &*(ffi::sfRenderWindow_getDefaultView(self.render_window) as *const View) }
+        unsafe {
+            &*(ffi::sfRenderWindow_getDefaultView(self.render_window.as_ptr()) as *const View)
+        }
     }
     fn map_pixel_to_coords(&self, point: Vector2i, view: &View) -> Vector2f {
         unsafe {
             Vector2f::from_raw(ffi::sfRenderWindow_mapPixelToCoords(
-                self.render_window,
+                self.render_window.as_ptr(),
                 point.raw(),
                 view.raw(),
             ))
         }
     }
     fn map_pixel_to_coords_current_view(&self, point: Vector2i) -> Vector2f {
-        let view = unsafe { ffi::sfRenderWindow_getView(self.render_window) };
+        let view = unsafe { ffi::sfRenderWindow_getView(self.render_window.as_ptr()) };
         unsafe {
             Vector2f::from_raw(ffi::sfRenderWindow_mapPixelToCoords(
-                self.render_window,
+                self.render_window.as_ptr(),
                 point.raw(),
                 view,
             ))
@@ -465,17 +482,17 @@ impl RenderTarget for RenderWindow {
     fn map_coords_to_pixel(&self, point: Vector2f, view: &View) -> Vector2i {
         unsafe {
             Vector2i::from_raw(ffi::sfRenderWindow_mapCoordsToPixel(
-                self.render_window,
+                self.render_window.as_ptr(),
                 point.raw(),
                 view.raw(),
             ))
         }
     }
     fn map_coords_to_pixel_current_view(&self, point: Vector2f) -> Vector2i {
-        let curr_view = unsafe { ffi::sfRenderWindow_getView(self.render_window) };
+        let curr_view = unsafe { ffi::sfRenderWindow_getView(self.render_window.as_ptr()) };
         unsafe {
             Vector2i::from_raw(ffi::sfRenderWindow_mapCoordsToPixel(
-                self.render_window,
+                self.render_window.as_ptr(),
                 point.raw(),
                 curr_view,
             ))
@@ -484,13 +501,13 @@ impl RenderTarget for RenderWindow {
     fn viewport(&self, view: &View) -> IntRect {
         unsafe {
             IntRect::from_raw(ffi::sfRenderWindow_getViewport(
-                self.render_window,
+                self.render_window.as_ptr(),
                 view.raw(),
             ))
         }
     }
     fn size(&self) -> Vector2u {
-        unsafe { Vector2u::from_raw(ffi::sfRenderWindow_getSize(self.render_window)) }
+        unsafe { Vector2u::from_raw(ffi::sfRenderWindow_getSize(self.render_window.as_ptr())) }
     }
     fn draw(&mut self, object: &dyn Drawable) {
         object.draw(self, &RenderStates::DEFAULT);
@@ -500,65 +517,52 @@ impl RenderTarget for RenderWindow {
     }
     fn draw_text(&self, text: &Text, render_states: &RenderStates) {
         unsafe {
-            ffi::sfRenderWindow_drawText(self.render_window, text.raw(), render_states.raw_ref())
+            ffi::sfRenderWindow_drawText(self.render_window.as_ptr(), text.raw(), render_states)
         }
     }
     fn draw_shape(&self, shape: &CustomShape, render_states: &RenderStates) {
         unsafe {
-            ffi::sfRenderWindow_drawShape(self.render_window, shape.raw(), render_states.raw_ref())
+            ffi::sfRenderWindow_drawShape(self.render_window.as_ptr(), shape.raw(), render_states)
         }
     }
     fn draw_sprite(&self, sprite: &Sprite, render_states: &RenderStates) {
         unsafe {
-            ffi::sfRenderWindow_drawSprite(
-                self.render_window,
-                sprite.raw(),
-                render_states.raw_ref(),
-            )
+            ffi::sfRenderWindow_drawSprite(self.render_window.as_ptr(), sprite.raw(), render_states)
         }
     }
     fn draw_circle_shape(&self, circle_shape: &CircleShape, render_states: &RenderStates) {
         unsafe {
             ffi::sfRenderWindow_drawCircleShape(
-                self.render_window,
+                self.render_window.as_ptr(),
                 circle_shape.raw(),
-                render_states.raw_ref(),
+                render_states,
             )
         }
     }
     fn draw_rectangle_shape(&self, rectangle_shape: &RectangleShape, render_states: &RenderStates) {
         unsafe {
             ffi::sfRenderWindow_drawRectangleShape(
-                self.render_window,
+                self.render_window.as_ptr(),
                 rectangle_shape.raw(),
-                render_states.raw_ref(),
+                render_states,
             )
         }
     }
     fn draw_convex_shape(&self, convex_shape: &ConvexShape, render_states: &RenderStates) {
         unsafe {
             ffi::sfRenderWindow_drawConvexShape(
-                self.render_window,
+                self.render_window.as_ptr(),
                 convex_shape.raw(),
-                render_states.raw_ref(),
-            )
-        }
-    }
-    fn draw_vertex_array(&self, vertex_array: &VertexArray, render_states: &RenderStates) {
-        unsafe {
-            ffi::sfRenderWindow_drawVertexArray(
-                self.render_window,
-                vertex_array.raw(),
-                render_states.raw_ref(),
+                render_states,
             )
         }
     }
     fn draw_vertex_buffer(&self, vertex_buffer: &VertexBuffer, render_states: &RenderStates) {
         unsafe {
             ffi::sfRenderWindow_drawVertexBuffer(
-                self.render_window,
+                self.render_window.as_ptr(),
                 vertex_buffer.raw(),
-                render_states.raw_ref(),
+                render_states,
             )
         }
     }
@@ -566,23 +570,23 @@ impl RenderTarget for RenderWindow {
         let len = vertices.len();
         unsafe {
             ffi::sfRenderWindow_drawPrimitives(
-                self.render_window,
+                self.render_window.as_ptr(),
                 vertices.as_ptr() as *const _,
                 len,
                 ty.0,
-                rs.raw_ref(),
+                rs,
             );
         }
     }
     fn clear(&mut self, color: Color) {
-        unsafe { ffi::sfRenderWindow_clear(self.render_window, color.0) }
+        unsafe { ffi::sfRenderWindow_clear(self.render_window.as_ptr(), color.0) }
     }
 }
 
 impl Drop for RenderWindow {
     fn drop(&mut self) {
         unsafe {
-            ffi::sfRenderWindow_destroy(self.render_window);
+            ffi::sfRenderWindow_destroy(self.render_window.as_ptr());
         }
     }
 }

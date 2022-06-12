@@ -6,6 +6,8 @@ use sfml::{
     window::{Event, Key, Style},
 };
 
+include!("../example_common.rs");
+
 fn main() {
     let mut window = RenderWindow::new(
         (800, 600),
@@ -16,10 +18,10 @@ fn main() {
     window.set_vertical_sync_enabled(true);
 
     // Create a new texture. (Hey Frank!)
-    let frank = Texture::from_file("resources/frank.jpeg").unwrap();
+    let frank = Texture::from_file(example_res!("frank.jpeg")).unwrap();
 
     // Create a font.
-    let font = Font::from_file("resources/sansation.ttf").unwrap();
+    let font = Font::from_file(example_res!("sansation.ttf")).unwrap();
 
     // Create a circle with the Texture.
     let mut circle = CircleShape::with_texture(&frank);
@@ -64,7 +66,7 @@ fn main() {
             match event {
                 Event::Closed
                 | Event::KeyPressed {
-                    code: Key::ESCAPE, ..
+                    code: Key::Escape, ..
                 } => return,
                 _ => {}
             }

@@ -1,4 +1,5 @@
 use crate::{
+    ffi::{graphics as ffi, sfBool, sfTrue},
     graphics::{
         Color, Drawable, FloatRect, IntRect, RenderStates, RenderTarget, Shape, Texture, Transform,
         Transformable,
@@ -6,8 +7,6 @@ use crate::{
     sf_bool_ext::SfBoolExt,
     system::Vector2f,
 };
-use csfml_graphics_sys as ffi;
-use csfml_system_sys::{sfBool, sfTrue};
 use std::{marker::PhantomData, ptr};
 
 /// Specialized shape representing a convex polygon
@@ -71,13 +70,12 @@ impl<'s> ConvexShape<'s> {
     /// * index - Index of the point to change, in range `[0 .. get_point_count() - 1]`
     /// * point - New position of the point
     pub fn set_point<P: Into<Vector2f>>(&mut self, index: u32, point: P) {
-        if index >= self.point_count() {
-            panic!(
-                "Index out of bounds. Index: {}, len: {}",
-                index,
-                self.point_count()
-            );
-        }
+        assert!(
+            index < self.point_count(),
+            "Index out of bounds. Index: {}, len: {}",
+            index,
+            self.point_count()
+        );
         unsafe {
             ffi::sfConvexShape_setPoint(self.convex_shape, index as usize, point.into().raw())
         }
@@ -149,10 +147,10 @@ impl<'s> Transformable for ConvexShape<'s> {
         unsafe { ffi::sfConvexShape_scale(self.convex_shape, factors.into().raw()) }
     }
     fn transform(&self) -> Transform {
-        unsafe { Transform(ffi::sfConvexShape_getTransform(self.convex_shape)) }
+        unsafe { ffi::sfConvexShape_getTransform(self.convex_shape) }
     }
     fn inverse_transform(&self) -> Transform {
-        unsafe { Transform(ffi::sfConvexShape_getInverseTransform(self.convex_shape)) }
+        unsafe { ffi::sfConvexShape_getInverseTransform(self.convex_shape) }
     }
 }
 
@@ -205,7 +203,6 @@ impl<'s> Shape<'s> for ConvexShape<'s> {
         unsafe { ffi::sfConvexShape_getOutlineThickness(self.convex_shape) }
     }
     fn point_count(&self) -> u32 {
-        use std::convert::TryInto;
         unsafe {
             ffi::sfConvexShape_getPointCount(self.convex_shape)
                 .try_into()
@@ -216,13 +213,12 @@ impl<'s> Shape<'s> for ConvexShape<'s> {
         unsafe {
             // ConvexShape stores items in a vector, and does unchecked indexing.
             // To retain safety, we check for OOB here.
-            if index >= self.point_count() {
-                panic!(
-                    "Index out of bounds. Index: {}, len: {}",
-                    index,
-                    self.point_count()
-                );
-            }
+            assert!(
+                index < self.point_count(),
+                "Index out of bounds. Index: {}, len: {}",
+                index,
+                self.point_count()
+            );
             Vector2f::from_raw(ffi::sfConvexShape_getPoint(
                 self.convex_shape,
                 index as usize,
@@ -256,7 +252,6 @@ impl Iterator for ConvexShapePoints {
     type Item = Vector2f;
 
     fn next(&mut self) -> Option<Vector2f> {
-        use std::convert::TryInto;
         let point_count = unsafe {
             ffi::sfConvexShape_getPointCount(self.convex_shape)
                 .try_into()
@@ -265,13 +260,14 @@ impl Iterator for ConvexShapePoints {
         if self.pos == point_count {
             None
         } else {
-            self.pos += 1;
-            unsafe {
-                Some(Vector2f::from_raw(ffi::sfConvexShape_getPoint(
+            let point = unsafe {
+                Vector2f::from_raw(ffi::sfConvexShape_getPoint(
                     self.convex_shape,
                     self.pos as usize,
-                )))
-            }
+                ))
+            };
+            self.pos += 1;
+            Some(point)
         }
     }
 }

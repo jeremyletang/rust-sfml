@@ -1,14 +1,13 @@
 use crate::{
     audio::{SoundSource, SoundStatus, TimeSpan},
-    inputstream::InputStream,
+    ffi::{self, sfBool},
     sf_bool_ext::SfBoolExt,
-    system::{Time, Vector3f},
+    system::{InputStream, Time, Vector3f},
 };
-use csfml_audio_sys as ffi;
-use csfml_system_sys::sfBool;
 use std::{
     ffi::CString,
     io::{Read, Seek},
+    marker::PhantomData,
 };
 
 /// Streamed music played from an audio file.
@@ -52,11 +51,12 @@ use std::{
 
 ///
 #[derive(Debug)]
-pub struct Music {
+pub struct Music<'stream> {
     music: *mut ffi::sfMusic,
+    _stream: PhantomData<&'stream mut ()>,
 }
 
-impl Music {
+impl<'stream> Music<'stream> {
     /// Create a new music and load it from a file
     ///
     /// This function doesn't start playing the music (call [`play`] to do so).
@@ -77,7 +77,10 @@ impl Music {
         if music_tmp.is_null() {
             None
         } else {
-            Some(Music { music: music_tmp })
+            Some(Music {
+                music: music_tmp,
+                _stream: PhantomData,
+            })
         }
     }
 
@@ -94,14 +97,18 @@ impl Music {
     /// Returns `None` if loading fails.
     ///
     /// [`play`]: Music::play
-    pub fn from_stream<T: Read + Seek>(stream: &mut T) -> Option<Music> {
-        let mut input_stream = InputStream::new(stream);
+    pub fn from_stream<T: Read + Seek>(
+        stream: &'stream mut InputStream<T>,
+    ) -> Option<Music<'stream>> {
         let music_tmp: *mut ffi::sfMusic =
-            unsafe { ffi::sfMusic_createFromStream(&mut input_stream.0) };
+            unsafe { ffi::sfMusic_createFromStream(&mut *stream.stream) };
         if music_tmp.is_null() {
             None
         } else {
-            Some(Music { music: music_tmp })
+            Some(Music {
+                music: music_tmp,
+                _stream: PhantomData,
+            })
         }
     }
 
@@ -125,7 +132,10 @@ impl Music {
         if music_tmp.is_null() {
             None
         } else {
-            Some(Music { music: music_tmp })
+            Some(Music {
+                music: music_tmp,
+                _stream: PhantomData,
+            })
         }
     }
 
@@ -145,7 +155,7 @@ impl Music {
     /// Return true if the music is looping, false otherwise
     #[must_use]
     pub fn is_looping(&self) -> bool {
-        unsafe { ffi::sfMusic_getLoop(self.music) }.to_bool()
+        unsafe { ffi::sfMusic_getLoop(self.music) }.into_bool()
     }
 
     /// Get the total duration of a music
@@ -261,7 +271,7 @@ impl Music {
     }
 }
 
-impl SoundSource for Music {
+impl<'stream> SoundSource for Music<'stream> {
     fn set_pitch(&mut self, pitch: f32) {
         unsafe { ffi::sfMusic_setPitch(self.music, pitch) }
     }
@@ -290,7 +300,7 @@ impl SoundSource for Music {
         unsafe { Vector3f::from_raw(ffi::sfMusic_getPosition(self.music)) }
     }
     fn is_relative_to_listener(&self) -> bool {
-        unsafe { ffi::sfMusic_isRelativeToListener(self.music).to_bool() }
+        unsafe { ffi::sfMusic_isRelativeToListener(self.music).into_bool() }
     }
     fn min_distance(&self) -> f32 {
         unsafe { ffi::sfMusic_getMinDistance(self.music) }
@@ -300,7 +310,7 @@ impl SoundSource for Music {
     }
 }
 
-impl Drop for Music {
+impl<'stream> Drop for Music<'stream> {
     fn drop(&mut self) {
         unsafe {
             ffi::sfMusic_destroy(self.music);

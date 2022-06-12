@@ -1,5 +1,7 @@
-use crate::graphics::{BlendMode, Shader, Texture, Transform};
-use csfml_graphics_sys as ffi;
+use crate::{
+    ffi::graphics as ffi,
+    graphics::{BlendMode, Shader, Texture, Transform},
+};
 use std::{marker::PhantomData, ptr};
 
 /// Define the states used for drawing to a [`RenderTarget`].
@@ -51,9 +53,14 @@ use std::{marker::PhantomData, ptr};
 /// [`RenderTarget::draw_with_renderstates`]: crate::graphics::RenderTarget::draw_with_renderstates
 /// [`Drawable`]: crate::graphics::Drawable
 #[derive(Debug, Clone, Copy)]
-#[repr(transparent)]
+#[repr(C)]
 pub struct RenderStates<'texture, 'shader, 'shader_texture: 'shader> {
-    repr: ffi::sfRenderStates,
+    /// The blending mode
+    pub blend_mode: BlendMode,
+    /// The transform
+    pub transform: Transform,
+    texture: *const ffi::sfTexture,
+    shader: *const ffi::sfShader,
     _texture: PhantomData<&'texture Texture>,
     _shader: PhantomData<&'shader Shader<'shader_texture>>,
 }
@@ -76,44 +83,30 @@ impl<'texture, 'shader, 'shader_texture> RenderStates<'texture, 'shader, 'shader
         shader: Option<&'shader Shader<'shader_texture>>,
     ) -> Self {
         Self {
-            repr: ffi::sfRenderStates {
-                blendMode: blend_mode.raw(),
-                transform: transform.raw(),
-                texture: match texture {
-                    Some(tex) => tex.raw(),
-                    None => ptr::null(),
-                },
-                shader: match shader {
-                    Some(shader) => shader.raw(),
-                    None => ptr::null(),
-                },
+            blend_mode,
+            transform,
+            texture: match texture {
+                Some(tex) => tex.raw(),
+                None => ptr::null(),
+            },
+            shader: match shader {
+                Some(shader) => shader.raw(),
+                None => ptr::null(),
             },
             _texture: PhantomData,
             _shader: PhantomData,
         }
     }
-    pub(super) fn raw_ref(&self) -> *const ffi::sfRenderStates {
-        let ptr: *const Self = self;
-        ptr as *const ffi::sfRenderStates
-    }
-    /// Sets the blending mode
-    pub fn set_blend_mode(&mut self, blend_mode: BlendMode) {
-        self.repr.blendMode = blend_mode.raw();
-    }
-    /// Sets the transform
-    pub fn set_transform(&mut self, transform: Transform) {
-        self.repr.transform = transform.raw();
-    }
     /// Sets the texture
     pub fn set_texture(&mut self, texture: Option<&'texture Texture>) {
-        self.repr.texture = match texture {
+        self.texture = match texture {
             None => ptr::null(),
             Some(tex) => tex.raw(),
         };
     }
     /// Sets the shader
     pub fn set_shader(&mut self, shader: Option<&'shader Shader<'shader_texture>>) {
-        self.repr.shader = match shader {
+        self.shader = match shader {
             None => ptr::null(),
             Some(shader) => shader.raw(),
         };
@@ -125,12 +118,10 @@ impl RenderStates<'static, 'static, 'static> {
     ///
     /// This can be used in a const context, unlike the [`Default`] implementation.
     pub const DEFAULT: Self = Self {
-        repr: ffi::sfRenderStates {
-            blendMode: BlendMode::ALPHA.raw(),
-            transform: Transform::IDENTITY.raw(),
-            texture: ptr::null(),
-            shader: ptr::null(),
-        },
+        blend_mode: BlendMode::ALPHA,
+        transform: Transform::IDENTITY,
+        texture: ptr::null(),
+        shader: ptr::null(),
         _texture: PhantomData,
         _shader: PhantomData,
     };

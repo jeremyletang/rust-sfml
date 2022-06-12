@@ -1,60 +1,57 @@
 [package]
 name = "sfml"
 description = "Rust binding for sfml"
-version = "0.15.1"
+version = "0.16.0"
 authors = ["Jeremy Letang <letang.jeremy@gmail.com>"]
 documentation = "https://docs.rs/sfml"
 repository = "https://github.com/jeremyletang/rust-sfml"
 license = "zlib-acknowledgement"
 keywords = ["sfml", "multimedia", "game"]
 readme = "README.md"
-edition = "2018"
+edition = "2021"
+rust-version = "1.56"
 
 [features]
 default = ["graphics", "audio"]
-window = ["csfml-window-sys", "bitflags", "widestring"]
-graphics = ["window", "csfml-graphics-sys"]
-audio = ["csfml-audio-sys"]
+window = ["bitflags", "once_cell", "widestring"]
+graphics = ["window"]
+audio = []
 serde = ["dep:serde"]
 # Used to skip running certain tests on CI, since it's running in a headless environment.
 ci-headless = []
+
+[dependencies]
+num-traits = "0.2.15"
 
 [dependencies.serde]
 version = "1.0"
 optional = true
 
 [dependencies.once_cell]
-version = "1.4"
+version = "1.7.2"
+optional = true
 
 [dependencies.widestring]
-version = "0.4.0"
+version = "0.5.1"
 optional = true
 
 [dependencies.bitflags]
+version = "1.2.1"
+optional = true
+
+[dependencies.link-cplusplus]
 version = "1.0"
-optional = true
 
-[dependencies.csfml-system-sys]
-path = "ffi/csfml-system-sys"
-version = "0.5.0"
+[build-dependencies]
+cc = "1.0.67"
 
-[dependencies.csfml-window-sys]
-path = "ffi/csfml-window-sys"
-version = "0.5.0"
-optional = true
-
-[dependencies.csfml-graphics-sys]
-path = "ffi/csfml-graphics-sys"
-version = "0.5.0"
-optional = true
-
-[dependencies.csfml-audio-sys]
-path = "ffi/csfml-audio-sys"
-version = "0.5.0"
-optional = true
+[build-dependencies.bindgen]
+version = "0.60.1"
+default-features = false
 
 [dev-dependencies]
-rand = "0.3"
+rand = "0.8.3"
+glu-sys = "0.1.4"
 
 [lib]
 name = "sfml"
@@ -121,6 +118,14 @@ required-features = ["graphics", "audio"]
 
 [[example]]
 name = "vertex-buffers"
+required-features = ["graphics"]
+
+[[example]]
+name = "spritemark"
+required-features = ["graphics"]
+
+[[example]]
+name = "opengl"
 required-features = ["graphics"]
 
 [workspace]

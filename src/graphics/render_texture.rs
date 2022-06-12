@@ -1,15 +1,14 @@
 use crate::{
+    ffi::{graphics as ffi, sfBool},
     graphics::{
         CircleShape, Color, ConvexShape, CustomShape, Drawable, IntRect, PrimitiveType,
-        RectangleShape, RenderStates, RenderTarget, Sprite, Text, Texture, Vertex, VertexArray,
-        VertexBuffer, View,
+        RectangleShape, RenderStates, RenderTarget, Sprite, Text, Texture, Vertex, VertexBuffer,
+        View,
     },
     sf_bool_ext::SfBoolExt,
     system::{Vector2f, Vector2i, Vector2u},
     window::ContextSettings,
 };
-use csfml_graphics_sys as ffi;
-use csfml_system_sys::sfBool;
 
 /// Target for off-screen 2D rendering into a texture
 #[derive(Debug)]
@@ -28,16 +27,8 @@ impl RenderTexture {
     ///
     /// Returns `None` if creation fails.
     #[must_use]
-    pub fn new(width: u32, height: u32, depth_buffer: bool) -> Option<RenderTexture> {
-        let tex =
-            unsafe { ffi::sfRenderTexture_create(width, height, sfBool::from_bool(depth_buffer)) };
-        if tex.is_null() {
-            None
-        } else {
-            Some(RenderTexture {
-                render_texture: tex,
-            })
-        }
+    pub fn new(width: u32, height: u32) -> Option<RenderTexture> {
+        Self::with_settings(width, height, &ContextSettings::default())
     }
 
     /// Create a `RenderTexture` with the given `ContextSettings`.
@@ -54,7 +45,7 @@ impl RenderTexture {
     /// Returns `None` if creation fails.
     #[must_use]
     pub fn with_settings(width: u32, height: u32, settings: &ContextSettings) -> Option<Self> {
-        let tex = unsafe { ffi::sfRenderTexture_createWithSettings(width, height, settings.0) };
+        let tex = unsafe { ffi::sfRenderTexture_createWithSettings(width, height, settings) };
         if tex.is_null() {
             None
         } else {
@@ -75,7 +66,7 @@ impl RenderTexture {
     /// * active - true to activate, false to deactivate
     pub fn set_active(&mut self, active: bool) -> bool {
         unsafe { ffi::sfRenderTexture_setActive(self.render_texture, sfBool::from_bool(active)) }
-            .to_bool()
+            .into_bool()
     }
 
     /// Get the target texture of a render texture
@@ -101,7 +92,7 @@ impl RenderTexture {
     /// Return true if smoothing is enabled, false if it is disabled
     #[must_use]
     pub fn is_smooth(&self) -> bool {
-        unsafe { ffi::sfRenderTexture_isSmooth(self.render_texture) }.to_bool()
+        unsafe { ffi::sfRenderTexture_isSmooth(self.render_texture) }.into_bool()
     }
     /// Enable or disable texture repeating.
     ///
@@ -114,7 +105,7 @@ impl RenderTexture {
     /// Tell whether the texture is repeated or not.
     #[must_use]
     pub fn is_repeated(&self) -> bool {
-        unsafe { ffi::sfRenderTexture_isRepeated(self.render_texture).to_bool() }
+        unsafe { ffi::sfRenderTexture_isRepeated(self.render_texture).into_bool() }
     }
     /// Generate a mipmap using the current texture data.
     ///
@@ -128,7 +119,13 @@ impl RenderTexture {
     /// completed and display has been called. Not calling display after subsequent drawing
     /// will lead to __undefined behavior__ if a mipmap had been previously generated.
     pub unsafe fn generate_mipmap(&mut self) -> bool {
-        ffi::sfRenderTexture_generateMipmap(self.render_texture).to_bool()
+        ffi::sfRenderTexture_generateMipmap(self.render_texture).into_bool()
+    }
+
+    /// Get the maximum anti-aliasing level supported by the system.
+    #[must_use]
+    pub fn maximum_antialiasing_level() -> u32 {
+        unsafe { ffi::sfRenderTexture_getMaximumAntialiasingLevel() }
     }
 }
 
@@ -201,57 +198,28 @@ impl RenderTarget for RenderTexture {
         object.draw(self, render_states);
     }
     fn draw_text(&self, text: &Text, rs: &RenderStates) {
-        unsafe { ffi::sfRenderTexture_drawText(self.render_texture, text.raw(), rs.raw_ref()) }
+        unsafe { ffi::sfRenderTexture_drawText(self.render_texture, text.raw(), rs) }
     }
     fn draw_shape(&self, shape: &CustomShape, rs: &RenderStates) {
-        unsafe { ffi::sfRenderTexture_drawShape(self.render_texture, shape.raw(), rs.raw_ref()) }
+        unsafe { ffi::sfRenderTexture_drawShape(self.render_texture, shape.raw(), rs) }
     }
     fn draw_sprite(&self, sprite: &Sprite, rs: &RenderStates) {
-        unsafe { ffi::sfRenderTexture_drawSprite(self.render_texture, sprite.raw(), rs.raw_ref()) }
+        unsafe { ffi::sfRenderTexture_drawSprite(self.render_texture, sprite.raw(), rs) }
     }
     fn draw_circle_shape(&self, circle_shape: &CircleShape, rs: &RenderStates) {
-        unsafe {
-            ffi::sfRenderTexture_drawCircleShape(
-                self.render_texture,
-                circle_shape.raw(),
-                rs.raw_ref(),
-            )
-        }
+        unsafe { ffi::sfRenderTexture_drawCircleShape(self.render_texture, circle_shape.raw(), rs) }
     }
     fn draw_rectangle_shape(&self, rectangle_shape: &RectangleShape, rs: &RenderStates) {
         unsafe {
-            ffi::sfRenderTexture_drawRectangleShape(
-                self.render_texture,
-                rectangle_shape.raw(),
-                rs.raw_ref(),
-            )
+            ffi::sfRenderTexture_drawRectangleShape(self.render_texture, rectangle_shape.raw(), rs)
         }
     }
     fn draw_convex_shape(&self, convex_shape: &ConvexShape, rs: &RenderStates) {
-        unsafe {
-            ffi::sfRenderTexture_drawConvexShape(
-                self.render_texture,
-                convex_shape.raw(),
-                rs.raw_ref(),
-            )
-        }
-    }
-    fn draw_vertex_array(&self, vertex_array: &VertexArray, rs: &RenderStates) {
-        unsafe {
-            ffi::sfRenderTexture_drawVertexArray(
-                self.render_texture,
-                vertex_array.raw(),
-                rs.raw_ref(),
-            )
-        }
+        unsafe { ffi::sfRenderTexture_drawConvexShape(self.render_texture, convex_shape.raw(), rs) }
     }
     fn draw_vertex_buffer(&self, vertex_buffer: &VertexBuffer, rs: &RenderStates) {
         unsafe {
-            ffi::sfRenderTexture_drawVertexBuffer(
-                self.render_texture,
-                vertex_buffer.raw(),
-                rs.raw_ref(),
-            )
+            ffi::sfRenderTexture_drawVertexBuffer(self.render_texture, vertex_buffer.raw(), rs)
         }
     }
     fn draw_primitives(&self, vertices: &[Vertex], ty: PrimitiveType, rs: &RenderStates) {
@@ -262,7 +230,7 @@ impl RenderTarget for RenderTexture {
                 vertices.as_ptr() as *const _,
                 len,
                 ty.0,
-                rs.raw_ref(),
+                rs,
             );
         }
     }

@@ -1,4 +1,13 @@
-use sfml::{graphics::*, system::*, window::*};
+use sfml::{
+    graphics::{
+        Color, Drawable, Font, IntRect, PrimitiveType, RenderStates, RenderTarget, RenderTexture,
+        RenderWindow, Shader, ShaderType, Sprite, Text, Texture, Transformable, Vertex,
+    },
+    system::{Clock, Vector2f},
+    window::{Event, Key, Style},
+};
+
+include!("../example_common.rs");
 
 trait Effect: Drawable {
     fn update(&mut self, t: f32, x: f32, y: f32);
@@ -17,7 +26,7 @@ impl<'t> Pixelate<'t> {
         sprite.set_texture(texture, false);
         Self {
             sprite,
-            shader: Shader::from_file(None, None, Some("resources/pixelate.frag")).unwrap(),
+            shader: Shader::from_file(example_res!("pixelate.frag"), ShaderType::Fragment).unwrap(),
         }
     }
 }
@@ -78,10 +87,9 @@ impl<'fo> WaveBlur<'fo> {
         text.set_position((30., 20.));
         Self {
             text,
-            shader: Shader::from_file(
-                Some("resources/wave.vert"),
-                None,
-                Some("resources/blur.frag"),
+            shader: Shader::from_file_vert_frag(
+                example_res!("wave.vert"),
+                example_res!("blur.frag"),
             )
             .unwrap(),
         }
@@ -117,7 +125,7 @@ impl<'fo> Effect for WaveBlur<'fo> {
 }
 
 struct StormBlink {
-    points: VertexArray,
+    points: Vec<Vertex>,
     shader: Shader<'static>,
 }
 
@@ -126,24 +134,20 @@ impl StormBlink {
         use rand::{thread_rng, Rng};
         let mut rng = thread_rng();
 
-        let mut points = VertexArray::default();
-        points.set_primitive_type(PrimitiveType::POINTS);
+        let mut points = Vec::new();
         for _ in 0..40_000 {
-            let x = rng.gen_range(0., 800.);
-            let y = rng.gen_range(0., 600.);
+            let x = rng.gen_range(0.0..800.);
+            let y = rng.gen_range(0.0..600.);
             let (red, green, blue) = (rng.gen(), rng.gen(), rng.gen());
-            points.append(&Vertex::with_pos_color(
+            points.push(Vertex::with_pos_color(
                 Vector2f::new(x, y),
                 Color::rgb(red, green, blue),
             ));
         }
 
-        let shader = Shader::from_file(
-            Some("resources/storm.vert"),
-            None,
-            Some("resources/blink.frag"),
-        )
-        .unwrap();
+        let shader =
+            Shader::from_file_vert_frag(example_res!("storm.vert"), example_res!("blink.frag"))
+                .unwrap();
         Self { points, shader }
     }
 }
@@ -156,7 +160,7 @@ impl Drawable for StormBlink {
     ) {
         let mut states = *states;
         states.set_shader(Some(&self.shader));
-        target.draw_with_renderstates(&self.points, &states);
+        target.draw_primitives(&self.points, PrimitiveType::POINTS, &states);
     }
 }
 
@@ -188,7 +192,7 @@ struct Edge<'t> {
 
 impl<'t> Edge<'t> {
     fn new(bg_texture: &'t Texture, entity_texture: &'t Texture) -> Self {
-        let mut surface = RenderTexture::new(800, 600, false).unwrap();
+        let mut surface = RenderTexture::new(800, 600).unwrap();
         surface.set_smooth(true);
         let mut bg_sprite = Sprite::with_texture(bg_texture);
         bg_sprite.set_position((135., 100.));
@@ -201,7 +205,8 @@ impl<'t> Edge<'t> {
             ));
         }
 
-        let mut shader = Shader::from_file(None, None, Some("resources/edge.frag")).unwrap();
+        let mut shader =
+            Shader::from_file(example_res!("edge.frag"), ShaderType::Fragment).unwrap();
         shader.set_uniform_current_texture("texture");
 
         Self {
@@ -261,11 +266,11 @@ fn main() {
         &Default::default(),
     );
     window.set_vertical_sync_enabled(true);
-    let font = Font::from_file("resources/sansation.ttf").unwrap();
-    let bg = Texture::from_file("resources/background.jpg").unwrap();
-    let mut bg_texture = Texture::from_file("resources/sfml.png").unwrap();
+    let font = Font::from_file(example_res!("sansation.ttf")).unwrap();
+    let bg = Texture::from_file(example_res!("background.jpg")).unwrap();
+    let mut bg_texture = Texture::from_file(example_res!("sfml.png")).unwrap();
     bg_texture.set_smooth(true);
-    let mut entity_texture = Texture::from_file("resources/devices.png").unwrap();
+    let mut entity_texture = Texture::from_file(example_res!("devices.png")).unwrap();
     entity_texture.set_smooth(true);
     let mut effects: [Box<dyn Effect>; 4] = [
         Box::new(Pixelate::new(&bg)),
@@ -274,7 +279,7 @@ fn main() {
         Box::new(Edge::new(&bg_texture, &entity_texture)),
     ];
     let mut current = 0;
-    let text_bg_texture = Texture::from_file("resources/text-background.png").unwrap();
+    let text_bg_texture = Texture::from_file(example_res!("text-background.png")).unwrap();
     let mut text_bg = Sprite::with_texture(&text_bg_texture);
     text_bg.set_position((0., 520.));
     text_bg.set_color(Color::rgba(255, 255, 255, 200));
@@ -294,8 +299,8 @@ fn main() {
             match event {
                 Closed => window.close(),
                 KeyPressed { code, .. } => match code {
-                    Key::ESCAPE => window.close(),
-                    Key::LEFT => {
+                    Key::Escape => window.close(),
+                    Key::Left => {
                         if current == 0 {
                             current = effects.len() - 1;
                         } else {
@@ -303,7 +308,7 @@ fn main() {
                         }
                         desc.set_string(&format!("Current effect: {}", effects[current].name()));
                     }
-                    Key::RIGHT => {
+                    Key::Right => {
                         if current == effects.len() - 1 {
                             current = 0;
                         } else {

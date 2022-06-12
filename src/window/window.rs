@@ -1,10 +1,11 @@
+use std::ptr::NonNull;
+
 use crate::{
+    ffi::{sfBool, window as ffi},
     sf_bool_ext::SfBoolExt,
     system::{SfStrConv, Vector2i, Vector2u},
     window::{thread_safety, ContextSettings, Cursor, Event, Style, VideoMode},
 };
-use csfml_system_sys::sfBool;
-use csfml_window_sys as ffi;
 
 /// The system native window handle type. Can be used to create an SFML Window
 /// from an existing system window.
@@ -58,7 +59,7 @@ pub type Handle = ffi::sfWindowHandle;
 /// ```
 #[derive(Debug)]
 pub struct Window {
-    window: *mut ffi::sfWindow,
+    window: NonNull<ffi::sfWindow>,
 }
 
 impl Window {
@@ -94,12 +95,13 @@ impl Window {
                     mode.into().raw(),
                     sfstr.as_ptr(),
                     style.bits(),
-                    &settings.0,
+                    settings,
                 )
             })
         };
-        assert!(!sf_win.is_null(), "Failed to create Window");
-        Window { window: sf_win }
+        Window {
+            window: NonNull::new(sf_win).expect("Failed to create Window"),
+        }
     }
 
     /// Create a window from an existing platform-specific window handle
@@ -121,9 +123,10 @@ impl Window {
     pub unsafe fn from_handle(handle: Handle, settings: &ContextSettings) -> Window {
         thread_safety::set_window_thread();
 
-        let sf_win: *mut ffi::sfWindow = ffi::sfWindow_createFromHandle(handle, &settings.0);
-        assert!(!sf_win.is_null(), "Failed to create Window");
-        Window { window: sf_win }
+        let sf_win: *mut ffi::sfWindow = ffi::sfWindow_createFromHandle(handle, settings);
+        Window {
+            window: NonNull::new(sf_win).expect("Failed to create Window"),
+        }
     }
 
     /// Get the OS-specific handle of the window.
@@ -133,7 +136,7 @@ impl Window {
     /// doesn't support, or implement a temporary workaround until a bug is fixed.
     #[must_use]
     pub fn system_handle(&self) -> Handle {
-        unsafe { ffi::sfWindow_getSystemHandle(self.window) }
+        unsafe { ffi::sfWindow_getSystemHandle(self.window.as_ptr()) }
     }
 
     ///  Pop the event on top of event queue, if any, and return it
@@ -147,8 +150,9 @@ impl Window {
     /// Returns `Some(event)` if an event was returned, or `None` if the event queue was empty
     pub fn poll_event(&mut self) -> Option<Event> {
         let mut event = std::mem::MaybeUninit::uninit();
-        let have_event =
-            unsafe { ffi::sfWindow_pollEvent(self.window, event.as_mut_ptr()).to_bool() };
+        let have_event = unsafe {
+            ffi::sfWindow_pollEvent(self.window.as_ptr(), event.as_mut_ptr()).into_bool()
+        };
         if have_event {
             unsafe { Event::from_raw(&event.assume_init()) }
         } else {
@@ -168,8 +172,9 @@ impl Window {
     /// Returns `Some(event)` or `None` if an error has occured
     pub fn wait_event(&mut self) -> Option<Event> {
         let mut event = std::mem::MaybeUninit::uninit();
-        let have_event =
-            unsafe { ffi::sfWindow_waitEvent(self.window, event.as_mut_ptr()).to_bool() };
+        let have_event = unsafe {
+            ffi::sfWindow_waitEvent(self.window.as_ptr(), event.as_mut_ptr()).into_bool()
+        };
         if have_event {
             unsafe { Event::from_raw(&event.assume_init()) }
         } else {
@@ -184,8 +189,14 @@ impl Window {
     /// * width - Icon's width, in pixels
     /// * height - Icon's height, in pixels
     /// * pixels - Vector of pixels
-    pub fn set_icon(&mut self, width: u32, height: u32, pixels: &[u8]) {
-        unsafe { ffi::sfWindow_setIcon(self.window, width, height, pixels.as_ptr()) }
+    ///
+    /// # Safety
+    ///
+    /// `pixels` not being at least `width * height * 4` will likely cause undefined behavior.
+    ///
+    /// Platform-specific behavior is also unclear (limits on max size, etc).
+    pub unsafe fn set_icon(&mut self, width: u32, height: u32, pixels: &[u8]) {
+        ffi::sfWindow_setIcon(self.window.as_ptr(), width, height, pixels.as_ptr())
     }
 
     /// Close a window and destroy all the attached resources
@@ -197,7 +208,7 @@ impl Window {
     /// every time), and will have no effect on closed windows.
     pub fn close(&mut self) {
         unsafe {
-            ffi::sfWindow_close(self.window);
+            ffi::sfWindow_close(self.window.as_ptr());
         }
     }
 
@@ -208,7 +219,7 @@ impl Window {
     /// true.
     #[must_use]
     pub fn is_open(&self) -> bool {
-        unsafe { ffi::sfWindow_isOpen(self.window) }.to_bool()
+        unsafe { ffi::sfWindow_isOpen(self.window.as_ptr()) }.into_bool()
     }
 
     /// Get the settings of the OpenGL context of a window
@@ -220,8 +231,8 @@ impl Window {
     ///
     /// Return a structure containing the OpenGL context settings
     #[must_use]
-    pub fn settings(&self) -> ContextSettings {
-        unsafe { ContextSettings(ffi::sfWindow_getSettings(self.window)) }
+    pub fn settings(&self) -> &ContextSettings {
+        unsafe { &*ffi::sfWindow_getSettings(self.window.as_ptr()) }
     }
 
     /// Change the title of a window
@@ -230,7 +241,7 @@ impl Window {
     /// * title - New title
     pub fn set_title<S: SfStrConv>(&mut self, title: S) {
         title.with_as_sfstr(|sfstr| unsafe {
-            ffi::sfWindow_setUnicodeTitle(self.window, sfstr.as_ptr())
+            ffi::sfWindow_setUnicodeTitle(self.window.as_ptr(), sfstr.as_ptr())
         })
     }
 
@@ -239,7 +250,7 @@ impl Window {
     /// # Arguments
     /// * visible - true to show the window, false to hide it
     pub fn set_visible(&mut self, visible: bool) {
-        unsafe { ffi::sfWindow_setVisible(self.window, sfBool::from_bool(visible)) }
+        unsafe { ffi::sfWindow_setVisible(self.window.as_ptr(), sfBool::from_bool(visible)) }
     }
 
     /// Show or hide the mouse cursor
@@ -247,7 +258,9 @@ impl Window {
     /// # Arguments
     /// * visible - true to  false to hide
     pub fn set_mouse_cursor_visible(&mut self, visible: bool) {
-        unsafe { ffi::sfWindow_setMouseCursorVisible(self.window, sfBool::from_bool(visible)) }
+        unsafe {
+            ffi::sfWindow_setMouseCursorVisible(self.window.as_ptr(), sfBool::from_bool(visible))
+        }
     }
 
     /// Grab or release the mouse cursor.
@@ -255,7 +268,9 @@ impl Window {
     /// If set, grabs the mouse cursor inside this window's client area so it may no longer be
     /// moved outside its bounds. Note that grabbing is only active while the window has focus.
     pub fn set_mouse_cursor_grabbed(&mut self, grabbed: bool) {
-        unsafe { ffi::sfWindow_setMouseCursorGrabbed(self.window, sfBool::from_bool(grabbed)) }
+        unsafe {
+            ffi::sfWindow_setMouseCursorGrabbed(self.window.as_ptr(), sfBool::from_bool(grabbed))
+        }
     }
 
     /// Enable or disable vertical synchronization
@@ -268,7 +283,9 @@ impl Window {
     /// # Arguments
     /// * enabled - true to enable v-sync, false to deactivate
     pub fn set_vertical_sync_enabled(&mut self, enabled: bool) {
-        unsafe { ffi::sfWindow_setVerticalSyncEnabled(self.window, sfBool::from_bool(enabled)) }
+        unsafe {
+            ffi::sfWindow_setVerticalSyncEnabled(self.window.as_ptr(), sfBool::from_bool(enabled))
+        }
     }
 
     /// Enable or disable automatic key-repeat
@@ -282,7 +299,9 @@ impl Window {
     /// # Arguments
     /// * enabled - true to enable, false to disable
     pub fn set_key_repeat_enabled(&mut self, enabled: bool) {
-        unsafe { ffi::sfWindow_setKeyRepeatEnabled(self.window, sfBool::from_bool(enabled)) }
+        unsafe {
+            ffi::sfWindow_setKeyRepeatEnabled(self.window.as_ptr(), sfBool::from_bool(enabled))
+        }
     }
 
     /// Activate or deactivate a window as the current target for OpenGL rendering
@@ -298,7 +317,8 @@ impl Window {
     ///
     /// Return true if operation was successful, false otherwise
     pub fn set_active(&mut self, enabled: bool) -> bool {
-        unsafe { ffi::sfWindow_setActive(self.window, sfBool::from_bool(enabled)) }.to_bool()
+        unsafe { ffi::sfWindow_setActive(self.window.as_ptr(), sfBool::from_bool(enabled)) }
+            .into_bool()
     }
 
     /// Display on screen what has been rendered to the window so far
@@ -307,7 +327,7 @@ impl Window {
     /// has been done for the current frame, in order to show
     /// it on screen.
     pub fn display(&mut self) {
-        unsafe { ffi::sfWindow_display(self.window) }
+        unsafe { ffi::sfWindow_display(self.window.as_ptr()) }
     }
 
     /// Limit the framerate to a maximum fixed frequency
@@ -319,7 +339,7 @@ impl Window {
     /// # Arguments
     /// * limit - Framerate limit, in frames per seconds (use 0 to disable limit)
     pub fn set_framerate_limit(&mut self, limit: u32) {
-        unsafe { ffi::sfWindow_setFramerateLimit(self.window, limit) }
+        unsafe { ffi::sfWindow_setFramerateLimit(self.window.as_ptr(), limit) }
     }
 
     /// Change the joystick threshold
@@ -330,7 +350,7 @@ impl Window {
     /// # Arguments
     /// * threshold - New threshold, in the range [0, 100]
     pub fn set_joystick_threshold(&mut self, threshold: f32) {
-        unsafe { ffi::sfWindow_setJoystickThreshold(self.window, threshold) }
+        unsafe { ffi::sfWindow_setJoystickThreshold(self.window.as_ptr(), threshold) }
     }
 
     /// Get the position of a window
@@ -338,7 +358,7 @@ impl Window {
     /// Return the position in pixels
     #[must_use]
     pub fn position(&self) -> Vector2i {
-        unsafe { Vector2i::from_raw(ffi::sfWindow_getPosition(self.window)) }
+        unsafe { Vector2i::from_raw(ffi::sfWindow_getPosition(self.window.as_ptr())) }
     }
 
     /// Change the position of a window on screen
@@ -350,7 +370,7 @@ impl Window {
     /// # Arguments
     /// * position - New position of the window, in pixels
     pub fn set_position(&mut self, position: Vector2i) {
-        unsafe { ffi::sfWindow_setPosition(self.window, position.raw()) }
+        unsafe { ffi::sfWindow_setPosition(self.window.as_ptr(), position.raw()) }
     }
 
     /// Get the size of the rendering region of a window
@@ -360,7 +380,7 @@ impl Window {
     /// Return the size in pixels
     #[must_use]
     pub fn size(&self) -> Vector2u {
-        unsafe { Vector2u::from_raw(ffi::sfWindow_getSize(self.window)) }
+        unsafe { Vector2u::from_raw(ffi::sfWindow_getSize(self.window.as_ptr())) }
     }
 
     /// Change the size of the rendering region of a window
@@ -368,13 +388,13 @@ impl Window {
     /// # Arguments
     /// * size - New size, in pixels
     pub fn set_size(&mut self, size: Vector2u) {
-        unsafe { ffi::sfWindow_setSize(self.window, size.raw()) }
+        unsafe { ffi::sfWindow_setSize(self.window.as_ptr(), size.raw()) }
     }
 
     /// Returns the current position of the mouse relative to the window.
     #[must_use]
     pub fn mouse_position(&self) -> Vector2i {
-        unsafe { Vector2i::from_raw(ffi::sfMouse_getPosition(self.window)) }
+        unsafe { Vector2i::from_raw(ffi::sfMouse_getPosition(self.window.as_ptr())) }
     }
 
     /// Set the current position of the mouse
@@ -386,7 +406,7 @@ impl Window {
     /// * relativeTo - Reference Window
     ///
     pub fn set_mouse_position(&mut self, position: Vector2i) {
-        unsafe { ffi::sfMouse_setPosition(position.raw(), self.window) }
+        unsafe { ffi::sfMouse_setPosition(position.raw(), self.window.as_ptr()) }
     }
 
     /// Set the displayed cursor to a native system cursor.
@@ -394,13 +414,13 @@ impl Window {
     /// Upon window creation, the arrow cursor is used by default.
     /// The cursor can not be destroyed while in use by the window.
     pub fn set_mouse_cursor(&mut self, cursor: &Cursor) {
-        unsafe { ffi::sfWindow_setMouseCursor(self.window, cursor.raw()) }
+        unsafe { ffi::sfWindow_setMouseCursor(self.window.as_ptr(), cursor.raw()) }
     }
 
     /// Returns the current position of a touch in window coordinates.
     #[must_use]
     pub fn touch_position(&self, finger: u32) -> Vector2i {
-        unsafe { Vector2i::from_raw(ffi::sfTouch_getPosition(finger, self.window)) }
+        unsafe { Vector2i::from_raw(ffi::sfTouch_getPosition(finger, self.window.as_ptr())) }
     }
 
     /// Check whether the window has the input focus.
@@ -409,7 +429,7 @@ impl Window {
     /// such as keystrokes or most mouse events.
     #[must_use]
     pub fn has_focus(&self) -> bool {
-        unsafe { ffi::sfWindow_hasFocus(self.window).to_bool() }
+        unsafe { ffi::sfWindow_hasFocus(self.window.as_ptr()).into_bool() }
     }
 
     /// Request the current window to be made the active foreground window.
@@ -419,18 +439,18 @@ impl Window {
     /// operating system, that it would like to be focused. The operating system is free to
     /// deny the request. This is not to be confused with [`Window::set_active`].
     pub fn request_focus(&self) {
-        unsafe { ffi::sfWindow_requestFocus(self.window) }
+        unsafe { ffi::sfWindow_requestFocus(self.window.as_ptr()) }
     }
     #[cfg(feature = "graphics")]
     pub(crate) fn raw(&self) -> *const ffi::sfWindow {
-        self.window
+        self.window.as_ptr()
     }
 }
 
 impl Drop for Window {
     fn drop(&mut self) {
         unsafe {
-            ffi::sfWindow_destroy(self.window);
+            ffi::sfWindow_destroy(self.window.as_ptr());
         }
     }
 }

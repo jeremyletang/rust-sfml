@@ -1,0 +1,46 @@
+name: Build and test
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: hecrj/setup-rust-action@v1
+      with:
+        rust-version: 1.56.0
+    - uses: actions/checkout@v2
+    - name: Install deps
+      run: |
+       sudo apt-get update
+       sudo apt-get install libpthread-stubs0-dev libgl1-mesa-dev libx11-dev libx11-xcb-dev libxcb-image0-dev libxrandr-dev libxcb-randr0-dev libudev-dev libfreetype6-dev libglew-dev libjpeg8-dev libgpgme11-dev libsndfile1-dev libopenal-dev libjpeg62 cmake libclang-dev clang
+    - name: Set up SFML
+      run: |
+       set -e
+       mkdir sfml_install
+       # TODO: Maybe investigate why the certificate checks for the SFML sources fail
+       wget http://www.sfml-dev.org/files/SFML-2.5.1-sources.zip --no-check-certificate
+       unzip -q SFML-2.5.1-sources.zip
+       pushd SFML-2.5.1 && mkdir build && cd build && cmake .. && make
+       make DESTDIR=$GITHUB_WORKSPACE/sfml_install install
+       popd
+    - name: Build
+      run: |
+       export SFML_INCLUDE_DIR=$GITHUB_WORKSPACE/sfml_install/usr/local/include
+       export SFML_LIBS_DIR=$GITHUB_WORKSPACE/sfml_install/usr/local/lib
+       cargo build --verbose
+    - name: Run tests
+      run: |
+       export LD_LIBRARY_PATH=$GITHUB_WORKSPACE/sfml_install/usr/local/lib
+       export SFML_INCLUDE_DIR=$GITHUB_WORKSPACE/sfml_install/usr/local/include
+       export SFML_LIBS_DIR=$GITHUB_WORKSPACE/sfml_install/usr/local/lib
+       cargo test --features ci-headless --verbose

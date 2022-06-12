@@ -32,7 +32,7 @@ impl<T: SfResource> DerefMut for SfBox<T> {
 
 impl<T: SfResource> Borrow<T> for SfBox<T> {
     fn borrow(&self) -> &T {
-        &*self
+        self
     }
 }
 
@@ -55,11 +55,11 @@ pub trait Dispose {
 /// A resource handed out to us by SFML
 ///
 /// Each resource type must call a different SFML destructor function before being destroyed.
-/// This is implemented using traits to make implementing `SfBox` easier.
+/// This is implemented using traits to make implementing [`SfBox`] easier.
 /// Behind the scenes, we have a `Dispose` trait that these types implement, but
 /// that trait never needs to be implemented outside of this crate.
 ///
-/// This trait is a public interface to the internal `Dispose` trait, so `SfBox` can be used
+/// This trait is a public interface to the internal `Dispose` trait, so [`SfBox`] can be used
 /// in a generic context.
 pub trait SfResource: Dispose {}
 

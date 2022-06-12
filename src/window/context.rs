@@ -1,5 +1,4 @@
-use crate::{sf_bool_ext::SfBoolExt, window::ContextSettings};
-use csfml_window_sys as ffi;
+use crate::{ffi::window as ffi, sf_bool_ext::SfBoolExt, window::ContextSettings};
 
 /// Type holding a valid drawing context.
 ///
@@ -47,16 +46,23 @@ impl Context {
     /// Returns true on success, false on failure.
     pub fn set_active(&mut self, active: bool) -> bool {
         let result = unsafe { ffi::sfContext_setActive(self.0, SfBoolExt::from_bool(active)) };
-        result.to_bool()
+        result.into_bool()
     }
     /// Get the settings of the context.
     ///
     /// Note that these settings may be different than the ones passed to the constructor;
     /// they are indeed adjusted if the original settings are not directly supported by the system.
     #[must_use]
-    pub fn settings(&self) -> ContextSettings {
-        let settings = unsafe { ffi::sfContext_getSettings(self.0) };
-        ContextSettings(settings)
+    pub fn settings(&self) -> &ContextSettings {
+        unsafe { &*ffi::sfContext_getSettings(self.0) }
+    }
+
+    /// Get the currently active context's ID.
+    ///
+    /// The context ID is used to identify contexts when managing unshareable OpenGL resources.
+    #[must_use]
+    pub fn active_context_id() -> u64 {
+        unsafe { ffi::sfContext_getActiveContextId() }
     }
 }
 
@@ -66,10 +72,10 @@ fn test_settings() {
     use std::thread;
 
     let window = Window::new((32, 32), "test", Default::default(), &Default::default());
-    let win_settings = window.settings();
+    let win_settings = *window.settings();
     thread::spawn(move || {
         let context = Context::new();
-        assert_eq!(context.settings(), win_settings);
+        assert_eq!(context.settings(), &win_settings);
     })
     .join()
     .unwrap();

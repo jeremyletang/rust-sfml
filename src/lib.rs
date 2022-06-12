@@ -46,8 +46,8 @@
     clippy::cast_sign_loss
 )]
 
-#[cfg(any(feature = "graphics", feature = "audio"))]
-mod inputstream;
+extern crate link_cplusplus;
+
 mod sf_bool_ext;
 
 #[cfg(feature = "audio")]
@@ -59,5 +59,24 @@ mod sf_box;
 pub mod system;
 #[cfg(feature = "window")]
 pub mod window;
+use std::{error::Error, fmt::Display};
+
 #[cfg(any(feature = "window", feature = "audio"))]
 pub use sf_box::{SfBox, SfResource};
+
+/// Error when failing to load an SFML resource.
+#[derive(Clone, Copy, Debug)]
+pub struct ResourceLoadError;
+
+impl Display for ResourceLoadError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "Failed to load SFML resource")
+    }
+}
+
+impl Error for ResourceLoadError {}
+
+/// Result for loading an SFML resource
+pub type LoadResult<T> = Result<T, ResourceLoadError>;
+
+mod ffi;

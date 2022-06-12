@@ -1,12 +1,16 @@
-use csfml_system_sys::{sfBool, sfFalse, sfTrue};
+use crate::{
+    ffi::{sfBool, sfFalse, sfTrue},
+    ResourceLoadError,
+};
 
 pub trait SfBoolExt {
-    fn to_bool(self) -> bool;
+    fn into_bool(self) -> bool;
     fn from_bool(src: bool) -> Self;
+    fn into_load_result(self) -> Result<(), ResourceLoadError>;
 }
 
 impl SfBoolExt for sfBool {
-    fn to_bool(self) -> bool {
+    fn into_bool(self) -> bool {
         self != sfFalse
     }
     fn from_bool(src: bool) -> Self {
@@ -14,6 +18,13 @@ impl SfBoolExt for sfBool {
             sfTrue
         } else {
             sfFalse
+        }
+    }
+    fn into_load_result(self) -> Result<(), ResourceLoadError> {
+        if self == sfTrue {
+            Ok(())
+        } else {
+            Err(ResourceLoadError)
         }
     }
 }

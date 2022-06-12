@@ -1,10 +1,10 @@
 use crate::{
+    ffi::graphics as ffi,
     graphics::FloatRect,
     sf_box::{Dispose, RawDefault},
     system::Vector2f,
     SfBox,
 };
-use csfml_graphics_sys as ffi;
 use std::borrow::ToOwned;
 
 /// 2D camera that defines what region is shown on screen

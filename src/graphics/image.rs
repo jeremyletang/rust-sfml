@@ -1,11 +1,9 @@
 use crate::{
+    ffi::{graphics as ffi, sfBool},
     graphics::{Color, IntRect},
-    inputstream::InputStream,
     sf_bool_ext::SfBoolExt,
-    system::Vector2u,
+    system::{InputStream, Vector2u},
 };
-use csfml_graphics_sys as ffi;
-use csfml_system_sys::sfBool;
 use std::{
     ffi::CString,
     io::{Read, Seek},
@@ -45,7 +43,7 @@ impl Image {
     /// Returns `None` if loading fails
     pub fn from_stream<T: Read + Seek>(stream: &mut T) -> Option<Self> {
         let mut input_stream = InputStream::new(stream);
-        let image = unsafe { ffi::sfImage_createFromStream(&mut input_stream.0) };
+        let image = unsafe { ffi::sfImage_createFromStream(&mut *input_stream.stream) };
         if image.is_null() {
             None
         } else {
@@ -149,7 +147,7 @@ impl Image {
     #[must_use]
     pub fn save_to_file(&self, filename: &str) -> bool {
         let c_str = CString::new(filename).unwrap();
-        unsafe { ffi::sfImage_saveToFile(self.image, c_str.as_ptr()) }.to_bool()
+        unsafe { ffi::sfImage_saveToFile(self.image, c_str.as_ptr()) }.into_bool()
     }
 
     /// Return the size of an image
