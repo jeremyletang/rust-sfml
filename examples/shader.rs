@@ -272,11 +272,11 @@ fn main() {
     bg_texture.set_smooth(true);
     let mut entity_texture = Texture::from_file(example_res!("devices.png")).unwrap();
     entity_texture.set_smooth(true);
-    let mut effects: [Box<dyn Effect>; 4] = [
-        Box::new(Pixelate::new(&bg)),
-        Box::new(WaveBlur::new(&font)),
-        Box::new(StormBlink::new()),
-        Box::new(Edge::new(&bg_texture, &entity_texture)),
+    let effects: [&mut dyn Effect; 4] = [
+        &mut Pixelate::new(&bg),
+        &mut WaveBlur::new(&font),
+        &mut StormBlink::new(),
+        &mut Edge::new(&bg_texture, &entity_texture),
     ];
     let mut current = 0;
     let text_bg_texture = Texture::from_file(example_res!("text-background.png")).unwrap();
