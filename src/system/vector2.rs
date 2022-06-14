@@ -1,4 +1,6 @@
 use num_traits::AsPrimitive;
+#[cfg(feature = "serde")]
+use serde::{Deserialize, Serialize};
 use std::{
     convert::TryInto,
     ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssign},
@@ -42,6 +44,7 @@ use std::{
 /// [`Vector3`]: crate::system::Vector3
 #[repr(C)]
 #[derive(Clone, PartialEq, Eq, Debug, Copy, Default)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 pub struct Vector2<T> {
     /// X coordinate of the vector.
     pub x: T,

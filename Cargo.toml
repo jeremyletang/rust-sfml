@@ -16,11 +16,17 @@ default = ["graphics", "audio"]
 window = ["bitflags", "once_cell", "widestring"]
 graphics = ["window"]
 audio = []
+serde = ["dep:serde"]
 # Used to skip running certain tests on CI, since it's running in a headless environment.
 ci-headless = []
 
 [dependencies]
 num-traits = "0.2.15"
+
+[dependencies.serde]
+version = "1.0"
+features = ["derive"]
+optional = true
 
 [dependencies.once_cell]
 version = "1.7.2"
