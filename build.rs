@@ -7,6 +7,7 @@ fn main() {
     let mut build = cc::Build::new();
     build
         .cpp(true)
+        .flag_if_supported("--std=c++17")
         .define("CSFML_SYSTEM_EXPORTS", None)
         .define("CSFML_AUDIO_EXPORTS", None)
         .define("CSFML_WINDOW_EXPORTS", None)
@@ -88,7 +89,7 @@ fn main() {
     let bindings = bindgen::Builder::default()
         .header("CSFML/bindgen-wrapper.h")
         .parse_callbacks(Box::new(bindgen::CargoCallbacks))
-        .clang_args(["-I", "CSFML/include/", "-xc++"])
+        .clang_args(["-I", "CSFML/include/", "-xc++", "--std=c++17"])
         .size_t_is_usize(true)
         .derive_hash(true)
         .derive_ord(true)
