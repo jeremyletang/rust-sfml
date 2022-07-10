@@ -91,7 +91,7 @@ pub enum Event {
         delta: f32,
         /// X position of the mouse pointer, relative to the left of the owner window.
         x: i32,
-        /// X position of the mouse pointer, relative to the left of the owner window.
+        /// Y position of the mouse pointer, relative to the top of the owner window.
         y: i32,
     },
     /// A mouse button was pressed
