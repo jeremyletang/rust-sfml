@@ -45,7 +45,7 @@ use num_traits::AsPrimitive;
 ///
 /// [`Vector2`]: crate::system::Vector2
 #[repr(C)]
-#[derive(Clone, PartialEq, Debug, Copy, Default)]
+#[derive(Clone, PartialEq, Eq, Debug, Copy, Default)]
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 pub struct Vector3<T> {
     /// X coordinate of the vector.
