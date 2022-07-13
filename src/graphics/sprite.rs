@@ -17,7 +17,7 @@ use std::{
 /// Sprite is a drawable type that allows to easily
 /// display a [`Texture`] (or a part of it) on a render target.
 ///
-/// <strong>Note:</strong>
+/// __Note:__
 /// Currently, it is not feasible to store sprites long term.
 /// A common pattern with rust-sfml is to create a `Sprite` right before you start drawing,
 /// and draw all the sprites you want with it. You can change its properties using

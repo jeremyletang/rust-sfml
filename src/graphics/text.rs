@@ -13,7 +13,7 @@ use std::{marker::PhantomData, ptr::NonNull};
 /// Text is a drawable type that allows to easily
 /// display some text with custom style and color on a render target.
 ///
-/// <strong>Note:</strong>
+/// __Note:__
 /// Currently, it is not feasible to store text long term.
 /// A common pattern with rust-sfml is to create a `Text` right before you start drawing,
 /// and draw all the text you want with it. You can change its properties using
