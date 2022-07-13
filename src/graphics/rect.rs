@@ -1,7 +1,7 @@
+use crate::system::Vector2;
 use num_traits::AsPrimitive;
 #[cfg(feature = "serde")]
 use serde::{Deserialize, Serialize};
-use crate::system::Vector2;
 use std::{
     convert::TryInto,
     ops::{Add, Sub},
