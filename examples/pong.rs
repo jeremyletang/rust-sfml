@@ -54,7 +54,7 @@ fn main() {
 
     // Create the left paddle
     let mut left_paddle = RectangleShape::new();
-    left_paddle.set_size(paddle_size - 3.);
+    left_paddle.set_size(paddle_size - Vector2f::new(3., 3.));
     left_paddle.set_outline_thickness(3.);
     left_paddle.set_outline_color(Color::BLACK);
     left_paddle.set_fill_color(Color::rgb(100, 100, 200));
@@ -62,7 +62,7 @@ fn main() {
 
     // Create the right paddle
     let mut right_paddle = RectangleShape::new();
-    right_paddle.set_size(paddle_size - 3.);
+    right_paddle.set_size(paddle_size - Vector2f::new(3., 3.));
     right_paddle.set_outline_thickness(3.);
     right_paddle.set_outline_color(Color::BLACK);
     right_paddle.set_fill_color(Color::rgb(200, 100, 100));
