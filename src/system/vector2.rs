@@ -139,13 +139,7 @@ impl<T: Div<Output = T> + CheckedDiv> Vector2<T> {
     pub fn cwise_checked_div(self, rhs: Self) -> Option<Vector2<T>> {
         let x = self.x.checked_div(&rhs.x);
         let y = self.y.checked_div(&rhs.y);
-        if x.is_none() || y.is_none() {
-            return None;
-        }
-        Some(Vector2 {
-            x: x.unwrap(),
-            y: y.unwrap(),
-        })
+        x.zip(y).map(|(x, y)| Vector2 { x, y })
     }
 }
 
