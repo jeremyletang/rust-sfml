@@ -1,4 +1,4 @@
-use num_traits::AsPrimitive;
+use num_traits::{AsPrimitive, CheckedDiv};
 #[cfg(feature = "serde")]
 use serde::{Deserialize, Serialize};
 use std::{
@@ -96,6 +96,66 @@ impl<T> Vector2<T> {
     }
 }
 
+impl<T: Mul<Output = T> + Add<Output = T> + Copy> Vector2<T> {
+    /// Dot product of two 2D vectors.
+    pub fn dot(self, rhs: Self) -> T {
+        self.x * rhs.x + self.y * rhs.y
+    }
+    /// Square of vector's length.
+    pub fn length_sq(self) -> T {
+        self.dot(self)
+    }
+}
+
+impl<T: Mul<Output = T> + Sub<Output = T> + Copy> Vector2<T> {
+    /// Z component of the cross product of two 2D vectors.
+    pub fn cross(self, rhs: Self) -> T {
+        self.x * rhs.y - self.y * rhs.x
+    }
+}
+
+impl<T: Mul<Output = T>> Vector2<T> {
+    /// Component-wise multiplication of self and rhs.
+    pub fn cwise_mul(self, rhs: Self) -> Vector2<T> {
+        Self {
+            x: self.x * rhs.x,
+            y: self.y * rhs.y,
+        }
+    }
+}
+
+impl<T: Div<Output = T>> Vector2<T> {
+    /// Component-wise division of self and rhs. Panics on divide by zero
+    pub fn cwise_div(self, rhs: Self) -> Vector2<T> {
+        Vector2 {
+            x: self.x / rhs.x,
+            y: self.y / rhs.y,
+        }
+    }
+}
+
+impl<T: Div<Output = T> + CheckedDiv> Vector2<T> {
+    /// Component-wise checked division of self and rhs. Returns None on divide by zero
+    pub fn cwise_checked_div(self, rhs: Self) -> Option<Vector2<T>> {
+        let x = self.x.checked_div(&rhs.x);
+        let y = self.y.checked_div(&rhs.y);
+        if x.is_none() || y.is_none() {
+            return None;
+        }
+        Some(Vector2 {
+            x: x.unwrap(),
+            y: y.unwrap(),
+        })
+    }
+}
+
+impl<T: Neg<Output = T>> Vector2<T> {
+    /// Returns a perpendicular vector rotated +90 degrees
+    pub fn perpendicular(self) -> Vector2<T> {
+        Vector2::new(-self.y, self.x)
+    }
+}
+
 impl<T> From<(T, T)> for Vector2<T> {
     /// Constructs a `Vector2` from `(x, y)`.
     fn from(src: (T, T)) -> Self {
@@ -103,40 +163,7 @@ impl<T> From<(T, T)> for Vector2<T> {
     }
 }
 
-macro_rules! impl_ops {
-    ( $_trait:ident, $_func:ident, $( $_type:ty ),+ ) => {
-        impl<T: $_trait + Copy> $_trait<T> for Vector2<T> {
-            type Output = Vector2<T::Output>;
-
-            fn $_func(self, rhs: T) -> Vector2<T::Output> {
-                Vector2 {
-                    x: $_trait::$_func(self.x, rhs),
-                    y: $_trait::$_func(self.y, rhs)
-                }
-            }
-        }
-
-        $(
-            impl $_trait<Vector2<$_type>> for $_type {
-                type Output = Vector2<$_type>;
-
-                fn $_func(self, rhs: Vector2<$_type>) -> Vector2<$_type> {
-                    Vector2 {
-                        x: $_trait::$_func(self, rhs.x),
-                        y: $_trait::$_func(self, rhs.y)
-                    }
-                }
-            }
-        )+
-    }
-}
-
-impl_ops!(Add, add, i32, u32, f32);
-impl_ops!(Sub, sub, i32, u32, f32);
-impl_ops!(Mul, mul, i32, u32, f32);
-impl_ops!(Div, div, i32, u32, f32);
-
-impl<T: Add> Add for Vector2<T> {
+impl<T: Add> Add<Vector2<T>> for Vector2<T> {
     type Output = Vector2<T::Output>;
 
     fn add(self, rhs: Vector2<T>) -> Vector2<T::Output> {
@@ -154,7 +181,7 @@ impl<T: AddAssign> AddAssign for Vector2<T> {
     }
 }
 
-impl<T: Sub> Sub for Vector2<T> {
+impl<T: Sub> Sub<Vector2<T>> for Vector2<T> {
     type Output = Vector2<T::Output>;
 
     fn sub(self, rhs: Vector2<T>) -> Vector2<T::Output> {
@@ -172,13 +199,13 @@ impl<T: SubAssign> SubAssign for Vector2<T> {
     }
 }
 
-impl<T: Mul> Mul for Vector2<T> {
+impl<T: Mul + Copy> Mul<T> for Vector2<T> {
     type Output = Vector2<T::Output>;
 
-    fn mul(self, rhs: Vector2<T>) -> Vector2<T::Output> {
+    fn mul(self, rhs: T) -> Vector2<T::Output> {
         Vector2 {
-            x: self.x * rhs.x,
-            y: self.y * rhs.y,
+            x: self.x * rhs,
+            y: self.y * rhs,
         }
     }
 }
@@ -190,13 +217,13 @@ impl<T: MulAssign + Copy> MulAssign<T> for Vector2<T> {
     }
 }
 
-impl<T: Div> Div for Vector2<T> {
+impl<T: Div + Copy> Div<T> for Vector2<T> {
     type Output = Vector2<T::Output>;
 
-    fn div(self, rhs: Vector2<T>) -> Vector2<T::Output> {
+    fn div(self, rhs: T) -> Vector2<T::Output> {
         Vector2 {
-            x: self.x / rhs.x,
-            y: self.y / rhs.y,
+            x: self.x / rhs,
+            y: self.y / rhs,
         }
     }
 }
