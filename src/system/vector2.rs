@@ -137,9 +137,9 @@ impl<T: Div<Output = T>> Vector2<T> {
 impl<T: Div<Output = T> + CheckedDiv> Vector2<T> {
     /// Component-wise checked division of self and rhs. Returns None on divide by zero
     pub fn cwise_checked_div(self, rhs: Self) -> Option<Vector2<T>> {
-        let x = self.x.checked_div(&rhs.x);
-        let y = self.y.checked_div(&rhs.y);
-        x.zip(y).map(|(x, y)| Vector2 { x, y })
+        let x = self.x.checked_div(&rhs.x)?;
+        let y = self.y.checked_div(&rhs.y)?;
+        Some(Vector2 { x, y })
     }
 }
 
@@ -226,6 +226,15 @@ impl<T: DivAssign + Copy> DivAssign<T> for Vector2<T> {
     fn div_assign(&mut self, rhs: T) {
         self.x /= rhs;
         self.y /= rhs;
+    }
+}
+
+impl<T: CheckedDiv> Vector2<T> {
+    /// checked_div for scalar division
+    pub fn checked_div(self, rhs: T) -> Option<Vector2<T>> {
+        let x = self.x.checked_div(&rhs)?;
+        let y = self.y.checked_div(&rhs)?;
+        Some(Vector2 { x, y })
     }
 }
 
