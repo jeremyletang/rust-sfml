@@ -187,18 +187,20 @@ impl Image {
 
     /// Get the color of a pixel in an image
     ///
-    /// This function doesn't check the validity of the pixel
-    /// coordinates, using out-of-range values will result in
-    /// an undefined behaviour.
-    ///
     /// # Arguments
     /// * x - X coordinate of pixel to get
     /// * y - Y coordinate of pixel to get
     ///
     /// Return the Color of the pixel at coordinates (x, y)
+    ///
+    /// # Safety
+    ///
+    /// This function doesn't check the validity of the pixel
+    /// coordinates, using out-of-range values will result in
+    /// an undefined behaviour.
     #[must_use]
-    pub fn pixel_at(&self, x: u32, y: u32) -> Color {
-        unsafe { Color(ffi::sfImage_getPixel(self.image, x, y)) }
+    pub unsafe fn pixel_at(&self, x: u32, y: u32) -> Color {
+        Color(ffi::sfImage_getPixel(self.image, x, y))
     }
 
     /// Return the memory buffer of this image.
