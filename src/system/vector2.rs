@@ -230,7 +230,7 @@ impl<T: DivAssign + Copy> DivAssign<T> for Vector2<T> {
 }
 
 impl<T: CheckedDiv> Vector2<T> {
-    /// checked_div for scalar division
+    /// `checked_div` for scalar division
     pub fn checked_div(self, rhs: T) -> Option<Vector2<T>> {
         let x = self.x.checked_div(&rhs)?;
         let y = self.y.checked_div(&rhs)?;
