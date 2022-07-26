@@ -5,7 +5,7 @@ use std::{
     ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssign},
 };
 
-use num_traits::AsPrimitive;
+use num_traits::{AsPrimitive, CheckedDiv};
 
 /// Utility type for manipulating 3-dimensional vectors.
 ///
@@ -101,40 +101,59 @@ pub type Vector3f = Vector3<f32>;
 /// [`Vector3`] with `i32` coordinates.
 pub type Vector3i = Vector3<i32>;
 
-macro_rules! impl_ops {
-    ( $_trait:ident, $_func:ident, $( $_type:ty ),+ ) => {
-        impl<T: $_trait + Copy> $_trait<T> for Vector3<T> {
-            type Output = Vector3<T::Output>;
-
-            fn $_func(self, rhs: T) -> Vector3<T::Output> {
-                Vector3 {
-                    x: $_trait::$_func(self.x, rhs),
-                    y: $_trait::$_func(self.y, rhs),
-                    z: $_trait::$_func(self.z, rhs)
-                }
-            }
-        }
-
-        $(
-            impl $_trait<Vector3<$_type>> for $_type {
-                type Output = Vector3<$_type>;
-
-                fn $_func(self, rhs: Vector3<$_type>) -> Vector3<$_type> {
-                    Vector3 {
-                        x: $_trait::$_func(self, rhs.x),
-                        y: $_trait::$_func(self, rhs.y),
-                        z: $_trait::$_func(self, rhs.z)
-                    }
-                }
-            }
-        )+
+impl<T: Mul<Output = T> + Add<Output = T> + Copy> Vector3<T> {
+    /// Dot product of two 3D vectors.
+    pub fn dot(self, rhs: Self) -> T {
+        self.x * rhs.x + self.y * rhs.y + self.z * rhs.z
+    }
+    /// Square of vector's length.
+    pub fn length_sq(self) -> T {
+        self.dot(self)
     }
 }
 
-impl_ops!(Add, add, i32, u32, f32);
-impl_ops!(Sub, sub, i32, u32, f32);
-impl_ops!(Mul, mul, i32, u32, f32);
-impl_ops!(Div, div, i32, u32, f32);
+impl<T: Mul<Output = T> + Sub<Output = T> + Copy> Vector3<T> {
+    /// Cross product of two 3D vectors.
+    pub fn cross(self, rhs: Self) -> Vector3<T> {
+        Vector3 {
+            x: self.y * rhs.z - self.z * rhs.y,
+            y: self.z * rhs.x - self.x * rhs.z,
+            z: self.x * rhs.y - self.y * rhs.x,
+        }
+    }
+}
+
+impl<T: Mul<Output = T>> Vector3<T> {
+    /// Component-wise multiplication of self and rhs.
+    pub fn cwise_mul(self, rhs: Self) -> Vector3<T> {
+        Self {
+            x: self.x * rhs.x,
+            y: self.y * rhs.y,
+            z: self.z * rhs.z,
+        }
+    }
+}
+
+impl<T: Div<Output = T>> Vector3<T> {
+    /// Component-wise division of self and rhs. Panics on divide by zero
+    pub fn cwise_div(self, rhs: Self) -> Vector3<T> {
+        Vector3 {
+            x: self.x / rhs.x,
+            y: self.y / rhs.y,
+            z: self.z / rhs.z,
+        }
+    }
+}
+
+impl<T: Div<Output = T> + CheckedDiv> Vector3<T> {
+    /// Component-wise checked division of self and rhs. Returns None on divide by zero
+    pub fn cwise_checked_div(self, rhs: Self) -> Option<Vector3<T>> {
+        let x = self.x.checked_div(&rhs.x)?;
+        let y = self.y.checked_div(&rhs.y)?;
+        let z = self.z.checked_div(&rhs.z)?;
+        Some(Vector3 { x, y, z })
+    }
+}
 
 impl<T: Add> Add for Vector3<T> {
     type Output = Vector3<T::Output>;
@@ -176,14 +195,14 @@ impl<T: SubAssign> SubAssign for Vector3<T> {
     }
 }
 
-impl<T: Mul> Mul for Vector3<T> {
+impl<T: Mul + Copy> Mul<T> for Vector3<T> {
     type Output = Vector3<T::Output>;
 
-    fn mul(self, rhs: Vector3<T>) -> Vector3<T::Output> {
+    fn mul(self, rhs: T) -> Vector3<T::Output> {
         Vector3 {
-            x: self.x * rhs.x,
-            y: self.y * rhs.y,
-            z: self.z * rhs.z,
+            x: self.x * rhs,
+            y: self.y * rhs,
+            z: self.z * rhs,
         }
     }
 }
@@ -196,14 +215,14 @@ impl<T: MulAssign + Copy> MulAssign<T> for Vector3<T> {
     }
 }
 
-impl<T: Div> Div for Vector3<T> {
+impl<T: Div + Copy> Div<T> for Vector3<T> {
     type Output = Vector3<T::Output>;
 
-    fn div(self, rhs: Vector3<T>) -> Vector3<T::Output> {
+    fn div(self, rhs: T) -> Vector3<T::Output> {
         Vector3 {
-            x: self.x / rhs.x,
-            y: self.y / rhs.y,
-            z: self.z / rhs.z,
+            x: self.x / rhs,
+            y: self.y / rhs,
+            z: self.z / rhs,
         }
     }
 }
@@ -213,6 +232,16 @@ impl<T: DivAssign + Copy> DivAssign<T> for Vector3<T> {
         self.x /= rhs;
         self.y /= rhs;
         self.z /= rhs;
+    }
+}
+
+impl<T: CheckedDiv> Vector3<T> {
+    /// checked_div for scalar division
+    pub fn checked_div(self, rhs: T) -> Option<Vector3<T>> {
+        let x = self.x.checked_div(&rhs)?;
+        let y = self.y.checked_div(&rhs)?;
+        let z = self.z.checked_div(&rhs)?;
+        Some(Vector3 { x, y, z })
     }
 }
 
