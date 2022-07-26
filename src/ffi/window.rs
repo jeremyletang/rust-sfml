@@ -2,6 +2,8 @@ use std::os::raw::c_ulong;
 
 use crate::ffi::system::sfString;
 pub use crate::ffi::*;
+#[cfg(feature = "serde")]
+use serde::{Deserialize, Serialize};
 
 decl_opaque! {
     sfCursor;
@@ -284,6 +286,7 @@ pub enum JoystickAxis {
 #[repr(C)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 #[allow(missing_docs)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 pub enum MouseWheel {
     VerticalWheel,
     HorizontalWheel,
@@ -292,6 +295,7 @@ pub enum MouseWheel {
 #[repr(C)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 #[allow(missing_docs)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 pub enum MouseButton {
     Left,
     Right,
@@ -304,6 +308,7 @@ pub enum MouseButton {
 #[repr(C)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 #[allow(missing_docs)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 pub enum Key {
     Unknown = -1,
     A = 0,
