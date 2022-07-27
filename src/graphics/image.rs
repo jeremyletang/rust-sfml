@@ -113,19 +113,21 @@ impl Image {
 
     /// Create an image from an vector of pixels
     ///
-    /// The pixel vector is assumed to contain 32-bits RGBA pixels,
-    /// and have the given width and height. If not, this is
-    /// an undefined behaviour.
-    ///
     /// # Arguments
     /// * width - Width of the image
     /// * height - Height of the image
     /// * pixels - Vector of pixels to copy to the image
     ///
     /// Returns `None` if creation fails.
+    ///
+    /// # Safety
+    ///
+    /// The pixel vector is assumed to contain 32-bits RGBA pixels,
+    /// and have the given width and height. If not, this is
+    /// an undefined behaviour.
     #[must_use]
-    pub fn create_from_pixels(width: u32, height: u32, pixels: &[u8]) -> Option<Self> {
-        let image = unsafe { ffi::sfImage_createFromPixels(width, height, pixels.as_ptr()) };
+    pub unsafe fn create_from_pixels(width: u32, height: u32, pixels: &[u8]) -> Option<Self> {
+        let image = ffi::sfImage_createFromPixels(width, height, pixels.as_ptr());
         if image.is_null() {
             None
         } else {
@@ -173,16 +175,18 @@ impl Image {
 
     /// Change the color of a pixel in an image
     ///
-    /// This function doesn't check the validity of the pixel
-    /// coordinates, using out-of-range values will result in
-    /// an undefined behaviour.
-    ///
     /// # Arguments
     /// * x - X coordinate of pixel to change
     /// * y - Y coordinate of pixel to change
     /// * color - New color of the pixel
-    pub fn set_pixel(&mut self, x: u32, y: u32, color: Color) {
-        unsafe { ffi::sfImage_setPixel(self.image, x, y, color.0) }
+    ///
+    /// # Safety
+    ///
+    /// This function doesn't check the validity of the pixel
+    /// coordinates, using out-of-range values will result in
+    /// an undefined behaviour.
+    pub unsafe fn set_pixel(&mut self, x: u32, y: u32, color: Color) {
+        ffi::sfImage_setPixel(self.image, x, y, color.0)
     }
 
     /// Get the color of a pixel in an image
