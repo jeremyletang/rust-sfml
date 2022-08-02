@@ -924,3 +924,13 @@ pub enum sfVertexBufferUsage {
     ///< Rarely changing data
     Static,
 }
+
+#[repr(C)]
+pub struct sfVertex {
+    ///< Position of the vertex
+    pub position: sfVector2f,
+    ///< Color of the vertex
+    pub color: sfColor,
+    ///< Coordinates of the texture's pixel to map to the vertex
+    pub texCoords: sfVector2f,
+}
