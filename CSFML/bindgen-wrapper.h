@@ -2,5 +2,4 @@
 #include "Graphics/PrimitiveType.h"
 #include "Graphics/Shape.h"
 #include "Graphics/Vertex.h"
-#include "Graphics/VertexBuffer.h"
 #include "Graphics/Glsl.h"

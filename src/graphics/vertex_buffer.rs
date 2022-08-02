@@ -17,11 +17,11 @@ pub struct VertexBufferUsage(pub(super) sfVertexBufferUsage);
 
 impl VertexBufferUsage {
     /// Constantly changing data.
-    pub const STREAM: Self = Self(sfVertexBufferUsage_sfVertexBufferStream);
+    pub const STREAM: Self = Self(sfVertexBufferUsage::Stream);
     /// Occasionally changing data.
-    pub const DYNAMIC: Self = Self(sfVertexBufferUsage_sfVertexBufferDynamic);
+    pub const DYNAMIC: Self = Self(sfVertexBufferUsage::Dynamic);
     /// Rarely changing data.
-    pub const STATIC: Self = Self(sfVertexBufferUsage_sfVertexBufferStatic);
+    pub const STATIC: Self = Self(sfVertexBufferUsage::Static);
 }
 
 /// Define a set of one or more 2D primitives stored in graphics memory

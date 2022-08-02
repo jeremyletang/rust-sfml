@@ -913,3 +913,14 @@ pub struct sfGlyph {
 
 pub type sfFloatRect = Rect<c_float>;
 pub type sfIntRect = Rect<c_int>;
+
+#[repr(C)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
+pub enum sfVertexBufferUsage {
+    ///< Constantly changing data
+    Stream,
+    ///< Occasionally changing data
+    Dynamic,
+    ///< Rarely changing data
+    Static,
+}

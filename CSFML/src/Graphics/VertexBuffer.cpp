@@ -23,11 +23,16 @@
 
 // Headers
 
-#include "Graphics/VertexBuffer.h"
 #include "Graphics/PrimitiveType.h"
 #include "Graphics/Vertex.h"
 #include "Graphics/VertexBufferStruct.h"
 #include <cstddef>
+
+typedef enum {
+    sfVertexBufferStream,  ///< Constantly changing data
+    sfVertexBufferDynamic, ///< Occasionally changing data
+    sfVertexBufferStatic   ///< Rarely changing data
+} sfVertexBufferUsage;
 
 extern "C" sfVertexBuffer *sfVertexBuffer_create(unsigned int vertexCount, sfPrimitiveType type, sfVertexBufferUsage usage) {
     sfVertexBuffer *buffer = new sfVertexBuffer;
