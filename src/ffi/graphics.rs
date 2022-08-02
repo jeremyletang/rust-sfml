@@ -892,3 +892,8 @@ extern "C" {
     pub fn sfVertexBuffer_bind(vertexBuffer: *const sfVertexBuffer);
     pub fn sfVertexBuffer_isAvailable() -> bool;
 }
+
+#[repr(C)]
+pub struct sfFontInfo {
+    pub family: *const c_char,
+}

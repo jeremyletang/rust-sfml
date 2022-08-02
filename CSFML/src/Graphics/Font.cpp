@@ -23,7 +23,6 @@
 
 // Headers
 
-#include "Graphics/FontInfo.h"
 #include "Graphics/Glyph.h"
 #include "System/InputStreamStruct.h"
 #include <SFML/Graphics/Font.hpp>
@@ -107,6 +106,11 @@ extern "C" float sfFont_getUnderlineThickness(const sf::Font *font, unsigned int
 extern "C" const sf::Texture *sfFont_getTexture(const sf::Font *font, unsigned int characterSize) {
     return &font->getTexture(characterSize);
 }
+
+typedef struct
+{
+    const char *family;
+} sfFontInfo;
 
 extern "C" sfFontInfo sfFont_getInfo(const sf::Font *font) {
     sfFontInfo info = {NULL};
