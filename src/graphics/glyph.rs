@@ -14,7 +14,7 @@ use crate::{
 /// - the offset to apply to get the starting position of the next glyph
 #[derive(Clone, Copy, Debug)]
 #[repr(transparent)]
-pub struct Glyph(pub(super) ffi::sfGlyph);
+pub struct Glyph(pub(super) ffi::graphics::sfGlyph);
 
 impl Glyph {
     /// Offset to move horizontally to the next character.

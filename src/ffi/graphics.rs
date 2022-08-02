@@ -1,7 +1,9 @@
+use std::os::raw::c_float;
+
 pub use crate::ffi::*;
 use crate::{
     ffi::window::{sfContextSettings, sfCursor, sfWindow, sfWindowHandle, Event},
-    graphics::{RenderStates, Transform},
+    graphics::{Rect, RenderStates, Transform},
 };
 
 decl_opaque! {
@@ -897,3 +899,17 @@ extern "C" {
 pub struct sfFontInfo {
     pub family: *const c_char,
 }
+
+#[repr(C)]
+#[derive(Clone, Copy, Debug)]
+pub struct sfGlyph {
+    ///< Offset to move horizontically to the next character
+    pub advance: c_float,
+    ///< Bounding rectangle of the glyph, in coordinates relative to the baseline
+    pub bounds: sfFloatRect,
+    ///< Texture coordinates of the glyph inside the font's image
+    pub textureRect: sfIntRect,
+}
+
+pub type sfFloatRect = Rect<c_float>;
+pub type sfIntRect = Rect<c_int>;

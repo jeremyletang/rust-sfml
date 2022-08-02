@@ -1,5 +1,4 @@
 #include "Graphics/Color.h"
-#include "Graphics/Glyph.h"
 #include "Graphics/PrimitiveType.h"
 #include "Graphics/Shape.h"
 #include "Graphics/Vertex.h"

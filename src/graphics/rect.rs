@@ -163,15 +163,15 @@ fn min_max<T: PartialOrd + Copy>(a: T, b: T) -> (T, T) {
 }
 
 impl IntRect {
-    pub(super) fn raw(&self) -> ffi::sfIntRect {
-        ffi::sfIntRect {
+    pub(super) fn raw(&self) -> ffi::graphics::sfIntRect {
+        ffi::graphics::sfIntRect {
             top: self.top,
             left: self.left,
             width: self.width,
             height: self.height,
         }
     }
-    pub(super) fn from_raw(raw: ffi::sfIntRect) -> Self {
+    pub(super) fn from_raw(raw: ffi::graphics::sfIntRect) -> Self {
         Self {
             top: raw.top,
             left: raw.left,
@@ -182,15 +182,15 @@ impl IntRect {
 }
 
 impl FloatRect {
-    pub(super) fn raw(&self) -> ffi::sfFloatRect {
-        ffi::sfFloatRect {
+    pub(super) fn raw(&self) -> ffi::graphics::sfFloatRect {
+        ffi::graphics::sfFloatRect {
             top: self.top,
             left: self.left,
             width: self.width,
             height: self.height,
         }
     }
-    pub(super) fn from_raw(raw: ffi::sfFloatRect) -> Self {
+    pub(super) fn from_raw(raw: ffi::graphics::sfFloatRect) -> Self {
         Self {
             top: raw.top,
             left: raw.left,

@@ -23,10 +23,17 @@
 
 // Headers
 
-#include "Graphics/Glyph.h"
 #include "System/InputStreamStruct.h"
+#include "Graphics/Rect.h"
 #include <SFML/Graphics/Font.hpp>
 #include <cstddef>
+
+typedef struct
+{
+    float advance;         ///< Offset to move horizontically to the next character
+    sfFloatRect bounds;    ///< Bounding rectangle of the glyph, in coordinates relative to the baseline
+    sfIntRect textureRect; ///< Texture coordinates of the glyph inside the font's image
+} sfGlyph;
 
 extern "C" sf::Font *sfFont_createFromFile(const char *filename) {
     sf::Font *font = new sf::Font;
