@@ -62,6 +62,32 @@ extern "C" {
     pub fn sfMusic_isRelativeToListener(music: *const sfMusic) -> bool;
     pub fn sfMusic_getMinDistance(music: *const sfMusic) -> f32;
     pub fn sfMusic_getAttenuation(music: *const sfMusic) -> f32;
+    // Sound
+    pub fn sfSound_create() -> *mut sfSound;
+    pub fn sfSound_copy(sound: *const sfSound) -> *mut sfSound;
+    pub fn sfSound_destroy(sound: *mut sfSound);
+    pub fn sfSound_play(sound: *mut sfSound);
+    pub fn sfSound_pause(sound: *mut sfSound);
+    pub fn sfSound_stop(sound: *mut sfSound);
+    pub fn sfSound_setBuffer(sound: *mut sfSound, buffer: *const sfSoundBuffer);
+    pub fn sfSound_getBuffer(sound: *const sfSound) -> *const sfSoundBuffer;
+    pub fn sfSound_setLoop(sound: *mut sfSound, loop_: bool);
+    pub fn sfSound_getLoop(sound: *const sfSound) -> bool;
+    pub fn sfSound_getStatus(sound: *const sfSound) -> sfSoundStatus;
+    pub fn sfSound_setPitch(sound: *mut sfSound, pitch: f32);
+    pub fn sfSound_setVolume(sound: *mut sfSound, volume: f32);
+    pub fn sfSound_setPosition(sound: *mut sfSound, position: sfVector3f);
+    pub fn sfSound_setRelativeToListener(sound: *mut sfSound, relative: bool);
+    pub fn sfSound_setMinDistance(sound: *mut sfSound, distance: f32);
+    pub fn sfSound_setAttenuation(sound: *mut sfSound, attenuation: f32);
+    pub fn sfSound_setPlayingOffset(sound: *mut sfSound, timeOffset: i64);
+    pub fn sfSound_getPitch(sound: *const sfSound) -> f32;
+    pub fn sfSound_getVolume(sound: *const sfSound) -> f32;
+    pub fn sfSound_getPosition(sound: *const sfSound) -> sfVector3f;
+    pub fn sfSound_isRelativeToListener(sound: *const sfSound) -> bool;
+    pub fn sfSound_getMinDistance(sound: *const sfSound) -> f32;
+    pub fn sfSound_getAttenuation(sound: *const sfSound) -> f32;
+    pub fn sfSound_getPlayingOffset(sound: *const sfSound) -> i64;
 }
 
 #[repr(C)]

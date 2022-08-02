@@ -23,97 +23,96 @@
 
 // Headers
 
-#include "Audio/Sound.h"
-#include <SFML/Audio/Sound.hpp>
+#include "System/Vector3.h"
+#include <SFML/Audio.hpp>
 #include <cstddef>
 
-sfSound *sfSound_create(void) {
-    return reinterpret_cast<sfSound *>(new sf::Sound);
+extern "C" sf::Sound *sfSound_create(void) {
+    return new sf::Sound;
 }
 
-sfSound *sfSound_copy(const sfSound *sound) {
-    const sf::Sound *src = reinterpret_cast<const sf::Sound *>(sound);
-    return reinterpret_cast<sfSound *>(new sf::Sound(*src));
+extern "C" sf::Sound *sfSound_copy(const sf::Sound *sound) {
+    const sf::Sound *src = sound;
+    return new sf::Sound(*src);
 }
 
-void sfSound_destroy(sfSound *sound) {
-    delete reinterpret_cast<sf::Sound *>(sound);
+extern "C" void sfSound_destroy(sf::Sound *sound) {
+    delete sound;
 }
 
-void sfSound_play(sfSound *sound) {
-    reinterpret_cast<sf::Sound *>(sound)->play();
+extern "C" void sfSound_play(sf::Sound *sound) {
+    sound->play();
 }
 
-void sfSound_pause(sfSound *sound) {
-    reinterpret_cast<sf::Sound *>(sound)->pause();
+extern "C" void sfSound_pause(sf::Sound *sound) {
+    sound->pause();
 }
 
-void sfSound_stop(sfSound *sound) {
-    reinterpret_cast<sf::Sound *>(sound)->stop();
+extern "C" void sfSound_stop(sf::Sound *sound) {
+    sound->stop();
 }
 
-void sfSound_setBuffer(sfSound *sound, const sfSoundBuffer *buffer) {
-    reinterpret_cast<sf::Sound *>(sound)->setBuffer(*reinterpret_cast<const sf::SoundBuffer *>(buffer));
+extern "C" void sfSound_setBuffer(sf::Sound *sound, const sf::SoundBuffer *buffer) {
+    sound->setBuffer(*reinterpret_cast<const sf::SoundBuffer *>(buffer));
 }
 
-const sfSoundBuffer *sfSound_getBuffer(const sfSound *sound) {
-    const sf::Sound *s = reinterpret_cast<const sf::Sound *>(sound);
-    return reinterpret_cast<const sfSoundBuffer *>(s->getBuffer());
+extern "C" const sf::SoundBuffer *sfSound_getBuffer(const sf::Sound *sound) {
+    const sf::Sound *s = sound;
+    return s->getBuffer();
 }
 
-void sfSound_setLoop(sfSound *sound, bool loop) {
-    reinterpret_cast<sf::Sound *>(sound)->setLoop(loop);
+extern "C" void sfSound_setLoop(sf::Sound *sound, bool loop) {
+    sound->setLoop(loop);
 }
 
-bool sfSound_getLoop(const sfSound *sound) {
-    return reinterpret_cast<const sf::Sound *>(sound)->getLoop();
+extern "C" bool sfSound_getLoop(const sf::Sound *sound) {
+    return sound->getLoop();
 }
 
-sfSoundStatus sfSound_getStatus(const sfSound *sound) {
-
-    return static_cast<sfSoundStatus>(reinterpret_cast<const sf::Sound *>(sound)->getStatus());
+extern "C" sf::Sound::Status sfSound_getStatus(const sf::Sound *sound) {
+    return sound->getStatus();
 }
 
-void sfSound_setPitch(sfSound *sound, float pitch) {
-    reinterpret_cast<sf::Sound *>(sound)->setPitch(pitch);
+extern "C" void sfSound_setPitch(sf::Sound *sound, float pitch) {
+    sound->setPitch(pitch);
 }
 
-void sfSound_setVolume(sfSound *sound, float volume) {
-    reinterpret_cast<sf::Sound *>(sound)->setVolume(volume);
+extern "C" void sfSound_setVolume(sf::Sound *sound, float volume) {
+    sound->setVolume(volume);
 }
 
-void sfSound_setPosition(sfSound *sound, sfVector3f position) {
-    reinterpret_cast<sf::Sound *>(sound)->setPosition(sf::Vector3f(position.x, position.y, position.z));
+extern "C" void sfSound_setPosition(sf::Sound *sound, sfVector3f position) {
+    sound->setPosition(sf::Vector3f(position.x, position.y, position.z));
 }
 
-void sfSound_setRelativeToListener(sfSound *sound, bool relative) {
-    reinterpret_cast<sf::Sound *>(sound)->setRelativeToListener(relative);
+extern "C" void sfSound_setRelativeToListener(sf::Sound *sound, bool relative) {
+    sound->setRelativeToListener(relative);
 }
 
-void sfSound_setMinDistance(sfSound *sound, float distance) {
-    reinterpret_cast<sf::Sound *>(sound)->setMinDistance(distance);
+extern "C" void sfSound_setMinDistance(sf::Sound *sound, float distance) {
+    sound->setMinDistance(distance);
 }
 
-void sfSound_setAttenuation(sfSound *sound, float attenuation) {
-    reinterpret_cast<sf::Sound *>(sound)->setAttenuation(attenuation);
+extern "C" void sfSound_setAttenuation(sf::Sound *sound, float attenuation) {
+    sound->setAttenuation(attenuation);
 }
 
-void sfSound_setPlayingOffset(sfSound *sound, int64_t timeOffset) {
-    reinterpret_cast<sf::Sound *>(sound)->setPlayingOffset(sf::microseconds(timeOffset));
+extern "C" void sfSound_setPlayingOffset(sf::Sound *sound, int64_t timeOffset) {
+    sound->setPlayingOffset(sf::microseconds(timeOffset));
 }
 
-float sfSound_getPitch(const sfSound *sound) {
-    return reinterpret_cast<const sf::Sound *>(sound)->getPitch();
+extern "C" float sfSound_getPitch(const sf::Sound *sound) {
+    return sound->getPitch();
 }
 
-float sfSound_getVolume(const sfSound *sound) {
-    return reinterpret_cast<const sf::Sound *>(sound)->getVolume();
+extern "C" float sfSound_getVolume(const sf::Sound *sound) {
+    return sound->getVolume();
 }
 
-sfVector3f sfSound_getPosition(const sfSound *sound) {
+extern "C" sfVector3f sfSound_getPosition(const sf::Sound *sound) {
     sfVector3f position = {0, 0, 0};
 
-    sf::Vector3f sfmlPos = reinterpret_cast<const sf::Sound *>(sound)->getPosition();
+    sf::Vector3f sfmlPos = sound->getPosition();
     position.x = sfmlPos.x;
     position.y = sfmlPos.y;
     position.z = sfmlPos.z;
@@ -121,19 +120,19 @@ sfVector3f sfSound_getPosition(const sfSound *sound) {
     return position;
 }
 
-bool sfSound_isRelativeToListener(const sfSound *sound) {
-    return reinterpret_cast<const sf::Sound *>(sound)->isRelativeToListener();
+extern "C" bool sfSound_isRelativeToListener(const sf::Sound *sound) {
+    return sound->isRelativeToListener();
 }
 
-float sfSound_getMinDistance(const sfSound *sound) {
-    return reinterpret_cast<const sf::Sound *>(sound)->getMinDistance();
+extern "C" float sfSound_getMinDistance(const sf::Sound *sound) {
+    return sound->getMinDistance();
 }
 
-float sfSound_getAttenuation(const sfSound *sound) {
-    return reinterpret_cast<const sf::Sound *>(sound)->getAttenuation();
+extern "C" float sfSound_getAttenuation(const sf::Sound *sound) {
+    return sound->getAttenuation();
 }
 
-int64_t sfSound_getPlayingOffset(const sfSound *sound) {
-    int64_t time = reinterpret_cast<const sf::Sound *>(sound)->getPlayingOffset().asMicroseconds();
+extern "C" int64_t sfSound_getPlayingOffset(const sf::Sound *sound) {
+    int64_t time = sound->getPlayingOffset().asMicroseconds();
     return time;
 }
