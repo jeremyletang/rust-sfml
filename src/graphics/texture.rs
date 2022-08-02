@@ -1,14 +1,10 @@
 use crate::{
-    ffi::{
-        graphics::{self as ffi, sfTexture_create},
-        sfBool,
-    },
+    ffi::graphics::{self as ffi, sfTexture_create},
     graphics::{Image, IntRect, RenderWindow},
-    sf_bool_ext::SfBoolExt,
     sf_box::{Dispose, SfBox},
     system::{InputStream, Vector2u},
     window::Window,
-    LoadResult,
+    IntoLoadResult, LoadResult,
 };
 use std::{
     borrow::ToOwned,
@@ -73,14 +69,14 @@ impl Texture {
     /// Return true if smoothing is enabled, false if it is disabled
     #[must_use]
     pub fn is_smooth(&self) -> bool {
-        unsafe { ffi::sfTexture_isSmooth(self.raw()) }.into_bool()
+        unsafe { ffi::sfTexture_isSmooth(self.raw()) }
     }
     /// Tell whether a texture is repeated or not
     ///
     /// Return frue if repeat mode is enabled, false if it is disabled
     #[must_use]
     pub fn is_repeated(&self) -> bool {
-        unsafe { ffi::sfTexture_isRepeated(self.raw()) }.into_bool()
+        unsafe { ffi::sfTexture_isRepeated(self.raw()) }
     }
     /// Copy a texture's pixels to an image
     ///
@@ -97,7 +93,7 @@ impl Texture {
     /// Tell whether the texture source is converted from sRGB or not.
     #[must_use]
     pub fn is_srgb(&self) -> bool {
-        unsafe { ffi::sfTexture_isSrgb(self.raw()).into_bool() }
+        unsafe { ffi::sfTexture_isSrgb(self.raw()) }
     }
     /// Get the underlying OpenGL handle of the texture.
     ///
@@ -140,7 +136,7 @@ impl Texture {
     /// Returns whether creation was successful.
     #[must_use = "Check if texture was created successfully"]
     pub fn create(&mut self, width: u32, height: u32) -> bool {
-        unsafe { sfTexture_create(self.raw_mut(), width, height).into_bool() }
+        unsafe { sfTexture_create(self.raw_mut(), width, height) }
     }
 
     /// Load texture from memory
@@ -293,7 +289,7 @@ impl Texture {
     /// # Arguments
     /// * smooth - true to enable smoothing, false to disable it
     pub fn set_smooth(&mut self, smooth: bool) {
-        unsafe { ffi::sfTexture_setSmooth(self.raw_mut(), sfBool::from_bool(smooth)) }
+        unsafe { ffi::sfTexture_setSmooth(self.raw_mut(), smooth) }
     }
 
     /// Enable or disable repeating for a texture
@@ -315,7 +311,7 @@ impl Texture {
     /// # Arguments
     /// * repeated  - true to repeat the texture, false to disable repeating
     pub fn set_repeated(&mut self, repeated: bool) {
-        unsafe { ffi::sfTexture_setRepeated(self.raw_mut(), sfBool::from_bool(repeated)) }
+        unsafe { ffi::sfTexture_setRepeated(self.raw_mut(), repeated) }
     }
 
     /// Get the maximum texture size allowed
@@ -341,7 +337,7 @@ impl Texture {
     /// This option is only useful in conjunction with an sRGB capable framebuffer.
     /// This can be requested during window creation.
     pub fn set_srgb(&mut self, srgb: bool) {
-        unsafe { ffi::sfTexture_setSrgb(self.raw_mut(), SfBoolExt::from_bool(srgb)) }
+        unsafe { ffi::sfTexture_setSrgb(self.raw_mut(), srgb) }
     }
 
     /// Generate a mipmap using the current texture data.
@@ -362,7 +358,7 @@ impl Texture {
     ///
     /// Returns true if mipmap generation was successful, false if unsuccessful.
     pub fn generate_mipmap(&mut self) -> bool {
-        unsafe { ffi::sfTexture_generateMipmap(self.raw_mut()).into_bool() }
+        unsafe { ffi::sfTexture_generateMipmap(self.raw_mut()) }
     }
     /// Swap the contents of this texture with those of another.
     pub fn swap(&mut self, other: &mut Texture) {

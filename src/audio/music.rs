@@ -1,7 +1,6 @@
 use crate::{
     audio::{SoundSource, SoundStatus, TimeSpan},
-    ffi::{self, sfBool},
-    sf_bool_ext::SfBoolExt,
+    ffi::{self},
     system::{InputStream, Time, Vector3f},
 };
 use std::{
@@ -147,7 +146,7 @@ impl<'stream> Music<'stream> {
     ///
     /// By default, the music will *not* loop.
     pub fn set_looping(&mut self, looping: bool) {
-        unsafe { ffi::sfMusic_setLoop(self.music, sfBool::from_bool(looping)) }
+        unsafe { ffi::sfMusic_setLoop(self.music, looping) }
     }
 
     /// Tell whether or not a music is in loop mode
@@ -155,7 +154,7 @@ impl<'stream> Music<'stream> {
     /// Return true if the music is looping, false otherwise
     #[must_use]
     pub fn is_looping(&self) -> bool {
-        unsafe { ffi::sfMusic_getLoop(self.music) }.into_bool()
+        unsafe { ffi::sfMusic_getLoop(self.music) }
     }
 
     /// Get the total duration of a music
@@ -282,7 +281,7 @@ impl<'stream> SoundSource for Music<'stream> {
         unsafe { ffi::sfMusic_setPosition(self.music, position.into().raw()) }
     }
     fn set_relative_to_listener(&mut self, relative: bool) {
-        unsafe { ffi::sfMusic_setRelativeToListener(self.music, sfBool::from_bool(relative)) }
+        unsafe { ffi::sfMusic_setRelativeToListener(self.music, relative) }
     }
     fn set_min_distance(&mut self, distance: f32) {
         unsafe { ffi::sfMusic_setMinDistance(self.music, distance) }
@@ -300,7 +299,7 @@ impl<'stream> SoundSource for Music<'stream> {
         unsafe { Vector3f::from_raw(ffi::sfMusic_getPosition(self.music)) }
     }
     fn is_relative_to_listener(&self) -> bool {
-        unsafe { ffi::sfMusic_isRelativeToListener(self.music).into_bool() }
+        unsafe { ffi::sfMusic_isRelativeToListener(self.music) }
     }
     fn min_distance(&self) -> f32 {
         unsafe { ffi::sfMusic_getMinDistance(self.music) }

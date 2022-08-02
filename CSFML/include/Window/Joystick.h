@@ -39,13 +39,13 @@ typedef enum {
     sfJoystickPovY  ///< The Y axis of the point-of-view hat
 } sfJoystickAxis;
 
-extern "C" sfBool sfJoystick_isConnected(unsigned int joystick);
+extern "C" bool sfJoystick_isConnected(unsigned int joystick);
 
 extern "C" unsigned int sfJoystick_getButtonCount(unsigned int joystick);
 
-extern "C" sfBool sfJoystick_hasAxis(unsigned int joystick, sfJoystickAxis axis);
+extern "C" bool sfJoystick_hasAxis(unsigned int joystick, sfJoystickAxis axis);
 
-extern "C" sfBool sfJoystick_isButtonPressed(unsigned int joystick, unsigned int button);
+extern "C" bool sfJoystick_isButtonPressed(unsigned int joystick, unsigned int button);
 
 extern "C" float sfJoystick_getAxisPosition(unsigned int joystick, sfJoystickAxis axis);
 

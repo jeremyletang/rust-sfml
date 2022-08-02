@@ -94,7 +94,7 @@ extern "C" void sfImage_destroy(sf::Image *image) {
     delete image;
 }
 
-extern "C" sfBool sfImage_saveToFile(const sf::Image *image, const char *filename) {
+extern "C" bool sfImage_saveToFile(const sf::Image *image, const char *filename) {
     return image->saveToFile(filename);
 }
 
@@ -102,10 +102,10 @@ extern "C" void sfImage_createMaskFromColor(sf::Image *image, sfColor colorKey, 
     image->createMaskFromColor(sf::Color(colorKey.r, colorKey.g, colorKey.b, colorKey.a), alpha);
 }
 
-extern "C" void sfImage_copyImage(sf::Image *image, const sf::Image *source, unsigned int destX, unsigned int destY, sfIntRect sourceRect, sfBool applyAlpha) {
+extern "C" void sfImage_copyImage(sf::Image *image, const sf::Image *source, unsigned int destX, unsigned int destY, sfIntRect sourceRect, bool applyAlpha) {
 
     sf::IntRect sfmlRect(sourceRect.left, sourceRect.top, sourceRect.width, sourceRect.height);
-    image->copy(*source, destX, destY, sfmlRect, applyAlpha == sfTrue);
+    image->copy(*source, destX, destY, sfmlRect, applyAlpha);
 }
 
 extern "C" void sfImage_setPixel(sf::Image *image, unsigned int x, unsigned int y, sfColor color) {

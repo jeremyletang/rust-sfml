@@ -1,7 +1,6 @@
 use crate::{
-    ffi::{graphics as ffi, sfBool},
+    ffi::graphics as ffi,
     graphics::{Color, IntRect},
-    sf_bool_ext::SfBoolExt,
     system::{InputStream, Vector2u},
 };
 use std::{
@@ -149,7 +148,7 @@ impl Image {
     #[must_use]
     pub fn save_to_file(&self, filename: &str) -> bool {
         let c_str = CString::new(filename).unwrap();
-        unsafe { ffi::sfImage_saveToFile(self.image, c_str.as_ptr()) }.into_bool()
+        unsafe { ffi::sfImage_saveToFile(self.image, c_str.as_ptr()) }
     }
 
     /// Return the size of an image
@@ -263,7 +262,7 @@ impl Image {
                 dest_x,
                 dest_y,
                 source_rect.raw(),
-                sfBool::from_bool(apply_alpha),
+                apply_alpha,
             )
         }
     }

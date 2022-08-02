@@ -115,8 +115,8 @@ extern "C" sf::Transform sfCircleShape_getInverseTransform(const sf::CircleShape
     return shape->getInverseTransform();
 }
 
-extern "C" void sfCircleShape_setTexture(sf::CircleShape *shape, const sf::Texture *texture, sfBool resetRect) {
-    shape->setTexture(texture, resetRect == sfTrue);
+extern "C" void sfCircleShape_setTexture(sf::CircleShape *shape, const sf::Texture *texture, bool resetRect) {
+    shape->setTexture(texture, resetRect);
 }
 
 extern "C" void sfCircleShape_setTextureRect(sf::CircleShape *shape, sfIntRect rect) {

@@ -51,7 +51,7 @@
 //! [`update`]: update
 //!
 
-use crate::{ffi::window as ffi, sf_bool_ext::SfBoolExt, SfBox};
+use crate::{ffi::window as ffi, SfBox};
 
 /// Maximum number of supported joysticks.
 pub const COUNT: u32 = 8;
@@ -92,7 +92,7 @@ impl Axis {
 /// Return true if the joystick is connected, false otherwise
 #[must_use]
 pub fn is_connected(joystick: u32) -> bool {
-    unsafe { ffi::sfJoystick_isConnected(joystick).into_bool() }
+    unsafe { ffi::sfJoystick_isConnected(joystick) }
 }
 
 /// Return the number of buttons supported by a joystick
@@ -117,7 +117,7 @@ pub fn button_count(joystick: u32) -> u32 {
 /// Return true if the joystick supports the axis, false otherwise
 #[must_use]
 pub fn has_axis(joystick: u32, axis: Axis) -> bool {
-    unsafe { ffi::sfJoystick_hasAxis(joystick, axis.0).into_bool() }
+    unsafe { ffi::sfJoystick_hasAxis(joystick, axis.0) }
 }
 
 /// Check if the button is pressed on a given joystick.
@@ -131,7 +131,7 @@ pub fn has_axis(joystick: u32, axis: Axis) -> bool {
 /// Return true if the button is pressed, false otherwise
 #[must_use]
 pub fn is_button_pressed(joystick: u32, button: u32) -> bool {
-    unsafe { ffi::sfJoystick_isButtonPressed(joystick, button).into_bool() }
+    unsafe { ffi::sfJoystick_isButtonPressed(joystick, button) }
 }
 
 /// Get the current position on a given axis, on a given joystick.

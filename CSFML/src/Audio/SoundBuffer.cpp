@@ -81,7 +81,7 @@ void sfSoundBuffer_destroy(sfSoundBuffer *soundBuffer) {
     delete reinterpret_cast<sf::SoundBuffer *>(soundBuffer);
 }
 
-sfBool sfSoundBuffer_saveToFile(const sfSoundBuffer *soundBuffer, const char *filename) {
+bool sfSoundBuffer_saveToFile(const sfSoundBuffer *soundBuffer, const char *filename) {
     return reinterpret_cast<const sf::SoundBuffer *>(soundBuffer)->saveToFile(filename);
 }
 

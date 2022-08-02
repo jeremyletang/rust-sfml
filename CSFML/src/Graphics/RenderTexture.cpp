@@ -58,8 +58,8 @@ extern "C" sfVector2u sfRenderTexture_getSize(const sf::RenderTexture *renderTex
     return size;
 }
 
-extern "C" sfBool sfRenderTexture_setActive(sf::RenderTexture *renderTexture, sfBool active) {
-    return renderTexture->setActive(active == sfTrue);
+extern "C" bool sfRenderTexture_setActive(sf::RenderTexture *renderTexture, bool active) {
+    return renderTexture->setActive(active);
 }
 
 extern "C" void sfRenderTexture_display(sf::RenderTexture *renderTexture) {
@@ -179,26 +179,26 @@ extern "C" const sf::Texture *sfRenderTexture_getTexture(const sf::RenderTexture
     return &renderTexture->getTexture();
 }
 
-extern "C" void sfRenderTexture_setSmooth(sf::RenderTexture *renderTexture, sfBool smooth) {
-    renderTexture->setSmooth(smooth == sfTrue);
+extern "C" void sfRenderTexture_setSmooth(sf::RenderTexture *renderTexture, bool smooth) {
+    renderTexture->setSmooth(smooth);
 }
 
 extern "C" unsigned int sfRenderTexture_getMaximumAntialiasingLevel() {
     return sf::RenderTexture::getMaximumAntialiasingLevel();
 }
 
-extern "C" sfBool sfRenderTexture_isSmooth(const sf::RenderTexture *renderTexture) {
+extern "C" bool sfRenderTexture_isSmooth(const sf::RenderTexture *renderTexture) {
     return renderTexture->isSmooth();
 }
 
-extern "C" void sfRenderTexture_setRepeated(sf::RenderTexture *renderTexture, sfBool repeated) {
-    renderTexture->setRepeated(repeated == sfTrue);
+extern "C" void sfRenderTexture_setRepeated(sf::RenderTexture *renderTexture, bool repeated) {
+    renderTexture->setRepeated(repeated);
 }
 
-extern "C" sfBool sfRenderTexture_isRepeated(const sf::RenderTexture *renderTexture) {
+extern "C" bool sfRenderTexture_isRepeated(const sf::RenderTexture *renderTexture) {
     return renderTexture->isRepeated();
 }
 
-extern "C" sfBool sfRenderTexture_generateMipmap(sf::RenderTexture *renderTexture) {
+extern "C" bool sfRenderTexture_generateMipmap(sf::RenderTexture *renderTexture) {
     return renderTexture->generateMipmap();
 }

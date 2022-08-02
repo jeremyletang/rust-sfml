@@ -39,6 +39,6 @@ typedef struct
 
 extern "C" sfVideoMode sfVideoMode_getDesktopMode(void);
 
-extern "C" sfBool sfVideoMode_isValid(sfVideoMode mode);
+extern "C" bool sfVideoMode_isValid(sfVideoMode mode);
 
 #endif // SFML_VIDEOMODE_H

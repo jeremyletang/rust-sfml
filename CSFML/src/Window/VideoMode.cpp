@@ -41,7 +41,7 @@ extern "C" const std::vector<sf::VideoMode> *sfVideoMode_getFullscreenModes() {
     return &sf::VideoMode::getFullscreenModes();
 }
 
-sfBool sfVideoMode_isValid(sfVideoMode mode) {
+bool sfVideoMode_isValid(sfVideoMode mode) {
     sf::VideoMode videoMode(mode.width, mode.height, mode.bitsPerPixel);
-    return videoMode.isValid() ? sfTrue : sfFalse;
+    return videoMode.isValid();
 }

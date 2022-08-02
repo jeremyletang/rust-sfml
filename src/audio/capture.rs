@@ -4,7 +4,6 @@ use crate::{
         audio::*,
         system::{sfStdString, sfStdStringVector},
     },
-    sf_bool_ext::SfBoolExt,
     system::Time,
     SfBox,
 };
@@ -97,18 +96,18 @@ pub struct SoundRecorderDriver<'a, R: 'a> {
     recorder: &'a mut R,
 }
 
-unsafe extern "C" fn on_start_callback<R: SoundRecorder>(user_data: *mut c_void) -> sfBool {
+unsafe extern "C" fn on_start_callback<R: SoundRecorder>(user_data: *mut c_void) -> bool {
     let recorder = user_data as *mut R;
-    sfBool::from_bool((*recorder).on_start())
+    (*recorder).on_start()
 }
 
 unsafe extern "C" fn on_process_callback<R: SoundRecorder>(
     data: *const sfInt16,
     len: usize,
     user_data: *mut c_void,
-) -> sfBool {
+) -> bool {
     let recorder = user_data as *mut R;
-    sfBool::from_bool((*recorder).on_process_samples(std::slice::from_raw_parts(data, len)))
+    (*recorder).on_process_samples(std::slice::from_raw_parts(data, len))
 }
 
 unsafe extern "C" fn on_stop_callback<R: SoundRecorder>(user_data: *mut c_void) {
@@ -150,7 +149,7 @@ impl<'a, R: SoundRecorder> SoundRecorderDriver<'a, R> {
     ///
     /// [`set_device`]: SoundRecorderDriver::set_device
     pub fn start(&mut self, sample_rate: u32) -> bool {
-        unsafe { sfSoundRecorder_start(self.ffi_handle.as_ptr(), sample_rate).into_bool() }
+        unsafe { sfSoundRecorder_start(self.ffi_handle.as_ptr(), sample_rate) }
     }
     /// Stop the capture, lending out the underlying [`SoundRecorder`].
     pub fn stop(&mut self) -> &mut R {
@@ -213,9 +212,7 @@ impl<'a, R: SoundRecorder> SoundRecorderDriver<'a, R> {
     /// If you do so while recording and opening the device fails, it stops the recording.
     pub fn set_device(&mut self, name: &str) -> Result<(), SetDeviceError> {
         let name = CString::new(name).unwrap();
-        let success = unsafe {
-            sfSoundRecorder_setDevice(self.ffi_handle.as_ptr(), name.as_ptr()).into_bool()
-        };
+        let success = unsafe { sfSoundRecorder_setDevice(self.ffi_handle.as_ptr(), name.as_ptr()) };
         if success {
             Ok(())
         } else {
@@ -273,7 +270,7 @@ impl SoundBufferRecorder {
     /// # Arguments
     /// * `sample_rate` - Desired capture rate, in number of samples per second
     pub fn start(&mut self, sample_rate: u32) -> bool {
-        unsafe { sfSoundBufferRecorder_start(self.ffi_handle.as_ptr(), sample_rate) == sfTrue }
+        unsafe { sfSoundBufferRecorder_start(self.ffi_handle.as_ptr(), sample_rate) }
     }
 
     /// Stop the capture of a sound recorder
@@ -320,9 +317,8 @@ impl SoundBufferRecorder {
     /// If you do so while recording and opening the device fails, it stops the recording.
     pub fn set_device(&mut self, name: &str) -> Result<(), SetDeviceError> {
         let name = CString::new(name).unwrap();
-        let success = unsafe {
-            sfSoundBufferRecorder_setDevice(self.ffi_handle.as_ptr(), name.as_ptr()).into_bool()
-        };
+        let success =
+            unsafe { sfSoundBufferRecorder_setDevice(self.ffi_handle.as_ptr(), name.as_ptr()) };
         if success {
             Ok(())
         } else {
@@ -371,7 +367,7 @@ impl Drop for SoundBufferRecorder {
 /// Return true if audio capture is supported, false otherwise
 #[must_use]
 pub fn is_available() -> bool {
-    unsafe { sfSoundRecorder_isAvailable() }.into_bool()
+    unsafe { sfSoundRecorder_isAvailable() }
 }
 /// Get the name of the default audio capture device.
 ///

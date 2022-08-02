@@ -28,7 +28,7 @@
 #include <SFML/Window/Touch.hpp>
 #include <cstddef>
 
-extern "C" sfBool sfTouch_isDown(unsigned int finger) {
+extern "C" bool sfTouch_isDown(unsigned int finger) {
     return sf::Touch::isDown(finger);
 }
 

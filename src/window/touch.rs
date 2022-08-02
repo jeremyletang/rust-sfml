@@ -46,12 +46,12 @@
 //! [`Window::touch_position`]: crate::window::Window::touch_position
 //!
 
-use crate::{ffi::window::*, sf_bool_ext::SfBoolExt, system::Vector2i};
+use crate::{ffi::window::*, system::Vector2i};
 
 /// Check if a touch event is currently down.
 #[must_use]
 pub fn is_down(finger: u32) -> bool {
-    unsafe { sfTouch_isDown(finger).into_bool() }
+    unsafe { sfTouch_isDown(finger) }
 }
 
 /// Get the current position of a touch in desktop coordinates.

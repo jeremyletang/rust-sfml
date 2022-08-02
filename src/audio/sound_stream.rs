@@ -1,7 +1,6 @@
 use crate::{
     audio::{SoundSource, SoundStatus},
     ffi::*,
-    sf_bool_ext::SfBoolExt,
     system::{Time, Vector3f},
 };
 use std::{os::raw::c_void, panic, ptr::NonNull};
@@ -31,7 +30,7 @@ pub struct SoundStreamPlayer<'a, S: SoundStream + 'a> {
 unsafe extern "C" fn get_data_callback<S: SoundStream>(
     chunk: *mut sfSoundStreamChunk,
     user_data: *mut c_void,
-) -> sfBool {
+) -> bool {
     let stream = user_data as *mut S;
     let (data, keep_playing) =
         match panic::catch_unwind(panic::AssertUnwindSafe(|| (*stream).get_data())) {
@@ -46,7 +45,7 @@ unsafe extern "C" fn get_data_callback<S: SoundStream>(
         .len()
         .try_into()
         .expect("Overflow casting data length to sample count");
-    sfBool::from_bool(keep_playing)
+    keep_playing
 }
 
 unsafe extern "C" fn seek_callback<S: SoundStream>(
@@ -180,7 +179,7 @@ impl<'a, S: SoundStream> SoundStreamPlayer<'a, S> {
     /// Tell whether or not the stream is in loop mode.
     #[must_use]
     pub fn is_looping(&self) -> bool {
-        unsafe { sfSoundStream_getLoop(self.sf_sound_stream.as_ptr()).into_bool() }
+        unsafe { sfSoundStream_getLoop(self.sf_sound_stream.as_ptr()) }
     }
     /// Set whether or not the stream should loop after reaching the end.
     ///
@@ -188,9 +187,7 @@ impl<'a, S: SoundStream> SoundStreamPlayer<'a, S> {
     /// until it is stopped or `set_looping(false)` is called.
     /// The default looping state for streams is false.
     pub fn set_looping(&mut self, looping: bool) {
-        unsafe {
-            sfSoundStream_setLoop(self.sf_sound_stream.as_ptr(), SfBoolExt::from_bool(looping))
-        }
+        unsafe { sfSoundStream_setLoop(self.sf_sound_stream.as_ptr(), looping) }
     }
 }
 
@@ -205,12 +202,7 @@ impl<'a, S: SoundStream> SoundSource for SoundStreamPlayer<'a, S> {
         unsafe { sfSoundStream_setPosition(self.sf_sound_stream.as_ptr(), position.into().raw()) }
     }
     fn set_relative_to_listener(&mut self, relative: bool) {
-        unsafe {
-            sfSoundStream_setRelativeToListener(
-                self.sf_sound_stream.as_ptr(),
-                SfBoolExt::from_bool(relative),
-            )
-        }
+        unsafe { sfSoundStream_setRelativeToListener(self.sf_sound_stream.as_ptr(), relative) }
     }
     fn set_min_distance(&mut self, distance: f32) {
         unsafe { sfSoundStream_setMinDistance(self.sf_sound_stream.as_ptr(), distance) }
@@ -228,7 +220,7 @@ impl<'a, S: SoundStream> SoundSource for SoundStreamPlayer<'a, S> {
         unsafe { Vector3f::from_raw(sfSoundStream_getPosition(self.sf_sound_stream.as_ptr())) }
     }
     fn is_relative_to_listener(&self) -> bool {
-        unsafe { sfSoundStream_isRelativeToListener(self.sf_sound_stream.as_ptr()).into_bool() }
+        unsafe { sfSoundStream_isRelativeToListener(self.sf_sound_stream.as_ptr()) }
     }
     fn min_distance(&self) -> f32 {
         unsafe { sfSoundStream_getMinDistance(self.sf_sound_stream.as_ptr()) }

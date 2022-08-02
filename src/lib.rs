@@ -48,8 +48,6 @@
 
 extern crate link_cplusplus;
 
-mod sf_bool_ext;
-
 #[cfg(feature = "audio")]
 pub mod audio;
 #[cfg(feature = "graphics")]
@@ -78,5 +76,19 @@ impl Error for ResourceLoadError {}
 
 /// Result for loading an SFML resource
 pub type LoadResult<T> = Result<T, ResourceLoadError>;
+
+trait IntoLoadResult {
+    fn into_load_result(self) -> LoadResult<()>;
+}
+
+impl IntoLoadResult for bool {
+    fn into_load_result(self) -> LoadResult<()> {
+        if self {
+            Ok(())
+        } else {
+            Err(ResourceLoadError)
+        }
+    }
+}
 
 mod ffi;

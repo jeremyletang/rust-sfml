@@ -53,12 +53,6 @@
 
 #endif
 
-// Define a portable boolean type
-
-typedef int sfBool;
-const sfBool sfFalse = 0;
-const sfBool sfTrue = 1;
-
 // Define portable fixed-size types
 
 // All "common" platforms use the same size for char, short and int

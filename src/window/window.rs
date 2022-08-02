@@ -1,8 +1,7 @@
 use std::ptr::NonNull;
 
 use crate::{
-    ffi::{sfBool, window as ffi},
-    sf_bool_ext::SfBoolExt,
+    ffi::window as ffi,
     system::{SfStrConv, Vector2i, Vector2u},
     window::{thread_safety, ContextSettings, Cursor, Event, Style, VideoMode},
 };
@@ -150,9 +149,8 @@ impl Window {
     /// Returns `Some(event)` if an event was returned, or `None` if the event queue was empty
     pub fn poll_event(&mut self) -> Option<Event> {
         let mut event = std::mem::MaybeUninit::uninit();
-        let have_event = unsafe {
-            ffi::sfWindow_pollEvent(self.window.as_ptr(), event.as_mut_ptr()).into_bool()
-        };
+        let have_event =
+            unsafe { ffi::sfWindow_pollEvent(self.window.as_ptr(), event.as_mut_ptr()) };
         if have_event {
             unsafe { Event::from_raw(&event.assume_init()) }
         } else {
@@ -172,9 +170,8 @@ impl Window {
     /// Returns `Some(event)` or `None` if an error has occured
     pub fn wait_event(&mut self) -> Option<Event> {
         let mut event = std::mem::MaybeUninit::uninit();
-        let have_event = unsafe {
-            ffi::sfWindow_waitEvent(self.window.as_ptr(), event.as_mut_ptr()).into_bool()
-        };
+        let have_event =
+            unsafe { ffi::sfWindow_waitEvent(self.window.as_ptr(), event.as_mut_ptr()) };
         if have_event {
             unsafe { Event::from_raw(&event.assume_init()) }
         } else {
@@ -219,7 +216,7 @@ impl Window {
     /// true.
     #[must_use]
     pub fn is_open(&self) -> bool {
-        unsafe { ffi::sfWindow_isOpen(self.window.as_ptr()) }.into_bool()
+        unsafe { ffi::sfWindow_isOpen(self.window.as_ptr()) }
     }
 
     /// Get the settings of the OpenGL context of a window
@@ -250,7 +247,7 @@ impl Window {
     /// # Arguments
     /// * visible - true to show the window, false to hide it
     pub fn set_visible(&mut self, visible: bool) {
-        unsafe { ffi::sfWindow_setVisible(self.window.as_ptr(), sfBool::from_bool(visible)) }
+        unsafe { ffi::sfWindow_setVisible(self.window.as_ptr(), visible) }
     }
 
     /// Show or hide the mouse cursor
@@ -258,9 +255,7 @@ impl Window {
     /// # Arguments
     /// * visible - true to  false to hide
     pub fn set_mouse_cursor_visible(&mut self, visible: bool) {
-        unsafe {
-            ffi::sfWindow_setMouseCursorVisible(self.window.as_ptr(), sfBool::from_bool(visible))
-        }
+        unsafe { ffi::sfWindow_setMouseCursorVisible(self.window.as_ptr(), visible) }
     }
 
     /// Grab or release the mouse cursor.
@@ -268,9 +263,7 @@ impl Window {
     /// If set, grabs the mouse cursor inside this window's client area so it may no longer be
     /// moved outside its bounds. Note that grabbing is only active while the window has focus.
     pub fn set_mouse_cursor_grabbed(&mut self, grabbed: bool) {
-        unsafe {
-            ffi::sfWindow_setMouseCursorGrabbed(self.window.as_ptr(), sfBool::from_bool(grabbed))
-        }
+        unsafe { ffi::sfWindow_setMouseCursorGrabbed(self.window.as_ptr(), grabbed) }
     }
 
     /// Enable or disable vertical synchronization
@@ -283,9 +276,7 @@ impl Window {
     /// # Arguments
     /// * enabled - true to enable v-sync, false to deactivate
     pub fn set_vertical_sync_enabled(&mut self, enabled: bool) {
-        unsafe {
-            ffi::sfWindow_setVerticalSyncEnabled(self.window.as_ptr(), sfBool::from_bool(enabled))
-        }
+        unsafe { ffi::sfWindow_setVerticalSyncEnabled(self.window.as_ptr(), enabled) }
     }
 
     /// Enable or disable automatic key-repeat
@@ -299,9 +290,7 @@ impl Window {
     /// # Arguments
     /// * enabled - true to enable, false to disable
     pub fn set_key_repeat_enabled(&mut self, enabled: bool) {
-        unsafe {
-            ffi::sfWindow_setKeyRepeatEnabled(self.window.as_ptr(), sfBool::from_bool(enabled))
-        }
+        unsafe { ffi::sfWindow_setKeyRepeatEnabled(self.window.as_ptr(), enabled) }
     }
 
     /// Activate or deactivate a window as the current target for OpenGL rendering
@@ -317,8 +306,7 @@ impl Window {
     ///
     /// Return true if operation was successful, false otherwise
     pub fn set_active(&mut self, enabled: bool) -> bool {
-        unsafe { ffi::sfWindow_setActive(self.window.as_ptr(), sfBool::from_bool(enabled)) }
-            .into_bool()
+        unsafe { ffi::sfWindow_setActive(self.window.as_ptr(), enabled) }
     }
 
     /// Display on screen what has been rendered to the window so far
@@ -429,7 +417,7 @@ impl Window {
     /// such as keystrokes or most mouse events.
     #[must_use]
     pub fn has_focus(&self) -> bool {
-        unsafe { ffi::sfWindow_hasFocus(self.window.as_ptr()).into_bool() }
+        unsafe { ffi::sfWindow_hasFocus(self.window.as_ptr()) }
     }
 
     /// Request the current window to be made the active foreground window.

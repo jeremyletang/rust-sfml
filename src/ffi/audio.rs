@@ -10,7 +10,7 @@ extern "C" {
     pub fn sfSoundBufferRecorder_start(
         bufRec: *mut sfSoundBufferRecorder,
         sampRate: c_uint,
-    ) -> sfBool;
+    ) -> bool;
     pub fn sfSoundBufferRecorder_stop(bufRec: *mut sfSoundBufferRecorder);
     pub fn sfSoundBufferRecorder_getSampleRate(bufRec: *const sfSoundBufferRecorder) -> c_uint;
     pub fn sfSoundBufferRecorder_getBuffer(
@@ -19,7 +19,7 @@ extern "C" {
     pub fn sfSoundBufferRecorder_setDevice(
         bufRec: *mut sfSoundBufferRecorder,
         name: *const c_char,
-    ) -> sfBool;
+    ) -> bool;
     pub fn sfSoundBufferRecorder_getDevice(
         bufRec: *const sfSoundBufferRecorder,
     ) -> *const sfStdString;

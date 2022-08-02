@@ -114,8 +114,8 @@ extern "C" sf::Transform sfConvexShape_getInverseTransform(const sf::ConvexShape
     return shape->getInverseTransform();
 }
 
-extern "C" void sfConvexShape_setTexture(sf::ConvexShape *shape, const sf::Texture *texture, sfBool resetRect) {
-    shape->setTexture(texture, resetRect == sfTrue);
+extern "C" void sfConvexShape_setTexture(sf::ConvexShape *shape, const sf::Texture *texture, bool resetRect) {
+    shape->setTexture(texture, resetRect);
 }
 
 extern "C" void sfConvexShape_setTextureRect(sf::ConvexShape *shape, sfIntRect rect) {

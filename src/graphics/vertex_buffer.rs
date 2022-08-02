@@ -88,7 +88,7 @@ impl VertexBuffer {
                 vertices.as_ptr() as *const _,
                 vertices.len().try_into().unwrap(),
                 offset,
-            ) != 0
+            )
         }
     }
 
@@ -103,7 +103,7 @@ impl VertexBuffer {
             sfVertexBuffer_updateFromVertexBuffer(
                 self.vertex_buffer.as_ptr(),
                 other.vertex_buffer.as_ptr(),
-            ) != 0
+            )
         }
     }
 
@@ -216,7 +216,7 @@ impl VertexBuffer {
     /// Return True if vertex buffers are supported, false otherwise
     #[must_use]
     pub fn available() -> bool {
-        unsafe { sfVertexBuffer_isAvailable() != 0 }
+        unsafe { sfVertexBuffer_isAvailable() }
     }
 
     pub(super) fn raw(&self) -> *const sfVertexBuffer {

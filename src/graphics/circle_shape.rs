@@ -1,10 +1,9 @@
 use crate::{
-    ffi::{graphics as ffi, sfBool, sfTrue},
+    ffi::graphics as ffi,
     graphics::{
         Color, Drawable, FloatRect, IntRect, RenderStates, RenderTarget, Shape, Texture, Transform,
         Transformable,
     },
-    sf_bool_ext::SfBoolExt,
     system::Vector2f,
 };
 use std::{
@@ -139,17 +138,11 @@ impl<'s> Transformable for CircleShape<'s> {
 impl<'s> Shape<'s> for CircleShape<'s> {
     fn set_texture(&mut self, texture: &'s Texture, reset_rect: bool) {
         unsafe {
-            ffi::sfCircleShape_setTexture(
-                self.circle_shape.as_ptr(),
-                texture.raw(),
-                sfBool::from_bool(reset_rect),
-            )
+            ffi::sfCircleShape_setTexture(self.circle_shape.as_ptr(), texture.raw(), reset_rect)
         }
     }
     fn disable_texture(&mut self) {
-        unsafe {
-            ffi::sfCircleShape_setTexture(self.circle_shape.as_ptr(), ptr::null_mut(), sfTrue)
-        }
+        unsafe { ffi::sfCircleShape_setTexture(self.circle_shape.as_ptr(), ptr::null_mut(), true) }
     }
     fn set_texture_rect(&mut self, rect: &IntRect) {
         unsafe { ffi::sfCircleShape_setTextureRect(self.circle_shape.as_ptr(), rect.raw()) }

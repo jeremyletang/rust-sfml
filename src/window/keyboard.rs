@@ -1,5 +1,5 @@
 pub use crate::ffi::window::Key;
-use crate::{ffi::window as ffi, sf_bool_ext::SfBoolExt, window::thread_safety};
+use crate::{ffi::window as ffi, window::thread_safety};
 
 impl Key {
     /// Return whether this key is currently pressed.
@@ -11,7 +11,7 @@ impl Key {
     pub fn is_pressed(self) -> bool {
         thread_safety::set_window_thread();
 
-        unsafe { ffi::sfKeyboard_isKeyPressed(self) }.into_bool()
+        unsafe { ffi::sfKeyboard_isKeyPressed(self) }
     }
 }
 
@@ -22,5 +22,5 @@ impl Key {
 ///
 /// If the virtual keyboard is not available, this function does nothing.
 pub fn set_virtual_keyboard_visible(visible: bool) {
-    unsafe { ffi::sfKeyboard_setVirtualKeyboardVisible(SfBoolExt::from_bool(visible)) }
+    unsafe { ffi::sfKeyboard_setVirtualKeyboardVisible(visible) }
 }
