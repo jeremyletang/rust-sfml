@@ -61,11 +61,11 @@ const sfSoundBuffer *sfSound_getBuffer(const sfSound *sound) {
     return reinterpret_cast<const sfSoundBuffer *>(s->getBuffer());
 }
 
-void sfSound_setLoop(sfSound *sound, sfBool loop) {
-    reinterpret_cast<sf::Sound *>(sound)->setLoop(loop == sfTrue);
+void sfSound_setLoop(sfSound *sound, bool loop) {
+    reinterpret_cast<sf::Sound *>(sound)->setLoop(loop);
 }
 
-sfBool sfSound_getLoop(const sfSound *sound) {
+bool sfSound_getLoop(const sfSound *sound) {
     return reinterpret_cast<const sf::Sound *>(sound)->getLoop();
 }
 
@@ -86,8 +86,8 @@ void sfSound_setPosition(sfSound *sound, sfVector3f position) {
     reinterpret_cast<sf::Sound *>(sound)->setPosition(sf::Vector3f(position.x, position.y, position.z));
 }
 
-void sfSound_setRelativeToListener(sfSound *sound, sfBool relative) {
-    reinterpret_cast<sf::Sound *>(sound)->setRelativeToListener(relative == sfTrue);
+void sfSound_setRelativeToListener(sfSound *sound, bool relative) {
+    reinterpret_cast<sf::Sound *>(sound)->setRelativeToListener(relative);
 }
 
 void sfSound_setMinDistance(sfSound *sound, float distance) {
@@ -121,7 +121,7 @@ sfVector3f sfSound_getPosition(const sfSound *sound) {
     return position;
 }
 
-sfBool sfSound_isRelativeToListener(const sfSound *sound) {
+bool sfSound_isRelativeToListener(const sfSound *sound) {
     return reinterpret_cast<const sf::Sound *>(sound)->isRelativeToListener();
 }
 

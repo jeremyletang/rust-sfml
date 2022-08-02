@@ -30,9 +30,9 @@
 #include "Config.h"
 #include <stddef.h>
 
-typedef sfBool (*sfSoundRecorderStartCallback)(void *);                            ///< Type of the callback used when starting a capture
-typedef sfBool (*sfSoundRecorderProcessCallback)(const sfInt16 *, size_t, void *); ///< Type of the callback used to process audio data
-typedef void (*sfSoundRecorderStopCallback)(void *);                               ///< Type of the callback used when stopping a capture
+typedef bool (*sfSoundRecorderStartCallback)(void *);                            ///< Type of the callback used when starting a capture
+typedef bool (*sfSoundRecorderProcessCallback)(const sfInt16 *, size_t, void *); ///< Type of the callback used to process audio data
+typedef void (*sfSoundRecorderStopCallback)(void *);                             ///< Type of the callback used when stopping a capture
 
 extern "C" sfSoundRecorder *sfSoundRecorder_create(sfSoundRecorderStartCallback onStart,
                                                    sfSoundRecorderProcessCallback onProcess,
@@ -41,17 +41,17 @@ extern "C" sfSoundRecorder *sfSoundRecorder_create(sfSoundRecorderStartCallback 
 
 extern "C" void sfSoundRecorder_destroy(sfSoundRecorder *soundRecorder);
 
-extern "C" sfBool sfSoundRecorder_start(sfSoundRecorder *soundRecorder, unsigned int sampleRate);
+extern "C" bool sfSoundRecorder_start(sfSoundRecorder *soundRecorder, unsigned int sampleRate);
 
 extern "C" void sfSoundRecorder_stop(sfSoundRecorder *soundRecorder);
 
 extern "C" unsigned int sfSoundRecorder_getSampleRate(const sfSoundRecorder *soundRecorder);
 
-extern "C" sfBool sfSoundRecorder_isAvailable(void);
+extern "C" bool sfSoundRecorder_isAvailable(void);
 
 extern "C" void sfSoundRecorder_setProcessingInterval(sfSoundRecorder *soundRecorder, sfInt64 interval);
 
-extern "C" sfBool sfSoundRecorder_setDevice(sfSoundRecorder *soundRecorder, const char *name);
+extern "C" bool sfSoundRecorder_setDevice(sfSoundRecorder *soundRecorder, const char *name);
 
 extern "C" void sfSoundRecorder_setChannelCount(sfSoundRecorder *soundRecorder, unsigned int channelCount);
 

@@ -36,7 +36,7 @@ extern "C" void sfSoundBufferRecorder_destroy(sfSoundBufferRecorder *soundBuffer
     delete reinterpret_cast<sf::SoundBufferRecorder *>(soundBufferRecorder);
 }
 
-extern "C" sfBool sfSoundBufferRecorder_start(sfSoundBufferRecorder *soundBufferRecorder, unsigned int sampleRate) {
+extern "C" bool sfSoundBufferRecorder_start(sfSoundBufferRecorder *soundBufferRecorder, unsigned int sampleRate) {
     return reinterpret_cast<sf::SoundBufferRecorder *>(soundBufferRecorder)->start(sampleRate);
 }
 
@@ -53,7 +53,7 @@ extern "C" const sfSoundBuffer *sfSoundBufferRecorder_getBuffer(const sfSoundBuf
     return reinterpret_cast<const sfSoundBuffer *>(buf);
 }
 
-extern "C" sfBool sfSoundBufferRecorder_setDevice(sfSoundBufferRecorder *soundBufferRecorder, const char *name) {
+extern "C" bool sfSoundBufferRecorder_setDevice(sfSoundBufferRecorder *soundBufferRecorder, const char *name) {
     return reinterpret_cast<sf::SoundBufferRecorder *>(soundBufferRecorder)->setDevice(name);
 }
 

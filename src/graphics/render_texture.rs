@@ -1,11 +1,10 @@
 use crate::{
-    ffi::{graphics as ffi, sfBool},
+    ffi::graphics as ffi,
     graphics::{
         CircleShape, Color, ConvexShape, CustomShape, Drawable, IntRect, PrimitiveType,
         RectangleShape, RenderStates, RenderTarget, Sprite, Text, Texture, Vertex, VertexBuffer,
         View,
     },
-    sf_bool_ext::SfBoolExt,
     system::{Vector2f, Vector2i, Vector2u},
     window::ContextSettings,
 };
@@ -65,8 +64,7 @@ impl RenderTexture {
     /// # Arguments
     /// * active - true to activate, false to deactivate
     pub fn set_active(&mut self, active: bool) -> bool {
-        unsafe { ffi::sfRenderTexture_setActive(self.render_texture, sfBool::from_bool(active)) }
-            .into_bool()
+        unsafe { ffi::sfRenderTexture_setActive(self.render_texture, active) }
     }
 
     /// Get the target texture of a render texture
@@ -84,7 +82,7 @@ impl RenderTexture {
     /// # Arguments
     /// * smooth - true to enable smoothing, false to disable it
     pub fn set_smooth(&mut self, smooth: bool) {
-        unsafe { ffi::sfRenderTexture_setSmooth(self.render_texture, sfBool::from_bool(smooth)) }
+        unsafe { ffi::sfRenderTexture_setSmooth(self.render_texture, smooth) }
     }
 
     /// Tell whether the smooth filter is enabled or not for a render texture
@@ -92,20 +90,18 @@ impl RenderTexture {
     /// Return true if smoothing is enabled, false if it is disabled
     #[must_use]
     pub fn is_smooth(&self) -> bool {
-        unsafe { ffi::sfRenderTexture_isSmooth(self.render_texture) }.into_bool()
+        unsafe { ffi::sfRenderTexture_isSmooth(self.render_texture) }
     }
     /// Enable or disable texture repeating.
     ///
     /// This function is similar to `Texture::setRepeated`. This parameter is disabled by default.
     pub fn set_repeated(&mut self, repeated: bool) {
-        unsafe {
-            ffi::sfRenderTexture_setRepeated(self.render_texture, SfBoolExt::from_bool(repeated))
-        }
+        unsafe { ffi::sfRenderTexture_setRepeated(self.render_texture, repeated) }
     }
     /// Tell whether the texture is repeated or not.
     #[must_use]
     pub fn is_repeated(&self) -> bool {
-        unsafe { ffi::sfRenderTexture_isRepeated(self.render_texture).into_bool() }
+        unsafe { ffi::sfRenderTexture_isRepeated(self.render_texture) }
     }
     /// Generate a mipmap using the current texture data.
     ///
@@ -119,7 +115,7 @@ impl RenderTexture {
     /// completed and display has been called. Not calling display after subsequent drawing
     /// will lead to __undefined behavior__ if a mipmap had been previously generated.
     pub unsafe fn generate_mipmap(&mut self) -> bool {
-        ffi::sfRenderTexture_generateMipmap(self.render_texture).into_bool()
+        ffi::sfRenderTexture_generateMipmap(self.render_texture)
     }
 
     /// Get the maximum anti-aliasing level supported by the system.

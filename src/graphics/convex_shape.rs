@@ -1,10 +1,9 @@
 use crate::{
-    ffi::{graphics as ffi, sfBool, sfTrue},
+    ffi::graphics as ffi,
     graphics::{
         Color, Drawable, FloatRect, IntRect, RenderStates, RenderTarget, Shape, Texture, Transform,
         Transformable,
     },
-    sf_bool_ext::SfBoolExt,
     system::Vector2f,
 };
 use std::{marker::PhantomData, ptr};
@@ -156,16 +155,10 @@ impl<'s> Transformable for ConvexShape<'s> {
 
 impl<'s> Shape<'s> for ConvexShape<'s> {
     fn set_texture(&mut self, texture: &'s Texture, reset_rect: bool) {
-        unsafe {
-            ffi::sfConvexShape_setTexture(
-                self.convex_shape,
-                texture.raw(),
-                sfBool::from_bool(reset_rect),
-            )
-        }
+        unsafe { ffi::sfConvexShape_setTexture(self.convex_shape, texture.raw(), reset_rect) }
     }
     fn disable_texture(&mut self) {
-        unsafe { ffi::sfConvexShape_setTexture(self.convex_shape, ptr::null_mut(), sfTrue) }
+        unsafe { ffi::sfConvexShape_setTexture(self.convex_shape, ptr::null_mut(), true) }
     }
     fn set_texture_rect(&mut self, rect: &IntRect) {
         unsafe { ffi::sfConvexShape_setTextureRect(self.convex_shape, rect.raw()) }

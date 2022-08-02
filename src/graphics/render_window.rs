@@ -1,12 +1,11 @@
 use std::ptr::NonNull;
 
 use crate::{
-    ffi::{graphics as ffi, sfBool},
+    ffi::graphics as ffi,
     graphics::{
         CircleShape, Color, ConvexShape, CustomShape, Drawable, IntRect, PrimitiveType,
         RectangleShape, RenderStates, RenderTarget, Sprite, Text, Vertex, VertexBuffer, View,
     },
-    sf_bool_ext::SfBoolExt,
     system::{SfStrConv, Vector2f, Vector2i, Vector2u},
     window::{thread_safety, ContextSettings, Cursor, Event, Handle, Style, VideoMode},
 };
@@ -131,8 +130,7 @@ impl RenderWindow {
         let mut event = std::mem::MaybeUninit::uninit();
         let have_event = unsafe {
             ffi::sfRenderWindow_pollEvent(self.render_window.as_ptr(), event.as_mut_ptr())
-        }
-        .into_bool();
+        };
         if have_event {
             unsafe { Event::from_raw(&event.assume_init()) }
         } else {
@@ -154,8 +152,7 @@ impl RenderWindow {
         let mut event = std::mem::MaybeUninit::uninit();
         let have_event = unsafe {
             ffi::sfRenderWindow_waitEvent(self.render_window.as_ptr(), event.as_mut_ptr())
-        }
-        .into_bool();
+        };
         if have_event {
             unsafe { Event::from_raw(&event.assume_init()) }
         } else {
@@ -184,7 +181,7 @@ impl RenderWindow {
     ///
     #[must_use]
     pub fn is_open(&self) -> bool {
-        unsafe { ffi::sfRenderWindow_isOpen(self.render_window.as_ptr()) }.into_bool()
+        unsafe { ffi::sfRenderWindow_isOpen(self.render_window.as_ptr()) }
     }
 
     /// Display on screen what has been rendered to the window so far
@@ -242,7 +239,7 @@ impl RenderWindow {
     ///
     pub fn set_visible(&mut self, visible: bool) {
         unsafe {
-            ffi::sfRenderWindow_setVisible(self.render_window.as_ptr(), sfBool::from_bool(visible));
+            ffi::sfRenderWindow_setVisible(self.render_window.as_ptr(), visible);
         }
     }
 
@@ -253,10 +250,7 @@ impl RenderWindow {
     ///
     pub fn set_mouse_cursor_visible(&mut self, visible: bool) {
         unsafe {
-            ffi::sfRenderWindow_setMouseCursorVisible(
-                self.render_window.as_ptr(),
-                sfBool::from_bool(visible),
-            );
+            ffi::sfRenderWindow_setMouseCursorVisible(self.render_window.as_ptr(), visible);
         }
     }
 
@@ -265,12 +259,7 @@ impl RenderWindow {
     /// If set, grabs the mouse cursor inside this window's client area so it may no longer be
     /// moved outside its bounds. Note that grabbing is only active while the window has focus.
     pub fn set_mouse_cursor_grabbed(&mut self, grabbed: bool) {
-        unsafe {
-            ffi::sfRenderWindow_setMouseCursorGrabbed(
-                self.render_window.as_ptr(),
-                sfBool::from_bool(grabbed),
-            )
-        }
+        unsafe { ffi::sfRenderWindow_setMouseCursorGrabbed(self.render_window.as_ptr(), grabbed) }
     }
 
     /// Enable or disable vertical synchronization
@@ -285,10 +274,7 @@ impl RenderWindow {
     ///
     pub fn set_vertical_sync_enabled(&mut self, enabled: bool) {
         unsafe {
-            ffi::sfRenderWindow_setVerticalSyncEnabled(
-                self.render_window.as_ptr(),
-                sfBool::from_bool(enabled),
-            );
+            ffi::sfRenderWindow_setVerticalSyncEnabled(self.render_window.as_ptr(), enabled);
         }
     }
 
@@ -305,10 +291,7 @@ impl RenderWindow {
     ///
     pub fn set_key_repeat_enabled(&mut self, enabled: bool) {
         unsafe {
-            ffi::sfRenderWindow_setKeyRepeatEnabled(
-                self.render_window.as_ptr(),
-                sfBool::from_bool(enabled),
-            );
+            ffi::sfRenderWindow_setKeyRepeatEnabled(self.render_window.as_ptr(), enabled);
         }
     }
 
@@ -326,10 +309,7 @@ impl RenderWindow {
     /// Return true if operation was successful, false otherwise
     ///
     pub fn set_active(&mut self, enabled: bool) -> bool {
-        unsafe {
-            ffi::sfRenderWindow_setActive(self.render_window.as_ptr(), sfBool::from_bool(enabled))
-        }
-        .into_bool()
+        unsafe { ffi::sfRenderWindow_setActive(self.render_window.as_ptr(), enabled) }
     }
 
     /// Change the joystick threshold
@@ -422,7 +402,7 @@ impl RenderWindow {
     /// such as keystrokes or most mouse events.
     #[must_use]
     pub fn has_focus(&self) -> bool {
-        unsafe { ffi::sfRenderWindow_hasFocus(self.render_window.as_ptr()).into_bool() }
+        unsafe { ffi::sfRenderWindow_hasFocus(self.render_window.as_ptr()) }
     }
 
     /// Request the current window to be made the active foreground window.

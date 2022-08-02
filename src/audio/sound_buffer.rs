@@ -1,6 +1,5 @@
 use crate::{
     ffi,
-    sf_bool_ext::SfBoolExt,
     sf_box::Dispose,
     system::{InputStream, Time},
     LoadResult, ResourceLoadError, SfBox,
@@ -85,7 +84,7 @@ impl SoundBuffer {
     #[must_use]
     pub fn save_to_file(&self, filename: &str) -> bool {
         let c_str = CString::new(filename).unwrap();
-        unsafe { ffi::sfSoundBuffer_saveToFile(self.raw(), c_str.as_ptr()) }.into_bool()
+        unsafe { ffi::sfSoundBuffer_saveToFile(self.raw(), c_str.as_ptr()) }
     }
 
     /// Get the number of samples stored in a sound buffer

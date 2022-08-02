@@ -35,12 +35,12 @@ extern "C" sf::Texture *sfTexture_new() {
     return reinterpret_cast<sf::Texture *>(texture);
 }
 
-extern "C" sfBool sfTexture_create(sf::Texture *tex, unsigned int width, unsigned int height) {
+extern "C" bool sfTexture_create(sf::Texture *tex, unsigned int width, unsigned int height) {
     sf::Texture *texture = reinterpret_cast<sf::Texture *>(tex);
     return texture->create(width, height);
 }
 
-extern "C" sfBool sfTexture_loadFromFile(sf::Texture *tex, const char *filename, const sfIntRect area) {
+extern "C" bool sfTexture_loadFromFile(sf::Texture *tex, const char *filename, const sfIntRect area) {
     sf::Texture *texture = reinterpret_cast<sf::Texture *>(tex);
 
     sf::IntRect rect = sf::IntRect(area.left, area.top, area.width, area.height);
@@ -48,7 +48,7 @@ extern "C" sfBool sfTexture_loadFromFile(sf::Texture *tex, const char *filename,
     return texture->loadFromFile(filename, rect);
 }
 
-extern "C" sfBool sfTexture_loadFromMemory(sf::Texture *tex, const void *data, size_t sizeInBytes, const sfIntRect area) {
+extern "C" bool sfTexture_loadFromMemory(sf::Texture *tex, const void *data, size_t sizeInBytes, const sfIntRect area) {
     sf::Texture *texture = reinterpret_cast<sf::Texture *>(tex);
 
     sf::IntRect rect = sf::IntRect(area.left, area.top, area.width, area.height);
@@ -56,7 +56,7 @@ extern "C" sfBool sfTexture_loadFromMemory(sf::Texture *tex, const void *data, s
     return texture->loadFromMemory(data, sizeInBytes, rect);
 }
 
-extern "C" sfBool sfTexture_loadFromStream(sf::Texture *tex, sfInputStream *stream, const sfIntRect area) {
+extern "C" bool sfTexture_loadFromStream(sf::Texture *tex, sfInputStream *stream, const sfIntRect area) {
 
     sf::Texture *texture = reinterpret_cast<sf::Texture *>(tex);
 
@@ -65,7 +65,7 @@ extern "C" sfBool sfTexture_loadFromStream(sf::Texture *tex, sfInputStream *stre
     return texture->loadFromStream(*stream, rect);
 }
 
-extern "C" sfBool sfTexture_loadFromImage(sf::Texture *tex, const sf::Image *image, const sfIntRect area) {
+extern "C" bool sfTexture_loadFromImage(sf::Texture *tex, const sf::Image *image, const sfIntRect area) {
 
     sf::Texture *texture = reinterpret_cast<sf::Texture *>(tex);
 
@@ -128,33 +128,33 @@ extern "C" void sfTexture_updateFromRenderWindow(sf::Texture *texture, const sf:
     reinterpret_cast<sf::Texture *>(texture)->update(*win, x, y);
 }
 
-extern "C" void sfTexture_setSmooth(sf::Texture *texture, sfBool smooth) {
-    reinterpret_cast<sf::Texture *>(texture)->setSmooth(smooth == sfTrue);
+extern "C" void sfTexture_setSmooth(sf::Texture *texture, bool smooth) {
+    reinterpret_cast<sf::Texture *>(texture)->setSmooth(smooth);
 }
 
-extern "C" sfBool sfTexture_isSmooth(const sf::Texture *texture) {
+extern "C" bool sfTexture_isSmooth(const sf::Texture *texture) {
 
     return reinterpret_cast<const sf::Texture *>(texture)->isSmooth();
 }
 
-extern "C" void sfTexture_setSrgb(sf::Texture *texture, sfBool sRgb) {
-    reinterpret_cast<sf::Texture *>(texture)->setSrgb(sRgb == sfTrue);
+extern "C" void sfTexture_setSrgb(sf::Texture *texture, bool sRgb) {
+    reinterpret_cast<sf::Texture *>(texture)->setSrgb(sRgb);
 }
 
-extern "C" sfBool sfTexture_isSrgb(const sf::Texture *texture) {
+extern "C" bool sfTexture_isSrgb(const sf::Texture *texture) {
     return reinterpret_cast<const sf::Texture *>(texture)->isSrgb();
 }
 
-extern "C" void sfTexture_setRepeated(sf::Texture *texture, sfBool repeated) {
-    reinterpret_cast<sf::Texture *>(texture)->setRepeated(repeated == sfTrue);
+extern "C" void sfTexture_setRepeated(sf::Texture *texture, bool repeated) {
+    reinterpret_cast<sf::Texture *>(texture)->setRepeated(repeated);
 }
 
-extern "C" sfBool sfTexture_isRepeated(const sf::Texture *texture) {
+extern "C" bool sfTexture_isRepeated(const sf::Texture *texture) {
 
     return reinterpret_cast<const sf::Texture *>(texture)->isRepeated();
 }
 
-extern "C" sfBool sfTexture_generateMipmap(sf::Texture *texture) {
+extern "C" bool sfTexture_generateMipmap(sf::Texture *texture) {
     return reinterpret_cast<sf::Texture *>(texture)->generateMipmap();
 }
 

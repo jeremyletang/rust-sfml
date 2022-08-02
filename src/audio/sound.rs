@@ -1,7 +1,6 @@
 use crate::{
     audio::{SoundBuffer, SoundSource, SoundStatus},
-    ffi::{self as ffi, sfBool},
-    sf_bool_ext::SfBoolExt,
+    ffi,
     system::{Time, Vector3f},
 };
 use std::{marker::PhantomData, ptr::NonNull};
@@ -65,7 +64,7 @@ impl<'s> Sound<'s> {
 
     /// Sets whether this sound should loop or not.
     pub fn set_looping(&mut self, looping: bool) {
-        unsafe { ffi::sfSound_setLoop(self.sound.as_ptr(), sfBool::from_bool(looping)) }
+        unsafe { ffi::sfSound_setLoop(self.sound.as_ptr(), looping) }
     }
 
     /// Tell whether or not a sound is in loop mode
@@ -73,7 +72,7 @@ impl<'s> Sound<'s> {
     /// Return true if the sound is looping, false otherwise
     #[must_use]
     pub fn is_looping(&self) -> bool {
-        unsafe { ffi::sfSound_getLoop(self.sound.as_ptr()) }.into_bool()
+        unsafe { ffi::sfSound_getLoop(self.sound.as_ptr()) }
     }
 
     /// Start or resume playing a sound
@@ -183,9 +182,7 @@ impl<'s> SoundSource for Sound<'s> {
         unsafe { ffi::sfSound_setPosition(self.sound.as_ptr(), position.into().raw()) }
     }
     fn set_relative_to_listener(&mut self, relative: bool) {
-        unsafe {
-            ffi::sfSound_setRelativeToListener(self.sound.as_ptr(), sfBool::from_bool(relative))
-        }
+        unsafe { ffi::sfSound_setRelativeToListener(self.sound.as_ptr(), relative) }
     }
     fn set_min_distance(&mut self, distance: f32) {
         unsafe { ffi::sfSound_setMinDistance(self.sound.as_ptr(), distance) }
@@ -203,7 +200,7 @@ impl<'s> SoundSource for Sound<'s> {
         unsafe { Vector3f::from_raw(ffi::sfSound_getPosition(self.sound.as_ptr())) }
     }
     fn is_relative_to_listener(&self) -> bool {
-        unsafe { ffi::sfSound_isRelativeToListener(self.sound.as_ptr()).into_bool() }
+        unsafe { ffi::sfSound_isRelativeToListener(self.sound.as_ptr()) }
     }
     fn min_distance(&self) -> f32 {
         unsafe { ffi::sfSound_getMinDistance(self.sound.as_ptr()) }

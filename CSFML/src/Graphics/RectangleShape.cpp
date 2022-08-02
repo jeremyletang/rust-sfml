@@ -114,8 +114,8 @@ extern "C" sf::Transform sfRectangleShape_getInverseTransform(const sf::Rectangl
     return shape->getInverseTransform();
 }
 
-extern "C" void sfRectangleShape_setTexture(sf::RectangleShape *shape, const sf::Texture *texture, sfBool resetRect) {
-    shape->setTexture(texture, resetRect == sfTrue);
+extern "C" void sfRectangleShape_setTexture(sf::RectangleShape *shape, const sf::Texture *texture, bool resetRect) {
+    shape->setTexture(texture, resetRect);
 }
 
 extern "C" void sfRectangleShape_setTextureRect(sf::RectangleShape *shape, sfIntRect rect) {

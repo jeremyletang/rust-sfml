@@ -66,7 +66,7 @@ extern "C" void sfRenderWindow_close(sf::RenderWindow *renderWindow) {
     renderWindow->close();
 }
 
-extern "C" sfBool sfRenderWindow_isOpen(const sf::RenderWindow *renderWindow) {
+extern "C" bool sfRenderWindow_isOpen(const sf::RenderWindow *renderWindow) {
     return renderWindow->isOpen();
 }
 
@@ -74,11 +74,11 @@ extern "C" const sf::ContextSettings *sfRenderWindow_getSettings(const sf::Rende
     return &renderWindow->getSettings();
 }
 
-extern "C" sfBool sfRenderWindow_pollEvent(sf::RenderWindow *renderWindow, sf::Event *event) {
+extern "C" bool sfRenderWindow_pollEvent(sf::RenderWindow *renderWindow, sf::Event *event) {
     return renderWindow->pollEvent(*event);
 }
 
-extern "C" sfBool sfRenderWindow_waitEvent(sf::RenderWindow *renderWindow, sf::Event *event) {
+extern "C" bool sfRenderWindow_waitEvent(sf::RenderWindow *renderWindow, sf::Event *event) {
     return renderWindow->waitEvent(*event);
 }
 
@@ -118,39 +118,39 @@ extern "C" void sfRenderWindow_setIcon(sf::RenderWindow *renderWindow, unsigned 
     renderWindow->setIcon(width, height, pixels);
 }
 
-extern "C" void sfRenderWindow_setVisible(sf::RenderWindow *renderWindow, sfBool visible) {
-    renderWindow->setVisible(visible == sfTrue);
+extern "C" void sfRenderWindow_setVisible(sf::RenderWindow *renderWindow, bool visible) {
+    renderWindow->setVisible(visible);
 }
 
-extern "C" void sfRenderWindow_setVerticalSyncEnabled(sf::RenderWindow *renderWindow, sfBool enabled) {
-    renderWindow->setVerticalSyncEnabled(enabled == sfTrue);
+extern "C" void sfRenderWindow_setVerticalSyncEnabled(sf::RenderWindow *renderWindow, bool enabled) {
+    renderWindow->setVerticalSyncEnabled(enabled);
 }
 
-extern "C" void sfRenderWindow_setMouseCursorVisible(sf::RenderWindow *renderWindow, sfBool visible) {
-    renderWindow->setMouseCursorVisible(visible == sfTrue);
+extern "C" void sfRenderWindow_setMouseCursorVisible(sf::RenderWindow *renderWindow, bool visible) {
+    renderWindow->setMouseCursorVisible(visible);
 }
 
-extern "C" void sfRenderWindow_setMouseCursorGrabbed(sf::RenderWindow *renderWindow, sfBool grabbed) {
-    renderWindow->setMouseCursorGrabbed(grabbed == sfTrue);
+extern "C" void sfRenderWindow_setMouseCursorGrabbed(sf::RenderWindow *renderWindow, bool grabbed) {
+    renderWindow->setMouseCursorGrabbed(grabbed);
 }
 
 extern "C" void sfRenderWindow_setMouseCursor(sf::RenderWindow *window, const sf::Cursor *cursor) {
     reinterpret_cast<sf::RenderWindow *>(window)->setMouseCursor(*cursor);
 }
 
-extern "C" void sfRenderWindow_setKeyRepeatEnabled(sf::RenderWindow *renderWindow, sfBool enabled) {
-    renderWindow->setKeyRepeatEnabled(enabled == sfTrue);
+extern "C" void sfRenderWindow_setKeyRepeatEnabled(sf::RenderWindow *renderWindow, bool enabled) {
+    renderWindow->setKeyRepeatEnabled(enabled);
 }
 
-extern "C" sfBool sfRenderWindow_setActive(sf::RenderWindow *renderWindow, sfBool active) {
-    return renderWindow->setActive(active == sfTrue);
+extern "C" bool sfRenderWindow_setActive(sf::RenderWindow *renderWindow, bool active) {
+    return renderWindow->setActive(active);
 }
 
 extern "C" void sfRenderWindow_requestFocus(sf::RenderWindow *renderWindow) {
     renderWindow->requestFocus();
 }
 
-extern "C" sfBool sfRenderWindow_hasFocus(const sf::RenderWindow *renderWindow) {
+extern "C" bool sfRenderWindow_hasFocus(const sf::RenderWindow *renderWindow) {
     return renderWindow->hasFocus();
 }
 

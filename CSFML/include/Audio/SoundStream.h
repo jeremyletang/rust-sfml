@@ -37,8 +37,8 @@ typedef struct
     unsigned int sampleCount; ///< Number of samples pointed by Samples
 } sfSoundStreamChunk;
 
-typedef sfBool (*sfSoundStreamGetDataCallback)(sfSoundStreamChunk *, void *); ///< Type of the callback used to get a sound stream data
-typedef void (*sfSoundStreamSeekCallback)(sfInt64, void *);                   ///< Type of the callback used to seek in a sound stream
+typedef bool (*sfSoundStreamGetDataCallback)(sfSoundStreamChunk *, void *); ///< Type of the callback used to get a sound stream data
+typedef void (*sfSoundStreamSeekCallback)(sfInt64, void *);                 ///< Type of the callback used to seek in a sound stream
 
 extern "C" sfSoundStream *sfSoundStream_create(sfSoundStreamGetDataCallback onGetData,
                                                sfSoundStreamSeekCallback onSeek,
@@ -66,7 +66,7 @@ extern "C" void sfSoundStream_setVolume(sfSoundStream *soundStream, float volume
 
 extern "C" void sfSoundStream_setPosition(sfSoundStream *soundStream, sfVector3f position);
 
-extern "C" void sfSoundStream_setRelativeToListener(sfSoundStream *soundStream, sfBool relative);
+extern "C" void sfSoundStream_setRelativeToListener(sfSoundStream *soundStream, bool relative);
 
 extern "C" void sfSoundStream_setMinDistance(sfSoundStream *soundStream, float distance);
 
@@ -74,7 +74,7 @@ extern "C" void sfSoundStream_setAttenuation(sfSoundStream *soundStream, float a
 
 extern "C" void sfSoundStream_setPlayingOffset(sfSoundStream *soundStream, sfInt64 timeOffset);
 
-extern "C" void sfSoundStream_setLoop(sfSoundStream *soundStream, sfBool loop);
+extern "C" void sfSoundStream_setLoop(sfSoundStream *soundStream, bool loop);
 
 extern "C" float sfSoundStream_getPitch(const sfSoundStream *soundStream);
 
@@ -82,13 +82,13 @@ extern "C" float sfSoundStream_getVolume(const sfSoundStream *soundStream);
 
 extern "C" sfVector3f sfSoundStream_getPosition(const sfSoundStream *soundStream);
 
-extern "C" sfBool sfSoundStream_isRelativeToListener(const sfSoundStream *soundStream);
+extern "C" bool sfSoundStream_isRelativeToListener(const sfSoundStream *soundStream);
 
 extern "C" float sfSoundStream_getMinDistance(const sfSoundStream *soundStream);
 
 extern "C" float sfSoundStream_getAttenuation(const sfSoundStream *soundStream);
 
-extern "C" sfBool sfSoundStream_getLoop(const sfSoundStream *soundStream);
+extern "C" bool sfSoundStream_getLoop(const sfSoundStream *soundStream);
 
 extern "C" sfInt64 sfSoundStream_getPlayingOffset(const sfSoundStream *soundStream);
 

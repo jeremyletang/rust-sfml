@@ -70,10 +70,10 @@ extern "C" void sfFont_destroy(sf::Font *font) {
     delete reinterpret_cast<sf::Font *>(font);
 }
 
-extern "C" sfGlyph sfFont_getGlyph(const sf::Font *font, sfUint32 codePoint, unsigned int characterSize, sfBool bold, float outlineThickness) {
+extern "C" sfGlyph sfFont_getGlyph(const sf::Font *font, sfUint32 codePoint, unsigned int characterSize, bool bold, float outlineThickness) {
     sfGlyph glyph = {0, {0, 0, 0, 0}, {0, 0, 0, 0}};
 
-    sf::Glyph SFMLGlyph = reinterpret_cast<const sf::Font *>(font)->getGlyph(codePoint, characterSize, bold == sfTrue, outlineThickness);
+    sf::Glyph SFMLGlyph = reinterpret_cast<const sf::Font *>(font)->getGlyph(codePoint, characterSize, bold, outlineThickness);
 
     glyph.advance = SFMLGlyph.advance;
     glyph.bounds.left = SFMLGlyph.bounds.left;

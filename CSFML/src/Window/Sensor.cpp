@@ -27,12 +27,12 @@
 #include <SFML/Window/Sensor.hpp>
 #include <cstddef>
 
-sfBool sfSensor_isAvailable(sfSensorType sensor) {
+bool sfSensor_isAvailable(sfSensorType sensor) {
     return sf::Sensor::isAvailable(static_cast<sf::Sensor::Type>(sensor));
 }
 
-void sfSensor_setEnabled(sfSensorType sensor, sfBool enabled) {
-    sf::Sensor::setEnabled(static_cast<sf::Sensor::Type>(sensor), enabled == sfTrue);
+void sfSensor_setEnabled(sfSensorType sensor, bool enabled) {
+    sf::Sensor::setEnabled(static_cast<sf::Sensor::Type>(sensor), enabled);
 }
 
 sfVector3f sfSensor_getValue(sfSensorType sensor) {

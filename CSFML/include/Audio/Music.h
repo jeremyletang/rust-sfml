@@ -46,9 +46,9 @@ extern "C" sfMusic *sfMusic_createFromStream(sfInputStream *stream);
 
 extern "C" void sfMusic_destroy(sfMusic *music);
 
-extern "C" void sfMusic_setLoop(sfMusic *music, sfBool loop);
+extern "C" void sfMusic_setLoop(sfMusic *music, bool loop);
 
-extern "C" sfBool sfMusic_getLoop(const sfMusic *music);
+extern "C" bool sfMusic_getLoop(const sfMusic *music);
 
 extern "C" sfInt64 sfMusic_getDuration(const sfMusic *music);
 
@@ -76,7 +76,7 @@ extern "C" void sfMusic_setVolume(sfMusic *music, float volume);
 
 extern "C" void sfMusic_setPosition(sfMusic *music, sfVector3f position);
 
-extern "C" void sfMusic_setRelativeToListener(sfMusic *music, sfBool relative);
+extern "C" void sfMusic_setRelativeToListener(sfMusic *music, bool relative);
 
 extern "C" void sfMusic_setMinDistance(sfMusic *music, float distance);
 
@@ -90,7 +90,7 @@ extern "C" float sfMusic_getVolume(const sfMusic *music);
 
 extern "C" sfVector3f sfMusic_getPosition(const sfMusic *music);
 
-extern "C" sfBool sfMusic_isRelativeToListener(const sfMusic *music);
+extern "C" bool sfMusic_isRelativeToListener(const sfMusic *music);
 
 extern "C" float sfMusic_getMinDistance(const sfMusic *music);
 

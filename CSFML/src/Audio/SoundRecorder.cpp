@@ -40,7 +40,7 @@ void sfSoundRecorder_destroy(sfSoundRecorder *soundRecorder) {
     delete soundRecorder;
 }
 
-sfBool sfSoundRecorder_start(sfSoundRecorder *soundRecorder, unsigned int sampleRate) {
+bool sfSoundRecorder_start(sfSoundRecorder *soundRecorder, unsigned int sampleRate) {
     return soundRecorder->This.start(sampleRate);
 }
 
@@ -52,7 +52,7 @@ unsigned int sfSoundRecorder_getSampleRate(const sfSoundRecorder *soundRecorder)
     return soundRecorder->This.getSampleRate();
 }
 
-sfBool sfSoundRecorder_isAvailable(void) {
+bool sfSoundRecorder_isAvailable(void) {
     return sf::SoundRecorder::isAvailable();
 }
 
@@ -72,7 +72,7 @@ extern "C" std::string *sfSoundRecorder_getDefaultDevice() {
     return copy;
 }
 
-sfBool sfSoundRecorder_setDevice(sfSoundRecorder *soundRecorder, const char *name) {
+bool sfSoundRecorder_setDevice(sfSoundRecorder *soundRecorder, const char *name) {
     return soundRecorder->This.setDevice(name);
 }
 

@@ -1,7 +1,6 @@
 use crate::{
-    ffi::{graphics as ffi, sfBool},
+    ffi::graphics as ffi,
     graphics::{Glyph, Texture},
-    sf_bool_ext::SfBoolExt,
     sf_box::{Dispose, SfBox},
     system::InputStream,
 };
@@ -105,7 +104,7 @@ impl Font {
                 self.raw(),
                 codepoint,
                 character_size,
-                sfBool::from_bool(bold),
+                bold,
                 outline_thickness,
             ))
         }

@@ -1,10 +1,9 @@
 use crate::{
-    ffi::{graphics as ffi, sfBool, sfTrue},
+    ffi::graphics as ffi,
     graphics::{
         Color, Drawable, FloatRect, IntRect, RenderStates, RenderTarget, Texture, Transform,
         Transformable,
     },
-    sf_bool_ext::SfBoolExt,
     system::Vector2f,
 };
 use std::{
@@ -74,20 +73,14 @@ impl<'s> Sprite<'s> {
     /// * `reset_rect` - Should the texture rect be reset to the size
     /// of the new texture?
     pub fn set_texture(&mut self, texture: &'s Texture, reset_rect: bool) {
-        unsafe {
-            ffi::sfSprite_setTexture(
-                self.sprite.as_ptr(),
-                texture.raw(),
-                sfBool::from_bool(reset_rect),
-            )
-        }
+        unsafe { ffi::sfSprite_setTexture(self.sprite.as_ptr(), texture.raw(), reset_rect) }
     }
 
     /// Disable Texturing
     ///
     /// Disable the current texture and reset the texture rect
     pub fn disable_texture(&mut self) {
-        unsafe { ffi::sfSprite_setTexture(self.sprite.as_ptr(), ptr::null_mut(), sfTrue) }
+        unsafe { ffi::sfSprite_setTexture(self.sprite.as_ptr(), ptr::null_mut(), true) }
     }
 
     /// Set the global color of a sprite

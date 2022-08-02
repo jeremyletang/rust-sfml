@@ -27,10 +27,10 @@
 #include <SFML/Window/Keyboard.hpp>
 #include <cstddef>
 
-extern "C" sfBool sfKeyboard_isKeyPressed(sf::Keyboard::Key key) {
+extern "C" bool sfKeyboard_isKeyPressed(sf::Keyboard::Key key) {
     return sf::Keyboard::isKeyPressed(key);
 }
 
-extern "C" void sfKeyboard_setVirtualKeyboardVisible(sfBool visible) {
-    sf::Keyboard::setVirtualKeyboardVisible(visible == sfTrue);
+extern "C" void sfKeyboard_setVirtualKeyboardVisible(bool visible) {
+    sf::Keyboard::setVirtualKeyboardVisible(visible);
 }

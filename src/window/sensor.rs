@@ -46,7 +46,7 @@
 //! [`ORIENTATION`]: Type::ORIENTATION
 //!
 
-use crate::{ffi::*, sf_bool_ext::SfBoolExt, system::Vector3f};
+use crate::{ffi::*, system::Vector3f};
 
 /// Get the current sensor value.
 #[must_use]
@@ -57,7 +57,7 @@ pub fn value(sensor: Type) -> Vector3f {
 /// Check if a sensor is available on the underlying platform.
 #[must_use]
 pub fn is_available(sensor: Type) -> bool {
-    unsafe { sfSensor_isAvailable(sensor.0).into_bool() }
+    unsafe { sfSensor_isAvailable(sensor.0) }
 }
 
 /// Enable or disable a sensor.
@@ -67,7 +67,7 @@ pub fn is_available(sensor: Type) -> bool {
 ///
 /// This function does nothing if the sensor is unavailable.
 pub fn set_enabled(sensor: Type, enabled: bool) {
-    unsafe { sfSensor_setEnabled(sensor.0, SfBoolExt::from_bool(enabled)) }
+    unsafe { sfSensor_setEnabled(sensor.0, enabled) }
 }
 
 /// Sensor type.

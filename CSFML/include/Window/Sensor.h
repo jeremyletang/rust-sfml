@@ -40,9 +40,9 @@ typedef enum {
     sfSensorCount ///< Keep last -- the total number of sensor types
 } sfSensorType;
 
-extern "C" sfBool sfSensor_isAvailable(sfSensorType sensor);
+extern "C" bool sfSensor_isAvailable(sfSensorType sensor);
 
-extern "C" void sfSensor_setEnabled(sfSensorType sensor, sfBool enabled);
+extern "C" void sfSensor_setEnabled(sfSensorType sensor, bool enabled);
 
 extern "C" sfVector3f sfSensor_getValue(sfSensorType sensor);
 

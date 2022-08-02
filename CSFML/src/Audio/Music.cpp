@@ -63,11 +63,11 @@ void sfMusic_destroy(sfMusic *music) {
     delete reinterpret_cast<sf::Music *>(music);
 }
 
-void sfMusic_setLoop(sfMusic *music, sfBool loop) {
+void sfMusic_setLoop(sfMusic *music, bool loop) {
     reinterpret_cast<sf::Music *>(music)->setLoop(loop != 0);
 }
 
-sfBool sfMusic_getLoop(const sfMusic *music) {
+bool sfMusic_getLoop(const sfMusic *music) {
     return reinterpret_cast<const sf::Music *>(music)->getLoop();
 }
 
@@ -133,8 +133,8 @@ void sfMusic_setPosition(sfMusic *music, sfVector3f position) {
     reinterpret_cast<sf::Music *>(music)->setPosition(sf::Vector3f(position.x, position.y, position.z));
 }
 
-void sfMusic_setRelativeToListener(sfMusic *music, sfBool relative) {
-    reinterpret_cast<sf::Music *>(music)->setRelativeToListener(relative == sfTrue);
+void sfMusic_setRelativeToListener(sfMusic *music, bool relative) {
+    reinterpret_cast<sf::Music *>(music)->setRelativeToListener(relative);
 }
 
 void sfMusic_setMinDistance(sfMusic *music, float distance) {
@@ -168,7 +168,7 @@ sfVector3f sfMusic_getPosition(const sfMusic *music) {
     return position;
 }
 
-sfBool sfMusic_isRelativeToListener(const sfMusic *music) {
+bool sfMusic_isRelativeToListener(const sfMusic *music) {
     return reinterpret_cast<const sf::Music *>(music)->isRelativeToListener();
 }
 

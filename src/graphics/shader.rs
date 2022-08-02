@@ -1,7 +1,6 @@
 use crate::{
     ffi::graphics as ffi,
     graphics::{glsl, Texture},
-    sf_bool_ext::SfBoolExt,
     system::InputStream,
     LoadResult, ResourceLoadError,
 };
@@ -141,7 +140,7 @@ macro_rules! shader_create {
         let $shader =
             NonNull::new(unsafe { ffi::sfShader_defaultConstruct() }).ok_or(ResourceLoadError)?;
         unsafe {
-            if !$load_block.into_bool() {
+            if !$load_block {
                 ffi::sfShader_destroy($shader.as_ptr());
                 return Err(ResourceLoadError);
             }
@@ -330,7 +329,7 @@ impl<'texture> Shader<'texture> {
     /// any attempt to use `Shader` will fail.
     #[must_use]
     pub fn is_available() -> bool {
-        unsafe { ffi::sfShader_isAvailable() }.into_bool()
+        unsafe { ffi::sfShader_isAvailable() }
     }
 
     /// Tell whether or not the system supports geometry shaders.
@@ -347,7 +346,7 @@ impl<'texture> Shader<'texture> {
     /// in a context switch.
     #[must_use]
     pub fn is_geometry_available() -> bool {
-        unsafe { ffi::sfShader_isGeometryAvailable() }.into_bool()
+        unsafe { ffi::sfShader_isGeometryAvailable() }
     }
 
     /// Specify value for `float` uniform.
@@ -452,7 +451,7 @@ impl<'texture> Shader<'texture> {
         unsafe {
             let cstring = CString::new(name).unwrap();
             let name = cstring.as_ptr();
-            ffi::sfShader_setBoolUniform(self.shader.as_ptr(), name, SfBoolExt::from_bool(value));
+            ffi::sfShader_setBoolUniform(self.shader.as_ptr(), name, value);
         }
     }
 

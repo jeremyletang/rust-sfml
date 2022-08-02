@@ -58,7 +58,7 @@ extern "C" void sfWindow_close(sf::Window *window) {
     window->close();
 }
 
-extern "C" sfBool sfWindow_isOpen(const sf::Window *window) {
+extern "C" bool sfWindow_isOpen(const sf::Window *window) {
     return window->isOpen();
 }
 
@@ -66,11 +66,11 @@ extern "C" const sf::ContextSettings *sfWindow_getSettings(const sf::Window *win
     return &window->getSettings();
 }
 
-extern "C" sfBool sfWindow_pollEvent(sf::Window *window, sf::Event *event) {
+extern "C" bool sfWindow_pollEvent(sf::Window *window, sf::Event *event) {
     return window->pollEvent(*event);
 }
 
-extern "C" sfBool sfWindow_waitEvent(sf::Window *window, sf::Event *event) {
+extern "C" bool sfWindow_waitEvent(sf::Window *window, sf::Event *event) {
     return window->waitEvent(*event);
 }
 
@@ -110,16 +110,16 @@ extern "C" void sfWindow_setIcon(sf::Window *window, unsigned int width, unsigne
     window->setIcon(width, height, pixels);
 }
 
-extern "C" void sfWindow_setVisible(sf::Window *window, sfBool visible) {
-    window->setVisible(visible == sfTrue);
+extern "C" void sfWindow_setVisible(sf::Window *window, bool visible) {
+    window->setVisible(visible);
 }
 
-extern "C" void sfWindow_setMouseCursorVisible(sf::Window *window, sfBool visible) {
-    window->setMouseCursorVisible(visible == sfTrue);
+extern "C" void sfWindow_setMouseCursorVisible(sf::Window *window, bool visible) {
+    window->setMouseCursorVisible(visible);
 }
 
-extern "C" void sfWindow_setMouseCursorGrabbed(sf::Window *window, sfBool grabbed) {
-    window->setMouseCursorGrabbed(grabbed == sfTrue);
+extern "C" void sfWindow_setMouseCursorGrabbed(sf::Window *window, bool grabbed) {
+    window->setMouseCursorGrabbed(grabbed);
 }
 
 extern "C" void sfWindow_setMouseCursor(sf::Window *window, const sf::Cursor *cursor) {
@@ -127,23 +127,23 @@ extern "C" void sfWindow_setMouseCursor(sf::Window *window, const sf::Cursor *cu
     window->setMouseCursor(*cursor);
 }
 
-extern "C" void sfWindow_setVerticalSyncEnabled(sf::Window *window, sfBool enabled) {
-    window->setVerticalSyncEnabled(enabled == sfTrue);
+extern "C" void sfWindow_setVerticalSyncEnabled(sf::Window *window, bool enabled) {
+    window->setVerticalSyncEnabled(enabled);
 }
 
-extern "C" void sfWindow_setKeyRepeatEnabled(sf::Window *window, sfBool enabled) {
-    window->setKeyRepeatEnabled(enabled == sfTrue);
+extern "C" void sfWindow_setKeyRepeatEnabled(sf::Window *window, bool enabled) {
+    window->setKeyRepeatEnabled(enabled);
 }
 
-extern "C" sfBool sfWindow_setActive(sf::Window *window, sfBool active) {
-    return window->setActive(active == sfTrue);
+extern "C" bool sfWindow_setActive(sf::Window *window, bool active) {
+    return window->setActive(active);
 }
 
 extern "C" void sfWindow_requestFocus(sf::Window *window) {
     window->requestFocus();
 }
 
-extern "C" sfBool sfWindow_hasFocus(const sf::Window *window) {
+extern "C" bool sfWindow_hasFocus(const sf::Window *window) {
     return window->hasFocus();
 }
 
@@ -171,8 +171,8 @@ extern "C" void sfContext_destroy(sf::Context *context) {
     delete context;
 }
 
-extern "C" sfBool sfContext_setActive(sf::Context *context, sfBool active) {
-    return context->setActive(active == sfTrue);
+extern "C" bool sfContext_setActive(sf::Context *context, bool active) {
+    return context->setActive(active);
 }
 
 extern "C" const sf::ContextSettings *sfContext_getSettings(const sf::Context *context) {

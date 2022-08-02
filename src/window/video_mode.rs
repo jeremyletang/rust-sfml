@@ -1,4 +1,4 @@
-use crate::{ffi::window as ffi, sf_bool_ext::SfBoolExt, window::thread_safety};
+use crate::{ffi::window as ffi, window::thread_safety};
 
 /// `VideoMode` defines a video mode (width, height, bpp)
 ///
@@ -70,7 +70,7 @@ impl VideoMode {
     /// return true if the video mode is valid for fullscreen mode
     #[must_use]
     pub fn is_valid(&self) -> bool {
-        unsafe { ffi::sfVideoMode_isValid(self.raw()) }.into_bool()
+        unsafe { ffi::sfVideoMode_isValid(self.raw()) }
     }
 
     /// Static Method, get the current desktop video mode

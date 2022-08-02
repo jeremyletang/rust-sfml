@@ -47,7 +47,7 @@ class sfSoundStreamImpl : public sf::SoundStream {
   private:
     virtual bool onGetData(Chunk &data) {
         sfSoundStreamChunk chunk = {NULL, 0};
-        bool ok = (myGetDataCallback(&chunk, myUserData) == sfTrue);
+        bool ok = (myGetDataCallback(&chunk, myUserData));
 
         data.samples = chunk.samples;
         data.sampleCount = chunk.sampleCount;

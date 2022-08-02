@@ -33,39 +33,39 @@ extern "C" sf::Shader *sfShader_defaultConstruct() {
     return new sf::Shader;
 }
 
-extern "C" sfBool sfShader_loadFromMemory_1(sf::Shader *shader, const char *content, sf::Shader::Type type) {
+extern "C" bool sfShader_loadFromMemory_1(sf::Shader *shader, const char *content, sf::Shader::Type type) {
     return shader->loadFromMemory(content, type);
 }
 
-extern "C" sfBool sfShader_loadFromFile_1(sf::Shader *shader, const char *filename, sf::Shader::Type type) {
+extern "C" bool sfShader_loadFromFile_1(sf::Shader *shader, const char *filename, sf::Shader::Type type) {
     return shader->loadFromFile(filename, type);
 }
 
-extern "C" sfBool sfShader_loadFromStream_1(sf::Shader *shader, sfInputStream *stream, sf::Shader::Type type) {
+extern "C" bool sfShader_loadFromStream_1(sf::Shader *shader, sfInputStream *stream, sf::Shader::Type type) {
     return shader->loadFromStream(*stream, type);
 }
 
-extern "C" sfBool sfShader_loadFromMemory_vert_frag(sf::Shader *shader, const char *vert, const char *frag) {
+extern "C" bool sfShader_loadFromMemory_vert_frag(sf::Shader *shader, const char *vert, const char *frag) {
     return shader->loadFromMemory(vert, frag);
 }
 
-extern "C" sfBool sfShader_loadFromFile_vert_frag(sf::Shader *shader, const char *vert, const char *frag) {
+extern "C" bool sfShader_loadFromFile_vert_frag(sf::Shader *shader, const char *vert, const char *frag) {
     return shader->loadFromFile(vert, frag);
 }
 
-extern "C" sfBool sfShader_loadFromStream_vert_frag(sf::Shader *shader, sfInputStream *vert, sfInputStream *frag) {
+extern "C" bool sfShader_loadFromStream_vert_frag(sf::Shader *shader, sfInputStream *vert, sfInputStream *frag) {
     return shader->loadFromStream(*vert, *frag);
 }
 
-extern "C" sfBool sfShader_loadFromMemory_all(sf::Shader *shader, const char *vert, const char *geom, const char *frag) {
+extern "C" bool sfShader_loadFromMemory_all(sf::Shader *shader, const char *vert, const char *geom, const char *frag) {
     return shader->loadFromMemory(vert, geom, frag);
 }
 
-extern "C" sfBool sfShader_loadFromFile_all(sf::Shader *shader, const char *vert, const char *geom, const char *frag) {
+extern "C" bool sfShader_loadFromFile_all(sf::Shader *shader, const char *vert, const char *geom, const char *frag) {
     return shader->loadFromFile(vert, geom, frag);
 }
 
-extern "C" sfBool sfShader_loadFromStream_all(sf::Shader *shader, sfInputStream *vert, sfInputStream *geom, sfInputStream *frag) {
+extern "C" bool sfShader_loadFromStream_all(sf::Shader *shader, sfInputStream *vert, sfInputStream *geom, sfInputStream *frag) {
     return shader->loadFromStream(*vert, *geom, *frag);
 }
 
@@ -105,20 +105,20 @@ extern "C" void sfShader_setIvec4Uniform(sf::Shader *shader, const char *name, s
     reinterpret_cast<sf::Shader *>(shader)->setUniform(name, sf::Glsl::Ivec4(vector.x, vector.y, vector.z, vector.w));
 }
 
-extern "C" void sfShader_setBoolUniform(sf::Shader *shader, const char *name, sfBool x) {
-    reinterpret_cast<sf::Shader *>(shader)->setUniform(name, x != sfFalse);
+extern "C" void sfShader_setBoolUniform(sf::Shader *shader, const char *name, bool x) {
+    reinterpret_cast<sf::Shader *>(shader)->setUniform(name, x);
 }
 
 extern "C" void sfShader_setBvec2Uniform(sf::Shader *shader, const char *name, sfGlslBvec2 vector) {
-    reinterpret_cast<sf::Shader *>(shader)->setUniform(name, sf::Glsl::Bvec2(vector.x != sfFalse, vector.y != sfFalse));
+    reinterpret_cast<sf::Shader *>(shader)->setUniform(name, sf::Glsl::Bvec2(vector.x, vector.y));
 }
 
 extern "C" void sfShader_setBvec3Uniform(sf::Shader *shader, const char *name, sfGlslBvec3 vector) {
-    reinterpret_cast<sf::Shader *>(shader)->setUniform(name, sf::Glsl::Bvec3(vector.x != sfFalse, vector.y != sfFalse, vector.z != sfFalse));
+    reinterpret_cast<sf::Shader *>(shader)->setUniform(name, sf::Glsl::Bvec3(vector.x, vector.y, vector.z));
 }
 
 extern "C" void sfShader_setBvec4Uniform(sf::Shader *shader, const char *name, sfGlslBvec4 vector) {
-    reinterpret_cast<sf::Shader *>(shader)->setUniform(name, sf::Glsl::Bvec4(vector.x != sfFalse, vector.y != sfFalse, vector.z != sfFalse, vector.w != sfFalse));
+    reinterpret_cast<sf::Shader *>(shader)->setUniform(name, sf::Glsl::Bvec4(vector.x, vector.y, vector.z, vector.w));
 }
 
 extern "C" void sfShader_setMat3Uniform(sf::Shader *shader, const char *name, const sfGlslMat3 *matrix) {
@@ -169,10 +169,10 @@ extern "C" void sfShader_bind(const sf::Shader *shader) {
     sf::Shader::bind(reinterpret_cast<const sf::Shader *>(shader));
 }
 
-extern "C" sfBool sfShader_isAvailable(void) {
-    return sf::Shader::isAvailable() ? sfTrue : sfFalse;
+extern "C" bool sfShader_isAvailable(void) {
+    return sf::Shader::isAvailable();
 }
 
-extern "C" sfBool sfShader_isGeometryAvailable(void) {
-    return sf::Shader::isGeometryAvailable() ? sfTrue : sfFalse;
+extern "C" bool sfShader_isGeometryAvailable(void) {
+    return sf::Shader::isGeometryAvailable();
 }

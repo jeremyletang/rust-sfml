@@ -117,8 +117,8 @@ extern "C" sf::Transform sfSprite_getInverseTransform(const sf::Sprite *sprite) 
     return reinterpret_cast<const sf::Sprite *>(sprite)->getInverseTransform();
 }
 
-extern "C" void sfSprite_setTexture(sf::Sprite *sprite, const sf::Texture *texture, sfBool resetRect) {
-    reinterpret_cast<sf::Sprite *>(sprite)->setTexture(*reinterpret_cast<const sf::Texture *>(texture), resetRect == sfTrue);
+extern "C" void sfSprite_setTexture(sf::Sprite *sprite, const sf::Texture *texture, bool resetRect) {
+    reinterpret_cast<sf::Sprite *>(sprite)->setTexture(*reinterpret_cast<const sf::Texture *>(texture), resetRect);
 }
 
 extern "C" void sfSprite_setTextureRect(sf::Sprite *sprite, sfIntRect rectangle) {

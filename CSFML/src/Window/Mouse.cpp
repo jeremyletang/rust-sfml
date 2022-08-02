@@ -29,8 +29,8 @@
 #include <SFML/Window/Window.hpp>
 #include <cstddef>
 
-extern "C" sfBool sfMouse_isButtonPressed(sf::Mouse::Button button) {
-    return sf::Mouse::isButtonPressed(button) ? sfTrue : sfFalse;
+extern "C" bool sfMouse_isButtonPressed(sf::Mouse::Button button) {
+    return sf::Mouse::isButtonPressed(button);
 }
 
 extern "C" sfVector2i sfMouse_getPosition(const sf::Window *relativeTo) {

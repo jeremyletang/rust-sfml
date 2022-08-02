@@ -32,7 +32,7 @@
 //! window.set_mouse_position(Vector2i::new(100, 200));
 //! ```
 
-use crate::{ffi::window as ffi, sf_bool_ext::SfBoolExt, system::Vector2i, window::thread_safety};
+use crate::{ffi::window as ffi, system::Vector2i, window::thread_safety};
 pub use ffi::window::{MouseButton as Button, MouseWheel as Wheel};
 
 impl Button {
@@ -45,7 +45,7 @@ impl Button {
     pub fn is_pressed(self) -> bool {
         thread_safety::set_window_thread();
 
-        unsafe { ffi::sfMouse_isButtonPressed(self) }.into_bool()
+        unsafe { ffi::sfMouse_isButtonPressed(self) }
     }
 }
 

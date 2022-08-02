@@ -76,8 +76,8 @@ void sfSoundStream_setPosition(sfSoundStream *soundStream, sfVector3f position) 
     soundStream->This.setPosition(position.x, position.y, position.z);
 }
 
-void sfSoundStream_setRelativeToListener(sfSoundStream *soundStream, sfBool relative) {
-    soundStream->This.setRelativeToListener(relative == sfTrue);
+void sfSoundStream_setRelativeToListener(sfSoundStream *soundStream, bool relative) {
+    soundStream->This.setRelativeToListener(relative);
 }
 
 void sfSoundStream_setMinDistance(sfSoundStream *soundStream, float distance) {
@@ -92,8 +92,8 @@ void sfSoundStream_setPlayingOffset(sfSoundStream *soundStream, sfInt64 timeOffs
     soundStream->This.setPlayingOffset(sf::microseconds(timeOffset));
 }
 
-void sfSoundStream_setLoop(sfSoundStream *soundStream, sfBool loop) {
-    soundStream->This.setLoop(loop == sfTrue);
+void sfSoundStream_setLoop(sfSoundStream *soundStream, bool loop) {
+    soundStream->This.setLoop(loop);
 }
 
 float sfSoundStream_getPitch(const sfSoundStream *soundStream) {
@@ -115,7 +115,7 @@ sfVector3f sfSoundStream_getPosition(const sfSoundStream *soundStream) {
     return position;
 }
 
-sfBool sfSoundStream_isRelativeToListener(const sfSoundStream *soundStream) {
+bool sfSoundStream_isRelativeToListener(const sfSoundStream *soundStream) {
     return soundStream->This.isRelativeToListener();
 }
 
@@ -127,7 +127,7 @@ float sfSoundStream_getAttenuation(const sfSoundStream *soundStream) {
     return soundStream->This.getAttenuation();
 }
 
-sfBool sfSoundStream_getLoop(const sfSoundStream *soundStream) {
+bool sfSoundStream_getLoop(const sfSoundStream *soundStream) {
     return soundStream->This.getLoop();
 }
 

@@ -486,8 +486,8 @@ extern "C" {
         ident: *const JoystickIdentification,
     ) -> *const sfString;
     pub fn sfVideoMode_getFullscreenModes() -> *const sfVideoModeVector;
-    pub(crate) fn sfKeyboard_isKeyPressed(key: Key) -> sfBool;
-    pub(crate) fn sfKeyboard_setVirtualKeyboardVisible(visible: sfBool);
+    pub(crate) fn sfKeyboard_isKeyPressed(key: Key) -> bool;
+    pub(crate) fn sfKeyboard_setVirtualKeyboardVisible(visible: bool);
     pub fn sfVideoModeVector_getLength(vec: *const sfVideoModeVector) -> usize;
     pub fn sfVideoModeVector_index(
         vec: *const sfVideoModeVector,
@@ -505,10 +505,10 @@ extern "C" {
     ) -> *mut sfWindow;
     pub fn sfWindow_destroy(window: *mut sfWindow);
     pub fn sfWindow_close(window: *mut sfWindow);
-    pub fn sfWindow_isOpen(window: *const sfWindow) -> sfBool;
+    pub fn sfWindow_isOpen(window: *const sfWindow) -> bool;
     pub fn sfWindow_getSettings(window: *const sfWindow) -> *const sfContextSettings;
-    pub(crate) fn sfWindow_pollEvent(window: *mut sfWindow, event: *mut Event) -> sfBool;
-    pub(crate) fn sfWindow_waitEvent(window: *mut sfWindow, event: *mut Event) -> sfBool;
+    pub(crate) fn sfWindow_pollEvent(window: *mut sfWindow, event: *mut Event) -> bool;
+    pub(crate) fn sfWindow_waitEvent(window: *mut sfWindow, event: *mut Event) -> bool;
     pub fn sfWindow_getPosition(window: *const sfWindow) -> sfVector2i;
     pub fn sfWindow_setPosition(window: *mut sfWindow, position: sfVector2i);
     pub fn sfWindow_getSize(window: *const sfWindow) -> sfVector2u;
@@ -520,26 +520,26 @@ extern "C" {
         height: c_uint,
         pixels: *const sfUint8,
     );
-    pub fn sfWindow_setVisible(window: *mut sfWindow, visible: sfBool);
-    pub fn sfWindow_setMouseCursorVisible(window: *mut sfWindow, visible: sfBool);
-    pub fn sfWindow_setMouseCursorGrabbed(window: *mut sfWindow, grabbed: sfBool);
+    pub fn sfWindow_setVisible(window: *mut sfWindow, visible: bool);
+    pub fn sfWindow_setMouseCursorVisible(window: *mut sfWindow, visible: bool);
+    pub fn sfWindow_setMouseCursorGrabbed(window: *mut sfWindow, grabbed: bool);
     pub fn sfWindow_setMouseCursor(window: *mut sfWindow, cursor: *const sfCursor);
-    pub fn sfWindow_setVerticalSyncEnabled(window: *mut sfWindow, enabled: sfBool);
-    pub fn sfWindow_setKeyRepeatEnabled(window: *mut sfWindow, enabled: sfBool);
-    pub fn sfWindow_setActive(window: *mut sfWindow, active: sfBool) -> sfBool;
+    pub fn sfWindow_setVerticalSyncEnabled(window: *mut sfWindow, enabled: bool);
+    pub fn sfWindow_setKeyRepeatEnabled(window: *mut sfWindow, enabled: bool);
+    pub fn sfWindow_setActive(window: *mut sfWindow, active: bool) -> bool;
     pub fn sfWindow_requestFocus(window: *mut sfWindow);
-    pub fn sfWindow_hasFocus(window: *const sfWindow) -> sfBool;
+    pub fn sfWindow_hasFocus(window: *const sfWindow) -> bool;
     pub fn sfWindow_display(window: *mut sfWindow);
     pub fn sfWindow_setFramerateLimit(window: *mut sfWindow, limit: c_uint);
     pub fn sfWindow_setJoystickThreshold(window: *mut sfWindow, threshold: f32);
     pub fn sfWindow_getSystemHandle(window: *const sfWindow) -> sfWindowHandle;
     pub fn sfContext_create() -> *mut sfContext;
     pub fn sfContext_destroy(context: *mut sfContext);
-    pub fn sfContext_setActive(context: *mut sfContext, active: sfBool) -> sfBool;
+    pub fn sfContext_setActive(context: *mut sfContext, active: bool) -> bool;
     pub fn sfContext_getSettings(context: *const sfContext) -> *const sfContextSettings;
     pub fn sfContext_getActiveContextId() -> sfUint64;
     // Mouse
-    pub fn sfMouse_isButtonPressed(button: MouseButton) -> sfBool;
+    pub fn sfMouse_isButtonPressed(button: MouseButton) -> bool;
     pub fn sfMouse_getPosition(relativeTo: *const sfWindow) -> sfVector2i;
     pub fn sfMouse_setPosition(position: sfVector2i, relativeTo: *const sfWindow);
     // Cursor
@@ -551,6 +551,6 @@ extern "C" {
     pub fn sfCursor_createFromSystem(type_: sfCursorType) -> *mut sfCursor;
     pub fn sfCursor_destroy(cursor: *mut sfCursor);
     // Touch
-    pub fn sfTouch_isDown(finger: c_uint) -> sfBool;
+    pub fn sfTouch_isDown(finger: c_uint) -> bool;
     pub fn sfTouch_getPosition(finger: c_uint, relativeTo: *const sfWindow) -> sfVector2i;
 }

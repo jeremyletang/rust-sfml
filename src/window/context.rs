@@ -1,4 +1,4 @@
-use crate::{ffi::window as ffi, sf_bool_ext::SfBoolExt, window::ContextSettings};
+use crate::{ffi::window as ffi, window::ContextSettings};
 
 /// Type holding a valid drawing context.
 ///
@@ -45,8 +45,7 @@ impl Context {
     ///
     /// Returns true on success, false on failure.
     pub fn set_active(&mut self, active: bool) -> bool {
-        let result = unsafe { ffi::sfContext_setActive(self.0, SfBoolExt::from_bool(active)) };
-        result.into_bool()
+        unsafe { ffi::sfContext_setActive(self.0, active) }
     }
     /// Get the settings of the context.
     ///

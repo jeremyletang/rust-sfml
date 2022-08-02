@@ -42,7 +42,7 @@ extern "C" sfSoundBuffer *sfSoundBuffer_copy(const sfSoundBuffer *soundBuffer);
 
 extern "C" void sfSoundBuffer_destroy(sfSoundBuffer *soundBuffer);
 
-extern "C" sfBool sfSoundBuffer_saveToFile(const sfSoundBuffer *soundBuffer, const char *filename);
+extern "C" bool sfSoundBuffer_saveToFile(const sfSoundBuffer *soundBuffer, const char *filename);
 
 extern "C" const sfInt16 *sfSoundBuffer_getSamples(const sfSoundBuffer *soundBuffer);
 

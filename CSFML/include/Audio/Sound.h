@@ -47,9 +47,9 @@ extern "C" void sfSound_setBuffer(sfSound *sound, const sfSoundBuffer *buffer);
 
 extern "C" const sfSoundBuffer *sfSound_getBuffer(const sfSound *sound);
 
-extern "C" void sfSound_setLoop(sfSound *sound, sfBool loop);
+extern "C" void sfSound_setLoop(sfSound *sound, bool loop);
 
-extern "C" sfBool sfSound_getLoop(const sfSound *sound);
+extern "C" bool sfSound_getLoop(const sfSound *sound);
 
 extern "C" sfSoundStatus sfSound_getStatus(const sfSound *sound);
 
@@ -59,7 +59,7 @@ extern "C" void sfSound_setVolume(sfSound *sound, float volume);
 
 extern "C" void sfSound_setPosition(sfSound *sound, sfVector3f position);
 
-extern "C" void sfSound_setRelativeToListener(sfSound *sound, sfBool relative);
+extern "C" void sfSound_setRelativeToListener(sfSound *sound, bool relative);
 
 extern "C" void sfSound_setMinDistance(sfSound *sound, float distance);
 
@@ -73,7 +73,7 @@ extern "C" float sfSound_getVolume(const sfSound *sound);
 
 extern "C" sfVector3f sfSound_getPosition(const sfSound *sound);
 
-extern "C" sfBool sfSound_isRelativeToListener(const sfSound *sound);
+extern "C" bool sfSound_isRelativeToListener(const sfSound *sound);
 
 extern "C" float sfSound_getMinDistance(const sfSound *sound);
 

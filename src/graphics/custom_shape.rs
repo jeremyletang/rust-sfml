@@ -1,10 +1,9 @@
 use crate::{
-    ffi::{graphics as ffi, sfBool, sfTrue, sfVector2f},
+    ffi::{graphics as ffi, sfVector2f},
     graphics::{
         Color, Drawable, FloatRect, IntRect, RenderStates, RenderTarget, Shape, Texture, Transform,
         Transformable,
     },
-    sf_bool_ext::SfBoolExt,
     system::Vector2f,
 };
 use std::{marker::PhantomData, os::raw::c_void, ptr};
@@ -103,10 +102,10 @@ impl<'s> CustomShape<'s> {
 
 impl<'s> Shape<'s> for CustomShape<'s> {
     fn set_texture(&mut self, texture: &'s Texture, reset_rect: bool) {
-        unsafe { ffi::sfShape_setTexture(self.shape, texture.raw(), sfBool::from_bool(reset_rect)) }
+        unsafe { ffi::sfShape_setTexture(self.shape, texture.raw(), reset_rect) }
     }
     fn disable_texture(&mut self) {
-        unsafe { ffi::sfShape_setTexture(self.shape, ptr::null_mut(), sfTrue) }
+        unsafe { ffi::sfShape_setTexture(self.shape, ptr::null_mut(), true) }
     }
     fn set_texture_rect(&mut self, rect: &IntRect) {
         unsafe { ffi::sfShape_setTextureRect(self.shape, rect.raw()) }

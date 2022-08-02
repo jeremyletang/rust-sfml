@@ -24,16 +24,16 @@
 // Headers
 
 #include "Graphics/Shape.h"
+#include "Config.h"
+#include "Graphics/Color.h"
+#include "Graphics/Rect.h"
 #include "Graphics/ShapeStruct.h"
 #include <SFML/Graphics/Color.hpp>
-#include "Config.h"
-#include "Graphics/Rect.h"
-#include "Graphics/Color.h"
 #include <cstddef>
 
 extern "C" sfShape *sfShape_create(sfShapeGetPointCountCallback getPointCount,
-                        sfShapeGetPointCallback getPoint,
-                        void *userData) {
+                                   sfShapeGetPointCallback getPoint,
+                                   void *userData) {
     return new sfShape(getPointCount, getPoint, userData);
 }
 
@@ -111,8 +111,8 @@ extern "C" sf::Transform sfShape_getInverseTransform(const sfShape *shape) {
     return shape->This.getInverseTransform();
 }
 
-extern "C" void sfShape_setTexture(sfShape *shape, const sf::Texture *texture, sfBool resetRect) {
-    shape->This.setTexture(reinterpret_cast<const sf::Texture *>(texture), resetRect == sfTrue);
+extern "C" void sfShape_setTexture(sfShape *shape, const sf::Texture *texture, bool resetRect) {
+    shape->This.setTexture(reinterpret_cast<const sf::Texture *>(texture), resetRect);
 }
 
 extern "C" void sfShape_setTextureRect(sfShape *shape, sfIntRect rect) {

@@ -27,20 +27,20 @@
 #include <SFML/Window/Joystick.hpp>
 #include <cstddef>
 
-sfBool sfJoystick_isConnected(unsigned int joystick) {
-    return sf::Joystick::isConnected(joystick) ? sfTrue : sfFalse;
+bool sfJoystick_isConnected(unsigned int joystick) {
+    return sf::Joystick::isConnected(joystick);
 }
 
 unsigned int sfJoystick_getButtonCount(unsigned int joystick) {
     return sf::Joystick::getButtonCount(joystick);
 }
 
-sfBool sfJoystick_hasAxis(unsigned int joystick, sfJoystickAxis axis) {
-    return sf::Joystick::hasAxis(joystick, static_cast<sf::Joystick::Axis>(axis)) ? sfTrue : sfFalse;
+bool sfJoystick_hasAxis(unsigned int joystick, sfJoystickAxis axis) {
+    return sf::Joystick::hasAxis(joystick, static_cast<sf::Joystick::Axis>(axis));
 }
 
-sfBool sfJoystick_isButtonPressed(unsigned int joystick, unsigned int button) {
-    return sf::Joystick::isButtonPressed(joystick, button) ? sfTrue : sfFalse;
+bool sfJoystick_isButtonPressed(unsigned int joystick, unsigned int button) {
+    return sf::Joystick::isButtonPressed(joystick, button);
 }
 
 float sfJoystick_getAxisPosition(unsigned int joystick, sfJoystickAxis axis) {

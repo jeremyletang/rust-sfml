@@ -102,21 +102,19 @@ impl From<IVec3> for ffi::sfGlslIvec3 {
 
 impl From<BVec2> for ffi::sfGlslBvec2 {
     fn from(src: BVec2) -> Self {
-        use crate::sf_bool_ext::SfBoolExt;
         Self {
-            x: SfBoolExt::from_bool(src.x),
-            y: SfBoolExt::from_bool(src.y),
+            x: (src.x),
+            y: (src.y),
         }
     }
 }
 
 impl From<BVec3> for ffi::sfGlslBvec3 {
     fn from(src: BVec3) -> Self {
-        use crate::sf_bool_ext::SfBoolExt;
         Self {
-            x: SfBoolExt::from_bool(src.x),
-            y: SfBoolExt::from_bool(src.y),
-            z: SfBoolExt::from_bool(src.z),
+            x: (src.x),
+            y: (src.y),
+            z: (src.z),
         }
     }
 }
@@ -136,12 +134,11 @@ pub struct BVec4 {
 
 impl From<BVec4> for ffi::sfGlslBvec4 {
     fn from(src: BVec4) -> Self {
-        use crate::sf_bool_ext::SfBoolExt;
         Self {
-            x: SfBoolExt::from_bool(src.x),
-            y: SfBoolExt::from_bool(src.y),
-            z: SfBoolExt::from_bool(src.z),
-            w: SfBoolExt::from_bool(src.w),
+            x: (src.x),
+            y: (src.y),
+            z: (src.z),
+            w: (src.w),
         }
     }
 }
