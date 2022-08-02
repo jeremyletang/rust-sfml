@@ -27,6 +27,7 @@
 // Headers
 
 #include <SFML/Audio/SoundStream.hpp>
+#include <cstdint>
 
 typedef struct
 {
