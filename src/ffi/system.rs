@@ -161,4 +161,19 @@ extern "C" {
         index: usize,
     ) -> *const sfStdString;
     pub fn sfStdStringVector_destroy(vec: *mut sfStdStringVector);
+    // InputStream
+    pub fn sfInputStream_new(
+        read: sfInputStreamReadFunc,
+        seek: sfInputStreamSeekFunc,
+        tell: sfInputStreamTellFunc,
+        getSize: sfInputStreamGetSizeFunc,
+        userData: *mut c_void,
+    ) -> *mut sfInputStream;
+    pub fn sfInputStream_destroy(stream: *mut sfInputStream);
 }
+
+type sfInputStreamReadFunc =
+    Option<unsafe extern "C" fn(data: *mut c_void, size: i64, userData: *mut c_void) -> i64>;
+type sfInputStreamSeekFunc = Option<unsafe extern "C" fn(pos: i64, user_data: *mut c_void) -> i64>;
+type sfInputStreamTellFunc = Option<unsafe extern "C" fn(userData: *mut c_void) -> i64>;
+type sfInputStreamGetSizeFunc = Option<unsafe extern "C" fn(user_data: *mut c_void) -> i64>;

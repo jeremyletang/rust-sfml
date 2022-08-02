@@ -27,8 +27,10 @@
 // Headers
 
 #include "Audio/Types.h"
-#include "System/InputStream.h"
 #include <stddef.h>
+#include <cstdint>
+
+struct sfInputStream;
 
 extern "C" sfSoundBuffer *sfSoundBuffer_createFromFile(const char *filename);
 

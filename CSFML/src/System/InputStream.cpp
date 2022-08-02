@@ -1,7 +1,6 @@
-#include "System/InputStream.h"
 #include "System/InputStreamStruct.h"
 
-sfInputStream *sfInputStream_new(
+extern "C" sfInputStream *sfInputStream_new(
     sfInputStreamReadFunc read,
     sfInputStreamSeekFunc seek,
     sfInputStreamTellFunc tell,
@@ -16,6 +15,6 @@ sfInputStream *sfInputStream_new(
     return stream;
 }
 
-void sfInputStream_destroy(sfInputStream *stream) {
+extern "C" void sfInputStream_destroy(sfInputStream *stream) {
     delete stream;
 }

@@ -1,8 +1,13 @@
 #ifndef SFML_SYSTEM_INPUTSTREAMSTRUCT_H
 #define SFML_SYSTEM_INPUTSTREAMSTRUCT_H
 
-#include "System/InputStream.h"
 #include <SFML/System/InputStream.hpp>
+#include <cstdint>
+
+typedef int64_t (*sfInputStreamReadFunc)(void *data, int64_t size, void *userData);
+typedef int64_t (*sfInputStreamSeekFunc)(int64_t position, void *userData);
+typedef int64_t (*sfInputStreamTellFunc)(void *userData);
+typedef int64_t (*sfInputStreamGetSizeFunc)(void *userData);
 
 struct sfInputStream : public sf::InputStream {
     virtual sf::Int64 read(void *data, sf::Int64 size) {

@@ -65,7 +65,7 @@ pub struct InputStream<'src, T> {
 
 impl Dispose for sfInputStream {
     unsafe fn dispose(&mut self) {
-        crate::ffi::sfInputStream_destroy(self)
+        crate::ffi::system::sfInputStream_destroy(self)
     }
 }
 
@@ -74,7 +74,7 @@ impl<'src, T: Read + Seek> InputStream<'src, T> {
     pub fn new(stream: &'src mut T) -> InputStream<'src, T> {
         let user_data: *mut T = stream;
         unsafe {
-            let new = crate::ffi::sfInputStream_new(
+            let new = crate::ffi::system::sfInputStream_new(
                 Some(read::<T>),
                 Some(seek::<T>),
                 Some(tell::<T>),

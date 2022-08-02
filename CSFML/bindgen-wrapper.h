@@ -1,4 +1,3 @@
-#include "System/InputStream.h"
 #include "Audio/Listener.h"
 #include "Audio/Music.h"
 #include "Audio/Sound.h"

@@ -28,9 +28,11 @@
 
 #include "Audio/SoundStatus.h"
 #include "Audio/Types.h"
-#include "System/InputStream.h"
 #include "System/Vector3.h"
 #include <stddef.h>
+#include <cstdint>
+
+struct sfInputStream;
 
 typedef struct
 {
