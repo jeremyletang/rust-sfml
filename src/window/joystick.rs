@@ -67,21 +67,21 @@ pub struct Axis(pub(super) ffi::sfJoystickAxis);
 
 impl Axis {
     /// The X axis.
-    pub const X: Self = Self(ffi::sfJoystickAxis_sfJoystickX);
+    pub const X: Self = Self(ffi::sfJoystickAxis::sfJoystickX);
     /// The Y axis.
-    pub const Y: Self = Self(ffi::sfJoystickAxis_sfJoystickY);
+    pub const Y: Self = Self(ffi::sfJoystickAxis::sfJoystickY);
     /// The Z axis.
-    pub const Z: Self = Self(ffi::sfJoystickAxis_sfJoystickZ);
+    pub const Z: Self = Self(ffi::sfJoystickAxis::sfJoystickZ);
     /// The R axis.
-    pub const R: Self = Self(ffi::sfJoystickAxis_sfJoystickR);
+    pub const R: Self = Self(ffi::sfJoystickAxis::sfJoystickR);
     /// The U axis.
-    pub const U: Self = Self(ffi::sfJoystickAxis_sfJoystickU);
+    pub const U: Self = Self(ffi::sfJoystickAxis::sfJoystickU);
     /// The V axis.
-    pub const V: Self = Self(ffi::sfJoystickAxis_sfJoystickV);
+    pub const V: Self = Self(ffi::sfJoystickAxis::sfJoystickV);
     /// The X axis of the point-of-view hat.
-    pub const POV_X: Self = Self(ffi::sfJoystickAxis_sfJoystickPovX);
+    pub const POV_X: Self = Self(ffi::sfJoystickAxis::sfJoystickPovX);
     /// The Y axis of the point-of-view hat.
-    pub const POV_Y: Self = Self(ffi::sfJoystickAxis_sfJoystickPovY);
+    pub const POV_Y: Self = Self(ffi::sfJoystickAxis::sfJoystickPovY);
 }
 
 /// Check if the joystick is connected

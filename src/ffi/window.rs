@@ -489,13 +489,6 @@ pub type sfWindowHandle = c_ulong;
 pub type sfWindowHandle = *mut c_void;
 
 extern "C" {
-    pub fn sfJoystick_getIdentification(joystick: c_uint) -> *mut JoystickIdentification;
-    pub fn sfJoystickIdentification_destroy(ident: *mut JoystickIdentification);
-    pub fn sfJoystickIdentification_getProductId(ident: *const JoystickIdentification) -> c_uint;
-    pub fn sfJoystickIdentification_getVendorId(ident: *const JoystickIdentification) -> c_uint;
-    pub fn sfJoystickIdentification_getName(
-        ident: *const JoystickIdentification,
-    ) -> *const sfString;
     pub(crate) fn sfKeyboard_isKeyPressed(key: Key) -> bool;
     pub(crate) fn sfKeyboard_setVirtualKeyboardVisible(visible: bool);
     pub fn sfVideoModeVector_getLength(vec: *const sfVideoModeVector) -> usize;
@@ -567,4 +560,39 @@ extern "C" {
     pub fn sfVideoMode_getDesktopMode() -> sfVideoMode;
     pub fn sfVideoMode_getFullscreenModes() -> *const sfVideoModeVector;
     pub fn sfVideoMode_isValid(mode: sfVideoMode) -> bool;
+    // Joystick
+    pub fn sfJoystick_isConnected(joystick: c_uint) -> bool;
+    pub fn sfJoystick_getButtonCount(joystick: c_uint) -> c_uint;
+    pub fn sfJoystick_hasAxis(joystick: c_uint, axis: sfJoystickAxis) -> bool;
+    pub fn sfJoystick_isButtonPressed(joystick: c_uint, button: c_uint) -> bool;
+    pub fn sfJoystick_getAxisPosition(joystick: c_uint, axis: sfJoystickAxis) -> f32;
+    pub fn sfJoystick_getIdentification(joystick: c_uint) -> *mut JoystickIdentification;
+    pub fn sfJoystickIdentification_destroy(ident: *mut JoystickIdentification);
+    pub fn sfJoystickIdentification_getVendorId(ident: *const JoystickIdentification) -> c_uint;
+    pub fn sfJoystickIdentification_getProductId(ident: *const JoystickIdentification) -> c_uint;
+    pub fn sfJoystickIdentification_getName(
+        ident: *const JoystickIdentification,
+    ) -> *const sfString;
+    pub fn sfJoystick_update();
+}
+
+#[repr(C)]
+#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug, Hash)]
+pub enum sfJoystickAxis {
+    ///< The X axis
+    sfJoystickX,
+    ///< The Y axis
+    sfJoystickY,
+    ///< The Z axis
+    sfJoystickZ,
+    ///< The R axis
+    sfJoystickR,
+    ///< The U axis
+    sfJoystickU,
+    ///< The V axis
+    sfJoystickV,
+    ///< The X axis of the point-of-view hat
+    sfJoystickPovX,
+    ///< The Y axis of the point-of-view hat
+    sfJoystickPovY,
 }

@@ -1,4 +1,3 @@
-#include "Window/Joystick.h"
 #include "Window/Sensor.h"
 #include "Graphics/Color.h"
 #include "Graphics/FontInfo.h"
