@@ -1,4 +1,4 @@
-use crate::{ffi::sfInputStream, sf_box::Dispose, SfBox};
+use crate::{ffi::system::sfInputStream, sf_box::Dispose, SfBox};
 use std::{
     convert::TryInto,
     io::{Read, Seek, SeekFrom},

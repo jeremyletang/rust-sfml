@@ -35,7 +35,8 @@ extern "C" {
     // Music
     pub fn sfMusic_createFromFile(filename: *const c_char) -> *mut sfMusic;
     pub fn sfMusic_createFromMemory(data: *const c_void, sizeInBytes: usize) -> *mut sfMusic;
-    pub fn sfMusic_createFromStream(stream: *mut sfInputStream) -> *mut sfMusic;
+    pub fn sfMusic_createFromStream(stream: *mut crate::ffi::system::sfInputStream)
+        -> *mut sfMusic;
     pub fn sfMusic_destroy(music: *mut sfMusic);
     pub fn sfMusic_setLoop(music: *mut sfMusic, loop_: bool);
     pub fn sfMusic_getLoop(music: *const sfMusic) -> bool;
@@ -88,6 +89,32 @@ extern "C" {
     pub fn sfSound_getMinDistance(sound: *const sfSound) -> f32;
     pub fn sfSound_getAttenuation(sound: *const sfSound) -> f32;
     pub fn sfSound_getPlayingOffset(sound: *const sfSound) -> i64;
+    // SoundBuffer
+    pub fn sfSoundBuffer_createFromFile(filename: *const c_char) -> *mut sfSoundBuffer;
+    pub fn sfSoundBuffer_createFromMemory(
+        data: *const c_void,
+        sizeInBytes: usize,
+    ) -> *mut sfSoundBuffer;
+    pub fn sfSoundBuffer_createFromStream(
+        stream: *mut crate::ffi::system::sfInputStream,
+    ) -> *mut sfSoundBuffer;
+    pub fn sfSoundBuffer_createFromSamples(
+        samples: *const i16,
+        sampleCount: u64,
+        channelCount: c_uint,
+        sampleRate: c_uint,
+    ) -> *mut sfSoundBuffer;
+    pub fn sfSoundBuffer_copy(soundBuffer: *const sfSoundBuffer) -> *mut sfSoundBuffer;
+    pub fn sfSoundBuffer_destroy(soundBuffer: *mut sfSoundBuffer);
+    pub fn sfSoundBuffer_saveToFile(
+        soundBuffer: *const sfSoundBuffer,
+        filename: *const c_char,
+    ) -> bool;
+    pub fn sfSoundBuffer_getSamples(soundBuffer: *const sfSoundBuffer) -> *const i16;
+    pub fn sfSoundBuffer_getSampleCount(soundBuffer: *const sfSoundBuffer) -> u64;
+    pub fn sfSoundBuffer_getSampleRate(soundBuffer: *const sfSoundBuffer) -> c_uint;
+    pub fn sfSoundBuffer_getChannelCount(soundBuffer: *const sfSoundBuffer) -> c_uint;
+    pub fn sfSoundBuffer_getDuration(soundBuffer: *const sfSoundBuffer) -> i64;
 }
 
 #[repr(C)]

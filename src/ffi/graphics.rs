@@ -448,7 +448,8 @@ extern "C" {
         -> *mut sfImage;
     pub fn sfImage_createFromFile(filename: *const c_char) -> *mut sfImage;
     pub fn sfImage_createFromMemory(data: *const c_void, sizeInBytes: usize) -> *mut sfImage;
-    pub fn sfImage_createFromStream(stream: *mut sfInputStream) -> *mut sfImage;
+    pub fn sfImage_createFromStream(stream: *mut crate::ffi::system::sfInputStream)
+        -> *mut sfImage;
     pub fn sfImage_copy(image: *const sfImage) -> *mut sfImage;
     pub fn sfImage_destroy(image: *mut sfImage);
     pub fn sfImage_saveToFile(image: *const sfImage, filename: *const c_char) -> bool;
@@ -520,7 +521,7 @@ extern "C" {
     ) -> bool;
     pub fn sfShader_loadFromStream_1(
         shader: *mut sfShader,
-        stream: *mut sfInputStream,
+        stream: *mut crate::ffi::system::sfInputStream,
         type_: ShaderType,
     ) -> bool;
     pub fn sfShader_loadFromMemory_vert_frag(
@@ -535,8 +536,8 @@ extern "C" {
     ) -> bool;
     pub fn sfShader_loadFromStream_vert_frag(
         shader: *mut sfShader,
-        vert: *mut sfInputStream,
-        frag: *mut sfInputStream,
+        vert: *mut crate::ffi::system::sfInputStream,
+        frag: *mut crate::ffi::system::sfInputStream,
     ) -> bool;
     pub fn sfShader_loadFromMemory_all(
         shader: *mut sfShader,
@@ -552,9 +553,9 @@ extern "C" {
     ) -> bool;
     pub fn sfShader_loadFromStream_all(
         shader: *mut sfShader,
-        vert: *mut sfInputStream,
-        geom: *mut sfInputStream,
-        frag: *mut sfInputStream,
+        vert: *mut crate::ffi::system::sfInputStream,
+        geom: *mut crate::ffi::system::sfInputStream,
+        frag: *mut crate::ffi::system::sfInputStream,
     ) -> bool;
     pub fn sfShader_destroy(shader: *mut sfShader);
     pub fn sfShader_setFloatUniform(shader: *mut sfShader, name: *const c_char, x: f32);
@@ -728,7 +729,7 @@ extern "C" {
     ) -> bool;
     pub fn sfTexture_loadFromStream(
         tex: *mut sfTexture,
-        stream: *mut sfInputStream,
+        stream: *mut crate::ffi::system::sfInputStream,
         area: sfIntRect,
     ) -> bool;
     pub fn sfTexture_loadFromImage(
@@ -803,7 +804,7 @@ extern "C" {
     // SfFont
     pub fn sfFont_createFromFile(filename: *const c_char) -> *mut sfFont;
     pub fn sfFont_createFromMemory(data: *const c_void, sizeInBytes: usize) -> *mut sfFont;
-    pub fn sfFont_createFromStream(stream: *mut sfInputStream) -> *mut sfFont;
+    pub fn sfFont_createFromStream(stream: *mut crate::ffi::system::sfInputStream) -> *mut sfFont;
     pub fn sfFont_copy(font: *const sfFont) -> *mut sfFont;
     pub fn sfFont_destroy(font: *mut sfFont);
     pub fn sfFont_getGlyph(

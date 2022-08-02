@@ -172,6 +172,12 @@ extern "C" {
     pub fn sfInputStream_destroy(stream: *mut sfInputStream);
 }
 
+#[repr(C)]
+#[derive(Debug)]
+pub struct sfInputStream {
+    _opaque: [u8; 0],
+}
+
 type sfInputStreamReadFunc =
     Option<unsafe extern "C" fn(data: *mut c_void, size: i64, userData: *mut c_void) -> i64>;
 type sfInputStreamSeekFunc = Option<unsafe extern "C" fn(pos: i64, user_data: *mut c_void) -> i64>;

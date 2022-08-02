@@ -84,7 +84,7 @@ impl SoundBuffer {
     #[must_use]
     pub fn save_to_file(&self, filename: &str) -> bool {
         let c_str = CString::new(filename).unwrap();
-        unsafe { ffi::sfSoundBuffer_saveToFile(self.raw(), c_str.as_ptr()) }
+        unsafe { ffi::audio::sfSoundBuffer_saveToFile(self.raw(), c_str.as_ptr()) }
     }
 
     /// Get the number of samples stored in a sound buffer
@@ -94,7 +94,7 @@ impl SoundBuffer {
     /// Return the number of samples
     #[must_use]
     pub fn sample_count(&self) -> u64 {
-        unsafe { ffi::sfSoundBuffer_getSampleCount(self.raw()) }
+        unsafe { ffi::audio::sfSoundBuffer_getSampleCount(self.raw()) }
     }
 
     /// Get the samples stored in the buffer
@@ -106,7 +106,7 @@ impl SoundBuffer {
             .sample_count()
             .try_into()
             .expect("Overflow when casting sample count to usize");
-        unsafe { slice::from_raw_parts(ffi::sfSoundBuffer_getSamples(self.raw()), len) }
+        unsafe { slice::from_raw_parts(ffi::audio::sfSoundBuffer_getSamples(self.raw()), len) }
     }
 
     /// Get the number of channels used by a sound buffer
@@ -117,7 +117,7 @@ impl SoundBuffer {
     /// Return the number of channels
     #[must_use]
     pub fn channel_count(&self) -> u32 {
-        unsafe { ffi::sfSoundBuffer_getChannelCount(self.raw()) }
+        unsafe { ffi::audio::sfSoundBuffer_getChannelCount(self.raw()) }
     }
 
     /// Get the total duration of a sound buffer
@@ -125,7 +125,7 @@ impl SoundBuffer {
     /// Return the sound duration
     #[must_use]
     pub fn duration(&self) -> Time {
-        unsafe { Time::from_raw(ffi::sfSoundBuffer_getDuration(self.raw())) }
+        unsafe { Time::from_raw(ffi::audio::sfSoundBuffer_getDuration(self.raw())) }
     }
 
     /// Get the sample rate of a sound buffer
@@ -137,7 +137,7 @@ impl SoundBuffer {
     /// Return the sample rate (number of samples per second)
     #[must_use]
     pub fn sample_rate(&self) -> u32 {
-        unsafe { ffi::sfSoundBuffer_getSampleRate(self.raw()) }
+        unsafe { ffi::audio::sfSoundBuffer_getSampleRate(self.raw()) }
     }
     fn raw(&self) -> *const ffi::sfSoundBuffer {
         let ptr: *const Self = self;
@@ -156,19 +156,19 @@ impl SoundBuffer {
     pub fn from_file(filename: &str) -> LoadResult<SfBox<Self>> {
         let c_str = CString::new(filename).unwrap();
         let sound_buffer: *mut ffi::sfSoundBuffer =
-            unsafe { ffi::sfSoundBuffer_createFromFile(c_str.as_ptr()) };
+            unsafe { ffi::audio::sfSoundBuffer_createFromFile(c_str.as_ptr()) };
         SfBox::new(sound_buffer as *mut Self).ok_or(ResourceLoadError)
     }
     /// Load the sound buffer from a file in memory.
     pub fn from_memory(data: &[u8]) -> LoadResult<SfBox<Self>> {
         let sound_buffer =
-            unsafe { ffi::sfSoundBuffer_createFromMemory(data.as_ptr() as _, data.len()) };
+            unsafe { ffi::audio::sfSoundBuffer_createFromMemory(data.as_ptr() as _, data.len()) };
         SfBox::new(sound_buffer as *mut Self).ok_or(ResourceLoadError)
     }
     /// Load the sound buffer from a custom stream.
     pub fn from_stream<T: Read + Seek>(stream: &mut T) -> LoadResult<SfBox<Self>> {
         let mut stream = InputStream::new(stream);
-        let buffer = unsafe { ffi::sfSoundBuffer_createFromStream(&mut *stream.stream) };
+        let buffer = unsafe { ffi::audio::sfSoundBuffer_createFromStream(&mut *stream.stream) };
         SfBox::new(buffer as *mut Self).ok_or(ResourceLoadError)
     }
     /// Load the sound buffer from a slice of audio samples.
@@ -180,7 +180,7 @@ impl SoundBuffer {
         sample_rate: u32,
     ) -> LoadResult<SfBox<Self>> {
         let buffer = unsafe {
-            ffi::sfSoundBuffer_createFromSamples(
+            ffi::audio::sfSoundBuffer_createFromSamples(
                 samples.as_ptr(),
                 samples.len() as _,
                 channel_count,
@@ -195,7 +195,7 @@ impl ToOwned for SoundBuffer {
     type Owned = SfBox<Self>;
 
     fn to_owned(&self) -> Self::Owned {
-        let sound_buffer = unsafe { ffi::sfSoundBuffer_copy(self.raw()) };
+        let sound_buffer = unsafe { ffi::audio::sfSoundBuffer_copy(self.raw()) };
         SfBox::new(sound_buffer as *mut Self).expect("Failed to copy SoundBuffer")
     }
 }
@@ -203,6 +203,6 @@ impl ToOwned for SoundBuffer {
 impl Dispose for SoundBuffer {
     unsafe fn dispose(&mut self) {
         let ptr: *mut Self = self;
-        ffi::sfSoundBuffer_destroy(ptr as _);
+        ffi::audio::sfSoundBuffer_destroy(ptr as _);
     }
 }
