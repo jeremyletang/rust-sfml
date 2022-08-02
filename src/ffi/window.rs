@@ -52,6 +52,17 @@ pub enum sfCursorType {
     NotAllowed,
 }
 
+#[repr(C)]
+#[derive(Clone, Copy, PartialEq, Eq, Debug)]
+pub struct sfVideoMode {
+    /// Video mode width, in pixels
+    pub width: c_uint,
+    /// Video mode height, in pixels
+    pub height: c_uint,
+    /// Video mode pixel depth, in bits per pixels
+    pub bitsPerPixel: c_uint,
+}
+
 /// Structure defining the settings of the OpenGL context attached to a window.
 ///
 /// `ContextSettings` allows to define several advanced settings of the OpenGL context attached
@@ -485,7 +496,6 @@ extern "C" {
     pub fn sfJoystickIdentification_getName(
         ident: *const JoystickIdentification,
     ) -> *const sfString;
-    pub fn sfVideoMode_getFullscreenModes() -> *const sfVideoModeVector;
     pub(crate) fn sfKeyboard_isKeyPressed(key: Key) -> bool;
     pub(crate) fn sfKeyboard_setVirtualKeyboardVisible(visible: bool);
     pub fn sfVideoModeVector_getLength(vec: *const sfVideoModeVector) -> usize;
@@ -553,4 +563,8 @@ extern "C" {
     // Touch
     pub fn sfTouch_isDown(finger: c_uint) -> bool;
     pub fn sfTouch_getPosition(finger: c_uint, relativeTo: *const sfWindow) -> sfVector2i;
+    // VideoMode
+    pub fn sfVideoMode_getDesktopMode() -> sfVideoMode;
+    pub fn sfVideoMode_getFullscreenModes() -> *const sfVideoModeVector;
+    pub fn sfVideoMode_isValid(mode: sfVideoMode) -> bool;
 }

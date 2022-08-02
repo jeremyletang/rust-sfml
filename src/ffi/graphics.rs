@@ -287,7 +287,7 @@ extern "C" {
 
     // RenderWindow
     pub fn sfRenderWindow_createUnicode(
-        mode: sfVideoMode,
+        mode: crate::ffi::window::sfVideoMode,
         title: *const u32,
         style: u32,
         settings: *const sfContextSettings,

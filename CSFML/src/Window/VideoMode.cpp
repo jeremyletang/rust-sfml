@@ -27,7 +27,7 @@
 #include <SFML/Window/VideoMode.hpp>
 #include <cstddef>
 
-sfVideoMode sfVideoMode_getDesktopMode(void) {
+extern "C" sfVideoMode sfVideoMode_getDesktopMode(void) {
     sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
     sfVideoMode ret;
     ret.width = desktop.width;
@@ -41,7 +41,7 @@ extern "C" const std::vector<sf::VideoMode> *sfVideoMode_getFullscreenModes() {
     return &sf::VideoMode::getFullscreenModes();
 }
 
-bool sfVideoMode_isValid(sfVideoMode mode) {
+extern "C" bool sfVideoMode_isValid(sfVideoMode mode) {
     sf::VideoMode videoMode(mode.width, mode.height, mode.bitsPerPixel);
     return videoMode.isValid();
 }

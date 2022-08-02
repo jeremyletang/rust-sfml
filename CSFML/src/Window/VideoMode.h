@@ -28,7 +28,6 @@
 // Headers
 
 #include <cstdint>
-#include <stddef.h>
 
 typedef struct
 {
@@ -36,9 +35,5 @@ typedef struct
     unsigned int height;       ///< Video mode height, in pixels
     unsigned int bitsPerPixel; ///< Video mode pixel depth, in bits per pixels
 } sfVideoMode;
-
-extern "C" sfVideoMode sfVideoMode_getDesktopMode(void);
-
-extern "C" bool sfVideoMode_isValid(sfVideoMode mode);
 
 #endif // SFML_VIDEOMODE_H
