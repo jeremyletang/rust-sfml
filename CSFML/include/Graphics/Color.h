@@ -25,14 +25,14 @@
 #define SFML_COLOR_H
 
 // Headers
-#include "Config.h"
+#include <cstdint>
 
 typedef struct
 {
-    sfUint8 r;
-    sfUint8 g;
-    sfUint8 b;
-    sfUint8 a;
+    uint8_t r;
+    uint8_t g;
+    uint8_t b;
+    uint8_t a;
 } sfColor;
 
 #endif // SFML_COLOR_H

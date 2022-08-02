@@ -27,11 +27,11 @@
 // Headers
 
 #include "Audio/Types.h"
-#include "Config.h"
+#include <cstdint>
 #include <stddef.h>
 
 typedef bool (*sfSoundRecorderStartCallback)(void *);                            ///< Type of the callback used when starting a capture
-typedef bool (*sfSoundRecorderProcessCallback)(const sfInt16 *, size_t, void *); ///< Type of the callback used to process audio data
+typedef bool (*sfSoundRecorderProcessCallback)(const int16_t *, size_t, void *); ///< Type of the callback used to process audio data
 typedef void (*sfSoundRecorderStopCallback)(void *);                             ///< Type of the callback used when stopping a capture
 
 extern "C" sfSoundRecorder *sfSoundRecorder_create(sfSoundRecorderStartCallback onStart,
@@ -49,7 +49,7 @@ extern "C" unsigned int sfSoundRecorder_getSampleRate(const sfSoundRecorder *sou
 
 extern "C" bool sfSoundRecorder_isAvailable(void);
 
-extern "C" void sfSoundRecorder_setProcessingInterval(sfSoundRecorder *soundRecorder, sfInt64 interval);
+extern "C" void sfSoundRecorder_setProcessingInterval(sfSoundRecorder *soundRecorder, int64_t interval);
 
 extern "C" bool sfSoundRecorder_setDevice(sfSoundRecorder *soundRecorder, const char *name);
 

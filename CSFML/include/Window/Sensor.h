@@ -26,7 +26,6 @@
 
 // Headers
 
-#include "Config.h"
 #include "System/Vector3.h"
 
 typedef enum {

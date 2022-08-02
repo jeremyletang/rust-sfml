@@ -24,7 +24,6 @@
 // Headers
 
 #include "Audio/Types.h"
-#include "Config.h"
 #include <SFML/Audio/SoundBufferRecorder.hpp>
 #include <cstddef>
 

@@ -23,20 +23,20 @@
 
 // Headers
 
-#include "Config.h"
 #include <SFML/Window/Clipboard.hpp>
 #include <cstddef>
+#include <cstdint>
 
 namespace {
 sf::String ClipboardString;
 std::string ClipboardStringAnsi;
 } // namespace
 
-extern "C" const sfUint32 *sfClipboard_getUnicodeString() {
+extern "C" const uint32_t *sfClipboard_getUnicodeString() {
     ClipboardString = sf::Clipboard::getString();
     return ClipboardString.getData();
 }
 
-extern "C" void sfClipboard_setUnicodeString(const sfUint32 *text) {
+extern "C" void sfClipboard_setUnicodeString(const uint32_t *text) {
     sf::Clipboard::setString(text);
 }

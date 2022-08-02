@@ -27,7 +27,7 @@
 
 // Headers
 
-#include "Config.h"
+#include <cstdint>
 #include <stddef.h>
 
 typedef struct

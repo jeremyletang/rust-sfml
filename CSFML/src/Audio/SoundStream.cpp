@@ -88,7 +88,7 @@ void sfSoundStream_setAttenuation(sfSoundStream *soundStream, float attenuation)
     soundStream->This.setAttenuation(attenuation);
 }
 
-void sfSoundStream_setPlayingOffset(sfSoundStream *soundStream, sfInt64 timeOffset) {
+void sfSoundStream_setPlayingOffset(sfSoundStream *soundStream, int64_t timeOffset) {
     soundStream->This.setPlayingOffset(sf::microseconds(timeOffset));
 }
 
@@ -131,7 +131,7 @@ bool sfSoundStream_getLoop(const sfSoundStream *soundStream) {
     return soundStream->This.getLoop();
 }
 
-sfInt64 sfSoundStream_getPlayingOffset(const sfSoundStream *soundStream) {
-    sfInt64 time = soundStream->This.getPlayingOffset().asMicroseconds();
+int64_t sfSoundStream_getPlayingOffset(const sfSoundStream *soundStream) {
+    int64_t time = soundStream->This.getPlayingOffset().asMicroseconds();
     return time;
 }

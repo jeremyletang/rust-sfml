@@ -57,7 +57,7 @@ class sfSoundStreamImpl : public sf::SoundStream {
 
     virtual void onSeek(sf::Time timeOffset) {
         if (mySeekCallback) {
-            sfInt64 time = {timeOffset.asMicroseconds()};
+            int64_t time = {timeOffset.asMicroseconds()};
             mySeekCallback(time, myUserData);
         }
     }

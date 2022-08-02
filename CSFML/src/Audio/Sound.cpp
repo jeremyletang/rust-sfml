@@ -98,7 +98,7 @@ void sfSound_setAttenuation(sfSound *sound, float attenuation) {
     reinterpret_cast<sf::Sound *>(sound)->setAttenuation(attenuation);
 }
 
-void sfSound_setPlayingOffset(sfSound *sound, sfInt64 timeOffset) {
+void sfSound_setPlayingOffset(sfSound *sound, int64_t timeOffset) {
     reinterpret_cast<sf::Sound *>(sound)->setPlayingOffset(sf::microseconds(timeOffset));
 }
 
@@ -133,7 +133,7 @@ float sfSound_getAttenuation(const sfSound *sound) {
     return reinterpret_cast<const sf::Sound *>(sound)->getAttenuation();
 }
 
-sfInt64 sfSound_getPlayingOffset(const sfSound *sound) {
-    sfInt64 time = reinterpret_cast<const sf::Sound *>(sound)->getPlayingOffset().asMicroseconds();
+int64_t sfSound_getPlayingOffset(const sfSound *sound) {
+    int64_t time = reinterpret_cast<const sf::Sound *>(sound)->getPlayingOffset().asMicroseconds();
     return time;
 }

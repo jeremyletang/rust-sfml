@@ -23,7 +23,6 @@
 
 // Headers
 
-#include "Config.h"
 #include "Graphics/Color.h"
 #include "Graphics/Rect.h"
 #include "System/Vector2.h"

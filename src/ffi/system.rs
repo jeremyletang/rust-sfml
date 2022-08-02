@@ -140,13 +140,13 @@ impl Display for sfStdString {
 }
 
 extern "C" {
-    pub fn sfClipboard_getUnicodeString() -> *const sfUint32;
-    pub fn sfClipboard_setUnicodeString(text: *const sfUint32);
+    pub fn sfClipboard_getUnicodeString() -> *const u32;
+    pub fn sfClipboard_setUnicodeString(text: *const u32);
 
     pub fn sfClock_new() -> *mut sfClock;
     pub fn sfClock_delete(clock: *mut sfClock);
-    pub fn sfClock_getElapsedTime(clock: *const sfClock) -> sfInt64;
-    pub fn sfClock_restart(clock: *mut sfClock) -> sfInt64;
+    pub fn sfClock_getElapsedTime(clock: *const sfClock) -> i64;
+    pub fn sfClock_restart(clock: *mut sfClock) -> i64;
 
     pub fn sfSleep(duration: sfTime);
     pub fn sfStdString_getLength(s: *const sfStdString) -> usize;

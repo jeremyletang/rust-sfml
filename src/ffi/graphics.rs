@@ -282,8 +282,8 @@ extern "C" {
     // RenderWindow
     pub fn sfRenderWindow_createUnicode(
         mode: sfVideoMode,
-        title: *const sfUint32,
-        style: sfUint32,
+        title: *const u32,
+        style: u32,
         settings: *const sfContextSettings,
     ) -> *mut sfRenderWindow;
     pub fn sfRenderWindow_createFromHandle(
@@ -308,15 +308,12 @@ extern "C" {
     pub fn sfRenderWindow_setPosition(renderWindow: *mut sfRenderWindow, position: sfVector2i);
     pub fn sfRenderWindow_getSize(renderWindow: *const sfRenderWindow) -> sfVector2u;
     pub fn sfRenderWindow_setSize(renderWindow: *mut sfRenderWindow, size: sfVector2u);
-    pub fn sfRenderWindow_setUnicodeTitle(
-        renderWindow: *mut sfRenderWindow,
-        title: *const sfUint32,
-    );
+    pub fn sfRenderWindow_setUnicodeTitle(renderWindow: *mut sfRenderWindow, title: *const u32);
     pub fn sfRenderWindow_setIcon(
         renderWindow: *mut sfRenderWindow,
         width: c_uint,
         height: c_uint,
-        pixels: *const sfUint8,
+        pixels: *const u8,
     );
     pub fn sfRenderWindow_setVisible(renderWindow: *mut sfRenderWindow, visible: bool);
     pub fn sfRenderWindow_setVerticalSyncEnabled(renderWindow: *mut sfRenderWindow, enabled: bool);
@@ -440,18 +437,15 @@ extern "C" {
     // SfImage
     pub fn sfImage_create(width: c_uint, height: c_uint) -> *mut sfImage;
     pub fn sfImage_createFromColor(width: c_uint, height: c_uint, color: sfColor) -> *mut sfImage;
-    pub fn sfImage_createFromPixels(
-        width: c_uint,
-        height: c_uint,
-        data: *const sfUint8,
-    ) -> *mut sfImage;
+    pub fn sfImage_createFromPixels(width: c_uint, height: c_uint, data: *const u8)
+        -> *mut sfImage;
     pub fn sfImage_createFromFile(filename: *const c_char) -> *mut sfImage;
     pub fn sfImage_createFromMemory(data: *const c_void, sizeInBytes: usize) -> *mut sfImage;
     pub fn sfImage_createFromStream(stream: *mut sfInputStream) -> *mut sfImage;
     pub fn sfImage_copy(image: *const sfImage) -> *mut sfImage;
     pub fn sfImage_destroy(image: *mut sfImage);
     pub fn sfImage_saveToFile(image: *const sfImage, filename: *const c_char) -> bool;
-    pub fn sfImage_createMaskFromColor(image: *mut sfImage, colorKey: sfColor, alpha: sfUint8);
+    pub fn sfImage_createMaskFromColor(image: *mut sfImage, colorKey: sfColor, alpha: u8);
     pub fn sfImage_copyImage(
         image: *mut sfImage,
         source: *const sfImage,
@@ -462,7 +456,7 @@ extern "C" {
     );
     pub fn sfImage_setPixel(image: *mut sfImage, x: c_uint, y: c_uint, color: sfColor);
     pub fn sfImage_getPixel(image: *const sfImage, x: c_uint, y: c_uint) -> sfColor;
-    pub fn sfImage_getPixelsPtr(image: *const sfImage) -> *const sfUint8;
+    pub fn sfImage_getPixelsPtr(image: *const sfImage) -> *const u8;
     pub fn sfImage_getSize(image: *const sfImage) -> sfVector2u;
     pub fn sfImage_flipHorizontally(image: *mut sfImage);
     pub fn sfImage_flipVertically(image: *mut sfImage);
@@ -688,21 +682,21 @@ extern "C" {
     pub fn sfText_scale(text: *mut sfText, factors: sfVector2f);
     pub fn sfText_getTransform(text: *const sfText) -> Transform;
     pub fn sfText_getInverseTransform(text: *const sfText) -> Transform;
-    pub fn sfText_setUnicodeString(text: *mut sfText, string: *const sfUint32);
+    pub fn sfText_setUnicodeString(text: *mut sfText, string: *const u32);
     pub fn sfText_setFont(text: *mut sfText, font: *const sfFont);
     pub fn sfText_setCharacterSize(text: *mut sfText, size: c_uint);
     pub fn sfText_setLineSpacing(text: *mut sfText, spacingFactor: f32);
     pub fn sfText_setLetterSpacing(text: *mut sfText, spacingFactor: f32);
-    pub fn sfText_setStyle(text: *mut sfText, style: sfUint32);
+    pub fn sfText_setStyle(text: *mut sfText, style: u32);
     pub fn sfText_setFillColor(text: *mut sfText, color: sfColor);
     pub fn sfText_setOutlineColor(text: *mut sfText, color: sfColor);
     pub fn sfText_setOutlineThickness(text: *mut sfText, thickness: f32);
-    pub fn sfText_getUnicodeString(text: *const sfText) -> *const sfUint32;
+    pub fn sfText_getUnicodeString(text: *const sfText) -> *const u32;
     pub fn sfText_getFont(text: *const sfText) -> *const sfFont;
     pub fn sfText_getCharacterSize(text: *const sfText) -> c_uint;
     pub fn sfText_getLetterSpacing(text: *const sfText) -> f32;
     pub fn sfText_getLineSpacing(text: *const sfText) -> f32;
-    pub fn sfText_getStyle(text: *const sfText) -> sfUint32;
+    pub fn sfText_getStyle(text: *const sfText) -> u32;
     pub fn sfText_getFillColor(text: *const sfText) -> sfColor;
     pub fn sfText_getOutlineColor(text: *const sfText) -> sfColor;
     pub fn sfText_getOutlineThickness(text: *const sfText) -> f32;
@@ -739,7 +733,7 @@ extern "C" {
     pub fn sfTexture_copyToImage(texture: *const sfTexture) -> *mut sfImage;
     pub fn sfTexture_updateFromPixels(
         texture: *mut sfTexture,
-        pixels: *const sfUint8,
+        pixels: *const u8,
         width: c_uint,
         height: c_uint,
         x: c_uint,
@@ -805,15 +799,15 @@ extern "C" {
     pub fn sfFont_destroy(font: *mut sfFont);
     pub fn sfFont_getGlyph(
         font: *const sfFont,
-        codePoint: sfUint32,
+        codePoint: u32,
         characterSize: c_uint,
         bold: bool,
         outlineThickness: f32,
     ) -> sfGlyph;
     pub fn sfFont_getKerning(
         font: *const sfFont,
-        first: sfUint32,
-        second: sfUint32,
+        first: u32,
+        second: u32,
         characterSize: c_uint,
     ) -> f32;
     pub fn sfFont_getLineSpacing(font: *const sfFont, characterSize: c_uint) -> f32;

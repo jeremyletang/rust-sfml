@@ -34,8 +34,8 @@
 
 typedef struct
 {
-    sfInt64 offset; ///< The beginning offset of the time range
-    sfInt64 length; ///< The length of the time range
+    int64_t offset; ///< The beginning offset of the time range
+    int64_t length; ///< The length of the time range
 } sfTimeSpan;
 
 extern "C" sfMusic *sfMusic_createFromFile(const char *filename);
@@ -50,7 +50,7 @@ extern "C" void sfMusic_setLoop(sfMusic *music, bool loop);
 
 extern "C" bool sfMusic_getLoop(const sfMusic *music);
 
-extern "C" sfInt64 sfMusic_getDuration(const sfMusic *music);
+extern "C" int64_t sfMusic_getDuration(const sfMusic *music);
 
 extern "C" sfTimeSpan sfMusic_getLoopPoints(const sfMusic *music);
 
@@ -68,7 +68,7 @@ extern "C" unsigned int sfMusic_getSampleRate(const sfMusic *music);
 
 extern "C" sfSoundStatus sfMusic_getStatus(const sfMusic *music);
 
-extern "C" sfInt64 sfMusic_getPlayingOffset(const sfMusic *music);
+extern "C" int64_t sfMusic_getPlayingOffset(const sfMusic *music);
 
 extern "C" void sfMusic_setPitch(sfMusic *music, float pitch);
 
@@ -82,7 +82,7 @@ extern "C" void sfMusic_setMinDistance(sfMusic *music, float distance);
 
 extern "C" void sfMusic_setAttenuation(sfMusic *music, float attenuation);
 
-extern "C" void sfMusic_setPlayingOffset(sfMusic *music, sfInt64 timeOffset);
+extern "C" void sfMusic_setPlayingOffset(sfMusic *music, int64_t timeOffset);
 
 extern "C" float sfMusic_getPitch(const sfMusic *music);
 

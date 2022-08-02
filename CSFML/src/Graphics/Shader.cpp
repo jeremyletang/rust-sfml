@@ -23,7 +23,6 @@
 
 // Headers
 
-#include "Config.h"
 #include "Graphics/Glsl.h"
 #include "System/InputStreamStruct.h"
 #include <SFML/Graphics/Shader.hpp>

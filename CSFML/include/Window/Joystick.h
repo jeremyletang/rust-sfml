@@ -26,8 +26,6 @@
 
 // Headers
 
-#include "Config.h"
-
 typedef enum {
     sfJoystickX,    ///< The X axis
     sfJoystickY,    ///< The Y axis

@@ -24,7 +24,6 @@
 // Headers
 
 #include "Graphics/Shape.h"
-#include "Config.h"
 #include "Graphics/Color.h"
 #include "Graphics/Rect.h"
 #include "Graphics/ShapeStruct.h"

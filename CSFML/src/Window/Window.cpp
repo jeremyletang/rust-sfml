@@ -24,14 +24,14 @@
 // Headers
 
 #include "SFML/Window.hpp"
-#include "Config.h"
 #include "System/Vector2.h"
 #include "Window/VideoMode.h"
 #include <SFML/Window/Context.hpp>
 #include <SFML/Window/Touch.hpp>
 #include <cstddef>
+#include <cstdint>
 
-extern "C" sf::Window *sfWindow_createUnicode(sfVideoMode mode, const sfUint32 *title, sfUint32 style, const sf::ContextSettings *settings) {
+extern "C" sf::Window *sfWindow_createUnicode(sfVideoMode mode, const uint32_t *title, uint32_t style, const sf::ContextSettings *settings) {
     // Convert video mode
     sf::VideoMode videoMode(mode.width, mode.height, mode.bitsPerPixel);
 
@@ -102,11 +102,11 @@ extern "C" void sfWindow_setSize(sf::Window *window, sfVector2u size) {
     window->setSize(sf::Vector2u(size.x, size.y));
 }
 
-extern "C" void sfWindow_setUnicodeTitle(sf::Window *window, const sfUint32 *title) {
+extern "C" void sfWindow_setUnicodeTitle(sf::Window *window, const uint32_t *title) {
     window->setTitle(title);
 }
 
-extern "C" void sfWindow_setIcon(sf::Window *window, unsigned int width, unsigned int height, const sfUint8 *pixels) {
+extern "C" void sfWindow_setIcon(sf::Window *window, unsigned int width, unsigned int height, const uint8_t *pixels) {
     window->setIcon(width, height, pixels);
 }
 
@@ -179,6 +179,6 @@ extern "C" const sf::ContextSettings *sfContext_getSettings(const sf::Context *c
     return &context->getSettings();
 }
 
-extern "C" sfUint64 sfContext_getActiveContextId() {
+extern "C" uint64_t sfContext_getActiveContextId() {
     return sf::Context::getActiveContextId();
 }

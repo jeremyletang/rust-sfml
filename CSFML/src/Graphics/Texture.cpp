@@ -103,7 +103,7 @@ extern "C" sf::Image *sfTexture_copyToImage(const sf::Texture *texture) {
     return image;
 }
 
-extern "C" void sfTexture_updateFromPixels(sf::Texture *texture, const sfUint8 *pixels, unsigned int width, unsigned int height, unsigned int x, unsigned int y) {
+extern "C" void sfTexture_updateFromPixels(sf::Texture *texture, const uint8_t *pixels, unsigned int width, unsigned int height, unsigned int x, unsigned int y) {
     reinterpret_cast<sf::Texture *>(texture)->update(pixels, width, height, x, y);
 }
 

@@ -44,7 +44,7 @@ extern "C" sf::Image *sfImage_createFromColor(unsigned int width, unsigned int h
     return image;
 }
 
-extern "C" sf::Image *sfImage_createFromPixels(unsigned int width, unsigned int height, const sfUint8 *data) {
+extern "C" sf::Image *sfImage_createFromPixels(unsigned int width, unsigned int height, const uint8_t *data) {
     sf::Image *image = new sf::Image;
     image->create(width, height, data);
 
@@ -98,7 +98,7 @@ extern "C" bool sfImage_saveToFile(const sf::Image *image, const char *filename)
     return image->saveToFile(filename);
 }
 
-extern "C" void sfImage_createMaskFromColor(sf::Image *image, sfColor colorKey, sfUint8 alpha) {
+extern "C" void sfImage_createMaskFromColor(sf::Image *image, sfColor colorKey, uint8_t alpha) {
     image->createMaskFromColor(sf::Color(colorKey.r, colorKey.g, colorKey.b, colorKey.a), alpha);
 }
 
@@ -118,7 +118,7 @@ extern "C" sfColor sfImage_getPixel(const sf::Image *image, unsigned int x, unsi
     return sfColor{sfmlColor.r, sfmlColor.g, sfmlColor.b, sfmlColor.a};
 }
 
-extern "C" const sfUint8 *sfImage_getPixelsPtr(const sf::Image *image) {
+extern "C" const uint8_t *sfImage_getPixelsPtr(const sf::Image *image) {
     return image->getPixelsPtr();
 }
 

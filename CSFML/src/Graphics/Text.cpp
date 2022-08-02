@@ -116,7 +116,7 @@ extern "C" sf::Transform sfText_getInverseTransform(const sf::Text *text) {
     return reinterpret_cast<const sf::Text *>(text)->getInverseTransform();
 }
 
-extern "C" void sfText_setUnicodeString(sf::Text *text, const sfUint32 *string) {
+extern "C" void sfText_setUnicodeString(sf::Text *text, const uint32_t *string) {
     sf::String UTF32Text = string;
     reinterpret_cast<sf::Text *>(text)->setString(UTF32Text);
 }
@@ -138,7 +138,7 @@ extern "C" void sfText_setLetterSpacing(sf::Text *text, float spacingFactor) {
     reinterpret_cast<sf::Text *>(text)->setLetterSpacing(spacingFactor);
 }
 
-extern "C" void sfText_setStyle(sf::Text *text, sfUint32 style) {
+extern "C" void sfText_setStyle(sf::Text *text, uint32_t style) {
     reinterpret_cast<sf::Text *>(text)->setStyle(style);
 }
 
@@ -154,7 +154,7 @@ extern "C" void sfText_setOutlineThickness(sf::Text *text, float thickness) {
     reinterpret_cast<sf::Text *>(text)->setOutlineThickness(thickness);
 }
 
-extern "C" const sfUint32 *sfText_getUnicodeString(const sf::Text *text) {
+extern "C" const uint32_t *sfText_getUnicodeString(const sf::Text *text) {
 
     return reinterpret_cast<const sf::Text *>(text)->getString().getData();
 }
@@ -176,7 +176,7 @@ extern "C" float sfText_getLineSpacing(const sf::Text *text) {
     return reinterpret_cast<const sf::Text *>(text)->getLineSpacing();
 }
 
-extern "C" sfUint32 sfText_getStyle(const sf::Text *text) {
+extern "C" uint32_t sfText_getStyle(const sf::Text *text) {
     return reinterpret_cast<const sf::Text *>(text)->getStyle();
 }
 

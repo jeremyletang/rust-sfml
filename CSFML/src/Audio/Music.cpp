@@ -71,8 +71,8 @@ bool sfMusic_getLoop(const sfMusic *music) {
     return reinterpret_cast<const sf::Music *>(music)->getLoop();
 }
 
-sfInt64 sfMusic_getDuration(const sfMusic *music) {
-    sfInt64 time = reinterpret_cast<const sf::Music *>(music)->getDuration().asMicroseconds();
+int64_t sfMusic_getDuration(const sfMusic *music) {
+    int64_t time = reinterpret_cast<const sf::Music *>(music)->getDuration().asMicroseconds();
     return time;
 }
 
@@ -116,8 +116,8 @@ sfSoundStatus sfMusic_getStatus(const sfMusic *music) {
     return static_cast<sfSoundStatus>(reinterpret_cast<const sf::Music *>(music)->getStatus());
 }
 
-sfInt64 sfMusic_getPlayingOffset(const sfMusic *music) {
-    sfInt64 time = reinterpret_cast<const sf::Music *>(music)->getPlayingOffset().asMicroseconds();
+int64_t sfMusic_getPlayingOffset(const sfMusic *music) {
+    int64_t time = reinterpret_cast<const sf::Music *>(music)->getPlayingOffset().asMicroseconds();
     return time;
 }
 
@@ -145,7 +145,7 @@ void sfMusic_setAttenuation(sfMusic *music, float attenuation) {
     reinterpret_cast<sf::Music *>(music)->setAttenuation(attenuation);
 }
 
-void sfMusic_setPlayingOffset(sfMusic *music, sfInt64 timeOffset) {
+void sfMusic_setPlayingOffset(sfMusic *music, int64_t timeOffset) {
     reinterpret_cast<sf::Music *>(music)->setPlayingOffset(sf::microseconds(timeOffset));
 }
 

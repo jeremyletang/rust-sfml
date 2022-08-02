@@ -27,8 +27,8 @@
 // Headers
 
 #include "Audio/SoundRecorder.h"
-#include "Config.h"
 #include <SFML/Audio/SoundRecorder.hpp>
+#include <cstdint>
 
 // Helper class implementing the callback forwarding from
 // C++ to C in sfSoundRecorder
@@ -44,7 +44,7 @@ class sfSoundRecorderImpl : public sf::SoundRecorder {
                                           myUserData(userData) {
     }
 
-    void setProcessingInterval(sfInt64 interval) {
+    void setProcessingInterval(int64_t interval) {
         sf::SoundRecorder::setProcessingInterval(sf::microseconds(interval));
     }
 

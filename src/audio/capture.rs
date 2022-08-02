@@ -102,7 +102,7 @@ unsafe extern "C" fn on_start_callback<R: SoundRecorder>(user_data: *mut c_void)
 }
 
 unsafe extern "C" fn on_process_callback<R: SoundRecorder>(
-    data: *const sfInt16,
+    data: *const i16,
     len: usize,
     user_data: *mut c_void,
 ) -> bool {

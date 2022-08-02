@@ -70,7 +70,7 @@ extern "C" void sfFont_destroy(sf::Font *font) {
     delete reinterpret_cast<sf::Font *>(font);
 }
 
-extern "C" sfGlyph sfFont_getGlyph(const sf::Font *font, sfUint32 codePoint, unsigned int characterSize, bool bold, float outlineThickness) {
+extern "C" sfGlyph sfFont_getGlyph(const sf::Font *font, uint32_t codePoint, unsigned int characterSize, bool bold, float outlineThickness) {
     sfGlyph glyph = {0, {0, 0, 0, 0}, {0, 0, 0, 0}};
 
     sf::Glyph SFMLGlyph = reinterpret_cast<const sf::Font *>(font)->getGlyph(codePoint, characterSize, bold, outlineThickness);
@@ -88,7 +88,7 @@ extern "C" sfGlyph sfFont_getGlyph(const sf::Font *font, sfUint32 codePoint, uns
     return glyph;
 }
 
-extern "C" float sfFont_getKerning(const sf::Font *font, sfUint32 first, sfUint32 second, unsigned int characterSize) {
+extern "C" float sfFont_getKerning(const sf::Font *font, uint32_t first, uint32_t second, unsigned int characterSize) {
     return reinterpret_cast<const sf::Font *>(font)->getKerning(first, second, characterSize);
 }
 

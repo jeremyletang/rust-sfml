@@ -23,11 +23,9 @@
 
 // Headers
 
-#include "Config.h"
 #include "System/Vector2.h"
 #include <SFML/Window/Mouse.hpp>
 #include <SFML/Window/Window.hpp>
-#include <cstddef>
 
 extern "C" bool sfMouse_isButtonPressed(sf::Mouse::Button button) {
     return sf::Mouse::isButtonPressed(button);

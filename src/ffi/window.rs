@@ -495,8 +495,8 @@ extern "C" {
     ) -> *const sfVideoMode;
     pub fn sfWindow_createUnicode(
         mode: sfVideoMode,
-        title: *const sfUint32,
-        style: sfUint32,
+        title: *const u32,
+        style: u32,
         settings: *const sfContextSettings,
     ) -> *mut sfWindow;
     pub fn sfWindow_createFromHandle(
@@ -513,12 +513,12 @@ extern "C" {
     pub fn sfWindow_setPosition(window: *mut sfWindow, position: sfVector2i);
     pub fn sfWindow_getSize(window: *const sfWindow) -> sfVector2u;
     pub fn sfWindow_setSize(window: *mut sfWindow, size: sfVector2u);
-    pub fn sfWindow_setUnicodeTitle(window: *mut sfWindow, title: *const sfUint32);
+    pub fn sfWindow_setUnicodeTitle(window: *mut sfWindow, title: *const u32);
     pub fn sfWindow_setIcon(
         window: *mut sfWindow,
         width: c_uint,
         height: c_uint,
-        pixels: *const sfUint8,
+        pixels: *const u8,
     );
     pub fn sfWindow_setVisible(window: *mut sfWindow, visible: bool);
     pub fn sfWindow_setMouseCursorVisible(window: *mut sfWindow, visible: bool);
@@ -537,14 +537,14 @@ extern "C" {
     pub fn sfContext_destroy(context: *mut sfContext);
     pub fn sfContext_setActive(context: *mut sfContext, active: bool) -> bool;
     pub fn sfContext_getSettings(context: *const sfContext) -> *const sfContextSettings;
-    pub fn sfContext_getActiveContextId() -> sfUint64;
+    pub fn sfContext_getActiveContextId() -> u64;
     // Mouse
     pub fn sfMouse_isButtonPressed(button: MouseButton) -> bool;
     pub fn sfMouse_getPosition(relativeTo: *const sfWindow) -> sfVector2i;
     pub fn sfMouse_setPosition(position: sfVector2i, relativeTo: *const sfWindow);
     // Cursor
     pub fn sfCursor_createFromPixels(
-        pixels: *const sfUint8,
+        pixels: *const u8,
         size: sfVector2u,
         hotspot: sfVector2u,
     ) -> *mut sfCursor;

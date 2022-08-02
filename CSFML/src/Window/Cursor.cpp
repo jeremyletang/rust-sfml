@@ -23,12 +23,12 @@
 
 // Headers
 
-#include "Config.h"
 #include "System/Vector2.h"
 #include <SFML/Window/Cursor.hpp>
 #include <cstddef>
+#include <cstdint>
 
-extern "C" sf::Cursor *sfCursor_createFromPixels(const sfUint8 *pixels, sfVector2u size, sfVector2u hotspot) {
+extern "C" sf::Cursor *sfCursor_createFromPixels(const uint8_t *pixels, sfVector2u size, sfVector2u hotspot) {
     sf::Cursor *cursor = new sf::Cursor;
 
     if (!cursor->loadFromPixels(pixels, sf::Vector2u(size.x, size.y), sf::Vector2u(hotspot.x, hotspot.y))) {

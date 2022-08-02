@@ -28,17 +28,17 @@
 
 #include "Audio/SoundStatus.h"
 #include "Audio/Types.h"
-#include "Config.h"
 #include "System/Vector3.h"
+#include <cstdint>
 
 typedef struct
 {
-    sfInt16 *samples;         ///< Pointer to the audio samples
+    int16_t *samples;         ///< Pointer to the audio samples
     unsigned int sampleCount; ///< Number of samples pointed by Samples
 } sfSoundStreamChunk;
 
 typedef bool (*sfSoundStreamGetDataCallback)(sfSoundStreamChunk *, void *); ///< Type of the callback used to get a sound stream data
-typedef void (*sfSoundStreamSeekCallback)(sfInt64, void *);                 ///< Type of the callback used to seek in a sound stream
+typedef void (*sfSoundStreamSeekCallback)(int64_t, void *);                 ///< Type of the callback used to seek in a sound stream
 
 extern "C" sfSoundStream *sfSoundStream_create(sfSoundStreamGetDataCallback onGetData,
                                                sfSoundStreamSeekCallback onSeek,
@@ -72,7 +72,7 @@ extern "C" void sfSoundStream_setMinDistance(sfSoundStream *soundStream, float d
 
 extern "C" void sfSoundStream_setAttenuation(sfSoundStream *soundStream, float attenuation);
 
-extern "C" void sfSoundStream_setPlayingOffset(sfSoundStream *soundStream, sfInt64 timeOffset);
+extern "C" void sfSoundStream_setPlayingOffset(sfSoundStream *soundStream, int64_t timeOffset);
 
 extern "C" void sfSoundStream_setLoop(sfSoundStream *soundStream, bool loop);
 
@@ -90,6 +90,6 @@ extern "C" float sfSoundStream_getAttenuation(const sfSoundStream *soundStream);
 
 extern "C" bool sfSoundStream_getLoop(const sfSoundStream *soundStream);
 
-extern "C" sfInt64 sfSoundStream_getPlayingOffset(const sfSoundStream *soundStream);
+extern "C" int64_t sfSoundStream_getPlayingOffset(const sfSoundStream *soundStream);
 
 #endif // SFML_SOUNDSTREAM_H

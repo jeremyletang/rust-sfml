@@ -36,7 +36,7 @@ extern "C" sfSoundBuffer *sfSoundBuffer_createFromMemory(const void *data, size_
 
 extern "C" sfSoundBuffer *sfSoundBuffer_createFromStream(sfInputStream *stream);
 
-extern "C" sfSoundBuffer *sfSoundBuffer_createFromSamples(const sfInt16 *samples, sfUint64 sampleCount, unsigned int channelCount, unsigned int sampleRate);
+extern "C" sfSoundBuffer *sfSoundBuffer_createFromSamples(const int16_t *samples, uint64_t sampleCount, unsigned int channelCount, unsigned int sampleRate);
 
 extern "C" sfSoundBuffer *sfSoundBuffer_copy(const sfSoundBuffer *soundBuffer);
 
@@ -44,14 +44,14 @@ extern "C" void sfSoundBuffer_destroy(sfSoundBuffer *soundBuffer);
 
 extern "C" bool sfSoundBuffer_saveToFile(const sfSoundBuffer *soundBuffer, const char *filename);
 
-extern "C" const sfInt16 *sfSoundBuffer_getSamples(const sfSoundBuffer *soundBuffer);
+extern "C" const int16_t *sfSoundBuffer_getSamples(const sfSoundBuffer *soundBuffer);
 
-extern "C" sfUint64 sfSoundBuffer_getSampleCount(const sfSoundBuffer *soundBuffer);
+extern "C" uint64_t sfSoundBuffer_getSampleCount(const sfSoundBuffer *soundBuffer);
 
 extern "C" unsigned int sfSoundBuffer_getSampleRate(const sfSoundBuffer *soundBuffer);
 
 extern "C" unsigned int sfSoundBuffer_getChannelCount(const sfSoundBuffer *soundBuffer);
 
-extern "C" sfInt64 sfSoundBuffer_getDuration(const sfSoundBuffer *soundBuffer);
+extern "C" int64_t sfSoundBuffer_getDuration(const sfSoundBuffer *soundBuffer);
 
 #endif // SFML_SOUNDBUFFER_H

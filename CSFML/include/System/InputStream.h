@@ -25,12 +25,12 @@
 #define SFML_INPUTSTREAM_H
 
 // Headers
-#include "Config.h"
+#include <cstdint>
 
-typedef sfInt64 (*sfInputStreamReadFunc)(void *data, sfInt64 size, void *userData);
-typedef sfInt64 (*sfInputStreamSeekFunc)(sfInt64 position, void *userData);
-typedef sfInt64 (*sfInputStreamTellFunc)(void *userData);
-typedef sfInt64 (*sfInputStreamGetSizeFunc)(void *userData);
+typedef int64_t (*sfInputStreamReadFunc)(void *data, int64_t size, void *userData);
+typedef int64_t (*sfInputStreamSeekFunc)(int64_t position, void *userData);
+typedef int64_t (*sfInputStreamTellFunc)(void *userData);
+typedef int64_t (*sfInputStreamGetSizeFunc)(void *userData);
 
 struct sfInputStream;
 

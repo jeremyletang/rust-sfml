@@ -39,7 +39,7 @@
 #include <SFML/Window/Touch.hpp>
 #include <cstddef>
 
-extern "C" sf::RenderWindow *sfRenderWindow_createUnicode(sfVideoMode mode, const sfUint32 *title, sfUint32 style, const sf::ContextSettings *settings) {
+extern "C" sf::RenderWindow *sfRenderWindow_createUnicode(sfVideoMode mode, const uint32_t *title, uint32_t style, const sf::ContextSettings *settings) {
     // Convert video mode
     sf::VideoMode videoMode(mode.width, mode.height, mode.bitsPerPixel);
 
@@ -110,11 +110,11 @@ extern "C" void sfRenderWindow_setSize(sf::RenderWindow *renderWindow, sfVector2
     renderWindow->setSize(sf::Vector2u(size.x, size.y));
 }
 
-extern "C" void sfRenderWindow_setUnicodeTitle(sf::RenderWindow *renderWindow, const sfUint32 *title) {
+extern "C" void sfRenderWindow_setUnicodeTitle(sf::RenderWindow *renderWindow, const uint32_t *title) {
     renderWindow->setTitle(title);
 }
 
-extern "C" void sfRenderWindow_setIcon(sf::RenderWindow *renderWindow, unsigned int width, unsigned int height, const sfUint8 *pixels) {
+extern "C" void sfRenderWindow_setIcon(sf::RenderWindow *renderWindow, unsigned int width, unsigned int height, const uint8_t *pixels) {
     renderWindow->setIcon(width, height, pixels);
 }
 

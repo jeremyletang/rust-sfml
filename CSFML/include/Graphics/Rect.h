@@ -24,9 +24,6 @@
 #ifndef SFML_RECT_H
 #define SFML_RECT_H
 
-// Headers
-#include "Config.h"
-
 typedef struct
 {
     float left;

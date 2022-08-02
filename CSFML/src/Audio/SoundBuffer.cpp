@@ -61,7 +61,7 @@ sfSoundBuffer *sfSoundBuffer_createFromStream(sfInputStream *stream) {
     return reinterpret_cast<sfSoundBuffer *>(buffer);
 }
 
-sfSoundBuffer *sfSoundBuffer_createFromSamples(const sfInt16 *samples, sfUint64 sampleCount, unsigned int channelCount, unsigned int sampleRate) {
+sfSoundBuffer *sfSoundBuffer_createFromSamples(const int16_t *samples, uint64_t sampleCount, unsigned int channelCount, unsigned int sampleRate) {
     sf::SoundBuffer *buffer = new sf::SoundBuffer;
 
     if (!buffer->loadFromSamples(samples, sampleCount, channelCount, sampleRate)) {
@@ -85,11 +85,11 @@ bool sfSoundBuffer_saveToFile(const sfSoundBuffer *soundBuffer, const char *file
     return reinterpret_cast<const sf::SoundBuffer *>(soundBuffer)->saveToFile(filename);
 }
 
-const sfInt16 *sfSoundBuffer_getSamples(const sfSoundBuffer *soundBuffer) {
+const int16_t *sfSoundBuffer_getSamples(const sfSoundBuffer *soundBuffer) {
     return reinterpret_cast<const sf::SoundBuffer *>(soundBuffer)->getSamples();
 }
 
-sfUint64 sfSoundBuffer_getSampleCount(const sfSoundBuffer *soundBuffer) {
+uint64_t sfSoundBuffer_getSampleCount(const sfSoundBuffer *soundBuffer) {
     return reinterpret_cast<const sf::SoundBuffer *>(soundBuffer)->getSampleCount();
 }
 
@@ -101,7 +101,7 @@ unsigned int sfSoundBuffer_getChannelCount(const sfSoundBuffer *soundBuffer) {
     return reinterpret_cast<const sf::SoundBuffer *>(soundBuffer)->getChannelCount();
 }
 
-sfInt64 sfSoundBuffer_getDuration(const sfSoundBuffer *soundBuffer) {
-    sfInt64 time = reinterpret_cast<const sf::SoundBuffer *>(soundBuffer)->getDuration().asMicroseconds();
+int64_t sfSoundBuffer_getDuration(const sfSoundBuffer *soundBuffer) {
+    int64_t time = reinterpret_cast<const sf::SoundBuffer *>(soundBuffer)->getDuration().asMicroseconds();
     return time;
 }
