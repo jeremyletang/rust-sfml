@@ -2,9 +2,6 @@ use crate::ffi::system::{sfStdString, sfStdStringVector};
 pub use crate::ffi::*;
 
 extern "C" {
-    pub fn sfSoundRecorder_getDevice(rec: *const sfSoundRecorder) -> *const sfStdString;
-    pub fn sfSoundRecorder_getDefaultDevice() -> *mut sfStdString;
-    pub fn sfSoundRecorder_getAvailableDevices() -> *mut sfStdStringVector;
     pub fn sfSoundBufferRecorder_create() -> *mut sfSoundBufferRecorder;
     pub fn sfSoundBufferRecorder_destroy(bufRec: *mut sfSoundBufferRecorder);
     pub fn sfSoundBufferRecorder_start(
@@ -115,6 +112,34 @@ extern "C" {
     pub fn sfSoundBuffer_getSampleRate(soundBuffer: *const sfSoundBuffer) -> c_uint;
     pub fn sfSoundBuffer_getChannelCount(soundBuffer: *const sfSoundBuffer) -> c_uint;
     pub fn sfSoundBuffer_getDuration(soundBuffer: *const sfSoundBuffer) -> i64;
+    // SoundRecorder
+    pub fn sfSoundRecorder_create(
+        onStart: sfSoundRecorderStartCallback,
+        onProcess: sfSoundRecorderProcessCallback,
+        onStop: sfSoundRecorderStopCallback,
+        userData: *mut c_void,
+    ) -> *mut sfSoundRecorder;
+    pub fn sfSoundRecorder_destroy(soundRecorder: *mut sfSoundRecorder);
+    pub fn sfSoundRecorder_start(soundRecorder: *mut sfSoundRecorder, sampleRate: c_uint) -> bool;
+    pub fn sfSoundRecorder_stop(soundRecorder: *mut sfSoundRecorder);
+    pub fn sfSoundRecorder_getSampleRate(soundRecorder: *const sfSoundRecorder) -> c_uint;
+    pub fn sfSoundRecorder_isAvailable() -> bool;
+    pub fn sfSoundRecorder_setProcessingInterval(
+        soundRecorder: *mut sfSoundRecorder,
+        interval: i64,
+    );
+    pub fn sfSoundRecorder_getAvailableDevices() -> *mut sfStdStringVector;
+    pub fn sfSoundRecorder_getDefaultDevice() -> *mut sfStdString;
+    pub fn sfSoundRecorder_setDevice(
+        soundRecorder: *mut sfSoundRecorder,
+        name: *const c_char,
+    ) -> bool;
+    pub fn sfSoundRecorder_getDevice(soundRecorder: *mut sfSoundRecorder) -> *const sfStdString;
+    pub fn sfSoundRecorder_setChannelCount(
+        soundRecorder: *mut sfSoundRecorder,
+        channelCount: c_uint,
+    );
+    pub fn sfSoundRecorder_getChannelCount(soundRecorder: *const sfSoundRecorder) -> c_uint;
 }
 
 #[repr(C)]
@@ -124,3 +149,8 @@ pub struct sfTimeSpan {
     /// The length of the time range
     pub length: i64,
 }
+
+type sfSoundRecorderStartCallback = Option<unsafe extern "C" fn(user_data: *mut c_void) -> bool>;
+type sfSoundRecorderProcessCallback =
+    Option<unsafe extern "C" fn(samples: *const i16, len: usize, user_data: *mut c_void) -> bool>;
+type sfSoundRecorderStopCallback = Option<unsafe extern "C" fn(user_data: *mut c_void)>;

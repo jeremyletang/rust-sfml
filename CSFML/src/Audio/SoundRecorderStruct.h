@@ -26,9 +26,12 @@
 
 // Headers
 
-#include "Audio/SoundRecorder.h"
 #include <SFML/Audio/SoundRecorder.hpp>
 #include <cstdint>
+
+typedef bool (*sfSoundRecorderStartCallback)(void *);                            ///< Type of the callback used when starting a capture
+typedef bool (*sfSoundRecorderProcessCallback)(const int16_t *, size_t, void *); ///< Type of the callback used to process audio data
+typedef void (*sfSoundRecorderStopCallback)(void *);                             ///< Type of the callback used when stopping a capture
 
 // Helper class implementing the callback forwarding from
 // C++ to C in sfSoundRecorder

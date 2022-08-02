@@ -23,40 +23,39 @@
 
 // Headers
 
-#include "Audio/SoundRecorder.h"
 #include "Audio/SoundRecorderStruct.h"
 #include <cstddef>
 #include <cstdint>
 #include <vector>
 
-sfSoundRecorder *sfSoundRecorder_create(sfSoundRecorderStartCallback onStart,
+extern "C" sfSoundRecorder *sfSoundRecorder_create(sfSoundRecorderStartCallback onStart,
                                         sfSoundRecorderProcessCallback onProcess,
                                         sfSoundRecorderStopCallback onStop,
                                         void *userData) {
     return new sfSoundRecorder(onStart, onProcess, onStop, userData);
 }
 
-void sfSoundRecorder_destroy(sfSoundRecorder *soundRecorder) {
+extern "C" void sfSoundRecorder_destroy(sfSoundRecorder *soundRecorder) {
     delete soundRecorder;
 }
 
-bool sfSoundRecorder_start(sfSoundRecorder *soundRecorder, unsigned int sampleRate) {
+extern "C" bool sfSoundRecorder_start(sfSoundRecorder *soundRecorder, unsigned int sampleRate) {
     return soundRecorder->This.start(sampleRate);
 }
 
-void sfSoundRecorder_stop(sfSoundRecorder *soundRecorder) {
+extern "C" void sfSoundRecorder_stop(sfSoundRecorder *soundRecorder) {
     soundRecorder->This.stop();
 }
 
-unsigned int sfSoundRecorder_getSampleRate(const sfSoundRecorder *soundRecorder) {
+extern "C" unsigned int sfSoundRecorder_getSampleRate(const sfSoundRecorder *soundRecorder) {
     return soundRecorder->This.getSampleRate();
 }
 
-bool sfSoundRecorder_isAvailable(void) {
+extern "C" bool sfSoundRecorder_isAvailable(void) {
     return sf::SoundRecorder::isAvailable();
 }
 
-void sfSoundRecorder_setProcessingInterval(sfSoundRecorder *soundRecorder, int64_t interval) {
+extern "C" void sfSoundRecorder_setProcessingInterval(sfSoundRecorder *soundRecorder, int64_t interval) {
     soundRecorder->This.setProcessingInterval(interval);
 }
 
@@ -72,7 +71,7 @@ extern "C" std::string *sfSoundRecorder_getDefaultDevice() {
     return copy;
 }
 
-bool sfSoundRecorder_setDevice(sfSoundRecorder *soundRecorder, const char *name) {
+extern "C" bool sfSoundRecorder_setDevice(sfSoundRecorder *soundRecorder, const char *name) {
     return soundRecorder->This.setDevice(name);
 }
 
@@ -80,10 +79,10 @@ extern "C" const std::string *sfSoundRecorder_getDevice(sfSoundRecorder *soundRe
     return &soundRecorder->This.getDevice();
 }
 
-void sfSoundRecorder_setChannelCount(sfSoundRecorder *soundRecorder, unsigned int channelCount) {
+extern "C" void sfSoundRecorder_setChannelCount(sfSoundRecorder *soundRecorder, unsigned int channelCount) {
     soundRecorder->This.setChannelCount(channelCount);
 }
 
-unsigned int sfSoundRecorder_getChannelCount(const sfSoundRecorder *soundRecorder) {
+extern "C" unsigned int sfSoundRecorder_getChannelCount(const sfSoundRecorder *soundRecorder) {
     return soundRecorder->This.getChannelCount();
 }
