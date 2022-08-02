@@ -72,7 +72,8 @@ impl<'stream> Music<'stream> {
     #[must_use]
     pub fn from_file(filename: &str) -> Option<Music> {
         let c_str = CString::new(filename).unwrap();
-        let music_tmp: *mut ffi::sfMusic = unsafe { ffi::sfMusic_createFromFile(c_str.as_ptr()) };
+        let music_tmp: *mut ffi::sfMusic =
+            unsafe { ffi::audio::sfMusic_createFromFile(c_str.as_ptr()) };
         if music_tmp.is_null() {
             None
         } else {
@@ -100,7 +101,7 @@ impl<'stream> Music<'stream> {
         stream: &'stream mut InputStream<T>,
     ) -> Option<Music<'stream>> {
         let music_tmp: *mut ffi::sfMusic =
-            unsafe { ffi::sfMusic_createFromStream(&mut *stream.stream) };
+            unsafe { ffi::audio::sfMusic_createFromStream(&mut *stream.stream) };
         if music_tmp.is_null() {
             None
         } else {
@@ -127,7 +128,7 @@ impl<'stream> Music<'stream> {
     #[must_use]
     pub fn from_memory(mem: &[u8]) -> Option<Music> {
         let music_tmp =
-            unsafe { ffi::sfMusic_createFromMemory(mem.as_ptr() as *const _, mem.len()) };
+            unsafe { ffi::audio::sfMusic_createFromMemory(mem.as_ptr() as *const _, mem.len()) };
         if music_tmp.is_null() {
             None
         } else {
@@ -146,7 +147,7 @@ impl<'stream> Music<'stream> {
     ///
     /// By default, the music will *not* loop.
     pub fn set_looping(&mut self, looping: bool) {
-        unsafe { ffi::sfMusic_setLoop(self.music, looping) }
+        unsafe { ffi::audio::sfMusic_setLoop(self.music, looping) }
     }
 
     /// Tell whether or not a music is in loop mode
@@ -154,7 +155,7 @@ impl<'stream> Music<'stream> {
     /// Return true if the music is looping, false otherwise
     #[must_use]
     pub fn is_looping(&self) -> bool {
-        unsafe { ffi::sfMusic_getLoop(self.music) }
+        unsafe { ffi::audio::sfMusic_getLoop(self.music) }
     }
 
     /// Get the total duration of a music
@@ -162,7 +163,7 @@ impl<'stream> Music<'stream> {
     /// Return Music duration
     #[must_use]
     pub fn duration(&self) -> Time {
-        unsafe { Time::from_raw(ffi::sfMusic_getDuration(self.music)) }
+        unsafe { Time::from_raw(ffi::audio::sfMusic_getDuration(self.music)) }
     }
 
     /// Start or resume playing a music
@@ -173,7 +174,7 @@ impl<'stream> Music<'stream> {
     /// This function uses its own thread so that it doesn't block
     /// the rest of the program while the music is played.
     pub fn play(&mut self) {
-        unsafe { ffi::sfMusic_play(self.music) }
+        unsafe { ffi::audio::sfMusic_play(self.music) }
     }
 
     /// Pause a music
@@ -181,7 +182,7 @@ impl<'stream> Music<'stream> {
     /// This function pauses the music if it was playing,
     /// otherwise (music already paused or stopped) it has no effect.
     pub fn pause(&mut self) {
-        unsafe { ffi::sfMusic_pause(self.music) }
+        unsafe { ffi::audio::sfMusic_pause(self.music) }
     }
 
     /// Stop playing a music
@@ -190,7 +191,7 @@ impl<'stream> Music<'stream> {
     /// and does nothing if it was already stopped.
     /// It also resets the playing position (unlike pause).
     pub fn stop(&mut self) {
-        unsafe { ffi::sfMusic_stop(self.music) }
+        unsafe { ffi::audio::sfMusic_stop(self.music) }
     }
 
     /// Return the number of channels of a music
@@ -200,7 +201,7 @@ impl<'stream> Music<'stream> {
     /// Return the number of channels
     #[must_use]
     pub fn channel_count(&self) -> u32 {
-        unsafe { ffi::sfMusic_getChannelCount(self.music) }
+        unsafe { ffi::audio::sfMusic_getChannelCount(self.music) }
     }
 
     /// Get the sample rate of a music
@@ -211,7 +212,7 @@ impl<'stream> Music<'stream> {
     /// Return the sample rate, in number of samples per second
     #[must_use]
     pub fn sample_rate(&self) -> u32 {
-        unsafe { ffi::sfMusic_getSampleRate(self.music) }
+        unsafe { ffi::audio::sfMusic_getSampleRate(self.music) }
     }
 
     /// Get the current status of a music (stopped, paused, playing)
@@ -219,7 +220,7 @@ impl<'stream> Music<'stream> {
     /// Return current status
     #[must_use]
     pub fn status(&self) -> SoundStatus {
-        unsafe { SoundStatus(ffi::sfMusic_getStatus(self.music)) }
+        unsafe { SoundStatus(ffi::audio::sfMusic_getStatus(self.music)) }
     }
 
     /// Get the current playing position of a music
@@ -227,7 +228,7 @@ impl<'stream> Music<'stream> {
     /// Return the current playing position
     #[must_use]
     pub fn playing_offset(&self) -> Time {
-        unsafe { Time::from_raw(ffi::sfMusic_getPlayingOffset(self.music)) }
+        unsafe { Time::from_raw(ffi::audio::sfMusic_getPlayingOffset(self.music)) }
     }
 
     /// Change the current playing position of a music
@@ -238,7 +239,7 @@ impl<'stream> Music<'stream> {
     /// # Arguments
     /// * timeOffset - New playing position
     pub fn set_playing_offset(&mut self, time_offset: Time) {
-        unsafe { ffi::sfMusic_setPlayingOffset(self.music, time_offset.raw()) }
+        unsafe { ffi::audio::sfMusic_setPlayingOffset(self.music, time_offset.raw()) }
     }
     /// Get the positions of the of the music's looping sequence.
     ///
@@ -253,7 +254,7 @@ impl<'stream> Music<'stream> {
     /// [`loop_points`]: Music::loop_points
     #[must_use]
     pub fn loop_points(&self) -> TimeSpan {
-        TimeSpan::from_raw(unsafe { ffi::sfMusic_getLoopPoints(self.music) })
+        TimeSpan::from_raw(unsafe { ffi::audio::sfMusic_getLoopPoints(self.music) })
     }
     /// Sets the beginning and end of the music's looping sequence.
     ///
@@ -266,53 +267,53 @@ impl<'stream> Music<'stream> {
     /// loop range. This function can be safely called at any point after a stream is opened,
     /// and will be applied to a playing sound without affecting the current playing offset.
     pub fn set_loop_points(&mut self, time_points: TimeSpan) {
-        unsafe { ffi::sfMusic_setLoopPoints(self.music, time_points.into_raw()) }
+        unsafe { ffi::audio::sfMusic_setLoopPoints(self.music, time_points.into_raw()) }
     }
 }
 
 impl<'stream> SoundSource for Music<'stream> {
     fn set_pitch(&mut self, pitch: f32) {
-        unsafe { ffi::sfMusic_setPitch(self.music, pitch) }
+        unsafe { ffi::audio::sfMusic_setPitch(self.music, pitch) }
     }
     fn set_volume(&mut self, volume: f32) {
-        unsafe { ffi::sfMusic_setVolume(self.music, volume) }
+        unsafe { ffi::audio::sfMusic_setVolume(self.music, volume) }
     }
     fn set_position<P: Into<Vector3f>>(&mut self, position: P) {
-        unsafe { ffi::sfMusic_setPosition(self.music, position.into().raw()) }
+        unsafe { ffi::audio::sfMusic_setPosition(self.music, position.into().raw()) }
     }
     fn set_relative_to_listener(&mut self, relative: bool) {
-        unsafe { ffi::sfMusic_setRelativeToListener(self.music, relative) }
+        unsafe { ffi::audio::sfMusic_setRelativeToListener(self.music, relative) }
     }
     fn set_min_distance(&mut self, distance: f32) {
-        unsafe { ffi::sfMusic_setMinDistance(self.music, distance) }
+        unsafe { ffi::audio::sfMusic_setMinDistance(self.music, distance) }
     }
     fn set_attenuation(&mut self, attenuation: f32) {
-        unsafe { ffi::sfMusic_setAttenuation(self.music, attenuation) }
+        unsafe { ffi::audio::sfMusic_setAttenuation(self.music, attenuation) }
     }
     fn pitch(&self) -> f32 {
-        unsafe { ffi::sfMusic_getPitch(self.music) }
+        unsafe { ffi::audio::sfMusic_getPitch(self.music) }
     }
     fn volume(&self) -> f32 {
-        unsafe { ffi::sfMusic_getVolume(self.music) }
+        unsafe { ffi::audio::sfMusic_getVolume(self.music) }
     }
     fn position(&self) -> Vector3f {
-        unsafe { Vector3f::from_raw(ffi::sfMusic_getPosition(self.music)) }
+        unsafe { Vector3f::from_raw(ffi::audio::sfMusic_getPosition(self.music)) }
     }
     fn is_relative_to_listener(&self) -> bool {
-        unsafe { ffi::sfMusic_isRelativeToListener(self.music) }
+        unsafe { ffi::audio::sfMusic_isRelativeToListener(self.music) }
     }
     fn min_distance(&self) -> f32 {
-        unsafe { ffi::sfMusic_getMinDistance(self.music) }
+        unsafe { ffi::audio::sfMusic_getMinDistance(self.music) }
     }
     fn attenuation(&self) -> f32 {
-        unsafe { ffi::sfMusic_getAttenuation(self.music) }
+        unsafe { ffi::audio::sfMusic_getAttenuation(self.music) }
     }
 }
 
 impl<'stream> Drop for Music<'stream> {
     fn drop(&mut self) {
         unsafe {
-            ffi::sfMusic_destroy(self.music);
+            ffi::audio::sfMusic_destroy(self.music);
         }
     }
 }

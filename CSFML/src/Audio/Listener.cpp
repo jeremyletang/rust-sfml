@@ -23,8 +23,8 @@
 
 // Headers
 
-#include <SFML/Audio/Listener.hpp>
 #include "System/Vector3.h"
+#include <SFML/Audio/Listener.hpp>
 
 extern "C" void sfListener_setGlobalVolume(float volume) {
     sf::Listener::setGlobalVolume(volume);

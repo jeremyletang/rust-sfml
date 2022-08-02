@@ -27,8 +27,8 @@
 // Headers
 
 #include "Audio/Types.h"
-#include <stddef.h>
 #include <cstdint>
+#include <stddef.h>
 
 struct sfInputStream;
 

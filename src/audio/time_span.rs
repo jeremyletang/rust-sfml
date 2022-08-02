@@ -10,14 +10,14 @@ pub struct TimeSpan {
 }
 
 impl TimeSpan {
-    pub(crate) fn from_raw(raw: ffi::sfTimeSpan) -> Self {
+    pub(crate) fn from_raw(raw: ffi::audio::sfTimeSpan) -> Self {
         Self {
             offset: Time::from_raw(raw.offset),
             length: Time::from_raw(raw.length),
         }
     }
-    pub(crate) fn into_raw(self) -> ffi::sfTimeSpan {
-        ffi::sfTimeSpan {
+    pub(crate) fn into_raw(self) -> ffi::audio::sfTimeSpan {
+        ffi::audio::sfTimeSpan {
             offset: self.offset.raw(),
             length: self.length.raw(),
         }
