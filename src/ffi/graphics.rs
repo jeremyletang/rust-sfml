@@ -1,5 +1,3 @@
-use std::os::raw::c_float;
-
 pub use crate::ffi::*;
 use crate::{
     ffi::window::{sfContextSettings, sfCursor, sfWindow, sfWindowHandle, Event},
@@ -904,14 +902,14 @@ pub struct sfFontInfo {
 #[derive(Clone, Copy, Debug)]
 pub struct sfGlyph {
     ///< Offset to move horizontically to the next character
-    pub advance: c_float,
+    pub advance: f32,
     ///< Bounding rectangle of the glyph, in coordinates relative to the baseline
     pub bounds: sfFloatRect,
     ///< Texture coordinates of the glyph inside the font's image
     pub textureRect: sfIntRect,
 }
 
-pub type sfFloatRect = Rect<c_float>;
+pub type sfFloatRect = Rect<f32>;
 pub type sfIntRect = Rect<c_int>;
 
 #[repr(C)]
@@ -946,7 +944,7 @@ pub struct sfGlslBvec2 {
 }
 
 // 3D vectors
-pub type sfGlslVec3 = crate::system::Vector3<c_float>;
+pub type sfGlslVec3 = crate::system::Vector3<f32>;
 
 #[repr(C)]
 pub struct sfGlslIvec3 {
@@ -965,10 +963,10 @@ pub struct sfGlslBvec3 {
 // 4D vectors
 #[repr(C)]
 pub struct sfGlslVec4 {
-    pub x: c_float,
-    pub y: c_float,
-    pub z: c_float,
-    pub w: c_float,
+    pub x: f32,
+    pub y: f32,
+    pub z: f32,
+    pub w: f32,
 }
 
 #[repr(C)]
@@ -990,10 +988,10 @@ pub struct sfGlslBvec4 {
 // matrices
 #[repr(C)]
 pub struct sfGlslMat3 {
-    pub array: [c_float; 3 * 3],
+    pub array: [f32; 3 * 3],
 }
 
 #[repr(C)]
 pub struct sfGlslMat4 {
-    pub array: [c_float; 4 * 4],
+    pub array: [f32; 4 * 4],
 }
