@@ -105,12 +105,12 @@ extern "C" void sfConvexShape_scale(sf::ConvexShape *shape, sfVector2f factors) 
     shape->scale(factors.x, factors.y);
 }
 
-extern "C" sf::Transform sfConvexShape_getTransform(const sf::ConvexShape *shape) {
-    return shape->getTransform();
+extern "C" sf::Transform const *sfConvexShape_getTransform(const sf::ConvexShape *shape) {
+    return &shape->getTransform();
 }
 
-extern "C" sf::Transform sfConvexShape_getInverseTransform(const sf::ConvexShape *shape) {
-    return shape->getInverseTransform();
+extern "C" sf::Transform const *sfConvexShape_getInverseTransform(const sf::ConvexShape *shape) {
+    return &shape->getInverseTransform();
 }
 
 extern "C" void sfConvexShape_setTexture(sf::ConvexShape *shape, const sf::Texture *texture, bool resetRect) {

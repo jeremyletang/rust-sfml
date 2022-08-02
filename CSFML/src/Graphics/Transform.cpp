@@ -23,26 +23,11 @@
 
 // Headers
 
-#include "Graphics/Transform.h"
 #include "Graphics/Rect.h"
 #include "System/Vector2.h"
 #include <SFML/Graphics/Transform.hpp>
 #include <cstddef>
 #include <cstring>
-
-extern "C" sf::Transform sfTransform_fromMatrix(float a00, float a01, float a02,
-                                                float a10, float a11, float a12,
-                                                float a20, float a21, float a22) {
-    return sf::Transform(a00, a01, a02, a10, a11, a12, a20, a21, a22);
-}
-
-extern "C" const float *sfTransform_getMatrix(const sf::Transform *transform) {
-    return transform->getMatrix();
-}
-
-extern "C" sf::Transform sfTransform_getInverse(const sf::Transform *transform) {
-    return transform->getInverse();
-}
 
 extern "C" sfVector2f sfTransform_transformPoint(const sf::Transform *transform, sfVector2f point) {
     sfVector2f p = {0, 0};

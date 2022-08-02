@@ -54,7 +54,7 @@ pub trait Transformable {
     /// [`set_scale`](Self::set_scale), which overwrites it.
     fn scale<F: Into<Vector2f>>(&mut self, factors: F);
     /// Gets the combined transform of the object.
-    fn transform(&self) -> Transform;
+    fn transform(&self) -> &Transform;
     /// Gets the inverse combined transform of the object.
-    fn inverse_transform(&self) -> Transform;
+    fn inverse_transform(&self) -> &Transform;
 }

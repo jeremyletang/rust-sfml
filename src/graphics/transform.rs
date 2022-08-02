@@ -37,17 +37,17 @@ impl Transform {
         a21: f32,
         a22: f32,
     ) -> Transform {
-        unsafe { ffi::sfTransform_fromMatrix(a00, a01, a02, a10, a11, a12, a20, a21, a22) }
+        Self {
+            matrix: [
+                a00, a10, 0., a20, a01, a11, 0., a21, 0., 0., 1., 0., a02, a12, 0., a22,
+            ],
+        }
     }
 
     /// Return the matrix
     #[must_use]
     pub fn get_matrix(&self) -> &[f32; 16] {
-        unsafe {
-            let ptr = ffi::sfTransform_getMatrix(self);
-            let arr_ptr: *const [f32; 16] = ptr as _;
-            &*arr_ptr
-        }
+        &self.matrix
     }
 
     /// The identity transform (does nothing)
@@ -65,7 +65,31 @@ impl Transform {
     /// Return the inverse matrix
     #[must_use]
     pub fn inverse(&self) -> Transform {
-        unsafe { ffi::sfTransform_getInverse(self) }
+        // Directly translated from SFML source code.
+        let det = self.matrix[0]
+            * (self.matrix[15] * self.matrix[5] - self.matrix[7] * self.matrix[13])
+            - self.matrix[1]
+                * (self.matrix[15] * self.matrix[4] - self.matrix[7] * self.matrix[12])
+            + self.matrix[3]
+                * (self.matrix[13] * self.matrix[4] - self.matrix[5] * self.matrix[12]);
+
+        // Compute the inverse if the determinant is not zero
+        // (don't use an epsilon because the determinant may *really* be tiny)
+        if det != 0. {
+            Self::new(
+                (self.matrix[15] * self.matrix[5] - self.matrix[7] * self.matrix[13]) / det,
+                -(self.matrix[15] * self.matrix[4] - self.matrix[7] * self.matrix[12]) / det,
+                (self.matrix[13] * self.matrix[4] - self.matrix[5] * self.matrix[12]) / det,
+                -(self.matrix[15] * self.matrix[1] - self.matrix[3] * self.matrix[13]) / det,
+                (self.matrix[15] * self.matrix[0] - self.matrix[3] * self.matrix[12]) / det,
+                -(self.matrix[13] * self.matrix[0] - self.matrix[1] * self.matrix[12]) / det,
+                (self.matrix[7] * self.matrix[1] - self.matrix[3] * self.matrix[5]) / det,
+                -(self.matrix[7] * self.matrix[0] - self.matrix[3] * self.matrix[4]) / det,
+                (self.matrix[5] * self.matrix[0] - self.matrix[1] * self.matrix[4]) / det,
+            )
+        } else {
+            Self::IDENTITY
+        }
     }
 
     /// Combine two transforms

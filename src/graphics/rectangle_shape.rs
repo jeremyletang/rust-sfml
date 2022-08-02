@@ -122,11 +122,11 @@ impl<'s> Transformable for RectangleShape<'s> {
     fn scale<F: Into<Vector2f>>(&mut self, factors: F) {
         unsafe { ffi::sfRectangleShape_scale(self.rectangle_shape, factors.into().raw()) }
     }
-    fn transform(&self) -> Transform {
-        unsafe { ffi::sfRectangleShape_getTransform(self.rectangle_shape) }
+    fn transform(&self) -> &Transform {
+        unsafe { &*ffi::sfRectangleShape_getTransform(self.rectangle_shape) }
     }
-    fn inverse_transform(&self) -> Transform {
-        unsafe { ffi::sfRectangleShape_getInverseTransform(self.rectangle_shape) }
+    fn inverse_transform(&self) -> &Transform {
+        unsafe { &*ffi::sfRectangleShape_getInverseTransform(self.rectangle_shape) }
     }
 }
 

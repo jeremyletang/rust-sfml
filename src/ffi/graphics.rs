@@ -142,29 +142,31 @@ pub enum ShaderType {
 }
 
 extern "C" {
-    pub fn sfCircleShape_getTransform(shape: *const sfCircleShape) -> Transform;
-    pub fn sfCircleShape_getInverseTransform(shape: *const sfCircleShape) -> Transform;
-    pub fn sfTransform_fromMatrix(
-        a00: f32,
-        a01: f32,
-        a02: f32,
-        a10: f32,
-        a11: f32,
-        a12: f32,
-        a20: f32,
-        a21: f32,
-        a22: f32,
-    ) -> Transform;
-    pub fn sfTransform_getMatrix(tf: *const Transform) -> *const f32;
-    pub fn sfTransform_getInverse(tf: *const Transform) -> Transform;
-    pub fn sfTransform_transformPoint(tf: *const Transform, point: sfVector2f) -> sfVector2f;
-    pub fn sfTransform_transformRect(tf: *const Transform, rect: sfFloatRect) -> sfFloatRect;
-    pub fn sfTransform_combine(tf: *mut Transform, other: *const Transform);
-    pub fn sfTransform_translate(tf: *mut Transform, x: f32, y: f32);
-    pub fn sfTransform_rotate(tf: *mut Transform, angle: f32);
-    pub fn sfTransform_rotateWithCenter(tf: *mut Transform, angle: f32, cx: f32, cy: f32);
-    pub fn sfTransform_scale(tf: *mut Transform, x: f32, y: f32);
-    pub fn sfTransform_scaleWithCenter(tf: *mut Transform, x: f32, y: f32, cx: f32, cy: f32);
+    // Transform
+    pub fn sfTransform_transformPoint(transform: *const Transform, point: sfVector2f)
+        -> sfVector2f;
+    pub fn sfTransform_transformRect(
+        transform: *const Transform,
+        rectangle: sfFloatRect,
+    ) -> sfFloatRect;
+    pub fn sfTransform_combine(transform: *mut Transform, other: *const Transform);
+    pub fn sfTransform_translate(transform: *mut Transform, x: f32, y: f32);
+    pub fn sfTransform_rotate(transform: *mut Transform, angle: f32);
+    pub fn sfTransform_rotateWithCenter(
+        transform: *mut Transform,
+        angle: f32,
+        centerX: f32,
+        centerY: f32,
+    );
+    pub fn sfTransform_scale(transform: *mut Transform, scaleX: f32, scaleY: f32);
+    pub fn sfTransform_scaleWithCenter(
+        transform: *mut Transform,
+        scaleX: f32,
+        scaleY: f32,
+        centerX: f32,
+        centerY: f32,
+    );
+    // RenderTexture
     pub fn sfRenderTexture_drawSprite(
         rt: *mut sfRenderTexture,
         object: *const sfSprite,
@@ -244,6 +246,7 @@ extern "C" {
     pub fn sfRenderTexture_setRepeated(renderTexture: *mut sfRenderTexture, repeated: bool);
     pub fn sfRenderTexture_isRepeated(renderTexture: *const sfRenderTexture) -> bool;
     pub fn sfRenderTexture_generateMipmap(renderTexture: *mut sfRenderTexture) -> bool;
+    // sfCircleShape
     pub fn sfCircleShape_create() -> *mut sfCircleShape;
     pub fn sfCircleShape_copy(shape: *const sfCircleShape) -> *mut sfCircleShape;
     pub fn sfCircleShape_destroy(shape: *mut sfCircleShape);
@@ -258,6 +261,8 @@ extern "C" {
     pub fn sfCircleShape_move(shape: *mut sfCircleShape, offset: sfVector2f);
     pub fn sfCircleShape_rotate(shape: *mut sfCircleShape, angle: f32);
     pub fn sfCircleShape_scale(shape: *mut sfCircleShape, factors: sfVector2f);
+    pub fn sfCircleShape_getTransform(shape: *const sfCircleShape) -> *const Transform;
+    pub fn sfCircleShape_getInverseTransform(shape: *const sfCircleShape) -> *const Transform;
     pub fn sfCircleShape_setTexture(
         shape: *mut sfCircleShape,
         texture: *const sfTexture,
@@ -279,6 +284,7 @@ extern "C" {
     pub fn sfCircleShape_setPointCount(shape: *mut sfCircleShape, count: usize);
     pub fn sfCircleShape_getLocalBounds(shape: *const sfCircleShape) -> sfFloatRect;
     pub fn sfCircleShape_getGlobalBounds(shape: *const sfCircleShape) -> sfFloatRect;
+
     // RenderWindow
     pub fn sfRenderWindow_createUnicode(
         mode: sfVideoMode,
@@ -412,8 +418,8 @@ extern "C" {
     pub fn sfConvexShape_move(shape: *mut sfConvexShape, offset: sfVector2f);
     pub fn sfConvexShape_rotate(shape: *mut sfConvexShape, angle: f32);
     pub fn sfConvexShape_scale(shape: *mut sfConvexShape, factors: sfVector2f);
-    pub fn sfConvexShape_getTransform(shape: *const sfConvexShape) -> Transform;
-    pub fn sfConvexShape_getInverseTransform(shape: *const sfConvexShape) -> Transform;
+    pub fn sfConvexShape_getTransform(shape: *const sfConvexShape) -> *const Transform;
+    pub fn sfConvexShape_getInverseTransform(shape: *const sfConvexShape) -> *const Transform;
     pub fn sfConvexShape_setTexture(
         shape: *mut sfConvexShape,
         texture: *const sfTexture,
@@ -434,6 +440,7 @@ extern "C" {
     pub fn sfConvexShape_setPoint(shape: *mut sfConvexShape, index: usize, point: sfVector2f);
     pub fn sfConvexShape_getLocalBounds(shape: *const sfConvexShape) -> sfFloatRect;
     pub fn sfConvexShape_getGlobalBounds(shape: *const sfConvexShape) -> sfFloatRect;
+
     // SfImage
     pub fn sfImage_create(width: c_uint, height: c_uint) -> *mut sfImage;
     pub fn sfImage_createFromColor(width: c_uint, height: c_uint, color: sfColor) -> *mut sfImage;
@@ -475,8 +482,9 @@ extern "C" {
     pub fn sfRectangleShape_move(shape: *mut sfRectangleShape, offset: sfVector2f);
     pub fn sfRectangleShape_rotate(shape: *mut sfRectangleShape, angle: f32);
     pub fn sfRectangleShape_scale(shape: *mut sfRectangleShape, factors: sfVector2f);
-    pub fn sfRectangleShape_getTransform(shape: *const sfRectangleShape) -> Transform;
-    pub fn sfRectangleShape_getInverseTransform(shape: *const sfRectangleShape) -> Transform;
+    pub fn sfRectangleShape_getTransform(shape: *const sfRectangleShape) -> *const Transform;
+    pub fn sfRectangleShape_getInverseTransform(shape: *const sfRectangleShape)
+        -> *const Transform;
     pub fn sfRectangleShape_setTexture(
         shape: *mut sfRectangleShape,
         texture: *const sfTexture,
@@ -497,6 +505,7 @@ extern "C" {
     pub fn sfRectangleShape_getSize(shape: *const sfRectangleShape) -> sfVector2f;
     pub fn sfRectangleShape_getLocalBounds(shape: *const sfRectangleShape) -> sfFloatRect;
     pub fn sfRectangleShape_getGlobalBounds(shape: *const sfRectangleShape) -> sfFloatRect;
+
     // SfShader
     pub fn sfShader_defaultConstruct() -> *mut sfShader;
     pub fn sfShader_loadFromMemory_1(
@@ -655,8 +664,8 @@ extern "C" {
     pub fn sfSprite_move(sprite: *mut sfSprite, offset: sfVector2f);
     pub fn sfSprite_rotate(sprite: *mut sfSprite, angle: f32);
     pub fn sfSprite_scale(sprite: *mut sfSprite, factors: sfVector2f);
-    pub fn sfSprite_getTransform(sprite: *const sfSprite) -> Transform;
-    pub fn sfSprite_getInverseTransform(sprite: *const sfSprite) -> Transform;
+    pub fn sfSprite_getTransform(sprite: *const sfSprite) -> *const Transform;
+    pub fn sfSprite_getInverseTransform(sprite: *const sfSprite) -> *const Transform;
     pub fn sfSprite_setTexture(sprite: *mut sfSprite, texture: *const sfTexture, resetRect: bool);
     pub fn sfSprite_setTextureRect(sprite: *mut sfSprite, rectangle: sfIntRect);
     pub fn sfSprite_setColor(sprite: *mut sfSprite, color: sfColor);
@@ -680,8 +689,8 @@ extern "C" {
     pub fn sfText_move(text: *mut sfText, offset: sfVector2f);
     pub fn sfText_rotate(text: *mut sfText, angle: f32);
     pub fn sfText_scale(text: *mut sfText, factors: sfVector2f);
-    pub fn sfText_getTransform(text: *const sfText) -> Transform;
-    pub fn sfText_getInverseTransform(text: *const sfText) -> Transform;
+    pub fn sfText_getTransform(text: *const sfText) -> *const Transform;
+    pub fn sfText_getInverseTransform(text: *const sfText) -> *const Transform;
     pub fn sfText_setUnicodeString(text: *mut sfText, string: *const u32);
     pub fn sfText_setFont(text: *mut sfText, font: *const sfFont);
     pub fn sfText_setCharacterSize(text: *mut sfText, size: c_uint);
@@ -833,8 +842,8 @@ extern "C" {
     pub fn sfShape_move(shape: *mut sfShape, offset: sfVector2f);
     pub fn sfShape_rotate(shape: *mut sfShape, angle: f32);
     pub fn sfShape_scale(shape: *mut sfShape, factors: sfVector2f);
-    pub fn sfShape_getTransform(shape: *const sfShape) -> Transform;
-    pub fn sfShape_getInverseTransform(shape: *const sfShape) -> Transform;
+    pub fn sfShape_getTransform(shape: *const sfShape) -> *const Transform;
+    pub fn sfShape_getInverseTransform(shape: *const sfShape) -> *const Transform;
     pub fn sfShape_setTexture(shape: *mut sfShape, texture: *const sfTexture, resetRect: bool);
     pub fn sfShape_setTextureRect(shape: *mut sfShape, rect: sfIntRect);
     pub fn sfShape_setFillColor(shape: *mut sfShape, color: sfColor);
@@ -850,6 +859,7 @@ extern "C" {
     pub fn sfShape_getLocalBounds(shape: *const sfShape) -> sfFloatRect;
     pub fn sfShape_getGlobalBounds(shape: *const sfShape) -> sfFloatRect;
     pub fn sfShape_update(shape: *mut sfShape);
+
     // VertexBuffer
     pub fn sfVertexBuffer_create(
         vertexCount: c_uint,

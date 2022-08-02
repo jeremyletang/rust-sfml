@@ -102,12 +102,12 @@ extern "C" void sfShape_scale(sfShape *shape, sfVector2f factors) {
     shape->This.scale(factors.x, factors.y);
 }
 
-extern "C" sf::Transform sfShape_getTransform(const sfShape *shape) {
-    return shape->This.getTransform();
+extern "C" sf::Transform const *sfShape_getTransform(const sfShape *shape) {
+    return &shape->This.getTransform();
 }
 
-extern "C" sf::Transform sfShape_getInverseTransform(const sfShape *shape) {
-    return shape->This.getInverseTransform();
+extern "C" sf::Transform const *sfShape_getInverseTransform(const sfShape *shape) {
+    return &shape->This.getInverseTransform();
 }
 
 extern "C" void sfShape_setTexture(sfShape *shape, const sf::Texture *texture, bool resetRect) {

@@ -108,12 +108,12 @@ extern "C" void sfText_scale(sf::Text *text, sfVector2f factors) {
     reinterpret_cast<sf::Text *>(text)->scale(factors.x, factors.y);
 }
 
-extern "C" sf::Transform sfText_getTransform(const sf::Text *text) {
-    return reinterpret_cast<const sf::Text *>(text)->getTransform();
+extern "C" sf::Transform const *sfText_getTransform(const sf::Text *text) {
+    return &text->getTransform();
 }
 
-extern "C" sf::Transform sfText_getInverseTransform(const sf::Text *text) {
-    return reinterpret_cast<const sf::Text *>(text)->getInverseTransform();
+extern "C" sf::Transform const *sfText_getInverseTransform(const sf::Text *text) {
+    return &text->getInverseTransform();
 }
 
 extern "C" void sfText_setUnicodeString(sf::Text *text, const uint32_t *string) {

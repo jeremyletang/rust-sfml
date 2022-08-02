@@ -107,12 +107,12 @@ extern "C" void sfCircleShape_scale(sf::CircleShape *shape, sfVector2f factors) 
     shape->scale(factors.x, factors.y);
 }
 
-extern "C" sf::Transform sfCircleShape_getTransform(const sf::CircleShape *shape) {
-    return shape->getTransform();
+extern "C" sf::Transform const *sfCircleShape_getTransform(const sf::CircleShape *shape) {
+    return &shape->getTransform();
 }
 
-extern "C" sf::Transform sfCircleShape_getInverseTransform(const sf::CircleShape *shape) {
-    return shape->getInverseTransform();
+extern "C" sf::Transform const *sfCircleShape_getInverseTransform(const sf::CircleShape *shape) {
+    return &shape->getInverseTransform();
 }
 
 extern "C" void sfCircleShape_setTexture(sf::CircleShape *shape, const sf::Texture *texture, bool resetRect) {

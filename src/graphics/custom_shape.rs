@@ -200,11 +200,11 @@ impl<'s> Transformable for CustomShape<'s> {
     fn scale<F: Into<Vector2f>>(&mut self, factors: F) {
         unsafe { ffi::sfShape_scale(self.shape, factors.into().raw()) }
     }
-    fn transform(&self) -> Transform {
-        unsafe { ffi::sfShape_getTransform(self.shape) }
+    fn transform(&self) -> &Transform {
+        unsafe { &*ffi::sfShape_getTransform(self.shape) }
     }
-    fn inverse_transform(&self) -> Transform {
-        unsafe { ffi::sfShape_getInverseTransform(self.shape) }
+    fn inverse_transform(&self) -> &Transform {
+        unsafe { &*ffi::sfShape_getInverseTransform(self.shape) }
     }
 }
 

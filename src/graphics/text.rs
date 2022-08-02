@@ -318,11 +318,11 @@ impl<'s> Transformable for Text<'s> {
     fn scale<F: Into<Vector2f>>(&mut self, factors: F) {
         unsafe { ffi::sfText_scale(self.text.as_ptr(), factors.into().raw()) }
     }
-    fn transform(&self) -> Transform {
-        unsafe { ffi::sfText_getTransform(self.text.as_ptr()) }
+    fn transform(&self) -> &Transform {
+        unsafe { &*ffi::sfText_getTransform(self.text.as_ptr()) }
     }
-    fn inverse_transform(&self) -> Transform {
-        unsafe { ffi::sfText_getInverseTransform(self.text.as_ptr()) }
+    fn inverse_transform(&self) -> &Transform {
+        unsafe { &*ffi::sfText_getInverseTransform(self.text.as_ptr()) }
     }
 }
 

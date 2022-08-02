@@ -236,11 +236,11 @@ impl<'s> Transformable for Sprite<'s> {
     fn scale<F: Into<Vector2f>>(&mut self, factors: F) {
         unsafe { ffi::sfSprite_scale(self.sprite.as_ptr(), factors.into().raw()) }
     }
-    fn transform(&self) -> Transform {
-        unsafe { ffi::sfSprite_getTransform(self.sprite.as_ptr()) }
+    fn transform(&self) -> &Transform {
+        unsafe { &*ffi::sfSprite_getTransform(self.sprite.as_ptr()) }
     }
-    fn inverse_transform(&self) -> Transform {
-        unsafe { ffi::sfSprite_getInverseTransform(self.sprite.as_ptr()) }
+    fn inverse_transform(&self) -> &Transform {
+        unsafe { &*ffi::sfSprite_getInverseTransform(self.sprite.as_ptr()) }
     }
 }
 

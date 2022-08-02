@@ -106,12 +106,12 @@ extern "C" void sfRectangleShape_scale(sf::RectangleShape *shape, sfVector2f fac
     shape->scale(factors.x, factors.y);
 }
 
-extern "C" sf::Transform sfRectangleShape_getTransform(const sf::RectangleShape *shape) {
-    return shape->getTransform();
+extern "C" sf::Transform const *sfRectangleShape_getTransform(const sf::RectangleShape *shape) {
+    return &shape->getTransform();
 }
 
-extern "C" sf::Transform sfRectangleShape_getInverseTransform(const sf::RectangleShape *shape) {
-    return shape->getInverseTransform();
+extern "C" sf::Transform const *sfRectangleShape_getInverseTransform(const sf::RectangleShape *shape) {
+    return &shape->getInverseTransform();
 }
 
 extern "C" void sfRectangleShape_setTexture(sf::RectangleShape *shape, const sf::Texture *texture, bool resetRect) {

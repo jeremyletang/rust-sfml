@@ -108,12 +108,12 @@ extern "C" void sfSprite_scale(sf::Sprite *sprite, sfVector2f factors) {
     reinterpret_cast<sf::Sprite *>(sprite)->scale(factors.x, factors.y);
 }
 
-extern "C" sf::Transform sfSprite_getTransform(const sf::Sprite *sprite) {
-    return reinterpret_cast<const sf::Sprite *>(sprite)->getTransform();
+extern "C" sf::Transform const *sfSprite_getTransform(const sf::Sprite *sprite) {
+    return &sprite->getTransform();
 }
 
-extern "C" sf::Transform sfSprite_getInverseTransform(const sf::Sprite *sprite) {
-    return reinterpret_cast<const sf::Sprite *>(sprite)->getInverseTransform();
+extern "C" sf::Transform const *sfSprite_getInverseTransform(const sf::Sprite *sprite) {
+    return &sprite->getInverseTransform();
 }
 
 extern "C" void sfSprite_setTexture(sf::Sprite *sprite, const sf::Texture *texture, bool resetRect) {

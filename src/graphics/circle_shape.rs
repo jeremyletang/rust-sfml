@@ -127,11 +127,11 @@ impl<'s> Transformable for CircleShape<'s> {
     fn scale<F: Into<Vector2f>>(&mut self, factors: F) {
         unsafe { ffi::sfCircleShape_scale(self.circle_shape.as_ptr(), factors.into().raw()) }
     }
-    fn transform(&self) -> Transform {
-        unsafe { ffi::sfCircleShape_getTransform(self.circle_shape.as_ptr()) }
+    fn transform(&self) -> &Transform {
+        unsafe { &*ffi::sfCircleShape_getTransform(self.circle_shape.as_ptr()) }
     }
-    fn inverse_transform(&self) -> Transform {
-        unsafe { ffi::sfCircleShape_getInverseTransform(self.circle_shape.as_ptr()) }
+    fn inverse_transform(&self) -> &Transform {
+        unsafe { &*ffi::sfCircleShape_getInverseTransform(self.circle_shape.as_ptr()) }
     }
 }
 

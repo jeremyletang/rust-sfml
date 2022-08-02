@@ -27,7 +27,6 @@
 // Headers
 
 #include "Graphics/Shape.h"
-#include "Graphics/Transform.h"
 #include <SFML/Graphics/Shape.hpp>
 
 // Helper class implementing the callback forwarding from
