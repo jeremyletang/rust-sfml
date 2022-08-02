@@ -934,3 +934,66 @@ pub struct sfVertex {
     ///< Coordinates of the texture's pixel to map to the vertex
     pub texCoords: sfVector2f,
 }
+
+// 2D vectors
+pub type sfGlslVec2 = sfVector2f;
+pub type sfGlslIvec2 = sfVector2i;
+
+#[repr(C)]
+pub struct sfGlslBvec2 {
+    pub x: bool,
+    pub y: bool,
+}
+
+// 3D vectors
+pub type sfGlslVec3 = crate::system::Vector3<c_float>;
+
+#[repr(C)]
+pub struct sfGlslIvec3 {
+    pub x: c_int,
+    pub y: c_int,
+    pub z: c_int,
+}
+
+#[repr(C)]
+pub struct sfGlslBvec3 {
+    pub x: bool,
+    pub y: bool,
+    pub z: bool,
+}
+
+// 4D vectors
+#[repr(C)]
+pub struct sfGlslVec4 {
+    pub x: c_float,
+    pub y: c_float,
+    pub z: c_float,
+    pub w: c_float,
+}
+
+#[repr(C)]
+pub struct sfGlslIvec4 {
+    pub x: c_int,
+    pub y: c_int,
+    pub z: c_int,
+    pub w: c_int,
+}
+
+#[repr(C)]
+pub struct sfGlslBvec4 {
+    pub x: bool,
+    pub y: bool,
+    pub z: bool,
+    pub w: bool,
+}
+
+// matrices
+#[repr(C)]
+pub struct sfGlslMat3 {
+    pub array: [c_float; 3 * 3],
+}
+
+#[repr(C)]
+pub struct sfGlslMat4 {
+    pub array: [c_float; 4 * 4],
+}

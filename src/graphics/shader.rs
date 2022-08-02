@@ -565,7 +565,7 @@ impl<'texture> Shader<'texture> {
             let cstring = CString::new(name).unwrap();
             let name = cstring.as_ptr();
             let len = array.len();
-            let ptr = array.as_ptr() as *const ffi::sfGlslVec3;
+            let ptr = array.as_ptr();
             ffi::sfShader_setVec3UniformArray(self.shader.as_ptr(), name, ptr, len);
         }
     }

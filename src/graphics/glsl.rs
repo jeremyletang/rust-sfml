@@ -34,8 +34,8 @@ pub struct Vec4 {
 }
 
 impl Vec4 {
-    pub(super) fn raw(&self) -> ffi::sfGlslVec4 {
-        ffi::sfGlslVec4 {
+    pub(super) fn raw(&self) -> ffi::graphics::sfGlslVec4 {
+        ffi::graphics::sfGlslVec4 {
             x: self.x,
             y: self.y,
             z: self.z,
@@ -69,8 +69,8 @@ pub struct IVec4 {
 }
 
 impl IVec4 {
-    pub(super) fn raw(&self) -> ffi::sfGlslIvec4 {
-        ffi::sfGlslIvec4 {
+    pub(super) fn raw(&self) -> ffi::graphics::sfGlslIvec4 {
+        ffi::graphics::sfGlslIvec4 {
             x: self.x,
             y: self.y,
             z: self.z,
@@ -90,7 +90,7 @@ impl From<Color> for IVec4 {
     }
 }
 
-impl From<IVec3> for ffi::sfGlslIvec3 {
+impl From<IVec3> for ffi::graphics::sfGlslIvec3 {
     fn from(src: IVec3) -> Self {
         Self {
             x: src.x,
@@ -100,7 +100,7 @@ impl From<IVec3> for ffi::sfGlslIvec3 {
     }
 }
 
-impl From<BVec2> for ffi::sfGlslBvec2 {
+impl From<BVec2> for ffi::graphics::sfGlslBvec2 {
     fn from(src: BVec2) -> Self {
         Self {
             x: (src.x),
@@ -109,7 +109,7 @@ impl From<BVec2> for ffi::sfGlslBvec2 {
     }
 }
 
-impl From<BVec3> for ffi::sfGlslBvec3 {
+impl From<BVec3> for ffi::graphics::sfGlslBvec3 {
     fn from(src: BVec3) -> Self {
         Self {
             x: (src.x),
@@ -132,7 +132,7 @@ pub struct BVec4 {
     pub w: bool,
 }
 
-impl From<BVec4> for ffi::sfGlslBvec4 {
+impl From<BVec4> for ffi::graphics::sfGlslBvec4 {
     fn from(src: BVec4) -> Self {
         Self {
             x: (src.x),
