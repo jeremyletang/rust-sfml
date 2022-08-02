@@ -38,7 +38,7 @@ use crate::{ffi, system::Vector3f};
 /// # Arguments
 /// * volume - The new global volume, in the range [0, 100]
 pub fn set_global_volume(volume: f32) {
-    unsafe { ffi::sfListener_setGlobalVolume(volume) }
+    unsafe { ffi::audio::sfListener_setGlobalVolume(volume) }
 }
 
 /// Get the current value of the global volume
@@ -46,7 +46,7 @@ pub fn set_global_volume(volume: f32) {
 /// Return the current global volume, in the range [0, 100]
 #[must_use]
 pub fn global_volume() -> f32 {
-    unsafe { ffi::sfListener_getGlobalVolume() }
+    unsafe { ffi::audio::sfListener_getGlobalVolume() }
 }
 
 /// Set the position of the listener in the scene
@@ -57,7 +57,7 @@ pub fn global_volume() -> f32 {
 ///
 /// * position - the New position of the listener
 pub fn set_position<P: Into<Vector3f>>(position: P) {
-    unsafe { ffi::sfListener_setPosition(position.into().raw()) }
+    unsafe { ffi::audio::sfListener_setPosition(position.into().raw()) }
 }
 
 /// Get the current position of the listener in the scene
@@ -65,7 +65,7 @@ pub fn set_position<P: Into<Vector3f>>(position: P) {
 /// Return the listener's position
 #[must_use]
 pub fn position() -> Vector3f {
-    unsafe { Vector3f::from_raw(ffi::sfListener_getPosition()) }
+    unsafe { Vector3f::from_raw(ffi::audio::sfListener_getPosition()) }
 }
 
 /// Set the orientation of the listener in the scene
@@ -78,7 +78,7 @@ pub fn position() -> Vector3f {
 /// # Arguments
 /// * direction - New listener's orientation
 pub fn set_direction<D: Into<Vector3f>>(direction: D) {
-    unsafe { ffi::sfListener_setDirection(direction.into().raw()) }
+    unsafe { ffi::audio::sfListener_setDirection(direction.into().raw()) }
 }
 
 /// Get the current orientation of the listener in the scene
@@ -86,7 +86,7 @@ pub fn set_direction<D: Into<Vector3f>>(direction: D) {
 /// Return the listener's direction
 #[must_use]
 pub fn direction() -> Vector3f {
-    unsafe { Vector3f::from_raw(ffi::sfListener_getDirection()) }
+    unsafe { Vector3f::from_raw(ffi::audio::sfListener_getDirection()) }
 }
 
 /// Set the upward vector of the listener in the scene.
@@ -96,11 +96,11 @@ pub fn direction() -> Vector3f {
 /// The up vector doesn't have to be normalized. The default listener's up vector is (0, 1, 0).
 /// It is usually not necessary to change it, especially in 2D scenarios.
 pub fn set_up_vector(value: &Vector3f) {
-    unsafe { ffi::sfListener_setUpVector(value.raw()) }
+    unsafe { ffi::audio::sfListener_setUpVector(value.raw()) }
 }
 
 /// Get the current upward vector of the listener in the scene. (not normalized)
 #[must_use]
 pub fn up_vector() -> Vector3f {
-    unsafe { Vector3f::from_raw(ffi::sfListener_getUpVector()) }
+    unsafe { Vector3f::from_raw(ffi::audio::sfListener_getUpVector()) }
 }

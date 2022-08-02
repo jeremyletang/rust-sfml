@@ -23,42 +23,42 @@
 
 // Headers
 
-#include "Audio/Listener.h"
 #include <SFML/Audio/Listener.hpp>
+#include "System/Vector3.h"
 
-void sfListener_setGlobalVolume(float volume) {
+extern "C" void sfListener_setGlobalVolume(float volume) {
     sf::Listener::setGlobalVolume(volume);
 }
 
-float sfListener_getGlobalVolume(void) {
+extern "C" float sfListener_getGlobalVolume(void) {
     return sf::Listener::getGlobalVolume();
 }
 
-void sfListener_setPosition(sfVector3f position) {
+extern "C" void sfListener_setPosition(sfVector3f position) {
     sf::Listener::setPosition(position.x, position.y, position.z);
 }
 
-sfVector3f sfListener_getPosition() {
+extern "C" sfVector3f sfListener_getPosition() {
     sf::Vector3f sfmlPos = sf::Listener::getPosition();
     sfVector3f position = {sfmlPos.x, sfmlPos.y, sfmlPos.z};
     return position;
 }
 
-void sfListener_setDirection(sfVector3f direction) {
+extern "C" void sfListener_setDirection(sfVector3f direction) {
     sf::Listener::setDirection(direction.x, direction.y, direction.z);
 }
 
-sfVector3f sfListener_getDirection() {
+extern "C" sfVector3f sfListener_getDirection() {
     sf::Vector3f sfmlDirection = sf::Listener::getDirection();
     sfVector3f direction = {sfmlDirection.x, sfmlDirection.y, sfmlDirection.z};
     return direction;
 }
 
-void sfListener_setUpVector(sfVector3f upVector) {
+extern "C" void sfListener_setUpVector(sfVector3f upVector) {
     sf::Listener::setUpVector(upVector.x, upVector.y, upVector.z);
 }
 
-sfVector3f sfListener_getUpVector() {
+extern "C" sfVector3f sfListener_getUpVector() {
     sf::Vector3f sfmlUpVector = sf::Listener::getUpVector();
     sfVector3f upVector = {sfmlUpVector.x, sfmlUpVector.y, sfmlUpVector.z};
     return upVector;

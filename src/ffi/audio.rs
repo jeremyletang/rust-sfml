@@ -23,4 +23,13 @@ extern "C" {
     pub fn sfSoundBufferRecorder_getDevice(
         bufRec: *const sfSoundBufferRecorder,
     ) -> *const sfStdString;
+    // Listener
+    pub fn sfListener_setGlobalVolume(volume: f32);
+    pub fn sfListener_getGlobalVolume() -> f32;
+    pub fn sfListener_setPosition(position: sfVector3f);
+    pub fn sfListener_getPosition() -> sfVector3f;
+    pub fn sfListener_setDirection(direction: sfVector3f);
+    pub fn sfListener_getDirection() -> sfVector3f;
+    pub fn sfListener_setUpVector(upVector: sfVector3f);
+    pub fn sfListener_getUpVector() -> sfVector3f;
 }
