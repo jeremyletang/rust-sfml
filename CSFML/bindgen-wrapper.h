@@ -1,4 +1,3 @@
-#include "Window/Sensor.h"
 #include "Graphics/Color.h"
 #include "Graphics/FontInfo.h"
 #include "Graphics/Glyph.h"

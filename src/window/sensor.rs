@@ -46,7 +46,7 @@
 //! [`ORIENTATION`]: Type::ORIENTATION
 //!
 
-use crate::{ffi::*, system::Vector3f};
+use crate::{ffi::window::*, system::Vector3f};
 
 /// Get the current sensor value.
 #[must_use]
@@ -77,19 +77,19 @@ pub struct Type(pub(super) sfSensorType);
 
 impl Type {
     /// Measures the raw acceleration (`m/s^2`)
-    pub const ACCELEROMETER: Self = Self(sfSensorType_sfSensorAccelerometer);
+    pub const ACCELEROMETER: Self = Self(sfSensorType::Accelerometer);
     /// Measures the raw rotation rates (degrees/s)
-    pub const GYROSCOPE: Self = Self(sfSensorType_sfSensorGyroscope);
+    pub const GYROSCOPE: Self = Self(sfSensorType::Gyroscope);
     /// Measures the ambient magnetic field (micro-teslas)
-    pub const MAGNETOMETER: Self = Self(sfSensorType_sfSensorMagnetometer);
+    pub const MAGNETOMETER: Self = Self(sfSensorType::Magnetometer);
     /// Measures the direction and intensity of gravity,
     /// independent of device acceleration (`m/s^2`)
-    pub const GRAVITY: Self = Self(sfSensorType_sfSensorGravity);
+    pub const GRAVITY: Self = Self(sfSensorType::Gravity);
     /// Measures the direction and intensity of device acceleration,
     /// independent of the gravity (`m/s^2`)
-    pub const USER_ACCELERATION: Self = Self(sfSensorType_sfSensorUserAcceleration);
+    pub const USER_ACCELERATION: Self = Self(sfSensorType::UserAcceleration);
     /// Measures the absolute 3D orientation (degrees)
-    pub const ORIENTATION: Self = Self(sfSensorType_sfSensorOrientation);
+    pub const ORIENTATION: Self = Self(sfSensorType::Orientation);
     /// The total number of sensor types.
-    pub const COUNT: sfSensorType = sfSensorType_sfSensorCount;
+    pub const COUNT: sfSensorType = sfSensorType::Count;
 }

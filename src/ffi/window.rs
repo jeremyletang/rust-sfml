@@ -211,21 +211,10 @@ pub(crate) struct TouchEvent {
 #[repr(C)]
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub(crate) struct SensorEvent {
-    pub(crate) type_: SensorType,
+    pub(crate) type_: crate::ffi::window::sfSensorType,
     pub(crate) x: f32,
     pub(crate) y: f32,
     pub(crate) z: f32,
-}
-
-#[repr(C)]
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
-pub enum SensorType {
-    Accelerometer,
-    Gyroscope,
-    Magnetometer,
-    Gravity,
-    UserAcceleration,
-    Orientation,
 }
 
 #[repr(C)]
@@ -574,6 +563,10 @@ extern "C" {
         ident: *const JoystickIdentification,
     ) -> *const sfString;
     pub fn sfJoystick_update();
+    // Sensor
+    pub fn sfSensor_isAvailable(sensor: sfSensorType) -> bool;
+    pub fn sfSensor_setEnabled(sensor: sfSensorType, enabled: bool);
+    pub fn sfSensor_getValue(sensor: sfSensorType) -> sfVector3f;
 }
 
 #[repr(C)]
@@ -595,4 +588,24 @@ pub enum sfJoystickAxis {
     sfJoystickPovX,
     ///< The Y axis of the point-of-view hat
     sfJoystickPovY,
+}
+
+#[repr(C)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
+pub enum sfSensorType {
+    ///< Measures the raw acceleration (m/s^2)
+    Accelerometer,
+    ///< Measures the raw rotation rates (degrees/s)
+    Gyroscope,
+    ///< Measures the ambient magnetic field (micro-teslas)
+    Magnetometer,
+    ///< Measures the direction and intensity of gravity, independent of device acceleration (m/s^2)
+    Gravity,
+    ///< Measures the direction and intensity of device acceleration, independent of the gravity (m/s^2)
+    UserAcceleration,
+    ///< Measures the absolute 3D orientation (degrees)
+    Orientation,
+
+    ///< Keep last -- the total number of sensor types
+    Count,
 }

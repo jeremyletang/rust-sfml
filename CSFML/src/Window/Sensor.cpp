@@ -23,19 +23,19 @@
 
 // Headers
 
-#include "Window/Sensor.h"
 #include <SFML/Window/Sensor.hpp>
 #include <cstddef>
+#include "System/Vector3.h"
 
-bool sfSensor_isAvailable(sfSensorType sensor) {
+extern "C" bool sfSensor_isAvailable(sf::Sensor::Type sensor) {
     return sf::Sensor::isAvailable(static_cast<sf::Sensor::Type>(sensor));
 }
 
-void sfSensor_setEnabled(sfSensorType sensor, bool enabled) {
+extern "C" void sfSensor_setEnabled(sf::Sensor::Type sensor, bool enabled) {
     sf::Sensor::setEnabled(static_cast<sf::Sensor::Type>(sensor), enabled);
 }
 
-sfVector3f sfSensor_getValue(sfSensorType sensor) {
+extern "C" sfVector3f sfSensor_getValue(sf::Sensor::Type sensor) {
     sf::Vector3f sfmlValue = sf::Sensor::getValue(static_cast<sf::Sensor::Type>(sensor));
 
     sfVector3f value = {sfmlValue.x, sfmlValue.y, sfmlValue.z};

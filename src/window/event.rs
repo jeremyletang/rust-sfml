@@ -186,7 +186,7 @@ pub enum Event {
     /// A sensor value changed
     SensorChanged {
         /// Type of the sensor.
-        type_: ffi::SensorType,
+        type_: ffi::window::sfSensorType,
         /// Current value of the sensor on X axis.
         x: f32,
         /// Current value of the sensor on Y axis.
