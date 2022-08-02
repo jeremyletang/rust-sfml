@@ -1,6 +1,6 @@
 use crate::{
     audio::{SoundSource, SoundStatus},
-    ffi::*,
+    ffi::audio::*,
     system::{Time, Vector3f},
 };
 use std::{os::raw::c_void, panic, ptr::NonNull};
@@ -28,7 +28,7 @@ pub struct SoundStreamPlayer<'a, S: SoundStream + 'a> {
 }
 
 unsafe extern "C" fn get_data_callback<S: SoundStream>(
-    chunk: *mut sfSoundStreamChunk,
+    chunk: *mut crate::ffi::audio::sfSoundStreamChunk,
     user_data: *mut c_void,
 ) -> bool {
     let stream = user_data as *mut S;
@@ -41,7 +41,7 @@ unsafe extern "C" fn get_data_callback<S: SoundStream>(
             }
         };
     (*chunk).samples = data.as_mut_ptr();
-    (*chunk).sampleCount = data
+    (*chunk).sample_count = data
         .len()
         .try_into()
         .expect("Overflow casting data length to sample count");

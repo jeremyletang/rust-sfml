@@ -1,6 +1,32 @@
 use crate::ffi::system::{sfStdString, sfStdStringVector};
 pub use crate::ffi::*;
 
+decl_opaque! {
+    sfSoundBuffer;
+    sfSoundBufferRecorder;
+    sfSoundRecorder;
+    sfMusic;
+    sfSound;
+    sfSoundStream;
+}
+
+#[repr(C)]
+pub struct sfSoundStreamChunk {
+    pub samples: *mut i16,
+    pub sample_count: c_uint,
+}
+
+#[repr(C)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+pub enum sfSoundStatus {
+    /// Sound is not playing
+    Stopped,
+    /// Sound is paused
+    Paused,
+    /// Sound is playing
+    Playing,
+}
+
 extern "C" {
     pub fn sfSoundBufferRecorder_create() -> *mut sfSoundBufferRecorder;
     pub fn sfSoundBufferRecorder_destroy(bufRec: *mut sfSoundBufferRecorder);
@@ -140,6 +166,37 @@ extern "C" {
         channelCount: c_uint,
     );
     pub fn sfSoundRecorder_getChannelCount(soundRecorder: *const sfSoundRecorder) -> c_uint;
+    // SoundStream
+    pub fn sfSoundStream_create(
+        onGetData: sfSoundStreamGetDataCallback,
+        onSeek: sfSoundStreamSeekCallback,
+        channelCount: c_uint,
+        sampleRate: c_uint,
+        userData: *mut c_void,
+    ) -> *mut sfSoundStream;
+    pub fn sfSoundStream_destroy(soundStream: *mut sfSoundStream);
+    pub fn sfSoundStream_play(soundStream: *mut sfSoundStream);
+    pub fn sfSoundStream_pause(soundStream: *mut sfSoundStream);
+    pub fn sfSoundStream_stop(soundStream: *mut sfSoundStream);
+    pub fn sfSoundStream_getStatus(soundStream: *const sfSoundStream) -> sfSoundStatus;
+    pub fn sfSoundStream_getChannelCount(soundStream: *const sfSoundStream) -> c_uint;
+    pub fn sfSoundStream_getSampleRate(soundStream: *const sfSoundStream) -> c_uint;
+    pub fn sfSoundStream_setPitch(soundStream: *mut sfSoundStream, pitch: f32);
+    pub fn sfSoundStream_setVolume(soundStream: *mut sfSoundStream, volume: f32);
+    pub fn sfSoundStream_setPosition(soundStream: *mut sfSoundStream, position: sfVector3f);
+    pub fn sfSoundStream_setRelativeToListener(soundStream: *mut sfSoundStream, relative: bool);
+    pub fn sfSoundStream_setMinDistance(soundStream: *mut sfSoundStream, distance: f32);
+    pub fn sfSoundStream_setAttenuation(soundStream: *mut sfSoundStream, attenuation: f32);
+    pub fn sfSoundStream_setPlayingOffset(soundStream: *mut sfSoundStream, timeOffset: i64);
+    pub fn sfSoundStream_setLoop(soundStream: *mut sfSoundStream, loop_: bool);
+    pub fn sfSoundStream_getPitch(soundStream: *const sfSoundStream) -> f32;
+    pub fn sfSoundStream_getVolume(soundStream: *const sfSoundStream) -> f32;
+    pub fn sfSoundStream_getPosition(soundStream: *const sfSoundStream) -> sfVector3f;
+    pub fn sfSoundStream_isRelativeToListener(soundStream: *const sfSoundStream) -> bool;
+    pub fn sfSoundStream_getMinDistance(soundStream: *const sfSoundStream) -> f32;
+    pub fn sfSoundStream_getAttenuation(soundStream: *const sfSoundStream) -> f32;
+    pub fn sfSoundStream_getLoop(soundStream: *const sfSoundStream) -> bool;
+    pub fn sfSoundStream_getPlayingOffset(soundStream: *const sfSoundStream) -> i64;
 }
 
 #[repr(C)]
@@ -154,3 +211,7 @@ type sfSoundRecorderStartCallback = Option<unsafe extern "C" fn(user_data: *mut 
 type sfSoundRecorderProcessCallback =
     Option<unsafe extern "C" fn(samples: *const i16, len: usize, user_data: *mut c_void) -> bool>;
 type sfSoundRecorderStopCallback = Option<unsafe extern "C" fn(user_data: *mut c_void)>;
+
+type sfSoundStreamGetDataCallback =
+    Option<unsafe extern "C" fn(chunk: *mut sfSoundStreamChunk, user_data: *mut c_void) -> bool>;
+type sfSoundStreamSeekCallback = Option<unsafe extern "C" fn(pos: i64, user_data: *mut c_void)>;

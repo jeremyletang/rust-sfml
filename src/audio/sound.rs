@@ -39,7 +39,7 @@ use std::{marker::PhantomData, ptr::NonNull};
 /// [`Music`]: crate::audio::Music
 #[derive(Debug)]
 pub struct Sound<'s> {
-    sound: NonNull<ffi::sfSound>,
+    sound: NonNull<ffi::audio::sfSound>,
     buffer: PhantomData<&'s SoundBuffer>,
 }
 

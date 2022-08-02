@@ -23,11 +23,11 @@
 
 // Headers
 
-#include "Audio/SoundStream.h"
 #include "Audio/SoundStreamStruct.h"
+#include "System/Vector3.h"
 #include <cstddef>
 
-sfSoundStream *sfSoundStream_create(sfSoundStreamGetDataCallback onGetData,
+extern "C" sfSoundStream *sfSoundStream_create(sfSoundStreamGetDataCallback onGetData,
                                     sfSoundStreamSeekCallback onSeek,
                                     unsigned int channelCount,
                                     unsigned int sampleRate,
@@ -35,76 +35,76 @@ sfSoundStream *sfSoundStream_create(sfSoundStreamGetDataCallback onGetData,
     return new sfSoundStream(onGetData, onSeek, channelCount, sampleRate, userData);
 }
 
-void sfSoundStream_destroy(sfSoundStream *soundStream) {
+extern "C" void sfSoundStream_destroy(sfSoundStream *soundStream) {
     delete soundStream;
 }
 
-void sfSoundStream_play(sfSoundStream *soundStream) {
+extern "C" void sfSoundStream_play(sfSoundStream *soundStream) {
     soundStream->This.play();
 }
 
-void sfSoundStream_pause(sfSoundStream *soundStream) {
+extern "C" void sfSoundStream_pause(sfSoundStream *soundStream) {
     soundStream->This.pause();
 }
 
-void sfSoundStream_stop(sfSoundStream *soundStream) {
+extern "C" void sfSoundStream_stop(sfSoundStream *soundStream) {
     soundStream->This.stop();
 }
 
-sfSoundStatus sfSoundStream_getStatus(const sfSoundStream *soundStream) {
+extern "C" sf::SoundStream::Status sfSoundStream_getStatus(const sfSoundStream *soundStream) {
 
-    return static_cast<sfSoundStatus>(soundStream->This.getStatus());
+    return soundStream->This.getStatus();
 }
 
-unsigned int sfSoundStream_getChannelCount(const sfSoundStream *soundStream) {
+extern "C" unsigned int sfSoundStream_getChannelCount(const sfSoundStream *soundStream) {
     return soundStream->This.getChannelCount();
 }
 
-unsigned int sfSoundStream_getSampleRate(const sfSoundStream *soundStream) {
+extern "C" unsigned int sfSoundStream_getSampleRate(const sfSoundStream *soundStream) {
     return soundStream->This.getSampleRate();
 }
 
-void sfSoundStream_setPitch(sfSoundStream *soundStream, float pitch) {
+extern "C" void sfSoundStream_setPitch(sfSoundStream *soundStream, float pitch) {
     soundStream->This.setPitch(pitch);
 }
 
-void sfSoundStream_setVolume(sfSoundStream *soundStream, float volume) {
+extern "C" void sfSoundStream_setVolume(sfSoundStream *soundStream, float volume) {
     soundStream->This.setVolume(volume);
 }
 
-void sfSoundStream_setPosition(sfSoundStream *soundStream, sfVector3f position) {
+extern "C" void sfSoundStream_setPosition(sfSoundStream *soundStream, sfVector3f position) {
     soundStream->This.setPosition(position.x, position.y, position.z);
 }
 
-void sfSoundStream_setRelativeToListener(sfSoundStream *soundStream, bool relative) {
+extern "C" void sfSoundStream_setRelativeToListener(sfSoundStream *soundStream, bool relative) {
     soundStream->This.setRelativeToListener(relative);
 }
 
-void sfSoundStream_setMinDistance(sfSoundStream *soundStream, float distance) {
+extern "C" void sfSoundStream_setMinDistance(sfSoundStream *soundStream, float distance) {
     soundStream->This.setMinDistance(distance);
 }
 
-void sfSoundStream_setAttenuation(sfSoundStream *soundStream, float attenuation) {
+extern "C" void sfSoundStream_setAttenuation(sfSoundStream *soundStream, float attenuation) {
     soundStream->This.setAttenuation(attenuation);
 }
 
-void sfSoundStream_setPlayingOffset(sfSoundStream *soundStream, int64_t timeOffset) {
+extern "C" void sfSoundStream_setPlayingOffset(sfSoundStream *soundStream, int64_t timeOffset) {
     soundStream->This.setPlayingOffset(sf::microseconds(timeOffset));
 }
 
-void sfSoundStream_setLoop(sfSoundStream *soundStream, bool loop) {
+extern "C" void sfSoundStream_setLoop(sfSoundStream *soundStream, bool loop) {
     soundStream->This.setLoop(loop);
 }
 
-float sfSoundStream_getPitch(const sfSoundStream *soundStream) {
+extern "C" float sfSoundStream_getPitch(const sfSoundStream *soundStream) {
     return soundStream->This.getPitch();
 }
 
-float sfSoundStream_getVolume(const sfSoundStream *soundStream) {
+extern "C" float sfSoundStream_getVolume(const sfSoundStream *soundStream) {
     return soundStream->This.getVolume();
 }
 
-sfVector3f sfSoundStream_getPosition(const sfSoundStream *soundStream) {
+extern "C" sfVector3f sfSoundStream_getPosition(const sfSoundStream *soundStream) {
     sfVector3f position = {0, 0, 0};
 
     sf::Vector3f sfmlPos = soundStream->This.getPosition();
@@ -115,23 +115,23 @@ sfVector3f sfSoundStream_getPosition(const sfSoundStream *soundStream) {
     return position;
 }
 
-bool sfSoundStream_isRelativeToListener(const sfSoundStream *soundStream) {
+extern "C" bool sfSoundStream_isRelativeToListener(const sfSoundStream *soundStream) {
     return soundStream->This.isRelativeToListener();
 }
 
-float sfSoundStream_getMinDistance(const sfSoundStream *soundStream) {
+extern "C" float sfSoundStream_getMinDistance(const sfSoundStream *soundStream) {
     return soundStream->This.getMinDistance();
 }
 
-float sfSoundStream_getAttenuation(const sfSoundStream *soundStream) {
+extern "C" float sfSoundStream_getAttenuation(const sfSoundStream *soundStream) {
     return soundStream->This.getAttenuation();
 }
 
-bool sfSoundStream_getLoop(const sfSoundStream *soundStream) {
+extern "C" bool sfSoundStream_getLoop(const sfSoundStream *soundStream) {
     return soundStream->This.getLoop();
 }
 
-int64_t sfSoundStream_getPlayingOffset(const sfSoundStream *soundStream) {
+extern "C" int64_t sfSoundStream_getPlayingOffset(const sfSoundStream *soundStream) {
     int64_t time = soundStream->This.getPlayingOffset().asMicroseconds();
     return time;
 }

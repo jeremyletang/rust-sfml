@@ -51,7 +51,7 @@ use std::{
 ///
 #[derive(Debug)]
 pub struct Music<'stream> {
-    music: *mut ffi::sfMusic,
+    music: *mut ffi::audio::sfMusic,
     _stream: PhantomData<&'stream mut ()>,
 }
 
@@ -72,7 +72,7 @@ impl<'stream> Music<'stream> {
     #[must_use]
     pub fn from_file(filename: &str) -> Option<Music> {
         let c_str = CString::new(filename).unwrap();
-        let music_tmp: *mut ffi::sfMusic =
+        let music_tmp: *mut ffi::audio::sfMusic =
             unsafe { ffi::audio::sfMusic_createFromFile(c_str.as_ptr()) };
         if music_tmp.is_null() {
             None
@@ -100,7 +100,7 @@ impl<'stream> Music<'stream> {
     pub fn from_stream<T: Read + Seek>(
         stream: &'stream mut InputStream<T>,
     ) -> Option<Music<'stream>> {
-        let music_tmp: *mut ffi::sfMusic =
+        let music_tmp: *mut ffi::audio::sfMusic =
             unsafe { ffi::audio::sfMusic_createFromStream(&mut *stream.stream) };
         if music_tmp.is_null() {
             None

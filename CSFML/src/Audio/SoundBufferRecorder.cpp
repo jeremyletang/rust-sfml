@@ -23,40 +23,39 @@
 
 // Headers
 
-#include "Audio/Types.h"
 #include <SFML/Audio/SoundBufferRecorder.hpp>
 #include <cstddef>
 
-extern "C" sfSoundBufferRecorder *sfSoundBufferRecorder_create(void) {
-    return reinterpret_cast<sfSoundBufferRecorder *>(new sf::SoundBufferRecorder);
+extern "C" sf::SoundBufferRecorder *sfSoundBufferRecorder_create(void) {
+    return new sf::SoundBufferRecorder;
 }
 
-extern "C" void sfSoundBufferRecorder_destroy(sfSoundBufferRecorder *soundBufferRecorder) {
-    delete reinterpret_cast<sf::SoundBufferRecorder *>(soundBufferRecorder);
+extern "C" void sfSoundBufferRecorder_destroy(sf::SoundBufferRecorder *soundBufferRecorder) {
+    delete soundBufferRecorder;
 }
 
-extern "C" bool sfSoundBufferRecorder_start(sfSoundBufferRecorder *soundBufferRecorder, unsigned int sampleRate) {
-    return reinterpret_cast<sf::SoundBufferRecorder *>(soundBufferRecorder)->start(sampleRate);
+extern "C" bool sfSoundBufferRecorder_start(sf::SoundBufferRecorder *soundBufferRecorder, unsigned int sampleRate) {
+    return soundBufferRecorder->start(sampleRate);
 }
 
-extern "C" void sfSoundBufferRecorder_stop(sfSoundBufferRecorder *soundBufferRecorder) {
-    reinterpret_cast<sf::SoundBufferRecorder *>(soundBufferRecorder)->stop();
+extern "C" void sfSoundBufferRecorder_stop(sf::SoundBufferRecorder *soundBufferRecorder) {
+    soundBufferRecorder->stop();
 }
 
-extern "C" unsigned int sfSoundBufferRecorder_getSampleRate(const sfSoundBufferRecorder *soundBufferRecorder) {
-    return reinterpret_cast<const sf::SoundBufferRecorder *>(soundBufferRecorder)->getSampleRate();
+extern "C" unsigned int sfSoundBufferRecorder_getSampleRate(const sf::SoundBufferRecorder *soundBufferRecorder) {
+    return soundBufferRecorder->getSampleRate();
 }
 
-extern "C" const sfSoundBuffer *sfSoundBufferRecorder_getBuffer(const sfSoundBufferRecorder *soundBufferRecorder) {
-    const sf::SoundBuffer *buf = &reinterpret_cast<const sf::SoundBufferRecorder *>(soundBufferRecorder)->getBuffer();
-    return reinterpret_cast<const sfSoundBuffer *>(buf);
+extern "C" const sf::SoundBuffer *sfSoundBufferRecorder_getBuffer(const sf::SoundBufferRecorder *soundBufferRecorder) {
+    const sf::SoundBuffer *buf = &soundBufferRecorder->getBuffer();
+    return buf;
 }
 
-extern "C" bool sfSoundBufferRecorder_setDevice(sfSoundBufferRecorder *soundBufferRecorder, const char *name) {
-    return reinterpret_cast<sf::SoundBufferRecorder *>(soundBufferRecorder)->setDevice(name);
+extern "C" bool sfSoundBufferRecorder_setDevice(sf::SoundBufferRecorder *soundBufferRecorder, const char *name) {
+    return soundBufferRecorder->setDevice(name);
 }
 
-extern "C" const std::string *sfSoundBufferRecorder_getDevice(sfSoundBufferRecorder *soundBufferRecorder) {
-    const std::string *device = &reinterpret_cast<sf::SoundBufferRecorder *>(soundBufferRecorder)->getDevice();
+extern "C" const std::string *sfSoundBufferRecorder_getDevice(sf::SoundBufferRecorder *soundBufferRecorder) {
+    const std::string *device = &soundBufferRecorder->getDevice();
     return device;
 }

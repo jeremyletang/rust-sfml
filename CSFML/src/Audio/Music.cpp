@@ -23,7 +23,6 @@
 
 // Headers
 
-#include "Audio/SoundStatus.h"
 #include "System/InputStreamStruct.h"
 #include "System/Vector2.h"
 #include "System/Vector3.h"
@@ -119,9 +118,9 @@ extern "C" unsigned int sfMusic_getSampleRate(const sf::Music *music) {
     return music->getSampleRate();
 }
 
-extern "C" sfSoundStatus sfMusic_getStatus(const sf::Music *music) {
+extern "C" sf::Music::Status sfMusic_getStatus(const sf::Music *music) {
 
-    return static_cast<sfSoundStatus>(music->getStatus());
+    return music->getStatus();
 }
 
 extern "C" int64_t sfMusic_getPlayingOffset(const sf::Music *music) {

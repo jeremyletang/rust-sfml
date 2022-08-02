@@ -26,8 +26,16 @@
 
 // Headers
 
-#include "Audio/SoundStream.h"
 #include <SFML/Audio/SoundStream.hpp>
+
+typedef struct
+{
+    int16_t *samples;         ///< Pointer to the audio samples
+    unsigned int sampleCount; ///< Number of samples pointed by Samples
+} sfSoundStreamChunk;
+
+typedef bool (*sfSoundStreamGetDataCallback)(sfSoundStreamChunk *, void *); ///< Type of the callback used to get a sound stream data
+typedef void (*sfSoundStreamSeekCallback)(int64_t, void *);                 ///< Type of the callback used to seek in a sound stream
 
 // Helper class implementing the callback forwarding from
 // C++ to C in sfSoundStream

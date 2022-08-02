@@ -1,5 +1,3 @@
-#include "Audio/SoundStatus.h"
-#include "Audio/SoundStream.h"
 #include "Window/Joystick.h"
 #include "Window/Sensor.h"
 #include "Graphics/Color.h"

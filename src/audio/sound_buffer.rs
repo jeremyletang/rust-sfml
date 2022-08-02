@@ -139,9 +139,9 @@ impl SoundBuffer {
     pub fn sample_rate(&self) -> u32 {
         unsafe { ffi::audio::sfSoundBuffer_getSampleRate(self.raw()) }
     }
-    fn raw(&self) -> *const ffi::sfSoundBuffer {
+    fn raw(&self) -> *const ffi::audio::sfSoundBuffer {
         let ptr: *const Self = self;
-        ptr as *const ffi::sfSoundBuffer
+        ptr as *const ffi::audio::sfSoundBuffer
     }
     /// Create a new sound buffer and load it from a file
     ///
@@ -155,7 +155,7 @@ impl SoundBuffer {
     /// Returns `None` on failure.
     pub fn from_file(filename: &str) -> LoadResult<SfBox<Self>> {
         let c_str = CString::new(filename).unwrap();
-        let sound_buffer: *mut ffi::sfSoundBuffer =
+        let sound_buffer: *mut ffi::audio::sfSoundBuffer =
             unsafe { ffi::audio::sfSoundBuffer_createFromFile(c_str.as_ptr()) };
         SfBox::new(sound_buffer as *mut Self).ok_or(ResourceLoadError)
     }
