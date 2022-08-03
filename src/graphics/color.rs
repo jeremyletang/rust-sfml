@@ -17,7 +17,7 @@ use std::ops::{Add, AddAssign, Mul, MulAssign, Sub, SubAssign};
 /// ```
 #[repr(transparent)]
 #[derive(Copy, Clone, PartialEq, Eq, Debug)]
-pub struct Color(pub(super) ffi::sfColor);
+pub struct Color(pub(super) ffi::graphics::sfColor);
 
 impl Color {
     /// Construct a color from its 3 RGB components
@@ -30,7 +30,7 @@ impl Color {
     /// Return Color object constructed from the components
     #[must_use]
     pub const fn rgb(red: u8, green: u8, blue: u8) -> Self {
-        Self(ffi::sfColor {
+        Self(ffi::graphics::sfColor {
             r: red,
             g: green,
             b: blue,
@@ -49,7 +49,7 @@ impl Color {
     /// Return Color object constructed from the components
     #[must_use]
     pub const fn rgba(red: u8, green: u8, blue: u8, alpha: u8) -> Self {
-        Self(ffi::sfColor {
+        Self(ffi::graphics::sfColor {
             r: red,
             g: green,
             b: blue,
@@ -139,7 +139,7 @@ impl From<u32> for Color {
     /// The number should contain the components in RGBA order.
     #[allow(clippy::cast_possible_truncation)]
     fn from(src: u32) -> Self {
-        Self(ffi::sfColor {
+        Self(ffi::graphics::sfColor {
             r: ((src & 0xff000000) >> 24) as u8,
             g: ((src & 0x00ff0000) >> 16) as u8,
             b: ((src & 0x0000ff00) >> 8) as u8,
@@ -162,7 +162,7 @@ impl Add for Color {
 
     /// Calculate the component-wise saturated addition of two colors.
     fn add(self, other: Color) -> Color {
-        Color(ffi::sfColor {
+        Color(ffi::graphics::sfColor {
             r: self.0.r.saturating_add(other.0.r),
             g: self.0.g.saturating_add(other.0.g),
             b: self.0.b.saturating_add(other.0.b),
@@ -182,7 +182,7 @@ impl Sub for Color {
 
     /// Component-wise subtraction of two colors. Components below 0 are clamped to 0.
     fn sub(self, other: Self) -> Self {
-        Color(ffi::sfColor {
+        Color(ffi::graphics::sfColor {
             r: self.0.r.saturating_sub(other.0.r),
             g: self.0.g.saturating_sub(other.0.g),
             b: self.0.b.saturating_sub(other.0.b),
@@ -209,7 +209,7 @@ impl Mul for Color {
         let (g1, g2) = (self.0.g as u16, other.0.g as u16);
         let (b1, b2) = (self.0.b as u16, other.0.b as u16);
         let (a1, a2) = (self.0.a as u16, other.0.a as u16);
-        Self(ffi::sfColor {
+        Self(ffi::graphics::sfColor {
             r: (r1 * r2 / 255) as u8,
             g: (g1 * g2 / 255) as u8,
             b: (b1 * b2 / 255) as u8,

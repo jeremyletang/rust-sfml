@@ -1018,3 +1018,12 @@ pub enum sfPrimitiveType {
     /// List of individual quads
     Quads,
 }
+
+#[repr(C)]
+#[derive(Clone, Copy, PartialEq, Eq, Debug)]
+pub struct sfColor {
+    pub r: u8,
+    pub g: u8,
+    pub b: u8,
+    pub a: u8,
+}
