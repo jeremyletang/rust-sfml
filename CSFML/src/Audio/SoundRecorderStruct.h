@@ -36,15 +36,15 @@ typedef void (*sfSoundRecorderStopCallback)(void *);                            
 // Helper class implementing the callback forwarding from
 // C++ to C in sfSoundRecorder
 
-class sfSoundRecorderImpl : public sf::SoundRecorder {
+class sfSoundRecorder : public sf::SoundRecorder {
   public:
-    sfSoundRecorderImpl(sfSoundRecorderStartCallback onStart,
-                        sfSoundRecorderProcessCallback onProcess,
-                        sfSoundRecorderStopCallback onStop,
-                        void *userData) : myStartCallback(onStart),
-                                          myProcessCallback(onProcess),
-                                          myStopCallback(onStop),
-                                          myUserData(userData) {
+    sfSoundRecorder(sfSoundRecorderStartCallback onStart,
+                    sfSoundRecorderProcessCallback onProcess,
+                    sfSoundRecorderStopCallback onStop,
+                    void *userData) : myStartCallback(onStart),
+                                      myProcessCallback(onProcess),
+                                      myStopCallback(onStop),
+                                      myUserData(userData) {
     }
 
     void setProcessingInterval(int64_t interval) {
@@ -75,18 +75,6 @@ class sfSoundRecorderImpl : public sf::SoundRecorder {
     sfSoundRecorderProcessCallback myProcessCallback;
     sfSoundRecorderStopCallback myStopCallback;
     void *myUserData;
-};
-
-// Internal structure of sfSoundRecorder
-
-struct sfSoundRecorder {
-    sfSoundRecorder(sfSoundRecorderStartCallback onStart,
-                    sfSoundRecorderProcessCallback onProcess,
-                    sfSoundRecorderStopCallback onStop,
-                    void *userData) : This(onStart, onProcess, onStop, userData) {
-    }
-
-    sfSoundRecorderImpl This;
 };
 
 #endif // SFML_SOUNDRECORDERSTRUCT_H

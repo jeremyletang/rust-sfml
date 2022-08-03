@@ -40,15 +40,15 @@ extern "C" void sfSoundRecorder_destroy(sfSoundRecorder *soundRecorder) {
 }
 
 extern "C" bool sfSoundRecorder_start(sfSoundRecorder *soundRecorder, unsigned int sampleRate) {
-    return soundRecorder->This.start(sampleRate);
+    return soundRecorder->start(sampleRate);
 }
 
 extern "C" void sfSoundRecorder_stop(sfSoundRecorder *soundRecorder) {
-    soundRecorder->This.stop();
+    soundRecorder->stop();
 }
 
 extern "C" unsigned int sfSoundRecorder_getSampleRate(const sfSoundRecorder *soundRecorder) {
-    return soundRecorder->This.getSampleRate();
+    return soundRecorder->getSampleRate();
 }
 
 extern "C" bool sfSoundRecorder_isAvailable(void) {
@@ -56,7 +56,7 @@ extern "C" bool sfSoundRecorder_isAvailable(void) {
 }
 
 extern "C" void sfSoundRecorder_setProcessingInterval(sfSoundRecorder *soundRecorder, int64_t interval) {
-    soundRecorder->This.setProcessingInterval(interval);
+    soundRecorder->setProcessingInterval(interval);
 }
 
 extern "C" std::vector<std::string> *sfSoundRecorder_getAvailableDevices() {
@@ -72,17 +72,17 @@ extern "C" std::string *sfSoundRecorder_getDefaultDevice() {
 }
 
 extern "C" bool sfSoundRecorder_setDevice(sfSoundRecorder *soundRecorder, const char *name) {
-    return soundRecorder->This.setDevice(name);
+    return soundRecorder->setDevice(name);
 }
 
 extern "C" const std::string *sfSoundRecorder_getDevice(sfSoundRecorder *soundRecorder) {
-    return &soundRecorder->This.getDevice();
+    return &soundRecorder->getDevice();
 }
 
 extern "C" void sfSoundRecorder_setChannelCount(sfSoundRecorder *soundRecorder, unsigned int channelCount) {
-    soundRecorder->This.setChannelCount(channelCount);
+    soundRecorder->setChannelCount(channelCount);
 }
 
 extern "C" unsigned int sfSoundRecorder_getChannelCount(const sfSoundRecorder *soundRecorder) {
-    return soundRecorder->This.getChannelCount();
+    return soundRecorder->getChannelCount();
 }
