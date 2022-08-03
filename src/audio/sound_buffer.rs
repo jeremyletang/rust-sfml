@@ -11,6 +11,7 @@ use std::{
     slice,
 };
 
+decl_opaque! {
 /// Storage for audio samples defining a sound.
 ///
 /// A sound buffer holds the data of a sound, which is an array of audio samples.
@@ -63,11 +64,7 @@ use std::{
 /// ```
 ///
 /// [`Sound`]: crate::audio::Sound
-#[derive(Debug)]
-#[allow(missing_copy_implementations)]
-#[repr(C)]
-pub struct SoundBuffer {
-    _opaque: [u8; 0],
+SoundBuffer;
 }
 
 impl SoundBuffer {

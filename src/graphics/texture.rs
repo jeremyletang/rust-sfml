@@ -12,6 +12,7 @@ use std::{
     io::{Read, Seek},
 };
 
+decl_opaque! {
 /// [`Image`] living on the graphics card that can be used for drawing.
 ///
 /// `Texture` stores pixels that can be drawn, with a sprite for example.
@@ -49,11 +50,7 @@ use std::{
 /// 8 bits red, green, blue and alpha channels – just like a [`Color`].
 ///
 /// [`Color`]: crate::graphics::Color
-#[derive(Debug)]
-#[allow(missing_copy_implementations)]
-#[repr(C)]
-pub struct Texture {
-    _opaque: [u8; 0],
+Texture;
 }
 
 impl Texture {

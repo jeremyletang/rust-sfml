@@ -10,6 +10,7 @@ use std::{
     io::{Read, Seek},
 };
 
+decl_opaque! {
 /// Type for loading and manipulating character fonts.
 ///
 /// Fonts can be loaded from a file, from memory or from a custom stream,
@@ -51,11 +52,7 @@ use std::{
 /// supports that size is used.
 ///
 /// [`Text`]: crate::graphics::Text
-#[derive(Debug)]
-#[allow(missing_copy_implementations)]
-#[repr(C)]
-pub struct Font {
-    _opaque: [u8; 0],
+Font;
 }
 
 impl Font {

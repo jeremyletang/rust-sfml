@@ -4,6 +4,7 @@ use crate::{
     system::Vector2u,
 };
 
+decl_opaque! {
 /// Defines the appearance of a system cursor.
 ///
 /// Warning: Features related to Cursor are not supported on iOS and Android.
@@ -18,11 +19,7 @@ use crate::{
 /// The behaviour is undefined if the cursor is destroyed while in use by the window.
 ///
 /// [`Window::set_mouse_cursor`]: crate::window::Window::set_mouse_cursor
-#[repr(C)]
-#[derive(Debug)]
-#[allow(missing_copy_implementations)]
-pub struct Cursor {
-    _opaque: [u8; 0],
+Cursor;
 }
 
 impl Dispose for Cursor {

@@ -7,16 +7,13 @@ use crate::{
 };
 use std::borrow::ToOwned;
 
+decl_opaque! {
 /// 2D camera that defines what region is shown on screen
 ///
 /// This is a very powerful concept: you can scroll,
 /// rotate or zoom the entire scene without altering
 /// the way that your drawable objects are drawn.
-#[derive(Debug)]
-#[allow(missing_copy_implementations)]
-#[repr(C)]
-pub struct View {
-    _opaque: [u8; 0],
+View;
 }
 
 impl View {

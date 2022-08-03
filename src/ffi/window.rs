@@ -9,6 +9,8 @@ decl_opaque! {
     sfCursor;
     sfContext;
     sfWindow;
+    JoystickIdentification;
+    sfVideoModeVector;
 }
 
 /// Enumeration of the native system cursor types.
@@ -414,13 +416,6 @@ pub enum Key {
     Pause,
 }
 
-#[repr(C)]
-#[derive(Debug)]
-#[allow(missing_copy_implementations)]
-pub struct JoystickIdentification {
-    _opaque: [u8; 0],
-}
-
 impl Dispose for JoystickIdentification {
     unsafe fn dispose(&mut self) {
         sfJoystickIdentification_destroy(self);
@@ -458,13 +453,6 @@ impl<'a> Iterator for sfVideoModeVectorIter<'a> {
             Some(&*item)
         }
     }
-}
-
-#[repr(C)]
-#[derive(Debug)]
-#[allow(missing_copy_implementations)]
-pub struct sfVideoModeVector {
-    _opaque: [u8; 0],
 }
 
 // Window handle is HWND (HWND__*) on Windows

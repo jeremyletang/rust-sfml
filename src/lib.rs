@@ -48,6 +48,9 @@
 
 extern crate link_cplusplus;
 
+#[macro_use]
+mod ffi;
+
 #[cfg(feature = "audio")]
 pub mod audio;
 #[cfg(feature = "graphics")]
@@ -90,5 +93,3 @@ impl IntoLoadResult for bool {
         }
     }
 }
-
-mod ffi;

@@ -2,6 +2,9 @@ pub use crate::ffi::*;
 
 decl_opaque! {
     sfStdString;
+    sfStdStringVector;
+    sfString;
+    sfInputStream;
     /// Utility type that measures the elapsed time.
     ///
     /// Its provides the most precise time that the underlying OS can
@@ -30,13 +33,6 @@ impl Dispose for sfStdString {
     unsafe fn dispose(&mut self) {
         sfStdString_destroy(self)
     }
-}
-
-#[repr(C)]
-#[derive(Debug)]
-#[allow(missing_copy_implementations)]
-pub struct sfStdStringVector {
-    _opaque: [u8; 0],
 }
 
 impl<'a> IntoIterator for &'a sfStdStringVector {
@@ -94,13 +90,6 @@ impl Dispose for sfStdStringVector {
     unsafe fn dispose(&mut self) {
         sfStdStringVector_destroy(self);
     }
-}
-
-#[repr(C)]
-#[derive(Debug)]
-#[allow(missing_copy_implementations)]
-pub struct sfString {
-    _opaque: [u8; 0],
 }
 
 impl sfString {
@@ -170,12 +159,6 @@ extern "C" {
         userData: *mut c_void,
     ) -> *mut sfInputStream;
     pub fn sfInputStream_destroy(stream: *mut sfInputStream);
-}
-
-#[repr(C)]
-#[derive(Debug)]
-pub struct sfInputStream {
-    _opaque: [u8; 0],
 }
 
 type sfInputStreamReadFunc =
