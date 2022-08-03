@@ -12,8 +12,7 @@ fn main() {
         .define("CSFML_AUDIO_EXPORTS", None)
         .define("CSFML_WINDOW_EXPORTS", None)
         .define("CSFML_GRAPHICS_EXPORTS", None)
-        .include("CSFML/src/")
-        .include("CSFML/include/");
+        .include("CSFML/src/");
     if let Ok(sfml_inc_dir) = env::var("SFML_INCLUDE_DIR") {
         println!("cargo:warning=Custom SFML include dir: {}", sfml_inc_dir);
         build.include(sfml_inc_dir);
