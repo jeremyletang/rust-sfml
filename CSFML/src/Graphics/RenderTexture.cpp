@@ -27,7 +27,6 @@
 #include "Graphics/Rect.h"
 #include "Graphics/ShapeStruct.h"
 #include "Graphics/Vertex.h"
-#include "Graphics/VertexBufferStruct.h"
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/ConvexShape.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
