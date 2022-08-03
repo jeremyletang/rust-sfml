@@ -995,3 +995,7 @@ pub struct sfGlslMat3 {
 pub struct sfGlslMat4 {
     pub array: [f32; 4 * 4],
 }
+
+type sfShapeGetPointCountCallback = Option<unsafe extern "C" fn(user_data: *mut c_void) -> usize>;
+type sfShapeGetPointCallback =
+    Option<unsafe extern "C" fn(idx: usize, user_data: *mut c_void) -> sfVector2f>;

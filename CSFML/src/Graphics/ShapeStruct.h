@@ -26,8 +26,11 @@
 
 // Headers
 
-#include "Graphics/Shape.h"
 #include <SFML/Graphics/Shape.hpp>
+#include "System/Vector2.h"
+
+typedef size_t (*sfShapeGetPointCountCallback)(void *);        ///< Type of the callback used to get the number of points in a shape
+typedef sfVector2f (*sfShapeGetPointCallback)(size_t, void *); ///< Type of the callback used to get a point of a shape
 
 // Helper class implementing the callback forwarding from
 // C++ to C in sfShape
