@@ -1,1 +1,1 @@
-clang-format -i $(find include/ src/ -name '*.*')
+clang-format -i $(find src/ -name '*.*')

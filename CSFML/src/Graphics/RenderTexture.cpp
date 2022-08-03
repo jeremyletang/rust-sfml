@@ -135,9 +135,9 @@ extern "C" void sfRenderTexture_drawText(sf::RenderTexture *renderTexture, const
 
     renderTexture->draw(*object, *states);
 }
-extern "C" void sfRenderTexture_drawShape(sf::RenderTexture *renderTexture, const sfShape *object, const sf::RenderStates *states) {
+extern "C" void sfRenderTexture_drawShape(sf::RenderTexture *renderTexture, const sf::Shape *object, const sf::RenderStates *states) {
 
-    renderTexture->draw(object->This, *states);
+    renderTexture->draw(*object, *states);
 }
 extern "C" void sfRenderTexture_drawCircleShape(sf::RenderTexture *renderTexture, const sf::CircleShape *object, const sf::RenderStates *states) {
 

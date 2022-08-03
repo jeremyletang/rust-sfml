@@ -35,13 +35,13 @@ typedef sfVector2f (*sfShapeGetPointCallback)(size_t, void *); ///< Type of the 
 // Helper class implementing the callback forwarding from
 // C++ to C in sfShape
 
-class sfShapeImpl : public sf::Shape {
+class sfShape : public sf::Shape {
   public:
-    sfShapeImpl(sfShapeGetPointCountCallback getPointCount,
-                sfShapeGetPointCallback getPoint,
-                void *userData) : myGetPointCountCallback(getPointCount),
-                                  myGetPointCallback(getPoint),
-                                  myUserData(userData) {
+    sfShape(sfShapeGetPointCountCallback getPointCount,
+            sfShapeGetPointCallback getPoint,
+            void *userData) : myGetPointCountCallback(getPointCount),
+                              myGetPointCallback(getPoint),
+                              myUserData(userData) {
     }
 
     virtual std::size_t getPointCount() const {
@@ -59,17 +59,6 @@ class sfShapeImpl : public sf::Shape {
     sfShapeGetPointCountCallback myGetPointCountCallback;
     sfShapeGetPointCallback myGetPointCallback;
     void *myUserData;
-};
-
-// Internal structure of sfShape
-
-struct sfShape {
-    sfShape(sfShapeGetPointCountCallback getPointCount,
-            sfShapeGetPointCallback getPoint,
-            void *userData) : This(getPointCount, getPoint, userData) {
-    }
-
-    sfShapeImpl This;
 };
 
 #endif // SFML_SHAPESTRUCT_H
