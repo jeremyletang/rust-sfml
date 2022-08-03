@@ -1,5 +1,3 @@
-use std::os::raw::c_ulong;
-
 use crate::ffi::system::sfString;
 pub use crate::ffi::*;
 #[cfg(feature = "serde")]
@@ -460,7 +458,7 @@ impl<'a> Iterator for sfVideoModeVectorIter<'a> {
 pub type sfWindowHandle = *mut c_void;
 // Window handle is Window (unsigned long) on Unix - X11
 #[cfg(any(target_os = "linux", target_os = "freebsd"))]
-pub type sfWindowHandle = c_ulong;
+pub type sfWindowHandle = std::os::raw::c_ulong;
 // Window handle is NSWindow (void*) on Mac OS X - Cocoa
 #[cfg(target_os = "macos")]
 pub type sfWindowHandle = *mut c_void;
