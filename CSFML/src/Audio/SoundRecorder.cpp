@@ -29,9 +29,9 @@
 #include <vector>
 
 extern "C" sfSoundRecorder *sfSoundRecorder_create(sfSoundRecorderStartCallback onStart,
-                                        sfSoundRecorderProcessCallback onProcess,
-                                        sfSoundRecorderStopCallback onStop,
-                                        void *userData) {
+                                                   sfSoundRecorderProcessCallback onProcess,
+                                                   sfSoundRecorderStopCallback onStop,
+                                                   void *userData) {
     return new sfSoundRecorder(onStart, onProcess, onStop, userData);
 }
 

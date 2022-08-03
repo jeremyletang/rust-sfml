@@ -23,8 +23,8 @@
 
 // Headers
 
-#include "System/InputStreamStruct.h"
 #include "Graphics/Rect.h"
+#include "System/InputStreamStruct.h"
 #include <SFML/Graphics/Font.hpp>
 #include <cstddef>
 

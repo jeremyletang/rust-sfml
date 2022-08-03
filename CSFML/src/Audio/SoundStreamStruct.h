@@ -41,15 +41,15 @@ typedef void (*sfSoundStreamSeekCallback)(int64_t, void *);                 ///<
 // Helper class implementing the callback forwarding from
 // C++ to C in sfSoundStream
 
-class sfSoundStreamImpl : public sf::SoundStream {
+class sfSoundStream : public sf::SoundStream {
   public:
-    sfSoundStreamImpl(sfSoundStreamGetDataCallback onGetData,
-                      sfSoundStreamSeekCallback onSeek,
-                      unsigned int channelCount,
-                      unsigned int sampleRate,
-                      void *userData) : myGetDataCallback(onGetData),
-                                        mySeekCallback(onSeek),
-                                        myUserData(userData) {
+    sfSoundStream(sfSoundStreamGetDataCallback onGetData,
+                  sfSoundStreamSeekCallback onSeek,
+                  unsigned int channelCount,
+                  unsigned int sampleRate,
+                  void *userData) : myGetDataCallback(onGetData),
+                                    mySeekCallback(onSeek),
+                                    myUserData(userData) {
         initialize(channelCount, sampleRate);
     }
 
@@ -74,19 +74,6 @@ class sfSoundStreamImpl : public sf::SoundStream {
     sfSoundStreamGetDataCallback myGetDataCallback;
     sfSoundStreamSeekCallback mySeekCallback;
     void *myUserData;
-};
-
-// Internal structure of sfSoundStream
-
-struct sfSoundStream {
-    sfSoundStream(sfSoundStreamGetDataCallback onGetData,
-                  sfSoundStreamSeekCallback onSeek,
-                  unsigned int channelCount,
-                  unsigned int sampleRate,
-                  void *userData) : This(onGetData, onSeek, channelCount, sampleRate, userData) {
-    }
-
-    sfSoundStreamImpl This;
 };
 
 #endif // SFML_SOUNDSTREAMSTRUCT_H
