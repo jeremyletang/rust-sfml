@@ -60,7 +60,7 @@ pub struct sfVideoMode {
     /// Video mode height, in pixels
     pub height: c_uint,
     /// Video mode pixel depth, in bits per pixels
-    pub bitsPerPixel: c_uint,
+    pub bits_per_pixel: c_uint,
 }
 
 /// Structure defining the settings of the OpenGL context attached to a window.

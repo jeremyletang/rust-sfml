@@ -6,7 +6,7 @@ fn main() {
     for fmode in fmodes {
         println!(
             "{}x{} {} bits",
-            fmode.width, fmode.height, fmode.bitsPerPixel
+            fmode.width, fmode.height, fmode.bits_per_pixel
         );
     }
 }

@@ -30,6 +30,6 @@ impl Glyph {
     /// Texture coordinates of the glyph inside the font's texture.
     #[must_use]
     pub fn texture_rect(&self) -> IntRect {
-        IntRect::from_raw(self.0.textureRect)
+        IntRect::from_raw(self.0.texture_rect)
     }
 }

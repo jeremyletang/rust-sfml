@@ -10,7 +10,6 @@ Requirements
 - Rust 1.60 or later
 - [SFML 2.5](http://www.sfml-dev.org/download.php)
 - A C++ compiler for building CSFML
-- libclang for generating the low level bindings (See bindgen [instructions](https://rust-lang.github.io/rust-bindgen/requirements.html))
 
 Documentation
 =====

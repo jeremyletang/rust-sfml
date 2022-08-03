@@ -102,11 +102,11 @@ impl VideoMode {
         ffi::sfVideoMode {
             width: self.width,
             height: self.height,
-            bitsPerPixel: self.bits_per_pixel,
+            bits_per_pixel: self.bits_per_pixel,
         }
     }
     fn from_raw(raw: ffi::sfVideoMode) -> Self {
-        Self::new(raw.width, raw.height, raw.bitsPerPixel)
+        Self::new(raw.width, raw.height, raw.bits_per_pixel)
     }
 }
 

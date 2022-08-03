@@ -46,10 +46,6 @@ version = "1.0"
 [build-dependencies]
 cc = "1.0.67"
 
-[build-dependencies.bindgen]
-version = "0.60.1"
-default-features = false
-
 [dev-dependencies]
 rand = "0.8.3"
 glu-sys = "0.1.4"

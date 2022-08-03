@@ -906,7 +906,7 @@ pub struct sfGlyph {
     ///< Bounding rectangle of the glyph, in coordinates relative to the baseline
     pub bounds: sfFloatRect,
     ///< Texture coordinates of the glyph inside the font's image
-    pub textureRect: sfIntRect,
+    pub texture_rect: sfIntRect,
 }
 
 pub type sfFloatRect = Rect<f32>;
@@ -930,7 +930,7 @@ pub struct sfVertex {
     ///< Color of the vertex
     pub color: sfColor,
     ///< Coordinates of the texture's pixel to map to the vertex
-    pub texCoords: sfVector2f,
+    pub tex_coords: sfVector2f,
 }
 
 // 2D vectors
