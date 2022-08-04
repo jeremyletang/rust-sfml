@@ -1,19 +1,12 @@
 //! Rust bindings for [SFML](http://www.sfml-dev.org), the Simple and Fast Multimedia Library.
 //!
-//! Prerequisites
+//! Requirements
 //! =============
 //!
-//! - Rust 1.42 or later
-//!
-//! - SFML 2.5 and CSFML 2.5 must be installed on your computer. You can download them here:
-//!
-//!     - SFML 2.5: <http://www.sfml-dev.org/download.php>
-//!     - CSFML 2.5: <http://www.sfml-dev.org/download/csfml/>
-//!
-//! - Supported platforms:
-//!     - Linux
-//!     - Windows
-//!     - Mac OS X
+//! - Linux, Windows, or OS X
+//! - Rust 1.60 or later
+//! - [SFML 2.5](http://www.sfml-dev.org/download.php)
+//! - A C++ compiler for building CSFML
 //!
 //! # !! Thread safety warning !!
 //!
