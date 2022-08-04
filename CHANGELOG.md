@@ -4,6 +4,7 @@
 
 ### Added
 - Examples for Vector3
+- Examples for Vector2
 
 ### Fixed
 - Update requirements in the crate documentation
