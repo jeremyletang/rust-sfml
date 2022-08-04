@@ -380,9 +380,12 @@ impl RenderWindow {
     /// Set the displayed cursor to a native system cursor.
     ///
     /// Upon window creation, the arrow cursor is used by default.
+    ///
+    /// # Safety
+    ///
     /// The cursor can not be destroyed while in use by the window.
-    pub fn set_mouse_cursor(&mut self, cursor: &Cursor) {
-        unsafe { ffi::sfRenderWindow_setMouseCursor(self.render_window.as_ptr(), cursor.raw()) }
+    pub unsafe fn set_mouse_cursor(&mut self, cursor: &Cursor) {
+        ffi::sfRenderWindow_setMouseCursor(self.render_window.as_ptr(), cursor.raw())
     }
 
     /// Returns the current position of a touch in window coordinates.

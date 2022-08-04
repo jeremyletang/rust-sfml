@@ -122,7 +122,9 @@ fn main() {
                         if mouse_over(b, x, y) {
                             if let Some(new_cursor) = Cursor::from_system(cursor_types[i]) {
                                 cursor = new_cursor;
-                                rw.set_mouse_cursor(&cursor);
+                                unsafe {
+                                    rw.set_mouse_cursor(&cursor);
+                                }
                                 selected_index = i;
                             } else {
                                 failed_index = i;
