@@ -34,7 +34,7 @@ decl_opaque! {
 /// * These cursor types are undocumented so may not be available on all versions,
 /// but have been tested on 10.13
 #[repr(C)]
-#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
 #[allow(missing_docs)]
 pub enum sfCursorType {
     Arrow,
