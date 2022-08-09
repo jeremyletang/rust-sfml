@@ -53,9 +53,9 @@ impl<T> Rect<T> {
     ///
     /// ```
     /// # use sfml::graphics::Rect;
-    /// # use sfml::system::Vector2i;
-    /// let a = Vector2i::new(10, 20);
-    /// let b = Vector2i::new(30, 40);
+    /// # use sfml::system::Vector2;
+    /// let a = Vector2::new(10, 20);
+    /// let b = Vector2::new(30, 40);
     /// let rect = Rect::from_vecs(a, b);
     /// assert_eq!(rect, Rect::new(10, 20, 30, 40));
     /// ```
