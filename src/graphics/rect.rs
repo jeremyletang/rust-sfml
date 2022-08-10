@@ -31,6 +31,13 @@ pub type FloatRect = Rect<f32>;
 
 impl<T> Rect<T> {
     /// Construct a rectangle from its coordinates.
+    ///
+    /// # Usage Example
+    ///
+    /// ```
+    /// # use sfml::graphics::Rect;
+    /// let rect = Rect::new(10, 10, 10, 10);
+    /// ```
     pub const fn new(left: T, top: T, width: T, height: T) -> Self {
         Rect {
             left,
@@ -41,6 +48,17 @@ impl<T> Rect<T> {
     }
 
     /// Construct a rectangle from its position and size.
+    ///
+    /// # Usage Example
+    ///
+    /// ```
+    /// # use sfml::graphics::Rect;
+    /// # use sfml::system::Vector2;
+    /// let a = Vector2::new(10, 20);
+    /// let b = Vector2::new(30, 40);
+    /// let rect = Rect::from_vecs(a, b);
+    /// assert_eq!(rect, Rect::new(10, 20, 30, 40));
+    /// ```
     pub fn from_vecs(pos: Vector2<T>, size: Vector2<T>) -> Rect<T> {
         Rect {
             left: pos.x,
@@ -51,6 +69,18 @@ impl<T> Rect<T> {
     }
 
     /// Lossless conversion into `Rect<U>`.
+    ///
+    /// # Usage Example
+    ///
+    /// ```
+    /// # use sfml::graphics::Rect;
+    /// let a = Rect::new(1u8, 2u8, 3u8, 4u8);
+    /// let b: Rect<u32> = a.into_other();
+    /// assert_eq!(u8::try_from(b.top).unwrap(), a.top);
+    /// assert_eq!(u8::try_from(b.height).unwrap(), a.height);
+    /// assert_eq!(u8::try_from(b.left).unwrap(), a.left);
+    /// assert_eq!(u8::try_from(b.width).unwrap(), a.width);
+    /// ```
     pub fn into_other<U>(self) -> Rect<U>
     where
         T: Into<U>,
@@ -63,6 +93,22 @@ impl<T> Rect<T> {
         }
     }
     /// Fallible conversion into `Rect<U>`
+    ///
+    /// # Usage Example
+    ///
+    /// ```
+    /// # use sfml::graphics::Rect;
+    /// let a = Rect::new(1i16, 2i16, 3i16, 4i16);
+    /// let b: Rect<u8> = a.try_into_other().unwrap();
+    /// assert_eq!(i16::from(b.top), a.top);
+    /// assert_eq!(i16::from(b.height), a.height);
+    /// assert_eq!(i16::from(b.left), a.left);
+    /// assert_eq!(i16::from(b.width), a.width);
+    ///
+    /// let a = Rect::new(-1i16, -2i16, -3i16, -4i16);
+    /// let b = a.try_into_other::<u8>();
+    /// assert!(b.is_err());
+    /// ```
     pub fn try_into_other<U>(self) -> Result<Rect<U>, T::Error>
     where
         T: TryInto<U>,
@@ -75,6 +121,18 @@ impl<T> Rect<T> {
         })
     }
     /// Lossy conversion into `Rect<U>`
+    ///
+    /// # Usage Example
+    ///
+    /// ```
+    /// # use sfml::graphics::Rect;
+    /// let a = Rect::new(2., 32.32, 3.34, 1.443);
+    /// let b: Rect<u8> = a.as_other();
+    /// assert_eq!(b.top, 32);
+    /// assert_eq!(b.left, 2);
+    /// assert_eq!(b.width, 3);
+    /// assert_eq!(b.height, 1);
+    /// ```
     pub fn as_other<U: 'static + Copy>(self) -> Rect<U>
     where
         T: AsPrimitive<U>,
@@ -88,11 +146,29 @@ impl<T> Rect<T> {
     }
 
     /// Get the position of the rectangle's top-left corner
+    ///
+    /// # Usage Example
+    ///
+    /// ```
+    /// # use sfml::graphics::Rect;
+    /// # use sfml::system::Vector2;
+    /// let a = Rect::new(1, 2, 3, 4);
+    /// assert_eq!(a.position(), Vector2::new(1, 2));
+    /// ```
     pub fn position(self) -> Vector2<T> {
         Vector2::new(self.left, self.top)
     }
 
     /// Get the size of the rectangle
+    ///
+    /// # Usage Example
+    ///
+    /// ```
+    /// # use sfml::graphics::Rect;
+    /// # use sfml::system::Vector2;
+    /// let a = Rect::new(1, 2, 3, 4);
+    /// assert_eq!(a.size(), Vector2::new(3, 4));
+    /// ```
     pub fn size(self) -> Vector2<T> {
         Vector2::new(self.width, self.height)
     }
@@ -100,12 +176,41 @@ impl<T> Rect<T> {
 
 impl<T: PartialOrd + Add<Output = T> + Sub<Output = T> + Copy> Rect<T> {
     /// Check if a point is inside the rectangle's area.
+    ///
+    /// # Usage Example
+    ///
+    /// ```
+    /// # use sfml::graphics::Rect;
+    /// # use sfml::system::Vector2;
+    /// // Passing case
+    /// let a = Rect::new(0, 0, 4, 4);
+    /// let b = Vector2::new(2, 2);
+    /// assert!(a.contains(b));
+    ///
+    /// // Failing case
+    /// let a = Rect::new(0, 0, 1, 1);
+    /// let b = Vector2::new(20, 10);
+    /// assert!(!a.contains(b));
+    /// ```
     #[inline]
     pub fn contains(self, point: Vector2<T>) -> bool {
         self.contains2(point.x, point.y)
     }
 
     /// Check if a point is inside the rectangle's area.
+    ///
+    /// # Usage Example
+    ///
+    /// ```
+    /// # use sfml::graphics::Rect;
+    /// // Passing case
+    /// let a = Rect::new(0, 0, 4, 4);
+    /// assert!(a.contains2(2, 2));
+    ///
+    /// // Failing case
+    /// let a = Rect::new(0, 0, 1, 1);
+    /// assert!(!a.contains2(20, 10));
+    /// ```
     pub fn contains2(self, x: T, y: T) -> bool {
         // Based on SFML's implementation.
         // Rectangles with negative dimensions are allowed.
@@ -118,6 +223,20 @@ impl<T: PartialOrd + Add<Output = T> + Sub<Output = T> + Copy> Rect<T> {
     ///
     /// If the rectangles intersect, returns Some filled with the intersection
     /// of the two rectangles. Otherwise, returns None.
+    ///
+    /// # Usage Example
+    /// ```
+    /// # use sfml::graphics::Rect;
+    /// // Passing case
+    /// let a = Rect::new(0, 0, 2, 2);
+    /// let b = Rect::new(1, 1, 2, 2);
+    /// assert_eq!(a.intersection(&b), Some(Rect::new(1, 1, 1, 1)));
+    ///
+    /// // Failing case
+    /// let a = Rect::new(0, 0, 2, 2);
+    /// let b = Rect::new(2, 2, 2, 2);
+    /// assert_eq!(a.intersection(&b), None);
+    /// ```
     pub fn intersection(self, other: &Rect<T>) -> Option<Rect<T>> {
         // Based on SFML's implementation.
         // Compute the min and max coordinates on various axes.
