@@ -83,14 +83,8 @@ extern "C" void sfTexture_destroy(sf::Texture *texture) {
 }
 
 extern "C" sfVector2u sfTexture_getSize(const sf::Texture *texture) {
-    sfVector2u size = {0, 0};
-
-    sf::Vector2u sfmlSize = texture->getSize();
-
-    size.x = sfmlSize.x;
-    size.y = sfmlSize.y;
-
-    return size;
+    sf::Vector2u vec2 = texture->getSize();
+    return {vec2.x, vec2.y};
 }
 
 extern "C" sf::Image *sfTexture_copyToImage(const sf::Texture *texture) {

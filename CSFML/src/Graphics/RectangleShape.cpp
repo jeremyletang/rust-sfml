@@ -59,13 +59,8 @@ extern "C" void sfRectangleShape_setOrigin(sf::RectangleShape *shape, sfVector2f
 }
 
 extern "C" sfVector2f sfRectangleShape_getPosition(const sf::RectangleShape *shape) {
-    sfVector2f position = {0, 0};
-
-    sf::Vector2f sfmlPos = shape->getPosition();
-    position.x = sfmlPos.x;
-    position.y = sfmlPos.y;
-
-    return position;
+    sf::Vector2f vec2 = shape->getPosition();
+    return {vec2.x, vec2.y};
 }
 
 extern "C" float sfRectangleShape_getRotation(const sf::RectangleShape *shape) {
@@ -73,23 +68,13 @@ extern "C" float sfRectangleShape_getRotation(const sf::RectangleShape *shape) {
 }
 
 extern "C" sfVector2f sfRectangleShape_getScale(const sf::RectangleShape *shape) {
-    sfVector2f scale = {0, 0};
-
-    sf::Vector2f sfmlScale = shape->getScale();
-    scale.x = sfmlScale.x;
-    scale.y = sfmlScale.y;
-
-    return scale;
+    sf::Vector2f vec2 = shape->getScale();
+    return {vec2.x, vec2.y};
 }
 
 extern "C" sfVector2f sfRectangleShape_getOrigin(const sf::RectangleShape *shape) {
-    sfVector2f origin = {0, 0};
-
-    sf::Vector2f sfmlOrigin = shape->getOrigin();
-    origin.x = sfmlOrigin.x;
-    origin.y = sfmlOrigin.y;
-
-    return origin;
+    sf::Vector2f vec2 = shape->getOrigin();
+    return {vec2.x, vec2.y};
 }
 
 extern "C" void sfRectangleShape_move(sf::RectangleShape *shape, sfVector2f offset) {
@@ -137,39 +122,18 @@ extern "C" const sf::Texture *sfRectangleShape_getTexture(const sf::RectangleSha
 }
 
 extern "C" sfIntRect sfRectangleShape_getTextureRect(const sf::RectangleShape *shape) {
-    sfIntRect rect = {0, 0, 0, 0};
-
-    sf::IntRect sfmlRect = shape->getTextureRect();
-    rect.left = sfmlRect.left;
-    rect.top = sfmlRect.top;
-    rect.width = sfmlRect.width;
-    rect.height = sfmlRect.height;
-
-    return rect;
+    sf::IntRect rect = shape->getTextureRect();
+    return {rect.left, rect.top, rect.width, rect.height};
 }
 
 extern "C" sfColor sfRectangleShape_getFillColor(const sf::RectangleShape *shape) {
-    sfColor color = {0, 0, 0, 0};
-
-    sf::Color sfmlColor = shape->getFillColor();
-    color.r = sfmlColor.r;
-    color.g = sfmlColor.g;
-    color.b = sfmlColor.b;
-    color.a = sfmlColor.a;
-
-    return color;
+    sf::Color color = shape->getFillColor();
+    return {color.r, color.g, color.b, color.a};
 }
 
 extern "C" sfColor sfRectangleShape_getOutlineColor(const sf::RectangleShape *shape) {
-    sfColor color = {0, 0, 0, 0};
-
-    sf::Color sfmlColor = shape->getOutlineColor();
-    color.r = sfmlColor.r;
-    color.g = sfmlColor.g;
-    color.b = sfmlColor.b;
-    color.a = sfmlColor.a;
-
-    return color;
+    sf::Color color = shape->getOutlineColor();
+    return {color.r, color.g, color.b, color.a};
 }
 
 extern "C" float sfRectangleShape_getOutlineThickness(const sf::RectangleShape *shape) {
@@ -181,13 +145,8 @@ extern "C" size_t sfRectangleShape_getPointCount(const sf::RectangleShape *shape
 }
 
 extern "C" sfVector2f sfRectangleShape_getPoint(const sf::RectangleShape *shape, size_t index) {
-    sfVector2f point = {0, 0};
-
-    sf::Vector2f sfmlPoint = shape->getPoint(index);
-    point.x = sfmlPoint.x;
-    point.y = sfmlPoint.y;
-
-    return point;
+    sf::Vector2f vec2 = shape->getPoint(index);
+    return {vec2.x, vec2.y};
 }
 
 extern "C" void sfRectangleShape_setSize(sf::RectangleShape *shape, sfVector2f size) {
@@ -195,35 +154,16 @@ extern "C" void sfRectangleShape_setSize(sf::RectangleShape *shape, sfVector2f s
 }
 
 extern "C" sfVector2f sfRectangleShape_getSize(const sf::RectangleShape *shape) {
-    sfVector2f size = {0, 0};
-
-    sf::Vector2f sfmlSize = shape->getSize();
-    size.x = sfmlSize.x;
-    size.y = sfmlSize.y;
-
-    return size;
+    sf::Vector2f vec2 = shape->getSize();
+    return {vec2.x, vec2.y};
 }
 
 extern "C" sfFloatRect sfRectangleShape_getLocalBounds(const sf::RectangleShape *shape) {
-    sfFloatRect rect = {0, 0, 0, 0};
-
-    sf::FloatRect sfmlRect = shape->getLocalBounds();
-    rect.left = sfmlRect.left;
-    rect.top = sfmlRect.top;
-    rect.width = sfmlRect.width;
-    rect.height = sfmlRect.height;
-
-    return rect;
+    sf::FloatRect rect = shape->getLocalBounds();
+    return {rect.left, rect.top, rect.width, rect.height};
 }
 
 extern "C" sfFloatRect sfRectangleShape_getGlobalBounds(const sf::RectangleShape *shape) {
-    sfFloatRect rect = {0, 0, 0, 0};
-
-    sf::FloatRect sfmlRect = shape->getGlobalBounds();
-    rect.left = sfmlRect.left;
-    rect.top = sfmlRect.top;
-    rect.width = sfmlRect.width;
-    rect.height = sfmlRect.height;
-
-    return rect;
+    sf::FloatRect rect = shape->getGlobalBounds();
+    return {rect.left, rect.top, rect.width, rect.height};
 }

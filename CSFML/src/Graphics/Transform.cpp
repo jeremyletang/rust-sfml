@@ -30,27 +30,13 @@
 #include <cstring>
 
 extern "C" sfVector2f sfTransform_transformPoint(const sf::Transform *transform, sfVector2f point) {
-    sfVector2f p = {0, 0};
-
-    sf::Vector2f sfmlPoint = transform->transformPoint(point.x, point.y);
-
-    p.x = sfmlPoint.x;
-    p.y = sfmlPoint.y;
-
-    return p;
+    sf::Vector2f vec2 = transform->transformPoint(point.x, point.y);
+    return {vec2.x, vec2.y};
 }
 
 extern "C" sfFloatRect sfTransform_transformRect(const sf::Transform *transform, sfFloatRect rectangle) {
-    sfFloatRect rect = {0, 0, 0, 0};
-
-    sf::FloatRect sfmlRect = transform->transformRect(sf::FloatRect(rectangle.left, rectangle.top, rectangle.width, rectangle.height));
-
-    rect.left = sfmlRect.left;
-    rect.top = sfmlRect.top;
-    rect.width = sfmlRect.width;
-    rect.height = sfmlRect.height;
-
-    return rect;
+    sf::FloatRect rect = transform->transformRect(sf::FloatRect(rectangle.left, rectangle.top, rectangle.width, rectangle.height));
+    return {rect.left, rect.top, rect.width, rect.height};
 }
 
 extern "C" void sfTransform_combine(sf::Transform *transform, const sf::Transform *other) {

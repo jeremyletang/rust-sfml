@@ -122,14 +122,8 @@ extern "C" const uint8_t *sfImage_getPixelsPtr(const sf::Image *image) {
 }
 
 extern "C" sfVector2u sfImage_getSize(const sf::Image *image) {
-    sfVector2u size = {0, 0};
-
-    sf::Vector2u sfmlSize = image->getSize();
-
-    size.x = sfmlSize.x;
-    size.y = sfmlSize.y;
-
-    return size;
+    sf::Vector2u size = image->getSize();
+    return {size.x, size.y};
 }
 
 extern "C" void sfImage_flipHorizontally(sf::Image *image) {

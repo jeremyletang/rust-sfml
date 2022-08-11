@@ -1,4 +1,3 @@
-
 //
 // SFML - Simple and Fast Multimedia Library
 // Copyright (C) 2007-2018 Laurent Gomila (laurent@sfml-dev.org)
@@ -21,23 +20,25 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-// Headers
-
 #include "System/Vector2.h"
+#include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/Touch.hpp>
 
 extern "C" bool sfTouch_isDown(unsigned int finger) {
     return sf::Touch::isDown(finger);
 }
 
-extern "C" sfVector2i sfTouch_getPosition(unsigned int finger, const sf::Window *relativeTo) {
-    sf::Vector2i sfmlPosition;
+extern "C" sfVector2i sfTouch_getPosition(unsigned int finger) {
+    sf::Vector2i pos = sf::Touch::getPosition(finger);
+    return {pos.x, pos.y};
+}
 
-    if (relativeTo)
-        sfmlPosition = sf::Touch::getPosition(finger, *relativeTo);
-    else
-        sfmlPosition = sf::Touch::getPosition(finger);
+extern "C" sfVector2i sfTouch_getPositionRelativeTo(unsigned int finger, const sf::Window *relativeTo) {
+    sf::Vector2i pos = sf::Touch::getPosition(finger, *relativeTo);
+    return {pos.x, pos.y};
+}
 
-    sfVector2i position = {sfmlPosition.x, sfmlPosition.y};
-    return position;
+extern "C" sfVector2i sfTouch_getPositionRenderWindow(unsigned int finger, const sf::RenderWindow *relativeTo) {
+    sf::Vector2i pos = sf::Touch::getPosition(finger, *relativeTo);
+    return {pos.x, pos.y};
 }

@@ -75,13 +75,8 @@ extern "C" bool sfWindow_waitEvent(sf::Window *window, sf::Event *event) {
 }
 
 extern "C" sfVector2i sfWindow_getPosition(const sf::Window *window) {
-    sfVector2i position = {0, 0};
-
-    sf::Vector2i sfmlPos = window->getPosition();
-    position.x = sfmlPos.x;
-    position.y = sfmlPos.y;
-
-    return position;
+    sf::Vector2i pos = window->getPosition();
+    return {pos.x, pos.y};
 }
 
 extern "C" void sfWindow_setPosition(sf::Window *window, sfVector2i position) {
@@ -89,13 +84,8 @@ extern "C" void sfWindow_setPosition(sf::Window *window, sfVector2i position) {
 }
 
 extern "C" sfVector2u sfWindow_getSize(const sf::Window *window) {
-    sfVector2u size = {0, 0};
-
-    sf::Vector2u sfmlSize = window->getSize();
-    size.x = sfmlSize.x;
-    size.y = sfmlSize.y;
-
-    return size;
+    sf::Vector2u size = window->getSize();
+    return {size.x, size.y};
 }
 
 extern "C" void sfWindow_setSize(sf::Window *window, sfVector2u size) {

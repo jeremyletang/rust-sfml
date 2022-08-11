@@ -61,13 +61,8 @@ extern "C" void sfText_setOrigin(sf::Text *text, sfVector2f origin) {
 }
 
 extern "C" sfVector2f sfText_getPosition(const sf::Text *text) {
-    sfVector2f position = {0, 0};
-
-    sf::Vector2f sfmlPos = text->getPosition();
-    position.x = sfmlPos.x;
-    position.y = sfmlPos.y;
-
-    return position;
+    sf::Vector2f vec2 = text->getPosition();
+    return {vec2.x, vec2.y};
 }
 
 extern "C" float sfText_getRotation(const sf::Text *text) {
@@ -75,23 +70,13 @@ extern "C" float sfText_getRotation(const sf::Text *text) {
 }
 
 extern "C" sfVector2f sfText_getScale(const sf::Text *text) {
-    sfVector2f scale = {0, 0};
-
-    sf::Vector2f sfmlScale = text->getScale();
-    scale.x = sfmlScale.x;
-    scale.y = sfmlScale.y;
-
-    return scale;
+    sf::Vector2f vec2 = text->getScale();
+    return {vec2.x, vec2.y};
 }
 
 extern "C" sfVector2f sfText_getOrigin(const sf::Text *text) {
-    sfVector2f origin = {0, 0};
-
-    sf::Vector2f sfmlOrigin = text->getOrigin();
-    origin.x = sfmlOrigin.x;
-    origin.y = sfmlOrigin.y;
-
-    return origin;
+    sf::Vector2f vec2 = text->getOrigin();
+    return {vec2.x, vec2.y};
 }
 
 extern "C" void sfText_move(sf::Text *text, sfVector2f offset) {
@@ -179,27 +164,13 @@ extern "C" uint32_t sfText_getStyle(const sf::Text *text) {
 }
 
 extern "C" sfColor sfText_getFillColor(const sf::Text *text) {
-    sfColor color = {0, 0, 0, 0};
-
-    sf::Color sfmlColor = text->getFillColor();
-    color.r = sfmlColor.r;
-    color.g = sfmlColor.g;
-    color.b = sfmlColor.b;
-    color.a = sfmlColor.a;
-
-    return color;
+    sf::Color color = text->getFillColor();
+    return {color.r, color.g, color.b, color.a};
 }
 
 extern "C" sfColor sfText_getOutlineColor(const sf::Text *text) {
-    sfColor color = {0, 0, 0, 0};
-
-    sf::Color sfmlColor = text->getOutlineColor();
-    color.r = sfmlColor.r;
-    color.g = sfmlColor.g;
-    color.b = sfmlColor.b;
-    color.a = sfmlColor.a;
-
-    return color;
+    sf::Color color = text->getOutlineColor();
+    return {color.r, color.g, color.b, color.a};
 }
 
 extern "C" float sfText_getOutlineThickness(const sf::Text *text) {
@@ -207,35 +178,16 @@ extern "C" float sfText_getOutlineThickness(const sf::Text *text) {
 }
 
 extern "C" sfVector2f sfText_findCharacterPos(const sf::Text *text, size_t index) {
-    sfVector2f position = {0, 0};
-
-    sf::Vector2f sfmlPos = text->findCharacterPos(index);
-    position.x = sfmlPos.x;
-    position.y = sfmlPos.y;
-
-    return position;
+    sf::Vector2f vec2 = text->findCharacterPos(index);
+    return {vec2.x, vec2.y};
 }
 
 extern "C" sfFloatRect sfText_getLocalBounds(const sf::Text *text) {
-    sfFloatRect rect = {0, 0, 0, 0};
-
-    sf::FloatRect sfmlRect = text->getLocalBounds();
-    rect.left = sfmlRect.left;
-    rect.top = sfmlRect.top;
-    rect.width = sfmlRect.width;
-    rect.height = sfmlRect.height;
-
-    return rect;
+    sf::FloatRect rect = text->getLocalBounds();
+    return {rect.left, rect.top, rect.width, rect.height};
 }
 
 extern "C" sfFloatRect sfText_getGlobalBounds(const sf::Text *text) {
-    sfFloatRect rect = {0, 0, 0, 0};
-
-    sf::FloatRect sfmlRect = text->getGlobalBounds();
-    rect.left = sfmlRect.left;
-    rect.top = sfmlRect.top;
-    rect.width = sfmlRect.width;
-    rect.height = sfmlRect.height;
-
-    return rect;
+    sf::FloatRect rect = text->getGlobalBounds();
+    return {rect.left, rect.top, rect.width, rect.height};
 }

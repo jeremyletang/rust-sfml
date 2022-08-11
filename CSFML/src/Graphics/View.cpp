@@ -68,23 +68,13 @@ extern "C" void sfView_reset(sf::View *view, sfFloatRect rectangle) {
 }
 
 extern "C" sfVector2f sfView_getCenter(const sf::View *view) {
-    sfVector2f center = {0, 0};
-
-    sf::Vector2f sfmlCenter = view->getCenter();
-    center.x = sfmlCenter.x;
-    center.y = sfmlCenter.y;
-
-    return center;
+    sf::Vector2f vec2 = view->getCenter();
+    return {vec2.x, vec2.y};
 }
 
 extern "C" sfVector2f sfView_getSize(const sf::View *view) {
-    sfVector2f size = {0, 0};
-
-    sf::Vector2f sfmlSize = view->getSize();
-    size.x = sfmlSize.x;
-    size.y = sfmlSize.y;
-
-    return size;
+    sf::Vector2f vec2 = view->getSize();
+    return {vec2.x, vec2.y};
 }
 
 extern "C" float sfView_getRotation(const sf::View *view) {
@@ -92,15 +82,8 @@ extern "C" float sfView_getRotation(const sf::View *view) {
 }
 
 extern "C" sfFloatRect sfView_getViewport(const sf::View *view) {
-    sfFloatRect rect = {0, 0, 0, 0};
-
-    sf::FloatRect SFMLRect = view->getViewport();
-    rect.left = SFMLRect.left;
-    rect.top = SFMLRect.top;
-    rect.width = SFMLRect.width;
-    rect.height = SFMLRect.height;
-
-    return rect;
+    sf::FloatRect rect = view->getViewport();
+    return {rect.left, rect.top, rect.width, rect.height};
 }
 
 extern "C" void sfView_move(sf::View *view, sfVector2f offset) {

@@ -61,13 +61,8 @@ extern "C" void sfSprite_setOrigin(sf::Sprite *sprite, sfVector2f origin) {
 }
 
 extern "C" sfVector2f sfSprite_getPosition(const sf::Sprite *sprite) {
-    sfVector2f position = {0, 0};
-
-    sf::Vector2f sfmlPos = sprite->getPosition();
-    position.x = sfmlPos.x;
-    position.y = sfmlPos.y;
-
-    return position;
+    sf::Vector2f vec2 = sprite->getPosition();
+    return {vec2.x, vec2.y};
 }
 
 extern "C" float sfSprite_getRotation(const sf::Sprite *sprite) {
@@ -75,23 +70,13 @@ extern "C" float sfSprite_getRotation(const sf::Sprite *sprite) {
 }
 
 extern "C" sfVector2f sfSprite_getScale(const sf::Sprite *sprite) {
-    sfVector2f scale = {0, 0};
-
-    sf::Vector2f sfmlScale = sprite->getScale();
-    scale.x = sfmlScale.x;
-    scale.y = sfmlScale.y;
-
-    return scale;
+    sf::Vector2f vec2 = sprite->getScale();
+    return {vec2.x, vec2.y};
 }
 
 extern "C" sfVector2f sfSprite_getOrigin(const sf::Sprite *sprite) {
-    sfVector2f origin = {0, 0};
-
-    sf::Vector2f sfmlOrigin = sprite->getOrigin();
-    origin.x = sfmlOrigin.x;
-    origin.y = sfmlOrigin.y;
-
-    return origin;
+    sf::Vector2f vec2 = sprite->getOrigin();
+    return {vec2.x, vec2.y};
 }
 
 extern "C" void sfSprite_move(sf::Sprite *sprite, sfVector2f offset) {
@@ -131,49 +116,21 @@ extern "C" const sf::Texture *sfSprite_getTexture(const sf::Sprite *sprite) {
 }
 
 extern "C" sfIntRect sfSprite_getTextureRect(const sf::Sprite *sprite) {
-    sfIntRect rect = {0, 0, 0, 0};
-
-    sf::IntRect sfmlRect = sprite->getTextureRect();
-    rect.left = sfmlRect.left;
-    rect.top = sfmlRect.top;
-    rect.width = sfmlRect.width;
-    rect.height = sfmlRect.height;
-
-    return rect;
+    sf::IntRect rect = sprite->getTextureRect();
+    return {rect.left, rect.top, rect.width, rect.height};
 }
 
 extern "C" sfColor sfSprite_getColor(const sf::Sprite *sprite) {
-    sfColor color = {0, 0, 0, 0};
-
-    sf::Color sfmlColor = sprite->getColor();
-    color.r = sfmlColor.r;
-    color.g = sfmlColor.g;
-    color.b = sfmlColor.b;
-    color.a = sfmlColor.a;
-
-    return color;
+    sf::Color color = sprite->getColor();
+    return {color.r, color.g, color.b, color.a};
 }
 
 extern "C" sfFloatRect sfSprite_getLocalBounds(const sf::Sprite *sprite) {
-    sfFloatRect rect = {0, 0, 0, 0};
-
-    sf::FloatRect sfmlRect = sprite->getLocalBounds();
-    rect.left = sfmlRect.left;
-    rect.top = sfmlRect.top;
-    rect.width = sfmlRect.width;
-    rect.height = sfmlRect.height;
-
-    return rect;
+    sf::FloatRect rect = sprite->getLocalBounds();
+    return {rect.left, rect.top, rect.width, rect.height};
 }
 
 extern "C" sfFloatRect sfSprite_getGlobalBounds(const sf::Sprite *sprite) {
-    sfFloatRect rect = {0, 0, 0, 0};
-
-    sf::FloatRect sfmlRect = sprite->getGlobalBounds();
-    rect.left = sfmlRect.left;
-    rect.top = sfmlRect.top;
-    rect.width = sfmlRect.width;
-    rect.height = sfmlRect.height;
-
-    return rect;
+    sf::FloatRect rect = sprite->getGlobalBounds();
+    return {rect.left, rect.top, rect.width, rect.height};
 }

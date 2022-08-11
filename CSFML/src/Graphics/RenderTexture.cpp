@@ -47,13 +47,8 @@ extern "C" void sfRenderTexture_destroy(sf::RenderTexture *renderTexture) {
 }
 
 extern "C" sfVector2u sfRenderTexture_getSize(const sf::RenderTexture *renderTexture) {
-    sfVector2u size = {0, 0};
-
-    sf::Vector2u sfmlSize = renderTexture->getSize();
-    size.x = sfmlSize.x;
-    size.y = sfmlSize.y;
-
-    return size;
+    sf::Vector2u size = renderTexture->getSize();
+    return {size.x, size.y};
 }
 
 extern "C" bool sfRenderTexture_setActive(sf::RenderTexture *renderTexture, bool active) {
@@ -84,45 +79,28 @@ extern "C" const sf::View *sfRenderTexture_getDefaultView(const sf::RenderTextur
 }
 
 extern "C" sfIntRect sfRenderTexture_getViewport(const sf::RenderTexture *renderTexture, const sf::View *view) {
-    sfIntRect rect = {0, 0, 0, 0};
-
-    sf::IntRect SFMLrect = renderTexture->getViewport(*view);
-    rect.left = SFMLrect.left;
-    rect.top = SFMLrect.top;
-    rect.width = SFMLrect.width;
-    rect.height = SFMLrect.height;
-
-    return rect;
+    sf::IntRect rect = renderTexture->getViewport(*view);
+    return {rect.left, rect.top, rect.width, rect.height};
 }
 
-extern "C" sfVector2f sfRenderTexture_mapPixelToCoords(const sf::RenderTexture *renderTexture, sfVector2i point, const sf::View *targetView) {
-    sfVector2f result = {0, 0};
-
-    sf::Vector2f sfmlPoint;
-    if (targetView)
-        sfmlPoint = renderTexture->mapPixelToCoords(sf::Vector2i(point.x, point.y), *targetView);
-    else
-        sfmlPoint = renderTexture->mapPixelToCoords(sf::Vector2i(point.x, point.y));
-
-    result.x = sfmlPoint.x;
-    result.y = sfmlPoint.y;
-
-    return result;
+extern "C" sfVector2f sfRenderTexture_mapPixelToCoords(const sf::RenderTexture *renderTexture, sfVector2i point) {
+    sf::Vector2f result = renderTexture->mapPixelToCoords(sf::Vector2i(point.x, point.y));
+    return {result.x, result.y};
 }
 
-extern "C" sfVector2i sfRenderTexture_mapCoordsToPixel(const sf::RenderTexture *renderTexture, sfVector2f point, const sf::View *targetView) {
-    sfVector2i result = {0, 0};
+extern "C" sfVector2f sfRenderTexture_mapPixelToCoords_View(const sf::RenderTexture *renderTexture, sfVector2i point, const sf::View *targetView) {
+    sf::Vector2f result = renderTexture->mapPixelToCoords(sf::Vector2i(point.x, point.y), *targetView);
+    return {result.x, result.y};
+}
 
-    sf::Vector2i sfmlPoint;
-    if (targetView)
-        sfmlPoint = renderTexture->mapCoordsToPixel(sf::Vector2f(point.x, point.y), *targetView);
-    else
-        sfmlPoint = renderTexture->mapCoordsToPixel(sf::Vector2f(point.x, point.y));
+extern "C" sfVector2i sfRenderTexture_mapCoordsToPixel(const sf::RenderTexture *renderTexture, sfVector2f point) {
+    sf::Vector2i result = renderTexture->mapCoordsToPixel(sf::Vector2f(point.x, point.y));
+    return {result.x, result.y};
+}
 
-    result.x = sfmlPoint.x;
-    result.y = sfmlPoint.y;
-
-    return result;
+extern "C" sfVector2i sfRenderTexture_mapCoordsToPixel_View(const sf::RenderTexture *renderTexture, sfVector2f point, const sf::View *targetView) {
+    sf::Vector2i result = renderTexture->mapCoordsToPixel(sf::Vector2f(point.x, point.y), *targetView);
+    return {result.x, result.y};
 }
 
 extern "C" void sfRenderTexture_drawSprite(sf::RenderTexture *renderTexture, const sf::Sprite *object, const sf::RenderStates *states) {
