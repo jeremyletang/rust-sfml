@@ -123,8 +123,7 @@ extern "C" sf::Music::Status sfMusic_getStatus(const sf::Music *music) {
 }
 
 extern "C" int64_t sfMusic_getPlayingOffset(const sf::Music *music) {
-    int64_t time = music->getPlayingOffset().asMicroseconds();
-    return time;
+    return music->getPlayingOffset().asMicroseconds();
 }
 
 extern "C" void sfMusic_setPitch(sf::Music *music, float pitch) {
