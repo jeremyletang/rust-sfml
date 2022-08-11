@@ -28,15 +28,15 @@
 #include <cstddef>
 
 extern "C" bool sfSensor_isAvailable(sf::Sensor::Type sensor) {
-    return sf::Sensor::isAvailable(static_cast<sf::Sensor::Type>(sensor));
+    return sf::Sensor::isAvailable(sensor);
 }
 
 extern "C" void sfSensor_setEnabled(sf::Sensor::Type sensor, bool enabled) {
-    sf::Sensor::setEnabled(static_cast<sf::Sensor::Type>(sensor), enabled);
+    sf::Sensor::setEnabled(sensor, enabled);
 }
 
 extern "C" sfVector3f sfSensor_getValue(sf::Sensor::Type sensor) {
-    sf::Vector3f sfmlValue = sf::Sensor::getValue(static_cast<sf::Sensor::Type>(sensor));
+    sf::Vector3f sfmlValue = sf::Sensor::getValue(sensor);
 
     sfVector3f value = {sfmlValue.x, sfmlValue.y, sfmlValue.z};
     return value;

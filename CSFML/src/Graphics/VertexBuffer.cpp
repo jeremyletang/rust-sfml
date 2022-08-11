@@ -23,26 +23,19 @@
 
 // Headers
 
-#include "Graphics/PrimitiveType.h"
 #include "Graphics/Vertex.h"
 #include <SFML/Graphics/VertexBuffer.hpp>
 #include <cstddef>
 
-typedef enum {
-    sfVertexBufferStream,  ///< Constantly changing data
-    sfVertexBufferDynamic, ///< Occasionally changing data
-    sfVertexBufferStatic   ///< Rarely changing data
-} sfVertexBufferUsage;
-
-extern "C" sf::VertexBuffer *sfVertexBuffer_create(unsigned int vertexCount, sfPrimitiveType type, sfVertexBufferUsage usage) {
+extern "C" sf::VertexBuffer *sfVertexBuffer_create(unsigned int vertexCount, sf::PrimitiveType type, sf::VertexBuffer::Usage usage) {
     sf::VertexBuffer *buffer = new sf::VertexBuffer;
 
     if (!buffer->create(vertexCount)) {
         delete buffer;
         buffer = NULL;
     } else {
-        buffer->setPrimitiveType(static_cast<sf::PrimitiveType>(type));
-        buffer->setUsage(static_cast<sf::VertexBuffer::Usage>(usage));
+        buffer->setPrimitiveType(type);
+        buffer->setUsage(usage);
     }
 
     return buffer;
@@ -78,22 +71,21 @@ extern "C" unsigned int sfVertexBuffer_getNativeHandle(sf::VertexBuffer *vertexB
     return vertexBuffer->getNativeHandle();
 }
 
-extern "C" void sfVertexBuffer_setPrimitiveType(sf::VertexBuffer *vertexBuffer, sfPrimitiveType type) {
-    vertexBuffer->setPrimitiveType(static_cast<sf::PrimitiveType>(type));
+extern "C" void sfVertexBuffer_setPrimitiveType(sf::VertexBuffer *vertexBuffer, sf::PrimitiveType type) {
+    vertexBuffer->setPrimitiveType(type);
 }
 
-extern "C" sfPrimitiveType sfVertexBuffer_getPrimitiveType(const sf::VertexBuffer *vertexBuffer) {
+extern "C" sf::PrimitiveType sfVertexBuffer_getPrimitiveType(const sf::VertexBuffer *vertexBuffer) {
 
-    return static_cast<sfPrimitiveType>(vertexBuffer->getPrimitiveType());
+    return vertexBuffer->getPrimitiveType();
 }
 
-extern "C" void sfVertexBuffer_setUsage(sf::VertexBuffer *vertexBuffer, sfVertexBufferUsage usage) {
-    vertexBuffer->setUsage(static_cast<sf::VertexBuffer::Usage>(usage));
+extern "C" void sfVertexBuffer_setUsage(sf::VertexBuffer *vertexBuffer, sf::VertexBuffer::Usage usage) {
+    vertexBuffer->setUsage(usage);
 }
 
-extern "C" sfVertexBufferUsage sfVertexBuffer_getUsage(const sf::VertexBuffer *vertexBuffer) {
-
-    return static_cast<sfVertexBufferUsage>(vertexBuffer->getUsage());
+extern "C" sf::VertexBuffer::Usage sfVertexBuffer_getUsage(const sf::VertexBuffer *vertexBuffer) {
+    return vertexBuffer->getUsage();
 }
 
 extern "C" void sfVertexBuffer_bind(const sf::VertexBuffer *vertexBuffer) {

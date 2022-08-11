@@ -23,7 +23,6 @@
 
 // Headers
 
-#include "Graphics/PrimitiveType.h"
 #include "Graphics/Rect.h"
 #include "Graphics/ShapeStruct.h"
 #include "Graphics/Vertex.h"
@@ -261,8 +260,8 @@ extern "C" void sfRenderWindow_drawVertexBuffer(sf::RenderWindow *renderWindow, 
 
 extern "C" void sfRenderWindow_drawPrimitives(sf::RenderWindow *renderWindow,
                                               const sf::Vertex *vertices, size_t vertexCount,
-                                              sfPrimitiveType type, const sf::RenderStates *states) {
-    renderWindow->draw(vertices, vertexCount, static_cast<sf::PrimitiveType>(type), *states);
+                                              sf::PrimitiveType type, const sf::RenderStates *states) {
+    renderWindow->draw(vertices, vertexCount, type, *states);
 }
 
 extern "C" void sfRenderWindow_pushGLStates(sf::RenderWindow *renderWindow) {
