@@ -40,9 +40,7 @@ extern "C" sf::View *sfView_createFromRect(sfFloatRect rectangle) {
 }
 
 extern "C" sf::View *sfView_copy(const sf::View *view) {
-    const sf::View *src = view;
-    sf::View *newView = new sf::View(*src);
-    return newView;
+    return new sf::View(*view);
 }
 
 extern "C" void sfView_destroy(sf::View *view) {

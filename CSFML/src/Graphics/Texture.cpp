@@ -75,9 +75,7 @@ extern "C" bool sfTexture_loadFromImage(sf::Texture *tex, const sf::Image *image
 }
 
 extern "C" sf::Texture *sfTexture_copy(const sf::Texture *texture) {
-    const sf::Texture *texture_ = texture;
-    sf::Texture *newTexture = new sf::Texture(*texture_);
-    return newTexture;
+    return new sf::Texture(*texture);
 }
 
 extern "C" void sfTexture_destroy(sf::Texture *texture) {

@@ -32,8 +32,7 @@ extern "C" sf::Sound *sfSound_create(void) {
 }
 
 extern "C" sf::Sound *sfSound_copy(const sf::Sound *sound) {
-    const sf::Sound *src = sound;
-    return new sf::Sound(*src);
+    return new sf::Sound(*sound);
 }
 
 extern "C" void sfSound_destroy(sf::Sound *sound) {

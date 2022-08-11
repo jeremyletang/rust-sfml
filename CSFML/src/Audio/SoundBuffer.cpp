@@ -72,8 +72,7 @@ extern "C" sf::SoundBuffer *sfSoundBuffer_createFromSamples(const int16_t *sampl
 }
 
 extern "C" sf::SoundBuffer *sfSoundBuffer_copy(const sf::SoundBuffer *soundBuffer) {
-    const sf::SoundBuffer *src = soundBuffer;
-    return new sf::SoundBuffer(*src);
+    return new sf::SoundBuffer(*soundBuffer);
 }
 
 extern "C" void sfSoundBuffer_destroy(sf::SoundBuffer *soundBuffer) {

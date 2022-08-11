@@ -42,8 +42,7 @@ extern "C" sf::VertexBuffer *sfVertexBuffer_create(unsigned int vertexCount, sf:
 }
 
 extern "C" sf::VertexBuffer *sfVertexBuffer_copy(const sf::VertexBuffer *vertexBuffer) {
-    sf::VertexBuffer *buffer = new sf::VertexBuffer(*vertexBuffer);
-    return buffer;
+    return new sf::VertexBuffer(*vertexBuffer);
 }
 
 extern "C" void sfVertexBuffer_destroy(sf::VertexBuffer *vertexBuffer) {

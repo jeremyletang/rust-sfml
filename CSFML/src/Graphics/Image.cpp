@@ -86,7 +86,6 @@ extern "C" sf::Image *sfImage_createFromStream(sfInputStream *stream) {
 }
 
 extern "C" sf::Image *sfImage_copy(const sf::Image *image) {
-
     return new sf::Image(*image);
 }
 

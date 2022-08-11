@@ -37,9 +37,7 @@ extern "C" sf::Text *sfText_create(void) {
 }
 
 extern "C" sf::Text *sfText_copy(const sf::Text *text) {
-    const sf::Text *src = text;
-    sf::Text *newText = new sf::Text(*src);
-    return newText;
+    return new sf::Text(*text);
 }
 
 extern "C" void sfText_destroy(sf::Text *text) {

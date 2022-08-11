@@ -67,9 +67,7 @@ extern "C" sf::Font *sfFont_createFromStream(sfInputStream *stream) {
 }
 
 extern "C" sf::Font *sfFont_copy(const sf::Font *font) {
-    const sf::Font *src = font;
-    sf::Font *newFont = new sf::Font(*src);
-    return newFont;
+    return new sf::Font(*font);
 }
 
 extern "C" void sfFont_destroy(sf::Font *font) {

@@ -35,7 +35,6 @@ extern "C" sf::ConvexShape *sfConvexShape_create(void) {
 }
 
 extern "C" sf::ConvexShape *sfConvexShape_copy(const sf::ConvexShape *shape) {
-
     return new sf::ConvexShape(*shape);
 }
 

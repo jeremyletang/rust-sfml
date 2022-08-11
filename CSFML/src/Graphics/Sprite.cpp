@@ -37,9 +37,7 @@ extern "C" sf::Sprite *sfSprite_create(void) {
 }
 
 extern "C" sf::Sprite *sfSprite_copy(const sf::Sprite *sprite) {
-    const sf::Sprite *src = sprite;
-    sf::Sprite *newSprite = new sf::Sprite(*src);
-    return newSprite;
+    return new sf::Sprite(*sprite);
 }
 
 extern "C" void sfSprite_destroy(sf::Sprite *sprite) {

@@ -35,9 +35,7 @@ extern "C" sf::RectangleShape *sfRectangleShape_create(void) {
 }
 
 extern "C" sf::RectangleShape *sfRectangleShape_copy(const sf::RectangleShape *shape) {
-    const sf::RectangleShape *src = shape;
-    sf::RectangleShape *newShape = new sf::RectangleShape(*src);
-    return newShape;
+    return new sf::RectangleShape(*shape);
 }
 
 extern "C" void sfRectangleShape_destroy(sf::RectangleShape *shape) {
