@@ -6,6 +6,7 @@
 - Examples for Vector3
 - Examples for Vector2
 - Examples for Rect
+- Examples for Font
 
 ### Fixed
 - Update requirements in the crate documentation
