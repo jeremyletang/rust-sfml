@@ -110,7 +110,7 @@ extern "C" sf::Transform const *sfShape_getInverseTransform(const sfShape *shape
 }
 
 extern "C" void sfShape_setTexture(sfShape *shape, const sf::Texture *texture, bool resetRect) {
-    shape->setTexture(reinterpret_cast<const sf::Texture *>(texture), resetRect);
+    shape->setTexture(texture, resetRect);
 }
 
 extern "C" void sfShape_setTextureRect(sfShape *shape, sfIntRect rect) {
@@ -130,8 +130,8 @@ extern "C" void sfShape_setOutlineThickness(sfShape *shape, float thickness) {
 }
 
 extern "C" const sf::Texture *sfShape_getTexture(const sfShape *shape) {
-    const sf::Shape *shape_ = reinterpret_cast<const sf::Shape *>(shape);
-    return reinterpret_cast<const sf::Texture *>(shape_->getTexture());
+    const sf::Shape *shape_ = shape;
+    return shape_->getTexture();
 }
 
 extern "C" sfIntRect sfShape_getTextureRect(const sfShape *shape) {

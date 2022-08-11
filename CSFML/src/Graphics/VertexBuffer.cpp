@@ -61,9 +61,9 @@ extern "C" unsigned int sfVertexBuffer_getVertexCount(const sf::VertexBuffer *ve
     return vertexBuffer->getVertexCount();
 }
 
-extern "C" bool sfVertexBuffer_update(sf::VertexBuffer *vertexBuffer, const sfVertex *vertices, unsigned int vertexCount, unsigned int offset) {
+extern "C" bool sfVertexBuffer_update(sf::VertexBuffer *vertexBuffer, const sf::Vertex *vertices, unsigned int vertexCount, unsigned int offset) {
     // the cast is safe, sfVertex has to be binary compatible with sf::Vertex
-    return vertexBuffer->update(reinterpret_cast<const sf::Vertex *>(vertices), vertexCount, offset);
+    return vertexBuffer->update(vertices, vertexCount, offset);
 }
 
 extern "C" bool sfVertexBuffer_updateFromVertexBuffer(sf::VertexBuffer *vertexBuffer, const sf::VertexBuffer *other) {

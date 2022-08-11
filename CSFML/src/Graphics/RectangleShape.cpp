@@ -31,7 +31,7 @@
 #include <cstddef>
 
 extern "C" sf::RectangleShape *sfRectangleShape_create(void) {
-    return reinterpret_cast<sf::RectangleShape *>(new sf::RectangleShape);
+    return new sf::RectangleShape;
 }
 
 extern "C" sf::RectangleShape *sfRectangleShape_copy(const sf::RectangleShape *shape) {

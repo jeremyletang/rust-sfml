@@ -42,7 +42,7 @@ extern "C" sf::Font *sfFont_createFromFile(const char *filename) {
         font = NULL;
     }
 
-    return reinterpret_cast<sf::Font *>(font);
+    return font;
 }
 
 extern "C" sf::Font *sfFont_createFromMemory(const void *data, size_t sizeInBytes) {
@@ -52,7 +52,7 @@ extern "C" sf::Font *sfFont_createFromMemory(const void *data, size_t sizeInByte
         font = NULL;
     }
 
-    return reinterpret_cast<sf::Font *>(font);
+    return font;
 }
 
 extern "C" sf::Font *sfFont_createFromStream(sfInputStream *stream) {
@@ -63,23 +63,23 @@ extern "C" sf::Font *sfFont_createFromStream(sfInputStream *stream) {
         font = NULL;
     }
 
-    return reinterpret_cast<sf::Font *>(font);
+    return font;
 }
 
 extern "C" sf::Font *sfFont_copy(const sf::Font *font) {
-    const sf::Font *src = reinterpret_cast<const sf::Font *>(font);
+    const sf::Font *src = font;
     sf::Font *newFont = new sf::Font(*src);
-    return reinterpret_cast<sf::Font *>(newFont);
+    return newFont;
 }
 
 extern "C" void sfFont_destroy(sf::Font *font) {
-    delete reinterpret_cast<sf::Font *>(font);
+    delete font;
 }
 
 extern "C" sfGlyph sfFont_getGlyph(const sf::Font *font, uint32_t codePoint, unsigned int characterSize, bool bold, float outlineThickness) {
     sfGlyph glyph = {0, {0, 0, 0, 0}, {0, 0, 0, 0}};
 
-    sf::Glyph SFMLGlyph = reinterpret_cast<const sf::Font *>(font)->getGlyph(codePoint, characterSize, bold, outlineThickness);
+    sf::Glyph SFMLGlyph = font->getGlyph(codePoint, characterSize, bold, outlineThickness);
 
     glyph.advance = SFMLGlyph.advance;
     glyph.bounds.left = SFMLGlyph.bounds.left;
@@ -95,19 +95,19 @@ extern "C" sfGlyph sfFont_getGlyph(const sf::Font *font, uint32_t codePoint, uns
 }
 
 extern "C" float sfFont_getKerning(const sf::Font *font, uint32_t first, uint32_t second, unsigned int characterSize) {
-    return reinterpret_cast<const sf::Font *>(font)->getKerning(first, second, characterSize);
+    return font->getKerning(first, second, characterSize);
 }
 
 extern "C" float sfFont_getLineSpacing(const sf::Font *font, unsigned int characterSize) {
-    return reinterpret_cast<const sf::Font *>(font)->getLineSpacing(characterSize);
+    return font->getLineSpacing(characterSize);
 }
 
 extern "C" float sfFont_getUnderlinePosition(const sf::Font *font, unsigned int characterSize) {
-    return reinterpret_cast<const sf::Font *>(font)->getUnderlinePosition(characterSize);
+    return font->getUnderlinePosition(characterSize);
 }
 
 extern "C" float sfFont_getUnderlineThickness(const sf::Font *font, unsigned int characterSize) {
-    return reinterpret_cast<const sf::Font *>(font)->getUnderlineThickness(characterSize);
+    return font->getUnderlineThickness(characterSize);
 }
 
 extern "C" const sf::Texture *sfFont_getTexture(const sf::Font *font, unsigned int characterSize) {
@@ -122,7 +122,7 @@ typedef struct
 extern "C" sfFontInfo sfFont_getInfo(const sf::Font *font) {
     sfFontInfo info = {NULL};
 
-    info.family = reinterpret_cast<const sf::Font *>(font)->getInfo().family.c_str();
+    info.family = font->getInfo().family.c_str();
 
     return info;
 }

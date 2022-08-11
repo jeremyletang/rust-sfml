@@ -32,16 +32,16 @@
 
 extern "C" sf::Texture *sfTexture_new() {
     sf::Texture *texture = new sf::Texture;
-    return reinterpret_cast<sf::Texture *>(texture);
+    return texture;
 }
 
 extern "C" bool sfTexture_create(sf::Texture *tex, unsigned int width, unsigned int height) {
-    sf::Texture *texture = reinterpret_cast<sf::Texture *>(tex);
+    sf::Texture *texture = tex;
     return texture->create(width, height);
 }
 
 extern "C" bool sfTexture_loadFromFile(sf::Texture *tex, const char *filename, const sfIntRect area) {
-    sf::Texture *texture = reinterpret_cast<sf::Texture *>(tex);
+    sf::Texture *texture = tex;
 
     sf::IntRect rect = sf::IntRect(area.left, area.top, area.width, area.height);
 
@@ -49,7 +49,7 @@ extern "C" bool sfTexture_loadFromFile(sf::Texture *tex, const char *filename, c
 }
 
 extern "C" bool sfTexture_loadFromMemory(sf::Texture *tex, const void *data, size_t sizeInBytes, const sfIntRect area) {
-    sf::Texture *texture = reinterpret_cast<sf::Texture *>(tex);
+    sf::Texture *texture = tex;
 
     sf::IntRect rect = sf::IntRect(area.left, area.top, area.width, area.height);
 
@@ -58,7 +58,7 @@ extern "C" bool sfTexture_loadFromMemory(sf::Texture *tex, const void *data, siz
 
 extern "C" bool sfTexture_loadFromStream(sf::Texture *tex, sfInputStream *stream, const sfIntRect area) {
 
-    sf::Texture *texture = reinterpret_cast<sf::Texture *>(tex);
+    sf::Texture *texture = tex;
 
     sf::IntRect rect = sf::IntRect(area.left, area.top, area.width, area.height);
 
@@ -67,7 +67,7 @@ extern "C" bool sfTexture_loadFromStream(sf::Texture *tex, sfInputStream *stream
 
 extern "C" bool sfTexture_loadFromImage(sf::Texture *tex, const sf::Image *image, const sfIntRect area) {
 
-    sf::Texture *texture = reinterpret_cast<sf::Texture *>(tex);
+    sf::Texture *texture = tex;
 
     sf::IntRect rect = sf::IntRect(area.left, area.top, area.width, area.height);
 
@@ -75,19 +75,19 @@ extern "C" bool sfTexture_loadFromImage(sf::Texture *tex, const sf::Image *image
 }
 
 extern "C" sf::Texture *sfTexture_copy(const sf::Texture *texture) {
-    const sf::Texture *texture_ = reinterpret_cast<const sf::Texture *>(texture);
+    const sf::Texture *texture_ = texture;
     sf::Texture *newTexture = new sf::Texture(*texture_);
-    return reinterpret_cast<sf::Texture *>(newTexture);
+    return newTexture;
 }
 
 extern "C" void sfTexture_destroy(sf::Texture *texture) {
-    delete reinterpret_cast<sf::Texture *>(texture);
+    delete texture;
 }
 
 extern "C" sfVector2u sfTexture_getSize(const sf::Texture *texture) {
     sfVector2u size = {0, 0};
 
-    sf::Vector2u sfmlSize = reinterpret_cast<const sf::Texture *>(texture)->getSize();
+    sf::Vector2u sfmlSize = texture->getSize();
 
     size.x = sfmlSize.x;
     size.y = sfmlSize.y;
@@ -98,78 +98,77 @@ extern "C" sfVector2u sfTexture_getSize(const sf::Texture *texture) {
 extern "C" sf::Image *sfTexture_copyToImage(const sf::Texture *texture) {
 
     sf::Image *image = new sf::Image;
-    *image = reinterpret_cast<const sf::Texture *>(texture)->copyToImage();
+    *image = texture->copyToImage();
 
     return image;
 }
 
 extern "C" void sfTexture_updateFromPixels(sf::Texture *texture, const uint8_t *pixels, unsigned int width, unsigned int height, unsigned int x, unsigned int y) {
-    reinterpret_cast<sf::Texture *>(texture)->update(pixels, width, height, x, y);
+    texture->update(pixels, width, height, x, y);
 }
 
 extern "C" void sfTexture_updateFromTexture(sf::Texture *destination, const sf::Texture *texture, unsigned int x, unsigned int y) {
-    sf::Texture *destination_ = reinterpret_cast<sf::Texture *>(destination);
-    const sf::Texture *texture_ = reinterpret_cast<const sf::Texture *>(texture);
+    sf::Texture *destination_ = destination;
+    const sf::Texture *texture_ = texture;
     destination_->update(*texture_, x, y);
 }
 
 extern "C" void sfTexture_updateFromImage(sf::Texture *texture, const sf::Image *image, unsigned int x, unsigned int y) {
 
-    reinterpret_cast<sf::Texture *>(texture)->update(*image, x, y);
+    texture->update(*image, x, y);
 }
 
 extern "C" void sfTexture_updateFromWindow(sf::Texture *texture, const sf::Window *window, unsigned int x, unsigned int y) {
 
-    reinterpret_cast<sf::Texture *>(texture)->update(*window, x, y);
+    texture->update(*window, x, y);
 }
 
 extern "C" void sfTexture_updateFromRenderWindow(sf::Texture *texture, const sf::RenderWindow *renderWindow, unsigned int x, unsigned int y) {
-    const sf::RenderWindow *win = reinterpret_cast<const sf::RenderWindow *>(renderWindow);
-    reinterpret_cast<sf::Texture *>(texture)->update(*win, x, y);
+    texture->update(*renderWindow, x, y);
 }
 
 extern "C" void sfTexture_setSmooth(sf::Texture *texture, bool smooth) {
-    reinterpret_cast<sf::Texture *>(texture)->setSmooth(smooth);
+    texture->setSmooth(smooth);
 }
 
 extern "C" bool sfTexture_isSmooth(const sf::Texture *texture) {
 
-    return reinterpret_cast<const sf::Texture *>(texture)->isSmooth();
+    return texture->isSmooth();
 }
 
 extern "C" void sfTexture_setSrgb(sf::Texture *texture, bool sRgb) {
-    reinterpret_cast<sf::Texture *>(texture)->setSrgb(sRgb);
+    texture->setSrgb(sRgb);
 }
 
 extern "C" bool sfTexture_isSrgb(const sf::Texture *texture) {
-    return reinterpret_cast<const sf::Texture *>(texture)->isSrgb();
+    return texture->isSrgb();
 }
 
 extern "C" void sfTexture_setRepeated(sf::Texture *texture, bool repeated) {
-    reinterpret_cast<sf::Texture *>(texture)->setRepeated(repeated);
+    texture->setRepeated(repeated);
 }
 
 extern "C" bool sfTexture_isRepeated(const sf::Texture *texture) {
 
-    return reinterpret_cast<const sf::Texture *>(texture)->isRepeated();
+    return texture->isRepeated();
 }
 
 extern "C" bool sfTexture_generateMipmap(sf::Texture *texture) {
-    return reinterpret_cast<sf::Texture *>(texture)->generateMipmap();
+    return texture->generateMipmap();
 }
 
 extern "C" void sfTexture_swap(sf::Texture *left, sf::Texture *right) {
-    sf::Texture *left_ = reinterpret_cast<sf::Texture *>(left);
-    sf::Texture *right_ = reinterpret_cast<sf::Texture *>(right);
+    sf::Texture *left_ = left;
+    sf::Texture *right_ = right;
     left_->swap(*right_);
 }
 
 extern "C" unsigned int sfTexture_getNativeHandle(const sf::Texture *texture) {
-    return reinterpret_cast<const sf::Texture *>(texture)->getNativeHandle();
+    return texture->getNativeHandle();
 }
 
 extern "C" void sfTexture_bind(const sf::Texture *texture) {
-    sf::Texture::bind(reinterpret_cast<const sf::Texture *>(texture));
+    sf::Texture::bind(texture);
 }
 
 extern "C" unsigned int sfTexture_getMaximumSize() {

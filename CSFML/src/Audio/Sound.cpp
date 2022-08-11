@@ -53,7 +53,7 @@ extern "C" void sfSound_stop(sf::Sound *sound) {
 }
 
 extern "C" void sfSound_setBuffer(sf::Sound *sound, const sf::SoundBuffer *buffer) {
-    sound->setBuffer(*reinterpret_cast<const sf::SoundBuffer *>(buffer));
+    sound->setBuffer(*buffer);
 }
 
 extern "C" const sf::SoundBuffer *sfSound_getBuffer(const sf::Sound *sound) {
