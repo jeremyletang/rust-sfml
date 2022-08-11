@@ -79,8 +79,7 @@ extern "C" bool sfMusic_getLoop(const sf::Music *music) {
 }
 
 extern "C" int64_t sfMusic_getDuration(const sf::Music *music) {
-    int64_t time = music->getDuration().asMicroseconds();
-    return time;
+    return music->getDuration().asMicroseconds();
 }
 
 extern "C" sfTimeSpan sfMusic_getLoopPoints(const sf::Music *music) {
