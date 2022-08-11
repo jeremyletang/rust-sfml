@@ -39,9 +39,8 @@ extern "C" void sfListener_setPosition(sfVector3f position) {
 }
 
 extern "C" sfVector3f sfListener_getPosition() {
-    sf::Vector3f sfmlPos = sf::Listener::getPosition();
-    sfVector3f position = {sfmlPos.x, sfmlPos.y, sfmlPos.z};
-    return position;
+    sf::Vector3f pos = sf::Listener::getPosition();
+    return {pos.x, pos.y, pos.z};
 }
 
 extern "C" void sfListener_setDirection(sfVector3f direction) {
@@ -49,9 +48,8 @@ extern "C" void sfListener_setDirection(sfVector3f direction) {
 }
 
 extern "C" sfVector3f sfListener_getDirection() {
-    sf::Vector3f sfmlDirection = sf::Listener::getDirection();
-    sfVector3f direction = {sfmlDirection.x, sfmlDirection.y, sfmlDirection.z};
-    return direction;
+    sf::Vector3f dir = sf::Listener::getDirection();
+    return {dir.x, dir.y, dir.z};
 }
 
 extern "C" void sfListener_setUpVector(sfVector3f upVector) {
@@ -59,7 +57,6 @@ extern "C" void sfListener_setUpVector(sfVector3f upVector) {
 }
 
 extern "C" sfVector3f sfListener_getUpVector() {
-    sf::Vector3f sfmlUpVector = sf::Listener::getUpVector();
-    sfVector3f upVector = {sfmlUpVector.x, sfmlUpVector.y, sfmlUpVector.z};
-    return upVector;
+    sf::Vector3f vec = sf::Listener::getUpVector();
+    return {vec.x, vec.y, vec.z};
 }

@@ -36,8 +36,6 @@ extern "C" void sfSensor_setEnabled(sf::Sensor::Type sensor, bool enabled) {
 }
 
 extern "C" sfVector3f sfSensor_getValue(sf::Sensor::Type sensor) {
-    sf::Vector3f sfmlValue = sf::Sensor::getValue(sensor);
-
-    sfVector3f value = {sfmlValue.x, sfmlValue.y, sfmlValue.z};
-    return value;
+    sf::Vector3f val = sf::Sensor::getValue(sensor);
+    return {val.x, val.y, val.z};
 }

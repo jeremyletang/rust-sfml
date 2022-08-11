@@ -163,14 +163,8 @@ extern "C" float sfMusic_getVolume(const sf::Music *music) {
 }
 
 extern "C" sfVector3f sfMusic_getPosition(const sf::Music *music) {
-    sfVector3f position = {0, 0, 0};
-
-    sf::Vector3f sfmlPos = music->getPosition();
-    position.x = sfmlPos.x;
-    position.y = sfmlPos.y;
-    position.z = sfmlPos.z;
-
-    return position;
+    sf::Vector3f pos = music->getPosition();
+    return {pos.x, pos.y, pos.z};
 }
 
 extern "C" bool sfMusic_isRelativeToListener(const sf::Music *music) {

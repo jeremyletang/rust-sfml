@@ -105,14 +105,8 @@ extern "C" float sfSoundStream_getVolume(const sfSoundStream *soundStream) {
 }
 
 extern "C" sfVector3f sfSoundStream_getPosition(const sfSoundStream *soundStream) {
-    sfVector3f position = {0, 0, 0};
-
-    sf::Vector3f sfmlPos = soundStream->getPosition();
-    position.x = sfmlPos.x;
-    position.y = sfmlPos.y;
-    position.z = sfmlPos.z;
-
-    return position;
+    sf::Vector3f pos = soundStream->getPosition();
+    return {pos.x, pos.y, pos.z};
 }
 
 extern "C" bool sfSoundStream_isRelativeToListener(const sfSoundStream *soundStream) {
