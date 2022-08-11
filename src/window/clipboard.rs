@@ -41,13 +41,15 @@ use crate::{
 
 /// Get the content of the clipboard as string data.
 ///
-/// This function returns the content of the clipboard as an SFML string.
-/// If the clipboard does not contain string it returns an empty string.
+/// If the clipboard does not contain a string, it returns an empty string.
 #[must_use]
-pub fn get_string() -> &'static SfStr {
+pub fn get_string() -> String {
     unsafe {
-        let raw = ffi::sfClipboard_getUnicodeString();
-        SfStr::from_ptr_str(raw)
+        let sf_string = ffi::sfClipboard_getUnicodeString();
+        let data = ffi::sfString_getData(sf_string);
+        let string = SfStr::from_ptr_str(data).to_rust_string();
+        ffi::sfString_delete(sf_string);
+        string
     }
 }
 
@@ -63,4 +65,10 @@ pub fn set_string<S: SfStrConv>(string: S) {
     string.with_as_sfstr(|sfstr| unsafe {
         ffi::sfClipboard_setUnicodeString(sfstr.as_ptr());
     })
+}
+
+#[test]
+fn identity_test() {
+    set_string("Hello world");
+    assert_eq!(&get_string(), "Hello world");
 }

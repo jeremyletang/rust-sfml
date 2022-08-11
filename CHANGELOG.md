@@ -7,6 +7,9 @@
 - Examples for Vector2
 - Examples for Rect
 
+### Changed
+- `window::clipboard::get_string()` now returns `String` instead of `&'static SfStr`
+
 ### Fixed
 - Update requirements in the crate documentation
 - Make `set_mouse_cursor` unsafe, as the cursor must stay alive while in use.

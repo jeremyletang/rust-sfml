@@ -46,8 +46,7 @@ fn main() {
                     ctrl: true,
                     ..
                 } => {
-                    let clipstring = clipboard::get_string();
-                    string.push_str(&clipstring.to_rust_string());
+                    string.push_str(&clipboard::get_string());
                     text.set_string(&string);
                 }
                 Event::KeyPressed {

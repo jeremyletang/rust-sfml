@@ -27,14 +27,10 @@
 #include <cstddef>
 #include <cstdint>
 
-namespace {
-sf::String ClipboardString;
-std::string ClipboardStringAnsi;
-} // namespace
-
-extern "C" const uint32_t *sfClipboard_getUnicodeString() {
-    ClipboardString = sf::Clipboard::getString();
-    return ClipboardString.getData();
+extern "C" sf::String *sfClipboard_getUnicodeString() {
+    sf::String *string = new sf::String;
+    *string = sf::Clipboard::getString();
+    return string;
 }
 
 extern "C" void sfClipboard_setUnicodeString(const uint32_t *text) {

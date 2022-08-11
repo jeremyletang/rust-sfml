@@ -129,7 +129,7 @@ impl Display for sfStdString {
 }
 
 extern "C" {
-    pub fn sfClipboard_getUnicodeString() -> *const u32;
+    pub fn sfClipboard_getUnicodeString() -> *mut sfString;
     pub fn sfClipboard_setUnicodeString(text: *const u32);
 
     pub fn sfClock_new() -> *mut sfClock;
@@ -143,6 +143,7 @@ extern "C" {
 
     pub fn sfString_getData(string: *const sfString) -> *const u32;
     pub fn sfString_getLength(string: *const sfString) -> usize;
+    pub fn sfString_delete(string: *mut sfString);
     pub fn sfStdString_destroy(std_string: *mut sfStdString);
     pub fn sfStdStringVector_getLength(vec: *const sfStdStringVector) -> usize;
     pub fn sfStdStringVector_index(
