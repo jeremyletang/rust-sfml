@@ -109,7 +109,7 @@ impl Font {
     ///
     /// # Usage Example
     ///
-    /// ```
+    /// ```no_run
     /// # use sfml::graphics::Font;
     /// # let font = Font::from_file("examples/resources/sansation.ttf").unwrap();
     /// let glyph = font.glyph(41, 32, false, 5.);
@@ -258,7 +258,7 @@ impl Font {
     ///
     /// # Usage Example
     ///
-    /// ```
+    /// ```no_run
     /// # use sfml::graphics::Font;
     /// # let font = Font::from_file("examples/resources/sansation.ttf").unwrap();
     /// let texture = font.texture(32);
