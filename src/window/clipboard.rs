@@ -45,7 +45,7 @@ use crate::{
 #[must_use]
 pub fn get_string() -> String {
     unsafe {
-        let sf_string = ffi::sfClipboard_getUnicodeString();
+        let sf_string = crate::ffi::window::sfClipboard_getUnicodeString();
         let data = ffi::sfString_getData(sf_string);
         let string = SfStr::from_ptr_str(data).to_rust_string();
         ffi::sfString_delete(sf_string);
@@ -63,7 +63,7 @@ pub fn get_string() -> String {
 /// open window for which events are being handled.
 pub fn set_string<S: SfStrConv>(string: S) {
     string.with_as_sfstr(|sfstr| unsafe {
-        ffi::sfClipboard_setUnicodeString(sfstr.as_ptr());
+        crate::ffi::window::sfClipboard_setUnicodeString(sfstr.as_ptr());
     })
 }
 

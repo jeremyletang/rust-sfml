@@ -3,6 +3,10 @@ pub use crate::ffi::*;
 #[cfg(feature = "serde")]
 use serde::{Deserialize, Serialize};
 
+use self::system::{sfVideoModeVector_getLength, sfVideoModeVector_index};
+
+use super::graphics::sfRenderWindow;
+
 decl_opaque! {
     sfCursor;
     sfContext;
@@ -10,6 +14,8 @@ decl_opaque! {
     JoystickIdentification;
     sfVideoModeVector;
 }
+
+type sfJoystickIdentification = JoystickIdentification;
 
 /// Enumeration of the native system cursor types.
 ///
@@ -248,10 +254,12 @@ pub(crate) enum EventType {
 
 #[repr(C)]
 #[derive(Clone, Copy)]
-pub(crate) struct Event {
+pub struct Event {
     pub(crate) type_: EventType,
     pub(crate) union: EventUnion,
 }
+
+type sfEvent = Event;
 
 #[repr(C)]
 #[derive(Clone, Copy)]
@@ -303,6 +311,8 @@ pub enum MouseButton {
     XButton1,
     XButton2,
 }
+
+type sfMouseButton = MouseButton;
 
 /// Key codes known to SFML.
 #[repr(C)]
@@ -414,6 +424,8 @@ pub enum Key {
     Pause,
 }
 
+type sfKeyboardKey = Key;
+
 impl Dispose for JoystickIdentification {
     unsafe fn dispose(&mut self) {
         sfJoystickIdentification_destroy(self);
@@ -464,13 +476,68 @@ pub type sfWindowHandle = std::os::raw::c_ulong;
 pub type sfWindowHandle = *mut c_void;
 
 extern "C" {
-    pub(crate) fn sfKeyboard_isKeyPressed(key: Key) -> bool;
-    pub(crate) fn sfKeyboard_setVirtualKeyboardVisible(visible: bool);
-    pub fn sfVideoModeVector_getLength(vec: *const sfVideoModeVector) -> usize;
-    pub fn sfVideoModeVector_index(
-        vec: *const sfVideoModeVector,
-        index: usize,
-    ) -> *const sfVideoMode;
+    // Clipboard.cpp
+    pub fn sfClipboard_getUnicodeString() -> *mut sfString;
+    pub fn sfClipboard_setUnicodeString(text: *const u32);
+
+    // Cursor.cpp
+    pub fn sfCursor_createFromPixels(
+        pixels: *const u8,
+        size: sfVector2u,
+        hotspot: sfVector2u,
+    ) -> *mut sfCursor;
+    pub fn sfCursor_createFromSystem(type_: sfCursorType) -> *mut sfCursor;
+    pub fn sfCursor_destroy(cursor: *mut sfCursor);
+
+    // Joystick.cpp
+    pub fn sfJoystick_isConnected(joystick: c_uint) -> bool;
+    pub fn sfJoystick_getButtonCount(joystick: c_uint) -> c_uint;
+    pub fn sfJoystick_hasAxis(joystick: c_uint, axis: sfJoystickAxis) -> bool;
+    pub fn sfJoystick_isButtonPressed(joystick: c_uint, button: c_uint) -> bool;
+    pub fn sfJoystick_getAxisPosition(joystick: c_uint, axis: sfJoystickAxis) -> f32;
+    pub fn sfJoystick_getIdentification(joystick: c_uint) -> *mut sfJoystickIdentification;
+    pub fn sfJoystickIdentification_destroy(ident: *mut sfJoystickIdentification);
+    pub fn sfJoystickIdentification_getVendorId(ident: *const sfJoystickIdentification) -> c_uint;
+    pub fn sfJoystickIdentification_getProductId(ident: *const sfJoystickIdentification) -> c_uint;
+    pub fn sfJoystickIdentification_getName(
+        ident: *const sfJoystickIdentification,
+    ) -> *const sfString;
+    pub fn sfJoystick_update();
+
+    // Keyboard.cpp
+    pub fn sfKeyboard_isKeyPressed(key: sfKeyboardKey) -> bool;
+    pub fn sfKeyboard_setVirtualKeyboardVisible(visible: bool);
+
+    // Mouse.cpp
+    pub fn sfMouse_isButtonPressed(button: sfMouseButton) -> bool;
+    pub fn sfMouse_getPosition() -> sfVector2i;
+    pub fn sfMouse_getPositionRelativeTo(relativeTo: *const sfWindow) -> sfVector2i;
+    pub fn sfMouse_getPositionRenderWindow(relativeTo: *const sfRenderWindow) -> sfVector2i;
+    pub fn sfMouse_setPosition(position: sfVector2i);
+    pub fn sfMouse_setPositionRelativeTo(pos: sfVector2i, relativeTo: *const sfWindow);
+    pub fn sfMouse_setPositionRenderWindow(pos: sfVector2i, relativeTo: *const sfRenderWindow);
+
+    // Sensor.cpp
+    pub fn sfSensor_isAvailable(sensor: sfSensorType) -> bool;
+    pub fn sfSensor_setEnabled(sensor: sfSensorType, enabled: bool);
+    pub fn sfSensor_getValue(sensor: sfSensorType) -> sfVector3f;
+
+    // Touch.cpp
+    pub fn sfTouch_isDown(finger: c_uint) -> bool;
+    pub fn sfTouch_getPosition(finger: c_uint) -> sfVector2i;
+    pub fn sfTouch_getPositionRelativeTo(finger: c_uint, relativeTo: *const sfWindow)
+        -> sfVector2i;
+    pub fn sfTouch_getPositionRenderWindow(
+        finger: c_uint,
+        relativeTo: *const sfRenderWindow,
+    ) -> sfVector2i;
+
+    // VideoMode.cpp
+    pub fn sfVideoMode_getDesktopMode() -> sfVideoMode;
+    pub fn sfVideoMode_getFullscreenModes() -> *const sfVideoModeVector;
+    pub fn sfVideoMode_isValid(mode: sfVideoMode) -> bool;
+
+    // Window.cpp
     pub fn sfWindow_createUnicode(
         mode: sfVideoMode,
         title: *const u32,
@@ -485,8 +552,8 @@ extern "C" {
     pub fn sfWindow_close(window: *mut sfWindow);
     pub fn sfWindow_isOpen(window: *const sfWindow) -> bool;
     pub fn sfWindow_getSettings(window: *const sfWindow) -> *const sfContextSettings;
-    pub(crate) fn sfWindow_pollEvent(window: *mut sfWindow, event: *mut Event) -> bool;
-    pub(crate) fn sfWindow_waitEvent(window: *mut sfWindow, event: *mut Event) -> bool;
+    pub fn sfWindow_pollEvent(window: *mut sfWindow, event: *mut sfEvent) -> bool;
+    pub fn sfWindow_waitEvent(window: *mut sfWindow, event: *mut sfEvent) -> bool;
     pub fn sfWindow_getPosition(window: *const sfWindow) -> sfVector2i;
     pub fn sfWindow_setPosition(window: *mut sfWindow, position: sfVector2i);
     pub fn sfWindow_getSize(window: *const sfWindow) -> sfVector2u;
@@ -516,43 +583,6 @@ extern "C" {
     pub fn sfContext_setActive(context: *mut sfContext, active: bool) -> bool;
     pub fn sfContext_getSettings(context: *const sfContext) -> *const sfContextSettings;
     pub fn sfContext_getActiveContextId() -> u64;
-    // Mouse
-    pub fn sfMouse_isButtonPressed(button: MouseButton) -> bool;
-    pub fn sfMouse_getPosition(relativeTo: *const sfWindow) -> sfVector2i;
-    pub fn sfMouse_setPosition(position: sfVector2i, relativeTo: *const sfWindow);
-    // Cursor
-    pub fn sfCursor_createFromPixels(
-        pixels: *const u8,
-        size: sfVector2u,
-        hotspot: sfVector2u,
-    ) -> *mut sfCursor;
-    pub fn sfCursor_createFromSystem(type_: sfCursorType) -> *mut sfCursor;
-    pub fn sfCursor_destroy(cursor: *mut sfCursor);
-    // Touch
-    pub fn sfTouch_isDown(finger: c_uint) -> bool;
-    pub fn sfTouch_getPosition(finger: c_uint, relativeTo: *const sfWindow) -> sfVector2i;
-    // VideoMode
-    pub fn sfVideoMode_getDesktopMode() -> sfVideoMode;
-    pub fn sfVideoMode_getFullscreenModes() -> *const sfVideoModeVector;
-    pub fn sfVideoMode_isValid(mode: sfVideoMode) -> bool;
-    // Joystick
-    pub fn sfJoystick_isConnected(joystick: c_uint) -> bool;
-    pub fn sfJoystick_getButtonCount(joystick: c_uint) -> c_uint;
-    pub fn sfJoystick_hasAxis(joystick: c_uint, axis: sfJoystickAxis) -> bool;
-    pub fn sfJoystick_isButtonPressed(joystick: c_uint, button: c_uint) -> bool;
-    pub fn sfJoystick_getAxisPosition(joystick: c_uint, axis: sfJoystickAxis) -> f32;
-    pub fn sfJoystick_getIdentification(joystick: c_uint) -> *mut JoystickIdentification;
-    pub fn sfJoystickIdentification_destroy(ident: *mut JoystickIdentification);
-    pub fn sfJoystickIdentification_getVendorId(ident: *const JoystickIdentification) -> c_uint;
-    pub fn sfJoystickIdentification_getProductId(ident: *const JoystickIdentification) -> c_uint;
-    pub fn sfJoystickIdentification_getName(
-        ident: *const JoystickIdentification,
-    ) -> *const sfString;
-    pub fn sfJoystick_update();
-    // Sensor
-    pub fn sfSensor_isAvailable(sensor: sfSensorType) -> bool;
-    pub fn sfSensor_setEnabled(sensor: sfSensorType, enabled: bool);
-    pub fn sfSensor_getValue(sensor: sfSensorType) -> sfVector3f;
 }
 
 #[repr(C)]

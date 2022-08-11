@@ -1,5 +1,7 @@
 pub use crate::ffi::*;
 
+use self::window::{sfVideoMode, sfVideoModeVector};
+
 decl_opaque! {
     sfStdString;
     sfStdStringVector;
@@ -129,29 +131,13 @@ impl Display for sfStdString {
 }
 
 extern "C" {
-    pub fn sfClipboard_getUnicodeString() -> *mut sfString;
-    pub fn sfClipboard_setUnicodeString(text: *const u32);
-
+    // Clock.cpp
     pub fn sfClock_new() -> *mut sfClock;
     pub fn sfClock_delete(clock: *mut sfClock);
     pub fn sfClock_getElapsedTime(clock: *const sfClock) -> i64;
     pub fn sfClock_restart(clock: *mut sfClock) -> i64;
 
-    pub fn sfSleep(duration: sfTime);
-    pub fn sfStdString_getLength(s: *const sfStdString) -> usize;
-    pub fn sfStdString_getData(s: *const sfStdString) -> *const c_char;
-
-    pub fn sfString_getData(string: *const sfString) -> *const u32;
-    pub fn sfString_getLength(string: *const sfString) -> usize;
-    pub fn sfString_delete(string: *mut sfString);
-    pub fn sfStdString_destroy(std_string: *mut sfStdString);
-    pub fn sfStdStringVector_getLength(vec: *const sfStdStringVector) -> usize;
-    pub fn sfStdStringVector_index(
-        vec: *const sfStdStringVector,
-        index: usize,
-    ) -> *const sfStdString;
-    pub fn sfStdStringVector_destroy(vec: *mut sfStdStringVector);
-    // InputStream
+    // InputStream.cpp
     pub fn sfInputStream_new(
         read: sfInputStreamReadFunc,
         seek: sfInputStreamSeekFunc,
@@ -160,6 +146,32 @@ extern "C" {
         userData: *mut c_void,
     ) -> *mut sfInputStream;
     pub fn sfInputStream_destroy(stream: *mut sfInputStream);
+
+    // SfStdString.cpp
+    pub fn sfStdString_getLength(s: *const sfStdString) -> usize;
+    pub fn sfStdString_getData(s: *const sfStdString) -> *const c_char;
+    pub fn sfStdString_destroy(s: *mut sfStdString);
+
+    // SfStdVector.cpp
+    pub fn sfStdStringVector_destroy(vec: *mut sfStdStringVector);
+    pub fn sfStdStringVector_getLength(vec: *const sfStdStringVector) -> usize;
+    pub fn sfStdStringVector_index(
+        vec: *const sfStdStringVector,
+        index: usize,
+    ) -> *const sfStdString;
+    pub fn sfVideoModeVector_getLength(vec: *const sfVideoModeVector) -> usize;
+    pub fn sfVideoModeVector_index(
+        vec: *const sfVideoModeVector,
+        index: usize,
+    ) -> *const sfVideoMode;
+
+    // SfString.cpp
+    pub fn sfString_getLength(string: *const sfString) -> usize;
+    pub fn sfString_getData(string: *const sfString) -> *const u32;
+    pub fn sfString_delete(string: *mut sfString);
+
+    // Sleep.cpp
+    pub fn sfSleep(duration_ms: i64);
 }
 
 type sfInputStreamReadFunc =

@@ -1,6 +1,8 @@
 use crate::ffi::system::{sfStdString, sfStdStringVector};
 pub use crate::ffi::*;
 
+use super::system::sfInputStream;
+
 decl_opaque! {
     sfSoundBuffer;
     sfSoundBufferRecorder;
@@ -28,25 +30,7 @@ pub enum sfSoundStatus {
 }
 
 extern "C" {
-    pub fn sfSoundBufferRecorder_create() -> *mut sfSoundBufferRecorder;
-    pub fn sfSoundBufferRecorder_destroy(bufRec: *mut sfSoundBufferRecorder);
-    pub fn sfSoundBufferRecorder_start(
-        bufRec: *mut sfSoundBufferRecorder,
-        sampRate: c_uint,
-    ) -> bool;
-    pub fn sfSoundBufferRecorder_stop(bufRec: *mut sfSoundBufferRecorder);
-    pub fn sfSoundBufferRecorder_getSampleRate(bufRec: *const sfSoundBufferRecorder) -> c_uint;
-    pub fn sfSoundBufferRecorder_getBuffer(
-        bufRec: *const sfSoundBufferRecorder,
-    ) -> *const sfSoundBuffer;
-    pub fn sfSoundBufferRecorder_setDevice(
-        bufRec: *mut sfSoundBufferRecorder,
-        name: *const c_char,
-    ) -> bool;
-    pub fn sfSoundBufferRecorder_getDevice(
-        bufRec: *const sfSoundBufferRecorder,
-    ) -> *const sfStdString;
-    // Listener
+    // Listener.cpp
     pub fn sfListener_setGlobalVolume(volume: f32);
     pub fn sfListener_getGlobalVolume() -> f32;
     pub fn sfListener_setPosition(position: sfVector3f);
@@ -55,11 +39,11 @@ extern "C" {
     pub fn sfListener_getDirection() -> sfVector3f;
     pub fn sfListener_setUpVector(upVector: sfVector3f);
     pub fn sfListener_getUpVector() -> sfVector3f;
-    // Music
+
+    // Music.cpp
     pub fn sfMusic_createFromFile(filename: *const c_char) -> *mut sfMusic;
     pub fn sfMusic_createFromMemory(data: *const c_void, sizeInBytes: usize) -> *mut sfMusic;
-    pub fn sfMusic_createFromStream(stream: *mut crate::ffi::system::sfInputStream)
-        -> *mut sfMusic;
+    pub fn sfMusic_createFromStream(stream: *mut sfInputStream) -> *mut sfMusic;
     pub fn sfMusic_destroy(music: *mut sfMusic);
     pub fn sfMusic_setLoop(music: *mut sfMusic, loop_: bool);
     pub fn sfMusic_getLoop(music: *const sfMusic) -> bool;
@@ -86,7 +70,8 @@ extern "C" {
     pub fn sfMusic_isRelativeToListener(music: *const sfMusic) -> bool;
     pub fn sfMusic_getMinDistance(music: *const sfMusic) -> f32;
     pub fn sfMusic_getAttenuation(music: *const sfMusic) -> f32;
-    // Sound
+
+    // Sound.cpp
     pub fn sfSound_create() -> *mut sfSound;
     pub fn sfSound_copy(sound: *const sfSound) -> *mut sfSound;
     pub fn sfSound_destroy(sound: *mut sfSound);
@@ -112,15 +97,14 @@ extern "C" {
     pub fn sfSound_getMinDistance(sound: *const sfSound) -> f32;
     pub fn sfSound_getAttenuation(sound: *const sfSound) -> f32;
     pub fn sfSound_getPlayingOffset(sound: *const sfSound) -> i64;
-    // SoundBuffer
+
+    // SoundBuffer.cpp
     pub fn sfSoundBuffer_createFromFile(filename: *const c_char) -> *mut sfSoundBuffer;
     pub fn sfSoundBuffer_createFromMemory(
         data: *const c_void,
         sizeInBytes: usize,
     ) -> *mut sfSoundBuffer;
-    pub fn sfSoundBuffer_createFromStream(
-        stream: *mut crate::ffi::system::sfInputStream,
-    ) -> *mut sfSoundBuffer;
+    pub fn sfSoundBuffer_createFromStream(stream: *mut sfInputStream) -> *mut sfSoundBuffer;
     pub fn sfSoundBuffer_createFromSamples(
         samples: *const i16,
         sampleCount: u64,
@@ -138,7 +122,30 @@ extern "C" {
     pub fn sfSoundBuffer_getSampleRate(soundBuffer: *const sfSoundBuffer) -> c_uint;
     pub fn sfSoundBuffer_getChannelCount(soundBuffer: *const sfSoundBuffer) -> c_uint;
     pub fn sfSoundBuffer_getDuration(soundBuffer: *const sfSoundBuffer) -> i64;
-    // SoundRecorder
+
+    // SoundBufferRecorder.cpp
+    pub fn sfSoundBufferRecorder_create() -> *mut sfSoundBufferRecorder;
+    pub fn sfSoundBufferRecorder_destroy(soundBufferRecorder: *mut sfSoundBufferRecorder);
+    pub fn sfSoundBufferRecorder_start(
+        soundBufferRecorder: *mut sfSoundBufferRecorder,
+        sampleRate: c_uint,
+    ) -> bool;
+    pub fn sfSoundBufferRecorder_stop(soundBufferRecorder: *mut sfSoundBufferRecorder);
+    pub fn sfSoundBufferRecorder_getSampleRate(
+        soundBufferRecorder: *const sfSoundBufferRecorder,
+    ) -> c_uint;
+    pub fn sfSoundBufferRecorder_getBuffer(
+        soundBufferRecorder: *const sfSoundBufferRecorder,
+    ) -> *const sfSoundBuffer;
+    pub fn sfSoundBufferRecorder_setDevice(
+        soundBufferRecorder: *mut sfSoundBufferRecorder,
+        name: *const c_char,
+    ) -> bool;
+    pub fn sfSoundBufferRecorder_getDevice(
+        soundBufferRecorder: *mut sfSoundBufferRecorder,
+    ) -> *const sfStdString;
+
+    // SoundRecorder.cpp
     pub fn sfSoundRecorder_create(
         onStart: sfSoundRecorderStartCallback,
         onProcess: sfSoundRecorderProcessCallback,
@@ -166,7 +173,8 @@ extern "C" {
         channelCount: c_uint,
     );
     pub fn sfSoundRecorder_getChannelCount(soundRecorder: *const sfSoundRecorder) -> c_uint;
-    // SoundStream
+
+    // SoundStream.cpp
     pub fn sfSoundStream_create(
         onGetData: sfSoundStreamGetDataCallback,
         onSeek: sfSoundStreamSeekCallback,

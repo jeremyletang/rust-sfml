@@ -151,7 +151,7 @@ impl RenderTarget for RenderTexture {
     }
     fn map_pixel_to_coords(&self, point: Vector2i, view: &View) -> Vector2f {
         unsafe {
-            Vector2f::from_raw(ffi::sfRenderTexture_mapPixelToCoords(
+            Vector2f::from_raw(ffi::sfRenderTexture_mapPixelToCoords_View(
                 self.render_texture,
                 point.raw(),
                 view.raw(),
@@ -159,18 +159,16 @@ impl RenderTarget for RenderTexture {
         }
     }
     fn map_pixel_to_coords_current_view(&self, point: Vector2i) -> Vector2f {
-        let view = unsafe { ffi::sfRenderTexture_getView(self.render_texture) };
         unsafe {
             Vector2f::from_raw(ffi::sfRenderTexture_mapPixelToCoords(
                 self.render_texture,
                 point.raw(),
-                view,
             ))
         }
     }
     fn map_coords_to_pixel(&self, point: Vector2f, view: &View) -> Vector2i {
         unsafe {
-            Vector2i::from_raw(ffi::sfRenderTexture_mapCoordsToPixel(
+            Vector2i::from_raw(ffi::sfRenderTexture_mapCoordsToPixel_View(
                 self.render_texture,
                 point.raw(),
                 view.raw(),
@@ -178,12 +176,10 @@ impl RenderTarget for RenderTexture {
         }
     }
     fn map_coords_to_pixel_current_view(&self, point: Vector2f) -> Vector2i {
-        let view = unsafe { ffi::sfRenderTexture_getView(self.render_texture) };
         unsafe {
             Vector2i::from_raw(ffi::sfRenderTexture_mapCoordsToPixel(
                 self.render_texture,
                 point.raw(),
-                view,
             ))
         }
     }
