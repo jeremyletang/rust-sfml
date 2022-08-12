@@ -75,21 +75,11 @@ extern "C" void sfFont_destroy(sf::Font *font) {
 }
 
 extern "C" sfGlyph sfFont_getGlyph(const sf::Font *font, uint32_t codePoint, unsigned int characterSize, bool bold, float outlineThickness) {
-    sfGlyph glyph = {0, {0, 0, 0, 0}, {0, 0, 0, 0}};
-
-    sf::Glyph SFMLGlyph = font->getGlyph(codePoint, characterSize, bold, outlineThickness);
-
-    glyph.advance = SFMLGlyph.advance;
-    glyph.bounds.left = SFMLGlyph.bounds.left;
-    glyph.bounds.top = SFMLGlyph.bounds.top;
-    glyph.bounds.width = SFMLGlyph.bounds.width;
-    glyph.bounds.height = SFMLGlyph.bounds.height;
-    glyph.textureRect.left = SFMLGlyph.textureRect.left;
-    glyph.textureRect.top = SFMLGlyph.textureRect.top;
-    glyph.textureRect.width = SFMLGlyph.textureRect.width;
-    glyph.textureRect.height = SFMLGlyph.textureRect.height;
-
-    return glyph;
+    sf::Glyph glyph = font->getGlyph(codePoint, characterSize, bold, outlineThickness);
+    return {
+        glyph.advance,
+        {glyph.bounds.left, glyph.bounds.top, glyph.bounds.width, glyph.bounds.height},
+        {glyph.textureRect.left, glyph.textureRect.top, glyph.textureRect.width, glyph.textureRect.height}};
 }
 
 extern "C" float sfFont_getKerning(const sf::Font *font, uint32_t first, uint32_t second, unsigned int characterSize) {
@@ -118,9 +108,5 @@ typedef struct
 } sfFontInfo;
 
 extern "C" sfFontInfo sfFont_getInfo(const sf::Font *font) {
-    sfFontInfo info = {NULL};
-
-    info.family = font->getInfo().family.c_str();
-
-    return info;
+    return {font->getInfo().family.c_str()};
 }

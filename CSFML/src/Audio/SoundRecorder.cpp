@@ -60,15 +60,11 @@ extern "C" void sfSoundRecorder_setProcessingInterval(sfSoundRecorder *soundReco
 }
 
 extern "C" std::vector<std::string> *sfSoundRecorder_getAvailableDevices() {
-    std::vector<std::string> devices = sf::SoundRecorder::getAvailableDevices();
-    std::vector<std::string> *copy = new std::vector<std::string>(devices);
-    return copy;
+    return new std::vector<std::string>(sf::SoundRecorder::getAvailableDevices());
 }
 
 extern "C" std::string *sfSoundRecorder_getDefaultDevice() {
-    std::string defaultDevice = sf::SoundRecorder::getDefaultDevice();
-    std::string *copy = new std::string(defaultDevice);
-    return copy;
+    return new std::string(sf::SoundRecorder::getDefaultDevice());
 }
 
 extern "C" bool sfSoundRecorder_setDevice(sfSoundRecorder *soundRecorder, const char *name) {

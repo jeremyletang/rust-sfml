@@ -84,12 +84,7 @@ extern "C" int64_t sfMusic_getDuration(const sf::Music *music) {
 
 extern "C" sfTimeSpan sfMusic_getLoopPoints(const sf::Music *music) {
     sf::Music::TimeSpan span = music->getLoopPoints();
-    sfTimeSpan timeSpan;
-
-    timeSpan.offset = span.offset.asMicroseconds();
-    timeSpan.length = span.length.asMicroseconds();
-
-    return timeSpan;
+    return {span.offset.asMicroseconds(), span.length.asMicroseconds()};
 }
 
 extern "C" void sfMusic_setLoopPoints(sf::Music *music, sfTimeSpan timePoints) {

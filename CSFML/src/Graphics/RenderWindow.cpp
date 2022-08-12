@@ -155,14 +155,11 @@ extern "C" void sfRenderWindow_setJoystickThreshold(sf::RenderWindow *renderWind
 }
 
 extern "C" sf::WindowHandle sfRenderWindow_getSystemHandle(const sf::RenderWindow *renderWindow) {
-
     return renderWindow->getSystemHandle();
 }
 
 extern "C" void sfRenderWindow_clear(sf::RenderWindow *renderWindow, sfColor color) {
-    sf::Color SFMLColor(color.r, color.g, color.b, color.a);
-
-    renderWindow->clear(SFMLColor);
+    renderWindow->clear(sf::Color(color.r, color.g, color.b, color.a));
 }
 
 extern "C" void sfRenderWindow_setView(sf::RenderWindow *renderWindow, const sf::View *view) {
@@ -218,11 +215,9 @@ extern "C" void sfRenderWindow_drawConvexShape(sf::RenderWindow *renderWindow, c
     renderWindow->draw(*object, *states);
 }
 extern "C" void sfRenderWindow_drawRectangleShape(sf::RenderWindow *renderWindow, const sf::RectangleShape *object, const sf::RenderStates *states) {
-
     renderWindow->draw(*object, *states);
 }
 extern "C" void sfRenderWindow_drawVertexBuffer(sf::RenderWindow *renderWindow, const sf::VertexBuffer *object, const sf::RenderStates *states) {
-
     renderWindow->draw(*object, *states);
 }
 

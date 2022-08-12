@@ -115,8 +115,7 @@ extern "C" void sfShape_setOutlineThickness(sfShape *shape, float thickness) {
 }
 
 extern "C" const sf::Texture *sfShape_getTexture(const sfShape *shape) {
-    const sf::Shape *shape_ = shape;
-    return shape_->getTexture();
+    return shape->getTexture();
 }
 
 extern "C" sfIntRect sfShape_getTextureRect(const sfShape *shape) {

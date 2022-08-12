@@ -31,47 +31,27 @@
 #include <cstddef>
 
 extern "C" sf::Texture *sfTexture_new() {
-    sf::Texture *texture = new sf::Texture;
-    return texture;
+    return new sf::Texture;
 }
 
 extern "C" bool sfTexture_create(sf::Texture *tex, unsigned int width, unsigned int height) {
-    sf::Texture *texture = tex;
-    return texture->create(width, height);
+    return tex->create(width, height);
 }
 
 extern "C" bool sfTexture_loadFromFile(sf::Texture *tex, const char *filename, const sfIntRect area) {
-    sf::Texture *texture = tex;
-
-    sf::IntRect rect = sf::IntRect(area.left, area.top, area.width, area.height);
-
-    return texture->loadFromFile(filename, rect);
+    return tex->loadFromFile(filename, sf::IntRect(area.left, area.top, area.width, area.height));
 }
 
 extern "C" bool sfTexture_loadFromMemory(sf::Texture *tex, const void *data, size_t sizeInBytes, const sfIntRect area) {
-    sf::Texture *texture = tex;
-
-    sf::IntRect rect = sf::IntRect(area.left, area.top, area.width, area.height);
-
-    return texture->loadFromMemory(data, sizeInBytes, rect);
+    return tex->loadFromMemory(data, sizeInBytes, sf::IntRect(area.left, area.top, area.width, area.height));
 }
 
 extern "C" bool sfTexture_loadFromStream(sf::Texture *tex, sfInputStream *stream, const sfIntRect area) {
-
-    sf::Texture *texture = tex;
-
-    sf::IntRect rect = sf::IntRect(area.left, area.top, area.width, area.height);
-
-    return texture->loadFromStream(*stream, rect);
+    return tex->loadFromStream(*stream, sf::IntRect(area.left, area.top, area.width, area.height));
 }
 
 extern "C" bool sfTexture_loadFromImage(sf::Texture *tex, const sf::Image *image, const sfIntRect area) {
-
-    sf::Texture *texture = tex;
-
-    sf::IntRect rect = sf::IntRect(area.left, area.top, area.width, area.height);
-
-    return texture->loadFromImage(*image, rect);
+    return tex->loadFromImage(*image, sf::IntRect(area.left, area.top, area.width, area.height));
 }
 
 extern "C" sf::Texture *sfTexture_copy(const sf::Texture *texture) {
@@ -88,11 +68,7 @@ extern "C" sfVector2u sfTexture_getSize(const sf::Texture *texture) {
 }
 
 extern "C" sf::Image *sfTexture_copyToImage(const sf::Texture *texture) {
-
-    sf::Image *image = new sf::Image;
-    *image = texture->copyToImage();
-
-    return image;
+    return new sf::Image(texture->copyToImage());
 }
 
 extern "C" void sfTexture_updateFromPixels(sf::Texture *texture, const uint8_t *pixels, unsigned int width, unsigned int height, unsigned int x, unsigned int y) {
@@ -100,18 +76,14 @@ extern "C" void sfTexture_updateFromPixels(sf::Texture *texture, const uint8_t *
 }
 
 extern "C" void sfTexture_updateFromTexture(sf::Texture *destination, const sf::Texture *texture, unsigned int x, unsigned int y) {
-    sf::Texture *destination_ = destination;
-    const sf::Texture *texture_ = texture;
-    destination_->update(*texture_, x, y);
+    destination->update(*texture, x, y);
 }
 
 extern "C" void sfTexture_updateFromImage(sf::Texture *texture, const sf::Image *image, unsigned int x, unsigned int y) {
-
     texture->update(*image, x, y);
 }
 
 extern "C" void sfTexture_updateFromWindow(sf::Texture *texture, const sf::Window *window, unsigned int x, unsigned int y) {
-
     texture->update(*window, x, y);
 }
 
@@ -124,7 +96,6 @@ extern "C" void sfTexture_setSmooth(sf::Texture *texture, bool smooth) {
 }
 
 extern "C" bool sfTexture_isSmooth(const sf::Texture *texture) {
-
     return texture->isSmooth();
 }
 
@@ -150,9 +121,7 @@ extern "C" bool sfTexture_generateMipmap(sf::Texture *texture) {
 }
 
 extern "C" void sfTexture_swap(sf::Texture *left, sf::Texture *right) {
-    sf::Texture *left_ = left;
-    sf::Texture *right_ = right;
-    left_->swap(*right_);
+    left->swap(*right);
 }
 
 extern "C" unsigned int sfTexture_getNativeHandle(const sf::Texture *texture) {

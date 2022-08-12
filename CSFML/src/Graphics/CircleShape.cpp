@@ -31,9 +31,7 @@
 #include <cstddef>
 
 extern "C" sf::CircleShape *sfCircleShape_create(void) {
-    sf::CircleShape *shape = new sf::CircleShape;
-
-    return shape;
+    return new sf::CircleShape;
 }
 
 extern "C" sf::CircleShape *sfCircleShape_copy(const sf::CircleShape *shape) {

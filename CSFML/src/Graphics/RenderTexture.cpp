@@ -35,10 +35,8 @@
 #include <cstddef>
 
 extern "C" sf::RenderTexture *sfRenderTexture_createWithSettings(unsigned int width, unsigned int height, const sf::ContextSettings *settings) {
-    // Create the render texture
     sf::RenderTexture *renderTexture = new sf::RenderTexture;
     renderTexture->create(width, height, *settings);
-
     return renderTexture;
 }
 
@@ -60,14 +58,11 @@ extern "C" void sfRenderTexture_display(sf::RenderTexture *renderTexture) {
 }
 
 extern "C" void sfRenderTexture_clear(sf::RenderTexture *renderTexture, sfColor color) {
-    sf::Color SFMLColor(color.r, color.g, color.b, color.a);
-
-    renderTexture->clear(SFMLColor);
+    renderTexture->clear(sf::Color(color.r, color.g, color.b, color.a));
 }
 
 extern "C" void sfRenderTexture_setView(sf::RenderTexture *renderTexture, const sf::View *view) {
-    const sf::View *view_ = view;
-    renderTexture->setView(*view_);
+    renderTexture->setView(*view);
 }
 
 extern "C" const sf::View *sfRenderTexture_getView(const sf::RenderTexture *renderTexture) {
@@ -104,31 +99,24 @@ extern "C" sfVector2i sfRenderTexture_mapCoordsToPixel_View(const sf::RenderText
 }
 
 extern "C" void sfRenderTexture_drawSprite(sf::RenderTexture *renderTexture, const sf::Sprite *object, const sf::RenderStates *states) {
-
     renderTexture->draw(*object, *states);
 }
 extern "C" void sfRenderTexture_drawText(sf::RenderTexture *renderTexture, const sf::Text *object, const sf::RenderStates *states) {
-
     renderTexture->draw(*object, *states);
 }
 extern "C" void sfRenderTexture_drawShape(sf::RenderTexture *renderTexture, const sf::Shape *object, const sf::RenderStates *states) {
-
     renderTexture->draw(*object, *states);
 }
 extern "C" void sfRenderTexture_drawCircleShape(sf::RenderTexture *renderTexture, const sf::CircleShape *object, const sf::RenderStates *states) {
-
     renderTexture->draw(*object, *states);
 }
 extern "C" void sfRenderTexture_drawConvexShape(sf::RenderTexture *renderTexture, const sf::ConvexShape *object, const sf::RenderStates *states) {
-
     renderTexture->draw(*object, *states);
 }
 extern "C" void sfRenderTexture_drawRectangleShape(sf::RenderTexture *renderTexture, const sf::RectangleShape *object, const sf::RenderStates *states) {
-
     renderTexture->draw(*object, *states);
 }
 extern "C" void sfRenderTexture_drawVertexBuffer(sf::RenderTexture *renderTexture, const sf::VertexBuffer *object, const sf::RenderStates *states) {
-
     renderTexture->draw(*object, *states);
 }
 

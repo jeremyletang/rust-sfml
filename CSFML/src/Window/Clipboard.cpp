@@ -28,9 +28,7 @@
 #include <cstdint>
 
 extern "C" sf::String *sfClipboard_getUnicodeString() {
-    sf::String *string = new sf::String;
-    *string = sf::Clipboard::getString();
-    return string;
+    return new sf::String(sf::Clipboard::getString());
 }
 
 extern "C" void sfClipboard_setUnicodeString(const uint32_t *text) {

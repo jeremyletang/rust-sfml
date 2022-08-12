@@ -31,9 +31,7 @@
 #include <cstddef>
 
 extern "C" sf::Text *sfText_create(void) {
-    sf::Text *text = new sf::Text;
-
-    return text;
+    return new sf::Text;
 }
 
 extern "C" sf::Text *sfText_copy(const sf::Text *text) {
@@ -100,12 +98,10 @@ extern "C" sf::Transform const *sfText_getInverseTransform(const sf::Text *text)
 }
 
 extern "C" void sfText_setUnicodeString(sf::Text *text, const uint32_t *string) {
-    sf::String UTF32Text = string;
-    text->setString(UTF32Text);
+    text->setString(sf::String(string));
 }
 
 extern "C" void sfText_setFont(sf::Text *text, const sf::Font *font) {
-
     text->setFont(*font);
 }
 
@@ -138,13 +134,11 @@ extern "C" void sfText_setOutlineThickness(sf::Text *text, float thickness) {
 }
 
 extern "C" const uint32_t *sfText_getUnicodeString(const sf::Text *text) {
-
     return text->getString().getData();
 }
 
 extern "C" const sf::Font *sfText_getFont(const sf::Text *text) {
-    const sf::Font *font = text->getFont();
-    return font;
+    return text->getFont();
 }
 
 extern "C" unsigned int sfText_getCharacterSize(const sf::Text *text) {

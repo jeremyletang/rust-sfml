@@ -100,6 +100,5 @@ extern "C" unsigned int sfSoundBuffer_getChannelCount(const sf::SoundBuffer *sou
 }
 
 extern "C" int64_t sfSoundBuffer_getDuration(const sf::SoundBuffer *soundBuffer) {
-    int64_t time = soundBuffer->getDuration().asMicroseconds();
-    return time;
+    return soundBuffer->getDuration().asMicroseconds();
 }

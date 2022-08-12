@@ -32,8 +32,7 @@
 #include <cstddef>
 
 extern "C" sf::Sprite *sfSprite_create(void) {
-    sf::Sprite *sprite = new sf::Sprite;
-    return sprite;
+    return new sf::Sprite;
 }
 
 extern "C" sf::Sprite *sfSprite_copy(const sf::Sprite *sprite) {

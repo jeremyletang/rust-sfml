@@ -28,13 +28,8 @@
 #include <cstddef>
 
 extern "C" sfVideoMode sfVideoMode_getDesktopMode(void) {
-    sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
-    sfVideoMode ret;
-    ret.width = desktop.width;
-    ret.height = desktop.height;
-    ret.bitsPerPixel = desktop.bitsPerPixel;
-
-    return ret;
+    sf::VideoMode vm = sf::VideoMode::getDesktopMode();
+    return {vm.width, vm.height, vm.bitsPerPixel};
 }
 
 extern "C" const std::vector<sf::VideoMode> *sfVideoMode_getFullscreenModes() {
@@ -42,6 +37,5 @@ extern "C" const std::vector<sf::VideoMode> *sfVideoMode_getFullscreenModes() {
 }
 
 extern "C" bool sfVideoMode_isValid(sfVideoMode mode) {
-    sf::VideoMode videoMode(mode.width, mode.height, mode.bitsPerPixel);
-    return videoMode.isValid();
+    return sf::VideoMode(mode.width, mode.height, mode.bitsPerPixel).isValid();
 }

@@ -47,8 +47,7 @@ extern "C" unsigned int sfSoundBufferRecorder_getSampleRate(const sf::SoundBuffe
 }
 
 extern "C" const sf::SoundBuffer *sfSoundBufferRecorder_getBuffer(const sf::SoundBufferRecorder *soundBufferRecorder) {
-    const sf::SoundBuffer *buf = &soundBufferRecorder->getBuffer();
-    return buf;
+    return &soundBufferRecorder->getBuffer();
 }
 
 extern "C" bool sfSoundBufferRecorder_setDevice(sf::SoundBufferRecorder *soundBufferRecorder, const char *name) {
@@ -56,6 +55,5 @@ extern "C" bool sfSoundBufferRecorder_setDevice(sf::SoundBufferRecorder *soundBu
 }
 
 extern "C" const std::string *sfSoundBufferRecorder_getDevice(sf::SoundBufferRecorder *soundBufferRecorder) {
-    const std::string *device = &soundBufferRecorder->getDevice();
-    return device;
+    return &soundBufferRecorder->getDevice();
 }

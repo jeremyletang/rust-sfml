@@ -102,7 +102,6 @@ extern "C" void sfImage_createMaskFromColor(sf::Image *image, sfColor colorKey, 
 }
 
 extern "C" void sfImage_copyImage(sf::Image *image, const sf::Image *source, unsigned int destX, unsigned int destY, sfIntRect sourceRect, bool applyAlpha) {
-
     sf::IntRect sfmlRect(sourceRect.left, sourceRect.top, sourceRect.width, sourceRect.height);
     image->copy(*source, destX, destY, sfmlRect, applyAlpha);
 }
@@ -112,9 +111,8 @@ extern "C" void sfImage_setPixel(sf::Image *image, unsigned int x, unsigned int 
 }
 
 extern "C" sfColor sfImage_getPixel(const sf::Image *image, unsigned int x, unsigned int y) {
-    sf::Color sfmlColor = image->getPixel(x, y);
-
-    return sfColor{sfmlColor.r, sfmlColor.g, sfmlColor.b, sfmlColor.a};
+    sf::Color color = image->getPixel(x, y);
+    return sfColor{color.r, color.g, color.b, color.a};
 }
 
 extern "C" const uint8_t *sfImage_getPixelsPtr(const sf::Image *image) {

@@ -35,11 +35,9 @@ extern "C" void sfClock_delete(sf::Clock *clock) {
 }
 
 extern "C" sf::Int64 sfClock_getElapsedTime(const sf::Clock *clock) {
-    sf::Time time = clock->getElapsedTime();
-    return time.asMicroseconds();
+    return clock->getElapsedTime().asMicroseconds();
 }
 
 extern "C" sf::Int64 sfClock_restart(sf::Clock *clock) {
-    sf::Time time = clock->restart();
-    return time.asMicroseconds();
+    return clock->restart().asMicroseconds();
 }

@@ -126,6 +126,5 @@ extern "C" bool sfSoundStream_getLoop(const sfSoundStream *soundStream) {
 }
 
 extern "C" int64_t sfSoundStream_getPlayingOffset(const sfSoundStream *soundStream) {
-    int64_t time = soundStream->getPlayingOffset().asMicroseconds();
-    return time;
+    return soundStream->getPlayingOffset().asMicroseconds();
 }

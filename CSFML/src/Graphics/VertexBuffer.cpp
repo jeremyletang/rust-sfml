@@ -74,7 +74,6 @@ extern "C" void sfVertexBuffer_setPrimitiveType(sf::VertexBuffer *vertexBuffer, 
 }
 
 extern "C" sf::PrimitiveType sfVertexBuffer_getPrimitiveType(const sf::VertexBuffer *vertexBuffer) {
-
     return vertexBuffer->getPrimitiveType();
 }
 
