@@ -25,7 +25,6 @@
 #ifndef SFML_VIDEOMODE_H
 #define SFML_VIDEOMODE_H
 
-// Headers
 
 #include <cstdint>
 

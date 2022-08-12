@@ -24,7 +24,6 @@
 #ifndef SFML_VERTEX_H
 #define SFML_VERTEX_H
 
-// Headers
 
 #include "Graphics/Color.h"
 

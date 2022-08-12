@@ -24,7 +24,6 @@
 #ifndef SFML_SHAPESTRUCT_H
 #define SFML_SHAPESTRUCT_H
 
-// Headers
 
 #include "System/Vector2.h"
 #include <SFML/Graphics/Shape.hpp>

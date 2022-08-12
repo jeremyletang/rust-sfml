@@ -24,7 +24,6 @@
 #ifndef SFML_SOUNDSTREAMSTRUCT_H
 #define SFML_SOUNDSTREAMSTRUCT_H
 
-// Headers
 
 #include <SFML/Audio/SoundStream.hpp>
 #include <cstdint>

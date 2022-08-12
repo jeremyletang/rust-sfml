@@ -24,7 +24,6 @@
 #ifndef SFML_COLOR_H
 #define SFML_COLOR_H
 
-// Headers
 #include <cstdint>
 
 typedef struct

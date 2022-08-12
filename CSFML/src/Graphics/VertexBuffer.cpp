@@ -21,7 +21,6 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-// Headers
 
 #include "Graphics/Vertex.h"
 #include <SFML/Graphics/VertexBuffer.hpp>

@@ -24,7 +24,6 @@
 #ifndef SFML_SOUNDRECORDERSTRUCT_H
 #define SFML_SOUNDRECORDERSTRUCT_H
 
-// Headers
 
 #include <SFML/Audio/SoundRecorder.hpp>
 #include <cstdint>

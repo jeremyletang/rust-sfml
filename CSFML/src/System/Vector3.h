@@ -24,7 +24,6 @@
 #ifndef SFML_VECTOR3_H
 #define SFML_VECTOR3_H
 
-// Headers
 
 typedef struct
 {

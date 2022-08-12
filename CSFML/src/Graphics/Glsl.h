@@ -24,7 +24,6 @@
 #ifndef SFML_GLSL_H
 #define SFML_GLSL_H
 
-// Headers
 
 #include "Graphics/Color.h"
 #include "System/Vector2.h"

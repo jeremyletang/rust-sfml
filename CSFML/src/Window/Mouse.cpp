@@ -21,7 +21,6 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-// Headers
 
 #include "System/Vector2.h"
 #include <SFML/Graphics/RenderWindow.hpp>
