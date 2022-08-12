@@ -1,4 +1,3 @@
-
 //
 // SFML - Simple and Fast Multimedia Library
 // Copyright (C) 2007-2018 Laurent Gomila (laurent@sfml-dev.org)
@@ -23,7 +22,6 @@
 
 #ifndef SFML_SHAPESTRUCT_H
 #define SFML_SHAPESTRUCT_H
-
 
 #include "System/Vector2.h"
 #include <SFML/Graphics/Shape.hpp>

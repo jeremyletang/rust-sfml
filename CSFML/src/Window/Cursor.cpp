@@ -1,4 +1,3 @@
-
 //
 // SFML - Simple and Fast Multimedia Library
 // Copyright (C) 2007-2018 Laurent Gomila (laurent@sfml-dev.org)
@@ -20,7 +19,6 @@
 //
 // 3. This notice may not be removed or altered from any source distribution.
 //
-
 
 #include "System/Vector2.h"
 #include <SFML/Window/Cursor.hpp>

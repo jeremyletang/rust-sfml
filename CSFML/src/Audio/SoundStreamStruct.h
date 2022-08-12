@@ -1,4 +1,3 @@
-
 //
 // SFML - Simple and Fast Multimedia Library
 // Copyright (C) 2007-2018 Laurent Gomila (laurent@sfml-dev.org)
@@ -23,7 +22,6 @@
 
 #ifndef SFML_SOUNDSTREAMSTRUCT_H
 #define SFML_SOUNDSTREAMSTRUCT_H
-
 
 #include <SFML/Audio/SoundStream.hpp>
 #include <cstdint>

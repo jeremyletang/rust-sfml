@@ -1,4 +1,3 @@
-
 //
 // SFML - Simple and Fast Multimedia Library
 // Copyright (C) 2007-2018 Laurent Gomila (laurent@sfml-dev.org)
@@ -23,7 +22,6 @@
 
 #ifndef SFML_VECTOR2_H
 #define SFML_VECTOR2_H
-
 
 typedef struct
 {
