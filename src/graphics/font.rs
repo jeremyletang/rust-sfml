@@ -64,6 +64,15 @@ impl Font {
     /// * characterSize - Character size, in pixels
     ///
     /// Return the kerning offset, in pixels
+    ///
+    /// # Usage Example
+    ///
+    /// ```
+    /// # use sfml::graphics::Font;
+    /// # let font = Font::from_file("examples/resources/sansation.ttf").unwrap();
+    /// let kerning = font.kerning(0, 0, 32);
+    /// assert_eq!(kerning, 0.);
+    /// ```
     #[must_use]
     pub fn kerning(&self, first: u32, second: u32, character_size: u32) -> f32 {
         unsafe { ffi::sfFont_getKerning(self.raw(), first, second, character_size) }
@@ -75,6 +84,15 @@ impl Font {
     /// * characterSize - Character size, in pixels
     ///
     /// Return the line spacing, in pixels
+    ///
+    /// # Usage Example
+    ///
+    /// ```
+    /// # use sfml::graphics::Font;
+    /// # let font = Font::from_file("examples/resources/sansation.ttf").unwrap();
+    /// let line_spacing = font.line_spacing(32);
+    /// assert_eq!(line_spacing, 35.);
+    /// ```
     #[must_use]
     pub fn line_spacing(&self, character_size: u32) -> f32 {
         unsafe { ffi::sfFont_getLineSpacing(self.raw(), character_size) }
@@ -88,6 +106,16 @@ impl Font {
     /// * bold - Retrieve the bold version or the regular one?
     ///
     /// Return the corresponding glyph
+    ///
+    /// # Usage Example
+    ///
+    /// ```no_run
+    /// # use sfml::graphics::Font;
+    /// # let font = Font::from_file("examples/resources/sansation.ttf").unwrap();
+    /// let glyph = font.glyph(41, 32, false, 5.);
+    /// # use sfml::graphics::Rect;
+    /// assert_eq!(glyph.bounds(), Rect::new(0., -23., 17., 39.));
+    /// ```
     #[must_use]
     pub fn glyph(
         &self,
@@ -107,6 +135,15 @@ impl Font {
         }
     }
     /// Returns the font information.
+    ///
+    /// # Usage Example
+    ///
+    /// ```
+    /// # use sfml::graphics::Font;
+    /// let font = Font::from_file("examples/resources/sansation.ttf").unwrap();
+    /// let font_info = font.info();
+    /// assert_eq!(font_info.family, "Sansation");
+    /// ```
     #[must_use]
     pub fn info(&self) -> Info {
         unsafe {
@@ -117,11 +154,29 @@ impl Font {
         }
     }
     /// Returns the position of the underline.
+    ///
+    /// # Usage Example
+    ///
+    /// ```
+    /// # use sfml::graphics::Font;
+    /// # let font = Font::from_file("examples/resources/sansation.ttf").unwrap();
+    /// let underline_position = font.underline_position(32);
+    /// assert_eq!(underline_position, 3.734375);
+    /// ```
     #[must_use]
     pub fn underline_position(&self, character_size: u32) -> f32 {
         unsafe { ffi::sfFont_getUnderlinePosition(self.raw(), character_size) }
     }
     /// Returns the thickness of the underline.
+    ///
+    /// # Usage Example
+    ///
+    /// ```
+    /// # use sfml::graphics::Font;
+    /// # let font = Font::from_file("examples/resources/sansation.ttf").unwrap();
+    /// let underline_thickness = font.underline_thickness(32);
+    /// assert_eq!(underline_thickness, 2.34375);
+    /// ```
     #[must_use]
     pub fn underline_thickness(&self, character_size: u32) -> f32 {
         unsafe { ffi::sfFont_getUnderlineThickness(self.raw(), character_size) }
@@ -137,6 +192,18 @@ impl Font {
     /// SFML cannot preload all the font data in this function,
     /// so the file has to remain accessible until the `Font` object loads a new font or
     /// is destroyed.
+    ///
+    /// # Usage Example
+    ///
+    /// ```
+    /// # use sfml::graphics::Font;
+    /// let font = match Font::from_file("examples/resources/sansation.ttf") {
+    ///     Some(font) => font,
+    ///     None => {
+    ///         panic!("Failed to read font file!");
+    ///     }
+    /// };
+    /// ```
     #[must_use]
     pub fn from_file(filename: &str) -> Option<SfBox<Self>> {
         let c_str = CString::new(filename).unwrap();
@@ -188,6 +255,16 @@ impl Font {
     ///
     /// # Arguments
     /// * `character_size` - Character size, in pixels
+    ///
+    /// # Usage Example
+    ///
+    /// ```no_run
+    /// # use sfml::graphics::Font;
+    /// # let font = Font::from_file("examples/resources/sansation.ttf").unwrap();
+    /// let texture = font.texture(32);
+    /// # use sfml::system::Vector2;
+    /// assert_eq!(texture.size(), Vector2::new(128, 128));
+    /// ```
     #[must_use]
     pub fn texture(&self, character_size: u32) -> &Texture {
         let tex = unsafe { ffi::sfFont_getTexture(self.raw(), character_size) };
@@ -220,10 +297,4 @@ impl Dispose for Font {
 pub struct Info {
     /// The font family.
     pub family: String,
-}
-
-#[test]
-fn test_info() {
-    let font = Font::from_file("examples/resources/sansation.ttf").unwrap();
-    assert_eq!(font.info().family, "Sansation");
 }

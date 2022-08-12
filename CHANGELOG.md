@@ -6,6 +6,7 @@
 - Examples for Vector3
 - Examples for Vector2
 - Examples for Rect
+- Examples for Font
 
 ### Changed
 - `window::clipboard::get_string()` now returns `String` instead of `&'static SfStr`
