@@ -17,6 +17,37 @@ use crate::{
 /// of the graphics module.
 ///
 /// [`Window`]: crate::window::Window
+///
+/// # Usage example
+///
+/// ```no_run
+/// use sfml::window::{Event, Style};
+/// use sfml::graphics::{RenderWindow, RenderTarget, Color};
+/// // Create a new window
+/// let mut window = RenderWindow::new((800, 600),
+///                              "SFML window",
+///                              Style::CLOSE,
+///                              &Default::default());
+/// // Limit the framerate to 60 frames per second (this step is optional)
+/// window.set_framerate_limit(60);
+///
+/// // The main loop - ends as soon as the window is closed
+/// while window.is_open() {
+///     // Event processing
+///     while let Some(event) = window.poll_event() {
+///         match event {
+///             Event::Closed => window.close(),
+///             _ => {}
+///         }
+///     }
+///
+///     window.clear(Color::BLACK);
+///     // SFML drawing commands go here...
+///
+///     // End the current frame and display its contents on screen
+///     window.display();
+/// }
+/// ```
 #[derive(Debug)]
 pub struct RenderWindow {
     render_window: NonNull<ffi::sfRenderWindow>,
@@ -41,6 +72,18 @@ impl RenderWindow {
     /// * title - Title of the render window
     /// * style - Window style
     /// * settings - Additional settings for the underlying OpenGL context
+    ///
+    /// # Usage example
+    ///
+    /// ```no_run
+    /// use sfml::window::Style;
+    /// use sfml::graphics::{RenderWindow};
+    /// // Create a new window
+    /// let mut window = RenderWindow::new((800, 600),
+    ///                              "SFML window",
+    ///                              Style::CLOSE,
+    ///                              &Default::default());
+    /// ```
     pub fn new<V: Into<VideoMode>, S: SfStrConv>(
         mode: V,
         title: S,
@@ -113,6 +156,22 @@ impl RenderWindow {
     /// `pixels` not being at least `width * height * 4` will likely cause undefined behavior.
     ///
     /// Platform-specific behavior is also unclear (limits on max size, etc).
+    ///
+    /// # Usage example
+    ///
+    /// ```no_run
+    /// # use sfml::window::Style;
+    /// # use sfml::graphics::{RenderWindow};
+    /// # // Create a new window
+    /// # let mut window = RenderWindow::new((800, 600),
+    /// #                              "SFML window",
+    /// #                              Style::CLOSE,
+    /// #                              &Default::default());
+    /// // Creates a bright red window icon
+    /// let (width, height) = (1, 1);
+    /// let pixels: [u8; 4] = [255, 0, 0, 255];
+    /// unsafe { window.set_icon(width, height, &pixels); }
+    /// ```
     pub unsafe fn set_icon(&mut self, width: u32, height: u32, pixels: &[u8]) {
         ffi::sfRenderWindow_setIcon(self.render_window.as_ptr(), width, height, pixels.as_ptr())
     }
@@ -126,6 +185,27 @@ impl RenderWindow {
     /// to make sure that you process every pending event.
     ///
     /// Returns `Some(event)` if an event was returned, or `None` if the event queue was empty
+    ///
+    /// # Usage example
+    ///
+    /// ```no_run
+    /// use sfml::window::{Event, Style};
+    /// # use sfml::graphics::RenderWindow;
+    /// # // Create a new window
+    /// # let mut window = RenderWindow::new((800, 600),
+    /// #                              "SFML window",
+    /// #                              Style::CLOSE,
+    /// #                              &Default::default());
+    /// while window.is_open() {
+    ///     // Event processing
+    ///     while let Some(event) = window.poll_event() {
+    ///         match event {
+    ///             Event::Closed => window.close(),
+    ///             _ => {},
+    ///         }
+    ///     }
+    /// }
+    /// ```
     pub fn poll_event(&mut self) -> Option<Event> {
         let mut event = std::mem::MaybeUninit::uninit();
         let have_event = unsafe {
@@ -148,6 +228,27 @@ impl RenderWindow {
     /// sleep as long as no new event is received.
     ///
     /// Returns `Some(event)` or `None` if an error has occured
+    ///
+    /// # Usage example
+    ///
+    /// ```no_run
+    /// # use sfml::window::{Event, Style};
+    /// # use sfml::graphics::RenderWindow;
+    /// # // Create a new window
+    /// # let mut window = RenderWindow::new((800, 600),
+    /// #                              "SFML window",
+    /// #                              Style::CLOSE,
+    /// #                              &Default::default());
+    /// // The main loop - ends as soon as the window is closed
+    /// while window.is_open() {
+    ///     // Event processing
+    ///     let event = window.wait_event();
+    ///     match event {
+    ///         Some(Event::Closed) => window.close(),
+    ///         _ => {},
+    ///     }
+    /// }
+    /// ```
     pub fn wait_event(&mut self) -> Option<Event> {
         let mut event = std::mem::MaybeUninit::uninit();
         let have_event = unsafe {
@@ -167,6 +268,24 @@ impl RenderWindow {
     /// All other functions such as `poll_event` or display
     /// will still work (i.e. you don't have to test `is_open`
     /// every time), and will have no effect on closed windows.
+    ///
+    /// # Usage Example
+    ///
+    /// ```no_run
+    /// # use sfml::window::{Event, Style};
+    /// # use sfml::graphics::RenderWindow;
+    /// # // Create a new window
+    /// # let mut window = RenderWindow::new((800, 600),
+    /// #                              "SFML window",
+    /// #                              Style::CLOSE,
+    /// #                              &Default::default());
+    /// while window.is_open() {
+    ///     // Do something
+    ///     window.close();
+    /// }
+    ///
+    /// // Once window is closed, we can do other thing.
+    /// ```
     pub fn close(&mut self) {
         unsafe {
             ffi::sfRenderWindow_close(self.render_window.as_ptr());
@@ -179,6 +298,21 @@ impl RenderWindow {
     /// Note that a hidden window `(set_visible(false))` will return
     /// true.
     ///
+    /// # Usage Example
+    ///
+    /// ```no_run
+    /// use sfml::window::{Event, Style};
+    /// use sfml::graphics::RenderWindow;
+    /// // Create a new window
+    /// let mut window = RenderWindow::new((800, 600),
+    ///                              "SFML window",
+    ///                              Style::CLOSE,
+    ///                              &Default::default());
+    ///
+    /// while window.is_open() {
+    ///     // Do something
+    /// }
+    /// ```
     #[must_use]
     pub fn is_open(&self) -> bool {
         unsafe { ffi::sfRenderWindow_isOpen(self.render_window.as_ptr()) }
@@ -190,6 +324,21 @@ impl RenderWindow {
     /// has been done for the current frame, in order to show
     /// it on screen.
     ///
+    /// # Usage Example
+    ///
+    /// ```no_run
+    /// # use sfml::window::{Event, Style};
+    /// # use sfml::graphics::RenderWindow;
+    /// # // Create a new window
+    /// # let mut window = RenderWindow::new((800, 600),
+    /// #                              "SFML window",
+    /// #                              Style::CLOSE,
+    /// #                              &Default::default());
+    /// while window.is_open() {
+    ///     // Draw something
+    ///     window.display();
+    /// }
+    /// ```
     pub fn display(&mut self) {
         unsafe { ffi::sfRenderWindow_display(self.render_window.as_ptr()) }
     }
@@ -203,6 +352,23 @@ impl RenderWindow {
     /// # Arguments
     /// * limit - Framerate limit, in frames per seconds (use 0 to disable limit)
     ///
+    /// # Usage Example
+    ///
+    /// ```no_run
+    /// # use sfml::window::{Event, Style};
+    /// # use sfml::graphics::RenderWindow;
+    /// # // Create a new window
+    /// # let mut window = RenderWindow::new((800, 600),
+    /// #                              "SFML window",
+    /// #                              Style::CLOSE,
+    /// #                              &Default::default());
+    /// // set framerate to 60fps
+    /// window.set_framerate_limit(60);
+    /// while window.is_open() {
+    ///     // Draw something
+    ///     window.display();
+    /// }
+    /// ```
     pub fn set_framerate_limit(&mut self, limit: u32) {
         unsafe { ffi::sfRenderWindow_setFramerateLimit(self.render_window.as_ptr(), limit) }
     }
@@ -216,6 +382,19 @@ impl RenderWindow {
     ///
     /// Return a structure containing the OpenGL context settings
     ///
+    /// # Usage Example
+    ///
+    /// ```no_run
+    /// # use sfml::window::{Event, Style};
+    /// # use sfml::graphics::RenderWindow;
+    /// # // Create a new window
+    /// # let mut window = RenderWindow::new((800, 600),
+    /// #                              "SFML window",
+    /// #                              Style::CLOSE,
+    /// #                              &Default::default());
+    /// let ctx_settings = window.settings();
+    /// assert_eq!(ctx_settings.srgb_capable, false);
+    /// ```
     #[must_use]
     pub fn settings(&self) -> &ContextSettings {
         unsafe { &*ffi::sfRenderWindow_getSettings(self.render_window.as_ptr()) }
@@ -226,17 +405,42 @@ impl RenderWindow {
     /// # Arguments
     /// * title - New title
     ///
+    /// # Usage Example
+    ///
+    /// ```no_run
+    /// # use sfml::window::{Event, Style};
+    /// # use sfml::graphics::RenderWindow;
+    /// // Create a new window with SFML window as name
+    /// let mut window = RenderWindow::new((800, 600),
+    ///                              "SFML window",
+    ///                              Style::CLOSE,
+    ///                              &Default::default());
+    /// // Rename the window to new window
+    /// window.set_title("New window title");
+    /// ```
     pub fn set_title<S: SfStrConv>(&mut self, title: S) {
         title.with_as_sfstr(|sfstr| unsafe {
             ffi::sfRenderWindow_setUnicodeTitle(self.render_window.as_ptr(), sfstr.as_ptr());
         })
     }
 
-    /// Show or hide a window
+    /// Show or hide a window.
     ///
     /// # Arguments
     /// * visible - true to show the window, false to hide it
     ///
+    /// # Usage Example
+    ///
+    /// ```no_run
+    /// # use sfml::window::{Event, Style};
+    /// # use sfml::graphics::RenderWindow;
+    /// # // Create a new window with SFML window as name
+    /// # let mut window = RenderWindow::new((800, 600),
+    /// #                              "SFML window",
+    /// #                              Style::CLOSE,
+    /// #                              &Default::default());
+    /// window.set_visible(false);
+    /// ```
     pub fn set_visible(&mut self, visible: bool) {
         unsafe {
             ffi::sfRenderWindow_setVisible(self.render_window.as_ptr(), visible);
@@ -248,6 +452,18 @@ impl RenderWindow {
     /// # Arguments
     /// * visible - true to  false to hide
     ///
+    /// # Usage Example
+    ///
+    /// ```no_run
+    /// # use sfml::window::{Event, Style};
+    /// # use sfml::graphics::RenderWindow;
+    /// # // Create a new window with SFML window as name
+    /// # let mut window = RenderWindow::new((800, 600),
+    /// #                              "SFML window",
+    /// #                              Style::CLOSE,
+    /// #                              &Default::default());
+    /// window.set_mouse_cursor_visible(false);
+    /// ```
     pub fn set_mouse_cursor_visible(&mut self, visible: bool) {
         unsafe {
             ffi::sfRenderWindow_setMouseCursorVisible(self.render_window.as_ptr(), visible);
@@ -258,6 +474,19 @@ impl RenderWindow {
     ///
     /// If set, grabs the mouse cursor inside this window's client area so it may no longer be
     /// moved outside its bounds. Note that grabbing is only active while the window has focus.
+    ///
+    /// # Usage Example
+    ///
+    /// ```no_run
+    /// # use sfml::window::{Event, Style};
+    /// # use sfml::graphics::RenderWindow;
+    /// # // Create a new window with SFML window as name
+    /// # let mut window = RenderWindow::new((800, 600),
+    /// #                              "SFML window",
+    /// #                              Style::CLOSE,
+    /// #                              &Default::default());
+    /// window.set_mouse_cursor_visible(true);
+    /// ```
     pub fn set_mouse_cursor_grabbed(&mut self, grabbed: bool) {
         unsafe { ffi::sfRenderWindow_setMouseCursorGrabbed(self.render_window.as_ptr(), grabbed) }
     }
@@ -272,6 +501,18 @@ impl RenderWindow {
     /// # Arguments
     /// * enabled - true to enable v-sync, false to deactivate
     ///
+    /// # Usage Example
+    ///
+    /// ```no_run
+    /// # use sfml::window::{Event, Style};
+    /// # use sfml::graphics::RenderWindow;
+    /// # // Create a new window with SFML window as name
+    /// # let mut window = RenderWindow::new((800, 600),
+    /// #                              "SFML window",
+    /// #                              Style::CLOSE,
+    /// #                              &Default::default());
+    /// window.set_vertical_sync_enabled(true);
+    /// ```
     pub fn set_vertical_sync_enabled(&mut self, enabled: bool) {
         unsafe {
             ffi::sfRenderWindow_setVerticalSyncEnabled(self.render_window.as_ptr(), enabled);
@@ -289,6 +530,18 @@ impl RenderWindow {
     /// # Arguments
     /// * enabled - true to enable, false to disable
     ///
+    /// # Usage Example
+    ///
+    /// ```no_run
+    /// # use sfml::window::{Event, Style};
+    /// # use sfml::graphics::RenderWindow;
+    /// # // Create a new window with SFML window as name
+    /// # let mut window = RenderWindow::new((800, 600),
+    /// #                              "SFML window",
+    /// #                              Style::CLOSE,
+    /// #                              &Default::default());
+    /// window.set_key_repeat_enabled(true);
+    /// ```
     pub fn set_key_repeat_enabled(&mut self, enabled: bool) {
         unsafe {
             ffi::sfRenderWindow_setKeyRepeatEnabled(self.render_window.as_ptr(), enabled);
@@ -308,6 +561,18 @@ impl RenderWindow {
     ///
     /// Return true if operation was successful, false otherwise
     ///
+    /// # Usage Example
+    ///
+    /// ```no_run
+    /// # use sfml::window::{Event, Style};
+    /// # use sfml::graphics::RenderWindow;
+    /// # // Create a new window with SFML window as name
+    /// # let mut window = RenderWindow::new((800, 600),
+    /// #                              "SFML window",
+    /// #                              Style::CLOSE,
+    /// #                              &Default::default());
+    /// window.set_active(true);
+    /// ```
     pub fn set_active(&mut self, enabled: bool) -> bool {
         unsafe { ffi::sfRenderWindow_setActive(self.render_window.as_ptr(), enabled) }
     }
@@ -320,6 +585,16 @@ impl RenderWindow {
     /// # Arguments
     /// * threshold - New threshold, in the range [0, 100]
     ///
+    /// ```no_run
+    /// # use sfml::window::{Event, Style};
+    /// # use sfml::graphics::RenderWindow;
+    /// # // Create a new window with SFML window as name
+    /// # let mut window = RenderWindow::new((800, 600),
+    /// #                              "SFML window",
+    /// #                              Style::CLOSE,
+    /// #                              &Default::default());
+    /// window.set_joystick_threshold(9.3);
+    /// ```
     pub fn set_joystick_threshold(&mut self, threshold: f32) {
         unsafe { ffi::sfRenderWindow_setJoystickThreshold(self.render_window.as_ptr(), threshold) }
     }
@@ -328,6 +603,19 @@ impl RenderWindow {
     ///
     /// Return the position in pixels
     ///
+    /// # Usage Example
+    ///
+    /// ```no_run
+    /// # use sfml::window::{Event, Style};
+    /// # use sfml::graphics::RenderWindow;
+    /// # use sfml::system::Vector2;
+    /// # // Create a new window with SFML window as name
+    /// # let mut window = RenderWindow::new((800, 600),
+    /// #                              "SFML window",
+    /// #                              Style::CLOSE,
+    /// #                              &Default::default());
+    /// assert_eq!(window.position(), Vector2::new(0, 0));
+    /// ```
     #[must_use]
     pub fn position(&self) -> Vector2i {
         unsafe { Vector2i::from_raw(ffi::sfRenderWindow_getPosition(self.render_window.as_ptr())) }
@@ -342,6 +630,23 @@ impl RenderWindow {
     /// # Arguments
     /// * position - New position of the window, in pixels
     ///
+    /// # Usage Example
+    ///
+    /// ```no_run
+    /// # use sfml::window::{Event, Style};
+    /// # use sfml::graphics::RenderWindow;
+    /// # use sfml::system::Vector2;
+    /// # // Create a new window with SFML window as name
+    /// # let mut window = RenderWindow::new((800, 600),
+    /// #                              "SFML window",
+    /// #                              Style::CLOSE,
+    /// #                              &Default::default());
+    /// window.set_position(Vector2::new(100, 400));
+    /// use std::{thread, time::Duration};
+    /// // You need to wait for the OS the set the window's position before checking
+    /// thread::sleep(Duration::from_secs(1));
+    /// assert_eq!(window.position(), Vector2::new(100, 400));
+    /// ```
     pub fn set_position(&mut self, position: Vector2i) {
         unsafe { ffi::sfRenderWindow_setPosition(self.render_window.as_ptr(), position.raw()) }
     }
@@ -351,6 +656,23 @@ impl RenderWindow {
     /// # Arguments
     /// * size - New size, in pixels
     ///
+    /// # Usage Example
+    ///
+    /// ```no_run
+    /// # use sfml::window::{Event, Style};
+    /// # use sfml::graphics::{ RenderWindow, RenderTarget };
+    /// # use sfml::system::Vector2;
+    /// # // Create a new window with SFML window as name
+    /// # let mut window = RenderWindow::new((800, 600),
+    /// #                              "SFML window",
+    /// #                              Style::CLOSE,
+    /// #                              &Default::default());
+    /// window.set_size(Vector2::new(100, 400));
+    /// use std::{thread, time::Duration};
+    /// // You need to wait for the OS the set the window's size before checking
+    /// thread::sleep(Duration::from_secs(1));
+    /// assert_eq!(window.size(), Vector2::new(100, 400));
+    /// ```
     pub fn set_size<S: Into<Vector2u>>(&mut self, size: S) {
         unsafe { ffi::sfRenderWindow_setSize(self.render_window.as_ptr(), size.into().raw()) }
     }
@@ -373,6 +695,19 @@ impl RenderWindow {
     /// # Arguments
     /// * `position` - the positon to set
     ///
+    /// # Usage Example
+    ///
+    /// ```no_run
+    /// # use sfml::window::{Event, Style};
+    /// # use sfml::graphics::RenderWindow;
+    /// # use sfml::system::Vector2;
+    /// # // Create a new window with SFML window as name
+    /// # let mut window = RenderWindow::new((800, 600),
+    /// #                              "SFML window",
+    /// #                              Style::CLOSE,
+    /// #                              &Default::default());
+    /// window.set_mouse_position(Vector2::new(0, 0));
+    /// ```
     pub fn set_mouse_position(&mut self, position: Vector2i) {
         unsafe { ffi::sfMouse_setPositionRenderWindow(position.raw(), self.render_window.as_ptr()) }
     }
@@ -384,11 +719,46 @@ impl RenderWindow {
     /// # Safety
     ///
     /// The cursor can not be destroyed while in use by the window.
+    ///
+    /// # Usage Example
+    ///
+    /// ```no_run
+    /// # use sfml::window::{Event, Style};
+    /// # use sfml::graphics::RenderWindow;
+    /// # // Create a new window with SFML window as name
+    /// # let mut window = RenderWindow::new((800, 600),
+    /// #                              "SFML window",
+    /// #                              Style::CLOSE,
+    /// #                              &Default::default());
+    /// # use sfml::window::{ Cursor, CursorType };
+    /// let cursor = Cursor::from_system(CursorType::Arrow);
+    /// if let Some(arrow_cursor) = &cursor {
+    ///     unsafe { window.set_mouse_cursor(arrow_cursor); }
+    /// }
+    /// // You need to ensure the SFML window closes before the cursor's end of life.
+    /// // Doing it the other way around will cause errouneous errors.
+    /// window.close();
+    /// drop(cursor);
+    /// ```
     pub unsafe fn set_mouse_cursor(&mut self, cursor: &Cursor) {
         ffi::sfRenderWindow_setMouseCursor(self.render_window.as_ptr(), cursor.raw())
     }
 
     /// Returns the current position of a touch in window coordinates.
+    ///
+    /// # Usage Example
+    ///
+    /// ```no_run
+    /// # use sfml::window::{Event, Style};
+    /// # use sfml::graphics::RenderWindow;
+    /// # // Create a new window with SFML window as name
+    /// # let mut window = RenderWindow::new((800, 600),
+    /// #                              "SFML window",
+    /// #                              Style::CLOSE,
+    /// #                              &Default::default());
+    /// # use sfml::system::Vector2;
+    /// assert_eq!(window.touch_position(15), Vector2::new(0, 0));
+    /// ```
     #[must_use]
     pub fn touch_position(&self, finger: u32) -> Vector2i {
         unsafe {
@@ -403,6 +773,19 @@ impl RenderWindow {
     ///
     /// At any given time, only one window may have the input focus to receive input events
     /// such as keystrokes or most mouse events.
+    ///
+    /// # Usage Example
+    ///
+    /// ```no_run
+    /// # use sfml::window::{Event, Style};
+    /// # use sfml::graphics::RenderWindow;
+    /// # // Create a new window with SFML window as name
+    /// # let mut window = RenderWindow::new((800, 600),
+    /// #                              "SFML window",
+    /// #                              Style::CLOSE,
+    /// #                              &Default::default());
+    /// assert_eq!(window.has_focus(), false);
+    /// ```
     #[must_use]
     pub fn has_focus(&self) -> bool {
         unsafe { ffi::sfRenderWindow_hasFocus(self.render_window.as_ptr()) }
@@ -414,6 +797,23 @@ impl RenderWindow {
     /// such as keystrokes or mouse events. If a window requests focus, it only hints to the
     /// operating system, that it would like to be focused. The operating system is free to
     /// deny the request. This is not to be confused with [`RenderWindow::set_active`].
+    ///
+    /// # Usage Example
+    ///
+    /// ```no_run
+    /// # use sfml::window::{Event, Style};
+    /// # use sfml::graphics::RenderWindow;
+    /// # // Create a new window with SFML window as name
+    /// # let mut window = RenderWindow::new((800, 600),
+    /// #                              "SFML window",
+    /// #                              Style::CLOSE,
+    /// #                              &Default::default());
+    /// window.request_focus();
+    /// use std::{thread, time::Duration};
+    /// // You need to wait for the OS the set the window's size before checking
+    /// thread::sleep(Duration::from_secs(1));
+    /// assert_eq!(window.has_focus(), true);
+    /// ```
     pub fn request_focus(&self) {
         unsafe { ffi::sfRenderWindow_requestFocus(self.render_window.as_ptr()) }
     }
