@@ -3,6 +3,10 @@ pub use crate::ffi::*;
 #[cfg(feature = "serde")]
 use serde::{Deserialize, Serialize};
 
+use self::system::{sfVideoModeVector_getLength, sfVideoModeVector_index};
+
+use super::graphics::sfRenderWindow;
+
 decl_opaque! {
     sfCursor;
     sfContext;
@@ -10,6 +14,8 @@ decl_opaque! {
     JoystickIdentification;
     sfVideoModeVector;
 }
+
+type sfJoystickIdentification = JoystickIdentification;
 
 /// Enumeration of the native system cursor types.
 ///
@@ -248,10 +254,12 @@ pub(crate) enum EventType {
 
 #[repr(C)]
 #[derive(Clone, Copy)]
-pub(crate) struct Event {
+pub struct Event {
     pub(crate) type_: EventType,
     pub(crate) union: EventUnion,
 }
+
+type sfEvent = Event;
 
 #[repr(C)]
 #[derive(Clone, Copy)]
@@ -303,6 +311,8 @@ pub enum MouseButton {
     XButton1,
     XButton2,
 }
+
+type sfMouseButton = MouseButton;
 
 /// Key codes known to SFML.
 #[repr(C)]
@@ -414,6 +424,8 @@ pub enum Key {
     Pause,
 }
 
+type sfKeyboardKey = Key;
+
 impl Dispose for JoystickIdentification {
     unsafe fn dispose(&mut self) {
         sfJoystickIdentification_destroy(self);
@@ -463,98 +475,6 @@ pub type sfWindowHandle = std::os::raw::c_ulong;
 #[cfg(target_os = "macos")]
 pub type sfWindowHandle = *mut c_void;
 
-extern "C" {
-    pub(crate) fn sfKeyboard_isKeyPressed(key: Key) -> bool;
-    pub(crate) fn sfKeyboard_setVirtualKeyboardVisible(visible: bool);
-    pub fn sfVideoModeVector_getLength(vec: *const sfVideoModeVector) -> usize;
-    pub fn sfVideoModeVector_index(
-        vec: *const sfVideoModeVector,
-        index: usize,
-    ) -> *const sfVideoMode;
-    pub fn sfWindow_createUnicode(
-        mode: sfVideoMode,
-        title: *const u32,
-        style: u32,
-        settings: *const sfContextSettings,
-    ) -> *mut sfWindow;
-    pub fn sfWindow_createFromHandle(
-        handle: sfWindowHandle,
-        settings: *const sfContextSettings,
-    ) -> *mut sfWindow;
-    pub fn sfWindow_destroy(window: *mut sfWindow);
-    pub fn sfWindow_close(window: *mut sfWindow);
-    pub fn sfWindow_isOpen(window: *const sfWindow) -> bool;
-    pub fn sfWindow_getSettings(window: *const sfWindow) -> *const sfContextSettings;
-    pub(crate) fn sfWindow_pollEvent(window: *mut sfWindow, event: *mut Event) -> bool;
-    pub(crate) fn sfWindow_waitEvent(window: *mut sfWindow, event: *mut Event) -> bool;
-    pub fn sfWindow_getPosition(window: *const sfWindow) -> sfVector2i;
-    pub fn sfWindow_setPosition(window: *mut sfWindow, position: sfVector2i);
-    pub fn sfWindow_getSize(window: *const sfWindow) -> sfVector2u;
-    pub fn sfWindow_setSize(window: *mut sfWindow, size: sfVector2u);
-    pub fn sfWindow_setUnicodeTitle(window: *mut sfWindow, title: *const u32);
-    pub fn sfWindow_setIcon(
-        window: *mut sfWindow,
-        width: c_uint,
-        height: c_uint,
-        pixels: *const u8,
-    );
-    pub fn sfWindow_setVisible(window: *mut sfWindow, visible: bool);
-    pub fn sfWindow_setMouseCursorVisible(window: *mut sfWindow, visible: bool);
-    pub fn sfWindow_setMouseCursorGrabbed(window: *mut sfWindow, grabbed: bool);
-    pub fn sfWindow_setMouseCursor(window: *mut sfWindow, cursor: *const sfCursor);
-    pub fn sfWindow_setVerticalSyncEnabled(window: *mut sfWindow, enabled: bool);
-    pub fn sfWindow_setKeyRepeatEnabled(window: *mut sfWindow, enabled: bool);
-    pub fn sfWindow_setActive(window: *mut sfWindow, active: bool) -> bool;
-    pub fn sfWindow_requestFocus(window: *mut sfWindow);
-    pub fn sfWindow_hasFocus(window: *const sfWindow) -> bool;
-    pub fn sfWindow_display(window: *mut sfWindow);
-    pub fn sfWindow_setFramerateLimit(window: *mut sfWindow, limit: c_uint);
-    pub fn sfWindow_setJoystickThreshold(window: *mut sfWindow, threshold: f32);
-    pub fn sfWindow_getSystemHandle(window: *const sfWindow) -> sfWindowHandle;
-    pub fn sfContext_create() -> *mut sfContext;
-    pub fn sfContext_destroy(context: *mut sfContext);
-    pub fn sfContext_setActive(context: *mut sfContext, active: bool) -> bool;
-    pub fn sfContext_getSettings(context: *const sfContext) -> *const sfContextSettings;
-    pub fn sfContext_getActiveContextId() -> u64;
-    // Mouse
-    pub fn sfMouse_isButtonPressed(button: MouseButton) -> bool;
-    pub fn sfMouse_getPosition(relativeTo: *const sfWindow) -> sfVector2i;
-    pub fn sfMouse_setPosition(position: sfVector2i, relativeTo: *const sfWindow);
-    // Cursor
-    pub fn sfCursor_createFromPixels(
-        pixels: *const u8,
-        size: sfVector2u,
-        hotspot: sfVector2u,
-    ) -> *mut sfCursor;
-    pub fn sfCursor_createFromSystem(type_: sfCursorType) -> *mut sfCursor;
-    pub fn sfCursor_destroy(cursor: *mut sfCursor);
-    // Touch
-    pub fn sfTouch_isDown(finger: c_uint) -> bool;
-    pub fn sfTouch_getPosition(finger: c_uint, relativeTo: *const sfWindow) -> sfVector2i;
-    // VideoMode
-    pub fn sfVideoMode_getDesktopMode() -> sfVideoMode;
-    pub fn sfVideoMode_getFullscreenModes() -> *const sfVideoModeVector;
-    pub fn sfVideoMode_isValid(mode: sfVideoMode) -> bool;
-    // Joystick
-    pub fn sfJoystick_isConnected(joystick: c_uint) -> bool;
-    pub fn sfJoystick_getButtonCount(joystick: c_uint) -> c_uint;
-    pub fn sfJoystick_hasAxis(joystick: c_uint, axis: sfJoystickAxis) -> bool;
-    pub fn sfJoystick_isButtonPressed(joystick: c_uint, button: c_uint) -> bool;
-    pub fn sfJoystick_getAxisPosition(joystick: c_uint, axis: sfJoystickAxis) -> f32;
-    pub fn sfJoystick_getIdentification(joystick: c_uint) -> *mut JoystickIdentification;
-    pub fn sfJoystickIdentification_destroy(ident: *mut JoystickIdentification);
-    pub fn sfJoystickIdentification_getVendorId(ident: *const JoystickIdentification) -> c_uint;
-    pub fn sfJoystickIdentification_getProductId(ident: *const JoystickIdentification) -> c_uint;
-    pub fn sfJoystickIdentification_getName(
-        ident: *const JoystickIdentification,
-    ) -> *const sfString;
-    pub fn sfJoystick_update();
-    // Sensor
-    pub fn sfSensor_isAvailable(sensor: sfSensorType) -> bool;
-    pub fn sfSensor_setEnabled(sensor: sfSensorType, enabled: bool);
-    pub fn sfSensor_getValue(sensor: sfSensorType) -> sfVector3f;
-}
-
 #[repr(C)]
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug, Hash)]
 pub enum sfJoystickAxis {
@@ -595,3 +515,5 @@ pub enum sfSensorType {
     ///< Keep last -- the total number of sensor types
     Count,
 }
+
+include!("window_bindgen.rs");

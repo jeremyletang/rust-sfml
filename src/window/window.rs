@@ -382,7 +382,7 @@ impl Window {
     /// Returns the current position of the mouse relative to the window.
     #[must_use]
     pub fn mouse_position(&self) -> Vector2i {
-        unsafe { Vector2i::from_raw(ffi::sfMouse_getPosition(self.window.as_ptr())) }
+        unsafe { Vector2i::from_raw(ffi::sfMouse_getPositionRelativeTo(self.window.as_ptr())) }
     }
 
     /// Set the current position of the mouse
@@ -394,7 +394,7 @@ impl Window {
     /// * relativeTo - Reference Window
     ///
     pub fn set_mouse_position(&mut self, position: Vector2i) {
-        unsafe { ffi::sfMouse_setPosition(position.raw(), self.window.as_ptr()) }
+        unsafe { ffi::sfMouse_setPositionRelativeTo(position.raw(), self.window.as_ptr()) }
     }
 
     /// Set the displayed cursor to a native system cursor.
@@ -411,7 +411,12 @@ impl Window {
     /// Returns the current position of a touch in window coordinates.
     #[must_use]
     pub fn touch_position(&self, finger: u32) -> Vector2i {
-        unsafe { Vector2i::from_raw(ffi::sfTouch_getPosition(finger, self.window.as_ptr())) }
+        unsafe {
+            Vector2i::from_raw(ffi::sfTouch_getPositionRelativeTo(
+                finger,
+                self.window.as_ptr(),
+            ))
+        }
     }
 
     /// Check whether the window has the input focus.

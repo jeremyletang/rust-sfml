@@ -1,28 +1,3 @@
-
-//
-// SFML - Simple and Fast Multimedia Library
-// Copyright (C) 2007-2018 Laurent Gomila (laurent@sfml-dev.org)
-//
-// This software is provided 'as-is', without any express or implied warranty.
-// In no event will the authors be held liable for any damages arising from the use of this software.
-//
-// Permission is granted to anyone to use this software for any purpose,
-// including commercial applications, and to alter it and redistribute it freely,
-// subject to the following restrictions:
-//
-// 1. The origin of this software must not be misrepresented;
-//    you must not claim that you wrote the original software.
-//    If you use this software in a product, an acknowledgment
-//    in the product documentation would be appreciated but is not required.
-//
-// 2. Altered source versions must be plainly marked as such,
-//    and must not be misrepresented as being the original software.
-//
-// 3. This notice may not be removed or altered from any source distribution.
-//
-
-// Headers
-
 #include "System/InputStreamStruct.h"
 #include "System/Vector2.h"
 #include "System/Vector3.h"
@@ -79,18 +54,12 @@ extern "C" bool sfMusic_getLoop(const sf::Music *music) {
 }
 
 extern "C" int64_t sfMusic_getDuration(const sf::Music *music) {
-    int64_t time = music->getDuration().asMicroseconds();
-    return time;
+    return music->getDuration().asMicroseconds();
 }
 
 extern "C" sfTimeSpan sfMusic_getLoopPoints(const sf::Music *music) {
     sf::Music::TimeSpan span = music->getLoopPoints();
-    sfTimeSpan timeSpan;
-
-    timeSpan.offset = span.offset.asMicroseconds();
-    timeSpan.length = span.length.asMicroseconds();
-
-    return timeSpan;
+    return {span.offset.asMicroseconds(), span.length.asMicroseconds()};
 }
 
 extern "C" void sfMusic_setLoopPoints(sf::Music *music, sfTimeSpan timePoints) {
@@ -124,8 +93,7 @@ extern "C" sf::Music::Status sfMusic_getStatus(const sf::Music *music) {
 }
 
 extern "C" int64_t sfMusic_getPlayingOffset(const sf::Music *music) {
-    int64_t time = music->getPlayingOffset().asMicroseconds();
-    return time;
+    return music->getPlayingOffset().asMicroseconds();
 }
 
 extern "C" void sfMusic_setPitch(sf::Music *music, float pitch) {
@@ -165,14 +133,8 @@ extern "C" float sfMusic_getVolume(const sf::Music *music) {
 }
 
 extern "C" sfVector3f sfMusic_getPosition(const sf::Music *music) {
-    sfVector3f position = {0, 0, 0};
-
-    sf::Vector3f sfmlPos = music->getPosition();
-    position.x = sfmlPos.x;
-    position.y = sfmlPos.y;
-    position.z = sfmlPos.z;
-
-    return position;
+    sf::Vector3f pos = music->getPosition();
+    return {pos.x, pos.y, pos.z};
 }
 
 extern "C" bool sfMusic_isRelativeToListener(const sf::Music *music) {

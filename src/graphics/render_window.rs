@@ -681,7 +681,7 @@ impl RenderWindow {
     #[must_use]
     pub fn mouse_position(&self) -> Vector2i {
         unsafe {
-            Vector2i::from_raw(ffi::sfMouse_getPositionRenderWindow(
+            Vector2i::from_raw(crate::ffi::window::sfMouse_getPositionRenderWindow(
                 self.render_window.as_ptr(),
             ))
         }
@@ -709,7 +709,12 @@ impl RenderWindow {
     /// window.set_mouse_position(Vector2::new(0, 0));
     /// ```
     pub fn set_mouse_position(&mut self, position: Vector2i) {
-        unsafe { ffi::sfMouse_setPositionRenderWindow(position.raw(), self.render_window.as_ptr()) }
+        unsafe {
+            crate::ffi::window::sfMouse_setPositionRenderWindow(
+                position.raw(),
+                self.render_window.as_ptr(),
+            )
+        }
     }
 
     /// Set the displayed cursor to a native system cursor.
@@ -762,7 +767,7 @@ impl RenderWindow {
     #[must_use]
     pub fn touch_position(&self, finger: u32) -> Vector2i {
         unsafe {
-            Vector2i::from_raw(ffi::sfTouch_getPositionRenderWindow(
+            Vector2i::from_raw(crate::ffi::window::sfTouch_getPositionRenderWindow(
                 finger,
                 self.render_window.as_ptr(),
             ))
@@ -845,7 +850,7 @@ impl RenderTarget for RenderWindow {
     }
     fn map_pixel_to_coords(&self, point: Vector2i, view: &View) -> Vector2f {
         unsafe {
-            Vector2f::from_raw(ffi::sfRenderWindow_mapPixelToCoords(
+            Vector2f::from_raw(ffi::sfRenderWindow_mapPixelToCoords_View(
                 self.render_window.as_ptr(),
                 point.raw(),
                 view.raw(),
@@ -853,18 +858,16 @@ impl RenderTarget for RenderWindow {
         }
     }
     fn map_pixel_to_coords_current_view(&self, point: Vector2i) -> Vector2f {
-        let view = unsafe { ffi::sfRenderWindow_getView(self.render_window.as_ptr()) };
         unsafe {
             Vector2f::from_raw(ffi::sfRenderWindow_mapPixelToCoords(
                 self.render_window.as_ptr(),
                 point.raw(),
-                view,
             ))
         }
     }
     fn map_coords_to_pixel(&self, point: Vector2f, view: &View) -> Vector2i {
         unsafe {
-            Vector2i::from_raw(ffi::sfRenderWindow_mapCoordsToPixel(
+            Vector2i::from_raw(ffi::sfRenderWindow_mapCoordsToPixel_View(
                 self.render_window.as_ptr(),
                 point.raw(),
                 view.raw(),
@@ -872,12 +875,10 @@ impl RenderTarget for RenderWindow {
         }
     }
     fn map_coords_to_pixel_current_view(&self, point: Vector2f) -> Vector2i {
-        let curr_view = unsafe { ffi::sfRenderWindow_getView(self.render_window.as_ptr()) };
         unsafe {
             Vector2i::from_raw(ffi::sfRenderWindow_mapCoordsToPixel(
                 self.render_window.as_ptr(),
                 point.raw(),
-                curr_view,
             ))
         }
     }
@@ -962,7 +963,7 @@ impl RenderTarget for RenderWindow {
         }
     }
     fn clear(&mut self, color: Color) {
-        unsafe { ffi::sfRenderWindow_clear(self.render_window.as_ptr(), color.0) }
+        unsafe { ffi::sfRenderWindow_clear(self.render_window.as_ptr(), color) }
     }
 }
 

@@ -1,31 +1,4 @@
-
-//
-// SFML - Simple and Fast Multimedia Library
-// Copyright (C) 2007-2018 Laurent Gomila (laurent@sfml-dev.org)
-//
-// This software is provided 'as-is', without any express or implied warranty.
-// In no event will the authors be held liable for any damages arising from the use of this software.
-//
-// Permission is granted to anyone to use this software for any purpose,
-// including commercial applications, and to alter it and redistribute it freely,
-// subject to the following restrictions:
-//
-// 1. The origin of this software must not be misrepresented;
-//    you must not claim that you wrote the original software.
-//    If you use this software in a product, an acknowledgment
-//    in the product documentation would be appreciated but is not required.
-//
-// 2. Altered source versions must be plainly marked as such,
-//    and must not be misrepresented as being the original software.
-//
-// 3. This notice may not be removed or altered from any source distribution.
-//
-
-// Headers
-
-#include "Graphics/PrimitiveType.h"
 #include "Graphics/Rect.h"
-#include "Graphics/ShapeStruct.h"
 #include "Graphics/Vertex.h"
 #include "Window/VideoMode.h"
 #include <SFML/Graphics/CircleShape.hpp>
@@ -82,13 +55,8 @@ extern "C" bool sfRenderWindow_waitEvent(sf::RenderWindow *renderWindow, sf::Eve
 }
 
 extern "C" sfVector2i sfRenderWindow_getPosition(const sf::RenderWindow *renderWindow) {
-    sfVector2i position = {0, 0};
-
-    sf::Vector2i sfmlPos = renderWindow->getPosition();
-    position.x = sfmlPos.x;
-    position.y = sfmlPos.y;
-
-    return position;
+    sf::Vector2i vec2 = renderWindow->getPosition();
+    return {vec2.x, vec2.y};
 }
 
 extern "C" void sfRenderWindow_setPosition(sf::RenderWindow *renderWindow, sfVector2i position) {
@@ -96,13 +64,8 @@ extern "C" void sfRenderWindow_setPosition(sf::RenderWindow *renderWindow, sfVec
 }
 
 extern "C" sfVector2u sfRenderWindow_getSize(const sf::RenderWindow *renderWindow) {
-    sfVector2u size = {0, 0};
-
-    sf::Vector2u sfmlSize = renderWindow->getSize();
-    size.x = sfmlSize.x;
-    size.y = sfmlSize.y;
-
-    return size;
+    sf::Vector2u vec2 = renderWindow->getSize();
+    return {vec2.x, vec2.y};
 }
 
 extern "C" void sfRenderWindow_setSize(sf::RenderWindow *renderWindow, sfVector2u size) {
@@ -134,7 +97,7 @@ extern "C" void sfRenderWindow_setMouseCursorGrabbed(sf::RenderWindow *renderWin
 }
 
 extern "C" void sfRenderWindow_setMouseCursor(sf::RenderWindow *window, const sf::Cursor *cursor) {
-    reinterpret_cast<sf::RenderWindow *>(window)->setMouseCursor(*cursor);
+    window->setMouseCursor(*cursor);
 }
 
 extern "C" void sfRenderWindow_setKeyRepeatEnabled(sf::RenderWindow *renderWindow, bool enabled) {
@@ -166,103 +129,76 @@ extern "C" void sfRenderWindow_setJoystickThreshold(sf::RenderWindow *renderWind
 }
 
 extern "C" sf::WindowHandle sfRenderWindow_getSystemHandle(const sf::RenderWindow *renderWindow) {
-
     return renderWindow->getSystemHandle();
 }
 
 extern "C" void sfRenderWindow_clear(sf::RenderWindow *renderWindow, sfColor color) {
-    sf::Color SFMLColor(color.r, color.g, color.b, color.a);
-
-    renderWindow->clear(SFMLColor);
+    renderWindow->clear(sf::Color(color.r, color.g, color.b, color.a));
 }
 
 extern "C" void sfRenderWindow_setView(sf::RenderWindow *renderWindow, const sf::View *view) {
-    renderWindow->setView(*reinterpret_cast<const sf::View *>(view));
+    renderWindow->setView(*view);
 }
 
 extern "C" const sf::View *sfRenderWindow_getView(const sf::RenderWindow *renderWindow) {
-    return reinterpret_cast<const sf::View *>(&renderWindow->getView());
+    return &renderWindow->getView();
 }
 
 extern "C" const sf::View *sfRenderWindow_getDefaultView(const sf::RenderWindow *renderWindow) {
-    return reinterpret_cast<const sf::View *>(&renderWindow->getDefaultView());
+    return &renderWindow->getDefaultView();
 }
 
 extern "C" sfIntRect sfRenderWindow_getViewport(const sf::RenderWindow *renderWindow, const sf::View *view) {
-    sfIntRect rect = {0, 0, 0, 0};
-
-    sf::IntRect SFMLrect = renderWindow->getViewport(*reinterpret_cast<const sf::View *>(view));
-    rect.left = SFMLrect.left;
-    rect.top = SFMLrect.top;
-    rect.width = SFMLrect.width;
-    rect.height = SFMLrect.height;
-
-    return rect;
+    sf::IntRect rect = renderWindow->getViewport(*view);
+    return {rect.left, rect.top, rect.width, rect.height};
 }
 
-extern "C" sfVector2f sfRenderWindow_mapPixelToCoords(const sf::RenderWindow *renderWindow, sfVector2i point, const sf::View *targetView) {
-    sfVector2f result = {0, 0};
-
-    sf::Vector2f sfmlPoint;
-    if (targetView)
-        sfmlPoint = renderWindow->mapPixelToCoords(sf::Vector2i(point.x, point.y), *reinterpret_cast<const sf::View *>(targetView));
-    else
-        sfmlPoint = renderWindow->mapPixelToCoords(sf::Vector2i(point.x, point.y));
-
-    result.x = sfmlPoint.x;
-    result.y = sfmlPoint.y;
-
-    return result;
+extern "C" sfVector2f sfRenderWindow_mapPixelToCoords(const sf::RenderWindow *renderWindow, sfVector2i point) {
+    sf::Vector2f vec2 = renderWindow->mapPixelToCoords(sf::Vector2i(point.x, point.y));
+    return {vec2.x, vec2.y};
 }
 
-extern "C" sfVector2i sfRenderWindow_mapCoordsToPixel(const sf::RenderWindow *renderWindow, sfVector2f point, const sf::View *targetView) {
-    sfVector2i result = {0, 0};
+extern "C" sfVector2f sfRenderWindow_mapPixelToCoords_View(const sf::RenderWindow *renderWindow, sfVector2i point, const sf::View *targetView) {
+    sf::Vector2f vec2 = renderWindow->mapPixelToCoords(sf::Vector2i(point.x, point.y), *targetView);
+    return {vec2.x, vec2.y};
+}
 
-    sf::Vector2i sfmlPoint;
-    if (targetView)
-        sfmlPoint = renderWindow->mapCoordsToPixel(sf::Vector2f(point.x, point.y), *reinterpret_cast<const sf::View *>(targetView));
-    else
-        sfmlPoint = renderWindow->mapCoordsToPixel(sf::Vector2f(point.x, point.y));
+extern "C" sfVector2i sfRenderWindow_mapCoordsToPixel(const sf::RenderWindow *renderWindow, sfVector2f point) {
+    sf::Vector2i vec2 = renderWindow->mapCoordsToPixel(sf::Vector2f(point.x, point.y));
+    return {vec2.x, vec2.y};
+}
 
-    result.x = sfmlPoint.x;
-    result.y = sfmlPoint.y;
-
-    return result;
+extern "C" sfVector2i sfRenderWindow_mapCoordsToPixel_View(const sf::RenderWindow *renderWindow, sfVector2f point, const sf::View *targetView) {
+    sf::Vector2i vec2 = renderWindow->mapCoordsToPixel(sf::Vector2f(point.x, point.y), *targetView);
+    return {vec2.x, vec2.y};
 }
 
 extern "C" void sfRenderWindow_drawSprite(sf::RenderWindow *renderWindow, const sf::Sprite *object, const sf::RenderStates *states) {
-
-    renderWindow->draw(*reinterpret_cast<const sf::Sprite *>(object), *states);
+    renderWindow->draw(*object, *states);
 }
 extern "C" void sfRenderWindow_drawText(sf::RenderWindow *renderWindow, const sf::Text *object, const sf::RenderStates *states) {
-
-    renderWindow->draw(*reinterpret_cast<const sf::Text *>(object), *states);
+    renderWindow->draw(*object, *states);
 }
 extern "C" void sfRenderWindow_drawShape(sf::RenderWindow *renderWindow, const sf::Shape *object, const sf::RenderStates *states) {
-
     renderWindow->draw(*object, *states);
 }
 extern "C" void sfRenderWindow_drawCircleShape(sf::RenderWindow *renderWindow, const sf::CircleShape *object, const sf::RenderStates *states) {
-
     renderWindow->draw(*object, *states);
 }
 extern "C" void sfRenderWindow_drawConvexShape(sf::RenderWindow *renderWindow, const sf::ConvexShape *object, const sf::RenderStates *states) {
-
     renderWindow->draw(*object, *states);
 }
 extern "C" void sfRenderWindow_drawRectangleShape(sf::RenderWindow *renderWindow, const sf::RectangleShape *object, const sf::RenderStates *states) {
-
-    renderWindow->draw(*reinterpret_cast<const sf::RectangleShape *>(object), *states);
+    renderWindow->draw(*object, *states);
 }
 extern "C" void sfRenderWindow_drawVertexBuffer(sf::RenderWindow *renderWindow, const sf::VertexBuffer *object, const sf::RenderStates *states) {
-
     renderWindow->draw(*object, *states);
 }
 
 extern "C" void sfRenderWindow_drawPrimitives(sf::RenderWindow *renderWindow,
-                                              const sfVertex *vertices, size_t vertexCount,
-                                              sfPrimitiveType type, const sf::RenderStates *states) {
-    renderWindow->draw(reinterpret_cast<const sf::Vertex *>(vertices), vertexCount, static_cast<sf::PrimitiveType>(type), *states);
+                                              const sf::Vertex *vertices, size_t vertexCount,
+                                              sf::PrimitiveType type, const sf::RenderStates *states) {
+    renderWindow->draw(vertices, vertexCount, type, *states);
 }
 
 extern "C" void sfRenderWindow_pushGLStates(sf::RenderWindow *renderWindow) {
@@ -275,34 +211,4 @@ extern "C" void sfRenderWindow_popGLStates(sf::RenderWindow *renderWindow) {
 
 extern "C" void sfRenderWindow_resetGLStates(sf::RenderWindow *renderWindow) {
     renderWindow->resetGLStates();
-}
-
-extern "C" sfVector2i sfMouse_getPositionRenderWindow(const sf::RenderWindow *relativeTo) {
-    sf::Vector2i sfmlPos;
-    if (relativeTo)
-        sfmlPos = sf::Mouse::getPosition(*reinterpret_cast<const sf::RenderWindow *>(relativeTo));
-    else
-        sfmlPos = sf::Mouse::getPosition();
-
-    sfVector2i position = {sfmlPos.x, sfmlPos.y};
-    return position;
-}
-
-extern "C" void sfMouse_setPositionRenderWindow(sfVector2i position, const sf::RenderWindow *relativeTo) {
-    if (relativeTo)
-        sf::Mouse::setPosition(sf::Vector2i(position.x, position.y), *reinterpret_cast<const sf::RenderWindow *>(relativeTo));
-    else
-        sf::Mouse::setPosition(sf::Vector2i(position.x, position.y));
-}
-
-extern "C" sfVector2i sfTouch_getPositionRenderWindow(unsigned int finger, const sf::RenderWindow *relativeTo) {
-    sf::Vector2i sfmlPosition;
-
-    if (relativeTo)
-        sfmlPosition = sf::Touch::getPosition(finger, *reinterpret_cast<const sf::RenderWindow *>(relativeTo));
-    else
-        sfmlPosition = sf::Touch::getPosition(finger);
-
-    sfVector2i position = {sfmlPosition.x, sfmlPosition.y};
-    return position;
 }

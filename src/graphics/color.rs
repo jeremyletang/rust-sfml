@@ -1,4 +1,3 @@
-use crate::ffi;
 use std::ops::{Add, AddAssign, Mul, MulAssign, Sub, SubAssign};
 
 /// Utility type for manpulating RGBA colors
@@ -15,9 +14,18 @@ use std::ops::{Add, AddAssign, Mul, MulAssign, Sub, SubAssign};
 /// let color2 = Color::rgba(255, 255, 255, 128); // from red/green/blue/alpha (transparency)
 /// let color3 = Color::GREEN; // from one of the associated color constants
 /// ```
-#[repr(transparent)]
+#[repr(C)]
 #[derive(Copy, Clone, PartialEq, Eq, Debug)]
-pub struct Color(pub(super) ffi::graphics::sfColor);
+pub struct Color {
+    /// Red component
+    pub r: u8,
+    /// Green component
+    pub g: u8,
+    /// Blue component
+    pub b: u8,
+    /// Alpha component (transparency)
+    pub a: u8,
+}
 
 impl Color {
     /// Construct a color from its 3 RGB components
@@ -30,12 +38,12 @@ impl Color {
     /// Return Color object constructed from the components
     #[must_use]
     pub const fn rgb(red: u8, green: u8, blue: u8) -> Self {
-        Self(ffi::graphics::sfColor {
+        Self {
             r: red,
             g: green,
             b: blue,
             a: 255,
-        })
+        }
     }
 
     /// Construct a color from its 4 RGBA components
@@ -49,60 +57,12 @@ impl Color {
     /// Return Color object constructed from the components
     #[must_use]
     pub const fn rgba(red: u8, green: u8, blue: u8, alpha: u8) -> Self {
-        Self(ffi::graphics::sfColor {
+        Self {
             r: red,
             g: green,
             b: blue,
             a: alpha,
-        })
-    }
-
-    /// The red component of this color
-    #[must_use]
-    pub const fn red(&self) -> u8 {
-        self.0.r
-    }
-
-    /// Mutable reference to the red component
-    #[must_use]
-    pub fn red_mut(&mut self) -> &mut u8 {
-        &mut self.0.r
-    }
-
-    /// The green component of this color
-    #[must_use]
-    pub const fn green(&self) -> u8 {
-        self.0.g
-    }
-
-    /// Mutable reference to the green component
-    #[must_use]
-    pub fn green_mut(&mut self) -> &mut u8 {
-        &mut self.0.g
-    }
-
-    /// The blue component of this color
-    #[must_use]
-    pub const fn blue(&self) -> u8 {
-        self.0.b
-    }
-
-    /// Mutable reference to the blue component
-    #[must_use]
-    pub fn blue_mut(&mut self) -> &mut u8 {
-        &mut self.0.b
-    }
-
-    /// The alpha component of this color
-    #[must_use]
-    pub const fn alpha(&self) -> u8 {
-        self.0.a
-    }
-
-    /// Mutable reference to the alpha component
-    #[must_use]
-    pub fn alpha_mut(&mut self) -> &mut u8 {
-        &mut self.0.a
+        }
     }
 
     /// Black predefined color
@@ -139,35 +99,32 @@ impl From<u32> for Color {
     /// The number should contain the components in RGBA order.
     #[allow(clippy::cast_possible_truncation)]
     fn from(src: u32) -> Self {
-        Self(ffi::graphics::sfColor {
+        Self {
             r: ((src & 0xff000000) >> 24) as u8,
             g: ((src & 0x00ff0000) >> 16) as u8,
             b: ((src & 0x0000ff00) >> 8) as u8,
             a: (src & 0x000000ff) as u8,
-        })
+        }
     }
 }
 
 impl From<Color> for u32 {
     fn from(src: Color) -> Self {
-        ((src.0.r as u32) << 24)
-            | ((src.0.g as u32) << 16)
-            | ((src.0.b as u32) << 8)
-            | (src.0.a as u32)
+        ((src.r as u32) << 24) | ((src.g as u32) << 16) | ((src.b as u32) << 8) | (src.a as u32)
     }
 }
 
 impl Add for Color {
-    type Output = Color;
+    type Output = Self;
 
     /// Calculate the component-wise saturated addition of two colors.
-    fn add(self, other: Color) -> Color {
-        Color(ffi::graphics::sfColor {
-            r: self.0.r.saturating_add(other.0.r),
-            g: self.0.g.saturating_add(other.0.g),
-            b: self.0.b.saturating_add(other.0.b),
-            a: self.0.a.saturating_add(other.0.a),
-        })
+    fn add(self, other: Self) -> Self {
+        Self {
+            r: self.r.saturating_add(other.r),
+            g: self.g.saturating_add(other.g),
+            b: self.b.saturating_add(other.b),
+            a: self.a.saturating_add(other.a),
+        }
     }
 }
 
@@ -182,12 +139,12 @@ impl Sub for Color {
 
     /// Component-wise subtraction of two colors. Components below 0 are clamped to 0.
     fn sub(self, other: Self) -> Self {
-        Color(ffi::graphics::sfColor {
-            r: self.0.r.saturating_sub(other.0.r),
-            g: self.0.g.saturating_sub(other.0.g),
-            b: self.0.b.saturating_sub(other.0.b),
-            a: self.0.a.saturating_sub(other.0.a),
-        })
+        Self {
+            r: self.r.saturating_sub(other.r),
+            g: self.g.saturating_sub(other.g),
+            b: self.b.saturating_sub(other.b),
+            a: self.a.saturating_sub(other.a),
+        }
     }
 }
 
@@ -205,16 +162,16 @@ impl Mul for Color {
     /// For each `X` in `rgba`, `result.X = a.X * b.X / 255`.
     #[allow(clippy::cast_possible_truncation)]
     fn mul(self, other: Color) -> Color {
-        let (r1, r2) = (self.0.r as u16, other.0.r as u16);
-        let (g1, g2) = (self.0.g as u16, other.0.g as u16);
-        let (b1, b2) = (self.0.b as u16, other.0.b as u16);
-        let (a1, a2) = (self.0.a as u16, other.0.a as u16);
-        Self(ffi::graphics::sfColor {
+        let (r1, r2) = (self.r as u16, other.r as u16);
+        let (g1, g2) = (self.g as u16, other.g as u16);
+        let (b1, b2) = (self.b as u16, other.b as u16);
+        let (a1, a2) = (self.a as u16, other.a as u16);
+        Self {
             r: (r1 * r2 / 255) as u8,
             g: (g1 * g2 / 255) as u8,
             b: (b1 * b2 / 255) as u8,
             a: (a1 * a2 / 255) as u8,
-        })
+        }
     }
 }
 

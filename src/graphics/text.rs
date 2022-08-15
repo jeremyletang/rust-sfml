@@ -137,14 +137,14 @@ impl<'s> Text<'s> {
     /// By default, the text's fill color is opaque white. Setting the fill color to a transparent
     /// color with an outline will cause the outline to be displayed in the fill area of the text.
     pub fn set_fill_color(&mut self, color: Color) {
-        unsafe { ffi::sfText_setFillColor(self.text.as_ptr(), color.0) }
+        unsafe { ffi::sfText_setFillColor(self.text.as_ptr(), color) }
     }
 
     /// Set the outline color of the text.
     ///
     /// By default, the text's outline color is opaque black.
     pub fn set_outline_color(&mut self, color: Color) {
-        unsafe { ffi::sfText_setOutlineColor(self.text.as_ptr(), color.0) }
+        unsafe { ffi::sfText_setOutlineColor(self.text.as_ptr(), color) }
     }
 
     /// Set the thickness of the text's outline.
@@ -160,13 +160,13 @@ impl<'s> Text<'s> {
     /// Returns the fill color of the text.
     #[must_use]
     pub fn fill_color(&self) -> Color {
-        unsafe { Color(ffi::sfText_getFillColor(self.text.as_ptr())) }
+        unsafe { ffi::sfText_getFillColor(self.text.as_ptr()) }
     }
 
     /// Returns the outline color of the text.
     #[must_use]
     pub fn outline_color(&self) -> Color {
-        unsafe { Color(ffi::sfText_getOutlineColor(self.text.as_ptr())) }
+        unsafe { ffi::sfText_getOutlineColor(self.text.as_ptr()) }
     }
 
     /// Returns the outline thickness of the text, in pixels.
