@@ -1,5 +1,4 @@
 #include "Graphics/Rect.h"
-#include "Graphics/ShapeStruct.h"
 #include "Graphics/Vertex.h"
 #include "Window/VideoMode.h"
 #include <SFML/Graphics/CircleShape.hpp>
