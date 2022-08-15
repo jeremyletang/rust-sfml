@@ -1,7 +1,7 @@
 pub use crate::ffi::*;
 use crate::{
     ffi::window::{sfContextSettings, sfCursor, sfWindow, sfWindowHandle, Event as sfEvent},
-    graphics::{Rect, RenderStates as sfRenderStates, Transform as sfTransform},
+    graphics::{Color, Rect, RenderStates as sfRenderStates, Transform as sfTransform},
 };
 
 use super::{system::sfInputStream, window::sfVideoMode};
@@ -180,7 +180,7 @@ pub struct sfVertex {
     ///< Position of the vertex
     pub position: sfVector2f,
     ///< Color of the vertex
-    pub color: sfColor,
+    pub color: Color,
     ///< Coordinates of the texture's pixel to map to the vertex
     pub tex_coords: sfVector2f,
 }
@@ -271,13 +271,6 @@ pub enum sfPrimitiveType {
     Quads,
 }
 
-#[repr(C)]
-#[derive(Clone, Copy, PartialEq, Eq, Debug)]
-pub struct sfColor {
-    pub r: u8,
-    pub g: u8,
-    pub b: u8,
-    pub a: u8,
-}
+type sfColor = Color;
 
 include!("graphics_bindgen.rs");

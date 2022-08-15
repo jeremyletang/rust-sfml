@@ -88,8 +88,8 @@ fn main() {
             let oc = text.outline_color();
             format!(
             "fill: {:02x}{:02x}{:02x}{:02x} outline: {:02x}{:02x}{:02x}{:02x} outline thickness: {} style: {:?} (F1-F4)",
-            fc.red(), fc.green(), fc.blue(), fc.alpha(),
-            oc.red(), oc.green(), oc.blue(), oc.alpha(),
+            fc.r, fc.g, fc.b, fc.a,
+            oc.r, oc.g, oc.b, oc.a,
             text.outline_thickness(),
             text.style()
         )

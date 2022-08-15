@@ -164,10 +164,10 @@ impl<'s> Shape<'s> for ConvexShape<'s> {
         unsafe { ffi::sfConvexShape_setTextureRect(self.convex_shape, rect.raw()) }
     }
     fn set_fill_color(&mut self, color: Color) {
-        unsafe { ffi::sfConvexShape_setFillColor(self.convex_shape, color.0) }
+        unsafe { ffi::sfConvexShape_setFillColor(self.convex_shape, color) }
     }
     fn set_outline_color(&mut self, color: Color) {
-        unsafe { ffi::sfConvexShape_setOutlineColor(self.convex_shape, color.0) }
+        unsafe { ffi::sfConvexShape_setOutlineColor(self.convex_shape, color) }
     }
     fn set_outline_thickness(&mut self, thickness: f32) {
         unsafe { ffi::sfConvexShape_setOutlineThickness(self.convex_shape, thickness) }
@@ -187,10 +187,10 @@ impl<'s> Shape<'s> for ConvexShape<'s> {
         unsafe { IntRect::from_raw(ffi::sfConvexShape_getTextureRect(self.convex_shape)) }
     }
     fn fill_color(&self) -> Color {
-        unsafe { Color(ffi::sfConvexShape_getFillColor(self.convex_shape)) }
+        unsafe { ffi::sfConvexShape_getFillColor(self.convex_shape) }
     }
     fn outline_color(&self) -> Color {
-        unsafe { Color(ffi::sfConvexShape_getOutlineColor(self.convex_shape)) }
+        unsafe { ffi::sfConvexShape_getOutlineColor(self.convex_shape) }
     }
     fn outline_thickness(&self) -> f32 {
         unsafe { ffi::sfConvexShape_getOutlineThickness(self.convex_shape) }

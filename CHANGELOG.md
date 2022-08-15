@@ -10,6 +10,7 @@
 
 ### Changed
 - `window::clipboard::get_string()` now returns `String` instead of `&'static SfStr`
+- `Color` now has public fields, removed the unnecessary getter/setter methods.
 
 ### Fixed
 - Update requirements in the crate documentation

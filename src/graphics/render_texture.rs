@@ -130,7 +130,7 @@ impl RenderTarget for RenderTexture {
         unsafe { Vector2u::from_raw(ffi::sfRenderTexture_getSize(self.render_texture)) }
     }
     fn clear(&mut self, color: Color) {
-        unsafe { ffi::sfRenderTexture_clear(self.render_texture, color.0) }
+        unsafe { ffi::sfRenderTexture_clear(self.render_texture, color) }
     }
     fn set_view(&mut self, view: &View) {
         unsafe { ffi::sfRenderTexture_setView(self.render_texture, view.raw()) }

@@ -80,7 +80,7 @@ impl Image {
     /// Returns `None` if creation fails.
     #[must_use]
     pub fn from_color(width: u32, height: u32, color: Color) -> Option<Self> {
-        let image = unsafe { ffi::sfImage_createFromColor(width, height, color.0) };
+        let image = unsafe { ffi::sfImage_createFromColor(width, height, color) };
         if image.is_null() {
             None
         } else {
@@ -169,7 +169,7 @@ impl Image {
     /// * color - Color to make transparent
     /// * alpha - Alpha value to assign to transparent pixels
     pub fn create_mask_from_color(&self, color: Color, alpha: u8) {
-        unsafe { ffi::sfImage_createMaskFromColor(self.image, color.0, alpha) }
+        unsafe { ffi::sfImage_createMaskFromColor(self.image, color, alpha) }
     }
 
     /// Change the color of a pixel in an image
@@ -185,7 +185,7 @@ impl Image {
     /// coordinates, using out-of-range values will result in
     /// an undefined behaviour.
     pub unsafe fn set_pixel(&mut self, x: u32, y: u32, color: Color) {
-        ffi::sfImage_setPixel(self.image, x, y, color.0)
+        ffi::sfImage_setPixel(self.image, x, y, color)
     }
 
     /// Get the color of a pixel in an image
@@ -203,7 +203,7 @@ impl Image {
     /// an undefined behaviour.
     #[must_use]
     pub unsafe fn pixel_at(&self, x: u32, y: u32) -> Color {
-        Color(ffi::sfImage_getPixel(self.image, x, y))
+        ffi::sfImage_getPixel(self.image, x, y)
     }
 
     /// Return the memory buffer of this image.
