@@ -14,10 +14,6 @@ extern "C" const std::string *sfStdStringVector_index(const std::vector<std::str
     return &(*vec)[index];
 }
 
-extern "C" void sfVideoModeVector_destroy(std::vector<sf::VideoMode> *vec) {
-    delete vec;
-}
-
 extern "C" std::size_t sfVideoModeVector_getLength(const std::vector<sf::VideoMode> *vec) {
     return vec->size();
 }

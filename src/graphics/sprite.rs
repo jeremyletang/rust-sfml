@@ -93,7 +93,7 @@ impl<'s> Sprite<'s> {
     /// # Arguments
     /// * color - New color of the sprite
     pub fn set_color(&mut self, color: Color) {
-        unsafe { ffi::sfSprite_setColor(self.sprite.as_ptr(), color.0) }
+        unsafe { ffi::sfSprite_setColor(self.sprite.as_ptr(), color) }
     }
 
     /// Get the source texture of a sprite
@@ -120,7 +120,7 @@ impl<'s> Sprite<'s> {
     /// Return the global color of the sprite
     #[must_use]
     pub fn color(&self) -> Color {
-        unsafe { Color(ffi::sfSprite_getColor(self.sprite.as_ptr())) }
+        unsafe { ffi::sfSprite_getColor(self.sprite.as_ptr()) }
     }
 
     /// Get the local bounding rectangle of a sprite

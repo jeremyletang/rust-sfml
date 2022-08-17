@@ -1,28 +1,3 @@
-
-//
-// SFML - Simple and Fast Multimedia Library
-// Copyright (C) 2007-2018 Laurent Gomila (laurent@sfml-dev.org)
-//
-// This software is provided 'as-is', without any express or implied warranty.
-// In no event will the authors be held liable for any damages arising from the use of this software.
-//
-// Permission is granted to anyone to use this software for any purpose,
-// including commercial applications, and to alter it and redistribute it freely,
-// subject to the following restrictions:
-//
-// 1. The origin of this software must not be misrepresented;
-//    you must not claim that you wrote the original software.
-//    If you use this software in a product, an acknowledgment
-//    in the product documentation would be appreciated but is not required.
-//
-// 2. Altered source versions must be plainly marked as such,
-//    and must not be misrepresented as being the original software.
-//
-// 3. This notice may not be removed or altered from any source distribution.
-//
-
-// Headers
-
 #include "System/Vector3.h"
 #include <SFML/Audio.hpp>
 #include <cstddef>
@@ -32,8 +7,7 @@ extern "C" sf::Sound *sfSound_create(void) {
 }
 
 extern "C" sf::Sound *sfSound_copy(const sf::Sound *sound) {
-    const sf::Sound *src = sound;
-    return new sf::Sound(*src);
+    return new sf::Sound(*sound);
 }
 
 extern "C" void sfSound_destroy(sf::Sound *sound) {
@@ -53,7 +27,7 @@ extern "C" void sfSound_stop(sf::Sound *sound) {
 }
 
 extern "C" void sfSound_setBuffer(sf::Sound *sound, const sf::SoundBuffer *buffer) {
-    sound->setBuffer(*reinterpret_cast<const sf::SoundBuffer *>(buffer));
+    sound->setBuffer(*buffer);
 }
 
 extern "C" const sf::SoundBuffer *sfSound_getBuffer(const sf::Sound *sound) {
@@ -110,14 +84,8 @@ extern "C" float sfSound_getVolume(const sf::Sound *sound) {
 }
 
 extern "C" sfVector3f sfSound_getPosition(const sf::Sound *sound) {
-    sfVector3f position = {0, 0, 0};
-
-    sf::Vector3f sfmlPos = sound->getPosition();
-    position.x = sfmlPos.x;
-    position.y = sfmlPos.y;
-    position.z = sfmlPos.z;
-
-    return position;
+    sf::Vector3f pos = sound->getPosition();
+    return {pos.x, pos.y, pos.z};
 }
 
 extern "C" bool sfSound_isRelativeToListener(const sf::Sound *sound) {

@@ -1,33 +1,41 @@
-
-//
-// SFML - Simple and Fast Multimedia Library
-// Copyright (C) 2007-2018 Laurent Gomila (laurent@sfml-dev.org)
-//
-// This software is provided 'as-is', without any express or implied warranty.
-// In no event will the authors be held liable for any damages arising from the use of this software.
-//
-// Permission is granted to anyone to use this software for any purpose,
-// including commercial applications, and to alter it and redistribute it freely,
-// subject to the following restrictions:
-//
-// 1. The origin of this software must not be misrepresented;
-//    you must not claim that you wrote the original software.
-//    If you use this software in a product, an acknowledgment
-//    in the product documentation would be appreciated but is not required.
-//
-// 2. Altered source versions must be plainly marked as such,
-//    and must not be misrepresented as being the original software.
-//
-// 3. This notice may not be removed or altered from any source distribution.
-//
-
-// Headers
-
 #include "Graphics/Color.h"
 #include "Graphics/Rect.h"
-#include "Graphics/ShapeStruct.h"
+#include "System/Vector2.h"
 #include <SFML/Graphics/Color.hpp>
+#include <SFML/Graphics/Shape.hpp>
 #include <cstddef>
+
+typedef size_t (*sfShapeGetPointCountCallback)(void *);        ///< Type of the callback used to get the number of points in a shape
+typedef sfVector2f (*sfShapeGetPointCallback)(size_t, void *); ///< Type of the callback used to get a point of a shape
+
+// Helper class implementing the callback forwarding from
+// C++ to C in sfShape
+
+class sfShape : public sf::Shape {
+  public:
+    sfShape(sfShapeGetPointCountCallback getPointCount,
+            sfShapeGetPointCallback getPoint,
+            void *userData) : myGetPointCountCallback(getPointCount),
+                              myGetPointCallback(getPoint),
+                              myUserData(userData) {
+    }
+
+    virtual std::size_t getPointCount() const {
+        return myGetPointCountCallback(myUserData);
+    }
+
+    virtual sf::Vector2f getPoint(std::size_t index) const {
+        sfVector2f point = myGetPointCallback(index, myUserData);
+        return sf::Vector2f(point.x, point.y);
+    }
+
+    using sf::Shape::update;
+
+  private:
+    sfShapeGetPointCountCallback myGetPointCountCallback;
+    sfShapeGetPointCallback myGetPointCallback;
+    void *myUserData;
+};
 
 extern "C" sfShape *sfShape_create(sfShapeGetPointCountCallback getPointCount,
                                    sfShapeGetPointCallback getPoint,
@@ -56,13 +64,8 @@ extern "C" void sfShape_setOrigin(sfShape *shape, sfVector2f origin) {
 }
 
 extern "C" sfVector2f sfShape_getPosition(const sfShape *shape) {
-    sfVector2f position = {0, 0};
-
-    sf::Vector2f sfmlPos = shape->getPosition();
-    position.x = sfmlPos.x;
-    position.y = sfmlPos.y;
-
-    return position;
+    sf::Vector2f vec2 = shape->getPosition();
+    return {vec2.x, vec2.y};
 }
 
 extern "C" float sfShape_getRotation(const sfShape *shape) {
@@ -70,23 +73,13 @@ extern "C" float sfShape_getRotation(const sfShape *shape) {
 }
 
 extern "C" sfVector2f sfShape_getScale(const sfShape *shape) {
-    sfVector2f scale = {0, 0};
-
-    sf::Vector2f sfmlScale = shape->getScale();
-    scale.x = sfmlScale.x;
-    scale.y = sfmlScale.y;
-
-    return scale;
+    sf::Vector2f vec2 = shape->getScale();
+    return {vec2.x, vec2.y};
 }
 
 extern "C" sfVector2f sfShape_getOrigin(const sfShape *shape) {
-    sfVector2f origin = {0, 0};
-
-    sf::Vector2f sfmlOrigin = shape->getOrigin();
-    origin.x = sfmlOrigin.x;
-    origin.y = sfmlOrigin.y;
-
-    return origin;
+    sf::Vector2f vec2 = shape->getOrigin();
+    return {vec2.x, vec2.y};
 }
 
 extern "C" void sfShape_move(sfShape *shape, sfVector2f offset) {
@@ -110,7 +103,7 @@ extern "C" sf::Transform const *sfShape_getInverseTransform(const sfShape *shape
 }
 
 extern "C" void sfShape_setTexture(sfShape *shape, const sf::Texture *texture, bool resetRect) {
-    shape->setTexture(reinterpret_cast<const sf::Texture *>(texture), resetRect);
+    shape->setTexture(texture, resetRect);
 }
 
 extern "C" void sfShape_setTextureRect(sfShape *shape, sfIntRect rect) {
@@ -130,44 +123,22 @@ extern "C" void sfShape_setOutlineThickness(sfShape *shape, float thickness) {
 }
 
 extern "C" const sf::Texture *sfShape_getTexture(const sfShape *shape) {
-    const sf::Shape *shape_ = reinterpret_cast<const sf::Shape *>(shape);
-    return reinterpret_cast<const sf::Texture *>(shape_->getTexture());
+    return shape->getTexture();
 }
 
 extern "C" sfIntRect sfShape_getTextureRect(const sfShape *shape) {
-    sfIntRect rect = {0, 0, 0, 0};
-
-    sf::IntRect sfmlRect = shape->getTextureRect();
-    rect.left = sfmlRect.left;
-    rect.top = sfmlRect.top;
-    rect.width = sfmlRect.width;
-    rect.height = sfmlRect.height;
-
-    return rect;
+    sf::IntRect rect = shape->getTextureRect();
+    return {rect.left, rect.top, rect.width, rect.height};
 }
 
 extern "C" sfColor sfShape_getFillColor(const sfShape *shape) {
-    sfColor color = {0, 0, 0, 0};
-
-    sf::Color sfmlColor = shape->getFillColor();
-    color.r = sfmlColor.r;
-    color.g = sfmlColor.g;
-    color.b = sfmlColor.b;
-    color.a = sfmlColor.a;
-
-    return color;
+    sf::Color color = shape->getFillColor();
+    return {color.r, color.g, color.b, color.a};
 }
 
 extern "C" sfColor sfShape_getOutlineColor(const sfShape *shape) {
-    sfColor color = {0, 0, 0, 0};
-
-    sf::Color sfmlColor = shape->getOutlineColor();
-    color.r = sfmlColor.r;
-    color.g = sfmlColor.g;
-    color.b = sfmlColor.b;
-    color.a = sfmlColor.a;
-
-    return color;
+    sf::Color color = shape->getOutlineColor();
+    return {color.r, color.g, color.b, color.a};
 }
 
 extern "C" float sfShape_getOutlineThickness(const sfShape *shape) {
@@ -179,37 +150,18 @@ extern "C" size_t sfShape_getPointCount(const sfShape *shape) {
 }
 
 extern "C" sfVector2f sfShape_getPoint(const sfShape *shape, size_t index) {
-    sfVector2f point = {0, 0};
-
-    sf::Vector2f sfmlPoint = shape->getPoint(index);
-    point.x = sfmlPoint.x;
-    point.y = sfmlPoint.y;
-
-    return point;
+    sf::Vector2f vec2 = shape->getPoint(index);
+    return {vec2.x, vec2.y};
 }
 
 extern "C" sfFloatRect sfShape_getLocalBounds(const sfShape *shape) {
-    sfFloatRect rect = {0, 0, 0, 0};
-
-    sf::FloatRect sfmlRect = shape->getLocalBounds();
-    rect.left = sfmlRect.left;
-    rect.top = sfmlRect.top;
-    rect.width = sfmlRect.width;
-    rect.height = sfmlRect.height;
-
-    return rect;
+    sf::FloatRect rect = shape->getLocalBounds();
+    return {rect.left, rect.top, rect.width, rect.height};
 }
 
 extern "C" sfFloatRect sfShape_getGlobalBounds(const sfShape *shape) {
-    sfFloatRect rect = {0, 0, 0, 0};
-
-    sf::FloatRect sfmlRect = shape->getGlobalBounds();
-    rect.left = sfmlRect.left;
-    rect.top = sfmlRect.top;
-    rect.width = sfmlRect.width;
-    rect.height = sfmlRect.height;
-
-    return rect;
+    sf::FloatRect rect = shape->getGlobalBounds();
+    return {rect.left, rect.top, rect.width, rect.height};
 }
 
 extern "C" void sfShape_update(sfShape *shape) {
