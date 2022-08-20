@@ -6,6 +6,8 @@
 - Examples for Vector3
 - Examples for Vector2
 - Examples for Rect
+- Examples for RenderWindow
+
 - Examples for Font
 
 ### Changed
