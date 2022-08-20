@@ -1,6 +1,10 @@
 # Changelog
 
-## [Unreleased]
+## Unreleased
+
+- Nothing yet
+
+## 0.18.0
 
 ### Added
 - Examples for Vector3
