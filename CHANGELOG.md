@@ -7,8 +7,8 @@
 - Examples for Vector2
 - Examples for Rect
 - Examples for RenderWindow
-
 - Examples for Font
+- Info about `SFML_INCLUDE_DIR` and `SFML_LIBS_DIR` environment variables
 
 ### Changed
 - `window::clipboard::get_string()` now returns `String` instead of `&'static SfStr`

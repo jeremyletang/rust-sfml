@@ -8,6 +8,14 @@
 //! - [SFML 2.5](http://www.sfml-dev.org/download.php)
 //! - A C++ compiler for building CSFML
 //!
+//! Environment variables
+//! =============
+//! If you get errors about SFML headers not being found, or linker errors, that probably means
+//! SFML is not installed in a global location.
+//! In that case, you can set two environment variables to help rust-sfml find the required files:
+//! - `SFML_INCLUDE_DIR`. Set this to the `include` folder of your SFML location.
+//! - `SFML_LIBS_DIR`. Set this to the `lib` folder of your SFML location.
+//!
 //! # !! Thread safety warning !!
 //!
 //! rust-sfml strives to be memory-safe, as a Rust library should be, but currently there is no
