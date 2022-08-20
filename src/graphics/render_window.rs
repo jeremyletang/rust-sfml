@@ -476,8 +476,6 @@ impl RenderWindow {
     /// Get the position of a window
     ///
     /// Return the position in pixels
-    ///
-    /// # Usage Example
     #[must_use]
     pub fn position(&self) -> Vector2i {
         unsafe { Vector2i::from_raw(ffi::sfRenderWindow_getPosition(self.render_window.as_ptr())) }
@@ -506,7 +504,7 @@ impl RenderWindow {
     /// window.set_position(Vector2::new(100, 400));
     /// use std::{thread, time::Duration};
     /// // You need to wait for the OS the set the window's position before checking
-    /// thread::sleep(Duration::from_secs(1));
+    /// thread::sleep(Duration::from_millis(250));
     /// assert_eq!(window.position(), Vector2::new(100, 400));
     /// ```
     pub fn set_position(&mut self, position: Vector2i) {
@@ -532,7 +530,7 @@ impl RenderWindow {
     /// window.set_size(Vector2::new(100, 400));
     /// use std::{thread, time::Duration};
     /// // You need to wait for the OS the set the window's size before checking
-    /// thread::sleep(Duration::from_secs(1));
+    /// thread::sleep(Duration::from_millis(250));
     /// assert_eq!(window.size(), Vector2::new(100, 400));
     /// ```
     pub fn set_size<S: Into<Vector2u>>(&mut self, size: S) {
@@ -589,7 +587,7 @@ impl RenderWindow {
     ///     unsafe { window.set_mouse_cursor(arrow_cursor); }
     /// }
     /// // You need to ensure the SFML window closes before the cursor's end of life.
-    /// // Doing it the other way around will cause errouneous errors.
+    /// // Doing it the other way around will cause undefined behavior.
     /// window.close();
     /// drop(cursor);
     /// ```
@@ -637,7 +635,7 @@ impl RenderWindow {
     /// window.request_focus();
     /// use std::{thread, time::Duration};
     /// // You need to wait for the OS the set the window's visibility before checking
-    /// thread::sleep(Duration::from_secs(1));
+    /// thread::sleep(Duration::from_millis(250));
     /// assert_eq!(window.has_focus(), true);
     /// ```
     pub fn request_focus(&self) {
