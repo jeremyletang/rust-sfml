@@ -19,6 +19,14 @@ In that case, you can set two environment variables to help rust-sfml find the r
 - `SFML_INCLUDE_DIR`. Set this to the `include` folder of your SFML location.
 - `SFML_LIBS_DIR`. Set this to the `lib` folder of your SFML location.
 
+To help debugging environment variables, you can try building with `cargo build -vv`.
+If the environment variables are set correctly, you should get warnings like this:
+
+```
+warning: Custom SFML include dir: C:\Users\You\sfml\include
+warning: Adding custom SFML libs search path C:\Users\You\sfml\lib
+```
+
 Documentation
 =====
 The API documentation is available at: https://docs.rs/sfml/
