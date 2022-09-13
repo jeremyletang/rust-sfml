@@ -44,3 +44,8 @@ jobs:
        export SFML_INCLUDE_DIR=$GITHUB_WORKSPACE/sfml_install/usr/local/include
        export SFML_LIBS_DIR=$GITHUB_WORKSPACE/sfml_install/usr/local/lib
        cargo test --features ci-headless --verbose
+       # Also test non-default feature combinations
+       cargo test --no-default-features --features=ci-headless --verbose
+       cargo test --no-default-features --features=ci-headless,audio --verbose
+       cargo test --no-default-features --features=ci-headless,window --verbose
+       cargo test --no-default-features --features=ci-headless,graphics --verbose
