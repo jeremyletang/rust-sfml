@@ -1,7 +1,5 @@
 pub use crate::ffi::*;
 
-use self::window::{sfVideoMode, sfVideoModeVector};
-
 decl_opaque! {
     sfStdString;
     sfStdStringVector;
@@ -107,7 +105,7 @@ impl sfString {
 impl Display for sfString {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let data = self.data();
-        let ustr = U32Str::from_slice(data);
+        let ustr = widestring::U32Str::from_slice(data);
         write!(f, "{}", ustr.to_string_lossy())
     }
 }

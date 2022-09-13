@@ -29,10 +29,8 @@ pub fn sfKeyboard_setVirtualKeyboardVisible(visible: bool);
 pub fn sfMouse_isButtonPressed(button: sfMouseButton) -> bool;
 pub fn sfMouse_getPosition() -> sfVector2i;
 pub fn sfMouse_getPositionRelativeTo(relativeTo: *const sfWindow) -> sfVector2i;
-pub fn sfMouse_getPositionRenderWindow(relativeTo: *const sfRenderWindow) -> sfVector2i;
 pub fn sfMouse_setPosition(position: sfVector2i);
 pub fn sfMouse_setPositionRelativeTo(pos: sfVector2i, relativeTo: *const sfWindow);
-pub fn sfMouse_setPositionRenderWindow(pos: sfVector2i, relativeTo: *const sfRenderWindow);
 // Sensor.cpp
 pub fn sfSensor_isAvailable(sensor: sfSensorType) -> bool;
 pub fn sfSensor_setEnabled(sensor: sfSensorType, enabled: bool);
@@ -41,11 +39,12 @@ pub fn sfSensor_getValue(sensor: sfSensorType) -> sfVector3f;
 pub fn sfTouch_isDown(finger: c_uint) -> bool;
 pub fn sfTouch_getPosition(finger: c_uint) -> sfVector2i;
 pub fn sfTouch_getPositionRelativeTo(finger: c_uint, relativeTo: *const sfWindow) -> sfVector2i;
-pub fn sfTouch_getPositionRenderWindow(finger: c_uint, relativeTo: *const sfRenderWindow) -> sfVector2i;
 // VideoMode.cpp
 pub fn sfVideoMode_getDesktopMode() -> sfVideoMode;
 pub fn sfVideoMode_getFullscreenModes() -> *const sfVideoModeVector;
 pub fn sfVideoMode_isValid(mode: sfVideoMode) -> bool;
+pub fn sfVideoModeVector_getLength(vec: *const sfVideoModeVector) -> usize;
+pub fn sfVideoModeVector_index(vec: *const sfVideoModeVector, index: usize) -> *const sfVideoMode;
 // Window.cpp
 pub fn sfWindow_createUnicode(mode: sfVideoMode, title: *const u32, style: u32, settings: *const sfContextSettings) -> *mut sfWindow;
 pub fn sfWindow_createFromHandle(handle: sfWindowHandle, settings: *const sfContextSettings) -> *mut sfWindow;

@@ -14,9 +14,12 @@ macro_rules! decl_opaque {
     };
 }
 
+#[cfg(feature = "audio")]
 pub(crate) mod audio;
+#[cfg(feature = "graphics")]
 pub(crate) mod graphics;
 pub(crate) mod system;
+#[cfg(any(feature = "window", feature = "graphics"))]
 pub(crate) mod window;
 
 use std::{
@@ -25,8 +28,6 @@ use std::{
     os::raw::{c_char, c_int, c_uint},
     str::Utf8Error,
 };
-
-use widestring::U32Str;
 
 use crate::{
     sf_box::Dispose,

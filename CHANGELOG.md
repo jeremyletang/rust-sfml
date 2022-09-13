@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-- Nothing yet
+- Fix broken feature combinations (audio, graphics, system)
 
 ## 0.18.0
 

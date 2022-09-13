@@ -19,8 +19,6 @@ pub fn sfStdString_destroy(s: *mut sfStdString);
 pub fn sfStdStringVector_destroy(vec: *mut sfStdStringVector);
 pub fn sfStdStringVector_getLength(vec: *const sfStdStringVector) -> usize;
 pub fn sfStdStringVector_index(vec: *const sfStdStringVector, index: usize) -> *const sfStdString;
-pub fn sfVideoModeVector_getLength(vec: *const sfVideoModeVector) -> usize;
-pub fn sfVideoModeVector_index(vec: *const sfVideoModeVector, index: usize) -> *const sfVideoMode;
 // SfString.cpp
 pub fn sfString_getLength(string: *const sfString) -> usize;
 pub fn sfString_getData(string: *const sfString) -> *const u32;

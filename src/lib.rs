@@ -56,14 +56,12 @@ mod ffi;
 pub mod audio;
 #[cfg(feature = "graphics")]
 pub mod graphics;
-#[cfg(any(feature = "window", feature = "audio"))]
 mod sf_box;
 pub mod system;
 #[cfg(feature = "window")]
 pub mod window;
 use std::{error::Error, fmt::Display};
 
-#[cfg(any(feature = "window", feature = "audio"))]
 pub use sf_box::{SfBox, SfResource};
 
 /// Error when failing to load an SFML resource.

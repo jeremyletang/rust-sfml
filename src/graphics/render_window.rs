@@ -541,7 +541,7 @@ impl RenderWindow {
     #[must_use]
     pub fn mouse_position(&self) -> Vector2i {
         unsafe {
-            Vector2i::from_raw(crate::ffi::window::sfMouse_getPositionRenderWindow(
+            Vector2i::from_raw(crate::ffi::graphics::sfMouse_getPositionRenderWindow(
                 self.render_window.as_ptr(),
             ))
         }
@@ -556,7 +556,7 @@ impl RenderWindow {
     /// * `position` - the positon to set
     pub fn set_mouse_position(&mut self, position: Vector2i) {
         unsafe {
-            crate::ffi::window::sfMouse_setPositionRenderWindow(
+            crate::ffi::graphics::sfMouse_setPositionRenderWindow(
                 position.raw(),
                 self.render_window.as_ptr(),
             )
@@ -599,7 +599,7 @@ impl RenderWindow {
     #[must_use]
     pub fn touch_position(&self, finger: u32) -> Vector2i {
         unsafe {
-            Vector2i::from_raw(crate::ffi::window::sfTouch_getPositionRenderWindow(
+            Vector2i::from_raw(crate::ffi::graphics::sfTouch_getPositionRenderWindow(
                 finger,
                 self.render_window.as_ptr(),
             ))

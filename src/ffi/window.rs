@@ -3,10 +3,6 @@ pub use crate::ffi::*;
 #[cfg(feature = "serde")]
 use serde::{Deserialize, Serialize};
 
-use self::system::{sfVideoModeVector_getLength, sfVideoModeVector_index};
-
-use super::graphics::sfRenderWindow;
-
 decl_opaque! {
     sfCursor;
     sfContext;

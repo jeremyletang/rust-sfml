@@ -13,7 +13,7 @@ rust-version = "1.60"
 
 [features]
 default = ["graphics", "audio"]
-window = ["bitflags", "once_cell", "widestring"]
+window = ["bitflags", "once_cell"]
 graphics = ["window"]
 audio = []
 serde = ["dep:serde"]
@@ -34,7 +34,6 @@ optional = true
 
 [dependencies.widestring]
 version = "1.0"
-optional = true
 
 [dependencies.bitflags]
 version = "1.2.1"
@@ -124,5 +123,13 @@ required-features = ["graphics"]
 [[example]]
 name = "opengl"
 required-features = ["graphics"]
+
+[[example]]
+name = "video_modes"
+required-features = ["window"]
+
+[[example]]
+name = "joystick"
+required-features = ["window"]
 
 [workspace]
