@@ -2,7 +2,11 @@
 
 ## Unreleased
 
+### Fixed
 - Fix broken feature combinations (audio, graphics, system)
+
+### Internal improvements
+- Test non-default feature combinations in CI
 
 ## 0.18.0
 
