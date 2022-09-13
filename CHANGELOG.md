@@ -1,6 +1,9 @@
 # Changelog
 
 ## Unreleased
+- Nothing yet
+
+## 0.18.1
 
 ### Fixed
 - Fix broken feature combinations (audio, graphics, system)
