@@ -127,12 +127,9 @@ fn main() {
             println!("cargo:rustc-link-lib=dylib=sfml-graphics");
         }
     }
-    #[cfg(windows)]  // i'll figure out linux later
-    if env::var("SFML_STATIC").is_ok() {
-        // if let Ok(win10_sdk_libs_dir) = env::var("SFML_WIN10_SDK_LIBS_DIR") {
-        //     println!("cargo:warning=Windows 10 SDK libs dir: {}", win10_sdk_libs_dir);
-        //     println!("cargo:rustc-link-search=native={}", win10_sdk_libs_dir);
-        // }
+
+    #[cfg(windows)]
+    if static_linking {
         println!("cargo:rustc-link-lib=dylib=winmm");
         println!("cargo:rustc-link-lib=dylib=user32");
         if feat_window {
@@ -141,6 +138,28 @@ fn main() {
         }
         if feat_graphics {
             println!("cargo:rustc-link-lib=static=freetype");
+        }
+        if feat_audio {
+            println!("cargo:rustc-link-lib=static=openal32");
+            println!("cargo:rustc-link-lib=static=flac");
+            println!("cargo:rustc-link-lib=static=vorbisenc");
+            println!("cargo:rustc-link-lib=static=vorbisfile");
+            println!("cargo:rustc-link-lib=static=vorbis");
+            println!("cargo:rustc-link-lib=static=ogg");
+        }
+    }
+
+    #[cfg(all(unix, target_os = "linux"))]
+    if static_linking {
+        println!("cargo:rustc-link-lib=dylib=udev");
+        if feat_window {
+            println!("cargo:rustc-link-lib=dylib=GL");
+            println!("cargo:rustc-link-lib=dylib=X11");
+            println!("cargo:rustc-link-lib=dylib=Xcursor");
+            println!("cargo:rustc-link-lib=dylib=Xrandr");
+        }
+        if feat_graphics {
+            println!("cargo:rustc-link-lib=dylib=freetype");
         }
         if feat_audio {
             println!("cargo:rustc-link-lib=static=openal32");
