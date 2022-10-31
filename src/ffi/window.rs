@@ -275,17 +275,28 @@ pub(crate) union EventUnion {
 }
 
 #[repr(C)]
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug, Hash)]
+/// Axes supported by SFML joysticks
 pub enum JoystickAxis {
+    /// The X axis.
     X,
+    /// The Y axis.
     Y,
+    /// The Z axis.
     Z,
+    /// The R axis.
     R,
+    /// The U axis.
     U,
+    /// The V axis.
     V,
+    /// The X axis of the point-of-view hat.
     PovX,
+    /// The Y axis of the point-of-view hat.
     PovY,
 }
+
+type sfJoystickAxis = JoystickAxis;
 
 #[repr(C)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
@@ -470,27 +481,6 @@ pub type sfWindowHandle = std::os::raw::c_ulong;
 // Window handle is NSWindow (void*) on Mac OS X - Cocoa
 #[cfg(target_os = "macos")]
 pub type sfWindowHandle = *mut c_void;
-
-#[repr(C)]
-#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug, Hash)]
-pub enum sfJoystickAxis {
-    ///< The X axis
-    sfJoystickX,
-    ///< The Y axis
-    sfJoystickY,
-    ///< The Z axis
-    sfJoystickZ,
-    ///< The R axis
-    sfJoystickR,
-    ///< The U axis
-    sfJoystickU,
-    ///< The V axis
-    sfJoystickV,
-    ///< The X axis of the point-of-view hat
-    sfJoystickPovX,
-    ///< The Y axis of the point-of-view hat
-    sfJoystickPovY,
-}
 
 #[repr(C)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]

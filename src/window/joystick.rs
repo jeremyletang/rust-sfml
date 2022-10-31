@@ -52,6 +52,7 @@
 //!
 
 use crate::{ffi::window as ffi, SfBox};
+pub use ffi::JoystickAxis as Axis;
 
 /// Maximum number of supported joysticks.
 pub const COUNT: u32 = 8;
@@ -59,30 +60,6 @@ pub const COUNT: u32 = 8;
 pub const BUTTON_COUNT: u32 = 32;
 /// Maximum number of supported axes.
 pub const AXIS_COUNT: u32 = 8;
-
-/// Axes supported by SFML joysticks
-#[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy, Hash)]
-#[repr(transparent)]
-pub struct Axis(pub(super) ffi::sfJoystickAxis);
-
-impl Axis {
-    /// The X axis.
-    pub const X: Self = Self(ffi::sfJoystickAxis::sfJoystickX);
-    /// The Y axis.
-    pub const Y: Self = Self(ffi::sfJoystickAxis::sfJoystickY);
-    /// The Z axis.
-    pub const Z: Self = Self(ffi::sfJoystickAxis::sfJoystickZ);
-    /// The R axis.
-    pub const R: Self = Self(ffi::sfJoystickAxis::sfJoystickR);
-    /// The U axis.
-    pub const U: Self = Self(ffi::sfJoystickAxis::sfJoystickU);
-    /// The V axis.
-    pub const V: Self = Self(ffi::sfJoystickAxis::sfJoystickV);
-    /// The X axis of the point-of-view hat.
-    pub const POV_X: Self = Self(ffi::sfJoystickAxis::sfJoystickPovX);
-    /// The Y axis of the point-of-view hat.
-    pub const POV_Y: Self = Self(ffi::sfJoystickAxis::sfJoystickPovY);
-}
 
 /// Check if the joystick is connected
 ///
@@ -117,7 +94,7 @@ pub fn button_count(joystick: u32) -> u32 {
 /// Return true if the joystick supports the axis, false otherwise
 #[must_use]
 pub fn has_axis(joystick: u32, axis: Axis) -> bool {
-    unsafe { ffi::sfJoystick_hasAxis(joystick, axis.0) }
+    unsafe { ffi::sfJoystick_hasAxis(joystick, axis) }
 }
 
 /// Check if the button is pressed on a given joystick.
@@ -145,7 +122,7 @@ pub fn is_button_pressed(joystick: u32, button: u32) -> bool {
 /// Return the current position of the axis, in range [-100 .. 100]
 #[must_use]
 pub fn axis_position(joystick: u32, axis: Axis) -> f32 {
-    unsafe { ffi::sfJoystick_getAxisPosition(joystick, axis.0) }
+    unsafe { ffi::sfJoystick_getAxisPosition(joystick, axis) }
 }
 
 /// Update the states of all joysticks

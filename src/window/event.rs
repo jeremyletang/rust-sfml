@@ -142,7 +142,7 @@ pub enum Event {
         /// Index of the joystick (in range [0 .. joystick::Count - 1])
         joystickid: u32,
         /// Axis on which the joystick moved.
-        axis: ffi::JoystickAxis,
+        axis: crate::window::joystick::Axis,
         /// New position on the axis (in range [-100 .. 100])
         position: f32,
     },
