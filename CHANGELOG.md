@@ -3,6 +3,7 @@
 ## Unreleased
 
 ## 0.19.0
+- Nothing yet
 
 ### Added
 - Basic support for statically linking SFML
