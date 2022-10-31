@@ -1,7 +1,17 @@
 # Changelog
 
 ## Unreleased
-- Nothing yet
+
+### Added
+- Basic support for statically linking SFML
+
+### Fixed
+
+- Wrong doc comment for RenderTexture::new
+- Joystick axis was inacessible in the JoystickMoved event
+
+### Changed
+- `joystick::Axis` is now a proper enum
 
 ## 0.18.1
 
