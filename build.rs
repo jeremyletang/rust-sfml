@@ -21,8 +21,7 @@ fn main() {
     let static_linking = env::var("SFML_STATIC").is_ok();
     if static_linking {
         println!("cargo:warning=Linking SFML statically");
-        build.define("SFML_STATIC", None)
-            .static_crt(true);
+        build.define("SFML_STATIC", None).static_crt(true);
     }
     let feat_audio = env::var("CARGO_FEATURE_AUDIO").is_ok();
     let feat_window = env::var("CARGO_FEATURE_WINDOW").is_ok();
