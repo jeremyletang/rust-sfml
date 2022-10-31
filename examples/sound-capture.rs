@@ -19,7 +19,7 @@ fn main() {
     reader.read_line(&mut line).unwrap();
     let sample_rate: u32 = match line.trim_end().parse() {
         Ok(value) => value,
-        Err(e) => panic!("Error, input is not valid: {}", e),
+        Err(e) => panic!("Error, input is not valid: {e}"),
     };
 
     // Wait for user input...

@@ -31,7 +31,7 @@ fn main() {
     while left > 0 {
         std::thread::sleep(std::time::Duration::from_millis(100));
         left -= 100;
-        print!("You have {} left to record\r", left);
+        print!("You have {left} left to record\r");
         let _ = std::io::stdout().flush();
     }
 }

@@ -17,7 +17,7 @@ impl CustomShapePoints for TriangleShape {
             0 => Vector2f { x: 20., y: 580. },
             1 => Vector2f { x: 400., y: 20. },
             2 => Vector2f { x: 780., y: 580. },
-            p => panic!("Non-existent point: {}", p),
+            p => panic!("Non-existent point: {p}"),
         }
     }
 }

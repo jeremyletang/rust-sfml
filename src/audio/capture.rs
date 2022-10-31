@@ -334,7 +334,7 @@ fn test_devices() {
     println!("Available devices:");
     let devices = available_devices();
     for device in devices.into_iter() {
-        println!("{}", device);
+        println!("{device}");
     }
     let mut recorder = SoundBufferRecorder::new();
     assert_eq!(*recorder.device(), *default);

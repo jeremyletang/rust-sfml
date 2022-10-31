@@ -15,7 +15,7 @@ fn main() {
         .define("CSFML_GRAPHICS_EXPORTS", None)
         .include("CSFML/src/");
     if let Ok(sfml_inc_dir) = env::var("SFML_INCLUDE_DIR") {
-        println!("cargo:warning=Custom SFML include dir: {}", sfml_inc_dir);
+        println!("cargo:warning=Custom SFML include dir: {sfml_inc_dir}");
         build.include(sfml_inc_dir);
     }
     let static_linking = env::var("SFML_STATIC").is_ok();
@@ -96,7 +96,7 @@ fn main() {
             "cargo:warning=Adding custom SFML libs search path {}",
             libs_dir
         );
-        println!("cargo:rustc-link-search=native={}", libs_dir);
+        println!("cargo:rustc-link-search=native={libs_dir}");
     }
     println!("cargo:rustc-link-lib=static=rcsfml");
     if static_linking {

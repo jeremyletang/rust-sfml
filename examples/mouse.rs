@@ -69,10 +69,10 @@ fn main() {
         mp_text.set_string(&format!(
             "x: {}, y: {} (Window)\n\
              x: {}, y: {} (Desktop)\n\
-             [{}] [{}] ('V'/'G') to toggle\n\
+             [{cur_vis_msg}] [{grab_msg}] ('V'/'G') to toggle\n\
              'W' to center mouse on window\n\
              'D' to center mouse on desktop",
-            mp.x, mp.y, dmp.x, dmp.y, cur_vis_msg, grab_msg
+            mp.x, mp.y, dmp.x, dmp.y
         ));
 
         circle.set_position((mp.x as f32, mp.y as f32));

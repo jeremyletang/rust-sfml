@@ -148,7 +148,7 @@ fn main() {
         rs.set_texture(Some(&texture));
         window.draw_primitives(&buf, PrimitiveType::QUADS, &rs);
         rs.set_texture(None);
-        text.set_string(&format!("{} sprites\n{} fps", objects.len(), fps));
+        text.set_string(&format!("{} sprites\n{fps} fps", objects.len()));
         window.draw_text(&text, &rs);
         window.display();
         buf.clear();

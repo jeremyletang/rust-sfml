@@ -124,7 +124,7 @@ impl Display for sfStdString {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let data = self.data();
         let string = String::from_utf8_lossy(data);
-        write!(f, "{}", string)
+        write!(f, "{string}")
     }
 }
 

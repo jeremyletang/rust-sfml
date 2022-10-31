@@ -21,7 +21,7 @@ fn main() {
     if let Some(arg) = env::args().nth(1) {
         match arg.parse::<u32>() {
             Ok(arg_as_num) => aa_level = arg_as_num,
-            Err(e) => println!("Didn't set AA level: {}", e),
+            Err(e) => println!("Didn't set AA level: {e}"),
         }
     }
 
