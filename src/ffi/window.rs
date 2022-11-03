@@ -4,7 +4,6 @@ pub use crate::ffi::*;
 use serde::{Deserialize, Serialize};
 
 decl_opaque! {
-    sfCursor;
     sfContext;
     sfWindow;
     JoystickIdentification;
@@ -12,6 +11,7 @@ decl_opaque! {
 }
 
 type sfJoystickIdentification = JoystickIdentification;
+pub type sfCursor = crate::window::Cursor;
 
 /// Enumeration of the native system cursor types.
 ///

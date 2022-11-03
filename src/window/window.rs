@@ -405,7 +405,7 @@ impl Window {
     ///
     /// The cursor can not be destroyed while in use by the window.
     pub unsafe fn set_mouse_cursor(&mut self, cursor: &Cursor) {
-        ffi::sfWindow_setMouseCursor(self.window.as_ptr(), cursor.raw())
+        ffi::sfWindow_setMouseCursor(self.window.as_ptr(), cursor)
     }
 
     /// Returns the current position of a touch in window coordinates.

@@ -590,7 +590,7 @@ impl RenderWindow {
     /// drop(cursor);
     /// ```
     pub unsafe fn set_mouse_cursor(&mut self, cursor: &Cursor) {
-        ffi::sfRenderWindow_setMouseCursor(self.render_window.as_ptr(), cursor.raw())
+        ffi::sfRenderWindow_setMouseCursor(self.render_window.as_ptr(), cursor)
     }
 
     /// Returns the current position of a touch in window coordinates.

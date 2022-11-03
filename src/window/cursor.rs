@@ -24,8 +24,7 @@ Cursor;
 
 impl Dispose for Cursor {
     unsafe fn dispose(&mut self) {
-        let ptr: *mut Self = self;
-        ffi::sfCursor_destroy(ptr as *mut ffi::sfCursor);
+        ffi::sfCursor_destroy(self);
     }
 }
 
@@ -73,7 +72,7 @@ impl Cursor {
         hotspot: Vector2u,
     ) -> Option<SfBox<Self>> {
         let cursor = ffi::sfCursor_createFromPixels(pixels.as_ptr(), size, hotspot);
-        SfBox::new(cursor as *mut Cursor)
+        SfBox::new(cursor)
     }
 
     /// Create a native system cursor.
@@ -92,12 +91,8 @@ impl Cursor {
     pub fn from_system(type_: Type) -> Option<SfBox<Self>> {
         unsafe {
             let cursor = ffi::sfCursor_createFromSystem(type_);
-            SfBox::new(cursor as *mut Cursor)
+            SfBox::new(cursor)
         }
-    }
-    pub(crate) fn raw(&self) -> *const ffi::sfCursor {
-        let ptr: *const Self = self;
-        ptr as *const ffi::sfCursor
     }
 }
 pub use ffi::sfCursorType as Type;
