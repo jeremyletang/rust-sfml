@@ -9,7 +9,6 @@ use super::{system::sfInputStream, window::sfVideoMode};
 decl_opaque! {
     sfCircleShape;
     sfConvexShape;
-    sfFont;
     sfImage;
     sfShader;
     sfRectangleShape;
@@ -24,6 +23,7 @@ decl_opaque! {
 
 pub type sfTexture = crate::graphics::Texture;
 pub type sfView = crate::graphics::View;
+pub type sfFont = crate::graphics::Font;
 
 /// Enumeration of the blending factors.
 ///

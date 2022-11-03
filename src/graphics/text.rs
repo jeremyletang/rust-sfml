@@ -82,7 +82,7 @@ impl<'s> Text<'s> {
     ///
     /// font - New font
     pub fn set_font(&mut self, font: &'s Font) {
-        unsafe { ffi::sfText_setFont(self.text.as_ptr(), font.raw()) }
+        unsafe { ffi::sfText_setFont(self.text.as_ptr(), font) }
     }
 
     /// Set the style of a text
@@ -121,15 +121,7 @@ impl<'s> Text<'s> {
     /// modify the font when you retrieve it with this function.
     #[must_use]
     pub fn font(&self) -> Option<&'s Font> {
-        unsafe {
-            let raw = ffi::sfText_getFont(self.text.as_ptr());
-
-            if raw.is_null() {
-                None
-            } else {
-                Some(&*(raw as *const Font))
-            }
-        }
+        unsafe { ffi::sfText_getFont(self.text.as_ptr()).as_ref() }
     }
 
     /// Set the fill color of the text.

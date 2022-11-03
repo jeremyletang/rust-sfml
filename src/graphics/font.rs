@@ -75,7 +75,7 @@ impl Font {
     /// ```
     #[must_use]
     pub fn kerning(&self, first: u32, second: u32, character_size: u32) -> f32 {
-        unsafe { ffi::sfFont_getKerning(self.raw(), first, second, character_size) }
+        unsafe { ffi::sfFont_getKerning(self, first, second, character_size) }
     }
 
     /// Get the line spacing value
@@ -95,7 +95,7 @@ impl Font {
     /// ```
     #[must_use]
     pub fn line_spacing(&self, character_size: u32) -> f32 {
-        unsafe { ffi::sfFont_getLineSpacing(self.raw(), character_size) }
+        unsafe { ffi::sfFont_getLineSpacing(self, character_size) }
     }
 
     /// Get a glyph in a font
@@ -126,7 +126,7 @@ impl Font {
     ) -> Glyph {
         unsafe {
             Glyph(ffi::sfFont_getGlyph(
-                self.raw(),
+                self,
                 codepoint,
                 character_size,
                 bold,
@@ -147,7 +147,7 @@ impl Font {
     #[must_use]
     pub fn info(&self) -> Info {
         unsafe {
-            let raw = ffi::sfFont_getInfo(self.raw());
+            let raw = ffi::sfFont_getInfo(self);
             let family = CStr::from_ptr(raw.family).to_string_lossy().into_owned();
 
             Info { family }
@@ -165,7 +165,7 @@ impl Font {
     /// ```
     #[must_use]
     pub fn underline_position(&self, character_size: u32) -> f32 {
-        unsafe { ffi::sfFont_getUnderlinePosition(self.raw(), character_size) }
+        unsafe { ffi::sfFont_getUnderlinePosition(self, character_size) }
     }
     /// Returns the thickness of the underline.
     ///
@@ -179,7 +179,7 @@ impl Font {
     /// ```
     #[must_use]
     pub fn underline_thickness(&self, character_size: u32) -> f32 {
-        unsafe { ffi::sfFont_getUnderlineThickness(self.raw(), character_size) }
+        unsafe { ffi::sfFont_getUnderlineThickness(self, character_size) }
     }
     /// Load the font from a file.
     ///
@@ -208,7 +208,7 @@ impl Font {
     pub fn from_file(filename: &str) -> Option<SfBox<Self>> {
         let c_str = CString::new(filename).unwrap();
         let fnt = unsafe { ffi::sfFont_createFromFile(c_str.as_ptr()) };
-        SfBox::new(fnt as *mut Self)
+        SfBox::new(fnt)
     }
 
     /// Load the font from a custom stream.
@@ -228,7 +228,7 @@ impl Font {
     pub unsafe fn from_stream<T: Read + Seek>(stream: &mut T) -> Option<SfBox<Self>> {
         let mut input_stream = InputStream::new(stream);
         let fnt = ffi::sfFont_createFromStream(&mut *input_stream.stream);
-        SfBox::new(fnt as *mut Self)
+        SfBox::new(fnt)
     }
 
     /// Load the font from a file in memory.
@@ -248,7 +248,7 @@ impl Font {
     #[must_use]
     pub unsafe fn from_memory(memory: &[u8]) -> Option<SfBox<Self>> {
         let fnt = ffi::sfFont_createFromMemory(memory.as_ptr() as *const _, memory.len());
-        SfBox::new(fnt as *mut Self)
+        SfBox::new(fnt)
     }
 
     /// Get the texture containing the glyphs of a given size in a font
@@ -268,29 +268,24 @@ impl Font {
     #[must_use]
     pub fn texture(&self, character_size: u32) -> &Texture {
         unsafe {
-            ffi::sfFont_getTexture(self.raw(), character_size)
+            ffi::sfFont_getTexture(self, character_size)
                 .as_ref()
                 .expect("sfFont_getTexture failed")
         }
-    }
-    pub(super) fn raw(&self) -> *const ffi::sfFont {
-        let ptr: *const Self = self;
-        ptr as _
     }
 }
 
 impl ToOwned for Font {
     type Owned = SfBox<Font>;
     fn to_owned(&self) -> Self::Owned {
-        let fnt = unsafe { ffi::sfFont_copy(self.raw()) };
-        SfBox::new(fnt as *mut Self).expect("Failed to copy Font")
+        let fnt = unsafe { ffi::sfFont_copy(self) };
+        SfBox::new(fnt).expect("Failed to copy Font")
     }
 }
 
 impl Dispose for Font {
     unsafe fn dispose(&mut self) {
-        let ptr: *mut Self = self;
-        ffi::sfFont_destroy(ptr as _)
+        ffi::sfFont_destroy(self)
     }
 }
 
