@@ -521,7 +521,7 @@ impl<'texture> Shader<'texture> {
         unsafe {
             let cstring = CString::new(name).unwrap();
             let name = cstring.as_ptr();
-            ffi::sfShader_setTextureUniform(self.shader.as_ptr(), name, value.raw());
+            ffi::sfShader_setTextureUniform(self.shader.as_ptr(), name, value);
         }
     }
 

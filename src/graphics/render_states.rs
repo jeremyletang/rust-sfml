@@ -86,7 +86,7 @@ impl<'texture, 'shader, 'shader_texture> RenderStates<'texture, 'shader, 'shader
             blend_mode,
             transform,
             texture: match texture {
-                Some(tex) => tex.raw(),
+                Some(tex) => tex,
                 None => ptr::null(),
             },
             shader: match shader {
@@ -101,7 +101,7 @@ impl<'texture, 'shader, 'shader_texture> RenderStates<'texture, 'shader, 'shader
     pub fn set_texture(&mut self, texture: Option<&'texture Texture>) {
         self.texture = match texture {
             None => ptr::null(),
-            Some(tex) => tex.raw(),
+            Some(tex) => tex,
         };
     }
     /// Sets the shader

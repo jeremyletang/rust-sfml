@@ -267,9 +267,11 @@ impl Font {
     /// ```
     #[must_use]
     pub fn texture(&self, character_size: u32) -> &Texture {
-        let tex = unsafe { ffi::sfFont_getTexture(self.raw(), character_size) };
-        assert!(!tex.is_null(), "sfFont_getTexture failed");
-        unsafe { &*(tex as *const Texture) }
+        unsafe {
+            ffi::sfFont_getTexture(self.raw(), character_size)
+                .as_ref()
+                .expect("sfFont_getTexture failed")
+        }
     }
     pub(super) fn raw(&self) -> *const ffi::sfFont {
         let ptr: *const Self = self;

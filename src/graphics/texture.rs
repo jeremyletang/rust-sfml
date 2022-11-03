@@ -59,28 +59,28 @@ impl Texture {
     /// Return the Size in pixels
     #[must_use]
     pub fn size(&self) -> Vector2u {
-        unsafe { ffi::sfTexture_getSize(self.raw()) }
+        unsafe { ffi::sfTexture_getSize(self) }
     }
     /// Tell whether the smooth filter is enabled or not for a texture
     ///
     /// Return true if smoothing is enabled, false if it is disabled
     #[must_use]
     pub fn is_smooth(&self) -> bool {
-        unsafe { ffi::sfTexture_isSmooth(self.raw()) }
+        unsafe { ffi::sfTexture_isSmooth(self) }
     }
     /// Tell whether a texture is repeated or not
     ///
     /// Return frue if repeat mode is enabled, false if it is disabled
     #[must_use]
     pub fn is_repeated(&self) -> bool {
-        unsafe { ffi::sfTexture_isRepeated(self.raw()) }
+        unsafe { ffi::sfTexture_isRepeated(self) }
     }
     /// Copy a texture's pixels to an image
     ///
     /// Return an image containing the texture's pixels
     #[must_use]
     pub fn copy_to_image(&self) -> Option<Image> {
-        let img = unsafe { ffi::sfTexture_copyToImage(self.raw()) };
+        let img = unsafe { ffi::sfTexture_copyToImage(self) };
         if img.is_null() {
             None
         } else {
@@ -90,7 +90,7 @@ impl Texture {
     /// Tell whether the texture source is converted from sRGB or not.
     #[must_use]
     pub fn is_srgb(&self) -> bool {
-        unsafe { ffi::sfTexture_isSrgb(self.raw()) }
+        unsafe { ffi::sfTexture_isSrgb(self) }
     }
     /// Get the underlying OpenGL handle of the texture.
     ///
@@ -98,7 +98,7 @@ impl Texture {
     /// that SFML doesn't support, or implement a temporary workaround until a bug is fixed.
     #[must_use]
     pub fn native_handle(&self) -> u32 {
-        unsafe { ffi::sfTexture_getNativeHandle(self.raw()) }
+        unsafe { ffi::sfTexture_getNativeHandle(self) }
     }
 
     /// Bind a texture for rendering
@@ -107,23 +107,15 @@ impl Texture {
     /// used when drawing SFML entities. It must be used only if you
     /// mix `Texture` with OpenGL code.
     pub fn bind(&self) {
-        unsafe { ffi::sfTexture_bind(self.raw()) }
+        unsafe { ffi::sfTexture_bind(self) }
     }
-    pub(super) fn raw(&self) -> *const ffi::sfTexture {
-        let ptr: *const Self = self;
-        ptr as _
-    }
-    fn raw_mut(&mut self) -> *mut ffi::sfTexture {
-        let ptr: *mut Self = self;
-        ptr as _
-    }
+
     /// Create a new texture
     ///
     /// Returns `None` on failure.
     #[must_use]
     pub fn new() -> Option<SfBox<Texture>> {
-        let tex = unsafe { ffi::sfTexture_new() };
-        SfBox::new(tex as *mut Self)
+        SfBox::new(unsafe { ffi::sfTexture_new() })
     }
 
     /// Create the texture.
@@ -133,7 +125,7 @@ impl Texture {
     /// Returns whether creation was successful.
     #[must_use = "Check if texture was created successfully"]
     pub fn create(&mut self, width: u32, height: u32) -> bool {
-        unsafe { sfTexture_create(self.raw_mut(), width, height) }
+        unsafe { sfTexture_create(self, width, height) }
     }
 
     /// Load texture from memory
@@ -148,7 +140,7 @@ impl Texture {
     /// * area - Area of the image to load
     pub fn load_from_memory(&mut self, mem: &[u8], area: IntRect) -> LoadResult<()> {
         unsafe {
-            ffi::sfTexture_loadFromMemory(self.raw_mut(), mem.as_ptr() as *const _, mem.len(), area)
+            ffi::sfTexture_loadFromMemory(self, mem.as_ptr() as *const _, mem.len(), area)
                 .into_load_result()
         }
     }
@@ -170,8 +162,7 @@ impl Texture {
     ) -> LoadResult<()> {
         let mut input_stream = InputStream::new(stream);
         unsafe {
-            ffi::sfTexture_loadFromStream(self.raw_mut(), &mut *input_stream.stream, area)
-                .into_load_result()
+            ffi::sfTexture_loadFromStream(self, &mut *input_stream.stream, area).into_load_result()
         }
     }
 
@@ -181,9 +172,7 @@ impl Texture {
     /// * filename - Path of the image file to load
     pub fn load_from_file(&mut self, filename: &str, area: IntRect) -> LoadResult<()> {
         let c_str = CString::new(filename).unwrap();
-        unsafe {
-            ffi::sfTexture_loadFromFile(self.raw_mut(), c_str.as_ptr(), area).into_load_result()
-        }
+        unsafe { ffi::sfTexture_loadFromFile(self, c_str.as_ptr(), area).into_load_result() }
     }
 
     /// Convenience method to easily create and load a `Texture` from a file.
@@ -198,9 +187,7 @@ impl Texture {
     /// # Arguments
     /// * image - Image to upload to the texture
     pub fn load_from_image(&mut self, image: &Image, area: IntRect) -> LoadResult<()> {
-        unsafe {
-            ffi::sfTexture_loadFromImage(self.raw_mut(), image.raw(), area).into_load_result()
-        }
+        unsafe { ffi::sfTexture_loadFromImage(self, image.raw(), area).into_load_result() }
     }
 
     /// Update a part of the texture from the contents of a window.
@@ -211,7 +198,7 @@ impl Texture {
     /// No additional check is performed on the size of the window, passing an invalid combination
     /// of window size and offset will lead to an _undefined behavior_.
     pub unsafe fn update_from_window(&mut self, window: &Window, x: u32, y: u32) {
-        ffi::sfTexture_updateFromWindow(self.raw_mut(), window.raw(), x, y)
+        ffi::sfTexture_updateFromWindow(self, window.raw(), x, y)
     }
 
     /// Update a part of the texture from the contents of a render window.
@@ -227,7 +214,7 @@ impl Texture {
         x: u32,
         y: u32,
     ) {
-        ffi::sfTexture_updateFromRenderWindow(self.raw_mut(), render_window.raw(), x, y)
+        ffi::sfTexture_updateFromRenderWindow(self, render_window.raw(), x, y)
     }
 
     /// Update a part of the texture from an image.
@@ -238,7 +225,7 @@ impl Texture {
     /// No additional check is performed on the size of the image, passing an invalid combination
     /// of image size and offset will lead to an _undefined behavior_.
     pub unsafe fn update_from_image(&mut self, image: &Image, x: u32, y: u32) {
-        ffi::sfTexture_updateFromImage(self.raw_mut(), image.raw(), x, y)
+        ffi::sfTexture_updateFromImage(self, image.raw(), x, y)
     }
 
     /// Update a part of this texture from another texture.
@@ -250,7 +237,7 @@ impl Texture {
     /// passing an invalid combination of texture size and offset will
     /// lead to an _undefined behavior_.
     pub unsafe fn update_from_texture(&mut self, texture: &Texture, x: u32, y: u32) {
-        ffi::sfTexture_updateFromTexture(self.raw_mut(), texture.raw(), x, y)
+        ffi::sfTexture_updateFromTexture(self, texture, x, y)
     }
 
     /// Update a part of the texture from an array of pixels.
@@ -272,7 +259,7 @@ impl Texture {
         x: u32,
         y: u32,
     ) {
-        ffi::sfTexture_updateFromPixels(self.raw_mut(), pixels.as_ptr(), width, height, x, y)
+        ffi::sfTexture_updateFromPixels(self, pixels.as_ptr(), width, height, x, y)
     }
 
     /// Enable or disable the smooth filter on a texture
@@ -280,7 +267,7 @@ impl Texture {
     /// # Arguments
     /// * smooth - true to enable smoothing, false to disable it
     pub fn set_smooth(&mut self, smooth: bool) {
-        unsafe { ffi::sfTexture_setSmooth(self.raw_mut(), smooth) }
+        unsafe { ffi::sfTexture_setSmooth(self, smooth) }
     }
 
     /// Enable or disable repeating for a texture
@@ -302,7 +289,7 @@ impl Texture {
     /// # Arguments
     /// * repeated  - true to repeat the texture, false to disable repeating
     pub fn set_repeated(&mut self, repeated: bool) {
-        unsafe { ffi::sfTexture_setRepeated(self.raw_mut(), repeated) }
+        unsafe { ffi::sfTexture_setRepeated(self, repeated) }
     }
 
     /// Get the maximum texture size allowed
@@ -328,7 +315,7 @@ impl Texture {
     /// This option is only useful in conjunction with an sRGB capable framebuffer.
     /// This can be requested during window creation.
     pub fn set_srgb(&mut self, srgb: bool) {
-        unsafe { ffi::sfTexture_setSrgb(self.raw_mut(), srgb) }
+        unsafe { ffi::sfTexture_setSrgb(self, srgb) }
     }
 
     /// Generate a mipmap using the current texture data.
@@ -349,11 +336,11 @@ impl Texture {
     ///
     /// Returns true if mipmap generation was successful, false if unsuccessful.
     pub fn generate_mipmap(&mut self) -> bool {
-        unsafe { ffi::sfTexture_generateMipmap(self.raw_mut()) }
+        unsafe { ffi::sfTexture_generateMipmap(self) }
     }
     /// Swap the contents of this texture with those of another.
     pub fn swap(&mut self, other: &mut Texture) {
-        unsafe { ffi::sfTexture_swap(self.raw_mut(), other.raw_mut()) }
+        unsafe { ffi::sfTexture_swap(self, other) }
     }
 }
 
@@ -361,14 +348,12 @@ impl ToOwned for Texture {
     type Owned = SfBox<Texture>;
 
     fn to_owned(&self) -> Self::Owned {
-        let tex = unsafe { ffi::sfTexture_copy(self.raw()) };
-        SfBox::new(tex as *mut Self).expect("Failed to copy texture")
+        SfBox::new(unsafe { ffi::sfTexture_copy(self) }).expect("Failed to copy texture")
     }
 }
 
 impl Dispose for Texture {
     unsafe fn dispose(&mut self) {
-        let ptr: *mut Self = self;
-        ffi::sfTexture_destroy(ptr as _)
+        ffi::sfTexture_destroy(self)
     }
 }

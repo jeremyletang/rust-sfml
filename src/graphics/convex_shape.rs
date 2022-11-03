@@ -153,7 +153,7 @@ impl<'s> Transformable for ConvexShape<'s> {
 
 impl<'s> Shape<'s> for ConvexShape<'s> {
     fn set_texture(&mut self, texture: &'s Texture, reset_rect: bool) {
-        unsafe { ffi::sfConvexShape_setTexture(self.convex_shape, texture.raw(), reset_rect) }
+        unsafe { ffi::sfConvexShape_setTexture(self.convex_shape, texture, reset_rect) }
     }
     fn disable_texture(&mut self) {
         unsafe { ffi::sfConvexShape_setTexture(self.convex_shape, ptr::null_mut(), true) }
@@ -171,15 +171,7 @@ impl<'s> Shape<'s> for ConvexShape<'s> {
         unsafe { ffi::sfConvexShape_setOutlineThickness(self.convex_shape, thickness) }
     }
     fn texture(&self) -> Option<&'s Texture> {
-        unsafe {
-            let raw = ffi::sfConvexShape_getTexture(self.convex_shape);
-
-            if raw.is_null() {
-                None
-            } else {
-                Some(&*(raw as *const Texture))
-            }
-        }
+        unsafe { ffi::sfConvexShape_getTexture(self.convex_shape).as_ref() }
     }
     fn texture_rect(&self) -> IntRect {
         unsafe { ffi::sfConvexShape_getTextureRect(self.convex_shape) }

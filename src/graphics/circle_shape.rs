@@ -137,9 +137,7 @@ impl<'s> Transformable for CircleShape<'s> {
 
 impl<'s> Shape<'s> for CircleShape<'s> {
     fn set_texture(&mut self, texture: &'s Texture, reset_rect: bool) {
-        unsafe {
-            ffi::sfCircleShape_setTexture(self.circle_shape.as_ptr(), texture.raw(), reset_rect)
-        }
+        unsafe { ffi::sfCircleShape_setTexture(self.circle_shape.as_ptr(), texture, reset_rect) }
     }
     fn disable_texture(&mut self) {
         unsafe { ffi::sfCircleShape_setTexture(self.circle_shape.as_ptr(), ptr::null_mut(), true) }
@@ -159,12 +157,7 @@ impl<'s> Shape<'s> for CircleShape<'s> {
     fn texture(&self) -> Option<&'s Texture> {
         unsafe {
             let raw = ffi::sfCircleShape_getTexture(self.circle_shape.as_ptr());
-
-            if raw.is_null() {
-                None
-            } else {
-                Some(&*(raw as *const Texture))
-            }
+            raw.as_ref()
         }
     }
     fn texture_rect(&self) -> IntRect {

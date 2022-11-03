@@ -18,11 +18,12 @@ decl_opaque! {
     sfShape;
     sfSprite;
     sfText;
-    sfTexture;
     sfTransformable;
     sfVertexBuffer;
     sfView;
 }
+
+pub type sfTexture = crate::graphics::Texture;
 
 /// Enumeration of the blending factors.
 ///

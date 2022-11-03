@@ -132,7 +132,7 @@ impl<'s> Transformable for RectangleShape<'s> {
 
 impl<'s> Shape<'s> for RectangleShape<'s> {
     fn set_texture(&mut self, texture: &'s Texture, reset_rect: bool) {
-        unsafe { ffi::sfRectangleShape_setTexture(self.rectangle_shape, texture.raw(), reset_rect) }
+        unsafe { ffi::sfRectangleShape_setTexture(self.rectangle_shape, texture, reset_rect) }
     }
     fn disable_texture(&mut self) {
         unsafe { ffi::sfRectangleShape_setTexture(self.rectangle_shape, ptr::null_mut(), true) }
@@ -150,15 +150,7 @@ impl<'s> Shape<'s> for RectangleShape<'s> {
         unsafe { ffi::sfRectangleShape_setOutlineThickness(self.rectangle_shape, thickness) }
     }
     fn texture(&self) -> Option<&'s Texture> {
-        unsafe {
-            let raw = ffi::sfRectangleShape_getTexture(self.rectangle_shape);
-
-            if raw.is_null() {
-                None
-            } else {
-                Some(&*(raw as *const Texture))
-            }
-        }
+        unsafe { ffi::sfRectangleShape_getTexture(self.rectangle_shape).as_ref() }
     }
     fn texture_rect(&self) -> IntRect {
         unsafe { ffi::sfRectangleShape_getTextureRect(self.rectangle_shape) }

@@ -73,7 +73,7 @@ impl<'s> Sprite<'s> {
     /// * `reset_rect` - Should the texture rect be reset to the size
     /// of the new texture?
     pub fn set_texture(&mut self, texture: &'s Texture, reset_rect: bool) {
-        unsafe { ffi::sfSprite_setTexture(self.sprite.as_ptr(), texture.raw(), reset_rect) }
+        unsafe { ffi::sfSprite_setTexture(self.sprite.as_ptr(), texture, reset_rect) }
     }
 
     /// Disable Texturing
@@ -105,14 +105,7 @@ impl<'s> Sprite<'s> {
     /// Return an Option to the sprite's texture
     #[must_use]
     pub fn texture(&self) -> Option<&'s Texture> {
-        unsafe {
-            let ptr = ffi::sfSprite_getTexture(self.sprite.as_ptr());
-            if ptr.is_null() {
-                None
-            } else {
-                Some(&*(ptr as *const Texture))
-            }
-        }
+        unsafe { ffi::sfSprite_getTexture(self.sprite.as_ptr()).as_ref() }
     }
 
     /// Get the global color of a sprite

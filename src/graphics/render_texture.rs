@@ -70,9 +70,11 @@ impl RenderTexture {
     /// Return the target texture
     #[must_use]
     pub fn texture(&self) -> &Texture {
-        let tex = unsafe { ffi::sfRenderTexture_getTexture(self.render_texture) };
-        assert!(!tex.is_null(), "sfRenderTexture_getTexture failed");
-        unsafe { &*(tex as *const Texture) }
+        unsafe {
+            ffi::sfRenderTexture_getTexture(self.render_texture)
+                .as_ref()
+                .expect("sfRenderTexture_getTexture failed")
+        }
     }
 
     /// Enable or disable the smooth filter on a render texture

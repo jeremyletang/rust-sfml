@@ -100,7 +100,7 @@ impl<'s> CustomShape<'s> {
 
 impl<'s> Shape<'s> for CustomShape<'s> {
     fn set_texture(&mut self, texture: &'s Texture, reset_rect: bool) {
-        unsafe { ffi::sfShape_setTexture(self.shape, texture.raw(), reset_rect) }
+        unsafe { ffi::sfShape_setTexture(self.shape, texture, reset_rect) }
     }
     fn disable_texture(&mut self) {
         unsafe { ffi::sfShape_setTexture(self.shape, ptr::null_mut(), true) }
@@ -118,15 +118,7 @@ impl<'s> Shape<'s> for CustomShape<'s> {
         unsafe { ffi::sfShape_setOutlineThickness(self.shape, thickness) }
     }
     fn texture(&self) -> Option<&'s Texture> {
-        unsafe {
-            let raw = ffi::sfShape_getTexture(self.shape);
-
-            if raw.is_null() {
-                None
-            } else {
-                Some(&*(raw as *const Texture))
-            }
-        }
+        unsafe { ffi::sfShape_getTexture(self.shape).as_ref() }
     }
     fn texture_rect(&self) -> IntRect {
         unsafe { ffi::sfShape_getTextureRect(self.shape) }
