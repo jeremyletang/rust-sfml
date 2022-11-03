@@ -25,11 +25,11 @@ impl Glyph {
     /// Bounding rectangle of the glyph, in coordinates relative to the baseline.
     #[must_use]
     pub fn bounds(&self) -> FloatRect {
-        FloatRect::from_raw(self.0.bounds)
+        self.0.bounds
     }
     /// Texture coordinates of the glyph inside the font's texture.
     #[must_use]
     pub fn texture_rect(&self) -> IntRect {
-        IntRect::from_raw(self.0.texture_rect)
+        self.0.texture_rect
     }
 }

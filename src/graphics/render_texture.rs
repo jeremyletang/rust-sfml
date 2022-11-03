@@ -140,12 +140,7 @@ impl RenderTarget for RenderTexture {
         unsafe { &*(ffi::sfRenderTexture_getDefaultView(self.render_texture) as *const View) }
     }
     fn viewport(&self, view: &View) -> IntRect {
-        unsafe {
-            IntRect::from_raw(ffi::sfRenderTexture_getViewport(
-                self.render_texture,
-                view.raw(),
-            ))
-        }
+        unsafe { ffi::sfRenderTexture_getViewport(self.render_texture, view.raw()) }
     }
     fn map_pixel_to_coords(&self, point: Vector2i, view: &View) -> Vector2f {
         unsafe {

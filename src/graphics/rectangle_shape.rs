@@ -137,8 +137,8 @@ impl<'s> Shape<'s> for RectangleShape<'s> {
     fn disable_texture(&mut self) {
         unsafe { ffi::sfRectangleShape_setTexture(self.rectangle_shape, ptr::null_mut(), true) }
     }
-    fn set_texture_rect(&mut self, rect: &IntRect) {
-        unsafe { ffi::sfRectangleShape_setTextureRect(self.rectangle_shape, rect.raw()) }
+    fn set_texture_rect(&mut self, rect: IntRect) {
+        unsafe { ffi::sfRectangleShape_setTextureRect(self.rectangle_shape, rect) }
     }
     fn set_fill_color(&mut self, color: Color) {
         unsafe { ffi::sfRectangleShape_setFillColor(self.rectangle_shape, color) }
@@ -161,7 +161,7 @@ impl<'s> Shape<'s> for RectangleShape<'s> {
         }
     }
     fn texture_rect(&self) -> IntRect {
-        unsafe { IntRect::from_raw(ffi::sfRectangleShape_getTextureRect(self.rectangle_shape)) }
+        unsafe { ffi::sfRectangleShape_getTextureRect(self.rectangle_shape) }
     }
     fn fill_color(&self) -> Color {
         unsafe { ffi::sfRectangleShape_getFillColor(self.rectangle_shape) }
@@ -188,10 +188,10 @@ impl<'s> Shape<'s> for RectangleShape<'s> {
         }
     }
     fn local_bounds(&self) -> FloatRect {
-        unsafe { FloatRect::from_raw(ffi::sfRectangleShape_getLocalBounds(self.rectangle_shape)) }
+        unsafe { ffi::sfRectangleShape_getLocalBounds(self.rectangle_shape) }
     }
     fn global_bounds(&self) -> FloatRect {
-        unsafe { FloatRect::from_raw(ffi::sfRectangleShape_getGlobalBounds(self.rectangle_shape)) }
+        unsafe { ffi::sfRectangleShape_getGlobalBounds(self.rectangle_shape) }
     }
 }
 

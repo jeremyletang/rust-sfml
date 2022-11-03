@@ -1,7 +1,12 @@
 # Changelog
 
 ## Unreleased
-- Nothing yet
+
+### Changed
+- Methods that used to take `&Rect` now take `Rect` by value
+
+### Internal improvements
+- Remove needless raw conversion methods for Rect
 
 ## 0.19.0
 

@@ -92,7 +92,7 @@ fn main() {
                     ..
                 } => click_counter += 1,
                 Event::Resized { width, height } => {
-                    window.set_view(&View::from_rect(&Rect::new(
+                    window.set_view(&View::from_rect(Rect::new(
                         0.,
                         0.,
                         width as f32,

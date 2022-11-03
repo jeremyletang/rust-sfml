@@ -144,8 +144,8 @@ impl<'s> Shape<'s> for CircleShape<'s> {
     fn disable_texture(&mut self) {
         unsafe { ffi::sfCircleShape_setTexture(self.circle_shape.as_ptr(), ptr::null_mut(), true) }
     }
-    fn set_texture_rect(&mut self, rect: &IntRect) {
-        unsafe { ffi::sfCircleShape_setTextureRect(self.circle_shape.as_ptr(), rect.raw()) }
+    fn set_texture_rect(&mut self, rect: IntRect) {
+        unsafe { ffi::sfCircleShape_setTextureRect(self.circle_shape.as_ptr(), rect) }
     }
     fn set_fill_color(&mut self, color: Color) {
         unsafe { ffi::sfCircleShape_setFillColor(self.circle_shape.as_ptr(), color) }
@@ -168,11 +168,7 @@ impl<'s> Shape<'s> for CircleShape<'s> {
         }
     }
     fn texture_rect(&self) -> IntRect {
-        unsafe {
-            IntRect::from_raw(ffi::sfCircleShape_getTextureRect(
-                self.circle_shape.as_ptr(),
-            ))
-        }
+        unsafe { ffi::sfCircleShape_getTextureRect(self.circle_shape.as_ptr()) }
     }
     fn fill_color(&self) -> Color {
         unsafe { ffi::sfCircleShape_getFillColor(self.circle_shape.as_ptr()) }
@@ -199,18 +195,10 @@ impl<'s> Shape<'s> for CircleShape<'s> {
         }
     }
     fn local_bounds(&self) -> FloatRect {
-        unsafe {
-            FloatRect::from_raw(ffi::sfCircleShape_getLocalBounds(
-                self.circle_shape.as_ptr(),
-            ))
-        }
+        unsafe { ffi::sfCircleShape_getLocalBounds(self.circle_shape.as_ptr()) }
     }
     fn global_bounds(&self) -> FloatRect {
-        unsafe {
-            FloatRect::from_raw(ffi::sfCircleShape_getGlobalBounds(
-                self.circle_shape.as_ptr(),
-            ))
-        }
+        unsafe { ffi::sfCircleShape_getGlobalBounds(self.circle_shape.as_ptr()) }
     }
 }
 

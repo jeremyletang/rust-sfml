@@ -201,7 +201,7 @@ impl<'t> Edge<'t> {
         for i in 0..6 {
             entities.push(Sprite::with_texture_and_rect(
                 entity_texture,
-                &IntRect::new(96 * i, 0, 96, 96),
+                IntRect::new(96 * i, 0, 96, 96),
             ));
         }
 

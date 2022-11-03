@@ -7,8 +7,6 @@ use std::{
     ops::{Add, Sub},
 };
 
-use crate::ffi;
-
 /// Utility type for manipulating 2D axis-aligned rectangles.
 #[repr(C)]
 #[derive(Clone, PartialEq, Eq, Debug, Copy, Default)]
@@ -279,42 +277,4 @@ fn max<T: PartialOrd>(a: T, b: T) -> T {
 #[inline]
 fn min_max<T: PartialOrd + Copy>(a: T, b: T) -> (T, T) {
     (min(a, b), max(a, b))
-}
-
-impl IntRect {
-    pub(super) fn raw(&self) -> ffi::graphics::sfIntRect {
-        ffi::graphics::sfIntRect {
-            top: self.top,
-            left: self.left,
-            width: self.width,
-            height: self.height,
-        }
-    }
-    pub(super) fn from_raw(raw: ffi::graphics::sfIntRect) -> Self {
-        Self {
-            top: raw.top,
-            left: raw.left,
-            width: raw.width,
-            height: raw.height,
-        }
-    }
-}
-
-impl FloatRect {
-    pub(super) fn raw(&self) -> ffi::graphics::sfFloatRect {
-        ffi::graphics::sfFloatRect {
-            top: self.top,
-            left: self.left,
-            width: self.width,
-            height: self.height,
-        }
-    }
-    pub(super) fn from_raw(raw: ffi::graphics::sfFloatRect) -> Self {
-        Self {
-            top: raw.top,
-            left: raw.left,
-            width: raw.width,
-            height: raw.height,
-        }
-    }
 }

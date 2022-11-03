@@ -702,12 +702,7 @@ impl RenderTarget for RenderWindow {
         }
     }
     fn viewport(&self, view: &View) -> IntRect {
-        unsafe {
-            IntRect::from_raw(ffi::sfRenderWindow_getViewport(
-                self.render_window.as_ptr(),
-                view.raw(),
-            ))
-        }
+        unsafe { ffi::sfRenderWindow_getViewport(self.render_window.as_ptr(), view.raw()) }
     }
     fn size(&self) -> Vector2u {
         unsafe { Vector2u::from_raw(ffi::sfRenderWindow_getSize(self.render_window.as_ptr())) }

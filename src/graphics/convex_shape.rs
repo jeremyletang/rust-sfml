@@ -160,8 +160,8 @@ impl<'s> Shape<'s> for ConvexShape<'s> {
     fn disable_texture(&mut self) {
         unsafe { ffi::sfConvexShape_setTexture(self.convex_shape, ptr::null_mut(), true) }
     }
-    fn set_texture_rect(&mut self, rect: &IntRect) {
-        unsafe { ffi::sfConvexShape_setTextureRect(self.convex_shape, rect.raw()) }
+    fn set_texture_rect(&mut self, rect: IntRect) {
+        unsafe { ffi::sfConvexShape_setTextureRect(self.convex_shape, rect) }
     }
     fn set_fill_color(&mut self, color: Color) {
         unsafe { ffi::sfConvexShape_setFillColor(self.convex_shape, color) }
@@ -184,7 +184,7 @@ impl<'s> Shape<'s> for ConvexShape<'s> {
         }
     }
     fn texture_rect(&self) -> IntRect {
-        unsafe { IntRect::from_raw(ffi::sfConvexShape_getTextureRect(self.convex_shape)) }
+        unsafe { ffi::sfConvexShape_getTextureRect(self.convex_shape) }
     }
     fn fill_color(&self) -> Color {
         unsafe { ffi::sfConvexShape_getFillColor(self.convex_shape) }
@@ -219,10 +219,10 @@ impl<'s> Shape<'s> for ConvexShape<'s> {
         }
     }
     fn local_bounds(&self) -> FloatRect {
-        unsafe { FloatRect::from_raw(ffi::sfConvexShape_getLocalBounds(self.convex_shape)) }
+        unsafe { ffi::sfConvexShape_getLocalBounds(self.convex_shape) }
     }
     fn global_bounds(&self) -> FloatRect {
-        unsafe { FloatRect::from_raw(ffi::sfConvexShape_getGlobalBounds(self.convex_shape)) }
+        unsafe { ffi::sfConvexShape_getGlobalBounds(self.convex_shape) }
     }
 }
 

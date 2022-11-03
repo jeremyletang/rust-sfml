@@ -48,7 +48,7 @@ impl<'s> Sprite<'s> {
 
     /// Create a new sprite with a texture and a source rectangle
     #[must_use]
-    pub fn with_texture_and_rect(texture: &'s Texture, rect: &IntRect) -> Self {
+    pub fn with_texture_and_rect(texture: &'s Texture, rect: IntRect) -> Self {
         let mut sprite = Sprite::with_texture(texture);
         sprite.set_texture_rect(rect);
         sprite
@@ -134,7 +134,7 @@ impl<'s> Sprite<'s> {
     /// Return the local bounding rectangle of the entity
     #[must_use]
     pub fn local_bounds(&self) -> FloatRect {
-        unsafe { FloatRect::from_raw(ffi::sfSprite_getLocalBounds(self.sprite.as_ptr())) }
+        unsafe { ffi::sfSprite_getLocalBounds(self.sprite.as_ptr()) }
     }
 
     /// Get the global bounding rectangle of a sprite
@@ -148,7 +148,7 @@ impl<'s> Sprite<'s> {
     /// Return the global bounding rectangle of the entity
     #[must_use]
     pub fn global_bounds(&self) -> FloatRect {
-        unsafe { FloatRect::from_raw(ffi::sfSprite_getGlobalBounds(self.sprite.as_ptr())) }
+        unsafe { ffi::sfSprite_getGlobalBounds(self.sprite.as_ptr()) }
     }
 
     /// Get the sub-rectangle of the texture displayed by a sprite
@@ -156,7 +156,7 @@ impl<'s> Sprite<'s> {
     /// Return the texture rectangle of the sprite
     #[must_use]
     pub fn texture_rect(&self) -> IntRect {
-        unsafe { IntRect::from_raw(ffi::sfSprite_getTextureRect(self.sprite.as_ptr())) }
+        unsafe { ffi::sfSprite_getTextureRect(self.sprite.as_ptr()) }
     }
 
     /// Set the sub-rectangle of the texture that a sprite will display
@@ -167,8 +167,8 @@ impl<'s> Sprite<'s> {
     ///
     /// # Arguments
     /// * rectangle - Rectangle defining the region of the texture to display
-    pub fn set_texture_rect(&mut self, rect: &IntRect) {
-        unsafe { ffi::sfSprite_setTextureRect(self.sprite.as_ptr(), rect.raw()) }
+    pub fn set_texture_rect(&mut self, rect: IntRect) {
+        unsafe { ffi::sfSprite_setTextureRect(self.sprite.as_ptr(), rect) }
     }
     pub(super) fn raw(&self) -> *const ffi::sfSprite {
         self.sprite.as_ptr()

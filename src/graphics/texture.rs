@@ -148,13 +148,8 @@ impl Texture {
     /// * area - Area of the image to load
     pub fn load_from_memory(&mut self, mem: &[u8], area: IntRect) -> LoadResult<()> {
         unsafe {
-            ffi::sfTexture_loadFromMemory(
-                self.raw_mut(),
-                mem.as_ptr() as *const _,
-                mem.len(),
-                area.raw(),
-            )
-            .into_load_result()
+            ffi::sfTexture_loadFromMemory(self.raw_mut(), mem.as_ptr() as *const _, mem.len(), area)
+                .into_load_result()
         }
     }
 
@@ -175,7 +170,7 @@ impl Texture {
     ) -> LoadResult<()> {
         let mut input_stream = InputStream::new(stream);
         unsafe {
-            ffi::sfTexture_loadFromStream(self.raw_mut(), &mut *input_stream.stream, area.raw())
+            ffi::sfTexture_loadFromStream(self.raw_mut(), &mut *input_stream.stream, area)
                 .into_load_result()
         }
     }
@@ -187,8 +182,7 @@ impl Texture {
     pub fn load_from_file(&mut self, filename: &str, area: IntRect) -> LoadResult<()> {
         let c_str = CString::new(filename).unwrap();
         unsafe {
-            ffi::sfTexture_loadFromFile(self.raw_mut(), c_str.as_ptr(), area.raw())
-                .into_load_result()
+            ffi::sfTexture_loadFromFile(self.raw_mut(), c_str.as_ptr(), area).into_load_result()
         }
     }
 
@@ -205,7 +199,7 @@ impl Texture {
     /// * image - Image to upload to the texture
     pub fn load_from_image(&mut self, image: &Image, area: IntRect) -> LoadResult<()> {
         unsafe {
-            ffi::sfTexture_loadFromImage(self.raw_mut(), image.raw(), area.raw()).into_load_result()
+            ffi::sfTexture_loadFromImage(self.raw_mut(), image.raw(), area).into_load_result()
         }
     }
 

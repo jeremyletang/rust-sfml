@@ -45,7 +45,7 @@ impl View {
     /// Return the viewport rectangle, expressed as a factor of the target size
     #[must_use]
     pub fn viewport(&self) -> FloatRect {
-        unsafe { FloatRect::from_raw(ffi::sfView_getViewport(self.raw())) }
+        unsafe { ffi::sfView_getViewport(self.raw()) }
     }
     /// Creates a view with position and size
     ///
@@ -65,8 +65,8 @@ impl View {
     /// # Arguments
     /// * rectangle - The rectangle defining the zone to display
     #[must_use]
-    pub fn from_rect(rectangle: &FloatRect) -> SfBox<View> {
-        let view = unsafe { ffi::sfView_createFromRect(rectangle.raw()) };
+    pub fn from_rect(rectangle: FloatRect) -> SfBox<View> {
+        let view = unsafe { ffi::sfView_createFromRect(rectangle) };
         SfBox::new(view as *mut Self).expect("Failed to create View from Rect")
     }
 
@@ -139,8 +139,8 @@ impl View {
     ///
     /// # Arguments
     /// * viewport - New viewport rectangle
-    pub fn set_viewport(&mut self, viewport: &FloatRect) {
-        unsafe { ffi::sfView_setViewport(self.raw_mut(), viewport.raw()) }
+    pub fn set_viewport(&mut self, viewport: FloatRect) {
+        unsafe { ffi::sfView_setViewport(self.raw_mut(), viewport) }
     }
 
     /// Reset a view to the given rectangle
@@ -149,8 +149,8 @@ impl View {
     ///
     /// # Arguments
     /// * rectangle - Rectangle defining the zone to display
-    pub fn reset(&mut self, rectangle: &FloatRect) {
-        unsafe { ffi::sfView_reset(self.raw_mut(), rectangle.raw()) }
+    pub fn reset(&mut self, rectangle: FloatRect) {
+        unsafe { ffi::sfView_reset(self.raw_mut(), rectangle) }
     }
     pub(super) fn raw(&self) -> *const ffi::sfView {
         let ptr: *const Self = self;

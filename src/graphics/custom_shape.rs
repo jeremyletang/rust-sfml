@@ -107,8 +107,8 @@ impl<'s> Shape<'s> for CustomShape<'s> {
     fn disable_texture(&mut self) {
         unsafe { ffi::sfShape_setTexture(self.shape, ptr::null_mut(), true) }
     }
-    fn set_texture_rect(&mut self, rect: &IntRect) {
-        unsafe { ffi::sfShape_setTextureRect(self.shape, rect.raw()) }
+    fn set_texture_rect(&mut self, rect: IntRect) {
+        unsafe { ffi::sfShape_setTextureRect(self.shape, rect) }
     }
     fn set_fill_color(&mut self, color: Color) {
         unsafe { ffi::sfShape_setFillColor(self.shape, color) }
@@ -131,7 +131,7 @@ impl<'s> Shape<'s> for CustomShape<'s> {
         }
     }
     fn texture_rect(&self) -> IntRect {
-        unsafe { IntRect::from_raw(ffi::sfShape_getTextureRect(self.shape)) }
+        unsafe { ffi::sfShape_getTextureRect(self.shape) }
     }
     fn fill_color(&self) -> Color {
         unsafe { ffi::sfShape_getFillColor(self.shape) }
@@ -149,10 +149,10 @@ impl<'s> Shape<'s> for CustomShape<'s> {
         unsafe { Vector2f::from_raw(ffi::sfShape_getPoint(self.shape, index as usize)) }
     }
     fn local_bounds(&self) -> FloatRect {
-        unsafe { FloatRect::from_raw(ffi::sfShape_getLocalBounds(self.shape)) }
+        unsafe { ffi::sfShape_getLocalBounds(self.shape) }
     }
     fn global_bounds(&self) -> FloatRect {
-        unsafe { FloatRect::from_raw(ffi::sfShape_getGlobalBounds(self.shape)) }
+        unsafe { ffi::sfShape_getGlobalBounds(self.shape) }
     }
 }
 

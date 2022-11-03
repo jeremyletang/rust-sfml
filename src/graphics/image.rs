@@ -252,7 +252,7 @@ impl Image {
         source: &Image,
         dest_x: u32,
         dest_y: u32,
-        source_rect: &IntRect,
+        source_rect: IntRect,
         apply_alpha: bool,
     ) {
         unsafe {
@@ -261,7 +261,7 @@ impl Image {
                 source.raw(),
                 dest_x,
                 dest_y,
-                source_rect.raw(),
+                source_rect,
                 apply_alpha,
             )
         }

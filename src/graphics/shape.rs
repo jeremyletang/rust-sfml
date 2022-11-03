@@ -19,7 +19,7 @@ pub trait Shape<'s>: Drawable + Transformable {
     ///
     /// The texture rect is useful when you don't want to display the whole texture,
     /// but rather a part of it. By default, the texture rect covers the entire texture.
-    fn set_texture_rect(&mut self, rect: &IntRect);
+    fn set_texture_rect(&mut self, rect: IntRect);
     /// Sets the fill color of the shape.
     ///
     /// This color is modulated (multiplied) with the shape's texture if any.

@@ -204,7 +204,7 @@ impl<'s> Text<'s> {
     /// Return the local bounding rectangle of the entity
     #[must_use]
     pub fn local_bounds(&self) -> FloatRect {
-        unsafe { FloatRect::from_raw(ffi::sfText_getLocalBounds(self.text.as_ptr())) }
+        unsafe { ffi::sfText_getLocalBounds(self.text.as_ptr()) }
     }
 
     /// Get the global bounding rectangle of a text
@@ -218,7 +218,7 @@ impl<'s> Text<'s> {
     /// Return the global bounding rectangle of the entity
     #[must_use]
     pub fn global_bounds(&self) -> FloatRect {
-        unsafe { FloatRect::from_raw(ffi::sfText_getGlobalBounds(self.text.as_ptr())) }
+        unsafe { ffi::sfText_getGlobalBounds(self.text.as_ptr()) }
     }
     /// Get the size of the line spacing factor.
     #[must_use]
