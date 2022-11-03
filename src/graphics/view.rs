@@ -22,14 +22,14 @@ impl View {
     /// Return the rotation angle of the view, in degrees
     #[must_use]
     pub fn rotation(&self) -> f32 {
-        unsafe { ffi::sfView_getRotation(self.raw()) }
+        unsafe { ffi::sfView_getRotation(self) }
     }
     /// Get the center of a view
     ///
     /// Return the center of the view
     #[must_use]
     pub fn center(&self) -> Vector2f {
-        unsafe { ffi::sfView_getCenter(self.raw()) }
+        unsafe { ffi::sfView_getCenter(self) }
     }
 
     /// Get the size of a view
@@ -37,7 +37,7 @@ impl View {
     /// Return the size of the view
     #[must_use]
     pub fn size(&self) -> Vector2f {
-        unsafe { ffi::sfView_getSize(self.raw()) }
+        unsafe { ffi::sfView_getSize(self) }
     }
 
     /// Get the target viewport rectangle of a view
@@ -45,7 +45,7 @@ impl View {
     /// Return the viewport rectangle, expressed as a factor of the target size
     #[must_use]
     pub fn viewport(&self) -> FloatRect {
-        unsafe { ffi::sfView_getViewport(self.raw()) }
+        unsafe { ffi::sfView_getViewport(self) }
     }
     /// Creates a view with position and size
     ///
@@ -67,7 +67,7 @@ impl View {
     #[must_use]
     pub fn from_rect(rectangle: FloatRect) -> SfBox<View> {
         let view = unsafe { ffi::sfView_createFromRect(rectangle) };
-        SfBox::new(view as *mut Self).expect("Failed to create View from Rect")
+        SfBox::new(view).expect("Failed to create View from Rect")
     }
 
     /// Set the orientation of a view
@@ -77,7 +77,7 @@ impl View {
     /// # Arguments
     /// * angle - New angle, in degrees
     pub fn set_rotation(&mut self, angle: f32) {
-        unsafe { ffi::sfView_setRotation(self.raw_mut(), angle) }
+        unsafe { ffi::sfView_setRotation(self, angle) }
     }
 
     /// Rotate a view relatively to its current orientation
@@ -85,7 +85,7 @@ impl View {
     /// # Arguments
     /// * angle - Angle to rotate, in degrees
     pub fn rotate(&mut self, angle: f32) {
-        unsafe { ffi::sfView_rotate(self.raw_mut(), angle) }
+        unsafe { ffi::sfView_rotate(self, angle) }
     }
 
     /// Resize a view rectangle relatively to its current size
@@ -101,7 +101,7 @@ impl View {
     /// # Arguments
     /// * factor - Zoom factor to apply
     pub fn zoom(&mut self, factor: f32) {
-        unsafe { ffi::sfView_zoom(self.raw_mut(), factor) }
+        unsafe { ffi::sfView_zoom(self, factor) }
     }
 
     /// Set the center of a view
@@ -109,7 +109,7 @@ impl View {
     /// # Arguments
     /// * center - New center
     pub fn set_center<C: Into<Vector2f>>(&mut self, center: C) {
-        unsafe { ffi::sfView_setCenter(self.raw_mut(), center.into()) }
+        unsafe { ffi::sfView_setCenter(self, center.into()) }
     }
 
     /// Set the size of a view
@@ -117,7 +117,7 @@ impl View {
     /// # Arguments
     /// * size - New size of the view
     pub fn set_size<S: Into<Vector2f>>(&mut self, size: S) {
-        unsafe { ffi::sfView_setSize(self.raw_mut(), size.into()) }
+        unsafe { ffi::sfView_setSize(self, size.into()) }
     }
 
     /// Move a view relatively to its current position
@@ -125,7 +125,7 @@ impl View {
     /// # Arguments
     /// * offset - Offset
     pub fn move_<O: Into<Vector2f>>(&mut self, offset: O) {
-        unsafe { ffi::sfView_move(self.raw_mut(), offset.into()) }
+        unsafe { ffi::sfView_move(self, offset.into()) }
     }
 
     /// Set the target viewport of a view
@@ -140,7 +140,7 @@ impl View {
     /// # Arguments
     /// * viewport - New viewport rectangle
     pub fn set_viewport(&mut self, viewport: FloatRect) {
-        unsafe { ffi::sfView_setViewport(self.raw_mut(), viewport) }
+        unsafe { ffi::sfView_setViewport(self, viewport) }
     }
 
     /// Reset a view to the given rectangle
@@ -150,36 +150,26 @@ impl View {
     /// # Arguments
     /// * rectangle - Rectangle defining the zone to display
     pub fn reset(&mut self, rectangle: FloatRect) {
-        unsafe { ffi::sfView_reset(self.raw_mut(), rectangle) }
-    }
-    pub(super) fn raw(&self) -> *const ffi::sfView {
-        let ptr: *const Self = self;
-        ptr as _
-    }
-    fn raw_mut(&mut self) -> *mut ffi::sfView {
-        let ptr: *mut Self = self;
-        ptr as _
+        unsafe { ffi::sfView_reset(self, rectangle) }
     }
 }
 
 impl ToOwned for View {
     type Owned = SfBox<Self>;
     fn to_owned(&self) -> Self::Owned {
-        let view = unsafe { ffi::sfView_copy(self.raw()) };
-        SfBox::new(view as *mut Self).expect("Failed to copy View")
+        let view = unsafe { ffi::sfView_copy(self) };
+        SfBox::new(view).expect("Failed to copy View")
     }
 }
 
 impl RawDefault for View {
     fn raw_default() -> *mut Self {
-        let view = unsafe { ffi::sfView_create() };
-        view as _
+        unsafe { ffi::sfView_create() }
     }
 }
 
 impl Dispose for View {
     unsafe fn dispose(&mut self) {
-        let ptr: *mut Self = self;
-        ffi::sfView_destroy(ptr as _)
+        ffi::sfView_destroy(self)
     }
 }

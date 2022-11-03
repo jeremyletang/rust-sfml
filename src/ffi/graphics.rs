@@ -20,10 +20,10 @@ decl_opaque! {
     sfText;
     sfTransformable;
     sfVertexBuffer;
-    sfView;
 }
 
 pub type sfTexture = crate::graphics::Texture;
+pub type sfView = crate::graphics::View;
 
 /// Enumeration of the blending factors.
 ///

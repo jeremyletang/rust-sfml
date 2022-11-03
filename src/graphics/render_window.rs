@@ -655,23 +655,17 @@ impl RenderTarget for RenderWindow {
         unsafe { ffi::sfRenderWindow_resetGLStates(self.render_window.as_ptr()) }
     }
     fn set_view(&mut self, view: &View) {
-        unsafe { ffi::sfRenderWindow_setView(self.render_window.as_ptr(), view.raw()) }
+        unsafe { ffi::sfRenderWindow_setView(self.render_window.as_ptr(), view) }
     }
     fn view(&self) -> &View {
-        unsafe { &*(ffi::sfRenderWindow_getView(self.render_window.as_ptr()) as *const View) }
+        unsafe { &*(ffi::sfRenderWindow_getView(self.render_window.as_ptr())) }
     }
     fn default_view(&self) -> &View {
-        unsafe {
-            &*(ffi::sfRenderWindow_getDefaultView(self.render_window.as_ptr()) as *const View)
-        }
+        unsafe { &*(ffi::sfRenderWindow_getDefaultView(self.render_window.as_ptr())) }
     }
     fn map_pixel_to_coords(&self, point: Vector2i, view: &View) -> Vector2f {
         unsafe {
-            ffi::sfRenderWindow_mapPixelToCoords_View(
-                self.render_window.as_ptr(),
-                point,
-                view.raw(),
-            )
+            ffi::sfRenderWindow_mapPixelToCoords_View(self.render_window.as_ptr(), point, view)
         }
     }
     fn map_pixel_to_coords_current_view(&self, point: Vector2i) -> Vector2f {
@@ -679,18 +673,14 @@ impl RenderTarget for RenderWindow {
     }
     fn map_coords_to_pixel(&self, point: Vector2f, view: &View) -> Vector2i {
         unsafe {
-            ffi::sfRenderWindow_mapCoordsToPixel_View(
-                self.render_window.as_ptr(),
-                point,
-                view.raw(),
-            )
+            ffi::sfRenderWindow_mapCoordsToPixel_View(self.render_window.as_ptr(), point, view)
         }
     }
     fn map_coords_to_pixel_current_view(&self, point: Vector2f) -> Vector2i {
         unsafe { ffi::sfRenderWindow_mapCoordsToPixel(self.render_window.as_ptr(), point) }
     }
     fn viewport(&self, view: &View) -> IntRect {
-        unsafe { ffi::sfRenderWindow_getViewport(self.render_window.as_ptr(), view.raw()) }
+        unsafe { ffi::sfRenderWindow_getViewport(self.render_window.as_ptr(), view) }
     }
     fn size(&self) -> Vector2u {
         unsafe { ffi::sfRenderWindow_getSize(self.render_window.as_ptr()) }

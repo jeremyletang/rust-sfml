@@ -133,29 +133,25 @@ impl RenderTarget for RenderTexture {
         unsafe { ffi::sfRenderTexture_clear(self.render_texture, color) }
     }
     fn set_view(&mut self, view: &View) {
-        unsafe { ffi::sfRenderTexture_setView(self.render_texture, view.raw()) }
+        unsafe { ffi::sfRenderTexture_setView(self.render_texture, view) }
     }
     fn view(&self) -> &View {
-        unsafe { &*(ffi::sfRenderTexture_getView(self.render_texture) as *const View) }
+        unsafe { &*(ffi::sfRenderTexture_getView(self.render_texture)) }
     }
     fn default_view(&self) -> &View {
-        unsafe { &*(ffi::sfRenderTexture_getDefaultView(self.render_texture) as *const View) }
+        unsafe { &*(ffi::sfRenderTexture_getDefaultView(self.render_texture)) }
     }
     fn viewport(&self, view: &View) -> IntRect {
-        unsafe { ffi::sfRenderTexture_getViewport(self.render_texture, view.raw()) }
+        unsafe { ffi::sfRenderTexture_getViewport(self.render_texture, view) }
     }
     fn map_pixel_to_coords(&self, point: Vector2i, view: &View) -> Vector2f {
-        unsafe {
-            ffi::sfRenderTexture_mapPixelToCoords_View(self.render_texture, point, view.raw())
-        }
+        unsafe { ffi::sfRenderTexture_mapPixelToCoords_View(self.render_texture, point, view) }
     }
     fn map_pixel_to_coords_current_view(&self, point: Vector2i) -> Vector2f {
         unsafe { ffi::sfRenderTexture_mapPixelToCoords(self.render_texture, point) }
     }
     fn map_coords_to_pixel(&self, point: Vector2f, view: &View) -> Vector2i {
-        unsafe {
-            ffi::sfRenderTexture_mapCoordsToPixel_View(self.render_texture, point, view.raw())
-        }
+        unsafe { ffi::sfRenderTexture_mapCoordsToPixel_View(self.render_texture, point, view) }
     }
     fn map_coords_to_pixel_current_view(&self, point: Vector2f) -> Vector2i {
         unsafe { ffi::sfRenderTexture_mapCoordsToPixel(self.render_texture, point) }
