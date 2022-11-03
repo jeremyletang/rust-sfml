@@ -4,13 +4,14 @@ pub use crate::ffi::*;
 use super::system::sfInputStream;
 
 decl_opaque! {
-    sfSoundBuffer;
     sfSoundBufferRecorder;
     sfSoundRecorder;
     sfMusic;
     sfSound;
     sfSoundStream;
 }
+
+pub type sfSoundBuffer = crate::audio::SoundBuffer;
 
 #[repr(C)]
 pub struct sfSoundStreamChunk {

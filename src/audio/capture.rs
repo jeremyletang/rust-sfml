@@ -302,7 +302,7 @@ impl SoundBufferRecorder {
     pub fn buffer(&self) -> &SoundBuffer {
         let buff = unsafe { sfSoundBufferRecorder_getBuffer(self.ffi_handle.as_ptr()) };
         assert!(!buff.is_null(), "sfSoundBufferRecorder_getBuffer failed");
-        unsafe { &*(buff as *const SoundBuffer) }
+        unsafe { &*(buff) }
     }
     /// Get the name of the current audio capture device.
     #[must_use]

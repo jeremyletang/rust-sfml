@@ -135,8 +135,7 @@ impl<'s> Sound<'s> {
     /// # Arguments
     /// * buffer - Sound buffer to attach to the sound
     pub fn set_buffer(&mut self, buffer: &'s SoundBuffer) {
-        let ptr: *const SoundBuffer = buffer;
-        unsafe { ffi::audio::sfSound_setBuffer(self.sound.as_ptr(), ptr as _) }
+        unsafe { ffi::audio::sfSound_setBuffer(self.sound.as_ptr(), buffer) }
     }
 
     /// Get the audio buffer attached to a sound
@@ -144,14 +143,7 @@ impl<'s> Sound<'s> {
     /// Return an option to Sound buffer attached to the sound or None
     #[must_use]
     pub fn buffer(&self) -> Option<&SoundBuffer> {
-        unsafe {
-            let ptr = ffi::audio::sfSound_getBuffer(self.sound.as_ptr());
-            if ptr.is_null() {
-                None
-            } else {
-                Some(&*(ptr as *const SoundBuffer))
-            }
-        }
+        unsafe { ffi::audio::sfSound_getBuffer(self.sound.as_ptr()).as_ref() }
     }
 }
 
