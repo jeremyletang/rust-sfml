@@ -172,15 +172,11 @@ impl<'s> Shape<'s> for RectangleShape<'s> {
     fn outline_thickness(&self) -> f32 {
         unsafe { ffi::sfRectangleShape_getOutlineThickness(self.rectangle_shape) }
     }
-    fn point_count(&self) -> u32 {
-        unsafe {
-            ffi::sfRectangleShape_getPointCount(self.rectangle_shape)
-                .try_into()
-                .unwrap()
-        }
+    fn point_count(&self) -> usize {
+        unsafe { ffi::sfRectangleShape_getPointCount(self.rectangle_shape) }
     }
-    fn point(&self, index: u32) -> Vector2f {
-        unsafe { ffi::sfRectangleShape_getPoint(self.rectangle_shape, index as usize) }
+    fn point(&self, index: usize) -> Vector2f {
+        unsafe { ffi::sfRectangleShape_getPoint(self.rectangle_shape, index) }
     }
     fn local_bounds(&self) -> FloatRect {
         unsafe { ffi::sfRectangleShape_getLocalBounds(self.rectangle_shape) }

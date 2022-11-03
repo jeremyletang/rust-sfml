@@ -140,11 +140,11 @@ impl<'s> Shape<'s> for CustomShape<'s> {
     fn outline_thickness(&self) -> f32 {
         unsafe { ffi::sfShape_getOutlineThickness(self.shape) }
     }
-    fn point_count(&self) -> u32 {
-        unsafe { ffi::sfShape_getPointCount(self.shape).try_into().unwrap() }
+    fn point_count(&self) -> usize {
+        unsafe { ffi::sfShape_getPointCount(self.shape) }
     }
-    fn point(&self, index: u32) -> Vector2f {
-        unsafe { ffi::sfShape_getPoint(self.shape, index as usize) }
+    fn point(&self, index: usize) -> Vector2f {
+        unsafe { ffi::sfShape_getPoint(self.shape, index) }
     }
     fn local_bounds(&self) -> FloatRect {
         unsafe { ffi::sfShape_getLocalBounds(self.shape) }

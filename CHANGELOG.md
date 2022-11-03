@@ -6,6 +6,7 @@
 - Methods that used to take `&Rect` now take `Rect` by value
 - `listener::set_up_vector` now Takes `Vector3f` instead of `&Vector3f`
 - Use `usize` instead of `u32` for `CustomShapePoints`
+- Use `usize` instead of `u32` for `Shape` methods
 
 ### Internal improvements
 - Remove needless raw conversion methods for Rect

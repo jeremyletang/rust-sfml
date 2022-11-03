@@ -179,15 +179,11 @@ impl<'s> Shape<'s> for CircleShape<'s> {
     fn outline_thickness(&self) -> f32 {
         unsafe { ffi::sfCircleShape_getOutlineThickness(self.circle_shape.as_ptr()) }
     }
-    fn point_count(&self) -> u32 {
-        unsafe {
-            ffi::sfCircleShape_getPointCount(self.circle_shape.as_ptr())
-                .try_into()
-                .unwrap()
-        }
+    fn point_count(&self) -> usize {
+        unsafe { ffi::sfCircleShape_getPointCount(self.circle_shape.as_ptr()) }
     }
-    fn point(&self, index: u32) -> Vector2f {
-        unsafe { ffi::sfCircleShape_getPoint(self.circle_shape.as_ptr(), index as usize) }
+    fn point(&self, index: usize) -> Vector2f {
+        unsafe { ffi::sfCircleShape_getPoint(self.circle_shape.as_ptr(), index) }
     }
     fn local_bounds(&self) -> FloatRect {
         unsafe { ffi::sfCircleShape_getLocalBounds(self.circle_shape.as_ptr()) }

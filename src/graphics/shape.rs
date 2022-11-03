@@ -50,13 +50,13 @@ pub trait Shape<'s>: Drawable + Transformable {
     /// Gets the outline thickness of this shape.
     fn outline_thickness(&self) -> f32;
     /// Gets the total number of points of the shape.
-    fn point_count(&self) -> u32;
+    fn point_count(&self) -> usize;
     /// Gets a point of the shape.
     ///
     /// The returned point is in local coordinates, that is, the shape's transforms
     /// (position, rotation, scale) are not taken into account.
     /// The result is unspecified if index is out of the valid range (`0..point_count()`).
-    fn point(&self, index: u32) -> Vector2f;
+    fn point(&self, index: usize) -> Vector2f;
     /// Gets the local bounding rectangle of the entity.
     ///
     /// The returned rectangle is in local coordinates, which means that it ignores the
