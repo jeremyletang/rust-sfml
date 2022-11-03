@@ -38,7 +38,7 @@ impl<'s> CircleShape<'s> {
     ///
     /// Default value on SFML are radius = 0 / pointCount = 30
     #[must_use]
-    pub fn new(radius: f32, point_count: u32) -> CircleShape<'s> {
+    pub fn new(radius: f32, point_count: usize) -> CircleShape<'s> {
         let mut shape = CircleShape::default();
         shape.set_radius(radius);
         shape.set_point_count(point_count);
@@ -65,8 +65,8 @@ impl<'s> CircleShape<'s> {
     ///
     /// # Arguments
     /// * count - New number of points of the circle
-    pub fn set_point_count(&mut self, count: u32) {
-        unsafe { ffi::sfCircleShape_setPointCount(self.circle_shape.as_ptr(), count as usize) }
+    pub fn set_point_count(&mut self, count: usize) {
+        unsafe { ffi::sfCircleShape_setPointCount(self.circle_shape.as_ptr(), count) }
     }
     pub(super) fn raw(&self) -> *const ffi::sfCircleShape {
         self.circle_shape.as_ptr()
