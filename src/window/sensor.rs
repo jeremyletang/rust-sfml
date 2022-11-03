@@ -51,7 +51,7 @@ use crate::{ffi::window::*, system::Vector3f};
 /// Get the current sensor value.
 #[must_use]
 pub fn value(sensor: Type) -> Vector3f {
-    unsafe { Vector3f::from_raw(sfSensor_getValue(sensor.0)) }
+    unsafe { sfSensor_getValue(sensor.0) }
 }
 
 /// Check if a sensor is available on the underlying platform.

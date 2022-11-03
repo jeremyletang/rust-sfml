@@ -363,7 +363,7 @@ impl<'texture> Shader<'texture> {
         unsafe {
             let cstring = CString::new(name).unwrap();
             let name = cstring.as_ptr();
-            ffi::sfShader_setVec2Uniform(self.shader.as_ptr(), name, value.raw());
+            ffi::sfShader_setVec2Uniform(self.shader.as_ptr(), name, value);
         }
     }
 
@@ -372,7 +372,7 @@ impl<'texture> Shader<'texture> {
         unsafe {
             let cstring = CString::new(name).unwrap();
             let name = cstring.as_ptr();
-            ffi::sfShader_setVec3Uniform(self.shader.as_ptr(), name, value.raw());
+            ffi::sfShader_setVec3Uniform(self.shader.as_ptr(), name, value);
         }
     }
 
@@ -412,7 +412,7 @@ impl<'texture> Shader<'texture> {
         unsafe {
             let cstring = CString::new(name).unwrap();
             let name = cstring.as_ptr();
-            ffi::sfShader_setIvec2Uniform(self.shader.as_ptr(), name, value.raw());
+            ffi::sfShader_setIvec2Uniform(self.shader.as_ptr(), name, value);
         }
     }
 

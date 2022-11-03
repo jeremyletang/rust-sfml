@@ -478,7 +478,7 @@ impl RenderWindow {
     /// Return the position in pixels
     #[must_use]
     pub fn position(&self) -> Vector2i {
-        unsafe { Vector2i::from_raw(ffi::sfRenderWindow_getPosition(self.render_window.as_ptr())) }
+        unsafe { ffi::sfRenderWindow_getPosition(self.render_window.as_ptr()) }
     }
 
     /// Change the position of a window on screen
@@ -508,7 +508,7 @@ impl RenderWindow {
     /// assert_eq!(window.position(), Vector2::new(100, 400));
     /// ```
     pub fn set_position(&mut self, position: Vector2i) {
-        unsafe { ffi::sfRenderWindow_setPosition(self.render_window.as_ptr(), position.raw()) }
+        unsafe { ffi::sfRenderWindow_setPosition(self.render_window.as_ptr(), position) }
     }
 
     /// Change the size of the rendering region of a window
@@ -534,16 +534,14 @@ impl RenderWindow {
     /// assert_eq!(window.size(), Vector2::new(100, 400));
     /// ```
     pub fn set_size<S: Into<Vector2u>>(&mut self, size: S) {
-        unsafe { ffi::sfRenderWindow_setSize(self.render_window.as_ptr(), size.into().raw()) }
+        unsafe { ffi::sfRenderWindow_setSize(self.render_window.as_ptr(), size.into()) }
     }
 
     /// Returns the current position of the mouse relative to the window.
     #[must_use]
     pub fn mouse_position(&self) -> Vector2i {
         unsafe {
-            Vector2i::from_raw(crate::ffi::graphics::sfMouse_getPositionRenderWindow(
-                self.render_window.as_ptr(),
-            ))
+            crate::ffi::graphics::sfMouse_getPositionRenderWindow(self.render_window.as_ptr())
         }
     }
 
@@ -557,7 +555,7 @@ impl RenderWindow {
     pub fn set_mouse_position(&mut self, position: Vector2i) {
         unsafe {
             crate::ffi::graphics::sfMouse_setPositionRenderWindow(
-                position.raw(),
+                position,
                 self.render_window.as_ptr(),
             )
         }
@@ -599,10 +597,10 @@ impl RenderWindow {
     #[must_use]
     pub fn touch_position(&self, finger: u32) -> Vector2i {
         unsafe {
-            Vector2i::from_raw(crate::ffi::graphics::sfTouch_getPositionRenderWindow(
+            crate::ffi::graphics::sfTouch_getPositionRenderWindow(
                 finger,
                 self.render_window.as_ptr(),
-            ))
+            )
         }
     }
 
@@ -669,43 +667,33 @@ impl RenderTarget for RenderWindow {
     }
     fn map_pixel_to_coords(&self, point: Vector2i, view: &View) -> Vector2f {
         unsafe {
-            Vector2f::from_raw(ffi::sfRenderWindow_mapPixelToCoords_View(
+            ffi::sfRenderWindow_mapPixelToCoords_View(
                 self.render_window.as_ptr(),
-                point.raw(),
+                point,
                 view.raw(),
-            ))
+            )
         }
     }
     fn map_pixel_to_coords_current_view(&self, point: Vector2i) -> Vector2f {
-        unsafe {
-            Vector2f::from_raw(ffi::sfRenderWindow_mapPixelToCoords(
-                self.render_window.as_ptr(),
-                point.raw(),
-            ))
-        }
+        unsafe { ffi::sfRenderWindow_mapPixelToCoords(self.render_window.as_ptr(), point) }
     }
     fn map_coords_to_pixel(&self, point: Vector2f, view: &View) -> Vector2i {
         unsafe {
-            Vector2i::from_raw(ffi::sfRenderWindow_mapCoordsToPixel_View(
+            ffi::sfRenderWindow_mapCoordsToPixel_View(
                 self.render_window.as_ptr(),
-                point.raw(),
+                point,
                 view.raw(),
-            ))
+            )
         }
     }
     fn map_coords_to_pixel_current_view(&self, point: Vector2f) -> Vector2i {
-        unsafe {
-            Vector2i::from_raw(ffi::sfRenderWindow_mapCoordsToPixel(
-                self.render_window.as_ptr(),
-                point.raw(),
-            ))
-        }
+        unsafe { ffi::sfRenderWindow_mapCoordsToPixel(self.render_window.as_ptr(), point) }
     }
     fn viewport(&self, view: &View) -> IntRect {
         unsafe { ffi::sfRenderWindow_getViewport(self.render_window.as_ptr(), view.raw()) }
     }
     fn size(&self) -> Vector2u {
-        unsafe { Vector2u::from_raw(ffi::sfRenderWindow_getSize(self.render_window.as_ptr())) }
+        unsafe { ffi::sfRenderWindow_getSize(self.render_window.as_ptr()) }
     }
     fn draw(&mut self, object: &dyn Drawable) {
         object.draw(self, &RenderStates::DEFAULT);

@@ -57,7 +57,7 @@ pub fn global_volume() -> f32 {
 ///
 /// * position - the New position of the listener
 pub fn set_position<P: Into<Vector3f>>(position: P) {
-    unsafe { ffi::audio::sfListener_setPosition(position.into().raw()) }
+    unsafe { ffi::audio::sfListener_setPosition(position.into()) }
 }
 
 /// Get the current position of the listener in the scene
@@ -65,7 +65,7 @@ pub fn set_position<P: Into<Vector3f>>(position: P) {
 /// Return the listener's position
 #[must_use]
 pub fn position() -> Vector3f {
-    unsafe { Vector3f::from_raw(ffi::audio::sfListener_getPosition()) }
+    unsafe { ffi::audio::sfListener_getPosition() }
 }
 
 /// Set the orientation of the listener in the scene
@@ -78,7 +78,7 @@ pub fn position() -> Vector3f {
 /// # Arguments
 /// * direction - New listener's orientation
 pub fn set_direction<D: Into<Vector3f>>(direction: D) {
-    unsafe { ffi::audio::sfListener_setDirection(direction.into().raw()) }
+    unsafe { ffi::audio::sfListener_setDirection(direction.into()) }
 }
 
 /// Get the current orientation of the listener in the scene
@@ -86,7 +86,7 @@ pub fn set_direction<D: Into<Vector3f>>(direction: D) {
 /// Return the listener's direction
 #[must_use]
 pub fn direction() -> Vector3f {
-    unsafe { Vector3f::from_raw(ffi::audio::sfListener_getDirection()) }
+    unsafe { ffi::audio::sfListener_getDirection() }
 }
 
 /// Set the upward vector of the listener in the scene.
@@ -95,12 +95,12 @@ pub fn direction() -> Vector3f {
 /// Together with the direction, it defines the 3D orientation of the listener in the scene.
 /// The up vector doesn't have to be normalized. The default listener's up vector is (0, 1, 0).
 /// It is usually not necessary to change it, especially in 2D scenarios.
-pub fn set_up_vector(value: &Vector3f) {
-    unsafe { ffi::audio::sfListener_setUpVector(value.raw()) }
+pub fn set_up_vector(value: Vector3f) {
+    unsafe { ffi::audio::sfListener_setUpVector(value) }
 }
 
 /// Get the current upward vector of the listener in the scene. (not normalized)
 #[must_use]
 pub fn up_vector() -> Vector3f {
-    unsafe { Vector3f::from_raw(ffi::audio::sfListener_getUpVector()) }
+    unsafe { ffi::audio::sfListener_getUpVector() }
 }

@@ -29,7 +29,7 @@ impl View {
     /// Return the center of the view
     #[must_use]
     pub fn center(&self) -> Vector2f {
-        unsafe { Vector2f::from_raw(ffi::sfView_getCenter(self.raw())) }
+        unsafe { ffi::sfView_getCenter(self.raw()) }
     }
 
     /// Get the size of a view
@@ -37,7 +37,7 @@ impl View {
     /// Return the size of the view
     #[must_use]
     pub fn size(&self) -> Vector2f {
-        unsafe { Vector2f::from_raw(ffi::sfView_getSize(self.raw())) }
+        unsafe { ffi::sfView_getSize(self.raw()) }
     }
 
     /// Get the target viewport rectangle of a view
@@ -109,7 +109,7 @@ impl View {
     /// # Arguments
     /// * center - New center
     pub fn set_center<C: Into<Vector2f>>(&mut self, center: C) {
-        unsafe { ffi::sfView_setCenter(self.raw_mut(), center.into().raw()) }
+        unsafe { ffi::sfView_setCenter(self.raw_mut(), center.into()) }
     }
 
     /// Set the size of a view
@@ -117,7 +117,7 @@ impl View {
     /// # Arguments
     /// * size - New size of the view
     pub fn set_size<S: Into<Vector2f>>(&mut self, size: S) {
-        unsafe { ffi::sfView_setSize(self.raw_mut(), size.into().raw()) }
+        unsafe { ffi::sfView_setSize(self.raw_mut(), size.into()) }
     }
 
     /// Move a view relatively to its current position
@@ -125,7 +125,7 @@ impl View {
     /// # Arguments
     /// * offset - Offset
     pub fn move_<O: Into<Vector2f>>(&mut self, offset: O) {
-        unsafe { ffi::sfView_move(self.raw_mut(), offset.into().raw()) }
+        unsafe { ffi::sfView_move(self.raw_mut(), offset.into()) }
     }
 
     /// Set the target viewport of a view

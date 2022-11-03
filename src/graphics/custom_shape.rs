@@ -42,8 +42,7 @@ unsafe extern "C" fn get_point_count_callback(obj: *mut c_void) -> usize {
 
 unsafe extern "C" fn get_point_callback(point: usize, obj: *mut c_void) -> sfVector2f {
     let shape = obj as *const Box<dyn CustomShapePoints + Send>;
-    let ret = (*shape).point(point.try_into().unwrap());
-    ret.raw()
+    (*shape).point(point.try_into().unwrap())
 }
 
 impl<'s> CustomShape<'s> {
@@ -146,7 +145,7 @@ impl<'s> Shape<'s> for CustomShape<'s> {
         unsafe { ffi::sfShape_getPointCount(self.shape).try_into().unwrap() }
     }
     fn point(&self, index: u32) -> Vector2f {
-        unsafe { Vector2f::from_raw(ffi::sfShape_getPoint(self.shape, index as usize)) }
+        unsafe { ffi::sfShape_getPoint(self.shape, index as usize) }
     }
     fn local_bounds(&self) -> FloatRect {
         unsafe { ffi::sfShape_getLocalBounds(self.shape) }
@@ -168,37 +167,37 @@ impl<'s> Drawable for CustomShape<'s> {
 
 impl<'s> Transformable for CustomShape<'s> {
     fn set_position<P: Into<Vector2f>>(&mut self, position: P) {
-        unsafe { ffi::sfShape_setPosition(self.shape, position.into().raw()) }
+        unsafe { ffi::sfShape_setPosition(self.shape, position.into()) }
     }
     fn set_rotation(&mut self, angle: f32) {
         unsafe { ffi::sfShape_setRotation(self.shape, angle) }
     }
     fn set_scale<S: Into<Vector2f>>(&mut self, scale: S) {
-        unsafe { ffi::sfShape_setScale(self.shape, scale.into().raw()) }
+        unsafe { ffi::sfShape_setScale(self.shape, scale.into()) }
     }
     fn set_origin<O: Into<Vector2f>>(&mut self, origin: O) {
-        unsafe { ffi::sfShape_setOrigin(self.shape, origin.into().raw()) }
+        unsafe { ffi::sfShape_setOrigin(self.shape, origin.into()) }
     }
     fn position(&self) -> Vector2f {
-        unsafe { Vector2f::from_raw(ffi::sfShape_getPosition(self.shape)) }
+        unsafe { ffi::sfShape_getPosition(self.shape) }
     }
     fn rotation(&self) -> f32 {
         unsafe { ffi::sfShape_getRotation(self.shape) }
     }
     fn get_scale(&self) -> Vector2f {
-        unsafe { Vector2f::from_raw(ffi::sfShape_getScale(self.shape)) }
+        unsafe { ffi::sfShape_getScale(self.shape) }
     }
     fn origin(&self) -> Vector2f {
-        unsafe { Vector2f::from_raw(ffi::sfShape_getOrigin(self.shape)) }
+        unsafe { ffi::sfShape_getOrigin(self.shape) }
     }
     fn move_<O: Into<Vector2f>>(&mut self, offset: O) {
-        unsafe { ffi::sfShape_move(self.shape, offset.into().raw()) }
+        unsafe { ffi::sfShape_move(self.shape, offset.into()) }
     }
     fn rotate(&mut self, angle: f32) {
         unsafe { ffi::sfShape_rotate(self.shape, angle) }
     }
     fn scale<F: Into<Vector2f>>(&mut self, factors: F) {
-        unsafe { ffi::sfShape_scale(self.shape, factors.into().raw()) }
+        unsafe { ffi::sfShape_scale(self.shape, factors.into()) }
     }
     fn transform(&self) -> &Transform {
         unsafe { &*ffi::sfShape_getTransform(self.shape) }

@@ -190,7 +190,7 @@ impl<'s> Text<'s> {
     /// Return the position of the character
     #[must_use]
     pub fn find_character_pos(&self, index: usize) -> Vector2f {
-        unsafe { Vector2f::from_raw(ffi::sfText_findCharacterPos(self.text.as_ptr(), index)) }
+        unsafe { ffi::sfText_findCharacterPos(self.text.as_ptr(), index) }
     }
 
     /// Get the local bounding rectangle of a text
@@ -286,37 +286,37 @@ impl<'s> Drawable for Text<'s> {
 
 impl<'s> Transformable for Text<'s> {
     fn set_position<P: Into<Vector2f>>(&mut self, position: P) {
-        unsafe { ffi::sfText_setPosition(self.text.as_ptr(), position.into().raw()) }
+        unsafe { ffi::sfText_setPosition(self.text.as_ptr(), position.into()) }
     }
     fn set_rotation(&mut self, angle: f32) {
         unsafe { ffi::sfText_setRotation(self.text.as_ptr(), angle) }
     }
     fn set_scale<S: Into<Vector2f>>(&mut self, scale: S) {
-        unsafe { ffi::sfText_setScale(self.text.as_ptr(), scale.into().raw()) }
+        unsafe { ffi::sfText_setScale(self.text.as_ptr(), scale.into()) }
     }
     fn set_origin<O: Into<Vector2f>>(&mut self, origin: O) {
-        unsafe { ffi::sfText_setOrigin(self.text.as_ptr(), origin.into().raw()) }
+        unsafe { ffi::sfText_setOrigin(self.text.as_ptr(), origin.into()) }
     }
     fn position(&self) -> Vector2f {
-        unsafe { Vector2f::from_raw(ffi::sfText_getPosition(self.text.as_ptr())) }
+        unsafe { ffi::sfText_getPosition(self.text.as_ptr()) }
     }
     fn rotation(&self) -> f32 {
         unsafe { ffi::sfText_getRotation(self.text.as_ptr()) }
     }
     fn get_scale(&self) -> Vector2f {
-        unsafe { Vector2f::from_raw(ffi::sfText_getScale(self.text.as_ptr())) }
+        unsafe { ffi::sfText_getScale(self.text.as_ptr()) }
     }
     fn origin(&self) -> Vector2f {
-        unsafe { Vector2f::from_raw(ffi::sfText_getOrigin(self.text.as_ptr())) }
+        unsafe { ffi::sfText_getOrigin(self.text.as_ptr()) }
     }
     fn move_<O: Into<Vector2f>>(&mut self, offset: O) {
-        unsafe { ffi::sfText_move(self.text.as_ptr(), offset.into().raw()) }
+        unsafe { ffi::sfText_move(self.text.as_ptr(), offset.into()) }
     }
     fn rotate(&mut self, angle: f32) {
         unsafe { ffi::sfText_rotate(self.text.as_ptr(), angle) }
     }
     fn scale<F: Into<Vector2f>>(&mut self, factors: F) {
-        unsafe { ffi::sfText_scale(self.text.as_ptr(), factors.into().raw()) }
+        unsafe { ffi::sfText_scale(self.text.as_ptr(), factors.into()) }
     }
     fn transform(&self) -> &Transform {
         unsafe { &*ffi::sfText_getTransform(self.text.as_ptr()) }

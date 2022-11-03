@@ -169,7 +169,7 @@ impl Transform {
     /// Return a transformed point
     #[must_use]
     pub fn transform_point(&self, point: Vector2f) -> Vector2f {
-        unsafe { Vector2f::from_raw(ffi::sfTransform_transformPoint(self, point.raw())) }
+        unsafe { ffi::sfTransform_transformPoint(self, point) }
     }
 
     /// Apply a transform to a rectangle

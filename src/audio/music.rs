@@ -279,7 +279,7 @@ impl<'stream> SoundSource for Music<'stream> {
         unsafe { ffi::audio::sfMusic_setVolume(self.music, volume) }
     }
     fn set_position<P: Into<Vector3f>>(&mut self, position: P) {
-        unsafe { ffi::audio::sfMusic_setPosition(self.music, position.into().raw()) }
+        unsafe { ffi::audio::sfMusic_setPosition(self.music, position.into()) }
     }
     fn set_relative_to_listener(&mut self, relative: bool) {
         unsafe { ffi::audio::sfMusic_setRelativeToListener(self.music, relative) }
@@ -297,7 +297,7 @@ impl<'stream> SoundSource for Music<'stream> {
         unsafe { ffi::audio::sfMusic_getVolume(self.music) }
     }
     fn position(&self) -> Vector3f {
-        unsafe { Vector3f::from_raw(ffi::audio::sfMusic_getPosition(self.music)) }
+        unsafe { ffi::audio::sfMusic_getPosition(self.music) }
     }
     fn is_relative_to_listener(&self) -> bool {
         unsafe { ffi::audio::sfMusic_isRelativeToListener(self.music) }

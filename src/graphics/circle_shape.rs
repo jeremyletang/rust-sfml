@@ -95,37 +95,37 @@ impl<'s> Drawable for CircleShape<'s> {
 
 impl<'s> Transformable for CircleShape<'s> {
     fn set_position<P: Into<Vector2f>>(&mut self, position: P) {
-        unsafe { ffi::sfCircleShape_setPosition(self.circle_shape.as_ptr(), position.into().raw()) }
+        unsafe { ffi::sfCircleShape_setPosition(self.circle_shape.as_ptr(), position.into()) }
     }
     fn set_rotation(&mut self, angle: f32) {
         unsafe { ffi::sfCircleShape_setRotation(self.circle_shape.as_ptr(), angle) }
     }
     fn set_scale<S: Into<Vector2f>>(&mut self, scale: S) {
-        unsafe { ffi::sfCircleShape_setScale(self.circle_shape.as_ptr(), scale.into().raw()) }
+        unsafe { ffi::sfCircleShape_setScale(self.circle_shape.as_ptr(), scale.into()) }
     }
     fn set_origin<O: Into<Vector2f>>(&mut self, origin: O) {
-        unsafe { ffi::sfCircleShape_setOrigin(self.circle_shape.as_ptr(), origin.into().raw()) }
+        unsafe { ffi::sfCircleShape_setOrigin(self.circle_shape.as_ptr(), origin.into()) }
     }
     fn position(&self) -> Vector2f {
-        unsafe { Vector2f::from_raw(ffi::sfCircleShape_getPosition(self.circle_shape.as_ptr())) }
+        unsafe { ffi::sfCircleShape_getPosition(self.circle_shape.as_ptr()) }
     }
     fn rotation(&self) -> f32 {
         unsafe { ffi::sfCircleShape_getRotation(self.circle_shape.as_ptr()) }
     }
     fn get_scale(&self) -> Vector2f {
-        unsafe { Vector2f::from_raw(ffi::sfCircleShape_getScale(self.circle_shape.as_ptr())) }
+        unsafe { ffi::sfCircleShape_getScale(self.circle_shape.as_ptr()) }
     }
     fn origin(&self) -> Vector2f {
-        unsafe { Vector2f::from_raw(ffi::sfCircleShape_getOrigin(self.circle_shape.as_ptr())) }
+        unsafe { ffi::sfCircleShape_getOrigin(self.circle_shape.as_ptr()) }
     }
     fn move_<O: Into<Vector2f>>(&mut self, offset: O) {
-        unsafe { ffi::sfCircleShape_move(self.circle_shape.as_ptr(), offset.into().raw()) }
+        unsafe { ffi::sfCircleShape_move(self.circle_shape.as_ptr(), offset.into()) }
     }
     fn rotate(&mut self, angle: f32) {
         unsafe { ffi::sfCircleShape_rotate(self.circle_shape.as_ptr(), angle) }
     }
     fn scale<F: Into<Vector2f>>(&mut self, factors: F) {
-        unsafe { ffi::sfCircleShape_scale(self.circle_shape.as_ptr(), factors.into().raw()) }
+        unsafe { ffi::sfCircleShape_scale(self.circle_shape.as_ptr(), factors.into()) }
     }
     fn transform(&self) -> &Transform {
         unsafe { &*ffi::sfCircleShape_getTransform(self.circle_shape.as_ptr()) }
@@ -187,12 +187,7 @@ impl<'s> Shape<'s> for CircleShape<'s> {
         }
     }
     fn point(&self, index: u32) -> Vector2f {
-        unsafe {
-            Vector2f::from_raw(ffi::sfCircleShape_getPoint(
-                self.circle_shape.as_ptr(),
-                index as usize,
-            ))
-        }
+        unsafe { ffi::sfCircleShape_getPoint(self.circle_shape.as_ptr(), index as usize) }
     }
     fn local_bounds(&self) -> FloatRect {
         unsafe { ffi::sfCircleShape_getLocalBounds(self.circle_shape.as_ptr()) }

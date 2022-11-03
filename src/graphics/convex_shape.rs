@@ -75,9 +75,7 @@ impl<'s> ConvexShape<'s> {
             index,
             self.point_count()
         );
-        unsafe {
-            ffi::sfConvexShape_setPoint(self.convex_shape, index as usize, point.into().raw())
-        }
+        unsafe { ffi::sfConvexShape_setPoint(self.convex_shape, index as usize, point.into()) }
     }
 
     /// Set the number of points of a convex
@@ -113,37 +111,37 @@ impl<'s> Drawable for ConvexShape<'s> {
 
 impl<'s> Transformable for ConvexShape<'s> {
     fn set_position<P: Into<Vector2f>>(&mut self, position: P) {
-        unsafe { ffi::sfConvexShape_setPosition(self.convex_shape, position.into().raw()) }
+        unsafe { ffi::sfConvexShape_setPosition(self.convex_shape, position.into()) }
     }
     fn set_rotation(&mut self, angle: f32) {
         unsafe { ffi::sfConvexShape_setRotation(self.convex_shape, angle) }
     }
     fn set_scale<S: Into<Vector2f>>(&mut self, scale: S) {
-        unsafe { ffi::sfConvexShape_setScale(self.convex_shape, scale.into().raw()) }
+        unsafe { ffi::sfConvexShape_setScale(self.convex_shape, scale.into()) }
     }
     fn set_origin<O: Into<Vector2f>>(&mut self, origin: O) {
-        unsafe { ffi::sfConvexShape_setOrigin(self.convex_shape, origin.into().raw()) }
+        unsafe { ffi::sfConvexShape_setOrigin(self.convex_shape, origin.into()) }
     }
     fn position(&self) -> Vector2f {
-        unsafe { Vector2f::from_raw(ffi::sfConvexShape_getPosition(self.convex_shape)) }
+        unsafe { ffi::sfConvexShape_getPosition(self.convex_shape) }
     }
     fn rotation(&self) -> f32 {
         unsafe { ffi::sfConvexShape_getRotation(self.convex_shape) }
     }
     fn get_scale(&self) -> Vector2f {
-        unsafe { Vector2f::from_raw(ffi::sfConvexShape_getScale(self.convex_shape)) }
+        unsafe { ffi::sfConvexShape_getScale(self.convex_shape) }
     }
     fn origin(&self) -> Vector2f {
-        unsafe { Vector2f::from_raw(ffi::sfConvexShape_getOrigin(self.convex_shape)) }
+        unsafe { ffi::sfConvexShape_getOrigin(self.convex_shape) }
     }
     fn move_<O: Into<Vector2f>>(&mut self, offset: O) {
-        unsafe { ffi::sfConvexShape_move(self.convex_shape, offset.into().raw()) }
+        unsafe { ffi::sfConvexShape_move(self.convex_shape, offset.into()) }
     }
     fn rotate(&mut self, angle: f32) {
         unsafe { ffi::sfConvexShape_rotate(self.convex_shape, angle) }
     }
     fn scale<F: Into<Vector2f>>(&mut self, factors: F) {
-        unsafe { ffi::sfConvexShape_scale(self.convex_shape, factors.into().raw()) }
+        unsafe { ffi::sfConvexShape_scale(self.convex_shape, factors.into()) }
     }
     fn transform(&self) -> &Transform {
         unsafe { &*ffi::sfConvexShape_getTransform(self.convex_shape) }
@@ -212,10 +210,7 @@ impl<'s> Shape<'s> for ConvexShape<'s> {
                 index,
                 self.point_count()
             );
-            Vector2f::from_raw(ffi::sfConvexShape_getPoint(
-                self.convex_shape,
-                index as usize,
-            ))
+            ffi::sfConvexShape_getPoint(self.convex_shape, index as usize)
         }
     }
     fn local_bounds(&self) -> FloatRect {
@@ -253,12 +248,8 @@ impl Iterator for ConvexShapePoints {
         if self.pos == point_count {
             None
         } else {
-            let point = unsafe {
-                Vector2f::from_raw(ffi::sfConvexShape_getPoint(
-                    self.convex_shape,
-                    self.pos as usize,
-                ))
-            };
+            let point =
+                unsafe { ffi::sfConvexShape_getPoint(self.convex_shape, self.pos as usize) };
             self.pos += 1;
             Some(point)
         }

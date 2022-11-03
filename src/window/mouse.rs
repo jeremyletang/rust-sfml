@@ -54,12 +54,12 @@ impl Button {
 /// This function returns the global position of the mouse cursor on the desktop.
 #[must_use]
 pub fn desktop_position() -> Vector2i {
-    unsafe { Vector2i::from_raw(ffi::sfMouse_getPosition()) }
+    unsafe { ffi::sfMouse_getPosition() }
 }
 
 /// Set the current position of the mouse in desktop coordinates.
 ///
 /// This function sets the global position of the mouse cursor on the desktop.
 pub fn set_desktop_position(position: Vector2i) {
-    unsafe { ffi::sfMouse_setPosition(position.raw()) }
+    unsafe { ffi::sfMouse_setPosition(position) }
 }

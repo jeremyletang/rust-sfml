@@ -72,7 +72,7 @@ impl Cursor {
         size: Vector2u,
         hotspot: Vector2u,
     ) -> Option<SfBox<Self>> {
-        let cursor = ffi::sfCursor_createFromPixels(pixels.as_ptr(), size.raw(), hotspot.raw());
+        let cursor = ffi::sfCursor_createFromPixels(pixels.as_ptr(), size, hotspot);
         SfBox::new(cursor as *mut Cursor)
     }
 

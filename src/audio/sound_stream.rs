@@ -199,7 +199,7 @@ impl<'a, S: SoundStream> SoundSource for SoundStreamPlayer<'a, S> {
         unsafe { sfSoundStream_setVolume(self.sf_sound_stream.as_ptr(), volume) }
     }
     fn set_position<P: Into<Vector3f>>(&mut self, position: P) {
-        unsafe { sfSoundStream_setPosition(self.sf_sound_stream.as_ptr(), position.into().raw()) }
+        unsafe { sfSoundStream_setPosition(self.sf_sound_stream.as_ptr(), position.into()) }
     }
     fn set_relative_to_listener(&mut self, relative: bool) {
         unsafe { sfSoundStream_setRelativeToListener(self.sf_sound_stream.as_ptr(), relative) }
@@ -217,7 +217,7 @@ impl<'a, S: SoundStream> SoundSource for SoundStreamPlayer<'a, S> {
         unsafe { sfSoundStream_getVolume(self.sf_sound_stream.as_ptr()) }
     }
     fn position(&self) -> Vector3f {
-        unsafe { Vector3f::from_raw(sfSoundStream_getPosition(self.sf_sound_stream.as_ptr())) }
+        unsafe { sfSoundStream_getPosition(self.sf_sound_stream.as_ptr()) }
     }
     fn is_relative_to_listener(&self) -> bool {
         unsafe { sfSoundStream_isRelativeToListener(self.sf_sound_stream.as_ptr()) }

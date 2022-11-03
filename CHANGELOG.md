@@ -4,9 +4,11 @@
 
 ### Changed
 - Methods that used to take `&Rect` now take `Rect` by value
+- `listener::set_up_vector` now Takes `Vector3f` instead of `&Vector3f`
 
 ### Internal improvements
 - Remove needless raw conversion methods for Rect
+- Remove needless raw conversion methods for Vector2/Vector3
 
 ## 0.19.0
 

@@ -156,7 +156,7 @@ impl Image {
     /// Return the size in pixels
     #[must_use]
     pub fn size(&self) -> Vector2u {
-        unsafe { Vector2u::from_raw(ffi::sfImage_getSize(self.image)) }
+        unsafe { ffi::sfImage_getSize(self.image) }
     }
 
     /// Create a transparency mask from a specified color-key

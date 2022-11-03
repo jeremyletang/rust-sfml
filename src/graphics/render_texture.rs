@@ -125,7 +125,7 @@ impl RenderTexture {
 
 impl RenderTarget for RenderTexture {
     fn size(&self) -> Vector2u {
-        unsafe { Vector2u::from_raw(ffi::sfRenderTexture_getSize(self.render_texture)) }
+        unsafe { ffi::sfRenderTexture_getSize(self.render_texture) }
     }
     fn clear(&mut self, color: Color) {
         unsafe { ffi::sfRenderTexture_clear(self.render_texture, color) }
@@ -144,37 +144,19 @@ impl RenderTarget for RenderTexture {
     }
     fn map_pixel_to_coords(&self, point: Vector2i, view: &View) -> Vector2f {
         unsafe {
-            Vector2f::from_raw(ffi::sfRenderTexture_mapPixelToCoords_View(
-                self.render_texture,
-                point.raw(),
-                view.raw(),
-            ))
+            ffi::sfRenderTexture_mapPixelToCoords_View(self.render_texture, point, view.raw())
         }
     }
     fn map_pixel_to_coords_current_view(&self, point: Vector2i) -> Vector2f {
-        unsafe {
-            Vector2f::from_raw(ffi::sfRenderTexture_mapPixelToCoords(
-                self.render_texture,
-                point.raw(),
-            ))
-        }
+        unsafe { ffi::sfRenderTexture_mapPixelToCoords(self.render_texture, point) }
     }
     fn map_coords_to_pixel(&self, point: Vector2f, view: &View) -> Vector2i {
         unsafe {
-            Vector2i::from_raw(ffi::sfRenderTexture_mapCoordsToPixel_View(
-                self.render_texture,
-                point.raw(),
-                view.raw(),
-            ))
+            ffi::sfRenderTexture_mapCoordsToPixel_View(self.render_texture, point, view.raw())
         }
     }
     fn map_coords_to_pixel_current_view(&self, point: Vector2f) -> Vector2i {
-        unsafe {
-            Vector2i::from_raw(ffi::sfRenderTexture_mapCoordsToPixel(
-                self.render_texture,
-                point.raw(),
-            ))
-        }
+        unsafe { ffi::sfRenderTexture_mapCoordsToPixel(self.render_texture, point) }
     }
     fn draw(&mut self, object: &dyn Drawable) {
         object.draw(self, &RenderStates::DEFAULT);
