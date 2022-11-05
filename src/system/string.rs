@@ -46,10 +46,10 @@ impl<'a> SfStrConv for &'a str {
     where
         F: FnOnce(&SfStr) -> R,
     {
-        let u32cstring = U32CString::from_str(self).unwrap();
-        #[allow(trivial_casts)]
-        let sfstr: &SfStr = unsafe { &*(&*u32cstring as *const _ as *const _) };
-        fun(sfstr)
+        let uc_string = U32CString::from_str(self).unwrap();
+        let uc_str_ptr: *const U32CStr = uc_string.as_ucstr();
+        let sf_str: &SfStr = unsafe { &*(uc_str_ptr as *const SfStr) };
+        fun(sf_str)
     }
 }
 
