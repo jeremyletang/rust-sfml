@@ -15,7 +15,7 @@ use std::ops::{Add, AddAssign, Mul, MulAssign, Sub, SubAssign};
 /// let color3 = Color::GREEN; // from one of the associated color constants
 /// ```
 #[repr(C)]
-#[derive(Copy, Clone, PartialEq, Eq, Debug)]
+#[derive(Copy, Clone, PartialEq, Eq, Debug, Default)]
 pub struct Color {
     /// Red component
     pub r: u8,
