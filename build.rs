@@ -32,12 +32,12 @@ fn static_link_linux(feat_window: bool, feat_audio: bool, feat_graphics: bool) {
         println!("cargo:rustc-link-lib=dylib=freetype");
     }
     if feat_audio {
-        println!("cargo:rustc-link-lib=static=openal32");
-        println!("cargo:rustc-link-lib=static=FLAC");
-        println!("cargo:rustc-link-lib=static=vorbisenc");
-        println!("cargo:rustc-link-lib=static=vorbisfile");
-        println!("cargo:rustc-link-lib=static=vorbis");
-        println!("cargo:rustc-link-lib=static=ogg");
+        println!("cargo:rustc-link-lib=dylib=openal");
+        println!("cargo:rustc-link-lib=dylib=FLAC");
+        println!("cargo:rustc-link-lib=dylib=vorbisenc");
+        println!("cargo:rustc-link-lib=dylib=vorbisfile");
+        println!("cargo:rustc-link-lib=dylib=vorbis");
+        println!("cargo:rustc-link-lib=dylib=ogg");
     }
 }
 
@@ -140,7 +140,18 @@ fn main() {
         println!("cargo:rustc-link-search=native={libs_dir}");
     }
     println!("cargo:rustc-link-lib=static=rcsfml");
+    // Need to probe Cargo's env as build.rs uses the default toolchain to
+    // run the build meaning that #[cfg(..)]'s won't work
+    let is_windows = env::var("CARGO_CFG_WINDOWS").is_ok();
+    let is_unix = env::var("CARGO_CFG_UNIX").is_ok();
+    let is_linux = env::var("CARGO_CFG_TARGET_OS").map(|os| os == "linux").unwrap_or(false);
+
     if static_linking {
+        if is_unix && is_linux {
+            static_link_linux(feat_window, feat_audio, feat_graphics);
+        } else if is_windows {
+            static_link_windows(feat_window, feat_audio, feat_graphics);
+        }
         println!("cargo:rustc-link-lib=static=sfml-system-s");
         if feat_audio {
             println!("cargo:rustc-link-lib=static=sfml-audio-s");
@@ -165,20 +176,6 @@ fn main() {
         if feat_graphics {
             println!("LINKING GRAPHICS",);
             println!("cargo:rustc-link-lib=dylib=sfml-graphics");
-        }
-    }
-
-    // Need to probe Cargo's env as build.rs uses the default toolchain to
-    // run the build meaning that #[cfg(..)]'s won't work
-    let is_windows = env::var("CARGO_CFG_WINDOWS").is_ok();
-    let is_unix = env::var("CARGO_CFG_UNIX").is_ok();
-    let is_linux = env::var("CARGO_CFG_TARGET_OS").map(|os| os == "linux").unwrap_or(false);
-    
-    if static_linking {
-        if is_unix && is_linux {
-            static_link_linux(feat_window, feat_audio, feat_graphics);
-        } else if is_windows {
-            static_link_windows(feat_window, feat_audio, feat_graphics);
         }
     }
 }
