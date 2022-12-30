@@ -1,7 +1,6 @@
 use std::env;
 
 fn static_link_windows(feat_window: bool, feat_audio: bool, feat_graphics: bool) {
-    println!("cargo:rustc-link-lib=static=stdc++");
     println!("cargo:rustc-link-lib=dylib=winmm");
     println!("cargo:rustc-link-lib=dylib=user32");
     if feat_window {
@@ -131,7 +130,7 @@ fn main() {
             .iter(),
         );
     }
-    build.compile("rcsfml");
+    build.cpp_link_stdlib("stdc++").compile("rcsfml");
 
     if let Ok(libs_dir) = env::var("SFML_LIBS_DIR") {
         println!(
