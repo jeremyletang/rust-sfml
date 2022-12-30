@@ -130,7 +130,7 @@ fn main() {
             .iter(),
         );
     }
-    build.cpp_link_stdlib("stdc++").compile("rcsfml");
+    build.compile("rcsfml");
 
     if let Ok(libs_dir) = env::var("SFML_LIBS_DIR") {
         println!(
