@@ -1,6 +1,7 @@
 use std::env;
 
 fn static_link_windows(feat_window: bool, feat_audio: bool, feat_graphics: bool) {
+    println!("cargo:rustc-link-lib=static=stdc++");
     println!("cargo:rustc-link-lib=dylib=winmm");
     println!("cargo:rustc-link-lib=dylib=user32");
     if feat_window {
@@ -147,12 +148,12 @@ fn main() {
     let is_linux = env::var("CARGO_CFG_TARGET_OS").map(|os| os == "linux").unwrap_or(false);
 
     if static_linking {
+        println!("cargo:rustc-link-lib=static=sfml-system-s");
         if is_unix && is_linux {
             static_link_linux(feat_window, feat_audio, feat_graphics);
         } else if is_windows {
             static_link_windows(feat_window, feat_audio, feat_graphics);
         }
-        println!("cargo:rustc-link-lib=static=sfml-system-s");
         if feat_audio {
             println!("cargo:rustc-link-lib=static=sfml-audio-s");
         }
