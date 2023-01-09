@@ -1,5 +1,46 @@
 use std::env;
 
+fn static_link_windows(feat_window: bool, feat_audio: bool, feat_graphics: bool) {
+    println!("cargo:rustc-link-lib=dylib=winmm");
+    println!("cargo:rustc-link-lib=dylib=user32");
+    if feat_window {
+        println!("cargo:rustc-link-lib=dylib=opengl32");
+        println!("cargo:rustc-link-lib=dylib=gdi32");
+    }
+    if feat_graphics {
+        println!("cargo:rustc-link-lib=static=freetype");
+    }
+    if feat_audio {
+        println!("cargo:rustc-link-lib=static=openal32");
+        println!("cargo:rustc-link-lib=static=FLAC");
+        println!("cargo:rustc-link-lib=static=vorbisenc");
+        println!("cargo:rustc-link-lib=static=vorbisfile");
+        println!("cargo:rustc-link-lib=static=vorbis");
+        println!("cargo:rustc-link-lib=static=ogg");
+    }
+}
+
+fn static_link_linux(feat_window: bool, feat_audio: bool, feat_graphics: bool) {
+    println!("cargo:rustc-link-lib=dylib=udev");
+    if feat_window {
+        println!("cargo:rustc-link-lib=dylib=GL");
+        println!("cargo:rustc-link-lib=dylib=X11");
+        println!("cargo:rustc-link-lib=dylib=Xcursor");
+        println!("cargo:rustc-link-lib=dylib=Xrandr");
+    }
+    if feat_graphics {
+        println!("cargo:rustc-link-lib=dylib=freetype");
+    }
+    if feat_audio {
+        println!("cargo:rustc-link-lib=dylib=openal");
+        println!("cargo:rustc-link-lib=dylib=FLAC");
+        println!("cargo:rustc-link-lib=dylib=vorbisenc");
+        println!("cargo:rustc-link-lib=dylib=vorbisfile");
+        println!("cargo:rustc-link-lib=dylib=vorbis");
+        println!("cargo:rustc-link-lib=dylib=ogg");
+    }
+}
+
 fn main() {
     println!("cargo:rerun-if-changed=CSFML");
     println!("cargo:rerun-if-env-changed=SFML_INCLUDE_DIR");
@@ -99,8 +140,19 @@ fn main() {
         println!("cargo:rustc-link-search=native={libs_dir}");
     }
     println!("cargo:rustc-link-lib=static=rcsfml");
+    // Need to probe Cargo's env as build.rs uses the default toolchain to
+    // run the build meaning that #[cfg(..)]'s won't work
+    let is_windows = env::var("CARGO_CFG_WINDOWS").is_ok();
+    let is_unix = env::var("CARGO_CFG_UNIX").is_ok();
+    let is_linux = env::var("CARGO_CFG_TARGET_OS").map(|os| os == "linux").unwrap_or(false);
+
     if static_linking {
         println!("cargo:rustc-link-lib=static=sfml-system-s");
+        if is_unix && is_linux {
+            static_link_linux(feat_window, feat_audio, feat_graphics);
+        } else if is_windows {
+            static_link_windows(feat_window, feat_audio, feat_graphics);
+        }
         if feat_audio {
             println!("cargo:rustc-link-lib=static=sfml-audio-s");
         }
@@ -124,49 +176,6 @@ fn main() {
         if feat_graphics {
             println!("LINKING GRAPHICS",);
             println!("cargo:rustc-link-lib=dylib=sfml-graphics");
-        }
-    }
-
-    #[cfg(windows)]
-    if static_linking {
-        println!("cargo:rustc-link-lib=dylib=winmm");
-        println!("cargo:rustc-link-lib=dylib=user32");
-        if feat_window {
-            println!("cargo:rustc-link-lib=dylib=opengl32");
-            println!("cargo:rustc-link-lib=dylib=gdi32");
-        }
-        if feat_graphics {
-            println!("cargo:rustc-link-lib=static=freetype");
-        }
-        if feat_audio {
-            println!("cargo:rustc-link-lib=static=openal32");
-            println!("cargo:rustc-link-lib=static=flac");
-            println!("cargo:rustc-link-lib=static=vorbisenc");
-            println!("cargo:rustc-link-lib=static=vorbisfile");
-            println!("cargo:rustc-link-lib=static=vorbis");
-            println!("cargo:rustc-link-lib=static=ogg");
-        }
-    }
-
-    #[cfg(all(unix, target_os = "linux"))]
-    if static_linking {
-        println!("cargo:rustc-link-lib=dylib=udev");
-        if feat_window {
-            println!("cargo:rustc-link-lib=dylib=GL");
-            println!("cargo:rustc-link-lib=dylib=X11");
-            println!("cargo:rustc-link-lib=dylib=Xcursor");
-            println!("cargo:rustc-link-lib=dylib=Xrandr");
-        }
-        if feat_graphics {
-            println!("cargo:rustc-link-lib=dylib=freetype");
-        }
-        if feat_audio {
-            println!("cargo:rustc-link-lib=static=openal32");
-            println!("cargo:rustc-link-lib=static=flac");
-            println!("cargo:rustc-link-lib=static=vorbisenc");
-            println!("cargo:rustc-link-lib=static=vorbisfile");
-            println!("cargo:rustc-link-lib=static=vorbis");
-            println!("cargo:rustc-link-lib=static=ogg");
         }
     }
 }
