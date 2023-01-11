@@ -16,6 +16,10 @@
 //! - `SFML_INCLUDE_DIR`. Set this to the `include` folder of your SFML location.
 //! - `SFML_LIBS_DIR`. Set this to the `lib` folder of your SFML location.
 //!
+//! Linux users may also have to set this environment variable to help your binary find the
+//! shared object files.
+//! - `LD_LIBRARY_PATH`. Set this to the `lib` folder of your SFML location.
+//!
 //! # !! Thread safety warning !!
 //!
 //! rust-sfml strives to be memory-safe, as a Rust library should be, but currently there is no

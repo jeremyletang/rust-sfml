@@ -4,6 +4,7 @@
 
 ### Added
 - `Default` impl for `Color` (transparent)
+- Linking Documentation for `LD_LIBRARY_PATH` 
 
 ### Changed
 - Methods that used to take `&Rect` now take `Rect` by value
