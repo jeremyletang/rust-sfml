@@ -1,7 +1,7 @@
 use crate::{
     ffi::graphics as ffi,
     graphics::{
-        CircleShape, Color, ConvexShape, CustomShape, Drawable, IntRect, PrimitiveType,
+        CircleShape, Color, ConvexShape, CustomShape, Drawable, IntRect, PrimitiveType, RcSprite,
         RectangleShape, RenderStates, RenderTarget, Sprite, Text, Texture, Vertex, VertexBuffer,
         View,
     },
@@ -169,6 +169,9 @@ impl RenderTarget for RenderTexture {
         unsafe { ffi::sfRenderTexture_drawShape(self.render_texture, shape.raw(), rs) }
     }
     fn draw_sprite(&self, sprite: &Sprite, rs: &RenderStates) {
+        unsafe { ffi::sfRenderTexture_drawSprite(self.render_texture, sprite.raw(), rs) }
+    }
+    fn draw_rc_sprite(&self, sprite: &RcSprite, rs: &RenderStates) {
         unsafe { ffi::sfRenderTexture_drawSprite(self.render_texture, sprite.raw(), rs) }
     }
     fn draw_circle_shape(&self, circle_shape: &CircleShape, rs: &RenderStates) {

@@ -3,7 +3,7 @@ use std::ptr::NonNull;
 use crate::{
     ffi::graphics as ffi,
     graphics::{
-        CircleShape, Color, ConvexShape, CustomShape, Drawable, IntRect, PrimitiveType,
+        CircleShape, Color, ConvexShape, CustomShape, Drawable, IntRect, PrimitiveType, RcSprite,
         RectangleShape, RenderStates, RenderTarget, Sprite, Text, Vertex, VertexBuffer, View,
     },
     system::{SfStrConv, Vector2f, Vector2i, Vector2u},
@@ -702,6 +702,11 @@ impl RenderTarget for RenderWindow {
         }
     }
     fn draw_sprite(&self, sprite: &Sprite, render_states: &RenderStates) {
+        unsafe {
+            ffi::sfRenderWindow_drawSprite(self.render_window.as_ptr(), sprite.raw(), render_states)
+        }
+    }
+    fn draw_rc_sprite(&self, sprite: &RcSprite, render_states: &RenderStates) {
         unsafe {
             ffi::sfRenderWindow_drawSprite(self.render_window.as_ptr(), sprite.raw(), render_states)
         }
