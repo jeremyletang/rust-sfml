@@ -133,10 +133,7 @@ fn main() {
     build.compile("rcsfml");
 
     if let Ok(libs_dir) = env::var("SFML_LIBS_DIR") {
-        println!(
-            "cargo:warning=Adding custom SFML libs search path {}",
-            libs_dir
-        );
+        println!("cargo:warning=Adding custom SFML libs search path {libs_dir}");
         println!("cargo:rustc-link-search=native={libs_dir}");
     }
     println!("cargo:rustc-link-lib=static=rcsfml");
