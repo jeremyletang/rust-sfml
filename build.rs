@@ -144,7 +144,9 @@ fn main() {
     // run the build meaning that #[cfg(..)]'s won't work
     let is_windows = env::var("CARGO_CFG_WINDOWS").is_ok();
     let is_unix = env::var("CARGO_CFG_UNIX").is_ok();
-    let is_linux = env::var("CARGO_CFG_TARGET_OS").map(|os| os == "linux").unwrap_or(false);
+    let is_linux = env::var("CARGO_CFG_TARGET_OS")
+        .map(|os| os == "linux")
+        .unwrap_or(false);
 
     if static_linking {
         println!("cargo:rustc-link-lib=static=sfml-system-s");
