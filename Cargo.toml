@@ -9,7 +9,7 @@ license = "zlib-acknowledgement"
 keywords = ["sfml", "multimedia", "game"]
 readme = "README.md"
 edition = "2021"
-rust-version = "1.60"
+rust-version = "1.66"
 
 [features]
 default = ["graphics", "audio"]
