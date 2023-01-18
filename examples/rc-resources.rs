@@ -1,6 +1,9 @@
-use sfml::graphics::{Color, RcSprite, RcTexture, RenderTarget, RenderWindow, Transformable};
-use sfml::system::Vector2f;
-use sfml::window::{Event, Style};
+use sfml::{
+    graphics::{Color, RcSprite, RcTexture, RenderTarget, RenderWindow, Transformable},
+    system::Vector2f,
+    window::{Event, Style},
+};
+
 include!("../example_common.rs");
 
 struct FloatingSprite {
