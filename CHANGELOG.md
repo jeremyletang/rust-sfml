@@ -5,6 +5,7 @@
 ### Added
 - `Default` impl for `Color` (transparent)
 - Linking Documentation for `LD_LIBRARY_PATH` 
+- RcTexture and RcSprite with examples in rc-resources.rs
 
 ### Changed
 - Methods that used to take `&Rect` now take `Rect` by value
