@@ -105,7 +105,7 @@ impl RcSprite {
     /// * color - New color of the sprite
     pub fn set_color(&mut self, color: Color) {
         if !self.texture_exists() {
-            eprintln!("{}", ERROR_MSG);
+            eprintln!("{ERROR_MSG}");
             return;
         }
         unsafe { ffi::sfSprite_setColor(self.sprite.as_ptr(), color) }
@@ -133,7 +133,7 @@ impl RcSprite {
     #[must_use]
     pub fn color(&self) -> Color {
         if !self.texture_exists() {
-            eprintln!("{}", RETURN_ERROR_MSG);
+            eprintln!("{RETURN_ERROR_MSG}");
             return Default::default();
         }
         unsafe { ffi::sfSprite_getColor(self.sprite.as_ptr()) }
@@ -151,7 +151,7 @@ impl RcSprite {
     #[must_use]
     pub fn local_bounds(&self) -> FloatRect {
         if !self.texture_exists() {
-            eprintln!("{}", RETURN_ERROR_MSG);
+            eprintln!("{RETURN_ERROR_MSG}");
             return Default::default();
         }
         unsafe { ffi::sfSprite_getLocalBounds(self.sprite.as_ptr()) }
@@ -169,7 +169,7 @@ impl RcSprite {
     #[must_use]
     pub fn global_bounds(&self) -> FloatRect {
         if !self.texture_exists() {
-            eprintln!("{}", RETURN_ERROR_MSG);
+            eprintln!("{RETURN_ERROR_MSG}");
             return Default::default();
         }
         unsafe { ffi::sfSprite_getGlobalBounds(self.sprite.as_ptr()) }
@@ -181,7 +181,7 @@ impl RcSprite {
     #[must_use]
     pub fn texture_rect(&self) -> IntRect {
         if !self.texture_exists() {
-            eprintln!("{}", RETURN_ERROR_MSG);
+            eprintln!("{RETURN_ERROR_MSG}");
             return Default::default();
         }
         unsafe { ffi::sfSprite_getTextureRect(self.sprite.as_ptr()) }
@@ -197,7 +197,7 @@ impl RcSprite {
     /// * rectangle - Rectangle defining the region of the texture to display
     pub fn set_texture_rect(&mut self, rect: IntRect) {
         if !self.texture_exists() {
-            eprintln!("{}", ERROR_MSG);
+            eprintln!("{ERROR_MSG}");
             return;
         }
         unsafe { ffi::sfSprite_setTextureRect(self.sprite.as_ptr(), rect) }
@@ -240,77 +240,77 @@ impl Drawable for RcSprite {
 impl Transformable for RcSprite {
     fn set_position<P: Into<Vector2f>>(&mut self, position: P) {
         if !self.texture_exists() {
-            eprintln!("{}", ERROR_MSG);
+            eprintln!("{ERROR_MSG}");
             return;
         }
         unsafe { ffi::sfSprite_setPosition(self.sprite.as_ptr(), position.into()) }
     }
     fn set_rotation(&mut self, angle: f32) {
         if !self.texture_exists() {
-            eprintln!("{}", ERROR_MSG);
+            eprintln!("{ERROR_MSG}");
             return;
         }
         unsafe { ffi::sfSprite_setRotation(self.sprite.as_ptr(), angle) }
     }
     fn set_scale<S: Into<Vector2f>>(&mut self, scale: S) {
         if !self.texture_exists() {
-            eprintln!("{}", ERROR_MSG);
+            eprintln!("{ERROR_MSG}");
             return;
         }
         unsafe { ffi::sfSprite_setScale(self.sprite.as_ptr(), scale.into()) }
     }
     fn set_origin<O: Into<Vector2f>>(&mut self, origin: O) {
         if !self.texture_exists() {
-            eprintln!("{}", ERROR_MSG);
+            eprintln!("{ERROR_MSG}");
             return;
         }
         unsafe { ffi::sfSprite_setOrigin(self.sprite.as_ptr(), origin.into()) }
     }
     fn position(&self) -> Vector2f {
         if !self.texture_exists() {
-            eprintln!("{}", RETURN_ERROR_MSG);
+            eprintln!("{RETURN_ERROR_MSG}");
             return Default::default();
         }
         unsafe { ffi::sfSprite_getPosition(self.sprite.as_ptr()) }
     }
     fn rotation(&self) -> f32 {
         if !self.texture_exists() {
-            eprintln!("{}", RETURN_ERROR_MSG);
+            eprintln!("{RETURN_ERROR_MSG}");
             return Default::default();
         }
         unsafe { ffi::sfSprite_getRotation(self.sprite.as_ptr()) }
     }
     fn get_scale(&self) -> Vector2f {
         if !self.texture_exists() {
-            eprintln!("{}", RETURN_ERROR_MSG);
+            eprintln!("{RETURN_ERROR_MSG}");
             return Default::default();
         }
         unsafe { ffi::sfSprite_getScale(self.sprite.as_ptr()) }
     }
     fn origin(&self) -> Vector2f {
         if !self.texture_exists() {
-            eprintln!("{}", RETURN_ERROR_MSG);
+            eprintln!("{RETURN_ERROR_MSG}");
             return Default::default();
         }
         unsafe { ffi::sfSprite_getOrigin(self.sprite.as_ptr()) }
     }
     fn move_<O: Into<Vector2f>>(&mut self, offset: O) {
         if !self.texture_exists() {
-            eprintln!("{}", ERROR_MSG);
+            eprintln!("{ERROR_MSG}");
             return;
         }
         unsafe { ffi::sfSprite_move(self.sprite.as_ptr(), offset.into()) }
     }
     fn rotate(&mut self, angle: f32) {
         if !self.texture_exists() {
-            eprintln!("{}", ERROR_MSG);
+            eprintln!("{ERROR_MSG}");
             return;
         }
         unsafe { ffi::sfSprite_rotate(self.sprite.as_ptr(), angle) }
     }
     fn scale<F: Into<Vector2f>>(&mut self, factors: F) {
         if !self.texture_exists() {
-            eprintln!("{}", ERROR_MSG);
+            eprintln!("{ERROR_MSG}");
             return;
         }
         unsafe { ffi::sfSprite_scale(self.sprite.as_ptr(), factors.into()) }
