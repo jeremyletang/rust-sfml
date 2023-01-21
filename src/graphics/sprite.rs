@@ -6,10 +6,7 @@ use crate::{
     },
     system::Vector2f,
 };
-use std::{
-    marker::PhantomData,
-    ptr::{self, NonNull},
-};
+use std::{marker::PhantomData, ptr::NonNull};
 
 /// Drawable representation of a texture
 ///
@@ -74,13 +71,6 @@ impl<'s> Sprite<'s> {
     /// of the new texture?
     pub fn set_texture(&mut self, texture: &'s Texture, reset_rect: bool) {
         unsafe { ffi::sfSprite_setTexture(self.sprite.as_ptr(), texture, reset_rect) }
-    }
-
-    /// Disable Texturing
-    ///
-    /// Disable the current texture and reset the texture rect
-    pub fn disable_texture(&mut self) {
-        unsafe { ffi::sfSprite_setTexture(self.sprite.as_ptr(), ptr::null_mut(), true) }
     }
 
     /// Set the global color of a sprite
