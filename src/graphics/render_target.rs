@@ -222,9 +222,9 @@ pub trait RenderTarget {
     /// Draw `ConvexShape`
     fn draw_convex_shape(&self, convex_shape: &ConvexShape, rs: &RenderStates);
 
-    /// Draw `VertexBuffer`
+    /// Draw primitives defined by a vertex buffer
     fn draw_vertex_buffer(&self, vertex_buffer: &VertexBuffer, rs: &RenderStates);
 
-    /// draw primitives
+    /// Draw primitives defined by an array of vertices.
     fn draw_primitives(&self, vertices: &[Vertex], ty: PrimitiveType, rs: &RenderStates);
 }
