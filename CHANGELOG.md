@@ -1,6 +1,9 @@
 # Changelog
 
 ## Unreleased
+- Nothing yet
+
+## 0.20.0
 
 ### Added
 - `Default` impl for `Color` (transparent)
