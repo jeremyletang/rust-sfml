@@ -4,7 +4,7 @@
 
 ### Added
 - `Default` impl for `Color` (transparent)
-- Linking Documentation for `LD_LIBRARY_PATH` 
+- Help on using `LD_LIBRARY_PATH` for finding SFML shared libraries on *nix.
 - `RcTexture` and `RcSprite` for reference counted textures (see `examples/rc-resources.rs`)
 
 ### Changed
