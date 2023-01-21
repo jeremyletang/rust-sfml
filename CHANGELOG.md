@@ -5,7 +5,7 @@
 ### Added
 - `Default` impl for `Color` (transparent)
 - Linking Documentation for `LD_LIBRARY_PATH` 
-- RcTexture and RcSprite with examples in rc-resources.rs
+- `RcTexture` and `RcSprite` for reference counted textures (see `examples/rc-resources.rs`)
 
 ### Changed
 - Removed `Sprite::disable_texture`, due to being an unsound API
