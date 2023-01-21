@@ -748,12 +748,11 @@ impl RenderTarget for RenderWindow {
         }
     }
     fn draw_primitives(&self, vertices: &[Vertex], ty: PrimitiveType, rs: &RenderStates) {
-        let len = vertices.len();
         unsafe {
             ffi::sfRenderWindow_drawPrimitives(
                 self.render_window.as_ptr(),
                 vertices.as_ptr() as *const _,
-                len,
+                vertices.len(),
                 ty.0,
                 rs,
             );
