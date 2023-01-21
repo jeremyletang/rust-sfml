@@ -18,7 +18,7 @@ impl FloatingSprite {
         Self {
             up,
             left,
-            sprite: RcSprite::with_texture(&texture),
+            sprite: RcSprite::with_texture(texture),
             speed,
         }
     }
@@ -70,9 +70,8 @@ fn main() {
 
     while window.is_open() {
         while let Some(event) = window.poll_event() {
-            match event {
-                Event::Closed => window.close(),
-                _ => {}
+            if event == Event::Closed {
+                window.close();
             }
         }
 
