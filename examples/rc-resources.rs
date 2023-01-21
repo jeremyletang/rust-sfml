@@ -14,11 +14,11 @@ struct FloatingSprite {
 }
 
 impl FloatingSprite {
-    fn new(sprite: RcSprite, up: bool, left: bool, speed: f32) -> Self {
+    fn new(texture: &RcTexture, up: bool, left: bool, speed: f32) -> Self {
         Self {
             up,
             left,
-            sprite,
+            sprite: RcSprite::with_texture(&texture),
             speed,
         }
     }
@@ -28,6 +28,7 @@ impl FloatingSprite {
     }
 
     fn move_sprites(&mut self, window_size: Vector2f) {
+        // Modify the sprite position freely
         if self.sprite.position().y <= 0f32 {
             self.up = false;
         }
@@ -55,13 +56,18 @@ fn main() {
     let mut window =
         RenderWindow::new((800, 600), "SFML window", Style::CLOSE, &Default::default());
     window.set_framerate_limit(60);
+
+    // Create a new texture.
     let texture = RcTexture::from_file(example_res!("logo.png")).unwrap();
+
+    // Load many sprites with no lifetime contingencies
     let mut floating_sprites = Vec::from([
-        FloatingSprite::new(RcSprite::with_texture(&texture), true, true, 1f32),
-        FloatingSprite::new(RcSprite::with_texture(&texture), true, false, 1.5f32),
-        FloatingSprite::new(RcSprite::with_texture(&texture), false, true, 2f32),
-        FloatingSprite::new(RcSprite::with_texture(&texture), false, false, 2.5f32),
+        FloatingSprite::new(&texture, true, true, 1f32),
+        FloatingSprite::new(&texture, true, false, 1.5f32),
+        FloatingSprite::new(&texture, false, true, 2f32),
+        FloatingSprite::new(&texture, false, false, 2.5f32),
     ]);
+
     while window.is_open() {
         while let Some(event) = window.poll_event() {
             match event {
@@ -69,11 +75,15 @@ fn main() {
                 _ => {}
             }
         }
+
+        // Update floating_sprite positions so they move around on the screen
         for floating_sprite in &mut floating_sprites {
             floating_sprite.move_sprites(Vector2f::new(800f32, 600f32));
         }
 
         window.clear(Color::BLACK);
+
+        // Fetch and draw all the sprites in floating_sprites
         for floating_sprite in &floating_sprites {
             window.draw(floating_sprite.sprite());
         }

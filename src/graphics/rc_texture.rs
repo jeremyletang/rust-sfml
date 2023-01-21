@@ -11,6 +11,43 @@ use std::{
     rc::Rc,
 };
 
+/// [`Image`] living on the graphics card that can be used for drawing.
+///
+/// `RcTexture` stores pixels that can be drawn, with a rc_sprite for example.
+///
+/// A texture lives in the graphics card memory, therefore it is very fast to draw a
+/// texture to a render target,
+/// or copy a render target to a texture (the graphics card can access both directly).
+///
+/// Being stored in the graphics card memory has some drawbacks.
+/// A texture cannot be manipulated as freely as a [`Image`],
+/// you need to prepare the pixels first and then upload them to the texture in a
+/// single operation (see the various update methods below).
+///
+/// `RcTexture` makes it easy to convert from/to [`Image`],
+/// but keep in mind that these calls require transfers between the graphics card and
+/// the central memory, therefore they are slow operations.
+///
+/// A texture can be loaded from an image, but also directly from a file/memory/stream.
+/// The necessary shortcuts are defined so that you don't need an image first for the
+/// most common cases.
+/// However, if you want to perform some modifications on the pixels before creating the
+/// final texture, you can load your file to a [`Image`], do whatever you need with the pixels,
+/// and then call [`RcTexture::load_from_image`].
+///
+/// Since they live in the graphics card memory,
+/// the pixels of a texture cannot be accessed without a slow copy first.
+/// And they cannot be accessed individually.
+/// Therefore, if you need to read the texture's pixels (like for pixel-perfect collisions),
+/// it is recommended to store the collision information separately,
+/// for example in an array of booleans.
+///
+/// Like [`Image`], `RcTexture` can handle a unique internal representation of pixels,
+/// which is RGBA 32 bits.
+/// This means that a pixel must be composed of
+/// 8 bits red, green, blue and alpha channels – just like a [`Color`].
+///
+/// [`Color`]: crate::graphics::Color
 #[derive(Debug)]
 pub struct RcTexture {
     texture: Rc<RefCell<SfBox<Texture>>>,
@@ -319,8 +356,6 @@ impl ToOwned for RcTexture {
     }
 }
 
-// It is safe to dispose of RcTexture as there is now way to create a strong reference to the
-// RefCell
 impl Dispose for RcTexture {
     unsafe fn dispose(&mut self) {
         self.texture.borrow_mut().dispose();
