@@ -1,7 +1,8 @@
 # Changelog
 
 ## Unreleased
-- Nothing yet
+### Changed
+- Update `RcSprite` and `RcTexture` documentation.
 
 ## 0.20.0
 
