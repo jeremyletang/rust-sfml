@@ -1,6 +1,6 @@
 use crate::{
     graphics::{
-        CircleShape, Color, ConvexShape, CustomShape, Drawable, IntRect, PrimitiveType,
+        CircleShape, Color, ConvexShape, CustomShape, Drawable, IntRect, PrimitiveType, RcSprite,
         RectangleShape, RenderStates, Sprite, Text, Vertex, VertexBuffer, View,
     },
     system::{Vector2f, Vector2i, Vector2u},
@@ -209,6 +209,9 @@ pub trait RenderTarget {
 
     /// Draw Sprite
     fn draw_sprite(&self, sprite: &Sprite, rs: &RenderStates);
+
+    /// Draw `RcSprite`
+    fn draw_rc_sprite(&self, sprite: &RcSprite, rs: &RenderStates);
 
     /// Draw `CircleShape`
     fn draw_circle_shape(&self, circle_shape: &CircleShape, rs: &RenderStates);

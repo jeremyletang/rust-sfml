@@ -132,4 +132,8 @@ required-features = ["window"]
 name = "joystick"
 required-features = ["window"]
 
+[[example]]
+name = "rc-resources"
+required-features = ["graphics", "window"]
+
 [workspace]
