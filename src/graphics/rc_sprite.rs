@@ -20,10 +20,10 @@ const PANIC_ERROR_MSG: &str = "Sprite does not hold a texture! Return value cann
 ///
 /// __Note:__
 /// This is an improvement upon the Sprite module which dissallows seperation from the texture
-/// lifetime. The RcSprite allows from complete seperation from the RcTexture while still
-/// referencing it. Underneath, it uses reference counting to ensure that the RcTexture is alive and
+/// lifetime. The `RcSprite` allows from complete seperation from the `RcTexture` while still
+/// referencing it. Underneath, it uses reference counting to ensure that the `RcTexture` is alive and
 /// well, and will throw errors messages if you try to perform function on the sprite while the
-/// RcTexture is no longer alive.
+/// `RcTexture` is no longer alive.
 #[derive(Debug)]
 pub struct RcSprite {
     sprite: NonNull<ffi::sfSprite>,
@@ -53,7 +53,7 @@ impl RcSprite {
     #[must_use]
     pub fn with_texture(texture: &RcTexture) -> RcSprite {
         let mut sprite = Self::new();
-        sprite.set_texture(&texture, true);
+        sprite.set_texture(texture, true);
         sprite
     }
 
@@ -84,7 +84,7 @@ impl RcSprite {
     /// * `reset_rect` - Should the texture rect be reset to the size
     /// of the new texture?
     pub fn set_texture(&mut self, texture: &RcTexture, reset_rect: bool) {
-        self.set_rc_texture(&texture);
+        self.set_rc_texture(texture);
         let raw_texture = unsafe {
             (*self.texture.upgrade().unwrap().as_ptr())
                 .0
@@ -119,7 +119,7 @@ impl RcSprite {
     ///
     /// Return an Option to the sprite's texture
     #[must_use]
-    pub fn texture<'s>(&'s self) -> Option<&'s Texture> {
+    pub fn texture(&self) -> Option<&Texture> {
         if self.texture_exists() {
             Some(unsafe { &*(*(self.texture.as_ptr())).as_ptr() })
         } else {

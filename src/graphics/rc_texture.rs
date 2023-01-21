@@ -13,7 +13,7 @@ use std::{
 
 /// [`Image`] living on the graphics card that can be used for drawing.
 ///
-/// `RcTexture` stores pixels that can be drawn, with a rc_sprite for example.
+/// `RcTexture` stores pixels that can be drawn, with a `RcSprite` for example.
 ///
 /// A texture lives in the graphics card memory, therefore it is very fast to draw a
 /// texture to a render target,
@@ -177,7 +177,7 @@ impl RcTexture {
     /// # Arguments
     /// * image - Image to upload to the texture
     pub fn load_from_image(&mut self, image: &Image, area: IntRect) -> LoadResult<()> {
-        self.texture.borrow_mut().load_from_image(&image, area)
+        self.texture.borrow_mut().load_from_image(image, area)
     }
 
     /// Update a part of the texture from the contents of a window.
@@ -217,7 +217,7 @@ impl RcTexture {
     /// No additional check is performed on the size of the image, passing an invalid combination
     /// of image size and offset will lead to an _undefined behavior_.
     pub unsafe fn update_from_image(&mut self, image: &Image, x: u32, y: u32) {
-        self.texture.borrow_mut().update_from_image(&image, x, y)
+        self.texture.borrow_mut().update_from_image(image, x, y)
     }
 
     /// Update a part of this texture from another texture.
@@ -229,9 +229,7 @@ impl RcTexture {
     /// passing an invalid combination of texture size and offset will
     /// lead to an _undefined behavior_.
     pub unsafe fn update_from_texture(&mut self, texture: &Texture, x: u32, y: u32) {
-        self.texture
-            .borrow_mut()
-            .update_from_texture(&texture, x, y)
+        self.texture.borrow_mut().update_from_texture(texture, x, y)
     }
 
     /// Update a part of the texture from an array of pixels.

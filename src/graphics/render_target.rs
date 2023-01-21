@@ -210,7 +210,7 @@ pub trait RenderTarget {
     /// Draw Sprite
     fn draw_sprite(&self, sprite: &Sprite, rs: &RenderStates);
 
-    /// Draw RcSprite
+    /// Draw `RcSprite`
     fn draw_rc_sprite(&self, sprite: &RcSprite, rs: &RenderStates);
 
     /// Draw `CircleShape`
