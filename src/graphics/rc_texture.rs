@@ -165,7 +165,7 @@ impl RcTexture {
         self.texture.borrow_mut().load_from_file(filename, area)
     }
 
-    /// Convenience method to easily create and load a `Texture` from a file.
+    /// Convenience method to easily create and load a `RcTexture` from a file.
     pub fn from_file(filename: &str) -> LoadResult<RcTexture> {
         Ok(RcTexture {
             texture: Rc::new(RefCell::new(Texture::from_file(filename)?)),
