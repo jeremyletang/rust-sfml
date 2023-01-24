@@ -1,6 +1,10 @@
 # Changelog
 
 ## Unreleased
+
+### Added
+- Added `RcFont` and `RcText` for reference counted text (see `examples/rc-resources.rs`)
+
 ### Changed
 - Update `RcSprite` and `RcTexture` documentation.
 
