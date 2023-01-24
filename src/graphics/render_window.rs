@@ -4,7 +4,8 @@ use crate::{
     ffi::graphics as ffi,
     graphics::{
         CircleShape, Color, ConvexShape, CustomShape, Drawable, IntRect, PrimitiveType, RcSprite,
-        RectangleShape, RenderStates, RenderTarget, Sprite, Text, Vertex, VertexBuffer, View,
+        RcText, RectangleShape, RenderStates, RenderTarget, Sprite, Text, Vertex, VertexBuffer,
+        View,
     },
     system::{SfStrConv, Vector2f, Vector2i, Vector2u},
     window::{thread_safety, ContextSettings, Cursor, Event, Handle, Style, VideoMode},
@@ -692,6 +693,11 @@ impl RenderTarget for RenderWindow {
         object.draw(self, render_states);
     }
     fn draw_text(&self, text: &Text, render_states: &RenderStates) {
+        unsafe {
+            ffi::sfRenderWindow_drawText(self.render_window.as_ptr(), text.raw(), render_states)
+        }
+    }
+    fn draw_rc_text(&self, text: &RcText, render_states: &RenderStates) {
         unsafe {
             ffi::sfRenderWindow_drawText(self.render_window.as_ptr(), text.raw(), render_states)
         }

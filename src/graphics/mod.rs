@@ -14,6 +14,8 @@ pub use self::{
     primitive_type::PrimitiveType,
     rc_sprite::RcSprite,
     rc_texture::RcTexture,
+    rc_font::RcFont,
+    rc_text::RcText,
     rect::{FloatRect, IntRect, Rect},
     rectangle_shape::RectangleShape,
     render_states::RenderStates,
@@ -45,6 +47,8 @@ pub mod glsl;
 mod glyph;
 mod image;
 mod primitive_type;
+mod rc_font;
+mod rc_text;
 mod rc_sprite;
 mod rc_texture;
 mod rect;
