@@ -1,6 +1,9 @@
 # Changelog
 
 ## Unreleased
+### Added
+- pub const DEFAULT for `Vertex`
+
 ### Changed
 - Update `RcSprite` and `RcTexture` documentation.
 
