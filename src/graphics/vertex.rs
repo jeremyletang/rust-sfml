@@ -78,7 +78,7 @@ impl Vertex {
     /// Return a Vertex
     #[must_use]
     pub const fn with_pos(position: Vector2f) -> Self {
-        Self::new(position, Color::WHITE, Vector2f::new(0., 0.))
+        Self::new(position, Self::DEFAULT.color, Self::DEFAULT.tex_coords)
     }
 
     /// Create a new Vertex with the position and the color
@@ -93,7 +93,7 @@ impl Vertex {
     /// Return a Vertex
     #[must_use]
     pub const fn with_pos_color(position: Vector2f, color: Color) -> Vertex {
-        Self::new(position, color, Vector2f::new(0., 0.))
+        Self::new(position, color, Self::DEFAULT.tex_coords)
     }
 
     /// Create a new Vertex with the position and the texture coordinates
@@ -108,8 +108,14 @@ impl Vertex {
     /// Return a Vertex
     #[must_use]
     pub const fn with_pos_coords(position: Vector2f, tex_coords: Vector2f) -> Vertex {
-        Self::new(position, Color::WHITE, tex_coords)
+        Self::new(position, Self::DEFAULT.color, tex_coords)
     }
+
+    /// Const default for `Vertex`
+    ///
+    /// Workaround for <https://github.com/rust-lang/rust/issues/67792>
+    pub const DEFAULT: Vertex =
+        Self::new(Vector2f::new(0., 0.), Color::WHITE, Vector2f::new(0., 0.));
 }
 
 /// Create a new default `Vertex`
@@ -122,6 +128,6 @@ impl Vertex {
 /// Return a `Vertex`
 impl Default for Vertex {
     fn default() -> Vertex {
-        Self::new(Vector2f::new(0., 0.), Color::WHITE, Vector2f::new(0., 0.))
+        Self::DEFAULT
     }
 }

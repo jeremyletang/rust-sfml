@@ -4,6 +4,7 @@
 
 ### Added
 - Added `RcFont` and `RcText` for reference counted text (see `examples/rc-resources.rs`)
+- pub const DEFAULT for `Vertex`
 
 ### Changed
 - Update `RcSprite` and `RcTexture` documentation.
