@@ -12,10 +12,10 @@ pub use self::{
     glyph::Glyph,
     image::Image,
     primitive_type::PrimitiveType,
-    rc_sprite::RcSprite,
-    rc_texture::RcTexture,
     rc_font::RcFont,
+    rc_sprite::RcSprite,
     rc_text::RcText,
+    rc_texture::RcTexture,
     rect::{FloatRect, IntRect, Rect},
     rectangle_shape::RectangleShape,
     render_states::RenderStates,
@@ -48,8 +48,8 @@ mod glyph;
 mod image;
 mod primitive_type;
 mod rc_font;
-mod rc_text;
 mod rc_sprite;
+mod rc_text;
 mod rc_texture;
 mod rect;
 mod rectangle_shape;
