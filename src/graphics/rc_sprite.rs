@@ -18,12 +18,13 @@ const PANIC_ERROR_MSG: &str = "Sprite does not hold a texture! Return value cann
 /// `RcSprite` is a drawable type that allows to easily
 /// display a [`RcTexture`] (or a part of it) on a render target.
 ///
-/// __Note:__
-/// This is an improvement upon the Sprite module which dissallows seperation from the texture
-/// lifetime. The `RcSprite` allows for complete seperation from the `RcTexture` while still
-/// referencing it. Underneath, it uses reference counting to ensure that the `RcTexture` is alive,
-/// and will throw errors messages if you try to perform function on the sprite while the
-/// `RcTexture` is no longer alive.
+/// This is an alternative to [`Sprite`], allowing for complete seperation from the texture's lifetime.
+///
+/// Underneath, it uses reference counting to ensure that the `RcTexture` is alive,
+/// and disallows performing certain actions if the `RcTexture` is no longer alive.
+/// It will print an error message in these cases.
+///
+/// [`Sprite`]: crate::graphics::Sprite
 #[derive(Debug)]
 pub struct RcSprite {
     sprite: NonNull<ffi::sfSprite>,
