@@ -160,7 +160,7 @@ impl RcText {
     /// Function fails, and prints an error message if `RcText`'s font is dead.
     pub fn set_fill_color(&mut self, color: Color) {
         if !self.font_exists() {
-            eprintln!("{}", ERROR_MSG);
+            eprintln!("{ERROR_MSG}");
             return;
         }
         unsafe { ffi::sfText_setFillColor(self.text.as_ptr(), color) }
@@ -177,7 +177,7 @@ impl RcText {
     /// Function fails, and prints an error message if `RcText`'s font is dead.
     pub fn set_outline_thickness(&mut self, thickness: f32) {
         if !self.font_exists() {
-            eprintln!("{}", ERROR_MSG);
+            eprintln!("{ERROR_MSG}");
             return;
         }
         unsafe { ffi::sfText_setOutlineThickness(self.text.as_ptr(), thickness) }
@@ -220,7 +220,7 @@ impl RcText {
     #[must_use]
     pub fn find_character_pos(&self, index: usize) -> Vector2f {
         if !self.font_exists() {
-            eprintln!("{}", RETURN_ERROR_MSG);
+            eprintln!("{RETURN_ERROR_MSG}");
             return Default::default();
         }
         unsafe { ffi::sfText_findCharacterPos(self.text.as_ptr(), index) }
@@ -241,7 +241,7 @@ impl RcText {
     #[must_use]
     pub fn local_bounds(&self) -> FloatRect {
         if !self.font_exists() {
-            eprintln!("{}", RETURN_ERROR_MSG);
+            eprintln!("{RETURN_ERROR_MSG}");
             return Default::default();
         }
         unsafe { ffi::sfText_getLocalBounds(self.text.as_ptr()) }
@@ -262,7 +262,7 @@ impl RcText {
     #[must_use]
     pub fn global_bounds(&self) -> FloatRect {
         if !self.font_exists() {
-            eprintln!("{}", RETURN_ERROR_MSG);
+            eprintln!("{RETURN_ERROR_MSG}");
             return Default::default();
         }
         unsafe { ffi::sfText_getGlobalBounds(self.text.as_ptr()) }
@@ -345,7 +345,7 @@ impl Transformable for RcText {
     /// Function fails, and prints an error message if `RcText`'s font is dead.
     fn set_position<P: Into<Vector2f>>(&mut self, position: P) {
         if !self.font_exists() {
-            eprintln!("{}", ERROR_MSG);
+            eprintln!("{ERROR_MSG}");
             return;
         }
         unsafe { ffi::sfText_setPosition(self.text.as_ptr(), position.into()) }
@@ -356,7 +356,7 @@ impl Transformable for RcText {
     /// Function fails, and prints an error message if `RcText`'s font is dead.
     fn set_rotation(&mut self, angle: f32) {
         if !self.font_exists() {
-            eprintln!("{}", ERROR_MSG);
+            eprintln!("{ERROR_MSG}");
             return;
         }
         unsafe { ffi::sfText_setRotation(self.text.as_ptr(), angle) }
@@ -367,7 +367,7 @@ impl Transformable for RcText {
     /// Function fails, and prints an error message if `RcText`'s font is dead.
     fn set_scale<S: Into<Vector2f>>(&mut self, scale: S) {
         if !self.font_exists() {
-            eprintln!("{}", ERROR_MSG);
+            eprintln!("{ERROR_MSG}");
             return;
         }
         unsafe { ffi::sfText_setScale(self.text.as_ptr(), scale.into()) }
@@ -378,7 +378,7 @@ impl Transformable for RcText {
     /// Function fails, and prints an error message if `RcText`'s font is dead.
     fn set_origin<O: Into<Vector2f>>(&mut self, origin: O) {
         if !self.font_exists() {
-            eprintln!("{}", ERROR_MSG);
+            eprintln!("{ERROR_MSG}");
             return;
         }
         unsafe { ffi::sfText_setOrigin(self.text.as_ptr(), origin.into()) }
@@ -389,7 +389,7 @@ impl Transformable for RcText {
     /// Function fails, returns default, and prints an error message if [`RcFont`] is dead.
     fn position(&self) -> Vector2f {
         if !self.font_exists() {
-            eprintln!("{}", RETURN_ERROR_MSG);
+            eprintln!("{RETURN_ERROR_MSG}");
             return Default::default();
         }
         unsafe { ffi::sfText_getPosition(self.text.as_ptr()) }
@@ -400,7 +400,7 @@ impl Transformable for RcText {
     /// Function fails, returns default, and prints an error message if [`RcFont`] is dead.
     fn rotation(&self) -> f32 {
         if !self.font_exists() {
-            eprintln!("{}", RETURN_ERROR_MSG);
+            eprintln!("{RETURN_ERROR_MSG}");
             return Default::default();
         }
         unsafe { ffi::sfText_getRotation(self.text.as_ptr()) }
@@ -411,7 +411,7 @@ impl Transformable for RcText {
     /// Function fails, returns default, and prints an error message if [`RcFont`] is dead.
     fn get_scale(&self) -> Vector2f {
         if !self.font_exists() {
-            eprintln!("{}", RETURN_ERROR_MSG);
+            eprintln!("{RETURN_ERROR_MSG}");
             return Default::default();
         }
         unsafe { ffi::sfText_getScale(self.text.as_ptr()) }
@@ -422,7 +422,7 @@ impl Transformable for RcText {
     /// Function fails, returns default, and prints an error message if [`RcFont`] is dead.
     fn origin(&self) -> Vector2f {
         if !self.font_exists() {
-            eprintln!("{}", RETURN_ERROR_MSG);
+            eprintln!("{RETURN_ERROR_MSG}");
             return Default::default();
         }
         unsafe { ffi::sfText_getOrigin(self.text.as_ptr()) }
@@ -433,7 +433,7 @@ impl Transformable for RcText {
     /// Function fails, and prints an error message if `RcText`'s font is dead.
     fn move_<O: Into<Vector2f>>(&mut self, offset: O) {
         if !self.font_exists() {
-            eprintln!("{}", ERROR_MSG);
+            eprintln!("{ERROR_MSG}");
             return;
         }
         unsafe { ffi::sfText_move(self.text.as_ptr(), offset.into()) }
@@ -444,7 +444,7 @@ impl Transformable for RcText {
     /// Function fails, and prints an error message if `RcText`'s font is dead.
     fn rotate(&mut self, angle: f32) {
         if !self.font_exists() {
-            eprintln!("{}", ERROR_MSG);
+            eprintln!("{ERROR_MSG}");
             return;
         }
         unsafe { ffi::sfText_rotate(self.text.as_ptr(), angle) }
@@ -455,7 +455,7 @@ impl Transformable for RcText {
     /// Function fails, and prints an error message if `RcText`'s font is dead.
     fn scale<F: Into<Vector2f>>(&mut self, factors: F) {
         if !self.font_exists() {
-            eprintln!("{}", ERROR_MSG);
+            eprintln!("{ERROR_MSG}");
             return;
         }
         unsafe { ffi::sfText_scale(self.text.as_ptr(), factors.into()) }
