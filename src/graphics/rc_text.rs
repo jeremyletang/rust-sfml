@@ -18,20 +18,18 @@ const PANIC_ERROR_MSG: &str = "Text does not hold a font! Return value cannot be
 /// `RcText` is a drawable type that allows to easily
 /// display some text with custom style and color on a render target.
 ///
-/// __Note:__
-/// Currently, it is not feasible to store text long term.
-/// A common pattern with rust-sfml is to create a `Text` right before you start drawing,
-/// and draw all the text you want with it. You can change its properties using
-/// `set_font`, `set_position`, `set_string`, etc., before drawing it, as many times as you need
-/// to.
-/// This is an improvement upon the [`sfml::graphics::Text`] module which dissallows seperation from the [`Font`]
-/// lifetime. The `RcText` allows for complete seperation from the [`RcFont`] while still
-/// referencing it. Underneath, it uses reference counting to ensure that the [`RcFont`] is alive,
-/// and will throw errors messages if you try to perform function on the sprite while the
-/// [`RcFont`] is no longer alive. the only functions that allow usage while the [`RcFont`] is not alive are
+/// This is an alternative to [`Text`], allowing for complete seperation from the font's lifetime.
+///
+/// Underneath, it uses reference counting to ensure that the [`RcFont`] is alive,
+/// and disallows performing certain actions on the text if the
+/// [`RcFont`] is no longer alive. It will print an error message in these cases.
+///
+/// The only functions that allow usage while the [`RcFont`] is not alive are
 /// `set_string`, `string`, `character_size`, `set_style`, `set_font`, `set_character_size`, `style`, `font`,
 /// `fill-color`, `outline_color`, `outline_thickness`, `line_spacing`, `set_line_spacing`, `letter_spacing`,
 /// `set_letter_spacing`
+///
+/// [`Text`]: crate::graphics::Text
 #[derive(Debug)]
 pub struct RcText {
     text: NonNull<ffi::sfText>,
