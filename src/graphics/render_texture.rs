@@ -2,8 +2,8 @@ use crate::{
     ffi::graphics as ffi,
     graphics::{
         CircleShape, Color, ConvexShape, CustomShape, Drawable, IntRect, PrimitiveType, RcSprite,
-        RectangleShape, RenderStates, RenderTarget, Sprite, Text, Texture, Vertex, VertexBuffer,
-        View,
+        RcText, RectangleShape, RenderStates, RenderTarget, Sprite, Text, Texture, Vertex,
+        VertexBuffer, View,
     },
     system::{Vector2f, Vector2i, Vector2u},
     window::ContextSettings,
@@ -163,6 +163,9 @@ impl RenderTarget for RenderTexture {
         object.draw(self, render_states);
     }
     fn draw_text(&self, text: &Text, rs: &RenderStates) {
+        unsafe { ffi::sfRenderTexture_drawText(self.render_texture, text.raw(), rs) }
+    }
+    fn draw_rc_text(&self, text: &RcText, rs: &RenderStates) {
         unsafe { ffi::sfRenderTexture_drawText(self.render_texture, text.raw(), rs) }
     }
     fn draw_shape(&self, shape: &CustomShape, rs: &RenderStates) {
