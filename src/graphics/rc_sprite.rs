@@ -13,7 +13,7 @@ const ERROR_MSG: &str = "Sprite does not hold a texture. Ignoring transformation
 const RETURN_ERROR_MSG: &str = "Sprite does not hold a texture. Returning default value!";
 const PANIC_ERROR_MSG: &str = "Sprite does not hold a texture! Return value cannot be discerned!";
 
-/// Drawable representation of a texture
+/// Drawable representation of a texture (reference counted)
 ///
 /// `RcSprite` is a drawable type that allows to easily
 /// display a [`RcTexture`] (or a part of it) on a render target.

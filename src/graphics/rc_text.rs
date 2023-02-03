@@ -13,7 +13,7 @@ const ERROR_MSG: &str = "Text does not hold a font. Ignoring transformation!";
 const RETURN_ERROR_MSG: &str = "Text does not hold a font. Returning default value!";
 const PANIC_ERROR_MSG: &str = "Text does not hold a font! Return value cannot be discerned!";
 
-/// Graphical text
+/// Graphical text (reference counted)
 ///
 /// `RcText` is a drawable type that allows to easily
 /// display some text with custom style and color on a render target.

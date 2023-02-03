@@ -11,7 +11,7 @@ use std::{
     rc::Rc,
 };
 
-/// [`Image`] living on the graphics card that can be used for drawing.
+/// [`Image`] living on the graphics card that can be used for drawing. (reference counted)
 ///
 /// `RcTexture` stores pixels that can be drawn, with a `RcSprite` for example.
 ///

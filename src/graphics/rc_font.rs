@@ -8,7 +8,7 @@ use std::{
     rc::Rc,
 };
 
-/// Type for loading and manipulating character fonts.
+/// Type for loading and manipulating character fonts. (reference counted)
 ///
 /// Fonts can be loaded from a file, from memory or from a custom stream,
 /// and supports the most common types of fonts.
