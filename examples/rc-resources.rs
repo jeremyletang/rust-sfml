@@ -1,6 +1,7 @@
 use sfml::{
     graphics::{
-        Color, RcFont, RcSprite, RcText, RcTexture, RenderTarget, RenderWindow, Transformable,
+        Color, RcFont, RcSprite, RcText, RcTexture, RenderTarget, RenderWindow, Texture,
+        Transformable,
     },
     system::Vector2f,
     window::{Event, Style},
@@ -97,6 +98,10 @@ impl FloatingResource {
     }
 }
 
+fn test_getting_rc_texture_from_texture() -> RcTexture {
+    RcTexture::from_texture(Texture::from_file(example_res!("frank.jpeg")).unwrap())
+}
+
 fn main() {
     let mut window =
         RenderWindow::new((800, 600), "SFML window", Style::CLOSE, &Default::default());
@@ -104,12 +109,15 @@ fn main() {
 
     // Create a new texture.
     let texture = RcTexture::from_file(example_res!("logo.png")).unwrap();
+    let texture2 = test_getting_rc_texture_from_texture();
 
     // Create a new font.
     let font = RcFont::from_file(example_res!("sansation.ttf")).unwrap();
 
     // Load many resources with no lifetime contingencies
     let mut floating_resources = Vec::from([
+        FloatingResource::with_texture(&texture2, true, true, 1.1f32),
+        FloatingResource::with_texture(&texture2, true, true, 1.2f32),
         FloatingResource::with_texture(&texture, true, true, 1f32),
         FloatingResource::with_texture(&texture, true, false, 1.5f32),
         FloatingResource::with_texture(&texture, false, true, 2f32),
