@@ -172,6 +172,14 @@ impl RcTexture {
         })
     }
 
+    /// Convenience method to easily move a [`Texture`] into a `RcTexture`
+    #[must_use]
+    pub fn from_texture(texture: SfBox<Texture>) -> RcTexture {
+        RcTexture {
+            texture: Rc::new(RefCell::new(texture)),
+        }
+    }
+
     /// Load texture from an image
     ///
     /// # Arguments
