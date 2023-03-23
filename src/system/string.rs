@@ -1,4 +1,7 @@
-use widestring::{U32CStr, U32CString};
+use core::fmt;
+use std::error::Error;
+
+use widestring::{error::Utf32Error, U32CStr, U32CString};
 
 /// A borrowed string type that's compatible with `sf::String`.
 ///
@@ -19,6 +22,17 @@ impl SfStr {
     pub fn to_rust_string(&self) -> String {
         self.0.to_string().unwrap()
     }
+
+    /// Convert to a UTF-8 `String` from the Rust standard library.
+    ///
+    /// Returns a `Result` and errors if the string is not valid UTF-32
+    pub fn try_to_rust_string(&self) -> Result<String, SfStrConvError> {
+        match self.0.to_string() {
+            Ok(string) => Ok(string),
+            Err(utf32error) => Err(SfStrConvError::from_utf32error(utf32error)),
+        }
+    }
+
     pub(crate) fn as_ptr(&self) -> *const u32 {
         self.0.as_ptr()
     }
@@ -60,5 +74,37 @@ impl<'a> SfStrConv for &'a String {
     {
         let str: &str = self;
         str.with_as_sfstr(fun)
+    }
+}
+
+/// Errors which can occur when attempting to translate from UTF-32 to UTF-8
+#[derive(Debug)]
+pub struct SfStrConvError(Utf32Error);
+
+impl SfStrConvError {
+    fn from_utf32error(value: Utf32Error) -> Self {
+        Self(value)
+    }
+
+    /// Returns the index in the string where the conversion error occured
+    pub fn index(&self) -> usize {
+        self.0.index()
+    }
+
+    /// Returns the underlying vector of values which generated the error in the first place.
+    ///
+    /// If the sequence that generated the error was a reference to a slice instead of a [`Vec`],
+    /// this will return [`None`].
+    #[must_use]
+    pub fn into_vec(self) -> Option<Vec<u32>> {
+        self.0.into_vec()
+    }
+}
+
+impl Error for SfStrConvError {}
+
+impl fmt::Display for SfStrConvError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{:?}", self.0)
     }
 }
