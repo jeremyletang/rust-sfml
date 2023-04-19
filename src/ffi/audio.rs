@@ -1,7 +1,8 @@
-use crate::ffi::system::{sfStdString, sfStdStringVector};
 pub use crate::ffi::*;
-
-use super::system::sfInputStream;
+use {
+    super::system::sfInputStream,
+    crate::ffi::system::{sfStdString, sfStdStringVector},
+};
 
 decl_opaque! {
     sfSoundBufferRecorder;

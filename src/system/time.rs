@@ -1,6 +1,8 @@
-use crate::ffi::system::sfTime;
-use std::ops::{
-    Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Rem, RemAssign, Sub, SubAssign,
+use {
+    crate::ffi::system::sfTime,
+    std::ops::{
+        Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Rem, RemAssign, Sub, SubAssign,
+    },
 };
 
 /// Represents a time value.

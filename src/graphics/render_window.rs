@@ -1,14 +1,15 @@
-use std::ptr::NonNull;
-
-use crate::{
-    ffi::graphics as ffi,
-    graphics::{
-        CircleShape, Color, ConvexShape, CustomShape, Drawable, IntRect, PrimitiveType, RcSprite,
-        RcText, RectangleShape, RenderStates, RenderTarget, Sprite, Text, Vertex, VertexBuffer,
-        View,
+use {
+    crate::{
+        ffi::graphics as ffi,
+        graphics::{
+            CircleShape, Color, ConvexShape, CustomShape, Drawable, IntRect, PrimitiveType,
+            RcSprite, RcText, RectangleShape, RenderStates, RenderTarget, Sprite, Text, Vertex,
+            VertexBuffer, View,
+        },
+        system::{SfStrConv, Vector2f, Vector2i, Vector2u},
+        window::{thread_safety, ContextSettings, Cursor, Event, Handle, Style, VideoMode},
     },
-    system::{SfStrConv, Vector2f, Vector2i, Vector2u},
-    window::{thread_safety, ContextSettings, Cursor, Event, Handle, Style, VideoMode},
+    std::ptr::NonNull,
 };
 
 /// [`Window`] that can serve as a target for 2D drawing.

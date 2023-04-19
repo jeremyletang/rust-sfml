@@ -1,10 +1,12 @@
-use crate::{ffi::system::sfInputStream, sf_box::Dispose, SfBox};
-use std::{
-    convert::TryInto,
-    io::{Read, Seek, SeekFrom},
-    marker::PhantomData,
-    os::raw::{c_longlong, c_void},
-    ptr,
+use {
+    crate::{ffi::system::sfInputStream, sf_box::Dispose, SfBox},
+    std::{
+        convert::TryInto,
+        io::{Read, Seek, SeekFrom},
+        marker::PhantomData,
+        os::raw::{c_longlong, c_void},
+        ptr,
+    },
 };
 
 #[allow(clippy::comparison_chain)]

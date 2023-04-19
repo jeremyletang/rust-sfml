@@ -1,11 +1,13 @@
-use crate::{
-    ffi::graphics as ffi,
-    graphics::FloatRect,
-    sf_box::{Dispose, RawDefault},
-    system::Vector2f,
-    SfBox,
+use {
+    crate::{
+        ffi::graphics as ffi,
+        graphics::FloatRect,
+        sf_box::{Dispose, RawDefault},
+        system::Vector2f,
+        SfBox,
+    },
+    std::borrow::ToOwned,
 };
-use std::borrow::ToOwned;
 
 decl_opaque! {
 /// 2D camera that defines what region is shown on screen

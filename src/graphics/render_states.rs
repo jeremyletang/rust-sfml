@@ -1,8 +1,10 @@
-use crate::{
-    ffi::graphics as ffi,
-    graphics::{BlendMode, Shader, Texture, Transform},
+use {
+    crate::{
+        ffi::graphics as ffi,
+        graphics::{BlendMode, Shader, Texture, Transform},
+    },
+    std::{marker::PhantomData, ptr},
 };
-use std::{marker::PhantomData, ptr};
 
 /// Define the states used for drawing to a [`RenderTarget`].
 ///

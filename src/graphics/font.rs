@@ -1,13 +1,15 @@
-use crate::{
-    ffi::graphics as ffi,
-    graphics::{Glyph, Texture},
-    sf_box::{Dispose, SfBox},
-    system::InputStream,
-};
-use std::{
-    borrow::ToOwned,
-    ffi::{CStr, CString},
-    io::{Read, Seek},
+use {
+    crate::{
+        ffi::graphics as ffi,
+        graphics::{Glyph, Texture},
+        sf_box::{Dispose, SfBox},
+        system::InputStream,
+    },
+    std::{
+        borrow::ToOwned,
+        ffi::{CStr, CString},
+        io::{Read, Seek},
+    },
 };
 
 decl_opaque! {

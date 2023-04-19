@@ -1,12 +1,14 @@
-use crate::{
-    ffi::graphics as ffi,
-    graphics::{
-        Color, Drawable, FloatRect, IntRect, RenderStates, RenderTarget, Texture, Transform,
-        Transformable,
+use {
+    crate::{
+        ffi::graphics as ffi,
+        graphics::{
+            Color, Drawable, FloatRect, IntRect, RenderStates, RenderTarget, Texture, Transform,
+            Transformable,
+        },
+        system::Vector2f,
     },
-    system::Vector2f,
+    std::{marker::PhantomData, ptr::NonNull},
 };
-use std::{marker::PhantomData, ptr::NonNull};
 
 /// Drawable representation of a texture
 ///

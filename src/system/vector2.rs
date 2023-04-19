@@ -1,9 +1,11 @@
-use num_traits::{AsPrimitive, CheckedDiv};
 #[cfg(feature = "serde")]
 use serde::{Deserialize, Serialize};
-use std::{
-    convert::TryInto,
-    ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssign},
+use {
+    num_traits::{AsPrimitive, CheckedDiv},
+    std::{
+        convert::TryInto,
+        ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssign},
+    },
 };
 
 /// Utility type for manipulating 2-dimensional vectors.

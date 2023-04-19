@@ -22,16 +22,17 @@ pub(crate) mod system;
 #[cfg(any(feature = "window", feature = "graphics"))]
 pub(crate) mod window;
 
-use std::{
-    ffi::c_void,
-    fmt::Display,
-    os::raw::{c_char, c_int, c_uint},
-    str::Utf8Error,
-};
-
-use crate::{
-    sf_box::Dispose,
-    system::{Vector2, Vector3},
+use {
+    crate::{
+        sf_box::Dispose,
+        system::{Vector2, Vector3},
+    },
+    std::{
+        ffi::c_void,
+        fmt::Display,
+        os::raw::{c_char, c_int, c_uint},
+        str::Utf8Error,
+    },
 };
 
 pub type sfVector3f = Vector3<f32>;

@@ -1,12 +1,14 @@
 //! `ResourceHolder` class from the SFML game dev book
 
-use sfml::{
-    audio::{Sound, SoundBuffer},
-    graphics::{Color, RenderTarget, RenderWindow, Sprite, Texture},
-    window::{Event, Key, Style},
-    SfBox, SfResource,
+use {
+    sfml::{
+        audio::{Sound, SoundBuffer},
+        graphics::{Color, RenderTarget, RenderWindow, Sprite, Texture},
+        window::{Event, Key, Style},
+        SfBox, SfResource,
+    },
+    std::{collections::HashMap, hash::Hash},
 };
-use std::{collections::HashMap, hash::Hash};
 
 include!("../example_common.rs");
 

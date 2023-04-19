@@ -64,9 +64,8 @@ mod sf_box;
 pub mod system;
 #[cfg(feature = "window")]
 pub mod window;
-use std::{error::Error, fmt::Display};
-
 pub use sf_box::{SfBox, SfResource};
+use std::{error::Error, fmt::Display};
 
 /// Error when failing to load an SFML resource.
 #[derive(Clone, Copy, Debug)]

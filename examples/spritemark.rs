@@ -2,14 +2,16 @@
 //!
 //! It uses an array of primitives to achieve a speed faster than using `sf::Sprite`.
 
-use rand::{thread_rng, Rng};
-use sfml::{
-    graphics::{
-        Color, Font, PrimitiveType, Rect, RenderStates, RenderTarget, RenderWindow, Text, Texture,
-        Transform, Vertex, View,
+use {
+    rand::{thread_rng, Rng},
+    sfml::{
+        graphics::{
+            Color, Font, PrimitiveType, Rect, RenderStates, RenderTarget, RenderWindow, Text,
+            Texture, Transform, Vertex, View,
+        },
+        system::{Clock, Vector2, Vector2f, Vector2i},
+        window::{mouse::Button, ContextSettings, Event, Key, Style, VideoMode},
     },
-    system::{Clock, Vector2, Vector2f, Vector2i},
-    window::{mouse::Button, ContextSettings, Event, Key, Style, VideoMode},
 };
 
 include!("../example_common.rs");

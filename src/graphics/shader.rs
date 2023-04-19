@@ -1,17 +1,18 @@
-use crate::{
-    ffi::graphics as ffi,
-    graphics::{glsl, Texture},
-    system::InputStream,
-    LoadResult, ResourceLoadError,
+use {
+    super::ShaderType,
+    crate::{
+        ffi::graphics as ffi,
+        graphics::{glsl, Texture},
+        system::InputStream,
+        LoadResult, ResourceLoadError,
+    },
+    std::{
+        ffi::CString,
+        io::{Read, Seek},
+        marker::PhantomData,
+        ptr::{self, NonNull},
+    },
 };
-use std::{
-    ffi::CString,
-    io::{Read, Seek},
-    marker::PhantomData,
-    ptr::{self, NonNull},
-};
-
-use super::ShaderType;
 
 /// Shader type (vertex, geometry and fragment).
 ///

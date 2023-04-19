@@ -1,8 +1,9 @@
-use std::ptr::NonNull;
-
-use crate::{
-    ffi::graphics::*,
-    graphics::{Drawable, PrimitiveType, RenderStates, RenderTarget, Vertex},
+use {
+    crate::{
+        ffi::graphics::*,
+        graphics::{Drawable, PrimitiveType, RenderStates, RenderTarget, Vertex},
+    },
+    std::ptr::NonNull,
 };
 
 /// Usage specifiers for a [`VertexBuffer`]

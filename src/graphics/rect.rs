@@ -1,10 +1,12 @@
-use crate::system::Vector2;
-use num_traits::AsPrimitive;
 #[cfg(feature = "serde")]
 use serde::{Deserialize, Serialize};
-use std::{
-    convert::TryInto,
-    ops::{Add, Sub},
+use {
+    crate::system::Vector2,
+    num_traits::AsPrimitive,
+    std::{
+        convert::TryInto,
+        ops::{Add, Sub},
+    },
 };
 
 /// Utility type for manipulating 2D axis-aligned rectangles.

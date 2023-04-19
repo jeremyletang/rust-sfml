@@ -1,12 +1,14 @@
-use crate::{
-    ffi::graphics as ffi,
-    graphics::{Color, IntRect},
-    system::{InputStream, Vector2u},
-};
-use std::{
-    ffi::CString,
-    io::{Read, Seek},
-    slice,
+use {
+    crate::{
+        ffi::graphics as ffi,
+        graphics::{Color, IntRect},
+        system::{InputStream, Vector2u},
+    },
+    std::{
+        ffi::CString,
+        io::{Read, Seek},
+        slice,
+    },
 };
 
 /// Loading, manipulating and saving images.

@@ -1,7 +1,8 @@
-use core::fmt;
-use std::error::Error;
-
-use widestring::{error::Utf32Error, U32CStr, U32CString};
+use {
+    core::fmt,
+    std::error::Error,
+    widestring::{error::Utf32Error, U32CStr, U32CString},
+};
 
 /// A borrowed string type that's compatible with `sf::String`.
 ///

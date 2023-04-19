@@ -1,14 +1,16 @@
-use crate::{
-    graphics::{Image, IntRect, RenderWindow, Texture},
-    sf_box::{Dispose, SfBox},
-    system::Vector2u,
-    window::Window,
-    LoadResult,
-};
-use std::{
-    cell::RefCell,
-    io::{Read, Seek},
-    rc::Rc,
+use {
+    crate::{
+        graphics::{Image, IntRect, RenderWindow, Texture},
+        sf_box::{Dispose, SfBox},
+        system::Vector2u,
+        window::Window,
+        LoadResult,
+    },
+    std::{
+        cell::RefCell,
+        io::{Read, Seek},
+        rc::Rc,
+    },
 };
 
 /// [`Image`] living on the graphics card that can be used for drawing. (reference counted)

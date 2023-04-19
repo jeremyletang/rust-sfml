@@ -1,9 +1,11 @@
-use crate::{
-    audio::{SoundSource, SoundStatus},
-    ffi::audio::*,
-    system::{Time, Vector3f},
+use {
+    crate::{
+        audio::{SoundSource, SoundStatus},
+        ffi::audio::*,
+        system::{Time, Vector3f},
+    },
+    std::{os::raw::c_void, panic, ptr::NonNull},
 };
-use std::{os::raw::c_void, panic, ptr::NonNull};
 
 /// Trait for streamed audio sources.
 pub trait SoundStream {

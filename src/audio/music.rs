@@ -1,12 +1,14 @@
-use crate::{
-    audio::{SoundSource, SoundStatus, TimeSpan},
-    ffi::{self},
-    system::{InputStream, Time, Vector3f},
-};
-use std::{
-    ffi::CString,
-    io::{Read, Seek},
-    marker::PhantomData,
+use {
+    crate::{
+        audio::{SoundSource, SoundStatus, TimeSpan},
+        ffi::{self},
+        system::{InputStream, Time, Vector3f},
+    },
+    std::{
+        ffi::CString,
+        io::{Read, Seek},
+        marker::PhantomData,
+    },
 };
 
 /// Streamed music played from an audio file.

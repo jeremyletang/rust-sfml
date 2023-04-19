@@ -1,5 +1,4 @@
 use crate::{ffi::system as ffi, sf_box::Dispose, system::Time, SfBox};
-
 pub use ffi::sfClock as Clock;
 
 impl Dispose for Clock {

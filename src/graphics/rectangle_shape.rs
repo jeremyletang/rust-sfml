@@ -1,12 +1,14 @@
-use crate::{
-    ffi::graphics as ffi,
-    graphics::{
-        Color, Drawable, FloatRect, IntRect, RenderStates, RenderTarget, Shape, Texture, Transform,
-        Transformable,
+use {
+    crate::{
+        ffi::graphics as ffi,
+        graphics::{
+            Color, Drawable, FloatRect, IntRect, RenderStates, RenderTarget, Shape, Texture,
+            Transform, Transformable,
+        },
+        system::Vector2f,
     },
-    system::Vector2f,
+    std::{marker::PhantomData, ptr},
 };
-use std::{marker::PhantomData, ptr};
 
 /// Specialized shape representing a rectangle
 #[derive(Debug)]

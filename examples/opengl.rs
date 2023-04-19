@@ -1,12 +1,14 @@
-use glu_sys as gl;
-use sfml::{
-    graphics::{
-        Color, Font, IntRect, RenderTarget, RenderWindow, Sprite, Text, Texture, Transformable,
+use {
+    glu_sys as gl,
+    sfml::{
+        graphics::{
+            Color, Font, IntRect, RenderTarget, RenderWindow, Sprite, Text, Texture, Transformable,
+        },
+        system::Clock,
+        window::{ContextSettings, Event, Key, Style},
     },
-    system::Clock,
-    window::{ContextSettings, Event, Key, Style},
+    std::{ffi::c_void, mem::size_of},
 };
-use std::{ffi::c_void, mem::size_of};
 
 include!("../example_common.rs");
 

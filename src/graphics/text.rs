@@ -1,12 +1,14 @@
-use crate::{
-    ffi::graphics as ffi,
-    graphics::{
-        Color, Drawable, FloatRect, Font, RenderStates, RenderTarget, TextStyle, Transform,
-        Transformable,
+use {
+    crate::{
+        ffi::graphics as ffi,
+        graphics::{
+            Color, Drawable, FloatRect, Font, RenderStates, RenderTarget, TextStyle, Transform,
+            Transformable,
+        },
+        system::{SfStr, SfStrConv, Vector2f},
     },
-    system::{SfStr, SfStrConv, Vector2f},
+    std::{marker::PhantomData, ptr::NonNull},
 };
-use std::{marker::PhantomData, ptr::NonNull};
 
 /// Graphical text
 ///

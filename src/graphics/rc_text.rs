@@ -1,13 +1,15 @@
-use crate::{
-    ffi::graphics as ffi,
-    graphics::{
-        Color, Drawable, FloatRect, Font, RcFont, RenderStates, RenderTarget, TextStyle, Transform,
-        Transformable,
+use {
+    crate::{
+        ffi::graphics as ffi,
+        graphics::{
+            Color, Drawable, FloatRect, Font, RcFont, RenderStates, RenderTarget, TextStyle,
+            Transform, Transformable,
+        },
+        sf_box::SfBox,
+        system::{SfStr, SfStrConv, Vector2f},
     },
-    sf_box::SfBox,
-    system::{SfStr, SfStrConv, Vector2f},
+    std::{cell::RefCell, ptr::NonNull, rc::Weak},
 };
-use std::{cell::RefCell, ptr::NonNull, rc::Weak};
 
 const ERROR_MSG: &str = "Text does not hold a font. Ignoring transformation!";
 const RETURN_ERROR_MSG: &str = "Text does not hold a font. Returning default value!";

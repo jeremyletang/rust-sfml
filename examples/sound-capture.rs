@@ -1,8 +1,10 @@
-use sfml::{
-    audio::{capture, Sound, SoundBufferRecorder, SoundStatus},
-    system::{sleep, Time},
+use {
+    sfml::{
+        audio::{capture, Sound, SoundBufferRecorder, SoundStatus},
+        system::{sleep, Time},
+    },
+    std::io::{BufRead, Write},
 };
-use std::io::{BufRead, Write};
 
 fn main() {
     // Check that the device can capture audio

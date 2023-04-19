@@ -1,5 +1,7 @@
-use once_cell::sync::OnceCell;
-use std::thread::{current, ThreadId};
+use {
+    once_cell::sync::OnceCell,
+    std::thread::{current, ThreadId},
+};
 
 // this WINDOW_THREAD is the only thread allowed to contain RenderWindows.
 static WINDOW_THREAD: OnceCell<ThreadId> = OnceCell::new();

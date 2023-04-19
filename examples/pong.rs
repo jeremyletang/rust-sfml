@@ -1,14 +1,16 @@
-use rand::{thread_rng, Rng};
-use sfml::{
-    audio::{Sound, SoundBuffer, SoundSource},
-    graphics::{
-        CircleShape, Color, Font, RectangleShape, RenderTarget, RenderWindow, Shape, Text,
-        Transformable,
+use {
+    rand::{thread_rng, Rng},
+    sfml::{
+        audio::{Sound, SoundBuffer, SoundSource},
+        graphics::{
+            CircleShape, Color, Font, RectangleShape, RenderTarget, RenderWindow, Shape, Text,
+            Transformable,
+        },
+        system::{Clock, Time, Vector2f},
+        window::{ContextSettings, Event, Key, Style},
     },
-    system::{Clock, Time, Vector2f},
-    window::{ContextSettings, Event, Key, Style},
+    std::{env, f32::consts::PI},
 };
-use std::{env, f32::consts::PI};
 
 include!("../example_common.rs");
 

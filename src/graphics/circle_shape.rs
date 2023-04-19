@@ -1,14 +1,16 @@
-use crate::{
-    ffi::graphics as ffi,
-    graphics::{
-        Color, Drawable, FloatRect, IntRect, RenderStates, RenderTarget, Shape, Texture, Transform,
-        Transformable,
+use {
+    crate::{
+        ffi::graphics as ffi,
+        graphics::{
+            Color, Drawable, FloatRect, IntRect, RenderStates, RenderTarget, Shape, Texture,
+            Transform, Transformable,
+        },
+        system::Vector2f,
     },
-    system::Vector2f,
-};
-use std::{
-    marker::PhantomData,
-    ptr::{self, NonNull},
+    std::{
+        marker::PhantomData,
+        ptr::{self, NonNull},
+    },
 };
 
 /// Specialized shape representing a circle.

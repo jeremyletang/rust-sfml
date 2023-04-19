@@ -1,9 +1,10 @@
-use std::ptr::NonNull;
-
-use crate::{
-    ffi::window as ffi,
-    system::{SfStrConv, Vector2i, Vector2u},
-    window::{thread_safety, ContextSettings, Cursor, Event, Style, VideoMode},
+use {
+    crate::{
+        ffi::window as ffi,
+        system::{SfStrConv, Vector2i, Vector2u},
+        window::{thread_safety, ContextSettings, Cursor, Event, Style, VideoMode},
+    },
+    std::ptr::NonNull,
 };
 
 /// The system native window handle type. Can be used to create an SFML Window

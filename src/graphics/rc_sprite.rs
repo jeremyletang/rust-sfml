@@ -1,13 +1,15 @@
-use crate::{
-    ffi::graphics as ffi,
-    graphics::{
-        Color, Drawable, FloatRect, IntRect, RcTexture, RenderStates, RenderTarget, Texture,
-        Transform, Transformable,
+use {
+    crate::{
+        ffi::graphics as ffi,
+        graphics::{
+            Color, Drawable, FloatRect, IntRect, RcTexture, RenderStates, RenderTarget, Texture,
+            Transform, Transformable,
+        },
+        sf_box::SfBox,
+        system::Vector2f,
     },
-    sf_box::SfBox,
-    system::Vector2f,
+    std::{cell::RefCell, ptr::NonNull, rc::Weak},
 };
-use std::{cell::RefCell, ptr::NonNull, rc::Weak};
 
 const ERROR_MSG: &str = "Sprite does not hold a texture. Ignoring transformation!";
 const RETURN_ERROR_MSG: &str = "Sprite does not hold a texture. Returning default value!";

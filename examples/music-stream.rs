@@ -1,8 +1,10 @@
-use sfml::{
-    audio::{Music, SoundStatus},
-    system::{sleep, InputStream, Time},
+use {
+    sfml::{
+        audio::{Music, SoundStatus},
+        system::{sleep, InputStream, Time},
+    },
+    std::{fs::File, io::Write},
 };
-use std::{fs::File, io::Write};
 
 include!("../example_common.rs");
 

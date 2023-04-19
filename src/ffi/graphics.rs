@@ -1,10 +1,11 @@
 pub use crate::ffi::*;
-use crate::{
-    ffi::window::{sfContextSettings, sfCursor, sfWindow, sfWindowHandle, Event as sfEvent},
-    graphics::{Color, Rect, RenderStates as sfRenderStates, Transform as sfTransform},
+use {
+    super::{system::sfInputStream, window::sfVideoMode},
+    crate::{
+        ffi::window::{sfContextSettings, sfCursor, sfWindow, sfWindowHandle, Event as sfEvent},
+        graphics::{Color, Rect, RenderStates as sfRenderStates, Transform as sfTransform},
+    },
 };
-
-use super::{system::sfInputStream, window::sfVideoMode};
 
 decl_opaque! {
     sfCircleShape;

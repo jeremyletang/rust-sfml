@@ -1,12 +1,14 @@
-use crate::{
-    ffi::{graphics as ffi, sfVector2f},
-    graphics::{
-        Color, Drawable, FloatRect, IntRect, RenderStates, RenderTarget, Shape, Texture, Transform,
-        Transformable,
+use {
+    crate::{
+        ffi::{graphics as ffi, sfVector2f},
+        graphics::{
+            Color, Drawable, FloatRect, IntRect, RenderStates, RenderTarget, Shape, Texture,
+            Transform, Transformable,
+        },
+        system::Vector2f,
     },
-    system::Vector2f,
+    std::{marker::PhantomData, os::raw::c_void, ptr},
 };
-use std::{marker::PhantomData, os::raw::c_void, ptr};
 
 /// The points of a custom shape.
 pub trait CustomShapePoints {

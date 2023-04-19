@@ -1,11 +1,13 @@
-use crate::{
-    graphics::{font::Info, Font, Glyph, Texture},
-    sf_box::{Dispose, SfBox},
-};
-use std::{
-    cell::RefCell,
-    io::{Read, Seek},
-    rc::Rc,
+use {
+    crate::{
+        graphics::{font::Info, Font, Glyph, Texture},
+        sf_box::{Dispose, SfBox},
+    },
+    std::{
+        cell::RefCell,
+        io::{Read, Seek},
+        rc::Rc,
+    },
 };
 
 /// Type for loading and manipulating character fonts. (reference counted)

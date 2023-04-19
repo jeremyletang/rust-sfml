@@ -1,5 +1,7 @@
-use sfml::audio::{SoundRecorder, SoundRecorderDriver};
-use std::{fs::File, io::Write};
+use {
+    sfml::audio::{SoundRecorder, SoundRecorderDriver},
+    std::{fs::File, io::Write},
+};
 
 struct FileRecorder {
     file: File,

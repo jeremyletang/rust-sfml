@@ -1,15 +1,17 @@
-use crate::{
-    ffi::graphics::{self as ffi, sfTexture_create},
-    graphics::{Image, IntRect, RenderWindow},
-    sf_box::{Dispose, SfBox},
-    system::{InputStream, Vector2u},
-    window::Window,
-    IntoLoadResult, LoadResult,
-};
-use std::{
-    borrow::ToOwned,
-    ffi::CString,
-    io::{Read, Seek},
+use {
+    crate::{
+        ffi::graphics::{self as ffi, sfTexture_create},
+        graphics::{Image, IntRect, RenderWindow},
+        sf_box::{Dispose, SfBox},
+        system::{InputStream, Vector2u},
+        window::Window,
+        IntoLoadResult, LoadResult,
+    },
+    std::{
+        borrow::ToOwned,
+        ffi::CString,
+        io::{Read, Seek},
+    },
 };
 
 decl_opaque! {

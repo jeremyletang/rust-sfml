@@ -1,11 +1,12 @@
 #[cfg(feature = "serde")]
 use serde::{Deserialize, Serialize};
-use std::{
-    convert::TryInto,
-    ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssign},
+use {
+    num_traits::{AsPrimitive, CheckedDiv},
+    std::{
+        convert::TryInto,
+        ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssign},
+    },
 };
-
-use num_traits::{AsPrimitive, CheckedDiv};
 
 /// Utility type for manipulating 3-dimensional vectors.
 ///

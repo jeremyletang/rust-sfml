@@ -1,14 +1,16 @@
-use crate::{
-    ffi,
-    sf_box::Dispose,
-    system::{InputStream, Time},
-    LoadResult, ResourceLoadError, SfBox,
-};
-use std::{
-    borrow::ToOwned,
-    ffi::CString,
-    io::{Read, Seek},
-    slice,
+use {
+    crate::{
+        ffi,
+        sf_box::Dispose,
+        system::{InputStream, Time},
+        LoadResult, ResourceLoadError, SfBox,
+    },
+    std::{
+        borrow::ToOwned,
+        ffi::CString,
+        io::{Read, Seek},
+        slice,
+    },
 };
 
 decl_opaque! {

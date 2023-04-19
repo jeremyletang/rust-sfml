@@ -1,5 +1,4 @@
 use crate::ffi::window as ffi;
-
 pub use ffi::sfContextSettings as ContextSettings;
 
 impl ContextSettings {

@@ -1,13 +1,15 @@
-use crate::{
-    audio::SoundBuffer,
-    ffi::{
-        audio::*,
-        system::{sfStdString, sfStdStringVector},
+use {
+    crate::{
+        audio::SoundBuffer,
+        ffi::{
+            audio::*,
+            system::{sfStdString, sfStdStringVector},
+        },
+        system::Time,
+        SfBox,
     },
-    system::Time,
-    SfBox,
+    std::{ffi::CString, os::raw::c_void, ptr::NonNull},
 };
-use std::{ffi::CString, os::raw::c_void, ptr::NonNull};
 
 /// Trait for processing captured sound data.
 ///

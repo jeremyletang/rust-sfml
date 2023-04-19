@@ -1,9 +1,11 @@
-use crate::{
-    audio::{SoundBuffer, SoundSource, SoundStatus},
-    ffi,
-    system::{Time, Vector3f},
+use {
+    crate::{
+        audio::{SoundBuffer, SoundSource, SoundStatus},
+        ffi,
+        system::{Time, Vector3f},
+    },
+    std::{marker::PhantomData, ptr::NonNull},
 };
-use std::{marker::PhantomData, ptr::NonNull};
 
 /// Regular sound that can be played in the audio environment.
 ///
