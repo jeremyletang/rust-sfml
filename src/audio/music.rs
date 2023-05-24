@@ -72,14 +72,14 @@ impl<'stream> Music<'stream> {
     ///
     /// [`play`]: Music::play
     #[must_use]
-    pub fn from_file(filename: &str) -> Option<Music> {
+    pub fn from_file(filename: &str) -> Option<Self> {
         let c_str = CString::new(filename).unwrap();
         let music_tmp: *mut ffi::audio::sfMusic =
             unsafe { ffi::audio::sfMusic_createFromFile(c_str.as_ptr()) };
         if music_tmp.is_null() {
             None
         } else {
-            Some(Music {
+            Some(Self {
                 music: music_tmp,
                 _stream: PhantomData,
             })
@@ -99,9 +99,7 @@ impl<'stream> Music<'stream> {
     /// Returns `None` if loading fails.
     ///
     /// [`play`]: Music::play
-    pub fn from_stream<T: Read + Seek>(
-        stream: &'stream mut InputStream<T>,
-    ) -> Option<Music<'stream>> {
+    pub fn from_stream<T: Read + Seek>(stream: &'stream mut InputStream<T>) -> Option<Self> {
         let music_tmp: *mut ffi::audio::sfMusic =
             unsafe { ffi::audio::sfMusic_createFromStream(&mut *stream.stream) };
         if music_tmp.is_null() {
@@ -128,7 +126,7 @@ impl<'stream> Music<'stream> {
     ///
     /// [`play`]: Music::play
     #[must_use]
-    pub fn from_memory(mem: &[u8]) -> Option<Music> {
+    pub fn from_memory(mem: &[u8]) -> Option<Self> {
         let music_tmp =
             unsafe { ffi::audio::sfMusic_createFromMemory(mem.as_ptr() as *const _, mem.len()) };
         if music_tmp.is_null() {
