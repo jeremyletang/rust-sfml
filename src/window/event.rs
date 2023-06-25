@@ -57,6 +57,8 @@ pub enum Event {
     KeyPressed {
         /// The pressed key
         code: ffi::Key,
+        /// The scancode of the pressed key
+        scan: ffi::Scancode,
         /// Is alt pressed too?
         alt: bool,
         /// Is ctrl pressed too?
@@ -218,6 +220,7 @@ impl Event {
             },
             EventType::KeyPressed => KeyPressed {
                 code: event.union.key.code,
+                scan: event.union.key.scan,
                 alt: event.union.key.alt,
                 ctrl: event.union.key.control,
                 shift: event.union.key.shift,

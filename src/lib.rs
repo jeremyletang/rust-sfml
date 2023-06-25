@@ -5,7 +5,7 @@
 //!
 //! - Linux, Windows, or OS X
 //! - Rust 1.66 or later
-//! - [SFML 2.5](http://www.sfml-dev.org/download.php)
+//! - [SFML 2.6](http://www.sfml-dev.org/download.php)
 //! - A C++ compiler for building CSFML
 //!
 //! Environment variables
