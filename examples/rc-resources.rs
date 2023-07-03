@@ -4,7 +4,7 @@ use sfml::{
         Transformable,
     },
     system::Vector2f,
-    window::{Event, Style},
+    window::{Event, Key, Style},
 };
 
 include!("../example_common.rs");
@@ -31,14 +31,17 @@ impl FloatingResource {
     }
 
     fn with_font(font: &RcFont, up: bool, left: bool, speed: f32) -> Self {
-        Self {
+        let mut self_ = Self {
             up,
             left,
             sprite: Default::default(),
-            text: RcText::new("SFML", font, 32),
+            text: RcText::new("SFML", font, 16),
             speed,
             render_sprite: false,
-        }
+        };
+        self_.text.scale(Vector2f::new(2., 2.));
+
+        self_
     }
 
     fn render(&self, window: &mut RenderWindow) {
@@ -102,6 +105,13 @@ fn test_getting_rc_texture_from_texture() -> RcTexture {
     RcTexture::from_texture(Texture::from_file(example_res!("frank.jpeg")).unwrap())
 }
 
+fn get_set_smooth_rc_text(font: &RcFont) -> RcText {
+    let mut set_smooth_text = RcText::new("Press 's' to enable/disable font smoothing", font, 16);
+    set_smooth_text.scale(Vector2f::new(2., 2.));
+
+    set_smooth_text
+}
+
 fn main() {
     let mut window =
         RenderWindow::new((800, 600), "SFML window", Style::CLOSE, &Default::default());
@@ -112,7 +122,7 @@ fn main() {
     let texture2 = test_getting_rc_texture_from_texture();
 
     // Create a new font.
-    let font = RcFont::from_file(example_res!("sansation.ttf")).unwrap();
+    let mut font = RcFont::from_file(example_res!("sansation.ttf")).unwrap();
 
     // Load many resources with no lifetime contingencies
     let mut floating_resources = Vec::from([
@@ -128,10 +138,21 @@ fn main() {
         FloatingResource::with_font(&font, true, true, 2.75f32),
     ]);
 
+    let set_smooth_text = get_set_smooth_rc_text(&font);
+
     while window.is_open() {
         while let Some(event) = window.poll_event() {
             if event == Event::Closed {
                 window.close();
+            }
+
+            match event {
+                Event::Closed => window.close(),
+                Event::KeyPressed { code, .. } if code == Key::S => {
+                    let smooth = !font.is_smooth();
+                    font.set_smooth(smooth)
+                }
+                _ => {}
             }
         }
 
@@ -146,6 +167,8 @@ fn main() {
         for floating_resource in &floating_resources {
             floating_resource.render(&mut window);
         }
+
+        window.draw(&set_smooth_text);
         window.display();
     }
 }
