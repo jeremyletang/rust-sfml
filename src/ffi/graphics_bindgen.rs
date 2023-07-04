@@ -78,6 +78,7 @@ pub fn sfFont_copy(font: *const sfFont) -> *mut sfFont;
 pub fn sfFont_destroy(font: *mut sfFont);
 pub fn sfFont_getGlyph(font: *const sfFont, codePoint: u32, characterSize: c_uint, bold: bool, outlineThickness: f32) -> sfGlyph;
 pub fn sfFont_getKerning(font: *const sfFont, first: u32, second: u32, characterSize: c_uint) -> f32;
+pub fn sfFont_getBoldKerning(font: *const sfFont, first: u32, second: u32, characterSize: c_uint) -> f32;
 pub fn sfFont_getLineSpacing(font: *const sfFont, characterSize: c_uint) -> f32;
 pub fn sfFont_getUnderlinePosition(font: *const sfFont, characterSize: c_uint) -> f32;
 pub fn sfFont_getUnderlineThickness(font: *const sfFont, characterSize: c_uint) -> f32;

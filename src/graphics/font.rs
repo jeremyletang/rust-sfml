@@ -80,6 +80,28 @@ impl Font {
         unsafe { ffi::sfFont_getKerning(self, first, second, character_size) }
     }
 
+    /// Get the bold kerning value corresponding to a given pair of characters in a font
+    ///
+    /// # Arguments
+    /// * first - Unicode code point of the first character
+    /// * second - Unicode code point of the second character
+    /// * characterSize - Character size, in pixels
+    ///
+    /// Return the bold kerning offset, in pixels
+    ///
+    /// # Usage Example
+    ///
+    /// ```
+    /// # use sfml::graphics::Font;
+    /// # let font = Font::from_file("examples/resources/sansation.ttf").unwrap();
+    /// let kerning = font.bold_kerning(0, 0, 32);
+    /// assert_eq!(kerning, 0.);
+    /// ```
+    #[must_use]
+    pub fn bold_kerning(&self, first: u32, second: u32, character_size: u32) -> f32 {
+        unsafe { ffi::sfFont_getBoldKerning(self, first, second, character_size) }
+    }
+
     /// Get the line spacing value
     ///
     /// # Arguments
