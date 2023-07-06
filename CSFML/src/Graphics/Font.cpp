@@ -1,5 +1,4 @@
 #include "Graphics/Rect.h"
-#include "SFML/Config.h"
 #include "System/InputStreamStruct.h"
 #include <SFML/Graphics/Font.hpp>
 #include <cstddef>
