@@ -289,6 +289,38 @@ impl RcFont {
         unsafe { (**self.font.as_ptr()).texture(character_size) }
     }
 
+    /// Check if the font has anti-aliasing enabled/disabled
+    ///
+    /// # Usage Example
+    /// ```no_run
+    /// # use sfml::graphics::Font;
+    /// # let mut font = Font::from_file("examples/resources/sansation.ttf").unwrap();
+    /// font.set_smooth(true);
+    /// assert_eq!(font.is_smooth(), true);
+    /// ````
+    #[must_use]
+    pub fn is_smooth(&self) -> bool {
+        self.font.borrow().is_smooth()
+    }
+
+    /// Enables/Disables font smoothing.
+    ///
+    /// # Arguments
+    /// * `smooth` - True to enable smoothing, false to disable smoothing
+    ///
+    /// # Usage Example
+    ///
+    /// ```no_run
+    /// # use sfml::graphics::Font;
+    /// # let font = Font::from_file("examples/resources/sansation.ttf").unwrap();
+    /// let texture = font.texture(32);
+    /// # use sfml::system::Vector2;
+    /// assert_eq!(texture.size(), Vector2::new(128, 128));
+    /// ```
+    pub fn set_smooth(&mut self, smooth: bool) {
+        self.font.borrow_mut().set_smooth(smooth)
+    }
+
     /// INTERNAL FUNCTION ONLY
     /// Allows other rc variants to request a weak pointer to the texture
     pub(super) fn downgrade(&self) -> std::rc::Weak<RefCell<SfBox<Font>>> {

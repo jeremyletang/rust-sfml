@@ -83,6 +83,8 @@ pub fn sfFont_getLineSpacing(font: *const sfFont, characterSize: c_uint) -> f32;
 pub fn sfFont_getUnderlinePosition(font: *const sfFont, characterSize: c_uint) -> f32;
 pub fn sfFont_getUnderlineThickness(font: *const sfFont, characterSize: c_uint) -> f32;
 pub fn sfFont_getTexture(font: *const sfFont, characterSize: c_uint) -> *const sfTexture;
+pub fn sfFont_isSmooth(font: *const sfFont) -> bool;
+pub fn sfFont_setSmooth(font: *const sfFont, smooth: bool);
 pub fn sfFont_getInfo(font: *const sfFont) -> sfFontInfo;
 // Image.cpp
 pub fn sfImage_create(width: c_uint, height: c_uint) -> *mut sfImage;

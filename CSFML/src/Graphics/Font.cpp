@@ -1,4 +1,5 @@
 #include "Graphics/Rect.h"
+#include "SFML/Config.h"
 #include "System/InputStreamStruct.h"
 #include <SFML/Graphics/Font.hpp>
 #include <cstddef>
@@ -79,6 +80,14 @@ extern "C" float sfFont_getUnderlineThickness(const sf::Font *font, unsigned int
 
 extern "C" const sf::Texture *sfFont_getTexture(const sf::Font *font, unsigned int characterSize) {
     return &font->getTexture(characterSize);
+}
+
+extern "C" bool sfFont_isSmooth(const sf::Font *font) {
+    return font->isSmooth();
+}
+
+extern "C" void sfFont_setSmooth(sf::Font *font, bool smooth) {
+    font->setSmooth(smooth);
 }
 
 typedef struct
