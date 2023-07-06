@@ -24,7 +24,7 @@ unsafe extern "C" fn read<T: Read + Seek>(
         let result = chunk.read_to_end(&mut buf);
         if let Ok(bytes_read) = result {
             ptr::copy_nonoverlapping(buf.as_ptr(), data as *mut u8, bytes_read);
-            return bytes_read as _;
+            return bytes_read.try_into().unwrap();
         }
     }
     -1
