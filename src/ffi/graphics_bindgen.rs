@@ -84,7 +84,7 @@ pub fn sfFont_getUnderlinePosition(font: *const sfFont, characterSize: c_uint) -
 pub fn sfFont_getUnderlineThickness(font: *const sfFont, characterSize: c_uint) -> f32;
 pub fn sfFont_getTexture(font: *const sfFont, characterSize: c_uint) -> *const sfTexture;
 pub fn sfFont_isSmooth(font: *const sfFont) -> bool;
-pub fn sfFont_setSmooth(font: *const sfFont, smooth: bool);
+pub fn sfFont_setSmooth(font: *mut sfFont, smooth: bool);
 pub fn sfFont_getInfo(font: *const sfFont) -> sfFontInfo;
 // Image.cpp
 pub fn sfImage_create(width: c_uint, height: c_uint) -> *mut sfImage;
@@ -171,7 +171,8 @@ pub fn sfRenderTexture_setRepeated(renderTexture: *mut sfRenderTexture, repeated
 pub fn sfRenderTexture_isRepeated(renderTexture: *const sfRenderTexture) -> bool;
 pub fn sfRenderTexture_generateMipmap(renderTexture: *mut sfRenderTexture) -> bool;
 // RenderWindow.cpp
-pub fn sfRenderWindow_createUnicode(mode: sfVideoMode, title: *const u32, style: u32, settings: *const sfContextSettings) -> *mut sfRenderWindow;
+pub fn sfRenderWindow_createUnicode(renderWindow: *mut sfRenderWindow, mode: sfVideoMode, title: *const u32, style: u32, settings: *const sfContextSettings);
+pub fn sfRenderWindow_createUnicode_new(mode: sfVideoMode, title: *const u32, style: u32, settings: *const sfContextSettings) -> *mut sfRenderWindow;
 pub fn sfRenderWindow_createFromHandle(handle: sfWindowHandle, settings: *const sfContextSettings) -> *mut sfRenderWindow;
 pub fn sfRenderWindow_destroy(renderWindow: *mut sfRenderWindow);
 pub fn sfRenderWindow_close(renderWindow: *mut sfRenderWindow);

@@ -3,6 +3,7 @@
 bitflags::bitflags! {
     /// Available styles applicable to windows.
     #[repr(C)]
+    #[derive(Clone, Copy, Debug)]
     pub struct Style: u32 {
         /// No decorations (cannot be combined with other flags).
         const NONE = 0;

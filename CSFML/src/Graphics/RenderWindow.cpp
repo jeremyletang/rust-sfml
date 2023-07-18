@@ -11,14 +11,16 @@
 #include <SFML/Window/Touch.hpp>
 #include <cstddef>
 
-extern "C" sf::RenderWindow *sfRenderWindow_createUnicode(sfVideoMode mode, const uint32_t *title, uint32_t style, const sf::ContextSettings *settings) {
+extern "C" void sfRenderWindow_createUnicode(sf::RenderWindow *renderWindow, sfVideoMode mode, const uint32_t *title, uint32_t style, const sf::ContextSettings *settings) {
     // Convert video mode
     sf::VideoMode videoMode(mode.width, mode.height, mode.bitsPerPixel);
-
     // Create the window
-    sf::RenderWindow *renderWindow = new sf::RenderWindow;
     renderWindow->create(videoMode, title, style, *settings);
+}
 
+extern "C" sf::RenderWindow *sfRenderWindow_createUnicode_new(sfVideoMode mode, const uint32_t *title, uint32_t style, const sf::ContextSettings *settings) {
+    sf::RenderWindow *renderWindow = new sf::RenderWindow;
+    sfRenderWindow_createUnicode(renderWindow, mode, title, style, settings);
     return renderWindow;
 }
 

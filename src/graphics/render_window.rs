@@ -96,7 +96,7 @@ impl RenderWindow {
 
         title.with_as_sfstr(|sfstr| {
             let sf_render_win: *mut ffi::sfRenderWindow = unsafe {
-                ffi::sfRenderWindow_createUnicode(
+                ffi::sfRenderWindow_createUnicode_new(
                     mode.into().raw(),
                     sfstr.as_ptr(),
                     style.bits(),
@@ -107,6 +107,26 @@ impl RenderWindow {
                 render_window: NonNull::new(sf_render_win).expect("Failed to create RenderWindow"),
             }
         })
+    }
+    /// Recreate with new settings. See [`Self::new`] for more information.
+    pub fn recreate<V: Into<VideoMode>, S: SfStrConv>(
+        &mut self,
+        mode: V,
+        title: S,
+        style: Style,
+        settings: &ContextSettings,
+    ) {
+        thread_safety::set_window_thread();
+
+        title.with_as_sfstr(|sfstr| unsafe {
+            ffi::sfRenderWindow_createUnicode(
+                self.render_window.as_ptr(),
+                mode.into().raw(),
+                sfstr.as_ptr(),
+                style.bits(),
+                settings,
+            );
+        });
     }
 
     /// Create a render window from an existing platform-specific window handle
