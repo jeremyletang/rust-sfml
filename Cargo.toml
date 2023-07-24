@@ -136,4 +136,8 @@ required-features = ["window"]
 name = "rc-resources"
 required-features = ["graphics", "window"]
 
+[[example]]
+name = "window-test"
+required-features = ["graphics", "window"]
+
 [workspace]
