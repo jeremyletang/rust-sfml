@@ -2,12 +2,26 @@
 
 ## Unreleased
 
+- Nothing yet
+
+## 0.21.0
+
+### SFML 2.6 update
+
+rust-sfml 0.21 requires SFML 2.6. It will not work with 2.5.
+
 ### Added
 - Added `RcFont` and `RcText` for reference counted text (see `examples/rc-resources.rs`)
 - pub const DEFAULT for `Vertex`
+- `is_smooth` and `set_smooth` methods for `Font`
+- `RenderWindow::recreate` method to recreate a window with new parameters
 
 ### Changed
 - Update `RcSprite` and `RcTexture` documentation.
+
+### Fixed
+- Missing `#include`s in CSFML
+- Too restrictive lifetime for Music
 
 ## 0.20.0
 
