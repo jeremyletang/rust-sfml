@@ -114,7 +114,7 @@ impl VertexBuffer {
     /// * other - Instance to swap with
     pub fn swap(&mut self, other: &mut VertexBuffer) {
         unsafe {
-            sfVertexBuffer_swap(self.vertex_buffer.as_ptr(), other.vertex_buffer.as_ptr());
+            sfVertexBuffer_swap(self.vertex_buffer.as_mut(), other.vertex_buffer.as_mut());
         }
     }
 
