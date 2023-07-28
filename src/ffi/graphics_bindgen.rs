@@ -141,6 +141,7 @@ pub fn sfRectangleShape_getGlobalBounds(shape: *const sfRectangleShape) -> sfFlo
 pub fn sfRenderTexture_createWithSettings(width: c_uint, height: c_uint, settings: *const sfContextSettings) -> *mut sfRenderTexture;
 pub fn sfRenderTexture_destroy(renderTexture: *mut sfRenderTexture);
 pub fn sfRenderTexture_getSize(renderTexture: *const sfRenderTexture) -> sfVector2u;
+pub fn sfRenderTexture_isSrgb(renderTexture: *const sfRenderTexture) -> bool;
 pub fn sfRenderTexture_setActive(renderTexture: *mut sfRenderTexture, active: bool) -> bool;
 pub fn sfRenderTexture_display(renderTexture: *mut sfRenderTexture);
 pub fn sfRenderTexture_clear(renderTexture: *mut sfRenderTexture, color: sfColor);
@@ -184,6 +185,7 @@ pub fn sfRenderWindow_getPosition(renderWindow: *const sfRenderWindow) -> sfVect
 pub fn sfRenderWindow_setPosition(renderWindow: *mut sfRenderWindow, position: sfVector2i);
 pub fn sfRenderWindow_getSize(renderWindow: *const sfRenderWindow) -> sfVector2u;
 pub fn sfRenderWindow_setSize(renderWindow: *mut sfRenderWindow, size: sfVector2u);
+pub fn sfRenderWindow_isSrgb(renderWindow: *const sfRenderWindow) -> bool;
 pub fn sfRenderWindow_setUnicodeTitle(renderWindow: *mut sfRenderWindow, title: *const u32);
 pub fn sfRenderWindow_setIcon(renderWindow: *mut sfRenderWindow, width: c_uint, height: c_uint, pixels: *const u8);
 pub fn sfRenderWindow_setVisible(renderWindow: *mut sfRenderWindow, visible: bool);

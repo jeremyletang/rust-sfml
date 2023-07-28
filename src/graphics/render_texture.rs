@@ -57,6 +57,14 @@ impl RenderTexture {
         unsafe { ffi::sfRenderTexture_display(self.render_texture) }
     }
 
+    /// Tell if the render texture will use sRGB encoding when drawing it
+    ///
+    /// Returns true if sRGB encoding is enabled, false if sRGB encoding is disabled
+    #[must_use]
+    pub fn is_srgb(&self) -> bool {
+        unsafe { ffi::sfRenderTexture_isSrgb(self.render_texture) }
+    }
+
     /// Activate or deactivate a render texture as the current target for rendering
     ///
     /// # Arguments

@@ -1,5 +1,6 @@
 #include "Graphics/Rect.h"
 #include "Graphics/Vertex.h"
+#include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/ConvexShape.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
@@ -21,6 +22,10 @@ extern "C" void sfRenderTexture_destroy(sf::RenderTexture *renderTexture) {
 extern "C" sfVector2u sfRenderTexture_getSize(const sf::RenderTexture *renderTexture) {
     sf::Vector2u size = renderTexture->getSize();
     return {size.x, size.y};
+}
+
+extern "C" bool sfRenderTexture_isSrgb(const sf::RenderTarget *renderTexture) {
+    return renderTexture->isSrgb();
 }
 
 extern "C" bool sfRenderTexture_setActive(sf::RenderTexture *renderTexture, bool active) {

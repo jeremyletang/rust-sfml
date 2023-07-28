@@ -1,6 +1,7 @@
 #include "Graphics/Rect.h"
 #include "Graphics/Vertex.h"
 #include "Window/VideoMode.h"
+#include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/ConvexShape.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
@@ -72,6 +73,10 @@ extern "C" sfVector2u sfRenderWindow_getSize(const sf::RenderWindow *renderWindo
 
 extern "C" void sfRenderWindow_setSize(sf::RenderWindow *renderWindow, sfVector2u size) {
     renderWindow->setSize(sf::Vector2u(size.x, size.y));
+}
+
+extern "C" bool sfRenderWindow_isSrgb(const sf::RenderWindow *renderWindow) {
+    return renderWindow->isSrgb();
 }
 
 extern "C" void sfRenderWindow_setUnicodeTitle(sf::RenderWindow *renderWindow, const uint32_t *title) {
