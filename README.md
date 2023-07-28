@@ -27,6 +27,8 @@ warning: Custom SFML include dir: C:\Users\You\sfml\include
 warning: Adding custom SFML libs search path C:\Users\You\sfml\lib
 ```
 
+TIP: To set the environment variables of a cargo project, you can use the {project_dir}/.cargo/config.toml file documented here: https://doc.rust-lang.org/cargo/reference/config.html#env
+
 Documentation
 =====
 The API documentation is available at: https://docs.rs/sfml/
