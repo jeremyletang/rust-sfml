@@ -7,7 +7,7 @@ use {
             Transformable,
         },
         system::{Clock, Time, Vector2f},
-        window::{ContextSettings, Event, Key, Style},
+        window::{ContextSettings, Event, Key, Scancode, Style},
     },
     std::{env, f32::consts::PI},
 };
@@ -134,13 +134,25 @@ fn main() {
                         }
                     }
                 }
-                Event::KeyPressed { code: Key::Up, .. } => up = true,
-                Event::KeyReleased { code: Key::Up, .. } => up = false,
+                Event::KeyPressed { code: Key::Up, .. }
+                | Event::KeyPressed {
+                    scan: Scancode::W, ..
+                } => up = true,
+                Event::KeyReleased { code: Key::Up, .. }
+                | Event::KeyReleased {
+                    scan: Scancode::W, ..
+                } => up = false,
                 Event::KeyPressed {
                     code: Key::Down, ..
+                }
+                | Event::KeyPressed {
+                    scan: Scancode::S, ..
                 } => down = true,
                 Event::KeyReleased {
                     code: Key::Down, ..
+                }
+                | Event::KeyReleased {
+                    scan: Scancode::S, ..
                 } => down = false,
                 _ => {}
             }

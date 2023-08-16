@@ -72,6 +72,8 @@ pub enum Event {
     KeyReleased {
         /// The released key
         code: ffi::Key,
+        /// The scancode of the released key
+        scan: ffi::Scancode,
         /// Is alt released too?
         alt: bool,
         /// Is ctrl released too?
@@ -228,6 +230,7 @@ impl Event {
             },
             EventType::KeyReleased => KeyReleased {
                 code: event.union.key.code,
+                scan: event.union.key.scan,
                 alt: event.union.key.alt,
                 ctrl: event.union.key.control,
                 shift: event.union.key.shift,

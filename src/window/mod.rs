@@ -11,6 +11,8 @@ pub use self::{
     window::{Handle, Window},
 };
 
+pub use crate::ffi::window::Scancode;
+
 pub mod clipboard;
 mod context;
 mod context_settings;
