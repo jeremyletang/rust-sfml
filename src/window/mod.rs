@@ -1,17 +1,18 @@
 //! Provides OpenGL-based windows, and abstractions for events and input handling.
 
-pub use self::{
-    context::Context,
-    context_settings::ContextSettings,
-    cursor::{Cursor, Type as CursorType},
-    event::Event,
-    keyboard::{set_virtual_keyboard_visible, Key},
-    style::Style,
-    video_mode::VideoMode,
-    window::{Handle, Window},
+pub use {
+    self::{
+        context::Context,
+        context_settings::ContextSettings,
+        cursor::{Cursor, Type as CursorType},
+        event::Event,
+        keyboard::{set_virtual_keyboard_visible, Key},
+        style::Style,
+        video_mode::VideoMode,
+        window::{Handle, Window},
+    },
+    crate::ffi::window::Scancode,
 };
-
-pub use crate::ffi::window::Scancode;
 
 pub mod clipboard;
 mod context;
