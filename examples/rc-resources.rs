@@ -148,7 +148,7 @@ fn main() {
 
             match event {
                 Event::Closed => window.close(),
-                Event::KeyPressed { code, .. } if code == Key::S => {
+                Event::KeyPressed { code: Key::S, .. } => {
                     let smooth = !font.is_smooth();
                     font.set_smooth(smooth)
                 }
