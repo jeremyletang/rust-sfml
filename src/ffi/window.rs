@@ -28,6 +28,14 @@ pub type sfCursor = crate::window::Cursor;
 /// | `SizeVertical`           | yes   | yes      | yes     |
 /// | `SizeTopLeftBottomRight` | no    | yes*     | yes     |
 /// | `SizeBottomLeftTopRight` | no    | yes*     | yes     |
+/// | `SizeLeft`               | yes   | yes      | yes     |
+/// | `SizeRight`              | yes   | yes      | yes     |
+/// | `SizeTop`                | yes   | yes      | yes     |
+/// | `SizeBottom`             | yes   | yes      | yes     |
+/// | `SizeTopLeft`            | yes   | yes      | yes     |
+/// | `SizeTopRight`           | yes   | yes      | yes     |
+/// | `SizeBottomLeft`         | yes   | yes      | yes     |
+/// | `SizeBottomRight`        | yes   | yes      | yes     |
 /// | `SizeAll`                | yes   | no       | yes     |
 /// | `Cross`                  | yes   | yes      | yes     |
 /// | `Help`                   | yes   | yes*     | yes     |
@@ -48,6 +56,14 @@ pub enum sfCursorType {
     SizeVertical,
     SizeTopLeftBottomRight,
     SizeBottomLeftTopRight,
+    SizeLeft,
+    SizeRight,
+    SizeTop,
+    SizeBottom,
+    SizeTopLeft,
+    SizeBottomRight,
+    SizeBottomLeft,
+    SizeTopRight,
     SizeAll,
     Cross,
     Help,
