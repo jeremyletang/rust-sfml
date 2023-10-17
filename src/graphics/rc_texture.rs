@@ -127,6 +127,18 @@ impl RcTexture {
         self.texture.borrow_mut().create(width, height)
     }
 
+    /// Get the source texture of an [`RcTexture`]
+    ///
+    /// It let's you temporarily borrow the [`Texture`] being held by an [`RcTexture`].
+    /// This may be useful for many things, for example, using vertex arrays with
+    /// [`RcTexture`].
+    ///
+    /// Returns a [`Texture`]
+    #[must_use]
+    pub fn raw_texture(&self) -> &Texture {
+        unsafe { &*self.texture.as_ptr() }
+    }
+
     /// Load texture from memory
     ///
     /// The `area` argument can be used to load only a sub-rectangle of the whole image.
