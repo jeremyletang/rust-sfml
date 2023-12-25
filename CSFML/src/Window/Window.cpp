@@ -147,3 +147,7 @@ extern "C" const sf::ContextSettings *sfContext_getSettings(const sf::Context *c
 extern "C" uint64_t sfContext_getActiveContextId() {
     return sf::Context::getActiveContextId();
 }
+
+extern "C" void* sfContext_getFunction(char const* name) {
+    return sf::Context::getFunction(name);
+}
