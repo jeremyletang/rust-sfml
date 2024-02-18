@@ -1,3 +1,5 @@
+use std::{error::Error, fmt};
+
 use {
     crate::{
         ffi::graphics as ffi,
@@ -186,8 +188,35 @@ impl Image {
     /// This function doesn't check the validity of the pixel
     /// coordinates, using out-of-range values will result in
     /// an undefined behaviour.
-    pub unsafe fn set_pixel(&mut self, x: u32, y: u32, color: Color) {
+    pub unsafe fn set_pixel_unchecked(&mut self, x: u32, y: u32, color: Color) {
         ffi::sfImage_setPixel(self.image, x, y, color)
+    }
+
+    /// Change the color of a pixel in an image
+    ///
+    /// # Arguments
+    /// * x - X coordinate of pixel to change
+    /// * y - Y coordinate of pixel to change
+    /// * color - New color of the pixel
+    pub fn set_pixel(&mut self, x: u32, y: u32, color: Color) -> Result<(), SetPixelError> {
+        let image_size = self.size();
+        if x >= image_size.x {
+            return Err(SetPixelError::XTooLarge {
+                x,
+                width: image_size.x - 1,
+            });
+        }
+        if y >= image_size.y {
+            return Err(SetPixelError::YTooLarge {
+                y,
+                height: image_size.y - 1,
+            });
+        }
+
+        // Since we check for index validity before setting the pixel, it is safe unless the
+        // image has been unloaded, but I doubt you can even do that.
+        unsafe { ffi::sfImage_setPixel(self.image, x, y, color) }
+        Ok(())
     }
 
     /// Get the color of a pixel in an image
@@ -204,8 +233,27 @@ impl Image {
     /// coordinates, using out-of-range values will result in
     /// an undefined behaviour.
     #[must_use]
-    pub unsafe fn pixel_at(&self, x: u32, y: u32) -> Color {
+    pub unsafe fn pixel_at_unchecked(&self, x: u32, y: u32) -> Color {
         ffi::sfImage_getPixel(self.image, x, y)
+    }
+
+    /// Get the color of a pixel in an image
+    ///
+    /// # Arguments
+    /// * x - X coordinate of pixel to get
+    /// * y - Y coordinate of pixel to get
+    ///
+    /// Return the Color of the pixel at coordinates (x, y)
+    #[must_use]
+    pub fn pixel_at(&self, x: u32, y: u32) -> Option<Color> {
+        let image_size = self.size();
+        if image_size.x <= x || image_size.y <= y {
+            return None;
+        }
+
+        // Since we check for index validity before getting the pixel, it is safe unless the
+        // image has been unloaded, but I doubt you can even do that.
+        unsafe { Some(ffi::sfImage_getPixel(self.image, x, y)) }
     }
 
     /// Return the memory buffer of this image.
@@ -291,5 +339,26 @@ impl Clone for Image {
 impl Drop for Image {
     fn drop(&mut self) {
         unsafe { ffi::sfImage_destroy(self.image) }
+    }
+}
+
+#[derive(Debug, Copy, Clone)]
+pub enum SetPixelError {
+    XTooLarge { x: u32, width: u32 },
+    YTooLarge { y: u32, height: u32 },
+}
+
+impl Error for SetPixelError {}
+
+impl fmt::Display for SetPixelError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::XTooLarge { x, width } => {
+                write!(f, "x index out of bounds. x:{} width:{}", x, width)
+            }
+            Self::YTooLarge { y, height } => {
+                write!(f, "y index out of bounds. y:{} height:{}", y, height)
+            }
+        }
     }
 }
