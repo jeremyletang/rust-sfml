@@ -69,8 +69,8 @@ impl Context {
     /// Get the address of an OpenGL function.
     /// # Arguments
     /// * name - Name of the function to get the address of
-    /// 
-    /// Returns the address of the OpenGL function, 0 on failure 
+    ///
+    /// Returns the address of the OpenGL function, 0 on failure
     pub unsafe fn get_function(name: &CStr) -> *const std::ffi::c_void {
         unsafe { ffi::sfContext_getFunction(name.as_ptr()) }
     }
