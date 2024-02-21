@@ -2,9 +2,7 @@
 use serde::{Deserialize, Serialize};
 use {
     num_traits::{AsPrimitive, CheckedDiv},
-    std::{
-        ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssign},
-    },
+    std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssign},
 };
 
 /// Utility type for manipulating 2-dimensional vectors.

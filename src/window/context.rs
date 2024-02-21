@@ -1,6 +1,7 @@
-use std::ffi::CStr;
-
-use crate::{ffi::window as ffi, window::ContextSettings};
+use {
+    crate::{ffi::window as ffi, window::ContextSettings},
+    std::ffi::CStr,
+};
 
 /// Type holding a valid drawing context.
 ///

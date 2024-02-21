@@ -1,11 +1,9 @@
-use {
-    crate::{
-        ffi::graphics as ffi,
-        graphics::FloatRect,
-        sf_box::{Dispose, RawDefault},
-        system::Vector2f,
-        SfBox,
-    },
+use crate::{
+    ffi::graphics as ffi,
+    graphics::FloatRect,
+    sf_box::{Dispose, RawDefault},
+    system::Vector2f,
+    SfBox,
 };
 
 decl_opaque! {

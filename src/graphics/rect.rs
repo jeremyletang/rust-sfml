@@ -3,9 +3,7 @@ use serde::{Deserialize, Serialize};
 use {
     crate::system::Vector2,
     num_traits::AsPrimitive,
-    std::{
-        ops::{Add, Sub},
-    },
+    std::ops::{Add, Sub},
 };
 
 /// Utility type for manipulating 2D axis-aligned rectangles.
