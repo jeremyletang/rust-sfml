@@ -6,7 +6,6 @@ use {
         LoadResult, ResourceLoadError, SfBox,
     },
     std::{
-        borrow::ToOwned,
         ffi::CString,
         io::{Read, Seek},
         slice,

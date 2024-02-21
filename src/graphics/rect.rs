@@ -4,7 +4,6 @@ use {
     crate::system::Vector2,
     num_traits::AsPrimitive,
     std::{
-        convert::TryInto,
         ops::{Add, Sub},
     },
 };

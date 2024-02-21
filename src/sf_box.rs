@@ -1,5 +1,5 @@
 use std::{
-    borrow::{Borrow, ToOwned},
+    borrow::Borrow,
     ops::{Deref, DerefMut},
     ptr::NonNull,
 };

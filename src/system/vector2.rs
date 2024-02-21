@@ -3,7 +3,6 @@ use serde::{Deserialize, Serialize};
 use {
     num_traits::{AsPrimitive, CheckedDiv},
     std::{
-        convert::TryInto,
         ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssign},
     },
 };

@@ -8,7 +8,6 @@ use {
         IntoLoadResult, LoadResult,
     },
     std::{
-        borrow::ToOwned,
         ffi::CString,
         io::{Read, Seek},
     },

@@ -6,7 +6,6 @@ use {
         system::Vector2f,
         SfBox,
     },
-    std::borrow::ToOwned,
 };
 
 decl_opaque! {

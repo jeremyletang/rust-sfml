@@ -6,7 +6,6 @@ use {
         system::InputStream,
     },
     std::{
-        borrow::ToOwned,
         ffi::{CStr, CString},
         io::{Read, Seek},
     },
