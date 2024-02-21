@@ -18,7 +18,6 @@ decl_opaque! {
     sfShape;
     sfSprite;
     sfText;
-    sfTransformable;
     sfVertexBuffer;
 }
 
