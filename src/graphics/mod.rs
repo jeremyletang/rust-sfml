@@ -11,7 +11,7 @@ pub use {
         drawable::Drawable,
         font::{Font, Info as FontInfo},
         glyph::Glyph,
-        image::Image,
+        image::{Image, PixelAccessError},
         primitive_type::PrimitiveType,
         rc_font::RcFont,
         rc_sprite::RcSprite,

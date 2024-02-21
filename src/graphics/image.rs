@@ -198,16 +198,16 @@ impl Image {
     /// * x - X coordinate of pixel to change
     /// * y - Y coordinate of pixel to change
     /// * color - New color of the pixel
-    pub fn set_pixel(&mut self, x: u32, y: u32, color: Color) -> Result<(), SetPixelError> {
+    pub fn set_pixel(&mut self, x: u32, y: u32, color: Color) -> Result<(), PixelAccessError> {
         let image_size = self.size();
         if x >= image_size.x {
-            return Err(SetPixelError::XTooLarge {
+            return Err(PixelAccessError::XTooLarge {
                 x,
                 width: image_size.x - 1,
             });
         }
         if y >= image_size.y {
-            return Err(SetPixelError::YTooLarge {
+            return Err(PixelAccessError::YTooLarge {
                 y,
                 height: image_size.y - 1,
             });
@@ -342,15 +342,28 @@ impl Drop for Image {
     }
 }
 
+/// Error that can happen when trying to access a pixel
 #[derive(Debug, Copy, Clone)]
-pub enum SetPixelError {
-    XTooLarge { x: u32, width: u32 },
-    YTooLarge { y: u32, height: u32 },
+pub enum PixelAccessError {
+    /// X coordinate is larger than the width of the image
+    XTooLarge {
+        /// X coordinate access was attempted at
+        x: u32,
+        /// Width of the image
+        width: u32,
+    },
+    /// Y coordinate is larger than the height of the image
+    YTooLarge {
+        /// Y coordinate access was attempted at
+        y: u32,
+        /// Height of the image
+        height: u32,
+    },
 }
 
-impl Error for SetPixelError {}
+impl Error for PixelAccessError {}
 
-impl fmt::Display for SetPixelError {
+impl fmt::Display for PixelAccessError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             Self::XTooLarge { x, width } => {
