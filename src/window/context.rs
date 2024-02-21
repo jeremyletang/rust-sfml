@@ -69,8 +69,14 @@ impl Context {
     /// Get the address of an OpenGL function.
     /// # Arguments
     /// * name - Name of the function to get the address of
-    /// 
-    /// Returns the address of the OpenGL function, 0 on failure 
+    ///
+    /// Returns the address of the OpenGL function, 0 on failure
+    ///
+    /// # Safety
+    ///
+    /// Return addresses to functions is inherently an unsafe operation. Must check failure on
+    /// your own. rust-sfml DOES NOT perform any checks on the returned pointer.
+    #[must_use]
     pub unsafe fn get_function(name: &CStr) -> *const std::ffi::c_void {
         unsafe { ffi::sfContext_getFunction(name.as_ptr()) }
     }
