@@ -194,8 +194,7 @@ pub trait RenderTarget {
     /// This function can be used when you mix SFML drawing
     /// and direct OpenGL rendering, if you choose not to use
     /// [`push_gl_states`]/[`pop_gl_states`]. It makes sure that all OpenGL
-    /// states needed by SFML are set, so that subsequent draw()
-    /// calls will work as expected.
+    /// states needed by SFML are set, so that subsequent draw calls will work as expected.
     ///
     /// [`push_gl_states`]: RenderTarget::push_gl_states
     /// [`pop_gl_states`]: RenderTarget::pop_gl_states
