@@ -61,11 +61,11 @@ pub enum BlendFactor {
 #[repr(C)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum BlendEquation {
-    /// Pixel = Src * SrcFactor + Dst * DstFactor.
+    /// `pixel = src * src_factor + dst * dst_factor`
     Add,
-    /// Pixel = Src * SrcFactor - Dst * DstFactor.
+    /// `pixel = src * src_factor - dst * dst_factor`
     Subtract,
-    /// Pixel = Dst * DstFactor - Src * SrcFactor.
+    /// `pixel = dst * dst_factor - src * src_factor`
     ReverseSubtract,
 }
 
