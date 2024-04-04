@@ -129,21 +129,31 @@ pub enum Event {
     MouseLeft,
     /// A joystick button was pressed
     JoystickButtonPressed {
-        /// Index of the joystick (in range [0 .. joystick::Count - 1])
+        /// Index of the joystick (in range `0 .. `[`joystick::COUNT`]` - 1`)
+        ///
+        /// [`joystick::COUNT`]: crate::window::joystick::COUNT
         joystickid: u32,
-        /// Index of the button that has been pressed (in range [0 .. Joystick::button_count - 1])
+        /// Index of the button that has been pressed (in range `0 .. `[`joystick::BUTTON_COUNT`]` - 1`)
+        ///
+        /// [`joystick::BUTTON_COUNT`]: crate::window::joystick::BUTTON_COUNT
         button: u32,
     },
     /// A joystick button was released
     JoystickButtonReleased {
-        /// Index of the joystick (in range [0 .. joystick::Count - 1])
+        /// Index of the joystick (in range `0 .. `[`joystick::COUNT`]` - 1`)
+        ///
+        /// [`joystick::COUNT`]: crate::window::joystick::COUNT
         joystickid: u32,
-        /// Index of the button that has been pressed (in range [0 .. Joystick::button_count - 1])
+        /// Index of the button that has been pressed (in range `0 .. `[`joystick::BUTTON_COUNT`]` - 1`)
+        ///
+        /// [`joystick::BUTTON_COUNT`]: crate::window::joystick::BUTTON_COUNT
         button: u32,
     },
     /// The joystick moved along an axis
     JoystickMoved {
-        /// Index of the joystick (in range [0 .. joystick::Count - 1])
+        /// Index of the joystick (in range `0 .. `[`joystick::COUNT`]` - 1`)
+        ///
+        /// [`joystick::COUNT`]: crate::window::joystick::COUNT
         joystickid: u32,
         /// Axis on which the joystick moved.
         axis: crate::window::joystick::Axis,
@@ -152,12 +162,16 @@ pub enum Event {
     },
     /// A joystick was connected
     JoystickConnected {
-        /// Index of the joystick (in range [0 .. joystick::Count - 1])
+        /// Index of the joystick (in range `0 .. `[`joystick::COUNT`]` - 1`)
+        ///
+        /// [`joystick::COUNT`]: crate::window::joystick::COUNT
         joystickid: u32,
     },
     /// A joystick was disconnected
     JoystickDisconnected {
-        /// Index of the joystick (in range [0 .. joystick::Count - 1])
+        /// Index of the joystick (in range `0 .. `[`joystick::COUNT`]` - 1`)
+        ///
+        /// [`joystick::COUNT`]: crate::window::joystick::COUNT
         joystickid: u32,
     },
     /// A touch event began
