@@ -43,6 +43,7 @@ use {
 ///
 /// - [`Color`] as a 4D vector (`vec4`)
 /// - [`Transform`] as matrices (`mat3` or `mat4`)
+///
 /// Every uniform variable in a shader can be set through one of the
 /// `set_uniform_*()` or `set_uniform_array_*()` methods.
 /// For example, if you have a shader with the following uniforms:

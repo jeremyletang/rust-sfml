@@ -16,8 +16,7 @@
 //!
 //! There are two functions that can be used to retrieve the current position of a touch.
 //! 1. [`desktop_position`]: operates in global coordinates (relative to the desktop)
-//! 2. [`Window::touch_position`]: operates in window coordinates
-//! (relative to a specific window).
+//! 2. [`Window::touch_position`]: operates in window coordinates (relative to a specific window).
 //!
 //! Touches are identified by an index (the "finger"), so that in multi-touch events, individual
 //! touches can be tracked correctly. As long as a finger touches the screen, it will keep the same

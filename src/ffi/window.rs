@@ -41,7 +41,7 @@ pub type sfCursor = crate::window::Cursor;
 /// | `Help`                   | yes   | yes*     | yes     |
 /// | `NotAllowed`             | yes   | yes      | yes     |
 ///
-/// * These cursor types are undocumented so may not be available on all versions,
+/// \* These cursor types are undocumented so may not be available on all versions,
 /// but have been tested on 10.13
 #[repr(C)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
