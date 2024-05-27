@@ -1,10 +1,10 @@
-use {
-    once_cell::sync::OnceCell,
-    std::thread::{current, ThreadId},
+use std::{
+    sync::OnceLock,
+    thread::{current, ThreadId},
 };
 
 // this WINDOW_THREAD is the only thread allowed to contain RenderWindows.
-static WINDOW_THREAD: OnceCell<ThreadId> = OnceCell::new();
+static WINDOW_THREAD: OnceLock<ThreadId> = OnceLock::new();
 
 // sets WINDOW_THREAD to the current thread.
 // panics if WINDOW_THREAD is already assigned to another thread.

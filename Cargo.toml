@@ -9,11 +9,11 @@ license = "zlib-acknowledgement"
 keywords = ["sfml", "multimedia", "game"]
 readme = "README.md"
 edition = "2021"
-rust-version = "1.66"
+rust-version = "1.70"
 
 [features]
 default = ["graphics", "audio"]
-window = ["bitflags", "once_cell"]
+window = ["bitflags"]
 graphics = ["window"]
 audio = []
 serde = ["dep:serde"]
@@ -26,10 +26,6 @@ num-traits = "0.2.15"
 [dependencies.serde]
 version = "1.0"
 features = ["derive"]
-optional = true
-
-[dependencies.once_cell]
-version = "1.18.0"
 optional = true
 
 [dependencies.widestring]
