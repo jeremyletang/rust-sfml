@@ -3,7 +3,9 @@ pub use ffi::sfClock as Clock;
 
 impl Dispose for Clock {
     unsafe fn dispose(&mut self) {
-        ffi::sfClock_delete(self);
+        unsafe {
+            ffi::sfClock_delete(self);
+        }
     }
 }
 

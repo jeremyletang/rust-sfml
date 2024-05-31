@@ -100,7 +100,7 @@ pub struct SoundRecorderDriver<'a, R: 'a> {
 
 unsafe extern "C" fn on_start_callback<R: SoundRecorder>(user_data: *mut c_void) -> bool {
     let recorder = user_data as *mut R;
-    (*recorder).on_start()
+    unsafe { (*recorder).on_start() }
 }
 
 unsafe extern "C" fn on_process_callback<R: SoundRecorder>(
@@ -109,12 +109,12 @@ unsafe extern "C" fn on_process_callback<R: SoundRecorder>(
     user_data: *mut c_void,
 ) -> bool {
     let recorder = user_data as *mut R;
-    (*recorder).on_process_samples(std::slice::from_raw_parts(data, len))
+    unsafe { (*recorder).on_process_samples(std::slice::from_raw_parts(data, len)) }
 }
 
 unsafe extern "C" fn on_stop_callback<R: SoundRecorder>(user_data: *mut c_void) {
     let recorder = user_data as *mut R;
-    (*recorder).on_stop()
+    unsafe { (*recorder).on_stop() }
 }
 
 impl<'a, R: SoundRecorder> SoundRecorderDriver<'a, R> {

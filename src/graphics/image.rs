@@ -130,7 +130,7 @@ impl Image {
     /// an undefined behaviour.
     #[must_use]
     pub unsafe fn create_from_pixels(width: u32, height: u32, pixels: &[u8]) -> Option<Self> {
-        let image = ffi::sfImage_createFromPixels(width, height, pixels.as_ptr());
+        let image = unsafe { ffi::sfImage_createFromPixels(width, height, pixels.as_ptr()) };
         if image.is_null() {
             None
         } else {
@@ -189,7 +189,7 @@ impl Image {
     /// coordinates, using out-of-range values will result in
     /// an undefined behaviour.
     pub unsafe fn set_pixel_unchecked(&mut self, x: u32, y: u32, color: Color) {
-        ffi::sfImage_setPixel(self.image, x, y, color)
+        unsafe { ffi::sfImage_setPixel(self.image, x, y, color) }
     }
 
     /// Change the color of a pixel in an image
@@ -234,7 +234,7 @@ impl Image {
     /// an undefined behaviour.
     #[must_use]
     pub unsafe fn pixel_at_unchecked(&self, x: u32, y: u32) -> Color {
-        ffi::sfImage_getPixel(self.image, x, y)
+        unsafe { ffi::sfImage_getPixel(self.image, x, y) }
     }
 
     /// Get the color of a pixel in an image

@@ -34,20 +34,22 @@ unsafe extern "C" fn get_data_callback<S: SoundStream>(
     user_data: *mut c_void,
 ) -> bool {
     let stream = user_data as *mut S;
-    let (data, keep_playing) =
-        match panic::catch_unwind(panic::AssertUnwindSafe(|| (*stream).get_data())) {
-            Ok(ret) => ret,
-            Err(_) => {
-                eprintln!("sound_stream: Stopping playback beacuse `get_data` panicked.");
-                (&mut [][..], false)
-            }
-        };
-    (*chunk).samples = data.as_mut_ptr();
-    (*chunk).sample_count = data
-        .len()
-        .try_into()
-        .expect("Overflow casting data length to sample count");
-    keep_playing
+    unsafe {
+        let (data, keep_playing) =
+            match panic::catch_unwind(panic::AssertUnwindSafe(|| (*stream).get_data())) {
+                Ok(ret) => ret,
+                Err(_) => {
+                    eprintln!("sound_stream: Stopping playback beacuse `get_data` panicked.");
+                    (&mut [][..], false)
+                }
+            };
+        (*chunk).samples = data.as_mut_ptr();
+        (*chunk).sample_count = data
+            .len()
+            .try_into()
+            .expect("Overflow casting data length to sample count");
+        keep_playing
+    }
 }
 
 unsafe extern "C" fn seek_callback<S: SoundStream>(
@@ -55,10 +57,11 @@ unsafe extern "C" fn seek_callback<S: SoundStream>(
     user_data: *mut c_void,
 ) {
     let stream = user_data as *mut S;
-
-    let result = panic::catch_unwind(panic::AssertUnwindSafe(|| {
-        (*stream).seek(Time::from_raw(offset))
-    }));
+    let result = unsafe {
+        panic::catch_unwind(panic::AssertUnwindSafe(|| {
+            (*stream).seek(Time::from_raw(offset))
+        }))
+    };
     if result.is_err() {
         eprintln!("sound_stream: Failed to seek because `seek` panicked.");
     }

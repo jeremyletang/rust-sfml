@@ -13,8 +13,10 @@ pub struct SfStr(U32CStr);
 
 impl SfStr {
     pub(crate) unsafe fn from_ptr_str<'a>(p: *const u32) -> &'a Self {
-        let ptr: *const U32CStr = U32CStr::from_ptr_str(p);
-        &*(ptr as *const Self)
+        unsafe {
+            let ptr: *const U32CStr = U32CStr::from_ptr_str(p);
+            &*(ptr as *const Self)
+        }
     }
     /// Convert to a UTF-8 `String` from the Rust standard library.
     ///

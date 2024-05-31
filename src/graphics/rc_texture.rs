@@ -210,7 +210,7 @@ impl RcTexture {
     /// No additional check is performed on the size of the window, passing an invalid combination
     /// of window size and offset will lead to an _undefined behavior_.
     pub unsafe fn update_from_window(&mut self, window: &Window, x: u32, y: u32) {
-        self.texture.borrow_mut().update_from_window(window, x, y)
+        unsafe { self.texture.borrow_mut().update_from_window(window, x, y) }
     }
 
     /// Update a part of the texture from the contents of a render window.
@@ -226,9 +226,11 @@ impl RcTexture {
         x: u32,
         y: u32,
     ) {
-        self.texture
-            .borrow_mut()
-            .update_from_render_window(render_window, x, y)
+        unsafe {
+            self.texture
+                .borrow_mut()
+                .update_from_render_window(render_window, x, y)
+        }
     }
 
     /// Update a part of the texture from an image.
@@ -239,7 +241,7 @@ impl RcTexture {
     /// No additional check is performed on the size of the image, passing an invalid combination
     /// of image size and offset will lead to an _undefined behavior_.
     pub unsafe fn update_from_image(&mut self, image: &Image, x: u32, y: u32) {
-        self.texture.borrow_mut().update_from_image(image, x, y)
+        unsafe { self.texture.borrow_mut().update_from_image(image, x, y) }
     }
 
     /// Update a part of this texture from another texture.
@@ -251,7 +253,7 @@ impl RcTexture {
     /// passing an invalid combination of texture size and offset will
     /// lead to an _undefined behavior_.
     pub unsafe fn update_from_texture(&mut self, texture: &Texture, x: u32, y: u32) {
-        self.texture.borrow_mut().update_from_texture(texture, x, y)
+        unsafe { self.texture.borrow_mut().update_from_texture(texture, x, y) }
     }
 
     /// Update a part of the texture from an array of pixels.
@@ -273,9 +275,11 @@ impl RcTexture {
         x: u32,
         y: u32,
     ) {
-        self.texture
-            .borrow_mut()
-            .update_from_pixels(pixels, width, height, x, y)
+        unsafe {
+            self.texture
+                .borrow_mut()
+                .update_from_pixels(pixels, width, height, x, y)
+        }
     }
 
     /// Enable or disable the smooth filter on a texture
@@ -378,6 +382,8 @@ impl ToOwned for RcTexture {
 
 impl Dispose for RcTexture {
     unsafe fn dispose(&mut self) {
-        self.texture.borrow_mut().dispose();
+        unsafe {
+            self.texture.borrow_mut().dispose();
+        }
     }
 }

@@ -609,7 +609,9 @@ type sfKeyboardKey = Key;
 
 impl Dispose for JoystickIdentification {
     unsafe fn dispose(&mut self) {
-        sfJoystickIdentification_destroy(self);
+        unsafe {
+            sfJoystickIdentification_destroy(self);
+        }
     }
 }
 

@@ -14,7 +14,7 @@ unsafe extern "C" fn read<T: Read + Seek>(
     size: c_longlong,
     user_data: *mut c_void,
 ) -> c_longlong {
-    let stream: &mut T = &mut *(user_data as *mut T);
+    let stream: &mut T = unsafe { &mut *(user_data as *mut T) };
     if size == 0 {
         return 0;
     } else if size > 0 {
@@ -22,7 +22,7 @@ unsafe extern "C" fn read<T: Read + Seek>(
         let mut buf = vec![];
         let result = chunk.read_to_end(&mut buf);
         if let Ok(bytes_read) = result {
-            ptr::copy_nonoverlapping(buf.as_ptr(), data as *mut u8, bytes_read);
+            unsafe { ptr::copy_nonoverlapping(buf.as_ptr(), data as *mut u8, bytes_read) };
             return bytes_read.try_into().unwrap();
         }
     }
@@ -30,7 +30,7 @@ unsafe extern "C" fn read<T: Read + Seek>(
 }
 
 unsafe extern "C" fn get_size<T: Read + Seek>(user_data: *mut c_void) -> c_longlong {
-    let stream: &mut T = &mut *(user_data as *mut T);
+    let stream: &mut T = unsafe { &mut *(user_data as *mut T) };
     let pos = stream.stream_position().unwrap();
     let size = stream.seek(SeekFrom::End(0)).unwrap();
     let _ = stream.seek(SeekFrom::Start(pos));
@@ -38,7 +38,7 @@ unsafe extern "C" fn get_size<T: Read + Seek>(user_data: *mut c_void) -> c_longl
 }
 
 unsafe extern "C" fn tell<T: Read + Seek>(user_data: *mut c_void) -> c_longlong {
-    let stream: &mut T = &mut *(user_data as *mut T);
+    let stream: &mut T = unsafe { &mut *(user_data as *mut T) };
     stream.stream_position().unwrap().try_into().unwrap()
 }
 
@@ -46,7 +46,7 @@ unsafe extern "C" fn seek<T: Read + Seek>(
     position: c_longlong,
     user_data: *mut c_void,
 ) -> c_longlong {
-    let stream: &mut T = &mut *(user_data as *mut T);
+    let stream: &mut T = unsafe { &mut *(user_data as *mut T) };
     match stream.seek(SeekFrom::Start(position.try_into().unwrap())) {
         Ok(n) => n.try_into().unwrap(),
         Err(_) => -1,
@@ -62,7 +62,7 @@ pub struct InputStream<'src, T> {
 
 impl Dispose for sfInputStream {
     unsafe fn dispose(&mut self) {
-        crate::ffi::system::sfInputStream_destroy(self)
+        unsafe { crate::ffi::system::sfInputStream_destroy(self) }
     }
 }
 

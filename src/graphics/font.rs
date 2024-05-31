@@ -250,7 +250,7 @@ impl Font {
     /// [`Font::from_file`], [`Font::from_memory`]
     pub unsafe fn from_stream<T: Read + Seek>(stream: &mut T) -> Option<SfBox<Self>> {
         let mut input_stream = InputStream::new(stream);
-        let fnt = ffi::sfFont_createFromStream(&mut *input_stream.stream);
+        let fnt = unsafe { ffi::sfFont_createFromStream(&mut *input_stream.stream) };
         SfBox::new(fnt)
     }
 
@@ -270,7 +270,8 @@ impl Font {
     /// [`Font::from_file`], [`Font::from_stream`]
     #[must_use]
     pub unsafe fn from_memory(memory: &[u8]) -> Option<SfBox<Self>> {
-        let fnt = ffi::sfFont_createFromMemory(memory.as_ptr() as *const _, memory.len());
+        let fnt =
+            unsafe { ffi::sfFont_createFromMemory(memory.as_ptr() as *const _, memory.len()) };
         SfBox::new(fnt)
     }
 
@@ -340,7 +341,7 @@ impl ToOwned for Font {
 
 impl Dispose for Font {
     unsafe fn dispose(&mut self) {
-        ffi::sfFont_destroy(self)
+        unsafe { ffi::sfFont_destroy(self) }
     }
 }
 

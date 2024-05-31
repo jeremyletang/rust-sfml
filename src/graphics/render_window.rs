@@ -147,9 +147,8 @@ impl RenderWindow {
     #[must_use]
     pub unsafe fn from_handle(handle: Handle, settings: &ContextSettings) -> RenderWindow {
         thread_safety::set_window_thread();
-
         let sf_render_win: *mut ffi::sfRenderWindow =
-            ffi::sfRenderWindow_createFromHandle(handle, settings);
+            unsafe { ffi::sfRenderWindow_createFromHandle(handle, settings) };
         RenderWindow {
             render_window: NonNull::new(sf_render_win).expect("Failed to create Window"),
         }
@@ -198,7 +197,9 @@ impl RenderWindow {
     /// }
     /// ```
     pub unsafe fn set_icon(&mut self, width: u32, height: u32, pixels: &[u8]) {
-        ffi::sfRenderWindow_setIcon(self.render_window.as_ptr(), width, height, pixels.as_ptr())
+        unsafe {
+            ffi::sfRenderWindow_setIcon(self.render_window.as_ptr(), width, height, pixels.as_ptr())
+        }
     }
 
     /// Pop the event on top of event queue, if any, and return it
@@ -620,7 +621,7 @@ impl RenderWindow {
     /// drop(cursor);
     /// ```
     pub unsafe fn set_mouse_cursor(&mut self, cursor: &Cursor) {
-        ffi::sfRenderWindow_setMouseCursor(self.render_window.as_ptr(), cursor)
+        unsafe { ffi::sfRenderWindow_setMouseCursor(self.render_window.as_ptr(), cursor) }
     }
 
     /// Returns the current position of a touch in window coordinates.

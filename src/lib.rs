@@ -43,6 +43,7 @@
     missing_debug_implementations,
     unused_results,
     trivial_casts,
+    unsafe_op_in_unsafe_fn,
     clippy::must_use_candidate,
     clippy::doc_markdown,
     clippy::cast_possible_truncation,

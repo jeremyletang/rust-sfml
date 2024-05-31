@@ -38,12 +38,12 @@ pub struct CustomShape<'s> {
 
 unsafe extern "C" fn get_point_count_callback(obj: *mut c_void) -> usize {
     let shape = obj as *const Box<dyn CustomShapePoints + Send>;
-    (*shape).point_count()
+    unsafe { (*shape).point_count() }
 }
 
 unsafe extern "C" fn get_point_callback(point: usize, obj: *mut c_void) -> sfVector2f {
     let shape = obj as *const Box<dyn CustomShapePoints + Send>;
-    (*shape).point(point)
+    unsafe { (*shape).point(point) }
 }
 
 impl<'s> CustomShape<'s> {
