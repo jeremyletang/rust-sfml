@@ -245,7 +245,7 @@ impl RcFont {
     /// [`RcFont::from_file`], [`RcFont::from_memory`]
     pub unsafe fn from_stream<T: Read + Seek>(stream: &mut T) -> Option<Self> {
         Some(RcFont {
-            font: Rc::new(RefCell::new(Font::from_stream(stream)?)),
+            font: Rc::new(RefCell::new(unsafe { Font::from_stream(stream) }?)),
         })
     }
 
@@ -266,7 +266,7 @@ impl RcFont {
     #[must_use]
     pub unsafe fn from_memory(memory: &[u8]) -> Option<Self> {
         Some(RcFont {
-            font: Rc::new(RefCell::new(Font::from_memory(memory)?)),
+            font: Rc::new(RefCell::new(unsafe { Font::from_memory(memory) }?)),
         })
     }
 
@@ -339,6 +339,6 @@ impl ToOwned for RcFont {
 
 impl Dispose for RcFont {
     unsafe fn dispose(&mut self) {
-        self.font.borrow_mut().dispose()
+        unsafe { self.font.borrow_mut().dispose() }
     }
 }

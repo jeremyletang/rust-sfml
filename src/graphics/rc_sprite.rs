@@ -86,7 +86,7 @@ impl RcSprite {
     /// # Arguments
     /// * `texture` - New texture
     /// * `reset_rect` - Should the texture rect be reset to the size
-    /// of the new texture?
+    ///   of the new texture?
     pub fn set_texture(&mut self, texture: &RcTexture, reset_rect: bool) {
         self.set_rc_texture(texture);
         let raw_texture = unsafe {

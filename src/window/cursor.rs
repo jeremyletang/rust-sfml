@@ -24,7 +24,9 @@ Cursor;
 
 impl Dispose for Cursor {
     unsafe fn dispose(&mut self) {
-        ffi::sfCursor_destroy(self);
+        unsafe {
+            ffi::sfCursor_destroy(self);
+        }
     }
 }
 
@@ -71,7 +73,7 @@ impl Cursor {
         size: Vector2u,
         hotspot: Vector2u,
     ) -> Option<SfBox<Self>> {
-        let cursor = ffi::sfCursor_createFromPixels(pixels.as_ptr(), size, hotspot);
+        let cursor = unsafe { ffi::sfCursor_createFromPixels(pixels.as_ptr(), size, hotspot) };
         SfBox::new(cursor)
     }
 

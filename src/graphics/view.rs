@@ -169,6 +169,6 @@ impl RawDefault for View {
 
 impl Dispose for View {
     unsafe fn dispose(&mut self) {
-        ffi::sfView_destroy(self)
+        unsafe { ffi::sfView_destroy(self) }
     }
 }

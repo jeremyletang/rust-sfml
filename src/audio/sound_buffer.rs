@@ -196,6 +196,8 @@ impl ToOwned for SoundBuffer {
 
 impl Dispose for SoundBuffer {
     unsafe fn dispose(&mut self) {
-        ffi::audio::sfSoundBuffer_destroy(self);
+        unsafe {
+            ffi::audio::sfSoundBuffer_destroy(self);
+        }
     }
 }

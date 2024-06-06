@@ -69,8 +69,7 @@ impl<'s> Sprite<'s> {
     ///
     /// # Arguments
     /// * `texture` - New texture
-    /// * `reset_rect` - Should the texture rect be reset to the size
-    /// of the new texture?
+    /// * `reset_rect` - Should the texture rect be reset to the size of the new texture?
     pub fn set_texture(&mut self, texture: &'s Texture, reset_rect: bool) {
         unsafe { ffi::sfSprite_setTexture(self.sprite.as_ptr(), texture, reset_rect) }
     }

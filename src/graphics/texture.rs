@@ -199,7 +199,7 @@ impl Texture {
     /// No additional check is performed on the size of the window, passing an invalid combination
     /// of window size and offset will lead to an _undefined behavior_.
     pub unsafe fn update_from_window(&mut self, window: &Window, x: u32, y: u32) {
-        ffi::sfTexture_updateFromWindow(self, window.raw(), x, y)
+        unsafe { ffi::sfTexture_updateFromWindow(self, window.raw(), x, y) }
     }
 
     /// Update a part of the texture from the contents of a render window.
@@ -215,7 +215,7 @@ impl Texture {
         x: u32,
         y: u32,
     ) {
-        ffi::sfTexture_updateFromRenderWindow(self, render_window.raw(), x, y)
+        unsafe { ffi::sfTexture_updateFromRenderWindow(self, render_window.raw(), x, y) }
     }
 
     /// Update a part of the texture from an image.
@@ -226,7 +226,7 @@ impl Texture {
     /// No additional check is performed on the size of the image, passing an invalid combination
     /// of image size and offset will lead to an _undefined behavior_.
     pub unsafe fn update_from_image(&mut self, image: &Image, x: u32, y: u32) {
-        ffi::sfTexture_updateFromImage(self, image.raw(), x, y)
+        unsafe { ffi::sfTexture_updateFromImage(self, image.raw(), x, y) }
     }
 
     /// Update a part of this texture from another texture.
@@ -238,7 +238,7 @@ impl Texture {
     /// passing an invalid combination of texture size and offset will
     /// lead to an _undefined behavior_.
     pub unsafe fn update_from_texture(&mut self, texture: &Texture, x: u32, y: u32) {
-        ffi::sfTexture_updateFromTexture(self, texture, x, y)
+        unsafe { ffi::sfTexture_updateFromTexture(self, texture, x, y) }
     }
 
     /// Update a part of the texture from an array of pixels.
@@ -260,7 +260,7 @@ impl Texture {
         x: u32,
         y: u32,
     ) {
-        ffi::sfTexture_updateFromPixels(self, pixels.as_ptr(), width, height, x, y)
+        unsafe { ffi::sfTexture_updateFromPixels(self, pixels.as_ptr(), width, height, x, y) }
     }
 
     /// Enable or disable the smooth filter on a texture
@@ -355,6 +355,6 @@ impl ToOwned for Texture {
 
 impl Dispose for Texture {
     unsafe fn dispose(&mut self) {
-        ffi::sfTexture_destroy(self)
+        unsafe { ffi::sfTexture_destroy(self) }
     }
 }

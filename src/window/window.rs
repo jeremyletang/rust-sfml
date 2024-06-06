@@ -122,8 +122,8 @@ impl Window {
     #[must_use]
     pub unsafe fn from_handle(handle: Handle, settings: &ContextSettings) -> Window {
         thread_safety::set_window_thread();
-
-        let sf_win: *mut ffi::sfWindow = ffi::sfWindow_createFromHandle(handle, settings);
+        let sf_win: *mut ffi::sfWindow =
+            unsafe { ffi::sfWindow_createFromHandle(handle, settings) };
         Window {
             window: NonNull::new(sf_win).expect("Failed to create Window"),
         }
@@ -194,7 +194,7 @@ impl Window {
     ///
     /// Platform-specific behavior is also unclear (limits on max size, etc).
     pub unsafe fn set_icon(&mut self, width: u32, height: u32, pixels: &[u8]) {
-        ffi::sfWindow_setIcon(self.window.as_ptr(), width, height, pixels.as_ptr())
+        unsafe { ffi::sfWindow_setIcon(self.window.as_ptr(), width, height, pixels.as_ptr()) }
     }
 
     /// Close a window and destroy all the attached resources
@@ -406,7 +406,7 @@ impl Window {
     ///
     /// The cursor can not be destroyed while in use by the window.
     pub unsafe fn set_mouse_cursor(&mut self, cursor: &Cursor) {
-        ffi::sfWindow_setMouseCursor(self.window.as_ptr(), cursor)
+        unsafe { ffi::sfWindow_setMouseCursor(self.window.as_ptr(), cursor) }
     }
 
     /// Returns the current position of a touch in window coordinates.
