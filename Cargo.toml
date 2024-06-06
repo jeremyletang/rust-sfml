@@ -13,7 +13,7 @@ rust-version = "1.70"
 
 [features]
 default = ["graphics", "audio"]
-window = ["bitflags"]
+window = ["dep:bitflags"]
 graphics = ["window"]
 audio = []
 serde = ["dep:serde"]
