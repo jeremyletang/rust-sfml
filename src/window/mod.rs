@@ -27,5 +27,5 @@ mod style;
 pub(crate) mod thread_safety;
 pub mod touch;
 mod video_mode;
-#[allow(clippy::module_inception)]
+#[expect(clippy::module_inception)]
 mod window;

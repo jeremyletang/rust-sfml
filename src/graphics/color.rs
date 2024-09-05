@@ -97,7 +97,6 @@ impl From<u32> for Color {
     /// Construct the color from 32-bit unsigned integer.
     ///
     /// The number should contain the components in RGBA order.
-    #[allow(clippy::cast_possible_truncation)]
     fn from(src: u32) -> Self {
         Self {
             r: ((src & 0xff000000) >> 24) as u8,
@@ -160,7 +159,7 @@ impl Mul for Color {
     /// Calculate the component-wise modulated multiplication of two colors.
     ///
     /// For each `X` in `rgba`, `result.X = a.X * b.X / 255`.
-    #[allow(clippy::cast_possible_truncation)]
+    #[expect(clippy::cast_possible_truncation)]
     fn mul(self, other: Color) -> Color {
         let (r1, r2) = (self.r as u16, other.r as u16);
         let (g1, g2) = (self.g as u16, other.g as u16);

@@ -24,7 +24,6 @@ pub struct ConvexShape<'s> {
 
 /// An iterator over the points of a [`ConvexShape`].
 #[derive(Debug)]
-#[allow(missing_copy_implementations)]
 pub struct ConvexShapePoints {
     convex_shape: *mut ffi::sfConvexShape,
     pos: usize,

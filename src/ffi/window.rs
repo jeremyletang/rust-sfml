@@ -238,7 +238,7 @@ pub(crate) struct SensorEvent {
 
 #[repr(C)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
-#[allow(dead_code)] // constructed on C++ side by SFML
+#[expect(dead_code, reason = "constructed on C++ side by SFML")]
 pub(crate) enum EventType {
     Closed,
     Resized,

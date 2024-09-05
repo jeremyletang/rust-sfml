@@ -8,7 +8,7 @@ use {
     },
 };
 
-#[allow(clippy::comparison_chain)]
+#[expect(clippy::comparison_chain)]
 unsafe extern "C" fn read<T: Read + Seek>(
     data: *mut c_void,
     size: c_longlong,

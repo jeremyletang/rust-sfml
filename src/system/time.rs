@@ -64,7 +64,7 @@ impl Ord for Time {
 impl Time {
     /// Constructs a time value from a number of seconds.
     #[must_use]
-    #[allow(clippy::cast_possible_truncation)]
+    #[expect(clippy::cast_possible_truncation)]
     pub fn seconds(seconds: f32) -> Self {
         Time((seconds * 1000000.) as i64)
     }
@@ -89,7 +89,7 @@ impl Time {
 
     /// Returns the time value as a number of milliseconds.
     #[must_use]
-    #[allow(clippy::cast_possible_truncation)]
+    #[expect(clippy::cast_possible_truncation)]
     pub fn as_milliseconds(self) -> i32 {
         (self.0 / 1000) as i32
     }

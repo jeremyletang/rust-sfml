@@ -7,7 +7,7 @@ Requirements
 =============
 
 - Linux, Windows, or OS X
-- Rust 1.70 or later
+- Rust 1.81 or later
 - [SFML 2.6](http://www.sfml-dev.org/download.php)
 - A C++ compiler for building CSFML
 
