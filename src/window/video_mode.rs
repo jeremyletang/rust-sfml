@@ -75,7 +75,7 @@ impl VideoMode {
 
     /// Static Method, get the current desktop video mode
     ///
-    /// return the urrent desktop video mode
+    /// return the current desktop video mode
     #[must_use]
     pub fn desktop_mode() -> Self {
         thread_safety::set_window_thread();
@@ -98,6 +98,7 @@ impl VideoMode {
     pub fn fullscreen_modes() -> &'static ffi::sfVideoModeVector {
         unsafe { &*ffi::sfVideoMode_getFullscreenModes() }
     }
+    
     pub(crate) fn raw(&self) -> ffi::sfVideoMode {
         ffi::sfVideoMode {
             width: self.width,
