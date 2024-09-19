@@ -4,6 +4,28 @@
 
 - Nothing yet
 
+## 0.22.0
+
+### Added
+
+- Added `is_rgb` method for `Texture`, `RenderWindow`, and `RenderTexture`
+- Add `RcTexture::raw_texture` to get the underlying `Texture` of an `RcTexture`
+- Add direction arrow cursors from SFML 2.6 to `CursorType`
+- Add `Scancode` API from SFML 2.6.
+- Add tip about environment variables to README
+
+### Changed
+
+- `Image::set_pixel` and `Image::pixel_at` are now safe, checked functions. Added unsafe unchecked variants.
+- Renamed `SetPixelError` to `PixelAccessError`
+- Rust requirement bumped to 1.81
+- Made `Context::get_function` a safe function
+
+### Fixed
+
+- Minor doc fixes, including typos
+- Fixed compilation error on Windows MinGW
+
 ## 0.21.0
 
 ### SFML 2.6 update
