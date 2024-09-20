@@ -25,7 +25,7 @@ fn main() {
         Vertex::with_pos_color((60.0, 60.0).into(), Color::GREEN),
         Vertex::with_pos_color((50.0, 80.0).into(), Color::GREEN),
     ];
-    vertex_buffer.update(&vertices, 0);
+    vertex_buffer.update(&vertices, 0).unwrap();
 
     loop {
         while let Some(e) = window.poll_event() {

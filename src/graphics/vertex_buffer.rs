@@ -2,6 +2,7 @@ use {
     crate::{
         ffi::graphics::*,
         graphics::{Drawable, PrimitiveType, RenderStates, RenderTarget, Vertex},
+        IntoSfResult, SfResult,
     },
     std::ptr::NonNull,
 };
@@ -82,7 +83,7 @@ impl VertexBuffer {
     /// * offset - Offset in the buffer to copy to
     ///
     /// Return True if the update was successful
-    pub fn update(&mut self, vertices: &[Vertex], offset: u32) -> bool {
+    pub fn update(&mut self, vertices: &[Vertex], offset: u32) -> SfResult<()> {
         unsafe {
             sfVertexBuffer_update(
                 self.vertex_buffer.as_ptr(),
@@ -91,21 +92,21 @@ impl VertexBuffer {
                 offset,
             )
         }
+        .into_sf_result()
     }
 
     /// Copy the contents of another buffer into this buffer.
     ///
     /// # Arguments
     /// * other - Vertex buffer whose contents to copy into this vertex buffer
-    ///
-    /// Return True if the update was successful
-    pub fn update_from_vertex_buffer(&mut self, other: &VertexBuffer) -> bool {
+    pub fn update_from_vertex_buffer(&mut self, other: &VertexBuffer) -> SfResult<()> {
         unsafe {
             sfVertexBuffer_updateFromVertexBuffer(
                 self.vertex_buffer.as_ptr(),
                 other.vertex_buffer.as_ptr(),
             )
         }
+        .into_sf_result()
     }
 
     /// Swap the contents of this vertex buffer with those of another.
