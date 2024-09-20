@@ -68,20 +68,56 @@ decl_opaque! {
 SoundBuffer;
 }
 
+/// Creation and loading
 impl SoundBuffer {
-    /// Save a sound buffer to an audio file
+    /// Create a new sound buffer and load it from a file
     ///
     /// Here is a complete list of all the supported audio formats:
     /// ogg, wav, flac, aiff, au, raw, paf, svx, nist, voc, ircam,
     /// w64, mat4, mat5 pvf, htk, sds, avr, sd2, caf, wve, mpc2k, rf64.
     ///
     /// # Arguments
-    /// * filename - Path of the sound file to write
-    pub fn save_to_file(&self, filename: &str) -> SfResult<()> {
+    /// * filename - Path of the sound file to load
+    pub fn from_file(filename: &str) -> SfResult<SfBox<Self>> {
         let c_str = CString::new(filename).into_sf_result()?;
-        unsafe { ffi::audio::sfSoundBuffer_saveToFile(self, c_str.as_ptr()) }.into_sf_result()
+        let sound_buffer: *mut ffi::audio::sfSoundBuffer =
+            unsafe { ffi::audio::sfSoundBuffer_createFromFile(c_str.as_ptr()) };
+        SfBox::new(sound_buffer).ok_or(SfError::CallFailed)
     }
+    /// Load the sound buffer from a file in memory.
+    pub fn from_memory(data: &[u8]) -> SfResult<SfBox<Self>> {
+        let sound_buffer =
+            unsafe { ffi::audio::sfSoundBuffer_createFromMemory(data.as_ptr() as _, data.len()) };
+        SfBox::new(sound_buffer).ok_or(SfError::CallFailed)
+    }
+    /// Load the sound buffer from a custom stream.
+    pub fn from_stream<T: Read + Seek>(stream: &mut T) -> SfResult<SfBox<Self>> {
+        let mut stream = InputStream::new(stream);
+        let buffer = unsafe { ffi::audio::sfSoundBuffer_createFromStream(&mut *stream.stream) };
+        SfBox::new(buffer).ok_or(SfError::CallFailed)
+    }
+    /// Load the sound buffer from a slice of audio samples.
+    ///
+    /// The assumed format of the audio samples is 16 bits signed integer.
+    pub fn from_samples(
+        samples: &[i16],
+        channel_count: u32,
+        sample_rate: u32,
+    ) -> SfResult<SfBox<Self>> {
+        let buffer = unsafe {
+            ffi::audio::sfSoundBuffer_createFromSamples(
+                samples.as_ptr(),
+                samples.len() as _,
+                channel_count,
+                sample_rate,
+            )
+        };
+        SfBox::new(buffer).ok_or(SfError::CallFailed)
+    }
+}
 
+/// Query properties
+impl SoundBuffer {
     /// Get the number of samples stored in a sound buffer
     ///
     /// The array of samples can be accessed with [`samples`](SoundBuffer::samples).
@@ -134,49 +170,21 @@ impl SoundBuffer {
     pub fn sample_rate(&self) -> u32 {
         unsafe { ffi::audio::sfSoundBuffer_getSampleRate(self) }
     }
-    /// Create a new sound buffer and load it from a file
+}
+
+/// Saving
+impl SoundBuffer {
+    /// Save a sound buffer to an audio file
     ///
     /// Here is a complete list of all the supported audio formats:
     /// ogg, wav, flac, aiff, au, raw, paf, svx, nist, voc, ircam,
     /// w64, mat4, mat5 pvf, htk, sds, avr, sd2, caf, wve, mpc2k, rf64.
     ///
     /// # Arguments
-    /// * filename - Path of the sound file to load
-    pub fn from_file(filename: &str) -> SfResult<SfBox<Self>> {
+    /// * filename - Path of the sound file to write
+    pub fn save_to_file(&self, filename: &str) -> SfResult<()> {
         let c_str = CString::new(filename).into_sf_result()?;
-        let sound_buffer: *mut ffi::audio::sfSoundBuffer =
-            unsafe { ffi::audio::sfSoundBuffer_createFromFile(c_str.as_ptr()) };
-        SfBox::new(sound_buffer).ok_or(SfError::CallFailed)
-    }
-    /// Load the sound buffer from a file in memory.
-    pub fn from_memory(data: &[u8]) -> SfResult<SfBox<Self>> {
-        let sound_buffer =
-            unsafe { ffi::audio::sfSoundBuffer_createFromMemory(data.as_ptr() as _, data.len()) };
-        SfBox::new(sound_buffer).ok_or(SfError::CallFailed)
-    }
-    /// Load the sound buffer from a custom stream.
-    pub fn from_stream<T: Read + Seek>(stream: &mut T) -> SfResult<SfBox<Self>> {
-        let mut stream = InputStream::new(stream);
-        let buffer = unsafe { ffi::audio::sfSoundBuffer_createFromStream(&mut *stream.stream) };
-        SfBox::new(buffer).ok_or(SfError::CallFailed)
-    }
-    /// Load the sound buffer from a slice of audio samples.
-    ///
-    /// The assumed format of the audio samples is 16 bits signed integer.
-    pub fn from_samples(
-        samples: &[i16],
-        channel_count: u32,
-        sample_rate: u32,
-    ) -> SfResult<SfBox<Self>> {
-        let buffer = unsafe {
-            ffi::audio::sfSoundBuffer_createFromSamples(
-                samples.as_ptr(),
-                samples.len() as _,
-                channel_count,
-                sample_rate,
-            )
-        };
-        SfBox::new(buffer).ok_or(SfError::CallFailed)
+        unsafe { ffi::audio::sfSoundBuffer_saveToFile(self, c_str.as_ptr()) }.into_sf_result()
     }
 }
 
