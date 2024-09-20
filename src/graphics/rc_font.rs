@@ -2,7 +2,7 @@ use {
     crate::{
         graphics::{font::Info, Font, Glyph, Texture},
         sf_box::{Dispose, SfBox},
-        LoadResult,
+        SfResult,
     },
     std::{
         cell::RefCell,
@@ -223,7 +223,7 @@ impl RcFont {
     ///     }
     /// };
     /// ```
-    pub fn from_file(filename: &str) -> LoadResult<Self> {
+    pub fn from_file(filename: &str) -> SfResult<Self> {
         Ok(RcFont {
             font: Rc::new(RefCell::new(Font::from_file(filename)?)),
         })

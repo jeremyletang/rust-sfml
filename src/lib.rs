@@ -68,31 +68,39 @@ pub mod window;
 pub use sf_box::{SfBox, SfResource};
 use std::{error::Error, fmt::Display};
 
-/// Error when failing to load an SFML resource.
+/// An SFML operation has failed
 #[derive(Clone, Copy, Debug)]
-pub struct ResourceLoadError;
+pub enum SfError {
+    /// An string argument passed had interior nul bytes
+    NulInStr,
+    /// Call to SFML function returned an error
+    CallFailed,
+}
 
-impl Display for ResourceLoadError {
+impl Display for SfError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "Failed to load SFML resource")
+        match self {
+            SfError::NulInStr => write!(f, "Interior nul byte in string passed to SFML"),
+            SfError::CallFailed => write!(f, "Call to SFML function returned an error"),
+        }
     }
 }
 
-impl Error for ResourceLoadError {}
+impl Error for SfError {}
 
-/// Result for loading an SFML resource
-pub type LoadResult<T> = Result<T, ResourceLoadError>;
+/// Result of a fallible SFML operation
+pub type SfResult<T> = Result<T, SfError>;
 
-trait IntoLoadResult {
-    fn into_load_result(self) -> LoadResult<()>;
+trait IntoSfCallErr {
+    fn into_sf_call_err(self) -> SfResult<()>;
 }
 
-impl IntoLoadResult for bool {
-    fn into_load_result(self) -> LoadResult<()> {
+impl IntoSfCallErr for bool {
+    fn into_sf_call_err(self) -> SfResult<()> {
         if self {
             Ok(())
         } else {
-            Err(ResourceLoadError)
+            Err(SfError::CallFailed)
         }
     }
 }

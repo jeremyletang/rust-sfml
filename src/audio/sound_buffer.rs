@@ -3,7 +3,7 @@ use {
         ffi,
         sf_box::Dispose,
         system::{InputStream, Time},
-        LoadResult, ResourceLoadError, SfBox,
+        SfBox, SfError, SfResult,
     },
     std::{
         ffi::CString,
@@ -147,23 +147,23 @@ impl SoundBuffer {
     /// * filename - Path of the sound file to load
     ///
     /// Returns `None` on failure.
-    pub fn from_file(filename: &str) -> LoadResult<SfBox<Self>> {
+    pub fn from_file(filename: &str) -> SfResult<SfBox<Self>> {
         let c_str = CString::new(filename).unwrap();
         let sound_buffer: *mut ffi::audio::sfSoundBuffer =
             unsafe { ffi::audio::sfSoundBuffer_createFromFile(c_str.as_ptr()) };
-        SfBox::new(sound_buffer).ok_or(ResourceLoadError)
+        SfBox::new(sound_buffer).ok_or(SfError::CallFailed)
     }
     /// Load the sound buffer from a file in memory.
-    pub fn from_memory(data: &[u8]) -> LoadResult<SfBox<Self>> {
+    pub fn from_memory(data: &[u8]) -> SfResult<SfBox<Self>> {
         let sound_buffer =
             unsafe { ffi::audio::sfSoundBuffer_createFromMemory(data.as_ptr() as _, data.len()) };
-        SfBox::new(sound_buffer).ok_or(ResourceLoadError)
+        SfBox::new(sound_buffer).ok_or(SfError::CallFailed)
     }
     /// Load the sound buffer from a custom stream.
-    pub fn from_stream<T: Read + Seek>(stream: &mut T) -> LoadResult<SfBox<Self>> {
+    pub fn from_stream<T: Read + Seek>(stream: &mut T) -> SfResult<SfBox<Self>> {
         let mut stream = InputStream::new(stream);
         let buffer = unsafe { ffi::audio::sfSoundBuffer_createFromStream(&mut *stream.stream) };
-        SfBox::new(buffer).ok_or(ResourceLoadError)
+        SfBox::new(buffer).ok_or(SfError::CallFailed)
     }
     /// Load the sound buffer from a slice of audio samples.
     ///
@@ -172,7 +172,7 @@ impl SoundBuffer {
         samples: &[i16],
         channel_count: u32,
         sample_rate: u32,
-    ) -> LoadResult<SfBox<Self>> {
+    ) -> SfResult<SfBox<Self>> {
         let buffer = unsafe {
             ffi::audio::sfSoundBuffer_createFromSamples(
                 samples.as_ptr(),
@@ -181,7 +181,7 @@ impl SoundBuffer {
                 sample_rate,
             )
         };
-        SfBox::new(buffer).ok_or(ResourceLoadError)
+        SfBox::new(buffer).ok_or(SfError::CallFailed)
     }
 }
 

@@ -4,7 +4,7 @@ use {
         graphics::{Glyph, Texture},
         sf_box::{Dispose, SfBox},
         system::InputStream,
-        LoadResult, ResourceLoadError,
+        SfError, SfResult,
     },
     std::{
         ffi::{CStr, CString},
@@ -228,10 +228,10 @@ impl Font {
     ///     }
     /// };
     /// ```
-    pub fn from_file(filename: &str) -> LoadResult<SfBox<Self>> {
+    pub fn from_file(filename: &str) -> SfResult<SfBox<Self>> {
         let c_str = CString::new(filename).unwrap();
         let fnt = unsafe { ffi::sfFont_createFromFile(c_str.as_ptr()) };
-        SfBox::new(fnt).ok_or(ResourceLoadError)
+        SfBox::new(fnt).ok_or(SfError::CallFailed)
     }
 
     /// Load the font from a custom stream.

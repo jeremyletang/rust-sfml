@@ -4,7 +4,7 @@ use {
         sf_box::{Dispose, SfBox},
         system::Vector2u,
         window::Window,
-        LoadResult,
+        SfResult,
     },
     std::{
         cell::RefCell,
@@ -149,7 +149,7 @@ impl RcTexture {
     /// # Arguments
     /// * mem - Pointer to the file data in memory
     /// * area - Area of the image to load
-    pub fn load_from_memory(&mut self, mem: &[u8], area: IntRect) -> LoadResult<()> {
+    pub fn load_from_memory(&mut self, mem: &[u8], area: IntRect) -> SfResult<()> {
         self.texture.borrow_mut().load_from_memory(mem, area)
     }
 
@@ -167,7 +167,7 @@ impl RcTexture {
         &mut self,
         stream: &mut T,
         area: IntRect,
-    ) -> LoadResult<()> {
+    ) -> SfResult<()> {
         self.texture.borrow_mut().load_from_stream(stream, area)
     }
 
@@ -175,12 +175,12 @@ impl RcTexture {
     ///
     /// # Arguments
     /// * filename - Path of the image file to load
-    pub fn load_from_file(&mut self, filename: &str, area: IntRect) -> LoadResult<()> {
+    pub fn load_from_file(&mut self, filename: &str, area: IntRect) -> SfResult<()> {
         self.texture.borrow_mut().load_from_file(filename, area)
     }
 
     /// Convenience method to easily create and load a `RcTexture` from a file.
-    pub fn from_file(filename: &str) -> LoadResult<RcTexture> {
+    pub fn from_file(filename: &str) -> SfResult<RcTexture> {
         Ok(RcTexture {
             texture: Rc::new(RefCell::new(Texture::from_file(filename)?)),
         })
@@ -198,7 +198,7 @@ impl RcTexture {
     ///
     /// # Arguments
     /// * image - Image to upload to the texture
-    pub fn load_from_image(&mut self, image: &Image, area: IntRect) -> LoadResult<()> {
+    pub fn load_from_image(&mut self, image: &Image, area: IntRect) -> SfResult<()> {
         self.texture.borrow_mut().load_from_image(image, area)
     }
 

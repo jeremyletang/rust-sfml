@@ -5,7 +5,7 @@ use {
         sf_box::{Dispose, SfBox},
         system::{InputStream, Vector2u},
         window::Window,
-        IntoLoadResult, LoadResult,
+        IntoSfCallErr, SfResult,
     },
     std::{
         ffi::CString,
@@ -139,10 +139,10 @@ impl Texture {
     /// # Arguments
     /// * mem - Pointer to the file data in memory
     /// * area - Area of the image to load
-    pub fn load_from_memory(&mut self, mem: &[u8], area: IntRect) -> LoadResult<()> {
+    pub fn load_from_memory(&mut self, mem: &[u8], area: IntRect) -> SfResult<()> {
         unsafe {
             ffi::sfTexture_loadFromMemory(self, mem.as_ptr() as *const _, mem.len(), area)
-                .into_load_result()
+                .into_sf_call_err()
         }
     }
 
@@ -160,10 +160,10 @@ impl Texture {
         &mut self,
         stream: &mut T,
         area: IntRect,
-    ) -> LoadResult<()> {
+    ) -> SfResult<()> {
         let mut input_stream = InputStream::new(stream);
         unsafe {
-            ffi::sfTexture_loadFromStream(self, &mut *input_stream.stream, area).into_load_result()
+            ffi::sfTexture_loadFromStream(self, &mut *input_stream.stream, area).into_sf_call_err()
         }
     }
 
@@ -171,13 +171,13 @@ impl Texture {
     ///
     /// # Arguments
     /// * filename - Path of the image file to load
-    pub fn load_from_file(&mut self, filename: &str, area: IntRect) -> LoadResult<()> {
+    pub fn load_from_file(&mut self, filename: &str, area: IntRect) -> SfResult<()> {
         let c_str = CString::new(filename).unwrap();
-        unsafe { ffi::sfTexture_loadFromFile(self, c_str.as_ptr(), area).into_load_result() }
+        unsafe { ffi::sfTexture_loadFromFile(self, c_str.as_ptr(), area).into_sf_call_err() }
     }
 
     /// Convenience method to easily create and load a `Texture` from a file.
-    pub fn from_file(filename: &str) -> LoadResult<SfBox<Self>> {
+    pub fn from_file(filename: &str) -> SfResult<SfBox<Self>> {
         let mut new = Self::new().expect("Failed to create texture");
         new.load_from_file(filename, IntRect::default())?;
         Ok(new)
@@ -187,8 +187,8 @@ impl Texture {
     ///
     /// # Arguments
     /// * image - Image to upload to the texture
-    pub fn load_from_image(&mut self, image: &Image, area: IntRect) -> LoadResult<()> {
-        unsafe { ffi::sfTexture_loadFromImage(self, image.raw(), area).into_load_result() }
+    pub fn load_from_image(&mut self, image: &Image, area: IntRect) -> SfResult<()> {
+        unsafe { ffi::sfTexture_loadFromImage(self, image.raw(), area).into_sf_call_err() }
     }
 
     /// Update a part of the texture from the contents of a window.

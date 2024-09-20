@@ -4,7 +4,8 @@
 
 ### Changed
 
-- Use `LoadResult` instead of `Option` for all `from_file` methods.
+- Rework `LoadResult` to `SfResult` as a more generic error type.
+- Use `SfResult` instead of `Option` for all `from_file` methods.
 
 ## 0.22.0
 

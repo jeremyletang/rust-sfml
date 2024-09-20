@@ -3,7 +3,7 @@ use {
         ffi::graphics as ffi,
         graphics::{Color, IntRect},
         system::{InputStream, Vector2u},
-        LoadResult, ResourceLoadError,
+        SfError, SfResult,
     },
     std::{
         error::Error,
@@ -102,11 +102,11 @@ impl Image {
     ///
     /// # Arguments
     /// * filename - Path of the image file to load
-    pub fn from_file(filename: &str) -> LoadResult<Self> {
+    pub fn from_file(filename: &str) -> SfResult<Self> {
         let c_filename = CString::new(filename).unwrap();
         let image = unsafe { ffi::sfImage_createFromFile(c_filename.as_ptr()) };
         if image.is_null() {
-            Err(ResourceLoadError)
+            Err(SfError::CallFailed)
         } else {
             Ok(Self { image })
         }

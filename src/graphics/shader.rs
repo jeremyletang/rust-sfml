@@ -4,7 +4,7 @@ use {
         ffi::graphics as ffi,
         graphics::{glsl, Texture},
         system::InputStream,
-        LoadResult, ResourceLoadError,
+        SfError, SfResult,
     },
     std::{
         ffi::CString,
@@ -140,11 +140,11 @@ pub struct Shader<'texture> {
 macro_rules! shader_create {
     ($shader:ident, $load_block:block) => {{
         let $shader =
-            NonNull::new(unsafe { ffi::sfShader_defaultConstruct() }).ok_or(ResourceLoadError)?;
+            NonNull::new(unsafe { ffi::sfShader_defaultConstruct() }).ok_or(SfError::CallFailed)?;
         unsafe {
             if !$load_block {
                 ffi::sfShader_destroy($shader.as_ptr());
-                return Err(ResourceLoadError);
+                return Err(SfError::CallFailed);
             }
         }
         Ok(Self {
@@ -154,8 +154,8 @@ macro_rules! shader_create {
     }};
 }
 
-fn c_string(source: &str) -> LoadResult<CString> {
-    CString::new(source).map_err(|_| ResourceLoadError)
+fn c_string(source: &str) -> SfResult<CString> {
+    CString::new(source).map_err(|_| SfError::NulInStr)
 }
 
 impl<'texture> Shader<'texture> {
@@ -166,7 +166,7 @@ impl<'texture> Shader<'texture> {
     /// The source must be a text file containing a valid shader in GLSL language.
     /// GLSL is a C-like language dedicated to OpenGL shaders; you'll probably need to read a good
     /// documentation for it before writing your own shaders.
-    pub fn from_file(path: &str, type_: ShaderType) -> LoadResult<Self> {
+    pub fn from_file(path: &str, type_: ShaderType) -> SfResult<Self> {
         shader_create!(shader, {
             let path = c_string(path)?;
             ffi::sfShader_loadFromFile_1(shader.as_ptr(), path.as_ptr(), type_)
@@ -179,7 +179,7 @@ impl<'texture> Shader<'texture> {
     /// The sources must be text files containing valid shaders in GLSL language.
     /// GLSL is a C-like language dedicated to OpenGL shaders;
     /// you'll probably need to read a good documentation for it before writing your own shaders.
-    pub fn from_file_vert_frag(vert: &str, frag: &str) -> LoadResult<Self> {
+    pub fn from_file_vert_frag(vert: &str, frag: &str) -> SfResult<Self> {
         shader_create!(shader, {
             let vert = c_string(vert)?;
             let frag = c_string(frag)?;
@@ -193,7 +193,7 @@ impl<'texture> Shader<'texture> {
     /// The sources must be text files containing valid shaders in GLSL language.
     /// GLSL is a C-like language dedicated to OpenGL shaders; you'll probably need to
     /// read a good documentation for it before writing your own shaders.
-    pub fn from_file_all(vert: &str, geom: &str, frag: &str) -> LoadResult<Self> {
+    pub fn from_file_all(vert: &str, geom: &str, frag: &str) -> SfResult<Self> {
         shader_create!(shader, {
             let vert = c_string(vert)?;
             let geom = c_string(geom)?;
@@ -214,7 +214,7 @@ impl<'texture> Shader<'texture> {
     /// The source code must be a valid shader in GLSL language.
     /// GLSL is a C-like language dedicated to OpenGL shaders; you'll probably need to read a
     /// good documentation for it before writing your own shaders.
-    pub fn from_memory(contents: &str, type_: ShaderType) -> LoadResult<Self> {
+    pub fn from_memory(contents: &str, type_: ShaderType) -> SfResult<Self> {
         shader_create!(shader, {
             let contents = c_string(contents)?;
             ffi::sfShader_loadFromMemory_1(shader.as_ptr(), contents.as_ptr(), type_)
@@ -227,7 +227,7 @@ impl<'texture> Shader<'texture> {
     /// The sources must be valid shaders in GLSL language. GLSL is a C-like language dedicated
     /// to OpenGL shaders; you'll probably need to read a good documentation
     /// for it before writing your own shaders.
-    pub fn from_memory_vert_frag(vert: &str, frag: &str) -> LoadResult<Self> {
+    pub fn from_memory_vert_frag(vert: &str, frag: &str) -> SfResult<Self> {
         shader_create!(shader, {
             let vert = c_string(vert)?;
             let frag = c_string(frag)?;
@@ -241,7 +241,7 @@ impl<'texture> Shader<'texture> {
     /// The sources must be valid shaders in GLSL language. GLSL is a C-like language dedicated to
     /// OpenGL shaders; you'll probably need to read a good documentation for it
     /// before writing your own shaders.
-    pub fn from_memory_all(vert: &str, geom: &str, frag: &str) -> LoadResult<Self> {
+    pub fn from_memory_all(vert: &str, geom: &str, frag: &str) -> SfResult<Self> {
         shader_create!(shader, {
             let vert = c_string(vert)?;
             let geom = c_string(geom)?;
@@ -261,7 +261,7 @@ impl<'texture> Shader<'texture> {
     /// argument. The source code must be a valid shader in GLSL language.
     /// GLSL is a C-like language dedicated to OpenGL shaders; you'll probably need to read a good
     /// documentation for it before writing your own shaders.
-    pub fn from_stream<T: Read + Seek>(mut source: T, type_: ShaderType) -> LoadResult<Self> {
+    pub fn from_stream<T: Read + Seek>(mut source: T, type_: ShaderType) -> SfResult<Self> {
         shader_create!(shader, {
             let source = InputStream::new(&mut source);
             ffi::sfShader_loadFromStream_1(shader.as_ptr(), source.stream.0.as_ptr(), type_)
@@ -274,7 +274,7 @@ impl<'texture> Shader<'texture> {
     /// The source codes must be valid shaders in GLSL language. GLSL is a C-like
     /// language dedicated to OpenGL shaders; you'll probably need to read a good documentation
     /// for it before writing your own shaders.
-    pub fn from_stream_vert_frag<T, U>(mut vert: T, mut frag: U) -> LoadResult<Self>
+    pub fn from_stream_vert_frag<T, U>(mut vert: T, mut frag: U) -> SfResult<Self>
     where
         T: Read + Seek,
         U: Read + Seek,
@@ -296,7 +296,7 @@ impl<'texture> Shader<'texture> {
     /// The source codes must be valid shaders in GLSL language. GLSL is a C-like language
     /// dedicated to OpenGL shaders; you'll probably need to read a good documentation for it
     /// before writing your own shaders.
-    pub fn from_stream_all<T, U, V>(mut vert: T, mut geom: U, mut frag: V) -> LoadResult<Self>
+    pub fn from_stream_all<T, U, V>(mut vert: T, mut geom: U, mut frag: V) -> SfResult<Self>
     where
         T: Read + Seek,
         U: Read + Seek,
