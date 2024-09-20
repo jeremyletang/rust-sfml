@@ -40,15 +40,16 @@ use {
 ///
 /// [`Music`]: crate::audio::Music
 #[derive(Debug)]
-pub struct Sound<'s> {
+pub struct Sound<'buf> {
     sound: NonNull<ffi::audio::sfSound>,
-    buffer: PhantomData<&'s SoundBuffer>,
+    buffer: PhantomData<&'buf SoundBuffer>,
 }
 
-impl<'s> Sound<'s> {
+/// Creation
+impl<'buf> Sound<'buf> {
     /// Create a new `Sound`
     #[must_use]
-    pub fn new() -> Sound<'s> {
+    pub fn new() -> Self {
         let s = unsafe { ffi::audio::sfSound_create() };
         Sound {
             sound: NonNull::new(s).expect("Failed to create Sound"),
@@ -58,25 +59,15 @@ impl<'s> Sound<'s> {
 
     /// Create a new `Sound` with a buffer
     #[must_use]
-    pub fn with_buffer(buffer: &SoundBuffer) -> Sound {
+    pub fn with_buffer(buffer: &'buf SoundBuffer) -> Self {
         let mut s = Sound::new();
         s.set_buffer(buffer);
         s
     }
+}
 
-    /// Sets whether this sound should loop or not.
-    pub fn set_looping(&mut self, looping: bool) {
-        unsafe { ffi::audio::sfSound_setLoop(self.sound.as_ptr(), looping) }
-    }
-
-    /// Tell whether or not a sound is in loop mode
-    ///
-    /// Return true if the sound is looping, false otherwise
-    #[must_use]
-    pub fn is_looping(&self) -> bool {
-        unsafe { ffi::audio::sfSound_getLoop(self.sound.as_ptr()) }
-    }
-
+/// Playback
+impl Sound<'_> {
     /// Start or resume playing a sound
     ///
     /// This function starts the sound if it was stopped, resumes
@@ -104,6 +95,17 @@ impl<'s> Sound<'s> {
     pub fn stop(&mut self) {
         unsafe { ffi::audio::sfSound_stop(self.sound.as_ptr()) }
     }
+}
+
+/// Query properties
+impl<'buf> Sound<'buf> {
+    /// Tell whether or not a sound is in loop mode
+    ///
+    /// Return true if the sound is looping, false otherwise
+    #[must_use]
+    pub fn is_looping(&self) -> bool {
+        unsafe { ffi::audio::sfSound_getLoop(self.sound.as_ptr()) }
+    }
 
     /// Get the current status of a sound (stopped, paused, playing)
     ///
@@ -119,6 +121,21 @@ impl<'s> Sound<'s> {
     #[must_use]
     pub fn playing_offset(&self) -> Time {
         unsafe { Time::from_raw(ffi::audio::sfSound_getPlayingOffset(self.sound.as_ptr())) }
+    }
+    /// Get the audio buffer attached to a sound
+    ///
+    /// Return an option to Sound buffer attached to the sound or None
+    #[must_use]
+    pub fn buffer(&self) -> Option<&'buf SoundBuffer> {
+        unsafe { ffi::audio::sfSound_getBuffer(self.sound.as_ptr()).as_ref() }
+    }
+}
+
+/// Set properties
+impl<'buf> Sound<'buf> {
+    /// Sets whether this sound should loop or not.
+    pub fn set_looping(&mut self, looping: bool) {
+        unsafe { ffi::audio::sfSound_setLoop(self.sound.as_ptr(), looping) }
     }
 
     /// Change the current playing position of a sound
@@ -136,26 +153,18 @@ impl<'s> Sound<'s> {
     ///
     /// # Arguments
     /// * buffer - Sound buffer to attach to the sound
-    pub fn set_buffer(&mut self, buffer: &'s SoundBuffer) {
+    pub fn set_buffer(&mut self, buffer: &'buf SoundBuffer) {
         unsafe { ffi::audio::sfSound_setBuffer(self.sound.as_ptr(), buffer) }
-    }
-
-    /// Get the audio buffer attached to a sound
-    ///
-    /// Return an option to Sound buffer attached to the sound or None
-    #[must_use]
-    pub fn buffer(&self) -> Option<&SoundBuffer> {
-        unsafe { ffi::audio::sfSound_getBuffer(self.sound.as_ptr()).as_ref() }
     }
 }
 
-impl<'a> Default for Sound<'a> {
+impl Default for Sound<'_> {
     fn default() -> Self {
         Self::new()
     }
 }
 
-impl<'s> Clone for Sound<'s> {
+impl Clone for Sound<'_> {
     fn clone(&self) -> Self {
         let s = unsafe { ffi::audio::sfSound_copy(self.sound.as_ptr()) };
         Sound {
@@ -165,7 +174,7 @@ impl<'s> Clone for Sound<'s> {
     }
 }
 
-impl<'s> SoundSource for Sound<'s> {
+impl SoundSource for Sound<'_> {
     fn set_pitch(&mut self, pitch: f32) {
         unsafe { ffi::audio::sfSound_setPitch(self.sound.as_ptr(), pitch) }
     }
@@ -204,7 +213,7 @@ impl<'s> SoundSource for Sound<'s> {
     }
 }
 
-impl<'s> Drop for Sound<'s> {
+impl Drop for Sound<'_> {
     fn drop(&mut self) {
         unsafe {
             ffi::audio::sfSound_destroy(self.sound.as_ptr());
