@@ -28,7 +28,7 @@ impl FileRecorder {
 fn main() {
     let mut fr = FileRecorder::create("hello.pcm");
     let mut recorder = SoundRecorderDriver::new(&mut fr);
-    recorder.start(44_100);
+    recorder.start(44_100).unwrap();
     let mut left = 5000;
     while left > 0 {
         std::thread::sleep(std::time::Duration::from_millis(100));

@@ -147,11 +147,9 @@ impl<'a, R: SoundRecorder> SoundRecorderDriver<'a, R> {
     /// You can get a list of the names of all available capture devices by
     /// calling [`available_devices`].
     ///
-    /// Returns whether the start of capture was successful.
-    ///
     /// [`set_device`]: SoundRecorderDriver::set_device
-    pub fn start(&mut self, sample_rate: u32) -> bool {
-        unsafe { sfSoundRecorder_start(self.ffi_handle.as_ptr(), sample_rate) }
+    pub fn start(&mut self, sample_rate: u32) -> SfResult<()> {
+        unsafe { sfSoundRecorder_start(self.ffi_handle.as_ptr(), sample_rate) }.into_sf_result()
     }
     /// Stop the capture, lending out the underlying [`SoundRecorder`].
     pub fn stop(&mut self) -> &mut R {
@@ -263,8 +261,9 @@ impl SoundBufferRecorder {
     ///
     /// # Arguments
     /// * `sample_rate` - Desired capture rate, in number of samples per second
-    pub fn start(&mut self, sample_rate: u32) -> bool {
+    pub fn start(&mut self, sample_rate: u32) -> SfResult<()> {
         unsafe { sfSoundBufferRecorder_start(self.ffi_handle.as_ptr(), sample_rate) }
+            .into_sf_result()
     }
 
     /// Stop the capture of a sound recorder

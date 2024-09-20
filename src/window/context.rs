@@ -1,5 +1,5 @@
 use {
-    crate::{ffi::window as ffi, window::ContextSettings},
+    crate::{ffi::window as ffi, window::ContextSettings, IntoSfResult, SfResult},
     std::ffi::CStr,
 };
 
@@ -45,10 +45,8 @@ impl Context {
     ///
     /// # Arguments
     /// * active - `true` to activate, `false` to deactivate
-    ///
-    /// Returns true on success, false on failure.
-    pub fn set_active(&mut self, active: bool) -> bool {
-        unsafe { ffi::sfContext_setActive(self.0, active) }
+    pub fn set_active(&mut self, active: bool) -> SfResult<()> {
+        unsafe { ffi::sfContext_setActive(self.0, active) }.into_sf_result()
     }
     /// Get the settings of the context.
     ///

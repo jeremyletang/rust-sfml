@@ -8,6 +8,7 @@ use {
         },
         system::{SfStrConv, Vector2f, Vector2i, Vector2u},
         window::{thread_safety, ContextSettings, Cursor, Event, Handle, Style, VideoMode},
+        IntoSfResult, SfResult,
     },
     std::ptr::NonNull,
 };
@@ -487,10 +488,9 @@ impl RenderWindow {
     ///
     /// # Arguments
     /// * active - true to activate, false to deactivate
-    ///
-    /// Return true if operation was successful, false otherwise
-    pub fn set_active(&mut self, enabled: bool) -> bool {
+    pub fn set_active(&mut self, enabled: bool) -> SfResult<()> {
         unsafe { ffi::sfRenderWindow_setActive(self.render_window.as_ptr(), enabled) }
+            .into_sf_result()
     }
 
     /// Change the joystick threshold

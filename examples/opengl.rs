@@ -50,8 +50,8 @@ fn main() {
         mipmap_instr.set_position((180., 550.));
 
         let mut texture = Texture::from_file(example_res!("texture.jpg")).unwrap();
-        texture.generate_mipmap();
-        window.set_active(true);
+        texture.generate_mipmap().unwrap();
+        window.set_active(true).unwrap();
         unsafe {
             gl::glEnable(gl::GL_DEPTH_TEST);
             gl::glDepthMask(gl::GL_TRUE as _);
@@ -101,7 +101,7 @@ fn main() {
             gl::glDisableClientState(gl::GL_COLOR_ARRAY);
         }
 
-        window.set_active(false);
+        window.set_active(false).unwrap();
         let clock = Clock::start().unwrap();
         let mut mipmap_enabled = true;
 
@@ -121,11 +121,11 @@ fn main() {
                         if mipmap_enabled {
                             texture = Texture::from_file(example_res!("texture.jpg")).unwrap();
                             mipmap_enabled = false;
-                            window.set_active(true);
+                            window.set_active(true).unwrap();
                             Texture::bind(&texture);
-                            window.set_active(false);
+                            window.set_active(false).unwrap();
                         } else {
-                            texture.generate_mipmap();
+                            texture.generate_mipmap().unwrap();
                             mipmap_enabled = true;
                         }
                     }
@@ -136,11 +136,11 @@ fn main() {
                         window.close();
                     }
                     Event::Resized { width, height } => {
-                        window.set_active(true);
+                        window.set_active(true).unwrap();
                         unsafe {
                             gl::glViewport(0, 0, width as _, height as _);
                         }
-                        window.set_active(false);
+                        window.set_active(false).unwrap();
                     }
                     _ => {}
                 }
@@ -149,7 +149,9 @@ fn main() {
             window.draw(&bg_sprite);
             window.pop_gl_states();
 
-            window.set_active(true);
+            if let Err(e) = window.set_active(true) {
+                eprintln!("Failed to set window as active: {e}");
+            }
 
             unsafe {
                 gl::glClear(gl::GL_DEPTH_BUFFER_BIT);
@@ -166,7 +168,9 @@ fn main() {
                 gl::glRotatef(clock.elapsed_time().as_seconds() * 90., 0., 0., 1.);
                 gl::glDrawArrays(gl::GL_TRIANGLES, 0, 36);
             }
-            window.set_active(false);
+            if let Err(e) = window.set_active(false) {
+                eprintln!("Failed to set window as active: {e}");
+            }
             window.push_gl_states();
             window.draw(&text);
             window.draw(&srgb_instr);

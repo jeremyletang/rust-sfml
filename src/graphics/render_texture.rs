@@ -7,7 +7,7 @@ use crate::{
     },
     system::{Vector2f, Vector2i, Vector2u},
     window::ContextSettings,
-    SfResult,
+    IntoSfResult, SfResult,
 };
 
 /// Target for off-screen 2D rendering into a texture
@@ -117,8 +117,8 @@ impl RenderTexture {
     /// For this reason, calling this function only makes sense after all drawing is
     /// completed and display has been called. Not calling display after subsequent drawing
     /// will lead to __undefined behavior__ if a mipmap had been previously generated.
-    pub unsafe fn generate_mipmap(&mut self) -> bool {
-        unsafe { ffi::sfRenderTexture_generateMipmap(self.render_texture) }
+    pub unsafe fn generate_mipmap(&mut self) -> SfResult<()> {
+        unsafe { ffi::sfRenderTexture_generateMipmap(self.render_texture) }.into_sf_result()
     }
 
     /// Get the maximum anti-aliasing level supported by the system.

@@ -34,7 +34,7 @@ fn main() {
 
     // Audio capture is done in a separate thread,
     // so we can block the main thread while it is capturing
-    recorder.start(sample_rate);
+    recorder.start(sample_rate).unwrap();
     println!("Recording... press enter to stop");
     reader.read_line(&mut String::new()).unwrap();
     recorder.stop();

@@ -121,8 +121,8 @@ impl Texture {
     ///
     /// Returns whether creation was successful.
     #[must_use = "Check if texture was created successfully"]
-    pub fn create(&mut self, width: u32, height: u32) -> bool {
-        unsafe { sfTexture_create(self, width, height) }
+    pub fn create(&mut self, width: u32, height: u32) -> SfResult<()> {
+        unsafe { sfTexture_create(self, width, height) }.into_sf_result()
     }
 
     /// Load texture from memory
@@ -330,10 +330,8 @@ impl Texture {
     /// false. Mipmap data is only valid from the time it is generated until the next time the base
     /// level image is modified, at which point this function will have to be called again to
     /// regenerate it.
-    ///
-    /// Returns true if mipmap generation was successful, false if unsuccessful.
-    pub fn generate_mipmap(&mut self) -> bool {
-        unsafe { ffi::sfTexture_generateMipmap(self) }
+    pub fn generate_mipmap(&mut self) -> SfResult<()> {
+        unsafe { ffi::sfTexture_generateMipmap(self) }.into_sf_result()
     }
     /// Swap the contents of this texture with those of another.
     pub fn swap(&mut self, other: &mut Texture) {

@@ -119,7 +119,7 @@ impl RcTexture {
     ///
     /// Returns whether creation was successful.
     #[must_use = "Check if texture was created successfully"]
-    pub fn create(&mut self, width: u32, height: u32) -> bool {
+    pub fn create(&mut self, width: u32, height: u32) -> SfResult<()> {
         self.texture.borrow_mut().create(width, height)
     }
 
@@ -349,9 +349,7 @@ impl RcTexture {
     /// false. Mipmap data is only valid from the time it is generated until the next time the base
     /// level image is modified, at which point this function will have to be called again to
     /// regenerate it.
-    ///
-    /// Returns true if mipmap generation was successful, false if unsuccessful.
-    pub fn generate_mipmap(&mut self) -> bool {
+    pub fn generate_mipmap(&mut self) -> SfResult<()> {
         self.texture.borrow_mut().generate_mipmap()
     }
     /// Swap the contents of this texture with those of another.
