@@ -57,6 +57,73 @@ decl_opaque! {
 Font;
 }
 
+/// Creation and loading
+impl Font {
+    /// Load the font from a file.
+    ///
+    /// The supported font formats are: TrueType, Type 1, CFF, OpenType, SFNT, X11 PCF,
+    /// Windows FNT, BDF, PFR and Type 42.
+    /// Note that this function know nothing about the standard fonts installed on the
+    /// user's system, thus you can't load them directly.
+    ///
+    /// # Warning
+    /// SFML cannot preload all the font data in this function,
+    /// so the file has to remain accessible until the `Font` object loads a new font or
+    /// is destroyed.
+    ///
+    /// # Usage Example
+    ///
+    /// ```
+    /// # use sfml::graphics::Font;
+    /// let font = match Font::from_file("examples/resources/sansation.ttf") {
+    ///     Ok(font) => font,
+    ///     Err(e) => {
+    ///         panic!("Failed to read font file: {e}");
+    ///     }
+    /// };
+    /// ```
+    pub fn from_file(filename: &str) -> SfResult<SfBox<Self>> {
+        let c_str = CString::new(filename).into_sf_result()?;
+        let fnt = unsafe { ffi::sfFont_createFromFile(c_str.as_ptr()) };
+        SfBox::new(fnt).ok_or(SfError::CallFailed)
+    }
+
+    /// Load the font from a custom stream.
+    ///
+    /// The supported font formats are: TrueType, Type 1, CFF, OpenType, SFNT, X11 PCF,
+    /// Windows FNT, BDF, PFR and Type 42.
+    ///
+    /// # Safety
+    /// SFML cannot preload all the font data in this function, so the stream has to remain
+    /// accessible until the `Font` object loads a new font or is destroyed.
+    ///
+    /// # See also
+    /// [`Font::from_file`], [`Font::from_memory`]
+    pub unsafe fn from_stream<T: Read + Seek>(stream: &mut T) -> SfResult<SfBox<Self>> {
+        let mut input_stream = InputStream::new(stream);
+        let fnt = unsafe { ffi::sfFont_createFromStream(&mut *input_stream.stream) };
+        SfBox::new(fnt).into_sf_result()
+    }
+
+    /// Load the font from a file in memory.
+    ///
+    /// The supported font formats are: TrueType, Type 1, CFF, OpenType, SFNT, X11 PCF,
+    /// Windows FNT, BDF, PFR and Type 42.
+    ///
+    /// # Safety
+    /// SFML cannot preload all the font data in this function, so the buffer pointed by `memory`
+    /// has to remain valid until the `Font` object loads a new font or is destroyed.
+    ///
+    /// See also
+    /// [`Font::from_file`], [`Font::from_stream`]
+    pub unsafe fn from_memory(memory: &[u8]) -> SfResult<SfBox<Self>> {
+        let fnt =
+            unsafe { ffi::sfFont_createFromMemory(memory.as_ptr() as *const _, memory.len()) };
+        SfBox::new(fnt).into_sf_result()
+    }
+}
+
+/// Font information, properties, glyph fetch
 impl Font {
     /// Get the kerning value corresponding to a given pair of characters in a font
     ///
@@ -121,7 +188,6 @@ impl Font {
     pub fn line_spacing(&self, character_size: u32) -> f32 {
         unsafe { ffi::sfFont_getLineSpacing(self, character_size) }
     }
-
     /// Get a glyph in a font
     ///
     /// # Arguments
@@ -205,69 +271,10 @@ impl Font {
     pub fn underline_thickness(&self, character_size: u32) -> f32 {
         unsafe { ffi::sfFont_getUnderlineThickness(self, character_size) }
     }
-    /// Load the font from a file.
-    ///
-    /// The supported font formats are: TrueType, Type 1, CFF, OpenType, SFNT, X11 PCF,
-    /// Windows FNT, BDF, PFR and Type 42.
-    /// Note that this function know nothing about the standard fonts installed on the
-    /// user's system, thus you can't load them directly.
-    ///
-    /// # Warning
-    /// SFML cannot preload all the font data in this function,
-    /// so the file has to remain accessible until the `Font` object loads a new font or
-    /// is destroyed.
-    ///
-    /// # Usage Example
-    ///
-    /// ```
-    /// # use sfml::graphics::Font;
-    /// let font = match Font::from_file("examples/resources/sansation.ttf") {
-    ///     Ok(font) => font,
-    ///     Err(e) => {
-    ///         panic!("Failed to read font file: {e}");
-    ///     }
-    /// };
-    /// ```
-    pub fn from_file(filename: &str) -> SfResult<SfBox<Self>> {
-        let c_str = CString::new(filename).into_sf_result()?;
-        let fnt = unsafe { ffi::sfFont_createFromFile(c_str.as_ptr()) };
-        SfBox::new(fnt).ok_or(SfError::CallFailed)
-    }
+}
 
-    /// Load the font from a custom stream.
-    ///
-    /// The supported font formats are: TrueType, Type 1, CFF, OpenType, SFNT, X11 PCF,
-    /// Windows FNT, BDF, PFR and Type 42.
-    ///
-    /// # Safety
-    /// SFML cannot preload all the font data in this function, so the stream has to remain
-    /// accessible until the `Font` object loads a new font or is destroyed.
-    ///
-    /// # See also
-    /// [`Font::from_file`], [`Font::from_memory`]
-    pub unsafe fn from_stream<T: Read + Seek>(stream: &mut T) -> SfResult<SfBox<Self>> {
-        let mut input_stream = InputStream::new(stream);
-        let fnt = unsafe { ffi::sfFont_createFromStream(&mut *input_stream.stream) };
-        SfBox::new(fnt).into_sf_result()
-    }
-
-    /// Load the font from a file in memory.
-    ///
-    /// The supported font formats are: TrueType, Type 1, CFF, OpenType, SFNT, X11 PCF,
-    /// Windows FNT, BDF, PFR and Type 42.
-    ///
-    /// # Safety
-    /// SFML cannot preload all the font data in this function, so the buffer pointed by `memory`
-    /// has to remain valid until the `Font` object loads a new font or is destroyed.
-    ///
-    /// See also
-    /// [`Font::from_file`], [`Font::from_stream`]
-    pub unsafe fn from_memory(memory: &[u8]) -> SfResult<SfBox<Self>> {
-        let fnt =
-            unsafe { ffi::sfFont_createFromMemory(memory.as_ptr() as *const _, memory.len()) };
-        SfBox::new(fnt).into_sf_result()
-    }
-
+/// Texture atlas and smoothing
+impl Font {
     /// Get the texture containing the glyphs of a given size in a font
     ///
     /// # Arguments
@@ -291,7 +298,7 @@ impl Font {
         }
     }
 
-    /// Check if the font has anti-aliasing enabled/disabled
+    /// Tell whether the smooth filter is enabled or not.
     ///
     /// # Usage Example
     /// ```no_run
@@ -305,7 +312,11 @@ impl Font {
         unsafe { ffi::sfFont_isSmooth(self) }
     }
 
-    /// Enables/Disables font smoothing.
+    /// Enable or disable the smooth filter.
+    ///
+    /// When the filter is activated, the font appears smoother so that pixels are less noticeable.
+    /// However if you want the font to look exactly the same as its source file,
+    /// you should disable it. The smooth filter is enabled by default.
     ///
     /// # Arguments
     /// * `smooth` - True to enable smoothing, false to disable smoothing
@@ -314,10 +325,8 @@ impl Font {
     ///
     /// ```no_run
     /// # use sfml::graphics::Font;
-    /// # let font = Font::from_file("examples/resources/sansation.ttf").unwrap();
-    /// let texture = font.texture(32);
-    /// # use sfml::system::Vector2;
-    /// assert_eq!(texture.size(), Vector2::new(128, 128));
+    /// # let mut font = Font::from_file("examples/resources/sansation.ttf").unwrap();
+    /// font.set_smooth(false);
     /// ```
     pub fn set_smooth(&mut self, smooth: bool) {
         unsafe { ffi::sfFont_setSmooth(self, smooth) }
