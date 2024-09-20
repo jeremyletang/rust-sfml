@@ -20,6 +20,7 @@ pub struct Image {
     image: *mut ffi::sfImage,
 }
 
+/// Creation and loading
 impl Image {
     /// Create an image
     ///
@@ -124,44 +125,10 @@ impl Image {
             Ok(Self { image })
         }
     }
+}
 
-    /// Save an image to a file on disk
-    ///
-    /// The format of the image is automatically deduced from
-    /// the extension. The supported image formats are bmp, png,
-    /// tga and jpg. The destination file is overwritten
-    /// if it already exists. This function fails if the image is empty.
-    ///
-    /// # Arguments
-    /// * filename - Path of the file to save
-    ///
-    /// Return true if saving was successful
-    pub fn save_to_file(&self, filename: &str) -> SfResult<()> {
-        let c_str = CString::new(filename).into_sf_result()?;
-        unsafe { ffi::sfImage_saveToFile(self.image, c_str.as_ptr()) }.into_sf_result()
-    }
-
-    /// Return the size of an image
-    ///
-    /// Return the size in pixels
-    #[must_use]
-    pub fn size(&self) -> Vector2u {
-        unsafe { ffi::sfImage_getSize(self.image) }
-    }
-
-    /// Create a transparency mask from a specified color-key
-    ///
-    /// This function sets the alpha value of every pixel matching
-    /// the given color to alpha (0 by default), so that they
-    /// become transparent.
-    ///
-    /// # Arguments
-    /// * color - Color to make transparent
-    /// * alpha - Alpha value to assign to transparent pixels
-    pub fn create_mask_from_color(&self, color: Color, alpha: u8) {
-        unsafe { ffi::sfImage_createMaskFromColor(self.image, color, alpha) }
-    }
-
+/// Get/set pixels
+impl Image {
     /// Change the color of a pixel in an image
     ///
     /// # Arguments
@@ -204,7 +171,6 @@ impl Image {
         unsafe { ffi::sfImage_setPixel(self.image, x, y, color) }
         Ok(())
     }
-
     /// Get the color of a pixel in an image
     ///
     /// # Arguments
@@ -251,6 +217,22 @@ impl Image {
 
             slice::from_raw_parts(pixels, (size.x * size.y * 4) as usize)
         }
+    }
+}
+
+/// Image data manipulation
+impl Image {
+    /// Create a transparency mask from a specified color-key
+    ///
+    /// This function sets the alpha value of every pixel matching
+    /// the given color to alpha (0 by default), so that they
+    /// become transparent.
+    ///
+    /// # Arguments
+    /// * color - Color to make transparent
+    /// * alpha - Alpha value to assign to transparent pixels
+    pub fn create_mask_from_color(&self, color: Color, alpha: u8) {
+        unsafe { ffi::sfImage_createMaskFromColor(self.image, color, alpha) }
     }
 
     /// Flip an image horizontally (left <-> right)
@@ -302,6 +284,34 @@ impl Image {
             )
         }
     }
+}
+
+/// Etc.
+impl Image {
+    /// Save an image to a file on disk
+    ///
+    /// The format of the image is automatically deduced from
+    /// the extension. The supported image formats are bmp, png,
+    /// tga and jpg. The destination file is overwritten
+    /// if it already exists. This function fails if the image is empty.
+    ///
+    /// # Arguments
+    /// * filename - Path of the file to save
+    ///
+    /// Return true if saving was successful
+    pub fn save_to_file(&self, filename: &str) -> SfResult<()> {
+        let c_str = CString::new(filename).into_sf_result()?;
+        unsafe { ffi::sfImage_saveToFile(self.image, c_str.as_ptr()) }.into_sf_result()
+    }
+
+    /// Return the size of an image
+    ///
+    /// Return the size in pixels
+    #[must_use]
+    pub fn size(&self) -> Vector2u {
+        unsafe { ffi::sfImage_getSize(self.image) }
+    }
+
     pub(super) fn raw(&self) -> *const ffi::sfImage {
         self.image
     }
