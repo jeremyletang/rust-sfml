@@ -91,12 +91,12 @@ impl Error for SfError {}
 /// Result of a fallible SFML operation
 pub type SfResult<T> = Result<T, SfError>;
 
-trait IntoSfCallErr {
-    fn into_sf_call_err(self) -> SfResult<()>;
+trait IntoSfResult {
+    fn into_sf_result(self) -> SfResult<()>;
 }
 
-impl IntoSfCallErr for bool {
-    fn into_sf_call_err(self) -> SfResult<()> {
+impl IntoSfResult for bool {
+    fn into_sf_result(self) -> SfResult<()> {
         if self {
             Ok(())
         } else {

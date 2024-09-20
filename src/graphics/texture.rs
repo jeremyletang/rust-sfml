@@ -5,7 +5,7 @@ use {
         sf_box::{Dispose, SfBox},
         system::{InputStream, Vector2u},
         window::Window,
-        IntoSfCallErr, SfResult,
+        IntoSfResult, SfResult,
     },
     std::{
         ffi::CString,
@@ -142,7 +142,7 @@ impl Texture {
     pub fn load_from_memory(&mut self, mem: &[u8], area: IntRect) -> SfResult<()> {
         unsafe {
             ffi::sfTexture_loadFromMemory(self, mem.as_ptr() as *const _, mem.len(), area)
-                .into_sf_call_err()
+                .into_sf_result()
         }
     }
 
@@ -163,7 +163,7 @@ impl Texture {
     ) -> SfResult<()> {
         let mut input_stream = InputStream::new(stream);
         unsafe {
-            ffi::sfTexture_loadFromStream(self, &mut *input_stream.stream, area).into_sf_call_err()
+            ffi::sfTexture_loadFromStream(self, &mut *input_stream.stream, area).into_sf_result()
         }
     }
 
@@ -173,7 +173,7 @@ impl Texture {
     /// * filename - Path of the image file to load
     pub fn load_from_file(&mut self, filename: &str, area: IntRect) -> SfResult<()> {
         let c_str = CString::new(filename).unwrap();
-        unsafe { ffi::sfTexture_loadFromFile(self, c_str.as_ptr(), area).into_sf_call_err() }
+        unsafe { ffi::sfTexture_loadFromFile(self, c_str.as_ptr(), area).into_sf_result() }
     }
 
     /// Convenience method to easily create and load a `Texture` from a file.
@@ -188,7 +188,7 @@ impl Texture {
     /// # Arguments
     /// * image - Image to upload to the texture
     pub fn load_from_image(&mut self, image: &Image, area: IntRect) -> SfResult<()> {
-        unsafe { ffi::sfTexture_loadFromImage(self, image.raw(), area).into_sf_call_err() }
+        unsafe { ffi::sfTexture_loadFromImage(self, image.raw(), area).into_sf_result() }
     }
 
     /// Update a part of the texture from the contents of a window.

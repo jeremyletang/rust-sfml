@@ -6,7 +6,7 @@ use {
             system::{sfStdString, sfStdStringVector},
         },
         system::Time,
-        SfBox,
+        IntoSfResult, SfBox, SfResult,
     },
     std::{ffi::CString, os::raw::c_void, ptr::NonNull},
 };
@@ -212,14 +212,10 @@ impl<'a, R: SoundRecorder> SoundRecorderDriver<'a, R> {
     /// This function sets the audio capture device to the device with the given name.
     /// It can be called on the fly (i.e: while recording).
     /// If you do so while recording and opening the device fails, it stops the recording.
-    pub fn set_device(&mut self, name: &str) -> Result<(), SetDeviceError> {
+    pub fn set_device(&mut self, name: &str) -> SfResult<()> {
         let name = CString::new(name).unwrap();
         let success = unsafe { sfSoundRecorder_setDevice(self.ffi_handle.as_ptr(), name.as_ptr()) };
-        if success {
-            Ok(())
-        } else {
-            Err(SetDeviceError)
-        }
+        success.into_sf_result()
     }
 }
 
@@ -245,10 +241,6 @@ impl<'a, S> Drop for SoundRecorderDriver<'a, S> {
 pub struct SoundBufferRecorder {
     ffi_handle: NonNull<sfSoundBufferRecorder>,
 }
-
-/// Error trying to set a capture device.
-#[derive(Debug, Clone, Copy)]
-pub struct SetDeviceError;
 
 impl SoundBufferRecorder {
     /// Create a new sound buffer recorder
@@ -317,15 +309,11 @@ impl SoundBufferRecorder {
     /// This function sets the audio capture device to the device with the given name.
     /// It can be called on the fly (i.e: while recording).
     /// If you do so while recording and opening the device fails, it stops the recording.
-    pub fn set_device(&mut self, name: &str) -> Result<(), SetDeviceError> {
+    pub fn set_device(&mut self, name: &str) -> SfResult<()> {
         let name = CString::new(name).unwrap();
         let success =
             unsafe { sfSoundBufferRecorder_setDevice(self.ffi_handle.as_ptr(), name.as_ptr()) };
-        if success {
-            Ok(())
-        } else {
-            Err(SetDeviceError)
-        }
+        success.into_sf_result()
     }
 }
 
