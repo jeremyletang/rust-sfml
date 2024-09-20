@@ -7,6 +7,7 @@ use crate::{
     },
     system::{Vector2f, Vector2i, Vector2u},
     window::ContextSettings,
+    SfResult,
 };
 
 /// Target for off-screen 2D rendering into a texture
@@ -21,10 +22,7 @@ impl RenderTexture {
     /// # Arguments
     /// * width - Width of the render texture
     /// * height - Height of the render texture
-    ///
-    /// Returns `None` if creation fails.
-    #[must_use]
-    pub fn new(width: u32, height: u32) -> Option<RenderTexture> {
+    pub fn new(width: u32, height: u32) -> SfResult<Self> {
         Self::with_settings(width, height, &ContextSettings::default())
     }
 
@@ -38,15 +36,12 @@ impl RenderTexture {
     /// * width - Width of the render-texture
     /// * height - Height of the render-texture
     /// * settings - Additional settings for the underlying OpenGL texture and context
-    ///
-    /// Returns `None` if creation fails.
-    #[must_use]
-    pub fn with_settings(width: u32, height: u32, settings: &ContextSettings) -> Option<Self> {
+    pub fn with_settings(width: u32, height: u32, settings: &ContextSettings) -> SfResult<Self> {
         let tex = unsafe { ffi::sfRenderTexture_createWithSettings(width, height, settings) };
         if tex.is_null() {
-            None
+            Err(crate::SfError::CallFailed)
         } else {
-            Some(Self {
+            Ok(Self {
                 render_texture: tex,
             })
         }

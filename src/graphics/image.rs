@@ -78,15 +78,12 @@ impl Image {
     /// * width - Width of the image
     /// * height - Height of the image
     /// * color - Fill color
-    ///
-    /// Returns `None` if creation fails.
-    #[must_use]
-    pub fn from_color(width: u32, height: u32, color: Color) -> Option<Self> {
+    pub fn from_color(width: u32, height: u32, color: Color) -> SfResult<Self> {
         let image = unsafe { ffi::sfImage_createFromColor(width, height, color) };
         if image.is_null() {
-            None
+            Err(SfError::CallFailed)
         } else {
-            Some(Self { image })
+            Ok(Self { image })
         }
     }
 
@@ -116,20 +113,17 @@ impl Image {
     /// * height - Height of the image
     /// * pixels - Vector of pixels to copy to the image
     ///
-    /// Returns `None` if creation fails.
-    ///
     /// # Safety
     ///
     /// The pixel vector is assumed to contain 32-bits RGBA pixels,
     /// and have the given width and height. If not, this is
     /// an undefined behaviour.
-    #[must_use]
-    pub unsafe fn create_from_pixels(width: u32, height: u32, pixels: &[u8]) -> Option<Self> {
+    pub unsafe fn create_from_pixels(width: u32, height: u32, pixels: &[u8]) -> SfResult<Self> {
         let image = unsafe { ffi::sfImage_createFromPixels(width, height, pixels.as_ptr()) };
         if image.is_null() {
-            None
+            Err(SfError::CallFailed)
         } else {
-            Some(Self { image })
+            Ok(Self { image })
         }
     }
 
