@@ -58,6 +58,7 @@ pub struct Music<'stream> {
     _stream: PhantomData<&'stream mut ()>,
 }
 
+/// Creating and loading
 impl<'stream> Music<'stream> {
     /// Create a new music and load it from a file
     ///
@@ -131,34 +132,10 @@ impl<'stream> Music<'stream> {
             })
         }
     }
+}
 
-    /// Sets whether this music should loop or not.
-    ///
-    /// If `true`, the music will restart from beginning after
-    /// reaching the end and so on, until it is stopped or
-    /// `set_looping(false)` is called.
-    ///
-    /// By default, the music will *not* loop.
-    pub fn set_looping(&mut self, looping: bool) {
-        unsafe { ffi::audio::sfMusic_setLoop(self.music, looping) }
-    }
-
-    /// Tell whether or not a music is in loop mode
-    ///
-    /// Return true if the music is looping, false otherwise
-    #[must_use]
-    pub fn is_looping(&self) -> bool {
-        unsafe { ffi::audio::sfMusic_getLoop(self.music) }
-    }
-
-    /// Get the total duration of a music
-    ///
-    /// Return Music duration
-    #[must_use]
-    pub fn duration(&self) -> Time {
-        unsafe { Time::from_raw(ffi::audio::sfMusic_getDuration(self.music)) }
-    }
-
+/// Playback
+impl<'stream> Music<'stream> {
     /// Start or resume playing a music
     ///
     /// This function starts the music if it was stopped, resumes
@@ -186,7 +163,24 @@ impl<'stream> Music<'stream> {
     pub fn stop(&mut self) {
         unsafe { ffi::audio::sfMusic_stop(self.music) }
     }
+}
 
+/// Query properties
+impl<'stream> Music<'stream> {
+    /// Tell whether or not a music is in loop mode
+    ///
+    /// Return true if the music is looping, false otherwise
+    #[must_use]
+    pub fn is_looping(&self) -> bool {
+        unsafe { ffi::audio::sfMusic_getLoop(self.music) }
+    }
+    /// Get the total duration of a music
+    ///
+    /// Return Music duration
+    #[must_use]
+    pub fn duration(&self) -> Time {
+        unsafe { Time::from_raw(ffi::audio::sfMusic_getDuration(self.music)) }
+    }
     /// Return the number of channels of a music
     ///
     /// 1 channel means a mono sound, 2 means stereo, etc.
@@ -196,7 +190,6 @@ impl<'stream> Music<'stream> {
     pub fn channel_count(&self) -> u32 {
         unsafe { ffi::audio::sfMusic_getChannelCount(self.music) }
     }
-
     /// Get the sample rate of a music
     ///
     /// The sample rate is the number of audio samples played per
@@ -224,16 +217,6 @@ impl<'stream> Music<'stream> {
         unsafe { Time::from_raw(ffi::audio::sfMusic_getPlayingOffset(self.music)) }
     }
 
-    /// Change the current playing position of a music
-    ///
-    /// The playing position can be changed when the music is
-    /// either paused or playing.
-    ///
-    /// # Arguments
-    /// * timeOffset - New playing position
-    pub fn set_playing_offset(&mut self, time_offset: Time) {
-        unsafe { ffi::audio::sfMusic_setPlayingOffset(self.music, time_offset.raw()) }
-    }
     /// Get the positions of the of the music's looping sequence.
     ///
     /// # Warning
@@ -248,6 +231,30 @@ impl<'stream> Music<'stream> {
     #[must_use]
     pub fn loop_points(&self) -> TimeSpan {
         TimeSpan::from_raw(unsafe { ffi::audio::sfMusic_getLoopPoints(self.music) })
+    }
+}
+
+/// Set properties
+impl<'stream> Music<'stream> {
+    /// Sets whether this music should loop or not.
+    ///
+    /// If `true`, the music will restart from beginning after
+    /// reaching the end and so on, until it is stopped or
+    /// `set_looping(false)` is called.
+    ///
+    /// By default, the music will *not* loop.
+    pub fn set_looping(&mut self, looping: bool) {
+        unsafe { ffi::audio::sfMusic_setLoop(self.music, looping) }
+    }
+    /// Change the current playing position of a music
+    ///
+    /// The playing position can be changed when the music is
+    /// either paused or playing.
+    ///
+    /// # Arguments
+    /// * timeOffset - New playing position
+    pub fn set_playing_offset(&mut self, time_offset: Time) {
+        unsafe { ffi::audio::sfMusic_setPlayingOffset(self.music, time_offset.raw()) }
     }
     /// Sets the beginning and end of the music's looping sequence.
     ///
