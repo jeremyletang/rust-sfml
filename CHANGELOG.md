@@ -11,6 +11,11 @@
 - Rework `LoadResult` to `SfResult` as a more generic error type.
 - Use `SfResult` in a lot of APIs that previously returned `Option`, `bool`, or panicked on error.
 
+### Documentation
+
+- Experiment with splitting up methods into different `impl` blocks, for better organization.
+  See `RenderWindow`'s documentation for example.
+
 ## 0.22.0
 
 ### Added
