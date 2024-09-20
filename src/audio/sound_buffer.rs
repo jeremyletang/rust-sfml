@@ -142,8 +142,6 @@ impl SoundBuffer {
     ///
     /// # Arguments
     /// * filename - Path of the sound file to load
-    ///
-    /// Returns `None` on failure.
     pub fn from_file(filename: &str) -> SfResult<SfBox<Self>> {
         let c_str = CString::new(filename).into_sf_result()?;
         let sound_buffer: *mut ffi::audio::sfSoundBuffer =

@@ -43,8 +43,6 @@ impl Image {
     ///
     /// # Arguments
     /// * stream - Your struct, implementing Read and Seek
-    ///
-    /// Returns `None` if loading fails
     pub fn from_stream<T: Read + Seek>(stream: &mut T) -> SfResult<Self> {
         let mut input_stream = InputStream::new(stream);
         let image = unsafe { ffi::sfImage_createFromStream(&mut *input_stream.stream) };

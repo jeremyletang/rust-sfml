@@ -110,9 +110,7 @@ impl Texture {
         unsafe { ffi::sfTexture_bind(self) }
     }
 
-    /// Create a new texture
-    ///
-    /// Returns `None` on failure.
+    /// Creates a new `Texture`
     pub fn new() -> SfResult<SfBox<Texture>> {
         SfBox::new(unsafe { ffi::sfTexture_new() }).into_sf_result()
     }

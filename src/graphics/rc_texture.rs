@@ -106,9 +106,7 @@ impl RcTexture {
         self.texture.borrow().bind()
     }
 
-    /// Create a new texture
-    ///
-    /// Returns `None` on failure.
+    /// Create a new `RcTexture`
     pub fn new() -> SfResult<RcTexture> {
         Ok(RcTexture {
             texture: Rc::new(RefCell::new(Texture::new()?)),
