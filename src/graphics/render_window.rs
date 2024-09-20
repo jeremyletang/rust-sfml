@@ -56,6 +56,7 @@ pub struct RenderWindow {
     render_window: NonNull<ffi::sfRenderWindow>,
 }
 
+/// Creation
 impl RenderWindow {
     /// Construct a new render window
     ///
@@ -154,55 +155,10 @@ impl RenderWindow {
             render_window: NonNull::new(sf_render_win).expect("Failed to create Window"),
         }
     }
+}
 
-    /// Get the OS-specific handle of the window.
-    ///
-    /// The type of the returned handle is Handle, which is a typedef to the handle type defined by the OS.
-    /// You shouldn't need to use this function, unless you have very specific stuff to implement that SFML
-    /// doesn't support, or implement a temporary workaround until a bug is fixed.
-    #[must_use]
-    pub fn system_handle(&self) -> Handle {
-        unsafe { ffi::sfRenderWindow_getSystemHandle(self.render_window.as_ptr()) }
-    }
-
-    /// Change a render window's icon
-    /// pixels must be an array of width x height pixels in 32-bits RGBA format.
-    ///
-    /// # Arguments
-    /// * width - Icon's width, in pixels
-    /// * height - Icon's height, in pixels
-    /// * pixels - Vector of pixels
-    ///
-    /// # Safety
-    ///
-    /// `pixels` not being at least `width * height * 4` will likely cause undefined behavior.
-    ///
-    /// Platform-specific behavior is also unclear (limits on max size, etc).
-    ///
-    /// # Usage example
-    ///
-    /// ```no_run
-    /// # use sfml::window::Style;
-    /// # use sfml::graphics::{RenderWindow};
-    /// # // Create a new window
-    /// # let mut window = RenderWindow::new((800, 600),
-    /// #                              "SFML window",
-    /// #                              Style::CLOSE,
-    /// #                              &Default::default());
-    /// while window.is_open() {
-    /// // Creates a bright red window icon
-    /// let (width, height) = (1, 1);
-    /// let pixels: [u8; 4] = [255, 0, 0, 255];
-    /// unsafe { window.set_icon(width, height, &pixels); }
-    ///     window.display();
-    /// }
-    /// ```
-    pub unsafe fn set_icon(&mut self, width: u32, height: u32, pixels: &[u8]) {
-        unsafe {
-            ffi::sfRenderWindow_setIcon(self.render_window.as_ptr(), width, height, pixels.as_ptr())
-        }
-    }
-
+/// Event handling
+impl RenderWindow {
     /// Pop the event on top of event queue, if any, and return it
     ///
     /// This function is not blocking: if there's no pending event then
@@ -286,6 +242,218 @@ impl RenderWindow {
             None
         }
     }
+}
+
+/// Rendering. See also [`RenderTarget`], which `RenderWindow` implements.
+impl RenderWindow {
+    /// Display on screen what has been rendered to the window so far
+    ///
+    /// This function is typically called after all OpenGL rendering
+    /// has been done for the current frame, in order to show
+    /// it on screen.
+    ///
+    /// # Usage Example
+    ///
+    /// ```no_run
+    /// # use sfml::window::{Event, Style};
+    /// # use sfml::graphics::{ RenderWindow, RenderTarget, Color };
+    /// # // Create a new window
+    /// # let mut window = RenderWindow::new((800, 600),
+    /// #                              "SFML window",
+    /// #                              Style::CLOSE,
+    /// #                              &Default::default());
+    /// while window.is_open() {
+    ///     window.clear(Color::BLACK);
+    ///     // Draw something
+    ///
+    ///     window.display();
+    /// }
+    /// ```
+    pub fn display(&mut self) {
+        unsafe { ffi::sfRenderWindow_display(self.render_window.as_ptr()) }
+    }
+
+    /// Limit the framerate to a maximum fixed frequency
+    ///
+    /// If a limit is set, the window will use a small delay after
+    /// each call to [`RenderWindow::display`] to ensure that the current frame
+    /// lasted long enough to match the framerate limit.
+    ///
+    /// # Arguments
+    /// * limit - Framerate limit, in frames per seconds (use 0 to disable limit)
+    pub fn set_framerate_limit(&mut self, limit: u32) {
+        unsafe { ffi::sfRenderWindow_setFramerateLimit(self.render_window.as_ptr(), limit) }
+    }
+
+    /// Get the settings of the OpenGL context of a window
+    ///
+    /// Note that these settings may be different from what was
+    /// passed to the [`RenderWindow::new`] function,
+    /// if one or more settings were not supported. In this case,
+    /// SFML chose the closest match.
+    ///
+    /// Return a structure containing the OpenGL context settings
+    #[must_use]
+    pub fn settings(&self) -> &ContextSettings {
+        unsafe { &*ffi::sfRenderWindow_getSettings(self.render_window.as_ptr()) }
+    }
+
+    /// Tell if the render texture will use sRGB encoding when drawing it
+    ///
+    /// Returns true if sRGB encoding is enabled, false if sRGB encoding is disabled
+    #[must_use]
+    pub fn is_srgb(&self) -> bool {
+        unsafe { ffi::sfRenderWindow_isSrgb(self.render_window.as_ptr()) }
+    }
+    /// Enable or disable vertical synchronization
+    ///
+    /// Activating vertical synchronization will limit the number
+    /// of frames displayed to the refresh rate of the monitor.
+    /// This can avoid some visual artifacts, and limit the framerate
+    /// to a good value (but not constant across different computers).
+    ///
+    /// # Arguments
+    /// * enabled - true to enable v-sync, false to deactivate
+    pub fn set_vertical_sync_enabled(&mut self, enabled: bool) {
+        unsafe {
+            ffi::sfRenderWindow_setVerticalSyncEnabled(self.render_window.as_ptr(), enabled);
+        }
+    }
+
+    /// Activate or deactivate a render window as the current target for OpenGL rendering
+    ///
+    /// A window is active only on the current thread, if you want to
+    /// make it active on another thread you have to deactivate it
+    /// on the previous thread first if it was active.
+    /// Only one window can be active on a thread at a time, thus
+    /// the window previously active (if any) automatically gets deactivated.
+    ///
+    /// # Arguments
+    /// * active - true to activate, false to deactivate
+    pub fn set_active(&mut self, enabled: bool) -> SfResult<()> {
+        unsafe { ffi::sfRenderWindow_setActive(self.render_window.as_ptr(), enabled) }
+            .into_sf_result()
+    }
+}
+
+/// Input
+impl RenderWindow {
+    /// Show or hide the mouse cursor
+    ///
+    /// # Arguments
+    /// * visible - true to  false to hide
+    pub fn set_mouse_cursor_visible(&mut self, visible: bool) {
+        unsafe {
+            ffi::sfRenderWindow_setMouseCursorVisible(self.render_window.as_ptr(), visible);
+        }
+    }
+
+    /// Grab or release the mouse cursor.
+    ///
+    /// If set, grabs the mouse cursor inside this window's client area so it may no longer be
+    /// moved outside its bounds. Note that grabbing is only active while the window has focus.
+    pub fn set_mouse_cursor_grabbed(&mut self, grabbed: bool) {
+        unsafe { ffi::sfRenderWindow_setMouseCursorGrabbed(self.render_window.as_ptr(), grabbed) }
+    }
+    /// Enable or disable automatic key-repeat
+    ///
+    /// If key repeat is enabled, you will receive repeated
+    /// [`crate::window::Event::KeyPressed`] events while keeping a key pressed.
+    /// If it is disabled, you will only get a single event when the key is pressed.
+    ///
+    /// Key repeat is enabled by default.
+    ///
+    /// # Arguments
+    /// * enabled - true to enable, false to disable
+    pub fn set_key_repeat_enabled(&mut self, enabled: bool) {
+        unsafe {
+            ffi::sfRenderWindow_setKeyRepeatEnabled(self.render_window.as_ptr(), enabled);
+        }
+    }
+    /// Change the joystick threshold
+    ///
+    /// The joystick threshold is the value below which
+    /// no [`crate::window::Event::JoystickMoved`] event will be generated.
+    ///
+    /// # Arguments
+    /// * threshold - New threshold, in the range [0, 100]
+    pub fn set_joystick_threshold(&mut self, threshold: f32) {
+        unsafe { ffi::sfRenderWindow_setJoystickThreshold(self.render_window.as_ptr(), threshold) }
+    }
+    /// Returns the current position of the mouse relative to the window.
+    #[must_use]
+    pub fn mouse_position(&self) -> Vector2i {
+        unsafe {
+            crate::ffi::graphics::sfMouse_getPositionRenderWindow(self.render_window.as_ptr())
+        }
+    }
+
+    /// Set the current position of the mouse relatively to a render window
+    ///
+    /// This function sets the current position of the mouse cursor relative
+    /// to the given render window
+    ///
+    /// # Arguments
+    /// * `position` - the positon to set
+    pub fn set_mouse_position(&mut self, position: Vector2i) {
+        unsafe {
+            crate::ffi::graphics::sfMouse_setPositionRenderWindow(
+                position,
+                self.render_window.as_ptr(),
+            )
+        }
+    }
+    /// Returns the current position of a touch in window coordinates.
+    #[must_use]
+    pub fn touch_position(&self, finger: u32) -> Vector2i {
+        unsafe {
+            crate::ffi::graphics::sfTouch_getPositionRenderWindow(
+                finger,
+                self.render_window.as_ptr(),
+            )
+        }
+    }
+}
+
+/// Window operations
+impl RenderWindow {
+    /// Change a render window's icon
+    /// pixels must be an array of width x height pixels in 32-bits RGBA format.
+    ///
+    /// # Arguments
+    /// * width - Icon's width, in pixels
+    /// * height - Icon's height, in pixels
+    /// * pixels - Vector of pixels
+    ///
+    /// # Safety
+    ///
+    /// `pixels` not being at least `width * height * 4` will likely cause undefined behavior.
+    ///
+    /// Platform-specific behavior is also unclear (limits on max size, etc).
+    ///
+    /// # Usage example
+    ///
+    /// ```no_run
+    /// # use sfml::window::Style;
+    /// # use sfml::graphics::{RenderWindow};
+    /// # // Create a new window
+    /// # let mut window = RenderWindow::new((800, 600),
+    /// #                              "SFML window",
+    /// #                              Style::CLOSE,
+    /// #                              &Default::default());
+    /// while window.is_open() {
+    /// // Creates a bright red window icon
+    /// let (width, height) = (1, 1);
+    /// let pixels: [u8; 4] = [255, 0, 0, 255];
+    /// unsafe { window.set_icon(width, height, &pixels); }
+    ///     window.display();
+    /// }
+    /// ```
+    pub unsafe fn set_icon(&mut self, width: u32, height: u32, pixels: &[u8]) {
+        unsafe {
+            ffi::sfRenderWindow_setIcon(self.render_window.as_ptr(), width, height, pixels.as_ptr())
+        }
+    }
 
     /// Close a render window and destroy all the attached resources
     ///
@@ -349,66 +517,6 @@ impl RenderWindow {
         unsafe { ffi::sfRenderWindow_isOpen(self.render_window.as_ptr()) }
     }
 
-    /// Display on screen what has been rendered to the window so far
-    ///
-    /// This function is typically called after all OpenGL rendering
-    /// has been done for the current frame, in order to show
-    /// it on screen.
-    ///
-    /// # Usage Example
-    ///
-    /// ```no_run
-    /// # use sfml::window::{Event, Style};
-    /// # use sfml::graphics::{ RenderWindow, RenderTarget, Color };
-    /// # // Create a new window
-    /// # let mut window = RenderWindow::new((800, 600),
-    /// #                              "SFML window",
-    /// #                              Style::CLOSE,
-    /// #                              &Default::default());
-    /// while window.is_open() {
-    ///     window.clear(Color::BLACK);
-    ///     // Draw something
-    ///
-    ///     window.display();
-    /// }
-    /// ```
-    pub fn display(&mut self) {
-        unsafe { ffi::sfRenderWindow_display(self.render_window.as_ptr()) }
-    }
-
-    /// Limit the framerate to a maximum fixed frequency
-    ///
-    /// If a limit is set, the window will use a small delay after
-    /// each call to [`RenderWindow::display`] to ensure that the current frame
-    /// lasted long enough to match the framerate limit.
-    ///
-    /// # Arguments
-    /// * limit - Framerate limit, in frames per seconds (use 0 to disable limit)
-    pub fn set_framerate_limit(&mut self, limit: u32) {
-        unsafe { ffi::sfRenderWindow_setFramerateLimit(self.render_window.as_ptr(), limit) }
-    }
-
-    /// Get the settings of the OpenGL context of a window
-    ///
-    /// Note that these settings may be different from what was
-    /// passed to the [`RenderWindow::new`] function,
-    /// if one or more settings were not supported. In this case,
-    /// SFML chose the closest match.
-    ///
-    /// Return a structure containing the OpenGL context settings
-    #[must_use]
-    pub fn settings(&self) -> &ContextSettings {
-        unsafe { &*ffi::sfRenderWindow_getSettings(self.render_window.as_ptr()) }
-    }
-
-    /// Tell if the render texture will use sRGB encoding when drawing it
-    ///
-    /// Returns true if sRGB encoding is enabled, false if sRGB encoding is disabled
-    #[must_use]
-    pub fn is_srgb(&self) -> bool {
-        unsafe { ffi::sfRenderWindow_isSrgb(self.render_window.as_ptr()) }
-    }
-
     /// Change the title of a window
     ///
     /// # Arguments
@@ -427,81 +535,6 @@ impl RenderWindow {
         unsafe {
             ffi::sfRenderWindow_setVisible(self.render_window.as_ptr(), visible);
         }
-    }
-
-    /// Show or hide the mouse cursor
-    ///
-    /// # Arguments
-    /// * visible - true to  false to hide
-    pub fn set_mouse_cursor_visible(&mut self, visible: bool) {
-        unsafe {
-            ffi::sfRenderWindow_setMouseCursorVisible(self.render_window.as_ptr(), visible);
-        }
-    }
-
-    /// Grab or release the mouse cursor.
-    ///
-    /// If set, grabs the mouse cursor inside this window's client area so it may no longer be
-    /// moved outside its bounds. Note that grabbing is only active while the window has focus.
-    pub fn set_mouse_cursor_grabbed(&mut self, grabbed: bool) {
-        unsafe { ffi::sfRenderWindow_setMouseCursorGrabbed(self.render_window.as_ptr(), grabbed) }
-    }
-
-    /// Enable or disable vertical synchronization
-    ///
-    /// Activating vertical synchronization will limit the number
-    /// of frames displayed to the refresh rate of the monitor.
-    /// This can avoid some visual artifacts, and limit the framerate
-    /// to a good value (but not constant across different computers).
-    ///
-    /// # Arguments
-    /// * enabled - true to enable v-sync, false to deactivate
-    pub fn set_vertical_sync_enabled(&mut self, enabled: bool) {
-        unsafe {
-            ffi::sfRenderWindow_setVerticalSyncEnabled(self.render_window.as_ptr(), enabled);
-        }
-    }
-
-    /// Enable or disable automatic key-repeat
-    ///
-    /// If key repeat is enabled, you will receive repeated
-    /// [`crate::window::Event::KeyPressed`] events while keeping a key pressed.
-    /// If it is disabled, you will only get a single event when the key is pressed.
-    ///
-    /// Key repeat is enabled by default.
-    ///
-    /// # Arguments
-    /// * enabled - true to enable, false to disable
-    pub fn set_key_repeat_enabled(&mut self, enabled: bool) {
-        unsafe {
-            ffi::sfRenderWindow_setKeyRepeatEnabled(self.render_window.as_ptr(), enabled);
-        }
-    }
-
-    /// Activate or deactivate a render window as the current target for OpenGL rendering
-    ///
-    /// A window is active only on the current thread, if you want to
-    /// make it active on another thread you have to deactivate it
-    /// on the previous thread first if it was active.
-    /// Only one window can be active on a thread at a time, thus
-    /// the window previously active (if any) automatically gets deactivated.
-    ///
-    /// # Arguments
-    /// * active - true to activate, false to deactivate
-    pub fn set_active(&mut self, enabled: bool) -> SfResult<()> {
-        unsafe { ffi::sfRenderWindow_setActive(self.render_window.as_ptr(), enabled) }
-            .into_sf_result()
-    }
-
-    /// Change the joystick threshold
-    ///
-    /// The joystick threshold is the value below which
-    /// no [`crate::window::Event::JoystickMoved`] event will be generated.
-    ///
-    /// # Arguments
-    /// * threshold - New threshold, in the range [0, 100]
-    pub fn set_joystick_threshold(&mut self, threshold: f32) {
-        unsafe { ffi::sfRenderWindow_setJoystickThreshold(self.render_window.as_ptr(), threshold) }
     }
 
     /// Get the position of a window
@@ -568,30 +601,6 @@ impl RenderWindow {
         unsafe { ffi::sfRenderWindow_setSize(self.render_window.as_ptr(), size.into()) }
     }
 
-    /// Returns the current position of the mouse relative to the window.
-    #[must_use]
-    pub fn mouse_position(&self) -> Vector2i {
-        unsafe {
-            crate::ffi::graphics::sfMouse_getPositionRenderWindow(self.render_window.as_ptr())
-        }
-    }
-
-    /// Set the current position of the mouse relatively to a render window
-    ///
-    /// This function sets the current position of the mouse cursor relative
-    /// to the given render window
-    ///
-    /// # Arguments
-    /// * `position` - the positon to set
-    pub fn set_mouse_position(&mut self, position: Vector2i) {
-        unsafe {
-            crate::ffi::graphics::sfMouse_setPositionRenderWindow(
-                position,
-                self.render_window.as_ptr(),
-            )
-        }
-    }
-
     /// Set the displayed cursor to a native system cursor.
     ///
     /// Upon window creation, the arrow cursor is used by default.
@@ -622,17 +631,6 @@ impl RenderWindow {
     /// ```
     pub unsafe fn set_mouse_cursor(&mut self, cursor: &Cursor) {
         unsafe { ffi::sfRenderWindow_setMouseCursor(self.render_window.as_ptr(), cursor) }
-    }
-
-    /// Returns the current position of a touch in window coordinates.
-    #[must_use]
-    pub fn touch_position(&self, finger: u32) -> Vector2i {
-        unsafe {
-            crate::ffi::graphics::sfTouch_getPositionRenderWindow(
-                finger,
-                self.render_window.as_ptr(),
-            )
-        }
     }
 
     /// Check whether the window has the input focus.
@@ -669,6 +667,19 @@ impl RenderWindow {
     /// ```
     pub fn request_focus(&self) {
         unsafe { ffi::sfRenderWindow_requestFocus(self.render_window.as_ptr()) }
+    }
+}
+
+/// System integration
+impl RenderWindow {
+    /// Get the OS-specific handle of the window.
+    ///
+    /// The type of the returned handle is Handle, which is a typedef to the handle type defined by the OS.
+    /// You shouldn't need to use this function, unless you have very specific stuff to implement that SFML
+    /// doesn't support, or implement a temporary workaround until a bug is fixed.
+    #[must_use]
+    pub fn system_handle(&self) -> Handle {
+        unsafe { ffi::sfRenderWindow_getSystemHandle(self.render_window.as_ptr()) }
     }
     pub(super) fn raw(&self) -> *const ffi::sfRenderWindow {
         self.render_window.as_ptr()
