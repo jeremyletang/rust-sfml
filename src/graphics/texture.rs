@@ -54,67 +54,8 @@ decl_opaque! {
 Texture;
 }
 
+/// Creation and loading
 impl Texture {
-    /// Return the size of the texture
-    ///
-    /// Return the Size in pixels
-    #[must_use]
-    pub fn size(&self) -> Vector2u {
-        unsafe { ffi::sfTexture_getSize(self) }
-    }
-    /// Tell whether the smooth filter is enabled or not for a texture
-    ///
-    /// Return true if smoothing is enabled, false if it is disabled
-    #[must_use]
-    pub fn is_smooth(&self) -> bool {
-        unsafe { ffi::sfTexture_isSmooth(self) }
-    }
-    /// Tell whether a texture is repeated or not
-    ///
-    /// Return frue if repeat mode is enabled, false if it is disabled
-    #[must_use]
-    pub fn is_repeated(&self) -> bool {
-        unsafe { ffi::sfTexture_isRepeated(self) }
-    }
-    /// Copy a texture's pixels to an image
-    ///
-    /// Return an image containing the texture's pixels
-    pub fn copy_to_image(&self) -> SfResult<Image> {
-        let img = unsafe { ffi::sfTexture_copyToImage(self) };
-        if img.is_null() {
-            Err(SfError::CallFailed)
-        } else {
-            Ok(unsafe { Image::from_raw(img) })
-        }
-    }
-    /// Tell whether the texture source is converted from sRGB or not.
-    #[must_use]
-    pub fn is_srgb(&self) -> bool {
-        unsafe { ffi::sfTexture_isSrgb(self) }
-    }
-    /// Get the underlying OpenGL handle of the texture.
-    ///
-    /// You shouldn't need to use this function, unless you have very specific stuff to implement
-    /// that SFML doesn't support, or implement a temporary workaround until a bug is fixed.
-    #[must_use]
-    pub fn native_handle(&self) -> u32 {
-        unsafe { ffi::sfTexture_getNativeHandle(self) }
-    }
-
-    /// Bind a texture for rendering
-    ///
-    /// This function is not part of the graphics API, it mustn't be
-    /// used when drawing SFML entities. It must be used only if you
-    /// mix `Texture` with OpenGL code.
-    pub fn bind(&self) {
-        unsafe { ffi::sfTexture_bind(self) }
-    }
-
-    /// Creates a new `Texture`
-    pub fn new() -> SfResult<SfBox<Texture>> {
-        SfBox::new(unsafe { ffi::sfTexture_new() }).into_sf_result()
-    }
-
     /// Create the texture.
     ///
     /// If this function fails, the texture is left unchanged.
@@ -123,6 +64,10 @@ impl Texture {
     #[must_use = "Check if texture was created successfully"]
     pub fn create(&mut self, width: u32, height: u32) -> SfResult<()> {
         unsafe { sfTexture_create(self, width, height) }.into_sf_result()
+    }
+    /// Creates a new `Texture`
+    pub fn new() -> SfResult<SfBox<Texture>> {
+        SfBox::new(unsafe { ffi::sfTexture_new() }).into_sf_result()
     }
 
     /// Load texture from memory
@@ -185,6 +130,129 @@ impl Texture {
     /// * image - Image to upload to the texture
     pub fn load_from_image(&mut self, image: &Image, area: IntRect) -> SfResult<()> {
         unsafe { ffi::sfTexture_loadFromImage(self, image.raw(), area).into_sf_result() }
+    }
+}
+
+/// Query properties
+impl Texture {
+    /// Return the size of the texture
+    ///
+    /// Return the Size in pixels
+    #[must_use]
+    pub fn size(&self) -> Vector2u {
+        unsafe { ffi::sfTexture_getSize(self) }
+    }
+    /// Get the maximum texture size allowed
+    ///
+    /// Return the maximum size allowed for textures, in pixels
+    #[must_use]
+    pub fn maximum_size() -> u32 {
+        unsafe { ffi::sfTexture_getMaximumSize() }
+    }
+    /// Tell whether the smooth filter is enabled or not for a texture
+    ///
+    /// Return true if smoothing is enabled, false if it is disabled
+    #[must_use]
+    pub fn is_smooth(&self) -> bool {
+        unsafe { ffi::sfTexture_isSmooth(self) }
+    }
+    /// Tell whether a texture is repeated or not
+    ///
+    /// Return frue if repeat mode is enabled, false if it is disabled
+    #[must_use]
+    pub fn is_repeated(&self) -> bool {
+        unsafe { ffi::sfTexture_isRepeated(self) }
+    }
+    /// Tell whether the texture source is converted from sRGB or not.
+    #[must_use]
+    pub fn is_srgb(&self) -> bool {
+        unsafe { ffi::sfTexture_isSrgb(self) }
+    }
+}
+
+/// Set properties
+impl Texture {
+    /// Enable or disable the smooth filter on a texture
+    ///
+    /// # Arguments
+    /// * smooth - true to enable smoothing, false to disable it
+    pub fn set_smooth(&mut self, smooth: bool) {
+        unsafe { ffi::sfTexture_setSmooth(self, smooth) }
+    }
+
+    /// Enable or disable repeating for a texture
+    ///
+    /// epeating is involved when using texture coordinates
+    /// outside the texture rectangle [0, 0, width, height].
+    /// In this case, if repeat mode is enabled, the whole texture
+    /// will be repeated as many times as needed to reach the
+    /// coordinate (for example, if the X texture coordinate is
+    /// 3 * width, the texture will be repeated 3 times).
+    /// If repeat mode is disabled, the "extra space" will instead
+    /// be filled with border pixels.
+    /// Warning: on very old graphics cards, white pixels may appear
+    /// when the texture is repeated. With such cards, repeat mode
+    /// can be used reliably only if the texture has power-of-two
+    /// dimensions (such as 256x128).
+    /// Repeating is disabled by default.
+    ///
+    /// # Arguments
+    /// * repeated  - true to repeat the texture, false to disable repeating
+    pub fn set_repeated(&mut self, repeated: bool) {
+        unsafe { ffi::sfTexture_setRepeated(self, repeated) }
+    }
+    /// Enable or disable conversion from sRGB.
+    ///
+    /// When providing texture data from an image file or memory, it can either be stored in a
+    /// linear color space or an sRGB color space. Most digital images account for gamma correction
+    /// already, so they would need to be "uncorrected" back to linear color space before being
+    /// processed by the hardware. The hardware can automatically convert it from the sRGB
+    /// color space to a linear color space when it gets sampled. When the rendered image gets
+    /// output to the final framebuffer, it gets converted back to sRGB.
+    ///
+    /// After enabling or disabling sRGB conversion, make sure to reload the texture data in
+    /// order for the setting to take effect.
+    ///
+    /// This option is only useful in conjunction with an sRGB capable framebuffer.
+    /// This can be requested during window creation.
+    pub fn set_srgb(&mut self, srgb: bool) {
+        unsafe { ffi::sfTexture_setSrgb(self, srgb) }
+    }
+}
+
+/// OpenGL interop
+impl Texture {
+    /// Get the underlying OpenGL handle of the texture.
+    ///
+    /// You shouldn't need to use this function, unless you have very specific stuff to implement
+    /// that SFML doesn't support, or implement a temporary workaround until a bug is fixed.
+    #[must_use]
+    pub fn native_handle(&self) -> u32 {
+        unsafe { ffi::sfTexture_getNativeHandle(self) }
+    }
+
+    /// Bind a texture for rendering
+    ///
+    /// This function is not part of the graphics API, it mustn't be
+    /// used when drawing SFML entities. It must be used only if you
+    /// mix `Texture` with OpenGL code.
+    pub fn bind(&self) {
+        unsafe { ffi::sfTexture_bind(self) }
+    }
+}
+
+/// Copying and updating
+impl Texture {
+    /// Copy a texture's pixels to an image
+    ///
+    /// Return an image containing the texture's pixels
+    pub fn copy_to_image(&self) -> SfResult<Image> {
+        let img = unsafe { ffi::sfTexture_copyToImage(self) };
+        if img.is_null() {
+            Err(SfError::CallFailed)
+        } else {
+            Ok(unsafe { Image::from_raw(img) })
+        }
     }
 
     /// Update a part of the texture from the contents of a window.
@@ -259,62 +327,14 @@ impl Texture {
         unsafe { ffi::sfTexture_updateFromPixels(self, pixels.as_ptr(), width, height, x, y) }
     }
 
-    /// Enable or disable the smooth filter on a texture
-    ///
-    /// # Arguments
-    /// * smooth - true to enable smoothing, false to disable it
-    pub fn set_smooth(&mut self, smooth: bool) {
-        unsafe { ffi::sfTexture_setSmooth(self, smooth) }
+    /// Swap the contents of this texture with those of another.
+    pub fn swap(&mut self, other: &mut Texture) {
+        unsafe { ffi::sfTexture_swap(self, other) }
     }
+}
 
-    /// Enable or disable repeating for a texture
-    ///
-    /// epeating is involved when using texture coordinates
-    /// outside the texture rectangle [0, 0, width, height].
-    /// In this case, if repeat mode is enabled, the whole texture
-    /// will be repeated as many times as needed to reach the
-    /// coordinate (for example, if the X texture coordinate is
-    /// 3 * width, the texture will be repeated 3 times).
-    /// If repeat mode is disabled, the "extra space" will instead
-    /// be filled with border pixels.
-    /// Warning: on very old graphics cards, white pixels may appear
-    /// when the texture is repeated. With such cards, repeat mode
-    /// can be used reliably only if the texture has power-of-two
-    /// dimensions (such as 256x128).
-    /// Repeating is disabled by default.
-    ///
-    /// # Arguments
-    /// * repeated  - true to repeat the texture, false to disable repeating
-    pub fn set_repeated(&mut self, repeated: bool) {
-        unsafe { ffi::sfTexture_setRepeated(self, repeated) }
-    }
-
-    /// Get the maximum texture size allowed
-    ///
-    /// Return the maximum size allowed for textures, in pixels
-    #[must_use]
-    pub fn maximum_size() -> u32 {
-        unsafe { ffi::sfTexture_getMaximumSize() }
-    }
-
-    /// Enable or disable conversion from sRGB.
-    ///
-    /// When providing texture data from an image file or memory, it can either be stored in a
-    /// linear color space or an sRGB color space. Most digital images account for gamma correction
-    /// already, so they would need to be "uncorrected" back to linear color space before being
-    /// processed by the hardware. The hardware can automatically convert it from the sRGB
-    /// color space to a linear color space when it gets sampled. When the rendered image gets
-    /// output to the final framebuffer, it gets converted back to sRGB.
-    ///
-    /// After enabling or disabling sRGB conversion, make sure to reload the texture data in
-    /// order for the setting to take effect.
-    ///
-    /// This option is only useful in conjunction with an sRGB capable framebuffer.
-    /// This can be requested during window creation.
-    pub fn set_srgb(&mut self, srgb: bool) {
-        unsafe { ffi::sfTexture_setSrgb(self, srgb) }
-    }
-
+/// Mipmapping
+impl Texture {
     /// Generate a mipmap using the current texture data.
     ///
     /// Mipmaps are pre-computed chains of optimized textures. Each level of texture in a mipmap
@@ -332,10 +352,6 @@ impl Texture {
     /// regenerate it.
     pub fn generate_mipmap(&mut self) -> SfResult<()> {
         unsafe { ffi::sfTexture_generateMipmap(self) }.into_sf_result()
-    }
-    /// Swap the contents of this texture with those of another.
-    pub fn swap(&mut self, other: &mut Texture) {
-        unsafe { ffi::sfTexture_swap(self, other) }
     }
 }
 
