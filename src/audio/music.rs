@@ -3,6 +3,7 @@ use {
         audio::{SoundSource, SoundStatus, TimeSpan},
         ffi::{self},
         system::{InputStream, Time, Vector3f},
+        LoadResult, ResourceLoadError,
     },
     std::{
         ffi::CString,
@@ -68,18 +69,15 @@ impl<'stream> Music<'stream> {
     /// # Arguments
     /// * filename - Path of the music file to open
     ///
-    /// Returns `None` if loading fails.
-    ///
     /// [`play`]: Music::play
-    #[must_use]
-    pub fn from_file(filename: &str) -> Option<Self> {
+    pub fn from_file(filename: &str) -> LoadResult<Self> {
         let c_str = CString::new(filename).unwrap();
         let music_tmp: *mut ffi::audio::sfMusic =
             unsafe { ffi::audio::sfMusic_createFromFile(c_str.as_ptr()) };
         if music_tmp.is_null() {
-            None
+            Err(ResourceLoadError)
         } else {
-            Some(Self {
+            Ok(Self {
                 music: music_tmp,
                 _stream: PhantomData,
             })

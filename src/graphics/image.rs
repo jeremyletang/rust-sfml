@@ -3,6 +3,7 @@ use {
         ffi::graphics as ffi,
         graphics::{Color, IntRect},
         system::{InputStream, Vector2u},
+        LoadResult, ResourceLoadError,
     },
     std::{
         error::Error,
@@ -101,16 +102,13 @@ impl Image {
     ///
     /// # Arguments
     /// * filename - Path of the image file to load
-    ///
-    /// Returns `None` if loading fails
-    #[must_use]
-    pub fn from_file(filename: &str) -> Option<Self> {
+    pub fn from_file(filename: &str) -> LoadResult<Self> {
         let c_filename = CString::new(filename).unwrap();
         let image = unsafe { ffi::sfImage_createFromFile(c_filename.as_ptr()) };
         if image.is_null() {
-            None
+            Err(ResourceLoadError)
         } else {
-            Some(Self { image })
+            Ok(Self { image })
         }
     }
 

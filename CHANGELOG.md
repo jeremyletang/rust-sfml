@@ -2,7 +2,9 @@
 
 ## Unreleased
 
-- Nothing yet
+### Changed
+
+- Use `LoadResult` instead of `Option` for all `from_file` methods.
 
 ## 0.22.0
 

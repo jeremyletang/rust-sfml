@@ -4,6 +4,7 @@ use {
         graphics::{Glyph, Texture},
         sf_box::{Dispose, SfBox},
         system::InputStream,
+        LoadResult, ResourceLoadError,
     },
     std::{
         ffi::{CStr, CString},
@@ -221,17 +222,16 @@ impl Font {
     /// ```
     /// # use sfml::graphics::Font;
     /// let font = match Font::from_file("examples/resources/sansation.ttf") {
-    ///     Some(font) => font,
-    ///     None => {
-    ///         panic!("Failed to read font file!");
+    ///     Ok(font) => font,
+    ///     Err(e) => {
+    ///         panic!("Failed to read font file: {e}");
     ///     }
     /// };
     /// ```
-    #[must_use]
-    pub fn from_file(filename: &str) -> Option<SfBox<Self>> {
+    pub fn from_file(filename: &str) -> LoadResult<SfBox<Self>> {
         let c_str = CString::new(filename).unwrap();
         let fnt = unsafe { ffi::sfFont_createFromFile(c_str.as_ptr()) };
-        SfBox::new(fnt)
+        SfBox::new(fnt).ok_or(ResourceLoadError)
     }
 
     /// Load the font from a custom stream.

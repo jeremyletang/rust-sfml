@@ -2,6 +2,7 @@ use {
     crate::{
         graphics::{font::Info, Font, Glyph, Texture},
         sf_box::{Dispose, SfBox},
+        LoadResult,
     },
     std::{
         cell::RefCell,
@@ -216,15 +217,14 @@ impl RcFont {
     /// ```
     /// # use sfml::graphics::RcFont;
     /// let font = match RcFont::from_file("examples/resources/sansation.ttf") {
-    ///     Some(font) => font,
-    ///     None => {
-    ///         panic!("Failed to read font file!");
+    ///     Ok(font) => font,
+    ///     Err(e) => {
+    ///         panic!("Failed to read font file: {e}");
     ///     }
     /// };
     /// ```
-    #[must_use]
-    pub fn from_file(filename: &str) -> Option<Self> {
-        Some(RcFont {
+    pub fn from_file(filename: &str) -> LoadResult<Self> {
+        Ok(RcFont {
             font: Rc::new(RefCell::new(Font::from_file(filename)?)),
         })
     }
