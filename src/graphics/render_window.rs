@@ -612,7 +612,7 @@ impl RenderWindow {
     /// #                              &Default::default());
     /// # use sfml::window::{ Cursor, CursorType };
     /// let cursor = Cursor::from_system(CursorType::Arrow);
-    /// if let Some(arrow_cursor) = &cursor {
+    /// if let Ok(arrow_cursor) = &cursor {
     ///     unsafe { window.set_mouse_cursor(arrow_cursor); }
     /// }
     /// // You need to ensure the SFML window closes before the cursor's end of life.

@@ -114,9 +114,8 @@ impl Texture {
     /// Create a new texture
     ///
     /// Returns `None` on failure.
-    #[must_use]
-    pub fn new() -> Option<SfBox<Texture>> {
-        SfBox::new(unsafe { ffi::sfTexture_new() })
+    pub fn new() -> SfResult<SfBox<Texture>> {
+        SfBox::new(unsafe { ffi::sfTexture_new() }).into_sf_result()
     }
 
     /// Create the texture.

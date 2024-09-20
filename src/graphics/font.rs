@@ -248,10 +248,10 @@ impl Font {
     ///
     /// # See also
     /// [`Font::from_file`], [`Font::from_memory`]
-    pub unsafe fn from_stream<T: Read + Seek>(stream: &mut T) -> Option<SfBox<Self>> {
+    pub unsafe fn from_stream<T: Read + Seek>(stream: &mut T) -> SfResult<SfBox<Self>> {
         let mut input_stream = InputStream::new(stream);
         let fnt = unsafe { ffi::sfFont_createFromStream(&mut *input_stream.stream) };
-        SfBox::new(fnt)
+        SfBox::new(fnt).into_sf_result()
     }
 
     /// Load the font from a file in memory.
@@ -268,11 +268,10 @@ impl Font {
     ///
     /// See also
     /// [`Font::from_file`], [`Font::from_stream`]
-    #[must_use]
-    pub unsafe fn from_memory(memory: &[u8]) -> Option<SfBox<Self>> {
+    pub unsafe fn from_memory(memory: &[u8]) -> SfResult<SfBox<Self>> {
         let fnt =
             unsafe { ffi::sfFont_createFromMemory(memory.as_ptr() as *const _, memory.len()) };
-        SfBox::new(fnt)
+        SfBox::new(fnt).into_sf_result()
     }
 
     /// Get the texture containing the glyphs of a given size in a font

@@ -2,6 +2,7 @@ use crate::{
     ffi::window::{self as ffi},
     sf_box::{Dispose, SfBox},
     system::Vector2u,
+    IntoSfResult, SfResult,
 };
 
 decl_opaque! {
@@ -67,14 +68,13 @@ impl Cursor {
     /// > I noticed that on at least Linux X11, if the size of the image is not a power of 2,
     /// > the image is loaded in a wrong way that doesn't respect the dimensions. This is also
     /// > why I decided to leave this function unsafe.
-    #[must_use]
     pub unsafe fn from_pixels(
         pixels: &[u8],
         size: Vector2u,
         hotspot: Vector2u,
-    ) -> Option<SfBox<Self>> {
+    ) -> SfResult<SfBox<Self>> {
         let cursor = unsafe { ffi::sfCursor_createFromPixels(pixels.as_ptr(), size, hotspot) };
-        SfBox::new(cursor)
+        SfBox::new(cursor).into_sf_result()
     }
 
     /// Create a native system cursor.
@@ -89,11 +89,10 @@ impl Cursor {
     /// # Returns
     /// true if and only if the corresponding cursor is natively supported by
     /// the operating system; false otherwise.
-    #[must_use]
-    pub fn from_system(type_: Type) -> Option<SfBox<Self>> {
+    pub fn from_system(type_: Type) -> SfResult<SfBox<Self>> {
         unsafe {
             let cursor = ffi::sfCursor_createFromSystem(type_);
-            SfBox::new(cursor)
+            SfBox::new(cursor).into_sf_result()
         }
     }
 }

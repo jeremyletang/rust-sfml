@@ -243,8 +243,8 @@ impl RcFont {
     ///
     /// # See also
     /// [`RcFont::from_file`], [`RcFont::from_memory`]
-    pub unsafe fn from_stream<T: Read + Seek>(stream: &mut T) -> Option<Self> {
-        Some(RcFont {
+    pub unsafe fn from_stream<T: Read + Seek>(stream: &mut T) -> SfResult<Self> {
+        Ok(RcFont {
             font: Rc::new(RefCell::new(unsafe { Font::from_stream(stream) }?)),
         })
     }
@@ -263,9 +263,8 @@ impl RcFont {
     ///
     /// See also
     /// [`RcFont::from_file`], [`RcFont::from_stream`]
-    #[must_use]
-    pub unsafe fn from_memory(memory: &[u8]) -> Option<Self> {
-        Some(RcFont {
+    pub unsafe fn from_memory(memory: &[u8]) -> SfResult<Self> {
+        Ok(RcFont {
             font: Rc::new(RefCell::new(unsafe { Font::from_memory(memory) }?)),
         })
     }

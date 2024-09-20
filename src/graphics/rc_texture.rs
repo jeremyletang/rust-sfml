@@ -110,9 +110,8 @@ impl RcTexture {
     /// Create a new texture
     ///
     /// Returns `None` on failure.
-    #[must_use]
-    pub fn new() -> Option<RcTexture> {
-        Some(RcTexture {
+    pub fn new() -> SfResult<RcTexture> {
+        Ok(RcTexture {
             texture: Rc::new(RefCell::new(Texture::new()?)),
         })
     }

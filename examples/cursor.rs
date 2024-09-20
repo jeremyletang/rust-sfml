@@ -128,7 +128,7 @@ fn main() {
                 } => {
                     for (i, b) in buttons.iter().enumerate() {
                         if mouse_over(b, x, y) {
-                            if let Some(new_cursor) = Cursor::from_system(cursor_types[i]) {
+                            if let Ok(new_cursor) = Cursor::from_system(cursor_types[i]) {
                                 cursor = new_cursor;
                                 unsafe {
                                     rw.set_mouse_cursor(&cursor);
@@ -151,7 +151,7 @@ fn main() {
                             }
                         }
                         unsafe {
-                            if let Some(new_cursor) = Cursor::from_pixels(
+                            if let Ok(new_cursor) = Cursor::from_pixels(
                                 &pixels,
                                 Vector2::new(DRAW_GRID_WH as u32, DRAW_GRID_WH as u32),
                                 hotspot,
