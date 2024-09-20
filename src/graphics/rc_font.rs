@@ -238,9 +238,6 @@ impl RcFont {
     /// SFML cannot preload all the font data in this function, so the stream has to remain
     /// accessible until the `RcFont` object loads a new font or is destroyed.
     ///
-    /// # Returns
-    /// True if loading succeeded, false if it failed
-    ///
     /// # See also
     /// [`RcFont::from_file`], [`RcFont::from_memory`]
     pub unsafe fn from_stream<T: Read + Seek>(stream: &mut T) -> SfResult<Self> {
@@ -257,9 +254,6 @@ impl RcFont {
     /// # Safety
     /// SFML cannot preload all the font data in this function, so the buffer pointed by `memory`
     /// has to remain valid until the `RcFont` object loads a new font or is destroyed.
-    ///
-    /// # Returns
-    /// True if loading succeeded, false if it failed
     ///
     /// See also
     /// [`RcFont::from_file`], [`RcFont::from_stream`]

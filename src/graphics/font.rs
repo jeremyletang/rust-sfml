@@ -243,9 +243,6 @@ impl Font {
     /// SFML cannot preload all the font data in this function, so the stream has to remain
     /// accessible until the `Font` object loads a new font or is destroyed.
     ///
-    /// # Returns
-    /// True if loading succeeded, false if it failed
-    ///
     /// # See also
     /// [`Font::from_file`], [`Font::from_memory`]
     pub unsafe fn from_stream<T: Read + Seek>(stream: &mut T) -> SfResult<SfBox<Self>> {
@@ -262,9 +259,6 @@ impl Font {
     /// # Safety
     /// SFML cannot preload all the font data in this function, so the buffer pointed by `memory`
     /// has to remain valid until the `Font` object loads a new font or is destroyed.
-    ///
-    /// # Returns
-    /// True if loading succeeded, false if it failed
     ///
     /// See also
     /// [`Font::from_file`], [`Font::from_stream`]
