@@ -79,7 +79,7 @@ fn main() {
     let mut rs = RenderStates::default();
     let mut buf = Vec::new();
     let mut frames_rendered = 0;
-    let mut sec_clock = Clock::start();
+    let mut sec_clock = Clock::start().unwrap();
     let mut fps = 0;
 
     while window.is_open() {

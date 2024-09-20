@@ -18,9 +18,11 @@ unsafe extern "C" fn read<T: Read + Seek>(
     if size == 0 {
         return 0;
     } else if size > 0 {
+        #[expect(clippy::unwrap_used)]
         let mut chunk = stream.take(size.try_into().unwrap());
         let mut buf = vec![];
         let result = chunk.read_to_end(&mut buf);
+        #[expect(clippy::unwrap_used)]
         if let Ok(bytes_read) = result {
             unsafe { ptr::copy_nonoverlapping(buf.as_ptr(), data as *mut u8, bytes_read) };
             return bytes_read.try_into().unwrap();
@@ -29,6 +31,7 @@ unsafe extern "C" fn read<T: Read + Seek>(
     -1
 }
 
+#[expect(clippy::unwrap_used)]
 unsafe extern "C" fn get_size<T: Read + Seek>(user_data: *mut c_void) -> c_longlong {
     let stream: &mut T = unsafe { &mut *(user_data as *mut T) };
     let pos = stream.stream_position().unwrap();
@@ -39,6 +42,7 @@ unsafe extern "C" fn get_size<T: Read + Seek>(user_data: *mut c_void) -> c_longl
 
 unsafe extern "C" fn tell<T: Read + Seek>(user_data: *mut c_void) -> c_longlong {
     let stream: &mut T = unsafe { &mut *(user_data as *mut T) };
+    #[expect(clippy::unwrap_used)]
     stream.stream_position().unwrap().try_into().unwrap()
 }
 
@@ -47,6 +51,7 @@ unsafe extern "C" fn seek<T: Read + Seek>(
     user_data: *mut c_void,
 ) -> c_longlong {
     let stream: &mut T = unsafe { &mut *(user_data as *mut T) };
+    #[expect(clippy::unwrap_used)]
     match stream.seek(SeekFrom::Start(position.try_into().unwrap())) {
         Ok(n) => n.try_into().unwrap(),
         Err(_) => -1,

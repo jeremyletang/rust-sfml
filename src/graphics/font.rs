@@ -4,7 +4,7 @@ use {
         graphics::{Glyph, Texture},
         sf_box::{Dispose, SfBox},
         system::InputStream,
-        SfError, SfResult,
+        IntoSfResult, SfError, SfResult,
     },
     std::{
         ffi::{CStr, CString},
@@ -229,7 +229,7 @@ impl Font {
     /// };
     /// ```
     pub fn from_file(filename: &str) -> SfResult<SfBox<Self>> {
-        let c_str = CString::new(filename).unwrap();
+        let c_str = CString::new(filename).into_sf_result()?;
         let fnt = unsafe { ffi::sfFont_createFromFile(c_str.as_ptr()) };
         SfBox::new(fnt).ok_or(SfError::CallFailed)
     }

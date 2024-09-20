@@ -49,7 +49,8 @@
     clippy::cast_possible_truncation,
     clippy::mut_mut,
     clippy::cast_possible_wrap,
-    clippy::cast_sign_loss
+    clippy::cast_sign_loss,
+    clippy::unwrap_used
 )]
 
 extern crate link_cplusplus;
@@ -66,7 +67,11 @@ pub mod system;
 #[cfg(feature = "window")]
 pub mod window;
 pub use sf_box::{SfBox, SfResource};
-use std::{error::Error, fmt::Display};
+use std::{
+    error::Error,
+    ffi::{CString, NulError},
+    fmt::Display,
+};
 
 /// An SFML operation has failed
 #[derive(Clone, Copy, Debug)]
@@ -91,16 +96,28 @@ impl Error for SfError {}
 /// Result of a fallible SFML operation
 pub type SfResult<T> = Result<T, SfError>;
 
-trait IntoSfResult {
-    fn into_sf_result(self) -> SfResult<()>;
+trait IntoSfResult<T> {
+    fn into_sf_result(self) -> SfResult<T>;
 }
 
-impl IntoSfResult for bool {
+impl IntoSfResult<()> for bool {
     fn into_sf_result(self) -> SfResult<()> {
         if self {
             Ok(())
         } else {
             Err(SfError::CallFailed)
         }
+    }
+}
+
+impl IntoSfResult<CString> for Result<CString, NulError> {
+    fn into_sf_result(self) -> SfResult<CString> {
+        self.map_err(|_| SfError::NulInStr)
+    }
+}
+
+impl<T: SfResource> IntoSfResult<SfBox<T>> for Option<SfBox<T>> {
+    fn into_sf_result(self) -> SfResult<SfBox<T>> {
+        self.ok_or(SfError::CallFailed)
     }
 }

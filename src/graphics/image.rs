@@ -3,7 +3,7 @@ use {
         ffi::graphics as ffi,
         graphics::{Color, IntRect},
         system::{InputStream, Vector2u},
-        SfError, SfResult,
+        IntoSfResult, SfError, SfResult,
     },
     std::{
         error::Error,
@@ -103,7 +103,7 @@ impl Image {
     /// # Arguments
     /// * filename - Path of the image file to load
     pub fn from_file(filename: &str) -> SfResult<Self> {
-        let c_filename = CString::new(filename).unwrap();
+        let c_filename = CString::new(filename).into_sf_result()?;
         let image = unsafe { ffi::sfImage_createFromFile(c_filename.as_ptr()) };
         if image.is_null() {
             Err(SfError::CallFailed)
@@ -147,10 +147,9 @@ impl Image {
     /// * filename - Path of the file to save
     ///
     /// Return true if saving was successful
-    #[must_use]
-    pub fn save_to_file(&self, filename: &str) -> bool {
-        let c_str = CString::new(filename).unwrap();
-        unsafe { ffi::sfImage_saveToFile(self.image, c_str.as_ptr()) }
+    pub fn save_to_file(&self, filename: &str) -> SfResult<()> {
+        let c_str = CString::new(filename).into_sf_result()?;
+        unsafe { ffi::sfImage_saveToFile(self.image, c_str.as_ptr()) }.into_sf_result()
     }
 
     /// Return the size of an image

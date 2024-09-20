@@ -10,6 +10,7 @@ static WINDOW_THREAD: OnceLock<ThreadId> = OnceLock::new();
 // panics if WINDOW_THREAD is already assigned to another thread.
 pub(crate) fn set_window_thread() {
     let current_id = current().id();
+    #[expect(clippy::unwrap_used)]
     match WINDOW_THREAD.get() {
         None => WINDOW_THREAD.set(current_id).unwrap(),
         Some(id) => {

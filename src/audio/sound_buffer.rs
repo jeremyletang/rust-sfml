@@ -3,7 +3,7 @@ use {
         ffi,
         sf_box::Dispose,
         system::{InputStream, Time},
-        SfBox, SfError, SfResult,
+        IntoSfResult, SfBox, SfError, SfResult,
     },
     std::{
         ffi::CString,
@@ -77,12 +77,9 @@ impl SoundBuffer {
     ///
     /// # Arguments
     /// * filename - Path of the sound file to write
-    ///
-    /// Return true if saving succeeded, false if it faileds
-    #[must_use]
-    pub fn save_to_file(&self, filename: &str) -> bool {
-        let c_str = CString::new(filename).unwrap();
-        unsafe { ffi::audio::sfSoundBuffer_saveToFile(self, c_str.as_ptr()) }
+    pub fn save_to_file(&self, filename: &str) -> SfResult<()> {
+        let c_str = CString::new(filename).into_sf_result()?;
+        unsafe { ffi::audio::sfSoundBuffer_saveToFile(self, c_str.as_ptr()) }.into_sf_result()
     }
 
     /// Get the number of samples stored in a sound buffer
@@ -148,7 +145,7 @@ impl SoundBuffer {
     ///
     /// Returns `None` on failure.
     pub fn from_file(filename: &str) -> SfResult<SfBox<Self>> {
-        let c_str = CString::new(filename).unwrap();
+        let c_str = CString::new(filename).into_sf_result()?;
         let sound_buffer: *mut ffi::audio::sfSoundBuffer =
             unsafe { ffi::audio::sfSoundBuffer_createFromFile(c_str.as_ptr()) };
         SfBox::new(sound_buffer).ok_or(SfError::CallFailed)

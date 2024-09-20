@@ -78,8 +78,8 @@ fn main() {
     rw.set_vertical_sync_enabled(true);
     let mut cursor;
     let font = Font::from_file(example_res!("sansation.ttf")).unwrap();
-    let mut failed_index = usize::max_value();
-    let mut selected_index = usize::max_value();
+    let mut failed_index = usize::MAX;
+    let mut selected_index = usize::MAX;
     let set_button = Rect::new(348, 500, 100, 32);
     let hotspot_button = Rect::new(458, 500, 100, 32);
     let clear_button = Rect::new(568, 500, 100, 32);
@@ -189,7 +189,7 @@ fn main() {
         let mut clear_button_highlighted = false;
         // System cursor set button interactions
         let mp = rw.mouse_position();
-        let mut highlight_index = usize::max_value();
+        let mut highlight_index = usize::MAX;
         for (i, b) in buttons.iter().enumerate() {
             if mouse_over(b, mp.x, mp.y) {
                 highlight_index = i;

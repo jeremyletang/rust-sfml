@@ -87,7 +87,7 @@ impl VertexBuffer {
             sfVertexBuffer_update(
                 self.vertex_buffer.as_ptr(),
                 vertices.as_ptr() as *const _,
-                vertices.len().try_into().unwrap(),
+                vertices.len().try_into().expect("Vertices length too high"),
                 offset,
             )
         }

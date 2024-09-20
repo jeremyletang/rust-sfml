@@ -2,10 +2,14 @@
 
 ## Unreleased
 
+### Removed
+
+- Remove `Default` impl for clock because `Clock::start` can fail.
+
 ### Changed
 
 - Rework `LoadResult` to `SfResult` as a more generic error type.
-- Use `SfResult` instead of `Option` for all `from_file` methods.
+- Use `SfResult` in a lot of APIs that previously returned `Option`, `bool`, or panicked on error.
 
 ## 0.22.0
 

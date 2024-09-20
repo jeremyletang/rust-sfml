@@ -102,7 +102,7 @@ fn main() {
         }
 
         window.set_active(false);
-        let clock = Clock::start();
+        let clock = Clock::start().unwrap();
         let mut mipmap_enabled = true;
 
         while window.is_open() {

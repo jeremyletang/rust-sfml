@@ -22,6 +22,7 @@ impl SfStr {
     ///
     /// Panics if the string is not valid UTF-32.
     #[must_use]
+    #[expect(clippy::unwrap_used)]
     pub fn to_rust_string(&self) -> String {
         self.0.to_string().unwrap()
     }
@@ -63,6 +64,7 @@ impl<'a> SfStrConv for &'a str {
     where
         F: FnOnce(&SfStr) -> R,
     {
+        #[expect(clippy::unwrap_used)]
         let uc_string = U32CString::from_str(self).unwrap();
         let uc_str_ptr: *const U32CStr = uc_string.as_ucstr();
         let sf_str: &SfStr = unsafe { &*(uc_str_ptr as *const SfStr) };

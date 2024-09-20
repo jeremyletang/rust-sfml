@@ -3,7 +3,7 @@ use {
         audio::{SoundSource, SoundStatus, TimeSpan},
         ffi::{self},
         system::{InputStream, Time, Vector3f},
-        SfError, SfResult,
+        IntoSfResult, SfError, SfResult,
     },
     std::{
         ffi::CString,
@@ -71,7 +71,7 @@ impl<'stream> Music<'stream> {
     ///
     /// [`play`]: Music::play
     pub fn from_file(filename: &str) -> SfResult<Self> {
-        let c_str = CString::new(filename).unwrap();
+        let c_str = CString::new(filename).into_sf_result()?;
         let music_tmp: *mut ffi::audio::sfMusic =
             unsafe { ffi::audio::sfMusic_createFromFile(c_str.as_ptr()) };
         if music_tmp.is_null() {

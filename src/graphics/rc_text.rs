@@ -98,6 +98,7 @@ impl RcText {
     pub fn set_font(&mut self, font: &RcFont) {
         self.set_rc_font(font);
         unsafe {
+            #[expect(clippy::unwrap_used)]
             ffi::sfText_setFont(
                 self.text.as_ptr(),
                 (*self.font.upgrade().unwrap().as_ptr())

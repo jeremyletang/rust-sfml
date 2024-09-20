@@ -61,7 +61,7 @@ fn main() {
         reader.read_line(&mut filename).unwrap();
 
         // Save the buffer
-        if !buffer.save_to_file(filename.trim()) {
+        if buffer.save_to_file(filename.trim()).is_err() {
             eprintln!("Error saving buffer to {}!", filename.trim());
         }
     } else {

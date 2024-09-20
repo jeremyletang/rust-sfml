@@ -89,6 +89,7 @@ impl RcSprite {
     ///   of the new texture?
     pub fn set_texture(&mut self, texture: &RcTexture, reset_rect: bool) {
         self.set_rc_texture(texture);
+        #[expect(clippy::unwrap_used)]
         let raw_texture = unsafe {
             (*self.texture.upgrade().unwrap().as_ptr())
                 .0

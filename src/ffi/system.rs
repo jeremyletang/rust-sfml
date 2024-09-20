@@ -15,7 +15,7 @@ decl_opaque! {
     /// # Usage example
     /// ```
     /// # use sfml::system::Clock;
-    /// let mut clock = Clock::start();
+    /// let mut clock = Clock::start().unwrap();
     /// // ...
     /// let time1 = clock.elapsed_time();
     /// // ...

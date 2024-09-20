@@ -4,7 +4,7 @@ use {
         ffi::graphics as ffi,
         graphics::{glsl, Texture},
         system::InputStream,
-        SfError, SfResult,
+        IntoSfResult, SfError, SfResult,
     },
     std::{
         ffi::CString,
@@ -352,30 +352,33 @@ impl<'texture> Shader<'texture> {
     }
 
     /// Specify value for `float` uniform.
-    pub fn set_uniform_float(&mut self, name: &str, value: f32) {
+    pub fn set_uniform_float(&mut self, name: &str, value: f32) -> SfResult<()> {
+        let cstring = CString::new(name).into_sf_result()?;
+        let name = cstring.as_ptr();
         unsafe {
-            let cstring = CString::new(name).unwrap();
-            let name = cstring.as_ptr();
             ffi::sfShader_setFloatUniform(self.shader.as_ptr(), name, value);
         }
+        Ok(())
     }
 
     /// Specify value for `vec2` uniform.
-    pub fn set_uniform_vec2(&mut self, name: &str, value: glsl::Vec2) {
+    pub fn set_uniform_vec2(&mut self, name: &str, value: glsl::Vec2) -> SfResult<()> {
+        let cstring = CString::new(name).into_sf_result()?;
+        let name = cstring.as_ptr();
         unsafe {
-            let cstring = CString::new(name).unwrap();
-            let name = cstring.as_ptr();
             ffi::sfShader_setVec2Uniform(self.shader.as_ptr(), name, value);
         }
+        Ok(())
     }
 
     /// Specify value for `vec3` uniform.
-    pub fn set_uniform_vec3(&mut self, name: &str, value: glsl::Vec3) {
+    pub fn set_uniform_vec3(&mut self, name: &str, value: glsl::Vec3) -> SfResult<()> {
+        let cstring = CString::new(name).into_sf_result()?;
+        let name = cstring.as_ptr();
         unsafe {
-            let cstring = CString::new(name).unwrap();
-            let name = cstring.as_ptr();
             ffi::sfShader_setVec3Uniform(self.shader.as_ptr(), name, value);
         }
+        Ok(())
     }
 
     /// Specify value for vec4 uniform.
@@ -389,42 +392,46 @@ impl<'texture> Shader<'texture> {
     /// passed to the shader. Therefore, they are converted from range `[0 .. 255]` to range
     /// `[0 .. 1]`. For example, a `Color{r: 255, g: 127, b: 0, a: 255}`
     /// will be transformed to a `Vec4{x: 1.0, y: 0.5, z: 0.0, w: 1.0}` in the shader.
-    pub fn set_uniform_vec4<V>(&mut self, name: &str, value: V)
+    pub fn set_uniform_vec4<V>(&mut self, name: &str, value: V) -> SfResult<()>
     where
         V: Into<glsl::Vec4>,
     {
+        let cstring = CString::new(name).into_sf_result()?;
+        let name = cstring.as_ptr();
         unsafe {
-            let cstring = CString::new(name).unwrap();
-            let name = cstring.as_ptr();
             ffi::sfShader_setVec4Uniform(self.shader.as_ptr(), name, value.into().raw());
         }
+        Ok(())
     }
 
     /// Specify value for `int` uniform.
-    pub fn set_uniform_int(&mut self, name: &str, value: i32) {
+    pub fn set_uniform_int(&mut self, name: &str, value: i32) -> SfResult<()> {
+        let cstring = CString::new(name).into_sf_result()?;
+        let name = cstring.as_ptr();
         unsafe {
-            let cstring = CString::new(name).unwrap();
-            let name = cstring.as_ptr();
             ffi::sfShader_setIntUniform(self.shader.as_ptr(), name, value);
         }
+        Ok(())
     }
 
     /// Specify value for `ivec2` uniform.
-    pub fn set_uniform_ivec2(&mut self, name: &str, value: glsl::IVec2) {
+    pub fn set_uniform_ivec2(&mut self, name: &str, value: glsl::IVec2) -> SfResult<()> {
+        let cstring = CString::new(name).into_sf_result()?;
+        let name = cstring.as_ptr();
         unsafe {
-            let cstring = CString::new(name).unwrap();
-            let name = cstring.as_ptr();
             ffi::sfShader_setIvec2Uniform(self.shader.as_ptr(), name, value);
         }
+        Ok(())
     }
 
     /// Specify value for `ivec3` uniform.
-    pub fn set_uniform_ivec3(&mut self, name: &str, value: glsl::IVec3) {
+    pub fn set_uniform_ivec3(&mut self, name: &str, value: glsl::IVec3) -> SfResult<()> {
+        let cstring = CString::new(name).into_sf_result()?;
+        let name = cstring.as_ptr();
         unsafe {
-            let cstring = CString::new(name).unwrap();
-            let name = cstring.as_ptr();
             ffi::sfShader_setIvec3Uniform(self.shader.as_ptr(), name, value.into());
         }
+        Ok(())
     }
 
     /// Specify value for `ivec4` uniform.
@@ -437,79 +444,86 @@ impl<'texture> Shader<'texture> {
     /// If color conversions are used, the `ivec4` uniform in GLSL will hold the same values
     /// as the original [`Color`] instance. For example, `Color{r: 255, g: 127, b: 0, a: 255}`
     /// is mapped to `IVec4{x: 255, y: 127, z: 0, w: 255}`.
-    pub fn set_uniform_ivec4<V>(&mut self, name: &str, value: V)
+    pub fn set_uniform_ivec4<V>(&mut self, name: &str, value: V) -> SfResult<()>
     where
         V: Into<glsl::IVec4>,
     {
+        let cstring = CString::new(name).into_sf_result()?;
+        let name = cstring.as_ptr();
         unsafe {
-            let cstring = CString::new(name).unwrap();
-            let name = cstring.as_ptr();
             ffi::sfShader_setIvec4Uniform(self.shader.as_ptr(), name, value.into().raw());
         }
+        Ok(())
     }
 
     /// Specify value for `bool` uniform.
-    pub fn set_uniform_bool(&mut self, name: &str, value: bool) {
+    pub fn set_uniform_bool(&mut self, name: &str, value: bool) -> SfResult<()> {
+        let cstring = CString::new(name).into_sf_result()?;
+        let name = cstring.as_ptr();
         unsafe {
-            let cstring = CString::new(name).unwrap();
-            let name = cstring.as_ptr();
             ffi::sfShader_setBoolUniform(self.shader.as_ptr(), name, value);
         }
+        Ok(())
     }
 
     /// Specify value for `bvec2` uniform.
-    pub fn set_uniform_bvec2(&mut self, name: &str, value: glsl::BVec2) {
+    pub fn set_uniform_bvec2(&mut self, name: &str, value: glsl::BVec2) -> SfResult<()> {
+        let cstring = CString::new(name).into_sf_result()?;
+        let name = cstring.as_ptr();
         unsafe {
-            let cstring = CString::new(name).unwrap();
-            let name = cstring.as_ptr();
             ffi::sfShader_setBvec2Uniform(self.shader.as_ptr(), name, value.into());
         }
+        Ok(())
     }
 
     /// Specify value for `bvec3` uniform.
-    pub fn set_uniform_bvec3(&mut self, name: &str, value: glsl::BVec3) {
+    pub fn set_uniform_bvec3(&mut self, name: &str, value: glsl::BVec3) -> SfResult<()> {
+        let cstring = CString::new(name).into_sf_result()?;
+        let name = cstring.as_ptr();
         unsafe {
-            let cstring = CString::new(name).unwrap();
-            let name = cstring.as_ptr();
             ffi::sfShader_setBvec3Uniform(self.shader.as_ptr(), name, value.into());
         }
+        Ok(())
     }
 
     /// Specify value for `bvec4` uniform.
-    pub fn set_uniform_bvec4(&mut self, name: &str, value: glsl::BVec4) {
+    pub fn set_uniform_bvec4(&mut self, name: &str, value: glsl::BVec4) -> SfResult<()> {
+        let cstring = CString::new(name).into_sf_result()?;
+        let name = cstring.as_ptr();
         unsafe {
-            let cstring = CString::new(name).unwrap();
-            let name = cstring.as_ptr();
             ffi::sfShader_setBvec4Uniform(self.shader.as_ptr(), name, value.into());
         }
+        Ok(())
     }
 
     /// Specify value for `mat3` matrix.
-    pub fn set_uniform_mat3<V>(&mut self, name: &str, value: V)
+    pub fn set_uniform_mat3<V>(&mut self, name: &str, value: V) -> SfResult<()>
     where
         V: Into<glsl::Mat3>,
     {
+        let cstring = CString::new(name).into_sf_result()?;
+        let name = cstring.as_ptr();
+        let value = value.into();
+        let ptr: *const _ = &value.0;
         unsafe {
-            let cstring = CString::new(name).unwrap();
-            let name = cstring.as_ptr();
-            let value = value.into();
-            let ptr: *const _ = &value.0;
             ffi::sfShader_setMat3Uniform(self.shader.as_ptr(), name, ptr as *const _);
         }
+        Ok(())
     }
 
     /// Specify value for `mat4` matrix.
-    pub fn set_uniform_mat4<V>(&mut self, name: &str, value: V)
+    pub fn set_uniform_mat4<V>(&mut self, name: &str, value: V) -> SfResult<()>
     where
         V: Into<glsl::Mat4>,
     {
+        let cstring = CString::new(name).into_sf_result()?;
+        let name = cstring.as_ptr();
+        let value = value.into();
+        let ptr: *const _ = &value.0;
         unsafe {
-            let cstring = CString::new(name).unwrap();
-            let name = cstring.as_ptr();
-            let value = value.into();
-            let ptr: *const _ = &value.0;
             ffi::sfShader_setMat4Uniform(self.shader.as_ptr(), name, ptr as *const _);
         }
+        Ok(())
     }
 
     /// Specify a texture as `sampler2D` uniform.
@@ -519,12 +533,13 @@ impl<'texture> Shader<'texture> {
     ///
     /// To use the texture of the object being drawn, which cannot be known in advance,
     /// use [`Shader::set_uniform_current_texture`].
-    pub fn set_uniform_texture(&mut self, name: &str, value: &'texture Texture) {
+    pub fn set_uniform_texture(&mut self, name: &str, value: &'texture Texture) -> SfResult<()> {
+        let cstring = CString::new(name).into_sf_result()?;
+        let name = cstring.as_ptr();
         unsafe {
-            let cstring = CString::new(name).unwrap();
-            let name = cstring.as_ptr();
             ffi::sfShader_setTextureUniform(self.shader.as_ptr(), name, value);
         }
+        Ok(())
     }
 
     /// Specify current texture as `sampler2D` uniform.
@@ -532,77 +547,84 @@ impl<'texture> Shader<'texture> {
     /// This function maps a shader texture variable to the texture of the object being drawn,
     /// which cannot be known in advance.
     /// The corresponding parameter in the shader must be a 2D texture (`sampler2D` GLSL type).
-    pub fn set_uniform_current_texture(&mut self, name: &str) {
+    pub fn set_uniform_current_texture(&mut self, name: &str) -> SfResult<()> {
+        let cstring = CString::new(name).into_sf_result()?;
+        let name = cstring.as_ptr();
         unsafe {
-            let cstring = CString::new(name).unwrap();
-            let name = cstring.as_ptr();
             ffi::sfShader_setCurrentTextureUniform(self.shader.as_ptr(), name);
         }
+        Ok(())
     }
 
     /// Specify values for `float[]` array uniform.
-    pub fn set_uniform_array_float(&mut self, name: &str, array: &[f32]) {
+    pub fn set_uniform_array_float(&mut self, name: &str, array: &[f32]) -> SfResult<()> {
+        let cstring = CString::new(name).into_sf_result()?;
+        let name = cstring.as_ptr();
+        let len = array.len();
         unsafe {
-            let cstring = CString::new(name).unwrap();
-            let name = cstring.as_ptr();
-            let len = array.len();
             ffi::sfShader_setFloatUniformArray(self.shader.as_ptr(), name, array.as_ptr(), len);
         }
+        Ok(())
     }
 
     /// Specify values for `vec2[]` array uniform.
-    pub fn set_uniform_array_vec2(&mut self, name: &str, array: &[glsl::Vec2]) {
+    pub fn set_uniform_array_vec2(&mut self, name: &str, array: &[glsl::Vec2]) -> SfResult<()> {
+        let cstring = CString::new(name).into_sf_result()?;
+        let name = cstring.as_ptr();
+        let len = array.len();
+        let ptr = array.as_ptr();
         unsafe {
-            let cstring = CString::new(name).unwrap();
-            let name = cstring.as_ptr();
-            let len = array.len();
-            let ptr = array.as_ptr();
             ffi::sfShader_setVec2UniformArray(self.shader.as_ptr(), name, ptr, len);
         }
+        Ok(())
     }
 
     /// Specify values for `vec3[]` array uniform.
-    pub fn set_uniform_array_vec3(&mut self, name: &str, array: &[glsl::Vec3]) {
+    pub fn set_uniform_array_vec3(&mut self, name: &str, array: &[glsl::Vec3]) -> SfResult<()> {
+        let cstring = CString::new(name).into_sf_result()?;
+        let name = cstring.as_ptr();
+        let len = array.len();
+        let ptr = array.as_ptr();
         unsafe {
-            let cstring = CString::new(name).unwrap();
-            let name = cstring.as_ptr();
-            let len = array.len();
-            let ptr = array.as_ptr();
             ffi::sfShader_setVec3UniformArray(self.shader.as_ptr(), name, ptr, len);
         }
+        Ok(())
     }
 
     /// Specify values for `vec4[]` array uniform.
-    pub fn set_uniform_array_vec4(&mut self, name: &str, array: &[glsl::Vec4]) {
+    pub fn set_uniform_array_vec4(&mut self, name: &str, array: &[glsl::Vec4]) -> SfResult<()> {
+        let cstring = CString::new(name).into_sf_result()?;
+        let name = cstring.as_ptr();
+        let len = array.len();
+        let ptr = array.as_ptr() as *const ffi::sfGlslVec4;
         unsafe {
-            let cstring = CString::new(name).unwrap();
-            let name = cstring.as_ptr();
-            let len = array.len();
-            let ptr = array.as_ptr() as *const ffi::sfGlslVec4;
             ffi::sfShader_setVec4UniformArray(self.shader.as_ptr(), name, ptr, len);
         }
+        Ok(())
     }
 
     /// Specify values for `mat3[]` array uniform.
-    pub fn set_uniform_array_mat3(&mut self, name: &str, array: &[glsl::Mat3]) {
+    pub fn set_uniform_array_mat3(&mut self, name: &str, array: &[glsl::Mat3]) -> SfResult<()> {
+        let cstring = CString::new(name).into_sf_result()?;
+        let name = cstring.as_ptr();
+        let len = array.len();
+        let ptr = array.as_ptr() as *const ffi::sfGlslMat3;
         unsafe {
-            let cstring = CString::new(name).unwrap();
-            let name = cstring.as_ptr();
-            let len = array.len();
-            let ptr = array.as_ptr() as *const ffi::sfGlslMat3;
             ffi::sfShader_setMat3UniformArray(self.shader.as_ptr(), name, ptr, len);
         }
+        Ok(())
     }
 
     /// Specify values for `mat4[]` array uniform.
-    pub fn set_uniform_array_mat4(&mut self, name: &str, array: &[glsl::Mat4]) {
+    pub fn set_uniform_array_mat4(&mut self, name: &str, array: &[glsl::Mat4]) -> SfResult<()> {
+        let cstring = CString::new(name).into_sf_result()?;
+        let name = cstring.as_ptr();
+        let len = array.len();
+        let ptr = array.as_ptr() as *const ffi::sfGlslMat4;
         unsafe {
-            let cstring = CString::new(name).unwrap();
-            let name = cstring.as_ptr();
-            let len = array.len();
-            let ptr = array.as_ptr() as *const ffi::sfGlslMat4;
             ffi::sfShader_setMat4UniformArray(self.shader.as_ptr(), name, ptr, len);
         }
+        Ok(())
     }
     /// Get the underlying OpenGL handle of the shader.
     ///
