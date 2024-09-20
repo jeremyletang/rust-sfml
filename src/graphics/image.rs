@@ -45,13 +45,13 @@ impl Image {
     /// * stream - Your struct, implementing Read and Seek
     ///
     /// Returns `None` if loading fails
-    pub fn from_stream<T: Read + Seek>(stream: &mut T) -> Option<Self> {
+    pub fn from_stream<T: Read + Seek>(stream: &mut T) -> SfResult<Self> {
         let mut input_stream = InputStream::new(stream);
         let image = unsafe { ffi::sfImage_createFromStream(&mut *input_stream.stream) };
         if image.is_null() {
-            None
+            Err(SfError::CallFailed)
         } else {
-            Some(Self { image })
+            Ok(Self { image })
         }
     }
 
@@ -63,15 +63,12 @@ impl Image {
     ///
     /// # Arguments
     /// * mem - Pointer to the file data in memory
-    ///
-    /// Returns `None` if loading fails.
-    #[must_use]
-    pub fn from_memory(mem: &[u8]) -> Option<Self> {
+    pub fn from_memory(mem: &[u8]) -> SfResult<Self> {
         let image = unsafe { ffi::sfImage_createFromMemory(mem.as_ptr() as *const _, mem.len()) };
         if image.is_null() {
-            None
+            Err(SfError::CallFailed)
         } else {
-            Some(Self { image })
+            Ok(Self { image })
         }
     }
 
