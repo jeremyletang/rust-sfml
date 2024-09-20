@@ -98,7 +98,7 @@ impl VideoMode {
     pub fn fullscreen_modes() -> &'static ffi::sfVideoModeVector {
         unsafe { &*ffi::sfVideoMode_getFullscreenModes() }
     }
-    
+
     pub(crate) fn raw(&self) -> ffi::sfVideoMode {
         ffi::sfVideoMode {
             width: self.width,
