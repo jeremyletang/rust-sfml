@@ -5,7 +5,7 @@ use {
         sf_box::{Dispose, SfBox},
         system::{InputStream, Vector2u},
         window::Window,
-        IntoSfResult, SfResult,
+        IntoSfResult, SfError, SfResult,
     },
     std::{
         ffi::CString,
@@ -79,13 +79,12 @@ impl Texture {
     /// Copy a texture's pixels to an image
     ///
     /// Return an image containing the texture's pixels
-    #[must_use]
-    pub fn copy_to_image(&self) -> Option<Image> {
+    pub fn copy_to_image(&self) -> SfResult<Image> {
         let img = unsafe { ffi::sfTexture_copyToImage(self) };
         if img.is_null() {
-            None
+            Err(SfError::CallFailed)
         } else {
-            Some(unsafe { Image::from_raw(img) })
+            Ok(unsafe { Image::from_raw(img) })
         }
     }
     /// Tell whether the texture source is converted from sRGB or not.
