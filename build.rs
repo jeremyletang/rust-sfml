@@ -43,9 +43,26 @@ fn static_link_linux(feat_window: bool, feat_audio: bool, feat_graphics: bool) {
 
 fn main() {
     println!("cargo:rerun-if-changed=CSFML");
-    println!("cargo:rerun-if-env-changed=SFML_INCLUDE_DIR");
-    println!("cargo:rerun-if-env-changed=SFML_LIBS_DIR");
-    println!("cargo:rerun-if-env-changed=SFML_STATIC");
+    let feat_audio = env::var("CARGO_FEATURE_AUDIO").is_ok();
+    let feat_window = env::var("CARGO_FEATURE_WINDOW").is_ok();
+    let feat_graphics = env::var("CARGO_FEATURE_GRAPHICS").is_ok();
+    let mut cmake = cmake::Config::new("SFML");
+    cmake
+        .define("BUILD_SHARED_LIBS", "FALSE")
+        .define("CMAKE_BUILD_TYPE", "Release")
+        .define("SFML_BUILD_NETWORK", "FALSE")
+        .define("SFML_INSTALL_PKGCONFIG_FILES", "FALSE");
+    if !feat_audio {
+        cmake.define("SFML_BUILD_AUDIO", "FALSE");
+    }
+    if !feat_window {
+        cmake.define("SFML_BUILD_WINDOW", "FALSE");
+    }
+    if !feat_graphics {
+        cmake.define("SFML_BUILD_GRAPHICS", "FALSE");
+    }
+    let path = cmake.build();
+    dbg!(&path);
     let mut build = cc::Build::new();
     build
         .cpp(true)
@@ -54,19 +71,9 @@ fn main() {
         .define("CSFML_AUDIO_EXPORTS", None)
         .define("CSFML_WINDOW_EXPORTS", None)
         .define("CSFML_GRAPHICS_EXPORTS", None)
-        .include("CSFML/src/");
-    if let Ok(sfml_inc_dir) = env::var("SFML_INCLUDE_DIR") {
-        println!("cargo:warning=Custom SFML include dir: {sfml_inc_dir}");
-        build.include(sfml_inc_dir);
-    }
-    let static_linking = env::var("SFML_STATIC").is_ok();
-    if static_linking {
-        println!("cargo:warning=Linking SFML statically");
-        build.define("SFML_STATIC", None).static_crt(true);
-    }
-    let feat_audio = env::var("CARGO_FEATURE_AUDIO").is_ok();
-    let feat_window = env::var("CARGO_FEATURE_WINDOW").is_ok();
-    let feat_graphics = env::var("CARGO_FEATURE_GRAPHICS").is_ok();
+        .include("CSFML/src/")
+        .include("SFML/include");
+    build.define("SFML_STATIC", None).static_crt(true);
     build.files(
         [
             "CSFML/src/System/Clock.cpp",
@@ -132,10 +139,10 @@ fn main() {
     }
     build.compile("rcsfml");
 
-    if let Ok(libs_dir) = env::var("SFML_LIBS_DIR") {
-        println!("cargo:warning=Adding custom SFML libs search path {libs_dir}");
-        println!("cargo:rustc-link-search=native={libs_dir}");
-    }
+    println!(
+        "cargo:rustc-link-search=native={}",
+        path.join("build/lib").display()
+    );
     println!("cargo:rustc-link-lib=static=rcsfml");
     // Need to probe Cargo's env as build.rs uses the default toolchain to
     // run the build meaning that #[cfg(..)]'s won't work
@@ -145,36 +152,21 @@ fn main() {
         .map(|os| os == "linux")
         .unwrap_or(false);
 
-    if static_linking {
-        println!("cargo:rustc-link-lib=static=sfml-system-s");
-        if is_unix && is_linux {
-            static_link_linux(feat_window, feat_audio, feat_graphics);
-        } else if is_windows {
-            static_link_windows(feat_window, feat_audio, feat_graphics);
-        }
-        if feat_audio {
-            println!("cargo:rustc-link-lib=static=sfml-audio-s");
-        }
-        if feat_window {
-            println!("LINKING WINDOW",);
-            println!("cargo:rustc-link-lib=static=sfml-window-s");
-        }
-        if feat_graphics {
-            println!("LINKING GRAPHICS",);
-            println!("cargo:rustc-link-lib=static=sfml-graphics-s");
-        }
-    } else {
-        println!("cargo:rustc-link-lib=dylib=sfml-system");
-        if feat_audio {
-            println!("cargo:rustc-link-lib=dylib=sfml-audio");
-        }
-        if feat_window {
-            println!("LINKING WINDOW",);
-            println!("cargo:rustc-link-lib=dylib=sfml-window");
-        }
-        if feat_graphics {
-            println!("LINKING GRAPHICS",);
-            println!("cargo:rustc-link-lib=dylib=sfml-graphics");
-        }
+    println!("cargo:rustc-link-lib=static=sfml-system-s");
+    if is_unix && is_linux {
+        static_link_linux(feat_window, feat_audio, feat_graphics);
+    } else if is_windows {
+        static_link_windows(feat_window, feat_audio, feat_graphics);
+    }
+    if feat_audio {
+        println!("cargo:rustc-link-lib=static=sfml-audio-s");
+    }
+    if feat_window {
+        println!("LINKING WINDOW",);
+        println!("cargo:rustc-link-lib=static=sfml-window-s");
+    }
+    if feat_graphics {
+        println!("LINKING GRAPHICS",);
+        println!("cargo:rustc-link-lib=static=sfml-graphics-s");
     }
 }
