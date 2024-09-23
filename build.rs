@@ -175,11 +175,9 @@ fn main() {
         println!("cargo:rustc-link-lib=static=sfml-audio-s");
     }
     if feat_window {
-        println!("LINKING WINDOW",);
         println!("cargo:rustc-link-lib=static=sfml-window-s");
     }
     if feat_graphics {
-        println!("LINKING GRAPHICS",);
         println!("cargo:rustc-link-lib=static=sfml-graphics-s");
     }
 }
