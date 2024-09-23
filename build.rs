@@ -1,6 +1,19 @@
 use std::env;
 
 fn static_link_windows(feat_window: bool, feat_audio: bool, feat_graphics: bool) {
+    let env = match std::env::var("CARGO_CFG_TARGET_ENV").as_deref() {
+        Ok("gnu") => "mingw",
+        Ok("msvc") => "msvc",
+        _ => {
+            panic!("Failed to determine windows environment (CARGO_CFG_TARGET_ENV))")
+        }
+    };
+    let arch = match std::env::var("CARGO_CFG_TARGET_ARCH").as_deref() {
+        Ok("x86") => "x86",
+        Ok("x86_64") => "x64",
+        _ => panic!("Failed to determine cpu arch (CARGO_CFG_TARGET_ARCH))"),
+    };
+    println!("cargo:rustc-link-search=native=SFML/extlibs/libs-{env}/{arch}");
     println!("cargo:rustc-link-lib=dylib=winmm");
     println!("cargo:rustc-link-lib=dylib=user32");
     if feat_window {
