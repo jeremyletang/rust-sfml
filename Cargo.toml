@@ -35,9 +35,6 @@ version = "1.0"
 version = "2.3.3"
 optional = true
 
-[dependencies.link-cplusplus]
-version = "1.0"
-
 [build-dependencies]
 cc = "1.0.79"
 cmake = "0.1.51"
