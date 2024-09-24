@@ -10,6 +10,18 @@ keywords = ["sfml", "multimedia", "game"]
 readme = "README.md"
 edition = "2021"
 rust-version = "1.81"
+# We have to exclude a few things, otherwise, the package would be too big for crates.io
+exclude = [
+    "SFML/doc",
+    "SFML/examples",
+    "SFML/tools",
+    "SFML/extlibs/bin",
+    "SFML/extlibs/libs-android",
+    "SFML/extlibs/libs-ios",
+    "SFML/extlibs/libs-mingw-ucrt",
+    "SFML/extlibs/libs-msvc-universal",
+    "SFML/extlibs/libs-osx"
+]
 
 [features]
 default = ["graphics", "audio"]
