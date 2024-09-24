@@ -64,7 +64,9 @@ fn main() {
         .define("BUILD_SHARED_LIBS", "FALSE")
         .define("CMAKE_BUILD_TYPE", "Release")
         .define("SFML_BUILD_NETWORK", "FALSE")
-        .define("SFML_INSTALL_PKGCONFIG_FILES", "FALSE");
+        .define("SFML_INSTALL_PKGCONFIG_FILES", "FALSE")
+        // Disable "install" step
+        .no_build_target(true);
     if !feat_audio {
         cmake.define("SFML_BUILD_AUDIO", "FALSE");
     }
