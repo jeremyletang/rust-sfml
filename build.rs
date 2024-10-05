@@ -152,12 +152,6 @@ fn main() {
         );
     }
     build.compile("rcsfml");
-
-    println!(
-        "cargo:rustc-link-search=native={}",
-        path.join("build/lib").display()
-    );
-    println!("cargo:rustc-link-lib=static=rcsfml");
     // Need to probe Cargo's env as build.rs uses the default toolchain to
     // run the build meaning that #[cfg(..)]'s won't work
     let is_windows = env::var("CARGO_CFG_WINDOWS").is_ok();
@@ -166,6 +160,21 @@ fn main() {
         .map(|os| os == "linux")
         .unwrap_or(false);
     let debug = cmake.get_profile() == "Debug";
+    // I have no idea why this is different on Windows and Linux
+    let link_search = if is_windows {
+        if debug {
+            "build/lib/Debug"
+        } else {
+            "build/lib/Release"
+        }
+    } else {
+        "build/lib"
+    };
+    println!(
+        "cargo:rustc-link-search=native={}",
+        path.join(link_search).display()
+    );
+    println!("cargo:rustc-link-lib=static=rcsfml");
     link_sfml_subsystem("system", debug);
     if is_unix && is_linux {
         static_link_linux(feat_window, feat_audio, feat_graphics);
