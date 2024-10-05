@@ -34,7 +34,7 @@ fn main() {
         Style::CLOSE,
         &ContextSettings::default(),
     );
-    let font = unsafe { Font::from_memory(include_bytes!("resources/sansation.ttf")) }.unwrap();
+    let font = Font::from_memory_static(include_bytes!("resources/sansation.ttf")).unwrap();
 
     while rw.is_open() {
         while let Some(ev) = rw.poll_event() {

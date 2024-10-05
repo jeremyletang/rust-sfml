@@ -255,12 +255,24 @@ impl RcFont {
     /// SFML cannot preload all the font data in this function, so the buffer pointed by `memory`
     /// has to remain valid until the `RcFont` object loads a new font or is destroyed.
     ///
-    /// See also
+    /// For a safe version, see [`RcFont::from_memory_static`].
+    ///
+    /// # See also
+    ///
     /// [`RcFont::from_file`], [`RcFont::from_stream`]
     pub unsafe fn from_memory(memory: &[u8]) -> SfResult<Self> {
         Ok(RcFont {
             font: Rc::new(RefCell::new(unsafe { Font::from_memory(memory) }?)),
         })
+    }
+
+    /// Load the font from a file in static memory.
+    ///
+    /// This function is safe because the font will stay in memory as long as required.
+    ///
+    /// See [`RcFont::from_memory`]
+    pub fn from_memory_static(memory: &'static [u8]) -> SfResult<Self> {
+        unsafe { Self::from_memory(memory) }
     }
 
     /// Get the texture containing the glyphs of a given size in a font

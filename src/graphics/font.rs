@@ -114,12 +114,23 @@ impl Font {
     /// SFML cannot preload all the font data in this function, so the buffer pointed by `memory`
     /// has to remain valid until the `Font` object loads a new font or is destroyed.
     ///
-    /// See also
+    /// For a safe version, see [`Font::from_memory_static`].
+    ///
+    /// # See also
+    ///
     /// [`Font::from_file`], [`Font::from_stream`]
     pub unsafe fn from_memory(memory: &[u8]) -> SfResult<SfBox<Self>> {
         let fnt =
             unsafe { ffi::sfFont_createFromMemory(memory.as_ptr() as *const _, memory.len()) };
         SfBox::new(fnt).into_sf_result()
+    }
+    /// Load the font from a file in static memory.
+    ///
+    /// This function is safe because the font will stay in memory as long as required.
+    ///
+    /// See [`Font::from_memory`]
+    pub fn from_memory_static(memory: &'static [u8]) -> SfResult<SfBox<Self>> {
+        unsafe { Self::from_memory(memory) }
     }
 }
 
