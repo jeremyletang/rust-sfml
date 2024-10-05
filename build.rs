@@ -62,7 +62,6 @@ fn main() {
     let mut cmake = cmake::Config::new("SFML");
     cmake
         .define("BUILD_SHARED_LIBS", "FALSE")
-        .define("CMAKE_BUILD_TYPE", "Release")
         .define("SFML_BUILD_NETWORK", "FALSE")
         .define("SFML_INSTALL_PKGCONFIG_FILES", "FALSE")
         // Disable "install" step
@@ -166,20 +165,25 @@ fn main() {
     let is_linux = env::var("CARGO_CFG_TARGET_OS")
         .map(|os| os == "linux")
         .unwrap_or(false);
-
-    println!("cargo:rustc-link-lib=static=sfml-system-s");
+    let debug = cmake.get_profile() == "Debug";
+    link_sfml_subsystem("system", debug);
     if is_unix && is_linux {
         static_link_linux(feat_window, feat_audio, feat_graphics);
     } else if is_windows {
         static_link_windows(feat_window, feat_audio, feat_graphics);
     }
     if feat_audio {
-        println!("cargo:rustc-link-lib=static=sfml-audio-s");
+        link_sfml_subsystem("audio", debug);
     }
     if feat_window {
-        println!("cargo:rustc-link-lib=static=sfml-window-s");
+        link_sfml_subsystem("window", debug);
     }
     if feat_graphics {
-        println!("cargo:rustc-link-lib=static=sfml-graphics-s");
+        link_sfml_subsystem("graphics", debug);
     }
+}
+
+fn link_sfml_subsystem(name: &str, debug: bool) {
+    let suffix = if debug { "-d" } else { "" };
+    println!("cargo:rustc-link-lib=static=sfml-{name}-s{suffix}");
 }
