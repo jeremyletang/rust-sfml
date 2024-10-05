@@ -75,7 +75,7 @@ impl<'s> CircleShape<'s> {
     }
 }
 
-impl<'s> Default for CircleShape<'s> {
+impl Default for CircleShape<'_> {
     fn default() -> Self {
         let circle = unsafe { ffi::sfCircleShape_create() };
         CircleShape {
@@ -85,7 +85,7 @@ impl<'s> Default for CircleShape<'s> {
     }
 }
 
-impl<'s> Drawable for CircleShape<'s> {
+impl Drawable for CircleShape<'_> {
     fn draw<'a: 'shader, 'texture, 'shader, 'shader_texture>(
         &'a self,
         target: &mut dyn RenderTarget,
@@ -95,7 +95,7 @@ impl<'s> Drawable for CircleShape<'s> {
     }
 }
 
-impl<'s> Transformable for CircleShape<'s> {
+impl Transformable for CircleShape<'_> {
     fn set_position<P: Into<Vector2f>>(&mut self, position: P) {
         unsafe { ffi::sfCircleShape_setPosition(self.circle_shape.as_ptr(), position.into()) }
     }
@@ -199,7 +199,7 @@ impl<'s> Clone for CircleShape<'s> {
     }
 }
 
-impl<'s> Drop for CircleShape<'s> {
+impl Drop for CircleShape<'_> {
     fn drop(&mut self) {
         unsafe { ffi::sfCircleShape_destroy(self.circle_shape.as_ptr()) }
     }

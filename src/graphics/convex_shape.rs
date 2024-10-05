@@ -100,7 +100,7 @@ impl<'s> ConvexShape<'s> {
     }
 }
 
-impl<'s> Drawable for ConvexShape<'s> {
+impl Drawable for ConvexShape<'_> {
     fn draw<'a: 'shader, 'texture, 'shader, 'shader_texture>(
         &'a self,
         target: &mut dyn RenderTarget,
@@ -110,7 +110,7 @@ impl<'s> Drawable for ConvexShape<'s> {
     }
 }
 
-impl<'s> Transformable for ConvexShape<'s> {
+impl Transformable for ConvexShape<'_> {
     fn set_position<P: Into<Vector2f>>(&mut self, position: P) {
         unsafe { ffi::sfConvexShape_setPosition(self.convex_shape, position.into()) }
     }
@@ -240,7 +240,7 @@ impl Iterator for ConvexShapePoints {
     }
 }
 
-impl<'s> Drop for ConvexShape<'s> {
+impl Drop for ConvexShape<'_> {
     fn drop(&mut self) {
         unsafe { ffi::sfConvexShape_destroy(self.convex_shape) }
     }

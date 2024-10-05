@@ -639,7 +639,7 @@ impl<'texture> Shader<'texture> {
     }
 }
 
-impl<'texture> Drop for Shader<'texture> {
+impl Drop for Shader<'_> {
     fn drop(&mut self) {
         unsafe { ffi::sfShader_destroy(self.shader.as_ptr()) }
     }

@@ -159,7 +159,7 @@ impl<'s> Sprite<'s> {
     }
 }
 
-impl<'s> Default for Sprite<'s> {
+impl Default for Sprite<'_> {
     fn default() -> Self {
         Self::new()
     }
@@ -176,7 +176,7 @@ impl<'s> Clone for Sprite<'s> {
     }
 }
 
-impl<'s> Drawable for Sprite<'s> {
+impl Drawable for Sprite<'_> {
     fn draw<'a: 'shader, 'texture, 'shader, 'shader_texture>(
         &'a self,
         target: &mut dyn RenderTarget,
@@ -186,7 +186,7 @@ impl<'s> Drawable for Sprite<'s> {
     }
 }
 
-impl<'s> Transformable for Sprite<'s> {
+impl Transformable for Sprite<'_> {
     fn set_position<P: Into<Vector2f>>(&mut self, position: P) {
         unsafe { ffi::sfSprite_setPosition(self.sprite.as_ptr(), position.into()) }
     }
@@ -228,7 +228,7 @@ impl<'s> Transformable for Sprite<'s> {
     }
 }
 
-impl<'s> Drop for Sprite<'s> {
+impl Drop for Sprite<'_> {
     fn drop(&mut self) {
         unsafe { ffi::sfSprite_destroy(self.sprite.as_ptr()) }
     }

@@ -217,7 +217,7 @@ impl<'a, R: SoundRecorder> SoundRecorderDriver<'a, R> {
     }
 }
 
-impl<'a, S> Drop for SoundRecorderDriver<'a, S> {
+impl<S> Drop for SoundRecorderDriver<'_, S> {
     fn drop(&mut self) {
         unsafe {
             // It seems there can be problems (e.g. "pure virtual method called") if the

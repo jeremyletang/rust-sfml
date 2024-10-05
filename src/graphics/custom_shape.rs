@@ -148,7 +148,7 @@ impl<'s> Shape<'s> for CustomShape<'s> {
     }
 }
 
-impl<'s> Drawable for CustomShape<'s> {
+impl Drawable for CustomShape<'_> {
     fn draw<'a: 'shader, 'texture, 'shader, 'shader_texture>(
         &'a self,
         target: &mut dyn RenderTarget,
@@ -158,7 +158,7 @@ impl<'s> Drawable for CustomShape<'s> {
     }
 }
 
-impl<'s> Transformable for CustomShape<'s> {
+impl Transformable for CustomShape<'_> {
     fn set_position<P: Into<Vector2f>>(&mut self, position: P) {
         unsafe { ffi::sfShape_setPosition(self.shape, position.into()) }
     }
@@ -200,7 +200,7 @@ impl<'s> Transformable for CustomShape<'s> {
     }
 }
 
-impl<'s> Drop for CustomShape<'s> {
+impl Drop for CustomShape<'_> {
     fn drop(&mut self) {
         unsafe {
             ffi::sfShape_destroy(self.shape);

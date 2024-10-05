@@ -133,7 +133,7 @@ impl<'stream> Music<'stream> {
 }
 
 /// Playback
-impl<'stream> Music<'stream> {
+impl Music<'_> {
     /// Start or resume playing a music
     ///
     /// This function starts the music if it was stopped, resumes
@@ -164,7 +164,7 @@ impl<'stream> Music<'stream> {
 }
 
 /// Query properties
-impl<'stream> Music<'stream> {
+impl Music<'_> {
     /// Tell whether or not a music is in loop mode
     ///
     /// Return true if the music is looping, false otherwise
@@ -233,7 +233,7 @@ impl<'stream> Music<'stream> {
 }
 
 /// Set properties
-impl<'stream> Music<'stream> {
+impl Music<'_> {
     /// Sets whether this music should loop or not.
     ///
     /// If `true`, the music will restart from beginning after
@@ -269,7 +269,7 @@ impl<'stream> Music<'stream> {
     }
 }
 
-impl<'stream> SoundSource for Music<'stream> {
+impl SoundSource for Music<'_> {
     fn set_pitch(&mut self, pitch: f32) {
         unsafe { ffi::audio::sfMusic_setPitch(self.music, pitch) }
     }
@@ -308,7 +308,7 @@ impl<'stream> SoundSource for Music<'stream> {
     }
 }
 
-impl<'stream> Drop for Music<'stream> {
+impl Drop for Music<'_> {
     fn drop(&mut self) {
         unsafe {
             ffi::audio::sfMusic_destroy(self.music);

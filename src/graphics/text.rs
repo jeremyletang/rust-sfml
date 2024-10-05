@@ -247,7 +247,7 @@ impl<'s> Text<'s> {
     }
 }
 
-impl<'s> Default for Text<'s> {
+impl Default for Text<'_> {
     fn default() -> Self {
         let text = unsafe { ffi::sfText_create() };
         Self {
@@ -268,7 +268,7 @@ impl<'s> Clone for Text<'s> {
     }
 }
 
-impl<'s> Drawable for Text<'s> {
+impl Drawable for Text<'_> {
     fn draw<'a: 'shader, 'texture, 'shader, 'shader_texture>(
         &'a self,
         target: &mut dyn RenderTarget,
@@ -278,7 +278,7 @@ impl<'s> Drawable for Text<'s> {
     }
 }
 
-impl<'s> Transformable for Text<'s> {
+impl Transformable for Text<'_> {
     fn set_position<P: Into<Vector2f>>(&mut self, position: P) {
         unsafe { ffi::sfText_setPosition(self.text.as_ptr(), position.into()) }
     }
@@ -320,7 +320,7 @@ impl<'s> Transformable for Text<'s> {
     }
 }
 
-impl<'s> Drop for Text<'s> {
+impl Drop for Text<'_> {
     fn drop(&mut self) {
         unsafe {
             ffi::sfText_destroy(self.text.as_ptr());

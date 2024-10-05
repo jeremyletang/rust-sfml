@@ -196,7 +196,7 @@ impl<'a, S: SoundStream> SoundStreamPlayer<'a, S> {
     }
 }
 
-impl<'a, S: SoundStream> SoundSource for SoundStreamPlayer<'a, S> {
+impl<S: SoundStream> SoundSource for SoundStreamPlayer<'_, S> {
     fn set_pitch(&mut self, pitch: f32) {
         unsafe { sfSoundStream_setPitch(self.sf_sound_stream.as_ptr(), pitch) }
     }
@@ -235,7 +235,7 @@ impl<'a, S: SoundStream> SoundSource for SoundStreamPlayer<'a, S> {
     }
 }
 
-impl<'a, S: SoundStream> Drop for SoundStreamPlayer<'a, S> {
+impl<S: SoundStream> Drop for SoundStreamPlayer<'_, S> {
     fn drop(&mut self) {
         unsafe {
             // It seems there can be problems (e.g. "pure virtual method called") if the

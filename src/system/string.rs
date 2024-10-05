@@ -50,7 +50,7 @@ pub trait SfStrConv {
         F: FnOnce(&SfStr) -> R;
 }
 
-impl<'a> SfStrConv for &'a SfStr {
+impl SfStrConv for &SfStr {
     fn with_as_sfstr<F, R>(self, fun: F) -> R
     where
         F: FnOnce(&SfStr) -> R,
@@ -59,7 +59,7 @@ impl<'a> SfStrConv for &'a SfStr {
     }
 }
 
-impl<'a> SfStrConv for &'a str {
+impl SfStrConv for &str {
     fn with_as_sfstr<F, R>(self, fun: F) -> R
     where
         F: FnOnce(&SfStr) -> R,
@@ -72,7 +72,7 @@ impl<'a> SfStrConv for &'a str {
     }
 }
 
-impl<'a> SfStrConv for &'a String {
+impl SfStrConv for &String {
     fn with_as_sfstr<F, R>(self, fun: F) -> R
     where
         F: FnOnce(&SfStr) -> R,

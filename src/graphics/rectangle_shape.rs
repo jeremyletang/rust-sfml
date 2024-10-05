@@ -74,13 +74,13 @@ impl<'s> RectangleShape<'s> {
     }
 }
 
-impl<'s> Default for RectangleShape<'s> {
+impl Default for RectangleShape<'_> {
     fn default() -> Self {
         Self::new()
     }
 }
 
-impl<'s> Drawable for RectangleShape<'s> {
+impl Drawable for RectangleShape<'_> {
     fn draw<'a: 'shader, 'texture, 'shader, 'shader_texture>(
         &'a self,
         target: &mut dyn RenderTarget,
@@ -90,7 +90,7 @@ impl<'s> Drawable for RectangleShape<'s> {
     }
 }
 
-impl<'s> Transformable for RectangleShape<'s> {
+impl Transformable for RectangleShape<'_> {
     fn set_position<P: Into<Vector2f>>(&mut self, position: P) {
         unsafe { ffi::sfRectangleShape_setPosition(self.rectangle_shape, position.into()) }
     }
@@ -195,7 +195,7 @@ impl<'s> Clone for RectangleShape<'s> {
     }
 }
 
-impl<'s> Drop for RectangleShape<'s> {
+impl Drop for RectangleShape<'_> {
     fn drop(&mut self) {
         unsafe { ffi::sfRectangleShape_destroy(self.rectangle_shape) }
     }

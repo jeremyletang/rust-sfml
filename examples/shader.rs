@@ -31,7 +31,7 @@ impl<'t> Pixelate<'t> {
     }
 }
 
-impl<'t> Drawable for Pixelate<'t> {
+impl Drawable for Pixelate<'_> {
     fn draw<'a: 'shader, 'texture, 'shader, 'shader_texture>(
         &'a self,
         target: &mut dyn RenderTarget,
@@ -43,7 +43,7 @@ impl<'t> Drawable for Pixelate<'t> {
     }
 }
 
-impl<'t> Effect for Pixelate<'t> {
+impl Effect for Pixelate<'_> {
     fn update(&mut self, _t: f32, x: f32, y: f32) {
         self.shader
             .set_uniform_float("pixel_threshold", (x + y) / 30.0)
@@ -97,7 +97,7 @@ impl<'fo> WaveBlur<'fo> {
     }
 }
 
-impl<'fo> Drawable for WaveBlur<'fo> {
+impl Drawable for WaveBlur<'_> {
     fn draw<'a: 'shader, 'texture, 'shader, 'shader_texture>(
         &'a self,
         target: &mut dyn RenderTarget,
@@ -109,7 +109,7 @@ impl<'fo> Drawable for WaveBlur<'fo> {
     }
 }
 
-impl<'fo> Effect for WaveBlur<'fo> {
+impl Effect for WaveBlur<'_> {
     fn update(&mut self, t: f32, x: f32, y: f32) {
         self.shader.set_uniform_float("wave_phase", t).unwrap();
         self.shader
@@ -226,7 +226,7 @@ impl<'t> Edge<'t> {
     }
 }
 
-impl<'t> Drawable for Edge<'t> {
+impl Drawable for Edge<'_> {
     fn draw<'a: 'shader, 'texture, 'shader, 'shader_texture>(
         &'a self,
         target: &mut dyn RenderTarget,
@@ -238,7 +238,7 @@ impl<'t> Drawable for Edge<'t> {
     }
 }
 
-impl<'t> Effect for Edge<'t> {
+impl Effect for Edge<'_> {
     fn update(&mut self, t: f32, x: f32, y: f32) {
         self.shader
             .set_uniform_float("edge_threshold", 1. - (x + y) / 2.)

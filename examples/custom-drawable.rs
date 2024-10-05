@@ -12,7 +12,7 @@ struct Bullet<'s> {
     torso: RectangleShape<'s>,
 }
 
-impl<'s> Bullet<'s> {
+impl Bullet<'_> {
     pub fn new() -> Self {
         let mut head = CircleShape::new(50.0, 50);
         head.set_position((100.0, 100.0));
@@ -26,7 +26,7 @@ impl<'s> Bullet<'s> {
 }
 
 // Implement the Drawable trait for our custom drawable.
-impl<'s> Drawable for Bullet<'s> {
+impl Drawable for Bullet<'_> {
     fn draw<'a: 'shader, 'texture, 'shader, 'shader_texture>(
         &'a self,
         render_target: &mut dyn RenderTarget,
