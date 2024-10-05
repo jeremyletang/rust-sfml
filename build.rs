@@ -1,19 +1,15 @@
 use std::env;
 
-fn static_link_windows(feat_window: bool, feat_audio: bool, feat_graphics: bool) {
-    let env = match env::var("CARGO_CFG_TARGET_ENV").as_deref() {
-        Ok("gnu") => "mingw",
-        Ok("msvc") => "msvc",
-        _ => {
-            panic!("Failed to determine windows environment (CARGO_CFG_TARGET_ENV))")
-        }
-    };
+fn static_link_windows(feat_window: bool, feat_audio: bool, feat_graphics: bool, env: WinEnv) {
     let arch = match env::var("CARGO_CFG_TARGET_ARCH").as_deref() {
         Ok("x86") => "x86",
         Ok("x86_64") => "x64",
         _ => panic!("Failed to determine cpu arch (CARGO_CFG_TARGET_ARCH))"),
     };
-    println!("cargo:rustc-link-search=native=SFML/extlibs/libs-{env}/{arch}");
+    println!(
+        "cargo:rustc-link-search=native=SFML/extlibs/libs-{seg}/{arch}",
+        seg = env.sfml_extlib_name()
+    );
     println!("cargo:rustc-link-lib=dylib=winmm");
     println!("cargo:rustc-link-lib=dylib=user32");
     if feat_window {
@@ -51,6 +47,27 @@ fn static_link_linux(feat_window: bool, feat_audio: bool, feat_graphics: bool) {
         println!("cargo:rustc-link-lib=dylib=vorbisfile");
         println!("cargo:rustc-link-lib=dylib=vorbis");
         println!("cargo:rustc-link-lib=dylib=ogg");
+    }
+}
+
+enum WinEnv {
+    Gnu,
+    Msvc,
+}
+
+impl WinEnv {
+    fn get() -> Option<Self> {
+        match env::var("CARGO_CFG_TARGET_ENV").as_deref() {
+            Ok("gnu") => Some(Self::Gnu),
+            Ok("msvc") => Some(Self::Msvc),
+            _ => None,
+        }
+    }
+    fn sfml_extlib_name(self) -> &'static str {
+        match self {
+            WinEnv::Gnu => "mingw",
+            WinEnv::Msvc => "msvc",
+        }
     }
 }
 
@@ -168,7 +185,8 @@ fn main() {
         .map(|os| os == "linux")
         .unwrap_or(false);
     // I have no idea why this is different on Windows and Linux
-    let link_search = if is_windows {
+    let win_env = WinEnv::get();
+    let link_search = if matches!(win_env, Some(WinEnv::Msvc)) {
         if cmake_debug {
             "build/lib/Debug"
         } else {
@@ -186,7 +204,14 @@ fn main() {
     if is_unix && is_linux {
         static_link_linux(feat_window, feat_audio, feat_graphics);
     } else if is_windows {
-        static_link_windows(feat_window, feat_audio, feat_graphics);
+        match win_env {
+            Some(env) => {
+                static_link_windows(feat_window, feat_audio, feat_graphics, env);
+            }
+            None => {
+                panic!("Failed to determine windows environment (MSVC/Mingw)");
+            }
+        }
     }
     if feat_audio {
         link_sfml_subsystem("audio", cmake_debug);
