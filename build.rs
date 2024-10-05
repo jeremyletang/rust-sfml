@@ -60,7 +60,15 @@ fn main() {
     let feat_window = env::var("CARGO_FEATURE_WINDOW").is_ok();
     let feat_graphics = env::var("CARGO_FEATURE_GRAPHICS").is_ok();
     let mut cmake = cmake::Config::new("SFML");
+    let cmake_debug = cmake.get_profile() == "Debug";
+    let msvc_rt = if cmake_debug {
+        "MultiThreadedDebug"
+    } else {
+        "MultiThreaded"
+    };
     cmake
+        .define("CMAKE_MSVC_RUNTIME_LIBRARY", msvc_rt)
+        .define("SFML_USE_STATIC_STD_LIBS", "TRUE")
         .define("BUILD_SHARED_LIBS", "FALSE")
         .define("SFML_BUILD_NETWORK", "FALSE")
         .define("SFML_INSTALL_PKGCONFIG_FILES", "FALSE")
@@ -159,10 +167,9 @@ fn main() {
     let is_linux = env::var("CARGO_CFG_TARGET_OS")
         .map(|os| os == "linux")
         .unwrap_or(false);
-    let debug = cmake.get_profile() == "Debug";
     // I have no idea why this is different on Windows and Linux
     let link_search = if is_windows {
-        if debug {
+        if cmake_debug {
             "build/lib/Debug"
         } else {
             "build/lib/Release"
@@ -175,20 +182,20 @@ fn main() {
         path.join(link_search).display()
     );
     println!("cargo:rustc-link-lib=static=rcsfml");
-    link_sfml_subsystem("system", debug);
+    link_sfml_subsystem("system", cmake_debug);
     if is_unix && is_linux {
         static_link_linux(feat_window, feat_audio, feat_graphics);
     } else if is_windows {
         static_link_windows(feat_window, feat_audio, feat_graphics);
     }
     if feat_audio {
-        link_sfml_subsystem("audio", debug);
+        link_sfml_subsystem("audio", cmake_debug);
     }
     if feat_window {
-        link_sfml_subsystem("window", debug);
+        link_sfml_subsystem("window", cmake_debug);
     }
     if feat_graphics {
-        link_sfml_subsystem("graphics", debug);
+        link_sfml_subsystem("graphics", cmake_debug);
     }
 }
 
