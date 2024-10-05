@@ -16,6 +16,8 @@
     clippy::unwrap_used
 )]
 
+extern crate link_cplusplus;
+
 #[macro_use]
 mod ffi;
 
