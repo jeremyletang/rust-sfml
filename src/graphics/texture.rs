@@ -82,7 +82,7 @@ impl Texture {
     /// * area - Area of the image to load
     pub fn load_from_memory(&mut self, mem: &[u8], area: IntRect) -> SfResult<()> {
         unsafe {
-            ffi::sfTexture_loadFromMemory(self, mem.as_ptr() as *const _, mem.len(), area)
+            ffi::sfTexture_loadFromMemory(self, mem.as_ptr().cast(), mem.len(), area)
                 .into_sf_result()
         }
     }

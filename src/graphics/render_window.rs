@@ -798,7 +798,7 @@ impl RenderTarget for RenderWindow {
         unsafe {
             ffi::sfRenderWindow_drawPrimitives(
                 self.render_window.as_ptr(),
-                vertices.as_ptr() as *const _,
+                vertices.as_ptr().cast(),
                 vertices.len(),
                 ty.0,
                 rs,

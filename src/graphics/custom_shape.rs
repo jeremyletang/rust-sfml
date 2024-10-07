@@ -58,7 +58,7 @@ impl<'s> CustomShape<'s> {
             ffi::sfShape_create(
                 Some(get_point_count_callback),
                 Some(get_point_callback),
-                raw_impl as *mut _,
+                raw_impl.cast(),
             )
         };
         assert!(!sp.is_null(), "Failed to create CustomShape");

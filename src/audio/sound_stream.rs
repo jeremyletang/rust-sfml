@@ -33,7 +33,7 @@ unsafe extern "C" fn get_data_callback<S: SoundStream>(
     chunk: *mut crate::ffi::audio::sfSoundStreamChunk,
     user_data: *mut c_void,
 ) -> bool {
-    let stream = user_data as *mut S;
+    let stream: *mut S = user_data.cast();
     unsafe {
         let (data, keep_playing) =
             match panic::catch_unwind(panic::AssertUnwindSafe(|| (*stream).get_data())) {
@@ -56,7 +56,7 @@ unsafe extern "C" fn seek_callback<S: SoundStream>(
     offset: crate::ffi::system::sfTime,
     user_data: *mut c_void,
 ) {
-    let stream = user_data as *mut S;
+    let stream: *mut S = user_data.cast();
     let result = unsafe {
         panic::catch_unwind(panic::AssertUnwindSafe(|| {
             (*stream).seek(Time::from_raw(offset))
@@ -70,15 +70,15 @@ unsafe extern "C" fn seek_callback<S: SoundStream>(
 impl<'a, S: SoundStream> SoundStreamPlayer<'a, S> {
     /// Create a new `SoundStreamPlayer` with the specified [`SoundStream`].
     pub fn new(sound_stream: &'a mut S) -> Self {
-        let ptr: *mut S = sound_stream;
         SoundStreamPlayer {
             sf_sound_stream: unsafe {
+                let ptr: *mut S = sound_stream;
                 NonNull::new(sfSoundStream_create(
                     Some(get_data_callback::<S>),
                     Some(seek_callback::<S>),
                     sound_stream.channel_count(),
                     sound_stream.sample_rate(),
-                    ptr as *mut _,
+                    ptr.cast(),
                 ))
                 .expect("Failed to create SoundStreamPlayer")
             },

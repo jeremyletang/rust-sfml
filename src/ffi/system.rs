@@ -117,7 +117,7 @@ impl sfStdString {
         unsafe {
             let len = sfStdString_getLength(self);
             let data = sfStdString_getData(self);
-            std::slice::from_raw_parts(data as *const u8, len)
+            std::slice::from_raw_parts(data.cast(), len)
         }
     }
 }

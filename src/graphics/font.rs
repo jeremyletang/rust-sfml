@@ -120,8 +120,7 @@ impl Font {
     ///
     /// [`Font::from_file`], [`Font::from_stream`]
     pub unsafe fn from_memory(memory: &[u8]) -> SfResult<SfBox<Self>> {
-        let fnt =
-            unsafe { ffi::sfFont_createFromMemory(memory.as_ptr() as *const _, memory.len()) };
+        let fnt = unsafe { ffi::sfFont_createFromMemory(memory.as_ptr().cast(), memory.len()) };
         SfBox::new(fnt).into_sf_result()
     }
     /// Load the font from a file in static memory.

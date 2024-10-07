@@ -120,7 +120,7 @@ impl<'stream> Music<'stream> {
     /// [`play`]: Music::play
     pub fn from_memory(mem: &[u8]) -> SfResult<Self> {
         let music_tmp =
-            unsafe { ffi::audio::sfMusic_createFromMemory(mem.as_ptr() as *const _, mem.len()) };
+            unsafe { ffi::audio::sfMusic_createFromMemory(mem.as_ptr().cast(), mem.len()) };
         if music_tmp.is_null() {
             Err(SfError::CallFailed)
         } else {

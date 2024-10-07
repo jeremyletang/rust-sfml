@@ -63,7 +63,7 @@ impl Image {
     /// # Arguments
     /// * mem - Pointer to the file data in memory
     pub fn from_memory(mem: &[u8]) -> SfResult<Self> {
-        let image = unsafe { ffi::sfImage_createFromMemory(mem.as_ptr() as *const _, mem.len()) };
+        let image = unsafe { ffi::sfImage_createFromMemory(mem.as_ptr().cast(), mem.len()) };
         if image.is_null() {
             Err(SfError::CallFailed)
         } else {

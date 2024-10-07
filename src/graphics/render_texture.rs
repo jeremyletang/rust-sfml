@@ -201,7 +201,7 @@ impl RenderTarget for RenderTexture {
         unsafe {
             ffi::sfRenderTexture_drawPrimitives(
                 self.render_texture,
-                vertices.as_ptr() as *const _,
+                vertices.as_ptr().cast(),
                 len,
                 ty.0,
                 rs,

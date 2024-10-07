@@ -87,7 +87,7 @@ impl VertexBuffer {
         unsafe {
             sfVertexBuffer_update(
                 self.vertex_buffer.as_ptr(),
-                vertices.as_ptr() as *const _,
+                vertices.as_ptr().cast(),
                 vertices.len().try_into().expect("Vertices length too high"),
                 offset,
             )

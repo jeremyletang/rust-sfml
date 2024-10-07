@@ -14,7 +14,8 @@
     clippy::cast_possible_wrap,
     clippy::cast_sign_loss,
     clippy::unwrap_used,
-    clippy::unreadable_literal
+    clippy::unreadable_literal,
+    clippy::ptr_as_ptr
 )]
 
 extern crate link_cplusplus;

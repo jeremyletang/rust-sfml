@@ -99,7 +99,7 @@ pub struct SoundRecorderDriver<'a, R: 'a> {
 }
 
 unsafe extern "C" fn on_start_callback<R: SoundRecorder>(user_data: *mut c_void) -> bool {
-    let recorder = user_data as *mut R;
+    let recorder: *mut R = user_data.cast();
     unsafe { (*recorder).on_start() }
 }
 
@@ -108,26 +108,26 @@ unsafe extern "C" fn on_process_callback<R: SoundRecorder>(
     len: usize,
     user_data: *mut c_void,
 ) -> bool {
-    let recorder = user_data as *mut R;
+    let recorder: *mut R = user_data.cast();
     unsafe { (*recorder).on_process_samples(std::slice::from_raw_parts(data, len)) }
 }
 
 unsafe extern "C" fn on_stop_callback<R: SoundRecorder>(user_data: *mut c_void) {
-    let recorder = user_data as *mut R;
+    let recorder: *mut R = user_data.cast();
     unsafe { (*recorder).on_stop() }
 }
 
 impl<'a, R: SoundRecorder> SoundRecorderDriver<'a, R> {
     /// Creates a new `SoundRecorderDriver` with the specified [`SoundRecorder`].
     pub fn new(sound_recorder: &'a mut R) -> Self {
-        let ptr: *mut R = sound_recorder;
         Self {
             ffi_handle: unsafe {
+                let ptr: *mut R = sound_recorder;
                 NonNull::new(sfSoundRecorder_create(
                     Some(on_start_callback::<R>),
                     Some(on_process_callback::<R>),
                     Some(on_stop_callback::<R>),
-                    ptr as *mut _,
+                    ptr.cast(),
                 ))
                 .expect("Failed to create SoundRecorderDriver")
             },

@@ -87,7 +87,7 @@ impl SoundBuffer {
     /// Load the sound buffer from a file in memory.
     pub fn from_memory(data: &[u8]) -> SfResult<SfBox<Self>> {
         let sound_buffer =
-            unsafe { ffi::audio::sfSoundBuffer_createFromMemory(data.as_ptr() as _, data.len()) };
+            unsafe { ffi::audio::sfSoundBuffer_createFromMemory(data.as_ptr().cast(), data.len()) };
         SfBox::new(sound_buffer).ok_or(SfError::CallFailed)
     }
     /// Load the sound buffer from a custom stream.
