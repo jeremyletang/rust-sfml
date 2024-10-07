@@ -13,7 +13,8 @@
     clippy::mut_mut,
     clippy::cast_possible_wrap,
     clippy::cast_sign_loss,
-    clippy::unwrap_used
+    clippy::unwrap_used,
+    clippy::unreadable_literal
 )]
 
 extern crate link_cplusplus;

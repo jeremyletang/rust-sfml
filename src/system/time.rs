@@ -66,7 +66,7 @@ impl Time {
     #[must_use]
     #[expect(clippy::cast_possible_truncation)]
     pub fn seconds(seconds: f32) -> Self {
-        Time((seconds * 1000000.) as i64)
+        Time((seconds * 1_000_000.) as i64)
     }
 
     /// Constructs a time value from a number of milliseconds.
@@ -84,7 +84,7 @@ impl Time {
     /// Returns the time value as a number of seconds.
     #[must_use]
     pub fn as_seconds(self) -> f32 {
-        self.0 as f32 / 1000000.
+        self.0 as f32 / 1_000_000.
     }
 
     /// Returns the time value as a number of milliseconds.

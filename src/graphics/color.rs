@@ -99,10 +99,10 @@ impl From<u32> for Color {
     /// The number should contain the components in RGBA order.
     fn from(src: u32) -> Self {
         Self {
-            r: ((src & 0xff000000) >> 24) as u8,
-            g: ((src & 0x00ff0000) >> 16) as u8,
-            b: ((src & 0x0000ff00) >> 8) as u8,
-            a: (src & 0x000000ff) as u8,
+            r: ((src & 0xff00_0000) >> 24) as u8,
+            g: ((src & 0x00ff_0000) >> 16) as u8,
+            b: ((src & 0x0000_ff00) >> 8) as u8,
+            a: (src & 0x0000_00ff) as u8,
         }
     }
 }
