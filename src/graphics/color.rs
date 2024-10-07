@@ -109,7 +109,10 @@ impl From<u32> for Color {
 
 impl From<Color> for u32 {
     fn from(src: Color) -> Self {
-        ((src.r as u32) << 24) | ((src.g as u32) << 16) | ((src.b as u32) << 8) | (src.a as u32)
+        (u32::from(src.r) << 24)
+            | (u32::from(src.g) << 16)
+            | (u32::from(src.b) << 8)
+            | u32::from(src.a)
     }
 }
 
@@ -161,10 +164,10 @@ impl Mul for Color {
     /// For each `X` in `rgba`, `result.X = a.X * b.X / 255`.
     #[expect(clippy::cast_possible_truncation)]
     fn mul(self, other: Color) -> Color {
-        let (r1, r2) = (self.r as u16, other.r as u16);
-        let (g1, g2) = (self.g as u16, other.g as u16);
-        let (b1, b2) = (self.b as u16, other.b as u16);
-        let (a1, a2) = (self.a as u16, other.a as u16);
+        let (r1, r2) = (u16::from(self.r), u16::from(other.r));
+        let (g1, g2) = (u16::from(self.g), u16::from(other.g));
+        let (b1, b2) = (u16::from(self.b), u16::from(other.b));
+        let (a1, a2) = (u16::from(self.a), u16::from(other.a));
         Self {
             r: (r1 * r2 / 255) as u8,
             g: (g1 * g2 / 255) as u8,
