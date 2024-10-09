@@ -264,7 +264,7 @@ impl Texture {
     /// No additional check is performed on the size of the window, passing an invalid combination
     /// of window size and offset will lead to an _undefined behavior_.
     pub unsafe fn update_from_window(&mut self, window: &Window, x: u32, y: u32) {
-        unsafe { ffi::sfTexture_updateFromWindow(self, window.raw(), x, y) }
+        unsafe { ffi::sfTexture_updateFromWindow(self, window, x, y) }
     }
 
     /// Update a part of the texture from the contents of a render window.

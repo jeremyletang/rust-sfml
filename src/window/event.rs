@@ -19,7 +19,7 @@ use crate::ffi::{window as ffi, window::EventType};
 /// # let mut window = Window::new((32, 32),
 /// #                              "test",
 /// #                              Style::CLOSE,
-/// #                              &Default::default());
+/// #                              &Default::default()).unwrap();
 /// # fn do_something_with_the_new_size(_x: u32, _y: u32) {}
 /// while let Some(event) = window.poll_event() {
 ///     match event {

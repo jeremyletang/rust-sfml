@@ -5,12 +5,12 @@ use serde::{Deserialize, Serialize};
 
 decl_opaque! {
     sfContext;
-    sfWindow;
     JoystickIdentification;
     sfVideoModeVector;
 }
 
 type sfJoystickIdentification = JoystickIdentification;
+pub(super) type sfWindow = crate::window::Window;
 pub type sfCursor = crate::window::Cursor;
 
 /// Enumeration of the native system cursor types.

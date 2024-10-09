@@ -80,7 +80,7 @@ impl Context {
 fn test_settings() {
     use {crate::window::Window, std::thread};
 
-    let window = Window::new((32, 32), "test", Default::default(), &Default::default());
+    let window = Window::new((32, 32), "test", Default::default(), &Default::default()).unwrap();
     let win_settings = *window.settings();
     thread::spawn(move || {
         let context = Context::new();
