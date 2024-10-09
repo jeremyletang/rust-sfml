@@ -1,11 +1,8 @@
-use {
-    sfml::{graphics::*, window::*},
-    std::error::Error,
-};
+use sfml::{graphics::*, window::*, SfResult};
 
 include!("../example_common.rs");
 
-fn main() -> Result<(), Box<dyn Error>> {
+fn main() -> SfResult<()> {
     let mut window = RenderWindow::new(
         (800, 600),
         "◢◤ Unicode text entry ◥◣",
@@ -14,7 +11,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     )?;
     window.set_vertical_sync_enabled(true);
 
-    let font = Font::from_file(example_res!("sansation.ttf")).unwrap();
+    let font = Font::from_file(example_res!("sansation.ttf"))?;
     let mut string = String::from("This text can be edited.\nTry it!");
 
     let mut text = Text::new(&string, &font, 24);

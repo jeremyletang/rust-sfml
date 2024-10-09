@@ -1,15 +1,12 @@
-use {
-    sfml::{
-        graphics::{
-            Color, PrimitiveType, RenderTarget, RenderWindow, Vertex, VertexBuffer,
-            VertexBufferUsage,
-        },
-        window::{Event, Style},
+use sfml::{
+    graphics::{
+        Color, PrimitiveType, RenderTarget, RenderWindow, Vertex, VertexBuffer, VertexBufferUsage,
     },
-    std::error::Error,
+    window::{Event, Style},
+    SfResult,
 };
 
-fn main() -> Result<(), Box<dyn Error>> {
+fn main() -> SfResult<()> {
     let mut window = RenderWindow::new(
         (800, 600),
         "SFML VertexBuffer accessors Example",
@@ -29,7 +26,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         Vertex::with_pos_color((60.0, 60.0).into(), Color::GREEN),
         Vertex::with_pos_color((50.0, 80.0).into(), Color::GREEN),
     ];
-    vertex_buffer.update(&vertices, 0).unwrap();
+    vertex_buffer.update(&vertices, 0)?;
 
     'mainloop: loop {
         while let Some(e) = window.poll_event() {

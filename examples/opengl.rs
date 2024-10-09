@@ -6,13 +6,14 @@ use {
         },
         system::Clock,
         window::{ContextSettings, Event, Key, Style},
+        SfResult,
     },
-    std::{error::Error, ffi::c_void, mem::size_of},
+    std::{ffi::c_void, mem::size_of},
 };
 
 include!("../example_common.rs");
 
-fn main() -> Result<(), Box<dyn Error>> {
+fn main() -> SfResult<()> {
     let mut exit = false;
     let mut srgb = false;
 
@@ -31,14 +32,12 @@ fn main() -> Result<(), Box<dyn Error>> {
         )?;
         window.set_vertical_sync_enabled(true);
 
-        let mut bg_tex = Texture::new().unwrap();
+        let mut bg_tex = Texture::new()?;
         bg_tex.set_srgb(srgb);
-        bg_tex
-            .load_from_file(example_res!("opengl-background.jpg"), IntRect::default())
-            .unwrap();
+        bg_tex.load_from_file(example_res!("opengl-background.jpg"), IntRect::default())?;
         let bg_sprite = Sprite::with_texture(&bg_tex);
 
-        let font = Font::from_file(example_res!("sansation.ttf")).unwrap();
+        let font = Font::from_file(example_res!("sansation.ttf"))?;
         let mut text = Text::new("SFML / OpenGL demo", &font, 32);
         let mut srgb_instr = Text::new("Press space to toggle sRGB conversion", &font, 32);
         let mut mipmap_instr = Text::new("Press return to toggle mipmapping", &font, 32);
@@ -49,9 +48,9 @@ fn main() -> Result<(), Box<dyn Error>> {
         srgb_instr.set_position((150., 500.));
         mipmap_instr.set_position((180., 550.));
 
-        let mut texture = Texture::from_file(example_res!("texture.jpg")).unwrap();
-        texture.generate_mipmap().unwrap();
-        window.set_active(true).unwrap();
+        let mut texture = Texture::from_file(example_res!("texture.jpg"))?;
+        texture.generate_mipmap()?;
+        window.set_active(true)?;
         unsafe {
             gl::glEnable(gl::GL_DEPTH_TEST);
             gl::glDepthMask(gl::GL_TRUE as _);
@@ -101,8 +100,8 @@ fn main() -> Result<(), Box<dyn Error>> {
             gl::glDisableClientState(gl::GL_COLOR_ARRAY);
         }
 
-        window.set_active(false).unwrap();
-        let clock = Clock::start().unwrap();
+        window.set_active(false)?;
+        let clock = Clock::start()?;
         let mut mipmap_enabled = true;
 
         while window.is_open() {
@@ -119,13 +118,13 @@ fn main() -> Result<(), Box<dyn Error>> {
                         code: Key::Enter, ..
                     } => {
                         if mipmap_enabled {
-                            texture = Texture::from_file(example_res!("texture.jpg")).unwrap();
+                            texture = Texture::from_file(example_res!("texture.jpg"))?;
                             mipmap_enabled = false;
-                            window.set_active(true).unwrap();
+                            window.set_active(true)?;
                             Texture::bind(&texture);
-                            window.set_active(false).unwrap();
+                            window.set_active(false)?;
                         } else {
-                            texture.generate_mipmap().unwrap();
+                            texture.generate_mipmap()?;
                             mipmap_enabled = true;
                         }
                     }
@@ -136,11 +135,11 @@ fn main() -> Result<(), Box<dyn Error>> {
                         window.close();
                     }
                     Event::Resized { width, height } => {
-                        window.set_active(true).unwrap();
+                        window.set_active(true)?;
                         unsafe {
                             gl::glViewport(0, 0, width as _, height as _);
                         }
-                        window.set_active(false).unwrap();
+                        window.set_active(false)?;
                     }
                     _ => {}
                 }

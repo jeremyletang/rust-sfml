@@ -1,21 +1,17 @@
-use {
-    sfml::{
-        graphics::{
-            Color, Drawable, Font, IntRect, PrimitiveType, RenderStates, RenderTarget,
-            RenderTexture, RenderWindow, Shader, ShaderType, Sprite, Text, Texture, Transformable,
-            Vertex,
-        },
-        system::{Clock, Vector2f},
-        window::{Event, Key, Style},
-        SfBox,
+use sfml::{
+    graphics::{
+        Color, Drawable, Font, IntRect, PrimitiveType, RenderStates, RenderTarget, RenderTexture,
+        RenderWindow, Shader, ShaderType, Sprite, Text, Texture, Transformable, Vertex,
     },
-    std::error::Error,
+    system::{Clock, Vector2f},
+    window::{Event, Key, Style},
+    SfBox, SfResult,
 };
 
 include!("../example_common.rs");
 
 trait Effect: Drawable {
-    fn update(&mut self, t: f32, x: f32, y: f32);
+    fn update(&mut self, t: f32, x: f32, y: f32) -> SfResult<()>;
     fn name(&self) -> &str;
     fn as_drawable(&self) -> &dyn Drawable;
 }
@@ -26,13 +22,13 @@ struct Pixelate<'t> {
 }
 
 impl<'t> Pixelate<'t> {
-    fn new(texture: &'t Texture) -> Self {
+    fn new(texture: &'t Texture) -> SfResult<Self> {
         let mut sprite = Sprite::new();
         sprite.set_texture(texture, false);
-        Self {
+        Ok(Self {
             sprite,
-            shader: Shader::from_file(example_res!("pixelate.frag"), ShaderType::Fragment).unwrap(),
-        }
+            shader: Shader::from_file(example_res!("pixelate.frag"), ShaderType::Fragment)?,
+        })
     }
 }
 
@@ -49,10 +45,9 @@ impl Drawable for Pixelate<'_> {
 }
 
 impl Effect for Pixelate<'_> {
-    fn update(&mut self, _t: f32, x: f32, y: f32) {
+    fn update(&mut self, _t: f32, x: f32, y: f32) -> SfResult<()> {
         self.shader
             .set_uniform_float("pixel_threshold", (x + y) / 30.0)
-            .unwrap();
     }
     fn name(&self) -> &str {
         "pixelate"
@@ -88,17 +83,16 @@ Duis erat eros, porta in accumsan in, blandit quis sem.
 In hac habitasse platea dictumst. Etiam fringilla est id odio dapibus sit amet semper dui laoreet.";
 
 impl<'fo> WaveBlur<'fo> {
-    fn new(font: &'fo Font) -> Self {
+    fn new(font: &'fo Font) -> SfResult<Self> {
         let mut text = Text::new(WAVEBLUR_TEXT, font, 22);
         text.set_position((30., 20.));
-        Self {
+        Ok(Self {
             text,
             shader: Shader::from_file_vert_frag(
                 example_res!("wave.vert"),
                 example_res!("blur.frag"),
-            )
-            .unwrap(),
-        }
+            )?,
+        })
     }
 }
 
@@ -115,14 +109,12 @@ impl Drawable for WaveBlur<'_> {
 }
 
 impl Effect for WaveBlur<'_> {
-    fn update(&mut self, t: f32, x: f32, y: f32) {
-        self.shader.set_uniform_float("wave_phase", t).unwrap();
+    fn update(&mut self, t: f32, x: f32, y: f32) -> SfResult<()> {
+        self.shader.set_uniform_float("wave_phase", t)?;
         self.shader
-            .set_uniform_vec2("wave_amplitude", Vector2f::new(x * 40., y * 40.))
-            .unwrap();
+            .set_uniform_vec2("wave_amplitude", Vector2f::new(x * 40., y * 40.))?;
         self.shader
             .set_uniform_float("blur_radius", (x + y) * 0.008)
-            .unwrap();
     }
     fn name(&self) -> &str {
         "wave + blur"
@@ -138,7 +130,7 @@ struct StormBlink {
 }
 
 impl StormBlink {
-    fn new() -> Self {
+    fn new() -> SfResult<Self> {
         use rand::{thread_rng, Rng};
         let mut rng = thread_rng();
 
@@ -154,9 +146,8 @@ impl StormBlink {
         }
 
         let shader =
-            Shader::from_file_vert_frag(example_res!("storm.vert"), example_res!("blink.frag"))
-                .unwrap();
-        Self { points, shader }
+            Shader::from_file_vert_frag(example_res!("storm.vert"), example_res!("blink.frag"))?;
+        Ok(Self { points, shader })
     }
 }
 
@@ -173,20 +164,16 @@ impl Drawable for StormBlink {
 }
 
 impl Effect for StormBlink {
-    fn update(&mut self, t: f32, x: f32, y: f32) {
+    fn update(&mut self, t: f32, x: f32, y: f32) -> SfResult<()> {
         let radius = 200. + t.cos() * 150.;
         self.shader
-            .set_uniform_vec2("storm_position", Vector2f::new(x * 800., y * 600.))
-            .unwrap();
+            .set_uniform_vec2("storm_position", Vector2f::new(x * 800., y * 600.))?;
         self.shader
-            .set_uniform_float("storm_inner_radius", radius / 3.)
-            .unwrap();
+            .set_uniform_float("storm_inner_radius", radius / 3.)?;
         self.shader
-            .set_uniform_float("storm_total_radius", radius)
-            .unwrap();
+            .set_uniform_float("storm_total_radius", radius)?;
         self.shader
             .set_uniform_float("blink_alpha", 0.5 + (t * 3.).cos() * 0.25)
-            .unwrap();
     }
     fn name(&self) -> &str {
         "storm + blink"
@@ -204,8 +191,8 @@ struct Edge<'t> {
 }
 
 impl<'t> Edge<'t> {
-    fn new(bg_texture: &'t Texture, entity_texture: &'t Texture) -> Self {
-        let mut surface = RenderTexture::new(800, 600).unwrap();
+    fn new(bg_texture: &'t Texture, entity_texture: &'t Texture) -> SfResult<Self> {
+        let mut surface = RenderTexture::new(800, 600)?;
         surface.set_smooth(true);
         let mut bg_sprite = Sprite::with_texture(bg_texture);
         bg_sprite.set_position((135., 100.));
@@ -218,16 +205,15 @@ impl<'t> Edge<'t> {
             ));
         }
 
-        let mut shader =
-            Shader::from_file(example_res!("edge.frag"), ShaderType::Fragment).unwrap();
-        shader.set_uniform_current_texture("texture").unwrap();
+        let mut shader = Shader::from_file(example_res!("edge.frag"), ShaderType::Fragment)?;
+        shader.set_uniform_current_texture("texture")?;
 
-        Self {
+        Ok(Self {
             surface,
             bg_sprite,
             entities,
             shader,
-        }
+        })
     }
 }
 
@@ -244,10 +230,9 @@ impl Drawable for Edge<'_> {
 }
 
 impl Effect for Edge<'_> {
-    fn update(&mut self, t: f32, x: f32, y: f32) {
+    fn update(&mut self, t: f32, x: f32, y: f32) -> SfResult<()> {
         self.shader
-            .set_uniform_float("edge_threshold", 1. - (x + y) / 2.)
-            .unwrap();
+            .set_uniform_float("edge_threshold", 1. - (x + y) / 2.)?;
         let entities_len = self.entities.len() as f32;
 
         for (i, en) in self.entities.iter_mut().enumerate() {
@@ -263,6 +248,7 @@ impl Effect for Edge<'_> {
             self.surface.draw(en);
         }
         self.surface.display();
+        Ok(())
     }
     fn as_drawable(&self) -> &dyn Drawable {
         self
@@ -272,7 +258,7 @@ impl Effect for Edge<'_> {
     }
 }
 
-fn main() -> Result<(), Box<dyn Error>> {
+fn main() -> SfResult<()> {
     let mut window = RenderWindow::new(
         (800, 600),
         "SFML Shader",
@@ -280,20 +266,20 @@ fn main() -> Result<(), Box<dyn Error>> {
         &Default::default(),
     )?;
     window.set_vertical_sync_enabled(true);
-    let font = Font::from_file(example_res!("sansation.ttf")).unwrap();
-    let bg = Texture::from_file(example_res!("background.jpg")).unwrap();
-    let mut bg_texture = Texture::from_file(example_res!("sfml.png")).unwrap();
+    let font = Font::from_file(example_res!("sansation.ttf"))?;
+    let bg = Texture::from_file(example_res!("background.jpg"))?;
+    let mut bg_texture = Texture::from_file(example_res!("sfml.png"))?;
     bg_texture.set_smooth(true);
-    let mut entity_texture = Texture::from_file(example_res!("devices.png")).unwrap();
+    let mut entity_texture = Texture::from_file(example_res!("devices.png"))?;
     entity_texture.set_smooth(true);
     let effects: [&mut dyn Effect; 4] = [
-        &mut Pixelate::new(&bg),
-        &mut WaveBlur::new(&font),
-        &mut StormBlink::new(),
-        &mut Edge::new(&bg_texture, &entity_texture),
+        &mut Pixelate::new(&bg)?,
+        &mut WaveBlur::new(&font)?,
+        &mut StormBlink::new()?,
+        &mut Edge::new(&bg_texture, &entity_texture)?,
     ];
     let mut current = 0;
-    let text_bg_texture = Texture::from_file(example_res!("text-background.png")).unwrap();
+    let text_bg_texture = Texture::from_file(example_res!("text-background.png"))?;
     let mut text_bg = Sprite::with_texture(&text_bg_texture);
     text_bg.set_position((0., 520.));
     text_bg.set_color(Color::rgba(255, 255, 255, 200));
@@ -305,7 +291,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     let mut instructions = Text::new(msg, &font, 20);
     instructions.set_position((280., 555.));
     instructions.set_fill_color(Color::rgb(80, 80, 80));
-    let clock = Clock::start().unwrap();
+    let clock = Clock::start()?;
 
     while window.is_open() {
         while let Some(event) = window.poll_event() {
@@ -339,7 +325,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         let x = window.mouse_position().x as f32 / window.size().x as f32;
         let y = window.mouse_position().y as f32 / window.size().y as f32;
 
-        effects[current].update(clock.elapsed_time().as_seconds(), x, y);
+        effects[current].update(clock.elapsed_time().as_seconds(), x, y)?;
 
         window.clear(Color::rgb(255, 128, 0));
         window.draw(effects[current].as_drawable());

@@ -5,9 +5,9 @@ use {
         audio::{Sound, SoundBuffer},
         graphics::{Color, RenderTarget, RenderWindow, Sprite, Texture},
         window::{Event, Key, Style},
-        SfBox, SfResource,
+        SfBox, SfResource, SfResult,
     },
-    std::{collections::HashMap, error::Error, hash::Hash},
+    std::{collections::HashMap, hash::Hash},
 };
 
 include!("../example_common.rs");
@@ -17,9 +17,10 @@ struct ResourceHolder<Resource: SfResource, Identifier: Hash + Eq> {
 }
 
 impl<Resource: SfResource + ResLoad, Identifier: Hash + Eq> ResourceHolder<Resource, Identifier> {
-    pub fn load(&mut self, identifier: Identifier, filename: &str) {
-        let res = Resource::load(filename);
+    pub fn load(&mut self, identifier: Identifier, filename: &str) -> SfResult<()> {
+        let res = Resource::load(filename)?;
         self.resource_map.insert(identifier, res);
+        Ok(())
     }
     pub fn get(&self, id: Identifier) -> &Resource {
         &self.resource_map[&id]
@@ -27,18 +28,18 @@ impl<Resource: SfResource + ResLoad, Identifier: Hash + Eq> ResourceHolder<Resou
 }
 
 trait ResLoad: SfResource {
-    fn load(filename: &str) -> SfBox<Self>;
+    fn load(filename: &str) -> SfResult<SfBox<Self>>;
 }
 
 impl ResLoad for Texture {
-    fn load(filename: &str) -> SfBox<Self> {
-        Self::from_file(filename).unwrap()
+    fn load(filename: &str) -> SfResult<SfBox<Self>> {
+        Self::from_file(filename)
     }
 }
 
 impl ResLoad for SoundBuffer {
-    fn load(filename: &str) -> SfBox<Self> {
-        Self::from_file(filename).unwrap()
+    fn load(filename: &str) -> SfResult<SfBox<Self>> {
+        Self::from_file(filename)
     }
 }
 
@@ -50,11 +51,11 @@ impl<Resource: SfResource, Identifier: Hash + Eq> Default for ResourceHolder<Res
     }
 }
 
-fn main() -> Result<(), Box<dyn Error>> {
+fn main() -> SfResult<()> {
     let mut tex_holder = ResourceHolder::<Texture, _>::default();
-    tex_holder.load("frank", example_res!("frank.jpeg"));
+    tex_holder.load("frank", example_res!("frank.jpeg"))?;
     let mut sb_holder = ResourceHolder::<SoundBuffer, _>::default();
-    sb_holder.load("canary", example_res!("canary.wav"));
+    sb_holder.load("canary", example_res!("canary.wav"))?;
     let mut rw = RenderWindow::new(
         (800, 600),
         "Resource holder test",

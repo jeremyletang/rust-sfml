@@ -1,10 +1,8 @@
-use {
-    sfml::{
-        graphics::{Color, CustomShape, CustomShapePoints, RenderTarget, RenderWindow, Shape},
-        system::Vector2f,
-        window::{Event, Key, Style},
-    },
-    std::error::Error,
+use sfml::{
+    graphics::{Color, CustomShape, CustomShapePoints, RenderTarget, RenderWindow, Shape},
+    system::Vector2f,
+    window::{Event, Key, Style},
+    SfResult,
 };
 
 #[derive(Clone, Copy)]
@@ -25,7 +23,7 @@ impl CustomShapePoints for TriangleShape {
     }
 }
 
-fn main() -> Result<(), Box<dyn Error>> {
+fn main() -> SfResult<()> {
     let mut window = RenderWindow::new(
         (800, 600),
         "Custom shape",

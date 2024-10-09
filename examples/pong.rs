@@ -8,13 +8,14 @@ use {
         },
         system::{Clock, Time, Vector2f},
         window::{ContextSettings, Event, Key, Scancode, Style},
+        SfResult,
     },
-    std::{env, error::Error, f32::consts::PI},
+    std::{env, f32::consts::PI},
 };
 
 include!("../example_common.rs");
 
-fn main() -> Result<(), Box<dyn Error>> {
+fn main() -> SfResult<()> {
     let mut rng = thread_rng();
 
     // Optional antialiasing
@@ -51,7 +52,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     window.set_vertical_sync_enabled(true);
 
     // Load the sounds used in the game
-    let ball_soundbuffer = SoundBuffer::from_file(example_res!("ball.wav")).unwrap();
+    let ball_soundbuffer = SoundBuffer::from_file(example_res!("ball.wav"))?;
     let mut ball_sound = Sound::with_buffer(&ball_soundbuffer);
 
     // Create the left paddle
@@ -79,7 +80,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     ball.set_origin((ball_radius / 2., ball_radius / 2.));
 
     // Load the text font
-    let font = Font::from_file(example_res!("sansation.ttf")).unwrap();
+    let font = Font::from_file(example_res!("sansation.ttf"))?;
 
     // Initialize the pause message
     let mut pause_message = Text::default();
@@ -90,14 +91,14 @@ fn main() -> Result<(), Box<dyn Error>> {
     pause_message.set_string("Welcome to SFML pong!\nPress space to start the game");
 
     // Define the paddles properties
-    let mut ai_timer = Clock::start().unwrap();
+    let mut ai_timer = Clock::start()?;
     let ai_time = Time::seconds(0.0333);
     let paddle_speed = 400.;
     let mut right_paddle_speed = 0.;
     let mut ball_speed = 400.;
     let mut ball_angle = 0.;
 
-    let mut clock = Clock::start().unwrap();
+    let mut clock = Clock::start()?;
     let mut is_playing = false;
     let mut up = false;
     let mut down = false;

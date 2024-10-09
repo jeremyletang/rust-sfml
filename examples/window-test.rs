@@ -1,9 +1,7 @@
-use {
-    sfml::{
-        graphics::{Color, Font, RenderTarget, RenderWindow, Text, Transformable},
-        window::{ContextSettings, Event, Key, Style},
-    },
-    std::error::Error,
+use sfml::{
+    graphics::{Color, Font, RenderTarget, RenderWindow, Text, Transformable},
+    window::{ContextSettings, Event, Key, Style},
+    SfResult,
 };
 
 struct WindowConfig {
@@ -12,7 +10,7 @@ struct WindowConfig {
     style: Style,
 }
 
-fn main() -> Result<(), Box<dyn Error>> {
+fn main() -> SfResult<()> {
     let configs = [
         WindowConfig {
             mode: (320, 240),
@@ -37,7 +35,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         Style::CLOSE,
         &ContextSettings::default(),
     )?;
-    let font = Font::from_memory_static(include_bytes!("resources/sansation.ttf")).unwrap();
+    let font = Font::from_memory_static(include_bytes!("resources/sansation.ttf"))?;
 
     while rw.is_open() {
         while let Some(ev) = rw.poll_event() {

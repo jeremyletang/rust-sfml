@@ -3,10 +3,13 @@ use {
         audio::{capture, Sound, SoundBufferRecorder, SoundStatus},
         system::{sleep, Time},
     },
-    std::io::{BufRead, Write},
+    std::{
+        error::Error,
+        io::{BufRead, Write},
+    },
 };
 
-fn main() {
+fn main() -> Result<(), Box<dyn Error>> {
     // Check that the device can capture audio
     assert!(
         capture::is_available(),
@@ -18,7 +21,7 @@ fn main() {
     let stdin = std::io::stdin();
     let mut reader = stdin.lock();
     let mut line = String::new();
-    reader.read_line(&mut line).unwrap();
+    reader.read_line(&mut line)?;
     let sample_rate: u32 = match line.trim_end().parse() {
         Ok(value) => value,
         Err(e) => panic!("Error, input is not valid: {e}"),
@@ -26,7 +29,7 @@ fn main() {
 
     // Wait for user input...
     println!("Press enter to start recording audio");
-    reader.read_line(&mut String::new()).unwrap();
+    reader.read_line(&mut String::new())?;
 
     // Here we'll use an integrated custom recorder,
     // which saves the captured data into a SoundBuffer
@@ -34,9 +37,9 @@ fn main() {
 
     // Audio capture is done in a separate thread,
     // so we can block the main thread while it is capturing
-    recorder.start(sample_rate).unwrap();
+    recorder.start(sample_rate)?;
     println!("Recording... press enter to stop");
-    reader.read_line(&mut String::new()).unwrap();
+    reader.read_line(&mut String::new())?;
     recorder.stop();
 
     // Get the buffer containing the captured data
@@ -52,13 +55,13 @@ fn main() {
     print!("What do you want to do with captured sound (p = play, s = save) ? ");
     let _ = std::io::stdout().flush();
     let mut resp = String::new();
-    reader.read_line(&mut resp).unwrap();
+    reader.read_line(&mut resp)?;
 
     if resp.trim() == "s" {
         // Choose a filename
         println!("Choose the file to create: ");
         let mut filename = String::new();
-        reader.read_line(&mut filename).unwrap();
+        reader.read_line(&mut filename)?;
 
         // Save the buffer
         if buffer.save_to_file(filename.trim()).is_err() {
@@ -87,4 +90,5 @@ fn main() {
     // Wait until the user presses 'enter' key
     println!("Press enter to exit...");
     let _ = reader.read_line(&mut String::new());
+    Ok(())
 }

@@ -1,17 +1,15 @@
-use {
-    sfml::{
-        graphics::{
-            CircleShape, Color, ConvexShape, Font, RenderTarget, RenderWindow, Sprite, Text,
-            Texture, Transformable,
-        },
-        window::{Event, Key, Style},
+use sfml::{
+    graphics::{
+        CircleShape, Color, ConvexShape, Font, RenderTarget, RenderWindow, Sprite, Text, Texture,
+        Transformable,
     },
-    std::error::Error,
+    window::{Event, Key, Style},
+    SfResult,
 };
 
 include!("../example_common.rs");
 
-fn main() -> Result<(), Box<dyn Error>> {
+fn main() -> SfResult<()> {
     let mut window = RenderWindow::new(
         (800, 600),
         "Borrowed resources",
@@ -21,10 +19,10 @@ fn main() -> Result<(), Box<dyn Error>> {
     window.set_vertical_sync_enabled(true);
 
     // Create a new texture. (Hey Frank!)
-    let frank = Texture::from_file(example_res!("frank.jpeg")).unwrap();
+    let frank = Texture::from_file(example_res!("frank.jpeg"))?;
 
     // Create a font.
-    let font = Font::from_file(example_res!("sansation.ttf")).unwrap();
+    let font = Font::from_file(example_res!("sansation.ttf"))?;
 
     // Create a circle with the Texture.
     let mut circle = CircleShape::with_texture(&frank);

@@ -1,13 +1,11 @@
-use {
-    sfml::{
-        graphics::{
-            Color, RcFont, RcSprite, RcText, RcTexture, RenderTarget, RenderWindow, Texture,
-            Transformable,
-        },
-        system::Vector2f,
-        window::{Event, Key, Style},
+use sfml::{
+    graphics::{
+        Color, RcFont, RcSprite, RcText, RcTexture, RenderTarget, RenderWindow, Texture,
+        Transformable,
     },
-    std::error::Error,
+    system::Vector2f,
+    window::{Event, Key, Style},
+    SfResult,
 };
 
 include!("../example_common.rs");
@@ -104,8 +102,10 @@ impl FloatingResource {
     }
 }
 
-fn test_getting_rc_texture_from_texture() -> RcTexture {
-    RcTexture::from_texture(Texture::from_file(example_res!("frank.jpeg")).unwrap())
+fn test_getting_rc_texture_from_texture() -> SfResult<RcTexture> {
+    Ok(RcTexture::from_texture(Texture::from_file(example_res!(
+        "frank.jpeg"
+    ))?))
 }
 
 fn get_set_smooth_rc_text(font: &RcFont) -> RcText {
@@ -115,17 +115,17 @@ fn get_set_smooth_rc_text(font: &RcFont) -> RcText {
     set_smooth_text
 }
 
-fn main() -> Result<(), Box<dyn Error>> {
+fn main() -> SfResult<()> {
     let mut window =
         RenderWindow::new((800, 600), "SFML window", Style::CLOSE, &Default::default())?;
     window.set_framerate_limit(60);
 
     // Create a new texture.
-    let texture = RcTexture::from_file(example_res!("logo.png")).unwrap();
-    let texture2 = test_getting_rc_texture_from_texture();
+    let texture = RcTexture::from_file(example_res!("logo.png"))?;
+    let texture2 = test_getting_rc_texture_from_texture()?;
 
     // Create a new font.
-    let mut font = RcFont::from_file(example_res!("sansation.ttf")).unwrap();
+    let mut font = RcFont::from_file(example_res!("sansation.ttf"))?;
 
     // Load many resources with no lifetime contingencies
     let mut floating_resources = Vec::from([

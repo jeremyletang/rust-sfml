@@ -11,8 +11,8 @@ use {
         },
         system::{Clock, Vector2, Vector2f, Vector2i},
         window::{mouse::Button, ContextSettings, Event, Key, Style, VideoMode},
+        SfResult,
     },
-    std::error::Error,
 };
 
 include!("../example_common.rs");
@@ -59,7 +59,7 @@ fn fconv(in_: Vector2i) -> Vector2f {
     }
 }
 
-fn main() -> Result<(), Box<dyn Error>> {
+fn main() -> SfResult<()> {
     let native_mode = VideoMode::desktop_mode();
     let mut window = RenderWindow::new(
         native_mode,
@@ -69,8 +69,8 @@ fn main() -> Result<(), Box<dyn Error>> {
     )?;
     window.set_position(Vector2::new(0, 0));
     window.set_vertical_sync_enabled(true);
-    let font = Font::from_file(example_res!("sansation.ttf")).unwrap();
-    let texture = Texture::from_file(example_res!("devices.png")).unwrap();
+    let font = Font::from_file(example_res!("sansation.ttf"))?;
+    let texture = Texture::from_file(example_res!("devices.png"))?;
     let mut text = Text::new("", &font, 18);
     text.set_outline_color(Color::BLACK);
     text.set_outline_thickness(1.0);
@@ -80,7 +80,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     let mut rs = RenderStates::default();
     let mut buf = Vec::new();
     let mut frames_rendered = 0;
-    let mut sec_clock = Clock::start().unwrap();
+    let mut sec_clock = Clock::start()?;
     let mut fps = 0;
 
     while window.is_open() {

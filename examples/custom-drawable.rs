@@ -1,12 +1,10 @@
-use {
-    sfml::{
-        graphics::{
-            CircleShape, Color, Drawable, RectangleShape, RenderStates, RenderTarget, RenderWindow,
-            Shape, Transformable,
-        },
-        window::{Event, Key, Style},
+use sfml::{
+    graphics::{
+        CircleShape, Color, Drawable, RectangleShape, RenderStates, RenderTarget, RenderWindow,
+        Shape, Transformable,
     },
-    std::error::Error,
+    window::{Event, Key, Style},
+    SfResult,
 };
 
 /// Our custom drawable type. It looks like a bullet.
@@ -40,7 +38,7 @@ impl Drawable for Bullet<'_> {
     }
 }
 
-fn main() -> Result<(), Box<dyn Error>> {
+fn main() -> SfResult<()> {
     let mut window = RenderWindow::new(
         (800, 600),
         "Custom drawable",

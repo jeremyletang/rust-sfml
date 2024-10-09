@@ -1,15 +1,13 @@
-use {
-    sfml::{
-        graphics::{
-            vertex_array_bounds, Color, PrimitiveType, RectangleShape, RenderStates, RenderTarget,
-            RenderWindow, Shape, Vertex,
-        },
-        window::{Event, Style},
+use sfml::{
+    graphics::{
+        vertex_array_bounds, Color, PrimitiveType, RectangleShape, RenderStates, RenderTarget,
+        RenderWindow, Shape, Vertex,
     },
-    std::error::Error,
+    window::{Event, Style},
+    SfResult,
 };
 
-fn main() -> Result<(), Box<dyn Error>> {
+fn main() -> SfResult<()> {
     let mut window = RenderWindow::new(
         (800, 600),
         "Vertex array example",

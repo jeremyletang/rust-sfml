@@ -1,13 +1,10 @@
-use {
-    sfml::{
-        graphics::{
-            Color, Font, Rect, RectangleShape, RenderTarget, RenderWindow, Shape, Text,
-            Transformable,
-        },
-        system::Vector2,
-        window::{mouse, ContextSettings, Cursor, CursorType, Event, Style},
+use sfml::{
+    graphics::{
+        Color, Font, Rect, RectangleShape, RenderTarget, RenderWindow, Shape, Text, Transformable,
     },
-    std::error::Error,
+    system::Vector2,
+    window::{mouse, ContextSettings, Cursor, CursorType, Event, Style},
+    SfResult,
 };
 
 include!("../example_common.rs");
@@ -72,7 +69,7 @@ fn bstyle(highlighted: bool, selected: bool, error: bool) -> ButtonStyle {
     }
 }
 
-fn main() -> Result<(), Box<dyn Error>> {
+fn main() -> SfResult<()> {
     let mut rw = RenderWindow::new(
         (800, 800),
         "SFML cursor example",
@@ -81,7 +78,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     )?;
     rw.set_vertical_sync_enabled(true);
     let mut cursor;
-    let font = Font::from_file(example_res!("sansation.ttf")).unwrap();
+    let font = Font::from_file(example_res!("sansation.ttf"))?;
     let mut failed_index = usize::MAX;
     let mut selected_index = usize::MAX;
     let set_button = Rect::new(348, 500, 100, 32);
@@ -275,7 +272,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                 } else {
                     shape.set_outline_color(Color::rgb(180, 180, 180));
                 }
-                if *gridindex(&mut pixel_grid, x as usize, y as usize).unwrap() {
+                if gridindex(&mut pixel_grid, x as usize, y as usize).is_some_and(|bool| *bool) {
                     shape.set_fill_color(Color::WHITE);
                 } else {
                     shape.set_fill_color(Color::TRANSPARENT);

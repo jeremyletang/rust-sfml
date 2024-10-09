@@ -3,15 +3,15 @@ use {
         audio::{Music, SoundStatus},
         system::{sleep, InputStream, Time},
     },
-    std::{fs::File, io::Write},
+    std::{error::Error, fs::File, io::Write},
 };
 
 include!("../example_common.rs");
 
-fn main() {
-    let mut file = File::open(example_res!("orchestral.ogg")).unwrap();
+fn main() -> Result<(), Box<dyn Error>> {
+    let mut file = File::open(example_res!("orchestral.ogg"))?;
     let mut stream = InputStream::new(&mut file);
-    let mut music = Music::from_stream(&mut stream).unwrap();
+    let mut music = Music::from_stream(&mut stream)?;
 
     // Display Music informations
     println!("orchestral.ogg :");
@@ -32,4 +32,5 @@ fn main() {
         let _ = std::io::stdout().flush();
     }
     println!();
+    Ok(())
 }

@@ -2,6 +2,7 @@ use {
     sfml::{
         audio::{Music, Sound, SoundBuffer, SoundStatus},
         system::{sleep, Time},
+        SfResult,
     },
     std::io::Write,
 };
@@ -9,8 +10,8 @@ use {
 include!("../example_common.rs");
 
 // Play a Sound
-fn play_sound() {
-    let buffer = SoundBuffer::from_file(example_res!("canary.wav")).unwrap();
+fn play_sound() -> SfResult<()> {
+    let buffer = SoundBuffer::from_file(example_res!("canary.wav"))?;
 
     // Display sound informations
     println!("canary.wav :");
@@ -29,11 +30,12 @@ fn play_sound() {
         sleep(Time::milliseconds(100));
     }
     println!();
+    Ok(())
 }
 
 // Play a Music
-fn play_music() {
-    let mut music = Music::from_file(example_res!("orchestral.ogg")).unwrap();
+fn play_music() -> SfResult<()> {
+    let mut music = Music::from_file(example_res!("orchestral.ogg"))?;
 
     // Display Music informations
     println!("orchestral.ogg :");
@@ -52,9 +54,11 @@ fn play_music() {
     }
 
     println!();
+    Ok(())
 }
 
-fn main() {
-    play_sound();
-    play_music();
+fn main() -> SfResult<()> {
+    play_sound()?;
+    play_music()?;
+    Ok(())
 }
