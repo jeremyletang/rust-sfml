@@ -24,7 +24,7 @@ extern "C" sfVector2u sfRenderTexture_getSize(const sf::RenderTexture *renderTex
     return {size.x, size.y};
 }
 
-extern "C" bool sfRenderTexture_isSrgb(const sf::RenderTarget *renderTexture) {
+extern "C" bool sfRenderTexture_isSrgb(const sf::RenderTexture *renderTexture) {
     return renderTexture->isSrgb();
 }
 

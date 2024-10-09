@@ -78,6 +78,6 @@ pub fn sfContext_destroy(context: *mut sfContext);
 pub fn sfContext_setActive(context: *mut sfContext, active: bool) -> bool;
 pub fn sfContext_getSettings(context: *const sfContext) -> *const sfContextSettings;
 pub fn sfContext_getActiveContextId() -> u64;
-pub fn sfContext_getFunction(name: *const std::ffi::c_char) -> *const std::ffi::c_void;
+pub fn sfContext_getFunction(name: *const c_char) -> *const c_void;
 
 }
