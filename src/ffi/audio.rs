@@ -16,7 +16,7 @@ pub type sfSoundBuffer = crate::audio::SoundBuffer;
 
 #[repr(C)]
 pub struct sfSoundStreamChunk {
-    pub samples: *mut i16,
+    pub samples: *const i16,
     pub sample_count: c_uint,
 }
 

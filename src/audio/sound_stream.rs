@@ -13,7 +13,7 @@ pub trait SoundStream {
     ///
     /// Returns `(chunk, keep_playing)`, where `chunk` is the chunk of audio samples,
     /// and `keep_playing` tells the streaming loop whether to keep playing or to stop.
-    fn get_data(&mut self) -> (&mut [i16], bool);
+    fn get_data(&mut self) -> (&[i16], bool);
     /// Change the current playing position in the stream source.
     fn seek(&mut self, offset: Time);
     /// Return the number of channels of the stream.
@@ -40,10 +40,10 @@ unsafe extern "C" fn get_data_callback<S: SoundStream>(
                 Ok(ret) => ret,
                 Err(_) => {
                     eprintln!("sound_stream: Stopping playback beacuse `get_data` panicked.");
-                    (&mut [][..], false)
+                    (&[][..], false)
                 }
             };
-        (*chunk).samples = data.as_mut_ptr();
+        (*chunk).samples = data.as_ptr();
         (*chunk).sample_count = data
             .len()
             .try_into()
@@ -123,7 +123,7 @@ impl<'a, S: SoundStream> SoundStreamPlayer<'a, S> {
     /// #    fn load(_arg: &str) -> Self { unimplemented!() }
     /// # }
     /// # impl SoundStream for MusicStream {
-    /// # fn get_data(&mut self) -> (&mut [i16], bool) { unimplemented!() }
+    /// # fn get_data(&mut self) -> (&[i16], bool) { unimplemented!() }
     /// # fn seek(&mut self, _: sfml::system::Time) { unimplemented!() }
     /// # fn channel_count(&self) -> u32 { unimplemented!() }
     /// # fn sample_rate(&self) -> u32 { unimplemented!() }

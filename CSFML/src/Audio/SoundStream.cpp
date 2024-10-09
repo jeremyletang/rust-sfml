@@ -5,7 +5,7 @@
 
 typedef struct
 {
-    int16_t *samples;         ///< Pointer to the audio samples
+    int16_t const *samples;   ///< Pointer to the audio samples
     unsigned int sampleCount; ///< Number of samples pointed by Samples
 } sfSoundStreamChunk;
 
