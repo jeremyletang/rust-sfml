@@ -19,7 +19,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     window.set_vertical_sync_enabled(true);
 
     let mut vertex_buffer =
-        VertexBuffer::new(PrimitiveType::LINE_STRIP, 6, VertexBufferUsage::STATIC);
+        VertexBuffer::new(PrimitiveType::LINE_STRIP, 6, VertexBufferUsage::STATIC)?;
 
     let vertices = [
         Vertex::with_pos_color((20.0, 30.0).into(), Color::GREEN),
@@ -39,7 +39,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         }
         // Clear the window
         window.clear(Color::BLACK);
-        window.draw(&vertex_buffer);
+        window.draw(&*vertex_buffer);
         // Display things on screen
         window.display()
     }

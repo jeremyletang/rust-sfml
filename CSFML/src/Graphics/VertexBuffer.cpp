@@ -40,7 +40,7 @@ extern "C" void sfVertexBuffer_swap(sf::VertexBuffer *left, sf::VertexBuffer *ri
     left->swap(*right);
 }
 
-extern "C" unsigned int sfVertexBuffer_getNativeHandle(sf::VertexBuffer *vertexBuffer) {
+extern "C" unsigned int sfVertexBuffer_getNativeHandle(const sf::VertexBuffer *vertexBuffer) {
     return vertexBuffer->getNativeHandle();
 }
 

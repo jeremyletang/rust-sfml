@@ -400,7 +400,7 @@ pub fn sfVertexBuffer_getVertexCount(vertexBuffer: *const sfVertexBuffer) -> c_u
 pub fn sfVertexBuffer_update(vertexBuffer: *mut sfVertexBuffer, vertices: *const sfVertex, vertexCount: c_uint, offset: c_uint) -> bool;
 pub fn sfVertexBuffer_updateFromVertexBuffer(vertexBuffer: *mut sfVertexBuffer, other: *const sfVertexBuffer) -> bool;
 pub fn sfVertexBuffer_swap(left: *mut sfVertexBuffer, right: *mut sfVertexBuffer);
-pub fn sfVertexBuffer_getNativeHandle(vertexBuffer: *mut sfVertexBuffer) -> c_uint;
+pub fn sfVertexBuffer_getNativeHandle(vertexBuffer: *const sfVertexBuffer) -> c_uint;
 pub fn sfVertexBuffer_setPrimitiveType(vertexBuffer: *mut sfVertexBuffer, type_: sfPrimitiveType);
 pub fn sfVertexBuffer_getPrimitiveType(vertexBuffer: *const sfVertexBuffer) -> sfPrimitiveType;
 pub fn sfVertexBuffer_setUsage(vertexBuffer: *mut sfVertexBuffer, usage: sfVertexBufferUsage);

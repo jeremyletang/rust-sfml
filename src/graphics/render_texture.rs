@@ -188,7 +188,7 @@ impl RenderTarget for RenderTexture {
         unsafe { ffi::sfRenderTexture_drawConvexShape(self, convex_shape.raw(), rs) }
     }
     fn draw_vertex_buffer(&mut self, vertex_buffer: &VertexBuffer, rs: &RenderStates) {
-        unsafe { ffi::sfRenderTexture_drawVertexBuffer(self, vertex_buffer.raw(), rs) }
+        unsafe { ffi::sfRenderTexture_drawVertexBuffer(self, vertex_buffer, rs) }
     }
     fn draw_primitives(&mut self, vertices: &[Vertex], ty: PrimitiveType, rs: &RenderStates) {
         let len = vertices.len();

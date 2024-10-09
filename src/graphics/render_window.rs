@@ -730,7 +730,7 @@ impl RenderTarget for RenderWindow {
         unsafe { ffi::sfRenderWindow_drawConvexShape(self, convex_shape.raw(), render_states) }
     }
     fn draw_vertex_buffer(&mut self, vertex_buffer: &VertexBuffer, render_states: &RenderStates) {
-        unsafe { ffi::sfRenderWindow_drawVertexBuffer(self, vertex_buffer.raw(), render_states) }
+        unsafe { ffi::sfRenderWindow_drawVertexBuffer(self, vertex_buffer, render_states) }
     }
     fn draw_primitives(&mut self, vertices: &[Vertex], ty: PrimitiveType, rs: &RenderStates) {
         unsafe {
