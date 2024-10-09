@@ -7,6 +7,7 @@ use {
         },
         system::{Clock, Vector2f},
         window::{Event, Key, Style},
+        SfBox,
     },
     std::error::Error,
 };
@@ -196,7 +197,7 @@ impl Effect for StormBlink {
 }
 
 struct Edge<'t> {
-    surface: RenderTexture,
+    surface: SfBox<RenderTexture>,
     bg_sprite: Sprite<'t>,
     entities: Vec<Sprite<'t>>,
     shader: Shader<'static>,
