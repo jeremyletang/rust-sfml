@@ -11,7 +11,7 @@ decl_opaque! {
 
 type sfJoystickIdentification = JoystickIdentification;
 pub(super) type sfWindow = crate::window::Window;
-pub type sfCursor = crate::window::Cursor;
+pub(super) type sfCursor = crate::window::Cursor;
 
 /// Enumeration of the native system cursor types.
 ///

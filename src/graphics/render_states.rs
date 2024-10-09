@@ -61,7 +61,7 @@ pub struct RenderStates<'texture, 'shader, 'shader_texture: 'shader> {
     pub blend_mode: BlendMode,
     /// The transform
     pub transform: Transform,
-    texture: *const ffi::sfTexture,
+    texture: *const Texture,
     shader: *const ffi::sfShader,
     _texture: PhantomData<&'texture Texture>,
     _shader: PhantomData<&'shader Shader<'shader_texture>>,
