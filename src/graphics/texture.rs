@@ -134,7 +134,7 @@ impl Texture {
     ///           If the area rectangle crosses the bounds of the image,
     ///           it is adjusted to fit the image size.
     pub fn load_from_image(&mut self, image: &Image, area: IntRect) -> SfResult<()> {
-        unsafe { ffi::sfTexture_loadFromImage(self, image.raw(), area).into_sf_result() }
+        unsafe { ffi::sfTexture_loadFromImage(self, image, area).into_sf_result() }
     }
 }
 
@@ -251,13 +251,9 @@ impl Texture {
     /// Copy a texture's pixels to an image
     ///
     /// Return an image containing the texture's pixels
-    pub fn copy_to_image(&self) -> SfResult<Image> {
+    pub fn copy_to_image(&self) -> SfResult<SfBox<Image>> {
         let img = unsafe { ffi::sfTexture_copyToImage(self) };
-        if img.is_null() {
-            Err(SfError::CallFailed)
-        } else {
-            Ok(unsafe { Image::from_raw(img) })
-        }
+        SfBox::new(img).ok_or(SfError::CallFailed)
     }
 
     /// Update a part of the texture from the contents of a window.
@@ -295,7 +291,7 @@ impl Texture {
     /// No additional check is performed on the size of the image, passing an invalid combination
     /// of image size and offset will lead to an _undefined behavior_.
     pub unsafe fn update_from_image(&mut self, image: &Image, x: u32, y: u32) {
-        unsafe { ffi::sfTexture_updateFromImage(self, image.raw(), x, y) }
+        unsafe { ffi::sfTexture_updateFromImage(self, image, x, y) }
     }
 
     /// Update a part of this texture from another texture.

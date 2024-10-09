@@ -10,7 +10,6 @@ use {
 decl_opaque! {
     sfCircleShape;
     sfConvexShape;
-    sfImage;
     sfShader;
     sfRectangleShape;
     sfRenderTexture;
@@ -24,6 +23,7 @@ decl_opaque! {
 pub type sfTexture = crate::graphics::Texture;
 pub type sfView = crate::graphics::View;
 pub type sfFont = crate::graphics::Font;
+type sfImage = crate::graphics::Image;
 
 /// Enumeration of the blending factors.
 ///

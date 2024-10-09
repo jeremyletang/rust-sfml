@@ -80,7 +80,7 @@ impl RcTexture {
     /// Copy a texture's pixels to an image
     ///
     /// Return an image containing the texture's pixels
-    pub fn copy_to_image(&self) -> SfResult<Image> {
+    pub fn copy_to_image(&self) -> SfResult<SfBox<Image>> {
         self.texture.borrow().copy_to_image()
     }
     /// Tell whether the texture source is converted from sRGB or not.

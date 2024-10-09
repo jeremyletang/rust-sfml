@@ -2,8 +2,9 @@ use {
     crate::{
         ffi::graphics as ffi,
         graphics::{Color, IntRect},
+        sf_box::Dispose,
         system::{InputStream, Vector2u},
-        IntoSfResult, SfError, SfResult,
+        IntoSfResult, SfBox, SfError, SfResult,
     },
     std::{
         error::Error,
@@ -14,10 +15,9 @@ use {
     },
 };
 
-/// Loading, manipulating and saving images.
-#[derive(Debug)]
-pub struct Image {
-    image: *mut ffi::sfImage,
+decl_opaque! {
+    /// Loading, manipulating and saving images.
+    Image;
 }
 
 /// Creation and loading
@@ -29,11 +29,9 @@ impl Image {
     /// # Arguments
     /// * width - Width of the image
     /// * height - Height of the image
-    #[must_use]
-    pub fn new(width: u32, height: u32) -> Self {
+    pub fn new(width: u32, height: u32) -> SfResult<SfBox<Self>> {
         let image = unsafe { ffi::sfImage_create(width, height) };
-        assert!(!image.is_null(), "Failed to create Image");
-        Self { image }
+        SfBox::new(image).ok_or(SfError::CallFailed)
     }
 
     /// Create an image from a custom stream.
@@ -44,14 +42,10 @@ impl Image {
     ///
     /// # Arguments
     /// * stream - Your struct, implementing Read and Seek
-    pub fn from_stream<T: Read + Seek>(stream: &mut T) -> SfResult<Self> {
+    pub fn from_stream<T: Read + Seek>(stream: &mut T) -> SfResult<SfBox<Self>> {
         let mut input_stream = InputStream::new(stream);
         let image = unsafe { ffi::sfImage_createFromStream(&mut *input_stream.stream) };
-        if image.is_null() {
-            Err(SfError::CallFailed)
-        } else {
-            Ok(Self { image })
-        }
+        SfBox::new(image).ok_or(SfError::CallFailed)
     }
 
     /// Create an image from a file in memory
@@ -62,13 +56,9 @@ impl Image {
     ///
     /// # Arguments
     /// * mem - Pointer to the file data in memory
-    pub fn from_memory(mem: &[u8]) -> SfResult<Self> {
+    pub fn from_memory(mem: &[u8]) -> SfResult<SfBox<Self>> {
         let image = unsafe { ffi::sfImage_createFromMemory(mem.as_ptr().cast(), mem.len()) };
-        if image.is_null() {
-            Err(SfError::CallFailed)
-        } else {
-            Ok(Self { image })
-        }
+        SfBox::new(image).ok_or(SfError::CallFailed)
     }
 
     /// Create an image and fill it with a unique color
@@ -77,13 +67,9 @@ impl Image {
     /// * width - Width of the image
     /// * height - Height of the image
     /// * color - Fill color
-    pub fn from_color(width: u32, height: u32, color: Color) -> SfResult<Self> {
+    pub fn from_color(width: u32, height: u32, color: Color) -> SfResult<SfBox<Self>> {
         let image = unsafe { ffi::sfImage_createFromColor(width, height, color) };
-        if image.is_null() {
-            Err(SfError::CallFailed)
-        } else {
-            Ok(Self { image })
-        }
+        SfBox::new(image).ok_or(SfError::CallFailed)
     }
 
     /// Create an image from a file on disk
@@ -95,14 +81,10 @@ impl Image {
     ///
     /// # Arguments
     /// * filename - Path of the image file to load
-    pub fn from_file(filename: &str) -> SfResult<Self> {
+    pub fn from_file(filename: &str) -> SfResult<SfBox<Self>> {
         let c_filename = CString::new(filename).into_sf_result()?;
         let image = unsafe { ffi::sfImage_createFromFile(c_filename.as_ptr()) };
-        if image.is_null() {
-            Err(SfError::CallFailed)
-        } else {
-            Ok(Self { image })
-        }
+        SfBox::new(image).ok_or(SfError::CallFailed)
     }
 
     /// Create an image from an vector of pixels
@@ -117,13 +99,13 @@ impl Image {
     /// The pixel vector is assumed to contain 32-bits RGBA pixels,
     /// and have the given width and height. If not, this is
     /// an undefined behaviour.
-    pub unsafe fn create_from_pixels(width: u32, height: u32, pixels: &[u8]) -> SfResult<Self> {
+    pub unsafe fn create_from_pixels(
+        width: u32,
+        height: u32,
+        pixels: &[u8],
+    ) -> SfResult<SfBox<Self>> {
         let image = unsafe { ffi::sfImage_createFromPixels(width, height, pixels.as_ptr()) };
-        if image.is_null() {
-            Err(SfError::CallFailed)
-        } else {
-            Ok(Self { image })
-        }
+        SfBox::new(image).ok_or(SfError::CallFailed)
     }
 }
 
@@ -142,7 +124,7 @@ impl Image {
     /// coordinates, using out-of-range values will result in
     /// an undefined behaviour.
     pub unsafe fn set_pixel_unchecked(&mut self, x: u32, y: u32, color: Color) {
-        unsafe { ffi::sfImage_setPixel(self.image, x, y, color) }
+        unsafe { ffi::sfImage_setPixel(self, x, y, color) }
     }
 
     /// Change the color of a pixel in an image
@@ -168,7 +150,7 @@ impl Image {
 
         // Since we check for index validity before setting the pixel, it is safe unless the
         // image has been unloaded, but I doubt you can even do that.
-        unsafe { ffi::sfImage_setPixel(self.image, x, y, color) }
+        unsafe { ffi::sfImage_setPixel(self, x, y, color) }
         Ok(())
     }
     /// Get the color of a pixel in an image
@@ -186,7 +168,7 @@ impl Image {
     /// an undefined behaviour.
     #[must_use]
     pub unsafe fn pixel_at_unchecked(&self, x: u32, y: u32) -> Color {
-        unsafe { ffi::sfImage_getPixel(self.image, x, y) }
+        unsafe { ffi::sfImage_getPixel(self, x, y) }
     }
 
     /// Get the color of a pixel in an image
@@ -205,7 +187,7 @@ impl Image {
 
         // Since we check for index validity before getting the pixel, it is safe unless the
         // image has been unloaded, but I doubt you can even do that.
-        unsafe { Some(ffi::sfImage_getPixel(self.image, x, y)) }
+        unsafe { Some(ffi::sfImage_getPixel(self, x, y)) }
     }
 
     /// Return the memory buffer of this image.
@@ -213,7 +195,7 @@ impl Image {
     pub fn pixel_data(&self) -> &[u8] {
         unsafe {
             let size = self.size();
-            let pixels = ffi::sfImage_getPixelsPtr(self.image);
+            let pixels = ffi::sfImage_getPixelsPtr(self);
 
             slice::from_raw_parts(pixels, (size.x * size.y * 4) as usize)
         }
@@ -232,17 +214,17 @@ impl Image {
     /// * color - Color to make transparent
     /// * alpha - Alpha value to assign to transparent pixels
     pub fn create_mask_from_color(&mut self, color: Color, alpha: u8) {
-        unsafe { ffi::sfImage_createMaskFromColor(self.image, color, alpha) }
+        unsafe { ffi::sfImage_createMaskFromColor(self, color, alpha) }
     }
 
     /// Flip an image horizontally (left <-> right)
     pub fn flip_horizontally(&mut self) {
-        unsafe { ffi::sfImage_flipHorizontally(self.image) }
+        unsafe { ffi::sfImage_flipHorizontally(self) }
     }
 
     /// Flip an image vertically (top <-> bottom)
     pub fn flip_vertically(&mut self) {
-        unsafe { ffi::sfImage_flipVertically(self.image) }
+        unsafe { ffi::sfImage_flipVertically(self) }
     }
 
     /// Copy pixels from an image onto another
@@ -273,16 +255,7 @@ impl Image {
         source_rect: IntRect,
         apply_alpha: bool,
     ) {
-        unsafe {
-            ffi::sfImage_copyImage(
-                self.image,
-                source.raw(),
-                dest_x,
-                dest_y,
-                source_rect,
-                apply_alpha,
-            )
-        }
+        unsafe { ffi::sfImage_copyImage(self, source, dest_x, dest_y, source_rect, apply_alpha) }
     }
 }
 
@@ -301,7 +274,7 @@ impl Image {
     /// Return true if saving was successful
     pub fn save_to_file(&self, filename: &str) -> SfResult<()> {
         let c_str = CString::new(filename).into_sf_result()?;
-        unsafe { ffi::sfImage_saveToFile(self.image, c_str.as_ptr()) }.into_sf_result()
+        unsafe { ffi::sfImage_saveToFile(self, c_str.as_ptr()) }.into_sf_result()
     }
 
     /// Return the size of an image
@@ -309,32 +282,27 @@ impl Image {
     /// Return the size in pixels
     #[must_use]
     pub fn size(&self) -> Vector2u {
-        unsafe { ffi::sfImage_getSize(self.image) }
-    }
-
-    pub(super) fn raw(&self) -> *const ffi::sfImage {
-        self.image
-    }
-    pub(super) unsafe fn from_raw(raw: *mut ffi::sfImage) -> Self {
-        Image { image: raw }
+        unsafe { ffi::sfImage_getSize(self) }
     }
 }
 
-impl Clone for Image {
-    /// Return a new `Image` or panic! if there is not enough memory
-    fn clone(&self) -> Self {
-        let image = unsafe { ffi::sfImage_copy(self.image) };
-        if image.is_null() {
-            panic!("Not enough memory to clone Image")
-        } else {
-            Self { image }
+impl ToOwned for Image {
+    type Owned = SfBox<Self>;
+
+    fn to_owned(&self) -> Self::Owned {
+        let ptr = unsafe { ffi::sfImage_copy(self) };
+        match SfBox::new(ptr) {
+            Some(new) => new,
+            None => panic!("Failed to copy image"),
         }
     }
 }
 
-impl Drop for Image {
-    fn drop(&mut self) {
-        unsafe { ffi::sfImage_destroy(self.image) }
+impl Dispose for Image {
+    unsafe fn dispose(&mut self) {
+        unsafe {
+            ffi::sfImage_destroy(self);
+        }
     }
 }
 
