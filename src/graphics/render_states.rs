@@ -61,9 +61,8 @@ pub struct RenderStates<'texture, 'shader, 'shader_texture: 'shader> {
     pub blend_mode: BlendMode,
     /// The transform
     pub transform: Transform,
-    texture: *const Texture,
+    texture: Option<&'texture Texture>,
     shader: *const ffi::sfShader,
-    _texture: PhantomData<&'texture Texture>,
     _shader: PhantomData<&'shader Shader<'shader_texture>>,
 }
 
@@ -87,24 +86,17 @@ impl<'texture, 'shader, 'shader_texture> RenderStates<'texture, 'shader, 'shader
         Self {
             blend_mode,
             transform,
-            texture: match texture {
-                Some(tex) => tex,
-                None => ptr::null(),
-            },
+            texture,
             shader: match shader {
                 Some(shader) => shader.raw(),
                 None => ptr::null(),
             },
-            _texture: PhantomData,
             _shader: PhantomData,
         }
     }
     /// Sets the texture
     pub fn set_texture(&mut self, texture: Option<&'texture Texture>) {
-        self.texture = match texture {
-            None => ptr::null(),
-            Some(tex) => tex,
-        };
+        self.texture = texture;
     }
     /// Sets the shader
     pub fn set_shader(&mut self, shader: Option<&'shader Shader<'shader_texture>>) {
@@ -122,9 +114,8 @@ impl RenderStates<'static, 'static, 'static> {
     pub const DEFAULT: Self = Self {
         blend_mode: BlendMode::ALPHA,
         transform: Transform::IDENTITY,
-        texture: ptr::null(),
+        texture: None,
         shader: ptr::null(),
-        _texture: PhantomData,
         _shader: PhantomData,
     };
 }
