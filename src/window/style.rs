@@ -21,6 +21,7 @@ bitflags::bitflags! {
 }
 
 impl Default for Style {
+    /// Default window style: title bar, resizable border, and close button.
     fn default() -> Self {
         Self::DEFAULT
     }
