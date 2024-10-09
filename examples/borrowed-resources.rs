@@ -1,20 +1,23 @@
-use sfml::{
-    graphics::{
-        CircleShape, Color, ConvexShape, Font, RenderTarget, RenderWindow, Sprite, Text, Texture,
-        Transformable,
+use {
+    sfml::{
+        graphics::{
+            CircleShape, Color, ConvexShape, Font, RenderTarget, RenderWindow, Sprite, Text,
+            Texture, Transformable,
+        },
+        window::{Event, Key, Style},
     },
-    window::{Event, Key, Style},
+    std::error::Error,
 };
 
 include!("../example_common.rs");
 
-fn main() {
+fn main() -> Result<(), Box<dyn Error>> {
     let mut window = RenderWindow::new(
         (800, 600),
         "Borrowed resources",
         Style::CLOSE,
         &Default::default(),
-    );
+    )?;
     window.set_vertical_sync_enabled(true);
 
     // Create a new texture. (Hey Frank!)
@@ -61,13 +64,13 @@ fn main() {
     third_text.set_position((300.0, 100.0));
     third_text.set_fill_color(Color::RED);
 
-    loop {
+    'mainloop: loop {
         while let Some(event) = window.poll_event() {
             match event {
                 Event::Closed
                 | Event::KeyPressed {
                     code: Key::Escape, ..
-                } => return,
+                } => break 'mainloop,
                 _ => {}
             }
         }
@@ -81,4 +84,5 @@ fn main() {
         window.draw(&third_text);
         window.display();
     }
+    Ok(())
 }

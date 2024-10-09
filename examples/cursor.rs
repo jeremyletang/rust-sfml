@@ -1,9 +1,13 @@
-use sfml::{
-    graphics::{
-        Color, Font, Rect, RectangleShape, RenderTarget, RenderWindow, Shape, Text, Transformable,
+use {
+    sfml::{
+        graphics::{
+            Color, Font, Rect, RectangleShape, RenderTarget, RenderWindow, Shape, Text,
+            Transformable,
+        },
+        system::Vector2,
+        window::{mouse, ContextSettings, Cursor, CursorType, Event, Style},
     },
-    system::Vector2,
-    window::{mouse, ContextSettings, Cursor, CursorType, Event, Style},
+    std::error::Error,
 };
 
 include!("../example_common.rs");
@@ -68,13 +72,13 @@ fn bstyle(highlighted: bool, selected: bool, error: bool) -> ButtonStyle {
     }
 }
 
-fn main() {
+fn main() -> Result<(), Box<dyn Error>> {
     let mut rw = RenderWindow::new(
         (800, 800),
         "SFML cursor example",
         Style::CLOSE,
         &ContextSettings::default(),
-    );
+    )?;
     rw.set_vertical_sync_enabled(true);
     let mut cursor;
     let font = Font::from_file(example_res!("sansation.ttf")).unwrap();
@@ -310,4 +314,5 @@ fn main() {
         );
         rw.display();
     }
+    Ok(())
 }

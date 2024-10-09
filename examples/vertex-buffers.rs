@@ -1,17 +1,21 @@
-use sfml::{
-    graphics::{
-        Color, PrimitiveType, RenderTarget, RenderWindow, Vertex, VertexBuffer, VertexBufferUsage,
+use {
+    sfml::{
+        graphics::{
+            Color, PrimitiveType, RenderTarget, RenderWindow, Vertex, VertexBuffer,
+            VertexBufferUsage,
+        },
+        window::{Event, Style},
     },
-    window::{Event, Style},
+    std::error::Error,
 };
 
-fn main() {
+fn main() -> Result<(), Box<dyn Error>> {
     let mut window = RenderWindow::new(
         (800, 600),
         "SFML VertexBuffer accessors Example",
         Style::CLOSE,
         &Default::default(),
-    );
+    )?;
     window.set_vertical_sync_enabled(true);
 
     let mut vertex_buffer =
@@ -27,10 +31,10 @@ fn main() {
     ];
     vertex_buffer.update(&vertices, 0).unwrap();
 
-    loop {
+    'mainloop: loop {
         while let Some(e) = window.poll_event() {
             if e == Event::Closed {
-                return;
+                break 'mainloop;
             }
         }
         // Clear the window
@@ -39,4 +43,5 @@ fn main() {
         // Display things on screen
         window.display()
     }
+    Ok(())
 }

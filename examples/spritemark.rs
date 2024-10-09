@@ -12,6 +12,7 @@ use {
         system::{Clock, Vector2, Vector2f, Vector2i},
         window::{mouse::Button, ContextSettings, Event, Key, Style, VideoMode},
     },
+    std::error::Error,
 };
 
 include!("../example_common.rs");
@@ -58,14 +59,14 @@ fn fconv(in_: Vector2i) -> Vector2f {
     }
 }
 
-fn main() {
+fn main() -> Result<(), Box<dyn Error>> {
     let native_mode = VideoMode::desktop_mode();
     let mut window = RenderWindow::new(
         native_mode,
         "Spritemark",
         Style::NONE,
         &ContextSettings::default(),
-    );
+    )?;
     window.set_position(Vector2::new(0, 0));
     window.set_vertical_sync_enabled(true);
     let font = Font::from_file(example_res!("sansation.ttf")).unwrap();
@@ -161,4 +162,5 @@ fn main() {
             frames_rendered = 0;
         }
     }
+    Ok(())
 }

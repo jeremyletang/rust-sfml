@@ -1,10 +1,13 @@
-use sfml::{
-    graphics::{
-        Color, RcFont, RcSprite, RcText, RcTexture, RenderTarget, RenderWindow, Texture,
-        Transformable,
+use {
+    sfml::{
+        graphics::{
+            Color, RcFont, RcSprite, RcText, RcTexture, RenderTarget, RenderWindow, Texture,
+            Transformable,
+        },
+        system::Vector2f,
+        window::{Event, Key, Style},
     },
-    system::Vector2f,
-    window::{Event, Key, Style},
+    std::error::Error,
 };
 
 include!("../example_common.rs");
@@ -112,9 +115,9 @@ fn get_set_smooth_rc_text(font: &RcFont) -> RcText {
     set_smooth_text
 }
 
-fn main() {
+fn main() -> Result<(), Box<dyn Error>> {
     let mut window =
-        RenderWindow::new((800, 600), "SFML window", Style::CLOSE, &Default::default());
+        RenderWindow::new((800, 600), "SFML window", Style::CLOSE, &Default::default())?;
     window.set_framerate_limit(60);
 
     // Create a new texture.
@@ -171,4 +174,5 @@ fn main() {
         window.draw(&set_smooth_text);
         window.display();
     }
+    Ok(())
 }

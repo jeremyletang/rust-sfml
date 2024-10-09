@@ -1,14 +1,17 @@
-use sfml::{graphics::*, window::*};
+use {
+    sfml::{graphics::*, window::*},
+    std::error::Error,
+};
 
 include!("../example_common.rs");
 
-fn main() {
+fn main() -> Result<(), Box<dyn Error>> {
     let mut window = RenderWindow::new(
         (800, 600),
         "◢◤ Unicode text entry ◥◣",
         Style::CLOSE,
         &Default::default(),
-    );
+    )?;
     window.set_vertical_sync_enabled(true);
 
     let font = Font::from_file(example_res!("sansation.ttf")).unwrap();
@@ -102,4 +105,5 @@ fn main() {
         window.display();
     }
     println!("The final text is {:?}", text.string().to_rust_string());
+    Ok(())
 }

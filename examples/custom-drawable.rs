@@ -1,9 +1,12 @@
-use sfml::{
-    graphics::{
-        CircleShape, Color, Drawable, RectangleShape, RenderStates, RenderTarget, RenderWindow,
-        Shape, Transformable,
+use {
+    sfml::{
+        graphics::{
+            CircleShape, Color, Drawable, RectangleShape, RenderStates, RenderTarget, RenderWindow,
+            Shape, Transformable,
+        },
+        window::{Event, Key, Style},
     },
-    window::{Event, Key, Style},
+    std::error::Error,
 };
 
 /// Our custom drawable type. It looks like a bullet.
@@ -37,24 +40,24 @@ impl Drawable for Bullet<'_> {
     }
 }
 
-fn main() {
+fn main() -> Result<(), Box<dyn Error>> {
     let mut window = RenderWindow::new(
         (800, 600),
         "Custom drawable",
         Style::CLOSE,
         &Default::default(),
-    );
+    )?;
     window.set_vertical_sync_enabled(true);
 
     let bullet = Bullet::new();
 
-    loop {
+    'mainloop: loop {
         while let Some(event) = window.poll_event() {
             match event {
                 Event::Closed
                 | Event::KeyPressed {
                     code: Key::Escape, ..
-                } => return,
+                } => break 'mainloop,
                 _ => {}
             }
         }
@@ -63,4 +66,5 @@ fn main() {
         window.draw(&bullet);
         window.display()
     }
+    Ok(())
 }

@@ -1,7 +1,10 @@
-use sfml::{
-    graphics::{Color, CustomShape, CustomShapePoints, RenderTarget, RenderWindow, Shape},
-    system::Vector2f,
-    window::{Event, Key, Style},
+use {
+    sfml::{
+        graphics::{Color, CustomShape, CustomShapePoints, RenderTarget, RenderWindow, Shape},
+        system::Vector2f,
+        window::{Event, Key, Style},
+    },
+    std::error::Error,
 };
 
 #[derive(Clone, Copy)]
@@ -22,13 +25,13 @@ impl CustomShapePoints for TriangleShape {
     }
 }
 
-fn main() {
+fn main() -> Result<(), Box<dyn Error>> {
     let mut window = RenderWindow::new(
         (800, 600),
         "Custom shape",
         Style::CLOSE,
         &Default::default(),
-    );
+    )?;
     window.set_vertical_sync_enabled(true);
 
     let mut shape = CustomShape::new(Box::new(TriangleShape));
@@ -36,13 +39,13 @@ fn main() {
     shape.set_outline_color(Color::GREEN);
     shape.set_outline_thickness(3.);
 
-    loop {
+    'mainloop: loop {
         while let Some(event) = window.poll_event() {
             match event {
                 Event::Closed
                 | Event::KeyPressed {
                     code: Key::Escape, ..
-                } => return,
+                } => break 'mainloop,
                 _ => {}
             }
         }
@@ -51,4 +54,5 @@ fn main() {
         window.draw(&shape);
         window.display();
     }
+    Ok(())
 }

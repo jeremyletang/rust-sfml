@@ -1,18 +1,21 @@
-use sfml::{
-    graphics::{
-        vertex_array_bounds, Color, PrimitiveType, RectangleShape, RenderStates, RenderTarget,
-        RenderWindow, Shape, Vertex,
+use {
+    sfml::{
+        graphics::{
+            vertex_array_bounds, Color, PrimitiveType, RectangleShape, RenderStates, RenderTarget,
+            RenderWindow, Shape, Vertex,
+        },
+        window::{Event, Style},
     },
-    window::{Event, Style},
+    std::error::Error,
 };
 
-fn main() {
+fn main() -> Result<(), Box<dyn Error>> {
     let mut window = RenderWindow::new(
         (800, 600),
         "Vertex array example",
         Style::CLOSE,
         &Default::default(),
-    );
+    )?;
     window.set_vertical_sync_enabled(true);
 
     let mut vertex_array = [
@@ -70,10 +73,10 @@ fn main() {
     bound_rect.set_outline_thickness(1.0);
     bound_rect.set_outline_color(Color::YELLOW);
 
-    loop {
+    'mainloop: loop {
         while let Some(e) = window.poll_event() {
             if e == Event::Closed {
-                return;
+                break 'mainloop;
             }
         }
         let rs = RenderStates::default();
@@ -84,4 +87,5 @@ fn main() {
         // Display things on screen
         window.display()
     }
+    Ok(())
 }

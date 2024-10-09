@@ -1,14 +1,17 @@
-use sfml::{graphics::*, system::*, window::*};
+use {
+    sfml::{graphics::*, system::*, window::*},
+    std::error::Error,
+};
 
 include!("../example_common.rs");
 
-fn main() {
+fn main() -> Result<(), Box<dyn Error>> {
     let mut window = RenderWindow::new(
         (800, 600),
         "Mouse events",
         Style::CLOSE,
         &Default::default(),
-    );
+    )?;
     window.set_mouse_cursor_visible(false);
     window.set_vertical_sync_enabled(true);
 
@@ -26,10 +29,10 @@ fn main() {
         }
     }
 
-    loop {
+    'mainloop: loop {
         while let Some(ev) = window.poll_event() {
             match ev {
-                Event::Closed => return,
+                Event::Closed => break 'mainloop,
                 Event::MouseWheelScrolled { wheel, delta, x, y } => {
                     push_text!(x, y, "Scroll: {:?}, {}, {}, {}", wheel, delta, x, y);
                 }
@@ -102,4 +105,5 @@ fn main() {
         window.draw(&mp_text);
         window.display();
     }
+    Ok(())
 }

@@ -7,12 +7,12 @@ use {
         system::Clock,
         window::{ContextSettings, Event, Key, Style},
     },
-    std::{ffi::c_void, mem::size_of},
+    std::{error::Error, ffi::c_void, mem::size_of},
 };
 
 include!("../example_common.rs");
 
-fn main() {
+fn main() -> Result<(), Box<dyn Error>> {
     let mut exit = false;
     let mut srgb = false;
 
@@ -28,7 +28,7 @@ fn main() {
             "SFML graphics with OpenGL",
             Style::default(),
             &ctx_sett,
-        );
+        )?;
         window.set_vertical_sync_enabled(true);
 
         let mut bg_tex = Texture::new().unwrap();
@@ -179,4 +179,5 @@ fn main() {
             window.display();
         }
     }
+    Ok(())
 }

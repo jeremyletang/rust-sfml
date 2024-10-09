@@ -1,6 +1,9 @@
-use sfml::{
-    graphics::{Color, Font, RenderTarget, RenderWindow, Text, Transformable},
-    window::{ContextSettings, Event, Key, Style},
+use {
+    sfml::{
+        graphics::{Color, Font, RenderTarget, RenderWindow, Text, Transformable},
+        window::{ContextSettings, Event, Key, Style},
+    },
+    std::error::Error,
 };
 
 struct WindowConfig {
@@ -9,7 +12,7 @@ struct WindowConfig {
     style: Style,
 }
 
-fn main() {
+fn main() -> Result<(), Box<dyn Error>> {
     let configs = [
         WindowConfig {
             mode: (320, 240),
@@ -33,7 +36,7 @@ fn main() {
         "Window test",
         Style::CLOSE,
         &ContextSettings::default(),
-    );
+    )?;
     let font = Font::from_memory_static(include_bytes!("resources/sansation.ttf")).unwrap();
 
     while rw.is_open() {
@@ -80,4 +83,5 @@ fn main() {
         }
         rw.display();
     }
+    Ok(())
 }

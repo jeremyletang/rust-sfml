@@ -7,7 +7,7 @@ use {
         window::{Event, Key, Style},
         SfBox, SfResource,
     },
-    std::{collections::HashMap, hash::Hash},
+    std::{collections::HashMap, error::Error, hash::Hash},
 };
 
 include!("../example_common.rs");
@@ -50,7 +50,7 @@ impl<Resource: SfResource, Identifier: Hash + Eq> Default for ResourceHolder<Res
     }
 }
 
-fn main() {
+fn main() -> Result<(), Box<dyn Error>> {
     let mut tex_holder = ResourceHolder::<Texture, _>::default();
     tex_holder.load("frank", example_res!("frank.jpeg"));
     let mut sb_holder = ResourceHolder::<SoundBuffer, _>::default();
@@ -60,7 +60,7 @@ fn main() {
         "Resource holder test",
         Style::CLOSE,
         &Default::default(),
-    );
+    )?;
     rw.set_vertical_sync_enabled(true);
     let mut sound = Sound::with_buffer(sb_holder.get("canary"));
     sound.play();
@@ -78,4 +78,5 @@ fn main() {
         rw.draw(&Sprite::with_texture(tex_holder.get("frank")));
         rw.display();
     }
+    Ok(())
 }

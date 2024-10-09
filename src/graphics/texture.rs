@@ -280,7 +280,7 @@ impl Texture {
         x: u32,
         y: u32,
     ) {
-        unsafe { ffi::sfTexture_updateFromRenderWindow(self, render_window.raw(), x, y) }
+        unsafe { ffi::sfTexture_updateFromRenderWindow(self, render_window, x, y) }
     }
 
     /// Update a part of the texture from an image.

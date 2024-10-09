@@ -13,7 +13,6 @@ decl_opaque! {
     sfShader;
     sfRectangleShape;
     sfRenderTexture;
-    sfRenderWindow;
     sfShape;
     sfSprite;
     sfText;
@@ -24,6 +23,7 @@ pub type sfTexture = crate::graphics::Texture;
 pub type sfView = crate::graphics::View;
 pub type sfFont = crate::graphics::Font;
 type sfImage = crate::graphics::Image;
+type sfRenderWindow = crate::graphics::RenderWindow;
 
 /// Enumeration of the blending factors.
 ///

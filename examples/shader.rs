@@ -1,10 +1,14 @@
-use sfml::{
-    graphics::{
-        Color, Drawable, Font, IntRect, PrimitiveType, RenderStates, RenderTarget, RenderTexture,
-        RenderWindow, Shader, ShaderType, Sprite, Text, Texture, Transformable, Vertex,
+use {
+    sfml::{
+        graphics::{
+            Color, Drawable, Font, IntRect, PrimitiveType, RenderStates, RenderTarget,
+            RenderTexture, RenderWindow, Shader, ShaderType, Sprite, Text, Texture, Transformable,
+            Vertex,
+        },
+        system::{Clock, Vector2f},
+        window::{Event, Key, Style},
     },
-    system::{Clock, Vector2f},
-    window::{Event, Key, Style},
+    std::error::Error,
 };
 
 include!("../example_common.rs");
@@ -267,13 +271,13 @@ impl Effect for Edge<'_> {
     }
 }
 
-fn main() {
+fn main() -> Result<(), Box<dyn Error>> {
     let mut window = RenderWindow::new(
         (800, 600),
         "SFML Shader",
         Style::TITLEBAR | Style::CLOSE,
         &Default::default(),
-    );
+    )?;
     window.set_vertical_sync_enabled(true);
     let font = Font::from_file(example_res!("sansation.ttf")).unwrap();
     let bg = Texture::from_file(example_res!("background.jpg")).unwrap();
@@ -343,4 +347,5 @@ fn main() {
         window.draw(&desc);
         window.display();
     }
+    Ok(())
 }

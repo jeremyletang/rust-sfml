@@ -9,12 +9,12 @@ use {
         system::{Clock, Time, Vector2f},
         window::{ContextSettings, Event, Key, Scancode, Style},
     },
-    std::{env, f32::consts::PI},
+    std::{env, error::Error, f32::consts::PI},
 };
 
 include!("../example_common.rs");
 
-fn main() {
+fn main() -> Result<(), Box<dyn Error>> {
     let mut rng = thread_rng();
 
     // Optional antialiasing
@@ -43,7 +43,7 @@ fn main() {
         "SFML Pong",
         Style::CLOSE,
         &context_settings,
-    );
+    )?;
     let context_settings = window.settings();
     if context_settings.antialiasing_level > 0 {
         println!("Using {}xAA", context_settings.antialiasing_level);
@@ -102,13 +102,13 @@ fn main() {
     let mut up = false;
     let mut down = false;
 
-    loop {
+    'mainloop: loop {
         while let Some(event) = window.poll_event() {
             match event {
                 Event::Closed
                 | Event::KeyPressed {
                     code: Key::Escape, ..
-                } => return,
+                } => break 'mainloop,
                 Event::KeyPressed {
                     code: Key::Space, ..
                 } if !is_playing => {
@@ -272,6 +272,7 @@ fn main() {
         // Display things on screen
         window.display()
     }
+    Ok(())
 }
 
 fn on_bounce(ball_sound: &mut Sound, ball_speed: &mut f32) {
