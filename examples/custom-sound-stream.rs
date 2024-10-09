@@ -30,7 +30,7 @@ impl SoundStream for BitMelody {
                 self.vol -= 1;
             }
         }
-        (&mut self.buf[..], self.vol > 0)
+        (&self.buf, self.vol > 0)
     }
     fn seek(&mut self, offset: Time) {
         // Not exactly correct, but meh.
