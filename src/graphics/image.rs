@@ -231,7 +231,7 @@ impl Image {
     /// # Arguments
     /// * color - Color to make transparent
     /// * alpha - Alpha value to assign to transparent pixels
-    pub fn create_mask_from_color(&self, color: Color, alpha: u8) {
+    pub fn create_mask_from_color(&mut self, color: Color, alpha: u8) {
         unsafe { ffi::sfImage_createMaskFromColor(self.image, color, alpha) }
     }
 
