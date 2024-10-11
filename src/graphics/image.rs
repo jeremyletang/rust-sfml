@@ -99,11 +99,7 @@ impl Image {
     /// The pixel vector is assumed to contain 32-bits RGBA pixels,
     /// and have the given width and height. If not, this is
     /// an undefined behaviour.
-    pub unsafe fn create_from_pixels(
-        width: u32,
-        height: u32,
-        pixels: &[u8],
-    ) -> SfResult<SfBox<Self>> {
+    pub unsafe fn from_pixels(width: u32, height: u32, pixels: &[u8]) -> SfResult<SfBox<Self>> {
         let image = unsafe { ffi::sfImage_createFromPixels(width, height, pixels.as_ptr()) };
         SfBox::new(image).ok_or(SfError::CallFailed)
     }
