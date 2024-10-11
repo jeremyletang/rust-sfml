@@ -8,7 +8,10 @@ use {
 };
 
 /// Trait for streamed audio sources.
-pub trait SoundStream {
+///
+/// The implementor must be able to be sent to another thread, so it must
+/// implement [`Send`].
+pub trait SoundStream: Send {
     /// Request a new chunk of audio samples from the stream source.
     ///
     /// Returns `(chunk, keep_playing)`, where `chunk` is the chunk of audio samples,
