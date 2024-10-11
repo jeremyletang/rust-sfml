@@ -4,7 +4,7 @@ use {
         ffi::audio::*,
         system::{Time, Vector3f},
     },
-    std::{os::raw::c_void, panic, ptr::NonNull},
+    std::{marker::PhantomData, os::raw::c_void, panic, ptr::NonNull},
 };
 
 /// Trait for streamed audio sources.
@@ -29,7 +29,12 @@ pub trait SoundStream: Send {
 #[derive(Debug)]
 pub struct SoundStreamPlayer<'a, S: SoundStream + 'a> {
     sf_sound_stream: NonNull<sfSoundStream>,
-    stream: &'a mut S,
+    /// We need to hold a raw pointer instead of a reference, since
+    /// we send it to another thread, violating `&mut` rules.
+    ///
+    /// Not sure if `NonNull` can be used to be honest. Not gonna risk it.
+    stream: *mut S,
+    _borrow: PhantomData<&'a mut S>,
 }
 
 unsafe extern "C" fn get_data_callback<S: SoundStream>(
@@ -73,19 +78,22 @@ unsafe extern "C" fn seek_callback<S: SoundStream>(
 impl<'a, S: SoundStream> SoundStreamPlayer<'a, S> {
     /// Create a new `SoundStreamPlayer` with the specified [`SoundStream`].
     pub fn new(sound_stream: &'a mut S) -> Self {
-        SoundStreamPlayer {
+        let channel_count = sound_stream.channel_count();
+        let sample_rate = sound_stream.sample_rate();
+        let sound_stream: *mut S = sound_stream;
+        Self {
             sf_sound_stream: unsafe {
-                let ptr: *mut S = sound_stream;
                 NonNull::new(sfSoundStream_create(
                     Some(get_data_callback::<S>),
                     Some(seek_callback::<S>),
-                    sound_stream.channel_count(),
-                    sound_stream.sample_rate(),
-                    ptr.cast(),
+                    channel_count,
+                    sample_rate,
+                    sound_stream.cast(),
                 ))
                 .expect("Failed to create SoundStreamPlayer")
             },
             stream: sound_stream,
+            _borrow: PhantomData,
         }
     }
     /// Start or resume playing the audio stream.
@@ -149,8 +157,8 @@ impl<'a, S: SoundStream> SoundStreamPlayer<'a, S> {
     pub fn stop(&mut self) -> &mut S {
         unsafe {
             sfSoundStream_stop(self.sf_sound_stream.as_ptr());
+            &mut *self.stream
         }
-        self.stream
     }
     /// Get the current playing position, from the beginning of the stream
     #[must_use]
