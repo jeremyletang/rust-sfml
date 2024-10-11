@@ -124,6 +124,13 @@ impl Texture {
         Ok(new)
     }
 
+    /// Convenience method to easily create and load a `Texture` from an iamge.
+    pub fn from_image(image: &Image, area: IntRect) -> SfResult<SfBox<Self>> {
+        let mut new = Self::new()?;
+        new.load_from_image(image, area)?;
+        Ok(new)
+    }
+
     /// Load texture from an image
     ///
     /// # Arguments
