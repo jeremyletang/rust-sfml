@@ -1,15 +1,35 @@
-use std::env;
+use std::{
+    env,
+    path::{Path, PathBuf},
+};
 
-fn static_link_windows(feat_window: bool, feat_audio: bool, feat_graphics: bool, env: WinEnv) {
+fn static_link_windows(
+    feat_window: bool,
+    feat_audio: bool,
+    feat_graphics: bool,
+    env: WinEnv,
+    build_lib_path: &Path,
+) {
     let arch = match env::var("CARGO_CFG_TARGET_ARCH").as_deref() {
         Ok("x86") => "x86",
         Ok("x86_64") => "x64",
         _ => panic!("Failed to determine cpu arch (CARGO_CFG_TARGET_ARCH))"),
     };
-    println!(
-        "cargo:rustc-link-search=native=SFML/extlibs/libs-{seg}/{arch}",
+    let sfml_extlibs_path: PathBuf = format!(
+        "SFML/extlibs/libs-{seg}/{arch}",
         seg = env.sfml_extlib_name()
-    );
+    )
+    .into();
+    // Copy only needed SFML extlibs to out dir to avoid linking every ext lib.
+    // We don't need libFLAC, because we build it ourselves.
+    for lib in ["freetype", "openal32", "vorbisenc", "vorbisfile", "vorbis"] {
+        let lib_name = env.lib_filename(lib);
+        std::fs::copy(
+            sfml_extlibs_path.join(&lib_name),
+            build_lib_path.join(&lib_name),
+        )
+        .unwrap();
+    }
     println!("cargo:rustc-link-lib=dylib=winmm");
     println!("cargo:rustc-link-lib=dylib=user32");
     if feat_window {
@@ -64,11 +84,20 @@ impl WinEnv {
             _ => None,
         }
     }
-    fn sfml_extlib_name(self) -> &'static str {
+    fn sfml_extlib_name(&self) -> &'static str {
         match self {
             WinEnv::Gnu => "mingw",
             WinEnv::Msvc => "msvc",
         }
+    }
+    fn lib_ext(&self) -> &'static str {
+        match self {
+            WinEnv::Gnu => ".a",
+            WinEnv::Msvc => ".lib",
+        }
+    }
+    fn lib_filename(&self, lib: &str) -> String {
+        [lib, self.lib_ext()].concat()
     }
 }
 
@@ -96,8 +125,7 @@ fn main() {
     if !feat_graphics {
         cmake.define("SFML_BUILD_GRAPHICS", "FALSE");
     }
-    let path = cmake.build();
-    dbg!(&path);
+    let cmake_build_path = cmake.build();
     let mut build = cc::Build::new();
     build
         .cpp(true)
@@ -187,9 +215,10 @@ fn main() {
     } else {
         "build/lib"
     };
+    let build_lib_path = cmake_build_path.join(link_search);
     println!(
         "cargo:rustc-link-search=native={}",
-        path.join(link_search).display()
+        build_lib_path.display()
     );
     println!("cargo:rustc-link-lib=static=rcsfml");
     link_sfml_subsystem("system");
@@ -198,7 +227,7 @@ fn main() {
     } else if is_windows {
         match win_env {
             Some(env) => {
-                static_link_windows(feat_window, feat_audio, feat_graphics, env);
+                static_link_windows(feat_window, feat_audio, feat_graphics, env, &build_lib_path);
             }
             None => {
                 panic!("Failed to determine windows environment (MSVC/Mingw)");
