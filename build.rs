@@ -42,11 +42,12 @@ fn static_link_linux(feat_window: bool, feat_audio: bool, feat_graphics: bool) {
     }
     if feat_audio {
         println!("cargo:rustc-link-lib=dylib=openal");
-        println!("cargo:rustc-link-lib=dylib=FLAC");
         println!("cargo:rustc-link-lib=dylib=vorbisenc");
         println!("cargo:rustc-link-lib=dylib=vorbisfile");
         println!("cargo:rustc-link-lib=dylib=vorbis");
-        println!("cargo:rustc-link-lib=dylib=ogg");
+        // Odd that we have to do this, I thought that libflac-sys would do this for us
+        println!("cargo:rustc-link-lib=static=FLAC");
+        println!("cargo:rustc-link-lib=static=ogg");
     }
 }
 

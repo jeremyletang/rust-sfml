@@ -27,7 +27,7 @@ exclude = [
 default = ["graphics", "audio"]
 window = ["dep:bitflags"]
 graphics = ["window"]
-audio = []
+audio = ["dep:libflac-sys"]
 serde = ["dep:serde"]
 # Used to skip running certain tests on CI, since it's running in a headless environment.
 ci-headless = []
@@ -46,6 +46,10 @@ version = "1.0"
 
 [dependencies.bitflags]
 version = "2.3.3"
+optional = true
+
+[dependencies.libflac-sys]
+version = "0.3"
 optional = true
 
 [build-dependencies]
