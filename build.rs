@@ -81,8 +81,6 @@ fn main() {
     // we cannot support debug builds of SFML.
     cmake.profile("Release");
     cmake
-        .define("CMAKE_MSVC_RUNTIME_LIBRARY", "MultiThreaded")
-        .define("SFML_USE_STATIC_STD_LIBS", "TRUE")
         .define("BUILD_SHARED_LIBS", "FALSE")
         .define("SFML_BUILD_NETWORK", "FALSE")
         .define("SFML_INSTALL_PKGCONFIG_FILES", "FALSE")
@@ -107,9 +105,9 @@ fn main() {
         .define("CSFML_AUDIO_EXPORTS", None)
         .define("CSFML_WINDOW_EXPORTS", None)
         .define("CSFML_GRAPHICS_EXPORTS", None)
+        .define("SFML_STATIC", None)
         .include("CSFML/src/")
         .include("SFML/include");
-    build.define("SFML_STATIC", None).static_crt(true);
     build.files(
         [
             "CSFML/src/System/Clock.cpp",
