@@ -77,14 +77,11 @@ fn main() {
     let feat_window = env::var("CARGO_FEATURE_WINDOW").is_ok();
     let feat_graphics = env::var("CARGO_FEATURE_GRAPHICS").is_ok();
     let mut cmake = cmake::Config::new("SFML");
-    let cmake_debug = cmake.get_profile() == "Debug";
-    let msvc_rt = if cmake_debug {
-        "MultiThreadedDebug"
-    } else {
-        "MultiThreaded"
-    };
+    // Due to complications with static linking of MSVC runtime (debug version),
+    // we cannot support debug builds of SFML.
+    cmake.profile("Release");
     cmake
-        .define("CMAKE_MSVC_RUNTIME_LIBRARY", msvc_rt)
+        .define("CMAKE_MSVC_RUNTIME_LIBRARY", "MultiThreaded")
         .define("SFML_USE_STATIC_STD_LIBS", "TRUE")
         .define("BUILD_SHARED_LIBS", "FALSE")
         .define("SFML_BUILD_NETWORK", "FALSE")
@@ -187,11 +184,7 @@ fn main() {
     // I have no idea why this is different on Windows and Linux
     let win_env = WinEnv::get();
     let link_search = if matches!(win_env, Some(WinEnv::Msvc)) {
-        if cmake_debug {
-            "build/lib/Debug"
-        } else {
-            "build/lib/Release"
-        }
+        "build/lib/Release"
     } else {
         "build/lib"
     };
@@ -200,7 +193,7 @@ fn main() {
         path.join(link_search).display()
     );
     println!("cargo:rustc-link-lib=static=rcsfml");
-    link_sfml_subsystem("system", cmake_debug);
+    link_sfml_subsystem("system");
     if is_unix && is_linux {
         static_link_linux(feat_window, feat_audio, feat_graphics);
     } else if is_windows {
@@ -214,17 +207,16 @@ fn main() {
         }
     }
     if feat_audio {
-        link_sfml_subsystem("audio", cmake_debug);
+        link_sfml_subsystem("audio");
     }
     if feat_window {
-        link_sfml_subsystem("window", cmake_debug);
+        link_sfml_subsystem("window");
     }
     if feat_graphics {
-        link_sfml_subsystem("graphics", cmake_debug);
+        link_sfml_subsystem("graphics");
     }
 }
 
-fn link_sfml_subsystem(name: &str, debug: bool) {
-    let suffix = if debug { "-d" } else { "" };
-    println!("cargo:rustc-link-lib=static=sfml-{name}-s{suffix}");
+fn link_sfml_subsystem(name: &str) {
+    println!("cargo:rustc-link-lib=static=sfml-{name}-s");
 }
