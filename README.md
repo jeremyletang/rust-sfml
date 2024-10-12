@@ -3,12 +3,24 @@ rust-sfml ![Build Status](https://github.com/jeremyletang/rust-sfml/actions/work
 
 Rust bindings for [SFML](http://www.sfml-dev.org), the Simple and Fast Multimedia Library.
 
-Requirements
+Platform support
+================
+
+|             |                                                   |
+|-------------|---------------------------------------------------|
+| 🐧 Linux    | ✅ Most tested                                    |
+| 🪟 Windows  | ⚠️ Rarely tested. Looking for testers/maintainers! |
+| 🍎 Mac OS X | ❌ Untested. Looking for testers/maintainers!     |
+
+Prerequisites
 =============
 
-- Linux, Windows, or OS X
 - Rust 1.81 or later
-- [CMake](https://cmake.org/), and a C++ compiler for building SFML
+- [CMake](https://cmake.org/), and a C++ toolchain for building SFML
+- 🐧 On Linux, you need the following dependencies installed:
+   - Window module: `libGL libX11 libXcursor libXrandr`
+   - Graphics module: `libfreetype`
+   - Audio module: `libopenal libvorbisenc libvorbisfile libvorbis`
 
 Documentation
 =============
