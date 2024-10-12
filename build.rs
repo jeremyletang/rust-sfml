@@ -113,7 +113,6 @@ fn main() {
     let feat_audio = env::var("CARGO_FEATURE_AUDIO").is_ok();
     let feat_window = env::var("CARGO_FEATURE_WINDOW").is_ok();
     let feat_graphics = env::var("CARGO_FEATURE_GRAPHICS").is_ok();
-    let libflac_root = env::var("DEP_FLAC_ROOT").unwrap();
     let mut cmake = cmake::Config::new("SFML");
     let win_env = WinEnv::get();
     let release_profile = env::var("PROFILE").is_ok_and(|prof| prof == "release");
@@ -142,11 +141,22 @@ fn main() {
             }
             _ => ("/lib", "/build/src/libFLAC"),
         };
-        cmake.define(
-            "CMAKE_PREFIX_PATH",
-            // We add both the path to libogg and libFLAC. Two separate paths, separated by `;`.
-            [&libflac_root, libogg_loc, ";", &libflac_root, libflac_loc].concat(),
-        );
+        match env::var("DEP_FLAC_ROOT") {
+            Ok(libflac_root) => {
+                cmake.define(
+                    "CMAKE_PREFIX_PATH",
+                    // We add both the path to libogg and libFLAC. Two separate paths, separated by `;`.
+                    [&libflac_root, libogg_loc, ";", &libflac_root, libflac_loc].concat(),
+                );
+            }
+            Err(e) => {
+                println!(
+                    "cargo:warning=Failed to get DEP_FLAC_ROOT: {e}.\n\
+                          Now the build will horribly break.\n\
+                          Except maybe on CI. ;)"
+                );
+            }
+        }
     }
     if !feat_window {
         cmake.define("SFML_BUILD_WINDOW", "FALSE");
