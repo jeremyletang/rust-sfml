@@ -113,11 +113,13 @@ fn main() {
     let feat_audio = env::var("CARGO_FEATURE_AUDIO").is_ok();
     let feat_window = env::var("CARGO_FEATURE_WINDOW").is_ok();
     let feat_graphics = env::var("CARGO_FEATURE_GRAPHICS").is_ok();
+    let libflac_root = env::var("DEP_FLAC_ROOT").unwrap();
     let mut cmake = cmake::Config::new("SFML");
     // Due to complications with static linking of MSVC runtime (debug version),
     // we cannot support debug builds of SFML.
     cmake.profile("Release");
     cmake
+        .define("CMAKE_FIND_DEBUG_MODE", "TRUE") // I think I'll leave this on for now. Useful for debugging.
         .define("BUILD_SHARED_LIBS", "FALSE")
         .define("SFML_BUILD_NETWORK", "FALSE")
         .define("SFML_INSTALL_PKGCONFIG_FILES", "FALSE")
@@ -125,6 +127,13 @@ fn main() {
         .no_build_target(true);
     if !feat_audio {
         cmake.define("SFML_BUILD_AUDIO", "FALSE");
+    } else {
+        // Add search path for libFLAC built by libflac-sys
+        cmake.define(
+            "CMAKE_PREFIX_PATH",
+            // We add both the path to libogg and libFLAC. Two separate paths, separated by `;`.
+            [&libflac_root, "/lib;", &libflac_root, "/build/src/libFLAC"].concat(),
+        );
     }
     if !feat_window {
         cmake.define("SFML_BUILD_WINDOW", "FALSE");
