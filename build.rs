@@ -116,6 +116,7 @@ fn main() {
     let libflac_root = env::var("DEP_FLAC_ROOT").unwrap();
     let mut cmake = cmake::Config::new("SFML");
     let win_env = WinEnv::get();
+    let release_profile = env::var("PROFILE").is_ok_and(|prof| prof == "release");
     // Due to complications with static linking of MSVC runtime (debug version),
     // we cannot support debug builds of SFML.
     cmake.profile("Release");
@@ -131,7 +132,14 @@ fn main() {
     } else {
         // Add search path for libFLAC built by libflac-sys
         let (libogg_loc, libflac_loc) = match win_env {
-            Some(WinEnv::Msvc) => ("/lib", "/build/src/libFLAC/Debug"),
+            Some(WinEnv::Msvc) => {
+                let libflac_loc = if release_profile {
+                    "/build/src/libFLAC/Release"
+                } else {
+                    "/build/src/libFLAC/Debug"
+                };
+                ("/lib", libflac_loc)
+            }
             _ => ("/lib", "/build/src/libFLAC"),
         };
         cmake.define(
