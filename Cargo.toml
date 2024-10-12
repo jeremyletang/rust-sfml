@@ -20,7 +20,15 @@ exclude = [
     "SFML/extlibs/libs-ios",
     "SFML/extlibs/libs-mingw-ucrt",
     "SFML/extlibs/libs-msvc-universal",
-    "SFML/extlibs/libs-osx"
+    "SFML/extlibs/libs-osx",
+    "SFML/extlibs/libs-mingw/x64/libFLAC.a",
+    "SFML/extlibs/libs-mingw/x64/libogg.a",
+    "SFML/extlibs/libs-mingw/x86/libFLAC.a",
+    "SFML/extlibs/libs-mingw/x86/libogg.a",
+    "SFML/extlibs/libs-msvc/x64/flac.lib",
+    "SFML/extlibs/libs-msvc/x64/ogg.lib",
+    "SFML/extlibs/libs-msvc/x86/flac.lib",
+    "SFML/extlibs/libs-msvc/x86/ogg.lib",
 ]
 
 [features]
