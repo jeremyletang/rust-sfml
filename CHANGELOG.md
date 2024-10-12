@@ -2,19 +2,41 @@
 
 ## Unreleased
 
+- Nothing yet
+
+## 0.23.0
+
+### Changed
+
+- ⚠️ Changed build process to **statically link** as much of SFML as possible. If you get a build error, open an issue!
+- Rework `LoadResult` to `SfResult` as a more generic error type.
+- Use `SfResult` in a lot of APIs that previously returned `Option`, `bool`, or panicked on error.
+- Fixed some methods on `Image`, `RenderWindow`, `RenderTexture` and `Window` to properly take `&mut self` instead of `&self`.
+- Examples now use `?` for error handling rather than `.unwrap()`.
+- `SoundStream::get_data` now returns an immutable slice, as it should.
+- `SoundStream` now requires `Send` bound, as the samples are polled from a different thread.
+- Renamed `Image::create_from_pixels` to `Image::from_pixels`
+
 ### Removed
 
 - Remove `Default` impl for clock because `Clock::start` can fail.
 
-### Changed
+### Added
 
-- Rework `LoadResult` to `SfResult` as a more generic error type.
-- Use `SfResult` in a lot of APIs that previously returned `Option`, `bool`, or panicked on error.
+- `Texture::from_image` convenience method.
+- Clock example. Mostly just to have an example that only links against the system submodule.
+
+### Fixed
+
+- Fixed docs.rs build failing due to linking shenanigans. The new static linking model fixes this.
+- Fixed potential unsoundness of `SoundStreamPlayer` holding a `&mut SoundStream` simultaneously with SFML
+  using it from another thread.
 
 ### Documentation
 
 - Experiment with splitting up methods into different `impl` blocks, for better organization.
   See `RenderWindow`'s documentation for example.
+- Various minor doc fixes.
 
 ## 0.22.0
 
