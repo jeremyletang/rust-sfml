@@ -24,11 +24,12 @@ fn static_link_windows(
     // We don't need libFLAC, because we build it ourselves.
     for lib in ["freetype", "openal32", "vorbisenc", "vorbisfile", "vorbis"] {
         let lib_name = env.lib_filename(lib);
-        std::fs::copy(
-            sfml_extlibs_path.join(&lib_name),
-            build_lib_path.join(&lib_name),
-        )
-        .unwrap();
+        let from = sfml_extlibs_path.join(&lib_name);
+        let to = build_lib_path.join(&lib_name);
+        let result = std::fs::copy(&from, &to);
+        if let Err(e) = result {
+            println!("cargo:warning=Failed to copy {from:?} to {to:?}: {e}",);
+        }
     }
     println!("cargo:rustc-link-lib=dylib=winmm");
     println!("cargo:rustc-link-lib=dylib=user32");
@@ -96,8 +97,14 @@ impl WinEnv {
             WinEnv::Msvc => ".lib",
         }
     }
+    fn lib_prefix(&self) -> &'static str {
+        match self {
+            WinEnv::Gnu => "lib",
+            WinEnv::Msvc => "",
+        }
+    }
     fn lib_filename(&self, lib: &str) -> String {
-        [lib, self.lib_ext()].concat()
+        [self.lib_prefix(), lib, self.lib_ext()].concat()
     }
 }
 
