@@ -115,6 +115,7 @@ fn main() {
     let feat_graphics = env::var("CARGO_FEATURE_GRAPHICS").is_ok();
     let libflac_root = env::var("DEP_FLAC_ROOT").unwrap();
     let mut cmake = cmake::Config::new("SFML");
+    let win_env = WinEnv::get();
     // Due to complications with static linking of MSVC runtime (debug version),
     // we cannot support debug builds of SFML.
     cmake.profile("Release");
@@ -129,10 +130,14 @@ fn main() {
         cmake.define("SFML_BUILD_AUDIO", "FALSE");
     } else {
         // Add search path for libFLAC built by libflac-sys
+        let (libogg_loc, libflac_loc) = match win_env {
+            Some(WinEnv::Msvc) => ("/lib", "/build/src/libFLAC/Debug"),
+            _ => ("/lib", "/build/src/libFLAC"),
+        };
         cmake.define(
             "CMAKE_PREFIX_PATH",
             // We add both the path to libogg and libFLAC. Two separate paths, separated by `;`.
-            [&libflac_root, "/lib;", &libflac_root, "/build/src/libFLAC"].concat(),
+            [&libflac_root, libogg_loc, ";", &libflac_root, libflac_loc].concat(),
         );
     }
     if !feat_window {
@@ -224,8 +229,6 @@ fn main() {
     let is_linux = env::var("CARGO_CFG_TARGET_OS")
         .map(|os| os == "linux")
         .unwrap_or(false);
-    // I have no idea why this is different on Windows and Linux
-    let win_env = WinEnv::get();
     let link_search = if matches!(win_env, Some(WinEnv::Msvc)) {
         "build/lib/Release"
     } else {
