@@ -27,6 +27,10 @@
 - `Texture::from_image` convenience method.
 - Clock example. Mostly just to have an example that only links against the system submodule.
 
+### Improved
+
+- Improve `Debug` impl for `SfBox` and opaque SFML types
+
 ### Fixed
 
 - Fixed docs.rs build failing due to linking shenanigans. The new static linking model fixes this.

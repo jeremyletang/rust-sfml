@@ -7,8 +7,18 @@ use std::{
 /// An owning pointer to an SFML-allocated object.
 ///
 /// On [`Drop`], it calls the appropriate SFML destructor for the object.
-#[derive(Debug)]
 pub struct SfBox<T: ?Sized>(pub(crate) NonNull<T>);
+
+impl<T> std::fmt::Debug for SfBox<T> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
+            "SfBox<{}>({:p})",
+            core::any::type_name::<T>(),
+            self.0.as_ptr()
+        )
+    }
+}
 
 impl<T> SfBox<T> {
     pub(crate) fn new(ptr: *mut T) -> Option<Self> {

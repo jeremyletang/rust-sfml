@@ -5,10 +5,14 @@ macro_rules! decl_opaque {
         $(
             $(#[$attr])*
             #[repr(C)]
-            #[derive(Debug)]
             #[allow(missing_copy_implementations)]
             pub struct $name {
                 _opaque: [u8; 0],
+            }
+            impl ::std::fmt::Debug for $name {
+                fn fmt(&self, f: &mut ::std::fmt::Formatter) -> std::fmt::Result {
+                    write!(f, concat!(stringify!($name), "(<opaque> @ {:p})"), self)
+                }
             }
         )+
     };
