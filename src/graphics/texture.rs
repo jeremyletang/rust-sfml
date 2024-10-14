@@ -2,7 +2,7 @@ use {
     crate::{
         ffi::graphics::{self as ffi, sfTexture_create},
         graphics::{Image, IntRect, RenderWindow},
-        sf_box::{Dispose, SfBox},
+        sf_box::SfBox,
         system::{InputStream, Vector2u},
         window::Window,
         IntoSfResult, SfError, SfResult,
@@ -371,8 +371,8 @@ impl ToOwned for Texture {
     }
 }
 
-impl Dispose for Texture {
-    unsafe fn dispose(&mut self) {
+impl Drop for Texture {
+    fn drop(&mut self) {
         unsafe { ffi::sfTexture_destroy(self) }
     }
 }

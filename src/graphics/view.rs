@@ -1,9 +1,5 @@
 use crate::{
-    ffi::graphics as ffi,
-    graphics::FloatRect,
-    sf_box::{Dispose, RawDefault},
-    system::Vector2f,
-    SfBox,
+    ffi::graphics as ffi, graphics::FloatRect, sf_box::RawDefault, system::Vector2f, SfBox,
 };
 
 decl_opaque! {
@@ -167,8 +163,8 @@ impl RawDefault for View {
     }
 }
 
-impl Dispose for View {
-    unsafe fn dispose(&mut self) {
+impl Drop for View {
+    fn drop(&mut self) {
         unsafe { ffi::sfView_destroy(self) }
     }
 }

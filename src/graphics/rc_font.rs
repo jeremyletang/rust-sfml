@@ -1,7 +1,7 @@
 use {
     crate::{
         graphics::{font::Info, Font, Glyph, Texture},
-        sf_box::{Dispose, SfBox},
+        sf_box::SfBox,
         SfResult,
     },
     std::{
@@ -339,11 +339,5 @@ impl ToOwned for RcFont {
         RcFont {
             font: Rc::new(RefCell::new(self.font.borrow().to_owned())),
         }
-    }
-}
-
-impl Dispose for RcFont {
-    unsafe fn dispose(&mut self) {
-        unsafe { self.font.borrow_mut().dispose() }
     }
 }

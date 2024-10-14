@@ -2,7 +2,7 @@ use {
     crate::{
         ffi::graphics as ffi,
         graphics::{Glyph, Texture},
-        sf_box::{Dispose, SfBox},
+        sf_box::SfBox,
         system::InputStream,
         IntoSfResult, SfError, SfResult,
     },
@@ -351,8 +351,8 @@ impl ToOwned for Font {
     }
 }
 
-impl Dispose for Font {
-    unsafe fn dispose(&mut self) {
+impl Drop for Font {
+    fn drop(&mut self) {
         unsafe { ffi::sfFont_destroy(self) }
     }
 }

@@ -1,6 +1,6 @@
 use crate::{
     ffi::window::{self as ffi},
-    sf_box::{Dispose, SfBox},
+    sf_box::SfBox,
     system::Vector2u,
     IntoSfResult, SfResult,
 };
@@ -23,8 +23,8 @@ decl_opaque! {
 Cursor;
 }
 
-impl Dispose for Cursor {
-    unsafe fn dispose(&mut self) {
+impl Drop for Cursor {
+    fn drop(&mut self) {
         unsafe {
             ffi::sfCursor_destroy(self);
         }

@@ -23,10 +23,7 @@ pub(crate) mod system;
 pub(crate) mod window;
 
 use {
-    crate::{
-        sf_box::Dispose,
-        system::{Vector2, Vector3},
-    },
+    crate::system::{Vector2, Vector3},
     std::{
         ffi::c_void,
         fmt::Display,

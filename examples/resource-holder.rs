@@ -5,18 +5,18 @@ use {
         audio::{Sound, SoundBuffer},
         graphics::{Color, RenderTarget, RenderWindow, Sprite, Texture},
         window::{Event, Key, Style},
-        SfBox, SfResource, SfResult,
+        SfBox, SfResult,
     },
     std::{collections::HashMap, hash::Hash},
 };
 
 include!("../example_common.rs");
 
-struct ResourceHolder<Resource: SfResource, Identifier: Hash + Eq> {
+struct ResourceHolder<Resource, Identifier: Hash + Eq> {
     resource_map: HashMap<Identifier, SfBox<Resource>>,
 }
 
-impl<Resource: SfResource + ResLoad, Identifier: Hash + Eq> ResourceHolder<Resource, Identifier> {
+impl<Resource: ResLoad, Identifier: Hash + Eq> ResourceHolder<Resource, Identifier> {
     pub fn load(&mut self, identifier: Identifier, filename: &str) -> SfResult<()> {
         let res = Resource::load(filename)?;
         self.resource_map.insert(identifier, res);
@@ -27,7 +27,7 @@ impl<Resource: SfResource + ResLoad, Identifier: Hash + Eq> ResourceHolder<Resou
     }
 }
 
-trait ResLoad: SfResource {
+trait ResLoad {
     fn load(filename: &str) -> SfResult<SfBox<Self>>;
 }
 
@@ -43,7 +43,7 @@ impl ResLoad for SoundBuffer {
     }
 }
 
-impl<Resource: SfResource, Identifier: Hash + Eq> Default for ResourceHolder<Resource, Identifier> {
+impl<Resource, Identifier: Hash + Eq> Default for ResourceHolder<Resource, Identifier> {
     fn default() -> Self {
         Self {
             resource_map: HashMap::default(),

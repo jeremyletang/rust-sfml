@@ -1,6 +1,5 @@
 use crate::{
     ffi::window as ffi,
-    sf_box::Dispose,
     system::{SfStrConv, Vector2i, Vector2u},
     window::{thread_safety, ContextSettings, Cursor, Event, Style, VideoMode},
     SfBox, SfError, SfResult,
@@ -423,8 +422,8 @@ impl Window {
     }
 }
 
-impl Dispose for Window {
-    unsafe fn dispose(&mut self) {
+impl Drop for Window {
+    fn drop(&mut self) {
         unsafe {
             ffi::sfWindow_destroy(self);
         }

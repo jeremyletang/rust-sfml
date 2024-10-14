@@ -1,7 +1,6 @@
 use {
     crate::{
         ffi,
-        sf_box::Dispose,
         system::{InputStream, Time},
         IntoSfResult, SfBox, SfError, SfResult,
     },
@@ -197,8 +196,8 @@ impl ToOwned for SoundBuffer {
     }
 }
 
-impl Dispose for SoundBuffer {
-    unsafe fn dispose(&mut self) {
+impl Drop for SoundBuffer {
+    fn drop(&mut self) {
         unsafe {
             ffi::audio::sfSoundBuffer_destroy(self);
         }

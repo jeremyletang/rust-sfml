@@ -607,8 +607,8 @@ pub enum Scancode {
 
 type sfKeyboardKey = Key;
 
-impl Dispose for JoystickIdentification {
-    unsafe fn dispose(&mut self) {
+impl Drop for JoystickIdentification {
+    fn drop(&mut self) {
         unsafe {
             sfJoystickIdentification_destroy(self);
         }

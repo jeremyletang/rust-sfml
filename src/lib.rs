@@ -32,7 +32,7 @@ mod sf_box;
 pub mod system;
 #[cfg(feature = "window")]
 pub mod window;
-pub use sf_box::{SfBox, SfResource};
+pub use sf_box::SfBox;
 use std::{
     error::Error,
     ffi::{CString, NulError},
@@ -82,7 +82,7 @@ impl IntoSfResult<CString> for Result<CString, NulError> {
     }
 }
 
-impl<T: SfResource> IntoSfResult<SfBox<T>> for Option<SfBox<T>> {
+impl<T> IntoSfResult<SfBox<T>> for Option<SfBox<T>> {
     fn into_sf_result(self) -> SfResult<SfBox<T>> {
         self.ok_or(SfError::CallFailed)
     }

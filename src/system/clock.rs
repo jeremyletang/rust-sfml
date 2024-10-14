@@ -1,10 +1,8 @@
-use crate::{
-    ffi::system as ffi, sf_box::Dispose, system::Time, IntoSfResult as _, SfBox, SfResult,
-};
+use crate::{ffi::system as ffi, system::Time, IntoSfResult as _, SfBox, SfResult};
 pub use ffi::sfClock as Clock;
 
-impl Dispose for Clock {
-    unsafe fn dispose(&mut self) {
+impl Drop for Clock {
+    fn drop(&mut self) {
         unsafe {
             ffi::sfClock_delete(self);
         }

@@ -5,7 +5,6 @@ use crate::{
         RcText, RectangleShape, RenderStates, RenderTarget, Sprite, Text, Texture, Vertex,
         VertexBuffer, View,
     },
-    sf_box::Dispose,
     system::{Vector2f, Vector2i, Vector2u},
     window::ContextSettings,
     IntoSfResult, SfBox, SfError, SfResult,
@@ -207,8 +206,8 @@ impl RenderTarget for RenderTexture {
     }
 }
 
-impl Dispose for RenderTexture {
-    unsafe fn dispose(&mut self) {
+impl Drop for RenderTexture {
+    fn drop(&mut self) {
         unsafe { ffi::sfRenderTexture_destroy(self) }
     }
 }

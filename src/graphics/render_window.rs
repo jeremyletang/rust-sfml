@@ -5,7 +5,6 @@ use crate::{
         RcText, RectangleShape, RenderStates, RenderTarget, Sprite, Text, Vertex, VertexBuffer,
         View,
     },
-    sf_box::Dispose,
     system::{SfStrConv, Vector2f, Vector2i, Vector2u},
     window::{thread_safety, ContextSettings, Cursor, Event, Handle, Style, VideoMode},
     IntoSfResult, SfBox, SfError, SfResult,
@@ -748,8 +747,8 @@ impl RenderTarget for RenderWindow {
     }
 }
 
-impl Dispose for RenderWindow {
-    unsafe fn dispose(&mut self) {
+impl Drop for RenderWindow {
+    fn drop(&mut self) {
         unsafe {
             ffi::sfRenderWindow_destroy(self);
         }

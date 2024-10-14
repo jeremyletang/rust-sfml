@@ -29,8 +29,8 @@ decl_opaque! {
 
 pub type sfTime = i64;
 
-impl Dispose for sfStdString {
-    unsafe fn dispose(&mut self) {
+impl Drop for sfStdString {
+    fn drop(&mut self) {
         unsafe { sfStdString_destroy(self) }
     }
 }
@@ -86,8 +86,8 @@ impl PartialEq<sfStdString> for str {
     }
 }
 
-impl Dispose for sfStdStringVector {
-    unsafe fn dispose(&mut self) {
+impl Drop for sfStdStringVector {
+    fn drop(&mut self) {
         unsafe {
             sfStdStringVector_destroy(self);
         }

@@ -1,7 +1,6 @@
 use crate::{
     ffi::graphics::*,
     graphics::{Drawable, PrimitiveType, RenderStates, RenderTarget, Vertex},
-    sf_box::Dispose,
     IntoSfResult, SfBox, SfError, SfResult,
 };
 
@@ -221,8 +220,8 @@ impl ToOwned for VertexBuffer {
     }
 }
 
-impl Dispose for VertexBuffer {
-    unsafe fn dispose(&mut self) {
+impl Drop for VertexBuffer {
+    fn drop(&mut self) {
         unsafe {
             sfVertexBuffer_destroy(self);
         }

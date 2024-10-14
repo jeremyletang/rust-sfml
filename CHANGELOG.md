@@ -19,6 +19,7 @@
 
 ### Removed
 
+- Remove `SfResource` trait. It's not required anymore.
 - Remove `Default` impl for clock because `Clock::start` can fail.
 
 ### Added

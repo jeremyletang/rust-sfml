@@ -1,5 +1,5 @@
 use {
-    crate::{ffi::system::sfInputStream, sf_box::Dispose, SfBox},
+    crate::{ffi::system::sfInputStream, SfBox},
     std::{
         io::{Read, Seek, SeekFrom},
         marker::PhantomData,
@@ -65,8 +65,8 @@ pub struct InputStream<'src, T> {
     _source: PhantomData<&'src mut T>,
 }
 
-impl Dispose for sfInputStream {
-    unsafe fn dispose(&mut self) {
+impl Drop for sfInputStream {
+    fn drop(&mut self) {
         unsafe { crate::ffi::system::sfInputStream_destroy(self) }
     }
 }

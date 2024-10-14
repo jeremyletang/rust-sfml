@@ -2,7 +2,6 @@ use {
     crate::{
         ffi::graphics as ffi,
         graphics::{Color, IntRect},
-        sf_box::Dispose,
         system::{InputStream, Vector2u},
         IntoSfResult, SfBox, SfError, SfResult,
     },
@@ -294,8 +293,8 @@ impl ToOwned for Image {
     }
 }
 
-impl Dispose for Image {
-    unsafe fn dispose(&mut self) {
+impl Drop for Image {
+    fn drop(&mut self) {
         unsafe {
             ffi::sfImage_destroy(self);
         }

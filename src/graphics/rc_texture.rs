@@ -1,7 +1,7 @@
 use {
     crate::{
         graphics::{Image, IntRect, RenderWindow, Texture},
-        sf_box::{Dispose, SfBox},
+        sf_box::SfBox,
         system::Vector2u,
         window::Window,
         SfResult,
@@ -370,14 +370,6 @@ impl ToOwned for RcTexture {
     fn to_owned(&self) -> Self {
         RcTexture {
             texture: Rc::new(RefCell::new(self.texture.borrow().to_owned())),
-        }
-    }
-}
-
-impl Dispose for RcTexture {
-    unsafe fn dispose(&mut self) {
-        unsafe {
-            self.texture.borrow_mut().dispose();
         }
     }
 }
