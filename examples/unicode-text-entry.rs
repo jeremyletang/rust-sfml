@@ -11,7 +11,10 @@ fn main() -> SfResult<()> {
     )?;
     window.set_vertical_sync_enabled(true);
 
-    let font = Font::from_file(example_res!("sansation.ttf"))?;
+    let font = match std::env::args().nth(1) {
+        Some(path) => Font::from_file(&path)?,
+        None => Font::from_file(example_res!("sansation.ttf"))?,
+    };
     let mut string = String::from("This text can be edited.\nTry it!");
 
     let mut text = Text::new(&string, &font, 24);
