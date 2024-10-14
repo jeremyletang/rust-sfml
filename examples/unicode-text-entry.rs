@@ -1,4 +1,7 @@
-use sfml::{graphics::*, window::*, SfResult};
+use {
+    sfml::{graphics::*, window::*, SfResult},
+    std::usize,
+};
 
 include!("../example_common.rs");
 
@@ -27,6 +30,7 @@ fn main() -> SfResult<()> {
     let mut italic = false;
     let mut underlined = false;
     let mut strikethrough = false;
+    let mut show_cursor = true;
 
     'mainloop: loop {
         while let Some(ev) = window.poll_event() {
@@ -61,10 +65,11 @@ fn main() -> SfResult<()> {
                 }
                 Event::KeyPressed { code, .. } => {
                     match code {
-                        Key::F1 => bold = !bold,
-                        Key::F2 => italic = !italic,
-                        Key::F3 => underlined = !underlined,
-                        Key::F4 => strikethrough = !strikethrough,
+                        Key::F1 => bold ^= true,
+                        Key::F2 => italic ^= true,
+                        Key::F3 => underlined ^= true,
+                        Key::F4 => strikethrough ^= true,
+                        Key::F5 => show_cursor ^= true,
                         _ => {}
                     }
                     let mut style = TextStyle::default();
@@ -90,17 +95,30 @@ fn main() -> SfResult<()> {
             let fc = text.fill_color();
             let oc = text.outline_color();
             format!(
-            "fill: {:02x}{:02x}{:02x}{:02x} outline: {:02x}{:02x}{:02x}{:02x} outline thickness: {} style: {:?} (F1-F4)",
+            "fill: {:02x}{:02x}{:02x}{:02x} outline: {:02x}{:02x}{:02x}{:02x} outline thickness: {} style: {:?} (F1-F4) cursor: {} (F5)",
             fc.r, fc.g, fc.b, fc.a,
             oc.r, oc.g, oc.b, oc.a,
             text.outline_thickness(),
-            text.style()
+            text.style(),
+            show_cursor
         )
         };
         status_text.set_string(&status_string);
 
         window.clear(Color::BLACK);
         window.draw(&text);
+        if show_cursor {
+            let mut end = text.find_character_pos(usize::MAX);
+            end.x += 2.0;
+            end.y += 2.0;
+            let mut rs = RectangleShape::new();
+            rs.set_fill_color(Color::TRANSPARENT);
+            rs.set_outline_color(Color::YELLOW);
+            rs.set_outline_thickness(-3.0);
+            rs.set_position(end);
+            rs.set_size((8.0, 24.0));
+            window.draw(&rs);
+        }
         window.draw(&status_text);
         window.display();
     }
