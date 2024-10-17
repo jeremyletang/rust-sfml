@@ -678,4 +678,6 @@ pub enum sfSensorType {
     Count,
 }
 
+type sfGlFunctionPointer = *const c_void;
+
 include!("window_bindgen.rs");
