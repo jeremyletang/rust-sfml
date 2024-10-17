@@ -15,6 +15,9 @@ use {
 
 include!("../example_common.rs");
 
+/// How much time needs to pass for the AI to react
+const AI_REACT_DELAY: Time = Time::seconds(0.0333);
+
 fn main() -> SfResult<()> {
     let mut rng = thread_rng();
 
@@ -92,7 +95,6 @@ fn main() -> SfResult<()> {
 
     // Define the paddles properties
     let mut ai_timer = Clock::start()?;
-    let ai_time = Time::seconds(0.0333);
     let paddle_speed = 400.;
     let mut right_paddle_speed = 0.;
     let mut ball_speed = 400.;
@@ -178,7 +180,7 @@ fn main() -> SfResult<()> {
             }
 
             // Update the computer's paddle direction according to the ball position
-            if ai_timer.elapsed_time() > ai_time {
+            if ai_timer.elapsed_time() > AI_REACT_DELAY {
                 ai_timer.restart();
                 if ball.position().y + ball_radius > right_paddle.position().y + paddle_size.y / 2.
                 {

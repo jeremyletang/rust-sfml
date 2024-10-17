@@ -65,7 +65,7 @@ impl Time {
     /// Constructs a time value from a number of seconds.
     #[must_use]
     #[expect(clippy::cast_possible_truncation)]
-    pub fn seconds(seconds: f32) -> Self {
+    pub const fn seconds(seconds: f32) -> Self {
         Time((seconds * 1_000_000.) as i64)
     }
 
@@ -83,26 +83,26 @@ impl Time {
 
     /// Returns the time value as a number of seconds.
     #[must_use]
-    pub fn as_seconds(self) -> f32 {
+    pub const fn as_seconds(self) -> f32 {
         self.0 as f32 / 1_000_000.
     }
 
     /// Returns the time value as a number of milliseconds.
     #[must_use]
     #[expect(clippy::cast_possible_truncation)]
-    pub fn as_milliseconds(self) -> i32 {
+    pub const fn as_milliseconds(self) -> i32 {
         (self.0 / 1000) as i32
     }
 
     /// Returns the time value as a number of microseconds.
     #[must_use]
-    pub fn as_microseconds(self) -> i64 {
+    pub const fn as_microseconds(self) -> i64 {
         self.0
     }
-    pub(crate) fn raw(self) -> sfTime {
+    pub(crate) const fn raw(self) -> sfTime {
         self.0
     }
-    pub(crate) fn from_raw(raw: sfTime) -> Self {
+    pub(crate) const fn from_raw(raw: sfTime) -> Self {
         Time(raw)
     }
 
