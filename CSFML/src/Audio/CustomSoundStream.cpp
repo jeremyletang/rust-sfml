@@ -24,10 +24,7 @@ class sfCustomSoundStream : public sf::SoundStream {
     }
 
     virtual void onSeek(sf::Time timeOffset) {
-        if (mySeekCallback) {
-            int64_t time = {timeOffset.asMicroseconds()};
-            mySeekCallback(time, myUserData);
-        }
+        mySeekCallback(timeOffset.asMicroseconds(), myUserData);
     }
 
     sfCustomSoundStreamGetDataCallback myGetDataCallback;
