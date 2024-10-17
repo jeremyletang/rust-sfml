@@ -4,3 +4,4 @@ BasedOnStyle: LLVM
 IndentWidth: 4
 # This makes the license fit without alteration
 ColumnLimit: 0
+SortIncludes: false
