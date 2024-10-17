@@ -6,7 +6,7 @@ pub use {
     self::{
         circle_shape::CircleShape,
         color::Color,
-        convex_shape::{ConvexShape, ConvexShapePoints},
+        convex_shape::ConvexShape,
         custom_shape::{CustomShape, CustomShapePoints},
         drawable::Drawable,
         font::{Font, Info as FontInfo},

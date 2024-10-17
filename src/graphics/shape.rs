@@ -4,7 +4,7 @@ use crate::{
 };
 
 /// Trait for textured shapes with outline.
-pub trait Shape<'s>: Drawable + Transformable {
+pub trait Shape<'texture>: Drawable + Transformable {
     /// Changes the source texture of the shape.
     ///
     /// If `reset_rect` is `true`, the [`texture_rect`] property of the shape is automatically
@@ -12,7 +12,7 @@ pub trait Shape<'s>: Drawable + Transformable {
     /// If it is `false`, the texture rect is left unchanged.
     ///
     /// [`texture_rect`]: Shape::texture_rect
-    fn set_texture(&mut self, texture: &'s Texture, reset_rect: bool);
+    fn set_texture(&mut self, texture: &'texture Texture, reset_rect: bool);
     /// Disables texturing for this shape.
     fn disable_texture(&mut self);
     /// Sets the sub-rectangle of the texture that the shape will display.
@@ -40,7 +40,7 @@ pub trait Shape<'s>: Drawable + Transformable {
     /// Gets the source texture of the shape.
     ///
     /// If the shape has no source texture, None is returned.
-    fn texture(&self) -> Option<&'s Texture>;
+    fn texture(&self) -> Option<&'texture Texture>;
     /// Gets the sub-rectangle of the texture displayed by the shape.
     fn texture_rect(&self) -> IntRect;
     /// Gets the fill color of this shape.
@@ -77,4 +77,20 @@ pub trait Shape<'s>: Drawable + Transformable {
     /// This allows for a fast approximation of the bounds as a first check;
     /// you may want to use more precise checks on top of that.
     fn global_bounds(&self) -> FloatRect;
+
+    /// Returns an immutable iterator over all points
+    #[must_use]
+    fn points<'a>(&'a self) -> impl Iterator<Item = Vector2f> + 'a {
+        let point_count = self.point_count();
+        let mut i = 0;
+        std::iter::from_fn(move || {
+            if i == point_count {
+                None
+            } else {
+                let point = self.point(i);
+                i += 1;
+                Some(point)
+            }
+        })
+    }
 }

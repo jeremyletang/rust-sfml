@@ -22,13 +22,6 @@ pub struct ConvexShape<'s> {
     texture: PhantomData<&'s Texture>,
 }
 
-/// An iterator over the points of a [`ConvexShape`].
-#[derive(Debug)]
-pub struct ConvexShapePoints {
-    convex_shape: *mut ffi::sfConvexShape,
-    pos: usize,
-}
-
 impl<'s> ConvexShape<'s> {
     /// Create a new convex shape
     ///
@@ -87,14 +80,6 @@ impl<'s> ConvexShape<'s> {
         unsafe { ffi::sfConvexShape_setPointCount(self.convex_shape, count) }
     }
 
-    /// Return an immutable iterator over all the points of the `ConvexShape`
-    #[must_use]
-    pub fn points(&self) -> ConvexShapePoints {
-        ConvexShapePoints {
-            convex_shape: self.convex_shape,
-            pos: 0,
-        }
-    }
     pub(super) fn raw(&self) -> *const ffi::sfConvexShape {
         self.convex_shape
     }
@@ -221,21 +206,6 @@ impl<'s> Clone for ConvexShape<'s> {
                 convex_shape: shape,
                 texture: self.texture,
             }
-        }
-    }
-}
-
-impl Iterator for ConvexShapePoints {
-    type Item = Vector2f;
-
-    fn next(&mut self) -> Option<Vector2f> {
-        let point_count = unsafe { ffi::sfConvexShape_getPointCount(self.convex_shape) };
-        if self.pos == point_count {
-            None
-        } else {
-            let point = unsafe { ffi::sfConvexShape_getPoint(self.convex_shape, self.pos) };
-            self.pos += 1;
-            Some(point)
         }
     }
 }
