@@ -7,13 +7,16 @@ use {
         },
         system::Vector2f,
     },
-    std::{marker::PhantomData, ptr},
+    std::{
+        marker::PhantomData,
+        ptr::{self, NonNull},
+    },
 };
 
 /// Specialized shape representing a rectangle
 #[derive(Debug)]
 pub struct RectangleShape<'s> {
-    rectangle_shape: *mut ffi::sfRectangleShape,
+    rectangle_shape: NonNull<ffi::sfRectangleShape>,
     texture: PhantomData<&'s Texture>,
 }
 
@@ -22,9 +25,8 @@ impl<'s> RectangleShape<'s> {
     #[must_use]
     pub fn new() -> RectangleShape<'s> {
         let rectangle = unsafe { ffi::sfRectangleShape_create() };
-        assert!(!rectangle.is_null(), "Failed to create RectangleShape");
         RectangleShape {
-            rectangle_shape: rectangle,
+            rectangle_shape: NonNull::new(rectangle).expect("Failed to create RectangleShape"),
             texture: PhantomData,
         }
     }
@@ -59,7 +61,7 @@ impl<'s> RectangleShape<'s> {
     /// Return the height Size of the rectangle
     #[must_use]
     pub fn size(&self) -> Vector2f {
-        unsafe { ffi::sfRectangleShape_getSize(self.rectangle_shape) }
+        unsafe { ffi::sfRectangleShape_getSize(self.rectangle_shape.as_ptr()) }
     }
 
     /// Set the size of a rectangle shape
@@ -67,10 +69,10 @@ impl<'s> RectangleShape<'s> {
     /// # Arguments
     /// * size - The new size of the rectangle
     pub fn set_size<S: Into<Vector2f>>(&mut self, size: S) {
-        unsafe { ffi::sfRectangleShape_setSize(self.rectangle_shape, size.into()) }
+        unsafe { ffi::sfRectangleShape_setSize(self.rectangle_shape.as_ptr(), size.into()) }
     }
     pub(super) fn raw(&self) -> *const ffi::sfRectangleShape {
-        self.rectangle_shape
+        self.rectangle_shape.as_ptr()
     }
 }
 
@@ -92,111 +94,113 @@ impl Drawable for RectangleShape<'_> {
 
 impl Transformable for RectangleShape<'_> {
     fn set_position<P: Into<Vector2f>>(&mut self, position: P) {
-        unsafe { ffi::sfRectangleShape_setPosition(self.rectangle_shape, position.into()) }
+        unsafe { ffi::sfRectangleShape_setPosition(self.rectangle_shape.as_ptr(), position.into()) }
     }
     fn set_rotation(&mut self, angle: f32) {
-        unsafe { ffi::sfRectangleShape_setRotation(self.rectangle_shape, angle) }
+        unsafe { ffi::sfRectangleShape_setRotation(self.rectangle_shape.as_ptr(), angle) }
     }
     fn set_scale<S: Into<Vector2f>>(&mut self, scale: S) {
-        unsafe { ffi::sfRectangleShape_setScale(self.rectangle_shape, scale.into()) }
+        unsafe { ffi::sfRectangleShape_setScale(self.rectangle_shape.as_ptr(), scale.into()) }
     }
     fn set_origin<O: Into<Vector2f>>(&mut self, origin: O) {
-        unsafe { ffi::sfRectangleShape_setOrigin(self.rectangle_shape, origin.into()) }
+        unsafe { ffi::sfRectangleShape_setOrigin(self.rectangle_shape.as_ptr(), origin.into()) }
     }
     fn position(&self) -> Vector2f {
-        unsafe { ffi::sfRectangleShape_getPosition(self.rectangle_shape) }
+        unsafe { ffi::sfRectangleShape_getPosition(self.rectangle_shape.as_ptr()) }
     }
     fn rotation(&self) -> f32 {
-        unsafe { ffi::sfRectangleShape_getRotation(self.rectangle_shape) }
+        unsafe { ffi::sfRectangleShape_getRotation(self.rectangle_shape.as_ptr()) }
     }
     fn get_scale(&self) -> Vector2f {
-        unsafe { ffi::sfRectangleShape_getScale(self.rectangle_shape) }
+        unsafe { ffi::sfRectangleShape_getScale(self.rectangle_shape.as_ptr()) }
     }
     fn origin(&self) -> Vector2f {
-        unsafe { ffi::sfRectangleShape_getOrigin(self.rectangle_shape) }
+        unsafe { ffi::sfRectangleShape_getOrigin(self.rectangle_shape.as_ptr()) }
     }
     fn move_<O: Into<Vector2f>>(&mut self, offset: O) {
-        unsafe { ffi::sfRectangleShape_move(self.rectangle_shape, offset.into()) }
+        unsafe { ffi::sfRectangleShape_move(self.rectangle_shape.as_ptr(), offset.into()) }
     }
     fn rotate(&mut self, angle: f32) {
-        unsafe { ffi::sfRectangleShape_rotate(self.rectangle_shape, angle) }
+        unsafe { ffi::sfRectangleShape_rotate(self.rectangle_shape.as_ptr(), angle) }
     }
     fn scale<F: Into<Vector2f>>(&mut self, factors: F) {
-        unsafe { ffi::sfRectangleShape_scale(self.rectangle_shape, factors.into()) }
+        unsafe { ffi::sfRectangleShape_scale(self.rectangle_shape.as_ptr(), factors.into()) }
     }
     fn transform(&self) -> &Transform {
-        unsafe { &*ffi::sfRectangleShape_getTransform(self.rectangle_shape) }
+        unsafe { &*ffi::sfRectangleShape_getTransform(self.rectangle_shape.as_ptr()) }
     }
     fn inverse_transform(&self) -> &Transform {
-        unsafe { &*ffi::sfRectangleShape_getInverseTransform(self.rectangle_shape) }
+        unsafe { &*ffi::sfRectangleShape_getInverseTransform(self.rectangle_shape.as_ptr()) }
     }
 }
 
 impl<'s> Shape<'s> for RectangleShape<'s> {
     fn set_texture(&mut self, texture: &'s Texture, reset_rect: bool) {
-        unsafe { ffi::sfRectangleShape_setTexture(self.rectangle_shape, texture, reset_rect) }
+        unsafe {
+            ffi::sfRectangleShape_setTexture(self.rectangle_shape.as_ptr(), texture, reset_rect)
+        }
     }
     fn disable_texture(&mut self) {
-        unsafe { ffi::sfRectangleShape_setTexture(self.rectangle_shape, ptr::null_mut(), true) }
+        unsafe {
+            ffi::sfRectangleShape_setTexture(self.rectangle_shape.as_ptr(), ptr::null_mut(), true)
+        }
     }
     fn set_texture_rect(&mut self, rect: IntRect) {
-        unsafe { ffi::sfRectangleShape_setTextureRect(self.rectangle_shape, rect) }
+        unsafe { ffi::sfRectangleShape_setTextureRect(self.rectangle_shape.as_ptr(), rect) }
     }
     fn set_fill_color(&mut self, color: Color) {
-        unsafe { ffi::sfRectangleShape_setFillColor(self.rectangle_shape, color) }
+        unsafe { ffi::sfRectangleShape_setFillColor(self.rectangle_shape.as_ptr(), color) }
     }
     fn set_outline_color(&mut self, color: Color) {
-        unsafe { ffi::sfRectangleShape_setOutlineColor(self.rectangle_shape, color) }
+        unsafe { ffi::sfRectangleShape_setOutlineColor(self.rectangle_shape.as_ptr(), color) }
     }
     fn set_outline_thickness(&mut self, thickness: f32) {
-        unsafe { ffi::sfRectangleShape_setOutlineThickness(self.rectangle_shape, thickness) }
+        unsafe {
+            ffi::sfRectangleShape_setOutlineThickness(self.rectangle_shape.as_ptr(), thickness)
+        }
     }
     fn texture(&self) -> Option<&'s Texture> {
-        unsafe { ffi::sfRectangleShape_getTexture(self.rectangle_shape).as_ref() }
+        unsafe { ffi::sfRectangleShape_getTexture(self.rectangle_shape.as_ptr()).as_ref() }
     }
     fn texture_rect(&self) -> IntRect {
-        unsafe { ffi::sfRectangleShape_getTextureRect(self.rectangle_shape) }
+        unsafe { ffi::sfRectangleShape_getTextureRect(self.rectangle_shape.as_ptr()) }
     }
     fn fill_color(&self) -> Color {
-        unsafe { ffi::sfRectangleShape_getFillColor(self.rectangle_shape) }
+        unsafe { ffi::sfRectangleShape_getFillColor(self.rectangle_shape.as_ptr()) }
     }
     fn outline_color(&self) -> Color {
-        unsafe { ffi::sfRectangleShape_getOutlineColor(self.rectangle_shape) }
+        unsafe { ffi::sfRectangleShape_getOutlineColor(self.rectangle_shape.as_ptr()) }
     }
     fn outline_thickness(&self) -> f32 {
-        unsafe { ffi::sfRectangleShape_getOutlineThickness(self.rectangle_shape) }
+        unsafe { ffi::sfRectangleShape_getOutlineThickness(self.rectangle_shape.as_ptr()) }
     }
     fn point_count(&self) -> usize {
-        unsafe { ffi::sfRectangleShape_getPointCount(self.rectangle_shape) }
+        unsafe { ffi::sfRectangleShape_getPointCount(self.rectangle_shape.as_ptr()) }
     }
     fn point(&self, index: usize) -> Vector2f {
-        unsafe { ffi::sfRectangleShape_getPoint(self.rectangle_shape, index) }
+        unsafe { ffi::sfRectangleShape_getPoint(self.rectangle_shape.as_ptr(), index) }
     }
     fn local_bounds(&self) -> FloatRect {
-        unsafe { ffi::sfRectangleShape_getLocalBounds(self.rectangle_shape) }
+        unsafe { ffi::sfRectangleShape_getLocalBounds(self.rectangle_shape.as_ptr()) }
     }
     fn global_bounds(&self) -> FloatRect {
-        unsafe { ffi::sfRectangleShape_getGlobalBounds(self.rectangle_shape) }
+        unsafe { ffi::sfRectangleShape_getGlobalBounds(self.rectangle_shape.as_ptr()) }
     }
 }
 
 impl<'s> Clone for RectangleShape<'s> {
     /// Return a new `RectangleShape` or panic! if there is not enough memory
     fn clone(&self) -> RectangleShape<'s> {
-        let rectangle = unsafe { ffi::sfRectangleShape_copy(self.rectangle_shape) };
-        if rectangle.is_null() {
-            panic!("Not enough memory to clone RectangleShape")
-        } else {
-            RectangleShape {
-                rectangle_shape: rectangle,
-                texture: self.texture,
-            }
+        let copy = unsafe { ffi::sfRectangleShape_copy(self.rectangle_shape.as_ptr()) };
+        RectangleShape {
+            rectangle_shape: NonNull::new(copy).expect("Not enough memory to clone RectangleShape"),
+            texture: self.texture,
         }
     }
 }
 
 impl Drop for RectangleShape<'_> {
     fn drop(&mut self) {
-        unsafe { ffi::sfRectangleShape_destroy(self.rectangle_shape) }
+        unsafe { ffi::sfRectangleShape_destroy(self.rectangle_shape.as_ptr()) }
     }
 }
