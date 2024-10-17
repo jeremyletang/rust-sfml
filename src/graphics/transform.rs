@@ -26,7 +26,7 @@ impl Transform {
     /// - *a22* : Element (2, 2) of the matrix
     #[expect(clippy::too_many_arguments)]
     #[must_use]
-    pub fn new(
+    pub const fn new(
         a00: f32,
         a01: f32,
         a02: f32,
@@ -36,7 +36,7 @@ impl Transform {
         a20: f32,
         a21: f32,
         a22: f32,
-    ) -> Transform {
+    ) -> Self {
         Self {
             matrix: [
                 a00, a10, 0., a20, a01, a11, 0., a21, 0., 0., 1., 0., a02, a12, 0., a22,
@@ -46,7 +46,7 @@ impl Transform {
 
     /// Return the matrix
     #[must_use]
-    pub fn get_matrix(&self) -> &[f32; 16] {
+    pub const fn get_matrix(&self) -> &[f32; 16] {
         &self.matrix
     }
 
@@ -64,7 +64,7 @@ impl Transform {
     ///
     /// Return the inverse matrix
     #[must_use]
-    pub fn inverse(&self) -> Transform {
+    pub const fn inverse(&self) -> Self {
         // Directly translated from SFML source code.
         let det = self.matrix[0]
             * (self.matrix[15] * self.matrix[5] - self.matrix[7] * self.matrix[13])
