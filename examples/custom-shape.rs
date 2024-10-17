@@ -1,6 +1,8 @@
 use sfml::{
-    graphics::{Color, CustomShape, CustomShapePoints, RenderTarget, RenderWindow, Shape},
-    system::Vector2f,
+    graphics::{
+        Color, CustomShape, CustomShapePoints, RenderTarget, RenderWindow, Shape, Transformable,
+    },
+    system::{Clock, Vector2f},
     window::{Event, Key, Style},
     SfResult,
 };
@@ -23,18 +25,37 @@ impl CustomShapePoints for TriangleShape {
     }
 }
 
+fn hue_time(t: f32) -> Color {
+    const fn lerp(from: f32, to: f32, amount: f32) -> f32 {
+        from + amount * (to - from)
+    }
+
+    let frac = t.fract();
+
+    let [r, g, b] = match (t % 6.0).floor() {
+        0.0 => [255., lerp(0., 255., frac), 0.],
+        1.0 => [lerp(255., 0., frac), 255., 0.],
+        2.0 => [0., 255., lerp(0., 255., frac)],
+        3.0 => [0., lerp(255., 0., frac), 255.],
+        4.0 => [lerp(0., 255., frac), 0., 255.],
+        _ => [255., 0., lerp(255., 0., frac)],
+    };
+    Color::rgb(r as u8, g as u8, b as u8)
+}
+
 fn main() -> SfResult<()> {
     let mut window = RenderWindow::new(
         (800, 600),
         "Custom shape",
-        Style::CLOSE,
+        Style::DEFAULT,
         &Default::default(),
     )?;
+    let clock = Clock::start()?;
     window.set_vertical_sync_enabled(true);
 
     let mut shape = CustomShape::new(Box::new(TriangleShape));
-    shape.set_fill_color(Color::RED);
-    shape.set_outline_color(Color::GREEN);
+    shape.set_position((400., 300.));
+    shape.set_origin((400., 300.));
     shape.set_outline_thickness(3.);
 
     'mainloop: loop {
@@ -48,6 +69,13 @@ fn main() -> SfResult<()> {
             }
         }
 
+        let t = clock.elapsed_time().as_seconds();
+
+        shape.set_rotation(t.sin().abs() * 360.0);
+        let scale = t.cos().abs();
+        shape.set_scale((scale, scale));
+        shape.set_fill_color(hue_time(t));
+        shape.set_outline_color(hue_time(t / 2.0));
         window.clear(Color::BLACK);
         window.draw(&shape);
         window.display();

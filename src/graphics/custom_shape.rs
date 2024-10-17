@@ -7,7 +7,11 @@ use {
         },
         system::Vector2f,
     },
-    std::{marker::PhantomData, os::raw::c_void, ptr},
+    std::{
+        marker::PhantomData,
+        os::raw::c_void,
+        ptr::{self, NonNull},
+    },
 };
 
 /// The points of a custom shape.
@@ -31,9 +35,9 @@ pub trait CustomShapePoints {
 /// A custom textured shape with outline.
 #[derive(Debug)]
 pub struct CustomShape<'s> {
-    shape: *mut ffi::sfShape,
+    shape: NonNull<ffi::sfShape>,
     texture: PhantomData<&'s Texture>,
-    points: *mut Box<dyn CustomShapePoints + Send>,
+    points: NonNull<Box<dyn CustomShapePoints + Send>>,
 }
 
 unsafe extern "C" fn get_point_count_callback(obj: *mut c_void) -> usize {
@@ -53,17 +57,17 @@ impl<'s> CustomShape<'s> {
     /// * points - Implementation of [`CustomShapePoints`]
     #[must_use]
     pub fn new(points: Box<dyn CustomShapePoints + Send>) -> CustomShape<'s> {
-        let raw_impl = Box::into_raw(Box::new(points));
+        // SAFETY: Box::into_raw produces non-null pointer
+        let raw_impl = unsafe { NonNull::new_unchecked(Box::into_raw(Box::new(points))) };
         let sp = unsafe {
             ffi::sfShape_create(
                 Some(get_point_count_callback),
                 Some(get_point_callback),
-                raw_impl.cast(),
+                raw_impl.as_ptr().cast(),
             )
         };
-        assert!(!sp.is_null(), "Failed to create CustomShape");
         CustomShape {
-            shape: sp,
+            shape: NonNull::new(sp).expect("Failed to create CustomShape"),
             texture: PhantomData,
             points: raw_impl,
         }
@@ -93,58 +97,58 @@ impl<'s> CustomShape<'s> {
     /// [`point_count`]: CustomShapePoints::point_count
     /// [`point`]: CustomShapePoints::point
     pub fn update(&mut self) {
-        unsafe { ffi::sfShape_update(self.shape) }
+        unsafe { ffi::sfShape_update(self.shape.as_ptr()) }
     }
     pub(super) fn raw(&self) -> *const ffi::sfShape {
-        self.shape
+        self.shape.as_ptr()
     }
 }
 
 impl<'s> Shape<'s> for CustomShape<'s> {
     fn set_texture(&mut self, texture: &'s Texture, reset_rect: bool) {
-        unsafe { ffi::sfShape_setTexture(self.shape, texture, reset_rect) }
+        unsafe { ffi::sfShape_setTexture(self.shape.as_ptr(), texture, reset_rect) }
     }
     fn disable_texture(&mut self) {
-        unsafe { ffi::sfShape_setTexture(self.shape, ptr::null_mut(), true) }
+        unsafe { ffi::sfShape_setTexture(self.shape.as_ptr(), ptr::null_mut(), true) }
     }
     fn set_texture_rect(&mut self, rect: IntRect) {
-        unsafe { ffi::sfShape_setTextureRect(self.shape, rect) }
+        unsafe { ffi::sfShape_setTextureRect(self.shape.as_ptr(), rect) }
     }
     fn set_fill_color(&mut self, color: Color) {
-        unsafe { ffi::sfShape_setFillColor(self.shape, color) }
+        unsafe { ffi::sfShape_setFillColor(self.shape.as_ptr(), color) }
     }
     fn set_outline_color(&mut self, color: Color) {
-        unsafe { ffi::sfShape_setOutlineColor(self.shape, color) }
+        unsafe { ffi::sfShape_setOutlineColor(self.shape.as_ptr(), color) }
     }
     fn set_outline_thickness(&mut self, thickness: f32) {
-        unsafe { ffi::sfShape_setOutlineThickness(self.shape, thickness) }
+        unsafe { ffi::sfShape_setOutlineThickness(self.shape.as_ptr(), thickness) }
     }
     fn texture(&self) -> Option<&'s Texture> {
-        unsafe { ffi::sfShape_getTexture(self.shape).as_ref() }
+        unsafe { ffi::sfShape_getTexture(self.shape.as_ptr()).as_ref() }
     }
     fn texture_rect(&self) -> IntRect {
-        unsafe { ffi::sfShape_getTextureRect(self.shape) }
+        unsafe { ffi::sfShape_getTextureRect(self.shape.as_ptr()) }
     }
     fn fill_color(&self) -> Color {
-        unsafe { ffi::sfShape_getFillColor(self.shape) }
+        unsafe { ffi::sfShape_getFillColor(self.shape.as_ptr()) }
     }
     fn outline_color(&self) -> Color {
-        unsafe { ffi::sfShape_getOutlineColor(self.shape) }
+        unsafe { ffi::sfShape_getOutlineColor(self.shape.as_ptr()) }
     }
     fn outline_thickness(&self) -> f32 {
-        unsafe { ffi::sfShape_getOutlineThickness(self.shape) }
+        unsafe { ffi::sfShape_getOutlineThickness(self.shape.as_ptr()) }
     }
     fn point_count(&self) -> usize {
-        unsafe { ffi::sfShape_getPointCount(self.shape) }
+        unsafe { ffi::sfShape_getPointCount(self.shape.as_ptr()) }
     }
     fn point(&self, index: usize) -> Vector2f {
-        unsafe { ffi::sfShape_getPoint(self.shape, index) }
+        unsafe { ffi::sfShape_getPoint(self.shape.as_ptr(), index) }
     }
     fn local_bounds(&self) -> FloatRect {
-        unsafe { ffi::sfShape_getLocalBounds(self.shape) }
+        unsafe { ffi::sfShape_getLocalBounds(self.shape.as_ptr()) }
     }
     fn global_bounds(&self) -> FloatRect {
-        unsafe { ffi::sfShape_getGlobalBounds(self.shape) }
+        unsafe { ffi::sfShape_getGlobalBounds(self.shape.as_ptr()) }
     }
 }
 
@@ -160,51 +164,51 @@ impl Drawable for CustomShape<'_> {
 
 impl Transformable for CustomShape<'_> {
     fn set_position<P: Into<Vector2f>>(&mut self, position: P) {
-        unsafe { ffi::sfShape_setPosition(self.shape, position.into()) }
+        unsafe { ffi::sfShape_setPosition(self.shape.as_ptr(), position.into()) }
     }
     fn set_rotation(&mut self, angle: f32) {
-        unsafe { ffi::sfShape_setRotation(self.shape, angle) }
+        unsafe { ffi::sfShape_setRotation(self.shape.as_ptr(), angle) }
     }
     fn set_scale<S: Into<Vector2f>>(&mut self, scale: S) {
-        unsafe { ffi::sfShape_setScale(self.shape, scale.into()) }
+        unsafe { ffi::sfShape_setScale(self.shape.as_ptr(), scale.into()) }
     }
     fn set_origin<O: Into<Vector2f>>(&mut self, origin: O) {
-        unsafe { ffi::sfShape_setOrigin(self.shape, origin.into()) }
+        unsafe { ffi::sfShape_setOrigin(self.shape.as_ptr(), origin.into()) }
     }
     fn position(&self) -> Vector2f {
-        unsafe { ffi::sfShape_getPosition(self.shape) }
+        unsafe { ffi::sfShape_getPosition(self.shape.as_ptr()) }
     }
     fn rotation(&self) -> f32 {
-        unsafe { ffi::sfShape_getRotation(self.shape) }
+        unsafe { ffi::sfShape_getRotation(self.shape.as_ptr()) }
     }
     fn get_scale(&self) -> Vector2f {
-        unsafe { ffi::sfShape_getScale(self.shape) }
+        unsafe { ffi::sfShape_getScale(self.shape.as_ptr()) }
     }
     fn origin(&self) -> Vector2f {
-        unsafe { ffi::sfShape_getOrigin(self.shape) }
+        unsafe { ffi::sfShape_getOrigin(self.shape.as_ptr()) }
     }
     fn move_<O: Into<Vector2f>>(&mut self, offset: O) {
-        unsafe { ffi::sfShape_move(self.shape, offset.into()) }
+        unsafe { ffi::sfShape_move(self.shape.as_ptr(), offset.into()) }
     }
     fn rotate(&mut self, angle: f32) {
-        unsafe { ffi::sfShape_rotate(self.shape, angle) }
+        unsafe { ffi::sfShape_rotate(self.shape.as_ptr(), angle) }
     }
     fn scale<F: Into<Vector2f>>(&mut self, factors: F) {
-        unsafe { ffi::sfShape_scale(self.shape, factors.into()) }
+        unsafe { ffi::sfShape_scale(self.shape.as_ptr(), factors.into()) }
     }
     fn transform(&self) -> &Transform {
-        unsafe { &*ffi::sfShape_getTransform(self.shape) }
+        unsafe { &*ffi::sfShape_getTransform(self.shape.as_ptr()) }
     }
     fn inverse_transform(&self) -> &Transform {
-        unsafe { &*ffi::sfShape_getInverseTransform(self.shape) }
+        unsafe { &*ffi::sfShape_getInverseTransform(self.shape.as_ptr()) }
     }
 }
 
 impl Drop for CustomShape<'_> {
     fn drop(&mut self) {
         unsafe {
-            ffi::sfShape_destroy(self.shape);
-            let _ = Box::from_raw(self.points);
+            ffi::sfShape_destroy(self.shape.as_ptr());
+            let _ = Box::from_raw(self.points.as_ptr());
         }
     }
 }
