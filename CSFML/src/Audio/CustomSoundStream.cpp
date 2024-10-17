@@ -3,13 +3,7 @@
 #include <cstddef>
 #include <cstdint>
 
-typedef struct
-{
-    int16_t const *samples;   ///< Pointer to the audio samples
-    unsigned int sampleCount; ///< Number of samples pointed by Samples
-} sfCustomSoundStreamChunk;
-
-typedef bool (*sfCustomSoundStreamGetDataCallback)(sfCustomSoundStreamChunk *, void *);
+typedef bool (*sfCustomSoundStreamGetDataCallback)(sf::SoundStream::Chunk *, void *);
 typedef void (*sfCustomSoundStreamSeekCallback)(int64_t, void *);
 
 class sfCustomSoundStream : public sf::SoundStream {
@@ -26,13 +20,7 @@ class sfCustomSoundStream : public sf::SoundStream {
 
   private:
     virtual bool onGetData(Chunk &data) {
-        sfCustomSoundStreamChunk chunk = {NULL, 0};
-        bool ok = (myGetDataCallback(&chunk, myUserData));
-
-        data.samples = chunk.samples;
-        data.sampleCount = chunk.sampleCount;
-
-        return ok;
+        return (myGetDataCallback(&data, myUserData));
     }
 
     virtual void onSeek(sf::Time timeOffset) {

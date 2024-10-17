@@ -38,7 +38,7 @@ pub struct SoundStreamPlayer<'a, S: SoundStream + 'a> {
 }
 
 unsafe extern "C" fn get_data_callback<S: SoundStream>(
-    chunk: *mut crate::ffi::audio::sfCustomSoundStreamChunk,
+    chunk: *mut crate::ffi::audio::sfSoundStreamChunk,
     user_data: *mut c_void,
 ) -> bool {
     let stream: *mut S = user_data.cast();
@@ -52,10 +52,7 @@ unsafe extern "C" fn get_data_callback<S: SoundStream>(
                 }
             };
         (*chunk).samples = data.as_ptr();
-        (*chunk).sample_count = data
-            .len()
-            .try_into()
-            .expect("Overflow casting data length to sample count");
+        (*chunk).sample_count = data.len();
         keep_playing
     }
 }

@@ -15,9 +15,9 @@ decl_opaque! {
 pub type sfSoundBuffer = crate::audio::SoundBuffer;
 
 #[repr(C)]
-pub struct sfCustomSoundStreamChunk {
+pub struct sfSoundStreamChunk {
     pub samples: *const i16,
-    pub sample_count: c_uint,
+    pub sample_count: usize,
 }
 
 #[repr(C)]
@@ -47,9 +47,8 @@ type sfSoundRecorderProcessCallback =
     Option<unsafe extern "C" fn(samples: *const i16, len: usize, user_data: *mut c_void) -> bool>;
 type sfSoundRecorderStopCallback = Option<unsafe extern "C" fn(user_data: *mut c_void)>;
 
-type sfCustomSoundStreamGetDataCallback = Option<
-    unsafe extern "C" fn(chunk: *mut sfCustomSoundStreamChunk, user_data: *mut c_void) -> bool,
->;
+type sfCustomSoundStreamGetDataCallback =
+    Option<unsafe extern "C" fn(chunk: *mut sfSoundStreamChunk, user_data: *mut c_void) -> bool>;
 type sfCustomSoundStreamSeekCallback =
     Option<unsafe extern "C" fn(pos: i64, user_data: *mut c_void)>;
 
