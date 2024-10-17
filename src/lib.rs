@@ -7,6 +7,7 @@
     unused_results,
     trivial_casts,
     unsafe_op_in_unsafe_fn,
+    unsafe_attr_outside_unsafe,
     clippy::must_use_candidate,
     clippy::doc_markdown,
     clippy::cast_possible_truncation,
