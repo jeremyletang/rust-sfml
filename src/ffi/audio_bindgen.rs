@@ -3,6 +3,31 @@
 
 unsafe extern "C" {
 
+// CustomSoundStream.cpp
+pub fn sfCustomSoundStream_create(onGetData: sfCustomSoundStreamGetDataCallback, onSeek: sfCustomSoundStreamSeekCallback, channelCount: c_uint, sampleRate: c_uint, userData: *mut c_void) -> *mut sfCustomSoundStream;
+pub fn sfCustomSoundStream_destroy(soundStream: *mut sfCustomSoundStream);
+pub fn sfCustomSoundStream_play(soundStream: *mut sfCustomSoundStream);
+pub fn sfCustomSoundStream_pause(soundStream: *mut sfCustomSoundStream);
+pub fn sfCustomSoundStream_stop(soundStream: *mut sfCustomSoundStream);
+pub fn sfCustomSoundStream_getStatus(soundStream: *const sfCustomSoundStream) -> sfSoundStreamStatus;
+pub fn sfCustomSoundStream_getChannelCount(soundStream: *const sfCustomSoundStream) -> c_uint;
+pub fn sfCustomSoundStream_getSampleRate(soundStream: *const sfCustomSoundStream) -> c_uint;
+pub fn sfCustomSoundStream_setPitch(soundStream: *mut sfCustomSoundStream, pitch: f32);
+pub fn sfCustomSoundStream_setVolume(soundStream: *mut sfCustomSoundStream, volume: f32);
+pub fn sfCustomSoundStream_setPosition(soundStream: *mut sfCustomSoundStream, position: sfVector3f);
+pub fn sfCustomSoundStream_setRelativeToListener(soundStream: *mut sfCustomSoundStream, relative: bool);
+pub fn sfCustomSoundStream_setMinDistance(soundStream: *mut sfCustomSoundStream, distance: f32);
+pub fn sfCustomSoundStream_setAttenuation(soundStream: *mut sfCustomSoundStream, attenuation: f32);
+pub fn sfCustomSoundStream_setPlayingOffset(soundStream: *mut sfCustomSoundStream, timeOffset: i64);
+pub fn sfCustomSoundStream_setLoop(soundStream: *mut sfCustomSoundStream, loop_: bool);
+pub fn sfCustomSoundStream_getPitch(soundStream: *const sfCustomSoundStream) -> f32;
+pub fn sfCustomSoundStream_getVolume(soundStream: *const sfCustomSoundStream) -> f32;
+pub fn sfCustomSoundStream_getPosition(soundStream: *const sfCustomSoundStream) -> sfVector3f;
+pub fn sfCustomSoundStream_isRelativeToListener(soundStream: *const sfCustomSoundStream) -> bool;
+pub fn sfCustomSoundStream_getMinDistance(soundStream: *const sfCustomSoundStream) -> f32;
+pub fn sfCustomSoundStream_getAttenuation(soundStream: *const sfCustomSoundStream) -> f32;
+pub fn sfCustomSoundStream_getLoop(soundStream: *const sfCustomSoundStream) -> bool;
+pub fn sfCustomSoundStream_getPlayingOffset(soundStream: *const sfCustomSoundStream) -> i64;
 // Listener.cpp
 pub fn sfListener_setGlobalVolume(volume: f32);
 pub fn sfListener_getGlobalVolume() -> f32;
@@ -104,30 +129,5 @@ pub fn sfSoundRecorder_setDevice(soundRecorder: *mut sfSoundRecorder, name: *con
 pub fn sfSoundRecorder_getDevice(soundRecorder: *mut sfSoundRecorder) -> *const sfStdString;
 pub fn sfSoundRecorder_setChannelCount(soundRecorder: *mut sfSoundRecorder, channelCount: c_uint);
 pub fn sfSoundRecorder_getChannelCount(soundRecorder: *const sfSoundRecorder) -> c_uint;
-// SoundStream.cpp
-pub fn sfSoundStream_create(onGetData: sfSoundStreamGetDataCallback, onSeek: sfSoundStreamSeekCallback, channelCount: c_uint, sampleRate: c_uint, userData: *mut c_void) -> *mut sfSoundStream;
-pub fn sfSoundStream_destroy(soundStream: *mut sfSoundStream);
-pub fn sfSoundStream_play(soundStream: *mut sfSoundStream);
-pub fn sfSoundStream_pause(soundStream: *mut sfSoundStream);
-pub fn sfSoundStream_stop(soundStream: *mut sfSoundStream);
-pub fn sfSoundStream_getStatus(soundStream: *const sfSoundStream) -> sfSoundStreamStatus;
-pub fn sfSoundStream_getChannelCount(soundStream: *const sfSoundStream) -> c_uint;
-pub fn sfSoundStream_getSampleRate(soundStream: *const sfSoundStream) -> c_uint;
-pub fn sfSoundStream_setPitch(soundStream: *mut sfSoundStream, pitch: f32);
-pub fn sfSoundStream_setVolume(soundStream: *mut sfSoundStream, volume: f32);
-pub fn sfSoundStream_setPosition(soundStream: *mut sfSoundStream, position: sfVector3f);
-pub fn sfSoundStream_setRelativeToListener(soundStream: *mut sfSoundStream, relative: bool);
-pub fn sfSoundStream_setMinDistance(soundStream: *mut sfSoundStream, distance: f32);
-pub fn sfSoundStream_setAttenuation(soundStream: *mut sfSoundStream, attenuation: f32);
-pub fn sfSoundStream_setPlayingOffset(soundStream: *mut sfSoundStream, timeOffset: i64);
-pub fn sfSoundStream_setLoop(soundStream: *mut sfSoundStream, loop_: bool);
-pub fn sfSoundStream_getPitch(soundStream: *const sfSoundStream) -> f32;
-pub fn sfSoundStream_getVolume(soundStream: *const sfSoundStream) -> f32;
-pub fn sfSoundStream_getPosition(soundStream: *const sfSoundStream) -> sfVector3f;
-pub fn sfSoundStream_isRelativeToListener(soundStream: *const sfSoundStream) -> bool;
-pub fn sfSoundStream_getMinDistance(soundStream: *const sfSoundStream) -> f32;
-pub fn sfSoundStream_getAttenuation(soundStream: *const sfSoundStream) -> f32;
-pub fn sfSoundStream_getLoop(soundStream: *const sfSoundStream) -> bool;
-pub fn sfSoundStream_getPlayingOffset(soundStream: *const sfSoundStream) -> i64;
 
 }

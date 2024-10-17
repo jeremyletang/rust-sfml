@@ -196,7 +196,7 @@ fn main() {
                 "CSFML/src/Audio/SoundBuffer.cpp",
                 "CSFML/src/Audio/SoundBufferRecorder.cpp",
                 "CSFML/src/Audio/SoundRecorder.cpp",
-                "CSFML/src/Audio/SoundStream.cpp",
+                "CSFML/src/Audio/CustomSoundStream.cpp",
             ]
             .iter(),
         );
