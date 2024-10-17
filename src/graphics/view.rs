@@ -1,5 +1,8 @@
-use crate::{
-    ffi::graphics as ffi, graphics::FloatRect, sf_box::RawDefault, system::Vector2f, SfBox,
+use {
+    crate::{
+        ffi::graphics as ffi, graphics::FloatRect, sf_box::RawDefault, system::Vector2f, SfBox,
+    },
+    std::ptr::NonNull,
 };
 
 decl_opaque! {
@@ -158,8 +161,8 @@ impl ToOwned for View {
 }
 
 impl RawDefault for View {
-    fn raw_default() -> *mut Self {
-        unsafe { ffi::sfView_create() }
+    fn raw_default() -> NonNull<Self> {
+        NonNull::new(unsafe { ffi::sfView_create() }).expect("Failed to create view")
     }
 }
 

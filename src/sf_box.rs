@@ -61,11 +61,11 @@ impl<T: ?Sized> Drop for SfBox<T> {
 }
 
 pub trait RawDefault {
-    fn raw_default() -> *mut Self;
+    fn raw_default() -> NonNull<Self>;
 }
 
 impl<T: RawDefault> Default for SfBox<T> {
     fn default() -> Self {
-        SfBox::new(T::raw_default()).expect("Failed to create default")
+        SfBox(T::raw_default())
     }
 }
