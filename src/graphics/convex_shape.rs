@@ -7,7 +7,10 @@ use {
         },
         system::Vector2f,
     },
-    std::{marker::PhantomData, ptr},
+    std::{
+        marker::PhantomData,
+        ptr::{self, NonNull},
+    },
 };
 
 /// Specialized shape representing a convex polygon
@@ -18,7 +21,7 @@ use {
 /// order would result in an incorrect shape.
 #[derive(Debug)]
 pub struct ConvexShape<'s> {
-    convex_shape: *mut ffi::sfConvexShape,
+    handle: NonNull<ffi::sfConvexShape>,
     texture: PhantomData<&'s Texture>,
 }
 
@@ -30,9 +33,8 @@ impl<'s> ConvexShape<'s> {
     #[must_use]
     pub fn new(points_count: usize) -> ConvexShape<'s> {
         let shape = unsafe { ffi::sfConvexShape_create() };
-        assert!(!shape.is_null(), "Failed to create ConvexShape");
         let mut shape = ConvexShape {
-            convex_shape: shape,
+            handle: NonNull::new(shape).expect("Failed to create ConvexShape"),
             texture: PhantomData,
         };
         shape.set_point_count(points_count);
@@ -69,7 +71,7 @@ impl<'s> ConvexShape<'s> {
             index,
             self.point_count()
         );
-        unsafe { ffi::sfConvexShape_setPoint(self.convex_shape, index, point.into()) }
+        unsafe { ffi::sfConvexShape_setPoint(self.handle.as_ptr(), index, point.into()) }
     }
 
     /// Set the number of points of a convex
@@ -77,11 +79,11 @@ impl<'s> ConvexShape<'s> {
     /// # Arguments
     /// * count - New number of points of the convex
     pub fn set_point_count(&mut self, count: usize) {
-        unsafe { ffi::sfConvexShape_setPointCount(self.convex_shape, count) }
+        unsafe { ffi::sfConvexShape_setPointCount(self.handle.as_ptr(), count) }
     }
 
     pub(super) fn raw(&self) -> *const ffi::sfConvexShape {
-        self.convex_shape
+        self.handle.as_ptr()
     }
 }
 
@@ -97,82 +99,82 @@ impl Drawable for ConvexShape<'_> {
 
 impl Transformable for ConvexShape<'_> {
     fn set_position<P: Into<Vector2f>>(&mut self, position: P) {
-        unsafe { ffi::sfConvexShape_setPosition(self.convex_shape, position.into()) }
+        unsafe { ffi::sfConvexShape_setPosition(self.handle.as_ptr(), position.into()) }
     }
     fn set_rotation(&mut self, angle: f32) {
-        unsafe { ffi::sfConvexShape_setRotation(self.convex_shape, angle) }
+        unsafe { ffi::sfConvexShape_setRotation(self.handle.as_ptr(), angle) }
     }
     fn set_scale<S: Into<Vector2f>>(&mut self, scale: S) {
-        unsafe { ffi::sfConvexShape_setScale(self.convex_shape, scale.into()) }
+        unsafe { ffi::sfConvexShape_setScale(self.handle.as_ptr(), scale.into()) }
     }
     fn set_origin<O: Into<Vector2f>>(&mut self, origin: O) {
-        unsafe { ffi::sfConvexShape_setOrigin(self.convex_shape, origin.into()) }
+        unsafe { ffi::sfConvexShape_setOrigin(self.handle.as_ptr(), origin.into()) }
     }
     fn position(&self) -> Vector2f {
-        unsafe { ffi::sfConvexShape_getPosition(self.convex_shape) }
+        unsafe { ffi::sfConvexShape_getPosition(self.handle.as_ptr()) }
     }
     fn rotation(&self) -> f32 {
-        unsafe { ffi::sfConvexShape_getRotation(self.convex_shape) }
+        unsafe { ffi::sfConvexShape_getRotation(self.handle.as_ptr()) }
     }
     fn get_scale(&self) -> Vector2f {
-        unsafe { ffi::sfConvexShape_getScale(self.convex_shape) }
+        unsafe { ffi::sfConvexShape_getScale(self.handle.as_ptr()) }
     }
     fn origin(&self) -> Vector2f {
-        unsafe { ffi::sfConvexShape_getOrigin(self.convex_shape) }
+        unsafe { ffi::sfConvexShape_getOrigin(self.handle.as_ptr()) }
     }
     fn move_<O: Into<Vector2f>>(&mut self, offset: O) {
-        unsafe { ffi::sfConvexShape_move(self.convex_shape, offset.into()) }
+        unsafe { ffi::sfConvexShape_move(self.handle.as_ptr(), offset.into()) }
     }
     fn rotate(&mut self, angle: f32) {
-        unsafe { ffi::sfConvexShape_rotate(self.convex_shape, angle) }
+        unsafe { ffi::sfConvexShape_rotate(self.handle.as_ptr(), angle) }
     }
     fn scale<F: Into<Vector2f>>(&mut self, factors: F) {
-        unsafe { ffi::sfConvexShape_scale(self.convex_shape, factors.into()) }
+        unsafe { ffi::sfConvexShape_scale(self.handle.as_ptr(), factors.into()) }
     }
     fn transform(&self) -> &Transform {
-        unsafe { &*ffi::sfConvexShape_getTransform(self.convex_shape) }
+        unsafe { &*ffi::sfConvexShape_getTransform(self.handle.as_ptr()) }
     }
     fn inverse_transform(&self) -> &Transform {
-        unsafe { &*ffi::sfConvexShape_getInverseTransform(self.convex_shape) }
+        unsafe { &*ffi::sfConvexShape_getInverseTransform(self.handle.as_ptr()) }
     }
 }
 
 impl<'s> Shape<'s> for ConvexShape<'s> {
     fn set_texture(&mut self, texture: &'s Texture, reset_rect: bool) {
-        unsafe { ffi::sfConvexShape_setTexture(self.convex_shape, texture, reset_rect) }
+        unsafe { ffi::sfConvexShape_setTexture(self.handle.as_ptr(), texture, reset_rect) }
     }
     fn disable_texture(&mut self) {
-        unsafe { ffi::sfConvexShape_setTexture(self.convex_shape, ptr::null_mut(), true) }
+        unsafe { ffi::sfConvexShape_setTexture(self.handle.as_ptr(), ptr::null_mut(), true) }
     }
     fn set_texture_rect(&mut self, rect: IntRect) {
-        unsafe { ffi::sfConvexShape_setTextureRect(self.convex_shape, rect) }
+        unsafe { ffi::sfConvexShape_setTextureRect(self.handle.as_ptr(), rect) }
     }
     fn set_fill_color(&mut self, color: Color) {
-        unsafe { ffi::sfConvexShape_setFillColor(self.convex_shape, color) }
+        unsafe { ffi::sfConvexShape_setFillColor(self.handle.as_ptr(), color) }
     }
     fn set_outline_color(&mut self, color: Color) {
-        unsafe { ffi::sfConvexShape_setOutlineColor(self.convex_shape, color) }
+        unsafe { ffi::sfConvexShape_setOutlineColor(self.handle.as_ptr(), color) }
     }
     fn set_outline_thickness(&mut self, thickness: f32) {
-        unsafe { ffi::sfConvexShape_setOutlineThickness(self.convex_shape, thickness) }
+        unsafe { ffi::sfConvexShape_setOutlineThickness(self.handle.as_ptr(), thickness) }
     }
     fn texture(&self) -> Option<&'s Texture> {
-        unsafe { ffi::sfConvexShape_getTexture(self.convex_shape).as_ref() }
+        unsafe { ffi::sfConvexShape_getTexture(self.handle.as_ptr()).as_ref() }
     }
     fn texture_rect(&self) -> IntRect {
-        unsafe { ffi::sfConvexShape_getTextureRect(self.convex_shape) }
+        unsafe { ffi::sfConvexShape_getTextureRect(self.handle.as_ptr()) }
     }
     fn fill_color(&self) -> Color {
-        unsafe { ffi::sfConvexShape_getFillColor(self.convex_shape) }
+        unsafe { ffi::sfConvexShape_getFillColor(self.handle.as_ptr()) }
     }
     fn outline_color(&self) -> Color {
-        unsafe { ffi::sfConvexShape_getOutlineColor(self.convex_shape) }
+        unsafe { ffi::sfConvexShape_getOutlineColor(self.handle.as_ptr()) }
     }
     fn outline_thickness(&self) -> f32 {
-        unsafe { ffi::sfConvexShape_getOutlineThickness(self.convex_shape) }
+        unsafe { ffi::sfConvexShape_getOutlineThickness(self.handle.as_ptr()) }
     }
     fn point_count(&self) -> usize {
-        unsafe { ffi::sfConvexShape_getPointCount(self.convex_shape) }
+        unsafe { ffi::sfConvexShape_getPointCount(self.handle.as_ptr()) }
     }
     fn point(&self, index: usize) -> Vector2f {
         unsafe {
@@ -184,34 +186,30 @@ impl<'s> Shape<'s> for ConvexShape<'s> {
                 index,
                 self.point_count()
             );
-            ffi::sfConvexShape_getPoint(self.convex_shape, index)
+            ffi::sfConvexShape_getPoint(self.handle.as_ptr(), index)
         }
     }
     fn local_bounds(&self) -> FloatRect {
-        unsafe { ffi::sfConvexShape_getLocalBounds(self.convex_shape) }
+        unsafe { ffi::sfConvexShape_getLocalBounds(self.handle.as_ptr()) }
     }
     fn global_bounds(&self) -> FloatRect {
-        unsafe { ffi::sfConvexShape_getGlobalBounds(self.convex_shape) }
+        unsafe { ffi::sfConvexShape_getGlobalBounds(self.handle.as_ptr()) }
     }
 }
 
 impl<'s> Clone for ConvexShape<'s> {
     /// Return a new `ConvexShape` or panic if there is not enough memory
     fn clone(&self) -> ConvexShape<'s> {
-        let shape = unsafe { ffi::sfConvexShape_copy(self.convex_shape) };
-        if shape.is_null() {
-            panic!("Not enough memory to clone ConvexShape")
-        } else {
-            ConvexShape {
-                convex_shape: shape,
-                texture: self.texture,
-            }
+        let shape = unsafe { ffi::sfConvexShape_copy(self.handle.as_ptr()) };
+        ConvexShape {
+            handle: NonNull::new(shape).expect("Not enough memory to clone ConvexShape"),
+            texture: self.texture,
         }
     }
 }
 
 impl Drop for ConvexShape<'_> {
     fn drop(&mut self) {
-        unsafe { ffi::sfConvexShape_destroy(self.convex_shape) }
+        unsafe { ffi::sfConvexShape_destroy(self.handle.as_ptr()) }
     }
 }
