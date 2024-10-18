@@ -4,7 +4,7 @@ use {
         graphics::{Glyph, Texture},
         sf_box::SfBox,
         system::InputStream,
-        IntoSfResult, SfError, SfResult,
+        IntoSfResult, SfResult,
     },
     std::{
         ffi::{CStr, CString},
@@ -59,6 +59,54 @@ Font;
 
 /// Creation and loading
 impl Font {
+    /// Creates a new (empty) font.
+    pub fn new() -> SfResult<SfBox<Self>> {
+        SfBox::new(unsafe { ffi::sfFont_new() }).into_sf_result()
+    }
+    /// Creates a new `Font` from a file on the filesystem.
+    ///
+    /// See [`Self::load_from_file`].
+    pub fn from_file(path: &str) -> SfResult<SfBox<Self>> {
+        let mut new = Self::new()?;
+        new.load_from_file(path)?;
+        Ok(new)
+    }
+    /// Creates a new `Font` from font file data in memory.
+    ///
+    /// See [`Self::load_from_memory`].
+    ///
+    /// # Safety
+    ///
+    /// Also see [`Self::load_from_memory`].
+    pub unsafe fn from_memory(data: &[u8]) -> SfResult<SfBox<Self>> {
+        let mut new = Self::new()?;
+        unsafe {
+            new.load_from_memory(data)?;
+        }
+        Ok(new)
+    }
+    /// Creates a new `Font` from static font file data in memory.
+    ///
+    /// See [`Self::load_from_memory_static`].
+    pub fn from_memory_static(data: &'static [u8]) -> SfResult<SfBox<Self>> {
+        let mut new = Self::new()?;
+        new.load_from_memory_static(data)?;
+        Ok(new)
+    }
+    /// Creates a new `Font` from a streamable source.
+    ///
+    /// See [`Self::load_from_stream`].
+    ///
+    /// # Safety
+    ///
+    /// Also see [`Self::load_from_stream`].
+    pub unsafe fn from_stream<T: Read + Seek>(stream: &mut T) -> SfResult<SfBox<Self>> {
+        let mut new = Self::new()?;
+        unsafe {
+            new.load_from_stream(stream)?;
+        }
+        Ok(new)
+    }
     /// Load the font from a file.
     ///
     /// The supported font formats are: TrueType, Type 1, CFF, OpenType, SFNT, X11 PCF,
@@ -82,10 +130,9 @@ impl Font {
     ///     }
     /// };
     /// ```
-    pub fn from_file(filename: &str) -> SfResult<SfBox<Self>> {
-        let c_str = CString::new(filename).into_sf_result()?;
-        let fnt = unsafe { ffi::sfFont_createFromFile(c_str.as_ptr()) };
-        SfBox::new(fnt).ok_or(SfError::CallFailed)
+    pub fn load_from_file(&mut self, path: &str) -> SfResult<()> {
+        let c_str = CString::new(path).into_sf_result()?;
+        unsafe { ffi::sfFont_loadFromFile(self, c_str.as_ptr()) }.into_sf_result()
     }
 
     /// Load the font from a custom stream.
@@ -99,10 +146,9 @@ impl Font {
     ///
     /// # See also
     /// [`Font::from_file`], [`Font::from_memory`]
-    pub unsafe fn from_stream<T: Read + Seek>(stream: &mut T) -> SfResult<SfBox<Self>> {
+    pub unsafe fn load_from_stream<T: Read + Seek>(&mut self, stream: &mut T) -> SfResult<()> {
         let mut input_stream = InputStream::new(stream);
-        let fnt = unsafe { ffi::sfFont_createFromStream(&mut *input_stream.stream) };
-        SfBox::new(fnt).into_sf_result()
+        unsafe { ffi::sfFont_loadFromStream(self, &mut *input_stream.stream) }.into_sf_result()
     }
 
     /// Load the font from a file in memory.
@@ -119,17 +165,16 @@ impl Font {
     /// # See also
     ///
     /// [`Font::from_file`], [`Font::from_stream`]
-    pub unsafe fn from_memory(memory: &[u8]) -> SfResult<SfBox<Self>> {
-        let fnt = unsafe { ffi::sfFont_createFromMemory(memory.as_ptr().cast(), memory.len()) };
-        SfBox::new(fnt).into_sf_result()
+    pub unsafe fn load_from_memory(&mut self, data: &[u8]) -> SfResult<()> {
+        unsafe { ffi::sfFont_loadFromMemory(self, data.as_ptr(), data.len()) }.into_sf_result()
     }
     /// Load the font from a file in static memory.
     ///
     /// This function is safe because the font will stay in memory as long as required.
     ///
-    /// See [`Font::from_memory`]
-    pub fn from_memory_static(memory: &'static [u8]) -> SfResult<SfBox<Self>> {
-        unsafe { Self::from_memory(memory) }
+    /// See [`Self::load_from_memory`].
+    pub fn load_from_memory_static(&mut self, data: &'static [u8]) -> SfResult<()> {
+        unsafe { self.load_from_memory(data) }
     }
 }
 
@@ -346,14 +391,14 @@ impl Font {
 impl ToOwned for Font {
     type Owned = SfBox<Font>;
     fn to_owned(&self) -> Self::Owned {
-        let fnt = unsafe { ffi::sfFont_copy(self) };
+        let fnt = unsafe { ffi::sfFont_cpy(self) };
         SfBox::new(fnt).expect("Failed to copy Font")
     }
 }
 
 impl Drop for Font {
     fn drop(&mut self) {
-        unsafe { ffi::sfFont_destroy(self) }
+        unsafe { ffi::sfFont_del(self) }
     }
 }
 

@@ -102,11 +102,12 @@ pub fn sfCustomShape_getLocalBounds(shape: *const sfCustomShape) -> sfFloatRect;
 pub fn sfCustomShape_getGlobalBounds(shape: *const sfCustomShape) -> sfFloatRect;
 pub fn sfCustomShape_update(shape: *mut sfCustomShape);
 // Font.cpp
-pub fn sfFont_createFromFile(filename: *const c_char) -> *mut sfFont;
-pub fn sfFont_createFromMemory(data: *const c_void, sizeInBytes: usize) -> *mut sfFont;
-pub fn sfFont_createFromStream(stream: *mut sfInputStream) -> *mut sfFont;
-pub fn sfFont_copy(font: *const sfFont) -> *mut sfFont;
-pub fn sfFont_destroy(font: *mut sfFont);
+pub fn sfFont_new() -> *mut sfFont;
+pub fn sfFont_del(font: *mut sfFont);
+pub fn sfFont_cpy(font: *const sfFont) -> *mut sfFont;
+pub fn sfFont_loadFromFile(font: *mut sfFont, filename: *const c_char) -> bool;
+pub fn sfFont_loadFromMemory(font: *mut sfFont, data: *const u8, sizeInBytes: usize) -> bool;
+pub fn sfFont_loadFromStream(font: *mut sfFont, stream: *mut sfInputStream) -> bool;
 pub fn sfFont_getGlyph(font: *const sfFont, codePoint: u32, characterSize: c_uint, bold: bool, outlineThickness: f32) -> sfGlyph;
 pub fn sfFont_getKerning(font: *const sfFont, first: u32, second: u32, characterSize: c_uint) -> f32;
 pub fn sfFont_getBoldKerning(font: *const sfFont, first: u32, second: u32, characterSize: c_uint) -> f32;

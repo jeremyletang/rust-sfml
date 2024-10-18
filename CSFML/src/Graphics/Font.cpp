@@ -10,43 +10,28 @@ typedef struct
     sfIntRect textureRect; ///< Texture coordinates of the glyph inside the font's image
 } sfGlyph;
 
-extern "C" sf::Font *sfFont_createFromFile(const char *filename) {
-    sf::Font *font = new sf::Font;
-    if (!font->loadFromFile(filename)) {
-        delete font;
-        font = NULL;
-    }
-
-    return font;
+extern "C" sf::Font *sfFont_new() {
+    return new sf::Font;
 }
 
-extern "C" sf::Font *sfFont_createFromMemory(const void *data, size_t sizeInBytes) {
-    sf::Font *font = new sf::Font;
-    if (!font->loadFromMemory(data, sizeInBytes)) {
-        delete font;
-        font = NULL;
-    }
-
-    return font;
+extern "C" void sfFont_del(sf::Font *font) {
+    delete font;
 }
 
-extern "C" sf::Font *sfFont_createFromStream(sfInputStream *stream) {
-
-    sf::Font *font = new sf::Font;
-    if (!font->loadFromStream(*stream)) {
-        delete font;
-        font = NULL;
-    }
-
-    return font;
-}
-
-extern "C" sf::Font *sfFont_copy(const sf::Font *font) {
+extern "C" sf::Font *sfFont_cpy(const sf::Font *font) {
     return new sf::Font(*font);
 }
 
-extern "C" void sfFont_destroy(sf::Font *font) {
-    delete font;
+extern "C" bool sfFont_loadFromFile(sf::Font *font, const char *filename) {
+    return font->loadFromFile(filename);
+}
+
+extern "C" bool sfFont_loadFromMemory(sf::Font *font, const uint8_t *data, size_t sizeInBytes) {
+    return font->loadFromMemory(data, sizeInBytes);
+}
+
+extern "C" bool sfFont_loadFromStream(sf::Font *font, sfInputStream *stream) {
+    return font->loadFromStream(*stream);
 }
 
 extern "C" sfGlyph sfFont_getGlyph(const sf::Font *font, uint32_t codePoint, unsigned int characterSize, bool bold, float outlineThickness) {
