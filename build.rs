@@ -276,6 +276,13 @@ fn main() {
                 panic!("Failed to determine windows environment (MSVC/Mingw)");
             }
         }
+    } else if is_macos {
+        // Link freetype for mac
+        if feat_graphics {
+            println!("cargo:rustc-link-lib=dylib=freetype");
+        }
+    } else {
+        panic!("Uhhh... Can't determine your environment. Sorry.");
     }
     if feat_audio {
         link_sfml_subsystem("audio");
