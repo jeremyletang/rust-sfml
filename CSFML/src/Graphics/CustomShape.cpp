@@ -8,7 +8,7 @@
 typedef size_t (*sfCustomShapeGetPointCountCallback)(void *);
 typedef sfVector2f (*sfCustomShapeGetPointCallback)(size_t, void *);
 
-class sfCustomShape : public sf::Shape {
+class sfCustomShape final : public sf::Shape {
   public:
     sfCustomShape(sfCustomShapeGetPointCountCallback getPointCount,
                   sfCustomShapeGetPointCallback getPoint,
@@ -17,11 +17,11 @@ class sfCustomShape : public sf::Shape {
                                     myUserData(userData) {
     }
 
-    virtual std::size_t getPointCount() const {
+    virtual std::size_t getPointCount() const final {
         return myGetPointCountCallback(myUserData);
     }
 
-    virtual sf::Vector2f getPoint(std::size_t index) const {
+    virtual sf::Vector2f getPoint(std::size_t index) const final {
         sfVector2f point = myGetPointCallback(index, myUserData);
         return sf::Vector2f(point.x, point.y);
     }

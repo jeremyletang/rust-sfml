@@ -6,7 +6,7 @@
 typedef bool (*sfCustomSoundStreamGetDataCallback)(sf::SoundStream::Chunk *, void *);
 typedef void (*sfCustomSoundStreamSeekCallback)(int64_t, void *);
 
-class sfCustomSoundStream : public sf::SoundStream {
+class sfCustomSoundStream final : public sf::SoundStream {
   public:
     sfCustomSoundStream(sfCustomSoundStreamGetDataCallback onGetData,
                         sfCustomSoundStreamSeekCallback onSeek,
@@ -19,11 +19,11 @@ class sfCustomSoundStream : public sf::SoundStream {
     }
 
   private:
-    virtual bool onGetData(Chunk &data) {
+    virtual bool onGetData(Chunk &data) final {
         return (myGetDataCallback(&data, myUserData));
     }
 
-    virtual void onSeek(sf::Time timeOffset) {
+    virtual void onSeek(sf::Time timeOffset) final {
         mySeekCallback(timeOffset.asMicroseconds(), myUserData);
     }
 
