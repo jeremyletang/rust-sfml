@@ -247,6 +247,12 @@ fn main() {
     let is_linux = env::var("CARGO_CFG_TARGET_OS")
         .map(|os| os == "linux")
         .unwrap_or(false);
+    let is_macos = env::var("CARGO_CFG_TARGET_OS")
+        .map(|os| os == "macos")
+        .unwrap_or(false);
+    if is_macos {
+        link_mac_os_frameworks();
+    }
     let link_search = if matches!(win_env, Some(WinEnv::Msvc)) {
         "build/lib/Release"
     } else {
@@ -284,4 +290,12 @@ fn main() {
 
 fn link_sfml_subsystem(name: &str) {
     println!("cargo:rustc-link-lib=static=sfml-{name}-s");
+}
+
+fn link_mac_os_frameworks() {
+    println!("cargo:rustc-link-lib=framework=CoreFoundation");
+    println!("cargo:rustc-link-lib=framework=CoreGraphics");
+    println!("cargo:rustc-link-lib=framework=IOKit");
+    println!("cargo:rustc-link-lib=framework=Carbon");
+    println!("cargo:rustc-link-lib=framework=AppKit");
 }
