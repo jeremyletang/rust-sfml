@@ -1,6 +1,7 @@
 use {
     crate::{
-        ffi::graphics as ffi, graphics::FloatRect, sf_box::RawDefault, system::Vector2f, SfBox,
+        ffi::graphics as ffi, graphics::FloatRect, sf_box::RawDefault, system::Vector2f,
+        IntoSfResult, SfBox, SfResult,
     },
     std::ptr::NonNull,
 };
@@ -14,6 +15,37 @@ decl_opaque! {
 View;
 }
 
+/// Creation
+impl View {
+    /// Creates a default `View` of (0, 0, 1000, 1000)
+    pub fn new() -> SfResult<SfBox<Self>> {
+        SfBox::new(unsafe { ffi::sfView_new() }).into_sf_result()
+    }
+    /// Creates a view with position and size
+    ///
+    /// # Arguments
+    /// * center - The center of the view
+    /// * size - The size of the view
+    #[must_use]
+    pub fn with_center_and_size(center: Vector2f, size: Vector2f) -> SfBox<View> {
+        let mut view: SfBox<View> = Default::default();
+        view.set_center(center);
+        view.set_size(size);
+        view
+    }
+
+    /// Construct a view from a rectangle
+    ///
+    /// # Arguments
+    /// * rectangle - The rectangle defining the zone to display
+    pub fn from_rect(rectangle: FloatRect) -> SfResult<SfBox<View>> {
+        let mut new = Self::new()?;
+        new.reset(rectangle);
+        Ok(new)
+    }
+}
+
+/// Query properties
 impl View {
     /// Get the current orientation of a view
     ///
@@ -45,29 +77,10 @@ impl View {
     pub fn viewport(&self) -> FloatRect {
         unsafe { ffi::sfView_getViewport(self) }
     }
-    /// Creates a view with position and size
-    ///
-    /// # Arguments
-    /// * center - The center of the view
-    /// * size - The size of the view
-    #[must_use]
-    pub fn new(center: Vector2f, size: Vector2f) -> SfBox<View> {
-        let mut view: SfBox<View> = Default::default();
-        view.set_center(center);
-        view.set_size(size);
-        view
-    }
+}
 
-    /// Construct a view from a rectangle
-    ///
-    /// # Arguments
-    /// * rectangle - The rectangle defining the zone to display
-    #[must_use]
-    pub fn from_rect(rectangle: FloatRect) -> SfBox<View> {
-        let view = unsafe { ffi::sfView_createFromRect(rectangle) };
-        SfBox::new(view).expect("Failed to create View from Rect")
-    }
-
+/// Set properties
+impl View {
     /// Set the orientation of a view
     ///
     /// The default rotation of a view is 0 degree.
@@ -155,19 +168,19 @@ impl View {
 impl ToOwned for View {
     type Owned = SfBox<Self>;
     fn to_owned(&self) -> Self::Owned {
-        let view = unsafe { ffi::sfView_copy(self) };
+        let view = unsafe { ffi::sfView_cpy(self) };
         SfBox::new(view).expect("Failed to copy View")
     }
 }
 
 impl RawDefault for View {
     fn raw_default() -> NonNull<Self> {
-        NonNull::new(unsafe { ffi::sfView_create() }).expect("Failed to create view")
+        NonNull::new(unsafe { ffi::sfView_new() }).expect("Failed to create view")
     }
 }
 
 impl Drop for View {
     fn drop(&mut self) {
-        unsafe { ffi::sfView_destroy(self) }
+        unsafe { ffi::sfView_del(self) }
     }
 }

@@ -2,23 +2,16 @@
 #include "System/Vector2.h"
 #include <SFML/Graphics/View.hpp>
 
-extern "C" sf::View *sfView_create(void) {
+extern "C" sf::View *sfView_new(void) {
     return new sf::View;
 }
 
-extern "C" sf::View *sfView_createFromRect(sfFloatRect rectangle) {
-    sf::View *view = new sf::View;
-    view->reset(sf::FloatRect(rectangle.left, rectangle.top, rectangle.width, rectangle.height));
-
-    return view;
-}
-
-extern "C" sf::View *sfView_copy(const sf::View *view) {
-    return new sf::View(*view);
-}
-
-extern "C" void sfView_destroy(sf::View *view) {
+extern "C" void sfView_del(sf::View *view) {
     delete view;
+}
+
+extern "C" sf::View *sfView_cpy(const sf::View *view) {
+    return new sf::View(*view);
 }
 
 extern "C" void sfView_setCenter(sf::View *view, sfVector2f center) {

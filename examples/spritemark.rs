@@ -64,7 +64,7 @@ fn main() -> SfResult<()> {
     let mut window = RenderWindow::new(
         native_mode,
         "Spritemark",
-        Style::NONE,
+        Style::default(),
         &ContextSettings::default(),
     )?;
     window.set_position(Vector2::new(0, 0));
@@ -82,6 +82,8 @@ fn main() -> SfResult<()> {
     let mut frames_rendered = 0;
     let mut sec_clock = Clock::start()?;
     let mut fps = 0;
+    let mut lmb_down = false;
+    let mut view = View::new()?;
 
     while window.is_open() {
         while let Some(event) = window.poll_event() {
@@ -93,20 +95,25 @@ fn main() -> SfResult<()> {
                 Event::MouseButtonPressed {
                     button: Button::Left,
                     ..
-                } => click_counter += 1,
+                } => {
+                    click_counter += 1;
+                    lmb_down = true;
+                }
+                Event::MouseButtonReleased {
+                    button: Button::Left,
+                    ..
+                } => {
+                    lmb_down = false;
+                }
                 Event::Resized { width, height } => {
-                    window.set_view(&View::from_rect(Rect::new(
-                        0.,
-                        0.,
-                        width as f32,
-                        height as f32,
-                    )));
+                    view.reset(Rect::new(0., 0., width as f32, height as f32));
+                    window.set_view(&view);
                 }
                 _ => {}
             }
         }
 
-        if Button::Left.is_pressed() {
+        if lmb_down {
             let mp = window.mouse_position();
             for _ in 0..25 {
                 objects.push(Object {

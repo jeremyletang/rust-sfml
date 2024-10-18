@@ -409,10 +409,9 @@ pub fn sfVertexBuffer_getUsage(vertexBuffer: *const sfVertexBuffer) -> sfVertexB
 pub fn sfVertexBuffer_bind(vertexBuffer: *const sfVertexBuffer);
 pub fn sfVertexBuffer_isAvailable() -> bool;
 // View.cpp
-pub fn sfView_create() -> *mut sfView;
-pub fn sfView_createFromRect(rectangle: sfFloatRect) -> *mut sfView;
-pub fn sfView_copy(view: *const sfView) -> *mut sfView;
-pub fn sfView_destroy(view: *mut sfView);
+pub fn sfView_new() -> *mut sfView;
+pub fn sfView_del(view: *mut sfView);
+pub fn sfView_cpy(view: *const sfView) -> *mut sfView;
 pub fn sfView_setCenter(view: *mut sfView, center: sfVector2f);
 pub fn sfView_setSize(view: *mut sfView, size: sfVector2f);
 pub fn sfView_setRotation(view: *mut sfView, angle: f32);
