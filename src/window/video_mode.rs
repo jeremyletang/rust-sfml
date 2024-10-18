@@ -35,10 +35,10 @@ use crate::{ffi::window as ffi, window::thread_safety};
 ///
 /// // Create a window with the same pixel depth as the desktop
 /// let desktop = VideoMode::desktop_mode();
-/// let _window = Window::new(VideoMode::new(1024, 768, desktop.bits_per_pixel),
-///                           "SFML window",
-///                           Style::CLOSE,
-///                           &Default::default());
+/// let _window = Window::new_open(VideoMode::new(1024, 768, desktop.bits_per_pixel),
+///                                "SFML window",
+///                                Style::CLOSE,
+///                                &Default::default());
 /// ```
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
 pub struct VideoMode {

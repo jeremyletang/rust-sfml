@@ -5,27 +5,23 @@
 #include <SFML/Window/Touch.hpp>
 #include <cstdint>
 
-extern "C" sf::Window *sfWindow_createUnicode(sfVideoMode mode, const uint32_t *title, uint32_t style, const sf::ContextSettings *settings) {
+extern "C" sf::Window *sfWindow_new() {
+    return new sf::Window;
+}
+
+extern "C" void sfWindow_del(sf::Window *window) {
+    delete window;
+}
+
+// Create with (mode, title, style, settings)
+extern "C" void sfWindow_create_mtss(sf::Window *window, sfVideoMode mode, const uint32_t *title, uint32_t style, const sf::ContextSettings *settings) {
     // Convert video mode
     sf::VideoMode videoMode(mode.width, mode.height, mode.bitsPerPixel);
-
-    // Create the window
-    sf::Window *window = new sf::Window;
     window->create(videoMode, title, style, *settings);
-
-    return window;
 }
 
-extern "C" sf::Window *sfWindow_createFromHandle(sf::WindowHandle handle, const sf::ContextSettings *settings) {
-    // Create the window
-    sf::Window *window = new sf::Window;
+extern "C" void sfWindow_create_handle_settings(sf::Window *window, sf::WindowHandle handle, const sf::ContextSettings *settings) {
     window->create(handle, *settings);
-
-    return window;
-}
-
-extern "C" void sfWindow_destroy(sf::Window *window) {
-    delete window;
 }
 
 extern "C" void sfWindow_close(sf::Window *window) {

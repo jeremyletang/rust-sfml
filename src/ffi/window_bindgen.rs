@@ -47,9 +47,10 @@ pub fn sfVideoMode_isValid(mode: sfVideoMode) -> bool;
 pub fn sfVideoModeVector_getLength(vec: *const sfVideoModeVector) -> usize;
 pub fn sfVideoModeVector_index(vec: *const sfVideoModeVector, index: usize) -> *const sfVideoMode;
 // Window.cpp
-pub fn sfWindow_createUnicode(mode: sfVideoMode, title: *const u32, style: u32, settings: *const sfContextSettings) -> *mut sfWindow;
-pub fn sfWindow_createFromHandle(handle: sfWindowHandle, settings: *const sfContextSettings) -> *mut sfWindow;
-pub fn sfWindow_destroy(window: *mut sfWindow);
+pub fn sfWindow_new() -> *mut sfWindow;
+pub fn sfWindow_del(window: *mut sfWindow);
+pub fn sfWindow_create_mtss(window: *mut sfWindow, mode: sfVideoMode, title: *const u32, style: u32, settings: *const sfContextSettings);
+pub fn sfWindow_create_handle_settings(window: *mut sfWindow, handle: sfWindowHandle, settings: *const sfContextSettings);
 pub fn sfWindow_close(window: *mut sfWindow);
 pub fn sfWindow_isOpen(window: *const sfWindow) -> bool;
 pub fn sfWindow_getSettings(window: *const sfWindow) -> *const sfContextSettings;

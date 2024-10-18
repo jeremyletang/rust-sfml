@@ -16,10 +16,10 @@ use crate::ffi::{window as ffi, window::EventType};
 #[cfg_attr(feature = "ci-headless", doc = "```no_run")]
 #[cfg_attr(not(feature = "ci-headless"), doc = "```")]
 /// # use sfml::window::{Event, Style, Key, Window};
-/// # let mut window = Window::new((32, 32),
-/// #                              "test",
-/// #                              Style::CLOSE,
-/// #                              &Default::default()).unwrap();
+/// # let mut window = Window::new_open((32, 32),
+/// #                                   "test",
+/// #                                   Style::CLOSE,
+/// #                                   &Default::default()).unwrap();
 /// # fn do_something_with_the_new_size(_x: u32, _y: u32) {}
 /// while let Some(event) = window.poll_event() {
 ///     match event {

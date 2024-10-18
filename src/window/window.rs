@@ -2,7 +2,7 @@ use crate::{
     ffi::window as ffi,
     system::{SfStrConv, Vector2i, Vector2u},
     window::{thread_safety, ContextSettings, Cursor, Event, Style, VideoMode},
-    SfBox, SfError, SfResult,
+    IntoSfResult, SfBox, SfResult,
 };
 
 /// The system native window handle type. Can be used to create an SFML Window
@@ -30,10 +30,10 @@ decl_opaque! {
     /// ```no_run
     /// use sfml::window::{Window, Event, Style};
     /// // Create a new window
-    /// let mut window = Window::new((800, 600),
-    ///                              "SFML window",
-    ///                              Style::CLOSE,
-    ///                              &Default::default()).unwrap();
+    /// let mut window = Window::new_open((800, 600),
+    ///                                   "SFML window",
+    ///                                   Style::CLOSE,
+    ///                                   &Default::default()).unwrap();
     /// // Limit the framerate to 60 frames per second (this step is optional)
     /// window.set_framerate_limit(60);
     ///
@@ -60,7 +60,24 @@ decl_opaque! {
 }
 
 impl Window {
-    /// Construct a new window
+    /// Create a new (closed) window.
+    pub fn new() -> SfResult<SfBox<Self>> {
+        SfBox::new(unsafe { ffi::sfWindow_new() }).into_sf_result()
+    }
+    /// Creates a new window and opens it with the specified parameters.
+    ///
+    /// See [`Self::open`].
+    pub fn new_open<V: Into<VideoMode>, S: SfStrConv>(
+        mode: V,
+        title: S,
+        style: Style,
+        settings: &ContextSettings,
+    ) -> SfResult<SfBox<Self>> {
+        let mut new = Self::new()?;
+        new.open(mode, title, style, settings);
+        Ok(new)
+    }
+    /// Open the window with the specified parameters
     ///
     /// This function creates the window with the size and pixel
     /// depth defined in mode. An optional style can be passed to
@@ -78,25 +95,23 @@ impl Window {
     /// * title - Title of the window
     /// * style - Window style
     /// * settings - Additional settings for the underlying OpenGL context
-    pub fn new<V: Into<VideoMode>, S: SfStrConv>(
+    pub fn open<V: Into<VideoMode>, S: SfStrConv>(
+        &mut self,
         mode: V,
         title: S,
         style: Style,
         settings: &ContextSettings,
-    ) -> SfResult<SfBox<Self>> {
+    ) {
         thread_safety::set_window_thread();
-
-        let ptr = unsafe {
-            title.with_as_sfstr(|sfstr| {
-                ffi::sfWindow_createUnicode(
-                    mode.into().raw(),
-                    sfstr.as_ptr(),
-                    style.bits(),
-                    settings,
-                )
-            })
-        };
-        SfBox::new(ptr).ok_or(crate::SfError::CallFailed)
+        title.with_as_sfstr(|sfstr| unsafe {
+            ffi::sfWindow_create_mtss(
+                self,
+                mode.into().raw(),
+                sfstr.as_ptr(),
+                style.bits(),
+                settings,
+            )
+        })
     }
 
     /// Create a window from an existing platform-specific window handle
@@ -114,10 +129,11 @@ impl Window {
     /// * handle - The handle to the platform-specific window handle to use for
     ///            the window.
     /// * settings - Additional settings for the underlying OpenGL context
-    pub unsafe fn from_handle(handle: Handle, settings: &ContextSettings) -> SfResult<SfBox<Self>> {
+    pub unsafe fn open_from_handle(&mut self, handle: Handle, settings: &ContextSettings) {
         thread_safety::set_window_thread();
-        let ptr = unsafe { ffi::sfWindow_createFromHandle(handle, settings) };
-        SfBox::new(ptr).ok_or(SfError::CallFailed)
+        unsafe {
+            ffi::sfWindow_create_handle_settings(self, handle, settings);
+        }
     }
 
     /// Get the OS-specific handle of the window.
@@ -425,7 +441,7 @@ impl Window {
 impl Drop for Window {
     fn drop(&mut self) {
         unsafe {
-            ffi::sfWindow_destroy(self);
+            ffi::sfWindow_del(self);
         }
     }
 }
