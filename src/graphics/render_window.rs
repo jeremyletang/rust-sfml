@@ -705,7 +705,7 @@ impl RenderTarget for RenderWindow {
         unsafe { ffi::sfRenderWindow_drawText(self, text.raw(), render_states) }
     }
     fn draw_shape(&mut self, shape: &CustomShape, render_states: &RenderStates) {
-        unsafe { ffi::sfRenderWindow_drawShape(self, shape.raw(), render_states) }
+        unsafe { ffi::sfRenderWindow_drawShape(self, shape.raw().cast(), render_states) }
     }
     fn draw_sprite(&mut self, sprite: &Sprite, render_states: &RenderStates) {
         unsafe { ffi::sfRenderWindow_drawSprite(self, sprite.raw(), render_states) }

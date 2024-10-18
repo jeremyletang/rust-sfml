@@ -13,6 +13,8 @@ decl_opaque! {
     sfShader;
     sfRectangleShape;
     sfCustomShape;
+    // Kind of unnecessary, but required by sf_render*_drawShape(...)
+    sfShape;
     sfSprite;
     sfText;
 }

@@ -169,7 +169,7 @@ impl RenderTarget for RenderTexture {
         unsafe { ffi::sfRenderTexture_drawText(self, text.raw(), rs) }
     }
     fn draw_shape(&mut self, shape: &CustomShape, rs: &RenderStates) {
-        unsafe { ffi::sfRenderTexture_drawShape(self, shape.raw(), rs) }
+        unsafe { ffi::sfRenderTexture_drawShape(self, shape.raw().cast(), rs) }
     }
     fn draw_sprite(&mut self, sprite: &Sprite, rs: &RenderStates) {
         unsafe { ffi::sfRenderTexture_drawSprite(self, sprite.raw(), rs) }

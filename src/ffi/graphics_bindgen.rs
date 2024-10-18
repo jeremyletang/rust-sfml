@@ -186,7 +186,7 @@ pub fn sfRenderTexture_mapCoordsToPixel(renderTexture: *const sfRenderTexture, p
 pub fn sfRenderTexture_mapCoordsToPixel_View(renderTexture: *const sfRenderTexture, point: sfVector2f, targetView: *const sfView) -> sfVector2i;
 pub fn sfRenderTexture_drawSprite(renderTexture: *mut sfRenderTexture, object: *const sfSprite, states: *const sfRenderStates);
 pub fn sfRenderTexture_drawText(renderTexture: *mut sfRenderTexture, object: *const sfText, states: *const sfRenderStates);
-pub fn sfRenderTexture_drawShape(renderTexture: *mut sfRenderTexture, object: *const sfCustomShape, states: *const sfRenderStates);
+pub fn sfRenderTexture_drawShape(renderTexture: *mut sfRenderTexture, object: *const sfShape, states: *const sfRenderStates);
 pub fn sfRenderTexture_drawCircleShape(renderTexture: *mut sfRenderTexture, object: *const sfCircleShape, states: *const sfRenderStates);
 pub fn sfRenderTexture_drawConvexShape(renderTexture: *mut sfRenderTexture, object: *const sfConvexShape, states: *const sfRenderStates);
 pub fn sfRenderTexture_drawRectangleShape(renderTexture: *mut sfRenderTexture, object: *const sfRectangleShape, states: *const sfRenderStates);
@@ -243,7 +243,7 @@ pub fn sfRenderWindow_mapCoordsToPixel(renderWindow: *const sfRenderWindow, poin
 pub fn sfRenderWindow_mapCoordsToPixel_View(renderWindow: *const sfRenderWindow, point: sfVector2f, targetView: *const sfView) -> sfVector2i;
 pub fn sfRenderWindow_drawSprite(renderWindow: *mut sfRenderWindow, object: *const sfSprite, states: *const sfRenderStates);
 pub fn sfRenderWindow_drawText(renderWindow: *mut sfRenderWindow, object: *const sfText, states: *const sfRenderStates);
-pub fn sfRenderWindow_drawShape(renderWindow: *mut sfRenderWindow, object: *const sfCustomShape, states: *const sfRenderStates);
+pub fn sfRenderWindow_drawShape(renderWindow: *mut sfRenderWindow, object: *const sfShape, states: *const sfRenderStates);
 pub fn sfRenderWindow_drawCircleShape(renderWindow: *mut sfRenderWindow, object: *const sfCircleShape, states: *const sfRenderStates);
 pub fn sfRenderWindow_drawConvexShape(renderWindow: *mut sfRenderWindow, object: *const sfConvexShape, states: *const sfRenderStates);
 pub fn sfRenderWindow_drawRectangleShape(renderWindow: *mut sfRenderWindow, object: *const sfRectangleShape, states: *const sfRenderStates);
