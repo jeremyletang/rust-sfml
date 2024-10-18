@@ -80,7 +80,7 @@ fn main() -> SfResult<()> {
     ball.set_outline_thickness(3.);
     ball.set_outline_color(Color::BLACK);
     ball.set_fill_color(Color::WHITE);
-    ball.set_origin((ball_radius / 2., ball_radius / 2.));
+    ball.set_origin(ball_radius / 2.);
 
     // Load the text font
     let font = Font::from_file(example_res!("sansation.ttf"))?;

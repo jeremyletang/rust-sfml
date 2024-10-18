@@ -83,7 +83,7 @@ fn main() -> SfResult<()> {
 
         // Little test here for `Shape::points`
         let mut circ = CircleShape::new(4.0, 30);
-        circ.set_origin((2.0, 2.0));
+        circ.set_origin(2.0);
         circ.set_fill_color(Color::YELLOW);
 
         for p in convex_shape.points() {
