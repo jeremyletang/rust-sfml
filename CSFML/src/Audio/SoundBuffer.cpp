@@ -2,56 +2,32 @@
 #include <SFML/Audio/SoundBuffer.hpp>
 #include <cstddef>
 
-extern "C" sf::SoundBuffer *sfSoundBuffer_createFromFile(const char *filename) {
-    sf::SoundBuffer *buffer = new sf::SoundBuffer;
-
-    if (!buffer->loadFromFile(filename)) {
-        delete buffer;
-        buffer = NULL;
-    }
-
-    return buffer;
+extern "C" sf::SoundBuffer *sfSoundBuffer_new() {
+    return new sf::SoundBuffer();
 }
 
-extern "C" sf::SoundBuffer *sfSoundBuffer_createFromMemory(const void *data, size_t sizeInBytes) {
-    sf::SoundBuffer *buffer = new sf::SoundBuffer;
-
-    if (!buffer->loadFromMemory(data, sizeInBytes)) {
-        delete buffer;
-        buffer = NULL;
-    }
-
-    return buffer;
+extern "C" void sfSoundBuffer_del(sf::SoundBuffer *soundBuffer) {
+    delete soundBuffer;
 }
 
-extern "C" sf::SoundBuffer *sfSoundBuffer_createFromStream(sfInputStream *stream) {
-
-    sf::SoundBuffer *buffer = new sf::SoundBuffer;
-    if (!buffer->loadFromStream(*stream)) {
-        delete buffer;
-        buffer = NULL;
-    }
-
-    return buffer;
-}
-
-extern "C" sf::SoundBuffer *sfSoundBuffer_createFromSamples(const int16_t *samples, uint64_t sampleCount, unsigned int channelCount, unsigned int sampleRate) {
-    sf::SoundBuffer *buffer = new sf::SoundBuffer;
-
-    if (!buffer->loadFromSamples(samples, sampleCount, channelCount, sampleRate)) {
-        delete buffer;
-        buffer = NULL;
-    }
-
-    return buffer;
-}
-
-extern "C" sf::SoundBuffer *sfSoundBuffer_copy(const sf::SoundBuffer *soundBuffer) {
+extern "C" sf::SoundBuffer *sfSoundBuffer_cpy(const sf::SoundBuffer *soundBuffer) {
     return new sf::SoundBuffer(*soundBuffer);
 }
 
-extern "C" void sfSoundBuffer_destroy(sf::SoundBuffer *soundBuffer) {
-    delete soundBuffer;
+extern "C" bool sfSoundBuffer_loadFromFile(sf::SoundBuffer *buffer, const char *filename) {
+    return buffer->loadFromFile(filename);
+}
+
+extern "C" bool sfSoundBuffer_loadFromMemory(sf::SoundBuffer *buffer, const uint8_t *data, size_t sizeInBytes) {
+    return buffer->loadFromMemory(data, sizeInBytes);
+}
+
+extern "C" bool sfSoundBuffer_loadFromStream(sf::SoundBuffer *buffer, sfInputStream *stream) {
+    return buffer->loadFromStream(*stream);
+}
+
+extern "C" bool sfSoundBuffer_loadFromSamples(sf::SoundBuffer *buffer, const int16_t *samples, uint64_t sampleCount, unsigned int channelCount, unsigned int sampleRate) {
+    return buffer->loadFromSamples(samples, sampleCount, channelCount, sampleRate);
 }
 
 extern "C" bool sfSoundBuffer_saveToFile(const sf::SoundBuffer *soundBuffer, const char *filename) {

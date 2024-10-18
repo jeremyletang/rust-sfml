@@ -1,8 +1,8 @@
 use {
     crate::{
-        ffi,
+        ffi::{self},
         system::{InputStream, Time},
-        IntoSfResult, SfBox, SfError, SfResult,
+        IntoSfResult, SfBox, SfResult,
     },
     std::{
         ffi::CString,
@@ -69,7 +69,47 @@ SoundBuffer;
 
 /// Creation and loading
 impl SoundBuffer {
-    /// Create a new sound buffer and load it from a file
+    /// Creates a new (empty) `SoundBuffer`.
+    pub fn new() -> SfResult<SfBox<Self>> {
+        SfBox::new(unsafe { ffi::audio::sfSoundBuffer_new() }).into_sf_result()
+    }
+    /// Creates a new `SoundBuffer` from a file.
+    ///
+    /// See [`Self::load_from_file`].
+    pub fn from_file(filename: &str) -> SfResult<SfBox<Self>> {
+        let mut new = Self::new()?;
+        new.load_from_file(filename)?;
+        Ok(new)
+    }
+    /// Creates a new `SoundBuffer` from a file in memory.
+    ///
+    /// See [`Self::load_from_memory`].
+    pub fn from_memory(data: &[u8]) -> SfResult<SfBox<Self>> {
+        let mut new = Self::new()?;
+        new.load_from_memory(data)?;
+        Ok(new)
+    }
+    /// Creates a new `SoundBuffer` from a stream.
+    ///
+    /// See [`Self::load_from_stream`].
+    pub fn from_stream<T: Read + Seek>(stream: &mut T) -> SfResult<SfBox<Self>> {
+        let mut new = Self::new()?;
+        new.load_from_stream(stream)?;
+        Ok(new)
+    }
+    /// Creates a new `SoundBuffer` from a slice of audio samples.
+    ///
+    /// See [`Self::load_from_samples`].
+    pub fn from_samples(
+        samples: &[i16],
+        channel_count: u32,
+        sample_rate: u32,
+    ) -> SfResult<SfBox<Self>> {
+        let mut new = Self::new()?;
+        new.load_from_samples(samples, channel_count, sample_rate)?;
+        Ok(new)
+    }
+    /// Load sound data from a file.
     ///
     /// Here is a complete list of all the supported audio formats:
     /// ogg, wav, flac, aiff, au, raw, paf, svx, nist, voc, ircam,
@@ -77,41 +117,40 @@ impl SoundBuffer {
     ///
     /// # Arguments
     /// * filename - Path of the sound file to load
-    pub fn from_file(filename: &str) -> SfResult<SfBox<Self>> {
+    pub fn load_from_file(&mut self, filename: &str) -> SfResult<()> {
         let c_str = CString::new(filename).into_sf_result()?;
-        let sound_buffer: *mut ffi::audio::sfSoundBuffer =
-            unsafe { ffi::audio::sfSoundBuffer_createFromFile(c_str.as_ptr()) };
-        SfBox::new(sound_buffer).ok_or(SfError::CallFailed)
+        unsafe { ffi::audio::sfSoundBuffer_loadFromFile(self, c_str.as_ptr()) }.into_sf_result()
     }
     /// Load the sound buffer from a file in memory.
-    pub fn from_memory(data: &[u8]) -> SfResult<SfBox<Self>> {
-        let sound_buffer =
-            unsafe { ffi::audio::sfSoundBuffer_createFromMemory(data.as_ptr().cast(), data.len()) };
-        SfBox::new(sound_buffer).ok_or(SfError::CallFailed)
+    pub fn load_from_memory(&mut self, data: &[u8]) -> SfResult<()> {
+        unsafe { ffi::audio::sfSoundBuffer_loadFromMemory(self, data.as_ptr(), data.len()) }
+            .into_sf_result()
     }
     /// Load the sound buffer from a custom stream.
-    pub fn from_stream<T: Read + Seek>(stream: &mut T) -> SfResult<SfBox<Self>> {
+    pub fn load_from_stream<T: Read + Seek>(&mut self, stream: &mut T) -> SfResult<()> {
         let mut stream = InputStream::new(stream);
-        let buffer = unsafe { ffi::audio::sfSoundBuffer_createFromStream(&mut *stream.stream) };
-        SfBox::new(buffer).ok_or(SfError::CallFailed)
+        unsafe { ffi::audio::sfSoundBuffer_loadFromStream(self, &mut *stream.stream) }
+            .into_sf_result()
     }
     /// Load the sound buffer from a slice of audio samples.
     ///
     /// The assumed format of the audio samples is 16 bits signed integer.
-    pub fn from_samples(
+    pub fn load_from_samples(
+        &mut self,
         samples: &[i16],
         channel_count: u32,
         sample_rate: u32,
-    ) -> SfResult<SfBox<Self>> {
-        let buffer = unsafe {
-            ffi::audio::sfSoundBuffer_createFromSamples(
+    ) -> SfResult<()> {
+        unsafe {
+            ffi::audio::sfSoundBuffer_loadFromSamples(
+                self,
                 samples.as_ptr(),
                 samples.len() as _,
                 channel_count,
                 sample_rate,
             )
-        };
-        SfBox::new(buffer).ok_or(SfError::CallFailed)
+        }
+        .into_sf_result()
     }
 }
 
@@ -191,7 +230,7 @@ impl ToOwned for SoundBuffer {
     type Owned = SfBox<Self>;
 
     fn to_owned(&self) -> Self::Owned {
-        let sound_buffer = unsafe { ffi::audio::sfSoundBuffer_copy(self) };
+        let sound_buffer = unsafe { ffi::audio::sfSoundBuffer_cpy(self) };
         SfBox::new(sound_buffer).expect("Failed to copy SoundBuffer")
     }
 }
@@ -199,7 +238,7 @@ impl ToOwned for SoundBuffer {
 impl Drop for SoundBuffer {
     fn drop(&mut self) {
         unsafe {
-            ffi::audio::sfSoundBuffer_destroy(self);
+            ffi::audio::sfSoundBuffer_del(self);
         }
     }
 }
