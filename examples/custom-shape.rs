@@ -73,7 +73,7 @@ fn main() -> SfResult<()> {
 
         shape.set_rotation(t.sin().abs() * 360.0);
         let scale = t.cos().abs();
-        shape.set_scale((scale, scale));
+        shape.set_scale(scale);
         shape.set_fill_color(hue_time(t));
         shape.set_outline_color(hue_time(t / 2.0));
         window.clear(Color::BLACK);

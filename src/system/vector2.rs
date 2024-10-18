@@ -274,6 +274,16 @@ impl<T> From<(T, T)> for Vector2<T> {
     }
 }
 
+/// Create a `Vector2` with both fields initialized to the same value
+impl<T: Clone> From<T> for Vector2<T> {
+    fn from(src: T) -> Self {
+        Self {
+            x: src.clone(),
+            y: src,
+        }
+    }
+}
+
 impl<T: Add> Add<Vector2<T>> for Vector2<T> {
     type Output = Vector2<T::Output>;
 

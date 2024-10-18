@@ -34,7 +34,7 @@ fn main() -> SfResult<()> {
     // Have it use the same texture as the circle.
     sprite.set_texture(&frank, true);
     sprite.set_position((400.0, 300.0));
-    sprite.set_scale((0.5, 0.5));
+    sprite.set_scale(0.5);
 
     // Create a ConvexShape using the same texture.
     let mut convex_shape = ConvexShape::with_texture(6, &frank);
