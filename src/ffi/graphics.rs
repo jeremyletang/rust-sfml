@@ -12,7 +12,7 @@ decl_opaque! {
     sfConvexShape;
     sfShader;
     sfRectangleShape;
-    sfShape;
+    sfCustomShape;
     sfSprite;
     sfText;
 }
@@ -249,8 +249,9 @@ pub struct sfGlslMat4 {
     pub array: [f32; 4 * 4],
 }
 
-type sfShapeGetPointCountCallback = Option<unsafe extern "C" fn(user_data: *mut c_void) -> usize>;
-type sfShapeGetPointCallback =
+type sfCustomShapeGetPointCountCallback =
+    Option<unsafe extern "C" fn(user_data: *mut c_void) -> usize>;
+type sfCustomShapeGetPointCallback =
     Option<unsafe extern "C" fn(idx: usize, user_data: *mut c_void) -> sfVector2f>;
 
 #[repr(C)]

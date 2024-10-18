@@ -35,7 +35,7 @@ pub trait CustomShapePoints {
 /// A custom textured shape with outline.
 #[derive(Debug)]
 pub struct CustomShape<'s> {
-    shape: NonNull<ffi::sfShape>,
+    shape: NonNull<ffi::sfCustomShape>,
     texture: PhantomData<&'s Texture>,
     points: NonNull<Box<dyn CustomShapePoints + Send>>,
 }
@@ -60,7 +60,7 @@ impl<'s> CustomShape<'s> {
         // SAFETY: Box::into_raw produces non-null pointer
         let raw_impl = unsafe { NonNull::new_unchecked(Box::into_raw(Box::new(points))) };
         let sp = unsafe {
-            ffi::sfShape_create(
+            ffi::sfCustomShape_create(
                 Some(get_point_count_callback),
                 Some(get_point_callback),
                 raw_impl.as_ptr().cast(),
@@ -97,58 +97,58 @@ impl<'s> CustomShape<'s> {
     /// [`point_count`]: CustomShapePoints::point_count
     /// [`point`]: CustomShapePoints::point
     pub fn update(&mut self) {
-        unsafe { ffi::sfShape_update(self.shape.as_ptr()) }
+        unsafe { ffi::sfCustomShape_update(self.shape.as_ptr()) }
     }
-    pub(super) fn raw(&self) -> *const ffi::sfShape {
+    pub(super) fn raw(&self) -> *const ffi::sfCustomShape {
         self.shape.as_ptr()
     }
 }
 
 impl<'s> Shape<'s> for CustomShape<'s> {
     fn set_texture(&mut self, texture: &'s Texture, reset_rect: bool) {
-        unsafe { ffi::sfShape_setTexture(self.shape.as_ptr(), texture, reset_rect) }
+        unsafe { ffi::sfCustomShape_setTexture(self.shape.as_ptr(), texture, reset_rect) }
     }
     fn disable_texture(&mut self) {
-        unsafe { ffi::sfShape_setTexture(self.shape.as_ptr(), ptr::null_mut(), true) }
+        unsafe { ffi::sfCustomShape_setTexture(self.shape.as_ptr(), ptr::null_mut(), true) }
     }
     fn set_texture_rect(&mut self, rect: IntRect) {
-        unsafe { ffi::sfShape_setTextureRect(self.shape.as_ptr(), rect) }
+        unsafe { ffi::sfCustomShape_setTextureRect(self.shape.as_ptr(), rect) }
     }
     fn set_fill_color(&mut self, color: Color) {
-        unsafe { ffi::sfShape_setFillColor(self.shape.as_ptr(), color) }
+        unsafe { ffi::sfCustomShape_setFillColor(self.shape.as_ptr(), color) }
     }
     fn set_outline_color(&mut self, color: Color) {
-        unsafe { ffi::sfShape_setOutlineColor(self.shape.as_ptr(), color) }
+        unsafe { ffi::sfCustomShape_setOutlineColor(self.shape.as_ptr(), color) }
     }
     fn set_outline_thickness(&mut self, thickness: f32) {
-        unsafe { ffi::sfShape_setOutlineThickness(self.shape.as_ptr(), thickness) }
+        unsafe { ffi::sfCustomShape_setOutlineThickness(self.shape.as_ptr(), thickness) }
     }
     fn texture(&self) -> Option<&'s Texture> {
-        unsafe { ffi::sfShape_getTexture(self.shape.as_ptr()).as_ref() }
+        unsafe { ffi::sfCustomShape_getTexture(self.shape.as_ptr()).as_ref() }
     }
     fn texture_rect(&self) -> IntRect {
-        unsafe { ffi::sfShape_getTextureRect(self.shape.as_ptr()) }
+        unsafe { ffi::sfCustomShape_getTextureRect(self.shape.as_ptr()) }
     }
     fn fill_color(&self) -> Color {
-        unsafe { ffi::sfShape_getFillColor(self.shape.as_ptr()) }
+        unsafe { ffi::sfCustomShape_getFillColor(self.shape.as_ptr()) }
     }
     fn outline_color(&self) -> Color {
-        unsafe { ffi::sfShape_getOutlineColor(self.shape.as_ptr()) }
+        unsafe { ffi::sfCustomShape_getOutlineColor(self.shape.as_ptr()) }
     }
     fn outline_thickness(&self) -> f32 {
-        unsafe { ffi::sfShape_getOutlineThickness(self.shape.as_ptr()) }
+        unsafe { ffi::sfCustomShape_getOutlineThickness(self.shape.as_ptr()) }
     }
     fn point_count(&self) -> usize {
-        unsafe { ffi::sfShape_getPointCount(self.shape.as_ptr()) }
+        unsafe { ffi::sfCustomShape_getPointCount(self.shape.as_ptr()) }
     }
     fn point(&self, index: usize) -> Vector2f {
-        unsafe { ffi::sfShape_getPoint(self.shape.as_ptr(), index) }
+        unsafe { ffi::sfCustomShape_getPoint(self.shape.as_ptr(), index) }
     }
     fn local_bounds(&self) -> FloatRect {
-        unsafe { ffi::sfShape_getLocalBounds(self.shape.as_ptr()) }
+        unsafe { ffi::sfCustomShape_getLocalBounds(self.shape.as_ptr()) }
     }
     fn global_bounds(&self) -> FloatRect {
-        unsafe { ffi::sfShape_getGlobalBounds(self.shape.as_ptr()) }
+        unsafe { ffi::sfCustomShape_getGlobalBounds(self.shape.as_ptr()) }
     }
 }
 
@@ -164,50 +164,50 @@ impl Drawable for CustomShape<'_> {
 
 impl Transformable for CustomShape<'_> {
     fn set_position<P: Into<Vector2f>>(&mut self, position: P) {
-        unsafe { ffi::sfShape_setPosition(self.shape.as_ptr(), position.into()) }
+        unsafe { ffi::sfCustomShape_setPosition(self.shape.as_ptr(), position.into()) }
     }
     fn set_rotation(&mut self, angle: f32) {
-        unsafe { ffi::sfShape_setRotation(self.shape.as_ptr(), angle) }
+        unsafe { ffi::sfCustomShape_setRotation(self.shape.as_ptr(), angle) }
     }
     fn set_scale<S: Into<Vector2f>>(&mut self, scale: S) {
-        unsafe { ffi::sfShape_setScale(self.shape.as_ptr(), scale.into()) }
+        unsafe { ffi::sfCustomShape_setScale(self.shape.as_ptr(), scale.into()) }
     }
     fn set_origin<O: Into<Vector2f>>(&mut self, origin: O) {
-        unsafe { ffi::sfShape_setOrigin(self.shape.as_ptr(), origin.into()) }
+        unsafe { ffi::sfCustomShape_setOrigin(self.shape.as_ptr(), origin.into()) }
     }
     fn position(&self) -> Vector2f {
-        unsafe { ffi::sfShape_getPosition(self.shape.as_ptr()) }
+        unsafe { ffi::sfCustomShape_getPosition(self.shape.as_ptr()) }
     }
     fn rotation(&self) -> f32 {
-        unsafe { ffi::sfShape_getRotation(self.shape.as_ptr()) }
+        unsafe { ffi::sfCustomShape_getRotation(self.shape.as_ptr()) }
     }
     fn get_scale(&self) -> Vector2f {
-        unsafe { ffi::sfShape_getScale(self.shape.as_ptr()) }
+        unsafe { ffi::sfCustomShape_getScale(self.shape.as_ptr()) }
     }
     fn origin(&self) -> Vector2f {
-        unsafe { ffi::sfShape_getOrigin(self.shape.as_ptr()) }
+        unsafe { ffi::sfCustomShape_getOrigin(self.shape.as_ptr()) }
     }
     fn move_<O: Into<Vector2f>>(&mut self, offset: O) {
-        unsafe { ffi::sfShape_move(self.shape.as_ptr(), offset.into()) }
+        unsafe { ffi::sfCustomShape_move(self.shape.as_ptr(), offset.into()) }
     }
     fn rotate(&mut self, angle: f32) {
-        unsafe { ffi::sfShape_rotate(self.shape.as_ptr(), angle) }
+        unsafe { ffi::sfCustomShape_rotate(self.shape.as_ptr(), angle) }
     }
     fn scale<F: Into<Vector2f>>(&mut self, factors: F) {
-        unsafe { ffi::sfShape_scale(self.shape.as_ptr(), factors.into()) }
+        unsafe { ffi::sfCustomShape_scale(self.shape.as_ptr(), factors.into()) }
     }
     fn transform(&self) -> &Transform {
-        unsafe { &*ffi::sfShape_getTransform(self.shape.as_ptr()) }
+        unsafe { &*ffi::sfCustomShape_getTransform(self.shape.as_ptr()) }
     }
     fn inverse_transform(&self) -> &Transform {
-        unsafe { &*ffi::sfShape_getInverseTransform(self.shape.as_ptr()) }
+        unsafe { &*ffi::sfCustomShape_getInverseTransform(self.shape.as_ptr()) }
     }
 }
 
 impl Drop for CustomShape<'_> {
     fn drop(&mut self) {
         unsafe {
-            ffi::sfShape_destroy(self.shape.as_ptr());
+            ffi::sfCustomShape_destroy(self.shape.as_ptr());
             let _ = Box::from_raw(self.points.as_ptr());
         }
     }

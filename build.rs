@@ -228,7 +228,7 @@ fn main() {
                 "CSFML/src/Graphics/RenderTexture.cpp",
                 "CSFML/src/Graphics/RenderWindow.cpp",
                 "CSFML/src/Graphics/Shader.cpp",
-                "CSFML/src/Graphics/Shape.cpp",
+                "CSFML/src/Graphics/CustomShape.cpp",
                 "CSFML/src/Graphics/Sprite.cpp",
                 "CSFML/src/Graphics/Text.cpp",
                 "CSFML/src/Graphics/Texture.cpp",
