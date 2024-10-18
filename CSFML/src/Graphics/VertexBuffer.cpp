@@ -1,4 +1,3 @@
-#include "Graphics/Vertex.h"
 #include <SFML/Graphics/VertexBuffer.hpp>
 #include <cstddef>
 

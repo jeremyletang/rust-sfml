@@ -1,5 +1,6 @@
 #include "Graphics/Rect.h"
-#include "Graphics/Vertex.h"
+#include "Graphics/Color.h"
+#include "System/Vector2.h"
 #include "Window/VideoMode.h"
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/CircleShape.hpp>
