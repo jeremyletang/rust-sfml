@@ -51,13 +51,13 @@ use {
 /// [`SoundBuffer`]: crate::audio::SoundBuffer
 /// [`Sound`]: crate::audio::Sound
 #[derive(Debug)]
-pub struct Music<'stream> {
+pub struct Music<'src> {
     music: *mut ffi::audio::sfMusic,
-    _stream: PhantomData<&'stream mut ()>,
+    _stream: PhantomData<&'src mut ()>,
 }
 
 /// Creating and opening
-impl<'stream> Music<'stream> {
+impl<'src> Music<'src> {
     /// Create a new (empty) `Music`.
     pub fn new() -> SfResult<Self> {
         Ok(Self {
@@ -76,7 +76,7 @@ impl<'stream> Music<'stream> {
     /// Create a new `Music` by "opening" it from a stream
     ///
     /// See [`Self::open_from_stream`].
-    pub fn from_stream<T: Read + Seek>(stream: &'stream mut InputStream<T>) -> SfResult<Self> {
+    pub fn from_stream<T: Read + Seek>(stream: &'src mut InputStream<T>) -> SfResult<Self> {
         let mut new = Self::new()?;
         new.open_from_stream(stream)?;
         Ok(new)
@@ -84,7 +84,7 @@ impl<'stream> Music<'stream> {
     /// Create a new `Music` by "opening" it from music data in memory
     ///
     /// See [`Self::open_from_memory`].
-    pub fn from_memory(data: &[u8]) -> SfResult<Self> {
+    pub fn from_memory(data: &'src [u8]) -> SfResult<Self> {
         let mut new = Self::new()?;
         new.open_from_memory(data)?;
         Ok(new)
@@ -118,7 +118,7 @@ impl<'stream> Music<'stream> {
     /// [`play`]: Music::play
     pub fn open_from_stream<T: Read + Seek>(
         &mut self,
-        stream: &'stream mut InputStream<T>,
+        stream: &'src mut InputStream<T>,
     ) -> SfResult<()> {
         unsafe { ffi::audio::sfMusic_openFromStream(self.music, &mut *stream.stream) }
             .into_sf_result()
@@ -135,7 +135,7 @@ impl<'stream> Music<'stream> {
     /// * `data` - Slice of music data in memory
     ///
     /// [`play`]: Music::play
-    pub fn open_from_memory(&mut self, data: &[u8]) -> SfResult<()> {
+    pub fn open_from_memory(&mut self, data: &'src [u8]) -> SfResult<()> {
         unsafe { ffi::audio::sfMusic_openFromMemory(self.music, data.as_ptr(), data.len()) }
             .into_sf_result()
     }
