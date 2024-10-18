@@ -70,6 +70,7 @@ fn bstyle(highlighted: bool, selected: bool, error: bool) -> ButtonStyle {
 }
 
 fn main() -> SfResult<()> {
+    let mut cursor = Cursor::from_system(CursorType::Arrow)?;
     let mut rw = RenderWindow::new(
         (800, 800),
         "SFML cursor example",
@@ -77,7 +78,6 @@ fn main() -> SfResult<()> {
         &ContextSettings::default(),
     )?;
     rw.set_vertical_sync_enabled(true);
-    let mut cursor;
     let font = Font::from_file(example_res!("sansation.ttf"))?;
     let mut failed_index = usize::MAX;
     let mut selected_index = usize::MAX;
@@ -129,14 +129,17 @@ fn main() -> SfResult<()> {
                 } => {
                     for (i, b) in buttons.iter().enumerate() {
                         if mouse_over(b, x, y) {
-                            if let Ok(new_cursor) = Cursor::from_system(cursor_types[i]) {
-                                cursor = new_cursor;
-                                unsafe {
-                                    rw.set_mouse_cursor(&cursor);
+                            match cursor.load_from_system(cursor_types[i]) {
+                                Ok(()) => {
+                                    unsafe {
+                                        rw.set_mouse_cursor(&cursor);
+                                    }
+                                    selected_index = i;
                                 }
-                                selected_index = i;
-                            } else {
-                                failed_index = i;
+                                Err(e) => {
+                                    eprintln!("{e}");
+                                    failed_index = i;
+                                }
                             }
                         }
                     }
@@ -152,13 +155,17 @@ fn main() -> SfResult<()> {
                             }
                         }
                         unsafe {
-                            if let Ok(new_cursor) = Cursor::from_pixels(
+                            match cursor.load_from_pixels(
                                 &pixels,
                                 Vector2::new(DRAW_GRID_WH as u32, DRAW_GRID_WH as u32),
                                 hotspot,
                             ) {
-                                cursor = new_cursor;
-                                rw.set_mouse_cursor(&cursor);
+                                Ok(()) => {
+                                    rw.set_mouse_cursor(&cursor);
+                                }
+                                Err(e) => {
+                                    eprintln!("{e}");
+                                }
                             }
                         }
                         modif = false;

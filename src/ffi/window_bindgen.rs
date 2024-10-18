@@ -7,9 +7,10 @@ unsafe extern "C" {
 pub fn sfClipboard_getUnicodeString() -> *mut sfString;
 pub fn sfClipboard_setUnicodeString(text: *const u32);
 // Cursor.cpp
-pub fn sfCursor_createFromPixels(pixels: *const u8, size: sfVector2u, hotspot: sfVector2u) -> *mut sfCursor;
-pub fn sfCursor_createFromSystem(type_: sfCursorType) -> *mut sfCursor;
-pub fn sfCursor_destroy(cursor: *mut sfCursor);
+pub fn sfCursor_new() -> *mut sfCursor;
+pub fn sfCursor_del(cursor: *mut sfCursor);
+pub fn sfCursor_loadFromPixels(cursor: *mut sfCursor, pixels: *const u8, size: sfVector2u, hotspot: sfVector2u) -> bool;
+pub fn sfCursor_loadFromSystem(cursor: *mut sfCursor, type_: sfCursorType) -> bool;
 // Joystick.cpp
 pub fn sfJoystick_isConnected(joystick: c_uint) -> bool;
 pub fn sfJoystick_getButtonCount(joystick: c_uint) -> c_uint;
