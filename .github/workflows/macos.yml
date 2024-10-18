@@ -1,0 +1,25 @@
+name: Build and test (Mac OS)
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+
+    runs-on: macos-latest
+
+    steps:
+    - uses: hecrj/setup-rust-action@v2
+      with:
+        rust-version: 1.82.0
+    - uses: actions/checkout@v4
+    - name: Build
+      run: |
+       git submodule update --init
+       cargo build --verbose
