@@ -19,9 +19,6 @@ jobs:
       with:
         rust-version: 1.82.0
     - uses: actions/checkout@v4
-    - name: Setup tmate session
-      if: ${{ failure() }}
-      uses: mxschmitt/action-tmate@v3
     - name: Install deps
       run: |
         brew install freetype
@@ -37,3 +34,6 @@ jobs:
        cargo test --no-default-features --features=ci-headless,audio --verbose
        cargo test --no-default-features --features=ci-headless,window --verbose
        cargo test --no-default-features --features=ci-headless,graphics --verbose
+    - name: TMate debug tests
+      if: ${{ failure() }}
+      uses: mxschmitt/action-tmate@v3
