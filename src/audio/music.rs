@@ -3,7 +3,7 @@ use {
         audio::{SoundSource, SoundStatus, TimeSpan},
         ffi::{self},
         system::{InputStream, Time, Vector3f},
-        IntoSfResult, SfError, SfResult,
+        IntoSfResult, SfResult,
     },
     std::{
         ffi::CString,
@@ -56,9 +56,40 @@ pub struct Music<'stream> {
     _stream: PhantomData<&'stream mut ()>,
 }
 
-/// Creating and loading
+/// Creating and opening
 impl<'stream> Music<'stream> {
-    /// Create a new music and load it from a file
+    /// Create a new (empty) `Music`.
+    pub fn new() -> SfResult<Self> {
+        Ok(Self {
+            music: unsafe { ffi::audio::sfMusic_new() },
+            _stream: PhantomData,
+        })
+    }
+    /// Create a new `Music` by opening a music file
+    ///
+    /// See [`Self::open_from_file`].
+    pub fn from_file(filename: &str) -> SfResult<Self> {
+        let mut new = Self::new()?;
+        new.open_from_file(filename)?;
+        Ok(new)
+    }
+    /// Create a new `Music` by "opening" it from a stream
+    ///
+    /// See [`Self::open_from_stream`].
+    pub fn from_stream<T: Read + Seek>(stream: &'stream mut InputStream<T>) -> SfResult<Self> {
+        let mut new = Self::new()?;
+        new.open_from_stream(stream)?;
+        Ok(new)
+    }
+    /// Create a new `Music` by "opening" it from music data in memory
+    ///
+    /// See [`Self::open_from_memory`].
+    pub fn from_memory(data: &[u8]) -> SfResult<Self> {
+        let mut new = Self::new()?;
+        new.open_from_memory(data)?;
+        Ok(new)
+    }
+    /// Open a new file for playback
     ///
     /// This function doesn't start playing the music (call [`play`] to do so).
     /// Here is a complete list of all the supported audio formats:
@@ -69,21 +100,12 @@ impl<'stream> Music<'stream> {
     /// * filename - Path of the music file to open
     ///
     /// [`play`]: Music::play
-    pub fn from_file(filename: &str) -> SfResult<Self> {
+    pub fn open_from_file(&mut self, filename: &str) -> SfResult<()> {
         let c_str = CString::new(filename).into_sf_result()?;
-        let music_tmp: *mut ffi::audio::sfMusic =
-            unsafe { ffi::audio::sfMusic_createFromFile(c_str.as_ptr()) };
-        if music_tmp.is_null() {
-            Err(SfError::CallFailed)
-        } else {
-            Ok(Self {
-                music: music_tmp,
-                _stream: PhantomData,
-            })
-        }
+        unsafe { ffi::audio::sfMusic_openFromFile(self.music, c_str.as_ptr()) }.into_sf_result()
     }
 
-    /// Create a new music and load it from a stream (a struct implementing Read and Seek)
+    /// Open music from a stream (a struct implementing Read and Seek)
     ///
     /// This function doesn't start playing the music (call [`play`] to do so).
     /// Here is a complete list of all the supported audio formats:
@@ -94,20 +116,15 @@ impl<'stream> Music<'stream> {
     /// * stream - Your struct, implementing Read and Seek
     ///
     /// [`play`]: Music::play
-    pub fn from_stream<T: Read + Seek>(stream: &'stream mut InputStream<T>) -> SfResult<Self> {
-        let music_tmp: *mut ffi::audio::sfMusic =
-            unsafe { ffi::audio::sfMusic_createFromStream(&mut *stream.stream) };
-        if music_tmp.is_null() {
-            Err(SfError::CallFailed)
-        } else {
-            Ok(Music {
-                music: music_tmp,
-                _stream: PhantomData,
-            })
-        }
+    pub fn open_from_stream<T: Read + Seek>(
+        &mut self,
+        stream: &'stream mut InputStream<T>,
+    ) -> SfResult<()> {
+        unsafe { ffi::audio::sfMusic_openFromStream(self.music, &mut *stream.stream) }
+            .into_sf_result()
     }
 
-    /// Create a new music and load it from memory
+    /// Create a new music and open it from memory
     ///
     /// This function doesn't start playing the music (call [`play`] to do so).
     /// Here is a complete list of all the supported audio formats:
@@ -115,20 +132,12 @@ impl<'stream> Music<'stream> {
     /// w64, mat4, mat5 pvf, htk, sds, avr, sd2, caf, wve, mpc2k, rf64.
     ///
     /// # Arguments
-    /// * mem - Pointer to the file data in memory
+    /// * `data` - Slice of music data in memory
     ///
     /// [`play`]: Music::play
-    pub fn from_memory(mem: &[u8]) -> SfResult<Self> {
-        let music_tmp =
-            unsafe { ffi::audio::sfMusic_createFromMemory(mem.as_ptr().cast(), mem.len()) };
-        if music_tmp.is_null() {
-            Err(SfError::CallFailed)
-        } else {
-            Ok(Music {
-                music: music_tmp,
-                _stream: PhantomData,
-            })
-        }
+    pub fn open_from_memory(&mut self, data: &[u8]) -> SfResult<()> {
+        unsafe { ffi::audio::sfMusic_openFromMemory(self.music, data.as_ptr(), data.len()) }
+            .into_sf_result()
     }
 }
 
@@ -311,7 +320,7 @@ impl SoundSource for Music<'_> {
 impl Drop for Music<'_> {
     fn drop(&mut self) {
         unsafe {
-            ffi::audio::sfMusic_destroy(self.music);
+            ffi::audio::sfMusic_del(self.music);
         }
     }
 }

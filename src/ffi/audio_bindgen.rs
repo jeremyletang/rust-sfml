@@ -38,10 +38,11 @@ pub fn sfListener_getDirection() -> sfVector3f;
 pub fn sfListener_setUpVector(upVector: sfVector3f);
 pub fn sfListener_getUpVector() -> sfVector3f;
 // Music.cpp
-pub fn sfMusic_createFromFile(filename: *const c_char) -> *mut sfMusic;
-pub fn sfMusic_createFromMemory(data: *const c_void, sizeInBytes: usize) -> *mut sfMusic;
-pub fn sfMusic_createFromStream(stream: *mut sfInputStream) -> *mut sfMusic;
-pub fn sfMusic_destroy(music: *mut sfMusic);
+pub fn sfMusic_new() -> *mut sfMusic;
+pub fn sfMusic_del(music: *mut sfMusic);
+pub fn sfMusic_openFromFile(music: *mut sfMusic, filename: *const c_char) -> bool;
+pub fn sfMusic_openFromMemory(music: *mut sfMusic, data: *const u8, sizeInBytes: usize) -> bool;
+pub fn sfMusic_openFromStream(music: *mut sfMusic, stream: *mut sfInputStream) -> bool;
 pub fn sfMusic_setLoop(music: *mut sfMusic, loop_: bool);
 pub fn sfMusic_getLoop(music: *const sfMusic) -> bool;
 pub fn sfMusic_getDuration(music: *const sfMusic) -> i64;

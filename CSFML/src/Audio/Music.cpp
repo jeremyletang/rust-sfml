@@ -9,39 +9,24 @@ typedef struct
     int64_t length; ///< The length of the time range
 } sfTimeSpan;
 
-extern "C" sf::Music *sfMusic_createFromFile(const char *filename) {
-    sf::Music *music = new sf::Music;
-    if (!music->openFromFile(filename)) {
-        delete music;
-        music = NULL;
-    }
-
-    return music;
+extern "C" sf::Music *sfMusic_new() {
+    return new sf::Music;
 }
 
-extern "C" sf::Music *sfMusic_createFromMemory(const void *data, size_t sizeInBytes) {
-    sf::Music *music = new sf::Music;
-    if (!music->openFromMemory(data, sizeInBytes)) {
-        delete music;
-        music = NULL;
-    }
-
-    return music;
-}
-
-extern "C" sf::Music *sfMusic_createFromStream(sfInputStream *stream) {
-
-    sf::Music *music = new sf::Music;
-    if (!music->openFromStream(*stream)) {
-        delete music;
-        music = NULL;
-    }
-
-    return music;
-}
-
-extern "C" void sfMusic_destroy(sf::Music *music) {
+extern "C" void sfMusic_del(sf::Music *music) {
     delete music;
+}
+
+extern "C" bool sfMusic_openFromFile(sf::Music *music, const char *filename) {
+    return music->openFromFile(filename);
+}
+
+extern "C" bool sfMusic_openFromMemory(sf::Music *music, const uint8_t *data, size_t sizeInBytes) {
+    return music->openFromMemory(data, sizeInBytes);
+}
+
+extern "C" bool sfMusic_openFromStream(sf::Music *music, sfInputStream *stream) {
+    return music->openFromStream(*stream);
 }
 
 extern "C" void sfMusic_setLoop(sf::Music *music, bool loop) {
