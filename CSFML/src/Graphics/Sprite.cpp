@@ -4,7 +4,6 @@
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/Image.hpp>
 #include <SFML/Graphics/Sprite.hpp>
-#include <cstddef>
 
 extern "C" sf::Sprite *sfSprite_create(void) {
     return new sf::Sprite;

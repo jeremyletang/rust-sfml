@@ -1,5 +1,4 @@
 #include "System/InputStreamStruct.h"
-#include "System/Vector2.h"
 #include "System/Vector3.h"
 #include <SFML/Audio/Music.hpp>
 #include <cstddef>

@@ -1,6 +1,5 @@
 #include "System/Vector3.h"
 #include <SFML/Audio.hpp>
-#include <cstddef>
 #include <cstdint>
 
 extern "C" sf::Sound *sfSound_create(void) {

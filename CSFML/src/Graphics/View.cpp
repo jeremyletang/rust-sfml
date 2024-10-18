@@ -1,7 +1,6 @@
 #include "Graphics/Rect.h"
 #include "System/Vector2.h"
 #include <SFML/Graphics/View.hpp>
-#include <cstddef>
 
 extern "C" sf::View *sfView_create(void) {
     return new sf::View;

@@ -1,5 +1,4 @@
 #include <SFML/Window/Clipboard.hpp>
-#include <cstddef>
 #include <cstdint>
 
 extern "C" sf::String *sfClipboard_getUnicodeString() {

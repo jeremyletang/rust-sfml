@@ -1,5 +1,4 @@
 #include <SFML/System/Clock.hpp>
-#include <cstddef>
 
 extern "C" sf::Clock *sfClock_new(void) {
     return new sf::Clock;

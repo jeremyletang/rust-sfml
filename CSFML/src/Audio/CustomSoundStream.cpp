@@ -1,6 +1,5 @@
 #include "System/Vector3.h"
 #include <SFML/Audio/SoundStream.hpp>
-#include <cstddef>
 #include <cstdint>
 
 typedef bool (*sfCustomSoundStreamGetDataCallback)(sf::SoundStream::Chunk *, void *);

@@ -1,5 +1,4 @@
 #include <SFML/Window/Joystick.hpp>
-#include <cstddef>
 
 extern "C" bool sfJoystick_isConnected(unsigned int joystick) {
     return sf::Joystick::isConnected(joystick);

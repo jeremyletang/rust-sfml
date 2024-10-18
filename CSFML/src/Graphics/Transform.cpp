@@ -1,7 +1,6 @@
 #include "Graphics/Rect.h"
 #include "System/Vector2.h"
 #include <SFML/Graphics/Transform.hpp>
-#include <cstddef>
 #include <cstring>
 
 extern "C" sfVector2f sfTransform_transformPoint(const sf::Transform *transform, sfVector2f point) {

@@ -1,9 +1,8 @@
-#include "SFML/Window.hpp"
 #include "System/Vector2.h"
 #include "Window/VideoMode.h"
+#include <SFML/Window/Window.hpp>
 #include <SFML/Window/Context.hpp>
 #include <SFML/Window/Touch.hpp>
-#include <cstddef>
 #include <cstdint>
 
 extern "C" sf::Window *sfWindow_createUnicode(sfVideoMode mode, const uint32_t *title, uint32_t style, const sf::ContextSettings *settings) {

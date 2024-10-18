@@ -1,6 +1,5 @@
 #include "System/Vector3.h"
 #include <SFML/Window/Sensor.hpp>
-#include <cstddef>
 
 extern "C" bool sfSensor_isAvailable(sf::Sensor::Type sensor) {
     return sf::Sensor::isAvailable(sensor);
