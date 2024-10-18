@@ -5,67 +5,36 @@
 #include <SFML/Graphics/Image.hpp>
 #include <cstddef>
 
-extern "C" sf::Image *sfImage_create(unsigned int width, unsigned int height) {
-    sf::Image *image = new sf::Image;
-    image->create(width, height);
-
-    return image;
+extern "C" sf::Image *sfImage_new() {
+    return new sf::Image;
 }
 
-extern "C" sf::Image *sfImage_createFromColor(unsigned int width, unsigned int height, sfColor color) {
-    sf::Image *image = new sf::Image;
-    image->create(width, height, sf::Color(color.r, color.g, color.b, color.a));
-
-    return image;
-}
-
-extern "C" sf::Image *sfImage_createFromPixels(unsigned int width, unsigned int height, const uint8_t *data) {
-    sf::Image *image = new sf::Image;
-    image->create(width, height, data);
-
-    return image;
-}
-
-extern "C" sf::Image *sfImage_createFromFile(const char *filename) {
-    sf::Image *image = new sf::Image;
-
-    if (!image->loadFromFile(filename)) {
-        delete image;
-        image = NULL;
-    }
-
-    return image;
-}
-
-extern "C" sf::Image *sfImage_createFromMemory(const void *data, size_t sizeInBytes) {
-    sf::Image *image = new sf::Image;
-
-    if (!image->loadFromMemory(data, sizeInBytes)) {
-        delete image;
-        image = NULL;
-    }
-
-    return image;
-}
-
-extern "C" sf::Image *sfImage_createFromStream(sfInputStream *stream) {
-
-    sf::Image *image = new sf::Image;
-
-    if (!image->loadFromStream(*stream)) {
-        delete image;
-        image = NULL;
-    }
-
-    return image;
-}
-
-extern "C" sf::Image *sfImage_copy(const sf::Image *image) {
+extern "C" sf::Image *sfImage_cpy(const sf::Image *image) {
     return new sf::Image(*image);
 }
 
-extern "C" void sfImage_destroy(sf::Image *image) {
+extern "C" void sfImage_del(sf::Image *image) {
     delete image;
+}
+
+extern "C" void sfImage_create_w_h_color(sf::Image *image, unsigned int width, unsigned int height, sfColor color) {
+    image->create(width, height, sf::Color(color.r, color.g, color.b, color.a));
+}
+
+extern "C" void sfImage_create_w_h_pixels(sf::Image *image, unsigned int width, unsigned int height, const uint8_t *data) {
+    image->create(width, height, data);
+}
+
+extern "C" bool sfImage_loadFromFile(sf::Image *image, const char *filename) {
+    return image->loadFromFile(filename);
+}
+
+extern "C" bool sfImage_loadFromMemory(sf::Image *image, const uint8_t *data, size_t sizeInBytes) {
+    return image->loadFromMemory(data, sizeInBytes);
+}
+
+extern "C" bool sfImage_loadFromStream(sf::Image *image, sfInputStream *stream) {
+    return image->loadFromStream(*stream);
 }
 
 extern "C" bool sfImage_saveToFile(const sf::Image *image, const char *filename) {
@@ -76,7 +45,7 @@ extern "C" void sfImage_createMaskFromColor(sf::Image *image, sfColor colorKey, 
     image->createMaskFromColor(sf::Color(colorKey.r, colorKey.g, colorKey.b, colorKey.a), alpha);
 }
 
-extern "C" void sfImage_copyImage(sf::Image *image, const sf::Image *source, unsigned int destX, unsigned int destY, sfIntRect sourceRect, bool applyAlpha) {
+extern "C" void sfImage_copy(sf::Image *image, const sf::Image *source, unsigned int destX, unsigned int destY, sfIntRect sourceRect, bool applyAlpha) {
     sf::IntRect sfmlRect(sourceRect.left, sourceRect.top, sourceRect.width, sourceRect.height);
     image->copy(*source, destX, destY, sfmlRect, applyAlpha);
 }

@@ -3,7 +3,7 @@ use {
         ffi::graphics as ffi,
         graphics::{Color, IntRect},
         system::{InputStream, Vector2u},
-        IntoSfResult, SfBox, SfError, SfResult,
+        IntoSfResult, SfBox, SfResult,
     },
     std::{
         error::Error,
@@ -21,33 +21,83 @@ decl_opaque! {
 
 /// Creation and loading
 impl Image {
-    /// Create an image
-    ///
-    /// This image is filled with black pixels.
-    ///
-    /// # Arguments
-    /// * width - Width of the image
-    /// * height - Height of the image
-    pub fn new(width: u32, height: u32) -> SfResult<SfBox<Self>> {
-        let image = unsafe { ffi::sfImage_create(width, height) };
-        SfBox::new(image).ok_or(SfError::CallFailed)
+    /// Create a new (empty) image.
+    pub fn new() -> SfResult<SfBox<Self>> {
+        SfBox::new(unsafe { ffi::sfImage_new() }).into_sf_result()
     }
-
-    /// Create an image from a custom stream.
+    /// Create a new `Image` filled with a solid color.
     ///
-    /// The supported image formats are bmp, png, tga, jpg, gif, psd, hdr and pic.
-    /// Some format options are not supported, like progressive jpeg.
-    /// If this function fails, the image is left unchanged.
+    /// See [`Self::recreate_solid`].
+    pub fn new_solid(width: u32, height: u32, color: Color) -> SfResult<SfBox<Self>> {
+        let mut new = Self::new()?;
+        new.recreate_solid(width, height, color);
+        Ok(new)
+    }
+    /// Create a new `Image` from the provided RGBA pixel data.
     ///
-    /// # Arguments
-    /// * stream - Your struct, implementing Read and Seek
+    /// See [`Self::recreate_from_pixels`].
+    ///
+    /// # Safety
+    ///
+    /// Also see [`Self::recreate_from_pixels`].
+    pub unsafe fn from_pixels(width: u32, height: u32, data: &[u8]) -> SfResult<SfBox<Self>> {
+        let mut new = Self::new()?;
+        unsafe {
+            new.recreate_from_pixels(width, height, data);
+        }
+        Ok(new)
+    }
+    /// Create a new `Image` from an image file on the filesystem.
+    ///
+    /// See [`Self::load_from_file`].
+    pub fn from_file(filename: &str) -> SfResult<SfBox<Self>> {
+        let mut new = Self::new()?;
+        new.load_from_file(filename)?;
+        Ok(new)
+    }
+    /// Create a new `Image` from image file data in memory.
+    ///
+    /// See [`Self::load_from_memory`].
+    pub fn from_memory(data: &[u8]) -> SfResult<SfBox<Self>> {
+        let mut new = Self::new()?;
+        new.load_from_memory(data)?;
+        Ok(new)
+    }
+    /// Create a new `Image` from a stream.
+    ///
+    /// See [`Self::load_from_stream`].
     pub fn from_stream<T: Read + Seek>(stream: &mut T) -> SfResult<SfBox<Self>> {
-        let mut input_stream = InputStream::new(stream);
-        let image = unsafe { ffi::sfImage_createFromStream(&mut *input_stream.stream) };
-        SfBox::new(image).ok_or(SfError::CallFailed)
+        let mut new = Self::new()?;
+        new.load_from_stream(stream)?;
+        Ok(new)
     }
-
-    /// Create an image from a file in memory
+    /// Recreate with the given size, filled with a solid color.
+    pub fn recreate_solid(&mut self, width: u32, height: u32, color: Color) {
+        unsafe {
+            ffi::sfImage_create_w_h_color(self, width, height, color);
+        }
+    }
+    /// Recreate from the provided RGBA pixel data.
+    ///
+    /// # Safety
+    ///
+    /// `data` is assumed to contain 32-bit RGBA pixels, and match the given size.
+    pub unsafe fn recreate_from_pixels(&mut self, width: u32, height: u32, data: &[u8]) {
+        unsafe {
+            ffi::sfImage_create_w_h_pixels(self, width, height, data.as_ptr());
+        }
+    }
+    /// Load from image file data on the filesystem.
+    ///
+    /// The supported image formats are bmp, png, tga, jpg, gif,
+    /// psd, hdr and pic. Some format options are not supported,
+    /// like progressive jpeg.
+    /// If this function fails, the image is left unchanged.
+    pub fn load_from_file(&mut self, path: &str) -> SfResult<()> {
+        let c_path = CString::new(path).into_sf_result()?;
+        unsafe { ffi::sfImage_loadFromFile(self, c_path.as_ptr()) }.into_sf_result()
+    }
+    /// Load from image file data in memory.
     ///
     /// The supported image formats are bmp, png, tga, jpg, gif, psd, hdr and pic.
     /// Some format options are not supported, like progressive jpeg.
@@ -55,52 +105,18 @@ impl Image {
     ///
     /// # Arguments
     /// * mem - Pointer to the file data in memory
-    pub fn from_memory(mem: &[u8]) -> SfResult<SfBox<Self>> {
-        let image = unsafe { ffi::sfImage_createFromMemory(mem.as_ptr().cast(), mem.len()) };
-        SfBox::new(image).ok_or(SfError::CallFailed)
+    pub fn load_from_memory(&mut self, data: &[u8]) -> SfResult<()> {
+        unsafe { ffi::sfImage_loadFromMemory(self, data.as_ptr(), data.len()) }.into_sf_result()
     }
-
-    /// Create an image and fill it with a unique color
+    /// Load from image file data coming from a custom stream.
     ///
-    /// # Arguments
-    /// * width - Width of the image
-    /// * height - Height of the image
-    /// * color - Fill color
-    pub fn from_color(width: u32, height: u32, color: Color) -> SfResult<SfBox<Self>> {
-        let image = unsafe { ffi::sfImage_createFromColor(width, height, color) };
-        SfBox::new(image).ok_or(SfError::CallFailed)
-    }
-
-    /// Create an image from a file on disk
-    ///
-    /// The supported image formats are bmp, png, tga, jpg, gif,
-    /// psd, hdr and pic. Some format options are not supported,
-    /// like progressive jpeg.
+    /// The supported image formats are bmp, png, tga, jpg, gif, psd, hdr and pic.
+    /// Some format options are not supported, like progressive jpeg.
     /// If this function fails, the image is left unchanged.
-    ///
-    /// # Arguments
-    /// * filename - Path of the image file to load
-    pub fn from_file(filename: &str) -> SfResult<SfBox<Self>> {
-        let c_filename = CString::new(filename).into_sf_result()?;
-        let image = unsafe { ffi::sfImage_createFromFile(c_filename.as_ptr()) };
-        SfBox::new(image).ok_or(SfError::CallFailed)
-    }
-
-    /// Create an image from an vector of pixels
-    ///
-    /// # Arguments
-    /// * width - Width of the image
-    /// * height - Height of the image
-    /// * pixels - Vector of pixels to copy to the image
-    ///
-    /// # Safety
-    ///
-    /// The pixel vector is assumed to contain 32-bits RGBA pixels,
-    /// and have the given width and height. If not, this is
-    /// an undefined behaviour.
-    pub unsafe fn from_pixels(width: u32, height: u32, pixels: &[u8]) -> SfResult<SfBox<Self>> {
-        let image = unsafe { ffi::sfImage_createFromPixels(width, height, pixels.as_ptr()) };
-        SfBox::new(image).ok_or(SfError::CallFailed)
+    pub fn load_from_stream<T: Read + Seek>(&mut self, stream: &mut T) -> SfResult<()> {
+        let mut input_stream = InputStream::new(stream);
+        unsafe { ffi::sfImage_loadFromStream(self, &mut *input_stream.stream) }.into_sf_result()?;
+        Ok(())
     }
 }
 
@@ -250,7 +266,7 @@ impl Image {
         source_rect: IntRect,
         apply_alpha: bool,
     ) {
-        unsafe { ffi::sfImage_copyImage(self, source, dest_x, dest_y, source_rect, apply_alpha) }
+        unsafe { ffi::sfImage_copy(self, source, dest_x, dest_y, source_rect, apply_alpha) }
     }
 }
 
@@ -285,7 +301,7 @@ impl ToOwned for Image {
     type Owned = SfBox<Self>;
 
     fn to_owned(&self) -> Self::Owned {
-        let ptr = unsafe { ffi::sfImage_copy(self) };
+        let ptr = unsafe { ffi::sfImage_cpy(self) };
         match SfBox::new(ptr) {
             Some(new) => new,
             None => panic!("Failed to copy image"),
@@ -296,7 +312,7 @@ impl ToOwned for Image {
 impl Drop for Image {
     fn drop(&mut self) {
         unsafe {
-            ffi::sfImage_destroy(self);
+            ffi::sfImage_del(self);
         }
     }
 }
