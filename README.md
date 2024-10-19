@@ -6,12 +6,12 @@ Rust bindings for [SFML](http://www.sfml-dev.org), the Simple and Fast Multimedi
 Platform support
 ================
 
-|                      |                                                          |
-|----------------------|----------------------------------------------------------|
-| 🐧 Linux             | ✅ Most tested                                            |
-| 🪟 Windows (MSVC)    | ⚠️ Rarely tested. Looking for testers/maintainers!       |
-| 🐧 -> 🪟 (mingw-w64) | ⚠️ Cross-compile from Linux to Windows. Somewhat tested. |
-| 🍎 Mac OS X          | ❌ Untested. Looking for testers/maintainers!             |
+| Platform             | Development and testing                                  | CI (basic tests) |
+|----------------------|----------------------------------------------------------|------------------|
+| 🐧 Linux             | ✅ Most tested                                            | ✅                |
+| 🪟 Windows (MSVC)    | ⚠️ Rarely tested. Looking for testers/maintainers!       | ❌                |
+| 🐧 -> 🪟 (mingw-w64) | ⚠️ Cross-compile from Linux to Windows. Somewhat tested. | ❌                |
+| 🍎 Mac OS X          | ❌ Untested. Looking for testers/maintainers!             | ✅                |
 
 Prerequisites
 =============
