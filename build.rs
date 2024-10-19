@@ -62,6 +62,8 @@ fn static_link_linux(feat_window: bool, feat_audio: bool, feat_graphics: bool) {
         unix_graphics_link_support_libs();
     }
     if feat_audio {
+        // We link openal separately because Mac Os has its own OpenAL framework
+        pkgconfig_probe_with_fallback("openal", "rustc-link-lib=dylib=openal");
         unix_audio_link_support_libs();
     }
 }
@@ -79,7 +81,6 @@ fn unix_graphics_link_support_libs() {
 }
 
 fn unix_audio_link_support_libs() {
-    pkgconfig_probe_with_fallback("openal", "rustc-link-lib=dylib=openal");
     pkgconfig_probe_with_fallback("vorbisenc", "rustc-link-lib=dylib=vorbisenc");
     pkgconfig_probe_with_fallback("vorbisfile", "rustc-link-lib=dylib=vorbisfile");
     pkgconfig_probe_with_fallback("vorbis", "rustc-link-lib=dylib=vorbis");
@@ -324,4 +325,5 @@ fn link_mac_os_frameworks() {
     println!("cargo:rustc-link-lib=framework=IOKit");
     println!("cargo:rustc-link-lib=framework=Carbon");
     println!("cargo:rustc-link-lib=framework=AppKit");
+    println!("cargo:rustc-link-lib=framework=OpenAL");
 }
