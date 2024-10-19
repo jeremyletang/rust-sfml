@@ -6,14 +6,15 @@ Rust bindings for [SFML](http://www.sfml-dev.org), the Simple and Fast Multimedi
 Platform support
 ================
 
-| Platform             | Development and testing                                  | CI (basic tests)    |
-|----------------------|----------------------------------------------------------|---------------------|
-| 🐧 Linux             | ✅ Most tested                                            | ![Status][linux-ci] |
-| 🪟 Windows (MSVC)    | ⚠️ Rarely tested. Looking for testers/maintainers!       | ❌                   |
-| 🐧 -> 🪟 (mingw-w64) | ⚠️ Cross-compile from Linux to Windows. Somewhat tested. | ❌                   |
-| 🍎 Mac OS X          | ❌ Untested. Looking for testers/maintainers!             | ![Status][macos-ci] |
+| Platform             | Development and testing                                  | CI (basic tests)       |
+|----------------------|----------------------------------------------------------|------------------------|
+| 🐧 Linux             | ✅ Most tested                                            | ![Status][linux-ci]    |
+| 🪟 Windows (MSVC)    | ⚠️ Rarely tested. Looking for testers/maintainers!       | ![Status][win-msvc-ci] |
+| 🐧 -> 🪟 (mingw-w64) | ⚠️ Cross-compile from Linux to Windows. Somewhat tested. | ❌                      |
+| 🍎 Mac OS X          | ❌ Untested. Looking for testers/maintainers!             | ![Status][macos-ci]    |
 
 [linux-ci]: https://github.com/jeremyletang/rust-sfml/actions/workflows/linux.yml/badge.svg
+[win-msvc-ci]: https://github.com/jeremyletang/rust-sfml/actions/workflows/windows.yml/badge.svg
 [macos-ci]: https://github.com/jeremyletang/rust-sfml/actions/workflows/macos.yml/badge.svg
 
 Prerequisites
