@@ -62,22 +62,30 @@ fn static_link_linux(feat_window: bool, feat_audio: bool, feat_graphics: bool) {
         unix_graphics_link_support_libs();
     }
     if feat_audio {
-        println!("cargo:rustc-link-lib=dylib=openal");
-        println!("cargo:rustc-link-lib=dylib=vorbisenc");
-        println!("cargo:rustc-link-lib=dylib=vorbisfile");
-        println!("cargo:rustc-link-lib=dylib=vorbis");
-        // Odd that we have to do this, I thought that libflac-sys would do this for us
-        println!("cargo:rustc-link-lib=static=FLAC");
-        println!("cargo:rustc-link-lib=static=ogg");
+        unix_audio_link_support_libs();
+    }
+}
+
+fn pkgconfig_probe_with_fallback(lib: &str, fallback: &str) {
+    if let Err(e) = pkg_config::probe_library(lib) {
+        eprintln!("cargo:warning=pkg-config failed: {e}.\nTrying manual link");
+        println!("cargo:{fallback}");
     }
 }
 
 /// Link supporting libraries for graphics on unix platforms (currently only freetype)
 fn unix_graphics_link_support_libs() {
-    if let Err(e) = pkg_config::probe_library("freetype2") {
-        eprintln!("cargo:warning=pkg-config failed: {e}.\nTrying manual link");
-        println!("cargo:rustc-link-lib=dylib=freetype");
-    }
+    pkgconfig_probe_with_fallback("freetype2", "rustc-link-lib=dylib=freetype");
+}
+
+fn unix_audio_link_support_libs() {
+    pkgconfig_probe_with_fallback("openal", "rustc-link-lib=dylib=openal");
+    pkgconfig_probe_with_fallback("vorbisenc", "rustc-link-lib=dylib=vorbisenc");
+    pkgconfig_probe_with_fallback("vorbisfile", "rustc-link-lib=dylib=vorbisfile");
+    pkgconfig_probe_with_fallback("vorbis", "rustc-link-lib=dylib=vorbis");
+    // Odd that we have to do this, I thought that libflac-sys would do this for us
+    println!("cargo:rustc-link-lib=static=FLAC");
+    println!("cargo:rustc-link-lib=static=ogg");
 }
 
 enum WinEnv {
@@ -288,6 +296,9 @@ fn main() {
         // Link freetype for mac
         if feat_graphics {
             unix_graphics_link_support_libs();
+        }
+        if feat_audio {
+            unix_audio_link_support_libs();
         }
     } else {
         panic!("Uhhh... Can't determine your environment. Sorry.");
