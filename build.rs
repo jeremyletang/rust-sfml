@@ -59,7 +59,7 @@ fn static_link_linux(feat_window: bool, feat_audio: bool, feat_graphics: bool) {
         println!("cargo:rustc-link-lib=dylib=Xrandr");
     }
     if feat_graphics {
-        println!("cargo:rustc-link-lib=dylib=freetype");
+        unix_graphics_link_support_libs();
     }
     if feat_audio {
         println!("cargo:rustc-link-lib=dylib=openal");
@@ -69,6 +69,14 @@ fn static_link_linux(feat_window: bool, feat_audio: bool, feat_graphics: bool) {
         // Odd that we have to do this, I thought that libflac-sys would do this for us
         println!("cargo:rustc-link-lib=static=FLAC");
         println!("cargo:rustc-link-lib=static=ogg");
+    }
+}
+
+/// Link supporting libraries for graphics on unix platforms (currently only freetype)
+fn unix_graphics_link_support_libs() {
+    if let Err(e) = pkg_config::probe_library("freetype2") {
+        eprintln!("cargo:warning=pkg-config failed: {e}.\nTrying manual link");
+        println!("cargo:rustc-link-lib=dylib=freetype");
     }
 }
 
@@ -279,7 +287,7 @@ fn main() {
     } else if is_macos {
         // Link freetype for mac
         if feat_graphics {
-            println!("cargo:rustc-link-lib=dylib=freetype");
+            unix_graphics_link_support_libs();
         }
     } else {
         panic!("Uhhh... Can't determine your environment. Sorry.");
