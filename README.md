@@ -1,4 +1,4 @@
-rust-sfml ![Build Status](https://github.com/jeremyletang/rust-sfml/actions/workflows/rust.yml/badge.svg) [![crates.io](https://img.shields.io/crates/v/sfml.svg)](https://crates.io/crates/sfml) [![Discord](https://img.shields.io/discord/175298431294636032?style=plastic)](https://discord.gg/XCaM5rhMa6)
+rust-sfml [![crates.io](https://img.shields.io/crates/v/sfml.svg)](https://crates.io/crates/sfml) [![Discord](https://img.shields.io/discord/175298431294636032?style=plastic)](https://discord.gg/XCaM5rhMa6)
 =========
 
 Rust bindings for [SFML](http://www.sfml-dev.org), the Simple and Fast Multimedia Library.
@@ -6,12 +6,15 @@ Rust bindings for [SFML](http://www.sfml-dev.org), the Simple and Fast Multimedi
 Platform support
 ================
 
-| Platform             | Development and testing                                  | CI (basic tests) |
-|----------------------|----------------------------------------------------------|------------------|
-| 🐧 Linux             | ✅ Most tested                                            | ✅                |
-| 🪟 Windows (MSVC)    | ⚠️ Rarely tested. Looking for testers/maintainers!       | ❌                |
-| 🐧 -> 🪟 (mingw-w64) | ⚠️ Cross-compile from Linux to Windows. Somewhat tested. | ❌                |
-| 🍎 Mac OS X          | ❌ Untested. Looking for testers/maintainers!             | ✅                |
+| Platform             | Development and testing                                  | CI (basic tests)    |
+|----------------------|----------------------------------------------------------|---------------------|
+| 🐧 Linux             | ✅ Most tested                                            | ![Status][linux-ci] |
+| 🪟 Windows (MSVC)    | ⚠️ Rarely tested. Looking for testers/maintainers!       | ❌                   |
+| 🐧 -> 🪟 (mingw-w64) | ⚠️ Cross-compile from Linux to Windows. Somewhat tested. | ❌                   |
+| 🍎 Mac OS X          | ❌ Untested. Looking for testers/maintainers!             | ![Status][macos-ci] |
+
+[linux-ci]: https://github.com/jeremyletang/rust-sfml/actions/workflows/linux.yml/badge.svg
+[macos-ci]: https://github.com/jeremyletang/rust-sfml/actions/workflows/macos.yml/badge.svg
 
 Prerequisites
 =============
