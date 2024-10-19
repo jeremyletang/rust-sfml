@@ -9,6 +9,7 @@ on:
       - '**.rs'
       - '**.toml'
       - '**.lock'
+      - '.github/workflows/macos.yml'
   pull_request:
     branches: [ master ]
     paths:
@@ -17,6 +18,7 @@ on:
       - '**.rs'
       - '**.toml'
       - '**.lock'
+      - '.github/workflows/macos.yml'
 
 env:
   CARGO_TERM_COLOR: always
