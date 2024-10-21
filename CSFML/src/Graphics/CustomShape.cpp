@@ -5,37 +5,37 @@
 #include <SFML/Graphics/Shape.hpp>
 #include <cstddef>
 
-typedef size_t (*sfCustomShapeGetPointCountCallback)(void *);
-typedef sfVector2f (*sfCustomShapeGetPointCallback)(size_t, void *);
+typedef size_t (*sfCustomShapeGetPointCountCb)(void *);
+typedef sfVector2f (*sfCustomShapeGetPointCb)(size_t, void *);
 
 class sfCustomShape final : public sf::Shape {
   public:
-    sfCustomShape(sfCustomShapeGetPointCountCallback getPointCount,
-                  sfCustomShapeGetPointCallback getPoint,
-                  void *userData) : myGetPointCountCallback(getPointCount),
-                                    myGetPointCallback(getPoint),
+    sfCustomShape(sfCustomShapeGetPointCountCb getPointCount,
+                  sfCustomShapeGetPointCb getPoint,
+                  void *userData) : myGetPointCountCb(getPointCount),
+                                    myGetPointCb(getPoint),
                                     myUserData(userData) {
     }
 
     virtual std::size_t getPointCount() const final {
-        return myGetPointCountCallback(myUserData);
+        return myGetPointCountCb(myUserData);
     }
 
     virtual sf::Vector2f getPoint(std::size_t index) const final {
-        sfVector2f point = myGetPointCallback(index, myUserData);
+        sfVector2f point = myGetPointCb(index, myUserData);
         return sf::Vector2f(point.x, point.y);
     }
 
     using sf::Shape::update;
 
   private:
-    sfCustomShapeGetPointCountCallback myGetPointCountCallback;
-    sfCustomShapeGetPointCallback myGetPointCallback;
+    sfCustomShapeGetPointCountCb myGetPointCountCb;
+    sfCustomShapeGetPointCb myGetPointCb;
     void *myUserData;
 };
 
-extern "C" sfCustomShape *sfCustomShape_create(sfCustomShapeGetPointCountCallback getPointCount,
-                                               sfCustomShapeGetPointCallback getPoint,
+extern "C" sfCustomShape *sfCustomShape_create(sfCustomShapeGetPointCountCb getPointCount,
+                                               sfCustomShapeGetPointCb getPoint,
                                                void *userData) {
     return new sfCustomShape(getPointCount, getPoint, userData);
 }

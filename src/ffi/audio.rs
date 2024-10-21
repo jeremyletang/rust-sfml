@@ -47,9 +47,8 @@ type sfCustomSoundRecorderProcessCb =
     Option<unsafe extern "C" fn(samples: *const i16, len: usize, user_data: *mut c_void) -> bool>;
 type sfCustomSoundRecorderStopCb = Option<unsafe extern "C" fn(user_data: *mut c_void)>;
 
-type sfCustomSoundStreamGetDataCallback =
+type sfCustomSoundStreamGetDataCb =
     Option<unsafe extern "C" fn(chunk: *mut sfSoundStreamChunk, user_data: *mut c_void) -> bool>;
-type sfCustomSoundStreamSeekCallback =
-    Option<unsafe extern "C" fn(pos: i64, user_data: *mut c_void)>;
+type sfCustomSoundStreamSeekCb = Option<unsafe extern "C" fn(pos: i64, user_data: *mut c_void)>;
 
 include!("audio_bindgen.rs");

@@ -15,7 +15,7 @@ pub fn sfCustomSoundRecorder_getDevice(soundRecorder: *mut sfCustomSoundRecorder
 pub fn sfCustomSoundRecorder_setChannelCount(soundRecorder: *mut sfCustomSoundRecorder, channelCount: c_uint);
 pub fn sfCustomSoundRecorder_getChannelCount(soundRecorder: *const sfCustomSoundRecorder) -> c_uint;
 // CustomSoundStream.cpp
-pub fn sfCustomSoundStream_create(onGetData: sfCustomSoundStreamGetDataCallback, onSeek: sfCustomSoundStreamSeekCallback, channelCount: c_uint, sampleRate: c_uint, userData: *mut c_void) -> *mut sfCustomSoundStream;
+pub fn sfCustomSoundStream_create(onGetData: sfCustomSoundStreamGetDataCb, onSeek: sfCustomSoundStreamSeekCb, channelCount: c_uint, sampleRate: c_uint, userData: *mut c_void) -> *mut sfCustomSoundStream;
 pub fn sfCustomSoundStream_destroy(soundStream: *mut sfCustomSoundStream);
 pub fn sfCustomSoundStream_play(soundStream: *mut sfCustomSoundStream);
 pub fn sfCustomSoundStream_pause(soundStream: *mut sfCustomSoundStream);

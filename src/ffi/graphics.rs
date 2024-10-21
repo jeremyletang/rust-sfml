@@ -251,9 +251,8 @@ pub struct sfGlslMat4 {
     pub array: [f32; 4 * 4],
 }
 
-type sfCustomShapeGetPointCountCallback =
-    Option<unsafe extern "C" fn(user_data: *mut c_void) -> usize>;
-type sfCustomShapeGetPointCallback =
+type sfCustomShapeGetPointCountCb = Option<unsafe extern "C" fn(user_data: *mut c_void) -> usize>;
+type sfCustomShapeGetPointCb =
     Option<unsafe extern "C" fn(idx: usize, user_data: *mut c_void) -> sfVector2f>;
 
 #[repr(C)]

@@ -71,7 +71,7 @@ pub fn sfConvexShape_setPoint(shape: *mut sfConvexShape, index: usize, point: sf
 pub fn sfConvexShape_getLocalBounds(shape: *const sfConvexShape) -> sfFloatRect;
 pub fn sfConvexShape_getGlobalBounds(shape: *const sfConvexShape) -> sfFloatRect;
 // CustomShape.cpp
-pub fn sfCustomShape_create(getPointCount: sfCustomShapeGetPointCountCallback, getPoint: sfCustomShapeGetPointCallback, userData: *mut c_void) -> *mut sfCustomShape;
+pub fn sfCustomShape_create(getPointCount: sfCustomShapeGetPointCountCb, getPoint: sfCustomShapeGetPointCb, userData: *mut c_void) -> *mut sfCustomShape;
 pub fn sfCustomShape_destroy(shape: *mut sfCustomShape);
 pub fn sfCustomShape_setPosition(shape: *mut sfCustomShape, position: sfVector2f);
 pub fn sfCustomShape_setRotation(shape: *mut sfCustomShape, angle: f32);

@@ -2,37 +2,37 @@
 #include <SFML/Audio/SoundStream.hpp>
 #include <cstdint>
 
-typedef bool (*sfCustomSoundStreamGetDataCallback)(sf::SoundStream::Chunk *, void *);
-typedef void (*sfCustomSoundStreamSeekCallback)(int64_t, void *);
+typedef bool (*sfCustomSoundStreamGetDataCb)(sf::SoundStream::Chunk *, void *);
+typedef void (*sfCustomSoundStreamSeekCb)(int64_t, void *);
 
 class sfCustomSoundStream final : public sf::SoundStream {
   public:
-    sfCustomSoundStream(sfCustomSoundStreamGetDataCallback onGetData,
-                        sfCustomSoundStreamSeekCallback onSeek,
+    sfCustomSoundStream(sfCustomSoundStreamGetDataCb onGetData,
+                        sfCustomSoundStreamSeekCb onSeek,
                         unsigned int channelCount,
                         unsigned int sampleRate,
-                        void *userData) : myGetDataCallback(onGetData),
-                                          mySeekCallback(onSeek),
+                        void *userData) : myGetDataCb(onGetData),
+                                          mySeekCallCb(onSeek),
                                           myUserData(userData) {
         initialize(channelCount, sampleRate);
     }
 
   private:
     virtual bool onGetData(Chunk &data) final {
-        return (myGetDataCallback(&data, myUserData));
+        return (myGetDataCb(&data, myUserData));
     }
 
     virtual void onSeek(sf::Time timeOffset) final {
-        mySeekCallback(timeOffset.asMicroseconds(), myUserData);
+        mySeekCallCb(timeOffset.asMicroseconds(), myUserData);
     }
 
-    sfCustomSoundStreamGetDataCallback myGetDataCallback;
-    sfCustomSoundStreamSeekCallback mySeekCallback;
+    sfCustomSoundStreamGetDataCb myGetDataCb;
+    sfCustomSoundStreamSeekCb mySeekCallCb;
     void *myUserData;
 };
 
-extern "C" sfCustomSoundStream *sfCustomSoundStream_create(sfCustomSoundStreamGetDataCallback onGetData,
-                                                           sfCustomSoundStreamSeekCallback onSeek,
+extern "C" sfCustomSoundStream *sfCustomSoundStream_create(sfCustomSoundStreamGetDataCb onGetData,
+                                                           sfCustomSoundStreamSeekCb onSeek,
                                                            unsigned int channelCount,
                                                            unsigned int sampleRate,
                                                            void *userData) {

@@ -13,9 +13,9 @@ class sfCustomSoundRecorder : public sf::SoundRecorder {
     sfCustomSoundRecorder(sfCustomSoundRecorderStartCb onStart,
                           sfCustomSoundRecorderProcessCb onProcess,
                           sfCustomSoundRecorderStopCb onStop,
-                          void *userData) : myStartCallback(onStart),
-                                            myProcessCallback(onProcess),
-                                            myStopCallback(onStop),
+                          void *userData) : myStartCb(onStart),
+                                            myProcessCb(onProcess),
+                                            myStopCb(onStop),
                                             myUserData(userData) {
     }
 
@@ -25,20 +25,20 @@ class sfCustomSoundRecorder : public sf::SoundRecorder {
 
   private:
     virtual bool onStart() {
-        return myStartCallback(myUserData);
+        return myStartCb(myUserData);
     }
 
     virtual bool onProcessSamples(const sf::Int16 *samples, std::size_t sampleCount) {
-        return myProcessCallback(samples, sampleCount, myUserData);
+        return myProcessCb(samples, sampleCount, myUserData);
     }
 
     virtual void onStop() {
-        myStopCallback(myUserData);
+        myStopCb(myUserData);
     }
 
-    sfCustomSoundRecorderStartCb myStartCallback;
-    sfCustomSoundRecorderProcessCb myProcessCallback;
-    sfCustomSoundRecorderStopCb myStopCallback;
+    sfCustomSoundRecorderStartCb myStartCb;
+    sfCustomSoundRecorderProcessCb myProcessCb;
+    sfCustomSoundRecorderStopCb myStopCb;
     void *myUserData;
 };
 
