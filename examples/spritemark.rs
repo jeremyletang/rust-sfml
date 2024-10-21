@@ -60,6 +60,8 @@ fn fconv(in_: Vector2i) -> Vector2f {
 }
 
 fn main() -> SfResult<()> {
+    example_ensure_right_working_dir();
+
     let native_mode = VideoMode::desktop_mode();
     let mut window = RenderWindow::new(
         native_mode,
@@ -69,8 +71,8 @@ fn main() -> SfResult<()> {
     )?;
     window.set_position(Vector2::new(0, 0));
     window.set_vertical_sync_enabled(true);
-    let font = Font::from_file(example_res!("sansation.ttf"))?;
-    let texture = Texture::from_file(example_res!("devices.png"))?;
+    let font = Font::from_file("sansation.ttf")?;
+    let texture = Texture::from_file("devices.png")?;
     let mut text = Text::new("", &font, 18);
     text.set_outline_color(Color::BLACK);
     text.set_outline_thickness(1.0);

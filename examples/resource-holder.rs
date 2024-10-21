@@ -52,10 +52,12 @@ impl<Resource, Identifier: Hash + Eq> Default for ResourceHolder<Resource, Ident
 }
 
 fn main() -> SfResult<()> {
+    example_ensure_right_working_dir();
+
     let mut tex_holder = ResourceHolder::<Texture, _>::default();
-    tex_holder.load("frank", example_res!("frank.jpeg"))?;
+    tex_holder.load("frank", "frank.jpeg")?;
     let mut sb_holder = ResourceHolder::<SoundBuffer, _>::default();
-    sb_holder.load("canary", example_res!("canary.wav"))?;
+    sb_holder.load("canary", "canary.wav")?;
     let mut rw = RenderWindow::new(
         (800, 600),
         "Resource holder test",

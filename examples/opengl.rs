@@ -14,6 +14,8 @@ use {
 include!("../example_common.rs");
 
 fn main() -> SfResult<()> {
+    example_ensure_right_working_dir();
+
     let mut exit = false;
     let mut srgb = false;
 
@@ -34,10 +36,10 @@ fn main() -> SfResult<()> {
 
         let mut bg_tex = Texture::new()?;
         bg_tex.set_srgb(srgb);
-        bg_tex.load_from_file(example_res!("opengl-background.jpg"), IntRect::default())?;
+        bg_tex.load_from_file("opengl-background.jpg", IntRect::default())?;
         let bg_sprite = Sprite::with_texture(&bg_tex);
 
-        let font = Font::from_file(example_res!("sansation.ttf"))?;
+        let font = Font::from_file("sansation.ttf")?;
         let mut text = Text::new("SFML / OpenGL demo", &font, 32);
         let mut srgb_instr = Text::new("Press space to toggle sRGB conversion", &font, 32);
         let mut mipmap_instr = Text::new("Press return to toggle mipmapping", &font, 32);
@@ -48,7 +50,7 @@ fn main() -> SfResult<()> {
         srgb_instr.set_position((150., 500.));
         mipmap_instr.set_position((180., 550.));
 
-        let mut texture = Texture::from_file(example_res!("texture.jpg"))?;
+        let mut texture = Texture::from_file("texture.jpg")?;
         texture.generate_mipmap()?;
         window.set_active(true)?;
         unsafe {
@@ -118,7 +120,7 @@ fn main() -> SfResult<()> {
                         code: Key::Enter, ..
                     } => {
                         if mipmap_enabled {
-                            texture = Texture::from_file(example_res!("texture.jpg"))?;
+                            texture = Texture::from_file("texture.jpg")?;
                             mipmap_enabled = false;
                             window.set_active(true)?;
                             Texture::bind(&texture);

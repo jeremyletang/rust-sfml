@@ -19,6 +19,8 @@ include!("../example_common.rs");
 const AI_REACT_DELAY: Time = Time::seconds(0.0333);
 
 fn main() -> SfResult<()> {
+    example_ensure_right_working_dir();
+
     let mut rng = thread_rng();
 
     // Optional antialiasing
@@ -55,7 +57,7 @@ fn main() -> SfResult<()> {
     window.set_vertical_sync_enabled(true);
 
     // Load the sounds used in the game
-    let ball_soundbuffer = SoundBuffer::from_file(example_res!("ball.wav"))?;
+    let ball_soundbuffer = SoundBuffer::from_file("ball.wav")?;
     let mut ball_sound = Sound::with_buffer(&ball_soundbuffer);
 
     // Create the left paddle
@@ -83,7 +85,7 @@ fn main() -> SfResult<()> {
     ball.set_origin(ball_radius / 2.);
 
     // Load the text font
-    let font = Font::from_file(example_res!("sansation.ttf"))?;
+    let font = Font::from_file("sansation.ttf")?;
 
     // Initialize the pause message
     let mut pause_message = Text::default();

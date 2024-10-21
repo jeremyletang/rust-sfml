@@ -70,6 +70,8 @@ fn bstyle(highlighted: bool, selected: bool, error: bool) -> ButtonStyle {
 }
 
 fn main() -> SfResult<()> {
+    example_ensure_right_working_dir();
+
     let mut cursor = Cursor::from_system(CursorType::Arrow)?;
     let mut rw = RenderWindow::new(
         (800, 800),
@@ -78,7 +80,7 @@ fn main() -> SfResult<()> {
         &ContextSettings::default(),
     )?;
     rw.set_vertical_sync_enabled(true);
-    let font = Font::from_file(example_res!("sansation.ttf"))?;
+    let font = Font::from_file("sansation.ttf")?;
     let mut failed_index = usize::MAX;
     let mut selected_index = usize::MAX;
     let set_button = Rect::new(348, 500, 100, 32);

@@ -11,7 +11,7 @@ include!("../example_common.rs");
 
 // Play a Sound
 fn play_sound() -> SfResult<()> {
-    let buffer = SoundBuffer::from_file(example_res!("canary.wav"))?;
+    let buffer = SoundBuffer::from_file("canary.wav")?;
 
     // Display sound informations
     println!("canary.wav :");
@@ -35,7 +35,7 @@ fn play_sound() -> SfResult<()> {
 
 // Play a Music
 fn play_music() -> SfResult<()> {
-    let mut music = Music::from_file(example_res!("orchestral.ogg"))?;
+    let mut music = Music::from_file("orchestral.ogg")?;
 
     // Display Music informations
     println!("orchestral.ogg :");
@@ -58,6 +58,8 @@ fn play_music() -> SfResult<()> {
 }
 
 fn main() -> SfResult<()> {
+    example_ensure_right_working_dir();
+
     play_sound()?;
     play_music()?;
     Ok(())

@@ -103,9 +103,7 @@ impl FloatingResource {
 }
 
 fn test_getting_rc_texture_from_texture() -> SfResult<RcTexture> {
-    Ok(RcTexture::from_texture(Texture::from_file(example_res!(
-        "frank.jpeg"
-    ))?))
+    Ok(RcTexture::from_texture(Texture::from_file("frank.jpeg")?))
 }
 
 fn get_set_smooth_rc_text(font: &RcFont) -> RcText {
@@ -116,16 +114,18 @@ fn get_set_smooth_rc_text(font: &RcFont) -> RcText {
 }
 
 fn main() -> SfResult<()> {
+    example_ensure_right_working_dir();
+
     let mut window =
         RenderWindow::new((800, 600), "SFML window", Style::CLOSE, &Default::default())?;
     window.set_framerate_limit(60);
 
     // Create a new texture.
-    let texture = RcTexture::from_file(example_res!("logo.png"))?;
+    let texture = RcTexture::from_file("logo.png")?;
     let texture2 = test_getting_rc_texture_from_texture()?;
 
     // Create a new font.
-    let mut font = RcFont::from_file(example_res!("sansation.ttf"))?;
+    let mut font = RcFont::from_file("sansation.ttf")?;
 
     // Load many resources with no lifetime contingencies
     let mut floating_resources = Vec::from([

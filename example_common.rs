@@ -1,8 +1,4 @@
-/// Macro for loading resources in examples.
-///
-/// This makes it so that the examples can be run from any directory
-macro_rules! example_res {
-    ($path:literal) => {
-        concat!(env!("CARGO_MANIFEST_DIR"), "/examples/resources/", $path)
-    }
+/// Sets up working directory so the example works no matter what directory it's run from
+fn example_ensure_right_working_dir() {
+    std::env::set_current_dir(concat!(env!("CARGO_MANIFEST_DIR"), "/examples/resources")).unwrap();
 }

@@ -10,6 +10,8 @@ use sfml::{
 include!("../example_common.rs");
 
 fn main() -> SfResult<()> {
+    example_ensure_right_working_dir();
+
     let mut window = RenderWindow::new(
         (800, 600),
         "Borrowed resources",
@@ -19,10 +21,10 @@ fn main() -> SfResult<()> {
     window.set_vertical_sync_enabled(true);
 
     // Create a new texture. (Hey Frank!)
-    let frank = Texture::from_file(example_res!("frank.jpeg"))?;
+    let frank = Texture::from_file("frank.jpeg")?;
 
     // Create a font.
-    let font = Font::from_file(example_res!("sansation.ttf"))?;
+    let font = Font::from_file("sansation.ttf")?;
 
     // Create a circle with the Texture.
     let mut circle = CircleShape::with_texture(&frank);

@@ -6,6 +6,8 @@ use {
 include!("../example_common.rs");
 
 fn main() -> SfResult<()> {
+    example_ensure_right_working_dir();
+
     let mut window = RenderWindow::new(
         (800, 600),
         "◢◤ Unicode text entry ◥◣",
@@ -16,7 +18,7 @@ fn main() -> SfResult<()> {
 
     let font = match std::env::args().nth(1) {
         Some(path) => Font::from_file(&path)?,
-        None => Font::from_file(example_res!("sansation.ttf"))?,
+        None => Font::from_file("sansation.ttf")?,
     };
     let mut string = String::from("This text can be edited.\nTry it!");
 

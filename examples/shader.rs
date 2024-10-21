@@ -27,7 +27,7 @@ impl<'t> Pixelate<'t> {
         sprite.set_texture(texture, false);
         Ok(Self {
             sprite,
-            shader: Shader::from_file(example_res!("pixelate.frag"), ShaderType::Fragment)?,
+            shader: Shader::from_file("pixelate.frag", ShaderType::Fragment)?,
         })
     }
 }
@@ -88,10 +88,7 @@ impl<'fo> WaveBlur<'fo> {
         text.set_position((30., 20.));
         Ok(Self {
             text,
-            shader: Shader::from_file_vert_frag(
-                example_res!("wave.vert"),
-                example_res!("blur.frag"),
-            )?,
+            shader: Shader::from_file_vert_frag("wave.vert", "blur.frag")?,
         })
     }
 }
@@ -145,8 +142,7 @@ impl StormBlink {
             ));
         }
 
-        let shader =
-            Shader::from_file_vert_frag(example_res!("storm.vert"), example_res!("blink.frag"))?;
+        let shader = Shader::from_file_vert_frag("storm.vert", "blink.frag")?;
         Ok(Self { points, shader })
     }
 }
@@ -205,7 +201,7 @@ impl<'t> Edge<'t> {
             ));
         }
 
-        let mut shader = Shader::from_file(example_res!("edge.frag"), ShaderType::Fragment)?;
+        let mut shader = Shader::from_file("edge.frag", ShaderType::Fragment)?;
         shader.set_uniform_current_texture("texture")?;
 
         Ok(Self {
@@ -259,6 +255,8 @@ impl Effect for Edge<'_> {
 }
 
 fn main() -> SfResult<()> {
+    example_ensure_right_working_dir();
+
     let mut window = RenderWindow::new(
         (800, 600),
         "SFML Shader",
@@ -266,11 +264,11 @@ fn main() -> SfResult<()> {
         &Default::default(),
     )?;
     window.set_vertical_sync_enabled(true);
-    let font = Font::from_file(example_res!("sansation.ttf"))?;
-    let bg = Texture::from_file(example_res!("background.jpg"))?;
-    let mut bg_texture = Texture::from_file(example_res!("sfml.png"))?;
+    let font = Font::from_file("sansation.ttf")?;
+    let bg = Texture::from_file("background.jpg")?;
+    let mut bg_texture = Texture::from_file("sfml.png")?;
     bg_texture.set_smooth(true);
-    let mut entity_texture = Texture::from_file(example_res!("devices.png"))?;
+    let mut entity_texture = Texture::from_file("devices.png")?;
     entity_texture.set_smooth(true);
     let effects: [&mut dyn Effect; 4] = [
         &mut Pixelate::new(&bg)?,
@@ -279,7 +277,7 @@ fn main() -> SfResult<()> {
         &mut Edge::new(&bg_texture, &entity_texture)?,
     ];
     let mut current = 0;
-    let text_bg_texture = Texture::from_file(example_res!("text-background.png"))?;
+    let text_bg_texture = Texture::from_file("text-background.png")?;
     let mut text_bg = Sprite::with_texture(&text_bg_texture);
     text_bg.set_position((0., 520.));
     text_bg.set_color(Color::rgba(255, 255, 255, 200));

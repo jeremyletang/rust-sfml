@@ -9,7 +9,9 @@ use {
 include!("../example_common.rs");
 
 fn main() -> Result<(), Box<dyn Error>> {
-    let mut file = File::open(example_res!("orchestral.ogg"))?;
+    example_ensure_right_working_dir();
+
+    let mut file = File::open("orchestral.ogg")?;
     let mut stream = InputStream::new(&mut file);
     let mut music = Music::from_stream(&mut stream)?;
 

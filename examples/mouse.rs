@@ -3,6 +3,8 @@ use sfml::{graphics::*, system::*, window::*, SfResult};
 include!("../example_common.rs");
 
 fn main() -> SfResult<()> {
+    example_ensure_right_working_dir();
+
     let mut window = RenderWindow::new(
         (800, 600),
         "Mouse events",
@@ -12,7 +14,7 @@ fn main() -> SfResult<()> {
     window.set_mouse_cursor_visible(false);
     window.set_vertical_sync_enabled(true);
 
-    let font = Font::from_file(example_res!("sansation.ttf"))?;
+    let font = Font::from_file("sansation.ttf")?;
     let mut circle = CircleShape::new(4., 30);
     let mut texts: Vec<Text> = Vec::new();
     let mut mp_text = Text::new("", &font, 14);
