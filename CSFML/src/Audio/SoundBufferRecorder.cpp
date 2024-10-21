@@ -1,5 +1,4 @@
 #include <SFML/Audio/SoundBufferRecorder.hpp>
-#include <cstddef>
 
 extern "C" sf::SoundBufferRecorder *sfSoundBufferRecorder_create(void) {
     return new sf::SoundBufferRecorder;
