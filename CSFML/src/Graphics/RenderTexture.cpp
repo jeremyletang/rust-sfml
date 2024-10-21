@@ -1,5 +1,6 @@
 #include "Graphics/Rect.hpp"
 #include "Graphics/Color.hpp"
+#include "SFML/Window/ContextSettings.hpp"
 #include "System/Vector2.hpp"
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/CircleShape.hpp>
@@ -10,14 +11,16 @@
 #include <SFML/Graphics/Text.hpp>
 #include <cstddef>
 
-extern "C" sf::RenderTexture *sfRenderTexture_createWithSettings(unsigned int width, unsigned int height, const sf::ContextSettings *settings) {
-    sf::RenderTexture *renderTexture = new sf::RenderTexture;
-    renderTexture->create(width, height, *settings);
-    return renderTexture;
+extern "C" sf::RenderTexture *sfRenderTexture_new() {
+    return new sf::RenderTexture;
 }
 
 extern "C" void sfRenderTexture_del(sf::RenderTexture *renderTexture) {
     delete renderTexture;
+}
+
+extern "C" bool sfRenderTexture_create(sf::RenderTexture *renderTexture, unsigned int width, unsigned int height, const sf::ContextSettings *settings) {
+    return renderTexture->create(width, height, *settings);
 }
 
 extern "C" sfVector2u sfRenderTexture_getSize(const sf::RenderTexture *renderTexture) {

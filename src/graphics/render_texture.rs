@@ -7,7 +7,7 @@ use crate::{
     },
     system::{Vector2f, Vector2i, Vector2u},
     window::ContextSettings,
-    IntoSfResult, SfBox, SfError, SfResult,
+    IntoSfResult, SfBox, SfResult,
 };
 
 decl_opaque! {
@@ -40,8 +40,18 @@ impl RenderTexture {
         height: u32,
         settings: &ContextSettings,
     ) -> SfResult<SfBox<Self>> {
-        let tex = unsafe { ffi::sfRenderTexture_createWithSettings(width, height, settings) };
-        SfBox::new(tex).ok_or(SfError::CallFailed)
+        let mut new = SfBox::new(unsafe { ffi::sfRenderTexture_new() }).into_sf_result()?;
+        new.recreate(width, height, settings)?;
+        Ok(new)
+    }
+    /// Recreate this `RenderTexture` with the given width, height, and settings.
+    pub fn recreate(
+        &mut self,
+        width: u32,
+        height: u32,
+        settings: &ContextSettings,
+    ) -> SfResult<()> {
+        unsafe { ffi::sfRenderTexture_create(self, width, height, settings) }.into_sf_result()
     }
 
     /// Update the contents of the target texture

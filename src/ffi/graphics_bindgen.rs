@@ -170,8 +170,9 @@ pub fn sfRectangleShape_getSize(shape: *const sfRectangleShape) -> sfVector2f;
 pub fn sfRectangleShape_getLocalBounds(shape: *const sfRectangleShape) -> sfFloatRect;
 pub fn sfRectangleShape_getGlobalBounds(shape: *const sfRectangleShape) -> sfFloatRect;
 // RenderTexture.cpp
-pub fn sfRenderTexture_createWithSettings(width: c_uint, height: c_uint, settings: *const sfContextSettings) -> *mut sfRenderTexture;
+pub fn sfRenderTexture_new() -> *mut sfRenderTexture;
 pub fn sfRenderTexture_del(renderTexture: *mut sfRenderTexture);
+pub fn sfRenderTexture_create(renderTexture: *mut sfRenderTexture, width: c_uint, height: c_uint, settings: *const sfContextSettings) -> bool;
 pub fn sfRenderTexture_getSize(renderTexture: *const sfRenderTexture) -> sfVector2u;
 pub fn sfRenderTexture_isSrgb(renderTexture: *const sfRenderTexture) -> bool;
 pub fn sfRenderTexture_setActive(renderTexture: *mut sfRenderTexture, active: bool) -> bool;
