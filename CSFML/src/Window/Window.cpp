@@ -123,7 +123,7 @@ extern "C" sf::WindowHandle sfWindow_getSystemHandle(const sf::Window *window) {
     return window->getSystemHandle();
 }
 
-extern "C" sf::Context *sfContext_create(void) {
+extern "C" sf::Context *sfContext_new(void) {
     return new sf::Context;
 }
 

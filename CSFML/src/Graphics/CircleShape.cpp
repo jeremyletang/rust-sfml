@@ -5,7 +5,7 @@
 #include <SFML/Graphics/Color.hpp>
 #include <cstddef>
 
-extern "C" sf::CircleShape *sfCircleShape_create(void) {
+extern "C" sf::CircleShape *sfCircleShape_new(void) {
     return new sf::CircleShape;
 }
 

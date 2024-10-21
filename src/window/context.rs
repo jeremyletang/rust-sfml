@@ -38,7 +38,7 @@ impl Context {
     /// Creates and activates a new context.
     #[must_use]
     pub fn new() -> Context {
-        Context(unsafe { ffi::sfContext_create() })
+        Context(unsafe { ffi::sfContext_new() })
     }
 
     /// Explicitly activates or deactivates the context.

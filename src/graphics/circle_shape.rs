@@ -77,7 +77,7 @@ impl<'s> CircleShape<'s> {
 
 impl Default for CircleShape<'_> {
     fn default() -> Self {
-        let circle = unsafe { ffi::sfCircleShape_create() };
+        let circle = unsafe { ffi::sfCircleShape_new() };
         CircleShape {
             circle_shape: NonNull::new(circle).expect("Failed to create CircleShape"),
             texture: PhantomData,

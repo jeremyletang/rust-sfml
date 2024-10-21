@@ -75,7 +75,7 @@ pub fn sfWindow_display(window: *mut sfWindow);
 pub fn sfWindow_setFramerateLimit(window: *mut sfWindow, limit: c_uint);
 pub fn sfWindow_setJoystickThreshold(window: *mut sfWindow, threshold: f32);
 pub fn sfWindow_getSystemHandle(window: *const sfWindow) -> sfWindowHandle;
-pub fn sfContext_create() -> *mut sfContext;
+pub fn sfContext_new() -> *mut sfContext;
 pub fn sfContext_del(context: *mut sfContext);
 pub fn sfContext_setActive(context: *mut sfContext, active: bool) -> bool;
 pub fn sfContext_getSettings(context: *const sfContext) -> *const sfContextSettings;

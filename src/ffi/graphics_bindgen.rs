@@ -4,7 +4,7 @@
 unsafe extern "C" {
 
 // CircleShape.cpp
-pub fn sfCircleShape_create() -> *mut sfCircleShape;
+pub fn sfCircleShape_new() -> *mut sfCircleShape;
 pub fn sfCircleShape_cpy(shape: *const sfCircleShape) -> *mut sfCircleShape;
 pub fn sfCircleShape_del(shape: *mut sfCircleShape);
 pub fn sfCircleShape_setPosition(shape: *mut sfCircleShape, position: sfVector2f);
