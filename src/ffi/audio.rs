@@ -6,7 +6,7 @@ use {
 
 decl_opaque! {
     sfSoundBufferRecorder;
-    sfSoundRecorder;
+    sfCustomSoundRecorder;
     sfMusic;
     sfSound;
     sfCustomSoundStream;
@@ -42,10 +42,10 @@ pub struct sfTimeSpan {
     pub length: i64,
 }
 
-type sfSoundRecorderStartCallback = Option<unsafe extern "C" fn(user_data: *mut c_void) -> bool>;
-type sfSoundRecorderProcessCallback =
+type sfCustomSoundRecorderStartCb = Option<unsafe extern "C" fn(user_data: *mut c_void) -> bool>;
+type sfCustomSoundRecorderProcessCb =
     Option<unsafe extern "C" fn(samples: *const i16, len: usize, user_data: *mut c_void) -> bool>;
-type sfSoundRecorderStopCallback = Option<unsafe extern "C" fn(user_data: *mut c_void)>;
+type sfCustomSoundRecorderStopCb = Option<unsafe extern "C" fn(user_data: *mut c_void)>;
 
 type sfCustomSoundStreamGetDataCallback =
     Option<unsafe extern "C" fn(chunk: *mut sfSoundStreamChunk, user_data: *mut c_void) -> bool>;

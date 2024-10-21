@@ -3,6 +3,17 @@
 
 unsafe extern "C" {
 
+// CustomSoundRecorder.cpp
+pub fn sfCustomSoundRecorder_new(onStart: sfCustomSoundRecorderStartCb, onProcess: sfCustomSoundRecorderProcessCb, onStop: sfCustomSoundRecorderStopCb, userData: *mut c_void) -> *mut sfCustomSoundRecorder;
+pub fn sfCustomSoundRecorder_del(soundRecorder: *mut sfCustomSoundRecorder);
+pub fn sfCustomSoundRecorder_start(soundRecorder: *mut sfCustomSoundRecorder, sampleRate: c_uint) -> bool;
+pub fn sfCustomSoundRecorder_stop(soundRecorder: *mut sfCustomSoundRecorder);
+pub fn sfCustomSoundRecorder_getSampleRate(soundRecorder: *const sfCustomSoundRecorder) -> c_uint;
+pub fn sfCustomSoundRecorder_setProcessingInterval(soundRecorder: *mut sfCustomSoundRecorder, interval: i64);
+pub fn sfCustomSoundRecorder_setDevice(soundRecorder: *mut sfCustomSoundRecorder, name: *const c_char) -> bool;
+pub fn sfCustomSoundRecorder_getDevice(soundRecorder: *mut sfCustomSoundRecorder) -> *const sfStdString;
+pub fn sfCustomSoundRecorder_setChannelCount(soundRecorder: *mut sfCustomSoundRecorder, channelCount: c_uint);
+pub fn sfCustomSoundRecorder_getChannelCount(soundRecorder: *const sfCustomSoundRecorder) -> c_uint;
 // CustomSoundStream.cpp
 pub fn sfCustomSoundStream_create(onGetData: sfCustomSoundStreamGetDataCallback, onSeek: sfCustomSoundStreamSeekCallback, channelCount: c_uint, sampleRate: c_uint, userData: *mut c_void) -> *mut sfCustomSoundStream;
 pub fn sfCustomSoundStream_destroy(soundStream: *mut sfCustomSoundStream);
@@ -118,18 +129,8 @@ pub fn sfSoundBufferRecorder_getBuffer(soundBufferRecorder: *const sfSoundBuffer
 pub fn sfSoundBufferRecorder_setDevice(soundBufferRecorder: *mut sfSoundBufferRecorder, name: *const c_char) -> bool;
 pub fn sfSoundBufferRecorder_getDevice(soundBufferRecorder: *mut sfSoundBufferRecorder) -> *const sfStdString;
 // SoundRecorder.cpp
-pub fn sfSoundRecorder_create(onStart: sfSoundRecorderStartCallback, onProcess: sfSoundRecorderProcessCallback, onStop: sfSoundRecorderStopCallback, userData: *mut c_void) -> *mut sfSoundRecorder;
-pub fn sfSoundRecorder_destroy(soundRecorder: *mut sfSoundRecorder);
-pub fn sfSoundRecorder_start(soundRecorder: *mut sfSoundRecorder, sampleRate: c_uint) -> bool;
-pub fn sfSoundRecorder_stop(soundRecorder: *mut sfSoundRecorder);
-pub fn sfSoundRecorder_getSampleRate(soundRecorder: *const sfSoundRecorder) -> c_uint;
 pub fn sfSoundRecorder_isAvailable() -> bool;
-pub fn sfSoundRecorder_setProcessingInterval(soundRecorder: *mut sfSoundRecorder, interval: i64);
-pub fn sfSoundRecorder_getAvailableDevices() -> *mut sfStdStringVector;
 pub fn sfSoundRecorder_getDefaultDevice() -> *mut sfStdString;
-pub fn sfSoundRecorder_setDevice(soundRecorder: *mut sfSoundRecorder, name: *const c_char) -> bool;
-pub fn sfSoundRecorder_getDevice(soundRecorder: *mut sfSoundRecorder) -> *const sfStdString;
-pub fn sfSoundRecorder_setChannelCount(soundRecorder: *mut sfSoundRecorder, channelCount: c_uint);
-pub fn sfSoundRecorder_getChannelCount(soundRecorder: *const sfSoundRecorder) -> c_uint;
+pub fn sfSoundRecorder_getAvailableDevices() -> *mut sfStdStringVector;
 
 }
