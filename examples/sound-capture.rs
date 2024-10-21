@@ -17,14 +17,19 @@ fn main() -> Result<(), Box<dyn Error>> {
     );
 
     // Choose the sample rate
-    println!("Please choose the sample rate for sound capture (44100 is CD quality): ");
+    println!("Please choose the sample rate for sound capture (default = 44100 (CD quality)): ");
     let stdin = std::io::stdin();
     let mut reader = stdin.lock();
     let mut line = String::new();
     reader.read_line(&mut line)?;
-    let sample_rate: u32 = match line.trim_end().parse() {
-        Ok(value) => value,
-        Err(e) => return Err(format!("Input is not valid: {e}").into()),
+    let input = line.trim_end();
+    let sample_rate: u32 = if input.is_empty() {
+        44_100
+    } else {
+        match input.parse() {
+            Ok(value) => value,
+            Err(e) => return Err(format!("Input is not valid: {e}").into()),
+        }
     };
 
     // Wait for user input...
@@ -38,7 +43,11 @@ fn main() -> Result<(), Box<dyn Error>> {
     // Audio capture is done in a separate thread,
     // so we can block the main thread while it is capturing
     recorder.start(sample_rate)?;
-    println!("Recording... press enter to stop");
+    println!(
+        "Recording on device {} @ {} Hz...\nPress enter to stop",
+        recorder.device().to_str().unwrap_or("<invalid utf-8>"),
+        recorder.sample_rate()
+    );
     reader.read_line(&mut String::new())?;
     recorder.stop();
 
