@@ -249,7 +249,7 @@ impl<'s> Text<'s> {
 
 impl Default for Text<'_> {
     fn default() -> Self {
-        let text = unsafe { ffi::sfText_create() };
+        let text = unsafe { ffi::sfText_new() };
         Self {
             text: NonNull::new(text).expect("Failed to create Text"),
             font: PhantomData,
@@ -260,7 +260,7 @@ impl Default for Text<'_> {
 impl<'s> Clone for Text<'s> {
     /// Return a new Text or panic! if there is not enough memory
     fn clone(&self) -> Text<'s> {
-        let sp = unsafe { ffi::sfText_copy(self.text.as_ptr()) };
+        let sp = unsafe { ffi::sfText_cpy(self.text.as_ptr()) };
         Text {
             text: NonNull::new(sp).expect("Not enough memory to clone Text"),
             font: PhantomData,
@@ -323,7 +323,7 @@ impl Transformable for Text<'_> {
 impl Drop for Text<'_> {
     fn drop(&mut self) {
         unsafe {
-            ffi::sfText_destroy(self.text.as_ptr());
+            ffi::sfText_del(self.text.as_ptr());
         }
     }
 }

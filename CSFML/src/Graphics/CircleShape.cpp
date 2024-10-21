@@ -9,11 +9,11 @@ extern "C" sf::CircleShape *sfCircleShape_create(void) {
     return new sf::CircleShape;
 }
 
-extern "C" sf::CircleShape *sfCircleShape_copy(const sf::CircleShape *shape) {
+extern "C" sf::CircleShape *sfCircleShape_cpy(const sf::CircleShape *shape) {
     return new sf::CircleShape(*shape);
 }
 
-extern "C" void sfCircleShape_destroy(sf::CircleShape *shape) {
+extern "C" void sfCircleShape_del(sf::CircleShape *shape) {
     delete shape;
 }
 

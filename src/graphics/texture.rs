@@ -367,12 +367,12 @@ impl ToOwned for Texture {
     type Owned = SfBox<Texture>;
 
     fn to_owned(&self) -> Self::Owned {
-        SfBox::new(unsafe { ffi::sfTexture_copy(self) }).expect("Failed to copy texture")
+        SfBox::new(unsafe { ffi::sfTexture_cpy(self) }).expect("Failed to copy texture")
     }
 }
 
 impl Drop for Texture {
     fn drop(&mut self) {
-        unsafe { ffi::sfTexture_destroy(self) }
+        unsafe { ffi::sfTexture_del(self) }
     }
 }

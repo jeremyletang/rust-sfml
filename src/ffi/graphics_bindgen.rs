@@ -5,8 +5,8 @@ unsafe extern "C" {
 
 // CircleShape.cpp
 pub fn sfCircleShape_create() -> *mut sfCircleShape;
-pub fn sfCircleShape_copy(shape: *const sfCircleShape) -> *mut sfCircleShape;
-pub fn sfCircleShape_destroy(shape: *mut sfCircleShape);
+pub fn sfCircleShape_cpy(shape: *const sfCircleShape) -> *mut sfCircleShape;
+pub fn sfCircleShape_del(shape: *mut sfCircleShape);
 pub fn sfCircleShape_setPosition(shape: *mut sfCircleShape, position: sfVector2f);
 pub fn sfCircleShape_setRotation(shape: *mut sfCircleShape, angle: f32);
 pub fn sfCircleShape_setScale(shape: *mut sfCircleShape, scale: sfVector2f);
@@ -38,9 +38,9 @@ pub fn sfCircleShape_setPointCount(shape: *mut sfCircleShape, count: usize);
 pub fn sfCircleShape_getLocalBounds(shape: *const sfCircleShape) -> sfFloatRect;
 pub fn sfCircleShape_getGlobalBounds(shape: *const sfCircleShape) -> sfFloatRect;
 // ConvexShape.cpp
-pub fn sfConvexShape_create() -> *mut sfConvexShape;
-pub fn sfConvexShape_copy(shape: *const sfConvexShape) -> *mut sfConvexShape;
-pub fn sfConvexShape_destroy(shape: *mut sfConvexShape);
+pub fn sfConvexShape_new() -> *mut sfConvexShape;
+pub fn sfConvexShape_cpy(shape: *const sfConvexShape) -> *mut sfConvexShape;
+pub fn sfConvexShape_del(shape: *mut sfConvexShape);
 pub fn sfConvexShape_setPosition(shape: *mut sfConvexShape, position: sfVector2f);
 pub fn sfConvexShape_setRotation(shape: *mut sfConvexShape, angle: f32);
 pub fn sfConvexShape_setScale(shape: *mut sfConvexShape, scale: sfVector2f);
@@ -71,8 +71,8 @@ pub fn sfConvexShape_setPoint(shape: *mut sfConvexShape, index: usize, point: sf
 pub fn sfConvexShape_getLocalBounds(shape: *const sfConvexShape) -> sfFloatRect;
 pub fn sfConvexShape_getGlobalBounds(shape: *const sfConvexShape) -> sfFloatRect;
 // CustomShape.cpp
-pub fn sfCustomShape_create(getPointCount: sfCustomShapeGetPointCountCb, getPoint: sfCustomShapeGetPointCb, userData: *mut c_void) -> *mut sfCustomShape;
-pub fn sfCustomShape_destroy(shape: *mut sfCustomShape);
+pub fn sfCustomShape_new(getPointCount: sfCustomShapeGetPointCountCb, getPoint: sfCustomShapeGetPointCb, userData: *mut c_void) -> *mut sfCustomShape;
+pub fn sfCustomShape_del(shape: *mut sfCustomShape);
 pub fn sfCustomShape_setPosition(shape: *mut sfCustomShape, position: sfVector2f);
 pub fn sfCustomShape_setRotation(shape: *mut sfCustomShape, angle: f32);
 pub fn sfCustomShape_setScale(shape: *mut sfCustomShape, scale: sfVector2f);
@@ -137,9 +137,9 @@ pub fn sfImage_getSize(image: *const sfImage) -> sfVector2u;
 pub fn sfImage_flipHorizontally(image: *mut sfImage);
 pub fn sfImage_flipVertically(image: *mut sfImage);
 // RectangleShape.cpp
-pub fn sfRectangleShape_create() -> *mut sfRectangleShape;
-pub fn sfRectangleShape_copy(shape: *const sfRectangleShape) -> *mut sfRectangleShape;
-pub fn sfRectangleShape_destroy(shape: *mut sfRectangleShape);
+pub fn sfRectangleShape_new() -> *mut sfRectangleShape;
+pub fn sfRectangleShape_cpy(shape: *const sfRectangleShape) -> *mut sfRectangleShape;
+pub fn sfRectangleShape_del(shape: *mut sfRectangleShape);
 pub fn sfRectangleShape_setPosition(shape: *mut sfRectangleShape, position: sfVector2f);
 pub fn sfRectangleShape_setRotation(shape: *mut sfRectangleShape, angle: f32);
 pub fn sfRectangleShape_setScale(shape: *mut sfRectangleShape, scale: sfVector2f);
@@ -171,7 +171,7 @@ pub fn sfRectangleShape_getLocalBounds(shape: *const sfRectangleShape) -> sfFloa
 pub fn sfRectangleShape_getGlobalBounds(shape: *const sfRectangleShape) -> sfFloatRect;
 // RenderTexture.cpp
 pub fn sfRenderTexture_createWithSettings(width: c_uint, height: c_uint, settings: *const sfContextSettings) -> *mut sfRenderTexture;
-pub fn sfRenderTexture_destroy(renderTexture: *mut sfRenderTexture);
+pub fn sfRenderTexture_del(renderTexture: *mut sfRenderTexture);
 pub fn sfRenderTexture_getSize(renderTexture: *const sfRenderTexture) -> sfVector2u;
 pub fn sfRenderTexture_isSrgb(renderTexture: *const sfRenderTexture) -> bool;
 pub fn sfRenderTexture_setActive(renderTexture: *mut sfRenderTexture, active: bool) -> bool;
@@ -207,7 +207,7 @@ pub fn sfRenderTexture_generateMipmap(renderTexture: *mut sfRenderTexture) -> bo
 pub fn sfRenderWindow_createUnicode(renderWindow: *mut sfRenderWindow, mode: sfVideoMode, title: *const u32, style: u32, settings: *const sfContextSettings);
 pub fn sfRenderWindow_createUnicode_new(mode: sfVideoMode, title: *const u32, style: u32, settings: *const sfContextSettings) -> *mut sfRenderWindow;
 pub fn sfRenderWindow_createFromHandle(handle: sfWindowHandle, settings: *const sfContextSettings) -> *mut sfRenderWindow;
-pub fn sfRenderWindow_destroy(renderWindow: *mut sfRenderWindow);
+pub fn sfRenderWindow_del(renderWindow: *mut sfRenderWindow);
 pub fn sfRenderWindow_close(renderWindow: *mut sfRenderWindow);
 pub fn sfRenderWindow_isOpen(renderWindow: *const sfRenderWindow) -> bool;
 pub fn sfRenderWindow_getSettings(renderWindow: *const sfRenderWindow) -> *const sfContextSettings;
@@ -257,7 +257,8 @@ pub fn sfMouse_setPositionRenderWindow(pos: sfVector2i, relativeTo: *const sfRen
 pub fn sfMouse_getPositionRenderWindow(relativeTo: *const sfRenderWindow) -> sfVector2i;
 pub fn sfTouch_getPositionRenderWindow(finger: c_uint, relativeTo: *const sfRenderWindow) -> sfVector2i;
 // Shader.cpp
-pub fn sfShader_defaultConstruct() -> *mut sfShader;
+pub fn sfShader_new() -> *mut sfShader;
+pub fn sfShader_del(shader: *mut sfShader);
 pub fn sfShader_loadFromMemory_1(shader: *mut sfShader, content: *const c_char, type_: sfShaderType) -> bool;
 pub fn sfShader_loadFromFile_1(shader: *mut sfShader, filename: *const c_char, type_: sfShaderType) -> bool;
 pub fn sfShader_loadFromStream_1(shader: *mut sfShader, stream: *mut sfInputStreamHelper, type_: sfShaderType) -> bool;
@@ -267,7 +268,6 @@ pub fn sfShader_loadFromStream_vert_frag(shader: *mut sfShader, vert: *mut sfInp
 pub fn sfShader_loadFromMemory_all(shader: *mut sfShader, vert: *const c_char, geom: *const c_char, frag: *const c_char) -> bool;
 pub fn sfShader_loadFromFile_all(shader: *mut sfShader, vert: *const c_char, geom: *const c_char, frag: *const c_char) -> bool;
 pub fn sfShader_loadFromStream_all(shader: *mut sfShader, vert: *mut sfInputStreamHelper, geom: *mut sfInputStreamHelper, frag: *mut sfInputStreamHelper) -> bool;
-pub fn sfShader_destroy(shader: *mut sfShader);
 pub fn sfShader_setFloatUniform(shader: *mut sfShader, name: *const c_char, x: f32);
 pub fn sfShader_setVec2Uniform(shader: *mut sfShader, name: *const c_char, vector: sfGlslVec2);
 pub fn sfShader_setVec3Uniform(shader: *mut sfShader, name: *const c_char, vector: sfGlslVec3);
@@ -295,9 +295,9 @@ pub fn sfShader_bind(shader: *const sfShader);
 pub fn sfShader_isAvailable() -> bool;
 pub fn sfShader_isGeometryAvailable() -> bool;
 // Sprite.cpp
-pub fn sfSprite_create() -> *mut sfSprite;
-pub fn sfSprite_copy(sprite: *const sfSprite) -> *mut sfSprite;
-pub fn sfSprite_destroy(sprite: *mut sfSprite);
+pub fn sfSprite_new() -> *mut sfSprite;
+pub fn sfSprite_cpy(sprite: *const sfSprite) -> *mut sfSprite;
+pub fn sfSprite_del(sprite: *mut sfSprite);
 pub fn sfSprite_setPosition(sprite: *mut sfSprite, position: sfVector2f);
 pub fn sfSprite_setRotation(sprite: *mut sfSprite, angle: f32);
 pub fn sfSprite_setScale(sprite: *mut sfSprite, scale: sfVector2f);
@@ -320,9 +320,9 @@ pub fn sfSprite_getColor(sprite: *const sfSprite) -> sfColor;
 pub fn sfSprite_getLocalBounds(sprite: *const sfSprite) -> sfFloatRect;
 pub fn sfSprite_getGlobalBounds(sprite: *const sfSprite) -> sfFloatRect;
 // Text.cpp
-pub fn sfText_create() -> *mut sfText;
-pub fn sfText_copy(text: *const sfText) -> *mut sfText;
-pub fn sfText_destroy(text: *mut sfText);
+pub fn sfText_new() -> *mut sfText;
+pub fn sfText_cpy(text: *const sfText) -> *mut sfText;
+pub fn sfText_del(text: *mut sfText);
 pub fn sfText_setPosition(text: *mut sfText, position: sfVector2f);
 pub fn sfText_setRotation(text: *mut sfText, angle: f32);
 pub fn sfText_setScale(text: *mut sfText, scale: sfVector2f);
@@ -359,13 +359,13 @@ pub fn sfText_getLocalBounds(text: *const sfText) -> sfFloatRect;
 pub fn sfText_getGlobalBounds(text: *const sfText) -> sfFloatRect;
 // Texture.cpp
 pub fn sfTexture_new() -> *mut sfTexture;
+pub fn sfTexture_cpy(texture: *const sfTexture) -> *mut sfTexture;
+pub fn sfTexture_del(texture: *mut sfTexture);
 pub fn sfTexture_create(tex: *mut sfTexture, width: c_uint, height: c_uint) -> bool;
 pub fn sfTexture_loadFromFile(tex: *mut sfTexture, filename: *const c_char, area: sfIntRect) -> bool;
 pub fn sfTexture_loadFromMemory(tex: *mut sfTexture, data: *const c_void, sizeInBytes: usize, area: sfIntRect) -> bool;
 pub fn sfTexture_loadFromStream(tex: *mut sfTexture, stream: *mut sfInputStreamHelper, area: sfIntRect) -> bool;
 pub fn sfTexture_loadFromImage(tex: *mut sfTexture, image: *const sfImage, area: sfIntRect) -> bool;
-pub fn sfTexture_copy(texture: *const sfTexture) -> *mut sfTexture;
-pub fn sfTexture_destroy(texture: *mut sfTexture);
 pub fn sfTexture_getSize(texture: *const sfTexture) -> sfVector2u;
 pub fn sfTexture_copyToImage(texture: *const sfTexture) -> *mut sfImage;
 pub fn sfTexture_updateFromPixels(texture: *mut sfTexture, pixels: *const u8, width: c_uint, height: c_uint, x: c_uint, y: c_uint);

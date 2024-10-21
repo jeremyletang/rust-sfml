@@ -24,7 +24,7 @@ impl<'s> RectangleShape<'s> {
     /// Returns a new `RectangleShape`.
     #[must_use]
     pub fn new() -> RectangleShape<'s> {
-        let rectangle = unsafe { ffi::sfRectangleShape_create() };
+        let rectangle = unsafe { ffi::sfRectangleShape_new() };
         RectangleShape {
             rectangle_shape: NonNull::new(rectangle).expect("Failed to create RectangleShape"),
             texture: PhantomData,
@@ -191,7 +191,7 @@ impl<'s> Shape<'s> for RectangleShape<'s> {
 impl<'s> Clone for RectangleShape<'s> {
     /// Return a new `RectangleShape` or panic! if there is not enough memory
     fn clone(&self) -> RectangleShape<'s> {
-        let copy = unsafe { ffi::sfRectangleShape_copy(self.rectangle_shape.as_ptr()) };
+        let copy = unsafe { ffi::sfRectangleShape_cpy(self.rectangle_shape.as_ptr()) };
         RectangleShape {
             rectangle_shape: NonNull::new(copy).expect("Not enough memory to clone RectangleShape"),
             texture: self.texture,
@@ -201,6 +201,6 @@ impl<'s> Clone for RectangleShape<'s> {
 
 impl Drop for RectangleShape<'_> {
     fn drop(&mut self) {
-        unsafe { ffi::sfRectangleShape_destroy(self.rectangle_shape.as_ptr()) }
+        unsafe { ffi::sfRectangleShape_del(self.rectangle_shape.as_ptr()) }
     }
 }

@@ -95,7 +95,7 @@ impl Drop for Context {
     /// Deactivates and destroys the context.
     fn drop(&mut self) {
         unsafe {
-            ffi::sfContext_destroy(self.0);
+            ffi::sfContext_del(self.0);
         }
     }
 }

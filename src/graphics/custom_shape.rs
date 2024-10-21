@@ -60,7 +60,7 @@ impl<'s> CustomShape<'s> {
         // SAFETY: Box::into_raw produces non-null pointer
         let raw_impl = unsafe { NonNull::new_unchecked(Box::into_raw(Box::new(points))) };
         let sp = unsafe {
-            ffi::sfCustomShape_create(
+            ffi::sfCustomShape_new(
                 Some(get_point_count_callback),
                 Some(get_point_callback),
                 raw_impl.as_ptr().cast(),
@@ -207,7 +207,7 @@ impl Transformable for CustomShape<'_> {
 impl Drop for CustomShape<'_> {
     fn drop(&mut self) {
         unsafe {
-            ffi::sfCustomShape_destroy(self.shape.as_ptr());
+            ffi::sfCustomShape_del(self.shape.as_ptr());
             let _ = Box::from_raw(self.points.as_ptr());
         }
     }

@@ -31,15 +31,15 @@ class sfCustomSoundStream final : public sf::SoundStream {
     void *myUserData;
 };
 
-extern "C" sfCustomSoundStream *sfCustomSoundStream_create(sfCustomSoundStreamGetDataCb onGetData,
-                                                           sfCustomSoundStreamSeekCb onSeek,
-                                                           unsigned int channelCount,
-                                                           unsigned int sampleRate,
-                                                           void *userData) {
+extern "C" sfCustomSoundStream *sfCustomSoundStream_new(sfCustomSoundStreamGetDataCb onGetData,
+                                                        sfCustomSoundStreamSeekCb onSeek,
+                                                        unsigned int channelCount,
+                                                        unsigned int sampleRate,
+                                                        void *userData) {
     return new sfCustomSoundStream(onGetData, onSeek, channelCount, sampleRate, userData);
 }
 
-extern "C" void sfCustomSoundStream_destroy(sfCustomSoundStream *soundStream) {
+extern "C" void sfCustomSoundStream_del(sfCustomSoundStream *soundStream) {
     delete soundStream;
 }
 

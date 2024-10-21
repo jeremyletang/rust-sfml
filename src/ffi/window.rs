@@ -610,7 +610,7 @@ type sfKeyboardKey = Key;
 impl Drop for JoystickIdentification {
     fn drop(&mut self) {
         unsafe {
-            sfJoystickIdentification_destroy(self);
+            sfJoystickIdentification_del(self);
         }
     }
 }

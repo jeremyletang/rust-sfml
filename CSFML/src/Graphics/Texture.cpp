@@ -9,6 +9,14 @@ extern "C" sf::Texture *sfTexture_new() {
     return new sf::Texture;
 }
 
+extern "C" sf::Texture *sfTexture_cpy(const sf::Texture *texture) {
+    return new sf::Texture(*texture);
+}
+
+extern "C" void sfTexture_del(sf::Texture *texture) {
+    delete texture;
+}
+
 extern "C" bool sfTexture_create(sf::Texture *tex, unsigned int width, unsigned int height) {
     return tex->create(width, height);
 }
@@ -27,14 +35,6 @@ extern "C" bool sfTexture_loadFromStream(sf::Texture *tex, sfInputStreamHelper *
 
 extern "C" bool sfTexture_loadFromImage(sf::Texture *tex, const sf::Image *image, const sfIntRect area) {
     return tex->loadFromImage(*image, sf::IntRect(area.left, area.top, area.width, area.height));
-}
-
-extern "C" sf::Texture *sfTexture_copy(const sf::Texture *texture) {
-    return new sf::Texture(*texture);
-}
-
-extern "C" void sfTexture_destroy(sf::Texture *texture) {
-    delete texture;
 }
 
 extern "C" sfVector2u sfTexture_getSize(const sf::Texture *texture) {

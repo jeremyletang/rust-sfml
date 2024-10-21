@@ -308,7 +308,7 @@ impl RcText {
 
 impl Default for RcText {
     fn default() -> Self {
-        let text = unsafe { ffi::sfText_create() };
+        let text = unsafe { ffi::sfText_new() };
         Self {
             text: NonNull::new(text).expect("Failed to create Text"),
             font: Weak::new(),
@@ -319,7 +319,7 @@ impl Default for RcText {
 impl Clone for RcText {
     /// Return a new Text or panic! if there is not enough memory
     fn clone(&self) -> Self {
-        let sp = unsafe { ffi::sfText_copy(self.text.as_ptr()) };
+        let sp = unsafe { ffi::sfText_cpy(self.text.as_ptr()) };
         Self {
             text: NonNull::new(sp).expect("Not enough memory to clone Text"),
             font: self.font.clone(),
@@ -484,7 +484,7 @@ impl Transformable for RcText {
 impl Drop for RcText {
     fn drop(&mut self) {
         unsafe {
-            ffi::sfText_destroy(self.text.as_ptr());
+            ffi::sfText_del(self.text.as_ptr());
         }
     }
 }

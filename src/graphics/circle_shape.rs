@@ -191,7 +191,7 @@ impl<'s> Shape<'s> for CircleShape<'s> {
 impl<'s> Clone for CircleShape<'s> {
     /// Return a new `CircleShape` or panic if there is not enough memory
     fn clone(&self) -> CircleShape<'s> {
-        let circle = unsafe { ffi::sfCircleShape_copy(self.circle_shape.as_ptr()) };
+        let circle = unsafe { ffi::sfCircleShape_cpy(self.circle_shape.as_ptr()) };
         CircleShape {
             circle_shape: NonNull::new(circle).expect("Not enough memory to clone CircleShape"),
             texture: self.texture,
@@ -201,6 +201,6 @@ impl<'s> Clone for CircleShape<'s> {
 
 impl Drop for CircleShape<'_> {
     fn drop(&mut self) {
-        unsafe { ffi::sfCircleShape_destroy(self.circle_shape.as_ptr()) }
+        unsafe { ffi::sfCircleShape_del(self.circle_shape.as_ptr()) }
     }
 }

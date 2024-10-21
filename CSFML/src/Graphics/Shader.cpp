@@ -67,8 +67,12 @@ typedef struct
     float array[4 * 4];
 } sfGlslMat4;
 
-extern "C" sf::Shader *sfShader_defaultConstruct() {
+extern "C" sf::Shader *sfShader_new() {
     return new sf::Shader;
+}
+
+extern "C" void sfShader_del(sf::Shader *shader) {
+    delete shader;
 }
 
 extern "C" bool sfShader_loadFromMemory_1(sf::Shader *shader, const char *content, sf::Shader::Type type) {
@@ -105,10 +109,6 @@ extern "C" bool sfShader_loadFromFile_all(sf::Shader *shader, const char *vert, 
 
 extern "C" bool sfShader_loadFromStream_all(sf::Shader *shader, sfInputStreamHelper *vert, sfInputStreamHelper *geom, sfInputStreamHelper *frag) {
     return shader->loadFromStream(*vert, *geom, *frag);
-}
-
-extern "C" void sfShader_destroy(sf::Shader *shader) {
-    delete shader;
 }
 
 extern "C" void sfShader_setFloatUniform(sf::Shader *shader, const char *name, float x) {

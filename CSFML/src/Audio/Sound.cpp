@@ -2,15 +2,15 @@
 #include <SFML/Audio.hpp>
 #include <cstdint>
 
-extern "C" sf::Sound *sfSound_create(void) {
+extern "C" sf::Sound *sfSound_new(void) {
     return new sf::Sound;
 }
 
-extern "C" sf::Sound *sfSound_copy(const sf::Sound *sound) {
+extern "C" sf::Sound *sfSound_cpy(const sf::Sound *sound) {
     return new sf::Sound(*sound);
 }
 
-extern "C" void sfSound_destroy(sf::Sound *sound) {
+extern "C" void sfSound_del(sf::Sound *sound) {
     delete sound;
 }
 

@@ -32,7 +32,7 @@ impl<'s> ConvexShape<'s> {
     /// * `points_count` - The number of point for the convex shape
     #[must_use]
     pub fn new(points_count: usize) -> ConvexShape<'s> {
-        let shape = unsafe { ffi::sfConvexShape_create() };
+        let shape = unsafe { ffi::sfConvexShape_new() };
         let mut shape = ConvexShape {
             handle: NonNull::new(shape).expect("Failed to create ConvexShape"),
             texture: PhantomData,
@@ -200,7 +200,7 @@ impl<'s> Shape<'s> for ConvexShape<'s> {
 impl<'s> Clone for ConvexShape<'s> {
     /// Return a new `ConvexShape` or panic if there is not enough memory
     fn clone(&self) -> ConvexShape<'s> {
-        let shape = unsafe { ffi::sfConvexShape_copy(self.handle.as_ptr()) };
+        let shape = unsafe { ffi::sfConvexShape_cpy(self.handle.as_ptr()) };
         ConvexShape {
             handle: NonNull::new(shape).expect("Not enough memory to clone ConvexShape"),
             texture: self.texture,
@@ -210,6 +210,6 @@ impl<'s> Clone for ConvexShape<'s> {
 
 impl Drop for ConvexShape<'_> {
     fn drop(&mut self) {
-        unsafe { ffi::sfConvexShape_destroy(self.handle.as_ptr()) }
+        unsafe { ffi::sfConvexShape_del(self.handle.as_ptr()) }
     }
 }

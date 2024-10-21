@@ -37,7 +37,7 @@ impl RcSprite {
     /// Create a new sprite
     #[must_use]
     pub fn new() -> Self {
-        let sp = unsafe { ffi::sfSprite_create() };
+        let sp = unsafe { ffi::sfSprite_new() };
         Self {
             sprite: NonNull::new(sp).expect("Failed to create Sprite"),
             texture: Weak::new(),
@@ -230,7 +230,7 @@ impl Default for RcSprite {
 impl Clone for RcSprite {
     /// Return a new Sprite or panic! if there is not enough memory
     fn clone(&self) -> Self {
-        let sp = unsafe { ffi::sfSprite_copy(self.sprite.as_ptr()) };
+        let sp = unsafe { ffi::sfSprite_cpy(self.sprite.as_ptr()) };
         Self {
             sprite: NonNull::new(sp).expect("Failed to copy Sprite"),
             texture: self.texture.clone(),
@@ -383,6 +383,6 @@ impl Transformable for RcSprite {
 
 impl Drop for RcSprite {
     fn drop(&mut self) {
-        unsafe { ffi::sfSprite_destroy(self.sprite.as_ptr()) }
+        unsafe { ffi::sfSprite_del(self.sprite.as_ptr()) }
     }
 }

@@ -1,10 +1,10 @@
 #include <SFML/Audio/SoundBufferRecorder.hpp>
 
-extern "C" sf::SoundBufferRecorder *sfSoundBufferRecorder_create(void) {
+extern "C" sf::SoundBufferRecorder *sfSoundBufferRecorder_new(void) {
     return new sf::SoundBufferRecorder;
 }
 
-extern "C" void sfSoundBufferRecorder_destroy(sf::SoundBufferRecorder *soundBufferRecorder) {
+extern "C" void sfSoundBufferRecorder_del(sf::SoundBufferRecorder *soundBufferRecorder) {
     delete soundBufferRecorder;
 }
 

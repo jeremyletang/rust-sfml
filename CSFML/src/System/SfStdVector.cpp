@@ -1,7 +1,7 @@
 #include <string>
 #include <vector>
 
-extern "C" void sfStdStringVector_destroy(std::vector<std::string> *vec) {
+extern "C" void sfStdStringVector_del(std::vector<std::string> *vec) {
     delete vec;
 }
 

@@ -34,13 +34,13 @@ class sfCustomShape final : public sf::Shape {
     void *myUserData;
 };
 
-extern "C" sfCustomShape *sfCustomShape_create(sfCustomShapeGetPointCountCb getPointCount,
-                                               sfCustomShapeGetPointCb getPoint,
-                                               void *userData) {
+extern "C" sfCustomShape *sfCustomShape_new(sfCustomShapeGetPointCountCb getPointCount,
+                                            sfCustomShapeGetPointCb getPoint,
+                                            void *userData) {
     return new sfCustomShape(getPointCount, getPoint, userData);
 }
 
-extern "C" void sfCustomShape_destroy(sfCustomShape *shape) {
+extern "C" void sfCustomShape_del(sfCustomShape *shape) {
     delete shape;
 }
 

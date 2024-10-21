@@ -127,7 +127,7 @@ extern "C" sf::Context *sfContext_create(void) {
     return new sf::Context;
 }
 
-extern "C" void sfContext_destroy(sf::Context *context) {
+extern "C" void sfContext_del(sf::Context *context) {
     delete context;
 }
 

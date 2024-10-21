@@ -5,15 +5,15 @@
 #include <SFML/Graphics/ConvexShape.hpp>
 #include <cstddef>
 
-extern "C" sf::ConvexShape *sfConvexShape_create(void) {
+extern "C" sf::ConvexShape *sfConvexShape_new(void) {
     return new sf::ConvexShape;
 }
 
-extern "C" sf::ConvexShape *sfConvexShape_copy(const sf::ConvexShape *shape) {
+extern "C" sf::ConvexShape *sfConvexShape_cpy(const sf::ConvexShape *shape) {
     return new sf::ConvexShape(*shape);
 }
 
-extern "C" void sfConvexShape_destroy(sf::ConvexShape *shape) {
+extern "C" void sfConvexShape_del(sf::ConvexShape *shape) {
     delete shape;
 }
 

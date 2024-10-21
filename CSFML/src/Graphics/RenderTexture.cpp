@@ -16,7 +16,7 @@ extern "C" sf::RenderTexture *sfRenderTexture_createWithSettings(unsigned int wi
     return renderTexture;
 }
 
-extern "C" void sfRenderTexture_destroy(sf::RenderTexture *renderTexture) {
+extern "C" void sfRenderTexture_del(sf::RenderTexture *renderTexture) {
     delete renderTexture;
 }
 

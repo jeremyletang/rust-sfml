@@ -34,7 +34,7 @@ extern "C" sf::RenderWindow *sfRenderWindow_createFromHandle(sf::WindowHandle ha
     return renderWindow;
 }
 
-extern "C" void sfRenderWindow_destroy(sf::RenderWindow *renderWindow) {
+extern "C" void sfRenderWindow_del(sf::RenderWindow *renderWindow) {
     delete renderWindow;
 }
 

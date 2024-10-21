@@ -5,15 +5,15 @@
 #include <SFML/Graphics/Text.hpp>
 #include <cstddef>
 
-extern "C" sf::Text *sfText_create(void) {
+extern "C" sf::Text *sfText_new(void) {
     return new sf::Text;
 }
 
-extern "C" sf::Text *sfText_copy(const sf::Text *text) {
+extern "C" sf::Text *sfText_cpy(const sf::Text *text) {
     return new sf::Text(*text);
 }
 
-extern "C" void sfText_destroy(sf::Text *text) {
+extern "C" void sfText_del(sf::Text *text) {
     delete text;
 }
 

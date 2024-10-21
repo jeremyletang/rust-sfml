@@ -80,7 +80,7 @@ impl<'a, S: SoundStream> SoundStreamPlayer<'a, S> {
         let sound_stream: *mut S = sound_stream;
         Self {
             sf_sound_stream: unsafe {
-                NonNull::new(sfCustomSoundStream_create(
+                NonNull::new(sfCustomSoundStream_new(
                     Some(get_data_callback::<S>),
                     Some(seek_callback::<S>),
                     channel_count,
@@ -251,7 +251,7 @@ impl<S: SoundStream> Drop for SoundStreamPlayer<'_, S> {
             // It seems there can be problems (e.g. "pure virtual method called") if the
             // stream is not stopped before it's destroyed. So let's make sure it's stopped.
             sfCustomSoundStream_stop(self.sf_sound_stream.as_ptr());
-            sfCustomSoundStream_destroy(self.sf_sound_stream.as_ptr());
+            sfCustomSoundStream_del(self.sf_sound_stream.as_ptr());
         }
     }
 }

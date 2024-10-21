@@ -50,7 +50,7 @@ impl<'buf> Sound<'buf> {
     /// Create a new `Sound`
     #[must_use]
     pub fn new() -> Self {
-        let s = unsafe { ffi::audio::sfSound_create() };
+        let s = unsafe { ffi::audio::sfSound_new() };
         Sound {
             sound: NonNull::new(s).expect("Failed to create Sound"),
             buffer: PhantomData,
@@ -166,7 +166,7 @@ impl Default for Sound<'_> {
 
 impl Clone for Sound<'_> {
     fn clone(&self) -> Self {
-        let s = unsafe { ffi::audio::sfSound_copy(self.sound.as_ptr()) };
+        let s = unsafe { ffi::audio::sfSound_cpy(self.sound.as_ptr()) };
         Sound {
             sound: NonNull::new(s).expect("Failed to copy Sound"),
             buffer: self.buffer,
@@ -216,7 +216,7 @@ impl SoundSource for Sound<'_> {
 impl Drop for Sound<'_> {
     fn drop(&mut self) {
         unsafe {
-            ffi::audio::sfSound_destroy(self.sound.as_ptr());
+            ffi::audio::sfSound_del(self.sound.as_ptr());
         }
     }
 }

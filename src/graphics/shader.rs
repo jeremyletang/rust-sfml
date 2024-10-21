@@ -139,11 +139,10 @@ pub struct Shader<'texture> {
 
 macro_rules! shader_create {
     ($shader:ident, $load_block:block) => {{
-        let $shader =
-            NonNull::new(unsafe { ffi::sfShader_defaultConstruct() }).ok_or(SfError::CallFailed)?;
+        let $shader = NonNull::new(unsafe { ffi::sfShader_new() }).ok_or(SfError::CallFailed)?;
         unsafe {
             if !$load_block {
-                ffi::sfShader_destroy($shader.as_ptr());
+                ffi::sfShader_del($shader.as_ptr());
                 return Err(SfError::CallFailed);
             }
         }
@@ -647,6 +646,6 @@ impl<'texture> Shader<'texture> {
 
 impl Drop for Shader<'_> {
     fn drop(&mut self) {
-        unsafe { ffi::sfShader_destroy(self.shader.as_ptr()) }
+        unsafe { ffi::sfShader_del(self.shader.as_ptr()) }
     }
 }

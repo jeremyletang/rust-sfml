@@ -208,6 +208,6 @@ impl RenderTarget for RenderTexture {
 
 impl Drop for RenderTexture {
     fn drop(&mut self) {
-        unsafe { ffi::sfRenderTexture_destroy(self) }
+        unsafe { ffi::sfRenderTexture_del(self) }
     }
 }

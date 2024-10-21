@@ -29,7 +29,7 @@ extern "C" sf::Joystick::Identification *sfJoystick_getIdentification(unsigned i
     return copy;
 }
 
-extern "C" void sfJoystickIdentification_destroy(sf::Joystick::Identification *ident) {
+extern "C" void sfJoystickIdentification_del(sf::Joystick::Identification *ident) {
     delete ident;
 }
 

@@ -31,7 +31,7 @@ pub type sfTime = i64;
 
 impl Drop for sfStdString {
     fn drop(&mut self) {
-        unsafe { sfStdString_destroy(self) }
+        unsafe { sfStdString_del(self) }
     }
 }
 
@@ -89,7 +89,7 @@ impl PartialEq<sfStdString> for str {
 impl Drop for sfStdStringVector {
     fn drop(&mut self) {
         unsafe {
-            sfStdStringVector_destroy(self);
+            sfStdStringVector_del(self);
         }
     }
 }

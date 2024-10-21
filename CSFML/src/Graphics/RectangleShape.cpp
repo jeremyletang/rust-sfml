@@ -5,15 +5,15 @@
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <cstddef>
 
-extern "C" sf::RectangleShape *sfRectangleShape_create(void) {
+extern "C" sf::RectangleShape *sfRectangleShape_new(void) {
     return new sf::RectangleShape;
 }
 
-extern "C" sf::RectangleShape *sfRectangleShape_copy(const sf::RectangleShape *shape) {
+extern "C" sf::RectangleShape *sfRectangleShape_cpy(const sf::RectangleShape *shape) {
     return new sf::RectangleShape(*shape);
 }
 
-extern "C" void sfRectangleShape_destroy(sf::RectangleShape *shape) {
+extern "C" void sfRectangleShape_del(sf::RectangleShape *shape) {
     delete shape;
 }
 

@@ -254,7 +254,7 @@ impl SoundBufferRecorder {
     /// Create a new sound buffer recorder
     #[must_use]
     pub fn new() -> SoundBufferRecorder {
-        let buffer = unsafe { ffi::sfSoundBufferRecorder_create() };
+        let buffer = unsafe { ffi::sfSoundBufferRecorder_new() };
         SoundBufferRecorder {
             ffi_handle: NonNull::new(buffer).expect("Failed to create SoundBufferRecorder"),
         }
@@ -353,7 +353,7 @@ impl Default for SoundBufferRecorder {
 impl Drop for SoundBufferRecorder {
     fn drop(&mut self) {
         unsafe {
-            ffi::sfSoundBufferRecorder_destroy(self.ffi_handle.as_ptr());
+            ffi::sfSoundBufferRecorder_del(self.ffi_handle.as_ptr());
         }
     }
 }

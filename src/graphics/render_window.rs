@@ -750,7 +750,7 @@ impl RenderTarget for RenderWindow {
 impl Drop for RenderWindow {
     fn drop(&mut self) {
         unsafe {
-            ffi::sfRenderWindow_destroy(self);
+            ffi::sfRenderWindow_del(self);
         }
     }
 }

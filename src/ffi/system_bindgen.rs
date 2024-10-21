@@ -12,11 +12,11 @@ pub fn sfClock_restart(clock: *mut sfClock) -> i64;
 pub fn sfInputStreamHelper_new(read: sfInputStreamHelperReadCb, seek: sfInputStreamHelperSeekCb, tell: sfInputStreamHelperTellCb, getSize: sfInputStreamHelperGetSizeCb, userData: *mut c_void) -> *mut sfInputStreamHelper;
 pub fn sfInputStreamHelper_del(stream: *mut sfInputStreamHelper);
 // SfStdString.cpp
+pub fn sfStdString_del(s: *mut sfStdString);
 pub fn sfStdString_getLength(s: *const sfStdString) -> usize;
 pub fn sfStdString_getData(s: *const sfStdString) -> *const c_char;
-pub fn sfStdString_destroy(s: *mut sfStdString);
 // SfStdVector.cpp
-pub fn sfStdStringVector_destroy(vec: *mut sfStdStringVector);
+pub fn sfStdStringVector_del(vec: *mut sfStdStringVector);
 pub fn sfStdStringVector_getLength(vec: *const sfStdStringVector) -> usize;
 pub fn sfStdStringVector_index(vec: *const sfStdStringVector, index: usize) -> *const sfStdString;
 // SfString.cpp

@@ -5,15 +5,15 @@
 #include <SFML/Graphics/Image.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 
-extern "C" sf::Sprite *sfSprite_create(void) {
+extern "C" sf::Sprite *sfSprite_new(void) {
     return new sf::Sprite;
 }
 
-extern "C" sf::Sprite *sfSprite_copy(const sf::Sprite *sprite) {
+extern "C" sf::Sprite *sfSprite_cpy(const sf::Sprite *sprite) {
     return new sf::Sprite(*sprite);
 }
 
-extern "C" void sfSprite_destroy(sf::Sprite *sprite) {
+extern "C" void sfSprite_del(sf::Sprite *sprite) {
     delete sprite;
 }
 

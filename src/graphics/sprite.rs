@@ -30,7 +30,7 @@ impl<'s> Sprite<'s> {
     /// Create a new sprite
     #[must_use]
     pub fn new() -> Sprite<'s> {
-        let sp = unsafe { ffi::sfSprite_create() };
+        let sp = unsafe { ffi::sfSprite_new() };
         Sprite {
             sprite: NonNull::new(sp).expect("Failed to create Sprite"),
             texture: PhantomData,
@@ -168,7 +168,7 @@ impl Default for Sprite<'_> {
 impl<'s> Clone for Sprite<'s> {
     /// Return a new Sprite or panic! if there is not enough memory
     fn clone(&self) -> Sprite<'s> {
-        let sp = unsafe { ffi::sfSprite_copy(self.sprite.as_ptr()) };
+        let sp = unsafe { ffi::sfSprite_cpy(self.sprite.as_ptr()) };
         Sprite {
             sprite: NonNull::new(sp).expect("Failed to copy Sprite"),
             texture: PhantomData,
@@ -230,6 +230,6 @@ impl Transformable for Sprite<'_> {
 
 impl Drop for Sprite<'_> {
     fn drop(&mut self) {
-        unsafe { ffi::sfSprite_destroy(self.sprite.as_ptr()) }
+        unsafe { ffi::sfSprite_del(self.sprite.as_ptr()) }
     }
 }
