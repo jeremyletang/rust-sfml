@@ -8,7 +8,7 @@ typedef void (*sfCustomSoundRecorderStopCb)(void *);
 
 // Helper class implementing the callback forwarding from
 // C++ to C in sfSoundRecorder
-class sfCustomSoundRecorder : public sf::SoundRecorder {
+class sfCustomSoundRecorder final : public sf::SoundRecorder {
   public:
     sfCustomSoundRecorder(sfCustomSoundRecorderStartCb onStart,
                           sfCustomSoundRecorderProcessCb onProcess,
@@ -18,21 +18,20 @@ class sfCustomSoundRecorder : public sf::SoundRecorder {
                                             myStopCb(onStop),
                                             myUserData(userData) {
     }
-
-    void setProcessingInterval(int64_t interval) {
+    virtual void setProcessingInterval(int64_t interval) final {
         sf::SoundRecorder::setProcessingInterval(sf::microseconds(interval));
     }
 
   private:
-    virtual bool onStart() {
+    virtual bool onStart() final {
         return myStartCb(myUserData);
     }
 
-    virtual bool onProcessSamples(const sf::Int16 *samples, std::size_t sampleCount) {
+    virtual bool onProcessSamples(const sf::Int16 *samples, std::size_t sampleCount) final {
         return myProcessCb(samples, sampleCount, myUserData);
     }
 
-    virtual void onStop() {
+    virtual void onStop() final {
         myStopCb(myUserData);
     }
 
