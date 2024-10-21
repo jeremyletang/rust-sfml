@@ -1,5 +1,27 @@
 use crate::{ffi::system as ffi, system::Time, IntoSfResult as _, SfBox, SfResult};
-pub use ffi::sfClock as Clock;
+
+decl_opaque! {
+    /// Utility type that measures the elapsed time.
+    ///
+    /// Its provides the most precise time that the underlying OS can
+    /// achieve (generally microseconds or nanoseconds).
+    /// It also ensures monotonicity, which means that the returned time can never go backward,
+    /// even if the system time is changed.
+    ///
+    /// # Usage example
+    /// ```
+    /// # use sfml::system::Clock;
+    /// let mut clock = Clock::start().unwrap();
+    /// // ...
+    /// let time1 = clock.elapsed_time();
+    /// // ...
+    /// let time2 = clock.restart();
+    /// ```
+    ///
+    /// The [`Time`](crate::system::Time) value returned by the clock can then be converted to
+    /// a number of seconds, milliseconds or even microseconds.
+    pub Clock;
+}
 
 impl Drop for Clock {
     fn drop(&mut self) {

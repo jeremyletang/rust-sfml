@@ -5,27 +5,9 @@ decl_opaque! {
     pub(crate) sfStdStringVector;
     pub(crate) sfString;
     pub(crate) sfInputStreamHelper;
-    /// Utility type that measures the elapsed time.
-    ///
-    /// Its provides the most precise time that the underlying OS can
-    /// achieve (generally microseconds or nanoseconds).
-    /// It also ensures monotonicity, which means that the returned time can never go backward,
-    /// even if the system time is changed.
-    ///
-    /// # Usage example
-    /// ```
-    /// # use sfml::system::Clock;
-    /// let mut clock = Clock::start().unwrap();
-    /// // ...
-    /// let time1 = clock.elapsed_time();
-    /// // ...
-    /// let time2 = clock.restart();
-    /// ```
-    ///
-    /// The [`Time`](crate::system::Time) value returned by the clock can then be converted to
-    /// a number of seconds, milliseconds or even microseconds.
-    pub sfClock;
 }
+
+use crate::system::Clock as sfClock;
 
 pub type sfTime = i64;
 
