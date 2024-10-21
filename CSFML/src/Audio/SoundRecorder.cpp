@@ -26,22 +26,15 @@ class sfSoundRecorder : public sf::SoundRecorder {
 
   private:
     virtual bool onStart() {
-        if (myStartCallback)
-            return myStartCallback(myUserData);
-        else
-            return true;
+        return myStartCallback(myUserData);
     }
 
     virtual bool onProcessSamples(const sf::Int16 *samples, std::size_t sampleCount) {
-        if (myProcessCallback)
-            return myProcessCallback(samples, sampleCount, myUserData);
-        else
-            return true;
+        return myProcessCallback(samples, sampleCount, myUserData);
     }
 
     virtual void onStop() {
-        if (myStopCallback)
-            myStopCallback(myUserData);
+        myStopCallback(myUserData);
     }
 
     sfSoundRecorderStartCallback myStartCallback;
