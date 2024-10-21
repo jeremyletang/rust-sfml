@@ -394,11 +394,12 @@ pub fn sfTransform_rotateWithCenter(transform: *mut sfTransform, angle: f32, cen
 pub fn sfTransform_scale(transform: *mut sfTransform, scaleX: f32, scaleY: f32);
 pub fn sfTransform_scaleWithCenter(transform: *mut sfTransform, scaleX: f32, scaleY: f32, centerX: f32, centerY: f32);
 // VertexBuffer.cpp
-pub fn sfVertexBuffer_create(vertexCount: c_uint, type_: sfPrimitiveType, usage: sfVertexBufferUsage) -> *mut sfVertexBuffer;
-pub fn sfVertexBuffer_copy(vertexBuffer: *const sfVertexBuffer) -> *mut sfVertexBuffer;
-pub fn sfVertexBuffer_destroy(vertexBuffer: *mut sfVertexBuffer);
-pub fn sfVertexBuffer_getVertexCount(vertexBuffer: *const sfVertexBuffer) -> c_uint;
-pub fn sfVertexBuffer_update(vertexBuffer: *mut sfVertexBuffer, vertices: *const sfVertex, vertexCount: c_uint, offset: c_uint) -> bool;
+pub fn sfVertexBuffer_new() -> *mut sfVertexBuffer;
+pub fn sfVertexBuffer_cpy(vertexBuffer: *const sfVertexBuffer) -> *mut sfVertexBuffer;
+pub fn sfVertexBuffer_del(vertexBuffer: *mut sfVertexBuffer);
+pub fn sfVertexBuffer_create(buffer: *mut sfVertexBuffer, vertexCount: usize) -> bool;
+pub fn sfVertexBuffer_getVertexCount(vertexBuffer: *const sfVertexBuffer) -> usize;
+pub fn sfVertexBuffer_update(vertexBuffer: *mut sfVertexBuffer, vertices: *const sfVertex, vertexCount: usize, offset: c_uint) -> bool;
 pub fn sfVertexBuffer_updateFromVertexBuffer(vertexBuffer: *mut sfVertexBuffer, other: *const sfVertexBuffer) -> bool;
 pub fn sfVertexBuffer_swap(left: *mut sfVertexBuffer, right: *mut sfVertexBuffer);
 pub fn sfVertexBuffer_getNativeHandle(vertexBuffer: *const sfVertexBuffer) -> c_uint;

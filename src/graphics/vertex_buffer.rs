@@ -1,7 +1,7 @@
 use crate::{
-    ffi::graphics::*,
+    ffi::graphics as ffi,
     graphics::{Drawable, PrimitiveType, RenderStates, RenderTarget, Vertex},
-    IntoSfResult, SfBox, SfError, SfResult,
+    IntoSfResult, SfBox, SfResult,
 };
 
 /// Usage specifiers for a [`VertexBuffer`]
@@ -12,15 +12,15 @@ use crate::{
 /// For everything else `Dynamic` should be a good compromise.
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
 #[repr(transparent)]
-pub struct VertexBufferUsage(pub(super) sfVertexBufferUsage);
+pub struct VertexBufferUsage(pub(super) ffi::sfVertexBufferUsage);
 
 impl VertexBufferUsage {
     /// Constantly changing data.
-    pub const STREAM: Self = Self(sfVertexBufferUsage::Stream);
+    pub const STREAM: Self = Self(ffi::sfVertexBufferUsage::Stream);
     /// Occasionally changing data.
-    pub const DYNAMIC: Self = Self(sfVertexBufferUsage::Dynamic);
+    pub const DYNAMIC: Self = Self(ffi::sfVertexBufferUsage::Dynamic);
     /// Rarely changing data.
-    pub const STATIC: Self = Self(sfVertexBufferUsage::Static);
+    pub const STATIC: Self = Self(ffi::sfVertexBufferUsage::Static);
 }
 
 decl_opaque! {
@@ -36,19 +36,35 @@ impl VertexBuffer {
     /// * `vertex_count` - The maximal number of vertex
     pub fn new(
         primitive_type: PrimitiveType,
-        vertex_count: u32,
+        vertex_count: usize,
         usage: VertexBufferUsage,
     ) -> SfResult<SfBox<Self>> {
-        let ptr = unsafe { sfVertexBuffer_create(vertex_count, primitive_type.0, usage.0) };
-        SfBox::new(ptr).ok_or(SfError::CallFailed)
+        let mut new = SfBox::new(unsafe { ffi::sfVertexBuffer_new() }).into_sf_result()?;
+        new.set_usage(usage);
+        new.set_primitive_type(primitive_type);
+        new.recreate(vertex_count)?;
+        Ok(new)
+    }
+
+    /// Recreate the vertex buffer.
+    ///
+    /// Recreates the vertex buffer and allocates enough graphics memory to hold
+    /// vertexCount vertices.
+    /// Any previously allocated memory is freed in the process.
+    ///
+    /// In order to deallocate previously allocated memory pass 0 as vertexCount.
+    /// Don't forget to recreate with a non-zero value when graphics memory should be
+    /// allocated again.
+    pub fn recreate(&mut self, vertex_count: usize) -> SfResult<()> {
+        unsafe { ffi::sfVertexBuffer_create(self, vertex_count) }.into_sf_result()
     }
 
     /// Return the vertex count of a vertex buffer
     ///
     /// Return the number of vertices in the buffer
     #[must_use]
-    pub fn vertex_count(&self) -> u32 {
-        unsafe { sfVertexBuffer_getVertexCount(self) }
+    pub fn vertex_count(&self) -> usize {
+        unsafe { ffi::sfVertexBuffer_getVertexCount(self) }
     }
 
     /// Update a part of the buffer from an array of vertices.
@@ -77,12 +93,7 @@ impl VertexBuffer {
     /// Return True if the update was successful
     pub fn update(&mut self, vertices: &[Vertex], offset: u32) -> SfResult<()> {
         unsafe {
-            sfVertexBuffer_update(
-                self,
-                vertices.as_ptr().cast(),
-                vertices.len().try_into().expect("Vertices length too high"),
-                offset,
-            )
+            ffi::sfVertexBuffer_update(self, vertices.as_ptr().cast(), vertices.len(), offset)
         }
         .into_sf_result()
     }
@@ -92,7 +103,7 @@ impl VertexBuffer {
     /// # Arguments
     /// * other - Vertex buffer whose contents to copy into this vertex buffer
     pub fn update_from_vertex_buffer(&mut self, other: &VertexBuffer) -> SfResult<()> {
-        unsafe { sfVertexBuffer_updateFromVertexBuffer(self, other) }.into_sf_result()
+        unsafe { ffi::sfVertexBuffer_updateFromVertexBuffer(self, other) }.into_sf_result()
     }
 
     /// Swap the contents of this vertex buffer with those of another.
@@ -101,7 +112,7 @@ impl VertexBuffer {
     /// * other - Instance to swap with
     pub fn swap(&mut self, other: &mut VertexBuffer) {
         unsafe {
-            sfVertexBuffer_swap(self, other);
+            ffi::sfVertexBuffer_swap(self, other);
         }
     }
 
@@ -113,7 +124,7 @@ impl VertexBuffer {
     /// Return OpenGL handle of the vertex buffer or 0 if not yet created
     #[must_use]
     pub fn native_handle(&self) -> u32 {
-        unsafe { sfVertexBuffer_getNativeHandle(self) }
+        unsafe { ffi::sfVertexBuffer_getNativeHandle(self) }
     }
 
     /// Get the type of primitives drawn by the vertex buffer.
@@ -121,7 +132,7 @@ impl VertexBuffer {
     /// Return Primitive type
     #[must_use]
     pub fn primitive_type(&self) -> PrimitiveType {
-        unsafe { PrimitiveType(sfVertexBuffer_getPrimitiveType(self)) }
+        unsafe { PrimitiveType(ffi::sfVertexBuffer_getPrimitiveType(self)) }
     }
 
     /// Set the type of primitives to draw.
@@ -134,7 +145,7 @@ impl VertexBuffer {
     /// * `primitive_type` - Type of primitive
     pub fn set_primitive_type(&mut self, primitive_type: PrimitiveType) {
         unsafe {
-            sfVertexBuffer_setPrimitiveType(self, primitive_type.0);
+            ffi::sfVertexBuffer_setPrimitiveType(self, primitive_type.0);
         }
     }
 
@@ -143,7 +154,7 @@ impl VertexBuffer {
     /// Return Usage specifier
     #[must_use]
     pub fn usage(&self) -> VertexBufferUsage {
-        unsafe { VertexBufferUsage(sfVertexBuffer_getUsage(self)) }
+        unsafe { VertexBufferUsage(ffi::sfVertexBuffer_getUsage(self)) }
     }
 
     /// Set the usage specifier of this vertex buffer.
@@ -159,7 +170,7 @@ impl VertexBuffer {
     /// # Arguments
     /// * usage - Usage specifier
     pub fn set_usage(&mut self, usage: VertexBufferUsage) {
-        unsafe { sfVertexBuffer_setUsage(self, usage.0) }
+        unsafe { ffi::sfVertexBuffer_setUsage(self, usage.0) }
     }
 
     /// Bind a vertex buffer for rendering.
@@ -189,9 +200,9 @@ impl VertexBuffer {
     pub fn bind(vb: Option<&VertexBuffer>) {
         unsafe {
             if let Some(vertex_buffer) = vb {
-                sfVertexBuffer_bind(vertex_buffer);
+                ffi::sfVertexBuffer_bind(vertex_buffer);
             } else {
-                sfVertexBuffer_bind(std::ptr::null());
+                ffi::sfVertexBuffer_bind(std::ptr::null());
             }
         }
     }
@@ -204,7 +215,7 @@ impl VertexBuffer {
     /// Return True if vertex buffers are supported, false otherwise
     #[must_use]
     pub fn available() -> bool {
-        unsafe { sfVertexBuffer_isAvailable() }
+        unsafe { ffi::sfVertexBuffer_isAvailable() }
     }
 }
 
@@ -212,7 +223,7 @@ impl ToOwned for VertexBuffer {
     type Owned = SfBox<Self>;
 
     fn to_owned(&self) -> Self::Owned {
-        let ptr = unsafe { sfVertexBuffer_copy(self) };
+        let ptr = unsafe { ffi::sfVertexBuffer_cpy(self) };
         match SfBox::new(ptr) {
             Some(new) => new,
             None => panic!("Failed to clone VertexBuffer"),
@@ -223,7 +234,7 @@ impl ToOwned for VertexBuffer {
 impl Drop for VertexBuffer {
     fn drop(&mut self) {
         unsafe {
-            sfVertexBuffer_destroy(self);
+            ffi::sfVertexBuffer_del(self);
         }
     }
 }

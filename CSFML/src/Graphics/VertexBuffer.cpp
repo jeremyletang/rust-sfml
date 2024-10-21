@@ -1,33 +1,28 @@
+#include "SFML/Graphics/RenderTarget.hpp"
 #include <SFML/Graphics/VertexBuffer.hpp>
 #include <cstddef>
 
-extern "C" sf::VertexBuffer *sfVertexBuffer_create(unsigned int vertexCount, sf::PrimitiveType type, sf::VertexBuffer::Usage usage) {
-    sf::VertexBuffer *buffer = new sf::VertexBuffer;
-
-    if (!buffer->create(vertexCount)) {
-        delete buffer;
-        buffer = NULL;
-    } else {
-        buffer->setPrimitiveType(type);
-        buffer->setUsage(usage);
-    }
-
-    return buffer;
+extern "C" sf::VertexBuffer *sfVertexBuffer_new() {
+    return new sf::VertexBuffer;
 }
 
-extern "C" sf::VertexBuffer *sfVertexBuffer_copy(const sf::VertexBuffer *vertexBuffer) {
+extern "C" sf::VertexBuffer *sfVertexBuffer_cpy(const sf::VertexBuffer *vertexBuffer) {
     return new sf::VertexBuffer(*vertexBuffer);
 }
 
-extern "C" void sfVertexBuffer_destroy(sf::VertexBuffer *vertexBuffer) {
+extern "C" void sfVertexBuffer_del(sf::VertexBuffer *vertexBuffer) {
     delete vertexBuffer;
 }
 
-extern "C" unsigned int sfVertexBuffer_getVertexCount(const sf::VertexBuffer *vertexBuffer) {
+extern "C" bool sfVertexBuffer_create(sf::VertexBuffer *buffer, size_t vertexCount) {
+    return buffer->create(vertexCount);
+}
+
+extern "C" size_t sfVertexBuffer_getVertexCount(const sf::VertexBuffer *vertexBuffer) {
     return vertexBuffer->getVertexCount();
 }
 
-extern "C" bool sfVertexBuffer_update(sf::VertexBuffer *vertexBuffer, const sf::Vertex *vertices, unsigned int vertexCount, unsigned int offset) {
+extern "C" bool sfVertexBuffer_update(sf::VertexBuffer *vertexBuffer, const sf::Vertex *vertices, size_t vertexCount, unsigned int offset) {
     return vertexBuffer->update(vertices, vertexCount, offset);
 }
 
