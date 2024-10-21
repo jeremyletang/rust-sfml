@@ -13,29 +13,25 @@
 #include <SFML/Window/Touch.hpp>
 #include <cstddef>
 
-extern "C" void sfRenderWindow_createUnicode(sf::RenderWindow *renderWindow, sfVideoMode mode, const uint32_t *title, uint32_t style, const sf::ContextSettings *settings) {
+extern "C" sf::RenderWindow *sfRenderWindow_new_mtss(sfVideoMode mode, const uint32_t *title, uint32_t style, const sf::ContextSettings *settings) {
     // Convert video mode
     sf::VideoMode videoMode(mode.width, mode.height, mode.bitsPerPixel);
-    // Create the window
-    renderWindow->create(videoMode, title, style, *settings);
+    return new sf::RenderWindow(videoMode, title, style, *settings);
 }
 
-extern "C" sf::RenderWindow *sfRenderWindow_createUnicode_new(sfVideoMode mode, const uint32_t *title, uint32_t style, const sf::ContextSettings *settings) {
-    sf::RenderWindow *renderWindow = new sf::RenderWindow;
-    sfRenderWindow_createUnicode(renderWindow, mode, title, style, settings);
-    return renderWindow;
-}
-
-extern "C" sf::RenderWindow *sfRenderWindow_createFromHandle(sf::WindowHandle handle, const sf::ContextSettings *settings) {
-    // Create the window
-    sf::RenderWindow *renderWindow = new sf::RenderWindow;
-    renderWindow->create(handle, *settings);
-
-    return renderWindow;
+extern "C" sf::RenderWindow *sfRenderWindow_new_handle_settings(sf::WindowHandle handle, const sf::ContextSettings *settings) {
+    return new sf::RenderWindow(handle, *settings);
 }
 
 extern "C" void sfRenderWindow_del(sf::RenderWindow *renderWindow) {
     delete renderWindow;
+}
+
+extern "C" void sfRenderWindow_create_mtss(sf::RenderWindow *renderWindow, sfVideoMode mode, const uint32_t *title, uint32_t style, const sf::ContextSettings *settings) {
+    // Convert video mode
+    sf::VideoMode videoMode(mode.width, mode.height, mode.bitsPerPixel);
+    // Create the window
+    renderWindow->create(videoMode, title, style, *settings);
 }
 
 extern "C" void sfRenderWindow_close(sf::RenderWindow *renderWindow) {

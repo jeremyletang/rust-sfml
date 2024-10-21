@@ -204,10 +204,10 @@ pub fn sfRenderTexture_setRepeated(renderTexture: *mut sfRenderTexture, repeated
 pub fn sfRenderTexture_isRepeated(renderTexture: *const sfRenderTexture) -> bool;
 pub fn sfRenderTexture_generateMipmap(renderTexture: *mut sfRenderTexture) -> bool;
 // RenderWindow.cpp
-pub fn sfRenderWindow_createUnicode(renderWindow: *mut sfRenderWindow, mode: sfVideoMode, title: *const u32, style: u32, settings: *const sfContextSettings);
-pub fn sfRenderWindow_createUnicode_new(mode: sfVideoMode, title: *const u32, style: u32, settings: *const sfContextSettings) -> *mut sfRenderWindow;
-pub fn sfRenderWindow_createFromHandle(handle: sfWindowHandle, settings: *const sfContextSettings) -> *mut sfRenderWindow;
+pub fn sfRenderWindow_new_mtss(mode: sfVideoMode, title: *const u32, style: u32, settings: *const sfContextSettings) -> *mut sfRenderWindow;
+pub fn sfRenderWindow_new_handle_settings(handle: sfWindowHandle, settings: *const sfContextSettings) -> *mut sfRenderWindow;
 pub fn sfRenderWindow_del(renderWindow: *mut sfRenderWindow);
+pub fn sfRenderWindow_create_mtss(renderWindow: *mut sfRenderWindow, mode: sfVideoMode, title: *const u32, style: u32, settings: *const sfContextSettings);
 pub fn sfRenderWindow_close(renderWindow: *mut sfRenderWindow);
 pub fn sfRenderWindow_isOpen(renderWindow: *const sfRenderWindow) -> bool;
 pub fn sfRenderWindow_getSettings(renderWindow: *const sfRenderWindow) -> *const sfContextSettings;

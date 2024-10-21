@@ -95,7 +95,7 @@ impl RenderWindow {
 
         title.with_as_sfstr(|sfstr| {
             let ptr = unsafe {
-                ffi::sfRenderWindow_createUnicode_new(
+                ffi::sfRenderWindow_new_mtss(
                     mode.into().raw(),
                     sfstr.as_ptr(),
                     style.bits(),
@@ -116,7 +116,7 @@ impl RenderWindow {
         thread_safety::set_window_thread();
 
         title.with_as_sfstr(|sfstr| unsafe {
-            ffi::sfRenderWindow_createUnicode(
+            ffi::sfRenderWindow_create_mtss(
                 self,
                 mode.into().raw(),
                 sfstr.as_ptr(),
@@ -143,7 +143,7 @@ impl RenderWindow {
     /// * settings - Additional settings for the underlying OpenGL context
     pub unsafe fn from_handle(handle: Handle, settings: &ContextSettings) -> SfResult<SfBox<Self>> {
         thread_safety::set_window_thread();
-        let ptr = unsafe { ffi::sfRenderWindow_createFromHandle(handle, settings) };
+        let ptr = unsafe { ffi::sfRenderWindow_new_handle_settings(handle, settings) };
         SfBox::new(ptr).ok_or(SfError::CallFailed)
     }
 }
