@@ -16,9 +16,12 @@ fn main() -> SfResult<()> {
     )?;
     window.set_vertical_sync_enabled(true);
 
-    let font = match std::env::args().nth(1) {
-        Some(path) => Font::from_file(&path)?,
-        None => Font::from_file("sansation.ttf")?,
+    // Showcase delayed initialization of font
+    let mut font = Font::new()?;
+
+    match std::env::args().nth(1) {
+        Some(path) => font.load_from_file(&path)?,
+        None => font.load_from_memory_static(include_bytes!("resources/sansation.ttf"))?,
     };
     let mut string = String::from("This text can be edited.\nTry it!");
 
@@ -27,7 +30,7 @@ fn main() -> SfResult<()> {
     text.set_outline_color(Color::YELLOW);
     text.set_outline_thickness(2.0);
     let mut status_text = Text::new("", &font, 16);
-    status_text.set_position((0., window.size().y as f32 - 32.0));
+    status_text.set_position((0., window.size().y as f32 - 64.0));
     let mut bold = false;
     let mut italic = false;
     let mut underlined = false;
@@ -97,12 +100,15 @@ fn main() -> SfResult<()> {
             let fc = text.fill_color();
             let oc = text.outline_color();
             format!(
-            "fill: {:02x}{:02x}{:02x}{:02x} outline: {:02x}{:02x}{:02x}{:02x} outline thickness: {} style: {:?} (F1-F4) cursor: {} (F5)",
+            "fill: {:02x}{:02x}{:02x}{:02x} outline: {:02x}{:02x}{:02x}{:02x} outline thickness: {}\n\
+            style: {:?} (F1-F4) cursor: {} (F5)\n\
+            font family: {}",
             fc.r, fc.g, fc.b, fc.a,
             oc.r, oc.g, oc.b, oc.a,
             text.outline_thickness(),
             text.style(),
-            show_cursor
+            show_cursor,
+            font.info().family
         )
         };
         status_text.set_string(&status_string);
