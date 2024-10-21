@@ -1,16 +1,16 @@
 #include "System/InputStreamHelper.hpp"
 
-sfInputStreamHelper::sfInputStreamHelper(sfInputStreamReadFunc read,
-                                         sfInputStreamSeekFunc seek,
-                                         sfInputStreamTellFunc tell,
-                                         sfInputStreamGetSizeFunc getSize, void *userData) : readFun(read), seekFun(seek), tellFun(tell), getSizeFun(getSize), userData(userData) {
+sfInputStreamHelper::sfInputStreamHelper(sfInputStreamHelperReadCb read,
+                                         sfInputStreamHelperSeekCb seek,
+                                         sfInputStreamHelperTellCb tell,
+                                         sfInputStreamHelperGetSizeCb getSize, void *userData) : readCb(read), seekCb(seek), tellCb(tell), getSizeCb(getSize), userData(userData) {
 }
 
 extern "C" sfInputStreamHelper *sfInputStreamHelper_new(
-    sfInputStreamReadFunc read,
-    sfInputStreamSeekFunc seek,
-    sfInputStreamTellFunc tell,
-    sfInputStreamGetSizeFunc getSize,
+    sfInputStreamHelperReadCb read,
+    sfInputStreamHelperSeekCb seek,
+    sfInputStreamHelperTellCb tell,
+    sfInputStreamHelperGetSizeCb getSize,
     void *userData) {
     return new sfInputStreamHelper(read, seek, tell, getSize, userData);
 }

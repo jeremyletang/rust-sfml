@@ -9,7 +9,7 @@ pub fn sfClock_delete(clock: *mut sfClock);
 pub fn sfClock_getElapsedTime(clock: *const sfClock) -> i64;
 pub fn sfClock_restart(clock: *mut sfClock) -> i64;
 // InputStreamHelper.cpp
-pub fn sfInputStreamHelper_new(read: sfInputStreamReadFunc, seek: sfInputStreamSeekFunc, tell: sfInputStreamTellFunc, getSize: sfInputStreamGetSizeFunc, userData: *mut c_void) -> *mut sfInputStreamHelper;
+pub fn sfInputStreamHelper_new(read: sfInputStreamHelperReadCb, seek: sfInputStreamHelperSeekCb, tell: sfInputStreamHelperTellCb, getSize: sfInputStreamHelperGetSizeCb, userData: *mut c_void) -> *mut sfInputStreamHelper;
 pub fn sfInputStreamHelper_del(stream: *mut sfInputStreamHelper);
 // SfStdString.cpp
 pub fn sfStdString_getLength(s: *const sfStdString) -> usize;

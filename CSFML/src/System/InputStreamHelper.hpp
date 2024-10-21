@@ -4,35 +4,35 @@
 #include <SFML/System/InputStream.hpp>
 #include <cstdint>
 
-typedef int64_t (*sfInputStreamReadFunc)(void *data, int64_t size, void *userData);
-typedef int64_t (*sfInputStreamSeekFunc)(int64_t position, void *userData);
-typedef int64_t (*sfInputStreamTellFunc)(void *userData);
-typedef int64_t (*sfInputStreamGetSizeFunc)(void *userData);
+typedef int64_t (*sfInputStreamHelperReadCb)(void *data, int64_t size, void *userData);
+typedef int64_t (*sfInputStreamHelperSeekCb)(int64_t position, void *userData);
+typedef int64_t (*sfInputStreamHelperTellCb)(void *userData);
+typedef int64_t (*sfInputStreamHelperGetSizeCb)(void *userData);
 
 struct sfInputStreamHelper : public sf::InputStream {
-    sfInputStreamHelper(sfInputStreamReadFunc read,
-                        sfInputStreamSeekFunc seek,
-                        sfInputStreamTellFunc tell,
-                        sfInputStreamGetSizeFunc getSize, void *userData);
+    sfInputStreamHelper(sfInputStreamHelperReadCb read,
+                        sfInputStreamHelperSeekCb seek,
+                        sfInputStreamHelperTellCb tell,
+                        sfInputStreamHelperGetSizeCb getSize, void *userData);
     virtual sf::Int64 read(void *data, sf::Int64 size) {
-        return readFun(data, size, userData);
+        return readCb(data, size, userData);
     }
 
     virtual sf::Int64 seek(sf::Int64 position) {
-        return seekFun(position, userData);
+        return seekCb(position, userData);
     }
 
     virtual sf::Int64 tell() {
-        return tellFun(userData);
+        return tellCb(userData);
     }
 
     virtual sf::Int64 getSize() {
-        return getSizeFun(userData);
+        return getSizeCb(userData);
     }
-    sfInputStreamReadFunc readFun;
-    sfInputStreamSeekFunc seekFun;
-    sfInputStreamTellFunc tellFun;
-    sfInputStreamGetSizeFunc getSizeFun;
+    sfInputStreamHelperReadCb readCb;
+    sfInputStreamHelperSeekCb seekCb;
+    sfInputStreamHelperTellCb tellCb;
+    sfInputStreamHelperGetSizeCb getSizeCb;
     void *userData;
 };
 
