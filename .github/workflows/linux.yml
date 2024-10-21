@@ -51,3 +51,5 @@ jobs:
        cargo test --no-default-features --features=ci-headless,audio --verbose
        cargo test --no-default-features --features=ci-headless,window --verbose
        cargo test --no-default-features --features=ci-headless,graphics --verbose
+       # Test packaging (building from .crate archive, without SFML submodule)
+       cargo package
