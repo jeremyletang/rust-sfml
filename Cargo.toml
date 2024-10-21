@@ -34,6 +34,9 @@ exclude = [
     "SFML/extlibs/libs-msvc-universal/x64/ogg.lib",
     "SFML/extlibs/libs-msvc-universal/ARM64",
 ]
+[package.metadata.docs.rs]
+cargo-args = ["-Zunstable-options", "-Zrustdoc-scrape-examples"]
+rustdoc-args = ["-Zunstable-options", "--generate-link-to-definition"]
 
 [features]
 default = ["graphics", "audio"]
@@ -79,6 +82,7 @@ name = "sfml"
 [[example]]
 name = "borrowed-resources"
 required-features = ["graphics"]
+doc-scrape-examples = true
 
 [[example]]
 name = "custom-drawable"
