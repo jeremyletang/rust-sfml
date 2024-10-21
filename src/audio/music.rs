@@ -29,24 +29,6 @@ use {
 /// program. This means that you can leave the music alone after calling [`play`],
 /// it will manage itself very well.
 ///
-/// # Usage example
-///
-/// ```no_run
-/// use sfml::audio::{Music, SoundSource};
-///
-/// // Open a new music from an audio file
-/// let mut music = Music::from_file("music.ogg").unwrap();
-///
-/// // Change some parameters
-/// music.set_position((0., 1., 10.)); // change its 3D position
-/// music.set_pitch(2.); // increase the pitch
-/// music.set_volume(50.); // reduce the volume
-/// music.set_looping(true); // make it loop
-///
-/// // Play it
-/// music.play();
-/// ```
-///
 /// [`play`]: Music::play
 /// [`SoundBuffer`]: crate::audio::SoundBuffer
 /// [`Sound`]: crate::audio::Sound

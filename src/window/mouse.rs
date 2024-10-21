@@ -12,25 +12,6 @@
 //! [`MouseMoved`]: crate::window::Event::MouseMoved
 //! [`MouseButtonPressed`]: crate::window::Event::MouseButtonPressed
 //! [`MouseButtonReleased`]: crate::window::Event::MouseButtonReleased
-//!
-//! # Usage example
-//!
-//! ```no_run
-//! use sfml::window::{Window, mouse};
-//! use sfml::system::Vector2i;
-//!
-//! # let window: Window = unimplemented!();
-//!
-//! if mouse::Button::Left.is_pressed() {
-//!     // left click
-//! }
-//!
-//! // get global mouse position
-//! let _position = mouse::desktop_position();
-//!
-//! // set mouse position relative to a window
-//! window.set_mouse_position(Vector2i::new(100, 200));
-//! ```
 
 use crate::{ffi::window as ffi, system::Vector2i, window::thread_safety};
 pub use ffi::window::{MouseButton as Button, MouseWheel as Wheel};

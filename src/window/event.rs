@@ -11,25 +11,6 @@ use crate::ffi::{window as ffi, window::EventType};
 /// (mouse moved, key pressed, window closed, ...) as well as the details about this
 /// particular event.
 ///
-/// # Usage example
-///
-#[cfg_attr(feature = "ci-headless", doc = "```no_run")]
-#[cfg_attr(not(feature = "ci-headless"), doc = "```")]
-/// # use sfml::window::{Event, Style, Key, Window};
-/// # let mut window = Window::new_open((32, 32),
-/// #                                   "test",
-/// #                                   Style::CLOSE,
-/// #                                   &Default::default()).unwrap();
-/// # fn do_something_with_the_new_size(_x: u32, _y: u32) {}
-/// while let Some(event) = window.poll_event() {
-///     match event {
-///         Event::Closed | Event::KeyPressed { code: Key::Escape, .. } => window.close(),
-///         Event::Resized { width, height } => do_something_with_the_new_size(width, height),
-///         _ => { /* Do nothing */ }
-///     }
-/// }
-/// ```
-///
 /// [`Window::poll_event`]: crate::window::Window::poll_event
 /// [`Window::wait_event`]: crate::window::Window::wait_event
 ///

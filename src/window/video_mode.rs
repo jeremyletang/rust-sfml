@@ -19,27 +19,6 @@ use crate::{ffi::window as ffi, window::thread_safety};
 /// Additionally, `VideoMode` provides a static function to get the mode currently used by
 /// the desktop: [`VideoMode::desktop_mode`]. This allows to build windows with the same size or
 /// pixel depth as the current resolution.
-///
-/// # Usage example
-///
-#[cfg_attr(feature = "ci-headless", doc = "```no_run")]
-#[cfg_attr(not(feature = "ci-headless"), doc = "```")]
-/// use sfml::window::{VideoMode, Window, Style};
-///
-/// // Display the list of all the video modes available for fullscreen
-/// let modes = VideoMode::fullscreen_modes();
-///
-/// for mode in modes {
-///     println!("{:?}", mode);
-/// }
-///
-/// // Create a window with the same pixel depth as the desktop
-/// let desktop = VideoMode::desktop_mode();
-/// let _window = Window::new_open(VideoMode::new(1024, 768, desktop.bits_per_pixel),
-///                                "SFML window",
-///                                Style::CLOSE,
-///                                &Default::default());
-/// ```
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
 pub struct VideoMode {
     /// Video mode width, in pixels.

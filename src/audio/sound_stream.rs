@@ -121,36 +121,6 @@ impl<'a, S: SoundStream> SoundStreamPlayer<'a, S> {
     /// [`pause`]: SoundStreamPlayer::pause
     ///
     /// It lends out the underlying `SoundStream`, allowing it to be manipulated.
-    ///
-    /// # Example
-    ///
-    /// ```no_run
-    /// # use sfml::audio::{SoundStream, SoundStreamPlayer};
-    /// # struct MusicStream;
-    /// # impl MusicStream {
-    /// #    fn load(_arg: &str) -> Self { unimplemented!() }
-    /// # }
-    /// # impl SoundStream for MusicStream {
-    /// # fn get_data(&mut self) -> (&[i16], bool) { unimplemented!() }
-    /// # fn seek(&mut self, _: sfml::system::Time) { unimplemented!() }
-    /// # fn channel_count(&self) -> u32 { unimplemented!() }
-    /// # fn sample_rate(&self) -> u32 { unimplemented!() }
-    /// # }
-    /// let mut music_stream = MusicStream::load("cool_song.ogg");
-    /// let mut player = SoundStreamPlayer::new(&mut music_stream);
-    /// player.play();
-    /// // ...
-    /// // Let's say we want to change the song being played.
-    /// // We can't just simply reassign `music_stream`, since it's being borrowed by `player`.
-    /// // Manipulating the stream while it's being played is _unsafe_, so it's not allowed.
-    /// //
-    /// // Instead, let's stop the player first, reassign the stream, then restart the player.
-    /// {
-    ///    let stream = player.stop();
-    ///    *stream = MusicStream::load("another_cool_song.ogg");
-    /// }
-    /// player.play();
-    /// ```
     pub fn stop(&mut self) -> &mut S {
         unsafe {
             sfCustomSoundStream_stop(self.sf_sound_stream.as_ptr());

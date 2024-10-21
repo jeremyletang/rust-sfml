@@ -28,16 +28,6 @@ use {
 ///
 /// [`set_buffer`]: Sound::set_buffer
 ///
-/// # Usage example
-///
-/// ```no_run
-/// use sfml::audio::{Sound, SoundBuffer};
-///
-/// let buffer = SoundBuffer::from_file("sound.wav").unwrap();
-/// let mut sound = Sound::with_buffer(&buffer);
-/// sound.play();
-/// ```
-///
 /// [`Music`]: crate::audio::Music
 #[derive(Debug)]
 pub struct Sound<'buf> {

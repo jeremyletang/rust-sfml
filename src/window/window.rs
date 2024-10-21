@@ -24,38 +24,6 @@ decl_opaque! {
     /// (antialiasing level, bits for the depth and stencil buffers, etc.) to the OpenGL context
     /// attached to the window, with the [`ContextSettings`] structure which is passed as an
     /// optional argument when creating the window.
-    ///
-    /// # Usage example
-    ///
-    /// ```no_run
-    /// use sfml::window::{Window, Event, Style};
-    /// // Create a new window
-    /// let mut window = Window::new_open((800, 600),
-    ///                                   "SFML window",
-    ///                                   Style::CLOSE,
-    ///                                   &Default::default()).unwrap();
-    /// // Limit the framerate to 60 frames per second (this step is optional)
-    /// window.set_framerate_limit(60);
-    ///
-    /// // The main loop - ends as soon as the window is closed
-    /// while window.is_open() {
-    ///     // Event processing
-    ///     while let Some(event) = window.poll_event() {
-    ///         // Request closing for the window
-    ///         if event == Event::Closed {
-    ///             window.close();
-    ///         }
-    ///     }
-    ///
-    ///     // Activate the window for OpenGL rendering
-    ///     window.set_active(true);
-    ///
-    ///     // OpenGL drawing commands go here...
-    ///
-    ///     // End the current frame and display its contents on screen
-    ///     window.display();
-    /// }
-    /// ```
     Window;
 }
 

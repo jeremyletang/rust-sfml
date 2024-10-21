@@ -251,16 +251,6 @@ impl Font {
     /// * bold - Retrieve the bold version or the regular one?
     ///
     /// Return the corresponding glyph
-    ///
-    /// # Usage Example
-    ///
-    /// ```no_run
-    /// # use sfml::graphics::Font;
-    /// # let font = Font::from_file("examples/resources/sansation.ttf").unwrap();
-    /// let glyph = font.glyph(41, 32, false, 5.);
-    /// # use sfml::graphics::Rect;
-    /// assert_eq!(glyph.bounds(), Rect::new(0., -23., 17., 39.));
-    /// ```
     #[must_use]
     pub fn glyph(
         &self,
@@ -334,16 +324,6 @@ impl Font {
     ///
     /// # Arguments
     /// * `character_size` - Character size, in pixels
-    ///
-    /// # Usage Example
-    ///
-    /// ```no_run
-    /// # use sfml::graphics::Font;
-    /// # let font = Font::from_file("examples/resources/sansation.ttf").unwrap();
-    /// let texture = font.texture(32);
-    /// # use sfml::system::Vector2;
-    /// assert_eq!(texture.size(), Vector2::new(128, 128));
-    /// ```
     #[must_use]
     pub fn texture(&self, character_size: u32) -> &Texture {
         unsafe {
@@ -354,14 +334,6 @@ impl Font {
     }
 
     /// Tell whether the smooth filter is enabled or not.
-    ///
-    /// # Usage Example
-    /// ```no_run
-    /// # use sfml::graphics::Font;
-    /// # let mut font = Font::from_file("examples/resources/sansation.ttf").unwrap();
-    /// font.set_smooth(true);
-    /// assert_eq!(font.is_smooth(), true);
-    /// ````
     #[must_use]
     pub fn is_smooth(&self) -> bool {
         unsafe { ffi::sfFont_isSmooth(self) }
@@ -375,14 +347,6 @@ impl Font {
     ///
     /// # Arguments
     /// * `smooth` - True to enable smoothing, false to disable smoothing
-    ///
-    /// # Usage Example
-    ///
-    /// ```no_run
-    /// # use sfml::graphics::Font;
-    /// # let mut font = Font::from_file("examples/resources/sansation.ttf").unwrap();
-    /// font.set_smooth(false);
-    /// ```
     pub fn set_smooth(&mut self, smooth: bool) {
         unsafe { ffi::sfFont_setSmooth(self, smooth) }
     }

@@ -24,23 +24,6 @@
 //! As a consequence, active touch indices may not always be sequential
 //! (i.e. touch number 0 may be released while touch number 1 is still down).
 //!
-//! # Usage example
-//! ```no_run
-//! use sfml::window::{Window, touch};
-//!
-//! # let window: Window = unimplemented!();
-//!
-//! if touch::is_down(0) {
-//!     // touch 0 is down
-//! }
-//!
-//! // get global position of touch 1
-//! let _global_pos = touch::desktop_position(1);
-//!
-//! // get position of touch 1 relative to a window
-//! let _relative_pos = window.touch_position(1);
-//! ```
-//!
 //! [`desktop_position`]: desktop_position
 //! [`Window::touch_position`]: crate::window::Window::touch_position
 //!

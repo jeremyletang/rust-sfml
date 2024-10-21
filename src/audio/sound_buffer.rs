@@ -41,28 +41,6 @@ decl_opaque! {
 /// it only keeps a reference to it. Thus, a `SoundBuffer` can not be destructed while it is
 /// borrowed by a [`Sound`].
 ///
-/// # Usage example
-///
-/// ```no_run
-/// use sfml::audio::{Sound, SoundBuffer, SoundSource};
-///
-/// // Load a new sound buffer
-/// let buffer = SoundBuffer::from_file("sound.wav").unwrap();
-///
-/// // Create a sound source and bind it to the buffer
-/// let mut sound_1 = Sound::with_buffer(&buffer);
-///
-/// // Play the sound
-/// sound_1.play();
-///
-/// // Create another sound source bound to the same buffer
-/// let mut sound_2 = Sound::with_buffer(&buffer);
-///
-/// // Play it with a higher pitch -- the first sound remains unchanged
-/// sound_2.set_pitch(2.0);
-/// sound_2.play();
-/// ```
-///
 /// [`Sound`]: crate::audio::Sound
 SoundBuffer;
 }

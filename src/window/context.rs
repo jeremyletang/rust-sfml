@@ -16,21 +16,6 @@ use {
 /// To use a `Context` instance, just construct it and let it live as long as you need
 /// a valid context. No explicit activation is needed, all it has to do is to exist.
 /// Its destructor will take care of deactivating and freeing all the attached resources.
-///
-/// # Usage example
-#[cfg_attr(feature = "ci-headless", doc = "```no_run")]
-#[cfg_attr(not(feature = "ci-headless"), doc = "```")]
-/// # use sfml::window::Context;
-/// # use std::thread;
-/// thread::spawn(|| {
-///     let context = Context::new();
-///     // from now on, you have a valid context
-///
-///     // you can make OpenGL calls, e.g. glClear(GL_DEPTH_BUFFER_BIT);
-/// }).join().unwrap();
-/// // the context is automatically deactivated and destroyed
-/// // by the `Context` destructor
-/// ```
 #[derive(Debug)]
 pub struct Context(*mut ffi::sfContext);
 

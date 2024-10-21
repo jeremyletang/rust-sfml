@@ -15,24 +15,7 @@ use crate::{graphics::Color, system::Vector2f};
 /// If you use the graphical entities of SFML (sprite, text, shape) you won't have to
 /// deal with vertices directly.
 /// But if you want to define your own 2D entities, such as tiled maps or particle systems,
-/// using vertices will allow you to get maximum performances.
-///
-/// Example:
-///
-/// ```no_run
-/// # use sfml::system::*;
-/// # use sfml::graphics::*;
-/// # let mut window: RenderWindow = unimplemented!();
-/// // define a 100x100 square, red, with a 10x10 texture mapped on it
-/// let vertices = [
-///     Vertex::new(Vector2f::new(  0.,   0.), Color::RED, Vector2f::new( 0.,  0.)),
-///     Vertex::new(Vector2f::new(  0., 100.), Color::RED, Vector2f::new( 0., 10.)),
-///     Vertex::new(Vector2f::new(100., 100.), Color::RED, Vector2f::new(10., 10.)),
-///     Vertex::new(Vector2f::new(100.,   0.), Color::RED, Vector2f::new(10.,  0.)),
-/// ];
-/// // draw it
-/// window.draw_primitives(&vertices, PrimitiveType::QUADS, &RenderStates::DEFAULT);
-/// ```
+/// using vertices will allow you to get maximum performance.
 ///
 /// Note: although texture coordinates are supposed to be an integer amount of pixels,
 /// their type is float because of some buggy graphics drivers that are not able to
