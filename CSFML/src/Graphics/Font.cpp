@@ -1,4 +1,4 @@
-#include "Graphics/Rect.h"
+#include "Graphics/Rect.hpp"
 #include "System/InputStreamHelper.hpp"
 #include <SFML/Graphics/Font.hpp>
 #include <cstddef>

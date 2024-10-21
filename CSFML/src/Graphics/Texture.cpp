@@ -1,6 +1,6 @@
-#include "Graphics/Rect.h"
+#include "Graphics/Rect.hpp"
 #include "System/InputStreamHelper.hpp"
-#include "System/Vector2.h"
+#include "System/Vector2.hpp"
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Texture.hpp>
 #include <cstddef>

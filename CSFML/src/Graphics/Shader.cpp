@@ -1,6 +1,6 @@
 #include "System/InputStreamHelper.hpp"
-#include "System/Vector2.h"
-#include "System/Vector3.h"
+#include "System/Vector2.hpp"
+#include "System/Vector3.hpp"
 #include <SFML/Graphics/Shader.hpp>
 #include <cstddef>
 

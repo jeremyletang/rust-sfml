@@ -1,5 +1,5 @@
-#include "System/Vector2.h"
-#include "Window/VideoMode.h"
+#include "System/Vector2.hpp"
+#include "Window/VideoMode.hpp"
 #include <SFML/Window/Window.hpp>
 #include <SFML/Window/Context.hpp>
 #include <SFML/Window/Touch.hpp>

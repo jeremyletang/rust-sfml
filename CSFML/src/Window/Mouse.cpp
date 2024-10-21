@@ -1,4 +1,4 @@
-#include "System/Vector2.h"
+#include "System/Vector2.hpp"
 #include <SFML/Window/Mouse.hpp>
 #include <SFML/Window/Window.hpp>
 

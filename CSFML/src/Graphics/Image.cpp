@@ -1,7 +1,7 @@
-#include "Graphics/Color.h"
-#include "Graphics/Rect.h"
+#include "Graphics/Color.hpp"
+#include "Graphics/Rect.hpp"
 #include "System/InputStreamHelper.hpp"
-#include "System/Vector2.h"
+#include "System/Vector2.hpp"
 #include <SFML/Graphics/Image.hpp>
 #include <cstddef>
 

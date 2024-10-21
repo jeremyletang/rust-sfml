@@ -1,5 +1,5 @@
-#include "Graphics/Rect.h"
-#include "System/Vector2.h"
+#include "Graphics/Rect.hpp"
+#include "System/Vector2.hpp"
 #include <SFML/Graphics/View.hpp>
 
 extern "C" sf::View *sfView_new(void) {

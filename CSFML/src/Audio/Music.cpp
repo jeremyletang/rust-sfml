@@ -1,5 +1,5 @@
 #include "System/InputStreamHelper.hpp"
-#include "System/Vector3.h"
+#include "System/Vector3.hpp"
 #include <SFML/Audio/Music.hpp>
 #include <cstddef>
 

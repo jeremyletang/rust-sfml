@@ -1,7 +1,7 @@
-#include "Graphics/Rect.h"
-#include "Graphics/Color.h"
-#include "System/Vector2.h"
-#include "Window/VideoMode.h"
+#include "Graphics/Rect.hpp"
+#include "Graphics/Color.hpp"
+#include "System/Vector2.hpp"
+#include "Window/VideoMode.hpp"
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/ConvexShape.hpp>

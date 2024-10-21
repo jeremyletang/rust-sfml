@@ -1,4 +1,4 @@
-#include "System/Vector3.h"
+#include "System/Vector3.hpp"
 #include <SFML/Audio/SoundStream.hpp>
 #include <cstdint>
 

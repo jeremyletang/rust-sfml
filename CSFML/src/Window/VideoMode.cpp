@@ -1,4 +1,4 @@
-#include "Window/VideoMode.h"
+#include "Window/VideoMode.hpp"
 #include <SFML/Window/VideoMode.hpp>
 #include <cstddef>
 #include <vector>
