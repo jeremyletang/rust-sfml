@@ -16,7 +16,7 @@ use {
 
 decl_opaque! {
     /// Loading, manipulating and saving images.
-    Image;
+    pub Image;
 }
 
 /// Creation and loading

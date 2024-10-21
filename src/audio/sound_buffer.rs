@@ -42,7 +42,7 @@ decl_opaque! {
 /// borrowed by a [`Sound`].
 ///
 /// [`Sound`]: crate::audio::Sound
-SoundBuffer;
+pub SoundBuffer;
 }
 
 /// Creation and loading

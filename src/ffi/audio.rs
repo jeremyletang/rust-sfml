@@ -5,11 +5,11 @@ use {
 };
 
 decl_opaque! {
-    sfSoundBufferRecorder;
-    sfCustomSoundRecorder;
-    sfMusic;
-    sfSound;
-    sfCustomSoundStream;
+    pub(crate) sfSoundBufferRecorder;
+    pub(crate) sfCustomSoundRecorder;
+    pub(crate) sfMusic;
+    pub(crate) sfSound;
+    pub(crate) sfCustomSoundStream;
 }
 
 pub type sfSoundBuffer = crate::audio::SoundBuffer;

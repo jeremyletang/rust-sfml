@@ -12,7 +12,7 @@ decl_opaque! {
 /// This is a very powerful concept: you can scroll,
 /// rotate or zoom the entire scene without altering
 /// the way that your drawable objects are drawn.
-View;
+pub View;
 }
 
 /// Creation

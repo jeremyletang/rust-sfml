@@ -1,10 +1,10 @@
 pub use crate::ffi::*;
 
 decl_opaque! {
-    sfStdString;
-    sfStdStringVector;
-    sfString;
-    sfInputStreamHelper;
+    pub sfStdString;
+    pub(crate) sfStdStringVector;
+    pub(crate) sfString;
+    pub(crate) sfInputStreamHelper;
     /// Utility type that measures the elapsed time.
     ///
     /// Its provides the most precise time that the underlying OS can
@@ -24,7 +24,7 @@ decl_opaque! {
     ///
     /// The [`Time`](crate::system::Time) value returned by the clock can then be converted to
     /// a number of seconds, milliseconds or even microseconds.
-    sfClock;
+    pub sfClock;
 }
 
 pub type sfTime = i64;

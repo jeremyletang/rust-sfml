@@ -4,9 +4,9 @@ pub use crate::ffi::*;
 use serde::{Deserialize, Serialize};
 
 decl_opaque! {
-    sfContext;
-    JoystickIdentification;
-    sfVideoModeVector;
+    pub(crate) sfContext;
+    pub(crate) JoystickIdentification;
+    pub(crate) sfVideoModeVector;
 }
 
 type sfJoystickIdentification = JoystickIdentification;

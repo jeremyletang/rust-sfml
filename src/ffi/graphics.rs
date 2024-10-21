@@ -8,15 +8,15 @@ use {
 };
 
 decl_opaque! {
-    sfCircleShape;
-    sfConvexShape;
-    sfShader;
-    sfRectangleShape;
-    sfCustomShape;
+    pub(crate) sfCircleShape;
+    pub(crate) sfConvexShape;
+    pub(crate) sfShader;
+    pub(crate) sfRectangleShape;
+    pub(crate) sfCustomShape;
     // Kind of unnecessary, but required by sf_render*_drawShape(...)
-    sfShape;
-    sfSprite;
-    sfText;
+    pub(crate) sfShape;
+    pub(crate) sfSprite;
+    pub(crate) sfText;
 }
 
 type sfTexture = crate::graphics::Texture;

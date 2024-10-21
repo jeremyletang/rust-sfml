@@ -20,7 +20,7 @@ decl_opaque! {
 /// The behaviour is undefined if the cursor is destroyed while in use by the window.
 ///
 /// [`Window::set_mouse_cursor`]: crate::window::Window::set_mouse_cursor
-Cursor;
+pub Cursor;
 }
 
 impl Drop for Cursor {

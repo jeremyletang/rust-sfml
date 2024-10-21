@@ -51,7 +51,7 @@ decl_opaque! {
 /// 8 bits red, green, blue and alpha channels – just like a [`Color`].
 ///
 /// [`Color`]: crate::graphics::Color
-Texture;
+pub Texture;
 }
 
 /// Creation and loading

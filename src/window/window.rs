@@ -24,7 +24,7 @@ decl_opaque! {
     /// (antialiasing level, bits for the depth and stencil buffers, etc.) to the OpenGL context
     /// attached to the window, with the [`ContextSettings`] structure which is passed as an
     /// optional argument when creating the window.
-    Window;
+    pub Window;
 }
 
 impl Window {

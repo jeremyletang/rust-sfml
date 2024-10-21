@@ -1,12 +1,12 @@
 #![allow(non_camel_case_types)]
 
 macro_rules! decl_opaque {
-    ($($(#[$attr:meta])* $name:ident;)+) => {
+    ($($(#[$attr:meta])* $v:vis $name:ident;)+) => {
         $(
             $(#[$attr])*
             #[repr(C)]
             #[allow(missing_copy_implementations)]
-            pub struct $name {
+            $v struct $name {
                 _opaque: [u8; 0],
             }
             impl ::std::fmt::Debug for $name {

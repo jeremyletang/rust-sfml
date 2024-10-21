@@ -25,7 +25,7 @@ impl VertexBufferUsage {
 
 decl_opaque! {
     /// Define a set of one or more 2D primitives stored in graphics memory
-    VertexBuffer;
+    pub VertexBuffer;
 }
 
 impl VertexBuffer {

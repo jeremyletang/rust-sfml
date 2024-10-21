@@ -54,7 +54,7 @@ decl_opaque! {
 /// supports that size is used.
 ///
 /// [`Text`]: crate::graphics::Text
-Font;
+pub Font;
 }
 
 /// Creation and loading

@@ -12,7 +12,7 @@ use crate::{
 
 decl_opaque! {
     /// Target for off-screen 2D rendering into a texture
-    RenderTexture;
+    pub RenderTexture;
 }
 
 impl RenderTexture {

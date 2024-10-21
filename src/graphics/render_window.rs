@@ -18,7 +18,7 @@ decl_opaque! {
     /// of the graphics module.
     ///
     /// [`Window`]: crate::window::Window
-    RenderWindow;
+    pub RenderWindow;
 }
 
 /// Creation
