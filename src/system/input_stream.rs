@@ -1,5 +1,8 @@
 use {
-    crate::{ffi::system::sfInputStream, SfBox},
+    crate::{
+        ffi::system::{sfInputStreamHelper, sfInputStreamHelper_del},
+        SfBox,
+    },
     std::{
         io::{Read, Seek, SeekFrom},
         marker::PhantomData,
@@ -61,14 +64,8 @@ unsafe extern "C" fn seek<T: Read + Seek>(
 /// Type that allows you to create an SFML input stream from a `Read + Seek` source.
 #[derive(Debug)]
 pub struct InputStream<'src, T> {
-    pub(crate) stream: SfBox<sfInputStream>,
+    pub(crate) stream: SfBox<sfInputStreamHelper>,
     _source: PhantomData<&'src mut T>,
-}
-
-impl Drop for sfInputStream {
-    fn drop(&mut self) {
-        unsafe { crate::ffi::system::sfInputStream_destroy(self) }
-    }
 }
 
 impl<'src, T: Read + Seek> InputStream<'src, T> {
@@ -76,7 +73,7 @@ impl<'src, T: Read + Seek> InputStream<'src, T> {
     pub fn new(stream: &'src mut T) -> InputStream<'src, T> {
         let user_data: *mut T = stream;
         unsafe {
-            let new = crate::ffi::system::sfInputStream_new(
+            let new = crate::ffi::system::sfInputStreamHelper_new(
                 Some(read::<T>),
                 Some(seek::<T>),
                 Some(tell::<T>),
@@ -87,6 +84,14 @@ impl<'src, T: Read + Seek> InputStream<'src, T> {
                 stream: SfBox::new(new).expect("Failed to create InputStream"),
                 _source: PhantomData,
             }
+        }
+    }
+}
+
+impl Drop for sfInputStreamHelper {
+    fn drop(&mut self) {
+        unsafe {
+            sfInputStreamHelper_del(self);
         }
     }
 }

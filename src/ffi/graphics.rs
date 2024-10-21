@@ -1,6 +1,6 @@
 pub use crate::ffi::*;
 use {
-    super::{system::sfInputStream, window::sfVideoMode},
+    super::{system::sfInputStreamHelper, window::sfVideoMode},
     crate::{
         ffi::window::{sfContextSettings, sfCursor, sfWindow, sfWindowHandle, Event as sfEvent},
         graphics::{Color, Rect, RenderStates as sfRenderStates, Transform as sfTransform},

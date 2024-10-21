@@ -1,4 +1,4 @@
-#include "System/InputStreamStruct.h"
+#include "System/InputStreamHelper.hpp"
 #include <SFML/Audio/SoundBuffer.hpp>
 #include <cstddef>
 
@@ -22,7 +22,7 @@ extern "C" bool sfSoundBuffer_loadFromMemory(sf::SoundBuffer *buffer, const uint
     return buffer->loadFromMemory(data, sizeInBytes);
 }
 
-extern "C" bool sfSoundBuffer_loadFromStream(sf::SoundBuffer *buffer, sfInputStream *stream) {
+extern "C" bool sfSoundBuffer_loadFromStream(sf::SoundBuffer *buffer, sfInputStreamHelper *stream) {
     return buffer->loadFromStream(*stream);
 }
 

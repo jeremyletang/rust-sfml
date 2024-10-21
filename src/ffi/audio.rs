@@ -1,6 +1,6 @@
 pub use crate::ffi::*;
 use {
-    super::system::sfInputStream,
+    super::system::sfInputStreamHelper,
     crate::ffi::system::{sfStdString, sfStdStringVector},
 };
 

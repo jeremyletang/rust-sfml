@@ -1,4 +1,4 @@
-#include "System/InputStreamStruct.h"
+#include "System/InputStreamHelper.hpp"
 #include "System/Vector3.h"
 #include <SFML/Audio/Music.hpp>
 #include <cstddef>
@@ -25,7 +25,7 @@ extern "C" bool sfMusic_openFromMemory(sf::Music *music, const uint8_t *data, si
     return music->openFromMemory(data, sizeInBytes);
 }
 
-extern "C" bool sfMusic_openFromStream(sf::Music *music, sfInputStream *stream) {
+extern "C" bool sfMusic_openFromStream(sf::Music *music, sfInputStreamHelper *stream) {
     return music->openFromStream(*stream);
 }
 

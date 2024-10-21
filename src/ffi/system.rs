@@ -4,7 +4,7 @@ decl_opaque! {
     sfStdString;
     sfStdStringVector;
     sfString;
-    sfInputStream;
+    sfInputStreamHelper;
     /// Utility type that measures the elapsed time.
     ///
     /// Its provides the most precise time that the underlying OS can

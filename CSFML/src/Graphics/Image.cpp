@@ -1,6 +1,6 @@
 #include "Graphics/Color.h"
 #include "Graphics/Rect.h"
-#include "System/InputStreamStruct.h"
+#include "System/InputStreamHelper.hpp"
 #include "System/Vector2.h"
 #include <SFML/Graphics/Image.hpp>
 #include <cstddef>
@@ -33,7 +33,7 @@ extern "C" bool sfImage_loadFromMemory(sf::Image *image, const uint8_t *data, si
     return image->loadFromMemory(data, sizeInBytes);
 }
 
-extern "C" bool sfImage_loadFromStream(sf::Image *image, sfInputStream *stream) {
+extern "C" bool sfImage_loadFromStream(sf::Image *image, sfInputStreamHelper *stream) {
     return image->loadFromStream(*stream);
 }
 

@@ -1,5 +1,5 @@
 #include "Graphics/Rect.h"
-#include "System/InputStreamStruct.h"
+#include "System/InputStreamHelper.hpp"
 #include <SFML/Graphics/Font.hpp>
 #include <cstddef>
 
@@ -30,7 +30,7 @@ extern "C" bool sfFont_loadFromMemory(sf::Font *font, const uint8_t *data, size_
     return font->loadFromMemory(data, sizeInBytes);
 }
 
-extern "C" bool sfFont_loadFromStream(sf::Font *font, sfInputStream *stream) {
+extern "C" bool sfFont_loadFromStream(sf::Font *font, sfInputStreamHelper *stream) {
     return font->loadFromStream(*stream);
 }
 

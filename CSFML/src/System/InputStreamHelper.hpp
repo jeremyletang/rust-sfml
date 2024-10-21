@@ -9,7 +9,11 @@ typedef int64_t (*sfInputStreamSeekFunc)(int64_t position, void *userData);
 typedef int64_t (*sfInputStreamTellFunc)(void *userData);
 typedef int64_t (*sfInputStreamGetSizeFunc)(void *userData);
 
-struct sfInputStream : public sf::InputStream {
+struct sfInputStreamHelper : public sf::InputStream {
+    sfInputStreamHelper(sfInputStreamReadFunc read,
+                        sfInputStreamSeekFunc seek,
+                        sfInputStreamTellFunc tell,
+                        sfInputStreamGetSizeFunc getSize, void *userData);
     virtual sf::Int64 read(void *data, sf::Int64 size) {
         return readFun(data, size, userData);
     }
