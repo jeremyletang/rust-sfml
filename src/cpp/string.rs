@@ -1,8 +1,8 @@
+use super::CppVectorItem;
+
 decl_opaque! {
 /// Opaque handle to a C++ `std::string`
 pub CppString;
-/// Opaque handle to a C++ `std::vector<std::string>>`
-pub CppStringVector;
 }
 
 impl CppString {
@@ -44,27 +44,23 @@ impl std::fmt::Display for CppString {
 
 impl Drop for CppString {
     fn drop(&mut self) {
+        eprintln!("Oh my god I'm being dropped");
         unsafe { crate::ffi::system::sfStdString_del(self) }
     }
 }
 
-impl std::ops::Deref for CppStringVector {
-    type Target = [CppString];
-
-    fn deref(&self) -> &Self::Target {
-        unsafe {
-            std::slice::from_raw_parts(
-                crate::ffi::system::sfStdStringVector_getData(self),
-                crate::ffi::system::sfStdStringVector_getLength(self),
-            )
-        }
+unsafe impl CppVectorItem for CppString {
+    fn get_data(vec: &super::CppVector<Self>) -> *const Self {
+        unsafe { crate::ffi::system::sfStdStringVector_getData(vec) }
     }
-}
 
-impl Drop for CppStringVector {
-    fn drop(&mut self) {
+    fn get_len(vec: &super::CppVector<Self>) -> usize {
+        unsafe { crate::ffi::system::sfStdStringVector_getLength(vec) }
+    }
+
+    fn del(vec: &mut super::CppVector<Self>) {
         unsafe {
-            crate::ffi::system::sfStdStringVector_del(self);
+            crate::ffi::system::sfStdStringVector_del(vec);
         }
     }
 }

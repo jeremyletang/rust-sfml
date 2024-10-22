@@ -1,10 +1,7 @@
 pub use crate::ffi::*;
 use crate::{
     system::SfString as sfString,
-    window::{
-        joystick::Identification as sfJoystickIdentification, VideoMode as sfVideoMode,
-        VideoModeVector as sfVideoModeVector,
-    },
+    window::{joystick::Identification as sfJoystickIdentification, VideoMode as sfVideoMode},
 };
 #[cfg(feature = "serde")]
 use serde::{Deserialize, Serialize};
@@ -15,6 +12,7 @@ decl_opaque! {
 
 pub(super) type sfWindow = crate::window::Window;
 pub(super) type sfCursor = crate::window::Cursor;
+pub(crate) type sfVideoModeVector = crate::cpp::CppVector<sfVideoMode>;
 
 /// Enumeration of the native system cursor types.
 ///

@@ -1,8 +1,6 @@
 #ifndef SFML_VIDEOMODE_H
 #define SFML_VIDEOMODE_H
 
-#include <cstdint>
-
 typedef struct
 {
     unsigned int width;        ///< Video mode width, in pixels

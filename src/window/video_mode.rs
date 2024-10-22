@@ -1,4 +1,8 @@
-use crate::{ffi::window as ffi, window::thread_safety};
+use crate::{
+    cpp::{CppVector, CppVectorItem},
+    ffi::window as ffi,
+    window::thread_safety,
+};
 
 /// `VideoMode` defines a video mode (width, height, bpp)
 ///
@@ -75,7 +79,7 @@ impl VideoMode {
     ///
     /// Return a vector containing all the supported `VideoMode`s
     #[must_use]
-    pub fn fullscreen_modes() -> &'static VideoModeVector {
+    pub fn fullscreen_modes() -> &'static CppVector<Self> {
         unsafe { &*ffi::sfVideoMode_getFullscreenModes() }
     }
 }
@@ -93,20 +97,14 @@ impl Default for VideoMode {
     }
 }
 
-decl_opaque! {
-    /// Opaque handle to a C++ `std::vector<sf::VideoMode>`
-    pub VideoModeVector;
-}
-
-impl std::ops::Deref for VideoModeVector {
-    type Target = [VideoMode];
-
-    fn deref(&self) -> &Self::Target {
-        unsafe {
-            std::slice::from_raw_parts(
-                ffi::sfVideoModeVector_getData(self),
-                ffi::sfVideoModeVector_getLength(self),
-            )
-        }
+unsafe impl CppVectorItem for VideoMode {
+    fn get_data(vec: &crate::cpp::CppVector<Self>) -> *const Self {
+        unsafe { ffi::sfVideoModeVector_getData(vec) }
     }
+
+    fn get_len(vec: &crate::cpp::CppVector<Self>) -> usize {
+        unsafe { ffi::sfVideoModeVector_getLength(vec) }
+    }
+    // We never get a video mode vector we must drop, so this is no-op
+    fn del(_vec: &mut CppVector<Self>) {}
 }

@@ -2,9 +2,8 @@
 
 mod fbox;
 mod string;
+mod vector;
 
-pub(crate) use fbox::RawDefault;
-pub use {
-    fbox::FBox,
-    string::{CppString, CppStringVector},
-};
+pub use {fbox::FBox, string::CppString, vector::CppVector};
+pub(crate) use {fbox::RawDefault, vector::CppVectorItem};
+pub(crate) type CppStringVector = CppVector<CppString>;

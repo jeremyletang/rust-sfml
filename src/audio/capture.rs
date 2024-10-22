@@ -1,7 +1,7 @@
 use {
     crate::{
         audio::SoundBuffer,
-        cpp::{CppString, CppStringVector, FBox},
+        cpp::{CppString, CppVector, FBox},
         ffi::audio as ffi,
         system::Time,
         IntoSfResult, SfResult,
@@ -383,7 +383,7 @@ pub fn default_device() -> FBox<CppString> {
 /// This function returns a vector of strings, containing the names of all available
 /// audio capture devices.
 #[must_use]
-pub fn available_devices() -> FBox<CppStringVector> {
+pub fn available_devices() -> FBox<CppVector<CppString>> {
     unsafe {
         FBox::new(ffi::sfSoundRecorder_getAvailableDevices())
             .expect("Failed to create sfStdStringVector")
