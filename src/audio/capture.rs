@@ -59,7 +59,7 @@ use {
 /// [`on_start`]: SoundRecorder::on_start
 /// [`on_stop`]: SoundRecorder::on_stop
 /// [`on_process_samples`]: SoundRecorder::on_process_samples
-pub trait SoundRecorder {
+pub trait SoundRecorder: Send {
     /// Start capturing audio data.
     ///
     /// This method may be overridden by an implementer if something has
