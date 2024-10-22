@@ -51,7 +51,7 @@
 //! [`update`]: update
 //!
 
-use crate::{ffi::window as ffi, system::SfString, SfBox};
+use crate::{cpp::FBox, ffi::window as ffi, system::SfString};
 pub use ffi::JoystickAxis as Axis;
 
 /// Maximum number of supported joysticks.
@@ -144,9 +144,9 @@ decl_opaque! {
 
 /// Get the joystick information.
 #[must_use]
-pub fn identification(joystick: u32) -> SfBox<Identification> {
+pub fn identification(joystick: u32) -> FBox<Identification> {
     unsafe {
-        SfBox::new(ffi::sfJoystick_getIdentification(joystick))
+        FBox::new(ffi::sfJoystick_getIdentification(joystick))
             .expect("Failed to create JoystickIdentification")
     }
 }

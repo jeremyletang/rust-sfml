@@ -3,9 +3,10 @@
 use {
     sfml::{
         audio::{Sound, SoundBuffer},
+        cpp::FBox,
         graphics::{Color, RenderTarget, RenderWindow, Sprite, Texture},
         window::{Event, Key, Style},
-        SfBox, SfResult,
+        SfResult,
     },
     std::{collections::HashMap, hash::Hash},
 };
@@ -13,7 +14,7 @@ use {
 include!("../example_common.rs");
 
 struct ResourceHolder<Resource, Identifier: Hash + Eq> {
-    resource_map: HashMap<Identifier, SfBox<Resource>>,
+    resource_map: HashMap<Identifier, FBox<Resource>>,
 }
 
 impl<Resource: ResLoad, Identifier: Hash + Eq> ResourceHolder<Resource, Identifier> {
@@ -28,17 +29,17 @@ impl<Resource: ResLoad, Identifier: Hash + Eq> ResourceHolder<Resource, Identifi
 }
 
 trait ResLoad {
-    fn load(filename: &str) -> SfResult<SfBox<Self>>;
+    fn load(filename: &str) -> SfResult<FBox<Self>>;
 }
 
 impl ResLoad for Texture {
-    fn load(filename: &str) -> SfResult<SfBox<Self>> {
+    fn load(filename: &str) -> SfResult<FBox<Self>> {
         Self::from_file(filename)
     }
 }
 
 impl ResLoad for SoundBuffer {
-    fn load(filename: &str) -> SfResult<SfBox<Self>> {
+    fn load(filename: &str) -> SfResult<FBox<Self>> {
         Self::from_file(filename)
     }
 }

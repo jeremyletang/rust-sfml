@@ -1,9 +1,10 @@
 use {
     crate::{
+        cpp::FBox,
         ffi::graphics as ffi,
         graphics::{Color, IntRect},
         system::{InputStream, Vector2u},
-        IntoSfResult, SfBox, SfResult,
+        IntoSfResult, SfResult,
     },
     std::{
         error::Error,
@@ -22,13 +23,13 @@ decl_opaque! {
 /// Creation and loading
 impl Image {
     /// Create a new (empty) image.
-    pub fn new() -> SfResult<SfBox<Self>> {
-        SfBox::new(unsafe { ffi::sfImage_new() }).into_sf_result()
+    pub fn new() -> SfResult<FBox<Self>> {
+        FBox::new(unsafe { ffi::sfImage_new() }).into_sf_result()
     }
     /// Create a new `Image` filled with a solid color.
     ///
     /// See [`Self::recreate_solid`].
-    pub fn new_solid(width: u32, height: u32, color: Color) -> SfResult<SfBox<Self>> {
+    pub fn new_solid(width: u32, height: u32, color: Color) -> SfResult<FBox<Self>> {
         let mut new = Self::new()?;
         new.recreate_solid(width, height, color);
         Ok(new)
@@ -40,7 +41,7 @@ impl Image {
     /// # Safety
     ///
     /// Also see [`Self::recreate_from_pixels`].
-    pub unsafe fn from_pixels(width: u32, height: u32, data: &[u8]) -> SfResult<SfBox<Self>> {
+    pub unsafe fn from_pixels(width: u32, height: u32, data: &[u8]) -> SfResult<FBox<Self>> {
         let mut new = Self::new()?;
         unsafe {
             new.recreate_from_pixels(width, height, data);
@@ -50,7 +51,7 @@ impl Image {
     /// Create a new `Image` from an image file on the filesystem.
     ///
     /// See [`Self::load_from_file`].
-    pub fn from_file(filename: &str) -> SfResult<SfBox<Self>> {
+    pub fn from_file(filename: &str) -> SfResult<FBox<Self>> {
         let mut new = Self::new()?;
         new.load_from_file(filename)?;
         Ok(new)
@@ -58,7 +59,7 @@ impl Image {
     /// Create a new `Image` from image file data in memory.
     ///
     /// See [`Self::load_from_memory`].
-    pub fn from_memory(data: &[u8]) -> SfResult<SfBox<Self>> {
+    pub fn from_memory(data: &[u8]) -> SfResult<FBox<Self>> {
         let mut new = Self::new()?;
         new.load_from_memory(data)?;
         Ok(new)
@@ -66,7 +67,7 @@ impl Image {
     /// Create a new `Image` from a stream.
     ///
     /// See [`Self::load_from_stream`].
-    pub fn from_stream<T: Read + Seek>(stream: &mut T) -> SfResult<SfBox<Self>> {
+    pub fn from_stream<T: Read + Seek>(stream: &mut T) -> SfResult<FBox<Self>> {
         let mut new = Self::new()?;
         new.load_from_stream(stream)?;
         Ok(new)
@@ -298,11 +299,11 @@ impl Image {
 }
 
 impl ToOwned for Image {
-    type Owned = SfBox<Self>;
+    type Owned = FBox<Self>;
 
     fn to_owned(&self) -> Self::Owned {
         let ptr = unsafe { ffi::sfImage_cpy(self) };
-        match SfBox::new(ptr) {
+        match FBox::new(ptr) {
             Some(new) => new,
             None => panic!("Failed to copy image"),
         }

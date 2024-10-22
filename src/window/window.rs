@@ -1,8 +1,9 @@
 use crate::{
+    cpp::FBox,
     ffi::window as ffi,
     system::{SfStrConv, Vector2i, Vector2u},
     window::{thread_safety, ContextSettings, Cursor, Event, Style, VideoMode},
-    IntoSfResult, SfBox, SfResult,
+    IntoSfResult, SfResult,
 };
 
 /// The system native window handle type. Can be used to create an SFML Window
@@ -29,8 +30,8 @@ decl_opaque! {
 
 impl Window {
     /// Create a new (closed) window.
-    pub fn new() -> SfResult<SfBox<Self>> {
-        SfBox::new(unsafe { ffi::sfWindow_new() }).into_sf_result()
+    pub fn new() -> SfResult<FBox<Self>> {
+        FBox::new(unsafe { ffi::sfWindow_new() }).into_sf_result()
     }
     /// Creates a new window and opens it with the specified parameters.
     ///
@@ -40,7 +41,7 @@ impl Window {
         title: S,
         style: Style,
         settings: &ContextSettings,
-    ) -> SfResult<SfBox<Self>> {
+    ) -> SfResult<FBox<Self>> {
         let mut new = Self::new()?;
         new.open(mode, title, style, settings);
         Ok(new)

@@ -1,7 +1,7 @@
 use {
     crate::{
+        cpp::FBox,
         graphics::{Image, IntRect, RenderWindow, Texture},
-        sf_box::SfBox,
         system::Vector2u,
         window::Window,
         SfResult,
@@ -52,7 +52,7 @@ use {
 /// [`Color`]: crate::graphics::Color
 #[derive(Debug)]
 pub struct RcTexture {
-    texture: Rc<RefCell<SfBox<Texture>>>,
+    texture: Rc<RefCell<FBox<Texture>>>,
 }
 
 impl RcTexture {
@@ -80,7 +80,7 @@ impl RcTexture {
     /// Copy a texture's pixels to an image
     ///
     /// Return an image containing the texture's pixels
-    pub fn copy_to_image(&self) -> SfResult<SfBox<Image>> {
+    pub fn copy_to_image(&self) -> SfResult<FBox<Image>> {
         self.texture.borrow().copy_to_image()
     }
     /// Tell whether the texture source is converted from sRGB or not.
@@ -184,7 +184,7 @@ impl RcTexture {
 
     /// Convenience method to easily move a [`Texture`] into a `RcTexture`
     #[must_use]
-    pub fn from_texture(texture: SfBox<Texture>) -> RcTexture {
+    pub fn from_texture(texture: FBox<Texture>) -> RcTexture {
         RcTexture {
             texture: Rc::new(RefCell::new(texture)),
         }
@@ -359,7 +359,7 @@ impl RcTexture {
 
     /// INTERNAL FUNCTION ONLY
     /// Allows other rc variants to request a weak pointer to the texture
-    pub(super) fn downgrade(&self) -> std::rc::Weak<RefCell<SfBox<Texture>>> {
+    pub(super) fn downgrade(&self) -> std::rc::Weak<RefCell<FBox<Texture>>> {
         Rc::downgrade(&self.texture)
     }
 }

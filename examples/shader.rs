@@ -1,11 +1,12 @@
 use sfml::{
+    cpp::FBox,
     graphics::{
         Color, Drawable, Font, IntRect, PrimitiveType, RenderStates, RenderTarget, RenderTexture,
         RenderWindow, Shader, ShaderType, Sprite, Text, Texture, Transformable, Vertex,
     },
     system::{Clock, Vector2f},
     window::{Event, Key, Style},
-    SfBox, SfResult,
+    SfResult,
 };
 
 include!("../example_common.rs");
@@ -180,7 +181,7 @@ impl Effect for StormBlink {
 }
 
 struct Edge<'t> {
-    surface: SfBox<RenderTexture>,
+    surface: FBox<RenderTexture>,
     bg_sprite: Sprite<'t>,
     entities: Vec<Sprite<'t>>,
     shader: Shader<'static>,

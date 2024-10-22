@@ -1,4 +1,4 @@
-use crate::{ffi::system as ffi, system::Time, IntoSfResult as _, SfBox, SfResult};
+use crate::{cpp::FBox, ffi::system as ffi, system::Time, IntoSfResult as _, SfResult};
 
 decl_opaque! {
     /// Utility type that measures the elapsed time.
@@ -33,8 +33,8 @@ impl Drop for Clock {
 
 impl Clock {
     /// Creates a new Clock and starts it automatically.
-    pub fn start() -> SfResult<SfBox<Self>> {
-        unsafe { SfBox::new(ffi::sfClock_new()) }.into_sf_result()
+    pub fn start() -> SfResult<FBox<Self>> {
+        unsafe { FBox::new(ffi::sfClock_new()) }.into_sf_result()
     }
 
     /// Gets the elapsed time.

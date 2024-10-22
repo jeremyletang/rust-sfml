@@ -1,8 +1,8 @@
 use {
     crate::{
+        cpp::FBox,
         ffi::graphics as ffi,
         graphics::{Glyph, Texture},
-        sf_box::SfBox,
         system::InputStream,
         IntoSfResult, SfResult,
     },
@@ -60,13 +60,13 @@ pub Font;
 /// Creation and loading
 impl Font {
     /// Creates a new (empty) font.
-    pub fn new() -> SfResult<SfBox<Self>> {
-        SfBox::new(unsafe { ffi::sfFont_new() }).into_sf_result()
+    pub fn new() -> SfResult<FBox<Self>> {
+        FBox::new(unsafe { ffi::sfFont_new() }).into_sf_result()
     }
     /// Creates a new `Font` from a file on the filesystem.
     ///
     /// See [`Self::load_from_file`].
-    pub fn from_file(path: &str) -> SfResult<SfBox<Self>> {
+    pub fn from_file(path: &str) -> SfResult<FBox<Self>> {
         let mut new = Self::new()?;
         new.load_from_file(path)?;
         Ok(new)
@@ -78,7 +78,7 @@ impl Font {
     /// # Safety
     ///
     /// Also see [`Self::load_from_memory`].
-    pub unsafe fn from_memory(data: &[u8]) -> SfResult<SfBox<Self>> {
+    pub unsafe fn from_memory(data: &[u8]) -> SfResult<FBox<Self>> {
         let mut new = Self::new()?;
         unsafe {
             new.load_from_memory(data)?;
@@ -88,7 +88,7 @@ impl Font {
     /// Creates a new `Font` from static font file data in memory.
     ///
     /// See [`Self::load_from_memory_static`].
-    pub fn from_memory_static(data: &'static [u8]) -> SfResult<SfBox<Self>> {
+    pub fn from_memory_static(data: &'static [u8]) -> SfResult<FBox<Self>> {
         let mut new = Self::new()?;
         new.load_from_memory_static(data)?;
         Ok(new)
@@ -100,7 +100,7 @@ impl Font {
     /// # Safety
     ///
     /// Also see [`Self::load_from_stream`].
-    pub unsafe fn from_stream<T: Read + Seek>(stream: &mut T) -> SfResult<SfBox<Self>> {
+    pub unsafe fn from_stream<T: Read + Seek>(stream: &mut T) -> SfResult<FBox<Self>> {
         let mut new = Self::new()?;
         unsafe {
             new.load_from_stream(stream)?;
@@ -353,10 +353,10 @@ impl Font {
 }
 
 impl ToOwned for Font {
-    type Owned = SfBox<Font>;
+    type Owned = FBox<Font>;
     fn to_owned(&self) -> Self::Owned {
         let fnt = unsafe { ffi::sfFont_cpy(self) };
-        SfBox::new(fnt).expect("Failed to copy Font")
+        FBox::new(fnt).expect("Failed to copy Font")
     }
 }
 

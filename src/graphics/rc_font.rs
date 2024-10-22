@@ -1,7 +1,7 @@
 use {
     crate::{
+        cpp::FBox,
         graphics::{font::Info, Font, Glyph, Texture},
-        sf_box::SfBox,
         SfResult,
     },
     std::{
@@ -54,7 +54,7 @@ use {
 /// [`RcText`]: crate::graphics::RcText
 #[derive(Debug)]
 pub struct RcFont {
-    font: Rc<RefCell<SfBox<Font>>>,
+    font: Rc<RefCell<FBox<Font>>>,
 }
 
 impl RcFont {
@@ -290,7 +290,7 @@ impl RcFont {
 
     /// INTERNAL FUNCTION ONLY
     /// Allows other rc variants to request a weak pointer to the texture
-    pub(super) fn downgrade(&self) -> std::rc::Weak<RefCell<SfBox<Font>>> {
+    pub(super) fn downgrade(&self) -> std::rc::Weak<RefCell<FBox<Font>>> {
         Rc::downgrade(&self.font)
     }
 }

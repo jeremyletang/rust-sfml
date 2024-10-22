@@ -1,7 +1,10 @@
 use {
     crate::{
-        ffi::graphics as ffi, graphics::FloatRect, sf_box::RawDefault, system::Vector2f,
-        IntoSfResult, SfBox, SfResult,
+        cpp::{FBox, RawDefault},
+        ffi::graphics as ffi,
+        graphics::FloatRect,
+        system::Vector2f,
+        IntoSfResult, SfResult,
     },
     std::ptr::NonNull,
 };
@@ -18,8 +21,8 @@ pub View;
 /// Creation
 impl View {
     /// Creates a default `View` of (0, 0, 1000, 1000)
-    pub fn new() -> SfResult<SfBox<Self>> {
-        SfBox::new(unsafe { ffi::sfView_new() }).into_sf_result()
+    pub fn new() -> SfResult<FBox<Self>> {
+        FBox::new(unsafe { ffi::sfView_new() }).into_sf_result()
     }
     /// Creates a view with position and size
     ///
@@ -27,8 +30,8 @@ impl View {
     /// * center - The center of the view
     /// * size - The size of the view
     #[must_use]
-    pub fn with_center_and_size(center: Vector2f, size: Vector2f) -> SfBox<View> {
-        let mut view: SfBox<View> = Default::default();
+    pub fn with_center_and_size(center: Vector2f, size: Vector2f) -> FBox<View> {
+        let mut view: FBox<View> = Default::default();
         view.set_center(center);
         view.set_size(size);
         view
@@ -38,7 +41,7 @@ impl View {
     ///
     /// # Arguments
     /// * rectangle - The rectangle defining the zone to display
-    pub fn from_rect(rectangle: FloatRect) -> SfResult<SfBox<View>> {
+    pub fn from_rect(rectangle: FloatRect) -> SfResult<FBox<View>> {
         let mut new = Self::new()?;
         new.reset(rectangle);
         Ok(new)
@@ -166,10 +169,10 @@ impl View {
 }
 
 impl ToOwned for View {
-    type Owned = SfBox<Self>;
+    type Owned = FBox<Self>;
     fn to_owned(&self) -> Self::Owned {
         let view = unsafe { ffi::sfView_cpy(self) };
-        SfBox::new(view).expect("Failed to copy View")
+        FBox::new(view).expect("Failed to copy View")
     }
 }
 

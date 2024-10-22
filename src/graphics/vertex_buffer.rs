@@ -1,7 +1,8 @@
 use crate::{
+    cpp::FBox,
     ffi::graphics as ffi,
     graphics::{Drawable, PrimitiveType, RenderStates, RenderTarget, Vertex},
-    IntoSfResult, SfBox, SfResult,
+    IntoSfResult, SfResult,
 };
 
 /// Usage specifiers for a [`VertexBuffer`]
@@ -38,8 +39,8 @@ impl VertexBuffer {
         primitive_type: PrimitiveType,
         vertex_count: usize,
         usage: VertexBufferUsage,
-    ) -> SfResult<SfBox<Self>> {
-        let mut new = SfBox::new(unsafe { ffi::sfVertexBuffer_new() }).into_sf_result()?;
+    ) -> SfResult<FBox<Self>> {
+        let mut new = FBox::new(unsafe { ffi::sfVertexBuffer_new() }).into_sf_result()?;
         new.set_usage(usage);
         new.set_primitive_type(primitive_type);
         new.recreate(vertex_count)?;
@@ -220,11 +221,11 @@ impl VertexBuffer {
 }
 
 impl ToOwned for VertexBuffer {
-    type Owned = SfBox<Self>;
+    type Owned = FBox<Self>;
 
     fn to_owned(&self) -> Self::Owned {
         let ptr = unsafe { ffi::sfVertexBuffer_cpy(self) };
-        match SfBox::new(ptr) {
+        match FBox::new(ptr) {
             Some(new) => new,
             None => panic!("Failed to clone VertexBuffer"),
         }

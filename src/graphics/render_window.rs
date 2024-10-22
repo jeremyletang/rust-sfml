@@ -1,4 +1,5 @@
 use crate::{
+    cpp::FBox,
     ffi::graphics as ffi,
     graphics::{
         CircleShape, Color, ConvexShape, CustomShape, Drawable, IntRect, PrimitiveType, RcSprite,
@@ -7,7 +8,7 @@ use crate::{
     },
     system::{SfStrConv, Vector2f, Vector2i, Vector2u},
     window::{thread_safety, ContextSettings, Cursor, Event, Handle, Style, VideoMode},
-    IntoSfResult, SfBox, SfError, SfResult,
+    IntoSfResult, SfError, SfResult,
 };
 
 decl_opaque! {
@@ -46,7 +47,7 @@ impl RenderWindow {
         title: S,
         style: Style,
         settings: &ContextSettings,
-    ) -> SfResult<SfBox<Self>> {
+    ) -> SfResult<FBox<Self>> {
         thread_safety::set_window_thread();
 
         title.with_as_sfstr(|sfstr| {
@@ -58,7 +59,7 @@ impl RenderWindow {
                     settings,
                 )
             };
-            SfBox::new(ptr).ok_or(SfError::CallFailed)
+            FBox::new(ptr).ok_or(SfError::CallFailed)
         })
     }
     /// Recreate with new settings. See [`Self::new`] for more information.
@@ -97,10 +98,10 @@ impl RenderWindow {
     /// * handle - The handle to the platform-specific window handle to use for
     ///            the window.
     /// * settings - Additional settings for the underlying OpenGL context
-    pub unsafe fn from_handle(handle: Handle, settings: &ContextSettings) -> SfResult<SfBox<Self>> {
+    pub unsafe fn from_handle(handle: Handle, settings: &ContextSettings) -> SfResult<FBox<Self>> {
         thread_safety::set_window_thread();
         let ptr = unsafe { ffi::sfRenderWindow_new_handle_settings(handle, settings) };
-        SfBox::new(ptr).ok_or(SfError::CallFailed)
+        FBox::new(ptr).ok_or(SfError::CallFailed)
     }
 }
 

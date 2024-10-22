@@ -63,8 +63,8 @@ use {
 /// ```no_run
 /// # use sfml::graphics::*;
 /// # use sfml::system::*;
-/// # use sfml::SfBox;
-/// let texture: SfBox<Texture> = unimplemented!();
+/// # use sfml::cpp::FBox;
+/// let texture: FBox<Texture> = unimplemented!();
 /// let mut shader: Shader = unimplemented!();
 /// let color: Color = unimplemented!();
 /// let transform: Transform = unimplemented!();

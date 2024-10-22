@@ -1,6 +1,6 @@
 use crate::{
+    cpp::FBox,
     ffi::window::{self as ffi, sfCursor_loadFromPixels, sfCursor_loadFromSystem, sfCursor_new},
-    sf_box::SfBox,
     system::Vector2u,
     IntoSfResult, SfResult,
 };
@@ -36,8 +36,8 @@ impl Cursor {
     /// # Safety
     ///
     /// Must be inited with [`Self::load_from_pixels`] or [`Self::load_from_system`]
-    unsafe fn new() -> SfResult<SfBox<Self>> {
-        SfBox::new(unsafe { sfCursor_new() }).into_sf_result()
+    unsafe fn new() -> SfResult<FBox<Self>> {
+        FBox::new(unsafe { sfCursor_new() }).into_sf_result()
     }
     /// Create a new `Cursor` from the provided image data.
     ///
@@ -50,7 +50,7 @@ impl Cursor {
         pixels: &[u8],
         size: Vector2u,
         hotspot: Vector2u,
-    ) -> SfResult<SfBox<Self>> {
+    ) -> SfResult<FBox<Self>> {
         unsafe {
             let mut new = Self::new()?;
             new.load_from_pixels(pixels, size, hotspot)?;
@@ -58,7 +58,7 @@ impl Cursor {
         }
     }
     /// Create a new `Cursor` from a native system cursor.
-    pub fn from_system(type_: Type) -> SfResult<SfBox<Self>> {
+    pub fn from_system(type_: Type) -> SfResult<FBox<Self>> {
         unsafe {
             let mut new = Self::new()?;
             new.load_from_system(type_)?;

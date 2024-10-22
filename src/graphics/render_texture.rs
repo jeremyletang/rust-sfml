@@ -1,4 +1,5 @@
 use crate::{
+    cpp::FBox,
     ffi::graphics as ffi,
     graphics::{
         CircleShape, Color, ConvexShape, CustomShape, Drawable, IntRect, PrimitiveType, RcSprite,
@@ -7,7 +8,7 @@ use crate::{
     },
     system::{Vector2f, Vector2i, Vector2u},
     window::ContextSettings,
-    IntoSfResult, SfBox, SfResult,
+    IntoSfResult, SfResult,
 };
 
 decl_opaque! {
@@ -21,7 +22,7 @@ impl RenderTexture {
     /// # Arguments
     /// * width - Width of the render texture
     /// * height - Height of the render texture
-    pub fn new(width: u32, height: u32) -> SfResult<SfBox<Self>> {
+    pub fn new(width: u32, height: u32) -> SfResult<FBox<Self>> {
         Self::with_settings(width, height, &ContextSettings::default())
     }
 
@@ -39,8 +40,8 @@ impl RenderTexture {
         width: u32,
         height: u32,
         settings: &ContextSettings,
-    ) -> SfResult<SfBox<Self>> {
-        let mut new = SfBox::new(unsafe { ffi::sfRenderTexture_new() }).into_sf_result()?;
+    ) -> SfResult<FBox<Self>> {
+        let mut new = FBox::new(unsafe { ffi::sfRenderTexture_new() }).into_sf_result()?;
         new.recreate(width, height, settings)?;
         Ok(new)
     }

@@ -1,8 +1,8 @@
 use {
     crate::{
+        cpp::FBox,
         ffi::graphics::{self as ffi, sfTexture_create},
         graphics::{Image, IntRect, RenderWindow},
-        sf_box::SfBox,
         system::{InputStream, Vector2u},
         window::Window,
         IntoSfResult, SfError, SfResult,
@@ -66,8 +66,8 @@ impl Texture {
         unsafe { sfTexture_create(self, width, height) }.into_sf_result()
     }
     /// Creates a new `Texture`
-    pub fn new() -> SfResult<SfBox<Texture>> {
-        SfBox::new(unsafe { ffi::sfTexture_new() }).into_sf_result()
+    pub fn new() -> SfResult<FBox<Texture>> {
+        FBox::new(unsafe { ffi::sfTexture_new() }).into_sf_result()
     }
 
     /// Load texture from memory
@@ -118,14 +118,14 @@ impl Texture {
     }
 
     /// Convenience method to easily create and load a `Texture` from a file.
-    pub fn from_file(filename: &str) -> SfResult<SfBox<Self>> {
+    pub fn from_file(filename: &str) -> SfResult<FBox<Self>> {
         let mut new = Self::new().expect("Failed to create texture");
         new.load_from_file(filename, IntRect::default())?;
         Ok(new)
     }
 
     /// Convenience method to easily create and load a `Texture` from an iamge.
-    pub fn from_image(image: &Image, area: IntRect) -> SfResult<SfBox<Self>> {
+    pub fn from_image(image: &Image, area: IntRect) -> SfResult<FBox<Self>> {
         let mut new = Self::new()?;
         new.load_from_image(image, area)?;
         Ok(new)
@@ -258,9 +258,9 @@ impl Texture {
     /// Copy a texture's pixels to an image
     ///
     /// Return an image containing the texture's pixels
-    pub fn copy_to_image(&self) -> SfResult<SfBox<Image>> {
+    pub fn copy_to_image(&self) -> SfResult<FBox<Image>> {
         let img = unsafe { ffi::sfTexture_copyToImage(self) };
-        SfBox::new(img).ok_or(SfError::CallFailed)
+        FBox::new(img).ok_or(SfError::CallFailed)
     }
 
     /// Update a part of the texture from the contents of a window.
@@ -364,10 +364,10 @@ impl Texture {
 }
 
 impl ToOwned for Texture {
-    type Owned = SfBox<Texture>;
+    type Owned = FBox<Texture>;
 
     fn to_owned(&self) -> Self::Owned {
-        SfBox::new(unsafe { ffi::sfTexture_cpy(self) }).expect("Failed to copy texture")
+        FBox::new(unsafe { ffi::sfTexture_cpy(self) }).expect("Failed to copy texture")
     }
 }
 

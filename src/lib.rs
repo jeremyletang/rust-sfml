@@ -25,15 +25,15 @@ extern crate link_cplusplus;
 #[macro_use]
 mod ffi;
 
+pub mod cpp;
+
 #[cfg(feature = "audio")]
 pub mod audio;
 #[cfg(feature = "graphics")]
 pub mod graphics;
-mod sf_box;
 pub mod system;
 #[cfg(feature = "window")]
 pub mod window;
-pub use sf_box::SfBox;
 use std::{
     error::Error,
     ffi::{CString, NulError},
@@ -83,8 +83,8 @@ impl IntoSfResult<CString> for Result<CString, NulError> {
     }
 }
 
-impl<T> IntoSfResult<SfBox<T>> for Option<SfBox<T>> {
-    fn into_sf_result(self) -> SfResult<SfBox<T>> {
+impl<T> IntoSfResult<cpp::FBox<T>> for Option<cpp::FBox<T>> {
+    fn into_sf_result(self) -> SfResult<cpp::FBox<T>> {
         self.ok_or(SfError::CallFailed)
     }
 }

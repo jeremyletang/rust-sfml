@@ -1,11 +1,11 @@
 use {
     crate::{
+        cpp::FBox,
         ffi::graphics as ffi,
         graphics::{
             Color, Drawable, FloatRect, IntRect, RcTexture, RenderStates, RenderTarget, Texture,
             Transform, Transformable,
         },
-        sf_box::SfBox,
         system::Vector2f,
     },
     std::{cell::RefCell, ptr::NonNull, rc::Weak},
@@ -30,7 +30,7 @@ const PANIC_ERROR_MSG: &str = "Sprite does not hold a texture! Return value cann
 #[derive(Debug)]
 pub struct RcSprite {
     sprite: NonNull<ffi::sfSprite>,
-    texture: Weak<RefCell<SfBox<Texture>>>,
+    texture: Weak<RefCell<FBox<Texture>>>,
 }
 
 impl RcSprite {

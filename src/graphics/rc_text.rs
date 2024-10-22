@@ -1,11 +1,11 @@
 use {
     crate::{
+        cpp::FBox,
         ffi::graphics as ffi,
         graphics::{
             Color, Drawable, FloatRect, Font, RcFont, RenderStates, RenderTarget, TextStyle,
             Transform, Transformable,
         },
-        sf_box::SfBox,
         system::{SfStr, SfStrConv, Vector2f},
     },
     std::{cell::RefCell, ptr::NonNull, rc::Weak},
@@ -35,7 +35,7 @@ const PANIC_ERROR_MSG: &str = "Text does not hold a font! Return value cannot be
 #[derive(Debug)]
 pub struct RcText {
     text: NonNull<ffi::sfText>,
-    font: Weak<RefCell<SfBox<Font>>>,
+    font: Weak<RefCell<FBox<Font>>>,
 }
 
 impl RcText {

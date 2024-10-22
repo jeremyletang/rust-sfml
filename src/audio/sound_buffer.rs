@@ -1,8 +1,9 @@
 use {
     crate::{
+        cpp::FBox,
         ffi::{self},
         system::{InputStream, Time},
-        IntoSfResult, SfBox, SfResult,
+        IntoSfResult, SfResult,
     },
     std::{
         ffi::CString,
@@ -48,13 +49,13 @@ pub SoundBuffer;
 /// Creation and loading
 impl SoundBuffer {
     /// Creates a new (empty) `SoundBuffer`.
-    pub fn new() -> SfResult<SfBox<Self>> {
-        SfBox::new(unsafe { ffi::audio::sfSoundBuffer_new() }).into_sf_result()
+    pub fn new() -> SfResult<FBox<Self>> {
+        FBox::new(unsafe { ffi::audio::sfSoundBuffer_new() }).into_sf_result()
     }
     /// Creates a new `SoundBuffer` from a file.
     ///
     /// See [`Self::load_from_file`].
-    pub fn from_file(filename: &str) -> SfResult<SfBox<Self>> {
+    pub fn from_file(filename: &str) -> SfResult<FBox<Self>> {
         let mut new = Self::new()?;
         new.load_from_file(filename)?;
         Ok(new)
@@ -62,7 +63,7 @@ impl SoundBuffer {
     /// Creates a new `SoundBuffer` from a file in memory.
     ///
     /// See [`Self::load_from_memory`].
-    pub fn from_memory(data: &[u8]) -> SfResult<SfBox<Self>> {
+    pub fn from_memory(data: &[u8]) -> SfResult<FBox<Self>> {
         let mut new = Self::new()?;
         new.load_from_memory(data)?;
         Ok(new)
@@ -70,7 +71,7 @@ impl SoundBuffer {
     /// Creates a new `SoundBuffer` from a stream.
     ///
     /// See [`Self::load_from_stream`].
-    pub fn from_stream<T: Read + Seek>(stream: &mut T) -> SfResult<SfBox<Self>> {
+    pub fn from_stream<T: Read + Seek>(stream: &mut T) -> SfResult<FBox<Self>> {
         let mut new = Self::new()?;
         new.load_from_stream(stream)?;
         Ok(new)
@@ -82,7 +83,7 @@ impl SoundBuffer {
         samples: &[i16],
         channel_count: u32,
         sample_rate: u32,
-    ) -> SfResult<SfBox<Self>> {
+    ) -> SfResult<FBox<Self>> {
         let mut new = Self::new()?;
         new.load_from_samples(samples, channel_count, sample_rate)?;
         Ok(new)
@@ -205,11 +206,11 @@ impl SoundBuffer {
 }
 
 impl ToOwned for SoundBuffer {
-    type Owned = SfBox<Self>;
+    type Owned = FBox<Self>;
 
     fn to_owned(&self) -> Self::Owned {
         let sound_buffer = unsafe { ffi::audio::sfSoundBuffer_cpy(self) };
-        SfBox::new(sound_buffer).expect("Failed to copy SoundBuffer")
+        FBox::new(sound_buffer).expect("Failed to copy SoundBuffer")
     }
 }
 
