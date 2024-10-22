@@ -4,9 +4,9 @@ decl_opaque! {
     pub(crate) sfInputStreamHelper;
 }
 
-use crate::system::{
-    Clock as sfClock, CppString as sfStdString, CppStringVector as sfStdStringVector,
-    SfString as sfString,
+use crate::{
+    cpp::{CppString as sfStdString, CppStringVector as sfStdStringVector},
+    system::{Clock as sfClock, SfString as sfString},
 };
 
 pub type sfTime = i64;

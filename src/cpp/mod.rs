@@ -1,6 +1,10 @@
 //! Types for interfacing with C++
 
 mod fbox;
+mod string;
 
-pub use fbox::FBox;
 pub(crate) use fbox::RawDefault;
+pub use {
+    fbox::FBox,
+    string::{CppString, CppStringVector},
+};

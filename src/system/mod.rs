@@ -7,7 +7,7 @@ pub use self::{
     clock::Clock,
     input_stream::InputStream,
     sleep::sleep,
-    string::{CppString, CppStringVector, SfStr, SfStrConv, SfString},
+    string::{SfStr, SfStrConv, SfString},
     time::Time,
     vector2::{Vector2, Vector2f, Vector2i, Vector2u},
     vector3::{Vector3, Vector3f, Vector3i},
