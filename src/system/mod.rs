@@ -3,7 +3,6 @@
 //! It provides vector types, timing types.
 //!
 
-#[cfg(feature = "window")]
 pub use self::string::{CppString, CppStringVector, SfStr, SfStrConv, SfString};
 pub use self::{
     clock::Clock,
@@ -17,7 +16,6 @@ pub use self::{
 mod clock;
 mod input_stream;
 mod sleep;
-#[cfg(feature = "window")]
 mod string;
 mod time;
 mod vector2;
