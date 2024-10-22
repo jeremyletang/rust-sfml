@@ -45,7 +45,7 @@ pub fn sfVideoMode_getDesktopMode() -> sfVideoMode;
 pub fn sfVideoMode_getFullscreenModes() -> *const sfVideoModeVector;
 pub fn sfVideoMode_isValid(mode: sfVideoMode) -> bool;
 pub fn sfVideoModeVector_getLength(vec: *const sfVideoModeVector) -> usize;
-pub fn sfVideoModeVector_index(vec: *const sfVideoModeVector, index: usize) -> *const sfVideoMode;
+pub fn sfVideoModeVector_getData(vec: *const sfVideoModeVector) -> *const sfVideoMode;
 // Window.cpp
 pub fn sfWindow_new() -> *mut sfWindow;
 pub fn sfWindow_del(window: *mut sfWindow);

@@ -19,14 +19,15 @@ use crate::{ffi::window as ffi, window::thread_safety};
 /// Additionally, `VideoMode` provides a static function to get the mode currently used by
 /// the desktop: [`VideoMode::desktop_mode`]. This allows to build windows with the same size or
 /// pixel depth as the current resolution.
-#[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Copy)]
+#[repr(C)]
+#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug)]
 pub struct VideoMode {
-    /// Video mode width, in pixels.
-    pub width: u32,
-    /// Video mode height, in pixels.
-    pub height: u32,
-    /// Video mode pixel depth, in bits per pixels.
-    pub bits_per_pixel: u32,
+    /// Video mode width, in pixels
+    pub width: std::ffi::c_uint,
+    /// Video mode height, in pixels
+    pub height: std::ffi::c_uint,
+    /// Video mode pixel depth, in bits per pixels
+    pub bits_per_pixel: std::ffi::c_uint,
 }
 
 impl VideoMode {
@@ -49,7 +50,7 @@ impl VideoMode {
     /// return true if the video mode is valid for fullscreen mode
     #[must_use]
     pub fn is_valid(&self) -> bool {
-        unsafe { ffi::sfVideoMode_isValid(self.raw()) }
+        unsafe { ffi::sfVideoMode_isValid(*self) }
     }
 
     /// Static Method, get the current desktop video mode
@@ -59,7 +60,7 @@ impl VideoMode {
     pub fn desktop_mode() -> Self {
         thread_safety::set_window_thread();
 
-        unsafe { Self::from_raw(ffi::sfVideoMode_getDesktopMode()) }
+        unsafe { ffi::sfVideoMode_getDesktopMode() }
     }
 
     /// Static Method, retrieve all the video modes supported in fullscreen mode
@@ -76,17 +77,6 @@ impl VideoMode {
     #[must_use]
     pub fn fullscreen_modes() -> &'static VideoModeVector {
         unsafe { &*ffi::sfVideoMode_getFullscreenModes() }
-    }
-
-    pub(crate) fn raw(&self) -> ffi::sfVideoMode {
-        ffi::sfVideoMode {
-            width: self.width,
-            height: self.height,
-            bits_per_pixel: self.bits_per_pixel,
-        }
-    }
-    fn from_raw(raw: ffi::sfVideoMode) -> Self {
-        Self::new(raw.width, raw.height, raw.bits_per_pixel)
     }
 }
 
@@ -106,4 +96,17 @@ impl Default for VideoMode {
 decl_opaque! {
     /// Opaque handle to a C++ `std::vector<sf::VideoMode>`
     pub VideoModeVector;
+}
+
+impl std::ops::Deref for VideoModeVector {
+    type Target = [VideoMode];
+
+    fn deref(&self) -> &Self::Target {
+        unsafe {
+            std::slice::from_raw_parts(
+                ffi::sfVideoModeVector_getData(self),
+                ffi::sfVideoModeVector_getLength(self),
+            )
+        }
+    }
 }

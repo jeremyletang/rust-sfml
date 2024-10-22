@@ -73,13 +73,7 @@ impl Window {
     ) {
         thread_safety::set_window_thread();
         title.with_as_sfstr(|sfstr| unsafe {
-            ffi::sfWindow_create_mtss(
-                self,
-                mode.into().raw(),
-                sfstr.as_ptr(),
-                style.bits(),
-                settings,
-            )
+            ffi::sfWindow_create_mtss(self, mode.into(), sfstr.as_ptr(), style.bits(), settings)
         })
     }
 

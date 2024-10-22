@@ -2,7 +2,8 @@ pub use crate::ffi::*;
 use crate::{
     system::SfString as sfString,
     window::{
-        joystick::Identification as sfJoystickIdentification, VideoModeVector as sfVideoModeVector,
+        joystick::Identification as sfJoystickIdentification, VideoMode as sfVideoMode,
+        VideoModeVector as sfVideoModeVector,
     },
 };
 #[cfg(feature = "serde")]
@@ -70,17 +71,6 @@ pub enum sfCursorType {
     Cross,
     Help,
     NotAllowed,
-}
-
-#[repr(C)]
-#[derive(Clone, Copy, PartialEq, Eq, Debug)]
-pub struct sfVideoMode {
-    /// Video mode width, in pixels
-    pub width: c_uint,
-    /// Video mode height, in pixels
-    pub height: c_uint,
-    /// Video mode pixel depth, in bits per pixels
-    pub bits_per_pixel: c_uint,
 }
 
 /// Structure defining the settings of the OpenGL context attached to a window.
@@ -608,39 +598,6 @@ pub enum Scancode {
 }
 
 type sfKeyboardKey = Key;
-
-impl<'a> IntoIterator for &'a sfVideoModeVector {
-    type IntoIter = sfVideoModeVectorIter<'a>;
-    type Item = &'a sfVideoMode;
-    fn into_iter(self) -> Self::IntoIter {
-        sfVideoModeVectorIter {
-            vec: self,
-            len: unsafe { sfVideoModeVector_getLength(self) },
-            cursor: 0,
-        }
-    }
-}
-
-#[derive(Debug)]
-pub struct sfVideoModeVectorIter<'a> {
-    vec: &'a sfVideoModeVector,
-    len: usize,
-    cursor: usize,
-}
-
-impl<'a> Iterator for sfVideoModeVectorIter<'a> {
-    type Item = &'a sfVideoMode;
-    fn next(&mut self) -> Option<&'a sfVideoMode> {
-        if self.cursor >= self.len {
-            return None;
-        }
-        unsafe {
-            let item = sfVideoModeVector_index(self.vec, self.cursor);
-            self.cursor += 1;
-            Some(&*item)
-        }
-    }
-}
 
 // Window handle is HWND (HWND__*) on Windows
 #[cfg(target_os = "windows")]

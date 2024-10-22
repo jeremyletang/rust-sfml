@@ -52,12 +52,7 @@ impl RenderWindow {
 
         title.with_as_sfstr(|sfstr| {
             let ptr = unsafe {
-                ffi::sfRenderWindow_new_mtss(
-                    mode.into().raw(),
-                    sfstr.as_ptr(),
-                    style.bits(),
-                    settings,
-                )
+                ffi::sfRenderWindow_new_mtss(mode.into(), sfstr.as_ptr(), style.bits(), settings)
             };
             FBox::new(ptr).ok_or(SfError::CallFailed)
         })
@@ -75,7 +70,7 @@ impl RenderWindow {
         title.with_as_sfstr(|sfstr| unsafe {
             ffi::sfRenderWindow_create_mtss(
                 self,
-                mode.into().raw(),
+                mode.into(),
                 sfstr.as_ptr(),
                 style.bits(),
                 settings,
