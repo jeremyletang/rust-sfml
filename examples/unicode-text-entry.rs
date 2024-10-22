@@ -70,6 +70,7 @@ fn main() -> SfResult<()> {
                 }
                 Event::KeyPressed { code, .. } => {
                     match code {
+                        Key::Escape => break 'mainloop,
                         Key::F1 => bold ^= true,
                         Key::F2 => italic ^= true,
                         Key::F3 => underlined ^= true,
