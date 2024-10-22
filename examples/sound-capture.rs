@@ -15,30 +15,59 @@ fn main() -> Result<(), Box<dyn Error>> {
         capture::is_available(),
         "Sorry, audio capture is not supported by your system"
     );
+    let default_device = capture::default_device();
+    let devices = capture::available_devices();
+    println!("{} recording devices available:", devices.len());
+    for (i, device) in devices.iter().enumerate() {
+        let def_str = if device == &*default_device {
+            " (default)"
+        } else {
+            ""
+        };
+        println!("Device {i}: {device}{def_str}");
+    }
 
     // Choose the sample rate
-    println!("Please choose the sample rate for sound capture (default = 44100 (CD quality)): ");
+    println!(
+        "Please input device and sample rate, then press enter\n\
+              Example:\n\
+              1 22050 # record at 22050 Hz on device 1\n\
+              Default (on empty input) is device 0 and 44100 Hz (CD quality)"
+    );
     let stdin = std::io::stdin();
     let mut reader = stdin.lock();
     let mut line = String::new();
     reader.read_line(&mut line)?;
     let input = line.trim_end();
-    let sample_rate: u32 = if input.is_empty() {
-        44_100
-    } else {
-        match input.parse() {
+    let mut tokens = input.split_whitespace();
+    let device_idx = if let Some(token) = tokens.next() {
+        match token.parse::<usize>() {
             Ok(value) => value,
             Err(e) => return Err(format!("Input is not valid: {e}").into()),
         }
+    } else {
+        0
     };
-
-    // Wait for user input...
-    println!("Press enter to start recording audio");
-    reader.read_line(&mut String::new())?;
+    let sample_rate = if let Some(token) = tokens.next() {
+        match token.parse::<u32>() {
+            Ok(value) => value,
+            Err(e) => return Err(format!("Input is not valid: {e}").into()),
+        }
+    } else {
+        44_100
+    };
 
     // Here we'll use an integrated custom recorder,
     // which saves the captured data into a SoundBuffer
     let mut recorder = SoundBufferRecorder::new();
+    match devices.get(device_idx) {
+        Some(device) => {
+            recorder.set_device(device.to_str()?)?;
+        }
+        None => {
+            eprintln!("No device with index {device_idx}");
+        }
+    }
 
     // Audio capture is done in a separate thread,
     // so we can block the main thread while it is capturing
@@ -95,9 +124,5 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     // Finished
     println!("\nDone!");
-
-    // Wait until the user presses 'enter' key
-    println!("Press enter to exit...");
-    let _ = reader.read_line(&mut String::new());
     Ok(())
 }
