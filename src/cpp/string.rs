@@ -44,7 +44,6 @@ impl std::fmt::Display for CppString {
 
 impl Drop for CppString {
     fn drop(&mut self) {
-        eprintln!("Oh my god I'm being dropped");
         unsafe { crate::ffi::system::sfStdString_del(self) }
     }
 }
