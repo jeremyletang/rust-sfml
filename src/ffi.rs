@@ -30,9 +30,7 @@ use {
     crate::system::{Vector2, Vector3},
     std::{
         ffi::c_void,
-        fmt::Display,
         os::raw::{c_char, c_int, c_uint},
-        str::Utf8Error,
     },
 };
 

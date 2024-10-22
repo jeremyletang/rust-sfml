@@ -1,7 +1,7 @@
 pub use crate::ffi::*;
 use {
     super::system::sfInputStreamHelper,
-    crate::ffi::system::{sfStdString, sfStdStringVector},
+    crate::system::{CppString as sfStdString, CppStringVector as sfStdStringVector},
 };
 
 decl_opaque! {

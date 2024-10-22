@@ -8,7 +8,7 @@ pub use {
         event::Event,
         keyboard::{set_virtual_keyboard_visible, Key},
         style::Style,
-        video_mode::VideoMode,
+        video_mode::{VideoMode, VideoModeVector},
         window::{Handle, Window},
     },
     crate::ffi::window::Scancode,

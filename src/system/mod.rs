@@ -4,7 +4,7 @@
 //!
 
 #[cfg(feature = "window")]
-pub use self::string::{SfStr, SfStrConv};
+pub use self::string::{CppString, CppStringVector, SfStr, SfStrConv, SfString};
 pub use self::{
     clock::Clock,
     input_stream::InputStream,

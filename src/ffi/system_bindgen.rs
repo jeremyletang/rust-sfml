@@ -17,8 +17,8 @@ pub fn sfStdString_getLength(s: *const sfStdString) -> usize;
 pub fn sfStdString_getData(s: *const sfStdString) -> *const c_char;
 // SfStdVector.cpp
 pub fn sfStdStringVector_del(vec: *mut sfStdStringVector);
+pub fn sfStdStringVector_getData(vec: *const sfStdStringVector) -> *const sfStdString;
 pub fn sfStdStringVector_getLength(vec: *const sfStdStringVector) -> usize;
-pub fn sfStdStringVector_index(vec: *const sfStdStringVector, index: usize) -> *const sfStdString;
 // SfString.cpp
 pub fn sfString_getLength(string: *const sfString) -> usize;
 pub fn sfString_getData(string: *const sfString) -> *const u32;

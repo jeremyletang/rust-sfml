@@ -1,11 +1,8 @@
 use {
     crate::{
         audio::SoundBuffer,
-        ffi::{
-            audio as ffi,
-            system::{sfStdString, sfStdStringVector},
-        },
-        system::Time,
+        ffi::audio as ffi,
+        system::{CppString, CppStringVector, Time},
         IntoSfResult, SfBox, SfResult,
     },
     std::{ffi::CString, os::raw::c_void, ptr::NonNull},
@@ -209,7 +206,7 @@ impl<'a, R: SoundRecorder> SoundRecorderDriver<'a, R> {
     }
     /// Get the name of the current audio capture device.
     #[must_use]
-    pub fn device(&self) -> &sfStdString {
+    pub fn device(&self) -> &CppString {
         unsafe { &*ffi::sfCustomSoundRecorder_getDevice(self.ffi_handle.as_ptr()) }
     }
 
@@ -309,7 +306,7 @@ impl SoundBufferRecorder {
     }
     /// Get the name of the current audio capture device.
     #[must_use]
-    pub fn device(&self) -> &sfStdString {
+    pub fn device(&self) -> &CppString {
         unsafe { &*ffi::sfSoundBufferRecorder_getDevice(self.ffi_handle.as_ptr()) }
     }
 
@@ -333,12 +330,12 @@ fn test_devices() {
     println!("Default device: {}", *default);
     println!("Available devices:");
     let devices = available_devices();
-    for device in devices.into_iter() {
+    for device in devices.iter() {
         println!("{device}");
     }
     let mut recorder = SoundBufferRecorder::new();
     assert_eq!(*recorder.device(), *default);
-    if let Some(device) = devices.into_iter().last() {
+    if let Some(device) = devices.last() {
         recorder.set_device(device.to_str().unwrap()).unwrap();
         assert_eq!(recorder.device().to_str().unwrap(), device);
     }
@@ -374,7 +371,7 @@ pub fn is_available() -> bool {
 /// This function returns the name of the default audio capture device.
 /// If none is available, an empty string is returned.
 #[must_use]
-pub fn default_device() -> SfBox<sfStdString> {
+pub fn default_device() -> SfBox<CppString> {
     unsafe {
         SfBox::new(ffi::sfSoundRecorder_getDefaultDevice()).expect("Failed to create sfStdString")
     }
@@ -385,7 +382,7 @@ pub fn default_device() -> SfBox<sfStdString> {
 /// This function returns a vector of strings, containing the names of all available
 /// audio capture devices.
 #[must_use]
-pub fn available_devices() -> SfBox<sfStdStringVector> {
+pub fn available_devices() -> SfBox<CppStringVector> {
     unsafe {
         SfBox::new(ffi::sfSoundRecorder_getAvailableDevices())
             .expect("Failed to create sfStdStringVector")

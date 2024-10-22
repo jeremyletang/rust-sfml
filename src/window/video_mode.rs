@@ -74,7 +74,7 @@ impl VideoMode {
     ///
     /// Return a vector containing all the supported `VideoMode`s
     #[must_use]
-    pub fn fullscreen_modes() -> &'static ffi::sfVideoModeVector {
+    pub fn fullscreen_modes() -> &'static VideoModeVector {
         unsafe { &*ffi::sfVideoMode_getFullscreenModes() }
     }
 
@@ -101,4 +101,9 @@ impl Default for VideoMode {
     fn default() -> Self {
         Self::new(0, 0, 0)
     }
+}
+
+decl_opaque! {
+    /// Opaque handle to a C++ `std::vector<sf::VideoMode>`
+    pub VideoModeVector;
 }

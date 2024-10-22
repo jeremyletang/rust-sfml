@@ -51,7 +51,7 @@
 //! [`update`]: update
 //!
 
-use crate::{ffi::window as ffi, SfBox};
+use crate::{ffi::window as ffi, system::SfString, SfBox};
 pub use ffi::JoystickAxis as Axis;
 
 /// Maximum number of supported joysticks.
@@ -137,23 +137,42 @@ pub fn update() {
     }
 }
 
+decl_opaque! {
+    /// Structure holding a joystick's identification.
+    pub Identification;
+}
+
 /// Get the joystick information.
 #[must_use]
-pub fn identification(joystick: u32) -> SfBox<ffi::JoystickIdentification> {
+pub fn identification(joystick: u32) -> SfBox<Identification> {
     unsafe {
         SfBox::new(ffi::sfJoystick_getIdentification(joystick))
             .expect("Failed to create JoystickIdentification")
     }
 }
 
-impl ffi::JoystickIdentification {
-    pub fn name(&self) -> &crate::ffi::system::sfString {
+impl Identification {
+    /// Name of the joystick.
+    #[must_use]
+    pub fn name(&self) -> &SfString {
         unsafe { &*ffi::sfJoystickIdentification_getName(self) }
     }
+    /// Manufacturer identifier.
+    #[must_use]
     pub fn vendor_id(&self) -> u32 {
         unsafe { ffi::sfJoystickIdentification_getVendorId(self) }
     }
+    /// Product identifier.
+    #[must_use]
     pub fn product_id(&self) -> u32 {
         unsafe { ffi::sfJoystickIdentification_getProductId(self) }
+    }
+}
+
+impl Drop for Identification {
+    fn drop(&mut self) {
+        unsafe {
+            ffi::sfJoystickIdentification_del(self);
+        }
     }
 }

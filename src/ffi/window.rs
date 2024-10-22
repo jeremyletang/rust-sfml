@@ -1,15 +1,17 @@
-use crate::ffi::system::sfString;
 pub use crate::ffi::*;
+use crate::{
+    system::SfString as sfString,
+    window::{
+        joystick::Identification as sfJoystickIdentification, VideoModeVector as sfVideoModeVector,
+    },
+};
 #[cfg(feature = "serde")]
 use serde::{Deserialize, Serialize};
 
 decl_opaque! {
     pub(crate) sfContext;
-    pub(crate) JoystickIdentification;
-    pub(crate) sfVideoModeVector;
 }
 
-type sfJoystickIdentification = JoystickIdentification;
 pub(super) type sfWindow = crate::window::Window;
 pub(super) type sfCursor = crate::window::Cursor;
 
@@ -606,14 +608,6 @@ pub enum Scancode {
 }
 
 type sfKeyboardKey = Key;
-
-impl Drop for JoystickIdentification {
-    fn drop(&mut self) {
-        unsafe {
-            sfJoystickIdentification_del(self);
-        }
-    }
-}
 
 impl<'a> IntoIterator for &'a sfVideoModeVector {
     type IntoIter = sfVideoModeVectorIter<'a>;
