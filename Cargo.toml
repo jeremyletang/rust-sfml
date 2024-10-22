@@ -153,10 +153,6 @@ name = "opengl"
 required-features = ["graphics"]
 
 [[example]]
-name = "video_modes"
-required-features = ["window"]
-
-[[example]]
 name = "joystick"
 required-features = ["window"]
 
