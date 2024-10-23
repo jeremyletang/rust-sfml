@@ -133,6 +133,10 @@ name = "custom-sound-recorder"
 required-features = ["audio", "graphics"]
 
 [[example]]
+name = "positional-audio"
+required-features = ["audio", "graphics"]
+
+[[example]]
 name = "cursor"
 required-features = ["graphics"]
 
