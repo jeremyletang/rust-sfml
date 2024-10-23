@@ -168,4 +168,8 @@ required-features = ["graphics", "window"]
 name = "window-test"
 required-features = ["graphics", "window"]
 
+[[example]]
+name = "opengl-context"
+required-features = ["window"]
+
 [workspace]
