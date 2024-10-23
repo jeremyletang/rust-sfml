@@ -8,7 +8,7 @@ pub trait Transformable {
     /// See [`move_`](Self::move_) to apply an offset based on the previous position instead.
     /// The default position of a transformable object is (0, 0).
     fn set_position<P: Into<Vector2f>>(&mut self, position: P);
-    /// Set the orientation of the object.
+    /// Set the orientation of the object in degrees.
     ///
     /// This function completely overwrites the previous rotation.
     /// See the rotate function to add an angle based on the previous rotation instead.
@@ -30,7 +30,7 @@ pub trait Transformable {
     fn set_origin<O: Into<Vector2f>>(&mut self, origin: O);
     /// Gets the position of the object.
     fn position(&self) -> Vector2f;
-    /// Gets the rotation of the object.
+    /// Gets the rotation of the object in degrees.
     ///
     /// The rotation is always in the range [0, 360].
     fn rotation(&self) -> f32;
