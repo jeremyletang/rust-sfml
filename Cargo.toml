@@ -130,7 +130,7 @@ required-features = ["graphics"]
 
 [[example]]
 name = "custom-sound-recorder"
-required-features = ["audio"]
+required-features = ["audio", "graphics"]
 
 [[example]]
 name = "cursor"
