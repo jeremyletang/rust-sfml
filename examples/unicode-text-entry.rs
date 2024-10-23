@@ -1,6 +1,10 @@
-use {
-    sfml::{graphics::*, window::*, SfResult},
-    std::usize,
+use sfml::{
+    graphics::{
+        Color, Font, RectangleShape, RenderTarget, RenderWindow, Shape, Text, TextStyle,
+        Transformable,
+    },
+    window::{clipboard, Event, Key, Style},
+    SfResult,
 };
 
 include!("../example_common.rs");
