@@ -22,7 +22,7 @@ use {
 /// `set_texture`, `set_position`, etc., before drawing it, as many times as you need to.
 #[derive(Debug)]
 pub struct Sprite<'s> {
-    sprite: NonNull<ffi::sfSprite>,
+    handle: NonNull<ffi::sfSprite>,
     texture: PhantomData<&'s Texture>,
 }
 
@@ -32,7 +32,7 @@ impl<'s> Sprite<'s> {
     pub fn new() -> Sprite<'s> {
         let sp = unsafe { ffi::sfSprite_new() };
         Sprite {
-            sprite: NonNull::new(sp).expect("Failed to create Sprite"),
+            handle: NonNull::new(sp).expect("Failed to create Sprite"),
             texture: PhantomData,
         }
     }
@@ -71,7 +71,7 @@ impl<'s> Sprite<'s> {
     /// * `texture` - New texture
     /// * `reset_rect` - Should the texture rect be reset to the size of the new texture?
     pub fn set_texture(&mut self, texture: &'s Texture, reset_rect: bool) {
-        unsafe { ffi::sfSprite_setTexture(self.sprite.as_ptr(), texture, reset_rect) }
+        unsafe { ffi::sfSprite_setTexture(self.handle.as_ptr(), texture, reset_rect) }
     }
 
     /// Set the global color of a sprite
@@ -84,7 +84,7 @@ impl<'s> Sprite<'s> {
     /// # Arguments
     /// * color - New color of the sprite
     pub fn set_color(&mut self, color: Color) {
-        unsafe { ffi::sfSprite_setColor(self.sprite.as_ptr(), color) }
+        unsafe { ffi::sfSprite_setColor(self.handle.as_ptr(), color) }
     }
 
     /// Get the source texture of a sprite
@@ -96,7 +96,7 @@ impl<'s> Sprite<'s> {
     /// Return an Option to the sprite's texture
     #[must_use]
     pub fn texture(&self) -> Option<&'s Texture> {
-        unsafe { ffi::sfSprite_getTexture(self.sprite.as_ptr()).as_ref() }
+        unsafe { ffi::sfSprite_getTexture(self.handle.as_ptr()).as_ref() }
     }
 
     /// Get the global color of a sprite
@@ -104,7 +104,7 @@ impl<'s> Sprite<'s> {
     /// Return the global color of the sprite
     #[must_use]
     pub fn color(&self) -> Color {
-        unsafe { ffi::sfSprite_getColor(self.sprite.as_ptr()) }
+        unsafe { ffi::sfSprite_getColor(self.handle.as_ptr()) }
     }
 
     /// Get the local bounding rectangle of a sprite
@@ -118,7 +118,7 @@ impl<'s> Sprite<'s> {
     /// Return the local bounding rectangle of the entity
     #[must_use]
     pub fn local_bounds(&self) -> FloatRect {
-        unsafe { ffi::sfSprite_getLocalBounds(self.sprite.as_ptr()) }
+        unsafe { ffi::sfSprite_getLocalBounds(self.handle.as_ptr()) }
     }
 
     /// Get the global bounding rectangle of a sprite
@@ -132,7 +132,7 @@ impl<'s> Sprite<'s> {
     /// Return the global bounding rectangle of the entity
     #[must_use]
     pub fn global_bounds(&self) -> FloatRect {
-        unsafe { ffi::sfSprite_getGlobalBounds(self.sprite.as_ptr()) }
+        unsafe { ffi::sfSprite_getGlobalBounds(self.handle.as_ptr()) }
     }
 
     /// Get the sub-rectangle of the texture displayed by a sprite
@@ -140,7 +140,7 @@ impl<'s> Sprite<'s> {
     /// Return the texture rectangle of the sprite
     #[must_use]
     pub fn texture_rect(&self) -> IntRect {
-        unsafe { ffi::sfSprite_getTextureRect(self.sprite.as_ptr()) }
+        unsafe { ffi::sfSprite_getTextureRect(self.handle.as_ptr()) }
     }
 
     /// Set the sub-rectangle of the texture that a sprite will display
@@ -152,10 +152,10 @@ impl<'s> Sprite<'s> {
     /// # Arguments
     /// * rectangle - Rectangle defining the region of the texture to display
     pub fn set_texture_rect(&mut self, rect: IntRect) {
-        unsafe { ffi::sfSprite_setTextureRect(self.sprite.as_ptr(), rect) }
+        unsafe { ffi::sfSprite_setTextureRect(self.handle.as_ptr(), rect) }
     }
     pub(super) fn raw(&self) -> *const ffi::sfSprite {
-        self.sprite.as_ptr()
+        self.handle.as_ptr()
     }
 }
 
@@ -168,9 +168,9 @@ impl Default for Sprite<'_> {
 impl<'s> Clone for Sprite<'s> {
     /// Return a new Sprite or panic! if there is not enough memory
     fn clone(&self) -> Sprite<'s> {
-        let sp = unsafe { ffi::sfSprite_cpy(self.sprite.as_ptr()) };
+        let sp = unsafe { ffi::sfSprite_cpy(self.handle.as_ptr()) };
         Sprite {
-            sprite: NonNull::new(sp).expect("Failed to copy Sprite"),
+            handle: NonNull::new(sp).expect("Failed to copy Sprite"),
             texture: PhantomData,
         }
     }
@@ -188,48 +188,48 @@ impl Drawable for Sprite<'_> {
 
 impl Transformable for Sprite<'_> {
     fn set_position<P: Into<Vector2f>>(&mut self, position: P) {
-        unsafe { ffi::sfSprite_setPosition(self.sprite.as_ptr(), position.into()) }
+        unsafe { ffi::sfSprite_setPosition(self.handle.as_ptr(), position.into()) }
     }
     fn set_rotation(&mut self, angle: f32) {
-        unsafe { ffi::sfSprite_setRotation(self.sprite.as_ptr(), angle) }
+        unsafe { ffi::sfSprite_setRotation(self.handle.as_ptr(), angle) }
     }
     fn set_scale<S: Into<Vector2f>>(&mut self, scale: S) {
-        unsafe { ffi::sfSprite_setScale(self.sprite.as_ptr(), scale.into()) }
+        unsafe { ffi::sfSprite_setScale(self.handle.as_ptr(), scale.into()) }
     }
     fn set_origin<O: Into<Vector2f>>(&mut self, origin: O) {
-        unsafe { ffi::sfSprite_setOrigin(self.sprite.as_ptr(), origin.into()) }
+        unsafe { ffi::sfSprite_setOrigin(self.handle.as_ptr(), origin.into()) }
     }
     fn position(&self) -> Vector2f {
-        unsafe { ffi::sfSprite_getPosition(self.sprite.as_ptr()) }
+        unsafe { ffi::sfSprite_getPosition(self.handle.as_ptr()) }
     }
     fn rotation(&self) -> f32 {
-        unsafe { ffi::sfSprite_getRotation(self.sprite.as_ptr()) }
+        unsafe { ffi::sfSprite_getRotation(self.handle.as_ptr()) }
     }
     fn get_scale(&self) -> Vector2f {
-        unsafe { ffi::sfSprite_getScale(self.sprite.as_ptr()) }
+        unsafe { ffi::sfSprite_getScale(self.handle.as_ptr()) }
     }
     fn origin(&self) -> Vector2f {
-        unsafe { ffi::sfSprite_getOrigin(self.sprite.as_ptr()) }
+        unsafe { ffi::sfSprite_getOrigin(self.handle.as_ptr()) }
     }
     fn move_<O: Into<Vector2f>>(&mut self, offset: O) {
-        unsafe { ffi::sfSprite_move(self.sprite.as_ptr(), offset.into()) }
+        unsafe { ffi::sfSprite_move(self.handle.as_ptr(), offset.into()) }
     }
     fn rotate(&mut self, angle: f32) {
-        unsafe { ffi::sfSprite_rotate(self.sprite.as_ptr(), angle) }
+        unsafe { ffi::sfSprite_rotate(self.handle.as_ptr(), angle) }
     }
     fn scale<F: Into<Vector2f>>(&mut self, factors: F) {
-        unsafe { ffi::sfSprite_scale(self.sprite.as_ptr(), factors.into()) }
+        unsafe { ffi::sfSprite_scale(self.handle.as_ptr(), factors.into()) }
     }
     fn transform(&self) -> &Transform {
-        unsafe { &*ffi::sfSprite_getTransform(self.sprite.as_ptr()) }
+        unsafe { &*ffi::sfSprite_getTransform(self.handle.as_ptr()) }
     }
     fn inverse_transform(&self) -> &Transform {
-        unsafe { &*ffi::sfSprite_getInverseTransform(self.sprite.as_ptr()) }
+        unsafe { &*ffi::sfSprite_getInverseTransform(self.handle.as_ptr()) }
     }
 }
 
 impl Drop for Sprite<'_> {
     fn drop(&mut self) {
-        unsafe { ffi::sfSprite_del(self.sprite.as_ptr()) }
+        unsafe { ffi::sfSprite_del(self.handle.as_ptr()) }
     }
 }

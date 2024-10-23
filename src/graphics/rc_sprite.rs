@@ -29,7 +29,7 @@ const PANIC_ERROR_MSG: &str = "Sprite does not hold a texture! Return value cann
 /// [`Sprite`]: crate::graphics::Sprite
 #[derive(Debug)]
 pub struct RcSprite {
-    sprite: NonNull<ffi::sfSprite>,
+    handle: NonNull<ffi::sfSprite>,
     texture: Weak<RefCell<FBox<Texture>>>,
 }
 
@@ -39,7 +39,7 @@ impl RcSprite {
     pub fn new() -> Self {
         let sp = unsafe { ffi::sfSprite_new() };
         Self {
-            sprite: NonNull::new(sp).expect("Failed to create Sprite"),
+            handle: NonNull::new(sp).expect("Failed to create Sprite"),
             texture: Weak::new(),
         }
     }
@@ -96,7 +96,7 @@ impl RcSprite {
                 .as_ptr()
                 .cast_const()
         };
-        unsafe { ffi::sfSprite_setTexture(self.sprite.as_ptr(), raw_texture, reset_rect) };
+        unsafe { ffi::sfSprite_setTexture(self.handle.as_ptr(), raw_texture, reset_rect) };
     }
 
     /// Set the global color of a sprite
@@ -114,7 +114,7 @@ impl RcSprite {
             eprintln!("{ERROR_MSG}");
             return;
         }
-        unsafe { ffi::sfSprite_setColor(self.sprite.as_ptr(), color) }
+        unsafe { ffi::sfSprite_setColor(self.handle.as_ptr(), color) }
     }
 
     /// Get the source texture of a sprite
@@ -143,7 +143,7 @@ impl RcSprite {
             eprintln!("{RETURN_ERROR_MSG}");
             return Default::default();
         }
-        unsafe { ffi::sfSprite_getColor(self.sprite.as_ptr()) }
+        unsafe { ffi::sfSprite_getColor(self.handle.as_ptr()) }
     }
 
     /// Get the local bounding rectangle of a sprite
@@ -162,7 +162,7 @@ impl RcSprite {
             eprintln!("{RETURN_ERROR_MSG}");
             return Default::default();
         }
-        unsafe { ffi::sfSprite_getLocalBounds(self.sprite.as_ptr()) }
+        unsafe { ffi::sfSprite_getLocalBounds(self.handle.as_ptr()) }
     }
 
     /// Get the global bounding rectangle of a sprite
@@ -182,7 +182,7 @@ impl RcSprite {
             eprintln!("{RETURN_ERROR_MSG}");
             return Default::default();
         }
-        unsafe { ffi::sfSprite_getGlobalBounds(self.sprite.as_ptr()) }
+        unsafe { ffi::sfSprite_getGlobalBounds(self.handle.as_ptr()) }
     }
 
     /// Get the sub-rectangle of the texture displayed by a sprite
@@ -196,7 +196,7 @@ impl RcSprite {
             eprintln!("{RETURN_ERROR_MSG}");
             return Default::default();
         }
-        unsafe { ffi::sfSprite_getTextureRect(self.sprite.as_ptr()) }
+        unsafe { ffi::sfSprite_getTextureRect(self.handle.as_ptr()) }
     }
 
     /// Set the sub-rectangle of the texture that a sprite will display
@@ -213,11 +213,11 @@ impl RcSprite {
             eprintln!("{ERROR_MSG}");
             return;
         }
-        unsafe { ffi::sfSprite_setTextureRect(self.sprite.as_ptr(), rect) }
+        unsafe { ffi::sfSprite_setTextureRect(self.handle.as_ptr(), rect) }
     }
 
     pub(super) fn raw(&self) -> *const ffi::sfSprite {
-        self.sprite.as_ptr()
+        self.handle.as_ptr()
     }
 }
 
@@ -230,9 +230,9 @@ impl Default for RcSprite {
 impl Clone for RcSprite {
     /// Return a new Sprite or panic! if there is not enough memory
     fn clone(&self) -> Self {
-        let sp = unsafe { ffi::sfSprite_cpy(self.sprite.as_ptr()) };
+        let sp = unsafe { ffi::sfSprite_cpy(self.handle.as_ptr()) };
         Self {
-            sprite: NonNull::new(sp).expect("Failed to copy Sprite"),
+            handle: NonNull::new(sp).expect("Failed to copy Sprite"),
             texture: self.texture.clone(),
         }
     }
@@ -259,7 +259,7 @@ impl Transformable for RcSprite {
             eprintln!("{ERROR_MSG}");
             return;
         }
-        unsafe { ffi::sfSprite_setPosition(self.sprite.as_ptr(), position.into()) }
+        unsafe { ffi::sfSprite_setPosition(self.handle.as_ptr(), position.into()) }
     }
     /// Reference [`Transformable::set_rotation`] for additional information
     ///
@@ -269,7 +269,7 @@ impl Transformable for RcSprite {
             eprintln!("{ERROR_MSG}");
             return;
         }
-        unsafe { ffi::sfSprite_setRotation(self.sprite.as_ptr(), angle) }
+        unsafe { ffi::sfSprite_setRotation(self.handle.as_ptr(), angle) }
     }
     /// Reference [`Transformable::set_scale`] for additional information
     ///
@@ -279,7 +279,7 @@ impl Transformable for RcSprite {
             eprintln!("{ERROR_MSG}");
             return;
         }
-        unsafe { ffi::sfSprite_setScale(self.sprite.as_ptr(), scale.into()) }
+        unsafe { ffi::sfSprite_setScale(self.handle.as_ptr(), scale.into()) }
     }
     /// Reference [`Transformable::set_origin`] for additional information
     ///
@@ -289,7 +289,7 @@ impl Transformable for RcSprite {
             eprintln!("{ERROR_MSG}");
             return;
         }
-        unsafe { ffi::sfSprite_setOrigin(self.sprite.as_ptr(), origin.into()) }
+        unsafe { ffi::sfSprite_setOrigin(self.handle.as_ptr(), origin.into()) }
     }
     /// Reference [`Transformable::position`] for additional information
     ///
@@ -299,7 +299,7 @@ impl Transformable for RcSprite {
             eprintln!("{RETURN_ERROR_MSG}");
             return Default::default();
         }
-        unsafe { ffi::sfSprite_getPosition(self.sprite.as_ptr()) }
+        unsafe { ffi::sfSprite_getPosition(self.handle.as_ptr()) }
     }
     /// Reference [`Transformable::rotation`] for additional information
     ///
@@ -309,7 +309,7 @@ impl Transformable for RcSprite {
             eprintln!("{RETURN_ERROR_MSG}");
             return Default::default();
         }
-        unsafe { ffi::sfSprite_getRotation(self.sprite.as_ptr()) }
+        unsafe { ffi::sfSprite_getRotation(self.handle.as_ptr()) }
     }
     /// Reference [`Transformable::get_scale`] for additional information
     ///
@@ -319,7 +319,7 @@ impl Transformable for RcSprite {
             eprintln!("{RETURN_ERROR_MSG}");
             return Default::default();
         }
-        unsafe { ffi::sfSprite_getScale(self.sprite.as_ptr()) }
+        unsafe { ffi::sfSprite_getScale(self.handle.as_ptr()) }
     }
     /// Reference [`Transformable::origin`] for additional information
     ///
@@ -329,7 +329,7 @@ impl Transformable for RcSprite {
             eprintln!("{RETURN_ERROR_MSG}");
             return Default::default();
         }
-        unsafe { ffi::sfSprite_getOrigin(self.sprite.as_ptr()) }
+        unsafe { ffi::sfSprite_getOrigin(self.handle.as_ptr()) }
     }
     /// Reference [`Transformable::move_`] for additional information
     ///
@@ -339,7 +339,7 @@ impl Transformable for RcSprite {
             eprintln!("{ERROR_MSG}");
             return;
         }
-        unsafe { ffi::sfSprite_move(self.sprite.as_ptr(), offset.into()) }
+        unsafe { ffi::sfSprite_move(self.handle.as_ptr(), offset.into()) }
     }
     /// Reference [`Transformable::rotate`] for additional information
     ///
@@ -349,7 +349,7 @@ impl Transformable for RcSprite {
             eprintln!("{ERROR_MSG}");
             return;
         }
-        unsafe { ffi::sfSprite_rotate(self.sprite.as_ptr(), angle) }
+        unsafe { ffi::sfSprite_rotate(self.handle.as_ptr(), angle) }
     }
     /// Reference [`Transformable::scale`] for additional information
     ///
@@ -359,7 +359,7 @@ impl Transformable for RcSprite {
             eprintln!("{ERROR_MSG}");
             return;
         }
-        unsafe { ffi::sfSprite_scale(self.sprite.as_ptr(), factors.into()) }
+        unsafe { ffi::sfSprite_scale(self.handle.as_ptr(), factors.into()) }
     }
     /// Reference [`Transformable::transform`] for additional information
     ///
@@ -368,7 +368,7 @@ impl Transformable for RcSprite {
         if !self.texture_exists() {
             panic!("{}", PANIC_ERROR_MSG);
         }
-        unsafe { &*ffi::sfSprite_getTransform(self.sprite.as_ptr()) }
+        unsafe { &*ffi::sfSprite_getTransform(self.handle.as_ptr()) }
     }
     /// Reference [`Transformable::inverse_transform`] for additional information
     ///
@@ -377,12 +377,12 @@ impl Transformable for RcSprite {
         if !self.texture_exists() {
             panic!("{}", PANIC_ERROR_MSG);
         }
-        unsafe { &*ffi::sfSprite_getInverseTransform(self.sprite.as_ptr()) }
+        unsafe { &*ffi::sfSprite_getInverseTransform(self.handle.as_ptr()) }
     }
 }
 
 impl Drop for RcSprite {
     fn drop(&mut self) {
-        unsafe { ffi::sfSprite_del(self.sprite.as_ptr()) }
+        unsafe { ffi::sfSprite_del(self.handle.as_ptr()) }
     }
 }

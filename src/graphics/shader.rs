@@ -133,7 +133,7 @@ use {
 ///
 #[derive(Debug)]
 pub struct Shader<'texture> {
-    shader: NonNull<ffi::sfShader>,
+    handle: NonNull<ffi::sfShader>,
     texture: PhantomData<&'texture Texture>,
 }
 
@@ -147,7 +147,7 @@ macro_rules! shader_create {
             }
         }
         Ok(Self {
-            shader: $shader,
+            handle: $shader,
             texture: PhantomData,
         })
     }};
@@ -320,7 +320,7 @@ impl<'texture> Shader<'texture> {
     /// it mustn't be used when drawing SFML entities.
     /// It must be used only if you mix `Shader` with OpenGL code.
     pub fn bind(shader: Option<&Self>) {
-        unsafe { ffi::sfShader_bind(shader.map_or(ptr::null_mut(), |s| s.shader.as_ptr())) }
+        unsafe { ffi::sfShader_bind(shader.map_or(ptr::null_mut(), |s| s.handle.as_ptr())) }
     }
 
     /// Tell whether or not the system supports shaders
@@ -355,7 +355,7 @@ impl<'texture> Shader<'texture> {
         let cstring = CString::new(name).into_sf_result()?;
         let name = cstring.as_ptr();
         unsafe {
-            ffi::sfShader_setFloatUniform(self.shader.as_ptr(), name, value);
+            ffi::sfShader_setFloatUniform(self.handle.as_ptr(), name, value);
         }
         Ok(())
     }
@@ -365,7 +365,7 @@ impl<'texture> Shader<'texture> {
         let cstring = CString::new(name).into_sf_result()?;
         let name = cstring.as_ptr();
         unsafe {
-            ffi::sfShader_setVec2Uniform(self.shader.as_ptr(), name, value);
+            ffi::sfShader_setVec2Uniform(self.handle.as_ptr(), name, value);
         }
         Ok(())
     }
@@ -375,7 +375,7 @@ impl<'texture> Shader<'texture> {
         let cstring = CString::new(name).into_sf_result()?;
         let name = cstring.as_ptr();
         unsafe {
-            ffi::sfShader_setVec3Uniform(self.shader.as_ptr(), name, value);
+            ffi::sfShader_setVec3Uniform(self.handle.as_ptr(), name, value);
         }
         Ok(())
     }
@@ -398,7 +398,7 @@ impl<'texture> Shader<'texture> {
         let cstring = CString::new(name).into_sf_result()?;
         let name = cstring.as_ptr();
         unsafe {
-            ffi::sfShader_setVec4Uniform(self.shader.as_ptr(), name, value.into().raw());
+            ffi::sfShader_setVec4Uniform(self.handle.as_ptr(), name, value.into().raw());
         }
         Ok(())
     }
@@ -408,7 +408,7 @@ impl<'texture> Shader<'texture> {
         let cstring = CString::new(name).into_sf_result()?;
         let name = cstring.as_ptr();
         unsafe {
-            ffi::sfShader_setIntUniform(self.shader.as_ptr(), name, value);
+            ffi::sfShader_setIntUniform(self.handle.as_ptr(), name, value);
         }
         Ok(())
     }
@@ -418,7 +418,7 @@ impl<'texture> Shader<'texture> {
         let cstring = CString::new(name).into_sf_result()?;
         let name = cstring.as_ptr();
         unsafe {
-            ffi::sfShader_setIvec2Uniform(self.shader.as_ptr(), name, value);
+            ffi::sfShader_setIvec2Uniform(self.handle.as_ptr(), name, value);
         }
         Ok(())
     }
@@ -428,7 +428,7 @@ impl<'texture> Shader<'texture> {
         let cstring = CString::new(name).into_sf_result()?;
         let name = cstring.as_ptr();
         unsafe {
-            ffi::sfShader_setIvec3Uniform(self.shader.as_ptr(), name, value.into());
+            ffi::sfShader_setIvec3Uniform(self.handle.as_ptr(), name, value.into());
         }
         Ok(())
     }
@@ -450,7 +450,7 @@ impl<'texture> Shader<'texture> {
         let cstring = CString::new(name).into_sf_result()?;
         let name = cstring.as_ptr();
         unsafe {
-            ffi::sfShader_setIvec4Uniform(self.shader.as_ptr(), name, value.into().raw());
+            ffi::sfShader_setIvec4Uniform(self.handle.as_ptr(), name, value.into().raw());
         }
         Ok(())
     }
@@ -460,7 +460,7 @@ impl<'texture> Shader<'texture> {
         let cstring = CString::new(name).into_sf_result()?;
         let name = cstring.as_ptr();
         unsafe {
-            ffi::sfShader_setBoolUniform(self.shader.as_ptr(), name, value);
+            ffi::sfShader_setBoolUniform(self.handle.as_ptr(), name, value);
         }
         Ok(())
     }
@@ -470,7 +470,7 @@ impl<'texture> Shader<'texture> {
         let cstring = CString::new(name).into_sf_result()?;
         let name = cstring.as_ptr();
         unsafe {
-            ffi::sfShader_setBvec2Uniform(self.shader.as_ptr(), name, value.into());
+            ffi::sfShader_setBvec2Uniform(self.handle.as_ptr(), name, value.into());
         }
         Ok(())
     }
@@ -480,7 +480,7 @@ impl<'texture> Shader<'texture> {
         let cstring = CString::new(name).into_sf_result()?;
         let name = cstring.as_ptr();
         unsafe {
-            ffi::sfShader_setBvec3Uniform(self.shader.as_ptr(), name, value.into());
+            ffi::sfShader_setBvec3Uniform(self.handle.as_ptr(), name, value.into());
         }
         Ok(())
     }
@@ -490,7 +490,7 @@ impl<'texture> Shader<'texture> {
         let cstring = CString::new(name).into_sf_result()?;
         let name = cstring.as_ptr();
         unsafe {
-            ffi::sfShader_setBvec4Uniform(self.shader.as_ptr(), name, value.into());
+            ffi::sfShader_setBvec4Uniform(self.handle.as_ptr(), name, value.into());
         }
         Ok(())
     }
@@ -505,7 +505,7 @@ impl<'texture> Shader<'texture> {
         let value = value.into();
         let ptr: *const _ = &value.0;
         unsafe {
-            ffi::sfShader_setMat3Uniform(self.shader.as_ptr(), name, ptr.cast());
+            ffi::sfShader_setMat3Uniform(self.handle.as_ptr(), name, ptr.cast());
         }
         Ok(())
     }
@@ -520,7 +520,7 @@ impl<'texture> Shader<'texture> {
         let value = value.into();
         let ptr: *const _ = &value.0;
         unsafe {
-            ffi::sfShader_setMat4Uniform(self.shader.as_ptr(), name, ptr.cast());
+            ffi::sfShader_setMat4Uniform(self.handle.as_ptr(), name, ptr.cast());
         }
         Ok(())
     }
@@ -536,7 +536,7 @@ impl<'texture> Shader<'texture> {
         let cstring = CString::new(name).into_sf_result()?;
         let name = cstring.as_ptr();
         unsafe {
-            ffi::sfShader_setTextureUniform(self.shader.as_ptr(), name, value);
+            ffi::sfShader_setTextureUniform(self.handle.as_ptr(), name, value);
         }
         Ok(())
     }
@@ -550,7 +550,7 @@ impl<'texture> Shader<'texture> {
         let cstring = CString::new(name).into_sf_result()?;
         let name = cstring.as_ptr();
         unsafe {
-            ffi::sfShader_setCurrentTextureUniform(self.shader.as_ptr(), name);
+            ffi::sfShader_setCurrentTextureUniform(self.handle.as_ptr(), name);
         }
         Ok(())
     }
@@ -561,7 +561,7 @@ impl<'texture> Shader<'texture> {
         let name = cstring.as_ptr();
         let len = array.len();
         unsafe {
-            ffi::sfShader_setFloatUniformArray(self.shader.as_ptr(), name, array.as_ptr(), len);
+            ffi::sfShader_setFloatUniformArray(self.handle.as_ptr(), name, array.as_ptr(), len);
         }
         Ok(())
     }
@@ -573,7 +573,7 @@ impl<'texture> Shader<'texture> {
         let len = array.len();
         let ptr = array.as_ptr();
         unsafe {
-            ffi::sfShader_setVec2UniformArray(self.shader.as_ptr(), name, ptr, len);
+            ffi::sfShader_setVec2UniformArray(self.handle.as_ptr(), name, ptr, len);
         }
         Ok(())
     }
@@ -585,7 +585,7 @@ impl<'texture> Shader<'texture> {
         let len = array.len();
         let ptr = array.as_ptr();
         unsafe {
-            ffi::sfShader_setVec3UniformArray(self.shader.as_ptr(), name, ptr, len);
+            ffi::sfShader_setVec3UniformArray(self.handle.as_ptr(), name, ptr, len);
         }
         Ok(())
     }
@@ -595,7 +595,7 @@ impl<'texture> Shader<'texture> {
         let cstring = CString::new(name).into_sf_result()?;
         unsafe {
             ffi::sfShader_setVec4UniformArray(
-                self.shader.as_ptr(),
+                self.handle.as_ptr(),
                 cstring.as_ptr(),
                 array.as_ptr().cast(),
                 array.len(),
@@ -609,7 +609,7 @@ impl<'texture> Shader<'texture> {
         let cstring = CString::new(name).into_sf_result()?;
         unsafe {
             ffi::sfShader_setMat3UniformArray(
-                self.shader.as_ptr(),
+                self.handle.as_ptr(),
                 cstring.as_ptr(),
                 array.as_ptr().cast(),
                 array.len(),
@@ -623,7 +623,7 @@ impl<'texture> Shader<'texture> {
         let cstring = CString::new(name).into_sf_result()?;
         unsafe {
             ffi::sfShader_setMat4UniformArray(
-                self.shader.as_ptr(),
+                self.handle.as_ptr(),
                 cstring.as_ptr(),
                 array.as_ptr().cast(),
                 array.len(),
@@ -637,15 +637,15 @@ impl<'texture> Shader<'texture> {
     /// that SFML doesn't support, or implement a temporary workaround until a bug is fixed.
     #[must_use]
     pub fn native_handle(&self) -> u32 {
-        unsafe { ffi::sfShader_getNativeHandle(self.shader.as_ptr()) }
+        unsafe { ffi::sfShader_getNativeHandle(self.handle.as_ptr()) }
     }
     pub(super) fn raw(&self) -> *const ffi::sfShader {
-        self.shader.as_ptr()
+        self.handle.as_ptr()
     }
 }
 
 impl Drop for Shader<'_> {
     fn drop(&mut self) {
-        unsafe { ffi::sfShader_del(self.shader.as_ptr()) }
+        unsafe { ffi::sfShader_del(self.handle.as_ptr()) }
     }
 }
