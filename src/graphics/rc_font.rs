@@ -5,7 +5,7 @@ use {
         SfResult,
     },
     std::{
-        cell::RefCell,
+        cell::{Ref, RefCell},
         io::{Read, Seek},
         rc::Rc,
     },
@@ -270,8 +270,8 @@ impl RcFont {
     /// # Arguments
     /// * `character_size` - Character size, in pixels
     #[must_use]
-    pub fn texture(&self, character_size: u32) -> &Texture {
-        unsafe { (**self.font.as_ptr()).texture(character_size) }
+    pub fn texture(&self, character_size: u32) -> Ref<Texture> {
+        Ref::map(self.font.borrow(), move |r| r.texture(character_size))
     }
 
     /// Check if the font has anti-aliasing enabled/disabled
