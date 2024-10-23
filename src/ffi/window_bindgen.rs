@@ -6,6 +6,14 @@ unsafe extern "C" {
 // Clipboard.cpp
 pub fn sfClipboard_getUnicodeString() -> *mut sfString;
 pub fn sfClipboard_setUnicodeString(text: *const u32);
+// Context.cpp
+pub fn sfContext_new() -> *mut sfContext;
+pub fn sfContext_del(context: *mut sfContext);
+pub fn sfContext_setActive(context: *mut sfContext, active: bool) -> bool;
+pub fn sfContext_getSettings(context: *const sfContext) -> *const sfContextSettings;
+pub fn sfContext_getActiveContextId() -> u64;
+pub fn sfContext_getActiveContext() -> *const sfContext;
+pub fn sfContext_getFunction(name: *const c_char) -> sfGlFunctionPointer;
 // Cursor.cpp
 pub fn sfCursor_new() -> *mut sfCursor;
 pub fn sfCursor_del(cursor: *mut sfCursor);
@@ -75,11 +83,5 @@ pub fn sfWindow_display(window: *mut sfWindow);
 pub fn sfWindow_setFramerateLimit(window: *mut sfWindow, limit: c_uint);
 pub fn sfWindow_setJoystickThreshold(window: *mut sfWindow, threshold: f32);
 pub fn sfWindow_getSystemHandle(window: *const sfWindow) -> sfWindowHandle;
-pub fn sfContext_new() -> *mut sfContext;
-pub fn sfContext_del(context: *mut sfContext);
-pub fn sfContext_setActive(context: *mut sfContext, active: bool) -> bool;
-pub fn sfContext_getSettings(context: *const sfContext) -> *const sfContextSettings;
-pub fn sfContext_getActiveContextId() -> u64;
-pub fn sfContext_getFunction(name: *const c_char) -> sfGlFunctionPointer;
 
 }

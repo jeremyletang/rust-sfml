@@ -231,6 +231,7 @@ fn main() {
                 "CSFML/src/Window/Touch.cpp",
                 "CSFML/src/Window/VideoMode.cpp",
                 "CSFML/src/Window/Window.cpp",
+                "CSFML/src/Window/Context.cpp",
             ]
             .iter(),
         );

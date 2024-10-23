@@ -6,13 +6,10 @@ use crate::{
 #[cfg(feature = "serde")]
 use serde::{Deserialize, Serialize};
 
-decl_opaque! {
-    pub(crate) sfContext;
-}
-
 pub(super) type sfWindow = crate::window::Window;
 pub(super) type sfCursor = crate::window::Cursor;
 pub(crate) type sfVideoModeVector = crate::cpp::CppVector<sfVideoMode>;
+pub(super) type sfContext = crate::window::Context;
 
 /// Enumeration of the native system cursor types.
 ///

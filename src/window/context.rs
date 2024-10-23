@@ -1,8 +1,9 @@
 use {
-    crate::{ffi::window as ffi, window::ContextSettings, IntoSfResult, SfResult},
+    crate::{cpp::FBox, ffi::window as ffi, window::ContextSettings, IntoSfResult, SfResult},
     std::ffi::CStr,
 };
 
+decl_opaque! {
 /// Type holding a valid drawing context.
 ///
 /// If you need to make OpenGL calls without having an active window (like in a thread),
@@ -16,14 +17,14 @@ use {
 /// To use a `Context` instance, just construct it and let it live as long as you need
 /// a valid context. No explicit activation is needed, all it has to do is to exist.
 /// Its destructor will take care of deactivating and freeing all the attached resources.
-#[derive(Debug)]
-pub struct Context(*mut ffi::sfContext);
+pub Context;
+}
 
 impl Context {
     /// Creates and activates a new context.
     #[must_use]
-    pub fn new() -> Context {
-        Context(unsafe { ffi::sfContext_new() })
+    pub fn new() -> SfResult<FBox<Self>> {
+        FBox::new(unsafe { ffi::sfContext_new() }).into_sf_result()
     }
 
     /// Explicitly activates or deactivates the context.
@@ -31,7 +32,7 @@ impl Context {
     /// # Arguments
     /// * active - `true` to activate, `false` to deactivate
     pub fn set_active(&mut self, active: bool) -> SfResult<()> {
-        unsafe { ffi::sfContext_setActive(self.0, active) }.into_sf_result()
+        unsafe { ffi::sfContext_setActive(self, active) }.into_sf_result()
     }
     /// Get the settings of the context.
     ///
@@ -39,7 +40,12 @@ impl Context {
     /// they are indeed adjusted if the original settings are not directly supported by the system.
     #[must_use]
     pub fn settings(&self) -> &ContextSettings {
-        unsafe { &*ffi::sfContext_getSettings(self.0) }
+        unsafe { &*ffi::sfContext_getSettings(self) }
+    }
+
+    /// Return a raw pointer to the currently active context
+    pub fn active_context() -> *const Context {
+        unsafe { ffi::sfContext_getActiveContext()}
     }
 
     /// Get the currently active context's ID.
@@ -69,7 +75,7 @@ fn test_settings() {
         Window::new_open((32, 32), "test", Default::default(), &Default::default()).unwrap();
     let win_settings = *window.settings();
     thread::spawn(move || {
-        let context = Context::new();
+        let context = Context::new().unwrap();
         assert_eq!(context.settings(), &win_settings);
     })
     .join()
@@ -80,13 +86,7 @@ impl Drop for Context {
     /// Deactivates and destroys the context.
     fn drop(&mut self) {
         unsafe {
-            ffi::sfContext_del(self.0);
+            ffi::sfContext_del(self);
         }
-    }
-}
-
-impl Default for Context {
-    fn default() -> Self {
-        Context::new()
     }
 }

@@ -1,7 +1,6 @@
 #include "System/Vector2.hpp"
 #include "Window/VideoMode.hpp"
 #include <SFML/Window/Window.hpp>
-#include <SFML/Window/Context.hpp>
 #include <SFML/Window/Touch.hpp>
 #include <cstdint>
 
@@ -121,28 +120,4 @@ extern "C" void sfWindow_setJoystickThreshold(sf::Window *window, float threshol
 
 extern "C" sf::WindowHandle sfWindow_getSystemHandle(const sf::Window *window) {
     return window->getSystemHandle();
-}
-
-extern "C" sf::Context *sfContext_new(void) {
-    return new sf::Context;
-}
-
-extern "C" void sfContext_del(sf::Context *context) {
-    delete context;
-}
-
-extern "C" bool sfContext_setActive(sf::Context *context, bool active) {
-    return context->setActive(active);
-}
-
-extern "C" const sf::ContextSettings *sfContext_getSettings(const sf::Context *context) {
-    return &context->getSettings();
-}
-
-extern "C" uint64_t sfContext_getActiveContextId() {
-    return sf::Context::getActiveContextId();
-}
-
-extern "C" sf::GlFunctionPointer sfContext_getFunction(const char *name) {
-    return sf::Context::getFunction(name);
 }
