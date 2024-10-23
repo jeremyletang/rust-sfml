@@ -22,7 +22,6 @@ pub Context;
 
 impl Context {
     /// Creates and activates a new context.
-    #[must_use]
     pub fn new() -> SfResult<FBox<Self>> {
         FBox::new(unsafe { ffi::sfContext_new() }).into_sf_result()
     }
@@ -44,6 +43,7 @@ impl Context {
     }
 
     /// Return a raw pointer to the currently active context
+    #[must_use]
     pub fn active_context() -> *const Context {
         unsafe { ffi::sfContext_getActiveContext() }
     }
