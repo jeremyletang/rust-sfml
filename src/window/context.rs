@@ -45,7 +45,7 @@ impl Context {
 
     /// Return a raw pointer to the currently active context
     pub fn active_context() -> *const Context {
-        unsafe { ffi::sfContext_getActiveContext()}
+        unsafe { ffi::sfContext_getActiveContext() }
     }
 
     /// Get the currently active context's ID.
