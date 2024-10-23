@@ -6,7 +6,9 @@ use std::{
 
 /// An owning pointer to a foreign-allocated object.
 ///
-/// On [`Drop`], it calls the appropriate foreign function to dispose of the object.
+/// It doesn't manage its own allocation, rather, it just drops its content in-place,
+/// counting on the [`Drop`] impl of the contained type to call the appropriate foreign
+/// function to properly dispose of the value.
 ///
 /// Named `FBox` to avoid confusion with the Rust standard library [`Box`].
 /// F stands for "foreign".
