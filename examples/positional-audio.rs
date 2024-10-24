@@ -145,11 +145,14 @@ fn main() -> Result<(), Box<dyn Error>> {
             (center.x + dx * scale, center.y + dy * scale).into(),
             2.0,
         );
+        text.set_string("WASD + mouse for movement of listener");
+        text.set_position(0.);
+        rw.draw(&text);
         text.set_string(&format!("Listener position: {lx}, {ly}, {lz}"));
-        text.set_position((0., 0.0));
+        text.set_position((0., 20.0));
         rw.draw(&text);
         text.set_string(&format!("Listener direction: {dx}, {dy}, {dz}"));
-        text.set_position((0., 20.0));
+        text.set_position((0., 40.0));
         rw.draw(&text);
         rw.display();
     }
