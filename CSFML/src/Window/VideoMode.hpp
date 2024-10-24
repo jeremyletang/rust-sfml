@@ -1,11 +1,10 @@
 #ifndef SFML_VIDEOMODE_H
 #define SFML_VIDEOMODE_H
 
-typedef struct
-{
-    unsigned int width;        ///< Video mode width, in pixels
-    unsigned int height;       ///< Video mode height, in pixels
-    unsigned int bitsPerPixel; ///< Video mode pixel depth, in bits per pixels
-} sfVideoMode;
+struct sfVideoMode {
+    unsigned int width;
+    unsigned int height;
+    unsigned int bitsPerPixel;
+};
 
 #endif // SFML_VIDEOMODE_H

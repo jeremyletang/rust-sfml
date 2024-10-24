@@ -1,22 +1,19 @@
 #ifndef SFML_VECTOR2_H
 #define SFML_VECTOR2_H
 
-typedef struct
-{
+struct sfVector2i {
     int x;
     int y;
-} sfVector2i;
+};
 
-typedef struct
-{
+struct sfVector2u {
     unsigned int x;
     unsigned int y;
-} sfVector2u;
+};
 
-typedef struct
-{
+struct sfVector2f {
     float x;
     float y;
-} sfVector2f;
+};
 
 #endif // SFML_VECTOR2_H

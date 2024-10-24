@@ -3,11 +3,10 @@
 #include <SFML/Audio/Music.hpp>
 #include <cstddef>
 
-typedef struct
-{
-    int64_t offset; ///< The beginning offset of the time range
-    int64_t length; ///< The length of the time range
-} sfTimeSpan;
+struct sfTimeSpan {
+    int64_t offset;
+    int64_t length;
+};
 
 extern "C" sf::Music *sfMusic_new() {
     return new sf::Music;

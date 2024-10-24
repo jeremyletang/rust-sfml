@@ -3,12 +3,11 @@
 
 #include <cstdint>
 
-typedef struct
-{
+struct sfColor {
     uint8_t r;
     uint8_t g;
     uint8_t b;
     uint8_t a;
-} sfColor;
+};
 
 #endif // SFML_COLOR_H

@@ -3,12 +3,11 @@
 #include <SFML/Graphics/Font.hpp>
 #include <cstddef>
 
-typedef struct
-{
+struct sfGlyph {
     float advance;         ///< Offset to move horizontically to the next character
     sfFloatRect bounds;    ///< Bounding rectangle of the glyph, in coordinates relative to the baseline
     sfIntRect textureRect; ///< Texture coordinates of the glyph inside the font's image
-} sfGlyph;
+};
 
 extern "C" sf::Font *sfFont_new() {
     return new sf::Font;
@@ -74,10 +73,9 @@ extern "C" void sfFont_setSmooth(sf::Font *font, bool smooth) {
     font->setSmooth(smooth);
 }
 
-typedef struct
-{
+struct sfFontInfo {
     const char *family;
-} sfFontInfo;
+};
 
 extern "C" sfFontInfo sfFont_getInfo(const sf::Font *font) {
     return {font->getInfo().family.c_str()};

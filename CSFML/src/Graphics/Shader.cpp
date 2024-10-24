@@ -8,64 +8,56 @@
 typedef sfVector2f sfGlslVec2;
 typedef sfVector2i sfGlslIvec2;
 
-typedef struct
-{
+struct sfGlslBvec2 {
     bool x;
     bool y;
-} sfGlslBvec2;
+};
 
 // 3D vectors
 typedef sfVector3f sfGlslVec3;
 
-typedef struct
-{
+struct sfGlslIvec3 {
     int x;
     int y;
     int z;
-} sfGlslIvec3;
+};
 
-typedef struct
-{
+struct sfGlslBvec3 {
     bool x;
     bool y;
     bool z;
-} sfGlslBvec3;
+};
 
 // 4D vectors
-typedef struct
-{
+struct sfGlslVec4 {
     float x;
     float y;
     float z;
     float w;
-} sfGlslVec4;
+};
 
-typedef struct
-{
+struct sfGlslIvec4 {
     int x;
     int y;
     int z;
     int w;
-} sfGlslIvec4;
+};
 
-typedef struct
-{
+struct sfGlslBvec4 {
     bool x;
     bool y;
     bool z;
     bool w;
-} sfGlslBvec4;
+};
 
 // matrices
-typedef struct
-{
+struct sfGlslMat3 {
     float array[3 * 3];
-} sfGlslMat3;
+};
 
-typedef struct
-{
+struct sfGlslMat4 {
     float array[4 * 4];
-} sfGlslMat4;
+};
 
 extern "C" sf::Shader *sfShader_new() {
     return new sf::Shader;
