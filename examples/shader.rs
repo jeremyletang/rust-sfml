@@ -40,7 +40,7 @@ impl Drawable for Pixelate<'_> {
         states: &RenderStates<'texture, 'shader, 'shader_texture>,
     ) {
         let mut states = *states;
-        states.set_shader(Some(&self.shader));
+        states.shader = Some(&self.shader);
         target.draw_with_renderstates(&self.sprite, &states);
     }
 }
@@ -101,7 +101,7 @@ impl Drawable for WaveBlur<'_> {
         states: &RenderStates<'texture, 'shader, 'shader_texture>,
     ) {
         let mut states = *states;
-        states.set_shader(Some(&self.shader));
+        states.shader = Some(&self.shader);
         target.draw_with_renderstates(&self.text, &states);
     }
 }
@@ -155,7 +155,7 @@ impl Drawable for StormBlink {
         states: &RenderStates<'texture, 'shader, 'shader_texture>,
     ) {
         let mut states = *states;
-        states.set_shader(Some(&self.shader));
+        states.shader = Some(&self.shader);
         target.draw_primitives(&self.points, PrimitiveType::POINTS, &states);
     }
 }
@@ -221,7 +221,7 @@ impl Drawable for Edge<'_> {
         states: &RenderStates<'texture, 'shader, 'shader_texture>,
     ) {
         let mut states = *states;
-        states.set_shader(Some(&self.shader));
+        states.shader = Some(&self.shader);
         target.draw_with_renderstates(&Sprite::with_texture(self.surface.texture()), &states);
     }
 }

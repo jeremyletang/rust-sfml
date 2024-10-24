@@ -157,9 +157,9 @@ fn main() -> SfResult<()> {
             obj.update(window.size().y as f32, window.size().x as f32);
         }
         window.clear(Color::BLACK);
-        rs.set_texture(Some(&texture));
+        rs.texture = Some(&texture);
         window.draw_primitives(&buf, PrimitiveType::QUADS, &rs);
-        rs.set_texture(None);
+        rs.texture = None;
         text.set_string(&format!("{} sprites\n{fps} fps", objects.len()));
         window.draw_text(&text, &rs);
         window.display();

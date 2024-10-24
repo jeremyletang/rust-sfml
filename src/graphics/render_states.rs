@@ -36,7 +36,7 @@ use crate::graphics::{BlendMode, Shader, Texture, Transform};
 /// # let shader: Shader = unimplemented!();
 /// # let sprite: Sprite = unimplemented!();
 /// let mut states = RenderStates::default();
-/// states.set_shader(Some(&shader));
+/// states.shader = Some(&shader);
 /// window.draw_with_renderstates(&sprite, &states);
 /// ```
 ///
@@ -55,42 +55,10 @@ pub struct RenderStates<'texture, 'shader, 'shader_texture: 'shader> {
     pub blend_mode: BlendMode,
     /// The transform
     pub transform: Transform,
-    texture: Option<&'texture Texture>,
-    shader: Option<&'shader Shader<'shader_texture>>,
-}
-
-impl<'texture, 'shader, 'shader_texture> RenderStates<'texture, 'shader, 'shader_texture> {
-    /// Create a new `RenderStates`.
-    ///
-    /// # Arguments
-    /// * `blend_mode` - The `BlendMode`
-    /// * transform - The transform
-    /// * texture - Some(texture) if there is a texture, None otherwise
-    /// * shader - Some(shader) if there is a shader, None otherwise
-    ///
-    /// Return a new default `RenderStates`
-    #[must_use]
-    pub fn new(
-        blend_mode: BlendMode,
-        transform: Transform,
-        texture: Option<&'texture Texture>,
-        shader: Option<&'shader Shader<'shader_texture>>,
-    ) -> Self {
-        Self {
-            blend_mode,
-            transform,
-            texture,
-            shader,
-        }
-    }
-    /// Sets the texture
-    pub fn set_texture(&mut self, texture: Option<&'texture Texture>) {
-        self.texture = texture;
-    }
-    /// Sets the shader
-    pub fn set_shader(&mut self, shader: Option<&'shader Shader<'shader_texture>>) {
-        self.shader = shader;
-    }
+    /// The texture that will be bound
+    pub texture: Option<&'texture Texture>,
+    /// The shader that will be used
+    pub shader: Option<&'shader Shader<'shader_texture>>,
 }
 
 impl RenderStates<'static, 'static, 'static> {

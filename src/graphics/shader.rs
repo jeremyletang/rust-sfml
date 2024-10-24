@@ -87,7 +87,7 @@ use {
 /// # let mut window: RenderWindow = unimplemented!();
 /// # let sprite: Sprite = unimplemented!();
 /// let mut states = RenderStates::default();;
-/// states.set_shader(Some(&shader));
+/// states.shader = Some(&shader);
 /// window.draw_with_renderstates(&sprite, &states);
 /// ```
 ///
