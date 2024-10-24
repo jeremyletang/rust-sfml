@@ -1,7 +1,17 @@
-rust-sfml [![crates.io](https://img.shields.io/crates/v/sfml.svg)](https://crates.io/crates/sfml) [![Discord](https://img.shields.io/discord/175298431294636032?style=plastic)](https://discord.gg/XCaM5rhMa6)
+rust-sfml
+[![crates.io][crates-io-shield]][crates-io-link]
+[![docs.rs][docs-rs-shield]][docs-rs-link]
+[![Discord][discord-shield]][discord-link]
 =========
 
 Rust bindings for [SFML](http://www.sfml-dev.org), the Simple and Fast Multimedia Library.
+
+[crates-io-shield]: https://img.shields.io/crates/v/sfml.svg
+[crates-io-link]: https://crates.io/crates/sfml
+[docs-rs-shield]: https://img.shields.io/docsrs/sfml
+[docs-rs-link]: https://docs.rs/sfml
+[discord-shield]: https://img.shields.io/discord/175298431294636032?style=plastic
+[discord-link]: https://discord.gg/XCaM5rhMa6
 
 Platform support
 ================
