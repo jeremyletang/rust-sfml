@@ -117,6 +117,10 @@ unsafe extern "C" fn on_stop_callback<R: SoundRecorder>(user_data: *mut c_void) 
 
 impl<'a, R: SoundRecorder> SoundRecorderDriver<'a, R> {
     /// Creates a new `SoundRecorderDriver` with the specified [`SoundRecorder`].
+    ///
+    /// # Panics
+    ///
+    /// Panics if a `SoundRecorderDriver` can't be created for whatever reason
     pub fn new(sound_recorder: &'a mut R) -> Self {
         Self {
             handle: unsafe {
@@ -244,6 +248,10 @@ pub struct SoundBufferRecorder {
 
 impl SoundBufferRecorder {
     /// Create a new sound buffer recorder
+    ///
+    /// # Panics
+    ///
+    /// Panics if a `SoundBufferRecorder` can't be created for whatever reason
     #[must_use]
     pub fn new() -> SoundBufferRecorder {
         let buffer = unsafe { ffi::sfSoundBufferRecorder_new() };
@@ -296,7 +304,7 @@ impl SoundBufferRecorder {
     #[must_use]
     pub fn buffer(&self) -> &SoundBuffer {
         let buff = unsafe { ffi::sfSoundBufferRecorder_getBuffer(self.handle.as_ptr()) };
-        assert!(!buff.is_null(), "sfSoundBufferRecorder_getBuffer failed");
+        // Safety: getBuffer returns a reference on C++ side, it can never be null or dangling.
         unsafe { &*(buff) }
     }
     /// Get the name of the current audio capture device.

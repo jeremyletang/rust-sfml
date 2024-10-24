@@ -17,7 +17,8 @@
     clippy::unwrap_used,
     clippy::unreadable_literal,
     clippy::ptr_as_ptr,
-    clippy::cast_lossless
+    clippy::cast_lossless,
+    clippy::missing_panics_doc
 )]
 
 extern crate link_cplusplus;
