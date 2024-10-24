@@ -28,6 +28,10 @@ pub struct Sprite<'s> {
 
 impl<'s> Sprite<'s> {
     /// Create a new sprite
+    ///
+    /// # Panics
+    ///
+    /// Panics if a new `Sprite` can't be created for some reason.
     #[must_use]
     pub fn new() -> Sprite<'s> {
         let sp = unsafe { ffi::sfSprite_new() };

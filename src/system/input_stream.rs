@@ -70,6 +70,10 @@ pub struct InputStream<'src, T> {
 
 impl<'src, T: Read + Seek> InputStream<'src, T> {
     /// Create a new input stream from a `Read + Seek` source.
+    ///
+    /// # Panics
+    ///
+    /// Panics if a new `InputStream` can't be created for some reason.
     pub fn new(stream: &'src mut T) -> InputStream<'src, T> {
         let user_data: *mut T = stream;
         unsafe {

@@ -74,6 +74,10 @@ unsafe extern "C" fn seek_callback<S: SoundStream>(
 
 impl<'a, S: SoundStream> SoundStreamPlayer<'a, S> {
     /// Create a new `SoundStreamPlayer` with the specified [`SoundStream`].
+    ///
+    /// # Panics
+    ///
+    /// Panics if for some reason a `SoundStreamPlayer` can't be created.
     pub fn new(sound_stream: &'a mut S) -> Self {
         let channel_count = sound_stream.channel_count();
         let sample_rate = sound_stream.sample_rate();

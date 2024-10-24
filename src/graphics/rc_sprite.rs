@@ -35,6 +35,10 @@ pub struct RcSprite {
 
 impl RcSprite {
     /// Create a new sprite
+    ///
+    /// # Panics
+    ///
+    /// Panics if for some reason a `Sprite` can't be created.
     #[must_use]
     pub fn new() -> Self {
         let sp = unsafe { ffi::sfSprite_new() };
@@ -87,6 +91,10 @@ impl RcSprite {
     /// * `texture` - New texture
     /// * `reset_rect` - Should the texture rect be reset to the size
     ///   of the new texture?
+    ///
+    /// # Panics
+    ///
+    /// Panics on [`std::rc::Rc`] related shenanigans.
     pub fn set_texture(&mut self, texture: &RcTexture, reset_rect: bool) {
         self.set_rc_texture(texture);
         #[expect(clippy::unwrap_used)]

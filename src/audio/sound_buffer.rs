@@ -147,7 +147,9 @@ impl SoundBuffer {
 
     /// Get the samples stored in the buffer
     ///
-    /// Panic if the sample count exceeds usize range
+    /// # Panics
+    ///
+    /// Panics if the sample count exceeds usize range
     #[must_use]
     pub fn samples(&self) -> &[i16] {
         let len: usize = self

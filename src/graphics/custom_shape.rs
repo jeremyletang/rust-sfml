@@ -55,6 +55,10 @@ impl<'s> CustomShape<'s> {
     ///
     /// # Arguments
     /// * points - Implementation of [`CustomShapePoints`]
+    ///
+    /// # Panics
+    ///
+    /// Panics if for some reason a `CustomShape` can't be created.
     #[must_use]
     pub fn new(points: Box<dyn CustomShapePoints + Send>) -> CustomShape<'s> {
         // SAFETY: Box::into_raw produces non-null pointer

@@ -143,6 +143,10 @@ decl_opaque! {
 }
 
 /// Get the joystick information.
+///
+/// # Panics
+///
+/// Panics if an `Identification` can't be created for some reason
 #[must_use]
 pub fn identification(joystick: u32) -> FBox<Identification> {
     unsafe {

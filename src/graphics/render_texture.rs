@@ -81,11 +81,10 @@ impl RenderTexture {
     /// Return the target texture
     #[must_use]
     pub fn texture(&self) -> &Texture {
-        unsafe {
-            ffi::sfRenderTexture_getTexture(self)
-                .as_ref()
-                .expect("sfRenderTexture_getTexture failed")
-        }
+        // # Safety
+        //
+        // `getTexture` returns a reference, which is never null or dangling
+        unsafe { &*ffi::sfRenderTexture_getTexture(self) }
     }
 
     /// Enable or disable the smooth filter on a render texture

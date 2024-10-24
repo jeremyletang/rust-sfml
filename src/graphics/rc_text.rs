@@ -95,6 +95,10 @@ impl RcText {
     /// Set the font of the `RcText`
     ///
     /// font - New [`RcFont`]
+    ///
+    /// # Panics
+    ///
+    /// Panics on [`std::rc::Rc`] related shenanigans.
     pub fn set_font(&mut self, font: &RcFont) {
         self.set_rc_font(font);
         unsafe {

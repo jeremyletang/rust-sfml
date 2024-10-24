@@ -372,6 +372,10 @@ pub fn is_available() -> bool {
 ///
 /// This function returns the name of the default audio capture device.
 /// If none is available, an empty string is returned.
+///
+/// # Panics
+///
+/// Panics on allocation failure.
 #[must_use]
 pub fn default_device() -> FBox<CppString> {
     unsafe {
@@ -383,6 +387,10 @@ pub fn default_device() -> FBox<CppString> {
 ///
 /// This function returns a vector of strings, containing the names of all available
 /// audio capture devices.
+///
+/// # Panics
+///
+/// Panics on allocation failure.
 #[must_use]
 pub fn available_devices() -> FBox<CppVector<CppString>> {
     unsafe {

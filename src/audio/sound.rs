@@ -38,6 +38,10 @@ pub struct Sound<'buf> {
 /// Creation
 impl<'buf> Sound<'buf> {
     /// Create a new `Sound`
+    ///
+    /// # Panics
+    ///
+    /// Panics on allocation failure
     #[must_use]
     pub fn new() -> Self {
         let s = unsafe { ffi::audio::sfSound_new() };

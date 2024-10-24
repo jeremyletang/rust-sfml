@@ -326,11 +326,10 @@ impl Font {
     /// * `character_size` - Character size, in pixels
     #[must_use]
     pub fn texture(&self, character_size: u32) -> &Texture {
-        unsafe {
-            ffi::sfFont_getTexture(self, character_size)
-                .as_ref()
-                .expect("sfFont_getTexture failed")
-        }
+        // # Safety
+        //
+        // `getTexture` returns a reference, which is never null or dangling.
+        unsafe { &*ffi::sfFont_getTexture(self, character_size) }
     }
 
     /// Tell whether the smooth filter is enabled or not.

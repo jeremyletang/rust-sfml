@@ -119,7 +119,7 @@ impl Texture {
 
     /// Convenience method to easily create and load a `Texture` from a file.
     pub fn from_file(filename: &str) -> SfResult<FBox<Self>> {
-        let mut new = Self::new().expect("Failed to create texture");
+        let mut new = Self::new()?;
         new.load_from_file(filename, IntRect::default())?;
         Ok(new)
     }

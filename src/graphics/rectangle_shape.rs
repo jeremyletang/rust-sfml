@@ -22,6 +22,10 @@ pub struct RectangleShape<'s> {
 
 impl<'s> RectangleShape<'s> {
     /// Returns a new `RectangleShape`.
+    ///
+    /// # Panics
+    ///
+    /// Panics if a `RectangleShape` can't be created for some reason.
     #[must_use]
     pub fn new() -> RectangleShape<'s> {
         let rectangle = unsafe { ffi::sfRectangleShape_new() };

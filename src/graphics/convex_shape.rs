@@ -30,6 +30,10 @@ impl<'s> ConvexShape<'s> {
     ///
     /// # Arguments
     /// * `points_count` - The number of point for the convex shape
+    ///
+    /// # Panics
+    ///
+    /// Panics if for some reason a `ConvexShape` can't be created.
     #[must_use]
     pub fn new(points_count: usize) -> ConvexShape<'s> {
         let shape = unsafe { ffi::sfConvexShape_new() };
@@ -64,6 +68,10 @@ impl<'s> ConvexShape<'s> {
     /// # Arguments
     /// * index - Index of the point to change, in range `[0 .. get_point_count() - 1]`
     /// * point - New position of the point
+    ///
+    /// # Panics
+    ///
+    /// Panics on out of bounds access
     pub fn set_point<P: Into<Vector2f>>(&mut self, index: usize, point: P) {
         assert!(
             index < self.point_count(),

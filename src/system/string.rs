@@ -21,6 +21,8 @@ impl SfStr {
     }
     /// Convert to a UTF-8 `String` from the Rust standard library.
     ///
+    /// # Panics
+    ///
     /// Panics if the string is not valid UTF-32.
     #[must_use]
     #[expect(clippy::unwrap_used)]
