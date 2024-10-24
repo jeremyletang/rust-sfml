@@ -79,7 +79,7 @@ impl IntoSfResult<()> for bool {
     }
 }
 
-impl<T> IntoSfResult<cpp::FBox<T>> for Option<cpp::FBox<T>> {
+impl<T: ?Sized> IntoSfResult<cpp::FBox<T>> for Option<cpp::FBox<T>> {
     fn into_sf_result(self) -> SfResult<cpp::FBox<T>> {
         self.ok_or(SfError::CallFailed)
     }

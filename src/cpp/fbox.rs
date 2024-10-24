@@ -14,7 +14,7 @@ use std::{
 /// F stands for "foreign".
 pub struct FBox<T: ?Sized>(pub(crate) NonNull<T>);
 
-impl<T> std::fmt::Debug for FBox<T> {
+impl<T: ?Sized> std::fmt::Debug for FBox<T> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(
             f,
@@ -25,13 +25,13 @@ impl<T> std::fmt::Debug for FBox<T> {
     }
 }
 
-impl<T> FBox<T> {
+impl<T: ?Sized> FBox<T> {
     pub(crate) fn new(ptr: *mut T) -> Option<Self> {
         NonNull::new(ptr).map(FBox)
     }
 }
 
-impl<T> Deref for FBox<T> {
+impl<T: ?Sized> Deref for FBox<T> {
     type Target = T;
 
     fn deref(&self) -> &T {
@@ -39,13 +39,13 @@ impl<T> Deref for FBox<T> {
     }
 }
 
-impl<T> DerefMut for FBox<T> {
+impl<T: ?Sized> DerefMut for FBox<T> {
     fn deref_mut(&mut self) -> &mut Self::Target {
         unsafe { self.0.as_mut() }
     }
 }
 
-impl<T> Borrow<T> for FBox<T> {
+impl<T: ?Sized> Borrow<T> for FBox<T> {
     fn borrow(&self) -> &T {
         self
     }

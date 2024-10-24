@@ -33,7 +33,7 @@ use crate::graphics::{BlendMode, Shader, Texture, Transform};
 /// ```no_run
 /// # use sfml::graphics::*;
 /// # let mut window: RenderWindow = unimplemented!();
-/// # let shader: Shader = unimplemented!();
+/// # let shader: &Shader = unimplemented!();
 /// # let sprite: Sprite = unimplemented!();
 /// let mut states = RenderStates::default();
 /// states.shader = Some(&shader);

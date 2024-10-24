@@ -66,7 +66,7 @@ use {
 /// # use sfml::system::*;
 /// # use sfml::cpp::FBox;
 /// let texture: FBox<Texture> = unimplemented!();
-/// let mut shader: Shader = unimplemented!();
+/// let mut shader: &Shader = unimplemented!();
 /// let color: Color = unimplemented!();
 /// let transform: Transform = unimplemented!();
 /// shader.set_uniform_float("offset", 2.);
@@ -83,11 +83,11 @@ use {
 ///
 /// ```no_run
 /// # use sfml::graphics::*;
-/// # let shader: Shader = unimplemented!();
+/// # let shader: &Shader = unimplemented!();
 /// # let mut window: RenderWindow = unimplemented!();
 /// # let sprite: Sprite = unimplemented!();
 /// let mut states = RenderStates::default();;
-/// states.shader = Some(&shader);
+/// states.shader = Some(shader);
 /// window.draw_with_renderstates(&sprite, &states);
 /// ```
 ///
@@ -118,7 +118,7 @@ use {
 ///
 /// ```no_run
 /// use sfml::graphics::*;
-/// # let shader: Shader = unimplemented!();
+/// # let shader: &Shader = unimplemented!();
 /// Shader::bind(Some(&shader));
 /// // ... render OpenGL geometry ...
 /// Shader::bind(None);
