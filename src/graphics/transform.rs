@@ -46,7 +46,7 @@ impl Transform {
 
     /// Return the matrix
     #[must_use]
-    pub const fn get_matrix(&self) -> &[f32; 16] {
+    pub const fn matrix(&self) -> &[f32; 16] {
         &self.matrix
     }
 
