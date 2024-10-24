@@ -136,7 +136,7 @@ use {
 #[repr(C)]
 pub struct Shader<'texture> {
     _opaque: [u8; 0],
-    texture: PhantomData<&'texture Texture>,
+    _texture: PhantomData<&'texture Texture>,
 }
 
 impl<'texture> Shader<'texture> {
