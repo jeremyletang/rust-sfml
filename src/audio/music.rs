@@ -83,7 +83,7 @@ impl<'src> Music<'src> {
     ///
     /// [`play`]: Music::play
     pub fn open_from_file(&mut self, filename: &str) -> SfResult<()> {
-        let c_str = CString::new(filename).into_sf_result()?;
+        let c_str = CString::new(filename)?;
         unsafe { ffi::audio::sfMusic_openFromFile(self.music, c_str.as_ptr()) }.into_sf_result()
     }
 

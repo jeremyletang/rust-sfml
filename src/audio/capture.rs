@@ -212,7 +212,7 @@ impl<'a, R: SoundRecorder> SoundRecorderDriver<'a, R> {
     /// It can be called on the fly (i.e: while recording).
     /// If you do so while recording and opening the device fails, it stops the recording.
     pub fn set_device(&mut self, name: &str) -> SfResult<()> {
-        let name = CString::new(name).into_sf_result()?;
+        let name = CString::new(name)?;
         let success =
             unsafe { ffi::sfCustomSoundRecorder_setDevice(self.handle.as_ptr(), name.as_ptr()) };
         success.into_sf_result()
@@ -311,7 +311,7 @@ impl SoundBufferRecorder {
     /// It can be called on the fly (i.e: while recording).
     /// If you do so while recording and opening the device fails, it stops the recording.
     pub fn set_device(&mut self, name: &str) -> SfResult<()> {
-        let name = CString::new(name).into_sf_result()?;
+        let name = CString::new(name)?;
         let success =
             unsafe { ffi::sfSoundBufferRecorder_setDevice(self.handle.as_ptr(), name.as_ptr()) };
         success.into_sf_result()

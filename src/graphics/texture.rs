@@ -113,7 +113,7 @@ impl Texture {
     /// # Arguments
     /// * filename - Path of the image file to load
     pub fn load_from_file(&mut self, filename: &str, area: IntRect) -> SfResult<()> {
-        let c_str = CString::new(filename).into_sf_result()?;
+        let c_str = CString::new(filename)?;
         unsafe { ffi::sfTexture_loadFromFile(self, c_str.as_ptr(), area).into_sf_result() }
     }
 

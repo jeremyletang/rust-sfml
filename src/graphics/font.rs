@@ -131,7 +131,7 @@ impl Font {
     /// };
     /// ```
     pub fn load_from_file(&mut self, path: &str) -> SfResult<()> {
-        let c_str = CString::new(path).into_sf_result()?;
+        let c_str = CString::new(path)?;
         unsafe { ffi::sfFont_loadFromFile(self, c_str.as_ptr()) }.into_sf_result()
     }
 

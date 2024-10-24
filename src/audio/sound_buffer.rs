@@ -97,7 +97,7 @@ impl SoundBuffer {
     /// # Arguments
     /// * filename - Path of the sound file to load
     pub fn load_from_file(&mut self, filename: &str) -> SfResult<()> {
-        let c_str = CString::new(filename).into_sf_result()?;
+        let c_str = CString::new(filename)?;
         unsafe { ffi::audio::sfSoundBuffer_loadFromFile(self, c_str.as_ptr()) }.into_sf_result()
     }
     /// Load the sound buffer from a file in memory.
@@ -200,7 +200,7 @@ impl SoundBuffer {
     /// # Arguments
     /// * filename - Path of the sound file to write
     pub fn save_to_file(&self, filename: &str) -> SfResult<()> {
-        let c_str = CString::new(filename).into_sf_result()?;
+        let c_str = CString::new(filename)?;
         unsafe { ffi::audio::sfSoundBuffer_saveToFile(self, c_str.as_ptr()) }.into_sf_result()
     }
 }

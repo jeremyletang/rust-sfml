@@ -4,7 +4,7 @@ use {
         ffi::graphics as ffi,
         graphics::{glsl, Texture},
         system::InputStream,
-        IntoSfResult, SfError, SfResult,
+        SfError, SfResult,
     },
     std::{
         ffi::CString,
@@ -352,7 +352,7 @@ impl<'texture> Shader<'texture> {
 
     /// Specify value for `float` uniform.
     pub fn set_uniform_float(&mut self, name: &str, value: f32) -> SfResult<()> {
-        let cstring = CString::new(name).into_sf_result()?;
+        let cstring = CString::new(name)?;
         let name = cstring.as_ptr();
         unsafe {
             ffi::sfShader_setFloatUniform(self.handle.as_ptr(), name, value);
@@ -362,7 +362,7 @@ impl<'texture> Shader<'texture> {
 
     /// Specify value for `vec2` uniform.
     pub fn set_uniform_vec2(&mut self, name: &str, value: glsl::Vec2) -> SfResult<()> {
-        let cstring = CString::new(name).into_sf_result()?;
+        let cstring = CString::new(name)?;
         let name = cstring.as_ptr();
         unsafe {
             ffi::sfShader_setVec2Uniform(self.handle.as_ptr(), name, value);
@@ -372,7 +372,7 @@ impl<'texture> Shader<'texture> {
 
     /// Specify value for `vec3` uniform.
     pub fn set_uniform_vec3(&mut self, name: &str, value: glsl::Vec3) -> SfResult<()> {
-        let cstring = CString::new(name).into_sf_result()?;
+        let cstring = CString::new(name)?;
         let name = cstring.as_ptr();
         unsafe {
             ffi::sfShader_setVec3Uniform(self.handle.as_ptr(), name, value);
@@ -395,7 +395,7 @@ impl<'texture> Shader<'texture> {
     where
         V: Into<glsl::Vec4>,
     {
-        let cstring = CString::new(name).into_sf_result()?;
+        let cstring = CString::new(name)?;
         let name = cstring.as_ptr();
         unsafe {
             ffi::sfShader_setVec4Uniform(self.handle.as_ptr(), name, value.into().raw());
@@ -405,7 +405,7 @@ impl<'texture> Shader<'texture> {
 
     /// Specify value for `int` uniform.
     pub fn set_uniform_int(&mut self, name: &str, value: i32) -> SfResult<()> {
-        let cstring = CString::new(name).into_sf_result()?;
+        let cstring = CString::new(name)?;
         let name = cstring.as_ptr();
         unsafe {
             ffi::sfShader_setIntUniform(self.handle.as_ptr(), name, value);
@@ -415,7 +415,7 @@ impl<'texture> Shader<'texture> {
 
     /// Specify value for `ivec2` uniform.
     pub fn set_uniform_ivec2(&mut self, name: &str, value: glsl::IVec2) -> SfResult<()> {
-        let cstring = CString::new(name).into_sf_result()?;
+        let cstring = CString::new(name)?;
         let name = cstring.as_ptr();
         unsafe {
             ffi::sfShader_setIvec2Uniform(self.handle.as_ptr(), name, value);
@@ -425,7 +425,7 @@ impl<'texture> Shader<'texture> {
 
     /// Specify value for `ivec3` uniform.
     pub fn set_uniform_ivec3(&mut self, name: &str, value: glsl::IVec3) -> SfResult<()> {
-        let cstring = CString::new(name).into_sf_result()?;
+        let cstring = CString::new(name)?;
         let name = cstring.as_ptr();
         unsafe {
             ffi::sfShader_setIvec3Uniform(self.handle.as_ptr(), name, value.into());
@@ -447,7 +447,7 @@ impl<'texture> Shader<'texture> {
     where
         V: Into<glsl::IVec4>,
     {
-        let cstring = CString::new(name).into_sf_result()?;
+        let cstring = CString::new(name)?;
         let name = cstring.as_ptr();
         unsafe {
             ffi::sfShader_setIvec4Uniform(self.handle.as_ptr(), name, value.into().raw());
@@ -457,7 +457,7 @@ impl<'texture> Shader<'texture> {
 
     /// Specify value for `bool` uniform.
     pub fn set_uniform_bool(&mut self, name: &str, value: bool) -> SfResult<()> {
-        let cstring = CString::new(name).into_sf_result()?;
+        let cstring = CString::new(name)?;
         let name = cstring.as_ptr();
         unsafe {
             ffi::sfShader_setBoolUniform(self.handle.as_ptr(), name, value);
@@ -467,7 +467,7 @@ impl<'texture> Shader<'texture> {
 
     /// Specify value for `bvec2` uniform.
     pub fn set_uniform_bvec2(&mut self, name: &str, value: glsl::BVec2) -> SfResult<()> {
-        let cstring = CString::new(name).into_sf_result()?;
+        let cstring = CString::new(name)?;
         let name = cstring.as_ptr();
         unsafe {
             ffi::sfShader_setBvec2Uniform(self.handle.as_ptr(), name, value.into());
@@ -477,7 +477,7 @@ impl<'texture> Shader<'texture> {
 
     /// Specify value for `bvec3` uniform.
     pub fn set_uniform_bvec3(&mut self, name: &str, value: glsl::BVec3) -> SfResult<()> {
-        let cstring = CString::new(name).into_sf_result()?;
+        let cstring = CString::new(name)?;
         let name = cstring.as_ptr();
         unsafe {
             ffi::sfShader_setBvec3Uniform(self.handle.as_ptr(), name, value.into());
@@ -487,7 +487,7 @@ impl<'texture> Shader<'texture> {
 
     /// Specify value for `bvec4` uniform.
     pub fn set_uniform_bvec4(&mut self, name: &str, value: glsl::BVec4) -> SfResult<()> {
-        let cstring = CString::new(name).into_sf_result()?;
+        let cstring = CString::new(name)?;
         let name = cstring.as_ptr();
         unsafe {
             ffi::sfShader_setBvec4Uniform(self.handle.as_ptr(), name, value.into());
@@ -500,7 +500,7 @@ impl<'texture> Shader<'texture> {
     where
         V: Into<glsl::Mat3>,
     {
-        let cstring = CString::new(name).into_sf_result()?;
+        let cstring = CString::new(name)?;
         let name = cstring.as_ptr();
         let value = value.into();
         let ptr: *const _ = &value.0;
@@ -515,7 +515,7 @@ impl<'texture> Shader<'texture> {
     where
         V: Into<glsl::Mat4>,
     {
-        let cstring = CString::new(name).into_sf_result()?;
+        let cstring = CString::new(name)?;
         let name = cstring.as_ptr();
         let value = value.into();
         let ptr: *const _ = &value.0;
@@ -533,7 +533,7 @@ impl<'texture> Shader<'texture> {
     /// To use the texture of the object being drawn, which cannot be known in advance,
     /// use [`Shader::set_uniform_current_texture`].
     pub fn set_uniform_texture(&mut self, name: &str, value: &'texture Texture) -> SfResult<()> {
-        let cstring = CString::new(name).into_sf_result()?;
+        let cstring = CString::new(name)?;
         let name = cstring.as_ptr();
         unsafe {
             ffi::sfShader_setTextureUniform(self.handle.as_ptr(), name, value);
@@ -547,7 +547,7 @@ impl<'texture> Shader<'texture> {
     /// which cannot be known in advance.
     /// The corresponding parameter in the shader must be a 2D texture (`sampler2D` GLSL type).
     pub fn set_uniform_current_texture(&mut self, name: &str) -> SfResult<()> {
-        let cstring = CString::new(name).into_sf_result()?;
+        let cstring = CString::new(name)?;
         let name = cstring.as_ptr();
         unsafe {
             ffi::sfShader_setCurrentTextureUniform(self.handle.as_ptr(), name);
@@ -557,7 +557,7 @@ impl<'texture> Shader<'texture> {
 
     /// Specify values for `float[]` array uniform.
     pub fn set_uniform_array_float(&mut self, name: &str, array: &[f32]) -> SfResult<()> {
-        let cstring = CString::new(name).into_sf_result()?;
+        let cstring = CString::new(name)?;
         let name = cstring.as_ptr();
         let len = array.len();
         unsafe {
@@ -568,7 +568,7 @@ impl<'texture> Shader<'texture> {
 
     /// Specify values for `vec2[]` array uniform.
     pub fn set_uniform_array_vec2(&mut self, name: &str, array: &[glsl::Vec2]) -> SfResult<()> {
-        let cstring = CString::new(name).into_sf_result()?;
+        let cstring = CString::new(name)?;
         let name = cstring.as_ptr();
         let len = array.len();
         let ptr = array.as_ptr();
@@ -580,7 +580,7 @@ impl<'texture> Shader<'texture> {
 
     /// Specify values for `vec3[]` array uniform.
     pub fn set_uniform_array_vec3(&mut self, name: &str, array: &[glsl::Vec3]) -> SfResult<()> {
-        let cstring = CString::new(name).into_sf_result()?;
+        let cstring = CString::new(name)?;
         let name = cstring.as_ptr();
         let len = array.len();
         let ptr = array.as_ptr();
@@ -592,7 +592,7 @@ impl<'texture> Shader<'texture> {
 
     /// Specify values for `vec4[]` array uniform.
     pub fn set_uniform_array_vec4(&mut self, name: &str, array: &[glsl::Vec4]) -> SfResult<()> {
-        let cstring = CString::new(name).into_sf_result()?;
+        let cstring = CString::new(name)?;
         unsafe {
             ffi::sfShader_setVec4UniformArray(
                 self.handle.as_ptr(),
@@ -606,7 +606,7 @@ impl<'texture> Shader<'texture> {
 
     /// Specify values for `mat3[]` array uniform.
     pub fn set_uniform_array_mat3(&mut self, name: &str, array: &[glsl::Mat3]) -> SfResult<()> {
-        let cstring = CString::new(name).into_sf_result()?;
+        let cstring = CString::new(name)?;
         unsafe {
             ffi::sfShader_setMat3UniformArray(
                 self.handle.as_ptr(),
@@ -620,7 +620,7 @@ impl<'texture> Shader<'texture> {
 
     /// Specify values for `mat4[]` array uniform.
     pub fn set_uniform_array_mat4(&mut self, name: &str, array: &[glsl::Mat4]) -> SfResult<()> {
-        let cstring = CString::new(name).into_sf_result()?;
+        let cstring = CString::new(name)?;
         unsafe {
             ffi::sfShader_setMat4UniformArray(
                 self.handle.as_ptr(),

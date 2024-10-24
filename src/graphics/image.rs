@@ -95,7 +95,7 @@ impl Image {
     /// like progressive jpeg.
     /// If this function fails, the image is left unchanged.
     pub fn load_from_file(&mut self, path: &str) -> SfResult<()> {
-        let c_path = CString::new(path).into_sf_result()?;
+        let c_path = CString::new(path)?;
         unsafe { ffi::sfImage_loadFromFile(self, c_path.as_ptr()) }.into_sf_result()
     }
     /// Load from image file data in memory.
@@ -285,7 +285,7 @@ impl Image {
     ///
     /// Return true if saving was successful
     pub fn save_to_file(&self, filename: &str) -> SfResult<()> {
-        let c_str = CString::new(filename).into_sf_result()?;
+        let c_str = CString::new(filename)?;
         unsafe { ffi::sfImage_saveToFile(self, c_str.as_ptr()) }.into_sf_result()
     }
 

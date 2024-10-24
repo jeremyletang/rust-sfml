@@ -34,11 +34,7 @@ pub mod graphics;
 pub mod system;
 #[cfg(feature = "window")]
 pub mod window;
-use std::{
-    error::Error,
-    ffi::{CString, NulError},
-    fmt::Display,
-};
+use std::{error::Error, fmt::Display};
 
 /// An SFML operation has failed
 #[derive(Clone, Copy, Debug)]
@@ -58,6 +54,12 @@ impl Display for SfError {
     }
 }
 
+impl From<std::ffi::NulError> for SfError {
+    fn from(_value: std::ffi::NulError) -> Self {
+        Self::NulInStr
+    }
+}
+
 impl Error for SfError {}
 
 /// Result of a fallible SFML operation
@@ -74,12 +76,6 @@ impl IntoSfResult<()> for bool {
         } else {
             Err(SfError::CallFailed)
         }
-    }
-}
-
-impl IntoSfResult<CString> for Result<CString, NulError> {
-    fn into_sf_result(self) -> SfResult<CString> {
-        self.map_err(|_| SfError::NulInStr)
     }
 }
 
