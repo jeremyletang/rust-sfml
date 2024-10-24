@@ -132,11 +132,16 @@ use {
 /// [`Text`]: crate::graphics::Text
 /// [`RenderTexture`]: crate::graphics::RenderTexture
 ///
-#[derive(Debug)]
 #[repr(C)]
 pub struct Shader<'texture> {
     _opaque: [u8; 0],
     _texture: PhantomData<&'texture Texture>,
+}
+
+impl std::fmt::Debug for Shader<'_> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "Shader(<opaque> @ {self:p})")
+    }
 }
 
 impl<'texture> Shader<'texture> {
