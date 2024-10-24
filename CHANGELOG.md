@@ -1,8 +1,54 @@
 # Changelog
 
-## Unreleased
+## 0.24.0
 
-- Nothing yet
+### Added
+
+- Add `cpp::CppString` and `cpp::CppVector` to deal with C++ strings and vectors returned by SFML
+- Add provided method `Shape::points` to get an iterator over the points of a shape
+- Add `From<T> for Vector2<T>`. This allows things like `my_sprite.set_scale(2.0)`,
+  to scale to `2.0` in both axes.
+- Add `Image::new_solid` to create an image filled with a solid color
+- Add `Font::new` to create an empty font
+- Add `Window::new` to create a closed window
+- Add `RenderTexture::recreate` to recreate a `RenderTexture` with new settings
+
+### Changed
+
+- Rust requirement increased to 1.82
+- Rename `SfBox` to `FBox` to emphasize the fact it doesn't only deal with SFML objects, but
+  multiple kinds of foreign objects. (F stands for "foreign")
+- All methods on `system::Time` are now `const fn`
+- Rename `Transform::get_matrix` to `Transform::matrix`
+- Make `Transform::{new, matrix, inverse}` `const fn`
+- `Image::new` now creates an empty image. See `Image::new_solid`
+- Old `Window::new` is now `Window::new_open`
+- `SoundRecorder` now requires `Send`
+- Make `RcFont::texture` return `Ref` rather than "leak" a borrow
+- Make all fields on `RenderStates` public
+- `Texture::upate_from_pixels` is now a safe, checked function
+
+### Fixed
+
+- Fix building on Mac OS X
+- Fix `Music::from_memory` having unbounded lifetime on the memory
+
+### Removed
+
+- `ConvexShape::points` in favor of `Shape::points`
+- `RenderStates::{new, set_texture, set_shader}` in favor of public fields
+
+### Documentation and examples
+
+- Remove awkward `example_res!` macro from examples in favor of calling
+  `example_ensure_right_working_dir()` at the beginning of main.
+- Improve some examples, showcase more API usages in them
+- Leverage "scrape examples" functionality of rustdoc in docs.rs generated documentation
+- Add "positional audio" example
+
+### Internal improvements
+
+- Added continuous integration for Windows MSVC, and Mac OS X
 
 ## 0.23.0
 
