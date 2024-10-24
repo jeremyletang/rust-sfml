@@ -1,10 +1,4 @@
-use {
-    crate::{
-        ffi::graphics as ffi,
-        graphics::{BlendMode, Shader, Texture, Transform},
-    },
-    std::{marker::PhantomData, ptr},
-};
+use crate::graphics::{BlendMode, Shader, Texture, Transform};
 
 /// Define the states used for drawing to a [`RenderTarget`].
 ///
@@ -62,8 +56,7 @@ pub struct RenderStates<'texture, 'shader, 'shader_texture: 'shader> {
     /// The transform
     pub transform: Transform,
     texture: Option<&'texture Texture>,
-    shader: *const ffi::sfShader,
-    _shader: PhantomData<&'shader Shader<'shader_texture>>,
+    shader: Option<&'shader Shader<'shader_texture>>,
 }
 
 impl<'texture, 'shader, 'shader_texture> RenderStates<'texture, 'shader, 'shader_texture> {
@@ -87,11 +80,7 @@ impl<'texture, 'shader, 'shader_texture> RenderStates<'texture, 'shader, 'shader
             blend_mode,
             transform,
             texture,
-            shader: match shader {
-                Some(shader) => shader.raw(),
-                None => ptr::null(),
-            },
-            _shader: PhantomData,
+            shader,
         }
     }
     /// Sets the texture
@@ -100,10 +89,7 @@ impl<'texture, 'shader, 'shader_texture> RenderStates<'texture, 'shader, 'shader
     }
     /// Sets the shader
     pub fn set_shader(&mut self, shader: Option<&'shader Shader<'shader_texture>>) {
-        self.shader = match shader {
-            None => ptr::null(),
-            Some(shader) => shader.raw(),
-        };
+        self.shader = shader;
     }
 }
 
@@ -115,8 +101,7 @@ impl RenderStates<'static, 'static, 'static> {
         blend_mode: BlendMode::ALPHA,
         transform: Transform::IDENTITY,
         texture: None,
-        shader: ptr::null(),
-        _shader: PhantomData,
+        shader: None,
     };
 }
 

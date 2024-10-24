@@ -19,7 +19,7 @@ trait Effect: Drawable {
 
 struct Pixelate<'t> {
     sprite: Sprite<'t>,
-    shader: Shader<'static>,
+    shader: FBox<Shader<'static>>,
 }
 
 impl<'t> Pixelate<'t> {
@@ -60,7 +60,7 @@ impl Effect for Pixelate<'_> {
 
 struct WaveBlur<'fo> {
     text: Text<'fo>,
-    shader: Shader<'static>,
+    shader: FBox<Shader<'static>>,
 }
 
 const WAVEBLUR_TEXT: &str = "\
@@ -124,7 +124,7 @@ impl Effect for WaveBlur<'_> {
 
 struct StormBlink {
     points: Vec<Vertex>,
-    shader: Shader<'static>,
+    shader: FBox<Shader<'static>>,
 }
 
 impl StormBlink {
@@ -184,7 +184,7 @@ struct Edge<'t> {
     surface: FBox<RenderTexture>,
     bg_sprite: Sprite<'t>,
     entities: Vec<Sprite<'t>>,
-    shader: Shader<'static>,
+    shader: FBox<Shader<'static>>,
 }
 
 impl<'t> Edge<'t> {

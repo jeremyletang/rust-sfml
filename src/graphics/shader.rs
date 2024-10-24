@@ -1,16 +1,17 @@
 use {
     super::ShaderType,
     crate::{
+        cpp::FBox,
         ffi::graphics as ffi,
         graphics::{glsl, Texture},
         system::InputStream,
-        IntoSfResult, SfError, SfResult,
+        IntoSfResult, SfResult,
     },
     std::{
         ffi::CString,
         io::{Read, Seek},
         marker::PhantomData,
-        ptr::{self, NonNull},
+        ptr::{self},
     },
 };
 
@@ -132,17 +133,15 @@ use {
 /// [`RenderTexture`]: crate::graphics::RenderTexture
 ///
 #[derive(Debug)]
+#[repr(C)]
 pub struct Shader<'texture> {
-    handle: NonNull<ffi::sfShader>,
+    _opaque: [u8; 0],
     texture: PhantomData<&'texture Texture>,
 }
 
 impl<'texture> Shader<'texture> {
-    fn new() -> SfResult<Self> {
-        Ok(Self {
-            handle: NonNull::new(unsafe { ffi::sfShader_new() }).ok_or(SfError::CallFailed)?,
-            texture: PhantomData,
-        })
+    fn new() -> SfResult<FBox<Self>> {
+        FBox::new(unsafe { ffi::sfShader_new() }.cast()).into_sf_result()
     }
     /// Load the vertex, geometry or fragment shader from a file.
     ///
@@ -151,10 +150,10 @@ impl<'texture> Shader<'texture> {
     /// The source must be a text file containing a valid shader in GLSL language.
     /// GLSL is a C-like language dedicated to OpenGL shaders; you'll probably need to read a good
     /// documentation for it before writing your own shaders.
-    pub fn from_file(path: &str, type_: ShaderType) -> SfResult<Self> {
+    pub fn from_file(path: &str, type_: ShaderType) -> SfResult<FBox<Self>> {
         let path = CString::new(path)?;
-        let new = Self::new()?;
-        unsafe { ffi::sfShader_loadFromFile_1(new.handle.as_ptr(), path.as_ptr(), type_) }
+        let mut new = Self::new()?;
+        unsafe { ffi::sfShader_loadFromFile_1(new.raw_mut(), path.as_ptr(), type_) }
             .into_sf_result()?;
         Ok(new)
     }
@@ -165,12 +164,12 @@ impl<'texture> Shader<'texture> {
     /// The sources must be text files containing valid shaders in GLSL language.
     /// GLSL is a C-like language dedicated to OpenGL shaders;
     /// you'll probably need to read a good documentation for it before writing your own shaders.
-    pub fn from_file_vert_frag(vert: &str, frag: &str) -> SfResult<Self> {
+    pub fn from_file_vert_frag(vert: &str, frag: &str) -> SfResult<FBox<Self>> {
         let vert = CString::new(vert)?;
         let frag = CString::new(frag)?;
-        let new = Self::new()?;
+        let mut new = Self::new()?;
         unsafe {
-            ffi::sfShader_loadFromFile_vert_frag(new.handle.as_ptr(), vert.as_ptr(), frag.as_ptr())
+            ffi::sfShader_loadFromFile_vert_frag(new.raw_mut(), vert.as_ptr(), frag.as_ptr())
         }
         .into_sf_result()?;
         Ok(new)
@@ -182,14 +181,14 @@ impl<'texture> Shader<'texture> {
     /// The sources must be text files containing valid shaders in GLSL language.
     /// GLSL is a C-like language dedicated to OpenGL shaders; you'll probably need to
     /// read a good documentation for it before writing your own shaders.
-    pub fn from_file_all(vert: &str, geom: &str, frag: &str) -> SfResult<Self> {
+    pub fn from_file_all(vert: &str, geom: &str, frag: &str) -> SfResult<FBox<Self>> {
         let vert = CString::new(vert)?;
         let geom = CString::new(geom)?;
         let frag = CString::new(frag)?;
-        let new = Self::new()?;
+        let mut new = Self::new()?;
         unsafe {
             ffi::sfShader_loadFromFile_all(
-                new.handle.as_ptr(),
+                new.raw_mut(),
                 vert.as_ptr(),
                 geom.as_ptr(),
                 frag.as_ptr(),
@@ -206,10 +205,10 @@ impl<'texture> Shader<'texture> {
     /// The source code must be a valid shader in GLSL language.
     /// GLSL is a C-like language dedicated to OpenGL shaders; you'll probably need to read a
     /// good documentation for it before writing your own shaders.
-    pub fn from_memory(contents: &str, type_: ShaderType) -> SfResult<Self> {
+    pub fn from_memory(contents: &str, type_: ShaderType) -> SfResult<FBox<Self>> {
         let contents = CString::new(contents)?;
-        let new = Self::new()?;
-        unsafe { ffi::sfShader_loadFromMemory_1(new.handle.as_ptr(), contents.as_ptr(), type_) }
+        let mut new = Self::new()?;
+        unsafe { ffi::sfShader_loadFromMemory_1(new.raw_mut(), contents.as_ptr(), type_) }
             .into_sf_result()?;
         Ok(new)
     }
@@ -220,17 +219,13 @@ impl<'texture> Shader<'texture> {
     /// The sources must be valid shaders in GLSL language. GLSL is a C-like language dedicated
     /// to OpenGL shaders; you'll probably need to read a good documentation
     /// for it before writing your own shaders.
-    pub fn from_memory_vert_frag(vert: &str, frag: &str) -> SfResult<Self> {
+    pub fn from_memory_vert_frag(vert: &str, frag: &str) -> SfResult<FBox<Self>> {
         let vert = CString::new(vert)?;
         let frag = CString::new(frag)?;
-        let new = Self::new()?;
+        let mut new = Self::new()?;
 
         unsafe {
-            ffi::sfShader_loadFromMemory_vert_frag(
-                new.handle.as_ptr(),
-                vert.as_ptr(),
-                frag.as_ptr(),
-            )
+            ffi::sfShader_loadFromMemory_vert_frag(new.raw_mut(), vert.as_ptr(), frag.as_ptr())
         }
         .into_sf_result()?;
         Ok(new)
@@ -242,14 +237,14 @@ impl<'texture> Shader<'texture> {
     /// The sources must be valid shaders in GLSL language. GLSL is a C-like language dedicated to
     /// OpenGL shaders; you'll probably need to read a good documentation for it
     /// before writing your own shaders.
-    pub fn from_memory_all(vert: &str, geom: &str, frag: &str) -> SfResult<Self> {
+    pub fn from_memory_all(vert: &str, geom: &str, frag: &str) -> SfResult<FBox<Self>> {
         let vert = CString::new(vert)?;
         let geom = CString::new(geom)?;
         let frag = CString::new(frag)?;
-        let new = Self::new()?;
+        let mut new = Self::new()?;
         unsafe {
             ffi::sfShader_loadFromMemory_all(
-                new.handle.as_ptr(),
+                new.raw_mut(),
                 vert.as_ptr(),
                 geom.as_ptr(),
                 frag.as_ptr(),
@@ -265,13 +260,11 @@ impl<'texture> Shader<'texture> {
     /// argument. The source code must be a valid shader in GLSL language.
     /// GLSL is a C-like language dedicated to OpenGL shaders; you'll probably need to read a good
     /// documentation for it before writing your own shaders.
-    pub fn from_stream<T: Read + Seek>(mut source: T, type_: ShaderType) -> SfResult<Self> {
+    pub fn from_stream<T: Read + Seek>(mut source: T, type_: ShaderType) -> SfResult<FBox<Self>> {
         let source = InputStream::new(&mut source);
-        let new = Self::new()?;
-        unsafe {
-            ffi::sfShader_loadFromStream_1(new.handle.as_ptr(), source.stream.0.as_ptr(), type_)
-        }
-        .into_sf_result()?;
+        let mut new = Self::new()?;
+        unsafe { ffi::sfShader_loadFromStream_1(new.raw_mut(), source.stream.0.as_ptr(), type_) }
+            .into_sf_result()?;
         Ok(new)
     }
 
@@ -281,18 +274,18 @@ impl<'texture> Shader<'texture> {
     /// The source codes must be valid shaders in GLSL language. GLSL is a C-like
     /// language dedicated to OpenGL shaders; you'll probably need to read a good documentation
     /// for it before writing your own shaders.
-    pub fn from_stream_vert_frag<T, U>(mut vert: T, mut frag: U) -> SfResult<Self>
+    pub fn from_stream_vert_frag<T, U>(mut vert: T, mut frag: U) -> SfResult<FBox<Self>>
     where
         T: Read + Seek,
         U: Read + Seek,
     {
         let vert = InputStream::new(&mut vert);
         let frag = InputStream::new(&mut frag);
-        let new = Self::new()?;
+        let mut new = Self::new()?;
 
         unsafe {
             ffi::sfShader_loadFromStream_vert_frag(
-                new.handle.as_ptr(),
+                new.raw_mut(),
                 vert.stream.0.as_ptr(),
                 frag.stream.0.as_ptr(),
             )
@@ -307,7 +300,7 @@ impl<'texture> Shader<'texture> {
     /// The source codes must be valid shaders in GLSL language. GLSL is a C-like language
     /// dedicated to OpenGL shaders; you'll probably need to read a good documentation for it
     /// before writing your own shaders.
-    pub fn from_stream_all<T, U, V>(mut vert: T, mut geom: U, mut frag: V) -> SfResult<Self>
+    pub fn from_stream_all<T, U, V>(mut vert: T, mut geom: U, mut frag: V) -> SfResult<FBox<Self>>
     where
         T: Read + Seek,
         U: Read + Seek,
@@ -316,10 +309,10 @@ impl<'texture> Shader<'texture> {
         let vert = InputStream::new(&mut vert);
         let geom = InputStream::new(&mut geom);
         let frag = InputStream::new(&mut frag);
-        let new = Self::new()?;
+        let mut new = Self::new()?;
         unsafe {
             ffi::sfShader_loadFromStream_all(
-                new.handle.as_ptr(),
+                new.raw_mut(),
                 vert.stream.0.as_ptr(),
                 geom.stream.0.as_ptr(),
                 frag.stream.0.as_ptr(),
@@ -335,7 +328,7 @@ impl<'texture> Shader<'texture> {
     /// it mustn't be used when drawing SFML entities.
     /// It must be used only if you mix `Shader` with OpenGL code.
     pub fn bind(shader: Option<&Self>) {
-        unsafe { ffi::sfShader_bind(shader.map_or(ptr::null_mut(), |s| s.handle.as_ptr())) }
+        unsafe { ffi::sfShader_bind(shader.map_or(ptr::null(), |s| s.raw())) }
     }
 
     /// Tell whether or not the system supports shaders
@@ -370,7 +363,7 @@ impl<'texture> Shader<'texture> {
         let cstring = CString::new(name)?;
         let name = cstring.as_ptr();
         unsafe {
-            ffi::sfShader_setFloatUniform(self.handle.as_ptr(), name, value);
+            ffi::sfShader_setFloatUniform(self.raw_mut(), name, value);
         }
         Ok(())
     }
@@ -380,7 +373,7 @@ impl<'texture> Shader<'texture> {
         let cstring = CString::new(name)?;
         let name = cstring.as_ptr();
         unsafe {
-            ffi::sfShader_setVec2Uniform(self.handle.as_ptr(), name, value);
+            ffi::sfShader_setVec2Uniform(self.raw_mut(), name, value);
         }
         Ok(())
     }
@@ -390,7 +383,7 @@ impl<'texture> Shader<'texture> {
         let cstring = CString::new(name)?;
         let name = cstring.as_ptr();
         unsafe {
-            ffi::sfShader_setVec3Uniform(self.handle.as_ptr(), name, value);
+            ffi::sfShader_setVec3Uniform(self.raw_mut(), name, value);
         }
         Ok(())
     }
@@ -413,7 +406,7 @@ impl<'texture> Shader<'texture> {
         let cstring = CString::new(name)?;
         let name = cstring.as_ptr();
         unsafe {
-            ffi::sfShader_setVec4Uniform(self.handle.as_ptr(), name, value.into().raw());
+            ffi::sfShader_setVec4Uniform(self.raw_mut(), name, value.into().raw());
         }
         Ok(())
     }
@@ -423,7 +416,7 @@ impl<'texture> Shader<'texture> {
         let cstring = CString::new(name)?;
         let name = cstring.as_ptr();
         unsafe {
-            ffi::sfShader_setIntUniform(self.handle.as_ptr(), name, value);
+            ffi::sfShader_setIntUniform(self.raw_mut(), name, value);
         }
         Ok(())
     }
@@ -433,7 +426,7 @@ impl<'texture> Shader<'texture> {
         let cstring = CString::new(name)?;
         let name = cstring.as_ptr();
         unsafe {
-            ffi::sfShader_setIvec2Uniform(self.handle.as_ptr(), name, value);
+            ffi::sfShader_setIvec2Uniform(self.raw_mut(), name, value);
         }
         Ok(())
     }
@@ -443,7 +436,7 @@ impl<'texture> Shader<'texture> {
         let cstring = CString::new(name)?;
         let name = cstring.as_ptr();
         unsafe {
-            ffi::sfShader_setIvec3Uniform(self.handle.as_ptr(), name, value.into());
+            ffi::sfShader_setIvec3Uniform(self.raw_mut(), name, value.into());
         }
         Ok(())
     }
@@ -465,7 +458,7 @@ impl<'texture> Shader<'texture> {
         let cstring = CString::new(name)?;
         let name = cstring.as_ptr();
         unsafe {
-            ffi::sfShader_setIvec4Uniform(self.handle.as_ptr(), name, value.into().raw());
+            ffi::sfShader_setIvec4Uniform(self.raw_mut(), name, value.into().raw());
         }
         Ok(())
     }
@@ -475,7 +468,7 @@ impl<'texture> Shader<'texture> {
         let cstring = CString::new(name)?;
         let name = cstring.as_ptr();
         unsafe {
-            ffi::sfShader_setBoolUniform(self.handle.as_ptr(), name, value);
+            ffi::sfShader_setBoolUniform(self.raw_mut(), name, value);
         }
         Ok(())
     }
@@ -485,7 +478,7 @@ impl<'texture> Shader<'texture> {
         let cstring = CString::new(name)?;
         let name = cstring.as_ptr();
         unsafe {
-            ffi::sfShader_setBvec2Uniform(self.handle.as_ptr(), name, value.into());
+            ffi::sfShader_setBvec2Uniform(self.raw_mut(), name, value.into());
         }
         Ok(())
     }
@@ -495,7 +488,7 @@ impl<'texture> Shader<'texture> {
         let cstring = CString::new(name)?;
         let name = cstring.as_ptr();
         unsafe {
-            ffi::sfShader_setBvec3Uniform(self.handle.as_ptr(), name, value.into());
+            ffi::sfShader_setBvec3Uniform(self.raw_mut(), name, value.into());
         }
         Ok(())
     }
@@ -505,7 +498,7 @@ impl<'texture> Shader<'texture> {
         let cstring = CString::new(name)?;
         let name = cstring.as_ptr();
         unsafe {
-            ffi::sfShader_setBvec4Uniform(self.handle.as_ptr(), name, value.into());
+            ffi::sfShader_setBvec4Uniform(self.raw_mut(), name, value.into());
         }
         Ok(())
     }
@@ -520,7 +513,7 @@ impl<'texture> Shader<'texture> {
         let value = value.into();
         let ptr: *const _ = &value.0;
         unsafe {
-            ffi::sfShader_setMat3Uniform(self.handle.as_ptr(), name, ptr.cast());
+            ffi::sfShader_setMat3Uniform(self.raw_mut(), name, ptr.cast());
         }
         Ok(())
     }
@@ -535,7 +528,7 @@ impl<'texture> Shader<'texture> {
         let value = value.into();
         let ptr: *const _ = &value.0;
         unsafe {
-            ffi::sfShader_setMat4Uniform(self.handle.as_ptr(), name, ptr.cast());
+            ffi::sfShader_setMat4Uniform(self.raw_mut(), name, ptr.cast());
         }
         Ok(())
     }
@@ -551,7 +544,7 @@ impl<'texture> Shader<'texture> {
         let cstring = CString::new(name)?;
         let name = cstring.as_ptr();
         unsafe {
-            ffi::sfShader_setTextureUniform(self.handle.as_ptr(), name, value);
+            ffi::sfShader_setTextureUniform(self.raw_mut(), name, value);
         }
         Ok(())
     }
@@ -565,7 +558,7 @@ impl<'texture> Shader<'texture> {
         let cstring = CString::new(name)?;
         let name = cstring.as_ptr();
         unsafe {
-            ffi::sfShader_setCurrentTextureUniform(self.handle.as_ptr(), name);
+            ffi::sfShader_setCurrentTextureUniform(self.raw_mut(), name);
         }
         Ok(())
     }
@@ -576,7 +569,7 @@ impl<'texture> Shader<'texture> {
         let name = cstring.as_ptr();
         let len = array.len();
         unsafe {
-            ffi::sfShader_setFloatUniformArray(self.handle.as_ptr(), name, array.as_ptr(), len);
+            ffi::sfShader_setFloatUniformArray(self.raw_mut(), name, array.as_ptr(), len);
         }
         Ok(())
     }
@@ -588,7 +581,7 @@ impl<'texture> Shader<'texture> {
         let len = array.len();
         let ptr = array.as_ptr();
         unsafe {
-            ffi::sfShader_setVec2UniformArray(self.handle.as_ptr(), name, ptr, len);
+            ffi::sfShader_setVec2UniformArray(self.raw_mut(), name, ptr, len);
         }
         Ok(())
     }
@@ -600,7 +593,7 @@ impl<'texture> Shader<'texture> {
         let len = array.len();
         let ptr = array.as_ptr();
         unsafe {
-            ffi::sfShader_setVec3UniformArray(self.handle.as_ptr(), name, ptr, len);
+            ffi::sfShader_setVec3UniformArray(self.raw_mut(), name, ptr, len);
         }
         Ok(())
     }
@@ -610,7 +603,7 @@ impl<'texture> Shader<'texture> {
         let cstring = CString::new(name)?;
         unsafe {
             ffi::sfShader_setVec4UniformArray(
-                self.handle.as_ptr(),
+                self.raw_mut(),
                 cstring.as_ptr(),
                 array.as_ptr().cast(),
                 array.len(),
@@ -624,7 +617,7 @@ impl<'texture> Shader<'texture> {
         let cstring = CString::new(name)?;
         unsafe {
             ffi::sfShader_setMat3UniformArray(
-                self.handle.as_ptr(),
+                self.raw_mut(),
                 cstring.as_ptr(),
                 array.as_ptr().cast(),
                 array.len(),
@@ -638,7 +631,7 @@ impl<'texture> Shader<'texture> {
         let cstring = CString::new(name)?;
         unsafe {
             ffi::sfShader_setMat4UniformArray(
-                self.handle.as_ptr(),
+                self.raw_mut(),
                 cstring.as_ptr(),
                 array.as_ptr().cast(),
                 array.len(),
@@ -652,15 +645,20 @@ impl<'texture> Shader<'texture> {
     /// that SFML doesn't support, or implement a temporary workaround until a bug is fixed.
     #[must_use]
     pub fn native_handle(&self) -> u32 {
-        unsafe { ffi::sfShader_getNativeHandle(self.handle.as_ptr()) }
+        unsafe { ffi::sfShader_getNativeHandle(self.raw()) }
     }
     pub(super) fn raw(&self) -> *const ffi::sfShader {
-        self.handle.as_ptr()
+        let ptr: *const Self = self;
+        ptr.cast()
+    }
+    fn raw_mut(&mut self) -> *mut ffi::sfShader {
+        let ptr: *mut Self = self;
+        ptr.cast()
     }
 }
 
 impl Drop for Shader<'_> {
     fn drop(&mut self) {
-        unsafe { ffi::sfShader_del(self.handle.as_ptr()) }
+        unsafe { ffi::sfShader_del(self.raw_mut()) }
     }
 }
