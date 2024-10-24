@@ -4,7 +4,7 @@ use {
         ffi::graphics as ffi,
         graphics::{glsl, Texture},
         system::InputStream,
-        SfError, SfResult,
+        IntoSfResult, SfError, SfResult,
     },
     std::{
         ffi::CString,
@@ -137,23 +137,13 @@ pub struct Shader<'texture> {
     texture: PhantomData<&'texture Texture>,
 }
 
-macro_rules! shader_create {
-    ($shader:ident, $load_block:block) => {{
-        let $shader = NonNull::new(unsafe { ffi::sfShader_new() }).ok_or(SfError::CallFailed)?;
-        unsafe {
-            if !$load_block {
-                ffi::sfShader_del($shader.as_ptr());
-                return Err(SfError::CallFailed);
-            }
-        }
+impl<'texture> Shader<'texture> {
+    fn new() -> SfResult<Self> {
         Ok(Self {
-            handle: $shader,
+            handle: NonNull::new(unsafe { ffi::sfShader_new() }).ok_or(SfError::CallFailed)?,
             texture: PhantomData,
         })
-    }};
-}
-
-impl<'texture> Shader<'texture> {
+    }
     /// Load the vertex, geometry or fragment shader from a file.
     ///
     /// This function loads a single shader, vertex, geometry or fragment,
@@ -162,10 +152,11 @@ impl<'texture> Shader<'texture> {
     /// GLSL is a C-like language dedicated to OpenGL shaders; you'll probably need to read a good
     /// documentation for it before writing your own shaders.
     pub fn from_file(path: &str, type_: ShaderType) -> SfResult<Self> {
-        shader_create!(shader, {
-            let path = CString::new(path)?;
-            ffi::sfShader_loadFromFile_1(shader.as_ptr(), path.as_ptr(), type_)
-        })
+        let path = CString::new(path)?;
+        let new = Self::new()?;
+        unsafe { ffi::sfShader_loadFromFile_1(new.handle.as_ptr(), path.as_ptr(), type_) }
+            .into_sf_result()?;
+        Ok(new)
     }
 
     /// Load both the vertex and fragment shaders from files.
@@ -175,11 +166,14 @@ impl<'texture> Shader<'texture> {
     /// GLSL is a C-like language dedicated to OpenGL shaders;
     /// you'll probably need to read a good documentation for it before writing your own shaders.
     pub fn from_file_vert_frag(vert: &str, frag: &str) -> SfResult<Self> {
-        shader_create!(shader, {
-            let vert = CString::new(vert)?;
-            let frag = CString::new(frag)?;
-            ffi::sfShader_loadFromFile_vert_frag(shader.as_ptr(), vert.as_ptr(), frag.as_ptr())
-        })
+        let vert = CString::new(vert)?;
+        let frag = CString::new(frag)?;
+        let new = Self::new()?;
+        unsafe {
+            ffi::sfShader_loadFromFile_vert_frag(new.handle.as_ptr(), vert.as_ptr(), frag.as_ptr())
+        }
+        .into_sf_result()?;
+        Ok(new)
     }
 
     /// Load the vertex, geometry and fragment shaders from files.
@@ -189,17 +183,20 @@ impl<'texture> Shader<'texture> {
     /// GLSL is a C-like language dedicated to OpenGL shaders; you'll probably need to
     /// read a good documentation for it before writing your own shaders.
     pub fn from_file_all(vert: &str, geom: &str, frag: &str) -> SfResult<Self> {
-        shader_create!(shader, {
-            let vert = CString::new(vert)?;
-            let geom = CString::new(geom)?;
-            let frag = CString::new(frag)?;
+        let vert = CString::new(vert)?;
+        let geom = CString::new(geom)?;
+        let frag = CString::new(frag)?;
+        let new = Self::new()?;
+        unsafe {
             ffi::sfShader_loadFromFile_all(
-                shader.as_ptr(),
+                new.handle.as_ptr(),
                 vert.as_ptr(),
                 geom.as_ptr(),
                 frag.as_ptr(),
             )
-        })
+        }
+        .into_sf_result()?;
+        Ok(new)
     }
 
     /// Load the vertex, geometry or fragment shader from a source code in memory.
@@ -210,10 +207,11 @@ impl<'texture> Shader<'texture> {
     /// GLSL is a C-like language dedicated to OpenGL shaders; you'll probably need to read a
     /// good documentation for it before writing your own shaders.
     pub fn from_memory(contents: &str, type_: ShaderType) -> SfResult<Self> {
-        shader_create!(shader, {
-            let contents = CString::new(contents)?;
-            ffi::sfShader_loadFromMemory_1(shader.as_ptr(), contents.as_ptr(), type_)
-        })
+        let contents = CString::new(contents)?;
+        let new = Self::new()?;
+        unsafe { ffi::sfShader_loadFromMemory_1(new.handle.as_ptr(), contents.as_ptr(), type_) }
+            .into_sf_result()?;
+        Ok(new)
     }
 
     /// Load both the vertex and fragment shaders from source codes in memory.
@@ -223,11 +221,19 @@ impl<'texture> Shader<'texture> {
     /// to OpenGL shaders; you'll probably need to read a good documentation
     /// for it before writing your own shaders.
     pub fn from_memory_vert_frag(vert: &str, frag: &str) -> SfResult<Self> {
-        shader_create!(shader, {
-            let vert = CString::new(vert)?;
-            let frag = CString::new(frag)?;
-            ffi::sfShader_loadFromMemory_vert_frag(shader.as_ptr(), vert.as_ptr(), frag.as_ptr())
-        })
+        let vert = CString::new(vert)?;
+        let frag = CString::new(frag)?;
+        let new = Self::new()?;
+
+        unsafe {
+            ffi::sfShader_loadFromMemory_vert_frag(
+                new.handle.as_ptr(),
+                vert.as_ptr(),
+                frag.as_ptr(),
+            )
+        }
+        .into_sf_result()?;
+        Ok(new)
     }
 
     /// Load the vertex, geometry and fragment shaders from source codes in memory.
@@ -237,17 +243,20 @@ impl<'texture> Shader<'texture> {
     /// OpenGL shaders; you'll probably need to read a good documentation for it
     /// before writing your own shaders.
     pub fn from_memory_all(vert: &str, geom: &str, frag: &str) -> SfResult<Self> {
-        shader_create!(shader, {
-            let vert = CString::new(vert)?;
-            let geom = CString::new(geom)?;
-            let frag = CString::new(frag)?;
+        let vert = CString::new(vert)?;
+        let geom = CString::new(geom)?;
+        let frag = CString::new(frag)?;
+        let new = Self::new()?;
+        unsafe {
             ffi::sfShader_loadFromMemory_all(
-                shader.as_ptr(),
+                new.handle.as_ptr(),
                 vert.as_ptr(),
                 geom.as_ptr(),
                 frag.as_ptr(),
             )
-        })
+        }
+        .into_sf_result()?;
+        Ok(new)
     }
 
     /// Load the vertex, geometry or fragment shader from a custom stream.
@@ -257,10 +266,13 @@ impl<'texture> Shader<'texture> {
     /// GLSL is a C-like language dedicated to OpenGL shaders; you'll probably need to read a good
     /// documentation for it before writing your own shaders.
     pub fn from_stream<T: Read + Seek>(mut source: T, type_: ShaderType) -> SfResult<Self> {
-        shader_create!(shader, {
-            let source = InputStream::new(&mut source);
-            ffi::sfShader_loadFromStream_1(shader.as_ptr(), source.stream.0.as_ptr(), type_)
-        })
+        let source = InputStream::new(&mut source);
+        let new = Self::new()?;
+        unsafe {
+            ffi::sfShader_loadFromStream_1(new.handle.as_ptr(), source.stream.0.as_ptr(), type_)
+        }
+        .into_sf_result()?;
+        Ok(new)
     }
 
     /// Load both the vertex and fragment shaders from custom streams.
@@ -274,15 +286,19 @@ impl<'texture> Shader<'texture> {
         T: Read + Seek,
         U: Read + Seek,
     {
-        shader_create!(shader, {
-            let vert = InputStream::new(&mut vert);
-            let frag = InputStream::new(&mut frag);
+        let vert = InputStream::new(&mut vert);
+        let frag = InputStream::new(&mut frag);
+        let new = Self::new()?;
+
+        unsafe {
             ffi::sfShader_loadFromStream_vert_frag(
-                shader.as_ptr(),
+                new.handle.as_ptr(),
                 vert.stream.0.as_ptr(),
                 frag.stream.0.as_ptr(),
             )
-        })
+        }
+        .into_sf_result()?;
+        Ok(new)
     }
 
     /// Load the vertex, geometry and fragment shaders from custom streams.
@@ -297,17 +313,20 @@ impl<'texture> Shader<'texture> {
         U: Read + Seek,
         V: Read + Seek,
     {
-        shader_create!(shader, {
-            let vert = InputStream::new(&mut vert);
-            let geom = InputStream::new(&mut geom);
-            let frag = InputStream::new(&mut frag);
+        let vert = InputStream::new(&mut vert);
+        let geom = InputStream::new(&mut geom);
+        let frag = InputStream::new(&mut frag);
+        let new = Self::new()?;
+        unsafe {
             ffi::sfShader_loadFromStream_all(
-                shader.as_ptr(),
+                new.handle.as_ptr(),
                 vert.stream.0.as_ptr(),
                 geom.stream.0.as_ptr(),
                 frag.stream.0.as_ptr(),
             )
-        })
+        }
+        .into_sf_result()?;
+        Ok(new)
     }
 
     /// Bind a shader for rendering.
