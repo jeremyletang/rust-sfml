@@ -61,7 +61,7 @@ pub struct RenderStates<'texture, 'shader, 'shader_texture: 'shader> {
     pub shader: Option<&'shader Shader<'shader_texture>>,
 }
 
-impl RenderStates<'static, 'static, 'static> {
+impl RenderStates<'_, '_, '_> {
     /// The default render state.
     ///
     /// This can be used in a const context, unlike the [`Default`] implementation.
@@ -73,7 +73,7 @@ impl RenderStates<'static, 'static, 'static> {
     };
 }
 
-impl Default for RenderStates<'static, 'static, 'static> {
+impl Default for RenderStates<'_, '_, '_> {
     fn default() -> Self {
         Self::DEFAULT
     }
