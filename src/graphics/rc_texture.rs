@@ -257,25 +257,15 @@ impl RcTexture {
     /// The size of the pixel array must match the width and height arguments,
     /// and it must contain 32-bits RGBA pixels.
     ///
-    /// This function does nothing if pixels is null or if the texture was not previously created.
+    /// This function does nothing if the texture was not previously created.
     ///
-    /// # Safety
+    /// # Panics
     ///
-    /// No additional check is performed on the size of the pixel array or the bounds of the
-    /// area to update, passing invalid arguments will lead to an _undefined behavior_.
-    pub unsafe fn update_from_pixels(
-        &mut self,
-        pixels: &[u8],
-        width: u32,
-        height: u32,
-        x: u32,
-        y: u32,
-    ) {
-        unsafe {
-            self.texture
-                .borrow_mut()
-                .update_from_pixels(pixels, width, height, x, y)
-        }
+    /// Panics the provided parameters would result in out of bounds access.
+    pub fn update_from_pixels(&mut self, pixels: &[u8], width: u32, height: u32, x: u32, y: u32) {
+        self.texture
+            .borrow_mut()
+            .update_from_pixels(pixels, width, height, x, y)
     }
 
     /// Enable or disable the smooth filter on a texture

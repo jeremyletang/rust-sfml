@@ -318,20 +318,18 @@ impl Texture {
     /// The size of the pixel array must match the width and height arguments,
     /// and it must contain 32-bits RGBA pixels.
     ///
-    /// This function does nothing if pixels is null or if the texture was not previously created.
+    /// This function does nothing if the texture was not previously created.
     ///
-    /// # Safety
+    /// # Panics
     ///
-    /// No additional check is performed on the size of the pixel array or the bounds of the
-    /// area to update, passing invalid arguments will lead to an _undefined behavior_.
-    pub unsafe fn update_from_pixels(
-        &mut self,
-        pixels: &[u8],
-        width: u32,
-        height: u32,
-        x: u32,
-        y: u32,
-    ) {
+    /// Panics the provided parameters would result in out of bounds access.
+    pub fn update_from_pixels(&mut self, pixels: &[u8], width: u32, height: u32, x: u32, y: u32) {
+        let my_dims = self.size();
+        assert!(
+            x + width <= my_dims.x
+                && y + height <= my_dims.y
+                && pixels.len() == (width * height * 4) as usize
+        );
         unsafe { ffi::sfTexture_updateFromPixels(self, pixels.as_ptr(), width, height, x, y) }
     }
 
