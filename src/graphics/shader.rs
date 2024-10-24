@@ -153,10 +153,6 @@ macro_rules! shader_create {
     }};
 }
 
-fn c_string(source: &str) -> SfResult<CString> {
-    CString::new(source).map_err(|_| SfError::NulInStr)
-}
-
 impl<'texture> Shader<'texture> {
     /// Load the vertex, geometry or fragment shader from a file.
     ///
@@ -167,7 +163,7 @@ impl<'texture> Shader<'texture> {
     /// documentation for it before writing your own shaders.
     pub fn from_file(path: &str, type_: ShaderType) -> SfResult<Self> {
         shader_create!(shader, {
-            let path = c_string(path)?;
+            let path = CString::new(path)?;
             ffi::sfShader_loadFromFile_1(shader.as_ptr(), path.as_ptr(), type_)
         })
     }
@@ -180,8 +176,8 @@ impl<'texture> Shader<'texture> {
     /// you'll probably need to read a good documentation for it before writing your own shaders.
     pub fn from_file_vert_frag(vert: &str, frag: &str) -> SfResult<Self> {
         shader_create!(shader, {
-            let vert = c_string(vert)?;
-            let frag = c_string(frag)?;
+            let vert = CString::new(vert)?;
+            let frag = CString::new(frag)?;
             ffi::sfShader_loadFromFile_vert_frag(shader.as_ptr(), vert.as_ptr(), frag.as_ptr())
         })
     }
@@ -194,9 +190,9 @@ impl<'texture> Shader<'texture> {
     /// read a good documentation for it before writing your own shaders.
     pub fn from_file_all(vert: &str, geom: &str, frag: &str) -> SfResult<Self> {
         shader_create!(shader, {
-            let vert = c_string(vert)?;
-            let geom = c_string(geom)?;
-            let frag = c_string(frag)?;
+            let vert = CString::new(vert)?;
+            let geom = CString::new(geom)?;
+            let frag = CString::new(frag)?;
             ffi::sfShader_loadFromFile_all(
                 shader.as_ptr(),
                 vert.as_ptr(),
@@ -215,7 +211,7 @@ impl<'texture> Shader<'texture> {
     /// good documentation for it before writing your own shaders.
     pub fn from_memory(contents: &str, type_: ShaderType) -> SfResult<Self> {
         shader_create!(shader, {
-            let contents = c_string(contents)?;
+            let contents = CString::new(contents)?;
             ffi::sfShader_loadFromMemory_1(shader.as_ptr(), contents.as_ptr(), type_)
         })
     }
@@ -228,8 +224,8 @@ impl<'texture> Shader<'texture> {
     /// for it before writing your own shaders.
     pub fn from_memory_vert_frag(vert: &str, frag: &str) -> SfResult<Self> {
         shader_create!(shader, {
-            let vert = c_string(vert)?;
-            let frag = c_string(frag)?;
+            let vert = CString::new(vert)?;
+            let frag = CString::new(frag)?;
             ffi::sfShader_loadFromMemory_vert_frag(shader.as_ptr(), vert.as_ptr(), frag.as_ptr())
         })
     }
@@ -242,9 +238,9 @@ impl<'texture> Shader<'texture> {
     /// before writing your own shaders.
     pub fn from_memory_all(vert: &str, geom: &str, frag: &str) -> SfResult<Self> {
         shader_create!(shader, {
-            let vert = c_string(vert)?;
-            let geom = c_string(geom)?;
-            let frag = c_string(frag)?;
+            let vert = CString::new(vert)?;
+            let geom = CString::new(geom)?;
+            let frag = CString::new(frag)?;
             ffi::sfShader_loadFromMemory_all(
                 shader.as_ptr(),
                 vert.as_ptr(),
