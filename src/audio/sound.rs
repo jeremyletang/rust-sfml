@@ -35,6 +35,13 @@ pub struct Sound<'buf> {
     buffer: PhantomData<&'buf SoundBuffer>,
 }
 
+// SAFETY: An `sfSound` isn't tied to a particular thread, so it can be sent between threads safely.
+unsafe impl Send for Sound<'_> {}
+
+// SAFETY: An `&Sound` only allows access to methods which read the status of the sound, which is
+// fine to do from multiple threads at once. Thus it is safe to pass `&Sound` between threads.
+unsafe impl Sync for Sound<'_> {}
+
 /// Creation
 impl<'buf> Sound<'buf> {
     /// Create a new `Sound`
