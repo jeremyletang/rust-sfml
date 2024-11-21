@@ -38,6 +38,13 @@ pub struct Music<'src> {
     _stream: PhantomData<&'src mut ()>,
 }
 
+// SAFETY: An `sfMusic` isn't tied to a particular thread, so it can be sent between threads safely.
+unsafe impl Send for Music<'_> {}
+
+// SAFETY: An `&Music` only allows access to methods which read the status of the music, which is
+// fine to do from multiple threads at once. Thus it is safe to pass `&Music` between threads.
+unsafe impl Sync for Music<'_> {}
+
 /// Creating and opening
 impl<'src> Music<'src> {
     /// Create a new (empty) `Music`.

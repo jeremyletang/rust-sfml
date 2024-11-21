@@ -96,6 +96,15 @@ pub struct SoundRecorderDriver<'a, R: 'a> {
     recorder: &'a mut R,
 }
 
+// SAFETY: An `sfCustomSoundRecorder` isn't tied to a particular thread, so it can be sent between
+// threads safely.
+unsafe impl<R: Send> Send for SoundRecorderDriver<'_, R> {}
+
+// SAFETY: An `&SoundRecorderDriver` only allows access to methods which read the status of the
+// driver, which is fine to do from multiple threads at once. Thus it is safe to pass
+// `&SoundRecorderDriver` between threads.
+unsafe impl<R: Sync> Sync for SoundRecorderDriver<'_, R> {}
+
 unsafe extern "C" fn on_start_callback<R: SoundRecorder>(user_data: *mut c_void) -> bool {
     let recorder: *mut R = user_data.cast();
     unsafe { (*recorder).on_start() }
@@ -245,6 +254,16 @@ impl<S> Drop for SoundRecorderDriver<'_, S> {
 pub struct SoundBufferRecorder {
     handle: NonNull<ffi::sfSoundBufferRecorder>,
 }
+
+// SAFETY: An `sfSoundBufferRecorder` isn't tied to a particular thread, so it can be sent between
+// threads safely.
+unsafe impl Send for SoundBufferRecorder {}
+
+// SAFETY: An `&SoundBufferRecorder` only allows access to methods which read the status of the
+// recorder, which is fine to do from multiple threads at once. Thus it is safe to pass
+// `&SoundBufferRecorder` between threads.
+unsafe impl Sync for SoundBufferRecorder {}
+
 
 impl SoundBufferRecorder {
     /// Create a new sound buffer recorder
