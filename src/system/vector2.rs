@@ -274,10 +274,24 @@ impl<T> From<(T, T)> for Vector2<T> {
     }
 }
 
+impl<T> From<Vector2<T>> for (T, T) {
+    /// Constructs `(x, y)` from a `Vector2`
+    fn from(vec: Vector2<T>) -> Self {
+        (vec.x, vec.y)
+    }
+}
+
 impl<T> From<[T; 2]> for Vector2<T> {
     /// Constructs a `Vector2` from `[x, y]`.
     fn from([x, y]: [T; 2]) -> Self {
         Self { x, y }
+    }
+}
+
+impl<T> From<Vector2<T>> for [T; 2] {
+    /// Constructs `[x, y]` from a `Vector2`
+    fn from(vec: Vector2<T>) -> Self {
+        [vec.x, vec.y]
     }
 }
 

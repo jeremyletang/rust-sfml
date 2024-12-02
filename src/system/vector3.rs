@@ -474,9 +474,23 @@ impl<T> From<(T, T, T)> for Vector3<T> {
     }
 }
 
+impl<T> From<Vector3<T>> for (T, T, T) {
+    /// Constructs `(x, y, z)` from a `Vector3`
+    fn from(vec: Vector3<T>) -> Self {
+        (vec.x, vec.y, vec.z)
+    }
+}
+
 impl<T> From<[T; 3]> for Vector3<T> {
     /// Constructs a `Vector3` from `[x, y, z]`.
     fn from([x, y, z]: [T; 3]) -> Self {
         Self { x, y, z }
+    }
+}
+
+impl<T> From<Vector3<T>> for [T; 3] {
+    /// Constructs `[x, y, z]` from a `Vector3`
+    fn from(vec: Vector3<T>) -> Self {
+        [vec.x, vec.y, vec.z]
     }
 }
