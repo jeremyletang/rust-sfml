@@ -86,8 +86,15 @@ impl VideoMode {
 
 impl From<(u32, u32)> for VideoMode {
     /// Constructs a `VideoMode` from `(w, h)`. Bit depth is 32.
-    fn from(src: (u32, u32)) -> Self {
-        Self::new(src.0, src.1, 32)
+    fn from((w, h): (u32, u32)) -> Self {
+        Self::new(w, h, 32)
+    }
+}
+
+impl From<[u32; 2]> for VideoMode {
+    /// Constructs a `VideoMode` from `[w, h]`. Bit depth is 32.
+    fn from([w, h]: [u32; 2]) -> Self {
+        Self::new(w, h, 32)
     }
 }
 
