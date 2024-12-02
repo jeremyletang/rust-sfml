@@ -274,6 +274,13 @@ impl<T> From<(T, T)> for Vector2<T> {
     }
 }
 
+impl<T> From<[T; 2]> for Vector2<T> {
+    /// Constructs a `Vector2` from `[x, y]`.
+    fn from([x, y]: [T; 2]) -> Self {
+        Self { x, y }
+    }
+}
+
 /// Create a `Vector2` with both fields initialized to the same value
 impl<T: Clone> From<T> for Vector2<T> {
     fn from(src: T) -> Self {
