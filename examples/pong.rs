@@ -45,7 +45,7 @@ fn main() -> SfResult<()> {
         ..Default::default()
     };
     let mut window = RenderWindow::new(
-        (game_width, game_height),
+        [game_width, game_height],
         "SFML Pong",
         Style::CLOSE,
         &context_settings,

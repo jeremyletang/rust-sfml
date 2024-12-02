@@ -40,7 +40,7 @@ impl Drawable for Bullet<'_> {
 
 fn main() -> SfResult<()> {
     let mut window = RenderWindow::new(
-        (800, 600),
+        [800, 600],
         "Custom drawable",
         Style::CLOSE,
         &Default::default(),

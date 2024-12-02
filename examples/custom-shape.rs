@@ -45,7 +45,7 @@ fn hue_time(t: f32) -> Color {
 
 fn main() -> SfResult<()> {
     let mut window = RenderWindow::new(
-        (800, 600),
+        [800, 600],
         "Custom shape",
         Style::DEFAULT,
         &Default::default(),
