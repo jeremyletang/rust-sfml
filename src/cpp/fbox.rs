@@ -27,12 +27,12 @@ impl<T: ?Sized> std::fmt::Debug for FBox<T> {
 
 // SAFETY: An `FBox` owns its contents, so it is safe to move between threads if and only if the
 // contents is safe to move between threads. This matches the behaviour of `std::boxed::Box`.
-unsafe impl <T: Send> Send for FBox<T> {}
+unsafe impl<T: Send> Send for FBox<T> {}
 
 // SAFETY: An `FBox` derefs to its contents, so it is safe to pass an `&FBox<T>` between threads if
 // and only if it is safe to pass a reference to its contents between threads. This matches the
 // behaviour of `std::boxed::Box`.
-unsafe impl <T: Sync> Sync for FBox<T> {}
+unsafe impl<T: Sync> Sync for FBox<T> {}
 
 impl<T: ?Sized> FBox<T> {
     pub(crate) fn new(ptr: *mut T) -> Option<Self> {

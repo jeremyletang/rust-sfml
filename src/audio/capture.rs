@@ -264,7 +264,6 @@ unsafe impl Send for SoundBufferRecorder {}
 // `&SoundBufferRecorder` between threads.
 unsafe impl Sync for SoundBufferRecorder {}
 
-
 impl SoundBufferRecorder {
     /// Create a new sound buffer recorder
     ///
