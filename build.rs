@@ -303,6 +303,9 @@ fn main() {
         if feat_audio {
             unix_audio_link_support_libs();
         }
+        // SFML contains Objective-C source files on OSX
+        // https://github.com/SFML/SFML/issues/2920
+        println!("cargo::rustc-link-arg=-ObjC");
     } else {
         panic!("Uhhh... Can't determine your environment. Sorry.");
     }
