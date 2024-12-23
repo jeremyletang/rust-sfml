@@ -127,6 +127,7 @@ impl WinEnv {
 
 fn main() {
     println!("cargo:rerun-if-changed=CSFML");
+    println!("cargo:rerun-if-changed=SFML");
     let feat_audio = env::var("CARGO_FEATURE_AUDIO").is_ok();
     let feat_window = env::var("CARGO_FEATURE_WINDOW").is_ok();
     let feat_graphics = env::var("CARGO_FEATURE_GRAPHICS").is_ok();
