@@ -69,7 +69,7 @@ optional = true
 
 [build-dependencies]
 cc = "1.0.79"
-cmake = "0.1.51"
+cmake = "0.1.53"
 pkg-config = "0.3.31"
 
 [dev-dependencies]
