@@ -207,7 +207,7 @@ fn main() -> SfResult<()> {
             rs.set_fill_color(Color::MAGENTA);
             rs.set_scale(scale);
             window.draw(&rs);
-            let mut s = Sprite::with_texture(&*tex);
+            let mut s = Sprite::with_texture(&tex);
             s.set_scale(scale);
             window.draw(&s);
         }
