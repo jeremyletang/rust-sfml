@@ -1,5 +1,5 @@
 use {
-    rand::Rng,
+    rand::Rng as _,
     sfml::{
         cpp::FBox,
         graphics::{
@@ -133,14 +133,13 @@ struct StormBlink {
 
 impl StormBlink {
     fn new() -> SfResult<Self> {
-        use rand::{thread_rng, Rng};
-        let mut rng = thread_rng();
+        let mut rng = rand::rng();
 
         let mut points = Vec::new();
         for _ in 0..40_000 {
-            let x = rng.gen_range(0.0..800.);
-            let y = rng.gen_range(0.0..600.);
-            let (red, green, blue) = (rng.r#gen(), rng.r#gen(), rng.r#gen());
+            let x = rng.random_range(0.0..800.);
+            let y = rng.random_range(0.0..600.);
+            let (red, green, blue) = (rng.random(), rng.random(), rng.random());
             points.push(Vertex::with_pos_color(
                 Vector2f::new(x, y),
                 Color::rgb(red, green, blue),
@@ -279,11 +278,15 @@ impl<'tex> Geometry<'tex> {
         )?;
         shader.set_uniform_texture("texture", texture)?;
         shader.set_uniform_vec2("resolution", (800., 600.).into())?;
-        let mut rng = rand::thread_rng();
+        let mut rng = rand::rng();
         Ok(Self {
             point_cloud: std::array::from_fn(|_| {
                 Vertex::new(
-                    (rng.gen_range(-480.0..480.0), rng.gen_range(-480.0..480.0)).into(),
+                    (
+                        rng.random_range(-480.0..480.0),
+                        rng.random_range(-480.0..480.0),
+                    )
+                        .into(),
                     Color::WHITE,
                     Default::default(),
                 )

@@ -3,7 +3,7 @@
 //! It uses an array of primitives to achieve a speed faster than using `sf::Sprite`.
 
 use {
-    rand::{thread_rng, Rng},
+    rand::Rng as _,
     sfml::{
         graphics::{
             Color, Font, PrimitiveType, Rect, RenderStates, RenderTarget, RenderWindow, Text,
@@ -78,7 +78,7 @@ fn main() -> SfResult<()> {
     text.set_outline_thickness(1.0);
     let mut click_counter = 0;
     let mut objects = Vec::new();
-    let mut rng = thread_rng();
+    let mut rng = rand::rng();
     let mut rs = RenderStates::default();
     let mut buf = Vec::new();
     let mut frames_rendered = 0;
@@ -120,10 +120,10 @@ fn main() -> SfResult<()> {
             for _ in 0..25 {
                 objects.push(Object {
                     position: fconv(mp),
-                    speed: Vector2f::new(rng.gen_range(-3.0..3.0), 0.0),
+                    speed: Vector2f::new(rng.random_range(-3.0..3.0), 0.0),
                     image_id: click_counter % N_IMAGES,
                     angle: 0.0,
-                    rot_speed: rng.gen_range(-2.0..2.0),
+                    rot_speed: rng.random_range(-2.0..2.0),
                 });
             }
         }

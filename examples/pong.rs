@@ -1,5 +1,5 @@
 use {
-    rand::{thread_rng, Rng},
+    rand::Rng as _,
     sfml::{
         audio::{Sound, SoundBuffer, SoundSource},
         graphics::{
@@ -21,7 +21,7 @@ const AI_REACT_DELAY: Time = Time::seconds(0.0333);
 fn main() -> SfResult<()> {
     example_ensure_right_working_dir();
 
-    let mut rng = thread_rng();
+    let mut rng = rand::rng();
 
     // Optional antialiasing
     let mut aa_level = 0;
@@ -132,7 +132,7 @@ fn main() -> SfResult<()> {
                     // Reset the ball angle
                     loop {
                         // Make sure the ball initial angle is not too much vertical
-                        ball_angle = rng.gen_range(0.0..360.) * 2. * PI / 360.;
+                        ball_angle = rng.random_range(0.0..360.) * 2. * PI / 360.;
 
                         if ball_angle.cos().abs() >= 0.7 {
                             break;
@@ -230,9 +230,9 @@ fn main() -> SfResult<()> {
                 && ball_pos.y - ball_radius <= paddle_pos.y + paddle_size.y / 2.
             {
                 if ball_pos.y > paddle_pos.y {
-                    ball_angle = PI - ball_angle + rng.gen_range(0.0..20.) * PI / 180.;
+                    ball_angle = PI - ball_angle + rng.random_range(0.0..20.) * PI / 180.;
                 } else {
-                    ball_angle = PI - ball_angle - rng.gen_range(0.0..20.) * PI / 180.;
+                    ball_angle = PI - ball_angle - rng.random_range(0.0..20.) * PI / 180.;
                 }
 
                 on_bounce(&mut ball_sound, &mut ball_speed);
@@ -249,9 +249,9 @@ fn main() -> SfResult<()> {
                 && ball_pos.y - ball_radius <= paddle_pos.y + paddle_size.y / 2.
             {
                 if ball_pos.y > paddle_pos.y {
-                    ball_angle = PI - ball_angle + rng.gen_range(0.0..20.) * PI / 180.;
+                    ball_angle = PI - ball_angle + rng.random_range(0.0..20.) * PI / 180.;
                 } else {
-                    ball_angle = PI - ball_angle - rng.gen_range(0.0..20.) * PI / 180.;
+                    ball_angle = PI - ball_angle - rng.random_range(0.0..20.) * PI / 180.;
                 }
 
                 on_bounce(&mut ball_sound, &mut ball_speed);
