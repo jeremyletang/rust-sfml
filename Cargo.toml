@@ -73,7 +73,9 @@ cmake = "0.1.53"
 pkg-config = "0.3.31"
 
 [dev-dependencies]
-rand = "0.9.0"
+rand.version = "0.9.0"
+rand.default-features = false
+rand.features = ["small_rng"]
 glu-sys = "0.1.4"
 
 [lib]

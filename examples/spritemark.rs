@@ -3,7 +3,7 @@
 //! It uses an array of primitives to achieve a speed faster than using `sf::Sprite`.
 
 use {
-    rand::Rng as _,
+    rand::{rngs::SmallRng, Rng as _, SeedableRng},
     sfml::{
         graphics::{
             Color, Font, PrimitiveType, Rect, RenderStates, RenderTarget, RenderWindow, Text,
@@ -78,7 +78,7 @@ fn main() -> SfResult<()> {
     text.set_outline_thickness(1.0);
     let mut click_counter = 0;
     let mut objects = Vec::new();
-    let mut rng = rand::rng();
+    let mut rng = SmallRng::seed_from_u64(1);
     let mut rs = RenderStates::default();
     let mut buf = Vec::new();
     let mut frames_rendered = 0;

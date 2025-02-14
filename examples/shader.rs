@@ -1,5 +1,5 @@
 use {
-    rand::Rng as _,
+    rand::{rngs::SmallRng, Rng as _, SeedableRng},
     sfml::{
         cpp::FBox,
         graphics::{
@@ -133,7 +133,7 @@ struct StormBlink {
 
 impl StormBlink {
     fn new() -> SfResult<Self> {
-        let mut rng = rand::rng();
+        let mut rng = SmallRng::seed_from_u64(1);
 
         let mut points = Vec::new();
         for _ in 0..40_000 {
@@ -278,7 +278,7 @@ impl<'tex> Geometry<'tex> {
         )?;
         shader.set_uniform_texture("texture", texture)?;
         shader.set_uniform_vec2("resolution", (800., 600.).into())?;
-        let mut rng = rand::rng();
+        let mut rng = SmallRng::seed_from_u64(1);
         Ok(Self {
             point_cloud: std::array::from_fn(|_| {
                 Vertex::new(

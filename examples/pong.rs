@@ -1,5 +1,5 @@
 use {
-    rand::Rng as _,
+    rand::{rngs::SmallRng, Rng as _, SeedableRng},
     sfml::{
         audio::{Sound, SoundBuffer, SoundSource},
         graphics::{
@@ -21,7 +21,7 @@ const AI_REACT_DELAY: Time = Time::seconds(0.0333);
 fn main() -> SfResult<()> {
     example_ensure_right_working_dir();
 
-    let mut rng = rand::rng();
+    let mut rng = SmallRng::seed_from_u64(1);
 
     // Optional antialiasing
     let mut aa_level = 0;
