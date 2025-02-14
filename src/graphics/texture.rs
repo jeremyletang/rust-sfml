@@ -137,9 +137,9 @@ impl Texture {
     ///
     /// - `image`: Image to upload to the texture
     /// - `area`: Can be used to load only a sub-rectangle of the whole image.
-    ///           If you want the entire image then use a default `IntRect`.
-    ///           If the area rectangle crosses the bounds of the image,
-    ///           it is adjusted to fit the image size.
+    ///   If you want the entire image then use a default `IntRect`.
+    ///   If the area rectangle crosses the bounds of the image,
+    ///   it is adjusted to fit the image size.
     pub fn load_from_image(&mut self, image: &Image, area: IntRect) -> SfResult<()> {
         unsafe { ffi::sfTexture_loadFromImage(self, image, area).into_sf_result() }
     }

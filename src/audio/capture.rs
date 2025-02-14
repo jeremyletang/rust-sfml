@@ -181,11 +181,7 @@ impl<'a, R: SoundRecorder> SoundRecorderDriver<'a, R> {
     /// Set the channel count of the audio capture device.
     ///
     /// This method allows you to specify the number of channels used for recording.
-    /// Currently only 16-bit mono and 16-bit stereo are supported.
-    ///
-    /// # Parameters
-    /// * `channel_count`   Number of channels.
-    ///                     Currently only mono (1) and stereo (2) are supported.
+    /// Currently only 16-bit mono (1) and 16-bit stereo (1) are supported.
     pub fn set_channel_count(&mut self, channel_count: u32) {
         unsafe { ffi::sfCustomSoundRecorder_setChannelCount(self.handle.as_ptr(), channel_count) }
     }

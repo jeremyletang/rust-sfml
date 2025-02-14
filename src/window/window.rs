@@ -60,7 +60,7 @@ impl Window {
     ///
     /// # Arguments
     /// * mode - Video mode to use (defines the width, height and depth of the
-    ///                             rendering area of the window)
+    ///   rendering area of the window)
     /// * title - Title of the window
     /// * style - Window style
     /// * settings - Additional settings for the underlying OpenGL context
@@ -90,7 +90,7 @@ impl Window {
     ///
     /// # Arguments
     /// * handle - The handle to the platform-specific window handle to use for
-    ///            the window.
+    ///   the window.
     /// * settings - Additional settings for the underlying OpenGL context
     pub unsafe fn open_from_handle(&mut self, handle: Handle, settings: &ContextSettings) {
         thread_safety::set_window_thread();

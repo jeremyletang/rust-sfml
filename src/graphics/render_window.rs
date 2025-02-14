@@ -38,7 +38,7 @@ impl RenderWindow {
     ///
     /// # Arguments
     /// * mode - Video mode to use (defines the width, height and depth of the
-    ///                             rendering area of the render window)
+    ///   rendering area of the render window)
     /// * title - Title of the render window
     /// * style - Window style
     /// * settings - Additional settings for the underlying OpenGL context
@@ -91,7 +91,7 @@ impl RenderWindow {
     ///
     /// # Arguments
     /// * handle - The handle to the platform-specific window handle to use for
-    ///            the window.
+    ///   the window.
     /// * settings - Additional settings for the underlying OpenGL context
     pub unsafe fn from_handle(handle: Handle, settings: &ContextSettings) -> SfResult<FBox<Self>> {
         thread_safety::set_window_thread();
