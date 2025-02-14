@@ -1,12 +1,16 @@
-use sfml::{
-    cpp::FBox,
-    graphics::{
-        Color, Drawable, Font, IntRect, PrimitiveType, RenderStates, RenderTarget, RenderTexture,
-        RenderWindow, Shader, ShaderType, Sprite, Text, Texture, Transformable, Vertex,
+use {
+    rand::Rng,
+    sfml::{
+        cpp::FBox,
+        graphics::{
+            Color, Drawable, Font, IntRect, PrimitiveType, RenderStates, RenderTarget,
+            RenderTexture, RenderWindow, Shader, ShaderType, Sprite, Text, Texture, Transform,
+            Transformable, Vertex,
+        },
+        system::{Clock, Vector2f},
+        window::{Event, Key, Style},
+        SfError, SfResult,
     },
-    system::{Clock, Vector2f},
-    window::{Event, Key, Style},
-    SfResult,
 };
 
 include!("../example_common.rs");
@@ -255,6 +259,75 @@ impl Effect for Edge<'_> {
     }
 }
 
+struct Geometry<'tex> {
+    point_cloud: [Vertex; 10_000],
+    shader: FBox<Shader<'tex>>,
+    texture: &'tex Texture,
+    transform: Transform,
+}
+
+impl<'tex> Geometry<'tex> {
+    fn new(texture: &'tex Texture) -> SfResult<Self> {
+        if !Shader::is_geometry_available() {
+            eprintln!("Geometry shaders not available");
+            return Err(SfError::CallFailed);
+        }
+        let mut shader = Shader::from_memory_all(
+            include_str!("resources/billboard.vert"),
+            include_str!("resources/billboard.geom"),
+            include_str!("resources/billboard.frag"),
+        )?;
+        shader.set_uniform_texture("texture", texture)?;
+        shader.set_uniform_vec2("resolution", (800., 600.).into())?;
+        let mut rng = rand::thread_rng();
+        Ok(Self {
+            point_cloud: std::array::from_fn(|_| {
+                Vertex::new(
+                    (rng.gen_range(-480.0..480.0), rng.gen_range(-480.0..480.0)).into(),
+                    Color::WHITE,
+                    Default::default(),
+                )
+            }),
+            shader,
+            texture,
+            transform: Transform::IDENTITY,
+        })
+    }
+}
+
+impl Drawable for Geometry<'_> {
+    fn draw<'a: 'shader, 'texture, 'shader, 'shader_texture>(
+        &'a self,
+        target: &mut dyn RenderTarget,
+        states: &RenderStates<'texture, 'shader, 'shader_texture>,
+    ) {
+        let mut states = *states;
+        states.shader = Some(&self.shader);
+        states.texture = Some(self.texture);
+        states.transform = self.transform;
+        target.draw_primitives(&self.point_cloud, PrimitiveType::POINTS, &states);
+    }
+}
+
+impl Effect for Geometry<'_> {
+    fn update(&mut self, _t: f32, x: f32, y: f32) -> SfResult<()> {
+        self.transform = Transform::IDENTITY;
+        self.transform.translate(400., 300.);
+        self.transform.rotate(x * 360.0);
+        let size = 25. + y.abs() * 50.;
+        self.shader.set_uniform_vec2("size", size.into())?;
+        Ok(())
+    }
+
+    fn name(&self) -> &str {
+        "Geometry Shader Billboards"
+    }
+
+    fn as_drawable(&self) -> &dyn Drawable {
+        self as _
+    }
+}
+
 fn main() -> SfResult<()> {
     example_ensure_right_working_dir();
 
@@ -271,11 +344,13 @@ fn main() -> SfResult<()> {
     bg_texture.set_smooth(true);
     let mut entity_texture = Texture::from_file("devices.png")?;
     entity_texture.set_smooth(true);
-    let effects: [&mut dyn Effect; 4] = [
+    let logo_texture = Texture::from_file("logo.png")?;
+    let effects: [&mut dyn Effect; 5] = [
         &mut Pixelate::new(&bg)?,
         &mut WaveBlur::new(&font)?,
         &mut StormBlink::new()?,
         &mut Edge::new(&bg_texture, &entity_texture)?,
+        &mut Geometry::new(&logo_texture)?,
     ];
     let mut current = 0;
     let text_bg_texture = Texture::from_file("text-background.png")?;
