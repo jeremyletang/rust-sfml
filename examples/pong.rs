@@ -1,6 +1,7 @@
 use {
-    rand::{rngs::SmallRng, Rng as _, SeedableRng},
+    rand::{Rng as _, SeedableRng, rngs::SmallRng},
     sfml::{
+        SfResult,
         audio::{Sound, SoundBuffer, SoundSource},
         graphics::{
             CircleShape, Color, Font, RectangleShape, RenderTarget, RenderWindow, Shape, Text,
@@ -8,7 +9,6 @@ use {
         },
         system::{Clock, Time, Vector2f},
         window::{ContextSettings, Event, Key, Scancode, Style},
-        SfResult,
     },
     std::{env, f32::consts::PI},
 };

@@ -1,10 +1,10 @@
 use sfml::{
+    SfResult,
     graphics::{
-        vertex_array_bounds, Color, PrimitiveType, RectangleShape, RenderStates, RenderTarget,
-        RenderWindow, Shape, Vertex,
+        Color, PrimitiveType, RectangleShape, RenderStates, RenderTarget, RenderWindow, Shape,
+        Vertex, vertex_array_bounds,
     },
     window::{Event, Style},
-    SfResult,
 };
 
 fn main() -> SfResult<()> {

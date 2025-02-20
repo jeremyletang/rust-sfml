@@ -1,4 +1,4 @@
-use crate::{cpp::FBox, ffi::system as ffi, system::Time, IntoSfResult as _, SfResult};
+use crate::{IntoSfResult as _, SfResult, cpp::FBox, ffi::system as ffi, system::Time};
 
 decl_opaque! {
     /// Utility type that measures the elapsed time.

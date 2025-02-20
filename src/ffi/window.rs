@@ -1,7 +1,7 @@
 pub use crate::ffi::*;
 use crate::{
     system::SfString as sfString,
-    window::{joystick::Identification as sfJoystickIdentification, VideoMode as sfVideoMode},
+    window::{VideoMode as sfVideoMode, joystick::Identification as sfJoystickIdentification},
 };
 #[cfg(feature = "serde")]
 use serde::{Deserialize, Serialize};

@@ -1,10 +1,10 @@
 use sfml::{
+    SfResult,
     graphics::{
         Color, CustomShape, CustomShapePoints, RenderTarget, RenderWindow, Shape, Transformable,
     },
     system::{Clock, Vector2f},
     window::{Event, Key, Style},
-    SfResult,
 };
 
 #[derive(Clone, Copy)]

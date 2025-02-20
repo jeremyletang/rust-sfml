@@ -1,4 +1,5 @@
 use crate::{
+    IntoSfResult, SfResult,
     cpp::FBox,
     ffi::graphics as ffi,
     graphics::{
@@ -8,7 +9,6 @@ use crate::{
     },
     system::{Vector2f, Vector2i, Vector2u},
     window::ContextSettings,
-    IntoSfResult, SfResult,
 };
 
 decl_opaque! {

@@ -1,8 +1,8 @@
 use crate::{
+    IntoSfResult, SfResult,
     cpp::FBox,
     ffi::window::{self as ffi, sfCursor_loadFromPixels, sfCursor_loadFromSystem, sfCursor_new},
     system::Vector2u,
-    IntoSfResult, SfResult,
 };
 
 decl_opaque! {

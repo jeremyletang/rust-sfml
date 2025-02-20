@@ -1,10 +1,10 @@
 use {
     crate::{
+        SfResult,
         cpp::FBox,
         graphics::{Image, IntRect, RenderWindow, Texture},
         system::Vector2u,
         window::Window,
-        SfResult,
     },
     std::{
         cell::RefCell,

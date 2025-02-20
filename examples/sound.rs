@@ -1,8 +1,8 @@
 use {
     sfml::{
-        audio::{Music, Sound, SoundBuffer, SoundStatus},
-        system::{sleep, Time},
         SfResult,
+        audio::{Music, Sound, SoundBuffer, SoundStatus},
+        system::{Time, sleep},
     },
     std::io::Write,
 };

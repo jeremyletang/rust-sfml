@@ -1,9 +1,9 @@
 use {
     crate::{
+        IntoSfResult, SfResult,
         audio::{SoundSource, SoundStatus, TimeSpan},
         ffi::{self},
         system::{InputStream, Time, Vector3f},
-        IntoSfResult, SfResult,
     },
     std::{
         ffi::CString,

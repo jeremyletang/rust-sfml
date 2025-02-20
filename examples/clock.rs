@@ -2,8 +2,8 @@
 
 use {
     sfml::{
-        system::{Clock, Time},
         SfError,
+        system::{Clock, Time},
     },
     std::io::Write,
 };

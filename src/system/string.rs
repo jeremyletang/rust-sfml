@@ -2,7 +2,7 @@ use {
     crate::ffi::system as ffi,
     core::fmt,
     std::error::Error,
-    widestring::{error::Utf32Error, U32CStr, U32CString},
+    widestring::{U32CStr, U32CString, error::Utf32Error},
 };
 
 /// A borrowed string type that's compatible with `sf::String`.

@@ -1,6 +1,6 @@
 use {
     sfml::{
-        audio::{capture, Sound, SoundBuffer, SoundRecorder, SoundRecorderDriver},
+        audio::{Sound, SoundBuffer, SoundRecorder, SoundRecorderDriver, capture},
         graphics::{Color, Font, RectangleShape, RenderTarget, RenderWindow, Text, Transformable},
         window::{Event, Key, Style},
     },

@@ -1,6 +1,6 @@
 use std::{
     sync::OnceLock,
-    thread::{current, ThreadId},
+    thread::{ThreadId, current},
 };
 
 // this WINDOW_THREAD is the only thread allowed to contain RenderWindows.

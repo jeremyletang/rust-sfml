@@ -1,11 +1,11 @@
 use {
     super::ShaderType,
     crate::{
+        IntoSfResult, SfResult,
         cpp::FBox,
         ffi::graphics as ffi,
-        graphics::{glsl, Texture},
+        graphics::{Texture, glsl},
         system::InputStream,
-        IntoSfResult, SfResult,
     },
     std::{
         ffi::CString,

@@ -1,9 +1,9 @@
 use {
     crate::{
+        IntoSfResult, SfResult,
         cpp::FBox,
         ffi::{self},
         system::{InputStream, Time},
-        IntoSfResult, SfResult,
     },
     std::{
         ffi::CString,

@@ -6,7 +6,7 @@ pub use {
         context_settings::ContextSettings,
         cursor::{Cursor, Type as CursorType},
         event::Event,
-        keyboard::{set_virtual_keyboard_visible, Key},
+        keyboard::{Key, set_virtual_keyboard_visible},
         style::Style,
         video_mode::VideoMode,
         window::{Handle, Window},

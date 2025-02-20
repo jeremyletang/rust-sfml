@@ -1,11 +1,11 @@
 use {
     crate::{
+        IntoSfResult, SfError, SfResult,
         cpp::FBox,
         ffi::graphics::{self as ffi, sfTexture_create},
         graphics::{Image, IntRect, RenderWindow},
         system::{InputStream, Vector2u},
         window::Window,
-        IntoSfResult, SfError, SfResult,
     },
     std::{
         ffi::CString,

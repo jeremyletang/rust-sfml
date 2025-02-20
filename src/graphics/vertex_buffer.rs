@@ -1,8 +1,8 @@
 use crate::{
+    IntoSfResult, SfResult,
     cpp::FBox,
     ffi::graphics as ffi,
     graphics::{Drawable, PrimitiveType, RenderStates, RenderTarget, Vertex},
-    IntoSfResult, SfResult,
 };
 
 /// Usage specifiers for a [`VertexBuffer`]

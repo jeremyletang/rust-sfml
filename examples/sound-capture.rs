@@ -1,7 +1,7 @@
 use {
     sfml::{
-        audio::{capture, Sound, SoundBufferRecorder, SoundStatus},
-        system::{sleep, Time},
+        audio::{Sound, SoundBufferRecorder, SoundStatus, capture},
+        system::{Time, sleep},
     },
     std::{
         error::Error,

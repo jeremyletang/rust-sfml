@@ -8,8 +8,8 @@ repository = "https://github.com/jeremyletang/rust-sfml"
 license = "zlib-acknowledgement"
 keywords = ["sfml", "multimedia", "game"]
 readme = "README.md"
-edition = "2021"
-rust-version = "1.82"
+edition = "2024"
+rust-version = "1.85"
 # We have to exclude a few things, otherwise, the package would be too big for crates.io
 exclude = [
     "SFML/doc",

@@ -1,10 +1,10 @@
 use {
     crate::{
+        IntoSfResult, SfResult,
         cpp::FBox,
         ffi::graphics as ffi,
         graphics::{Glyph, Texture},
         system::InputStream,
-        IntoSfResult, SfResult,
     },
     std::{
         ffi::{CStr, CString},

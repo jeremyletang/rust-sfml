@@ -1,10 +1,10 @@
 use sfml::{
+    SfResult,
     graphics::{
         Color, Font, Rect, RectangleShape, RenderTarget, RenderWindow, Shape, Text, Transformable,
     },
     system::Vector2,
-    window::{mouse, ContextSettings, Cursor, CursorType, Event, Style},
-    SfResult,
+    window::{ContextSettings, Cursor, CursorType, Event, Style, mouse},
 };
 
 include!("../example_common.rs");

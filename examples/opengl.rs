@@ -1,12 +1,12 @@
 use {
     glu_sys as gl,
     sfml::{
+        SfResult,
         graphics::{
             Color, Font, IntRect, RenderTarget, RenderWindow, Sprite, Text, Texture, Transformable,
         },
         system::Clock,
         window::{ContextSettings, Event, Key, Style},
-        SfResult,
     },
     std::{ffi::c_void, mem::size_of},
 };

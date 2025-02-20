@@ -3,15 +3,15 @@
 //! It uses an array of primitives to achieve a speed faster than using `sf::Sprite`.
 
 use {
-    rand::{rngs::SmallRng, Rng as _, SeedableRng},
+    rand::{Rng as _, SeedableRng, rngs::SmallRng},
     sfml::{
+        SfResult,
         graphics::{
             Color, Font, PrimitiveType, Rect, RenderStates, RenderTarget, RenderWindow, Text,
             Texture, Transform, Vertex, View,
         },
         system::{Clock, Vector2, Vector2f, Vector2i},
-        window::{mouse::Button, ContextSettings, Event, Key, Style, VideoMode},
-        SfResult,
+        window::{ContextSettings, Event, Key, Style, VideoMode, mouse::Button},
     },
 };
 

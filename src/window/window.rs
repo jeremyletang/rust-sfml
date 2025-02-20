@@ -1,9 +1,9 @@
 use crate::{
+    IntoSfResult, SfResult,
     cpp::FBox,
     ffi::window as ffi,
     system::{SfStrConv, Vector2i, Vector2u},
-    window::{thread_safety, ContextSettings, Cursor, Event, Style, VideoMode},
-    IntoSfResult, SfResult,
+    window::{ContextSettings, Cursor, Event, Style, VideoMode, thread_safety},
 };
 
 /// The system native window handle type. Can be used to create an SFML Window

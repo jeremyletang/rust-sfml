@@ -1,9 +1,9 @@
 use sfml::{
+    SfResult,
     graphics::{
         Color, PrimitiveType, RenderTarget, RenderWindow, Vertex, VertexBuffer, VertexBufferUsage,
     },
-    window::{mouse::Button, Event, Style},
-    SfResult,
+    window::{Event, Style, mouse::Button},
 };
 
 fn main() -> SfResult<()> {

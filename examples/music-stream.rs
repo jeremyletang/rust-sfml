@@ -1,7 +1,7 @@
 use {
     sfml::{
         audio::{Music, SoundStatus},
-        system::{sleep, InputStream, Time},
+        system::{InputStream, Time, sleep},
     },
     std::{error::Error, fs::File, io::Write},
 };

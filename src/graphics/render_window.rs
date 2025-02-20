@@ -1,4 +1,5 @@
 use crate::{
+    IntoSfResult, SfError, SfResult,
     cpp::FBox,
     ffi::graphics as ffi,
     graphics::{
@@ -7,8 +8,7 @@ use crate::{
         View,
     },
     system::{SfStrConv, Vector2f, Vector2i, Vector2u},
-    window::{thread_safety, ContextSettings, Cursor, Event, Handle, Style, VideoMode},
-    IntoSfResult, SfError, SfResult,
+    window::{ContextSettings, Cursor, Event, Handle, Style, VideoMode, thread_safety},
 };
 
 decl_opaque! {

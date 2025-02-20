@@ -2,11 +2,11 @@
 
 use {
     sfml::{
+        SfResult,
         audio::{Sound, SoundBuffer},
         cpp::FBox,
         graphics::{Color, RenderTarget, RenderWindow, Sprite, Texture},
         window::{Event, Key, Style},
-        SfResult,
     },
     std::{collections::HashMap, hash::Hash},
 };

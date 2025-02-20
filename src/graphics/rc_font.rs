@@ -1,8 +1,8 @@
 use {
     crate::{
-        cpp::FBox,
-        graphics::{font::Info, Font, Glyph, Texture},
         SfResult,
+        cpp::FBox,
+        graphics::{Font, Glyph, Texture, font::Info},
     },
     std::{
         cell::{Ref, RefCell},

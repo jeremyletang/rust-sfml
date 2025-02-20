@@ -1,6 +1,7 @@
 use {
-    rand::{rngs::SmallRng, Rng as _, SeedableRng},
+    rand::{Rng as _, SeedableRng, rngs::SmallRng},
     sfml::{
+        SfError, SfResult,
         cpp::FBox,
         graphics::{
             Color, Drawable, Font, IntRect, PrimitiveType, RenderStates, RenderTarget,
@@ -9,7 +10,6 @@ use {
         },
         system::{Clock, Vector2f},
         window::{Event, Key, Style},
-        SfError, SfResult,
     },
 };
 

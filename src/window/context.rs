@@ -1,5 +1,5 @@
 use {
-    crate::{cpp::FBox, ffi::window as ffi, window::ContextSettings, IntoSfResult, SfResult},
+    crate::{IntoSfResult, SfResult, cpp::FBox, ffi::window as ffi, window::ContextSettings},
     std::ffi::CStr,
 };
 

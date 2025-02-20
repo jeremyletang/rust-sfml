@@ -1,10 +1,10 @@
 use {
     crate::{
+        IntoSfResult, SfResult,
         audio::SoundBuffer,
         cpp::{CppString, CppVector, FBox},
         ffi::audio as ffi,
         system::Time,
-        IntoSfResult, SfResult,
     },
     std::{ffi::CString, os::raw::c_void, ptr::NonNull},
 };

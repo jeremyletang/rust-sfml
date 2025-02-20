@@ -1,7 +1,7 @@
 use sfml::{
+    SfResult,
     graphics::{Color, Font, RenderTarget, RenderWindow, Text, Transformable},
     window::{ContextSettings, Event, Key, Style, VideoMode},
-    SfResult,
 };
 
 struct WindowConfig {

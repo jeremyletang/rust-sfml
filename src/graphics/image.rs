@@ -1,10 +1,10 @@
 use {
     crate::{
+        IntoSfResult, SfResult,
         cpp::FBox,
         ffi::graphics as ffi,
         graphics::{Color, IntRect},
         system::{InputStream, Vector2u},
-        IntoSfResult, SfResult,
     },
     std::{
         error::Error,

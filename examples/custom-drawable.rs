@@ -1,10 +1,10 @@
 use sfml::{
+    SfResult,
     graphics::{
         CircleShape, Color, Drawable, RectangleShape, RenderStates, RenderTarget, RenderWindow,
         Shape, Transformable,
     },
     window::{Event, Key, Style},
-    SfResult,
 };
 
 /// Our custom drawable type. It looks like a bullet.

@@ -1,10 +1,10 @@
 use sfml::{
+    SfResult,
     graphics::{
         Color, Font, RectangleShape, RenderTarget, RenderWindow, Shape, Text, TextStyle,
         Transformable,
     },
-    window::{clipboard, Event, Key, Style},
-    SfResult,
+    window::{Event, Key, Style, clipboard},
 };
 
 include!("../example_common.rs");
@@ -105,16 +105,22 @@ fn main() -> SfResult<()> {
             let fc = text.fill_color();
             let oc = text.outline_color();
             format!(
-            "fill: {:02x}{:02x}{:02x}{:02x} outline: {:02x}{:02x}{:02x}{:02x} outline thickness: {}\n\
+                "fill: {:02x}{:02x}{:02x}{:02x} outline: {:02x}{:02x}{:02x}{:02x} outline thickness: {}\n\
             style: {:?} (F1-F4) cursor: {} (F5)\n\
             font family: {}",
-            fc.r, fc.g, fc.b, fc.a,
-            oc.r, oc.g, oc.b, oc.a,
-            text.outline_thickness(),
-            text.style(),
-            show_cursor,
-            font.info().family
-        )
+                fc.r,
+                fc.g,
+                fc.b,
+                fc.a,
+                oc.r,
+                oc.g,
+                oc.b,
+                oc.a,
+                text.outline_thickness(),
+                text.style(),
+                show_cursor,
+                font.info().family
+            )
         };
         status_text.set_string(&status_string);
 

@@ -1,11 +1,11 @@
 use sfml::{
+    SfResult,
     graphics::{
         Color, RcFont, RcSprite, RcText, RcTexture, RectangleShape, RenderTarget, RenderWindow,
         Shape, Sprite, Texture, Transformable,
     },
     system::Vector2f,
-    window::{clipboard, Event, Key, Style},
-    SfResult,
+    window::{Event, Key, Style, clipboard},
 };
 
 include!("../example_common.rs");

@@ -1,6 +1,6 @@
 use {
     sfml::{
-        audio::{listener, Music, SoundSource},
+        audio::{Music, SoundSource, listener},
         graphics::{
             CircleShape, Color, FloatRect, Font, RectangleShape, RenderStates, RenderTarget,
             RenderWindow, Shape, Text, Transformable,
