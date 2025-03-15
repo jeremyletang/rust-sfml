@@ -3,6 +3,29 @@ use std::{
     path::{Path, PathBuf},
 };
 
+fn csfml_build_symlink() {
+    if env::var("SYMLINK_CSFML").is_err() {
+        return;
+    }
+
+    let Ok(out_dir) = env::var("OUT_DIR") else {
+        return;
+    };
+
+    let out_build_directory = &format!("{out_dir}/build");
+    let out_build_path = Path::new(out_build_directory);
+    if !out_build_path.is_dir() {
+        return;
+    }
+
+    let csfml_symlink_path = Path::new("./CSFML/build");
+    let _ = std::fs::remove_file(csfml_symlink_path);
+    #[cfg(unix)]
+    let _ = std::os::unix::fs::symlink(out_build_path, &csfml_symlink_path);
+    #[cfg(windows)]
+    let _ = std::os::windows::fs::symlink_dir(out_build_path, &csfml_symlink_path);
+}
+
 fn static_link_windows(
     feat_window: bool,
     feat_audio: bool,
@@ -139,6 +162,7 @@ fn main() {
     cmake.profile("Release");
     cmake
         .define("CMAKE_FIND_DEBUG_MODE", "TRUE") // I think I'll leave this on for now. Useful for debugging.
+        .define("CMAKE_EXPORT_COMPILE_COMMANDS", "ON")
         .define("BUILD_SHARED_LIBS", "FALSE")
         .define("SFML_BUILD_NETWORK", "FALSE")
         .define("SFML_INSTALL_PKGCONFIG_FILES", "FALSE")
@@ -183,6 +207,7 @@ fn main() {
         cmake.define("SFML_BUILD_GRAPHICS", "FALSE");
     }
     let cmake_build_path = cmake.build();
+    csfml_build_symlink();
     let mut build = cc::Build::new();
     build
         .cpp(true)
